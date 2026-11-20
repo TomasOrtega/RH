@@ -17,19 +17,19 @@ def Zp : Polynomial O := (1 + Polynomial.X) ^ (p ^ m) - 1
 def Zs : PowerSeries O := (1 + PowerSeries.X) ^ (p ^ m) - 1
 
 /- English proof (translation)
-Simplify using `[Zp, Zs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Zs_coe : ((Zp (O := O) p m : Polynomial O) : PowerSeries O) = Zs p m := by
   simp [Zp, Zs]
 
 /- English proof (translation)
-Simplify using `using Polynomial.monic_X_add_C (1 : O)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_add_one_monic : (Polynomial.X + 1 : Polynomial O).Monic := by
   simpa using Polynomial.monic_X_add_C (1 : O)
 
 /- English proof (translation)
-Establish `h1 : (1 + Polynomial.X : Polynomial O).Monic` using `by rw [add_comm]; exact X_add_one_monic`. Establish `h2 : (1 + Polynomial.X : Polynomial O).natDegree = 1`. Rewrite using `[add_comm]`. Simplify using `using Polynomial.natDegree_X_add_C (1 : O)`. Rewrite using `[h1.natDegree_pow, h2, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_natDegree' : ((1 + Polynomial.X : Polynomial O) ^ (p ^ m)).natDegree = p ^ m := by
   have h1 : (1 + Polynomial.X : Polynomial O).Monic := by rw [add_comm]; exact X_add_one_monic
@@ -38,9 +38,9 @@ theorem pow_natDegree' : ((1 + Polynomial.X : Polynomial O) ^ (p ^ m)).natDegree
   rw [h1.natDegree_pow, h2, mul_one]
 
 /- English proof (translation)
-Establish `h1 : (1 + Polynomial.X : Polynomial O).Monic` using `by rw [add_comm]; exact X_add_one_monic`. Establish `hpm : 0 < p ^ m` using `pow_pos (Fact.out : p.Prime).pos m`. Establish `h2` using `h1.pow (p ^ m)`. Unfold `Zp`. Apply `h2.sub_of_left` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Polynomial.degree_one, Polynomial.degree_eq_natDegree h2.ne_zero, pow_natDegree']`. Use `first`. Consider the case `exact_mod_cast hpm`. Consider the case `exact WithBot.coe_lt_coe.mpr hpm`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Zp_monic : (Zp (O := O) p m).Monic := by
   have h1 : (1 + Polynomial.X : Polynomial O).Monic := by rw [add_comm]; exact X_add_one_monic
@@ -54,11 +54,11 @@ theorem Zp_monic : (Zp (O := O) p m).Monic := by
   | exact WithBot.coe_lt_coe.mpr hpm
 
 /- English proof (translation)
-Use `first`. Consider the case `(have e := Polynomial.algHom_ext (f := φ.comp (Polynomial.coeToPowerSeries.algHom A)) (g := ψ.comp (Polynomial.coeToPowerSeries.algHom A)) (by simpa using h)`. Simplify using `using AlgHom.congr_fun e r)`. Consider the case `(have hC : ∀ a : A, φ ((Polynomial.C a : Polynomial A) : PowerSeries A) = ψ ((Polynomial.C a : Polynomial A) : PowerSeries A) := by`. Introduce `a`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ((Polynomial.C a : Polynomial A) : PowerSeries A) = algebraMap A (PowerSeries A) a` using `by first`. Consider the case `rw [Polynomial.coe_C, PowerSeries.algebraMap_eq]`. Consider the case `simp [PowerSeries.algebraMap_eq]`. Rewrite using `[e, AlgHom.commutes, AlgHom.commutes]`. Use `Polynomial.induction_on r (fun a => hC a) (fun p q hp hq => ?_) (fun n a _ => ?_)` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.coe_add, map_add, map_add, hp, hq]`. Rewrite using `[Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_X, map_mul, map_mul, map_pow, map_pow, h, hC])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algHom_coe_polynomial_eq_of_X_eq {A B : Type} [CommRing A] [CommRing B] [Algebra A B]
     (φ ψ : PowerSeries A →ₐ[A] B) (h : φ PowerSeries.X = ψ PowerSeries.X) (r : Polynomial A) :
@@ -81,7 +81,7 @@ private theorem algHom_coe_polynomial_eq_of_X_eq {A B : Type} [CommRing A] [Comm
          map_pow, h, hC])
 
 /- English proof (translation)
-Establish `hpm : 0 < p ^ m` using `pow_pos (Fact.out : p.Prime).pos m`. Unfold `Zp`. Rewrite using `[Polynomial.natDegree_sub_eq_left_of_natDegree_lt, pow_natDegree']`. Rewrite using `[Polynomial.natDegree_one, pow_natDegree']`. Conclude with `hpm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zp_natDegree : (Zp (O := O) p m).natDegree = p ^ m := by
   have hpm : 0 < p ^ m := pow_pos (Fact.out : p.Prime).pos m
@@ -93,13 +93,11 @@ variable (hlm : ((p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O)
 include hlm
 
 /- English proof (translation)
-Establish `hpp : p.Prime` using `Fact.out`. Establish `hp : ((p : ℕ) : IsLocalRing.ResidueField O) = 0`. Establish `h` using `(IsLocalRing.residue_eq_zero_iff ((p : ℕ) : O)).mpr hlm`. Simplify using `using h`. Use `haveI hk : CharP (IsLocalRing.ResidueField O) p := by first`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `exact (CharP.charP_iff_prime_eq_zero hpp).mpr hp`. Consider the case `exact CharP.charP_of_prime_eq_zero hpp hp`. Consider the case `(have h1 : ringChar (IsLocalRing.ResidueField O) ∣ p := ringChar.dvd hp`. Break down `(Nat.dvd_prime hpp).mp h1 with h2 | h2` into its components or cases. Conclude with `absurd h2 CharP.ringChar_ne_one`.
+Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Conclude with `ringChar.of_eq h2)`. Use `haveI : CharP (PowerSeries (IsLocalRing.ResidueField O)) p := by first`. Consider the case `infer_instance`. Consider the case `exact charP_of_injective_algebraMap' (IsLocalRing.ResidueField O) p`. Simplify using `only [Zs, map_sub, map_pow, map_add, map_one, PowerSeries.map_X]`.
-
-Use `first`. Consider the case `(rw [add_pow_char_pow]; simp)`. Consider the case `(rw [add_pow_expChar_pow]; simp)`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Zs_res : PowerSeries.map (IsLocalRing.residue O) (Zs p m) = PowerSeries.X ^ (p ^ m) := by
   have hpp : p.Prime := Fact.out
@@ -124,13 +122,13 @@ theorem Zs_res : PowerSeries.map (IsLocalRing.residue O) (Zs p m) = PowerSeries.
   | (rw [add_pow_expChar_pow]; simp)
 
 /- English proof (translation)
-Rewrite using `[Zs_res p m hlm]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zs_res_ne : PowerSeries.map (IsLocalRing.residue O) (Zs p m) ≠ 0 := by
   rw [Zs_res p m hlm]; exact pow_ne_zero _ PowerSeries.X_ne_zero
 
 /- English proof (translation)
-Establish `h : (PowerSeries.map (IsLocalRing.residue O) (Zs p m)).order.toNat = p ^ m` using `by first`. Consider the case `rw [Zs_res p m hlm, PowerSeries.order_X_pow, ENat.toNat_coe]`. Consider the case `simp [Zs_res p m hlm]`. Conclude with `h`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Zs_order : (PowerSeries.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) (Zs p m)).order.toNat =
     p ^ m := by
@@ -151,21 +149,21 @@ Both sides reduce to the same expression.
 theorem evalWeierstrassMod_def (x : F) (f : PowerSeries O) : evP p m x f = Polynomial.aeval x (f %ʷ Zs p m) := rfl
 
 /- English proof (translation)
-Establish `hne` using `Zs_res_ne p m hlm`. Establish `hW` using `f.isWeierstrassDivision_weierstrassDiv_weierstrassMod hne`. Establish `hP` using `Zp_monic (O := O) p m`. Establish `hord : (PowerSeries.map (IsLocalRing.residue O) (Zs p m)).order.toNat = p ^ m` using `by first`. Consider the case `rw [Zs_res p m hlm, PowerSeries.order_X_pow, ENat.toNat_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simp [Zs_res p m hlm]`. Rewrite using `[evalWeierstrassMod_def]`. Generalize the expression as in `hq0 : f /ʷ Zs p m = q0 at hW`. Generalize the expression as in `hr0 : f %ʷ Zs p m = r0 at hW ⊢`. Establish `h2` using `hW.eq_mul_add`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `e1 : ((r0 - r : Polynomial O) : PowerSeries O) = Zs p m * (q - q0)`. Rewrite using `[Polynomial.coe_sub]`. Take the linear combination `h - h2`. Establish `hdiv : (((r0 - r) %ₘ Zp p m + Zp p m * ((r0 - r) /ₘ Zp p m) : Polynomial O) : PowerSeries O) = ((r0 - r : Polynomial O) : PowerSeries O)` using `by first`. Consider the case `rw [Polynomial.modByMonic_add_div _ _ hP]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `rw [Polynomial.modByMonic_add_div (r0 - r) (Zp p m)]`. Consider the case `rw [Polynomial.modByMonic_add_div (r0 - r) hP]`. Rewrite `hdiv` using `[Polynomial.coe_add, Polynomial.coe_mul, Zs_coe]`. Establish `H1 : PowerSeries.IsWeierstrassDivision (((r0 - r) %ₘ Zp p m : Polynomial O) : PowerSeries O) (Zs p m) (q - q0 - (((r0 - r) /ₘ Zp p m : Polynomial O) : PowerSeries O)) 0`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.degree_zero]`. Conclude with `WithBot.bot_lt_coe _`. Rewrite using `[Polynomial.coe_zero, add_zero]`. Take the linear combination `hdiv + e1`. Establish `H2 : PowerSeries.IsWeierstrassDivision (((r0 - r) %ₘ Zp p m : Polynomial O) : PowerSeries O) (Zs p m) 0 ((r0 - r) %ₘ Zp p m)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rw [Zs_order p m hlm]`. Consider the case `rw [hord]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.degree_eq_natDegree hP.ne_zero, Zp_natDegree]`. Rewrite using `[mul_zero, zero_add]`. Establish `hb : (r0 - r) %ₘ Zp p m = 0` using `by first`. Consider the case `exact (PowerSeries.IsWeierstrassDivision.elim hne H1 H2).2.symm`. Consider the case `exact (H1.elim hne H2).2.symm`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact (H2.eq_weierstrassDiv_weierstrassMod hne).2.trans (H1.eq_weierstrassDiv_weierstrassMod hne).2.symm`. Establish `hdvd : Zp p m ∣ r0 - r` using `(Polynomial.modByMonic_eq_zero_iff_dvd hP).mp hb`. Establish `h3` using `Polynomial.aeval_eq_zero_of_dvd_aeval_eq_zero hdvd hx`. Rewrite `h3` using `[map_sub, sub_eq_zero]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalWeierstrassMod_eq_aeval_of_eq {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (f q : PowerSeries O)
     (r : Polynomial O) (h : f = Zs p m * q + (r : PowerSeries O)) :
@@ -256,7 +254,7 @@ theorem evR_apply {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (f : P
     evR p m hlm hx f = evP p m x f := rfl
 
 /- English proof (translation)
-Rewrite using `[evR_apply]`. Conclude with `evalWeierstrassMod_eq_aeval_of_eq p m hlm hx _ 0 r (by rw [mul_zero, zero_add])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_coe {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (r : Polynomial O) :
     evR p m hlm hx (r : PowerSeries O) = Polynomial.aeval x r := by
@@ -264,7 +262,7 @@ theorem evR_coe {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) (r : Pol
   exact evalWeierstrassMod_eq_aeval_of_eq p m hlm hx _ 0 r (by rw [mul_zero, zero_add])
 
 /- English proof (translation)
-Establish `h` using `evR_coe p m hlm hx (Polynomial.X : Polynomial O)`. Rewrite `h` using `[Polynomial.coe_X, Polynomial.aeval_X]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evR_X {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) :
     evR p m hlm hx PowerSeries.X = x := by
@@ -272,7 +270,7 @@ theorem evR_X {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) :
   rwa [Polynomial.coe_X, Polynomial.aeval_X] at h
 
 /- English proof (translation)
-Establish `h` using `evR_coe p m hlm hx (Zp (O := O) p m)`. Rewrite `h` using `[Zs_coe, hx]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evR_Zs {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) :
     evR p m hlm hx (Zs p m) = 0 := by
@@ -280,11 +278,11 @@ theorem evR_Zs {x : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0) :
   rwa [Zs_coe, hx] at h
 
 /- English proof (translation)
-Establish `hu' : PowerSeries.HasSubst u` using `by first`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero' hu`. Consider the case `exact PowerSeries.HasSubst.of_constantCoeff_zero hu`. Take `⟨ψ, hψ⟩ : ∃ ψ : PowerSeries O →ₐ[O] F, ∀ g, evR p m hlm hx (PowerSeries.subst u g) = ψ g` from `⟨(evR p m hlm hx).comp (PowerSeries.substAlgHom hu'), fun g => by first`. Consider the case `rfl`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `rw [AlgHom.comp_apply, PowerSeries.coe_substAlgHom]`. Consider the case `simp [PowerSeries.coe_substAlgHom]⟩`. Establish `hX : ψ PowerSeries.X = evR p m hlm hy PowerSeries.X`. Rewrite using `[← hψ, PowerSeries.subst_X hu', huy, evR_X]`. Establish `hpoly` using `algHom_coe_polynomial_eq_of_X_eq ψ (evR p m hlm hy) hX`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ψ (Zs p m) = 0`. Rewrite using `[← Zs_coe, hpoly, evR_coe, hy]`. Take `⟨q, r, hf⟩ : ∃ (q : PowerSeries O) (r : Polynomial O), f = Zs p m * q + (r : PowerSeries O)` from `⟨_, _, (f.isWeierstrassDivision_weierstrassDiv_weierstrassMod (Zs_res_ne p m hlm)).eq_mul_add⟩`. Rewrite using `[hψ, hf, map_add, map_add, map_mul, map_mul, hS, evR_Zs p m hlm hy, hpoly]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evR_subst {x y : F} (hx : Polynomial.aeval x (Zp (O := O) p m) = 0)
     (hy : Polynomial.aeval y (Zp (O := O) p m) = 0) (u : PowerSeries O)

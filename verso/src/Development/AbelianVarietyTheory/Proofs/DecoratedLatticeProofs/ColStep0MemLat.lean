@@ -19,7 +19,7 @@ variable {X : Fields} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 X.E))
   (pf : ∀ b, (stepY ST y β Λ Θ pref).D b → Prop)
 
 /- English proof (translation)
-Take `⟨b, q⟩` from `k`. Conclude with `congrArg (Sigma.mk b) (((stepY ST y β Λ Θ pref).reRep pf).rp_spec b q)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cl_rep_reRep (k : ((stepY ST y β Λ Θ pref).reRep pf).Cl) :
     (stepY ST y β Λ Θ pref).cl k.1 (((stepY ST y β Λ Θ pref).reRep pf).rep k) = k := by
@@ -36,7 +36,7 @@ def secRe [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀) (
     exact e1.symm.trans ((congrArg (clMap (Λ₀ := Λ₀) pref lam) e2).trans ((clEquiv pref lam hy hΛ hΘ).apply_symm_apply c))
 
 /- English proof (translation)
-Rewrite using `[(base ST lam Λ₀).mem_intDel_iff h₀ (secRe pref lam pf hy hΛ hΘ)]`. Use `(clEquiv pref lam hy hΛ hΘ).symm.surjective.forall.trans (forall_congr' fun c => ?_)` and prove the remaining obligations. Use `show x.1 _ ∈ _ ↔ _`. Rewrite using `[hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_lat_reRep [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ b = Λ₀)
     (hΘ : ∀ b, Θ b = LevQFam.top X.E X.K n Q) (h : (((stepY ST y β Λ Θ pref).reRep pf).fam X.emb lam).Ok)
@@ -52,9 +52,9 @@ theorem mem_lat_reRep [Unique β] (hy : ∀ N, y.ys N = {∅}) (hΛ : ∀ b, Λ 
 end Gen
 
 /- English proof (translation)
-Introduce `B X I h hX l u a x φ hc`. Establish `hL` using `h.idx_ok a`. Use `letI := StepZero.idxUnique hL`. Establish `h₀` using `colOk B.wts I.Ch hX u 0`. Establish `key` using `mem_lat_reRep ((I.Tp a).pref u 0) (lamT (B.hcW u) 0) (I.pref u a 0) (StepZero.ysAt_zero I.sel (I.tup a) (I.cst a)) (StepZero.levGAt_zero (I.Tp a) hL) (StepZero.levQAt_zero (I.Tp a) hL) ((l.fmL u a).fam 0) h₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key x φ hc`.
+A detailed English derivation is pending.
 -/
 theorem colStep0_mem_lat : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : TC B X) (h : I.Ok) (hX : B.fields.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (x : ((I.fm l u a).lat 0).V) (φ : ColsK I u), IsCol I u a l x φ → (x ∈ ((I.fm l u a).lat 0).L ↔ φ ∈ MfL (Pr := B.primes X) B.wts I.Ch u) := by
   intro B X I h hX l u a x φ hc

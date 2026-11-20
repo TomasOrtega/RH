@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJAStarOp
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `modelPlaceBuilt2_of_genTransfer hJ hG (jDecayTrQQ_of_open hHat) (JA.jAdjTrQQ_of_three hHat hBdd JA.star_operator_transfer_holds)`.
+A detailed English derivation is pending.
 -/
 theorem modelPlaceBuilt2_of_hat (hJ : JfSmoothDS) (hG : Gauge.GC.GenTransfer)
     (hHat : JDHatOpQQ) (hBdd : JA.JABddOpQQ) : Formalism.FourierDecayAlt.JCT.ModelPlaceBuilt2 :=

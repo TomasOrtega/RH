@@ -13,7 +13,7 @@ namespace GlobalTheory.JR.WeilMix
 variable {r : ℕ} {F : Type} [NontriviallyNormedField F]
 
 /- English proof (translation)
-Take `⟨A, u, c, l⟩` from `Y`. Simplify using `only [rowMap, Matrix.SpecialLinearGroup.coe_mul, Matrix.mul_apply, Fin.sum_univ_two, Prod.mk.injEq, true_and, and_true]`. Apply the tactic sequence `constructor <;> funext i <;> ring`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowMap_mul (g h : SpecialLinearGroup (Fin 2) F) (Y : Gl r F) :
     rowMap (g * h) Y = rowMap h (rowMap g Y) := by
@@ -22,21 +22,21 @@ theorem rowMap_mul (g h : SpecialLinearGroup (Fin 2) F) (Y : Gl r F) :
   constructor <;> funext i <;> ring
 
 /- English proof (translation)
-Take `⟨A, u, c, l⟩` from `Y`. Simplify using `[rowMap]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem rowMap_one (Y : Gl r F) : rowMap (1 : SpecialLinearGroup (Fin 2) F) Y = Y := by
   obtain ⟨A, u, c, l⟩ := Y
   simp [rowMap]
 
 /- English proof (translation)
-Unfold `rowMap`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_rowMap (g : SpecialLinearGroup (Fin 2) F) : Continuous (rowMap (r := r) g) := by
   unfold rowMap
   fun_prop
 
 /- English proof (translation)
-Set `e : Gl r F ≃ₜ Gl r F` to `{ toFun := rowMap g, invFun := rowMap g⁻¹ left_inv := fun Y => by simp [← rowMap_mul, rowMap_one] right_inv := fun Y => by simp [← rowMap_mul, rowMap_one] continuous_toFun := continuous_rowMap g, continuous_invFun := continuous_rowMap g⁻¹ }`. Conclude with `⟨hh.1.comp_continuous (continuous_rowMap g), hh.2.comp_homeomorph e⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem isTest_rowAct (g : SpecialLinearGroup (Fin 2) F) (h : Gl r F → ℂ) (hh : IsTest h) : IsTest (rowAct g h) := by
   let e : Gl r F ≃ₜ Gl r F :=
@@ -50,27 +50,25 @@ end GlobalTheory.JR.WeilMix
 
 open GlobalTheory.JR.WeilMix in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r M ψ hψ`. Establish `hT` using `GlobalTheory.T.isLocallyConstantCompactSupport_mixedModelPartialFourierColumn F E r M ψ hψ`. Establish `hI` using `GlobalTheory.T.mixedModelPartialFourierColumn_twice_neg_column F E r M ψ hψ`. Establish `hL` using `GlobalTheory.T.mixedModelPartialFourier_linear F E r M ψ hψ`. Establish `hW` using `GlobalTheory.T.mixedModel_weylElement_eq_partialFourier F E r M ψ hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc : IsLocallyConstant (fun x : F => ψ x)` using `((GlobalTheory.T.unramifiedStandardAddChar_conductor_properties F E).2 ψ hψ).1`. Establish `h4 : ∀ f, IsTest f → ptrB M ψ (ptrB M ψ (ptrB M ψ (ptrB M ψ f))) = f`. Introduce `f hf`. Rewrite using `[hI _ (hT _ (hT _ hf)), hI _ hf]`. Use function extensionality and compare the values at `Y`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[negB]`. Use `⟨weil M ψ, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `g f hf`. Conclude with `hT _ (hT _ (hT _ (isTest_rowAct g _ (hT _ hf))))`. Introduce `f hf`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: rowAct (1 : SpecialLinearGroup (Fin 2) F) (ptrB M ψ f) = ptrB M ψ f`. Use function extensionality and compare the values at `Y`. Simplify using `[rowAct, rowMap_one]`. Simplify using `only [weil, this]`. Conclude with `h4 f hf`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `g h f hf`. Simplify using `only [weil]`. Rewrite using `[h4 _ (isTest_rowAct h _ (hT _ hf))]`. Use `congr 3`. Use function extensionality and compare the values at `Y`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[rowAct, rowMap_mul]`. Introduce `g c f f' hf hf'`. Establish `hR : ∀ (a b : Gl r F → ℂ), rowAct g (c • a + b) = c • rowAct g a + rowAct g b`. Introduce `a b`. Use function extensionality and compare the values at `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[rowAct]`. Simplify using `only [weil]`. Rewrite using `[hL c f f' hf hf', hR, hL _ _ _ (isTest_rowAct g _ (hT _ hf)) (isTest_rowAct g _ (hT _ hf')), hL _ _ _ (hT _ (isTest_rowAct g _ (hT _ hf))) (hT _ (isTest_rowAct g _ (hT _ hf'))), hL _ _ _ (hT _ (hT _ (isTest_rowAct g _ (hT _ hf)))) (hT _ (hT _ (isTest_rowAct g _ (hT _ hf'))))]`. Introduce `f hf`. Use `⟨fun t Y => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ft : Gl r F → ℂ` to `fun Y => ψ (t * mom Y 0) * f Y`. Establish `hft : IsTest ft`. Use `⟨IsLocallyConstant.mul (hψc.comp_continuous ?_) hf.1, hf.2.mul_left⟩` and prove the remaining obligations. Simplify using `only [mom, pow_zero, Matrix.one_mulVec]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `key : rowAct (nS t) (ptrB M ψ f) = ptrB M ψ ft`. Use function extensionality and compare the values at `Y`. Take `⟨A, u, c, l⟩` from `Y`. Simplify using `only [rowAct, rowMap, ptrB, nS, ft]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Simplify using `only [SpecialLinearGroup.coe_mk, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, mul_zero, add_zero, mul_one, zero_add, mom, pow_zero, Matrix.one_mulVec]`. Establish `hu : (fun i => c i * t + u i) = t • c + u` using `by funext i; simp [mul_comm]`. Rewrite using `[hu, dotProduct_add, dotProduct_smul, smul_eq_mul, dotProduct_comm b c, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `show ptrB M ψ (ptrB M ψ (ptrB M ψ (rowAct (nS t) (ptrB M ψ f)))) Y = _`. Rewrite using `[key, h4 ft hft]`. Use `show ptrB M ψ (ptrB M ψ (ptrB M ψ (rowAct (wS F) (ptrB M ψ f)))) = _`. Rewrite using `[hI _ (hT _ (isTest_rowAct _ _ (hT _ hf)))]`. Conclude with `hW f hf`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.weil_repG : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (ψ : AddChar F ℂ), IsStdChar ψ → ∃ W : SpecialLinearGroup (Fin 2) F → (Gl r F → ℂ) → Gl r F → ℂ, IsTestRep W ∧ ∀ f, IsTest f → (∀ t Y, W (nS t) f Y = ψ (t * mom Y 0) * f Y) ∧ W (wS F) f = fourG M ψ f := by
   intro F E _ _ _ _ _ r M ψ hψ

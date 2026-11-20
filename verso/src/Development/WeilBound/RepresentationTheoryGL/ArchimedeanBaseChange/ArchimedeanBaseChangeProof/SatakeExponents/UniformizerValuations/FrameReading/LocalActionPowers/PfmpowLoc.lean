@@ -19,7 +19,7 @@ set_option linter.unusedVariables false
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `hK : IsCompact ((K2 a b w : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`. Use `(GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w a).prod (GlobalTheory.CompanionTheory.IwLevels.isCompact_KGL w b)` as an intermediate fact. Simplify `this` using `[K2, Subgroup.coe_prod]`. Conclude with `GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero hV hK`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem relIndex_ne {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} (hV : IsOpen (V : Set (GLw a w × GLw b w)))
     (hle : V ≤ K2 a b w) : V.relIndex (K2 a b w) ≠ 0 := by
@@ -29,7 +29,7 @@ theorem relIndex_ne {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} (hV : IsOpen 
   exact GlobalTheory.CompanionTheory.IwLevels.relIndex_ne_zero hV hK
 
 /- English proof (translation)
-Unfold `idem`. Distinguish the cases in `hg : g0 ∈ V`. Rewrite using `[Set.indicator_of_mem (V.mul_mem hv hg), Set.indicator_of_mem hg]`. Establish `: v * g0 ∉ V` using `fun h => hg (by simpa using V.mul_mem (V.inv_mem hv) h)`. Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hg]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_left {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} {v : GLw a w × GLw b w} (hv : v ∈ V)
     (g0 : GLw a w × GLw b w) : idem V (v * g0) = idem V g0 := by
@@ -40,7 +40,7 @@ theorem idem_left {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} {v : GLw a w ×
     rw [Set.indicator_of_notMem this, Set.indicator_of_notMem hg]
 
 /- English proof (translation)
-Unfold `idem`. Distinguish the cases in `hg : g0 ∈ V`. Rewrite using `[Set.indicator_of_mem (V.mul_mem hg hv), Set.indicator_of_mem hg]`. Establish `: g0 * v ∉ V` using `fun h => hg (by simpa using V.mul_mem h (V.inv_mem hv))`. Rewrite using `[Set.indicator_of_notMem this, Set.indicator_of_notMem hg]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_right {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} {v : GLw a w × GLw b w} (hv : v ∈ V)
     (g0 : GLw a w × GLw b w) : idem V (g0 * v) = idem V g0 := by
@@ -51,7 +51,7 @@ theorem idem_right {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} {v : GLw a w �
     rw [Set.indicator_of_notMem this, Set.indicator_of_notMem hg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `mconv`. Simplify using `using FinConv.hint_zero ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b))`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mconv_zero_left {w : Pl E} (f : GLw a w × GLw b w → ℂ) :
     mconv (fun _ => (0 : ℂ)) f = fun _ => 0 := by
@@ -60,7 +60,7 @@ theorem mconv_zero_left {w : Pl E} (f : GLw a w × GLw b w → ℂ) :
   simpa using FinConv.hint_zero ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Unfold `mconv`. Simplify using `using FinConv.hint_zero ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b))`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mconv_zero_right {w : Pl E} (f : GLw a w × GLw b w → ℂ) :
     mconv f (fun _ => (0 : ℂ)) = fun _ => 0 := by
@@ -69,9 +69,9 @@ theorem mconv_zero_right {w : Pl E} (f : GLw a w × GLw b w → ℂ) :
   simpa using FinConv.hint_zero ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b))
 
 /- English proof (translation)
-Unfold `mconv`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[mul_assoc]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `_ = hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) (fun z => f (v * z) * g (z⁻¹ * m)) := FinConv.hint_left _ (fun z => f (v * z) * g (z⁻¹ * m)) v⁻¹`. Use `_ = _ := by congr 1; funext z; rw [hf]`.
+A detailed English derivation is pending.
 -/
 theorem mconv_left {w : Pl E} {f g : GLw a w × GLw b w → ℂ} {v : GLw a w × GLw b w} (hf : ∀ x, f (v * x) = f x)
     (m : GLw a w × GLw b w) : mconv f g (v * m) = mconv f g m := by
@@ -85,7 +85,7 @@ theorem mconv_left {w : Pl E} {f g : GLw a w × GLw b w → ℂ} {v : GLw a w ×
     _ = _ := by congr 1; funext z; rw [hf]
 
 /- English proof (translation)
-Unfold `mconv`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[← mul_assoc, hg]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem mconv_right {w : Pl E} {f g : GLw a w × GLw b w → ℂ} {v : GLw a w × GLw b w} (hg : ∀ x, g (x * v) = g x)
     (m : GLw a w × GLw b w) : mconv f g (m * v) = mconv f g m := by
@@ -93,19 +93,17 @@ theorem mconv_right {w : Pl E} {f g : GLw a w × GLw b w → ℂ} {v : GLw a w �
   congr 1; funext z; rw [← mul_assoc, hg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `hr` using `relIndex_ne hV hle`. Use `set u : GLw a w × GLw b w → ℂ := fun m' => idem V m' * f (m'⁻¹ * m) with hu`. Establish `hSu : V ≤ rStab u`. Introduce `k hk x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hu]`. Rewrite using `[idem_right hk, _root_.mul_inv_rev, mul_assoc, hf _ (V.inv_mem hk)]`. Establish `hsupp : ∀ q : (GLw a w × GLw b w) ⧸ V, q ≠ QuotientGroup.mk 1 → u q.out = 0`. Introduce `q hq`. Simplify using `only [hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: q.out ∉ V`. Introduce `hm`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using V.inv_mem hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `idem`. Rewrite using `[Set.indicator_of_notMem this, zero_mul]`. Establish `hfin : (Function.support fun q : (GLw a w × GLw b w) ⧸ V => u q.out).Finite`. Use `(Set.finite_singleton (QuotientGroup.mk 1 : (GLw a w × GLw b w) ⧸ V)).subset fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hq (hsupp q hne)`. Establish `h` using `PositivityTheory.Rg.BcN.F2.LocOpPf.hinteq (K2 a b w) V u hle hSu hr hfin`. Express the relevant statement in the definitionally equal form `hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) u = f m`. Rewrite using `[show ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) = K2 a b w from rfl, h, finsum_eq_single _ (QuotientGroup.mk 1) hsupp]`. Take `⟨hh, e⟩` from `QuotientGroup.mk_out_eq_mul V (1 : GLw a w × GLw b w)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [hu]`. Rewrite using `[e, one_mul]`. Unfold `idem`. Rewrite using `[Set.indicator_of_mem hh.2, hf _ (V.inv_mem hh.2)]`. Establish `: ((V.relIndex (K2 a b w) : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hr`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mconv_idem_left {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} (hV : IsOpen (V : Set (GLw a w × GLw b w)))
     (hle : V ≤ K2 a b w) {f : GLw a w × GLw b w → ℂ} (hf : ∀ v ∈ V, ∀ x, f (v * x) = f x) :
@@ -144,19 +142,17 @@ theorem mconv_idem_left {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} (hV : IsO
   field_simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Establish `hr` using `relIndex_ne hV hle`. Use `set u : GLw a w × GLw b w → ℂ := fun m' => f m' * idem V (m'⁻¹ * m) with hu`. Establish `hSu : V ≤ rStab u`. Introduce `k hk x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hu]`. Rewrite using `[hf _ hk, _root_.mul_inv_rev, mul_assoc, idem_left (V.inv_mem hk)]`. Establish `hsupp : ∀ q : (GLw a w × GLw b w) ⧸ V, q ≠ QuotientGroup.mk m → u q.out = 0`. Introduce `q hq`. Simplify using `only [hu]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: q.out⁻¹ * m ∉ V`. Introduce `hm`. Apply `hq` to reduce the goal to its premises. Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `idem`. Rewrite using `[Set.indicator_of_notMem this, mul_zero]`. Establish `hfin : (Function.support fun q : (GLw a w × GLw b w) ⧸ V => u q.out).Finite`. Use `(Set.finite_singleton (QuotientGroup.mk m : (GLw a w × GLw b w) ⧸ V)).subset fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hq (hsupp q hne)`. Establish `h` using `PositivityTheory.Rg.BcN.F2.LocOpPf.hinteq (K2 a b w) V u hle hSu hr hfin`. Express the relevant statement in the definitionally equal form `hint ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) u = f m`. Rewrite using `[show ((GlobalTheory.LFun.KGL w a).prod (GlobalTheory.LFun.KGL w b)) = K2 a b w from rfl, h, finsum_eq_single _ (QuotientGroup.mk m) hsupp]`. Take `⟨hh, e⟩` from `QuotientGroup.mk_out_eq_mul V m`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only [hu]`. Rewrite using `[e, hf _ hh.2]`. Unfold `idem`. Rewrite using `[Set.indicator_of_mem (by simpa using V.inv_mem hh.2)]`. Establish `: ((V.relIndex (K2 a b w) : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast hr`.
-
-Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mconv_idem_right {w : Pl E} {V : Subgroup (GLw a w × GLw b w)} (hV : IsOpen (V : Set (GLw a w × GLw b w)))
     (hle : V ≤ K2 a b w) {f : GLw a w × GLw b w → ℂ} (hf : ∀ v ∈ V, ∀ x, f (x * v) = f x) :

@@ -57,11 +57,7 @@ def updL (Y : NewReal R V X) (ioY : type_of% (extR R Y).ioY) (ioX : type_of% (ex
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `⟨?_, hM.vpos, ?_, ?_, ?_, h.1, h.2.1, ?_, ?_, ?_, ?_, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1, ?_, h.2.2.2.2.2.2.1, h.2.2.2.2.2.2.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hM.inf :))`. Conclude with `(by with_unfolding_all exact (hM.cX :))`. Conclude with `(by with_unfolding_all exact (hM.cV :))`. Conclude with `(by with_unfolding_all exact (hM.prX :))`.
-
-Conclude with `(by with_unfolding_all exact (hM.HE :))`. Conclude with `(by with_unfolding_all exact (hM.HW :))`. Conclude with `(by with_unfolding_all exact (hM.gE :))`. Conclude with `(by with_unfolding_all exact (hM.gW :))`. Conclude with `(by with_unfolding_all exact (hM.ν0 :))`.
-
-Conclude with `(by with_unfolding_all exact (hM.νW :))`. Conclude with `(by with_unfolding_all exact (hM.BV :))`. Conclude with `(by with_unfolding_all exact (hM.order :))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isModels_ext (hM : R.IsModels) (Y : NewReal R V X) (h : ModC (extR R Y)) : (extR R Y).IsModels := by
   refine ⟨?_, hM.vpos, ?_, ?_, ?_, h.1, h.2.1, ?_, ?_, ?_, ?_, h.2.2.1, h.2.2.2.1, h.2.2.2.2.1, h.2.2.2.2.2.1, ?_, h.2.2.2.2.2.2.1,
@@ -81,9 +77,7 @@ theorem isModels_ext (hM : R.IsModels) (Y : NewReal R V X) (h : ModC (extR R Y))
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `⟨?_, ?_, h.2.2.2.1, ?_, h.2.2.2.2.1, h.2.2.2.2.2.1, h.2.2.2.2.2.2, ?_⟩` and prove the remaining obligations. Use `obt ⟨g, c, c', ht⟩ := hF.tie`. Establish `h1` using `h.2.2.1 g c c' ht`. Use `⟨g, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (c :))`.
-
-Conclude with `(by with_unfolding_all exact (c' :))`. Conclude with `(by with_unfolding_all exact (h1 :))`. Conclude with `(by with_unfolding_all exact (hF.Sb :))`. Conclude with `(by with_unfolding_all exact (hF.pl_onto :))`. Conclude with `(by with_unfolding_all exact (hF.etaVal :))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isFam_ext (hF : R.IsFam) (Y : NewReal R V X) (h : FamC Y) : (extR R Y).IsFam := by
   refine ⟨?_, ?_, h.2.2.2.1, ?_, h.2.2.2.2.1, h.2.2.2.2.2.1, h.2.2.2.2.2.2, ?_⟩
@@ -99,7 +93,7 @@ theorem isFam_ext (hF : R.IsFam) (Y : NewReal R V X) (h : FamC Y) : (extR R Y).I
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `⟨h.1, h.2.1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (hG.levels :))`. Conclude with `(by with_unfolding_all exact (hG.record :))`. Conclude with `(by with_unfolding_all exact (hG.chiW :))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGrp_ext {F : Face D A} (hG : R.IsGrp F) (Y : NewReal R V X) (h : FamC Y) : (extR R Y).IsGrp (extF F X) := by
   refine ⟨h.1, h.2.1, ?_, ?_, ?_⟩
@@ -110,19 +104,9 @@ theorem isGrp_ext {F : Face D A} (hG : R.IsGrp F) (Y : NewReal R V X) (h : FamC 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `choose HX jX h1 h2 using fun n => exists_modX (extR R Y) (.inr n)`. Use `choose HV jV h3 h4 using fun i n => exists_modV (extR R Y) i (.inr n)`. Use `choose νY fdY h5 h6 using fun n j => exists_measY (extR R Y) (.inr n) j`. Use `choose νX fdX h7 using fun n => exists_measX (extR R Y) (.inr n)`. Use `choose νV fdV h8 using fun i n => exists_measV (extR R Y) hM.vpos i (.inr n)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Use `⟨updM Y HX HV jX jV νY fdY νX fdX νV fdV, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `kexactB h`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hM.HX t :))`. Conclude with `(by with_unfolding_all exact (h1 n :))`.
-
-Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hM.HV i t :))`. Conclude with `(by with_unfolding_all exact (h3 i n :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hM.jX t :))`.
-
-Conclude with `(by with_unfolding_all exact (h2 n :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hM.jV i t :))`. Conclude with `(by with_unfolding_all exact (h4 i n :))`. Introduce and unpack `(t | n)`.
-
-Conclude with `(by with_unfolding_all exact (hM.νY t :))`. Conclude with `(by with_unfolding_all exact (h5 n :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hM.νY' t :))`. Conclude with `(by with_unfolding_all exact (h6 n _ rfl :))`.
-
-Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hM.νX t :))`. Conclude with `(by with_unfolding_all exact (h7 n :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hM.νV i t :))`.
-
-Conclude with `(by with_unfolding_all exact (h8 i n :))`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem models_stage (hM : R.IsModels) (Y : NewReal R V X) (h : FamC Y) : ∃ Y' : NewReal R V X, FamC Y' ∧ ModC (extR R Y') := by
   choose HX jX h1 h2 using fun n => exists_modX (extR R Y) (.inr n)
@@ -160,15 +144,9 @@ theorem models_stage (hM : R.IsModels) (Y : NewReal R V X) (h : FamC Y) : ∃ Y'
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hψ : IsStdChar D (extR R Y).ψ (-1)` using `(hc.ωX A.μ0).std`. Use `choose ωY vY h1 using fun n k => exists_kerY (R := extR R Y) hL hψ (.inr n) k ((by with_unfolding_all exact (fun hk => (hc.vY A.μ0 k hk).1 :)))`. Use `choose ωX vX h2 h3 using fun n => exists_kerX (R := extR R Y) hL hψ (.inr n) ((by with_unfolding_all exact ((hc.vX A.μ0).1 :)))`. Use `choose ωP vP h4 h5 using fun i n => exists_kerP (R := extR R Y) hL hψ i (.inr n) ((by with_unfolding_all exact ((hp.vP i A.μ0).1 :)))`. Use `⟨updK Y ωY ωX ωP vY vX vP, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `(by with_unfolding_all exact (h :))`. Conclude with `(by with_unfolding_all exact (hm :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.ωY t :))`. Conclude with `(by with_unfolding_all exact (fun k hk => (h1 n k hk).1 :))`.
-
-Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.ωX t :))`. Conclude with `(by with_unfolding_all exact (h2 n :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.vY t :))`.
-
-Conclude with `(by with_unfolding_all exact (fun k hk => (h1 n k hk).2 :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.vX t :))`. Conclude with `(by with_unfolding_all exact (h3 n :))`. Introduce and unpack `i (t | n)`.
-
-Conclude with `(by with_unfolding_all exact (hp.ωP i t :))`. Conclude with `(by with_unfolding_all exact (h4 i n :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hp.vP i t :))`. Conclude with `(by with_unfolding_all exact (h5 i n :))`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem ker_stage (hc : R.IsChain) (hp : R.IsThP) (hL : (extL R.toLevCh V).Is (.inl A.μ0)) (Y : NewReal R V X) (h : FamC Y)
     (hm : ModC (extR R Y)) : ∃ Y' : NewReal R V X, FamC Y' ∧ ModC (extR R Y') ∧ KerC (extR R Y') := by
@@ -200,13 +178,7 @@ theorem ker_stage (hc : R.IsChain) (hp : R.IsThP) (hL : (extL R.toLevCh V).Is (.
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `kexactB h.ωY`. Conclude with `(by with_unfolding_all exact (h.ωX :))`. Conclude with `(by with_unfolding_all exact (h.vY :))`. Conclude with `(by with_unfolding_all exact (h.vX :))`.
-
-Conclude with `(by with_unfolding_all exact (h.ptY :))`. Conclude with `(by with_unfolding_all exact (h.ptX :))`. Conclude with `(by with_unfolding_all exact (h.ItY :))`. Conclude with `(by with_unfolding_all exact (h.ItX :))`. Introduce and unpack `(t | n)`.
-
-Conclude with `(by with_unfolding_all exact (hc.ioY t :))`. Conclude with `(by with_unfolding_all exact (h.ioY (.inr n) :))`. Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.ioX t :))`. Conclude with `(by with_unfolding_all exact (h.ioX (.inr n) :))`.
-
-Introduce and unpack `(t | n)`. Conclude with `(by with_unfolding_all exact (hc.Th t :))`. Conclude with `(by with_unfolding_all exact (h.Th (.inr n) :))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isChain_updL (hc : R.IsChain) (Y : NewReal R V X) (ioY ioX Th thF thG)
     (h : ({ extR R Y with ioY := ioY, ioX := ioX, Th := Th } : RealDat D (extA A X) Ks).IsChain) :
@@ -232,11 +204,7 @@ theorem isChain_updL (hc : R.IsChain) (Y : NewReal R V X) (ioY ioX Th thF thG)
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (h.ωP :))`. Conclude with `(by with_unfolding_all exact (h.vP :))`. Conclude with `(by with_unfolding_all exact (h.pt_theta :))`. Conclude with `(by with_unfolding_all exact (h.ioP :))`.
-
-Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hp.thF_mem i t :))`. Conclude with `(by with_unfolding_all exact (h.thF_mem i (.inr n) :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hp.thF i t :))`.
-
-Conclude with `(by with_unfolding_all exact (h.thF i (.inr n) :))`. Introduce and unpack `i (t | n)`. Conclude with `(by with_unfolding_all exact (hp.thG i t :))`. Conclude with `(by with_unfolding_all exact (h.thG i (.inr n) :))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isThP_updL (hp : R.IsThP) (Y : NewReal R V X) (ioY ioX Th thF thG)
     (h : ({ extR R Y with thF := thF, thG := thG } : RealDat D (extA A X) Ks).IsThP) :
@@ -259,11 +227,9 @@ theorem isThP_updL (hp : R.IsThP) (Y : NewReal R V X) (ioY ioX Th thF thG)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `obt ⟨Y1, f1, m1⟩ := models_stage hC.models Y h`. Use `obt ⟨Y2, f2, m2, k2⟩ := ker_stage hC.chain hC.thP hL Y1 f1 m1`. Establish `hF` using `isFam_ext hC.fam Y2 f2`. Establish `hM` using `isModels_ext hC.models Y2 m2`. Establish `e1` using `GlobalTheory.ConjExt.exists_chain (R := extR R Y2) h₁ h₂ h₃ h₄ hP hL (isGrp_ext hC.grp Y2 f2).record hF hM k2.1 k2.2.1 k2.2.2.1 k2.2.2.2.1 (.inl A.μ0) ((by with_unfolding_all exact (hC.chain.ItY A.μ0 :))) ((by with_unfolding_all exact (hC.chain.ItX A.μ0 :)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.ConjExt.exists_thP (R := extR R Y2) h₃ hL hF hM k2.2.2.2.2.1 k2.2.2.2.2.2 (.inl A.μ0) ((by with_unfolding_all exact (fun i => hC.thP.ioP i A.μ0 :)))`. Use `obt ⟨ioY, ioX, Th, c3⟩ := e1`. Use `obt ⟨thF, thG, p3⟩ := e2`. Establish `f3 : FamC (updL Y2 ioY ioX Th thF thG)` using `(by with_unfolding_all exact (f2 :))`. Establish `m3 : ModC (extR R (updL Y2 ioY ioX Th thF thG))` using `(by with_unfolding_all exact (m2 :))`.
-
-Conclude with `⟨updL Y2 ioY ioX Th thF thG, ⟨hL, isGrp_ext hC.grp _ f3, isFam_ext hC.fam _ f3, isModels_ext hC.models _ m3, isChain_updL hC.chain Y2 _ _ _ _ _ c3, isThP_updL hC.thP Y2 _ _ _ _ _ p3⟩, f3.2.2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core_ext (h₁ : GlobalTheory.Published.DiscreteSeriesCover) (h₂ : GlobalTheory.Published.HarishChandraModules) (h₃ : GlobalTheory.Published.CuspRapidDecay)
     (h₄ : GlobalTheory.Published.CasselmanWallach) (hP : ∀ k, GlobalTheory.Chain.ChainPar D k) {F : Face D A} (hC : GlobalTheory.Hk3.Core R F)

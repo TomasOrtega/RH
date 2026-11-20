@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.PrimeRing.StdChain
 variable {R : Type} [Ring R]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Take `rfl : k = m` from `by omega`. Simplify using `[hE k le_rfl, hid]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hkm : k < m` using `by omega`. Establish `hEx : E * x k = x k`. Rewrite using `[← hx k hkm, ← mul_assoc, hE k hkm.le]`. Rewrite using `[List.range'_succ, List.map_cons, word_cons, hEx]`. Simplify using `only [← mul_assoc, hx k hkm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem word_left (E : R) (m : ℕ) (q x : ℕ → R) (hE : ∀ i ≤ m, E * q i = q i) (hid : q m * q m = q m)
     (hx : ∀ i < m, q i * x i = x i) (n k : ℕ) (hk : k + n = m) :
@@ -29,15 +29,13 @@ theorem word_left (E : R) (m : ℕ) (q x : ℕ → R) (hE : ∀ i ≤ m, E * q i
     simp only [← mul_assoc, hx k hkm]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact Or.inr ⟨m, rfl, rfl⟩`. Consider the case `cons a l ih`. Establish `ha : a < m` using `hl a (by simp)`. Establish `hEx : E * x a = x a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hx1 a ha, ← mul_assoc, hE a ha.le]`. Rewrite using `[List.map_cons, word_cons, hEx]`. Break down `ih (fun b hb => hl b (by simp [hb])) with h | ⟨k, hk, h⟩` into its components or cases. Use `left`. Rewrite using `[mul_assoc, h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hak : a + 1 = k`. Use `right`. Use `⟨a, by simp; omega, ?_⟩` and prove the remaining obligations. Rewrite using `[List.length_cons, List.range'_succ, hak, ← h]`. Use `left`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hw` using `word_left E m q x hE hid hx1 l.length k hk`. Rewrite `hw` using `[← h]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx2 a ha, hw, mul_assoc]`. Use `_ = x a * (q (a + 1) * q k) * (word E (l.map x) * q m) := by`.
-
-Simplify using `only [mul_assoc]`. Use `_ = 0 := by`. Rewrite using `[horth (a + 1) (by omega) k (by omega) hak]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem word_cases (E : R) (m : ℕ) (q x : ℕ → R) (hE : ∀ i ≤ m, E * q i = q i) (hid : q m * q m = q m)
     (hx1 : ∀ i < m, q i * x i = x i) (hx2 : ∀ i < m, x i * q (i + 1) = x i)
@@ -70,19 +68,17 @@ theorem word_cases (E : R) (m : ℕ) (q x : ℕ → R) (hE : ∀ i ≤ m, E * q 
               simp
 
 /- English proof (translation)
-Proceed by induction on `n generalizing k with`. Consider the case `zero`. Take `rfl : k = m` from `by omega`. Conclude with `⟨0, q k, hne k le_rfl, hA k le_rfl, hid k le_rfl, fun i h1 h2 => absurd h2 (by omega), by simp [hE k le_rfl]⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨x, y, hy0, hyA, hqy, hx, hw⟩` from `ih (k + 1) (by omega)`. Establish `hkm : k < m` using `by omega`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, hsy⟩ : ∃ s ∈ S, q k * s * y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne k hkm.le (hprime _ (hA k hkm.le) y hyA hy0 hcon)`. Establish `hqs : q k * s ∈ A` using `hmul _ (hA k hkm.le) _ (hS hs)`. Establish `hxk : q k * s * q (k + 1) ∈ A` using `hmul _ hqs _ (hA (k + 1) hkm)`. Use `⟨Function.update x k (q k * s * q (k + 1)), q k * s * y, hsy, hmul _ hqs _ hyA, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← mul_assoc, hid k hkm.le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `i h1 h2`. Break down `eq_or_lt_of_le h1 with rfl | h3` into its components or cases. Rewrite using `[Function.update_self]`. Use `⟨hxk, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [← mul_assoc, hid k hkm.le]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc _ (q (k + 1)), hid (k + 1) hkm]`. Rewrite using `[Function.update_of_ne (by omega)]`. Conclude with `hx i (by omega) h2`. Establish `hmap : (List.range' (k + 1) n).map (Function.update x k (q k * s * q (k + 1))) = (List.range' (k + 1) n).map x`. Apply `List.map_congr_left` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Use `List.mem_range'_1.mp ha` as an intermediate fact. Rewrite using `[Function.update_of_ne (by omega)]`. Establish `hEq : E * (q k * s * q (k + 1)) = q k * s * q (k + 1)`. Simplify using `only [← mul_assoc, hE k hkm.le]`.
-
-Rewrite using `[List.range'_succ, List.map_cons, word_cons, hmap, Function.update_self, mul_assoc, hw, hEq, mul_assoc _ (q (k + 1)), hqy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chain (A S : Set R) (E : R) (m : ℕ) (q : ℕ → R)
     (hmul : ∀ a ∈ A, ∀ b ∈ A, a * b ∈ A) (hS : S ⊆ A)
@@ -128,17 +124,15 @@ theorem exists_chain (A S : Set R) (E : R) (m : ℕ) (q : ℕ → R)
         mul_assoc _ (q (k + 1)), hqy]
 
 /- English proof (translation)
-Take `⟨x, y, hy0, -, -, hx, hw⟩` from `exists_chain A S E m q hmul hS hprime hA hne hid hE m 0 (by omega)`. Establish `hx' : ∀ i, i < m → x i ∈ A ∧ q i * x i = x i ∧ x i * q (i + 1) = x i` using `fun i hi => hx i (Nat.zero_le _) hi`. Establish `h0` using `hstd (fun i => x i) (fun i => (hx' i i.2).1)`. Establish `hm : ∀ π : Equiv.Perm (Fin m), (List.ofFn fun i => x (π i)) = (List.ofFn fun i => (π i : ℕ)).map x`. Introduce `π`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Establish `key : stdPoly E (fun i : Fin m => x i) * q m = y`. Rewrite using `[stdPoly, Finset.sum_mul, Finset.sum_eq_single 1]`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.Perm.sign_one, Units.val_one, Int.cast_one, one_mul, Equiv.Perm.coe_one, id]`. Rewrite using `[CompanionTheory.D.gk.admitted.FinOfPIAux.ofFn_val, hw]`. Introduce `π _ hπ`. Rewrite using `[hm, mul_assoc]`. Break down `word_cases E m q x hE (hid m le_rfl) (fun i hi => (hx' i hi).2.1) (fun i hi => (hx' i hi).2.2) horth (List.ofFn fun i => (π i : ℕ)) (by simp [List.mem_ofFn]) with h | ⟨k, hk, h⟩` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h, mul_zero]`. It suffices to derive a contradiction. Apply `hπ` to reduce the goal to its premises. Rewrite `hk`, `h` using `[List.length_ofFn]`. Take `rfl : k = 0` from `by omega`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[← CompanionTheory.D.gk.admitted.FinOfPIAux.ofFn_val]`. Use extensionality with `i`. Conclude with `congrFun (List.ofFn_injective h) i`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Rewrite `key` using `[h0, zero_mul]`. Conclude with `hy0 key.symm`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_chain_nat (A S : Set R) (E : R) (m : ℕ) (q : ℕ → R)
     (hmul : ∀ a ∈ A, ∀ b ∈ A, a * b ∈ A) (hS : S ⊆ A)
@@ -180,13 +174,11 @@ theorem no_chain_nat (A S : Set R) (E : R) (m : ℕ) (q : ℕ → R)
   exact hy0 key.symm
 
 /- English proof (translation)
-Introduce `R _ A S E m q hmul hS hprime hstd hA hne hid horth hE`. Set `qq : ℕ → R` to `fun i => if h : i < m + 1 then q ⟨i, h⟩ else 0`. Establish `hqq : ∀ i (h : i ≤ m), qq i = q ⟨i, Nat.lt_succ_of_le h⟩` using `fun i h => dif_pos (Nat.lt_succ_of_le h)`. Use `no_chain_nat A S E m qq hmul hS hprime hstd ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hqq i h]`. Conclude with `hA _`. Introduce `i h`. Rewrite using `[hqq i h]`. Conclude with `hne _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i h`. Rewrite using `[hqq i h]`. Conclude with `hid _`. Introduce `i h k h' hik`. Rewrite using `[hqq i h, hqq k h']`.
-
-Conclude with `horth _ _ fun e => hik (congrArg Fin.val e)`. Introduce `i h`. Rewrite using `[hqq i h]`. Conclude with `hE _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_orthogonal_idempotents : ∀ (R : Type) [Ring R] (A S : Set R) (E : R) (m : ℕ) (q : Fin (m + 1) → R),
     (∀ a ∈ A, ∀ b ∈ A, a * b ∈ A) → S ⊆ A →

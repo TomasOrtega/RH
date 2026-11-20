@@ -34,12 +34,12 @@ variable {W : LocWach PD LL O v n} (Br : PhiBridge W)
 def cst (F : PowerSeries O) : LetA O n := fun _ => Br.ι F
 
 /- English proof (translation)
-The claim follows from `Br.mem F`.
+A detailed English derivation is pending.
 -/
 theorem cst_mem (F : PowerSeries O) : Br.cst F ∈ W.AΔ := Br.mem F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show Br.ι 1 = (1 : LetA O n) i`. Rewrite using `[map_one]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cst_one : Br.cst 1 = 1 := by
   funext i
@@ -47,7 +47,7 @@ theorem cst_one : Br.cst 1 = 1 := by
   rw [map_one]
   rfl
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show Br.ι (F * F') = (Br.cst F * Br.cst F') i`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cst_mul (F F' : PowerSeries O) : Br.cst (F * F') = Br.cst F * Br.cst F' := by
   funext i
@@ -55,14 +55,14 @@ theorem cst_mul (F F' : PowerSeries O) : Br.cst (F * F') = Br.cst F * Br.cst F' 
   rw [map_mul]
   rfl
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, Br.cst_one]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, Br.cst_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cst_pow (F : PowerSeries O) (k : ℕ) : Br.cst (F ^ k) = Br.cst F ^ k := by
   induction k with
   | zero => rw [pow_zero, pow_zero, Br.cst_one]
   | succ k ih => rw [pow_succ, pow_succ, Br.cst_mul, ih]
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show Br.ι (C x) = algebraMap O (LetA O n) x i`. Rewrite using `[show (C x : PowerSeries O) = algebraMap O (PowerSeries O) x from rfl, AlgHom.commutes]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cst_C (x : O) : Br.cst (C x) = algebraMap O (LetA O n) x := by
   funext i
@@ -70,7 +70,7 @@ theorem cst_C (x : O) : Br.cst (C x) = algebraMap O (LetA O n) x := by
   rw [show (C x : PowerSeries O) = algebraMap O (PowerSeries O) x from rfl, AlgHom.commutes]
   rfl
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, Br.cst_one]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, Br.cst_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem cst_prod {ι' : Type*} (s : Finset ι') (F : ι' → PowerSeries O) :
     Br.cst (∏ i ∈ s, F i) = ∏ i ∈ s, Br.cst (F i) := by
@@ -80,9 +80,7 @@ theorem cst_prod {ι' : Type*} (s : Finset ι') (F : ι' → PowerSeries O) :
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, Br.cst_mul, ih]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show (W.π₀ + lA W) i = Br.ι X`. Rewrite using `[Br.ι_X]`. Use `show W.π₀ i + lA W i = W.π₀₁ + C ((PD.p : ℕ) : O)`. Use `congr 1`.
-
-Apply the tactic sequence `all_goals first | rfl | simp [lA]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem qA_eq : qA W = Br.cst X := by
   funext i
@@ -92,7 +90,7 @@ theorem qA_eq : qA W = Br.cst X := by
   congr 1
   all_goals first | rfl | simp [lA]
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.π₀ i = Br.ι (X - C ((PD.p : ℕ) : O))`. Rewrite using `[map_sub, Br.ι_X, show (C ((PD.p : ℕ) : O) : PowerSeries O) = algebraMap O (PowerSeries O) ((PD.p : ℕ) : O) from rfl, AlgHom.commutes, ← show (C ((PD.p : ℕ) : O) : PowerSeries O) = algebraMap O (PowerSeries O) ((PD.p : ℕ) : O) from rfl, add_sub_cancel_right]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem π₀_eq : W.π₀ = Br.cst (X - C ((PD.p : ℕ) : O)) := by
   funext i
@@ -102,13 +100,13 @@ theorem π₀_eq : W.π₀ = Br.cst (X - C ((PD.p : ℕ) : O)) := by
     from rfl, add_sub_cancel_right]
   rfl
 /- English proof (translation)
-Rewrite using `[Br.cst_C]`. Simplify using `[lA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lA_eq : lA W = Br.cst (C ((PD.p : ℕ) : O)) := by
   rw [Br.cst_C]
   simp [lA]
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.φA (fun _ => Br.ι F) i = Br.ι (Br.P.φ F)`. Rewrite using `[Br.ι_φ]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem φA_cst (F : PowerSeries O) : W.φA (Br.cst F) = Br.cst (Br.P.φ F) := by
   funext i
@@ -116,11 +114,9 @@ theorem φA_cst (F : PowerSeries O) : W.φA (Br.cst F) = Br.cst (Br.P.φ F) := b
   rw [Br.ι_φ]
   rfl
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => show (W.φA ^ 0) (qA W) = Br.cst ((Br.P.φ : PowerSeries O → PowerSeries O)^[0] X)`. Rewrite using `[pow_zero]`. Conclude with `Br.qA_eq`. Consider the case `succ s ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : ps W (s + 1) = W.φA (ps W s)`. Simplify using `only [ps, pow_succ']`. Both sides reduce to the same expression. Rewrite using `[h, ih, Br.φA_cst]`. Use `show Br.cst (Br.P.φ ((Br.P.φ : PowerSeries O → PowerSeries O)^[s] X)) = Br.cst ((Br.P.φ : PowerSeries O → PowerSeries O)^[s + 1] X)`.
-
-Rewrite using `[Function.iterate_succ_apply']`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ps_eq (s : ℕ) : ps W s = Br.cst (Br.P.p s) := by
   induction s with
@@ -138,13 +134,13 @@ theorem ps_eq (s : ℕ) : ps W s = Br.cst (Br.P.p s) := by
     rw [Function.iterate_succ_apply']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`. Rewrite `h` using `[← _root_.map_mul]`. Establish `h2` using `congrFun (W.EE_inj h) c`. Take `⟨U, hU⟩` from `Br.range u hu c`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨U, Br.inj ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, letE, Pi.single_eq_same, one_mul, cst] at h2`. Rewrite using `[_root_.map_mul, _root_.map_mul, ← hU, h2]`. Introduce and unpack `⟨U, hU⟩`. Use `⟨Br.cst U, Br.cst_mem U, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← _root_.map_mul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `h` using `congrArg Br.ι hU`. Rewrite `h` using `[_root_.map_mul, _root_.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, cst]`. Take the linear combination `(letE (O := O) c i) * h`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inFr_alg_iff (c : ZMod n) (N D G : PowerSeries O) :
     InFr W c (Br.cst N) (Br.cst D) (algebraMap (LetA O n) W.EE (letE c * Br.cst G)) ↔
@@ -168,11 +164,11 @@ theorem inFr_alg_iff (c : ZMod n) (N D G : PowerSeries O) :
     linear_combination (letE (O := O) c i) * h
 
 /- English proof (translation)
-Take `⟨u₁, hu₁, h₁⟩` from `hf`. Take `⟨u₂, hu₂, h₂⟩` from `hx`. Take `⟨U₁, hU₁⟩` from `Br.range u₁ hu₁ c`. Take `⟨U₂, hU₂⟩` from `Br.range u₂ hu₂ c`. Use `⟨U₁, U₂, Br.inj ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : algebraMap (LetA O n) W.EE (((PD.p : ℕ) : LetA O n) ^ κ * (letE c * Br.cst N₁ * u₁) - Br.cst D * (letE c * algebraMap O (LetA O n) x)) = algebraMap (LetA O n) W.EE (letE c * Br.cst N₂ * u₂)`. Rewrite `h₂` using `[lE, IsScalarTower.algebraMap_apply O (LetA O n) W.EE x]`. Simplify using `only [_root_.map_mul, _root_.map_sub, _root_.map_pow, _root_.map_natCast] at h₁ h₂ ⊢`. Take the linear combination `h₂ - ((PD.p : ℕ) : W.EE) ^ κ * h₁`. Establish `h3` using `congrFun (W.EE_inj key) c`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, letE, Pi.single_eq_same, one_mul, cst, hU₁, hU₂, Pi.algebraMap_apply, PowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at h3`. Simplify using `only [_root_.map_mul, _root_.map_sub, _root_.map_pow, PB.algC, _root_.map_natCast]`. Take the linear combination `-h3`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem inFr_const (c : ZMod n) {N₁ N₂ D : PowerSeries O} {f : W.EE} {κ : ℕ} {x : O}
     (hf : InFr W c (Br.cst N₁) (Br.cst D) f)
@@ -200,59 +196,51 @@ theorem inFr_const (c : ZMod n) {N₁ N₂ D : PowerSeries O} {f : W.EE} {κ : �
 end PhiBridge
 
 /- English proof (translation)
-Establish `hp1 : PD.p - 1 + 1 = PD.p` using `Nat.sub_add_cancel PD.hp.one_lt.le`. Establish `hpos : PD.p - 1 ≠ 0` using `by have := PD.hp.two_le; omega`. Establish `hlO0 : ((PD.p : ℕ) : O) ≠ 0`. Introduce `h`. Establish `h1` using `W.v_l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← map_natCast (algebraMap O LL), h, _root_.map_zero, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe h1`. Establish `hlm : ((PD.p : ℕ) : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : ((PD.p : ℕ) : O) * ((u⁻¹ : Oˣ) : O) = 1` using `by rw [← hu, Units.mul_inv]`. Establish `h2` using `congrArg (fun z => v (algebraMap O LL z)) h1`. Simplify using `only [_root_.map_mul, _root_.map_one, AddValuation.map_mul, AddValuation.map_one, map_natCast, W.v_l] at h2`. Establish `h3 : (1 : WithTop ℚ) ≤ 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h4 : (0 : WithTop ℚ) < 1` using `by exact_mod_cast (zero_lt_one : (0 : ℚ) < 1)`. Conclude with `absurd h3 (not_le.2 h4)`. Establish `hres : IsLocalRing.residue O ((PD.p : ℕ) : O) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 hlm`. Take `⟨hK, hs, hp2⟩` from `hcase`. Establish `hfr : Module.finrank K₀ K = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hK).finrank_eq, Module.finrank_self]`. Establish `hR : GS.RD W` using `GS.rd_of W ((hP9 T hT hs hp2).2.2 hfr).1`. Take `⟨⟨w₁, hw₁⟩, ⟨w₂, hw₂⟩, -, hsub⟩` from `id hR`. Establish `hπ₁ : W.π₀₁ = (w₁ : LetA O n) 0 * X ^ (PD.p - 1)` using `congrFun hw₁ 0`. Establish `hw₁u : IsUnit ((w₁ : LetA O n) 0)` using `w₁.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw₂u : IsUnit ((w₂ : LetA O n) 0)` using `w₂.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) 0)`. Establish `h0 : constantCoeff W.π₀₁ = 0`. Rewrite using `[hπ₁, _root_.map_mul, _root_.map_pow, constantCoeff_X, zero_pow hpos, mul_zero]`. Establish `hne : W.π₀₁ ≠ 0`. Rewrite using `[hπ₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero hw₁u.ne_zero (pow_ne_zero _ X_ne_zero)`. Use `set σ : PowerSeries O →ₐ[O] PowerSeries O := substAlgHom (HasSubst.of_constantCoeff_zero' h0) with hσdef`. Establish `hσX : σ X = W.π₀₁` using `substAlgHom_X _`. Establish `hσinj : Function.Injective σ` using `PB.subst_injective h0 hne`. Establish `hσapp : ∀ F, σ F = PowerSeries.subst W.π₀₁ F` using `fun F => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hσdef, coe_substAlgHom]`. Establish `hw₂mem : (w₂ : LetA O n) ∈ W.AΔ`. Establish `hc : W.π₀ * qA W ^ (PD.p - 1) ∈ W.AΔ` using `W.AΔ.mul_mem (GS.π₀_mem W) (W.AΔ.pow_mem (GS.qA_mem W) _)`. Establish `hcu : IsUnit (algebraMap (LetA O n) W.EE (W.π₀ * qA W ^ (PD.p - 1)))`. Rewrite using `[_root_.map_mul, _root_.map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(GS.isUnit_π₀ hR).mul ((GS.isUnit_qA hR).pow _)`. Use `GS.quot_mem W hc hcu ?_` and prove the remaining obligations. Establish `e : W.π₀ * qA W ^ (PD.p - 1) * (w₂ : LetA O n) = W.φA W.π₀` using `by rw [hw₂]; ring`. Rewrite using `[e]`. Use `GS.φpow_mem W 1 (GS.π₀_mem W)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis. Take `⟨Fw, hFw⟩` from `hsub _ hw₂mem`. Use `set W' := Fw 0`. Establish `hσW' : σ W' = (w₂ : LetA O n) 0` using `by rw [hσapp, hFw 0]; rfl`. Establish `hW'u : IsUnit W'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[isUnit_iff_constantCoeff]`. Use `(isUnit_iff_constantCoeff.1 hw₂u)` as an intermediate fact. Rewrite `this` using `[← hσW', hσdef, PB.constantCoeff_substAlgHom h0]`. Then use the resulting hypothesis. Establish `hφ0 : constantCoeff (W' * X * (X + C ((PD.p : ℕ) : O)) ^ (PD.p - 1)) = 0`. Rewrite using `[_root_.map_mul, _root_.map_mul, constantCoeff_X, mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set φY : PowerSeries O →ₐ[O] PowerSeries O := substAlgHom (HasSubst.of_constantCoeff_zero' hφ0)`. Establish `hφYX : φY X = W' * X * (X + C ((PD.p : ℕ) : O)) ^ (PD.p - 1)` using `substAlgHom_X _`. Establish `hφ₀π : W.φ₀ W.π₀₁ = (w₂ : LetA O n) 0 * W.π₀₁ * (W.π₀₁ + C ((PD.p : ℕ) : O)) ^ (PD.p - 1)`. Establish `h` using `congrFun hw₂ 0`. Establish `e1 : W.φA W.π₀ 0 = W.φ₀ W.π₀₁` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[e1]`. Rewrite using `[h]`. Use `show (w₂ : LetA O n) 0 * W.π₀₁ * (W.π₀₁ + ((PD.p : ℕ) : LetA O n) 0) ^ (PD.p - 1) = _`. Rewrite using `[Pi.natCast_apply, map_natCast]`. Establish `hσφ : σ.toRingHom.comp φY.toRingHom = W.φ₀.toRingHom.comp σ.toRingHom`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hX1 : (σ.toRingHom.comp φY.toRingHom) X = (w₂ : LetA O n) 0 * W.π₀₁ * (W.π₀₁ + C ((PD.p : ℕ) : O)) ^ (PD.p - 1)`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, hφYX, _root_.map_mul, _root_.map_pow, _root_.map_add, hσX, hσW', PB.algC]`. Apply `PB.ringHom_ext_nil` to reduce the goal to its premises. Introduce `r`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, PB.algC]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hX1, ← hφ₀π]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, hσX]`. Rewrite using `[hX1, _root_.map_mul, _root_.map_mul, h0, mul_zero, zero_mul]`. Conclude with `IsNilpotent.zero`. Use `set τ := PB.shiftEquiv ((PD.p : ℕ) : O) hlm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hτX : τ X = X + C ((PD.p : ℕ) : O)` using `PB.shiftEquiv_X _ _`. Establish `hτsX : τ.symm X = X - C ((PD.p : ℕ) : O)` using `PB.shiftEquiv_symm_X _ _`. Establish `hτC : ∀ r, τ.symm (C r) = C r` using `fun r => PB.algC τ.symm.toAlgHom r`. Establish `hτC' : ∀ r, τ (C r) = C r` using `fun r => PB.algC τ.toAlgHom r`. Use `set φX : PowerSeries O →ₐ[O] PowerSeries O := τ.symm.toAlgHom.comp (φY.comp τ.toAlgHom)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφXapp : ∀ F, φX F = τ.symm (φY (τ F))` using `fun F => rfl`. Establish `hτXl : τ (X - C ((PD.p : ℕ) : O)) = X`. Rewrite using `[_root_.map_sub, hτX, hτC']`. Expand and normalize the polynomial expressions, which then agree. Use `set u := τ.symm W'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφX0 : φX (X - C ((PD.p : ℕ) : O)) = u * (X - C ((PD.p : ℕ) : O)) * X ^ (PD.p - 1)`. Rewrite using `[hφXapp, hτXl, hφYX, _root_.map_mul, _root_.map_mul, _root_.map_pow, _root_.map_add, hτsX, hτC]`. Expand and normalize the polynomial expressions, which then agree. Establish `hφXX : φX X = u * (X - C ((PD.p : ℕ) : O)) * X ^ (PD.p - 1) + C ((PD.p : ℕ) : O)`. Establish `: X = (X - C ((PD.p : ℕ) : O)) + C ((PD.p : ℕ) : O)` using `by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `conv_lhs => rw [this]`. Rewrite using `[_root_.map_add, hφX0, PB.algC]`. Establish `hφred : ∀ f : PowerSeries O, (φX f).map (IsLocalRing.residue O) = PowerSeries.subst ((u * X ^ PD.p).map (IsLocalRing.residue O)) (f.map (IsLocalRing.residue O))`. Establish `hc0 : constantCoeff ((u * X ^ PD.p).map (IsLocalRing.residue O)) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, _root_.map_mul, _root_.map_pow, constantCoeff_X, zero_pow (by have := PD.hp.two_le; omega), mul_zero, _root_.map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : PowerSeries (IsLocalRing.ResidueField O) →ₐ[IsLocalRing.ResidueField O] PowerSeries (IsLocalRing.ResidueField O)` to `substAlgHom (HasSubst.of_constantCoeff_zero' hc0)`. Establish `hψX : ψ X = (u * X ^ PD.p).map (IsLocalRing.residue O)` using `substAlgHom_X _`. Establish `hX1 : ((map (IsLocalRing.residue O)).comp φX.toRingHom) X = (u * X ^ PD.p).map (IsLocalRing.residue O)`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, hφXX, _root_.map_add, _root_.map_mul, _root_.map_sub, _root_.map_pow, map_X, map_C, hres, _root_.map_zero, sub_zero, add_zero]`. Rewrite using `[mul_assoc, ← pow_succ', hp1]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `PB.ringHom_ext_nil (h₁ := (map (IsLocalRing.residue O)).comp φX.toRingHom) (h₂ := ψ.toRingHom.comp (map (IsLocalRing.residue O))) (fun r => by simp only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, PB.algC, map_C]) (by rw [hX1]; simp only [AlgHom.toRingHom_ …`. Introduce `f`. Use `RingHom.congr_fun h f` as an intermediate fact. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply] at this`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `show ψ _ = _`. Rewrite using `[coe_substAlgHom]`. Set `P : PhiData O PD.p` to `{ φ := φX u := u hu := hW'u.map τ.symm hl := hlm hl0 := hlO0 hφ0 := hφX0 hred := hφred }`. Set `ι : PowerSeries O →ₐ[O] PowerSeries O` to `σ.comp τ.toAlgHom`. Establish `hιapp : ∀ F, ι F = σ (τ F)` using `fun F => rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hγ : ∀ δ ∈ W.DelF, (W.γ₀ δ).toRingHom.comp σ.toRingHom = σ.toRingHom`. Introduce `δ hδ`. Establish `hπ : W.γ₀ δ W.π₀₁ = W.π₀₁` using `congrFun (GS.π₀_mem W δ hδ) 0`. Apply `PB.ringHom_ext_nil` to reduce the goal to its premises. Introduce `r`.
-
-Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, PB.algC]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, hσX, hπ]`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, RingHom.comp_apply, hσX, hπ, h0]`. Conclude with `IsNilpotent.zero`. Conclude with `⟨{ P := P ι := ι inj := hσinj.comp τ.injective ι_X := by rw [hιapp, hτX, _root_.map_add, hσX, PB.algC] ι_φ := fun F => by`.
-
-Rewrite using `[hιapp, hιapp]`. Use `show σ (τ (τ.symm (φY (τ F)))) = W.φ₀ (σ (τ F))`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `RingHom.congr_fun hσφ (τ F)`. Use `range := fun a ha i => by`.
-
-Take `⟨F, hF⟩` from `hsub a ha`. Use `⟨τ.symm (F i), ?_⟩` and prove the remaining obligations. Rewrite using `[hιapp, AlgEquiv.apply_symm_apply, hσapp, hF i]`. Both sides reduce to the same expression. Use `mem := fun F δ hδ => by`.
-
-Use function extensionality and compare the values at `i`. Rewrite using `[GS.γA_apply]`. Conclude with `RingHom.congr_fun (hγ δ hδ) (τ F) }⟩`.
+Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_phiBridge [IsAdicComplete (IsLocalRing.maximalIdeal O) O] (W : LocWach PD LL O v n)
     (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hP9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ)

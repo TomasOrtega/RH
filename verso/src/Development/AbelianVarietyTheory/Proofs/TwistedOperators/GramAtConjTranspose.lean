@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : (HSpace.gram V)ᴴ = HSpace.gram V`. Use function extensionality and compare the values at `i j`. Conclude with `V.herm.eq (V.frame j) (V.frame i)`. Rewrite using `[gramAt, ← Matrix.conjTranspose_map _ (GlobalTheory.FockCompare.tauE_star τ), h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramAt_conjTranspose (V : HSp D) (τ : D.what₂.Tau) : (gramAt D V τ)ᴴ = gramAt D V τ := by
   have h : (HSpace.gram V)ᴴ = HSpace.gram V := by

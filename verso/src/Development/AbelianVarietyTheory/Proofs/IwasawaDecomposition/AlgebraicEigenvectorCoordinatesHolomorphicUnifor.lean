@@ -20,9 +20,9 @@ namespace GlobalTheory.HolCoordEv
 open GlobalTheory.ShFam.Hor.LogCh
 
 /- English proof (translation)
-Substitute `hxx` using the available equality. Take `⟨a, ha, -⟩` from `f.basis τ v' hv' heig`. Establish `e1 : ex 0 = 1`. Establish `h` using `hex.1 0 0`. Rewrite `h` using `[add_zero]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.1 h.symm`. Establish `hd` using `GlobalTheory.ShFam.Hor.ExpDirs.isDerivAt0_of_comb (congrArg (·.left) e1) (f.tan τ) hδ hv' ha`. Take `⟨w', -, hu⟩` from `hex.2.2 v' hv'`. Conclude with `⟨a, ha, (hu w hw).trans (hu _ hd).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_comb_of_exp {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
@@ -50,35 +50,29 @@ open GlobalTheory.ShFam.Hor.LogCh
 open ReciprocityTheory.ChartRestriction.G.PullbackSections.ExpRows (isDerivAt0_comp_hom)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ U _hg hU d u₀ R _ φR xR fR ev k G τ hev hG hφ hpt`. Take `⟨-, -, -, -, -, g, e, F, ik, φ, -, hP⟩` from `hU`. Use `choose Pm h1 h2 h3 h4 _ using hP`. Take `⟨h₀, -⟩` from `hpt.self_of_nhds`. Set `L` to `EuclideanSpace.equiv (Fin d) ℂ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x : (Fin d → ℂ) → (U.X k).dom` to `fun b => if h : G (L.symm b) ∈ (U.X k).dom then ⟨G (L.symm b), h⟩ else ⟨G u₀, h₀⟩`. Establish `hxb : ∀ b (h : G (L.symm b) ∈ (U.X k).dom), x b = ⟨G (L.symm b), h⟩` using `fun b h => dif_pos h`. Set `P : (Fin d → ℂ) → ((F.Di (ik k)).La →+ (Fin g → ℂ))` to `fun b => Pm k (x b)`. Set `p : (Fin d → ℂ) → (Sp ℂ ⟶ Xo.XF c)` to `fun b => GlobalTheory.AllWt.ptF (S := CAt σ) (U.un k (x b))`. Establish `hu : ∀ b, F.u (ik k) (P b) = p b ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom)` using `fun b => (h3 k (x b)).symm.trans (ptF_fst (U.un k (x b))).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ b, p b ≫ pullback.snd _ _ = spMap σ` using `fun b => ptF_snd (U.un k (x b))`. Establish `hgood : ∀ᶠ u in 𝓝 u₀, G u ∈ (U.X k).dom ∧ ∀ τ' a b, DifferentiableAt ℂ (fun u => ReciprocityTheory.ChartRestriction.G.FD.mat (G u) τ' a b) u` using `(hpt.mono fun u hu => hu.1).and (eventually_all.2 fun τ' => eventually_all.2 fun a => eventually_all.2 fun b => hG τ' a b)`. Take `⟨B₀, hB₀, hB₀o, hu₀⟩` from `eventually_nhds_iff.1 hgood`. Set `B : Set (Fin d → ℂ)` to `L.symm ⁻¹' B₀`. Establish `hBo : IsOpen B` using `hB₀o.preimage L.symm.continuous`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb₀ : L u₀ ∈ B` using `by show L.symm (L u₀) ∈ B₀`. Rewrite using `[ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `hu₀`. Establish `hPd : ∀ a, DifferentiableOn ℂ (fun b => P b a) B` using `fun a => differentiableOn_pi.2 fun j => (TrueCx.TorHolo.differentiableOn_perFr (U.X k) (x := fun b => G (L.symm b)) (fun b hb => (hB₀ _ hb).1) (fun τ' a' c' b hb => (((hB₀ _ hb).2 τ' a' c').comp b L.symm.differentiableAt).differentiableWithinAt) _ _ _).congr fun b hb => by show P …`. Rewrite using `[h1, hxb b (hB₀ _ hb).1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ev' : (Fin d → ℂ) → (R →+* ℂ)` to `fun b => ev (L.symm b)`. Set `Ex : (Fin d → ℂ) → (Fin g → ℂ) → (Sp ℂ ⟶ Z.t.G.left)` to `fun b z => liftEx Z F (p b) (ik k) (P b) (hu b) z ≫ Z.m.φ`. Set `Wd : Fin (Dw.mult τ) → (Fin d → ℂ) → Fin g → ℂ` to `fun i b => if h : ∃ w, IsDerivAt0 (Ex b) w (spMap (dualMap (ev' b)) ≫ fR.v τ i) then h.choose else 0`. Establish `core : ∀ b (h : G (L.symm b) ∈ (U.X k).dom), (cxPt Z (U.un k ⟨G (L.symm b), h⟩)).1 ≫ genι Z = spMap (ev (L.symm b)) ≫ xR → (ev (L.symm b)).comp φR = σ → ∀ i, IsDerivAt0 (Ex b) (Wd i b) (spMap (dualMap (ev' b)) ≫ fR.v τ i) ∧ IsCombAtG Z.t ((cxPt Z (U.un k ⟨G (L.symm b), h⟩)).1 ≫ g …`. Introduce `b h hx hφb i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx`, the goal using `[← hxb b h]`. Take `⟨gF, hgF⟩` from `HolFrames.exists_bc fR (ev (L.symm b)) (φ' := σ) hφb.symm hx`. Establish `hxp : p b ≫ Z.jQ ≫ genι Z = (cxPt Z (U.un k (x b))).1 ≫ genι Z` using `(Category.assoc _ _ _).symm`. Establish `hExp` using `isExpAt_pushEx E H Dw l Xo c O β Z g _ _ F (p b) (ik k) (P b) _ (hu b) rfl (h2 k (x b))`. Establish `hδ : ∀ a, IsDerivAt0 (fun z => (pushEx Z F (p b) (ik k) (P b) _ (hu b) rfl z).left) (Pi.single (e.symm ⟨τ, a⟩) 1) ((cxFrame Z (U.un k (x b))).v τ a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `a`. Take `⟨w, hwt, hw0, hwm⟩` from `EigFrame.ofFrPt_v Z (U.un k (x b)) (x := (cxPt Z (U.un k (x b))).1 ≫ genι Z) (Category.assoc _ _ _).symm τ a`. Establish `hw0' : (w : Sp (DualNumber ℂ) ⟶ Z.oF.t.G.left) ≫ Z.m0.toSABMap.φ = (U.un k (x b)).u τ a` using `hw0`. Establish `hwm' : (w : Sp (DualNumber ℂ) ⟶ Z.oF.t.G.left) ≫ Z.m.φ = (cxFrame Z (U.un k (x b))).v τ a` using `hwm`. Establish `hd : IsDerivAt0 (fun z => (F.ex (ik k) (P b) z).left) (Pi.single (e.symm ⟨τ, a⟩) 1) (w ≫ Z.m0.toSABMap.φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg (IsDerivAt0 _ _) hw0').mpr (h4 k (x b) τ a)`. Use `isDerivAt0_comp_hom (isDerivAt0_liftEx Z F (p b) (ik k) (P b) (h2 k (x b)) (hu b) hwt.1 hd) Z.m.φ` as an intermediate fact. Conclude with `(congrArg (IsDerivAt0 _ _) hwm').mp this`. Establish `ht : IsTanAtG Z.t (p b ≫ Z.jQ ≫ genι Z) (gF.v τ i)`. Rewrite using `[hxp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `gF.tan τ i`. Establish `hex : ∃ w, IsDerivAt0 (Ex b) w (spMap (dualMap (ev' b)) ≫ fR.v τ i)`. Take `⟨w, hw, -⟩` from `hExp.2.2 _ ht`. Conclude with `⟨w, (hgF τ i) ▸ hw⟩`. Establish `hW : IsDerivAt0 (Ex b) (Wd i b) (spMap (dualMap (ev' b)) ≫ fR.v τ i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e0 : Wd i b = hex.choose` using `dif_pos hex`. Rewrite using `[e0]`. Conclude with `hex.choose_spec`. Use `⟨hW, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hwa⟩` from `exists_comb_of_exp hxp _ hExp (cxFrame Z (U.un k (x b))) τ _ hδ (gF.v τ i) (gF.tan τ i) (gF.eig τ i) (Wd i b) ((hgF τ i).symm ▸ hW)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfa : (fun a' => Wd i b (e.symm ⟨τ, a'⟩)) = a`. Use function extensionality and compare the values at `a'`. Rewrite using `[hwa]`. Establish `hi : ∀ j j' : Fin (Dw.mult τ), e.symm ⟨τ, j⟩ = e.symm ⟨τ, j'⟩ ↔ j = j'` using `fun j j' => by simp`. Simplify using `[Finset.sum_apply, Pi.single_apply, hi]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfa, ← hgF τ i]`. Conclude with `ha`. Establish `ht : Tendsto L.symm (𝓝 (L u₀)) (𝓝 u₀)`. Simplify using `using L.symm.continuous.tendsto (L u₀)`. Use `⟨fun u a i => Wd i (L u) (e.symm ⟨τ, a⟩), fun a i => ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `hev'' : ∀ t, ∀ᶠ b in 𝓝 (L u₀), DifferentiableAt ℂ (fun b => ev' b t) b` using `fun t => by filter_upwards [ht.eventually (hev t)] with b hb`. Conclude with `hb.comp b L.symm.differentiableAt`. Establish `hW : ∀ᶠ b in 𝓝 (L u₀), IsDerivAt0 (Ex b) (Wd i b) (spMap (dualMap (ev' b)) ≫ fR.v τ i)` using `by filter_upwards [ht.eventually hpt, ht.eventually hφ] with b ⟨h, hx⟩ hφb`. Conclude with `(core b h hx hφb i).1`. Establish `hd` using `eventually_differentiableAt_dir Z σ F (ik k) hBo hu (fun b => h2 k (x b)) hPd hs (fR.v τ i) ev' hb₀ hev'' (Wd i) hW`.
-
-Use `filter_upwards [(L.continuous.tendsto u₀).eventually hd] with u hu`. Conclude with `(differentiableAt_pi.1 hu (e.symm ⟨τ, a⟩)).comp u L.differentiableAt`. Use `filter_upwards [hpt, hφ] with u ⟨h, hx⟩ hφu`. Use `⟨h, fun i => ?_⟩` and prove the remaining obligations. Establish `c` using `core (L u)`.
-
-Rewrite `c` using `[ContinuousLinearEquiv.symm_apply_apply]`. Conclude with `(c h hx hφu i).2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_holomorphic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (d : ℕ) (u₀ : V d) (R : Type) [CommRing R] (φR : c.F →+* R) (xR : Sp R ⟶ Z.X) (fR : EigFrame Z φR xR) (ev : V d → (R →+* ℂ)) (k : U.Comp) (G : V d → ReciprocityTheory.ChartRestriction.G.FD.Frame (U.X k).Ψ (Dw.p + Dw.q)) (τ : E →+* ℂ), (∀ t, ∀ᶠ u in 𝓝 u₀, DifferentiableAt ℂ (fun u => ev u t) u) → (∀ τ' a b, ∀ᶠ u in 𝓝 u₀, DifferentiableAt ℂ (fun u => ReciprocityTheory.ChartRestriction.G.FD.mat (G u) τ' a b) u) → (∀ᶠ u in 𝓝 u₀, (ev u).comp φR = σ) → (∀ᶠ u in 𝓝 u₀, ∃ h : G u ∈ (U.X k).dom, (cxPt Z (U.un k ⟨G u, h⟩)).1 ≫ genι Z = spMap (ev u) ≫ xR) → ∃ M : V d → Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ, (∀ a b, ∀ᶠ u in 𝓝 u₀, DifferentiableAt ℂ (fun u => M u a b) u) ∧ ∀ᶠ u in 𝓝 u₀, ∃ h : G u ∈ (U.X k).dom, ∀ i, IsCombAtG Z.t ((cxPt Z (U.un k ⟨G u, h⟩)).1 ≫ genι Z) ((cxFrame Z (U.un k ⟨G u, h⟩)).v τ) (fun b => M u b i) (spMap (dualMap (ev u)) ≫ fR.v τ i) := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ U _hg hU d u₀ R _ φR xR fR ev k G τ hev hG hφ hpt

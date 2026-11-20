@@ -28,21 +28,19 @@ noncomputable section
 namespace GlobalTheory.DefiniteSmallIrred
 
 /- English proof (translation)
-Introduce `hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT hs₁ ν₁ 𝓕₁ hν₁ ωA ωB Pm rf rl p p' hm τ Y hY Ψ hΨ Φ' hΦ' hder h`. Establish `hw : IsWeilDatumO ψ W₁ X α (α / β) ωB` using `(GlobalTheory.Grid.isWeil_false ψ W₁ X α (α / β) ωB).1 hm.weilB`. Establish `hthA : ∀ Φ ∈ GlobalTheory.SquareComm.algF ψ θ false A₁ B, IsThetaFunO ψ W₁ X Φ`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨f, P, hf, rfl⟩` from `hx`. Conclude with `GlobalTheory.Chain.InnerSteps.theta_pureTensorO hψ hθ _ _ _ _ hf.1 P`. Consider the case `zero => exact GlobalTheory.OrientedHeis.theta_zero`. Consider the case `add x y _ _ hx hy => exact GlobalTheory.OrientedHeis.theta_add hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => exact GlobalTheory.OrientedHeis.theta_smul c hx`. Establish `hth : IsThetaFunO ψ W₁ X Ψ` using `hthA Ψ hΨ`. Establish `hpos : ∀ τ, (gramAt D W₁ τ).PosDef` using `fun τ => GlobalTheory.IndefiniteRowSideFullHecke.MassFormulaPositivity.posDef_of_hasSignature (hs₁ τ)`. Take `⟨Gn, hGn⟩` from `GlobalTheory.T.exists_weilDatum_generator_realOneParamGroup D ψ W₁ X α (α / β) ωB hw θ hθ τ Y hY`. Establish `hGΨ : ∀ (g : GA D W₁) (k : GA D X), HasDerivAt (fun t : ℝ => thetaKO ωB g (k * oneP θ X τ Y t) Ψ) (thetaKO ωB g k Φ') 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : Gn Ψ = Φ'`. Use function extensionality and compare the values at `z`. Establish `h1` using `(hGn Ψ hth).2.2.2 1 z`. Simplify using `only [one_mul, map_one, Module.End.one_apply] at h1`. Conclude with `h1.unique (hder z)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g k`. Establish `h1` using `(hGn Ψ hth).2.2.2 (g, k) 0`. Simplify using `only [Prod.mk_mul_mk, mul_one, hG] at h1`. Conclude with `h1`. Set `L : ℂ →ₗ[ℂ] (WO W₁ X → ℂ)` to `LinearMap.toSpanSingleton ℂ _ Ψ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : ∀ x, IsThetaFunO ψ W₁ X (L x)` using `fun x => GlobalTheory.OrientedHeis.theta_smul x hth`. Establish `hL1 : L 1 = Ψ` using `by simp [L]`. Take `⟨-, hD⟩` from `GlobalTheory.DefLiftDer.lift_continuous_invariant_hasDerivAt D ψ W₁ X α (α / β) ωB hw θ hθ hpos ℂ L hL (fun _ => 1) continuous_const (fun _ _ _ => rfl) ν₁ 𝓕₁ hν₁.1 hν₁.2`. Take `⟨L', -, hk, hlift⟩` from `hD τ Y hY`. Establish `hkid : ∀ g k, thetaKO ωB g k (L' 1) = thetaKO ωB g k Φ'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `g k`. Establish `h1` using `hk 1 g k`. Rewrite `h1` using `[hL1]`. Conclude with `h1.unique (hGΨ g k)`. Establish `h2` using `hlift h`.
-
-Simplify using `only [GlobalTheory.DefLift.lift, hL1, hkid] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lieDeriv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
   ∀ (W W₁ X : HSp D) (A : GlobalTheory.ChainFr.Fr W) (A₁ : GlobalTheory.ChainFr.Fr W₁) (B : GlobalTheory.ChainFr.Fr X) (α β : (AE D)ˣ →* Circle),
@@ -93,47 +91,39 @@ theorem lieDeriv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddCh
   exact h2
 
 /- English proof (translation)
-Introduce `hP hTK hLM D ψ θ hψ hθ W W₁ X A A₁ B α β hT hs₁ ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm Φ₁ hΦ₁ hp₁ hz₁ Φ₂ hΦ₂`. Establish `hTA : GlobalTheory.SquareSt.ThetaIntegralsAgree` using `GlobalTheory.T.theta_integrals_of_minguez hP.minguezThetaGL hP hTK hLM`. Use `set S := GlobalTheory.SquareComm.algF ψ θ false A₁ B with hSdef`. Establish `hint` using `GlobalTheory.DefIrred.integrable_algF hψ hθ A₁ B hm.weilB hs₁ hν₁`. Establish `tr : ∀ (Φ : WO W₁ X → ℂ) (g : GA D W₁) (h k : GA D X), thetaKO ωB g h (ωB (1, k) Φ) = thetaKO ωB g (h * k) Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Φ g h k`. Use `show (ωB (g, h) * ωB (1, k)) Φ 0 = _`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one]`. Both sides reduce to the same expression. Establish `tsub : ∀ Φ Ψ, (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) → (∀ h, IntegrableOn (fun g => thetaKO ωB g h Ψ) 𝓕₁ ν₁) → GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ (Φ - Ψ) = GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ - GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Ψ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `Φ Ψ hΦ hΨ`. Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωB g h (Φ - Ψ)) = fun g => thetaKO ωB g h Φ - thetaKO ωB g h Ψ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_sub]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.SquareComm.thetaInt, Pi.sub_apply]`. Rewrite using `[e]`. Conclude with `integral_sub (hΦ h) (hΨ h)`. Establish `tadd : ∀ Φ Ψ, (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) → (∀ h, IntegrableOn (fun g => thetaKO ωB g h Ψ) 𝓕₁ ν₁) → GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ (Φ + Ψ) = GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ + GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Ψ`. Introduce `Φ Ψ hΦ hΨ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Establish `e : (fun g => thetaKO ωB g h (Φ + Ψ)) = fun g => thetaKO ωB g h Φ + thetaKO ωB g h Ψ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_add]`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, Pi.add_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `integral_add (hΦ h) (hΨ h)`. Establish `tsmul : ∀ (c : ℂ) Φ, GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ (c • Φ) = c • GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ`. Introduce `c Φ`. Use function extensionality and compare the values at `h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : (fun g => thetaKO ωB g h (c • Φ)) = fun g => c * thetaKO ωB g h Φ`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_smul]`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `integral_const_mul c _`. Set `Kint : Submodule ℂ (WO W₁ X → ℂ)` to `{ carrier := {Φ | (∀ h, IntegrableOn (fun g => thetaKO ωB g h Φ) 𝓕₁ ν₁) ∧ GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ = 0} add_mem' := fun {a b} ha hb => ⟨fun h => by`. Establish `e : (fun g => thetaKO ωB g h (a + b)) = fun g => thetaKO ωB g h a + thetaKO ωB g h b`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(ha.1 h).add (hb.1 h),`. Use `by rw [tadd a b ha.1 hb.1, ha.2, hb.2, add_zero]⟩`. Use the proof step `zero_mem' := ⟨fun h => by simp [thetaKO], by funext h; simp [GlobalTheory.SquareComm.thetaInt, thetaKO]⟩`. Use the proof step `smul_mem' := fun c a ha => ⟨fun h => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun g => thetaKO ωB g h (c • a)) = fun g => c * thetaKO ωB g h a`. Use function extensionality and compare the values at `g`. Simplify using `[thetaKO, map_smul]`. Rewrite using `[e]`. Conclude with `(ha.1 h).const_mul c,`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `by rw [tsmul, ha.2, smul_zero]⟩ }`. Set `K : Submodule ℂ (WO W₁ X → ℂ)` to `S ⊓ Kint`. Take `⟨c, hc0, hc⟩` from `hTA D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pm rf rl p p' hm`. Establish `hrel` using `GlobalTheory.T.theta_integral_finite_relation hP D ψ θ hψ hθ W₁ X A₁ B α (α / β) ωB hm.weilB hs₁ ν₁ 𝓕₁ hν₁`. Establish `kerp' : GlobalTheory.SquareComm.finRel ωB S ≤ LinearMap.ker p'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Simplify using `[map_sub, hm.mapB.invf u hu Ψ hΨ]`. Establish `kill : ∀ Ψ ∈ S, p' Ψ = 0 → GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Ψ = 0`. Introduce `Ψ hΨ hp0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Φ₀, hΦ₀, hd, -, hI⟩` from `hc Ψ hΨ`. Establish `hp00 : p' Φ₀ = 0`. Use `kerp' hd` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, hp0, zero_sub, neg_eq_zero]`. Conclude with `this`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hI 0 (zero_mem _) (by rw [map_zero, hp00])`. Establish `h2 : GlobalTheory.SquareComm.thetaInt ωA ν 𝓕 0 = 0` using `by funext h; simp [GlobalTheory.SquareComm.thetaInt, thetaKO]`. Rewrite `h1` using `[h2]`. Establish `h3 : GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Φ₀ = 0` using `(smul_eq_zero.1 h1.symm).resolve_left hc0`. Establish `h4` using `hrel _ hd`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h4` using `[tsub Ψ Φ₀ (hint Ψ hΨ) (hint Φ₀ hΦ₀), h3, sub_zero]`. Conclude with `h4`. Establish `stf : ∀ g ∈ GfC X, ∀ x ∈ K.map p', rf g x ∈ K.map p'`. Introduce and unpack `g hg _ ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, rfl⟩`. Use `⟨ωB (1, g) Ψ, ⟨hm.mapB.stabX.1 g hg Ψ hΨS, fun h => ?_, ?_⟩, hm.mapB.eqf g hg Ψ hΨS⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [tr]`. Conclude with `hΨi (h * g)`. Use function extensionality and compare the values at `h`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, tr]`. Conclude with `congrFun hΨ0 (h * g)`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `stl : ∀ τ, ∀ Y ∈ lieAt X τ, ∀ x ∈ K.map p', rl τ Y x ∈ K.map p'`. Introduce and unpack `τ Y hY _ ⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, rfl⟩`. Take `⟨Φ', hΦ'S, hder⟩` from `hm.mapB.stabX.2 τ Y hY Ψ hΨS`. Use `⟨Φ', ⟨hΦ'S, hint Φ' hΦ'S, ?_⟩, hm.mapB.eql τ Y hY Ψ hΨS Φ' hΦ'S hder⟩` and prove the remaining obligations. Use function extensionality and compare the values at `h`.
-
-Establish `hd` using `lieDeriv hP D ψ θ hψ hθ W W₁ X A A₁ B α β hT hs₁ ν₁ 𝓕₁ hν₁ ωA ωB Pm rf rl p p' hm τ Y hY Ψ hΨS Φ' hΦ'S hder h`. Establish `e0 : (fun t : ℝ => GlobalTheory.SquareComm.thetaInt ωB ν₁ 𝓕₁ Ψ (h * oneP θ X τ Y t)) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `t`. Rewrite using `[hΨ0]`. Both sides reduce to the same expression.
-
-Rewrite `hd` using `[e0]`. Conclude with `hd.unique (hasDerivAt_const 0 0)`. Break down `hm.irred.2 (K.map p') stf stl with hbot | htop` into its components or cases. It suffices to derive a contradiction. Establish `: p' Φ₁ ∈ K.map p'` using `⟨Φ₁, ⟨hΦ₁, hint Φ₁ hΦ₁, hz₁⟩, rfl⟩`.
-
-Rewrite `this` using `[hbot, Submodule.mem_bot]`. Conclude with `hp₁ this`. Establish `: p' Φ₂ ∈ K.map p'` using `by rw [htop]; exact Submodule.mem_top`. Take `⟨Ψ, ⟨hΨS, hΨi, hΨ0⟩, hΨp⟩` from `this`. Establish `h0` using `kill (Φ₂ - Ψ) (S.sub_mem hΦ₂ hΨS) (by rw [map_sub, hΨp, sub_self])`.
-
-Rewrite `h0` using `[tsub Φ₂ Ψ (hint Φ₂ hΦ₂) hΨi, hΨ0, sub_zero]`. Conclude with `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_all : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

@@ -27,7 +27,7 @@ noncomputable def isColimit (A : CommRingCat.{0}) : IsColimit (Cocone.mk A (incl
 
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 /- English proof (translation)
-Establish `h : (Algebra.adjoin ℤ (t : Set A)).FG` using `Subalgebra.fg_adjoin_finset t`. Use `(Subalgebra.fg_iff_finiteType _).1 h` as an intermediate fact. Express the relevant statement in the definitionally equal form `Algebra.FiniteType ℤ (CommRingCat.of (Algebra.adjoin ℤ (t : Set A)))`. Use `this` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem _root_.GlobalTheory.FiniteTypeColimit.finiteType (A : CommRingCat.{0}) (t : Finset A) :
     Algebra.FiniteType ℤ ((_root_.GlobalTheory.FiniteTypeColimit.diagram A).obj t) := by
@@ -39,7 +39,7 @@ theorem _root_.GlobalTheory.FiniteTypeColimit.finiteType (A : CommRingCat.{0}) (
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex TensorProduct in
 
 /- English proof (translation)
-Introduce `A` and use `⟨Finset A, inferInstance, inferInstance, _root_.GlobalTheory.FiniteTypeColimit.diagram A, _root_.GlobalTheory.FiniteTypeColimit.inclusions A, ⟨_root_.GlobalTheory.FiniteTypeColimit.isColimit A⟩, _root_.GlobalTheory.FiniteTypeColimit.finiteType A⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.FiniteTypeColimit.exists_filtered_colimit_finiteType : ∀ A : CommRingCat.{0},
     ∃ (J : Type) (_ : SmallCategory J) (_ : IsFiltered J) (D : J ⥤ CommRingCat.{0})

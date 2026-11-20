@@ -25,20 +25,20 @@ def InvClosed : Prop :=
 variable {R}
 
 /- English proof (translation)
-Use `R.smul (-1) h` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem neg {a a'} (h : R.r a a') : R.r (-a) (-a') := by
   have := R.smul (-1) h
   rwa [neg_one_smul, neg_one_smul] at this
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`. Conclude with `R.add h (neg h')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub {a a' b b'} (h : R.r a a') (h' : R.r b b') : R.r (a - b) (a' - b') := by
   rw [sub_eq_add_neg, sub_eq_add_neg]; exact R.add h (neg h')
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using R.zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `R.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum {ι : Type} (s : Finset ι) {f : ι → A} {f' : ι → A'} (h : ∀ i ∈ s, R.r (f i) (f' i)) :
     R.r (∑ i ∈ s, f i) (∑ i ∈ s, f' i) := by
@@ -50,7 +50,7 @@ theorem sum {ι : Type} (s : Finset ι) {f : ι → A} {f' : ι → A'} (h : ∀
     exact R.add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using R.one`. Consider the case `succ n ih => rw [pow_succ, pow_succ]`. Conclude with `R.mul ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow {a a'} (h : R.r a a') (n : ℕ) : R.r (a ^ n) (a' ^ n) := by
   induction n with
@@ -58,20 +58,20 @@ theorem pow {a a'} (h : R.r a a') (n : ℕ) : R.r (a ^ n) (a' ^ n) := by
   | succ n ih => rw [pow_succ, pow_succ]; exact R.mul ih h
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]`. Conclude with `R.smul c R.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algMap (c : ℂ) : R.r (algebraMap ℂ A c) (algebraMap ℂ A' c) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one]; exact R.smul c R.one
 
 /- English proof (translation)
-Use `split_ifs`. Use `exacts [h, h']`.
+A detailed English derivation is pending.
 -/
 theorem ite (p : Prop) [Decidable p] {a a' b b'} (h : R.r a a') (h' : R.r b b') :
     R.r (if p then a else b) (if p then a' else b') := by
   split_ifs; exacts [h, h']
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using R.one`. Consider the case `cons a l ih`. Simplify using `only [List.map_cons, List.prod_cons]`. Conclude with `R.mul (h a List.mem_cons_self) (ih fun i hi => h i (List.mem_cons_of_mem _ hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem listProd {ι : Type} (l : List ι) {f : ι → A} {f' : ι → A'} (h : ∀ i ∈ l, R.r (f i) (f' i)) :
     R.r (l.map f).prod (l.map f').prod := by
@@ -96,7 +96,7 @@ def mat (n : Type) [Fintype n] [DecidableEq n] : SRel (Matrix n n A) (Matrix n n
 variable {R}
 
 /- English proof (translation)
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simpa`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem m2 {a b c d : A} {a' b' c' d' : A'} (ha : R.r a a') (hb : R.r b b') (hc : R.r c c') (hd : R.r d d') :
     (R.mat (Fin 2)).r !![a, b; c, d] !![a', b'; c', d'] := by
@@ -106,38 +106,38 @@ theorem m2 {a b c d : A} {a' b' c' d' : A'} (ha : R.r a a') (hb : R.r b b') (hc 
 variable {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Introduce `x y` and use `by simp only [Wd.eU, Matrix.of_apply]; exact ite _ R.one R.zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eU (a : S) (i j : Fin 2) : (R.mat (Ix S)).r (Wd.eU a i j) (Wd.eU a i j) := fun x y => by
   simp only [Wd.eU, Matrix.of_apply]; exact ite _ R.one R.zero
 
 /- English proof (translation)
-Introduce `i j` and use `by simp only [Wd.io, Matrix.scalar_apply, Matrix.diagonal_apply]; exact ite _ h R.zero`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem io {x : A} {x' : A'} (h : R.r x x') : (R.mat (Ix S)).r (Wd.io x) (Wd.io x') := fun i j => by
   simp only [Wd.io, Matrix.scalar_apply, Matrix.diagonal_apply]; exact ite _ h R.zero
 
 /- English proof (translation)
-The claim follows from `sum _ fun i _ => sum _ fun j _ => (R.mat (Ix S)).mul (eU a i j) (h i j)`.
+A detailed English derivation is pending.
 -/
 theorem ins (a : S) {M : M2 (SlopeTestRemainingChoices S A)} {M' : M2 (SlopeTestRemainingChoices S A')} (h : ((R.mat (Ix S)).mat (Fin 2)).r M M') :
     (R.mat (Ix S)).r (Wd.ins a M) (Wd.ins a M') :=
   sum _ fun i _ => sum _ fun j _ => (R.mat (Ix S)).mul (eU a i j) (h i j)
 
 /- English proof (translation)
-Introduce `i j` and use `io (h i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lift0 {M : M2 A} {M' : M2 A'} (h : (R.mat (Fin 2)).r M M') :
     ((R.mat (Ix S)).mat (Fin 2)).r (Wd.lift0 M) (Wd.lift0 M') := fun i j => io (h i j)
 
 /- English proof (translation)
-The claim follows from `SRel.smul _ _ (sub (SRel.smul _ _ (SRel.one _)) fun i j => eU a j i)`.
+A detailed English derivation is pending.
 -/
 theorem Rh0 (a : S) (D : ℂ) : ((R.mat (Ix S)).mat (Fin 2)).r (Wd.Rh0 a D) (Wd.Rh0 a D) :=
   SRel.smul _ _ (sub (SRel.smul _ _ (SRel.one _)) fun i j => eU a j i)
 
 /- English proof (translation)
-The claim follows from `SRel.smul _ _ (sub (SRel.smul _ _ (SRel.one _)) fun i j => eU a i j)`.
+A detailed English derivation is pending.
 -/
 theorem Rht0 (a : S) (D : ℂ) : ((R.mat (Ix S)).mat (Fin 2)).r (Wd.Rht0 a D) (Wd.Rht0 a D) :=
   SRel.smul _ _ (sub (SRel.smul _ _ (SRel.one _)) fun i j => eU a i j)
@@ -145,14 +145,14 @@ theorem Rht0 (a : S) (D : ℂ) : ((R.mat (Ix S)).mat (Fin 2)).r (Wd.Rht0 a D) (W
 def Site (σ : Wd.Site A) (σ' : Wd.Site A') : Prop := R.r σ.p σ'.p ∧ R.r σ.c σ'.c ∧ R.r σ.ci σ'.ci
 
 /- English proof (translation)
-The claim follows from `m2 (R.add (algMap Y) h.1) (neg h.2.1) h.2.2 R.zero`.
+A detailed English derivation is pending.
 -/
 theorem Ts {σ : Wd.Site A} {σ' : Wd.Site A'} (h : R.Site σ σ') (Y : ℂ) :
     (R.mat (Fin 2)).r (Wd.Ts σ Y) (Wd.Ts σ' Y) :=
   m2 (R.add (algMap Y) h.1) (neg h.2.1) h.2.2 R.zero
 
 /- English proof (translation)
-Use `ins _ (lift0 ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Ts h _`. Conclude with `fun i j => R.star (Ts h _ i j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem vlet {σ : Wd.Site A} {σ' : Wd.Site A'} (h : R.Site σ σ') (l : Letter ℂ S) :
     (R.mat (Ix S)).r (Wd.vlet σ l) (Wd.vlet σ' l) := by
@@ -162,7 +162,7 @@ theorem vlet {σ : Wd.Site A} {σ' : Wd.Site A'} (h : R.Site σ σ') (l : Letter
   · exact fun i j => R.star (Ts h _ i j)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact SRel.one _`. Consider the case `cons l w ih => exact SRel.mul _ (vlet h l) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem bT {σ : Wd.Site A} {σ' : Wd.Site A'} (h : R.Site σ σ') (w : List (Letter ℂ S)) :
     (R.mat (Ix S)).r (Wd.bT σ w) (Wd.bT σ' w) := by
@@ -201,9 +201,9 @@ structure FrRel (R : SRel A A') (I : Set ℂ) (f : FrameData S A) (f' : FrameDat
 omit [StarModule ℂ A] in
 
 /- English proof (translation)
-Establish `hG : (io L.GGi : SlopeTestRemainingChoices S A) * io L.GG = 1`. Rewrite using `[io, io, ← map_mul, L.GGi_GG, map_one]`. Rewrite using `[hf.frame_l Y hY hY1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, one_mul, (hf.x_xi Y hY).2, hf.F_Fi, one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by simp only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem l_eq {L : LevelData A r} {f : FrameData S A} (hf : IsFrame L f) {Y : ℂ} (hY : Y ∈ f.inv)
     (hY1 : Y + 1 ∈ f.inv) : f.l L Y = f.xi Y * io L.GGi * (f.F * f.TT Y 1 0) * f.Fi := by
@@ -216,7 +216,7 @@ theorem l_eq {L : LevelData A r} {f : FrameData S A} (hf : IsFrame L f) {Y : ℂ
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Rewrite using `[l_eq hf hY hY1, l_eq hf' (h.inv ▸ hY) (h.inv ▸ hY1)]`. Conclude with `SRel.mul _ (SRel.mul _ (SRel.mul _ (h.xi Y hr (h.sub hY)) (SRel.io hL.GGi)) (SRel.mul _ h.F (h.TT Y hr 1 0))) h.Fi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {f : FrameData S A} {f' : FrameData S A'} (h : FrRel R I f f') (hf : IsFrame L f) (hf' : IsFrame L' f')
@@ -227,7 +227,7 @@ theorem l_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData 
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Unfold `FrameData.d`. Rewrite using `[h.N]`. Conclude with `SRel.mul _ (SRel.pow (SRel.io (R.mul (R.mul hL.ζ hL.ζb) hL.GGi)) _) h.c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {f : FrameData S A} {f' : FrameData S A'} (h : FrRel R I f f') : (R.mat (Ix S)).r (f.d L) (f'.d L') := by
@@ -237,7 +237,7 @@ theorem d_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData 
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Unfold `FrameData.di`. Rewrite using `[h.N]`. Conclude with `SRel.mul _ h.ci (SRel.pow (SRel.io (R.mul (R.mul hL.GG hL.ζi) hL.ζbi)) _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem di_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {f : FrameData S A} {f' : FrameData S A'} (h : FrRel R I f f') : (R.mat (Ix S)).r (f.di L) (f'.di L') := by
@@ -246,24 +246,20 @@ theorem di_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData
   exact SRel.mul _ h.ci (SRel.pow (SRel.io (R.mul (R.mul hL.GG hL.ζi) hL.ζbi)) _)
 
 /- English proof (translation)
-Rewrite using `[star_add, h, star_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_add_one {Y : ℂ} (h : star Y = Y) : star (Y + 1) = Y + 1 := by rw [star_add, h, star_one]
 
 /- English proof (translation)
-Rewrite using `[star_sub, h, star_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_sub_one {Y : ℂ} (h : star Y = Y) : star (Y - 1) = Y - 1 := by rw [star_sub, h, star_one]
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Establish `hl` using `l_rel hL h hf hf' hr hY hY1`. Establish `z` using `(R.mat (Ix S)).zero`. Establish `o` using `(R.mat (Ix S)).one`. Use `⟨?_, fun _ hy => h.sub hy.1, ?_, ?_, fun y hy => ?_, ?_, ?_, fun y hy => ?_, fun y hy hI => ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [FrameData.plus, h.inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [FrameData.plus, h.q]`. Simplify using `only [FrameData.plus, h.N]`. Conclude with `SRel.mul _ (h.TT y hy) (SRel.Rh0 a _)`. Conclude with `SRel.mul _ (SRel.ins a (SRel.mul _ (SRel.m2 (SRel.io hL.ζi) z z (SRel.io hL.ζbi)) (SRel.m2 o z (SRel.mul _ (SRel.io hL.GG) hl) (SRel.io hL.GG)))) h.F`. Conclude with `SRel.mul _ h.Fi (SRel.ins a (SRel.mul _ (SRel.m2 o z (SRel.neg hl) (SRel.io hL.GGi)) (SRel.m2 (SRel.io hL.ζ) z z (SRel.io hL.ζb))))`.
-
-Conclude with `SRel.mul _ (h.x y hy) (SRel.ins a (SRel.m2 (SRel.smul _ _ o) z z o))`. Conclude with `SRel.mul _ (h.xi y hy hI) (SRel.ins a (SRel.m2 (SRel.smul _ _ o) z z o))`. Use `show (R.mat (Ix S)).r (f.c * ins a !![f.q Y • f.xi (Y + 1), 0; 0, f.x Y]) (f'.c * ins a !![f'.q Y • f'.xi (Y + 1), 0; 0, f'.x Y])`. Rewrite using `[← h.q]`. Conclude with `SRel.mul _ h.c (SRel.ins a (SRel.m2 (SRel.smul _ _ (h.xi _ (star_add_one hr) (h.sub hY1))) z z (h.x Y hr)))`.
-
-Use `show (R.mat (Ix S)).r (f.ci * ins a !![(f.q Y)⁻¹ • f.x (Y + 1), 0; 0, f.xi Y]) (f'.ci * ins a !![(f'.q Y)⁻¹ • f'.x (Y + 1), 0; 0, f'.xi Y])`. Rewrite using `[← h.q]`. Conclude with `SRel.mul _ h.ci (SRel.ins a (SRel.m2 (SRel.smul _ _ (h.x _ (star_add_one hr))) z z (h.xi Y hr (h.sub hY))))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plus_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {f : FrameData S A} {f' : FrameData S A'} (h : FrRel R I f f') (hf : IsFrame L f) (hf' : IsFrame L' f')
@@ -294,13 +290,11 @@ theorem plus_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelDa
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Establish `hl` using `l_rel hL h hf hf' (star_sub_one hr) hY1 (by rwa [sub_add_cancel])`. Establish `hm : (R.mat (Ix S)).r (f.m L Y) (f'.m L' Y)` using `SRel.mul _ (SRel.mul _ (di_rel hL h) (SRel.star _ hl)) (d_rel hL h)`. Establish `z` using `(R.mat (Ix S)).zero`. Establish `o` using `(R.mat (Ix S)).one`. Use `⟨?_, fun _ hy => h.sub hy.1, ?_, ?_, fun y hy => ?_, ?_, ?_, fun y hy => ?_, fun y hy hI => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [FrameData.minus, h.inv]`. Simplify using `only [FrameData.minus, h.q]`. Simplify using `only [FrameData.minus, h.N]`. Conclude with `SRel.mul _ (SRel.Rht0 a _) (h.TT y hy)`. Conclude with `SRel.mul _ (SRel.ins a (SRel.mul _ (SRel.m2 (SRel.io hL.ζbi) z z (SRel.io hL.ζi)) (SRel.m2 o z (SRel.mul _ (SRel.io hL.GG) hm) (SRel.io hL.GG)))) h.F`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SRel.mul _ h.Fi (SRel.ins a (SRel.mul _ (SRel.m2 o z (SRel.neg hm) (SRel.io hL.GGi)) (SRel.m2 (SRel.io hL.ζb) z z (SRel.io hL.ζ))))`. Conclude with `SRel.mul _ (h.x y hy) (SRel.ins a (SRel.m2 (SRel.smul _ _ o) z z o))`. Conclude with `SRel.mul _ (h.xi y hy hI) (SRel.ins a (SRel.m2 (SRel.smul _ _ o) z z o))`. Use `show (R.mat (Ix S)).r (f.c * ins a !![f.q (Y - 1) • f.xi (Y - 1), 0; 0, f.x Y]) (f'.c * ins a !![f'.q (Y - 1) • f'.xi (Y - 1), 0; 0, f'.x Y])`. Rewrite using `[← h.q]`.
-
-Conclude with `SRel.mul _ h.c (SRel.ins a (SRel.m2 (SRel.smul _ _ (h.xi _ (star_sub_one hr) (h.sub hY1))) z z (h.x Y hr)))`. Use `show (R.mat (Ix S)).r (f.ci * ins a !![(f.q (Y - 1))⁻¹ • f.x (Y - 1), 0; 0, f.xi Y]) (f'.ci * ins a !![(f'.q (Y - 1))⁻¹ • f'.x (Y - 1), 0; 0, f'.xi Y])`. Rewrite using `[← h.q]`. Conclude with `SRel.mul _ h.ci (SRel.ins a (SRel.m2 (SRel.smul _ _ (h.x _ (star_sub_one hr))) z z (h.xi Y hr (h.sub hY))))`.
+A detailed English derivation is pending.
 -/
 theorem minus_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {f : FrameData S A} {f' : FrameData S A'} (h : FrRel R I f f') (hf : IsFrame L f) (hf' : IsFrame L' f')
@@ -333,9 +327,9 @@ theorem minus_rel {R : SRel A A'} {I : Set ℂ} {L : LevelData A r} {L' : LevelD
 
 omit [StarModule ℂ A] [StarModule ℂ A'] in
 /- English proof (translation)
-Establish `hx : ∀ Y, star Y = Y → R.r (st.x Y) (st'.x Y)` using `fun Y hY => by`. Establish `e : st.x Y = L.GGi * st.QQ Y 1 1` using `by rw [hs.tau, ← mul_assoc, L.GGi_GG, one_mul]`. Establish `e' : st'.x Y = L'.GGi * st'.QQ Y 1 1` using `by rw [hs'.tau, ← mul_assoc, L'.GGi_GG, one_mul]`. Rewrite using `[e, e']`. Conclude with `R.mul hL.GGi (hQ Y hY 1 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `o` using `(R.mat (Ix S)).one`. Conclude with `⟨hi, subset_rfl, hq, rfl, fun Y hY => SRel.lift0 (hQ Y hY), o, o, fun Y hY => SRel.io (hx Y hY), fun Y hY hI => SRel.io (hR _ _ _ _ (hx Y hY) (hs.x_xi Y hI).1 (hs.x_xi Y hI).2 (hs'.x_xi Y (hi ▸ hI)).1 (hs'.x_xi Y (hi ▸ hI)).2), o, o⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem start_rel {R : SRel A A'} (hR : R.InvClosed) {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     {st : Start A} {st' : Start A'} (hs : IsLevelStart L st) (hs' : IsLevelStart L' st') (hq : st.q = st'.q)
@@ -351,11 +345,11 @@ theorem start_rel {R : SRel A A'} (hR : R.InvClosed) {L : LevelData A r} {L' : L
       (hs'.x_xi Y (hi ▸ hI)).2), o, o⟩
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact ⟨trivial, start_rel hR hL hs hs' hq hi hQ⟩`. Consider the case `cons l w ih`. Take `⟨h0, hsl, hre, hY, hY1, hq'⟩` from `hw`. Take `⟨h0', h⟩` from `ih h0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf` using `frame_of_recursive_word A S r L st w hSL hs h0`. Establish `hf'` using `frame_of_recursive_word A' S r L' st' w hSL' hs' h0'`. Use `⟨⟨h0', hsl, hre, h.inv ▸ hY, h.inv ▸ hY1, by rw [← h.inv, ← h.q]; exact hq'⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp : l.plus = true`. Simplify using `only [ofWord, hp, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `plus_rel hL h hf hf' _ hre hY hY1`. Simplify using `only [ofWord, hp] at hq' ⊢`. Conclude with `minus_rel hL h hf hf' _ hre hY hq'.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofWord_rel {R : SRel A A'} (hR : R.InvClosed) {L : LevelData A r} {L' : LevelData A' r} (hL : FnRel R L L')
     (hSL : IsStarLevel L) (hSL' : IsStarLevel L')

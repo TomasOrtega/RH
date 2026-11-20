@@ -42,7 +42,7 @@ def ShiftSizeAt (L : SizeData₂ D) (C : ℝ) : Prop := C * (exch D * L.sc.X'' D
 def TypeUnitAt (D : D7) : Prop := ∀ u (i : Fin 2), padicValNat (D.host.g i) (D.mem u).C.DGam = 0
 
 /- English proof (translation)
-Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `a1` using `P.h0_ge.2.2.2.2.1`. Establish `a2 : LevelStarExponents.h0 L ≤ L.etaSz` using `div_le_self L.etaSz_pos.le hm`. Combine the linear relations using `[one_le_letterBlockLength D]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cube_le_eta (P : ParameterChoice' D L) : 4 * (D.R.N D.R.m : ℝ) ^ 3 + 6 ≤ L.etaSz := by
   have hm : (1 : ℝ) ≤ D.R.m := by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)

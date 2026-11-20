@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.UnitaryClasses
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramOn, hform, Matrix.mul_apply, Matrix.conjTranspose_apply, IsCMField.complexEmbedding_complexConj, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramOn_map_eq_H {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) E) (V : Submodule E (Fin n → E)) (τ : E →+* ℂ) :
@@ -26,19 +26,17 @@ theorem gramOn_map_eq_H {E : Type} [Field E] [NumberField E] [IsCMField E] {n : 
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `key : ∀ τ : E →+* ℂ, 0 < τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H V).det`. Introduce `τ`. Take `⟨Q, hQ, hHQ⟩` from `hH τ`. Rewrite using `[RingHom.map_det]`. Establish `e1 : τ.mapMatrix (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H V) = (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H V).map τ` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : cT (starRingEnd ℂ) Q = Qᴴ`. Use extensionality with `i j`. Simplify using `[cT, Matrix.conjTranspose_apply]`. Use `set A : Matrix (Fin n) (Fin (Module.finrank E V)) ℂ := Matrix.of fun k i => τ ((Module.finBasis E V i).1 k) with hA`. Establish `e3 : Aᴴ * (Qᴴ * Q) * A = (Q * A)ᴴ * (Q * A)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, gramOn_map_eq_H, ← hA, hHQ, e2, e3]`. Establish `hQi : Function.Injective Q.mulVec`. Rewrite using `[Matrix.mulVec_injective_iff_isUnit, Matrix.isUnit_iff_isUnit_det]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isUnit_iff_ne_zero.mpr hQ`. Establish `hinj : Function.Injective (Q * A).mulVec`. Introduce `v w hvw`. Simplify using `only [← Matrix.mulVec_mulVec] at hvw`. Conclude with `gramOn_basis_mulVec_injective V τ (hQi hvw)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Matrix.PosDef.conjTranspose_mul_self _ hinj).det_pos`. Use `⟨fun h0 => ?_, fun τ => ?_⟩` and prove the remaining obligations. Establish `τ0` using `(Classical.arbitrary (NumberField.InfinitePlace E)).embedding`. Use `key τ0` as an intermediate fact. Rewrite `this` using `[h0, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `lt_irrefl _ this`. Establish `h` using `Complex.lt_def.mp (key τ)`. Use `⟨(τ (gramOn (IsCMField.complexConj E).toRingEquiv.toRingHom H V).det).re, h.1, ?_⟩` and prove the remaining obligations. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
-
-Simplify using `using h.2.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gramOn_det_totallyPositive_of_posDef {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (H : Matrix (Fin n) (Fin n) E)
@@ -79,9 +77,9 @@ theorem gramOn_det_totallyPositive_of_posDef {E : Type} [Field E] [NumberField E
     · simpa using h.2.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ hU S hS n γ₀ _ H₀ _ _ _ hpos P₁ _ _`. Take `⟨hd0, hdpos⟩` from `gramOn_det_totallyPositive_of_posDef H₀ hpos (LinearMap.ker (Matrix.toLin' (aeval γ₀.val P₁)))`. Use `Eq.trans ?_ (GlobalTheory.T.finprod_nonsplit_sign_totallyPositive_eq_one E hU S hS _ hd0 hdpos)` and prove the remaining obligations. Apply `finprod_mem_congr rfl` to reduce the goal to its premises. Introduce `w _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hw`. Both sides reduce to the same expression. Unfold `sgnOn`. Rewrite using `[aeval_map_mat]`. Conclude with `GlobalTheory.T.gramKernelSign_nonsplit_baseChange_eq E hU w hw n H₀ (aeval γ₀.val P₁)`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem refSign_prod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ S : Set (Pl E), IsSection S → ∀ (n : ℕ) (γ₀ : GL (Fin n) E), γ₀.val.charpoly ∈ Ell E n → ∀ H₀ : Matrix (Fin n) (Fin n) E, IsHerm (IsCMField.complexConj E).toRingEquiv.toRingHom H₀ → H₀.det ≠ 0 → cT (IsCMField.complexConj E).toRingEquiv.toRingHom γ₀.val * H₀ * γ₀.val = H₀ → (∀ τ : E →+* ℂ, ∃ Q : Matrix (Fin n) (Fin n) ℂ, Q.det ≠ 0 ∧ H₀.map τ = cT (starRingEnd ℂ) Q * Q) → (∀ P₁ : E[X], P₁.Monic → P₁ ∣ γ₀.val.charpoly → ∏ᶠ w ∈ S, (if IsSplitAt w then (1 : ℂ) else sgnOn (cj w) (H₀.map (algebraMap E (w.adicCompletion E))) (atPl w P₁) (γ₀.val.map (algebraMap E (w.adicCompletion E)))) = 1) := by
   intro E _ _ _ hU S hS n γ₀ _ H₀ _ _ _ hpos P₁ _ _

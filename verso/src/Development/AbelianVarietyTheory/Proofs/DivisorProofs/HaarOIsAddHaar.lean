@@ -68,7 +68,7 @@ def haarO (v : Pl F) : MeasureTheory.Measure (Fv F v) := MeasureTheory.Measure.a
 def haarVec (v : Pl F) (p : ℕ) : MeasureTheory.Measure (Fin p → Fv F v) := MeasureTheory.Measure.pi fun _ => haarO v
 
 /- English proof (translation)
-The claim follows from `MeasureTheory.Measure.isAddHaarMeasure_addHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 theorem haarO_isAddHaar (v : Pl F) : (haarO v).IsAddHaarMeasure := MeasureTheory.Measure.isAddHaarMeasure_addHaarMeasure _
 

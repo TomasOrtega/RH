@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.CompAdds
 
 /- English proof (translation)
-Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[InfinitePlace.isComplex_iff]`. Introduce `h`. Conclude with `GlobalTheory.CompHt.conj_comp_ne v.embedding (RingHom.ext fun a => by`. Simplify `congrArg (fun f : c.F →+* ℂ => f a) (ComplexEmbedding.isReal_iff.1 h))` using `[ComplexEmbedding.conjugate_coe_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem totallyComplex {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {l : Level H} (c : Coeff l) :
     IsTotallyComplex c.F := by
@@ -27,9 +27,9 @@ theorem totallyComplex {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.To
       congrArg (fun f : c.F →+* ℂ => f a) (ComplexEmbedding.isReal_iff.1 h))
 
 /- English proof (translation)
-Establish `e : N σ x = N (InfinitePlace.mk σ).embedding x`. Break down `InfinitePlace.embedding_mk_eq σ with h1 | h1` into its components or cases. Rewrite using `[h1]`. Establish `: ComplexEmbedding.conjugate σ = (starRingEnd ℂ).comp σ` using `RingHom.ext fun a => ComplexEmbedding.conjugate_coe_eq σ a`. Rewrite using `[h1, this, hc]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `lt_of_le_of_ne (hn _ _) fun h0 => hx (GlobalTheory.HSApp.HasGram_eq_zero h _ h0.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_of_hasGram {K W : Type} [Field K] [NumberField K] [AddCommGroup W] [Module K W]
     {N : (K →+* ℂ) → W → ℝ} (h : HasGram N) (hn : ∀ σ x, 0 ≤ N σ x)
@@ -52,37 +52,37 @@ section Basic
 variable (Z : Comp Xo c) (G : WTZ D.host.E)
 
 /- English proof (translation)
-The claim follows from `petAt_nonneg _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem normRes_nonneg (σ : c.F →+* ℂ) (f : cuspOn U Z G) : 0 ≤ normRes U V dict Z G σ f :=
   petAt_nonneg _ _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `petAt_nonneg _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem normOn_nonneg (σ : c.F →+* ℂ) (f : cuspOn U Z G) : 0 ≤ normOn U (xiR D) V dict Z G σ f :=
   petAt_nonneg _ _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `congrArg (fun s => petAt (U s) (xiR D) (V s) (dict s) (muQ1 (V s)) G (f : Rul Xo c)) (GlobalTheory.CompHt.goodOf_conj σ)`.
+A detailed English derivation is pending.
 -/
 theorem normRes_conj (σ : c.F →+* ℂ) (f : cuspOn U Z G) :
     normRes U V dict Z G ((starRingEnd ℂ).comp σ) f = normRes U V dict Z G σ f :=
   congrArg (fun s => petAt (U s) (xiR D) (V s) (dict s) (muQ1 (V s)) G (f : Rul Xo c)) (GlobalTheory.CompHt.goodOf_conj σ)
 
 /- English proof (translation)
-The claim follows from `congrArg (fun s => (muQ1 (V s) (classesOver (V s) (dict s) (framesOn (U s) Z))).toReal) (GlobalTheory.CompHt.goodOf_conj σ)`.
+A detailed English derivation is pending.
 -/
 theorem mass_conj (σ : c.F →+* ℂ) : mass U V dict Z ((starRingEnd ℂ).comp σ) = mass U V dict Z σ :=
   congrArg (fun s => (muQ1 (V s) (classesOver (V s) (dict s) (framesOn (U s) Z))).toReal) (GlobalTheory.CompHt.goodOf_conj σ)
 
 /- English proof (translation)
-The claim follows from `ENNReal.toReal_nonneg`.
+A detailed English derivation is pending.
 -/
 theorem mass_nonneg (σ : c.F →+* ℂ) : 0 ≤ mass U V dict Z σ := ENNReal.toReal_nonneg
 
 /- English proof (translation)
-Establish `a` using `petW_smul U (xiR D) V dict G σ 0 0`. Simplify using `only [zero_smul, map_zero, norm_zero, zero_mul] at a`. Conclude with `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normRes_zero (σ : c.F →+* ℂ) : normRes U V dict Z G σ 0 = 0 := by
   have a := petW_smul U (xiR D) V dict G σ 0 0
@@ -90,7 +90,7 @@ theorem normRes_zero (σ : c.F →+* ℂ) : normRes U V dict Z G σ 0 = 0 := by
   exact a
 
 /- English proof (translation)
-Establish `a` using `petOn_smul U (xiR D) V dict Z G σ 0 0`. Simplify using `only [zero_smul, map_zero, norm_zero, zero_mul] at a`. Conclude with `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normOn_zero (σ : c.F →+* ℂ) : normOn U (xiR D) V dict Z G σ 0 = 0 := by
   have a := petOn_smul U (xiR D) V dict Z G σ 0 0
@@ -98,7 +98,7 @@ theorem normOn_zero (σ : c.F →+* ℂ) : normOn U (xiR D) V dict Z G σ 0 = 0 
   exact a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, ENNReal.toReal_nonneg, fun f => GlobalTheory.HSApp.petAt_muOn (U (goodOf c σ)) (xiR D) (V (goodOf c σ)) (dict (goodOf c σ)) Z G (Submodule.mem_inf.1 f.2).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_normOn_eq (σ : c.F →+* ℂ) : ∃ k : ℝ, 0 ≤ k ∧
     ∀ f : cuspOn U Z G, normOn U (xiR D) V dict Z G σ f = k * normRes U V dict Z G σ f :=
@@ -106,9 +106,9 @@ theorem exists_normOn_eq (σ : c.F →+* ℂ) : ∃ k : ℝ, 0 ≤ k ∧
     (dict (goodOf c σ)) Z G (Submodule.mem_inf.1 f.2).2⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∃ f : cuspOn U Z G, f ≠ 0`. Take `⟨f, hf⟩` from `h0 choose k hk0 hk using fun σ => exists_normOn_eq U V dict Z G σ`. Establish `hkpos : ∀ v : InfinitePlace c.F, 0 < k v.embedding` using `fun v => by`. Use `lt_of_le_of_ne (hk0 _) fun h2 => hf (GlobalTheory.HSApp.HasGram_eq_zero h v ?_)` and prove the remaining obligations. Rewrite using `[hk, ← h2, zero_mul]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.HSApp.hasGram_of_injective h LinearMap.id (fun _ _ h => h) (fun v => (k v.embedding)⁻¹) (fun v => inv_pos.2 (hkpos v)) fun v x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.id_apply, hk, ← mul_assoc, inv_mul_cancel₀ (hkpos v).ne', one_mul]`. Use `push_neg at h0`. Use `GlobalTheory.HSApp.hasGram_of_injective h LinearMap.id (fun _ _ h => h) (fun _ => 1) (fun _ => one_pos) fun v x => ?_` and prove the remaining obligations. Rewrite using `[h0 x, LinearMap.id_apply, one_mul, normRes_zero, normOn_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasGram_normRes (h : HasGram (normOn U (xiR D) V dict Z G)) : HasGram (normRes U V dict Z G) := by
   by_cases h0 : ∃ f : cuspOn U Z G, f ≠ 0
@@ -131,13 +131,13 @@ def toOn : sub U Z G →ₗ[c.F] cuspOn U Z G :=
   LinearMap.codRestrict (cuspOn U Z G) ((cuspW Xo c U G).subtype ∘ₗ (sub U Z G).subtype) fun x => x.2
 
 /- English proof (translation)
-Introduce `a b h` and use `Subtype.ext (Subtype.ext (congrArg (fun y : cuspOn U Z G => (y : Rul Xo c)) h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toOn_injective : Function.Injective (toOn U Z G) := fun a b h =>
   Subtype.ext (Subtype.ext (congrArg (fun y : cuspOn U Z G => (y : Rul Xo c)) h))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.HSApp.hasGram_of_injective h (toOn U Z G) (toOn_injective U Z G) (fun _ => 1) (fun _ => one_pos) fun _ _ => (one_mul _).symm`.
+A detailed English derivation is pending.
 -/
 theorem hasGram_sub (h : HasGram (normRes U V dict Z G)) :
     HasGram (fun σ (x : sub U Z G) => normW U (xiR D) V dict G σ x) :=
@@ -145,7 +145,7 @@ theorem hasGram_sub (h : HasGram (normRes U V dict Z G)) :
     fun _ _ => (one_mul _).symm
 
 /- English proof (translation)
-The claim follows from `Submodule.span_le.2 (by rintro _ ⟨g, _, rfl⟩; exact g.2)`.
+A detailed English derivation is pending.
 -/
 theorem span_partLat_le : Submodule.span c.F (partLat U Z G : Set (cuspW Xo c U G)) ≤ sub U Z G :=
   Submodule.span_le.2 (by rintro _ ⟨g, _, rfl⟩; exact g.2)
@@ -155,7 +155,7 @@ end Basic
 variable {U V dict} {G : WTZ D.host.E}
 
 /- English proof (translation)
-Introduce `Z`. Use `Disjoint.mono_right (iSup₂_le fun j hj => Submodule.comap_mono (le_iSup₂ (f := fun j (_ : j ≠ Z) => cuspOn U j G) j hj)) ?_` and prove the remaining obligations. Rewrite using `[disjoint_iff]`. Use `show Submodule.comap (cuspW Xo c U G).subtype (cuspOn U Z G) ⊓ Submodule.comap (cuspW Xo c U G).subtype (⨆ j, ⨆ (_ : j ≠ Z), cuspOn U j G) = ⊥`. Rewrite using `[← Submodule.comap_inf, disjoint_iff.1 (hS.2.1.1 Z), Submodule.comap_bot, Submodule.ker_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_indep (hS : Splits U G) : iSupIndep (fun Z => sub U Z G) := by
   intro Z
@@ -167,7 +167,7 @@ theorem sub_indep (hS : Splits U G) : iSupIndep (fun Z => sub U Z G) := by
   rw [← Submodule.comap_inf, disjoint_iff.1 (hS.2.1.1 Z), Submodule.comap_bot, Submodule.ker_subtype]
 
 /- English proof (translation)
-Apply `Submodule.map_injective_of_injective (cuspW Xo c U G).injective_subtype` to reduce the goal to its premises. Rewrite using `[Submodule.map_iSup, Submodule.map_subtype_top]`. Simplify using `only [sub, Submodule.map_comap_subtype]`. Rewrite using `[iSup_congr fun Z => inf_eq_right.2 (cuspOn_le U Z G)]`. Conclude with `hS.2.1.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_iSup (hS : Splits U G) : ⨆ Z, sub U Z G = ⊤ := by
   apply Submodule.map_injective_of_injective (cuspW Xo c U G).injective_subtype
@@ -177,7 +177,7 @@ theorem sub_iSup (hS : Splits U G) : ⨆ Z, sub U Z G = ⊤ := by
   exact hS.2.1.2
 
 /- English proof (translation)
-Establish `h` using `(hO σ).1 (fun Z => toOn U Z G (f Z))`. Rewrite `h` using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype]`. Unfold `normW`. Rewrite using `[Submodule.coe_sum]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pyth [Fintype (Comp Xo c)] (hO : Orthogonal U V dict G) (σ : c.F →+* ℂ) (f : ∀ Z, sub U Z G) :
     normW U (xiR D) V dict G σ (∑ Z, (f Z : cuspW Xo c U G)) ^ 2 =
@@ -189,11 +189,9 @@ theorem pyth [Fintype (Comp Xo c)] (hO : Orthogonal U V dict G) (σ : c.F →+* 
   exact h
 
 /- English proof (translation)
-Use `haveI : Finite (Comp Xo c) := CompFin.finite_comp Xo c`. Use `letI := Fintype.ofFinite (Comp Xo c)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.OrthSumGram.orth_sum_hasGram c.F (cuspW Xo c U G) (Comp Xo c) (normW U (xiR D) V dict G) (fun Z => sub U Z G) (fun σ x => petAt_nonneg _ _ _ _ _ _ _) (sub_indep hS) (sub_iSup hS) (fun Z => hasGram_sub U V dict Z G (hasGram_normRes U V dict Z G (h Z).1)) (pyth hO)`. Rewrite using `[← hS.2.2.2]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.fg_iSup _ fun Z => (h Z).2.1.map _`. Rewrite using `[eq_top_iff, ← sub_iSup hS]`. Use `iSup_le fun Z y hy => ?_` and prove the remaining obligations. Establish `h1 : toOn U Z G ⟨y, hy⟩ ∈ Submodule.span c.F (latOn U Z G : Set (cuspOn U Z G))` using `by rw [(h Z).2.2]; exact Submodule.mem_top`. Establish `h3 : Submodule.span c.F (latOn U Z G : Set (cuspOn U Z G)) ≤ (Submodule.span c.F (latW U G : Set (cuspW Xo c U G))).comap (Submodule.inclusion (cuspOn_le U Z G))` using `Submodule.span_le.2 fun g hg => Submodule.subset_span ((mem_latOn U).1 hg)`.
-
-Conclude with `h3 h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem goodW_of (hS : Splits U G) (hO : Orthogonal U V dict G) (h : ∀ Z, GoodOn U (xiR D) V dict Z G) :
     GoodW U (xiR D) V dict G := by
@@ -216,9 +214,9 @@ theorem goodW_of (hS : Splits U G) (hO : Orthogonal U V dict G) (h : ∀ Z, Good
     exact h3 h1
 
 /- English proof (translation)
-Establish `h1` using `(hO σ).2 Z f`. Establish `hs` using `Real.sqrt_pos.2 hm`. Establish `h2 : normRes U V dict Z G σ f = Real.sqrt (mass U V dict Z σ) * normOn U (xiR D) V dict Z G σ f`. Rewrite using `[← sq_eq_sq₀ (normRes_nonneg U V dict Z G σ f) (mul_nonneg hs.le (normOn_nonneg U V dict Z G σ f)), mul_pow, Real.sq_sqrt hm.le]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← mul_assoc, inv_mul_cancel₀ hs.ne', one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem normOn_eq_of_mass (hO : Orthogonal U V dict G) (Z : Comp Xo c) (σ : c.F →+* ℂ)
     (hm : 0 < mass U V dict Z σ) (f : cuspOn U Z G) :
@@ -232,9 +230,9 @@ theorem normOn_eq_of_mass (hO : Orthogonal U V dict G) (Z : Comp Xo c) (σ : c.F
   rw [h2, ← mul_assoc, inv_mul_cancel₀ hs.ne', one_mul]
 
 /- English proof (translation)
-Establish `hne : latOn U Z G ≠ ⊥` using `fun h0 => hr (by`. Rewrite using `[show rankOn U Z G = Module.finrank c.F (Submodule.span c.F ((latOn U Z G : Submodule _ _) : Set (cuspOn U Z G))) from rfl, h0, Submodule.bot_coe, Submodule.span_zero_singleton, finrank_bot])`. Take `⟨f, -, hf⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hp` using `pos_of_hasGram hR (normRes_nonneg U V dict Z G) (normRes_conj U V dict Z G) hf σ`. Establish `h1` using `(hO σ).2 Z f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne (mass_nonneg U V dict Z σ) fun h0 => ?_` and prove the remaining obligations. Rewrite `h1` using `[← h0, zero_mul]`. Conclude with `hp.ne' ((pow_eq_zero_iff two_ne_zero).1 h1)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_pos (hO : Orthogonal U V dict G) (Z : Comp Xo c) (hR : HasGram (normRes U V dict Z G))
     (hr : rankOn U Z G ≠ 0) (σ : c.F →+* ℂ) : 0 < mass U V dict Z σ := by
@@ -249,7 +247,7 @@ theorem mass_pos (hO : Orthogonal U V dict G) (Z : Comp Xo c) (hR : HasGram (nor
   exact hp.ne' ((pow_eq_zero_iff two_ne_zero).1 h1)
 
 /- English proof (translation)
-Unfold `degRes GlobalTheory.AllWt.deg`. Unfold `rankOn at hr`. Rewrite using `[hr, Nat.cast_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem degRes_zero (Z : Comp Xo c) (hr : rankOn U Z G = 0) : degRes U V dict Z G = 0 := by
   unfold degRes GlobalTheory.AllWt.deg
@@ -257,7 +255,7 @@ theorem degRes_zero (Z : Comp Xo c) (hr : rankOn U Z G = 0) : degRes U V dict Z 
   rw [hr, Nat.cast_zero, zero_mul]
 
 /- English proof (translation)
-Unfold `degOn GlobalTheory.AllWt.deg`. Unfold `rankOn at hr`. Rewrite using `[hr, Nat.cast_zero, zero_mul]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem degOn_zero (Z : Comp Xo c) (hr : rankOn U Z G = 0) : degOn U (xiR D) V dict Z G = 0 := by
   unfold degOn GlobalTheory.AllWt.deg
@@ -265,9 +263,9 @@ theorem degOn_zero (Z : Comp Xo c) (hr : rankOn U Z G = 0) : degOn U (xiR D) V d
   rw [hr, Nat.cast_zero, zero_mul]
 
 /- English proof (translation)
-Distinguish the cases in `hr : rankOn U Z G = 0`. Rewrite using `[degRes_zero Z hr, degOn_zero Z hr, hr]`. Simplify using the standard rewrite rules. Establish `hm` using `mass_pos hO Z hR hr`. Establish `hsc` using `(GlobalTheory.NormScale.deg_scale c.F (cuspOn U Z G) (normRes U V dict Z G) (normOn U (xiR D) V dict Z G) (fun σ => (Real.sqrt (mass U V dict Z σ))⁻¹) hR (fun σ => inv_pos.2 (Real.sqrt_pos.2 (hm σ))) (fun σ => congrArg (fun m => (Real.sqrt m)⁻¹) (mass_conj U V dict Z σ)) (fun σ f …`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ σ, Real.log (Real.sqrt (mass U V dict Z σ))⁻¹ = -(Real.log (mass U V dict Z σ) / 2)` using `fun σ => by rw [Real.log_inv, Real.log_sqrt (mass_nonneg U V dict Z σ)]`. Simplify using `only [hl, Finset.sum_neg_distrib, ← Finset.sum_div] at hsc`. Unfold `degRes degOn rankOn`. Rewrite using `[hsc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degRes_eq [IsTotallyComplex c.F] (hO : Orthogonal U V dict G) (Z : Comp Xo c)
     (hR : HasGram (normRes U V dict Z G)) (hfg : (latOn U Z G).FG) :
@@ -289,11 +287,11 @@ theorem degRes_eq [IsTotallyComplex c.F] (hO : Orthogonal U V dict G) (Z : Comp 
     ring
 
 /- English proof (translation)
-Use `haveI : Finite (Comp Xo c) := CompFin.finite_comp Xo c`. Use `letI := Fintype.ofFinite (Comp Xo c)`. Establish `hrd` using `fun Z => (GlobalTheory.RestrictNorm.restrict_deg c.F (cuspW Xo c U G) (cuspOn U Z G) (normW U (xiR D) V dict G) (Submodule.inclusion (cuspOn_le U Z G)) (Submodule.inclusion_injective _) hW.1).2 (latOn U Z G) (hOn Z).2.1`. Take `⟨hs1, hs2⟩` from `GlobalTheory.OrthRankDeg.rkK_deg_iSup c.F (cuspW Xo c U G) (Comp Xo c) (normW U (xiR D) V dict G) (fun Z => partLat U Z G) hW.1 (fun Z => (hOn Z).2.1.map _) (fun σ f hf => pyth hO σ (fun Z => ⟨f Z, span_partLat_le U Z G (hf Z)⟩))`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_fintype]`. Unfold `GlobalTheory.AllWt.rankW`. Rewrite using `[← hS.2.2.2]`. Conclude with `hs1.trans (Finset.sum_congr rfl fun Z _ => (hrd Z).1)`. Rewrite using `[finsum_eq_sum_of_fintype]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.AllWt.degW`. Rewrite using `[← hS.2.2.2]`. Conclude with `hs2.trans (Finset.sum_congr rfl fun Z _ => (hrd Z).2)`.
+A detailed English derivation is pending.
 -/
 theorem sums [IsTotallyComplex c.F] (hS : Splits U G) (hO : Orthogonal U V dict G) (hW : GoodW U (xiR D) V dict G)
     (hOn : ∀ Z, GoodOn U (xiR D) V dict Z G) :
@@ -317,11 +315,9 @@ theorem sums [IsTotallyComplex c.F] (hS : Splits U G) (hO : Orthogonal U V dict 
     exact hs2.trans (Finset.sum_congr rfl fun Z _ => (hrd Z).2)
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c r U V dict G hS hO`. Use `haveI : Finite (Comp Xo c) := CompFin.finite_comp Xo c`. Use `letI := Fintype.ofFinite (Comp Xo c)`. Use `haveI : IsTotallyComplex c.F := totallyComplex c`. Use `⟨⟨fun h Z => GlobalTheory.HSApp.goodOn_of_goodW U (xiR D) V dict Z G h, goodW_of hS hO⟩, fun hW => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOn : ∀ Z, GoodOn U (xiR D) V dict Z G` using `fun Z => GlobalTheory.HSApp.goodOn_of_goodW U (xiR D) V dict Z G hW`. Establish `hRes : ∀ Z, HasGram (normRes U V dict Z G)` using `fun Z => hasGram_normRes U V dict Z G (hOn Z).1`. Take `⟨hs1, hs2⟩` from `sums hS hO hW hOn`. Use `⟨hRes, hs1, hs2, fun Z => mass_pos hO Z (hRes Z), ?_⟩` and prove the remaining obligations. Rewrite using `[hs2]`.
-
-Conclude with `finsum_congr fun Z => degRes_eq hO Z (hRes Z) (hOn Z).2.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adds : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (V : (c.F →+* ℂ) → HSp D)

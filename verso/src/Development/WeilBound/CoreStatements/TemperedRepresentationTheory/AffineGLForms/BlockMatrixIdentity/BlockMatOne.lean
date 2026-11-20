@@ -14,7 +14,7 @@ def blockMat {R : Type} [CommRing R] {a r : ℕ} (h : r ≤ a) (A : Matrix (Fin 
   Matrix.reindex (splitEquiv h) (splitEquiv h) (Matrix.fromBlocks A 0 0 B)
 
 /- English proof (translation)
-Simplify using `[blockMat, Matrix.fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMat_mul {R : Type} [CommRing R] {a r : ℕ} (h : r ≤ a) (A A' : Matrix (Fin r) (Fin r) R)
     (B B' : Matrix (Fin (a - r)) (Fin (a - r)) R) :
@@ -22,7 +22,7 @@ theorem blockMat_mul {R : Type} [CommRing R] {a r : ℕ} (h : r ≤ a) (A A' : M
   simp [blockMat, Matrix.fromBlocks_multiply]
 
 /- English proof (translation)
-Simplify using `[blockMat, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockMat_one {R : Type} [CommRing R] {a r : ℕ} (h : r ≤ a) :
     blockMat h (1 : Matrix (Fin r) (Fin r) R) 1 = 1 := by

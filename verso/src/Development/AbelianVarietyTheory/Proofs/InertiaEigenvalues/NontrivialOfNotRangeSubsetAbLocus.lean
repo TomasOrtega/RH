@@ -14,9 +14,9 @@ open ReciprocityTheory.ChartRestriction.G.DVR.QForm (QVal IsQ bOf)
 namespace GlobalTheory.BadReductionLattice
 
 /- English proof (translation)
-Introduce `E _ _ _ H S t₀ T T' g y t m P gi gf hy`. Assume the negation of the conclusion as `hn`. Rewrite `hn` using `[not_nontrivial_iff_subsingleton]`. Establish `hab` using `GlobalTheory.isAbelianScheme_of_unif_of_subsingleton GlobalTheory.allSixLaws.1 GlobalTheory.allSixLaws.2.1 T'.V inferInstance P.D P.A t.G t.semi P.U hn`. Establish `hp : IsProper t.G.hom` using `hab.proper`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hy` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨x', rfl⟩` from `gf.to_isIntegral.comap_surjective gi x`. Conclude with `GlobalTheory.ModelSum.range_subset_abLocus m hp ⟨x', rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nontrivial_of_not_range_subset_abLocus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (S : Scheme.{0}) (t₀ : SAB H S) (T T' : Formalism.L2.Pj.CDVR) (g : T.V →+* T'.V) (y : Sp T.V ⟶ S) (t : SAB H (Sp T'.V)) (_ : SABMap t t₀ (spMap g ≫ y)) (P : PELUnif (IsLocalRing.maximalIdeal T'.V) t), Function.Injective g → g.Finite → ¬ Set.range y ⊆ abLocus t₀.G → Nontrivial P.D.toPre.X := by
   intro E _ _ _ H S t₀ T T' g y t m P gi gf hy

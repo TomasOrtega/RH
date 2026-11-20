@@ -14,9 +14,9 @@ section
 variable (F : Type) {E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.prod_empty, Finset.prod_empty, Algebra.TensorProduct.one_def]`. Conclude with `one_tmul_mem_adelicCompletionOfElementSet F (FractionalIdeal.one_mem_one _)`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `(adelicCompletion_fractionalIdeal_properties F E).1 _ _ _ (h a (Finset.mem_insert_self _ _)) _ (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem prod_mem_adelicCompletionOfElementSet {ι : Type} (s : Finset ι) (I : ι → FractionalIdeal (𝓞 E)⁰ E)
     (x : ι → RA F E) (h : ∀ i ∈ s, x i ∈ hat1 F (I i : Set E)) :
@@ -32,9 +32,9 @@ theorem prod_mem_adelicCompletionOfElementSet {ι : Type} (s : Finset ι) (I : �
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `sum_mem fun σ _ => ?_` and prove the remaining obligations. Use `prod_mem_adelicCompletionOfElementSet F Finset.univ (fun j => r (σ j) * s j) (fun j => M (σ j) j) (fun j _ => h _ _)` as an intermediate fact. Rewrite `this` using `[Finset.prod_mul_distrib, Equiv.prod_comp σ r]`. Rewrite using `[Units.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem this _`.
+A detailed English derivation is pending.
 -/
 theorem det_mem_adelicCompletionOfElementSet {n : ℕ} (r s : Fin n → FractionalIdeal (𝓞 E)⁰ E)
     (M : Matrix (Fin n) (Fin n) (RA F E))
@@ -49,11 +49,11 @@ theorem det_mem_adelicCompletionOfElementSet {n : ℕ} (r s : Fin n → Fraction
   exact zsmul_mem this _
 
 /- English proof (translation)
-Rewrite using `[Matrix.cramer_apply]`. Use `det_mem_adelicCompletionOfElementSet F cI (Function.update (fun j => (cI j)⁻¹) a 1) (M.updateCol a w) (by` as an intermediate fact. Introduce `i j`. Distinguish the cases in `hj : j = a`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hw i`. Simplify `h i j)` using `[hj]`. Establish `e : (∏ i, cI i) * ∏ j, Function.update (fun j => (cI j)⁻¹) a 1 j = cI a`. Rewrite using `[← Finset.prod_mul_distrib, Finset.prod_eq_single a]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b _ hb`. Simplify using `[hb, hc b]`. Simplify using the standard rewrite rules. Rewrite `this` using `[e]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cramer_mem_adelicCompletionOfElementSet {n : ℕ} (cI : Fin n → FractionalIdeal (𝓞 E)⁰ E) (hc : ∀ a, cI a ≠ 0)
     (M : Matrix (Fin n) (Fin n) (RA F E))
@@ -76,7 +76,7 @@ theorem cramer_mem_adelicCompletionOfElementSet {n : ℕ} (cI : Fin n → Fracti
   rwa [e] at this
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[FractionalIdeal.mem_one_iff]`. Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨⟨c y, (RingOfIntegers.isIntegral_coe y).map c.toRingEquiv.toRingHom.toIntAlgHom⟩, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem algEquiv_mem_one (c : E ≃ₐ[F] E) (x : E) (hx : x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E)) :
     c x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) := by
@@ -87,31 +87,29 @@ theorem algEquiv_mem_one (c : E ≃ₐ[F] E) (x : E) (hx : x ∈ (1 : Fractional
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L g c hfg hsp hg hdet z hz`. Take `⟨-, e, cI, hc, hL, -⟩` from `GlobalTheory.exists_pseudoBasis_adapted E n L ⊤ hfg hsp`. Establish `key` using `mem_hat_pseudoBasis_iff F E n L e cI hL`. Set `P : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun i a => fv F (e a) i`. Set `Q : Matrix (Fin n) (Fin n) (RA F E)` to `Matrix.of fun b i => (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ e.repr (Pi.single i 1) b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : ∀ w : Fin n → RA F E, P *ᵥ w = ∑ a, w a • fv F (e a)`. Introduce `w`. Use function extensionality and compare the values at `i`. Simplify using `[P, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hQ : ∀ w b, (Q *ᵥ w) b = adCoord F e b w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `w b`. Express the relevant statement in the definitionally equal form `∑ i : Fin n, _ = ∑ i : Fin n, _`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hQP : Q * P = 1`. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[← Matrix.mulVec_mulVec, hQ, hP, adCoord_sum, Matrix.one_mulVec]`. Establish `hPQ : P * Q = 1` using `mul_eq_one_comm.1 hQP`. Establish `key' : ∀ w, P *ᵥ w ∈ hat F (L : Set (Fin n → E)) ↔ ∀ a, w a ∈ hat1 F (cI a : Set E)`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Conclude with `key w`. Use `set G : Matrix (Fin n) (Fin n) (RA F E) := (g : Matrix (Fin n) (Fin n) (RA F E)) with hG`. Set `k : Matrix (Fin n) (Fin n) (RA F E)` to `Q * G * P`. Establish `hPk : P * k = G * P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [k, ← Matrix.mul_assoc, hPQ, Matrix.one_mul]`. Establish `hkdet : k.det = G.det`. Establish `: Q.det * P.det = 1` using `by rw [← Matrix.det_mul, hQP, Matrix.det_one]`. Simplify using `only [k, Matrix.det_mul]`. Take the linear combination `G.det * this`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hk : ∀ i j, k i j ∈ hat1 F ((cI i * (cI j)⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Introduce `i j`. Use `mem_adelicCompletion_mul_inv_fractionalIdeal F _ _ _ (hc j) fun x hx => ?_` and prove the remaining obligations. Establish `h1 : P *ᵥ (Pi.single j ((1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] x)) ∈ hat F (L : Set (Fin n → E))`. Rewrite using `[key']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `a`. Distinguish the cases in `ha : a = j`. Substitute `ha` using the available equality. Rewrite using `[Pi.single_eq_same]`. Conclude with `one_tmul_mem_adelicCompletionOfElementSet F hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.single_eq_of_ne ha]`. Conclude with `zero_mem _`. Establish `h2` using `hg _ h1`. Rewrite `h2` using `[Matrix.mulVec_mulVec, ← hPk, ← Matrix.mulVec_mulVec, key']`. Establish `h3` using `h2 i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h3` using `[Matrix.mulVec_single, Pi.smul_apply, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Then use the resulting hypothesis. Establish `hd : G.det ∈ hat1 F ((1 : FractionalIdeal (𝓞 E)⁰ E) : Set E)`. Use `det_mem_adelicCompletionOfElementSet F cI (fun j => (cI j)⁻¹) k hk` as an intermediate fact. Rewrite `this` using `[← Finset.prod_mul_distrib, Finset.prod_eq_one fun i _ => mul_inv_cancel₀ (hc i), hkdet]`. Then use the resulting hypothesis. Establish `hd'` using `galoisAut_mem_adelicCompletionOfElementSet F c (algEquiv_mem_one F c) hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw : ∀ a, (Q *ᵥ z) a ∈ hat1 F (cI a : Set E)`. Rewrite using `[← key', Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`. Conclude with `hz`. Establish `hu : P *ᵥ (sg (FiniteAdeleRing (𝓞 F) F) c G.det • k.cramer (Q *ᵥ z)) ∈ hat F (L : Set (Fin n → E))`. Rewrite using `[key']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Use `(adelicCompletion_fractionalIdeal_properties F E).1 1 (cI a) _ hd' _ (cramer_mem_adelicCompletionOfElementSet F cI hc k hk _ hw a)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Establish `hz' : G *ᵥ (P *ᵥ (sg (FiniteAdeleRing (𝓞 F) F) c G.det • k.cramer (Q *ᵥ z))) = z`. Rewrite using `[Matrix.mulVec_mulVec, ← hPk, ← Matrix.mulVec_mulVec, Matrix.mulVec_smul, Matrix.mulVec_cramer, smul_smul, hkdet, mul_comm, hdet, one_smul, Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`.
-
-Rewrite using `[← hz', Matrix.mulVec_mulVec, hG, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem inv_mulVec_mem_hat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)) (g : GL (Fin n) (RA F E)) (c : E ≃ₐ[F] E), L.FG → Submodule.span E (L : Set (Fin n → E)) = ⊤ → (∀ z ∈ (hat F (L : Set (Fin n → E))), (g : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ z ∈ (hat F (L : Set (Fin n → E)))) → (g : Matrix (Fin n) (Fin n) (RA F E)).det * sg (FiniteAdeleRing (𝓞 F) F) c (g : Matrix (Fin n) (Fin n) (RA F E)).det = 1 → ∀ z ∈ (hat F (L : Set (Fin n → E))), ((g⁻¹ : GL (Fin n) (RA F E)) : Matrix (Fin n) (Fin n) (RA F E)) *ᵥ z ∈ (hat F (L : Set (Fin n → E))) := by
   intro F E _ _ _ _ _ n L g c hfg hsp hg hdet z hz

@@ -18,9 +18,9 @@ namespace GlobalTheory.SiegelAvgInv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Prod.fst_add, Prod.snd_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul, add_assoc x w.1 w'.1]`. Use `congr 2`. Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self 2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e1 : w.1 ⬝ᵥ w'.2 = w'.1 ⬝ᵥ w.2` using `sub_eq_zero.mp h`. Simplify using `only [add_dotProduct, dotProduct_add]`. Take the linear combination `⅟(2 : R) * e1 - (w.1 ⬝ᵥ w'.2) * h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem schr_schr_of_orth {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (h : w.1 ⬝ᵥ w'.2 - w'.1 ⬝ᵥ w.2 = 0) (φ : (κ → R) → ℂ) :
@@ -35,14 +35,14 @@ theorem schr_schr_of_orth {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : Add
   linear_combination ⅟(2 : R) * e1 - (w.1 ⬝ᵥ w'.2) * h2
 
 /- English proof (translation)
-Simplify using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_diagCols_transpose {m n : ℕ} (A : Matrix (Fin m) (Fin n) (AE F E)) :
     A * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ = Matrix.fromCols A A := by
   simp [diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols]
 
 /- English proof (translation)
-Simplify using `only [symp, hTens, dbl, Fintype.sum_sum_type, Matrix.fromCols_apply_inl, Matrix.fromCols_apply_inr, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mul_zero, zero_mul, Finset.sum_cons …`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem symp_diag (σ : E →ₐ[F] E) {m n : ℕ} (JA : Matrix (Fin m) (Fin m) (AE F E)) (JB : Matrix (Fin n) (Fin n) (AE F E))
     (A A' : Matrix (Fin m) (Fin n) (AE F E)) :
@@ -54,7 +54,7 @@ theorem symp_diag (σ : E →ₐ[F] E) {m n : ℕ} (JA : Matrix (Fin m) (Fin m) 
   simp
 
 /- English proof (translation)
-Rewrite using `[mul_diagCols_transpose]`. Apply the tactic sequence `ext i (j | j) <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMulVec_elim {m n : ℕ} (u : Fin m → AE F E) (v : Fin n → AE F E) :
     Matrix.vecMulVec u (Sum.elim v v) =
@@ -63,7 +63,7 @@ theorem vecMulVec_elim {m n : ℕ} (u : Fin m → AE F E) (v : Fin n → AE F E)
   ext i (j | j) <;> rfl
 
 /- English proof (translation)
-Simplify using `only [Darboux.rho]`. Rewrite using `[schr_schr_of_orth ψ _ _ ?_ φ, ← map_add, ← Matrix.add_mul]`. Rewrite using `[← dd.form, mul_diagCols_transpose, mul_diagCols_transpose, symp_diag]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_diag_add (σ : E →ₐ[F] E) {m n : ℕ} {JA : Matrix (Fin m) (Fin m) (AE F E)}
     {JB : Matrix (Fin n) (Fin n) (AE F E)} {κ : Type} [Fintype κ]
@@ -77,23 +77,21 @@ theorem rho_diag_add (σ : E →ₐ[F] E) {m n : ℕ} {JA : Matrix (Fin m) (Fin 
   rw [← dd.form, mul_diagCols_transpose, mul_diagCols_transpose, symp_diag]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hedS hedH hedI hedA hedNe l₁ hl₁ hl₁I μ hμ z Φ hΦ`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hρ : ∀ u, ∀ Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d)), dd.rho B.ψ u Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))` using `fun u Ψ hΨ => GlobalTheory.HeisSchA.schr_mem_schA B.ψ hstd _ Ψ hΨ`. Establish `hconv` using `fun Ψ (hΨ : Ψ ∈ schA F ((Fin n × Fin d) ⊕ (Fin n × Fin d))) => GlobalTheory.T.pair_restricts_adapted_plane hPr F E σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hA hP₁ d' hd' d₁' hd₁' dd hdd dd₁ hdd₁ ed hedS hedH hedI hedA hedNe l₁ hl₁ hl₁I μ hμ Ψ hΨ`. Take `⟨Sc, Uc, Tc, hdec⟩` from `GlobalTheory.ArchUniq.Coord.decomp (n := n) hP.skew hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `a : Fin n → AE F E` to `fun j => ((incM F Sc)ᵀ * z) () j`. Set `z₁ : Matrix (Fin d₁) (Fin n) (AE F E)` to `(incM F Uc)ᵀ * z`. Set `b : Fin n → AE F E` to `fun j => ((incM F Tc)ᵀ * z) () j`. Establish `hz : z = Matrix.vecMulVec (incV F H'.x) a + incM F H'.ι * z₁ + Matrix.vecMulVec (incV F H'.y) b`. Establish `h` using `congrArg Matrix.transpose (hdec zᵀ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.transpose_transpose]`. Use `conv_lhs => rw [h]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_mul, Matrix.transpose_transpose]`. Use `congr 1`. Use `congr 1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `simp only [z₁, Matrix.mul_assoc]`. Consider the case `(ext i j; simp [Matrix.mul_apply, Matrix.vecMulVec_apply, a, b, incM, incV, Matrix.replicateCol])`. Set `Δt : Matrix (Fin n) (Fin n ⊕ Fin n) (AE F E)` to `Matrix.transpose (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd : ∀ (A A' : Matrix (Fin d) (Fin n) (AE F E)) (φ : ((Fin n × Fin d) ⊕ (Fin n × Fin d) → AF F) → ℂ), dd.rho B.ψ (A * Δt) (dd.rho B.ψ (A' * Δt) φ) = dd.rho B.ψ ((A + A') * Δt) φ` using `fun A A' φ => GlobalTheory.SiegelAvgInv.rho_diag_add σ dd B.ψ A A' φ`. Establish `helim : ∀ (u : Fin d → AE F E) (v : Fin n → AE F E), Matrix.vecMulVec u (Sum.elim v v) = Matrix.vecMulVec u v * Δt` using `fun u v => GlobalTheory.SiegelAvgInv.vecMulVec_elim u v`. Establish `key : ∀ y : Fin n → AE F E, (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y (dd.rho B.ψ (z * (diagCols (Fin n))ᵀ) Φ)) = (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) (b + y) Φ)`. Introduce `y`. Establish `s2 : Matrix.vecMulVec (incV F H'.y) y + z = incM F H'.ι * z₁ + (Matrix.vecMulVec (incV F H'.x) a + Matrix.vecMulVec (incV F H'.y) (b + y))` using `by conv_lhs => rw [hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `s1 : dd.rho B.ψ (Matrix.vecMulVec (incV F H'.y) (Sum.elim y y)) (dd.rho B.ψ (z * Δt) Φ) = dd.rho B.ψ (incM F H'.ι * (z₁ * Δt)) (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.x) a * Δt) (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.y) (b + y) * Δt) Φ))`. Rewrite using `[helim, hadd, s2, ← Matrix.mul_assoc (incM F H'.ι) z₁ Δt, hadd, hadd]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [add_assoc]`. Establish `h3` using `hρ (Matrix.vecMulVec (incV F H'.y) (b + y) * Δt) Φ hΦ`. Establish `h2` using `hρ (Matrix.vecMulVec (incV F H'.x) a * Δt) _ h3`. Establish `s4 : ed (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.x) a * Δt) (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.y) (b + y) * Δt) Φ)) = ed (dd.rho B.ψ (Matrix.vecMulVec (incV F H'.y) (b + y) * Δt) Φ)`. Rewrite using `[← helim]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hedI _ _ h3`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.SiegelAvg.avgForm_apply _ _ _ (hconv _ (hρ _ Φ hΦ)), GlobalTheory.SiegelAvg.avgForm_apply _ _ _ (hconv Φ hΦ)]`. Use `letI : MeasurableSpace (Fin n → AE F E) := borel _`. Use `haveI : BorelSpace (Fin n → AE F E) := ⟨rfl⟩`.
-
-Use `haveI : μ.IsAddHaarMeasure := hμ`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Simplify using `only [key]`. Conclude with `integral_add_left_eq_self (fun y => (l₁ ∘ₗ ed) (GlobalTheory.SiegelAvg.starFam dd B.ψ (incV F H'.y) y Φ)) b`.
+Equip the data with the indicated structure. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avgForm_rho_diag_eq : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

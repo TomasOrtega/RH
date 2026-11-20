@@ -5,23 +5,23 @@ namespace CrystallineSemistableComparison.Onto
 open scoped BigOperators
 
 /- English proof (translation)
-Establish `hs : LinearIndepOn k0 id (Set.range u)` using `(linearIndepOn_id_range_iff hu.injective).2 hu`. Set `B` to `Module.Basis.extend hs`. Establish `: Finite (hs.extend (Set.subset_univ _))` using `Module.Finite.finite_basis B`. Take `⟨k, ⟨eqv⟩⟩` from `Finite.exists_equiv_fin (hs.extend (Set.subset_univ _))`. Set `b : Module.Basis (Fin k) k0 V` to `B.reindex eqv`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e : Fin m → Fin k` to `fun s => eqv ⟨u s, hs.subset_extend _ ⟨s, rfl⟩⟩`. Establish `hbe : ∀ s, b (e s) = u s`. Introduce `s`. Simplify using `[b, e, B, Module.Basis.reindex_apply, Module.Basis.extend_apply_self]`. Establish `he : Function.Injective e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `s s' h`. Apply `hu.injective` to reduce the goal to its premises. Rewrite using `[← hbe s, ← hbe s', h]`. Set `vec : J → Fin k → L` to `fun j i => F j (b i)`. Establish `hW : Submodule.span L (Set.range vec) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf0, hle⟩` from `(Submodule.span L (Set.range vec)).exists_le_ker_of_lt_top (lt_top_iff_ne_top.2 hne)`. Set `z : Fin k → L` to `fun i => f (fun j => if i = j then 1 else 0)`. Establish `hz : z = 0`. Apply `hInj b z` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Establish `h1 : f (vec j) = 0` using `hle (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite `h1` using `[LinearMap.pi_apply_eq_sum_univ f (vec j)]`. Rewrite using `[← h1]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[z, vec, smul_eq_mul, mul_comm]`. Apply `hf0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ f x]`. Establish `: ∀ i, f (fun j => if i = j then (1 : L) else 0) = 0` using `fun i => congrFun hz i`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`. Establish `hT : Function.extend e t 0 ∈ Submodule.span L (Set.range vec)`. Rewrite using `[hW]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hT`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c.support, c, fun s => ?_⟩` and prove the remaining obligations. Establish `h2` using `congrFun hc (e s)`. Rewrite `h2` using `[he.extend_apply]`. Rewrite using `[← h2, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[vec, hbe s]`.
+A detailed English derivation is pending.
 -/
 theorem onto_la {k0 L V J : Type*} [Field k0] [Field L] [AddCommGroup V] [Module k0 V]
     [FiniteDimensional k0 V] (F : J → V → L)

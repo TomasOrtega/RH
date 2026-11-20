@@ -24,7 +24,7 @@ def ratOf (γ : GF D n) : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E :=
   Classical.choose (GlobalTheory.StdUnn.LeftInvSect.rat_mat γ.2)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (GlobalTheory.StdUnn.LeftInvSect.rat_mat γ.2)`.
+A detailed English derivation is pending.
 -/
 theorem mat_ratOf (γ : GF D n) : mat (γ : G D n) = (ratOf γ).map (incA D) :=
   Classical.choose_spec (GlobalTheory.StdUnn.LeftInvSect.rat_mat γ.2)

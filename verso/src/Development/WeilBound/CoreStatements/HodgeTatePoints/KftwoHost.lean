@@ -29,26 +29,26 @@ Both sides reduce to the same expression.
 theorem coe_J : algebraMap (𝓞 F) F B.J = B.i := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (by simpa only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_sub, map_natCast, coe_W] using B.w_sq)`.
+A detailed English derivation is pending.
 -/
 theorem W_sq : B.W * B.W = B.W - m := RingOfIntegers.ext (by
   simpa only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_sub, map_natCast, coe_W] using B.w_sq)
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (by simpa only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_neg, map_one, coe_J] using B.i_sq)`.
+A detailed English derivation is pending.
 -/
 theorem J_sq : B.J * B.J = -1 := RingOfIntegers.ext (by
   simpa only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_neg, map_one, coe_J] using B.i_sq)
 
 /- English proof (translation)
-Simplify using `only [mk4, map_add, map_mul, map_intCast, coe_W, coe_J]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_mk_quad (v : ℤ × ℤ × ℤ × ℤ) : algebraMap (𝓞 F) F (B.mk4 v) =
     v.1 + v.2.1 * B.w + v.2.2.1 * B.i + v.2.2.2 * (B.w * B.i) := by
   simp only [mk4, map_add, map_mul, map_intCast, coe_W, coe_J]
 
 /- English proof (translation)
-Introduce `v v' h` and use `by have h' := congrArg (algebraMap (𝓞 F) F) h rw [coe_mk_quad, coe_mk_quad] at h' obtain ⟨h1, h2, h3, h4⟩ := B.indep (v.1 - v'.1) (v.2.1 - v'.2.1) (v.2.2.1 - v'.2.2.1) (v.2.2.2 - v'.2.2.2) (by push_cast; linear_combination h') refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_)) · e …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mk_quad_injective : Function.Injective B.mk4 := fun v v' h => by
   have h' := congrArg (algebraMap (𝓞 F) F) h
@@ -62,14 +62,14 @@ theorem mk_quad_injective : Function.Injective B.mk4 := fun v v' h => by
   · exact_mod_cast sub_eq_zero.1 h4
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨a, b, c, e, h⟩ := B.coords hd hp x.isIntegral_coe exact ⟨(a, b, c, e), RingOfIntegers.ext (by rw [RingOfIntegers.coe_eq_algebraMap, coe_mk_quad]; exact h.symm)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mk_quad_surjective {d : ℕ} (hd : d + 1 = 4 * m) (hp : d.Prime) : Function.Surjective B.mk4 := fun x => by
   obtain ⟨a, b, c, e, h⟩ := B.coords hd hp x.isIntegral_coe
   exact ⟨(a, b, c, e), RingOfIntegers.ext (by rw [RingOfIntegers.coe_eq_algebraMap, coe_mk_quad]; exact h.symm)⟩
 
 /- English proof (translation)
-Take `⟨a, b, c, e, rfl⟩` from `B.span x`. Simplify using `only [map_add, map_mul, map_ratCast, B.σw, B.σi, map_neg, neg_neg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem σ_σ (x : F) : B.σ (B.σ x) = x := by
   obtain ⟨a, b, c, e, rfl⟩ := B.span x
@@ -79,19 +79,19 @@ def σO : 𝓞 F ≃+* 𝓞 F :=
   RingOfIntegers.mapRingEquiv (RingEquiv.ofRingHom B.σ B.σ (RingHom.ext B.σ_σ) (RingHom.ext B.σ_σ))
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext B.σw`.
+A detailed English derivation is pending.
 -/
 theorem sigma_W : B.σO B.W = B.W := RingOfIntegers.ext B.σw
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext B.σi`.
+A detailed English derivation is pending.
 -/
 theorem σO_J : B.σO B.J = -B.J := RingOfIntegers.ext B.σi
 
 variable [IsCMField F]
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, B.conj_eq hm]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem complexConj_eq (hm : 0 < m) (x : F) : IsCMField.complexConj F x = B.σ (B.τ x) := by
   obtain ⟨φ⟩ : Nonempty (F →+* ℂ) := inferInstance
@@ -100,21 +100,21 @@ theorem complexConj_eq (hm : 0 < m) (x : F) : IsCMField.complexConj F x = B.σ (
 
 include B in
 /- English proof (translation)
-Establish `hm : 0 < m` using `by omega`. Set `R` to `𝓞 (maximalRealSubfield F)`. Set `δ` to `KaehlerDifferential.D R (𝓞 F)`. Establish `h1 : (2 * B.J) • δ B.J = 0`. Use `congrArg δ B.J_sq` as an intermediate fact.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Derivation.leibniz, map_neg, Derivation.map_one_eq_zero, neg_zero]`. Rewrite using `[two_mul, add_smul, this]`. Establish `h2 : (2 * B.W - 1) • δ B.W = 0`. Use `congrArg δ B.W_sq` as an intermediate fact. Rewrite `this` using `[Derivation.leibniz, map_sub, Derivation.map_natCast, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[two_mul, sub_smul, add_smul, this, one_smul, sub_self]`. Establish `h3 : δ (B.J * (B.W + B.W - 1)) = 0`. Take `⟨r, hr⟩` from `(IsCMField.ringOfIntegersComplexConj_eq_self_iff F (B.J * (B.W + B.W - 1))).1 (RingOfIntegers.ext (by`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, B.complexConj_eq hm]`. Simplify using `only [RingOfIntegers.coe_eq_algebraMap, map_mul, map_sub, map_add, map_one, coe_W, coe_J, B.τi, B.τw, B.σi, B.σw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `ring))`. Rewrite using `[← hr, Derivation.map_algebraMap]`. Rewrite `h3` using `[Derivation.leibniz, map_sub, map_add, Derivation.map_one_eq_zero, sub_zero]`. Establish `hJ : δ B.J = 0`. Establish `e : (1 : 𝓞 F) = -(2 * m * B.J) * (2 * B.J) + (2 * B.W - 1) * (B.W + B.W - 1)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(4 * m : 𝓞 F) * B.J_sq - 4 * B.W_sq`. Establish `e2 : (2 * B.W - 1) • ((B.W + B.W - 1) • δ B.J) = 0`. Rewrite using `[eq_neg_of_add_eq_zero_right h3, smul_neg, smul_comm, smul_add, h2, add_zero, smul_zero, neg_zero]`. Rewrite using `[← one_smul (𝓞 F) (δ B.J), e, add_smul, mul_smul, mul_smul (2 * B.W - 1), h1, e2, smul_zero, add_zero]`. Establish `hW : δ B.W = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hJ, smul_zero, add_zero, ← two_smul (𝓞 F), smul_smul]`. Establish `e : (1 : 𝓞 F) = -(2 * m * B.J) * (B.J * 2) + (2 * B.W - 1) * (2 * B.W - 1)`. Take the linear combination `(4 * m : 𝓞 F) * B.J_sq - 4 * B.W_sq`. Rewrite using `[← one_smul (𝓞 F) (δ B.W), e, add_smul, mul_smul, mul_smul (2 * B.W - 1), h3, h2, smul_zero, smul_zero, add_zero]`. Establish `hall : ∀ x, δ x = 0` using `fun x => by`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `B.mk_quad_surjective hd hp x`. Simplify using `only [mk4, map_add, Derivation.leibniz, hW, hJ, Derivation.map_intCast, smul_zero, add_zero]`. Establish `hs : Subsingleton (Ω[𝓞 F⁄R])`. Rewrite using `[← Submodule.subsingleton_iff (𝓞 F), ← subsingleton_iff_bot_eq_top, eq_comm, ← KaehlerDifferential.span_range_derivation, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hall x`. Establish `: Algebra.FormallyUnramified R (𝓞 F)` using `⟨hs⟩`. Establish `: Algebra.FiniteType R (𝓞 F)` using `Algebra.FiniteType.of_restrictScalars_finiteType ℤ R (𝓞 F)`. Conclude with `{}`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unramified {d : ℕ} (hd : d + 1 = 4 * m) (hp : d.Prime) :
     Algebra.Unramified (𝓞 (maximalRealSubfield F)) (𝓞 F) := by
@@ -171,39 +171,33 @@ def mat (w : 𝓞 E) (v : ℤ × ℤ × ℤ × ℤ) : Matrix (Fin 2) (Fin 2) (�
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨m, hd⟩ : ∃ m, H.d + 1 = 4 * m` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hm : 0 < m` using `by omega`. Take `⟨F, _, _, ⟨B⟩⟩` from `exists_biq m (by rw [show 4 * m - 1 = H.d by omega]; exact H.d_prime)`. Use `B.numberField` as an intermediate fact. Use `B.isCMField hm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdO : (H.d : 𝓞 F) + 1 = 4 * m` using `by exact_mod_cast hd`. Set `H' : Host F` to `{ d := H.d, d_mod := H.d_mod, d_prime := H.d_prime, rt := 2 * B.W - 1 rt_sq := by linear_combination 4 * B.W_sq + hdO w0 := B.W, two_weight_eq_one_add_root := by ring bar := (IsCMField.ringOfIntegersComplexConj F).toRingEquiv bar_eq := fun _ => rfl unram := B.unramified hd H.d_pr …`. Establish `hbW : H'.bar B.W = 1 - B.W` using `GlobalTheory.HostModel.cmHost_bar_halfIntegerGenerator H'`. Establish `hbJ : H'.bar B.J = -B.J` using `RingOfIntegers.ext (by`. Rewrite using `[H'.bar_eq, B.complexConj_eq hm]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show B.σ (B.τ B.i) = -B.i`. Rewrite using `[B.τi, B.σi])`. Establish `hw : H.w0 * H.w0 = H.w0 - m`. Establish `hdE : (H.d : 𝓞 E) + 1 = 4 * m` using `by exact_mod_cast hd`. Establish `h1` using `H.rt_sq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[GlobalTheory.HostModel.rt_eq]`. Establish `: (4 : 𝓞 E) * (H.w0 * H.w0 - (H.w0 - m)) = 0` using `by linear_combination h1 - hdE`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 this).resolve_left (by norm_num))`. Set `e` to `Equiv.ofBijective B.mk4 ⟨B.mk_quad_injective, B.mk_quad_surjective hd H.d_prime⟩`. Establish `he : ∀ (x : 𝓞 F) v, x = B.mk4 v → mat H.w0 (e.symm x) = mat H.w0 v`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ v rfl`. Rewrite using `[show e.symm (B.mk4 v) = v from e.symm_apply_apply v]`. Set `ψ : 𝓞 F →+* Matrix (Fin 2) (Fin 2) (𝓞 E)` to `{ toFun := fun x => mat H.w0 (e.symm x) map_one' := by`. Rewrite using `[he 1 (1, 0, 0, 0) (by simp [Biq.mk4])]`. Apply the tactic sequence `ext1 i j; fin_cases i <;> fin_cases j <;> simp [mat]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `map_zero' := by`. Rewrite using `[he 0 (0, 0, 0, 0) (by simp [Biq.mk4])]`. Apply the tactic sequence `ext1 i j; fin_cases i <;> fin_cases j <;> simp [mat]`. Use the proof step `map_add' := fun x y => by`. Take `⟨⟨a, b, c, f⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a', b', c', f'⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime y`. Rewrite using `[he _ _ rfl, he _ _ rfl, he _ (a + a', b + b', c + c', f + f') (by simp only [Biq.mk4]; push_cast; ring)]`. Apply the tactic sequence `ext1 i j; fin_cases i <;> fin_cases j <;> simp [mat] <;> ring`. Use the proof step `map_mul' := fun x y => by`. Take `⟨⟨a, b, c, f⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take `⟨⟨a', b', c', f'⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime y`. Rewrite using `[he _ _ rfl, he _ _ rfl, he _ (a * a' - m * b * b' - c * c' + m * f * f', a * b' + b * a' + b * b' - c * f' - f * c' - f * f', a * c' + c * a' - m * b * f' - m * f * b', a * f' + b * c' + b * f' + c * b' + f * a' + f * b') (by`. Simplify using `only [Biq.mk4]`. Use `push_cast`. Take the linear combination `((b * b' + (b * f' + f * b') * B.J - f * f' : 𝓞 F)) * B.W_sq + ((c + f * B.W) * (c' + f' * B.W) : 𝓞 F) * B.J_sq)]`.
+Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `ext1 i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat, Matrix.mul_apply, Fin.sum_univ_two]`. Take the linear combination `(f * f' - b * b' : 𝓞 E) * hw`. Take the linear combination `(b * f' + f * b' : 𝓞 E) * hw`. Take the linear combination `(-(b * f' + f * b') : 𝓞 E) * hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(f * f' - b * b' : 𝓞 E) * hw }`. Establish `hψ : ∀ (x : 𝓞 F) v, x = B.mk4 v → ψ x = mat H.w0 v` using `he`. Use `clear_value ψ`. Use `⟨F, inferInstance, inferInstance, inferInstance, H', ⟨⟨ψ, B.σO, fun x i j => ?_, ?_, fun x => ?_, ?_, fun k _ _ τ τ' h => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨⟨a, b, c, f⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ _ _ rfl, hψ _ (a + b, -b, -c - f, f) (by`. Simplify using `only [Biq.mk4, map_add, map_mul, map_intCast, hbW, hbJ]`. Use `push_cast`. Use the proof step `ring)]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat] <;> ring`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [hψ _ (0, 1, 0, 0) (by simp [Biq.mk4, H'])] ext1 i j; fin_cases i <;> fin_cases j <;> simp [mat]`. Take `⟨⟨a, b, c, f⟩, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`. Rewrite using `[hψ _ _ rfl, hψ _ (a, b, -c, -f) (by`. Simplify using `only [Biq.mk4, map_add, map_mul, map_intCast, B.sigma_W, B.σO_J]`. Use `push_cast`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring)]`. Use `ext1 i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [mat, Matrix.mul_diagonal, Matrix.diagonal_mul] <;> ring`. Use `show B.σO (2 * B.W - 1) = 2 * B.W - 1`. Rewrite using `[map_sub, map_mul, map_ofNat, map_one, B.sigma_W]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hW : τ' B.W = τ B.W`. Express the relevant statement in the definitionally equal form `τ (2 * B.W - 1) = τ' (2 * B.W - 1) at h`. Simplify using `only [map_sub, map_mul, map_ofNat, map_one] at h`. Take the linear combination `(-1 / 2 : k) * h`. Establish `h1` using `congrArg τ B.J_sq`.
-
-Establish `h2` using `congrArg τ' B.J_sq`. Simplify using `only [map_mul, map_neg, map_one] at h1 h2`. Establish `: (τ' B.J - τ B.J) * (τ' B.J + τ B.J) = 0` using `by linear_combination h2 - h1`. Break down `mul_eq_zero.1 this with h3 | h3` into its components or cases. Use `Or.inl (RingHom.ext fun x => ?_)` and prove the remaining obligations.
-
-Take `⟨v, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`. Simplify using `only [Biq.mk4, map_add, map_mul, map_intCast, hW, sub_eq_zero.1 h3]`. Use `Or.inr (RingHom.ext fun x => ?_)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `B.mk_quad_surjective hd H.d_prime x`. Use `show _ = τ (B.σO _)`.
-
-Simplify using `only [Biq.mk4, map_add, map_mul, map_intCast, hW, eq_neg_of_add_eq_zero_left h3, B.sigma_W, B.σO_J, map_neg]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pairHost {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) :
     ∃ (E' : Type) (_ : Field E') (_ : NumberField E') (_ : IsCMField E') (H' : Host E'), Nonempty (PairHost H H') := by

@@ -24,14 +24,14 @@ def Tower.SSBB (X : Tower Ω ε) (N l w : ℕ) [Fact l.Prime] (E : Type) [Field 
     (X.opV N l E T - lam T • (1 : Module.End E (E ⊗[ℤ_[l]] X.Fn l))) (FreeAlgebra.lift E (X.opV N l E) P x) = 0
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨T, hT, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem iota_mem_admissibleSubalgebra (R : Type) [CommRing R] {N l : ℕ} {T : Letter} (hT : admitted N l T) :
     FreeAlgebra.ι R T ∈ admissibleLettersSubalgebra R N l :=
   Algebra.subset_adjoin ⟨T, hT, rfl⟩
 
 /- English proof (translation)
-Use `SSAdm.lift_sub_smul_mem (A := {T | admitted N l T}) (W := ⊥) (f := f) (lam := lam) (x := x) (fun T _ z hz => by rw [(Submodule.mem_bot R).1 hz, map_zero]; exact Submodule.zero_mem _) (fun T hT => (Submodule.mem_bot R).2 (sub_eq_zero.2 (hx T hT))) hP` as an intermediate fact. Conclude with `sub_eq_zero.1 ((Submodule.mem_bot R).1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_apply_of_mem_admissibleSubalgebra {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {N l : ℕ}
     {f : Letter → Module.End R M} {lam : Letter → R} {x : M} (hx : ∀ T, admitted N l T → f T x = lam T • x)
@@ -43,23 +43,23 @@ theorem lift_apply_of_mem_admissibleSubalgebra {R M : Type} [CommRing R] [AddCom
   exact sub_eq_zero.1 ((Submodule.mem_bot R).1 this)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem SSPotB_iff_SSPotA {N l w : ℕ} {lam : Letter → ℂ} : SSPotB N l w lam ↔ SSPotA N l w lam := Iff.rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem Tower.SSBB_iff_SSBA (X : Tower Ω ε) {N l w : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℤ_[l] E]
     {lam : Letter → E} : X.SSBB N l w E lam ↔ X.SSBA N l w E lam := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `iota_mem_admissibleSubalgebra ℂ trivial`.
+A detailed English derivation is pending.
 -/
 example (N l : ℕ) : FreeAlgebra.ι ℂ Letter.U ∈ admissibleLettersSubalgebra ℂ N l := iota_mem_admissibleSubalgebra ℂ trivial
 
 /- English proof (translation)
-Introduce `h`. Use `SSAdm.lift_congr (A := {T | admitted N l T}) (B := ℂ) (f := fun _ => 0) (g := fun T => if admitted N l T then 0 else 1) (fun T hT => (if_pos hT).symm) h` as an intermediate fact. Establish `hn : ¬ admitted N l (Letter.T 1)` using `fun h => Nat.not_prime_one h.1`. Simplify using `[hn] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (N l : ℕ) : FreeAlgebra.ι ℂ (Letter.T 1) ∉ admissibleLettersSubalgebra ℂ N l := by
   classical

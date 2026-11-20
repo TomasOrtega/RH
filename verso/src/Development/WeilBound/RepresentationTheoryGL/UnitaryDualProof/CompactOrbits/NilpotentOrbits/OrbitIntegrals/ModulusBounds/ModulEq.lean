@@ -11,17 +11,17 @@ open PositivityTheory.RgUd.T PositivityTheory.RgUd.T.Nil PositivityTheory.RgUd.T
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Use `set ϖ : k := ((GroundTheory.Automorphic.GLnLocal.uniformizer k : 𝒪[k]) : k) with hϖ`. Establish `hv0 : valuation k ϖ ≠ 0` using `valuation_uniformizer_ne_zero k`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hv0 (by rw [h, map_zero])`. Establish `hpm : ϖ ^ m ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hum : u ∈ congruenceSubgroup k n m` using `congruenceSubgroup_antitone k n (by omega) hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hu`, the goal using `[mem_congruenceSubgroup_iff]`. Use `⟨hlev u hum, ?_⟩` and prove the remaining obligations. Use `set x : Matrix (Fin n) (Fin n) k := (ϖ ^ m)⁻¹ • ((u : Matrix (Fin n) (Fin n) k) - 1) with hx`. Establish `hxe : ∀ i j, valuation k (x i j) ≤ valuation k ϖ ^ m`. Introduce `i j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hu.2 i j`. Simplify using `only [hx, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_inv₀, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨w, hw, hwx⟩` from `exists_unit m hm x hxe`. Establish `hwi` using `ent_integral (hlev w hw)`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : (u : Matrix (Fin n) (Fin n) k) = 1 + ϖ ^ m • x`. Rewrite using `[hx, smul_smul, mul_inv_cancel₀ hpm, one_smul]`. Normalize the expressions using the abelian group laws. Establish `key : ((g⁻¹ * u * g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) - 1 = ϖ ^ m • (((g⁻¹ * w * g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) - 1)`. Simplify using `only [Units.val_mul, hu', hwx, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.mul_smul, Matrix.smul_mul, Units.inv_mul, smul_sub, smul_add]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Introduce `i j`. Rewrite using `[← Matrix.sub_apply, key, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul, map_mul, map_pow]`. Establish `h2 : valuation k ((((g⁻¹ * w * g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) i j - (1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Use `le_trans (Valuation.map_sub _ _ _) (max_le (hwi i j) ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem conj_level_lemma (g : GL (Fin n) k) (m : ℕ) (hm : 1 ≤ m)
     (hlev : ∀ u ∈ congruenceSubgroup k n m, g⁻¹ * u * g ∈ integralGL k n)
@@ -64,19 +64,17 @@ private theorem conj_level_lemma (g : GL (Fin n) k) (m : ℕ) (hm : 1 ≤ m)
     _ = valuation k ϖ ^ m := mul_one _
 
 /- English proof (translation)
-Use `set ϖ : k := ((GroundTheory.Automorphic.GLnLocal.uniformizer k : 𝒪[k]) : k) with hϖ`. Establish `hv0 : valuation k ϖ ≠ 0` using `valuation_uniformizer_ne_zero k`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hv0 (by rw [h, map_zero])`. Establish `hpm : ϖ ^ m ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hv1 : valuation k ϖ ^ m ≤ 1` using `pow_le_one' (valuation_uniformizer_lt_one k).le m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2m : valuation k ϖ ^ (2 * m) = valuation k ϖ ^ m * valuation k ϖ ^ m`. Rewrite using `[two_mul, pow_add]`. Establish `hle : lat V (valuation k ϖ ^ (2 * m)) ≤ lat V (valuation k ϖ ^ m)`. Introduce `y hy`. Rewrite `hy`, the goal using `[mem_lat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hy.1, fun i j => le_trans (hy.2 i j) ?_⟩` and prove the remaining obligations. Rewrite using `[h2m]`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `hratio V (valuation k ϖ ^ m) (pow_ne_zero _ hv0) (LinearEquiv.smulOfNeZero k V (ϖ ^ m) hpm) (lat V (valuation k ϖ ^ m)) (lat V (valuation k ϖ ^ (2 * m))) (fun y => mem_lat) (fun y => ?_)`. Rewrite `h` using `[inf_eq_right.mpr hle]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `h.1`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Rewrite `hy` using `[mem_lat]`. Use `⟨⟨(ϖ ^ m)⁻¹ • y, V.smul_mem _ hy.1⟩, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_lat]`. Use `⟨V.smul_mem _ hy.1, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, map_inv₀, map_pow]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[LinearEquiv.smulOfNeZero_apply, smul_smul, mul_inv_cancel₀ hpm]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Rewrite `hx`, the goal using `[mem_lat]`. Use `⟨?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.smulOfNeZero_apply]`. Conclude with `(ϖ ^ m • x).2`.
-
-Simplify using `only [LinearEquiv.smulOfNeZero_apply, Submodule.coe_smul, Matrix.smul_apply, smul_eq_mul, map_mul, map_pow]`. Rewrite using `[h2m]`. Conclude with `mul_le_mul_right (hx.2 i j) _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lat_fin_lemma_2 (hratio : RatioP k n) (V : Submodule k (Matrix (Fin n) (Fin n) k)) (m : ℕ) :
     (lat V (valuation k ((GroundTheory.Automorphic.GLnLocal.uniformizer k : 𝒪[k]) : k) ^ (2 * m))).relIndex
@@ -122,9 +120,9 @@ private theorem lat_fin_lemma_2 (hratio : RatioP k n) (V : Submodule k (Matrix (
         exact mul_le_mul_right (hx.2 i j) _
 
 /- English proof (translation)
-Use `cS_inv Z x v g⁻¹ (Gz_inv Z hg) t⁻¹ (inv_ne_zero ht) ?_ ?_` and prove the remaining obligations. Rewrite using `[inv_inv]`. Establish `e : g⁻¹.val * (t • x) * g.val = x`. Rewrite using `[← hgx]`. Simplify using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← e, smul_smul, inv_mul_cancel₀ ht, one_smul, e]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hgv]`. Use `_ = v := by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cS_inv_lemma_3 (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x : Matrix (Fin n) (Fin n) k)
     (v : Fin n → k) (g : GL (Fin n) k) (hg : g ∈ Gz Z) (t : k) (ht : t ≠ 0)
@@ -143,77 +141,69 @@ private theorem cS_inv_lemma_3 (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (x 
       _ = v := by rw [Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hv0 : valuation k ((GroundTheory.Automorphic.GLnLocal.uniformizer k : 𝒪[k]) : k) ≠ 0` using `valuation_uniformizer_ne_zero k`. Use `set γ := valuation k ((GroundTheory.Automorphic.GLnLocal.uniformizer k : 𝒪[k]) : k) with hγ`. Establish `hW : ∀ a ∈ cS Z (p.1 - c) p.2, adL g a ∈ cS Z (p.1 - c) p.2` using `cS_inv Z (p.1 - c) p.2 g hg t ht hgx hgv`. Establish `hWi : ∀ a ∈ cS Z (p.1 - c) p.2, adL g⁻¹ a ∈ cS Z (p.1 - c) p.2` using `cS_inv_lemma_3 Z (p.1 - c) p.2 g hg t ht hgx hgv`. Use `set W := cS Z (p.1 - c) p.2 with hWdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC` using `cC_inv Z g hg`. Use `set C := Subalgebra.toSubmodule (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))) with hCdef`. Take `⟨m, hm1, hlev⟩` from `exists_level g`. Establish `hginv : g⁻¹ ∈ GzS Z` using `Gz_inv Z hg`. Establish `hgG : g ∈ GzS Z` using `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKm : ∀ u : GL (Fin n) k, u ∈ congruenceSubgroup k n m ⊓ GzS Z ↔ u.val - 1 ∈ lat C (γ ^ m)` using `memK Z m hm1`. Establish `hLm : ∀ u : GL (Fin n) k, u ∈ congruenceSubgroup k n (2 * m) ⊓ GzS Z ↔ u.val - 1 ∈ lat C (γ ^ (2 * m))` using `memK Z (2 * m) (by omega)`. Establish `hgKm : ∀ u : GL (Fin n) k, u ∈ (congruenceSubgroup k n m ⊓ GzS Z).map (MulAut.conj g).toMonoidHom ↔ u.val - 1 ∈ cj g (lat C (γ ^ m))`. Introduce `u`. Rewrite using `[memK', hKm, conj_sub_one, mem_cj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `WC : ∀ y ∈ W, y ∈ C` using `fun y hy => (mem_C_iff Z y).mpr hy.1.1`. Establish `latWC : ∀ (γ' : ValueGroupWithZero k) y, y ∈ lat W γ' → y ∈ lat C γ'`. Introduce `γ' y hy`. Rewrite `hy`, the goal using `[mem_lat]`. Conclude with `⟨WC y hy.1, hy.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSiff : ∀ u : GL (Fin n) k, u ∈ GzS Z → (u ∈ stab Z p ↔ u.val - 1 ∈ W)` using `fun u hu => mem_stab_iff Z c p u (hu c hc).symm ((mem_Gz_iff Z u).mp hu)`. Establish `intK : ∀ u ∈ congruenceSubgroup k n m ⊓ GzS Z, u ∈ integralGL k n` using `fun u hu => congruenceSubgroup_le k n m (Subgroup.mem_inf.mp hu).1`. Establish `gKint : ∀ u ∈ (congruenceSubgroup k n m ⊓ GzS Z).map (MulAut.conj g).toMonoidHom, u ∈ integralGL k n ∧ u ∈ GzS Z`. Introduce `u hu`. Rewrite `hu` using `[memK']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `(hlev _ (Subgroup.mem_inf.mp hu).1).2`. Establish `h2` using `(GzS Z).mul_mem ((GzS Z).mul_mem hgG (Subgroup.mem_inf.mp hu).2) hginv`. Rewrite `h1`, `h2` using `[show g * (g⁻¹ * u * g) * g⁻¹ = u by group]`. Conclude with `⟨h1, h2⟩`. Establish `surj : ∀ (V : Submodule k (Matrix (Fin n) (Fin n) k)) x, x ∈ lat V (γ ^ m) → ∃ u : GL (Fin n) k, u.val = 1 + x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `V x hx`. Take `⟨u, -, hu⟩` from `exists_unit m hm1 x (mem_lat.mp hx).2`. Conclude with `⟨u, hu⟩`. Establish `multC : ∀ (γ' : ValueGroupWithZero k) (u : GL (Fin n) k), u ∈ integralGL k n → u ∈ GzS Z → ∀ y ∈ lat C γ', u.val * y ∈ lat C γ'`. Introduce `γ' u hui huz y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[mem_lat]`. Conclude with `⟨(mem_C_iff Z _).mpr (Bz_mul Z huz ((mem_C_iff Z y).mp hy.1)), ent_mul (ent_integral hui) hy.2⟩`. Establish `multW : ∀ (γ' : ValueGroupWithZero k) (u : GL (Fin n) k), u ∈ integralGL k n → u ∈ GzS Z → u.val - 1 ∈ W → ∀ y ∈ lat W γ', u.val * y ∈ lat W γ'`. Introduce `γ' u hui huz huW y hy`. Rewrite `hy`, the goal using `[mem_lat]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨⟨Bz_mul Z huz hy.1.1.1, ?_⟩, ?_⟩, ent_mul (ent_integral hui) hy.2⟩` and prove the remaining obligations. Establish `h1` using `comm_of_mem_cS Z (p.1 - c) p.2 u huW`. Establish `h2` using `hy.1.1.2`. Rewrite using `[mul_assoc, h2, ← mul_assoc, h1, mul_assoc]`. Rewrite using `[← Matrix.mulVec_mulVec, hy.1.2, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hLK : congruenceSubgroup k n (2 * m) ⊓ GzS Z ≤ (congruenceSubgroup k n m ⊓ GzS Z) ⊓ (congruenceSubgroup k n m ⊓ GzS Z).map (MulAut.conj g).toMonoidHom`. Introduce `u hu`. Take `⟨hu1, hu2⟩` from `Subgroup.mem_inf.mp hu`. Use `Subgroup.mem_inf.mpr ⟨Subgroup.mem_inf.mpr ⟨congruenceSubgroup_antitone k n (by omega : m ≤ 2 * m) hu1, hu2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[memK']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.mem_inf.mpr ⟨conj_level_lemma g m hm1 (fun v hv => (hlev v hv).1) u hu1, (GzS Z).mul_mem ((GzS Z).mul_mem hginv hu2) hgG⟩`. Establish `liftY : ∀ y ∈ lat C (γ ^ (2 * m)), ∃ w ∈ congruenceSubgroup k n (2 * m) ⊓ GzS Z, w.val - 1 = y`. Introduce `y hy`. Take `⟨w, -, hw⟩` from `exists_unit (2 * m) (by omega) y (mem_lat.mp hy).2`. Establish `e : w.val - 1 = y` using `by rw [hw, add_sub_cancel_left]`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w, (hLm w).mpr (e ▸ hy), e⟩`. Establish `hYX : lat C (γ ^ (2 * m)) ≤ lat C (γ ^ m)`. Introduce `y hy`. Take `⟨w, hw, rfl⟩` from `liftY y hy`. Conclude with `(hKm w).mp (Subgroup.mem_inf.mp (hLK hw)).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hYgX : lat C (γ ^ (2 * m)) ≤ cj g (lat C (γ ^ m))`. Introduce `y hy`. Take `⟨w, hw, rfl⟩` from `liftY y hy`. Conclude with `(hgKm w).mp (Subgroup.mem_inf.mp (hLK hw)).2`. Establish `hYWXW : lat W (γ ^ (2 * m)) ≤ lat W (γ ^ m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `y hy`. Conclude with `mem_lat.mpr ⟨(mem_lat.mp hy).1, (mem_lat.mp (hYX (latWC _ y hy))).2⟩`. Establish `hYWgXW : lat W (γ ^ (2 * m)) ≤ cj g (lat W (γ ^ m))`. Introduce `y hy`. Establish `h1` using `hWi y (mem_lat.mp hy).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite `h1` using `[adL_apply, inv_inv]`. Establish `h2` using `mem_cj.mp (hYgX (latWC _ y hy))`. Conclude with `mem_cj.mpr (mem_lat.mpr ⟨h1, (mem_lat.mp h2).2⟩)`. Establish `memKS : ∀ u : GL (Fin n) k, u ∈ (congruenceSubgroup k n m ⊓ GzS Z) ⊓ stab Z p ↔ u.val - 1 ∈ lat W (γ ^ m)`. Introduce `u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hS⟩`. Establish `hz` using `(Subgroup.mem_inf.mp hK).2`. Conclude with `mem_lat.mpr ⟨(hSiff u hz).mp hS, (mem_lat.mp ((hKm u).mp hK)).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `h`. Establish `hK` using `(hKm u).mpr (latWC _ _ h)`. Conclude with `⟨hK, (hSiff u (Subgroup.mem_inf.mp hK).2).mpr (mem_lat.mp h).1⟩`. Establish `memLS : ∀ u : GL (Fin n) k, u ∈ (congruenceSubgroup k n (2 * m) ⊓ GzS Z) ⊓ stab Z p ↔ u.val - 1 ∈ lat W (γ ^ (2 * m))`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hS⟩`. Establish `hz` using `(Subgroup.mem_inf.mp hK).2`. Conclude with `mem_lat.mpr ⟨(hSiff u hz).mp hS, (mem_lat.mp ((hLm u).mp hK)).2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `hK` using `(hLm u).mpr (latWC _ _ h)`. Conclude with `⟨hK, (hSiff u (Subgroup.mem_inf.mp hK).2).mpr (mem_lat.mp h).1⟩`. Establish `memgKS : ∀ u : GL (Fin n) k, u ∈ (congruenceSubgroup k n m ⊓ GzS Z).map (MulAut.conj g).toMonoidHom ⊓ stab Z p ↔ u.val - 1 ∈ cj g (lat W (γ ^ m))`. Introduce `u`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hK, hS⟩`. Establish `hz` using `(gKint u hK).2`. Establish `hw` using `(hSiff u hz).mp hS`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hWi _ hw`. Rewrite `h1` using `[adL_apply, inv_inv]`. Conclude with `mem_cj.mpr (mem_lat.mpr ⟨h1, (mem_lat.mp (mem_cj.mp ((hgKm u).mp hK))).2⟩)`. Introduce `h`. Establish `h'` using `mem_cj.mp h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `(hgKm u).mpr (mem_cj.mpr (latWC _ _ h'))`. Use `⟨hK, (hSiff u (gKint u hK).2).mpr ?_⟩` and prove the remaining obligations. Establish `h1` using `hW _ (mem_lat.mp h').1`. Rewrite `h1` using `[adL_apply, adL_adL_inv]`. Then use the resulting hypothesis. Establish `surjgX : ∀ x ∈ cj g (lat C (γ ^ m)), ∃ u : GL (Fin n) k, u.val = 1 + x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨w, hw⟩` from `surj C _ (mem_cj.mp hx)`. Use `⟨g * w * g⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, Units.val_mul, hw, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Units.mul_inv, adL_adL_inv]`. Establish `e1` using `relIndex_eq (lat C (γ ^ m)) (lat C (γ ^ (2 * m))) _ _ hYX hKm hLm (fun x hx => surj C x hx) (fun u hu y hy => multC _ u (intK u hu) (Subgroup.mem_inf.mp hu).2 y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2` using `relIndex_eq (lat W (γ ^ m)) (lat W (γ ^ (2 * m))) _ _ hYWXW memKS memLS (fun x hx => surj W x hx) (fun u hu y hy => by`. Take `⟨hK, hS⟩` from `Subgroup.mem_inf.mp hu`. Establish `hz` using `(Subgroup.mem_inf.mp hK).2`. Conclude with `multW _ u (intK u hK) hz ((hSiff u hz).mp hS) y hy)`. Establish `e3` using `relIndex_eq (cj g (lat C (γ ^ m))) (lat C (γ ^ (2 * m))) _ _ hYgX hgKm hLm surjgX (fun u hu y hy => multC _ u (gKint u hu).1 (gKint u hu).2 y hy)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e4` using `relIndex_eq (cj g (lat W (γ ^ m))) (lat W (γ ^ (2 * m))) _ _ hYWgXW memgKS memLS (fun x hx => surjgX x (mem_cj.mpr (latWC _ _ (mem_cj.mp hx)))) (fun u hu y hy => by`. Take `⟨hK, hS⟩` from `Subgroup.mem_inf.mp hu`. Establish `hz` using `(gKint u hK).2`. Conclude with `multW _ u (gKint u hK).1 hz ((hSiff u hz).mp hS) y hy)`. Establish `rC` using `hratio C (γ ^ m) (pow_ne_zero _ hv0) _ (lat C (γ ^ m)) (cj g (lat C (γ ^ m))) (fun y => mem_lat) (fun y => mem_cj_iff_exists g C hC (γ ^ m) y)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rW` using `hratio W (γ ^ m) (pow_ne_zero _ hv0) _ (lat W (γ ^ m)) (cj g (lat W (γ ^ m))) (fun y => mem_lat) (fun y => mem_cj_iff_exists g W hW (γ ^ m) y)`. Establish `dC : LinearEquiv.det (LinearEquiv.ofInjectiveEndo ((adL g).restrict hC) (adL_restrict_inj g C hC)) = 1`. Use `ext`. Rewrite using `[det_ofInjectiveEndo, det_C Z hZ g hg]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `rC' : (((lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))).relIndex (cj g (lat C (γ ^ m))) : ℕ) : ℝ) / (((lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))).relIndex (lat C (γ ^ m)) : ℕ) : ℝ) = 1`. Use `rC.2.2.trans ?_` and prove the remaining obligations. Use `congrArg (fun d => ((distribHaarChar k d : NNReal) : ℝ)) dC` as an intermediate fact. Simplify using `only [map_one, NNReal.coe_one] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `m1` using `AddSubgroup.relIndex_mul_relIndex (lat C (γ ^ (2 * m))) (lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))) (lat C (γ ^ m)) (le_inf hYX hYgX) inf_le_left`. Establish `m2` using `AddSubgroup.relIndex_mul_relIndex (lat C (γ ^ (2 * m))) (lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))) (cj g (lat C (γ ^ m))) (le_inf hYX hYgX) inf_le_right`. Establish `m3` using `AddSubgroup.relIndex_mul_relIndex (lat W (γ ^ (2 * m))) (lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))) (lat W (γ ^ m)) (le_inf hYWXW hYWgXW) inf_le_left`. Establish `m4` using `AddSubgroup.relIndex_mul_relIndex (lat W (γ ^ (2 * m))) (lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))) (cj g (lat W (γ ^ m))) (le_inf hYWXW hYWgXW) inf_le_right`. Establish `fC : (lat C (γ ^ (2 * m))).relIndex (lat C (γ ^ m)) ≠ 0` using `lat_fin_lemma_2 hratio C m`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `fW : (lat W (γ ^ (2 * m))).relIndex (lat W (γ ^ m)) ≠ 0` using `lat_fin_lemma_2 hratio W m`. Use `⟨congruenceSubgroup k n m ⊓ GzS Z, congruenceSubgroup k n (2 * m) ⊓ GzS Z, LinearEquiv.det (LinearEquiv.ofInjectiveEndo ((adL g).restrict hW) (adL_restrict_inj g W hW)), det_ofInjectiveEndo g W hW, inf_le_right, ?_, ?_, ?_, hLK, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ((↑) : GzS Z → GL (Fin n) k) ⁻¹' ((congruenceSubgroup k n m ⊓ GzS Z : Subgroup _) : Set _) = ((↑) : GzS Z → GL (Fin n) k) ⁻¹' (congruenceSubgroup k n m : Set _)`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_inf]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `⟨fun h => h.1, fun h => ⟨h, x.2⟩⟩`. Rewrite using `[e]`. Conclude with `(isOpen_congruenceSubgroup k n m).preimage continuous_subtype_val`. Conclude with `(isCompact_congruenceSubgroup k n m).inter_right (isClosed_Gz Z)`. Establish `e : ((↑) : GzS Z → GL (Fin n) k) ⁻¹' ((congruenceSubgroup k n (2 * m) ⊓ GzS Z : Subgroup _) : Set _) = ((↑) : GzS Z → GL (Fin n) k) ⁻¹' (congruenceSubgroup k n (2 * m) : Set _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Subgroup.mem_inf]`. Conclude with `⟨fun h => h.1, fun h => ⟨h, x.2⟩⟩`. Rewrite using `[e]`. Conclude with `(isOpen_congruenceSubgroup k n (2 * m)).preimage continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Take `⟨ha1, ha2⟩` from `Subgroup.mem_inf.mp ha`. Take `⟨hb1, hb2⟩` from `Subgroup.mem_inf.mp hb`. Conclude with `Subgroup.mem_inf.mpr ⟨conj_mem_congruenceSubgroup k n (congruenceSubgroup_le k n m ha1) hb1, (GzS Z).mul_mem ((GzS Z).mul_mem ha2 hb2) ((GzS Z).inv_mem ha2)⟩`. Introduce `a ha b hb`.
-
-Take `⟨hai, haz⟩` from `gKint a ha`. Take `⟨hb1, hb2⟩` from `Subgroup.mem_inf.mp hb`. Conclude with `Subgroup.mem_inf.mpr ⟨conj_mem_congruenceSubgroup k n hai hb1, (GzS Z).mul_mem ((GzS Z).mul_mem haz hb2) ((GzS Z).inv_mem haz)⟩`. Unfold `modul`. Rewrite using `[e1, e2, e3, e4, ← m1, ← m2, ← m3, ← m4]`.
-
-Establish `hrW : (((lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))).relIndex (cj g (lat W (γ ^ m))) : ℕ) : ℝ) / (((lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))).relIndex (lat W (γ ^ m)) : ℕ) : ℝ) = GlobalTheory.SplitWeil.nabs k (LinearEquiv.det (LinearEquiv.ofInjectiveEndo ((adL g).restrict hW) (adL_restrict …` using `rW.2.2`. Rewrite `fC` using `[← m1]`. Rewrite `fW` using `[← m3]`. Establish `ha : (((lat C (γ ^ (2 * m))).relIndex (lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))) : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (left_ne_zero_of_mul fC)`. Establish `hc : (((lat C (γ ^ m) ⊓ cj g (lat C (γ ^ m))).relIndex (lat C (γ ^ m)) : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (right_ne_zero_of_mul fC)`.
-
-Establish `haW : (((lat W (γ ^ (2 * m))).relIndex (lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))) : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (left_ne_zero_of_mul fW)`. Establish `hcW : (((lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))).relIndex (lat W (γ ^ m)) : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr (right_ne_zero_of_mul fW)`. Establish `hbW : (((lat W (γ ^ m) ⊓ cj g (lat W (γ ^ m))).relIndex (cj g (lat W (γ ^ m))) : ℕ) : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr rW.2.1`. Establish `hbc` using `(div_eq_one_iff_eq hc).mp rC'`. Rewrite using `[← hrW]`.
-
-Use `push_cast`. Rewrite using `[hbc]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem modul_eq [CharZero k] (hratio : RatioP k n) (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (hZ : CR Z)
     (c : Matrix (Fin n) (Fin n) k) (hc : c ∈ Z) (p : Sp k n) (hp : p.1 ∈ Bz Z)

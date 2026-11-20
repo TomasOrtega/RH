@@ -7,9 +7,9 @@ namespace PI.GaugeCharW
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes
 
 /- English proof (translation)
-Introduce `F _ _ a ha`. Establish `h : ∀ v : HeightOneSpectrum (𝓞 F), v.valuation F a ≤ 1`. Introduce `v`. Establish `h1` using `ha v`. Rewrite `h1` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v a]`. Conclude with `h1`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one F a h`. Conclude with `⟨b, hb⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intInter : IntInter := by
   intro F _ _ a ha
@@ -23,7 +23,7 @@ theorem intInter : IntInter := by
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Introduce `F _ _`. Conclude with `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem openInt : OpenInt := by
   intro F _ _

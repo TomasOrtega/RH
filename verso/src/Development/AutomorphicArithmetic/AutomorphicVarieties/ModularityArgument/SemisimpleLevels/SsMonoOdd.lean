@@ -27,7 +27,7 @@ def CsdMonoOdd : Prop :=
             (wdAt P ι Bw h hj (R.comp (Dec (F := E) A).subtype)).mono0 → (rc (algNorm σ)).mono0
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha _ π hd hc`. Take `⟨R, h1, h2, h3, h4⟩` from `H E Ω l ι a ha π hd hc`. Use `⟨R, h1, h2, h3, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Conclude with `⟨(h4 P AI hT w A h O Bw hj).1, fun σ hσ rc hrc hm => (h4 P AI hT w A h O Bw hj).2 σ hσ rc hrc ▸ hm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem csdMonoOdd_of_full (H : GlobalTheory.Published.CaraianiLocalGlobalDual) : CsdMonoOdd := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha _ π hd hc

@@ -11,7 +11,7 @@ open scoped BigOperators
 namespace GlobalTheory.FinWeil.MovedIdx
 
 /- English proof (translation)
-Use `choose n hn hf using h`. Use `⟨∏ i, n i, Finset.prod_induction _ P hm h1 fun i _ => hn i, fun i => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem n (Finset.mem_univ i)`. Rewrite using `[hc, mul_comm (n i), Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem S c) (hf i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem common_denom {A ι : Type} [CommRing A] [Fintype ι] (S : Subring A) (f : ι → A) (P : ℕ → Prop) (h1 : P 1)
     (hm : ∀ a b, P a → P b → P (a * b)) (h : ∀ i, ∃ n : ℕ, P n ∧ (n : A) * f i ∈ S) :
@@ -23,9 +23,9 @@ theorem common_denom {A ι : Type} [CommRing A] [Fintype ι] (S : Subring A) (f 
   exact mul_mem (natCast_mem S c) (hf i)
 
 /- English proof (translation)
-Use `haveI : Fact q.Prime := ⟨hq⟩`. Use `haveI : Finite (B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) := Nat.finite_of_card_ne_zero h0`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' (G := B.toAddSubgroup ⧸ A.toAddSubgroup.addSubgroupOf B.toAddSubgroup) q hd`. Rewrite using `[← hx, addOrderOf_dvd_iff_nsmul_eq_zero]`. Proceed by induction on `x using QuotientAddGroup.induction_on with`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `H y`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff, AddSubgroup.mem_addSubgroupOf]`. Conclude with `hn y.1 y.2`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_dvd_idx {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] (A B : Submodule R X) (n q : ℕ)
     (hq : q.Prime) (h0 : idx A B ≠ 0) (hn : ∀ x ∈ B, n • x ∈ A) (hd : q ∣ idx A B) : q ∣ n := by
@@ -39,9 +39,9 @@ theorem dvd_of_dvd_idx {R X : Type} [CommRing R] [AddCommGroup X] [Module R X] (
     exact hn y.1 y.2
 
 /- English proof (translation)
-Take `⟨n, hn, hy⟩` from `GlobalTheory.HeckeVal.exists_denom D y`. Take `⟨a, n', hn', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn.ne' q hq.ne_one`. Take `⟨m, -, hmq, s, hs, h⟩` from `hx a`. Use `⟨m * n', Nat.Coprime.mul_left hmq ((Nat.Prime.coprime_iff_not_dvd hq).2 hn').symm, ?_⟩` and prove the remaining obligations. Use `mul_mem hs hy using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Take the linear combination `(n' : AE D) * y * h`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem denom_mul (D : D7) {q : ℕ} (hq : q.Prime) {x : AE D} (hx : ZeroAt D q x) (y : AE D) :
     ∃ n : ℕ, n.Coprime q ∧ (n : AE D) * (y * x) ∈ OhE D := by
@@ -54,7 +54,7 @@ theorem denom_mul (D : D7) {q : ℕ} (hq : q.Prime) {x : AE D} (hx : ZeroAt D q 
   linear_combination (n' : AE D) * y * h
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_entry_mem (D : D7) {N : ℕ} (i j : Fin N) : (1 : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D := by
   rw [Matrix.one_apply]; split_ifs
@@ -62,9 +62,9 @@ theorem one_entry_mem (D : D7) {N : ℕ} (i j : Fin N) : (1 : Matrix (Fin N) (Fi
   · exact zero_mem _
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `common_denom (OhE D) (fun p : Fin N × Fin N => (g : Matrix (Fin N) (Fin N) (AE D)) p.1 p.2) (fun n => n.Coprime q) (by simp) (fun a b => Nat.Coprime.mul_left) (by`. Introduce and unpack `⟨i, j⟩`. Take `⟨m, -, hm, s, hs, e⟩` from `hg i j 0`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Use `add_mem hs (mul_mem (natCast_mem _ m) (one_entry_mem D i j)) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take the linear combination `e)`. Conclude with `⟨n, hn, fun i j => h (i, j)⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem denom_triv (D : D7) {q N : ℕ} {g : GL (Fin N) (AE D)} (hg : TrivAt D q g) :
     ∃ n : ℕ, n.Coprime q ∧ ∀ i j, (n : AE D) * (g : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D := by
@@ -78,9 +78,9 @@ theorem denom_triv (D : D7) {q N : ℕ} {g : GL (Fin N) (AE D)} (hg : TrivAt D q
   exact ⟨n, hn, fun i j => h (i, j)⟩
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `common_denom (OhE D) (fun p : Fin N × Fin N × Fin N => ((g⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) p.1 p.2.1 * ((g : Matrix (Fin N) (Fin N) (AE D)) p.2.1 p.2.2 - (1 : Matrix (Fin N) (Fin N) (AE D)) p.2.1 p.2.2)) (fun n => n.Coprime q) (by simp) (fun a b => Nat.Cop …`. Use `⟨n, hn, fun i j => ?_⟩` and prove the remaining obligations. Establish `e : ((g⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) = 1 - ((g⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) * ((g : Matrix (Fin N) (Fin N) (AE D)) - 1)`. Rewrite using `[Matrix.mul_sub, Units.inv_mul, Matrix.mul_one, sub_sub_cancel]`. Rewrite using `[e, Matrix.sub_apply, Matrix.mul_apply, mul_sub, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (mul_mem (natCast_mem _ n) (one_entry_mem D i j)) (sum_mem fun l _ => h (i, l, j))`.
+A detailed English derivation is pending.
 -/
 theorem denom_triv_inv (D : D7) {q N : ℕ} (hq : q.Prime) {g : GL (Fin N) (AE D)} (hg : TrivAt D q g) :
     ∃ n : ℕ, n.Coprime q ∧ ∀ i j, (n : AE D) * ((g⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D := by
@@ -96,7 +96,7 @@ theorem denom_triv_inv (D : D7) {q N : ℕ} (hq : q.Prime) {g : GL (Fin N) (AE D
   exact sub_mem (mul_mem (natCast_mem _ n) (one_entry_mem D i j)) (sum_mem fun l _ => h (i, l, j))
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `common_denom (OhE D) (fun p : Fin N × Fin N => M p.1 p.2) (fun n => 0 < n) one_pos (fun a b => Nat.mul_pos) (fun p => GlobalTheory.HeckeVal.exists_denom D _)`. Conclude with `⟨n, hn, fun i j => h (i, j)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem denom_mat (D : D7) {N : ℕ} (M : Matrix (Fin N) (Fin N) (AE D)) :
     ∃ n : ℕ, 0 < n ∧ ∀ i j, (n : AE D) * M i j ∈ OhE D := by
@@ -105,9 +105,9 @@ theorem denom_mat (D : D7) {N : ℕ} (M : Matrix (Fin N) (Fin N) (AE D)) :
   exact ⟨n, hn, fun i j => h (i, j)⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨ζ, hζ, rfl⟩ i j`. Rewrite using `[actA_apply, Matrix.smul_apply, Matrix.mul_apply, Finset.smul_sum]`. Use `sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul, Finset.smul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ihE_mul D cc (mul_mem (h l j) (h' i k)) (hζ k l) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nsmul_mem_latA (D : D7) (cc : Ideal (𝓞 D.host.K)) {N N' : ℕ} (g : GA D N) (g' : GA D N') {n n' : ℕ}
     (h : ∀ i j, (n : AE D) * (((g : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) i j ∈ OhE D)
@@ -128,11 +128,9 @@ end GlobalTheory.FinWeil.MovedIdx
 open GlobalTheory.FinWeil.MovedIdx in
 
 /- English proof (translation)
-Introduce `D hD cc δ hC N N' g g'`. Establish `h0 : idx (latA D cc N N') ((latA D cc N N').map (actA D N N' (g, g'))) ≠ 0`. Take `⟨n, hn, h⟩` from `denom_mat D (((g : GL (Fin N) (AE D))⁻¹ : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D))`. Take `⟨n', hn', h'⟩` from `denom_mat D ((g' : GL (Fin N') (AE D)) : Matrix (Fin N') (Fin N') (AE D))`. Conclude with `GlobalTheory.T.heisenbergRelativeIndex_completedStandard_ne_zero D hD cc δ hC N N' _ (Nat.mul_pos hn hn') _ (nsmul_mem_latA D cc g g' h h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h0, fun q hq hg hg' hd => ?_, fun hg hg' ζ hζ => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, h⟩` from `denom_triv_inv D hq hg`. Take `⟨n', hn', h'⟩` from `denom_triv D hg'`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hq).1 (Nat.Coprime.mul_left hn hn').symm (dvd_of_dvd_idx _ _ _ q hq h0 (nsmul_mem_latA D cc g g' h h') hd)`. Use `nsmul_mem_latA D cc g g' (n := 1) (n' := 1) (fun i j => by simpa using (hg i j).2) (fun i j => by simpa using (hg' i j).1) ζ hζ` as an intermediate fact.
-
-Simplify using `using this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinWeil.idx_map_actA : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (g : GA D N) (g' : GA D N'), idx (latA D cc N N') ((latA D cc N N').map (actA D N N' (g, g'))) ≠ 0 ∧ (∀ q : ℕ, q.Prime → TrivAt D q (g : GL (Fin N) (AE D)) → TrivAt D q (g' : GL (Fin N') (AE D)) → ¬ q ∣ idx (latA D cc N N') ((latA D cc N N').map (actA D N N' (g, g')))) ∧ (IntG D (g : GL (Fin N) (AE D)) → IntG D (g' : GL (Fin N') (AE D)) → (latA D cc N N').map (actA D N N' (g, g')) ≤ latA D cc N N') := by
   intro D hD cc δ hC N N' g g'

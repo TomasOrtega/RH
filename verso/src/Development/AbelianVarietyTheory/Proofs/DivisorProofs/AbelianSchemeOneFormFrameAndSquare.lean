@@ -14,7 +14,7 @@ set_option autoImplicit false
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Establish `: SmoothOfRelativeDimension g (Limits.pullback.fst A.hom A.hom)` using `(smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback A.hom A.hom).flip hg`. Rewrite using `[Over.tensorObj_hom]`. Conclude with `smoothOfRelativeDimension_comp g g _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_sq {R : Type} [CommRing R] {A : Over (Sp R)} {g : ℕ}
     (hg : SmoothOfRelativeDimension g A.hom) : SmoothOfRelativeDimension (g + g) (A ⊗ A).hom := by
@@ -25,9 +25,9 @@ theorem smoothOfRelativeDimension_sq {R : Type} [CommRing R] {A : Over (Sp R)} {
   exact smoothOfRelativeDimension_comp g g _ _
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Establish `hs : Smooth A.hom` using `SmoothOfRelativeDimension.smooth g _`. Use `⟨GlobalTheory.T.hasGlobalOneFormFrame_of_smooth_groupScheme R A hs, ?_, AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA, smoothOfRelativeDimension_sq hg⟩` and prove the remaining obligations. Establish `hsq : IsPullback (𝟙 A.left) A.hom A.hom (spMap (algebraMap R R))`. Rewrite using `[Algebra.algebraMap_self, spMap_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Conclude with `GlobalTheory.T.globalFunctionsConstantAfterBaseChange_of_abelianScheme R A hA R A.left A.hom (𝟙 _) hsq`.
+A detailed English derivation is pending.
 -/
 theorem basic_of_isAbelianScheme : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ),
     IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → HasFrame (OAff A.hom) ∧ CohomZeroIsConstants (OAff A.hom) ∧

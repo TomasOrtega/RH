@@ -15,27 +15,25 @@ namespace ReciprocityTheory.ChartRestriction.G.H1
 open ReciprocityTheory.ChartRestriction.G.Out ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.DVR ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Introduce `E _ _ _ H V _ _ _ t P hT`. Use `letI := H.starRing`. Introduce `α N hN hαN _hco _hNu F _ _ _ θ θα hpull p x hx hxα`. Take `⟨z, q, h, g0, hy, hgt, hι, hadd, hz⟩` from `CanonicalLiftUnpacking.alpha_unpack P hT (qkActExists_of hL.globalFns) α N hN hαN F p x hx hxα`. Use `haveI := P.oD.onB.hom (star α)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := P.oD.onB.hom α`. Take `⟨r, hr, hr0⟩` from `Geo.Tor.exists_ros (A := P.D.toPre.P.A) (L := P.D.toPre.P.L) hL.globalFns P.D.toPre.P.isAb P.D.toPre.P.isLB (P.oD.onB.act (star α)) (P.oD.onB.act α) (by have hR := P.oD.onB.rosati (star α); rwa [star_star] at hR)`. Take `⟨hb, hrel⟩` from `CanonicalLiftOrigin.gt_rel P.oD α p.g q.g h g0 z hgt hι hadd hz r hr hr0`. Take `⟨u0, hu0, hc0, -⟩` from `hpull.1 0`. Take `⟨w, hw, hwv⟩` from `CanonicalLiftTraces.exists_w P.oD α N hN p.g.b z hb u0 hu0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : PhiRel P.D.toPre F (1 * N) p w θα θα` using `CanonicalLiftFrobenius.phi_fixes hL.globalFns P.oD α N p z hy hb r hr hr0 hrel u0 hu0 hc0 w hw hwv θ θα hpull`. Establish `hk : 1 ≤ 1 * N` using `by omega`. Take `⟨Φ, hΦ⟩` from `phiFun_of hL V (maximalIdeal V) P.D F (1 * N) hk p w hw`. Take `⟨c, hc0', hcpow⟩` from `phiPow_of hL V (maximalIdeal V) P.D F (1 * N) hk p w hw`. Establish `hpowc : ∀ s, (Φ ^ (1 * N)) s = c • s`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s`. Establish `h1` using `hcpow (fun i => (Φ ^ (i : ℕ)) s) (by`. Introduce `i`. Rewrite using `[hΦ]`. Simplify using `only [Fin.val_succ, Fin.coe_castSucc, pow_succ']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `rfl)`. Rewrite `h1` using `[isSmul_iff]`. Simplify using `using h1`. Establish `hΦθ : Φ θα = θα` using `((hΦ θα θα).1 hfix).symm`. Distinguish the cases in `hc1 : c = 1`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `hc1` using the available equality. Use `⟨w, hw, ?_, hfix⟩` and prove the remaining obligations. Conclude with `CanonicalLiftFiniteOrder.finOrd_of_pow hk p w Φ hΦ (fun s => by rw [hpowc, one_smul])`. Establish `hθ : θα = 0`. Establish `hfixpow : ∀ n : ℕ, (Φ ^ n) θα = θα`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ']`. Use `show Φ ((Φ ^ n) θα) = θα`. Rewrite using `[ih, hΦθ]`. Establish `h3 : θα = c • θα` using `by rw [← hpowc θα, hfixpow]`. Establish `h4 : (c - 1) • θα = 0` using `by rw [sub_smul, one_smul, ← h3, sub_self]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h5 : c - 1 ≠ 0` using `sub_ne_zero.mpr hc1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_pow_nat_eq (c⁻¹) (show 0 < 1 * N by omega)`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hζ` using `[zero_pow (by omega : 1 * N ≠ 0)]`. Conclude with `inv_ne_zero hc0' hζ.symm`. Establish `hsc` using `CanonicalLiftFiniteOrder.phiRel_scale hL.globalFns p w hw Φ hΦ ζ hζ0`. Use `⟨DVR.scaleGen (CanonicalLiftFiniteOrder.zUnit (V := V) ζ hζ0) w, DVR.scaleGen_isGen _ _ hw, ?_, ?_⟩` and prove the remaining obligations. Use `CanonicalLiftFiniteOrder.finOrd_of_pow hk p _ (ζ • Φ) (fun s t => by rw [hsc]; rfl) ?_` and prove the remaining obligations.
-
-Introduce `s`. Rewrite using `[smul_pow, LinearMap.smul_apply, hpowc, smul_smul, hζ, inv_mul_cancel₀ hc0', one_smul]`. Rewrite using `[hsc, hθ, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem canonLiftFix_of_laws (hL : Out.Laws) : CanonLiftFixStatement := by
   intro E _ _ _ H V _ _ _ t P hT

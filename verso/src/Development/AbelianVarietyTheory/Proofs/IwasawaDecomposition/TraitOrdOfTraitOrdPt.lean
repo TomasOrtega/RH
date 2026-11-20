@@ -20,14 +20,14 @@ def TraitOrdPt (φ : InvFun (𝓞 E)) (Z : Model Xo c β) (U : Z.X.Opens) (f : �
         Associated ((Scheme.stalkClosedPointTo χ).hom ((Z.X.presheaf.germ U _ hU).hom f)) (ϖ ^ n)
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ χ t m P hχ be hbe hmon hU` and use `h _ hU W hW ϖ hϖ χ t m P hχ be hbe hmon hU rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem traitOrd_of_traitOrdPt {φ : InvFun (𝓞 E)} {Z : Model Xo c β} {U : Z.X.Opens} {f : Γ(Z.X, U)}
     (h : ∀ x ∈ U, TraitOrdPt φ Z U f x) : TraitOrd φ Z U f :=
   fun W _ _ _ hW ϖ hϖ χ t m P hχ be hbe hmon hU => h _ hU W hW ϖ hϖ χ t m P hχ be hbe hmon hU rfl
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ χ t m P hχ be hbe hmon hU hcx`. Substitute `hcx` using the available equality. Take `⟨n, hn, hgn⟩` from `hg W hW ϖ hϖ χ t m P hχ be hbe hmon hx' rfl`. Conclude with `⟨n, hn, (ha.map (Scheme.stalkClosedPointTo χ).hom).trans hgn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TraitOrdPt.of_associated {φ : InvFun (𝓞 E)} {Z : Model Xo c β} {U V : Z.X.Opens} {f : Γ(Z.X, U)}
     {g : Γ(Z.X, V)} {x : Z.X} (hx : x ∈ U) (hx' : x ∈ V)

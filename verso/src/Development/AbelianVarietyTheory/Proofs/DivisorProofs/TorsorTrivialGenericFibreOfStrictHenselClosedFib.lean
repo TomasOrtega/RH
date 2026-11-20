@@ -6,23 +6,19 @@ open IsLocalRing Polynomial
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-Introduce `D _ _ hfin hproj hff act hbij`. Use `letI : Algebra B' B := e.symm.toRingHom.toAlgebra`. Use `letI : Algebra B' D := ((algebraMap B D).comp e.symm.toRingHom).toAlgebra`. Use `haveI : IsScalarTower B' B D := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hmap : ∀ b : B, algebraMap B D b = algebraMap B' D (e b)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Express the relevant statement in the definitionally equal form `algebraMap B D b = algebraMap B D (e.symm (e b))`. Rewrite using `[RingEquiv.symm_apply_apply]`. Establish `hsmul : ∀ (b : B) (d : D), b • d = (e b) • d`. Introduce `b d`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, hmap]`. Set `eL : B ≃ₗ[B'] B'` to `{ e.toAddEquiv with map_smul' := fun b' b => by`. Express the relevant statement in the definitionally equal form `e (e.symm b' * b) = b' * e b`. Rewrite using `[map_mul, RingEquiv.apply_symm_apply] }`. Use `haveI : Module.FaithfullyFlat B' B := Module.FaithfullyFlat.of_linearEquiv B' B' eL`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Finite B' B := Module.Finite.equiv eL.symm`. Use `haveI : Module.FaithfullyFlat B D := hff`. Use `haveI : Module.Finite B D := hfin`. Establish `hfin' : Module.Finite B' D` using `Module.Finite.trans B D`. Establish `hff' : Module.FaithfullyFlat B' D` using `Module.FaithfullyFlat.trans B' B D`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI i1 : RingHomInvPair e.toRingHom e.symm.toRingHom := RingHomInvPair.of_ringEquiv e`. Use `haveI i2 : RingHomInvPair e.symm.toRingHom e.toRingHom := RingHomInvPair.symm _ _`. Set `sl : D ≃ₛₗ[e.toRingHom] D` to `{ AddEquiv.refl D with map_smul' := fun b d => hsmul b d }`. Use `haveI := hproj`. Establish `hproj' : Module.Projective B' D` using `Module.Projective.of_equiv sl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Set `act' : Multiplicative (ZMod q) →* (D ≃ₐ[B'] D)` to `{ toFun := fun g => (act g).restrictScalars B' map_one' := by ext x; simp map_mul' := fun g g' => by ext x; simp }`. Use `haveI : TensorProduct.CompatibleSMul B' B D D := ⟨fun b m n => by`. Rewrite using `[hsmul b m, hsmul b n, TensorProduct.smul_tmul]⟩`. Set `s : TensorProduct B' D D ≃ₗ[B'] TensorProduct B D D` to `TensorProduct.equivOfCompatibleSMul B B' B' D D`. Establish `hcomp : ∀ x : TensorProduct B' D D, Algebra.TensorProduct.productMap (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id B' D)) (Pi.algHom B' (fun _ : Multiplicative (ZMod q) => D) (fun g => (act' g).toAlgHom)) x = Algebra.TensorProduct.productMap (Pi.algHom …`.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Both sides reduce to the same expression.
-
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Take `⟨σ⟩` from `h D hfin' hproj' hff' act' (by`. Use `hbij.comp s.bijective using 1` and compare the differences between its conclusion and the goal. Conclude with `funext hcomp)`. Use `⟨{ toRingHom := (e.symm : B' →+* B).comp σ.toRingHom, commutes' := fun b => ?_ }⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `e.symm (σ (algebraMap B D b)) = b`. Rewrite using `[hmap, σ.commutes]`. Conclude with `e.symm_apply_apply b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsorsTrivial_of_ringEquiv {B B' : Type} [CommRing B] [CommRing B'] (e : B ≃+* B')
     (q : ℕ) (h : TorsorsTrivial B' q) : TorsorsTrivial B q := by
@@ -89,15 +85,13 @@ end GlobalTheory.LocAcyc
 namespace GlobalTheory.LocAcyc
 
 /- English proof (translation)
-Use `haveI : IsDomain T' := IsLocalization.isDomain_of_le_nonZeroDivisors _ hM`. Establish `hinj : Function.Injective (algebraMap T T')` using `IsLocalization.injective T' hM`. Use `set M1 := Algebra.algebraMapSubmonoid O (nonZeroDivisors T)`. Use `set M2 := Algebra.algebraMapSubmonoid O (nonZeroDivisors T')`. Establish `h1 : M1 ≤ M2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨s, hs, rfl⟩`. Use `⟨algebraMap T T' s, ?_, (IsScalarTower.algebraMap_apply T T' O s).symm⟩` and prove the remaining obligations. Establish `hs' : s ≠ 0` using `mem_nonZeroDivisors_iff_ne_zero.mp hs`. Conclude with `mem_nonZeroDivisors_iff_ne_zero.mpr fun h => hs' (hinj (by rw [h, map_zero]))`. Establish `h2 : ∀ x : M2, ∃ m : O, m * x ∈ M1`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, y, hy, rfl⟩`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective M y`. Use `⟨algebraMap T O s, a, ?_, ?_⟩` and prove the remaining obligations. Establish `hy' : IsLocalization.mk' T' a s ≠ 0` using `mem_nonZeroDivisors_iff_ne_zero.mp hy`. Use `mem_nonZeroDivisors_iff_ne_zero.mpr ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `rfl`. Conclude with `hy' (IsLocalization.mk'_zero s)`. Express the relevant statement in the definitionally equal form `algebraMap T O a = algebraMap T O s * algebraMap T' O (IsLocalization.mk' T' a s)`. Rewrite using `[IsScalarTower.algebraMap_apply T T' O s, ← map_mul, IsLocalization.mk'_spec', ← IsScalarTower.algebraMap_apply]`. Use `haveI : IsLocalization M2 (GenFib T O) := IsLocalization.isLocalization_of_is_exists_mul_mem (S := GenFib T O) (M := M1) (N := M2) h1 h2`.
-
-Conclude with `⟨(IsLocalization.algEquiv M2 (GenFib T O) (GenFib T' O)).toRingEquiv⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_genFib_equiv {T T' O : Type} [CommRing T] [IsDomain T] [CommRing T'] [CommRing O]
     [Algebra T T'] [Algebra T O] [Algebra T' O] [IsScalarTower T T' O] (M : Submonoid T)
@@ -134,37 +128,31 @@ namespace GlobalTheory.LocAcyc
 open CategoryTheory in
 
 /- English proof (translation)
-Introduce `hL T O _ _ _ _ _ _ _ hAIC P _ φ hφ hSH q hq hqu`. Use `set p : Ideal T := P.comap (C : T →+* T[X]) with hp`. Use `haveI : p.IsPrime := Ideal.comap_isPrime _ _`. Set `T'` to `Localization.AtPrime p`. Establish `hle : p.primeCompl ≤ nonZeroDivisors T` using `p.primeCompl_le_nonZeroDivisors`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAIC' : AbsIntClosed T'` using `((absIntClosed_localization_and_quotient T ⟨inferInstance, hAIC⟩).1 p.primeCompl (fun h => h (zero_mem p))).2`. Establish `hTO : ∀ a : T, algebraMap T O a = algebraMap T[X] O (C a)` using `fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply T T[X] O, Polynomial.algebraMap_eq]`. Establish `hunit : ∀ s : p.primeCompl, IsUnit (algebraMap T O s)`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : C (s : T) ∈ P.primeCompl` using `s.2`. Establish `hu` using `(IsLocalization.map_units (Localization.AtPrime P) (⟨C (s : T), hs⟩ : P.primeCompl)).map φ`. Rewrite `hu` using `[← RingHom.comp_apply, hφ]`. Rewrite using `[hTO]` and apply the resulting hypothesis. Use `letI : Algebra T' O := (IsLocalization.lift (M := p.primeCompl) (S := T') hunit).toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : IsScalarTower T T' O := IsScalarTower.of_algebraMap_eq (fun x => (IsLocalization.lift_eq hunit x).symm)`. Use `letI : Algebra T'[X] O := (eval₂RingHom (algebraMap T' O) (algebraMap T[X] O X)).toAlgebra`. Use `haveI : IsScalarTower T' T'[X] O := IsScalarTower.of_algebraMap_eq (fun x => by`. Express the relevant statement in the definitionally equal form `_ = eval₂ (algebraMap T' O) (algebraMap T[X] O X) (algebraMap T' T'[X] x)`. Rewrite using `[Polynomial.algebraMap_eq, eval₂_C])`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `letI : Algebra T[X] T'[X] := Polynomial.algebra T T'`. Use `haveI : IsLocalization (Submonoid.map C p.primeCompl) T'[X] := Polynomial.isLocalization p.primeCompl T'`. Establish `hdisj : Disjoint (Submonoid.map C p.primeCompl : Set T[X]) (P : Set T[X])`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `_ ⟨s, hs, rfl⟩ hsP`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs hsP`. Use `set P' : Ideal T'[X] := P.map (algebraMap T[X] T'[X]) with hP'`. Use `haveI hP'prime : P'.IsPrime := IsLocalization.isPrime_of_isPrime_disjoint _ T'[X] P inferInstance hdisj`. Establish `hcomapP' : P'.comap (algebraMap T[X] T'[X]) = P` using `IsLocalization.comap_map_of_isPrime_disjoint _ T'[X] inferInstance hdisj`. Establish `hCcomm : ∀ a : T, C (algebraMap T T' a) = algebraMap T[X] T'[X] (C a)` using `fun a => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (C a).map (algebraMap T T')`. Rewrite using `[Polynomial.map_C]`. Establish `hmax : P'.comap (C : T' →+* T'[X]) = maximalIdeal T'`. Rewrite using `[← IsLocalization.map_comap p.primeCompl T' (P'.comap C), ← IsLocalization.map_comap p.primeCompl T' (maximalIdeal T'), IsLocalization.AtPrime.comap_maximalIdeal T' p]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use extensionality with `a`. Express the relevant statement in the definitionally equal form `C (algebraMap T T' a) ∈ P' ↔ C a ∈ P`. Rewrite using `[hCcomm, ← Ideal.mem_comap, hcomapP']`. Use `haveI : IsLocalization.AtPrime (Localization.AtPrime P') P := by`. Use `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Submonoid.map C p.primeCompl) (Localization.AtPrime P') P'` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (P'.comap (algebraMap T[X] T'[X])).primeCompl = P.primeCompl`. Use extensionality with `x`. Simplify using `only [Ideal.mem_primeCompl_iff, hcomapP']`. Unfold `IsLocalization.AtPrime at this ⊢`. Rewrite `this` using `[hc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Set `e : Localization.AtPrime P ≃ₐ[T[X]] Localization.AtPrime P'` to `IsLocalization.algEquiv P.primeCompl _ _`. Set `φ' : Localization.AtPrime P' →+* O` to `φ.comp e.symm.toRingEquiv.toRingHom`. Establish `hOO : (algebraMap T'[X] O).comp (algebraMap T[X] T'[X]) = algebraMap T[X] O`. Use `Polynomial.ringHom_ext (fun a => ?_) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `eval₂ (algebraMap T' O) (algebraMap T[X] O X) ((C a).map (algebraMap T T')) = _`. Rewrite using `[Polynomial.map_C, eval₂_C, ← IsScalarTower.algebraMap_apply, hTO]`. Express the relevant statement in the definitionally equal form `eval₂ (algebraMap T' O) (algebraMap T[X] O X) ((X : T[X]).map (algebraMap T T')) = _`. Rewrite using `[Polynomial.map_X, eval₂_X]`. Establish `hφ' : φ'.comp (algebraMap T'[X] (Localization.AtPrime P')) = algebraMap T'[X] O`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `IsLocalization.ringHom_ext (Submonoid.map C p.primeCompl) ?_` and prove the remaining obligations. Rewrite using `[RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq, hOO]`. Use `RingHom.ext fun f => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (e.symm (algebraMap T[X] _ f)) = _`. Rewrite using `[AlgEquiv.commutes, ← RingHom.comp_apply, hφ]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSH' : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsStrictHenselisation φ'`. Take `⟨h1, h2, h3, h4⟩` from `hSH`. Use `⟨h1, h2, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsUnit (φ (e.symm a)) at ha`.
-
-Establish `h5 : IsUnit (e.symm a)` using `h3.map_nonunit _ ha`. Simplify using `using h5.map e`. Use `haveI : (RingHom.toMorphismProperty @RingHom.Etale).RespectsIso := RingHom.toMorphismProperty_respectsIso_iff.mp RingHom.Etale.respectsIso`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale at h4 ⊢`. Rewrite using `[CommRingCat.ofHom_comp]`.
-
-Use `haveI : IsIso (CommRingCat.ofHom e.symm.toRingEquiv.toRingHom) := inferInstanceAs (IsIso (e.symm.toRingEquiv.toCommRingCatIso).hom)`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso _ _ _).mpr h4`. Establish `hqu' : IsUnit (q : T')`. Simplify using `using hqu.map (algebraMap T T')`. Establish `key` using `hL T' O hAIC' P' φ' hφ' hSH' hmax trivial q hq hqu'`.
-
-Take `⟨eG⟩` from `nonempty_genFib_equiv (T := T) (T' := T') (O := O) p.primeCompl hle`. Conclude with `torsorsTrivial_of_ringEquiv eG q key`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem keyAll_of_keyLocal : KeyLocal → KeyAll := by
   intro hL T O _ _ _ _ _ _ _ hAIC P _ φ hφ hSH q hq hqu

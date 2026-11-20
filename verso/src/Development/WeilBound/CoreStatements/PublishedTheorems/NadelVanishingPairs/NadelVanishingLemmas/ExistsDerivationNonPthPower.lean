@@ -14,7 +14,7 @@ def Good (p : ℕ) (f : K) (R : Subring (TrivSqZeroExt K K)) : Prop :=
     (∀ r ∈ R, r.fst ≠ 0 → ∃ t ∈ R, r * t = 1) ∧ (inl f + inr 1 : TrivSqZeroExt K K) ∈ R
 
 /- English proof (translation)
-Use `h0 (r - t) (R.sub_mem hr ht) (by simp [h])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma inj_of {R : Subring (TrivSqZeroExt K K)} (h0 : ∀ r ∈ R, r.fst = 0 → r = 0)
     {r t : TrivSqZeroExt K K} (hr : r ∈ R) (ht : t ∈ R) (h : r.fst = t.fst) : r = t := by
@@ -69,7 +69,7 @@ noncomputable def sec (R : Subring (TrivSqZeroExt K K)) (h0 : ∀ r ∈ R, r.fst
     exact inj_of h0 hab.1 (R.add_mem ha.1 hb.1) (by rw [hab.2, fst_add, ha.2, hb.2]; rfl)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec a.2`.
+A detailed English derivation is pending.
 -/
 lemma sec_spec (R : Subring (TrivSqZeroExt K K)) (h0 : ∀ r ∈ R, r.fst = 0 → r = 0)
     (hinv : ∀ r ∈ R, r.fst ≠ 0 → ∃ t ∈ R, r * t = 1) (a : fieldOf R hinv) :
@@ -77,11 +77,11 @@ lemma sec_spec (R : Subring (TrivSqZeroExt K K)) (h0 : ∀ r ∈ R, r.fst = 0 �
   Classical.choose_spec a.2
 
 /- English proof (translation)
-Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir : DirectedOn (· ≤ ·) c` using `hch.directedOn`. Establish `mem : ∀ x, x ∈ sSup c ↔ ∃ s ∈ c, x ∈ s` using `fun x => Subring.mem_sSup_of_directedOn hne hdir`. Establish `le : ∀ z ∈ c, z ≤ sSup c` using `fun z hz => le_sSup hz`. Use `⟨⟨?_, ?_, ?_, ?_⟩, le⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `r hr h`. Take `⟨s, hs, hrs⟩` from `(mem r).1 hr`. Conclude with `(show Good p f s from hc hs).1 r hrs h`. Introduce `g`. Conclude with `le y hy ((show Good p f y from hc hy).2.1 g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `r hr h`. Take `⟨s, hs, hrs⟩` from `(mem r).1 hr`. Take `⟨t, ht, hrt⟩` from `(show Good p f s from hc hs).2.2.1 r hrs h`. Conclude with `⟨t, le s hs ht, hrt⟩`. Conclude with `le y hy (show Good p f y from hc hy).2.2.2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma good_sSup (p : ℕ) (f : K) (c : Set (Subring (TrivSqZeroExt K K)))
     (hc : c ⊆ {R | Good p f R}) (hch : IsChain (· ≤ ·) c) (y : Subring (TrivSqZeroExt K K))
@@ -103,27 +103,25 @@ lemma good_sSup (p : ℕ) (f : K) (c : Set (Subring (TrivSqZeroExt K K)))
   · exact le y hy (show Good p f y from hc hy).2.2.2
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Set `c : L` to `⟨x ^ p, hxp⟩`. Set `φ : Polynomial L →+* TrivSqZeroExt K K` to `Polynomial.eval₂RingHom s (inl x + inr v)`. Set `ev : Polynomial L →+* K` to `Polynomial.eval₂RingHom L.subtype x`. Establish `hfstφ : ∀ P : Polynomial L, (φ P).fst = ev P`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `P`. Proceed by induction on `P using Polynomial.induction_on with`. Consider the case `C a => simp [φ, ev, hfst]`. Consider the case `add P Q hP hQ => simp only [map_add, fst_add, hP, hQ]`. Consider the case `monomial n a _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `[φ, ev, hfst, fst_pow]`. Establish `hpow : (inl x + inr v : TrivSqZeroExt K K) ^ p = inl (x ^ p)`. Use `ext`. Simplify using `[fst_pow]`. Simplify using `[snd_pow, CharP.cast_eq_zero K p]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Set `m : Polynomial L` to `Polynomial.X ^ p - Polynomial.C c`. Establish `hφm : φ m = 0`. Simplify using `only [m, map_sub, map_pow, φ, Polynomial.coe_eval₂RingHom, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Rewrite using `[hpow]`. Simplify using `only [c, hs, sub_self]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hevm : ev m = 0`. Simplify using `[m, ev, c]`. Establish `hirr : Irreducible m`. Use `X_pow_sub_C_irreducible_of_prime hp (fun b hb => hx ?_)` and prove the remaining obligations. Establish `hb' : (b : K) ^ p = x ^ p`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hb` as an intermediate fact. Simplify `this` using `[c]`. Establish `: (b : K) = x` using `frobenius_inj K p (by simpa [frobenius_def] using hb')`. Conclude with `this ▸ b.2`. Establish `hdvd : ∀ P : Polynomial L, ev P = 0 → m ∣ P`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Assume the negation of the conclusion as `h`. Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).2 h`. Use `congrArg ev hab` as an intermediate fact. Simplify using `[map_add, map_mul, hevm, hP] at this`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ.range, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨P, rfl⟩ h`. Take `⟨Q, rfl⟩` from `hdvd P (by rw [← hfstφ]; exact h)`. Rewrite using `[map_mul, hφm, zero_mul]`. Introduce and unpack `_ ⟨P, rfl⟩ h`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hnd : ¬ m ∣ P`. Introduce and unpack `⟨Q, rfl⟩`. Conclude with `h (by rw [hfstφ, map_mul, hevm, zero_mul])`. Take `⟨a, b, hab⟩` from `(hirr.coprime_iff_not_dvd).2 hnd`. Use `⟨φ b, ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg φ hab` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, map_mul, hφm, mul_zero, zero_add, map_one]`. Rewrite using `[mul_comm]`. Conclude with `this`. Introduce `a`.
-
-Conclude with `⟨Polynomial.C a, by simp [φ]⟩`. Conclude with `⟨Polynomial.X, by simp [φ]⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal (p : ℕ) [Fact p.Prime] [CharP K p] (L : Subfield K)
     (s : L →+* TrivSqZeroExt K K) (hfst : ∀ a : L, (s a).fst = a) (x v : K) (hx : x ∉ L)
@@ -186,9 +184,9 @@ private theorem exists_inclusion_mul_eq_mul_inclusion_of_normal (p : ℕ) [Fact 
   · exact ⟨Polynomial.X, by simp [φ]⟩
 
 /- English proof (translation)
-Establish `hp : p.Prime` using `Fact.out`. Set `L : Subfield K` to `(frobenius K p).fieldRange`. Set `s : L →+* TrivSqZeroExt K K` to `(TrivSqZeroExt.inlHom K K).comp L.subtype`. Establish `hx : f ∉ L`. Introduce and unpack `⟨g, hg⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hf g (by rw [← hg, frobenius_def])`. Establish `hxp : f ^ p ∈ L` using `⟨f, by simp [frobenius_def]⟩`. Take `⟨R, h0, hinv, hsR, hfR⟩` from `exists_inclusion_mul_eq_mul_inclusion_of_normal p L s (fun a => rfl) f 1 hx hxp rfl`. Use `⟨R, h0, fun g => ?_, hinv, hfR⟩` and prove the remaining obligations. Conclude with `hsR ⟨g ^ p, ⟨g, by simp [frobenius_def]⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma exists_good (p : ℕ) [Fact p.Prime] [CharP K p] (f : K) (hf : ∀ g : K, f ≠ g ^ p) :
     ∃ R, Good p f R := by
@@ -204,17 +202,17 @@ lemma exists_good (p : ℕ) [Fact p.Prime] [CharP K p] (f : K) (hf : ∀ g : K, 
   exact hsR ⟨g ^ p, ⟨g, by simp [frobenius_def]⟩⟩
 
 /- English proof (translation)
-Take `⟨R0, hR0⟩` from `exists_good p f hf`. Take `⟨M, -, hM⟩` from `zorn_le_nonempty₀ {R | Good p f R} (fun c hc hch y hy => ⟨sSup c, (good_sSup p f c hc hch y hy).1, (good_sSup p f c hc hch y hy).2⟩) R0 hR0`. Take `⟨h0, hpw, hinv, hf1⟩` from `(show Good p f M from hM.1)`. Establish `hall : ∀ a : K, a ∈ fieldOf M hinv`. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hx`. Establish `hxp : x ^ p ∈ fieldOf M hinv` using `⟨inl (x ^ p), hpw x, by simp⟩`. Establish `hs : sec M h0 hinv ⟨x ^ p, hxp⟩ = inl (x ^ p)` using `inj_of h0 (sec_spec M h0 hinv _).1 (hpw x) (by rw [(sec_spec M h0 hinv _).2]; simp)`. Take `⟨R', h0', hinv', hsR', hxR'⟩` from `exists_inclusion_mul_eq_mul_inclusion_of_normal p (fieldOf M hinv) (sec M h0 hinv) (fun a => (sec_spec M h0 hinv a).2) x 0 hx hxp hs`. Establish `hle : M ≤ R'`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `hmem : r.fst ∈ fieldOf M hinv` using `⟨r, hr, rfl⟩`. Use `inj_of h0 hr (sec_spec M h0 hinv ⟨r.fst, hmem⟩).1 (by rw [(sec_spec M h0 hinv _).2])` as an intermediate fact. Rewrite using `[this]`. Conclude with `hsR' _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgood : Good p f R'` using `⟨h0', fun g => hle (hpw g), hinv', hle hf1⟩`. Establish `hR'M` using `hM.2 hgood hle`. Conclude with `hx ⟨_, hR'M hxR', by simp⟩`. Set `e : K →+* fieldOf M hinv` to `{ toFun := fun a => ⟨a, hall a⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `s' : K →+* TrivSqZeroExt K K` to `(sec M h0 hinv).comp e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'fst : ∀ a, (s' a).fst = a` using `fun a => (sec_spec M h0 hinv (e a)).2`. Establish `hs'mem : ∀ a, s' a ∈ M` using `fun a => (sec_spec M h0 hinv (e a)).1`. Set `Dl : K →ₗ[ℤ] K` to `{ toFun := fun a => (s' a).snd map_add' := fun a b => by simp map_smul' := fun n a => by simp }`. Use `⟨Derivation.mk' Dl (fun a b => ?_), ?_⟩` and prove the remaining obligations. Simplify using `[Dl, snd_mul, hs'fst, smul_eq_mul]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `: s' f = inl f + inr 1` using `inj_of h0 (hs'mem f) hf1 (by simp [hs'fst])`. Simplify using `[Dl, this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_derivation (p : ℕ) [Fact p.Prime] [CharP K p] (f : K)
     (hf : ∀ g : K, f ≠ g ^ p) : ∃ D : Derivation ℤ K K, D f = 1 := by

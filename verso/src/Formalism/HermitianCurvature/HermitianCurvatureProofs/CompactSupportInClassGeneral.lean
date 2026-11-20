@@ -17,31 +17,27 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `set C : Set (Mat k r) := tsupport F with hCdef`. Use `set C' : Set (Mat k r) := tsupport F' with hC'def`. Establish `hCc : IsCompact C` using `hFc`. Establish `hC'c : IsCompact C'` using `hF'c`. Take `⟨_, _, _, _, _, hL3, _⟩` from `Formalism.FourierDecayAlt.P.b_any_of_xi k r Wp Wq D (AB k r) le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `supp : ∀ {φ : Mat k r → (Wq →L[ℂ] Wp)} {K : Set (Mat k r)}, IsCompact K → (∀ g ∈ K, g ∈ GV k r → g ∈ GPos D) → (∀ g ∈ GV k r, g ∉ K → φ g = 0) → closure {g | g ∈ GV k r ∧ φ g ≠ 0} ⊆ GPos D`. Introduce `φ K hK hKO hz`. Conclude with `(closure_minimal (s := {g | g ∈ GV k r ∧ φ g ≠ 0}) (t := K ∩ GV k r) (fun g hg => by`. Use `⟨?_, hg.1⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgK`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hg.2 (hz g hg.1 hgK)) (hK.isClosed.inter Formalism.FourierDecayAlt.P.B5.GV_closed)).trans (fun g hg => hKO g hg.1 hg.2)`. Establish `rwz : ∀ {φ : Mat k r → (Wq →L[ℂ] Wp)} {K : Set (Mat k r)}, IsCompact K → (∀ g ∈ GV k r, g ∉ K → φ g = 0) → ∀ w : List (Mat k r), (∀ X ∈ w, inLie k r X) → ∀ g ∈ GV k r, g ∉ K → Rw w φ g = 0` using `fun hK hz w hw g hg hgK => Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_vanish hK.isClosed.isOpen_compl hw (fun x hx hxK => hz x hx hxK) g hg hgK`. Establish `hFz : ∀ g ∈ GV k r, g ∉ C → F g = 0` using `fun g _ h => image_eq_zero_of_notMem_tsupport h`. Establish `hF'z : ∀ g ∈ GV k r, g ∉ C' → F' g = 0` using `fun g _ h => image_eq_zero_of_notMem_tsupport h`. Establish `hap : ∀ T ∈ Θ, CkOn ⊤ (GV k r) (fun x => T.coefAdj x (F' x)) ∧ ∀ g ∈ GV k r, g ∉ C' → T.coefAdj g (F' g) = 0` using `fun T hT => ⟨Formalism.FourierDecayAlt.P.B5.ckOn_coef (hS T hT).2 hF' (supp hC'c hF'O hF'z), fun g hg hgK => by rw [hF'z g hg hgK, map_zero]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hrev : ∀ T ∈ Θ, ∀ X ∈ T.word.reverse, inLie k r X` using `fun T _ X hX => T.word_lie X (List.mem_reverse.1 hX)`. Establish `hΘF : InCC (AB k r) 5 (opApply Θ F)` using `by show InCC _ 5 (fun g => (Θ.map fun T => T.coef g (Rw T.word F g)).sum)`. Use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.InCC_opsum Θ (fun T g => T.coef g (Rw T.word F g)) fun T hT => ?_` and prove the remaining obligations. Conclude with `cptInCC_G (Formalism.FourierDecayAlt.P.B5.ckOn_coef (hS T hT).1 (ckOn_Rw_top hF T.word T.word_lie) (supp hCc hFO (rwz hCc hFz T.word T.word_lie))) hCc (fun g hg hgK => by show T.coef g (Rw T.word F g) = 0`. Rewrite using `[rwz hCc hFz T.word T.word_lie g hg hgK, map_zero]) _ 5`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hΘF' : InCC (AB k r) 5 (opAdj Θ F')` using `by show InCC _ 5 (fun g => (Θ.map fun T => ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g).sum)`. Use `Formalism.FourierDecayAlt.P.BetaSesquilinearity.InCC_opsum Θ (fun T g => ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g) fun T hT => ?_` and prove the remaining obligations. Conclude with `cptInCC_G (ckOn_smul ((-1 : ℂ) ^ T.word.length) (ckOn_Rw_top (hap T hT).1 _ (hrev T hT))) hC'c (fun g hg hgK => by show ((-1 : ℂ) ^ T.word.length) • Rw T.word.reverse (fun x => T.coefAdj x (F' x)) g = 0`. Rewrite using `[rwz hC'c (hap T hT).2 _ (hrev T hT) g hg hgK, smul_zero]) _ 5`. Establish `hIC : IntClause D Θ F F'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `p hp T hT i j hij hj`. Establish `hlie1 : ∀ X ∈ (T.word.take i).reverse, inLie k r X` using `fun X hX => T.word_lie X (List.mem_of_mem_take (List.mem_reverse.mp hX))`. Establish `hlie2 : ∀ X ∈ T.word.drop j, inLie k r X` using `fun X hX => T.word_lie X (List.mem_of_mem_drop hX)`. Use `set f₁ : Mat k r → (Wq →L[ℂ] Wp) := Rw (T.word.take i).reverse (fun x => T.coefAdj x (F' x)) with hf₁`. Use `set f₂ : Mat k r → (Wq →L[ℂ] Wp) := Rw (T.word.drop j) (rho D p F) with hf₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hf₁c : CkOn ⊤ (GV k r) f₁` using `ckOn_Rw_top (hap T hT).1 _ hlie1`. Establish `hf₁z : ∀ g ∈ GV k r, g ∉ C' → f₁ g = 0` using `rwz hC'c (hap T hT).2 _ hlie1`. Take `⟨K₁, hK₁⟩` from `cptInCC_G hf₁c hC'c hf₁z 0 0`. Establish `hb₁ : ∀ g ∈ GV k r, ‖f₁ g‖ ≤ K₁`. Introduce `g hg`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `hK₁.2 [] [] (by simp) (by simp) (by simp) g hg` as an intermediate fact. Simplify `this` using `[Real.rpow_zero, dLR, Rw]`. Establish `hf₂c : ContinuousOn f₂ (GV k r)` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_cont subset_rfl (Formalism.FourierDecayAlt.P.B5.ckOn_mono bot_le (ckOn_Rw_top (Formalism.FourierDecayAlt.P.B5.ckOn_rho D hp hF) _ hlie2))`. Establish `hf₁cont : ContinuousOn f₁ (GV k r)` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.CkOn_cont subset_rfl (Formalism.FourierDecayAlt.P.B5.ckOn_mono bot_le hf₁c)`. Take `⟨K₂, hK₂⟩` from `(hC'c.inter_right Formalism.FourierDecayAlt.P.B5.GV_closed).exists_bound_of_continuousOn (hf₂c.mono Set.inter_subset_right)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set G : Mat k r → (Wq →L[ℂ] Wp) := fun g => ((‖f₂ g‖ : ℝ) : ℂ) • f₁ g with hG`. Establish `hGn : ∀ g, ‖G g‖ = ‖f₁ g‖ * ‖f₂ g‖`. Introduce `g`. Simplify using `only [hG, norm_smul, Complex.norm_real, norm_norm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGc : ContinuousOn G (GV k r)` using `(Complex.continuous_ofReal.comp_continuousOn hf₂c.norm).smul hf₁cont`. Establish `hGm` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.aesm_of_continuousOn D hGc`. Establish `hfin : D.μG (C' : Set (Mt k r)) ≠ ⊤` using `(D.haarG.finite_compact C' hC'c).ne`. Establish `hind : Integrable ((C' : Set (Mt k r)).indicator fun _ => K₁ * K₂) D.μG` using `(integrableOn_const hfin).integrable_indicator (IsClosed.measurableSet (α := Mt k r) hC'c.isClosed)`. Establish `hint : Integrable (fun g : Mt k r => G (Matrix.of g)) D.μG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `hind.mono' hGm ?_` and prove the remaining obligations. Use `filter_upwards [Formalism.FourierDecayAlt.P.B5.haar_ae D.haarG] with x hx`. Distinguish the cases in `hxC : x ∈ (C' : Set (Mt k r))`. Rewrite using `[Set.indicator_of_mem hxC, hGn]`. Establish `h1` using `hb₁ (Matrix.of x) hx`.
-
-Establish `h2` using `hK₂ (Matrix.of x) ⟨hxC, hx⟩`. Conclude with `mul_le_mul h1 h2 (norm_nonneg _) ((norm_nonneg _).trans h1)`. Rewrite using `[Set.indicator_of_notMem hxC, hGn, hf₁z (Matrix.of x) hx hxC, norm_zero, zero_mul]`. Conclude with `hint.norm.congr (Filter.Eventually.of_forall fun g => hGn _)`. Establish `hIF` using `cptInCC_G hF hCc hFz (AB k r) 5`.
-
-Establish `hIF'` using `cptInCC_G hF' hC'c hF'z (AB k r) 5`. Conclude with `⟨hIF, hIF', hΘF, hΘF', hL3 (GPos D) Θ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gPos_stable D) hS hC F F' (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF) (Formalism.FourierDecayAlt.P.B5.ckOn_mono le_top hF') (supp hCc hFO hFz) (supp hC'c hF'O hF'z) hIF hIF' hΘF hΘF' h …`.
+A detailed English derivation is pending.
 -/
 theorem compact_support_in_class_general (D : RealPlaceData k r Wp Wq) (Θ : DiffOp k r Wp Wq) (hS : SmoothCoef (GPos D) Θ)
     (hC : Commutes D (GPos D) Θ) (F F' : Mat k r → (Wq →L[ℂ] Wp))
@@ -144,7 +140,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 open NumberField Formalism.FourierDecayAlt.P.CutMP Formalism.FourierDecayAlt.P.CutMP.JA
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ _hB v Θ hΘ F F' hF hFc hFO hF' hF'c hF'O`. Conclude with `Formalism.FourierDecayAlt.P.CompactSupportClassLemmas.compact_support_in_class_general (T v).base Θ hΘ.1 hΘ.2 F F' hF hFc (fun g hg hgG => ⟨hgG, (hFO hg).1⟩) hF' hF'c (fun g hg hgG => ⟨hgG, (hF'O hg).1⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem compact_support_lemma_three : CompactSupportClassMembership := by
   refine ⟨0, ?_⟩

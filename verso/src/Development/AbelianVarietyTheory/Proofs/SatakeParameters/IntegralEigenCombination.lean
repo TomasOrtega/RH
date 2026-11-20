@@ -9,17 +9,17 @@ open Formalism.DworkPowerSeriesWeights (JetsIntegral)
 namespace GlobalTheory.Proof.IntegralEigenCombination
 
 /- English proof (translation)
-Introduce `D cD hD p _ lm τ`. Take `⟨M, hMnf, hM, hs⟩` from `hD`. Take `⟨s, hsc, hsp⟩` from `hs τ`. Establish `hmem : s ∈ TaylorLogMetric.ellT D M τ` using `by rw [hsp]; exact Submodule.mem_span_singleton_self s`. Establish `hv : (LinearMap.single (𝓞 M) (fun _ : D.what₂.Tau => (M : Type)) τ) s ∈ TaylorLogMetric.mmM D M` using `Submodule.mem_comap.1 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, f, v, hfv⟩` from `Submodule.mem_span_set'.1 hv`. Establish `hva : ∀ j, ∃ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E), (v j : D.what₂.Tau → M) = fun τ => TaylorLogMetric.liftM M (TaylorLogMetric.embT D τ a)` using `fun j => (v j).2`. Use `choose a ha hav using hva`. Take `⟨g, hg⟩` from `GlobalTheory.Proof.DirectionalDerivative.exists_lamHom lm (algebraMap M ℂ)`. Establish `hg' : ∀ x : M, lamC lm (x : ℂ) = g x` using `hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, fun j => g ((f j : 𝓞 M) : M), a, fun j => ?_, ha, fun τ' => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SplitEmbSep.norm_le_one_of_isIntegral (map_isIntegral_int g (f j).isIntegral_coe)`. Establish `e : ∀ j, tauEmb D lm τ' (a j) = g (TaylorLogMetric.liftM M (TaylorLogMetric.embT D τ' (a j)))`. Introduce `j`. Rewrite using `[← hg', TaylorLogMetric.liftM, dif_pos (hM _ _)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hc` using `congrFun hfv τ'`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, hav] at hc`. Simplify using `only [e, ← map_mul]`. Rewrite using `[← map_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : (∑ j, ((f j : 𝓞 M) : M) * TaylorLogMetric.liftM M (TaylorLogMetric.embT D τ' (a j))) = (LinearMap.single (𝓞 M) (fun _ : D.what₂.Tau => (M : Type)) τ) s τ'`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Rewrite using `[hc']`. Distinguish the cases in `h : τ' = τ`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[hsc.symm, hg']`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigGen_integral_comb : ∀ (D : D7) (cD : D.what₂.Tau → ℂ), Formalism.L2.Ker.IsDgen D cD → ∀ (p : ℕ) [Fact p.Prime] (lm : TaylorLogMetric.Qbar →+* ℂ_[p]), ∀ τ : D.what₂.Tau, ∃ (n : ℕ) (r : Fin n → ℂ_[p]) (a : Fin n → D.host.E), (∀ j, ‖r j‖ ≤ 1) ∧ (∀ j, a j ∈ D.host.AA0) ∧ ∀ τ', ∑ j, r j * tauEmb D lm τ' (a j) = if τ' = τ then lamC lm (cD τ) else 0 := by
   intro D cD hD p _ lm τ

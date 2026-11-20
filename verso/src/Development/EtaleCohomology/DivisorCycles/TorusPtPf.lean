@@ -9,24 +9,24 @@ variable {C : Type} [Field C] [CharZero C]
 noncomputable def E (a : C) : PowerSeries C := PowerSeries.rescale a (PowerSeries.exp C)
 
 /- English proof (translation)
-Simplify using `[E, PowerSeries.coeff_rescale, PowerSeries.coeff_exp]`.
+Simplify using the standard rewrite rules.
 -/
 lemma coeff_E (a : C) (k : ℕ) : PowerSeries.coeff k (E a) = a ^ k * (k.factorial : C)⁻¹ := by
   simp [E, PowerSeries.coeff_rescale, PowerSeries.coeff_exp]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.exp_mul_exp_eq_exp_add a b`.
+A detailed English derivation is pending.
 -/
 lemma E_add (a b : C) : E a * E b = E (a + b) := PowerSeries.exp_mul_exp_eq_exp_add a b
 
 /- English proof (translation)
-Apply the tactic sequence `ext k; rcases k with _ | k <;> simp [coeff_E, PowerSeries.coeff_one]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma E_zero : E (0 : C) = 1 := by
   ext k; rcases k with _ | k <;> simp [coeff_E, PowerSeries.coeff_one]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [E_zero]`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, E_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma E_prod {ι : Type} (s : Finset ι) (a : ι → C) : ∏ i ∈ s, E (a i) = E (∑ i ∈ s, a i) := by
   classical
@@ -35,7 +35,7 @@ lemma E_prod {ι : Type} (s : Finset ι) (a : ι → C) : ∏ i ∈ s, E (a i) =
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, E_add]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [E_zero]`. Consider the case `succ m ih => rw [pow_succ, ih, E_add]`. Use `congr 1`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,9 +45,9 @@ lemma E_pow (a : C) (m : ℕ) : E a ^ m = E ((m : C) * a) := by
   | succ m ih => rw [pow_succ, ih, E_add]; congr 1; push_cast; ring
 
 /- English proof (translation)
-Establish `h0` using `congrArg (PowerSeries.coeff 0) h`. Establish `h1` using `congrArg (PowerSeries.coeff 1) h`. Simplify using `only [map_sub, PowerSeries.coeff_C_mul, coeff_E, map_zero] at h0 h1`. Simplify using `at h0 h1`. Establish `hb : b = 1` using `by linear_combination -h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨hb, ?_⟩` and prove the remaining obligations. Rewrite `h1` using `[hb]`. Take the linear combination `h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma E_ne (a b c : C) (h : E a - PowerSeries.C b * E c = 0) : b = 1 ∧ a = c := by
   have h0 := congrArg (PowerSeries.coeff 0) h
@@ -60,9 +60,9 @@ lemma E_ne (a b c : C) (h : E a - PowerSeries.C b * E c = 0) : b = 1 ∧ a = c :
   linear_combination h1
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hp.1.complete.symm`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[smul_mul_smul_comm, (hp.1.idem i).eq, pow_succ]`. Introduce `j _ hji`. Rewrite using `[smul_mul_smul_comm, hp.1.ortho hji.symm, smul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma pow_sys {N n : ℕ} {p : Fin n → Mat C N} (hp : Sys p) (e : Fin n → C) (k : ℕ) :
     (∑ i, e i • p i) ^ k = ∑ i, e i ^ k • p i := by
@@ -77,7 +77,7 @@ lemma pow_sys {N n : ℕ} {p : Fin n → Mat C N} (hp : Sys p) (e : Fin n → C)
     · simp
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [PowerSeries.coeff_mk, map_sum, PowerSeries.coeff_C_mul, coeff_E, pow_sys hp, Matrix.smul_apply, Matrix.sum_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 lemma entry_exp {N n : ℕ} {p : Fin n → Mat C N} (hp : Sys p) (e : Fin n → C) (a b : Fin N) :
     (PowerSeries.mk fun k => ((k.factorial : C)⁻¹ • (∑ i, e i • p i) ^ k) a b) =
@@ -94,23 +94,21 @@ noncomputable def bin {n : ℕ} (q : Finset (Fin n) × Finset (Fin n) × C) : Mv
   (∏ i ∈ q.1, MvPolynomial.X i) ^ q.2.1.card - MvPolynomial.C q.2.2 * (∏ i ∈ q.2.1, MvPolynomial.X i) ^ q.1.card
 
 /- English proof (translation)
-Introduce `C _ _ _ N n S p e hp hlac hX B hB`. Set `x : Fin n → PowerSeries C` to `fun j => E (e j)`. Set `Q : Set (Finset (Fin n) × Finset (Fin n) × C)` to `{q | q.1.Nonempty ∧ q.2.1.Nonempty ∧ Disjoint q.1 q.2.1 ∧ q.2.2 ∈ B}`. Set `G : Set (MvPolynomial (Fin n) C)` to `Set.range (fun j => MvPolynomial.X j) ∪ bin '' Q`. Establish `hQ : Q.Finite` using `(Set.finite_univ.prod (Set.finite_univ.prod hB)).subset fun q hq => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_prod, Set.mem_univ, true_and]`. Conclude with `hq.2.2.2`. Establish `hG : G.Finite` using `(Set.finite_range _).union (hQ.image _)`. Establish `hxg : ∀ g ∈ G, MvPolynomial.aeval x g ≠ 0`. Introduce and unpack `g (⟨j, rfl⟩ | ⟨q, ⟨h1, h2, h3, h4⟩, rfl⟩)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Use `congrArg (PowerSeries.coeff 0) h0` as an intermediate fact. Simplify using `[x, coeff_E] at this`. Introduce `h0`. Simplify using `only [bin, map_sub, map_mul, map_pow, map_prod, MvPolynomial.aeval_X, MvPolynomial.aeval_C, x, E_prod, E_pow] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0' : E ((q.2.1.card : C) * ∑ i ∈ q.1, e i) - PowerSeries.C q.2.2 * E ((q.1.card : C) * ∑ i ∈ q.2.1, e i) = 0`. Simplify using `using h0`. Conclude with `hlac _ _ h1 h2 h3 (E_ne _ _ _ h0').2`. Take `⟨y, hy1, hy2⟩` from `hS C (PowerSeries C) (Fin n) x G hG hxg`. Use `⟨y, fun j => ?_, fun f hf => ?_, fun O O' hO hO' hd b hb => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hy2 _ (Or.inl ⟨j, rfl⟩)` as an intermediate fact. Simplify using `using this`. Establish `h` using `hE C N S _ hX f hf`. Establish `hent : (fun ab : Fin N × Fin N => PowerSeries.mk fun k => ((k.factorial : C)⁻¹ • (∑ i, e i • p i) ^ k) ab.1 ab.2) = fun ab => MvPolynomial.aeval x (∑ j, MvPolynomial.C (p j ab.1 ab.2) * MvPolynomial.X j)`. Use function extensionality and compare the values at `ab`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[entry_exp hp]`. Simplify using `[x]`. Rewrite `h` using `[hent, ← MvPolynomial.aeval_bind₁]`. Establish `h2` using `hy1 _ h`. Establish `h3 : MvPolynomial.aeval y ((MvPolynomial.bind₁ fun ab : Fin N × Fin N => ∑ j, MvPolynomial.C (p j ab.1 ab.2) * MvPolynomial.X j) f) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `h2`. Rewrite `h3` using `[MvPolynomial.aeval_bind₁]`. Unfold `ev`. Rewrite using `[show (fun q : Fin N × Fin N => (∑ j, y j • p j) q.1 q.2) = fun ab => MvPolynomial.aeval y (∑ j, MvPolynomial.C (p j ab.1 ab.2) * MvPolynomial.X j) from`. Use function extensionality and compare the values at `fun ab => by simp [Matrix.sum_apply, mul_comm]]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `h3`. Introduce `h`. Apply `hy2 _ (Or.inr ⟨(O, O', b), ⟨hO, hO', hd, hb⟩, rfl⟩)` to reduce the goal to its premises. Simplify using `only [bin, map_sub, map_mul, map_pow, map_prod, MvPolynomial.eval_X, MvPolynomial.eval_C]`. Rewrite using `[h]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem TorusPt_of (hE : ExpVan) (hS : SpecPt) : TorusPt := by
   intro C _ _ _ N n S p e hp hlac hX B hB

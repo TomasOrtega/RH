@@ -10,9 +10,9 @@ noncomputable section
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[lgCurve_pcurve G hp hγ x n hx a, map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s _`. Rewrite using `[map_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `b _`. Rewrite using `[coeff_expand_rescale]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_lg_pcurve (G : LogFGL v d) {p : ℕ} (hp : p ≠ 0)
     {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, IsCurve v (γ a)) (x : ℕ → Fin d → C) (n : ℕ)
@@ -29,27 +29,25 @@ theorem coeff_lg_pcurve (G : LogFGL v d) {p : ℕ} (hp : p ≠ 0)
   rw [coeff_expand_rescale]
 
 /- English proof (translation)
-Introduce `a j hj`. Rewrite using `[coeff_lg_pcurve G hp.ne_zero hγ _ n hx a j]`. Distinguish the cases in `hpow : ∃ m, j = p ^ m`. Take `⟨m, rfl⟩` from `hpow`. Establish `hmn : m < n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `absurd hj (not_lt.mpr (Nat.pow_le_pow_right hp.pos h))`. Establish `hrel` using `congrFun (ptx_rel G p hγ hdet ga m) a`. Express the relevant statement in the definitionally equal form `G.lc p ga m a = _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrel]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ (show m + 1 ≤ n by omega)]`. Establish `hzero : ∑ s ∈ Finset.Ico (m + 1) n, ∑ b, (if p ^ s ∣ p ^ m then ptx G p γ ga s b ^ (p ^ m / p ^ s) * PowerSeries.coeff (p ^ m / p ^ s) (G.lgCurve (γ b) a) else 0) = 0`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hs' : m < s`. Rewrite `hs` using `[Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Rewrite using `[if_neg]`. Introduce `hd`. Establish `hle : s ≤ m` using `by first`. Consider the case `exact (Nat.pow_dvd_pow_iff_le_right hp.one_lt).mp hd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `exact (Nat.pow_dvd_pow_iff_le_right' ).mp hd`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hzero, add_zero]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsm : s ≤ m` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hs)`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_pos (pow_dvd_pow p hsm), Nat.pow_div hsm hp.pos]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `push_neg at hpow`. Rewrite using `[hga a j hpow]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Use `split_ifs with hd`. Take `⟨k, hk⟩` from `hd`. Establish `hk' : j / p ^ s = k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hk, Nat.mul_div_cancel_left _ (pow_pos hp.pos s)]`. Establish `hnp : ∀ m', k ≠ p ^ m'`. Introduce `m' hm'`. Apply `hpow (s + m')` to reduce the goal to its premises. Rewrite using `[hk, hm', pow_add]`.
-
-Rewrite using `[hk', hγt b a k hnp, mul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lg_agree (G : LogFGL v d) {p : ℕ} (hp : p.Prime) {γ : Fin d → Fin d → PowerSeries C}
     (hγ : ∀ a, IsCurve v (γ a)) (hγt : ∀ b, G.IsPTypical p (γ b)) (hdet : v (tmat γ).det = 0)
@@ -114,9 +112,9 @@ theorem lg_agree (G : LogFGL v d) {p : ℕ} (hp : p.Prime) {γ : Fin d → Fin d
     · rfl
 
 /- English proof (translation)
-Rewrite using `[coeff_lg_pcurve G hp.ne_zero hγ x n hx a (p ^ n)]`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `s hs`. Establish `hsn : s ≤ n` using `(Finset.mem_range.mp hs).le`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[if_pos (pow_dvd_pow p hsn), Nat.pow_div hsn hp.pos]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_lg_pcurve_top (G : LogFGL v d) {p : ℕ} (hp : p.Prime)
     {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, IsCurve v (γ a)) (x : ℕ → Fin d → C) (n : ℕ)
@@ -134,7 +132,7 @@ theorem coeff_lg_pcurve_top (G : LogFGL v d) {p : ℕ} (hp : p.Prime)
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ carrier := {x | 0 ≤ v x} mul_mem' := fun {a b} ha hb => by simp only [Set.mem_setOf_eq, AddValuation.map_mul] at * exact add_nonneg ha hb one_mem' := by simp add_mem' := fun {a b} ha hb => le_trans (le_min ha hb) (AddValuation.map_add v a b) zero_mem' := by simp neg_mem' := fu …`.
+Supply the required witnesses or components.
 -/
 private theorem exists_subring_mem_iff_isIntV : ∃ S : Subring C, ∀ x, x ∈ S ↔ IsIntV v x :=
   ⟨{ carrier := {x | 0 ≤ v x}
@@ -147,15 +145,15 @@ private theorem exists_subring_mem_iff_isIntV : ∃ S : Subring C, ∀ x, x ∈ 
      neg_mem' := fun {a} ha => by simpa [AddValuation.map_neg] using ha }, fun _ => Iff.rfl⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_subring_mem_iff_isIntV (v := v)`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `b`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : ∀ s < n, ∀ b, IsIntV v (ptx G p γ ga s b)` using `fun s hs b => ih s hs b`. Establish `hagree` using `lg_agree G hp hγ hγt hdet ga hga n hx`. Establish `hα : ∀ c, PowerSeries.constantCoeff (ga c) = 0` using `fun c => (hgaC c).1`. Establish `hpcC` using `isCurve_pcurve G hp.ne_zero hγ (ptx G p γ ga) n hx`. Establish `hβ : ∀ c, PowerSeries.constantCoeff (pcurve G p γ (ptx G p γ ga) n c) = 0` using `fun c => (hpcC c).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ c, IsIntV v (ptw G p γ ga n c)`. Introduce `c`. Establish `h1` using `coeff_lgCurve_sub_eq G hα hβ (p ^ n) hagree c`. Establish `h2` using `coeff_lg_pcurve_top G hp hγ (ptx G p γ ga) n hx c`. Establish `e : ptw G p γ ga n c = PowerSeries.coeff (p ^ n) (ga c - pcurve G p γ (ptx G p γ ga) n c)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h1, map_sub, h2]`. Simplify using `only [ptw, Pi.sub_apply]`. Both sides reduce to the same expression. Rewrite using `[e, ← hS, map_sub]`. Conclude with `S.sub_mem ((hS _).2 ((hgaC c).2 _)) ((hS _).2 ((hpcC c).2 _))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ptx_eq]`. Conclude with `isIntV_vecMul_inv hγ hdet hw b`.
+A detailed English derivation is pending.
 -/
 theorem ptx_int (G : LogFGL v d) {p : ℕ} (hp : p.Prime) {γ : Fin d → Fin d → PowerSeries C}
     (hγ : ∀ a, IsCurve v (γ a)) (hγt : ∀ b, G.IsPTypical p (γ b)) (hdet : v (tmat γ).det = 0)
@@ -187,13 +185,13 @@ theorem ptx_int (G : LogFGL v d) {p : ℕ} (hp : p.Prime) {γ : Fin d → Fin d 
     exact isIntV_vecMul_inv hγ hdet hw b
 
 /- English proof (translation)
-Establish `h0 : HasSubst (fun _ : Fin d => (0 : PowerSeries C))` using `by first`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => by simp)`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero' (fun _ => by simp)`. Use extensionality with `j`. Rewrite using `[map_zero]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `MvPowerSeries.coeff (Finsupp.single () j) (subst _ (G.lg a)) = 0`. Rewrite using `[MvPowerSeries.coeff_subst h0]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `e`. Distinguish the cases in `he : e = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `he` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply, G.lg_const a, zero_smul]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, e s ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he (Finsupp.ext hcon)`. Rewrite using `[Finsupp.prod, Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs) (by simp [hs]), map_zero, smul_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem lgCurve_const_zero (G : LogFGL v d) (a : Fin d) :
     G.lgCurve (fun _ => (0 : PowerSeries C)) a = 0 := by
@@ -218,11 +216,9 @@ private theorem lgCurve_const_zero (G : LogFGL v d) (a : Fin d) :
       map_zero, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Establish `hk : ∀ b, (PowerSeries.X : PowerSeries C) ^ 1 ∣ ga b - (fun _ => (0 : PowerSeries C)) b`. Introduce `b`. Use `show (PowerSeries.X : PowerSeries C) ^ 1 ∣ ga b - 0`. Rewrite using `[pow_one, sub_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PowerSeries.X_dvd_iff.mpr (h0 b)`. Establish `h1` using `lgCurve_sub_dvd (β := fun _ => (0 : PowerSeries C)) G h0 (fun _ => by simp) 1 hk a`. Simplify using `only [lgCurve_const_zero, sub_zero] at h1`. Establish `h2` using `PowerSeries.X_pow_dvd_iff.mp h1 1 (by norm_num)`. Rewrite `h2` using `[map_sub, sub_eq_zero]`.
-
-Use `show PowerSeries.coeff (p ^ 0) (G.lgCurve ga a) = PowerSeries.coeff 1 (ga a)`. Rewrite using `[pow_zero, h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lc_zero_eq_tangent_of_constantCoeff_eq_zero (G : LogFGL v d) (p : ℕ) (ga : Fin d → PowerSeries C)
     (h0 : ∀ b, PowerSeries.constantCoeff (ga b) = 0) : G.lc p ga 0 = tangent ga := by
@@ -240,19 +236,19 @@ private theorem lc_zero_eq_tangent_of_constantCoeff_eq_zero (G : LogFGL v d) (p 
   rw [pow_zero, h2]
 
 /- English proof (translation)
-Establish `ht : ∀ b c, ty c ≠ ty b → tangent (γ b) c = 0`. Introduce `b c hc`. Establish `h0` using `(hγty b).2 0 c (by simpa using hc)`. Rewrite `h0` using `[lc_zero_eq_tangent_of_constantCoeff_eq_zero G p (γ b) (fun c' => (hγ b c').1)]`. Then use the resulting hypothesis. Introduce `n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `hw : ∀ c, ty c ≠ i + n → Matrix.vecMul (ptx G p γ ga n) (tmat γ) c = 0`. Introduce `c hc`. Rewrite using `[ptx_eq, vecMul_inv_tmat hdet]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ptw, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hga.2 n c hc, zero_sub, neg_eq_zero]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `s hs`. Establish `hsn : s < n` using `Finset.mem_range.mp hs`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `b _`. Distinguish the cases in `hx0 : ptx G p γ ga s b = 0`. Rewrite using `[hx0, zero_pow (pow_ne_zero _ hp.ne_zero), zero_mul]`. Establish `htb` using `ih s hsn b hx0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlc : G.lc p (γ b) (n - s) c = 0`. Apply `(hγty b).2 (n - s) c` to reduce the goal to its premises. Rewrite using `[htb, Nat.cast_sub hsn.le]`. Introduce `h'`. Apply `hc` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hlc, mul_zero]`. Introduce `b hb`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hb (vecMul_tmat_support ty hdet ht (ptx G p γ ga n) (i + n) hw b hne)`.
+A detailed English derivation is pending.
 -/
 theorem ptx_type {h : ℕ} (ty : Fin d → ZMod h) (G : LogFGL v d) {p : ℕ} (hp : p.Prime)
     {γ : Fin d → Fin d → PowerSeries C} (hγ : ∀ a, IsCurve v (γ a)) (hdet : v (tmat γ).det = 0)

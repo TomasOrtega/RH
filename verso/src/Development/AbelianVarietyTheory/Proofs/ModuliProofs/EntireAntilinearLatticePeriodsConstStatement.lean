@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.ModuliProofs.EntireAntilinearLatt
 open Complex Matrix
 open scoped ContDiff BigOperators Real
 /- English proof (citation)
-Apply `GlobalTheory.entire_antilinear_periods_const` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FEntireAntilinearLatticePeriodsConst.lean&line=85#L85)
 -/

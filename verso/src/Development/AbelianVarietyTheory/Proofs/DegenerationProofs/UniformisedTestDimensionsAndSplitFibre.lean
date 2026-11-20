@@ -20,11 +20,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Take `⟨E₀, -, -, -, -, hE⟩` from `GlobalTheory.gtCoord_isGt V (IsLocalRing.maximalIdeal V) D 0 G ⟨g⟩`. Establish `hle : IsLocalRing.maximalIdeal V ^ (0 + 1) ≤ RingHom.ker (IsLocalRing.residue V)`. Rewrite using `[zero_add, pow_one, IsLocalRing.ker_residue]`. Set `c : V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1) →+* IsLocalRing.ResidueField V` to `Ideal.Quotient.lift _ (IsLocalRing.residue V) fun a ha => (RingHom.mem_ker).1 (hle ha)`. Take `⟨E₁, -, -, -, -, hE₁⟩` from `hB _ _ (spMap c) E₀ _ hE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hc : spMap c ≫ thick V (IsLocalRing.maximalIdeal V) 0 = spMap (IsLocalRing.residue V)`. Rewrite using `[show thick V (IsLocalRing.maximalIdeal V) 0 = spMap (Ideal.Quotient.mk _) from rfl, ← spMap_comp]`. Use `congr 1`. Establish `gp` using `((isGrpPullback_pullback (thickObj V (IsLocalRing.maximalIdeal V) 0 G) (spMap c)).comp (isGrpPullback_pullback G (thick V (IsLocalRing.maximalIdeal V) 0))).congr hc rfl`. Take `⟨e, he, -⟩` from `grpPullback_iso gp (isGrpPullback_pullback G (spMap (IsLocalRing.residue V)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨E₁, isGt_of_iso e hE₁⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isGt_specialFibre (hB : GtBaseChangeSt) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V]
     (D : DegPre V) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G] (g : GtCoord (IsLocalRing.maximalIdeal V) D 0 G) :
@@ -45,13 +45,13 @@ theorem exists_isGt_specialFibre (hB : GtBaseChangeSt) {V : Type} [CommRing V] [
   exact ⟨E₁, isGt_of_iso e hE₁⟩
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u`. Establish `: CharZero u.V` using `((algebraMap (FractionRing u.V) (PadicAlgCl p)).comp (algebraMap u.V (FractionRing u.V))).charZero`. Establish `hA : AdmBase u.V (IsLocalRing.maximalIdeal u.V)` using `⟨inferInstance, inferInstance, inferInstance, u.complete⟩`. Establish `hsm : SmoothOfRelativeDimension S.g u.A.A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback u.cart.1 (ρ.g_eq ▸ ρ.P.smoothDim)`. Establish `hg : u.A.g = S.g` using `H1.dim_unique u.A.A.hom u.A.smoothDim hsm (eSec u.A.A (IsLocalRing.closedPoint (FractionRing u.V)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hg, ?_, ?_, ?_, exists_isGt_specialFibre hL.2.2.1.gtBaseChange _ _ (u.U.gt 0)⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.UT.dim_eq_rank_add_dim hL u.V _ hA u.D u.A u.G u.semi u.U`. Rewrite using `[← hg, add_comm]`. Conclude with `h.symm`. Use `u.semi.smooth` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `u.semi.geomConnected` as an intermediate fact. Use `GlobalTheory.GenericDim.smoothOfRelativeDimension_of_generic u.V u.G S.g ?_` and prove the remaining obligations. Establish `w : u.U.gen.hom.left ≫ u.A.A.hom = pullback.snd u.G.hom (jK u.V)` using `Over.w u.U.gen.hom`. Establish `: IsIso u.U.gen.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map u.U.gen.hom))`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_horiz_isIso (g := 𝟙 _) ⟨w.trans (Category.comp_id _).symm⟩) hsm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ρ.N_eq]`. Establish `h₁ : 2 ≤ ρ.n ^ ρ.k` using `ρ.n_prime.two_le.trans (Nat.le_self_pow (by have := ρ.two_le; omega) _)`. Conclude with `Nat.pow_le_pow_left h₁ 2`.
+A detailed English derivation is pending.
 -/
 theorem utest_dim_and_split : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), u.A.g = S.g ∧ u.D.toPre.P.g + Module.finrank ℤ u.D.toPre.X = S.g ∧ SmoothOfRelativeDimension S.g u.G.hom ∧ 4 ≤ S.N ∧ ∃ E : SplitExt (Sp (IsLocalRing.ResidueField u.V)), E.IsGt ((Over.pullback (spMap (IsLocalRing.residue u.V))).obj u.G) := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u

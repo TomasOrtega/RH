@@ -15,9 +15,9 @@ namespace GlobalTheory.RowAtOfColLen
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.NLink
 
 /- English proof (translation)
-Introduce `D i r ρ π w hw Cx x y hx hxy`. Introduce `V2 _ _ _ _ _ _ _ _ _ _ _ ρ2 T2 hc2 hm2 V1 _ _ _ _ _ _ _ _ _ _ _ ρ1 T1 hc1 hs1 F hF`. Take `⟨mm, k, h1, h2, h3⟩` from `hx { V := V1, ρ := ρ1, cont := hc1, L := T1 } { V := V2, ρ := ρ2, cont := hc2, L := T2 } F hm2 hs1 hF`. Use `⟨mm, k, h1, h2, ?_⟩` and prove the remaining obligations. Establish `h4 : (mm : ℝ) ≤ (y : ℝ) * k` using `h3.trans (mul_le_mul_of_nonneg_right hxy (Nat.cast_nonneg _))`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (x : ℝ) (y : ℚ), RowL i r ρ π w hw Cx x → x ≤ (y : ℝ) → RowAt (Br.PD D.loc D.nbr i w hw) (O := ↥(OL Cx.LL)) (fun x : D.nd.X i => ⇑(TruncatedSeriesCountingIdentities.locC Cx (rDuO D.nd i r x))) ⇑(TruncatedSeriesCountingIdentities.locC Cx (T2O D.nd i ρ π)) y := by
   intro D i r ρ π w hw Cx x y hx hxy

@@ -11,15 +11,15 @@ open scoped BigOperators
 namespace GlobalTheory.ThetaConj
 
 /- English proof (translation)
-Unfold `LaB at hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨w, hw, i, rfl⟩` from `hz`. Use `⟨Pi.single i w, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using hw`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨w, hw, rfl⟩` from `hy`. Take `⟨w', hw', rfl⟩` from `hz`. Use `⟨w + w', fun j => add_mem (hw j) (hw' j), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_smul, Finset.sum_add_distrib]`. Consider the case `neg y _ hy`. Take `⟨w, hw, rfl⟩` from `hy`. Use `⟨fun j => -w j, fun j => neg_mem (hw j), ?_⟩` and prove the remaining obligations. Simplify using `only [neg_smul, Finset.sum_neg_distrib]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coords_of_mem_LaB (D : D7) (T : Tor D) {N N' r : ℕ}
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (y : VC D N N') (hy : y ∈ LaB D T b) :
@@ -48,45 +48,41 @@ theorem exists_coords_of_mem_LaB (D : D7) (T : Tor D) {N N' r : ℕ}
     simp only [neg_smul, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Introduce `D hG hS cc δ hc M ρ hK hD hM N N' r b hb n hn`. Take `⟨h1, h2, -, h4, h5, h6, h7⟩` from `hS cc δ hc M ρ hK hD.2.1 hD.2.2`. Establish `hn0 : (n : ℂ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hneg : ∀ t t', StarPt M ρ (lamOf D cc δ) t t' → StarPt M ρ (lamOf D cc δ) (-t) (-t')`. Introduce `t t' h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h5 (-1) t t' h` as an intermediate fact. Simplify using `using this`. Establish `hsub : ∀ t t' u u', StarPt M ρ (lamOf D cc δ) t t' → StarPt M ρ (lamOf D cc δ) u u' → StarPt M ρ (lamOf D cc δ) (t - u) (t' - u')`. Introduce `t t' u u' h h'`. Rewrite using `[sub_eq_add_neg, sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4 _ _ _ _ h (hneg _ _ h')`. Establish `hone : ∀ t t', StarPt M ρ (lamOf D cc δ) t t' → (t ∈ lamOf D cc δ ↔ t' ∈ lamConj M ρ (lamOf D cc δ))`. Introduce `t t' h`. Simplify using `using h6 1 t t' h`. Establish `hex : ∀ t, InRationalLattice (lamOf D cc δ) t → ∃ t', StarPt M ρ (lamOf D cc δ) t t'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t hq`. Use `h1 _ hq ?_` and prove the remaining obligations. Distinguish the cases in `h : t ∈ lamOf D cc δ`. Conclude with `Or.inl h`. Conclude with `Or.inr (hM _ hq h)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Establish `hex' : ∀ t', InRationalLattice (lamConj M ρ (lamOf D cc δ)) t' → ∃ t, StarPt M ρ (lamOf D cc δ) t t'`. Introduce and unpack `t' ⟨m, hm, ht'⟩`. Take `⟨t, -, ht⟩` from `h7 m hm (fun t h h' => hM t ⟨m, hm, h⟩ h') t' ht'`. Conclude with `⟨t, ht⟩`. Establish `hst : ∀ a : 𝓞 D.host.K, ∀ w ∈ lamOf D cc δ, D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ lamOf D cc δ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a w hw`. Use `h5 a w 0 (Or.inl ⟨hw, zero_mem _⟩)` as an intermediate fact. Rewrite using `[hone _ _ this, mul_zero]`. Conclude with `zero_mem _`. Establish `hst' : ∀ a : 𝓞 D.host.K, ∀ w ∈ lamConj M ρ (lamOf D cc δ), D.host.φ₀ (((a : D.host.K) : D.host.E)) * w ∈ lamConj M ρ (lamOf D cc δ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a w hw`. Use `h5 a 0 w (Or.inl ⟨zero_mem _, hw⟩)` as an intermediate fact. Rewrite using `[← hone _ _ this, mul_zero]`. Conclude with `zero_mem _`. Establish `hT` using `isTraceCompatibleTorusEmbedding_standardTorus D hG cc δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hT'` using `good_torConj D hG cc δ M ρ hK hD`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ _ _ _ ⟨c, c', hc, rfl, rfl, hcc⟩ ⟨d, d', hd, rfl, rfl, hdd⟩`. Use `⟨c - d, c' - d', fun j => ?_, ?_, ?_, fun j => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `hc j`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨m', hm', h'⟩` from `hd j`. Use `⟨m * m', Nat.mul_pos hm hm', ?_⟩` and prove the remaining obligations. Establish `: ((m * m' : ℕ) : ℂ) * (c - d) j = m' • ((m : ℂ) * c j) - m • ((m' : ℂ) * d j)`. Simplify using `only [nsmul_eq_mul, Pi.sub_apply]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `sub_mem (AddSubgroup.nsmul_mem _ h _) (AddSubgroup.nsmul_mem _ h' _)`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`. Simplify using `only [Pi.sub_apply, sub_smul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show StarPt M ρ (lamOf D cc δ) ((c j - d j) / n) ((c' j - d' j) / n)`. Rewrite using `[sub_div, sub_div]`. Conclude with `hsub _ _ _ _ (hcc j) (hdd j)`. Introduce `x m hm hmx`. Take `⟨w, hw, hsum⟩` from `exists_coords_of_mem_LaB D _ b _ hmx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hq : ∀ j, ∃ t', StarPt M ρ (lamOf D cc δ) (w j / m / n) t'`. Introduce `j`. Use `hex _ ⟨m * n, Nat.mul_pos hm hn, ?_⟩` and prove the remaining obligations. Establish `: ((m * n : ℕ) : ℂ) * (w j / m / n) = w j` using `by push_cast; field_simp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hw j`. Use `choose t' ht' using hq`. Use `⟨_, fun j => w j / m, fun j => (n : ℂ) * t' j, ?_, ?_, rfl, ?_⟩` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `: (m : ℂ) * (w j / m) = w j` using `by field_simp`. Rewrite using `[this]`. Conclude with `hw j`. Establish `hx : x = (m : ℂ)⁻¹ • (m • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hm0, one_smul]`. Rewrite using `[hx, hsum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← div_eq_inv_mul]`. Introduce `j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `: (n : ℂ) * t' j / n = t' j` using `by field_simp`. Use `show StarPt M ρ (lamOf D cc δ) (w j / m / n) ((n : ℂ) * t' j / n)`. Rewrite using `[this]`. Conclude with `ht' j`. Introduce `k Y hk hkn hY`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨A1, A2⟩` from `GlobalTheory.T.okLinear_torsionCorrespondence_maps_lattice D (tor0 D cc δ) (torConj D (tor0 D cc δ) M ρ) hT hT' hst N N' r b hb.1 (StarPt M ρ (lamOf D cc δ)) hex (fun t t₁ t₂ h h' => (h2 t t₁ t₂ h).1 h') h4 h5 (fun m t t' h => (h6 m t t' h).1) n k Y hn hk hkn hY`. Take `⟨B1, B2⟩` from `GlobalTheory.T.okLinear_torsionCorrespondence_maps_lattice D (torConj D (tor0 D cc δ) M ρ) (tor0 D cc δ) hT' hT hst' N N' r b hb.1 (fun t' t => StarPt M ρ (lamOf D cc δ) t t') hex' (fun t t₁ t₂ h h' => (hone _ _ (hsub _ _ _ _ h h')).2 (by rw [sub_self]; exact zero_mem _)) (fun t …`. Use `⟨fun x hx => ?_, fun x' hx' => ?_, ?_⟩` and prove the remaining obligations. Take `⟨c, c', hc, hxc, hcc, hmem⟩` from `A1 x hx`. Conclude with `⟨_, hmem, c, c', hc, hxc, rfl, hcc⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨c', c, hc', hxc, hcc, hmem⟩` from `B1 x' hx'`. Use `⟨_, hmem, c, c', fun j => ?_, rfl, hxc, hcc⟩` and prove the remaining obligations. Take `⟨m, hm, h⟩` from `hc' j`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Establish `h'` using `(h6 (m * n) _ _ (hcc j)).2 (by`.
-
-Establish `: ((m * n : ℕ) : ℂ) * (c' j / n) = m * c' j` using `by push_cast; field_simp`. Rewrite using `[this]`. Conclude with `h)`. Establish `: ((m * n : ℕ) : ℂ) * (c j / n) = m * c j` using `by push_cast; field_simp`. Rewrite `h'` using `[this]`.
-
-Conclude with `h'`. Introduce and unpack `_ _ ⟨c, c', -, rfl, rfl, hcc⟩`. Conclude with `⟨A2 c c' hcc, B2 c' c hcc⟩`.
+A detailed English derivation is pending.
 -/
 theorem adpB_lattices : ∀ (D : D7), admG1 D → galStar D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ), FixK D M ρ → DataIn D (tor0 D cc δ) M → (∀ t, InRationalLattice (lamOf D cc δ) t → t ∉ (lamOf D cc δ) → wpF (lamOf D cc δ) t ∈ M ∧ wpD (lamOf D cc δ) t ∈ M) → ∀ (N N' r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), OnB D b → ∀ n : ℕ, 0 < n → (∀ x x' y y', AdpB D (tor0 D cc δ) M ρ b n x x' → AdpB D (tor0 D cc δ) M ρ b n y y' → AdpB D (tor0 D cc δ) M ρ b n (x - y) (x' - y')) ∧ (∀ (t : VC D N N') (m : ℕ), 0 < m → m • t ∈ LaB D (tor0 D cc δ) b → ∃ t', AdpB D (tor0 D cc δ) M ρ b n t t') ∧ ∀ (k : ℕ) (Y : Set (Matrix (Fin N') (Fin N) D.host.E)), 0 < k → k ∣ n → Comm D b k Y → (∀ x ∈ LaS D (tor0 D cc δ) Y, ∃ x' ∈ LaS D (torConj D (tor0 D cc δ) M ρ) Y, AdpB D (tor0 D cc δ) M ρ b n x x') ∧ (∀ x' ∈ LaS D (torConj D (tor0 D cc δ) M ρ) Y, ∃ x ∈ LaS D (tor0 D cc δ) Y, AdpB D (tor0 D cc δ) M ρ b n x x') ∧ ∀ x x', AdpB D (tor0 D cc δ) M ρ b n x x' → (x ∈ LaS D (tor0 D cc δ) Y ↔ x' ∈ LaS D (torConj D (tor0 D cc δ) M ρ) Y) := by
   intro D hG hS cc δ hc M ρ hK hD hM N N' r b hb n hn

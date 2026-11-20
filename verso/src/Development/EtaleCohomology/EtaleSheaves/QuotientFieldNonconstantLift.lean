@@ -16,11 +16,11 @@ def LeafLiftNonconst : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] {X : Sch
     ∀ y : C0, ∃ a : C0, pullback.lift c0 e he.symm a ≠ pullback.lift c0 e he.symm y
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `id hc`. Establish `: JacobsonSpace C` using `LocallyOfFiniteType.jacobsonSpace c`. Use `GlobalTheory.locallyQuasiFinite_of_finite_fibres_closedPoints g fun y hy => ?_` and prove the remaining obligations. Establish `hcl : IsClosed ({g y} : Set Y)`. Use `g.isClosedMap _ hy` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Assume the negation of the conclusion as `hinf`. Use `(hC Ω c hc).2 _ (hcl.preimage g.continuous) hinf` as an intermediate fact. Take `⟨a, ha⟩` from `hn y`. Establish `: a ∈ g ⁻¹' {g y}` using `this ▸ Set.mem_univ a`.
+Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `ha this`.
+A detailed English derivation is pending.
 -/
 theorem lqf_of_nonconst (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClosed Ω] {C Y : Scheme.{0}}
     (c : C ⟶ Sp Ω) (hc : IsCurve c) (g : C ⟶ Y) [LocallyOfFiniteType g] [UniversallyClosed g]
@@ -38,7 +38,7 @@ theorem lqf_of_nonconst (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClose
   exact ha this
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `((hC Ω c0 hc).1.sdiff (Set.finite_singleton (g y))).nonempty`. Take `⟨a, rfl⟩` from `hg.surj b`. Conclude with `⟨a, by simpa using hb.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonconst_of_surj (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClosed Ω] {C0 C1 : Scheme.{0}}
     (c0 : C0 ⟶ Sp Ω) (hc : IsCurve c0) (g : C1 ⟶ C0) (hg : Surjective g) (y : C1) : ∃ a, g a ≠ g y := by
@@ -47,7 +47,7 @@ theorem nonconst_of_surj (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClos
   exact ⟨a, by simpa using hb.2⟩
 
 /- English proof (translation)
-Take `⟨_, _, _⟩` from `id hc`. Take `⟨_, _, _⟩` from `id hc1`. Establish `: LocallyOfFiniteType g` using `locallyOfFiniteType_of_comp g c0`. Establish `: UniversallyClosed g` using `UniversallyClosed.of_comp_of_isSeparated g c0`. Conclude with `lqf_of_nonconst hC (g ≫ c0) hc1 g (nonconst_of_surj hC c0 hc g hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lqf_gamma (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClosed Ω] {C0 C1 : Scheme.{0}}
     (c0 : C0 ⟶ Sp Ω) (hc : IsCurve c0) (g : C1 ⟶ C0) (hc1 : IsCurve (g ≫ c0)) (hg : Surjective g) :
@@ -59,9 +59,9 @@ theorem lqf_gamma (hC : LeafCurveSmall) {Ω : Type} [Field Ω] [IsAlgClosed Ω] 
   exact lqf_of_nonconst hC (g ≫ c0) hc1 g (nonconst_of_surj hC c0 hc g hg)
 
 /- English proof (translation)
-Introduce `k _ _ X _ p _ Ω _ _ _ hdim C0 c0 e hc0 he hgen C1 C2 γ1 γ2 h1 h2 s1 s2`. Use `⟨?_, lqf_gamma hC c0 hc0 γ1 h1 s1, lqf_gamma hC (γ1 ≫ c0) h1 γ2 h2 s2⟩` and prove the remaining obligations. Take `⟨_, _, _⟩` from `id hc0`. Use `set g := pullback.lift c0 e he.symm with hgdef`. Establish `hfst : g ≫ pullback.fst _ _ = c0` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType (g ≫ pullback.fst _ _)` using `by rw [hfst]; infer_instance`. Establish `: UniversallyClosed (g ≫ pullback.fst _ _)` using `by rw [hfst]; infer_instance`. Establish `: LocallyOfFiniteType g` using `locallyOfFiniteType_of_comp g (pullback.fst _ _)`. Establish `: UniversallyClosed g` using `UniversallyClosed.of_comp_of_isSeparated g (pullback.fst _ _)`. Conclude with `lqf_of_nonconst hC c0 hc0 g (hL k p Ω hdim c0 e hc0 he hgen)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LeafQFOmega_of (hC : LeafCurveSmall) (hL : LeafLiftNonconst) :
     LateralTheory.E.QuasiFiniteDescent.LeafQFOmega := by

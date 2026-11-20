@@ -14,7 +14,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullCubComp, pullCubCancel, sabComp pullCubComp, sabCancel pullCubCancel, abLocusOne, projProper⟩`.
+Supply the required witnesses or components.
 -/
 theorem all_six : PullCubCompSt ∧ PullCubCancelSt ∧ SABCompSt ∧ SABCancelSt ∧ AbLocusOneSt ∧ ProjProperSt :=
   ⟨pullCubComp, pullCubCancel, sabComp pullCubComp, sabCancel pullCubCancel, abLocusOne, projProper⟩
@@ -25,7 +25,7 @@ variable {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} [G
   [IsCommMonObj G'] [GrpObj G''] [IsCommMonObj G'']
 
 /- English proof (translation)
-Establish `a : eSec G ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Rewrite using `[← Category.assoc, m.e_comm, Category.assoc, a]`. Conclude with `(Category.comp_id _).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_eq (m : CubeMap G' G) : m.e = eSec G' ≫ m.F ≫ G.hom := by
   have a : eSec G ≫ G.hom = 𝟙 _ := Over.w η[G]
@@ -33,9 +33,9 @@ theorem base_eq (m : CubeMap G' G) : m.e = eSec G' ≫ m.F ≫ G.hom := by
   exact (Category.comp_id _).symm
 
 /- English proof (translation)
-Establish `h3 : m.F3 = n.F3` using `hom_ext_triple _ fun i => by rw [cubeMap_comp_proj_three, cubeMap_comp_proj_three, h]`. Establish `he : m.e = n.e` using `by rw [base_eq, base_eq, h]`. Consider the cases of `m`. Consider the cases of `n`. Simplify using `only at h h3 he`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Substitute `h h3 he` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cubeMap_ext (m n : CubeMap G' G) (h : m.F = n.F) : m = n := by
   have h3 : m.F3 = n.F3 := hom_ext_triple _ fun i => by rw [cubeMap_comp_proj_three, cubeMap_comp_proj_three, h]
@@ -52,7 +52,7 @@ section Triple
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' S'' : Scheme.{0}}
 
 /- English proof (translation)
-Use `cubeMap_ext m.cm n.cm h` as an intermediate fact. Consider the cases of `m`. Consider the cases of `n`. Simplify using `only at this`. Substitute `this` using the available equality.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -64,7 +64,7 @@ theorem sabMap_ext {t : SAB H S} {t' : SAB H S'} {f : S' ⟶ S} (m n : SABMap t'
   rfl
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `sabCancel pullCubCancel E H S S' S'' t t' t'' f g m n`. Use `⟨k, hk, fun k' hk' => sabMap_ext _ _ (m.cart.1.hom_ext (hk'.symm.trans hk) ?_)⟩` and prove the remaining obligations. Conclude with `k'.cart.1.w.trans k.cart.1.w.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem existsUnique_cancel {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f : S' ⟶ S} {g : S'' ⟶ S'}
     (m : SABMap t' t f) (n : SABMap t'' t (g ≫ f)) : ∃! m' : SABMap t'' t' g, n.φ = m'.φ ≫ m.φ := by
@@ -75,9 +75,9 @@ theorem existsUnique_cancel {t : SAB H S} {t' : SAB H S'} {t'' : SAB H S''} {f :
 end Triple
 
 /- English proof (translation)
-Use `⟨GlobalTheory.Diag.isSemiAbelian _ ℤ, Set.eq_empty_of_forall_notMem fun s hs => ?_⟩` and prove the remaining obligations. Establish `h` using `hs k (𝟙 _) ⟨s, rfl⟩`. Use `GlobalTheory.MultiplicativeTorusSetting.not_isProper_torus (k := k) ?_` and prove the remaining obligations. Establish `e : (splitTorus (Spec (CommRingCat.of k)) ℤ).hom = inv (pullback.fst (splitTorus (Spec (CommRingCat.of k)) ℤ).hom (𝟙 _)) ≫ pullback.snd _ (𝟙 _)`. Rewrite using `[IsIso.eq_inv_comp, pullback.condition, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abLocus_torus (k : Type) [Field k] [IsAlgClosed k] [CharZero k] :
     IsSemiAbelian (splitTorus (Spec (CommRingCat.of k)) ℤ) ∧ abLocus (splitTorus (Spec (CommRingCat.of k)) ℤ) = ∅ := by
@@ -91,7 +91,7 @@ theorem abLocus_torus (k : Type) [Field k] [IsAlgClosed k] [CharZero k] :
   infer_instance
 
 /- English proof (translation)
-Introduce `h` and use `by have hp := projProper R _ _ h have hf : IsFinite (spMap (Polynomial.C : R →+* Polynomial R)) := IsFinite.iff_isProper_and_isAffineHom.2 ⟨hp, inferInstance⟩ have h2 := (IsFinite.SpecMap_iff _).1 hf exact Polynomial.not_finite (R := R) (RingHom.finite_algebraMap.1 h2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isProjOver_affineLine (R : Type) [CommRing R] [Nontrivial R] :
     ¬ IsProjOver (spMap (Polynomial.C : R →+* Polynomial R)) := fun h => by

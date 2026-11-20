@@ -11,25 +11,23 @@ section LinAlg
 variable {K : Type*} [Field K] {m : ℕ}
 
 /- English proof (translation)
-Establish `hdet : M.det ≠ 0`. Introduce `h0`. Use `congrArg Matrix.det h` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin]`. Distinguish the cases in `hm : m = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hm` using the available equality. Simplify using `[Matrix.det_isEmpty] at h0`. Conclude with `pow_ne_zero _ ha this.symm`. Establish `hroot : ∀ x ∈ M.charpoly.roots, x ≠ 0 ∧ a / x ∈ N.charpoly.roots`. Introduce `x hx`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx0 : M.charpoly.eval x = 0` using `(Polynomial.mem_roots'.1 hx).2`. Rewrite `hx0` using `[Matrix.eval_charpoly]`. Establish `hne : x ≠ 0`. Introduce and unpack `rfl`. Apply `hdet` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hx0` using `[Matrix.det_neg]`. Use `⟨hne, Polynomial.mem_roots'.2 ⟨(Matrix.charpoly_monic N).ne_zero, ?_⟩⟩` and prove the remaining obligations. Use `show N.charpoly.eval (a / x) = 0`. Rewrite using `[Matrix.eval_charpoly]`. Establish `e : Matrix.scalar (Fin m) (a / x) - N = (-x⁻¹) • (N * (Matrix.scalar (Fin m) x - M))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mul_sub, h, Matrix.scalar_apply, Matrix.scalar_apply]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.mul_apply, Matrix.diagonal_apply, Matrix.one_apply] <;> field_simp <;> ring`. Rewrite using `[e, Matrix.det_smul, Matrix.det_mul, hx0, mul_zero, mul_zero]`. Establish `hnd : M.charpoly.roots.Nodup` using `Polynomial.nodup_roots hM`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcM : M.charpoly.roots.card = m`. Use `Polynomial.splits_iff_card_roots.1 (IsAlgClosed.splits M.charpoly)` as an intermediate fact. Rewrite using `[this, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hcN : N.charpoly.roots.card = m`. Use `Polynomial.splits_iff_card_roots.1 (IsAlgClosed.splits N.charpoly)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hinj : Set.InjOn (fun x : K => a / x) (M.charpoly.roots.toFinset : Set K)`. Introduce `x hx y hy hxy`. Establish `hx0` using `(hroot x (by simpa using hx)).1`. Establish `hy0` using `(hroot y (by simpa using hy)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy' : a * x⁻¹ = a * y⁻¹` using `by simpa only [div_eq_mul_inv] using hxy`. Conclude with `inv_injective (mul_left_cancel₀ ha hxy')`. Establish `hsub : M.charpoly.roots.toFinset.image (fun x : K => a / x) ⊆ N.charpoly.roots.toFinset`. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Multiset.mem_toFinset.2 (hroot x (Multiset.mem_toFinset.1 hx)).2`. Establish `hle : m ≤ N.charpoly.roots.toFinset.card`. Establish `h1` using `Finset.card_le_card hsub`. Rewrite `h1` using `[Finset.card_image_of_injOn hinj, Multiset.toFinset_card_of_nodup hnd, hcM]`. Then use the resulting hypothesis. Establish `hndN : N.charpoly.roots.Nodup`.
-
-Rewrite using `[← Multiset.dedup_card_eq_card_iff_nodup]`. Use `le_antisymm (Multiset.card_le_card (Multiset.dedup_le _)) ?_` and prove the remaining obligations. Rewrite using `[hcN]`. Conclude with `hle`. Conclude with `(Polynomial.nodup_roots_iff_of_splits (Matrix.charpoly_monic N).ne_zero (IsAlgClosed.splits _)).1 hndN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_of_mul_closed [IsAlgClosed K] {M N : Matrix (Fin m) (Fin m) K} {a : K} (ha : a ≠ 0)
     (h : N * M = a • (1 : Matrix (Fin m) (Fin m) K)) (hM : M.charpoly.Separable) : N.charpoly.Separable := by
@@ -86,9 +84,9 @@ private theorem sep_of_mul_closed [IsAlgClosed K] {M N : Matrix (Fin m) (Fin m) 
   exact (Polynomial.nodup_roots_iff_of_splits (Matrix.charpoly_monic N).ne_zero (IsAlgClosed.splits _)).1 hndN
 
 /- English proof (translation)
-Establish `h' : N.map (algebraMap K (AlgebraicClosure K)) * M.map (algebraMap K (AlgebraicClosure K)) = algebraMap K (AlgebraicClosure K) a • (1 : Matrix (Fin m) (Fin m) (AlgebraicClosure K))`. Rewrite using `[← Matrix.map_mul, h]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply]`. Establish `h2` using `sep_of_mul_closed (K := AlgebraicClosure K) (a := algebraMap K (AlgebraicClosure K) a) (by simpa using ha) h' (by rw [Matrix.charpoly_map]; exact hM.map)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.charpoly_map]`. Conclude with `(Polynomial.separable_map _).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sep_of_mul {M N : Matrix (Fin m) (Fin m) K} {a : K} (ha : a ≠ 0)
     (h : N * M = a • (1 : Matrix (Fin m) (Fin m) K)) (hM : M.charpoly.Separable) : N.charpoly.Separable := by
@@ -107,11 +105,11 @@ end LinAlg
 end UpperTheory.Gal.Spc
 
 /- English proof (translation)
-Introduce `E _ _ _ n g w hw`. Establish `h0 : (g.1.1.val.map (conjFin (conjE E)))ᵀ * g.1.1.val = GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E (g.1.2 : UpperTheory.Gal.CertificateRingHomMap.AfQ) • (1 : Matrix (Fin n) (Fin n) _)` using `g.2`. Establish `h1` using `congrArg (RingHom.mapMatrix (pLoc E w)) h0`. Rewrite `h1` using `[map_mul]`. Establish `ha : pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E (g.1.2 : UpperTheory.Gal.CertificateRingHomMap.AfQ)) ≠ 0` using `((g.1.2.isUnit.map (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E)).map (pLoc E w)).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (((UpperTheory.Gal.CertificateRingHomMap.comp (UpperTheory.Gal.CertificateRingHomMap.cj w) g).val.map (conjLoc (conjE E) w))ᵀ) * (UpperTheory.Gal.CertificateRingHomMap.comp w g).val = pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E (g.1.2 : UpperTheory.Gal.C …`. Use `Eq.trans ?_ (h1.trans ?_)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h3` using `UpperTheory.Gal.Spc.sep_of_mul ha h2 hw`. Rewrite `h3` using `[Matrix.charpoly_transpose, Matrix.charpoly_map]`. Conclude with `(Polynomial.separable_map _).1 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Spc.sepConj :
     UpperTheory.Gal.Spc.SepConj := by

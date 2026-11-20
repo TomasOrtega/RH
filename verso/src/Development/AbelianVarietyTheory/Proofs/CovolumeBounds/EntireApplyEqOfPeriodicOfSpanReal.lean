@@ -11,7 +11,7 @@ variable {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Use `hF.apply_eq_apply_of_bounded ((hK.image hF.continuous).isBounded.subset ?_) z w` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨k, hk, h⟩` from `hcov x`. Conclude with `⟨k, hk, h.symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem entire_apply_eq_of_values_on_compact {F : E → V} (hF : Differentiable ℂ F) {K : Set E}
     (hK : IsCompact K) (hcov : ∀ x, ∃ k ∈ K, F x = F k) (z w : E) : F z = F w := by
@@ -21,7 +21,7 @@ theorem entire_apply_eq_of_values_on_compact {F : E → V} (hF : Differentiable 
   exact ⟨k, hk, h.symm⟩
 
 /- English proof (translation)
-Use `entire_apply_eq_of_values_on_compact hF hK (fun x => ?_) z w` and prove the remaining obligations. Take `⟨k, hk, g, hg, rfl⟩` from `hcov x`. Conclude with `⟨k, hk, hper k g hg⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem entire_apply_eq_of_periodic_of_compact {F : E → V} (hF : Differentiable ℂ F)
     {G K : Set E} (hK : IsCompact K) (hcov : ∀ x, ∃ k ∈ K, ∃ g ∈ G, x = k + g)
@@ -31,7 +31,7 @@ theorem entire_apply_eq_of_periodic_of_compact {F : E → V} (hF : Differentiabl
   exact ⟨k, hk, hper k g hg⟩
 
 /- English proof (translation)
-Use `haveI : ProperSpace E := FiniteDimensional.proper ℂ E`. Use `entire_apply_eq_of_periodic_of_compact hF hK.isCompact_closure (fun x => ?_) hper z w` and prove the remaining obligations. Take `⟨k, hk, g, hg, h⟩` from `hcov x`. Conclude with `⟨k, subset_closure hk, g, hg, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem entire_apply_eq_of_periodic_of_bounded [FiniteDimensional ℂ E] {F : E → V}
     (hF : Differentiable ℂ F) {G K : Set E} (hK : Bornology.IsBounded K)
@@ -43,7 +43,7 @@ theorem entire_apply_eq_of_periodic_of_bounded [FiniteDimensional ℂ E] {F : E 
   exact ⟨k, subset_closure hk, g, hg, h⟩
 
 /- English proof (translation)
-Use `⟨F 0, fun z => entire_apply_eq_of_periodic_of_bounded hF (G := G) hK (fun x => ?_) hper z 0⟩` and prove the remaining obligations. Take `⟨g, hg, k, hk, h⟩` from `hcov x`. Conclude with `⟨k, hk, g, hg, h.trans (add_comm _ _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem entire_const_of_addSubgroup_periodic [FiniteDimensional ℂ E] {F : E → V}
     (hF : Differentiable ℂ F) (G : AddSubgroup E) {K : Set E} (hK : Bornology.IsBounded K)
@@ -55,7 +55,7 @@ theorem entire_const_of_addSubgroup_periodic [FiniteDimensional ℂ E] {F : E �
   exact ⟨k, hk, g, hg, h.trans (add_comm _ _)⟩
 
 /- English proof (translation)
-The claim follows from `hF.apply_eq_apply_of_bounded (IsZLattice.isCompact_range_of_periodic L F hF.continuous hper).isBounded z w`.
+A detailed English derivation is pending.
 -/
 theorem entire_apply_eq_of_isZLattice_periodic [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     {F : E → V} (hF : Differentiable ℂ F) (L : Submodule ℤ E) [DiscreteTopology L]
@@ -66,7 +66,7 @@ theorem entire_apply_eq_of_isZLattice_periodic [NormedSpace ℝ E] [FiniteDimens
 omit [NormedSpace ℂ E] [NormedAddCommGroup V] [NormedSpace ℂ V] in
 
 /- English proof (translation)
-Set `P : AddSubgroup E` to `{ carrier := {g | ∀ x, F (x + g) = F x} zero_mem' := fun x => by simp add_mem' := fun {a b} ha hb x => by rw [← add_assoc, hb, ha] neg_mem' := fun {a} ha x => by rw [← ha (x + -a)]; simp }`. Introduce `x g hg`. Establish `: Submodule.span ℤ S ≤ AddSubgroup.toIntSubmodule P` using `Submodule.span_le.2 fun s hs y => hper y s hs`. Conclude with `this hg x`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem periodic_of_mem_span_int {F : E → V} {S : Set E}
     (hper : ∀ x, ∀ g ∈ S, F (x + g) = F x) :
@@ -82,9 +82,7 @@ theorem periodic_of_mem_span_int {F : E → V} {S : Set E}
   exact this hg x
 
 /- English proof (translation)
-Take `⟨t, htS, hspan, hli⟩` from `exists_linearIndependent ℝ S`. Set `b : Module.Basis t ℝ E` to `Module.Basis.mk hli (by simp [hspan, hS])`. Use `haveI : Finite t := Module.Finite.finite_basis b`. Use `entire_apply_eq_of_isZLattice_periodic hF (Submodule.span ℤ (range b)) (periodic_of_mem_span_int ?_) z w` and prove the remaining obligations. Introduce and unpack `x _ ⟨i, rfl⟩`.
-
-Conclude with `hper x _ (by simpa [b] using htS i.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem entire_apply_eq_of_periodic_of_span_real [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     {F : E → V} (hF : Differentiable ℂ F) {S : Set E} (hS : Submodule.span ℝ S = ⊤)
@@ -104,13 +102,11 @@ section Polynomial
 variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [CompleteSpace V]
 
 /- English proof (translation)
-Establish `hC : 0 ≤ C` using `by simpa using (norm_nonneg _).trans (hb 0)`. Establish `key : ∀ R : ℝ, 1 ≤ R → ‖iteratedDeriv n F 0‖ ≤ (n ! * C * 2 ^ m) / R`. Introduce `R hR`. Establish `hR0 : 0 < R` using `by linarith`. Establish `h` using `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (c := 0) (R := R) (C := C * (2 ^ m * R ^ m)) n hR0 hF.diffContOnCl (fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz' : ‖z‖ = R` using `by simpa using hz`. Use `(hb z).trans ?_` and prove the remaining obligations. Rewrite using `[hz', ← mul_pow]`. Use `gcongr`. Use the proof step `linarith)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[div_le_div_iff₀ (by positivity) hR0]`. Establish `: R ^ m * R ≤ R ^ n`. Rewrite using `[← pow_succ]`. Conclude with `pow_le_pow_right₀ hR hn`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `lim : Tendsto (fun R : ℝ => (n ! * C * 2 ^ m) / R) atTop (𝓝 0)` using `tendsto_const_nhds.div_atTop tendsto_id`. Conclude with `norm_le_zero_iff.1 (ge_of_tendsto lim ((eventually_ge_atTop 1).mono key))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_zero_eq_zero_of_poly_bound {F : ℂ → V} (hF : Differentiable ℂ F) {C : ℝ}
     {m : ℕ} (hb : ∀ z, ‖F z‖ ≤ C * (1 + ‖z‖) ^ m) {n : ℕ} (hn : m < n) :
@@ -138,9 +134,9 @@ theorem iteratedDeriv_zero_eq_zero_of_poly_bound {F : ℂ → V} (hF : Different
   exact norm_le_zero_iff.1 (ge_of_tendsto lim ((eventually_ge_atTop 1).mono key))
 
 /- English proof (translation)
-Establish `h` using `Complex.hasSum_taylorSeries_of_entire hF 0 z`. Establish `h2` using `hasSum_sum_of_ne_finset_zero (L := SummationFilter.unconditional ℕ) (f := fun n : ℕ => (n ! : ℂ)⁻¹ • (z - 0) ^ n • iteratedDeriv n F 0) (s := Finset.range (m + 1)) (fun n hn => by`. Establish `: m < n` using `by simpa using hn`. Simplify using `[iteratedDeriv_zero_eq_zero_of_poly_bound hF hb this])`. Rewrite using `[h.unique h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[sub_zero, smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem entire_eq_taylor_sum_of_poly_bound {F : ℂ → V} (hF : Differentiable ℂ F) {C : ℝ}
     {m : ℕ} (hb : ∀ z, ‖F z‖ ≤ C * (1 + ‖z‖) ^ m) (z : ℂ) :
@@ -156,7 +152,7 @@ theorem entire_eq_taylor_sum_of_poly_bound {F : ℂ → V} (hF : Differentiable 
   rw [sub_zero, smul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, entire_eq_taylor_sum_of_poly_bound hF hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem entire_exists_coeff_of_poly_bound {F : ℂ → V} (hF : Differentiable ℂ F) {C : ℝ}
     {m : ℕ} (hb : ∀ z, ‖F z‖ ≤ C * (1 + ‖z‖) ^ m) :
@@ -164,9 +160,9 @@ theorem entire_exists_coeff_of_poly_bound {F : ℂ → V} (hF : Differentiable �
   ⟨_, entire_eq_taylor_sum_of_poly_bound hF hb⟩
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `entire_exists_coeff_of_poly_bound hF hb`. Use `⟨∑ k ∈ Finset.range (m + 1), Polynomial.monomial k (a k), ?_, fun z => ?_⟩` and prove the remaining obligations. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun k hk => ?_` and prove the remaining obligations. Conclude with `(Polynomial.natDegree_monomial_le _).trans (by simpa [Nat.lt_succ_iff] using hk)`. Rewrite using `[ha z, Polynomial.eval_finset_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entire_exists_polynomial_of_poly_bound {F : ℂ → ℂ} (hF : Differentiable ℂ F) {C : ℝ}
     {m : ℕ} (hb : ∀ z, ‖F z‖ ≤ C * (1 + ‖z‖) ^ m) :

@@ -20,9 +20,9 @@ abbrev IncreasingRowChoicePerColumn (N : ℕ) (Y : YoungDiagram) : Type := ∀ c
 def sig {Lt : Type} (N : ℕ) (s : Lt) : Fin N × Fin N → Lt × ℕ × Fin N := fun v => (s, (v.2 : ℕ), v.1)
 
 /- English proof (translation)
-Unfold `WeylLatticeDuality.nablaX GlobalTheory.WeylMinorDual.colProd Formalism.GradedWeylDivisibility.bideterminant`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.GradedWeylDivisibility.initMinor`. Rewrite using `[RingHom.map_det, AlgHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use `ext1 p q`. Simplify using `[sig]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_nablaX {Lt : Type} [Fintype Lt] (K : Type) [CommRing K] (N : ℕ) (nu : Lt → YoungDiagram)
     (hY : ∀ s, (nu s).colLen 0 ≤ N) (J : WeylLatticeDuality.ColChoice N nu) :
@@ -40,7 +40,7 @@ theorem map_nablaX {Lt : Type} [Fintype Lt] (K : Type) [CommRing K] (N : ℕ) (n
   simp [sig]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc'`. Establish `hc` using `not_le.mp hc'`. Establish `h1 : (N, 0) ∈ Y` using `YoungDiagram.mem_iff_lt_colLen.mpr hc`. Establish `h2` using `YoungDiagram.mem_iff_lt_rowLen.mp h1`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem colLen_le_of_rowLen {N : ℕ} {Y : YoungDiagram} (h : Y.rowLen N = 0) : Y.colLen 0 ≤ N := by
   by_contra hc'

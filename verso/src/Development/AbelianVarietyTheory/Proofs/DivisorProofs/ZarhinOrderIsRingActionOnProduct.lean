@@ -13,19 +13,19 @@ variable {M M' : Type*} [CommGroup M] [CommGroup M']
 def E (x y : Fin 4 → M) (α β : Fin 4 → ℤ) : M := ∏ k, x k ^ α k * y k ^ β k
 
 /- English proof (translation)
-Simplify using `only [E, map_prod, map_mul, map_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_E (f : M →* M') (x y : Fin 4 → M) (α β : Fin 4 → ℤ) :
     f (E x y α β) = E (fun k => f (x k)) (fun k => f (y k)) α β := by
   simp only [E, map_prod, map_mul, map_zpow]
 
 /- English proof (translation)
-Simplify using `[E]`.
+Simplify using the standard rewrite rules.
 -/
 theorem E_zero (x y : Fin 4 → M) : E x y 0 0 = 1 := by simp [E]
 
 /- English proof (translation)
-Simplify using `only [E, Pi.add_apply, zpow_add, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem E_add (x y : Fin 4 → M) (α β α' β' : Fin 4 → ℤ) :
     E x y (α + α') (β + β') = E x y α β * E x y α' β' := by
@@ -33,7 +33,7 @@ theorem E_add (x y : Fin 4 → M) (α β α' β' : Fin 4 → ℤ) :
   exact Finset.prod_congr rfl fun k _ => mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [E, ← Finset.prod_zpow, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.prod_congr rfl fun k _ => by`. Rewrite using `[mul_zpow, ← zpow_mul, ← zpow_mul, mul_comm (α k), mul_comm (β k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_zsmul (x y : Fin 4 → M) (n : ℤ) (α β : Fin 4 → ℤ) :
     E x y (n • α) (n • β) = E x y α β ^ n := by
@@ -42,7 +42,7 @@ theorem E_zsmul (x y : Fin 4 → M) (n : ℤ) (α β : Fin 4 → ℤ) :
     rw [mul_zpow, ← zpow_mul, ← zpow_mul, mul_comm (α k), mul_comm (β k)]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, Finset.prod_empty]`. Conclude with `E_zero x y`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Finset.prod_insert hj, E_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem E_sum {J : Type*} (s : Finset J) (x y : Fin 4 → M) (α β : J → Fin 4 → ℤ) :
     E x y (∑ j ∈ s, α j) (∑ j ∈ s, β j) = ∏ j ∈ s, E x y (α j) (β j) := by
@@ -52,7 +52,7 @@ theorem E_sum {J : Type*} (s : Finset J) (x y : Fin 4 → M) (α β : J → Fin 
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, Finset.prod_insert hj, E_add, ih]
 
 /- English proof (translation)
-Rewrite using `[E_sum]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [E_add, E_zsmul, E_zsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_nest (x y : Fin 4 → M) (a b c e : Fin 4 → Fin 4 → ℤ) (gm dl : Fin 4 → ℤ) :
     E (fun j => E x y (a j) (b j)) (fun j => E x y (c j) (e j)) gm dl =
@@ -61,7 +61,7 @@ theorem E_nest (x y : Fin 4 → M) (a b c e : Fin 4 → Fin 4 → ℤ) (gm dl : 
   exact Finset.prod_congr rfl fun j _ => by rw [E_add, E_zsmul, E_zsmul]
 
 /- English proof (translation)
-Simplify using `only [E, mul_zpow, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => mul_mul_mul_comm _ _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem E_mul (x y x' y' : Fin 4 → M) (α β : Fin 4 → ℤ) :
     E (fun k => x k * x' k) (fun k => y k * y' k) α β = E x y α β * E x' y' α β := by
@@ -69,7 +69,7 @@ theorem E_mul (x y x' y' : Fin 4 → M) (α β : Fin 4 → ℤ) :
   exact Finset.prod_congr rfl fun k _ => mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Simplify using `only [E, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← zpow_natCast, ← zpow_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem E_pow_left (x y : Fin 4 → M) (n : ℕ) (α β : Fin 4 → ℤ) :
     E (fun k => x k ^ n) y α β = E x y ((n : ℤ) • α) β := by
@@ -77,7 +77,7 @@ theorem E_pow_left (x y : Fin 4 → M) (n : ℕ) (α β : Fin 4 → ℤ) :
   exact Finset.prod_congr rfl fun k _ => by rw [← zpow_natCast, ← zpow_mul]
 
 /- English proof (translation)
-Simplify using `only [E, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← zpow_natCast (y k), ← zpow_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem E_pow_right (x y : Fin 4 → M) (n : ℕ) (α β : Fin 4 → ℤ) :
     E x (fun k => y k ^ n) α β = E x y α ((n : ℤ) • β) := by
@@ -91,7 +91,7 @@ section Hom
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Rewrite using `[MonObj.one_eq_one, MonObj.one_eq_one]`. Conclude with `map_one (MonoidHom.mk' (fun x : 𝟙_ (Over S) ⟶ G ↦ x ≫ f) (h _))`. Use `mul_hom := by`. Rewrite using `[MonObj.mul_eq_mul, h, MonObj.mul_eq_mul, MonObj.comp_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_mul_comp {G H : Over S} [GrpObj G] [GrpObj H] (f : G ⟶ H)
     (h : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f where
@@ -109,14 +109,14 @@ def postHom {T G H : Over S} [GrpObj G] [GrpObj H] (g : G ⟶ H) [IsMonHom g] : 
   MonoidHom.mk' (fun a => a ≫ g) fun a b => MonObj.mul_comp a b g
 
 /- English proof (translation)
-The claim follows from `map_E (preHom p) x y α β`.
+A detailed English derivation is pending.
 -/
 theorem comp_E {T T' G : Over S} [GrpObj G] [IsCommMonObj G] (p : T' ⟶ T) (x y : Fin 4 → (T ⟶ G))
     (α β : Fin 4 → ℤ) : p ≫ E x y α β = E (fun k => p ≫ x k) (fun k => p ≫ y k) α β :=
   map_E (preHom p) x y α β
 
 /- English proof (translation)
-The claim follows from `map_E (postHom g) x y α β`.
+A detailed English derivation is pending.
 -/
 theorem E_comp {T G H : Over S} [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H] (g : G ⟶ H) [IsMonHom g]
     (x y : Fin 4 → (T ⟶ G)) (α β : Fin 4 → ℤ) : E x y α β ≫ g = E (fun k => x k ≫ g) (fun k => y k ≫ g) α β :=
@@ -131,7 +131,7 @@ variable {S : Scheme.{0}} (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] 
 abbrev Mt := Matrix (Fin 4 ⊕ Fin 4) (Fin 4 ⊕ Fin 4) ℤ
 
 /- English proof (translation)
-Simplify using `only [mkZ, pa, lift_fst_assoc]`. Conclude with `(Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (i : Fin 4) :
     mkZ A B u v ≫ pa A B i = u i := by
@@ -139,7 +139,7 @@ theorem mkZ_pa {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit A 4).fac (Fan.mk T u) ⟨i⟩
 
 /- English proof (translation)
-Simplify using `only [mkZ, pb, lift_snd_assoc]`. Conclude with `(Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) (j : Fin 4) :
     mkZ A B u v ≫ pb A B j = v j := by
@@ -147,9 +147,9 @@ theorem mkZ_pb {T : Over S} (u : Fin 4 → (T ⟶ A)) (v : Fin 4 → (T ⟶ B)) 
   exact (Out.powIsLimit B 4).fac (Fan.mk T v) ⟨j⟩
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Apply `(Out.powIsLimit A 4).hom_ext` to reduce the goal to its premises. Introduce and unpack `⟨i⟩`. Simplify `ha i` using `[pa]`. Apply `(Out.powIsLimit B 4).hom_ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨j⟩`. Simplify `hb j` using `[pb]`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hom_ext {T : Over S} {f g : T ⟶ Zob A B} (ha : ∀ i, f ≫ pa A B i = g ≫ pa A B i)
     (hb : ∀ j, f ≫ pb A B j = g ≫ pb A B j) : f = g := by
@@ -168,7 +168,7 @@ instance pb_isMonHom (j : Fin 4) : IsMonHom (pb A B j) := by unfold pb; infer_in
 variable {A B} (d : ℕ) (la : A ⟶ B) (mu : B ⟶ A)
 
 /- English proof (translation)
-Rewrite using `[actZ, mkZ_pa]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actZ_pa (N : ord d) (i : Fin 4) :
     actZ A B d la mu N ≫ pa A B i =
@@ -177,7 +177,7 @@ theorem actZ_pa (N : ord d) (i : Fin 4) :
   rw [actZ, mkZ_pa]; rfl
 
 /- English proof (translation)
-Rewrite using `[actZ, mkZ_pb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actZ_pb (N : ord d) (i : Fin 4) :
     actZ A B d la mu N ≫ pb A B i =
@@ -188,7 +188,7 @@ theorem actZ_pb (N : ord d) (i : Fin 4) :
 variable {d la mu}
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, actZ_pb, E_comp]`. Establish `e : ∀ k, (pa A B k ≫ la) ≫ mu = pa A B k ^ d` using `fun k => by`. Rewrite using `[Category.assoc, hla, MonObj.comp_pow, Category.comp_id]`. Simplify using `only [e, Category.assoc]`. Conclude with `E_pow_left (fun k => pa A B k) _ d _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actZ_pb_mu [IsMonHom mu] (hla : la ≫ mu = 𝟙 A ^ d) (N : ord d) (i : Fin 4) :
     actZ A B d la mu N ≫ pb A B i ≫ mu =
@@ -201,7 +201,7 @@ theorem actZ_pb_mu [IsMonHom mu] (hla : la ≫ mu = 𝟙 A ^ d) (N : ord d) (i :
   exact E_pow_left (fun k => pa A B k) _ d _ _
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, actZ_pa, E_comp]`. Establish `e : ∀ k, (pb A B k ≫ mu) ≫ la = pb A B k ^ d` using `fun k => by`. Rewrite using `[Category.assoc, hml, MonObj.comp_pow, Category.comp_id]`. Simplify using `only [e]`. Conclude with `E_pow_right _ (fun k => pb A B k) d _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actZ_pa_la [IsMonHom la] (hml : mu ≫ la = 𝟙 B ^ d) (N : ord d) (i : Fin 4) :
     actZ A B d la mu N ≫ pa A B i ≫ la =
@@ -214,7 +214,7 @@ theorem actZ_pa_la [IsMonHom la] (hml : mu ≫ la = 𝟙 B ^ d) (N : ord d) (i :
   exact E_pow_right _ (fun k => pb A B k) d _ _
 
 /- English proof (translation)
-Use `isMonHom_of_mul_comp _ fun T x y => hom_ext A B (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc, actZ_pa, MonObj.mul_comp, comp_E]`. Conclude with `E_mul _ _ _ _ _ _`. Simplify using `only [Category.assoc, actZ_pb, MonObj.mul_comp, comp_E]`. Conclude with `E_mul _ _ _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actZ_isMonHom [IsMonHom la] [IsMonHom mu] (N : ord d) : IsMonHom (actZ A B d la mu N) := by
   refine isMonHom_of_mul_comp _ fun T x y => hom_ext A B (fun i => ?_) (fun i => ?_)
@@ -224,7 +224,7 @@ theorem actZ_isMonHom [IsMonHom la] [IsMonHom mu] (N : ord d) : IsMonHom (actZ A
     exact E_mul _ _ _ _ _ _
 
 /- English proof (translation)
-Use `hom_ext A B (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[actZ_pa, Category.id_comp]`. Simplify using `[E, Matrix.one_apply]`. Rewrite using `[actZ_pb, Category.id_comp]`. Simplify using `[E, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem actZ_one : actZ A B d la mu 1 = 𝟙 _ := by
   refine hom_ext A B (fun i => ?_) (fun i => ?_)
@@ -234,9 +234,9 @@ theorem actZ_one : actZ A B d la mu 1 = 𝟙 _ := by
     simp [E, Matrix.one_apply]
 
 /- English proof (translation)
-Use `hom_ext A B (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, actZ_pa, actZ_pa, actZ_pa, ← E_add]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Subring.coe_add, Matrix.add_apply, Pi.add_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Int.add_ediv_of_dvd_left (N.2 j i)`. Rewrite using `[MonObj.mul_comp, actZ_pb, actZ_pb, actZ_pb, ← E_add]`. Apply the tactic sequence `congr 1 <;> funext j <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem actZ_add (N N' : ord d) : actZ A B d la mu (N + N') = actZ A B d la mu N * actZ A B d la mu N' := by
   refine hom_ext A B (fun i => ?_) (fun i => ?_)
@@ -249,15 +249,13 @@ theorem actZ_add (N N' : ord d) : actZ A B d la mu (N + N') = actZ A B d la mu N
     congr 1 <;> funext j <;> simp
 
 /- English proof (translation)
-Establish `hd0 : (d : ℤ) ≠ 0` using `by exact_mod_cast hd.ne'`. Take `⟨q, hq⟩ : ∃ q : Fin 4 → Fin 4 → ℤ, ∀ i j, (N : Mt) (.inr i) (.inl j) = d * q i j` from `⟨fun i j => Classical.choose (N.2 i j), fun i j => Classical.choose_spec (N.2 i j)⟩`. Take `⟨q', hq'⟩ : ∃ q : Fin 4 → Fin 4 → ℤ, ∀ i j, (N' : Mt) (.inr i) (.inl j) = d * q i j` from `⟨fun i j => Classical.choose (N'.2 i j), fun i j => Classical.choose_spec (N'.2 i j)⟩`. Use `hom_ext A B (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `only [Category.assoc, actZ_pa, comp_E, actZ_pb_mu hla]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[E_nest]`. Apply the tactic sequence `congr 1 <;> funext k`. Simplify using `only [Subring.coe_mul, Matrix.mul_apply, Fintype.sum_sum_type, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hq', Int.mul_ediv_cancel_left _ hd0]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subring.coe_mul, Matrix.mul_apply, Fintype.sum_sum_type, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hq, hq', Int.mul_ediv_cancel_left _ hd0]`. Use `Int.ediv_eq_of_eq_mul_right hd0 ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Simplify using `only [Category.assoc, actZ_pb, comp_E, actZ_pa_la hml]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[E_nest]`. Apply the tactic sequence `congr 1 <;> funext k`. Simplify using `only [Subring.coe_mul, Matrix.mul_apply, Fintype.sum_sum_type, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
-
-Simplify using `only [Subring.coe_mul, Matrix.mul_apply, Fintype.sum_sum_type, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hq, Int.mul_ediv_cancel_left _ hd0]`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actZ_mul [IsMonHom la] [IsMonHom mu] (hla : la ≫ mu = 𝟙 A ^ d) (hml : mu ≫ la = 𝟙 B ^ d) (hd : 0 < d)
     (N N' : ord d) : actZ A B d la mu (N * N') = actZ A B d la mu N ≫ actZ A B d la mu N' := by
@@ -294,7 +292,7 @@ theorem actZ_mul [IsMonHom la] [IsMonHom mu] (hla : la ≫ mu = 𝟙 A ^ d) (hml
 end Zob
 
 /- English proof (translation)
-Introduce `h M d S t c B _ _ Q la mu hZ _ _ _ hd _ _ _`. Take `⟨-, -, -, hla, hmu, hlm, hml, -⟩` from `hZ`. Use `haveI := hla`. Use `haveI := hmu`. Conclude with `⟨fun N => actZ_isMonHom N, actZ_one, fun N N' => actZ_mul hlm hml hd N N', fun N N' => actZ_add N N'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem actZ_isRAct : ∀ (h M d : ℕ) (S : Scheme.{0}) (t : S ⟶ Sp (cycAway M)) (c : SiegPre h M (zetaAway M) t)
     (B : Over S) [GrpObj B] [IsCommMonObj B] (Q : LB (c.A ⊗ B).left) (la : c.A ⟶ B) (mu : B ⟶ c.A)

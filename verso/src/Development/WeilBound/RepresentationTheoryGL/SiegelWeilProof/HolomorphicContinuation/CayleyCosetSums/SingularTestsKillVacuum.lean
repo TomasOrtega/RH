@@ -9,9 +9,9 @@ namespace PositivityTheory.Rg.Sw.HSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 
 /- English proof (translation)
-Introduce `n m e hmn Kg _ _ _ _ _ _ μ _ ι hι hK ρ ψ a b x hρ hψ ha hb hx`. Establish `mulG : ∀ {p q : M2 n}, InG p → InG q → InG (p * q)`. Introduce `p q hp hq`. Unfold `InG at *`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = JJ n := by rw [hp, hq]`. Establish `hG : ∀ k, InG (ι k)` using `fun k => ((hK (ι k)).2 ⟨k, rfl⟩).1`. Establish `h : ∀ k, ∫ t, fz m e 0 (x * ι k * a * nU (herm t) * b) * ψ t = 0` using `fun k => L3.vanish_all hmn e _ b (mulG (mulG hx (hG k)) ha) hb ψ hψ`. Simplify using `only [tOp, h, mul_zero, integral_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lt3 : SingularTestsKillVacuum := by
   intro n m e hmn Kg _ _ _ _ _ _ μ _ ι hι hK ρ ψ a b x hρ hψ ha hb hx

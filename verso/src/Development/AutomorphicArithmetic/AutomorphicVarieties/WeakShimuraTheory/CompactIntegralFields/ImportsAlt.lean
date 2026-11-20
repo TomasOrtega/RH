@@ -12,37 +12,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.BuildingsResidueCh
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `_ Ω _ _ _ l _ c D T hFit _ ι c' h X J hPM v i j hij q hq hJ hϖ hU dv hdv`. Establish `hOk` using `hFit.1`. Establish `hl2 : l ≠ 2`. Break down `hFit.2 with h | h` into its components or cases. Conclude with `h.1.1.l_odd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h.1.1.l_odd`. Use `haveI : IsAlgClosure T.F Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) _⟩`. Use `haveI : IsGalois T.F Ω := IsAlgClosure.isGalois T.F Ω`. Use `haveI : Nonempty T.ι := ⟨v⟩`. Establish `hg : 0 < Nat.card T.ι` using `Nat.card_pos`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI hcD : ∀ u, CompactSpace (Dec (F := T.F) (T.pl u)) := fun u => isCompact_iff_compactSpace.1 (isClosed_Dec (T.pl u)).isCompact`. Set `I : ∀ u, Subgroup (Dec (F` to `T.F) (T.pl u)) := fun u => (Ine (F := T.F) (T.pl u)).subgroupOf _`. Establish `hs : ∀ u, ∃ s : Fin dv → Dec (F` using `T.F) (T.pl u), (∀ k, s k ∈ I u) ∧ Pins l (I u) (Set.range s) := fun u => by`. Take `⟨w, hw, hlw, hd⟩` from `UpperTheory.exists_place_over_l_locDeg_mul_card_eq D T u`. Take `⟨A⟩` from `UpperTheory.nonempty_localWeilData_decompositionGroup_of_mem_place l (T.pl u) w hw hlw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : locDeg w = dv` from `Nat.eq_of_mul_eq_mul_right hg (hd.trans hdv.symm)`. Conclude with `UpperTheory.exists_pinning_elements_of_locAb l _ _ _ A`. Use `choose s hsI hsP using hs`. Take `⟨s0, hs0, hP0⟩` from `UpperTheory.exists_mem_pins_insert_ker_of_padic_character l hl2 _ (I v) ((isClosed_Ine (T.pl v)).preimage continuous_subtype_val) ((cycZ T.F Ω l).comp (Dec (F := T.F) (T.pl v)).subtype) ((continuous_cycZ T.F Ω l).comp continuous_subtype_val)`. Take `⟨a, ha, ha'⟩ : ∃ a : Fin 4, (a = j ∨ j = i.rev) ∧ ∀ m : Fin 4, m = a ∨ m = a.rev ∨ m = i ∨ m = i.rev` from `(by decide : ∀ i j : Fin 4, i ≠ j → ∃ a : Fin 4, (a = j ∨ j = i.rev) ∧ ∀ m : Fin 4, m = a ∨ m = a.rev ∨ m = i ∨ m = i.rev) i j hij`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `x : (T.ι × Fin dv) ⊕ ({u // u ≠ v} × Fin dv) ⊕ Unit → X.B` to `Sum.elim (fun y => X.ψ y.1 a (s y.1 y.2) - 1) (Sum.elim (fun y => X.ψ y.1.1 i (s y.1.1 y.2) - 1) fun _ => X.ψ v i s0 - X.ψ v j s0)`. Establish `hm : ∀ u m (t : Dec (F` using `T.F) (T.pl u)), t ∈ I u → X.ψ u m t - 1 ∈ maximalIdeal X.B := fun u m t ht => by`. Take `⟨-, κ, hκ⟩` from `UpperTheory.deformationSpace_local_characters_continuous D T hOk c' h X _ (residue X.B) (fun b hb => by`. Rewrite using `[(residue_eq_zero_iff b).2 hb]`. Conclude with `zero_mem _) (fun b hb => (residue_eq_zero_iff _).2 (map_nonunit _ b hb))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1` using `((hκ u m).2.2 t ht).1`. Rewrite `h1` using `[(hκ u m).1, maximalIdeal_eq_bot, Ideal.mem_bot, ← map_one (residue X.B), ← map_sub, residue_eq_zero_iff]`. Conclude with `h1`. Establish `hdim` using `UpperTheory.krullDim_quotient_le_card_of_radical_parameters X.B q _ x ?_ ?_`. Establish `hc : Nat.card ((T.ι × Fin dv) ⊕ ({u // u ≠ v} × Fin dv) ⊕ Unit) + dv = 2 * T.d + 1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : Nat.card {u // u ≠ v} + 1 = Nat.card T.ι`. Rewrite using `[← Finite.card_option]`. Conclude with `Nat.card_congr (Equiv.optionSubtypeNe v)`. Simplify using `only [Nat.card_sum, Nat.card_prod, Nat.card_eq_fintype_card (α := Fin dv), Fintype.card_fin, Nat.card_unique]`. Rewrite using `[← hdv, ← h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hc, Nat.cast_add]`. Use `gcongr`. Introduce and unpack `(y | y | y)`. Conclude with `hm _ _ _ (hsI _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hm _ _ _ (hsI _ _)`. Simplify `sub_mem (hm v i s0 hs0) (hm v j s0 hs0)` using `[x]`. Introduce `p hp hqp hx`. Use `haveI : IsLocalRing (X.B ⧸ p) := IsLocalRing.of_surjective' (Ideal.Quotient.mk p) Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk p) := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨h0, κ, hκ⟩` from `UpperTheory.deformationSpace_local_characters_continuous D T hOk c' h X _ (Ideal.Quotient.mk p) (fun b hb => map_nonunit _ b hb) (fun b hb => Ideal.Quotient.eq_zero_iff_mem.2 (hqp (hϖ (Ideal.mem_map_of_mem _ hb))))`. Establish `h1 : ∀ u m (t : Dec (F` using `T.F) (T.pl u)), κ u m t = 1 ↔ X.ψ u m t - 1 ∈ p := fun u m t => by`. Rewrite using `[← Units.val_eq_one, (hκ u m).1, ← Ideal.Quotient.eq, map_one]`. Establish `hpin : ∀ u m, (∀ k, X.ψ u m (s u k) - 1 ∈ p) → ∀ t ∈ I u, κ u m t = 1` using `fun u m hk => hsP u _ h0 (κ u m) (hκ u m).2.1 (fun t ht => ((hκ u m).2.2 t ht).1) (by`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(h1 _ _ _).2 (hk k))`. Establish `hA : ∀ u, ∀ t ∈ I u, κ u a t = 1` using `fun u => hpin u a fun k => hx (.inl (u, k))`. Establish `hE : ∀ t ∈ I v, κ v i t = κ v j t`. Use `hP0.eq h0 _ _ (hκ v i).2.1 (hκ v j).2.1 (fun t ht => ((hκ v i).2.2 t ht).1) (fun t ht => ((hκ v j).2.2 t ht).1) fun t ht => Units.ext ?_` and prove the remaining obligations. Rewrite using `[(hκ v i).1, (hκ v j).1, Ideal.Quotient.eq]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Break down `ht with rfl | ⟨ht, ht'⟩` into its components or cases. Conclude with `hx (.inr (.inr ()))`. Conclude with `hqp (hU t ⟨ht, ht', hOk.ineL _ (T.ovl v) _ ht⟩)`. Establish `hI : ∀ u, ∀ t ∈ I u, κ u i t = 1` using `fun u => by`. Distinguish the cases in `hu : u = v`.
-
-Substitute `hu` using the available equality. Introduce `t ht`. Break down `ha with rfl | rfl` into its components or cases. Conclude with `(hE t ht).trans (hA u t ht)`. Establish `h2` using `(hκ u i).2.2 t ht`.
-
-Use `Units.val_eq_one.1 (eq_one_of_pow h0 h2.1 two_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, sq, Units.val_eq_one]`. Rewrite `h2` using `[← hE t ht]`. Conclude with `h2.2`. Conclude with `hpin u i fun k => hx (.inr (.inl (⟨u, hu⟩, k)))`.
-
-Establish `hall : ∀ u m, ∀ t ∈ I u, κ u m t = 1` using `fun u m t ht => by`. Break down `ha' m with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `hA u t ht`. Simplify `((hκ u a).2.2 t ht).2` using `[hA u t ht]`. Conclude with `hI u t ht`.
-
-Simplify `((hκ u i).2.2 t ht).2` using `[hI u t ht]`. Take `⟨n, hn⟩` from `hPM.fin`. Use `hp.le_of_pow_le (n := n) (hn.trans (sup_le (sup_le (hJ.trans hqp) (hϖ.trans hqp)) (Ideal.span_le.2 ?_)))` and prove the remaining obligations. Introduce and unpack `_ ⟨u, m, t, ht, rfl⟩`. Conclude with `(h1 u m ⟨t, Ine_le_Dec _ ht⟩).1 (hall u m _ ht)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.nn :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c) (T : Tower D), T.Fit → T.Deep → ∀ (ι : PadicAlgCl l ≃+* ℂ) (c' : Coef l) (h : c.O ≤ c'.O) (X : Space (T.fr ∅) (inc h)) (J : Ideal X.B), T.PM ι X J → ∀ (v : T.ι) (i j : Fin 4), i ≠ j → ∀ (q : Ideal X.B), q.IsPrime → J ≤ q → (maximalIdeal c'.O).map (algebraMap c'.O X.B) ≤ q →

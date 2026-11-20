@@ -14,7 +14,7 @@ namespace GlobalTheory.UPel.HT.CorrForm
 open GlobalTheory.AbDual
 
 /- English proof (translation)
-Introduce `p _ D R _ b N _ _ k _ _ t o₀`. Take `⟨g, hg⟩` from `GlobalTheory.AbVarRelDim.exists_relDim k o₀.A o₀.ab`. Establish `C` using `cupSquare_of_free GlobalTheory.abelianDeRham.1 (AbelianSchemeGerms.isAbelianScheme_tensor o₀.A o₀.A o₀.ab o₀.ab) (smooth_prod hg hg)`. Conclude with `exists_isCorrForm C o₀.isLB o₀.rig₁ o₀.rig₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isCorrForm_obj : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N t), ∃ φ : LinearMap.BilinForm k (HdR o₀.A), GlobalTheory.AbDual.IsCorrForm (dp0 k) (𝟙 _) o₀.A o₀.A o₀.P φ := by
   intro p _ D R _ b N _ _ k _ _ t o₀

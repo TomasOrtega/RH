@@ -18,9 +18,9 @@ namespace GlobalTheory.CoeffRings
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k` from `⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩`. Establish `hk' : (H.d : ℂ) + 1 = 4 * k` using `by exact_mod_cast hk`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (k : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C]`. Simplify using `only [eq_intCast, Int.cast_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 / 4 : ℂ) * H.sqrt_neg_disc_sq - (1 / 4 : ℂ) * hk'`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isIntegral_half (H : Host E) : IsIntegral ℤ ((1 + H.rt0) / 2) := by
   obtain ⟨k, hk⟩ : ∃ k : ℕ, H.d + 1 = 4 * k := ⟨(H.d + 1) / 4, by have := H.d_mod; omega⟩
@@ -32,13 +32,13 @@ theorem isIntegral_half (H : Host E) : IsIntegral ℤ ((1 + H.rt0) / 2) := by
   linear_combination (1 / 4 : ℂ) * H.sqrt_neg_disc_sq - (1 / 4 : ℂ) * hk'
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.HostModel.isPrimitiveRoot_zeta hn).isIntegral hn`.
+A detailed English derivation is pending.
 -/
 theorem isIntegral_int_zeta {n : ℕ} (hn : 0 < n) : IsIntegral ℤ (zeta n) :=
   (GlobalTheory.HostModel.isPrimitiveRoot_zeta hn).isIntegral hn
 
 /- English proof (translation)
-Establish `h : IsIntegral W x` using `hx.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := W) (K := L)).mp h`. Conclude with `hy ▸ y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegral {L : Type} [Field L] (W : ValuationSubring L) {x : L} (hx : IsIntegral ℤ x) : x ∈ W := by
   have h : IsIntegral W x := hx.tower_top
@@ -46,9 +46,9 @@ theorem mem_of_isIntegral {L : Type} [Field L] (W : ValuationSubring L) {x : L} 
   exact hy ▸ y.2
 
 /- English proof (translation)
-Establish `hpV : (p : V) ∈ IsLocalRing.maximalIdeal V` using `ValuationSubring.coe_mem_nonunits_iff.mp (by simpa using hp)`. Take `⟨a, b, hab⟩ : IsCoprime (n : V) (p : V)` from `Nat.Coprime.cast h`. Assume the negation of the conclusion as `hn`. Establish `hnV : (n : V) ∈ IsLocalRing.maximalIdeal V` using `hn`. Establish `h1 : (1 : V) ∈ IsLocalRing.maximalIdeal V` using `hab ▸ add_mem (Ideal.mul_mem_left _ a hnV) (Ideal.mul_mem_left _ b hpV)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal V).ne_top ((Ideal.eq_top_iff_one _).mpr h1)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_coprime {L : Type} [Field L] (V : ValuationSubring L) {p n : ℕ} (hp : (p : L) ∈ V.nonunits)
     (h : n.Coprime p) : IsUnit (n : V) := by
@@ -65,9 +65,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hd : H.d % 16 = 7` using `H.2`. Take `⟨k, hk⟩ : ∃ k : ℕ, 4 * k = H.d + 1` from `⟨(H.d + 1) / 4, by omega⟩`. Establish `hkC : (4 : ℂ) * k = H.d + 1` using `by exact_mod_cast hk`. Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C (k : ℤ), by monicity!, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_X_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, Polynomial.eval₂_natCast, eq_intCast, Int.cast_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 / 4 : ℂ) * H.sqrt_neg_disc_sq + (1 / 4 : ℂ) * hkC`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem isIntegral_one_add_rt0_div_two (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) :
     IsIntegral ℤ ((1 + H.rt0) / 2) := by
@@ -83,7 +83,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Set `e : R ≃+* g.range` to `RingEquiv.ofBijective g.rangeRestrict ⟨fun a b h => hg (congrArg Subtype.val h), g.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (Subring.inclusion hS), fun x => ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (e.apply_symm_apply ⟨x, hS x.2⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_isInc_of_le_range {R : Type} [CommRing R] (g : R →+* ℂ)
     (hg : Function.Injective g) (S : Subring ℂ) (hS : S ≤ g.range) :
@@ -97,13 +97,11 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Rewrite `hpW` using `[ValuationSubring.mem_nonunits_iff]`. Establish `hle : ∀ m : ℤ, W.valuation (m : ℂ) ≤ 1` using `fun m => by`. Simplify using `using W.valuation_le_one (m : W)`. Establish `hn1 : W.valuation (n : ℂ) = 1`. Use `le_antisymm (by simpa using hle n) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, v, huv⟩` from `Nat.isCoprime_iff_coprime.mpr hn`. Establish `huvC : (u : ℂ) * n + v * p = 1` using `by exact_mod_cast huv`. Establish `h1 : W.valuation ((u : ℂ) * n) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle u)) hlt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : W.valuation ((v : ℂ) * p) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (hle v)) hpW`. Use `Valuation.map_add_lt _ h1 h2` as an intermediate fact. Rewrite `this` using `[huvC, map_one]`.
-
-Conclude with `lt_irrefl _ this`. Conclude with `W.mem_of_valuation_le_one _ (by rw [map_inv₀, hn1, inv_one])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem natCast_inv_mem_of_coprime (W : ValuationSubring ℂ) {p n : ℕ}
     (hpW : (p : ℂ) ∈ W.nonunits) (hn : n.Coprime p) : (n : ℂ)⁻¹ ∈ W := by
@@ -127,7 +125,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `hV : IsIntegral V x` using `hx.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hV`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_valuationSubring_of_isIntegral_moduli {K : Type} [Field K] (V : ValuationSubring K)
     {x : K} (hx : IsIntegral ℤ x) : x ∈ V := by
@@ -140,33 +138,27 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Set `f : 𝓞 K →+* V` to `(algebraMap (𝓞 K) K).codRestrict V.toSubring (fun x => mem_valuationSubring_of_isIntegral_moduli V (RingOfIntegers.isIntegral_coe x))`. Use `letI : Algebra (𝓞 K) V := f.toAlgebra`. Establish `hcoe : ∀ x : 𝓞 K, ((algebraMap (𝓞 K) V x : V) : K) = algebraMap (𝓞 K) K x` using `fun _ => rfl`. Set `P : Ideal (𝓞 K)` to `(IsLocalRing.maximalIdeal V).comap (algebraMap (𝓞 K) V)`. Establish `hM : P.primeCompl ≤ nonZeroDivisors (𝓞 K)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs`. Use `mem_nonZeroDivisors_of_ne_zero ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hs P.zero_mem`. Establish `hpP : ((p : 𝓞 K)) ∈ P` using `by show algebraMap (𝓞 K) V p ∈ IsLocalRing.maximalIdeal V`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `hpV`. Establish `hP : P ≠ ⊥`. Introduce `h`. Establish `: ((p : 𝓞 K)) = 0` using `by simpa [h] using hpP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hp (by exact_mod_cast this)`. Establish `hinj : Function.Injective (algebraMap (𝓞 K) V)`. Introduce `a b h`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify `this` using `[hcoe]`. Use `haveI : IsLocalization P.primeCompl V := { map_units := by`. Introduce and unpack `⟨s, hs⟩`. Assume the negation of the conclusion as `h`. Conclude with `hs h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `surj := by`. Introduce `v`. Take `⟨a, b, hb, hab⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) (v : K)`. Establish `hb0 : algebraMap (𝓞 K) K b ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `nonZeroDivisors.ne_zero hb (by exact_mod_cast (IsFractionRing.injective (𝓞 K) K) (h0.trans (map_zero _).symm))`. Set `Dp` to `Localization.AtPrime P`. Use `haveI : IsDiscreteValuationRing Dp := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 K) hP Dp`. Establish `hDinj : Function.Injective (algebraMap (𝓞 K) Dp)` using `IsLocalization.injective Dp hM`. Take `⟨c, hc⟩` from `ValuationRing.cond (algebraMap (𝓞 K) Dp a) (algebraMap (𝓞 K) Dp b)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take `⟨⟨x, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl c`. Establish `hspec` using `IsLocalization.mk'_spec Dp x s`. Establish `key : ∀ u w : 𝓞 K, algebraMap (𝓞 K) Dp u * IsLocalization.mk' Dp x s = algebraMap (𝓞 K) Dp w → u * x = w * s`. Introduce `u w h`. Apply `hDinj` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, map_mul, ← h, ← hspec, _root_.mul_assoc]`. Break down `hc with hc | hc` into its components or cases. Establish `h1` using `key a b hc`. Distinguish the cases in `hx : x ∈ P`. It suffices to derive a contradiction.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `s.2` to reduce the goal to its premises. Use `show algebraMap (𝓞 K) V s ∈ IsLocalRing.maximalIdeal V`. Establish `hsv : algebraMap (𝓞 K) V s = v * algebraMap (𝓞 K) V x`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show algebraMap (𝓞 K) K s = (v : K) * algebraMap (𝓞 K) K x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hab, div_mul_eq_mul_div, eq_div_iff hb0]`. Rewrite using `[← map_mul, ← map_mul, h1, mul_comm]`. Rewrite using `[hsv]`. Conclude with `Ideal.mul_mem_left _ _ hx`. Use `⟨(s, ⟨x, hx⟩), ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (v : K) * algebraMap (𝓞 K) K x = algebraMap (𝓞 K) K s`. Rewrite using `[← hab, div_mul_eq_mul_div, div_eq_iff hb0, ← map_mul, ← map_mul, h1, mul_comm]`. Establish `h1` using `key b a hc`. Use `⟨(x, s), ?_⟩` and prove the remaining obligations.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (v : K) * algebraMap (𝓞 K) K s = algebraMap (𝓞 K) K x`. Rewrite using `[← hab, div_mul_eq_mul_div, div_eq_iff hb0, ← map_mul, ← map_mul, ← h1, mul_comm]`. Use `exists_of_eq := by`. Introduce `x y h`.
-
-Conclude with `⟨1, by rw [hinj h]⟩ }`. Conclude with `IsLocalization.isDedekindDomain (𝓞 K) hM V`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem isDedekindDomain_valuationSubring_of_not_isUnit_natCast {K : Type} [Field K] [NumberField K]
     (V : ValuationSubring K) (p : ℕ) (hp : p ≠ 0) (hpV : ¬ IsUnit (p : V)) :
@@ -251,35 +243,31 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c`. Use `haveI : FiniteDimensional ℚ c.F := c.2`. Use `haveI : NumberField c.F := ⟨⟩`. Establish `hw : IsIntegral ℤ ((1 + H.rt0) / 2)` using `isIntegral_one_add_rt0_div_two H`. Establish `hnatF : ∀ n : ℕ, (n : ℂ) ∈ c.F` using `fun n => natCast_mem c.F n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwF : (1 + H.rt0) / 2 ∈ c.F` using `div_mem (add_mem (one_mem _) (_root_.GlobalTheory.HostModel.sqrtNegDisc_mem_coeffField c)) (by simpa using hnatF 2)`. Establish `hintF : ∀ {x : ℂ} (hx : x ∈ c.F), IsIntegral ℤ x → IsIntegral ℤ (⟨x, hx⟩ : c.F)` using `fun hx h => (isIntegral_algHom_iff c.F.val.toRingHom.toIntAlgHom Subtype.val_injective).mp h`. Use `⟨?_, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨inferInstance, inferInstance⟩, inferInstance, ?_⟩` and prove the remaining obligations. Establish `h : IsFractionRing (𝓞 c.F) c.F` using `inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h`. Introduce `A hA`. Establish `hApos : 0 < A` using `Nat.pos_of_dvd_of_pos hA l.A_pos`. Establish `hzF : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta A ∈ c.F`. Take `⟨k, hk⟩` from `_root_.GlobalTheory.LevelExist.zeta_eq_pow_of_dvd l.A_pos hA`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hk]`. Conclude with `pow_mem (_root_.GlobalTheory.HostModel.zeta_A_mem_coeff c) k`. Establish `hz : IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta A)` using `(_root_.GlobalTheory.HostModel.isPrimitiveRoot_zeta hApos).isIntegral hApos`. Use `exists_isInc_of_le_range _ (fun a b h => RingOfIntegers.coe_injective (Subtype.val_injective h)) _ ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Models.RZ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Subring.closure_le]`. Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `⟨⟨⟨_, hwF⟩, hintF hwF hw⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨1, by simp⟩`. Conclude with `⟨⟨⟨_, hzF⟩, hintF hzF hz⟩, rfl⟩`. Introduce `p W hp hpW`. Establish `memV : ∀ x : c.F, x ∈ c.V W ↔ (x : ℂ) ∈ W` using `fun x => by`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff.V`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ValuationSubring.mem_comap`. Establish `hunit : ∀ n : ℕ, n.Coprime p → IsUnit (n : c.V W)`. Introduce `n hn`. Establish `hinvW` using `natCast_inv_mem_of_coprime W hpW hn`. Establish `hn0 : (n : ℂ) ≠ 0`.
+Put the expressions in a common number system so they can be compared. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `norm_cast`. Introduce and unpack `rfl`. Conclude with `hp.one_lt.ne' (Nat.coprime_zero_left _ |>.mp hn)`. Establish `hnF : (n : ℂ)⁻¹ ∈ c.F` using `inv_mem (hnatF n)`. Use `IsUnit.of_mul_eq_one (a := (n : c.V W)) ⟨⟨_, hnF⟩, (memV _).mpr hinvW⟩ ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hn0]`. Use `⟨?_, hunit, ?_⟩` and prove the remaining obligations. Establish `hpV : ¬ IsUnit (p : c.V W)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `hu`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Establish `hbC : (p : ℂ) * ((b : c.F) : ℂ) = 1`. Use `congrArg (fun y : c.V W => ((y : c.F) : ℂ)) hb` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hpW` using `[ValuationSubring.mem_nonunits_iff]`. Establish `hbW : W.valuation ((b : c.F) : ℂ) ≤ 1` using `W.valuation_le_one ⟨_, (memV _).mp b.2⟩`. Use `lt_of_le_of_lt (mul_le_of_le_one_right' hbW) hpW` as an intermediate fact. Rewrite `this` using `[← map_mul, hbC, map_one]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD` using `isDedekindDomain_valuationSubring_of_not_isUnit_natCast (c.V W) p hp.ne_zero hpV`. Use `⟨⟨inferInstance, hD⟩, ⟨fun a b h => by exact_mod_cast congrArg Subtype.val h⟩, ?_⟩` and prove the remaining obligations. Establish `h : IsFractionRing (c.V W) c.F` using `inferInstance`. Conclude with `h`. Introduce `S A hS hA hzF`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hz : IsIntegral ℤ (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta A)` using `(_root_.GlobalTheory.HostModel.isPrimitiveRoot_zeta hA).isIntegral hA`. Establish `hSF : (S : ℂ)⁻¹ ∈ c.F` using `inv_mem (hnatF S)`. Use `exists_isInc_of_le_range _ (fun a b h => Subtype.val_injective (Subtype.val_injective h)) _ ?_` and prove the remaining obligations. Unfold `_root_.GlobalTheory.Models.RZ`. Rewrite using `[Subring.closure_le]`.
-
-Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `⟨⟨⟨_, hwF⟩, (memV _).mpr (mem_valuationSubring_of_isIntegral_moduli W hw)⟩, rfl⟩`. Conclude with `⟨⟨⟨_, hSF⟩, (memV _).mpr (natCast_inv_mem_of_coprime W hpW hS)⟩, rfl⟩`.
-
-Conclude with `⟨⟨⟨_, hzF⟩, (memV _).mpr (mem_valuationSubring_of_isIntegral_moduli W hz)⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CoeffRings.coeff_isDedFrac : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (c : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l), _root_.GlobalTheory.Models.IsDedFrac (algebraMap (𝓞 c.F) c.F) ∧ Algebra.FiniteType ℤ (𝓞 c.F) ∧ (∀ A : ℕ, A ∣ l.A → ∃ b : _root_.GlobalTheory.Models.RZ H 1 A →+* 𝓞 c.F, _root_.GlobalTheory.Models.IsInc (_root_.GlobalTheory.Models.RZ H 1 A).subtype (c.F.val.toRingHom.comp (algebraMap (𝓞 c.F) c.F)) b) ∧ ∀ (p : ℕ) (W : ValuationSubring ℂ), p.Prime → (p : ℂ) ∈ W.nonunits → _root_.GlobalTheory.Models.IsDedFrac (c.V W).subtype ∧ (∀ n : ℕ, n.Coprime p → IsUnit (n : c.V W)) ∧ ∀ S A : ℕ, S.Coprime p → 0 < A → _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.zeta A ∈ c.F → ∃ b : _root_.GlobalTheory.Models.RZ H S A →+* c.V W, _root_.GlobalTheory.Models.IsInc (_root_.GlobalTheory.Models.RZ H S A).subtype (c.F.val.toRingHom.comp (c.V W).subtype) b := by
   intro E _ _ _ H l c

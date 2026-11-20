@@ -22,7 +22,7 @@ def hL (y : V) : V →ₗ[E] E where
   map_smul' a x := H.h_smul_left a x y
 
 /- English proof (translation)
-Use `show hL H y (∑ i, c i • v i) = _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem h_sum_smul_left {ι : Type} [Fintype ι] (c : ι → E) (v : ι → V) (y : V) :
     H.h (∑ i, c i • v i) y = ∑ i, c i * H.h (v i) y := by
@@ -32,12 +32,12 @@ theorem h_sum_smul_left {ι : Type} [Fintype ι] (c : ι → E) (v : ι → V) (
   rfl
 
 /- English proof (translation)
-The claim follows from `(hL H y).map_sub x x'`.
+A detailed English derivation is pending.
 -/
 theorem h_sub_left (x x' y : V) : H.h (x - x') y = H.h x y - H.h x' y := (hL H y).map_sub x x'
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (∑ i, c i • v i) w, h_sum_smul_left, map_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_mul, H.h_herm (v i) w]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_sum_smul_right {ι : Type} [Fintype ι] (c : ι → E) (v : ι → V) (w : V) :
     H.h w (∑ i, c i • v i) = ∑ i, M.L.cj (c i) * H.h w (v i) := by
@@ -46,19 +46,17 @@ theorem h_sum_smul_right {ι : Type} [Fintype ι] (c : ι → E) (v : ι → V) 
   rw [map_mul, H.h_herm (v i) w]
 
 /- English proof (translation)
-Establish `hmv : ∀ (c : ι → E) (j : ι), H.h (∑ i, c i • v i) (v j) = (H.gram v *ᵥ c) j`. Introduce `c j`. Rewrite using `[h_sum_smul_left]`. Use `show _ = ∑ i, H.gram v j i * c i`. Simplify using `only [HermSp.gram, Matrix.of_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxp`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hc : H.gram v *ᵥ c = 0`. Use function extensionality and compare the values at `j`. Rewrite using `[← hmv]`. Conclude with `hxp (v j) (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hc0 : c = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality.
 
-Use `congrArg (fun w => (H.gram v)⁻¹ *ᵥ w) hc` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hG]`. Substitute `hc0` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[codisjoint_iff, eq_top_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `x -`. Use `set c := (H.gram v)⁻¹ *ᵥ (fun j => H.h x (v j)) with hc`. Establish `hsum : ∑ i, c i • v i ∈ Submodule.span E (Set.range v)` using `(Submodule.mem_span_range_iff_exists_fun E).2 ⟨c, rfl⟩`. Establish `hperp : x - ∑ i, c i • v i ∈ H.perp (Submodule.span E (Set.range v))`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨d, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hy`. Rewrite using `[h_sum_smul_right]`. Use `Finset.sum_eq_zero (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[h_sub_left, hmv, hc, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hG, Matrix.one_mulVec]`. Simplify using the standard rewrite rules.
-
-Conclude with `Submodule.mem_sup.2 ⟨_, hsum, _, hperp, by abel⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCompl_span_perp {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → V) (hG : IsUnit (H.gram v).det) :
     IsCompl (Submodule.span E (Set.range v)) (H.perp (Submodule.span E (Set.range v))) := by
@@ -101,7 +99,7 @@ def cornerM (c : E) : Matrix (Fin (r + 1)) (Fin (r + 1)) E :=
   Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then c else 0
 
 /- English proof (translation)
-Simplify using `only [cornerM, Matrix.mul_apply, Matrix.of_apply]`. Use `split_ifs with ha`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cornerM_mul (c : E) (N : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a k : Fin (r + 1)) :
     (cornerM (r := r) c * N) a k = if a = Fin.last r then c * N (Fin.last r) k else 0 := by
@@ -112,7 +110,7 @@ theorem cornerM_mul (c : E) (N : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a k : Fi
   · simp [ha]
 
 /- English proof (translation)
-Simplify using `only [cornerM, Matrix.mul_apply, Matrix.of_apply]`. Use `split_ifs with hb`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_cornerM (c : E) (N : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (k b : Fin (r + 1)) :
     (N * cornerM (r := r) c) k b = if b = Fin.last r then N k (Fin.last r) * c else 0 := by
@@ -123,11 +121,9 @@ theorem mul_cornerM (c : E) (N : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (k b : Fi
   · simp [hb]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [HermSp.gram, Matrix.of_apply, Sum.elim_inl, Matrix.fromBlocks_apply₁₁, cornerM] split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Conclude with `hF.2`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `hF.1 b a (not_and_or.1 h).symm`. Simplify using `only [HermSp.gram, HermSp.Zhat, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₁₂]`. Simplify using `only [HermSp.gram, HermSp.Zhat, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr, Matrix.fromBlocks_apply₂₁]`. Conclude with `H.h_herm (f' a) (f b)`. Simplify using `only [HermSp.gram, Matrix.of_apply, Sum.elim_inr, Matrix.fromBlocks_apply₂₂, cornerM] split_ifs with h`.
-
-Take `⟨rfl, rfl⟩` from `h`. Conclude with `hF'.2`. Conclude with `hF'.1 b a (not_and_or.1 h).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gram_eq_fromBlocks (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') :
@@ -150,11 +146,11 @@ theorem gram_eq_fromBlocks (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism
     · exact hF'.1 b a (not_and_or.1 h).symm
 
 /- English proof (translation)
-Establish `hP : (-1 : E) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ)) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hsub : ∀ j : Fin (r + 1), (N - cornerM t).submatrix (Fin.last r).succAbove j.succAbove = N.submatrix (Fin.last r).succAbove j.succAbove`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.sub_apply, cornerM, Matrix.of_apply, Fin.succAbove_last]`. Rewrite using `[if_neg (fun h => (Fin.castSucc_lt_last a).ne h.1), sub_zero]`. Establish `hrow : ∀ k : Fin r, (N - cornerM t : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (Fin.last r) k.castSucc = N (Fin.last r) k.castSucc`. Introduce `k`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.sub_apply, cornerM, Matrix.of_apply]`. Rewrite using `[if_neg (fun h => (Fin.castSucc_lt_last k).ne h.2), sub_zero]`. Rewrite using `[Matrix.det_succ_row (N - cornerM t) (Fin.last r), Matrix.det_succ_row N (Fin.last r), Fin.sum_univ_castSucc, Fin.sum_univ_castSucc]`. Simplify using `only [hsub, hrow, hP]`. Simplify using `only [Matrix.sub_apply, cornerM, Matrix.of_apply, eq_self_iff_true, and_self, ite_true, Fin.succAbove_last]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -182,7 +178,7 @@ private theorem det_sub_cornerM (N : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (t : 
   ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem det_cj_transpose_eq_cj_det {n : Type} [Fintype n] [DecidableEq n] (N : Matrix n n E) :
     (Matrix.of fun a b => M.L.cj (N b a)).det = M.L.cj N.det := by
@@ -193,17 +189,17 @@ private theorem det_cj_transpose_eq_cj_det {n : Type} [Fintype n] [DecidableEq n
     _ = M.L.cj N.det := rfl
 
 /- English proof (translation)
-Establish `hdB : H.Dl f f' (r + 1) = (H.Zhat f f').det`. Rewrite using `[HermSp.Dl, dif_pos le_rfl]`. Conclude with `congrArg Matrix.det (Matrix.ext fun i j => rfl)`. Establish `hdBr : H.Dl f f' r = ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[HermSp.Dl, dif_pos (by omega : r ≤ r + 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg Matrix.det (Matrix.ext fun i j => rfl)`. Use `haveI hBinv : Invertible (H.Zhat f f') := Matrix.invertibleOfIsUnitDet _ (hdB ▸ hD)`. Establish `hcorner : cornerM (r` using `r) (-algebraMap F E T') * ⅟(H.Zhat f f') * cornerM (-algebraMap F E T) = cornerM (algebraMap F E T * algebraMap F E T' * (⅟(H.Zhat f f')) (Fin.last r) (Fin.last r)) := by`. Use extensionality with `a b`. Rewrite using `[mul_cornerM, cornerM_mul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [cornerM, Matrix.of_apply]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases hb : b = Fin.last r <;> simp [ha, hb] <;> ring`. Establish `hP : (-1 : E) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ)) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : (⅟(H.Zhat f f')) (Fin.last r) (Fin.last r) = Ring.inverse (H.Zhat f f').det * ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[Matrix.invOf_eq_nonsing_inv, Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last, smul_eq_mul, hP, one_mul]`. Establish `hC : (Matrix.of fun a b => M.L.cj (H.Zhat f f' b a)).det = M.L.cj (H.Zhat f f').det` using `det_cj_transpose_eq_cj_det _`. Establish `hCs : ((Matrix.of fun a b => M.L.cj (H.Zhat f f' b a)).submatrix Fin.castSucc Fin.castSucc).det = M.L.cj ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det` using `det_cj_transpose_eq_cj_det _`. Establish `hu : (H.Zhat f f').det * Ring.inverse (H.Zhat f f').det = 1` using `Ring.mul_inverse_cancel _ (hdB ▸ hD)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gram_eq_fromBlocks H f f' T T' hF hF']`. Use `⟨((Equiv.Perm.sign (Equiv.sumComm (Fin (r + 1)) (Fin (r + 1))) : ℤ) : E), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one]`. Establish `h1` using `Matrix.det_permute' (Equiv.sumComm (Fin (r + 1)) (Fin (r + 1))) (Matrix.fromBlocks (cornerM (-algebraMap F E T)) (H.Zhat f f') (Matrix.of fun a b => M.L.cj (H.Zhat f f' b a)) (cornerM (-algebraMap F E T')))`. Establish `hperm : (Matrix.fromBlocks (cornerM (-algebraMap F E T)) (H.Zhat f f') (Matrix.of fun a b => M.L.cj (H.Zhat f f' b a)) (cornerM (-algebraMap F E T'))).submatrix id (Equiv.sumComm (Fin (r + 1)) (Fin (r + 1))) = Matrix.fromBlocks (H.Zhat f f') (cornerM (-algebraMap F E T)) (cornerM …`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `ext (i | i) (j | j) <;> rfl`. Rewrite `h1` using `[hperm, Matrix.det_fromBlocks₁₁, hcorner, det_sub_cornerM, hinv, hC, hCs]`. Simplify using `only [HermSp.Gdet, HermSp.normE]`. Rewrite using `[hdB, hdBr, (algebraMap F E).map_mul T T']`. Take the linear combination `(-1 : E) * h1 - (algebraMap F E T * algebraMap F E T' * (((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det * M.L.cj ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det)) * hu`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gram_det (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1))) :
@@ -256,9 +252,9 @@ theorem gram_det (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotio
         M.L.cj ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det)) * hu
 
 /- English proof (translation)
-Establish `hfix : M.L.cj (H.Gdet f f' T T') = H.Gdet f f' T T'`. Apply the tactic sequence `simp only [HermSp.Gdet, HermSp.normE, map_sub, map_mul, AlgEquiv.commutes, M.L.cj_cj] <;> ring`. Take `⟨a, ha⟩` from `(M.L.cj_fix _).1 hfix`. Rewrite `hG`, the goal using `[← ha]`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hG (map_zero _)`. Conclude with `(IsUnit.mk0 a ha0).map (algebraMap F E)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isUnit_Gdet (f f' : Fin (r + 1) → V) (T T' : F) (hG : H.Gdet f f' T T' ≠ 0) :
     IsUnit (H.Gdet f f' T T') := by
@@ -272,11 +268,11 @@ theorem isUnit_Gdet (f f' : Fin (r + 1) → V) (T T' : F) (hG : H.Gdet f f' T T'
   exact (IsUnit.mk0 a ha0).map (algebraMap F E)
 
 /- English proof (translation)
-Establish `hsp : H.Xp f ⊔ H.Xp f' = Submodule.span E (Set.range (Sum.elim f f'))`. Simplify using `only [HermSp.Xp, Set.Sum.elim_range, Submodule.span_union]`. Take `⟨s, hs, hdet⟩` from `gram_det H f f' T T' hF hF' hD`. Establish `hu : IsUnit (H.gram (Sum.elim f f')).det`. Establish `h'` using `hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h'` using `[← hdet]`. Conclude with `isUnit_of_mul_isUnit_left h'`. Establish `hW : H.W0 f f' = H.perp (Submodule.span E (Set.range (Sum.elim f f')))`. Rewrite using `[← hsp]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hW]`. Conclude with `isCompl_span_perp H _ hu`.
+A detailed English derivation is pending.
 -/
 theorem isCompl_span_frames_W0 (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1))) (hG : IsUnit (H.Gdet f f' T T')) :

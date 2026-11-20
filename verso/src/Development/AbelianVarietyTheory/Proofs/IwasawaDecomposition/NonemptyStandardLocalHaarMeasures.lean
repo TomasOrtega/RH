@@ -24,7 +24,7 @@ def coordHomeo {F E : Type} [Field F] [Field E] [Algebra F E] {d : ℕ} (b : Mod
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Conclude with `isCompact_iff_compactSpace.2 this`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (v.adicCompletionIntegers F : Set (Fv F v)) := by
@@ -32,14 +32,14 @@ theorem isCompact_integers (v : HeightOneSpectrum (𝓞 F)) :
   exact isCompact_iff_compactSpace.2 this
 
 /- English proof (translation)
-The claim follows from `Valued.isOpen_valuationSubring _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (v.adicCompletionIntegers F : Set (Fv F v)) :=
   Valued.isOpen_valuationSubring _
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [intV, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_imp_iff]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem intV_eq {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     intV b v = coordHomeo b (Fv F v) ⁻¹'
@@ -49,7 +49,7 @@ theorem intV_eq {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum 
   rfl
 
 /- English proof (translation)
-Rewrite using `[intV_eq, Homeomorph.isCompact_preimage]`. Conclude with `isCompact_univ_pi fun _ => isCompact_integers v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     IsCompact (intV b v) := by
@@ -57,7 +57,7 @@ theorem isCompact_intV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSp
   exact isCompact_univ_pi fun _ => isCompact_integers v
 
 /- English proof (translation)
-Rewrite using `[intV_eq]`. Conclude with `(isOpen_set_pi Set.finite_univ fun _ _ => isOpen_integers v).preimage (coordHomeo b (Fv F v)).continuous`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intV {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 F)) :
     IsOpen (intV b v) := by
@@ -81,7 +81,7 @@ def intVK {d : ℕ} (b : Module.Basis (Fin d) F E) (v : HeightOneSpectrum (𝓞 
     exact ⟨0, fun k => by simp⟩
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_basis b`. Conclude with `⟨{ lamI := Measure.addHaar lamV := fun v => Measure.addHaarMeasure (intVK b v) nuI := Measure.addHaar nuV := fun v => Measure.addHaarMeasure (intK v) haar_lamI := inferInstance haar_lamV := fun v => inferInstance haar_nuI := inferInstance haar_nuV := fun v => inferInstance lamV_i …`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_stdMeas (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (d : ℕ) (b : Module.Basis (Fin d) F E) : Nonempty (StdMeas b) := by

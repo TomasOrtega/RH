@@ -9,9 +9,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro f g _ v`. Simplify using the standard rewrite rules. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `f g h v`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.foldr_cons, Module.End.mul_apply, h, ih (fun i => f i.succ) (fun i => g i.succ) (fun k v => h k.succ v) v]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ofFn_prod_apply_of_intertwine {M Wp : Type} [AddCommGroup M] [Module ℂ M]
     (l : M → Wp) :
@@ -27,11 +27,11 @@ theorem map_ofFn_prod_apply_of_intertwine {M Wp : Type} [AddCommGroup M] [Module
       ih (fun i => f i.succ) (fun i => g i.succ) (fun k v => h k.succ v) v]
 
 /- English proof (translation)
-Introduce `M Wp _ _ _ _ n m E l w Pop hw h u v`. Unfold `Formalism.REAL.qminor Formalism.FourierDecayAlt.Q.qmF`. Rewrite using `[LinearMap.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `key` using `map_ofFn_prod_apply_of_intertwine (l : M → Wp) m (fun k => Formalism.REAL.Tm E (u - ((k : ℕ) : ℂ)) (w (σ k)) (w k)) (fun k y => (if id (σ k) = id k then (u - ((k : ℕ) : ℂ)) • y else 0) + Pop (id (σ k)) (id k) y) (fun k x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `Formalism.REAL.Tm`. Distinguish the cases in `hk : σ k = k`. Simplify using `[hk, h, sub_smul, Nat.cast_smul_eq_nsmul]`. Establish `: w (σ k) ≠ w k` using `fun e => hk (hw e)`. Simplify using `[hk, this, h]) v`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← key, Module.End.mul_apply]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with hs | hs <;> simp [hs]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qminor_block_intertwine : ∀ (M Wp : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup Wp] [Module ℂ Wp] (n m : ℕ) (E : Fin n → Fin n → Module.End ℂ M) (l : M →ₗ[ℂ] Wp) (w : Fin m → Fin n) (Pop : Fin m → Fin m → Wp → Wp), Function.Injective w → (∀ i j v, l (E (w i) (w j) v) = Pop i j (l v)) → ∀ u v, l (Formalism.REAL.qminor E w w u v) = Formalism.FourierDecayAlt.Q.qmF Pop id id u (l v) := by
   intro M Wp _ _ _ _ n m E l w Pop hw h u v

@@ -12,9 +12,7 @@ variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M 
 variable {r : ℕ}
 
 /- English proof (translation)
-Use `split_ifs with hab`. Take `⟨rfl, rfl⟩` from `hab`. Conclude with `hF.2`. Apply `hF.1 b a` to reduce the goal to its premises. Assume the negation of the conclusion as `hc`.
-
-Use `push_neg at hc`. Conclude with `hab ⟨hc.2, hc.1⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem h_frame (f : Fin (r + 1) → V) (T : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T) (a b : Fin (r + 1)) :
     H.h (f b) (f a) = if a = Fin.last r ∧ b = Fin.last r then -algebraMap F E T else 0 := by
@@ -27,9 +25,9 @@ theorem h_frame (f : Fin (r + 1) → V) (T : F) (hF : Formalism.MainNotions.Thin
     exact hab ⟨hc.2, hc.1⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_fin_succ_eq_det_submatrix]`. Unfold `HermSp.Dl`. Rewrite using `[dif_pos (Nat.le_succ r)]`. Establish `hpow : ((-1 : E) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ))) = 1`. Rewrite using `[Fin.val_last, ← two_mul, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hpow, one_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.submatrix_apply, Fin.succAbove_last]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -48,9 +46,9 @@ theorem adj_last (f f' : Fin (r + 1) → V) :
   rfl
 
 /- English proof (translation)
-Unfold `HermSp.om'`. Rewrite using `[h_sum_left]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`. Distinguish the cases in `hc : c = Fin.last r ∧ b = Fin.last r`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hc`. Rewrite using `[adj_last, hD0, zero_mul]`. Rewrite using `[hF'.1 c b (not_and_or.mp hc), mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem h_om'_f' (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T')
     (hD0 : H.Dl f f' r = 0) (b : Fin (r + 1)) : H.h (H.om' f f') (f' b) = 0 := by
@@ -64,17 +62,17 @@ theorem h_om'_f' (f f' : Fin (r + 1) → V) (T' : F) (hF' : Formalism.MainNotion
   · rw [hF'.1 c b (not_and_or.mp hc), mul_zero]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun E).1 hv`. Rewrite `h1`, `h2`, the goal using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h1 h2 ⊢`. Establish `hl : c (Sum.inl (Fin.last r)) = 0`. Rewrite `h2` using `[h_add_right, h_sum_right, h_sum_right]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [h_om'_f' H f f' T' hF' hD0, mul_zero, Finset.sum_const_zero, add_zero, h_om'_f] at h2`. Rewrite `h2` using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by rw [if_neg hb, mul_zero]) (by simp), if_pos rfl, ← dl_full]`. Establish `h3 : M.L.cj (c (Sum.inl (Fin.last r))) = 0` using `(hD.mul_left_eq_zero).1 h2`. Use `congrArg M.L.cj h3` as an intermediate fact. Rewrite `this` using `[M.L.cj_cj, map_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hZ : (H.Zhat f f').mulVec (fun b => c (Sum.inr b)) = 0`. Use function extensionality and compare the values at `a`. Use `h1 a` as an intermediate fact. Rewrite `this` using `[H.h_add_left, h_sum_left, h_sum_left]`. Simplify using `only [h_frame H f T hF] at this`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[Finset.sum_eq_single (Fin.last r) (fun b _ hb => by simp [hb]) (by simp)]`. Simplify using `only [hl, zero_mul, zero_add] at this`. Rewrite using `[Pi.zero_apply, Matrix.mulVec, dotProduct, ← this]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hp' : (fun b => c (Sum.inr b)) = 0`. Establish `hu : IsUnit (H.Zhat f f').det` using `by rw [← dl_full]; exact hD`. Use `congrArg (fun w => (H.Zhat f f')⁻¹.mulVec w) hZ` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp'' : ∀ b, c (Sum.inr b) = 0` using `fun b => congrFun hp' b`. Simplify using `only [hp'', zero_smul, Finset.sum_const_zero, add_zero]`. Rewrite using `[Fin.sum_univ_castSucc, hl, zero_smul, add_zero]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_X_of (f f' : Fin (r + 1) → V) (T T' : F) (hF : Formalism.MainNotions.ThinScalesBound.FrameK H f T)
     (hF' : Formalism.MainNotions.ThinScalesBound.FrameK H f' T') (hD : IsUnit (H.Dl f f' (r + 1))) (hD0 : H.Dl f f' r = 0)

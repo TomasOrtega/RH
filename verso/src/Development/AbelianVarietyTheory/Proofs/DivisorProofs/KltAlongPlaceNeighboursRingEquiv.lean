@@ -11,39 +11,35 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.TopForm GlobalTheory.Discrep
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `k K K' _ _ _ _ c c' e hce n x T φ S S' hx hS h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.FieldPair.placeEquiv_ringEquiv c c' e hce`. Establish `hmem : ∀ (P : Place c) (b : K'), b ∈ (Φ P).ring ↔ e.symm b ∈ P.ring` using `fun P b => by`. Simplify using `using (hΦ P).1 (e.symm b)`. Establish `hord : ∀ (P : Place c) (b : K'), (Φ P).ord b = P.ord (e.symm b)` using `fun P b => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using (hΦ P).2.1 (e.symm b)`. Establish `hdisc : ∀ P : Place c, (Φ P).disc (dForm c' (e ∘ x)) (Finsupp.mapDomain e φ) = P.disc (dForm c x) φ` using `fun P => by`. Simplify using `only [Place.disc]`. Rewrite using `[(hΦ P).2.2.1 φ, (hΦ P).2.2.2 n x hx]`. Establish `hΦS : Φ S = S'` using `Place.ext (ValuationSubring.ext _ _ fun b => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmem, ← hS (e.symm b), e.apply_symm_apply])`. Establish `hk : Klt c n ⊤ (dForm c x) φ` using `⟨h.1, h.2.1, fun P hP => (P.ring_ne_top (eq_top_iff.2 fun f _ => hP f trivial)).elim⟩`. Establish `hk'` using `((GlobalTheory.FieldPair.transport_ringEquiv c c' e hce n x ⊤ φ hx).2.2.1).1 hk`. Use `⟨hk'.1, hk'.2.1, ?_⟩` and prove the remaining obligations. Introduce `Q' hQ' t' u' E' hTQ hmax hdim hSQ hEQ ht hu hoth`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set Q : Subring K := Q'.map e.symm.toRingHom with hQdef`. Establish `hQmem : ∀ a : K, a ∈ Q ↔ e a ∈ Q'` using `fun a => by`. Conclude with `Subring.mem_map_equiv (f := e.symm) (K := Q')`. Establish `hQQ : Q.map e.toRingHom = Q'`. Use extensionality with `b`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(Subring.mem_map_equiv (f := e) (K := Q)).trans ((hQmem _).trans (by rw [e.apply_symm_apply]))`. Establish `hQ : IsLocModel c Q` using `((GlobalTheory.FieldPair.transport_ringEquiv c c' e hce n x Q φ hx).2.1).2 (hQQ ▸ hQ')`. Set `ψ : Q' ≃+* Q` to `e.symm.subringMap`. Establish `hψ : ∀ y, ((ψ y : Q) : K) = e.symm y` using `fun y => rfl`. Establish `hprime : ∀ P : Place c, (Φ P).IsPrimeOf Q' ↔ P.IsPrimeOf Q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce `P`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Use `h1 (e f) ((hQmem f).1 hf)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hmem, e.symm_apply_apply]`. Then use the resulting hypothesis. Take `⟨a, ha, b, hb, hb0, hbo, hfab⟩` from `h2 (e f) (by rw [hmem, e.symm_apply_apply]; exact hf)`. Use `⟨e.symm a, by rw [hQmem, e.apply_symm_apply]; exact ha, e.symm b, by rw [hQmem, e.apply_symm_apply]; exact hb, by simpa using hb0, by rw [← hord]; exact hbo, ?_⟩` and prove the remaining obligations. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, e.apply_symm_apply, e.apply_symm_apply, hfab]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Conclude with `h1 _ (by rw [hQmem, e.apply_symm_apply]; exact hf)`. Take `⟨a, ha, b, hb, hb0, hbo, hfab⟩` from `h2 (e.symm f) ((hmem P f).1 hf)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e a, (hQmem a).1 ha, e b, (hQmem b).1 hb, by simpa using hb0, by rw [hord, e.symm_apply_apply]; exact hbo, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfab, map_mul, e.apply_symm_apply]`. Use `set E := Φ.symm E' with hEdef`. Establish `hE : Φ E = E'` using `Φ.apply_symm_apply E'`. Use `haveI := hQ'.isLocalRing`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `haveI := hQ.isLocalRing`. Establish `hTQ' : T ≤ Q` using `fun f hf => (hQmem f).2 (hTQ (Subring.mem_map.2 ⟨f, hf, rfl⟩))`. Establish `hmax' : Ideal.span {ψ t', ψ u'} = IsLocalRing.maximalIdeal Q`. Establish `h1` using `congrArg (Ideal.map ψ) hmax`. Rewrite `h1` using `[Ideal.map_span, Set.image_pair]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[h1]`. Use extensionality with `z`. Rewrite using `[Ideal.mem_map_of_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[isUnit_map_iff]` and apply the resulting hypothesis. Introduce `hz`. Use `⟨ψ.symm z, ?_, ψ.apply_symm_apply z⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isUnit_map_iff ψ.symm]` and apply the resulting hypothesis. Establish `hdim' : ringKrullDim Q = 2`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv ψ]`. Conclude with `hdim`. Establish `hSQ' : S.IsPrimeOf Q` using `(hprime S).1 (hΦS ▸ hSQ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hEQ' : E.IsPrimeOf Q` using `(hprime E).1 (hE ▸ hEQ)`. Establish `ht' : S.ord ((ψ t' : Q) : K) = 1`. Rewrite using `[hψ, ← hord, hΦS]`. Conclude with `ht`. Establish `hu' : E.ord ((ψ u' : Q) : K) = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, ← hord, hE]`. Conclude with `hu`. Establish `hoth' : ∀ P : Place c, P.IsPrimeOf Q → P.ring ≠ S.ring → P.ring ≠ E.ring → P.disc (dForm c x) φ = 0`. Introduce `P hP hPS hPE`. Rewrite using `[← hdisc]`.
-
-Use `hoth (Φ P) ((hprime P).2 hP) (fun hr => hPS ?_) (fun hr => hPE ?_)` and prove the remaining obligations. Establish `h3 : Φ P = Φ S` using `Place.ext (hr.trans (congrArg Place.ring hΦS).symm)`. Rewrite using `[Φ.injective h3]`. Establish `h3 : Φ P = Φ E` using `Place.ext (hr.trans (congrArg Place.ring hE).symm)`. Rewrite using `[Φ.injective h3]`.
-
-Establish `key` using `h.2.2 Q hQ (ψ t') (ψ u') E hTQ' hmax' hdim' hSQ' hEQ' ht' hu' hoth'`. Rewrite using `[← hE, hdisc]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjKlt_ringEquiv : ∀ {k K K' : Type} [Field k] [CharZero k] [Field K] [Field K'] (c : k →+* K) (c' : k →+* K') (e : K ≃+* K'), (∀ a, e (c a) = c' a) → ∀ (n : ℕ) (x : Fin n → K) (T : Subring K) (φ : K →₀ ℚ) (S : Place c) (S' : Place c'), TrBasis c x → (∀ a, e a ∈ S'.ring ↔ a ∈ S.ring) → AdjKlt c n T S (dForm c x) φ → AdjKlt c' n (T.map e.toRingHom) S' (dForm c' (e ∘ x)) (Finsupp.mapDomain e φ) := by
   intro k K K' _ _ _ _ c c' e hce n x T φ S S' hx hS h

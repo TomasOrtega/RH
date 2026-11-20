@@ -13,7 +13,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε 
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_ne_zero (T : S7.KType ε (lowK ε lam)) : T.w ≠ 0 := by
   intro h
@@ -22,9 +22,9 @@ theorem w_ne_zero (T : S7.KType ε (lowK ε lam)) : T.w ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Unfold `V1`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Take `⟨v, hv⟩` from `(mem_datumV_iff hP T.w y).1 hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨v, hv⟩`. Introduce and unpack `⟨v, rfl⟩`. Use `⟨⟨uniformisationL2 ε Ψ T.w v, datumEmbedding_mem_smooth hP T.w v⟩, ?_, rfl⟩` and prove the remaining obligations. Conclude with `(mem_datumV_iff hP T.w _).2 ⟨v, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_datum_space_iff_range (hP : IsPsiFor ε lam T Ψ) (x : L2 ε) :
     x ∈ V1 ε Ψ ↔ ∃ v : T.V, x = uniformisationL2 ε Ψ T.w v := by
@@ -39,9 +39,9 @@ theorem mem_datum_space_iff_range (hP : IsPsiFor ε lam T Ψ) (x : L2 ε) :
     exact (mem_datumV_iff hP T.w _).2 ⟨v, rfl⟩
 
 /- English proof (translation)
-Establish `hker : ∀ k : S7.KG ε, ∀ v ∈ LinearMap.ker B, (T.τ k : T.V →L[ℂ] T.V) v ∈ LinearMap.ker B`. Introduce `k v hv`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[show (T.τ k : T.V →L[ℂ] T.V) v = T.op k v from rfl, hB k v, hv, map_zero]`. Break down `T.irred (LinearMap.ker B) hker with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `LinearMap.ker_eq_bot.1 h`. Conclude with `absurd (LinearMap.ker_eq_top.1 h) hB0`.
+A detailed English derivation is pending.
 -/
 theorem kmap_injective (B : T.V →ₗ[ℂ] L2 ε)
     (hB : ∀ (k : S7.KG ε) (v : T.V), B (T.op k v) = rreg ε (S7.toMK k) (B v)) (hB0 : B ≠ 0) :
@@ -56,13 +56,11 @@ theorem kmap_injective (B : T.V →ₗ[ℂ] L2 ε)
   · exact absurd (LinearMap.ker_eq_top.1 h) hB0
 
 /- English proof (translation)
-Establish `hg' : g ∈ Matrix.unitaryGroup (Fin n) ℂ ∧ g * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * g` using `hg`. Establish `h1 : g.conjTranspose * g = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.1 hg'.1`. Establish `hc : g * Jm ε = Jm ε * g` using `hg'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : inUJ ε g` using `by show g.conjTranspose * Jm ε * g = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hr : g ∈ Set.range (fun y : S7.UJ ε => S7.toM y)`. Rewrite using `[S7.range_toM ε]`. Conclude with `hU`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hr`. Establish `hy' : S7.toM y = g` using `hy`. Use `⟨⟨y, ?_⟩, hy'⟩` and prove the remaining obligations. Use `show S7.toM y ∈ Kset ε`. Rewrite using `[hy']`.
-
-Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_toMK_eq_of_mem_Kset {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     ∃ k : S7.KG ε, S7.toMK k = g := by
@@ -85,14 +83,14 @@ private theorem exists_toMK_eq_of_mem_Kset {g : Matrix (Fin n) (Fin n) ℂ} (hg 
   exact hg
 
 /- English proof (translation)
-The claim follows from `k.2`.
+A detailed English derivation is pending.
 -/
 private theorem toMK_mem_Kset' (k : S7.KG ε) : S7.toMK k ∈ Formalism.REAL.Kset ε := k.2
 
 /- English proof (translation)
-Introduce `θ hθ`. Take `⟨k, hk⟩` from `exists_toMK_eq_of_mem_Kset hθ`. Establish `hAu` using `h θ hθ`. Rewrite `hAu`, the goal using `[← hk]`. Rewrite `hAu` using `[← hA k u]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hku : T.op k u = Complex.exp (↑(∑ a, μ a * θ a) * Complex.I) • u` using `hinj (by rw [hAu, map_smul])`. Rewrite using `[← hC k u, hku, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isWtOn_transfer {A C : T.V →ₗ[ℂ] L2 ε}
     (hA : ∀ (k : S7.KG ε) (v : T.V), A (T.op k v) = rreg ε (S7.toMK k) (A v))
@@ -110,27 +108,23 @@ theorem isWtOn_transfer {A C : T.V →ₗ[ℂ] L2 ε}
   rw [← hC k u, hku, map_smul]
 
 /- English proof (translation)
-Establish `hinj` using `kmap_injective B hB hB0`. Establish `hw` using `w_ne_zero T`. Establish `hAapp : ∀ v, datumEmbeddingToL2 hP T.w v = uniformisationL2 ε Ψ T.w v` using `fun v => rfl`. Establish `hAeq : ∀ (k : S7.KG ε) (v : T.V), datumEmbeddingToL2 hP T.w (T.op k v) = rreg ε (S7.toMK k) (datumEmbeddingToL2 hP T.w v)`. Introduce `k v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hAapp, hAapp, rightRegular_datumEmbedding hP]`. Establish `hAinj : Function.Injective (datumEmbeddingToL2 hP T.w)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `v hv`. Conclude with `eq_zero_of_datumEmbedding_eq_zero hP hw hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _, _, ⟨x, hxV, hx0, hxw⟩, hdom⟩` from `hD`. Use `⟨inferInstance, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g hg y hy`. Take `⟨k, rfl⟩` from `exists_toMK_eq_of_mem_Kset hg`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `LinearMap.mem_range.2 ⟨T.op k v, hB k v⟩`. Introduce `S' hS' hstab`. Establish `hW : ∀ k : S7.KG ε, ∀ v ∈ S'.comap B, (T.τ k : T.V →L[ℂ] T.V) v ∈ S'.comap B`. Introduce `k v hv`. Use `show B (T.op k v) ∈ S'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB]`. Conclude with `hstab _ (toMK_mem_Kset' k) (B v) hv`. Break down `T.irred (S'.comap B) hW with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.1 (hS' hy)`. Establish `hv : v ∈ S'.comap B` using `hy`. Rewrite `hv` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).1 hv, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.zero_mem _`. Use `right`. Apply `le_antisymm hS'` to reduce the goal to its premises. Introduce `y hy`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : v ∈ S'.comap B` using `by rw [h]; trivial`. Conclude with `hv`. Take `⟨u, rfl⟩` from `(mem_datum_space_iff_range hP x).1 hxV`. Use `⟨B u, LinearMap.mem_range.2 ⟨u, rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx0` to reduce the goal to its premises. Establish `hu : u = 0` using `hinj (by rw [h0, map_zero])`. Rewrite using `[hu, ← hAapp, map_zero]`. Conclude with `isWtOn_transfer hAeq hB hAinj hxw`. Introduce `μ y hy hne hwt`.
-
-Take `⟨u, rfl⟩` from `LinearMap.mem_range.1 hy`. Use `hdom μ (datumEmbeddingToL2 hP T.w u) ((mem_datum_space_iff_range hP _).2 ⟨u, rfl⟩) ?_ ?_` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Establish `hu : u = 0` using `hAinj (by rw [h0, map_zero])`.
-
-Rewrite using `[hu, map_zero]`. Conclude with `isWtOn_transfer hB hAeq hinj hwt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_range (hP : IsPsiFor ε lam T Ψ)
     (hD : Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) (lowK ε lam) (V1 ε Ψ)) (B : T.V →ₗ[ℂ] L2 ε)
@@ -191,13 +185,13 @@ theorem isKTypeOf_range (hP : IsPsiFor ε lam T Ψ)
     · exact isWtOn_transfer hB hAeq hinj hwt
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hB0`. Establish `hK` using `isKTypeOf_range hP hD B hB hB0`. Establish `hle : LinearMap.range B ≤ Hlam ε Ψ T.w`. Introduce `y hy`. Take `⟨v, rfl⟩` from `LinearMap.mem_range.1 hy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hrange v`. Establish `heq` using `hU _ hle hK`. Apply `hB0` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `hv : B v ∈ V1 ε Ψ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← heq]`. Conclude with `LinearMap.mem_range.2 ⟨v, rfl⟩`. Take `⟨u, hu⟩` from `(mem_datum_space_iff_range hP _).1 hv`. Establish `h0 : inner ℂ (B v) (B v) = 0`. Establish `h1` using `horth u v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← hu]`. Then use the resulting hypothesis. Rewrite using `[LinearMap.zero_apply]`. Conclude with `inner_self_eq_zero.1 h0`.
+A detailed English derivation is pending.
 -/
 theorem kmap_zero (hP : IsPsiFor ε lam T Ψ)
     (hD : Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) (lowK ε lam) (V1 ε Ψ))
@@ -226,31 +220,27 @@ theorem kmap_zero (hP : IsPsiFor ε lam T Ψ)
   exact inner_self_eq_zero.1 h0
 
 /- English proof (translation)
-Establish `hv₀ : T.w ≠ 0` using `w_ne_zero T`. Take `⟨q, hq⟩` from `LinearMap.mem_range.1 (Submodule.starProjection_apply_mem (LinearMap.range (ffaJ hP T.w)) (rreg ε g (uniformisationL2 ε Ψ T.w v)))`. Establish `hxo : rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q ∈ (LinearMap.range (ffaJ hP T.w))ᗮ`. Rewrite using `[← ffaJ_apply hP T.w q, hq]`. Conclude with `Submodule.sub_starProjection_mem_orthogonal (K := LinearMap.range (ffaJ hP T.w)) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxj : ∀ w, inner ℂ (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q) (uniformisationL2 ε Ψ T.w w) = 0` using `fun w => Submodule.inner_left_of_mem_orthogonal (LinearMap.mem_range_self (ffaJ hP T.w) w) hxo`. Establish `hfH : rreg ε g (uniformisationL2 ε Ψ T.w v) ∈ Hlam ε Ψ T.w` using `hst g hg _ (datumEmbedding_mem_Hlam hP v)`. Establish `hxH : rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q ∈ Hlam ε Ψ T.w` using `Submodule.sub_mem _ hfH (datumEmbedding_mem_Hlam hP q)`. Establish `hRH : ∀ k : S7.KG ε, rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q) ∈ Hlam ε Ψ T.w` using `fun k => hst _ (ffa_toMK_mem k) _ hxH`. Establish `horth : ∀ u v'' : T.V, inner ℂ (ffaB T (Ψ g v - q) (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q) v'') (uniformisationL2 ε Ψ T.w u) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u v''`. Establish `h0 : ∀ k : S7.KG ε, inner ℂ (uniformisationL2 ε Ψ T.w u) (rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q)) = 0`. Introduce `k`. Rewrite using `[← inv_inv k, ← ffa_rreg_adj, rightRegular_datumEmbedding hP]`. Conclude with `inner_eq_zero_symm.1 (hxj _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← inner_conj_symm, ffaB_inner]`. Simplify using `only [h0, mul_zero, integral_zero, map_zero]`. Establish `hB0` using `kmap_zero hP hD hU (ffaB T (Ψ g v - q) (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q)) (ffaB_equiv T _ _) (ffaB_mem T _ _ (Hlam ε Ψ T.w) hRH) horth`. Establish `hBv : ∫ k, inner ℂ (T.op k (Ψ g v - q)) T.w • rreg ε (S7.toMK k) (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q) ∂(dk ε) = 0`. Use `LinearMap.congr_fun hB0 T.w` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[ffaB_apply, LinearMap.zero_apply]`. Then use the resulting hypothesis. Take `⟨yg, hyg⟩` from `ffa_UJ_lift hg`. Establish `hxae : ((rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q : L2 ε) : Formalism.REAL.UJ ε → ℂ) =ᵐ[Formalism.REAL.muG ε] fun y => jfun Ψ T.w v (Formalism.MainNotions.S.umat y * g) - jfun Ψ T.w q (Formalism.MainNotions.S.umat y)`. Establish `e1` using `rreg_umat_ae ε yg (uniformisationL2 ε Ψ T.w v)`. Establish `e2` using `(measurePreserving_mul_right ε yg).quasiMeasurePreserving.ae_eq_comp (uniformisationL2_ae_eq_jfun hP T.w v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `filter_upwards [Lp.coeFn_sub (rreg ε g (uniformisationL2 ε Ψ T.w v)) (uniformisationL2 ε Ψ T.w q), e1, e2, uniformisationL2_ae_eq_jfun hP T.w q] with y h0 h1 h2 h3`. Rewrite using `[h0, Pi.sub_apply, h3, ← hyg, h1]`. Use `congr 1`. Establish `hFc : ContinuousOn (fun y => jfun Ψ T.w v (y * g) - jfun Ψ T.w q y) (UJset ε)` using `((ffa_jfun_cont hP T.w v).comp (continuousOn_id.mul continuousOn_const) (fun y hy => rq_UJ_mul hy hg)).sub (ffa_jfun_cont hP T.w q)`. Establish `hev` using `ffa_eval hFc hxae _ (ffa_cont_coef T (Ψ g v - q) T.w) hBv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΨk : ∀ (k : S7.KG ε) (h : Matrix (Fin n) (Fin n) ℂ), h ∈ UJset ε → Ψ (S7.toMK k * h) = T.op k * Ψ h`. Introduce `k h hh`. Establish `e` using `hP.1 k 1 h hh`. Rewrite `e` using `[show S7.toMK (1 : S7.KG ε) = 1 from rfl, mul_one, ffa_op_one, mul_one]`. Then use the resulting hypothesis. Establish `hΨk1 : ∀ k : S7.KG ε, Ψ (S7.toMK k) = T.op k`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `k`. Establish `e` using `hΨk k 1 (ffa_toMK_mem (1 : S7.KG ε))`. Rewrite `e` using `[mul_one, hP.2.1, mul_one]`. Then use the resulting hypothesis. Establish `hint : ∀ k : S7.KG ε, inner ℂ (T.op k (Ψ g v - q)) T.w * (jfun Ψ T.w v (S7.toMK k * g) - jfun Ψ T.w q (S7.toMK k)) = ((‖inner ℂ T.w (T.op k (Ψ g v - q))‖ ^ 2 : ℝ) : ℂ)`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show inner ℂ (T.op k (Ψ g v - q)) T.w * (inner ℂ T.w (Ψ (S7.toMK k * g) v) - inner ℂ T.w (Ψ (S7.toMK k) q)) = _`. Rewrite using `[hΨk k g hg, hΨk1 k, ContinuousLinearMap.mul_apply, ← inner_sub_right, ← map_sub, ← inner_conj_symm, Complex.conj_mul', Complex.ofReal_pow]`. Establish `hI : ∫ k, ‖inner ℂ T.w (T.op k (Ψ g v - q))‖ ^ 2 ∂(dk ε) = 0`. Establish `e2 : ((∫ k, ‖inner ℂ T.w (T.op k (Ψ g v - q))‖ ^ 2 ∂(dk ε) : ℝ) : ℂ) = 0`. Rewrite using `[← integral_complex_ofReal]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `Eq.trans ?_ hev` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `(hint k).symm`. Conclude with `e2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hDz : Ψ g v - q = 0`. Establish `hk` using `kschur_coef T T.w (Ψ g v - q)`. Rewrite `hk` using `[hI, mul_zero]`. Establish `hv0 : ‖T.w‖ ^ 2 ≠ 0` using `pow_ne_zero 2 (norm_ne_zero_iff.2 hv₀)`. Establish `h2 : ‖Ψ g v - q‖ ^ 2 = 0`.
-
-Break down `mul_eq_zero.1 hk.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hv0`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 h2)`. Establish `hqv : q = Ψ g v` using `(sub_eq_zero.1 hDz).symm`.
-
-Establish `hdec : rreg ε g (uniformisationL2 ε Ψ T.w v) = (rreg ε g (uniformisationL2 ε Ψ T.w v) - uniformisationL2 ε Ψ T.w q) + uniformisationL2 ε Ψ T.w q` using `(sub_add_cancel _ _).symm`. Rewrite using `[hdec, inner_add_right, inner_eq_zero_symm.1 (hxj v'), zero_add, hqv, ffa_form hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formulaF_of (hP : IsPsiFor ε lam T Ψ)
     (hD : Formalism.MainNotions.S.IsKTypeOf ε (rreg ε) (lowK ε lam) (V1 ε Ψ))
@@ -342,7 +332,7 @@ theorem formulaF_of (hP : IsPsiFor ε lam T Ψ)
   rw [hdec, inner_add_right, inner_eq_zero_symm.1 (hxj v'), zero_add, hqv, ffa_form hP]
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hP hst hU g hg v v'`. Conclude with `formulaF_of hP (hDatum n ε lam T Ψ hP) hst hU hg v v'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stepFormulaF (hDatum : StepDatum) : StepFormulaF := by
   intro n ε lam T Ψ hP hst hU g hg v v'

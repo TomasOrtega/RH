@@ -8,9 +8,9 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.LocVan
 
 /- English proof (translation)
-Establish `hf : Continuous fun c : GL (Fin n) ℂ => ((g * c⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) - 1` using `(Units.continuous_val.comp (continuous_const.mul continuous_inv)).sub continuous_const`. Establish `hK'` using `hK.image hf`. Establish `hemb : Topology.IsClosedEmbedding (Subtype.val : nilrad W₁ W₂ → Matrix (Fin n) (Fin n) ℂ)` using `(isClosed_nilrad W₁ W₂).isClosedEmbedding_subtypeVal`. Use `⟨_, hemb.isCompact_preimage hK', fun Y hY => ?_⟩` and prove the remaining obligations. Use `⟨(uOf Y)⁻¹ * g, hY, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: g * ((uOf Y)⁻¹ * g)⁻¹ = uOf Y` using `by group`. Simplify using `only [this, uOf_val, add_sub_cancel_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_isCompact_uOf_subset {n : ℕ} (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     (g : GL (Fin n) ℂ) {K : Set (GL (Fin n) ℂ)} (hK : IsCompact K) :
@@ -28,9 +28,9 @@ theorem exists_isCompact_uOf_subset {n : ℕ} (W₁ W₂ : Submodule ℂ (Fin n 
   simp only [this, uOf_val, add_sub_cancel_left]
 
 /- English proof (translation)
-Establish `: nSet W₁ W₂ C = ⋃ X : nilrad W₁ W₂, (fun g => (uOf X)⁻¹ * g) ⁻¹' C`. Use extensionality with `g`. Simplify using `only [nSet, Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, c, hc, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨X, by simpa using hc⟩`. Introduce and unpack `⟨X, hX⟩`. Conclude with `⟨X, _, hX, by simp⟩`. Rewrite using `[this]`. Conclude with `isOpen_iUnion fun X => hC.preimage (continuous_const.mul continuous_id)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_nSet {n : ℕ} (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {C : Set (GL (Fin n) ℂ)}
     (hC : IsOpen C) : IsOpen (nSet W₁ W₂ C) := by
@@ -46,9 +46,9 @@ theorem isOpen_nSet {n : ℕ} (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) {C : S
   exact isOpen_iUnion fun X => hC.preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, c, hc, e⟩`. Use `⟨nmul hW h X, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[uOf_nmul, mul_assoc, e]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨X, c, hc, rfl⟩`. Use `⟨nmul hW (ninv hW h) X, c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[uOf_nmul, uOf_ninv, mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mul_mem_nSet_iff {n : ℕ} {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂)
     (C : Set (GL (Fin n) ℂ)) (h : nilrad W₁ W₂) (x : GL (Fin n) ℂ) :
@@ -63,15 +63,13 @@ theorem inv_mul_mem_nSet_iff {n : ℕ} {W₁ W₂ : Submodule ℂ (Fin n → ℂ
     rw [uOf_nmul, uOf_ninv, mul_assoc]
 
 /- English proof (translation)
-Introduce `n _ _ W₁ W₂ hW _ _ ν _ hmp`. Use `haveI := locallyCompact_nilrad W₁ W₂`. Use `haveI := secondCountable_nilrad W₁ W₂`. Use `haveI := secondCountable_GL n`. Use `haveI := locallyCompact_GL n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUo, hUc, hUcov⟩` from `exists_open_cover n`. Establish `hmeas : Measurable (fun p : nilrad W₁ W₂ × GL (Fin n) ℂ => (uOf p.1)⁻¹ * p.2)` using `(((continuous_uOf.comp continuous_fst).inv).mul continuous_snd).measurable`. Take `⟨ρ, hρm, hρ, -⟩` from `GlobalTheory.T.integral_fiber_decomposition_invariant ν (fun Y g => (uOf Y)⁻¹ * g) hmeas (nmul hW) hmp (fun h₀ h x => by simp only [uOf_nmul, _root_.mul_inv_rev, mul_assoc]) (fun i => closure (U i)) (fun i => nSet W₁ W₂ (U i)) (fun i => isClosed_closure.measurableSet) (fun i => ( …`. Take `⟨i, hi⟩` from `hUcov x`. Conclude with `⟨i, 0, x, hi, by`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: uOf (0 : nilrad W₁ W₂) = 1` using `Units.ext (by simp)`. Simplify using `[this]⟩)`. Use the proof step `(fun i x => by`. Take `⟨C, hC, hsub⟩` from `exists_isCompact_uOf_subset W₁ W₂ x (hUc i)`. Conclude with `((measure_mono hsub).trans_lt hC.measure_lt_top).ne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use the proof step `(fun i x hx => by`. Take `⟨Y₀, c, hc, rfl⟩` from `hx`. Establish `ho : IsOpen {Y : nilrad W₁ W₂ | (uOf Y)⁻¹ * (uOf Y₀ * c) ∈ U i}` using `(hUo i).preimage ((continuous_uOf.inv).mul continuous_const)`. Establish `hne : ({Y : nilrad W₁ W₂ | (uOf Y)⁻¹ * (uOf Y₀ * c) ∈ U i}).Nonempty` using `⟨Y₀, by simpa using hc⟩`. Establish `hpos` using `ho.measure_pos ν hne`.
-
-Establish `hsub : {Y : nilrad W₁ W₂ | (uOf Y)⁻¹ * (uOf Y₀ * c) ∈ U i} ⊆ {Y : nilrad W₁ W₂ | (uOf Y)⁻¹ * (uOf Y₀ * c) ∈ closure (U i)}` using `fun Y hY => subset_closure hY`. Conclude with `(hpos.trans_le (measure_mono hsub)).ne')`. Use the proof step `∅ (by simp) (by simp) (by simp)`. Conclude with `⟨ρ, hρm, hρ⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_nilrad_normaliser : ∀ (n : ℕ) [MeasurableSpace (GL (Fin n) ℂ)] [BorelSpace (GL (Fin n) ℂ)]
   (W₁ W₂ : Submodule ℂ (Fin n → ℂ)) (hW : W₁ ≤ W₂) [MeasurableSpace (nilrad W₁ W₂)]

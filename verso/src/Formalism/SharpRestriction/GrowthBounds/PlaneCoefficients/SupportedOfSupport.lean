@@ -21,9 +21,9 @@ theorem homComp_eq {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ)
     homComp d H = compD d H := rfl
 
 /- English proof (translation)
-Unfold `compD at hmo`. Take `⟨a, ha, hmo'⟩` from `Finset.mem_biUnion.1 (support_sum hmo)`. Use `support_monomial_subset hmo'` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Conclude with `⟨(Finset.mem_filter.1 ha).1, (Finset.mem_filter.1 ha).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem compD_support {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ) (H : MvPolynomial (ι × Fin s) Kf)
     (mo : ι × Fin s →₀ ℕ) (hmo : mo ∈ (compD d H).support) : mo ∈ H.support ∧ ∀ x, multideg mo x = d x := by
@@ -35,14 +35,14 @@ theorem compD_support {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → �
   exact ⟨(Finset.mem_filter.1 ha).1, (Finset.mem_filter.1 ha).2⟩
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk ⟨compD d, T5.compD_zero d⟩ (T5.compD_add d)) f T`.
+A detailed English derivation is pending.
 -/
 theorem compD_sum {ι κ : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ) (T : Finset κ)
     (f : κ → MvPolynomial (ι × Fin s) Kf) : compD d (∑ i ∈ T, f i) = ∑ i ∈ T, compD d (f i) :=
   map_sum (AddMonoidHom.mk ⟨compD d, T5.compD_zero d⟩ (T5.compD_add d)) f T
 
 /- English proof (translation)
-Unfold `compD`. Use `Finset.sum_eq_zero fun mo hmo => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `h mo (Finset.mem_filter.1 hmo).1`. Conclude with `absurd ((Finset.mem_filter.1 hmo).2 x) hx`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem compD_eq_zero {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → ℕ) (H : MvPolynomial (ι × Fin s) Kf)
     (h : ∀ mo ∈ H.support, ∃ x, multideg mo x ≠ d x) : compD d H = 0 := by
@@ -52,7 +52,7 @@ theorem compD_eq_zero {ι : Type} {s : ℕ} {Kf : Type} [Field Kf] (d : ι → �
   exact absurd ((Finset.mem_filter.1 hmo).2 x) hx
 
 /- English proof (translation)
-Rewrite `hQ`, the goal using `[mem_supported]`. Introduce `v hv`. Take `⟨d, hd, hvd⟩` from `(mem_vars_iff_mem_support v).1 (Finset.mem_coe.1 hv)`. Conclude with `hQ (Finset.mem_coe.2 ((mem_vars_iff_mem_support v).2 ⟨d, h hd, hvd⟩))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem supported_of_support {τ R : Type*} [CommSemiring R] {s : Set τ} {P Q : MvPolynomial τ R}
     (h : P.support ⊆ Q.support) (hQ : Q ∈ supported R s) : P ∈ supported R s := by
@@ -62,7 +62,7 @@ theorem supported_of_support {τ R : Type*} [CommSemiring R] {s : Set τ} {P Q :
   exact hQ (Finset.mem_coe.2 ((mem_vars_iff_mem_support v).2 ⟨d, h hd, hvd⟩))
 
 /- English proof (translation)
-Unfold `multideg`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem multideg_add {ι : Type} {s : ℕ} (a b : ι × Fin s →₀ ℕ) (x : ι) :
     multideg (a + b) x = multideg a x + multideg b x := by
@@ -70,9 +70,9 @@ theorem multideg_add {ι : Type} {s : ℕ} (a b : ι × Fin s →₀ ℕ) (x : �
   simp only [Finsupp.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, valS_zero_eq_top]`. Conclude with `geZ_top _`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha]`. Conclude with `geZ_mono (mul_valS_add _ _ _ _) (geZ_min (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))`.
+A detailed English derivation is pending.
 -/
 theorem geZ_sum {Kf : Type} [Field Kf] {ι κ : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (T : Finset κ)
     (f : κ → MvPolynomial (ι × Fin n) Kf) (t : ℝ) (h : ∀ i ∈ T, geZ (valS LL S (f i)) t) :
@@ -87,7 +87,7 @@ theorem geZ_sum {Kf : Type} [Field Kf] {ι κ : Type} {n : ℕ} [NeZero n] (LL :
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi)))
 
 /- English proof (translation)
-Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe k => exact WithTop.coe_le_coe.2 (Int.ceil_le.2 (h k rfl))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem le_of_geZ {x : WithTop ℤ} {t : ℝ} (h : geZ x t) : ((⌈t⌉ : ℤ) : WithTop ℤ) ≤ x := by
   induction x using WithTop.recTopCoe with
@@ -95,7 +95,7 @@ theorem le_of_geZ {x : WithTop ℤ} {t : ℝ} (h : geZ x t) : ((⌈t⌉ : ℤ) :
   | coe k => exact WithTop.coe_le_coe.2 (Int.ceil_le.2 (h k rfl))
 
 /- English proof (translation)
-Introduce `k' hk'`. Establish `: k = k'` using `WithTop.coe_injective hk'`. Rewrite using `[← this]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geZ_coe {k : ℤ} {t : ℝ} (h : t ≤ (k : ℝ)) : geZ ((k : ℤ) : WithTop ℤ) t := by
   intro k' hk'
@@ -106,47 +106,43 @@ theorem geZ_coe {k : ℤ} {t : ℝ} (h : t ≤ (k : ℝ)) : geZ ((k : ℤ) : Wit
 end Lk
 
 /- English proof (translation)
-Introduce `p _ n' r K m _ _ _ O _ _ _ _ hk Fr L₁ N₁ hV hn J _ Dt hT hJ A hA l hl ga hga t ht dPl j mm hm`. Take `⟨hEq, hcov⟩` from `hTr p n' r K m O hk Fr L₁ N₁ hV hn J Dt hT A hA l hl ga hga`. Establish `hp : 0 < p` using `(Fact.out : p.Prime).pos`. Use `set μ0 := plMon Fr p hk Dt.nL (l.mapDomain (castV hk) + ga) with hμ0`. Use `set u := Dt.nL j + (r - 1 - mm.val) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hur : u < Dt.nL j + r` using `by omega`. Use `set Ab : ZMod J → MvPolynomial (ℤ × Fin r) (KK O) := fun j' => MvPolynomial.map (algebraMap O (KK O)) (A (segZ j')) with hAb`. Use `set Rst : MvPolynomial (TL J Dt.nL r × Fin r) (KK O) := monomial μ0 1 * ∏ j' ∈ Finset.univ.erase j, PhiJ Fr Dt j' (Ab j') with hRst`. Establish `e1 : levP Fr p hk Dt.nL (zPl p O hk Fr A l ga) = Rst * PhiJ Fr Dt j (Ab j)`. Rewrite using `[hEq, hRst]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: ∏ j' : ZMod J, Dt.ph (chi Fr Dt.nL (KK O) j' (MvPolynomial.map (algebraMap O (KK O)) (A (segZ j')))) = PhiJ Fr Dt j (Ab j) * ∏ j' ∈ Finset.univ.erase j, PhiJ Fr Dt j' (Ab j')` using `(Finset.mul_prod_erase Finset.univ (fun j' => PhiJ Fr Dt j' (Ab j')) (Finset.mem_univ j)).symm`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR0 : 0 ≤ valS Dt.trueLet (Dt.TSet j mm) Rst`. Apply `hNN` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv hvT`. Break down `Finset.mem_union.1 (vars_mul _ _ hv) with h1 | h1` into its components or cases. Rewrite `h1` using `[vars_monomial one_ne_zero]`. Establish `h2 : μ0 v ≠ 0` using `Finsupp.mem_support_iff.1 h1`. Take `⟨⟨j'', s⟩, a⟩` from `v`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Consider the cases of `s with`. Consider the case `inl ll`. Assume the negation of the conclusion as `hs`. Establish `hs' : Dt.sgn j'' ll = false`. Establish `: Dt.trueLet.vec ⟨j'', Sum.inl ll⟩ = Dt.sgn j'' ll` using `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite `hs` using `[this]`. Simplify using `using hs`. Conclude with `h2 (hcov j'' ll a hs')`. Consider the case `inr m' => rfl`. Take `⟨j', hj', h2⟩` from `Finset.mem_biUnion.1 (vars_prod _ h1)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hne : j' ≠ j` using `(Finset.mem_erase.1 hj').1`. Break down `hVr p n' r O Fr J Dt j' (Ab j') v h2 with ⟨ll, h3⟩ | ⟨j'', m', h3⟩` into its components or cases. It suffices to derive a contradiction. Rewrite `hvT` using `[h3]`. Break down `hvT with ⟨l', h4⟩ | ⟨m', _, h4⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne (congrArg Sigma.fst h4)`. Conclude with `hne (congrArg Sigma.fst h4)`. Rewrite using `[h3]`. Both sides reduce to the same expression. Take `⟨Dl, hDl⟩` from `hHD (KK O) ℤ r (Ab j)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : compD dPl (Rst * PhiJ Fr Dt j (Ab j)) = ∑ δ ∈ Dl, compD dPl (Rst * PhiJ Fr Dt j (compD δ (Ab j)))` using `by conv_lhs => rw [hDl]`. Rewrite using `[map_sum, Finset.mul_sum, Lk.compD_sum]`. Both sides reduce to the same expression. Rewrite using `[e1, e2]`. Use `Lk.geZ_sum _ _ _ _ _ fun δ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Use `set F := compD δ (Ab j) with hF`. Establish `hjv : j.val < Fr.J`. Rewrite using `[← hT.1]`. Conclude with `ZMod.val_lt j`. Establish `hAbS : Ab j ∈ supported (KK O) {v : ℤ × Fin r | v.1 ∈ Fr.letters (segZ j)}`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hA j.val hjv`. Rewrite `h1`, the goal using `[mem_supported]`. Conclude with `fun v hv => h1 (Finset.mem_coe.2 (vars_map (A (segZ j)) (algebraMap O (KK O)) (Finset.mem_coe.1 hv)))`. Establish `hFS : F ∈ supported (KK O) {v : ℤ × Fin r | v.1 ∈ Fr.letters (segZ j)}` using `Lk.supported_of_support (fun mo hmo => (Lk.compD_support δ (Ab j) mo hmo).1) hAbS`. Establish `hFd : ∀ μ ∈ F.support, ∀ y, multideg μ y = δ y` using `fun μ hμ => (Lk.compD_support δ (Ab j) μ hμ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdeg` using `hDg p n' r O Fr L₁ N₁ hV J Dt hT hJ j F hFS δ hFd`. Distinguish the cases in `hbig : ∃ m' : Fin r, dPl ⟨j - 1, Sum.inr m'⟩ < multideg μ0 ⟨j - 1, Sum.inr m'⟩ + Dt.P (j - 1) m' * δ (Fr.fr (segZ j - 1) (r - 1 - m'.val))`. Take `⟨m', hm'⟩` from `hbig`. Rewrite using `[Lk.compD_eq_zero, valS_zero_eq_top]`. Conclude with `geZ_top _`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `mo hmo`. Use `⟨⟨j - 1, Sum.inr m'⟩, ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Finset.mem_add.1 (support_mul _ _ hmo)`. Take `⟨a0, ha0, c, _, rfl⟩` from `Finset.mem_add.1 (support_mul _ _ ha)`. Establish `h0` using `support_monomial_subset ha0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[Finset.mem_singleton]`. Substitute `h0` using the available equality. Rewrite using `[Lk.multideg_add, Lk.multideg_add, hdeg b hb m']`. Use linear arithmetic over natural numbers and integers. Use `push Not at hbig set dw : ℕ := ∑ m' : Fin r, δ (Fr.fr (segZ j - 1) (r - 1 - m'.val)) with hdw`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwd : ∀ μ ∈ F.support, wDeg (wSet Fr (segZ j)) μ ≤ dw`. Introduce `μ hμ`. Use `le_trans (hW Fr (segZ j) μ) (le_of_eq ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun m' _ => hFd μ hμ _`. Establish `hdwB : (dw : ℝ) ≤ dwB Fr hk Dt dPl (l.mapDomain (castV hk) + ga) j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `dwB`. Rewrite using `[hdw]`. Use `push_cast`. Use `Finset.sum_le_sum fun m' _ => ?_` and prove the remaining obligations. Establish `hP : (0 : ℝ) < (Dt.P (j - 1) m' : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: 0 < Dt.P (j - 1) m'` using `pow_pos hp _`. Conclude with `this` after adjusting the coercions. Rewrite using `[le_div_iff₀ hP]`. Establish `h1` using `hbig m'`. Establish `h2 : δ (Fr.fr (segZ j - 1) (r - 1 - m'.val)) * Dt.P (j - 1) m' ≤ dPl ⟨j - 1, Sum.inr m'⟩ - multideg μ0 ⟨j - 1, Sum.inr m'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Use linear arithmetic over natural numbers and integers. Conclude with `h2` after adjusting the coercions. Establish `h1 : ((⌈t j u⌉ : ℤ) : WithTop ℤ) ≤ valS LZ {y | y < posU Fr (Dt.nL j) (segZ j) u} F`. Use `le_trans (Lk.le_of_geZ (ht j u hur)) ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `(valComp (KK O) ℤ r LZ {y | y < posU Fr (Dt.nL j) (segZ j) u} (Ab j) δ).1`. Rewrite `h2` using `[Lk.homComp_eq]`. Use `le_trans (le_of_eq ?_) h2` and prove the remaining obligations. Conclude with `(Formalism.MainNotions.G.Joints.StandardMonomialSpace.valS_map (algebraMap O (KK O)) (IsFractionRing.injective O (KK O)) LZ _ _).symm`. Establish `h3` using `hLL p n' r O Fr L₁ N₁ hV hn J Dt hT hJ j mm hm F hFS dw hwd ⌈t j u⌉ h1`.
-
-Establish `h4 : ((⌈t j u⌉ - dw : ℤ) : WithTop ℤ) ≤ valS Dt.trueLet (Dt.TSet j mm) (compD dPl (Rst * PhiJ Fr Dt j F))`. Establish `h5` using `(valComp (KK O) _ r Dt.trueLet (Dt.TSet j mm) (Rst * PhiJ Fr Dt j F) dPl).1`. Rewrite `h5` using `[Lk.homComp_eq]`. Use `le_trans ?_ h5` and prove the remaining obligations. Rewrite using `[mul_valS_mul]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `geZ_mono h4 (Lk.geZ_coe ?_)` and prove the remaining obligations. Use `Int.le_ceil (t j u)` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem restLink_of (hNN : ValNN) (hHD : HomDec) (hLL : LinkL) (hDg : LkDeg) (hVr : LkVars) (hTr : RestTr)
     (hW : ∀ {n' r : ℕ} (Fr : Frames n' r) (jz : ℤ) (μ : ℤ × Fin r →₀ ℕ),

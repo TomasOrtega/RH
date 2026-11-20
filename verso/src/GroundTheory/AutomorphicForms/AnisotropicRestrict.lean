@@ -23,13 +23,13 @@ abbrev baseBasis : Module.Basis κ R (R ⊗[K] A) := Algebra.TensorProduct.basis
 def coords : (R ⊗[K] A) ≃ₗ[R] (κ → R) := (baseBasis b R).equivFun
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.basis_apply b k`.
+A detailed English derivation is pending.
 -/
 theorem baseBasis_apply (k : κ) : baseBasis b R k = 1 ⊗ₜ b k :=
   Algebra.TensorProduct.basis_apply b k
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[coords, Module.Basis.equivFun_self, Pi.single_apply]`. Conclude with `if_congr eq_comm rfl rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_baseBasis (k : κ) : coords b R (baseBasis b R k) = Pi.single k 1 := by
   funext l
@@ -37,7 +37,7 @@ theorem coords_baseBasis (k : κ) : coords b R (baseBasis b R k) = Pi.single k 1
   exact if_congr eq_comm rfl rfl
 
 /- English proof (translation)
-The claim follows from `((baseBasis b R).sum_equivFun z).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_coords (z : R ⊗[K] A) : z = ∑ k, coords b R z k • baseBasis b R k :=
   ((baseBasis b R).sum_equivFun z).symm
@@ -47,7 +47,7 @@ def rmat (x : R ⊗[K] A) : Matrix κ κ R := fun k => coords b R (baseBasis b R
 def lmat (a : R ⊗[K] A) : Matrix κ κ R := fun k => coords b R (a * baseBasis b R k)
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_coords b R z]`. Rewrite using `[Finset.sum_mul, map_sum]`. Use function extensionality and compare the values at `l`. Simplify using `only [smul_mul_assoc, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, vecMul, dotProduct, rmat]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_mul (z x : R ⊗[K] A) : coords b R (z * x) = coords b R z ᵥ* rmat b R x := by
   conv_lhs => rw [eq_sum_coords b R z]
@@ -57,7 +57,7 @@ theorem coords_mul (z x : R ⊗[K] A) : coords b R (z * x) = coords b R z ᵥ* r
     dotProduct, rmat]
 
 /- English proof (translation)
-Use `conv_lhs => rw [eq_sum_coords b R z]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use function extensionality and compare the values at `l`. Simplify using `only [mul_smul_comm, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, vecMul, dotProduct, lmat]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_mul_left (a z : R ⊗[K] A) : coords b R (a * z) = coords b R z ᵥ* lmat b R a := by
   conv_lhs => rw [eq_sum_coords b R z]
@@ -67,7 +67,7 @@ theorem coords_mul_left (a z : R ⊗[K] A) : coords b R (a * z) = coords b R z �
     dotProduct, lmat]
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [rmat]`. Rewrite using `[← mul_assoc, coords_mul]`. Simplify using `only [vecMul, dotProduct, Matrix.mul_apply, rmat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rmat_mul (x y : R ⊗[K] A) : rmat b R (x * y) = rmat b R x * rmat b R y := by
   ext k l
@@ -76,7 +76,7 @@ theorem rmat_mul (x y : R ⊗[K] A) : rmat b R (x * y) = rmat b R x * rmat b R y
   simp only [vecMul, dotProduct, Matrix.mul_apply, rmat]
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [rmat, mul_one, coords_baseBasis, Pi.single_apply, Matrix.one_apply, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rmat_one : rmat b R 1 = 1 := by
   ext k l
@@ -100,9 +100,9 @@ Both sides reduce to the same expression.
 theorem rmatHom_apply (x : R ⊗[K] A) : rmatHom b R x = rmat b R x := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `hx` using `coords_mul b R 1 x`. Establish `hy` using `coords_mul b R 1 y`. Rewrite `hx`, `hy` using `[one_mul]`. Rewrite `hx` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(coords b R).injective (hx.trans hy.symm)`.
+A detailed English derivation is pending.
 -/
 theorem rmat_injective : Function.Injective (rmat b R) := by
   intro x y h
@@ -113,13 +113,13 @@ theorem rmat_injective : Function.Injective (rmat b R) := by
   exact (coords b R).injective (hx.trans hy.symm)
 
 /- English proof (translation)
-Set `φ : R ⊗[K] A →ₗ[R] R ⊗[K] A` to `(coords b R).symm.toLinearMap ∘ₗ g.vecMulLinear ∘ₗ (coords b R).toLinearMap`. Establish `hφ : ∀ z, coords b R (φ z) = coords b R z ᵥ* g`. Introduce `z`. Simplify using `[φ]`. Establish `hj : ∀ j z, φ (baseBasis b R j * z) = baseBasis b R j * φ z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j z`. Apply `(coords b R).injective` to reduce the goal to its premises. Rewrite using `[hφ, coords_mul_left, coords_mul_left, hφ, vecMul_vecMul, vecMul_vecMul, hg]`. Establish `ha : ∀ a z, φ (a * z) = a * φ z`. Introduce `a z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_sum_coords b R a, Finset.sum_mul, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, smul_mul_assoc, map_smul, hj]`. Use `⟨φ 1, ?_⟩` and prove the remaining obligations. Use extensionality with `k l`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `h1 : baseBasis b R k * φ 1 = φ (baseBasis b R k)` using `by rw [← ha, mul_one]`. Simplify using `only [rmat, h1, hφ, coords_baseBasis, single_one_vecMul, Matrix.row_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_rmat_eq (g : Matrix κ κ R)
     (hg : ∀ j, lmat b R (baseBasis b R j) * g = g * lmat b R (baseBasis b R j)) :
@@ -149,7 +149,7 @@ def baseMap (f : R →ₐ[K] R') : R ⊗[K] A →ₐ[K] R' ⊗[K] A :=
   Algebra.TensorProduct.map f (AlgHom.id K A)
 
 /- English proof (translation)
-Rewrite using `[baseBasis_apply, baseBasis_apply, baseMap, Algebra.TensorProduct.map_tmul, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem baseMap_baseBasis (f : R →ₐ[K] R') (k : κ) :
     baseMap f (baseBasis b R k) = baseBasis b R' k := by
@@ -157,9 +157,9 @@ theorem baseMap_baseBasis (f : R →ₐ[K] R') (k : κ) :
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ k, baseMap f (coords b R z k • baseBasis b R k) = f (coords b R z k) • baseBasis b R' k`. Introduce `k`. Simplify using `only [baseBasis_apply, baseMap, TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq]`. Use `conv_lhs => rw [eq_sum_coords b R z]`. Rewrite using `[map_sum, Finset.sum_congr rfl fun k _ => h k, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [map_smul, Pi.smul_apply, coords_baseBasis, smul_eq_mul, Pi.single_apply, mul_ite, mul_one, mul_zero, Function.comp_apply]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coords_baseMap (f : R →ₐ[K] R') (z : R ⊗[K] A) :
     coords b R' (baseMap f z) = f ∘ coords b R z := by
@@ -178,7 +178,7 @@ theorem coords_baseMap (f : R →ₐ[K] R') (z : R ⊗[K] A) :
   simp
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [rmat, Matrix.map_apply, ← baseMap_baseBasis b f k, ← map_mul, coords_baseMap, Function.comp_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rmat_baseMap (f : R →ₐ[K] R') (x : R ⊗[K] A) :
     rmat b R' (baseMap f x) = (rmat b R x).map f := by
@@ -195,7 +195,7 @@ variable (R : Type*) [CommRing R] [Algebra K R] {R' : Type*} [CommRing R'] [Alge
 variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use extensionality with `k l`. Simplify using `only [lmat, rmat, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lmat_eq_rmat (a : R ⊗[K] E) : lmat b R a = rmat b R a := by
   ext k l
@@ -211,7 +211,7 @@ theorem blockHom_apply (M : Matrix ι ι (R ⊗[K] E)) (i j : ι) (k l : κ) :
     blockHom b R M (i, k) (j, l) = rmat b R (M i j) k l := rfl
 
 /- English proof (translation)
-Introduce `M M' h`. Use extensionality with `i j : 2`. Apply `rmat_injective b R` to reduce the goal to its premises. Use extensionality with `k l`. Conclude with `congrFun (congrFun h (i, k)) (j, l)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem blockHom_injective : Function.Injective (blockHom (ι := ι) b R) := by
   intro M M' h
@@ -223,7 +223,7 @@ theorem blockHom_injective : Function.Injective (blockHom (ι := ι) b R) := by
 def coordsVec (x : ι → R ⊗[K] E) : ι × κ → R := fun p => coords b R (x p.1) p.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨j, l⟩`. Simplify using `only [coordsVec, vecMul, dotProduct, map_sum, Finset.sum_apply, coords_mul, Fintype.sum_prod_type, blockHom_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordsVec_vecMul (x : ι → R ⊗[K] E) (M : Matrix ι ι (R ⊗[K] E)) :
     coordsVec b R (x ᵥ* M) = coordsVec b R x ᵥ* blockHom b R M := by
@@ -232,13 +232,13 @@ theorem coordsVec_vecMul (x : ι → R ⊗[K] E) (M : Matrix ι ι (R ⊗[K] E))
     Fintype.sum_prod_type, blockHom_apply]
 
 /- English proof (translation)
-Establish `hsc : ∀ j, blockHom b R (Matrix.scalar ι (baseBasis b R j)) = Matrix.compAlgEquiv ι κ R R (Matrix.scalar ι (rmat b R (baseBasis b R j)))`. Introduce `j`. Simplify using `only [blockHom, AlgHom.comp_apply, AlgHom.mapMatrix_apply, Matrix.scalar_apply, Matrix.diagonal_map (map_zero _), rmatHom_apply]`. Both sides reduce to the same expression. Establish `hcomm : ∀ j i i', rmat b R (baseBasis b R j) * (Matrix.comp ι ι κ κ R).symm g i i' = (Matrix.comp ι ι κ κ R).symm g i i' * rmat b R (baseBasis b R j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `j i i'`. Establish `h` using `hg j`. Rewrite `h` using `[hsc, ← (Matrix.compAlgEquiv ι κ R R).apply_symm_apply g, ← map_mul, ← map_mul]`. Establish `h2` using `(Matrix.compAlgEquiv ι κ R R).injective h`. Establish `h3` using `congrFun (congrFun h2 i) i'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h3` using `[Matrix.scalar_apply, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Establish `hx : ∀ i i', ∃ x, rmat b R x = (Matrix.comp ι ι κ κ R).symm g i i'` using `fun i i' => exists_rmat_eq b R _ fun j => by rw [lmat_eq_rmat]; exact hcomm j i i'`. Use `choose M hM using hx`. Use `⟨Matrix.of M, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨i, k⟩ ⟨i', l⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockHom_apply, Matrix.of_apply, hM i i']`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_blockHom_eq (g : Matrix (ι × κ) (ι × κ) R)
     (hg : ∀ j, blockHom b R (Matrix.scalar ι (baseBasis b R j)) * g =
@@ -269,7 +269,7 @@ theorem exists_blockHom_eq (g : Matrix (ι × κ) (ι × κ) R)
 variable {R}
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, l⟩`. Simplify using `only [blockHom_apply, Matrix.map_apply, rmat_baseMap]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blockHom_baseMap (f : R →ₐ[K] R') (M : Matrix ι ι (R ⊗[K] E)) :
     blockHom b R' (M.map (baseMap f)) = (blockHom b R M).map f := by
@@ -277,7 +277,7 @@ theorem blockHom_baseMap (f : R →ₐ[K] R') (M : Matrix ι ι (R ⊗[K] E)) :
   simp only [blockHom_apply, Matrix.map_apply, rmat_baseMap]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, k⟩`. Simplify using `only [coordsVec, coords_baseMap, Function.comp_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordsVec_baseMap (f : R →ₐ[K] R') (x : ι → R ⊗[K] E) :
     coordsVec b R' (fun i => baseMap f (x i)) = f ∘ coordsVec b R x := by

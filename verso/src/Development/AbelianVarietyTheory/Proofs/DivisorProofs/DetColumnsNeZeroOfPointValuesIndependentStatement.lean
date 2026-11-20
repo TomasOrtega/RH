@@ -8,7 +8,7 @@ open NumberField MvPolynomial ReciprocityTheory.MultiplicativeHeights Reciprocit
 open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools GlobalTheory.HilbertSamuel GlobalTheory.HSChoice GlobalTheory.HSShort
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HSShort.DetNe.det_ne_zero_of_indep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDetColumnsNeZeroOfPointValuesIndependent.lean&line=10#L10)
 -/

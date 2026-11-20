@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.LogCanon
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use `⟨x, ?_⟩` and prove the remaining obligations. Use `show (LB.toMod B).presheaf.map (homOfLE (le_refl (⊤ : Y.Opens))).op x = x`. Rewrite using `[show (homOfLE (le_refl (⊤ : Y.Opens))).op = 𝟙 _ from rfl, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restr_top_surj {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} {B : LB Y} {O : Y.Opens} (h : O = ⊤)
     (x : H0 p B O) : ∃ g : H0 p B ⊤, H0.restr le_top g = x := by
@@ -37,7 +37,7 @@ theorem restr_top_surj {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
   rfl
 
 /- English proof (translation)
-Establish `: Dw.p + Dw.q = 0` using `by omega`. Simplify using `[GlobalTheory.FlagTan.dimFlag, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dimFlag_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (h : ¬ 1 ≤ Dw.p + Dw.q) : dimFlag Dw = 0 := by
@@ -45,11 +45,11 @@ theorem dimFlag_eq_zero {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   simp [GlobalTheory.FlagTan.dimFlag, this]
 
 /- English proof (translation)
-Introduce `hP hG E _ _ _ H Dw l Xo c TF Z hF M ω b s hs m`. Establish `hV : IsVariety₀ TF.X Z` using `GlobalTheory.T.flagSpace_component_smooth_projective_connected E H Dw l Xo c TF Z hF`. Distinguish the cases in `hpq : 1 ≤ Dw.p + Dw.q`. Establish `hKS : (∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), GlobalTheory.FlagTan.KSIso (GlobalTheory.FlagTan.psiSet H) y)` using `fun K _ _ y => GlobalTheory.T.kodaira_spencer_iso_flag_tangent hP hG E H Dw l Xo c K y hpq`. Take `⟨ω₀⟩` from `GlobalTheory.T.nonempty_kodairaSpencer_identification_offBoundary hP.p5 E H Dw l Xo c TF.Y TF.X Z (Modif.refl hV.1 hV.2.1 (dense_U₀ TF.X Z)) hKS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(GlobalTheory.T.canonical_modification_ks_iso hP hG E H Dw l Xo c TF Z hF hKS hV ω₀ b s hs m).trans (GlobalTheory.T.canonical_modification_ks_iso_sec hP hG E H Dw l Xo c TF Z hF hKS hV ω₀ M ω b s hs m)`. Establish `h0` using `dimFlag_eq_zero Dw hpq`. Establish `hU : U₀ TF.X Z = ⊤` using `GlobalTheory.T.dense_open_eq_univ_of_smooth_relDim_zero c.F _ (str₀ TF.X Z) (h0 ▸ hV.1) _ (dense_U₀ TF.X Z)`. Establish `hall : ∀ y, y ∈ U₀ TF.X Z` using `fun y => hU.symm ▸ (Set.mem_univ y : y ∈ ((⊤ : (Y₀ TF.X Z).Opens) : Set _))`. Establish `hoff : M.off = ⊤` using `eq_top_iff.2 fun x _ => M.off_eq.ge (hall _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iff_of_true ?_ (restr_top_surj hoff _)` and prove the remaining obligations. Take `⟨g, hg⟩` from `restr_top_surj hU m`. Use `⟨g, fun y hy => (hy (hall y)).elim, hg⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logCanon_iff : GlobalTheory.CovTop.Hypotheses₂ → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), FnAlgClosed Xo c → ∀ (M : Modif (str₀ TF.X Z) (U₀ TF.X Z) (dimFlag Dw)) (ω : CanId M) (b s : AllWt.Weight Dw) (hs : FlagTan.kap Dw + b = s) (m : H0 (str₀ TF.X Z) (L₀ TF.X Z s) (U₀ TF.X Z)), (∃ g ∈ vanBd TF.X Z s, H0.restr le_top g = m) ↔ ∃ g : H0 M.str (tens M.K.bundle ((L₀ TF.X Z b).pull M.σ)) ⊤, H0.restr le_top g = (((common₀ TF.X Z).pull M.σ).canChart M.K.isLB hs).mul ω.ω (M.pullOff m) := by
   intro hP hG E _ _ _ H Dw l Xo c TF Z hF M ω b s hs m

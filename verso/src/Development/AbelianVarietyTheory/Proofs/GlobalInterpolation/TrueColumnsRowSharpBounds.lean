@@ -15,11 +15,11 @@ namespace GlobalTheory.LvT.Built.TrueCols
 variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X}
 
 /- English proof (translation)
-Take `⟨Bd, hch, hsp, hse, hk, hBd⟩` from `GlobalTheory.T.fivePointLaws_trueChains B X I h hJ l l0 Z u a`. Establish `hT : Module.finrank ℚ Bd.E * (I.rec7 l Z).R.N (I.rec7 l Z).R.m + 1 < Bd.J.T`. Substitute `hBd` using the available equality. Use `show Module.finrank ℚ B.host.E * B.R.N B.R.m + 1 < B.T u`. Establish `h1` using `X.a_gt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `X.T_gt u`. Establish `hf : Module.finrank ℚ B.host.E = 2 * B.R.f`. Rewrite using `[B.host.finrank_cmField, Formalism.BasicNotions.Ranks.f, Formalism.BasicNotions.Ranks.n]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ((2 * B.R.f * B.R.N B.R.m + 1 : ℕ) : ℝ) < (B.T u : ℝ)` using `lt_trans h1 h2`. Conclude with `h3` after adjusting the coercions. Establish `hW : TwColumn.WtSigns Bd.ch` using `(GlobalTheory.LvT.WtSign.wtSigns_assemble_iff B (I.cols l) Z.W Z.V Z.S Z.N Z.G u Bd.ch).2 hS`. Use `(GlobalTheory.LvT.Built.Assemble.sharpBound_stability_latticeColumnChain (I.rec7 l Z) u Bd hsp hse hk hT hW).1` as an intermediate fact. Rewrite `this` using `[hch]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trueColumns_chain_last_step_sharp_bound (h : I.Ok) (hJ : I.JetsIn) (hS : GlobalTheory.LvT.WtSign.BaseSigns B) (l : I.Laws) (l0 : I.Law0 l)
     (Z : TC.Later B (I.cols l)) (u : (I.rec7 l Z).what₂.Word) (a : I.ι) : Conclusion5Sharp (tw (I.tw l l0 Z) u a) := by
@@ -41,9 +41,9 @@ theorem trueColumns_chain_last_step_sharp_bound (h : I.Ok) (hJ : I.JetsIn) (hS :
   rwa [hch] at this
 
 /- English proof (translation)
-Introduce `B X I h hJ hS l l0 Z Dx u`. Use `⟨?_, fun w hw μ _ _ _ x hx => ?_⟩` and prove the remaining obligations. Establish `h0` using `trueColumns_chain_last_step_sharp_bound h hJ hS l l0 Z u I.mu0`. Rewrite `h0` using `[← own_eq I l l0 Z u]`. Conclude with `(levelChainSharpColumnValuation_ownChain_iff (I.rec7 l Z) u).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hTw : TupleChainSharpColumnValuation (I.tw l l0 Z) u μ` using `TwSharp.tupleChainSharpColumnValuation_of_twisted (I.rec7 l Z) u (I.tw l l0 Z) μ (GlobalTheory.T.twistedChain_initialLattice_compatible_trueColumns B X I h l l0 Z u μ) (trueColumns_chain_last_step_sharp_bound h hJ hS l l0 Z u μ)`. Conclude with `GlobalTheory.Proof.ColumnWeightTwisted.colGeTw_of_tupleChainSharpColumnValuation (I.rec7 l Z) (I.tw l l0 Z) u μ hTw w hw x hx`.
+A detailed English derivation is pending.
 -/
 theorem row_true : ∀ (B : GlobalTheory.Mem.Base) (X : PreX B.toPre) (I : TC B X), I.Ok → I.JetsIn → GlobalTheory.LvT.WtSign.BaseSigns B →
     ∀ (l : I.Laws) (l0 : I.Law0 l) (Z : TC.Later B (I.cols l)) (Dx : DivX (I.rec7 l Z)) (u : (I.rec7 l Z).what₂.Word),

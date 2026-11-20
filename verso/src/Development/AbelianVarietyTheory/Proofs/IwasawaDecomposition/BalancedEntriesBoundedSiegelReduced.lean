@@ -11,7 +11,7 @@ open Matrix GlobalTheory.RedTh NumberField GlobalTheory.PolFan ReciprocityTheory
 namespace GlobalTheory.RedTh
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem term_le_double_sum {n : ℕ} (f : Fin n → Fin n → ℝ) (hf : ∀ p q, 0 ≤ f p q) (p q : Fin n) :
     f p q ≤ ∑ p, ∑ q, f p q := by
@@ -20,9 +20,9 @@ theorem term_le_double_sum {n : ℕ} (f : Fin n → Fin n → ℝ) (hf : ∀ p q
         (fun p _ => Finset.sum_nonneg fun q _ => hf p q) (Finset.mem_univ p)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro hm`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hm`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hs ⟨q + m, by omega⟩ ⟨q + (m + 1), hm⟩ (by simp; omega)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem step_chain {n : ℕ} {d : Fin n → ℝ} (hs : ∀ p q : Fin n, (q : ℕ) = p + 1 → d p ≤ 4 * d q)
     (q : Fin n) : ∀ m (hm : (q : ℕ) + m < n), d q ≤ 4 ^ m * d ⟨q + m, hm⟩ := by
@@ -38,9 +38,9 @@ theorem step_chain {n : ℕ} {d : Fin n → ℝ} (hs : ∀ p q : Fin n, (q : ℕ
       _ = 4 ^ (m + 1) * d ⟨q + (m + 1), hm⟩ := by ring
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro hm _`. Simplify using the standard rewrite rules. Consider the case `succ m ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hm h`. Establish `h1` using `ih (by omega) (fun k k' hk hpk hk' => h k k' hk hpk (by omega))`. Establish `h2` using `h ⟨p + m, by omega⟩ ⟨p + (m + 1), hm⟩ (by simp; omega) (by simp [Fin.le_def]) (by simp)`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem gap_chain {n : ℕ} {d : Fin n → ℝ} {R : ℝ} (hR : 0 ≤ R) (p : Fin n) :
     ∀ m (hm : (p : ℕ) + m < n),
@@ -59,43 +59,39 @@ theorem gap_chain {n : ℕ} {d : Fin n → ℝ} {R : ℝ} (hR : 0 ≤ R) (p : Fi
       _ = R ^ (m + 1) * d p := by ring
 
 /- English proof (translation)
-Introduce `n K`. Take `⟨c, hc⟩` from `GlobalTheory.T.siegelUnipotent_inverse_entries_bounded n`. Take `⟨R, hR1, hR⟩` from `GlobalTheory.T.siegelDomain_lowerBlock_eq_zero_of_large_gap n K c`. Establish `hK0 : 0 ≤ max K 0` using `le_max_right _ _`. Establish `h4 : (1 : ℝ) ≤ 4 ^ n` using `one_le_pow₀ (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRn : (1 : ℝ) ≤ R ^ n` using `one_le_pow₀ hR1`. Establish `hB : 0 ≤ 4 ^ n * R ^ n * max K 0`. Apply `mul_nonneg (mul_nonneg (by linarith) (by linarith)) hK0` to reduce the goal to its premises. Use `⟨(n : ℝ) ^ 2 * |c| * (1 + 4 ^ n * R ^ n * max K 0), ?_⟩` and prove the remaining obligations. Introduce `A A' d u hS hd hbal htr i j`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hvu, huv, hvl, hvc⟩` from `hc u hS.diag hS.lower hS.upper`. Take `⟨hsym, hsum, hsum'⟩` from `GlobalTheory.T.balancedIntMatrix_triangularGram_adjoint_weighted_sq_trace n A A' d u v hd hvu huv hbal`. Establish `hK' : ∑ p, ∑ q, d p / d q * (u * A'.map (Int.cast : ℤ → ℝ) * v) p q ^ 2 ≤ K`. Rewrite using `[hsum']`. Conclude with `htr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK : ∑ p, ∑ q, d p / d q * (u * A.map (Int.cast : ℤ → ℝ) * v) p q ^ 2 ≤ K`. Rewrite using `[hsum]`. Conclude with `htr`. Use `set Ar := A.map (Int.cast : ℤ → ℝ) with hAr`. Use `set W := u * Ar * v with hWdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set B := 4 ^ n * R ^ n * max K 0 with hBdef`. Establish `hterm : ∀ p q, d p / d q * W p q ^ 2 ≤ max K 0` using `fun p q => (term_le_double_sum (fun p q => d p / d q * W p q ^ 2) (fun p q => mul_nonneg (div_nonneg (hd p).le (hd q).le) (sq_nonneg _)) p q).trans (hK.trans (le_max_left _ _))`. Establish `hsq : ∀ p q, W p q ^ 2 ≤ d q / d p * max K 0`. Introduce `p q`. Establish `hp` using `(hd p).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq` using `(hd q).ne'`. Establish `e : W p q ^ 2 = d q / d p * (d p / d q * W p q ^ 2)` using `by field_simp`. Rewrite using `[e]`. Conclude with `mul_le_mul_of_nonneg_left (hterm p q) (div_nonneg (hd q).le (hd p).le)`. Establish `hW : ∀ p q, W p q ^ 2 ≤ B`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p q`. Break down `le_or_gt q p with hqp | hpq` into its components or cases. Establish `hqp' : (q : ℕ) ≤ p` using `hqp`. Establish `hm : (q : ℕ) + ((p : ℕ) - q) < n` using `by omega`. Establish `h1` using `step_chain hS.step q ((p : ℕ) - q) hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpe : (⟨(q : ℕ) + ((p : ℕ) - q), hm⟩ : Fin n) = p` using `by ext; simp; omega`. Rewrite `h1` using `[hpe]`. Establish `h2 : (4 : ℝ) ^ ((p : ℕ) - q) ≤ 4 ^ n` using `pow_le_pow_right₀ (by norm_num) (by omega)`. Establish `h3 : d q ≤ 4 ^ n * d p` using `h1.trans (mul_le_mul_of_nonneg_right h2 (hd p).le)`. Establish `h5 : d q / d p ≤ 4 ^ n` using `by rw [div_le_iff₀ (hd p)]; exact h3`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hpq' : (p : ℕ) < q` using `hpq`. Distinguish the cases in `hgap : ∃ k k' : Fin n, (k' : ℕ) = k + 1 ∧ p ≤ k ∧ k' ≤ q ∧ R * d k < d k'`. Take `⟨k, k', hk, hpk, hkq, hlt⟩` from `hgap`. Establish `h0 : (u * A'.map (Int.cast : ℤ → ℝ) * v) q p = 0` using `hR A' d u v hS hd hvu huv hvl hvc hK' k k' hk hlt q p hpk hkq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1` using `hsym p q`. Rewrite `h1` using `[h0, mul_zero]`. Establish `hz : W p q = 0`. Break down `mul_eq_zero.mp h1 with h | h` into its components or cases. Conclude with `absurd h (hd p).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h`. Rewrite using `[hz]`. Simplify using `using hB`. Use `push_neg at hgap`. Establish `hm : (p : ℕ) + ((q : ℕ) - p) < n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h1` using `gap_chain (d := d) (by linarith) p ((q : ℕ) - p) hm (fun k k' hk hpk hk' => hgap k k' hk hpk (by rw [Fin.le_def]; omega))`. Establish `hqe : (⟨(p : ℕ) + ((q : ℕ) - p), hm⟩ : Fin n) = q` using `by ext; simp; omega`. Rewrite `h1` using `[hqe]`. Establish `h2 : R ^ ((q : ℕ) - p) ≤ R ^ n` using `pow_le_pow_right₀ hR1 (by omega)`. Establish `h3 : d q ≤ R ^ n * d p` using `h1.trans (mul_le_mul_of_nonneg_right h2 (hd p).le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : d q / d p ≤ R ^ n` using `by rw [div_le_iff₀ (hd p)]; exact h3`. Combine the equalities or inequalities in the displayed calculation. Establish `hA : Ar = v * W * u`. Combine the equalities or inequalities in the displayed calculation. Establish `hu1 : ∀ l j, |u l j| ≤ 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `l j`. Break down `lt_trichotomy l j with h | h | h` into its components or cases. Conclude with `(hS.upper l j h).trans (by norm_num)`. Substitute `h` using the available equality. Rewrite using `[hS.diag]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Rewrite using `[hS.lower l j h]`. Simplify using the standard rewrite rules. Establish `hWb : ∀ k l, |W k l| ≤ 1 + B` using `fun k l => by`. Use polynomial arithmetic with `[hW k l, abs_nonneg (W k l), sq_abs (W k l)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc0 : 0 ≤ |c|` using `abs_nonneg c`. Apply the tactic sequence `have hentry : |Ar i j| ≤ (n : ℝ) ^ 2 * |c| * (1 + B) := by`. Rewrite using `[hA, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l _`. Rewrite using `[abs_mul, Matrix.mul_apply]`. Establish `hin : |∑ k, v i k * W k l| ≤ (n : ℝ) * (|c| * (1 + B))`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
-
-Introduce `k _`. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul ((hvc i k).trans (le_abs_self c)) (hWb k l) (abs_nonneg _) hc0`. Use `_ = (n : ℝ) * (|c| * (1 + B)) := by simp`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `_ = (n : ℝ) ^ 2 * |c| * (1 + B) := by simp; ring`. Establish `hcast : ((|A i j| : ℤ) : ℝ) = |Ar i j|` using `by simp [hAr, Int.cast_abs]`. Rewrite using `[hcast]`. Conclude with `hentry`.
+A detailed English derivation is pending.
 -/
 theorem balanced_entries_bounded : ∀ (n : ℕ) (K : ℝ), ∃ C : ℝ, ∀ (A A' : Matrix (Fin n) (Fin n) ℤ) (d : Fin n → ℝ)
     (u : Matrix (Fin n) (Fin n) ℝ), IsSiegel d u → (∀ i, 0 < d i) →

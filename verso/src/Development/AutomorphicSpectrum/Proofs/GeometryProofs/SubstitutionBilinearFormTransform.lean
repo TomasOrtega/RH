@@ -18,9 +18,9 @@ local notation "eX" => ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.eXv
 local notation "eZ'" => ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.eZ
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.rename_eq_subst]`. Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_first_point_eq_rename (φ : PS R 1 d) : ev (n := 2) ![pt R d 0] φ = MvPowerSeries.rename (eX d) φ := by
   rw [MvPowerSeries.rename_eq_subst]
@@ -32,9 +32,9 @@ theorem eval_first_point_eq_rename (φ : PS R 1 d) : ev (n := 2) ![pt R d 0] φ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.rename_eq_subst]`. Unfold `ev`. Use `congr 1`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_second_point_eq_rename (φ : PS R 1 d) : ev (n := 2) ![pt R d 1] φ = MvPowerSeries.rename (eZ' d) φ := by
   rw [MvPowerSeries.rename_eq_subst]
@@ -46,33 +46,31 @@ theorem eval_second_point_eq_rename (φ : PS R 1 d) : ev (n := 2) ![pt R d 1] φ
   rfl
 
 /- English proof (translation)
-Establish `hA : ∀ u : Fin 2 × Fin d →₀ ℕ, u ((1 : Fin 2), b) ≠ 0 → MvPowerSeries.coeff u (MvPowerSeries.rename (eX d) P) = 0`. Introduce `u hu`. Use `MvPowerSeries.coeff_rename_eq_zero _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Apply `hu` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hw]`. Use `Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨p, q⟩, hp⟩`. Establish `h2 : (0 : Fin 2) = 1` using `congrArg Prod.fst hp`. Conclude with `absurd h2 (by simp)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ v : Fin 2 × Fin d →₀ ℕ, v ((0 : Fin 2), a) ≠ 0 → MvPowerSeries.coeff v (MvPowerSeries.rename (eZ' d) Q) = 0`. Introduce `v hv`. Use `MvPowerSeries.coeff_rename_eq_zero _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨w, hw⟩`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw]`. Use `Finsupp.mapDomain_notin_range _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨p, q⟩, hp⟩`. Establish `h2 : (1 : Fin 2) = 0` using `congrArg Prod.fst hp`. Conclude with `absurd h2 (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ((0 : Fin 2), a) ≠ ((1 : Fin 2), b)` using `fun e => absurd (congrArg Prod.fst e) (by simp)`. Establish `e0 : Finsupp.single ((0 : Fin 2), a) 1 = Finsupp.embDomain (eX d) (Finsupp.single ((0 : Fin 1), a) 1)`. Rewrite using `[Finsupp.embDomain_single]`. Both sides reduce to the same expression. Establish `e1 : Finsupp.single ((1 : Fin 2), b) 1 = Finsupp.embDomain (eZ' d) (Finsupp.single ((0 : Fin 1), b) 1)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finsupp.embDomain_single]`. Both sides reduce to the same expression. Rewrite using `[MvPowerSeries.coeff_mul, Finset.sum_eq_single (Finsupp.single ((0 : Fin 2), a) 1, Finsupp.single ((1 : Fin 2), b) 1)]`. Use `show MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), a) 1) _ * MvPowerSeries.coeff (Finsupp.single ((1 : Fin 2), b) 1) _ = _`. Rewrite using `[e0, e1, MvPowerSeries.coeff_embDomain_rename, MvPowerSeries.coeff_embDomain_rename]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨u, v⟩ huv hne'`. Rewrite `huv` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Simplify using `only at huv ⊢`. Distinguish the cases in `hu : u ((1 : Fin 2), b) = 0`. Distinguish the cases in `hv : v ((0 : Fin 2), a) = 0`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Apply `hne'` to reduce the goal to its premises. Establish `hv1` using `DFunLike.congr_fun huv ((1 : Fin 2), b)`. Establish `hu0` using `DFunLike.congr_fun huv ((0 : Fin 2), a)`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, hne, hne.symm, if_true, if_false, hu, hv] at hv1 hu0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrest : ∀ t, t ≠ ((0 : Fin 2), a) → t ≠ ((1 : Fin 2), b) → u t = 0 ∧ v t = 0`. Introduce `t h0 h1`. Establish `ht` using `DFunLike.congr_fun huv t`. Simplify using `only [Finsupp.add_apply, Finsupp.single_apply, Ne.symm h0, Ne.symm h1, if_false] at ht`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Prod.ext (Finsupp.ext fun t => ?_) (Finsupp.ext fun t => ?_)` and prove the remaining obligations. Distinguish the cases in `h0 : t = ((0 : Fin 2), a)`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : t = ((1 : Fin 2), b)`. Substitute `h1` using the available equality. Simplify using `[Finsupp.single_apply, hne.symm, hu]`. Simplify using `[Finsupp.single_apply, Ne.symm h0, (hrest t h0 h1).1]`. Distinguish the cases in `h1 : t = ((1 : Fin 2), b)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Substitute `h1` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Distinguish the cases in `h0 : t = ((0 : Fin 2), a)`. Substitute `h0` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, hne, hv]`. Simplify using `[Finsupp.single_apply, Ne.symm h1, (hrest t h0 h1).2]`. Rewrite using `[hB v hv, mul_zero]`. Rewrite using `[hA u hu, zero_mul]`. Introduce `h`.
-
-Rewrite `h` using `[Finset.HasAntidiagonal.mem_antidiagonal]`. Conclude with `absurd rfl h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_xz_rename (P Q : PS R 1 d) (a b : Fin d) :
     MvPowerSeries.coeff (Finsupp.single ((0 : Fin 2), a) 1 + Finsupp.single ((1 : Fin 2), b) 1)
@@ -144,9 +142,7 @@ theorem coeff_xz_rename (P Q : PS R 1 d) (a b : Fin d) :
     exact absurd rfl h
 
 /- English proof (translation)
-Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Use `show MvPowerSeries.constantCoeff (ev (n := 2) ![pt R d 0] (Qs i)) = 0`. Rewrite using `[eval_first_point_eq_rename, MvPowerSeries.constantCoeff_rename, hQ]`. Use `show MvPowerSeries.constantCoeff (ev (n := 2) ![pt R d 1] (Qs i)) = 0`.
-
-Rewrite using `[eval_second_point_eq_rename, MvPowerSeries.constantCoeff_rename, hQ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_side {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constantCoeff (Qs i) = 0)
     (p : Fin 2 × Fin d') :
@@ -159,11 +155,9 @@ theorem const_side {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constan
     rw [eval_second_point_eq_rename, MvPowerSeries.constantCoeff_rename, hQ]
 
 /- English proof (translation)
-Establish `hs : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d => (![pt R d j] q.1 q.2 : PS R 2 d))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => by`. Take `⟨u, i⟩` from `q`. Use `fin_cases u`. Conclude with `MvPowerSeries.constantCoeff_X _`. Unfold `ev`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply hs hb]`. Use `congr 1`. Use function extensionality and compare the values at `q`. Take `⟨u, i⟩` from `q`. Use `fin_cases u`.
-
-Conclude with `MvPowerSeries.subst_X hb _`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subst_side {τ : Type} {b : Fin 2 × Fin d → MvPowerSeries τ R} (hb : MvPowerSeries.HasSubst b) (j : Fin 2)
     (φ : PS R 1 d) :
@@ -183,25 +177,25 @@ theorem subst_side {τ : Type} {b : Fin 2 × Fin d → MvPowerSeries τ R} (hb :
   exact MvPowerSeries.subst_X hb _
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_one' {σ τ : Type} {a : σ → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a) :
     MvPowerSeries.subst a (1 : MvPowerSeries σ R) = 1 := by
   rw [← MvPowerSeries.coe_substAlgHom ha, map_one]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coe_substAlgHom ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_zero' {σ τ : Type} {a : σ → MvPowerSeries τ R} (ha : MvPowerSeries.HasSubst a) :
     MvPowerSeries.subst a (0 : MvPowerSeries σ R) = 0 := by
   rw [← MvPowerSeries.coe_substAlgHom ha, map_zero]
 
 /- English proof (translation)
-Establish `hb : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d => A p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => hA p.1 p.2`. Establish `hb' : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d' => A' p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => hA' p.1 p.2`. Establish `hσ : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d' => ev (n` using `2) ![pt R d p.1] (Qs p.2)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (const_side hQ)`. Establish `hq : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d' => Qs q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hQ q.2`. Establish `h1` using `congrArg (MvPowerSeries.subst (fun q : Fin 1 × Fin d' => Qs q.2)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ev at h1`. Rewrite `h1` using `[subst_one' hq, MvPowerSeries.subst_comp_subst_apply hb' hq]`. Unfold `ev subQ`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply hσ hb, ← h1]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Rewrite using `[subst_side hb, hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_subQ_eq_one {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constantCoeff (Qs i) = 0)
     {f : PS R 2 d'} (A : Fin 2 → Pt R 1 d) (A' : Fin 2 → Pt R 1 d')
@@ -227,23 +221,15 @@ theorem ev_subQ_eq_one {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.con
   rw [subst_side hb, hc]
 
 /- English proof (translation)
-Establish `hq : MvPowerSeries.HasSubst (fun q : Fin 1 × Fin d' => Qs q.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => hQ q.2`. Establish `hz : ∀ i, MvPowerSeries.subst (fun q : Fin 1 × Fin d => (0 : PS R 1 d)) (Qs i) = MvPowerSeries.subst (fun q : Fin 1 × Fin d' => Qs q.2) (0 : PS R 1 d')` using `fun i => by`. Rewrite using `[subst_zero' hq]`. Conclude with `MvPowerSeries.subst_zero_of_constantCoeff_zero (hQ i)`. Establish `hx : ∀ i, MvPowerSeries.subst (fun q : Fin 1 × Fin d => pt R d 0 q.2) (Qs i) = MvPowerSeries.subst (fun q : Fin 1 × Fin d' => Qs q.2) (pt R d' 0 i)` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun q : Fin 1 × Fin d => pt R d 0 q.2) = MvPowerSeries.X`. Use function extensionality and compare the values at `q`. Take `⟨u, l⟩` from `q`. Use `fin_cases u`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, MvPowerSeries.subst_self]`. Use `show _ = MvPowerSeries.subst _ (MvPowerSeries.X ((0 : Fin 1), i) : PS R 1 d')`. Rewrite using `[MvPowerSeries.subst_X hq]`. Both sides reduce to the same expression. Establish `c0 : ∀ {n : ℕ} (i : Fin n), MvPowerSeries.constantCoeff (pt R (n` using `1) n 0 i) = 0 := fun i => MvPowerSeries.constantCoeff_X _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Use `ev_subQ_eq_one hQ _ _ ?_ ?_ ?_ hf.1` and prove the remaining obligations. Introduce `j i`. Use `fin_cases j`. Conclude with `map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `c0 i`. Introduce `j i`. Use `fin_cases j`. Conclude with `map_zero _`. Conclude with `c0 i`.
-
-Introduce `j i`. Use `fin_cases j`. Conclude with `hz i`. Conclude with `hx i`. Use `ev_subQ_eq_one hQ _ _ ?_ ?_ ?_ hf.2` and prove the remaining obligations.
-
-Introduce `j i`. Use `fin_cases j`. Conclude with `c0 i`. Conclude with `map_zero _`. Introduce `j i`.
-
-Use `fin_cases j`. Conclude with `c0 i`. Conclude with `map_zero _`. Introduce `j i`. Use `fin_cases j`.
-
-Conclude with `hx i`. Conclude with `hz i`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem axOne_subQ {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constantCoeff (Qs i) = 0)
     {f : PS R 2 d'} (hf : AxOne f) : AxOne (subQ Qs f) := by
@@ -289,23 +275,19 @@ theorem axOne_subQ {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constan
       · exact hz i
 
 /- English proof (translation)
-Establish `hσ : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d' => ev (n` using `2) ![pt R d p.1] (Qs p.2)) := MvPowerSeries.hasSubst_of_constantCoeff_zero (const_side hQ)`. Establish `hA0 : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d' => (![0, pt R d' 0] : Fin 2 → Pt R 1 d') p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => by`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `MvPowerSeries.constantCoeff_X _`. Establish `hA1 : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin d' => (![pt R d' 0, 0] : Fin 2 → Pt R 1 d') p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => by`. Take `⟨j, i⟩` from `p`. Use `fin_cases j`. Conclude with `MvPowerSeries.constantCoeff_X _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `map_zero _`. Establish `h0 : ev (n` using `1) ![0, pt R d' 0] (f - 1) = 0 := by`. Unfold `ev`. Rewrite using `[MvPowerSeries.subst_sub hA0, subst_one' hA0]`. Conclude with `sub_eq_zero.2 hf.1`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ev (n` using `1) ![pt R d' 0, 0] (f - 1) = 0 := by`. Unfold `ev`. Rewrite using `[MvPowerSeries.subst_sub hA1, subst_one' hA1]`. Conclude with `sub_eq_zero.2 hf.2`. Use extensionality with `a b`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdeg` using `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.degree_xz a b`. Establish `hn : (Finsupp.single ((0 : Fin 2), a) 1 + Finsupp.single ((1 : Fin 2), b) 1 : Fin 2 × Fin d →₀ ℕ) ≠ 0`. Introduce `e`. Rewrite `hdeg` using `[e]`. Simplify using `at hdeg`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.coeff_subst_xz (f - 1) h0 h1 _ (const_side hQ) _ hdeg`. Rewrite `key` using `[MvPowerSeries.subst_sub hσ, subst_one' hσ, map_sub, MvPowerSeries.coeff_one, if_neg hn, sub_zero]`. Use `show MvPowerSeries.coeff _ (subQ Qs f) = _`. Use `key.trans ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `hl : (Finsupp.single ((0 : Fin 2), l) 1 + Finsupp.single ((1 : Fin 2), m) 1 : Fin 2 × Fin d' →₀ ℕ) ≠ 0`. Introduce `e`. Establish `hd` using `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.degree_xz l m`.
-
-Rewrite `hd` using `[e]`. Simplify using `at hd`. Establish `e0 : ev (n` using `2) ![pt R d ((0 : Fin 2), l).1] (Qs ((0 : Fin 2), l).2) = MvPowerSeries.rename (eX d) (Qs l) := eval_first_point_eq_rename _`. Establish `e1 : ev (n` using `2) ![pt R d ((1 : Fin 2), m).1] (Qs ((1 : Fin 2), m).2) = MvPowerSeries.rename (eZ' d) (Qs m) := eval_second_point_eq_rename _`. Rewrite using `[map_sub, MvPowerSeries.coeff_one, if_neg hl, sub_zero, e0, e1, coeff_xz_rename]`.
-
-Use `show _ = linQ Qs l a * bil f 1 1 l m * linQ Qs m b`. Simplify using `only [linQ, bil]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem bil_subQ {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constantCoeff (Qs i) = 0)
     {f : PS R 2 d'} (hf : AxOne f) : bil (subQ Qs f) 1 1 = (linQ Qs).transpose * bil f 1 1 * linQ Qs := by
@@ -360,7 +342,7 @@ theorem bil_subQ {Qs : Fin d' → PS R 1 d} (hQ : ∀ i, MvPowerSeries.constantC
   ring
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ hQ hf` and use `⟨axOne_subQ hQ hf, bil_subQ hQ hf⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem bil_axOne_subQ : ∀ (R : Type) [CommRing R] (d d' : ℕ) (Qs : Fin d' → PS R 1 d) (f : PS R 2 d'),
     (∀ i, MvPowerSeries.constantCoeff (Qs i) = 0) → AxOne f →

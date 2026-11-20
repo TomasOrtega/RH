@@ -28,7 +28,7 @@ def twistSubIso (ρ : Representation F G V) (χ : G →* Fˣ) :
   map_rel_iff' := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(OrderIso.isSimpleOrder_iff (twistSubIso ρ χ)).1 h`.
+A detailed English derivation is pending.
 -/
 theorem isIrreducible_twist {ρ : Representation F G V} (h : ρ.IsIrreducible) (χ : G →* Fˣ) :
     (twist ρ χ).IsIrreducible :=
@@ -53,7 +53,7 @@ theorem pairChar_apply (μ : kˣ →* ℂˣ) (g : GL a k × GL b k) :
     pairChar a b μ g = μ (Matrix.GeneralLinearGroup.det g.1) * μ (Matrix.GeneralLinearGroup.det g.2) := rfl
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Use `Submodule.subset_span ⟨u, v, ?_⟩` and prove the remaining obligations. Simplify using `[det_eq_one_of_mem_unipRad k u.2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem twKer_twist_le (e : a ⊕ b ≃ n) (X : Representation ℂ (GL n k) V) (μ : kˣ →* ℂˣ) :
     twKer (twist X (detChar n μ)) (unipRad k (two e)) 1 ≤ twKer X (unipRad k (two e)) 1 := by

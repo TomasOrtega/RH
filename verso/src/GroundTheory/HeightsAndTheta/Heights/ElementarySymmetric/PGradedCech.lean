@@ -5,7 +5,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Swarm
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.Kleiman.TranslateEq.GradedCech.proof`.
+A detailed English derivation is pending.
 -/
 theorem GradedCech.proof : GroundTheory.Heights₂.Heights.Kleiman.TranslateEq.GradedCech.Statement :=
   GroundTheory.Heights₂.Heights.Kleiman.TranslateEq.GradedCech.proof

@@ -4,27 +4,27 @@ open MvPolynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hXm : ∀ (α : Fin (n + 1) →₀ ℕ) (c : ℝ), X i * monomial α c = monomial (α + Finsupp.single i 1) c`. Introduce `α c`. Rewrite using `[X, monomial_mul, one_mul, add_comm (Finsupp.single i 1) α]`. Establish `hpi : ∀ (α : Fin (n + 1) →₀ ℕ) (c : ℝ), pderiv i (monomial (α + Finsupp.single i 1) c) = monomial α (c * ((α i : ℝ) + 1))`. Introduce `α c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pderiv_monomial]`. Simplify using the standard rewrite rules. Establish `hpi' : ∀ (α : Fin (n + 1) →₀ ℕ) (c : ℝ), pderiv i' (monomial (α + Finsupp.single i 1) c) = monomial (α + Finsupp.single i 1 - Finsupp.single i' 1) (c * (α i' : ℝ))`. Introduce `α c`. Rewrite using `[pderiv_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finsupp.single_apply, hii]`. Establish `hsplit : ∀ x y : MvPolynomial (Fin (n + 1)) ℝ, pderiv i' (x + y) - pderiv i (x + y) = (pderiv i' x - pderiv i x) + (pderiv i' y - pderiv i y)`. Introduce `x y`. Simplify using `only [map_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Introduce `b`. Proceed by induction on `b with`. Consider the case `zero`. Introduce `α c hb`. Use `⟨(-(1 / ((α i : ℝ) + 1))) • (X i * monomial α c), 0, ?_, by simp, by simp⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha : ((α i : ℝ) + 1) ≠ 0` using `by positivity`. Rewrite using `[hXm, Derivation.map_smul, Derivation.map_smul, hpi, hpi', hb, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul]`. Establish `e2 : -(1 / ((α i : ℝ) + 1)) * (c * ((α i : ℝ) + 1)) = -c` using `by field_simp`. Rewrite using `[e2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ b ih`. Introduce `α c hb`. Establish `ha : ((α i : ℝ) + 1) ≠ 0` using `by positivity`. Use `set α' := α + Finsupp.single i 1 - Finsupp.single i' 1 with hα'`. Establish `hα'i' : α' i' = b`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hα', Finsupp.single_apply, hii, hb]`. Establish `hα'j : ∀ j, j ≠ i → j ≠ i' → α' j = α j`. Introduce `j h1 h2`. Simplify using `[hα', Finsupp.single_apply, Ne.symm h1, Ne.symm h2]`. Take `⟨J', R', hD', hJ', hR'⟩` from `ih α' (c * ((b : ℝ) + 1) / ((α i : ℝ) + 1)) hα'i'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(-(1 / ((α i : ℝ) + 1))) • (X i * monomial α c) + J', J', ?_, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hsplit, hD', hXm, Derivation.map_smul, Derivation.map_smul, hpi, hpi', hb, smul_monomial, smul_monomial, smul_eq_mul, smul_eq_mul]`. Establish `e1 : -(1 / ((α i : ℝ) + 1)) * (c * ((b + 1 : ℕ) : ℝ)) + c * ((b : ℝ) + 1) / ((α i : ℝ) + 1) = 0` using `by push_cast; field_simp; ring`. Establish `e2 : -(1 / ((α i : ℝ) + 1)) * (c * ((α i : ℝ) + 1)) = -c` using `by field_simp`. Rewrite using `[e2, map_neg, sub_neg_eq_add, add_comm _ (monomial α c), add_assoc, ← map_add, e1, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β hβ`. Rewrite `hβ` using `[hJ', hXm, smul_monomial]`. Break down `Finset.mem_union.1 (support_add hβ) with h | h` into its components or cases. Establish `hb'` using `support_monomial_subset h`. Rewrite `hb'` using `[Finset.mem_singleton]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hb'` using the available equality. Use `⟨?_, fun j hj hj' => ?_⟩` and prove the remaining obligations. Simplify using `[Finsupp.single_apply, hii, hα'i', hb]`. Simplify using `[Finsupp.single_apply, Ne.symm hj, hα'j j hj hj']`. Take `⟨h1, h2⟩` from `hR' β h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hα'i']`. Conclude with `⟨by omega, fun j hj hj' => (h2 j hj hj').trans (hα'j j hj hj')⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem monomial_pderiv_difference_primitive (n : ℕ) (i i' : Fin (n + 1)) (hii : i ≠ i') :
     ∀ b : ℕ, ∀ (α : Fin (n + 1) →₀ ℕ) (c : ℝ), α i' = b →
@@ -92,7 +92,7 @@ theorem monomial_pderiv_difference_primitive (n : ℕ) (i i' : Fin (n + 1)) (hii
         exact ⟨by omega, fun j hj hj' => (h2 j hj hj').trans (hα'j j hj hj')⟩
 
 /- English proof (translation)
-Introduce `n i i' h α c` and use `monomial_pderiv_difference_primitive n i i' h _ α c rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem monomial_pderiv_diff_primitive :
     ∀ (n : ℕ) (i i' : Fin (n + 1)), i ≠ i' → ∀ (α : Fin (n + 1) →₀ ℕ) (c : ℝ),

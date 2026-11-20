@@ -8,9 +8,7 @@ namespace GlobalTheory.CompletionAut
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm v.asIdeal, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : CharZero (v.adicCompletion F) := algebraRat.charZero _`. Conclude with `Nat.cast_ne_zero.2 (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)`. Establish `h` using `Ideal.absNorm_mem v.asIdeal`. Establish `h2 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) = algebraMap F (v.adicCompletion F) (algebraMap (𝓞 F) F ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F))` using `by simp`.
-
-Rewrite using `[h2]`. Use `erw [valuedAdicCompletion_eq_valuation']`. Conclude with `(valuation_lt_one_iff_mem v _).2 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_natCast_valued_lt_one :
     ∃ p : ℕ, (p : v.adicCompletion F) ≠ 0 ∧ Valued.v (p : v.adicCompletion F) < 1 := by
@@ -26,15 +24,13 @@ theorem exists_natCast_valued_lt_one :
     exact (valuation_lt_one_iff_mem v _).2 h
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SelfDualGenus.isAdicComplete_adicCompletionIntegers v`. Use `set R := v.adicCompletionIntegers F`. Establish `hpm : (p : R) ∈ maximalIdeal R`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff, adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h' : Valued.v (p : v.adicCompletion F) = 1` using `by simpa using h`. Conclude with `hp.ne h'`. Set `c : R` to `1 + p * (⟨x, hx⟩ : R) ^ (p * e + 1)`. Take `⟨a, ha, -⟩` from `HenselianRing.is_henselian (I := maximalIdeal R) (X ^ (p * e + 1) - C c) (monic_X_pow_sub_C c (Nat.succ_ne_zero _)) 1 (by`. Simplify using `only [eval_sub, eval_pow, eval_X, eval_C, one_pow, c]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (1 : R) - (1 + p * (⟨x, hx⟩ : R) ^ (p * e + 1)) = p * (-(⟨x, hx⟩ : R) ^ (p * e + 1))` using `by ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hpm)`. Use the proof step `(by`. Establish `h0 : Ideal.Quotient.mk (maximalIdeal R) (p : R) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hpm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h0` using `[map_natCast]`. Simplify using `[derivative_X_pow, h0])`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `h1 : a ^ (p * e + 1) = c`. Simplify `ha` using `[IsRoot, sub_eq_zero]`.
-
-Use `congrArg (fun z : R => (z : v.adicCompletion F)) h1` as an intermediate fact. Simplify `this` using `[c]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_of_mem {p : ℕ} (hp : Valued.v (p : v.adicCompletion F) < 1) (e : ℕ)
     {x : v.adicCompletion F} (hx : x ∈ v.adicCompletionIntegers F) :
@@ -67,19 +63,17 @@ theorem exists_pow_eq_of_mem {p : ℕ} (hp : Valued.v (p : v.adicCompletion F) <
   simpa [c] using this
 
 /- English proof (translation)
-Rewrite using `[mem_adicCompletionIntegers]`. Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Establish `hx0 : Valued.v x ≠ 0` using `(zero_lt_one.trans hx).ne'`. Use `set l := p * e + 1 with hl`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : e < l`. Establish `: e ≤ p * e` using `Nat.le_mul_of_pos_left e (Nat.pos_of_ne_zero hp0)`. Use linear arithmetic over natural numbers and integers. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v x = WithZero.exp m` from `⟨_, (WithZero.exp_log hx0).symm⟩`. Establish `hm0 : 0 < m`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[hm, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Conclude with `hx`. Establish `h1 : Valued.v ((p : v.adicCompletion F) * x ^ l) = WithZero.exp (-(e : ℤ) + l * m)`. Rewrite using `[map_mul, map_pow, hp, hm, ← WithZero.exp_nsmul, ← WithZero.exp_add, nsmul_eq_mul]`. Establish `hpos : 0 < -(e : ℤ) + l * m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `: (e : ℤ) < l` using `by exact_mod_cast hle`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : Valued.v (1 + (p : v.adicCompletion F) * x ^ l) = WithZero.exp (-(e : ℤ) + l * m)`. Rewrite using `[← h1]`. Apply `Valuation.map_add_eq_of_lt_right` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, map_one, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Conclude with `hpos`. Rewrite `h2` using `[← h, map_pow]`. Establish `hy0 : Valued.v y ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[h0, zero_pow (by omega)]`. Conclude with `WithZero.exp_ne_zero h2.symm`. Take `⟨k, hk⟩ : ∃ k : ℤ, Valued.v y = WithZero.exp k` from `⟨_, (WithZero.exp_log hy0).symm⟩`. Rewrite `h2` using `[hk, ← WithZero.exp_nsmul, WithZero.exp_inj, nsmul_eq_mul]`. Establish `hd : (l : ℤ) ∣ (e : ℤ)` using `⟨m - k, by linear_combination h2⟩`.
-
-Use `Nat.le_of_dvd he (Int.natCast_dvd_natCast.1 hd)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_of_pow_eq {p e : ℕ} (he : 0 < e)
     (hp : Valued.v (p : v.adicCompletion F) = WithZero.exp (-(e : ℤ))) (hp0 : p ≠ 0)
@@ -118,9 +112,9 @@ theorem mem_of_pow_eq {p e : ℕ} (he : 0 < e)
   omega
 
 /- English proof (translation)
-Take `⟨p, hp0, hp⟩` from `exists_natCast_valued_lt_one v`. Establish `hv0 : Valued.v (p : v.adicCompletion F) ≠ 0` using `by simpa using hp0`. Take `⟨m, hm⟩ : ∃ m : ℤ, Valued.v (p : v.adicCompletion F) = WithZero.exp m` from `⟨_, (WithZero.exp_log hv0).symm⟩`. Establish `hm0 : m < 0`. Rewrite `hp` using `[hm, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp`. Take `⟨e, he⟩` from `Int.eq_ofNat_of_zero_le (show 0 ≤ -m by omega)`. Take `⟨y, hy⟩` from `exists_pow_eq_of_mem v hp e hx`. Use `mem_of_pow_eq v (p := p) (e := e) (y := θ y) (by omega) (by rw [hm, ← he, neg_neg]) (by rintro rfl; simp at hp0) ?_` and prove the remaining obligations. Simplify using `using congrArg θ hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_mem (θ : v.adicCompletion F →+* v.adicCompletion F) {x : v.adicCompletion F}
     (hx : x ∈ v.adicCompletionIntegers F) : θ x ∈ v.adicCompletionIntegers F := by
@@ -141,7 +135,7 @@ end GlobalTheory.CompletionAut
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by simpa using CompletionAut.map_mem v θ.symm.toRingHom h, fun h => CompletionAut.map_mem v θ.toRingHom h⟩`.
+Supply the required witnesses or components.
 -/
 theorem ringEquiv_adicCompletion_mem_integers_iff (F : Type) [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (θ : v.adicCompletion F ≃+* v.adicCompletion F)

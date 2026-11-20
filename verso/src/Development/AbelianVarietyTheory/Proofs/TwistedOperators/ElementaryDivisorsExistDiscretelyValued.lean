@@ -10,13 +10,13 @@ open Formalism.UG Matrix
 namespace GlobalTheory.InertZeta
 
 /- English proof (translation)
-Introduce `L _ _ ϖ n hϖ g hg`. Establish `hv0 : Valued.v ϖ ≠ 0` using `by rw [hϖ]; exact WithZero.exp_ne_zero`. Establish `hϖ0 : ϖ ≠ 0` using `fun h => hv0 (by rw [h, map_zero])`. Establish `hnt : (Valued.v : Valuation L (WithZero (Multiplicative ℤ))).IsNontrivial` using `⟨ϖ, hv0, by rw [hϖ]; decide⟩`. Set `A` to `(Valued.v : Valuation L (WithZero (Multiplicative ℤ))).valuationSubring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA : IsDiscreteValuationRing A` using `Valuation.valuationSubring_isDiscreteValuationRing _`. Establish `: IsPrincipalIdealRing (intL L)` using `inferInstanceAs (IsPrincipalIdealRing A)`. Set `G : GL (Fin n) L` to `Matrix.nonsingInvUnit g (isUnit_iff_ne_zero.2 hg)`. Take `⟨c, hc0, hcg, -⟩` from `P.glint_exists_denom (n := Fin n) A G`. Take `⟨d, -, k₁, h₁, k₂, h₂, e⟩` from `P.cartan_decomp_gen (intL L) Valued.v (fun _ => Iff.rfl) ϖ hϖ0 (fun x hx => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx' : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx`. Use `⟨-WithZero.log (Valued.v x), ?_⟩` and prove the remaining obligations. Rewrite using `[hϖ, ← WithZero.exp_zsmul]`. Simplify using `[WithZero.exp_log hx']) G c hc0 hcg`. Use `⟨d, k₁, (k₁⁻¹ : GL (Fin n) L), k₂, (k₂⁻¹ : GL (Fin n) L), P.cartan_entries_of_mem _ _ h₁, P.cartan_entries_of_mem _ _ (inv_mem h₁), P.cartan_entries_of_mem _ _ h₂, P.cartan_entries_of_mem _ _ (inv_mem h₂), k₁.inv_mul, k₂.mul_inv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem elementaryDivisors_exist_discretely_valued : Smith := by
   intro L _ _ ϖ n hϖ g hg

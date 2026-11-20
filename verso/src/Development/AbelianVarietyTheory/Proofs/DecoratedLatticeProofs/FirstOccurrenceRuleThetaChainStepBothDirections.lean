@@ -19,15 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StepRule
 
 /- English proof (translation)
-Establish `far : ∀ {t : ℕ} {al be ga de : List ℚ}, GlobalTheory.SignedHC.FarFrom aT (((t : ℚ) + 3) / 2) (signed (al ++ be) (ga ++ de) aT) → ¬ ∃ a, lamA al be ga de a = ((t : ℚ) + 1) / 2`. Introduce and unpack `t al be ga de hF ⟨a, ha⟩`. Establish `hm : (((t : ℚ) + 1) / 2, a.isLeft) ∈ GlobalTheory.SignedHC.ofIx (lamA al be ga de)` using `Finset.mem_image.2 ⟨a, Finset.mem_univ _, by rw [ha]⟩`. Rewrite `hm` using `[lamA, GlobalTheory.SignedHC.mem_ofIx_ofBlocks (by simp) (by simp)]`. Establish `: ∃ s, (((t : ℚ) + 1) / 2 + aT, s) ∈ signed (al ++ be) (ga ++ de) aT`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `hm with ⟨h1, -⟩ | ⟨h1, -⟩` into its components or cases. Conclude with `⟨true, Finset.mem_union_left _ (List.mem_toFinset.2 (List.mem_map.2 ⟨_, h1, rfl⟩))⟩`. Conclude with `⟨false, Finset.mem_union_right _ (List.mem_toFinset.2 (List.mem_map.2 ⟨_, h1, rfl⟩))⟩`. Use `hF _ (GlobalTheory.SignedHC.mem_entries.2 this)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right, abs_of_nonneg (by positivity)]`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hb : ∀ t, (block t).length = t` using `fun t => by simp [block]`. Take `⟨t, P, P', e, e', ⟨⟨al, be, ga, de, rfl, ⟨hd, rfl⟩ | ⟨hd, rfl⟩⟩, hF⟩ | ⟨al, be, ga, de, rfl, ⟨hd, rfl⟩ | ⟨hd, rfl⟩⟩⟩` from `h`. Use `all_goals`. Establish `ht` using `hd.1.1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn` using `hd.1.2.1`. Take `⟨-, p1, p2, -⟩` from `GlobalTheory.T.lowest_kTypes_jointShape_block_unitary t al be ga de hd.1`. Take `⟨-, p3, -⟩` from `GlobalTheory.T.lowestKTypes_jointShape_block_in_unitaryS t al be ga de hd.1`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp, by simp [hb]; omega, by simp, ⟨by omega, by omega, p1, p2, (h3.1 t al be ga de hd).2.1, (h3.1 t al be ga de hd).2.2, h5.1 t al be ga de hd (Or.inl (far hF))⟩, e, e'⟩`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp, by simp, by simp [hb]; omega, ⟨by omega, by omega, p1, p3, (h3.2 t al be ga de hd).2.1, (h3.2 t al be ga de hd).2.2, h5.2 t al be ga de hd (Or.inl (far hF))⟩, e, e'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `sw` using `GlobalTheory.T.realThetaRule_exchange_pair_members X _ _ _ _ (lamA al be ga de) (lamA' t al be ga de)`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp [hb]; omega, by simp, by simp, by simp, ⟨by omega, by omega, p2, p1, sw.1 (h3.1 t al be ga de hd).1, sw.2.1 (h3.1 t al be ga de hd).2.2, sw.2.2 (h4.1 t al be ga de hd)⟩, e, e'⟩`. Establish `sw` using `GlobalTheory.T.realThetaRule_exchange_pair_members X _ _ _ _ (lamA al be ga de) (lamM' t al be ga de)`. Conclude with `⟨_, _, _, _, _, _, _, _, by simp, by simp [hb]; omega, by simp, by simp, ⟨by omega, by omega, p3, p1, sw.1 (h3.2 t al be ga de hd).1, sw.2.1 (h3.2 t al be ga de hd).2.2, sw.2.2 (h4.2 t al be ga de hd)⟩, e, e'⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rulePar_of_pairPar {X : ProvA} (h3 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X) (h4 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X) (h5 : Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X)
     {S S' : SPar} {aS aT : ℚ} (h : PairPar S S' aS aT) : RulePar X S S' aS aT := by
@@ -67,13 +67,13 @@ theorem rulePar_of_pairPar {X : ProvA} (h3 : Formalism.MainNotions.SchurIrreduci
         sw.2.2 (h4.2 t al be ga de hd)⟩, e, e'⟩
 
 /- English proof (translation)
-Introduce `D X h3 h4 h5 k hk τ`. Take `⟨al, be, ga, de, hd, hfar, e0, e1⟩` from `hk τ`. Establish `hT : ThetaPar D.R.t (parA (Ptw D) k τ) (parA (Ptw D) (k + 1) τ) (expT D k τ) (expS D k τ)` using `⟨al, be, ga, de, e0, Or.inl ⟨hd, e1⟩⟩`. Establish `hF : GlobalTheory.SignedHC.FarFrom (expT D k τ) (((D.R.t : ℚ) + 3) / 2) (parA (Ptw D) k τ)`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs⟩` from `GlobalTheory.SignedHC.mem_entries.1 hx`. Rewrite `hs` using `[e0]`. Establish `: ∃ y ∈ al ++ be ++ ga ++ de, x = y + expT D k τ`. Break down `Finset.mem_union.1 hs with h | h` into its components or cases. Take `⟨y, hy, hy'⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, by simp only [List.mem_append] at hy ⊢; tauto, (congrArg Prod.fst hy').symm⟩`. Take `⟨y, hy, hy'⟩` from `List.mem_map.1 (List.mem_toFinset.1 h)`. Conclude with `⟨y, by simp only [List.mem_append] at hy ⊢; tauto, (congrArg Prod.fst hy').symm⟩`. Take `⟨y, hy, rfl⟩` from `this`. Rewrite using `[add_sub_cancel_right]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfar y hy`. Conclude with `⟨rulePar_of_pairPar h3 h4 h5 ⟨D.R.t, _, _, rfl, rfl, Or.inl ⟨hT, hF⟩⟩, rulePar_of_pairPar h3 h4 h5 ⟨D.R.t, _, _, rfl, rfl, Or.inr hT⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rulePar_step : ∀ (D : D7) (X : ProvA), Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisUpDownLine X → Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFourth X → Formalism.MainNotions.SchurIrreducible.ArchimedeanRallisFifth X →
     ∀ k : Fin D.R.m, ChainPar D k → ∀ τ, RulePar X (parB (Ptw D) k τ) (parB (Ptw D) (k + 1) τ) (expS D k τ) (expT D k τ) ∧

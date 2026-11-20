@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm
 variable {Ψ : Type} {p q : ℕ} {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Simplify using `[tMat]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tMat_blockEquiv (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) (a b : Fin q ⊕ Fin p) :
     tMat Ts τ (blockEquiv p q a) (blockEquiv p q b) =
@@ -20,7 +20,7 @@ theorem tMat_blockEquiv (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q 
   rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `tMat_blockEquiv Ts τ (.inl a) (.inl b)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem omBlock_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) :
     omBlock (tMat Ts τ) = Ts (.inr τ) := by
@@ -28,7 +28,7 @@ theorem omBlock_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s))
   exact tMat_blockEquiv Ts τ (.inl a) (.inl b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Conclude with `tMat_blockEquiv Ts τ (.inr a) (.inr b)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem wBlock_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) :
     wBlock (tMat Ts τ) = Ts (.inl τ) := by
@@ -36,11 +36,9 @@ theorem wBlock_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) 
   exact tMat_blockEquiv Ts τ (.inr a) (.inr b)
 
 /- English proof (translation)
-Introduce `a b hab`. Take `⟨a, rfl⟩` from `(blockEquiv p q).surjective a`. Take `⟨b, rfl⟩` from `(blockEquiv p q).surjective b`. Rewrite using `[tMat_blockEquiv]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (by`. Establish `h1` using `a.2`. Establish `h2` using `b.2`. Use `show ((a : ℕ) < p + q - p ↔ (b : ℕ) < p + q - p)`. Use the proof step `omega) hab`.
-
-Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `absurd (by show (q + (a : ℕ) < p + q - p ↔ q + (b : ℕ) < p + q - p) omega) hab`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isBlockDiag_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) :
     IsBlockDiag p (tMat Ts τ) := by
@@ -61,11 +59,11 @@ theorem isBlockDiag_tMat (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q
       omega) hab
 
 /- English proof (translation)
-Use `⟨isBlockDiag_tMat Ts τ, ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `(isBlockDiag_tMat Ts τ).det_eq_blocks`. Rewrite `h` using `[omBlock_tMat, wBlock_tMat]`. Conclude with `h`. Establish `h1 : minorIJ (tMat Ts τ) (wIdx (p + q) p) (wIdx (p + q) p) = (Ts (.inl τ)).det`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[minorIJ_wIdx, wBlock_tMat]`. Both sides reduce to the same expression. Establish `h2 : minorIJ (tMat Ts τ) (omIdx (p + q) p) (omIdx (p + q) p) = (Ts (.inr τ)).det`. Rewrite using `[minorIJ_omIdx, omBlock_tMat]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[detFac, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem tMat_main {Ψ : Type} {p q : ℕ} {Ω : Type} [Field Ω]
     (Ts : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) (τ : Ψ) :

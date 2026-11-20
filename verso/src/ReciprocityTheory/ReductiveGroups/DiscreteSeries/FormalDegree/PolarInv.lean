@@ -14,7 +14,7 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [pmat, Matrix.neg_apply, Pi.neg_apply]`. Apply the tactic sequence `split_ifs <;> simp [star_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem polarInv_pmat_neg {ε : Fin n → Bool} (z : PCoord ε → ℂ) : pmat (-z) = -pmat z := by
   ext a b
@@ -22,9 +22,9 @@ theorem polarInv_pmat_neg {ε : Fin n → Bool} (z : PCoord ε → ℂ) : pmat (
   split_ifs <;> simp [star_neg]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.neg_apply]`. Distinguish the cases in `hab : ε a = ε b`. Establish `h0 : pmat z a b = 0` using `by simp [pmat, hab]`. Rewrite using `[h0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hs : (if ε a then (1:ℂ) else -1) * (if ε b then 1 else -1) = -1`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b <;> simp_all`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 -/
 theorem polarInv_Jm_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Jm ε * pmat z * Jm ε = -pmat z := by
   ext a b
@@ -39,16 +39,16 @@ theorem polarInv_Jm_pmat {ε : Fin n → Bool} (z : PCoord ε → ℂ) : Jm ε *
       _ = -pmat z a b := by rw [hs]; ring
 
 /- English proof (translation)
-Establish `hu : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `k.2.1`. Conclude with `Units.inv_eq_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff.mp hu)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polarInv_toMK_inv {ε : Fin n → Bool} (k : KG ε) : toMK k⁻¹ = (toMK k)ᴴ := by
   have hu : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ := k.2.1
   exact Units.inv_eq_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff.mp hu)
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.conjTranspose_apply, pmat]`. Distinguish the cases in `h1 : b < a ∧ ε a ≠ ε b`. Establish `h2 : ¬ (a < b ∧ ε b ≠ ε a)` using `fun h => lt_asymm h1.1 h.1`. Simplify using `only [dif_neg h2, dif_pos h1, star_star]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h3 : a < b ∧ ε b ≠ ε a`. Simplify using `only [dif_neg h1, dif_pos h3]`. Simplify using `only [dif_neg h1, dif_neg h3, star_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem pmat_conjTranspose_eq_self {ε : Fin n → Bool} (z : PCoord ε → ℂ) : (pmat z)ᴴ = pmat z := by
   ext a b
@@ -61,7 +61,7 @@ private theorem pmat_conjTranspose_eq_self {ε : Fin n → Bool} (z : PCoord ε 
     · simp only [dif_neg h1, dif_neg h3, star_zero]
 
 /- English proof (translation)
-Rewrite using `[Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Jm_mul_Jm_eq_oneFormalDegree (ε : Fin n → Bool) : Jm ε * Jm ε = 1 := by
   rw [Jm, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -70,7 +70,7 @@ private theorem Jm_mul_Jm_eq_oneFormalDegree (ε : Fin n → Bool) : Jm ε * Jm 
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using `only [Pi.star_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem conjTranspose_Jm_eq_Jm (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm ε := by
   rw [Jm, Matrix.diagonal_conjTranspose]
@@ -80,17 +80,15 @@ private theorem conjTranspose_Jm_eq_Jm (ε : Fin n → Bool) : (Jm ε)ᴴ = Jm �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hK : toMK k ∈ Matrix.unitaryGroup (Fin n) ℂ` using `k.2.1`. Establish `hKJ : toMK k * Jm ε = Jm ε * toMK k` using `k.2.2`. Establish `hJJ : Jm ε * Jm ε = 1` using `Jm_mul_Jm_eq_oneFormalDegree ε`. Establish `hJh : (Jm ε)ᴴ = Jm ε` using `conjTranspose_Jm_eq_Jm ε`. Establish `hKKh : toMK k * (toMK k)ᴴ = 1` using `Matrix.mem_unitaryGroup_iff.mp hK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKhK : (toMK k)ᴴ * toMK k = 1` using `Matrix.mem_unitaryGroup_iff'.mp hK`. Establish `hKhJ : (toMK k)ᴴ * Jm ε = Jm ε * (toMK k)ᴴ`. Establish `h` using `congrArg Matrix.conjTranspose hKJ`. Simplify using `only [Matrix.conjTranspose_mul, hJh] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hKu : IsUnit (toMK k)` using `⟨⟨toMK k, (toMK k)ᴴ, hKKh, hKhK⟩, rfl⟩`. Establish `hJu : IsUnit (Jm ε)` using `⟨⟨Jm ε, Jm ε, hJJ, hJJ⟩, rfl⟩`. Establish `hKinv : (toMK k)⁻¹ = (toMK k)ᴴ` using `Matrix.inv_eq_right_inv hKKh`. Establish `hJinv : (Jm ε)⁻¹ = Jm ε` using `Matrix.inv_eq_right_inv hJJ`. Establish `hE : (NormedSpace.exp (pmat z))ᴴ = NormedSpace.exp (pmat z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.exp_conjTranspose, pmat_conjTranspose_eq_self]`. Establish `h1 : NormedSpace.exp (Jm ε * pmat z * (Jm ε)⁻¹) = Jm ε * NormedSpace.exp (pmat z) * (Jm ε)⁻¹` using `Matrix.exp_conj _ _ hJu`. Establish `h2 : NormedSpace.exp (toMK k * pmat (-z) * (toMK k)⁻¹) = toMK k * NormedSpace.exp (pmat (-z)) * (toMK k)⁻¹` using `Matrix.exp_conj _ _ hKu`. Rewrite `h1` using `[hJinv, polarInv_Jm_pmat]`. Rewrite `h2` using `[hKinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show polarM (k, z) = toMK k * NormedSpace.exp (pmat z) from rfl, show polarM (k⁻¹, adK k (-z)) = toMK k⁻¹ * NormedSpace.exp (pmat (adK k (-z))) from rfl, polarInv_toMK_inv, pmat_adK, h2, Matrix.conjTranspose_mul, hE, polarInv_pmat_neg, h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hKhK, Matrix.one_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = (toMK k)ᴴ * (toMK k * (Jm ε * NormedSpace.exp (pmat z) * Jm ε) * (toMK k)ᴴ) := by`.
-
-Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polarInv_key {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) :
     Jm ε * (polarM (k, z))ᴴ * Jm ε = polarM (k⁻¹, adK k (-z)) := by
@@ -128,9 +126,9 @@ theorem polarInv_key {ε : Fin n → Bool} (k : KG ε) (z : PCoord ε → ℂ) :
         simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hce : Topology.IsClosedEmbedding (intMuCD_eM ε)` using `isClosedEmbedding_toM ε`. Establish `he : MeasurableEmbedding (intMuCD_eM ε)` using `hce.measurableEmbedding`. Establish `hT : MeasurableSet (intMuCD_eM ε '' S)` using `he.measurableSet_image.2 hS`. Establish `hF : Measurable ((intMuCD_eM ε '' S).indicator (1 : (Fin n → Fin n → ℂ) → ENNReal))` using `measurable_one.indicator hT`. Establish `h` using `lintegral_muPolar ε _ hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← lintegral_indicator_one hS]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Use `lintegral_congr (fun g => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `S.indicator 1 g = (intMuCD_eM ε '' S).indicator 1 (intMuCD_eM ε g)`. Simplify using `only [Set.indicator_apply, he.injective.mem_set_image, Pi.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem polarInv_apply (ε : Fin n → Bool) (S : Set (UJ ε)) (hS : MeasurableSet S) :
     muPolar ε S = ∫⁻ k, ∫⁻ z, (intMuCD_eM ε '' S).indicator (1 : (Fin n → Fin n → ℂ) → ENNReal)
@@ -149,19 +147,17 @@ theorem polarInv_apply (ε : Fin n → Bool) (S : Set (UJ ε)) (hS : MeasurableS
   simp only [Set.indicator_apply, he.injective.mem_set_image, Pi.one_apply]
 
 /- English proof (translation)
-Establish `hinv : Measurable (fun x : UJ ε => x⁻¹)` using `continuous_inv.measurable`. Establish `hinvK : Measurable (fun x : KG ε => x⁻¹)` using `continuous_inv.measurable`. Establish `hce : Topology.IsClosedEmbedding (intMuCD_eM ε)` using `isClosedEmbedding_toM ε`. Establish `he : MeasurableEmbedding (intMuCD_eM ε)` using `hce.measurableEmbedding`. Use extensionality with `S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Measure.map_apply hinv hS, polarInv_apply ε _ (hinv hS), polarInv_apply ε S hS]`. Establish `hT : MeasurableSet (intMuCD_eM ε '' S)` using `he.measurableSet_image.2 hS`. Establish `hpt : ∀ (k : KG ε) (z : PCoord ε → ℂ), (intMuCD_eM ε '' ((fun x : UJ ε => x⁻¹) ⁻¹' S)).indicator (1 : (Fin n → Fin n → ℂ) → ENNReal) (intMuCD_pM ε (k, z)) = (intMuCD_eM ε '' S).indicator 1 (intMuCD_pM ε (k⁻¹, adK k (-z)))`. Introduce `k z`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : polarM (k, z) ∈ Set.range (fun g : UJ ε => toM g) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[range_toM]`. Conclude with `polarM_inUJ (k, z)`. Establish `hg' : toM g = polarM (k, z)` using `hg`. Establish `e1 : intMuCD_pM ε (k, z) = intMuCD_eM ε g` using `hg'.symm`. Establish `e2 : intMuCD_pM ε (k⁻¹, adK k (-z)) = intMuCD_eM ε g⁻¹` using `by show polarM _ = toM g⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toM_inv, hg', polarInv_key]`. Rewrite using `[e1, e2]`. Simplify using `only [Set.indicator_apply, he.injective.mem_set_image, Set.mem_preimage, Pi.one_apply]`. Set `G : KG ε × (PCoord ε → ℂ) → ENNReal` to `fun kz => (intMuCD_eM ε '' S).indicator 1 (intMuCD_pM ε kz) * ENNReal.ofReal (Jac kz.2)`. Establish `hG : Measurable G` using `((measurable_one.indicator hT).comp (intMuCD_measurable_pM ε)).mul (ENNReal.measurable_ofReal.comp ((jac_continuous ε).measurable.comp measurable_snd))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : Measurable fun k => ∫⁻ w, G (k, w)` using `hG.lintegral_prod_right'`. Establish `step : ∀ k : KG ε, ∫⁻ z, (intMuCD_eM ε '' ((fun x : UJ ε => x⁻¹) ⁻¹' S)).indicator 1 (intMuCD_pM ε (k, z)) * ENNReal.ofReal (Jac z) = ∫⁻ w, G (k⁻¹, w)`. Introduce `k`. Establish `hφ : MeasurePreserving (fun z : PCoord ε → ℂ => adK k (-z)) volume volume` using `(adK_measurePreserving k).comp (Measure.measurePreserving_neg volume)`. Establish `hm : Measurable (fun w => G (k⁻¹, w))` using `hG.comp measurable_prodMk_left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (hφ.lintegral_comp hm)` and prove the remaining obligations. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Use `show _ = G (k⁻¹, adK k (-z))`. Simplify using `only [G, hpt, jac_adK, jac_neg]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[lintegral_map hH hinvK]`. Use `_ = _ := by rw [(dk_props ε).2.2.2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muPolar_inv (ε : Fin n → Bool) : Measure.map (fun x : UJ ε => x⁻¹) (muPolar ε) = muPolar ε := by
   have hinv : Measurable (fun x : UJ ε => x⁻¹) := continuous_inv.measurable

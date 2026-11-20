@@ -8,7 +8,7 @@ open Filter Topology MeasureTheory GlobalTheory.PRep GlobalTheory.SplitWeil Glob
 namespace GlobalTheory.CompanionTheory.UnifPow
 
 /- English proof (translation)
-Establish `hle : valuation k ((Zls.unif k : 𝒪[k]) : k) ≤ 1` using `(Zls.unif k).2`. Use `lt_of_le_of_ne hle fun h1 => (Zls.irreducible_unif (k := k)).not_isUnit ?_` and prove the remaining obligations. Conclude with `((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one).2 h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem valuation_unifU_lt_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] : valuation k ((Zls.unifU k : kˣ) : k) < 1 := by
@@ -17,9 +17,9 @@ theorem valuation_unifU_lt_one (k : Type) [Field k] [ValuativeRel k] [Topologica
   exact ((Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one).2 h1
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero' k).tendsto_right_iff]`. Introduce `γ hγ`. Establish `h` using `valuation_unifU_lt_one k`. Establish `: MulArchimedean (ValueGroupWithZero k)` using `ValuativeRel.isRankLeOne_iff_mulArchimedean.mp inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `exists_pow_lt₀ h (Units.mk0 γ hγ)`. Use `filter_upwards [eventually_ge_atTop n] with m hm`. Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' h.le hm) hn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_unifU_pow : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k],

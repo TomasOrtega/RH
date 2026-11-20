@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `haveI := ArithBase.ded (o := o') (Ω := Ω)`. Use `haveI := M.lft`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian M.s`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_model {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω]
     (M : RatModel o' Ω) : IsLocallyNoetherian M.Z := by
@@ -33,7 +33,7 @@ theorem isLocallyNoetherian_model {o' Ω : Type} [CommRing o'] [Field Ω] [Algeb
   exact LocallyOfFiniteType.isLocallyNoetherian M.s
 
 /- English proof (translation)
-Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg (X.fromSpecStalk x) ?_) (Scheme.fromSpecStalk_closedPoint (x := x)))` and prove the remaining obligations. Conclude with `comap_closedPoint g`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem centre_apply {X : Scheme.{0}} {x : X} {V : Type} [CommRing V] [IsLocalRing V] (g : X.presheaf.stalk x →+* V)
     [IsLocalHom g] : (spMap g ≫ X.fromSpecStalk x) (closedPoint V) = x := by
@@ -42,15 +42,13 @@ theorem centre_apply {X : Scheme.{0}} {x : X} {V : Type} [CommRing V] [IsLocalRi
   exact comap_closedPoint g
 
 /- English proof (translation)
-Use `haveI := ArithBase.char (o := o') (Ω := Ω)`. Use `haveI := isLocallyNoetherian_model M`. Use `haveI : CharZero (M.Z.presheaf.stalk x) := RingHom.charZero (M.stalkHom x)`. Take `⟨V, _, _, _, θ, ⟨hd, hcomp, -⟩, hθ, hl⟩` from `GlobalTheory.DvrDom.exists_cdvr_dominating (M.Z.presheaf.stalk x)`. Use `haveI := hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := hcomp`. Use `haveI : CharZero V := charZero_of_injective_ringHom hθ`. Establish `hB : GlobalTheory.Mum.Base V` using `⟨⟨inferInstance, inferInstance, inferInstance, hcomp⟩, inferInstance⟩`. Set `θ' : M.O x →+* FractionRing V` to `((algebraMap V (FractionRing V)).comp θ).comp (M.stalkEquiv x).symm.toRingHom`. Establish `hθ' : Function.Injective θ'` using `(IsFractionRing.injective V (FractionRing V)).comp (hθ.comp (M.stalkEquiv x).symm.injective)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `γ₀ : Ω →+* FractionRing V` to `IsFractionRing.lift (A := M.O x) (K := Ω) hθ'`. Establish `hγ₀ : ∀ a, γ₀ (M.stalkHom x a) = algebraMap V (FractionRing V) (θ a)`. Introduce `a`. Establish `h` using `IsFractionRing.lift_algebraMap (A := M.O x) (K := Ω) hθ' (M.stalkEquiv x a)`. Rewrite using `[← RatModel.coe_stalkEquiv]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `h.trans ?_` and prove the remaining obligations. Simplify using `[θ']`. Take `⟨T, f, fK, -, hfl, -, hc, hy⟩` from `GlobalTheory.UTraitExt.uTraitExtSt E H Dw l Xo c V hB hd (spMap γ₀ ≫ y₀)`. Use `haveI := hfl`. Use `⟨T, spMap (f.comp θ) ≫ M.Z.fromSpecStalk x, fK.comp γ₀, centre_apply _, ?_, ?_⟩` and prove the remaining obligations.
-
-Establish `e : (algebraMap T.V (FractionRing T.V)).comp (f.comp θ) = (fK.comp γ₀).comp (M.stalkHom x)`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, hγ₀, hc]`. Rewrite using `[← GlobalTheory.Poinc.GenTrait.spMap_stalkHom_fromSpecStalk M x, ← Category.assoc, Formalism.L2.Pj.spMap_comp', e, ← Formalism.L2.Pj.spMap_comp', Category.assoc]`. Rewrite using `[hy, ← Category.assoc, Formalism.L2.Pj.spMap_comp']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_uTrait_centre {o' Ω : Type} [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (M : RatModel o' Ω)
     (y₀ : Sp Ω ⟶ Xo.XF c) (x : M.Z) :
@@ -93,23 +91,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Use `letI := C.b.toAlgebra`. Use `haveI := C.isFractionRing`. Use `haveI := C.ded`. Use `haveI := C.iF_open`. Use `haveI : IsPreimmersion (spMap C.b) := IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsPreimmersion (pullback.fst C.z (spMap C.b)) := inferInstance`. Establish `hinj : Function.Injective (pullback.fst C.z (spMap C.b))` using `(pullback.fst C.z (spMap C.b)).isEmbedding.injective`. Take `⟨x, hx⟩` from `hg`. Set `φ : C.o →+* V` to `(Spec.preimage (g ≫ C.z)).hom`. Establish `hφ : spMap φ = g ≫ C.z` using `Spec.map_preimage _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hc : spMap φ (closedPoint V) = spMap C.b ((C.iF ≫ pullback.snd C.z (spMap C.b)) x)`. Rewrite using `[hφ]`. Use `(Scheme.Hom.comp_apply g C.z _).trans ((congrArg C.z hx.symm).trans ?_)` and prove the remaining obligations. Use `show C.z ((C.iF ≫ pullback.fst C.z (spMap C.b)) x) = _`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, pullback.condition, ← Category.assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hunit : ∀ a : C.o, a ≠ 0 → IsUnit (φ a)`. Introduce `a ha`. Assume the negation of the conclusion as `hn`. Establish `hm : a ∈ (spMap φ (closedPoint V)).asIdeal` using `by show φ a ∈ (closedPoint V).asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).2 hn`. Rewrite `hm` using `[hc]`. Use `haveI := ((C.iF ≫ pullback.snd C.z (spMap C.b)) x).isPrime`. Establish `hb : C.b a ∈ ((C.iF ≫ pullback.snd C.z (spMap C.b)) x).asIdeal` using `hm`. Rewrite `hb` using `[Ideal.eq_bot_of_prime (((C.iF ≫ pullback.snd C.z (spMap C.b)) x).asIdeal), Ideal.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ha (C.inj (hb.trans (map_zero C.b).symm))`. Set `ψ : c.F →+* V` to `IsLocalization.lift (M := nonZeroDivisors C.o) (S := c.F) (g := φ) (fun a => hunit a (nonZeroDivisors.ne_zero a.2))`. Establish `hψ : ψ.comp C.b = φ` using `RingHom.ext fun a => IsLocalization.lift_eq (M := nonZeroDivisors C.o) (S := c.F) _ a`. Establish `hsq : g ≫ C.z = spMap ψ ≫ spMap C.b`. Rewrite using `[← hφ, ← hψ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.UTraitPt.spMap_comp_eq _ _`. Set `g₁ : Sp V ⟶ pullback C.z (spMap C.b)` to `pullback.lift g (spMap ψ) hsq`. Establish `e1 : g₁ ≫ pullback.fst C.z (spMap C.b) = g` using `pullback.lift_fst _ _ _`. Establish `hx₁ : g₁ (closedPoint V) = C.iF x` using `hinj ((Scheme.Hom.comp_apply g₁ (pullback.fst C.z (spMap C.b)) _).symm.trans ((congrArg (fun h : Sp V ⟶ C.Z => h (closedPoint V)) e1).trans (hx.symm.trans (Scheme.Hom.comp_apply C.iF (pullback.fst C.z (spMap C.b)) x))))`. Establish `hr : Set.range g₁ ⊆ Set.range C.iF`.
-
-Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hs : g₁ w ⤳ g₁ (closedPoint V)` using `(IsLocalRing.specializes_closedPoint w).map g₁.continuous`. Rewrite `hs` using `[hx₁]`. Conclude with `hs.mem_open (IsOpenImmersion.isOpen_range C.iF) ⟨x, rfl⟩`. Use `⟨IsOpenImmersion.lift C.iF g₁ hr, ?_⟩` and prove the remaining obligations.
-
-Use `show _ ≫ C.iF ≫ pullback.fst C.z (spMap C.b) = g`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`.
+A detailed English derivation is pending.
 -/
 theorem lift_i_of_closedPoint (C : UCompact Xo c) (V : Type) [CommRing V] [IsLocalRing V] (g : Sp V ⟶ C.Z)
     (hg : g (closedPoint V) ∈ Set.range C.i) : ∃ σ : Sp V ⟶ Xo.XF c, σ ≫ C.i = g := by
@@ -161,13 +155,11 @@ theorem lift_i_of_closedPoint (C : UCompact Xo c) (V : Type) [CommRing V] [IsLoc
   rw [← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]
 
 /- English proof (translation)
-Take `⟨hdvr, -, -⟩` from `T.cdvr`. Use `haveI := hdvr`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `T.gen`. Establish `hsemi` using `Xo.univ.t.semi`. Establish `hAb : IsAbelianScheme Xo.univ.t.G` using `{ comm := hsemi.comm, smooth := hsemi.smooth, proper := Xo.univ.proper, geomConnected := hsemi.geomConnected }`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `f : Sp T.V ⟶ Xo.X` to `σ ≫ pullback.fst _ _`. Establish `hB` using `GlobalTheory.isAbelianScheme_pullback_obj f Xo.univ.t.G hAb`. Take `⟨e₁, he₁, -⟩` from `grpPullback_iso m₁.cart (isGrpPullback_pullback T.t.G (jK T.V))`. Establish `h₂` using `(isGrpPullback_pullback ((Over.pullback f).obj Xo.univ.t.G) (jK T.V)).comp (isGrpPullback_pullback Xo.univ.t.G f)`. Take `⟨e₂, he₂, -⟩` from `grpPullback_iso (m₂.cart.congr (by rw [← h, Category.assoc]) rfl) h₂`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := he₁`. Use `haveI := he₂`. Take `⟨F, -, -⟩` from `GlobalTheory.Poinc.TraitUniq.extIso T.t.semi (GlobalTheory.isSemiAbelian_of_isAbelianScheme _ hB) (e₁.symm ≪≫ e₂) (show IsMonHom (e₁.inv ≫ e₂.hom) from inferInstance)`. Establish `hp : IsProper T.t.G.hom`. Use `hB.proper` as an intermediate fact.
-
-Establish `: IsIso F.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map F.hom))`. Rewrite using `[← Over.w F.hom]`. Use `infer_instance`. Conclude with `GlobalTheory.ChartNotAb.subsingleton_of_closed_mem_abLocus T.P (fun _ _ _ _ _ => inferInstance)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_extends (T : UTrait Xo c) (σ : Sp T.V ⟶ Xo.XF c) (h : jK T.V ≫ σ = T.y) :
     Subsingleton T.P.D.toPre.X := by
@@ -199,21 +191,19 @@ end GlobalTheory.UPoinc.SuppTrait
 open GlobalTheory.UPoinc.SuppTrait in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw hpq φ hφ l Xo c C X₁ Y U₀ EE out πY hAdm hhom ι D hoff hord y hy hC`. Take `⟨T, ξ, γ, hcen, hgen, hTy⟩` from `exists_uTrait_centre Y X₁.uΩ y`. Establish `hU₀ : Set.range Y.pt ⊆ Set.range U₀.ι`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Y.top_le_preimage_pt hAdm.1.ne (x := w) trivial`. Establish `hthru : ∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y`. Use `⟨spMap γ ≫ IsOpenImmersion.lift U₀.ι Y.pt hU₀, by rw [Category.assoc, IsOpenImmersion.lift_fac, hgen], ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, out.u₀_gen _ (IsOpenImmersion.lift_fac _ _ _)]`. Take `⟨x', hx', hu⟩` from `X₁.lies_uΩ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨spMap γ ≫ x', by rw [Category.assoc, hx'], by rw [Category.assoc, hu, hTy]⟩`. Take `⟨a, ha, hJ⟩` from `hord T ξ hthru`. Establish `hpt : Y.pt ≫ πY ≫ X₁.π = X₁.uΩ ≫ C.i`. Establish `h : Y.pt ≫ πY = X₁.M.pt` using `hhom.trans (by`. Rewrite using `[show spMap (AlgHom.id X₁.o₁ X₁.Ω₁).toRingHom = 𝟙 _ from Spec.map_id _, Category.id_comp])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, h, X₁.comp, Category.assoc]`. Establish `hsq : jK T.V ≫ ξ ≫ πY ≫ X₁.π = T.y ≫ C.i`. Rewrite using `[← Category.assoc, hgen, Category.assoc, hpt, hTy]`. Simplify using `only [USetup.uΩ, Category.assoc]`. Take `⟨σ, hσ⟩` from `lift_i_of_closedPoint C T.V (ξ ≫ πY ≫ X₁.π) (by show X₁.π (πY (ξ (closedPoint T.V))) ∈ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcen]`. Conclude with `hC)`. Use `haveI := C.isPreimmersion_i`. Establish `hσ' : jK T.V ≫ σ = T.y`. Rewrite using `[← cancel_mono C.i, Category.assoc, hσ, hsq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `haveI := subsingleton_of_extends T σ hσ'`. Establish `ha0 : a = 0`. Rewrite `ha` using `[InvFun.evalZ, InvFun.eval_of_subsingleton, mul_zero]`. Conclude with `ha` after adjusting the coercions. Substitute `ha0` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hJ` using `[pow_zero, Ideal.span_singleton_one]`. Establish `htop : FinalTheorems.stalkId D.idealSheaf (ξ (closedPoint T.V)) = ⊤`. Assume the negation of the conclusion as `h`. Establish `hle : (FinalTheorems.stalkId D.idealSheaf (ξ (closedPoint T.V))).map (Scheme.stalkClosedPointTo ξ).hom ≤ maximalIdeal T.V` using `Ideal.map_le_iff_le_comap.2 fun b hb => (map_mem_nonunits_iff _ b).2 (IsLocalRing.le_maximalIdeal h hb)`. Establish `hle' : idlAlong D.idealSheaf ξ ≤ maximalIdeal T.V` using `hle`.
-
-Rewrite `hle'` using `[hJ]`. Conclude with `(maximalIdeal.isMaximal T.V).ne_top (top_le_iff.1 hle')`. Conclude with `(mem_support_iff_stalkId _ y).1 hy (hcen ▸ htop)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UPoinc.SuppTrait.support_not_mem_range : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ φ : InvFun (𝓞 E), IsPolFan H.bar (min Dw.p Dw.q) φ → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c) (X₁ : USetup C) (Y : RatModel X₁.o₁ X₁.Ω₁) (U₀ : Y.Z.Opens) (EE : Y.Lat X₁.S.J) (out : ZHOut X₁.ρ Y U₀ EE) (πY : Y.Z ⟶ X₁.M.Z), X₁.S.admitted Y U₀ → X₁.M.IsHom Y (AlgHom.id X₁.o₁ X₁.Ω₁) πY → ∀ (ι : ℕ) (D : GlobalTheory.EffCartierData Y.Z), (∀ y ∈ D.idealSheaf.support, y ∉ U₀) → (∀ (T : UTrait Xo c) (ξ : Sp T.V ⟶ Y.Z), (∃ ξ₀ : Sp (FractionRing T.V) ⟶ U₀.toScheme, ξ₀ ≫ U₀.ι = jK T.V ≫ ξ ∧ X₁.Lies (ξ₀ ≫ out.u₀) T.y) → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.be ∧ idlAlong D.idealSheaf ξ = Ideal.span {T.ϖ ^ a}) → ∀ y ∈ D.idealSheaf.support, X₁.π (πY y) ∉ Set.range C.i := by
   intro E _ _ _ H Dw hpq φ hφ l Xo c C X₁ Y U₀ EE out πY hAdm hhom ι D hoff hord y hy hC

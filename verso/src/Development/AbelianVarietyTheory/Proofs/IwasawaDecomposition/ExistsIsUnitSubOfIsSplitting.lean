@@ -20,9 +20,9 @@ end GlobalTheory.LocM.LieEig
 namespace GlobalTheory.LocM.LieEig
 
 /- English proof (translation)
-Establish `e₁ : resG X (le_refl T) = RingHom.id _`. Use extensionality with `a`. Simplify using `[resG]`. Establish `e₂ : Formalism.L2.Pj.dualMap (RingHom.id Γ(X, T)) = RingHom.id _`. Apply the tactic sequence `ext z <;> simp [Formalism.L2.Pj.dualMap]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[e₁, e₂]`. Simplify using `[spMap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem spMap_dualMap_resG_self {X : Scheme.{0}} (T : X.Opens) {Y' : Scheme.{0}} (f : Sp (DualNumber Γ(X, T)) ⟶ Y') :
     spMap (Formalism.L2.Pj.dualMap (resG X (le_refl T))) ≫ f = f := by
@@ -37,7 +37,7 @@ theorem spMap_dualMap_resG_self {X : Scheme.{0}} (T : X.Opens) {Y' : Scheme.{0}}
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Use `IsSecOf.eq_resM h le_rfl (GlobalTheory.T.isSecOf_action t h v (Θ v) a (hΘ v)) (hΘ (actR t.act a v)) (spMap_dualMap_resG_self T _).symm` as an intermediate fact. Rewrite `this` using `[resM_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sec_act {X : Scheme.{0}} {t : SAB H X} [QuasiSeparated t.G.hom] {T : X.Opens} (h : CoordOpen t T)
     (Θ : TanM (affPt h.1) t.G ≃ₗ[Γ(X, T)] Γ(Lie t.G, T)) (hΘ : ∀ v, IsSecOf h.1 v (Θ v)) (a : 𝓞 E)
@@ -47,11 +47,9 @@ theorem sec_act {X : Scheme.{0}} {t : SAB H X} [QuasiSeparated t.G.hom] {T : X.O
   rwa [resM_self] at this
 
 /- English proof (translation)
-Use `choose Θ hΘ using fun T (h : CoordOpen t' T) => h.exists_equiv`. Use `⟨fun T h x hx => (pushE m _ hx).symm ≪≫ₗ Θ T h, fun T h x hx T' h' x' hx' e u u' hu => ?_, fun T h x hx a u => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `(pushE m _ hx).surjective u`. Take `rfl : pushE m _ hx' (tanOf (isTan_map _ (spMap_affPt h.1 h'.1 e) (isTan_tv v))) = u'` from `tan_ext (by rw [hu, left_pushE, left_pushE, left_tanOf, Category.assoc])`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hΘ T h v).eq_resM h e (hΘ T' h' _) rfl`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← sec_act h (Θ T h) (hΘ T h) a]`. Use `congrArg (Θ T h) ?_` and prove the remaining obligations. Establish `key` using `pushE_act m (affPt h.1) hx a ((pushE m _ hx).symm u)`.
-
-Rewrite `key` using `[LinearEquiv.apply_symm_apply]`. Conclude with `(LinearEquiv.symm_apply_eq _).2 key.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tangent_equiv_act {X C : Scheme.{0}} {t : SAB H X} {t' : SAB H C} [QuasiSeparated t'.G.hom] {g : C ⟶ X}
     (m : SABMap t' t g) :

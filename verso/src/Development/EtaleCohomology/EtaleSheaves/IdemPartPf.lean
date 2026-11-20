@@ -5,7 +5,7 @@ namespace LateralTheory.E.IdemPartPf
 open Finset
 
 /- English proof (translation)
-Establish `hl : l ∈ (univ : Finset (Fin n)).erase m` using `mem_erase.2 ⟨hlm, mem_univ l⟩`. Rewrite using `[← mul_prod_erase _ y hl, ← mul_assoc, mul_comm (∏ k ∈ univ.erase l, y k) (y l), mul_prod_erase _ y (mem_univ l), h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_erase_mul_prod_erase {A : Type} [CommRing A] {n : ℕ} (y : Fin n → A)
     (h0 : ∏ l, y l = 0) {l m : Fin n} (hlm : l ≠ m) :
@@ -15,17 +15,15 @@ theorem prod_erase_mul_prod_erase {A : Type} [CommRing A] {n : ℕ} (y : Fin n �
     mul_prod_erase _ y (mem_univ l), h0, zero_mul]
 
 /- English proof (translation)
-Introduce `A _ n y h0 hu`. Take `⟨u, hu⟩` from `hu`. Set `e : Fin n → A` to `fun l => (↑u⁻¹ : A) * ∏ m ∈ univ.erase l, y m`. Establish `horth : ∀ l m, l ≠ m → e l * e m = 0`. Introduce `l m hlm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `prod_erase_mul_prod_erase y h0 hlm` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [this, mul_zero]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hsum : ∑ l, e l = 1`. Simplify using `only [e]`. Rewrite using `[← mul_sum, ← hu, Units.inv_mul]`. Use `⟨e, ?_, horth, hsum, ?_⟩` and prove the remaining obligations. Introduce `l`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `IsIdempotentElem`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_sum, sum_eq_single l]`. Introduce `m _ hml`. Conclude with `horth l m (Ne.symm hml)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (mem_univ l) h`. Use `_ = e l := by rw [hsum, mul_one]`. Introduce `l`. Simplify using `only [e]`.
-
-Rewrite using `[mul_assoc, mul_comm (∏ m ∈ univ.erase l, y m) (y l), mul_prod_erase _ y (mem_univ l), h0, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdemPart_of : LateralTheory.E.HensCut.IdemPart := by
   intro A _ n y h0 hu

@@ -7,13 +7,13 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-Introduce `E _ _`. Establish `hD : differentIdeal ℤ (𝓞 E) ≠ ⊥` using `differentIdeal_ne_bot`. Take `⟨n, hn⟩ : ∃ n : ℕ, n = (discr E).natAbs` from `⟨_, rfl⟩`. Establish `hn0 : n ≠ 0` using `hn ▸ Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Establish `hsum : ∀ p : Nat.Primes, ∑ j : E →+* ℂ_[p], GlobalTheory.CompanionTheory.Ar.Fl.logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) = Real.log ‖((n : ℚ) : ℂ_[p])‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p`. Rewrite using `[GlobalTheory.T.sum_logIdeal_eq_log_absNorm E _ hD p, absNorm_differentIdeal E (𝓞 E), ← hn, Rat.cast_natCast]`. Establish `hq : (n : ℚ) ≠ 0` using `by exact_mod_cast hn0`. Take `⟨hfin, hprod⟩` from `GlobalTheory.T.rat_product_formula (n : ℚ) hq`. Establish `h1 : ‖((n : ℚ) : ℂ)‖ = (n : ℝ)` using `by rw [Rat.cast_natCast, Complex.norm_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpos : (0 : ℝ) < ((|discr E| : ℤ) : ℝ)` using `Int.cast_pos.mpr (abs_pos.mpr (discr_ne_zero E))`. Establish `h2 : Real.log (rootDiscr E) = (Module.finrank ℚ E : ℝ)⁻¹ * Real.log (n : ℝ)`. Rewrite using `[rootDiscr_def, Real.log_rpow hpos, hn, Nat.cast_natAbs]`. Establish `hk : (0 : ℝ) < Module.finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Simplify using `only [hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨hfin, ?_⟩` and prove the remaining obligations. Rewrite `hprod` using `[h1]`. Rewrite using `[h2, ← mul_assoc, neg_mul, mul_inv_cancel₀ hk.ne', neg_one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem different_sum_eq_neg_finrank_mul_log_rootDiscr : ∀ (E : Type) [Field E] [NumberField E], {p : Nat.Primes | ∑ j : E →+* ℂ_[p], logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) ≠ 0}.Finite ∧ ∑ᶠ p : Nat.Primes, ∑ j : E →+* ℂ_[p], logIdeal (j.comp (algebraMap (𝓞 E) E)) (differentIdeal ℤ (𝓞 E)) = -(Module.finrank ℚ E : ℝ) * Real.log (rootDiscr E) := by
   intro E _ _

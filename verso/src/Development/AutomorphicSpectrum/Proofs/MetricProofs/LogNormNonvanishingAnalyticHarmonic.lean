@@ -7,11 +7,9 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
 /- English proof (translation)
-Introduce `e f z hf hz`. Use `⟨fun z' => Complex.log (f z' * (f z)⁻¹) + Complex.log (f z), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : AnalyticAt ℂ (fun z' => f z' * (f z)⁻¹) z` using `hf.mul analyticAt_const`. Establish `h2 : AnalyticAt ℂ Complex.log (f z * (f z)⁻¹)`. Apply `analyticAt_clog` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_inv_cancel₀ hz]`. Conclude with `Complex.one_mem_slitPlane`. Conclude with `(AnalyticAt.comp (f := fun z' => f z' * (f z)⁻¹) (x := z) h2 h1).add analyticAt_const`. Use `filter_upwards [hf.continuousAt.eventually_ne hz] with z' hz'`. Simplify using `only [Complex.add_re, Complex.log_re, norm_mul, norm_inv]`.
-
-Rewrite using `[Real.log_mul (norm_ne_zero_iff.2 hz') (inv_ne_zero (norm_ne_zero_iff.2 hz)), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem log_norm_eventually_eq_re_analyticAt :
     ∀ (e : ℕ) (f : (Fin e → ℂ) → ℂ) (z : Fin e → ℂ), AnalyticAt ℂ f z → f z ≠ 0 →

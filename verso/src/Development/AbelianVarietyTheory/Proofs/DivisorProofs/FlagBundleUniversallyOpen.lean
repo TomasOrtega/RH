@@ -13,7 +13,7 @@ open CategoryTheory.Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `B Y π ι _ E r fl hE hF`. Use `haveI := GlobalTheory.T.flag_bundle_smooth_relative_dimension B Y π ι E r fl hE hF`. Use `haveI : Smooth π := SmoothOfRelativeDimension.smooth (∑ a, r a * (r a - 1) / 2) π`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flagBundle_universallyOpen : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a)), (∀ a, GlobalTheory.VB.IsVB (E a) (r a)) → IsFlagBundle π E r fl → UniversallyOpen π := by
   intro B Y π ι _ E r fl hE hF

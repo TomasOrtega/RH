@@ -38,7 +38,7 @@ def relEmb (f : ∀ i, (Σ j, c i j) ≃ m i) : (∀ i, Levi k (c i)) →* Levi 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype α] in
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun i _ => Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k (f i) (g i)) (u i)`.
+A detailed English derivation is pending.
 -/
 theorem relEmb_mem_normalizer (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i)) :
     relEmb k f g ∈ Subgroup.normalizer (relUnip k f : Set (Levi k m)) :=
@@ -75,7 +75,7 @@ theorem relEmb_apply (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i)
     relEmb k f g i = leviEmb k (f i) (g i) := rfl
 
 /- English proof (translation)
-Simplify using `[relDeltaHalf, MonoidHom.finsetProd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem relDeltaHalf_apply (g : ∀ i, Levi k (c i)) :
     relDeltaHalf k c g = ∏ i, deltaHalf k (c i) (g i) := by
@@ -90,7 +90,7 @@ theorem relJac_mk (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (L
       (((relDeltaHalf k c g)⁻¹ : ℂˣ) : ℂ) • Submodule.Quotient.mk (ρ (relEmb k f g) v) := rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_smoothRep _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_relInd (f : ∀ i, (Σ j, c i j) ≃ m i) (ρ : Representation ℂ (∀ i, Levi k (c i)) W) :
     IsSmooth (relInd f ρ) := isSmooth_smoothRep _
@@ -105,7 +105,7 @@ def SizeMatrix {α β : Type} [Fintype α] [Fintype β] (m : α → Type) [∀ i
   {b : α → β → ℕ // (∀ i, ∑ j, b i j = Fintype.card (m i)) ∧ ∀ j, ∑ i, b i j = Fintype.card (m' j)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => Fintype.equivOfCardEq (by simp [b.2.1 i])⟩`.
+Supply the required witnesses or components.
 -/
 theorem SizeMatrix.nonempty_rows {α β : Type} [Fintype α] [Fintype β] {m : α → Type}
     [∀ i, Fintype (m i)] {m' : β → Type} [∀ j, Fintype (m' j)] (b : SizeMatrix m m') :
@@ -113,7 +113,7 @@ theorem SizeMatrix.nonempty_rows {α β : Type} [Fintype α] [Fintype β] {m : �
   ⟨fun i => Fintype.equivOfCardEq (by simp [b.2.1 i])⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun j => Fintype.equivOfCardEq (by simp [b.2.2 j])⟩`.
+Supply the required witnesses or components.
 -/
 theorem SizeMatrix.nonempty_cols {α β : Type} [Fintype α] [Fintype β] {m : α → Type}
     [∀ i, Fintype (m i)] {m' : β → Type} [∀ j, Fintype (m' j)] (b : SizeMatrix m m') :
@@ -158,7 +158,7 @@ def Segment.ofChar (χ : kˣ →* ℂˣ) (h : IsSmoothChar χ) (l : ℕ) (hl : 0
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Unfold `IsSmoothChar`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem isSmoothChar_one {G : Type} [Group G] [TopologicalSpace G] : IsSmoothChar (1 : G →* ℂˣ) := by
   unfold IsSmoothChar; simp
@@ -258,7 +258,7 @@ instance : Finite (SizeMatrix m m') :=
       congrArg Fin.val (congrFun (congrFun h i) j))
 
 /- English proof (translation)
-Take `⟨N, b, hb⟩` from `h α β n m m' e e'`. Take `⟨S, h1, h2, h3, h4⟩` from `hb W ρ hρ`. Conclude with `(jhMult_filtration hτ S h1 h2 h3).trans (Fintype.sum_equiv b _ _ fun t => (h4 t (f (b t)) (g (b t))).elim fun φ => jhMult_congr_right τ φ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem JacquetOfInducedFiltration.jhMult_eq (h : JacquetOfInducedFiltration k)
     [Fintype (SizeMatrix m m')] (e : (Σ i, m i) ≃ n) (e' : (Σ j, m' j) ≃ n)
@@ -274,9 +274,9 @@ theorem JacquetOfInducedFiltration.jhMult_eq (h : JacquetOfInducedFiltration k)
     (h4 t (f (b t)) (g (b t))).elim fun φ => jhMult_congr_right τ φ)
 
 /- English proof (translation)
-Use `Fintype.ofFinite (SizeMatrix m m')` as an intermediate fact. Establish `h0` using `jhMult_ne_zero_iff.2 hs`. Rewrite `h0` using `[multiProd, h.jhMult_eq e e' (isSmooth_piTensor hρ) (fun b => b.nonempty_rows.some) (fun b => b.nonempty_cols.some) hτ]`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h0`. Take `⟨T, -, hT⟩` from `h' α β m m' _ b.nonempty_rows.some b.nonempty_cols.some X ρ hρ hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hb` using `[hT ⟨Y, τ, hs.isSmooth (isSmooth_jac _ (isSmooth_parInd _ _)), hτ⟩]`. Take `⟨s, -, hs⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hb`. Conclude with `⟨b, _, _, fun i j => (s i j).rep, fun i => jhMult_ne_zero_iff.1 (Finset.prod_ne_zero_iff.1 (left_ne_zero_of_mul hs) i (Finset.mem_univ i)), jhMult_ne_zero_iff.1 (right_ne_zero_of_mul hs)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cell_of_isSubquotient (h : JacquetOfInducedFiltration k) (h' : CellSemisimplification k)
     (e : (Σ i, m i) ≃ n) (e' : (Σ j, m' j) ≃ n)
@@ -309,21 +309,21 @@ variable {V W U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module
   [AddCommGroup U] [Module ℂ U]
 
 /- English proof (translation)
-Rewrite using `[clsGL, cls_irr, Finsupp.mapDomain_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clsGL_irr {n : ℕ} (σ : IrrRep (GL (Fin n) k)) (h : HasFiniteLength σ.ρ) :
     clsGL σ.ρ h = Finsupp.single ⟨n, σ.cl⟩ 1 := by
   rw [clsGL, cls_irr, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_apply sigma_mk_injective _ _`.
+A detailed English derivation is pending.
 -/
 theorem clsGL_apply {n : ℕ} (π : Representation ℂ (GL (Fin n) k) V) (h : HasFiniteLength π)
     (c : IrrCl (GL (Fin n) k)) : clsGL π h ⟨n, c⟩ = cls π h c :=
   Finsupp.mapDomain_apply sigma_mk_injective _ _
 
 /- English proof (translation)
-Rewrite using `[clsGL, clsGL, cls_congr φ h h']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem clsGL_congr {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V}
     {τ : Representation ℂ (GL (Fin n) k) W} (φ : π.Equiv τ) (h : HasFiniteLength π)
@@ -333,7 +333,7 @@ theorem clsGL_congr {n : ℕ} {π : Representation ℂ (GL (Fin n) k) V}
 variable {A : Type 1} [CommRing A] {Ψ : GrothGL k ≃+ A}
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `hΨ.2 r t V W π₁ π₂ h₁ h₂ s₁ s₂`. Take `⟨h', e'⟩` from `hΨ.2 t r W V π₂ π₁ h₂ h₁ s₂ s₁`. Conclude with `⟨h, h', Ψ.injective (by rw [e, e', mul_comm])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsProductIso.comm (hΨ : IsProductIso k Ψ) {r t : ℕ} {π₁ : Representation ℂ (GL (Fin r) k) V}
     {π₂ : Representation ℂ (GL (Fin t) k) W} (h₁ : HasFiniteLength π₁) (h₂ : HasFiniteLength π₂)
@@ -344,9 +344,9 @@ theorem IsProductIso.comm (hΨ : IsProductIso k Ψ) {r t : ℕ} {π₁ : Represe
   exact ⟨h, h', Ψ.injective (by rw [e, e', mul_comm])⟩
 
 /- English proof (translation)
-Take `⟨h, e⟩` from `hΨ.2 r t _ _ π₁.ρ τ.ρ π₁.hasFiniteLength τ.hasFiniteLength π₁.smooth τ.smooth`. Take `⟨h', e'⟩` from `hΨ.2 r t _ _ π₂.ρ τ.ρ π₂.hasFiniteLength τ.hasFiniteLength π₂.smooth τ.smooth`. Establish `h0 : Ψ (clsGL τ.ρ τ.hasFiniteLength) ≠ 0`. Rewrite using `[clsGL_irr, map_ne_zero_iff _ Ψ.injective]`. Conclude with `Finsupp.single_ne_zero.2 one_ne_zero`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[clsGL_congr φ h h', e']`. Establish `h1` using `Ψ.injective (mul_right_cancel₀ h0 e)`. Rewrite `h1` using `[clsGL_irr, clsGL_irr, Finsupp.single_left_inj one_ne_zero]`. Conclude with `IrrRep.cl_eq_iff.1 (sigma_mk_injective (β := fun n => IrrCl (GL (Fin n) k)) h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsProductIso.cancel [IsDomain A] (hΨ : IsProductIso k Ψ) {r t : ℕ}
     (π₁ π₂ : IrrRep (GL (Fin r) k)) (τ : IrrRep (GL (Fin t) k))
@@ -368,11 +368,11 @@ section Characters
 variable {n : Type} [Fintype n] [DecidableEq n] {l : ℕ}
 
 /- English proof (translation)
-Use `⟨.mk ((Submodule.quotEquivOfEqBot _ (twKer_detRep e _)).trans (PiTensorProduct.constantBaseRingEquiv (Fin l) ℂ).toLinearEquiv.symm) fun g => ?_⟩` and prove the remaining obligations. Establish `key : ∀ y, piTensor (segTerm (detRep (Fin 1) χ) l) g y = (detLevi e (χ * absPow k (((l : ℂ) - 1) / 2)) g : ℂ) • y`. Introduce `y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => rw [map_add, hx, hy, smul_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `smul_tprod c x`. Rewrite using `[map_smul, smul_comm, piTensor_tprod, detLevi_apply, Units.coe_prod, ← MultilinearMap.map_smul_univ]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Rewrite using `[modExp_fin _ (fun _ => by simp), mul_assoc, ← absPow_add, show ((l : ℂ) - 1) / 2 + -(((l : ℤ) - 1 - 2 * ((i : ℕ) : ℤ) : ℤ) : ℂ) / 2 = ((i : ℕ) : ℂ) by push_cast; ring]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `[segTerm, detRep, mul_left_comm, mul_assoc]`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[key, Model.jac_detRep, map_smul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_jac_det_equiv (e : (Σ _ : Fin l, Fin 1) ≃ n) (χ : kˣ →* ℂˣ) :
     Nonempty ((jac e (detRep n (χ * absPow k (((l : ℂ) - 1) / 2)))).Equiv
@@ -398,9 +398,9 @@ theorem nonempty_jac_det_equiv (e : (Σ _ : Fin l, Fin 1) ≃ n) (χ : kˣ →* 
   rw [key, Model.jac_detRep, map_smul]
 
 /- English proof (translation)
-Take `⟨ψ⟩` from `nonempty_jac_det_equiv e χ`. Take `⟨φ, hφ⟩` from `(Model.evalOne_bijective e ((isSmooth_ofChar_iff _).2 (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))).detChar) _).2 ψ.toIntertwiningMap`. Use `⟨φ, (injective_iff_map_eq_zero _).2 fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (Submodule.Quotient.mk v) = (φ v).1.1 1` using `(congrArg (fun F => F (Submodule.Quotient.mk v)) hφ).symm`. Use `replace h1 : ψ (Submodule.Quotient.mk v) = 0 := h1.trans (congrArg (fun F => F.1.1 1) hv)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : v ∈ twKer (detRep n (χ * absPow k (((l : ℂ) - 1) / 2))) (unipRad k e) 1` using `(Submodule.Quotient.mk_eq_zero _).1 ((map_eq_zero_iff ψ ψ.injective).1 h1)`. Rewrite `h2` using `[twKer_detRep]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_det_embedding (e : (Σ _ : Fin l, Fin 1) ≃ n) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     ∃ φ : (detRep n (χ * absPow k (((l : ℂ) - 1) / 2))).IntertwiningMap
@@ -417,7 +417,7 @@ theorem exists_det_embedding (e : (Σ _ : Fin l, Fin 1) ≃ n) {χ : kˣ →* �
   rwa [twKer_detRep] at h2
 
 /- English proof (translation)
-Set `e : (Σ _ : Fin l, Fin 1) ≃ Fin (l * 1)` to `Fintype.equivOfCardEq (by simp)`. Establish `h1` using `(hZ (Segment.ofChar χ hχ l hl) (IrrRep.det (Fin 1) χ hχ) rfl e (IrrRep.det (Fin (l * 1)) (χ * absPow k (((l : ℂ) - 1) / 2)) (hχ.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))))).2`. Conclude with `(h1.2 (nonempty_jac_det_equiv (l := l) (n := Fin (l * 1)) e χ)).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsSegmentClass.ofChar {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * Δ.d)) k)}
     (hZ : IsSegmentClass k Z) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) (hl : 0 < l) :
@@ -430,14 +430,14 @@ theorem IsSegmentClass.ofChar {Z : ∀ Δ : Segment k, IrrCl (GL (Fin (Δ.len * 
   exact (h1.2 (nonempty_jac_det_equiv (l := l) (n := Fin (l * 1)) e χ)).symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Nat.succ_injective (congrArg Segment.len h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : Function.Injective fun l : ℕ =>
     Segment.ofChar (1 : kˣ →* ℂˣ) isSmoothChar_one (l + 1) l.succ_pos :=
   fun _ _ h => Nat.succ_injective (congrArg Segment.len h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨![![1, 0], ![0, 1]], by decide⟩, ⟨![![0, 1], ![1, 0]], by decide⟩, fun h => absurd (congrArg (fun b => b.1 0 0) h) (by decide)⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ b b' : SizeMatrix (fun _ : Fin 2 => Fin 1) (fun _ : Fin 2 => Fin 1), b ≠ b' :=
   ⟨⟨![![1, 0], ![0, 1]], by decide⟩, ⟨![![0, 1], ![1, 0]], by decide⟩, fun h =>

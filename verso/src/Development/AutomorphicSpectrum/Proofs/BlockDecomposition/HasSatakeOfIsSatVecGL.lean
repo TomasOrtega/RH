@@ -19,11 +19,11 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
   {π : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V}
 
 /- English proof (translation)
-Take `⟨φ, hφ, h1, -⟩` from `Final.SphericalExists E w n (fun i => (α i : ℂ)) fun i => (α i).ne_zero`. Establish `hφ0 : φ ≠ 0` using `fun e => by simp [e] at h1`. Take `⟨ho, hc⟩` from `isOpen_isCompact_KGL w n`. Take `⟨y, hy, hy0, ht⟩` from `exists_fixed_of_fun _ _ ho (Final.GLintComm E w n) hφ0 ((isSphericalGL_iff α φ).1 hφ)`. Establish `hq : IsSubquot π (psGL (w.adicCompletion E) α)` using `GlobalTheory.T.isSubquotient_of_same_spherical_hecke_eigenvalues _ _ _ π _ _ hc (Final.GLintComm E w n) hπ (LeviDatum.nInd_isSmooth _ _) x hx.2.1 hx.1 y hy hy0 fun f hf => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, e1, e2⟩` from `exists_eigenvalue_GL hx (isSatVecGL_of_isSpherical hφ hφ0) f hf`. Conclude with `⟨c, e1, ht f hf c e2⟩`. Establish `hs : IsSpherical π (GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n))`. Rewrite using `[GlobalTheory.SmGL.SphCompletion.KO_completion w n]`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨x, hx.2.1, hx.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hπ.2, hs, (GlobalTheory.LGrp.SatakeCompare.isSubquot_ps_iff _ _ π α).1 hq⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasSatake_of_isSatVecGL (hπ : IsIrrSmooth π) {x : V} (α : Fin n → ℂˣ)
     (hx : IsSatVecGL w π x (Finset.univ.val.map α)) : GlobalTheory.SmGL.HasSatake π α := by
@@ -46,7 +46,7 @@ end GlobalTheory.CompanionTheory.SatComp
 open GlobalTheory.CompanionTheory.SatComp in
 
 /- English proof (translation)
-Introduce `E _ _ _ n π w τ τ' B hs hB hπ hτ'`. Take `⟨α, rfl, h'⟩` from `GlobalTheory.LFun.SphComp.hasSatake_of_isLocComp π ((CG.hasSat_mk π w B).1 hπ) hτ'`. Take `⟨x, hx⟩` from `hB.exists_vec`. Establish `h` using `hasSatake_of_isSatVecGL ⟨τ.smooth, τ.irred⟩ α hx`. Conclude with `GlobalTheory.SmGL.SphUniq.equiv_of_parInd _ _ h.1 h'.1 h.2.2 h'.2.2 h.2.1 h'.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SatComp.satComp : SatComp := by
   intro E _ _ _ n π w τ τ' B hs hB hπ hτ'

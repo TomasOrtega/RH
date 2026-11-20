@@ -10,41 +10,37 @@ open scoped Matrix
 namespace GlobalTheory.HilbertThetaSeries
 
 /- English proof (translation)
-Introduce `F _ _ _ κ _ _ G hG t ht k hk a b c T Φ ha hb hab hT hsupp hper`. Establish `hdec : ∀ x, Φ x = ∑ x₀ ∈ T, Φ x₀ * (if x - x₀ ∈ aL κ a then (1:ℂ) else 0)`. Introduce `x`. Establish `e2 : ∀ x₀ ∈ T, Φ x₀ * (if x - x₀ ∈ aL κ a then (1:ℂ) else 0) = Φ x * (if x - x₀ ∈ aL κ a then (1:ℂ) else 0)`. Introduce `x₀ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Use `hper x₀ (x - x₀) h` as an intermediate fact. Rewrite `this` using `[show x₀ + (x - x₀) = x by abel]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl e2, ← Finset.mul_sum]`. Distinguish the cases in `h0 : Φ x = 0`. Simplify using `[h0]`. Take `⟨y, ⟨hyT, hy⟩, huniq⟩` from `hT.2 x (hsupp x h0)`. Rewrite using `[Finset.sum_eq_single y]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Introduce `x₀ hx₀ hne`. Rewrite using `[if_neg]`. Introduce `hm`. Conclude with `hne (huniq x₀ ⟨hx₀, hm⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `absurd hyT h`. Establish `hW : ∀ y, wT G k t a c T Φ y = ∑ x₀ ∈ T, Φ x₀ * wT G k t a c {x₀} (fun _ => 1) y`. Introduce `y`. Simplify using `only [wT, Finset.sum_singleton, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun x₀ _ => by ring)` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hsumL : ∀ x₀ ∈ T, ∀ z : Hn F, Summable fun x => (if x - x₀ ∈ aL κ a then (1:ℂ) else 0) * ez (QF G x) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x₀ hx₀ z`. Use `(_root_.GlobalTheory.T.thetaSeries_holomorphic_qExpansion_of_bounded_coeff F κ G hG b _ 1 ?_ ?_).1 z` and prove the remaining obligations. Introduce `x hx`. Establish `hm : x - x₀ ∈ aL κ a`. Assume the negation of the conclusion as `hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `hx (if_neg hm)`. Use `(aL κ b).add_mem (hab hm) (hT.1 x₀ hx₀)` as an intermediate fact. Simplify using `using this`. Apply the tactic sequence `intro x split_ifs <;> simp`. Establish `hsumR : ∀ (x₀ : κ → F) (z : Hn F), Summable fun y => wT G k t a c {x₀} (fun _ => (1:ℂ)) y * ez (QF G y) z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x₀ z`. Take `⟨-, ⟨N, hN, hN2⟩, -⟩` from `_root_.GlobalTheory.T.dualLattice_index_eq_discr_pow_mul_det_pow F κ G hG`. Establish `hc : (c : F) ≠ 0` using `c.ne_zero`. Establish `hNF : (N : F) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `(_root_.GlobalTheory.T.thetaSeries_holomorphic_qExpansion_of_bounded_coeff F κ G hG ((c:F) / ((N:F) * a)) _ ‖wC k t a (c:F)‖ ?_ ?_).1 z` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Establish `hd : (a / c) • y ∈ dualL F G`. Assume the negation of the conclusion as `hd`. Conclude with `hy (by simp [wT, hd])`. Establish `hw` using `(hN2 _ hd).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `AddSubgroup.mem_map.2 ⟨_, hw, ?_⟩` and prove the remaining obligations. Simplify using `only [DistribMulAction.toAddMonoidHom_apply]`. Rewrite using `[smul_smul, smul_smul]`. Rewrite using `[show (c:F) / ((N:F) * a) * (N:F) * (a / c) = 1 by field_simp, one_smul]`. Introduce `y`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [wT, Finset.sum_singleton, one_mul]`. Use `split_ifs`. Simplify using `[et, Complex.norm_exp]`. Simplify using the standard rewrite rules. Establish `thL : ∀ z, th G Φ z = ∑ x₀ ∈ T, Φ x₀ * th G (fun x => if x - x₀ ∈ aL κ a then (1:ℂ) else 0) z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Simplify using `only [th]`. Establish `e : ∀ x, Φ x * ez (QF G x) z = ∑ x₀ ∈ T, Φ x₀ * ((if x - x₀ ∈ aL κ a then (1:ℂ) else 0) * ez (QF G x) z)`. Introduce `x`. Rewrite using `[hdec x, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`. Rewrite using `[tsum_congr e, Summable.tsum_finsetSum (fun x₀ hx₀ => (hsumL x₀ hx₀ z).mul_left (Φ x₀))]`. Conclude with `Finset.sum_congr rfl (fun x₀ _ => tsum_mul_left)`. Establish `thR : ∀ z, th G (wT G k t a c T Φ) z = ∑ x₀ ∈ T, Φ x₀ * th G (wT G k t a c {x₀} (fun _ => (1:ℂ))) z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [th]`. Establish `e : ∀ y, wT G k t a c T Φ y * ez (QF G y) z = ∑ x₀ ∈ T, Φ x₀ * (wT G k t a c {x₀} (fun _ => (1:ℂ)) y * ez (QF G y) z)`. Introduce `y`. Rewrite using `[hW y, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl (fun _ _ => by ring)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[tsum_congr e, Summable.tsum_finsetSum (fun x₀ _ => (hsumR x₀ z).mul_left (Φ x₀))]`. Conclude with `Finset.sum_congr rfl (fun x₀ _ => tsum_mul_left)`. Use function extensionality and compare the values at `z`. Rewrite using `[thR z]`. Simplify using `only [sl0]`.
-
-Rewrite using `[thL, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun x₀ _ => ?_)` and prove the remaining obligations. Use `congrFun (_root_.GlobalTheory.T.hilbertThetaSeries_coset_inversion_formula F κ G hG t ht k hk a c x₀ ha) z` as an intermediate fact. Simplify using `only [sl0] at this`. Rewrite using `[← this]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem thetaSeries_periodic_slash_frickeMatrix : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∀ (a b : F) (c : Fˣ) (T : Finset (κ → F)) (Φ : (κ → F) → ℂ), a ≠ 0 → b ≠ 0 → aL κ a ≤ aL κ b → IsReps (aL κ a) (aL κ b) T → (∀ x, Φ x ≠ 0 → x ∈ aL κ b) → (∀ x, ∀ l ∈ aL κ a, Φ (x + l) = Φ x) → sl0 k (toInf (wm c)) (th G Φ) = th G (wT G k t a c T Φ) := by
   classical
@@ -142,7 +138,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix | exact GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix | (intros; apply GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hilbertThetaSeries_periodic_inversion_formula : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (κ : Type) [Fintype κ] [DecidableEq κ] (G : Matrix κ κ ℤ), EvenPos G → ∀ t : ℕ, G.det = (t : ℤ) ^ 2 → ∀ k : ℕ, Fintype.card κ = 2 * k → ∀ (a b : F) (c : Fˣ) (T : Finset (κ → F)) (Φ : (κ → F) → ℂ), a ≠ 0 → b ≠ 0 → aL κ a ≤ aL κ b → IsReps (aL κ a) (aL κ b) T → (∀ x, Φ x ≠ 0 → x ∈ aL κ b) → (∀ x, ∀ l ∈ aL κ a, Φ (x + l) = Φ x) → sl0 k (toInf (wm c)) (th G Φ) = th G (wT G k t a c T Φ) := by
   first | exact @GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix | exact GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix | (intros; apply GlobalTheory.HilbertThetaSeries.thetaSeries_periodic_slash_frickeMatrix <;> assumption)

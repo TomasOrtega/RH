@@ -7,7 +7,7 @@ open Matrix GlobalTheory GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionT
 open scoped ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `PositivityTheory.Xgf.exists_local_basis_cm_order` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FSesquilinearFractions%2FDOkBasis.lean&line=183#L183)
 -/

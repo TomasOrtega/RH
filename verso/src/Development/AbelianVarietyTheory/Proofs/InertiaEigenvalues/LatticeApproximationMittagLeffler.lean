@@ -28,51 +28,45 @@ namespace GlobalTheory.BKLim
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ d N ρ tw F T0 R hT0 hR hRF n`. Use `set I : Ideal (WCb l) := Ideal.span {(l : WCb l) ^ n} with hI`. Set `q : WCb l →+* WCb l ⧸ I` to `Ideal.Quotient.mk I`. Establish `hq : ∀ w, (l : WCb l) ^ n ∣ w ↔ q w = 0` using `fun w => by`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : ∀ {a b : ℕ} (A B : Matrix (Fin a) (Fin b) (WCb l)), (∀ i j, (l : WCb l) ^ n ∣ (A - B) i j) → A.map q = B.map q`. Introduce `a b A B h`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[← sub_eq_zero, ← map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hq _).1 (h i j)`. Establish `hvec : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) (WCb l)) (v : Fin b → WCb l), (fun i => q ((M *ᵥ v) i)) = M.map q *ᵥ fun j => q (v j)` using `fun M v => funext fun i => RingHom.map_mulVec q M v i`. Take `⟨c, y, hcy⟩` from `GlobalTheory.BKLim.flatPow_dvd_perPow_mod l K bk τ hτ (2 * N) n`. Use `⟨c, fun m hnm s => ?_⟩` and prove the remaining obligations. Take `⟨Yn, Y'n, hYn, -⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N (tw.d' n) _ (F n)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ym, Y'm, hYm, hYYm⟩` from `GlobalTheory.T.breuilKisinPreframe_bounded_poles l K bk τ hτ N (tw.d' m) _ (F m)`. Take `⟨Sm, hSm⟩` from `(tw.onto m).surj`. Establish `hu : IsUnit (inclW l τ ^ N)` using `(GlobalTheory.T.breuilKisin_period_isUnit_wittTilt_and_ne_zero l K bk τ hτ).1.pow N`. Establish `hTY : (F m).T * Y'm.map (inclW l) = inclW l τ ^ N • (1 : Matrix _ _ (WCb l))`. Establish `h1 : (Ym * Y'm).map (inclW l) = (τ ^ (2 * N) • (1 : Matrix _ _ (Ainf l))).map (inclW l)` using `by rw [hYYm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[Matrix.map_mul, hYm]`. Establish `h2 : (τ ^ (2 * N) • (1 : Matrix (Fin (tw.d' m)) (Fin (tw.d' m)) (Ainf l))).map (inclW l) = inclW l τ ^ N • (inclW l τ ^ N • (1 : Matrix (Fin (tw.d' m)) (Fin (tw.d' m)) (WCb l)))`. Rewrite using `[smul_smul, ← pow_add, ← two_mul, ← map_pow]`. Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [h, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← hu.smul_left_cancel, ← Matrix.smul_mul, h1, h2]`. Set `qi : Ainf l →+* WCb l ⧸ I` to `q.comp (inclW l)`. Establish `hv : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) (Ainf l)) (v : Fin b → Ainf l), (fun i => qi ((M *ᵥ v) i)) = M.map qi *ᵥ fun j => qi (v j)` using `fun M v => funext fun i => RingHom.map_mulVec qi M v i`. Establish `hzq : ∀ {a b : ℕ} (M : Matrix (Fin a) (Fin b) ℤ_[l]), (M.map (algebraMap ℤ_[l] (Ainf l))).map qi = (zW M).map q` using `fun M => by`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `show q (inclW l (algebraMap ℤ_[l] (Ainf l) (M i j))) = q (algebraMap ℤ_[l] (WCb l) (M i j))`. Use `congr 1`. Conclude with `(inclWA l).commutes _`. Establish `F1 : T0.map q * (R n).map q = (zW (tw.Pi n)).map q * (F n).T.map q`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hmat _ _ fun i j => by rw [Matrix.sub_apply, dvd_sub_comm, ← Matrix.sub_apply]; exact hRF n i j)`. Establish `F2 : T0.map q * (R m).map q = (zW (tw.Pi m)).map q * (F m).T.map q`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_mul]`. Conclude with `(hmat _ _ fun i j => by`. Rewrite using `[Matrix.sub_apply, dvd_sub_comm, ← Matrix.sub_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `dvd_trans (pow_dvd_pow _ hnm) (hRF m i j))`. Establish `F3 : (zW (tw.Pi m)).map q * (zW Sm).map q = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.map_one q (map_zero q) (map_one q)]`. Use `hmat _ _ fun i j => dvd_trans (pow_dvd_pow _ hnm) ?_` and prove the remaining obligations. Establish `h` using `map_dvd (algebraMap ℤ_[l] (WCb l)) (hSm i j)`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_pow, map_natCast]`. Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[← Matrix.map_mul, Matrix.sub_apply, Matrix.sub_apply, map_sub, Matrix.map_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `F4 : Yn.map qi = qi τ ^ N • (F n).T.map q`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Yn.map qi = (Yn.map (inclW l)).map q` using `by ext i j; rfl`. Rewrite using `[this, hYn]`. Use extensionality with `i j`. Simplify using `[qi]`. Establish `F5 : (F m).T.map q * Y'm.map qi = qi τ ^ N • (1 : Matrix _ _ (WCb l ⧸ I))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Y'm.map qi = (Y'm.map (inclW l)).map q` using `by ext i j; rfl`. Rewrite using `[this, ← Matrix.map_mul, hTY]`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.smul_apply, Matrix.smul_apply, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [qi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hXc : q (inclW l (bk.ev X ^ c)) = qi τ ^ (2 * N) * qi y`. Establish `h0 : (l : WCb l) ^ n ∣ inclW l (bk.ev X ^ c - τ ^ (2 * N) * y)`. Use `map_dvd (inclW l) hcy` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast]`. Then use the resulting hypothesis. Establish `h` using `(hq _).1 h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_sub, map_sub, sub_eq_zero]`. Rewrite using `[h]`. Simplify using `[qi]`. Establish `F6 : (fun j => q (bk.evW (X ^ c * s j))) = (qi τ ^ (2 * N) * qi y) • fun j => qi (bk.ev (s j))`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, ← hXc]`. Use `show q (inclW l (bk.ev (X ^ c * s j))) = q (inclW l (bk.ev X ^ c)) * q (inclW l (bk.ev (s j)))`. Rewrite using `[map_mul, map_pow, map_mul, map_mul]`. Use `set e : Fin (tw.d' n) → WCb l ⧸ I := fun j => qi (bk.ev (s j)) with he`. Use `set zA := algebraMap ℤ_[l] (Ainf l) with hzA`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w1 : Fin (tw.d' m) → Ainf l := (Sm.map zA) *ᵥ ((tw.Pi n).map zA *ᵥ (Yn *ᵥ fun j => bk.ev (s j))) with hw1`. Use `set a : Fin (tw.d' m) → Ainf l := y • (Y'm *ᵥ w1) with ha`. Establish `hqa : (fun j => q (inclW l (a j))) = qi y • (Y'm.map qi *ᵥ ((zW Sm).map q *ᵥ ((zW (tw.Pi n)).map q *ᵥ (Yn.map qi *ᵥ e))))`. Establish `h0 : (fun j => q (inclW l (a j))) = qi y • fun j => qi ((Y'm *ᵥ w1) j)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ha, Pi.smul_apply, smul_eq_mul, map_mul]`. Both sides reduce to the same expression. Rewrite using `[h0, hv, hw1, hv, hv, hv, hzq, hzq]`. Take `⟨T0i, hT0i⟩` from `(hT0.map (RingHom.mapMatrix q)).exists_left_inv`. Establish `hT0i' : T0i * T0.map q = 1` using `hT0i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `G : (R n).map q *ᵥ ((qi τ ^ (2 * N) * qi y) • e) = (R m).map q *ᵥ (qi y • (Y'm.map qi *ᵥ ((zW Sm).map q *ᵥ ((zW (tw.Pi n)).map q *ᵥ (Yn.map qi *ᵥ e)))))`. Establish `canc : ∀ u v : Fin d → WCb l ⧸ I, T0.map q *ᵥ u = T0.map q *ᵥ v → u = v` using `fun u v h => by`. Use `congrArg (fun x => T0i *ᵥ x) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hT0i', Matrix.one_mulVec]`. Apply `canc` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Establish `L : T0.map q *ᵥ ((R n).map q *ᵥ ((qi τ ^ (2 * N) * qi y) • e)) = (qi τ ^ (2 * N) * qi y) • (((zW (tw.Pi n)).map q * (F n).T.map q) *ᵥ e)`. Rewrite using `[Matrix.mulVec_smul, Matrix.mulVec_smul, Matrix.mulVec_mulVec, F1]`. Establish `Rr : T0.map q *ᵥ ((R m).map q *ᵥ (qi y • (Y'm.map qi *ᵥ ((zW Sm).map q *ᵥ ((zW (tw.Pi n)).map q *ᵥ (Yn.map qi *ᵥ e)))))) = (qi y * qi τ ^ N * qi τ ^ N) • (((zW (tw.Pi n)).map q * (F n).T.map q) *ᵥ e)`. Simplify using `only [Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← Matrix.mul_assoc]`. Rewrite using `[F2, Matrix.mul_assoc ((zW (tw.Pi m)).map q), F5, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Matrix.smul_mul, F3, Matrix.one_mul, F4]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.smul_mulVec, smul_smul]`. Apply the tactic sequence `first | rfl | (congr 1; ring)`. Rewrite using `[L, Rr]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hev : ∀ t : bk.S, bk.evW t ∈ bk.OE` using `fun t => by`. Introduce `k`. Conclude with `⟨0, t, 0, by simp⟩`. Establish `hxOE : ∀ i, (R n *ᵥ fun j => bk.evW (X ^ c * s j)) i ∈ bk.OE` using `fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`.
-
-Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hR n i j) (hev _)`. Take `⟨s', hs'⟩` from `GlobalTheory.T.breuilKisin_descent_coefficients_ainf_mod_pow l K bk d (tw.d' m) n (R m) (R n *ᵥ fun j => bk.evW (X ^ c * s j)) a (hR m) hxOE (fun i => by`. Rewrite using `[hq, Pi.sub_apply, map_sub, sub_eq_zero]`. Establish `h1 : q ((R n *ᵥ fun j => bk.evW (X ^ c * s j)) i) = ((R n).map q *ᵥ fun j => q (bk.evW (X ^ c * s j))) i` using `congrFun (hvec (R n) fun j => bk.evW (X ^ c * s j)) i`. Establish `h2 : q ((R m *ᵥ fun j => inclW l (a j)) i) = ((R m).map q *ᵥ fun j => q (inclW l (a j))) i` using `congrFun (hvec (R m) fun j => inclW l (a j)) i`.
-
-Rewrite using `[h1, h2, F6, hqa, G])`. Conclude with `⟨s', hs'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mittagLeffler_approx : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (d N : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (tw : Tower ρ) (F : ∀ n, Pre bk N (tw.d' n) fun g => (tw.ρ' n g).val) (T0 : Matrix (Fin d) (Fin d) (WCb l)) (R : ∀ n, Matrix (Fin d) (Fin (tw.d' n)) (WCb l)), IsUnit T0 → (∀ n i j, R n i j ∈ bk.OE) → (∀ n i j, (l : WCb l) ^ n ∣ (zW (tw.Pi n) * (F n).T - T0 * R n) i j) → ∀ n, ∃ c : ℕ, ∀ m, n ≤ m → ∀ s : Fin (tw.d' n) → bk.S, ∃ s' : Fin (tw.d' m) → bk.S, ∀ i, (l : WCb l) ^ n ∣ ((R n *ᵥ fun j => bk.evW (X ^ c * s j)) - R m *ᵥ fun j => bk.evW (s' j)) i := by
   intro l _ K bk τ hτ d N ρ tw F T0 R hT0 hR hRF n

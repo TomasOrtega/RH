@@ -12,15 +12,13 @@ noncomputable section
 namespace GlobalTheory.SeeOntoCusp
 
 /- English proof (translation)
-Introduce `D r C hC g`. Set `I` to `Formalism.IndefR.RationalEmbedding.inst D`. Set `T` to `(Formalism.IndefR.RationalEmbedding.iota D).toMulEquiv`. Take `⟨L, R, hL, hR⟩` from `GlobalTheory.CuspCompare.exists_inverses (starRingEnd D.host.E) (J := (D.sp.Y 0).gram) I.J_det hC.2.1`. Establish `key : ∀ h : GA D (D.sp.Y 0), T h ∈ I.NA (Submodule.span I.E (Set.range (C : Matrix (Fin I.n) (Fin r) I.E).col)) ↔ GlobalTheory.CuspCompare.UnipEq (incA D) C R (Formalism.UG.cT (starRingEnd D.host.E) C * (D.sp.Y 0).gram) L ((matHom (D.sp.Y 0) h).1 - 1)` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : (Formalism.IndefR.RationalEmbedding.iota D).symm (T h) = h` using `(Formalism.IndefR.RationalEmbedding.iota D).symm_apply_apply h`. Use `GlobalTheory.CuspCompare.mem_NA_iff I (fun v => Formalism.IndefR.Eqv.thetaC D ((Formalism.L2.Host.tauPl D).symm v)) (fun v => Formalism.IndefR.Eqv.isInfFam_thetaC D ((Formalism.L2.Host.tauPl D).symm v)) h (T h) ?_ (fun v => ?_) hL hR` and prove the remaining obligations. Establish `hb` using `(Formalism.IndefR.RationalEmbedding.iota_symm_isBridge D (T h)).2`. Establish `h2` using `hb.trans (congrArg (Formalism.L2.SG.AdBridge.ofHAFin I) hs)`. Unfold `Formalism.L2.SG.AdBridge.ofHAFin at h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[Formalism.L2.SG.EvalTIota.tauF_eq_i]`. Conclude with `h2`. Take `⟨ρ, rfl⟩` from `(Formalism.L2.Host.tauPl D).surjective v`. Establish `hb` using `Formalism.L2.SG.EvalTIota.infMat_brg_i (T h) ρ`. Rewrite `hb` using `[hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `hb.symm`. Establish `hW : I.IsIsot (Submodule.span I.E (Set.range (C : Matrix (Fin I.n) (Fin r) I.E).col))` using `(GlobalTheory.CuspCompare.isIsot_iff I _).2 ⟨r, C, hC, rfl⟩`. Use `GlobalTheory.CuspCompare.mem_closure_iff_of_equiv T (GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I _ hW).1 (fun g => ?_) g` and prove the remaining obligations. Rewrite using `[key]`.
-
-Conclude with `and_congr Iff.rfl (and_congr Iff.rfl (GlobalTheory.CuspCompare.perp_cond (incA D) hL hR _).2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_NI_iff_iota : ∀ (D : D7) {r : ℕ} (C : Matrix (Fin (D.sp.Y 0).rank) (Fin r) D.host.E), IsIsoFrame (D.sp.Y 0) C → ∀ g : GA D (D.sp.Y 0), g ∈ NI (D.sp.Y 0) C ↔ Formalism.IndefR.RationalEmbedding.iota D g ∈ (Formalism.IndefR.RationalEmbedding.inst D).NA (Submodule.span (Formalism.IndefR.RationalEmbedding.inst D).E (Set.range C.col)) := by
   intro D r C hC g

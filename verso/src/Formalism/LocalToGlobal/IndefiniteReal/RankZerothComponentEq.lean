@@ -12,19 +12,19 @@ namespace Formalism.IndefR.ModelConjugation
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Take `⟨ha, q, hq, hS⟩` from `h`. Take `⟨ha', q', hq', hS'⟩` from `h'`. Establish `key : ∀ a, ∃ b, q' b = q a ∧ ε' b = ε a`. Introduce `a`. Establish `hm : (q a, ε a) ∈ S` using `by rw [hS]; exact Finset.mem_image_of_mem _ (Finset.mem_univ a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[hS']`. Take `⟨b, -, hb⟩` from `Finset.mem_image.mp hm`. Conclude with `⟨b, congrArg Prod.fst hb, congrArg Prod.snd hb⟩`. Establish `key' : ∀ b, ∃ a, q a = q' b`. Introduce `b`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : (q' b, ε' b) ∈ S` using `by rw [hS']; exact Finset.mem_image_of_mem _ (Finset.mem_univ b)`. Rewrite `hm` using `[hS]`. Take `⟨a, -, hqa⟩` from `Finset.mem_image.mp hm`. Conclude with `⟨a, congrArg Prod.fst hqa⟩`. Establish `hm1 : StrictMono fun a => OrderDual.toDual (lam a)` using `fun a b hab => OrderDual.toDual_lt_toDual.2 (ha hab)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hm2 : StrictMono fun a => OrderDual.toDual (lam' a)` using `fun a b hab => OrderDual.toDual_lt_toDual.2 (ha' hab)`. Establish `hr : Set.range (fun a => OrderDual.toDual (lam a)) = Set.range (fun a => OrderDual.toDual (lam' a))`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb, -⟩` from `key a`. Conclude with `⟨b, by simp only [hq, hq', hb]⟩`. Introduce and unpack `⟨b, rfl⟩`. Take `⟨a, hqa⟩` from `key' b`. Conclude with `⟨a, by simp only [hq, hq', hqa]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hl : lam = lam'`. Use `(StrictMono.range_inj hm1 hm2).mp hr` as an intermediate fact. Use function extensionality and compare the values at `a`. Conclude with `congrArg OrderDual.ofDual (congrFun this a)`. Use `⟨hl, funext fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, he⟩` from `key a`. Establish `hab : b = a`. Apply `ha'.injective` to reduce the goal to its premises. Rewrite using `[hq' b, hb, ← hq a, hl]`. Rewrite using `[← he, hab]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEnum_unique {n : ℕ} {S : SPar} {lam lam' : Fin n → ℝ} {ε ε' : Fin n → Bool}
     (h : IsEnum S lam ε) (h' : IsEnum S lam' ε') : lam = lam' ∧ ε = ε' := by
@@ -67,17 +67,17 @@ theorem isEnum_unique {n : ℕ} {S : SPar} {lam lam' : Fin n → ℝ} {ε ε' : 
   rw [← he, hab]
 
 /- English proof (translation)
-Rewrite using `[D.sp.Y_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.rankY]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rank_zeroth_component_eq (D : D7) : (D.sp.Y 0).rank = D.R.r := by
   rw [D.sp.Y_rank 0 (Nat.zero_le _)]; simp [Ranks.rankY]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hv : ∀ a : Fin D.R.r, D.R.r - 1 - (a : ℕ) = ((Fin.rev a : Fin D.R.r) : ℕ)`. Introduce `a`. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `e1 : (fun a : Fin D.R.r => -((lamAt (D.hc τ) (D.R.r - 1 - a) : ℚ) : ℝ)) = fun a => -((lamAt (D.hc τ) (Fin.rev a : Fin D.R.r) : ℚ) : ℝ)` using `funext fun a => by rw [hv a]`. Establish `e2 : (fun a : Fin D.R.r => sgA D.R (D.R.r - 1 - a)) = fun a => sgA D.R (Fin.rev a : Fin D.R.r)`. Use function extensionality and compare the values at `fun a => by rw [hv a]`. Rewrite using `[e1, e2]`. Use `show IsEnum (dualPar (parA (tparHC D _ _) 0 τ)) _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[parA_eq]`. Conclude with `DiscreteSeriesPlaces.isEnum_dual (lam := fun a => ((lamAt (D.hc τ) a : ℚ) : ℝ)) ⟨fun _ _ h => by dsimp only; exact_mod_cast lamAt_strictAnti _ h, fun a => lamAt (D.hc τ) a, fun _ => rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem isEnum_parB_rec (D : D7) (τ : D.what₂.Tau) (n : ℕ) (hn : n = D.R.r) :
     IsEnum (parB (tparRec D) 0 τ) (fun a : Fin n => -((lamAt (D.hc τ) (n - 1 - a) : ℚ) : ℝ))
@@ -97,14 +97,14 @@ theorem isEnum_parB_rec (D : D7) (τ : D.what₂.Tau) (n : ℕ) (hn : n = D.R.r)
       fun _ => rfl, rfl⟩
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.lamS lamAt`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lamS_eq (R : Ranks) (P : HCParam R) (i : Fin R.r) : Formalism.MainNotions.S.lamS R P i = ((lamAt P i : ℚ) : ℝ) := by
   unfold Formalism.MainNotions.S.lamS lamAt
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.epsS sgA`. Distinguish the cases in `h : (i : ℕ) < R.k - 1`. Simplify using `[h]`. Simplify using `[h, Nat.even_iff]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem epsS_eq (R : Ranks) (i : Fin R.r) : Formalism.MainNotions.S.epsS R i = sgA R i := by
   unfold Formalism.MainNotions.S.epsS sgA
@@ -113,7 +113,7 @@ theorem epsS_eq (R : Ranks) (i : Fin R.r) : Formalism.MainNotions.S.epsS R i = s
   · simp [h, Nat.even_iff]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `isEnum_unique (M.enum τ) (isEnum_parB_rec D τ _ (rank_zeroth_component_eq D))`. Conclude with `⟨fun a => congrFun h1 a, fun a => congrFun h2 a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem model_lam_eps (D : D7) (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0)) (τ : D.what₂.Tau) :
     (∀ a : Fin (D.sp.Y 0).rank, M.lam τ a = -((lamAt (D.hc τ) ((D.sp.Y 0).rank - 1 - a) : ℚ) : ℝ)) ∧
@@ -122,9 +122,9 @@ theorem model_lam_eps (D : D7) (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0)) (τ
   exact ⟨fun a => congrFun h1 a, fun a => congrFun h2 a⟩
 
 /- English proof (translation)
-Take `⟨hl, he⟩` from `model_lam_eps D M (X.pl v)`. Establish `hv : ∀ a : Fin (D.sp.Y 0).rank, (D.sp.Y 0).rank - 1 - (a : ℕ) = ((Fin.cast X.n_eq (Fin.rev (finCongr hN a)) : Fin D.R.r) : ℕ)`. Introduce `a`. Use `a.2` as an intermediate fact. Simplify using `only [Fin.val_cast, Fin.val_rev, finCongr_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[he a, X.eps_eq, epsS_eq, hv a]`. Rewrite using `[hl a, X.lam_eq, lamS_eq, hv a]`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem match_X (D : D7) (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0)) (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
     (v : NumberField.InfinitePlace X.B.I.F) (hN : (D.sp.Y 0).rank = X.B.I.n) :
@@ -142,7 +142,7 @@ theorem match_X (D : D7) (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0)) (X : Form
   · rw [hl a, X.lam_eq, lamS_eq, hv a]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `e1 : lamX = fun a => -lamM (Fin.rev a)` using `funext fun a => by rw [hl]; simp`. Establish `e2 : εX = fun a => εM (Fin.rev a)` using `funext fun a => by rw [hε]; simp`. Rewrite using `[e1, e2]`. Conclude with `⟨DiscreteSeriesPlaces.isHCParam_dual hc, DiscreteSeriesPlaces.gap_dual hg⟩`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hc_gap_transfer {n n' : ℕ} (hN : n = n') (lamM : Fin n → ℝ) (εM : Fin n → Bool) (lamX : Fin n' → ℝ)
     (εX : Fin n' → Bool) (hε : ∀ a, εM a = εX (Fin.rev (finCongr hN a)))
@@ -155,7 +155,7 @@ theorem hc_gap_transfer {n n' : ℕ} (hN : n = n') (lamM : Fin n → ℝ) (εM :
   exact ⟨DiscreteSeriesPlaces.isHCParam_dual hc, DiscreteSeriesPlaces.gap_dual hg⟩
 
 /- English proof (translation)
-Take `⟨lam, ε, hen, hhc, hgap, -, -⟩` from `DiscreteSeriesPlaces.exists_enumB D h hN τ _ (rank_zeroth_component_eq D)`. Take `⟨e1, e2⟩` from `isEnum_unique (M.enum τ) hen`. Rewrite using `[e1, e2]`. Conclude with `⟨hhc, hgap⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem model_hc_gap (D : D7) (h : ℝ) (hN : D.NodeGap h) (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0))
     (τ : D.what₂.Tau) : Formalism.QuantumDeterminants.IsHCParam (M.lam τ) ∧ Formalism.QuantumDeterminants.GapAtLeast (M.ε τ) (M.lam τ) h := by
@@ -173,7 +173,7 @@ def frC' (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (τ : D.what₂.Tau) : 
   (X.bas.toMatrix (D.sp.Y 0).frame).map (tauE D τ)
 
 /- English proof (translation)
-Unfold `frC frC'`. Rewrite using `[← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatrix_flip]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frC_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (τ : D.what₂.Tau) : frC X τ * frC' X τ = 1 := by
   unfold frC frC'
@@ -181,7 +181,7 @@ theorem frC_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (τ : D.what₂.
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Unfold `frC frC'`. Rewrite using `[← Matrix.map_mul, Module.Basis.toMatrix_mul_toMatrix_flip]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frC'_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (τ : D.what₂.Tau) : frC' X τ * frC X τ = 1 := by
   unfold frC frC'
@@ -189,9 +189,9 @@ theorem frC'_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (τ : D.what₂
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, X.φ_eq, X.J_eq]`. Use `show _ = tauE D (X.pl v) ((D.sp.Y 0).hT (X.bas i) (X.bas j))`. Rewrite using `[← (D.sp.Y 0).frame.sum_repr (X.bas i), ← (D.sp.Y 0).frame.sum_repr (X.bas j)]`. Simplify using `only [map_sum, map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply, starRingEnd_apply, Eqv.tauE_star, Matrix.mul_apply, conjTranspose_apply, frC, gramAt, Matrix.map_apply, Module.Basis.toMatrix_apply, HSpace.gram]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gram_change (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : NumberField.InfinitePlace X.B.I.F) :
     (frC X (X.pl v))ᴴ * gramAt D (D.sp.Y 0) (X.pl v) * frC X (X.pl v) = X.B.I.J.map (X.B.I.φ v) := by
@@ -216,9 +216,9 @@ def Afr' (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.sp.Y 0)
   (X.B.I.P v)⁻¹ * frC' X (X.pl v) * (M.fr (X.pl v))⁻¹
 
 /- English proof (translation)
-Establish `hP : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hf : IsUnit (M.fr (X.pl v)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit (X.pl v))`. Unfold `Afr Afr'`. Rewrite using `[show M.fr (X.pl v) * frC X (X.pl v) * X.B.I.P v * ((X.B.I.P v)⁻¹ * frC' X (X.pl v) * (M.fr (X.pl v))⁻¹) = M.fr (X.pl v) * (frC X (X.pl v) * ((X.B.I.P v * (X.B.I.P v)⁻¹) * frC' X (X.pl v))) * (M.fr (X.pl v))⁻¹ by`. Simplify using `only [Matrix.mul_assoc]]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_nonsing_inv _ hP, Matrix.one_mul, frC_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Afr_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.sp.Y 0) S)
     (v : NumberField.InfinitePlace X.B.I.F) : Afr X M v * Afr' X M v = 1 := by
@@ -231,9 +231,9 @@ theorem Afr_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.
   rw [Matrix.mul_nonsing_inv _ hP, Matrix.one_mul, frC_mul, Matrix.mul_one, Matrix.mul_nonsing_inv _ hf]
 
 /- English proof (translation)
-Establish `hP : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `hf : IsUnit (M.fr (X.pl v)).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit (X.pl v))`. Unfold `Afr Afr'`. Rewrite using `[show (X.B.I.P v)⁻¹ * frC' X (X.pl v) * (M.fr (X.pl v))⁻¹ * (M.fr (X.pl v) * frC X (X.pl v) * X.B.I.P v) = (X.B.I.P v)⁻¹ * (frC' X (X.pl v) * (((M.fr (X.pl v))⁻¹ * M.fr (X.pl v)) * frC X (X.pl v))) * X.B.I.P v by`. Simplify using `only [Matrix.mul_assoc]]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ hf, Matrix.one_mul, frC'_mul, Matrix.mul_one, Matrix.nonsing_inv_mul _ hP]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Afr'_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.sp.Y 0) S)
     (v : NumberField.InfinitePlace X.B.I.F) : Afr' X M v * Afr X M v = 1 := by
@@ -246,7 +246,7 @@ theorem Afr'_mul (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D
   rw [Matrix.nonsing_inv_mul _ hf, Matrix.one_mul, frC'_mul, Matrix.mul_one, Matrix.nonsing_inv_mul _ hP]
 
 /- English proof (translation)
-Unfold `Afr`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [M.fr_gram, gram_change, X.B.I.P_spec]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Afr_J (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.sp.Y 0) S)
     (v : NumberField.InfinitePlace X.B.I.F) :
@@ -260,9 +260,9 @@ theorem Afr_J (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (M : DSModel (D.sp
     _ = Formalism.REAL.Jm (X.B.I.ε v) := by rw [M.fr_gram, gram_change, X.B.I.P_spec]
 
 /- English proof (translation)
-Introduce `v`. Establish `hr : (D.sp.Y 0).rank = X.B.I.n` using `(rank_zeroth_component_eq D).trans X.n_eq.symm`. Take `⟨hcM, hgM⟩` from `model_hc_gap D _ hN M (X.pl v)`. Take `⟨hε, hl⟩` from `match_X D M X v hr`. Take `⟨hcX, hgX⟩` from `hc_gap_transfer hr _ _ _ _ hε hl _ hcM hgM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbig : 2 * ((D.sp.Y 0).rank : ℝ) < 4 * (D.R.N D.R.m : ℝ) ^ 3 + 2 * D.R.t + 6` using `lt_of_le_of_lt (le_max_left _ _) (DiscreteSeriesPlaces.big_rec D _ (rank_zeroth_component_eq D) (M.ε (X.pl v)))`. Establish `hrR : (X.B.I.n : ℝ) = ((D.sp.Y 0).rank : ℝ)` using `by exact_mod_cast hr.symm`. Establish `hbigX : 2 * (X.B.I.n : ℝ) < 4 * (D.R.N D.R.m : ℝ) ^ 3 + 2 * D.R.t + 6` using `by rw [hrR]; exact hbig`. Conclude with `modelConjAt_of X M v (X.pl v) hr hcX _ hgX hbigX hcM _ hgM hbig hε hl _ _ (Afr_mul X M v) (Afr'_mul X M v) (Afr_J X M v)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem modelConjAt_rec (D : D7) (hN : D.NodeGap (4 * (D.R.N D.R.m : ℝ) ^ 3 + 2 * D.R.t + 6))
     (M : DSModel (D.sp.Y 0) (parB (tparRec D) 0)) (X : Formalism.L2.SG.HidaSetting.HidaSetting D) :

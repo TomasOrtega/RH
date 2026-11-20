@@ -33,7 +33,7 @@ local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E)
 local notation "ιA" => inclE (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
 
 /- English proof (translation)
-Use `Formalism.UG.P.levelaf_tmul_mem (F := F) (E := E) b (one_mem (intAd F))` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incl_int (b : 𝓞 E) : ιA (algebraMap (𝓞 E) E b) ∈ 𝒮 := by
   have := Formalism.UG.P.levelaf_tmul_mem (F := F) (E := E) b (one_mem (intAd F))

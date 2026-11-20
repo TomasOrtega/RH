@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.ExistsUniq
 open CategoryTheory TensorProduct GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing | exact GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing | (intros; apply GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing <;> …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.verschiebung_frobenius_kernel_range : GlobalTheory.Published.BarsottiTateDieudonne.WittModule → ∀ (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (h : (p : R) = 0) (G : PDivGroup p R), LinearMap.range (rigExtMap (verschiebung h G)) = LinearMap.range (frobTwist h G).rigOfOmega ∧ LinearMap.ker (rigExtMap (relFrob h G)) = LinearMap.range (frobTwist h G).rigOfOmega ∧ LinearMap.ker (rigExtMap (verschiebung h G)) = LinearMap.range (rigExtMap (relFrob h G)) ∧ LinearMap.range (rigExtMap (relFrob h G)) = Submodule.span R (Set.range (absFrob h G).rig) := by
   first | exact @GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing | exact GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing | (intros; apply GlobalTheory.PDivGroup.exact_frobenius_verschiebung_of_isDiscreteValuationRing <;> assumption)

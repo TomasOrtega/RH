@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.FoundationProofs.RangeAlgebraMapE
 open IsLocalRing ReciprocityTheory.ChartRestriction.G.Out
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_pow_eq_mul_of_quadratic_bound` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsPowEqMulOfQuadraticBoundNormalLocal.lean&line=47#L47)
 -/

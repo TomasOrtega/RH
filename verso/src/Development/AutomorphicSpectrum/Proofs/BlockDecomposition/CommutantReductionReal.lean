@@ -18,7 +18,7 @@ open UniversalEnvelopingAlgebra
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `qdet qminor`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Use `congr 3`. Use function extensionality and compare the values at `k`. Simplify using `[Tm, hf.eq_iff]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qminor_reindex {A : Type} [Ring A] [Algebra ℂ A] {t : ℕ} (X : Fin n → Fin n → A) (f : Fin t → Fin n)
     (hf : Function.Injective f) (u : ℂ) : qminor X f f u = qdet (fun i k => X (f i) (f k)) u := by
@@ -29,7 +29,7 @@ theorem qminor_reindex {A : Type} [Ring A] [Algebra ℂ A] {t : ℕ} (X : Fin n 
   simp [Tm, hf.eq_iff]
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Simplify using `[qminor]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem qminor_of_size_zero {A : Type} [Ring A] [Algebra ℂ A] {t : ℕ} (ht : t = 0) (X : Fin n → Fin n → A)
     (f : Fin t → Fin n) (u : ℂ) : qminor X f f u = 1 := by
@@ -37,20 +37,20 @@ theorem qminor_of_size_zero {A : Type} [Ring A] [Algebra ℂ A] {t : ℕ} (ht : 
   simp [qminor]
 
 /- English proof (translation)
-The claim follows from `((blk lev j).orderEmbOfFin rfl).injective`.
+A detailed English derivation is pending.
 -/
 theorem blkE_injective (lev : Fin n → ℕ) (j : ℕ) : Function.Injective (blkE lev j) :=
   ((blk lev j).orderEmbOfFin rfl).injective
 
 /- English proof (translation)
-Establish `h : blkE lev j i ∈ blk lev j` using `(blk lev j).orderEmbOfFin_mem rfl i`. Conclude with `(Finset.mem_filter.1 h).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev_blkE (lev : Fin n → ℕ) (j : ℕ) (i : Fin (blk lev j).card) : lev (blkE lev j i) = j := by
   have h : blkE lev j i ∈ blk lev j := (blk lev j).orderEmbOfFin_mem rfl i
   exact (Finset.mem_filter.1 h).2
 
 /- English proof (translation)
-Use `⟨((blk lev (lev a)).orderIsoOfFin rfl).symm ⟨a, Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `congrArg Subtype.val (((blk lev (lev a)).orderIsoOfFin rfl).apply_symm_apply ⟨a, Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩⟩)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_blkE (lev : Fin n → ℕ) (a : Fin n) : ∃ i, blkE lev (lev a) i = a := by
   refine ⟨((blk lev (lev a)).orderIsoOfFin rfl).symm ⟨a, Finset.mem_filter.2 ⟨Finset.mem_univ _, rfl⟩⟩, ?_⟩
@@ -78,9 +78,9 @@ def kpWord : FreeAlgebra ℂ (Bool × Fin n × Fin n) →ₐ[ℂ] FreeAlgebra �
     else FreeAlgebra.ι ℂ (true, p.2) + FreeAlgebra.ι ℂ (false, p.2)
 
 /- English proof (translation)
-Establish `h : evLv lev F1 F2 = (GlobalTheory.CompanionTheory.PairMult.evB lev F1 F2).comp kpWord`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨s, p, q⟩` from `x`. Distinguish the cases in `hpq : lev p = lev q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Apply the tactic sequence `cases s <;> simp [evLv, kpWord, GlobalTheory.CompanionTheory.PairMult.evB, hpq, pA, kA]`. Apply the tactic sequence `cases s <;> simp [evLv, kpWord, GlobalTheory.CompanionTheory.PairMult.evB, hpq]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evLv_eq {V : Type} [AddCommGroup V] [Module ℂ V] (lev : Fin n → ℕ) (F1 F2 : Fin n → Fin n → Module.End ℂ V)
     (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
@@ -96,14 +96,14 @@ theorem evLv_eq {V : Type} [AddCommGroup V] [Module ℂ V] (lev : Fin n → ℕ)
   rfl
 
 /- English proof (translation)
-Introduce `a b c d h1 h2` and use `⟨h.1 a b c d h1 h2, h.2.1 a b c d h1 h2, (h.2.2 a b c d h1 h2).eq⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isLevPairA_of_lRel {V : Type} [AddCommGroup V] [Module ℂ V] {lev : Fin n → ℕ}
     {F1 F2 : Fin n → Fin n → Module.End ℂ V} (h : GlobalTheory.CompanionTheory.PairMult.LRel lev F1 F2) : IsLevPairA lev F1 F2 :=
   fun a b c d h1 h2 => ⟨h.1 a b c d h1 h2, h.2.1 a b c d h1 h2, (h.2.2 a b c d h1 h2).eq⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b c d h1 h2 => (h a b c d h1 h2).1, fun a b c d h1 h2 => (h a b c d h1 h2).2.1, fun a b c d h1 h2 => (h a b c d h1 h2).2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem lRel_of_isLevPairA {V : Type} [AddCommGroup V] [Module ℂ V] {lev : Fin n → ℕ}
     {F1 F2 : Fin n → Fin n → Module.End ℂ V} (h : IsLevPairA lev F1 F2) : GlobalTheory.CompanionTheory.PairMult.LRel lev F1 F2 :=
@@ -111,7 +111,7 @@ theorem lRel_of_isLevPairA {V : Type} [AddCommGroup V] [Module ℂ V] {lev : Fin
     fun a b c d h1 h2 => (h a b c d h1 h2).2.2⟩
 
 /- English proof (translation)
-Introduce `W _ _ X1 X2 hL p q hpq`. Establish `h` using `hb W X1 X2 (isLevPairA_of_lRel hL) p q hpq`. Rewrite `h` using `[evLv_eq]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invLev_kpWord {lev : Fin n → ℕ} {b : FreeAlgebra ℂ (Bool × Fin n × Fin n)} (hb : InvLv lev b) :
     GlobalTheory.CompanionTheory.PairMult.InvLev lev (kpWord b) := by
@@ -121,11 +121,11 @@ theorem invLev_kpWord {lev : Fin n → ℕ} {b : FreeAlgebra ℂ (Bool × Fin n 
   exact h
 
 /- English proof (translation)
-Establish `hl : ∀ i (p q : Fin (d i)), lev (e ⟨i, p⟩) = lev (e ⟨i, q⟩)` using `fun i p q => by rw [he, he]`. Establish `hG : ∀ i, GlRel (fun p q : Fin (d i) => X1 (e ⟨i, p⟩) (e ⟨i, q⟩))` using `fun i a c f g => by`. Use `hL.1 (e ⟨i, a⟩) (e ⟨i, c⟩) (e ⟨i, f⟩) (e ⟨i, g⟩) (hl _ _ _) (hl _ _ _)` as an intermediate fact. Simplify `this` using `only [EmbeddingLike.apply_eq_iff_eq, Sigma.mk.injEq, heq_eq_eq, true_and]`. Establish `hC : ∀ i k, i ≠ k → ∀ (p q : Fin (d i)) (r v : Fin (d k)), Commute (X1 (e ⟨i, p⟩) (e ⟨i, q⟩)) (X1 (e ⟨k, r⟩) (e ⟨k, v⟩))` using `fun i k hik p q r v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hL.1 (e ⟨i, p⟩) (e ⟨i, q⟩) (e ⟨k, r⟩) (e ⟨k, v⟩) (hl _ _ _) (hl _ _ _)` as an intermediate fact. Establish `n1 : e ⟨i, q⟩ ≠ e ⟨k, r⟩` using `fun h => hik (congrArg Sigma.fst (e.injective h))`. Establish `n2 : e ⟨k, v⟩ ≠ e ⟨i, p⟩` using `fun h => hik (congrArg Sigma.fst (e.injective h)).symm`. Rewrite `this` using `[if_neg n1, if_neg n2, sub_zero]`. Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨lift ℂ (DirectSum.toLieAlgebra _ (fun i => glHom (fun p q : Fin (d i) => X1 (e ⟨i, p⟩) (e ⟨i, q⟩)) (hG i)) (fun i k hik Z Z' => glHom_comm _ _ (hC i k hik) Z Z')), fun i p q => ?_⟩` and prove the remaining obligations. Simplify using `only [eb, eu, GlobalTheory.CompanionTheory.PairMult.CenScal.mi_ι, lift_ι_apply]`. Use `(GlobalTheory.EnvCentre.toLieAlgebra_of (fun i => GlobalTheory.CompanionTheory.PairMult.CenScal.Gl (d i)) _ _ i _).trans ?_` and prove the remaining obligations. Conclude with `glHom_single _ (hG i) p q`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_rho {M : ℕ} {d : Fin M → ℕ} (e : (Σ i, Fin (d i)) ≃ Fin n) {lev : Fin n → ℕ}
     (he : ∀ i p, lev (e ⟨i, p⟩) = (i : ℕ)) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -157,13 +157,13 @@ def capLetter (lev : Fin n → ℕ) (p : ℕ × ℂ) : UD (bd lev) :=
 def capWord (lev : Fin n → ℕ) : FreeAlgebra ℂ (ℕ × ℂ) →ₐ[ℂ] UD (bd lev) := FreeAlgebra.lift ℂ (capLetter lev)
 
 /- English proof (translation)
-Establish `h : ρ.comp (capWord lev) = evCap lev F`. Apply `FreeAlgebra.hom_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Take `⟨j, u⟩` from `x`. Simplify using `only [Function.comp_apply, AlgHom.comp_apply, capWord, evCap, FreeAlgebra.lift_ι_apply, capLetter]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j < numLev lev`. Rewrite using `[dif_pos hj]`. Simplify using `only [capS]`. Rewrite using `[qminor_reindex _ _ (blkE_injective lev j), ← AlgHom.comp_apply, qdet_map]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p q`. Conclude with `hρ ⟨j, hj⟩ p q`. Rewrite using `[dif_neg hj, map_one]`. Establish `hc : (blk lev j).card = 0`. Use `Finset.card_eq_zero.2 (Finset.filter_eq_empty_iff.2 fun a _ ha => hj ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Conclude with `Nat.lt_succ_of_le (Finset.le_sup (Finset.mem_univ a))`. Conclude with `(qminor_of_size_zero hc _ _ _).symm`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rho_capWord {lev : Fin n → ℕ} {W : Type} [AddCommGroup W] [Module ℂ W] (F : Fin n → Fin n → Module.End ℂ W)
     (ρ : UD (bd lev) →ₐ[ℂ] Module.End ℂ W)
@@ -191,11 +191,11 @@ theorem rho_capWord {lev : Fin n → ℕ} {W : Type} [AddCommGroup W] [Module �
   rfl
 
 /- English proof (translation)
-Establish `hle : Algebra.adjoin ℂ (⋃ i, Set.range fun u : ℂ => mi (bd lev) i (qdet (eu (bd lev i)) u)) ≤ (capWord lev).range`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, u, rfl⟩` from `Set.mem_iUnion.1 hx`. Use `⟨FreeAlgebra.ι ℂ ((i : ℕ), u - ((bd lev i : ℂ) - 1) / 2), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `capWord lev (FreeAlgebra.ι ℂ _) = _`. Simplify using `only [capWord, FreeAlgebra.lift_ι_apply, capLetter]`. Rewrite using `[dif_pos i.2]`. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `hle hy`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_capWord (lev : Fin n → ℕ) {y : UD (bd lev)}
     (hy : y ∈ Algebra.adjoin ℂ (⋃ i, Set.range fun u : ℂ => mi (bd lev) i (qdet (eu (bd lev i)) u))) :
@@ -214,23 +214,21 @@ theorem mem_range_capWord (lev : Fin n → ℕ) {y : UD (bd lev)}
   exact ⟨z, hz⟩
 
 /- English proof (translation)
-Introduce `n lev _ b hb ν hν`. Set `e` to `blkEquiv lev`. Establish `he : ∀ i p, lev (e ⟨i, p⟩) = (i : ℕ)` using `fun i p => lev_blkE lev i p`. Set `τ : Fin n → ℂ` to `fun a => (ν a : ℂ)`. Establish `hτ : ∀ a c, lev a = lev c → τ a = τ c` using `fun a c h => by simp only [τ, hν a c h]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb'` using `invLev_kpWord hb`. Establish `hl : ∀ i (p q : Fin (bd lev i)), lev (e ⟨i, p⟩) = lev (e ⟨i, q⟩)` using `fun i p q => by rw [he, he]`. Use `set y := GlobalTheory.CompanionTheory.PairMult.evB lev (leftMulLetter (xl e)) (negRightMulLetterShift (xl e) τ) (kpWord b) 1 with hy`. Establish `hcen : y ∈ Subalgebra.center ℂ (UD (bd lev))`. Rewrite using `[Subalgebra.mem_center_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hg : g ∈ Subalgebra.centralizer ℂ {y}` using `mem_of_eb (bd lev) _ (fun i r v => by`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Use `central_letters (levRel_xl e he) hτ hb' _ _ (hl i r v)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[xl_apply, xs_same]`. Conclude with `this.symm) g`. Rewrite `hg` using `[Subalgebra.mem_centralizer_iff]`. Conclude with `(hg _ rfl).symm`. Take `⟨z, hz⟩` from `mem_range_capWord lev (center_UD_le (bd lev) hcen)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, fun H _ _ F1 F2 hL h hh => ?_⟩` and prove the remaining obligations. Establish `hL'` using `lRel_of_isLevPairA hL`. Take `⟨ρ, hρ⟩` from `exists_rho e he hL'`. Establish `hρx : ∀ p q, lev p = lev q → ρ (xl e p q) = F1 p q`. Introduce `p q hpq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨i, p⟩, rfl⟩` from `e.surjective p`. Take `⟨⟨k, q⟩, rfl⟩` from `e.surjective q`. Rewrite `hpq` using `[he, he]`. Take `rfl : i = k` from `Fin.ext hpq`. Rewrite using `[xl_apply, xs_same, hρ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ∀ p q, lev p = lev q → ∀ u, Commute (ρ u) (F2 p q)` using `fun p q hpq u => by`. Establish `hu : u ∈ (Subalgebra.centralizer ℂ {F2 p q}).comap ρ` using `mem_of_eb (bd lev) _ (fun i r v => by`. Rewrite using `[Subalgebra.mem_comap, Subalgebra.mem_centralizer_iff]`. Introduce and unpack `_ rfl`. Rewrite using `[hρ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hL'.2.2 _ _ _ _ (hl _ _ _) hpq).eq.symm) u`. Rewrite `hu` using `[Subalgebra.mem_comap, Subalgebra.mem_centralizer_iff]`. Conclude with `(hu _ rfl).symm`. Establish `e1` using `evB_intertwine (x := xl e) (τ := τ) ρ F1 F2 h hρx hcomm hh (kpWord b) 1`. Rewrite `e1` using `[map_one, Module.End.one_apply]`.
-
-Rewrite using `[evLv_eq, e1, ← hy, ← hz, rho_capWord F1 ρ hρ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commutant_block_capelli_words : LeviCommutantWordReduction := by
   intro n lev _ b hb ν hν

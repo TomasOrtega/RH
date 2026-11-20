@@ -25,17 +25,15 @@ def isPowGrpOfUniv {T : Scheme.{0}} {P C : Over T} [GrpObj P] [GrpObj C] (pr : F
     (fun s m hm => (hu s.pt s.proj).choose_spec.2 m hm)
 
 /- English proof (translation)
-Introduce `g n F W o Ω _ _ _ _ β S ρ u hSys Y M q U₀ EE Zh hLev hO V _ _ _ ξ τ κ hξ hτ`. Take `⟨c, hc, pr, hpr, hu, -⟩` from `hSys.2.2.2.1`. Take `⟨ψ, -, hψ, -⟩` from `hc`. Take `⟨α, hα, -⟩` from `PowFibre.exists_pow_pullback (powIsPowGrp F.univ.A 8) (isPowGrpOfUniv pr hpr hu) hψ`. Establish `hrange : Set.range M.pt ⊆ Set.range U₀.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `(top_le_preimage_iff _ _).1 (M.top_le_preimage_pt hO.ne)`. Set `x' : Sp Ω ⟶ U₀.toScheme` to `IsOpenImmersion.lift U₀.ι M.pt hrange`. Establish `hx' : x' ≫ U₀.ι = M.pt` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hxu : x' ≫ Zh.u₀ = spMap S.R.val.toRingHom` using `Zh.u₀_gen x' hx'`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `a : Sp (FractionRing V) ⟶ U₀.toScheme` to `spMap κ ≫ x'`. Establish `ha1 : a ≫ U₀.ι = spMap (algebraMap V (FractionRing V)) ≫ ξ`. Rewrite using `[hξ, Category.assoc, hx']`. Establish `ha2 : a ≫ (Zh.u₀ ≫ u) = spMap (algebraMap V (FractionRing V)) ≫ (τ ≫ q)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hA` using `isGrpPullback_pullback ((Over.pullback Zh.u₀).obj ρ.P.A) a`. Establish `h₂` using `(hA.comp Zh.cart).congr ha1 rfl`. Establish `h₃` using `(hA.comp ((isGrpPullback_pullback ρ.P.A Zh.u₀).comp hα)).congr ha2 rfl`. Take `⟨φ₁, h₁⟩` from `GoodVal.exists_isGrpPullback_of_comp (powObj F.univ.A 8) (τ ≫ q) _ h₃`. Establish `hab : IsAbelianScheme ((Over.pullback (τ ≫ q)).obj (powObj F.univ.A 8))` using `isAbelianScheme_pullback_obj (τ ≫ q) _ (AbelianSchemeGerms.isAbelianScheme_powObj F.univ.A F.univ.ab 7)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : LocallyOfFiniteType (M.s ≫ spMap (algebraMap ℤ o))`. Use `M.lft` as an intermediate fact. Use `haveI := ArithBase.ft (o := o) (Ω := Ω)`. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ o))` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 inferInstance)`. Use `infer_instance`.
-
-Conclude with `range_subset_abLocus_of_goodReduction (existsUnique_hom_extension_semiAbelian_dvr (AbelianSubgroupFinite.finite_of_no_torsion abMulN_holds)) M.Z _ Zh.G V (FractionRing V) ξ _ _ _ _ hz Zh.semi hab h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem range_subset_abLocus_of_levelTrait : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (o Ω : Type) [CommRing o] [Field Ω]
     [Algebra o Ω] [ArithBase o Ω] (β : cycAway n →+* o) (S : ThetaSys o Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X),

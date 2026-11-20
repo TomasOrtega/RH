@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem smSubM_top : smSubM r TT ⊤ = MA.smSub r TT := rfl
 
 /- English proof (translation)
-Introduce `f hf`. Use `show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)`. Conclude with `(show ContDiffOn ℝ MA.sm (MA.ext f) (MA.Qset r TT) from hf).of_le (WithTop.coe_le_coe.mpr le_top)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smSub_le (m : ℕ∞) : MA.smSub r TT ≤ smSubM r TT m := by
   intro f hf
@@ -35,7 +35,7 @@ theorem smSub_le (m : ℕ∞) : MA.smSub r TT ≤ smSubM r TT m := by
     (WithTop.coe_le_coe.mpr le_top)
 
 /- English proof (translation)
-Introduce `f hf`. Use `show ContDiffOn ℝ (smM m) (MA.ext f) (MA.Qset r TT)`. Conclude with `(show ContDiffOn ℝ (smM m') (MA.ext f) (MA.Qset r TT) from hf).of_le (WithTop.coe_le_coe.mpr h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smSubM_mono {m m' : ℕ∞} (h : m ≤ m') : smSubM r TT m' ≤ smSubM r TT m := by
   intro f hf
@@ -110,9 +110,9 @@ def JetLin : Prop :=
       actJ m (a + b) u = actJ m a u + actJ m b u ∧ actJ m (z • a) u = z • actJ m a u
 
 /- English proof (translation)
-Introduce `r TT d a ha m hd g`. Use function extensionality and compare the values at `q`. Establish `hex : ∃ g' : MA.SmQ r TT, JetEq m q g'.1 g.1` using `⟨g, fun _ _ => rfl⟩`. Unfold `actJ`. Rewrite using `[dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h r TT d a ha m hd q _ g (Classical.choose_spec hex)`.
+A detailed English derivation is pending.
 -/
 theorem jetAgree_of_local (h : JetLocal) : JetAgree := by
   intro r TT d a ha m hd g
@@ -123,7 +123,7 @@ theorem jetAgree_of_local (h : JetLocal) : JetAgree := by
   exact h r TT d a ha m hd q _ g (Classical.choose_spec hex)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨u, hu⟩, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem jetExists_top (r : ℕ) (TT : ℝ) (u : MA.Qp r TT → ℂ) (hu : u ∈ smSubM r TT ⊤) (q : MA.Qp r TT) :
     ∃ g : MA.SmQ r TT, JetEq ⊤ q g.1 u :=
@@ -175,7 +175,7 @@ def truncatedEnergyAtOrder (l : ℕ) (j : M.Ty P → MA.Qp P.r P.TT → ℂ) (c 
 end En
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Iff.rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem level_system_admissibility_indep (P : M.Par) (l : ℕ) (L : R.LevelData (MA.A P (MA.DQ P)) P.r)
     (j j' : M.Ty P → MA.SmQ P.r P.TT) (lam : Fin (P.k + 2 * P.r + 1) → ℝ) (α β Lb : ℝ) (c : LE.Cut) (N : ℕ)

@@ -50,7 +50,7 @@ abbrev Om (X : Tower Ω ε) : Type := AlgebraicClosure X.K
 attribute [local instance] algMdl
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem isScalarTower_mdl_om (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) :
     @IsScalarTower (mdl X Γ' S) (lev X Γ') (Om X) Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
@@ -166,7 +166,7 @@ def zetaB (X : Tower Ω ε) (l N m r n w c d : ℕ) [Fact l.Prime] (x : ZMod N) 
   zetaBχ X l N m r n w c d x (ReciprocityTheory.Gal.cycMod ℚ Ω l r)
 
 /- English proof (translation)
-Simplify using `only [cR, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]`. Rewrite using `[mul_comm (-r₀), ← mul_assoc, mul_inv_cancel₀ hN, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cR_mod (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) : ((cR l N r₀ : ℤ) : ZMod l) = -r₀ := by
   simp only [cR, Int.cast_mul, Int.cast_natCast, ZMod.natCast_zmod_val]
@@ -178,7 +178,7 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 attribute [local instance] _root_.GlobalTheory.K4.algMdl in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ZetaB.clsHat`. Rewrite using `[AdicCompletion.eval_of]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.ZetaB.eval_clsHat (X : _root_.GlobalTheory.KZ.Tower Ω ε) (l : ℕ)
     [Fact l.Prime] (n : ℕ) (a : X.K) :
@@ -195,7 +195,7 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 attribute [local instance] _root_.GlobalTheory.K4.algMdl in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ZetaB.unitOf`. Rewrite using `[dif_neg ha]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.ZetaB.unitOf_val (X : _root_.GlobalTheory.KZ.Tower Ω ε) {a : X.K}
     (ha : a ≠ 0) : ((_root_.GlobalTheory.ZetaB.unitOf X a : (X.K)ˣ) : X.K) = a := by
@@ -209,7 +209,7 @@ variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 attribute [local instance] _root_.GlobalTheory.K4.algMdl in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ZetaB.unitOf`. Rewrite using `[dif_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ZetaB.unitOf_zero (X : _root_.GlobalTheory.KZ.Tower Ω ε) :
     _root_.GlobalTheory.ZetaB.unitOf X 0 = 1 := by
@@ -217,7 +217,7 @@ theorem _root_.GlobalTheory.ZetaB.unitOf_zero (X : _root_.GlobalTheory.KZ.Tower 
   rw [dif_pos rfl]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two, cR_mod l N hN]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vecMul_gR (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : ZMod l) :
     ![-r₀, -1] ᵥ* (((gR l N r₀ : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ).map (Int.cast : ℤ → ZMod l)) = ![0, -1] := by
@@ -225,7 +225,7 @@ theorem vecMul_gR (l N : ℕ) [Fact l.Prime] (hN : (N : ZMod l) ≠ 0) (r₀ : Z
   fin_cases i <;> simp [gR, Matrix.vecMul, dotProduct, Fin.sum_univ_two, cR_mod l N hN]
 
 /- English proof (translation)
-Use `haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩`. Rewrite using `[tInv, pow_one]`. Conclude with `inv_eq_of_mul_eq_one_right (by decide +revert)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : tInv 3 5 1 = 2 := by
   haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩
@@ -233,9 +233,9 @@ example : tInv 3 5 1 = 2 := by
   exact inv_eq_of_mul_eq_one_right (by decide +revert)
 
 /- English proof (translation)
-Establish `h : tInv 3 5 1 = 2` using `by haveI : Fact (Nat.Prime 5) := ⟨by norm_num⟩`. Rewrite using `[tInv, pow_one]`. Conclude with `inv_eq_of_mul_eq_one_right (by decide +revert)`. Establish `h2 : (2 : ZMod 5).val = 2` using `rfl`. Unfold `uIdxMu vIdxMu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, one_mul, h2]`. Apply the tactic sequence `constructor <;> norm_num`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example : uIdxMu 3 5 1 1 = ![11 / 15, 0] ∧ vIdxMu 3 5 1 = ![2 / 5, 1 / 3] := by
   have h : tInv 3 5 1 = 2 := by
@@ -248,7 +248,7 @@ example : uIdxMu 3 5 1 1 = ![11 / 15, 0] ∧ vIdxMu 3 5 1 = ![2 / 5, 1 / 3] := b
   constructor <;> norm_num
 
 /- English proof (translation)
-Establish `h : (-1 * ((5 : ℕ) : ZMod 3)⁻¹) = 1` using `by haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩`. Rewrite using `[inv_eq_of_mul_eq_one_right (show ((5 : ℕ) : ZMod 3) * 2 = 1 by decide +revert)]`. Use `decide +revert`. Rewrite using `[cR, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example : cR 3 5 1 = 5 := by
   have h : (-1 * ((5 : ℕ) : ZMod 3)⁻¹) = 1 := by
@@ -259,7 +259,7 @@ example : cR 3 5 1 = 5 := by
   rfl
 
 /- English proof (translation)
-Simplify using `[gR]`.
+Simplify using the standard rewrite rules.
 -/
 example : ((gR 3 5 1 : SL(2, ℤ)) : Matrix (Fin 2) (Fin 2) ℤ) 1 0 = cR 3 5 1 := by
   simp [gR]

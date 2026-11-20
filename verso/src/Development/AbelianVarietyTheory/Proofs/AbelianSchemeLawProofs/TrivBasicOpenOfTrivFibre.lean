@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.AbLaw.CubeOpen
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Take `⟨t, ht⟩` from `ht`. Conclude with `⟨_, LB.isGen_pullGen M _ _ t ht h⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem triv_comp {X Y Z : Scheme.{0}} {M : LB X} {f : Y ⟶ X} (h : Z ⟶ Y) {k : Z ⟶ X}
     (hk : h ≫ f = k) (ht : Triv (M.pull f)) : Triv (M.pull k) := by
@@ -24,11 +24,9 @@ theorem triv_comp {X Y Z : Scheme.{0}} {M : LB X} {f : Y ⟶ X} (h : Z ⟶ Y) {k
   exact ⟨_, LB.isGen_pullGen M _ _ t ht h⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `ht`. Establish `hle : ∀ j : PUnit.{1} → PUnit.{1} → M.ι, LB.wchart (M.pull f) (K` using `PUnit) (fun _ => h) j ≤ LB.wchart M (K := PUnit) (fun _ => h ≫ f) (j PUnit.unit) := fun j y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 (Set.mem_iInter.1 hy PUnit.unit) k`. Use `⟨⟨fun j => res (hle j) (LB.ts t (j PUnit.unit))⟩, (LB.isGen_iff _ _).2 fun i j => ?_⟩` and prove the remaining obligations. Establish `key` using `congrArg (res (inf_le_inf (hle i) (hle j))) ((LB.isGen_iff M t).1 ht (i PUnit.unit) (j PUnit.unit))`. Rewrite `key` using `[LB.lcg_comp M (fun _ : PUnit.{1} => f) (fun _ => 1) h (i PUnit.unit) (j PUnit.unit)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [map_mul] at key`. Simplify using `only [LB.res_res] at key`. Rewrite using `[LB.lcg_pull]`. Express the relevant statement in the definitionally equal form `res _ (res (hle i) _) = _ * res _ (res (hle j) _)`. Simplify using `only [LB.res_res]`.
-
-Conclude with `key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triv_pull_pull {X Y Z : Scheme.{0}} {M : LB X} (f : Y ⟶ X) (h : Z ⟶ Y)
     (ht : Triv (M.pull (h ≫ f))) : Triv ((M.pull f).pull h) := by
@@ -50,11 +48,11 @@ theorem triv_pull_pull {X Y Z : Scheme.{0}} {M : LB X} (f : Y ⟶ X) (h : Z ⟶ 
   exact key
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset S, (s : Set S) ⊆ J → J ≤ IsLocalRing.maximalIdeal S * J ⊔ Ideal.span (s : Set S) → J ≤ IsLocalRing.maximalIdeal S * J`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _ h`. Simplify using `using h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s _ ih`. Introduce `hs h`. Rewrite `hs`, `h` using `[Finset.coe_insert]`. Establish `hs' : (s : Set S) ⊆ J` using `(Set.subset_insert _ _).trans hs`. Use `ih hs' (H _ a (hs (Set.mem_insert _ _)) le_sup_left (sup_le Ideal.mul_le_right (Ideal.span_le.2 hs')) ?_)` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[Ideal.span_insert, sup_comm (Ideal.span {a}), ← sup_assoc]`. Then use the resulting hypothesis. Take `⟨s, hs⟩` from `id hJ`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal S) J hJ ?_ (IsLocalRing.maximalIdeal_le_jacobson _)` and prove the remaining obligations. Conclude with `key s (hs ▸ Ideal.subset_span) (hs.ge.trans le_sup_right)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_bot_of_small {S : Type} [CommRing S] [IsLocalRing S] (J : Ideal S) (hJ : J.FG)
     (H : ∀ (I' : Ideal S) (e : S), e ∈ J → IsLocalRing.maximalIdeal S * J ≤ I' → I' ≤ J →
@@ -79,23 +77,19 @@ theorem eq_bot_of_small {S : Type} [CommRing S] [IsLocalRing S] (J : Ideal S) (h
   exact key s (hs ▸ Ideal.subset_span) (hs.ge.trans le_sup_right)
 
 /- English proof (translation)
-Set `S` to `Localization.AtPrime p`. Establish `hJm : I.map (algebraMap R S) ≤ IsLocalRing.maximalIdeal S`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`. Conclude with `Ideal.map_mono hIp`. Establish `hbot : I.map (algebraMap R S) = ⊥`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_bot_of_small _ (hI.map _) fun I' e he h₁ h₂ h₃ => ?_` and prove the remaining obligations. Establish `hne : I' ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal S).ne_top (top_unique (h ▸ h₂.trans hJm))`. Use `haveI : Nontrivial (S ⧸ I') := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsLocalRing (S ⧸ I') := IsLocalRing.of_surjective' (Ideal.Quotient.mk I') Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk I') := IsLocalHom.of_surjective _ Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `H (S ⧸ I') ((Ideal.Quotient.mk I').comp (algebraMap R S)) (Ideal.Quotient.mk I' e) (fun r hr => (IsLocalization.map_units S (⟨r, hr⟩ : p.primeCompl)).map (Ideal.Quotient.mk I')) ?_ ?_ ?_` as an intermediate fact. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem (I := I')).1 (this hx)`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h₁ (Ideal.mul_mem_mul (fun hb => ha (hb.map _)) he)`. Conclude with `fun hu => hJm he (IsUnit.of_map _ _ hu)`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 (h₃ (Ideal.mem_map_of_mem _ hx))`. Take `⟨w, rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Rewrite using `[RingHom.mem_ker, RingHom.comp_apply, RingHom.comp_apply, ← hyz, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hy, zero_add, Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Establish `hx : ∀ x ∈ I, ∃ c ∉ p, c * x = 0` using `fun x hx => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : algebraMap R S x = 0`. Use `Ideal.mem_map_of_mem (algebraMap R S) hx` as an intermediate fact. Rewrite `this` using `[hbot, Ideal.mem_bot]`. Then use the resulting hypothesis. Take `⟨c, hc⟩` from `(IsLocalization.map_eq_zero_iff p.primeCompl S x).1 h0`. Conclude with `⟨c, c.2, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨s, rfl⟩` from `hI`. Use `choose! c hc using hx`. Use `⟨∏ y ∈ s, c y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submonoid.prod_mem p.primeCompl fun y hy => (hc y (Ideal.subset_span hy)).1`. Introduce `x hx`.
-
-Establish `: Ideal.span (s : Set R) ≤ LinearMap.ker (LinearMap.mulLeft R (∏ y ∈ s, c y))`. Use `Ideal.span_le.2 fun y hy => ?_` and prove the remaining obligations. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem c (show y ∈ s from hy)`. Express the relevant statement in the definitionally equal form `(∏ y ∈ s, c y) * y = 0`. Rewrite using `[hd, mul_comm (c y), _root_.mul_assoc, (hc y (Ideal.subset_span hy)).2, mul_zero]`.
-
-Conclude with `this hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ann {R : Type} [CommRing R] (p : Ideal R) [p.IsPrime] (I : Ideal R) (hI : I.FG)
     (hIp : I ≤ p)
@@ -154,7 +148,7 @@ section BaseChange
 variable {S S' : Scheme.{0}} (φ : S' ⟶ S) (A : Over S)
 
 /- English proof (translation)
-The claim follows from `h.of_iso (asIso e).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_iso_comp {W P X Y Z : Scheme.{0}} {a : P ⟶ X} {b : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     (h : IsPullback a b f g) (e : W ⟶ P) [IsIso e] : IsPullback (e ≫ a) (e ≫ b) f g :=
@@ -164,7 +158,7 @@ def sqMap : ((Over.pullback φ).obj A ⊗ (Over.pullback φ).obj A).left ⟶ (A 
   (Functor.LaxMonoidal.μ (Over.pullback φ) A A).left ≫ pullback.fst (A ⊗ A).hom φ
 
 /- English proof (translation)
-Establish `h` using `IsPullback.of_hasPullback (A ⊗ A).hom φ`. Establish `hw` using `Over.w (Functor.LaxMonoidal.μ (Over.pullback φ) A A)`. Use `haveI : IsIso (Functor.LaxMonoidal.μ (Over.pullback φ) A A).left := (Over.forget S').map_isIso (Functor.LaxMonoidal.μ (Over.pullback φ) A A)`. Rewrite using `[← hw]`. Conclude with `isPullback_iso_comp h _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_sqMap :
     IsPullback (sqMap φ A) ((Over.pullback φ).obj A ⊗ (Over.pullback φ).obj A).hom (A ⊗ A).hom φ := by
@@ -176,7 +170,7 @@ theorem isPullback_sqMap :
   exact isPullback_iso_comp h _
 
 /- English proof (translation)
-Rewrite using `[sqMap, ← Category.assoc, ← Over.comp_left, Functor.Monoidal.lift_μ]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_sqMap (a b : A ⟶ A) :
     (lift ((Over.pullback φ).map a) ((Over.pullback φ).map b)).left ≫ sqMap φ A =
@@ -187,9 +181,9 @@ theorem lift_sqMap (a b : A ⟶ A) :
 end BaseChange
 
 /- English proof (translation)
-Establish `hp` using `IsPullback.of_hasPullback ((Over.pullback φ).obj A ⊗ (Over.pullback φ).obj A).hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {e}))))`. Use `hobs T e he ((Over.pullback φ).obj A) (TLinPf.isAb_pullback φ A hA) (M.pull (sqMap φ A)) (LB.isLB_pull hM _) ?_ ?_ _ _ _ hp he' ?_` and prove the remaining obligations. Use `triv_pull_pull _ _ (triv_comp (pullback.fst A.hom φ) ?_ h₁)` and prove the remaining obligations. Rewrite using `[← lift_sqMap, Functor.map_one, CategoryTheory.Functor.map_id]`. Use `triv_pull_pull _ _ (triv_comp (pullback.fst A.hom φ) ?_ h₂)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← lift_sqMap, Functor.map_one, CategoryTheory.Functor.map_id]`. Conclude with `triv_pull_pull _ _ (H _ _ _ (hp.paste_horiz (isPullback_sqMap φ A)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_lift (hobs : ∀ (R : Type) [CommRing R] [IsLocalRing R] (ε : R), (∀ a ∈ IsLocalRing.maximalIdeal R, a * ε = 0) → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A], IsAbelianScheme A → ∀ M : LB (A ⊗ A).left, M.IsLB → (∃ t : LB.Gen (M.pull (lift (𝟙 A) 1).left), t.IsGen) → (∃ t : LB.Gen (M.pull (lift 1 (𝟙 A)).left), t.IsGen) → ∀ (X' : Scheme.{0}) (π : X' ⟶ (A ⊗ A).left) (f' : X' ⟶ Spec (CommRingCat.of (R ⧸ Ideal.span {ε}))), IsPullback π f' (A ⊗ A).hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {ε})))) → ε ∈ IsLocalRing.maximalIdeal R → (∃ t : LB.Gen (M.pull π), t.IsGen) → ∃ t : LB.Gen M, t.IsGen)
     {S : Scheme.{0}} (A : Over S) [GrpObj A] (hA : IsAbelianScheme A) (M : LB (A ⊗ A).left)
@@ -212,7 +206,7 @@ theorem triv_lift (hobs : ∀ (R : Type) [CommRing R] [IsLocalRing R] (ε : R), 
   · exact triv_pull_pull _ _ (H _ _ _ (hp.paste_horiz (isPullback_sqMap φ A)))
 
 /- English proof (translation)
-Establish `h₁ : Function.Bijective (pullback.snd B.hom φ).appTop.hom` using `hG _ _ (TLinPf.isAb_pullback φ B hB)`. Establish `h₂ : Function.Bijective h.isoPullback.hom.appTop.hom` using `ConcreteCategory.bijective_of_isIso (h.isoPullback.hom.app ⊤)`. Rewrite using `[← h.isoPullback_hom_snd, Scheme.Hom.comp_appTop]`. Conclude with `h₂.comp h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_appTop (hG : GlobalFnsSt) {S S' X : Scheme.{0}} (B : Over S) [GrpObj B]
     (hB : IsAbelianScheme B) {φ : S' ⟶ S} {π : X ⟶ B.left} {f : X ⟶ S'}
@@ -225,17 +219,13 @@ theorem bijective_appTop (hG : GlobalFnsSt) {S S' X : Scheme.{0}} (B : Over S) [
   exact h₂.comp h₁
 
 /- English proof (translation)
-Introduce `hG hsee hobs R _ A _ hA M hM hP h₁ h₂ K _ g₀ X₀ π₀ f₀ h₀ ht₀`. Establish `hB` using `Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Use `haveI := hB.proper`. Use `haveI := hB.geomConnected`. Take `⟨r, I, hr, hI, H⟩` from `hsee R _ (A ⊗ A).hom M hM hP inferInstance inferInstance K g₀ X₀ π₀ f₀ h₀ (bijective_appTop hG _ hB h₀) ht₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : (RingHom.ker g₀).IsPrime := RingHom.ker_isPrime g₀`. Take `⟨c, hc, hcI⟩` from `exists_ann (RingHom.ker g₀) I hI ((H K g₀ X₀ π₀ f₀ h₀ (Ne.isUnit hr)).1 ht₀) (fun T _ _ g e hu he he' hle => by`. Use `(H T g _ _ _ (isPullback_sqMap (Spec.map (CommRingCat.ofHom g)) A) (hu r hr)).1 ?_` and prove the remaining obligations. Use `triv_lift hobs A hA M hM h₁ h₂ T _ e he he' fun X' π f' hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(H _ _ X' π f' hp ((hu r hr).map (Ideal.Quotient.mk (Ideal.span {e})))).2 hle)`. Use `⟨r * c, by rw [map_mul]; exact mul_ne_zero hr hc, ?_⟩` and prove the remaining obligations. Set `L` to `Localization.Away (r * c)`. Establish `hu : IsUnit (algebraMap R L (r * c))` using `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `hu` using `[map_mul, IsUnit.mul_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `IsPullback.of_hasPullback (A ⊗ A).hom (Spec.map (CommRingCat.ofHom (algebraMap R L)))`. Establish `ht` using `(H L (algebraMap R L) _ _ _ hp hu.1).2 fun x hx => by`. Rewrite using `[RingHom.mem_ker, ← hu.2.mul_right_eq_zero, ← map_mul, hcI x hx, map_zero]`. Use `haveI : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R L))) := IsOpenImmersion.of_isLocalization (r * c)`. Establish `hsub : Set.range (((A ⊗ A).hom ⁻¹ᵁ (PrimeSpectrum.basicOpen (r * c))).ι ≫ (A ⊗ A).hom) ⊆ Set.range (Spec.map (CommRingCat.ofHom (algebraMap R L)))`.
-
-Introduce and unpack `_ ⟨y, rfl⟩`. Use `PrimeSpectrum.localization_away_comap_range L (r * c)` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ ∈ Set.range (PrimeSpectrum.comap (algebraMap R L))`. Rewrite using `[this]`. Conclude with `y.2`.
-
-Conclude with `triv_comp (hp.lift _ _ (IsOpenImmersion.lift_fac _ _ hsub).symm) (hp.lift_fst _ _ _) ht`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_basicOpen_of_triv_fibre : GlobalFnsSt → (∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X), M.IsLB → Nonempty (Perf f M) → UniversallyClosed f → Surjective f → ∀ (K : Type) [Field K] (g₀ : R →+* K) (X₀ : Scheme.{0}) (π₀ : X₀ ⟶ X) (f₀ : X₀ ⟶ Spec (CommRingCat.of K)), IsPullback π₀ f₀ f (Spec.map (CommRingCat.ofHom g₀)) → Function.Bijective f₀.appTop.hom → Triv (M.pull π₀) → ∃ (r : R) (I : Ideal R), g₀ r ≠ 0 ∧ I.FG ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R') (X' : Scheme.{0}) (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R')), IsPullback π f' f (Spec.map (CommRingCat.ofHom g)) → IsUnit (g r) → (Triv (M.pull π) ↔ I ≤ RingHom.ker g)) → (∀ (R : Type) [CommRing R] [IsLocalRing R] (ε : R), (∀ a ∈ IsLocalRing.maximalIdeal R, a * ε = 0) → ∀ (A : Over (Spec (CommRingCat.of R))) [GrpObj A], IsAbelianScheme A → ∀ M : LB (A ⊗ A).left, M.IsLB → (∃ t : LB.Gen (M.pull (lift (𝟙 A) 1).left), t.IsGen) → (∃ t : LB.Gen (M.pull (lift 1 (𝟙 A)).left), t.IsGen) → ∀ (X' : Scheme.{0}) (π : X' ⟶ (A ⊗ A).left) (f' : X' ⟶ Spec (CommRingCat.of (R ⧸ Ideal.span {ε}))), IsPullback π f' (A ⊗ A).hom (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (Ideal.span {ε})))) → ε ∈ IsLocalRing.maximalIdeal R → (∃ t : LB.Gen (M.pull π), t.IsGen) → ∃ t : LB.Gen M, t.IsGen) → ∀ (R : Type) [CommRing R] (A : Over (Spec (CommRingCat.of R))) [GrpObj A], IsAbelianScheme A → ∀ M : LB (A ⊗ A).left, M.IsLB → Nonempty (Perf (A ⊗ A).hom M) → Triv (M.pull (lift (𝟙 A) 1).left) → Triv (M.pull (lift 1 (𝟙 A)).left) → ∀ (K : Type) [Field K] (g₀ : R →+* K) (X₀ : Scheme.{0}) (π₀ : X₀ ⟶ (A ⊗ A).left) (f₀ : X₀ ⟶ Spec (CommRingCat.of K)), IsPullback π₀ f₀ (A ⊗ A).hom (Spec.map (CommRingCat.ofHom g₀)) → Triv (M.pull π₀) → ∃ r : R, g₀ r ≠ 0 ∧ Triv (M.pull ((A ⊗ A).hom ⁻¹ᵁ (PrimeSpectrum.basicOpen r)).ι) := by
   intro hG hsee hobs R _ A _ hA M hM hP h₁ h₂ K _ g₀ X₀ π₀ f₀ h₀ ht₀

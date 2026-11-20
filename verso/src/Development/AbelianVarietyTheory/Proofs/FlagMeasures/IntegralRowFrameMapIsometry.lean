@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameIsom
 
 /- English proof (translation)
-Introduce `D γ hγ Λ₁ Λ₂ hΛ T F hF`. Substitute `hΛ` using the available equality. Establish `e : mapLF γ F = PI.RepsIndep.Tr.mapL γ hγ F`. Unfold `mapLF`. Rewrite using `[dif_pos hγ]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `PI.RepsIndep.Tr.FrameOK_map hγ hF`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameOK_mapLF : ∀ (D : D7) (γ : (VS D).V ≃ₗ[D.host.E] (VS D).V), γ ∈ Formalism.HermitianLatticesTheory.isom (VS D).hT →
     ∀ (Λ₁ Λ₂ : Submodule (𝓞 D.host.E) (VS D).V), Formalism.HermitianLatticesTheory.gmap γ Λ₁ = Λ₂ →

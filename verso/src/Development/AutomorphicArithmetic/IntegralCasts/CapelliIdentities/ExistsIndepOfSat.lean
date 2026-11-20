@@ -1,27 +1,25 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R E _ _ _ _ _ _ _ T F hF`. Take `⟨I, hI, hmax⟩` from `exists_maximal_linearIndepOn R (Subtype.val : T → E)`. Use `set S : Submodule R E := Submodule.span R ((Subtype.val : T → E) '' I) with hS`. Establish `hT : ∀ y ∈ Submodule.span R T, ∃ b : R, b ≠ 0 ∧ b • y ∈ S`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Distinguish the cases in `h : (⟨x, hx⟩ : T) ∈ I`. Conclude with `⟨1, one_ne_zero, by`. Rewrite using `[one_smul]`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨⟨x, hx⟩, h, rfl⟩⟩`. Conclude with `hmax ⟨x, hx⟩ h`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hax⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb, hby⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `S.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `S.smul_mem _ hax`. Rewrite using `[mul_smul]`. Conclude with `S.smul_mem _ hby`. Consider the case `smul c x _ hx`. Take `⟨a, ha, hax⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `S.smul_mem _ hax`. Set `N : Submodule R F` to `S.comap F.subtype`. Establish `h0 : Module.rank R (F ⧸ N) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[rank_eq_zero_iff]`. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective N q`. Take `⟨a, ha, hax⟩` from `(hF x).1 x.2`. Take `⟨b, hb, hbx⟩` from `hT _ hax`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b * a, mul_ne_zero hb ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `(b * a) • (x : E) ∈ S`. Rewrite using `[mul_smul]` and apply the resulting hypothesis. Establish `h1 : Module.rank R F = Module.rank R N`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← rank_quotient_add_rank_of_isDomain N, h0, zero_add]`. Establish `h2 : Module.rank R N ≤ Module.rank R S`. Set `g : N →ₗ[R] S` to `(F.subtype.comp N.subtype).codRestrict S (fun x => x.2)`. Use `LinearMap.rank_le_of_injective g ?_` and prove the remaining obligations. Introduce `x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h : ((g x : S) : E) = ((g y : S) : E)` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h)`. Establish `h3 : Module.rank R S ≤ Cardinal.mk I` using `(rank_span_le _).trans Cardinal.mk_image_le`. Establish `h4 : Cardinal.mk (Fin (Module.finrank R F)) ≤ Cardinal.mk I`. Rewrite using `[Cardinal.mk_fin, Module.finrank_eq_rank, h1]`.
-
-Conclude with `h2.trans h3`. Take `⟨e⟩` from `(Cardinal.le_def _ _).1 h4`. Conclude with `⟨fun j => ((e j : T) : E), fun j => (e j : T).2, LinearIndependent.comp hI e e.injective⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ud9.exists_indep_of_sat :
     ∀ {R E : Type} [inst : CommRing R] [IsDomain R] [IsNoetherianRing R]

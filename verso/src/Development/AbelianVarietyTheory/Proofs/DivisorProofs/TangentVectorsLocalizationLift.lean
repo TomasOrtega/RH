@@ -19,7 +19,7 @@ noncomputable section
 namespace GlobalTheory.LieFrameLoc
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, Chart.spMap_comp]`. Use `congr 2`. Use `AlgHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[Chart.scaleD]`. Simplify using `only [Chart.scaleD, AlgHom.comp_apply, TrivSqZeroExt.snd_map, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,13 +35,13 @@ theorem scaleD_scaleD {R : Type} [CommRing R] {G : Over (Sp R)} (a b : R)
     ring
 
 /- English proof (translation)
-Establish `key : ∀ c : Fin n → R, Chart.prodPts c (fun i => Chart.spMap (Chart.scaleD (a i : R)) ≫ u i) = Chart.prodPts (fun i => c i * a i) u` using `fun c => by`. Unfold `Chart.prodPts`. Conclude with `congrArg List.prod (congrArg List.ofFn (funext fun i => scaleD_scaleD _ _ _))`. Use `⟨ht, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, huniq⟩` from `hu.2 w hw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => c i * ↑(a i)⁻¹, ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Rewrite `hc`, the goal using `[Chart.isLieComb_iff]`. Rewrite using `[key, hc]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Use `replace hc' := (Chart.isLieComb_iff _ _ _).mp hc'`. Rewrite `hc'` using `[key]`. Use `huniq _ ((Chart.isLieComb_iff _ _ _).mpr hc')` as an intermediate fact. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `congrFun this i`. Rewrite using `[← hi]`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLieBasis_scale {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {n : ℕ} {u : Fin n → (epsR R ⟶ G)}
     (hu : IsLieBasis u) (a : Fin n → Rˣ)
@@ -73,25 +73,23 @@ open GlobalTheory.LieFrameLoc in
 open scoped CategoryTheory.Obj in
 
 /- English proof (translation)
-Introduce `R _ G _ hsm p _`. Use `haveI := hsm`. Establish `: ∀ s : R, Smooth (Chart.Gs G s).hom` using `fun s => show Smooth (pullback.snd G.hom _) from inferInstance`. Establish `hGp : Smooth (Chart.Gp (G` using `G) p).hom := show Smooth (pullback.snd G.hom _) from inferInstance`. Take `⟨n, u, hu⟩` from `Chart.exists_isLieBasis (Chart.Gp (G := G) p) hGp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `lift : ∀ i, ∃ q ∈ p.primeCompl, ∃ w : epsR R ⟶ G, IsTangent w ∧ Chart.resP p w = Chart.spMap (Chart.scaleD (algebraMap R (Localization.AtPrime p) q)) ≫ u i`. Introduce `i`. Establish `hT : Chart.TanS (Chart.pushR G (u i))` using `(Chart.isTan_iff_tanS p (u i)).mp ((Chart.isTan_iff _).mpr (hu.1 i))`. Take `⟨q, hq, w, hw, he⟩` from `Chart.tan_prime_lift p hT`. Use `⟨q, hq, w, (Chart.isTan_iff _).mp hw, Chart.pushR_inj G ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Chart.pushR_resP, he, Chart.pushR_spMap]`. Use `congr 2`. Use `choose q hq w hw hres using lift`. Use `⟨n, w, hw, fun G' _ ψ hψ v hv => ?_⟩` and prove the remaining obligations. Set `a : Fin n → (Localization.AtPrime p)ˣ` to `fun i => (IsLocalization.map_units _ ⟨q i, hq i⟩).unit`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres' : ∀ i, Chart.resP p (w i) = Chart.spMap (Chart.scaleD (a i : Localization.AtPrime p)) ≫ u i` using `hres`. Establish `htan : ∀ i, IsTangent (Chart.resP p (w i))` using `fun i => (Chart.isTan_iff _).mp ((Chart.isTan_iff_tanS p _).mpr (by`. Rewrite using `[Chart.pushR_resP]`. Conclude with `Chart.tanS_restrict _ ((Chart.isTan_iff _).mpr (hw i))))`. Establish `hbasis : IsLieBasis (G` using `Chart.Gp (G := G) p) (fun i => Chart.resP p (w i)) := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun i => Chart.resP p (w i)) = fun i => Chart.spMap (Chart.scaleD (a i : Localization.AtPrime p)) ≫ u i`. Use function extensionality and compare the values at `hres'`. Rewrite using `[e]`. Conclude with `isLieBasis_scale hu a fun i => hres' i ▸ htan i`. Set `φp : Localization.AtPrime p →+* Localization.AtPrime p` to `RingHom.id _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ : φp.comp (algebraMap R (Localization.AtPrime p)) = algebraMap R (Localization.AtPrime p)` using `RingHom.id_comp _`. Establish `hsp : spMap (algebraMap R (Localization.AtPrime p)) = spMap φp ≫ Chart.fB R (Localization.AtPrime p)` using `by show Spec.map (CommRingCat.ofHom (algebraMap R (Localization.AtPrime p))) = Spec.map (CommRingCat.ofHom φp) ≫ Spec.map (CommRingCat.ofHom (algebraMap R (Localization.AtPrime p)))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, hφ]`. Establish `h' : IsGrpPullback G' G (spMap φp ≫ Chart.fB R (Localization.AtPrime p)) ψ` using `hsp ▸ hψ`. Establish `hG` using `Chart.isGrpPullback_factor (Chart.fB R (Localization.AtPrime p)) (spMap φp) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hv' : ∀ j, (v j).left ≫ ψ = spMap (Chart.dualMapR (algebraMap R (Localization.AtPrime p))) ≫ (w j).left` using `hv`. Use `Chart.isLieBasis_baseChange φp hG hbasis fun j => ?_` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hv' j, Category.assoc]`. Establish `e` using `congrArg (fun q => Over.Hom.left q) (Chart.pushR_resP (G := G) p (w j))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Chart.pushR_left, Over.comp_left] at e`. Rewrite using `[e, ← Category.assoc]`. Use `congr 1`. Use `show Spec.map (CommRingCat.ofHom (Chart.dualMapR (algebraMap R (Localization.AtPrime p)))) = Spec.map (CommRingCat.ofHom (Chart.dualMapR φp)) ≫ Spec.map (CommRingCat.ofHom (Chart.dualMapR (algebraMap R (Localization.AtPrime p))))`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp, ← Chart.dualMapR_comp, hφ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, Over.w (v j), Category.assoc]`. Rewrite using `[show (Chart.resP p (w j)).left ≫ pullback.snd G.hom (Chart.fB R (Localization.AtPrime p)) = (Chart.sp (R₀ := Localization.AtPrime p) (DualNumber (Localization.AtPrime p))).hom from Over.w (Chart.resP p (w j))]`. Use `show Spec.map (CommRingCat.ofHom (algebraMap (Localization.AtPrime p) (DualNumber (Localization.AtPrime p)))) ≫ Spec.map (CommRingCat.ofHom φp) = Spec.map (CommRingCat.ofHom (Chart.dualMapR φp)) ≫ Spec.map (CommRingCat.ofHom (algebraMap (Localization.AtPrime p) (DualNumber (Local …`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`.
-
-Apply the tactic sequence `refine RingHom.ext fun r => TrivSqZeroExt.ext ?_ ?_ <;> simp [φp, Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl']`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_tangent_isLieBasis_atPrime : ∀ {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G], Smooth G.hom → ∀ (p : Ideal R) [p.IsPrime],
     ∃ (n : ℕ) (w : Fin n → (epsR R ⟶ G)), (∀ i, IsTangent (w i)) ∧

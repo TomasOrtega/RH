@@ -12,23 +12,21 @@ section Unram
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero _)`. Establish `hy1 : ‖y‖ = 1`. Use `congrArg norm hy` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm0).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hy1`. Assume the negation of the conclusion as `hne`. Use `set z := x / y with hz`. Establish `hz1 : z ≠ 1` using `fun h1 => hne (by rwa [hz, div_eq_one_iff_eq hy0] at h1)`. Establish `hzm : z ^ m = 1` using `by rw [hz, div_pow, hx, hy, div_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzn : ‖z - 1‖ < 1`. Rewrite using `[hz, div_sub_one hy0, norm_div, hy1, div_one]`. Conclude with `h`. Establish `hz0 : ‖z‖ ≤ 1`. Use `IsUltrametricDist.norm_add_le_max (z - 1) 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_add_cancel, norm_one]`. Conclude with `this.trans (max_le hzn.le le_rfl)`. Establish `hsum : ∑ i ∈ Finset.range m, z ^ i = 0`. Use `geom_sum_mul z m` as an intermediate fact. Rewrite `this` using `[hzm, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `(mul_eq_zero.mp this).resolve_right (sub_ne_zero.mpr hz1)`. Establish `hpow : ∀ i : ℕ, ‖z ^ i - 1‖ < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ i ih`. Establish `e : z ^ (i + 1) - 1 = z * (z ^ i - 1) + (z - 1)` using `by ring`. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ hzn)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `(mul_le_of_le_one_left (norm_nonneg _) hz0).trans_lt ih`. Establish `hall : ∀ n : ℕ, ‖∑ i ∈ Finset.range n, z ^ i - (n : Om l)‖ < 1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ n ih`. Establish `e : ∑ i ∈ Finset.range (n + 1), z ^ i - ((n + 1 : ℕ) : Om l) = (∑ i ∈ Finset.range n, z ^ i - (n : Om l)) + (z ^ n - 1)`. Rewrite using `[Finset.sum_range_succ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ih (hpow n))`. Establish `h1` using `hall m`. Rewrite `h1` using `[hsum, zero_sub, norm_neg, ← map_natCast (algebraMap ℚ_[l] (Om l)), PadicAlgCl.norm_extends, Padic.norm_natCast_lt_one_iff]`. Conclude with `hm h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_pow_eq_one_of_norm_sub_lt {x y : Om l} {m : ℕ} (hm : ¬ l ∣ m) (hx : x ^ m = 1)
     (hy : y ^ m = 1) (h : ‖x - y‖ < 1) : x = y := by
@@ -78,7 +76,7 @@ theorem eq_of_pow_eq_one_of_norm_sub_lt {x y : Om l} {m : ℕ} (hm : ¬ l ∣ m)
   exact hm h1
 
 /- English proof (translation)
-Use `congrArg norm hx` as an intermediate fact. Rewrite `this` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_pow_eq_one {x : Om l} {m : ℕ} (hm : 0 < m) (hx : x ^ m = 1) : ‖x‖ = 1 := by
   have := congrArg norm hx
@@ -86,7 +84,7 @@ theorem norm_eq_one_of_pow_eq_one {x : Om l} {m : ℕ} (hm : 0 < m) (hx : x ^ m 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hm.ne').mp this
 
 /- English proof (translation)
-The claim follows from `IntermediateField.adjoin_algHom_ext ℚ_[l] fun _ ⟨m, h0, hm, hx⟩ => h _ m h0 hm (Subtype.ext hx)`.
+A detailed English derivation is pending.
 -/
 theorem kur_algHom_ext {B : Type*} [Semiring B] [Algebra ℚ_[l] B] {f g : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] B}
     (h : ∀ (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ), 0 < m → ¬ l ∣ m → c ^ m = 1 → f c = g c) : f = g :=
@@ -97,13 +95,13 @@ variable (l) in
 def frobUr : ↥(MaximalUnramifiedExtension l) →ₐ[ℚ_[l]] ↥(MaximalUnramifiedExtension l) := (GlobalTheory.MemLoc.exists_frobenius_Kur l).choose
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.MemLoc.exists_frobenius_Kur l).choose_spec c m h0 hm hc`.
+A detailed English derivation is pending.
 -/
 theorem frobUr_root (c : ↥(MaximalUnramifiedExtension l)) (m : ℕ) (h0 : 0 < m) (hm : ¬ l ∣ m) (hc : c ^ m = 1) :
     frobUr l c = c ^ l := (GlobalTheory.MemLoc.exists_frobenius_Kur l).choose_spec c m h0 hm hc
 
 /- English proof (translation)
-The claim follows from `Algebra.IsAlgebraic.algHom_bijective _`.
+A detailed English derivation is pending.
 -/
 theorem frobUr_bijective : Function.Bijective (frobUr l) :=
   Algebra.IsAlgebraic.algHom_bijective _
@@ -113,7 +111,7 @@ def adjExt (x : Om l) : FinExt l :=
     IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)⟩
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_adjoin_simple_self _ x`.
+A detailed English derivation is pending.
 -/
 theorem mem_adjExt (x : Om l) : x ∈ (adjExt x).1 := IntermediateField.mem_adjoin_simple_self _ x
 
@@ -125,13 +123,13 @@ def mapExt (g : GQ l) (K : FinExt l) : FinExt l :=
     haveI := K.2; (K.1.equivMap (g : Om l →ₐ[ℚ_[l]] Om l)).toLinearEquiv.finiteDimensional⟩
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_fixingSubgroup_iff _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_GK {K : FinExt l} {g : GQ l} : g ∈ GK K ↔ ∀ x ∈ K.1, g x = x :=
   IntermediateField.mem_fixingSubgroup_iff _ _
 
 /- English proof (translation)
-Rewrite `hh`, the goal using `[mem_GK]`. Introduce `x hx`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, hh (g x) ⟨x, hx, rfl⟩, ← AlgEquiv.mul_apply, inv_mul_cancel, AlgEquiv.one_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_GK {K : FinExt l} {g h : GQ l} (hh : h ∈ GK (mapExt g K)) : g⁻¹ * h * g ∈ GK K := by
   rw [mem_GK] at hh ⊢
@@ -142,11 +140,11 @@ theorem conj_mem_GK {K : FinExt l} {g h : GQ l} (hh : h ∈ GK (mapExt g K)) : g
 variable (P : LocPrime l)
 
 /- English proof (translation)
-Establish `: P.φB.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B) = (IsScalarTower.toAlgHom ℚ_[l] ↥(MaximalUnramifiedExtension l) P.R.B).comp (frobUr l)`. Use `kur_algHom_ext fun c m h0 hm hc => ?_` and prove the remaining obligations. Establish `hc' : (c : Om l) ^ m = 1` using `congrArg Subtype.val hc`. Set `x : ↥(K0 (adjExt (c : Om l)))` to `⟨c, mem_adjExt _, c.2⟩`. Establish `hx : x ^ m = 1` using `Subtype.ext hc'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `(P.PD (adjExt (c : Om l))).φ_K₀ x`. Rewrite `h1` using `[P.PD_φ]`. Establish `h2 : (((P.PD (adjExt (c : Om l))).σ x : ↥(K0 (adjExt (c : Om l)))) : Om l) = (c : Om l) ^ l`. Use `eq_of_pow_eq_one_of_norm_sub_lt hm ?_ (by rw [← pow_mul, mul_comm, pow_mul, hc', one_pow]) (P.PD_σ _ x (norm_eq_one_of_pow_eq_one h0 hc').le)` and prove the remaining obligations. Establish `: (P.PD (adjExt (c : Om l))).σ x ^ m = 1` using `by rw [← map_pow, hx, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val this`. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, frobUr_root c m h0 hm hc]`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `congrArg (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B) (Subtype.ext h2)`. Conclude with `AlgHom.congr_fun this c`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem phiB_algebraMap (c : ↥(MaximalUnramifiedExtension l)) :
     P.φB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (frobUr l c) := by
@@ -169,14 +167,14 @@ theorem phiB_algebraMap (c : ↥(MaximalUnramifiedExtension l)) :
   exact AlgHom.congr_fun this c
 
 /- English proof (translation)
-Rewrite using `[Polynomial.algebraMap_apply, Polynomial.algebraMap_apply, phiSt_C, phiB_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiSt_algebraMap (c : ↥(MaximalUnramifiedExtension l)) :
     phiSt P (algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c) = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) (frobUr l c) := by
   rw [Polynomial.algebraMap_apply, Polynomial.algebraMap_apply, phiSt_C, phiB_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.algebraMap_apply, Polynomial.algebraMap_apply, actSt_C, P.actQ_Kur g c c' h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem actSt_algebraMap (g : GQ l) (c c' : ↥(MaximalUnramifiedExtension l)) (h : g (c : Om l) = (c' : Om l)) :
     actSt P g (algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c) = algebraMap ↥(MaximalUnramifiedExtension l) (Bst P) c' := by
@@ -238,26 +236,26 @@ Both sides reduce to the same expression.
 @[simp] theorem crisIncl_tmul (v : V) (b : P.R.B) : crisIncl P LL V (v ⊗ₜ b) = v ⊗ₜ C b := rfl
 
 /- English proof (translation)
-The claim follows from `AlgebraTensorModule.ext h`.
+A detailed English derivation is pending.
 -/
 theorem end_ext {f g : End LL (V ⊗[ℚ_[l]] Bst P)} (h : ∀ v b, f (v ⊗ₜ b) = g (v ⊗ₜ b)) : f = g :=
   AlgebraTensorModule.ext h
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (M := V) (phiSt P).toLinearMap (phiSt_injective P)`.
+A detailed English derivation is pending.
 -/
 theorem phiV_injective : Function.Injective (phiV P LL V) :=
   Module.Flat.lTensor_preserves_injective_linearMap (M := V) (phiSt P).toLinearMap (phiSt_injective P)
 
 /- English proof (translation)
-The claim follows from `Module.Flat.lTensor_preserves_injective_linearMap (M := V) (CAlgHom : P.R.B →ₐ[ℚ_[l]] Bst P).toLinearMap C_injective`.
+A detailed English derivation is pending.
 -/
 theorem crisIncl_injective : Function.Injective (crisIncl P LL V) :=
   Module.Flat.lTensor_preserves_injective_linearMap (M := V)
     (CAlgHom : P.R.B →ₐ[ℚ_[l]] Bst P).toLinearMap C_injective
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by rw [End.mul_apply, phiV_tmul, monV_tmul, monSt_phiSt, LinearMap.smul_apply, End.mul_apply, monV_tmul, phiV_tmul, tmul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]`.
+A detailed English derivation is pending.
 -/
 theorem monV_phiV : monV P LL V * phiV P LL V = (l : LL) • (phiV P LL V * monV P LL V) :=
   end_ext P fun v b => by
@@ -265,25 +263,25 @@ theorem monV_phiV : monV P LL V * phiV P LL V = (l : LL) • (phiV P LL V * monV
       monV_tmul, phiV_tmul, tmul_smul, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by simp only [End.mul_apply, phiV_tmul, mulV_tmul, map_mul, phiSt_algebraMap]`.
+A detailed English derivation is pending.
 -/
 theorem phiV_mulV (c : ↥(MaximalUnramifiedExtension l)) :
     phiV P LL V * mulV P LL V c = mulV P LL V (frobUr l c) * phiV P LL V :=
   end_ext P fun v b => by simp only [End.mul_apply, phiV_tmul, mulV_tmul, map_mul, phiSt_algebraMap]
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by simp only [End.mul_apply, monV_tmul, mulV_tmul, Polynomial.algebraMap_apply, monSt_C_mul]`.
+A detailed English derivation is pending.
 -/
 theorem monV_mulV (c : ↥(MaximalUnramifiedExtension l)) : monV P LL V * mulV P LL V c = mulV P LL V c * monV P LL V :=
   end_ext P fun v b => by
     simp only [End.mul_apply, monV_tmul, mulV_tmul, Polynomial.algebraMap_apply, monSt_C_mul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul v b`. Take `⟨n, hn⟩` from `exists_monSt_pow_eq_zero P b`. Conclude with `⟨n, by rw [monV, ← map_pow, onB_tmul, hn, tmul_zero]⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨m, hm⟩` from `hx`. Take `⟨n, hn⟩` from `hy`. Use `⟨m + n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [add_comm m n]`. Rewrite using `[pow_add, pow_add, End.mul_apply, End.mul_apply, hm, hn, map_zero, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_monV_pow_eq_zero (x : V ⊗[ℚ_[l]] Bst P) : ∃ n : ℕ, (monV P LL V ^ n) x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -313,7 +311,7 @@ Both sides reduce to the same expression.
     stRep P ρ g (v ⊗ₜ b) = ρ g v ⊗ₜ actSt P (g : GQ l) b := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [actVB, P.PD_actB]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem stRep_crisIncl (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.B) :
     stRep P ρ g (crisIncl P LL V x) = crisIncl P LL V (actVB (P.PD K) ρ g x) := by
@@ -323,19 +321,19 @@ theorem stRep_crisIncl (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] P.R.B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by simp only [End.mul_apply, phiV_tmul, stRep_tmul, phiSt_actSt]`.
+A detailed English derivation is pending.
 -/
 theorem phiV_stRep (g : ↥(GK K)) : phiV P LL V * stRep P ρ g = stRep P ρ g * phiV P LL V :=
   end_ext P fun v b => by simp only [End.mul_apply, phiV_tmul, stRep_tmul, phiSt_actSt]
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by simp only [End.mul_apply, monV_tmul, stRep_tmul, monSt_actSt]`.
+A detailed English derivation is pending.
 -/
 theorem monV_stRep (g : ↥(GK K)) : monV P LL V * stRep P ρ g = stRep P ρ g * monV P LL V :=
   end_ext P fun v b => by simp only [End.mul_apply, monV_tmul, stRep_tmul, monSt_actSt]
 
 /- English proof (translation)
-The claim follows from `end_ext P fun v b => by simp only [End.mul_apply, stRep_tmul, mulV_tmul, map_mul, actSt_algebraMap P _ c c' h]`.
+A detailed English derivation is pending.
 -/
 theorem stRep_mulV (g : ↥(GK K)) (c c' : ↥(MaximalUnramifiedExtension l)) (h : (g : GQ l) (c : Om l) = (c' : Om l)) :
     stRep P ρ g * mulV P LL V c = mulV P LL V c' * stRep P ρ g :=
@@ -345,7 +343,7 @@ theorem stRep_mulV (g : ↥(GK K)) (c c' : ↥(MaximalUnramifiedExtension l)) (h
 def Dst : Submodule LL (V ⊗[ℚ_[l]] Bst P) := ⨅ g, LinearMap.ker (stRep P ρ g - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[Dst, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dst {x : V ⊗[ℚ_[l]] Bst P} : x ∈ Dst P ρ ↔ ∀ g, stRep P ρ g x = x := by
   simp [Dst, sub_eq_zero]
@@ -356,7 +354,7 @@ abbrev resTo {K' : FinExt l} (h : K.1 ≤ K'.1) : Representation LL ↥(GK K') V
   ρ.comp (Subgroup.inclusion (GK_le h))
 
 /- English proof (translation)
-Rewrite using `[mem_Dst]`. Conclude with `⟨fun hx g hg => hx ⟨g, hg⟩, fun hx g => hx ⟨g, GK_le h g.2⟩ g.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_Dst_resTo {K' : FinExt l} (h : K.1 ≤ K'.1) {x : V ⊗[ℚ_[l]] Bst P} :
     x ∈ Dst P (resTo ρ h) ↔ ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → stRep P ρ g x = x := by
@@ -377,7 +375,7 @@ def Dpst : Submodule LL (V ⊗[ℚ_[l]] Bst P) where
     exact ⟨K₁, h₁, Submodule.smul_mem _ c hx⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨K', h, hx⟩`. Conclude with `⟨K', (mem_Dst_resTo P ρ h).mp hx⟩`. Introduce and unpack `⟨K', hx⟩`. Conclude with `⟨supExt K K', le_sup_left, (mem_Dst_resTo P ρ _).mpr fun g hg => hx g (GK_le (K' := supExt K K') le_sup_right hg)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_Dpst {x : V ⊗[ℚ_[l]] Bst P} : x ∈ Dpst P ρ ↔
     ∃ K' : FinExt l, ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → stRep P ρ g x = x := by
@@ -389,15 +387,15 @@ theorem mem_Dpst {x : V ⊗[ℚ_[l]] Bst P} : x ∈ Dpst P ρ ↔
       hx g (GK_le (K' := supExt K K') le_sup_right hg)⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨K', h, hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Dst_resTo_le {K' : FinExt l} (h : K.1 ≤ K'.1) : Dst P (resTo ρ h) ≤ Dpst P ρ :=
   fun _ hx => ⟨K', h, hx⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_Dpst, mem_Dpst]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨K₁, hx⟩`. Conclude with `⟨supExt K' K₁, fun g hg => hx ⟨g, GK_le (K' := supExt K' K₁) le_sup_left hg⟩ (GK_le (K' := supExt K' K₁) le_sup_right hg)⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨K₁, hx⟩`. Conclude with `⟨K₁, fun g hg => hx ⟨g, GK_le h g.2⟩ hg⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Dpst_resTo {K' : FinExt l} (h : K.1 ≤ K'.1) : Dpst P (resTo ρ h) = Dpst P ρ := by
   ext x
@@ -410,7 +408,7 @@ theorem Dpst_resTo {K' : FinExt l} (h : K.1 ≤ K'.1) : Dpst P (resTo ρ h) = Dp
     exact ⟨K₁, fun g hg => hx ⟨g, GK_le h g.2⟩ hg⟩
 
 /- English proof (translation)
-Take `⟨K', hx⟩` from `(mem_Dpst P ρ).mp hx`. Use `(mem_Dpst P ρ).mpr ⟨K', fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← End.mul_apply, ← hT, End.mul_apply, hx g hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Dpst_of_commute {T : End LL (V ⊗[ℚ_[l]] Bst P)}
     (hT : ∀ g, T * stRep P ρ g = stRep P ρ g * T) (x : V ⊗[ℚ_[l]] Bst P) (hx : x ∈ Dpst P ρ) :
@@ -420,7 +418,7 @@ theorem mem_Dpst_of_commute {T : End LL (V ⊗[ℚ_[l]] Bst P)}
   rw [← End.mul_apply, ← hT, End.mul_apply, hx g hg]
 
 /- English proof (translation)
-Take `⟨K', hx⟩` from `(mem_Dpst P ρ).mp hx`. Use `(mem_Dpst P ρ).mpr ⟨mapExt g K', fun h hh => ?_⟩` and prove the remaining obligations. Use `congrArg (stRep P ρ g) (hx (g⁻¹ * h * g) (conj_mem_GK hh))` as an intermediate fact. Rewrite `this` using `[← End.mul_apply, ← map_mul, ← mul_assoc, ← mul_assoc, mul_inv_cancel, one_mul, map_mul, End.mul_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stRep_mem_Dpst (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] Bst P) (hx : x ∈ Dpst P ρ) :
     stRep P ρ g x ∈ Dpst P ρ := by
@@ -431,7 +429,7 @@ theorem stRep_mem_Dpst (g : ↥(GK K)) (x : V ⊗[ℚ_[l]] Bst P) (hx : x ∈ Dp
     End.mul_apply] at this
 
 /- English proof (translation)
-Take `⟨K', hx⟩` from `(mem_Dpst P ρ).mp hx`. Use `(mem_Dpst P ρ).mpr ⟨supExt K' (adjExt (c : Om l)), fun g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : (g : GQ l) (c : Om l) = c` using `mem_GK.mp (GK_le (K := adjExt (c : Om l)) le_sup_right hg) _ (mem_adjExt _)`. Rewrite using `[← End.mul_apply, stRep_mulV P ρ g c c h1, End.mul_apply, hx g (GK_le (K := K') le_sup_left hg)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulV_mem_Dpst (c : ↥(MaximalUnramifiedExtension l)) (x : V ⊗[ℚ_[l]] Bst P) (hx : x ∈ Dpst P ρ) :
     mulV P LL V c x ∈ Dpst P ρ := by
@@ -480,44 +478,44 @@ Both sides reduce to the same expression.
     (mulD P ρ c x : V ⊗[ℚ_[l]] Bst P) = mulV P LL V c x := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (phiV_stRep P ρ g) x)`.
+A detailed English derivation is pending.
 -/
 theorem phiD_actD (g : ↥(GK K)) : phiD P ρ * actD P ρ g = actD P ρ g * phiD P ρ :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (phiV_stRep P ρ g) x)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_stRep P ρ g) x)`.
+A detailed English derivation is pending.
 -/
 theorem monD_actD (g : ↥(GK K)) : monD P ρ * actD P ρ g = actD P ρ g * monD P ρ :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_stRep P ρ g) x)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_phiV P) x.1)`.
+A detailed English derivation is pending.
 -/
 theorem monD_phiD : monD P ρ * phiD P ρ = (l : LL) • (phiD P ρ * monD P ρ) :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_phiV P) x.1)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (phiV_mulV P c) x.1)`.
+A detailed English derivation is pending.
 -/
 theorem phiD_mulD (c : ↥(MaximalUnramifiedExtension l)) : phiD P ρ * mulD P ρ c = mulD P ρ (frobUr l c) * phiD P ρ :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (phiV_mulV P c) x.1)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_mulV P c) x.1)`.
+A detailed English derivation is pending.
 -/
 theorem monD_mulD (c : ↥(MaximalUnramifiedExtension l)) : monD P ρ * mulD P ρ c = mulD P ρ c * monD P ρ :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (monV_mulV P c) x.1)
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (stRep_mulV P ρ g c c' h) x.1)`.
+A detailed English derivation is pending.
 -/
 theorem actD_mulD (g : ↥(GK K)) (c c' : ↥(MaximalUnramifiedExtension l)) (h : (g : GQ l) (c : Om l) = (c' : Om l)) :
     actD P ρ g * mulD P ρ c = mulD P ρ c' * actD P ρ g :=
   LinearMap.ext fun x => Subtype.ext (LinearMap.congr_fun (stRep_mulV P ρ g c c' h) x.1)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (phiV_injective P (congrArg Subtype.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phiD_injective : Function.Injective (phiD P ρ) :=
   fun _ _ h => Subtype.ext (phiV_injective P (congrArg Subtype.val h))
@@ -546,9 +544,9 @@ def IsPst : Prop := Module.rank ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) 
 variable [FiniteDimensional ℚ_[l] V]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨Module.rank_lt_aleph0_iff.mp (by rw [h]; exact Module.rank_lt_aleph0 _ _), ?_⟩` and prove the remaining obligations. Rewrite using `[finrank, finrank, h]`. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[IsPst, ← finrank_eq_rank, ← finrank_eq_rank, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isPst_iff : IsPst P ρ ↔ FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) ∧
     finrank ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) = finrank ℚ_[l] V := by
@@ -562,7 +560,7 @@ theorem isPst_iff : IsPst P ρ ↔ FiniteDimensional ↥(MaximalUnramifiedExtens
 variable {P ρ}
 
 /- English proof (translation)
-The claim follows from `((isPst_iff P ρ).mp h).1`.
+A detailed English derivation is pending.
 -/
 theorem IsPst.finiteDimensional (h : IsPst P ρ) : FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ) :=
   ((isPst_iff P ρ).mp h).1
@@ -570,15 +568,15 @@ theorem IsPst.finiteDimensional (h : IsPst P ρ) : FiniteDimensional ↥(Maximal
 omit [FiniteDimensional ℚ_[l] V] in
 
 /- English proof (translation)
-Use `⟨phiD_injective P ρ, ?_⟩` and prove the remaining obligations. Set `j : DpstUr P ρ →+ DpstUr P ρ` to `(phiD P ρ).toAddMonoidHom`. Establish `hj : ∀ (c : ↥(MaximalUnramifiedExtension l)) (x : DpstUr P ρ), j (c • x) = frobUr l c • j x` using `fun c x => LinearMap.congr_fun (phiD_mulD P ρ c) x`. Establish `hli` using `(finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)).linearIndependent.map_of_surjective_injective (frobUr l) j frobUr_bijective.2 (fun x hx => phiD_injective P ρ (hx.trans (map_zero (phiD P ρ)).symm)) hj`. Establish `hsp` using `hli.span_eq_top_of_card_eq_finrank' (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Establish `hy : toUr P ρ y ∈ Submodule.span ↥(MaximalUnramifiedExtension l) (Set.range (j ∘ finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)))`. Rewrite using `[hsp]`. Discharge the goal by the elementary cases of `trivial`. Establish `key : ∀ z ∈ Submodule.span ↥(MaximalUnramifiedExtension l) (Set.range (j ∘ finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ))), ∃ x, j x = z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz => obtain ⟨i, rfl⟩ := hz`. Conclude with `⟨_, rfl⟩`. Consider the case `zero => exact ⟨0, map_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨a, rfl⟩` from `ha`. Take `⟨b, rfl⟩` from `hb`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `smul c a _ ha`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, rfl⟩` from `ha`. Take `⟨c, rfl⟩` from `frobUr_bijective.2 c`. Conclude with `⟨c • a, hj c a⟩`. Conclude with `key _ hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem phiD_bijective [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] : Function.Bijective (phiD P ρ) := by
   refine ⟨phiD_injective P ρ, ?_⟩
@@ -609,15 +607,15 @@ theorem phiD_bijective [FiniteDimensional ↥(MaximalUnramifiedExtension l) (Dps
 omit [FiniteDimensional ℚ_[l] V] in
 
 /- English proof (translation)
-Establish `hp : ∀ (n : ℕ) (x : ↥(Dpst P ρ)), (urEnd P ρ (monD P ρ) (monD_mulD P ρ) ^ n) (toUr P ρ x) = toUr P ρ ((monD P ρ ^ n) x)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ, pow_succ, End.mul_apply, End.mul_apply, ← ih]`. Both sides reduce to the same expression. Establish `hc : ∀ (n : ℕ) (x : ↥(Dpst P ρ)), (((monD P ρ ^ n) x : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = (monV P LL V ^ n) x`. Introduce `n`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ n ih => intro x`. Rewrite using `[pow_succ, pow_succ, End.mul_apply, End.mul_apply, ih]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : IsNilpotent (urEnd P ρ (monD P ρ) (monD_mulD P ρ)) := by`. Rewrite using `[Module.End.isNilpotent_iff_of_finite]`. Introduce `x`. Take `⟨x, rfl⟩` from `(toUr P ρ).surjective x`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `exists_monV_pow_eq_zero P (LL := LL) x.1`. Conclude with `⟨n, by rw [hp, show (monD P ρ ^ n) x = 0 from Subtype.ext ((hc n x).trans hn), map_zero]⟩`. Conclude with `⟨n, LinearMap.ext fun x => (toUr P ρ).injective (by rw [← hp, hn]; rfl)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem isNilpotent_monD [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] : IsNilpotent (monD P ρ) := by
   have hp : ∀ (n : ℕ) (x : ↥(Dpst P ρ)), (urEnd P ρ (monD P ρ) (monD_mulD P ρ) ^ n) (toUr P ρ x) =
@@ -643,9 +641,7 @@ theorem isNilpotent_monD [FiniteDimensional ↥(MaximalUnramifiedExtension l) (D
 omit [FiniteDimensional ℚ_[l] V] in
 
 /- English proof (translation)
-Set `b` to `finBasis ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)`. Use `choose F hF using fun i => (mem_Dpst P ρ).mp ((toUr P ρ).symm (b i)).2`. Use `fun i => (F i).2` as an intermediate fact. Use `⟨⟨⨆ i, (F i).1, inferInstance⟩, fun g hg hc => ?_⟩` and prove the remaining obligations. Establish `h1 : urEnd P ρ (actD P ρ g) hc = 1` using `b.ext fun i => Subtype.ext (hF i g (GK_le (K := F i) (le_iSup (fun i => (F i).1) i) hg))`.
-
-Conclude with `LinearMap.ext fun x => LinearMap.congr_fun h1 (toUr P ρ x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_actD_eq_one [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)] : ∃ K' : FinExt l,
     ∀ g : ↥(GK K), (g : GQ l) ∈ GK K' → (∀ c, actD P ρ g * mulD P ρ c = mulD P ρ c * actD P ρ g) →

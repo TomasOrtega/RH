@@ -4,7 +4,7 @@ open MeasureTheory Filter Topology
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.right_translation_curve_sq_le_and_integral_deriv_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FRightTranslationCurveSqLeAndIntegralDerivEqZeroA.lean&line=48#L48)
 -/

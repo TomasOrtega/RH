@@ -10,9 +10,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
   IsDedekindDomain Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 
 /- English proof (translation)
-Establish `hne : ∏ p : TypX X, muSv X w p ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun p _ => hA X hb hT hL w p)`. Establish `hS` using `hB X hb hT hL w`. Establish `hR` using `hC X hb hK hT hL w`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_cancel₀ _ hne, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, div_mul_eq_mul_div, div_eq_iff hne]`. Take the linear combination `(-muNf X w) * hR`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem clauses_word (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) {D : D7} (X : HidaSetting D)
     (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (hT : X.MeasTie hb) (hL : X.LevelSubgroupNormalized) (w : D.what₂.Word) :
@@ -28,7 +28,7 @@ theorem clauses_word (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) {D : D7} (X 
     linear_combination (-muNf X w) * hR
 
 /- English proof (translation)
-Introduce `D X hb hK FdN FdN' u u' X0 L A hH`. Take `⟨hT, hL, -, -⟩` from `hH`. Take `⟨h1, h2⟩` from `clauses_word hA hB hC X hb hK hT hL u`. Take `⟨h3, h4⟩` from `clauses_word hA hB hC X hb hK hT hL u'`. Conclude with `⟨h1, h2, h3, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inLevelSAt_of (hA : TypedNe) (hB : GlobLevelS) (hC : RatioH) :
     ∀ {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubgroupCharacter) (FdN FdN' : Set X.B.I.Ginf)

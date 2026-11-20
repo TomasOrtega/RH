@@ -32,16 +32,16 @@ noncomputable section
 namespace GlobalTheory.SiegTh.ThIntAll
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp_ring {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Use `⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Set `ρ : Over.mk (T.hom ≫ 𝟙 S) ⟶ T` to `Over.homMk (𝟙 T.left) (by simp)`. Establish `ex : x₀ = ρ ≫ x` using `Over.OverMorphism.ext (hx.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Establish `ey : y₀ = ρ ≫ y` using `Over.OverMorphism.ext (hy.trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Rewrite using `[ex, ey, ← MonObj.comp_mul]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`.
+A detailed English derivation is pending.
 -/
 theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨IsPullback.of_horiz_isIso ⟨by simp⟩, fun T x y x₀ y₀ hx hy => ?_⟩
@@ -52,7 +52,7 @@ theorem grpPullback_self {S : Scheme.{0}} (G : Over S) [GrpObj G] : IsGrpPullbac
   exact (Category.id_comp _).trans (Category.comp_id _).symm
 
 /- English proof (translation)
-Consider the cases of `s`. Consider the cases of `s'`. Simplify using `only [LB.Sec.mk.injEq]`. Conclude with `funext h`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_eq {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j = s'.f j) : s = s' := by
   cases s; cases s'
@@ -60,7 +60,7 @@ theorem sec_eq {X : Scheme.{0}} {M : LB X} {s s' : LB.Sec M} (h : ∀ j, s.f j =
   exact funext h
 
 /- English proof (translation)
-Use `sec_eq (sec_ext_val hL (fun y J hJ => ?_))` and prove the remaining obligations. Use `(VVRank.sv_pullS G a h' _ (𝟙 _) y hJ).trans ((VVRank.sv_pullS G a h s _ y hJ).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (VVRank.sv_pullS G a (h' ≫ h) s (𝟙 _) y hJ).symm` and prove the remaining obligations. Rewrite using `[MonoidalCategory.comp_whiskerRight, Over.comp_left, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullS_comp {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL : L.IsLB) (a : ℤ) {T T' T'' : Over S}
     (h : T' ⟶ T) (h' : T'' ⟶ T') (s : LB.Sec (LPow G L a T)) :
@@ -71,7 +71,7 @@ theorem pullS_comp {S : Scheme.{0}} (G : Over S) [GrpObj G] {L : LB G.left} (hL 
   rw [MonoidalCategory.comp_whiskerRight, Over.comp_left, Category.assoc]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : u = u'` from `Over.OverMorphism.ext hu`. Conclude with `⟨pt, H⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thList_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {ρ : LB.Gen (L.pull (eSec G))}
     {m : ℕ} {R : Type} [CommRing R] {x : Sp R ⟶ S} (θ : SecAt G L x) {K : Type} [Field K]
@@ -83,7 +83,7 @@ theorem thList_congr {S : Scheme.{0}} {G : Over S} [GrpObj G] {L : LB G.left} {�
   exact ⟨pt, H⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ, -⟩` from `GlobalTheory.T.sharp_polarization_unique_pullback g n F W Q P u (𝟙 F.X) u (Category.comp_id u) hQ hPs`. Establish `h1 : SmoothOfRelativeDimension (8 * g) Q.A.hom`. Rewrite using `[← hPg]`. Conclude with `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hψ.1 P.smoothDim`. Conclude with `ReciprocityTheory.ChartRestriction.G.H1.dim_unique Q.A.hom Q.smoothDim h1 ((η[Q.A]).left (Nonempty.some (inferInstanceAs (Nonempty T))))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relDim_eq_of_sharp {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {P : PolAV F.X}
     (hPg : P.g = 8 * g) (hPs : GlobalTheory.Poinc.SharpOver F W P (𝟙 F.X)) {T : Scheme.{0}} [Nonempty T] (Q : PolAV T)
@@ -94,17 +94,17 @@ theorem relDim_eq_of_sharp {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (
   exact ReciprocityTheory.ChartRestriction.G.H1.dim_unique Q.A.hom Q.smoothDim h1 ((η[Q.A]).left (Nonempty.some (inferInstanceAs (Nonempty T))))
 
 /- English proof (translation)
-Take `⟨hPg, hPs, hrig, hm, -, hmu, hN, -, hf, -⟩` from `hT`. Use `haveI : CharZero Ω := hA.char`. Establish `hSB : SecBaseChangeAnySt` using `GlobalTheory.abelianSchemeLaws_all.2.secBaseChangeAny`. Set `v : S.R →+* Ω` to `S.R.val.toRingHom`. Take `⟨P₀, φ, hg₀, hφ, hL₀⟩` from `exists_isPolFibre polBaseChange_holds v ρ.P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφ' : IsGrpPullback P₀.A ρ.P.A (spMap v ≫ 𝟙 (Sp S.R)) φ`. Simplify using `using hφ`. Establish `hL₀' : LBIso P₀.L (ρ.P.L.pull φ)` using `hL₀.symm`. Establish `hfib : PolFib ρ.P.A ρ.P.L (8 * g) (spMap v ≫ 𝟙 (Sp S.R))` using `⟨P₀, φ, by rw [hg₀, ρ.g_eq, hSg], hφ', hL₀'⟩`. Establish `hth : IsGenSec ρ.P.A ρ.P.L 1 ρ.th₁` using `fun s => (ρ.th₁_basis s).exists.elim fun r h => ⟨r 0, fun j => (h j).trans (Fin.sum_univ_one _)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `θ : SecAt ρ.P.A ρ.P.L (spMap v ≫ 𝟙 (Sp S.R))` to `SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ v`. Establish `: IsAffine (Over.mk (𝟙 (Sp S.R))).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `: IsAffine (Over.mk (spMap v ≫ 𝟙 (Sp S.R))).left` using `inferInstanceAs (IsAffine (Spec _))`. Establish `hθ : IsGenSec ρ.P.A ρ.P.L _ θ` using `GlobalTheory.EmbPull.isGenSec_pullS ρ.P hSB _ hth`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_theta_symmetric_function_values_in_ground_field (Sp S.R) ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen (8 * g) m (N + 1) Ω (spMap v ≫ 𝟙 (Sp S.R)) θ hm hN hfib`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmΩ : (m : Ω) ≠ 0`. Set `κ : cycAway n →+* S.R` to `(Spec.preimage (u ≫ F.s)).hom`. Use `(hmu.map κ).map v` as an intermediate fact. Rewrite `this` using `[map_natCast, map_natCast]`. Conclude with `this.ne_zero`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨e, ⟨by rw [hSg]; exact hN, hmΩ, he⟩, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, hLψ⟩` from `GlobalTheory.T.sharp_polarization_unique_pullback g n F W ρ.P P u (𝟙 F.X) u (Category.comp_id u) hρs hPs`. Establish `hα : IsGrpPullback P₀.A P.A ((spMap v ≫ u) ≫ 𝟙 F.X) (φ ≫ ψ)`. Simplify using `using hφ.comp hψ`. Establish `hLα : LBIso P₀.L (P.L.pull (φ ≫ ψ))` using `LBIso.trans P₀.isLB (pull_isLB ρ.P.isLB φ) (pull_isLB P.isLB _) hL₀' (LBIso.trans (pull_isLB ρ.P.isLB φ) (pull_isLB (pull_isLB P.isLB ψ) φ) (pull_isLB P.isLB _) (RigidBundleGlue.LBIso.pull hLψ φ) (GlobalTheory.UMin.FibMove.lbIso_pull_comp P.isLB ψ φ).symm)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.T.thetaMap_coords_of_symmetric_theta_isomorphic_fibre F.X P.A P.L rig P.isLB hrig (8 * g) m N (cycAway n) F.X (𝟙 F.X) f (Sp S.R) ρ.P.A ρ.P.L ρ.rig Ω (spMap v ≫ u) (spMap v ≫ 𝟙 (Sp S.R)) P₀ (φ ≫ ψ) φ θ e hm hN hf ρ.P.isLB ρ.rig_gen (by rw [hg₀, ρ.g_eq, hSg]) hα hLα hφ …`. Rewrite using `[hh, show algebraMap S.R Ω = v from RingHom.ext fun _ => rfl]`. Simplify `key` using `[Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_symE_pCrd_of_sharp {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {P : PolAV F.X}
     {rig : LB.Gen (P.L.pull (eSec P.A))} {m N : ℕ} {f : F.X ⟶ PSpace (cycAway n) N} (hT : ThAt F W P rig m f)
@@ -150,41 +150,35 @@ theorem exists_symE_pCrd_of_sharp {g n : ℕ} {F : SFam g n (zetaAway n)} {W : M
   simpa [Category.assoc] using key
 
 /- English proof (translation)
-Introduce `g n hg hn hno F W hW P rig m N f hTh o Ω _ _ _ _ S ρ u hρs _ M h hnorm hpt`. Establish `hSg : S.g = 8 * g`. Rewrite using `[← ρ.g_eq]`. Conclude with `relDim_eq_of_sharp hTh.1 hTh.2.1 ρ.P u hρs`. Take `⟨e, hSym, hCrd⟩` from `exists_symE_pCrd_of_sharp hTh S ρ u hSg hρs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCrd' : PCrd (M.pt ≫ h) e`. Rewrite using `[hpt]`. Conclude with `hCrd _ rfl`. Establish `hDe : M.HasDiv e` using `GlobalTheory.T.model_hasDiv_of_genericPoint_projectiveCoords o Ω (cycAway n) M N h e hCrd'`. Take `⟨-, -, -, hm, hm3, hmu, hNm, -, -⟩` from `hTh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsDedekindDomain o := ArithBase.ded Ω`. Use `haveI : CharZero Ω := ArithBase.char o`. Use `haveI : NeZero (S.r * S.N) := ⟨by have := S.r_pos; have := S.N_ge; positivity⟩`. Use `letI := ρ.P.isAb.comm`. Take `⟨j, hj1, hr⟩` from `ρ.r_eq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnodd` using `ρ.n_odd`. Establish `hnp` using `ρ.n_prime`. Establish `hrNodd : Odd (S.r * S.N)`. Rewrite using `[hr, ρ.N_eq]`. Conclude with `hnodd.pow.mul hnodd.pow.pow`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hrN3 : 3 ≤ S.r * S.N`. Establish `hn3 : 3 ≤ ρ.n`. Use `hnp.two_le` as an intermediate fact. Break down `hnodd with ⟨k, hk⟩` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h1 : ρ.n ≤ S.r` using `by rw [hr]; exact Nat.le_self_pow (by omega) _`. Establish `h2 : 1 ≤ S.N` using `by have := S.N_ge; omega`. Use the polynomial consequences of the given equalities and inequalities. Use `GlobalTheory.T.hasDivisor_of_forall_complete_dvr_points o Ω M S.Gam (Fin (N + 1)) S.th e (N + 1).factorial (Nat.factorial_pos _) ((GlobalTheory.isNormalScheme_iff_pred _).1 hnorm) hDe ?_` and prove the remaining obligations. Introduce `V _ _ _ hV ξ emb hξ j₀ hj₀ hint`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsDiscreteValuationRing V := ((GlobalTheory.LN.cDvr_iff V).1 hV).1`. Set `K` to `AlgebraicClosure (FractionRing V)`. Set `io : FractionRing V →+* K` to `algebraMap _ _`. Set `val : S.R →+* Ω` to `S.R.val.toRingHom`. Set `i₀ : S.R →+* FractionRing V` to `emb.comp val`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `iK : S.R →+* K` to `io.comp i₀`. Set `i' : Ω →+* K` to `io.comp emb`. Set `σ : o →+* V` to `(Spec.preimage (ξ ≫ M.s)).hom`. Set `τ : cycAway n →+* V` to `(Spec.preimage (ξ ≫ h ≫ PSpace.str (cycAway n) N)).hom`. Establish `hmV : IsUnit (m : V)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_natCast τ]`. Conclude with `hmu.map τ`. Establish `hrNV : IsUnit ((S.r * S.N : ℕ) : V)` using `by rw [← map_natCast σ]; exact S.unit.map σ`. Establish `hmK : (m : K) ≠ 0`. Use `hmV.map (io.comp (algebraMap V (FractionRing V)))` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast]`. Conclude with `this.ne_zero`. Establish `hrNK : ((S.r * S.N : ℕ) : K) ≠ 0`. Use `hrNV.map (io.comp (algebraMap V (FractionRing V)))` as an intermediate fact. Rewrite `this` using `[map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `this.ne_zero`. Set `y : Sp (FractionRing V) ⟶ Sp S.R` to `spMap i₀`. Take `⟨P', φ, gp, hL'⟩` from `GlobalTheory.UPoinc.exists_pol_baseChange ρ.P y`. Use `letI := P'.isAb.comm`. Establish `hS' : HypS P'.A P'.L` using `GlobalTheory.T.lineBundleSymmetry_hypothesis_base_change _ _ ρ.P.A P'.A y φ ρ.P.L P'.L ρ.P.isLB P'.isLB gp hL' ρ.hypS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPF0 : PolFib ρ.P.A ρ.P.L (8 * g) (𝟙 (Sp S.R))` using `⟨ρ.P, 𝟙 _, by rw [ρ.g_eq, hSg], grpPullback_self _, GlobalTheory.ThetaAffineGlue.lbIso_pull_id ρ.P.isLB⟩`. Establish `hPFK : PolFib ρ.P.A ρ.P.L (8 * g) (spMap iK ≫ 𝟙 (Sp S.R))` using `(GlobalTheory.T.principallyPolarisedFibre_iff_of_grpPullback (Sp S.R) (Sp S.R) ρ.P.A ρ.P.L ρ.P.A ρ.P.L (𝟙 _) (𝟙 _) ρ.P.isLB ρ.P.isLB (grpPullback_self _) (GlobalTheory.ThetaAffineGlue.lbIso_pull_id ρ.P.isLB) (8 * g) S.R (𝟙 _)).2 K iK hPF0`. Set `θK` to `SecAt.pull ρ.P.A ρ.P.L (x := 𝟙 (Sp S.R)) ρ.th₁ iK`. Take `⟨pt, c, hc⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed (Sp S.R) ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen (8 * g) m (N + 1) K (spMap iK ≫ 𝟙 (Sp S.R)) θK hm hmK hNm hPFK`. Take `⟨pt', c', hc'⟩` from `GlobalTheory.T.exists_thetaConstantList_algClosed (Sp S.R) ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen (8 * g) (S.r * S.N) ((S.r * S.N) ^ (4 * (8 * g))) K (spMap iK ≫ 𝟙 (Sp S.R)) θK hrNodd hrNK rfl hPFK`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hgen` using `GlobalTheory.T.realisedThetaSystem_section_generates_field_fibres o Ω S ρ K iK`. Establish `hxy : spMap io ≫ y = spMap iK ≫ 𝟙 (Sp S.R)`. Rewrite using `[Category.comp_id]`. Conclude with `spMap_comp_ring i₀ io`. Establish `h2 : HasTh₂ ρ.P.A ρ.P.L ρ.rig m (S.r * S.N) (spMap io ≫ y) c c'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hxy]`. Conclude with `⟨θK, pt, pt', hgen, hc, hc'⟩`. Take `⟨a, ha, hp1, hp2⟩` from `GlobalTheory.T.thetaConstants_two_levels_primitive_at_trait (Sp S.R) ρ.P.A ρ.P.L ρ.rig ρ.P.isLB ρ.rig_gen V hV y P' φ gp hL' hS' K io m (S.r * S.N) (N + 1) _ c c' hm hm3 hmV hrNodd hrN3 hrNV h2`. Establish `hreal` using `GlobalTheory.T.thetaConstantList_realisedSystem_up_to_rootsOfUnity o Ω S ρ K iK _ pt' c' hc'`. Establish `hlist : ∃ pt'' : Fin (N + 1) → (Over.mk (spMap i' ≫ (spMap val ≫ 𝟙 (Sp S.R))) ⟶ ρ.P.A), ThList ρ.P.A ρ.P.L ρ.rig m (spMap i' ≫ (spMap val ≫ 𝟙 (Sp S.R))) (SecAt.pull ρ.P.A ρ.P.L (SecAt.pull ρ.P.A ρ.P.L (x` using `𝟙 (Sp S.R)) ρ.th₁ val) i') pt'' c := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [SecAt.pull]`. Rewrite using `[pullS_comp ρ.P.A ρ.P.isLB]`. Use `thList_congr ρ.th₁ ?_ (Over.homMk (spMap iK) rfl) _ ?_ hc` and prove the remaining obligations. Rewrite using `[Category.comp_id, Category.comp_id]`. Conclude with `(spMap_comp_ring val i').symm`.
-
-Simplify using `only [Over.comp_left, Over.homMk_left]`. Conclude with `(spMap_comp_ring val i').symm`. Take `⟨pt'', hpt''⟩` from `hlist`. Establish `hsym : ∀ j, io (emb (e j)) = symTup c j` using `fun j => by unfold SymE SymAt at hSym; exact hSym.2.2 K i' pt'' c hpt'' j`. Establish `hj₀' : emb (e j₀) ≠ 0` using `(map_ne_zero emb).2 hj₀`.
-
-Establish `hint' : ∀ j, emb (e j) / emb (e j₀) ∈ Set.range (algebraMap V (FractionRing V))` using `fun j => by`. Rewrite using `[← map_div₀]`. Conclude with `hint j`. Take `⟨H1, b, hb, H2⟩` from `GlobalTheory.T.primitive_families_thetaSymmetric_min_member_compare V K io (N + 1) ((S.r * S.N) ^ (4 * (8 * g))) ((S.r * S.N) ^ 2) S.Gam c c' a (fun j => emb (e j)) (fun b => emb (S.th b)) ha (Nat.one_le_pow _ _ (by omega)) hp1 hp2 hsym hreal.1 hreal.2 j₀ hj₀' hint'`. Use `⟨fun b' => ?_, b, fun h0 => hb (by rw [h0, map_zero]), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_div₀, map_pow]`. Conclude with `H1 b'`. Rewrite using `[map_div₀, map_pow]`. Conclude with `H2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaInt_all : ∀ (g n : ℕ), 1 ≤ g → 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (P : PolAV F.X) (rig : LB.Gen (P.L.pull (eSec P.A))) (m N : ℕ) (f : F.X ⟶ PSpace (cycAway n) N), ThAt F W P rig m f → GlobalTheory.Poinc.ThetaInt F W f := by
   intro g n hg hn hno F W hW P rig m N f hTh o Ω _ _ _ _ S ρ u hρs _ M h hnorm hpt

@@ -20,7 +20,7 @@ def IsP (p : GL (Fin (m + 1)) k) : Prop :=
   ∀ j, (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_apply_last_of_isMirabolic {a b : GL (Fin (m + 1)) k} (ha : IsP a) (j : Fin (m + 1)) :
     ((a * b : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j =
@@ -32,32 +32,30 @@ theorem mul_apply_last_of_isMirabolic {a b : GL (Fin (m + 1)) k} (ha : IsP a) (j
     _ = _ := by rw [← Matrix.mul_apply, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `j` and use `(mul_apply_last_of_isMirabolic ha j).trans (hb j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isMirabolic_mul {a b : GL (Fin (m + 1)) k} (ha : IsP a) (hb : IsP b) : IsP (a * b) := fun j =>
   (mul_apply_last_of_isMirabolic ha j).trans (hb j)
 
 /- English proof (translation)
-The claim follows from `corner_last g`.
+A detailed English derivation is pending.
 -/
 theorem isMirabolic_corner (g : GL (Fin m) k) : IsP (corner g) := corner_last g
 
 /- English proof (translation)
-Establish `hne : ∀ j : Fin m, Fin.last m ≠ j.castSucc` using `fun j => (Fin.castSucc_lt_last j).ne'`. Use `set A : Matrix (Fin m) (Fin m) k := (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k).submatrix Fin.castSucc Fin.castSucc`. Establish `he : ((-1 : k) ^ (m + m)) = 1` using `by rw [← two_mul, pow_mul]; simp`. Establish `hdet : (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k).det = A.det`. Establish `hp' : ∀ j, (p : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j` using `hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_succ_row _ (Fin.last m), Fin.sum_univ_castSucc]`. Simplify using `[hp', Matrix.one_apply, hne, Fin.succAbove_last, A, he]`. Establish `hA : A.det ≠ 0`. Rewrite using `[← hdet]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 p.isUnit).ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set h : GL (Fin m) k := Matrix.GeneralLinearGroup.mkOfDetNeZero A hA`. Establish `hh : (h : Matrix (Fin m) (Fin m) k) = A` using `rfl`. Use `⟨p * corner h⁻¹, ?_, h, ?_⟩` and prove the remaining obligations. Use `swap`. Rewrite using `[mul_assoc, ← cornerHom_apply, ← cornerHom_apply, ← map_mul, inv_mul_cancel, map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∀ j, ((p * corner h⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j = (1 : Matrix (Fin (m + 1)) (Fin (m + 1)) k) (Fin.last m) j` using `fun j => (mul_apply_last_of_isMirabolic hp j).trans (corner_last _ j)`. Establish `hB : ∀ i j : Fin m, ((p * corner h⁻¹ : GL (Fin (m + 1)) k) : Matrix (Fin (m + 1)) (Fin (m + 1)) k) i.castSucc j.castSucc = (1 : Matrix (Fin m) (Fin m) k) i j`. Introduce `i j`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_castSucc, corner_last, Matrix.one_apply_ne (hne j)]`. Simplify using `only [corner_cs_cs, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Rewrite using `[← h.mul_inv, Matrix.mul_apply, hh]`. Both sides reduce to the same expression. Use `(mem_unipB k).2 ⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [hL, Matrix.one_apply_ne hij.ne']`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => exact absurd hij (not_lt.2 (Fin.castSucc_lt_last i).le)`. Consider the case `cast j`. Rewrite using `[hB, Matrix.one_apply_ne]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Proceed by induction. Treat this case separately.
 
-Introduce `e`. Substitute `e` using the available equality. Conclude with `lt_irrefl _ hij`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [hL, Matrix.one_apply_eq]`.
-
-Consider the case `cast i => rw [hB, Matrix.one_apply_eq]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_corner {p : GL (Fin (m + 1)) k} (hp : IsP p) :
     ∃ u ∈ unipB k (Fin (m + 1)), ∃ h : GL (Fin m) k, p = u * corner h := by
@@ -107,7 +105,7 @@ variable {ψ : AddChar k Circle} {V₁ V₂ : Type} [AddCommGroup V₁] [Module 
   {l₁ : Module.Dual ℂ V₁} {l₂ : Module.Dual ℂ V₂}
 
 /- English proof (translation)
-Take `⟨u, hu, h, rfl⟩` from `exists_eq_mul_corner hp`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hl₁ u hu, hl₂ u hu, hX h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem agree_of_isP (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂) {v₁ : V₁} {v₂ : V₂}
     (hX : ∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) {p : GL (Fin (m + 1)) k}
@@ -116,7 +114,7 @@ theorem agree_of_isP (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional 
   rw [map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hl₁ u hu, hl₂ u hu, hX h]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Conclude with `agree_of_isP hl₁ hl₂ hX (isMirabolic_mul (isMirabolic_corner g) hp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree_translate (hl₁ : IsFunctional ψ π₁ l₁) (hl₂ : IsFunctional ψ π₂ l₂) {v₁ : V₁} {v₂ : V₂}
     (hX : ∀ g : GL (Fin m) k, l₁ (π₁ (corner g) v₁) = l₂ (π₂ (corner g) v₂)) {p : GL (Fin (m + 1)) k}

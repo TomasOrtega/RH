@@ -13,9 +13,9 @@ open scoped ContDiff Matrix ENNReal
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `n Y κ _ _ _ e S hS d d' t h hd`. Establish `key : ∀ ε : ℤˣ, glueMeas e (fun i y => ENNReal.ofReal ((ε : ℤ) * d' i y)) S = glueMeas e (fun i y => ENNReal.ofReal ((ε : ℤ) * d i y)) S`. Introduce `ε`. Establish `hm` using `GlobalTheory.ChernScale.glueMeas_restrict_eq e (ρ := fun i y => ENNReal.ofReal ((ε : ℤ) * d' i y)) (ρ' := fun i y => ENNReal.ofReal ((ε : ℤ) * d i y)) (c := 1) ENNReal.one_ne_top hS (fun i y hy hyS => by rw [one_mul, h i y hyS hy])`. Use `congrArg (fun μ : Measure Y => μ S) hm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [one_smul, Measure.restrict_apply_self]`. Use `⟨fun ε => by rw [key ε]; exact hd.1 ε, ?_⟩` and prove the remaining obligations. Rewrite using `[← hd.2, measureReal_def, measureReal_def, measureReal_def, measureReal_def, key 1, key (-1)]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasInt_congr_on : ∀ {n : ℕ} {Y κ : Type} [TopologicalSpace Y] [MeasurableSpace Y] [BorelSpace Y]
     (e : κ → OpenPartialHomeomorph Y (V n)) {S : Set Y}, MeasurableSet S → ∀ {d d' : κ → Y → ℝ} {t : ℝ},

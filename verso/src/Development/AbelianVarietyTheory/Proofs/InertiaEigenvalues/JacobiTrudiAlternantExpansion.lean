@@ -16,7 +16,7 @@ def antisymMat {A : Type*} [CommRing A] (m : ℕ) (h : ℕ → A) (ν : Fin m �
   Matrix.of fun i j => antisymHExt h ((ν j : ℤ) - staircase m i)
 
 /- English proof (translation)
-Rewrite using `[alternant, Matrix.det_apply']`. Simplify using `[Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alternant_eq_sum_perm {A : Type*} [CommRing A] (m : ℕ) (μ : Fin m → ℕ) :
     alternant A m μ = ∑ σ : Perm (Fin m),
@@ -25,19 +25,19 @@ theorem alternant_eq_sum_perm {A : Type*} [CommRing A] (m : ℕ) (μ : Fin m →
   simp [Matrix.of_apply]
 
 /- English proof (translation)
-Use `set F : (Fin m → ℕ) → MvPolynomial (Fin m) A := fun ν => (∏ j, C (antisymHExt h ((ν j : ℤ) - μ j))) * ∏ j, X j ^ ν j with hF`. Establish `key : ∀ k : Fin m → ℕ, (∏ i, (X i : MvPolynomial (Fin m) A) ^ μ i) * ∏ j, C (h (k j)) * X j ^ (k j) = F (k + μ)`. Introduce `k`. Simplify using `only [hF]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `e : (((k + μ) j : ℕ) : ℤ) - μ j = k j` using `by simp`. Rewrite using `[e, antisymHExt, if_neg (not_lt.2 (Int.natCast_nonneg _)), Int.toNat_natCast, Pi.add_apply, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.mul_sum, Finset.sum_congr rfl fun k _ => key k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_image (g := fun k => k + μ) (by intro a _ b _ hab; exact add_right_cancel hab)]`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `ν hν`. Take `⟨k, hk, rfl⟩` from `Finset.mem_image.1 hν`. Rewrite `hk`, the goal using `[Finset.Nat.mem_antidiagonalTuple]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_add_distrib, hk]`. Introduce `ν hν hnot`. Distinguish the cases in `hle : ∀ j, μ j ≤ ν j`. It suffices to derive a contradiction. Apply `hnot` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_image.2 ⟨ν - μ, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hν`, the goal using `[Finset.Nat.mem_antidiagonalTuple]`. Establish `: ∑ i, (ν - μ) i + ∑ i, μ i = ∑ i, ν i`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.sub_add_cancel (hle i)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument.
 
-Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `j`. Simplify using `[Nat.sub_add_cancel (hle j)]`. Use `push_neg at hle`. Take `⟨j, hj⟩` from `hle`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF]`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j), zero_mul]`. Rewrite using `[antisymHExt, if_pos (by omega), map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem antisym_shift_sum {A : Type*} [CommRing A] (m d : ℕ) (h : ℕ → A) (μ : Fin m → ℕ) :
     (∏ i, (X i : MvPolynomial (Fin m) A) ^ μ i) *
@@ -82,11 +82,11 @@ theorem antisym_shift_sum {A : Type*} [CommRing A] (m d : ℕ) (h : ℕ → A) (
       rw [antisymHExt, if_pos (by omega), map_zero]
 
 /- English proof (translation)
-Rewrite using `[alternant_eq_sum_perm, Finset.sum_mul]`. Establish `hσ : ∀ σ : Perm (Fin m), ((Perm.sign σ : ℤ) : MvPolynomial (Fin m) A) * (∏ i, X i ^ staircase m (σ i)) * ∑ k ∈ Finset.Nat.antidiagonalTuple m d, ∏ j, C (h (k j)) * X j ^ (k j) = ∑ ν ∈ Finset.Nat.antidiagonalTuple m (d + ∑ i, staircase m i), (((Perm.sign σ : ℤ) : MvPolynomial (Fin …`. Introduce `σ`. Rewrite using `[mul_assoc, antisym_shift_sum m d h (fun i => staircase m (σ i)), Equiv.sum_comp σ (staircase m), Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun ν _ => by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun σ _ => hσ σ, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, Matrix.det_apply', map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_intCast, map_prod]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem antisym_lhs_eq {A : Type*} [CommRing A] (m d : ℕ) (h : ℕ → A) :
     alternant A m (staircase m) *
@@ -113,7 +113,7 @@ theorem antisym_lhs_eq {A : Type*} [CommRing A] (m d : ℕ) (h : ℕ → A) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_permute']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem antisymMat_comp_perm {A : Type*} [CommRing A] (m : ℕ) (h : ℕ → A) (μ : Fin m → ℕ)
     (τ : Perm (Fin m)) :
@@ -122,9 +122,9 @@ theorem antisymMat_comp_perm {A : Type*} [CommRing A] (m : ℕ) (h : ℕ → A) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[jtDet, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `i j`. Establish `hi` using `i.2`. Establish `hj` using `j.2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((l i + staircase m i : ℕ)) : ℤ) - (staircase m j : ℕ) = (l i : ℤ) - i + j`. Simplify using `only [staircase]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [antisymMat, Matrix.of_apply, Matrix.transpose_apply, antisymHExt]`. Rewrite using `[e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem antisymMat_staircase {A : Type*} [CommRing A] (m : ℕ) (h : ℕ → A) (l : Fin m → ℕ) :
     (antisymMat m h (fun i => l i + staircase m i)).det = jtDet m h l := by
@@ -140,7 +140,7 @@ theorem antisymMat_staircase {A : Type*} [CommRing A] (m : ℕ) (h : ℕ → A) 
   rw [e]
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `hl hij.le`. Establish `h2 : (i : ℕ) < j` using `hij`. Use `j.2` as an intermediate fact. Simplify using `only [staircase]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -154,9 +154,9 @@ theorem antisym_strictAnti {m : ℕ} {l : Fin m → ℕ} (hl : Antitone l) :
   omega
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti`. Consider the case `exact _root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti`. Consider the case `(apply _root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.StrictAntiAddLe.add_le_of_strictAnti ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem antisym_gap {m : ℕ} {s : Fin m → ℕ} (hs : StrictAnti s) :
     ∀ (k : ℕ) (i j : Fin m), (j : ℕ) = i + k → s j + k ≤ s i := by
@@ -171,35 +171,31 @@ theorem antisym_gap {m : ℕ} {s : Fin m → ℕ} (hs : StrictAnti s) :
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product']`. Use `Finset.sum_bij (fun p _ => fun i => p.1 (p.2 i) + staircase m (p.2 i)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Take `⟨hl, -⟩` from `Finset.mem_product.1 hp`. Rewrite `hl` using `[mem_antiParts]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.sum_comp p.2 (fun i => p.1 i + staircase m i), Finset.sum_add_distrib, hl.1]`. Conclude with `(antisym_strictAnti hl.2).injective.comp p.2.injective`. Introduce `p hp q hq hpq`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hl, -⟩` from `Finset.mem_product.1 hp`. Take `⟨hl', -⟩` from `Finset.mem_product.1 hq`. Rewrite `hl`, `hl'` using `[mem_antiParts]`. Use `set ν : Fin m → ℕ := fun i => p.1 (p.2 i) + staircase m (p.2 i) with hν`. Establish `hν' : ν = fun i => q.1 (q.2 i) + staircase m (q.2 i)` using `hpq`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : Antitone (ν ∘ p.2.symm)`. Establish `: ν ∘ p.2.symm = fun i => p.1 i + staircase m i` using `by funext i; simp [hν]`. Rewrite using `[this]`. Conclude with `(antisym_strictAnti hl.2).antitone`. Establish `a2 : Antitone (ν ∘ q.2.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ν ∘ q.2.symm = fun i => q.1 i + staircase m i` using `by funext i; simp [hν']`. Rewrite using `[this]`. Conclude with `(antisym_strictAnti hl'.2).antitone`. Establish `u` using `Tuple.unique_antitone a1 a2`. Establish `hinj : Function.Injective ν` using `(antisym_strictAnti hl.2).injective.comp p.2.injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hperm : p.2.symm = q.2.symm` using `Equiv.ext fun i => hinj (congrFun u i)`. Establish `h2 : p.2 = q.2` using `by simpa using congrArg Equiv.symm hperm`. Establish `h1 : p.1 = q.1`. Use function extensionality and compare the values at `i`. Use `congrFun hν' (p.2.symm i)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hν, h2, Equiv.apply_symm_apply] at this`. Use linear arithmetic over natural numbers and integers. Conclude with `Prod.ext h1 h2`. Introduce `ν hν`. Rewrite `hν` using `[Finset.mem_filter, Finset.Nat.mem_antidiagonalTuple]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsum, hinj⟩` from `hν`. Use `set σ := Tuple.sort (fun i => OrderDual.toDual (ν i)) with hσ`. Establish `hanti : Antitone (ν ∘ σ)`. Use `Tuple.monotone_sort (fun i => OrderDual.toDual (ν i))` as an intermediate fact. Conclude with `monotone_toDual_comp_iff.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hs : StrictAnti (ν ∘ σ)` using `hanti.strictAnti_of_injective (hinj.comp σ.injective)`. Establish `hδ : ∀ i, staircase m i ≤ ν (σ i)`. Introduce `i`. Establish `hm : m - 1 < m` using `by have := i.2; omega`. Use `antisym_gap hs (m - 1 - i) i ⟨m - 1, hm⟩ (by simp; have := i.2; omega)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [staircase, Function.comp] at this ⊢`. Use linear arithmetic over natural numbers and integers. Use `⟨(fun i => ν (σ i) - staircase m i, σ.symm), ?_, ?_⟩` and prove the remaining obligations. Use `Finset.mem_product.2 ⟨?_, Finset.mem_univ _⟩` and prove the remaining obligations. Rewrite using `[mem_antiParts]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show ∑ i, (ν (σ i) - staircase m i) = d`. Establish `e : ∑ i, (ν (σ i) - staircase m i) + ∑ i, staircase m i = ∑ i, ν (σ i)`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => Nat.sub_add_cancel (hδ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Equiv.sum_comp σ ν]`. Use linear arithmetic over natural numbers and integers. Introduce `i j hij`. Establish `g` using `antisym_gap hs (j - i) i j (by have : (i : ℕ) ≤ j := hij; omega)`. Establish `h1` using `hδ i`.
+Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h2` using `hδ j`. Simplify using `only [staircase, Function.comp] at g h1 h2 ⊢`. Use `j.2` as an intermediate fact. Establish `: (i : ℕ) ≤ j` using `hij`. Use linear arithmetic over natural numbers and integers.
-
-Use function extensionality and compare the values at `i`. Use `hδ (σ.symm i)` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this ⊢`. Use linear arithmetic over natural numbers and integers. Introduce `p _`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem antisym_sum_sort {M : Type*} [AddCommMonoid M] (m d : ℕ) (g : (Fin m → ℕ) → M) :
     ∑ l ∈ antiParts m d, ∑ τ : Perm (Fin m), g (fun i => l (τ i) + staircase m (τ i)) =
@@ -275,13 +271,13 @@ theorem antisym_sum_sort {M : Type*} [AddCommMonoid M] (m d : ℕ) (g : (Fin m �
     rfl
 
 /- English proof (translation)
-Rewrite using `[antisym_lhs_eq]`. Establish `hr : ∀ l : Fin m → ℕ, C (jtDet m h l) * alternant A m (fun i => l i + staircase m i) = ∑ τ : Perm (Fin m), (fun ν : Fin m → ℕ => C (antisymMat m h ν).det * ∏ j, (X j : MvPolynomial (Fin m) A) ^ ν j) (fun i => l (τ i) + staircase m (τ i))`. Introduce `l`. Rewrite using `[alternant_eq_sum_perm, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `antisymMat_comp_perm m h (fun i => l i + staircase m i) τ`. Simplify using `only at e ⊢`. Rewrite using `[e, antisymMat_staircase, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun l _ => hr l, antisym_sum_sort m d (fun ν : Fin m → ℕ => C (antisymMat m h ν).det * ∏ j, (X j : MvPolynomial (Fin m) A) ^ ν j)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `symm`. Apply `Finset.sum_filter_of_ne` to reduce the goal to its premises. Introduce `ν _ hne`. Assume the negation of the conclusion as `hni`. Apply `hne` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨a, b, hab, hne'⟩ : ∃ a b, ν a = ν b ∧ a ≠ b := by`. Simplify using `only [Function.Injective, not_forall] at hni`. Take `⟨a, b, hab, hne⟩` from `hni`. Conclude with `⟨a, b, hab, hne⟩`. Rewrite using `[Matrix.det_zero_of_column_eq hne' (fun k => by simp [antisymMat, hab]), map_zero, zero_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem alternant_staircase_mul_antidiagonal {A : Type} [CommRing A] (m d : ℕ) (h : ℕ → A) :
     alternant A m (staircase m) *
@@ -315,7 +311,7 @@ theorem alternant_staircase_mul_antidiagonal {A : Type} [CommRing A] (m d : ℕ)
   rw [Matrix.det_zero_of_column_eq hne' (fun k => by simp [antisymMat, hab]), map_zero, zero_mul]
 
 /- English proof (translation)
-The claim follows from `alternant_staircase_mul_antidiagonal 2 1 (fun k => (k : ℤ) + 1)`.
+A detailed English derivation is pending.
 -/
 example : alternant ℤ 2 (staircase 2) *
     ∑ k ∈ Finset.Nat.antidiagonalTuple 2 1, ∏ j, MvPolynomial.C ((k j : ℤ) + 1) * MvPolynomial.X j ^ (k j) =

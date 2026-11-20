@@ -12,7 +12,7 @@ def sm (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : Matrix (Fin a ⊕ Fin b) (Fi
   M.submatrix finSumFinEquiv finSumFinEquiv
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : (i : ℕ) < a + b` using `by omega`. Establish `hj : (j : ℕ) < a + b` using `by omega`. Simplify using `only [tl, ent, hi, hj, and_self, dif_pos, sm, Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tl_eq (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : tl a M = (sm M).toBlocks₁₁ := by
   ext i j
@@ -23,7 +23,7 @@ theorem tl_eq (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : tl a M = (sm M).toBlo
   rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi : a + (i : ℕ) < a + b` using `by omega`. Establish `hj : a + (j : ℕ) < a + b` using `by omega`. Simplify using `only [br, ent, hi, hj, and_self, dif_pos, sm, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_right]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem br_eq (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : br a b M = (sm M).toBlocks₂₂ := by
   ext i j
@@ -34,9 +34,9 @@ theorem br_eq (M : Matrix (Fin (a + b)) (Fin (a + b)) F) : br a b M = (sm M).toB
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Simplify using `only [sm, Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.submatrix_apply, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.zero_apply]`. Apply the tactic sequence `apply h <;> simp`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `h i j hj hi`. Take `⟨i', rfl⟩ : ∃ i' : Fin b, Fin.natAdd a i' = i` from `⟨⟨i - a, by omega⟩, Fin.ext (by simp; omega)⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin a, Fin.castAdd b j' = j` from `⟨⟨j, hj⟩, rfl⟩`. Use `congrFun (congrFun h i') j'` as an intermediate fact. Simplify `this` using `[sm, Matrix.toBlocks₂₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inPar_iff (x : GL (Fin (a + b)) F) :
     InPar a x ↔ (sm (x : Matrix (Fin (a + b)) (Fin (a + b)) F)).toBlocks₂₁ = 0 := by
@@ -54,22 +54,22 @@ theorem inPar_iff (x : GL (Fin (a + b)) F) :
     simpa [sm, Matrix.toBlocks₂₁] using this
 
 /- English proof (translation)
-Rewrite using `[tl_eq, br_eq, ← h, Matrix.fromBlocks_toBlocks]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_eq {M : Matrix (Fin (a + b)) (Fin (a + b)) F} (h : (sm M).toBlocks₂₁ = 0) :
     sm M = Matrix.fromBlocks (tl a M) (sm M).toBlocks₁₂ 0 (br a b M) := by
   rw [tl_eq, br_eq, ← h, Matrix.fromBlocks_toBlocks]
 
 /- English proof (translation)
-The claim follows from `(Matrix.submatrix_mul_equiv M N _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sm_mul (M N : Matrix (Fin (a + b)) (Fin (a + b)) F) : sm (M * N) = sm M * sm N :=
   (Matrix.submatrix_mul_equiv M N _ _ _).symm
 
 /- English proof (translation)
-Establish `e : sm (M * N) = Matrix.fromBlocks (tl a M * tl a N) (tl a M * (sm N).toBlocks₁₂ + (sm M).toBlocks₁₂ * br a b N) 0 (br a b M * br a b N)`. Rewrite using `[sm_mul, sm_eq hM, sm_eq hN, Matrix.fromBlocks_multiply]`. Simplify using the standard rewrite rules. Use `⟨by rw [e, Matrix.toBlocks_fromBlocks₂₁], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tl_eq (M * N), e, Matrix.toBlocks_fromBlocks₁₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[br_eq (M * N), e, Matrix.toBlocks_fromBlocks₂₂]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem mul_blocks {M N : Matrix (Fin (a + b)) (Fin (a + b)) F} (hM : (sm M).toBlocks₂₁ = 0)
     (hN : (sm N).toBlocks₂₁ = 0) :
@@ -83,7 +83,7 @@ theorem mul_blocks {M N : Matrix (Fin (a + b)) (Fin (a + b)) F} (hM : (sm M).toB
   · rw [br_eq (M * N), e, Matrix.toBlocks_fromBlocks₂₂]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M]`. Express the relevant statement in the definitionally equal form `(sm M).det = _`. Rewrite using `[sm_eq h, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq {M : Matrix (Fin (a + b)) (Fin (a + b)) F} (h : (sm M).toBlocks₂₁ = 0) :
     M.det = (tl a M).det * (br a b M).det := by
@@ -92,7 +92,7 @@ theorem det_eq {M : Matrix (Fin (a + b)) (Fin (a + b)) F} (h : (sm M).toBlocks�
   rw [sm_eq h, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_reindex finSumFinEquiv.symm M]`. Establish `: Matrix.reindex finSumFinEquiv.symm finSumFinEquiv.symm M = sm M`. Rewrite using `[Matrix.reindex_apply, Equiv.symm_symm]`. Both sides reduce to the same expression. Rewrite using `[this, sm_eq h, Matrix.charpoly_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_eq {M : Matrix (Fin (a + b)) (Fin (a + b)) F} (h : (sm M).toBlocks₂₁ = 0) :
     M.charpoly = (tl a M).charpoly * (br a b M).charpoly := by
@@ -102,13 +102,13 @@ theorem charpoly_eq {M : Matrix (Fin (a + b)) (Fin (a + b)) F} (h : (sm M).toBlo
   rw [this, sm_eq h, Matrix.charpoly_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Unfold `toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toG_val {m : ℕ} {M : Matrix (Fin m) (Fin m) F} (h : IsUnit M) : ((toG M : GL (Fin m) F) : Matrix (Fin m) (Fin m) F) = M := by
   unfold toG; rw [dif_pos h]; rfl
 
 /- English proof (translation)
-Establish `hu : IsUnit (x : Matrix (Fin (a + b)) (Fin (a + b)) F).det` using `(Matrix.isUnit_iff_isUnit_det _).1 x.isUnit`. Rewrite `hu` using `[det_eq ((inPar_iff x).1 h)]`. Conclude with `⟨(Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_left hu), (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hu)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem units_of_par (x : GL (Fin (a + b)) F) (h : InPar a x) :
     IsUnit (tl a (x : Matrix (Fin (a + b)) (Fin (a + b)) F)) ∧ IsUnit (br a b (x : Matrix (Fin (a + b)) (Fin (a + b)) F)) := by
@@ -119,11 +119,9 @@ theorem units_of_par (x : GL (Fin (a + b)) F) (h : InPar a x) :
     (Matrix.isUnit_iff_isUnit_det _).2 (isUnit_of_mul_isUnit_right hu)⟩
 
 /- English proof (translation)
-Set `β : Fin (a + b) → Bool` to `fun i => decide (a ≤ (i : ℕ))`. Establish `hb : (x : Matrix (Fin (a + b)) (Fin (a + b)) F).BlockTriangular β`. Introduce `i j hij`. Rewrite `hij` using `[Bool.lt_iff]`. Simplify using `only [β, decide_eq_false_iff_not, decide_eq_true_eq, not_le] at hij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h i j hij.1 hij.2`. Use `haveI := x.invertible`. Establish `hb'` using `Matrix.blockTriangular_inv_of_blockTriangular hb`. Introduce `i j hj hi`. Rewrite using `[Matrix.coe_units_inv]`.
-
-Conclude with `hb' (by rw [Bool.lt_iff]; simp [β]; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inPar_inv (x : GL (Fin (a + b)) F) (h : InPar a x) : InPar a x⁻¹ := by
   let β : Fin (a + b) → Bool := fun i => decide (a ≤ (i : ℕ))
@@ -139,25 +137,21 @@ theorem inPar_inv (x : GL (Fin (a + b)) F) (h : InPar a x) : InPar a x⁻¹ := b
   exact hb' (by rw [Bool.lt_iff]; simp [β]; omega)
 
 /- English proof (translation)
-Introduce `F _ a b n hn`. Substitute `hn` using the available equality. Set `H : Subgroup (GL (Fin (a + b)) F)` to `{ carrier := {x | InPar a x} one_mem' := by`. Introduce `i j hj hi`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Use the proof step `mul_mem' := by`. Introduce `x y hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(inPar_iff _).2 (mul_blocks ((inPar_iff x).1 hx) ((inPar_iff y).1 hy)).1`. Use the proof step `inv_mem' := fun {x} hx => inPar_inv x hx }`. Establish `hH : ∀ x, x ∈ H ↔ InPar a x` using `fun _ => Iff.rfl`. Establish `hpar : ∀ p : H, (sm ((p.1 : GL (Fin (a + b)) F) : Matrix (Fin (a + b)) (Fin (a + b)) F)).toBlocks₂₁ = 0` using `fun p => (inPar_iff _).1 p.2`. Establish `hval : ∀ p : H, ((tlG a p.1 : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = tl a (p.1 : Matrix (Fin (a + b)) (Fin (a + b)) F) ∧ ((brG a b p.1 : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) = br a b (p.1 : Matrix (Fin (a + b)) (Fin (a + b)) F)` using `fun p => ⟨toG_val (units_of_par _ p.2).1, toG_val (units_of_par _ p.2).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `π : H →* GL (Fin a) F × GL (Fin b) F` to `MonoidHom.mk' (fun p => (tlG a p.1, brG a b p.1)) (by`. Introduce `p q`. Establish `hm` using `mul_blocks (hpar p) (hpar q)`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((tlG a (p * q).1 : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) = ((tlG a p.1 : GL (Fin a) F) : Matrix (Fin a) (Fin a) F) * ((tlG a q.1 : GL (Fin a) F) : Matrix (Fin a) (Fin a) F)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[(hval (p * q)).1, (hval p).1, (hval q).1]`. Conclude with `hm.2.1`. Express the relevant statement in the definitionally equal form `((brG a b (p * q).1 : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) = ((brG a b p.1 : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) * ((brG a b q.1 : GL (Fin b) F) : Matrix (Fin b) (Fin b) F)`. Rewrite using `[(hval (p * q)).2, (hval p).2, (hval q).2]`. Conclude with `hm.2.2)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ : ∀ p : H, π p = (tlG a p.1, brG a b p.1)` using `fun _ => rfl`. Use `⟨H, π, hH, ?_, hπ, fun p => hval p, fun p => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨u, v⟩`. Set `M : Matrix (Fin (a + b)) (Fin (a + b)) F` to `(Matrix.fromBlocks (u : Matrix (Fin a) (Fin a) F) 0 0 (v : Matrix (Fin b) (Fin b) F)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Establish `hsm : sm M = Matrix.fromBlocks (u : Matrix (Fin a) (Fin a) F) 0 0 (v : Matrix (Fin b) (Fin b) F)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sm, M, Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id]`. Establish `h21 : (sm M).toBlocks₂₁ = 0` using `by rw [hsm, Matrix.toBlocks_fromBlocks₂₁]`. Establish `htl : tl a M = u` using `by rw [tl_eq, hsm, Matrix.toBlocks_fromBlocks₁₁]`. Establish `hbr : br a b M = v` using `by rw [br_eq, hsm, Matrix.toBlocks_fromBlocks₂₂]`. Establish `hu : IsUnit M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, det_eq h21, htl, hbr]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 u.isUnit).mul ((Matrix.isUnit_iff_isUnit_det _).1 v.isUnit)`. Establish `hmem : hu.unit ∈ H`. Rewrite using `[hH, inPar_iff]`. Conclude with `h21`.
-
-Use `⟨⟨hu.unit, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `hv` using `hval ⟨hu.unit, hmem⟩`. Simplify using `only [IsUnit.unit_spec] at hv`. Rewrite using `[hπ]`. Use `Prod.ext (Units.ext ?_) (Units.ext ?_)` and prove the remaining obligations.
-
-Conclude with `hv.1.trans htl`. Conclude with `hv.2.trans hbr`. Rewrite using `[hπ, (hval p).1, (hval p).2]`. Conclude with `charpoly_eq (hpar p)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem block_par : ∀ (F : Type) [Field F] (a b n : ℕ), n = a + b → ∃ (H : Subgroup (GL (Fin n) F)) (π : H →* GL (Fin a) F × GL (Fin b) F), (∀ x, x ∈ H ↔ InPar a x) ∧ Function.Surjective π ∧ (∀ p : H, π p = (tlG a p.1, brG a b p.1)) ∧ (∀ p : H, ((π p).1 : Matrix (Fin a) (Fin a) F) = tl a (p.1 : Matrix (Fin n) (Fin n) F) ∧ ((π p).2 : Matrix (Fin b) (Fin b) F) = br a b (p.1 : Matrix (Fin n) (Fin n) F)) ∧ ∀ p : H, Matrix.charpoly (p.1 : Matrix (Fin n) (Fin n) F) = Matrix.charpoly ((π p).1 : Matrix (Fin a) (Fin a) F) * Matrix.charpoly ((π p).2 : Matrix (Fin b) (Fin b) F) := by
   intro F _ a b n hn

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `p _ c hc`. Set `f : ∀ n : ℕ, Polynomial ℤ →+* ZMod (p ^ n)` to `fun n => Polynomial.eval₂RingHom (Int.castRingHom _) (c n)`. Establish `hf : ∀ (k₁ k₂ : ℕ) (hk : k₁ ≤ k₂), (ZMod.castHom (pow_dvd_pow p hk) (ZMod (p ^ k₁))).comp (f k₂) = f k₁`. Introduce `k₁ k₂ hk`. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Simplify using `[f]`. Simplify `hc k₁ k₂ hk` using `[f]`. Use `⟨PadicInt.lift hf Polynomial.X, fun n => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun g : Polynomial ℤ →+* ZMod (p ^ n) => g Polynomial.X) (PadicInt.lift_spec hf n)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h` using `[f]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_padicInt_of_compatible_zmod_pow :
     ∀ (p : ℕ) [Fact p.Prime] (c : ∀ n : ℕ, ZMod (p ^ n)),

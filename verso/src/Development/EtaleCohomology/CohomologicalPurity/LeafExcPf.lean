@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← NatTrans.comp_app, ← NatTrans.comp_app, Arrow.w φ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem freeSq (R : Type) [CommRing R] {P' P : Arrow Spc} (φ : P' ⟶ P) (p : SimplexCategoryᵒᵖ) :
     (free R).map (P'.hom.app p) ≫ (free R).map (φ.right.app p) =
@@ -18,7 +18,7 @@ def LeafExcFormal : Prop := ∀ (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P),
     ((free (ZMod q)).map (φ.left.app p)) ((free (ZMod q)).map (φ.right.app p)) (freeSq _ φ p))) → Exc q φ
 
 /- English proof (translation)
-Rewrite using `[← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, ← Functor.map_comp, Scheme.Hom.resLE_comp_ι]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem freeSqSch (R : Type) [CommRing R] {X' X : Scheme.{0}} (f : X' ⟶ X) (U' : X'.Opens) (U : X.Opens)
     (h : U' ≤ f ⁻¹ᵁ U) :
@@ -33,7 +33,7 @@ def LeafExcSheaf : Prop := ∀ (R : Type) [CommRing R] {X' X Z : Scheme.{0}} (f 
     ((free R).map (yoneda.map (f.resLE U U' h.le))) ((free R).map (yoneda.map f)) (freeSqSch R f U' U h.le))
 
 /- English proof (translation)
-Introduce `_ q X' X Z f _ ι' ι _ hp U' U hU h`. Use `hF q _ fun p => ?_` and prove the remaining obligations. Conclude with `hS (ZMod q) f ι' ι hp U' U hU h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LeafExc_of (hF : LeafExcFormal) (hS : LeafExcSheaf) : LeafExc := by
   intro _ q X' X Z f _ ι' ι _ hp U' U hU h

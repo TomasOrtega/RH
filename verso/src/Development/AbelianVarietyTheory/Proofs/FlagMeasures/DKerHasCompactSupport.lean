@@ -21,7 +21,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   [CompleteSpace H]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (((Commute.refl Z).neg_right.smul_left t).smul_right t)]`. Simplify using `[smul_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expS_mul_neg (Z : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • Z) * NormedSpace.exp (t • -Z) = 1 := by
@@ -29,7 +29,7 @@ theorem expS_mul_neg (Z : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
   simp [smul_neg]
 
 /- English proof (translation)
-Establish `h` using `expS_mul_neg (-Z) t`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem expS_neg_mul (Z : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • -Z) * NormedSpace.exp (t • Z) = 1 := by
@@ -56,7 +56,7 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {G : Matrix (Fin n) (Fin n) ℂ} {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Establish `h1 : Xᴴ * G + G * X = 0` using `hX`. Use `show (c • X)ᴴ * G + G * (c • X) = 0`. Rewrite using `[conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, h1, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_smulR (c : ℝ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieOf G) : c • X ∈ lieOf G := by
   have h1 : Xᴴ * G + G * X = 0 := hX
@@ -64,14 +64,14 @@ theorem lie_smulR (c : ℝ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieOf G
   rw [conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, h1, smul_zero]
 
 /- English proof (translation)
-The claim follows from `CCRuleCW.exp_mem_UH G (t • X) (lie_smulR t hX)`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieOf G) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.QuantumDeterminants.UH G :=
   CCRuleCW.exp_mem_UH G (t • X) (lie_smulR t hX)
 
 /- English proof (translation)
-The claim follows from `| [], _ => by show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * G * 1 = G simp | g :: l, h => by rw [List.prod_cons] exact CCRuleCW.UH_mul G _ _ (h g (by simp)) (listProd_mem l fun x hx => h x (by simp [hx]))`.
+A detailed English derivation is pending.
 -/
 theorem listProd_mem : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ g ∈ l, g ∈ Formalism.QuantumDeterminants.UH G) →
     l.prod ∈ Formalism.QuantumDeterminants.UH G
@@ -83,7 +83,7 @@ theorem listProd_mem : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ g ∈ l, 
     exact CCRuleCW.UH_mul G _ _ (h g (by simp)) (listProd_mem l fun x hx => h x (by simp [hx]))
 
 /- English proof (translation)
-The claim follows from `listProd_mem _ fun g hg => by obtain ⟨i, rfl⟩ := (List.mem_ofFn' _ _).1 hg exact exp_mem (hX i) _`.
+A detailed English derivation is pending.
 -/
 theorem expProd_mem {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hX : ∀ i, Xs i ∈ lieOf G)
     (t : Fin k → ℝ) : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ Formalism.QuantumDeterminants.UH G :=
@@ -92,18 +92,18 @@ theorem expProd_mem {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hX : 
     exact exp_mem (hX i) _
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Conclude with `isUnit_of_mul_isUnit_right (h.symm ▸ hG : IsUnit (gᴴ * G * g))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem (hG : IsUnit G) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G) : IsUnit g := by
   have h : gᴴ * G * g = G := hg
   exact isUnit_of_mul_isUnit_right (h.symm ▸ hG : IsUnit (gᴴ * G * g))
 
 /- English proof (translation)
-Establish `h : gᴴ * G * g = G` using `hg`. Establish `hX' : Xᴴ * G + G * X = 0` using `hX`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 (isUnit_of_mem hG hg)`. Establish `h1 : G * g⁻¹ = gᴴ * G` using `by conv_lhs => rw [← h]`. Rewrite using `[Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (g⁻¹)ᴴ * G = G * g` using `by conv_lhs => rw [← h]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← conjTranspose_mul, mul_nonsing_inv _ hd]`. Simplify using the standard rewrite rules. Use `show (g⁻¹ * X * g)ᴴ * G + G * (g⁻¹ * X * g) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = gᴴ * (Xᴴ * G + G * X) * g := by rw [h1, h2]; simp only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX']; simp`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_lie (hG : IsUnit G) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G)
     (hX : X ∈ lieOf G) : g⁻¹ * X * g ∈ lieOf G := by
@@ -123,21 +123,21 @@ theorem conj_mem_lie (hG : IsUnit G) {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g 
     _ = 0 := by rw [hX']; simp
 
 /- English proof (translation)
-Rewrite using `[hπ.1.2 g hg g' hg']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rep_mul (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {g g' : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH G) (hg' : g' ∈ Formalism.QuantumDeterminants.UH G) (w : H) : ρ (g * g') w = ρ g (ρ g' w) := by
   rw [hπ.1.2 g hg g' hg']; rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.exp_conj' _ _ hg, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_conj_inv {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     NormedSpace.exp (t • (g⁻¹ * X * g)) = g⁻¹ * NormedSpace.exp (t • X) * g := by
   rw [← Matrix.exp_conj' _ _ hg, Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Establish `h1` using `hw 1 (fun _ => X) (fun _ => hX)`. Establish `h2 : ContDiff ℝ ∞ fun t : ℝ => fun _ : Fin 1 => t` using `contDiff_pi.2 fun _ => contDiff_id`. Establish `h3 : ContDiff ℝ ∞ fun t : ℝ => ρ (NormedSpace.exp (t • X)) w`. Simplify `h1.comp h2` using `[Function.comp_def]`. Conclude with `(h3.differentiable (by simp) 0).hasDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_dR {w : H} (hw : SmV (lieOf G) ρ w) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieOf G) :
     HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) w) (dR ρ X w) 0 := by
@@ -148,9 +148,9 @@ theorem hasDerivAt_dR {w : H} (hw : SmV (lieOf G) ρ w) {X : Matrix (Fin n) (Fin
   exact (h3.differentiable (by simp) 0).hasDerivAt
 
 /- English proof (translation)
-Establish `hs : ContDiff ℝ ∞ fun p : (Fin k → ℝ) × ℝ => (Fin.snoc p.1 p.2 : Fin (k + 1) → ℝ)`. Use `contDiff_pi.2 fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using contDiff_snd`. Simplify using `only [Fin.snoc_castSucc] fun_prop`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Establish `h1 : ContDiff ℝ ∞ (Function.uncurry fun (t : Fin k → ℝ) (s : ℝ) => F (Fin.snoc t s))` using `hF.comp hs`. Establish `h2` using `ContDiff.fderiv (𝕜 := ℝ) (m := ∞) (n := ∞) (g := fun _ : Fin k → ℝ => (0 : ℝ)) h1 contDiff_const (le_of_eq rfl)`. Conclude with `h2.clm_apply (contDiff_const (c := (1 : ℝ)))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_deriv_snoc {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] {k : ℕ}
     {F : (Fin (k + 1) → ℝ) → E} (hF : ContDiff ℝ ∞ F) :
@@ -167,11 +167,11 @@ theorem contDiff_deriv_snoc {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E
   exact h2.clm_apply (contDiff_const (c := (1 : ℝ)))
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `h1` using `hw (k + 1) (Fin.snoc Xs X) (fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `using hX`. Simplify using `using hXs j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `contDiff_deriv_snoc h1 using 2 with t` and compare the differences between its conclusion and the goal. Establish `h2` using `(((ρ _).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dR hw hX) : HasDerivAt (fun s : ℝ => ρ (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod (ρ (NormedSpace.exp (s • X)) w)) _ 0)`. Use `h2.deriv.symm.trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `s`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show ρ _ (ρ _ w) = _`. Rewrite using `[← rep_mul hπ (expProd_mem hXs t) (exp_mem hX s)]`. Simplify using `[List.ofFn_succ', -List.ofFn_succ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dR_mem (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {w : H} (hw : SmV (lieOf G) ρ w)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieOf G) : SmV (lieOf G) ρ (dR ρ X w) := by
@@ -192,9 +192,9 @@ theorem dR_mem (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH
   simp [List.ofFn_succ', -List.ofFn_succ]
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 hg`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons x l ih`. Rewrite using `[List.map_cons, List.prod_cons, List.prod_cons, Matrix.mul_assoc x, ← ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (l : List (Matrix (Fin n) (Fin n) ℂ)) :
     g * (l.map fun x => g⁻¹ * x * g).prod = l.prod * g := by
@@ -206,9 +206,9 @@ theorem prod_conj {g : Matrix (Fin n) (Fin n) ℂ} (hg : IsUnit g) (l : List (Ma
     simp only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `hu` using `isUnit_of_mem hG hg`. Establish `hY : ∀ i, g⁻¹ * Xs i * g ∈ lieOf G` using `fun i => conj_mem_lie hG hg (hXs i)`. Establish `h1` using `((ρ g).restrictScalars ℝ).contDiff.comp (hw k _ hY)`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `show _ = ρ g _`. Rewrite using `[← rep_mul hπ (expProd_mem hXs t) hg, ← rep_mul hπ hg (expProd_mem hY t), ← prod_conj hu, List.map_ofFn]`. Simplify using `only [exp_conj_inv hu, Function.comp_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_mem (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {w : H} (hw : SmV (lieOf G) ρ w)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G) : SmV (lieOf G) ρ (ρ g w) := by
@@ -223,11 +223,11 @@ theorem rep_mem (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.U
   simp only [exp_conj_inv hu, Function.comp_def]
 
 /- English proof (translation)
-Establish `hu` using `isUnit_of_mem hG hg`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det g).1 hu`. Establish `hY` using `conj_mem_lie hG hg hX`. Establish `h2` using `(((ρ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dR hw hY) : HasDerivAt (fun s : ℝ => ρ g (ρ (NormedSpace.exp (s • (g⁻¹ * X * g))) w)) _ 0)`. Use `Eq.trans ?_ h2.deriv` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `dR`. Use `congr 1`. Use function extensionality and compare the values at `s`. Use `show _ = ρ g (ρ _ w)`. Rewrite using `[← rep_mul hπ hg (exp_mem hY s), ← rep_mul hπ (exp_mem hX s) hg, exp_conj_inv hu]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem dR_rep (hG : IsUnit G) (hπ : IsURepOn (Formalism.QuantumDeterminants.UH G) ρ) {w : H} (hw : SmV (lieOf G) ρ w)
     {g X : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.QuantumDeterminants.UH G) (hX : X ∈ lieOf G) :

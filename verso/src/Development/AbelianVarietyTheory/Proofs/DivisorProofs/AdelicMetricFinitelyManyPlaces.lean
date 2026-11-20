@@ -14,13 +14,13 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Establish `hP : IsProper V.p`. Take `⟨N, j, hj, he⟩` from `V.ar.isProjOver`. Use `isProper_str (𝓞 F) N` as an intermediate fact. Rewrite using `[← he]`. Use `infer_instance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ∀ a : 𝓞 F, ((algebraMap F (AlgebraicClosure F)).comp (algebraMap (𝓞 F) F)) a ∈ e.O`. Introduce `a`. Rewrite using `[e.mem_O, RingHom.comp_apply, e.w_alg]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.adicAbv_coe_le_one (K := F) v (NumberField.HeightOneSpectrum.one_lt_absNorm_nnreal v) a`. Set `φ : 𝓞 F →+* e.O` to `((algebraMap F (AlgebraicClosure F)).comp (algebraMap (𝓞 F) F)).codRestrict e.O.toSubring hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : ValuativeCriterion.Existence V.p`. Establish `h : UniversallyClosed V.p` using `inferInstance`. Rewrite `h` using `[UniversallyClosed.eq_valuativeCriterion]`. Conclude with `h.1`. Establish `hsq : CommSq (z ≫ V.j) (Spec.map (CommRingCat.ofHom (algebraMap e.O (AlgebraicClosure F)))) V.p (spMap φ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, V.pb.w, ← Category.assoc, ← Category.assoc, hz, y.2, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨⟨l⟩⟩` from `hE { R := e.O, K := AlgebraicClosure F, i₁ := z ≫ V.j, i₂ := spMap φ, commSq := hsq }`. Conclude with `⟨l.l, l.fac_left, fun U hU => ((IsLocalRing.closedPoint_mem_iff (R := e.O) (l.l ⁻¹ᵁ U)).1 hU).ge⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Cover.exists_valuationRing_point {F : Type} [Field F] [NumberField F] {Y : Var F} (V : Cover Y)
     {v : HeightOneSpectrum (𝓞 F)} (e : TrueGeo.Ext v) (y : AlgPt Y) (z : Sp (AlgebraicClosure F) ⟶ V.G)
@@ -50,19 +50,17 @@ theorem Cover.exists_valuationRing_point {F : Type} [Field F] [NumberField F] {Y
   exact ⟨l.l, l.fac_left, fun U hU => ((IsLocalRing.closedPoint_mem_iff (R := e.O) (l.l ⁻¹ᵁ U)).1 hU).ge⟩
 
 /- English proof (translation)
-Introduce `F _ _ C Y V A L k hk0 hI y`. Take `⟨r, -, -, -, hfin⟩` from `hI`. Take `⟨z, hz⟩` from `ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_lift_pt V.π y.1`. Use `V.ar.isNoetherian` as an intermediate fact. Establish `hcov : (Set.univ : Set V.X) ⊆ ⋃ i, (L.B.U i : Set V.X)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hx : x ∈ (⨆ i, L.B.U i : V.X.Opens)` using `by rw [L.isLB.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hx`. Conclude with `Set.mem_iUnion.mpr ⟨i, hi⟩`. Take `⟨S, hS⟩` from `isCompact_univ.elim_finite_subcover (fun i => (L.B.U i : Set V.X)) (fun i => (L.B.U i).isOpen) hcov`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `a : L.B.ι → AlgebraicClosure F` to `fun i => valAt z (V.φ (genAt A.D (below y.1)) ^ k * (r (fun _ => i) : V.G.functionField))`. Establish `hB : ∀ i, {v : HeightOneSpectrum (𝓞 F) | a i ≠ 0 ∧ ∃ e : TrueGeo.Ext v, e.w (a i) ≠ 1}.Finite`. Introduce `i`. Distinguish the cases in `h : a i = 0`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.TrueGeo.finite_ext_ne_one F (a i) h).subset fun v hv => hv.2`. Use `(S.finite_toSet.biUnion fun i _ => hB i).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he⟩`. Take `⟨yt, hyt, hU⟩` from `V.exists_valuationRing_point e y z hz`. Take `⟨i, hiS, hi⟩` from `Set.mem_iUnion₂.mp (hS (Set.mem_univ (yt (IsLocalRing.closedPoint e.O))))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h` using `hfin v e y z yt (fun _ => i) hz hyt (hU _ hi)`. Assume the negation of the conclusion as `h2`. Establish `hlog : Real.log (e.w (a i)) = 0`. Distinguish the cases in `h0 : a i = 0`. Simplify using `[h0]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: e.w (a i) = 1`. Assume the negation of the conclusion as `hne`. Conclude with `h2 (Set.mem_iUnion₂.mpr ⟨i, hiS, h0, e, hne⟩)`. Simplify using `[this]`. Establish `h3 : (k : ℝ) * A.lg v e y = 0` using `h.trans hlog`.
-
-Establish `hk : (k : ℝ) ≠ 0` using `by exact_mod_cast hk0`. Conclude with `he ((mul_eq_zero.mp h3).resolve_left hk)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Cover.finite_places_lg_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (V : Cover Y) (A : Adl C Y) (L : HermLB V.p) (k : ℕ), k ≠ 0 → V.Induces A L k → ∀ y : AlgPt Y, {v : HeightOneSpectrum (𝓞 F) | ∃ e : TrueGeo.Ext v, A.lg v e y ≠ 0}.Finite := by
   intro F _ _ C Y V A L k hk0 hI y

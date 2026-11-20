@@ -30,23 +30,23 @@ def SimpLab (φ lab : InvFun O) : Prop :=
 variable {bar q}
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ h` and use `h.linear`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linOnCells_self (φ : InvFun O) : LinOnCells bar q φ φ := fun _ _ _ _ _ _ _ _ h => h.linear
 
 /- English proof (translation)
-Introduce `_ h` and use `h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Subordinate.refl (φ : InvFun O) : Subordinate bar q φ φ := fun _ h => h
 
 /- English proof (translation)
-Introduce `χ h` and use `h₁ χ (h₂ χ h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Subordinate.trans {φ'' φ' φ : InvFun O} (h₁ : Subordinate bar q φ'' φ') (h₂ : Subordinate bar q φ' φ) :
     Subordinate bar q φ'' φ := fun χ h => h₁ χ (h₂ χ h)
 
 /- English proof (translation)
-The claim follows from `h φ (linOnCells_self φ) X hX m γ hγ`.
+A detailed English derivation is pending.
 -/
 theorem Subordinate.linearOn {φ' φ : InvFun O} (h : Subordinate bar q φ' φ) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] [Module.Projective O X] (hX : Module.finrank O X ≤ q) {m : ℕ}
@@ -63,7 +63,7 @@ def zeroFun (O : Type) [CommRing O] : InvFun O where
   zero _ := rfl
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Simplify using `only [InvFun.evalZ, (zeroFun O).eval_eq hr]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 @[simp] theorem zeroFun_evalZ {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
     (β : LinearMap.BilinForm ℤ X) : (zeroFun O).evalZ β = 0 := by
@@ -72,12 +72,12 @@ Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Simplify using `only
   rfl
 
 /- English proof (translation)
-The claim follows from `linOnCells_self _`.
+A detailed English derivation is pending.
 -/
 example : LinOnCells id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := linOnCells_self _
 
 /- English proof (translation)
-The claim follows from `Subordinate.refl _`.
+A detailed English derivation is pending.
 -/
 example : Subordinate id 1 (InvFun.minVal ℤ) (InvFun.minVal ℤ) := Subordinate.refl _
 

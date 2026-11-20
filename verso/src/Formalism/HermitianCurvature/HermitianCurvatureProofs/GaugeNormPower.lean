@@ -13,11 +13,11 @@ def lstN (K m : ℕ) (y : Fin K → ℝ) : List ℝ :=
   List.ofFn fun b : Fin m => if hb : m - 1 - b < K then y ⟨m - 1 - b, hb⟩ else 0
 
 /- English proof (translation)
-Unfold `lstN`. Rewrite using `[List.ofFn_succ]`. Use `congr 1`. Rewrite using `[dif_pos (by omega)]`. Establish `e : (⟨(a : ℕ) + 1 - 1 - ((0 : Fin ((a : ℕ) + 1)) : ℕ), by omega⟩ : Fin K) = a` using `Fin.ext (by simp)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Function.update_self]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Rewrite using `[dif_pos (by simp; omega), dif_pos (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨(a : ℕ) + 1 - 1 - (i.succ : ℕ), by simp; omega⟩ : Fin K) = ⟨(a : ℕ) - 1 - i, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[e, Function.update_of_ne]`. Introduce `h'`. Use `congrArg Fin.val h'` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -42,9 +42,9 @@ theorem lstN_succ (K : ℕ) (a : Fin K) (y : Fin K → ℝ) (t : ℝ) :
     omega
 
 /- English proof (translation)
-Unfold `lstN`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[dif_pos (by omega)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lstN_full (K : ℕ) (z : Fin K → ℝ) : lstN K K z = List.ofFn fun b => z (Fin.rev b) := by
   unfold lstN
@@ -57,7 +57,7 @@ theorem lstN_full (K : ℕ) (z : Fin K → ℝ) : lstN K K z = List.ofFn fun b =
   omega
 
 /- English proof (translation)
-The claim follows from `| [], h => h | _ :: ys, h => cutWord_plusW ys (cutWord_tail h)`.
+A detailed English derivation is pending.
 -/
 theorem cutWord_plusW {P : M.Par} {l0 : ℕ} {w : List C.Letter} :
     ∀ ys : List ℝ, KB.CutWord P l0 (KB.plusW ys w) → KB.CutWord P l0 w
@@ -79,7 +79,7 @@ def aPIter {V : Type} [AddCommGroup V] [Module ℂ V] {r : ℕ} (L : R.LevelData
   | y :: ys, Ψ => (TL.aP L (y : ℂ)).1 (aPIter L ys Ψ)
 
 /- English proof (translation)
-The claim follows from `| [] => ⟨hF0, hΨ⟩ | y :: ys => by obtain ⟨h1, h2⟩ := aaIter_rad hRA P Bs X μ L st l0 hD hF0 hΨ ys obtain ⟨h3, h4⟩ := hRA Wp Wq P Bs X μ L st l0 y hD _ h1 exact ⟨h3, h4 _ h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem aaIter_rad (hRA : RadAATop) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp Wq)
     (X : Q.ActualOps P.k P.r Bs.z Bs.z' Bs.π Bs.π') (μ : Measure (Mt P.k P.r))
@@ -95,7 +95,7 @@ theorem aaIter_rad (hRA : RadAATop) (P : M.Par) (Bs : B.RealPlaceData P.k P.r Wp
     exact ⟨h3, h4 _ h2⟩
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | y :: ys, hc => by have ih := rad_plusW hWS P p X μ L st hD w Φ e ys (cutWord_tail hc) have h1 := rad_plus hWS P p X μ L st hD (KB.plusW ys w) y hc Φ (KB.firstSt ys e) exact h1.trans (congrArg (fun Ψ => (TL.aP L (y : ℂ)).1 Ψ) ih)`.
+A detailed English derivation is pending.
 -/
 theorem rad_plusW (hWS : TL.WordStep) (P : M.Par) (p : KB.Pl P Wp Wq)
     (X : Q.ActualOps P.k P.r p.T.base.z p.T.base.z' p.T.base.π p.T.base.π') (μ : Measure (Mt P.k P.r))
@@ -122,21 +122,21 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.P.PBN
 
 /- English proof (translation)
-Introduce `hWS hRA hPT hDC Wp Wq _ _ _ _ _ _ P p F s w h t K grid e Cb hCb hs hloc hF hgrid hcut`. Take `⟨X, μ, L, st, hD, hTL⟩` from `p.hΘ`. Establish `hcw : KB.CutWord P p.l0 w` using `cutWord_plusW _ (hcut fun _ => 0)`. Take `⟨F0, hF0, hF0eq, hV0⟩` from `Formalism.FourierDecayAlt.P.theta_compact_support Wp Wq P p F w e Cb hCb hF hcw`. Take `⟨Φ, hΦ⟩` from `radExists p hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΨ` using `isRadOf_congr p.T.base (hTL w hcw F hF Φ hΦ e) hF0eq`. Establish `hIt` using `aaIter_rad hRA P p.T.base X μ L st p.l0 hD hF0 hΨ`. Establish `hVit : ∀ ys : List ℝ, KB.CutWord P p.l0 (KB.plusW ys w) → p.V (aaIter p.T.base F0 ys) (h ++ [(s, t)]) = p.V (p.Θ.Θ (KB.plusW ys w) (KB.firstSt ys e) F) (h ++ [(s, t)])`. Introduce `ys hc`. Take `⟨Fn, hFn, hFneq, hVn⟩` from `Formalism.FourierDecayAlt.P.theta_compact_support Wp Wq P p F (KB.plusW ys w) (KB.firstSt ys e) Cb hCb hF hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hVn]`. Establish `hrad` using `isRadOf_congr p.T.base (hTL (KB.plusW ys w) hc F hF Φ hΦ (KB.firstSt ys e)) hFneq`. Rewrite `hrad` using `[rad_plusW hWS P p X μ L st hD w Φ e ys hc]`. Conclude with `vecV_eq_of_rad hDC p (hIt ys).1 hFn (hIt ys).2 hrad _`. Use `set W : ℕ → (Fin K → ℝ) → (Wq →L[ℂ] Wp) := fun m y => p.V (aaIter p.T.base F0 (lstN K m y)) (h ++ [(s, t)]) with hW`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hPS : F7.PolyStep K (D.ptSize h) (fun _ => ((-1) ^ (s - 1) / t : ℂ)) W`. Introduce `a y`. Take `⟨c, hc, hpoly⟩` from `hPT Wp Wq P p (aaIter p.T.base F0 (lstN K a y)) s h t hs hloc (hIt _).1`. Use `⟨c, hc, fun t' => ?_⟩` and prove the remaining obligations. Simplify using `only [hW]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lstN_succ]`. Conclude with `hpoly t'`. Establish `hinj : ∀ a, Function.Injective (fun i => grid (Fin.rev a) i)` using `fun a => hgrid _`. Establish `hE` using `Formalism.FourierDecayAlt.P.extract_K_bound (Wq →L[ℂ] Wp) K (D.ptSize h) (fun _ => ((-1) ^ (s - 1) / t : ℂ)) W (fun a => grid (Fin.rev a)) hPS hinj (fun _ => 0)`. Rewrite `hE` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hW0 : W 0 (fun _ => 0) = p.V (p.Θ.Θ w e F) (h ++ [(s, t)])`. Simplify using `only [hW, lstN, List.ofFn_zero, aaIter]`. Rewrite using `[hV0]`. Rewrite `hE` using `[hW0]`. Rewrite using `[hE]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Fintype.sum_equiv ((Fin.revPerm).arrowCongr (Equiv.refl _)) _ _ (fun n => ?_)` and prove the remaining obligations. Simplify using `only [hW]`. Rewrite using `[lstN_full]`. Establish `e1 : (fun b : Fin K => grid (Fin.rev (Fin.rev b)) (n (Fin.rev b))) = fun b => grid b ((Fin.revPerm.arrowCongr (Equiv.refl (Fin (D.ptSize h + 1)))) n b)`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Equiv.arrowCongr_apply, Fin.revPerm]`. Establish `e2 : (∏ a : Fin K, F7.lagCo (grid (Fin.rev a)) (n a)) = ∏ a : Fin K, F7.lagCo (grid a) ((Fin.revPerm.arrowCongr (Equiv.refl (Fin (D.ptSize h + 1)))) n a)`. Use `Fintype.prod_equiv Fin.revPerm _ _ (fun a => ?_)` and prove the remaining obligations. Simplify using `[Equiv.arrowCongr_apply, Fin.revPerm]`. Rewrite using `[e1, e2, hVit _ (hcut _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_top_of_parts : PBN.DegTopOfParts := by
   intro hWS hRA hPT hDC Wp Wq _ _ _ _ _ _ P p F s w h t K grid e Cb hCb hs hloc hF hgrid hcut

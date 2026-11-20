@@ -7,17 +7,17 @@ open IsLocalRing GlobalTheory.Poinc GlobalTheory.UT
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `O _ bar q s W A _ _ Φ y N hN κ c V' _ _ io e x hx j`. Establish `hinj : Function.Injective (fun nu : Fin s → Φ.X y => κ + N • nu)`. Introduce `a b h`. Establish `h1 : N • a = N • b` using `add_left_cancel h`. Use function extensionality and compare the values at `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : (N : ℤ) • a v = (N : ℤ) • b v`. Rewrite using `[natCast_zsmul, natCast_zsmul]`. Conclude with `congrFun h1 v`. Conclude with `smul_right_injective (Φ.X y) (by omega : (N : ℤ) ≠ 0) h2`. Take `⟨N', -, -, -, hx⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S₀, hS₀⟩` from `hx j`. Establish `hF : ((fun nu : Fin s → Φ.X y => κ + N • nu) ⁻¹' {mu | True ∧ ∑ i, qW W (Φ.δ y i) mu < (j : ℤ)}).Finite` using `(PreModel.low_finite Φ y (fun _ => True) j).preimage hinj.injOn`. Use `⟨(S₀ ∪ hF.toFinset).image (fun nu => κ + N • nu), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `mu hmu v`. Take `⟨nu, -, rfl⟩` from `Finset.mem_image.1 hmu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨nu v, rfl⟩`. Introduce `mu hmu hn choose nu hnu using hmu`. Establish `e1 : mu = κ + N • nu` using `funext hnu`. Assume the negation of the conclusion as `hlt`. Use `hn (Finset.mem_image.2 ⟨nu, Finset.mem_union_right _ ?_, e1.symm⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Conclude with `⟨trivial, by show ∑ i, qW W (Φ.δ y i) (κ + N • nu) < _; rw [← e1]; omega⟩`. Establish `h` using `Submodule.smul_mono le_rfl (le_top : N' ≤ ⊤) (hS₀ (S₀ ∪ hF.toFinset) Finset.subset_union_left)`. Rewrite `h` using `[smul_eq_mul, Ideal.mul_top, ← Finset.mul_sum]`. Rewrite using `[Finset.sum_image hinj.injOn, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h'` using `Ideal.mul_mem_left _ ((e⁻¹ : V'ˣ) : V') h`. Rewrite `h'` using `[mul_sub, Units.inv_mul_cancel_left]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isClassSum_of_sumI : ∀ (O : Type) [CommRing O] (bar : O → O) (q s : ℕ) (W : Matrix (Fin s) (Fin s) ℤ) (A : Type) [CommRing A] [IsLocalRing A] (Φ : VPre bar q W A) (y : Φ.Y) (N : ℕ), 1 ≤ N → ∀ (κ : Fin s → Φ.X y) (c : Φ.Q) (V' : Type) [CommRing V'] [IsLocalRing V'] (io : Φ.V y →+* V') (e : V'ˣ) (x : V'), SumI (maximalIdeal V') (fun nu : Fin s → Φ.X y => (e : V') * io (Φ.term y (κ + N • nu) c)) x → Φ.IsClassSum y N κ c io (((e⁻¹ : V'ˣ) : V') * x) := by
   intro O _ bar q s W A _ _ Φ y N hN κ c V' _ _ io e x hx j

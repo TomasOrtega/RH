@@ -16,7 +16,7 @@ section Identity
 variable {A B : Rep.{u} k G} [IsDiscreteRep A] [IsDiscreteRep B]
 
 /- English proof (translation)
-Use extensionality with `n x : 3`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem cochainsMapAlong_id_eq_cochainsMap (f : A ⟶ B) :
     cochainsMapAlong (MonoidHom.id G) continuous_id f = cochainsMap f := by
@@ -24,7 +24,7 @@ theorem cochainsMapAlong_id_eq_cochainsMap (f : A ⟶ B) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cohomologyMapAlong, cochainsMapAlong_id_eq_cochainsMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMapAlong_id_eq_cohomologyMap (f : A ⟶ B) (n : ℕ) :
     cohomologyMapAlong (MonoidHom.id G) continuous_id f n = cohomologyMap f n := by
@@ -46,7 +46,7 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap]`. Conclude with `cohomologyRes_naturality A g S n`. Use the proof step `@[reassoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_comp_cohomologyRes {A' : Rep.{u} k G} [IsDiscreteRep A'] (g : A ⟶ A')
     (S : Subgroup G) (n : ℕ) :
@@ -57,7 +57,7 @@ theorem cohomologyMap_comp_cohomologyRes {A' : Rep.{u} k G} [IsDiscreteRep A'] (
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `cohomologyRes_comp_homologyMap_cochainsComplexι A S n`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyRes_comp_cohomologyToGroupCohomology (S : Subgroup G) (n : ℕ) :
     cohomologyRes A S n ≫ cohomologyToGroupCohomology (Rep.res S.subtype A) n =
@@ -76,7 +76,7 @@ instance isDiscreteRep_quotientToInvariantsFunctor_obj :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `cohomologyInfl_comp_homologyMap_cochainsComplexι A N n`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyInfl_comp_cohomologyToGroupCohomology (n : ℕ) :
     cohomologyInfl A N n ≫ cohomologyToGroupCohomology A n =

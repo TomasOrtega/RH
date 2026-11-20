@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.TwistedOperators.OmSplitHalves
 namespace GlobalTheory.HeckeMember
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.HkIntegral.heckeInt, GlobalTheory.HeckeEx.heckeTransform_of_pointLaws (GlobalTheory.HeckePointLaw.heckePointLaws_of_transport GlobalTheory.ThetaTransport.thetaTransportLaw), GlobalTheory.HeckeReadProof.heckeReadTie GlobalTheory.SplitLinear.splitLinearModel GlobalThe …`.
+Supply the required witnesses or components.
 -/
 theorem heckeInt_transform_readTie :
     GlobalTheory.IndefiniteRowSideFullHecke.UnusedSlot39.HeckeInt ∧ GlobalTheory.IndefiniteRowSideFullHecke.SplitOffDetection.HeckeTransform ∧ GlobalTheory.HeckeSupSt.HeckeReadTie :=

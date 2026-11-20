@@ -19,7 +19,7 @@ set_option linter.unusedSectionVars false
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[aeval_def]`. Use `congr 1`. Conclude with `RingHom.ext_int _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem aeval_eq_eval₂ {F : Type*} [CommRing F] {inst : Algebra ℤ F} (y : (Σ k, ι k) → F) (f : MRing ι) :
     @aeval ℤ F _ _ _ inst y f = eval₂ (Int.castRingHom F) y f := by
@@ -31,7 +31,7 @@ def genericPt (W : Ideal (MRing ι)) [W.IsPrime] : (Σ k, ι k) → FractionRing
   fun p ↦ algebraMap (MRing ι ⧸ W) _ (Ideal.Quotient.mk W (X p))
 
 /- English proof (translation)
-Establish `h : (aeval (genericPt W) : MRing ι →ₐ[ℤ] _).toRingHom = (algebraMap (MRing ι ⧸ W) (FractionRing (MRing ι ⧸ W))).comp (Ideal.Quotient.mk W)` using `ringHom_ext (fun n ↦ by simp) (fun p ↦ by simp [genericPt])`. Conclude with `RingHom.congr_fun h f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_genericPt (W : Ideal (MRing ι)) [W.IsPrime] (f : MRing ι) :
     aeval (genericPt W) f = algebraMap (MRing ι ⧸ W) _ (Ideal.Quotient.mk W f) := by
@@ -41,7 +41,7 @@ theorem aeval_genericPt (W : Ideal (MRing ι)) [W.IsPrime] (f : MRing ι) :
   exact RingHom.congr_fun h f
 
 /- English proof (translation)
-Rewrite using `[aeval_genericPt, ← Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(IsFractionRing.injective (MRing ι ⧸ W) (FractionRing (MRing ι ⧸ W))).eq_iff' (map_zero _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_genericPt_eq_zero_iff (W : Ideal (MRing ι)) [W.IsPrime] (f : MRing ι) :
     aeval (genericPt W) f = 0 ↔ f ∈ W := by
@@ -49,15 +49,13 @@ theorem aeval_genericPt_eq_zero_iff (W : Ideal (MRing ι)) [W.IsPrime] (f : MRin
   exact (IsFractionRing.injective (MRing ι ⧸ W) (FractionRing (MRing ι ⧸ W))).eq_iff' (map_zero _)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.eq_sum_multihomogeneous_components f]`. Use `Ideal.sum_mem _ fun b _ ↦ ?_` and prove the remaining obligations. Establish `h1` using `ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.i2comp_mem (CoordinateConeArithVar.isMultiHomogIdeal _) b hf`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[mCoordIdeal, RingHom.mem_ker, ProjLine.mConeMap_eq_of_isMultiHomog _ (ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_i2comp b f)]`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `(aeval_genericPt_eq_zero_iff W _).1 (by`. Establish `h'` using `MvPolynomial.C_eq_zero.1 h`. Rewrite `h'`, the goal using `[aeval_eq_eval₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h')`. Conclude with `absurd h (Finset.prod_ne_zero_iff.2 fun k _ ↦ pow_ne_zero _ (MvPolynomial.X_ne_zero k))`. Take `⟨S, hS, hWS⟩` from `hW`. Combine the equalities or inequalities in the displayed calculation. Take `⟨a, ha⟩` from `hS f hf`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfW : f ∈ W` using `hWS ▸ Ideal.subset_span hf`. Use `show f ∈ RingHom.ker (mConeMap (genericPt W))`. Establish `h0` using `(aeval_genericPt_eq_zero_iff W f).2 hfW`. Rewrite using `[RingHom.mem_ker, ProjLine.mConeMap_eq_of_isMultiHomog _ ha]`. Conclude with `mul_eq_zero_of_left (MvPolynomial.C_eq_zero.2 (by`.
-
-Rewrite `h0`, the goal using `[aeval_eq_eval₂]`. Conclude with `h0)) _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCoordIdeal_genericPt (W : Ideal (MRing ι)) [W.IsPrime] (hW : IsMultiHomogIdeal W) :
     mCoordIdeal (genericPt W) = W := by
@@ -87,7 +85,7 @@ theorem mCoordIdeal_genericPt (W : Ideal (MRing ι)) [W.IsPrime] (hW : IsMultiHo
           exact h0)) _
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap ℤ (FractionRing (MRing ι ⧸ W)))`. Establish `e : algebraMap ℤ (FractionRing (MRing ι ⧸ W)) = (algebraMap (MRing ι ⧸ W) (FractionRing (MRing ι ⧸ W))).comp (algebraMap ℤ (MRing ι ⧸ W))` using `RingHom.ext_int _ _`. Rewrite using `[e]`. Conclude with `(IsFractionRing.injective (MRing ι ⧸ W) (FractionRing (MRing ι ⧸ W))).comp (CoordinateConeArithVar.algebraMap_injective W hH)`. Conclude with `charZero_of_injective_algebraMap hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charZero_fractionRing (W : Ideal (MRing ι)) [W.IsPrime] (hH : IsHorizontal W) :
     CharZero (FractionRing (MRing ι ⧸ W)) := by
@@ -104,13 +102,11 @@ end CurvePointsFinite
 open CurvePointsFinite in
 
 /- English proof (translation)
-Introduce `K _ ι _ W hW`. Establish `: W.IsPrime` using `hW.2.1.1`. Use `charZero_fractionRing W hW.2.2.1` as an intermediate fact. Establish `hEq` using `mCoordIdeal_genericPt W hW.2.1.2.1`. Establish `hP : IsArithVar (mCoordIdeal (genericPt W)) 1` using `by rw [hEq]; exact hW`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg` using `IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.degC_eq hP`. Rewrite `hdeg` using `[hEq, GroundTheory.Heights₂.Heights.degC_eq_card_projPts]`. Use `IndefiniteRowSideFullHecke.HeightsSet.CoordCurveDegree.isAlgebraic_blockFnField hP` as an intermediate fact. Use `set L := ReciprocityTheory.ChartRestriction.G.AI.I4.blockFnField (genericPt W)`. Use `set S : Set (FractionRing (MRing ι ⧸ W)) := {t | ∃ p q : Σ k, ι k, p.1 = q.1 ∧ t = genericPt W p / genericPt W q}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSfin : S.Finite` using `(Set.finite_range fun pq : (Σ k, ι k) × (Σ k, ι k) ↦ genericPt W pq.1 / genericPt W pq.2).subset fun t ⟨p, q, _, ht⟩ ↦ ⟨(p, q), ht.symm⟩`. Establish `: Finite S` using `hSfin.to_subtype`. Establish `hint : ∀ t ∈ S, IsIntegral ℚ t` using `fun t ht ↦ ((Algebra.IsAlgebraic.isAlgebraic (⟨t, IntermediateField.subset_adjoin ℚ S ht⟩ : L)).isIntegral).map L.val`. Establish `: FiniteDimensional ℚ L` using `IntermediateField.finiteDimensional_adjoin hint`. Establish `hpos : 0 < Nat.card (L →ₐ[ℚ] ℂ)` using `Nat.card_pos_iff.2 ⟨⟨IsAlgClosed.lift⟩, inferInstance⟩`.
-
-Conclude with `(Nat.card_pos_iff.1 (hdeg ▸ hpos)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem CurvePointsFinite.proof : CurvePointsFinite.Statement := by
   intro K _ ι _ W hW

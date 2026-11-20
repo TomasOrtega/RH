@@ -9,7 +9,7 @@ open Module Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formali
   Formalism.MainNotions.RamifiedCoefficientChains.S9.ShB TensorProduct
 
 /- English proof (translation)
-Establish `hB : l ^ B = l ^ (B - A) * l ^ A` using `by rw [← pow_add, Nat.sub_add_cancel hAB]`. Rewrite `h` using `[hB, ← mul_assoc]`. Establish `hx : x = c * l ^ (B - A)` using `mul_right_cancel₀ (pow_ne_zero A hl) h`. Take `⟨v, rfl⟩` from `hc`. Conclude with `⟨↑v⁻¹, by rw [hx, mul_comm (v : O), mul_assoc, Units.mul_inv, mul_one]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvd_of_mul_pow {O : Type} [CommRing O] [IsDomain O] (x c l : O) (hl : l ≠ 0) (hc : IsUnit c)
     (A B : ℕ) (hAB : A ≤ B) (h : x * l ^ A = c * l ^ B) : x ∣ l ^ (B - A) := by
@@ -31,9 +31,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use `W.EE_complete` as an intermediate fact. Take `⟨u, hu⟩` from `hπu`. Establish `hj` using `(Ideal.mem_jacobson_bot.mp (IsAdicComplete.le_jacobson_bot _ (Ideal.mem_span_singleton_self ((PD.p : ℕ) : W.EE)))) (↑u⁻¹ : W.EE)`. Establish `: algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W) = (u : W.EE) * (((PD.p : ℕ) : W.EE) * ↑u⁻¹ + 1)`. Rewrite using `[Formalism.MainNotions.LiftingTheory.qp, map_add, ← hu, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, mul_one, mul_comm ((PD.p : ℕ) : W.EE), ← mul_assoc, Units.mul_inv, one_mul, add_comm]`. Rewrite using `[this]`. Conclude with `u.isUnit.mul hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qp_unit (hπu : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) :
     IsUnit (algebraMap (LetA O n) W.EE (Formalism.MainNotions.LiftingTheory.qp W)) := by
@@ -62,13 +62,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Establish `hfin1 : finrank K₀ K = 1`. Use `(LinearEquiv.ofBijective (Algebra.linearMap K₀ K) hA.1).finrank_eq` as an intermediate fact. Rewrite `this` using `[Module.finrank_self]`. Conclude with `this.symm`. Take `⟨-, -, h9'⟩` from `h9 T hT hA.2.1 hA.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hring, -⟩` from `h9' hfin1`. Take `⟨w, hw⟩` from `hring.2.2.1`. Take `⟨w', hw'⟩` from `hring.2.2.2.2.1`. Use `⟨?_, ?_, w', ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun hw 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LocWach.π₀, Pi.mul_apply, Pi.pow_apply, letπ] at h1`. Rewrite using `[h1, map_mul, map_pow, PowerSeries.constantCoeff_X, zero_pow (by omega), mul_zero]`. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `((w.isUnit.map _)).mul (W.EE_π.pow _)`. Rewrite using `[hw']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uniformizer_unit_and_q_factor (h9 : Formalism.MainNotions.DeltaInvariantLattices.P9W W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W) (T : LocLat G Qp LL O)
     (hT : IsCrys PD T.ρ) (hp : 2 ≤ PD.p) :
@@ -94,37 +94,35 @@ theorem uniformizer_unit_and_q_factor (h9 : Formalism.MainNotions.DeltaInvariant
     simp [Formalism.MainNotions.DeltaInvariantLattices.Eat, Formalism.MainNotions.LiftingTheory.qp]
 
 /- English proof (translation)
-Establish `hinjπ : ∀ y : W.DD T, W.π₀ • y = 0 → y = 0`. Introduce `y hy`. Rewrite `hy` using `[← algebraMap_smul W.EE W.π₀ y]`. Take `⟨u, hu⟩` from `hπu`. Use `congrArg (fun z => (↑u⁻¹ : W.EE) • z) hy` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [smul_zero, ← hu, smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this`. Establish `hex : ∀ x : ↥(NDl W T i), ∃! a : Fin r → PowerSeries O, (x : W.DD T) = ∑ k, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a k) • e k` using `fun x => he.2 x x.2.1 x.2.2`. Set `coord : ↥(NDl W T i) → Fin r → PowerSeries O` to `fun x => (hex x).exists.choose`. Establish `hcoord : ∀ x : ↥(NDl W T i), (x : W.DD T) = ∑ k, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (coord x k) • e k` using `fun x => (hex x).exists.choose_spec`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huniq : ∀ (x : ↥(NDl W T i)) (a : Fin r → PowerSeries O), (x : W.DD T) = ∑ k, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a k) • e k → coord x = a` using `fun x a ha => (hex x).unique (hcoord x) ha`. Set `red : ↥(NDl W T i) →ₗ[O] (Fin r → O)` to `{ toFun := fun x k => PowerSeries.constantCoeff (coord x k) map_add' := by`. Introduce `x y`. Establish `h` using `huniq (x + y) (coord x + coord y) (by`. Rewrite using `[Submodule.coe_add, hcoord x, hcoord y, ← Finset.sum_add_distrib]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.add_apply, ShB.evaluation_add W hz, add_smul])`. Use function extensionality and compare the values at `k`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_smul' := by`. Introduce `c x`. Establish `h` using `huniq (c • x) (fun k => PowerSeries.C c * coord x k) (by`. Rewrite using `[Submodule.coe_smul, hcoord x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[ShB.evalZero_mul W hz, ShB.evalZero_C, mul_smul, algebraMap_smul])`. Use function extensionality and compare the values at `k`. Rewrite using `[h]`. Simplify using `}`. Use `⟨red, ⟨?_, ?_⟩, fun x a ha => by` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Use `show PowerSeries.constantCoeff (coord x k) = _`. Rewrite using `[huniq x a ha]⟩`. Introduce `lam`. Establish `hmem : (∑ k, lam k • e k : W.DD T) ∈ NDl W T i` using `Submodule.sum_mem _ fun k _ => (NDl W T i).smul_mem (lam k) (show e k ∈ NDl W T i from ⟨(he.1 k).1, (he.1 k).2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Establish `h` using `huniq ⟨_, hmem⟩ (fun k => PowerSeries.C (lam k)) (by show (∑ k, lam k • e k : W.DD T) = _`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ShB.evalZero_C, algebraMap_smul])`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `show PowerSeries.constantCoeff (coord ⟨_, hmem⟩ k) = lam k`. Rewrite using `[h]`. Simplify using the standard rewrite rules. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx0`. Establish `hdv : ∀ k, ∃ a', coord x k = PowerSeries.X * a'` using `fun k => PowerSeries.X_dvd_iff.mpr (congrFun hx0 k)`. Use `choose a' ha' using hdv`. Set `y : W.DD T` to `∑ k, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (a' k) • e k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxy : (x : W.DD T) = W.π₀ • y`. Rewrite using `[hcoord x, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ha' k, ShB.evalZero_mul W hz, ShB.evalZero_X_eq_pi0 W hz, mul_smul]`. Establish `hyN : y ∈ W.N T` using `Submodule.sum_mem _ fun k _ => (W.N T).smul_mem _ (he.1 k).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyl : (letE i : LetA O n) • y = y`. Simplify using `only [y, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, (he.1 k).2.1]`. Establish `hyΔ : ∀ δ ∈ W.DelF, W.γD T δ y = y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce `δ hδ`. Establish `h2` using `Formalism.MainNotions.RamifiedCoefficientChains.S9.NinQ.γD_smulA W T δ W.π₀ y`. Rewrite `h2` using `[uniformizer_mem_delta_invariants W δ hδ, ← hxy, x.2.2.2 δ hδ, hxy]`. Establish `h1 : W.π₀ • (W.γD T δ y - y) = 0` using `by rw [smul_sub, ← h2, sub_self]`. Conclude with `sub_eq_zero.mp (hinjπ _ h1)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨y, ⟨hyN, hyl, hyΔ⟩, by simp [hxy]⟩`. Introduce and unpack `⟨y, hy, hxy⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply] at hxy`. Establish `h` using `huniq x (fun k => PowerSeries.X * coord ⟨y, hy⟩ k) (by`. Rewrite `hxy` using `[Submodule.subtype_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hy' : y = ∑ k, Formalism.MainNotions.RamifiedCoefficientChains.Sh.at0 W (coord ⟨y, hy⟩ k) • e k` using `hcoord ⟨y, hy⟩`. Rewrite using `[← hxy]`. Use `conv_lhs => rw [hy']`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[ShB.evalZero_mul W hz, ShB.evalZero_X_eq_pi0 W hz, mul_smul])`. Use function extensionality and compare the values at `k`. Use `show PowerSeries.constantCoeff (coord x k) = 0`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem red_exists (T : LocLat G Qp LL O) (i : ZMod n) (hz : PowerSeries.constantCoeff W.π₀₁ = 0)
     (hπu : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) {r : ℕ} (e : Fin r → W.DD T)
@@ -272,15 +270,15 @@ def DetAlg : Prop :=
             (Matrix.of fun l k => red (cols k) l).det ∣ ((PD.p : ℕ) : O) ^ V
 
 /- English proof (translation)
-Establish `hl11 : (11 : ℝ) ≤ (PD.p : ℝ)` using `by exact_mod_cast hS.2.1`. Establish `hl1 : (0 : ℝ) < (PD.p : ℝ) - 1` using `by linarith`. Establish `hbi : b i ≤ Finset.univ.sup b` using `Finset.le_sup (Finset.mem_univ i)`. Establish `hX : ((1 : ℕ) + (b i + S + η : ℕ) : ℝ) ≤ ((hpar n b S + η : ℕ) : ℝ) + 1`. Unfold `hpar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Establish `: (b i : ℝ) ≤ (Finset.univ.sup b : ℕ)` using `by exact_mod_cast hbi`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcD1 : (1 : ℝ) ≤ cD PD.p (hpar n b S + η)`. Unfold `cD`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `: 0 ≤ (((hpar n b S + η : ℕ) : ℝ) + 1) / ((PD.p : ℝ) - 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hx : ((1 : ℕ) + (b i + S + η : ℕ) : ℝ) / ((PD.p : ℝ) - 1) + 1 ≤ cD PD.p (hpar n b S + η)`. Unfold `cD`. Use `div_le_div_of_nonneg_right hX hl1.le` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfl1 : 1 ≤ ⌊cD PD.p (hpar n b S + η)⌋₊` using `Nat.le_floor (by exact_mod_cast hcD1)`. Establish `hlt : cD PD.p (hpar n b S + η) < (⌊cD PD.p (hpar n b S + η)⌋₊ : ℝ) + 1` using `Nat.lt_floor_add_one _`. Rewrite using `[Nat.ceil_le]`. Establish `: ((⌊cD PD.p (hpar n b S + η)⌋₊ : ℝ) + 1) ≤ ((2 * ⌊cD PD.p (hpar n b S + η)⌋₊ : ℕ) : ℝ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Establish `: (1 : ℝ) ≤ (⌊cD PD.p (hpar n b S + η)⌋₊ : ℝ)` using `by exact_mod_cast hfl1`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sigma_le {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T₂.L} {b : ZMod n → ℕ} {S η m : ℕ}
     (hS : SetCS W d T₁ T₂ F b S η m) (i : ZMod n) :
@@ -310,9 +308,9 @@ theorem sigma_le {d : ℕ} {T₁ T₂ : LocLat G Qp LL O} {F : LatHom T₁.L T�
   linarith
 
 /- English proof (translation)
-Introduce `d T₁ T₂ F b S η m hS i hi`. Take `⟨e', m', u, had⟩` from `hA d T₁ T₂ F b S η m hS i hi`. Use `set σ := ⌈((1 : ℕ) + (b i + S + η : ℕ) : ℝ) / ((PD.p : ℝ) - 1) + 1⌉₊ with hσ`. Establish `hT : IsCrys PD T₂.ρ` using `hS.2.2.2.2.2.1.2.1`. Take `⟨Z, Z', R, hZ0, -, hZk⟩` from `hZ hS.1 hS.2.1 1 (b i + S + η) σ (Or.inl ⟨rfl, le_rfl, by rw [hσ]⟩) T₂ hT (i - 1) _ e' had.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hZP : ZProps W T₂ i (b i + S + η) σ e' had.1 Z` using `⟨hZ0, fun k ζ hζ d' hd' => (hZk k).2 ζ hζ d' hd'⟩`. Conclude with `hb d T₁ T₂ F b S η m hS i hi e' m' u had σ Z (sigma_le W hS i) hZ0 (fun j hmr => ha d T₁ T₂ F b S η m hS i hi e' m' u had σ Z hZP j hmr)`.
+A detailed English derivation is pending.
 -/
 theorem detColsE_of (hZ : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ZTool W) (hA : AdaptBas W) (ha : GMem W) (hb : DetAlg W) :
     DetColsE W := by
@@ -328,7 +326,7 @@ theorem detColsE_of (hZ : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ZTo
     (fun j hmr => ha d T₁ T₂ F b S η m hS i hi e' m' u had σ Z hZP j hmr)
 
 /- English proof (translation)
-The claim follows from `lemmaDN_of_detE W (detColsE_of W hZ hA ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem lemmaDN_of_S1E (hZ : Formalism.MainNotions.RamifiedCoefficientChains.Sh.ZTool W) (hA : AdaptBas W) (ha : GMem W) (hb : DetAlg W) :
     LemmaDN W :=

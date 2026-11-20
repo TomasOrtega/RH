@@ -20,7 +20,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `funext fun x => integral_const_mul a _`.
+A detailed English derivation is pending.
 -/
 theorem res_smul_twisted_operators {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V.rank) (Fin r) D.host.E}
     {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E} {μ : Measure (Mx D W.rank r)} {𝓨 : Set (Mx D W.rank r)}
@@ -29,17 +29,15 @@ theorem res_smul_twisted_operators {V V' W : HSp D} {r : ℕ} {C : Matrix (Fin V
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC hKB e he`. Establish `hR` using `GlobalTheory.T.thetaRestrictIsotropicQuotient_wittTower_properties D V V' W r C B hs ψ hψ μ 𝓨 hμ`. Establish `hth : ∀ {f : WO V W → ℂ}, IsThetaFunO ψ V W f → ∀ u, IsThetaFunO ψ V W (heisO ψ V W u f)` using `fun hf u => GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hf u`. Take `⟨f₁, hf₁, hres₁⟩` from `hR.2`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ', hℓ', s, hs', hℓs⟩ : ∃ ℓ' : (WO V' W → ℂ) →ₗ[ℂ] ℂ, (∀ u, IsHalf (cA D e) u → ∀ f, IsThetaFunO ψ V' W f → ℓ' (heisO ψ V' W u f) = ℓ' f) ∧ ∃ s, IsHalf e s ∧ ℓ' (heisO ψ V' W s (res V V' W C B μ 𝓨 f₁)) ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hres₁ (GlobalTheory.ThetaStalk.eq_zero_of_invariant_forms D ψ hψ V' W e he _ (hR.1 f₁ hf₁).2.1 h)`. Establish `hf₂ : IsThetaFunO ψ V W (heisO ψ V W (midPart V V' W B s) f₁)` using `hth hf₁ _`. Establish `h0 : ℓ' (res V V' W C B μ 𝓨 (heisO ψ V W (midPart V V' W B s) f₁)) ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hR.1 f₁ hf₁).2.2.1 s]`. Conclude with `hℓs`. Use `⟨ℓ', fun u hu f hf => hℓ' u hu f hf, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨L, Kc, hL, hKc, hz, hloc⟩` from `GlobalTheory.T.thetaRestriction_complement_translates_locallyConstant D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC hKB e he _ hf₂`. Take `⟨L', hL', hL'L, hsep⟩` from `GlobalTheory.T.exists_open_subgroup_half_characters_separate D ψ hψ W r e he L hL`. Establish `hφ` using `GlobalTheory.T.eq_zero_of_integral_char_eq_zero_of_periodic_open (haarHalf (cA D e) W.rank r) (fun (a : halfMx e W.rank r) (t : halfMx (cA D e) W.rank r) => ψ (halfSympl W (a : Mx D W.rank r) (t : Mx D W.rank r))) (fun a s t => by simp only [AddSubgroup.coe_add, halfSympl_add_rig …`. Rewrite using `[← hall _ (hth hf₂ (isoPart V W C (a : Mx D W.rank r)))]`. Unfold `avgForm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[GlobalTheory.ThetaStalk.heisO_comm (restEmb V W K (t : Mx D W.rank r)) (isoPart V W C (a : Mx D W.rank r)), res_smul_twisted_operators, map_smul, smul_eq_mul, (hR.1 _ (hth hf₂ _)).2.2.2 (a : Mx D W.rank r), GlobalTheory.T.symplectic_restriction_isotropic_part_eq_pairing D V V' W …`. Apply `h0` to reduce the goal to its premises. Use `congrFun hφ 0` as an intermediate fact.
-
-Simplify `this` using `[restEmb, GlobalTheory.SplitScalar.heisO_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem avgForm_ne_zero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ K : Matrix (Fin r) (Fin V.rank) D.host.E, K * C = 1 → K * B = 0 → ∀ e, IsSplitIdem D e → ∃ ℓ' : (WO V' W → ℂ) →ₗ[ℂ] ℂ, (∀ u : WO V' W, (∀ i j, cA D e * u i j = u i j) → ∀ f, IsThetaFunO ψ V' W f → ℓ' (heisO ψ V' W u f) = ℓ' f) ∧ ∃ f, IsThetaFunO ψ V W f ∧ avgForm ψ V V' W C B μ 𝓨 K e ℓ' f ≠ 0 := by
   intro D ψ hψ V V' W r C B hs μ 𝓨 hμ K hKC hKB e he

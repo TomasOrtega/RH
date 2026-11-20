@@ -20,7 +20,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.homogeneous_ideal_component_mem ..`. Consider the case `(intros; apply GlobalTheory.T.homogeneous_ideal_component_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem homIdeal_homog : ∀ f ∈ homIdeal i, ∀ n : ℕ, MvPolynomial.homogeneousComponent n f ∈ homIdeal i := by
   first
@@ -28,7 +28,7 @@ theorem homIdeal_homog : ∀ f ∈ homIdeal i, ∀ n : ℕ, MvPolynomial.homogen
     | (intros; apply GlobalTheory.T.homogeneous_ideal_component_mem <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.homogeneous_ideal_ne_top ..`. Consider the case `(intros; apply GlobalTheory.T.homogeneous_ideal_ne_top <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem homIdeal_ne_top [Nonempty X] : homIdeal i ≠ ⊤ := by
   first
@@ -36,7 +36,7 @@ theorem homIdeal_ne_top [Nonempty X] : homIdeal i ≠ ⊤ := by
     | (intros; apply GlobalTheory.T.homogeneous_ideal_ne_top <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.basic_open_nonempty_of_ne_zero ..`. Consider the case `(intros; apply GlobalTheory.T.basic_open_nonempty_of_ne_zero <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem preimage_basicOpen_nonempty [IsIntegral X] {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ} (he : 0 < e)
     (hg : g ∈ grK K N e) (hg0 : Ideal.Quotient.mk (homIdeal i) g ≠ 0) :

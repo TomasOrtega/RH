@@ -17,7 +17,7 @@ def twA (γ : G →* Aˣ) (B : Type) [CommRing B] [Algebra A B] : MonoidAlgebra 
       map_mul' := fun g h => by simp [MonoidAlgebra.single_mul_single] }
 
 /- English proof (translation)
-Simplify using `[twA, MonoidAlgebra.lift_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twA_single (γ : G →* Aˣ) (B : Type) [CommRing B] [Algebra A B] (g : G) (b : B) :
     twA γ B (MonoidAlgebra.single g b) = MonoidAlgebra.single g (b * algebraMap A B (γ g)) := by
@@ -38,20 +38,20 @@ def twD (D : GDet n A G) (γ : G →* Aˣ) : GDet n A G where
     rw [map_smul, D.homog]
 
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isTwist_twD (D : GDet n A G) (γ : G →* Aˣ) : D.IsTwist γ (twD D γ) := fun _ _ _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `GDet.ext fun B _ _ y => h B y`.
+A detailed English derivation is pending.
 -/
 theorem eq_twD {D D' : GDet n A G} {γ : G →* Aˣ} (h : D.IsTwist γ D') : D' = twD D γ :=
   GDet.ext fun B _ _ y => h B y
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `D.D (Polynomial A) (twA γ (Polynomial A) _) = D.D (Polynomial A) _`. Use `congr 1`. Rewrite using `[map_sub, twA_single]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Proceed by induction on `y using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `single g r => simp [twA_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem chi_twD (D : GDet n A G) (γ : G →* Aˣ) (y : MonoidAlgebra A G) : (twD D γ).chi y = D.chi (twA γ A y) := by
   change D.D (Polynomial A) (twA γ (Polynomial A) _) = D.D (Polynomial A) _
@@ -65,7 +65,7 @@ theorem chi_twD (D : GDet n A G) (γ : G →* Aˣ) (y : MonoidAlgebra A G) : (tw
     | single g r => simp [twA_single]
 
 /- English proof (translation)
-Simplify using `only [GDet.lam, chi_twD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_twD (D : GDet n A G) (γ : G →* Aˣ) (i : ℕ) (y : MonoidAlgebra A G) :
     (twD D γ).lam i y = D.lam i (twA γ A y) := by
@@ -82,7 +82,7 @@ structure Anti (F : GFrame l) {Q : Type} [CommGroup Q] (γ : F.G₀ →* Q) : Pr
   mu : ∀ v (g : F.Gv v), g ∈ F.mu v → γ (F.φ v g) = 1
 
 /- English proof (translation)
-Rewrite using `[← map_mul]`. Conclude with `hk (show γ _ = 1 by rw [map_mul]; exact h.conj g)`. Use `iu u := (h.iu u).trans hk`. Use `i0 := h.i0.trans hk`. Use `mu v g hg := hk (h.mu v g hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Anti.mono {F : GFrame l} {Q Q' : Type} [CommGroup Q] [CommGroup Q'] {γ : F.G₀ →* Q} {γ' : F.G₀ →* Q'}
     (h : Anti F γ) (hk : γ.ker ≤ γ'.ker) : Anti F γ' where
@@ -98,7 +98,7 @@ structure TwCh (F : GFrame l) {R : Type} [CommRing R] [IsLocalRing R] (γ : F.G�
   red : ∀ g, (γ g : R) - 1 ∈ maximalIdeal R
 
 /- English proof (translation)
-Simplify using `iu u := by simp i0 := by simp mu v g _ := rfl cont N := IsLocallyConstant.of_constant _ fun _ _ => rfl red g := by simp`.
+Simplify using the standard rewrite rules.
 -/
 theorem TwCh.one (F : GFrame l) (R : Type) [CommRing R] [IsLocalRing R] : TwCh F (1 : F.G₀ →* Rˣ) where
   conj g := by simp
@@ -116,20 +116,20 @@ def TwMap (B : UniversalOrdinaryDeterminantRing r) {R : Type} [CommRing R] (f₀
   ∀ v i (g : F.Gv v), f (B.u.ψ v i g) = f₀ (B.u.ψ v i g) * γ (F.φ v g)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g i _ => by simp, fun v i g => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwMap.refl (B : UniversalOrdinaryDeterminantRing r) {R : Type} [CommRing R] (f : B.B →+* R) : TwMap B f f 1 :=
   ⟨fun g i _ => by simp, fun v i g => by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g i hi => by simp [h.1 g i hi], fun v i g => by simp [h.2 v i g]⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwMap.comp {B : UniversalOrdinaryDeterminantRing r} {R R' : Type} [CommRing R] [CommRing R'] {f₀ f : B.B →+* R} {γ : F.G₀ →* Rˣ}
     (h : TwMap B f₀ f γ) (e : R →+* R') : TwMap B (e.comp f₀) (e.comp f) (pushCh e γ) :=
   ⟨fun g i hi => by simp [h.1 g i hi], fun v i g => by simp [h.2 v i g]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun g i hi => by rw [h'.1 g i hi, h.1 g i hi]; simp [mul_pow]; ring, fun v i g => by rw [h'.2 v i g, h.2 v i g]; simp [mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwMap.trans {B : UniversalOrdinaryDeterminantRing r} {R : Type} [CommRing R] {f₀ f₁ f₂ : B.B →+* R} {γ γ' : F.G₀ →* Rˣ}
     (h : TwMap B f₀ f₁ γ) (h' : TwMap B f₁ f₂ γ') : TwMap B f₀ f₂ (γ * γ') :=

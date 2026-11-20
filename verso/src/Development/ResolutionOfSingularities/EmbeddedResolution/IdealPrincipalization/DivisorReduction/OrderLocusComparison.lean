@@ -24,13 +24,13 @@ variable (k : Type u) [Field k] [CharZero k] {X S : Scheme.{u}}
     [AlgebraicGeometry.Smooth (ι ≫ p)]
 
 /- English proof (translation)
-Establish `hsupp : ι.base y ∈ (⨆ l ≤ m - 1, logDerivIdealSheafIterate k p ι.ker (m - 1 - l) (K l)).support`. Use `mem_support_iSup_le_nat (m - 1) (fun l => logDerivIdealSheafIterate k p ι.ker (m - 1 - l) (K l)) (ι.base y) ?_` and prove the remaining obligations. Introduce `l hl`. Establish `hlm : l < m` using `by omega`. Establish `hml : 1 ≤ m - l` using `by omega`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(Scheme.IdealSheafData.mem_support_comap).mp` to reduce the goal to its premises. Use `Scheme.IdealSheafData.support_antitone (comap_logDerivIdealSheafIterate_ker_le_derivIdealSheafIterate k p ι (K l) (m - 1 - l)) ?_` and prove the remaining obligations. Establish `hpow : ((K l).comap ι) ^ m ≤ (A.comap ι) ^ (m - l)`. Establish `h1 : (K l ^ m).comap ι ≤ (A ^ (m - l)).comap ι` using `Scheme.IdealSheafData.comap_mono ι (hbal l hlm)`. Rewrite `h1` using `[Scheme.IdealSheafData.comap_pow, Scheme.IdealSheafData.comap_pow]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hy2 : y ∈ orderAtLeastLocus ((K l).comap ι) (m - l)` using `orderAtLeastLocus_subset_orderAtLeastLocus_of_pow_le k (ι ≫ p) ((K l).comap ι) (A.comap ι) l m hlm hpow hy`. Establish `hstep` using `support_derivIdealSheafIterate_eq_orderAtLeastLocus k (ι ≫ p) ((K l).comap ι) hml`. Rewrite `hy2` using `[← hstep]`. Establish `hexp : m - 1 - l = m - l - 1` using `by omega`. Rewrite using `[hexp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy2`. Rewrite using `[← support_derivIdealSheafIterate_eq_orderAtLeastLocus k p A hm]`. Conclude with `Scheme.IdealSheafData.support_antitone hdom hsupp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_mem_orderAtLeastLocus_of_mem_comap
     (m : ℕ) (hm : 1 ≤ m) (A : X.IdealSheafData) (K : ℕ → X.IdealSheafData)

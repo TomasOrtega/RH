@@ -18,9 +18,9 @@ namespace GlobalTheory.ThK.LocalOps
 end GlobalTheory.ThK.LocalOps
 namespace GlobalTheory.ThK.LocalOps
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v`. Establish `hex : ∀ x : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J × GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ W.J, x.1 ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ X (evFin F v) → x.2 ∈ GlobalTheory.IndefiniteRowSideFullHecke.We …` using `fun x hx1 hx2 φ hφ => acts_exists hP v x hx1 hx2 φ hφ`. Use `⟨fun g hg h hh φ hφ => ?_, fun u hu φ hφ => ?_, GlobalTheory.T.weilRep_smooth_at_finitePlace B X W M χX χW om r s r' s' hP v hex⟩` and prove the remaining obligations. Take `⟨φ₁, h1, h2⟩` from `hex (g, h) hg hh φ hφ`. Conclude with `⟨φ₁, ⟨h1, h2⟩, fun φ₂ hφ₂ => acts_unique v _ hφ hφ₂.2 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨GlobalTheory.WeilM.schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo M.co v u) φ, ⟨GlobalTheory.SchrSB.schr_mem_SB B.ψ hP.base.std.1 v _ φ hφ, GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v u hu φ⟩, fun φ₂ hφ₂ => acts_unique v _ hφ hφ₂.2 (GlobalTheory.VacBridge …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem theta_kernel_local_operators_act (_hP : _root_.GlobalTheory.FunPr.ThetaLocalInputs) : GlobalTheory.ThK.ActsEx := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP v
@@ -47,7 +47,7 @@ end
 section
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act | exact _root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act | (intros; apply _root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.theta_kernel_local_operator_action : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.ThK.ActsEx := by
   first | exact @_root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act | exact _root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act | (intros; apply _root_.GlobalTheory.ThK.LocalOps.theta_kernel_local_operators_act <;> assumption)

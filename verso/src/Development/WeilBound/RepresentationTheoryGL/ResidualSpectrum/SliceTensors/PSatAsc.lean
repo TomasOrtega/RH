@@ -16,7 +16,7 @@ namespace satakeAscent
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 π.ne_bot`. Use `filter_upwards [LocSph.eventually_mem ((π.cusp φ hφ).1.level.mem_nhds (by simp))] with w hw`. Use `(Submodule.ne_bot_iff _).2 ⟨⟨φ, hφ⟩, GlobalTheory.LGrp.mem_fixed.2 fun k hk => ?_, fun e => h0 (congrArg Subtype.val e)⟩` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hk`. Conclude with `Subtype.ext (hw g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_spherical {a : ℕ} (π : CuspSub E a) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite,
@@ -28,7 +28,7 @@ theorem eventually_spherical {a : ℕ} (π : CuspSub E a) :
   exact Subtype.ext (hw g)
 
 /- English proof (translation)
-Introduce `ψ hψ hK h0` and use `by have hx := h.2 ⟨ψ, hψ⟩ (GlobalTheory.LGrp.mem_fixed.2 fun k hk => Subtype.ext (hK k hk)) fun e => h0 (congrArg Subtype.val e) exact hx.map (ρ' := (finRep E m).comp (locGL E m w)) π'.V.subtype (fun _ _ => rfl) h0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem satLike_cusp {m : ℕ} (π' : CuspSub E m) {w : HeightOneSpectrum (𝓞 E)} {B : Multiset ℂˣ}
     (h : GlobalTheory.LFun.HasSatGL w (π'.locRep w) B) : SatakeVectors.SatLike π'.V w B := fun ψ hψ hK h0 => by
@@ -37,9 +37,9 @@ theorem satLike_cusp {m : ℕ} (π' : CuspSub E m) {w : HeightOneSpectrum (𝓞 
   exact hx.map (ρ' := (finRep E m).comp (locGL E m w)) π'.V.subtype (fun _ _ => rfl) h0
 
 /- English proof (translation)
-Establish `e : modExp (fun _ : Fin d => Fin a) i = (∑ _b ∈ Finset.Ioi i, (a : ℤ)) - ∑ _b ∈ Finset.Iio i, (a : ℤ)`. Unfold `modExp`. Use `congr 1`. Conclude with `Finset.sum_congr (by ext; simp) fun _ _ => by simp`. Conclude with `Finset.sum_congr (by ext; simp) fun _ _ => by simp`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Establish `hc : ((d - 1 - (i : ℕ) : ℕ) : ℤ) = (d : ℤ) - 1 - ((i : ℕ) : ℤ)` using `by omega`. Rewrite using `[e, Finset.sum_const, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, nsmul_eq_mul, nsmul_eq_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem modExp_const {a d : ℕ} (i : Fin d) :
     modExp (fun _ : Fin d => Fin a) i = (a : ℤ) * ((d : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)) := by
@@ -55,7 +55,7 @@ theorem modExp_const {a d : ℕ} (i : Fin d) :
   ring
 
 /- English proof (translation)
-Establish `h` using `i.2`. Simplify using `only [spehExp, Fin.val_rev]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem spehExp_rev (d : ℕ) (i : Fin d) : spehExp d i.rev = -spehExp d i := by
   have h := i.2
@@ -65,9 +65,9 @@ theorem spehExp_rev (d : ℕ) (i : Fin d) : spehExp d i.rev = -spehExp d i := by
   ring
 
 /- English proof (translation)
-Rewrite using `[SatakeVectors.satTw_eq, Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, Units.val_mul, SatakeVectors.qU_val, hν.2.1 w, modExp_const]`. Rewrite using `[mul_assoc, ← Complex.cpow_add _ _ (by exact_mod_cast (NumberField.HeightOneSpectrum.one_lt_absNorm w).ne_bot)]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [spehExp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem term_eq {a d : ℕ} (w : HeightOneSpectrum (𝓞 E)) (B₀ : Multiset ℂˣ) (ν : HChar E) (i : Fin d)
     (hν : ν.IsAbsPow (-spehExp d i + a * spehExp d i)) :
@@ -85,7 +85,7 @@ theorem term_eq {a d : ℕ} (w : HeightOneSpectrum (𝓞 E)) (B₀ : Multiset �
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `Fintype.sum_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, spehExp_rev]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem sum_rev {d : ℕ} (w : HeightOneSpectrum (𝓞 E)) (B₀ : Multiset ℂˣ) :
     ∑ i : Fin d, satTw w (-(spehExp d i : ℂ)) B₀ = ∑ i : Fin d, satTw w (spehExp d i : ℂ) B₀ := by
@@ -98,13 +98,13 @@ end satakeAscent
 
 open satakeAscent in
 /- English proof (translation)
-Introduce `E _ _ _ N a d V π hV hA`. Take `⟨hsum, ν, hν, f, hfP, hfi, hfe⟩` from `hA`. Use `filter_upwards [eventually_spherical π] with w hw`. Take `⟨B₀, hB₀⟩` from `GlobalTheory.CuspRep.UnrSat.exists_hasSatGL_locRep PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E a π w hw`. Use `⟨B₀, hB₀, fun B hB => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφV, hφ⟩` from `hB.1`. Establish `hF` using `hfP φ hφV`. Establish `hF0 : f φ ≠ 0` using `fun e => hφ.1 (hfi φ hφV e)`. Establish `hFK : ∀ k ∈ GlobalTheory.LFun.KGL w N, finRep E N (locGL E N w k) (f φ) = f φ` using `fun k hk => by`. Establish `e` using `hfe (.fin (locGL E N w k)) φ hφV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : finRep E N (locGL E N w k) φ = φ` using `GlobalTheory.LGrp.mem_fixed.1 hφ.2.1 k hk`. Conclude with `e.symm.trans (congrArg f e2)`. Establish `hS : ∀ i, SatakeVectors.SatLike (π.twist (ν i)).V w (B₀.map (· * (ν i).val w))` using `fun i => satLike_cusp _ (GlobalTheory.SphGal.hasSatGL_twist E a π (ν i) w B₀ ((hν i).1 w) hB₀)`. Establish `hc` using `SatakeVectors.isSatVecGL_of_ind hsum (fun i => (π.twist (ν i)).V) (fun i g ψ hψ => (π.twist (ν i)).stable (.fin g) ψ hψ) (fun i ψ hψ => ((π.twist (ν i)).cusp ψ hψ).1.level.preimage (CuspSub.continuous_locGL w)) _ hS hF0 hFK hF.1 hF.2.2.2`. Establish `hφ' : GlobalTheory.LFun.IsSatVecGL w (GlobalTheory.DiscLocEx.locRepD hV.stable w) ⟨φ, hφV⟩ B` using `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := (finRep E N).comp (locGL E N w)) V.subtype (fun _ _ => rfl) Subtype.val_injective hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm` using `hφ'.map (ρ' := (finRep E N).comp (locGL E N w)) (f ∘ₗ V.subtype) (fun g v => hfe (.fin (locGL E N w g)) v.1 v.2) hF0`. Rewrite using `[hm.unique hc, ← sum_rev, ← Finset.sum_congr rfl fun i _ => term_eq w B₀ (ν i) i (hν i)]`. Conclude with `map_sum (Multiset.mapAddMonoidHom fun b : ℂˣ => (b : ℂ)) _ _`.
+A detailed English derivation is pending.
 -/
 theorem satAsc_holds : SatAsc := by
   intro E _ _ _ N a d V π hV hA

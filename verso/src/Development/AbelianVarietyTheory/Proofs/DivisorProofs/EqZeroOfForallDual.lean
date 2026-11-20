@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.HTLat.KerPerp
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis O M`. Use `(b.baseChange C).ext_elem fun i => ?_` and prove the remaining obligations. Establish `e : (b.baseChange C).coord i = (Algebra.linearMap O C ∘ₗ b.coord i).liftBaseChange C`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Proceed by induction on `w using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c m`. Rewrite using `[Module.Basis.coord_apply, Module.Basis.baseChange_repr_tmul, LinearMap.liftBaseChange_tmul, LinearMap.comp_apply, Algebra.linearMap_apply, Module.Basis.coord_apply, Algebra.smul_def, smul_eq_mul, mul_comm]`. Rewrite using `[map_zero, Finsupp.zero_apply, ← Module.Basis.coord_apply, e]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h _`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_dual {O C M : Type} [CommRing O] [CommRing C] [Algebra O C]
     [AddCommGroup M] [Module O M] [Module.Free O M] (z : C ⊗[O] M)
@@ -34,13 +34,13 @@ theorem eq_zero_of_forall_dual {O C M : Type} [CommRing O] [CommRing C] [Algebra
   exact h _
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P x`. Take `⟨hf, -, hb⟩` from `Point.omega_free_finite_bijective p C v O Λ P`. Establish `key : ∀ y (w : P.V), P.pairV (P.bLie y) w = (Algebra.linearMap O C ∘ₗ ((LinearMap.proj y : (_ → O) →ₗ[O] O) ∘ₗ (omega P.Gt).subtype)).liftBaseChange C (P.alC w)`. Introduce `y w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul c t`. Establish `e : (c ⊗ₜ[ℤ_[p]] t : P.V) = c • ((1 : C) ⊗ₜ[ℤ_[p]] t)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Point.alC_tmul, LinearMap.liftBaseChange_tmul, e, map_smul, Point.pairV_bLie]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `hx y`. Rewrite using `[key, show P.alC x = 0 from hx, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `eq_zero_of_forall_dual (P.alC x) fun l => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `hb.2 l`. Conclude with `(key y x).symm.trans (h y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_W_iff : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [Algebra ℤ_[p] O] [Algebra ℤ_[p] C] [IsScalarTower ℤ_[p] O C] (Λ : Type) [CommRing Λ] [StarRing Λ] (P : Point p v O Λ), ∀ x : P.V, x ∈ P.W ↔ ∀ y, P.pairV (P.bLie y) x = 0 := by
   intro p _ C _ _ _ v O _ _ _ _ _ _ _ Λ _ _ P x

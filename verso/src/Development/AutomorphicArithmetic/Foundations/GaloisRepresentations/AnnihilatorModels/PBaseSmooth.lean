@@ -5,15 +5,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hC hR l O R _ _ _ _ _ _ ϖ hϖ hl _`. Establish `hflat : Module.Flat O R` using `Algebra.Smooth.flat O R`. Establish `hlO : (l : O) ∈ nonZeroDivisors O` using `mem_nonZeroDivisors_of_ne_zero hl`. Use `⟨?_, hC l O R hl, ?_⟩` and prove the remaining obligations. Establish `hreg : IsSMulRegular R (l : O)` using `Module.Flat.isSMulRegular_of_nonZeroDivisors hlO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ x : R, (l : R) * x = 0 → x = 0`. Introduce `x hx`. Apply `hreg` to reduce the goal to its premises. Simplify using `only [Algebra.smul_def, map_natCast, mul_zero]`. Conclude with `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨key, fun x hx => key x (by rw [mul_comm]; exact hx)⟩`. Rewrite using `[Ideal.isRadical_iff_quotient_reduced]`. Establish `hspan : Ideal.span {(algebraMap O R) ϖ} = (IsLocalRing.maximalIdeal O).map (algebraMap O R)`. Rewrite using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ, Ideal.map_span, Set.image_singleton]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan]`. Use `haveI : Algebra.Smooth (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] R) := Algebra.Smooth.baseChange O R (IsLocalRing.ResidueField O)`. Establish `hred : IsReduced (IsLocalRing.ResidueField O ⊗[O] R)` using `hR (IsLocalRing.ResidueField O) (IsLocalRing.ResidueField O ⊗[O] R)`. Use `haveI : IsReduced ((O ⧸ IsLocalRing.maximalIdeal O) ⊗[O] R) := hred`. Set `e` to `((Algebra.TensorProduct.quotIdealMapEquivTensorQuot R (IsLocalRing.maximalIdeal O)).restrictScalars O).trans (Algebra.TensorProduct.comm O R (O ⧸ IsLocalRing.maximalIdeal O))`.
-
-Conclude with `isReduced_of_injective e.toRingHom e.injective`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.baseSmooth_of :
     SmoothClosed → SmoothReduced → BaseOfSmooth := by

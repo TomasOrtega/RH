@@ -5,19 +5,19 @@ open ReciprocityTheory.Gal
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨i, his, x, hx⟩` from `hs c`. Set `d : Z1 ρ` to `⟨d0 ρ x, coboundaries_le_cocycles ρ hρ ⟨x, rfl⟩⟩`. Set `E : Z1 ρ` to `c - i - d`. Establish `hE : ∀ g, (E : G → M) g = (c : G → M) g - (i : G → M) g - (ρ g x - x)` using `fun g => rfl`. Establish `hx' : ∀ g, ∃ y : M, ϖ • y = (E : G → M) g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g`. Take `⟨y, hy⟩` from `hx g`. Conclude with `⟨y, by rw [hE]; simpa using hy⟩`. Use `choose f hf using hx'`. Establish `hfE : (fun g => ϖ • f g) = (E : G → M)` using `funext hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : Continuous f`. Rewrite using `[hemb.continuous_iff]`. Express the relevant statement in the definitionally equal form `Continuous (fun g => ϖ • f g)`. Rewrite using `[hfE]`. Conclude with `E.2.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfco : ∀ g h, f (g * h) = f g + ρ g (f h)`. Introduce `g h`. Apply `hemb.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `ϖ • f (g * h) = ϖ • (f g + ρ g (f h))`. Rewrite using `[smul_add, ← map_smul, hf, hf, hf]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `E.2.2 g h`. Use `⟨fun j => if j = i then 1 else 0, ⟨f, hfc, hfco⟩, x, ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ j ∈ s, (if j = i then (1 : O) else 0) • (j : G → M) = (i : G → M)`. Simplify using `only [ite_smul, one_smul, zero_smul]`. Rewrite using `[Finset.sum_ite_eq' s i (fun j => (j : G → M))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[his]`. Rewrite using `[hsum]`. Use function extensionality and compare the values at `g`. Use `hf g` as an intermediate fact. Rewrite `this` using `[hE]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, amitsur_d0_apply]`. Rewrite using `[this]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem cocycle_lift_mod_uniformizer
     {O : Type} [CommRing O] {M : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M]

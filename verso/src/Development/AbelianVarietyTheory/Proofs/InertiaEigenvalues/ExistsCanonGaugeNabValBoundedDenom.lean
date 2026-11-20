@@ -18,23 +18,21 @@ open GlobalTheory.QuadDeriv GlobalTheory.GaugeInt
 namespace GlobalTheory.GaugeBoundedDenom
 
 /- English proof (translation)
-Take `⟨x, y, h1, hc⟩` from `GlobalTheory.IntSepElement.exists_sep_discr E`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u : k, ((2 * discr E : ℤ) : k) * u = 1 := by`. Use `⟨algebraMap ℚ k (((2 * discr E : ℤ) : ℚ)⁻¹), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_intCast (algebraMap ℚ k), ← map_mul, mul_inv_cancel₀, map_one]`. Conclude with `mul_ne_zero two_ne_zero (discr_ne_zero E)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `GlobalTheory.exists_addHom_tensor_int_of_biadditive (fun a b : 𝓞 E => (A a)ᵀ * β * A (star b)) (fun m m' n => by simp only [map_add, transpose_add, Matrix.add_mul]) (fun m n n' => by simp only [star_add, map_add, Matrix.mul_add])`. Establish `hT : ∀ a b : 𝓞 E, (A (a * b))ᵀ = (A a)ᵀ * (A b)ᵀ` using `fun a b => by`. Rewrite using `[mul_comm a b, map_mul, transpose_mul]`. Use `set γ : Matrix (Fin d) (Fin d) k := ∑ i, (A (x i))ᵀ * β * A (star (y i)) with hγ`. Establish `hγbal : ∀ a, (A a)ᵀ * γ = γ * A (star a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg g (hc a)` as an intermediate fact. Simplify using `only [map_sum, hg] at this`. Rewrite using `[hγ, Finset.mul_sum, Finset.sum_mul]`. Use `this using 2 with i _ i _` and compare the differences between its conclusion and the goal. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[star_mul, map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hβ : ((discr E : ℤ) : k) • β = ∑ i, (A (x i))ᵀ * ((A (y i))ᵀ * β)`. Use `congrArg (fun a => (A a)ᵀ * β) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, transpose_sum, Finset.sum_mul, hT, Matrix.mul_assoc, map_intCast, transpose_intCast] at this`. Rewrite using `[this, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Establish `hdiff : ∀ i j, (((discr E : ℤ) : k) • β - γ) i j ∈ S` using `fun i j => by`. Establish `e : ((discr E : ℤ) : k) • β - γ = ∑ l, (A (x l))ᵀ * ((A (y l))ᵀ * β - β * A (star (y l)))`. Rewrite using `[hβ, hγ, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_sub, Matrix.mul_assoc]`. Rewrite using `[e, Matrix.sum_apply]`. Use `Subring.sum_mem _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.sum_mem _ fun m _ => Subring.mul_mem _ (hA _ _ _) (hbal _ _ _)`. Use `⟨u • (γ + γᵀ), ?_, fun a => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[transpose_smul, transpose_add, transpose_transpose, add_comm]`. Establish `h` using `congrArg transpose (hγbal (star a))`. Rewrite `h` using `[transpose_mul, transpose_mul, transpose_transpose, star_star]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_add, Matrix.add_mul, hγbal, h]`. Establish `h` using `sub_mem (add_mem (hdiff i j) (hdiff j i)) (mul_mem (intCast_mem S (discr E)) (hsym i j))`. Use `h using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, transpose_apply, smul_eq_mul]`. Rewrite using `[mul_sub, ← mul_assoc, hu]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_symm_balanced {k : Type} [CommRing k] [Algebra ℚ k] (S : Subring k) (E : Type) [Field E]
     [NumberField E] [StarRing (𝓞 E)] {d : ℕ} (A : 𝓞 E →+* Matrix (Fin d) (Fin d) k)
@@ -93,33 +91,29 @@ section Ring
 variable {R k : Type} [CommRing R] [CommRing k] [Algebra ℚ k] {φ : R →+* k} {d : ℕ}
 
 /- English proof (translation)
-Set `M : Subring (PS k 1 d)` to `Subring.closure ((IntS φ 1 d : Set (PS k 1 d)) ∪ Set.range fun l => C δ * Dof F (U l) q)`. Establish `hI : ∀ g ∈ IntS φ 1 d, g ∈ M` using `fun g hg => Subring.subset_closure (Or.inl hg)`. Establish `hp : ∀ l, C δ * Dof F (U l) q ∈ M` using `fun l => Subring.subset_closure (Or.inr ⟨l, rfl⟩)`. Establish `hc : ∀ g ∈ M, constantCoeff g ∈ φ.range`. Introduce `g hg`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: M ≤ φ.range.comap (constantCoeff (σ` using `Fin 1 × Fin d) (R := k)) := by`. Use `Subring.closure_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x (hx | ⟨l, rfl⟩)`. Conclude with `int_const hx`. Use `show constantCoeff (C δ * Dof F (U l) q) ∈ φ.range`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, q1, mul_zero]`. Conclude with `zero_mem _`. Conclude with `this hg`. Establish `hD : ∀ l, ∀ g ∈ M, C δ * Dof F (U l) g ∈ M`. Introduce `l g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hg using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with hx | ⟨l', rfl⟩` into its components or cases. Conclude with `hI _ (mul_mem (int_C hδ) (dof_int iF (hu l) hx))`. Rewrite using `[GE.dof_C_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hI _ (mul_mem (int_C hδ) (q2 l l'))`. Consider the case `zero => simp [Dof]`. Consider the case `one => simp [Dof]`. Consider the case `add x y _ _ hx hy => rw [GE.dof_add, mul_add]`. Conclude with `add_mem hx hy`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Consider the case `neg x _ hx => rw [← GE.dofD_apply, map_neg, GE.dofD_apply, mul_neg]`. Conclude with `neg_mem hx`. Consider the case `mul x y h1 h2 hx hy`. Use `add_mem (mul_mem hx h2) (mul_mem h1 hy)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GE.dof_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmq : constantCoeff ((m : k) • q) = 0` using `by rw [smul_eq_C_mul, map_mul, q0, mul_zero]`. Set `P : ℕ → PS k 1 d → Prop` to `fun n x => ∃ g ∈ M, C δ ^ n * x = g * FB.expS k ((m : k) • q)`. Establish `step : ∀ l n x, P n x → P (n + 1) (Dof F (U l) x)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `l n x ⟨g, hg, e⟩`. Use `⟨C δ * Dof F (U l) g + g * (m : PS k 1 d) * (C δ * Dof F (U l) q), add_mem (hD l g hg) (mul_mem (mul_mem hg (natCast_mem M m)) (hp l)), ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg (Dof F (U l)) e`. Rewrite `e'` using `[← map_pow, GE.dof_C_mul, GE.dof_mul, Nab.dof_expS F _ hmq]`. Establish `e2 : Dof F (U l) ((m : k) • q) = (m : PS k 1 d) * Dof F (U l) q`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[smul_eq_C_mul, GE.dof_C_mul, map_natCast]`. Rewrite `e'` using `[e2, map_pow]`. Rewrite using `[pow_succ', mul_assoc, e']`. Expand and normalize the polynomial expressions, which then agree. Establish `iter : ∀ l (j : ℕ) n x, P n x → P (j + n) ((Dof F (U l))^[j] x)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `l j n x hx`. Proceed by induction on `j with`. Consider the case `zero => simpa using hx`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', add_right_comm]`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `step l _ _ ih`. Establish `fold : ∀ L : List ι, P (L.map α).sum (L.foldr (fun l g => (Dof F (U l))^[α l] g) (f * FB.expS k ((m : k) • q)))`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => exact ⟨f, hI f hf, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons a L ih => exact iter a _ _ _ ih`. Take `⟨g, hg, e⟩` from `fold (Finset.univ : Finset ι).toList`. Establish `e'` using `congrArg constantCoeff e`. Establish `hE : constantCoeff (FB.expS k ((m : k) • q)) = 1`. Unfold `FB.expS`.
-
-Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hmq), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `j hj`. Rewrite using `[map_pow, hmq, zero_pow hj, smul_zero]`. Rewrite `e'` using `[map_mul, map_mul, map_pow, constantCoeff_C, Finset.sum_map_toList, hE, mul_one]`.
-
-Rewrite using `[Finsupp.degree_eq_sum, DmonOf, e']`. Conclude with `hc g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_const_dmonOf_mem {F : Pt k 2 d} (iF : IP φ F) {ι : Type} [Fintype ι] (U : ι → Fin d → k)
     (hu : ∀ l i, U l i ∈ φ.range) (δ : k) (hδ : δ ∈ φ.range) (q : PS k 1 d) (q0 : constantCoeff q = 0)
@@ -200,7 +194,7 @@ theorem pow_mul_const_dmonOf_mem {F : Pt k 2 d} (iF : IP φ F) {ι : Type} [Fint
 end Ring
 
 /- English proof (translation)
-Establish `e : DpolyOf F u (MvPolynomial.monomial mo (1 : k)) g = ∑ m ∈ ({mo} : Finset (ι →₀ ℕ)), C ((MvPolynomial.monomial mo (1 : k)).coeff m) * DmonOf F u m g`. Unfold `DpolyOf`. Use `Finset.sum_subset MvPolynomial.support_monomial_subset fun x _ hx => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.1 hx, map_zero, zero_mul]`. Rewrite using `[e, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, map_one, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpolyOf_monomial_one {k : Type} [CommRing k] {d : ℕ} (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι]
     (u : ι → Fin d → k) (mo : ι →₀ ℕ) (g : PS k 1 d) :
@@ -214,25 +208,23 @@ theorem dpolyOf_monomial_one {k : Type} [CommRing k] {d : ℕ} (F : Fin d → PS
   rw [e, Finset.sum_singleton, MvPolynomial.coeff_monomial, if_pos rfl, map_one, one_mul]
 
 /- English proof (translation)
-Establish `iF : IP (algebraMap R k) (B.FK k)` using `⟨B.G.F, B.G.const, rfl⟩`. Establish `iw : IP (algebraMap R k) (B.actK k w0)` using `⟨B.A.act w0, B.A.const w0, rfl⟩`. Establish `hF` using `iF.gp`. Establish `hw` using `iw.gp`. Establish `hU : evP (n` using `1) ![pt k d 0, 0] (B.FK k) = pt k d 0 := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (mapP (algebraMap R k)) (unit_right B.G)` as an intermediate fact. Rewrite `this` using `[baseChange_addOf _ _ _ _ (gp_pt 0) gp_zero₂, baseChange_pt, show mapP (algebraMap R k) (0 : Pt R 1 d) = 0 from funext fun i => map_zero _]`. Conclude with `this`. Establish `hom : comp1 (B.actK k w0) (B.FK k) = addOf (B.FK k) (comp1 (B.actK k w0) (pt k (n` using `2) d 0)) (comp1 (B.actK k w0) (pt k (n := 2) d 1)) := by`. Use `congrArg (mapP (algebraMap R k)) (B.A.hom w0)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[FGLaw.add, FGLaw.add, addOf_pt, baseChange_comp1 _ _ _ B.G.const, baseChange_addOf _ _ _ _ (gp_comp1 _ _ (B.A.const w0) (gp_pt 0)) (gp_comp1 _ _ (B.A.const w0) (gp_pt 1)), baseChange_comp1 _ _ _ (gp_pt 0), baseChange_comp1 _ _ _ (gp_pt 1), baseChange_pt, baseChange_pt]`. Conclude with `this`. Establish `c0 : constantCoeff g = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply]`. Conclude with `coeff_eq_zero_of_axes g hg.ax0 hg.ax1 0 (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c1 : ∀ s, constantCoeff (pderiv k s g) = 0` using `fun s => by`. Rewrite using `[const_pderiv]`. Conclude with `coeff_eq_zero_of_axes g hg.ax0 hg.ax1 _ (by simp)`. Establish `hp : ∀ j : Fin 3, GP (pt k d j)` using `gp_pt`. Establish `hl : DI (algebraMap R k) (defL (B.FK k) g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `di_of_exp B.ph1 ?_ _ ?_ hg.ph1` and prove the remaining obligations. Rewrite using `[← gt_const_ev_eq _ (triple_points_zero_constant (n := 2) gp_zero₂ (gp_pt 0) (gp_pt 1)), B.cocycleLeft_zero_fst, map_one]`. Rewrite using `[defL, map_sub, map_add, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (gp_addOf _ hF _ _ (hp _) (hp _)) (hp _)) _ c0]`. Simplify using the standard rewrite rules. Establish `hr : DI (algebraMap R k) (defR (B.FK k) g)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `di_of_exp B.ph2 ?_ _ ?_ hg.ph2` and prove the remaining obligations. Rewrite using `[← gt_const_ev_eq _ (triple_points_zero_constant (n := 2) gp_zero₂ (gp_pt 0) (gp_pt 1)), B.cocycleRight_zero_fst, map_one]`. Rewrite using `[defR, map_sub, map_add, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (hp _)) _ c0, gt_const_ev _ (pair_points_zero_constant (hp _) (gp_addOf _ hF _ _ (hp _) (hp _))) _ c0]`. Simplify using the standard rewrite rules. Establish `hu : ∀ l i, algebraMap R k (u l i) ∈ (algebraMap R k).range` using `fun l i => ⟨u l i, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : B.hL k g w0 = ev (n` using `1) ![pt k d 0, B.actK k w0] g := by`. Rewrite using `[FB.hL, gt_comp1_pt_right]`. Establish `hW : ∀ l j, coeff (Finsupp.single ((0 : Fin 1), l) 1) (B.actK k w0 j) ∈ (algebraMap R k).range` using `fun l j => ⟨coeff (Finsupp.single ((0 : Fin 1), l) 1) (B.A.act w0 j), by simp only [FB.actK, coeff_map]⟩`. Rewrite using `[FB.nabVal, dpolyOf_monomial_one, hq]`. Use `pow_mul_const_dmonOf_mem iF _ hu δ hδ _ (gt_const_ev _ (pair_points_zero_constant (gp_pt 0) hw) _ c0) (fun l => ?_) (fun l l' => ?_) m _ ⟨f, rfl⟩ α` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Dof]`. Simplify using `only [map_sum, map_mul, constantCoeff_pderiv_formalSubst_two _ _ (gp_pt 0) hw, c1, zero_mul, Finset.sum_const_zero, add_zero, mul_zero]`. Establish `h` using `mul_mem (int_C (n := 1) (d := d) hδ) (quad_int iF hU iw hom g c1 hl hr (hu l) (hu l'))`. Rewrite `h` using `[mul_sub, ← map_mul]`. Establish `h'` using `add_mem h (int_C (n := 1) (d := d) (add_mem (sum_mem (t := Finset.univ) fun j _ => mul_mem (sum_mem (t := Finset.univ) fun a _ => mul_mem (hu l' a) (hW a j)) (sum_mem (t := Finset.univ) fun i _ => mul_mem (hu l i) (hβ i j))) (sum_mem (t := Finset.univ) fun i _ => mul_mem (hu l' i …`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `h' using 1` and compare the differences between its conclusion and the goal. Rewrite using `[sub_add_eq_add_sub, eq_sub_iff_add_eq]`. Use `congr 2`. Simplify using `only [bilinPart, mul_add, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pow_mul_nabVal_mem {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (k : Type)
     [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (g : PS k 2 d) (hg : B.IsCanonGauge k g) (δ : k)
@@ -309,9 +301,9 @@ theorem pow_mul_nabVal_mem {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRin
         Finset.sum_congr rfl fun l _ => by ring
 
 /- English proof (translation)
-Introduce `V k _ _ _ _ E _ _ _ d B h hc`. Take `⟨c1, c2, c3, c4, c5, c6⟩` from `GlobalTheory.bilinPart_canonGauge_congr V d (𝓞 E) k B h hc`. Set `A : 𝓞 E →+* Matrix (Fin d) (Fin d) k` to `{ toFun := dAct k B map_one' := c4 map_mul' := c6 map_add' := c5 map_zero' := by`. Establish `e` using `c5 0 0`. Rewrite `e` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `left_eq_add.1 e }`. Take `⟨β, b1, b2, b3⟩` from `exists_symm_balanced (algebraMap V k).range E A c3 (bilinPart k h) c1 c2`. Take `⟨h', hc', e⟩` from `GlobalTheory.GaugeShift.canon_sub_bilin V d (𝓞 E) k B h hc β b1 b2`. Conclude with `⟨h', hc', fun w0 m f ι _ u α => pow_mul_nabVal_mem k B h' hc' _ (intCast_mem _ _) (e ▸ b3) w0 m f ι u α⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_canonGauge_nabVal_bounded_denom :
     ∀ (V k : Type) [CommRing V] [CommRing k] [Algebra ℚ k] [Algebra V k] (E : Type) [Field E] [NumberField E] [StarRing (𝓞 E)] (d : ℕ) (B : FB V d (𝓞 E)) (h : PS k 2 d), B.IsCanonGauge k h → ∃ h' : PS k 2 d, B.IsCanonGauge k h' ∧ ∀ (w0 : 𝓞 E) (m : ℕ) (f : PS V 1 d) (ι : Type) [Fintype ι] (u : ι → Fin d → V) (α : ι →₀ ℕ), ((2 * NumberField.discr E : ℤ) : k) ^ α.degree * B.nabVal k h' w0 m (FB.toK k f) (fun l i => algebraMap V k (u l i)) (MvPolynomial.monomial α 1) ∈ (algebraMap V k).range := by

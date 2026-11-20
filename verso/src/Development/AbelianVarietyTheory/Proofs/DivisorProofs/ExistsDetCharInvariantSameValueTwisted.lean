@@ -25,11 +25,11 @@ namespace GlobalTheory.MinorFrame
 open MvPolynomial
 
 /- English proof (translation)
-Unfold `colSub`. Use `conv_lhs => rw [P.as_sum]`. Rewrite using `[map_sum]`. Use `totalDegree_finsetSum_le fun s hs => ?_` and prove the remaining obligations. Rewrite using `[aeval_monomial]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[algebraMap_eq, totalDegree_C, zero_add]`. Use `le_trans ?_ (le_totalDegree hs)` and prove the remaining obligations. Unfold `Finsupp.prod Finsupp.sum`. Use `(totalDegree_finsetProd _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Establish `h1 : (∑ j' : Fin a, C (g i.1 j' i.2.2) * (X (i.1, i.2.1, j') : Pol ι d a)).totalDegree ≤ 1` using `totalDegree_finsetSum_le fun j _ => (totalDegree_mul _ _).trans (by rw [totalDegree_C, totalDegree_X])`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem colSub_totalDegree_le {ι : Type} [Fintype ι] {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (P : Pol ι d a) :
     (colSub g P).totalDegree ≤ P.totalDegree := by
@@ -51,9 +51,9 @@ theorem colSub_totalDegree_le {ι : Type} [Fintype ι] {d a : ℕ} (g : ι → M
     _ = s i := mul_one _
 
 /- English proof (translation)
-Unfold `detChar`. Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, ← mul_pow]`. Establish `h : starRingEnd ℂ (g τ : Matrix (Fin a) (Fin a) ℂ).det * (g τ : Matrix (Fin a) (Fin a) ℂ).det = 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[starRingEnd_apply, ← Matrix.det_conjTranspose, ← Matrix.det_mul, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.1 (g τ).2, Matrix.det_one]`. Rewrite using `[h, one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_detChar_mul_detChar {ι : Type} [Fintype ι] {a : ℕ} (n : ι → ℕ) (g : ι → Matrix.unitaryGroup (Fin a) ℂ) :
     starRingEnd ℂ (detChar n (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ))) *
@@ -90,23 +90,23 @@ theorem star_detChar_mul_detChar {ι : Type} [Fintype ι] {a : ℕ} (n : ι → 
     simp at this
 
 /- English proof (translation)
-Introduce `ι _ a d n Pr _ _ q hq P`. Set `S : Submodule ℂ (Pol ι d a)` to `restrictTotalDegree (Var ι d a) ℂ P.totalDegree`. Use `haveI : FiniteDimensional ℂ S := inferInstanceAs (Module.Finite ℂ (restrictTotalDegree (Var ι d a) ℂ P.totalDegree))`. Use `letI : InnerProductSpace.Core ℂ S := fockCore S`. Use `letI : NormedAddCommGroup S := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : InnerProductSpace ℂ S := InnerProductSpace.ofCore _`. Establish `hmemS : ∀ (g : ι → Matrix (Fin a) (Fin a) ℂ) (x : Pol ι d a), x ∈ S → colSub g x ∈ S` using `fun g x hx => (mem_restrictTotalDegree _ _ _).2 ((colSub_totalDegree_le g x).trans ((mem_restrictTotalDegree _ _ _).1 hx))`. Set `gen : Set S` to `{w | ∃ (g : ι → Matrix.unitaryGroup (Fin a) ℂ) (x : S), (w : Pol ι d a) = colSub (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) x.1 - detChar n (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) • x.1}`. Set `K : Submodule ℂ S` to `Submodule.span ℂ gen`. Establish `hK : ∀ w ∈ K, q (w : Pol ι d a) = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, y, hy⟩` from `hx`. Rewrite using `[hy, map_sub, map_smul, hq, sub_self]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul r x _ hx => simp [hx]`. Establish `hPS : P ∈ S` using `(mem_restrictTotalDegree _ _ _).2 le_rfl`. Take `⟨y, hy, z, hz, hyz⟩` from `K.exists_add_mem_mem_orthogonal (⟨P, hPS⟩ : S)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `g set G := colSub (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) z.1 with hG set c := detChar n (fun τ => (g τ : Matrix (Fin a) (Fin a) ℂ)) with hc`. Set `w : S` to `⟨G - c • z.1, S.sub_mem (hmemS _ _ z.2) (S.smul_mem c z.2)⟩`. Establish `hw : w ∈ K` using `Submodule.subset_span ⟨g, z, rfl⟩`. Establish `h1 : Formalism.L2.DIV.fockL z.1 (G - c • z.1) = 0` using `Submodule.inner_left_of_mem_orthogonal hw hz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Formalism.L2.DIV.fockL (G - c • z.1) z.1 = 0` using `Submodule.inner_right_of_mem_orthogonal hw hz`. Establish `hinv : Formalism.L2.DIV.fockL G G = Formalism.L2.DIV.fockL z.1 z.1`. Rewrite using `[Formalism.L2.DIV.fockL_apply, Formalism.L2.DIV.fockL_apply, hG, fockS_colSub_unitary]`. Establish `hcc` using `star_detChar_mul_detChar n g`. Rewrite `hcc` using `[← hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : Formalism.L2.DIV.fockL (G - c • z.1) (G - c • z.1) = Formalism.L2.DIV.fockL (G - c • z.1) G - c * Formalism.L2.DIV.fockL (G - c • z.1) z.1`. Rewrite using `[map_sub, map_smul, smul_eq_mul]`. Establish `e2 : Formalism.L2.DIV.fockL (G - c • z.1) G = Formalism.L2.DIV.fockL G G - starRingEnd ℂ c * Formalism.L2.DIV.fockL z.1 G`. Rewrite using `[LinearMap.map_sub₂, LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Establish `h1' : Formalism.L2.DIV.fockL z.1 G - c * Formalism.L2.DIV.fockL z.1 z.1 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, map_sub, map_smul, smul_eq_mul]`. Establish `hWW : Formalism.L2.DIV.fockL (G - c • z.1) (G - c • z.1) = 0`. Take the linear combination `e1 + e2 - c * h2 + hinv - starRingEnd ℂ c * h1' - Formalism.L2.DIV.fockL z.1 z.1 * hcc`. Assume the negation of the conclusion as `hne`. Establish `hne' : G - c • z.1 ≠ 0` using `sub_ne_zero.2 hne`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fockS_self_re_pos hne'` as an intermediate fact. Rewrite `this` using `[← Formalism.L2.DIV.fockL_apply, hWW]`. Simplify using `at this`. Establish `hP : P = y.1 + z.1` using `congrArg Subtype.val hyz`. Rewrite using `[hP, map_add, hK y hy, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_inv_eq_of_twisted : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (n : ι → ℕ) (Pr : Type) [AddCommGroup Pr] [Module ℂ Pr]
     (q : GlobalTheory.MinorFrame.Pol ι d a →ₗ[ℂ] Pr),

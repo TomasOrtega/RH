@@ -20,15 +20,15 @@ open ReciprocityTheory.ChartRestriction.G.Out (RosatiAdj rosatiφ rosatiε)
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `c`. Establish `hr : RosatiAdj U.D.toPre.P.A U.D.toPre.P.L ((abPartAct U).act c) ((abPartAct U).act (star c))`. Establish `h : RosatiAdj U.D.toPre.P.A U.D.toPre.P.L ((abPartAct U).act c) ((abPartAct U).act (H.bar c))`. Use `letI := H.starRing`. Conclude with `U.oD.onB.rosati c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← bar_eq_star H]`. Conclude with `h`. Take `⟨V, hV, g, hg⟩` from `hr (IsLocalRing.closedPoint R)`. Take `rfl : V = ⊤` from `(IsLocalRing.closedPoint_mem_iff V).1 hV`. Establish `hL : U.D.toPre.P.L.IsLB` using `U.D.toPre.P.isLB`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgen : ∃ u : LB.Gen (LB.LinComb U.D.toPre.P.L (rosatiφ U.D.toPre.P.A ((abPartAct U).act c) ((abPartAct U).act (star c))) rosatiε), u.IsGen`. Establish `e : rosatiφ U.D.toPre.P.A ((abPartAct U).act c) ((abPartAct U).act (star c)) = fun i => (U.D.toPre.P.A ⊗ U.D.toPre.P.A).left.topIso.inv ≫ ((U.D.toPre.P.A ⊗ U.D.toPre.P.A).hom ⁻¹ᵁ ⊤).ι ≫ rosatiφ U.D.toPre.P.A ((abPartAct U).act c) ((abPartAct U).act (star c)) i`. Use function extensionality and compare the values at `fun i => ((U.D.toPre.P.A ⊗ U.D.toPre.P.A).left.topIso.inv_hom_id_assoc _).symm`. Rewrite using `[e]`. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.DVR.pullGen_isGen _ _ _ _ hg _⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hgen`. Establish `h0` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨u, hu⟩`. Rewrite `h0` using `[cls_linComb hL, Fin.sum_univ_six]`. Use `(cls_eq_iff (LB.isLB_linComb hL _ _) (LB.isLB_linComb hL _ _)).1 ?_` and prove the remaining obligations. Use `(cls_cube_two hL _ _ _).trans (Eq.trans ?_ (cls_cube_two hL _ _ _).symm)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `pm : ∀ a b : U.D.toPre.P.A ⊗ U.D.toPre.P.A ⟶ U.D.toPre.P.A, padd U.D.toPre.P.A a b = a * b` using `fun _ _ => rfl`. Simplify using `only [rosatiφ, rosatiε, lam, pm, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, Matrix.head_cons, one_smul, neg_smul, Fin.isValue] at h0 ⊢`. Rewrite using `[← sub_eq_zero, ← h0]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem abPartAct_isAdj (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Ideal R) (t : SAB H (Sp R)) (U : PELUnif I t) :

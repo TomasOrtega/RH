@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.Mum.CoverFin
 
 /- English proof (translation)
-Take `⟨bc, hbc, -⟩` from `grpPullback_iso h (isGrpPullback_pullback G f)`. Use `haveI := hbc`. Conclude with `GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback f G hG)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem semiAbelian_of_pull {S T : Scheme.{0}} {G : Over S} [GrpObj G] {f : T ⟶ S} {G' : Over T} [GrpObj G']
     [IsCommMonObj G'] {π : G'.left ⟶ G.left} (h : IsGrpPullback G' G f π) (hG : IsSemiAbelian G) : IsSemiAbelian G' := by
@@ -33,7 +33,7 @@ theorem semiAbelian_of_pull {S T : Scheme.{0}} {G : Over S} [GrpObj G] {f : T �
   exact GlobalTheory.isSemiAbelian_of_grpIso bc (IsSemiAbelian.pullback f G hG)
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `: a ∈ (maximalIdeal B).comap φ` using `by rw [h]; exact (mem_maximalIdeal a).2 hn`. Conclude with `(mem_maximalIdeal _).1 this ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_comap {A B : Type} [CommRing A] [IsLocalRing A] [CommRing B] [IsLocalRing B] (φ : A →+* B)
     (h : (maximalIdeal B).comap φ = maximalIdeal A) : IsLocalHom φ := by
@@ -47,15 +47,13 @@ end GlobalTheory.Mum.CoverFin
 open GlobalTheory.Mum.CoverFin
 
 /- English proof (translation)
-Introduce `R _ _ _ hB D ⟨C⟩`. Take `⟨R', _, _, _, ρ, D', C', E, hρ, hD', hθ⟩` from `GlobalTheory.T.exists_labelledCover_embedding_closedFibre R hB D C`. Take `⟨G, _, _, P, β, hG, hβ, hL⟩` from `GlobalTheory.T.semiAbelian_descends_of_closedFibre_embedding R' hρ.1 C'.toModif C'.G C'.semi C'.P E hθ`. Use `haveI : IsNoetherianRing R' := hρ.1.1`. Use `haveI : CharZero R := hB.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : CharZero R' := charZero_of_injective_ringHom hρ.2.1`. Take `⟨V, _, _, _, φ, hV, hφ, hm⟩` from `GlobalTheory.PrimeUnif.exists_cdvr R' (maximalIdeal R')`. Establish `hloc : IsLocalHom φ` using `isLocalHom_of_comap φ hm`. Use `haveI : IsDiscreteValuationRing V := hV.1`. Set `fφ : FractionRing R' →+* FractionRing V` to `IsLocalization.map (FractionRing V) φ (nonZeroDivisors_le_comap_nonZeroDivisors_of_injective φ hφ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfφ : ∀ r, fφ (algebraMap R' _ r) = algebraMap V _ (φ r)` using `fun r => IsLocalization.map_eq _ _`. Use `haveI : IsProper C'.π := C'.proper`. Take `⟨ξ, -, hξ⟩` from `val_exists C'.π (spMap fφ ≫ C'.gp) (spMap φ) (by`. Rewrite using `[Category.assoc, C'.gp_π]`. Use `show spMap fφ ≫ spMap (algebraMap R' (FractionRing R')) = spMap (algebraMap V (FractionRing V)) ≫ spMap φ`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← spMap_comp, ← spMap_comp]`. Use `congr 1`. Conclude with `RingHom.ext fun r => hfφ r)`. Take `⟨W', _, _, _, io, G'', _, _, β', D'', A'', U'', hD'', hW', hio, hfin, hβ', hL', -⟩` from `C'.trait V hV φ ξ hφ hloc hξ`. Use `haveI : IsLocalHom io := hfin.to_isIntegral.isLocalHom hio`.
-
-Establish `hcomp : IsGrpPullback G'' G (spMap (io.comp φ)) (β' ≫ β)` using `(hβ'.comp hβ).congr (by rw [Category.assoc, hξ, spMap_comp]) rfl`. Establish `h₂ : LBIso (C'.P.L.L.pull β') (P.L.L.pull (β' ≫ β))` using `LBIso.chartPull (chartPullPull C'.P.L.L β') (chartPullSame P.L.L _ _ _ β' fun _ => rfl) hL`. Establish `hLc : LBIso U''.LG.L (P.L.L.pull (β' ≫ β))` using `LBIso.trans U''.LG.isLB (pull_isLB C'.P.L.isLB β') (pull_isLB P.L.isLB _) hL' h₂`. Take `⟨R₁, _, _, _, ρ₁, D₁, G₁, _, _, β₁, A₁, U₁, hρ₁, hD₁, hβ₁, -⟩` from `GlobalTheory.T.exists_finiteExtension_uniformisation_of_trait_unif R' ⟨hρ.1, inferInstance⟩ D' G P hG W' hW' (io.comp φ) (hio.comp hφ) inferInstance G'' (β' ≫ β) D'' A'' U'' hcomp hLc ⟨hD''⟩`. Conclude with `GlobalTheory.T.hasSemiAbelianUniformisation_of_finiteExt_trans R R' ρ hρ D D' hD' ⟨R₁, _, _, _, ρ₁, D₁, hρ₁, hD₁, G₁, _, _, A₁, semiAbelian_of_pull hβ₁ hG, ⟨U₁⟩⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.hasFin_of_labCover : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R →
     ∀ (D : DegData R (maximalIdeal R)), Nonempty (LabCover D) → HasFin D := by

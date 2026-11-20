@@ -15,15 +15,15 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 namespace GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Introduce `D T L sc μ₀ hL G i j P hq`. Take `⟨q, hqp, hqi, hqP⟩` from `hq`. Establish `hmu : (L.C.mu0 j).UnrAt P` using `(L.C.isMu0 j).unr P fun k hk => by`. Establish `hk' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal` using `hk`. Establish `e` using `prime_unique (K := D.host.E) hqp (D.host.g_prime k) hqP hk'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.Mem.Col2.SplitChar.not_inertQ_g k (e ▸ hqi)`. Establish `hchi : (G.ch.chiH (D.R.m - i)).UnrAt P`. Use `G.ch.unr (D.R.m - i) (by omega) (by omega) P fun hv => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `G.pl.w_split _ hv`. Establish `hov` using `G.pl.w_over _ hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := G.pl.w (P.under (𝓞 D.host.F))`. Establish `h1 : ((q : ℕ) : 𝓞 D.host.F) ∈ (P.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (q : 𝓞 D.host.F) ∈ P.asIdeal`. Simplify using `using hqP`. Rewrite `h1` using `[← hov]`. Establish `hqw : ((q : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) (q : 𝓞 D.host.F) ∈ w.asIdeal` using `h1`. Simplify using `using h2`. Establish `hfix` using `hqi _ w.isPrime w.ne_bot hqw`. Take `⟨⟨e1, e2, v, ε, hε, e3⟩, e4⟩` from `he`. Conclude with `GlobalTheory.DualPairCheck.split_ne e ⟨e1, e2, v, ε, hε, e3⟩ (GlobalTheory.EtaProduct.cA_of_fixed ⟨e1, ⟨v, ε, hε, Or.inl ⟨e2, e3⟩⟩, e4⟩ hfix)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : nuH G μ₀ i j = L.C.mu0 j * (G.ch.chiH (D.R.m - i))⁻¹`. Rewrite using `[nuH, hL.xi_base, mul_one, div_eq_mul_inv]`. Rewrite using `[e]`. Conclude with `(hmu.mul hchi.inv).inv`.
+A detailed English derivation is pending.
 -/
 theorem nuH_inv_unrAt_of_inertQ : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T}, L.Is μ₀ → ∀ (G : GridData L sc) (i j : Fin D.R.m) (P : HeightOneSpectrum (𝓞 D.host.E)), (∃ q : ℕ, q.Prime ∧ InertQ D q ∧ ((q : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) → (nuH G μ₀ i j)⁻¹.UnrAt P := by
   intro D T L sc μ₀ hL G i j P hq

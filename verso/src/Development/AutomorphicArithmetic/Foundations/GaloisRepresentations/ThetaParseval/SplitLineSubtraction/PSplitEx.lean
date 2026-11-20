@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨g, w, -, hw, -⟩` from `(GlobalTheory.SplitAttUniq.dense_splitFrobInv_away E (AlgebraicClosure E) 2 Nat.prime_two ∅ Set.finite_empty).nonempty`. Conclude with `⟨w, hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.TP.Sub.splitEx_holds :
     SplitEx := by

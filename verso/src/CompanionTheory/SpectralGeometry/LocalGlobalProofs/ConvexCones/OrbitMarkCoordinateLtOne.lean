@@ -9,11 +9,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.CompanionTheory.Ar.Fan.OrbitMarkCoordinateBound
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb φ hφ X₀ _ _ _ m₀ δ₀ h₀ hli₀ hprim₀ v t hv ht hvsum X _ _ _ m δ h hli hprim β _ _ hβ1 c hc hβsum j`. Take `⟨p, -, hpos, hcells⟩` from `GlobalTheory.T.exists_matching_pieces_of_cell O bar w0 hb φ hφ δ₀ h₀ hli₀ hprim₀ v t hv (fun i => (ht i).1) hvsum β hβ1`. Break down `(hc j).lt_or_eq with hcj | hcj` into its components or cases. Take `⟨i, hti, d, hd, hpd, hcd⟩` from `(hcells m δ h hli c hc hβsum).2 j hcj`. Establish `hpi` using `(hpos i hti).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδj` using `GlobalTheory.T.isPrimitiveBalancedForm_primitive_among_intForms bar (δ j) (h.mem j) (hprim j)`. Establish `hd1` using `(GlobalTheory.T.primitive_intBilinForm_eq_of_positive_real_ray (p i) (δ j) d hd hpi hδj hpd).2`. Rewrite using `[hcd, hd1, mul_one]`. Conclude with `(ht i).2`. Rewrite using `[← hcj]`.
-
-Conclude with `zero_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbMark_coord_lt_one : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O) (w0 : O), CMOrd O bar → ∀ (φ : InvFun O), IsTwG w0 φ →
   ∀ {X₀ : Type} [AddCommGroup X₀] [Module O X₀] [Module.Finite O X₀] {m₀ : ℕ} (δ₀ : Fin m₀ → LinearMap.BilinForm ℤ X₀) (h₀ : IsCell bar φ δ₀),

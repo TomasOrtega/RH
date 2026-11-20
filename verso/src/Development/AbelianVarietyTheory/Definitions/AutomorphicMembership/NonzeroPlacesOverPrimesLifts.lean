@@ -86,7 +86,7 @@ structure HoldsL {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3
   sep : A3.fam3.TypesSep3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.prim.heckeR, h.prim.heckeL, h.prim.hecke, h.prim.gUnit, h.prim.gEquiv, h.prim.block, h.prim.liftTest, h.prim.liftTestB, h.prim.liftOnto, h.prim.unif, h.prim.mLat, h.prim.levW, h.prim.thmA, h.prim.sumW, h.aux, h.ok, h.sep⟩`.
+Supply the required witnesses or components.
 -/
 theorem HoldsL.of_holds {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} (h : Holds R F) :

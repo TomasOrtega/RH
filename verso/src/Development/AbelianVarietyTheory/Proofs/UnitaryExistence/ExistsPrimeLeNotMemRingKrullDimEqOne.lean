@@ -5,13 +5,13 @@ import Development.AbelianVarietyTheory.Proofs.HomogeneousIdeals.ExistsValuation
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ B _ _ _ _ m h hm h0 hhm`. Establish `: IsNoetherianRing B` using `Algebra.FiniteType.isNoetherianRing k B`. Take `⟨q, hq, hqm, h1⟩` from `exists_mem_height_map_le_one m (PrimeSpectrum.basicOpen h).isOpen ⟨⟨⊥, inferInstance⟩, by simpa using h0, bot_le⟩`. Establish `hq' : h ∉ q.asIdeal` using `hq`. Use `⟨q.asIdeal, q.isPrime, hqm, hq', ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsurj` using `Ideal.Quotient.mk_surjective (I := q.asIdeal)`. Establish `hmax : (m.map (Ideal.Quotient.mk q.asIdeal)).IsMaximal` using `Ideal.IsMaximal.map_of_surjective_of_ker_le hsurj (by simpa using hqm)`. Establish `h2 : (m.map (Ideal.Quotient.mk q.asIdeal)).height ≠ 0`. Rewrite using `[Ne, Ideal.height_eq_zero_iff, IsDomain.minimalPrimes_eq_singleton_bot, Set.mem_singleton_iff]`. Introduce `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk q.asIdeal) hhm` as an intermediate fact. Rewrite `this` using `[e, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hq' this`. Establish `h3` using `le_antisymm h1 (Order.one_le_iff_ne_zero.2 h2)`. Take `⟨s, hs1, hs2⟩` from `ReciprocityTheory.CA.exists_dim_trdeg_field (K := k) (A := B ⧸ q.asIdeal)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4` using `ReciprocityTheory.CA.height_eq_of_isMaximal_of_trdeg_eq_field s hs2 (m.map (Ideal.Quotient.mk q.asIdeal))`. Rewrite `h4` using `[h3]`. Establish `h5 : s = 1` using `by exact_mod_cast h4.symm`. Rewrite using `[hs1, h5]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_prime_le_notMem_ringKrullDim_eq_one :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (B : Type) [CommRing B] [IsDomain B] [Algebra k B]

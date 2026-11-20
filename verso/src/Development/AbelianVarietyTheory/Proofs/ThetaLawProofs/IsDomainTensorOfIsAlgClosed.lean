@@ -24,9 +24,9 @@ section Algebra
 open Polynomial TensorProduct AlgebraicGeometry CategoryTheory Limits
 
 /- English proof (translation)
-Set `f : Spec (.of A) ⟶ Spec (.of K)` to `Spec.map (CommRingCat.ofHom (algebraMap K A))`. Establish `hf : LocallyOfFiniteType f`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.finiteType_algebraMap.2 inferInstance`. Establish `hi : IsIntegral (Over.mk f).left` using `inferInstanceAs (IsIntegral (Spec (.of A)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : GeometricallyIntegral f` using `GlobalTheory.geometricallyIntegral_of_isIntegral_of_isAlgClosed K (Over.mk f) hf`. Set `y` to `Spec.map (CommRingCat.ofHom (algebraMap K F))`. Establish `: IsIntegral (pullback y f)` using `pullback_of_geometrically' GeometricallyIntegral.geometrically_isIntegral F y`. Establish `: IsIntegral (Spec (.of (F ⊗[K] A)))` using `IsIntegral.of_isIso (pullbackSpecIso K F A).hom`. Conclude with `(affine_isIntegral_iff (.of (F ⊗[K] A))).mp this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDomain_tensor_of_isAlgClosed (K A : Type) [Field K] [IsAlgClosed K] [CommRing A] [IsDomain A]
     [Algebra K A] [Algebra.FiniteType K A] (F : Type) [Field F] [Algebra K F] : IsDomain (F ⊗[K] A) := by
@@ -44,9 +44,9 @@ theorem isDomain_tensor_of_isAlgClosed (K A : Type) [Field K] [IsAlgClosed K] [C
   exact (affine_isIntegral_iff (.of (F ⊗[K] A))).mp this
 
 /- English proof (translation)
-Use `letI := e.toAlgebra`. Use `⟨F ⊗[K] A, inferInstance, h F, inferInstance, inferInstance, (Algebra.TensorProduct.includeRight (R := K) (A := F) (B := A)).toRingHom, fun p hp => ?_⟩` and prove the remaining obligations. Set `p' : A →ₐ[K] F` to `{ p with commutes' := fun a => congr($hp a) }`. Use `⟨Algebra.TensorProduct.lift (AlgHom.id F F) p' fun _ _ => .all _ _, ?_⟩` and prove the remaining obligations. Use extensionality with `a`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[p']`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_baseChange {K F : Type} [Field K] [Field F] (e : K →+* F) (A : Type) [CommRing A] [Algebra K A]
     [Algebra.Smooth K A] (h : ∀ (L : Type) [Field L] [Algebra K L], IsDomain (L ⊗[K] A)) :
@@ -61,27 +61,27 @@ theorem exists_baseChange {K F : Type} [Field K] [Field F] (e : K →+* F) (A : 
   simp [p']
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ ρ : R, ρ ^ n = κ`. Take `⟨ρ, hρ⟩` from `h`. Establish `h₁ : p₀ κ ≠ 0` using `(hκ.map p₀).ne_zero`. Establish `h₂ : p₀ ρ ≠ 0`. Introduce `h0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h₁` to reduce the goal to its premises. Rewrite using `[← hρ, map_pow, h0, zero_pow hn.ne_zero]`. Use `⟨R, inferInstance, inferInstance, inferInstance, inferInstance, AlgHom.id K R, algebraMap K R (u₀ / p₀ ρ) * ρ, p₀, p, ?_, rfl, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_pow, ← map_pow, div_pow, hu, ← map_pow, hρ, div_self h₁]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h₂]`. Establish `hic : IsIntegrallyClosed R` using `GlobalTheory.isIntegrallyClosed_of_smooth K R`. Set `L` to `FractionRing R`. Set `f : R[X]` to `X ^ n - C κ`. Establish `hf : f.Monic` using `monic_X_pow_sub_C κ hn.ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : f.map (algebraMap R L) = X ^ n - C (algebraMap R L κ)` using `by simp [f]`. Establish `hirr : Irreducible (f.map (algebraMap R L))`. Rewrite using `[hmap]`. Use `X_pow_sub_C_irreducible_of_prime hn fun b hb => h ?_` and prove the remaining obligations. Establish `hb' : IsIntegral R b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Simplify using `[f, hb]`. Take `⟨ρ, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hb'`. Conclude with `⟨ρ, IsFractionRing.injective R L (by rw [map_pow, hb])⟩`. Establish `hpr : Prime f`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `⟨hf.ne_zero, fun hu => hirr.not_isUnit (hu.map (mapRingHom (algebraMap R L))), fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[← map_dvd_map (algebraMap R L) (IsFractionRing.injective R L) hf, Polynomial.map_mul]`. Rewrite using `[← map_dvd_map (algebraMap R L) (IsFractionRing.injective R L) hf, ← map_dvd_map (algebraMap R L) (IsFractionRing.injective R L) hf]`. Conclude with `hirr.prime.dvd_or_dvd hab`. Establish `hdom : IsDomain (AdjoinRoot f)` using `AdjoinRoot.isDomain_of_prime hpr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hroot : AdjoinRoot.root f ^ n = algebraMap R (AdjoinRoot f) κ`. Use `AdjoinRoot.aeval_eq f (f := f)` as an intermediate fact. Rewrite `this` using `[AdjoinRoot.mk_self]`. Simplify `this` using `[f, sub_eq_zero]`. Establish `hru : IsUnit (AdjoinRoot.root f)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isUnit_pow_iff hn.ne_zero, hroot]`. Conclude with `hκ.map _`. Establish `het : Algebra.Etale R (AdjoinRoot f)`. Use `GlobalTheory.etale_adjoinRoot_of_isUnit_derivative hf ?_` and prove the remaining obligations. Establish `: AdjoinRoot.mk f f.derivative = algebraMap K (AdjoinRoot f) (n : K) * AdjoinRoot.root f ^ (n - 1)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[f, derivative_X_pow]`. Rewrite using `[this]`. Conclude with `((Ne.isUnit (Nat.cast_ne_zero.2 hn.ne_zero)).map _).mul (hru.pow _)`. Establish `hsm : Algebra.Smooth K (AdjoinRoot f)` using `Algebra.Smooth.comp K R (AdjoinRoot f)`. Establish `lift : ∀ (s : R →ₐ[K] K) (u : K), u ^ n = s κ → ∃ q : AdjoinRoot f →ₐ[K] K, q.comp (IsScalarTower.toAlgHom K R (AdjoinRoot f)) = s ∧ q (AdjoinRoot.root f) = u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Introduce `s u hs`. Use `⟨AdjoinRoot.liftAlgHom f s u (by simp [f, hs]), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu'⟩` from `IsAlgClosed.exists_pow_nat_eq (p κ) hn.pos`. Take `⟨q₀, h₀, h₀'⟩` from `lift p₀ u₀ hu`. Take `⟨q, h₁, -⟩` from `lift p u hu'`. Conclude with `⟨AdjoinRoot f, inferInstance, hdom, inferInstance, hsm, IsScalarTower.toAlgHom K R _, AdjoinRoot.root f, q₀, q, hroot, h₀, h₁, h₀'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_root_prime (K : Type) [Field K] [IsAlgClosed K] [CharZero K] {n : ℕ} (hn : n.Prime)
     (R : Type) [CommRing R] [IsDomain R] [Algebra K R] [Algebra.Smooth K R] (κ : R) (hκ : IsUnit κ)
@@ -149,13 +149,13 @@ theorem exists_root_prime (K : Type) [Field K] [IsAlgClosed K] [CharZero K] {n :
       AdjoinRoot.root f, q₀, q, hroot, h₀, h₁, h₀'⟩
 
 /- English proof (translation)
-Proceed by induction on `n using induction_on_primes with`. Consider the case `zero => exact fun h => (h rfl).elim`. Consider the case `one`. Introduce `_ R _ _ _ _ κ _ p₀ p u₀ hu`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, inferInstance, AlgHom.id K R, κ, p₀, p, by simp, rfl, rfl, by simpa using hu.symm⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `prime_mul l a hl ih`. Introduce `hn R _ _ _ _ κ hκ p₀ p u₀ hu`. Take `⟨B, _, _, _, _, φ, r, q₀, q, h₁, h₂, h₃, h₄⟩` from `exists_root_prime K hl R κ hκ p₀ p (u₀ ^ a) (by rw [← pow_mul, mul_comm, hu])`. Establish `hr : IsUnit r`. Rewrite using `[← isUnit_pow_iff hl.ne_zero, h₁]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hκ.map _`. Take `⟨B', _, _, _, _, φ', r', q₀', q', g₁, g₂, g₃, g₄⟩` from `ih (right_ne_zero_of_mul hn) B r hr q₀ q u₀ h₄.symm`. Use `⟨B', inferInstance, inferInstance, inferInstance, inferInstance, φ'.comp φ, r', q₀', q', ?_, ?_, ?_, g₄⟩` and prove the remaining obligations. Rewrite using `[mul_comm, pow_mul, g₁, ← map_pow, h₁, AlgHom.comp_apply]`. Rewrite using `[← AlgHom.comp_assoc, g₂, h₂]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← AlgHom.comp_assoc, g₃, h₃]`.
+A detailed English derivation is pending.
 -/
 theorem exists_root (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (n : ℕ) : n ≠ 0 →
     ∀ (R : Type) [CommRing R] [IsDomain R] [Algebra K R] [Algebra.Smooth K R] (κ : R) (_ : IsUnit κ)
@@ -195,22 +195,20 @@ def IsVal (x : KeyIn ℂ) (t : ℂ) : Prop :=
     charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8
 
 /- English proof (translation)
-Take `⟨τ, M, a, b, c, h₁, h₂, -, h₃⟩` from `(GlobalTheory.KeyNormalExists.exists_normalAt hU x).1`. Conclude with `⟨_, τ, M, a, b, c, h₁, h₂, h₃, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isVal (hU : ThetaUnifAV) (x : KeyIn ℂ) : ∃ t, IsVal x t := by
   obtain ⟨τ, M, a, b, c, h₁, h₂, -, h₃⟩ := (GlobalTheory.KeyNormalExists.exists_normalAt hU x).1
   exact ⟨_, τ, M, a, b, c, h₁, h₂, h₃, rfl⟩
 
 /- English proof (translation)
-Take `⟨yB, hyB⟩` from `GlobalTheory.KeyPow.keyIn_baseChange hL.polBaseChange S B y ψ`. Establish `hex : ∀ p : B →ₐ[ℂ] ℂ, ∃ u : ℂ, (∃ z : KeyIn ℂ, KeyPB z yB p.toRingHom ∧ IsVal z u) ∧ (p = q → u = t)`. Introduce `p`. Distinguish the cases in `hp : p = q`. Substitute `hp` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `⟨t, ⟨x, GlobalTheory.KeyCancel.keyPB_cancel _ _ _ y yB x ψ _ hyB hx, ht⟩, fun _ => rfl⟩`. Take `⟨z, hz⟩` from `GlobalTheory.KeyPow.keyIn_baseChange hL.polBaseChange B ℂ yB p.toRingHom`. Take `⟨u, hu⟩` from `exists_isVal hU z`. Conclude with `⟨u, ⟨z, hz, hu⟩, fun h => (hp h).elim⟩`. Use `choose T hT hTq using hex`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hru : IsUnit r`. Rewrite using `[← isUnit_pow_iff (Nat.one_le_iff_ne_zero.1 hn), hr]`. Conclude with `κ.isUnit.map ψ`. Take `⟨r, rfl⟩` from `hru`. Rewrite using `[← hTq q rfl]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.thetaFrame_value_eq_unit_smooth_connected_base hL hU hI B yB n r T q₀ hn hT (fun p => ?_) ?_ q` and prove the remaining obligations. Take `⟨z, hz, hu⟩` from `hT p`. Rewrite using `[hκ _ z _ (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz) hu, ← map_pow, hr]`. Both sides reduce to the same expression. Take `⟨z, hz, hu⟩` from `hT q₀`.
-
-Conclude with `GlobalTheory.T.thetaFrame_value_independent_normalForm hU hI z _ _ hu (h₀ z (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_eq_root (hL : Out.Laws) (hU : ThetaUnifAV) (hI : Key.Chi.InversionStatement) {S : Type} [CommRing S]
     (y : KeyIn S) {n : ℕ} (hn : 1 ≤ n) (κ : Sˣ)
@@ -242,21 +240,21 @@ theorem val_eq_root (hL : Out.Laws) (hU : ThetaUnifAV) (hI : Key.Chi.InversionSt
     exact GlobalTheory.T.thetaFrame_value_independent_normalForm hU hI z _ _ hu (h₀ z (GlobalTheory.keyPB_trans _ _ _ y yB z ψ _ hyB hz))
 
 /- English proof (translation)
-Introduce and unpack `hL hU hI ⟨N, hN, hR⟩ hfam f x x' t t' hx' ht ht'`. Take `⟨k, _, _, S, _, _, y, s, s₀, t₀, hsm, hdom, hx, h₀⟩` from `hfam x`. Establish `: IsDomain S`. Use `hdom k` as an intermediate fact. Conclude with `(Algebra.TensorProduct.lid k S).symm.toMulEquiv.isDomain _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `GlobalTheory.T.exists_unit_thetaKeyRule_smooth_base hU hL.polBaseChange N hR k S y`. Establish `hn` using `hN y.P.g`. Set `e : k →+* ℂ` to `s.comp (algebraMap k S)`. Take `⟨R, _, _, _, _, ψ₁, hψ₁⟩` from `exists_baseChange e S hdom`. Take `⟨p, hp⟩` from `hψ₁ s rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p₀, hp₀⟩` from `hψ₁ (e.comp s₀.toRingHom) (by ext a; simp)`. Establish `hu : e t₀ ^ N y.P.g = p₀ (ψ₁ κ)`. Take `⟨x₀, hx₀⟩` from `GlobalTheory.KeyPow.keyIn_baseChange hL.polBaseChange S ℂ y (e.comp s₀.toRingHom)`. Rewrite using `[hκ _ x₀ _ hx₀ (h₀ e x₀ hx₀), ← hp₀]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨B, _, _, _, _, φ, r, q₀, q, hr, hq₀, hq, hq₀r⟩` from `exists_root ℂ (N y.P.g) (Nat.one_le_iff_ne_zero.1 hn) R (ψ₁ κ) (κ.isUnit.map ψ₁) p₀ p (e t₀) hu`. Establish `key : ∀ (g : ℂ →+* ℂ) (z : KeyIn ℂ) (u : ℂ), KeyPB z y (g.comp s) → IsVal z u → u = g (q r)`. Introduce `g z u hz hu`. Take `⟨B', _, _, _, _, ψ₂, hψ₂⟩` from `exists_baseChange g B fun L _ _ => isDomain_tensor_of_isAlgClosed ℂ B L`. Take `⟨Q, hQ⟩` from `hψ₂ (g.comp q.toRingHom) (by ext a; simp)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Q₀, hQ₀⟩` from `hψ₂ (g.comp q₀.toRingHom) (by ext a; simp)`. Establish `a₁ : Q.toRingHom.comp (ψ₂.comp (φ.toRingHom.comp ψ₁)) = g.comp s`. Rewrite using `[← RingHom.comp_assoc, hQ, ← hp, ← hq]`. Both sides reduce to the same expression. Establish `a₀ : Q₀.toRingHom.comp (ψ₂.comp (φ.toRingHom.comp ψ₁)) = (g.comp e).comp s₀.toRingHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.comp_assoc, hQ₀, RingHom.comp_assoc s₀.toRingHom, ← hp₀, ← hq₀]`. Both sides reduce to the same expression. Establish `b₁ : Q (ψ₂ r) = g (q r)` using `congr($hQ r)`. Establish `b₀ : Q₀ (ψ₂ r) = (g.comp e) t₀`. Rewrite using `[RingHom.comp_apply, ← hq₀r]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congr($hQ₀ r)`. Rewrite using `[← b₁]`. Use `val_eq_root hL hU hI y hn κ hκ B' (ψ₂.comp (φ.toRingHom.comp ψ₁)) (ψ₂ r) ?_ Q₀ Q (fun x₀ hx₀ => ?_) z u (a₁ ▸ hz) hu` and prove the remaining obligations. Rewrite using `[← map_pow, hr]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[b₀]`. Conclude with `h₀ _ x₀ (a₀ ▸ hx₀)`. Establish `c₁ : t = q r` using `key (RingHom.id ℂ) x t hx ht`. Rewrite using `[c₁]`. Conclude with `key f x' t' (GlobalTheory.keyPB_trans _ _ _ y x x' s f hx hx') ht'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_equivariant : Out.Laws → ThetaUnifAV → Key.Chi.InversionStatement → (∃ N : ℕ → ℕ, (∀ g, 1 ≤ N g) ∧ KeyRule N 1 charHalf) → (∀ x : KeyIn ℂ, ∃ (k : Type) (_ : Field k) (_ : NumberField k) (S : Type) (_ : CommRing S) (_ : Algebra k S) (y : KeyIn S) (s : S →+* ℂ) (s₀ : S →ₐ[k] k) (t₀ : k), Algebra.Smooth k S ∧ (∀ (K : Type) [Field K] [Algebra k K], IsDomain (TensorProduct k K S)) ∧ KeyPB x y s ∧ ∀ (e : k →+* ℂ) (x₀ : KeyIn ℂ), KeyPB x₀ y (e.comp s₀.toRingHom) → (∃ (τ M : Matrix (Fin x₀.P.g) (Fin x₀.P.g) ℂ) (a b : Fin x₀.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x₀ τ M a b c ∧ e t₀ = M.det ^ 4 / c ^ 8)) → ∀ (f : ℂ →+* ℂ) (x x' : KeyIn ℂ) (t t' : ℂ), KeyPB x' x f → (∃ (τ M : Matrix (Fin x.P.g) (Fin x.P.g) ℂ) (a b : Fin x.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x τ M a b c ∧ t = M.det ^ 4 / c ^ 8) → (∃ (τ M : Matrix (Fin x'.P.g) (Fin x'.P.g) ℂ) (a b : Fin x'.P.g → ℂ) (c : ℂ), charHalf _ a b ∧ c ≠ 0 ∧ NormalAt x' τ M a b c ∧ t' = M.det ^ 4 / c ^ 8) → t' = f t := by
   rintro hL hU hI ⟨N, hN, hR⟩ hfam f x x' t t' hx' ht ht'

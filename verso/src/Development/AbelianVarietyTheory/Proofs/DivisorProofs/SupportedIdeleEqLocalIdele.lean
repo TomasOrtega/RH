@@ -12,13 +12,11 @@ theorem snd_apply_mul {K : Type} [Field K] [NumberField K] (v : HeightOneSpectru
     (a b : AdeleRing (𝓞 K) K) : (a * b).2 v = a.2 v * b.2 v := rfl
 
 /- English proof (translation)
-Introduce `K _ _ v a ha`. Set `x : (v.adicCompletion K)ˣ` to `{ val := (a : AdeleRing (𝓞 K) K).2 v inv := ((a⁻¹ : Ideles K) : AdeleRing (𝓞 K) K).2 v val_inv := by`. Rewrite using `[← snd_apply_mul, Units.mul_inv]`. Both sides reduce to the same expression. Use `inv_val := by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← snd_apply_mul, Units.inv_mul]`. Use `rfl }`. Use `⟨x, rfl, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Conclude with `(ha.1 w).symm`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Distinguish the cases in `hw : w = v`.
-
-Substitute `hw` using the available equality. Conclude with `(localIdele_snd_self K w x).trans rfl`. Conclude with `((localIdele_isSupportedAt K v x).2 w hw).trans (ha.2 w hw).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem supported_eq_localIdele : ∀ {K : Type} [Field K] [NumberField K] {v : HeightOneSpectrum (𝓞 K)} {a : Ideles K},
     IsSupportedAt K a v → ∃ x : (v.adicCompletion K)ˣ, (x : v.adicCompletion K) = (a : AdeleRing (𝓞 K) K).2 v ∧

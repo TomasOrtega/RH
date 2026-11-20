@@ -18,14 +18,14 @@ theorem pt_apply (z : Matrix (Fin N') (Fin N) D.host.E) (τ : D.what₂.Tau) (i 
     pt D (tor0 D cc δ) δ z τ i j = δ * embT D τ (z i j) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[pt_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pt_zero : pt D (tor0 D cc δ) δ (0 : Matrix (Fin N') (Fin N) D.host.E) = 0 := by
   funext τ i j
   simp [pt_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[pt_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pt_add (z w : Matrix (Fin N') (Fin N) D.host.E) :
     pt D (tor0 D cc δ) δ (z + w) = pt D (tor0 D cc δ) δ z + pt D (tor0 D cc δ) δ w := by
@@ -33,7 +33,7 @@ theorem pt_add (z w : Matrix (Fin N') (Fin N) D.host.E) :
   simp [pt_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Simplify using `[pt_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pt_neg (z : Matrix (Fin N') (Fin N) D.host.E) :
     pt D (tor0 D cc δ) δ (-z) = -pt D (tor0 D cc δ) δ z := by
@@ -41,7 +41,7 @@ theorem pt_neg (z : Matrix (Fin N') (Fin N) D.host.E) :
   simp [pt_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Express the relevant statement in the definitionally equal form `(δ * D.host.φ₀ (c : D.host.E)) * embT D τ (A i j) = δ * embT D τ ((c : D.host.E) * A i j)`. Rewrite using `[map_mul, (GlobalTheory.InducedType.induced_type D).1.1 τ c, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pt_smulK (c : D.host.K) (A : Matrix (Fin N') (Fin N) D.host.E) :
     (δ * D.host.φ₀ (c : D.host.E)) • embV D (tor0 D cc δ) A =
@@ -51,9 +51,9 @@ theorem pt_smulK (c : D.host.K) (A : Matrix (Fin N') (Fin N) D.host.E) :
   rw [map_mul, (GlobalTheory.InducedType.induced_type D).1.1 τ c, mul_assoc]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm ⟨1, by simp [Formalism.FrobeniusOrbits.Psi]⟩⟩`. Introduce `z w h`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (congrFun h τ) i) j`. Rewrite `h1` using `[pt_apply, pt_apply]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(embT D τ).injective (mul_left_cancel₀ hδ h1)`.
+A detailed English derivation is pending.
 -/
 theorem pt_injective (hδ : δ ≠ 0) :
     Function.Injective (pt D (tor0 D cc δ) δ : Matrix (Fin N') (Fin N) D.host.E → VC D N N') := by
@@ -65,11 +65,9 @@ theorem pt_injective (hδ : δ ≠ 0) :
   exact (embT D τ).injective (mul_left_cancel₀ hδ h1)
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem A hA => exact hA`. Consider the case `zero => intro x _`. Rewrite using `[Matrix.zero_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L'.zero_mem`. Consider the case `add A B _ _ hA hB => intro x hx`. Rewrite using `[Matrix.add_mulVec]`. Conclude with `L'.add_mem (hA x hx) (hB x hx)`. Consider the case `smul o A _ hA => intro x hx`.
-
-Rewrite using `[Matrix.smul_mulVec]`. Conclude with `L'.smul_mem o (hA x hx)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_homL {L : Lat D N} {L' : Lat D N'} {A : Matrix (Fin N') (Fin N) D.host.E} :
     A ∈ homL D L L' ↔ ∀ x ∈ L, A.mulVec x ∈ L' := by
@@ -81,15 +79,15 @@ theorem mem_homL {L : Lat D N} {L' : Lat D N'} {A : Matrix (Fin N') (Fin N) D.ho
   | smul o A _ hA => intro x hx; rw [Matrix.smul_mulVec]; exact L'.smul_mem o (hA x hx)
 
 /- English proof (translation)
-Simplify using `only [stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one, IntE, RingHom.mem_range]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stdL {x : Fin N → D.host.E} : x ∈ stdL D N ↔ ∀ i, IntE D (x i) := by
   simp only [stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one, IntE, RingHom.mem_range]
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Take `⟨a, ha, B, hB, rfl⟩` from `hA`. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨c, hc, a, ha, rfl⟩, B, hB, smul_smul _ _ _⟩`. Consider the case `zero => rw [smul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add A B _ _ hA hB => rw [smul_add]`. Conclude with `Submodule.add_mem _ hA hB`. Consider the case `smul o A _ hA => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ o hA`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_RL {L : Lat D N} {L' : Lat D N'} {c : 𝓞 D.host.K} (hc : c ∈ cc)
     {A : Matrix (Fin N') (Fin N) D.host.E} (hA : A ∈ YYl D L L') :
@@ -103,15 +101,15 @@ theorem smul_mem_RL {L : Lat D N} {L' : Lat D N'} {c : 𝓞 D.host.K} (hc : c �
   | smul o A _ hA => rw [smul_comm]; exact Submodule.smul_mem _ o hA
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨w, hw, A, hA, rfl⟩` from `hx`. Express the relevant statement in the definitionally equal form `w ∈ lamOf D cc δ at hw`. Proceed by induction on `hw using AddSubgroup.closure_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem w hw`. Take `⟨c, hc, rfl⟩` from `hw`. Conclude with `⟨_, smul_mem_RL hc hA, pt_smulK _ _⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by rw [zero_smul, pt_zero]⟩`. Consider the case `add w w' _ _ h h'`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨z, hz, e⟩` from `h`. Take `⟨z', hz', e'⟩` from `h'`. Conclude with `⟨z + z', Submodule.add_mem _ hz hz', by rw [add_smul, e, e', pt_add]⟩`. Consider the case `neg w _ h`. Take `⟨z, hz, e⟩` from `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-z, Submodule.neg_mem _ hz, by rw [neg_smul, e, pt_neg]⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, pt_zero.symm⟩`. Consider the case `add w w' _ _ h h'`. Take `⟨z, hz, e⟩` from `h`. Take `⟨z', hz', e'⟩` from `h'`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z + z', Submodule.add_mem _ hz hz', by rw [e, e', pt_add]⟩`. Consider the case `neg w _ h`. Take `⟨z, hz, e⟩` from `h`. Conclude with `⟨-z, Submodule.neg_mem _ hz, by rw [e, pt_neg]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem La_sub {L : Lat D N} {L' : Lat D N'} {x : VC D N N'} (hx : x ∈ La D (tor0 D cc δ) L L') :
     ∃ z ∈ RL D cc L L', x = pt D (tor0 D cc δ) δ z := by
@@ -141,13 +139,11 @@ theorem La_sub {L : Lat D N} {L' : Lat D N'} {x : VC D N N'} (hx : x ∈ La D (t
     exact ⟨-z, Submodule.neg_mem _ hz, by rw [e, pt_neg]⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction generalizing o with`. Consider the case `mem z hz`. Take `⟨t, ht, A, hA, rfl⟩` from `hz`. Proceed by induction on `ht using Submodule.span_induction generalizing o with`. Consider the case `mem t ht`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨c, hc, a, ha, rfl⟩` from `ht`. Rewrite using `[mul_smul, smul_comm, ← pt_smulK]`. Conclude with `AddSubgroup.subset_closure ⟨_, AddSubgroup.subset_closure ⟨c, hc, rfl⟩, _, Submodule.smul_mem _ o (Submodule.subset_span ⟨a, ha, A, hA, rfl⟩), rfl⟩`. Consider the case `zero => rw [zero_smul, smul_zero, pt_zero]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add t t' _ _ h h' => rw [add_smul, smul_add, pt_add]`. Conclude with `add_mem (h o) (h' o)`. Consider the case `smul o' t _ h => rw [smul_assoc, smul_smul]`. Conclude with `h _`. Consider the case `zero => rw [smul_zero, pt_zero]`.
-
-Conclude with `zero_mem _`. Consider the case `add t t' _ _ h h' => rw [smul_add, pt_add]`. Conclude with `add_mem (h o) (h' o)`. Consider the case `smul o' t _ h => rw [smul_smul]`. Conclude with `h _`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pt_mem_La {L : Lat D N} {L' : Lat D N'} {z : Matrix (Fin N') (Fin N) D.host.E}
     (hz : z ∈ RL D cc L L') (o : 𝓞 D.host.E) :
@@ -181,9 +177,9 @@ def rowM (D : D7) {N N' : ℕ} (i : Fin N') :
   map_smul' a v := by ext k j; by_cases h : k = i <;> simp [h]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (h x hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul o x _ hx => rw [LinearMap.map_smul_of_tower]`. Conclude with `Submodule.smul_mem _ o hx`.
+A detailed English derivation is pending.
 -/
 theorem map_span_mem {M M' : Type} [AddCommGroup M] [Module D.host.E M] [Module (𝓞 D.host.E) M]
     [IsScalarTower (𝓞 D.host.E) D.host.E M] [AddCommGroup M'] [Module D.host.E M']
@@ -197,19 +193,17 @@ theorem map_span_mem {M M' : Type} [AddCommGroup M] [Module D.host.E M] [Module 
   | smul o x _ hx => rw [LinearMap.map_smul_of_tower]; exact Submodule.smul_mem _ o hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz j`. Set `f : Matrix (Fin N') (Fin N) D.host.E →ₗ[D.host.E] (Fin N' → D.host.E)` to `{ toFun := fun z i => z i j, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `map_span_mem f ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, A, hA, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨t, ht, f A, ?_, map_smul _ _ _⟩` and prove the remaining obligations. Establish `h1 : (Pi.single j 1 : Fin N → D.host.E) ∈ stdL D N`. Use `mem_stdL.2 fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.single_eq_same]`. Conclude with `one_mem _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Establish `h2` using `mem_homL.1 hA _ h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h2` using `[Matrix.mulVec_single_one]`. Conclude with `h2`. Introduce `h`. Establish `e : z = ∑ j, colM D j (fun i => z i j)`. Use extensionality with `i k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[colM, Matrix.sum_apply]`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun j _ => map_span_mem (colM D j) ?_ (h j)` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, y, hy, rfl⟩`. Use `⟨t, ht, colM D j y, mem_homL.2 fun x hx => ?_, map_smul _ _ _⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨o, ho⟩` from `mem_stdL.1 hx j`. Establish `: (colM D j y).mulVec x = o • y`. Use function extensionality and compare the values at `i`. Simplify using `[colM, Matrix.mulVec, dotProduct, ← ho, Algebra.smul_def, mul_comm]`. Rewrite using `[this]`.
-
-Conclude with `L'.smul_mem o hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_RL_cols (L' : Lat D N') (z : Matrix (Fin N') (Fin N) D.host.E) :
     z ∈ RL D cc (stdL D N) L' ↔ ∀ j, (fun i => z i j) ∈
@@ -245,19 +239,17 @@ theorem mem_RL_cols (L' : Lat D N') (z : Matrix (Fin N') (Fin N) D.host.E) :
     exact L'.smul_mem o hy
 
 /- English proof (translation)
-Establish `hs` using `((sd_iff D L).1 hL).2.2`. Prove the components needed by the constructor for the conclusion. Introduce `hz i`. Set `f : Matrix (Fin N') (Fin N) D.host.E →ₗ[D.host.E] (Fin N → D.host.E)` to `{ toFun := fun z => z i, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`. Use `map_span_mem f ?_ hz` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨t, ht, A, hA, rfl⟩`. Use `⟨t, ht, fun j => D.host.conj (A i j), (hs _).2 fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `(mem_stdL.1 (mem_homL.1 hA x hx) i).conj`. Establish `e : hE D (fun j => D.host.conj (A i j)) x = D.host.conj (A.mulVec x i)`. Simplify using `only [hE, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `h2`. Simplify using `only [conj_conj]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : z = ∑ i, rowM D i (z i)`. Use extensionality with `i k`. Simplify using `[rowM, Matrix.sum_apply]`. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun i _ => map_span_mem (rowM D i) ?_ (h i)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨t, ht, y, hy, rfl⟩`. Use `⟨t, ht, rowM D i _, mem_homL.2 fun x hx => mem_stdL.2 fun k => ?_, map_smul _ _ _⟩` and prove the remaining obligations. Distinguish the cases in `hk : k = i`. Establish `e : (rowM D i fun j => D.host.conj (y j)).mulVec x k = hE D x y`. Simplify using `[rowM, Matrix.mulVec, dotProduct, hk, hE, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hs x).1 hx y hy`. Establish `e : (rowM D i fun j => D.host.conj (y j)).mulVec x k = 0`. Simplify using `[rowM, Matrix.mulVec, dotProduct, hk]`. Rewrite using `[e]`.
-
-Conclude with `zero_mem _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_RL_rows (L : Lat D N) (hL : SD D L) (z : Matrix (Fin N') (Fin N) D.host.E) :
     z ∈ RL D cc L (stdL D N') ↔ ∀ i, z i ∈ Submodule.span (𝓞 D.host.E)
@@ -292,7 +284,7 @@ theorem mem_RL_rows (L : Lat D N) (hL : SD D L) (z : Matrix (Fin N') (Fin N) D.h
       rw [e]; exact zero_mem _
 
 /- English proof (translation)
-Introduce `D cc δ hδ N N'`. Use `⟨pt_injective hδ, fun L L' x => ⟨La_sub, ?_⟩, mem_RL_cols, mem_RL_rows⟩` and prove the remaining obligations. Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using pt_mem_La (δ := δ) hz 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_lattice_image : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), δ ≠ 0 → ∀ (N N' : ℕ), Function.Injective (pt D (tor0 D cc δ) δ : Matrix (Fin N') (Fin N) D.host.E → VC D N N') ∧ (∀ (L : Lat D N) (L' : Lat D N') (x : VC D N N'), x ∈ La D (tor0 D cc δ) L L' ↔ ∃ z ∈ RL D cc L L', x = pt D (tor0 D cc δ) δ z) ∧ (∀ (L' : Lat D N') (z : Matrix (Fin N') (Fin N) D.host.E), z ∈ RL D cc (stdL D N) L' ↔ ∀ j, (fun i => z i j) ∈ Submodule.span (𝓞 D.host.E) {v | ∃ t ∈ Iid D cc, ∃ y ∈ L', v = t • y}) ∧ ∀ (L : Lat D N), SD D L → ∀ (z : Matrix (Fin N') (Fin N) D.host.E), z ∈ RL D cc L (stdL D N') ↔ ∀ i, z i ∈ Submodule.span (𝓞 D.host.E) {v | ∃ t ∈ Iid D cc, ∃ y ∈ L, v = t • fun j => D.host.conj (y j)} := by
   intro D cc δ hδ N N'

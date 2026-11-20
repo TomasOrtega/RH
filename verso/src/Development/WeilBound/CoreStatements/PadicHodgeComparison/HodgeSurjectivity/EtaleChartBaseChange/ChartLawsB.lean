@@ -18,7 +18,7 @@ open Pb CLB
 variable {K : Type} [CommRing K] {W Z Y : Scheme.{0}}
 
 /- English proof (translation)
-Unfold `strV`. Rewrite using `[← Scheme.Hom.appLE_comp_appLE π q ⊤ V U le_top h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem strV_appLE (q : Z ⟶ Spec (CommRingCat.of K)) (π : Y ⟶ Z) (V : Z.Opens) (U : Y.Opens) (h : U ≤ π ⁻¹ᵁ V) :
     strV (π ≫ q) U = (π.appLE V U h).hom.comp (strV q V) := by
@@ -27,14 +27,14 @@ theorem strV_appLE (q : Z ⟶ Spec (CommRingCat.of K)) (π : Y ⟶ Z) (V : Z.Ope
   rfl
 
 /- English proof (translation)
-Rewrite using `[strV_appLE q π U (π ⁻¹ᵁ U) le_rfl, Scheme.Hom.app_eq_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem strV_app (q : Z ⟶ Spec (CommRingCat.of K)) (π : Y ⟶ Z) (U : Z.Opens) :
     strV (π ≫ q) (π ⁻¹ᵁ U) = (π.app U).hom.comp (strV q U) := by
   rw [strV_appLE q π U (π ⁻¹ᵁ U) le_rfl, Scheme.Hom.app_eq_appLE]
 
 /- English proof (translation)
-Unfold `rs`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_appLE (π : Y ⟶ Z) (V : Z.Opens) (U U' : Y.Opens) (hU : U ≤ π ⁻¹ᵁ V) (h : U' ≤ U) (a : Γ(Z, V)) :
     rs h ((π.appLE V U hU).hom a) = (π.appLE V U' (h.trans hU)).hom a := by
@@ -42,31 +42,27 @@ theorem rs_appLE (π : Y ⟶ Z) (V : Z.Opens) (U U' : Y.Opens) (hU : U ≤ π �
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Simplify using `[Fintype.card_subtype_compl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_ne (m : ℕ) (j0 : Fin m) : Fintype.card {j : Fin m // j ≠ j0} = m - 1 := by
   simp [Fintype.card_subtype_compl]
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i _ π d V c k D h hD`. Establish `hDV : D ≤ π ⁻¹ᵁ V` using `h.trans (c.C_le k)`. Use `set φ := (π.appLE V (c.C k) (c.C_le k)).hom with hφ`. Use `set yC : Fin c.n ⊕ Fin d → Γ(Y, c.C k) := Sum.elim (φ ∘ c.x) (fun j => if j = k then φ (c.t k) else c.u k j) with hyC`. Establish `hC` using `chart_etale (strV q V) c.x c.t c.etale φ (c.u k) k (c.surj k) (c.rel k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `cC : Coord (π ≫ q) (c.C k) (c.n + d)` to `⟨c.C_aff k, yC ∘ finSumFinEquiv.symm, by`. Rewrite using `[strV_appLE q π V (c.C k) (c.C_le k)]`. Conclude with `etale_reindex _ _ _ hC⟩`. Take `⟨cD, hcD⟩` from `coord_res cC h hD`. Use `set j0 : Fin (c.n + d) := finSumFinEquiv (Sum.inr k) with hj0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `set τ := (π.appLE V D hDV).hom (c.t k) with hτ`. Establish `ht : cD.t j0 = τ`. Rewrite using `[hcD]`. Express the relevant statement in the definitionally equal form `rs h (yC (finSumFinEquiv.symm (finSumFinEquiv (Sum.inr k)))) = _`. Rewrite using `[Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hyC, Sum.elim_inr, hφ]`. Conclude with `rs_appLE π V (c.C k) D (c.C_le k) h (c.t k)`. Establish `hrel : ∀ j, φ (c.t j) = φ (c.t k) * c.u k j`. Introduce `j`. Establish `hm : MvPolynomial.C (c.t j) - MvPolynomial.C (c.t k) * MvPolynomial.X j ∈ RingHom.ker (MvPolynomial.eval₂Hom φ (c.u k))`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[c.rel k]`. Conclude with `Ideal.subset_span (Set.mem_insert_of_mem _ ⟨j, rfl⟩)`. Rewrite `hm` using `[RingHom.mem_ker]`. Simplify `hm` using `[sub_eq_zero]`. Establish `hker : RingHom.ker ((pullback.snd i π).app D).hom = Ideal.span {τ}`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ker_snd i π V c.affine D hD hDV, c.ker, Ideal.map_span]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨rs h (c.u k j), ?_⟩` and prove the remaining obligations. Rewrite using `[hτ, ← rs_appLE π V (c.C k) D (c.C_le k) h, ← rs_appLE π V (c.C k) D (c.C_le k) h, ← map_mul, ← hφ, hrel j, mul_comm]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.subset_span ⟨c.t k, ⟨k, rfl⟩, rfl⟩`. Use `⟨⟨cD⟩, ?_, hker, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj` using `app_surj (pullback.snd i π) D hD`. Establish `hq` using `quot_etale (strV (π ≫ q) D) cD.t j0 cD.etale ((pullback.snd i π).app D).hom hsurj (by rw [hker, ht])`. Set `e : Fin (c.n + d - 1) ≃ {j : Fin (c.n + d) // j ≠ j0}` to `(Fintype.equivFinOfCardEq (card_ne (c.n + d) j0)).symm`. Use `⟨⟨hD.preimage (pullback.snd i π), (fun j : {j : Fin (c.n + d) // j ≠ j0} => ((pullback.snd i π).app D).hom (cD.t j)) ∘ e, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[strV_app (π ≫ q) (pullback.snd i π) D]`.
-
-Conclude with `etale_reindex _ _ _ hq`. Introduce `a ω hω`. Establish `hal : algebraMap K (Sec (π ≫ q) D) = strV (π ≫ q) D` using `rfl`. Establish `he : (MvPolynomial.eval₂Hom (algebraMap K (Sec (π ≫ q) D)) (cD.t : Fin (c.n + d) → Sec (π ≫ q) D)).Etale`. Rewrite using `[hal]`.
-
-Conclude with `cD.etale`. Establish `key : ∀ ω' : Om K (Sec (π ≫ q) D) a, (cD.t j0 : Sec (π ≫ q) D) • ω' = 0 → ω' = 0` using `coord_nzd (K := K) (B := Sec (π ≫ q) D) _ he j0 a`. Apply `key` to reduce the goal to its premises. Rewrite using `[ht]`. Conclude with `hω`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartLaws_B : ∀ (K : Type) [Field K] (W Z Y : Scheme.{0}) (q : Z ⟶ Spec (CommRingCat.of K)) (i : W ⟶ Z)
     [IsClosedImmersion i] (π : Y ⟶ Z) (d : ℕ) (V : Z.Opens) (c : BChart q i π d V),

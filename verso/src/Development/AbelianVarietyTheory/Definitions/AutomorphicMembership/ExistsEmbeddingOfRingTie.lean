@@ -22,11 +22,11 @@ namespace GlobalTheory.Mem.LocalPack.Test
 attribute [local instance] Formalism.BasicNotions.factResChar Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hp0 : (p : 𝓞 F) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hnu : ¬ IsUnit (p : 𝓞 F)`. Introduce `h`. Establish `h1 : IsUnit (Algebra.norm ℤ (p : 𝓞 F))` using `h.map _`. Establish `h2 : Algebra.norm ℤ (p : 𝓞 F) = (p : ℤ) ^ Module.finrank ℤ (𝓞 F)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Algebra.norm_algebraMap (R := ℤ) (S := 𝓞 F) (p : ℤ)` as an intermediate fact. Simplify using `using this`. Rewrite `h1` using `[h2, isUnit_pow_iff Module.finrank_pos.ne', Int.isUnit_iff_natAbs_eq]`. Conclude with `hp.ne_one (by simpa using h1)`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {(p : 𝓞 F)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : (p : 𝓞 F) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`. Conclude with `⟨⟨M, hM.isPrime, fun h => hp0 (by simpa [h] using hmem)⟩, hmem⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_place_over (F : Type) [Field F] [NumberField F] {p : ℕ} (hp : p.Prime) :
     ∃ v : HeightOneSpectrum (𝓞 F), (p : 𝓞 F) ∈ v.asIdeal := by
@@ -44,7 +44,7 @@ theorem exists_place_over (F : Type) [Field F] [NumberField F] {p : ℕ} (hp : p
   exact ⟨⟨M, hM.isPrime, fun h => hp0 (by simpa [h] using hmem)⟩, hmem⟩
 
 /- English proof (translation)
-Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h`. Rewrite using `[heq]`. Take `⟨v, hv⟩` from `exists_place_over D.host.F hg.1`. Conclude with `(I.pl.symm ⟨v, hv⟩).pos`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem orbits_pos {D : D7} {H : LevelData D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} (h : LocalIs D H u w hg) : 0 < (D.gat u w hg).P.nV := by
@@ -54,7 +54,7 @@ theorem orbits_pos {D : D7} {H : LevelData D} {u : D.what₂.Word} {w : D.what�
   exact (I.pl.symm ⟨v, hv⟩).pos
 
 /- English proof (translation)
-Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h`. Rewrite using `[heq]`. Conclude with `hk`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_eq {D : D7} {H : LevelData D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} (h : LocalIs D H u w hg) :
@@ -64,7 +64,7 @@ theorem rank_eq {D : D7} {H : LevelData D} {u : D.what₂.Word} {w : D.what₂.p
   exact hk
 
 /- English proof (translation)
-Take `⟨W, Qq, O, Kf, _, _, _, _, _, _, _, _, _, _, n', ι, σ, j, w0, hS, nV, r, m, lam0, dom, hk, I, ψ, e, hH, heq⟩` from `h`. Rewrite using `[heq]`. Conclude with `⟨Cmp.finClasses hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH, fun hT => Cmp.trivStab hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH hT⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finClasses_and_trivStab {D : D7} {H : LevelData D} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} (h : LocalIs D H u w hg) :
@@ -75,7 +75,7 @@ theorem finClasses_and_trivStab {D : D7} {H : LevelData D} {u : D.what₂.Word} 
     fun hT => Cmp.trivStab hS r lam0 dom hk I ψ e (isUnit_det_gram0 D.sp) hH hT⟩
 
 /- English proof (translation)
-Take `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem orbit_length {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (v : Fin (D.gat u w hg).P.nV) :
@@ -87,7 +87,7 @@ theorem orbit_length {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem coefficient_ring {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) (u : D.what₂.Word)
     (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) :
@@ -97,9 +97,9 @@ theorem coefficient_ring {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcret
   rfl
 
 /- English proof (translation)
-Take `⟨eW, eQ, eO, eK, -, hOK, -, -, -⟩` from `h`. Use `⟨eK.toRingHom.comp (embRec D w _), fun x => (embRec_int D w ((D.gat u w hg).P.n' v) x).trans ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨eO y, by rw [← hOK, hy]; rfl⟩`. Introduce and unpack `⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨eO.symm y, eK.injective ?_⟩` and prove the remaining obligations. Rewrite using `[hOK, RingEquiv.apply_symm_apply, hy]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_embedding_of_ringTie {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl}
     {hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)} {v : Fin (D.gat u w hg).P.nV} (h : RingTie D u w hg v) :
@@ -115,7 +115,7 @@ theorem exists_embedding_of_ringTie {D : D7} {u : D.what₂.Word} {w : D.what₂
     rfl
 
 /- English proof (translation)
-The claim follows from `localIs_of_hyperspecial D sc Ce Lc (packAll D Lc I ψ) hd Lc (fun _ => rfl) (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)) u w hg`.
+A detailed English derivation is pending.
 -/
 theorem localIs_record_free (D : D7) (sc : Scale) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))
@@ -125,7 +125,7 @@ theorem localIs_record_free (D : D7) (sc : Scale) (Ce : ℝ)
     (fun u w h => isHyperbolicAt_rec_of_placeIdentification D u w h (I u w h)) u w hg
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Lc, levTieG D sc Ce Lc (packAll D Lc I ψ) hd⟩, fun _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_hermTies (D : D7) (sc : Scale) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))
@@ -133,14 +133,14 @@ theorem exists_hermTies (D : D7) (sc : Scale) (Ce : ℝ)
   ⟨⟨Lc, levTieG D sc Ce Lc (packAll D Lc I ψ) hd⟩, fun _ => rfl⟩
 
 /- English proof (translation)
-The claim follows from `h.nonempty_allTies.elim fun G => ⟨fun u => ⟨G.forms u⟩, G.cmp.B, G.cmp.B_std⟩`.
+A detailed English derivation is pending.
 -/
 theorem forms_and_basis {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) :
     (∀ u, Nonempty (Forms0 D u)) ∧ ∃ B, Cmp.StdB D B :=
   h.nonempty_allTies.elim fun G => ⟨fun u => ⟨G.forms u⟩, G.cmp.B, G.cmp.B_std⟩
 
 /- English proof (translation)
-Take `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩` from `h`. Consider the cases of `heq`. Conclude with `⟨sc, fun _ _ _ => ⟨rfl, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem exponent_eq {D : D7} {Gt : GatTies D} {c : LatCmp D} (h : IsConcrete D Gt c) :
     ∃ sc : Scale, ∀ u w hg, (D.gat u w hg).e = epSc D.R sc 1 (D.what₂.places.resChar w) ∧
@@ -154,7 +154,7 @@ section Reduction
 open Formalism.L2.G.Cmp Formalism.L2.G.RelativeIndexFlags
 
 /- English proof (translation)
-Introduce `p O Kf _ _ _ _ _ P Tau _ n LL _ h pos G M embLL lam hW hM`. Conclude with `blockRatReal P.lam0 h pos G M embLL (fun τ => (lam τ).w) (fun τ => (lam τ).anti) hW hM`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem block_rational : Formalism.L2.G.BlockRationalityField := by
   intro p O Kf _ _ _ _ _ P Tau _ n LL _ h pos G M embLL lam hW hM
@@ -188,7 +188,7 @@ set_option maxHeartbeats 32000000 in
 include hK hPos in
 
 /- English proof (translation)
-Establish `hpos` using `fun u w hg v s x => pos_C D sc 1 Lc I ψ hd H0 hL B hBs hB iK lam hK hPos u w hg v s x`. Establish `hs : ∀ u, SameUloc (hermitianLevelZeroOfRecursion D sc 1 Lc I ψ hd H0 hL) T u` using `fun u => sameUloc_of_joint (hermitianLevelZeroOfRecursion D sc 1 Lc I ψ hd H0 hL) T u (hJ u)`. Establish `N : CmpLeft D sc 1 Lc I ψ hd H0 hL T B hBs hB` using `{ same := hs blk := fun u w hg => blkRatRec_of_stmt block_rational _ _ u w hg B psi0 := h0 chi := chi_C D sc 1 Lc I ψ hd H0 hL T B hBs hB hψ valInt := valIntRec_of weylLatticeDescent_holds (fun u w hg => ex_C_blk D sc 1 Lc I ψ hd H0 hL T B hBs hB u (hs u) w hg (blkRatRec_of_stmt …`. Conclude with `N.toHyp0P hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comparison_statements (hJ : ∀ u, Joint0 H0.lev0 u (T u))
     (h0 : ∀ u, LevelZeroCharacterRational (D := recC D sc 1 Lc I ψ hd) T u)
@@ -221,7 +221,7 @@ set_option maxHeartbeats 32000000 in
 include hBs hB hK hPos hL in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, IsConcrete.intro D sc Lc I ψ hd H0 hL T B hBs hB iK lam hK hPos (comparison_statements D sc Lc I ψ hd H0 hL T B hBs hB iK lam hK hPos hJ h0 hψ) rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isConcrete (hJ : ∀ u, Joint0 H0.lev0 u (T u))
     (h0 : ∀ u, LevelZeroCharacterRational (D := recC D sc 1 Lc I ψ hd) T u)
@@ -237,7 +237,7 @@ theorem exists_isConcrete (hJ : ∀ u, Joint0 H0.lev0 u (T u))
 end Reduction
 
 /- English proof (translation)
-Establish `key : ∀ X X' (_ : X = X') h h', (∃ c, IsConcrete (recG D sc Ce Lc X h) (gatTiesG D sc Ce Lc X h) c) ↔ ∃ c, IsConcrete (recG D sc Ce Lc X' h') (gatTiesG D sc Ce Lc X' h') c`. Introduce `X X' e h h'`. Substitute `e` using the available equality. Both sides reduce to the same expression. Conclude with `key _ _ (packAll_eq D Lc I ψ) hd' hd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isConcrete_record_iff (D : D7) (sc : Scale) (Ce : ℝ)
     (Lc : ∀ u, ColLevel D.R D.host.F D.host.E D.sp D.host.g (D.mem u).C (D.mem u).A (D.clsLat u))
@@ -252,7 +252,7 @@ theorem isConcrete_record_iff (D : D7) (sc : Scale) (Ce : ℝ)
   exact key _ _ (packAll_eq D Lc I ψ) hd' hd
 
 /- English proof (translation)
-Use `⟨G.cmp.B, G.cmp.B_std, fun u w hg w' h t => ?_⟩` and prove the remaining obligations. Rewrite using `[← G.cmp.fr_B u w hg w' h]`. Conclude with `(G.herm.g u w hg).fr_lat w' h t`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseLattice_standard {D : D7} {Gt : GatTies D} {c : LatCmp D} (G : AllTies D Gt c) :
     ∃ B : GL (Fin D.R.k) D.host.E, Cmp.StdB D B ∧
@@ -269,7 +269,7 @@ theorem baseLattice_standard {D : D7} {Gt : GatTies D} {c : LatCmp D} (G : AllTi
   exact (G.herm.g u w hg).fr_lat w' h t
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩`. Conclude with `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩`. Introduce and unpack `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩`. Conclude with `⟨D0, sc, Lc, I, ψ, hd, H0, hL, T, B, hBs, hB, iK, lam, hK, hPos, CH, heq⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isConcrete_iff (D : D7) (Gt : GatTies D) (c : LatCmp D) : IsConcrete D Gt c ↔ IsRecC D Gt c := by
   constructor
@@ -281,11 +281,11 @@ theorem isConcrete_iff (D : D7) (Gt : GatTies D) (c : LatCmp D) : IsConcrete D G
 set_option maxHeartbeats 32000000 in
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_stdB_of_tied D hS`. Use `choose 𝔞 h𝔞 using hb`. Use `choose I0 iK lam hK hPos using fun u w hg => GlobalTheory.PlaceOrbit.exists_locId D u (L0 u) w hg`. Use `choose ψ hψ using fun u w hg => GlobalTheory.Mem.AwayChar.exists_psi D L0 T hJ h0 u w hg`. Set `I` to `fun u w hg => locIdStd D u w hg (I0 u w hg) B hB (𝔞 u) (h𝔞 u)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ∀ u w h, ((packC D L0 I ψ u w h).gat (rSc sc D.R.k (D.what₂.places.resChar w)) (epSc D.R sc 1 (D.what₂.places.resChar w))).d = Module.finrank ℂ (D.mem u).A.Mu0`. Introduce `u w h`. Conclude with `GlobalTheory.ClassRank.pack_d_eq D L0 T hJ u w h _ _ _ _`. Use `⟨I, ψ, hd, ?_⟩` and prove the remaining obligations. Use `exists_isConcrete D sc L0 I ψ hd ⟨L0, levTieG D sc 1 L0 (packC D L0 I ψ) hd⟩ (fun _ => rfl) (formsOfRecursion D sc 1 L0 I ψ hd T) B hB (fun _ _ _ _ _ => rfl) iK lam hK ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `u w hg`. Conclude with `hPos u w hg (ψ u w hg)`. Conclude with `fun u => hJ u`. Conclude with `fun u => h0 u`. Conclude with `fun u w hg => hψ u w hg`.
+A detailed English derivation is pending.
 -/
 theorem exists_concrete_of_record (D : D7) (L0 : LevelData D) (T : ∀ u : D.what₂.Word, Forms0 D u)
     (hS : Formalism.L2.Herm.StdTied D) (hJ : ∀ u, Joint0 L0 u (T u)) (h0 : ∀ u, LevelZeroCharacterRational T u)

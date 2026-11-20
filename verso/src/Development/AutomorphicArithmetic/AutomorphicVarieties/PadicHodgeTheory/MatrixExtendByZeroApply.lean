@@ -12,7 +12,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.Bas
 namespace UpperTheory.V.Loc.CrExt
 
 /- English proof (translation)
-Establish `h1 : Dcr (φ.comp e) (resCoef ℚ_[l] (ρ.comp e : Representation A G V)) = Dcr φ (resCoef ℚ_[l] ρ)` using `he.iInf_comp (fun g => LinearMap.ker (actC φ (resCoef ℚ_[l] ρ) g - LinearMap.id))`. Establish `h2 : (φ.comp e).range = φ.range`. Rewrite using `[MonoidHom.range_comp, MonoidHom.range_eq_top.2 he, ← MonoidHom.range_eq_map]`. Unfold `IsCr`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isCr_comp {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G] [Group G'] [CommRing A]
     [Algebra ℚ_[l] A] [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V]
@@ -26,15 +26,15 @@ private theorem isCr_comp {l : ℕ} [Fact l.Prime] {G G' A V : Type} [Group G] [
   rw [h1, h2]
 
 /- English proof (translation)
-Take `⟨K, e, -, -, rfl, -⟩` from `openField φ hφ`. Set `σ : Representation ℚ_[l] (GK K) V` to `ρ.comp e.symm.toMonoidHom`. Set `σ' : Representation ℚ_[l] (GK K) W` to `ρ'.comp e.symm.toMonoidHom`. Establish `e1 : ρ = σ.comp e.toMonoidHom` using `by ext g x; simp [σ]`. Establish `e2 : ρ' = σ'.comp e.toMonoidHom` using `by ext g x; simp [σ']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.IsExt σ σ' i p` using `⟨h.1, h.2.1, h.2.2.1, fun g => h.2.2.2.1 _, fun g => h.2.2.2.2 _⟩`. Establish `hcσ : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.IsCocycleOf σ' i p (fun g => c (e.symm g))`. Take `⟨x, hx, hx'⟩` from `hc`. Conclude with `⟨x, hx, fun g => hx' _⟩`. Rewrite `hV` using `[e1, isCr_comp _ _ _ e.surjective, (isCrIff K σ).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hV' : IsCrys ((PP l).PD K) σ` using `hV`. Establish `key` using `(GlobalTheory.CrysExt.isCrys_iff_surjective ((PP l).PD K) hV' hσ).trans ((GlobalTheory.CrysExt.lift_iff_surjective ((PP l).PD K) hσ).symm.trans (GlobalTheory.CrysExt.coboundary_iff_lift ((PP l).PD K) hσ hcσ).symm)`. Rewrite using `[e2, isCr_comp _ _ _ e.surjective, (isCrIff K σ').1]`. Use `key.trans (exists_congr fun x => ?_)` and prove the remaining obligations. Rewrite using `[e.surjective.forall]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun g => ?_` and prove the remaining obligations. Establish `: actVB ((PP l).PD K) σ (e g) x = actC ((GK K).subtype.comp e.toMonoidHom) ρ g x`. Rewrite using `[e1]`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v b`. Express the relevant statement in the definitionally equal form `σ (e g) v ⊗ₜ[ℚ_[l]] ((PP l).PD K).actB (e g) b = σ (e g) v ⊗ₜ[ℚ_[l]] (PP l).actQ (e g : GQ l) b`. Rewrite using `[(PP l).PD_actB]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[this, e.symm_apply_apply]`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem line {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {V W : Type} [AddCommGroup V] [Module ℚ_[l] V]
@@ -73,7 +73,7 @@ private theorem line {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalS
   rw [this, e.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `crUnr φ hφ (Representation.trivial ℚ_[l] G X) continuous_snd 0 (fun g _ x => by simp)`.
+A detailed English derivation is pending.
 -/
 private theorem isCr_trivial {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (X : Type) [AddCommGroup X] [Module ℚ_[l] X]
@@ -94,23 +94,21 @@ private def ext0 {Q G V : Type} [CommRing Q] [Group G] [AddCommGroup V] [Module 
     abel
 
 /- English proof (translation)
-Set `σ` to `ext0 (resCoef ℚ_[l] ρ) c hZ.2`. Establish `hσ : ∀ g x, σ g x = (ρ g x.1 + x.2 • c g, x.2)` using `fun _ _ => rfl`. Establish `hcont : ReciprocityTheory.Gal.ContAction σ`. Unfold `ReciprocityTheory.Gal.ContAction`. Simplify using `only [hσ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `((hρ.comp (continuous_fst.prodMk continuous_snd.fst)).add (continuous_snd.snd.smul (hZ.1.comp continuous_fst))).prodMk continuous_snd.snd`. Establish `hext : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.IsExt (resCoef ℚ_[l] ρ) σ (LinearMap.inl ℚ_[l] V ℚ_[l]) (LinearMap.snd ℚ_[l] V ℚ_[l])` using `⟨LinearMap.inl_injective, Function.Exact.inl_snd, LinearMap.snd_surjective, fun g x => by rw [hσ]; simp [resCoef], fun g x => rfl⟩`. Establish `hco : GlobalTheory.IndefiniteRowSideFullHecke.CrystallineExtensions.IsCocycleOf σ (LinearMap.inl ℚ_[l] V ℚ_[l]) (LinearMap.snd ℚ_[l] V ℚ_[l]) c` using `⟨(0, 1), rfl, fun g => by rw [hσ]; simp⟩`. Establish `key : IsCr φ σ ↔ c ∈ UpperTheory.V.Loc.finiteCocycles φ ρ` using `(line φ hφ (resCoef ℚ_[l] ρ) σ _ _ hext c hco hV).trans ⟨fun h => ⟨hZ, h⟩, fun h => h.2⟩`. Set `j : V × ℚ_[l] →ₗ[ℚ_[l]] V'` to `(f.restrictScalars ℚ_[l]).coprod (LinearMap.toSpanSingleton ℚ_[l] V' s)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hj : ∀ x, j x = f x.1 + x.2 • s` using `fun _ => rfl`. Establish `hjρ : ∀ g x, j (σ g x) = ρ' g (j x)`. Introduce `g x`. Simplify using `only [hj, hσ, map_add, LinearMap.map_smul_of_tower, hc, hfρ, smul_add]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases. Use `haveI := Module.subsingleton A V`. Rewrite using `[Subsingleton.elim c 0]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `key.1 (((isCrys_isDR_sub_quot φ hφ σ ρ' hcont hρ' j hjρ).1 ?_).1 h)` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨v, t⟩ hx`. Establish `h1` using `congrArg p hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hj, map_add, hex.apply_apply_eq_zero, LinearMap.map_smul_of_tower, hs, zero_add, map_zero, smul_eq_zero]`. Take `rfl : t = 0` from `h1.resolve_right one_ne_zero`. Rewrite `hx` using `[hj, zero_smul, add_zero, map_eq_zero_iff f hf]`. Conclude with `Prod.ext hx rfl`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `b : A →ₗ[ℚ_[l]] V × ℚ_[l] →ₗ[ℚ_[l]] V'` to `(Algebra.lsmul ℚ_[l] ℚ_[l] V' : A →ₐ[ℚ_[l]] Module.End ℚ_[l] V').toLinearMap.compl₂ j`. Establish `hb : ∀ a x, b a x = a • j x` using `fun _ _ => rfl`. Use `(admissible_of_bilinear_openSubgroup_galois φ hφ (Representation.trivial ℚ_[l] G A) σ (resCoef ℚ_[l] ρ') continuous_snd hcont hρ' b (fun g a x => ?_) ?_).1 (isCr_trivial φ hφ A) (key.2 h)` and prove the remaining obligations. Rewrite using `[hb, hb, hjρ]`. Conclude with `(map_smul (ρ' g) a _).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Take `⟨v, hv⟩` from `(hex (y - p y • s)).1 (by simp [hs])`. Establish `: y = b 1 (v, 0) + b (p y) (0, 1)` using `by simp [hb, hj, hv]`. Rewrite using `[this]`.
-
-Conclude with `add_mem (Submodule.subset_span ⟨(1, (v, 0)), rfl⟩) (Submodule.subset_span ⟨(p y, (0, 1)), rfl⟩)`.
+A detailed English derivation is pending.
 -/
 private theorem triv {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A]
@@ -178,7 +176,7 @@ private theorem triv {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalS
       exact add_mem (Submodule.subset_span ⟨(1, (v, 0)), rfl⟩) (Submodule.subset_span ⟨(p y, (0, 1)), rfl⟩)
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_bilinear_of_finite_left (Algebra.lsmul ℚ_[l] ℚ_[l] V : A →ₐ[ℚ_[l]] Module.End ℚ_[l] V).toLinearMap`.
+A detailed English derivation is pending.
 -/
 private theorem cont_smul (l : ℕ) [Fact l.Prime] {A : Type} [CommRing A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A]
     [TopologicalSpace A] [IsModuleTopology ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V]
@@ -187,7 +185,7 @@ private theorem cont_smul (l : ℕ) [Fact l.Prime] {A : Type} [CommRing A] [Alge
     (Algebra.lsmul ℚ_[l] ℚ_[l] V : A →ₐ[ℚ_[l]] Module.End ℚ_[l] V).toLinearMap
 
 /- English proof (translation)
-The claim follows from `(cont_smul l (A := A) (V := V)).comp ((hκ.comp continuous_fst).prodMk hρ)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_twist (l : ℕ) [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G]
     {A : Type} [CommRing A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A]
@@ -208,7 +206,7 @@ variable {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsT
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-The claim follows from `(hκ.comp continuous_fst).mul continuous_snd`.
+A detailed English derivation is pending.
 -/
 private theorem cont_chRep (κ : G →* Aˣ) (hκ : Continuous fun g => (κ g : A)) :
     ReciprocityTheory.Gal.ContAction (chRep κ) :=
@@ -216,14 +214,14 @@ private theorem cont_chRep (κ : G →* Aˣ) (hκ : Continuous fun g => (κ g : 
 
 omit [IsTopologicalRing A] in
 /- English proof (translation)
-Simplify `hκ.comp' continuous_inv` using `only [MonoidHom.inv_apply, ← map_inv]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem cont_inv (κ : G →* Aˣ) (hκ : Continuous fun g => (κ g : A)) :
     Continuous fun g => ((κ⁻¹ g : Aˣ) : A) := by
   simpa only [MonoidHom.inv_apply, ← map_inv] using hκ.comp' continuous_inv
 
 /- English proof (translation)
-Use `(admissible_of_bilinear_openSubgroup_galois φ hφ (chRep κ) ρ (twist κ ρ) (cont_chRep κ hκ) hρ (cont_twist l κ hκ ρ hρ) (Algebra.lsmul ℚ_[l] ℚ_[l] V : A →ₐ[ℚ_[l]] Module.End ℚ_[l] V).toLinearMap (fun g a x => ?_) ?_).1 h1 h2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((κ g : A) * a) • ρ g x = (κ g : A) • ρ g (a • x)`. Rewrite using `[map_smul, mul_smul]`. Rewrite using `[eq_top_iff]`. Conclude with `fun y _ => Submodule.subset_span ⟨(1, y), one_smul A y⟩`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem isCr_twist (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (κ : G →* Aˣ)
     (hκ : Continuous fun g => (κ g : A)) (ρ : Representation A G V) (hρ : ReciprocityTheory.Gal.ContAction ρ)
@@ -236,7 +234,7 @@ private theorem isCr_twist (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (κ : G
     exact fun y _ => Submodule.subset_span ⟨(1, y), one_smul A y⟩
 
 /- English proof (translation)
-Use `(isCrys_isDR_internalHom φ hφ (chRep κ) (Representation.trivial A G A) (chRep κ⁻¹) (cont_chRep κ hκ) continuous_snd (cont_chRep _ (cont_inv κ hκ)) (LinearMap.mul ℚ_[l] A) (fun g a x => ?_) ?_).1 h1 (isCr_trivial φ hφ A)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((κ g)⁻¹ : Aˣ) : A) * a * ((κ g : A) * x) = a * x`. Rewrite using `[mul_mul_mul_comm, Units.inv_mul, one_mul]`. Introduce `a b h`. Simplify using `using LinearMap.congr_fun h 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem isCr_inv (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) (κ : G →* Aˣ)
     (hκ : Continuous fun g => (κ g : A)) (h1 : IsCr φ (chRep κ)) : IsCr φ (chRep κ⁻¹) := by
@@ -253,31 +251,27 @@ end UpperTheory.V.Loc.CrExt
 
 open UpperTheory.V.Loc.CrExt in
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ A _ _ _ _ _ _ V _ _ _ _ _ _ _ _ _ V' _ _ _ _ _ _ _ _ _ ρ ρ' hρ hρ' κ f p s c hf hex hs hfρ hc H _ hH hV hκcr`. Establish `hp : Continuous p` using `IsModuleTopology.continuous_of_linearMap (p.restrictScalars ℚ_[l])`. Establish `hκ : Continuous fun g => (κ g : A)`. Establish `: (fun g => (κ g : A)) = fun g => p (ρ' g s)`. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hc, map_smul, map_add, hex.apply_apply_eq_zero, hs, add_zero, smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `hp.comp (hρ'.comp (continuous_id.prodMk continuous_const))`. Establish `hκ'` using `cont_inv κ hκ`. Establish `hτ` using `cont_twist l κ⁻¹ hκ' ρ hρ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ'` using `cont_twist l κ⁻¹ hκ' ρ' hρ'`. Establish `hfτ : ∀ g x, f (twist κ⁻¹ ρ g x) = twist κ⁻¹ ρ' g (f x)`. Introduce `g x`. Express the relevant statement in the definitionally equal form `f (((κ⁻¹ g : Aˣ) : A) • ρ g x) = ((κ⁻¹ g : Aˣ) : A) • ρ' g (f x)`. Rewrite using `[map_smul, hfρ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcτ : ∀ g, twist κ⁻¹ ρ' g s = s + f (c g)`. Introduce `g`. Express the relevant statement in the definitionally equal form `(((κ g)⁻¹ : Aˣ) : A) • ρ' g s = _`. Rewrite using `[hc, smul_smul, Units.inv_mul, one_smul]`. Establish `hZ : c ∈ Z1 (twist κ⁻¹ ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun g h => hf ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `(f.restrictScalars ℚ_[l]).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hf)`. Establish `: c = fun g => r (twist κ⁻¹ ρ' g s - s)`. Use function extensionality and compare the values at `g`. Rewrite using `[hcτ, add_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(LinearMap.congr_fun hr (c g)).symm`. Rewrite using `[this]`. Conclude with `(IsModuleTopology.continuous_of_linearMap r).comp ((hτ'.comp (continuous_id.prodMk continuous_const)).sub continuous_const)`. Establish `h1` using `hcτ (g * h)`. Rewrite `h1` using `[map_mul, Module.End.mul_apply, hcτ, map_add, hcτ, ← hfτ, add_assoc, add_right_inj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_add, h1]`. Use `haveI : H.FiniteIndex := by`. Take `⟨K, e, -, he, -⟩` from `openField φ hφ`. Use `haveI := GlobalTheory.BlochKatoIntegralScalars.compactSpace_GK K`. Use `haveI : CompactSpace G := e.symm.surjective.compactSpace he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := H.quotient_finite_of_isOpen hH`. Conclude with `H.finiteIndex_of_finite_quotient`. Establish `hφH : IsOpenEmbedding (φ.comp H.subtype)` using `hφ.comp hH.isOpenEmbedding_subtypeVal`. Establish `res : ∀ {X : Type} [AddCommGroup X] [Module A X] [TopologicalSpace X] (π : Representation A G X), ReciprocityTheory.Gal.ContAction π → ReciprocityTheory.Gal.ContAction (π.comp H.subtype : Representation A H X)` using `fun π hπ => hπ.comp ((continuous_subtype_val.comp continuous_fst).prodMk continuous_snd)`. Establish `hκH : Continuous fun g : H => ((κ.comp H.subtype) g : A)` using `hκ.comp continuous_subtype_val`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκH'` using `cont_inv _ hκH`. Establish `hκcr' : IsCr (φ.comp H.subtype) (chRep (κ.comp H.subtype))` using `hκcr`. Establish `hinv` using `isCr_inv _ hφH (κ.comp H.subtype) hκH hκcr'`. Establish `tw : ∀ {X : Type} [AddCommGroup X] [Module A X] (π : Representation A G X), ((twist κ⁻¹ π).comp H.subtype : Representation A H X) = twist (κ.comp H.subtype)⁻¹ (π.comp H.subtype : Representation A H X)` using `fun π => by`. Use extensionality with `g x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hVH : IsCr (φ.comp H.subtype) (ρ.comp H.subtype : Representation A H V)` using `hV`. Establish `h1 : IsCr (φ.comp H.subtype) ((twist κ⁻¹ ρ).comp H.subtype : Representation A H V)`. Rewrite using `[tw]`. Conclude with `isCr_twist _ hφH _ hκH' _ (res ρ hρ) hinv hVH`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : IsCr (φ.comp H.subtype) (ρ'.comp H.subtype : Representation A H V') ↔ IsCr (φ.comp H.subtype) ((twist κ⁻¹ ρ').comp H.subtype : Representation A H V')`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[tw]`. Conclude with `isCr_twist _ hφH _ hκH' _ (res ρ' hρ') hinv h`. Establish `h3` using `isCr_twist _ hφH _ hκH _ (res _ hτ') hκcr' h`.
-
-Establish `h4 : twist (κ.comp H.subtype) ((twist κ⁻¹ ρ').comp H.subtype : Representation A H V') = ρ'.comp H.subtype`. Use extensionality with `g x`. Express the relevant statement in the definitionally equal form `(κ g : A) • (((κ g)⁻¹ : Aˣ) : A) • ρ' g x = ρ' g x`. Rewrite using `[smul_smul, Units.mul_inv, one_smul]`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis.
-
-Rewrite using `[CrOn, h2, z1fDesc φ (twist κ⁻¹ ρ) H c hZ]`. Conclude with `triv _ hφH _ _ (res _ hτ) (res _ hτ') f p s (fun h : H => c h) hf hex hs (fun g => hfτ g) (fun g => hcτ g) ⟨hZ.1.comp continuous_subtype_val, fun g h => hZ.2 g h⟩ h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.crExt :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ) {A : Type} [CommRing A] [Algebra ℚ_[l] A] [Module.Finite ℚ_[l] A] [TopologicalSpace A] [IsModuleTopology ℚ_[l] A] [IsTopologicalRing A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] {V' : Type} [AddCommGroup V'] [Module A V'] [Module ℚ_[l] V'] [IsScalarTower ℚ_[l] A V'] [FiniteDimensional ℚ_[l] V'] [TopologicalSpace V'] [IsModuleTopology ℚ_[l] V'] [IsTopologicalAddGroup V'] [ContinuousConstSMul A V'] (ρ : Representation A G V) (ρ' : Representation A G V'), ContAction ρ → ContAction ρ' → ∀ (κ : G →* Aˣ) (f : V →ₗ[A] V') (p : V' →ₗ[A] A) (s : V') (c : G → V), Function.Injective f → Function.Exact f p → p s = 1 → (∀ g x, f (ρ g x) = ρ' g (f x)) → (∀ g, ρ' g s = (κ g : A) • (s + f (c g))) → ∀ (H : Subgroup G) [H.Normal], IsOpen (H : Set G) → CrOn φ ρ H → CrOn φ (chRep κ) H → (CrOn φ ρ' H ↔ c ∈ UpperTheory.V.Loc.finiteCocycles φ (twist κ⁻¹ ρ)) := by

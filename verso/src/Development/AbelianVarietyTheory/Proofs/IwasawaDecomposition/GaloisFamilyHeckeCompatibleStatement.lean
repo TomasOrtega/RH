@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Ex
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX GlobalTheory.HeightCounting NumberField IsDedekindDomain Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AutPart.chiMu_unr_frob` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FGaloisFamilyHeckeCompatible.lean&line=12#L12)
 -/

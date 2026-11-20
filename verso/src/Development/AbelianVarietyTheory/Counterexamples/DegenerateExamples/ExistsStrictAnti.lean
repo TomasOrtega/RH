@@ -9,7 +9,7 @@ def antiMon (r : ℕ) : Submonoid (Multiplicative (Fin r → ℤ)) where
   mul_mem' := fun {a b} ha hb i j h => add_le_add (ha h) (hb h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i => -(i : ℤ), fun i j hij => by have : (i : ℕ) < j := hij simp only; omega⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_strictAnti (r : ℕ) : ∃ a : Fin r → ℤ, StrictAnti a :=
   ⟨fun i => -(i : ℤ), fun i j hij => by

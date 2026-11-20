@@ -16,7 +16,7 @@ open GlobalTheory.QCoh (pullbackSections)
 namespace GlobalTheory.HodgeFrameGen
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[gm_val r z U (hW hz), gm_val (𝟙 Z) z W hz, e]`. Conclude with `(TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE hW) z hz _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_eq_of_appLE {T Z : Scheme.{0}} (r : Z ⟶ T) (z : Z) {U : T.Opens} {W : Z.Opens} (hW : W ≤ r ⁻¹ᵁ U)
     (hz : z ∈ W) (u : Γ(T, U)ˣ) (v : Γ(Z, W)ˣ) (e : v.val = (r.appLE U W hW).hom u.val) :
@@ -26,15 +26,13 @@ theorem gm_eq_of_appLE {T Z : Scheme.{0}} (r : Z ⟶ T) (z : Z) {U : T.Opens} {W
   exact (TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE hW) z hz _).symm
 
 /- English proof (translation)
-Introduce `S' T Z G _ H _ x ψ _ g h a ha r B _ ρ q x' ψ' h' e e' b hb hab z J hJ`. Establish `: QuasiSeparated H.hom` using `MorphismProperty.of_isPullback h.1 ‹_›`. Rewrite using `[val_of (L := hodge G g) (φ := fun _ : PUnit => x) (ε := fun _ => 1) (gen h ha) r z J (fun _ => J x') (fun _ => by rw [e]), val_of (L := hodge G g) (φ := fun _ : PUnit => x') (ε := fun _ => 1) (gen h' hb) (𝟙 Z) z J (fun _ => J x') (fun _ => by rw [Category.id_comp])]`. Establish `hW : LB.wchart (hodge G g) (fun _ : PUnit => x') (fun _ => J x') ≤ r ⁻¹ᵁ LB.wchart (hodge G g) (fun _ : PUnit => x) (fun _ => J x')` using `fun y hy => Set.mem_iInter.2 fun k => by`. Use `Set.mem_iInter.1 hy k` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[← e]`. Conclude with `this`. Establish `hz : z ∈ LB.wchart (hodge G g) (fun _ : PUnit => x') (fun _ => J x')` using `Set.mem_iInter.2 fun _ => hJ x'`. Establish `k {U : T.Opens} {V W : Z.Opens} (hV : V ≤ r ⁻¹ᵁ U) (h₁ : W ≤ V) (s : Γ(omega H, U)) : GlobalTheory.Twist.resM _ h₁ ((omegaBase q).app V (pullbackSections r _ hV s)) = (omegaBase q).app W (pullbackSections r _ (h₁.trans hV) s)`. Rewrite using `[← GlobalTheory.QCoh.res_pullbackSections r _ hV h₁ s]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congr($((omegaBase q).mapPresheaf.naturality (homOfLE h₁).op) (pullbackSections r _ hV s)).symm`. Use `gm_eq_of_appLE r z hW hz _ _ ?_` and prove the remaining obligations. Establish `hc` using `isFrame_chart h (fun _ => J x')`. Use `Eq.trans ?_ (hc.val_detUnit_pullback ha r le_rfl le_top hW)` and prove the remaining obligations. Use `congrArg Units.val ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (IsFrame.detUnit_map_iso _ _ (omegaBase q) _ _)` and prove the remaining obligations. Use `GlobalTheory.Vert.DivPull.detUnit_congr _ _ _ _ _ _ _ _ (fun i => ?_) (fun i => ?_)` and prove the remaining obligations. Use `Eq.trans (GlobalTheory.Twist.resM_self _ _) (Eq.trans ?_ (k _ _ _).symm)` and prove the remaining obligations. Conclude with `(GlobalTheory.BadPt.Fibre.omegaBase_comp h q h' e e' _ _ _ _).symm`. Rewrite using `[hab]`.
-
-Conclude with `(k _ _ _).trans (k _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_gen_pull : ∀ {S' T Z : Scheme.{0}} {G : Over S'} [GrpObj G] {H : Over T} [GrpObj H] {x : T ⟶ S'}
     {ψ : H.left ⟶ G.left} [QuasiSeparated G.hom] {g : ℕ} (h : IsGrpPullback H G x ψ)

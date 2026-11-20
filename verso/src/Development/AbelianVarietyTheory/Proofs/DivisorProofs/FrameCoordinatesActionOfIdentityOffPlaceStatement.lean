@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open scoped TensorProduct Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.InertLocFrame.actAB_xm_frame | exact GlobalTheory.InertLocFrame.actAB_xm_frame | (intros; apply GlobalTheory.InertLocFrame.actAB_xm_frame <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.frame_coordinates_action_of_identity_off_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (L : Type) [Field L]
     (ι : L →+ AE F E), (∀ x y, ι (x * y) = ι x * ι y) →

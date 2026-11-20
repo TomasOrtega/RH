@@ -8,19 +8,17 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.IndefiniteRowSideFu
 namespace GlobalTheory.RootEx.UnfoldShape
 
 /- English proof (translation)
-Establish `h1 : Finite (𝒪[k] ⧸ Ideal.span {ϖ})`. Rewrite using `[← hϖ.maximalIdeal_eq]`. Conclude with `(inferInstance : Finite 𝓀[k])`. Establish `hfin : Module.Finite 𝒪[k] M` using `Module.Finite.iff_fg.mpr hM`. Use `set N : Submodule 𝒪[k] M := Ideal.span {ϖ} • ⊤ with hN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Finite (M ⧸ N)`. Establish `: Finite (M ⧸ (⊤ : Submodule 𝒪[k] M))`. Establish `: Subsingleton (M ⧸ (⊤ : Submodule 𝒪[k] M))` using `Submodule.Quotient.subsingleton_iff.mpr rfl`. Use `infer_instance`. Conclude with `Submodule.finite_quotient_smul _ Module.Finite.fg_top`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmem : ∀ x : M, x ∈ N ↔ (x : ι → k) ∈ ϖ • M`. Introduce `x`. Rewrite using `[hN, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, -, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨b, b.2, rfl⟩`. Introduce and unpack `⟨b, hb, h⟩`. Conclude with `⟨⟨b, hb⟩, trivial, Subtype.ext h⟩`. Use `Fintype.ofFinite (M ⧸ N)` as an intermediate fact. Use `choose s hs using Submodule.Quotient.mk_surjective N`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨Finset.univ.image fun q => (s q : ι → k), ?_, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp ht`. Conclude with `(s q).2`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ q, v - (s q : ι → k) ∈ ϖ • M ↔ Submodule.Quotient.mk (⟨v, hv⟩ : M) = q`. Introduce `q`. Use `conv_rhs => rw [← hs q, Submodule.Quotient.eq, hmem]`. Both sides reduce to the same expression. Use `⟨s (Submodule.Quotient.mk ⟨v, hv⟩), ⟨Finset.mem_image.mpr ⟨_, Finset.mem_univ _, rfl⟩, (key _).mpr rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Introduce and unpack `t ⟨ht, h⟩`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.mp ht`. Rewrite using `[(key q).mp h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isReps_of_fg (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ι : Type) [Fintype ι] [DecidableEq ι] (ϖ : 𝒪[k])

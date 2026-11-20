@@ -19,7 +19,7 @@ variable {N : ℕ}
 namespace ProjFS
 
 /- English proof (translation)
-Take `rfl | ⟨k, rfl⟩` from `Fin.eq_self_or_eq_succAbove i m`. Simplify using `only [chartVec_self]`. Conclude with `analyticAt_const`. Simplify using `only [chartVec_succAbove]`. Conclude with `(ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).analyticAt z`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma analyticAt_chartVec_apply (i m : Fin (N + 1)) (z : Fin N → ℂ) :
     AnalyticAt ℂ (fun w : Fin N → ℂ => chartVec i w m) z := by
@@ -29,16 +29,16 @@ lemma analyticAt_chartVec_apply (i m : Fin (N + 1)) (z : Fin N → ℂ) :
     exact (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin N => ℂ) k).analyticAt z
 
 /- English proof (translation)
-The claim follows from `(analyticAt_chartVec_apply i m z).continuousAt.eventually_ne h`.
+A detailed English derivation is pending.
 -/
 lemma eventually_chartVec_ne {i m : Fin (N + 1)} {z : Fin N → ℂ} (h : chartVec i z m ≠ 0) :
     ∀ᶠ w in 𝓝 z, chartVec i w m ≠ 0 :=
   (analyticAt_chartVec_apply i m z).continuousAt.eventually_ne h
 
 /- English proof (translation)
-Establish `: transition (N` using `N) i j = fun w k => chartVec i w (j.succAbove k) / chartVec i w j := by`. Use function extensionality and compare the values at `w k`. Both sides reduce to the same expression. Rewrite using `[this, analyticAt_pi_iff]`. Introduce `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(analyticAt_chartVec_apply i _ z).div (analyticAt_chartVec_apply i j z) hz`.
+A detailed English derivation is pending.
 -/
 lemma analyticAt_transition (i j : Fin (N + 1)) {z : Fin N → ℂ} (hz : chartVec i z j ≠ 0) :
     AnalyticAt ℂ (transition i j) z := by
@@ -49,14 +49,14 @@ lemma analyticAt_transition (i j : Fin (N + 1)) {z : Fin N → ℂ} (hz : chartV
   exact (analyticAt_chartVec_apply i _ z).div (analyticAt_chartVec_apply i j z) hz
 
 /- English proof (translation)
-The claim follows from `chartVec_transition m j hz`.
+A detailed English derivation is pending.
 -/
 lemma chartVec_chartCoord_chartInv {m j : Fin (N + 1)} {z : Fin N → ℂ} (hz : chartVec m z j ≠ 0) :
     chartVec j (chartCoord j (chartInv m z)) = (chartVec m z j)⁻¹ • chartVec m z :=
   chartVec_transition m j hz
 
 /- English proof (translation)
-Use `conv_lhs => rw [← chartInv_chartCoord j hx]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma mem_chartDomain_iff {j k : Fin (N + 1)} {x : CP N} (hx : x ∈ chartDomain j) :
     x ∈ chartDomain k ↔ chartVec j (chartCoord j x) k ≠ 0 := by
@@ -64,7 +64,7 @@ lemma mem_chartDomain_iff {j k : Fin (N + 1)} {x : CP N} (hx : x ∈ chartDomain
   rfl
 
 /- English proof (translation)
-Establish `h` using `(mem_chartDomain_iff hx).1 hk`. Use `conv_lhs => rw [← chartInv_chartCoord j hx]`. Conclude with `chartVec_chartCoord_chartInv h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma chartVec_chartCoord_of_mem {j k : Fin (N + 1)} {x : CP N} (hx : x ∈ chartDomain j)
     (hk : x ∈ chartDomain k) :
@@ -107,7 +107,7 @@ def tautologicalLineBundle (N : ℕ) : HolLineBundle (projAtlas N) where
 def fsPhi (j : Fin (N + 1)) (x : CP N) : ℝ := Real.log (normSq2 (chartVec j (chartCoord j x)))
 
 /- English proof (translation)
-Unfold `normSq2`. Conclude with `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_chartVec_apply ℝ m i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma contDiff_normSq2_chartVec (m : Fin (N + 1)) :
     ContDiff ℝ ∞ (fun z : Fin N → ℂ => normSq2 (chartVec m z)) := by
@@ -160,11 +160,9 @@ def projMatrix : CP N → (Fin (N + 1) → Fin (N + 1) → ℂ) :=
       field_simp)
 
 /- English proof (translation)
-Rewrite using `[ProjTopology.continuous_iff]`. Establish `h : projMatrix (N` using `N) ∘ Projectivization.mk' ℂ = fun v : {v : Fin (N + 1) → ℂ // v ≠ 0} => fun i j => v.1 i * conj (v.1 j) / ((normSq2 v.1 : ℝ) : ℂ) := by`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : Continuous fun v : {v : Fin (N + 1) → ℂ // v ≠ 0} => ((normSq2 v.1 : ℝ) : ℂ)`. Unfold `normSq2`. Conclude with `Complex.continuous_ofReal.comp (continuous_finset_sum _ fun m _ => (continuous_norm.comp ((continuous_apply m).comp continuous_subtype_val)).pow 2)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `Continuous.div (((continuous_apply i).comp continuous_subtype_val).mul (Complex.continuous_conj.comp ((continuous_apply j).comp continuous_subtype_val))) hn fun v => ?_` and prove the remaining obligations.
-
-Conclude with `(normSq2_pos v.2).ne'` after adjusting the coercions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma continuous_projMatrix : Continuous (projMatrix (N := N)) := by
   rw [ProjTopology.continuous_iff]
@@ -182,17 +180,15 @@ lemma continuous_projMatrix : Continuous (projMatrix (N := N)) := by
   exact_mod_cast (normSq2_pos v.2).ne'
 
 /- English proof (translation)
-Introduce `x y hxy`. Proceed by induction on `x using Projectivization.ind with`. Consider the case `h v hv`. Proceed by induction on `y using Projectivization.ind with`. Consider the case `h w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `e : ∀ i j, v i * conj (v j) / ((normSq2 v : ℝ) : ℂ) = w i * conj (w j) / ((normSq2 w : ℝ) : ℂ)` using `fun i j => congr_fun (congr_fun hxy i) j`. Take `⟨j, hj⟩` from `Function.ne_iff.mp hv`. Establish `hv2 : ((normSq2 v : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (normSq2_pos hv).ne'`. Establish `hw2 : ((normSq2 w : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (normSq2_pos hw).ne'`. Establish `hvj : conj (v j) ≠ 0` using `(map_ne_zero _).2 hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwj : w j ≠ 0`. Introduce `h0`. Establish `h1` using `e j j`. Rewrite `h1` using `[h0, zero_mul, zero_div, div_eq_zero_iff]`. Break down `h1 with h1 | h1` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hj (by simpa [hvj] using h1)`. Conclude with `hv2 h1`. Establish `hwjc : conj (w j) ≠ 0` using `(map_ne_zero _).2 hwj`. Rewrite using `[Projectivization.mk_eq_mk_iff]`. Use `⟨Units.mk0 ((conj (w j) * ((normSq2 v : ℝ) : ℂ)) / (conj (v j) * ((normSq2 w : ℝ) : ℂ))) (div_ne_zero (mul_ne_zero hwjc hv2) (mul_ne_zero hvj hw2)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `ei` using `e i j`. Rewrite `ei` using `[div_eq_div_iff hv2 hw2]`. Simplify using `only [Units.smul_mk0, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[div_mul_eq_mul_div, div_eq_iff (mul_ne_zero hvj hw2)]`.
-
-Take the linear combination `(-1 : ℂ) * ei`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma projMatrix_injective : Function.Injective (projMatrix (N := N)) := by
   intro x y hxy
@@ -232,7 +228,7 @@ namespace ProjFS
 def logPot (z : Fin N → ℂ) : ℝ := Real.log (1 + normSqSum z)
 
 /- English proof (translation)
-Simplify using `[dNormSqSum, Complex.inner, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 lemma dNormSqSum_apply (a b : Fin N → ℂ) :
     dNormSqSum a b = ∑ m, 2 * (b m * conj (a m)).re := by
@@ -262,14 +258,14 @@ Both sides reduce to the same expression.
 lemma coe_dNCLM : ⇑(dNCLM (N := N)) = dNormSqSum := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Conclude with `(((hasFDerivAt_normSqSum y).const_add 1).log (one_add_normSqSum_pos y).ne').fderiv`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma fderiv_logPot : fderiv ℝ (logPot (N := N)) = fun y => (1 + normSqSum y)⁻¹ • dNormSqSum y := by
   funext y
   exact (((hasFDerivAt_normSqSum y).const_add 1).log (one_add_normSqSum_pos y).ne').fderiv
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_inv (one_add_normSqSum_pos z).ne').comp_hasFDerivAt z ((hasFDerivAt_normSqSum z).const_add 1)`.
+A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_inv_q (z : Fin N → ℂ) :
     HasFDerivAt (fun u : Fin N → ℂ => (1 + normSqSum u)⁻¹)
@@ -278,9 +274,9 @@ lemma hasFDerivAt_inv_q (z : Fin N → ℂ) :
     ((hasFDerivAt_normSqSum z).const_add 1)
 
 /- English proof (translation)
-Rewrite using `[fderiv_logPot]`. Establish `hd : HasFDerivAt (dNormSqSum (N` using `N)) dNCLM z := by`. Rewrite using `[← coe_dNCLM]`. Conclude with `dNCLM.hasFDerivAt`. Establish `h2 : HasFDerivAt (fun y : Fin N → ℂ => (1 + normSqSum y)⁻¹ • dNormSqSum y) ((1 + normSqSum z)⁻¹ • dNCLM + ((-((1 + normSqSum z) ^ 2)⁻¹) • dNormSqSum z).smulRight (dNormSqSum z)) z` using `(hasFDerivAt_inv_q z).smul hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, coe_dNCLM, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma fderiv2_logPot (z a b : Fin N → ℂ) :
     fderiv ℝ (fderiv ℝ logPot) z a b = (1 + normSqSum z)⁻¹ * dNormSqSum a b -
@@ -298,7 +294,7 @@ lemma fderiv2_logPot (z a b : Fin N → ℂ) :
   ring
 
 /- English proof (translation)
-Use extensionality with `m`. Distinguish the cases in `h : m = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma I_smul_single (i : Fin N) : Complex.I • (Pi.single i 1 : Fin N → ℂ) = Pi.single i Complex.I := by
   ext m; by_cases h : m = i
@@ -306,9 +302,9 @@ lemma I_smul_single (i : Fin N) : Complex.I • (Pi.single i 1 : Fin N → ℂ) 
   · simp [h]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [hessC, fderiv2_logPot, I_smul_single, dNormSqSum_single, ← inv_pow]`. Generalize the expression as in `(1 + normSqSum z)⁻¹ = r`. Simplify using `only [Matrix.smul_apply, Matrix.sub_apply, Matrix.one_apply, Matrix.vecMulVec_apply, Pi.star_apply, Complex.star_def, smul_eq_mul]`. Distinguish the cases in `h : i = j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im, sq] <;> ring`. Apply the tactic sequence `apply Complex.ext <;> simp [h, Complex.mul_re, Complex.mul_im, sq] <;> ring`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hessC_logPot (z : Fin N → ℂ) :
     hessC logPot z = (((1 + normSqSum z)⁻¹ : ℝ) : ℂ) •
@@ -324,7 +320,7 @@ theorem hessC_logPot (z : Fin N → ℂ) :
   · apply Complex.ext <;> simp [h, Complex.mul_re, Complex.mul_im, sq] <;> ring
 
 /- English proof (translation)
-Rewrite using `[hessC_logPot, chernCoeff_eq_matrix, smul_smul]`. Use `congr 1`. Establish `hq` using `one_add_normSqSum_pos z`. Establish `hpi` using `Real.pi_pos`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -338,11 +334,11 @@ theorem hessC_logPot_eq_chernCoeff (i : Fin (N + 1)) (z : Fin N → ℂ) :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `re_star_dot_hessC (logPot (N := N)) z (star w)`. Use `conv_rhs at h => rw [star_star]`. Rewrite using `[← h, hessC_logPot_eq_chernCoeff 0, Matrix.smul_mulVec, dotProduct_smul, chernCoeff_quadForm, smul_eq_mul, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `hq` using `one_add_normSqSum_pos z`. Establish `hpi` using `Real.pi_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCS` using `norm_dotProduct_sq_le z (star w)`. Establish `hS0` using `normSqSum_nonneg z`. Establish `hX : 0 ≤ ∑ j, ‖(star w) j‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Use `mul_nonneg (by positivity) (mul_nonneg (by positivity) ?_)` and prove the remaining obligations. Rewrite using `[sub_nonneg, inv_mul_le_iff₀ hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem levi_logPot_nonneg (z w : Fin N → ℂ) : 0 ≤ levi logPot z w := by
   have h := re_star_dot_hessC (logPot (N := N)) z (star w)

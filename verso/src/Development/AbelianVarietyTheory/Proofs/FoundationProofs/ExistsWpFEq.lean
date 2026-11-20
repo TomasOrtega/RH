@@ -10,7 +10,7 @@ open scoped BigOperators
 namespace GlobalTheory.EvenTheta
 
 /- English proof (translation)
-Introduce `Λ h r`. Take `⟨L, hL⟩` from `GlobalTheory.OddTheta.exists_periodPair Λ h`. Take `⟨z, hz, e⟩` from `GlobalTheory.exists_weierstrassP_eq L r`. Conclude with `⟨z, (hL z).not.2 hz, (GlobalTheory.OddTheta.wpF_eq L Λ hL z).trans e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_wpF_eq : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ r : ℂ, ∃ Q, Q ∉ Λ ∧ wpF Λ Q = r := by
   intro Λ h r

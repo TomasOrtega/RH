@@ -10,15 +10,15 @@ def toMv {σ : Type} (i : σ) (p : Polynomial ℂ) : MvPolynomial σ ℂ :=
   ∑ j ∈ Finset.range (p.natDegree + 1), C (p.coeff j) * X i ^ j
 
 /- English proof (translation)
-Simplify using `[toMv, Polynomial.eval_eq_sum_range, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_toMv {σ : Type} (i : σ) (p : Polynomial ℂ) (g : σ → ℂ) : eval g (toMv i p) = p.eval (g i) := by
   simp [toMv, Polynomial.eval_eq_sum_range, map_sum]
 
 /- English proof (translation)
-Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun j hj => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations. Use `Finset.mem_range.mp hj` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : (X i : MvPolynomial σ ℂ).totalDegree ≤ 1` using `by rw [totalDegree_X]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem deg_toMv {σ : Type} (i : σ) (p : Polynomial ℂ) : (toMv i p).totalDegree ≤ p.natDegree := by
   refine (totalDegree_finsetSum _ _).trans (Finset.sup_le fun j hj => ?_)
@@ -30,11 +30,11 @@ theorem deg_toMv {σ : Type} (i : σ) (p : Polynomial ℂ) : (toMv i p).totalDeg
   nlinarith
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum]`. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun v hv => ?_)` and prove the remaining obligations. Rewrite using `[bind₁_monomial]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_finsetProd _ _).trans ?_` and prove the remaining obligations. Use `le_trans ?_ (le_totalDegree hv)` and prove the remaining obligations. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `(totalDegree_pow _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hf i` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem deg_bind_le {σ τ : Type} (f : σ → MvPolynomial τ ℂ) (hf : ∀ i, (f i).totalDegree ≤ 1)
     (p : MvPolynomial σ ℂ) : (bind₁ f p).totalDegree ≤ p.totalDegree := by
@@ -54,7 +54,7 @@ theorem deg_bind_le {σ τ : Type} (f : σ → MvPolynomial τ ℂ) (hf : ∀ i,
 def G2 (b l μ : ℂ) (p : ℝ × ℝ) : ℂ := cexp (b * (p.1 : ℂ) ^ 2 + l * p.1) * cexp (b * (p.2 : ℂ) ^ 2 + μ * p.2)
 
 /- English proof (translation)
-Rewrite using `[eval_monomial, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `[Fin.prod_univ_two]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eval_monomial2 (v : Fin 2 →₀ ℕ) (c : ℂ) (x y : ℝ) :
     eval ![(x : ℂ), (y : ℂ)] (monomial v c) = c * ((x : ℂ) ^ v 0 * (y : ℂ) ^ v 1) := by
@@ -62,7 +62,7 @@ theorem eval_monomial2 (v : Fin 2 →₀ ℕ) (c : ℂ) (x y : ℝ) :
   simp [Fin.prod_univ_two]
 
 /- English proof (translation)
-Use `((intg_pow_quad hb (v 0) l).mul_prod (intg_pow_quad hb (v 1) μ)).const_mul c` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Simplify using `only [G2, eval_monomial2]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem intg_mono2 {b : ℂ} (hb : b.re < 0) (l μ : ℂ) (v : Fin 2 →₀ ℕ) (c : ℂ) :
     Integrable (fun p : ℝ × ℝ => eval ![(p.1 : ℂ), (p.2 : ℂ)] (monomial v c) * G2 b l μ p) := by
@@ -72,9 +72,7 @@ theorem intg_mono2 {b : ℂ} (hb : b.re < 0) (l μ : ℂ) (v : Fin 2 →₀ ℕ)
   ring
 
 /- English proof (translation)
-Establish `e : (fun p : ℝ × ℝ => eval ![(p.1 : ℂ), (p.2 : ℂ)] R * G2 b l μ p) = fun p => ∑ v ∈ R.support, eval ![(p.1 : ℂ), (p.2 : ℂ)] (monomial v (coeff v R)) * G2 b l μ p`. Use function extensionality and compare the values at `p`. Use `conv_lhs => rw [R.as_sum]`. Rewrite using `[map_sum, Finset.sum_mul]`. Rewrite using `[e]`.
-
-Conclude with `integrable_finsetSum _ fun v _ => intg_mono2 hb l μ v _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intg_poly2 {b : ℂ} (hb : b.re < 0) (l μ : ℂ) (R : MvPolynomial (Fin 2) ℂ) :
     Integrable (fun p : ℝ × ℝ => eval ![(p.1 : ℂ), (p.2 : ℂ)] R * G2 b l μ p) := by
@@ -87,17 +85,17 @@ theorem intg_poly2 {b : ℂ} (hb : b.re < 0) (l μ : ℂ) (R : MvPolynomial (Fin
   exact integrable_finsetSum _ fun v _ => intg_mono2 hb l μ v _
 
 /- English proof (translation)
-Use `⟨∑ v ∈ R.support, C (coeff v R) * (toMv 0 (pk b (v 0)) * toMv 1 (pk b (v 1))), ?_, fun l μ => ?_⟩` and prove the remaining obligations. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun v hv => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_C, zero_add]`. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ (le_totalDegree hv)` and prove the remaining obligations. Establish `h0` using `(deg_toMv (0 : Fin 2) (pk b (v 0))).trans (pk_deg b (v 0))`. Establish `h1` using `(deg_toMv (1 : Fin 2) (pk b (v 1))).trans (pk_deg b (v 1))`. Establish `hs : v.sum (fun _ e => e) = v 0 + v 1`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]; simp [Fin.sum_univ_two]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Use linear arithmetic over natural numbers and integers. Establish `e : (fun p : ℝ × ℝ => eval ![(p.1 : ℂ), (p.2 : ℂ)] R * G2 b l μ p) = fun p => ∑ v ∈ R.support, eval ![(p.1 : ℂ), (p.2 : ℂ)] (monomial v (coeff v R)) * G2 b l μ p`. Use function extensionality and compare the values at `p`. Use `conv_lhs => rw [R.as_sum]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_mul]`. Rewrite using `[e, integral_finsetSum _ fun v _ => intg_mono2 hb l μ v _, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `e2 : (fun p : ℝ × ℝ => eval ![(p.1 : ℂ), (p.2 : ℂ)] (monomial v (coeff v R)) * G2 b l μ p) = fun p => coeff v R * (((p.1 : ℂ) ^ v 0 * cexp (b * (p.1 : ℂ) ^ 2 + l * p.1)) * ((p.2 : ℂ) ^ v 1 * cexp (b * (p.2 : ℂ) ^ 2 + μ * p.2)))`. Use function extensionality and compare the values at `p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [G2, eval_monomial2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, integral_const_mul]`. Rewrite using `[show (volume : Measure (ℝ × ℝ)) = (volume : Measure ℝ).prod volume from rfl, integral_prod_mul (fun x : ℝ => (x : ℂ) ^ v 0 * cexp (b * (x : ℂ) ^ 2 + l * x)) (fun y : ℝ => (y : ℂ) ^ v 1 * cexp (b * (y : ℂ) ^ 2 + μ * y))]`. Establish `h0` using `J_eq hb (v 0) l`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `J_eq hb (v 1) μ`. Simplify using `only [J] at h0 h1 ⊢`. Rewrite using `[h0, h1]`. Simplify using `only [eval_mul, eval_C, eval_toMv, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mom2 {b : ℂ} (hb : b.re < 0) (R : MvPolynomial (Fin 2) ℂ) :
     ∃ R' : MvPolynomial (Fin 2) ℂ, R'.totalDegree ≤ R.totalDegree ∧ ∀ l μ : ℂ,

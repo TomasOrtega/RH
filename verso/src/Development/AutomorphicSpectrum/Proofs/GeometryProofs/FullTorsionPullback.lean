@@ -14,19 +14,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.HcptPull
 
 /- English proof (translation)
-Introduce `X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ n hd hp hf k _ i' g hg`. Establish `hd' : ξ' ≫ f = spMap i ≫ ξ` using `hd`. Establish `e : (spMap i' ≫ ξ') ≫ f = spMap (i'.comp i) ≫ ξ`. Rewrite using `[Category.assoc, hd', ← Category.assoc]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [spMap]`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Set `ρ : (Over.mk (spMap i' ≫ ξ') ⟶ G') →* (Over.mk ((spMap i' ≫ ξ') ≫ f) ⟶ G)` to `MonoidHom.mk' (pushPt hp.1.w) fun x y => Over.OverMorphism.ext (hp.2 _ x y _ _ rfl rfl).symm`. Establish `ha : (ρ g) ^ n = 1` using `by rw [← map_pow, hg, map_one]`. Establish `tr : ∀ {a b : Sp k ⟶ X} (_ : a = b) (u : Over.mk a ⟶ G), u ^ n = 1 → ∃ u' : Over.mk b ⟶ G, u'.left = u.left ∧ u' ^ n = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b h u hu`. Substitute `h` using the available equality. Conclude with `⟨u, rfl, hu⟩`. Take `⟨u, hl, hu⟩` from `tr e (ρ g) ha`. Take `⟨x, hx⟩` from `hf k (i'.comp i) u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hxw : x.left ≫ G.hom = ξ` using `by simpa using Over.w x`. Establish `hw : (spMap i ≫ x.left) ≫ G.hom = ξ' ≫ f`. Rewrite using `[Category.assoc, hxw, hd']`. Establish `hs : spMap (i'.comp i) = spMap i' ≫ spMap i`. Simplify using `only [spMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `⟨Over.homMk (hp.1.lift (spMap i ≫ x.left) ξ' hw) (hp.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `hp.1.hom_ext` to reduce the goal to its premises. Establish `h1 : g.left ≫ φ = spMap (i'.comp i) ≫ x.left`. Rewrite using `[← hx, hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_fst]`. Rewrite using `[h1, hs, Category.assoc]`. Establish `h2 : g.left ≫ G'.hom = spMap i' ≫ ξ'` using `by simpa using Over.w g`. Simplify using `only [Over.homMk_left, Category.assoc, IsPullback.lift_snd]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem fullTorsion_of_dominates : ∀ (X X' : Scheme.{0}) (Ω Ω' : Type) [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X) (ξ' : Sp Ω' ⟶ X') (f : X' ⟶ X) (i : Ω →+* Ω') (G : Over X) (G' : Over X') [GrpObj G] [GrpObj G'] [IsCommMonObj G] [IsCommMonObj G'] (φ : G'.left ⟶ G.left) (n : ℕ), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → IsGrpPullback G' G f φ → FullTorsion G ξ n → FullTorsion G' ξ' n := by
   intro X X' Ω Ω' _ _ ξ ξ' f i G G' _ _ _ _ φ n hd hp hf k _ i' g hg

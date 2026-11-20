@@ -16,33 +16,33 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ y₂ y _` and use `(evalAt_zero _ _ y₂).trans (evalAt_zero _ _ y).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_zero (d : DeltaDat Xo c 0) : Pull d 0 0 := fun _ _ _ _ _ _ y₂ y _ =>
   (evalAt_zero _ _ y₂).trans (evalAt_zero _ _ y).symm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ y₂ y _` and use `(GlobalTheory.RawSpan.evR_one_field k y₂).trans (GlobalTheory.RawSpan.evR_one_field k y).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_one (d : DeltaDat Xo c 0) : Pull d 1 1 := fun k _ _ _ _ _ y₂ y _ =>
   (GlobalTheory.RawSpan.evR_one_field k y₂).trans (GlobalTheory.RawSpan.evR_one_field k y).symm
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hk y₂ y ho` and use `(evalAt_add _ _ g g' y₂).trans ((congrArg₂ (· + ·) (h k hk y₂ y ho) (h' k hk y₂ y ho)).trans (evalAt_add _ _ f f' y).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_add {d : DeltaDat Xo c 0} {f f' : Rul Xo c} {g g' : Rul d.Xo₂ d.c₂} (h : Pull d f g) (h' : Pull d f' g') :
     Pull d (f + f') (g + g') := fun k _ _ _ _ hk y₂ y ho =>
   (evalAt_add _ _ g g' y₂).trans ((congrArg₂ (· + ·) (h k hk y₂ y ho) (h' k hk y₂ y ho)).trans (evalAt_add _ _ f f' y).symm)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hk y₂ y ho` and use `(evalAt_mul _ _ g g' y₂).trans ((congrArg₂ (· * ·) (h k hk y₂ y ho) (h' k hk y₂ y ho)).trans (evalAt_mul _ _ f f' y).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_mul {d : DeltaDat Xo c 0} {f f' : Rul Xo c} {g g' : Rul d.Xo₂ d.c₂} (h : Pull d f g) (h' : Pull d f' g') :
     Pull d (f * f') (g * g') := fun k _ _ _ _ hk y₂ y ho =>
   (evalAt_mul _ _ g g' y₂).trans ((congrArg₂ (· * ·) (h k hk y₂ y ho) (h' k hk y₂ y ho)).trans (evalAt_mul _ _ f f' y).symm)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hk y₂ y ho` and use `(evalAt_smul _ _ (d.eF a) g y₂).trans ((congrArg₂ (· * ·) (hk a) (h k hk y₂ y ho)).trans (evalAt_smul _ _ a f y).symm)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pull_smul {d : DeltaDat Xo c 0} {f : Rul Xo c} {g : Rul d.Xo₂ d.c₂} (h : Pull d f g) (a : c.F) :
     Pull d (a • f) (d.eF a • g) := fun k _ _ _ _ hk y₂ y ho =>
@@ -50,7 +50,7 @@ theorem pull_smul {d : DeltaDat Xo c 0} {f : Rul Xo c} {g : Rul d.Xo₂ d.c₂} 
     ((congrArg₂ (· * ·) (hk a) (h k hk y₂ y ho)).trans (evalAt_smul _ _ a f y).symm)
 
 /- English proof (translation)
-Set `_ : Algebra d.c₂.F k` to `((algebraMap c.F k).comp d.eF.symm.toRingEquiv.toRingHom).toAlgebra`. Establish `hk : ∀ a : c.F, algebraMap d.c₂.F k (d.eF a) = algebraMap c.F k a` using `fun a => congrArg (algebraMap c.F k) (d.eF.symm_apply_apply a)`. Take `⟨y₂, hy⟩` from `hd.2.2.2.2.2.2.1 k hk y`. Conclude with `(h k hk y₂ y hy).symm.trans (h' k hk y₂ y hy)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pull_inj {d : DeltaDat Xo c 0} (hd : d.IsLev) {f f' : Rul Xo c} {g : Rul d.Xo₂ d.c₂} (h : Pull d f g)
     (h' : Pull d f' g) (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k] (y : FrPt Xo c k) :
@@ -62,7 +62,7 @@ theorem pull_inj {d : DeltaDat Xo c 0} (hd : d.IsLev) {f f' : Rul Xo c} {g : Rul
   exact (h k hk y₂ y hy).symm.trans (h' k hk y₂ y hy)
 
 /- English proof (translation)
-Introduce `h` and use `by have e := pull_inj hd h (pull_one d) k y rw [GlobalTheory.RawSpan.evR_one_field k y] at e exact zero_ne_one ((evalAt_zero _ _ y).symm.trans e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_pull_zero_one {d : DeltaDat Xo c 0} (hd : d.IsLev) (k : Type) [Field k] [IsAlgClosed k] [Algebra c.F k]
     (y : FrPt Xo c k) : ¬ Pull d 0 1 := fun h => by
@@ -71,9 +71,9 @@ theorem not_pull_zero_one {d : DeltaDat Xo c 0} (hd : d.IsLev) (k : Type) [Field
   exact zero_ne_one ((evalAt_zero _ _ y).symm.trans e)
 
 /- English proof (translation)
-Introduce `k _ _ i₁ i₂ hk y₂ y ho`. Establish `e : i₂ = i₁` using `Algebra.algebra_ext _ _ fun a => hk a`. Substitute `e` using the available equality. Establish `hb` using `@GlobalTheory.FrameLift.frBor_lift E _ _ _ H Dw l Xo k _ c 0 (GlobalTheory.RawSpan.idCover nab 0) GlobalTheory.firstFiveLaws.1.globalFns i₂ i₂ 1 y y y y₂ (@GlobalTheory.RawSpan.frOver_self E _ _ _ H Dw l Xo c nab 0 k _ i₂ y) ho ((CategoryTheory.Category.comp_id _).symm.trans ho.1 …`. Use `@GlobalTheory.ThetaSumDescent.evR_frBor E _ _ _ H Dw l Xo c n a f hf k _ i₂ 1 y y₂ hb` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Simplify using `[wchar]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem pull_id (nab : NabV Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} (hf : f ∈ sec Xo c a n) :
     Pull (GlobalTheory.RawSpan.idCover nab 0) f f := by
@@ -88,7 +88,7 @@ theorem pull_id (nab : NabV Xo c) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {
   simp [wchar]
 
 /- English proof (translation)
-Take `⟨f, hf, h⟩` from `GlobalTheory.ThetaSumDescent.exists_sec_of_moveInv d hd g hg hi`. Conclude with `⟨f, hf, fun k _ _ _ _ hk y₂ y ho => (h k hk y y₂ ho).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull_of_moveInv (d : DeltaDat Xo c 0) (hd : d.IsLev) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (g : Rul d.Xo₂ d.c₂) (hg : g ∈ sec d.Xo₂ d.c₂ a n) (hi : GlobalTheory.ThetaSumDescent.MoveInv d g) :
@@ -97,7 +97,7 @@ theorem exists_pull_of_moveInv (d : DeltaDat Xo c 0) (hd : d.IsLev) {a : (E →+
   exact ⟨f, hf, fun k _ _ _ _ hk y₂ y ho => (h k hk y y₂ ho).symm⟩
 
 /- English proof (translation)
-Take `⟨f, -, h⟩` from `exists_pull_of_moveInv d hd g hg hi`. Conclude with `h.fibConst`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fibConst_of_moveInv (d : DeltaDat Xo c 0) (hd : d.IsLev) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
     (g : Rul d.Xo₂ d.c₂) (hg : g ∈ sec d.Xo₂ d.c₂ a n) (hi : GlobalTheory.ThetaSumDescent.MoveInv d g) : FibConst d g := by
@@ -105,21 +105,21 @@ theorem fibConst_of_moveInv (d : DeltaDat Xo c 0) (hd : d.IsLev) {a : (E →+* �
   exact h.fibConst
 
 /- English proof (translation)
-Introduce and unpack `la _ ⟨y, rfl⟩`. Rewrite using `[vAtV_zero]`. Conclude with `le_top`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_zero : IntAt Xo c 0 := by
   rintro la _ ⟨y, rfl⟩
   rw [vAtV_zero]; exact le_top
 
 /- English proof (translation)
-Introduce and unpack `la _ ⟨y, rfl⟩`. Conclude with `(le_min (hf la _ ⟨y, rfl⟩) (hg la _ ⟨y, rfl⟩)).trans (vAtV_add y f g)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem intAt_add {f g : Rul Xo c} (hf : IntAt Xo c f) (hg : IntAt Xo c g) : IntAt Xo c (f + g) := by
   rintro la _ ⟨y, rfl⟩
   exact (le_min (hf la _ ⟨y, rfl⟩) (hg la _ ⟨y, rfl⟩)).trans (vAtV_add y f g)
 
 /- English proof (translation)
-Introduce and unpack `la _ ⟨y, rfl⟩`. Rewrite using `[vAtV_mul]`. Conclude with `add_nonneg (hf la _ ⟨y, rfl⟩) (hg la _ ⟨y, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_mul {f g : Rul Xo c} (hf : IntAt Xo c f) (hg : IntAt Xo c g) : IntAt Xo c (f * g) := by
   rintro la _ ⟨y, rfl⟩
@@ -132,7 +132,7 @@ Both sides reduce to the same expression.
 theorem laQ_eq : LaQ Dw l = LevQ Dw l := rfl
 
 /- English proof (translation)
-Use `Dw.proj` as an intermediate fact. Use `choose lift h using fun γ : Gam Dw l => Module.projective_lifting_property (Submodule.mkQ (l.Mb • ⊤ : Submodule (𝓞 E) Dw.La)) (γ.toLinearMap ∘ₗ Submodule.mkQ _) (Submodule.mkQ_surjective _)`. Conclude with `⟨lift, h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isLift : ∃ lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La, IsLift lift := by
   have := Dw.proj
@@ -142,33 +142,33 @@ theorem exists_isLift : ∃ lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La, IsLi
   exact ⟨lift, h⟩
 
 /- English proof (translation)
-The claim follows from `forall_congr' fun _ => (Submodule.Quotient.eq _).symm`.
+A detailed English derivation is pending.
 -/
 theorem congMod_iff (h h' : Dw.La →ₗ[𝓞 E] Dw.La) :
     CongMod l.Mb h h' ↔ ∀ a, (Submodule.Quotient.mk (h a) : LaQ Dw l) = Submodule.Quotient.mk (h' a) :=
   forall_congr' fun _ => (Submodule.Quotient.eq _).symm
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (h γ) a`.
+A detailed English derivation is pending.
 -/
 theorem lift_mk {lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La} (h : IsLift lift) (γ : Gam Dw l) (a : Dw.La) :
     (Submodule.Quotient.mk (lift γ a) : LaQ Dw l) = γ (Submodule.Quotient.mk a) := LinearMap.congr_fun (h γ) a
 
 /- English proof (translation)
-The claim follows from `(congMod_iff _ _).2 fun a => (lift_mk h γ a).trans (lift_mk h' γ a).symm`.
+A detailed English derivation is pending.
 -/
 theorem lift_unique {lift lift' : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La} (h : IsLift lift) (h' : IsLift lift') (γ : Gam Dw l) :
     CongMod l.Mb (lift γ) (lift' γ) := (congMod_iff _ _).2 fun a => (lift_mk h γ a).trans (lift_mk h' γ a).symm
 
 /- English proof (translation)
-The claim follows from `(congMod_iff _ _).2 fun a => by rw [lift_mk h, LinearMap.comp_apply, lift_mk h, lift_mk h]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem lift_mul {lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La} (h : IsLift lift) (γ γ' : Gam Dw l) :
     CongMod l.Mb (lift (γ * γ')) (lift γ ∘ₗ lift γ') := (congMod_iff _ _).2 fun a => by
   rw [lift_mk h, LinearMap.comp_apply, lift_mk h, lift_mk h]; rfl
 
 /- English proof (translation)
-Use extensionality with `q`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Conclude with `(lift_mk h γ a).symm.trans (((congMod_iff _ _).1 e a).trans (lift_mk h γ' a))`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_of_congMod {lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La} (h : IsLift lift) {γ γ' : Gam Dw l}
     (e : CongMod l.Mb (lift γ) (lift γ')) : γ = γ' := by
@@ -177,7 +177,7 @@ theorem eq_of_congMod {lift : Gam Dw l → Dw.La →ₗ[𝓞 E] Dw.La} (h : IsLi
   exact (lift_mk h γ a).symm.trans (((congMod_iff _ _).1 e a).trans (lift_mk h γ' a))
 
 /- English proof (translation)
-Introduce `h` and use `by have e := l.prod rw [h, Ideal.bot_mul, eq_comm, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero] at e have := l.three_le omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mb_ne_bot : l.Mb ≠ ⊥ := fun h => by
   have e := l.prod
@@ -186,7 +186,7 @@ theorem mb_ne_bot : l.Mb ≠ ⊥ := fun h => by
   omega
 
 /- English proof (translation)
-Use `Dw.fin` as an intermediate fact. Establish `: Finite (𝓞 E ⧸ l.Mb)` using `Ideal.finiteQuotientOfFreeOfNeBot _ mb_ne_bot`. Establish `: Module.Finite (𝓞 E ⧸ l.Mb) (LaQ Dw l)` using `Module.Finite.of_restrictScalars_finite (𝓞 E) _ _`. Conclude with `Module.finite_of_finite (𝓞 E ⧸ l.Mb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_laQ : Finite (LaQ Dw l) := by
   have := Dw.fin
@@ -195,14 +195,14 @@ theorem finite_laQ : Finite (LaQ Dw l) := by
   exact Module.finite_of_finite (𝓞 E ⧸ l.Mb)
 
 /- English proof (translation)
-Use `finite_laQ (Dw := Dw) (l := l)` as an intermediate fact. Conclude with `Finite.of_injective (fun γ : Gam Dw l => (γ : LaQ Dw l → LaQ Dw l)) DFunLike.coe_injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_gam : Finite (Gam Dw l) := by
   have := finite_laQ (Dw := Dw) (l := l)
   exact Finite.of_injective (fun γ : Gam Dw l => (γ : LaQ Dw l → LaQ Dw l)) DFunLike.coe_injective
 
 /- English proof (translation)
-Introduce `h` and use `by have e := l.prod rw [h, Ideal.map_top, Ideal.top_mul, eq_comm, Ideal.span_singleton_eq_top] at e have h1 := (e.map (Algebra.norm ℤ)) have h2 : Algebra.norm ℤ ((l.M : 𝓞 E)) = (l.M : ℤ) ^ Module.finrank ℤ (𝓞 E) := by rw [← Algebra.norm_algebraMap (R := ℤ) (S := 𝓞 E) (l.M : ℤ)]; …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mb_ne_top : l.Mb ≠ ⊤ := fun h => by
   have e := l.prod
@@ -215,11 +215,9 @@ theorem mb_ne_top : l.Mb ≠ ⊤ := fun h => by
   omega
 
 /- English proof (translation)
-Use `Dw.fin` as an intermediate fact. Use `Dw.proj` as an intermediate fact. Rewrite using `[Submodule.Quotient.nontrivial_iff]`. Introduce `h`. Take `⟨r, hr1, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul l.Mb (⊤ : Submodule (𝓞 E) Dw.La) Module.Finite.fg_top h.ge`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hne : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `mb_ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using l.Mb.neg_mem hr1))`. Establish `: Nontrivial Dw.La` using `Module.nontrivial_of_finrank_pos (R := 𝓞 E) (by rw [Dw.rank]; omega)`. Take `⟨x, hx⟩` from `exists_ne (0 : Dw.La)`.
-
-Conclude with `hx ((smul_eq_zero.1 (hr0 x trivial)).resolve_left hne)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nontrivial_laQ (hr : 1 ≤ Dw.p + Dw.q) : Nontrivial (LaQ Dw l) := by
   have := Dw.fin
@@ -236,13 +234,13 @@ theorem nontrivial_laQ (hr : 1 ≤ Dw.p + Dw.q) : Nontrivial (LaQ Dw l) := by
   exact hx ((smul_eq_zero.1 (hr0 x trivial)).resolve_left hne)
 
 /- English proof (translation)
-Use `nontrivial_laQ (l := l) hr` as an intermediate fact. Use `⟨LinearEquiv.neg _, 1, fun h => ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `exists_ne (0 : LaQ Dw l)`. Establish `h2 : -q = q` using `LinearEquiv.congr_fun h q`. Establish `hM : (l.M : 𝓞 E) • q = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `Submodule.smul_mem_smul ?_ trivial` and prove the remaining obligations. Establish `e : (l.M : 𝓞 E) ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Rewrite using `[l.prod]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.mul_le_left e`. Take `⟨m, hm⟩` from `l.odd`. Establish `h3 : (2 : 𝓞 E) • q = 0` using `by rw [two_smul]; nth_rewrite 1 [← h2]; exact neg_add_cancel q`. Rewrite `hM` using `[hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at hM`. Rewrite `hM` using `[add_smul, one_smul, mul_comm, mul_smul, h3, smul_zero, zero_add]`. Conclude with `hq hM`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_gam (hr : 1 ≤ Dw.p + Dw.q) : Nontrivial (Gam Dw l) := by
   have := nontrivial_laQ (l := l) hr

@@ -23,51 +23,51 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdSpan.ReVec
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_completedLattice_reframeHomMatrix_iff`.
+A detailed English derivation is pending.
 -/
 theorem L_lat : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (LT : Set (Fin T.rank → D.host.E)) (u : WO (reS S b) T), u ∈ latO (reS S b) T (L0c D (reS S b)) LT (fun _ => True) ↔ reW S T b u ∈ latO S T (L0c D S) LT (fun _ => True) := GlobalTheory.T.mem_completedLattice_reframeHomMatrix_iff
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.symplecticFormOnHoms_reframeHomMatrix`.
+A detailed English derivation is pending.
 -/
 theorem L_sympl : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x y : WO (reS S b) T), symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y) := GlobalTheory.T.symplecticFormOnHoms_reframeHomMatrix
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isSmoothThetaFunction_reframeFunctionOnHoms`.
+A detailed English derivation is pending.
 -/
 theorem L_theta : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → IsThetaFunO ψ (reS S b) T (reF S T b f) := GlobalTheory.T.isSmoothThetaFunction_reframeFunctionOnHoms
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFockVacuumAt_reframeFunctionOnHoms`.
+A detailed English derivation is pending.
 -/
 theorem L_fock : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), IsInfFam θ → (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → ∀ (τ : D.what₂.Tau) (sT : Matrix (Fin T.rank) (Fin T.rank) ℂ) (f : WO S T → ℂ), IsFockVacAt (heisO ψ S T) θ τ (cplxO 1 sT) f → IsFockVacAt (heisO ψ (reS S b) T) θ τ (cplxO 1 sT) (reF S T b f) := GlobalTheory.T.isFockVacuumAt_reframeFunctionOnHoms
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.reF_norm_one_of_norm_one_covolOne`.
+A detailed English derivation is pending.
 -/
 theorem L_norm : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (f : WO S T → ℂ), AllSome (fun p : Measure (WO S T) × Set (WO S T) => IsCovolOne (ratL T S) p.1 p.2) (fun p => nrm2 p.1 p.2 f = 1) → AllSome (fun p : Measure (WO (reS S b) T) × Set (WO (reS S b) T) => IsCovolOne (ratL T (reS S b)) p.1 p.2) (fun p => nrm2 p.1 p.2 (reF S T b f) = 1) := GlobalTheory.T.reF_norm_one_of_norm_one_covolOne
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isThetaAtSplitPlace_reframe`.
+A detailed English derivation is pending.
 -/
 theorem L_thetaAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (e : AE D) (Λ : AddSubgroup (WO S T)) (Λ' : AddSubgroup (WO (reS S b) T)) (c : ℂ) (f₀ Φ f : WO S T → ℂ), (∀ x y : WO (reS S b) T, symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y)) → (∀ u, u ∈ Λ' ↔ reW S T b u ∈ Λ) → IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f → IsThetaAt ψ (symplO (reS S b) T) (heisO ψ (reS S b) T) e Λ' c (reF S T b f₀) (fun x => Φ (reW S T b x)) (reF S T b f) := GlobalTheory.T.isThetaAtSplitPlace_reframe
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.frameAdjointMap_reframedHermitianSpace`.
+A detailed English derivation is pending.
 -/
 theorem L_frMap : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (x : WO (reS S b) T), frMapAdj (reS S b) T (frPinvGL S b * βS) βT x = frMapAdj S T βS βT (reW S T b x) := GlobalTheory.T.frameAdjointMap_reframedHermitianSpace
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFrame_frameChangeInverseGL_mul`.
+A detailed English derivation is pending.
 -/
 theorem L_frame : ∀ (D : D7) (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (βS : GL (Fin S.rank) (Lev.EAf D)) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)), StdFrame.OrthFrame (reS S b) → (ΛS : Set (Fin S.rank → D.host.E)) = L0c D S → Formalism.L2.DIV.IsFrame βS ΛS → Formalism.L2.DIV.IsFrame (frPinvGL S b * βS) (stdL D.host.E (reS S b).rank) := GlobalTheory.T.isFrame_frameChangeInverseGL_mul
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hx a trivial)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: (Pi.single a (x a) : Fin n → E) = b • (Pi.single a 1 : Fin n → E)`. Rewrite using `[← Pi.single_smul, ← hb, Algebra.smul_def, mul_one]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, rfl⟩ j -`. Distinguish the cases in `h : j = a`. Substitute `h` using the available equality. Conclude with `Submodule.mem_one.2 ⟨1, by simp⟩`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pi_eq_stdL' (E : Type) [Field E] [NumberField E] (n : ℕ) :
     (Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)) = stdL E n := by
@@ -88,7 +88,7 @@ theorem pi_eq_stdL' (E : Type) [Field E] [NumberField E] (n : ℕ) :
     · simp [h]
 
 /- English proof (translation)
-Introduce `D S b hO`. Use extensionality with `x`. Rewrite using `[SetLike.mem_coe, ← pi_eq_stdL', Submodule.mem_pi]`. Conclude with `(hO.mem_iff x).trans ⟨fun k a _ => k a, fun k a => k a trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem L_std : ∀ (D : D7) (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), StdFrame.OrthFrame (reS S b) → L0c D (reS S b) = (stdL D.host.E (reS S b).rank : Set (Fin (reS S b).rank → D.host.E)) := by
   intro D S b hO
@@ -97,13 +97,13 @@ theorem L_std : ∀ (D : D7) (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E
   exact (hO.mem_iff x).trans ⟨fun k a _ => k a, fun k a => k a trivial⟩
 
 /- English proof (translation)
-Introduce `D S T b hO ψ θ sT ΛS ΛT βS βT Pg Q ξ f₀ f hΛ hfr hv`. Establish `hL` using `L_std D S b hO`. Use `⟨frPinvGL S b * βS, L_frame D S b βS ΛS hO hΛ hfr, ?_⟩` and prove the remaining obligations. Rewrite using `[← hL]`. Rewrite `hv` using `[hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨hstd, hvac⟩, e, he, hth⟩` from `hv`. Establish `hs` using `L_sympl D S T b`. Establish `hlat` using `L_lat D S T b ΛT`. Use `⟨⟨hstd, ?_⟩, e, he, ?_⟩` and prove the remaining obligations. Conclude with `{ inf := hvac.inf theta := L_theta D ψ S T b hs f₀ hvac.theta lat := ⟨fun u hu => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heisO_reF S T b ψ hs, reW_nsmul, hvac.lat.1 _ ((hlat u).1 hu)],`. Use `fun e' he' u hu hh => by`. Rewrite using `[heisO_reF S T b ψ hs, hvac.lat.2 e' he' _ ((hlat u).1 hu) ((isHalf_reW_iff S T b e' u).2 hh)]⟩`. Use `fock := fun τ => L_fock D ψ θ S T b hvac.inf hs τ (sT τ) f₀ (hvac.fock τ)`. Use `norm := L_norm D S T b f₀ hvac.norm }`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (fun Φ => IsThetaAt ψ (symplO (reS S b) T) (heisO ψ (reS S b) T) (cA D e) (latO (reS S b) T (L0c D (reS S b)) ΛT fun _ => True) 1 (reF S T b f₀) Φ (reF S T b f)) ?_).mpr (L_thetaAt D ψ S T b (cA D e) _ _ 1 f₀ _ f hs hlat hth)` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [L_frMap D S T b βS βT x]`. Rewrite using `[isHalf_reW_iff S T b (cA D e) x]`. Conclude with `if_congr Iff.rfl rfl rfl`.
+A detailed English derivation is pending.
 -/
 theorem reframe_thPVecOf : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V), StdFrame.OrthFrame (reS S b) → ∀ (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (ΛS : Lt D.host.E S.rank) (ΛT : Set (Fin T.rank → D.host.E)) (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)) (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ) (f₀ f : WO S T → ℂ), (ΛS : Set (Fin S.rank → D.host.E)) = L0c D S → Formalism.L2.DIV.IsFrame βS ΛS → IsThPVecOf ψ θ S T (fun _ => 1) sT (ΛS : Set (Fin S.rank → D.host.E)) ΛT βS βT Pg Q ξ f₀ f → ∃ βS' : GL (Fin (reS S b).rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame βS' (stdL D.host.E (reS S b).rank) ∧ IsThPVecOf ψ θ (reS S b) T (fun _ => 1) sT (stdL D.host.E (reS S b).rank : Set (Fin (reS S b).rank → D.host.E)) ΛT βS' βT Pg Q ξ (reF S T b f₀) (reF S T b f) := by
   intro D S T b hO ψ θ sT ΛS ΛT βS βT Pg Q ξ f₀ f hΛ hfr hv

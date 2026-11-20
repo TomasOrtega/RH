@@ -19,17 +19,17 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.RigLBDense
 
 /- English proof (translation)
-Introduce `S Y U YU _ _ f _ _ j _ hj e fU hP σ σU hσ hσU L hL r hr hloc`. Use `haveI : IsOpenImmersion e := MorphismProperty.of_isPullback hP.flip ‹IsOpenImmersion j›`. Use `haveI : IsReduced S := isReduced_of_isReduced_stalk S`. Use `haveI : GeometricallyIntegral f := (GlobalTheory.geometricallyIntegral_of_smooth_of_geometricallyConnected.1 f).1`. Use `GlobalTheory.DenseGlue.exists_glue j hj f hσ hP hσU hL ⟨r, hr⟩ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨W, hxW, N, hN, hagr⟩` from `hloc x hx`. Take `⟨M, hM, hMN⟩` from `exists_isOn_of_openImmersion Y _ (f ⁻¹ᵁ W).ι N hN`. Rewrite `hM` using `[Scheme.Opens.opensRange_ι]`. Use `⟨W, hxW, M, hM, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `T : YU.Opens` to `e ⁻¹ᵁ (f ⁻¹ᵁ W)`. Establish `hrange : Set.range (T.ι ≫ e) ⊆ Set.range (f ⁻¹ᵁ W).ι`. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `z.2`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : T.toScheme ⟶ (f ⁻¹ᵁ W).toScheme` to `IsOpenImmersion.lift (f ⁻¹ᵁ W).ι (T.ι ≫ e) hrange`. Establish `ha : a ≫ (f ⁻¹ᵁ W).ι = T.ι ≫ e` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hι : ∀ z, (f ⁻¹ᵁ W).ι z ∈ f ⁻¹ᵁ W` using `fun z => by`. Establish `: (f ⁻¹ᵁ W).ι z ∈ Set.range (f ⁻¹ᵁ W).ι` using `⟨z, rfl⟩`. Rewrite `this` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ z, (T.ι ≫ e) z ∈ f ⁻¹ᵁ W` using `fun z => z.2`. Establish `k₀ : (M.pull (f ⁻¹ᵁ W).ι).IsLB` using `pull_isLB_of_isOn Y _ _ M _ hM hι`. Establish `k₁ : ((M.pull (f ⁻¹ᵁ W).ι).pull a).IsLB` using `pull_isLB k₀ a`. Establish `k₂ : (M.pull (T.ι ≫ e)).IsLB` using `pull_isLB_of_isOn Y _ _ M _ hM hg`. Establish `i₁ : LBIso ((M.pull (f ⁻¹ᵁ W).ι).pull a) (M.pull (T.ι ≫ e))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isOn_pull_comp Y _ _ (f ⁻¹ᵁ W) M (f ⁻¹ᵁ W).ι a hM hι` as an intermediate fact. Rewrite `this` using `[ha]`. Then use the resulting hypothesis. Establish `i₂ : LBIso ((M.pull (f ⁻¹ᵁ W).ι).pull a) (N.pull a)` using `LBIso.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ a a rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull _ a a rfl) hMN`. Establish `i₃ : LBIso (N.pull a) (L.pull T.ι)` using `hagr T a T.ι ha`. Conclude with `LBIso.trans k₂ k₁ (pull_isLB hL _) i₁.symm (LBIso.trans k₁ (pull_isLB hN a) (pull_isLB hL _) i₂ i₃)`.
+A detailed English derivation is pending.
 -/
 theorem exists_extension_of_local_ext : ∀ {S Y U YU : Scheme.{0}} [IsLocallyNoetherian S] [GlobalTheory.IsNormalScheme S] (f : Y ⟶ S) [Smooth f] [GeometricallyConnected f] (j : U ⟶ S) [IsOpenImmersion j], Dense (Set.range j) → ∀ (e : YU ⟶ Y) (fU : YU ⟶ U), IsPullback e fU f j → ∀ (σ : S ⟶ Y) (σU : U ⟶ YU), σ ≫ f = 𝟙 S → σU ≫ e = j ≫ σ → ∀ (L : LB YU), L.IsLB → ∀ (r : LB.Gen (L.pull σU)), r.IsGen → (∀ x : S, x ∉ Set.range j → ∃ W : S.Opens, x ∈ W ∧ ∃ N : LB ↑(f ⁻¹ᵁ W), N.IsLB ∧ ∀ (T : Scheme.{0}) (a : T ⟶ ↑(f ⁻¹ᵁ W)) (b : T ⟶ YU), a ≫ (f ⁻¹ᵁ W).ι = b ≫ e → LBIso (N.pull a) (L.pull b)) → ∃ M : LB Y, M.IsLB ∧ LBIso (M.pull e) L := by
   intro S Y U YU _ _ f _ _ j _ hj e fU hP σ σU hσ hσU L hL r hr hloc

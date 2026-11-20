@@ -9,9 +9,9 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `y hy`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : valuation k (z - y) ≤ γ` using `le_of_lt hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : z - a = (z - y) + (y - a)` using `by ring`. Use `show valuation k (z - a) ≤ γ`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ hz' hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_cb (a : k) {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
     IsOpen {y : k | valuation k (y - a) ≤ γ} := by
@@ -26,9 +26,9 @@ theorem isOpen_cb (a : k) {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
   exact Valuation.map_add_le _ hz' hy
 
 /- English proof (translation)
-Establish `h` using `(IsNonarchimedeanLocalField.isCompact_closedBall k γ).image (continuous_add_const a)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨y - a, hy, sub_add_cancel y a⟩`. Introduce and unpack `⟨x, hx, rfl⟩ show valuation k (x + a - a) ≤ γ`. Rewrite using `[add_sub_cancel_right]`. Conclude with `hx`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_cb (a : k) (γ : ValueGroupWithZero k) :
     IsCompact {y : k | valuation k (y - a) ≤ γ} := by
@@ -44,7 +44,7 @@ theorem isCompact_cb (a : k) (γ : ValueGroupWithZero k) :
     exact hx
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h i _ l _ => h i l, fun h i l => h i trivial l trivial⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     (ballM c x₀ : Set (Matrix (Fin n) (Fin r) k)) =
@@ -54,22 +54,22 @@ theorem ballM_eq_pi (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
   exact ⟨fun h i _ l _ => h i l, fun h i l => h i trivial l trivial⟩
 
 /- English proof (translation)
-Introduce `i l`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem mem_ballM_self (c : kˣ) (x : Matrix (Fin n) (Fin r) k) : x ∈ ballM c x := by
   intro i l
   simp
 
 /- English proof (translation)
-Introduce `_ hy i l` and use `(hy i l).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ballM_mono {c c' : kˣ} (h : valuation k (c : k) ≤ valuation k (c' : k)) (x : Matrix (Fin n) (Fin r) k) :
     ballM c x ⊆ ballM c' x := fun _ hy i l => (hy i l).trans h
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i l`. Establish `e : y i l - x₀ i l = (y i l - x i l) + (x i l - x₀ i l)` using `by ring`. Rewrite using `[e]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Valuation.map_add_le _ (hy i l) (hx i l)`. Introduce `hy i l`. Establish `e : y i l - x i l = (y i l - x₀ i l) - (x i l - x₀ i l)` using `by ring`. Rewrite using `[e]`. Conclude with `Valuation.map_sub_le _ (hy i l) (hx i l)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballM_eq_of_mem {c : kˣ} {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x ∈ ballM c x₀) :
     ballM c x = ballM c x₀ := by
@@ -85,13 +85,13 @@ theorem ballM_eq_of_mem {c : kˣ} {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x �
     exact Valuation.map_sub_le _ (hy i l) (hx i l)
 
 /- English proof (translation)
-Rewrite using `[ballM_eq_of_mem hx]`. Conclude with `mem_ballM_self c x₀`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_symm {c : kˣ} {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x ∈ ballM c x₀) : x₀ ∈ ballM c x := by
   rw [ballM_eq_of_mem hx]; exact mem_ballM_self c x₀
 
 /- English proof (translation)
-Rewrite using `[ballM_eq_pi]`. Conclude with `isOpen_set_pi Set.finite_univ (fun i _ => isOpen_set_pi Set.finite_univ (fun l _ => isOpen_cb _ (by simp)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ballM (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) : IsOpen (ballM c x₀) := by
   rw [ballM_eq_pi]
@@ -99,14 +99,14 @@ theorem isOpen_ballM (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) : IsOpen (ballM
     (fun l _ => isOpen_cb _ (by simp)))
 
 /- English proof (translation)
-Rewrite using `[ballM_eq_pi]`. Conclude with `isCompact_univ_pi (fun i => isCompact_univ_pi (fun l => isCompact_cb _ _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ballM (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) : IsCompact (ballM c x₀) := by
   rw [ballM_eq_pi]
   exact isCompact_univ_pi (fun i => isCompact_univ_pi (fun l => isCompact_cb _ _))
 
 /- English proof (translation)
-Introduce `y hy hy0`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← ballM_eq_of_mem hy0, ballM_eq_of_mem hy]`. Conclude with `mem_ballM_self c x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disj {c : kˣ} {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x ∉ ballM c x₀) :
     ∀ y ∈ ballM c x, y ∉ ballM c x₀ := by
@@ -116,7 +116,7 @@ theorem disj {c : kˣ} {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x ∉ ballM c x
   exact mem_ballM_self c x
 
 /- English proof (translation)
-Rewrite using `[← isOpen_compl_iff, isOpen_iff_forall_mem_open]`. Introduce `x hx`. Conclude with `⟨ballM c x, fun y hy => disj hx y hy, isOpen_ballM c x, mem_ballM_self c x⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isClosed_ballM (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) : IsClosed (ballM c x₀) := by
   rw [← isOpen_compl_iff, isOpen_iff_forall_mem_open]
@@ -124,9 +124,9 @@ theorem isClosed_ballM (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) : IsClosed (b
   exact ⟨ballM c x, fun y hy => disj hx y hy, isOpen_ballM c x, mem_ballM_self c x⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `x`. Distinguish the cases in `hx : x ∈ ballM c x₀`. Use `⟨ballM c x₀, isOpen_ballM c x₀, hx, fun x' hx' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem hx', Set.indicator_of_mem hx]`. Use `⟨ballM c x, isOpen_ballM c x, mem_ballM_self c x, fun x' hx' => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.indicator_of_notMem (disj hx x' hx'), Set.indicator_of_notMem hx]`. Conclude with `HasCompactSupport.intro' (isCompact_ballM c x₀) (isClosed_ballM c x₀) (fun x hx => Set.indicator_of_notMem hx _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_mem_SB (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
     (ballM c x₀).indicator (fun _ => (1 : ℂ)) ∈ SB (Matrix (Fin n) (Fin r) k) := by
@@ -142,7 +142,7 @@ theorem indicator_mem_SB (c : kˣ) (x₀ : Matrix (Fin n) (Fin r) k) :
       (fun x hx => Set.indicator_of_notMem hx _)
 
 /- English proof (translation)
-Take `⟨H, rfl⟩` from `hh`. Conclude with `(H.val i j).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem KO_entry {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) (i j : Fin N) :
     valuation k (h.val i j) ≤ 1 := by
@@ -150,7 +150,7 @@ theorem KO_entry {N : ℕ} {h : GL (Fin N) k} (hh : h ∈ KO k (Fin N)) (i j : F
   exact (H.val i j).2
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem left_le {m p q : ℕ} (h : Matrix (Fin m) (Fin p) k) (y : Matrix (Fin p) (Fin q) k)
     {γ : ValueGroupWithZero k} (hh : ∀ i j, valuation k (h i j) ≤ 1) (hy : ∀ i j, valuation k (y i j) ≤ γ) :
@@ -163,7 +163,7 @@ theorem left_le {m p q : ℕ} (h : Matrix (Fin m) (Fin p) k) (y : Matrix (Fin p)
     _ = γ := one_mul γ
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem right_le {m p q : ℕ} (y : Matrix (Fin m) (Fin p) k) (g : Matrix (Fin p) (Fin q) k)
     {γ : ValueGroupWithZero k} (hy : ∀ i j, valuation k (y i j) ≤ γ) (hg : ∀ i j, valuation k (g i j) ≤ 1) :
@@ -176,7 +176,7 @@ theorem right_le {m p q : ℕ} (y : Matrix (Fin m) (Fin p) k) (g : Matrix (Fin p
     _ = γ := mul_one γ
 
 /- English proof (translation)
-Introduce `i l`. Establish `e : h.val * x * g.val - h.val * x₀ * g.val = h.val * (x - x₀) * g.val`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul]`. Rewrite using `[← Matrix.sub_apply, e]`. Apply the tactic sequence `exact right_le _ _ (left_le _ _ (KO_entry hh) (fun i l => by rw [Matrix.sub_apply]; exact hx i l)) (KO_entry hg) i l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem KO_fwd {c : kˣ} {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) {g : GL (Fin r) k} (hg : g ∈ KO k (Fin r))
     {x x₀ : Matrix (Fin n) (Fin r) k} (hx : x ∈ ballM c x₀) :
@@ -189,9 +189,9 @@ theorem KO_fwd {c : kˣ} {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) {g : GL (F
     (KO_entry hg) i l
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, KO_fwd hh hg⟩` and prove the remaining obligations. Use `KO_fwd (inv_mem hh) (inv_mem hg) hx` as an intermediate fact. Establish `e : ∀ y : Matrix (Fin n) (Fin r) k, (h⁻¹).val * (h.val * y * g.val) * (g⁻¹).val = y`. Introduce `y`. Simplify using `[Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e, e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem KO_inv {c : kˣ} {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) {g : GL (Fin r) k} (hg : g ∈ KO k (Fin r))
     {x x₀ : Matrix (Fin n) (Fin r) k} :
@@ -204,13 +204,13 @@ theorem KO_inv {c : kˣ} {h : GL (Fin n) k} (hh : h ∈ KO k (Fin n)) {g : GL (F
   rwa [e, e] at this
 
 /- English proof (translation)
-Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_iff').mp ht`. Take `⟨r', hr', hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Break down `lt_or_ge (γ : ValueGroupWithZero k) 1 with h1 | h1` into its components or cases. Take `⟨ρ, hρ⟩` from `ValuativeRel.valuation_surjective (γ : ValueGroupWithZero k)`. Establish `hρ0 : ρ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `γ.ne_zero (by simpa using hρ.symm)`. Establish `hv0 : valuation k ρ ≠ 0` using `by simpa using hρ0`. Establish `hlt : valuation k ρ * valuation k ρ < valuation k ρ`. Rewrite `hv0`, the goal using `[hρ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1` using `[hv0]`. Use `⟨Units.mk0 (ρ ^ 2) (pow_ne_zero 2 hρ0), ?_, fun y hy => hγ ?_⟩` and prove the remaining obligations. Simplify using `only [Units.val_mk0, pow_two, map_mul]`. Conclude with `hlt.trans (hρ ▸ h1)`. Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0, pow_two, map_mul] at hy ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hρ]`. Conclude with `hy.trans_lt hlt`. Use `⟨Units.mk0 r' hr', hr1, fun y hy => hγ ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, Units.val_mk0] at hy ⊢`. Conclude with `hy.trans_lt (hr1.trans_le h1)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_small (a : k) {t : Set k} (ht : t ∈ nhds a) :
     ∃ c : kˣ, valuation k (c : k) < 1 ∧ {y : k | valuation k (y - a) ≤ valuation k (c : k)} ⊆ t := by
@@ -236,7 +236,7 @@ theorem exists_small (a : k) {t : Set k} (ht : t ∈ nhds a) :
     exact hy.trans_lt (hr1.trans_le h1)
 
 /- English proof (translation)
-Rewrite using `[Units.coe_prod, map_prod, ← Finset.mul_prod_erase s _ hi]`. Conclude with `mul_le_of_le_one_right' (Finset.prod_le_one' fun j _ => hf j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_le {ι : Type*} (s : Finset ι) (f : ι → kˣ) (hf : ∀ j, valuation k (f j : k) ≤ 1) {i : ι}
     (hi : i ∈ s) : valuation k ((∏ j ∈ s, f j : kˣ) : k) ≤ valuation k (f i : k) := by
@@ -245,9 +245,9 @@ theorem prod_le {ι : Type*} (s : Finset ι) (f : ι → kˣ) (hf : ∀ j, valua
   exact mul_le_of_le_one_right' (Finset.prod_le_one' fun j _ => hf j)
 
 /- English proof (translation)
-Establish `h1 : U ∈ Filter.pi (fun i => nhds (x₀ i))` using `(nhds_pi (a := (x₀ : Fin n → Fin r → k))).ge hU`. Take `⟨I, -, t, ht, hsub⟩` from `Filter.mem_pi.mp h1`. Establish `h2 : ∀ i, ∃ s : Fin r → Set k, (∀ l, s l ∈ nhds (x₀ i l)) ∧ ∀ y : Fin r → k, (∀ l, y l ∈ s l) → y ∈ t i`. Introduce `i`. Establish `h3 : t i ∈ Filter.pi (fun l => nhds (x₀ i l))` using `(nhds_pi (a := x₀ i)).ge (ht i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨J, -, s, hs, hsub'⟩` from `Filter.mem_pi.mp h3`. Conclude with `⟨s, hs, fun y hy => hsub' (fun l _ => hy l)⟩`. Use `choose s hs hsub2 using h2`. Conclude with `⟨s, hs, fun x hx => hsub (fun i _ => hsub2 i (x i) (hx i))⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nhds_entry (x₀ : Matrix (Fin n) (Fin r) k) {U : Set (Matrix (Fin n) (Fin r) k)} (hU : U ∈ nhds x₀) :
     ∃ t : Fin n → Fin r → Set k, (∀ i l, t i l ∈ nhds (x₀ i l)) ∧
@@ -264,11 +264,9 @@ theorem nhds_entry (x₀ : Matrix (Fin n) (Fin r) k) {U : Set (Matrix (Fin n) (F
   exact ⟨s, hs, fun x hx => hsub (fun i _ => hsub2 i (x i) (hx i))⟩
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨t, ht, hsub⟩ := nhds_entry x₀ hU`. Establish `h2 : ∀ p : Fin n × Fin r, ∃ c : kˣ, valuation k (c : k) < 1 ∧ {y : k | valuation k (y - x₀ p.1 p.2) ≤ valuation k (c : k)} ⊆ t p.1 p.2` using `fun p => exists_small _ (ht p.1 p.2)`. Use `choose cc hcc1 hcc2 using h2`. Take `⟨c₁, hc₁, -⟩` from `exists_small (0 : k) (Filter.univ_mem (f := nhds (0 : k)))`. Use `⟨c₁ * ∏ p, cc p, ?_, fun x hx => hsub x fun i l => hcc2 (i, l) (show valuation k (x i l - x₀ i l) ≤ valuation k (cc (i, l) : k) from ?_)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, map_mul]`. Conclude with `(mul_le_of_le_one_right' (by`. Rewrite using `[Units.coe_prod, map_prod]`. Conclude with `Finset.prod_le_one' fun j _ => (hcc1 j).le)).trans_lt hc₁`. Use `(hx i l).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[Units.val_mul, map_mul]`. Conclude with `(mul_le_of_le_one_left' hc₁.le).trans (prod_le _ _ (fun j => (hcc1 j).le) (Finset.mem_univ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nhds_ball (x₀ : Matrix (Fin n) (Fin r) k) {U : Set (Matrix (Fin n) (Fin r) k)} (hU : U ∈ nhds x₀) :
     ∃ c : kˣ, valuation k (c : k) < 1 ∧ ballM c x₀ ⊆ U := by
@@ -290,7 +288,7 @@ theorem nhds_ball (x₀ : Matrix (Fin n) (Fin r) k) {U : Set (Matrix (Fin n) (Fi
 variable {M : Type} [TopologicalSpace M]
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Function.support f)`. Establish `e : Function.support f = {x | f x = 0}ᶜ` using `by ext; simp`. Rewrite using `[e]`. Conclude with `(hf.1.isOpen_fiber 0).isClosed_compl`. Conclude with `hf.2.isCompact.of_isClosed_subset hcl (subset_tsupport f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_support {f : M → ℂ} (hf : f ∈ SB M) : IsCompact (Function.support f) := by
   have hcl : IsClosed (Function.support f) := by
@@ -300,11 +298,11 @@ theorem isCompact_support {f : M → ℂ} (hf : f ∈ SB M) : IsCompact (Functio
   exact hf.2.isCompact.of_isClosed_subset hcl (subset_tsupport f)
 
 /- English proof (translation)
-Establish `hK` using `isCompact_support Ψ.2`. Establish `h1 : ∀ y : Matrix (Fin n) (Fin r) k, ∃ c : kˣ, valuation k (c : k) < 1 ∧ ballM c y ⊆ {z | Ψ.1 z = Ψ.1 y}` using `fun y => nhds_ball y ((Ψ.2.1.isOpen_fiber (Ψ.1 y)).mem_nhds rfl)`. Use `choose cy hcy1 hcy2 using h1`. Take `⟨T, hT⟩` from `hK.elim_finite_subcover (fun y => ballM (cy y) y) (fun y => isOpen_ballM _ _) (fun z _ => Set.mem_iUnion.2 ⟨z, mem_ballM_self _ z⟩)`. Use `⟨∏ y ∈ T, cy y, fun c hc y hy z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw, hyw⟩` from `Set.mem_iUnion₂.1 (hT hy)`. Establish `hle : valuation k (c : k) ≤ valuation k (cy w : k)` using `hc.trans (prod_le _ _ (fun j => (hcy1 j).le) hw)`. Establish `hzw : z ∈ ballM (cy w) w`. Rewrite using `[← ballM_eq_of_mem hyw]`. Conclude with `ballM_mono hle y hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Ψ.1 z = Ψ.1 w` using `hcy2 w hzw`. Establish `e2 : Ψ.1 y = Ψ.1 w` using `hcy2 w hyw`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniform (Ψ : SB (Matrix (Fin n) (Fin r) k)) :
     ∃ c₀ : kˣ, ∀ c : kˣ, valuation k (c : k) ≤ valuation k (c₀ : k) →
@@ -330,32 +328,32 @@ def rep (c : kˣ) (y : Matrix (Fin n) (Fin r) k) : Matrix (Fin n) (Fin r) k :=
   Classical.epsilon (fun z => z ∈ ballM c y)
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun z => z ∈ ballM c y) ⟨y, mem_ballM_self c y⟩`.
+A detailed English derivation is pending.
 -/
 theorem rep_mem (c : kˣ) (y : Matrix (Fin n) (Fin r) k) : rep c y ∈ ballM c y :=
   Classical.epsilon_spec (p := fun z => z ∈ ballM c y) ⟨y, mem_ballM_self c y⟩
 
 /- English proof (translation)
-Unfold `rep`. Rewrite using `[ballM_eq_of_mem h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_eq {c : kˣ} {y y' : Matrix (Fin n) (Fin r) k} (h : y' ∈ ballM c y) : rep c y' = rep c y := by
   unfold rep
   rw [ballM_eq_of_mem h]
 
 /- English proof (translation)
-Take `⟨c₀, hc₀⟩` from `uniform Ψ`. Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Establish `D` using `hc₀ c hc`. Establish `hK` using `isCompact_support Ψ.2`. Take `⟨T, hT⟩` from `hK.elim_finite_subcover (fun y => ballM c y) (fun y => isOpen_ballM _ _) (fun z _ => Set.mem_iUnion.2 ⟨z, mem_ballM_self _ z⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hS : ∀ x ∈ (T.filter fun y => Ψ.1 y ≠ 0).image (rep c), Ψ.1 x ≠ 0 ∧ rep c x = x`. Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`. Establish `hy0` using `(Finset.mem_filter.1 hy).2`. Conclude with `⟨by rw [D y hy0 _ (rep_mem c y)]; exact hy0, rep_eq (rep_mem c y)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨(T.filter fun y => Ψ.1 y ≠ 0).image (rep c), fun x hx y hy => ?_, ?_⟩` and prove the remaining obligations. Conclude with `⟨D x (hS x hx).1 y hy, (hS x hx).1⟩`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : Ψ.1 z = 0`. Rewrite using `[hz]`. Use `(Finset.sum_eq_zero fun x hx => ?_).symm` and prove the remaining obligations. Establish `hzx : z ∉ ballM c x` using `fun hzx => (hS x hx).1 (by rw [← D x (hS x hx).1 z hzx]; exact hz)`. Rewrite using `[Set.indicator_of_notMem hzx, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hyT, hzy⟩` from `Set.mem_iUnion₂.1 (hT hz)`. Establish `hy0 : Ψ.1 y ≠ 0` using `by rw [D z hz y (mem_symm hzy)]; exact hz`. Establish `hmem : rep c y ∈ (T.filter fun y => Ψ.1 y ≠ 0).image (rep c)` using `Finset.mem_image_of_mem _ (Finset.mem_filter.2 ⟨hyT, hy0⟩)`. Establish `hz' : z ∈ ballM c (rep c y)` using `by rw [ballM_eq_of_mem (rep_mem c y)]; exact hzy`. Rewrite using `[Finset.sum_eq_single (rep c y)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hz', mul_one]`. Conclude with `D _ (hS _ hmem).1 z hz'`. Introduce `s hs hne`. Establish `hzs : z ∉ ballM c s`. Introduce `hzs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← (hS s hs).2, ← rep_eq hzs, rep_eq hzy]`. Rewrite using `[Set.indicator_of_notMem hzs, mul_zero]`. Introduce `h`. Conclude with `absurd hmem h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem decomp (Ψ : SB (Matrix (Fin n) (Fin r) k)) :
     ∃ c₀ : kˣ, ∀ c : kˣ, valuation k (c : k) ≤ valuation k (c₀ : k) →
@@ -406,7 +404,7 @@ namespace PositivityTheory.Rg.Ming
 
 open PositivityTheory.Rg.Ming.BallA in
 /- English proof (translation)
-Introduce `k _ _ _ _ n r`. Conclude with `⟨fun c x₀ => ⟨isOpen_ballM c x₀, isCompact_ballM c x₀, indicator_mem_SB c x₀, fun x hx => ballM_eq_of_mem hx, fun h hh g hg x => KO_inv hh hg⟩, fun x₀ U hU => nhds_ball x₀ hU, fun Ψ => decomp Ψ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ball : BallSt := by
   intro k _ _ _ _ n r

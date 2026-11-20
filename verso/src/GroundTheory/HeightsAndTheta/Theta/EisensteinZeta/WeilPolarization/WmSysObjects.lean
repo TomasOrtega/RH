@@ -24,7 +24,7 @@ def sympGroup (ω : LinearMap.BilinForm R W) : Subgroup (W ≃ₗ[R] W) where
     rw [ha]
 
 /- English proof (translation)
-The claim follows from `Iff.rfl @[ext]`.
+A detailed English derivation is pending.
 -/
 theorem mem_sympGroup {ω : LinearMap.BilinForm R W} {g : W ≃ₗ[R] W} :
     g ∈ sympGroup ω ↔ ∀ w w', ω (g w) (g w') = ω w w' := Iff.rfl
@@ -119,13 +119,11 @@ def Stab (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) : Prop :=
   (∀ x : X, (P.e (g (P.e.symm (x, 0)))).2 = 0) ∧ ∀ y : Y, (P.e (g (P.e.symm (0, y)))).1 = 0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Establish `h1 : b (P.e.symm (x, 0)) = P.e.symm ((P.e (b (P.e.symm (x, 0)))).1, 0)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Prod.ext rfl (hb.1 x)`. Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (x, 0))))).2 = 0`. Rewrite using `[h1]`. Conclude with `ha.1 _`. Introduce `y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : b (P.e.symm (0, y)) = P.e.symm (0, (P.e (b (P.e.symm (0, y)))).2)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext (hb.2 y) rfl`. Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (0, y))))).1 = 0`.
-
-Rewrite using `[h1]`. Conclude with `ha.2 _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (ha : P.Stab a)
     (hb : P.Stab b) : P.Stab (a * b) := by
@@ -167,9 +165,9 @@ theorem leviX_apply (P : SympPolarization ω X Y) (g : W ≃ₗ[R] W) (x : X) :
     P.leviX g x = (P.e (g (P.e.symm (x, 0)))).1 := rfl
 
 /- English proof (translation)
-Rewrite using `[leviX_apply, leviX_apply, leviX_apply]`. Establish `h1 : b (P.e.symm (x, 0)) = P.e.symm ((P.e (b (P.e.symm (x, 0)))).1, 0)`. Apply `P.e.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `Prod.ext rfl (hb.1 x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(P.e (a (b (P.e.symm (x, 0))))).1 = _`. Use `conv_lhs => rw [h1]`.
+A detailed English derivation is pending.
 -/
 theorem leviX_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (hb : P.Stab b) (x : X) :
     P.leviX (a * b) x = P.leviX a (P.leviX b x) := by
@@ -182,7 +180,7 @@ theorem leviX_mul (P : SympPolarization ω X Y) {a b : W ≃ₗ[R] W} (hb : P.St
   conv_lhs => rw [h1]
 
 /- English proof (translation)
-Simplify using `[leviX_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviX_one (P : SympPolarization ω X Y) (x : X) : P.leviX 1 x = x := by
   simp [leviX_apply]

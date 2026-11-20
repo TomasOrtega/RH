@@ -16,9 +16,9 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace CrystallineSemistableComparison.Pb.Site
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Break down `h with rfl | rfl` into its components or cases. Discharge the goal by the elementary cases of `trivial`. Conclude with `GlobalTheory.T.flat_comp_envelope_algebraMap T.obj.i T.property.1`. Take `⟨V, hV, hT⟩` from `T.property.2`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨V, hV, inU_hom (polyJ T.obj hp) hT⟩`.
+A detailed English derivation is pending.
 -/
 theorem polyT_mem {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPowers I} {p : ℕ} (hp : p ≠ 0)
     {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {κ : O →+* R ⧸ I}
@@ -62,17 +62,17 @@ def polyAll {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} {γ : DividedPo
   span T z := GlobalTheory.T.divided_power_envelope_expansion T.obj.δ z
 
 /- English proof (translation)
-Introduce `O R _ _ I γ p hp X q κ Q₀ h 𝒱`. Use `⟨polyAll hp Q₀ h 𝒱, fun r => ⟨?_, ?_, fun c => ⟨?_, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b r.toNat 0).1 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 0).2.2.2 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ (⊥ : Ideal T.obj.B)`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Ideal.mem_bot]`. Conclude with `Iff.rfl`. Introduce `T b`. Use `Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b r.toNat (T.obj.i c)).2.1 (forall_congr' fun k => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ fil T.obj.δ (r - k).toNat ⊔ Ideal.span {T.obj.i c}`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show (r - k).toNat = r.toNat - k by omega]`. Conclude with `Iff.rfl`. Introduce `T b`. Establish `e : ∀ (B : Type) [CommRing B] (a : B), (⊥ : Ideal B) ⊔ Ideal.span {a} = Ideal.span {a}` using `fun _ _ _ => bot_sup_eq _`. Use `Iff.trans ?_ (Iff.trans (GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 (T.obj.i c)).2.2.1 (forall_congr' fun k => ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Ideal (pq T.obj.B).P) ⊔ Ideal.span {algebraMap T.obj.B (pq T.obj.B).P (T.obj.i c)} ↔ _`. Rewrite using `[e]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ ↔ b k ∈ (⊥ : Ideal T.obj.B) ⊔ Ideal.span {T.obj.i c}`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Introduce `T b`. Conclude with `(GlobalTheory.T.divided_power_envelope_filtration T.obj.δ b 0 (T.obj.i c)).2.2.1`.
+Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem poly_all' : ∀ {O R : Type} [CommRing O] [CommRing R] {I : Ideal R} (γ : DividedPowers I) (p : ℕ) (hp : p ≠ 0) {X : Scheme.{0}}
     (q : X ⟶ Spec (CommRingCat.of O)) (κ : O →+* R ⧸ I) (Q₀ : ObjectProperty (Thick (nlFun γ p X q κ))) (h : Q₀ = ⊤ ∨ Q₀ = FlatT)

@@ -5,12 +5,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ValuationLocalVolumes.F
 namespace PI.OmVe.Top
 
 /- English proof (translation)
-The claim follows from `PI.OmVe.fFInertB_holds`.
+A detailed English derivation is pending.
 -/
 theorem fFInertB_holds : PI.OmVd.FFInertB := PI.OmVe.fFInertB_holds
 
 /- English proof (translation)
-The claim follows from `PI.OmVe.fFSplitB_holds`.
+A detailed English derivation is pending.
 -/
 theorem fFSplitB_holds : PI.OmVd.FFSplitB := PI.OmVe.fFSplitB_holds
 

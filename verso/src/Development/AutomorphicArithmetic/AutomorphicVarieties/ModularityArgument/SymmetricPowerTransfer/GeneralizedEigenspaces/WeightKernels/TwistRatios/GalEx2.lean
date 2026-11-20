@@ -14,9 +14,9 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `P hG L Ω _ _ _ _ _ _ l _ ι hl hE n hn σ hσ`. Take `⟨r, HT, hc, hs, -, hHT, hwt, hLG, hp, hi⟩` from `hG L Ω hE l hl ι n hn σ hσ`. Take `⟨Pw, hbc⟩` from `UpperTheory.BaseChangeIdentities.splitComp (GlobalTheory.BcSpeh.bcSpeh_of_baseChange (GlobalTheory.BaseChangeBridge.main P.litN.aut.bc P.litN.loc.bern) (GlobalTheory.SpehInfChar.discreteSpectrumGL_of_residual P.litN.aut.mw)) L hE n hn σ hσ`. Use `⟨r, HT, ⟨hc, fun w hw => ⟨Pw w hw, hbc w hw⟩, hLG, hp⟩, hs, hHT, hwt, fun h => ?_⟩` and prove the remaining obligations. Take `⟨π, h1, -, h2, -⟩` from `hi h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨π, h1, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.galEx2 :
     Af.Hypotheses₂ → Af.GalUnitary → ∀ (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ), l ≠ 2 → Unr L → ∀ (n : ℕ), 1 ≤ n → ∀ σ : Submodule ℂ (UA L n → ℂ), IsAutRepU σ → ∃ (r : G L Ω →* GL (Fin n) (Qbar l)) (HT : (L →+* Qbar l) → Multiset ℤ), Ga.GalOf ι σ r ∧ IsSSRep r ∧ HasHT r HT ∧ (∀ (τ : L →+* Qbar l) lam, HasWeightAt σ (ι.toRingHom.comp τ) lam → (HT τ).map (fun k : ℤ => (k : ℂ)) = (infOfWeight lam).map fun z => ((n : ℂ) - 1) / 2 - z) ∧ (IsIrr r → IsAutC ι r) := by

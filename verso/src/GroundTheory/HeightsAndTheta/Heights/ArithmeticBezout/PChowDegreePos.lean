@@ -7,23 +7,21 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `n k δ W g hk hW hg hδ`. Assume the negation of the conclusion as `hlt`. Establish `hδ0 : δ = 0` using `by omega`. Substitute `hδ0` using the available equality. Establish `hnt : NonTorsionWeight (groupWeight k n)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Introduce `m ij h`. Use `congrFun h ij.1` as an intermediate fact. Simplify `this` using `[groupWeight]`. Establish `hsupp : ∀ m ∈ g.support, m = 0`. Introduce `m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : Finsupp.weight (groupWeight k n) m = 0` using `hδ (mem_support_iff.1 hm)`. Use extensionality with `ij`. Conclude with `(weightedDegree_eq_zero_iff hnt).1 h1 ij`. Choose the witnesses or unpack the hypotheses as in `⟨c, rfl⟩ : ∃ c, g = C c := by`. Use `⟨coeff 0 g, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[coeff_C]`. Use `split_ifs with hm`. Rewrite using `[hm]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm (hsupp m (mem_support_iff.2 hne)).symm`. Establish `hc : c ≠ 0`. Introduce `h`. Apply `hg.1` to reduce the goal to its premises. Rewrite using `[h, C_0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdvd : (C c : MvPolynomial (Fin k × Fin n) ℂ) ∣ 1` using `⟨C c⁻¹, by rw [← C_mul, mul_inv_cancel₀ hc, C_1]⟩`. Establish `hvan` using `(hg.2 1).2 hdvd`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx0, hx⟩ : ∃ x : Fin n → AlgebraicClosure ℂ, x ≠ 0 ∧ ∀ p ∈ W, aeval x p = 0 := by`. Assume the negation of the conclusion as `hne`. Take `⟨j, hj⟩` from `hW.isRelevant`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hj` to reduce the goal to its premises. Establish `hrad : X j ∈ W.radical`. Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := AlgebraicClosure ℂ)]`. Rewrite using `[mem_vanishingIdeal_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hy0 : y = 0`. Substitute `hy0` using the available equality. Simplify using the standard rewrite rules. Conclude with `absurd ⟨y, hy0, hy⟩ hne`. Rewrite `hrad` using `[hW.isPrime.radical]`. Then use the resulting hypothesis.
-
-Establish `hmem : (0 : Fin k × Fin n → AlgebraicClosure ℂ) ∈ incidence W k` using `⟨x, hx0, hx, fun i => by simp⟩`. Use `hvan 0 hmem` as an intermediate fact. Simplify using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ChowDegreePos.proof : ChowDegreePos.Statement := by
   intro n k δ W g hk hW hg hδ

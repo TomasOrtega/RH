@@ -20,7 +20,7 @@ variable (rho : Representation R G M) (rho' : Representation R G M')
   (rho'' : Representation R G M'')
 
 /- English proof (translation)
-Substitute `huv` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem map_H2_congr {u v : M →ₗ[R] M'} (huv : u = v) (hu : Continuous u)
     (hue : ∀ g m, u (rho g m) = rho' g (u m)) (hv : Continuous v)
@@ -29,7 +29,7 @@ theorem map_H2_congr {u v : M →ₗ[R] M'} (huv : u = v) (hu : Continuous u)
   subst huv; rfl
 
 /- English proof (translation)
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem map_H2_id :
     mapH2 rho rho LinearMap.id continuous_id (fun _ _ => rfl) = LinearMap.id := by
@@ -37,7 +37,7 @@ theorem map_H2_id :
   rfl
 
 /- English proof (translation)
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem map_H2_comp (u : M →ₗ[R] M') (hu : Continuous u)
     (hue : ∀ g m, u (rho g m) = rho' g (u m)) (v : M' →ₗ[R] M'') (hv : Continuous v)
@@ -49,7 +49,7 @@ theorem map_H2_comp (u : M →ₗ[R] M') (hu : Continuous u)
   rfl
 
 /- English proof (translation)
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem map_H2_zero (h0 : Continuous (0 : M →ₗ[R] M'))
     (h0e : ∀ g m, (0 : M →ₗ[R] M') (rho g m) = rho' g ((0 : M →ₗ[R] M') m)) :
@@ -58,7 +58,7 @@ theorem map_H2_zero (h0 : Continuous (0 : M →ₗ[R] M'))
   rfl
 
 /- English proof (translation)
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem map_H2_add (u v : M →ₗ[R] M') (hu : Continuous u)
     (hue : ∀ g m, u (rho g m) = rho' g (u m)) (hv : Continuous v)
@@ -69,7 +69,7 @@ theorem map_H2_add (u v : M →ₗ[R] M') (hu : Continuous u)
   rfl
 
 /- English proof (translation)
-Use `Submodule.linearMap_qext _ (LinearMap.ext fun f => ?_)` and prove the remaining obligations. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem map_H2_smul (c : R) (u : M →ₗ[R] M') (hu : Continuous u)
     (hue : ∀ g m, u (rho g m) = rho' g (u m)) (hcu : Continuous (c • u))
@@ -79,11 +79,11 @@ theorem map_H2_smul (c : R) (u : M →ₗ[R] M') (hu : Continuous u)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `map_H2_zero rho rho' _ _`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hc : Continuous ((∑ j ∈ s, u j : M →ₗ[R] M') : M → M')`. Use `continuous_finset_sum s (fun j _ => hu j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `he : ∀ g m, (∑ j ∈ s, u j) (rho g m) = rho' g ((∑ j ∈ s, u j) m)`. Introduce `g m`. Simplify using `only [LinearMap.sum_apply, map_sum, hue]`. Rewrite using `[map_H2_congr rho rho' (Finset.sum_insert ha) hs hse ((hu a).add hc) (fun g m => by simp only [LinearMap.add_apply, hue, he, map_add]), map_H2_add rho rho' _ _ (hu a) (hue a) hc he, ih hc he, Finset.sum_insert ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_H2_sum {ι : Type*} (s : Finset ι) (u : ι → M →ₗ[R] M') (hu : ∀ j, Continuous (u j))
     (hue : ∀ j g m, u j (rho g m) = rho' g (u j m))
@@ -113,14 +113,14 @@ variable {O : Type} [CommRing O] [TopologicalSpace O] [IsTopologicalRing O]
   {G : Type} [Group G] [TopologicalSpace G] (ε : G →* Oˣ)
 
 /- English proof (translation)
-The claim follows from `continuous_id.smul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem cont_span (M : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M]
     [ContinuousSMul O M] (m : M) : Continuous (LinearMap.toSpanSingleton O M m) :=
   continuous_id.smul continuous_const
 
 /- English proof (translation)
-Use `show ((ε g : O) • a) • m = (ε g : O) • (a • m)`. Rewrite using `[smul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_twist (M : Type) [AddCommGroup M] [Module O M] (m : M) (g : G) (a : O) :
     LinearMap.toSpanSingleton O M m (twist ε O g a) =
@@ -159,7 +159,7 @@ theorem phi_apply (M : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M]
       (cont_span M m) (span_twist ε M m) z := rfl
 
 /- English proof (translation)
-Rewrite using `[phi_apply, phi_apply, ← LinearMap.comp_apply, ← map_H2_comp (twist ε O) (twist ε M) (twist ε M') _ (cont_span M m) (span_twist ε M m) f hf hfe (hf.comp (cont_span M m)) (fun g a => by simp only [LinearMap.comp_apply, span_twist, hfe])]`. Conclude with `congrArg (fun L : H2 (twist ε O) →ₗ[O] H2 (twist ε M') => L z) (map_H2_congr _ _ (LinearMap.ext fun a => by simp) _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_natural (M M' : Type) [AddCommGroup M] [Module O M] [TopologicalSpace M]
     [IsTopologicalAddGroup M] [ContinuousConstSMul O M] [ContinuousSMul O M]
@@ -174,7 +174,7 @@ theorem phi_natural (M M' : Type) [AddCommGroup M] [Module O M] [TopologicalSpac
     (map_H2_congr _ _ (LinearMap.ext fun a => by simp) _ _ _ _)
 
 /- English proof (translation)
-Rewrite using `[phi_apply, map_H2_congr (twist ε O) (twist ε O) (show LinearMap.toSpanSingleton O O a = a • LinearMap.id from LinearMap.ext fun b => by simp [mul_comm]) _ _ (continuous_id.const_smul a) (fun g b => by show a * ((ε g : O) * b) = (ε g : O) * (a * b); ring), map_H2_smul _ _ a _ con …`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_self (a : O) : phi ε z O a = a • z := by
   rw [phi_apply, map_H2_congr (twist ε O) (twist ε O)
@@ -193,7 +193,7 @@ variable {O : Type} [CommRing O] [TopologicalSpace O] [IsTopologicalRing O]
   {G : Type} [Group G] [TopologicalSpace G] (ε : G →* Oˣ) (z : H2 (twist ε O))
 
 /- English proof (translation)
-Use `show f ((ε g : O) • m) = (ε g : O) • f m`. Conclude with `map_smul f _ m`.
+A detailed English derivation is pending.
 -/
 theorem twist_equiv {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'] [Module O M']
     (f : M →ₗ[O] M') (g : G) (m : M) : f (twist ε M g m) = twist ε M' g (f m) := by
@@ -201,7 +201,7 @@ theorem twist_equiv {M M' : Type} [AddCommGroup M] [Module O M] [AddCommGroup M'
   exact map_smul f _ m
 
 /- English proof (translation)
-Use `continuous_finset_sum s (fun j _ => hu j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cont_sum {ι M M' : Type} [AddCommGroup M] [Module O M] [TopologicalSpace M]
     [AddCommGroup M'] [Module O M'] [TopologicalSpace M'] [IsTopologicalAddGroup M']
@@ -211,13 +211,13 @@ theorem cont_sum {ι M M' : Type} [AddCommGroup M] [Module O M] [TopologicalSpac
   convert this using 1; ext x; simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`. Establish `h1 : ∀ j, p j m = 0` using `fun j => (injective_iff_map_eq_zero _).1 (hN j).1 _ (by`. Rewrite using `[← phi_natural ε z M (N j) (p j) (hp j) (twist_equiv ε (p j)), hm, map_zero])`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ i, p' i m = 0` using `fun i => (injective_iff_map_eq_zero _).1 (hN' i).1 _ (by`. Rewrite using `[← phi_natural ε z M (N' i) (p' i) (hp' i) (twist_equiv ε (p' i)), hm, map_zero])`. Rewrite using `[← hid m]`. Simplify using `[h1, h2]`. Introduce `w choose n hn using fun j => (hN j).2 (mapH2 (twist ε M) (twist ε (N j)) (p j) (hp j) (twist_equiv ε (p j)) w) choose n' hn' using fun i => (hN' i).2 (mapH2 (twist ε M) (twist ε (N' i)) (p' i) (hp' i) (twist_equiv ε (p' i)) w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ j, s j (n j) + ∑ i, s' i (n' i), ?_⟩` and prove the remaining obligations. Establish `k1 : ∀ j, phi ε z M (s j (n j)) = mapH2 (twist ε M) (twist ε M) (s j ∘ₗ p j) ((hs j).comp (hp j)) (twist_equiv ε _) w`. Introduce `j`. Rewrite using `[← phi_natural ε z (N j) M (s j) (hs j) (twist_equiv ε (s j)), hn j, map_H2_comp (twist ε M) (twist ε (N j)) (twist ε M) (p j) (hp j) (twist_equiv ε _) (s j) (hs j) (twist_equiv ε _)]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `k2 : ∀ i, phi ε z M (s' i (n' i)) = mapH2 (twist ε M) (twist ε M) (s' i ∘ₗ p' i) ((hs' i).comp (hp' i)) (twist_equiv ε _) w`. Introduce `i`. Rewrite using `[← phi_natural ε z (N' i) M (s' i) (hs' i) (twist_equiv ε (s' i)), hn' i, map_H2_comp (twist ε M) (twist ε (N' i)) (twist ε M) (p' i) (hp' i) (twist_equiv ε _) (s' i) (hs' i) (twist_equiv ε _)]`. Both sides reduce to the same expression. Rewrite using `[map_add, map_sum, map_sum, Finset.sum_congr rfl (fun j _ => k1 j), Finset.sum_congr rfl (fun i _ => k2 i), ← LinearMap.sum_apply, ← LinearMap.sum_apply, ← map_H2_sum (twist ε M) (twist ε M) _ _ _ _ (cont_sum _ _ fun j => (hs j).comp (hp j)) (twist_equiv ε _), ← map_H2_sum (twist …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

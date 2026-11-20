@@ -11,11 +11,9 @@ namespace GlobalTheory.LamF
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h0, h⟩`. Rewrite using `[GlobalTheory.Idele.valuation_eq_exp_neg_count p h0, h]`. Introduce `h`. Establish `h0 : c ≠ 0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `exp_ne_zero h.symm`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[GlobalTheory.Idele.valuation_eq_exp_neg_count p h0, exp_inj]`.
-
-Conclude with `neg_injective h`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocGen_iff_valuation_eq (p : HeightOneSpectrum (𝓞 K)) (c : K) (I : FractionalIdeal (𝓞 K)⁰ K) :
     IsLocGen p c I ↔ p.valuation K c = exp (-FractionalIdeal.count K p I) := by
@@ -32,15 +30,13 @@ theorem isLocGen_iff_valuation_eq (p : HeightOneSpectrum (𝓞 K)) (c : K) (I : 
     exact neg_injective h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy, hv⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI p`. Establish `hvy : p.valuation K y ≠ 0` using `by rw [hv]; exact exp_ne_zero`. Establish `hy0 : y ≠ 0` using `by rintro rfl; simp at hvy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : p.valuation K (c / y) ≤ 1`. Rewrite using `[map_div₀, div_le_one₀ (zero_lt_iff.2 hvy), hv]`. Conclude with `h`. Take `⟨a, s, hs⟩` from `HeightOneSpectrum.exists_primeCompl_mul_eq_of_integer p (c / y) h1`. Use `⟨s.1, s.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (s.1 : 𝓞 K) • c = a • y`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, ← hs]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Submodule.smul_mem (I : Submodule (𝓞 K) K) a hy`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨s, hs, hc⟩`. Establish `h` using `(GlobalTheory.Idele.mem_iff_valuation_le hI _).1 hc p`. Establish `h1 : p.valuation K (algebraMap (𝓞 K) K s) = 1`. Use `le_antisymm (p.valuation_le_one s) (not_lt.1 fun hlt => hs ?_)` and prove the remaining obligations. Conclude with `(p.valuation_lt_one_iff_mem s).1 hlt`.
-
-Rewrite `h` using `[Algebra.smul_def, map_mul, h1, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem valuation_le_iff_exists_smul_mem (p : HeightOneSpectrum (𝓞 K)) {I : FractionalIdeal (𝓞 K)⁰ K}
     (hI : I ≠ 0) (c : K) :
@@ -67,11 +63,11 @@ theorem valuation_le_iff_exists_smul_mem (p : HeightOneSpectrum (𝓞 K)) {I : F
     rwa [Algebra.smul_def, map_mul, h1, one_mul] at h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz p`. Conclude with `⟨1, fun h => p.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simpa using hz⟩`. Introduce `h`. Set `A : Ideal (𝓞 K)` to `Λ.comap (LinearMap.toSpanSingleton (𝓞 K) V z)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hA : A = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hAm⟩` from `Ideal.exists_le_maximal A hne`. Establish `hm0 : m ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hm (RingOfIntegers.not_isField K)`. Take `⟨s, hs, hsz⟩` from `h ⟨m, hm.isPrime, hm0⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hs (hAm (by simpa [A] using hsz))`. Establish `: (1 : 𝓞 K) ∈ A` using `hA ▸ Submodule.mem_top`. Simplify `this` using `[A]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_iff_forall_exists_smul_mem {V : Type} [AddCommGroup V] [Module (𝓞 K) V]
     (Λ : Submodule (𝓞 K) V) (z : V) :
@@ -91,13 +87,13 @@ theorem mem_iff_forall_exists_smul_mem {V : Type} [AddCommGroup V] [Module (𝓞
     simpa [A] using this
 
 /- English proof (translation)
-Introduce `K _ _`. Use `⟨fun I cl hI hcl c => ?_, fun I p hI => ⟨?_, fun cl => ?_⟩, fun V _ _ Λ z => mem_iff_forall_exists_smul_mem Λ z⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Idele.mem_iff_valuation_le hI]`. Use `forall_congr' fun p => ?_` and prove the remaining obligations. Rewrite using `[(isLocGen_iff_valuation_eq p _ I).1 (hcl p)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hv⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI p`. Conclude with `⟨y, hy, (isLocGen_iff_valuation_eq p y I).2 hv⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h.1, fun c => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(isLocGen_iff_valuation_eq p _ I).1 h]`. Conclude with `valuation_le_iff_exists_smul_mem p hI c`. Introduce and unpack `⟨-, h⟩`. Take `⟨y, hy, hv⟩` from `GlobalTheory.Idele.exists_mem_valuation_eq hI p`. Use `(isLocGen_iff_valuation_eq p cl I).2 (le_antisymm ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(valuation_le_iff_exists_smul_mem p hI cl).2 ((h cl).1 le_rfl)`. Rewrite using `[← hv]`. Conclude with `(h y).2 ((valuation_le_iff_exists_smul_mem p hI y).1 hv.le)`.
+A detailed English derivation is pending.
 -/
 theorem local_global_ideal_lattice : ∀ (K : Type) [Field K] [NumberField K],
     (∀ (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (cl : HeightOneSpectrum (𝓞 K) → K), I ≠ 0 →

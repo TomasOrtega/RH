@@ -13,15 +13,13 @@ open GlobalTheory.CompanionTheory.Hypotheses₂.OneV.FouCoord GroundTheory.Autom
 open scoped NNReal
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M dx hdx Φ hΦ`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Set `b` to `Module.finBasis F E`. Take `⟨h1, -, -, -, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM (AF F)`. Use `haveI := h1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI := hBor 1 M`. Establish `hf` using `(isSchwartzBruhat_iff b Φ).1 hΦ`. Set `e` to `crd (AF F) b M`. Establish `hcomp : (Φ ∘ e.symm) ∘ e = Φ`. Use function extensionality and compare the values at `X`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hcont : Continuous Φ`. Establish `h : Continuous ((Φ ∘ e.symm) ∘ e)` using `(continuous_of_mem_schwartzBruhatPi hf).comp e.continuous`. Rewrite `h` using `[hcomp]`. Then use the resulting hypothesis. Use `⟨hcont, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : LocallyCompactSpace (Fin 1 → Fin M → AF F ⊗[F] E) := e.toHomeomorph.isOpenEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Fin 1 → Fin M → AF F ⊗[F] E) := e.toHomeomorph.secondCountableTopology`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, dx = c • mu0 e` from `⟨_, Measure.isAddLeftInvariant_eq_smul dx (mu0 e)⟩`. Establish `hI : Integrable Φ (mu0 e)`. Rewrite using `[mu0, (measurableEmbedding_symm e).integrable_map_iff]`.
-
-Conclude with `integrable_of_mem_schwartzBruhatPi hf`. Rewrite using `[hc]`. Conclude with `hI.smul_measure_nnreal`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_integrable_of_isSchwartzBruhat : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (dx : Measure (Fin 1 → Fin M → AF F ⊗[F] E)), dx.IsAddHaarMeasure → ∀ Φ : (Fin 1 → Fin M → AF F ⊗[F] E) → ℂ, IsSchwartzBruhat Φ → Continuous Φ ∧ Integrable Φ dx := by
   intro F E _ _ _ _ _ σ hCM M dx hdx Φ hΦ

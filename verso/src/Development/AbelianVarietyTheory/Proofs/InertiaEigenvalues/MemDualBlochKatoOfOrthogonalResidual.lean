@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.ResDual.Perp
 
 /- English proof (translation)
-Use `⟨fun hx => ?_, h x⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hu : IsUnit x` using `by simpa using hn`. Conclude with `(hu.map (algebraMap O K)).ne_zero hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_iff {O K : Type} [CommRing O] [IsLocalRing O] [Field K] [Algebra O K]
     (h : ∀ x ∈ IsLocalRing.maximalIdeal O, algebraMap O K x = 0) (x : O) :
@@ -23,7 +23,7 @@ theorem ker_iff {O K : Type} [CommRing O] [IsLocalRing O] [Field K] [Algebra O K
   exact (hu.map (algebraMap O K)).ne_zero hx
 
 /- English proof (translation)
-Rewrite using `[← ker_iff h, map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_iff {O K : Type} [CommRing O] [IsLocalRing O] [Field K] [Algebra O K]
     (h : ∀ x ∈ IsLocalRing.maximalIdeal O, algebraMap O K x = 0) (x y : O) :
@@ -40,9 +40,9 @@ theorem divMap_apply {O : Type} [CommRing O] [IsDomain O] (ϖ a : O) :
     divMap ϖ a = Submodule.Quotient.mk ((algebraMap O (FractionRing O) ϖ)⁻¹ * algebraMap O (FractionRing O) a) := rfl
 
 /- English proof (translation)
-Rewrite `ha` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨b, rfl⟩` from `ha`. Establish `h0 : algebraMap O (FractionRing O) ϖ ≠ 0`. Simplify using `using hϖ.ne_zero`. Rewrite using `[divMap_apply, Submodule.Quotient.mk_eq_zero, map_mul, inv_mul_cancel_left₀ h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨b, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem divMap_eq_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O} (hϖ : Irreducible ϖ)
     {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) : divMap ϖ a = 0 := by
@@ -54,7 +54,7 @@ theorem divMap_eq_zero {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuation
   exact ⟨b, rfl⟩
 
 /- English proof (translation)
-Establish `ho : IsOpen (IsLocalRing.maximalIdeal O : Set O)` using `by simpa using (isAdic_iff.1 ha).1 1`. Use `IsLocallyConstant.continuous ((IsLocallyConstant.iff_exists_open _).2 fun x => ?_)` and prove the remaining obligations. Use `⟨(fun y => y - x) ⁻¹' (IsLocalRing.maximalIdeal O : Set O), ho.preimage (by fun_prop), by simp, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `(eq_iff h y x).1 hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_algebraMap {O K : Type} [CommRing O] [IsLocalRing O] [TopologicalSpace O] [IsTopologicalRing O]
     [Field K] [Algebra O K] [TopologicalSpace K]
@@ -66,7 +66,7 @@ theorem continuous_algebraMap {O K : Type} [CommRing O] [IsLocalRing O] [Topolog
   exact (eq_iff h y x).1 hy
 
 /- English proof (translation)
-Simplify using `[repOn, matAct, Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem repOn_one_map {G O K : Type} [Group G] [CommRing O] [Field K] [Algebra O K] {r : ℕ} (ρ : G →* GL (Fin r) O)
     (g : G) (y : Fin r → O) (a : Fin r) :
@@ -75,19 +75,19 @@ theorem repOn_one_map {G O K : Type} [Group G] [CommRing O] [Field K] [Algebra O
   simp [repOn, matAct, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Introduce `D N X bkP i s hG K _ _ _ _ hK hs ρ hρ v hv y H`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible (X.O0 i)`. Use `choose lift hlift using hs`. Establish `hy : ∀ g, y.1 g = fun b => algebraMap (X.O0 i) K (lift (y.1 g b))` using `fun g => funext fun b => (hlift _).symm`. Establish `hact : ∀ (g h : DecV N v) a, ((red i K ρ).comp (DecV N v).subtype) g (y.1 h) a = algebraMap (X.O0 i) K ((Tdual i s g.1).mulVec (fun b => lift (y.1 h b)) a)` using `fun g h a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hρ g.1, ← repOn_one_map ρ g.1, ← hy]`. Both sides reduce to the same expression. Establish `key` using `(GlobalTheory.T.lift_blochKatoCocycle_iff_orthogonal_lattice D N X bkP i s hG ρ hρ v hv ϖ hϖ (fun g a => lift (y.1 g a)) (fun a => ?_) (fun g h a => ?_)).2 ?_`. Take `⟨y', hy', e⟩` from `key`. Take `⟨c, hc, hc'⟩` from `isFCoc_iff.1 hy'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `bkOn`. Rewrite using `[dif_pos hv]`. Use `Submodule.subset_span ⟨y, c, y', 1, hc, hc', fun g a => ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_one, (eq_iff hK _ _).1 (e g a), hlift]`. Establish `: IsLocallyConstant fun g => y.1 g a` using `(IsLocallyConstant.iff_continuous _).2 ((continuous_apply a).comp y.2.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this.comp fun k => IsLocalRing.residue (X.O0 i) (lift k)`. Rewrite using `[eq_iff hK, map_add, hlift, hlift, ← hact, y.2.2 g h]`. Both sides reduce to the same expression. Introduce `d hd`. Set `x : Z1 ((red i K (Tgl i s)).comp (DecV N v).subtype)` to `⟨fun g a => algebraMap (X.O0 i) K (d g a), continuous_pi fun a => (continuous_algebraMap (X.twistBaseCoefficientRing_isAdic i) hK).comp ((continuous_apply a).comp hd.continuous), fun g h => funext fun a => by beta_reduce`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hd.cocycle g h, Pi.add_apply, map_add, ← repOn_one_map]`. Use the proof step `rfl⟩`. Establish `hx : Submodule.Quotient.mk x ∈ bkOn bkP i (Tgl i s) (1 : GE N →* Kˣ) K v`. Take `⟨c, hc, hc'⟩` from `isFCoc_iff.1 hd`. Unfold `bkOn`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dif_pos hv]`. Conclude with `Submodule.subset_span ⟨x, c, d, 1, hc, hc', fun g a => by rw [smul_eq_mul, mul_one], rfl⟩`. Take `⟨f, hf, e⟩` from `H x hx`. Use `⟨fun g => divMap ϖ (lift (f g)), hf.comp fun k => divMap ϖ (lift k), fun g h => ?_⟩` and prove the remaining obligations. Rewrite using `[← divMap_apply, ← map_smul, ← map_sub, ← map_add, ← sub_eq_zero, ← map_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Apply `divMap_eq_zero hϖ` to reduce the goal to its premises. Rewrite using `[eq_iff hK, map_add, map_sub, smul_eq_mul, map_mul, hlift, hlift, hlift, ← e g h]`. Simplify using `only [dotProductBilin_apply_apply, dotProduct, map_sum, map_mul, hact]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_bkOn_of_orthogonal : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), GalHyp bkP i s → ∀ (K : Type) [Field K] [Algebra (X.O0 i) K] [TopologicalSpace K] [DiscreteTopology K], IsRes i K → Function.Surjective (algebraMap (X.O0 i) K) → ∀ ρ, IsDual i s ρ → ∀ v ∈ placesOver D.host.E (X.l i), ∀ y : Z1 ((red i K ρ).comp (DecV N v).subtype), (∀ x : Z1 ((red i K (Tgl i s)).comp (DecV N v).subtype), Submodule.Quotient.mk x ∈ bkOn bkP i (Tgl i s) (1 : GE N →* Kˣ) K v → CupCob (fun g : DecV N v => algebraMap (X.O0 i) K ((eps0 X i g.1 : (X.O0 i)ˣ) : X.O0 i)) ((red i K ρ).comp (DecV N v).subtype) (dotProductBilin K K) x.1 y.1) → Submodule.Quotient.mk y ∈ bkOn bkP i ρ (1 : GE N →* Kˣ) K v := by
   intro D N X bkP i s hG K _ _ _ _ hK hs ρ hρ v hv y H

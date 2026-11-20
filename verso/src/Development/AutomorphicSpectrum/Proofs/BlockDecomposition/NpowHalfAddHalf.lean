@@ -18,9 +18,9 @@ namespace GlobalTheory.CompanionTheory.SetCell
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Take `⟨hf, h1, h2⟩` from `mem_levelOff.1 hu`. Use `mem_levelAll.2 ⟨fun v => ?_, fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[h1 v hv]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 v hv`. Rewrite using `[mem_finPts_iff_forall.1 hf w]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_K_of_mem_KOff {S : Finset (Pl D)} {u : G D p} (hu : u ∈ KOff D p S) : u ∈ K D p := by
   obtain ⟨hf, h1, h2⟩ := mem_levelOff.1 hu
@@ -31,7 +31,7 @@ theorem mem_K_of_mem_KOff {S : Finset (Pl D)} {u : G D p} (hu : u ∈ KOff D p S
   · rw [mem_finPts_iff_forall.1 hf w]; exact one_mem _
 
 /- English proof (translation)
-Take `⟨q, hq, k', hk', rfl⟩` from `GlobalTheory.StdUnn.Iwasawa.exists_mul D p g`. Rewrite using `[mul_assoc, GlobalTheory.CompanionTheory.HtEx.height_eq hH ⟨q, hq⟩ (mul_mem hk' hk), GlobalTheory.CompanionTheory.HtEx.height_eq hH ⟨q, hq⟩ hk']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem height_mul_K {H : G D p → ℝ≥0} (hH : IsHeight H) {k : G D p} (hk : k ∈ K D p) (g : G D p) :
     H (g * k) = H g := by
@@ -39,9 +39,9 @@ theorem height_mul_K {H : G D p → ℝ≥0} (hH : IsHeight H) {k : G D p} (hk :
   rw [mul_assoc, GlobalTheory.CompanionTheory.HtEx.height_eq hH ⟨q, hq⟩ (mul_mem hk' hk), GlobalTheory.CompanionTheory.HtEx.height_eq hH ⟨q, hq⟩ hk']
 
 /- English proof (translation)
-Establish `hY : mat w⁻¹ = blk4 0 (-1) 1 0`. Establish `e2 : mat w⁻¹ * mat w = 1` using `(show mat (w⁻¹ * w) = mat w⁻¹ * mat w from rfl).symm.trans (by rw [inv_mul_cancel]; rfl)`. Establish `e3 : mat w * blk4 0 (-1) 1 0 = 1`. Rewrite using `[show mat w = _ from hw, GlobalTheory.StdUnn.Model.submatrix_fromBlocks_mul]`. Simplify using `[GlobalTheory.StdUnn.Model.block_matrix_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `GlobalTheory.CompanionTheory.PcB.mem_GF w (blk4 0 1 (-1) 0) (blk4 0 (-1) 1 0) ?_ ?_` and prove the remaining obligations. Rewrite using `[show mat w = _ from hw, GlobalTheory.CompanionTheory.PcB.rational_map_block_matrix, GlobalTheory.CompanionTheory.PcB.rat_zero', GlobalTheory.CompanionTheory.PcB.rat_one', GlobalTheory.CompanionTheory.PcB.rat_neg', GlobalTheory.CompanionTheory.PcB.rat_one']`. Rewrite using `[hY, GlobalTheory.CompanionTheory.PcB.rational_map_block_matrix, GlobalTheory.CompanionTheory.PcB.rat_zero', GlobalTheory.CompanionTheory.PcB.rat_one', GlobalTheory.CompanionTheory.PcB.rat_neg', GlobalTheory.CompanionTheory.PcB.rat_one']`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem w_mem_GF {w : G D p} (hw : IsW w) : w ∈ GF D p := by
   have hY : mat w⁻¹ = blk4 0 (-1) 1 0 := by
@@ -59,7 +59,7 @@ theorem w_mem_GF {w : G D p} (hw : IsW w) : w ∈ GF D p := by
       GlobalTheory.CompanionTheory.PcB.rat_one']
 
 /- English proof (translation)
-Establish `e : (p : ℂ) / 2 + (p : ℂ) / 2 = (p : ℂ)` using `by ring`. Rewrite using `[e, npow, Complex.cpow_natCast]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem npow_half_add_half (r : ℝ≥0) : npow r ((p : ℂ) / 2 + (p : ℂ) / 2) = (((r : ℝ) ^ p : ℝ) : ℂ) := by
   have e : (p : ℂ) / 2 + (p : ℂ) / 2 = (p : ℂ) := by ring
@@ -70,7 +70,7 @@ theorem npow_half_add_half (r : ℝ≥0) : npow r ((p : ℂ) / 2 + (p : ℂ) / 2
 def hp (H : G D p → ℝ≥0) (g : G D p) : ℝ := (H g : ℝ) ^ p
 
 /- English proof (translation)
-Simplify using `only [hp]`. Rewrite using `[hH.2.2 q hq a ha g, NNReal.coe_mul, mul_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hp_law {H : G D p → ℝ≥0} (hH : IsHt H) {q : G D p} (hq : q ∈ P D p) {a : GL (Fin p) (AE D)}
     (ha : blkA (mat q) = a.1) (g : G D p) :
@@ -79,25 +79,25 @@ theorem hp_law {H : G D p → ℝ≥0} (hH : IsHt H) {q : G D p} (hq : q ∈ P D
   rw [hH.2.2 q hq a ha g, NNReal.coe_mul, mul_pow]
 
 /- English proof (translation)
-The claim follows from `pow_pos (by exact_mod_cast hH.2.1 g) _`.
+A detailed English derivation is pending.
 -/
 theorem hp_pos {H : G D p → ℝ≥0} (hH : IsHt H) (g : G D p) : 0 < hp H g :=
   pow_pos (by exact_mod_cast hH.2.1 g) _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.StdUnn.HeightExists.leviBlock (D := D) (n := p) ⟨q, hq⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_block {q : G D p} (hq : q ∈ P D p) : ∃ a : GL (Fin p) (AE D), blkA (mat q) = a.1 :=
   ⟨GlobalTheory.StdUnn.HeightExists.leviBlock (D := D) (n := p) ⟨q, hq⟩, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, l⟩`. Use `⟨c, fun q hq g => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_block hq`. Rewrite using `[l q hq a ha g, hp_law hH hq ha g, npow_half_add_half]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.one_apply, Circle.coe_one, one_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨c, l⟩`. Use `⟨c, fun q hq a ha g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `l q hq g`. Rewrite `h1` using `[hp_law hH hq ha g]`. Establish `h0 : ((hp H g : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (hp_pos hH g).ne'`. Rewrite using `[npow_half_add_half]`. Simplify using `only [MonoidHom.one_apply, Circle.coe_one, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `mul_right_cancel₀ h0` to reduce the goal to its premises. Rewrite using `[h1]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isRho_iff_sec {H : G D p → ℝ≥0} (hH : IsHt H) (f : G D p → ℂ) : IsRho f ↔ Sec (P D p) (hp H) f := by
   constructor
@@ -121,17 +121,17 @@ theorem isRho_iff_sec {H : G D p → ℝ≥0} (hH : IsHt H) (f : G D p → ℂ) 
     ring
 
 /- English proof (translation)
-Introduce `hEx D p mu hmu`. Take `⟨H, hH⟩` from `GlobalTheory.StdUnn.exists_height D p`. Establish `hI : IsHt H` using `GlobalTheory.CompanionTheory.HtEx.isHt_of_isHeight hH`. Establish `hS` using `isRho_iff_sec hI`. Use `⟨hp H, ?_, hS, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.StdUnn.HeightExists.isClosed_P, (hEx D p).2, ?_, hp_pos hI, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(NNReal.continuous_coe.comp hI.1).pow p`. Introduce `q hq g g'`. Take `⟨a, ha⟩` from `exists_block hq`. Rewrite using `[hp_law hI hq ha g, hp_law hI hq ha g']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `fun f f' hf hf' => hmu.add f f' ((hS f).2 hf) ((hS f').2 hf')`. Conclude with `fun c f hf => hmu.smul c f ((hS f).2 hf)`. Conclude with `fun f hf h0 => hmu.pos f ((hS f).2 hf) h0`. Introduce `S u hu g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hp]`. Rewrite using `[height_mul_K hH (mem_K_of_mem_KOff hu) g]`. Introduce `nb hnb w hw y`. Establish `hN : ∀ f, IsRho f → mu (fun g => f (g * nb y)) = mu f` using `fun f hf => hmu.inv_n (nb y) y.1 (hnb y) f hf`. Establish `hW` using `w_mem_GF hw`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun f hf => hN f ((hS f).2 hf), fun f hf => ?_⟩` and prove the remaining obligations. Establish `hf'` using `(hS f).2 hf`. Establish `r1` using `GlobalTheory.CompanionTheory.MuC.isRho_right hf' w⁻¹`. Establish `r2` using `GlobalTheory.CompanionTheory.MuC.isRho_right r1 (nb y)`. Establish `e3` using `hmu.inv_rat w hW _ r2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hN _ r1`. Establish `e1` using `hmu.inv_rat w⁻¹ ((GF D p).inv_mem hW) f hf'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = mu f := by rw [e3, e2, e1]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setC : HtExist → PositivityTheory.Rg.Rsw.Cell.SetC := by
   intro hEx D p mu hmu

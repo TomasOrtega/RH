@@ -21,7 +21,7 @@ def t_pair_assoc : Prop :=
       μ₂.cup E h₂ (μ₁.cup E h₁ a b) c = ν₂.cup E h₄ a (ν₁.cup E h₃ b c)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Substitute `hs` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cast_pair_cup {q : ℕ} {E : Spc} {i j k k' n m s s' : ℤ}
     (μ : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q k))) (e : k = k') (hk : n + m = s) (hs : s = s')
@@ -30,7 +30,7 @@ theorem cast_pair_cup {q : ℕ} {E : Spc} {i j k k' n m s s' : ℤ}
   subst e; subst hs; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isTwPair_cast {q : ℕ} {i j k k' : ℤ}
     (μ : Pair (res _ (tw q i)) (res _ (tw q j)) (res _ (tw q k))) (e : k = k') (h : IsTwPair μ) :
@@ -38,9 +38,9 @@ theorem isTwPair_cast {q : ℕ} {i j k k' : ℤ}
   subst e; exact h
 
 /- English proof (translation)
-Introduce `q _ E n m k i j l a b c`. Establish `hp : ∀ i j : ℤ, IsTwPair (twPair q i j)` using `fun i j => pick_spec (hex q i j)`. Establish `e : i + (j + l) = i + j + l` using `by ring`. Establish `hs : n + (m + k) = n + m + k` using `by ring`. Use `show (twPair q (i + j) l).cup E rfl ((twPair q i j).cup E rfl a b) c = Ht.cast hs e ((twPair q i (j + l)).cup E rfl a ((twPair q j l).cup E rfl b c))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cast_pair_cup]`. Conclude with `has q E rfl rfl e _ _ _ _ (hp i j) (hp (i + j) l) (hp j l) (isTwPair_cast _ e (hp i (j + l)))`. Use `rfl rfl rfl (rfl.trans hs) a b c`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem etale_twisted_cup_assoc_of_twisted_pairing_exists_assoc (hex : t_twpair_ex) (has : t_pair_assoc) : EtaleTwistedCupProductAssociative := by
   intro q _ E n m k i j l a b c

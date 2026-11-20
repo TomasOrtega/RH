@@ -17,27 +17,25 @@ namespace GlobalTheory.InterpWeight
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hCo` using `GlobalTheory.OrbitCoord.det_fderiv_ne_zero_orbit hK`. Establish `hn : 0 < nd X` using `lt_of_lt_of_le (by norm_num) Xa.n_ge`. Establish `hbb0 : 0 ≤ bb` using `le_trans (by positivity) hbb.le`. Establish `hw0b : X.IsBddSec Xa.L Fl.w0` using `Fl.weightForm_vanishes.1.1`. Establish `hsb : ∀ k, X.IsBddSec Xa.L (Fl.s k)` using `fun k => (Fl.s_van k).1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : X.IsSec Xa.L Fl.w0` using `hw0b.1`. Establish `hs : ∀ k, X.IsSec Xa.L (Fl.s k)` using `fun k => (hsb k).1`. Establish `key : ∀ j', ∀ γ ∈ X.Γ, ∀ b ∈ Bor X.Ψ r, ∀ x1, x1 = lact γ (rmul (Fl.xs j') b) → Fl.w0 x1 ≠ 0 ∧ (∀ k, Fl.s k x1 = 0) ∧ (fderiv ℂ (fun z : V (nd X) => (WithLp.toLp 2 fun k => Fl.s k (cpt X x1 z) / Fl.w0 (cpt X x1 z) : V (nd X))) 0).det ≠ 0`. Introduce and unpack `j' γ hγ b hb x1 rfl`. Use `⟨KronAssembly.sec_ne_zero X hw0 (Fl.xs_mem j') (Fl.w0_ne j') hγ hb, ?_, hCo r X Xa.L Fl.w0 Fl.s hw0 hs _ (Fl.xs_mem j') (Fl.w0_ne j') (Fl.coord j') γ hγ b hb⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Fl.S_eq _ (OntoS.dom_lact X hγ (OntoS.dom_rmul X (Fl.xs_mem j') hb))).2 ⟨j', γ, hγ, b, hb, rfl⟩`. Take `⟨x0, ho, b0, hb0, b0', hb0', hx0, hx0'⟩` from `KronAssembly.exists_orth X (Fl.xs_mem j) X.Γ.one_mem`. Establish `hx0d : x0 ∈ X.dom` using `IW.orth_mem_dom X x0 ho`. Take `⟨k1, k2, k3⟩` from `key j 1 X.Γ.one_mem b0' hb0' x0 hx0'`. Establish `hψb : ∃ C : ℝ, ∀ x ∈ X.dom, (fun _ : Frame X.Ψ r => (0 : ℝ)) x ≤ C` using `⟨0, fun _ _ => le_rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hψc, hMW, hWL⟩` from `GlobalTheory.KronMetric.kronMetric hN r X G (fun _ => 0) (fun _ _ _ _ _ _ => rfl) (fun _ _ => contDiffOn_const) hψb`. Take `⟨ε, χ, F, hε, hball, hiso, hχc, hχ1, hχ0, hF, hint⟩` from `GlobalTheory.kronSolve r X G Xa.L Fl.w0 Fl.s (fun _ => 0) x0 bb m η hn ho hw0 hs contDiffOn_const hbb0 hbm hη (fun z hz ξ => by rw [leviO_zero, add_zero]; exact hmar x0 ho z hz ξ) (fun z hz ξ => by rw [leviO_zero, add_zero]; exact hstr x0 ho z hz ξ) (fun z hz ξ hξ => Xa.posL x0 h …`. Take `⟨hF0, hInAt, hloc⟩` from `GlobalTheory.KronValue.value_and_integrability hV r X G Xa.L Fl.w0 Fl.s (fun _ => 0) x0 bb ε (2 * ε) χ F hn ho hw0b hsb hψc hψb hbb0 hε hball hχc hχ1 hχ0 hF hint k1 k2 k3`. Take `⟨P, hP, hPF⟩` from `hExt r X x0 ho G F hF hloc`. Establish `h0 : (0 : V (nd X)) ∈ OmF X x0` using `by show cpt X x0 0 ∈ X.dom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IW.cpt_zero]`. Conclude with `hx0d`. Establish `hP0 : P x0 = 1`. Use `hPF 0 h0` as an intermediate fact. Rewrite `this` using `[IW.cpt_zero, hF0]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x0, _, F, P, ho, hMW, hWL, hF, hInAt, hP, hPF, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hx0, hP.2 x0 hx0d b0 hb0, hP0, mul_one]`. Conclude with `OntoE.bchar_ne X _ hb0`. Introduce `γ hγ j' hne`. Take `⟨x1, ho1, b1, hb1, b1', hb1', hx1, hx1'⟩` from `KronAssembly.exists_orth X (Fl.xs_mem j') hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx1d : x1 ∈ X.dom` using `IW.orth_mem_dom X x1 ho1`. Take `⟨l1, l2, l3⟩` from `key j' γ hγ b1' hb1' x1 hx1'`. Establish `hP1 : P x1 = 0`. Use `GlobalTheory.KronOff.vanish_off hMI hV hN r X G Xa.L Fl.w0 Fl.s (fun _ => 0) x0 x1 bb (2 * ε) χ F P hn ho ho1 hw0 hs hψc (fun _ _ _ _ => rfl) hbb0 hball hχ0 hP hPF hint ?_ l1 l2 l3` and prove the remaining obligations. Introduce `z hz b hb hxz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz0 : z = 0`. Use `hiso z hz fun k => ?_` and prove the remaining obligations. Establish `h1` using `l2 k`. Rewrite `h1` using `[hxz, (hs k).2.1 _ (hball hz) b hb]`. Conclude with `(mul_eq_zero.mp h1).resolve_left (OntoE.bchar_ne X _ hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hxz` using `[hz0, IW.cpt_zero]`. Rewrite `hx0'` using `[FundSetPf.lact_one]`. Establish `hc : rmul b0' (rmul b b1) ∈ Bor X.Ψ r` using `ExtFPf.mul_mem X hb0' (ExtFPf.mul_mem X hb hb1)`. Establish `he : lact γ (Fl.xs j') = rmul (Fl.xs j) (rmul b0' (rmul b b1))`. Rewrite using `[hx1, hxz, ← ExtFPf.rmul_assoc X (Fl.xs j) b0', ← hx0', ExtFPf.rmul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hjj : j = j'`. Use `Fl.xs_inj j j' γ⁻¹ (X.Γ.inv_mem hγ) _ hc ?_` and prove the remaining obligations. Rewrite using `[← he, FundSetPf.lact_inv]`. Substitute `hjj` using the available equality. Establish `hγ1 : γ = 1` using `X.Γ_free γ hγ _ (Fl.xs_mem j) _ hc he`.
-
-Break down `hne with h | h` into its components or cases. Conclude with `h hγ1`. Conclude with `h rfl`. Rewrite using `[hx1, hP.2 x1 hx1d b1 hb1, hP1, mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hN : NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E))
     (hExt : ExtFStatement (E := E)) (hMI : MeasInvStatement (E := E)) (hV : VanishAtSStatement (E := E))
@@ -124,13 +122,13 @@ theorem core (hN : NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧
     rw [hx1, hP.2 x1 hx1d b1 hb1, hP1, mul_zero]
 
 /- English proof (translation)
-Introduce `hN hPo hExt hMI hV hK r X Xa Fl G hPD ⟨bb, m, hbb, hbm, hmar⟩ ⟨η, hη, hstr⟩ hcusp`. Apply `interp_of_kron X G Fl.xs` to reduce the goal to its premises. Introduce `j`. Take `⟨x0, W, F, P, hx0, hW, hWl, hF, hA, hBE, hPF, hne, hz⟩` from `core hN hExt hMI hV hK X Xa Fl G bb m η hbb hbm hη hmar hstr j`. Take `⟨-, hQ, -⟩` from `hPo r X x0 hx0 hPD G W bb hW hWl hbb F P hF hA hBE hPF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hQne : poin X G P (Fl.xs j) ≠ 0`. Rewrite using `[poin_single X G P _ X.Γ.one_mem fun γ hγ hne' => hz γ hγ j (Or.inl hne')]`. Conclude with `mul_ne_zero (inv_ne_zero (KronAssembly.chi_ne_zero X G X.Γ.one_mem)) hne`. Establish `hQz : ∀ j', j' ≠ j → poin X G P (Fl.xs j') = 0` using `fun j' hj' => poin_zero X G P _ fun γ hγ => hz γ hγ j' (Or.inr hj')`. Establish `hQs : poin X G P ∈ X.SSgt G 0` using `ss_sub_ssgt0 X G (hcusp _ hQ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, ⟨-, -, hsmul⟩, -⟩` from `siegelSpaceAlgebra_holds (E := E) r X G G 0`. Use `⟨(poin X G P (Fl.xs j))⁻¹ • poin X G P, hsmul _ _ hQs, fun j' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality. Simplify using `[hQne]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, hQz j' h]`.
+A detailed English derivation is pending.
 -/
 theorem interp_weight : (NfacRmulStatement (E := E) ∧ NfacLactStatement (E := E) ∧ PnormInvStatement (E := E)) → PoinStatement (E := E) → ExtFStatement (E := E) → MeasInvStatement (E := E) → VanishAtSStatement (E := E) → KapGGStatement (E := E) →
     ∀ (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa) (G : Wt X.Ψ r), PropDisc X →

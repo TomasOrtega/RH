@@ -27,7 +27,7 @@ section
 variable (V : Type) [CommRing V] [IsDomain V] (F : Type) [Field F] [Algebra (FractionRing V) F]
 
 /- English proof (translation)
-Use `show Spec.map (CommRingCat.ofHom (RingHom.id _)) = 𝟙 _`. Conclude with `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem jFK_self : jFK (R := V) (FractionRing V) = 𝟙 _ := by
   show Spec.map (CommRingCat.ofHom (RingHom.id _)) = 𝟙 _
@@ -37,7 +37,7 @@ def specFrac : Spec (CommRingCat.of F) ⟶ Spec (CommRingCat.of (FractionRing V)
   Spec.map (CommRingCat.ofHom (algebraMap (FractionRing V) F))
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => specFrac V F ≫ q) (jFK_self V)).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem specFrac_jFK : specFrac V F ≫ jFK (R := V) (FractionRing V) = jFK (R := V) F :=
   (congrArg (fun q => specFrac V F ≫ q) (jFK_self V)).trans (Category.comp_id _)
@@ -47,7 +47,7 @@ def toFrac : TF (R := V) F ⟶ TF (R := V) (FractionRing V) :=
     (congrArg (fun q => q ≫ jK V) (specFrac_jFK V F)))
 
 /- English proof (translation)
-The claim follows from `specFrac_jFK V F`.
+A detailed English derivation is pending.
 -/
 theorem toFrac_jFK : (toFrac V F).left ≫ jFK (R := V) (FractionRing V) = jFK (R := V) F :=
   specFrac_jFK V F
@@ -57,18 +57,18 @@ variable {V} (D : DegPre V)
 def bc : DegPre.BF D F ⟶ DegPre.BF D (FractionRing V) := toFrac V F ▷ D.P.A
 
 /- English proof (translation)
-The claim follows from `whiskerRight_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem bc_prB : bc F D ≫ DegPre.prB D (FractionRing V) = DegPre.prB D F := whiskerRight_snd _ _
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (bc_prB F D)`.
+A detailed English derivation is pending.
 -/
 theorem bc_prB_left : (bc F D).left ≫ (DegPre.prB D (FractionRing V)).left = (DegPre.prB D F).left :=
   congrArg (fun q => q.left) (bc_prB F D)
 
 /- English proof (translation)
-Unfold `DegPre.zF bc`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Simplify using `only [Category.assoc, whiskerRight_snd, lift_snd]`. Rewrite using `[← Category.assoc, comp_toUnit]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zF_bc : DegPre.zF D F ≫ bc F D = toFrac V F ≫ DegPre.zF D (FractionRing V) := by
   unfold DegPre.zF bc
@@ -78,7 +78,7 @@ theorem zF_bc : DegPre.zF D F ≫ bc F D = toFrac V F ≫ DegPre.zF D (FractionR
     rw [← Category.assoc, comp_toUnit]
 
 /- English proof (translation)
-Rewrite using `[GC.famφ_eq, GC.famφ_eq, ← Category.assoc, bc_prB_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_famφ (α : D.X) (i : Fin 4) :
     (bc F D).left ≫ DegPre.famφ D (FractionRing V) α i = DegPre.famφ D F α i := by
@@ -90,9 +90,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : D
   (F : Type) [Field F] [Algebra (FractionRing V) F] {O : Type} [Ring O] [StarRing O] [Module O D.toPre.X]
 
 /- English proof (translation)
-Unfold `aF`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[bc]`. Simplify using `only [Category.assoc, lift_snd]`. Rewrite using `[← Category.assoc (bc F D.toPre), bc_prB]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lift_snd _ _`.
+A detailed English derivation is pending.
 -/
 theorem aF_bc (oa : D.toPre.OAct O) (a : O) :
     aF D F oa a ≫ bc F D.toPre = bc F D.toPre ≫ aF D (FractionRing V) oa a := by
@@ -104,14 +104,14 @@ theorem aF_bc (oa : D.toPre.OAct O) (a : O) :
     exact lift_snd _ _
 
 /- English proof (translation)
-The claim follows from `congrArg (fun q => q.left) (aF_bc D F oa a)`.
+A detailed English derivation is pending.
 -/
 theorem aF_bc_left (oa : D.toPre.OAct O) (a : O) :
     (aF D F oa a).left ≫ (bc F D.toPre).left = (bc F D.toPre).left ≫ (aF D (FractionRing V) oa a).left :=
   congrArg (fun q => q.left) (aF_bc D F oa a)
 
 /- English proof (translation)
-Break down `i with i | i` into its components or cases. Conclude with `bc_famφ F D.toPre _ i`. Use `show (bc F D.toPre).left ≫ (aF D (FractionRing V) oa a).left ≫ _ = (aF D F oa a).left ≫ _`. Rewrite using `[← Category.assoc, ← aF_bc_left, Category.assoc, bc_famφ]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bc_pullφ (oa : D.toPre.OAct O) (a : O) (χ : D.toPre.X) (i : Fin 4 ⊕ Fin 4) :
     (bc F D.toPre).left ≫ pullφ D (FractionRing V) oa a χ i = pullφ D F oa a χ i := by
@@ -121,7 +121,7 @@ theorem bc_pullφ (oa : D.toPre.OAct O) (a : O) (χ : D.toPre.X) (i : Fin 4 ⊕ 
     rw [← Category.assoc, ← aF_bc_left, Category.assoc, bc_famφ]
 
 /- English proof (translation)
-Rewrite using `[← SectionScalarValuation.secScal_sval ht r z hJ, ← SectionScalarValuation.secScal_sval hs _ z hJ, Category.assoc, bc_prB_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sval_bc {k : ℕ} {α : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k))}
@@ -135,15 +135,13 @@ theorem sval_bc {k : ℕ} {α : D.toPre.X}
   rw [← SectionScalarValuation.secScal_sval ht r z hJ, ← SectionScalarValuation.secScal_sval hs _ z hJ, Category.assoc, bc_prB_left]
 
 /- English proof (translation)
-Introduce `V _ _ _ D F _ _ O _ _ _ oa a k N E E' g g' θ θ' hE hE' hθ hθ' hP`. Establish `hL` using `D.toPre.P.isLB`. Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hc, hrel⟩` from `hP.1 χ`. Take `⟨u', hu', vu⟩` from `exists_gen hL (φ' := pullφ D F oa a χ) (ε' := pullε k N) (fun U _ h => Finset.prod_congr rfl fun i _ => by rw [bc_pullφ]) (LB.pullGen D.toPre.P.L _ _ u (bc F D.toPre).left) (pullGen_isGen _ _ _ _ hu _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨u', hu', corr_of_val hL fun y J hJ => ?_, (secRel_iff hL _ _ _ _ _ _ _ _ _ u').2 fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `val_corr hJ hc (toFrac V F).left`. Rewrite `e` using `[val_pull hJ, val_pull hJ, toFrac_jFK]`. Establish `z₁ : (DegPre.zF D.toPre F).left ≫ (bc F D.toPre).left = (toFrac V F).left ≫ (DegPre.zF D.toPre (FractionRing V)).left` using `congrArg (fun q => q.left) (zF_bc F D.toPre)`. Rewrite using `[val_pull hJ, val_pull hJ, vu _ _ y J hJ, val_pull hJ, Category.id_comp, Category.id_comp, z₁]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `e` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).1 hrel _ (bc F D.toPre).left y J hJ`. Rewrite using `[sval_bc D F (hE' _) (hθ' _) _ y hJ, sval_bc D F (hE _) (hθ _) _ y hJ, vu _ _ y J hJ, val_pull hJ, Category.id_comp, Category.id_comp, aF_bc_left]`. Conclude with `e`. Use `fn_ext (V := LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F β) j) fun y hy => ?_ choose I hI using fun ψ : (DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left => exists_chart hL (ψ y)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI' : Good D.toPre.P.L y I` using `hI`. Establish `e : sval (θ'.s β) (𝟙 _) y I = 0`. Rewrite using `[sval_bc D F (hE' β) (hθ' β) _ y hI']`. Conclude with `(congrArg (gs _ y _) (hP.2 β hβ _)).trans (gs_zero _ y _ (hI'.mem _ _))`. Use `(sec_trans (θ'.s β) (𝟙 _) y hy (hI'.mem _ _)).trans ?_` and prove the remaining obligations.
-
-Conclude with `(congrArg _ e).trans ((mul_zero _).trans (gs_zero _ y _ hy).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (O : Type) [Ring O] [StarRing O] [Module O D.toPre.X] (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (E : Fam D.toPre (FractionRing V) k) (E' : Fam D.toPre (FractionRing V) (k * N)) (g : ∀ α, D.toPre.SecB k α) (g' : ∀ α, D.toPre.SecB (k * N) α) (θ : Fam D.toPre F k) (θ' : Fam D.toPre F (k * N)), (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε k) (E.s α) (D.toPre.famφB α) (DegPre.famε k) (g α) (DegPre.prB D.toPre (FractionRing V)).left 1) → (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre (FractionRing V) α) (DegPre.famε (k * N)) (E'.s α) (D.toPre.famφB α) (DegPre.famε (k * N)) (g' α) (DegPre.prB D.toPre (FractionRing V)).left 1) → (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k) (θ.s α) (D.toPre.famφB α) (DegPre.famε k) (g α) (DegPre.prB D.toPre F).left 1) → (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε (k * N)) (θ'.s α) (D.toPre.famφB α) (DegPre.famε (k * N)) (g' α) (DegPre.prB D.toPre F).left 1) → PullAl D (FractionRing V) oa a k N E E' → PullAl D F oa a k N θ θ' := by
   intro V _ _ _ D F _ _ O _ _ _ oa a k N E E' g g' θ θ' hE hE' hθ hθ' hP

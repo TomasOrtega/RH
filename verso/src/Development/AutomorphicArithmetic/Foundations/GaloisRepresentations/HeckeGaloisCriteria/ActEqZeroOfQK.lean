@@ -24,7 +24,7 @@ theorem resT_apply (f : T) (y : S) : ((resT T S f : cutT T S) : S → O) y = (f 
 
 omit [IsDomain O] in
 /- English proof (translation)
-Introduce and unpack `⟨_, f, hf, rfl⟩`. Conclude with `⟨⟨f, hf⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem resT_surj : Function.Surjective (resT T S) := by
   rintro ⟨_, f, hf, rfl⟩
@@ -34,7 +34,7 @@ def outM : Submodule O M := ⨅ f : {f : T // ∀ y, y ∉ S → (f : X → O) y
 
 omit [IsDomain O] in
 /- English proof (translation)
-Simplify using `[outM, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_outM {m : M} : m ∈ outM T act S ↔ ∀ f : T, (∀ y, y ∉ S → (f : X → O) y = 0) → act f m = 0 := by
   simp [outM, Submodule.mem_iInf]
@@ -43,9 +43,9 @@ abbrev cutM : Type := M ⧸ outM T act S
 
 omit [IsDomain O] in
 /- English proof (translation)
-Introduce `m hm`. Rewrite using `[Submodule.mem_comap, mem_outM]`. Introduce `f hf`. Use `congrArg (fun e : Module.End O M => e m) (h f)` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, (mem_outM T act S).1 hm f hf, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_stable (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β) : outM T act S ≤ (outM T act S).comap β := by
   intro m hm
@@ -67,17 +67,17 @@ theorem desc_mk (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β) (
 
 omit [IsDomain O] in
 /- English proof (translation)
-Rewrite using `[← map_mul, mul_comm, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comm (g f : T) : act g * act f = act f * act g := by rw [← map_mul, mul_comm, map_mul]
 
 omit [IsDomain O] in
 /- English proof (translation)
-Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(outM T act S).mkQ_surjective u`. Rewrite using `[desc_mk, desc_mk, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, mem_outM]`. Introduce `k hk`. Establish `z : k * (f - g) = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ S`. Use `congrArg (fun t : cutT T S => (t : S → O) ⟨y, hy⟩) e` as an intermediate fact. Simplify using `only [resT_apply] at this`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Simplify using `[hk y hy]`. Rewrite using `[← LinearMap.sub_apply, ← map_sub, ← Module.End.mul_apply, ← map_mul, z, map_zero, LinearMap.zero_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem desc_congr {f g : T} (e : resT T S f = resT T S g) :
     desc T act S (act f) (act_comm T act f) = desc T act S (act g) (act_comm T act g) := by
@@ -124,7 +124,7 @@ def cutAct : cutT T S →ₐ[O] Module.End O (cutM T act S) :=
 
 omit [IsDomain O] in
 /- English proof (translation)
-Use `show desc T act S (act (Function.surjInv (resT_surj T S) _)) (act_comm T act _) _ = _`. Rewrite using `[desc_congr T act S (Function.surjInv_eq (resT_surj T S) _), desc_mk]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutAct_mk (f : T) (m : M) : cutAct T act S (resT T S f) ((outM T act S).mkQ m) = (outM T act S).mkQ (act f m) := by
   show desc T act S (act (Function.surjInv (resT_surj T S) _)) (act_comm T act _) _ = _
@@ -139,13 +139,13 @@ Both sides reduce to the same expression.
 theorem qK_tmul (a : FractionRing O) (m : M) : qK T act S (a ⊗ₜ m) = a ⊗ₜ (outM T act S).mkQ m := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.lTensor_surjective (FractionRing O) (outM T act S).mkQ_surjective`.
+A detailed English derivation is pending.
 -/
 theorem qK_surj : Function.Surjective (qK T act S) :=
   LinearMap.lTensor_surjective (FractionRing O) (outM T act S).mkQ_surjective
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => rw [qK_tmul, LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, qK_tmul, h]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem qK_comm {β : Module.End O M} {γ : Module.End O (cutM T act S)}
     (h : ∀ m, γ ((outM T act S).mkQ m) = (outM T act S).mkQ (β m)) (v : FractionRing O ⊗[O] M) :
@@ -156,14 +156,14 @@ theorem qK_comm {β : Module.End O M} {γ : Module.End O (cutM T act S)}
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-The claim follows from `qK_comm T act S (cutAct_mk T act S f) v`.
+A detailed English derivation is pending.
 -/
 theorem qK_act (f : T) (v : FractionRing O ⊗[O] M) :
     (cutAct T act S (resT T S f)).baseChange (FractionRing O) (qK T act S v) =
       qK T act S ((act f).baseChange (FractionRing O) v) := qK_comm T act S (cutAct_mk T act S f) v
 
 /- English proof (translation)
-The claim follows from `qK_comm T act S (desc_mk T act S β h) v`.
+A detailed English derivation is pending.
 -/
 theorem qK_desc (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β) (v : FractionRing O ⊗[O] M) :
     (desc T act S β h).baseChange (FractionRing O) (qK T act S v) =
@@ -171,7 +171,7 @@ theorem qK_desc (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β) (
 
 omit [IsDomain O] in
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `resT_surj T S b`. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(outM T act S).mkQ_surjective u`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, cutAct_mk, desc_mk, desc_mk, cutAct_mk, ← Module.End.mul_apply, h f, Module.End.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem desc_comm (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β) (b : cutT T S) :
     desc T act S β h * cutAct T act S b = cutAct T act S b * desc T act S β h := by
@@ -182,18 +182,16 @@ theorem desc_comm (β : Module.End O M) (h : ∀ f : T, β * act f = act f * β)
     Module.End.mul_apply]
 
 /- English proof (translation)
-Simplify using `[heckeEig, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eig {x : X} {v : FractionRing O ⊗[O] M} : v ∈ heckeEig T act x ↔
     ∀ f : T, (act f).baseChange (FractionRing O) v = algebraMap O (FractionRing O) ((f : X → O) x) • v := by
   simp [heckeEig, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `h : ∀ y : X, ∃ g : T, (g : X → O) x ≠ 0 ∧ (y ≠ x → (g : X → O) y = 0)` using `fun y => by`. Distinguish the cases in `e : y = x`. Conclude with `⟨1, by simp, fun h => absurd e h⟩`. Take `⟨f, hf, hne⟩` from `hs x y (Ne.symm e)`. Conclude with `⟨⟨f, hf⟩ - algebraMap O T (f y), by simpa [sub_eq_zero] using hne, fun _ => by simp⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose g hg using h`. Use `⟨∏ y, g y, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun y _ => (hg y).1`. Rewrite using `[SubmonoidClass.coe_finset_prod, Finset.prod_apply]`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ y) ((hg y).2 hy)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep [Fintype X] (hs : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x ≠ (f : X → O) y) (x : X) :
     ∃ f : T, (f : X → O) x ≠ 0 ∧ ∀ y, y ≠ x → (f : X → O) y = 0 := by
@@ -211,16 +209,16 @@ theorem exists_sep [Fintype X] (hs : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : 
     exact Finset.prod_eq_zero (Finset.mem_univ y) ((hg y).2 hy)
 
 /- English proof (translation)
-Rewrite using `[map_mul, LinearMap.baseChange_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_mul_K (f g : T) (v : FractionRing O ⊗[O] M) : (act f).baseChange (FractionRing O) ((act g).baseChange (FractionRing O) v) =
     (act (f * g)).baseChange (FractionRing O) v := by
   rw [map_mul, LinearMap.baseChange_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[mem_eig]`. Introduce `g`. Establish `e : g * f = (g : X → O) x • f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hf y hy]`. Rewrite using `[act_mul_K, e, map_smul, LinearMap.baseChange_smul, LinearMap.smul_apply, algebraMap_smul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sep_mem {x : X} {f : T} (hf : ∀ y, y ≠ x → (f : X → O) y = 0) (v : FractionRing O ⊗[O] M) :
     (act f).baseChange (FractionRing O) v ∈ heckeEig T act x := by
@@ -235,7 +233,7 @@ theorem sep_mem {x : X} {f : T} (hf : ∀ y, y ≠ x → (f : X → O) y = 0) (v
   rw [act_mul_K, e, map_smul, LinearMap.baseChange_smul, LinearMap.smul_apply, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[mem_eig]`. Introduce `b`. Take `⟨f, rfl⟩` from `resT_surj T S b`. Rewrite using `[qK_act, (mem_eig T act).1 hv f, map_smul, resT_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem qK_mem {x : S} {v : FractionRing O ⊗[O] M} (hv : v ∈ heckeEig T act x.1) :
     qK T act S v ∈ heckeEig (cutT T S) (cutAct T act S) x := by
@@ -245,9 +243,9 @@ theorem qK_mem {x : S} {v : FractionRing O ⊗[O] M} (hv : v ∈ heckeEig T act 
   rw [qK_act, (mem_eig T act).1 hv f, map_smul, resT_apply]
 
 /- English proof (translation)
-Set `l : cutM T act S →ₗ[O] M` to `(outM T act S).liftQ (act f) fun m hm => (mem_outM T act S).1 hm f hf`. Establish `: ∀ u, (act f).baseChange (FractionRing O) u = l.baseChange (FractionRing O) (qK T act S u)` using `fun u => by`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Rewrite using `[this, hv, map_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_eq_zero_of_qK {v : FractionRing O ⊗[O] M} (hv : qK T act S v = 0) (f : T)
     (hf : ∀ y, y ∉ S → (f : X → O) y = 0) : (act f).baseChange (FractionRing O) v = 0 := by
@@ -263,7 +261,7 @@ variable [Fintype X] (hs : ∀ x y : X, x ≠ y → ∃ f ∈ T, (f : X → O) x
 include hs
 
 /- English proof (translation)
-Take `⟨f, h0, h1⟩` from `exists_sep T hs x`. Establish `z : resT T S f = 0` using `Subtype.ext (funext fun y => h1 y.1 fun e => hx (e ▸ y.2))`. Use `qK_act T act S f v` as an intermediate fact. Rewrite `this` using `[z, map_zero, LinearMap.baseChange_zero, LinearMap.zero_apply, (mem_eig T act).1 hv f, map_smul]`. Conclude with `(smul_eq_zero.1 this.symm).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O _)).2 h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qK_out {x : X} (hx : x ∉ S) {v : FractionRing O ⊗[O] M} (hv : v ∈ heckeEig T act x) : qK T act S v = 0 := by
   obtain ⟨f, h0, h1⟩ := exists_sep T hs x
@@ -273,7 +271,7 @@ theorem qK_out {x : X} (hx : x ∉ S) {v : FractionRing O ⊗[O] M} (hv : v ∈ 
   exact (smul_eq_zero.1 this.symm).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O _)).2 h0)
 
 /- English proof (translation)
-Take `⟨f, h0, h1⟩` from `exists_sep T hs x.1`. Use `act_eq_zero_of_qK T act S h f fun y hy => h1 y fun e => hy (e ▸ x.2)` as an intermediate fact. Rewrite `this` using `[(mem_eig T act).1 hv f]`. Conclude with `(smul_eq_zero.1 this).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O _)).2 h0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qK_inj {x : S} {v : FractionRing O ⊗[O] M} (hv : v ∈ heckeEig T act x.1) (h : qK T act S v = 0) : v = 0 := by
   obtain ⟨f, h0, h1⟩ := exists_sep T hs x.1
@@ -282,9 +280,9 @@ theorem qK_inj {x : S} {v : FractionRing O ⊗[O] M} (hv : v ∈ heckeEig T act 
   exact (smul_eq_zero.1 this).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O _)).2 h0)
 
 /- English proof (translation)
-Use `le_antisymm (by rintro _ ⟨v, hv, rfl⟩; exact qK_mem T act S hv) fun u hu => ?_` and prove the remaining obligations. Take `⟨f, h0, h1⟩` from `exists_sep T hs x.1`. Take `⟨v, rfl⟩` from `qK_surj T act S u`. Establish `c0` using `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 h0`. Use `⟨(algebraMap O (FractionRing O) ((f : X → O) x.1))⁻¹ • (act f).baseChange (FractionRing O) v, Submodule.smul_mem _ _ (sep_mem T act h1 v), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ← qK_act, (mem_eig _ _).1 hu, resT_apply, smul_smul, inv_mul_cancel₀ c0, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_eig (x : S) : (heckeEig T act x.1).map (qK T act S) = heckeEig (cutT T S) (cutAct T act S) x := by
   refine le_antisymm (by rintro _ ⟨v, hv, rfl⟩; exact qK_mem T act S hv) fun u hu => ?_
@@ -296,14 +294,14 @@ theorem map_eig (x : S) : (heckeEig T act x.1).map (qK T act S) = heckeEig (cutT
   rw [map_smul, ← qK_act, (mem_eig _ _).1 hu, resT_apply, smul_smul, inv_mul_cancel₀ c0, one_smul]
 
 /- English proof (translation)
-Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 h`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, qK_mem T act S hv, fun e => h0 (qK_inj T act S hs hv e)⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eig_ne (x : S) (h : heckeEig T act x.1 ≠ ⊥) : heckeEig (cutT T S) (cutAct T act S) x ≠ ⊥ := by
   obtain ⟨v, hv, h0⟩ := (Submodule.ne_bot_iff _).1 h
   exact (Submodule.ne_bot_iff _).2 ⟨_, qK_mem T act S hv, fun e => h0 (qK_inj T act S hs hv e)⟩
 
 /- English proof (translation)
-Unfold `heckeMult`. Rewrite using `[← map_eig T act S hs x, ← LinearMap.range_domRestrict]`. Use `LinearMap.finrank_range_of_inj ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun v hv => Subtype.ext (qK_inj T act S hs v.2 hv)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mult_eq (x : S) : heckeMult (cutT T S) (cutAct T act S) x = heckeMult T act x.1 := by
   unfold heckeMult
@@ -313,11 +311,11 @@ theorem mult_eq (x : S) : heckeMult (cutT T S) (cutAct T act S) x = heckeMult T 
   exact fun v hv => Subtype.ext (qK_inj T act S hs v.2 hv)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `b hb`. Take `⟨g, rfl⟩` from `resT_surj T S b`. Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Take `⟨f, h0, h1⟩` from `exists_sep T hs x.1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `z : act (f * g) = act 0` using `LinearMap.ext fun m => by`. Use `cutAct_mk T act S g m` as an intermediate fact. Rewrite `this` using `[hb, LinearMap.zero_apply, eq_comm, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_outM]`. Rewrite using `[map_mul, Module.End.mul_apply, this f fun y hy => h1 y fun e => hy (e ▸ x.2), map_zero, LinearMap.zero_apply]`. Use `congrArg (fun t : T => (t : X → O) x.1) (hi z)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [MulMemClass.coe_mul, Pi.mul_apply, ZeroMemClass.coe_zero, Pi.zero_apply] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left h0`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cutAct_inj (hi : Function.Injective act) : Function.Injective (cutAct T act S) := by
   rw [injective_iff_map_eq_zero]
@@ -334,15 +332,15 @@ theorem cutAct_inj (hi : Function.Injective act) : Function.Injective (cutAct T 
   exact (mul_eq_zero.1 this).resolve_left h0
 
 /- English proof (translation)
-Use `choose f h0 h1 using exists_sep T hs`. Use `top_unique fun v _ => ?_` and prove the remaining obligations. Set `c : X → O` to `fun x => ∏ y ∈ Finset.univ.erase x, (f y : X → O) y`. Establish `e : (∑ x, c x • f x : T) = algebraMap O T (∏ y, (f y : X → O) y)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Finset.sum_eq_single y]`. Simplify using `[c, Finset.prod_erase_mul]`. Introduce `x _ hx`. Simplify using `[h1 x y (Ne.symm hx)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `d0 : algebraMap O (FractionRing O) (∏ y, (f y : X → O) y) ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O _)).2 (Finset.prod_ne_zero_iff.2 fun y _ => h0 y)`. Rewrite using `[← Submodule.smul_mem_iff _ d0, algebraMap_smul]`. Establish `: (∏ y, (f y : X → O) y) • v = ∑ x, (act (c x • f x)).baseChange (FractionRing O) v`. Establish `a : ∀ s : Finset X, ∑ x ∈ s, (act (c x • f x)).baseChange (FractionRing O) v = (act (∑ x ∈ s, c x • f x)).baseChange (FractionRing O) v` using `fun s => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, ih, map_add, LinearMap.baseChange_add, LinearMap.add_apply]`. Rewrite using `[a, e, AlgHom.commutes, Algebra.algebraMap_eq_smul_one, LinearMap.baseChange_smul, LinearMap.baseChange_one]`. Both sides reduce to the same expression.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun x _ => Submodule.mem_iSup_of_mem x (sep_mem T act (fun y hy => by simp [h1 x y hy]) v)`.
+A detailed English derivation is pending.
 -/
 theorem iSup_eig : ⨆ x, heckeEig T act x = ⊤ := by
   classical
@@ -371,16 +369,16 @@ theorem iSup_eig : ⨆ x, heckeEig T act x = ⊤ := by
 
 omit hs [Fintype X] in
 /- English proof (translation)
-The claim follows from `IsLocalRing.of_surjective' (resT T S).toRingHom (resT_surj T S)`.
+A detailed English derivation is pending.
 -/
 theorem cutT_local [Nonempty S] [IsLocalRing T] : IsLocalRing (cutT T S) :=
   IsLocalRing.of_surjective' (resT T S).toRingHom (resT_surj T S)
 
 omit hs [Fintype X] in
 /- English proof (translation)
-Use `Module.IsTorsionFree.of_smul_eq_zero fun c u h => ?_` and prove the remaining obligations. Take `⟨m, rfl⟩` from `(outM T act S).mkQ_surjective u`. Use `or_iff_not_imp_left.2 fun hc => ?_` and prove the remaining obligations. Rewrite `h` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_outM]`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, mem_outM]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `f hf`. Use `h f hf` as an intermediate fact. Rewrite `this` using `[map_smul]`. Conclude with `(smul_eq_zero.1 this).resolve_left hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutM_tf [Module.IsTorsionFree O M] : Module.IsTorsionFree O (cutM T act S) := by
   refine Module.IsTorsionFree.of_smul_eq_zero fun c u h => ?_
@@ -395,7 +393,7 @@ theorem cutM_tf [Module.IsTorsionFree O M] : Module.IsTorsionFree O (cutM T act 
 
 omit hs [Fintype X] in
 /- English proof (translation)
-The claim follows from `haveI := cutM_tf T act S inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem cutM_free [IsPrincipalIdealRing O] [Module.Free O M] [Module.Finite O M] : Module.Free O (cutM T act S) :=
   haveI := cutM_tf T act S

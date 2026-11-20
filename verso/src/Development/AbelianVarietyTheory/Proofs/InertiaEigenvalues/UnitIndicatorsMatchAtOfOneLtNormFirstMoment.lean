@@ -6,7 +6,7 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory.JR.BigMoment
 
 /- English proof (translation)
-Unfold `dotProduct`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hc i) (norm_nonneg _) (hb i)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dot_le_one {n : ℕ} {k : Type} [NormedField k] [IsUltrametricDist k] (c b : Fin n → k)
     (hc : ∀ i, ‖c i‖ ≤ 1) (hb : ∀ i, ‖b i‖ ≤ 1) : ‖c ⬝ᵥ b‖ ≤ 1 := by
@@ -17,7 +17,7 @@ theorem norm_dot_le_one {n : ℕ} {k : Type} [NormedField k] [IsUltrametricDist 
   exact mul_le_one₀ (hc i) (norm_nonneg _) (hb i)
 
 /- English proof (translation)
-Simplify using `only [act]`. Rewrite using `[← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_act {n : ℕ} {k : Type} [CommRing k] (g : GL (Fin n) k) (Y : Gl n k) :
     (act g Y).2.2.1 ⬝ᵥ (act g Y).2.1 = Y.2.2.1 ⬝ᵥ Y.2.1 := by
@@ -26,14 +26,14 @@ theorem dot_act {n : ℕ} {k : Type} [CommRing k] (g : GL (Fin n) k) (Y : Gl n k
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `[sec, dotProduct, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_sec {r : ℕ} {k : Type} [CommRing k] (a : Inv (r + 1) k) :
     (sec a).2.2.1 ⬝ᵥ (sec a).2.1 = a.2.1 0 := by
   simp [sec, dotProduct, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, ← Matrix.star_eq_conjTranspose, Matrix.mem_unitaryGroup_iff'.mp g.2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_actU {n : ℕ} {E : Type} [CommRing E] [StarRing E] (g : Matrix.unitaryGroup (Fin n) E)
     (b : Fin n → E) : star (g.1 *ᵥ b) ⬝ᵥ (g.1 *ᵥ b) = star b ⬝ᵥ b := by
@@ -41,17 +41,15 @@ theorem dot_actU {n : ℕ} {E : Type} [CommRing E] [StarRing E] (g : Matrix.unit
     Matrix.mem_unitaryGroup_iff'.mp g.2, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r M a ha`. Use `haveI := hU.ultraF`. Use `haveI := hU.ultraE`. Establish `hG : orbG M (unitG (r + 1) F) (sec a) = 0`. Establish `h : ∀ g, unitG (r + 1) F (act g (sec a)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `g`. Unfold `unitG`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨-, hb, hc, -⟩`. Use `norm_dot_le_one _ _ hc hb` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[dot_act, dot_sec]`. Conclude with `absurd ha (not_lt.mpr this)`. Simplify using `[orbG, h]`. Use `⟨fun X hX => ?_, fun _ => hG⟩` and prove the remaining obligations. Rewrite using `[hG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h0 : star X.2.1 ⬝ᵥ X.2.1 = algebraMap F E (a.2.1 0)`. Use `congrArg (fun t : Inv (r + 1) E => t.2.1 0) hX` as an intermediate fact. Simplify `this` using `[inv, mom, Hn.toGl, Inv.map]`. Establish `h : ∀ g, unitU (r + 1) F E (actU g X) = 0`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Unfold `unitU`. Use `Set.indicator_of_notMem ?_ _` and prove the remaining obligations. Introduce and unpack `⟨-, hb, -⟩`. Use `norm_dot_le_one (star (actU g X).2.1) (actU g X).2.1 (fun i => by rw [Pi.star_apply, hU.norm_star]; exact hb i) hb` as an intermediate fact. Simplify using `only [actU] at this`.
-
-Rewrite `this` using `[dot_actU, h0, norm_algebraMap']`. Conclude with `absurd ha (not_lt.mpr this)`. Simplify using `[orbU, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matchAt_unit_of_one_lt_norm :
     ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]

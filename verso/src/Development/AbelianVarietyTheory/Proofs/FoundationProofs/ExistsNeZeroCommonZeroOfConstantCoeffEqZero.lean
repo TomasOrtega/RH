@@ -5,23 +5,19 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ n r f hf hrn`. Use `set m : Ideal (MvPolynomial (Fin n) k) := RingHom.ker (MvPolynomial.eval (0 : Fin n → k)) with hm`. Establish `hsurj : Function.Surjective (MvPolynomial.eval (0 : Fin n → k))` using `fun c => ⟨MvPolynomial.C c, by simp⟩`. Use `haveI hmax : m.IsMaximal := RingHom.ker_isMaximal_of_surjective _ hsurj`. Use `set I : Ideal (MvPolynomial (Fin n) k) := Ideal.span ((Finset.univ.image f : Finset _) : Set (MvPolynomial (Fin n) k)) with hI`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIm : I ≤ m`. Rewrite using `[hI, Ideal.span_le]`. Introduce `g hg`. Simplify using `only [Finset.coe_image, Finset.coe_univ, Set.image_univ] at hg`. Take `⟨i, rfl⟩` from `hg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `[hm, RingHom.mem_ker, MvPolynomial.eval_zero, hf i]`. Establish `hItop : I ≠ ⊤` using `fun h => hmax.ne_top (top_le_iff.mp (h ▸ hIm))`. Take `⟨P, hP⟩` from `Ideal.nonempty_minimalPrimes hItop`. Use `haveI hPp : P.IsPrime := hP.1.1`. Establish `hht : P.height ≤ r`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `Ideal.height_le_card_of_mem_minimalPrimes_span_finset hP`. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `Finset.card_image_le.trans (by simp)` after adjusting the coercions. Establish `hmh : m.height = n` using `(ReciprocityTheory.CA.height_maximal_mvPolynomial_field k n m).2`. Establish `hPne : P ≠ m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hht` using `[h, hmh]`. Conclude with `absurd (by exact_mod_cast hht : n ≤ r) (not_le.mpr hrn)`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hPne` to reduce the goal to its premises. Establish `hsub : MvPolynomial.zeroLocus k P ⊆ {0}`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Take `⟨i, hi⟩` from `hcon x hx0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hi` to reduce the goal to its premises. Use `hx (f i) (hP.1.2 (Ideal.subset_span (by simp)))` as an intermediate fact. Simplify `this` using `[MvPolynomial.coe_aeval_eq_eval]`. Establish `hle : m ≤ P`. Introduce `p hp`.
-
-Establish `h2 : p ∈ MvPolynomial.vanishingIdeal k (MvPolynomial.zeroLocus k P)`. Introduce `x hx`. Rewrite using `[Set.mem_singleton_iff.mp (hsub hx)]`. Conclude with `hp`. Rewrite `h2` using `[MvPolynomial.vanishingIdeal_zeroLocus_eq_radical, hPp.radical]`. Then use the resulting hypothesis.
-
-Conclude with `(hmax.eq_of_le hPp.ne_top hle).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_common_zero_of_constantCoeff_eq_zero :
     ∀ (k : Type) [Field k] [IsAlgClosed k] (n r : ℕ) (f : Fin r → MvPolynomial (Fin n) k),

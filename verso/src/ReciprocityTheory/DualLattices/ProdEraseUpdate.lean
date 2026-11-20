@@ -18,22 +18,22 @@ def monF (Cm : Matrix ι ι k) (α : ι → ZMod p) (x : ι → ZMod p) : k :=
   ∏ j, lam Cm j x ^ (α j).val
 
 /- English proof (translation)
-Simplify using `only [xc, ← map_pow, ZMod.pow_card]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xc_pow (i : ι) (x : ι → ZMod p) : xc k i x ^ p = xc k i x := by
   simp only [xc, ← map_pow, ZMod.pow_card]
 
 /- English proof (translation)
-Simplify using `only [lam, sum_pow_char, mul_pow, xc_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_pow (Cm : Matrix ι ι k) (j : ι) (x : ι → ZMod p) :
     lam Cm j x ^ p = ∑ i, Cm j i ^ p * xc k i x := by
   simp only [lam, sum_pow_char, mul_pow, xc_pow]
 
 /- English proof (translation)
-Establish `e : ∀ i', ∑ m, Cinv i m * Cm m i' = (1 : Matrix ι ι k) i i'`. Introduce `i'`. Rewrite using `[← h, Matrix.mul_apply]`. Simplify using `only [lam, Finset.mul_sum, ← mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Finset.sum_mul, e, Matrix.one_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem xc_eq (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) (i : ι) (x : ι → ZMod p) :
     xc k i x = ∑ m, Cinv i m * lam Cm m x := by
@@ -48,7 +48,7 @@ def MulStable (S : Submodule k ((ι → ZMod p) → k)) (h : (ι → ZMod p) →
   ∀ f ∈ S, h * f ∈ S
 
 /- English proof (translation)
-Unfold `monF`. Conclude with `(Finset.mul_prod_erase _ _ (Finset.mem_univ l)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem monF_split (Cm : Matrix ι ι k) (α : ι → ZMod p) (l : ι) (x : ι → ZMod p) :
     monF Cm α x = lam Cm l x ^ (α l).val * ∏ j ∈ univ.erase l, lam Cm j x ^ (α j).val := by
@@ -56,7 +56,7 @@ theorem monF_split (Cm : Matrix ι ι k) (α : ι → ZMod p) (l : ι) (x : ι �
   exact (Finset.mul_prod_erase _ _ (Finset.mem_univ l)).symm
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[Function.update_apply, if_neg (Finset.ne_of_mem_erase hj)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_erase_update (Cm : Matrix ι ι k) (α : ι → ZMod p) (l : ι) (a : ZMod p)
     (x : ι → ZMod p) :
@@ -66,7 +66,7 @@ theorem prod_erase_update (Cm : Matrix ι ι k) (α : ι → ZMod p) (l : ι) (a
   rw [Function.update_apply, if_neg (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl (fun j hj => ?_)` and prove the remaining obligations. Rewrite using `[Function.update_apply, if_neg (Finset.ne_of_mem_erase hj)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_erase_update (α : ι → ZMod p) (l : ι) (a : ZMod p) :
     ∑ j ∈ univ.erase l, (Function.update α l a j).val = ∑ j ∈ univ.erase l, (α j).val := by
@@ -74,21 +74,19 @@ theorem sum_erase_update (α : ι → ZMod p) (l : ι) (a : ZMod p) :
   rw [Function.update_apply, if_neg (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `hp.out.two_le`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `α hα l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : (α l).val < p` using `ZMod.val_lt (α l)`. Distinguish the cases in `hcase : (α l).val + 1 < p`. Establish `hv : (α l + 1).val = (α l).val + 1`. Rewrite using `[ZMod.val_add, ZMod.val_one_eq_one_mod, Nat.mod_eq_of_lt (by omega : 1 < p), Nat.mod_eq_of_lt hcase]`. Establish `hfun : (fun x => lam Cm l x * monF Cm α x) = monF Cm (Function.update α l (α l + 1))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[monF_split Cm α l x, monF_split Cm (Function.update α l (α l + 1)) l x, prod_erase_update, Function.update_self, hv, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : (α l).val = p - 1` using `by omega`. Establish `hsplit : (α l).val + ∑ j ∈ univ.erase l, (α j).val = ∑ j, (α j).val` using `Finset.add_sum_erase univ (fun j => (α j).val) (Finset.mem_univ l)`. Establish `hsplitγ : (Function.update α l 0 l).val + ∑ j ∈ univ.erase l, (Function.update α l 0 j).val = ∑ j, (Function.update α l 0 j).val` using `Finset.add_sum_erase univ (fun j => (Function.update α l 0 j).val) (Finset.mem_univ l)`. Establish `hγl : (Function.update α l 0 l).val = 0` using `by simp`. Establish `hse` using `sum_erase_update α l 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow : ∑ j, (Function.update α l 0 j).val < N` using `by omega`. Establish `hfun : (fun x => lam Cm l x * monF Cm α x) = ∑ i, ∑ m, (Cm l i ^ p * Cinv i m) • (fun x => lam Cm m x * monF Cm (Function.update α l 0) x)`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `e1 : monF Cm α x = lam Cm l x ^ (p - 1) * monF Cm (Function.update α l 0) x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monF_split Cm α l x, monF_split Cm (Function.update α l 0) l x, prod_erase_update, Function.update_self, ZMod.val_zero, pow_zero, one_mul, hval]`. Establish `e2 : lam Cm l x * lam Cm l x ^ (p - 1) = lam Cm l x ^ p`. Rewrite using `[← pow_succ', Nat.sub_add_cancel (by omega : 1 ≤ p)]`. Rewrite using `[e1, ← mul_assoc, e2, lam_pow, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[xc_eq Cm Cinv h i x, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Use `Submodule.sum_mem _ (fun i _ => Submodule.sum_mem _ (fun m _ => Submodule.smul_mem _ _ ?_))` and prove the remaining obligations.
-
-Conclude with `ih _ hlow _ rfl m`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem key_step (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) :
     ∀ (N : ℕ) (α : ι → ZMod p), ∑ j, (α j).val = N → ∀ l,
@@ -144,16 +142,16 @@ theorem key_step (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) :
     exact ih _ hlow _ rfl m
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[monF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem monF_zero (Cm : Matrix ι ι k) : monF Cm (0 : ι → ZMod p) = 1 := by
   funext x
   simp [monF]
 
 /- English proof (translation)
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨α, rfl⟩` from `hg`. Conclude with `key_step Cm Cinv h _ α rfl l`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simpa using Submodule.zero_mem _`. Consider the case `add f g _ _ hf hg => rw [mul_add]`. Conclude with `Submodule.add_mem _ hf hg`. Consider the case `smul a f _ hf => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ a hf`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mulStable_lam (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) (l : ι) :
     MulStable (Submodule.span k (Set.range (monF (p := p) Cm))) (lam Cm l) := by
@@ -167,7 +165,7 @@ theorem mulStable_lam (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) (l : ι) :
   | smul a f _ hf => rw [mul_smul_comm]; exact Submodule.smul_mem _ a hf
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[add_mul]`. Conclude with `S.add_mem (a f hf) (b f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MulStable.add {S : Submodule k ((ι → ZMod p) → k)} {h₁ h₂ : (ι → ZMod p) → k}
     (a : MulStable S h₁) (b : MulStable S h₂) : MulStable S (h₁ + h₂) := by
@@ -176,7 +174,7 @@ theorem MulStable.add {S : Submodule k ((ι → ZMod p) → k)} {h₁ h₂ : (ι
   exact S.add_mem (a f hf) (b f hf)
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[mul_assoc]`. Conclude with `a _ (b f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MulStable.mul {S : Submodule k ((ι → ZMod p) → k)} {h₁ h₂ : (ι → ZMod p) → k}
     (a : MulStable S h₁) (b : MulStable S h₂) : MulStable S (h₁ * h₂) := by
@@ -185,7 +183,7 @@ theorem MulStable.mul {S : Submodule k ((ι → ZMod p) → k)} {h₁ h₂ : (ι
   exact a _ (b f hf)
 
 /- English proof (translation)
-Introduce `f hf`. Establish `e : (fun _ => c) * f = c • f` using `by funext x; simp`. Rewrite using `[e]`. Conclude with `S.smul_mem c hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MulStable.const (S : Submodule k ((ι → ZMod p) → k)) (c : k) :
     MulStable S (fun _ => c) := by
@@ -195,9 +193,9 @@ theorem MulStable.const (S : Submodule k ((ι → ZMod p) → k)) (c : k) :
   exact S.smul_mem c hf
 
 /- English proof (translation)
-Use `revert a`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ f _`. Simplify using the standard rewrite rules. Introduce `j s hj ih a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hj]`. Conclude with `(a j (Finset.mem_insert_self j s)).add (ih fun i hi => a i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem MulStable.sum {S : Submodule k ((ι → ZMod p) → k)} {s : Finset ι}
     {h : ι → (ι → ZMod p) → k} (a : ∀ i ∈ s, MulStable S (h i)) :
@@ -211,9 +209,9 @@ theorem MulStable.sum {S : Submodule k ((ι → ZMod p) → k)} {s : Finset ι}
     exact (a j (Finset.mem_insert_self j s)).add (ih fun i hi => a i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Use `revert a`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_ f hf`. Simplify using `using hf`. Introduce `j s hj ih a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hj]`. Conclude with `(a j (Finset.mem_insert_self j s)).mul (ih fun i hi => a i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem MulStable.prod {S : Submodule k ((ι → ZMod p) → k)} {s : Finset ι}
     {h : ι → (ι → ZMod p) → k} (a : ∀ i ∈ s, MulStable S (h i)) :
@@ -227,7 +225,7 @@ theorem MulStable.prod {S : Submodule k ((ι → ZMod p) → k)} {s : Finset ι}
     exact (a j (Finset.mem_insert_self j s)).mul (ih fun i hi => a i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro f hf`. Simplify using `using hf`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul a`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem MulStable.pow {S : Submodule k ((ι → ZMod p) → k)} {h : (ι → ZMod p) → k}
     (a : MulStable S h) (n : ℕ) : MulStable S (h ^ n) := by
@@ -240,13 +238,13 @@ def delta (k : Type) [Field k] [CharP k p] (y : ι → ZMod p) : (ι → ZMod p)
     ((fun x => xc k i x) + (fun _ => -ZMod.castHom (dvd_refl p) k (y i))) ^ (p - 1))
 
 /- English proof (translation)
-Establish `hp1 : p - 1 ≠ 0` using `by have := hp.out.two_le; omega`. Establish `hfac : ∀ i, (1 : k) + -1 * (xc k i x + -ZMod.castHom (dvd_refl p) k (y i)) ^ (p - 1) = if x i = y i then 1 else 0`. Introduce `i`. Establish `e : xc k i x + -ZMod.castHom (dvd_refl p) k (y i) = ZMod.castHom (dvd_refl p) k (x i - y i)`. Simplify using `[xc, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← map_pow]`. Distinguish the cases in `hxy : x i = y i`. Simplify using `[hxy, zero_pow hp1]`. Rewrite using `[ZMod.pow_card_sub_one_eq_one (sub_ne_zero.mpr hxy)]`. Simplify using `[hxy]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [delta, Finset.prod_apply, Pi.add_apply, Pi.mul_apply, Pi.pow_apply, hfac]`. Rewrite using `[Finset.prod_boole]`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hn : ¬ ∀ i ∈ (univ : Finset ι), x i = y i` using `fun hall => hxy (funext fun i => hall i (mem_univ i))`. Rewrite using `[if_neg hn, if_neg hxy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_apply (y x : ι → ZMod p) : delta k y x = if x = y then 1 else 0 := by
   have hp1 : p - 1 ≠ 0 := by have := hp.out.two_le; omega
@@ -269,15 +267,15 @@ theorem delta_apply (y x : ι → ZMod p) : delta k y x = if x = y then 1 else 0
     rw [if_neg hn, if_neg hxy]
 
 /- English proof (translation)
-Establish `hxc : ∀ i, MulStable (Submodule.span k (Set.range (monF (p` using `p) Cm))) (fun x => xc k i x) := by`. Introduce `i`. Establish `e : (fun x => xc k i x) = ∑ m, (fun _ => Cinv i m) * lam Cm m`. Use function extensionality and compare the values at `x`. Rewrite using `[xc_eq Cm Cinv h i x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `MulStable.sum (fun m _ => (MulStable.const _ _).mul (mulStable_lam Cm Cinv h m))`. Establish `hdelta : ∀ y, MulStable (Submodule.span k (Set.range (monF (p` using `p) Cm))) (delta k y) := by`. Introduce `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `delta`. Conclude with `MulStable.prod (fun i _ => (MulStable.const _ 1).add ((MulStable.const _ (-1)).mul (((hxc i).add (MulStable.const _ _)).pow _)))`. Establish `h1 : (1 : (ι → ZMod p) → k) ∈ Submodule.span k (Set.range (monF (p` using `p) Cm)) := by`. Rewrite using `[← monF_zero Cm]`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ y, delta k y ∈ Submodule.span k (Set.range (monF (p` using `p) Cm)) := fun y => by`. Simplify using `using hdelta y 1 h1`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `e : f = ∑ y, f y • delta k y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_apply, delta_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ (fun y _ => Submodule.smul_mem _ _ (hmem y))`.
+A detailed English derivation is pending.
 -/
 theorem span_monF_eq_top (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) :
     Submodule.span k (Set.range (monF (p := p) Cm)) = ⊤ := by
@@ -308,9 +306,9 @@ theorem span_monF_eq_top (Cm Cinv : Matrix ι ι k) (h : Cinv * Cm = 1) :
   exact Submodule.sum_mem _ (fun y _ => Submodule.smul_mem _ _ (hmem y))
 
 /- English proof (translation)
-Establish `hspan` using `span_monF_eq_top (p := p) Cm Cm⁻¹ (Matrix.nonsing_inv_mul Cm hC)`. Establish `hli : LinearIndependent k (fun α => Matrix.transpose (Matrix.of fun (x α : ι → ZMod p) => monF Cm α x) α)`. Establish `hcols : (fun α => Matrix.transpose (Matrix.of fun (x α : ι → ZMod p) => monF Cm α x) α) = monF (p` using `p) Cm := by`. Use function extensionality and compare the values at `α x`. Simplify using `[Matrix.transpose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcols]`. Apply `linearIndependent_of_top_le_span_of_card_eq_finrank hspan.ge` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `hu` using `Matrix.linearIndependent_cols_iff_isUnit.mp hli`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem det_monF_ne_zero (Cm : Matrix ι ι k) (hC : IsUnit Cm.det) :
     (Matrix.of fun (x α : ι → ZMod p) => monF Cm α x).det ≠ 0 := by

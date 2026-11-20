@@ -14,11 +14,11 @@ open GlobalTheory.TopFlip
 namespace GlobalTheory.XiAway
 
 /- English proof (translation)
-Introduce `D T L μ₀ hL t hx m y`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`. Establish `h` using `hL.xi t`. Establish `h1 : L.xi t y ^ n = 1` using `GlobalTheory.HeckeFinTrivial.eq_one_of_trivial_on_finite D (L.xi t ^ n) ⟨h.1.1.pow n, fun x => by`. Rewrite using `[MonoidHom.pow_apply, h.1.2, one_pow]⟩ (GlobalTheory.CharOrderFin.char_pow_eq_one_of_orderDvd D _ _ h n ho) y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, hζ⟩` from `GlobalTheory.TwistValues.char_mem (L.xi t) (L.xiH t) h hn ho D.what₂.embLL.fieldRange (fun P k => hx P (Formalism.L2.Host.atFin P k)) y`. Establish `h2 : ζ ^ n = 1` using `D.what₂.embLL.injective (by`. Rewrite using `[map_pow, map_one]`. Use `erw [hζ]`. Use `congrArg (fun w : Circle => (w : ℂ)) h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this)`. Conclude with `⟨ζ, GlobalTheory.KappaArith.isAwayUnit_of_pow_eq_one m hn h2, hζ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem xi_awayIm : ∀ {D : D7} {T : Type} {L : LevCh D T} {μ₀ : T}, L.Is μ₀ → ∀ t : T, LocIn D.what₂.embLL (L.xiH t) →
       ∀ (m : ℕ) (y : (AE D)ˣ), GlobalTheory.KappaArith.AwayIm D m ((L.xi t y : Circle) : ℂ) := by

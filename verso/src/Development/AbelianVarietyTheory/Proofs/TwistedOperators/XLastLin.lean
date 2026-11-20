@@ -13,23 +13,21 @@ namespace GlobalTheory.JacMean
 variable {D : D7}
 
 /- English proof (translation)
-Use `set z : Fin T.rank → D.host.E := d.i₀ *ᵥ (o.iB *ᵥ ζ) with hz`. Use `set x : Matrix (Fin T.rank) (Fin (σ + 1)) D.host.E := Matrix.of fun k => Fin.snoc (α := fun _ => D.host.E) (d.e k) (z k) with hxdef`. Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Use `(show LinearIndependent D.host.E x.col from ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_injective_iff]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v w hvw`. Establish `key : ∀ u : Fin (σ + 1) → D.host.E, x *ᵥ u = d.e *ᵥ (fun j => u j.castSucc) + u (Fin.last σ) • z`. Introduce `u`. Use extensionality with `k`. Simplify using `only [x, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Matrix.of_apply, Fin.snoc_castSucc, Fin.snoc_last, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set u := v - w with hu`. Establish `h0 : x *ᵥ u = 0` using `by rw [hu, Matrix.mulVec_sub, hvw, sub_self]`. Establish `hi : d.e'ᴴ * T.gram * d.i₀ = 0`. Use `congrArg Matrix.conjTranspose d.i₀e'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, gram_conjTranspose, conjTranspose_zero, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hZ : (d.e'ᴴ * T.gram) *ᵥ z = 0`. Rewrite using `[hz, Matrix.mulVec_mulVec, hi, Matrix.zero_mulVec]`. Establish `h1 : (fun j : Fin σ => u j.castSucc) = 0`. Use `congrArg (fun y => (d.e'ᴴ * T.gram) *ᵥ y) ((key u).symm.trans h0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mulVec_add, Matrix.mulVec_smul, hZ, smul_zero, add_zero, Matrix.mulVec_mulVec, d.e'e, Matrix.one_mulVec, Matrix.mulVec_zero] at this`. Conclude with `this`. Establish `hzne : z ≠ 0`. Introduce `hz0`. Apply `hζ.2` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : L.gram *ᵥ ζ = (o.iBᴴ * d.i₀ᴴ * T.gram) *ᵥ z`. Rewrite using `[hz, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← o.isoB, ← d.iso]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e1, hz0, Matrix.mulVec_zero, dotProduct_zero]`. Establish `h2 : u (Fin.last σ) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(key u).symm.trans h0` as an intermediate fact. Rewrite `this` using `[h1, Matrix.mulVec_zero, zero_add]`. Conclude with `(smul_eq_zero.1 this).resolve_right hzne`. Establish `hu0 : u = 0`. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Fin.lastCases h2 (fun j => congrFun h1 j) i` and prove the remaining obligations. Conclude with `sub_eq_zero.1 hu0`. Use extensionality with `k i`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [xLast, x, z, vecB, HypDec.j0, rat, ratV, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.of_apply, Fin.snoc_last, Matrix.map_apply]`.
-
-Simplify using `[xLast, x, HypDec.jX, rat]`.
+A detailed English derivation is pending.
 -/
 theorem xLast_lin {T T₀ A L : HSp D} {σ : ℕ} (d : HypDec T T₀ σ) (o : OrthDec T₀ A L) {ζ : Fin L.rank → D.host.E}
     (hζ : IsLineVec L ζ) : ∃ x : Matrix (Fin T.rank) (Fin (σ + 1)) D.host.E,

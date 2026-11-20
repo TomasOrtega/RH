@@ -13,9 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.BcB.F.Choice
 
 /- English proof (translation)
-Unfold `qh`. Establish `hq : qV E w ≠ 0`. Unfold `qV`. Conclude with `(Ideal.absNorm_eq_zero_iff).not.2 w.ne_bot`. Establish `hpos : (0 : ℝ) < (qV E w : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hq`.
-
-Conclude with `Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 hpos)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qh_ne_zero' {E : Type} [Field E] [NumberField E] (w : Pl E) : qh w ≠ 0 := by
   unfold qh
@@ -26,7 +24,7 @@ theorem qh_ne_zero' {E : Type} [Field E] [NumberField E] (w : Pl E) : qh w ≠ 0
   exact Complex.ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 hpos)
 
 /- English proof (translation)
-Unfold `qU`. Rewrite using `[dif_pos (qh_ne_zero' w)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_power_eq_residue_power {E : Type} [Field E] [NumberField E] (w : Pl E) (k : ℤ) :
     qU w k = Units.mk0 (qh w) (qh_ne_zero' w) ^ k := by
@@ -34,7 +32,7 @@ theorem unit_power_eq_residue_power {E : Type} [Field E] [NumberField E] (w : Pl
   rw [dif_pos (qh_ne_zero' w)]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha, _root_.zpow_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_finsum' {ι : Type} (u : ℂˣ) (s : Finset ι) (f : ι → ℤ) :
     u ^ (∑ i ∈ s, f i) = ∏ i ∈ s, u ^ f i := by
@@ -44,11 +42,11 @@ theorem zpow_finsum' {ι : Type} (u : ℂˣ) (s : Finset ι) (f : ι → ℤ) :
     rw [Finset.sum_insert ha, Finset.prod_insert ha, _root_.zpow_add, ih]
 
 /- English proof (translation)
-Establish `hU : ∀ k, qU w k = Units.mk0 (qh w) (qh_ne_zero' w) ^ k` using `unit_power_eq_residue_power w`. Establish `hdl : dl w y = ((Units.mk0 (qh w) (qh_ne_zero' w) ^ (∑ i : Fin m, ((m : ℤ) - 1 - 2 * ((i : ℕ) : ℤ)) * y i) : ℂˣ) : ℂ)`. Rewrite using `[Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression. Establish `hpw : pw ξ y = ((∏ i, ξ i ^ y i : ℂˣ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `pw`. Rewrite using `[Units.coe_prod]`. Rewrite using `[hdl, hpw, ← Units.val_mul]`. Use `congr 1`. Simplify using `only [hU, mul_zpow, Finset.prod_mul_distrib, ← _root_.zpow_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[← zpow_finsum', mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_mul_pw {E : Type} [Field E] [NumberField E] (w : Pl E) {m : ℕ} (ξ : Fin m → ℂˣ) (y : Fin m → ℤ) :
     dl w y * pw ξ y = ((∏ i, (ξ i * qU w ((m : ℤ) - 1 - 2 * (i : ℕ))) ^ y i : ℂˣ) : ℂ) := by
@@ -66,11 +64,11 @@ theorem dl_mul_pw {E : Type} [Field E] [NumberField E] (w : Pl E) {m : ℕ} (ξ 
   rw [← zpow_finsum', mul_comm]
 
 /- English proof (translation)
-Introduce `E _ _ _ n w s ξa ξb x`. Unfold `ev2`. Rewrite using `[dl_mul_pw, dl_mul_pw, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Unfold `chiOf`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`. Use `congr 1`. Establish `h` using `Equiv.prod_comp s.e (fun k => (Sum.elim (fun i : Fin s.a => ξa i * qU w ((s.a : ℤ) - 1 - 2 * ((i : ℕ) : ℤ))) (fun j : Fin s.b => ξb j * qU w ((s.b : ℤ) - 1 - 2 * ((j : ℕ) : ℤ))) (s.e.symm k)) ^ x k)`. Rewrite using `[← h, Fintype.prod_sum_type]`. Simplify using `[resL, resR]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zpow, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiEval : ChiEval := by
   intro E _ _ _ n w s ξa ξb x
@@ -87,11 +85,11 @@ theorem chiEval : ChiEval := by
   simp only [mul_zpow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Introduce `n s x hx`. Establish `hx' : ∀ i j : Fin n, i < j → x j + 2 ≤ x i` using `hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `Gap`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx' _ _ (s.monoL hij)` as an intermediate fact. Simplify using `only at this`. Simplify using `only [resL]`. Use linear arithmetic over natural numbers and integers. Unfold `Gap`.
+Establish an intermediate fact. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Introduce `i j hij`. Use `hx' _ _ (s.monoR hij)` as an intermediate fact. Simplify using `only at this`. Simplify using `only [resR]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gapRes : GapRes := by
   intro n s x hx

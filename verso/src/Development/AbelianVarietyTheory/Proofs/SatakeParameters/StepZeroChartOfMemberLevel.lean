@@ -14,7 +14,7 @@ namespace GlobalTheory.TwU.AtTrue.ZeroChart
 variable {B : Base} {X : PreX B.toPre} (I : TC B X)
 
 /- English proof (translation)
-Establish `e : I.eCls0 l u a c = I.cl0 u a (l.idx0 a).some c` using `rfl`. Unfold `TC.latAt`. Rewrite using `[dif_pos (Nat.zero_le _), dif_pos (Nat.zero_le _), e, ClsZero.stepZero_corresponding_representatives_same_deco hI]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem latAt_eCls0 (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c : (I.stp u I.mu0 0).Cl) :
     I.latAt u a 0 (I.eCls0 l u a c) = I.latAt u I.mu0 0 c := by
@@ -23,7 +23,7 @@ theorem latAt_eCls0 (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c : (I.stp
   rw [dif_pos (Nat.zero_le _), dif_pos (Nat.zero_le _), e, ClsZero.stepZero_corresponding_representatives_same_deco hI]
 
 /- English proof (translation)
-Rewrite using `[Chart0.stab_range0 I hI, Chart0.stab_range0 I hI]`. Establish `e : I.eCls0 l u a c = I.cl0 u a (l.idx0 a).some c` using `rfl`. Rewrite using `[e, ClsZero.stepZero_corresponding_representatives_same_deco hI]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_eCls0 (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c : (I.stp u I.mu0 0).Cl)
     (γ : GL (Fin (B.R.N 0)) B.host.E) :
@@ -34,9 +34,9 @@ theorem range_eCls0 (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (c : (I.stp
   rw [e, ClsZero.stepZero_corresponding_representatives_same_deco hI]
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, hg⟩`. Use `⟨k * x * k⁻¹, (conj_mem_iff hk x).2 hx, Eq.trans ?_ hg⟩` and prove the remaining obligations. Use `show y * (k * x * k⁻¹) * y⁻¹ = y * k * x * (y * k)⁻¹`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `group`. Introduce and unpack `⟨x, hx, hg⟩`. Use `⟨k⁻¹ * x * k, by simpa using (conj_mem_iff (inv_mem hk) x).2 hx, Eq.trans ?_ hg⟩` and prove the remaining obligations. Use `show y * k * (k⁻¹ * x * k) * (y * k)⁻¹ = y * x * y⁻¹`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem map_conj_mul {G : Type} [Group G] (U : Subgroup G) (y k : G) (hk : k ∈ U) :
     U.map (MulAut.conj (y * k)).toMonoidHom = U.map (MulAut.conj y).toMonoidHom := by
@@ -62,23 +62,19 @@ open scoped TensorProduct
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a Q K κ hK`. Establish `hi : 0 ≤ B.R.m` using `Nat.zero_le _`. Set `e` to `I.eCls0 l u a`. Establish `hU : ∀ c, (κ c).1 ∈ UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) 0 hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)` using `fun c => ((K.lev.U_eq _).1 (κ c).2).1`. Set `κU : ∀ c, UPts (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) 0 hi) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)` to `fun c => ⟨(κ c).1, hU c⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hL : ∀ c, (κ c).1 ∈ levelAfL (sigD (I.rec7 l Z)) (gramN (I.rec7 l Z) 0 hi) K.lev.Lb` using `fun c => (GlobalTheory.LatticeStabLocal.mem_levelAfL_iff _ _ _ _ _ _ K.lev.Lb_fin _).2 ⟨hU c, fun v => K.lev.Uloc_lev v (((K.lev.U_eq _).1 (κ c).2).2 v)⟩`. Establish `hlat : ∀ c'', I.latAt u a 0 c'' = I.latAt u I.mu0 0 (e.symm c'')`. Introduce `c''`. Take `⟨c, rfl⟩` from `e.surjective c''`. Rewrite using `[e.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `latAt_eCls0 I hI l u a c`. Establish `hrng : ∀ c'' (γ : GL (Fin (B.R.N 0)) B.host.E), γ ∈ (MemChart.stM (Chart0.lvG I a) (Chart0.lvQ I a) ((I.Tp a).pref u 0) (I.pref u a 0) c'').range ↔ γ ∈ (MemChart.stM (Chart0.lvG I I.mu0) (Chart0.lvQ I I.mu0) ((I.Tp I.mu0).pref u 0) (I.pref u I.mu0 0) (e.symm c'')).range`. Introduce `c'' γ`. Take `⟨c, rfl⟩` from `e.surjective c''`. Rewrite using `[e.symm_apply_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `range_eCls0 I hI l u a c γ`. Establish `hmem : ∀ c'' (s : (I.stp u a 0).Stab c''), MemChart.stM (Chart0.lvG I a) (Chart0.lvQ I a) ((I.Tp a).pref u 0) (I.pref u a 0) c'' s ∈ UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) 0 hi)`. Introduce `c'' s`. Take `⟨t, ht⟩` from `(hrng c'' _).1 ⟨s, rfl⟩`. Rewrite using `[← ht]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (fun g => g ∈ UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) 0 hi)) (hK (e.symm c'') t)).mp (K.stabI (e.symm c'') t).2`. Establish `hcls : ∀ c, (Quotient.mk'' (K.y c * κU c) : Cls K.lev) = Quotient.mk'' (K.y c)` using `fun c => by`. Use `(DoubleCoset.eq _ _ _ _).2 ⟨1, one_mem _, (κU c)⁻¹, ?_, by group⟩` and prove the remaining obligations. Conclude with `inv_mem (κ c).2`. Use `⟨fun _ => { lev := { K.lev with Uloc_hyp := fun v hv hT => K.lev.Uloc_hyp v (fun h => hv (Or.inl h)) hT chi_triv := fun x hx => K.lev.chi_triv x (fun v hv => hx v (Or.inl hv)) } y := fun c' => K.y (e.symm c'.1) * κU (e.symm c'.1) y_bij := ?_ y_lat := ?_ stabI := fun c' => (MemCha …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `K.y_bij.comp (e.symm.bijective.comp (Equiv.subtypeUnivEquiv (p := fun c' : (I.stp u a 0).Cl => (fun _ => ()) c' = ()) (fun _ => rfl)).bijective) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `c'`. Conclude with `hcls (e.symm c'.1)`. Introduce `c' x`. Rewrite using `[hlat c'.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(K.y_lat (e.symm c'.1) x).trans ?_` and prove the remaining obligations. Use `show _ ↔ ((((K.y (e.symm c'.1)).1 * (κ (e.symm c'.1)).1)⁻¹).1 *ᵥ x ∈ _)`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `(inv_mem (hL _)).2 _`. Introduce `c' γ`.
-
-Establish `h1 : γ ∈ ((MemChart.stM (Chart0.lvG I a) (Chart0.lvQ I a) ((I.Tp a).pref u 0) (I.pref u a 0) c'.1).codRestrict _ (hmem c'.1)).range ↔ γ.1 ∈ (MemChart.stM (Chart0.lvG I a) (Chart0.lvQ I a) ((I.Tp a).pref u 0) (I.pref u a 0) c'.1).range` using `⟨fun ⟨s, hs⟩ => ⟨s, congrArg Subtype.val hs⟩, fun ⟨s, hs⟩ => ⟨s, Subtype.ext hs⟩⟩`. Use `h1.trans ((hrng c'.1 γ.1).trans (Iff.trans ?_ ((K.stabI_range (e.symm c'.1) γ).trans ?_)))` and prove the remaining obligations. Conclude with `⟨fun ⟨t, ht⟩ => ⟨t, Subtype.ext ((hK _ t).trans ht)⟩, fun ⟨t, ht⟩ => ⟨t, (hK _ t).symm.trans (congrArg Subtype.val ht)⟩⟩`. Use `show _ ↔ _ ∈ K.lev.U.map (MulAut.conj ((K.y (e.symm c'.1)).1 * (κ (e.symm c'.1)).1)).toMonoidHom`. Rewrite using `[map_conj_mul _ _ _ (κ _).2]`.
-
-Use `show K.lev.chi x = K.lev.chi x'`. Conclude with `congrArg K.lev.chi (Subtype.ext h)`. Use `show (K.y (e.symm (e c))).1 * (κ (e.symm (e c))).1 = _`. Rewrite using `[e.symm_apply_apply]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_of_member : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Q : Finset (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (K : ClsTied (D := (I.rec7 l Z)) u 0 (Nat.zero_le _)) (κ : (I.stp u I.mu0 0).Cl → K.lev.U), (∀ c s, (K.stabI c s).1 = (I.stp u I.mu0 0).gam c.1 s.1) → ∃ K0 : Fam I l Z u a 0 (Nat.zero_le _) (badQ (I.rec7 l Z) Q) (fun _ => ()), (K0 ()).lev.Lb = K.lev.Lb ∧ (K0 ()).lev.Uloc = K.lev.Uloc ∧ (K0 ()).lev.U = K.lev.U ∧ (∀ (x : (K0 ()).lev.U) (x' : K.lev.U), x.1 = x'.1 → (K0 ()).lev.chi x = K.lev.chi x') ∧ (∀ c, ((K0 ()).y ⟨I.eCls0 l u a c, rfl⟩).1 = (K.y c).1 * (κ c).1) ∧ ∀ c s, ((K0 ()).stabI c s).1 = (I.stp u a 0).gam c.1.1 s.1 := by
   intro B X I hI hP l Z u a Q K κ hK

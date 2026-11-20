@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `R _ X f _ H n t hH hc ha`. Establish `h : IsAmpleLB H` using `isAmpleLB_of_cover hH le_rfl (fun i => secToPow (t i) 1) (by simp only [nonzeroLocus_secToPow _ le_rfl, hc]) fun i => (nonzeroLocus_secToPow (t i) le_rfl).symm ▸ ha i`. Establish `: IsProper (Over.mk f).hom` using `‹IsProper f›`. Conclude with `(Unif.relAmple_iff_veryAmpleBy R (Over.mk f) H hH).1 ((relAmple_iff_isAmpleLB_of_isAffine (Over.mk f) hH).2 h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_pw_of_affine_loci : ∀ (R : Type) [CommRing R] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of R)) [IsProper f] (H : LB X) (n : ℕ) (t : Fin (n + 1) → LB.Sec H), H.IsLB → (⨆ i, nonzeroLocus (t i) = ⊤) → (∀ i, IsAffineOpen (nonzeroLocus (t i))) → ∃ d : ℕ, 1 ≤ d ∧ ∃ (n' : ℕ) (s : Fin (n' + 1) → LB.Sec (pw H d)), VeryAmpleBy f (pw H d) s := by
   intro R _ X f _ H n t hH hc ha

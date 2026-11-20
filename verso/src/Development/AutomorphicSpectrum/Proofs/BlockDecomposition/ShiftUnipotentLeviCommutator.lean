@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.ShEmbUnip
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D n ρ p hn M g₁ b hg y`. Establish `hb : adj b = b` using `(GlobalTheory.StdUnn.Model.exists_unip b).1 ⟨g₁, hg⟩`. Establish `hE` using `M.emb_mat g₁ _ _ _ _ hg`. Use `⟨⟨HMul.hMul (HMul.hMul y b : Mx D ρ p) (adj y), ?_⟩, HMul.hMul y b, ?_, rfl⟩` and prove the remaining obligations. Use `show adj _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adj_mul, adj_mul, adj_adj, hb, Matrix.mul_assoc]`. Apply `mat_injective'` to reduce the goal to its premises. Rewrite using `[mat_mul' (M.sh y), mat_mul' _ (M.sh y), mat_mul' (M.nzx _ _), M.sh_mat, M.nzx_mat, hE, blockMatrix_zero, blockRowSubstitution_one, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.one_mul, Matrix.mul_one, block_mul₂, bl_add, adj_mul, hb, Matrix.mul_neg, Matrix.neg_mul, sub_eq_add_neg, add_neg_cancel, neg_add_cancel]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sh_emb_unip : ∀ (D : D7) (n ρ p : ℕ) (hn : ρ + p = n) (M : Maps D hn) (g₁ : G D p) (b : Mx D p p), mat g₁ = blk4 1 b 0 1 →
     ∀ y : Mx D ρ p, ∃ (z₀ : hermA D ρ) (x₀ : Mx D ρ p), M.sh y * M.emb g₁ = M.nzx z₀ x₀ * M.emb g₁ * M.sh y ∧

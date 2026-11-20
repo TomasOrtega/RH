@@ -4,51 +4,43 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Kumm
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ U M _ φ hU hφ hmul`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed F`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap F Ω).injective`. Use `haveI hroots : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Establish `hlp : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hφ1 : φ 1 = 0`. Establish `h` using `hmul 1 1`. Simplify using `using h`. Establish `hprinc : ∀ (x : ℤ_[l]ˣ) (n : ℕ), x ∈ KStar.TotallyRealRoots.princ l n ↔ PadicInt.toZModPow n (x : ℤ_[l]) = 1`. Introduce `x n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact.
 
-Simplify using `only [KStar.TotallyRealRoots.princ, KStar.TotallyRealRoots.redPow, MonoidHom.mem_ker, Units.ext_iff, Units.coe_map, Units.val_one, MonoidHom.coe_coe]`. Conclude with `Iff.rfl`. Establish `hopen_n : ∀ n, IsOpen ((Subgroup.comap (cycZ F Ω l) (KStar.TotallyRealRoots.princ l n) : Subgroup (G F Ω)) : Set (G F Ω))`. Introduce `n`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hlp.ne_zero⟩`. Apply `Subgroup.isOpen_of_mem_nhds _ (g := 1)` to reduce the goal to its premises. Rewrite using `[krullTopology_mem_nhds_one_iff]`. Use `⟨IntermediateField.adjoin F {ζ}, IntermediateField.adjoin.finiteDimensional ((hζ.isIntegral (Nat.pos_of_neZero _)).tower_top), ?_⟩` and prove the remaining obligations. Introduce `σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using `only [SetLike.mem_coe, Subgroup.mem_comap]`. Rewrite using `[hprinc]`. Break down `Nat.eq_zero_or_pos n with h0 | hn0` into its components or cases. Substitute `h0 haveI : Subsingleton (ZMod (l ^ 0)) := ZMod.subsingleton_iff.mpr (pow_zero l)` using the available equality. Conclude with `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show (cyclotomicCharacter Ω l (MulSemiringAction.toRingAut (G F Ω) Ω σ)).val.toZModPow n = 1`. Rewrite using `[cyclotomicCharacter.toZModPow, eq_comm]`. Apply `modularCyclotomicCharacter.unique` to reduce the goal to its premises. Introduce `t ht`. Take `⟨i, hi, rfl⟩` from `(hζ.isUnit_unit NeZero.out).eq_pow_of_mem_rootsOfUnity ht`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ZMod.val_one'', pow_one]`. Conclude with `hσ ⟨ζ ^ i, pow_mem (IntermediateField.mem_adjoin_simple_self F ζ) _⟩`. Conclude with `(one_lt_pow₀ hlp.one_lt hn0.ne').ne'`. Establish `hprinc_anti : ∀ (x : ℤ_[l]ˣ) (n m : ℕ), n ≤ m → x ∈ KStar.TotallyRealRoots.princ l m → x ∈ KStar.TotallyRealRoots.princ l n`. Introduce `x n m hnm hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[hprinc]`. Rewrite using `[← PadicInt.cast_toZModPow n m hnm, hx]`. Conclude with `ZMod.cast_one (pow_dvd_pow l hnm)`. Establish `hlev_anti : ∀ n m : ℕ, n ≤ m → (levU l U m : Set (G F Ω)) ⊆ levU l U n`. Introduce `n m hnm x hx`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [levU, SetLike.mem_coe, Subgroup.mem_inf, Subgroup.mem_comap] at hx ⊢`. Conclude with `⟨hx.1, hprinc_anti _ n m hnm hx.2⟩`. Establish `hclosed : ∀ n, IsClosed ((levU l U n : Subgroup (G F Ω)) : Set (G F Ω))`. Introduce `n`. Simplify using `only [levU, Subgroup.coe_inf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hU.inter (Subgroup.isClosed_of_isOpen _ (hopen_n n))`. Take `⟨O, hOo, hOeq⟩` from `isOpen_induced_iff.mp (hφ.isOpen_fiber (φ 1))`. Establish `h1O : (1 : G F Ω) ∈ O`. Establish `h : (1 : cycU l U) ∈ Subtype.val ⁻¹' O` using `by rw [hOeq]; rfl`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨E, hEfin, hEnorm, hEsub⟩` from `(krullTopology_mem_nhds_one_iff_of_normal F Ω O).mp (hOo.mem_nhds h1O)`. Use `haveI := hEfin`. Use `haveI := hEnorm`. Establish `hNnorm : (E.fixingSubgroup : Subgroup (G F Ω)).Normal`. Rewrite using `[← IntermediateField.restrictNormalHom_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MonoidHom.normal_ker _`. Establish `hNopen : IsOpen ((E.fixingSubgroup : Subgroup (G F Ω)) : Set (G F Ω))` using `E.fixingSubgroup_isOpen`. Establish `hNker : ∀ c : cycU l U, (c : G F Ω) ∈ E.fixingSubgroup → φ c = 0`. Introduce `c hc`. Establish `h : c ∈ Subtype.val ⁻¹' O` using `hEsub hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hOeq]`. Rewrite using `[← hφ1]`. Conclude with `h`. Establish `hwd : ∀ (c c' : cycU l U) (w w' : G F Ω), w ∈ E.fixingSubgroup → w' ∈ E.fixingSubgroup → (c : G F Ω) * w = c' * w' → φ c = φ c'`. Introduce `c c' w w' hw hw' h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hmem : ((c'⁻¹ * c : cycU l U) : G F Ω) ∈ E.fixingSubgroup`. Establish `e : ((c'⁻¹ * c : cycU l U) : G F Ω) = w' * w⁻¹`. Simplify using `only [Subgroup.coe_mul, InvMemClass.coe_inv]`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, h, ← mul_assoc, inv_mul_cancel, one_mul]`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.mul_mem _ hw' (Subgroup.inv_mem _ hw)`. Establish `h0` using `hNker _ hmem`. Rewrite `h0` using `[hmul]`. Establish `hinv : φ c'⁻¹ + φ c' = 0` using `by rw [← hmul]; simp [hφ1]`. Establish `e1 : φ c'⁻¹ = -φ c'` using `eq_neg_of_add_eq_zero_left hinv`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h0` using `[e1]`. Conclude with `(neg_add_eq_zero.mp h0).symm`. Establish `hinter : ∀ x ∈ ⋂ n, (levU l U n : Set (G F Ω)), x ∈ cycU l U`. Introduce `x hx`. Simplify using `only [Set.mem_iInter, levU, SetLike.mem_coe, Subgroup.mem_inf, Subgroup.mem_comap] at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cycU, Subgroup.mem_inf, MonoidHom.mem_ker]`. Use `⟨(hx 0).1, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `(PadicInt.ext_of_toZModPow).mp` to reduce the goal to its premises. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hprinc _ n).mp (hx n).2, Units.val_one, map_one]`. Take `⟨n, hn⟩` from `exists_subset_nhds_of_compactSpace (X := G F Ω) (ι := ℕ) (V := fun n => (levU l U n : Set (G F Ω))) (fun i j => ⟨max i j, hlev_anti _ _ (le_max_left _ _), hlev_anti _ _ (le_max_right _ _)⟩) hclosed (U := {a | ∃ c ∈ cycU l U, ∃ w ∈ E.fixingSubgroup, a = c * w}) (by`. Introduce `x hx`. Establish `hxc` using `hinter x hx`. Use `Filter.mem_of_superset (IsOpen.mem_nhds (hNopen.preimage (continuous_mul_left x⁻¹)) (by simpa using Subgroup.one_mem _)) (fun a ha => ⟨x, hxc, x⁻¹ * a, ha, by group⟩))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∀ y : levU l U n, ∃ c : cycU l U, ∃ w ∈ E.fixingSubgroup, (y : G F Ω) = c * w`. Introduce `y`. Take `⟨c, hc, w, hw, e⟩` from `hn y.2`. Conclude with `⟨⟨c, hc⟩, w, hw, e⟩`. Use `choose cf wf hwf hcw using hex`.
-
-Use `⟨n, fun y => φ (cf y), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_exists_open]`. Introduce `y`. Use `⟨{z : levU l U n | (y : G F Ω)⁻¹ * z ∈ E.fixingSubgroup}, hNopen.preimage (continuous_const.mul continuous_subtype_val), by simpa using Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Introduce `z hz`.
-
-Conclude with `hwd (cf z) (cf y) (wf z) (wf y * ((y : G F Ω)⁻¹ * z)) (hwf z) (Subgroup.mul_mem _ (hwf y) hz) (by rw [← hcw z, ← mul_assoc, ← hcw y]; group)`. Introduce `a b`. Rewrite using `[← hmul]`. Establish `hv : ((cf b : G F Ω)⁻¹ * wf a * cf b) * wf b ∈ E.fixingSubgroup`. Use `Subgroup.mul_mem _ ?_ (hwf b)` and prove the remaining obligations.
-
-Use `hNnorm.conj_mem _ (hwf a) ((cf b : G F Ω)⁻¹)` as an intermediate fact. Simplify using `using this`. Use `hwd (cf (a * b)) (cf a * cf b) (wf (a * b)) _ (hwf _) hv ?_` and prove the remaining obligations. Rewrite using `[← hcw (a * b), Subgroup.coe_mul, hcw a, hcw b, Subgroup.coe_mul]`. Use `group`.
-
-Introduce `u`. Conclude with `hwd _ u (wf _) 1 (hwf _) (Subgroup.one_mem _) (by rw [← hcw, mul_one])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Kum.homExt :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (U : Subgroup (G F Ω)) (M : Type) [AddCommGroup M] (φ : cycU l U → M), IsClosed (U : Set (G F Ω)) → IsLocallyConstant φ → (∀ a b, φ (a * b) = φ a + φ b) →

@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Jp
 
 /- English proof (translation)
-Introduce `D v ϖ hϖ w hw`. Establish `hu1 : Formalism.UG.IsUnifV D.host.F v (algebraMap (Ov D v) (Lv D v) ϖ)`. Unfold `Formalism.UG.IsUnifV`. Apply the tactic sequence `rw [GlobalTheory.SplitDetValue.valued_irreducible v hϖ] <;> rfl`. Establish `hn : ‖algebraMap (Ov D v) (Lv D v) ϖ‖₊ = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ≥0)⁻¹` using `GlobalTheory.norm_uniformiser_eq_inv_absNorm D.host.F v _ hu1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hc : ((Ideal.absNorm v.asIdeal : ℕ) : ℝ≥0)⁻¹ ≠ 0`. Rewrite using `[Ne, inv_eq_zero, Nat.cast_eq_zero, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Unfold `NvOK`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show ‖algebraMap (Ov D v) (Lv D v) (u : Ov D v)‖₊ = 1`. Establish `hu2 : Formalism.UG.IsUnifV D.host.F v (algebraMap (Ov D v) (Lv D v) ((u : Ov D v) * ϖ))`. Unfold `Formalism.UG.IsUnifV`. Apply the tactic sequence `rw [map_mul, map_mul, GlobalTheory.SplitDetValue.valued_unit v u, GlobalTheory.SplitDetValue.valued_irreducible v hϖ, one_mul] <;> rfl`. Establish `h2` using `GlobalTheory.norm_uniformiser_eq_inv_absNorm D.host.F v _ hu2`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[map_mul, nnnorm_mul, hn]`. Conclude with `(mul_eq_right₀ hc).mp h2`. Use `show ‖(w : Lv D v)‖₊ = _`. Rewrite using `[hw, hn, Fintype.card_eq_nat_card, GlobalTheory.SplitDetValue.card_residue_eq]`.
+A detailed English derivation is pending.
 -/
 theorem nvOK_nvL : ∀ (D : D7) (v : Pl D) (ϖ : Ov D v), Irreducible ϖ → ∀ w : (Lv D v)ˣ,
     (w : Lv D v) = algebraMap (Ov D v) (Lv D v) ϖ → NvOK (O := Ov D v) (nvL D v) w := by

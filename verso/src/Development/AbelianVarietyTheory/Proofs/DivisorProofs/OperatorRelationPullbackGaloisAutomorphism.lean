@@ -16,7 +16,7 @@ open GlobalTheory.FieldBaseChange GlobalTheory.Mum.Conj.FamBij
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Rewrite using `[famMapTw_eq]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[DegPre.trPt]`. Simplify using `[DegPre.trPt, padd, comp_lift_assoc]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem famMapTw_trPt (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) {b b' : TF (R := R) (Kb R) ⟶ D.P.A}
     (hb : twF ρ ≫ b = b') : famMapTw D ρ ≫ DegPre.trPt D (Kb R) b = DegPre.trPt D (Kb R) b' ≫ famMapTw D ρ := by
@@ -27,7 +27,7 @@ theorem famMapTw_trPt (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) {b 
   · simp [DegPre.trPt, padd, comp_lift_assoc]
 
 /- English proof (translation)
-Rewrite using `[famMapTw_eq]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[DegPre.zF]`. Simplify using `[DegPre.zF]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem zF_famMapTw (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) :
     DegPre.zF D (Kb R) ≫ famMapTw D ρ = twF ρ ≫ DegPre.zF D (Kb R) := by
@@ -37,16 +37,14 @@ theorem zF_famMapTw (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) :
   · simp [DegPre.zF]
 
 /- English proof (translation)
-The claim follows from `(famφ_famMap D (Kb R) (TwF ρ) β i).symm`.
+A detailed English derivation is pending.
 -/
 theorem famMapTw_famφ (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) (β : D.X) (i : Fin 4) :
     (famMapTw D ρ).left ≫ DegPre.famφ D (Kb R) β i = DegPre.famφ D (Kb R) β i :=
   (famφ_famMap D (Kb R) (TwF ρ) β i).symm
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Use function extensionality and compare the values at `k`. Break down `k with i | i` into its components or cases. Conclude with `famMapTw_famφ D ρ _ i`. Use `show (famMapTw D ρ).left ≫ (DegPre.trPt D (Kb R) b₀).left ≫ DegPre.famφ D (Kb R) α i = (DegPre.trPt D (Kb R) b).left ≫ DegPre.famφ D (Kb R) α i`.
-
-Rewrite using `[← Category.assoc, ← Over.comp_left, famMapTw_trPt D ρ hb, Over.comp_left, Category.assoc, famMapTw_famφ]`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famMapTw_phiφ (D : DegPre R) (ρ : Kb R →ₐ[FractionRing R] Kb R) {y y₀ : D.X} (α : D.X)
     {b b₀ : TF (R := R) (Kb R) ⟶ D.P.A} (hy : y₀ = y) (hb : twF ρ ≫ b₀ = b) :
@@ -72,19 +70,19 @@ namespace GlobalTheory.Mum.Conj.PhiTw
 open GlobalTheory.FieldBaseChange GlobalTheory.Mum.Conj.FamBij
 
 /- English proof (translation)
-Introduce `R _ _ D N τ p p₀ h w s s' H α u hu hu0`. Establish `hL` using `D.P.isLB`. Set `e : Kb R ≃ₐ[FractionRing R] Kb R` to `AlgEquiv.ofBijective τ (Algebra.IsAlgebraic.algHom_bijective τ)`. Set `σ : Kb R →ₐ[FractionRing R] Kb R` to `(e.symm : Kb R →ₐ[FractionRing R] Kb R)`. Establish `hστ : ∀ x, σ (τ x) = x` using `fun x => e.symm_apply_apply x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτσ : ∀ x, τ (σ x) = x` using `fun x => e.apply_symm_apply x`. Establish `hb₀ : twF τ ≫ p.g.b = p₀.g.b` using `Over.OverMorphism.ext (by`. Rewrite using `[Over.comp_left, twF_left]`. Conclude with `h.2.1.symm)`. Establish `hb : twF σ ≫ p₀.g.b = p.g.b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb₀, ← Category.assoc, twF_comp_eq_id hστ, Category.id_comp]`. Establish `hφ` using `famMapTw_phiφ D σ α h.1 hb`. Set `u'` to `genCast hφ (LB.pullGen D.P.L _ _ u (famMapTw D σ).left)`. Establish `hu' : u'.IsGen` using `genCast_isGen _ (DVR.pullGen_isGen _ _ _ u hu _)`. Establish `hid : (twF σ).left ≫ spMap τ.toRingHom = 𝟙 _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← twF_left, ← Over.comp_left, twF_comp_eq_id hστ]`. Both sides reduce to the same expression. Establish `hz : (DegPre.zF D (Kb R)).left ≫ (famMapTw D σ).left = (twF σ).left ≫ (DegPre.zF D (Kb R)).left`. Rewrite using `[← Over.comp_left, zF_famMapTw, Over.comp_left]`. Establish `hu'0 : LB.Gen.Corr D.P.L _ _ _ _ (LB.pullGen D.P.L _ _ u' (DegPre.zF D (Kb R)).left) (LB.mulGen D.P.L _ _ _ _ (p.g.s α) w)` using `corr_of_val hL fun y J hJ => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_pull hJ, val_genCast, val_pull hJ, Category.id_comp, hz, ← val_pull hJ, val_corr hJ hu0, val_mul hJ, val_mul hJ, val_corr hJ (h.2.2 α), val_pull hJ, frTw, val_genCast, val_pull hJ, hid]`. Establish `H1` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ u').1 (H α u' hu' hu'0)`. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Establish `e1` using `H1 _ (famMapTw D τ).left y J hJ`. Establish `hTT : (famMapTw D τ).left ≫ (famMapTw D σ).left = 𝟙 _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, famMapTw_comp_eq_id D hτσ]`. Both sides reduce to the same expression. Rewrite `e1` using `[val_genCast, val_pull hJ, hTT]`. Rewrite `e1` using `[← h.1]`. Establish `hc : (famMapTw D τ).left ≫ (DegPre.trPt D (Kb R) p.g.b).left = (DegPre.trPt D (Kb R) p₀.g.b).left ≫ (famMapTw D τ).left`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, famMapTw_trPt D τ hb₀, Over.comp_left]`. Rewrite using `[sval_famTw _ _ _ _ _ _ hJ, sval_famTw _ _ _ _ _ _ hJ]`. Simplify using `only [Category.id_comp]`. Rewrite using `[e1, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiRel_famTw : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (N : ℕ)
     (τ : Kb R →ₐ[FractionRing R] Kb R) (p p₀ : QkPt D (Kb R) N) (h : QkExt τ.toRingHom p p₀)

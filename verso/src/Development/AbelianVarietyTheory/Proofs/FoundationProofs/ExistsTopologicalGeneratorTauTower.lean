@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.K5.TauGen
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.q_not_pth_pow_in_closure_algebraic_padicInt`.
+A detailed English derivation is pending.
 -/
 theorem not_pow : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ b ∈ Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x}),
@@ -19,13 +19,11 @@ def geoF (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω] : S
   Subfield.closure (Set.range (algebraMap (O0 p) Ω) ∪ {x | IsAlgZp p x})
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F F⟮x⟯ := adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral (R := F) x)`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `σ hσ`. Establish `hU : IsOpen (((F⟮x⟯).fixingSubgroup : Subgroup (Ω ≃ₐ[F] Ω)) : Set (Ω ≃ₐ[F] Ω))` using `IntermediateField.fixingSubgroup_isOpen _`. Establish `hV : IsOpen ((fun τ : Ω ≃ₐ[F] Ω => σ⁻¹ * τ) ⁻¹' ((F⟮x⟯).fixingSubgroup : Set (Ω ≃ₐ[F] Ω)))` using `hU.preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.mem_of_superset (hV.mem_nhds ?_) ?_` and prove the remaining obligations. Use `show σ⁻¹ * σ ∈ (F⟮x⟯).fixingSubgroup`. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Introduce `τ hτ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(mem_fixingSubgroup_iff _ _).1 hτ x (mem_adjoin_simple_self F x)`. Establish `h2 : τ x = σ x`. Establish `: σ⁻¹ (τ x) = x` using `h1`. Combine the equalities or inequalities in the displayed calculation. Use `show P (τ x)`.
-
-Rewrite using `[h2]`. Conclude with `hσ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_apply {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Algebra.IsAlgebraic F Ω]
     (x : Ω) (P : Ω → Prop) : IsOpen {σ : Ω ≃ₐ[F] Ω | P (σ x)} := by
@@ -49,23 +47,21 @@ theorem isOpen_setOf_apply {F Ω : Type} [Field F] [Field Ω] [Algebra F Ω] [Al
     rw [h2]; exact hσ
 
 /- English proof (translation)
-Introduce `p hp hp2 Ω _ _ hΩ T`. Use `haveI := hΩ.clo`. Use `haveI : CharZero Ω := Basic.charZero_of_isClo hΩ`. Establish `hO : ∀ a : O0 p, algebraMap (O0 p) Ω a ∈ geoF p Ω` using `fun a => Subfield.subset_closure (Or.inl ⟨a, rfl⟩)`. Establish `hA : ∀ x : Ω, IsAlgZp p x → x ∈ geoF p Ω` using `fun x hx => Subfield.subset_closure (Or.inr hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F` to `geoF p Ω`. Set `φ : O0 p →+* F` to `(algebraMap (O0 p) Ω).codRestrict F hO`. Establish `hφ : Function.Injective φ` using `fun a b h => hΩ.inj (congrArg Subtype.val h)`. Establish `hcomp : (algebraMap F Ω).comp φ = algebraMap (O0 p) Ω` using `by ext a; rfl`. Use `haveI hal : Algebra.IsAlgebraic F Ω := by`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x`. Take `⟨P, hP, hx⟩` from `hΩ.alg.isAlgebraic x`. Use `⟨P.map φ, (Polynomial.map_ne_zero_iff hφ).2 hP, ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, eval₂_map, hcomp, ← aeval_def, hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsAlgClosure F Ω := ⟨inferInstance, hal⟩`. Use `haveI : IsGalois F Ω := {}`. Use `haveI : CompactSpace (Ω ≃ₐ[F] Ω) := inferInstance`. Set `q' : F` to `⟨algebraMap (O0 p) Ω (qO p), hO _⟩`. Establish `hirr : ∀ n, Irreducible (X ^ (p ^ n) - C q')` using `fun n => X_pow_sub_C_irreducible_of_prime_pow hp.out hp2 n (fun b hb => not_pow p Ω hΩ (b : Ω) b.2 (by rw [← SubmonoidClass.coe_pow, hb]))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmin : ∀ n (y : Ω), y ^ (p ^ n) = algebraMap (O0 p) Ω (qO p) → minpoly F y = X ^ (p ^ n) - C q'`. Introduce `n y hy`. Use `(minpoly.eq_of_irreducible_of_monic (hirr n) ?_ (monic_X_pow_sub_C _ (pow_ne_zero _ hp.out.ne_zero))).symm` and prove the remaining obligations. Simplify using `only [map_sub, map_pow, aeval_X, aeval_C, hy]`. Conclude with `sub_self _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `S : ℕ → Set (Ω ≃ₐ[F] Ω)` to `fun n => {σ | σ (T.qq n) = T.ζ n * T.qq n}`. Establish `hne : ∀ n, (S n).Nonempty`. Introduce `n`. Establish `h1` using `hmin n (T.qq n) (Basic.qq_pow T n)`. Establish `h2` using `hmin n (T.ζ n * T.qq n) (by rw [mul_pow, (T.prim n).pow_eq_one, one_mul, Basic.qq_pow T n])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨σ, hσ⟩` from `(Normal.minpoly_eq_iff_mem_orbit (F := F) Ω).1 (h2.trans h1.symm)`. Conclude with `⟨σ, hσ⟩`. Establish `hdec : ∀ n, S (n + 1) ⊆ S n`. Introduce `n σ hσ`. Use `show σ (T.qq n) = T.ζ n * T.qq n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hσ' : σ (T.qq (n + 1)) = T.ζ (n + 1) * T.qq (n + 1)` using `hσ`. Rewrite using `[← T.qpow n, map_pow, hσ', mul_pow, T.ζpow, T.qpow]`. Establish `hcl : ∀ n, IsClosed (S n)`. Introduce `n`. Rewrite using `[← isOpen_compl_iff]`.
-
-Conclude with `isOpen_setOf_apply (F := F) (T.qq n) (fun y => ¬ y = T.ζ n * T.qq n)`. Take `⟨σ, hσ⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S hdec hne (hcl 0).isCompact hcl`. Rewrite `hσ` using `[Set.mem_iInter]`. Set `τ : Gal p Ω` to `{ σ.toRingEquiv with commutes' := fun a => σ.commutes (⟨algebraMap (O0 p) Ω a, hO a⟩ : F) }`. Use `⟨τ, fun x hx => σ.commutes (⟨x, hA x hx⟩ : F), fun n => hσ n⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ T : Tower p Ω, ∃ τ ∈ Ggeo p Ω, ∀ n, τ (T.qq n) = T.ζ n * T.qq n := by

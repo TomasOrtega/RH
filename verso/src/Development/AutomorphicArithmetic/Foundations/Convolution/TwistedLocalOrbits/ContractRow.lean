@@ -7,15 +7,15 @@ namespace UpperTheory.ConvolutionTheory.Loc
 variable {E : Type} [Field E] [ValuativeRel E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Take `⟨m, -, hm⟩` from `Finset.exists_max_image Finset.univ (fun l => valuation E (e l)) ⟨l₀, Finset.mem_univ _⟩`. Take `⟨j, hj, hj'⟩` from `Finset.exists_min_image (Finset.univ.filter fun l => valuation E (e l) = valuation E (e m)) id ⟨m, by simp⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, id, forall_true_left] at hj hj' hm`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hγ : γ < valuation E (e j)` using `hj ▸ hc.trans_le (hm l₀)`. Establish `hpos : 0 < valuation E (e j)` using `zero_le.trans_lt hγ`. Establish `hji : (j : ℕ) < i`. Assume the negation of the conclusion as `h`. Rewrite `hpos` using `[h0 j (not_lt.1 h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hpos`. Establish `hs : valuation E (∑ l ∈ Finset.univ.erase j, e l * M l j) < valuation E (e j)`. Use `Valuation.map_sum_lt _ hpos.ne' fun l hlj => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase hlj) with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `(mul_le_of_le_one_right' (h1 l j)).trans_lt (lt_of_le_of_ne (hj ▸ hm l) fun h' => ?_)` and prove the remaining obligations. Conclude with `absurd (hj' l (h'.trans hj)) (not_le.2 h)`. Use `(mul_le_mul_left (show valuation E (e l) ≤ valuation E (e j) from hj ▸ hm l) _).trans_lt ?_` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_right hpos (hl l j h)`. Use `hb j hji` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j), Valuation.map_add_eq_of_lt_left, map_mul, hd, mul_one]`. Conclude with `absurd this (not_le.2 hγ)`. Rewrite using `[map_mul, hd, mul_one]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem vecMul_bound {n : ℕ} (M : Matrix (Fin n) (Fin n) E) (h1 : ∀ j l, valuation E (M j l) ≤ 1)
     (hd : ∀ j, valuation E (M j j) = 1) (hl : ∀ j l, l < j → valuation E (M j l) < 1) (i : ℕ) (e : Fin n → E)
@@ -51,13 +51,13 @@ private def Nr (γ : ValueGroupWithZero E) (a a' : E) : Prop :=
   valuation E a ≤ 1 ∧ valuation E a' ≤ 1 ∧ valuation E (a - a') ≤ γ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, h, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem Nr.const {γ : ValueGroupWithZero E} {a : E} (h : valuation E a ≤ 1) : Nr γ a a :=
   ⟨h, h, by simp⟩
 
 /- English proof (translation)
-Use `⟨by rw [map_mul]; exact mul_le_one' h.1 h'.1, by rw [map_mul]; exact mul_le_one' h.2.1 h'.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[show a * b - a' * b' = a * (b - b') + (a - a') * b' by ring]`. Apply the tactic sequence `refine Valuation.map_add_le _ ?_ ?_ <;> rw [map_mul]`. Conclude with `(mul_le_of_le_one_left' h.1).trans h'.2.2`. Conclude with `(mul_le_of_le_one_right' h'.2.1).trans h.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem Nr.mul {γ : ValueGroupWithZero E} {a a' b b' : E} (h : Nr γ a a') (h' : Nr γ b b') :
     Nr γ (a * b) (a' * b') := by
@@ -68,7 +68,7 @@ private theorem Nr.mul {γ : ValueGroupWithZero E} {a a' b b' : E} (h : Nr γ a 
   · exact (mul_le_of_le_one_right' h'.2.1).trans h.2.2
 
 /- English proof (translation)
-Use `⟨Valuation.map_sum_le _ fun l _ => (h l).1, Valuation.map_sum_le _ fun l _ => (h l).2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `Valuation.map_sum_le _ fun l _ => (h l).2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Nr.sum {γ : ValueGroupWithZero E} {n : ℕ} {a a' : Fin n → E} (h : ∀ l, Nr γ (a l) (a' l)) :
     Nr γ (∑ l, a l) (∑ l, a' l) := by
@@ -77,7 +77,7 @@ private theorem Nr.sum {γ : ValueGroupWithZero E} {n : ℕ} {a a' : Fin n → E
   exact Valuation.map_sum_le _ fun l _ => (h l).2.2
 
 /- English proof (translation)
-Establish `ha : a ≠ 0` using `by rintro rfl; simp at h1`. Establish `ha' : a' ≠ 0` using `by rintro rfl; simp at h2`. Use `⟨by simp [h1], by simp [h2], ?_⟩` and prove the remaining obligations. Rewrite using `[show a⁻¹ - a'⁻¹ = -((a - a') * a⁻¹ * a'⁻¹) by field_simp; ring]`. Simplify `h.2.2` using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Nr.inv {γ : ValueGroupWithZero E} {a a' : E} (h : Nr γ a a') (h1 : valuation E a = 1)
     (h2 : valuation E a' = 1) : Nr γ a⁻¹ a'⁻¹ := by
@@ -88,14 +88,14 @@ private theorem Nr.inv {γ : ValueGroupWithZero E} {a a' : E} (h : Nr γ a a') (
   simpa [h1, h2] using h.2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(hσ _).le.trans h.1, (hσ _).le.trans h.2.1, by rw [← map_sub, hσ]; exact h.2.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem Nr.map {γ : ValueGroupWithZero E} {σ : E ≃+* E} (hσ : ∀ x, valuation E (σ x) = valuation E x)
     {a a' : E} (h : Nr γ a a') : Nr γ (σ a) (σ a') :=
   ⟨(hσ _).le.trans h.1, (hσ _).le.trans h.2.1, by rw [← map_sub, hσ]; exact h.2.2⟩
 
 /- English proof (translation)
-Use `⟨by rw [map_mul]; exact mul_le_one' (hc.trans hρ) h.1, by rw [map_mul]; exact mul_le_one' (hc.trans hρ) h.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_sub, map_mul]`. Conclude with `mul_le_mul' hc h.2.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Nr.small {γ ρ : ValueGroupWithZero E} {a a' c : E} (h : Nr γ a a') (hc : valuation E c ≤ ρ)
     (hρ : ρ ≤ 1) : Nr (ρ * γ) (c * a) (c * a') := by
@@ -107,29 +107,25 @@ private theorem Nr.small {γ ρ : ValueGroupWithZero E} {a a' c : E} (h : Nr γ 
 variable [TopologicalSpace E] [IsNonarchimedeanLocalField E]
 
 /- English proof (translation)
-The claim follows from `(Homeomorph.subRight a).isCompact_preimage.2 (IsNonarchimedeanLocalField.isCompact_closedBall E γ)`.
+A detailed English derivation is pending.
 -/
 private theorem isCompact_ball (a : E) (γ : ValueGroupWithZero E) : IsCompact {x | valuation E (x - a) ≤ γ} :=
   (Homeomorph.subRight a).isCompact_preimage.2 (IsNonarchimedeanLocalField.isCompact_closedBall E γ)
 
 /- English proof (translation)
-Use `haveI : T2Space E := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace E`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := E)`. Use `infer_instance`. Establish `hX : ∀ m l, valuation E (F^[m] e l - e l) ≤ r`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih => rw [Function.iterate_succ_apply']`. Conclude with `hF _ ih`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hD : ∀ m l, valuation E (F^[m + 1] e l - F^[m] e l) ≤ ρ ^ m * r`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hX 1`. Consider the case `succ m ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hc _ _ _ (hX _) (hX _) ih` as an intermediate fact. Rewrite `this` using `[← Function.iterate_succ_apply' F, ← Function.iterate_succ_apply' F, ← mul_assoc, ← pow_succ']`. Then use the resulting hypothesis. Set `S : ℕ → Set (Fin n → E)` to `fun m => Set.pi Set.univ fun l => {x | valuation E (x - F^[m] e l) ≤ ρ ^ m * r}`. Establish `hS : ∀ m, IsCompact (S m)` using `fun m => isCompact_univ_pi fun l => isCompact_ball _ _`. Establish `hle : ∀ m, ρ ^ (m + 1) * r ≤ ρ ^ m * r` using `fun m => mul_le_mul_left (by rw [pow_succ]; exact mul_le_of_le_one_right' hρ.le) _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `IsCompact.nonempty_iInter_of_sequence_nonempty_isCompact_isClosed S (fun m x hx l _ => by`. Establish `h` using `hx l trivial`. Simplify using `only [Set.mem_setOf_eq] at h ⊢`. Rewrite using `[← sub_add_sub_cancel _ (F^[m + 1] e l)]`. Conclude with `Valuation.map_add_le _ (h.trans (hle m)) (hD m l))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `(fun m => ⟨F^[m] e, fun l _ => by simp⟩) (hS 0) fun m => (hS m).isClosed`. Establish `hx' : ∀ m l, valuation E (x l - F^[m] e l) ≤ ρ ^ m * r` using `fun m l => Set.mem_iInter.1 hx m l trivial`. Establish `hx0 : ∀ l, valuation E (x l - e l) ≤ r` using `by simpa using hx' 0`. Use `⟨x, hx0, funext fun l => ?_⟩` and prove the remaining obligations. Establish `key : ∀ m, valuation E (F x l - x l) ≤ ρ ^ m * r`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `m`. Establish `h1` using `hc _ _ _ hx0 (hX m) (hx' m) l`. Rewrite `h1` using `[← Function.iterate_succ_apply' F, ← mul_assoc, ← pow_succ']`. Rewrite using `[← sub_sub_sub_cancel_right _ _ (F^[m + 1] e l)]`. Conclude with `(Valuation.map_sub_le _ h1 (hx' _ l)).trans (hle m)`.
-
-Assume the negation of the conclusion as `hne`. Establish `hpos : valuation E (F x l - x l) ≠ 0` using `by simpa [sub_eq_zero] using hne`. Establish `hr : r ≠ 0`. Introduce and unpack `rfl`. Conclude with `hpos (by simpa using key 0)`.
-
-Use `haveI : MulArchimedean (ValueGroupWithZero E) := isRankLeOne_iff_mulArchimedean.1 inferInstance`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hρ (Units.mk0 (valuation E (F x l - x l) / r) (div_ne_zero hpos hr))`. Rewrite `hm` using `[Units.val_mk0, lt_div_iff₀ (zero_lt_iff.2 hr)]`. Conclude with `absurd (key m) (not_le.2 hm)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed {n : ℕ} (e : Fin n → E) (r ρ : ValueGroupWithZero E) (hρ : ρ < 1)
     (F : (Fin n → E) → (Fin n → E))
@@ -183,35 +179,31 @@ theorem exists_fixed {n : ℕ} (e : Fin n → E) (r ρ : ValueGroupWithZero E) (
   exact absurd (key m) (not_le.2 hm)
 
 /- English proof (translation)
-Establish `hr1 : r < 1` using `hr.trans_lt hρ`. Establish `hσ' : ∀ x, valuation E (σ.symm x) = valuation E x` using `fun x => by rw [← hσ, RingEquiv.apply_symm_apply]`. Use `set e : Fin n → E := fun l => (1 : Matrix (Fin n) (Fin n) E) i l with he`. Set `y : (Fin n → E) → Fin n → E` to `fun x j => ∑ l, σ (x l) * c l j`. Set `w : (Fin n → E) → Fin n → E` to `fun x l => if l < i then (t l : E) / t i * (x l * y x i) else y x l`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `F : (Fin n → E) → Fin n → E` to `fun x j => if j < i then σ.symm (∑ l, w x l * b l j) else if i < j then (t i : E) / t j * (y x j * (y x i)⁻¹) else 1`. Establish `he1 : ∀ l, valuation E (e l) ≤ 1` using `fun l => by`. Apply the tactic sequence `simp only [he, one_apply]; split_ifs <;> simp`. Establish `hx1 : ∀ x : Fin n → E, (∀ l, valuation E (x l - e l) ≤ r) → ∀ l, valuation E (x l) ≤ 1` using `fun x hx l => by`. Rewrite using `[← sub_add_cancel (x l) (e l)]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Valuation.map_add_le _ ((hx l).trans hr1.le) (he1 l)`. Establish `hy : ∀ (x x' : Fin n → E) γ, (∀ l, Nr γ (x l) (x' l)) → ∀ j, Nr γ (y x j) (y x' j)` using `fun x x' γ h j => Nr.sum fun l => ((h l).map hσ).mul (.const (hc1 l j))`. Establish `hye : ∀ j, y e j = c i j` using `fun j => by`. Simplify using `[y, he, one_apply, apply_ite σ]`. Establish `hyc : ∀ x : Fin n → E, (∀ l, valuation E (x l - e l) ≤ r) → ∀ j, Nr r (y x j) (c i j)` using `fun x hx j => hye j ▸ hy x e r (fun l => ⟨hx1 x hx l, he1 l, hx l⟩) j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμ : ∀ x : Fin n → E, (∀ l, valuation E (x l - e l) ≤ r) → valuation E (y x i) = 1` using `fun x hx => by`. Rewrite using `[← sub_add_cancel (y x i) (c i i), Valuation.map_add_eq_of_lt_right, hcd]`. Conclude with `hcd i ▸ (hyc x hx i).2.2.trans_lt hr1`. Take `⟨x, hx, hF⟩` from `exists_fixed e r ρ hρ F (fun x hx j => by`. Break down `lt_trichotomy j i with h | h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [F, if_pos h, he, one_apply_ne h.ne', sub_zero, hσ']`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Distinguish the cases in `hl : l < i`. Use `(mul_le_of_le_one_right' (hb1 l j)).trans ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `hx l` as an intermediate fact. Simplify using `only [he, one_apply_ne hl.ne', sub_zero] at this`. Simplify using `only [w, if_pos hl, map_mul, hμ x hx, mul_one]`. Conclude with `(mul_le_of_le_one_left' ((ht l i hl).trans hρ.le)).trans this`. Simplify using `only [w, if_neg hl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mul_le_of_le_one_left' (hyc x hx l).1).trans (hbl l j (h.trans_le (not_lt.1 hl)))`. Simplify using `[F, h, he]`. Simplify using `only [F, if_neg h.not_gt, if_pos h, he, one_apply_ne h.ne, sub_zero]`. Rewrite using `[← mul_assoc, map_mul, map_inv₀, hμ x hx, inv_one, mul_one, ← sub_add_cancel (y x j) (c i j), mul_add]`. Use `Valuation.map_add_le _ ?_ (hcu i j h)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ((ht i j h).trans hρ.le)).trans (hyc x hx j).2.2)`. Use the proof step `(fun x x' γ hx hx' hd j => by`. Establish `hN : ∀ l, Nr γ (x l) (x' l)` using `fun l => ⟨hx1 x hx l, hx1 x' hx' l, hd l⟩`. Break down `lt_trichotomy j i with h | h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, if_pos h]`. Use `((Nr.sum fun l => ?_).map hσ').2.2` and prove the remaining obligations. Distinguish the cases in `hl : l < i`. Simplify using `only [w, if_pos hl]`. Conclude with `(((hN l).mul (hy x x' γ hN i)).small (ht l i hl) hρ.le).mul (.const (hb1 l j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, if_neg hl, mul_comm _ (b l j)]`. Conclude with `(hy x x' γ hN l).small ((hbl l j (h.trans_le (not_lt.1 hl))).trans hr) hρ.le`. Simplify using `[F, h]`. Simplify using `only [F, if_neg h.not_gt, if_pos h]`. Conclude with `(((hy x x' γ hN j).mul ((hy x x' γ hN i).inv (hμ x hx) (hμ x' hx'))).small (ht i j h) hρ.le).2.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hμ0 : y x i ≠ 0` using `fun h => by simpa [h] using hμ x hx`. Establish `hw : ∀ l, w x l = y x l` using `fun l => by`. Use `vecMul_bound b hb1 hbd (fun j l h => (hbl j l h).trans_lt hr1) i (fun l => w x l - y x l) 0 (fun l hl => by simp only [w, if_neg (not_lt.2 (show i ≤ l from hl)), sub_self]) (fun j hj => by` as an intermediate fact. Establish `h1` using `congrFun hF j`. Simplify using `only [F, if_pos (show j < i from hj), RingEquiv.symm_apply_eq] at h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `h2 : ∑ l, y x l * b l j = σ (x j)`. Establish `: (fun l => σ (x l)) ᵥ* c ᵥ* b = fun l => σ (x l)` using `by rw [vecMul_vecMul, hcb, vecMul_one]`. Conclude with `congrFun this j`. Simplify using `only [sub_mul, Finset.sum_sub_distrib, h1, h2, sub_self, map_zero, le_refl]) l`. Simplify `this` using `[sub_eq_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x, y x i, (hyc x hx i).2.2, hx, fun j => ?_⟩` and prove the remaining obligations. Use `show _ = _ * y x j`. Establish `h1` using `congrFun hF j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Rewrite using `[← hw j]`.
-
-Simplify using `only [w, if_pos h]`. Clear the denominators using the available nonvanishing facts. Substitute `h` using the available equality. Simplify using `only [F, lt_irrefl, if_false] at h1`. Rewrite using `[← h1, one_mul]`.
-
-Simplify using `only [F, if_neg h.not_gt, if_pos h] at h1`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_row {n : ℕ} {σ : E ≃+* E} (hσ : Isom σ) (t : Fin n → Eˣ) {r ρ : ValueGroupWithZero E} (hr : r ≤ ρ)
     (hρ : ρ < 1) (ht : ∀ j l, j < l → valuation E ((t j : E) / t l) ≤ ρ) (b c : Matrix (Fin n) (Fin n) E)
@@ -304,21 +296,19 @@ theorem exists_row {n : ℕ} {σ : E ≃+* E} (hσ : Isom σ) (t : Fin n → Eˣ
 open GlobalTheory.PRep GlobalTheory.SmGL in
 
 /- English proof (translation)
-Establish `hr1 : r < 1` using `hr.trans_lt hρ`. Use `choose x μ hμ hx hxe using exists_row hσ t hr hρ ht b.val b⁻¹.val b.inv_mul hb1 hc1 hbd hcd hbl hcu`. Establish `hμ0 : ∀ i, μ i ≠ 0` using `fun i h => by`. Use `hμ i` as an intermediate fact. Rewrite `this` using `[h, zero_sub, Valuation.map_neg, hcd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `absurd this (not_le.2 hr1)`. Set `M : Matrix (Fin n) (Fin n) E` to `Matrix.of x`. Establish `hoff : ∀ j l, j ≠ l → valuation E (M j l) < 1` using `fun j l h => by`. Simplify `(hx j l).trans_lt hr1` using `[M, one_apply_ne h]`. Establish `hd : ∀ j, valuation E (M j j) = 1` using `fun j => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(hx j j).trans_lt hr1` as an intermediate fact. Rewrite `this` using `[one_apply_eq]`. Use `show valuation E (x j j) = 1`. Apply the tactic sequence `rw [← sub_add_cancel (x j j) 1, Valuation.map_add_eq_of_lt_right] <;> simpa using this`. Establish `hbd` using `vecMul_bound M (fun j l => by`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : j = l`. Conclude with `h ▸ (hd j).le`. Conclude with `(hoff j l h).le) hd (fun j l h => hoff j l h.ne') n`. Establish `hu : IsUnit M`. Use `vecMul_injective_iff_isUnit.1 fun u v huv => funext fun l => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hbd (u - v) 0 (fun l hl => absurd l.2 (not_lt.2 hl)) (fun j _ => by` as an intermediate fact. Establish `: (u - v) ᵥ* M = 0` using `by rw [sub_vecMul, sub_eq_zero]; exact huv`. Conclude with `le_of_eq ((map_eq_zero _).2 (congrFun this j))) l`. Simplify `this` using `[sub_eq_zero]`. Take `⟨k, hk⟩` from `hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `⟨k, fun i j => by rw [hk]; exact hx i j, fun i j => ?_, fun i => (Units.mk0 _ (hμ0 i))⁻¹, fun i => by simpa using hμ i, ?_⟩` and prove the remaining obligations. Use `hbd (fun l => k⁻¹.val i l) 1 (fun l hl => absurd l.2 (not_lt.2 hl)) (fun j _ => ?_) j` and prove the remaining obligations. Rewrite using `[← hk, ← mul_apply, k.inv_mul, one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[mul_assoc, eq_inv_mul_iff_mul_eq, ← mul_assoc, ← eq_mul_inv_iff_mul_eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, Units.val_mul, val_diagT, val_diagT, mul_diagonal, diagonal_mul, mul_apply]`. Establish `h2 : ∀ l, (sg σ k).val i l = σ (x i l)` using `fun l => by show σ (k.val i l) = _`. Rewrite using `[hk]`. Both sides reduce to the same expression.
-
-Simplify using `only [h2, Pi.mul_apply, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_mk0]`. Rewrite using `[mul_right_comm, ← hxe, hk, mul_inv_cancel_right₀ (hμ0 i)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_conj {n : ℕ} {σ : E ≃+* E} (hσ : Isom σ) (t : Fin n → Eˣ) {r ρ : ValueGroupWithZero E} (hr : r ≤ ρ)
     (hρ : ρ < 1) (ht : ∀ j l, j < l → valuation E ((t j : E) / t l) ≤ ρ) (b : GL (Fin n) E)

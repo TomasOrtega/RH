@@ -13,11 +13,11 @@ open GlobalTheory.PRep Formalism.UG GlobalTheory.DefU
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `A B hA hB hd hAn hBn e`. Establish `inj : Function.Injective (fun x : ℤ => c - x)` using `fun x y e => by simpa using e`. Establish `back : ∀ S : Finset ℤ, S ⊆ J.image (fun x => c - x) → S.image (fun x => c - x) ⊆ J`. Introduce `S hS x hx`. Take `⟨y, hy, rfl⟩` from `Finset.mem_image.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, rfl⟩` from `Finset.mem_image.1 (hS hy)`. Simplify using `using hz`. Establish `hsum : ∀ S : Finset ℤ, (S.image fun x => c - x).sum id = (S.card : ℤ) * c - S.sum id`. Introduce `S`. Rewrite using `[Finset.sum_image (fun x _ y _ e => inj e)]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [id]`. Rewrite using `[Finset.sum_sub_distrib (fun _ => c) (fun x => x), Finset.sum_const, nsmul_eq_mul]`. Use `h _ _ (back A hA) (back B hB) ((Finset.disjoint_image inj).2 hd) (hAn.image _) (hBn.image _) ?_` and prove the remaining obligations. Rewrite using `[Finset.card_image_of_injective _ inj, Finset.card_image_of_injective _ inj, hsum, hsum]`. Take the linear combination `-e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem lacunary_image_sub {J : Finset ℤ} (c : ℤ) (h : Lacunary J) :
     Lacunary (J.image fun x => c - x) := by
@@ -39,11 +39,11 @@ private theorem lacunary_image_sub {J : Finset ℤ} (c : ℤ) (h : Lacunary J) :
   linear_combination -e
 
 /- English proof (translation)
-Establish `key : ∀ k : Fin a, ((k : ℕ) : ℤ) - lam.dual.w k = ((a : ℤ) - 1) - (((k.rev : ℕ) : ℤ) - lam.w k.rev)`. Introduce `k`. Establish `h1 : lam.dual.w k = -lam.w k.rev` using `rfl`. Establish `h2` using `Fin.val_rev k`. Establish `h3` using `k.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Use linear arithmetic over natural numbers and integers. Use extensionality with `x`. Simplify using `only [wtJumps, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨k, rfl⟩`. Conclude with `⟨_, ⟨k.rev, rfl⟩, (key k).symm⟩`. Introduce and unpack `⟨_, ⟨k, rfl⟩, rfl⟩`. Use `⟨k.rev, ?_⟩` and prove the remaining obligations. Rewrite using `[key, Fin.rev_rev]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem wtJumps_dual {a : ℕ} (lam : DomWeight a) :
     wtJumps lam.dual = (wtJumps lam).image fun x => ((a : ℤ) - 1) - x := by
@@ -64,9 +64,9 @@ private theorem wtJumps_dual {a : ℕ} (lam : DomWeight a) :
     rw [key, Fin.rev_rev]
 
 /- English proof (translation)
-Introduce `hC E _ _ _ l _ ι a ha U v ⟨τ, hτ, lam, hw, hl⟩`. Use `⟨ComplexEmbedding.conjugate τ, ?_, lam.dual, GlobalTheory.DefiniteBC.hasWeightAt_conjugate ha hw, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hy : ((IsCMField.ringOfIntegersComplexConj E x : 𝓞 E) : E) = IsCMField.complexConj E (x : E)` using `rfl`. Establish `h` using `hτ _ ((hC E v x _ hy).1 hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hy, IsCMField.complexEmbedding_complexConj]`. Conclude with `h`. Rewrite using `[wtJumps_dual]`. Conclude with `lacunary_image_sub _ hl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.lacConj_of :
     CplMem → LacConj := by

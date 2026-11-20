@@ -3,13 +3,11 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Trans
 open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComplex.HomComplex GlobalTheory.EtC UpperTheory.Gal.TranscendenceTraces
 
 /- English proof (translation)
-Use `haveI : (RingHom.ker f).IsPrime := RingHom.ker_isPrime f`. Use `haveI : IsDomain (B ⧸ RingHom.ker f) := Ideal.Quotient.isDomain _`. Establish `hb` using `IsAlgClosed.algebraMap_bijective_of_isIntegral (k := Ω) (K := B ⧸ RingHom.ker f)`. Use extensionality with `b`. Take `⟨c, hc⟩` from `hb.2 (Ideal.Quotient.mk _ b)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : b - algebraMap Ω B c ∈ RingHom.ker f`. Rewrite using `[← Ideal.Quotient.eq]`. Rewrite using `[← hc]`. Both sides reduce to the same expression. Establish `h1 : f b = f (algebraMap Ω B c)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `RingHom.mem_ker.mp hm` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`. Establish `h2 : f' b = f' (algebraMap Ω B c)`. Use `RingHom.mem_ker.mp (hk ▸ hm)` as an intermediate fact.
-
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this`. Rewrite using `[h1, h2]`. Conclude with `congrArg (fun g : Ω →+* L => g c) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ring_eq {Ω B L : Type} [Field Ω] [IsAlgClosed Ω] [CommRing B] [Algebra Ω B] [Module.Finite Ω B] [Field L]
     (f f' : B →+* L) (h : f.comp (algebraMap Ω B) = f'.comp (algebraMap Ω B))
@@ -35,7 +33,7 @@ private lemma ring_eq {Ω B L : Type} [Field Ω] [IsAlgClosed Ω] [CommRing B] [
   exact congrArg (fun g : Ω →+* L => g c) h
 
 /- English proof (translation)
-Use extensionality with `b`. Express the relevant statement in the definitionally equal form `f.hom b ∈ (IsLocalRing.closedPoint L).asIdeal ↔ _`. Simplify using `[RingHom.mem_ker, IsLocalRing.closedPoint]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private lemma pt_spec {B L : Type} [CommRing B] [Field L] (f : CommRingCat.of B ⟶ CommRingCat.of L) :
     (pt (Spec.map f) : Spec (CommRingCat.of B)).asIdeal = RingHom.ker f.hom := by
@@ -44,15 +42,15 @@ private lemma pt_spec {B L : Type} [CommRing B] [Field L] (f : CommRingCat.of B 
   simp [RingHom.mem_ker, IsLocalRing.closedPoint]
 
 /- English proof (translation)
-Introduce `hC V Ω _ _ r _ L _ a z z' hz hz' hp`. Take `⟨B, _, _, v, hfin, hpb⟩` from `hC r Ω (𝟙 _)`. Use `haveI : IsIso v := hpb.isIso_fst_of_isIso`. Establish `hs : inv v ≫ Spec.map (CommRingCat.ofHom (algebraMap Ω B)) = r`. Use `hpb.w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Category.comp_id]`. Rewrite using `[← this, IsIso.inv_hom_id_assoc]`. Take `⟨f, hf⟩` from `Spec.map_surjective (z ≫ inv v)`. Take `⟨f', hf'⟩` from `Spec.map_surjective (z' ≫ inv v)`. Establish `e1 : Spec.map f ≫ Spec.map (CommRingCat.ofHom (algebraMap Ω B)) = a`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, Category.assoc, hs, hz]`. Establish `e2 : Spec.map f' ≫ Spec.map (CommRingCat.ofHom (algebraMap Ω B)) = a`. Rewrite using `[hf', Category.assoc, hs, hz']`. Establish `e3 : CommRingCat.ofHom (algebraMap Ω B) ≫ f = CommRingCat.ofHom (algebraMap Ω B) ≫ f'`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Spec.map_comp, Spec.map_comp, e1, e2]`. Establish `e4 : pt (Spec.map f) = pt (Spec.map f')`. Rewrite using `[hf, hf', pt_comp, pt_comp, hp]`. Establish `e5 : RingHom.ker f.hom = RingHom.ker f'.hom`. Rewrite using `[← pt_spec f, ← pt_spec f', e4]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e6 : f.hom = f'.hom` using `ring_eq f.hom f'.hom (congrArg CommRingCat.Hom.hom e3) e5`. Establish `e7 : f = f'` using `CommRingCat.hom_ext e6`. Establish `e8 : z ≫ inv v = z' ≫ inv v` using `by rw [← hf, ← hf', e7]`. Conclude with `(cancel_mono (inv v)).mp e8`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TranscendenceTraces.ptOne_of :
     Chart → PtOne := by

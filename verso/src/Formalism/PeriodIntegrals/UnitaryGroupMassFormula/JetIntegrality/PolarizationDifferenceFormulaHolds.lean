@@ -11,9 +11,9 @@ namespace R
 variable {K : Type*} [CommRing K]
 
 /- English proof (translation)
-Establish `h1` using `PowerSeries.constantCoeff_subst (R := K) (PowerSeries.HasSubst.of_constantCoeff_zero' hex) l`. Rewrite `h1` using `[hl]`. Establish `hex' : MvPowerSeries.constantCoeff ex = 0` using `hex`. Rewrite `h1` using `[finsum_eq_single _ 0 (fun d hd => by rw [map_pow, hex', zero_pow hd, smul_zero])]`. Simplify using `only [pow_zero, map_one, smul_eq_mul, mul_one] at h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : PowerSeries.coeff 0 l = 0`. Rewrite using `[← h1]`. Conclude with `PowerSeries.constantCoeff_X`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cc_l {l ex : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0)
     (hl : PowerSeries.subst ex l = PowerSeries.X) : PowerSeries.constantCoeff l = 0 := by
@@ -28,7 +28,7 @@ theorem cc_l {l ex : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0)
   simpa using h2
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst ex` using `PowerSeries.HasSubst.of_constantCoeff_zero' hex`. Establish `hb : PowerSeries.HasSubst x` using `PowerSeries.HasSubst.of_constantCoeff_zero hx`. Rewrite using `[← PowerSeries.subst_comp_subst_apply ha hb, hl, PowerSeries.subst_X hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_ex {l ex : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0)
     (hl : PowerSeries.subst ex l = PowerSeries.X) {τ : Type*} {x : MvPowerSeries τ K}
@@ -39,7 +39,7 @@ theorem l_ex {l ex : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0)
   rw [← PowerSeries.subst_comp_subst_apply ha hb, hl, PowerSeries.subst_X hb]
 
 /- English proof (translation)
-The claim follows from `(PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hex) (PowerSeries.HasSubst.of_constantCoeff_zero hs) ph).symm`.
+A detailed English derivation is pending.
 -/
 theorem ph_ex {ex ph : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0) {τ : Type*}
     {s : MvPowerSeries τ K} (hs : MvPowerSeries.constantCoeff s = 0) :
@@ -48,7 +48,7 @@ theorem ph_ex {ex ph : PowerSeries K} (hex : PowerSeries.constantCoeff ex = 0) {
     (PowerSeries.HasSubst.of_constantCoeff_zero hs) ph).symm
 
 /- English proof (translation)
-Rewrite using `[map_add, PowerSeries.constantCoeff_subst_eq_zero ha l hl0, PowerSeries.constantCoeff_subst_eq_zero hb l hl0, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_sum {l : PowerSeries K} (hl0 : PowerSeries.constantCoeff l = 0) {τ : Type*}
     {a b : MvPowerSeries τ K} (ha : MvPowerSeries.constantCoeff a = 0)
@@ -63,7 +63,7 @@ section
 variable {p : ℕ} [Fact p.Prime] {σ : Type*} {l ex ph : PowerSeries ℂ_[p]}
 
 /- English proof (translation)
-Unfold `PI.JetsPhW.phAt PI.JetsPhW.add psi`. Conclude with `PI.JetsPhW.W.R.ph_ex hex (PI.JetsPhW.W.R.cc_sum (PI.JetsPhW.W.R.cc_l hex hl) ha hb)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phAt_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst ex l = PowerSeries.X)
     {a b : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
@@ -74,7 +74,7 @@ theorem phAt_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subs
     (PI.JetsPhW.W.R.cc_sum (PI.JetsPhW.W.R.cc_l hex hl) ha hb)
 
 /- English proof (translation)
-Unfold `PI.JetsPhW.add`. Conclude with `PI.JetsPhW.W.R.l_ex hex hl (PI.JetsPhW.W.R.cc_sum (PI.JetsPhW.W.R.cc_l hex hl) ha hb)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem l_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst ex l = PowerSeries.X)
     {a b : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
@@ -85,7 +85,7 @@ theorem l_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst e
     (PI.JetsPhW.W.R.cc_sum (PI.JetsPhW.W.R.cc_l hex hl) ha hb)
 
 /- English proof (translation)
-Unfold `PI.JetsPhW.add`. Conclude with `PowerSeries.constantCoeff_subst_eq_zero (PI.JetsPhW.W.R.cc_sum (PI.JetsPhW.W.R.cc_l hex hl) ha hb) ex hex`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst ex l = PowerSeries.X)
     {a b : MvPowerSeries σ ℂ_[p]} (ha : MvPowerSeries.constantCoeff a = 0)
@@ -97,9 +97,9 @@ theorem cc_add (hex : PowerSeries.constantCoeff ex = 0) (hl : PowerSeries.subst 
 end
 
 /- English proof (translation)
-Introduce `p _ l ex ph h`. Take `⟨hex, hl, -⟩` from `h`. Establish `h0 : MvPowerSeries.constantCoeff (PI.JetsPhW.Xv 0 : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `h1 : MvPowerSeries.constantCoeff (PI.JetsPhW.Xv 1 : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `MvPowerSeries.constantCoeff_X _`. Establish `h2 : MvPowerSeries.constantCoeff (PI.JetsPhW.Xv 2 : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `MvPowerSeries.constantCoeff_X _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PI.JetsPhW.cubeE`. Rewrite using `[phAt_add hex hl (cc_add hex hl h0 h1) h2, l_add hex hl h0 h1, phAt_add hex hl h0 h1, phAt_add hex hl h1 h2, phAt_add hex hl h2 h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cubeDefectFormula_holds : Rw3 := by
   intro p _ l ex ph h

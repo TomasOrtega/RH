@@ -30,7 +30,7 @@ open Matrix Module
 open scoped MatrixOrder ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_pow]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_norm_sq_eq {n : ℕ} (u : Fin n → ℂ) : ((∑ i, ‖u i‖ ^ 2 : ℝ) : ℂ) = star u ⬝ᵥ u := by
   simp only [dotProduct, Pi.star_apply, Complex.ofReal_sum, Complex.ofReal_pow]
@@ -38,9 +38,9 @@ theorem sum_norm_sq_eq {n : ℕ} (u : Fin n → ℂ) : ((∑ i, ‖u i‖ ^ 2 : 
   rw [Complex.star_def, Complex.conj_mul']
 
 /- English proof (translation)
-Establish `key : ∀ {k : ℕ} (B : Matrix (Fin k) (Fin m) ℂ), star (B *ᵥ u) ⬝ᵥ (B *ᵥ u) = star u ⬝ᵥ ((Bᴴ * B) *ᵥ u)` using `fun B => by`. Establish `e0 : star u ⬝ᵥ (Bᴴ *ᵥ (B *ᵥ u)) = (star u ᵥ* Bᴴ) ⬝ᵥ (B *ᵥ u)` using `dotProduct_mulVec _ _ _`. Rewrite using `[← mulVec_mulVec, e0, star_mulVec]`. Establish `e : ∑ i, ‖(Y *ᵥ u) i‖ ^ 2 = ∑ i, ‖(A *ᵥ u) i‖ ^ 2`. Apply `Complex.ofReal_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sum_norm_sq_eq, sum_norm_sq_eq, key, key, h]`. Simplify using `only [Formalism.HermitianLatticesTheory.cnorm, e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cnorm_mulVec_eq {n n' m : ℕ} {A : Matrix (Fin n) (Fin m) ℂ} {Y : Matrix (Fin n') (Fin m) ℂ} (h : Aᴴ * A = Yᴴ * Y)
     (u : Fin m → ℂ) : Formalism.HermitianLatticesTheory.cnorm (Y *ᵥ u) = Formalism.HermitianLatticesTheory.cnorm (A *ᵥ u) := by
@@ -53,7 +53,7 @@ theorem cnorm_mulVec_eq {n n' m : ℕ} {A : Matrix (Fin n) (Fin m) ℂ} {Y : Mat
   simp only [Formalism.HermitianLatticesTheory.cnorm, e]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.cnorm, Pi.smul_apply, smul_eq_mul, norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos ht, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg t), Real.sqrt_sq ht.le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cnorm_smul {n : ℕ} {t : ℝ} (ht : 0 < t) (u : Fin n → ℂ) :
     Formalism.HermitianLatticesTheory.cnorm ((t : ℂ) • u) = t * Formalism.HermitianLatticesTheory.cnorm u := by
@@ -64,7 +64,7 @@ theorem cnorm_smul {n : ℕ} {t : ℝ} (ht : 0 < t) (u : Fin n → ℂ) :
 variable {K V W : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [AddCommGroup W] [Module K W]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hA.posSemidef.nonneg`. Use `⟨B, ?_, by simpa [star_eq_conjTranspose] using hB⟩` and prove the remaining obligations. Establish `h1 : A.det ≠ 0` using `hA.det_pos.ne'`. Rewrite `h1` using `[hB, star_eq_conjTranspose, det_mul]`. Conclude with `isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul h1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unit_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) :
     ∃ B : Matrix (Fin n) (Fin n) ℂ, IsUnit B.det ∧ A = Bᴴ * B := by
@@ -75,19 +75,17 @@ theorem exists_unit_factor {n : ℕ} {A : Matrix (Fin n) (Fin n) ℂ} (hA : A.Po
   exact isUnit_iff_ne_zero.mpr (right_ne_zero_of_mul h1)
 
 /- English proof (translation)
-Take `⟨n, ⟨b, X⟩, hX⟩` from `h`. Simplify using `only at hX`. Use `haveI : FiniteDimensional K V := Module.Finite.of_basis b`. Use `haveI : FiniteDimensional K W := FiniteDimensional.of_injective φ hφ`. Set `b'` to `Module.finBasis K W`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `B : Matrix (Fin n) (Fin (finrank K W)) K` to `LinearMap.toMatrix b' b φ`. Take `⟨g, hg⟩` from `φ.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hφ)`. Set `C : Matrix (Fin (finrank K W)) (Fin n) K` to `LinearMap.toMatrix b b' g`. Establish `hCB : C * B = 1`. Rewrite using `[← LinearMap.toMatrix_comp, hg, LinearMap.toMatrix_id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ v : InfinitePlace K, ∃ Y : Matrix (Fin (finrank K W)) (Fin (finrank K W)) ℂ, IsUnit Y.det ∧ ((X v)⁻¹ * B.map v.embedding)ᴴ * ((X v)⁻¹ * B.map v.embedding) = Yᴴ * Y` using `fun v => by`. Establish `hu` using `(hX v).1`. Establish `hL : (C.map v.embedding * X v) * ((X v)⁻¹ * B.map v.embedding) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (X v), Matrix.mul_nonsing_inv _ hu, Matrix.one_mul, ← Matrix.map_mul, hCB, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hinj : Function.Injective ((X v)⁻¹ * B.map v.embedding).mulVec` using `fun y z hyz => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (C.map v.embedding * X v).mulVec hyz` as an intermediate fact. Simplify `this` using `only [mulVec_mulVec, hL, one_mulVec]`. Conclude with `exists_unit_factor (PosDef.conjTranspose_mul_self _ hinj)`. Use `choose Y hY hYG using key`. Establish `hu : ∀ v, IsUnit (((t v : ℂ)) • Y v).det` using `fun v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[det_smul]`. Conclude with `(IsUnit.pow _ (isUnit_iff_ne_zero.2 (by exact_mod_cast (ht v).ne'))).mul (hY v)`. Use `IsGram.hasGram (b := b') (X := fun v => ((t v : ℂ) • Y v)⁻¹) fun v => ⟨?_, fun x => ?_⟩` and prove the remaining obligations. Conclude with `Matrix.isUnit_nonsing_inv_det _ (hu v)`. Establish `e1 : Formalism.HermitianLatticesTheory.vecAt b v (φ x) = B.map v.embedding *ᵥ Formalism.HermitianLatticesTheory.vecAt b' v x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Establish `e` using `congrFun (LinearMap.toMatrix_mulVec_repr b' b φ x) i`. Use `show v.embedding (b.repr (φ x) i) = _`. Rewrite using `[← e]`. Conclude with `RingHom.map_mulVec v.embedding _ _ i`.
-
-Rewrite using `[hN v x, ← (hX v).2 (φ x)]`. Simplify using `only [Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.fcoord]`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (hu v), smul_mulVec, cnorm_smul (ht v), e1, mulVec_mulVec, cnorm_mulVec_eq (hYG v)]`.
+A detailed English derivation is pending.
 -/
 theorem hasGram_of_injective {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) (φ : W →ₗ[K] V) (hφ : Function.Injective φ)
     {N' : (K →+* ℂ) → W → ℝ} (t : InfinitePlace K → ℝ) (ht : ∀ v, 0 < t v)
@@ -131,13 +129,13 @@ theorem hasGram_of_injective {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) (
       cnorm_mulVec_eq (hYG v)]
 
 /- English proof (translation)
-Take `⟨n, ⟨b, X⟩, hX⟩` from `h`. Simplify using `only at hX`. Establish `h0` using `(hX v).2 x`. Rewrite `h0` using `[hx]`. Establish `h1 : ∑ i, ‖Formalism.HermitianLatticesTheory.fcoord b X v x i‖ ^ 2 = 0` using `(Real.sqrt_eq_zero (Finset.sum_nonneg fun _ _ => sq_nonneg _)).1 h0`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Formalism.HermitianLatticesTheory.fcoord b X v x = 0`. Use function extensionality and compare the values at `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => sq_nonneg _)).1 h1 i (Finset.mem_univ i)` as an intermediate fact. Simplify using `using this`. Establish `h3 : Formalism.HermitianLatticesTheory.vecAt b v x = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (X v).mulVec h2` as an intermediate fact. Simplify `this` using `only [Formalism.HermitianLatticesTheory.fcoord, mulVec_mulVec, Matrix.mul_nonsing_inv _ (hX v).1, one_mulVec, mulVec_zero]`. Apply `b.repr.map_eq_zero_iff.1` to reduce the goal to its premises. Use extensionality with `i`. Use `congrFun h3 i` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify `this` using `[Formalism.HermitianLatticesTheory.vecAt]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem HasGram_eq_zero {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) (v : InfinitePlace K) {x : V} (hx : N v.embedding x = 0) :
     x = 0 := by
@@ -160,9 +158,9 @@ theorem HasGram_eq_zero {N : (K →+* ℂ) → V → ℝ} (h : HasGram N) (v : I
   simpa [Formalism.HermitianLatticesTheory.vecAt] using this
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem`. Consider the case `exact _root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem`. Consider the case `(apply _root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] {L : Submodule (𝓞 K) V} {x : V}
     (hx : x ∈ Submodule.span K (L : Set V)) : ∃ a : 𝓞 K, a ≠ 0 ∧ a • x ∈ L := by
@@ -175,9 +173,7 @@ theorem exists_smul_mem_of_mem_span [Module (𝓞 K) V] [IsScalarTower (𝓞 K) 
   | (intros; exact _root_.GlobalTheory.NonzeroScalarMultipleMembership.exists_ne_zero_smul_mem ..)
 
 /- English proof (translation)
-Establish `hN : IsNoetherian (𝓞 K) L` using `isNoetherian_of_fg_of_noetherian _ hfg`. Set `ψ : W →ₗ[𝓞 K] V` to `φ.restrictScalars (𝓞 K)`. Establish `hle : L'.map ψ ≤ L`. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Conclude with `hL f hf`.
-
-Conclude with `Submodule.fg_of_fg_map_injective ψ hφ (isNoetherian_submodule.1 hN _ hle)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fg_of_injective [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     (φ : W →ₗ[K] V) (hφ : Function.Injective φ) {L : Submodule (𝓞 K) V} {L' : Submodule (𝓞 K) W}
@@ -190,9 +186,9 @@ theorem fg_of_injective [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module
   exact Submodule.fg_of_fg_map_injective ψ hφ (isNoetherian_submodule.1 hN _ hle)
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `hf : φ f ∈ Submodule.span K (L : Set V)` using `hsp ▸ Submodule.mem_top`. Take `⟨a, ha, hm⟩` from `exists_smul_mem_of_mem_span hf`. Establish `h1 : a • f ∈ L'` using `hL _ (by rwa [LinearMap.map_smul_of_tower])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : algebraMap (𝓞 K) K a ≠ 0` using `fun h => ha (IsFractionRing.injective (𝓞 K) K (h.trans (map_zero _).symm))`. Establish `e : f = (algebraMap (𝓞 K) K a)⁻¹ • (a • f)`. Rewrite using `[← algebraMap_smul K a f, smul_smul, inv_mul_cancel₀ hA, one_smul]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_injective [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) W] [IsScalarTower (𝓞 K) K W]
     (φ : W →ₗ[K] V) {L : Submodule (𝓞 K) V} {L' : Submodule (𝓞 K) W} (hL : ∀ f, φ f ∈ L → f ∈ L')
@@ -221,7 +217,7 @@ variable {σ : c.F →+* ℂ} (U : Unf Xo c σ r) (x : ℝ) (V : TH.HSp D)
   (dict : Formalism.L2.Theta.GA D V → Σ k, FD.Frame (U.X k).Ψ r) (Z : Comp Xo c) (G : WTZ E)
 
 /- English proof (translation)
-Introduce `q hq` and use `by by_contra h apply hq have h0 := rdU_eq_zero U hf (z := dict q.out) h show ‖rdU U f (dict q.out).1 (dict q.out).2‖ * _ = 0 rw [h0, norm_zero, zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem support_ptN_subset {f : Rul Xo c} (hf : f ∈ suppOn Z) :
     Function.support (fun q : AutQ V => ptN (modelWt U G) (rdU U f) (dict q.out)) ⊆
@@ -233,7 +229,7 @@ theorem support_ptN_subset {f : Rul Xo c} (hf : f ∈ suppOn Z) :
   rw [h0, norm_zero, zero_mul]
 
 /- English proof (translation)
-Unfold `petAt petE muOn muPart`. Rewrite using `[ProbabilityTheory.cond, MeasureTheory.eLpNorm_smul_measure_of_ne_top (by simp), MeasureTheory.eLpNorm_restrict_eq_of_support_subset (support_ptN_subset U V dict Z G hf), smul_eq_mul, ENNReal.toReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem petAt_muOn {f : Rul Xo c} (hf : f ∈ suppOn Z) :
     petAt U x V dict (muOn U V dict Z) G f =
@@ -245,7 +241,7 @@ theorem petAt_muOn {f : Rul Xo c} (hf : f ∈ suppOn Z) :
   ring
 
 /- English proof (translation)
-Unfold `petAt petE`. Rewrite using `[← MeasureTheory.eLpNorm_restrict_eq_of_support_subset (support_ptN_subset U V dict Z G hf), MeasureTheory.Measure.restrict_eq_zero.2 h0, MeasureTheory.eLpNorm_measure_zero]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem petAt_eq_zero {f : Rul Xo c} (hf : f ∈ suppOn Z) (h0 : muQ1 V (classesOver V dict (framesOn U Z)) = 0) :
     petAt U x V dict (muQ1 V) G f = 0 := by
@@ -260,15 +256,13 @@ variable (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (V : (c.F →+* �
   (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (Z : Comp Xo c) (G : WTZ E)
 
 /- English proof (translation)
-Take `⟨hg, hfg, hsp⟩` from `h`. Set `φ : cuspOn U Z G →ₗ[c.F] cuspW Xo c U G` to `Submodule.inclusion (cuspOn_le U Z G)`. Establish `hφ : Function.Injective φ` using `Submodule.inclusion_injective _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : ∃ v : InfinitePlace c.F, muQ1 (V (goodOf c v.embedding)) (classesOver (V (goodOf c v.embedding)) (dict (goodOf c v.embedding)) (framesOn (U (goodOf c v.embedding)) Z)) = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨v, hv⟩` from `h0`. Establish `hz : ∀ f : cuspOn U Z G, f = 0` using `fun f => hφ (by`. Rewrite using `[map_zero]`. Conclude with `HasGram_eq_zero hg v (petAt_eq_zero _ x _ _ Z G f.2.2 hv))`. Use `hasGram_of_injective hg φ hφ (fun _ => 1) (fun _ => one_pos) fun w f => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `hz f`. Rewrite using `[map_zero, one_mul]`. Establish `a1` using `GlobalTheory.AllWt.petOn_smul U x V dict Z G w.embedding 0 0`. Establish `a2` using `GlobalTheory.AllWt.petW_smul U x V dict G w.embedding 0 0`. Simplify using `only [zero_smul, map_zero, norm_zero, zero_mul] at a1 a2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `a1.trans a2.symm`. Use `push_neg at h0`. Use `hasGram_of_injective hg φ hφ (fun v => (((muQ1 (V (goodOf c v.embedding)) (classesOver (V (goodOf c v.embedding)) (dict (goodOf c v.embedding)) (framesOn (U (goodOf c v.embedding)) Z)))⁻¹ ^ (1 / (2 : ENNReal)).toReal).toReal)) (fun v => ?_) fun v f => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.toReal_rpow]`. Use `Real.rpow_pos_of_pos (ENNReal.toReal_pos (ENNReal.inv_ne_zero.2 (MeasureTheory.measure_ne_top _ _)) (ENNReal.inv_ne_top.2 (h0 v))) _` and prove the remaining obligations.
-
-Conclude with `petAt_muOn _ x _ _ Z G f.2.2`. Conclude with `fg_of_injective φ hφ (fun _ h => h) hfg`. Conclude with `span_eq_top_of_injective φ (fun _ h => h) hsp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem goodOn_of_goodW (h : GoodW U x V dict G) : GoodOn U x V dict Z G := by
   obtain ⟨hg, hfg, hsp⟩ := h
@@ -302,7 +296,7 @@ theorem goodOn_of_goodW (h : GoodW U x V dict G) : GoodOn U x V dict Z G := by
 end Norms
 
 /- English proof (translation)
-Introduce `_ _ _ Y _ _ _ _ Z G hG` and use `goodOn_of_goodW Y.U _ _ Y.dict Z G hG`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem goodOn_of_goodAt : ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o →
     2 < Module.finrank ℚ D.host.E / 2 → ∀ (Z : Comp Y.d.Xo₂ Y.d.c₂) (G : WTZ D.host.E), Y.GoodAt G →

@@ -17,23 +17,21 @@ namespace GlobalTheory.RescaleForm
 open GlobalTheory.TauTwist (unitAt unitAt_injective IsScalarForm)
 
 /- English proof (translation)
-Use `letI : Module O (GlobalTheory.PolDeg.rescale D g).X := inst`. Establish `hG` using `GlobalTheory.globalFns_holds`. Set `y : (TK R).left` to `IsLocalRing.closedPoint (FractionRing R)`. Take `⟨I, hJ⟩` from `GlobalTheory.DegPull.exists_good' D.P.isLB y`. Establish `vt : ∀ a b, val ((GlobalTheory.PolDeg.rescale D g).tau a b) (𝟙 _) y I = unitAt (𝟙 (TK R).left) y (g (a + b) * (g a)⁻¹ * (g b)⁻¹) * val (D.tau a b) (𝟙 _) y I` using `fun a b => by`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_mul, map_inv, map_inv]`. Conclude with `GlobalTheory.PolDeg.rescale_tau_val D g a b hJ`. Establish `sy : ∀ a b, g (a + b) * (g a)⁻¹ * (g b)⁻¹ = g (b + a) * (g b)⁻¹ * (g a)⁻¹` using `fun a b => by`. Rewrite using `[add_comm, mul_right_comm]`. Establish `al : ∀ a a' b, g (a + a' + b) * (g (a + a'))⁻¹ * (g b)⁻¹ = (g (a + b) * (g a)⁻¹ * (g b)⁻¹) * (g (a' + b) * (g a')⁻¹ * (g b)⁻¹)` using `fun a a' b => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hB a a' b) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e'` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (hB' a a' b) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e''` using `(congrArg₂ (· * ·) (vt (a + a') b).symm rfl).trans (e'.trans (congrArg₂ (· * ·) (vt a b) (vt a' b)))`. Rewrite `e''` using `[_root_.mul_mul_mul_comm, ← e, _root_.mul_assoc, ← map_mul]`. Conclude with `unitAt_injective y (mul_right_cancel e'')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨onB', cl', tb'⟩` from `oa'`. Take `rfl : onB' = oa.onB` from `ho`. Use `⟨⟨fun a b b' => ?_, sy, fun x a b => ?_⟩, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[sy, sy a b, sy a b']`. Conclude with `al b b' a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `GlobalTheory.TorusExt.exists_isRos hG oa (star x)`. Rewrite `hr` using `[star_star]`. Take `⟨u, hu, u₀⟩` from `hr`. Establish `e` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (oa.tau_bal x u hu u₀ a b) (𝟙 _))`. Establish `e'` using `(val_mul hJ _ _ _).symm.trans (val_corr hJ (tb' x u hu u₀ a b) (𝟙 _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e''` using `(congrArg₂ (· * ·) (vt (x • a) b).symm rfl).trans (e'.trans (vt a (star x • b)))`. Rewrite `e''` using `[← e, _root_.mul_assoc]`. Conclude with `unitAt_injective y (mul_right_cancel e'')`. Take `⟨u, hu, u₀, h⟩` from `hW`. Take `⟨u', hu', u₀', h'⟩` from `hW'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `gen_unique' D.P.isLB (fun _ _ _ => rfl) D.P.A.hom (eSec D.P.A) (Over.w η[D.P.A]) (hG _ _ D.P.isAb).2 hu hu' (fun z J hz => by`. Establish `a` using `val_corr hz u₀ (𝟙 _)`. Establish `b` using `val_corr hz u₀' (𝟙 _)`. Rewrite `a` using `[val_pull hz, val_one, Category.id_comp]`. Establish `b'` using `((val_pull hz _ _ _).symm.trans b).trans (val_one _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b'` using `[Category.id_comp]`. Conclude with `a.trans b'.symm) _ (𝟙 _ ≫ D.xK a) y I hJ`. Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (h a) (𝟙 _)).trans (val_mul hJ _ _ _))`. Establish `e'` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (h' a) (𝟙 _)).trans (val_mul hJ _ _ _))`. Rewrite `e` using `[val_pull hJ]`.
-
-Establish `e''` using `(congrArg₂ (· * ·) (vt a (w0 • a)).symm (k.trans (val_pull hJ _ _ _).symm)).trans (e'.trans (congrArg₂ (· * ·) (GlobalTheory.UU.val_scaleGen (unitOn (g a)) (D.psi a) (𝟙 _) hJ) rfl))`. Rewrite `e''` using `[_root_.mul_assoc, e]`. Conclude with `(unitAt_injective y (mul_right_cancel (e''.trans (_root_.mul_assoc _ _ _)))).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_of_laws {R : Type} [CommRing R] [IsDomain R] {O : Type} [CommRing O] [StarRing O] (D : DegPre R)
     [inst : Module O D.X] (oa : D.OAct O) (w0 : O) (g : D.X → (FractionRing R)ˣ) (hB : D.TauBimult) (hW : TraceFormTwistIso D oa w0)
@@ -92,7 +90,7 @@ theorem scalar_of_laws {R : Type} [CommRing R] [IsDomain R] {O : Type} [CommRing
     exact (unitAt_injective y (mul_right_cancel (e''.trans (_root_.mul_assoc _ _ _)))).symm
 
 /- English proof (translation)
-Introduce `D _ oa w0 g a b c oa' d e` and use `scalar_of_laws D oa w0 g a b c oa' d e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Type} [CommRing R] [IsDomain R] {O : Type} [CommRing O] [StarRing O] (D : DegPre R) [inst : Module O D.X] (oa : D.OAct O) (w0 : O) (g : D.X → (FractionRing R)ˣ), D.TauBimult → TraceFormTwistIso D oa w0 → (GlobalTheory.PolDeg.rescale D g).TauBimult → ∀ (oa' : @DegPre.OAct R _ _ O _ _ (GlobalTheory.PolDeg.rescale D g) inst), @DegPre.OAct.onB R _ _ O _ _ (GlobalTheory.PolDeg.rescale D g) inst oa' = oa.onB → @TraceFormTwistIso R _ _ O _ _ (GlobalTheory.PolDeg.rescale D g) inst oa' w0 → GlobalTheory.TauTwist.IsScalarForm O (fun a b => g (a + b) * (g a)⁻¹ * (g b)⁻¹) ∧ ∀ y, g y = g (y + w0 • y) * (g y)⁻¹ * (g (w0 • y))⁻¹ :=
   fun D _ oa w0 g a b c oa' d e => scalar_of_laws D oa w0 g a b c oa' d e

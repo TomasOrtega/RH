@@ -12,21 +12,17 @@ section SlopeTestRemainingChoices
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual
 
 /- English proof (translation)
-Establish `h0 : H0 rho = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `m hm`. Establish `h1 : rho γ m = m` using `(Representation.mem_invariants rho m).mp hm γ`. Apply `hγ.1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show rho γ m - m = rho γ 0 - 0`. Rewrite using `[h1, map_zero, sub_self, sub_self]`. Use `set χ := (cycMod F Ω l 1).comp (Dec (F := F) A).subtype with hχdef`. Establish `hχ : χ γ = 1` using `hχ0`. Establish `hdual : Subsingleton (H0 ((twDual χ rho).comp (MonoidHom.id _)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ φ ∈ H0 ((twDual χ rho).comp (MonoidHom.id _)), φ = 0`. Introduce `φ hφ`. Establish `h1 : twDual χ rho γ φ = φ` using `(Representation.mem_invariants _ φ).mp hφ γ`. Use extensionality with `x`. Take `⟨m, rfl⟩` from `hγ.2 x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun ψ : TDual (ZMod (l ^ 1)) M => ψ (rho γ m)) h1`. Simplify using `only [twDual_apply, hχ, Units.val_one, one_mul] at h3`. Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Use `show φ (rho γ m - m) = 0`. Conclude with `(LinearMap.map_sub (φ : Module.Dual (ZMod (l ^ 1)) M) (rho γ m) m).trans (sub_eq_zero.mpr h3.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext ((key a.1 a.2).trans (key b.1 b.2).symm)`. Establish `hTD'` using `hTD F Ω l 1 M A rho v Nat.one_pos hA hrho`. Establish `hinj` using `hTD'.2.2.2.2.1`. Establish `h2 : Subsingleton (H2 rho)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun x y => hinj ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Rewrite using `[Subsingleton.elim z 0, map_zero, map_zero]`. Use `⟨h2, fun hl => ?_⟩` and prove the remaining obligations. Establish `hc0 : Nat.card (H0 rho) = 1`.
-
-Rewrite using `[h0]`. Conclude with `Nat.card_unique`. Establish `hc2 : Nat.card (H2 rho) = 1` using `Nat.card_eq_one_iff_unique.mpr ⟨h2, ⟨0⟩⟩`. Establish `he` using `(hEC F Ω l 1 M A rho v Nat.one_pos hA hrho).2 hl`. Establish `hc1 : Nat.card (H1 rho) = 1` using `by rw [he, hc0, hc2]`.
-
-Conclude with `(Nat.card_eq_one_iff_unique.mp hc1).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem vanish_zmod (hTD : LocalTateDuality) (hEC : LocalEulerChar) (F Ω : Type) [Field F] [NumberField F]
     [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M]
@@ -72,15 +68,13 @@ private theorem vanish_zmod (hTD : LocalTateDuality) (hEC : LocalEulerChar) (F �
   exact (Nat.card_eq_one_iff_unique.mp hc1).1
 
 /- English proof (translation)
-Substitute `hD` using the available equality. Use `haveI : CharP k (l ^ 1) := by rw [pow_one]; infer_instance`. Use `letI : Module (ZMod (l ^ 1)) M := Module.compHom _ (ZMod.castHom (dvd_refl _) k)`. Use `haveI : ContinuousConstSMul (ZMod (l ^ 1)) M := ⟨fun _ => continuous_of_discreteTopology⟩`. Set `rho' : Representation (ZMod (l ^ 1)) (Dec (F` to `F) A) M := { toFun := fun g => { toFun := rho g map_add' := map_add (rho g) map_smul' := fun c m => map_smul (rho g) (ZMod.castHom (dvd_refl _) k c) m } map_one' := LinearMap.ext fun m => show rho 1 m = m by rw [map_one]; rfl map_mul' := fun g h => LinearMap.ext fun m => show rho …`.
+Substitute using the available equality. Equip the data with the indicated structure. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_mul]`. Use `rfl }`. Establish `h` using `vanish_zmod hTD hEC F Ω l M A v rho' hA hrho γ hχ0 hγ`. Use `⟨?_, fun hl => ?_⟩` and prove the remaining obligations. Establish `h2` using `Submodule.Quotient.subsingleton_iff.1 h.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Introduce and unpack `⟨f, hf⟩ -`. Use `show f ∈ B2 _`. Establish `hf' : f ∈ Z2 rho'` using `hf`. Establish `hB : (⟨f, hf'⟩ : Z2 rho') ∈ (B2 rho').comap (Z2 rho').subtype` using `h2 ▸ Submodule.mem_top`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem rho' _).1 hB`. Conclude with `(separated_dvr_second_cohomology_mem _ _).2 ⟨c, hc, hcf⟩`. Establish `h1` using `Submodule.Quotient.subsingleton_iff.1 (h.2 hl)`. Rewrite using `[Submodule.Quotient.subsingleton_iff, eq_top_iff]`. Introduce and unpack `⟨f, hf⟩ -`.
-
-Use `show f ∈ B1 _`. Establish `hf' : f ∈ Z1 rho'` using `hf`. Establish `hB : (⟨f, hf'⟩ : Z1 rho') ∈ (B1 rho').comap (Z1 rho').subtype` using `h1 ▸ Submodule.mem_top`. Take `⟨m, hm⟩` from `(mem_coboundaries1 rho' _).1 hB`. Conclude with `(mem_coboundaries1 _ _).2 ⟨m, hm⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem vanish_k (hTD : LocalTateDuality) (hEC : LocalEulerChar) (F Ω : Type) [Field F] [NumberField F]
     [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (k : Type) [CommRing k] [CharP k l]
@@ -122,29 +116,27 @@ private theorem vanish_k (hTD : LocalTateDuality) (hEC : LocalEulerChar) (F Ω :
     exact (mem_coboundaries1 _ _).2 ⟨m, hm⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 private theorem gb_ext {k : Type} [CommRing k] {j : ℤ} {X Y : Gb k j} (h : X.val = Y.val) : X = Y :=
   Subtype.ext h
 
 /- English proof (translation)
-The claim follows from `Finite.of_injective (fun X : Gb k j => X.val) fun _ _ h => gb_ext h`.
+A detailed English derivation is pending.
 -/
 private theorem gb_finite (k : Type) [CommRing k] [Finite k] (j : ℤ) : Finite (Gb k j) :=
   Finite.of_injective (fun X : Gb k j => X.val) fun _ _ h => gb_ext h
 
 /- English proof (translation)
-Use `haveI := gb_finite k j`. Rewrite using `[← Finite.injective_iff_bijective]`. Establish `h1 : Ψ x ≠ 1` using `fun h => hΨ (by rw [h, one_pow])`. Establish `hker : ∀ m : Gb k j, gRep η Ψ j x m = m → m = 0`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `gb_ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show m.val a b = 0`. Distinguish the cases in `hab : wt a b = j`. Establish `e` using `congrArg (fun X : Gb k j => X.val a b) hm`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [gRep_val, adRep_baseLift_apply, hη, if_true] at e`. Establish `hne : (Ψ x ^ wt a b : kˣ) ≠ 1`. Establish `h0 : wt a b ≠ 0` using `hab ▸ hj`. Apply the tactic sequence `have hw : wt a b = 1 ∨ wt a b = 2 ∨ wt a b = -1 ∨ wt a b = -2 := by revert h0 fin_cases a <;> fin_cases b <;> simp [wt, wt1]`. Apply the tactic sequence `rcases hw with h | h | h | h <;> rw [h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`. Conclude with `hΨ` after adjusting the coercions. Simplify using `using h1`. Rewrite using `[_root_.zpow_neg, Ne, inv_eq_one]`. Conclude with `hΨ` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e' : (((Ψ x ^ wt a b : kˣ) : k) - 1) * m.val a b = 0` using `by rw [sub_mul, e, one_mul, sub_self]`. Break down `mul_eq_zero.1 e' with h | h` into its components or cases. Conclude with `absurd (Units.ext (sub_eq_zero.1 h)) hne`. Conclude with `h`. Conclude with `Subtype.property (p := fun X => X ∈ gw k j) m a b hab`.
-
-Introduce `m m' h`. Establish `h' : gRep η Ψ j x m - m = gRep η Ψ j x m' - m'` using `h`. Use `sub_eq_zero.1 (hker _ ?_)` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_sub_iff_sub_eq_sub]`. Conclude with `h'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gRep_bij {k D : Type} [Field k] [Finite k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) {j : ℤ}
     (hj : j ≠ 0) (x : D) (hη : η x = 1) (hΨ : Ψ x ^ 2 ≠ 1) :
@@ -182,9 +174,9 @@ private theorem gRep_bij {k D : Type} [Field k] [Finite k] [Group D] (η : D →
   exact h'
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.Gal.ContAction`. Apply `IsLocallyConstant.continuous` to reduce the goal to its premises. Establish `h1 : IsLocallyConstant fun p : D' × Gb k j => ((η (φ p.1), Ψ (φ p.1)), p.2)` using `((hη.comp_continuous (hφ.comp continuous_fst)).prodMk (hΨ.comp_continuous (hφ.comp continuous_fst))).prodMk ((IsLocallyConstant.iff_continuous _).2 continuous_snd)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `p`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [h1 p] with q hq`. Simplify using `only [Prod.mk.injEq] at hq`. Apply `gb_ext` to reduce the goal to its premises. Use extensionality with `a b`. Rewrite using `[MonoidHom.comp_apply, MonoidHom.comp_apply, gRep_val, gRep_val, adRep_baseLift_apply, adRep_baseLift_apply, hq.1.1, hq.1.2, hq.2]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gRep_cont {k D D' : Type} [CommRing k] [Group D] [TopologicalSpace D] [Group D']
     [TopologicalSpace D'] (η : D →* ℤˣ) (Ψ : D →* kˣ) (j : ℤ) (hη : IsLocallyConstant η) (hΨ : IsLocallyConstant Ψ)
@@ -205,21 +197,17 @@ private theorem gRep_cont {k D D' : Type} [CommRing k] [Group D] [TopologicalSpa
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `_ hTD hEC Ω _ _ _ l hl c N _ e ψ o₁ hd S A F hF`. Establish `hok` using `hostFrame_ok Ω c e ψ o₁ hd S A F hF`. Establish `hx` using `exists_sigma Ω c e ψ o₁ hd S A F hF`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := (UpperTheory.V.Base.dvrFacts l c.O).2.2.1`. Use `haveI : Finite (ResidueField ℤ_[l]) := Finite.of_equiv _ (PadicInt.residueField (p := l)).symm.toEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite (ResidueField c.O) := Module.finite_of_finite (ResidueField ℤ_[l])`. Use `haveI : CharP (ResidueField c.O) l := by`. Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]`. Introduce `hu`. Conclude with `PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hΨ : IsLocallyConstant F.Ψbar`. Establish `h1` using `(hok.Ψ_cont 1)`. Rewrite `h1`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `g`. Use `filter_upwards [h1 g] with g' hg`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Use `show residue c.O (F.Ψ g') = residue c.O (F.Ψ g)`. Rewrite `hg` using `[Ideal.Quotient.eq, pow_one]`. Conclude with `Ideal.Quotient.eq.2 hg`. Establish `key : ∀ v ∈ F.Tb, ∀ j ≠ 0, Subsingleton (H2 (F.gloc j v)) ∧ (((l : ℕ) : NumberField.RingOfIntegers ℚ) ∉ v.1.asIdeal → Subsingleton (H1 (F.gloc j v)))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv j hj`. Take `⟨x, hη, hu, hc⟩` from `hx v hv`. Use `haveI := gb_finite (ResidueField c.O) j`. Establish `hloc : Continuous (F.loc v)` using `hok.π_cont.comp continuous_subtype_val`. Establish `hcont : ContAction (F.gloc j v)` using `gRep_cont F.η F.Ψbar j hok.η_cont hΨ (F.loc v) hloc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `vanish_k hTD hEC ℚ Ω l (ResidueField c.O) _ (A v) v.1 (F.D v) (hF.D v) (F.gloc j v) (hF.isOver v) hcont x hc (gRep_bij F.η F.Ψbar hj (F.loc v x) hη fun h => ?_)` and prove the remaining obligations. Establish `h2` using `(hu.map (residue c.O)).ne_zero`. Apply `h2` to reduce the goal to its premises. Rewrite using `[map_sub, map_pow, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val h`.
-
-Use `⟨fun v hv j hj => (key v hv j hj).1, fun v hv j hj => (key v (Set.mem_insert_of_mem _ hv) j hj).2 ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpv⟩` from `(hF.Sb v).1 hv`. Introduce `hlv`. Simplify using `only [HV.Sb, Finset.mem_filter] at hp`. Establish `hcop : Nat.Coprime p l` using `(Nat.coprime_primes (Nat.prime_of_mem_primeFactors hp.1) hl.out).2 hp.2.1`.
-
-Take `⟨a, b, hab⟩` from `(Nat.Coprime.cast (R := NumberField.RingOfIntegers ℚ) hcop)`. Conclude with `v.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ hpv) (Ideal.mul_mem_left _ _ hlv)))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.hostFrame_locVan :
     LocalFiniteness → LocalTateDuality → LocalEulerChar → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (c : Coef l) {N : ℕ} [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ →

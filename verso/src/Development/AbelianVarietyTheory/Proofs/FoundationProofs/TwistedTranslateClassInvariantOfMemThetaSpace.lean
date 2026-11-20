@@ -10,7 +10,7 @@ open scoped BigOperators
 namespace GlobalTheory.ThetaConj
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_pi_mul_I, ← Complex.exp_int_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_intCast_half (n : ℤ) : ee ((n : ℝ) / 2) = (-1 : ℂ) ^ n := by
   unfold ee
@@ -20,7 +20,7 @@ theorem ee_intCast_half (n : ℤ) : ee ((n : ℝ) / 2) = (-1 : ℂ) ^ n := by
   ring
 
 /- English proof (translation)
-Unfold `qH at h`. Unfold `al`. Rewrite using `[h, round_intCast]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem al_of_qH (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (m : ℤ) (h : qH D T x = m) :
     al D T x = (-1 : ℂ) ^ m := by
@@ -29,7 +29,7 @@ theorem al_of_qH (D : D7) (T : Tor D) {N N' : ℕ} (x : VC D N N') (m : ℤ) (h 
   rw [h, round_intCast]
 
 /- English proof (translation)
-Unfold `qH`. Rewrite using `[Hf_smul_left, Hf_add_left, Hf_add_right, Hf_add_right, Hf_conj D T y u]`. Establish `h1 : (w0 D).re = 1 / 2` using `by simp [w0]`. Establish `h2 : (w0 D).im = Real.sqrt D.host.d / 2` using `by simp [w0]`. Simplify using `only [Complex.add_re, Complex.conj_re, Complex.mul_im, h1, h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -43,15 +43,15 @@ theorem qH_add_im (D : D7) (T : Tor D) {N N' : ℕ} (y u : VC D N N') :
   ring
 
 /- English proof (translation)
-Introduce `x hx y hy hxy`. Establish `hu2 : x - y ∈ A₂` using `A₂.sub_mem hx hy`. Take `⟨u, rfl⟩ : ∃ u, x = y + u` from `⟨x - y, by abel⟩`. Rewrite `hxy`, `hu2` using `[add_sub_cancel_left]`. Take `⟨a, ha⟩` from `hq _ hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hq _ hy`. Take `⟨c, hc⟩` from `hq _ hu2`. Take `⟨k, hk⟩` from `hw _ hy _ hu2`. Establish `h1` using `qH_add_im D T y u`. Rewrite `h1` using `[ha, hb, hc, hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : -(Hf D T y u).im = ((a - b - c - 2 * k : ℤ) : ℝ)` using `by push_cast; linarith`. Use function extensionality and compare the values at `z`. Establish `h3` using `U_U D T y u F z`. Rewrite `h3` using `[h2, ee_intCast_half]`. Establish `h4 : al D T u * U D T y (U D T u F) z = U D T y F z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hF.2 u hxy (z + y)` as an intermediate fact. Use `conv_lhs => rw [U]`. Use `conv_rhs => rw [U]`. Rewrite using `[← mul_assoc, this]`. Unfold `aU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h4, h3, al_of_qH D T _ _ ha, al_of_qH D T _ _ hb, al_of_qH D T _ _ hc, ← mul_assoc, ← mul_assoc, ← zpow_add₀ (by norm_num), ← zpow_add₀ (by norm_num)]`. Use `congr 1`. Establish `: b + c + (a - b - c - 2 * k) = a + 2 * (-k)` using `by ring`. Rewrite using `[this, zpow_add₀ (by norm_num), zpow_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem repInd_of_thSp (D : D7) (T : Tor D) (N N' : ℕ) (A₁ A₂ : AddSubgroup (VC D N N'))
     (F : VC D N N' → ℂ) (hq : ∀ x ∈ A₂, ∃ m : ℤ, qH D T x = m)

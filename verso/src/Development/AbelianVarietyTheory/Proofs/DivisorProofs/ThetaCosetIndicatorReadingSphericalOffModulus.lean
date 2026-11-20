@@ -24,9 +24,9 @@ open GlobalTheory.NormRatio
 namespace GlobalTheory.NormRatio.SphCoset
 
 /- English proof (translation)
-Use `⟨⟨hL.1, hL.2.1⟩, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hL.2.2 y]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Establish `e : ∑ i, ∑ j, star (x i) * V.gram i j * y j = stdH D.host.E V.rank x y`. Rewrite using `[hV, stdH]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i (fun j _ hj => by rw [Matrix.one_apply_ne (Ne.symm hj), mul_zero, zero_mul]) (fun h => absurd (Finset.mem_univ i) h), Matrix.one_apply_eq, mul_one]`. Rewrite using `[e]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨b, hb⟩, fun ⟨b, hb⟩ => ⟨b, hb⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isSelfDualC_of_gram_one {D : D7} {V : HSp D} (hV : V.gram = 1) {L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hL : IsSDLat D.host.E V.rank L) : IsSelfDualC V L := by
@@ -42,7 +42,7 @@ theorem isSelfDualC_of_gram_one {D : D7} {V : HSp D} (hV : V.gram = 1) {L : Subm
   exact ⟨fun ⟨b, hb⟩ => ⟨b, hb⟩, fun ⟨b, hb⟩ => ⟨b, hb⟩⟩
 
 /- English proof (translation)
-Establish `hA : IsSelfDualC X.A (stdLat X.A)` using `isSelfDualC_of_gram_one hX.std.frame.gramA (Formalism.MainNotions.GlobalTheoryTheory.Inhab.stdL_isSD D _)`. Use `Formalism.IndefR.Fin.lat_ann hX.weil.std X.A X.B hA hLB ((hiff z).1 hz) ?_` and prove the remaining obligations. Use `AddSubgroup.closure_mono ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hαi, _, rest⟩`. Conclude with `⟨α, hαi, fun v hv => (hv trivial).elim, rest⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem psi_symplO_std {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (X : Data P) (r : D.host.E) (hX : IsExact P X r)
     (LB : Lat X.B) (hLB : IsSelfDualC X.B LB)
@@ -59,11 +59,9 @@ theorem psi_symplO_std {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q)
   exact ⟨α, hαi, fun v hv => (hv trivial).elim, rest⟩
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨1, ?_, _, Submodule.subset_span fun x hx i _ => ?_, (one_smul _ _).symm⟩` and prove the remaining obligations. Use `FractionalIdeal.one_mem_inv_coe_ideal fun h => ?_` and prove the remaining obligations. Establish `h2` using `D.host.𝔟_spec.2`. Rewrite `h2` using `[h, Ideal.smul_bot, sup_bot_eq]`. Conclude with `bot_ne_top h2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∑ j, unitBlock D o a d i j * x j ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)` using `sum_mem fun j _ => by`. Use `hx j trivial` as an intermediate fact. Distinguish the cases in `h : i.1 = o + j.1`. Simplify `this` using `[unitBlock, h]`. Simplify using `[unitBlock, h]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitBlock_mem (D : D7) (o a d : ℕ) :
     unitBlock D o a d ∈ Formalism.MainNotions.TaylorLogMetric.YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (Formalism.MainNotions.StandardLatticesGL3.stdL D d) := by
@@ -80,19 +78,19 @@ theorem unitBlock_mem (D : D7) (o a d : ℕ) :
     exact this
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem g hg => exact hs g hg`. Consider the case `zero => exact ⟨fun u _ => by funext w; simp [heisO], fun e _ u _ _ => by funext w; simp [heisO]⟩`. Consider the case `add f g _ _ hf hg`. Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hf.1 u hu`. Establish `h2` using `hg.1 u hu`. Use function extensionality and compare the values at `w`. Establish `e1` using `congrFun h1 w`. Establish `e2` using `congrFun h2 w`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [heisO, Pi.add_apply] at e1 e2 ⊢`. Rewrite using `[mul_add, e1, e2]`. Establish `h1` using `hf.2 e he u hu hh`. Establish `h2` using `hg.2 e he u hu hh`. Use function extensionality and compare the values at `w`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1` using `congrFun h1 w`. Establish `e2` using `congrFun h2 w`. Simplify using `only [heisO, Pi.add_apply] at e1 e2 ⊢`. Rewrite using `[mul_add, e1, e2]`. Consider the case `smul c f _ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `⟨fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations. Establish `h1` using `hf.1 u hu`. Use function extensionality and compare the values at `w`. Establish `e1` using `congrFun h1 w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at e1 ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_left_comm, e1]`. Establish `h1` using `hf.2 e he u hu hh`. Use function extensionality and compare the values at `w`. Establish `e1` using `congrFun h1 w`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at e1 ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_left_comm, e1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLatVac_span {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {Γ : AddSubgroup (WO S T)} {s : Set (WO S T → ℂ)}
     (hs : ∀ g ∈ s, IsLatVac (heisO ψ S T) Γ g) {φ : WO S T → ℂ} (hφ : φ ∈ Submodule.span ℂ s) :
@@ -120,17 +118,15 @@ theorem isLatVac_span {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {�
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `IsNoetherian.noetherian 𝔫`. Establish `hg : ∀ v : FinPl D, ∃ n : 𝓞 D.host.F, ¬ 𝔫 ≤ v.asIdeal → n ∈ s ∧ n ∉ v.asIdeal` using `fun v => by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `(h 0).1 (hs ▸ Submodule.span_le.2 fun n hn => (h n).2 hn)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose g hg using hg`. Use `⟨s, fun n => ((n : D.host.F)⁻¹) • (GlobalTheory.SelfDualAt.indP (fun v => ¬ 𝔫 ≤ v.asIdeal ∧ g v = n) * α), fun n hn => hs ▸ Submodule.subset_span hn, fun n v => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_mul, GlobalTheory.SelfDualAt.evalV_indP] split_ifs with h`. Establish `h1 : n ∉ v.asIdeal` using `h.2 ▸ (hg v h.1).2`. Establish `h2 : v.valuation D.host.F (n : D.host.F) = 1` using `(v.valuation_eq_one_iff_notMem).2 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_mul, Algebra.smul_def]`. Use `mul_mem ?_ (hα v)` and prove the remaining obligations. Use `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 ?_` and prove the remaining obligations. Establish `h3` using `v.valuedAdicCompletion_eq_valuation' (K := D.host.F) ((n : D.host.F)⁻¹)`. Conclude with `(h3.trans ((map_inv₀ _ _).trans (by rw [h2, inv_one]))).le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zero_mul, smul_zero]`. Conclude with `zero_mem _`. Use `FiniteAdeleRing.ext (R := 𝓞 D.host.F) D.host.F fun v => ?_ show evalV D.host.F v α = evalV D.host.F v _` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [Algebra.smul_def, map_mul, AlgHom.commutes, GlobalTheory.SelfDualAt.evalV_indP]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : 𝔫 ≤ v.asIdeal`. Rewrite using `[h0 v h]`. Conclude with `(Finset.sum_eq_zero fun n _ => by rw [mul_zero, mul_zero, mul_zero]).symm`. Establish `hn : (g v : D.host.F) ≠ 0` using `fun e => (hg v h).2 (by`. Rewrite using `[show g v = 0 from by exact_mod_cast e]; exact zero_mem _)`.
-
-Rewrite using `[Finset.sum_eq_single (g v) (fun n _ hn => by rw [if_neg fun h => hn h.2.symm, zero_mul, mul_zero, mul_zero]) (fun h' => absurd (hg v h).1 h'), if_pos ⟨h, rfl⟩, one_mul, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hn, map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sum_eq {D : D7} (𝔫 : Ideal (𝓞 D.host.F)) {α : Af D.host.F} (hα : α ∈ Formalism.MainNotions.StandardLattice.intAf D.host.F)
     (h0 : ∀ v : FinPl D, 𝔫 ≤ v.asIdeal → evalV D.host.F v α = 0) :
@@ -167,17 +163,15 @@ theorem exists_sum_eq {D : D7} (𝔫 : Ideal (𝓞 D.host.F)) {α : Af D.host.F}
         (fun h' => absurd (hg v h).1 h'), if_pos ⟨h, rfl⟩, one_mul, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hn, map_one, one_mul]
 
 /- English proof (translation)
-Establish `hc : (D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) ≠ ⊥` using `fun h => hm (by`. Use `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h` as an intermediate fact. Simplify using `using this)`. Establish `h1 : ∀ A ∈ Formalism.MainNotions.TaylorLogMetric.homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (skewLat D 𝔪 d), b • A ∈ Formalism.MainNotions.TaylorLogMetric.homL D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (Formalism.MainNotions.StandardLatticesGL3.stdL …`. Introduce `A hA`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Use `Submodule.subset_span fun x hx i _ => ?_` and prove the remaining obligations. Establish `h2` using `(FractionalIdeal.mem_div_iff_of_ne_zero (FractionalIdeal.coeIdeal_ne_zero.2 hc)).1 (FractionalIdeal.mem_coe.1 (hA x hx i trivial)) _ (FractionalIdeal.mem_coeIdeal_of_mem _ hb)`. Establish `h3` using `FractionalIdeal.coeIdeal_le_one h2`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mulVec, Pi.smul_apply, Algebra.smul_def, mul_comm]`. Conclude with `Submodule.mem_one.2 ((FractionalIdeal.mem_one_iff _).1 h3)`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem B hB`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc, A, hA, rfl⟩` from `hB`. Conclude with `Submodule.subset_span ⟨c, hc, _, h1 A hA, smul_comm _ _ _⟩`. Consider the case `zero => rw [smul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_std {D : D7} {𝔪 : Ideal (𝓞 D.host.E)} (hm : 𝔪 ≠ ⊥) {b : 𝓞 D.host.E} (hb : b ∈ D.host.conj • 𝔪) {a d : ℕ}
     {z : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ Formalism.MainNotions.TaylorLogMetric.YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D a) (skewLat D 𝔪 d)) :
@@ -208,17 +202,15 @@ theorem smul_mem_std {D : D7} {𝔪 : Ideal (𝓞 D.host.E)} (hm : 𝔪 ≠ ⊥)
   | smul c x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Establish `hG` using `(GlobalTheory.InducedType.induced_type D).1`. Set `K : AddSubgroup (Formalism.MainNotions.TaylorLogMetric.VC D a d)` to `{ carrier := {x | ∃ z ∈ Formalism.MainNotions.TaylorLogMetric.YYl D L L', x = Formalism.MainNotions.StandardLatticesGL3.pt D (Formalism.MainNotions.TaylorLogMetric.tor0 D ⊤ δ) δ z} zero_mem' := ⟨0, zero_mem _, by funext τ i j; simp [Formalism.MainNotions.StandardLatticesGL3.pt, F …`. Introduce and unpack `_ _ ⟨z, hz, rfl⟩ ⟨w, hw, rfl⟩`. Conclude with `⟨z + w, add_mem hz hw, by funext τ i j; simp [Formalism.MainNotions.StandardLatticesGL3.pt, Formalism.MainNotions.TaylorLogMetric.embV, Formalism.MainNotions.TaylorLogMetric.tor0, mul_add]⟩`. Use the proof step `neg_mem' := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `⟨-z, neg_mem hz, by funext τ i j; simp [Formalism.MainNotions.StandardLatticesGL3.pt, Formalism.MainNotions.TaylorLogMetric.embV, Formalism.MainNotions.TaylorLogMetric.tor0]⟩ }`. Use `(AddSubgroup.closure_le K).2 ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Express the relevant statement in the definitionally equal form `w ∈ Formalism.MainNotions.TaylorLogMetric.lamOf D ⊤ δ at hw`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Use `show _ ∈ K`. Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨c, -, rfl⟩` from `hw`. Use `⟨algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c • A, Submodule.smul_mem _ _ hA, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ i j`. Establish `e` using `hG.1 τ (c : D.host.K)`. Establish `e2 : (algebraMap (𝓞 D.host.K) (𝓞 D.host.E) c • A) i j = ((c : D.host.K) : D.host.E) * A i j` using `rfl`. Simplify using `only [Formalism.MainNotions.StandardLatticesGL3.pt, Formalism.MainNotions.TaylorLogMetric.embV, Formalism.MainNotions.TaylorLogMetric.tor0, Pi.smul_apply, smul_eq_mul, e2, map_mul]`. Rewrite using `[e, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add u v _ _ hu hv => rw [add_smul]`. Conclude with `add_mem hu hv`. Consider the case `neg u _ hu => rw [neg_smul]`.
-
-Conclude with `neg_mem hu`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pt {D : D7} (δ : ℂ) {a d : ℕ} (L : Submodule (𝓞 D.host.E) (Fin a → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin d → D.host.E)) {x : Formalism.MainNotions.TaylorLogMetric.VC D a d}
@@ -252,7 +244,7 @@ theorem exists_pt {D : D7} (δ : ℂ) {a d : ℕ} (L : Submodule (𝓞 D.host.E)
   | neg u _ hu => rw [neg_smul]; exact neg_mem hu
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨(GlobalTheory.FinWeilO.thetaSub ψ S T).zero_mem, fun w _ => by simp⟩`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reads_sum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {a d : ℕ} {hS : S.rank = a} {hT : T.rank = d}
     {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {r : D.host.E} {ι : Type} (s : Finset ι) {G : ι → Formalism.MainNotions.TaylorLogMetric.VC D a d → ℂ}
@@ -263,7 +255,7 @@ theorem reads_sum {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]; exact (h i).add ih
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [heisO, Finset.sum_apply, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun q _ => mul_left_comm _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heisO_sum {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : WO S T) {ι : Type} (s : Finset ι) (c : ι → ℂ)
     (f : ι → WO S T → ℂ) : heisO ψ S T x (∑ q ∈ s, c q • f q) = ∑ q ∈ s, c q • heisO ψ S T x (f q) := by
@@ -274,15 +266,13 @@ theorem heisO_sum {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (x : W
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D δ t0 Q P X r hX 𝔪 o f₀ φ hf₀ hφ`. Use `set Tr := Formalism.MainNotions.TaylorLogMetric.tor0 D ⊤ δ with hTr`. Use `set L₁ := Formalism.MainNotions.TaylorLogMetric.La D Tr (Formalism.MainNotions.StandardLatticesGL3.stdL D P.a) (skewLat D 𝔪 P.d) with hL₁`. Use `set L₀ := Formalism.MainNotions.StandardLatticesGL3.La0 D Tr P.a P.d with hL₀`. Use `choose z hz hzx using fun q : L₁ ⧸ L₀.addSubgroupOf L₁ => exists_pt δ _ _ (Quotient.out q : L₁).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hU` using `fun G f (h : Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r G f) => GlobalTheory.NormExact.heisO_finPt_reads X.ψ X.θ X.A X.B X.rkA X.rkB ⊤ δ r hX.setup G f h`. Choose the witnesses or unpack the hypotheses as in `⟨s, c, hs⟩ : ∃ (s : Finset (L₁ ⧸ L₀.addSubgroupOf L₁)) (c : L₁ ⧸ L₀.addSubgroupOf L₁ → ℂ), Formalism.MainNotions.TaylorLogMetric.Iop D Tr L₀ L₁ P.e0 = ∑ q ∈ s, c q • Formalism.MainNotions.TaylorLogMetric.U D Tr (Formalism.MainNotions.StandardLatticesGL3.pt D Tr δ (z q)) P.e0 := b …`. Distinguish the cases in `hfin : Finite (L₁ ⧸ L₀.addSubgroupOf L₁)`. Use `Fintype.ofFinite (L₁ ⧸ L₀.addSubgroupOf L₁)` as an intermediate fact. Use `⟨Finset.univ, fun q => ((Real.sqrt ((L₀.addSubgroupOf L₁).index : ℝ))⁻¹ : ℂ) * Formalism.MainNotions.TaylorLogMetric.al D Tr ((Quotient.out q : L₁) : Formalism.MainNotions.TaylorLogMetric.VC D P.a P.d), funext fun y => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.MainNotions.TaylorLogMetric.Iop, finsum_eq_sum_of_fintype, Finset.sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← hzx q, mul_assoc]`. Use `⟨∅, 0, funext fun y => ?_⟩` and prove the remaining obligations. Establish `: (L₀.addSubgroupOf L₁).index = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Infinite (L₁ ⧸ L₀.addSubgroupOf L₁)` using `not_finite_iff_infinite.1 hfin`. Conclude with `Nat.card_eq_zero_of_infinite`. Simplify using `[Formalism.MainNotions.TaylorLogMetric.Iop, this]`. Establish `h1` using `reads_sum s fun q => (hU _ _ hf₀ (z q)).smul (c q)`. Rewrite `h1` using `[← hs]`.
-
-Establish `h2` using `((hU _ _ h1 (unitBlock D o P.a P.d)).smul (Formalism.MainNotions.StandardLatticesGL3.wdPh D Tr (Formalism.MainNotions.StandardLatticesGL3.pt D Tr δ (unitBlock D o P.a P.d)))).smul ((Real.sqrt ((Ideal.absNorm 𝔪 : ℝ) ^ (P.a * P.d)) : ℂ))⁻¹`. Rewrite using `[Reads.unique hφ h2]`. Use `Submodule.smul_mem _ _ (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite using `[heisO_sum]`. Conclude with `sum_mem fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨z q, hz q, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (X : Data P) (r : D.host.E), IsExact P X r →
   ∀ (𝔪 : Ideal (𝓞 D.host.E)) (o : ℕ) (f₀ φ : WO X.A X.B → ℂ), Reads X.ψ X.θ X.rkA X.rkB ⊤ δ r P.e0 f₀ →
@@ -324,9 +314,7 @@ set_option synthInstance.maxHeartbeats 200000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Use `show algebraMap D.host.F (AF D.host.F) n • ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] (-(r⁻¹ * z (Fin.cast hT i) (Fin.cast hS j))) : AE D) = (pairA D.host.F 0 1) ⊗ₜ[D.host.F] (-(r⁻¹ * (((n : D.host.F) : D.host.E) * z (Fin.cast hT i) (Fin.cast hS j))))`. Rewrite using `[TensorProduct.smul_tmul', algebraMap_smul, TensorProduct.smul_tmul]`. Use `congr 1`. Use `show ((n : D.host.F) : D.host.E) * _ = _`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem smul_finPt {D : D7} {S T : HSp D} {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (r : D.host.E) (n : 𝓞 D.host.F)
     (z : Matrix (Fin d) (Fin a) D.host.E) : algebraMap D.host.F (AF D.host.F) n • finPt hS hT r z =
@@ -342,23 +330,21 @@ theorem smul_finPt {D : D7} {S T : HSp D} {a d : ℕ} (hS : S.rank = a) (hT : T.
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D δ t0 Q P X r hX 𝔪 Sf hm LB hLB hiff z hz u hu`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `zero => rw [Formalism.IndefR.Fin.symplO_zero_right, AddChar.map_zero_eq_one]`. Consider the case `add u1 u2 _ _ h1 h2 => rw [Formalism.IndefR.Fin.symplO_add_right, AddChar.map_add_eq_mul, h1, h2, one_mul]`. Consider the case `neg u' _ h => rw [Formalism.IndefR.Fin.symplO_neg_right, AddChar.map_neg_eq_inv, h, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem u hu`. Take `⟨α, hα, h0, c, hc, s, hs, t, ht, rfl⟩` from `hu`. Take `⟨N, β, hN, hβ, rfl⟩` from `exists_sum_eq (𝔪.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))) hα fun v hv => by`. Use `h0 v (not_not.2 ((hm.2.2.2 v).2 ?_))` and prove the remaining obligations. Use `v.isPrime` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨w, h1, h2, h3⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal 𝔪 hv`. Conclude with `⟨⟨w, h2, fun h => hm.1 (le_bot_iff.1 (h ▸ h1))⟩, h1, HeightOneSpectrum.ext h3⟩`. Use `clear hα h0`. Generalize the expression as in `hm' : (fun i j => c * t i * ∑ k, star (s k) * X.A.gram k j) = m`. Establish `hgen : ∀ n, (Matrix.of fun i j => (pairA D.host.F 0 (β n)) ⊗ₜ[D.host.F] m i j : WO X.A X.B) ∈ latO X.A X.B (stdLat X.A) LB fun _ => True` using `fun n => AddSubgroup.subset_closure ⟨β n, hβ n, fun v h => (h trivial).elim, c, hc, s, hs, t, ht, by rw [← hm']⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : (Matrix.of fun i j => (pairA D.host.F 0 (∑ n ∈ N, (n : D.host.F) • β n)) ⊗ₜ[D.host.F] (c * t i * ∑ k, star (s k) * X.A.gram k j) : WO X.A X.B) = Matrix.of fun i j => (pairA D.host.F 0 (∑ n ∈ N, (n : D.host.F) • β n)) ⊗ₜ[D.host.F] m i j` using `by rw [← hm']`. Rewrite using `[e0]`. Use `clear e0`. Proceed by induction on `N using Finset.induction_on with`. Consider the case `empty`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: (Matrix.of fun i j => (pairA D.host.F 0 (∑ n ∈ (∅ : Finset (𝓞 D.host.F)), (n : D.host.F) • β n)) ⊗ₜ[D.host.F] m i j : WO X.A X.B) = 0`. Use function extensionality and compare the values at `i j`. Rewrite using `[Finset.sum_empty]`. Conclude with `TensorProduct.zero_tmul _ _`. Rewrite using `[this, Formalism.IndefR.Fin.symplO_zero_right, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `insert n N hn ih`. Establish `e1 : (Matrix.of fun i j => (pairA D.host.F 0 (∑ n ∈ insert n N, (n : D.host.F) • β n)) ⊗ₜ[D.host.F] m i j : WO X.A X.B) = algebraMap D.host.F (AF D.host.F) n • (Matrix.of fun i j => (pairA D.host.F 0 (β n)) ⊗ₜ[D.host.F] m i j : WO X.A X.B) + Matrix.of fun i j => (pairA D.host.F 0 …`. Use function extensionality and compare the values at `i j`. Rewrite using `[Finset.sum_insert hn, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, Matrix.of_apply, Matrix.of_apply, TensorProduct.smul_tmul', ← TensorProduct.add_tmul, smul_eq_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (0 : Ainf D.host.F) = _ * 0 + 0`. Rewrite using `[mul_zero, add_zero]`. Use `show _ = algebraMap D.host.F (Af D.host.F) n * β n + _`. Rewrite using `[← Algebra.smul_def]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Both sides reduce to the same expression. Establish `hb : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) n ∈ D.host.conj • 𝔪`. Establish `h1` using `Ideal.smul_mem_pointwise_smul D.host.conj _ 𝔪 (hN n (Finset.mem_insert_self _ _))`. Establish `h2 : D.host.conj • algebraMap (𝓞 D.host.F) (𝓞 D.host.E) n = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) n` using `RingOfIntegers.ext ((D.host.conjE_mem_hostF_iff _).1 (n : D.host.F).2)`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis.
-
-Rewrite using `[e1, Formalism.IndefR.Fin.symplO_add_right, AddChar.map_add_eq_mul, ih fun k hk => hN k (Finset.mem_insert_of_mem hk), mul_one, GlobalTheory.SelfDualAt.symplO_smul_swap, smul_finPt]`. Conclude with `psi_symplO_std P X r hX LB hLB hiff _ (smul_mem_std hm.1 hb hz) _ _ (hgen n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_symplO_skew : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (X : Data P) (r : D.host.E), IsExact P X r →
   ∀ (𝔪 : Ideal (𝓞 D.host.E)) (Sf : Finset (FinPl D)), GoodMod D 𝔪 Sf →
@@ -422,11 +408,9 @@ theorem psi_symplO_skew : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ �
       exact psi_symplO_std P X r hX LB hLB hiff _ (smul_mem_std hm.1 hb hz) _ _ (hgen n)
 
 /- English proof (translation)
-Introduce `D δ t0 Q P X r hX 𝔪 Sf o hm LB hLB hiff f₀ φ hf₀ hsph hφ`. Establish `hstd : IsStdChar D X.ψ (-1)` using `hX.weil.std`. Use `set Γ := latO X.A X.B (stdLat X.A : Set (Fin X.A.rank → D.host.E)) (LB : Set (Fin X.B.rank → D.host.E)) (fun v => v ∉ Sf) with hΓ`. Establish `hle : Γ ≤ latO X.A X.B (stdLat X.A : Set (Fin X.A.rank → D.host.E)) (LB : Set (Fin X.B.rank → D.host.E)) (fun v => v ∉ (∅ : Finset (FinPl D)))` using `AddSubgroup.closure_mono fun _ ⟨α, hαi, _, rest⟩ => ⟨α, hαi, fun v hv => (hv (Finset.notMem_empty v)).elim, rest⟩`. Establish `hv0 : GlobalTheory.Asc.VacG X.ψ X.A X.B Γ f₀` using `⟨hf₀.1, fun u hu => hsph.1 u (hle hu), fun e he u hu hh => hsph.2 e he u (hle hu) hh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `toAnn : ∀ w : WO X.A X.B, (∀ u ∈ Γ, X.ψ (symplO X.A X.B w u) = 1) → w ∈ GlobalTheory.Asc.Ann X.ψ X.A X.B Γ` using `fun w h => ⟨fun u hu => h _ (Γ.nsmul_mem hu 2), fun e _ u hu _ => h u hu⟩`. Establish `key` using `(GlobalTheory.Asc.annVac D X.ψ hstd X.A X.B Γ).1`. Establish `hgen : ∀ g ∈ {g | ∃ z ∈ Formalism.MainNotions.TaylorLogMetric.YYl D (Formalism.MainNotions.StandardLatticesGL3.stdL D P.a) (skewLat D 𝔪 P.d), g = heisO X.ψ X.A X.B (finPt X.rkA X.rkB r (unitBlock D o P.a P.d)) (heisO X.ψ X.A X.B (finPt X.rkA X.rkB r z) f₀)}, IsLatVac (heisO X.ψ X …`. Introduce and unpack `g ⟨z, hz, rfl⟩`. Conclude with `(key _ (key _ hv0 _ (toAnn _ (psi_symplO_skew P X r hX 𝔪 Sf hm LB hLB hiff z hz))) _ (toAnn _ (psi_symplO_std P X r hX LB hLB hiff _ (unitBlock_mem D o P.a P.d) _))).2`.
-
-Conclude with `isLatVac_span hgen (mem_span P X r hX 𝔪 o f₀ φ hf₀ hφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem sph : ∀ {D : D7} {δ t0 : ℂ} {Q : ℕ} (P : Pair D ⊤ δ t0 Q) (X : Data P) (r : D.host.E), IsExact P X r →
   ∀ (𝔪 : Ideal (𝓞 D.host.E)) (Sf : Finset (FinPl D)) (o : ℕ), GoodMod D 𝔪 Sf →

@@ -10,51 +10,45 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ hO hcyc U U' P hP LT`. Take `⟨⟨hdom, hdvr, hfr⟩, hfd, hmt, htr, hopen⟩` from `hO`. Use `haveI := hfr`. Use `haveI : Module.Finite O LT.T := Module.Finite.iff_fg.mpr LT.fg`. Use `haveI : Module.Free O LT.T := LT.free`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis O LT.T`. Set `e : Module.Free.ChooseBasisIndex O LT.T → U.V` to `fun i => (b i : U.V)`. Establish `he_O : LinearIndependent O e` using `b.linearIndependent.map' LT.T.subtype (Submodule.ker_subtype _)`. Establish `he_L : LinearIndependent LL e` using `(LinearIndependent.iff_fractionRing O LL).mp he_O`. Establish `hspanO : Submodule.span O (Set.range e) = LT.T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : Set.range e = LT.T.subtype '' Set.range b` using `(Set.range_comp _ _)`. Rewrite using `[h1, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspanL : Submodule.span LL (Set.range e) = ⊤`. Rewrite using `[← Submodule.span_span_of_tower O LL (Set.range e), hspanO]`. Conclude with `LT.span`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `bL` to `Basis.mk he_L (le_of_eq hspanL.symm)`. Establish `hbL : ∀ i, bL i = e i` using `fun i => Basis.mk_apply _ _ _`. Set `φ : U'.V →ₗ[LL] (Module.Free.ChooseBasisIndex O LT.T → LL)` to `LinearMap.pi (fun i => P (e i))`. Establish `hφ : ∀ y i, φ y i = P (e i) y` using `fun _ _ => rfl`. Establish `hφinj : Function.Injective φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y hy`. Apply `hP.2.2.1 y` to reduce the goal to its premises. Introduce `x`. Establish `h1 : P.flip y = 0` using `bL.ext (fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hbL]`. Simplify `congrFun hy i)` using `[hφ]`. Simplify using `using LinearMap.congr_fun h1 x`. Establish `hdim : finrank LL U'.V = finrank LL (Module.Free.ChooseBasisIndex O LT.T → LL)`. Rewrite using `[← hP.2.2.2, Module.finrank_fintype_fun_eq_card, Module.finrank_eq_card_basis bL]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφsurj : Function.Surjective φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hdim).mp hφinj`. Set `φe : U'.V ≃ₗ[LL] (Module.Free.ChooseBasisIndex O LT.T → LL)` to `LinearEquiv.ofBijective φ ⟨hφinj, hφsurj⟩`. Set `bf` to `(Pi.basisFun LL (Module.Free.ChooseBasisIndex O LT.T)).map φe.symm`. Establish `hφf : ∀ i j, P (e j) (bf i) = (Pi.single i (1 : LL) : Module.Free.ChooseBasisIndex O LT.T → LL) j` using `fun i j => by`. Establish `: φ (bf i) = Pi.single i 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [bf, Basis.map_apply, Pi.basisFun_apply]`. Conclude with `φe.apply_symm_apply _`. Conclude with `congrFun this j`. Set `T' : Submodule O U'.V` to `{ carrier := {y | ∀ x ∈ LT.T, ∃ a : O, P x y = algebraMap O LL a} add_mem' := by`. Introduce `y z hy hz x hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hy x hx`. Take `⟨c, hc⟩` from `hz x hx`. Conclude with `⟨a + c, by simp [ha, hc]⟩`. Use the proof step `zero_mem' := fun x _ => ⟨0, by simp⟩`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `c y hy x hx`. Take `⟨a, ha⟩` from `hy x hx`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Use `show P x (c • y) = _`. Rewrite using `[← algebraMap_smul LL c y, map_smul, ha, smul_eq_mul, map_mul] }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : ∀ y, y ∈ T' ↔ ∀ x ∈ LT.T, ∃ a : O, P x y = algebraMap O LL a` using `fun y => Iff.rfl`. Establish `hmem' : ∀ y, y ∈ T' ↔ ∀ i, P (e i) y ∈ Set.range (algebraMap O LL)`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `hy (e i) (b i).2`. Conclude with `⟨a, ha.symm⟩`. Introduce `hy x hx choose a ha using hy`. Establish `hx' : x = ∑ i, (b.repr ⟨x, hx⟩ i) • e i`. Establish `h2` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[Submodule.coe_sum]`. Conclude with `h2.symm`. Take `⟨c, hcx⟩ : ∃ c : Module.Free.ChooseBasisIndex O LT.T → O, x = ∑ i, c i • e i` from `⟨_, hx'⟩`. Use `⟨∑ i, c i * a i, ?_⟩` and prove the remaining obligations. Rewrite using `[hcx, map_sum, LinearMap.sum_apply, map_sum (algebraMap O LL)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← algebraMap_smul LL (c i) (e i), map_smul, LinearMap.smul_apply, ← ha i, smul_eq_mul, map_mul]`. Establish `hf_mem : ∀ i, bf i ∈ T'` using `fun i => (hmem' _).mpr fun j => by`. Rewrite using `[hφf]`. Use `⟨(Pi.single i (1 : O) : Module.Free.ChooseBasisIndex O LT.T → O) j, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne j i with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Establish `hT'eq : T' = Submodule.span O (Set.range bf)`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `y hy choose a ha using (hmem' y).mp hy`. Establish `hy' : y = ∑ i, a i • bf i`. Apply `hφinj` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[hφ, hφ, map_sum, ← ha j]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Repeatedly rewrite using `[← algebraMap_smul LL (a _) (bf _), map_smul, hφf, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using the standard rewrite rules. Rewrite using `[hy']`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `hf_mem i`. Establish `hfO : LinearIndependent O bf` using `(LinearIndependent.iff_fractionRing O LL).mpr bf.linearIndependent`. Establish `hstab : ∀ g, ∀ y ∈ T', U'.ρ g y ∈ T'`. Introduce `g y hy x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨u, hu⟩` from `hcyc g`. Take `⟨a, ha⟩` from `hy (U.ρ g⁻¹ x) (LT.stable g⁻¹ x hx)`. Use `⟨u * a, ?_⟩` and prove the remaining obligations. Establish `hx' : U.ρ g (U.ρ g⁻¹ x) = x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hP.1 g (U.ρ g⁻¹ x) y`. Rewrite `h3` using `[hx']`. Rewrite using `[h3, hu, ha, map_mul]`. Establish `hopenT : IsOpen (T' : Set U'.V)`. Establish `h4 : (T' : Set U'.V) = ⋂ i, (fun y => P (e i) y) ⁻¹' Set.range (algebraMap O LL)`.
-
-Use extensionality with `y`. Simplify using `only [Set.mem_iInter, Set.mem_preimage, SetLike.mem_coe]`. Conclude with `hmem' y`. Rewrite using `[h4]`. Conclude with `isOpen_iInter_of_finite (fun i => hopen.preimage (IsModuleTopology.continuous_of_linearMap (R := LL) (P (e i))))`.
-
-Use `⟨⟨T', hstab, ?_, ?_, ?_⟩, ⟨hP, hmem⟩, hopenT⟩` and prove the remaining obligations. Rewrite using `[hT'eq]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Rewrite using `[hT'eq]`. Conclude with `Module.Free.of_basis (Basis.span hfO)`.
-
-Rewrite using `[hT'eq, Submodule.span_span_of_tower O LL]`. Conclude with `bf.span_eq`.
+A detailed English derivation is pending.
 -/
 theorem exists_dualLat_isOpen : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]
     [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K]

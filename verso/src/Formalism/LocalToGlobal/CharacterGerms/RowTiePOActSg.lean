@@ -14,31 +14,31 @@ open PartialDerivEval LogEx OActLog
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[FB.actK, Algebra.algebraMap_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem actK_self (B : FB C dd O) (a : O) : B.actK C a = B.A.act a := by
   funext i
   simp [FB.actK, Algebra.algebraMap_self]
 
 /- English proof (translation)
-Rewrite using `[pderiv_eval_single (pt C dd 0) (coordinate_point_constantCoeff 0), sum_d_pt_other (0 : Fin 2) 1 (by decide)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_second_eval_first (f : PS C 1 dd) (i : Fin dd) : pderiv C ((1 : Fin 2), i) (ev (n := 2) ![pt C dd 0] f) = 0 := by
   rw [pderiv_eval_single (pt C dd 0) (coordinate_point_constantCoeff 0), sum_d_pt_other (0 : Fin 2) 1 (by decide)]
 
 /- English proof (translation)
-Rewrite using `[pderiv_eval_single (pt C dd 1) (coordinate_point_constantCoeff 1), sum_d_pt_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pderiv_second_eval_second (f : PS C 1 dd) (i : Fin dd) :
     pderiv C ((1 : Fin 2), i) (ev (n := 2) ![pt C dd 1] f) = ev (n := 2) ![pt C dd 1] (pderiv C ((0 : Fin 1), i) f) := by
   rw [pderiv_eval_single (pt C dd 1) (coordinate_point_constantCoeff 1), sum_d_pt_self]
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin dd => (![pt C dd 0] : Fin 1 → Pt C 2 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by simp [pt])`. Establish `hb : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by`. Break down `p with ⟨j, i⟩` into its components or cases. Apply the tactic sequence `fin_cases j <;> simp [pt])`. Unfold `ev`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Establish `hX : (fun s : Fin 1 × Fin dd => MvPowerSeries.subst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) ((![pt C dd 0] : Fin 1 → Pt C 2 dd) s.1 s.2)) = MvPowerSeries.X`. Use function extensionality and compare the values at `s`. Break down `s with ⟨j, i⟩` into its components or cases. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `show MvPowerSeries.subst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (MvPowerSeries.X ((0 : Fin 2), i)) = MvPowerSeries.X ((0 : Fin 1), i)`. Rewrite using `[MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression. Rewrite using `[hX, MvPowerSeries.subst_self]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_first_then_zero (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0, 0] (ev (n := 2) ![pt C dd 0] f) = f := by
   have ha : MvPowerSeries.HasSubst
@@ -65,11 +65,11 @@ theorem eval_first_then_zero (f : PS C 1 dd) : ev (n := 1) ![pt C dd 0, 0] (ev (
   rfl
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin dd => (![pt C dd 1] : Fin 1 → Pt C 2 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by simp [pt])`. Establish `hb : MvPowerSeries.HasSubst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun p => by`. Break down `p with ⟨j, i⟩` into its components or cases. Apply the tactic sequence `fin_cases j <;> simp [pt])`. Unfold `ev`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Establish `hX : (fun s : Fin 1 × Fin dd => MvPowerSeries.subst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) ((![pt C dd 1] : Fin 1 → Pt C 2 dd) s.1 s.2)) = 0`. Use function extensionality and compare the values at `s`. Break down `s with ⟨j, i⟩` into its components or cases. Take `rfl : j = 0` from `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `show MvPowerSeries.subst (fun p : Fin 2 × Fin dd => (![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) p.1 p.2) (MvPowerSeries.X ((1 : Fin 2), i)) = 0`. Rewrite using `[MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression. Rewrite using `[hX, MvPowerSeries.subst_zero_eq_C_constantCoeff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_second_then_zero (f : PS C 1 dd) :
     ev (n := 1) ![pt C dd 0, 0] (ev (n := 2) ![pt C dd 1] f) = MvPowerSeries.C (constantCoeff f) := by
@@ -97,29 +97,23 @@ theorem eval_second_then_zero (f : PS C 1 dd) :
   simp
 
 /- English proof (translation)
-Use `set φ := Y.B.A.act α with hφdef`. Use `set ψ := Y.B.A.act (star α) with hψdef`. Establish `hφ0 : ∀ j, constantCoeff (φ j) = 0` using `Y.B.A.const α`. Establish `hψ0 : ∀ j, constantCoeff (ψ j) = 0` using `Y.B.A.const (star α)`. Use `set A : Pt C 2 dd := comp1 φ (pt C (n := 2) dd 0) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Bp : Pt C 2 dd := comp1 ψ (pt C (n := 2) dd 1) with hBp`. Establish `hA0 : ∀ j, constantCoeff (A j) = 0` using `fun j => const_ev (z0_1 _ (coordinate_point_constantCoeff 0)) (hφ0 j)`. Establish `hB0 : ∀ j, constantCoeff (Bp j) = 0` using `fun j => const_ev (z0_1 _ (coordinate_point_constantCoeff 1)) (hψ0 j)`. Establish `hZA : Z0 (![A, pt C dd 1] : Fin 2 → Pt C 2 dd)`. Introduce `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fin_cases k`. Conclude with `hA0 j`. Conclude with `z0_pt 1 j`. Establish `hZB : Z0 (![pt C dd 0, Bp] : Fin 2 → Pt C 2 dd)`. Introduce `k j`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases k`. Conclude with `z0_pt 0 j`. Conclude with `hB0 j`. Use `set H : PS C 2 dd := ev (n := 2) ![A, pt C dd 1] Y.h - ev (n := 2) ![pt C dd 0, Bp] Y.h with hH`. Establish `had : Y.B.ad α = FB.expS C H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Y.gauge.ad α` as an intermediate fact. Rewrite `this` using `[toK_self, actK_self, actK_self]`. Then use the resulting hypothesis. Establish `hH0 : constantCoeff H = 0`. Rewrite using `[hH, map_sub, const_ev hZA (h_const Y), const_ev hZB (h_const Y), sub_zero]`. Establish `t1 : ∀ i, ev (n` using `1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), i) (ev (n := 2) ![A, pt C dd 1] Y.h)) = ev (n := 1) ![φ, 0] (pderiv C ((1 : Fin 2), i) Y.h) := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Rewrite using `[pderiv_eval_pair hZA]`. Establish `e1 : ∑ j, ev (n` using `2) ![A, pt C dd 1] (pderiv C ((0 : Fin 2), j) Y.h) * pderiv C ((1 : Fin 2), i) ((![A, pt C dd 1] : Fin 2 → Pt C 2 dd) 0 j) = 0 := Finset.sum_eq_zero fun j _ => by`. Rewrite using `[show ((![A, pt C dd 1] : Fin 2 → Pt C 2 dd) 0 j) = ev (n := 2) ![pt C dd 0] (φ j) from rfl, pderiv_second_eval_first, mul_zero]`. Rewrite using `[e1, zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (∑ j, ev (n := 2) ![A, pt C dd 1] (pderiv C ((1 : Fin 2), j) Y.h) * pderiv C ((1 : Fin 2), i) ((![A, pt C dd 1] : Fin 2 → Pt C 2 dd) 1 j)) = ∑ j, ev (n := 2) ![A, pt C dd 1] (pderiv C ((1 : Fin 2), j) Y.h) * pderiv C ((1 : Fin 2), i) (pt C dd 1 j) from rfl, sum_d_pt_self]`. Conclude with `eval_eval_pair hZA constant_zero_first_zero (a' := φ) (b' := 0) (fun j => eval_first_then_zero (φ j)) (fun j => ev_X constant_zero_first_zero 1 j) _`. Establish `t2 : ∀ i, ev (n` using `1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), i) (ev (n := 2) ![pt C dd 0, Bp] Y.h)) = ∑ j, ev (n := 1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) Y.h) * MvPowerSeries.C (linM ψ j i) := by`. Introduce `i`. Rewrite using `[pderiv_eval_pair hZB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (∑ j, ev (n := 2) ![pt C dd 0, Bp] (pderiv C ((0 : Fin 2), j) Y.h) * pderiv C ((1 : Fin 2), i) ((![pt C dd 0, Bp] : Fin 2 → Pt C 2 dd) 0 j)) = ∑ j, ev (n := 2) ![pt C dd 0, Bp] (pderiv C ((0 : Fin 2), j) Y.h) * pderiv C ((1 : Fin 2), i) (pt C dd 0 j) from rfl, sum_d_pt_othe …`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show ((![pt C dd 0, Bp] : Fin 2 → Pt C 2 dd) 1 j) = ev (n := 2) ![pt C dd 1] (ψ j) from rfl, pderiv_second_eval_second, ev_mul constant_zero_first_zero, eval_second_then_zero, cc_pderiv]`. Use `congr 1`. Conclude with `eval_eval_pair hZB constant_zero_first_zero (a' := pt C dd 0) (b' := 0) (fun k => ev_X constant_zero_first_zero 0 k) (fun k => by show ev (n := 1) ![pt C dd 0, 0] (ev (n := 2) ![pt C dd 1] (ψ k)) = 0`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval_second_then_zero, hψ0 k, map_zero]) _`. Establish `hi : ∀ i, ev (n` using `1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), i) (Y.B.ad α)) = ev (n := 1) ![φ, 0] (pderiv C ((1 : Fin 2), i) Y.h) - ∑ j, ev (n := 1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) Y.h) * MvPowerSeries.C (linM ψ j i) := by`. Introduce `i`. Rewrite using `[had, pderiv_expS hH0, ← had, ev_mul constant_zero_first_zero, Y.B.adjoint_zero_snd, one_mul, hH, map_sub, ev_sub constant_zero_first_zero, t1, t2]`. Establish `hl : ∀ j, linAct ψ v j = ∑ i, linM ψ j i * v i` using `fun j => rfl`.
-
-Establish `e : ∑ j, MvPowerSeries.C (linAct ψ v j) * ev (n` using `1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) Y.h) = ∑ i, MvPowerSeries.C (v i) * ∑ j, ev (n := 1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) Y.h) * MvPowerSeries.C (linM ψ j i) := by`. Simplify using `only [hl, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Establish `key : ev (n` using `1) ![φ] (Y.sgP v) - Y.sgP (linAct ψ v) = -∑ i, MvPowerSeries.C (v i) * ev (n := 1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), i) (Y.B.ad α)) := by`.
-
-Rewrite using `[ev_sgP Y v φ hφ0, show Y.sgP (linAct ψ v) = -∑ j, MvPowerSeries.C (linAct ψ v j) * ev (n := 1) ![pt C dd 0, 0] (pderiv C ((1 : Fin 2), j) Y.h) from rfl, e]`. Simplify using `only [hi, mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Establish `hpts : ∀ k i, IntS V ((![pt C dd 0, 0] : Fin 2 → Pt C 1 dd) k i)`.
-
-Introduce `k i`. Use `fin_cases k`. Conclude with `intS_X _`. Conclude with `intS_zero`. Conclude with `intS_neg (intS_sum _ fun i _ => intS_C_mul (hv i) (intS_ev constant_zero_first_zero hpts (intS_pderiv (Y.intAd α) _)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sg_act (Y : FBChart C V O dd) (α : O) (v : Fin dd → C) (hv : ∀ i, V.Ge 0 (v i)) :
     IntS V (ev (n := 1) ![Y.B.A.act α] (Y.sgP v) - Y.sgP (linAct (Y.B.A.act (star α)) v)) := by

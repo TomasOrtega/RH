@@ -5,15 +5,13 @@ namespace GlobalTheory.CharacterSumInverse
 open scoped BigOperators
 
 /- English proof (translation)
-Establish `hinv : ∀ c : T →* oˣ, ((c t)⁻¹ : oˣ).val = (c t⁻¹).val` using `fun c => by rw [map_inv]`. Repeatedly rewrite using `[hinv]`. Use `split_ifs with ht`. Substitute `ht` using the available equality. Simplify using `only [inv_one, map_one, Units.val_one, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `CommGroup.card_monoidHom_of_hasEnoughRootsOfUnity T o`. Rewrite `h` using `[Nat.card_eq_fintype_card, Nat.card_eq_fintype_card]`. Rewrite using `[h]`. Establish `hs : t⁻¹ ≠ 1` using `by simpa using ht`. Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity T o hs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set S := ∑ c : T →* oˣ, (c t⁻¹).val with hS`. Establish `hshift : (∑ c : T →* oˣ, ((φ * c) t⁻¹).val) = S` using `Fintype.sum_equiv (Equiv.mulLeft φ) _ _ (fun _ => rfl)`. Establish `hmul : (∑ c : T →* oˣ, ((φ * c) t⁻¹).val) = (φ t⁻¹).val * S`. Rewrite using `[hS, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[MonoidHom.mul_apply, Units.val_mul]`. Establish `h0 : ((φ t⁻¹).val - 1) * S = 0`. Rewrite using `[sub_mul, ← hmul, hshift, one_mul, sub_self]`. Establish `hne : (φ t⁻¹).val - 1 ≠ 0`. Introduce `h`.
-
-Apply `hφ` to reduce the goal to its premises. Conclude with `Units.val_eq_one.mp (sub_eq_zero.mp h)`. Conclude with `(mul_eq_zero.mp h0).resolve_left hne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem charSum_inv {o : Type} [CommRing o] [IsDomain o] {T : Type} [CommGroup T] [Fintype T]
     [HasEnoughRootsOfUnity o (Monoid.exponent T)] [Fintype (T →* oˣ)] [DecidableEq T] (t : T) :
@@ -46,9 +44,9 @@ theorem charSum_inv {o : Type} [CommRing o] [IsDomain o] {T : Type} [CommGroup T
     exact (mul_eq_zero.mp h0).resolve_left hne
 
 /- English proof (translation)
-Introduce `d1 o _ T _ M _ _ _ ρ u _ _ _ hu x`. Simplify using `only [d1, LinearMap.smul_apply, LinearMap.sum_apply]`. Rewrite using `[← Finset.smul_sum, Finset.sum_comm]`. Repeatedly rewrite using `[← Finset.sum_smul, charSum_inv]`. Simplify using `only [ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, map_one, Module.End.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_smul, hu, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem main : (let d1 : {o : Type} → [inst : CommRing o] → {T : Type} → [inst_1 : CommGroup T] → {M : Type} → [inst_2 : AddCommGroup M] → [inst_3 : Module o M] → [Fintype T] → Representation o T M → o → (T →* oˣ) → M →ₗ[o] M := @(fun {o : Type} [CommRing o] {T : Type} [CommGroup T] {M : Type} [AddCommGroup M] [Module o M] [Fintype T] (ρ : Representation o T M) (u : o) (c : T →* oˣ) ↦ u • ∑ t : T, (↑((c : T → oˣ) t)⁻¹ : o) • (ρ : T → M →ₗ[o] M) t); ∀ {o : Type} [inst : CommRing o] {T : Type} [inst_1 : CommGroup T] {M : Type} [inst_2 : AddCommGroup M] [inst_3 : Module o M] [inst_4 : Fintype T] (ρ : Representation o T M) (u : o) [IsDomain o] [HasEnoughRootsOfUnity o (Monoid.exponent T)] [inst_7 : Fintype (T →* oˣ)], u * (↑(Fintype.card T) : o) = (1 : o) → ∀ (x : M), ∑ c : T →* oˣ, (d1 ρ u c : M → M) x = x) := by
   intro d1 o _ T _ M _ _ _ ρ u _ _ _ hu x

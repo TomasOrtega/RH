@@ -25,13 +25,13 @@ namespace Formalism.L2.SG.SpectralTiesReal
 open Formalism.L2.SG.AdBridge Formalism.L2.SG.DataInst Formalism.L2.SG.RealObj
 
 /- English proof (translation)
-Take `⟨C₆, Cc, C₄, hC₆, hC₄, H⟩` from `Formalism.FourierDecayAlt.P.RealInputsCompactSupport.real_inputs_closed_compact_support_of hPA Formalism.FourierDecayAlt.P.radial_module_form Formalism.FourierDecayAlt.P.positive_density_compact_support Formalism.FourierDecayAlt.P.level_form_sesquilinear_moderate Formalism.Fourie …`. Take `⟨CA₀, hX1⟩` from `hX C₆ Cc hC₆`. Use `⟨C₄, CA₀, hC₄, ?_⟩` and prove the remaining obligations. Introduce `CA hCA h1CA C0 CG CDel cT Cb' h1 h2 h3 h4 h5 h6`. Take `⟨k0, hk⟩` from `hX1 CA hCA h1CA C0 CG CDel cT Cb' h1 h2 h3 h4 h5 h6`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨k0, ?_⟩` and prove the remaining obligations. Introduce `Cg cb Cw cTf CT C0f hcb hcTf`. Take `⟨C'₀, Cl₀, hC⟩` from `hk Cg cb Cw cTf CT C0f hcb hcTf`. Use `⟨C'₀, Cl₀, ?_⟩` and prove the remaining obligations. Introduce `C' Cl hC' hCl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th F0 what₂ vR Q hTies hu hk0 hHyp hpl hSz hi0 hPt hNu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hData` using `hC C' Cl hC' hCl D L T u u' e τ Cp Th' i0 i0' νq X0 sd C Th vR Q hTies hu hk0 hHyp hpl hSz hi0 hPt hNu`. Take `⟨Wp, Wq, i1, i2, i3, i4, i5, i6, S, p, f, χ, A₀, c, τ', Qm, Qim, eP, eQ, hCA', hG, hde, hde', hl, hComp, hBP, hSB, hc, hcut, hVt, hBX, hBase, hTop, hVJ, hjn⟩` from `hData`. Unfold `CarrierFull`. Use `⟨Wp, Wq, i1, i2, i3, i4, i6, S, Formalism.FourierDecayAlt.KB.plT S p, f, Formalism.FourierDecayAlt.KB.plν S p, Formalism.FourierDecayAlt.KB.plm S p, τ', Qm, Qim, eP, eQ, hCA', hG, hde, hde', hl, hComp, hBase, hTop, hVJ, ?_⟩` and prove the remaining obligations. Take `⟨L', j, lam, Cm, σ, hMod, hRI⟩` from `H D.host.E Wp Wq S p f χ A₀ c _ _ hBP hSB hc hcut hVt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hjn L' j lam Cm σ hMod]`. Conclude with `hRI _ _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carrierP_of_compact_model (hPA : P5.ThmPActualCpt) (hLEM : MA.LemmaEModel) (hMP : JCT.ModelPlaceBuilt2)
     (hBB : KB.BuiltBounds2Cpt) (Cb : ℝ) (hX : CarrierSideBoundPositive Cb) : Formalism.L2.SG.PoincareAmplitudeLowerBounds.CarrierP := by

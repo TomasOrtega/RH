@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.K5.LevEmb
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hΩ T m hm ι hι`. Take `⟨b, hb⟩` from `GlobalTheory.K5.OnFree.on_free p m`. Establish `hadj : Algebra.adjoin (O0 p) {xn p m, yn p m} = ⊤` using `GlobalTheory.K5.OnDVR.adjoin_eq_top_of_basis b (xn p m) (yn p m) (fun i => (i : ℕ)) (fun j => (j : ℕ)) (fun i j => hb i j)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨hdom, -, -⟩` from `GlobalTheory.K5.OnDVR.isDVR_On p m hm haveI : Module.Finite (O0 p) (On p m) := Module.Finite.of_basis b haveI : Algebra.IsIntegral (O0 p) (On p m) := Algebra.IsIntegral.of_finite _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hk : RingHom.ker (ι : On p m →+* Ω) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := O0 p)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite `ha` using `[Ideal.mem_comap, RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : algebraMap (O0 p) Ω a = 0`. Rewrite using `[← ι.commutes]`. Conclude with `ha`. Rewrite using `[Ideal.mem_bot]`. Conclude with `hΩ.inj (by rw [h1, map_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(RingHom.injective_iff_ker_eq_bot _).2 hk`. Rewrite using `[← Algebra.map_top, ← hadj, AlgHom.map_adjoin, Set.image_pair, hι.1, hι.2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem emb_inj_range : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω →
     ∀ (T : Tower p Ω) (m : ℕ), 1 ≤ m → ∀ ι : On p m →ₐ[O0 p] Ω, IsEmb T m ι →

@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 attribute [local instance] MvPolynomial.gradedAlgebra
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Geo.preimage_basicOpen_nonempty_of_mk_ne_zero` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FBasicOpenNonemptyOfNeZero.lean&line=13#L13)
 -/

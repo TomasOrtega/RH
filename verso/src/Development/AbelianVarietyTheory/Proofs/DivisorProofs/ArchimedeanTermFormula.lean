@@ -34,7 +34,7 @@ namespace GlobalTheory.OrthFilt
 open GlobalTheory.FlagFibre (Low)
 
 /- English proof (translation)
-Simplify using `[vdm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_vdm_unit {κ : Type} {g : ℕ} (f : Fin g → κ) :
     rename (fun z : Σ _ : Unit, Fin g => f z.2) (vdm fun _ : Unit => g) =
@@ -42,7 +42,7 @@ theorem rename_vdm_unit {κ : Type} {g : ℕ} (f : Fin g → κ) :
   simp [vdm]
 
 /- English proof (translation)
-Establish `h` using `(FlagCmp.isHomogeneous_vdm fun _ : Unit => g).rename_isHomogeneous (f := fun z : Σ _ : Unit, Fin g => f z.2)`. Rewrite `h` using `[rename_vdm_unit, Fintype.card_sigma, Fintype.sum_unique, (FlagCmp.card_low g).2, ← Nat.choose_two_right]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHomogeneous_vdm_one {κ : Type} {g : ℕ} (f : Fin g → κ) :
     (∏ i : Fin g, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (f i') - MvPolynomial.X (f i) : MvPolynomial κ ℝ)).IsHomogeneous
@@ -51,14 +51,14 @@ theorem isHomogeneous_vdm_one {κ : Type} {g : ℕ} (f : Fin g → κ) :
   rwa [rename_vdm_unit, Fintype.card_sigma, Fintype.sum_unique, (FlagCmp.card_low g).2, ← Nat.choose_two_right] at h
 
 /- English proof (translation)
-The claim follows from `IsHomogeneous.sum _ _ _ fun z _ => by simpa using (isHomogeneous_X ℝ (f z)).pow 2`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_sq {κ J : Type} [Fintype J] (f : J → κ) :
     (∑ z, MvPolynomial.X (f z) ^ 2 : MvPolynomial κ ℝ).IsHomogeneous 2 :=
   IsHomogeneous.sum _ _ _ fun z _ => by simpa using (isHomogeneous_X ℝ (f z)).pow 2
 
 /- English proof (translation)
-Substitute `v` using the available equality. Conclude with `T.flag_height_pairing_pullback_degree k X Y p d ρ hX hρ E r h H fl N`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem bcPair_pull_of_eq {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y] {p : X ⟶ Sp k}
     {q : Y ⟶ Sp k} {d : ℕ} {ρ : Y ⟶ X} (hX : IsArithVar p (d + 1)) (hρ : FlagChain.IsCov p (d + 1) ρ) (v : ρ ≫ p = q)
@@ -68,9 +68,9 @@ theorem bcPair_pull_of_eq {k : Type} [CommRing k] {X Y : Scheme.{0}} [IsIntegral
   exact T.flag_height_pairing_pullback_degree k X Y p d ρ hX hρ E r h H fl N
 
 /- English proof (translation)
-Use `hq.isLocallyNoetherian` as an intermediate fact. Take `⟨y, Φ, hy, hΦ, e⟩` from `ha`. Take `⟨y', hy', hc, -⟩` from `((T.flag_variety_arith_dimension k B q _ hq L g hL.isVB).2 F).2.2 (genericPoint B)`. Establish `h₁ : y' = genericPoint F.Y`. Use `IsGenericPoint.eq (S := Set.univ) ?_ (genericPoint_spec F.Y)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[isGenericPoint_def, hc, genericPoint_closure, Set.preimage_univ]`. Take `rfl : y = genericPoint F.Y` from `h₁ ▸ ((hy.2 y' hy'.1).antisymm (hy'.2 y hy.1)).eq`. Rewrite `hΦ` using `[show n + 2 + g.choose 2 = n + 1 + g.choose 2 + 1 by omega]`. Conclude with `⟨Φ, hΦ, e⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isArFun_of_isVal {k : Type} [CommRing k] {B : Scheme.{0}} [IsIntegral B] {q : B ⟶ Sp k} {n : ℕ}
     (hq : IsArithVar q (n + 1)) {L : B.Modules} {g : ℕ} {hL : VMetric q L g} (HL : hL.IsCInf) (F : FlagSp L g)
@@ -87,45 +87,41 @@ theorem exists_isArFun_of_isVal {k : Type} [CommRing k] {B : Scheme.{0}} [IsInte
   exact ⟨Φ, hΦ, e⟩
 
 /- English proof (translation)
-Substitute `w` using the available equality. Establish `hX` using `hρ.1`. Use `hq.isLocallyNoetherian` as an intermediate fact. Use `hX.isLocallyNoetherian` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, rfl⟩ : ∃ f, (vdm r).IsHomogeneous f ∧ D = n + f + 1 := by`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨_, FlagCmp.isHomogeneous_vdm r, ?_⟩` and prove the remaining obligations. Establish `hs` using `T.flag_bundle_smooth_relative_dimension B Y π ι E r fl (fun a => (h a).isVB) hfl`. Establish `h₁` using `(T.krull_dim_smooth_surjective_total B Y π (∑ a, r a * (r a - 1) / 2) (n + 1) (T.flag_bundle_projection_surjective B Y π ι E r fl (fun a => (h a).isVB) hfl) hq.dim_eq).symm.trans hY.dim_eq`. Establish `h₂ : n + 1 + ∑ a, r a * (r a - 1) / 2 + 1 = D + 1` using `by exact_mod_cast h₁`. Rewrite using `[Fintype.card_sigma, Finset.sum_congr rfl fun a _ => (FlagCmp.card_low (r a)).2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hF` using `((T.flag_variety_arith_dimension k B q _ hq L g hL.isVB).2 F).1`. Use `hF.isIntegral` as an intermediate fact. Take `⟨ΦF, hΦF, rfl⟩` from `exists_isArFun_of_isVal hq HL F ha`. Set `HX` to `(HL.pull π rfl).pull ρ rfl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Apply the tactic sequence `obtain ⟨T, wf, e, hT, hA, hw⟩ := GlobalTheory.T.graded_metric_flag_isometry k X _ ι _ g _ HX _ _ r (fun a => ((h a).pull π rfl).pull ρ rfl) _ (fun a => ((H' a).pull π rfl).pull ρ rfl) _ m o (fun a => ((hu a).pull π rfl).pull ρ rfl) (GlobalTheory.T.graded_metric_pullback k Y X _ _ …`. Take `⟨⟨W⟩, hW⟩` from `GlobalTheory.T.flag_variety_arith_dimension k X _ _ hX _ g ((hL.isVB.pullback π).pullback ρ)`. Use `replace hW := (hW W).1`. Use `hW.isIntegral` as an intermediate fact. Take `⟨Z, _, π₂, fz, γ, v, hNp, hfz, hZ, hγ, hdeg, hx, hy, hbc⟩` from `GlobalTheory.T.flag_bundle_chern_cover_chain k B Y X q π ρ _ rfl _ _ hq hY hρ ι E r h H fl hfl L g hL HL F W`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hW`, `hZ`, `hγ` using `[show n + f + 1 + g.choose 2 = n + f + g.choose 2 + 1 by omega]`. Set `LZ : (Σ a, Fin (r a)) ⊕ Option (Fin g) → HermLB (π₂ ≫ F.π ≫ q)` to `Sum.elim (fun z => VMetric.grLB (fz z.1) z.2 (((H z.1).pull F.π rfl).pull π₂ rfl)) fun o => (F.fam HL N o).pull π₂ rfl`. Set `x' : (Σ a, Fin (r a)) → HermLB (ρ ≫ π ≫ q)` to `fun z => VMetric.grLB (fl' z.1) z.2 (((H' z.1).pull π rfl).pull ρ rfl)`. Take `⟨ΨZ, hΨZ⟩` from `((HP.p4.arExists k Z _ _ hZ).2 _ LZ).1`. Establish `hΨ₀` using `(HP.p4.arProj k Z W.Y _ _ _ hZ hW γ v hγ.2.1 hγ.2.2).2 _ LZ ΨZ hΨZ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, hΨ⟩` from `((HP.p4.arExists k W.Y _ _ hW).2 _ (Sum.elim (fun i => (LZ i).pull γ v) fun z => (x' z).pull W.π rfl)).1`. Set `Vy : MvPolynomial (Option (Fin g)) ℝ` to `∏ i : Fin g, ∏ i' ∈ Finset.Ioi i, (MvPolynomial.X (some i') - MvPolynomial.X (some i))`. Establish `hVy : Vy.IsHomogeneous (g.choose 2)` using `isHomogeneous_vdm_one some`. Establish `hn : (MvPolynomial.X none ^ n : MvPolynomial (Option (Fin g)) ℝ).IsHomogeneous n`. Simplify using `using (isHomogeneous_X ℝ none).pow n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e₁` using `GlobalTheory.T.flag_bundle_chern_push_forward HP hR k F.Y Z _ _ _ _ hF hZ π₂ rfl ι _ r _ (fun a => (H a).pull F.π rfl) fz hfz _ _ LZ (F.fam HL N) .inl .inr (fun _ => .refl _) (fun _ => .refl _) ΦF ΨZ hΦF hΨZ ((∑ i : Fin g, MvPolynomial.X (some i) ^ 2) * Vy * MvPolynomial.X none ^ …`. Rewrite using `[show n + 1 + g.choose 2 + 1 = 2 + g.choose 2 + n by omega]`. Conclude with `((isHomogeneous_sq some).mul hVy).mul hn)`. Establish `e₂` using `GlobalTheory.T.flag_bundle_chern_push_forward HP hR k X W.Y _ _ _ _ hX hW W.π rfl Unit _ (fun _ => g) _ (fun _ => HX) (fun _ => W.fl) W.univ _ _ _ _ (fun z => .inl (.inr (some z.2))) (Sum.elim (fun z => .inl (.inl z)) .inr) (fun z => hy z.2) (by rintro (z | z); exacts [hx z.1 z.2 …`. Rewrite using `[show n + f + 1 + 1 = 2 + f + 1 * n by omega]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isHomogeneous_sq Sum.inr).mul hf.rename_isHomogeneous).mul ((IsHomogeneous.sum _ _ _ fun z _ => isHomogeneous_X ℝ _).neg.pow n))`. Take `⟨I, _, c, nn, hV⟩` from `FlagCmp.exists_sum_pow (d := n + f + g.choose 2) (P := rename Sum.inl (vdm r) * rename Sum.inr (Vy * MvPolynomial.X none ^ n)) (by`. Rewrite using `[show n + f + g.choose 2 = f + (g.choose 2 + n) by omega]`. Conclude with `hf.rename_isHomogeneous.mul (hVy.mul hn).rename_isHomogeneous)`. Establish `key (j : I)` using `FlagCmp.compare HP.p4 HP.q16 hW (HX.pull W.π rfl) (wf.pull W.π) W.fl _ _ Ψ hΨ (fun i => .inr (e.symm i)) (fun i => .inl (.inr (some i))) (fun i => ((VMetric.isometric_grLB_pull _ _ _ _ _ _ _ _ _ _ W.π rfl i).trans ((e.apply_symm_apply i ▸ hw (e.symm i)).pull W.π rfl)).symm) hy (S …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bcPair_congr _ _ (FlagCmp.isometric_comb_inl _ _ _), ← FlagCmp.rename_inl_lin] at key`. Establish `b₁` using `GlobalTheory.T.flag_bundle_chern_height HP k X W.Y _ _ _ _ hX hW W.π rfl Unit _ (fun _ => g) _ (fun _ => HX) (fun _ => W.fl) W.univ _ (Option (Σ a, Fin (r a))) (fun i => (LZ i).pull γ v) (fun o => o.elim ((N.pull π rfl).pull ρ rfl) fun z => (VMetric.grLB (fl z.1) z.2 ((H z.1).pul …`. Rewrite using `[add_comm]`. Conclude with `hf.rename_isHomogeneous.mul (by simpa using (isHomogeneous_X ℝ none).pow n)) I c nn (by`. Rewrite using `[hV, rename_vdm_unit fun i => Sum.inr (some i)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Vy, map_mul, map_prod, map_sub, map_pow, rename_X, rename_rename, Option.elim]`. Establish `: ((fun o : Option (Σ a, Fin (r a)) => (o.elim (.inr none) .inl : (Σ a, Fin (r a)) ⊕ Option (Fin g))) ∘ some) = Sum.inl` using `rfl`. Use `erw [this]`. Use the proof step `ring) ()`. Establish `b₂ (a : ι)` using `GlobalTheory.T.flag_bundle_chern_height HP k F.Y Z _ _ (n + g.choose 2) _ (by rwa [add_right_comm]) hZ π₂ rfl ι _ r _ (fun a => (H a).pull F.π rfl) fz hfz _ _ LZ (F.fam HL N) .inl .inr (fun _ => .refl _) (fun _ => .refl _) _ (add_comm n _ ▸ hVy.mul hn) I c nn hV a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `b₃ (j : I) : bcPair (((hL.pull π rfl).pull ρ rfl).pull W.π rfl) (wf.pull W.π) (comb (fun i => (LZ i).pull γ v) (nn j)) (n + f + g.choose 2) = ∑ a, (γ.residueDegree (genericPoint W.Y) : ℝ) * bcPair (((h a).pull F.π rfl).pull π₂ rfl) (fz a) (comb LZ (nn j)) (n + f + g.choose 2)`. Rewrite using `[GlobalTheory.T.orthogonal_embedding_adapted_flag HP.q16 k X _ ι _ g _ HX _ r _ (fun a => ((H a).pull π rfl).pull ρ rfl) T _ wf e hT hA W.Y _ W.π rfl _ hW]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← hbc, bcPair_congr _ _ (isometric_comb_pull LZ (nn j) γ v)]`. Conclude with `bcPair_pull_of_eq hZ hγ v (((H a).pull F.π rfl).pull π₂ rfl) _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₃ : Ψ ((∑ i, MvPolynomial.X (.inr (e.symm i)) ^ 2 - ∑ i, MvPolynomial.X (.inl (.inr (some i))) ^ 2) * rename Sum.inl (rename Sum.inl (vdm r) * rename Sum.inr (Vy * MvPolynomial.X none ^ n))) = 0`. Rewrite using `[← hV, map_sum, Finset.mul_sum, map_sum]`. Simplify using `only [map_smul, mul_smul_comm, map_pow, smul_eq_mul, key, mul_sub, Finset.sum_sub_distrib, b₃, b₁, sub_zero, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [mul_left_comm (c _), ← Finset.mul_sum, b₂ a, mul_zero]`. Establish `hsum : ∑ z, ((x' z).pull W.π rfl).icls = -((LZ (.inr none)).pull γ v).icls`. Establish `a₁ : ((LZ (.inr none)).pull γ v).icls = _` using `HermLB.icls_eq_iff.2 (hNp N)`. Establish `a₂ : ∑ z, (x' z).icls = (VMetric.det HX).icls`. Rewrite using `[← sum_icls_grLB HX wf, ← e.sum_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun z _ => (HermLB.icls_eq_iff.2 (hw z)).symm`. Establish `a₃ : (VMetric.det HX).icls = _` using `HermLB.icls_eq_iff.2 ((VMetric.isometric_det_pull (HL.pull π rfl) ρ rfl).trans ((VMetric.isometric_det_pull HL π rfl).pull ρ rfl))`. Establish `a₄` using `congrArg (HermLB.IsomClass.pull W.π rfl) (a₂.trans a₃)`. Rewrite `a₄` using `[map_sum]`. Rewrite using `[a₁, HermLB.icls_pull _ W.π, HermLB.icls_pull _ ρ, HermLB.icls_pull N π, hN, map_neg, map_neg, map_neg, neg_neg]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `a₄`. Establish `e₄` using `apply_aeval HP.p4.arIso hW hΨ hΨ (fun i => if i = .inl (.inr none) then -∑ z, MvPolynomial.X (.inr z) else MvPolynomial.X i) (fun i => by split_ifs with hi`. Substitute `hi` using the available equality. Use `⟨Sum.elim 0 fun _ => -1, by simp [lin], ?_⟩` and prove the remaining obligations. Simplify using `[Fintype.sum_sum_type, hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨Pi.single i 1, by simp [lin, Pi.single_apply, apply_ite], by simp [Pi.single_apply]⟩)`. Use the proof step `((∑ i, MvPolynomial.X (.inr (e.symm i)) ^ 2) * rename Sum.inl (rename Sum.inl (vdm r) * rename Sum.inr (Vy * MvPolynomial.X none ^ n)))`. Establish `e₅` using `FlagCmp.isArFun_restrict_inl HP.p4.arIso hW _ _ hΨ₀ hΨ (rename Sum.inl (vdm r) * rename Sum.inr ((∑ i : Fin g, MvPolynomial.X (some i) ^ 2) * Vy * MvPolynomial.X none ^ n))`. Rewrite `e₅` using `[LinearMap.smul_apply, e₁, smul_eq_mul, hdeg]`. Rewrite `e₃` using `[sub_mul, map_sub, sub_eq_zero, ← e₄]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ((g.factorial : ℕ) : ℝ) ≠ 0` using `by positivity`. Establish `e₆ : ΦF (vdmPol g n) = (g.factorial : ℝ)⁻¹ * ΦF ((∑ i : Fin g, MvPolynomial.X (some i) ^ 2) * Vy * MvPolynomial.X none ^ n)`. Rewrite using `[vdmPol, mul_assoc, mul_assoc, ← smul_eq_C_mul, map_smul, ← mul_assoc]`. Both sides reduce to the same expression. Rewrite `e₂` using `[Fintype.prod_unique]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `mul_left_cancel₀ hg (e₂.symm.trans (Eq.trans ?_ (e₃.trans (Eq.trans ?_ (e₅.trans ?_)))))` and prove the remaining obligations. Use `congr 1`. Establish `a₁ : aeval (fun z => MvPolynomial.X (.inl (.inl z))) (vdm r) = (rename (fun z => .inl (.inl z)) (vdm r) : MvPolynomial (((Σ a, Fin (r a)) ⊕ Option (Fin g)) ⊕ (Σ a, Fin (r a))) ℝ)`. Rewrite using `[rename_eq_aeval]`. Both sides reduce to the same expression.
-
-Rewrite using `[rename_vdm_unit fun i => Sum.inl (Sum.inr (some i)), e.symm.sum_comp fun z => MvPolynomial.X (Sum.inr z) ^ 2]`. Simplify using `only [pairPol, Vy, map_mul, map_sum, map_prod, map_sub, map_pow, map_neg, rename_X, aeval_X, rename_rename, aeval_rename, Function.comp_def, Sum.elim_inl, Sum.elim_inr, reduceCtorEq, Sum.inl.injEq, Sum.inr.injEq, if_false, if_true, a₁]`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`. Simplify using `only [map_mul, map_sum, map_pow, rename_X]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e₆]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem apply_pairPol (HP : Hypotheses2) (hR : RegularAlteration) {k : Type} [CommRing k] {B Y X : Scheme.{0}} [IsIntegral B]
     [IsIntegral Y] [IsIntegral X] {q : B ⟶ Sp k} {π : Y ⟶ B} {ρ : X ⟶ Y} {p : X ⟶ Sp k} (w : ρ ≫ π ≫ q = p) {n D : ℕ}
@@ -279,25 +275,23 @@ theorem apply_pairPol (HP : Hypotheses2) (hR : RegularAlteration) {k : Type} [Co
     field_simp
 
 /- English proof (translation)
-Introduce `_ HP hH hR D O hO _ _ _ _ _ c M R hR2`. Establish `: IsGalois ℚ D.host.E` using `D.host.hostE_isGalois`. Take `⟨V₀, _, j, hj, hdim, hr⟩` from `exists_comp O c`. Take `⟨B, Bg, q, jB, πB, ρ₀, hpre, hn, hloc⟩` from `GlobalTheory.T.model_base_change_number_field O.s.T.Z O.κ.e j hj hdim`. Rewrite `hpre` using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `⟨hq, hpb, hfin, hrg, hρ₀⟩` using `hpre`. Use `hq.isIntegral` as an intermediate fact. Take `⟨β, hβ, w, hgen, hβd⟩` from `GlobalTheory.T.exists_generic_map_to_moduli_base D O c M B Bg q jB πB ρ₀ hpre`. Use `choose E t hvb hfr hlat using fun σ : D.host.E →+* ℂ => exists_bundle O.s.T.Z O.κ.e hq hn hpb (O.S.Dw.mult σ) σ (ArIn.ind ∅) false (fun y => (hloc σ y).1)`. Use `choose E' t' hvb' hfr' hgr using fun σ : D.host.E →+* ℂ => GlobalTheory.T.model_change_of_field_points_a O.s.T.Z O.κ.e hq hn hpb (O.S.Dw.mult σ) σ (fun y => (hloc σ y).2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose u hg using fun σ : D.host.E →+* ℂ => GlobalTheory.T.model_change_of_field_points_b O.s.T.Z O.κ.e hq hn hpb (E σ) (E' σ) _ σ (t σ) (t' σ) (hvb σ) (hvb' σ) (hfr σ) (hfr' σ) (hlat σ) (hgr σ)`. Set `G : ∀ σ', EigMet O.s.T.Z σ'` to `fun σ' => M.x.eigMetAt σ' (some R)`. Establish `hG : EigConj O.s.T.Z G` using `fun σ σ' y y' g g' τ hσ e hg => GlobalTheory.ShFam.ConjMet.eigMetAt_conj M.x hσ e hg τ _`. Use `choose h hh using fun σ : D.host.E →+* ℂ => GlobalTheory.T.arithmetic_model_flag_height_fifth _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e B Bg q jB πB hpb (E σ) _ σ false rfl (t σ) G (hvb σ) (hfr σ) hG`. Use `choose h' hh' using fun σ : D.host.E →+* ℂ => GlobalTheory.T.arithmetic_model_flag_height_fifth _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e B Bg q jB πB hpb (E' σ) _ σ false rfl (t' σ) G (hvb' σ) (hfr' σ) hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm` using `O.s.T.smooth`. Establish `hGs : ∀ σ', (G σ').SmoothOn (manifold O.s.T.Z σ') Set.univ` using `fun σ' => ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ M.x σ' R hR2 (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ M.x σ')`. Establish `H` using `fun σ => GlobalTheory.T.arithmetic_model_smooth_flag_height _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e B Bg q jB πB hpb (E σ) _ σ false rfl (t σ) G (h σ) (hfr σ) hGs (hh σ)`. Establish `H'` using `fun σ => GlobalTheory.T.arithmetic_model_smooth_flag_height _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e B Bg q jB πB hpb (E' σ) _ σ false rfl (t' σ) G (h' σ) (hfr' σ) hGs (hh' σ)`. Establish `hu` using `fun σ => GlobalTheory.T.model_change_of_field_points_c O.s.T.Z O.κ.e hpb (E σ) (E' σ) _ σ rfl (t σ) (t' σ) (u σ) G (h σ) (h' σ) (hvb σ) (hvb' σ) (hfr σ) (hfr' σ) (hg σ) (hh σ) (hh' σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAt : PairAt O R c q E E' h h' u jB πB t t' G` using `⟨hpb, hfin, hrg, hfr, hfr', hg, hlat, hgr, fun σ n => by rw [M.core.hm_eq]; rfl, hh, hh'⟩`. Establish `hsq : jB ≫ β ≫ M.b = πB ≫ genι O.s.T.Z` using `by rw [hβ, hρ₀]`. Take `⟨V, Y, _, π, ρ, wV, fl, fl', hdeg, hY, hρ, hfl, hc, h₁, h₂⟩` from `GlobalTheory.T.eigen_metric_isometry_normal_base HP hH hR D O hO R hR2 c M B q E E' h h' H H' u hq hn hu Bg jB πB t t' hAt β w hsq hgen`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn1⟩ : ∃ n, dimGr D.what₂.Tau O.N O.j = n + 1 := by`. Establish `hι : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 ⟨D.eTau.symm (Classical.arbitrary _)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.exists_eq_add_one.2 (Nat.mul_pos hι (Nat.mul_pos O.indef.1 (Nat.sub_pos_of_lt O.indef.2)))`. Establish `hM` using `M.ar`. Take `⟨hM₀, h₀, H₀, hs, hval⟩` from `GlobalTheory.T.metric_descends_same_value _ _ (intEquiv O) M.B M.q _ hM _ _ _ ((M.H R).pull M.b rfl)`. Establish `hgr` using `GlobalTheory.T.eigen_metric_comparison_normal_base D O hO R hR2 c M B q E E' h h' H H' u hq hn hu Bg jB πB t t' hAt β w hsq hgen h₀ hs`. Take `⟨Φ, hΦ⟩` from `((HP.p4.arExists _ V.X V.p _ V.ar).2 _ (Sum.elim (fun z : Letter O.S.Dw => (VMetric.grLB (fl z.1) z.2 ((H z.1).pull π rfl)).pull ρ wV) fun z : Letter O.S.Dw => VMetric.grLB (fl' z.1) z.2 (((H' z.1).pull π rfl).pull ρ wV))).1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.T.arithmetic_function_line_adeles HP.p4 hH.deg D O hO R hR2 c V _ _ h₁ h₂ Φ hΦ]`. Rewrite `hq`, `hM`, `hM₀` using `[hn1]`. Rewrite using `[hn1, Nat.add_sub_cancel]`. Establish `v₁ : M.F.IsVal ((M.H R).pull M.b rfl) (M.lam R) (genericPoint M.B) n (M.val R (genericPoint M.B) n)` using `Classical.epsilon_spec ((T.flag_variety_value_unique HP.p4 _ M.B M.q _ hM _ _ _ ((M.H R).pull M.b rfl) M.F (M.lam R) _ n).1 (by`. Rewrite using `[genericPoint_closure, IsHomeomorph.topologicalKrullDim_eq _ (Homeomorph.Set.univ M.B).isHomeomorph]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hM.dim_eq)).exists`. Take `⟨F', hF'⟩` from `GlobalTheory.T.dual_flag_value_preserved HP.p4 _ M.B _ _ hM₀ _ _ h₀ H₀ M.F`. Use `hq.isLocallyNoetherian` as an intermediate fact. Take `⟨F₁⟩` from `(T.flag_variety_arith_dimension _ B q _ hq _ _ (h₀.dual.pull β w).isVB).1`. Establish `v₂` using `GlobalTheory.T.flag_value_pullback_cover HP.p4 _ M.B B _ q n hM₀ β w ⟨w ▸ hq, hgen, hβd⟩ _ _ _ H₀.dual F' F₁ _ _ (hF' _ n _ rfl (hval M.F _ n _ v₁))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[apply_pairPol HP hR wV hq hY hρ H H' hu hfl hc (H₀.dual.pull β w) hgr F₁ (by`. Rewrite using `[HermLB.icls_eq_iff.2 ((VMetric.isometric_det_pull H₀.dual β w).trans ((GlobalTheory.T.det_dual_metric_isometric _ _ _ _ _ h₀ H₀).pull β w))]`. Simplify using `only [HermLB.icls_pull, HermLB.icls_dual, map_neg, neg_neg]) v₂ hΦ, Cover.ν, hdeg]`. Establish `a₁ : (ρ.residueDegree (genericPoint V.X) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hρ.2.2`. Establish `a₂ : (β.residueDegree (genericPoint B) : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hβd`.
-
-Establish `a₃ : ∏ σ, ((O.S.Dw.mult σ).factorial : ℝ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun _ _ => by positivity`. Establish `a₄ : (Module.finrank ℚ D.what₂.LL : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem termW_eq_val : GlobalTheory.CovTop.HypothesesXH → Hypotheses2 → HypothesesH → RegularAlteration → OnObj fun D O _ _ _ _ =>
     ∀ c (M : DRBase O c) (R : ℝ), 2 ≤ R → termW O c R =

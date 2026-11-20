@@ -21,43 +21,41 @@ noncomputable section
 namespace GlobalTheory.TranslHoriz
 
 /- English proof (translation)
-Introduce `k _ R _ A _ hA ρ B' _ π₁ π₂ h₁ h₂ hcl A₀ _ m₀ hm₀ dl hdl s T₀ hT₀ hT₀h hcomm x hx hx1`. Use `set fst := (TrivSqZeroExt.fstHom k k k).toRingHom with hfst`. Use `set alg := algebraMap k (DualNumber k) with halg`. Establish `e_fa : spMap fst ≫ spMap alg = 𝟙 _`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `e_c : spMap (constHom ρ) = spMap alg ≫ spMap (fst.comp ρ)`. Simplify using `only [spMap, constHom, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e_r : spMap (fst.comp ρ) = spMap fst ≫ spMap ρ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `P₁` using `h₁.1`. Establish `P₂` using `h₂.1`. Establish `P₀` using `hm₀.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `wr : π₂ ≫ A.hom = (B'.hom ≫ spMap alg) ≫ spMap (fst.comp ρ)`. Rewrite using `[P₂.w, e_c, Category.assoc]`. Set `r : B'.left ⟶ A₀.left` to `P₀.lift π₂ (B'.hom ≫ spMap alg) wr`. Establish `hr1 : r ≫ m₀ = π₂` using `P₀.lift_fst _ _ _`. Establish `hr2 : r ≫ A₀.hom = B'.hom ≫ spMap alg` using `P₀.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `Pr : IsPullback r B'.hom A₀.hom (spMap alg)`. Use `IsPullback.of_right ?_ hr2 P₀` and prove the remaining obligations. Rewrite using `[hr1, ← e_c]`. Conclude with `P₂`. Establish `wj : m₀ ≫ A.hom = (A₀.hom ≫ spMap fst) ≫ spMap (constHom ρ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[P₀.w, Category.assoc, e_c, ← Category.assoc (spMap fst), e_fa, Category.id_comp]`. Set `j : A₀.left ⟶ B'.left` to `P₂.lift m₀ (A₀.hom ≫ spMap fst) wj`. Establish `hj1 : j ≫ π₂ = m₀` using `P₂.lift_fst _ _ _`. Establish `hj2 : j ≫ B'.hom = A₀.hom ≫ spMap fst` using `P₂.lift_snd _ _ _`. Establish `hjr : j ≫ r = 𝟙 _` using `P₀.hom_ext (by rw [Category.assoc, hr1, hj1, Category.id_comp]) (by rw [Category.assoc, hr2, ← Category.assoc, hj2, Category.assoc, e_fa, Category.comp_id, Category.id_comp])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hjπ₁ : j ≫ π₁ = m₀` using `by rw [hcl A₀.left j A₀.hom hj2, hj1]`. Take `⟨-, Pj, -⟩` from `GlobalTheory.ConstThickening.structure_dualNumber k A₀.left B'.left A₀.hom B'.hom r j Pr hjr hj2`. Establish `hjs : Surjective j` using `MorphismProperty.of_isPullback (P := @Surjective) Pj.flip GlobalTheory.ConstThickening.surjective_spMap_fst`. Establish `hm : m₀ ≫ A.hom = A₀.hom ≫ spMap fst ≫ spMap ρ` using `by rw [P₀.w, e_r]`. Take `⟨Φ, hΦj, hΦp, hΦ⟩` from `GlobalTheory.KS.DerMorK.exists_hom_of_derivation k A₀.left B'.left A₀.hom B'.hom r j Pr hjr hj2 R ρ A.left A.hom m₀ dl hm hdl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : ∀ y, Φ y = m₀ (r y)`. Introduce `y`. Take `⟨y₀, rfl⟩` from `hjs.surj y`. Use `show (j ≫ Φ) y₀ = (j ≫ r ≫ m₀) y₀`. Rewrite using `[hΦj, ← Category.assoc, hjr, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `wT : (r ≫ T₀) ≫ A₀.hom = B'.hom ≫ spMap alg` using `by rw [Category.assoc, hT₀h, hr2]`. Set `TB : B'.left ⟶ B'.left` to `Pr.lift (r ≫ T₀) B'.hom wT`. Establish `hTB1 : TB ≫ r = r ≫ T₀` using `Pr.lift_fst _ _ _`. Establish `hTB2 : TB ≫ B'.hom = B'.hom` using `Pr.lift_snd _ _ _`. Establish `hcΦ : TB ≫ Φ = Φ ≫ (lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left` using `GlobalTheory.T.firstOrderLift_derivation_comm_translations k A₀.left B'.left A.left m₀ B'.hom r dl Φ hb hΦ _ T₀ TB hT₀ hTB1 hTB2 hcomm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `α : B'.left ⟶ B'.left` to `P₁.lift Φ B'.hom hΦp`. Establish `hα1 : α ≫ π₁ = Φ` using `P₁.lift_fst _ _ _`. Establish `hα2 : α ≫ B'.hom = B'.hom` using `P₁.lift_snd _ _ _`. Establish `hjα : j ≫ α = j` using `P₁.hom_ext (by rw [Category.assoc, hα1, hΦj, hjπ₁]) (by rw [Category.assoc, hα2])`. Set `αo : B' ⟶ B'` to `Over.homMk α hα2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hB' : IsAbelianScheme B'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA h₁`. Use `set w : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B' := η[B'] ≫ αo with hw`. Establish `hαo : αo = lift (toUnit B' ≫ w) (𝟙 B') ≫ μ[B']` using `GlobalTheory.T.abelianScheme_dualNumber_endo_eq_translation k B' hB' αo (fun Z z y hz => by`. Express the relevant statement in the definitionally equal form `z ≫ α = z`. Rewrite using `[← Pj.lift_fst z y hz, Category.assoc, hjα])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `xo : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B'` to `Over.homMk x hx`. Establish `wσ : (spMap (constHom ρ) ≫ s.left) ≫ A.hom = 𝟙 _ ≫ spMap (constHom ρ)`. Rewrite using `[Category.assoc, Over.w s, Category.id_comp]`. Both sides reduce to the same expression. Set `σ : Sp (DualNumber k) ⟶ B'.left` to `P₂.lift (spMap (constHom ρ) ≫ s.left) (𝟙 _) wσ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ1 : σ ≫ π₂ = spMap (constHom ρ) ≫ s.left` using `P₂.lift_fst _ _ _`. Establish `hσ2 : σ ≫ B'.hom = 𝟙 _` using `P₂.lift_snd _ _ _`. Set `σo : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B'` to `Over.homMk σ hσ2`. Establish `tx` using `GlobalTheory.T.groupPullback_translation_comp_eq B' A (spMap ρ) π₁ h₁ xo s hx1`. Establish `tσ` using `GlobalTheory.T.groupPullback_translation_comp_eq B' A (spMap (constHom ρ)) π₂ h₂ σo s hσ1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTBσ : TB = (lift (toUnit B' ≫ σo) (𝟙 B') ≫ μ[B']).left`. Use `P₂.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[tσ, ← hr1, ← Category.assoc, hTB1, Category.assoc, hT₀, ← Category.assoc]`. Rewrite using `[hTB2, Over.w]`. Establish `hcα : αo ≫ (lift (toUnit B' ≫ xo) (𝟙 B') ≫ μ[B']) = (lift (toUnit B' ≫ σo) (𝟙 B') ≫ μ[B']) ≫ αo`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `P₁.hom_ext ?_ ?_` and prove the remaining obligations. Use `show α ≫ (lift (toUnit B' ≫ xo) (𝟙 B') ≫ μ[B']).left ≫ π₁ = (lift (toUnit B' ≫ σo) (𝟙 B') ≫ μ[B']).left ≫ α ≫ π₁`. Rewrite using `[tx, ← Category.assoc, hα1, ← hcΦ, hTBσ]`. Simplify using `only [Over.comp_left, Category.assoc, Over.w]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsCommMonObj B' := hB'.comm`. Establish `hτ : ∀ (u y : 𝟙_ (Over (Sp (DualNumber k))) ⟶ B'), y ≫ (lift (toUnit B' ≫ u) (𝟙 B') ≫ μ[B']) = u * y`. Introduce `u y`. Rewrite using `[← Category.assoc, comp_lift, ← Category.assoc, toUnit_unique (y ≫ toUnit B') (𝟙 _), Category.id_comp, Category.comp_id, ← Hom.mul_def]`. Establish `h1 : (η[B'] : 𝟙_ _ ⟶ B') = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`. Establish `e1 : η[B'] ≫ αo ≫ (lift (toUnit B' ≫ xo) (𝟙 B') ≫ μ[B']) = xo * w`. Rewrite using `[← Category.assoc, ← hw, hτ]`. Establish `e2 : η[B'] ≫ (lift (toUnit B' ≫ σo) (𝟙 B') ≫ μ[B']) ≫ αo = w * σo`. Rewrite using `[← Category.assoc, hτ, h1, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [hαo]`. Rewrite using `[hτ]`. Establish `key : xo * w = w * σo`. Rewrite using `[← e1, ← e2]`. Conclude with `congrArg (η[B'] ≫ ·) hcα`.
-
-Establish `hxσ : xo = σo`. Rewrite `key` using `[_root_.mul_comm w σo]`. Conclude with `_root_.mul_right_cancel key`. Establish `: x = σ` using `congrArg Over.Hom.left hxσ`. Rewrite using `[this, hσ1]`.
+A detailed English derivation is pending.
 -/
 theorem isHoriz_of_comm : ∀ (k : Type) [Field k] (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A], IsAbelianScheme A → ∀ (ρ : R →+* DualNumber k) (B' : Over (Sp (DualNumber k))) (_ : GrpObj B') (π₁ π₂ : B'.left ⟶ A.left), IsGrpPullback B' A (spMap ρ) π₁ → IsGrpPullback B' A (spMap (constHom ρ)) π₂ → (∀ (Z : Scheme.{0}) (x : Z ⟶ B'.left) (y : Z ⟶ Sp k), x ≫ B'.hom = y ≫ spMap (TrivSqZeroExt.fstHom k k k).toRingHom → x ≫ π₁ = x ≫ π₂) → ∀ (A₀ : Over (Sp k)) (_ : GrpObj A₀) (m₀ : A₀.left ⟶ A.left), IsGrpPullback A₀ A (spMap ((TrivSqZeroExt.fstHom k k k).toRingHom.comp ρ)) m₀ → ∀ (dl : ∀ W : A.left.Opens, Γ(A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W)), GlobalTheory.KS.LocDerK A₀.hom A.hom m₀ (fun r => (ρ r).snd) ⊤ dl → ∀ (s : 𝟙_ (Over (Sp R)) ⟶ A) (T₀ : A₀.left ⟶ A₀.left), T₀ ≫ m₀ = m₀ ≫ (lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left → T₀ ≫ A₀.hom = A₀.hom → (∀ (W : A.left.Opens) (f : Γ(A.left, W)), dl ((lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left ⁻¹ᵁ W) (((lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left.app W).hom f) = pbT T₀ (dl W f) (m₀ ⁻¹ᵁ ((lift (toUnit A ≫ s) (𝟙 A) ≫ μ[A]).left ⁻¹ᵁ W))) → ∀ x : Sp (DualNumber k) ⟶ B'.left, x ≫ B'.hom = 𝟙 _ → x ≫ π₁ = spMap ρ ≫ s.left → x ≫ π₂ = spMap (constHom ρ) ≫ s.left := by
   intro k _ R _ A _ hA ρ B' _ π₁ π₂ h₁ h₂ hcl A₀ _ m₀ hm₀ dl hdl s T₀ hT₀ hT₀h hcomm x hx hx1

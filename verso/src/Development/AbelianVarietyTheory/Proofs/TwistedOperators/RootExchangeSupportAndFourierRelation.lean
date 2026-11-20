@@ -34,9 +34,7 @@ theorem colE_inv_val (u : n → k) : ((colE c p u)⁻¹).val = fromBlocks 1 (-co
 
 omit [DecidableEq n] [Fintype n] in
 /- English proof (translation)
-Use extensionality with `r s`. Simplify using `only [colM, rowM, Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h1 h2`. Use linear arithmetic over natural numbers and integers.
-
-Apply the tactic sequence `all_goals simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem colM_mul_rowM (u β : n → k) : colM c (p + 1) β * rowM c p u = 0 := by
   ext r s
@@ -48,7 +46,7 @@ theorem colM_mul_rowM (u β : n → k) : colM c (p + 1) β * rowM c p u = 0 := b
 
 omit [DecidableEq n] in
 /- English proof (translation)
-Simplify using `only [colM, rowM, Matrix.mul_apply, Matrix.of_apply, dotProduct]`. Apply the tactic sequence `by_cases h1 : i.val + 1 = p <;> by_cases h2 : j.val = p <;> simp [h1, h2]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowM_mul_colM (u β : n → k) (i j : Fin c) :
     (rowM c p u * colM c (p + 1) β) i j = if i.val + 1 = p ∧ j.val = p then u ⬝ᵥ β else 0 := by
@@ -56,7 +54,7 @@ theorem rowM_mul_colM (u β : n → k) (i j : Fin c) :
   by_cases h1 : i.val + 1 = p <;> by_cases h2 : j.val = p <;> simp [h1, h2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, rowE_val, rowE_val, rowE_val]`. Establish `: rowM c p (u + w) = rowM c p u + rowM c p w`. Apply the tactic sequence `ext i j; simp only [rowM, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]; split_ifs <;> simp`. Simplify using `[fromBlocks_multiply, this]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem rowE_add (u w : n → k) : rowE c p (u + w) = rowE c p u * rowE c p w := by
   apply Units.ext
@@ -66,9 +64,9 @@ theorem rowE_add (u w : n → k) : rowE c p (u + w) = rowE c p u * rowE c p w :=
   simp [fromBlocks_multiply, this]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, colE_val, colE_val, colE_val]`. Establish `: colM c p (u + w) = colM c p w + colM c p u`. Use extensionality with `i j`. Simplify using `only [colM, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp [add_comm]`. Simplify using `[fromBlocks_multiply, this]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem colE_add (u w : n → k) : colE c p (u + w) = colE c p u * colE c p w := by
   apply Units.ext
@@ -79,7 +77,7 @@ theorem colE_add (u w : n → k) : colE c p (u + w) = colE c p u * colE c p w :=
   simp [fromBlocks_multiply, this]
 
 /- English proof (translation)
-Use `rowE_add (c := c) (p := p) (0 : n → k) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowE_zero : rowE c p (0 : n → k) = 1 := by
   have := rowE_add (c := c) (p := p) (0 : n → k) 0
@@ -87,7 +85,7 @@ theorem rowE_zero : rowE c p (0 : n → k) = 1 := by
   exact left_eq_mul.mp this
 
 /- English proof (translation)
-Use `colE_add (c := c) (p := p) (0 : n → k) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colE_zero : colE c p (0 : n → k) = 1 := by
   have := colE_add (c := c) (p := p) (0 : n → k) 0
@@ -95,13 +93,13 @@ theorem colE_zero : colE c p (0 : n → k) = 1 := by
   exact left_eq_mul.mp this
 
 /- English proof (translation)
-Unfold `simpleSum`. Rewrite using `[Finset.sum_eq_single (⟨p - 1, by omega⟩ : Fin c), Finset.sum_eq_single (⟨p, hc⟩ : Fin c)]`. Establish `h1 : p - 1 + 1 = p` using `by omega`. Establish `h2 : (⟨p - 1, by omega⟩ : Fin c) ≠ ⟨p, hc⟩`. Simplify using `only [ne_eq, Fin.mk.injEq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[h, h1, Matrix.one_apply_ne h2]`. Introduce `j _ hj`. Establish `: j.val ≠ p - 1 + 1` using `fun e => hj (Fin.ext (by simp only; omega))`. Simplify using `[this]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i _ hi`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Establish `h1 : i.val + 1 ≠ p` using `fun e => hi (Fin.ext (by simp only; omega))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : i ≠ j` using `fun e => by subst e; omega`. Simplify using `[h, h1, Matrix.one_apply_ne h2]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem simpleSum_eq (hp : 1 ≤ p) (hc : p < c) (g : GL (n ⊕ Fin c) k) (t : k)
     (h : ∀ i j : Fin c, g.val (Sum.inr i) (Sum.inr j) =
@@ -127,13 +125,13 @@ theorem simpleSum_eq (hp : 1 ≤ p) (hc : p < c) (g : GL (n ⊕ Fin c) k) (t : k
   · simp
 
 /- English proof (translation)
-Establish `hv : (rowE c p u * colE c (p + 1) β * (rowE c p u)⁻¹).val = fromBlocks 1 (colM c (p + 1) β) 0 (1 + rowM c p u * colM c (p + 1) β)`. Rewrite using `[Units.val_mul, Units.val_mul, rowE_val, colE_val, rowE_inv_val]`. Simplify using `[fromBlocks_multiply, Matrix.add_mul, Matrix.mul_assoc, colM_mul_rowM, add_comm]`. Use `⟨Subgroup.subset_closure ?_, simpleSum_eq hp hc _ _ ?_⟩` and prove the remaining obligations. Introduce `r s hrs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv, ← fromBlocks_one]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Both sides reduce to the same expression. Establish `: s.val ≠ p` using `by simp [lev] at hrs; omega`. Simplify using `[colM, this]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `: ¬ (r.val + 1 = p ∧ s.val = p)` using `by simp [lev] at hrs; omega`. Simplify using `[rowM_mul_colM, this]`. Introduce `i j`. Rewrite using `[hv]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rowM_mul_colM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conj_col (hp : 1 ≤ p) (hc : p < c) (u β : n → k) :
     rowE c p u * colE c (p + 1) β * (rowE c p u)⁻¹ ∈ N k n c p ∧
@@ -156,13 +154,13 @@ theorem conj_col (hp : 1 ≤ p) (hc : p < c) (u β : n → k) :
     rw [hv]; simp [rowM_mul_colM]
 
 /- English proof (translation)
-Establish `hv : (colE c (p + 1) β * rowE c p u * (colE c (p + 1) β)⁻¹).val = fromBlocks 1 0 (rowM c p u) (1 - rowM c p u * colM c (p + 1) β)`. Rewrite using `[Units.val_mul, Units.val_mul, rowE_val, colE_val, colE_inv_val]`. Simplify using `[fromBlocks_multiply, colM_mul_rowM, sub_eq_add_neg, add_comm]`. Use `⟨Subgroup.subset_closure ?_, simpleSum_eq hp hc _ _ ?_⟩` and prove the remaining obligations. Introduce `r s hrs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hv, ← fromBlocks_one]`. Apply the tactic sequence `rcases r with r | r <;> rcases s with s | s`. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish `: r.val + 1 ≠ p` using `by simp [lev] at hrs; omega`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[rowM, this]`. Establish `: ¬ (r.val + 1 = p ∧ s.val = p)` using `by simp [lev] at hrs; omega`. Simplify using `[rowM_mul_colM, this]`. Introduce `i j`. Rewrite using `[hv]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [fromBlocks_apply₂₂, Matrix.sub_apply, rowM_mul_colM]`. Apply the tactic sequence `split_ifs <;> simp [sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_row (hp : 1 ≤ p) (hc : p < c) (u β : n → k) :
     colE c (p + 1) β * rowE c p u * (colE c (p + 1) β)⁻¹ ∈ N k n c (p + 1) ∧
@@ -193,7 +191,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 
 omit [Fintype n] [DecidableEq n] [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [rowM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply j`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_rowM : Continuous fun u : n → k => rowM c p u := by
   refine continuous_matrix fun i j => ?_
@@ -204,7 +202,7 @@ theorem continuous_rowM : Continuous fun u : n → k => rowM c p u := by
 
 omit [Fintype n] [DecidableEq n] [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [colM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `continuous_apply i`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colM : Continuous fun u : n → k => colM c p u := by
   refine continuous_matrix fun i j => ?_
@@ -214,7 +212,7 @@ theorem continuous_colM : Continuous fun u : n → k => colM c p u := by
   · exact continuous_const
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_const continuous_rowM continuous_const`. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_const continuous_rowM.neg continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_rowE : Continuous fun u : n → k => rowE c p u := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -222,7 +220,7 @@ theorem continuous_rowE : Continuous fun u : n → k => rowE c p u := by
   · exact Continuous.matrix_fromBlocks continuous_const continuous_const continuous_rowM.neg continuous_const
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_colM continuous_const continuous_const`. Conclude with `Continuous.matrix_fromBlocks continuous_const continuous_colM.neg continuous_const continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_colE : Continuous fun u : n → k => colE c p u := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -230,23 +228,21 @@ theorem continuous_colE : Continuous fun u : n → k => colE c p u := by
   · exact Continuous.matrix_fromBlocks continuous_const continuous_colM.neg continuous_const continuous_const
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `ht : Tendsto (fun y : n → k => y - x) (𝓝 x) (𝓝 0)`. Establish `: Continuous fun y : n → k => y - x` using `by fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.tendsto x`. Use `filter_upwards [ht.eventually h1] with y hy`. Simplify using `using hy x`. Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x₀, ψ x₀ ≠ 1 := by`. Assume the negation of the conclusion as `h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push Not at h`. Conclude with `hψ (by ext x; simp [h])`. Establish `h3 : ∀ᶠ y in 𝓝 (0 : k), ∀ i : n, ∀ u, f u = (ψ (u ⬝ᵥ Pi.single i y) : ℂ) * f u`. Rewrite using `[eventually_all]`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Continuous fun y : k => (Pi.single i y : n → k)` using `continuous_single (A := fun _ : n => k) i`. Establish `ht` using `this.tendsto 0`. Rewrite `ht` using `[Pi.single_zero]`. Conclude with `ht.eventually h2`. Take `⟨γ, hγ, hs⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `HasCompactSupport.intro (isCompact_univ_pi fun _ : n => IsNonarchimedeanLocalField.isCompact_closedBall k (valuation k x₀ / γ)) ?_` and prove the remaining obligations. Introduce `u hu`. Simplify using `only [Set.mem_pi, Set.mem_univ, true_imp_iff, not_forall, Set.mem_ofPred_eq, not_le] at hu`. Take `⟨i, hi⟩` from `hu`. Establish `hu0 : u i ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `e`. Rewrite `hi` using `[e]`. Simplify using `at hi`. Establish `hv0 : 0 < valuation k (u i)` using `lt_of_le_of_lt zero_le hi`. Establish `hγ0 : 0 < γ` using `zero_lt_iff.2 hγ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hy : valuation k (x₀ / u i) < γ`. Rewrite using `[map_div₀, div_lt_iff₀ hv0]`. Rewrite `hi` using `[div_lt_iff₀ hγ0]`. Rewrite using `[mul_comm]` and apply the resulting hypothesis. Use `hs hy i u` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `this` using `[dotProduct_single, mul_div_cancel₀ _ hu0]`. Assume the negation of the conclusion as `hf`. Apply `hx₀` to reduce the goal to its premises. Establish `h4 : (ψ x₀ : ℂ) = 1`. Establish `h5 : (ψ x₀ : ℂ) * f u = 1 * f u` using `by rw [one_mul]; exact this.symm`.
-
-Conclude with `mul_right_cancel₀ hf h5`. Conclude with `Circle.ext (by simpa using h4)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_SB_of {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (f : (n → k) → ℂ)
     (h1 : ∀ᶠ w in 𝓝 (0 : n → k), ∀ u, f (u + w) = f u)
@@ -297,17 +293,15 @@ theorem mem_SB_of {ψ : AddChar k Circle} (hψ : ψ ≠ 1) (f : (n → k) → �
 end Top
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c p hp hc ψ _ hψ ν _ A _ _ σ hσ l v`. Establish `hrow : ∀ᶠ w in 𝓝 (0 : n → k), σ (rowE c p w) v = v` using `continuous_rowE.continuousAt.eventually_mem ((hσ v).mem_nhds (by simp [rowE_zero]))`. Establish `hcol : ∀ᶠ w in 𝓝 (0 : n → k), σ (colE c (p + 1) w) v = v` using `continuous_colE.continuousAt.eventually_mem ((hσ v).mem_nhds (by simp [colE_zero]))`. Establish `hmul : ∀ (a b : GL (n ⊕ Fin c) k), σ a (σ b v) = σ (a * b * a⁻¹) (σ a v)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, inv_mul_cancel_right]`. Use `⟨fun hl => ?_, fun hl => ?_⟩` and prove the remaining obligations. Establish `key : ∀ u β : n → k, l (σ (rowE c p u) (σ (colE c (p + 1) β) v)) = (ψ (u ⬝ᵥ β) : ℂ) * l (σ (rowE c p u) v)`. Introduce `u β`. Rewrite using `[hmul, hl _ (conj_col hp hc u β).1, (conj_col hp hc u β).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mem_SB_of hψ _ ?_ ?_, key, fun β => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hrow] with w hw u`. Rewrite using `[rowE_add, map_mul, Module.End.mul_apply, hw]`. Use `filter_upwards [hcol] with w hw u`. Rewrite using `[← key, hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [exUp, key]`. Establish `key : ∀ u β : n → k, l (σ (colE c (p + 1) β) (σ (rowE c p u) v)) = (ψ (-(u ⬝ᵥ β)) : ℂ) * l (σ (colE c (p + 1) β) v)`. Introduce `u β`. Rewrite using `[hmul, hl _ (conj_row hp hc u β).1, (conj_row hp hc u β).2]`. Use `⟨mem_SB_of hψ _ ?_ ?_, key⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [hcol] with w hw u`. Rewrite using `[colE_add, map_mul, Module.End.mul_apply, hw]`. Establish `hneg : Tendsto (fun w : n → k => -w) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_neg (G := n → k)).tendsto 0`. Use `filter_upwards [hneg.eventually hrow] with w hw u`.
-
-Use `key (-w) u` as an intermediate fact. Rewrite `this` using `[hw, neg_dotProduct, neg_neg, dotProduct_comm]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exchange_support : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (n : Type) [Fintype n] [DecidableEq n] (c p : ℕ) (_ : 1 ≤ p) (_ : p < c) (ψ : AddChar k Circle) (_ : Continuous ψ) (_ : ψ ≠ 1) (ν : Measure k) [ν.IsAddHaarMeasure] (A : Type) [AddCommGroup A] [Module ℂ A] (σ : Representation ℂ (GL (n ⊕ Fin c) k) A) (_ : IsSmoothRep σ) (l : A →ₗ[ℂ] ℂ) (v : A), (IsNEquiv ψ p σ l → (fun u : n → k => l (σ (rowE c p u) v)) ∈ SB (n → k) ∧ (∀ u β : n → k, l (σ (rowE c p u) (σ (colE c (p + 1) β) v)) = (ψ (u ⬝ᵥ β) : ℂ) * l (σ (rowE c p u) v)) ∧ ∀ β : n → k, exUp ν p σ l (σ (colE c (p + 1) β) v) = ∫ u : n → k, (ψ (u ⬝ᵥ β) : ℂ) * l (σ (rowE c p u) v) ∂(Measure.pi fun _ => ν)) ∧ (IsNEquiv ψ (p + 1) σ l → (fun β : n → k => l (σ (colE c (p + 1) β) v)) ∈ SB (n → k) ∧ ∀ u β : n → k, l (σ (colE c (p + 1) β) (σ (rowE c p u) v)) = (ψ (-(u ⬝ᵥ β)) : ℂ) * l (σ (colE c (p + 1) β) v)) := by
   intro k _ _ _ _ _ _ n _ _ c p hp hc ψ _ hψ ν _ A _ _ σ hσ l v

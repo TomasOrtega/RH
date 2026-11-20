@@ -20,7 +20,7 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
 variable {r : Type*} [Fintype r] [DecidableEq r] {H A B : E → Matrix r r ℂ} {z : E}
 
 /- English proof (translation)
-Use `(eq_conn_of_compatible ?_ ?_).symm` and prove the remaining obligations. Simplify using `only [det_mul, det_conjTranspose]`. Conclude with `(hAu.mul hu).mul hBu.star`. Rewrite using `[mdel_mul (hA.mul h) hB.conjTranspose, mdel_mul hA h, mdel_conjTranspose, hB0, ← conn_transpose_mul hu, transpose_mul, transpose_nonsing_inv]`. Simplify using `only [Matrix.mul_assoc, nonsing_inv_mul_cancel_left _ _ hAu, transpose_add, transpose_mul, Matrix.add_mul, conjTranspose_zero, transpose_transpose, Matrix.mul_zero, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conn_mul_mul (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
     (hA : MContDiffAt 1 A z) (hAu : IsUnit (A z).det) (hB : MContDiffAt 1 B z) (hBu : IsUnit (B z).det)
@@ -35,9 +35,9 @@ theorem conn_mul_mul (h : MContDiffAt 1 H z) (hu : IsUnit (H z).det)
       conjTranspose_zero, transpose_transpose, Matrix.mul_zero, zero_add]
 
 /- English proof (translation)
-Establish `he : (fun x => conn (fun x => A x * H x * (B x)ᴴ) x ξ) =ᶠ[𝓝 z] fun x => (A x)ᵀ⁻¹ * (conn H x ξ * (A x)ᵀ + (mdel A x ξ)ᵀ)` using `by filter_upwards [h.eventually_two, h.eventually_isUnit hu, hA.eventually_two, hA.eventually_isUnit hAu, hB.eventually_two, hB.eventually_isUnit hBu, hB0] with x h1 h2 h3 h4 h5 h6 h7`. Conclude with `conn_mul_mul (h1.of_le one_le_two) h2 (h3.of_le one_le_two) h4 (h5.of_le one_le_two) h6 h7 ξ`. Establish `hA1 : MContDiffAt 1 (fun x => (A x)ᵀ) z` using `(hA.of_le one_le_two).transpose`. Establish `hAu' : IsUnit (A z)ᵀ.det` using `by rwa [det_transpose]`. Establish `hc : MContDiffAt 1 (fun x => conn H x ξ) z` using `h.conn hu (by norm_num) ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : MContDiffAt 1 (fun x => (mdel A x ξ)ᵀ) z` using `(hA.mdel (by norm_num) ξ).transpose`. Establish `h0 : mddbar A z ξ η = 0`. Rewrite using `[← mdel_mdbar hA, mdel_congr (B := fun _ => 0) (hA0.mono fun x hx => hx η), mdel_const]`. Rewrite using `[curv, mdbar_congr he, mdbar_mul (hA1.inv hAu') ((hc.mul hA1).add hd), mdbar_inv hA1 hAu', mdbar_add (hc.mul hA1) hd, mdbar_mul hc hA1, mdbar_transpose (fun x => mdel A x ξ), mdbar_mdel hA, h0, mdbar_transpose A, hA0.self_of_nhds, curv]`. Simplify using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem curv_mul_mul (h : MContDiffAt 2 H z) (hu : IsUnit (H z).det)
     (hA : MContDiffAt 2 A z) (hAu : IsUnit (A z).det) (hA0 : ∀ᶠ x in 𝓝 z, ∀ η, mdbar A x η = 0)
@@ -66,13 +66,13 @@ variable {n : ℕ} {r : Type} [Fintype r] {T : V n → Matrix r r ℂ} {v : V n}
 omit [Fintype r] in
 
 /- English proof (translation)
-Introduce `a b` and use `((SCV.analyticAt_iff_eventually_differentiableAt.2 (h a b)).contDiffAt).restrict_scalars ℝ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem two_of_holo (h : ∀ a b, ∀ᶠ x in 𝓝 v, DifferentiableAt ℂ (fun u => T u a b) x) : MContDiffAt 2 T v :=
   fun a b => ((SCV.analyticAt_iff_eventually_differentiableAt.2 (h a b)).contDiffAt).restrict_scalars ℝ
 
 /- English proof (translation)
-The claim follows from `(eventually_all.2 fun a => eventually_all.2 fun b => h a b).mono fun x hx η => by ext a b rw [mdbar_apply, dbar_eq_zero (hx a b)] rfl`.
+A detailed English derivation is pending.
 -/
 theorem mdbar_zero_of_holo (h : ∀ a b, ∀ᶠ x in 𝓝 v, DifferentiableAt ℂ (fun u => T u a b) x) :
     ∀ᶠ x in 𝓝 v, ∀ η, mdbar T x η = 0 :=
@@ -82,9 +82,9 @@ theorem mdbar_zero_of_holo (h : ∀ a b, ∀ᶠ x in 𝓝 v, DifferentiableAt �
     rfl
 
 /- English proof (translation)
-Introduce `n r _ _ G G₂ T K v hG hGu hT hTu hK hKu he`. Establish `hG2 : MContDiffAt 2 G v` using `hG.of_le (by norm_cast)`. Use `⟨fun ξ => ?_, fun ξ η => ?_⟩` and prove the remaining obligations. Rewrite using `[conn_congr he]`. Conclude with `conn_mul_mul (hG2.of_le one_le_two) hGu ((two_of_holo hT).of_le one_le_two) hTu ((two_of_holo hK).of_le one_le_two) hKu (mdbar_zero_of_holo hK).self_of_nhds ξ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[curv_congr he]`. Conclude with `curv_mul_mul hG2 hGu (two_of_holo hT) hTu (mdbar_zero_of_holo hT) (two_of_holo hK) hKu (mdbar_zero_of_holo hK) ξ η`.
+A detailed English derivation is pending.
 -/
 theorem conn_curv_frame : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G₂ T K : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → (∀ a b, ∀ᶠ x in 𝓝 v, DifferentiableAt ℂ (fun u => T u a b) x) → IsUnit (T v).det → (∀ a b, ∀ᶠ x in 𝓝 v, DifferentiableAt ℂ (fun u => K u a b) x) → IsUnit (K v).det → (∀ᶠ x in 𝓝 v, G₂ x = T x * G x * (K x)ᴴ) → (∀ ξ, conn G₂ v ξ = (T v)ᵀ⁻¹ * (conn G v ξ * (T v)ᵀ + (mdel T v ξ)ᵀ)) ∧ ∀ ξ η, curv G₂ v ξ η = (T v)ᵀ⁻¹ * curv G v ξ η * (T v)ᵀ := by
   intro n r _ _ G G₂ T K v hG hGu hT hTu hK hKu he

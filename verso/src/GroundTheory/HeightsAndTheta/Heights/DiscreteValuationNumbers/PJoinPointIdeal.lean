@@ -41,9 +41,9 @@ def tgtEquiv (Ω : Type) [CommRing Ω] : MvPolynomial (K ⊕ Unit) Ω ≃+* MvPo
 variable (Ω : Type) [Field Ω] [Algebra R Ω]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[tgtEquiv, srcEquiv, mcMap, pointConeMap, MvPolynomial.algebraMap_eq]`. Introduce and unpack `⟨(k | ⟨⟩), i⟩`. Simplify using `[tgtEquiv, srcEquiv, mcMap, pointConeMap, joinCoord, joinIdx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[tgtEquiv, srcEquiv, mcMap, pointConeMap, joinCoord, joinIdx, ptCoord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cone_comp (y : (Σ k, ι k) → Ω) :
     ((tgtEquiv (K := K) Ω : MvPolynomial (K ⊕ Unit) Ω →+* MvPolynomial Unit (MvPolynomial K Ω))).comp
@@ -61,7 +61,7 @@ theorem cone_comp (y : (Σ k, ι k) → Ω) :
     · simp [tgtEquiv, srcEquiv, mcMap, pointConeMap, joinCoord, joinIdx, ptCoord]
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[srcEquiv]`. Introduce `p`. Simplify using `[srcEquiv, liftVar, joinIdx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem rename_liftVar_eq :
     ((rename (liftVar (ι := ι) ptIdx) : MRing ι R →ₐ[R] MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R) :
@@ -79,11 +79,9 @@ end
 end JoinPointIdeal
 
 /- English proof (translation)
-Introduce `R _ Ω _ _ K _ ι _ y`. Use `set φ : MRing ι R →+* MvPolynomial K Ω := ((pointConeMap R y : MRing ι R →ₐ[R] MvPolynomial K Ω) : MRing ι R →+* MvPolynomial K Ω) with hφ`. Establish `h1 : mcIdeal R (joinCoord y (ptCoord (Ω` using `Ω))) = Ideal.comap (JoinPointIdeal.srcEquiv (ι := ι) R : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) R →+* MvPolynomial Unit (MRing ι R)) (RingHom.ker (MvPolynomial.map (σ := Unit) φ)) := by`. Use extensionality with `f`. Establish `hc` using `RingHom.congr_fun (JoinPointIdeal.cone_comp R Ω y) f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply] at hc`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, ← hc]`. Simplify using `only [RingHom.coe_coe, EmbeddingLike.map_eq_zero_iff]`. Conclude with `RingHom.mem_ker`. Rewrite using `[h1, pointIdeal, show RingHom.ker (pointConeMap R y) = RingHom.ker φ from rfl, ← Ideal.map_coe, JoinPointIdeal.rename_liftVar_eq, ← Ideal.map_map, Ideal.map_coe, Ideal.map_symm, ← MvPolynomial.ker_map]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem JoinPointIdeal.proof : JoinPointIdeal.Statement := by
   intro R _ Ω _ _ K _ ι _ y

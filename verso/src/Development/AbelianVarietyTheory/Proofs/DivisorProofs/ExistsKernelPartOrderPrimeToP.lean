@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.AV.KerPart
 
 /- English proof (translation)
-Use `⟨⟨MonObj.one_comp _, one_pow _⟩, ?_⟩` and prove the remaining obligations. Introduce `R _ _ x _ hx`. Rewrite `hx` using `[pow_one]`. Substitute `hx` using the available equality. Use `⟨Algebra.ofId k R, ?_, fun ψ _ => Subsingleton.elim _ _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(spOver (Algebra.ofId k R) ≫ (1 : ptOver k k ⟶ A.X)).left = (1 : ptOver k R ⟶ A.X).left`. Rewrite using `[MonObj.comp_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerPow_one {k : Type} [Field k] {A B : AbVar k} (f : A ⟶ B) :
     KerPow f 1 k (1 : ptOver k k ⟶ A.X) := by
@@ -30,7 +30,7 @@ theorem kerPow_one {k : Type} [Field k] {A B : AbVar k} (f : A ⟶ B) :
   rw [MonObj.comp_one]
 
 /- English proof (translation)
-Use `haveI : Fact q.Prime := ⟨hq⟩`. Take `⟨G, -, ⟨tA⟩⟩` from `GlobalTheory.AVTower.exists_tower q k A`. Take `⟨G', -, ⟨tB⟩⟩` from `GlobalTheory.AVTower.exists_tower q k B`. Use `⟨_, inferInstance, inferInstance, kerPt tA tB f e, kerPow_kerPt tA tB f e, ?_⟩` and prove the remaining obligations. Conclude with `(Nat.dvd_prime_pow hq).1 (finrank_quot_kerIdeal_dvd (tA.map tB f.hom) e) |>.imp fun _ h => h.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_kerPow_primePow {k : Type} [Field k] {A B : AbVar k} (f : A ⟶ B) (q e : ℕ) (hq : q.Prime) :
     ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X),
@@ -42,19 +42,17 @@ theorem exists_kerPow_primePow {k : Type} [Field k] {A B : AbVar k} (f : A ⟶ B
   exact (Nat.dvd_prime_pow hq).1 (finrank_quot_kerIdeal_dvd (tA.map tB f.hom) e) |>.imp fun _ h => h.2
 
 /- English proof (translation)
-Introduce `p hp k _ A B f m`. Establish `hpp : p.Prime` using `hp.out`. Proceed by induction on `m using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow q n hq hn`. Introduce `_ hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hqp : q ≠ p`. Introduce and unpack `rfl`. Conclude with `hdvd (dvd_pow_self q hn.ne')`. Take `⟨H, _, _, i, hi, j, hj⟩` from `exists_kerPow_primePow f q n hq`. Use `⟨H, inferInstance, inferInstance, i, hi, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj]`. Introduce `h`. Conclude with `hqp ((Nat.prime_dvd_prime_iff_eq hpp hq).1 (hpp.dvd_of_dvd_pow h)).symm`. Consider the case `zero => intro h`. Conclude with `absurd h (lt_irrefl 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `one`. Introduce `_ _`. Use `⟨k, inferInstance, inferInstance, 1, kerPow_one f, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_self]`. Conclude with `hpp.not_dvd_one`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `coprime a b ha hb hab iha ihb`. Introduce `_ hdvd`. Establish `hpa : ¬ p ∣ a` using `fun h => hdvd (h.mul_right b)`. Establish `hpb : ¬ p ∣ b` using `fun h => hdvd (h.mul_left a)`. Take `⟨H₁, _, _, i₁, hi₁, h₁⟩` from `iha (by omega) hpa`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H₂, _, _, i₂, hi₂, h₂⟩` from `ihb (by omega) hpb`. Take `⟨H, _, _, i, hi, hH⟩` from `GlobalTheory.T.kernelPart_mul_of_coprime_abelianVariety k A B f a b hab H₁ i₁ H₂ i₂ hi₁ hi₂`. Use `⟨H, inferInstance, inferInstance, i, hi, ?_⟩` and prove the remaining obligations. Rewrite using `[hH]`. Introduce `h`.
-
-Break down `(Nat.Prime.dvd_mul hpp).1 h with h | h` into its components or cases. Conclude with `h₁ h`. Conclude with `h₂ h`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_kerPow_not_dvd : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] (A B : AbVar k) (f : A ⟶ B)
     (m : ℕ), 0 < m → ¬ p ∣ m → ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X),

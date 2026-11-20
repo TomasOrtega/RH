@@ -19,7 +19,7 @@ instance cm : IsCMField Qi := IsCyclotomicExtension.Rat.isCMField Qi (S := {4}) 
 noncomputable def ii : Qi := IsCyclotomicExtension.zeta 4 ℚ Qi
 
 /- English proof (translation)
-Establish `h` using `IsCyclotomicExtension.zeta_spec 4 ℚ Qi`. Use `(h.pow (a := 2) (b := 2) (by norm_num) (by norm_num)).eq_neg_one_of_two_right` as an intermediate fact. Rewrite using `[← this, pow_two]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ii_mul : ii * ii = -1 := by
   have h := IsCyclotomicExtension.zeta_spec 4 ℚ Qi
@@ -27,9 +27,9 @@ theorem ii_mul : ii * ii = -1 := by
   rw [← this, pow_two]; rfl
 
 /- English proof (translation)
-Set `τ : Qi →+* ℂ` to `Classical.choice inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Establish `h : τ ii * τ ii = -1` using `by rw [← map_mul, ii_mul]; simp`. Establish `h' : τ ii = Complex.I ∨ τ ii = -Complex.I`. Rewrite using `[← mul_self_eq_mul_self_iff, h]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg]`. Apply the tactic sequence `rcases h' with h' | h' <;> simp [h']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_ii : IsCMField.complexConj Qi ii = -ii := by
   let τ : Qi →+* ℂ := Classical.choice inferInstance
@@ -43,23 +43,23 @@ theorem cc_ii : IsCMField.complexConj Qi ii = -ii := by
 noncomputable def A : Matrix (Fin 2) (Fin 2) Qi := !![1, ii; -ii, 3]
 
 /- English proof (translation)
-Establish `h3 : IsCMField.complexConj Qi 3 = 3` using `map_ofNat _ 3`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [A, cc, cc_ii, h3]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem A_herm (a b : Fin 2) : cc (A a b) = A b a := by
   have h3 : IsCMField.complexConj Qi 3 = 3 := map_ofNat _ 3
   fin_cases a <;> fin_cases b <;> simp [A, cc, cc_ii, h3]
 
 /- English proof (translation)
-Simplify using `only [A, Matrix.det_fin_two_of]`. Take the linear combination `ii_mul`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem A_det : A.det = 2 := by
   simp only [A, Matrix.det_fin_two_of]
   linear_combination ii_mul
 
 /- English proof (translation)
-Establish `hne : (1 : Qi) + ii ≠ 0`. Introduce `h`. Establish `: (2 : Qi) = 0` using `by linear_combination (1 - ii) * h + ii_mul`. Evaluate the numerical expressions using `at this`. Use `⟨!![1, -ii; 0, 1 + ii], by simpa [Matrix.det_fin_two] using hne, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [A, Matrix.mul_apply, Fin.sum_univ_two, cc, cc_ii]`. Take the linear combination `2 * ii_mul`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem A_congr : ∃ P : Matrix (Fin 2) (Fin 2) Qi, P.det ≠ 0 ∧ A = Pᵀ * 1 * P.map cc := by
   have hne : (1 : Qi) + ii ≠ 0 := by
@@ -72,7 +72,7 @@ theorem A_congr : ∃ P : Matrix (Fin 2) (Fin 2) Qi, P.det ≠ 0 ∧ A = Pᵀ * 
   linear_combination 2 * ii_mul
 
 /- English proof (translation)
-Use `⟨?_, A_herm, by simp, by rw [A_det]; norm_num, Landherr.congr_complex A_congr, Landherr.det_norm (by simp) A_congr⟩` and prove the remaining obligations. Introduce `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [cc]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hypotheses :
     (∀ a b, cc ((1 : Matrix (Fin 2) (Fin 2) Qi) a b) = (1 : Matrix (Fin 2) (Fin 2) Qi) b a) ∧
@@ -86,15 +86,13 @@ theorem hypotheses :
   fin_cases a <;> fin_cases b <;> simp [cc]
 
 /- English proof (translation)
-Introduce `h`. Use `set D : ℕ := a.den * b.den with hD`. Establish `hD0 : D ≠ 0` using `mul_ne_zero a.den_nz b.den_nz`. Establish `key : 3 * D ^ 2 = (a.num * b.den).natAbs ^ 2 + (b.num * a.den).natAbs ^ 2`. Establish `: (3 * (D : ℤ) ^ 2) = (a.num * b.den) ^ 2 + (b.num * a.den) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (a.num : ℚ) = a * a.den` using `(Rat.mul_den_eq_num a).symm`. Establish `hb : (b.num : ℚ) = b * b.den` using `(Rat.mul_den_eq_num b).symm`. Establish `: ((3 * (D : ℤ) ^ 2 : ℤ) : ℚ) = (((a.num * b.den) ^ 2 + (b.num * a.den) ^ 2 : ℤ) : ℚ)`. Move the coercions through the operations in `[hD]`. Rewrite using `[ha, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `((a.den : ℚ) * b.den) ^ 2 * h`. Conclude with `this` after adjusting the coercions. Use `zify`. Rewrite using `[sq_abs, sq_abs]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(Nat.eq_sq_add_sq_iff (n := 3 * D ^ 2)).mp ⟨_, _, key⟩ 3 (by`. Rewrite using `[Nat.mem_primeFactors]`. Conclude with `⟨by norm_num, dvd_mul_right _ _, by positivity⟩) (by norm_num)`. Use `haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩`. Rewrite `h2` using `[padicValNat.mul (by norm_num) (pow_ne_zero _ hD0), padicValNat.pow, padicValNat_self]`.
-
-Rewrite `h2` using `[Nat.even_add]`. Simplify using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem three_ne_sq_add_sq (a b : ℚ) : (3 : ℚ) ≠ a ^ 2 + b ^ 2 := by
   intro h
@@ -123,13 +121,13 @@ theorem three_ne_sq_add_sq (a b : ℚ) : (3 : ℚ) ≠ a ^ 2 + b ^ 2 := by
   simp at h2
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℚ ![(1 : Qi), ii]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `h1 : (s : Qi) + (t : Qi) * ii = 0`. Simplify `hst` using `[Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ((s ^ 2 + t ^ 2 : ℚ) : Qi) = 0`. Use `push_cast`. Take the linear combination `((s : Qi) - t * ii) * h1 + (t : Qi) ^ 2 * ii_mul`. Establish `h3 : s ^ 2 + t ^ 2 = 0` using `by exact_mod_cast h2`. Apply the tactic sequence `constructor <;> nlinarith [sq_nonneg s, sq_nonneg t]`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hr : Module.finrank ℚ Qi = 2`. Rewrite using `[IsCyclotomicExtension.finrank (n := 4) Qi (Polynomial.cyclotomic.irreducible_rat (by norm_num))]`. Evaluate the decidable proposition. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli (by rw [hr]; simp)`. Use `⟨b.repr x 0, b.repr x 1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← b.sum_repr x, Fin.sum_univ_two]`. Simplify using `[b, Algebra.smul_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord (x : Qi) : ∃ a b : ℚ, x = a + b * ii := by
   have hli : LinearIndependent ℚ ![(1 : Qi), ii] := by
@@ -152,9 +150,9 @@ theorem exists_coord (x : Qi) : ∃ a b : ℚ, x = a + b * ii := by
   simp [b, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce and unpack `⟨x, hx⟩`. Take `⟨a, b, rfl⟩` from `exists_coord x`. Apply `three_ne_sq_add_sq a b` to reduce the goal to its premises. Simplify using `only [cc, map_add, map_mul, map_ratCast, cc_ii] at hx`. Establish `: ((3 : ℚ) : Qi) = ((a ^ 2 + b ^ 2 : ℚ) : Qi)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `hx - (b : Qi) ^ 2 * ii_mul`. Conclude with `this` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem three_not_norm : ¬ ∃ x : Qi, (3 : Qi) = x * cc x := by
   rintro ⟨x, hx⟩
@@ -167,11 +165,9 @@ theorem three_not_norm : ¬ ∃ x : Qi, (3 : Qi) = x * cc x := by
   exact_mod_cast this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `τ`. Use `⟨!![((Real.sqrt 3 : ℝ) : ℂ)], by simp, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Use `fin_cases a`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `fin_cases b`. Establish `h3 : τ 3 = 3` using `map_ofNat _ 3`. Simplify using `[Matrix.mul_apply, h3, ← Complex.ofReal_mul]`. Introduce and unpack `⟨P, -, h⟩`. Use `three_not_norm ⟨P 0 0, ?_⟩` and prove the remaining obligations.
-
-Simplify `congrFun (congrFun h 0) 0` using `[Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_needed :
     (∀ τ : Qi →+* ℂ, ∃ Q : Matrix (Fin 1) (Fin 1) ℂ, Q.det ≠ 0 ∧
@@ -191,7 +187,7 @@ theorem det_needed :
     simpa [Matrix.mul_apply] using congrFun (congrFun h 0) 0
 
 /- English proof (translation)
-Use `⟨⟨1, by simp [cc, Matrix.det_neg]⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨Q, -, h⟩` from `Landherr.congr_complex h (Classical.choice inferInstance)`. Establish `h0` using `congrArg Complex.re (congrFun (congrFun h 0) 0)`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at h0`. Use polynomial arithmetic with `[mul_self_nonneg (Q 0 0).re, mul_self_nonneg (Q 0 0).im, mul_self_nonneg (Q 1 0).re, mul_self_nonneg (Q 1 0).im]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem signature_needed :
     (∃ x : Qi, (1 : Matrix (Fin 2) (Fin 2) Qi).det / (-1 : Matrix (Fin 2) (Fin 2) Qi).det = x * cc x) ∧
@@ -205,7 +201,7 @@ theorem signature_needed :
     mul_self_nonneg (Q 1 0).im]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => H K L a ha h.1 h.2, fun h => ⟨fun _ => HasseNorm.local_of_global _ h, fun _ => HasseNorm.local_of_global _ h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasseNorm_iff (H : HasseNorm) (K L : Type) [Field K] [NumberField K] [Field L]
     [NumberField L] [Algebra K L] [IsGalois K L] [IsCyclic (L ≃ₐ[K] L)] (a : K) (ha : a ≠ 0) :

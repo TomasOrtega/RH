@@ -14,13 +14,13 @@ namespace GlobalTheory.SerSys.ParVec
 open GlobalTheory.GLq.Opp GlobalTheory.SerSys.Opp MonoidAlgebra
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hj hi`. Take `⟨i', rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j', rfl⟩` from `finSumFinEquiv.surjective j`. Rewrite using `[par_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `i' with i' | i'` into its components or cases. Use `i'.isLt` as an intermediate fact. Simplify using `at hi`. Use linear arithmetic over natural numbers and integers. Break down `j' with j' | j'` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using the standard rewrite rules. Simplify using `at hj`. Use extensionality with `i j show entN _ i j = _`. Rewrite using `[(entN_par (1 : Gn g a) B 1 i j).1 i.isLt j.isLt]`. Simplify using `[entN]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j show entN _ (a + i) (a + j) = _`. Rewrite using `[(entN_par (1 : Gn g a) B 1 i j).2.2.1]`. Simplify using `[entN]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem inPar_tl_br_par_one {g : ℕ} [Fact g.Prime] {a b : ℕ} (B : Matrix (Fin a) (Fin b) (ZMod g)) :
     InPar a ((par finSumFinEquiv (1 : Gn g a) B 1 : Gn g (a + b)) : Mt g (a + b)) ∧
@@ -48,31 +48,29 @@ private theorem inPar_tl_br_par_one {g : ℕ} [Fact g.Prime] {a b : ℕ} (B : Ma
     simp [entN]
 
 /- English proof (translation)
-Introduce `g _ S n V _ _ π a b χ h f v hn hχ hv hne`. Substitute `hn` using the available equality. Take `⟨hvK, hrad, hy⟩` from `hv`. Set `v' : fixK1 π` to `⟨v, hvK⟩`. Establish `hA : ∀ x : Gn g a, blk a b (a + b) x 1 = inA finSumFinEquiv x` using `fun x => blk_eq x 1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hB : ∀ y : Gn g b, blk a b (a + b) 1 y = inB finSumFinEquiv y` using `fun y => blk_eq 1 y`. Set `ρA : Representation ℂ (Gn g a) (fixK1 π)` to `(repK π).comp (inA (g := g) (finSumFinEquiv : Fin a ⊕ Fin b ≃ Fin (a + b)))`. Set `ρB : Representation ℂ (Gn g b) (fixK1 π)` to `(repK π).comp (inB (g := g) (finSumFinEquiv : Fin a ⊕ Fin b ≃ Fin (a + b)))`. Set `u : fixK1 π` to `ρA.asAlgebraHom (S.e a f) v'`. Establish `hu : (u : V) = actTop π a b (S.e a f) v` using `by show ((ρA.asAlgebraHom (S.e a f) v' : fixK1 π) : V) = _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[alg_apply, actTop, Submodule.coe_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[hA]`. Both sides reduce to the same expression. Establish `hv1 : ρB.asAlgebraHom (S.e b h) v' = v'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[alg_apply]`. Establish `hyv : ∀ y : Gn g b, ρB y v' = ((χ (Matrix.GeneralLinearGroup.det y) : ℂˣ) : ℂ) • v'`. Introduce `y`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show π (lift g (a + b) (inB finSumFinEquiv y)) v = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hB]`. Conclude with `hy y`. Repeatedly rewrite using `[hyv, smul_smul, ← Finset.sum_smul]`. Establish `hev` using `(Loc.charIn_iff S χ b h).1 hχ`. Simplify using `only [Loc.ev] at hev`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hev, one_smul]`. Establish `key : (repK π).asAlgebraHom (S.e (a + b) (f * h)) u = u`. Apply `S.mul a b (a + b) rfl f h (fixK1 π) (repK π) u` to reduce the goal to its premises. Introduce `u0 h0 h1 h2`. Take `⟨B, rfl⟩` from `eq_par (k := a) (l := b) u0 h0 h1 h2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (repK π) _ (ρA.asAlgebraHom (S.e a f) v') = ρA.asAlgebraHom (S.e a f) v'`. Rewrite using `[alg_apply, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hconj : par finSumFinEquiv 1 B 1 * inA finSumFinEquiv x = inA finSumFinEquiv x * par finSumFinEquiv 1 (((x⁻¹ : Gn g a) : Mt g a) * B) 1` using `by show par finSumFinEquiv 1 B 1 * par finSumFinEquiv x 0 1 = par finSumFinEquiv x 0 1 * par finSumFinEquiv 1 (((x⁻¹ : Gn g a) : Mt g a) * B) 1`. Rewrite using `[par_mul, par_mul]`. Simplify using `[← Matrix.mul_assoc]`. Use `show (repK π) (par finSumFinEquiv 1 B 1) ((repK π) (inA finSumFinEquiv x) v') = (repK π) (inA finSumFinEquiv x) v'`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hconj, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Take `⟨r0, r1, r2⟩` from `inPar_tl_br_par_one (g := g) (((x⁻¹ : Gn g a) : Mt g a) * B)`. Conclude with `Subtype.ext (hrad _ r0 r1 r2)`. Repeatedly rewrite using `[hA]`. Establish `e2 : ∑ x, (S.e a f).coeff x • (repK π) (inA finSumFinEquiv x) u = ρA.asAlgebraHom (S.e a f) u`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[alg_apply]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Use `show ρA.asAlgebraHom (S.e a f) (ρA.asAlgebraHom (S.e a f) v') = ρA.asAlgebraHom (S.e a f) v'`. Rewrite using `[← Module.End.mul_apply, ← map_mul, S.idem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hB]`. Establish `e3 : ∑ y, (S.e b h).coeff y • (repK π) (inB finSumFinEquiv y) u = ρB.asAlgebraHom (S.e b h) u`. Rewrite using `[alg_apply]`. Both sides reduce to the same expression. Rewrite using `[e3]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ρB.asAlgebraHom (S.e b h) (ρA.asAlgebraHom (S.e a f) v') = ρA.asAlgebraHom (S.e a f) v'`. Establish `hc : ρB.asAlgebraHom (S.e b h) (ρA.asAlgebraHom (S.e a f) v') = ρA.asAlgebraHom (S.e a f) (ρB.asAlgebraHom (S.e b h) v')`. Simplify using `only [ρA, ρB, comp_alg]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, (commute_AB finSumFinEquiv (S.e a f) (S.e b h)).eq]`. Rewrite using `[hc, hv1]`.
-
-Use `⟨(u : V), u.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← repK_alg, key, hu]`. Conclude with `hne`.
+A detailed English derivation is pending.
 -/
 theorem has_mul_of_isParVec : ∀ (g : ℕ) [Fact g.Prime] (S : Sys g) (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) ℚ_[g]) V) (a b : ℕ) (χ : (ZMod g)ˣ →* ℂˣ) (h f : (ZMod g)[X]) (v : V), n = a + b → CharIn S χ b h → IsParVec π a b χ v → actTop π a b (S.e a f) v ≠ 0 → Has S π (f * h) := by
   intro g _ S n V _ _ π a b χ h f v hn hχ hv hne

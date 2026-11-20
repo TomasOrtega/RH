@@ -21,7 +21,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ} {H : Hos
   {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CuspFamilyCompare.exp_unique A.ex_add A'.ex_add A.hol A'.hol (fun j => y.u (e j).1 (e j).2) (fun j => by simpa only [Equiv.symm_apply_apply] using A.der (e j)) (fun j => by simpa only [Equiv.symm_apply_apply] using A'.der (e j))`.
+A detailed English derivation is pending.
 -/
 theorem ex_eq [Algebra c.F ℂ] {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ} {idx : Fin g ≃ X.Ψ × Fin r}
     {e : Fin g ≃ Lt1 Dw} {x : Frame X.Ψ r} {L : Lt E r} {y : FrPt Xo c ℂ} (A A' : AnFib X bas idx e x L y) :
@@ -31,11 +31,11 @@ theorem ex_eq [Algebra c.F ℂ] {X : Data E r} {bas : (Fin g ⊕ Fin g → ℤ) 
     (fun j => by simpa only [Equiv.symm_apply_apply] using A'.der (e j))
 
 /- English proof (translation)
-Establish `hM0 : (l.M : E) ≠ 0` using `Nat.cast_ne_zero.2 (LevCover.M_pos l).ne'`. Use `choose a ha t ht h using fun b => hmk.surj _ (hy b)`. Use `⟨fun b => Submodule.Quotient.mk (a b), fun b => ?_⟩` and prove the remaining obligations. Take `⟨⟨a', ha', hq, h'⟩, -⟩` from `hY (fun b => Submodule.Quotient.mk (a b)) b`. Take `⟨d, hd⟩` from `LevCover.modN_of_mem_both l ((Submodule.Quotient.eq _).1 hq) (Submodule.sub_mem _ ha' (ha b))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₀ : mk a' = mk (a b) + (l.M : E) • mk d`. Rewrite using `[Nat.cast_smul_eq_nsmul, ← map_nsmul, ← hd, ← map_add, add_sub_cancel]`. Establish `e₁ : y b = (l.M : E)⁻¹ • mk (a b) + t b`. Rewrite using `[← inv_smul_smul₀ hM0 (y b), h, smul_add, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM0]`. Rewrite `h'` using `[e₀, smul_add, inv_smul_smul₀ hM0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `L.sub_mem (L.add_mem h' (hmk.mem d)) (ht b) using 1` and compare the differences between its conclusion and the goal. Rewrite using `[e₁]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_root {L : Lt E r} {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (hmk : IsMark l L mk) {n N : ℕ}
     {Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E} (hY : IsRoots l L mk N Y) {y : Matrix (Fin n) (Fin r) E}
@@ -55,33 +55,31 @@ theorem exists_root {L : Lt E r} {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (hmk 
   abel
 
 /- English proof (translation)
-Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Establish `hC` using `GlobalTheory.ChartFree.chartIndep`. Take `⟨W⟩` from `nonempty_uw hU`. Take `rfl : g = W.g` from `Fin.equiv_iff_eq.1 ⟨e.trans W.e.symm⟩`. Take `⟨-, hL, hmk, -⟩` from `uw_lattice E H Dw l Xo c σ r U hσ hU hr1 W k`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw : IsIntegral ℤ (H.w0 : E)` using `H.w0.isIntegral_coe`. Establish `hw'` using `ThRead.cmHost_idempotent_trace_eq_one H`. Establish `hD : Dom (0 : (E →+* ℂ) × ℕ → ℕ) n` using `⟨fun _ => antitone_const, hn⟩`. Take `⟨Dc, hDe, -⟩` from `exists_dic E H Dw l c σ r W.g n (U.X k) 0 e hσ hU.1 (hU.2.1 k).1 (hU.2.1 k).2 hL hD`. Substitute `hDe` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Take `rfl : idx = Dc.idx` from `idx_unique hs fun x u j => (hI x u j).trans (Dc.per_eq x u j).symm`. Take `⟨ρ, hρ, hnorm⟩` from `VacNorm.norm_factor_eq E r _ _ bas Dc.idx n hs hn _ hw hw' _ hL v hv`. Establish `hpt : ∀ x (hx : x ∈ (U.X k).dom), IsUnitFr (U.X k) x → ∃ κ : ℂ, ‖κ‖ = ρ ∧ ∃ (A : AnFib (U.X k) bas Dc.idx Dc.e x (U.X k).Λ (unC U k ⟨x, hx⟩)) (ϑ : (Fin W.g → ℂ) → ℂ), A.Marked (W.mark k) ∧ A.Reads 1 (unC U k ⟨x, hx⟩).s ϑ ∧ IsTheta1 (U.X k) bas Dc.idx (H.w0 : E) x (U.X k).Λ ϑ ∧ Me …`. Introduce `x hx hux`. Take `⟨π, hπ⟩ : ∃ π : Fin W.g ≃ Fin W.g, π.trans W.e = Dc.e` from `⟨Dc.e.trans W.e.symm, by ext1; simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hπ' : ∀ j, W.e j = Dc.e (π.symm j)` using `fun j => by rw [← hπ]; simp`. Establish `hid : π.trans (π.symm.trans Dc.idx) = Dc.idx` using `by ext1; simp`. Take `⟨A₀, hA₀, ϑ₀, hϑ₀, hm₀⟩` from `uw_anFib E H Dw l Xo c σ r U hσ hU hr1 W k bas (π.symm.trans Dc.idx) hs (fun x u j => by rw [hπ']; exact Dc.per_eq x u _) (fun j => by rw [hπ']; exact Dc.ty_eq _) ⟨x, hx⟩ hux`. Establish `h1` using `exists_anFib_trans π A₀`. Establish `hmean` using `meanOne_trans π hm₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hid, hπ]`. Rewrite `hmean` using `[hid]`. Take `⟨A, hA, hR⟩` from `h1`. Establish `hT` using `isTheta1_of_reads_generator E H Dw l Xo c r _ _ bas Dc.idx Dc.e x _ _ A hs hx hL _ (hR _ hϑ₀)`. Take `⟨κ, hκ⟩` from `VacProd.prod_eq_mul_thA E r _ _ bas Dc.idx n hs hn _ hw hw' _ hL v hv x hx _ hT`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨κ, hnorm x hx hux _ κ hT hmean hκ, A, _, hA _ hA₀, hR _ hϑ₀, hT, hmean, hκ⟩`. Use `choose κ hκ hpt using hpt`. Take `⟨C, -, hCe⟩` from `Const.exists_const (U.X k) (Formalism.L2.PjFree.laU U 0 n k) ρ hρ κ hκ`. Use `⟨C, fun x hox A ϑ hϑ => ?_⟩` and prove the remaining obligations. Establish `hux : IsUnitFr (U.X k) x.1` using `PullbackSections.PfSupAtUnit.dmin_ortho _ hox`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨A₀, ϑ₀, hA₀, -, hT₀, hmean, hprod₀⟩` from `hpt x.1 x.2 hux`. Establish `hA : A.Marked (W.mark k)` using `fun a ha => (hA₀ a ha).trans (congrFun (ex_eq A₀ A) _)`. Take `⟨κ', hprod⟩` from `VacProd.prod_eq_mul_thA E r _ _ bas Dc.idx n hs hn _ hw hw' _ hL v hv x.1 x.2 _ (isTheta1_of_reads_generator E H Dw l Xo c r _ _ bas Dc.idx Dc.e x.1 _ _ A hs x.2 hL _ hϑ)`. Establish `hM` using `LevCover.M_pos l`. Take `⟨-, -, h1, h2, hY⟩` from `DualMark.dual_marking E H Dw l r (U.X k) _ (W.mark k) _ hL hmk (Complex.isPrimitiveRoot_exp l.M hM.ne')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, hY⟩` from `hY n l.M hM`. Establish `ht0 : 0 < t`. Take `⟨τ₀⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, τ ∈ (U.X k).Ψ := by`. Distinguish the cases in `h : ComplexEmbedding.conjugate τ₀ ∈ (U.X k).Ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Conclude with `⟨_, h⟩`. Conclude with `⟨τ₀, ((U.X k).cmType τ₀).2 h⟩`. Rewrite using `[← ht ⟨τ, hτ⟩]`. Conclude with `mul_pos two_pos (norm_pos_iff.2 ((_root_.map_ne_zero τ).2 (U.X k).ξ0_ne))`. Take `⟨y, hy, hne⟩` from `exists_level_translate_jet_ne_zero E r (U.X k) W.g Dw.p Dc.hr bas Dc.idx n hs hn H.w0 hw' _ hL x.1 x.2 hox t ht0 ht (Mfr l) l.M l.odd (by rw [h1, h2]) v hv ϑ₀ _ hT₀ hmean hprod₀ 1 one_ne_zero (by rw [MvPolynomial.totalDegree_one]; exact le_trans (by norm_num) l.three_le)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq⟩` from `exists_root hmk hY hy`. Establish `h3` using `right_ne_zero_of_mul (hne _ hq)`. Take `⟨_, nab, hnab⟩` from `GlobalTheory.CanonConn.exists_isNab_uncond E H Dw l Xo c`. Establish `hLaw : Laws` using `GlobalTheory.allSixLaws.1`. Establish `hP` using `one_mem_harmA (Dw := Dw) c n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `(existsUnique_thRule Xo c nab (GlobalTheory.thValTot_of_chartIndep hLaw hC E H Dw l Xo c nab hnab) (fun b => levRep (q b)) hP).exists`. Establish `hsec : f ∈ sec Xo c 0 n` using `GlobalTheory.thetaRule_mem_sec hLaw hC E H Dw l Xo c nab hnab 0 n f ⟨_, _, hP, hf⟩`. Establish `hsb : IsSB (heisG (U.X k) bas (Y q) v)` using `((GlobalTheory.SW.heisG_laws E r (U.X k) W.g bas Dc.idx n hs hn).2.2.2 (Y q) v hv.1).1`. Establish `hhol` using `GlobalTheory.SW.theta_holomorphic_weight E r (U.X k) W.g Dw.p Dc.hr bas Dc.idx n hs hn Dc.k Dc.k' _ hsb _ (Dc.mem 1 hP.1)`. Establish `hS` using `hU.2.2.2.2.1 0 n hD f hsec k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hwt : wtOf (U.X k) Dc.hr Dc.k Dc.k' n = Formalism.L2.PjFree.laU U 0 n k` using `Dc.wt_eq`. Rewrite `hhol` using `[hwt]`. Establish `hval : ∀ x' (hx' : x' ∈ (U.X k).dom) (A' : AnFib (U.X k) bas Dc.idx Dc.e x' (U.X k).Λ (unC U k ⟨x', hx'⟩)) (ϑ' : (Fin W.g → ℂ) → ℂ) (κ'' : ℂ), A'.Marked (W.mark k) → A'.Reads 1 (unC U k ⟨x', hx'⟩).s ϑ' → (∀ z : Fin n → Fin W.g → ℂ, ∏ b, ϑ' (z b) = κ'' * thA (U.X k) bas Dc.idx v x …` using `fun x' hx' A' ϑ' κ'' hA' hϑ' hprod' => by`. Use `thVal_eq_thP hC E H Dw l Xo c r W.g (U.X k) bas Dc.idx Dc.e x' _ _ A' hs hx' hL Dw.p n Dc.hr Dc.eL hU.1 hn Dc.dir_eq nab hnab ϑ' v _ hϑ' hv hprod' (W.mark k) hmk hA' (fun b => levRep (q b)) (Y q) (fun b => by` as an intermediate fact. Take `⟨⟨a', ha', hq, hy⟩, hj⟩` from `hY q b`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨a', ha', (Submodule.Quotient.eq _).1 (hq.trans (Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q b))).symm), hy⟩, hj⟩) 0 1 hP _`. Use the proof step `(ThRead.thValAt_evR hC Xo c nab hnab _ hP hf ℂ (unC U k ⟨x', hx'⟩))`. Conclude with `Eq.trans (dif_pos hx') this`. Establish `h4` using `hCe _ _ hS.1 hhol.1 (fun x hx b hb => ⟨hS.2.1 x hx b hb, hhol.2.1 x hx b hb⟩) (fun x' hx' hu' => by`. Take `⟨A', ϑ', hA', hϑ', -, -, hprod'⟩` from `hpt x' hx' hu'`.
-
-Conclude with `hval x' hx' A' ϑ' _ hA' hϑ' hprod') x.1 x.2`. Rewrite `h4` using `[hval x.1 x.2 A ϑ κ' hA hϑ hprod, map_one, map_one]`. Rewrite using `[← mul_right_cancel₀ h3 h4]`. Conclude with `hprod`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_const {σ : c.F →+* ℂ} (U : Formalism.L2.PjFree.Unf Xo c σ r) (hσ : GoodEmb c σ)
     (hU : Formalism.L2.PjFree.IsUnf U) (hr1 : 1 ≤ r) (k : U.Comp) (t : ℝ) (ht : ∀ τ, (U.X k).c τ = t) (n : ℕ) (hn : Even n)
@@ -195,7 +193,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.OneMapRef GlobalTheory.WeilParts
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ r U hσ hU hr _ k t ht n hn g bas idx e hs hm v hv`. Conclude with `GlobalTheory.OneMapRef.Kappa.exists_const (Formalism.L2.PjFree.Unf.ofPj U) hσ hU hr k t ht n hn bas idx e hs hm.1 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OneMapRef.exists_const_ortho : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r), GoodEmb c σ → IsUnf U → 1 ≤ r → l.A = 1 → ∀ (k : U.Comp) (t : ℝ), (∀ τ, (U.X k).c τ = t) → ∀ n : ℕ, Even n → ∀ (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] (U.X k).Λ) (idx : Fin g ≃ (U.X k).Ψ × Fin r) (e : Fin g ≃ Lt1 Dw), IsSympl (U.X k) bas → Matched c σ (U.X k) idx e → ∀ v : TF n g, IsVac (U.X k) bas (H.w0 : D.host.E) (tens (stdL D.host.E n) (U.X k).Λ) v → ∃ C : ℂ, ∀ x : (U.X k).dom, (U.X k).IsOrtho x.1 → letI : Algebra c.F ℂ := σ.toAlgebra; ∀ (A : AnFib (U.X k) bas idx e x.1 (U.X k).Λ (ptC U k x)) (th : (Fin g → ℂ) → ℂ), A.Reads 1 (ptC U k x).s th → ∀ z : Fin n → Fin g → ℂ, ∏ b, th (z b) = C * thA (U.X k) bas idx v x.1 z := by
   intro D H Dw l Xo c σ r U hσ hU hr _ k t ht n hn g bas idx e hs hm v hv

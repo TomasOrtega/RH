@@ -26,7 +26,7 @@ def sheetTerm (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin D) (Fin n)
   (fibre J A y).indicator (fun x => if h : ∃ s, IsSheetAt J A x s then H x h.choose else 0) x
 
 /- English proof (translation)
-Unfold `sheetSum sheetTerm`. Rewrite using `[finsum_mem_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sheetSum_eq_finsum (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin D) (Fin n) ℂ)
     (H : (Fin n → ℂ) → ((Fin D → ℂ) → Fin n → ℂ) → ℝ) (y : Fin D → ℂ) :
@@ -35,9 +35,9 @@ theorem sheetSum_eq_finsum (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (F
   rw [finsum_mem_def]
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hsd, hsx, hsec, N, hN, hNs⟩` from `hs`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Use `⟨V, interior N ∩ (fun z => A *ᵥ z) ⁻¹' V, hV, isOpen_interior.inter (hV.preimage hAc), ⟨mem_interior_iff_mem_nhds.2 hN, hxV⟩, hsd, hsec, ?_⟩` and prove the remaining obligations. Introduce and unpack `x' ⟨hx'Z, hx'N, hx'V⟩`. Establish `hx's : s (A *ᵥ x') = x'` using `(hNs x' ⟨hx'Z, interior_subset hx'N⟩ hx'V).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `⟨hx'V, V, hV, hx'V, hsd, hx's, hsec, interior N, isOpen_interior.mem_nhds hx'N, fun x'' hx'' hAx'' => hNs x'' ⟨hx''.1, interior_subset hx''.2⟩ hAx''⟩`.
+Supply the required witnesses or components.
 -/
 theorem window_of_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin D → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) :
@@ -56,15 +56,13 @@ theorem window_of_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
 open Classical in
 
 /- English proof (translation)
-Unfold `sheetTerm`. Distinguish the cases in `hx : x ∈ fibre J A y`. Rewrite using `[Set.indicator_of_mem hx]`. Take `⟨hxZ, hxy⟩` from `hx`. Distinguish the cases in `hxW : x ∈ W`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨hAV, hsx⟩` from `hW x ⟨hxZ, hxW⟩`. Establish `hxs : s (A *ᵥ x) = x` using `hsx.choose_spec.2.2.2.1`. Establish `hyV : y ∈ V` using `hxy ▸ hAV`. Establish `hx' : x = s y` using `by rw [← hxy, hxs]`. Establish `hex : ∃ s', IsSheetAt J A x s'` using `⟨s, hsx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[dif_pos hex, if_pos ⟨hyV, hx'⟩, h1 x _ hxy hex.choose_spec hsx, ← hx']`. Establish `h0 : (if h : ∃ s', IsSheetAt J A x s' then H x h.choose else 0) = 0` using `by split_ifs with hex`. Conclude with `h2 x _ hxZ hxy hxW hex.choose_spec`. Both sides reduce to the same expression. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `split_ifs with hc`. Take `⟨hyV, rfl⟩` from `hc`. Conclude with `(h3 hyV hxW).symm`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx] split_ifs with hc`.
-
-Take `⟨hyV, rfl⟩` from `hc`. Conclude with `absurd ⟨(hsec y hyV).2, (hsec y hyV).1⟩ hx`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sheetTerm_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {H : (Fin n → ℂ) → ((Fin D → ℂ) → Fin n → ℂ) → ℝ} {y : Fin D → ℂ}
@@ -103,7 +101,7 @@ theorem sheetTerm_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin
 
 open Classical in
 /- English proof (translation)
-Use `(Set.finite_singleton (s y)).subset fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Function.mem_support, h x]`. Use `split_ifs at hx with hc`. Conclude with `hc.2`. Conclude with `absurd rfl hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_support_sheetTerm_window {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin D) (Fin n) ℂ} {H : (Fin n → ℂ) → ((Fin D → ℂ) → Fin n → ℂ) → ℝ}
@@ -118,9 +116,9 @@ theorem finite_support_sheetTerm_window {J : Ideal (MvPolynomial (Fin n) ℂ)}
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[sheetSum_eq_finsum, finsum_congr h]`. Distinguish the cases in `hyV : y ∈ V`. Rewrite using `[Set.indicator_of_mem hyV, finsum_eq_single _ (s y) fun x hx => if_neg fun hc => hx hc.2]`. Simplify using `[hyV]`. Rewrite using `[Set.indicator_of_notMem hyV]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hyV]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sheetSum_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {H : (Fin n → ℂ) → ((Fin D → ℂ) → Fin n → ℂ) → ℝ} {y : Fin D → ℂ}
@@ -135,9 +133,9 @@ theorem sheetSum_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
     simp [hyV]
 
 /- English proof (translation)
-Simplify using `only [sheetSum_eq_finsum]`. Rewrite using `[← finsum_sum_comm t (fun x i => sheetTerm J A (K i) y x) hfin]`. Use `finsum_congr fun x => ?_` and prove the remaining obligations. Unfold `sheetTerm`. Distinguish the cases in `hx : x ∈ fibre J A y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Set.indicator_of_mem hx] split_ifs with hex`. Conclude with `hH x hx _ hex.choose_spec`. Simplify using the standard rewrite rules. Simplify using `[Set.indicator_of_notMem hx]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetSum_finset_sum {ι : Type*} (t : Finset ι) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin D) (Fin n) ℂ} {y : Fin D → ℂ}
@@ -158,7 +156,7 @@ theorem sheetSum_finset_sum {ι : Type*} (t : Finset ι) {J : Ideal (MvPolynomia
   · simp [Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hessC_fam_cons {m : ℕ} (f : (Fin (m + 1) → ℂ) → ℝ) (φ : Fin m → (Fin (m + 1) → ℂ) → ℝ)
     (z : Fin (m + 1) → ℂ) :
@@ -168,7 +166,7 @@ theorem hessC_fam_cons {m : ℕ} (f : (Fin (m + 1) → ℂ) → ℝ) (φ : Fin m
   refine Fin.cases ?_ (fun k => ?_) k <;> simp
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.maDens`. Rewrite using `[hessC_fam_cons, hessC_fam_cons, hessC_fam_cons, ReciprocityTheory.AnForm.A.hessC_add f g z hf hg, ReciprocityTheory.AnForm.A.mdisc_cons_eq_sum, ReciprocityTheory.AnForm.A.mdisc_cons_eq_sum, ReciprocityTheory.AnForm.A.mdisc_cons_eq_sum]`. Simplify using `only [Matrix.add_apply, add_mul, Finset.sum_add_distrib, Complex.add_re]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem maDens_cons_add {m : ℕ} (f g : (Fin (m + 1) → ℂ) → ℝ) (φ : Fin m → (Fin (m + 1) → ℂ) → ℝ)
     (z : Fin (m + 1) → ℂ) (hf : ContDiffAt ℝ 2 f z) (hg : ContDiffAt ℝ 2 g z) :
@@ -182,9 +180,9 @@ theorem maDens_cons_add {m : ℕ} (f g : (Fin (m + 1) → ℂ) → ℝ) (φ : Fi
   ring
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `ReciprocityTheory.AnForm.M.PLAux.maDens_cons_eq_zero EventuallyEq.rfl`. Consider the case `insert a t ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_insert ha]`. Rewrite using `[maDens_cons_add (g a) (fun w => ∑ i ∈ t, g i w) φ z (hg a (Finset.mem_insert_self a t)) (ContDiffAt.sum fun i hi => hg i (Finset.mem_insert_of_mem hi)), ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maDens_cons_finset_sum {m : ℕ} {ι : Type*} (t : Finset ι)
     (g : ι → (Fin (m + 1) → ℂ) → ℝ) (φ : Fin m → (Fin (m + 1) → ℂ) → ℝ) (z : Fin (m + 1) → ℂ)
@@ -203,7 +201,7 @@ theorem maDens_cons_finset_sum {m : ℕ} {ι : Type*} (t : Finset ι)
       ih fun i hi => hg i (Finset.mem_insert_of_mem hi)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `refine Fin.cases ?_ (fun k => ?_) k <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fam_comp {m : ℕ} {α β : Type*} (f : α → ℝ) (φ : Fin m → α → ℝ) (s : β → α) :
     (fun k => vecCons f φ k ∘ s) = (Fin.cons (f ∘ s) (fun k => φ k ∘ s) : Fin (m + 1) → β → ℝ) := by
@@ -211,7 +209,7 @@ theorem fam_comp {m : ℕ} {α β : Type*} (f : α → ℝ) (φ : Fin m → α �
   refine Fin.cases ?_ (fun k => ?_) k <;> rfl
 
 /- English proof (translation)
-Rewrite using `[fam_comp]`. Apply `ReciprocityTheory.AnForm.M.PLAux.maDens_cons_eq_zero` to reduce the goal to its premises. Use `filter_upwards [hs.preimage_mem_nhds ((isClosed_tsupport f).isOpen_compl.mem_nhds hy)] with w hw`. Conclude with `image_eq_zero_of_notMem_tsupport (f := f) (x := s w) hw`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem maDens_eq_zero_of_notMem_tsupport {m : ℕ} (f : (Fin n → ℂ) → ℝ)
     (φ : Fin m → (Fin n → ℂ) → ℝ) {s : (Fin (m + 1) → ℂ) → Fin n → ℂ} {y : Fin (m + 1) → ℂ}
@@ -223,7 +221,7 @@ theorem maDens_eq_zero_of_notMem_tsupport {m : ℕ} (f : (Fin n → ℂ) → ℝ
   exact image_eq_zero_of_notMem_tsupport (f := f) (x := s w) hw
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.M.PLAux.maDens_congr_germ fun k => (SheetSumMeasurable.sheet_eventuallyEq hs hs').fun_comp (Ψ k)`.
+A detailed English derivation is pending.
 -/
 theorem maDens_sheet_congr {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     (Ψ : Fin D → (Fin n → ℂ) → ℝ) {x : Fin n → ℂ} {s s' : (Fin D → ℂ) → Fin n → ℂ}
@@ -234,7 +232,7 @@ theorem maDens_sheet_congr {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (F
     (SheetSumMeasurable.sheet_eventuallyEq hs hs').fun_comp (Ψ k)
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hsd, -⟩` from `hs`. Conclude with `hsd.continuousOn.continuousAt (hV.mem_nhds hxV)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem continuousAt_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin D → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) :
@@ -243,7 +241,7 @@ theorem continuousAt_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (F
   exact hsd.continuousOn.continuousAt (hV.mem_nhds hxV)
 
 /- English proof (translation)
-Introduce `y hy` and use `analyticAt_pi_iff.2 fun j => ReciprocityTheory.AnForm.Osgood.osgood D V (fun y => s y j) hV (differentiableOn_pi.1 hsd j) y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem analyticOnNhd_of_differentiableOn {s : (Fin D → ℂ) → Fin n → ℂ} {V : Set (Fin D → ℂ)}
     (hV : IsOpen V) (hsd : DifferentiableOn ℂ s V) : AnalyticOnNhd ℂ s V := fun y hy =>
@@ -251,7 +249,7 @@ theorem analyticOnNhd_of_differentiableOn {s : (Fin D → ℂ) → Fin n → ℂ
     ReciprocityTheory.AnForm.Osgood.osgood D V (fun y => s y j) hV (differentiableOn_pi.1 hsd j) y hy
 
 /- English proof (translation)
-Take `⟨O, -, hZO, hgO⟩` from `hg`. Conclude with `hgO.comp (ReciprocityTheory.AnForm.M.pa_holoSmooth s V (analyticOnNhd_of_differentiableOn hV hsd)) fun y hy => hZO (hsZ y hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contDiffOn_comp_section {J : Ideal (MvPolynomial (Fin n) ℂ)} {g : (Fin n → ℂ) → ℝ}
     {s : (Fin D → ℂ) → Fin n → ℂ} {V : Set (Fin D → ℂ)} (hg : SmoothNear (zeroSet J) g)
@@ -264,9 +262,9 @@ theorem contDiffOn_comp_section {J : Ideal (MvPolynomial (Fin n) ℂ)} {g : (Fin
 open Classical in
 
 /- English proof (translation)
-Establish `hf0 : ∀ x, x ∉ W → f x = 0` using `fun x hx => image_eq_zero_of_notMem_tsupport fun h => hx (hfW h)`. Use `sheetTerm_window hsec hW ?_ ?_ ?_ x` and prove the remaining obligations. Introduce and unpack `x s' rfl hs' hs`. Rewrite using `[maDens_sheet_congr Ψ hs hs']`. Introduce `x s' _ _ hxW _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf0 x hxW, zero_mul]`. Introduce `_ hyW`. Rewrite using `[hf0 _ hyW, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem sheetTerm_weight_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {s : (Fin D → ℂ) → Fin n → ℂ} {V : Set (Fin D → ℂ)} {W : Set (Fin n → ℂ)}
@@ -288,9 +286,9 @@ theorem sheetTerm_weight_window {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matr
 open Classical in
 
 /- English proof (translation)
-Use `sheetTerm_window hsec hW ?_ ?_ ?_ x` and prove the remaining obligations. Introduce and unpack `x s' rfl hs' hs`. Rewrite using `[maDens_sheet_congr (vecCons f φ) hs hs']`. Introduce and unpack `x s' _ rfl hxW hs'`. Establish `hx : s' (A *ᵥ x) = x` using `hs'.choose_spec.2.2.2.1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[maDens_eq_zero_of_notMem_tsupport f φ (continuousAt_sheet hs') (by rw [hx]; exact fun h => hxW (hfW h)), mul_zero]`. Introduce `hyV hyW`. Rewrite using `[maDens_eq_zero_of_notMem_tsupport f φ (hsd.continuousOn.continuousAt (hV.mem_nhds hyV)) (fun h => hyW (hfW h)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem sheetTerm_cons_window {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (D + 1)) (Fin n) ℂ} {s : (Fin (D + 1) → ℂ) → Fin n → ℂ}
@@ -314,7 +312,7 @@ theorem sheetTerm_cons_window {J : Ideal (MvPolynomial (Fin n) ℂ)}
       (fun h => hyW (hfW h)), mul_zero]
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hsd, -, hsec, -⟩` from `hs`. Conclude with `((contDiffOn_comp_section hg hV hsd fun y hy => (hsec y hy).2).contDiffAt (hV.mem_nhds hxV)).of_le (WithTop.coe_le_coe.2 le_top)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem contDiffAt_comp_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin D) (Fin n) ℂ}
     {g : (Fin n → ℂ) → ℝ} {x : Fin n → ℂ} {s : (Fin D → ℂ) → Fin n → ℂ}
@@ -324,11 +322,9 @@ theorem contDiffAt_comp_sheet {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix
     (hV.mem_nhds hxV)).of_le (WithTop.coe_le_coe.2 le_top)
 
 /- English proof (translation)
-Simplify using `only [fam_comp]`. Rewrite using `[ReciprocityTheory.AnForm.M.PLAux.maDens_congr_germ (ψ := Fin.cons (fun w => ∑ i ∈ t, (f i ∘ s) w) (fun k => φ k ∘ s)) ?_]`. Conclude with `maDens_cons_finset_sum t (fun i => f i ∘ s) _ _ fun i hi => contDiffAt_comp_sheet (hf i hi) hs`. Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero]`. Take `⟨V, hV, hxV, -, -, hsec, -⟩` from `hs`. Use `filter_upwards [hV.mem_nhds hxV] with w hw`. Conclude with `hsum _ (hsec w hw).2`. Simplify using `only [Fin.cons_succ]`.
-
-Conclude with `EventuallyEq.rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem maDens_sheet_finset_sum {ι : Type*} (t : Finset ι) {J : Ideal (MvPolynomial (Fin n) ℂ)}
     {A : Matrix (Fin (D + 1)) (Fin n) ℂ} (F : (Fin n → ℂ) → ℝ) (f : ι → (Fin n → ℂ) → ℝ)
@@ -351,23 +347,21 @@ theorem maDens_sheet_finset_sum {ι : Type*} (t : Finset ι) {J : Ideal (MvPolyn
       exact EventuallyEq.rfl
 
 /- English proof (translation)
-Establish `hsZ : ∀ y ∈ V, s y ∈ zeroSet J` using `fun y hy => (hsec y hy).2`. Establish `h3 : (3 : WithTop ℕ∞) ≤ ∞` using `WithTop.coe_le_coe.2 le_top`. Establish `hvV : ContDiffOn ℝ ∞ (V.indicator (f ∘ s)) V` using `(contDiffOn_comp_section hf hV hsd hsZ).congr fun y hy => Set.indicator_of_mem hy _`. Establish `hAc : Continuous fun z : Fin n → ℂ => A *ᵥ z` using `by fun_prop`. Establish `hCc : IsCompact ((fun x => A *ᵥ x) '' (tsupport f ∩ zeroSet J))` using `(hfc.inter_right (SheetSumMeasurable.isClosed_zeroSet J)).image hAc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCV : (fun x => A *ᵥ x) '' (tsupport f ∩ zeroSet J) ⊆ V`. Introduce and unpack `_ ⟨x, ⟨hxf, hxZ⟩, rfl⟩`. Conclude with `(hW x ⟨hxZ, hfW hxf⟩).1`. Establish `hvC : tsupport (V.indicator (f ∘ s)) ⊆ (fun x => A *ᵥ x) '' (tsupport f ∩ zeroSet J)`. Use `closure_minimal (fun y hy => ?_) hCc.isClosed` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hyV : y ∈ V`. Rewrite `hy` using `[Function.mem_support, Set.indicator_of_mem hyV]`. Conclude with `⟨s y, ⟨subset_tsupport f hy, hsZ y hyV⟩, (hsec y hyV).1⟩`. Conclude with `absurd (Set.indicator_of_notMem hyV _) hy`. Establish `hyp : ReciprocityTheory.AnForm.A.PartsHyp (fun k => φ k ∘ s) (V.indicator (f ∘ s)) (G ∘ s) V` using `⟨hV, hvV.of_le h3, hCc.of_isClosed_subset (isClosed_tsupport _) hvC, hvC.trans hCV, (contDiffOn_comp_section hG hV hsd hsZ).of_le h3, fun i => (contDiffOn_comp_section (hφ i) hV hsd hsZ).of_le h3⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i1, i2, -, -, hsym⟩` from `ReciprocityTheory.AnForm.A.parts_thm D _ _ _ V hyp`. Establish `hL : chartDens J A f (vecCons G φ) = V.indicator (fun z => V.indicator (f ∘ s) z * ReciprocityTheory.AnForm.maDens (Fin.cons (G ∘ s) (fun k => φ k ∘ s)) z)`. Use function extensionality and compare the values at `y`. Rewrite using `[chartDens, sheetSum_window (sheetTerm_weight_window hsec hW f hfW _ y)]`. Distinguish the cases in `hyV : y ∈ V`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_mem hyV, Set.indicator_of_mem hyV, Set.indicator_of_mem hyV, fam_comp]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hyV, Set.indicator_of_notMem hyV]`. Establish `hR : chartDens J A G (vecCons f φ) = V.indicator (fun z => (G ∘ s) z * ReciprocityTheory.AnForm.maDens (Fin.cons (V.indicator (f ∘ s)) (fun k => φ k ∘ s)) z)`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[chartDens, sheetSum_window (sheetTerm_cons_window hV hsd hsec hW f G hfW φ y)]`. Distinguish the cases in `hyV : y ∈ V`. Rewrite using `[Set.indicator_of_mem hyV, Set.indicator_of_mem hyV, fam_comp]`. Use `congr 1`. Use `ReciprocityTheory.AnForm.M.PLAux.maDens_congr_germ fun k => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero] filter_upwards [hV.mem_nhds hyV] with z hz`. Rewrite using `[Set.indicator_of_mem hz]`. Simplify using `only [Fin.cons_succ]`. Conclude with `EventuallyEq.rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[Set.indicator_of_notMem hyV, Set.indicator_of_notMem hyV]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `chartInt`. Rewrite using `[hL, hR, integral_indicator hV.measurableSet, integral_indicator hV.measurableSet]`. Conclude with `hsym.symm`.
-
-Rewrite using `[hL]`. Conclude with `(integrable_indicator_iff hV.measurableSet).2 i1`. Rewrite using `[hR]`. Conclude with `(integrable_indicator_iff hV.measurableSet).2 i2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem window_stokes {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (D + 1)) (Fin n) ℂ}
     {s : (Fin (D + 1) → ℂ) → Fin n → ℂ} {V : Set (Fin (D + 1) → ℂ)} {W : Set (Fin n → ℂ)}

@@ -15,7 +15,7 @@ open PositivityTheory.Rg.Tf.Loc (twConj)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Unfold `orbFn`. Rewrite using `[← hU u hu (x⁻¹ * (ratF E a δ₁, ratF E b δ₂) * thP E a b x), map_mul]`. Use `congr 1`. Use `group`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem orbFn_mul_right (S : Set (Pl E)) (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ)
     (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E) (U : Subgroup (Gf E a b))
@@ -27,11 +27,9 @@ theorem orbFn_mul_right (S : Set (Pl E)) (φ₁ φ₂ : ∀ w : Pl E, GLw a w ×
   group
 
 /- English proof (translation)
-Establish `: IsLocallyConstant f`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hmem : (x⁻¹ * ·) ⁻¹' (U : Set G) ∈ nhds x`. Apply `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hUo.mem_nhds` to reduce the goal to its premises. Simplify using `[U.one_mem]`. Use `filter_upwards [hmem] with y hy`. Use `hf x (x⁻¹ * y) hy` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `this.continuous`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_right_invariant {G X : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [TopologicalSpace X] (f : G → X) (U : Subgroup G) (hUo : IsOpen (U : Set G))
@@ -49,7 +47,7 @@ theorem continuous_of_right_invariant {G X : Type*} [Group G] [TopologicalSpace 
   exact this.continuous
 
 /- English proof (translation)
-Unfold `twConj`. Conclude with `(continuous_inv.mul continuous_const).mul hθ`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_twConj {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (θ : Monoid.End G) (hθ : Continuous θ) (δ : G) : Continuous fun g : G => twConj θ g δ := by
@@ -57,13 +55,11 @@ theorem continuous_twConj {G : Type*} [Group G] [TopologicalSpace G] [IsTopologi
   exact (continuous_inv.mul continuous_const).mul hθ
 
 /- English proof (translation)
-Introduce `hEq hFin hComp hTopo E _ _ _ hUnr a b S u₁ u₂ h₁ h₂ ψ φ₁ φ₂ hψ t₁ t₂ d₁ d₂`. Take `⟨e, he⟩` from `hComp E a b`. Establish `hc : Continuous (comps : GA E a × GA E b → Gi E a b × Gf E a b)`. Establish `: (comps : GA E a × GA E b → Gi E a b × Gf E a b) = e` using `funext fun x => (he x).symm`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.continuous`. Establish `hθa : Continuous (thetaR (starRingEnd ℂ) a)` using `(hTopo E a).2.2.2.2.2`. Establish `hθb : Continuous (thetaR (starRingEnd ℂ) b)` using `(hTopo E b).2.2.2.2.2`. Take `⟨U, hUo, hU⟩` from `hFin E hUnr a b S φ₁ φ₂ t₁ t₂`. Establish `hfin : Continuous (orbFn S φ₁ φ₂ (d₁ * u₁⁻¹) (d₂ * u₂⁻¹))` using `continuous_of_right_invariant _ U hUo fun x u hu => orbFn_mul_right S φ₁ φ₂ _ _ U hU x u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrw : (fun x : GA E a × GA E b => adel S u₁ u₂ ψ φ₁ φ₂ (twConj (thetaA E a) x.1 (ratGL E a d₁), twConj (thetaA E b) x.2 (ratGL E b d₂))) = fun x => (∏ v, ψ v (twConj (thetaR (starRingEnd ℂ) a) ((comps x).1 v).1 (GeneralLinearGroup.map v.embedding d₁), twConj (thetaR (starRingEnd …`. Use function extensionality and compare the values at `fun x => hEq E a b S u₁ u₂ h₁ h₂ ψ φ₁ φ₂ d₁ d₂ x`. Rewrite using `[hrw]`. Use `Continuous.mul (continuous_finsetProd _ fun v _ => (hψ v).comp ?_) (hfin.comp (continuous_snd.comp hc))` and prove the remaining obligations. Establish `hv : Continuous fun x : GA E a × GA E b => (comps x).1 v` using `(continuous_apply v).comp (continuous_fst.comp hc)`.
-
-Conclude with `((continuous_twConj _ hθa _).comp (continuous_fst.comp hv)).prodMk ((continuous_twConj _ hθb _).comp (continuous_snd.comp hv))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem adelContOf : AdelContOf := by
   intro hEq hFin hComp hTopo E _ _ _ hUnr a b S u₁ u₂ h₁ h₂ ψ φ₁ φ₂ hψ t₁ t₂ d₁ d₂

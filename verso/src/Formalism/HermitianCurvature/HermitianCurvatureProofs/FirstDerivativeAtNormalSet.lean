@@ -13,17 +13,15 @@ open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Rewrite using `[vLet_left z z' hz hz' _ _ _ _ K sx x₁ hsx hx₁G, vLet_left z z' hz hz' _ _ _ _ K sx x₁ hsx hx₁G]`. Establish `hsG : sx ∈ B.GV k r` using `Formalism.QuantumDeterminants.Sset_UH hsx`. Use `set Dset : Set (Q.Mx k r) := {y | Dmin k r z z' y ⟨i0 + s, by omega⟩ ≠ 0} with hDset`. Establish `hDo : IsOpen Dset` using `isOpen_ne_fun ((contDiff_Dmin z z' _).continuous) continuous_const`. Establish `hx₁ : x₁ ∈ Q.Glev k r 0 ∩ Dset` using `⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hx₁G, hD₁⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDinv : ∀ y, Dmin k r z z' (sx * y) ⟨i0 + s, by omega⟩ = Dmin k r z z' y ⟨i0 + s, by omega⟩`. Introduce `y`. Use `Formalism.QuantumDeterminants.diagonal_inverse_holds k r z z' hz hz' sx hsx 1 (one_mem_Sset k r z') y ⟨i0 + s, by omega⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hK' : Q.SmoothLev k r 0 Dset (fun y => K (sx * y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `smoothLev_of_loc` to reduce the goal to its premises. Introduce `y hy`. Use `loc_left hsG (hK _ (Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul hsG hy.1.1) ?_)` and prove the remaining obligations. Rewrite using `[hDinv]`. Conclude with `hy.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR' : ∀ g ∈ Q.Glev k r 0 ∩ Dset, ∀ p q, C3.InNp k r p q → Q.EH k r p q (fun y => K (sx * y)) g = C3.dpsiP k r z' p q • (fun y => K (sx * y)) g`. Introduce `g _ p q hpq`. Use `show EabH (Hpk k r) p q (fun y => K (sx * y)) g = _`. Rewrite using `[AAInvW.ly_Eab_left]`. Conclude with `hR _ p q hpq`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the cases of `b`. Use `letter_minus_component_one_eq_smul_component_zero hDo z z' i0 s hs hj hh τ hdet hτ x₁ hx₁ hx₁G hnf hnfy _ hK' hR' Y` as an intermediate fact. Simplify using `only [cLift, Bool.false_eq_true, if_false]`. Conclude with `this`. Use `letter_plus_component_one_eq_smul_component_zero hDo z z' i0 s hs hj hh τ hdet hτ x₁ hx₁ hnf _ hK' hR' Y` as an intermediate fact.
-
-Simplify using `only [cLift, if_true]`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem first_derivative_at_normal_set {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (z z' : Fin (2 * r + k + 1) → ℂ)
     (hz : inWb k r z) (hz' : inWb k r z') (i0 s : ℕ) (hs : 1 ≤ s) (hj : i0 + s ≤ r)
@@ -68,22 +66,22 @@ theorem first_derivative_at_normal_set {k r : ℕ} {E : Type} [NormedAddCommGrou
     exact this
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vLet_congr_level {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     (z z' : Fin (2 * r + k + 1) → ℂ) {j₁ j₂ : ℕ} (hj : j₁ = j₂) (h₁ : j₁ ≤ r) (h₂ : j₂ ≤ r) (l : C.Letter) (e : Fin 2)
     (f : B.Mat k r → E) : D.vLet k r z z' j₁ h₁ l e f = D.vLet k r z z' j₂ h₂ l e f := by subst hj; rfl
 
 /- English proof (translation)
-Substitute `hj` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem dmin_congr {k r : ℕ} (z z' : Fin (2 * r + k + 1) → ℂ) (g : B.Mat k r) {j₁ j₂ : ℕ} (hj : j₁ = j₂)
     (h₁ : j₁ < r + 2) (h₂ : j₂ < r + 2) : Dmin k r z z' g ⟨j₁, h₁⟩ = Dmin k r z z' g ⟨j₂, h₂⟩ := by subst hj; rfl
 
 /- English proof (translation)
-Establish `hτ : Function.Injective (fun i : Fin n => (((i : ℕ) : ℝ) : ℂ))`. Introduce `a b hab`. Simplify using `only [Complex.ofReal_inj, Nat.cast_inj] at hab`. Conclude with `Fin.ext hab`. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [← Finset.sum_smul]`. Simplify using `only [vand_row _ hτ l, ite_smul, one_smul, zero_smul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_recover {V : Type} [AddCommGroup V] [Module ℂ V] (n : ℕ) (C : Fin n → V) (l : Fin n) :
     C l = ∑ i : Fin n, (Matrix.vandermonde (fun i : Fin n => (((i : ℕ) : ℝ) : ℂ)))⁻¹ l i •
@@ -103,45 +101,37 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Use `set z := T.base.z with hzdef`. Use `set z' := T.base.z' with hz'def`. Establish `hz : inWb k r z` using `T.base.z_mem`. Establish `hz' : inWb k r z'` using `T.base.z'_mem`. Establish `hsz : D.ptSize (h ++ [(s, τ)]) = D.ptSize h + s` using `Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append h s τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : 1 ≤ s` using `(ha.1 (s, τ) (by simp)).1`. Establish `hτ : τ ≠ 0` using `(ha.1 (s, τ) (by simp)).2`. Establish `hjeq : j = D.ptSize h + s` using `by rw [← ha.2, hsz]`. Use `set i0 := D.ptSize h with hi0`. Establish `hloc_h : D.IsLocPt h (D.ptSize h)` using `Formalism.FourierDecayAlt.P.Dx2.SL.isLocPt_head ⟨ha.1, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set hh := U.hMat (D.ptPerm h) (D.ptDiag h) with hhdef`. Establish `hdet : hh.det ≠ 0` using `Formalism.FourierDecayAlt.P.Ux10.det_hMat_ne _ _ (fun q => Formalism.FourierDecayAlt.P.JCTx6.Link2.ptScal_ne h hloc_h.1 q q.2)`. Establish `hjr : i0 + s ≤ r` using `by omega`. Establish `hDl : C3.Dlead i0 s hh τ (i0 + s) ≠ 0`. Rewrite using `[(Formalism.FourierDecayAlt.P.SignAntidiagonal.derivative_leading_zb i0 s hh τ).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (mul_ne_zero hdet (pow_ne_zero _ hτ)) ?_` and prove the remaining obligations. Unfold `C3.sgnW; exact pow_ne_zero _ (by norm_num)`. Establish `hD₁ : Dmin k r z z' x₁ ⟨i0 + s, by omega⟩ ≠ 0`. Rewrite using `[dmin_nf z z' x₁ i0 s hh τ hjr hnf (i0 + s) le_rfl]`. Conclude with `hDl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hDinv : ∀ (y x : B.Mat k r) (hyS : y ∈ Sset k r z) (n : ℕ) (hn : n < r + 2), Dmin k r z z' (y * x) ⟨n, hn⟩ = Dmin k r z z' x ⟨n, hn⟩`. Introduce `y x hyS n hn`. Use `Formalism.QuantumDeterminants.diagonal_inverse_holds k r z z' hz hz' y hyS 1 (one_mem_Sset k r z') x ⟨n, hn⟩` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis. Establish `hyG : ∀ x, sx x * x₁ ∈ B.GV k r` using `fun x => Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (Formalism.QuantumDeterminants.Sset_UH (hsx x)) hx₁G`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyD : ∀ x, Dmin k r z z' (sx x * x₁) ⟨j, by omega⟩ ≠ 0`. Introduce `x`. Rewrite using `[hDinv _ _ (hsx x), dmin_congr z z' x₁ hjeq _ (by omega)]`. Conclude with `hD₁`. Use `set G := D.uwG k r z z' F j hj w' a' with hGdef`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG` using `hPW w' a'`. Use `set KG := Kr T.base G with hKG`. Establish `key : ∀ (x : X) (Y : ℝ), Kr T.base (D.uwG k r z z' F j hj ((b, Y) :: w') (Fin.cons 1 a')) (sx x * x₁) = cLift s τ b • D.vLet k r z z' i0 (by omega) (b, Y) 0 KG (sx x * x₁)`. Introduce `x Y`. Use `show Kr T.base (D.vLet k r z z' j hj (b, Y) 1 G) (sx x * x₁) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hvl G hG _ (hyG x) (hyD x), vLet_congr_level z z' hjeq hj hjr]`. Use `first_derivative_at_normal_set z z' hz hz' i0 s hs1 hjr hh τ hdet hτ x₁ hx₁G hD₁ hnf hnfy KG (fun y hy hyd => ?_) (fun y p q hpq => kr_rule T.base G y p q hpq) (sx x) (hsx x) b Y` and prove the remaining obligations. Conclude with `hloc G hG y hy (by rw [dmin_congr z z' y hjeq _ (by omega)]; exact hyd)`. Establish `poly : ∀ x : X, ∃ c : Fin (i0 + 1) → (Wq →L[ℂ] Wp), c (Fin.last i0) = KG (sx x * x₁) ∧ ∀ Y : ℝ, D.vLet k r z z' i0 (by omega) (b, Y + δ) 0 KG (sx x * x₁) = ∑ l : Fin (i0 + 1), ((Y : ℂ) ^ (l : ℕ)) • c l`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hDi : Dmin k r z z' (sx x * x₁) ⟨i0, by omega⟩ ≠ 0`. Rewrite using `[hDinv _ _ (hsx x), dmin_nf z z' x₁ i0 s hh τ hjr hnf i0 (by omega), (Formalism.FourierDecayAlt.P.SignAntidiagonal.derivative_leading_zb i0 s hh τ).1]`. Conclude with `hdet`. Take `⟨c₀, hc₀l, hc₀⟩` from `vLet_poly (E := Wq →L[ℂ] Wp) (j := i0) (by omega) z z' KG (sx x * x₁) (hyG x) hDi (hloc G hG _ (hyG x) (hyD x)) b 0`. Take `⟨c', hc'l, hsh⟩` from `poly_shift i0 c₀ (δ : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨c', by rw [hc'l, hc₀l, if_pos rfl], fun Y => ?_⟩` and prove the remaining obligations. Rewrite using `[hc₀ (Y + δ), ← hsh (Y : ℂ)]`. Use `push_cast`. Both sides reduce to the same expression. Use `choose cf hcfl hcfY using poly`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcL : cLift s τ b ≠ 0`. Unfold `cLift`. Use `mul_ne_zero (pow_ne_zero _ (by norm_num)) ?_` and prove the remaining obligations. Consider the cases of `b`. Simplify using `only [Bool.false_eq_true, if_false]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `inv_ne_zero ((map_ne_zero _).2 hτ)`. Simplify using `only [if_true]`. Conclude with `inv_ne_zero hτ`. Establish `hnode : ∀ (x : X) (Y : ℝ), D.vLet k r z z' i0 (by omega) (b, Y) 0 KG (sx x * x₁) = (cLift s τ b)⁻¹ • Kr T.base (D.uwG k r z z' F j hj ((b, Y) :: w') (Fin.cons 1 a')) (sx x * x₁)`. Introduce `x Y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[key x Y, smul_smul, inv_mul_cancel₀ hcL, one_smul]`. Use `set Vi := (Matrix.vandermonde (fun i : Fin (i0 + 1) => (((i : ℕ) : ℝ) : ℂ)))⁻¹ with hVi`. Establish `hdl : ∀ (x : X) (l : Fin (i0 + 1)), ℓ x (cf x l) = ∑ i : Fin (i0 + 1), (Vi l i * (cLift s τ b)⁻¹) • ℓ x (Kr T.base (D.uwG k r z z' F j hj ((b, ((i : ℕ) : ℝ) + δ) :: w') (Fin.cons 1 a')) (sx x * x₁))`. Introduce `x l`. Rewrite using `[coeff_recover (i0 + 1) (cf x) l, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[← hcfY x ((i : ℕ) : ℝ), hnode x, map_smul, map_smul, smul_smul]`. Establish `hint : ∀ l : Fin (i0 + 1), Integrable (fun x => ℓ x (cf x l)) μ`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdl]`. Conclude with `integrable_finset_sum _ (fun i _ => ((hFub (D.uwG k r z z' F j hj ((b, ((i : ℕ) : ℝ) + δ) :: w') (Fin.cons 1 a')) (hPW _ _)).1).smul (Vi l i * (cLift s τ b)⁻¹))`. Use `set c' : Fin (i0 + 1) → (Wq →L[ℂ] Wp) := fun l => cLift s τ b • ∫ x, ℓ x (cf x l) ∂μ with hc'`. Establish `hc'top : c' (Fin.last i0) = cLift s τ b • B.JF (T.bs j) (KB.slv T F j hj w' (h ++ [(s, τ)]) ha.2 a') g`. Simplify using `only [hc', hcfl]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `((hFub G hG).2).symm`. Establish `hc'exp : ∀ y : ℝ, B.JF (T.bs j) (KB.slv T F j hj ((b, y + δ) :: w') (h ++ [(s, τ)]) ha.2 (Fin.cons 1 a')) g = ∑ l : Fin (i0 + 1), ((y : ℂ) ^ (l : ℕ)) • c' l`. Introduce `y`. Establish `e1` using `(hFub _ (hPW ((b, y + δ) :: w') (Fin.cons 1 a'))).2`.
-
-Use `show B.JF (T.bs j) (D.castF _ (D.sliceAt k r z z' (D.uwG k r z z' F j hj ((b, y + δ) :: w') (Fin.cons 1 a')) (h ++ [(s, τ)]))) g = _`. Rewrite using `[e1]`. Establish `e2 : ∀ x, ℓ x (Kr T.base (D.uwG k r z z' F j hj ((b, y + δ) :: w') (Fin.cons 1 a')) (sx x * x₁)) = ∑ l : Fin (i0 + 1), (((y : ℂ) ^ (l : ℕ)) * cLift s τ b) • ℓ x (cf x l)`. Introduce `x`. Rewrite using `[key x (y + δ), hcfY x y, map_smul, map_sum, Finset.smul_sum]`.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[map_smul, smul_smul, mul_comm]`. Simplify using `only [e2]`. Rewrite using `[integral_finsetSum Finset.univ (f := fun (l : Fin (i0 + 1)) x => (((y : ℂ) ^ (l : ℕ)) * cLift s τ b) • ℓ x (cf x l)) (fun l _ => (hint l).smul (((y : ℂ) ^ (l : ℕ)) * cLift s τ b))]`.
-
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Rewrite using `[integral_smul, hc', smul_smul]`. Establish `hcast : j - s + 1 = i0 + 1` using `by omega`. Use `⟨fun l => c' (Fin.cast hcast l), ?_, fun y => ?_⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `have : Fin.cast hcast (Fin.last (j - s)) = Fin.last i0 := Fin.ext (by simp <;> omega)`. Simplify using `only [this]`. Conclude with `hc'top`. Rewrite using `[hc'exp y]`. Conclude with `(Fintype.sum_equiv (finCongr hcast) _ _ (fun l => rfl)).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftDeg_core {k r : ℕ} (T : D.LevTower k r Wp Wq) (F : B.Mat k r → (Wq →L[ℂ] Wp)) (j s : ℕ) (hj : j ≤ r)
     (h : C.LPt) (τ : ℂ) (ha : D.IsLocPt (h ++ [(s, τ)]) j)

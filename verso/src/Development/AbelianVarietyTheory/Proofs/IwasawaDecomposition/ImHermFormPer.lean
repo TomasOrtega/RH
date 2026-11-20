@@ -33,23 +33,21 @@ namespace GlobalTheory.WeilStd
 open ReciprocityTheory.PTheta Matrix in
 
 /- English proof (translation)
-Establish `hper : ∀ r : Fin g ⊕ Fin g → ℤ, per τ r = τ *ᵥ ofIntVec (fun i => r (Sum.inl i)) + ofIntVec (fun i => r (Sum.inr i))` using `fun r => rfl`. Establish `qp : ∀ r z, theta (Key.halfVec k) (Key.halfVec k') (z + per τ r) τ = autFactor (Key.halfVec k) (Key.halfVec k') τ (fun i => r (Sum.inl i)) (fun i => r (Sum.inr i)) z * theta (Key.halfVec k) (Key.halfVec k') z τ` using `fun r z => by`. Rewrite using `[hper, ← add_assoc]`. Conclude with `thetaQuasiPeriod_holds (Fin g) _ _ z τ _ _ hτ.1`. Use `choose c₁ hc₁ using fun r : Fin g ⊕ Fin g → ℤ => NormalUnique.autFactor_eq_exp (Key.halfVec k) (Key.halfVec k') τ (fun i => r (Sum.inl i)) (fun i => r (Sum.inr i))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `lin₁ : (Fin g ⊕ Fin g → ℤ) → (Fin g → ℂ) →ₗ[ℂ] ℂ` to `fun r => { toFun := fun v => -(2 * Real.pi * Complex.I) * (ofIntVec (fun i => r (Sum.inl i)) ⬝ᵥ v) map_add' := fun v w => by simp only [dotProduct_add]; ring map_smul' := fun s v => by simp only [dotProduct_smul, smul_eq_mul, RingHom.id_apply]; ring }`. Set `lin₂ : (Fin g ⊕ Fin g → ℤ) → (Fin g → ℂ) →ₗ[ℂ] ℂ` to `fun r => { toFun := fun v => (Real.pi : ℂ) * hermForm Hm (F v) (F (per τ r)) map_add' := fun v w => by simp only [map_add, hermForm, add_dotProduct]; ring map_smul' := fun s v => by simp only [map_smul, hermForm, smul_dotProduct, smul_eq_mul, RingHom.id_apply]; ring }`. Set `c₂ : (Fin g ⊕ Fin g → ℤ) → ℂ` to `fun r => Complex.log (χ r) + Real.pi / 2 * hermForm Hm (F (per τ r)) (F (per τ r))`. Establish `e1 : ∀ r v, Complex.exp (lin₁ r v + c₁ r) = autFactor (Key.halfVec k) (Key.halfVec k') τ (fun i => r (Sum.inl i)) (fun i => r (Sum.inr i)) v` using `fun r v => by`. Rewrite using `[hc₁]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : ∀ r v, Complex.exp (lin₂ r v + c₂ r) = χ r * Complex.exp (Real.pi * hermForm Hm (F v) (F (per τ r)) + Real.pi / 2 * hermForm Hm (F (per τ r)) (F (per τ r)))` using `fun r v => by`. Rewrite using `[show lin₂ r v + c₂ r = Complex.log (χ r) + (Real.pi * hermForm Hm (F v) (F (per τ r)) + Real.pi / 2 * hermForm Hm (F (per τ r)) (F (per τ r))) from by show (Real.pi : ℂ) * hermForm Hm (F v) (F (per τ r)) + (Complex.log (χ r) + Real.pi / 2 * hermForm Hm (F (per τ r)) (F (per τ r) …`. Establish `hfac : ∀ r v, Complex.exp (lin₁ r v + c₁ r) * ρ v = Complex.exp (lin₂ r v + c₂ r) * ρ (v + per τ r)`. Introduce `r v`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `d₁ : Differentiable ℂ fun z => Complex.exp (lin₁ r z + c₁ r) * ρ z - Complex.exp (lin₂ r z + c₂ r) * ρ (z + per τ r)` using `((((LinearMap.toContinuousLinearMap (lin₁ r)).differentiable.add_const (c₁ r)).cexp).mul hρd).sub ((((LinearMap.toContinuousLinearMap (lin₂ r)).differentiable.add_const (c₂ r)).cexp).mul (hρd.comp (differentiable_id.add_const _)))`. Break down `entire_eq_zero_or_eq_zero_of_mul_eq_zero _ (fun z => theta (Key.halfVec k) (Key.halfVec k') z τ) d₁ (differentiable_theta hτ _ _) (fun z => by` into its components or cases. Simplify using `only [e1, e2]`. Establish `h1` using `h r z`. Establish `h2` using `qp r z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-ρ z) * h2 - h1) with h0 | h0`. Conclude with `sub_eq_zero.1 (h0 v)`. Conclude with `absurd (funext h0) (theta_ne_zero hτ _ _)`. Establish `key` using `alternating_eq_of_equivalent_factors (per τ) lin₁ lin₂ c₁ c₂ hρd.continuous hρ0 hfac p q`. Use `set X := hermForm Hm (F (per τ p)) (F (per τ q)) with hX`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `k2 : -(2 * Real.pi * Complex.I) * (ofIntVec (fun i => p (Sum.inl i)) ⬝ᵥ per τ q) - -(2 * Real.pi * Complex.I) * (ofIntVec (fun i => q (Sum.inl i)) ⬝ᵥ per τ p) = (Real.pi : ℂ) * hermForm Hm (F (per τ q)) (F (per τ p)) - (Real.pi : ℂ) * X` using `key`. Rewrite `k2` using `[hermForm_conj_symm_of_isHermitian Hm hH, ← hX, hper, hper, dotProduct_add, dotProduct_add]`. Establish `sym : ofIntVec (fun i => p (Sum.inl i)) ⬝ᵥ τ *ᵥ ofIntVec (fun i => q (Sum.inl i)) = ofIntVec (fun i => q (Sum.inl i)) ⬝ᵥ τ *ᵥ ofIntVec (fun i => p (Sum.inl i))`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, hτ.1.eq, dotProduct_comm]`. Establish `sc : X - star X = 2 * (X.im : ℂ) * Complex.I`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `Complex.sub_conj X` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Establish `om : ((omegaStd p q : ℤ) : ℂ) = ofIntVec (fun i => p (Sum.inl i)) ⬝ᵥ ofIntVec (fun i => q (Sum.inr i)) - ofIntVec (fun i => q (Sum.inl i)) ⬝ᵥ ofIntVec (fun i => p (Sum.inr i))`. Simplify using `only [omegaStd, ofIntVec, dotProduct, ← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `G : (2 * Real.pi * Complex.I) * (((omegaStd p q : ℤ) : ℂ) - (X.im : ℂ)) = 0`. Rewrite using `[om]`.
-
-Take the linear combination `-k2 - (2 * Real.pi * Complex.I) * sym + (Real.pi : ℂ) * sc`. Break down `mul_eq_zero.1 G with h0 | h0` into its components or cases. Conclude with `absurd h0 Complex.two_pi_I_ne_zero`. Conclude with `(sub_eq_zero.1 h0).symm` after adjusting the coercions.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem im_hermForm_per {g : ℕ} {τ : Matrix (Fin g) (Fin g) ℂ} (hτ : τ ∈ SiegelH (Fin g))
     (k k' : Fin g → ℤ) {Hm : Matrix (Fin g) (Fin g) ℂ} (hH : Hm.IsHermitian)
@@ -139,19 +137,17 @@ namespace GlobalTheory.WeilStd
 open GlobalTheory.NormalUnique in
 
 /- English proof (translation)
-Introduce `x g u τ a b c hg hτs hτp hab hc hΛ hfn n p q e hn he`. Substitute `hg` using the available equality. Take `⟨u₁, Hm, χ, Ef, hA, -, h1, h2, -, -, hE, -, hW⟩` from `thetaUnifAV_all x.P x.rig x.rig_gen`. Take `⟨F, hF, hFl, -, -⟩` from `HomLinear.exists_linear_of_isMonHom x.P.A x.P.A x.P.isAb x.P.isAb x.P.L x.P.L x.P.g x.P.g u u₁ h1 h2 (𝟙 x.P.A) inferInstance`. Simplify using `only [Category.comp_id] at hF`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨ρ, hρd, hρ0, -, hρ⟩` from `NormalUnique.exists_frame_ratio x.P.isLB u₁ u F hF`. Take `⟨θ₁, hθ₁⟩` from `exists_isFn x.P.isLB u₁ x.th`. Establish `hT` using `(isThetaFn_and_ne_zero_of_isFn x u₁ Hm χ θ₁ hA hθ₁).1`. Establish `hrel : ∀ z, c * thetaChar τ a b z = ρ z * θ₁ (F z)` using `hρ x.th θ₁ _ hθ₁ hfn`. Establish `hmem : ∀ r, F (per τ r) ∈ u₁.Λ` using `fun r => hFl _ ((hΛ _).2 ⟨fun i => r (Sum.inr i), fun i => r (Sum.inl i), by simp only [per]; rw [add_comm]⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `obtain ⟨k, rfl⟩ : ∃ k : Fin x.P.g → ℤ, a = fun i => (k i : ℂ) / 2 := ⟨fun i => if a i = 0 then 0 else 1, funext fun i => by rcases hab.1 i with h | h <;> simp [h]⟩`. Apply the tactic sequence `obtain ⟨k', rfl⟩ : ∃ k : Fin x.P.g → ℤ, b = fun i => (k i : ℂ) / 2 := ⟨fun i => if b i = 0 then 0 else 1, funext fun i => by rcases hab.2 i with h | h <;> simp [h]⟩`. Simplify using `only [SpMove.thetaChar_half] at hrel`. Establish `hχ : ∀ l, χ l ≠ 0` using `fun l => norm_ne_zero_iff.1 (by rw [hA.2.2.1]; exact one_ne_zero)`. Establish `key` using `WeilStd.im_hermForm_per (τ := τ) ⟨hτs, hτp⟩ k k' hA.1 F ρ hρd hρ0 (fun r => χ ⟨_, hmem r⟩) (fun r => hχ _) (fun r z => by`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eA` using `hrel (z + per τ r)`. Establish `eB` using `hT.2 ⟨_, hmem r⟩ (F z)`. Establish `eC` using `hrel z`. Rewrite `eB` using `[pow_one]`. Rewrite `eA` using `[map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `mul_left_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `(ρ (z + per τ r) * (χ ⟨_, hmem r⟩ * Complex.exp (Real.pi * hermForm Hm (F z) (F (per τ r)) + Real.pi / 2 * hermForm Hm (F (per τ r)) (F (per τ r))))) * eC - ρ z * eA - ρ z * ρ (z + per τ r) * eB) p q`. Establish `hEf : Ef ⟨_, hmem p⟩ ⟨_, hmem q⟩ = omegaStd p q`. Use `hE ⟨_, hmem p⟩ ⟨_, hmem q⟩` as an intermediate fact. Rewrite `this` using `[key]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this` after adjusting the coercions. Establish `hw` using `hW n ⟨_, hmem p⟩ ⟨_, hmem q⟩ e hn (by rw [he, hEf])`. Establish `e1 : u.ex ((n : ℂ)⁻¹ • per τ p) = u₁.ex ((n : ℂ)⁻¹ • F (per τ p))` using `by rw [← map_smul, hF]`. Establish `e2 : u.ex ((n : ℂ)⁻¹ • per τ q) = u₁.ex ((n : ℂ)⁻¹ • F (per τ q))` using `by rw [← map_smul, hF]`. Rewrite using `[e1, e2]`.
-
-Conclude with `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_per : ∀ (x : KeyIn ℂ) (g : ℕ) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ),
     x.P.g = g → τ.IsSymm → (τ.map Complex.im).PosDef → charHalf g a b → c ≠ 0 →

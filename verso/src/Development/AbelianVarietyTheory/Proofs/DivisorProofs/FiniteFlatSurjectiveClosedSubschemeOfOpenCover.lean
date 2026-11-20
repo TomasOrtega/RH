@@ -5,9 +5,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(h A a).2 ⟨𝟙 A, Category.id_comp a⟩`. Use `⟨k, ⟨hk⟩, ⟨PullbackCone.IsLimit.mk hk (fun s => ((h s.pt s.snd).1 ⟨s.fst, s.condition⟩).choose) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Establish `hs` using `((h s.pt s.snd).1 ⟨s.fst, s.condition⟩).choose_spec`. Rewrite using `[← cancel_mono b, Category.assoc, hk, ← Category.assoc, hs, s.condition]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Conclude with `((h s.pt s.snd).1 ⟨s.fst, s.condition⟩).choose_spec`. Introduce `s l _ hl`. Establish `hs` using `((h s.pt s.snd).1 ⟨s.fst, s.condition⟩).choose_spec`. Rewrite using `[← cancel_mono a, hl, hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPullback_of_factor_iff {C : Type*} [Category C] {X X' A B : C} (m : X' ⟶ X)
     (b : B ⟶ X) (a : A ⟶ X') [Mono a] [Mono b]
@@ -26,9 +26,9 @@ theorem exists_isPullback_of_factor_iff {C : Type*} [Category C] {X X' A B : C} 
     rw [← cancel_mono a, hl, hs]
 
 /- English proof (translation)
-Rewrite using `[IsZariskiLocalAtTarget.iff_of_iSup_eq_top (P := P) V hV]`. Introduce `i`. Establish `h'` using `(isPullback_morphismRestrict f (V i)).flip`. Establish `e : (h'.isoIsPullback _ _ (h i)).hom ≫ g i = f ∣_ V i` using `by simp`. Rewrite using `[← e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(P.cancel_left_of_respectsIso _ _).2 (hg i)`.
+A detailed English derivation is pending.
 -/
 theorem of_isPullback_openCover (P : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget P]
     {B T : Scheme.{0}} (f : B ⟶ T) {ι : Type} (V : ι → T.Opens) (hV : iSup V = ⊤)
@@ -44,9 +44,9 @@ theorem of_isPullback_openCover (P : MorphismProperty Scheme.{0}) [IsZariskiLoca
 set_option backward.isDefEq.respectTransparency.types false in
 
 /- English proof (translation)
-Introduce `X T₀ p ι V hV Xi m q hpb B b hb A a ha hrep hP`. Establish `H : ∀ i, ∃ k : A i ⟶ B, IsPullback k (a i ≫ q i) (b ≫ p) (V i).ι`. Introduce `i`. Use `ha i` as an intermediate fact. Take `⟨k, hk⟩` from `exists_isPullback_of_factor_iff (m i) b (a i) (hrep i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, hk.paste_vert (hpb i)⟩`. Use `choose k hk using H`. Establish `hfin : IsZariskiLocalAtTarget @IsFinite.{0}` using `inferInstance`. Establish `hflat : IsZariskiLocalAtTarget @Flat.{0}` using `HasRingHomProperty.instIsZariskiLocalAtTarget (P := @Flat.{0})`. Conclude with `⟨of_isPullback_openCover @IsFinite _ V hV A k _ hk (fun i => (hP i).1), of_isPullback_openCover @Flat _ V hV A k _ hk (fun i => (hP i).2.1), of_isPullback_openCover @Surjective _ V hV A k _ hk (fun i => (hP i).2.2)⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_flat_surjective_of_openCover : ∀ (X T₀ : Scheme.{0}) (p : X ⟶ T₀) (ι : Type) (V : ι → T₀.Opens), iSup V = ⊤ → ∀ (Xi : ι → Scheme.{0}) (m : ∀ i, Xi i ⟶ X) (q : ∀ i, Xi i ⟶ (V i).toScheme), (∀ i, IsPullback (m i) (q i) p (V i).ι) → ∀ (B : Scheme.{0}) (b : B ⟶ X), IsClosedImmersion b → ∀ (A : ι → Scheme.{0}) (a : ∀ i, A i ⟶ Xi i), (∀ i, IsClosedImmersion (a i)) → (∀ (i : ι) (Y : Scheme.{0}) (g : Y ⟶ Xi i), (∃ z : Y ⟶ B, z ≫ b = g ≫ m i) ↔ (∃ z : Y ⟶ A i, z ≫ a i = g)) → (∀ i, IsFinite (a i ≫ q i) ∧ Flat (a i ≫ q i) ∧ Surjective (a i ≫ q i)) → IsFinite (b ≫ p) ∧ Flat (b ≫ p) ∧ Surjective (b ≫ p) := by
   intro X T₀ p ι V hV Xi m q hpb B b hb A a ha hrep hP

@@ -16,7 +16,7 @@ variable {k V : Type} [CommRing k] [CommRing V] [Algebra k V] {P Q T : Scheme.{0
   {p : P ⟶ Sp k} {q : Q ⟶ Sp k} {t : T ⟶ Sp V} {τ : T ⟶ P} {τ' : T ⟶ Q}
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[h₁, Category.assoc, bcMap_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[h₂, Category.assoc, bcMap_snd, ← Category.assoc, IsPullback.isoPullback_hom_snd]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_isoPullback_hom_comp_bcMap (hτ : IsPullback τ t p (spMap (algebraMap k V)))
     (R : Subalgebra k V) (σ : T ⟶ pullback p (spMap (algebraMap k R)))
@@ -27,11 +27,11 @@ theorem eq_isoPullback_hom_comp_bcMap (hτ : IsPullback τ t p (spMap (algebraMa
   · rw [h₂, Category.assoc, bcMap_snd, ← Category.assoc, IsPullback.isoPullback_hom_snd]
 
 /- English proof (translation)
-Establish `hu : hτ.isoPullback.hom ≫ bcMap p R.val ≫ f = hτ'.isoPullback.hom ≫ bcMap q R.val`. Apply `eq_isoPullback_hom_comp_bcMap hτ' R` to reduce the goal to its premises. Simplify `hf'` using `only [Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hf, bcMap_snd, ← Category.assoc, IsPullback.isoPullback_hom_snd]`. Establish `hfst : bcMap p R.val ≫ f ≫ g ≫ pullback.fst _ _ = pullback.fst _ _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi hτ.isoPullback.hom, reassoc_of% hu, IsPullback.isoPullback_hom_fst]`. Conclude with `hg'`. Use `hom_ext_bcMap p R.val Subtype.val_injective (pullback.snd p (spMap (algebraMap k R))) ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hg, hf, Category.id_comp]`. Rewrite using `[Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, hfst, bcMap_fst]`. Rewrite using `[Category.assoc, Category.assoc, hg, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq_id_of_models [Flat p] [IsSeparated p]
     (hτ : IsPullback τ t p (spMap (algebraMap k V)))
@@ -70,15 +70,15 @@ namespace GlobalTheory
 open Spread
 
 /- English proof (translation)
-Introduce `k V _ _ _ P Q T p q t τ τ' _ _ _ _ _ _ hτ hτ'`. Establish `hΦ : (hτ.isoPullback.inv ≫ τ') ≫ q = pullback.fst _ _ ≫ p`. Rewrite using `[← hτ.isoPullback_inv_fst]`. Simplify using `only [Category.assoc, hτ.w, hτ'.w]`. Establish `hΨ : (hτ'.isoPullback.inv ≫ τ) ≫ p = pullback.fst _ _ ≫ q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hτ'.isoPullback_inv_fst]`. Simplify using `only [Category.assoc, hτ.w, hτ'.w]`. Take `⟨R₁, ψ₁, hR₁, hψ₁, hψ₁'⟩` from `exists_fg_comp_eq p q _ hΦ`. Take `⟨R, ψ₂, hR, hle, hψ₂⟩` from `exists_fg_forall_comp_eq q p (fun _ : Unit ↦ hτ'.isoPullback.inv ≫ τ) (fun _ ↦ hΨ) R₁ hR₁`. Establish `ha : (bcMap p (Subalgebra.inclusion hle) ≫ ψ₁) ≫ q = pullback.snd _ _ ≫ spMap (algebraMap k R)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hψ₁, bcMap_fst_assoc, pullback.condition]`. Establish `hb : ψ₂ () ≫ p = pullback.snd _ _ ≫ spMap (algebraMap k R)`. Rewrite using `[(hψ₂ ()).1, pullback.condition]`. Take `⟨f, hf₁, hf₂⟩ : ∃ f : pullback p (spMap (algebraMap k R)) ⟶ pullback q (spMap (algebraMap k R)), f ≫ pullback.fst _ _ = bcMap p (Subalgebra.inclusion hle) ≫ ψ₁ ∧ f ≫ pullback.snd _ _ = pullback.snd _ _` from `⟨pullback.lift _ _ ha, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`. Take `⟨g, hg₁, hg₂⟩ : ∃ g : pullback q (spMap (algebraMap k R)) ⟶ pullback p (spMap (algebraMap k R)), g ≫ pullback.fst _ _ = ψ₂ () ∧ g ≫ pullback.snd _ _ = pullback.snd _ _` from `⟨pullback.lift _ _ hb, pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hf' : hτ.isoPullback.hom ≫ bcMap p R.val ≫ f ≫ pullback.fst _ _ = τ'`. Rewrite using `[hf₁, bcMap_comp_of_eq_assoc p (Subalgebra.inclusion hle) R.val R₁.val (fun _ ↦ rfl), hψ₁', Iso.hom_inv_id_assoc]`. Establish `hg' : hτ'.isoPullback.hom ≫ bcMap q R.val ≫ g ≫ pullback.fst _ _ = τ`. Rewrite using `[hg₁, (hψ₂ ()).2, Iso.hom_inv_id_assoc]`. Use `⟨R, ⟨f, g, comp_eq_id_of_models hτ hτ' R f g hf₂ hg₂ hf' hg', comp_eq_id_of_models hτ' hτ R g f hg₂ hf₂ hg' hf'⟩, hR, hf₂, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ h₁ h₂`. Rewrite using `[eq_isoPullback_hom_comp_bcMap hτ R σ h₁ h₂, Category.assoc]`. Conclude with `hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_models_iso_over_fg_subalgebra :
     ∀ (k V : Type) [CommRing k] [CommRing V] [Algebra k V] (P Q T : Scheme.{0}) (p : P ⟶ Sp k) (q : Q ⟶ Sp k) (t : T ⟶ Sp V) (τ : T ⟶ P) (τ' : T ⟶ Q), Smooth p → IsSeparated p → QuasiCompact p → Smooth q → IsSeparated q → QuasiCompact q → IsPullback τ t p (spMap (algebraMap k V)) → IsPullback τ' t q (spMap (algebraMap k V)) → ∃ (R : Subalgebra k V) (e : pullback p (spMap (algebraMap k R)) ≅ pullback q (spMap (algebraMap k R))), R.FG ∧ e.hom ≫ pullback.snd _ _ = pullback.snd _ _ ∧ ∀ σ : T ⟶ pullback p (spMap (algebraMap k R)), σ ≫ pullback.fst _ _ = τ → σ ≫ pullback.snd _ _ = t ≫ spMap R.val.toRingHom → σ ≫ e.hom ≫ pullback.fst _ _ = τ' := by

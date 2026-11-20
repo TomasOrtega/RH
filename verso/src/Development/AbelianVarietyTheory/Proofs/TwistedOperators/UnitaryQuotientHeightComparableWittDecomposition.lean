@@ -14,9 +14,9 @@ open GlobalTheory.Asc
 namespace GlobalTheory.HtWitt
 
 /- English proof (translation)
-Take `⟨C₁, hC₁⟩` from `hT2 D S S₀ ρ d`. Use `⟨C₁, fun n hn h => ?_⟩` and prove the remaining obligations. Take `⟨δ, hδ, hδh⟩` from `exists_height_le_two_mul_quotHeight S₀ h`. Establish `hm : d.emb0 δ * n * (d.emb0 δ)⁻¹ ∈ flagN d` using `GlobalTheory.MixPer.witt_anisotropic_group_normalizes_flag_unipotent D S S₀ ρ d n hn δ`. Take `⟨γ, hγ, hγN, hγC⟩` from `hC₁ _ hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨γ * (d.emb0 δ * n * (d.emb0 δ)⁻¹), mul_mem hγN hm, δ * h, hγC, hδh, quotHeight_left S₀ hδ h, ?_⟩` and prove the remaining obligations. Establish `e : γ * (d.emb0 δ * n * (d.emb0 δ)⁻¹) * d.emb0 (δ * h) = (γ * d.emb0 δ) * (n * d.emb0 h)`. Rewrite using `[map_mul]`. Use `group`. Rewrite using `[e, quotHeight_left S (mul_mem hγ (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hδ))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduce (hT2 : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ C : ℝ, ∀ n ∈ flagN d, ∃ γ ∈ GQ S, γ ∈ flagN d ∧ height S (γ * n) ≤ C) (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) :
     ∃ C₁ : ℝ, ∀ n ∈ flagN d, ∀ h : GA D S₀, ∃ n' ∈ flagN d, ∃ h' : GA D S₀, height S n' ≤ C₁ ∧
@@ -33,17 +33,17 @@ theorem reduce (hT2 : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S�
   rw [e, quotHeight_left S (mul_mem hγ (d.wittDecomp_anisotropicEmbedding_mem_rationalPoints hδ))]
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d`. Take `⟨C₁, hC₁⟩` from `reduce hT2 D S S₀ ρ d`. Take `⟨C₂, hC₂⟩` from `hT1 D S S₀ ρ d`. Take `⟨C₃, a₃, hC₃⟩` from `hT3 D S S₀ ρ d C₁`. Establish `hC2 : 0 ≤ C₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hC₂ 1` as an intermediate fact. Rewrite `this` using `[map_one, height_one, height_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨max C₃ (C₁ * C₂ * 2) , max a₃ 1, fun n hn h => ?_⟩` and prove the remaining obligations. Take `⟨n', hn', h', hn'C, hh', hq0, hq⟩` from `hC₁ n hn h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hC1 : 0 ≤ C₁` using `(height_pos S n').le.trans hn'C`. Establish `q1 : 1 ≤ quotHeight S (n * d.emb0 h)` using `one_le_quotHeight S _`. Establish `q0 : 1 ≤ quotHeight S₀ h` using `one_le_quotHeight S₀ _`. Establish `hM : 0 ≤ max C₃ (C₁ * C₂ * 2)` using `le_max_of_le_right (by positivity)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `h3` using `hC₃ n' hn' hn'C h'`. Rewrite `h3` using `[hq0, hq]`. Conclude with `h3.trans (mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ q1 (le_max_left _ _)) (by positivity) hM)`. Establish `hb : quotHeight S (n' * d.emb0 h') ≤ C₁ * C₂ * 2 * quotHeight S₀ h`. Establish `h1` using `height_mul_le S n' (d.emb0 h')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hC₂ h'`. Establish `hp : 0 ≤ height S (d.emb0 h')` using `(height_pos S _).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hb` using `[hq]`. Use `hb.trans (mul_le_mul (le_max_right _ _) ?_ (by linarith) hM)` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem main (hT1 : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ C : ℝ, ∀ g : GA D S₀, height S (d.emb0 g) ≤ C * height S₀ g) (hT2 : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ C : ℝ, ∀ n ∈ flagN d, ∃ γ ∈ GQ S, γ ∈ flagN d ∧ height S (γ * n) ≤ C) (hT3 : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (C₀ : ℝ), ∃ (C : ℝ) (a : ℕ), ∀ n ∈ flagN d, height S n ≤ C₀ → ∀ h : GA D S₀, quotHeight S₀ h ≤ C * quotHeight S (n * d.emb0 h) ^ a) : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ (C : ℝ) (a : ℕ), ∀ n ∈ flagN d, ∀ h, quotHeight S₀ h ≤ C * quotHeight S (n * d.emb0 h) ^ a ∧ quotHeight S (n * d.emb0 h) ≤ C * quotHeight S₀ h ^ a := by
   intro D S S₀ ρ d
@@ -83,7 +83,7 @@ end GlobalTheory.HtWitt
 namespace GlobalTheory.HtWitt
 
 /- English proof (translation)
-The claim follows from `main GlobalTheory.T.unitaryAdelicHeight_wittEmbedding_le_const_mul GlobalTheory.T.exists_rational_translate_flagUnipotent_height_le GlobalTheory.T.unitaryQuotientHeight_wittLevi_le_pow_of_boundedUnipotent`.
+A detailed English derivation is pending.
 -/
 theorem quotHeight_witt : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), ∃ (C : ℝ) (a : ℕ), ∀ n ∈ flagN d, ∀ h, quotHeight S₀ h ≤ C * quotHeight S (n * d.emb0 h) ^ a ∧ quotHeight S (n * d.emb0 h) ≤ C * quotHeight S₀ h ^ a :=
   main GlobalTheory.T.unitaryAdelicHeight_wittEmbedding_le_const_mul GlobalTheory.T.exists_rational_translate_flagUnipotent_height_le GlobalTheory.T.unitaryQuotientHeight_wittLevi_le_pow_of_boundedUnipotent

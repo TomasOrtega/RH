@@ -15,9 +15,9 @@ def proj : geom Ω p ⟶ geom L p :=
     congr 3)
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [proj, Category.assoc, pullback.lift_fst, galMap_fst]`. Simplify using `only [proj, Category.assoc, pullback.lift_snd]`. Rewrite using `[galMap_snd_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Conclude with `(mem_fixingSubgroup_iff _).1 hσ x x.2`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem galMap_proj (σ : Ω ≃ₐ[K] Ω) (hσ : σ ∈ L.fixingSubgroup) : galMap Ω p σ ≫ proj L p = proj L p := by
   apply pullback.hom_ext

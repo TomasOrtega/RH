@@ -15,17 +15,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hev h hcov Z`. Establish `hexp : _root_.Formalism.L2.Pj.ex Dw 0 0 = 0`. Unfold `_root_.Formalism.L2.Pj.ex`. Use function extensionality and compare the values at `x`. Apply the tactic sequence `cases x <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hreg : ∀ C : _root_.GlobalTheory.Reg.FChart h, _root_.Formalism.L2.Pj.wchar (_root_.Formalism.L2.Pj.ex Dw 0 0) C.t * (fun Z' => if Z' = Z then (1 : _root_.Formalism.L2.Pj.Om Z') else 0) C.Z ∈ C.R`. Introduce `C`. Rewrite using `[hexp]`. Unfold `_root_.Formalism.L2.Pj.wchar`. Simplify using `only [Pi.zero_apply, pow_zero, Finset.prod_const_one, _root_.one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `C.R.one_mem`. Conclude with `C.R.zero_mem`. Take `⟨χ, hχ, hval⟩` from `_root_.GlobalTheory.Reg.SecGlue.exists_sec_of_regular E H Dw l Xo c hev h hcov 0 0 (fun Z' => if Z' = Z then (1 : _root_.Formalism.L2.Pj.Om Z') else 0) hreg`. Use `⟨χ, hχ, ?_, by simp [hval], fun Z' hZ' => by simp [hval, hZ']⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : χ * χ ∈ _root_.Formalism.L2.Pj.sec Xo c 0 0` using `by simpa using _root_.Formalism.L2.Pj.sec_mul Xo c 0 0 0 0 hχ hχ`. Establish `hmem : χ * χ - χ ∈ _root_.Formalism.L2.Pj.sec Xo c 0 0` using `Submodule.sub_mem _ hsq hχ`. Use `sub_eq_zero.mp (_root_.GlobalTheory.Reg.sec_eq_zero_of_generic_values E H Dw l Xo c hev h hcov 0 0 _ hmem fun Z' => ?_)` and prove the remaining obligations. Establish `hmul : _root_.Formalism.L2.Pj.evC h Z' (χ * χ) = _root_.Formalism.L2.Pj.evC h Z' χ * _root_.Formalism.L2.Pj.evC h Z' χ`. Unfold `_root_.Formalism.L2.Pj.evC _root_.Formalism.L2.Pj.evR`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `_root_.Formalism.L2.Pj.evalAt_mul _ _ _ _ _`. Establish `hadd : _root_.Formalism.L2.Pj.evC h Z' (χ * χ - χ + χ) = _root_.Formalism.L2.Pj.evC h Z' (χ * χ - χ) + _root_.Formalism.L2.Pj.evC h Z' χ`. Unfold `_root_.Formalism.L2.Pj.evC _root_.Formalism.L2.Pj.evR`. Conclude with `_root_.Formalism.L2.Pj.evalAt_add _ _ _ _ _`. Establish `hidem : _root_.Formalism.L2.Pj.evC h Z' χ * _root_.Formalism.L2.Pj.evC h Z' χ = _root_.Formalism.L2.Pj.evC h Z' χ`.
-
-Rewrite using `[hval]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hadd` using `[sub_add_cancel, hmul, hidem]`. Conclude with `add_eq_right.mp hadd.symm`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Reg.exists_idem_section : ∀ (E : Type) [Field E] [NumberField E]
     [IsCMField E] (H : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)

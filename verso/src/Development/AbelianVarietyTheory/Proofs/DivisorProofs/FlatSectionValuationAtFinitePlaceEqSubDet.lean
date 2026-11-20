@@ -10,7 +10,7 @@ open scoped Matrix Classical
 namespace GlobalTheory.DefPt
 
 /- English proof (translation)
-Establish `: valV T.V (algebraMap T.V T.Fr u) = 1`. Rewrite using `[valV, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun h => (IsLocalRing.mem_maximalIdeal u).1 h hu`. Simplify using `[vV, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules.
 -/
 theorem vV_algebraMap_of_isUnit (T : CDVR) {u : T.V} (hu : IsUnit u) : vV T.V (algebraMap T.V T.Fr u) = 0 := by
   have : valV T.V (algebraMap T.V T.Fr u) = 1 := by
@@ -19,19 +19,19 @@ theorem vV_algebraMap_of_isUnit (T : CDVR) {u : T.V} (hu : IsUnit u) : vV T.V (a
   simp [vV, this]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U ξ hD Z P τ s b hb hev w`. Take `⟨v, hv⟩` from `s.hasPts.2 w`. Establish `hval` using `s.val_eq hv`. Take `⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩` from `hv`. Use `letI := io.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hval' : nval T.V e (evR Xo c s.sig y.1) = ((flDefect_vw Dw c τ w + s.rho_vw w : ℝ) : EReal)` using `hval`. Establish `hδ : flDefect_vw Dw c τ w = 0` using `by simp [flDefect_vw, hD.q]`. Rewrite `hval'` using `[hδ, zero_add]`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.lawsFieldsSeparately.2.1 E H Dw l Xo c c.F T.Fr (Algebra.ofId c.F T.Fr) P.y₀`. Take `⟨ha, hB, hloc⟩` from `P.loc w`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx : y.1.x = z.x` using `(P.only T.Fr y.1 hy.2).trans hz.1.symm`. Take `⟨Y, u, hY, hch⟩` from `hloc T io e ho y.1 z y.2.2 hz hx`. Establish `hdet : ∀ τ', ((P.B w τ').map io * (Y τ').map (algebraMap T.V T.Fr)).det = io (P.B w τ').det * algebraMap T.V T.Fr (Y τ').det` using `fun τ' => by`. Rewrite using `[Matrix.det_mul, RingHom.map_det, RingHom.map_det]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hYne : ∀ τ', algebraMap T.V T.Fr (Y τ').det ≠ 0` using `fun τ' => ((hY τ').map _).ne_zero`. Establish `hBne : ∀ τ', io (P.B w τ').det ≠ 0` using `fun τ' => (map_ne_zero io).2 (hB τ')`. Establish `key` using `hev T.Fr z y.1 (fun τ' => (P.B w τ').map io * (Y τ').map (algebraMap T.V T.Fr)) _ (fun τ' => by rw [hdet]; exact (mul_ne_zero (hBne τ') (hYne τ')).isUnit) (mul_ne_zero ((map_ne_zero io).2 ha) (u.isUnit.map _).ne_zero).isUnit hz hch`. Rewrite `key` using `[hdet]`. Establish `key' : evR Xo c s.sig y.1 * (io (P.B w τ.1).det * algebraMap T.V T.Fr (Y τ.1).det) = io b` using `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hbne : io b ≠ 0` using `(map_ne_zero io).2 hb`. Establish `h0 : evR Xo c s.sig y.1 ≠ 0` using `left_ne_zero_of_mul (key' ▸ hbne)`. Establish `h1` using `congrArg (vV T.V) key'`. Rewrite `h1` using `[vV_mul h0 (mul_ne_zero (hBne _) (hYne _)), vV_mul (hBne _) (hYne _), vV_algebraMap_of_isUnit T (hY _), ho.2, ho.2]`. Rewrite `hval'` using `[nval_of_ne h0, EReal.coe_eq_coe_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he : (e : ℝ) ≠ 0` using `by exact_mod_cast ho.1.ne'`. Establish `h2` using `congrArg (Int.cast : ℤ → ℝ) h1`. Move the coercions through the operations in `at h2`. Rewrite using `[← hval', div_eq_iff he]`. Use `show _ = ((vLa w b : ℝ) - (vLa w (P.B w τ.1).det : ℝ)) * e`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem rho_vw_eq_vAdd_sub : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ (Z : Comp Xo c) (P : PtData Z) (τ : Psi H) (s : FlatSec U ξ Z τ) (b : c.F), b ≠ 0 → (∀ (S : Type) [CommRing S] [Algebra c.F S] (z y : FrPt Xo c S) (Y : Mats Dw S) (u : S), (∀ τ', IsUnit (Y τ').det) → IsUnit u → FrMap (Algebra.ofId c.F S) P.y₀ z → FrChg (fun τ' => (Y τ')ᵀ) u z y → evR Xo c s.sig y * (Y τ.1).det = algebraMap c.F S b) → ∀ w, s.rho_vw w = (vAdd w b : ℝ) - (vAdd w (P.B w τ.1).det : ℝ) := by
   intro E _ _ _ H Dw l Xo c r U ξ hD Z P τ s b hb hev w

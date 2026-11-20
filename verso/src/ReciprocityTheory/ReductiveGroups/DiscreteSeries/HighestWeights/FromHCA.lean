@@ -22,7 +22,7 @@ def fhSig (τ : KG ε →* unitary (V →L[ℂ] V)) (g : Matrix (Fin n) (Fin n) 
   if h : g ∈ Kset ε then ((τ (torepK ε h) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) else 1
 
 /- English proof (translation)
-Unfold `fhSig`. Rewrite using `[dif_pos hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma fhSig_of_mem (τ : KG ε →* unitary (V →L[ℂ] V)) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     fhSig τ g = ((τ (torepK ε hg) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) := by
@@ -30,14 +30,14 @@ lemma fhSig_of_mem (τ : KG ε →* unitary (V →L[ℂ] V)) {g : Matrix (Fin n)
   rw [dif_pos hg]
 
 /- English proof (translation)
-Rewrite using `[fhSig_of_mem τ (g := toMK k) k.2, torepK_toMK]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma fhSig_toMK (τ : KG ε →* unitary (V →L[ℂ] V)) (k : KG ε) :
     fhSig τ (toMK k) = ((τ k : unitary (V →L[ℂ] V)) : V →L[ℂ] V) := by
   rw [fhSig_of_mem τ (g := toMK k) k.2, torepK_toMK]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma fh_op_mul (τ : KG ε →* unitary (V →L[ℂ] V)) (k k' : KG ε) :
     ((τ (k * k') : unitary (V →L[ℂ] V)) : V →L[ℂ] V) =
@@ -46,15 +46,15 @@ lemma fh_op_mul (τ : KG ε →* unitary (V →L[ℂ] V)) (k k' : KG ε) :
   rfl
 
 /- English proof (translation)
-Establish `hmul : ∀ a ∈ Kset ε, ∀ b ∈ Kset ε, a * b ∈ Kset ε`. Introduce `a ha b hb`. Use `⟨Submonoid.mul_mem _ ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hb.2, ← Matrix.mul_assoc, ha.2, Matrix.mul_assoc]`. Establish `hone : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Kset ε` using `⟨Submonoid.one_mem _, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[fhSig_of_mem τ hone]`. Establish `h1 : torepK ε hone = 1` using `onep_KG_ext (by rw [toMK_torepK]; rfl)`. Rewrite using `[h1, map_one]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a ha b hb`. Rewrite using `[fhSig_of_mem τ ha, fhSig_of_mem τ hb, fhSig_of_mem τ (hmul a ha b hb)]`. Establish `h1 : torepK ε (hmul a ha b hb) = torepK ε ha * torepK ε hb` using `onep_KG_ext (by`. Rewrite using `[toMK_torepK]`. Conclude with `(congrArg₂ (· * ·) (toMK_torepK ε ha) (toMK_torepK ε hb)).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, fh_op_mul]`. Introduce `g hg v`. Rewrite using `[fhSig_of_mem τ hg]`. Conclude with `Unitary.norm_map _ v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `show Continuous fun x : ↥(Kset ε) => fhSig τ (x : Matrix (Fin n) (Fin n) ℂ) v`. Establish `hc : Continuous fun x : ↥(Kset ε) => ((τ (torepK ε x.2) : unitary (V →L[ℂ] V)) : V →L[ℂ] V) v` using `(continuous_subtype_val.comp (hτ.comp (continuous_torepK ε))).clm_apply continuous_const`. Use `hc.congr fun x => ?_` and prove the remaining obligations. Rewrite using `[fhSig_of_mem τ x.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fhSig_isURepOn (τ : KG ε →* unitary (V →L[ℂ] V)) (hτ : Continuous τ) :
     Formalism.MainNotions.S.IsURepOn (Formalism.REAL.Kset ε) (fhSig τ) := by
@@ -107,9 +107,7 @@ def fhEnt (k : ℕ) : Matrix (Fin k) (Fin k) ℂ →ₗ[ℂ] (Fin k × Fin k →
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Use `next a =>`. Simplify using `only [MvPolynomial.eval_C]`. Conclude with `differentiableAt_const _`. Use `next p q hp hq =>`.
-
-Simplify using `only [map_add]`. Conclude with `hp.add hq`. Use `next p i hp =>`. Simplify using `only [map_mul, MvPolynomial.eval_X]`. Conclude with `hp.mul (differentiableAt_pi.1 (LinearMap.toContinuousLinearMap (fhEnt k)).differentiableAt i)`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma fh_diff_eval (P : MvPolynomial (Fin k × Fin k) ℂ) (A : Matrix (Fin k) (Fin k) ℂ) :
     DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => MvPolynomial.eval (fhEnt k A) P) A := by
@@ -126,7 +124,7 @@ lemma fh_diff_eval (P : MvPolynomial (Fin k × Fin k) ℂ) (A : Matrix (Fin k) (
       (LinearMap.toContinuousLinearMap (fhEnt k)).differentiableAt i)
 
 /- English proof (translation)
-Establish `h : (fhEnt k A : Fin k × Fin k → ℂ) = fun p => A p.1 p.2` using `rfl`. Rewrite using `[h, RingHom.map_det, Matrix.mvPolynomialX_mapMatrix_eval]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma fh_det_eq (A : Matrix (Fin k) (Fin k) ℂ) :
     A.det = MvPolynomial.eval (fhEnt k A) (Matrix.det (Matrix.mvPolynomialX (Fin k) (Fin k) ℂ)) := by
@@ -143,7 +141,7 @@ variable {k : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [
   [CompleteSpace V]
 
 /- English proof (translation)
-Introduce `h0`. Establish `hu` using `Matrix.mem_unitaryGroup_iff.1 hg.1`. Establish `h` using `congrArg Matrix.det hu`. Rewrite `h` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma fh_det_ne_zero {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Kset (fun _ : Fin k => true)) : g.det ≠ 0 := by
   intro h0
@@ -153,21 +151,19 @@ lemma fh_det_ne_zero {g : Matrix (Fin k) (Fin k) ℂ} (hg : g ∈ Kset (fun _ : 
   exact zero_ne_one h
 
 /- English proof (translation)
-Take `⟨m, P, hP⟩` from `polynomial_coefficients k V (fhSig τ) ⊤ (fhSig_isURepOn τ hτ) inferInstance (fun _ _ _ _ => Submodule.mem_top) v Submodule.mem_top w`. Establish `hdet1 : DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => A.det) 1`. Establish `h : (fun A : Matrix (Fin k) (Fin k) ℂ => A.det) = fun A => MvPolynomial.eval (fhEnt k A) (Matrix.det (Matrix.mvPolynomialX (Fin k) (Fin k) ℂ))`. Use function extensionality and compare the values at `fh_det_eq`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fh_diff_eval _ _`. Set `F : Matrix (Fin k) (Fin k) ℂ → ℂ` to `fun A => MvPolynomial.eval (fhEnt k A) P * (A.det ^ m)⁻¹`. Establish `hF : DifferentiableAt ℂ F 1`. Establish `hne : (1 : Matrix (Fin k) (Fin k) ℂ).det ^ m ≠ 0`. Rewrite using `[Matrix.det_one, one_pow]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_ne_zero`. Establish `hpow : DifferentiableAt ℂ (fun A : Matrix (Fin k) (Fin k) ℂ => A.det ^ m) 1` using `(differentiableAt_pow m).comp 1 hdet1`. Conclude with `(fh_diff_eval P 1).mul (hpow.inv hne)`. Use `⟨(fderiv ℂ F 1).toLinearMap, fun X hX => ?_⟩` and prove the remaining obligations. Establish `hγ` using `(kcurve_spec (fun _ : Fin k => true) hX).2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hD` using `derOp_hasDeriv (fun _ : Fin k => true) τ hτ X hX (kcurve (fun _ : Fin k => true) X) hγ`. Set `Λ : (V →L[ℂ] V) →L[ℂ] ℂ` to `(innerSL ℂ w).comp (ContinuousLinearMap.apply ℂ V v)`. Establish `h1` using `(Λ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 hD`. Establish `he` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Rewrite `he` using `[zero_smul, NormedSpace.exp_zero, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h3` using `(hF.hasFDerivAt.restrictScalars ℝ).comp_hasDerivAt_of_eq 0 he (by simp)`. Establish `heq : (⇑(Λ.restrictScalars ℝ) ∘ fun t : ℝ => ((τ (kcurve (fun _ : Fin k => true) X t) : unitary (V →L[ℂ] V)) : V →L[ℂ] V)) = F ∘ fun u : ℝ => NormedSpace.exp (u • X)`. Use function extensionality and compare the values at `t`. Establish `hx : NormedSpace.exp (t • X) = toMK (kcurve (fun _ : Fin k => true) X t)`. Rewrite using `[hγ t]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg NormedSpace.exp (Complex.coe_smul t X).symm`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hx]`. Establish `hk : toMK (kcurve (fun _ : Fin k => true) X t) ∈ Kset (fun _ : Fin k => true)` using `(kcurve (fun _ : Fin k => true) X t).2`. Establish `hP'` using `hP _ hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hP'` using `[fhSig_toMK]`. Simplify using `only [Λ, F, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply]`. Rewrite using `[eq_mul_inv_iff_mul_eq₀ (pow_ne_zero _ (fh_det_ne_zero hk))]`. Conclude with `hP'`. Rewrite `h1` using `[heq]`.
-
-Establish `h4` using `h1.unique h3`. Conclude with `h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fh_coef (τ : KG (fun _ : Fin k => true) →* unitary (V →L[ℂ] V)) (hτ : Continuous τ) (v w : V) :
     ∃ L : Matrix (Fin k) (Fin k) ℂ →ₗ[ℂ] ℂ, ∀ X, inK (fun _ : Fin k => true) X →

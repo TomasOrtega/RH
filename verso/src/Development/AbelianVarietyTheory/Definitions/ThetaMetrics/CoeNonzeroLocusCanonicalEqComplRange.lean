@@ -20,16 +20,16 @@ def secOnOf {L : LB X} (t : L.Sec) (V : X.Opens) : ∀ i, Γ(X, V ⊓ L.U i) :=
   fun i => resG X inf_le_right (t.f i)
 
 /- English proof (translation)
-Introduce `i j` and use `(resG_resG _ _ _).trans ((sec_compat t i j (inf_le_left.trans inf_le_right) inf_le_right).trans (congrArg _ (resG_resG _ _ _).symm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secOnOf_mem {L : LB X} (t : L.Sec) (V : X.Opens) : secOnOf t V ∈ secOn L V := fun i j =>
   (resG_resG _ _ _).trans ((sec_compat t i j (inf_le_left.trans inf_le_right) inf_le_right).trans
     (congrArg _ (resG_resG _ _ _).symm))
 
 /- English proof (translation)
-Establish `le : ∀ i, L.U i ≤ ⊤ ⊓ L.U i` using `fun i => le_inf le_top le_rfl`. Use `⟨fun t _ => secOnOf_mem t ⊤, fun t _ t' _ e => sec_ext fun i => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Use `congrArg (resG X (le i)) (congrFun e i)` as an intermediate fact. Simplify using `only [secOnOf, resG_resG, resG_self] at this`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun i => resG X (le i) (t i), fun i j => ?_⟩, trivial, funext fun i => (resG_resG _ _ _).trans (resG_self _ _)⟩` and prove the remaining obligations. Use `congrArg (resG X (inf_le_inf_right _ (le i) : L.U i ⊓ L.U j ≤ ⊤ ⊓ L.U i ⊓ L.U j)) (ht i j)` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG, resG_resG, resG_self]`. Conclude with `(resG_resG _ _ _).trans (this.trans (congrArg _ (resG_resG _ _ _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijOn_secOnOf_top (L : LB X) :
     Set.BijOn (fun t : L.Sec => secOnOf t ⊤) Set.univ (secOn L ⊤) := by
@@ -48,7 +48,7 @@ theorem bijOn_secOnOf_top (L : LB X) :
 instance nonempty_top [IsIntegral X] : Nonempty (⊤ : X.Opens) := ⟨⟨genericPoint X, trivial⟩⟩
 
 /- English proof (translation)
-Establish `hm : genericPoint X ∈ V ⊓ L.U (genericChart hL)` using `⟨genericPoint_mem V, mem_genericChart hL⟩`. Establish `hne : @id X.functionField ((X.presheaf.germ _ _ (mem_genericChart hL)).hom (s.f (genericChart hL))) ≠ 0` using `nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (hs _) _ _)`. Establish `key : ∀ a b : X.functionField, a = b → b ≠ 0 → a * b⁻¹ = 1` using `fun a b e hb => by`. Rewrite using `[e, mul_inv_cancel₀ hb]`. Conclude with `key _ _ (germ_resG inf_le_right _ hm _) hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratOf_secOnOf_self [IsIntegral X] {L : LB X} (hL : L.IsLB) {s : L.Sec}
     (hs : IsRegularSec s) (V : X.Opens) [Nonempty V] : ratOf hL s V (secOnOf s V) = 1 := by
@@ -91,9 +91,9 @@ def principal (a : Γ(X, ⊤)) (ha : IsRegularFn a) : EffCartierData X where
   assoc _ _ := Associated.refl _
 
 /- English proof (translation)
-Use `(isRegularFn_iff_of_isAffineOpen (isAffineOpen_top _)).2 ?_` and prove the remaining obligations. Use `mem_nonZeroDivisors_iff_right.2 fun t ht => ?_` and prove the remaining obligations. Establish `e` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom ht`. Rewrite `e` using `[map_mul, map_zero, Iso.inv_hom_id_apply]`. Use `congrArg (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom (mem_nonZeroDivisors_iff_right.1 hr _ e)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Iso.hom_inv_id_apply, map_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isRegularFn_spec {R : Type} [CommRing R] {r : R} (hr : r ∈ nonZeroDivisors R) :
     IsRegularFn (X := Sp R) (U := ⊤) ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r) := by
@@ -131,7 +131,7 @@ def zero (X : Scheme.{0}) : EffCartierData X := principal 1 (IsRegularFn.of_isUn
 variable (D D' : EffCartierData X)
 
 /- English proof (translation)
-The claim follows from `Opens.mem_iSup.1 (D.cover.ge (Set.mem_univ x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem (x : X) : ∃ i, x ∈ D.U i :=
   Opens.mem_iSup.1 (D.cover.ge (Set.mem_univ x))
@@ -139,7 +139,7 @@ theorem exists_mem (x : X) : ∃ i, x ∈ D.U i :=
 def trans (i j : D.ι) : Γ(X, D.U i ⊓ D.U j)ˣ := (D.assoc i j).symm.choose
 
 /- English proof (translation)
-The claim follows from `((mul_comm _ _).trans (D.assoc i j).symm.choose_spec).symm`.
+A detailed English derivation is pending.
 -/
 theorem trans_spec (i j : D.ι) :
     resG X (inf_le_left : D.U i ⊓ D.U j ≤ D.U i) (D.f i) =
@@ -147,7 +147,7 @@ theorem trans_spec (i j : D.ι) :
   ((mul_comm _ _).trans (D.assoc i j).symm.choose_spec).symm
 
 /- English proof (translation)
-Use `congrArg (resG X (le_inf hi hj)) (D.trans_spec i j)` as an intermediate fact. Rewrite `this` using `[map_mul, resG_resG, resG_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem trans_spec_on (i j : D.ι) {W : X.Opens} (hi : W ≤ D.U i) (hj : W ≤ D.U j) :
     resG X hi (D.f i) =
@@ -156,7 +156,7 @@ theorem trans_spec_on (i j : D.ι) {W : X.Opens} (hi : W ≤ D.U i) (hj : W ≤ 
   rwa [map_mul, resG_resG, resG_resG] at this
 
 /- English proof (translation)
-The claim follows from `((D.regular j).resG hj).mul_right_cancel (hc.symm.trans (D.trans_spec_on i j hi hj))`.
+A detailed English derivation is pending.
 -/
 theorem eq_trans_on (i j : D.ι) {W : X.Opens} (hi : W ≤ D.U i) (hj : W ≤ D.U j) {c : Γ(X, W)}
     (hc : resG X hi (D.f i) = c * resG X hj (D.f j)) :
@@ -164,7 +164,7 @@ theorem eq_trans_on (i j : D.ι) {W : X.Opens} (hi : W ≤ D.U i) (hj : W ≤ D.
   ((D.regular j).resG hj).mul_right_cancel (hc.symm.trans (D.trans_spec_on i j hi hj))
 
 /- English proof (translation)
-The claim follows from `Units.ext (((D.regular j).resG _).mul_right_cancel (hu.symm.trans (D.trans_spec i j)))`.
+A detailed English derivation is pending.
 -/
 theorem eq_trans (i j : D.ι) {u : Γ(X, D.U i ⊓ D.U j)ˣ}
     (hu : resG X (inf_le_left : D.U i ⊓ D.U j ≤ D.U i) (D.f i) =
@@ -178,7 +178,7 @@ def lb : LB X where
   g := D.trans
 
 /- English proof (translation)
-The claim follows from `D.cover g_self i := Units.ext (D.eq_trans_on i i le_rfl le_rfl (c := 1) (one_mul _).symm).symm cocycle i j k := by have hi : D.U i ⊓ D.U j ⊓ D.U k ≤ D.U i := inf_le_left.trans inf_le_left have hj : D.U i ⊓ D.U j ⊓ D.U k ≤ D.U j := inf_le_left.trans inf_le_right have hk : D.U i ⊓ …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lb : D.lb.IsLB where
   cover := D.cover
@@ -201,12 +201,12 @@ Both sides reduce to the same expression.
 @[simp] theorem canonical_f (i : D.ι) : D.canonical.f i = D.f i := rfl
 
 /- English proof (translation)
-The claim follows from `D.regular`.
+A detailed English derivation is pending.
 -/
 theorem isRegularSec_canonical : IsRegularSec D.canonical := D.regular
 
 /- English proof (translation)
-Establish `hm : x ∈ D.U i ⊓ D.U j` using `⟨hi, hj⟩`. Use `(D.assoc i j).map (X.presheaf.germ _ x hm).hom` as an intermediate fact. Rewrite `this` using `[germ_resG, germ_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem associated_germ (i j : D.ι) (x : X) (hi : x ∈ D.U i) (hj : x ∈ D.U j) :
     Associated ((X.presheaf.germ _ x hi).hom (D.f i)) ((X.presheaf.germ _ x hj).hom (D.f j)) := by
@@ -223,7 +223,7 @@ variable {κ : Type} (V : κ → X.Opens) (g : ∀ c, Γ(X, V c)) (hV : ∀ x : 
 include hg in
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(hg c c' x hx hx').symm`. Conclude with `⟨u, hu.symm.trans (mul_comm _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit_germ (c c' : κ) (x : X) (hx : x ∈ V c) (hx' : x ∈ V c') :
     ∃ u : (X.presheaf.stalk x)ˣ,
@@ -236,9 +236,9 @@ def locIdeal : X.IdealSheafData where
   map_ideal_basicOpen := dsJ_basicOpen hV (exists_unit_germ V g hg)
 
 /- English proof (translation)
-Use `mem_dsJ.trans ⟨fun h c x hx hc => ?_, fun h x hx => ?_⟩` and prove the remaining obligations. Use `h x hx` as an intermediate fact. Rewrite `this` using `[dsK_eq (exists_unit_germ V g hg) c hc]`. Conclude with `Ideal.mem_span_singleton.1 this`. Take `⟨c, hc⟩` from `hV x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dsK_eq (exists_unit_germ V g hg) c hc]`. Conclude with `Ideal.mem_span_singleton.2 (h c x hx hc)`.
+A detailed English derivation is pending.
 -/
 theorem mem_locIdeal_iff {W : X.affineOpens} {a : Γ(X, W.1)} :
     a ∈ (locIdeal V g hV hg).ideal W ↔ ∀ c x (hx : x ∈ W.1) (hc : x ∈ V c),
@@ -252,9 +252,9 @@ theorem mem_locIdeal_iff {W : X.affineOpens} {a : Γ(X, W.1)} :
     exact Ideal.mem_span_singleton.2 (h c x hx hc)
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[mem_locIdeal_iff, W.2.mem_ideal_iff]`. Use `⟨fun H x hx => ?_, fun H c' x hx hc' => ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton, germ_resG]`. Conclude with `H c x hx (h hx)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `H x hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, Ideal.mem_span_singleton, germ_resG]`. Conclude with `(hg c' c x hc' (h hx)).dvd.trans this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_locIdeal (W : X.affineOpens) (c : κ) (h : W.1 ≤ V c) :
     (locIdeal V g hV hg).ideal W = Ideal.span {resG X h (g c)} := by
@@ -272,16 +272,16 @@ end LocIdeal
 def idealSheaf : X.IdealSheafData := locIdeal D.U D.f D.exists_mem D.associated_germ
 
 /- English proof (translation)
-The claim follows from `ideal_locIdeal _ _ _ _ W i h`.
+A detailed English derivation is pending.
 -/
 theorem ideal_idealSheaf (W : X.affineOpens) (i : D.ι) (h : W.1 ≤ D.U i) :
     D.idealSheaf.ideal W = Ideal.span {resG X h (D.f i)} :=
   ideal_locIdeal _ _ _ _ W i h
 
 /- English proof (translation)
-Use `(mem_locIdeal_iff _ _ _ _).trans ⟨fun h i => ?_, fun h i x hx hi => ?_⟩` and prove the remaining obligations. Use `((D.regular i).resG _).dvd_of_germ fun x hx => ?_` and prove the remaining obligations. Rewrite using `[germ_resG, germ_resG]`. Conclude with `h i x hx.1 hx.2`. Establish `hm : x ∈ W.1 ⊓ D.U i` using `⟨hx, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `map_dvd (X.presheaf.germ _ x hm).hom (h i)` as an intermediate fact. Rewrite `this` using `[germ_resG, germ_resG]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_idealSheaf_iff {W : X.affineOpens} {a : Γ(X, W.1)} :
     a ∈ D.idealSheaf.ideal W ↔ ∀ i, resG X (inf_le_right : W.1 ⊓ D.U i ≤ D.U i) (D.f i) ∣
@@ -295,7 +295,7 @@ theorem mem_idealSheaf_iff {W : X.affineOpens} {a : Γ(X, W.1)} :
     rwa [germ_resG, germ_resG] at this
 
 /- English proof (translation)
-Take `⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Conclude with `⟨⟨W, hW⟩, hxW, hWV⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affine_le {V : X.Opens} {x : X} (hx : x ∈ V) :
     ∃ W : X.affineOpens, x ∈ W.1 ∧ W.1 ≤ V := by
@@ -304,7 +304,7 @@ theorem exists_affine_le {V : X.Opens} {x : X} (hx : x ∈ V) :
   exact ⟨⟨W, hW⟩, hxW, hWV⟩
 
 /- English proof (translation)
-Take `⟨W, hxW, hW⟩` from `exists_affine_le hx`. Rewrite using `[ds_stalkId_eq_map _ W x hxW, D.ideal_idealSheaf W i hW, Ideal.map_span, Set.image_singleton, germ_resG]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkId_idealSheaf (i : D.ι) (x : X) (hx : x ∈ D.U i) :
     FinalTheorems.stalkId D.idealSheaf x = Ideal.span {(X.presheaf.germ _ x hx).hom (D.f i)} := by
@@ -313,7 +313,7 @@ theorem stalkId_idealSheaf (i : D.ι) (x : X) (hx : x ∈ D.U i) :
     germ_resG]
 
 /- English proof (translation)
-Use `choose W i hW hx hI using h`. Conclude with `Scheme.IdealSheafData.ext_of_iSup_eq_top W (eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩) fun x => (hI x).trans (D.ideal_idealSheaf _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_idealSheaf {I : X.IdealSheafData}
     (h : ∀ x : X, ∃ (W : X.affineOpens) (i : D.ι) (hW : W.1 ≤ D.U i),
@@ -324,7 +324,7 @@ theorem eq_idealSheaf {I : X.IdealSheafData}
     fun x => (hI x).trans (D.ideal_idealSheaf _ _ _).symm
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨i, hi⟩ := D.exists_mem x obtain ⟨W, hxW, hW⟩ := exists_affine_le hi exact ⟨W, _, hxW, D.regular i _ hW, D.ideal_idealSheaf W i hW⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem effCartier_idealSheaf : FinalTheorems.EffCartier D.idealSheaf := fun x => by
   obtain ⟨i, hi⟩ := D.exists_mem x
@@ -336,7 +336,7 @@ abbrev zeroScheme : Scheme.{0} := D.idealSheaf.subscheme
 abbrev zeroSchemeι : D.zeroScheme ⟶ X := D.idealSheaf.subschemeι
 
 /- English proof (translation)
-Use `(mem_support_iff_stalkId D.idealSheaf x).trans ?_` and prove the remaining obligations. Rewrite using `[D.stalkId_idealSheaf i x hx, Ne, Ideal.span_singleton_eq_top, X.mem_basicOpen _ x hx]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_support_iff (i : D.ι) {x : X} (hx : x ∈ D.U i) :
     x ∈ D.idealSheaf.support ↔ x ∉ X.basicOpen (D.f i) := by
@@ -344,7 +344,7 @@ theorem mem_support_iff (i : D.ι) {x : X} (hx : x ∈ D.U i) :
   rw [D.stalkId_idealSheaf i x hx, Ne, Ideal.span_singleton_eq_top, X.mem_basicOpen _ x hx]
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨i, hi⟩` from `D.exists_mem x`. Conclude with `(mem_nonzeroLocus_iff D.canonical i hi).trans (not_not.symm.trans (not_congr (D.mem_support_iff i hi)).symm)`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coe_nonzeroLocus_canonical :
     (Out.nonzeroLocus D.canonical : Set X) = (D.idealSheaf.support : Set X)ᶜ := by
@@ -354,18 +354,18 @@ theorem coe_nonzeroLocus_canonical :
     (not_not.symm.trans (not_congr (D.mem_support_iff i hi)).symm)
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.range_subschemeι, coe_nonzeroLocus_canonical]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_nonzeroLocus_canonical_eq_compl_range :
     (Out.nonzeroLocus D.canonical : Set X) = (Set.range D.zeroSchemeι)ᶜ := by
   rw [Scheme.IdealSheafData.range_subschemeι, coe_nonzeroLocus_canonical]
 
 /- English proof (translation)
-Use `dense_iff_inter_open.2 fun V hV ⟨x, hx⟩ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `D.exists_mem x`. Take `⟨W, hxW, hW⟩` from `exists_affine_le (V := ⟨V, hV⟩ ⊓ D.U i) ⟨hx, hi⟩`. Establish `hWi : W.1 ≤ D.U i` using `hW.trans inf_le_right`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hbot : X.basicOpen (resG X hWi (D.f i)) = ⊥`. Use `eq_bot_iff.2 fun y hy => hne ⟨y, (hW (X.basicOpen_le _ hy)).1, ?_⟩` and prove the remaining obligations. Establish `hyW : y ∈ W.1` using `X.basicOpen_le _ hy`. Use `(mem_nonzeroLocus_iff D.canonical i (hWi hyW)).2 ?_` and prove the remaining obligations. Rewrite `hy` using `[X.mem_basicOpen _ y hyW]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(X.mem_basicOpen _ y (hWi hyW)).2 ((congrArg IsUnit (germ_resG hWi y hyW _)).mp hy)`. Take `⟨n, hn⟩` from `(Scheme.isNilpotent_iff_basicOpen_eq_bot_of_isCompact W.2.isCompact _).2 hbot`. Establish `: Nonempty W.1` using `⟨⟨x, hxW⟩⟩`. Conclude with `(((D.regular i).resG hWi).pow n).ne_zero hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dense_nonzeroLocus_canonical : Dense (Out.nonzeroLocus D.canonical : Set X) := by
   refine dense_iff_inter_open.2 fun V hV ⟨x, hx⟩ => ?_
@@ -384,7 +384,7 @@ theorem dense_nonzeroLocus_canonical : Dense (Out.nonzeroLocus D.canonical : Set
   exact (((D.regular i).resG hWi).pow n).ne_zero hn
 
 /- English proof (translation)
-The claim follows from `((D.regular q).resG _).associated_of_germ ((D'.regular p).resG _) fun x hx => by rw [germ_resG, germ_resG, ← stalkId_idealSheaf, ← stalkId_idealSheaf, h]`.
+A detailed English derivation is pending.
 -/
 theorem associated_of_idealSheaf_eq (h : D.idealSheaf = D'.idealSheaf) (p : D'.ι) (q : D.ι) :
     Associated (resG X (inf_le_right : D'.U p ⊓ D.U q ≤ D.U q) (D.f q))
@@ -393,22 +393,22 @@ theorem associated_of_idealSheaf_eq (h : D.idealSheaf = D'.idealSheaf) (p : D'.�
     rw [germ_resG, germ_resG, ← stalkId_idealSheaf, ← stalkId_idealSheaf, h]
 
 /- English proof (translation)
-The claim follows from `existsUnique_secMaps D.regular (D.associated_of_idealSheaf_eq D' h)`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_of_idealSheaf_eq (h : D.idealSheaf = D'.idealSheaf) :
     ∃! w : LB.Iso D.lb D'.lb, w.IsGen ∧ SecMaps w D.canonical D'.canonical :=
   existsUnique_secMaps D.regular (D.associated_of_idealSheaf_eq D' h)
 
 /- English proof (translation)
-The claim follows from `(D.existsUnique_iso_of_idealSheaf_eq D' h).exists.imp fun _ hw => hw.1`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_idealSheaf_eq (h : D.idealSheaf = D'.idealSheaf) : LBIso D.lb D'.lb :=
   (D.existsUnique_iso_of_idealSheaf_eq D' h).exists.imp fun _ hw => hw.1
 
 /- English proof (translation)
-Use `D'.eq_idealSheaf fun x => ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `D.exists_mem x`. Take `⟨p, hp⟩` from `D'.exists_mem x`. Take `⟨W, hxW, hW⟩` from `exists_affine_le (V := D'.U p ⊓ D.U q) ⟨hp, hq⟩`. Use `⟨W, p, hW.trans inf_le_left, hxW, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[D.ideal_idealSheaf W q (hW.trans inf_le_right)]`. Conclude with `(Ideal.span_singleton_mul_left_unit ((Units.isUnit _).map _) _).symm.trans (congrArg (fun a => Ideal.span {a}) (hw.on p q (hW.trans inf_le_left) (hW.trans inf_le_right)).symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_eq_of_secMaps {w : LB.Iso D.lb D'.lb}
     (hw : SecMaps w D.canonical D'.canonical) : D.idealSheaf = D'.idealSheaf := by
@@ -423,7 +423,7 @@ theorem idealSheaf_eq_of_secMaps {w : LB.Iso D.lb D'.lb}
       (hw.on p q (hW.trans inf_le_left) (hW.trans inf_le_right)).symm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => (D.existsUnique_iso_of_idealSheaf_eq D' h).exists, fun ⟨_, hw⟩ => D.idealSheaf_eq_of_secMaps D' hw.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem idealSheaf_eq_iff : D.idealSheaf = D'.idealSheaf ↔
     ∃ w : LB.Iso D.lb D'.lb, w.IsGen ∧ SecMaps w D.canonical D'.canonical :=
@@ -431,9 +431,9 @@ theorem idealSheaf_eq_iff : D.idealSheaf = D'.idealSheaf ↔
     fun ⟨_, hw⟩ => D.idealSheaf_eq_of_secMaps D' hw.2⟩
 
 /- English proof (translation)
-Use `choose W g hx hg hI using hI`. Establish `reg : ∀ x, IsRegularFn (g x)` using `fun x => (isRegularFn_iff_of_isAffineOpen (W x).2).2 (hg x)`. Establish `st : ∀ x y (hy : y ∈ (W x).1), FinalTheorems.stalkId I y = Ideal.span {(X.presheaf.germ _ y hy).hom (g x)}` using `fun x y hy => by`. Rewrite using `[ds_stalkId_eq_map _ (W x) y hy, hI, Ideal.map_span, Set.image_singleton]`. Set `D : EffCartierData X` to `{ ι := X U := fun x => (W x).1 f := g cover := eq_top_iff.2 fun x _ => Opens.mem_iSup.2 ⟨x, hx x⟩ regular := reg assoc := fun x x' => ((reg x).resG _).associated_of_germ ((reg x').resG _) fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[germ_resG, germ_resG, ← st, ← st] }`. Conclude with `⟨D, (D.eq_idealSheaf fun x => ⟨W x, x, le_rfl, hx x, (hI x).trans (congrArg (fun a => Ideal.span {a}) (resG_self _ _).symm)⟩).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_idealSheaf_eq {I : X.IdealSheafData} (hI : FinalTheorems.EffCartier I) :
     ∃ D : EffCartierData X, D.idealSheaf = I := by
@@ -463,7 +463,7 @@ def ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) : EffCartie
     (associated_unit_mul_left _ _ (L.g i j).isUnit)
 
 /- English proof (translation)
-Establish `: (ofSec hL s hs).trans = L.g` using `funext fun i => funext fun j => ((ofSec hL s hs).eq_trans i j (s.compat i j)).symm`. Conclude with `congrArg (LB.mk L.ι L.U) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lb_ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) :
     (ofSec hL s hs).lb = L := by
@@ -472,21 +472,21 @@ theorem lb_ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) :
   exact congrArg (LB.mk L.ι L.U) this
 
 /- English proof (translation)
-The claim follows from `existsUnique_secMaps hs fun p q => ((ofSec hL s hs).assoc p q).symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) :
     ∃! w : LB.Iso L (ofSec hL s hs).lb, w.IsGen ∧ SecMaps w s (ofSec hL s hs).canonical :=
   existsUnique_secMaps hs fun p q => ((ofSec hL s hs).assoc p q).symm
 
 /- English proof (translation)
-The claim follows from `existsUnique_secMaps (A := (ofSec hL s hs).lb) hs fun p q => ((ofSec hL s hs).assoc p q).symm`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_ofSec' {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) :
     ∃! w : LB.Iso (ofSec hL s hs).lb L, w.IsGen ∧ SecMaps w (ofSec hL s hs).canonical s :=
   existsUnique_secMaps (A := (ofSec hL s hs).lb) hs fun p q => ((ofSec hL s hs).assoc p q).symm
 
 /- English proof (translation)
-The claim follows from `(existsUnique_iso_ofSec' hL s hs).exists.imp fun _ hw => hw.1`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec) (hs : IsRegularSec s) :
     LBIso (ofSec hL s hs).lb L :=
@@ -498,7 +498,7 @@ Both sides reduce to the same expression.
 theorem ofSec_canonical : ofSec D.isLB_lb D.canonical D.isRegularSec_canonical = D := rfl
 
 /- English proof (translation)
-The claim follows from `(ofSec hL s hs).coe_nonzeroLocus_canonical`.
+A detailed English derivation is pending.
 -/
 theorem coe_nonzeroLocus_eq_compl_support_ofSec {L : LB X} (hL : L.IsLB) (s : L.Sec)
     (hs : IsRegularSec s) :
@@ -508,7 +508,7 @@ theorem coe_nonzeroLocus_eq_compl_support_ofSec {L : LB X} (hL : L.IsLB) (s : L.
 def KeepsRegular (φ : Y ⟶ X) : Prop := ∀ i, IsRegularFn ((φ.app (D.U i)).hom (D.f i))
 
 /- English proof (translation)
-The claim follows from `(Scheme.Hom.germ_stalkMap_apply φ U y hy a).symm`.
+A detailed English derivation is pending.
 -/
 theorem germ_app (φ : Y ⟶ X) {U : X.Opens} (a : Γ(X, U)) (y : Y) (hy : φ y ∈ U) :
     (Y.presheaf.germ (φ ⁻¹ᵁ U) y hy).hom ((φ.app U).hom a) =
@@ -516,7 +516,7 @@ theorem germ_app (φ : Y ⟶ X) {U : X.Opens} (a : Γ(X, U)) (y : Y) (hy : φ y 
   (Scheme.Hom.germ_stalkMap_apply φ U y hy a).symm
 
 /- English proof (translation)
-Rewrite using `[germ_app φ _ y hi, germ_app φ _ y hj]`. Conclude with `(D.associated_germ i j (φ y) hi hj).map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_germ_app (φ : Y ⟶ X) (i j : D.ι) (y : Y) (hi : y ∈ φ ⁻¹ᵁ D.U i)
     (hj : y ∈ φ ⁻¹ᵁ D.U j) :
@@ -526,11 +526,11 @@ theorem associated_germ_app (φ : Y ⟶ X) (i j : D.ι) (y : Y) (hi : y ∈ φ �
   exact (D.associated_germ i j (φ y) hi hj).map _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(comap_le_iff _ _ _).2 fun U a ha W h => (mem_locIdeal_iff _ _ _ _).2 fun i y hy hi => ?_` and prove the remaining obligations. Rewrite using `[germ_resG, germ_app φ _ y hi, germ_app φ a y (h hy)]`. Conclude with `map_dvd _ ((mem_locIdeal_iff _ _ _ _).1 ha i (φ y) (h hy) hi)`. Establish `loc : ∀ y : Y, ∃ (W : Y.affineOpens) (U : X.affineOpens) (i : D.ι), y ∈ W.1 ∧ W.1 ≤ φ ⁻¹ᵁ U.1 ∧ U.1 ≤ D.U i` using `fun y => by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `D.exists_mem (φ y)`. Take `⟨U, hyU, hU⟩` from `exists_affine_le hi`. Take `⟨W, hyW, hW⟩` from `exists_affine_le (V := φ ⁻¹ᵁ U.1) (x := y) hyU`. Conclude with `⟨W, U, i, hyW, hW, hU⟩`. Use `choose W U i hy hW hU using loc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.IdealSheafData.le_of_iSup_eq_top W (eq_top_iff.2 fun y _ => Opens.mem_iSup.2 ⟨y, hy y⟩) fun y => ?_` and prove the remaining obligations. Use `(ideal_locIdeal (fun i => φ ⁻¹ᵁ D.U i) _ _ _ (W y) (i y) ((hW y).trans (φ.preimage_mono (hU y)))).trans_le ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `(comap_le_iff D.idealSheaf φ _).1 le_rfl (U y) (resG X (hU y) (D.f (i y))) (by rw [D.ideal_idealSheaf (U y) (i y) (hU y)]; exact Ideal.mem_span_singleton_self _) (W y) (hW y)` as an intermediate fact. Rewrite `this` using `[app_resG, resG_resG]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem comap_idealSheaf (φ : Y ⟶ X) : D.idealSheaf.comap φ =
     locIdeal (fun i => φ ⁻¹ᵁ D.U i) (fun i => (φ.app (D.U i)).hom (D.f i))
@@ -558,7 +558,7 @@ theorem comap_idealSheaf (φ : Y ⟶ X) : D.idealSheaf.comap φ =
     rwa [app_resG, resG_resG] at this
 
 /- English proof (translation)
-Rewrite using `[comap_idealSheaf]`. Conclude with `ideal_locIdeal _ _ _ _ W i h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_comap_idealSheaf (φ : Y ⟶ X) (W : Y.affineOpens) (i : D.ι)
     (h : W.1 ≤ φ ⁻¹ᵁ D.U i) :
@@ -567,11 +567,11 @@ theorem ideal_comap_idealSheaf (φ : Y ⟶ X) (W : Y.affineOpens) (i : D.ι)
   exact ideal_locIdeal _ _ _ _ W i h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h y`. Take `⟨i, hi⟩` from `D.exists_mem (φ y)`. Take `⟨W, hyW, hW⟩` from `exists_affine_le (V := φ ⁻¹ᵁ D.U i) (x := y) hi`. Conclude with `⟨W, _, hyW, h i _ hW, D.ideal_comap_idealSheaf φ W i hW⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h i`. Use `isRegularFn_of_locally fun y hy => ?_` and prove the remaining obligations. Take `⟨W, g, hyW, hg, hI⟩` from `h y`. Take `⟨W', hyW', hW'⟩` from `exists_affine_le (V := W.1 ⊓ φ ⁻¹ᵁ D.U i) (x := y) ⟨hyW, hy⟩`. Establish `h₁ : W'.1 ≤ W.1` using `hW'.trans inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨W'.1, hW'.trans inf_le_right, hyW', ?_⟩` and prove the remaining obligations. Use `(((isRegularFn_iff_of_isAffineOpen W.2).2 hg).resG h₁).of_dvd ?_` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, ← D.ideal_comap_idealSheaf φ W' i]`. Conclude with `(D.idealSheaf.comap φ).ideal_le_comap_ideal (U := W') (V := W) h₁ (by rw [hI]; exact Ideal.mem_span_singleton_self _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keepsRegular_iff_effCartier (φ : Y ⟶ X) :
     D.KeepsRegular φ ↔ FinalTheorems.EffCartier (D.idealSheaf.comap φ) := by
@@ -592,14 +592,14 @@ theorem keepsRegular_iff_effCartier (φ : Y ⟶ X) :
       (by rw [hI]; exact Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Rewrite using `[keepsRegular_iff_effCartier, keepsRegular_iff_effCartier, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem keepsRegular_congr (h : D.idealSheaf = D'.idealSheaf) (φ : Y ⟶ X) :
     D.KeepsRegular φ ↔ D'.KeepsRegular φ := by
   rw [keepsRegular_iff_effCartier, keepsRegular_iff_effCartier, h]
 
 /- English proof (translation)
-Use `⟨fun h j => (h (j ⟨⟩)).resG _, fun h i => ?_⟩` and prove the remaining obligations. Use `(h fun _ => i).resG (pull_U D.lb φ fun _ => i).ge` as an intermediate fact. Conclude with `(congrArg IsRegularFn ((resG_resG _ _ _).trans (resG_self _ _))).mp this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem keepsRegular_iff_isRegularSec (φ : Y ⟶ X) :
     D.KeepsRegular φ ↔ IsRegularSec (secPull D.canonical φ) := by
@@ -608,15 +608,15 @@ theorem keepsRegular_iff_isRegularSec (φ : Y ⟶ X) :
   exact (congrArg IsRegularFn ((resG_resG _ _ _).trans (resG_self _ _))).mp this
 
 /- English proof (translation)
-Introduce `i` and use `(D.regular i).app_of_flat φ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem keepsRegular_of_flat (φ : Y ⟶ X) [Flat φ] : D.KeepsRegular φ :=
   fun i => (D.regular i).app_of_flat φ
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `D.exists_mem (φ y)`. Use `(D.keepsRegular_iff_isRegularSec φ).2 (isRegularSec_of_ne_zero _ (i := fun _ => i) fun h0 => ?_)` and prove the remaining obligations. Establish `h1 : φ y ∈ Out.nonzeroLocus D.canonical` using `D.coe_nonzeroLocus_canonical.ge hy`. Establish `h2 : y ∈ Out.nonzeroLocus (secPull D.canonical φ)` using `(nonzeroLocus_secPull D.canonical φ).ge h1`. Establish `h3` using `(mem_nonzeroLocus_iff (secPull D.canonical φ) (fun _ => i) ((pull_U D.lb φ fun _ => i).ge hi)).1 h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h0, Scheme.basicOpen_zero]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keepsRegular_of_notMem_support [IsIntegral Y] (φ : Y ⟶ X) {y : Y}
     (hy : φ y ∉ D.idealSheaf.support) : D.KeepsRegular φ := by
@@ -632,7 +632,7 @@ theorem keepsRegular_of_notMem_support [IsIntegral Y] (φ : Y ⟶ X) {y : Y}
   exact h3
 
 /- English proof (translation)
-Establish `: Nonempty X` using `⟨φ (genericPoint Y)⟩`. Take `⟨y, hy⟩` from `φ.denseRange.exists_mem_open (Out.nonzeroLocus D.canonical).isOpen D.dense_nonzeroLocus_canonical.nonempty`. Conclude with `D.keepsRegular_of_notMem_support φ (y := y) (D.coe_nonzeroLocus_canonical.le hy)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem keepsRegular_of_isDominant [IsIntegral Y] (φ : Y ⟶ X) [IsDominant φ] :
     D.KeepsRegular φ := by
@@ -653,14 +653,14 @@ def pull (φ : Y ⟶ X) (h : D.KeepsRegular φ) : EffCartierData Y where
     exact this
 
 /- English proof (translation)
-The claim follows from `(D.comap_idealSheaf φ).symm`.
+A detailed English derivation is pending.
 -/
 theorem idealSheaf_pull (φ : Y ⟶ X) (h : D.KeepsRegular φ) :
     (D.pull φ h).idealSheaf = D.idealSheaf.comap φ :=
   (D.comap_idealSheaf φ).symm
 
 /- English proof (translation)
-The claim follows from `existsUnique_secMaps (D.pull φ h).regular fun p q => by have := ((D.pull φ h).assoc q (p ⟨⟩)).map (resG Y (le_inf inf_le_right (inf_le_left.trans (pull_U D.lb φ p).le) : (D.lb.pull φ).U p ⊓ (D.pull φ h).U q ≤ (D.pull φ h).U q ⊓ (D.pull φ h).U (p ⟨⟩))) rw [resG_resG, resG_resG] at …`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_pull (φ : Y ⟶ X) (h : D.KeepsRegular φ) :
     ∃! w : LB.Iso (D.pull φ h).lb (D.lb.pull φ),
@@ -673,13 +673,13 @@ theorem existsUnique_iso_pull (φ : Y ⟶ X) (h : D.KeepsRegular φ) :
     exact (congrArg (Associated _) (resG_resG _ _ _)).mpr this
 
 /- English proof (translation)
-The claim follows from `(D.existsUnique_iso_pull φ h).exists.imp fun _ hw => hw.1`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull (φ : Y ⟶ X) (h : D.KeepsRegular φ) : LBIso (D.pull φ h).lb (D.lb.pull φ) :=
   (D.existsUnique_iso_pull φ h).exists.imp fun _ hw => hw.1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem keepsRegular_comp_iff (φ : Y ⟶ X) (h : D.KeepsRegular φ) (ψ : Z ⟶ Y) :
     D.KeepsRegular (ψ ≫ φ) ↔ (D.pull φ h).KeepsRegular ψ := Iff.rfl
@@ -717,7 +717,7 @@ def add : EffCartierData X where
     exact h₁.mul_mul h₂
 
 /- English proof (translation)
-Use `(map_mul (resG X h) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[resG_resG, resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_add_f (i : D.ι) (j : D'.ι) {W : X.Opens} (h : W ≤ D.U i ⊓ D'.U j) :
     resG X h ((D.add D').f (i, j)) =
@@ -726,9 +726,9 @@ theorem resG_add_f (i : D.ι) (j : D'.ι) {W : X.Opens} (h : W ≤ D.U i ⊓ D'.
   rw [resG_resG, resG_resG]
 
 /- English proof (translation)
-Use `((D.add D').eq_idealSheaf fun x => ?_).symm` and prove the remaining obligations. Take `⟨i, hi⟩` from `D.exists_mem x`. Take `⟨j, hj⟩` from `D'.exists_mem x`. Take `⟨W, hxW, hW⟩` from `exists_affine_le (V := D.U i ⊓ D'.U j) ⟨hi, hj⟩`. Use `⟨W, (i, j), hW, hxW, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `D.idealSheaf.ideal W * D'.idealSheaf.ideal W = _`. Rewrite using `[D.ideal_idealSheaf W i (hW.trans inf_le_left), D'.ideal_idealSheaf W j (hW.trans inf_le_right), Ideal.span_singleton_mul_span_singleton]`. Conclude with `congrArg (fun a => Ideal.span {a}) (D.resG_add_f D' i j hW).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_add : (D.add D').idealSheaf = D.idealSheaf * D'.idealSheaf := by
   refine ((D.add D').eq_idealSheaf fun x => ?_).symm
@@ -742,7 +742,7 @@ theorem idealSheaf_add : (D.add D').idealSheaf = D.idealSheaf * D'.idealSheaf :=
   exact congrArg (fun a => Ideal.span {a}) (D.resG_add_f D' i j hW).symm
 
 /- English proof (translation)
-Use `Units.ext ((D.add D').eq_trans_on p q hp hq ?_).symm` and prove the remaining obligations. Use `(D.resG_add_f D' p.1 p.2 hp).trans (Eq.trans ?_ (congrArg _ (D.resG_add_f D' q.1 q.2 hq)).symm)` and prove the remaining obligations. Rewrite using `[D.trans_spec_on p.1 q.1 _ (hq.trans inf_le_left), D'.trans_spec_on p.2 q.2 _ (hq.trans inf_le_right), mul_mul_mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_trans_add (p q : D.ι × D'.ι) {W : X.Opens} (hp : W ≤ D.U p.1 ⊓ D'.U p.2)
     (hq : W ≤ D.U q.1 ⊓ D'.U q.2) :
@@ -764,7 +764,7 @@ def addGen : LB.Gen (LB.div (LB.div (D.add D').lb D.lb) D'.lb) where
         (D'.trans p.1.1.2 p.2) : Γ(X, D.U p.1.1.1 ⊓ D'.U p.1.1.2 ⊓ D.U p.1.2 ⊓ D'.U p.2)ˣ)
 
 /- English proof (translation)
-Use `(map_mul (res h) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[LB.res_res, LB.res_res]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_addGen (i j : D.ι) (i' j' : D'.ι) {W : X.Opens}
     (h : W ≤ D.U i ⊓ D'.U i' ⊓ D.U j ⊓ D'.U j') :
@@ -777,7 +777,7 @@ theorem res_addGen (i j : D.ι) (i' j' : D'.ι) {W : X.Opens}
   rw [LB.res_res, LB.res_res]
 
 /- English proof (translation)
-Use `(D.resG_add_f D' i i' _).trans ?_` and prove the remaining obligations. Rewrite using `[res_addGen, D.trans_spec_on i j _ (h.trans (inf_le_left.trans inf_le_right)), D'.trans_spec_on i' j' _ (h.trans inf_le_right), mul_mul_mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem addGen_canonical (i j : D.ι) (i' j' : D'.ι) {W : X.Opens}
     (h : W ≤ D.U i ⊓ D'.U i' ⊓ D.U j ⊓ D'.U j') :
@@ -791,11 +791,11 @@ theorem addGen_canonical (i j : D.ι) (i' j' : D'.ι) {W : X.Opens}
   rfl
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨i, j⟩, k⟩ ⟨⟨i', j'⟩, k'⟩`. Establish `key : ∀ {W : X.Opens} (h : W ≤ N.U i ⊓ L.U j ⊓ M.U k) (h' : W ≤ N.U i' ⊓ L.U j' ⊓ M.U k'), res h (w.s ((i, j), k)) = res (le_inf (h.trans (inf_le_left.trans inf_le_left)) (h'.trans (inf_le_left.trans inf_le_left))) (N.g i i') * (res (le_inf (h.trans (inf_le_left.trans inf_le_righ …`. Introduce `W h h'`. Rewrite using `[mul_right_comm, mul_right_comm _ _⁻¹, eq_mul_inv_iff_mul_eq, eq_mul_inv_iff_mul_eq]`. Use `Units.ext ((((ha j').resG (h'.trans (inf_le_left.trans inf_le_right))).mul ((hb k').resG (h'.trans inf_le_right))).mul_right_cancel ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁` using `H i j k h`. Establish `e₂` using `H i' j' k' h'`. Rewrite `e₁` using `[sec_compat c i i' _ (h'.trans (inf_le_left.trans inf_le_left)), e₂, sec_compat a j j' _ (h'.trans (inf_le_left.trans inf_le_right)), sec_compat b k k' _ (h'.trans inf_le_right)]`. Simplify using `only [Units.val_mul, val_res] at e₁ ⊢`. Take the linear combination `-e₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `(key inf_le_left inf_le_right).trans (congrArg (· * _) (congrArg (· * _) ?_))` and prove the remaining obligations. Conclude with `(LB.res_dg N L (i, j) (i', j') _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGen_of_mul {N L M : LB X} {a : L.Sec} {b : M.Sec} {c : N.Sec} (ha : IsRegularSec a)
     (hb : IsRegularSec b) (w : LB.Gen (LB.div (LB.div N L) M))
@@ -828,19 +828,19 @@ theorem isGen_of_mul {N L M : LB X} {a : L.Sec} {b : M.Sec} {c : N.Sec} (ha : Is
   exact (LB.res_dg N L (i, j) (i', j') _).symm
 
 /- English proof (translation)
-The claim follows from `isGen_of_mul (c := (D.add D').canonical) D.isRegularSec_canonical D'.isRegularSec_canonical _ fun i j j' _ h => D.addGen_canonical D' i.1 j i.2 j' h`.
+A detailed English derivation is pending.
 -/
 theorem isGen_addGen : (D.addGen D').IsGen :=
   isGen_of_mul (c := (D.add D').canonical) D.isRegularSec_canonical D'.isRegularSec_canonical _
     fun i j j' _ h => D.addGen_canonical D' i.1 j i.2 j' h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.addGen D', D.isGen_addGen D'⟩`.
+Supply the required witnesses or components.
 -/
 theorem lbIso_add : LBIso D'.lb (LB.div (D.add D').lb D.lb) := ⟨D.addGen D', D.isGen_addGen D'⟩
 
 /- English proof (translation)
-The claim follows from `(map_mul (φ.app (D.U p.1 ⊓ D'.U p.2)).hom _ _).trans (congrArg₂ (· * ·) (app_resG φ _ _) (app_resG φ _ _))`.
+A detailed English derivation is pending.
 -/
 theorem app_add_f (φ : Y ⟶ X) (p : D.ι × D'.ι) :
     (φ.app ((D.add D').U p)).hom ((D.add D').f p) =
@@ -850,14 +850,14 @@ theorem app_add_f (φ : Y ⟶ X) (p : D.ι × D'.ι) :
     (congrArg₂ (· * ·) (app_resG φ _ _) (app_resG φ _ _))
 
 /- English proof (translation)
-Introduce `p` and use `(congrArg IsRegularFn (D.app_add_f D' φ p)).mpr (((h p.1).resG _).mul ((h' p.2).resG _))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem KeepsRegular.add {D D' : EffCartierData X} {φ : Y ⟶ X} (h : D.KeepsRegular φ)
     (h' : D'.KeepsRegular φ) : (D.add D').KeepsRegular φ := fun p =>
   (congrArg IsRegularFn (D.app_add_f D' φ p)).mpr (((h p.1).resG _).mul ((h' p.2).resG _))
 
 /- English proof (translation)
-Establish `key : ∀ (A : EffCartierData Y) (f : ∀ i, Γ(Y, A.U i)) (r) (a), f = A.f → EffCartierData.mk A.ι A.U f A.cover r a = A`. Introduce and unpack `A f r a rfl`. Both sides reduce to the same expression. Conclude with `key ((D.pull φ h).add (D'.pull φ h')) _ _ _ (funext (D.app_add_f D' φ))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pull_add (φ : Y ⟶ X) (h : D.KeepsRegular φ) (h' : D'.KeepsRegular φ) :
     (D.add D').pull φ (h.add h') = (D.pull φ h).add (D'.pull φ h') := by
@@ -878,9 +878,9 @@ def nsmul (n : ℕ) : EffCartierData X where
     exact (D.assoc i j).pow_pow
 
 /- English proof (translation)
-Use `((D.nsmul n).eq_idealSheaf fun x => ?_).symm` and prove the remaining obligations. Take `⟨i, hi⟩` from `D.exists_mem x`. Take `⟨W, hxW, hW⟩` from `exists_affine_le hi`. Use `⟨W, i, hW, hxW, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.idealSheaf.ideal W ^ n = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[D.ideal_idealSheaf W i hW, Ideal.span_singleton_pow, ← map_pow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idealSheaf_nsmul (n : ℕ) : (D.nsmul n).idealSheaf = D.idealSheaf ^ n := by
   refine ((D.nsmul n).eq_idealSheaf fun x => ?_).symm
@@ -892,7 +892,7 @@ theorem idealSheaf_nsmul (n : ℕ) : (D.nsmul n).idealSheaf = D.idealSheaf ^ n :
   rfl
 
 /- English proof (translation)
-The claim follows from `existsUnique_secMaps (D.nsmul n).regular fun p q => by have := ((D.nsmul n).assoc q (p ⟨⟩)).map (resG X (le_inf inf_le_right (inf_le_left.trans (lbPow_U D.lb n p).le) : (lbPow D.lb n).U p ⊓ (D.nsmul n).U q ≤ (D.nsmul n).U q ⊓ (D.nsmul n).U (p ⟨⟩))) rw [resG_resG, resG_resG] at th …`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_iso_nsmul (n : ℕ) :
     ∃! w : LB.Iso (D.nsmul n).lb (lbPow D.lb n),
@@ -906,13 +906,13 @@ theorem existsUnique_iso_nsmul (n : ℕ) :
     exact (congrArg _ (map_pow (resG X (lbPow_U D.lb n p).le) _ n).symm).trans (resG_resG _ _ _)
 
 /- English proof (translation)
-The claim follows from `(D.existsUnique_iso_nsmul n).exists.imp fun _ hw => hw.1`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_nsmul (n : ℕ) : LBIso (D.nsmul n).lb (lbPow D.lb n) :=
   (D.existsUnique_iso_nsmul n).exists.imp fun _ hw => hw.1
 
 /- English proof (translation)
-Use extensionality with `W : 2`. Rewrite using `[(principal a ha).ideal_idealSheaf W ⟨⟩ le_top, Scheme.IdealSheafData.ofIdealTop_ideal, Ideal.map_span, Set.image_singleton]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem idealSheaf_principal (a : Γ(X, ⊤)) (ha : IsRegularFn a) :
     (principal a ha).idealSheaf = Scheme.IdealSheafData.ofIdealTop (Ideal.span {a}) := by
@@ -922,7 +922,7 @@ theorem idealSheaf_principal (a : Γ(X, ⊤)) (ha : IsRegularFn a) :
   rfl
 
 /- English proof (translation)
-Establish `: (principal a ha).trans = fun _ _ => 1` using `funext fun i => funext fun j => ((principal a ha).eq_trans i j (u := 1) (one_mul _).symm).symm`. Conclude with `congrArg (LB.mk PUnit fun _ => ⊤) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lb_principal (a : Γ(X, ⊤)) (ha : IsRegularFn a) : (principal a ha).lb = LB.triv X := by
   have : (principal a ha).trans = fun _ _ => 1 := funext fun i => funext fun j =>
@@ -930,7 +930,7 @@ theorem lb_principal (a : Γ(X, ⊤)) (ha : IsRegularFn a) : (principal a ha).lb
   exact congrArg (LB.mk PUnit fun _ => ⊤) this
 
 /- English proof (translation)
-Use extensionality with `W : 2`. Rewrite using `[(zero X).ideal_idealSheaf W ⟨⟩ le_top]`. Conclude with `Ideal.span_singleton_eq_top.2 (isUnit_one.map _)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idealSheaf_zero : (zero X).idealSheaf = ⊤ := by
   ext W : 2
@@ -945,7 +945,7 @@ def poleSecs (n : ℕ) (V : X.Opens) [Nonempty V] : Submodule Γ(X, V) X.functio
   ratSecs (D.nsmul n).canonical V
 
 /- English proof (translation)
-Use `forall₂_congr fun i _ => exists_congr fun a => iff_of_eq (congrArg (fun r => _ = r * h) ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (map_pow (resG X _) (D.f i) n)).trans (map_pow _ _ n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_poleSecs_iff (n : ℕ) (V : X.Opens) [Nonempty V] (h : X.functionField) :
     h ∈ D.poleSecs n V ↔ ∀ (i : D.ι) [Nonempty (V ⊓ D.U i : X.Opens)], ∃ a : Γ(X, V ⊓ D.U i),
@@ -955,7 +955,7 @@ theorem mem_poleSecs_iff (n : ℕ) (V : X.Opens) [Nonempty V] (h : X.functionFie
   exact (congrArg _ (map_pow (resG X _) (D.f i) n)).trans (map_pow _ _ n)
 
 /- English proof (translation)
-Use `(mem_ratSecs_iff_stalk _ V h).trans (forall₄_congr fun i x _ hx => iff_of_eq (congrArg (fun r => r * h ∈ Set.range (algebraMap (X.presheaf.stalk x) X.functionField)) ?_))` and prove the remaining obligations. Conclude with `(congrArg _ (map_pow (X.presheaf.germ _ x hx).hom (D.f i) n)).trans (map_pow _ _ n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_poleSecs_iff_stalk (n : ℕ) (V : X.Opens) [Nonempty V] (h : X.functionField) :
     h ∈ D.poleSecs n V ↔ ∀ (i : D.ι) (x : X) (_ : x ∈ V) (hx : x ∈ D.U i),
@@ -966,7 +966,7 @@ theorem mem_poleSecs_iff_stalk (n : ℕ) (V : X.Opens) [Nonempty V] (h : X.funct
   exact (congrArg _ (map_pow (X.presheaf.germ _ x hx).hom (D.f i) n)).trans (map_pow _ _ n)
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `((D.nsmul n).idealSheaf_eq_iff (D'.nsmul n)).1 (by rw [idealSheaf_nsmul, idealSheaf_nsmul, h])`. Conclude with `hw.ratSecs_eq (D.nsmul n).isLB_lb (D'.nsmul n).isLB_lb V`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem poleSecs_congr (h : D.idealSheaf = D'.idealSheaf) (n : ℕ) (V : X.Opens) [Nonempty V] :
     D.poleSecs n V = D'.poleSecs n V := by
@@ -975,9 +975,9 @@ theorem poleSecs_congr (h : D.idealSheaf = D'.idealSheaf) (n : ℕ) (V : X.Opens
   exact hw.ratSecs_eq (D.nsmul n).isLB_lb (D'.nsmul n).isLB_lb V
 
 /- English proof (translation)
-Rewrite using `[mem_poleSecs_iff_stalk]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `exists_germK_eq_of_stalk V h fun x hx => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `D.exists_mem x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `using H i x hx hi`. Introduce and unpack `⟨a, rfl⟩ i x hx hi`. Rewrite using `[pow_zero, one_mul]`. Conclude with `⟨_, Scheme.algebraMap_germ_eq_germToFunctionField X hx a⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_poleSecs_zero_iff (V : X.Opens) [Nonempty V] (h : X.functionField) :
     h ∈ D.poleSecs 0 V ↔ ∃ a : Γ(X, V), (X.germToFunctionField V).hom a = h := by
@@ -992,7 +992,7 @@ theorem mem_poleSecs_zero_iff (V : X.Opens) [Nonempty V] (h : X.functionField) :
     exact ⟨_, Scheme.algebraMap_germ_eq_germToFunctionField X hx a⟩
 
 /- English proof (translation)
-Use `monotone_nat_of_le_succ fun n h hh => ?_` and prove the remaining obligations. Rewrite `hh`, the goal using `[mem_poleSecs_iff_stalk]`. Introduce `i x hx hi`. Take `⟨r, hr⟩` from `hh i x hx hi`. Conclude with `⟨(X.presheaf.germ _ x hi).hom (D.f i) * r, by rw [map_mul, hr]; ring⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem poleSecs_mono (V : X.Opens) [Nonempty V] : Monotone fun n => D.poleSecs n V := by
   refine monotone_nat_of_le_succ fun n h hh => ?_
@@ -1002,7 +1002,7 @@ theorem poleSecs_mono (V : X.Opens) [Nonempty V] : Monotone fun n => D.poleSecs 
   exact ⟨(X.presheaf.germ _ x hi).hom (D.f i) * r, by rw [map_mul, hr]; ring⟩
 
 /- English proof (translation)
-Rewrite `hh`, `hh'`, the goal using `[mem_poleSecs_iff_stalk]`. Introduce `i x hx hi`. Take `⟨r, hr⟩` from `hh i x hx hi`. Take `⟨r', hr'⟩` from `hh' i x hx hi`. Conclude with `⟨r * r', by rw [map_mul, hr, hr']; ring⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mul_mem_poleSecs {m n : ℕ} {V : X.Opens} [Nonempty V] {h h' : X.functionField}
     (hh : h ∈ D.poleSecs m V) (hh' : h' ∈ D.poleSecs n V) : h * h' ∈ D.poleSecs (m + n) V := by
@@ -1013,7 +1013,7 @@ theorem mul_mem_poleSecs {m n : ℕ} {V : X.Opens} [Nonempty V] {h h' : X.functi
   exact ⟨r * r', by rw [map_mul, hr, hr']; ring⟩
 
 /- English proof (translation)
-The claim follows from `bijOn_ratOf _ (D.nsmul n).isRegularSec_canonical V`.
+A detailed English derivation is pending.
 -/
 theorem bijOn_poleSecs_nsmul (n : ℕ) (V : X.Opens) [Nonempty V] :
     Set.BijOn (ratOf (D.nsmul n).isLB_lb (D.nsmul n).canonical V) (secOn (D.nsmul n).lb V)
@@ -1021,7 +1021,7 @@ theorem bijOn_poleSecs_nsmul (n : ℕ) (V : X.Opens) [Nonempty V] :
   bijOn_ratOf _ (D.nsmul n).isRegularSec_canonical V
 
 /- English proof (translation)
-Use `(@germK_eq_mul_ratOf _ _ _ (D.nsmul n).isLB_lb _ (D.nsmul n).isRegularSec_canonical V _ _ ht i hi).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (map_pow (resG X _) (D.f i) n)).trans (map_pow _ _ n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem germK_eq_pow_mul_ratOf (n : ℕ) (V : X.Opens) [Nonempty V]
     {t : ∀ i, Γ(X, V ⊓ (D.nsmul n).lb.U i)} (ht : t ∈ secOn (D.nsmul n).lb V) (i : D.ι)
@@ -1034,13 +1034,13 @@ theorem germK_eq_pow_mul_ratOf (n : ℕ) (V : X.Opens) [Nonempty V]
   exact (congrArg _ (map_pow (resG X _) (D.f i) n)).trans (map_pow _ _ n)
 
 /- English proof (translation)
-The claim follows from `LB.isLB_linComb D.isLB_lb _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLB_lbPow {X : Scheme.{0}} (D : EffCartierData X) (n : ℕ) : (lbPow D.lb n).IsLB :=
   LB.isLB_linComb D.isLB_lb _ _
 
 /- English proof (translation)
-Take `⟨w, ⟨-, hw⟩, -⟩` from `D.existsUnique_iso_nsmul n`. Rewrite using `[poleSecs, hw.ratSecs_eq (D.nsmul n).isLB_lb (D.isLB_lbPow n) V]`. Conclude with `bijOn_ratOf _ (D.isRegularSec_canonical.secPow n) V`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijOn_poleSecs_lbPow (n : ℕ) (V : X.Opens) [Nonempty V] :
     Set.BijOn (ratOf (D.isLB_lbPow n) (secPow D.canonical n) V) (secOn (lbPow D.lb n) V)
@@ -1050,7 +1050,7 @@ theorem bijOn_poleSecs_lbPow (n : ℕ) (V : X.Opens) [Nonempty V] :
   exact bijOn_ratOf _ (D.isRegularSec_canonical.secPow n) V
 
 /- English proof (translation)
-Take `⟨w, -, hw⟩` from `((D.nsmul 1).idealSheaf_eq_iff D).1 (by rw [idealSheaf_nsmul, pow_one])`. Rewrite using `[poleSecs, hw.ratSecs_eq (D.nsmul 1).isLB_lb D.isLB_lb V]`. Conclude with `bijOn_ratOf _ D.isRegularSec_canonical V`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijOn_poleSecs_one (V : X.Opens) [Nonempty V] :
     Set.BijOn (ratOf D.isLB_lb D.canonical V) (secOn D.lb V) (D.poleSecs 1 V) := by
@@ -1059,7 +1059,7 @@ theorem bijOn_poleSecs_one (V : X.Opens) [Nonempty V] :
   exact bijOn_ratOf _ D.isRegularSec_canonical V
 
 /- English proof (translation)
-Use `(@germK_eq_mul_ratOf _ _ _ (D.isLB_lbPow n) _ (D.isRegularSec_canonical.secPow n) V _ _ ht j hj).trans (congrArg (· * _) ?_)` and prove the remaining obligations. Conclude with `(congrArg _ ((map_pow (resG X _) _ n).trans (congrArg (· ^ n) (resG_resG _ _ _)))).trans (map_pow _ _ n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem germK_eq_pow_mul_ratOf_lbPow (n : ℕ) (V : X.Opens) [Nonempty V]
     {t : ∀ j, Γ(X, V ⊓ (lbPow D.lb n).U j)} (ht : t ∈ secOn (lbPow D.lb n) V) (j : PUnit → D.ι)
@@ -1074,7 +1074,7 @@ theorem germK_eq_pow_mul_ratOf_lbPow (n : ℕ) (V : X.Opens) [Nonempty V]
     (map_pow _ _ n)
 
 /- English proof (translation)
-The claim follows from `(D.bijOn_poleSecs_lbPow n ⊤).comp (bijOn_secOnOf_top _)`.
+A detailed English derivation is pending.
 -/
 theorem bijOn_poleSecs_global (n : ℕ) :
     Set.BijOn (fun t => ratOf (D.isLB_lbPow n) (secPow D.canonical n) ⊤ (secOnOf t ⊤)) Set.univ
@@ -1082,18 +1082,18 @@ theorem bijOn_poleSecs_global (n : ℕ) :
   (D.bijOn_poleSecs_lbPow n ⊤).comp (bijOn_secOnOf_top _)
 
 /- English proof (translation)
-The claim follows from `ratOf_secOnOf_self _ (D.isRegularSec_canonical.secPow n) V`.
+A detailed English derivation is pending.
 -/
 theorem ratOf_secPow_canonical (n : ℕ) (V : X.Opens) [Nonempty V] :
     ratOf (D.isLB_lbPow n) (secPow D.canonical n) V (secOnOf (secPow D.canonical n) V) = 1 :=
   ratOf_secOnOf_self _ (D.isRegularSec_canonical.secPow n) V
 
 /- English proof (translation)
-Establish `e : ∀ x (hx : x ∈ V), algebraMap (X.presheaf.stalk x) X.functionField ((X.presheaf.germ ⊤ x trivial).hom a) = (X.germToFunctionField V).hom (resG X le_top a)` using `fun x hx => (congrArg _ (germ_resG le_top x hx a).symm).trans (Scheme.algebraMap_germ_eq_germToFunctionField X hx _)`. Rewrite using `[mem_poleSecs_iff_stalk]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `exists_germK_eq_of_stalk V _ fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← e x hx]`. Conclude with `H ⟨⟩ x hx trivial`. Introduce and unpack `⟨b, hb⟩ i x hx hi`. Use `⟨_, (Scheme.algebraMap_germ_eq_germToFunctionField X hx b).trans (hb.trans ?_)⟩` and prove the remaining obligations. Rewrite using `[← e x hx]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_poleSecs_principal_iff (a : Γ(X, ⊤)) (ha : IsRegularFn a) (n : ℕ) (V : X.Opens)
     [Nonempty V] (h : X.functionField) :
@@ -1117,7 +1117,7 @@ theorem mem_poleSecs_principal_iff (a : Γ(X, ⊤)) (ha : IsRegularFn a) (n : �
 end Rational
 
 /- English proof (translation)
-Use `((ofElement r hr).mem_support_iff ⟨⟩ (x := p) trivial).trans ?_` and prove the remaining obligations. Establish `e` using `basicOpen_eq_of_affine (R := CommRingCat.of R) r`. Conclude with `(not_congr (iff_of_eq (congrArg (fun W => (p : Sp R) ∈ W) e))).trans not_not`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_support_ofElement_iff {R : Type} [CommRing R] (r : R) (hr : r ∈ nonZeroDivisors R)
     (p : PrimeSpectrum R) :
@@ -1127,31 +1127,31 @@ theorem mem_support_ofElement_iff {R : Type} [CommRing R] (r : R) (hr : r ∈ no
   exact (not_congr (iff_of_eq (congrArg (fun W => (p : Sp R) ∈ W) e))).trans not_not
 
 /- English proof (translation)
-The claim follows from `(mem_support_ofElement_iff _ _ _).2 (Ideal.mem_span_singleton_self _)`.
+A detailed English derivation is pending.
 -/
 example : (⟨Ideal.span {Polynomial.X}, (Ideal.span_singleton_prime Polynomial.X_ne_zero).2
     Polynomial.prime_X⟩ : PrimeSpectrum (Polynomial ℤ)) ∈ lineOrigin.idealSheaf.support :=
   (mem_support_ofElement_iff _ _ _).2 (Ideal.mem_span_singleton_self _)
 
 /- English proof (translation)
-Introduce `h` and use `Polynomial.X_ne_zero ((mem_support_ofElement_iff _ _ _).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (⊥ : PrimeSpectrum (Polynomial ℤ)) ∉ lineOrigin.idealSheaf.support :=
   fun h => Polynomial.X_ne_zero ((mem_support_ofElement_iff _ _ _).1 h)
 
 /- English proof (translation)
-The claim follows from `((principalTwist a ha u).eq_trans true false (map_mul (resG X _) _ _)).symm`.
+A detailed English derivation is pending.
 -/
 example (a : Γ(X, ⊤)) (ha : IsRegularFn a) (u : Γ(X, ⊤)ˣ) :
     (principalTwist a ha u).lb.g true false = res (inf_le_left : (⊤ : X.Opens) ⊓ ⊤ ≤ ⊤) u :=
   ((principalTwist a ha u).eq_trans true false (map_mul (resG X _) _ _)).symm
 
 /- English proof (translation)
-Establish `h0 : t ≠ 0` using `ht ▸ nonZeroDivisors.ne_zero (isRegularFn_iff_germ.1 (lineOrigin.regular ⟨⟩) _ trivial)`. Establish `hh : t * t⁻¹ = 1` using `mul_inv_cancel₀ h0`. Prove the components needed by the constructor for the conclusion. Use `(mem_poleSecs_principal_iff _ _ 1 ⊤ _).2 ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, pow_one, resG_self, ← ht, hh]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `H`. Take `⟨b, hb⟩` from `(mem_poleSecs_zero_iff _ ⊤ _).1 H`. Rewrite `hh` using `[← hb, ht, ← map_mul, ← map_one ((Sp (Polynomial ℤ)).germToFunctionField ⊤).hom]`. Establish `e` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of (Polynomial ℤ))).hom.hom ((Sp (Polynomial ℤ)).germToFunctionField_injective ⊤ hh)`. Rewrite `e` using `[map_mul, map_one, Iso.inv_hom_id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Polynomial.not_isUnit_X (IsUnit.of_mul_eq_one _ e)`.
+A detailed English derivation is pending.
 -/
 example (t : (Sp (Polynomial ℤ)).functionField)
     (ht : t = ((Sp (Polynomial ℤ)).germToFunctionField ⊤).hom
@@ -1172,7 +1172,7 @@ example (t : (Sp (Polynomial ℤ)).functionField)
     exact Polynomial.not_isUnit_X (IsUnit.of_mul_eq_one _ e)
 
 /- English proof (translation)
-Introduce `h` and use `by have hd := (lineOrigin.pull _ h).dense_nonzeroLocus_canonical have : Nonempty (Sp ℤ) := ⟨(⊥ : PrimeSpectrum ℤ)⟩ obtain ⟨p, hp⟩ := hd.nonempty rw [coe_nonzeroLocus_canonical, idealSheaf_pull, Scheme.IdealSheafData.support_comap] at hp refine hp ((mem_support_ofElement_iff _ _ _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ lineOrigin.KeepsRegular (spMap (Polynomial.evalRingHom (0 : ℤ))) := fun h => by
   have hd := (lineOrigin.pull _ h).dense_nonzeroLocus_canonical

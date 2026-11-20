@@ -11,13 +11,13 @@ namespace P_spTwBasic
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.SmGL.isSmoothChar_of_isUnram (GlobalTheory.SmGL.isUnram_absPow k s)).detChar`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothChar_detAbsPow (N : ℕ) (s : ℂ) : IsSmoothChar (detChar (Fin N) (absPow k s)) :=
   (GlobalTheory.SmGL.isSmoothChar_of_isUnram (GlobalTheory.SmGL.isUnram_absPow k s)).detChar
 
 /- English proof (translation)
-Take `⟨v, hv0, hv⟩` from `h`. Use `⟨v, hv0, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.twist_apply, GlobalTheory.LocGL.detChar_of_mem_KO (GlobalTheory.SmGL.isUnram_absPow k s) hg, hv g hg, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hasDetVec_twist_absPow {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin N) k) V) (η : kˣ →* ℂˣ) (s : ℂ) (h : HasDetVec ρ η) :
@@ -30,7 +30,7 @@ theorem hasDetVec_twist_absPow {N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ
 end P_spTwBasic
 
 /- English proof (translation)
-Introduce `Y _ _ τ a hs hi hd`. Unfold `twD`. Conclude with `⟨GlobalTheory.SmGL.isSmooth_twist hs (P_spTwBasic.isSmoothChar_detAbsPow _ _), GlobalTheory.LocGL.isIrreducible_twist hi _, P_spTwBasic.hasDetVec_twist_absPow _ _ _ hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem step_spTwBasic {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : G.NonzeroBasicTwistOfSpecialForm := by

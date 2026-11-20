@@ -96,7 +96,7 @@ open NumberField Formalism.GaloisCohomology UpperTheory.Top
 namespace UpperTheory.V.HV.DescentVanishingReductions
 open UpperTheory.V.Af UpperTheory.V.Published UpperTheory.V.Lit UpperTheory.V.Z.Bc
 /- English proof (translation)
-The claim follows from `{ litN := hN, cohC := _root_.UpperTheory.V.Af.clozelCohC_alt hN, conjC := Z.Coh.clozelConjC, borelC := Z.Coh.borelInjC, galR := _root_.UpperTheory.Gal.SV.galois_rep_exists_totally_real_rank_two_of_base_change hN UpperTheory.ConvolutionTheory.R2.quadBC2 admissibleReal, smoR := str …`.
+A detailed English derivation is pending.
 -/
 theorem published_hypotheses_from_patching_alt (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (desc : Z.Desc.DescWeak) : _root_.UpperTheory.V.Af.HypothesesH' :=
   { litN := hN, cohC := _root_.UpperTheory.V.Af.clozelCohC_alt hN, conjC := Z.Coh.clozelConjC, borelC := Z.Coh.borelInjC,

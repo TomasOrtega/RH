@@ -13,9 +13,9 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `hw`. Use `isTotallyComplex_of_sq_eq_neg hp.pos hx` as an intermediate fact. Take `⟨⟨⟨hfin, -, hun⟩, -⟩, -⟩` from `GlobalTheory.Laid.hcfj_holds K h2 L₀ ((isIntegersLattice_iff hp.pos h2 hx L₀).mp hL)`. Establish `: NumberField K⟮(latticeCurve L₀).j⟯` using `NumberField.of_module_finite K _`. Establish `hle : ℚ⟮(latticeCurve L₀).j⟯ ≤ (K⟮(latticeCurve L₀).j⟯.toSubfield.toIntermediateField fun q => SubfieldClass.ratCast_mem _ q)` using `IntermediateField.adjoin_simple_le_iff.mpr (IntermediateField.mem_adjoin_simple_self K _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ℚ⟮(latticeCurve L₀).j⟯ →+* K⟮(latticeCurve L₀).j⟯` to `RingHom.codRestrict (algebraMap ℚ⟮(latticeCurve L₀).j⟯ ℂ) K⟮(latticeCurve L₀).j⟯ fun z => hle z.2`. Take `⟨P, hP, hP0, hPp⟩` from `GlobalTheory.T.exists_prime_natCast_mem_pow_of_ringHom' _ _ f w p 3 hw`. Conclude with `GlobalTheory.T.natPrime_not_mem_prime_cube_of_isUnramifiedAt p K K⟮(latticeCurve L₀).j⟯ x P hp h2 hx hP0 (hun P hP0) hPp`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem natCast_notMem_pow_three_of_quadratic (p : ℕ) (K : Type) [Field K] [NumberField K]
     [Algebra K ℂ] (h2 : Module.finrank ℚ K = 2) (x : K) (hx : x ^ 2 = -(p : K))
@@ -38,13 +38,13 @@ theorem natCast_notMem_pow_three_of_quadratic (p : ℕ) (K : Type) [Field K] [Nu
   exact GlobalTheory.T.natPrime_not_mem_prime_cube_of_isUnramifiedAt p K K⟮(latticeCurve L₀).j⟯ x P hp h2 hx hP0 (hun P hP0) hPp
 
 /- English proof (translation)
-Introduce `p L₀ _ w hp hL`. Establish `hint : IsIntegral ℚ (sqrtNegNat p)` using `IsIntegral.of_pow two_pos (by rw [sqrtNegNat_sq]; exact (isIntegral_natCast p).neg)`. Establish `: FiniteDimensional ℚ ℚ⟮sqrtNegNat p⟯` using `IntermediateField.adjoin.finiteDimensional hint`. Establish `: NumberField ℚ⟮sqrtNegNat p⟯` using `NumberField.of_module_finite ℚ _`. Establish `hx : (IntermediateField.AdjoinSimple.gen ℚ (sqrtNegNat p)) ^ 2 = -(p : ℚ⟮sqrtNegNat p⟯)` using `Subtype.ext (by simpa using sqrtNegNat_sq p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isTotallyComplex_of_sq_eq_neg hp.pos hx` as an intermediate fact. Establish `h2 : Module.finrank ℚ ℚ⟮sqrtNegNat p⟯ = 2`. Establish `hle : Module.finrank ℚ ℚ⟮sqrtNegNat p⟯ ≤ 2`. Rewrite using `[IntermediateField.adjoin.finrank hint]`. Establish `hm : (Polynomial.X ^ 2 + Polynomial.C (p : ℚ)).Monic` using `Polynomial.monic_X_pow_add_C _ two_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Polynomial.natDegree_le_of_dvd (minpoly.dvd ℚ (sqrtNegNat p) (p := Polynomial.X ^ 2 + Polynomial.C (p : ℚ)) (by simp [sqrtNegNat_sq])) hm.ne_zero` as an intermediate fact. Rewrite `this` using `[Polynomial.natDegree_X_pow_add_C]`. Then use the resulting hypothesis. Establish `h1` using `IsTotallyComplex.finrank ℚ⟮sqrtNegNat p⟯`. Establish `h3 : 0 < Module.finrank ℚ ℚ⟮sqrtNegNat p⟯` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `natCast_notMem_pow_three_of_quadratic p _ h2 _ hx L₀ w hp hL`.
+A detailed English derivation is pending.
 -/
 theorem natCast_notMem_pow_three_adjoin_j : ∀ (p : ℕ) (L₀ : PeriodPair)
     [NumberField ℚ⟮(latticeCurve L₀).j⟯] (w : HeightOneSpectrum (𝓞 ℚ⟮(latticeCurve L₀).j⟯)),

@@ -22,9 +22,9 @@ open AlgebraicGeometry CategoryTheory Limits NumberField IsDedekindDomain
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c h1`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.allSixLaws.1.secBaseChange`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.allSixLaws.2.1.secTwist`. Establish `hA : AllTest Xo c` using `GlobalTheory.Frames.allTest_of_secBaseChange hB E H Dw l Xo c`. Establish `h : GenFrEx Xo c` using `genFrEx_of hT`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : GenFromTest Xo c h` using `fun Z => hA _ _`. Take `⟨x⟩` from `(GlobalTheory.PeriodExists.typeFn_period_exist E H Dw).2.2 GlobalTheory.closing_of_abelianSchemeLaws h1 l Xo c`. Conclude with `⟨⟨⟨irreducibleComponent x, irreducibleComponent_mem_irreducibleComponents x⟩⟩, CompFin.finite_comp Xo c, h, hg, fun Z => evalAt_one _ _ _ (hg Z), (GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Exist.comp_nonempty_finite_genFr_trdeg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → Nonempty (Comp Xo c) ∧ Finite (Comp Xo c) ∧ ∃ h : GenFrEx Xo c, GenFromTest Xo c h ∧ (∀ Z, evC h Z 1 = 1) ∧ ∀ Z : Comp Xo c, Algebra.trdeg c.F (kap Z) = Dw.dim := by
   intro E _ _ _ H Dw l Xo c h1

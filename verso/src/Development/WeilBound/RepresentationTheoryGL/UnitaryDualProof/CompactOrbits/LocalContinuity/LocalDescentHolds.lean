@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {n : ℕ}
 
 /- English proof (translation)
-Use `continuous_pi fun ij => ?_` and prove the remaining obligations. Use `show Continuous fun x : Matrix (Fin n) (Fin n) k => trace (((Module.finBasis k Z ij.2 : Z) : Matrix (Fin n) (Fin n) k) * x ^ (ij.1 : ℕ))`. Conclude with `(continuous_const.matrix_mul (continuous_pow _)).matrix_trace`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pZ (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) :
     Continuous (pZ Z : Matrix (Fin n) (Fin n) k → _) := by
@@ -23,7 +23,7 @@ theorem continuous_pZ (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) :
   exact (continuous_const.matrix_mul (continuous_pow _)).matrix_trace
 
 /- English proof (translation)
-Establish `: Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a}`. Use extensionality with `x`. Simplify using `[Bz]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul continuous_id) (continuous_id.matrix_mul continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_Bz (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (Bz Z) := by
   have : Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a} := by
@@ -35,11 +35,9 @@ theorem isClosed_Bz (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : IsClosed (Bz
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `ij`. Simplify using `only [pZ]`. Establish `hb` using `hg _ ((Module.finBasis k Z) ij.2).2`. Rewrite using `[Units.conj_pow]`. Use `set b : Matrix (Fin n) (Fin n) k := ((Module.finBasis k Z) ij.2 : Matrix (Fin n) (Fin n) k)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `set y := x ^ (ij.1 : ℕ)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`. Use `_ = ((g.val * b) * y * g⁻¹.val).trace := by rw [hb]`. Use `_ = (g⁻¹.val * (g.val * b * y)).trace := Matrix.trace_mul_comm _ _`.
-
-Use `_ = (b * y).trace := by`. Rewrite using `[← mul_assoc, ← mul_assoc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     (x : Matrix (Fin n) (Fin n) k) : pZ Z (g.val * x * g⁻¹.val) = pZ Z x := by
@@ -58,16 +56,16 @@ theorem pZ_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k}
         simp
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_iff_lemma {X : Type} [TopologicalSpace X] (U : Set X) (F : X → ℂ) :
     F ∈ supportedIn U ↔ (IsLocallyConstant F ∧ HasCompactSupport F) ∧ Function.support F ⊆ U :=
   Iff.rfl
 
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_exists_open _).2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ s`. Conclude with `⟨s, hs.isOpen, hx, fun y hy => by simp [Set.indicator_apply, hx, hy]⟩`. Use `⟨sᶜ, hs.isClosed.isOpen_compl, hx, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : y ∉ s` using `hy`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_apply, hx, hy']`.
+Simplify using the standard rewrite rules.
 -/
 private theorem isLocallyConstant_indicator_one_of_isClopen {X : Type} [TopologicalSpace X] {s : Set X} (hs : IsClopen s) :
     IsLocallyConstant (s.indicator (1 : X → ℂ)) := by
@@ -79,7 +77,7 @@ private theorem isLocallyConstant_indicator_one_of_isClopen {X : Type} [Topologi
     simp [Set.indicator_apply, hx, hy']
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_iff_lemma]`. Take `⟨⟨hlc, hcs⟩, hsub⟩` from `hF`. Conclude with `⟨⟨hlc.mul (isLocallyConstant_indicator_one_of_isClopen hs), hcs.mul_right⟩, (Function.support_mul_subset_left _ _).trans hsub⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mul_indicator_mem_supportedIn_of_isClopen {X : Type} [TopologicalSpace X] {U s : Set X} (hs : IsClopen s)
     {F : X → ℂ} (hF : F ∈ supportedIn U) : F * s.indicator 1 ∈ supportedIn U := by
@@ -88,57 +86,51 @@ private theorem mul_indicator_mem_supportedIn_of_isClopen {X : Type} [Topologica
   exact ⟨⟨hlc.mul (isLocallyConstant_indicator_one_of_isClopen hs), hcs.mul_right⟩, (Function.support_mul_subset_left _ _).trans hsub⟩
 
 /- English proof (translation)
-Unfold `LocStep Kills`. Introduce `m Z hCR ξ hsupp hinv hfib f hf`. Use `haveI : NonarchimedeanRing k := by convert! (ValuativeRel.nonarchimedeanRing k)`. Conclude with `Valuation.toTopologicalSpace_eq _`. Establish `hbasis : TopologicalSpace.IsTopologicalBasis {s : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k) | IsClopen s}` using `loc_compact_Haus_tot_disc_of_zero_dim`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨q, hq_def⟩ : ∃ q : Sp k m → (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), q = fun p => pZ Z p.1` from `⟨_, rfl⟩`. Establish `hq : Continuous q` using `by rw [hq_def]; exact (continuous_pZ Z).comp continuous_fst`. Take `⟨⟨hflc, hfcs⟩, hfsub⟩` from `(mem_iff_lemma _ _).1 hf`. Establish `hfS : f ∈ supportedIn (univ : Set (Sp k m))` using `(mem_iff_lemma _ _).2 ⟨⟨hflc, hfcs⟩, subset_univ _⟩`. Establish `hloc : ∀ y, ∃ O : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), IsOpen O ∧ y ∈ O ∧ ∀ W, IsClopen W → W ⊆ O → ξ (f * (q ⁻¹' W).indicator 1) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Take `⟨A, hA⟩ : ∃ A : Set (Sp k m → ℂ), A = {F | (∃ g ∈ Gz Z, ∃ h ∈ supportedIn (univ : Set (Sp k m)), F = h - fun p => h (act g p)) ∨ (F ∈ supportedIn (univ : Set (Sp k m)) ∧ ∀ p ∈ (Bz Z ∩ pZ Z ⁻¹' {y}) ×ˢ (univ : Set (Fin m → k)), F p = 0)}` from `⟨_, rfl⟩`. Establish `hfJ : f ∈ Submodule.span ℂ A`. Break down `hfib y with ⟨c, hcZ, hc⟩ | hB` into its components or cases. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA, Set.mem_setOf_eq]`. Use `Or.inr ⟨hfS, fun p hp => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hpU` using `hfsub (Function.mem_support.mpr hne)`. Establish `hZN : p.1 ∈ ZN Z`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [ZN, Set.mem_setOf_eq]`. Conclude with `⟨c, hcZ, hc p.1 hp.1.1 hp.1.2⟩`. Conclude with `(show p.1 ∉ ZN Z from hpU.2) hZN`. Assume the negation of the conclusion as `hnot`. Take `⟨l, hlf, hlJ⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hnot inferInstance`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : ∀ F ∈ Submodule.span ℂ A, l F = 0`. Introduce `F hF`. Establish `h1` using `Submodule.mem_map_of_mem (f := l) hF`. Rewrite `h1` using `[hlJ]`. Conclude with `(Submodule.mem_bot ℂ).1 h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hlf` to reduce the goal to its premises. Use `hB l ?_ ?_ f ((mem_iff_lemma _ _).2 ⟨⟨hflc, hfcs⟩, fun p hp => (hfsub hp).1⟩)` and prove the remaining obligations. Introduce `F hF hvan`. Conclude with `hz F (Submodule.subset_span (by rw [hA, Set.mem_setOf_eq]; exact Or.inr ⟨hF, hvan⟩))`. Introduce `g hg F hF`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `h1` using `hz _ (Submodule.subset_span (by rw [hA, Set.mem_setOf_eq]; exact Or.inl ⟨g, hg, F, hF, rfl⟩))`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Conclude with `h1.symm`. Establish `hP : ∀ F ∈ Submodule.span ℂ A, ∃ O : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), IsOpen O ∧ y ∈ O ∧ ∀ W, IsClopen W → W ⊆ O → ξ (F * (q ⁻¹' W).indicator 1) = 0`. Introduce `F hF`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Rewrite `hF` using `[hA, Set.mem_setOf_eq]`. Break down `hF with ⟨g, hg, h, hh, rfl⟩ | ⟨hrS, hvan⟩` into its components or cases. Use `⟨univ, isOpen_univ, mem_univ _, fun W hW _ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hqa : ∀ p, q (act g p) = q p`. Introduce `p`. Rewrite using `[hq_def]`. Conclude with `pZ_conj Z hg p.1`. Use `set φ : Sp k m → ℂ := (q ⁻¹' W).indicator 1 with hφ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hφa : ∀ p, φ (act g p) = φ p`. Introduce `p`. Simplify using `only [hφ, Set.indicator_apply, Set.mem_preimage, hqa, Pi.one_apply]`. Establish `hsplit : (h - fun p => h (act g p)) * φ = h * φ - fun p => (h * φ) (act g p)`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.mul_apply, Pi.sub_apply, hφa]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit, map_sub, hinv g hg _ (mul_indicator_mem_supportedIn_of_isClopen (hW.preimage hq) hh), sub_self]`. Take `⟨⟨hrlc, hrcs⟩, -⟩` from `(mem_iff_lemma _ _).1 hrS`. Establish `hsuppc : IsClosed (Function.support F)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(hrlc.isOpen_fiber 0).isClosed_compl`. Establish `h2 : Function.support F = {x | F x = 0}ᶜ` using `by ext x; simp`. Rewrite using `[h2]`. Conclude with `h1`. Establish `hKc : IsCompact (Function.support F ∩ (Bz Z ×ˢ (univ : Set (Fin m → k))))` using `IsCompact.of_isClosed_subset hrcs (hsuppc.inter ((isClosed_Bz Z).prod isClosed_univ)) (inter_subset_left.trans (subset_tsupport F))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hKq` using `(hKc.image hq).isClosed`. Use `⟨(q '' (Function.support F ∩ (Bz Z ×ˢ (univ : Set (Fin m → k)))))ᶜ, hKq.isOpen_compl, ?_, fun W hW hWO => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p, ⟨hpF, hpB⟩, hpy⟩`. Use `(Function.mem_support.mp hpF) (hvan p ⟨⟨hpB.1, ?_⟩, mem_univ _⟩)` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, Set.mem_singleton_iff, ← hpy, hq_def]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `hsupp _ (mul_indicator_mem_supportedIn_of_isClopen (hW.preimage hq) hrS) (fun p hp => ?_)` and prove the remaining obligations. Distinguish the cases in `hpW : q p ∈ W`. Establish `h0 : F p = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hWO hpW ⟨p, ⟨hne, hp⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[h0]`. Simplify using `[Set.indicator_apply, hpW]`. Consider the case `zero => exact ⟨univ, isOpen_univ, mem_univ _, fun W _ _ => by simp⟩`. Consider the case `add F F' _ _ hF hF'`. Take `⟨O, hO, hyO, hOW⟩` from `hF`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨O', hO', hyO', hOW'⟩` from `hF'`. Conclude with `⟨O ∩ O', hO.inter hO', ⟨hyO, hyO'⟩, fun W hW hWO => by`. Rewrite using `[add_mul, map_add, hOW W hW (hWO.trans inter_subset_left), hOW' W hW (hWO.trans inter_subset_right), add_zero]⟩`. Consider the case `smul a F _ hF`. Take `⟨O, hO, hyO, hOW⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨O, hO, hyO, fun W hW hWO => by rw [smul_mul_assoc, map_smul, hOW W hW hWO, smul_zero]⟩`. Conclude with `hP f hfJ`. Use `choose O hO hyO hOW using hloc`. Establish `hV : ∀ y, ∃ V : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), IsClopen V ∧ y ∈ V ∧ V ⊆ O y` using `fun y => by`. Take `⟨V, hVB, hyV, hVO⟩` from `hbasis.exists_subset_of_mem_open (hyO y) (hO y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `⟨V, hVB, hyV, hVO⟩`. Use `choose V hVc hyV hVO using hV`. Establish `hunion : ∀ B1 B2 : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), IsClopen B1 → (∀ W, IsClopen W → W ⊆ B1 → ξ (f * (q ⁻¹' W).indicator 1) = 0) → (∀ W, IsClopen W → W ⊆ B2 → ξ (f * (q ⁻¹' W).indicator 1) = 0) → ∀ W, IsClopen W → W ⊆ B1 ∪ B2 → ξ (f * (q ⁻¹' W).indicator 1) = …`. Introduce `B1 B2 hB1 hQ1 hQ2 W hW hWB`. Establish `hsplit : f * (q ⁻¹' W).indicator 1 = f * (q ⁻¹' (W ∩ B1)).indicator 1 + f * (q ⁻¹' (W \ B1)).indicator 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Apply the tactic sequence `by_cases h1 : q p ∈ W <;> by_cases h2 : q p ∈ B1 <;> simp [Set.indicator_apply, h1, h2]`. Rewrite using `[hsplit, map_add, hQ1 _ (hW.inter hB1) inter_subset_right, hQ2 _ (hW.diff hB1) (fun z hz => (hWB hz.1).resolve_left hz.2), add_zero]`. Establish `hfin : ∀ t : Finset (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k), IsClopen (⋃ i ∈ t, V i) ∧ ∀ W, IsClopen W → W ⊆ ⋃ i ∈ t, V i → ξ (f * (q ⁻¹' W).indicator 1) = 0`. Introduce `t`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Establish `he : (⋃ i ∈ (∅ : Finset (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k)), V i) = ∅`. Use extensionality with `z`. Simplify using the standard rewrite rules.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[he]`. Use `⟨isClopen_empty, fun W _ hW => ?_⟩` and prove the remaining obligations. Establish `hW0 : W = ∅` using `Set.subset_empty_iff.mp hW`. Substitute `hW0` using the available equality. Establish `h0 : f * (q ⁻¹' (∅ : Set (Fin (2 * m + 1) × Fin (Module.finrank k Z) → k))).indicator 1 = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Rewrite using `[h0, map_zero]`. Consider the case `insert a s _ ih`. Rewrite using `[Finset.set_biUnion_insert]`.
-
-Conclude with `⟨(hVc a).union ih.1, hunion _ _ (hVc a) (fun W hW hWV => hOW a W hW (hWV.trans (hVO a))) ih.2⟩`. Take `⟨t, ht⟩` from `(IsCompact.image hfcs hq).elim_finite_subcover V (fun y => (hVc y).isOpen) (fun z _ => mem_iUnion.2 ⟨z, hyV z⟩)`. Take `⟨hc, hQt⟩` from `hfin t`. Establish `heq : f * (q ⁻¹' (⋃ i ∈ t, V i)).indicator 1 = f`. Use function extensionality and compare the values at `p`.
-
-Distinguish the cases in `hp : f p = 0`. Simplify using `[hp]`. Establish `hmem : q p ∈ ⋃ i ∈ t, V i` using `ht ⟨p, subset_tsupport f (Function.mem_support.mpr hp), rfl⟩`. Rewrite using `[Pi.mul_apply, Set.indicator_of_mem (show p ∈ q ⁻¹' (⋃ i ∈ t, V i) from hmem), Pi.one_apply, mul_one]`. Rewrite using `[← heq]`.
-
-Conclude with `hQt _ hc subset_rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem local_descent_holds : LocStep (k := k) := by
   classical

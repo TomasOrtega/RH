@@ -25,9 +25,9 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt.KerTrace
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SmoothEvaluation.main`. Consider the case `exact _root_.GlobalTheory.SmoothEvaluation.main`. Consider the case `(apply _root_.GlobalTheory.SmoothEvaluation.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SmoothEvaluation.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SmoothEvaluation.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SmoothEvaluation.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_basis {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {r : ℕ} (b : Fin r → R)
     (h : ∀ f, ∃! cf : Fin r → A, f = ∑ i, algebraMap A R (cf i) * b i) :
@@ -41,21 +41,17 @@ theorem exists_basis {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {r : �
   | (intros; exact _root_.GlobalTheory.SmoothEvaluation.main ..)
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `letI := ψ.toAlgebra`. Use `letI := (ψ.comp φ).toAlgebra`. Use `haveI : IsScalarTower A₀ A₁ R := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨e, he⟩` from `exists_basis (A := A₀) b h`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e', -⟩` from `exists_basis (A := A₁) b' h'`. Take `⟨e'', -⟩` from `exists_basis (A := A₀) b'' h''`. Use `haveI := Module.Free.of_basis e`. Use `haveI := Module.Free.of_basis e'`. Use `haveI := Module.Free.of_basis e''`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := Module.Finite.of_basis e`. Use `haveI := Module.Finite.of_basis e'`. Use `haveI := Module.Finite.of_basis e''`. Use `choose χ hχ using hg`. Set `G : S → (R →ₐ[A₀] R)` to `fun α => { χ α.1 α.2 with commutes' := fun a => (hχ α.1 α.2 _).symm.trans (hfix α.1 α.2 a) }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG : ∀ α f, G α f = g α.1 f` using `fun α f => (hχ α.1 α.2 f).symm`. Establish `hGi : Function.Injective G`. Introduce `α β hab`. Conclude with `Subtype.ext (hinj _ α.2 _ β.2 fun f => by rw [← hG, ← hG, hab])`. Establish `hcard : (Finset.univ.map ⟨G, hGi⟩).card = Module.finrank A₀ R`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.card_map, Module.finrank_eq_card_basis e'']`. Simplify using `[hS]`. Establish `key` using `(GlobalTheory.T.invariants_and_trace_finite_free_domain_endomorphisms A₀ R _ hcard).2 (ψ x)`. Rewrite `key` using `[Finset.sum_map]`. Establish `h1 : ∑ α ∈ S, g α (ψ x) = ∑ α : S, G α (ψ x)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hG]`. Conclude with `(Finset.sum_coe_sort S fun α => g α (ψ x)).symm`. Establish `h2 : Algebra.trace A₀ A₁ x = M.trace`. Rewrite using `[Algebra.trace_eq_matrix_trace e]`. Use `congr 1`.
-
-Use extensionality with `i j`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, he, hM]`. Establish `: ∑ i, φ (M i j) * b i = ∑ i, M i j • e i` using `Finset.sum_congr rfl fun i _ => by`. Rewrite using `[he, Algebra.smul_def]`. Both sides reduce to the same expression.
-
-Rewrite using `[this, e.repr_sum_self]`. Establish `h3 : Algebra.trace A₀ R (ψ x) = (r' : A₀) * M.trace`. Rewrite using `[← Algebra.trace_trace (S := A₁), show ψ x = algebraMap A₁ R x from rfl, Algebra.trace_algebraMap, Module.finrank_eq_card_basis e', Fintype.card_fin, map_nsmul, h2, nsmul_eq_mul]`. Rewrite using `[h1, ← h3]`. Conclude with `key.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tower {A₀ A₁ R : Type} [CommRing A₀] [IsDomain A₀] [CommRing A₁] [IsDomain A₁] [CommRing R] [IsDomain R]
     (φ : A₀ →+* A₁) (ψ : A₁ →+* R) {r r' r'' : ℕ} (b : Fin r → A₁) (b' : Fin r' → R) (b'' : Fin r'' → R)
@@ -111,11 +107,11 @@ theorem sum_tower {A₀ A₁ R : Type} [CommRing A₀] [IsDomain A₀] [CommRing
   exact key.symm
 
 /- English proof (translation)
-Establish `h0 : ∀ {ρ : Type} (u : ρ) (g : MvPowerSeries ρ k), MvPowerSeries.constantCoeff (MvPowerSeries.pderiv k u g) = MvPowerSeries.coeff (Finsupp.single u 1) g`. Introduce `ρ u g`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_pderiv]`. Simplify using the standard rewrite rules. Establish `h1 : ∀ g : MvPowerSeries σ k, MvPowerSeries.constantCoeff (MvPowerSeries.subst a g) = MvPowerSeries.constantCoeff g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[MvPowerSeries.constantCoeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero ha), finsum_eq_single _ 0]`. Simplify using the standard rewrite rules. Introduce `e he`. Take `⟨s, hs⟩` from `Finsupp.support_nonempty_iff.2 he`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finsupp.prod, map_prod, Finset.prod_eq_zero hs, smul_zero]`. Rewrite using `[map_pow, ha, zero_pow (Finsupp.mem_support_iff.1 hs)]`. Rewrite using `[← h0, ReciprocityTheory.ChartRestriction.G.TB.LogPf.pderiv_subst ha, map_sum]`. Simplify using `only [map_mul, h1, h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_one_subst {k σ τ : Type} [CommRing k] [Fintype σ] {a : σ → MvPowerSeries τ k}
     (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (f : MvPowerSeries σ k) (t : τ) :
@@ -140,11 +136,11 @@ theorem coeff_one_subst {k σ τ : Type} [CommRing k] [Fintype σ] {a : σ → M
   simp only [map_mul, h1, h0]
 
 /- English proof (translation)
-Establish `hs` using `MvPowerSeries.hasSubst_of_constantCoeff_zero ha`. Establish `h1` using `GlobalTheory.SocleDet.mem_span_X_of_coeff (Finset.univ : Finset σ) g fun m hm => by`. Establish `: m = 0` using `Finsupp.ext fun j => hm j (Finset.mem_univ j)`. Rewrite using `[this]`. Conclude with `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Ideal.span ((fun i => (MvPowerSeries.X i : MvPowerSeries σ k)) '' (Finset.univ : Finset σ)) ≤ RingHom.ker (χ.comp (MvPowerSeries.substAlgHom hs))`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, -, rfl⟩`. Simplify using `[RingHom.mem_ker, MvPowerSeries.subst_X hs, hχ]`. Establish `h3` using `h2 h1`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[RingHom.mem_ker, AlgHom.comp_apply, MvPowerSeries.substAlgHom_apply]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem map_subst_eq_zero {k σ τ Ω : Type} [CommRing k] [CommRing Ω] [Algebra k Ω] [Fintype σ]
     {a : σ → MvPowerSeries τ k} (ha : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (χ : MvPowerSeries τ k →ₐ[k] Ω)
@@ -164,11 +160,11 @@ theorem map_subst_eq_zero {k σ τ Ω : Type} [CommRing k] [CommRing Ω] [Algebr
   exact h3
 
 /- English proof (translation)
-Establish `hd : q.det ≠ 0`. Introduce `h`. Use `congrArg Matrix.det h1` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, Matrix.det_mul, h, Matrix.det_smul, Matrix.det_one]`. Conclude with `pow_ne_zero _ hc (by simpa using this.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (q * s * p - c • (1 : Matrix (Fin n) (Fin n) O)) * q = 0`. Rewrite using `[sub_mul, _root_.mul_assoc, _root_.mul_assoc, h1]`. Simplify using the standard rewrite rules. Establish `h4 : q.det • (q * s * p - c • (1 : Matrix (Fin n) (Fin n) O)) = 0`. Use `congrArg (· * q.adjugate) h3` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [_root_.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, _root_.mul_one, zero_mul]`. Conclude with `sub_eq_zero.1 ((smul_eq_zero.1 h4).resolve_left hd)`.
+A detailed English derivation is pending.
 -/
 theorem left_inv_of_right {O : Type} [CommRing O] [IsDomain O] {n : ℕ} (p q s : Matrix (Fin n) (Fin n) O) (c : O)
     (hc : c ≠ 0) (h1 : s * (p * q) = c • (1 : Matrix (Fin n) (Fin n) O))
@@ -194,25 +190,25 @@ abbrev crd (p : Matrix (Fin n) (Fin n) O) : Fin n × Fin d → PS V n d :=
 
 omit [IsAdicComplete (maximalIdeal V) V] [CharZero V] in
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pt_small (b : Fin n) (i : Fin d) : MvPowerSeries.constantCoeff (pt V (n := n) d b i) ∈ maximalIdeal V := by
   simp [pt]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p p _ _ pt_small pt_small).2.2.2.2.2.1 s.1 s.2`.
+A detailed English derivation is pending.
 -/
 theorem crd_const (p : Matrix (Fin n) (Fin n) O) (s : Fin n × Fin d) : MvPowerSeries.constantCoeff (crd B p s) = 0 :=
   (GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p p _ _ pt_small pt_small).2.2.2.2.2.1 s.1 s.2
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V _ _ Unit (crd B p) fun j => by rw [crd_const]; exact zero_mem _).2.2.1 (crd_const B p) f`.
+A detailed English derivation is pending.
 -/
 theorem pullM_eq (p : Matrix (Fin n) (Fin n) O) (f : PS V n d) : pullM B p f = MvPowerSeries.subst (crd B p) f :=
   (GlobalTheory.T.mvPowerSeriesSubstConstTerms_local_algHom_spec V _ _ Unit (crd B p) fun j => by rw [crd_const]; exact zero_mem _).2.2.1 (crd_const B p) f
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p q _ _ pt_small pt_small).2.1`. Establish `hq : ∀ b i, MvPowerSeries.constantCoeff (matV B q (fun j => pt V (n` using `n) d j) b i) ∈ maximalIdeal V := fun b i => by rw [crd_const B q (b, i)]; exact zero_mem _`. Establish `h2` using `(GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p q _ _ hq hq).2.2.2.2.1 s.1 s.2`. Rewrite using `[← pullM_eq]`. Conclude with `(congrFun (congrFun h1 s.1) s.2).trans h2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_mul (p q : Matrix (Fin n) (Fin n) O) (s : Fin n × Fin d) :
     crd B (p * q) s = MvPowerSeries.subst (crd B q) (crd B p s) := by
@@ -224,9 +220,9 @@ theorem crd_mul (p q : Matrix (Fin n) (Fin n) O) (s : Fin n × Fin d) :
   exact (congrFun (congrFun h1 s.1) s.2).trans h2.symm
 
 /- English proof (translation)
-Unfold `jacM`. Rewrite using `[← Matrix.det_mul]`. Use `congr 1`. Use extensionality with `s t`. Rewrite using `[Matrix.mul_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg _ (crd_mul B p q s)).trans (coeff_one_subst (crd_const B q) _ t)`.
+A detailed English derivation is pending.
 -/
 theorem jacM_mul (p q : Matrix (Fin n) (Fin n) O) : jacM B (p * q) = jacM B p * jacM B q := by
   unfold jacM
@@ -237,7 +233,7 @@ theorem jacM_mul (p q : Matrix (Fin n) (Fin n) O) : jacM B (p * q) = jacM B p * 
   exact (congrArg _ (crd_mul B p q s)).trans (coeff_one_subst (crd_const B q) _ t)
 
 /- English proof (translation)
-Introduce `Ω _ _ hi χ hχ`. Use `h Ω hi χ fun b i => ?_` and prove the remaining obligations. Conclude with `(congrArg χ (crd_mul B p q (b, i))).trans (map_subst_eq_zero (crd_const B q) χ (fun s => hχ s.1 s.2) (crd_const B p _))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem splitKer_right (p q : Matrix (Fin n) (Fin n) O) (h : SplitKer B (p * q)) : SplitKer B q := by
   intro Ω _ _ hi χ hχ
@@ -249,13 +245,13 @@ def pullHom (p : Matrix (Fin n) (Fin n) O) : PS V n d →ₐ[V] PS V n d :=
   MvPowerSeries.substAlgHom (MvPowerSeries.hasSubst_of_constantCoeff_zero (crd_const B p))
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.substAlgHom_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem pullHom_apply (p : Matrix (Fin n) (Fin n) O) (f : PS V n d) :
     pullHom B p f = MvPowerSeries.subst (crd B p) f := MvPowerSeries.substAlgHom_apply _ _
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.T.formalModuleMatrixApplyPoints_action_laws V d O B n n p q _ _ pt_small pt_small).2.2.2.2.2.2 f, pullM_eq, pullM_eq, pullHom_apply, pullHom_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pullHom_mul (p q : Matrix (Fin n) (Fin n) O) (f : PS V n d) :
     pullHom B q (pullHom B p f) = pullM B (p * q) f := by
@@ -265,19 +261,17 @@ theorem pullHom_mul (p q : Matrix (Fin n) (Fin n) O) (f : PS V n d) :
 end
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B hB n p q s N hN h1 h2 hO hN0 hj hsp f hf`. Establish `hq : (s * p) * q = (N : O) • (1 : Matrix (Fin n) (Fin n) O)` using `by rw [_root_.mul_assoc, h1]`. Establish `hp` using `left_inv_of_right p q s _ hN0 h1 h2`. Establish `hjm` using `jacM_mul B p q`. Establish `hjp : jacM B p ≠ 0` using `fun h => hj (by rw [hjm, h, zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjq : jacM B q ≠ 0` using `fun h => hj (by rw [hjm, h, mul_zero])`. Establish `hsq` using `splitKer_right B p q hsp`. Take `⟨f', rfl⟩` from `GlobalTheory.T.formalSeries_descends_of_splitKernel_invariant V d O B hB n q _ N hN hq hjq hsq f hf`. Take `⟨hfin, hcard⟩` from `GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n (p * q) s N hN h1 hj hsp`. Take `⟨-, hcardq⟩` from `GlobalTheory.T.formalMatrixKernel_finite_ncard_eq_rank V d O B hB n q _ N hN hq hjq hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `cp` using `GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n p _ N hN hp`. Take `⟨r, b, -, hb⟩` from `GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B p) (crd_const B p) cp`. Take `⟨r', b', hr', hb'⟩` from `GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B q) (crd_const B q) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n q _ N hN hq)`. Take `⟨r'', b'', hr'', hb''⟩` from `GlobalTheory.T.exists_finite_basis_powerSeries_subst_finite_colength V _ (crd B (p * q)) (crd_const B _) (GlobalTheory.T.exists_pow_span_X_le_span_formalModuleMatrix V d O B hB n _ s N hN h1)`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose M hM using fun j => (hb (f' * b j)).exists`. Take `⟨U, hU⟩` from `GlobalTheory.T.det_jacobian_formal_module_matrix_eq_const_mul_unit V d O B n p`. Take `⟨g, hg⟩` from `GlobalTheory.T.constant_dvd_trace_of_jacobian_finite_colength V _ (crd B p) (crd_const B p) cp _ U hjp hU r b hb f' (Matrix.of fun i j => M j i) hM`. Use `⟨g, ?_⟩` and prove the remaining obligations. Use `haveI : IsDomain (PS V n d) := NoZeroDivisors.to_isDomain _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ α ∈ hfin.toFinset, ∀ b, Small (α b)` using `fun α hα => (hfin.mem_toFinset.1 hα).1`. Establish `hsh` using `(GlobalTheory.T.formalGroupTranslate_automorphism_and_matrixKernel V d O B n (p * q)).2.2`. Establish `key` using `sum_tower (pullHom B p : PS V n d →+* PS V n d) (pullHom B q : PS V n d →+* PS V n d) b b' b'' (by simpa only [RingHom.coe_coe, pullHom_apply] using hb) (by simpa only [RingHom.coe_coe, pullHom_apply] using hb') (by simpa only [RingHom.coe_coe, pullHom_mul, pullM_eq] using hb'') …`. Take `⟨ψ, hψ⟩` from `(hsh α α (hsm α hα) (hsm α hα)).1`. Conclude with `⟨(ψ : PS V n d →+* PS V n d), hψ⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun α hα a => by`. Simplify using `only [RingHom.coe_coe, pullHom_mul]`. Conclude with `(hsh α α (hsm α hα) (hsm α hα)).2.1.1 (hfin.mem_toFinset.1 hα) a)`. Use the proof step `(fun α hα β hβ => (hsh α β (hsm α hα) (hsm β hβ)).2.2.1)`. Use the proof step `f' (Matrix.of fun i j => M j i) (by simpa only [RingHom.coe_coe, pullHom_apply, Matrix.of_apply] using hM)`.
-
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, pullM_eq B q, ← pullHom_apply]`. Use `key.trans ?_` and prove the remaining obligations. Establish `hC : ∀ (m : Matrix (Fin n) (Fin n) O) (c : V), pullHom B m (MvPowerSeries.C c) = MvPowerSeries.C c` using `fun m c => (pullHom B m).commutes c`. Rewrite using `[hg, hcardq.trans hr', ← pullHom_mul]`. Simplify using `only [RingHom.coe_coe, map_mul, map_natCast, hC, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_shift_kerM_mul : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O), FinHt B → ∀ (n : ℕ) (p q s : Matrix (Fin n) (Fin n) O) (N : ℕ), 1 ≤ N → s * (p * q) = (N : O) • (1 : Matrix (Fin n) (Fin n) O) → (p * q) * s = (N : O) • (1 : Matrix (Fin n) (Fin n) O) → IsDomain O → (N : O) ≠ 0 → jacM B (p * q) ≠ 0 → SplitKer B (p * q) → ∀ f : PS V n d, (∀ α ∈ kerM B q, shift B.G.F α f = f) → (kerM B (p * q)).Finite ∧ ∃ g : PS V n d, ∑ᶠ α ∈ kerM B (p * q), shift B.G.F α f = MvPowerSeries.C (((kerM B q).ncard : V) * jacM B p) * pullM B (p * q) g := by
   intro V _ _ _ _ _ d O _ _ B hB n p q s N hN h1 h2 hO hN0 hj hsp f hf

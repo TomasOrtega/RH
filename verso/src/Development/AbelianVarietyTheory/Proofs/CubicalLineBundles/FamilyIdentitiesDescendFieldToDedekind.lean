@@ -17,23 +17,23 @@ noncomputable section
 namespace GlobalTheory.FamDescent
 
 /- English proof (translation)
-Take `⟨Pic, _, cl, pl, hiso, -, -, hcomp, hlin, -⟩` from `CechPicMul.exists_picardGroup`. Establish `hpull : ∀ {U V : Scheme.{0}} (N : LB U), N.IsLB → ∀ g : V ⟶ U, (N.pull g).IsLB ∧ cl (N.pull g) = pl g (cl N)` using `fun N hN g => ⟨(hlin _ _ N hN _ _ _).1, (hlin _ _ N hN _ _ _).2.trans (by simp)⟩`. Set `π` to `pullback.fst (X ⊗ Y).hom (spMap f)`. Set `p` to `pullback.snd (X ⊗ Y).hom (spMap f)`. Establish `hπ : π ≫ (X ⊗ Y).hom = p ≫ spMap f` using `pullback.condition`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `u : Over.mk p ⟶ X'` to `Over.homMk (hx.lift (π ≫ (fst X Y).left) p (by rw [Category.assoc, Over.w, hπ])) (hx.lift_snd _ _ _)`. Set `v : Over.mk p ⟶ Y'` to `Over.homMk (hy.lift (π ≫ (snd X Y).left) p (by rw [Category.assoc, Over.w, hπ])) (hy.lift_snd _ _ _)`. Establish `hu : u.left ≫ x = π ≫ (fst X Y).left` using `hx.lift_fst _ _ _`. Establish `hv : v.left ≫ y = π ≫ (snd X Y).left` using `hy.lift_fst _ _ _`. Set `U : Over.mk ((Over.mk p).hom ≫ spMap f) ⟶ X ⊗ Y` to `Over.homMk π hπ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `gen : ∀ {C : Over (Sp R)} {C' : Over (Sp k)} [GrpObj C] [GrpObj C'] {c : C'.left ⟶ C.left} (hC : IsGrpPullback C' C (spMap f) c) {N : LB C.left} {N' : LB C'.left}, N.IsLB → N'.IsLB → LBIso (N.pull c) N' → ∀ (s : X ⟶ C) (t : Y ⟶ C) (s' : X' ⟶ C') (t' : Y' ⟶ C'), s'.left ≫ c = x ≫ …`. Introduce `C C' _ _ c hC N N' hN hN' iN s t s' t' hs ht`. Establish `e : pl c (cl N) = cl N'` using `(hpull N hN c).2.symm.trans ((hiso _ _ _ (hpull N hN c).1 hN').2 iN)`. Use `(hpull _ (LamCalc.cubeLB_isLB hN _) π).2.trans ?_` and prove the remaining obligations. Use `(congrArg (pl π) (hlin _ _ N hN _ _ _).2).trans (Eq.trans ?_ (hlin _ _ N' hN' _ _ _).2.symm)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, ← hcomp, ← e, ← hcomp]`. Use `congrArg (fun z => pl z (cl N) ^ _) (Eq.symm ?_)` and prove the remaining obligations. Use `lamBC_psum_push hC _ _ U (fun i => ?_) I.down` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases i`. Use `Over.OverMorphism.ext ?_ show (u.left ≫ s'.left) ≫ c = π ≫ (fst X Y).left ≫ s.left` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, ← Category.assoc, hu, Category.assoc]`. Use `Over.OverMorphism.ext ?_ show (v.left ≫ t'.left) ≫ c = π ≫ (snd X Y).left ≫ t.left` and prove the remaining obligations. Rewrite using `[Category.assoc, ht, ← Category.assoc, hv, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `zero : ∀ {C : Over (Sp R)} [GrpObj C] [IsCommMonObj C] {N : LB C.left}, N.IsLB → ∀ (s : X ⟶ C) (t : Y ⟶ C), IsMonHom s → IsMonHom t → cl ((cubeLB C ![fst X Y ≫ s, snd X Y ≫ t] N).pull (eSec (X ⊗ Y))) = 1`. Introduce `C _ _ N hN s t _ _`. Use `(hpull _ (LamCalc.cubeLB_isLB hN _) _).2.trans ?_` and prove the remaining obligations. Rewrite using `[LamCalc.class_cubeLB cl (fun z => pl z (cl N)) (fun I _ φ ε => (hlin _ _ N hN I φ ε).2)]`. Establish `w : ∀ z : X ⊗ Y ⟶ C, η[X ⊗ Y] ≫ z = 1 → pl (eSec (X ⊗ Y)) (pl z.left (cl N)) = pl (1 : 𝟙_ (Over (Sp R)) ⟶ C).left (cl N)` using `fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcomp, ← hz]`. Both sides reduce to the same expression. Establish `o : (1 : 𝟙_ (Over (Sp R)) ⟶ C) = η[C]` using `by simp [Hom.one_def]`. Establish `h₁ : η[X ⊗ Y] ≫ fst X Y ≫ s = 1` using `by rw [o]; exact IsMonHom.one_hom _`. Establish `h₂ : η[X ⊗ Y] ≫ snd X Y ≫ t = 1` using `by rw [o]; exact IsMonHom.one_hom _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv]`. Rewrite using `[w _ h₁, w _ h₂, w 1 (MonObj.comp_one _), w _ (by rw [MonObj.comp_mul, h₁, h₂, _root_.mul_one])]`. Simplify using the standard rewrite rules. Establish `cL` using `LamCalc.cubeLB_isLB hL ![fst X Y ≫ f₁, snd X Y ≫ f₂]`. Establish `cM` using `LamCalc.cubeLB_isLB hM ![fst X Y ≫ g₁, snd X Y ≫ g₂]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.lineBundleIso_descends_field_to_dedekindDomain R k f hf (X ⊗ Y) (AbelianSchemeGerms.isAbelianScheme_tensor X Y hX hY) _ π p (IsPullback.of_hasPullback _ _) _ _ cL cM ?_ ?_` and prove the remaining obligations. Conclude with `(hiso _ _ _ (hpull _ cL _).1 (hpull _ cM _).1).1 ((zero hL f₁ f₂ ‹_› ‹_›).trans (zero hM g₁ g₂ ‹_› ‹_›).symm)`. Use `(hiso _ _ _ (hpull _ cL _).1 (hpull _ cM _).1).1 ((gen hA hL hL' iL _ _ _ _ e₁ e₂).trans (Eq.trans ?_ (gen hB hM hM' iM _ _ _ _ e₃ e₄).symm))` and prove the remaining obligations. Conclude with `(hiso _ _ _ (LamCalc.cubeLB_isLB hL' _) (LamCalc.cubeLB_isLB hM' _)).2 (LamCalc.lbIso_of_lamEq H u v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lamEq_descend {R k : Type} [CommRing R] [IsDedekindDomain R] [Field k] (f : R →+* k)
     (hf : Function.Injective f) {X Y A B : Over (Sp R)} {X' Y' A' B' : Over (Sp k)} [GrpObj X] [GrpObj Y]
@@ -109,17 +109,17 @@ theorem lamEq_descend {R k : Type} [CommRing R] [IsDedekindDomain R] [Field k] (
     exact (hiso _ _ _ (LamCalc.cubeLB_isLB hL' _) (LamCalc.cubeLB_isLB hM' _)).2 (LamCalc.lbIso_of_lamEq H u v)
 
 /- English proof (translation)
-Introduce `_ E _ _ _ H R _ _ ω C D h T L ψ k _ ω' C' f φ T' m ψ' hf hE hψ hF`. Take `⟨-, ⟨-, hC, iC⟩, -, hact⟩` from `hE`. Take `⟨hlin, hadd, hsm, hlam⟩` from `hF`. Establish `: IsSchemeTheoreticallyDominant (spMap f)` using `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom f) hf`. Establish `: QuasiCompact (spMap f)` using `inferInstanceAs (QuasiCompact (Spec.map (CommRingCat.ofHom f)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `C.P.isAb.smooth` as an intermediate fact. Establish `: Flat C.P.A.hom` using `inferInstance`. Establish `: IsSeparated T.t.G.hom` using `T.t.semi.separated`. Establish `hm : ∀ a, IsMonHom (ψ a)` using `fun a =>`. Use `(hlin a).isMonHom` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ExtUnique.isMonHom_of_isGrpPullback hC m.cart (ψ' a) (ψ a) (hψ a)`. Use `⟨fun a => ⟨hm a, fun c => ?_⟩, fun a b => ?_, fun s a => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `ExtUnique.over_hom_ext_of_isPullback hC.1 ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun z => z.left ≫ m.φ) ((hlin a).comm c)`. Simplify using `only [Over.comp_left, Category.assoc, Serre.comapAct_act] at e ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hψ, m.act, ← Category.assoc, ← Category.assoc, hact, hψ, Category.assoc, Category.assoc]`. Conclude with `e`. Use `ExtUnique.over_hom_ext_of_isPullback hC.1 ?_` and prove the remaining obligations. Set `φ₀ : Over.mk (C'.P.A.hom ≫ spMap f) ⟶ C.P.A` to `Over.homMk φ hC.1.w`. Establish `e` using `m.cart.2 C'.P.A (ψ' a) (ψ' b) (φ₀ ≫ ψ a) (φ₀ ≫ ψ b) (hψ a).symm (hψ b).symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[← MonObj.comp_mul]`. Rewrite using `[← hψ, hadd, ← e]`. Both sides reduce to the same expression. Use `ExtUnique.over_hom_ext_of_isPullback hC.1 ?_` and prove the remaining obligations. Rewrite using `[← hψ, hsm, Over.comp_left, Over.comp_left, Category.assoc, m.act, ← Category.assoc, hψ, Category.assoc]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm a` as an intermediate fact. Use `hm b` as an intermediate fact. Use `C.act.hom (h a b)` as an intermediate fact. Conclude with `lamEq_descend f hf C.P.isAb C.P.isAb hC.1 hC.1 m.cart hC T.t.PP.isLB C.P.isLB T'.t.PP.isLB C'.P.isLB (LBIso.symm (show LBIso T'.t.PP.L (T.t.PP.L.pull m.φ) from m.lin.imp fun _ h => h.1)) iC (hψ a) (hψ b) (hact _) (by simp) (hlam a b)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFam_descend : Out.Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (R : Type) [CommRing R] [IsDedekindDomain R] (ω : R) (C : Ell H R ω) (D : Datum H) (h : D.La → D.La → OK H) (T : PAT H (Sp R)) (L : Submodule (𝓞 E) D.La) (ψ : L → (C.P.A ⟶ T.t.G)) (k : Type) [Field k] (ω' : k) (C' : Ell H k ω') (f : R →+* k) (φ : C'.P.A.left ⟶ C.P.A.left) (T' : PAT H (Sp k)) (m : SABMap T'.t T.t (spMap f)) (ψ' : L → (C'.P.A ⟶ T'.t.G)), Function.Injective f → EllMap C' C f φ → (∀ a, (ψ' a).left ≫ m.φ = φ ≫ (ψ a).left) → IsFam C' T' h L ψ' → IsFam C T h L ψ := by
   intro _ E _ _ _ H R _ _ ω C D h T L ψ k _ ω' C' f φ T' m ψ' hf hE hψ hF

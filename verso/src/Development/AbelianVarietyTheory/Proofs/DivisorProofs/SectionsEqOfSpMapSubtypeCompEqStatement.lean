@@ -22,7 +22,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory.IndefiniteRowSideFullHecke.SiegelFamilyZetaUnit GlobalTheory.SiegelTypings
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.sections_eq_of_spMap_subtype_comp_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSectionsEqOfSpMapSubtypeCompEq.lean&line=24#L24)
 -/

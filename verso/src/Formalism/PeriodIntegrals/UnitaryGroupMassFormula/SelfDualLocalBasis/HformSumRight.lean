@@ -13,14 +13,14 @@ variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
   (σ : A →+* A) (J : Matrix n n A)
 
 /- English proof (translation)
-Simplify using `only [PI.SelfDualLoc.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_right (x y y' : n → A) :
     hform σ J x (y + y') = hform σ J x y + hform σ J x y' := by
   simp only [PI.SelfDualLoc.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [PI.SelfDualLoc.hform, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_right (x : n → A) (c : A) (y : n → A) :
     hform σ J x (c • y) = c * hform σ J x y := by
@@ -29,14 +29,14 @@ theorem hform_smul_right (x : n → A) (c : A) (y : n → A) :
   ring
 
 /- English proof (translation)
-Simplify using `only [PI.SelfDualLoc.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (x x' y : n → A) :
     hform σ J (x + x') y = hform σ J x y + hform σ J x' y := by
   simp only [PI.SelfDualLoc.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [PI.SelfDualLoc.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hform_smul_left (c : A) (x y : n → A) :
     hform σ J (c • x) y = σ c * hform σ J x y := by
@@ -45,19 +45,19 @@ theorem hform_smul_left (c : A) (x y : n → A) :
   ring
 
 /- English proof (translation)
-Simplify using `[PI.SelfDualLoc.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_left (y : n → A) : hform σ J 0 y = 0 := by
   simp [PI.SelfDualLoc.hform]
 
 /- English proof (translation)
-Simplify using `[PI.SelfDualLoc.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_right (x : n → A) : hform σ J x 0 = 0 := by
   simp [PI.SelfDualLoc.hform]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `hform_zero_right σ J x`. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hform_add_right, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_sum_right {ι : Type} (s : Finset ι) (x : n → A) (f : ι → n → A) :
     hform σ J x (∑ k ∈ s, f k) = ∑ k ∈ s, hform σ J x (f k) := by
@@ -69,7 +69,7 @@ theorem hform_sum_right {ι : Type} (s : Finset ι) (x : n → A) (f : ι → n 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hform_add_right, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using `only [Finset.sum_empty]`. Conclude with `hform_zero_left σ J y`. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_sum_left {ι : Type} (s : Finset ι) (f : ι → n → A) (y : n → A) :
     hform σ J (∑ k ∈ s, f k) y = ∑ k ∈ s, hform σ J (f k) y := by
@@ -81,7 +81,7 @@ theorem hform_sum_left {ι : Type} (s : Finset ι) (f : ι → n → A) (y : n �
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hform_add_left, ih]
 
 /- English proof (translation)
-Simplify using `only [PI.SelfDualLoc.hform, map_sum, map_mul, hf, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_map {B : Type} [CommRing B] (τ : B →+* B) (f : A →+* B)
     (hf : ∀ a, f (σ a) = τ (f a)) (x y : n → A) :

@@ -4,19 +4,17 @@ open Matrix
 
 open scoped MatrixOrder ComplexOrder in
 /- English proof (translation)
-Take `⟨b, hb⟩` from `exists_linearIndependent_of_le_finrank hj`. Establish `hb' : LinearIndependent ℂ (fun i => (b i : Fin N → ℂ))` using `hb.map' K.subtype (Submodule.ker_subtype K)`. Set `C : Matrix (Fin N) (Fin j) ℂ` to `Matrix.of fun r i => (b i : Fin N → ℂ) r`. Establish `hC : ∀ v, C.mulVec v = ∑ i, v i • (b i : Fin N → ℂ)`. Introduce `v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `r`. Simplify using `[C, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hmem : ∀ v, C.mulVec v ∈ K` using `fun v => by`. Rewrite using `[hC]`. Conclude with `K.sum_mem fun i _ => K.smul_mem _ (b i).2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ v, v ≠ 0 → C.mulVec v ≠ 0` using `fun v hv h => by`. Rewrite `h` using `[hC]`. Conclude with `hv (funext (Fintype.linearIndependent_iff.mp hb' v h))`. Establish `hH : (Cᴴ * S * C).IsHermitian` using `isHermitian_conjTranspose_mul_mul C hS`. Establish `hG : (Cᴴ * S * C).PosDef`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `hK _ (hmem x) (hne x hx)`. Establish `h2` using `hH.im_star_dotProduct_mulVec_self x`. Establish `h3 : star x ⬝ᵥ (Cᴴ * S * C) *ᵥ x = star (C *ᵥ x) ⬝ᵥ S *ᵥ C *ᵥ x`. Rewrite using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[← h3]`. Conclude with `Complex.pos_iff.mpr ⟨h1, Eq.symm h2⟩`. Take `⟨D, hD, hGD⟩` from `CStarAlgebra.isStrictlyPositive_iff_eq_star_mul_self.mp hG.isStrictlyPositive`. Take `⟨E, hE⟩` from `hD.exists_right_inv`. Use `⟨C * E, ?_, fun v => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (D * E)ᴴ * (D * E) := by`. Rewrite using `[hGD, star_eq_conjTranspose]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = 1 := by rw [hE]; simp`. Rewrite using `[← mulVec_mulVec]`. Conclude with `hmem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.frame_pos {N j : ℕ} (S : Matrix (Fin N) (Fin N) ℂ)
     (K : Submodule ℂ (Fin N → ℂ)) (hS : S.IsHermitian) (hj : j ≤ Module.finrank ℂ K)
@@ -59,13 +57,13 @@ private theorem UpperTheory.frame_pos {N j : ℕ} (S : Matrix (Fin N) (Fin N) �
     exact hmem _
 
 /- English proof (translation)
-Introduce `N j j' S K K' hS hj hj' hK hK' hO`. Take `⟨B, hB, hBK⟩` from `UpperTheory.frame_pos S K hS hj hK`. Take `⟨B', hB', hBK'⟩` from `UpperTheory.frame_pos (-S) K' hS.neg hj' (fun y hy h0 => by`. Use `hK' y hy h0` as an intermediate fact. Simplify `this)` using `[neg_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h22 : B'ᴴ * S * B' = -1`. Rewrite using `[← hB']`. Simplify using the standard rewrite rules. Establish `h21 : B'ᴴ * S * B = 0`. Use extensionality with `a c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `hO _ (hBK (Pi.single c 1)) _ (hBK' (Pi.single a 1))`. Rewrite `h` using `[star_mulVec, ← dotProduct_mulVec, mulVec_mulVec, mulVec_mulVec]`. Simplify `h` using `[← Pi.single_star]`. Establish `h12 : Bᴴ * S * B' = 0`. Establish `h` using `congrArg conjTranspose h21`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[conjTranspose_mul, hS.eq, Matrix.mul_assoc]`. Use `⟨fromCols B B', ?_, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_fromCols_eq_fromRows_conjTranspose, fromRows_mul, fromRows_mul_fromCols, hB, h12, h21, h22]`. Simplify using `using hBK v`. Simplify using `using hBK' v`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.signature_block_diagonal :
     ∀ {N j j' : ℕ} (S : Matrix (Fin N) (Fin N) ℂ) (K K' : Submodule ℂ (Fin N → ℂ)),

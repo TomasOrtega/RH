@@ -24,19 +24,17 @@ def LevelCongruenceTypedPlaces : Prop :=
         haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb κ')) → κ ∈ X.K2
 
 /- English proof (translation)
-Introduce `D X hb hK hL κ hκ hloc`. Take `⟨h, hT, hO⟩` from `glueHA_holds X (fun p => haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F p.1) (finHA X hb κ))`. Take `⟨κt, hκt⟩` from `PI.MassDataKppVolLemmas.Bridge_tf_surjective X.B.I hb h`. Establish `hκtf : finHA X hb κt = h` using `hκt`. Establish `hκf : finHA X hb κ ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))` using `finHA_mem_Kf X hb κ hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhK : h ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Use `Subgroup.mem_iInf.2 fun v => ?_` and prove the remaining obligations. Establish `hv' : haMap X.B.I.cm.sig X.B.I.J (evalV X.B.I.F v) h ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) v`. Distinguish the cases in `hv : v ∈ typSet X.B.I.F (D.host.g 0) (D.host.g 1)`. Establish `e` using `hT ⟨v, hv⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only at e`. Rewrite using `[e]`. Conclude with `compK_holds X v _ hκf`. Rewrite using `[hO v hv]`. Conclude with `Subgroup.one_mem (Kloc (E := X.B.I.E) v (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hv'`. Establish `hκtK : κt ∈ X.B.I.Kset`. Use `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb κt).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHA X hb κt ∈ _`. Rewrite using `[hκtf]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hhK`. Establish `hrK : κt⁻¹ * κ ∈ X.B.I.Kset`. Use `(PI.MassDataKppVolLemmas.Bridge_mem_Kf_iff X.B.I hb _).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finHA X hb (κt⁻¹ * κ) ∈ _`. Rewrite using `[finHA_mul, finHA_inv, hκtf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ hhK) hκf`. Establish `hrest : κt⁻¹ * κ ∈ X.B.I.Kg X.B.g` using `hg X hb _ hrK (fun p => by`. Rewrite using `[finHA_mul, finHA_inv, map_mul, map_inv, hκtf, hT p]`. Conclude with `inv_mul_cancel _)`. Establish `hκt2 : κt ∈ X.K2` using `ht X hb hK hL κt hκtK (fun v hv => by rw [hκtf]; exact hO v hv) (fun p => by`.
-
-Take `⟨κ', hκ', e⟩` from `hloc p`. Conclude with `⟨κ', hκ', by rw [hκtf, hT p]; exact e⟩)`. Establish `hr2 : κt⁻¹ * κ ∈ X.K2` using `(hL.1 _ hrest).1`. Establish `hprod` using `hK.2.1 _ hκt2 _ hr2`. Rewrite `hprod` using `[mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem level_local_of_typed (hg : KgLoc) (ht : LevelCongruenceTypedPlaces) : LevelCongruenceLocal := by
   intro D X hb hK hL κ hκ hloc
@@ -81,7 +79,7 @@ theorem level_local_of_typed (hg : KgLoc) (ht : LevelCongruenceTypedPlaces) : Le
   rwa [mul_inv_cancel_left] at hprod
 
 /- English proof (translation)
-The claim follows from `globProd_of_k2Loc (level_local_of_typed hg ht)`.
+A detailed English derivation is pending.
 -/
 theorem globProd_of_loc (hg : KgLoc) (ht : LevelCongruenceTypedPlaces) : GlobProd := globProd_of_k2Loc (level_local_of_typed hg ht)
 

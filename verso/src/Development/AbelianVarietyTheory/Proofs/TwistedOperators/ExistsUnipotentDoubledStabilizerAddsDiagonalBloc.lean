@@ -17,7 +17,7 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {n : Type} [Fintyp
 def uni (Z : Matrix n n A) : Matrix (n ⊕ n) (n ⊕ n) A := Matrix.fromBlocks (1 + Z) (-Z) Z (1 - Z)
 
 /- English proof (translation)
-Rewrite using `[uni, uni, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]`. Apply the tactic sequence `congr 1 <;> noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_mul_uni_neg (Z : Matrix n n A) : uni Z * uni (-Z) = 1 := by
   rw [uni, uni, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one]
@@ -27,13 +27,13 @@ def uniGL (Z : Matrix n n A) : GL (n ⊕ n) A :=
   ⟨uni Z, uni (-Z), uni_mul_uni_neg Z, by simpa using uni_mul_uni_neg (-Z)⟩
 
 /- English proof (translation)
-Establish `h1 : (1 + Z).map c = 1 + Z.map c`. Rewrite using `[Matrix.map_add _ (map_add c), Matrix.map_one _ (map_zero c) (map_one c)]`. Establish `h2 : (1 - Z).map c = 1 - Z.map c`. Rewrite using `[Matrix.map_sub _ (map_sub c), Matrix.map_one _ (map_zero c) (map_one c)]`. Establish `h3 : (-Z).map c = - Z.map c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h4 : J * Z.map c = - (Zᵀ * J)` using `eq_neg_of_add_eq_zero_right h`. Rewrite using `[uni, dbl, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, h1, h2, h3, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.transpose_add, Matrix.transpose_sub, Matrix.transpose_one, Matrix.transpose_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `Z.map c = Zc at *`. Generalize the expression as in `Zᵀ = Zt at *`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem uni_unitary (c : A →ₐ[R] A) (J Z : Matrix n n A) (h : Zᵀ * J + J * Z.map c = 0) :
     (uni Z)ᵀ * dbl J * (uni Z).map c = dbl J := by
@@ -60,21 +60,21 @@ theorem uni_unitary (c : A →ₐ[R] A) (J Z : Matrix n n A) (h : Zᵀ * J + J *
       _ = -J := by rw [h, add_zero]
 
 /- English proof (translation)
-Rewrite using `[uni, diagCols, Matrix.fromBlocks_mul_fromRows]`. Apply the tactic sequence `congr 1 <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem uni_mul_diagCols (Z : Matrix n n A) : uni Z * (diagCols n : Matrix (n ⊕ n) n A) = diagCols n := by
   rw [uni, diagCols, Matrix.fromBlocks_mul_fromRows]
   congr 1 <;> simp
 
 /- English proof (translation)
-Establish `h' : ∀ i j, u • Z i j = 0` using `fun i j => congrFun (congrFun h i) j`. Apply the tactic sequence `ext (i | i) (j | j) <;> simp [uni, Matrix.one_apply, h']`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_uni_sub_one (u : R) (Z : Matrix n n A) (h : u • Z = 0) : u • (uni Z - 1) = 0 := by
   have h' : ∀ i j, u • Z i j = 0 := fun i j => congrFun (congrFun h i) j
   ext (i | i) (j | j) <;> simp [uni, Matrix.one_apply, h']
 
 /- English proof (translation)
-Rewrite using `[uni, Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Matrix.add_mulVec, Matrix.one_mulVec, Matrix.neg_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem uni_mulVec_inl (Z : Matrix n n A) (z : n ⊕ n → A) :
     (uni Z *ᵥ z) ∘ Sum.inl = z ∘ Sum.inl + Z *ᵥ (z ∘ Sum.inl - z ∘ Sum.inr) := by
@@ -83,7 +83,7 @@ theorem uni_mulVec_inl (Z : Matrix n n A) (z : n ⊕ n → A) :
   abel
 
 /- English proof (translation)
-Rewrite using `[uni, Matrix.fromBlocks_mulVec, Sum.elim_comp_inr, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem uni_mulVec_inr (Z : Matrix n n A) (z : n ⊕ n → A) :
     (uni Z *ᵥ z) ∘ Sum.inr = z ∘ Sum.inr + Z *ᵥ (z ∘ Sum.inl - z ∘ Sum.inr) := by
@@ -92,7 +92,7 @@ theorem uni_mulVec_inr (Z : Matrix n n A) (z : n ⊕ n → A) :
   abel
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.fromBlocks_toBlocks g, uni, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`. Use `noncomm_ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks_uni_mul (Z : Matrix n n A) (g : Matrix (n ⊕ n) (n ⊕ n) A) :
     (uni Z * g).toBlocks₁₁ + (uni Z * g).toBlocks₁₂ + (uni Z * g).toBlocks₂₁ + (uni Z * g).toBlocks₂₂ =
@@ -108,9 +108,9 @@ end Alg
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h0 : evFin F v (⅟(2 : AF F)) = (2 : Fv F v)⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_ofNat (evFin F v) 2, ← map_mul, invOf_mul_self, map_one]`. Rewrite using `[h0, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : v.valuation F (algebraMap (𝓞 F) F 2) = 1` using `(v.valuation_eq_one_iff_notMem (K := F)).2 h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_ofNat]`. Establish `h2 : Valued.v (algebraMap F (Fv F v) (2 : F)⁻¹) = v.valuation F (2 : F)⁻¹` using `v.valuedAdicCompletion_eq_valuation' _`. Simplify using `only [map_inv₀] at h2`. Rewrite `h2` using `[h1, inv_one, map_ofNat]`. Rewrite using `[map_inv₀, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evFin_invOf_two_mem {v : Pl F} (h : (2 : 𝓞 F) ∉ v.asIdeal) :
     evFin F v (⅟(2 : AF F)) ∈ v.adicCompletionIntegers F := by
@@ -127,9 +127,7 @@ theorem evFin_invOf_two_mem {v : Pl F} (h : (2 : 𝓞 F) ∉ v.asIdeal) :
   rw [map_inv₀, h2]
 
 /- English proof (translation)
-Introduce `z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[uni_mulVec_inl]`. Conclude with `add_mem hz.1 (hZ _ (sub_mem hz.1 hz.2))`. Rewrite using `[uni_mulVec_inr]`.
-
-Conclude with `add_mem hz.2 (hZ _ (sub_mem hz.1 hz.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uni_mulVec_mem {d : ℕ} (W : Spc F E d) (v : Pl F) (Z : Matrix (Fin d) (Fin d) (AE F E))
     (hZ : ∀ z ∈ GlobalTheory.InertSph.latAt W v, Z *ᵥ z ∈ GlobalTheory.InertSph.latAt W v) :
@@ -140,9 +138,9 @@ theorem uni_mulVec_mem {d : ℕ} (W : Spc F E d) (v : Pl F) (Z : Matrix (Fin d) 
   · rw [uni_mulVec_inr]; exact add_mem hz.2 (hZ _ (sub_mem hz.1 hz.2))
 
 /- English proof (translation)
-Establish `hm : ∀ a b : GlobalTheory.DblVac.UD σ W, GlobalTheory.DblVac.matD (a * b) = GlobalTheory.DblVac.matD a * GlobalTheory.DblVac.matD b` using `fun _ _ => rfl`. Use `⟨fun u hu => ?_, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : GlobalTheory.DblVac.matD (p * g) - 1 = (GlobalTheory.DblVac.matD p - 1) * GlobalTheory.DblVac.matD g + (GlobalTheory.DblVac.matD g - 1)`. Rewrite using `[hm]`. Use `noncomm_ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_add, ← Matrix.smul_mul, hp.1 u hu, hg.1 u hu, Matrix.zero_mul, add_zero]`. Rewrite using `[hm, ← Matrix.mulVec_mulVec]`. Conclude with `(hp.2 _ (hg.2 z hz).1).1`. Rewrite using `[mul_inv_rev, hm, ← Matrix.mulVec_mulVec]`. Conclude with `(hg.2 _ (hp.2 z hz).2).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_KD {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {p g : GlobalTheory.DblVac.UD σ W}
     (hp : p ∈ GlobalTheory.DblVac.KD σ W v) (hg : g ∈ GlobalTheory.DblVac.KD σ W v) : p * g ∈ GlobalTheory.DblVac.KD σ W v := by
@@ -159,17 +157,15 @@ theorem mul_mem_KD {σ : E →ₐ[F] E} {d : ℕ} {W : Spc F E d} {v : Pl F} {p 
     exact (hg.2 _ (hp.2 z hz).2).2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d W v h2 Y hAt hL hY`. Take `⟨Z, hZ⟩ : ∃ Z : Matrix (Fin d) (Fin d) (AE F E), Z = ⅟(2 : AF F) • Y` from `⟨_, rfl⟩`. Establish `hZZ : Z + Z = Y`. Rewrite using `[← two_smul (AF F) Z, hZ, smul_smul, mul_invOf_self, one_smul]`. Establish `hZc : Z.map (cA σ) = ⅟(2 : AF F) • Y.map (cA σ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ]`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `hZu : Zᵀ * incM F W.J + incM F W.J * Z.map (cA σ) = 0`. Rewrite using `[hZc, hZ, Matrix.transpose_smul, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hY, smul_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZL : ∀ z ∈ GlobalTheory.InertSph.latAt W v, Z *ᵥ z ∈ GlobalTheory.InertSph.latAt W v`. Introduce `z hz`. Rewrite using `[hZ, Matrix.smul_mulVec]`. Conclude with `GlobalTheory.LatAlmostAll.smul_mem_latAt W v (evFin_invOf_two_mem h2) (hL z hz)`. Establish `hZL' : ∀ z ∈ GlobalTheory.InertSph.latAt W v, (-Z) *ᵥ z ∈ GlobalTheory.InertSph.latAt W v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z hz`. Rewrite using `[Matrix.neg_mulVec]`. Conclude with `neg_mem (hZL z hz)`. Set `p : GlobalTheory.DblVac.UD σ W` to `⟨uniGL Z, uni_unitary (cA σ) (incM F W.J) Z hZu⟩`. Establish `hp : p ∈ GlobalTheory.DblVac.KD σ W v`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun u hu => ?_, fun z hz => ⟨uni_mulVec_mem W v Z hZL z hz, uni_mulVec_mem W v (-Z) hZL' z hz⟩⟩` and prove the remaining obligations. Use `smul_uni_sub_one u Z ?_` and prove the remaining obligations. Rewrite using `[hZ, smul_comm, hAt u hu, smul_zero]`. Use `⟨p, hp, ⟨1, ?_⟩, fun g hg => ⟨mul_mem_KD hp hg, ?_⟩⟩` and prove the remaining obligations. Conclude with `(uni_mul_diagCols Z).trans (Matrix.mul_one _).symm`.
-
-Establish `e : GlobalTheory.DblVac.matD (p * g) = uni Z * GlobalTheory.DblVac.matD g` using `rfl`. Rewrite using `[GlobalTheory.DblVac.diagonalBlockOfMatrix, GlobalTheory.DblVac.diagonalBlockOfMatrix, e, blocks_uni_mul, smul_add, hZZ, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unip : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     {d : ℕ} (W : Spc F E d) (v : Pl F), (2 : 𝓞 F) ∉ v.asIdeal → ∀ Y : Matrix (Fin d) (Fin d) (AE F E),

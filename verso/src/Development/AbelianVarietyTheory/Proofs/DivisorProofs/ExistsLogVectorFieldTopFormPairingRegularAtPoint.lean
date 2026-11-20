@@ -25,13 +25,11 @@ namespace GlobalTheory.LogKSDiv
 open IsLocalRing
 
 /- English proof (translation)
-Establish `h : ∀ i, ∃ a : Fin N → A, ∑ j, a j • δ j = KaehlerDifferential.linearMapEquivDerivation k A (bΩ.coord i)` using `fun i => (Submodule.mem_span_range_iff_exists_fun A).1 (hδ ▸ Submodule.mem_top)`. Use `choose a ha using h`. Establish `hm : (Matrix.of fun i j => δ j (g i)) * (Matrix.of fun j i => a i j) = 1`. Use extensionality with `l i`. Establish `h1` using `congrArg (fun d : Derivation k A A => d (g l)) (ha i)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [KaehlerDifferential.linearMapEquivDerivation_apply_apply, ← hg] at h1`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `h2 : (∑ j, a i j • δ j) (g l) = ∑ j, a i j * δ j (g l)`. Use `map_sum (Derivation.coeFnAddMonoidHom (R := k) (A := A) (M := A)) (fun j => a i j • δ j) Finset.univ` as an intermediate fact. Establish `h3` using `congrFun this (g l)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[Finset.sum_apply]`. Conclude with `h3`. Rewrite `h1` using `[h2]`. Simplify using `only [Matrix.of_apply, mul_comm (δ _ _)]`. Rewrite using `[h1]`.
-
-Simplify using `[Finsupp.single_apply]`. Conclude with `Matrix.isUnit_det_of_right_inverse hm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_span_eq_top (k A : Type) [CommRing k] [CommRing A] [Algebra k A] {N : ℕ} (g : Fin N → A)
     (bΩ : Module.Basis (Fin N) A Ω[A⁄k]) (hg : ∀ i, bΩ i = KaehlerDifferential.D k A (g i))
@@ -58,13 +56,13 @@ theorem isUnit_det_of_span_eq_top (k A : Type) [CommRing k] [CommRing A] [Algebr
   exact Matrix.isUnit_det_of_right_inverse hm
 
 /- English proof (translation)
-Use `set c : Fin N → A := fun i => bΩ.repr (KaehlerDifferential.D k A t) i with hc`. Establish `hsum : KaehlerDifferential.D k A t = ∑ i, c i • bΩ i` using `(bΩ.sum_repr _).symm`. Establish `hne : (fun i => residue A (c i)) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Conclude with `(residue_eq_zero_iff _).1 (congrFun h0 i)`. Rewrite using `[← residue_eq_zero_iff, RingHom.map_det]`. Use `Matrix.exists_vecMul_eq_zero_iff.1 ⟨_, hne, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Establish `h1 : δ j t = ∑ i, c i * δ j (g i)`. Rewrite using `[← (δ j).liftKaehlerDifferential_comp_D t, hsum, map_sum]`. Simplify using `[hg]`. Establish `h2 : residue A (δ j t) = 0` using `(residue_eq_zero_iff _).2 ((Ideal.span_singleton_le_iff_mem _).2 ht (hδ j))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[h1, map_sum]`. Simplify `h2` using `[Matrix.vecMul, dotProduct]`.
+A detailed English derivation is pending.
 -/
 theorem det_mem_maximalIdeal (k A : Type) [CommRing k] [CommRing A] [IsLocalRing A] [Algebra k A] {N : ℕ}
     (g : Fin N → A) (bΩ : Module.Basis (Fin N) A Ω[A⁄k]) (hg : ∀ i, bΩ i = KaehlerDifferential.D k A (g i))
@@ -92,9 +90,9 @@ theorem det_mem_maximalIdeal (k A : Type) [CommRing k] [CommRing A] [IsLocalRing
   simpa [Matrix.vecMul, dotProduct] using h2
 
 /- English proof (translation)
-Establish `hD : IsDomain A` using `ReciprocityTheory.AnForm.R.isDomain_of_isRegularLocalRing`. Establish `hp` using `ReciprocityTheory.AnForm.R.prime_of_regular_params f hf.1 hf.2`. Rewrite `hδ`, the goal using `[Ideal.mem_span_singleton]`. Rewrite `hδ` using `[← Finset.mul_prod_erase J f hj, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Establish `h1 : f j ∣ (∏ i ∈ J.erase j, f i) * δ (f j)` using `(dvd_add_right (dvd_mul_right _ _)).1 ((dvd_mul_right _ _).trans hδ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `((hp j).dvd_or_dvd h1).resolve_left fun h2 => ?_` and prove the remaining obligations. Take `⟨i, hi, h3⟩` from `(hp j).exists_mem_finset_dvd h2`. Conclude with `(ReciprocityTheory.AnForm.R.regular_params_spec f hf.1 hf.2).2 j i (Finset.ne_of_mem_erase hi).symm ((hp j).associated_of_dvd (hp i) h3)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem derivation_mem_span_of_prod {k A : Type} [CommRing k] [CommRing A] [IsRegularLocalRing A] [Algebra k A] {n : ℕ}
     (f : Fin n → A) (hf : ReciprocityTheory.AnForm.R.FinalTheorems.Rsp A n f) (J : Finset (Fin n)) {j : Fin n} (hj : j ∈ J)
@@ -112,9 +110,9 @@ theorem derivation_mem_span_of_prod {k A : Type} [CommRing k] [CommRing A] [IsRe
     ((hp j).associated_of_dvd (hp i) h3)
 
 /- English proof (translation)
-Introduce `hm`. Establish `h` using `GlobalTheory.AdaptedFrame.linearIndependent_tmul_D (k := k) (fun _ : Unit => t) (fun _ => ht) (linearIndependent_unique_iff.2 (by`. Introduce `h0`. Conclude with `ht2 ((Ideal.toCotangent_eq_zero _ _).1 h0)))`. Use `h.ne_zero () ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `KaehlerDifferential.D k A t = w at hm`. Use `Submodule.smul_induction_on hm (fun r hr w _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[← TensorProduct.smul_tmul, Algebra.smul_def, mul_one, ResidueField.algebraMap_eq, (residue_eq_zero_iff _).2 hr, TensorProduct.zero_tmul]`. Rewrite using `[TensorProduct.tmul_add, hx, hy, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem D_notMem_smul_top {k A : Type} [CommRing k] [CommRing A] [IsLocalRing A] [Algebra k A]
     [Algebra.FormallySmooth k (ResidueField A)] {t : A} (ht : t ∈ maximalIdeal A) (ht2 : t ∉ maximalIdeal A ^ 2) :
@@ -132,11 +130,9 @@ theorem D_notMem_smul_top {k A : Type} [CommRing k] [CommRing A] [IsLocalRing A]
   · rw [TensorProduct.tmul_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨r, hr, rfl⟩` from `hx`. Rewrite using `[hδ]`. Conclude with `Ideal.mem_map_of_mem _ (hd r hr)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x hx0 hx`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`.
-
-Conclude with `add_mem (Ideal.mul_mem_left _ _ hx) (Ideal.mul_mem_right _ _ hx0)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_mem_map {k R A : Type} [CommRing k] [CommRing R] [CommRing A] [Algebra k A] (φ : R →+* A)
     (I : Ideal R) (d : R → R) (hd : ∀ r ∈ I, d r ∈ I) (δ : Derivation k A A) (hδ : ∀ r, δ (φ r) = φ (d r))
@@ -153,11 +149,11 @@ theorem derivation_mem_map {k R A : Type} [CommRing k] [CommRing R] [CommRing A]
     exact add_mem (Ideal.mul_mem_left _ _ hx) (Ideal.mul_mem_right _ _ hx0)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U hx b δ hδ hn`. Use `letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra`. Take `⟨hreg, n, f, J, hf, ⟨j, hj⟩, hI⟩` from `GlobalTheory.T.boundary_componentStalk_regular_boundaryIdeal_prod_params E H Dw l Xo c TF Z x U hx hn`. Establish `hm : f j ∈ maximalIdeal ((X₀ TF.Y Z).presheaf.stalk x)` using `hf.1 ▸ Ideal.subset_span ⟨j, rfl⟩`. Use `⟨f j, hm, ?_, fun i => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, hxV, -⟩` from `Opens.isBasis_iff_nbhd.1 (X₀ TF.Y Z).isBasis_affineOpens (show x ∈ (⊤ : (X₀ TF.Y Z).Opens) from trivial) haveI := GlobalTheory.AdaptedFrame.formallySmooth_residueField (s₀ TF.Y Z) (n := Dw.dim) hV x hxV (by`. Use extensionality with `t`. Express the relevant statement in the definitionally equal form `((X₀ TF.Y Z).presheaf.germ ⊤ x trivial).hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (s₀ TF.Y Z) ⊤ t) = ((X₀ TF.Y Z).presheaf.germ V x hxV).hom (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX (s₀ TF.Y Z) V t)`. Rewrite using `[← GlobalTheory.TopForm.resG_comp_algX (s₀ TF.Y Z) (le_top : V ≤ ⊤), RingHom.comp_apply, germ_resG])`. Conclude with `D_notMem_smul_top hm ((ReciprocityTheory.AnForm.R.regular_params_spec f hf.1 hf.2).1 j)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `derivation_mem_span_of_prod f hf J hj (δ i) ?_` and prove the remaining obligations. Rewrite using `[← hI]`. Use `derivation_mem_map _ _ (b i).1 (b i).2.2 (δ i) (hδ i) ?_` and prove the remaining obligations. Rewrite using `[hI]`. Conclude with `Ideal.subset_span rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_boundary_param : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), ∀ (hx : (barComp TF.Y Z).ι x ∈ U.1) (b : Module.Basis (Fin Dw.dim) Γ(TF.Y.X, U.1) (LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U)), letI := (GlobalTheory.LogKSDiv.stalkAlg TF Z x).toAlgebra; ∀ δ : Fin Dw.dim → Derivation c.F ((X₀ TF.Y Z).presheaf.stalk x) ((X₀ TF.Y Z).presheaf.stalk x), (∀ j r, δ j (GlobalTheory.LogKSDiv.stalkHom TF Z x U hx r) = GlobalTheory.LogKSDiv.stalkHom TF Z x U hx ((b j).1 r)) → x ∉ (j₀ TF.Y Z).opensRange → ∃ t ∈ IsLocalRing.maximalIdeal ((X₀ TF.Y Z).presheaf.stalk x), KaehlerDifferential.D c.F ((X₀ TF.Y Z).presheaf.stalk x) t ∉ (IsLocalRing.maximalIdeal ((X₀ TF.Y Z).presheaf.stalk x)) • (⊤ : Submodule ((X₀ TF.Y Z).presheaf.stalk x) Ω[(X₀ TF.Y Z).presheaf.stalk x⁄c.F]) ∧ ∀ j, δ j t ∈ Ideal.span {t} := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U hx b δ hδ hn
@@ -179,13 +175,13 @@ theorem exists_boundary_param : ∀ (E : Type) [Field E] [NumberField E] [IsCMFi
     exact Ideal.subset_span rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z _ _ x U hU hxU ρ hρ b D hD U' ω hω hx`. Establish `h1` using `chartRestr_eq_germ E H Dw l Xo c TF Z x U hU hxU ρ hρ`. Take `⟨δ, hδK, hδR⟩` from `GlobalTheory.T.exists_componentStalkDerivation_of_functionField_extension E H Dw l Xo c TF Z x U hU hxU ρ h1 (fun j => (b j).1) D hD`. Take `⟨g, bΩ, u, hg, hu, hform⟩` from `frame_eq_unit_smul_dForm E H Dw l Xo c TF Z x U' ω hω hx`. Use `letI := (stalkAlg TF Z x).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `key : topPair (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)) D (formOf U' (gen_mem hx) ω) = algebraMap ((X₀ TF.Y Z).presheaf.stalk x) (X₀ TF.Y Z).functionField (u * (Matrix.of fun i j => δ j (g i)).det)`. Rewrite using `[hform, LinearMap.map_smul, topPair_dForm, smul_eq_mul, map_mul, RingHom.map_det]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `hδK j (g i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, key.symm⟩, fun hU' => ?_, fun hr => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Take `⟨t, htm, htd, htδ⟩` from `exists_boundary_param E H Dw l Xo c TF Z x U hxU b δ hδR hn`. Establish `hz` using `det_mem_maximalIdeal c.F _ g bΩ hg δ t htm htd htδ`. Use `(zeroAt_iff.1 ⟨_, Ideal.mul_mem_left _ u hz, key.symm⟩).2 hU'` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.T.span_logDer_germs' E H Dw l Xo c TF Z x U hU hxU b δ hδR hr`. Conclude with `⟨_, hu.mul (isUnit_det_of_span_eq_top c.F _ g bΩ hg δ hs), key.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem local_topPair : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c), ∀ [IsIntegral (X₀ TF.Y Z)] [SmoothOfRelativeDimension Dw.dim (s₀ TF.Y Z)] (x : X₀ TF.Y Z) (U : TF.Y.X.affineOpens), U.1 ≤ barComp TF.Y Z → (barComp TF.Y Z).ι x ∈ U.1 → ∀ (ρ : Γ(TF.Y.X, U.1) →+* (X₀ TF.Y Z).functionField), spMap ρ ≫ LogKS.chart U = GlobalTheory.LogKSDiv.genPt TF Z ≫ (barComp TF.Y Z).ι → ∀ (b : Module.Basis (Fin Dw.dim) Γ(TF.Y.X, U.1) (LogKS.logDer TF.Y.s (Scheme.IdealSheafData.vanishingIdeal (LogKS.interior TF.Y).compl) U)) (D : Fin Dw.dim → GlobalTheory.LogKSDiv.GenDer TF Z), (letI := (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)).toAlgebra; ∀ j r, (show Derivation c.F (X₀ TF.Y Z).functionField (X₀ TF.Y Z).functionField from D j) (ρ r) = ρ ((b j).1 r)) → ∀ (U' : (X₀ TF.Y Z).Opens) (ω : TopForm.FormsOn (s₀ TF.Y Z) Dw.dim U'), TopForm.IsFrame ω → ∀ hx : x ∈ U', RegAt x (GlobalTheory.LogKSDiv.topPair (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)) D (formOf U' (gen_mem hx) ω)) ∧ (UnitAt x (GlobalTheory.LogKSDiv.topPair (GlobalTheory.Cartier.constFn (s₀ TF.Y Z)) D (formOf U' (gen_mem hx) ω)) ↔ x ∈ (j₀ TF.Y Z).opensRange) := by
   intro E _ _ _ H Dw l Xo c TF Z _ _ x U hU hxU ρ hρ b D hD U' ω hω hx

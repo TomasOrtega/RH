@@ -8,7 +8,7 @@ open scoped Matrix Classical
 namespace GlobalTheory.DefPt.PtExist
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DefPt.Model.nonempty_ptData_all`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (ξ : ℝ), DefCase U ξ → ∀ Z : Comp Xo c, Nonempty (PtData Z) :=
   GlobalTheory.DefPt.Model.nonempty_ptData_all

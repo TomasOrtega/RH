@@ -22,13 +22,13 @@ open GlobalTheory.Dict
 namespace GlobalTheory.Dict.Letters
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `Harm.mem_rowHighest_iff_rowAdd.1 hP`. Use `set F := f.prodCongr (Equiv.refl ((Fin p ⊕ Fin q) × κ)) with hF`. Establish `hFa (t : T) (v : (Fin p ⊕ Fin q) × κ) : F (t, v) = (f t, v)` using `rfl`. Apply the tactic sequence `refine Harm.mem_rowHighest_iff_rowAdd.2 ⟨fun t a b => ?_, fun t ρ => ?_, fun t ρ ρ' hρ s => ?_⟩ <;>`. Take `⟨t, rfl⟩` from `f.surjective t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (MvPolynomial.rename F) (h₁ t a b)` as an intermediate fact. Rewrite `this` using `[map_zero, Harm.laplacian_apply, map_sum]`. Rewrite using `[Harm.laplacian_apply, ← this]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Harm.xVar, Harm.yVar, ← hFa, ← hFa, MvPolynomial.pderiv_rename F.injective, MvPolynomial.pderiv_rename F.injective]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Harm.isWeightedHomogeneous_rename_iff F.injective, h, h']`. Use `h₂ t ρ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `⟨t', ρ', k⟩`. Simplify using `[hFa, Harm.rowInd_apply]`. Use `conv_rhs => rw [← h₃ t ρ ρ' hρ s]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `DFunLike.congr_fun (?_ : (Harm.rowAdd (f t) ρ ρ' (s : R)).comp (MvPolynomial.rename F) = (MvPolynomial.rename F).comp (Harm.rowAdd t ρ ρ' (s : R))) P` and prove the remaining obligations. Use `MvPolynomial.algHom_ext fun ⟨t', ρ'', k⟩ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, MvPolynomial.rename_X, hFa, Harm.rowAdd_X, Harm.rowAdd_X]`. Simplify using `only [f.injective.eq_iff]`. Apply the tactic sequence `split_ifs <;> simp [hFa]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rename_place_mem {R : Type} [CommRing R] {T T' κ : Type} [Fintype κ] {p q : ℕ} (f : T ≃ T')
     {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ} {d : T' → Fin p → ℕ} {d' : T' → Fin q → ℕ}
@@ -59,7 +59,7 @@ theorem rename_place_mem {R : Type} [CommRing R] {T T' κ : Type} [Fintype κ] {
     split_ifs <;> simp [hFa]
 
 /- English proof (translation)
-Use `⟨fun hP => ?_, rename_place_mem f h h'⟩` and prove the remaining obligations. Use `rename_place_mem f.symm (d := c) (d' := c') (fun t => by rw [← h, f.apply_symm_apply]) (fun t => by rw [← h', f.apply_symm_apply]) hP` as an intermediate fact. Rewrite `this` using `[MvPolynomial.rename_rename]`. Use `this` and compare the differences between its conclusion and the goal. Rewrite using `[show (f.symm.prodCongr (Equiv.refl ((Fin p ⊕ Fin q) × κ))) ∘ (f.prodCongr (Equiv.refl ((Fin p ⊕ Fin q) × κ))) = id from (f.prodCongr (Equiv.refl ((Fin p ⊕ Fin q) × κ))).symm_comp_self, MvPolynomial.rename_id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_place_mem_iff {R : Type} [CommRing R] {T T' κ : Type} [Fintype κ] {p q : ℕ} (f : T ≃ T')
     {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ} {d : T' → Fin p → ℕ} {d' : T' → Fin q → ℕ}
@@ -78,17 +78,15 @@ theorem rename_place_mem_iff {R : Type} [CommRing R] {T T' κ : Type} [Fintype �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `ThetaHol.finrank_lattice X`. Establish `hg : g = X.Ψ.card * r` using `by simpa using Fintype.card_congr idx`. Apply the tactic sequence `have hκ : X.κ0 / 2 ≠ 0 := by rcases X.κ0_xi with h | h <;> rw [h] <;> simp [X.ξ0_ne]`. Establish `hlat : ReciprocityTheory.MultiplicativeHeights.IsLattice X.Λ` using `⟨X.Λ_fg, X.Λ_span⟩`. Take `⟨B, hB⟩ : ∃ B : LinearMap.BilinForm ℚ (Fin r → E), ∀ u v, EF X u v = B u v` from `⟨_, TensLat.EF_eq_bilin X⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose k hk using fun u v : X.Λ => (hL.2 u).1 u.2 v v.2`. Establish `hk' (u v : X.Λ) : (k u v : ℚ) = B u v` using `(hk u v).symm.trans (hB _ _)`. Set `β : LinearMap.BilinForm ℤ X.Λ` to `LinearMap.mk₂ ℤ k (fun x x' y => by apply Int.cast_injective (α := ℚ); simp [hk']) (fun m x y => by apply Int.cast_injective (α := ℚ); simp [hk', -zsmul_eq_mul, map_zsmul]; simp) (fun x y y' => by apply Int.cast_injective (α := ℚ); simp [hk']) (fun m x y => by apply Int.cast_inje …`. Establish `hβ (u v : X.Λ) : (β u v : ℚ) = EF X u v` using `(hk u v).symm`. Establish `halt : β.IsAlt` using `fun x => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `TensLat.EF_swap X x x` as an intermediate fact. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[hβ, Int.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hbij : Function.Bijective β`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `x x' h`. Use `Subtype.ext (eq_of_EFf_eq hκ X.Gm_det hlat fun y hy => ?_)` and prove the remaining obligations. Conclude with `(hβ x ⟨y, hy⟩).symm.trans (h ▸ hβ x' ⟨y, hy⟩)`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx, hφ⟩` from `exists_traceFormDual_eq hκ X.Gm_det hlat φ.toAddMonoidHom`. Use `⟨⟨x, (hL.2 x).2 hx⟩, LinearMap.ext fun y => Int.cast_injective (α := ℚ) ?_⟩` and prove the remaining obligations. Conclude with `(hβ _ _).trans (hφ y).symm`. Take `⟨g', bas, S, hs, -, hr⟩` from `exists_symplectic_coordinates_adapted halt hbij (I := ⊥) (fun m x hm hx => by simpa [hm] using hx) (by simp) (Or.inr rfl)`. Take `rfl : g' = g` from `by omega`.
-
-Conclude with `⟨bas, fun a b => by rw [← hβ, hs]; simp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isSympl (X : Data E r) (hL : SelfD X X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) :
     ∃ bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ, IsSympl X bas := by
@@ -130,39 +128,37 @@ end GlobalTheory.Dict.Letters
 open GlobalTheory.Dict.Letters GlobalTheory.Harm in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c σ r g n X a e hσ hr hp0 hΨ hL hD`. Take `⟨hbij, hrt, hcj, -⟩` from `GlobalTheory.Relab.relab_good E H l c σ hσ`. Establish `hr' : X.p0 + Dw.p = r` using `by omega`. Establish `i1` using `ComplexEmbedding.involutive_conjugate E`. Establish `i2 : ∀ τ, ¬ InPsi H τ ↔ InPsi H (ComplexEmbedding.conjugate τ)` using `not_mem_hostType_iff H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i3 : ∀ τ, InPsi H τ → Dw.mult τ = Dw.p` using `fun _ => mult_of_mem Dw`. Establish `i4 : ∀ τ, InPsi H τ → Dw.mult (ComplexEmbedding.conjugate τ) = X.p0` using `fun _ h => (mult_conjEmb_of_mem Dw h).trans hp0.symm`. Set `f : {τ // InPsi H τ} ≃ X.Ψ` to `(Equiv.ofBijective _ hbij).subtypeEquiv fun τ => ((hΨ _).trans (hrt τ)).symm`. Establish `hf (t : {τ // InPsi H τ}) : (f t).1 = relab c σ t.1` using `rfl`. Set `ρ : Lt1 Dw ≃ X.Ψ × (Fin Dw.p ⊕ Fin X.p0)` to `(halfRowEquiv i1 i2 i3 i4).trans (f.prodCongr (Equiv.refl _))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `idx : Fin g ≃ X.Ψ × Fin r` to `e.trans (ρ.trans (rowOf X hr'))`. Establish `hidx (j) : (∃ t : {τ // InPsi H τ}, ∃ i : Fin Dw.p, (e j).1 = t.1 ∧ ((e j).2 : ℕ) = i ∧ idx j = (f t, rowIdx hr' (Sum.inl i))) ∨ ∃ t : {τ // InPsi H τ}, ∃ i : Fin X.p0, (e j).1 = ComplexEmbedding.conjugate t.1 ∧ ((e j).2 : ℕ) = i ∧ idx j = (f t, rowIdx hr' (Sum.inr i))`. Take `⟨⟨t, i | i⟩, h⟩` from `(halfRowEquiv i1 i2 i3 i4).symm.surjective (e j)`. Use `Or.inl ⟨t, i, by rw [← h]; rfl, by rw [← h]; rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [idx, ρ, Equiv.trans_apply, ← h, Equiv.apply_symm_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Use `Or.inr ⟨t, i, by rw [← h]; rfl, by rw [← h]; rfl, ?_⟩` and prove the remaining obligations. Simplify using `only [idx, ρ, Equiv.trans_apply, ← h, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Take `⟨bas, hbas⟩` from `exists_isSympl X hL idx`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Set `k₀ : {τ // InPsi H τ} → Fin Dw.p → ℕ` to `fun t => diffOf fun i => a (t.1, i)`. Set `k₀' : {τ // InPsi H τ} → Fin X.p0 → ℕ` to `fun t => diffOf fun i => a (ComplexEmbedding.conjugate t.1, i)`. Establish `hx (t) : partOf (k₀ t) = fun i : Fin Dw.p => a (t.1, i)` using `partOf_diffOf fun i j h => hD.1 _ h`. Establish `hy (t) : partOf (k₀' t) = fun i : Fin X.p0 => a (ComplexEmbedding.conjugate t.1, i)` using `partOf_diffOf fun i j h => hD.1 _ h`. Set `eL : LtN Dw n ≃ Harm.Var X.Ψ Dw.p X.p0 (Fin n)` to `(typeLetterEquiv i1 i2 i3 i4 n).trans (f.prodCongr (Equiv.refl _))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem (P : MvPolynomial (LtN Dw n) c.F) : P ∈ HHa Dw.mult n c.F ComplexEmbedding.conjugate (InPsi H) (fun τ i => a (τ, i)) ↔ MvPolynomial.rename eL P ∈ rowHighest c.F (k₀ ∘ f.symm) (k₀' ∘ f.symm)`. Rewrite using `[Equiv.coe_trans, ← MvPolynomial.rename_rename, rename_place_mem_iff f (c := k₀) (c' := k₀') (fun t => by simp) (fun t => by simp)]`. Simplify using `only [mem_HHa_iff_rename i1 i2 i3 i4, mem_rowHighest_iff_rowAdd, hx, hy]`. Establish `hinv (τ) : Function.invFun (relab c σ) (relab c σ τ) = τ` using `Function.leftInverse_invFun hbij.1 τ`. Use `⟨⟨hr', bas, idx, hbas, e, eL, k₀ ∘ f.symm, k₀' ∘ f.symm, fun x v j => ?_, fun j => ?_, fun ℓ => ?_, ?_, fun P hP => ?_, ?_⟩, rfl, fun hpos hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Break down `hidx j with ⟨t, i, h1, h2, h3⟩ | ⟨t, i, h1, h2, h3⟩` into its components or cases. Establish `hi` using `i.isLt`. Rewrite using `[pv, Function.comp_apply, h3, h2, h1, per_of_le _ _ _ _ (by simp), perFr, dif_pos (show relab c σ t.1 ∈ X.Ψ from (f t).2), dif_pos (by omega)]`. Both sides reduce to the same expression. Establish `hi` using `i.isLt`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h4 : relab c σ (ComplexEmbedding.conjugate t.1) = ComplexEmbedding.conjugate (f t).1` using `hcj t.1`. Rewrite using `[pv, Function.comp_apply, h3, h2, h1, per_of_lt _ _ _ _ (by rw [rowIdx_inr]; omega), h4]`. Establish `h5 : rowIdx hr' (Sum.inr i) = ⟨X.p0 - 1 - i, by omega⟩` using `Fin.ext (rowIdx_inr hr' i)`. Rewrite using `[h5]`. Generalize the expression as in `f t = u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨τ, hτ⟩` from `u`. Take `⟨τ, rfl⟩` from `i1.surjective τ`. Rewrite using `[show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from i1 τ, perFr, dif_neg (fun h => (X.cmType τ).1 h hτ), dif_pos (show conjEmb τ ∈ X.Ψ from hτ), dif_pos (by omega)]`. Both sides reduce to the same expression. Break down `hidx j with ⟨t, i, h1, h2, h3⟩ | ⟨t, i, h1, h2, h3⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h3, h1]`. Conclude with `rowType_rowOf_inl X hr' (f t) i`. Rewrite using `[h3, h1]`. Conclude with `(rowType_rowOf_inr X hr' (f t) i).trans (hcj t.1).symm`. Establish `: idx.symm (rowOf X hr' ((eL ℓ).1, (eL ℓ).2.1)) = e.symm ⟨ℓ.1, ℓ.2.1⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.symm_apply_eq]`. Simplify using `only [idx, Equiv.trans_apply, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Rewrite using `[letterDir, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `τ j`. Take `⟨t, rfl⟩` from `f.surjective τ`. Take `⟨i | i, rfl⟩` from `(rowIdx hr').surjective j`. Rewrite using `[wtOf_inl, wtX, if_pos (by simp), hf, hinv, Function.comp_apply, f.symm_apply_apply, hx]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `i.isLt`. Rewrite using `[wtOf_inr, wtX, if_neg (by rw [rowIdx_inr]; omega), hf, ← hcj, hinv, Function.comp_apply, f.symm_apply_apply, hy, rowIdx_inr, show X.p0 - 1 - (X.p0 - 1 - i) = i by omega]`. Both sides reduce to the same expression. Rewrite using `[← MvPolynomial.map_rename]`. Conclude with `map_mem_rowHighest _ ((hmem P).1 hP)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := σ.toAlgebra`. Rewrite using `[← span_map_rowHighest c.F ℂ]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨Q, hQ, rfl⟩`. Take `⟨P, rfl⟩` from `MvPolynomial.rename_surjective _ eL.surjective Q`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨P, (hmem P).2 hQ, (MvPolynomial.map_rename _ _ _).symm⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t⟩ : Nonempty {τ // InPsi H τ} := by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : InPsi H τ`. Conclude with `⟨⟨τ, h⟩⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨⟨_, (i2 τ).1 h⟩⟩`. Use `⟨f t, ⟨Dw.p - 1, by omega⟩, by simp only; omega, ?_⟩` and prove the remaining obligations. Use `hpos t.1 t.2 (by rw [i3 _ t.2]; exact hp)` as an intermediate fact. Rewrite `this` using `[i3 _ t.2]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, k₀, diffOf]`.
-
-Rewrite using `[dif_neg (by omega)]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.exists_dic : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (c : Coeff l) (σ : c.F →+* ℂ) (r g n : ℕ) (X : Data E r) (a : (E →+* ℂ) × ℕ → ℕ) (e : Fin g ≃ Lt1 Dw), GoodEmb c σ → r = Dw.p + Dw.q → X.p0 = Dw.q → (∀ τ : E →+* ℂ, τ ∈ X.Ψ ↔ τ (H.rt : E) = H.rt0) → SelfD X X.Λ → Dom a n → ∃ Dc : Dic Dw c σ X g Dw.p n a, Dc.e = e ∧ (LastPos Dw a → 0 < Dw.p → ∃ τ, ∃ i : Fin Dw.p, i.val + 1 = Dw.p ∧ 1 ≤ Dc.k τ i) := by
   intro E _ _ _ H Dw l c σ r g n X a e hσ hr hp0 hΨ hL hD

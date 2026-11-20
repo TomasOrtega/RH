@@ -9,7 +9,7 @@ variable {P : Type} [AddCommGroup P] [Module ℝ P] {M : Type} [AddCommGroup M] 
   [Module ℝ M] [IsScalarTower ℝ ℂ M]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `[Fin.removeNth]`. Simplify using `[Fin.removeNth, Fin.succ_succAbove_succ]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem removeNth_succ_vecCons {n : ℕ} (x : P) (Y : Fin (n + 1) → P) (t : Fin (n + 1)) :
     t.succ.removeNth (Matrix.vecCons x Y) = Matrix.vecCons x (t.removeNth Y) := by
@@ -19,9 +19,9 @@ theorem removeNth_succ_vecCons {n : ℕ} (x : P) (Y : Fin (n + 1) → P) (t : Fi
   · simp [Fin.removeNth, Fin.succ_succAbove_succ]
 
 /- English proof (translation)
-Establish `hW : Matrix.vecCons x (t.removeNth Y) = Function.update Y t x ∘ t.cycleRange.symm`. Rewrite using `[← Fin.cons_removeNth_eq_comp_cycleRange_symm]`. Simplify using `only [Function.update_self, Fin.removeNth_update]`. Both sides reduce to the same expression. Rewrite using `[hW, η.map_perm, Equiv.Perm.sign_symm, Fin.sign_cycleRange, Units.smul_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem map_vecCons_removeNth {n : ℕ} (η : P [⋀^Fin (n + 1)]→ₗ[ℝ] M) (x : P)
     (Y : Fin (n + 1) → P) (t : Fin (n + 1)) :
@@ -35,11 +35,11 @@ theorem map_vecCons_removeNth {n : ℕ} (η : P [⋀^Fin (n + 1)]→ₗ[ℝ] M) 
   rfl
 
 /- English proof (translation)
-Establish `hs : ∀ t : ℕ, ((-1 : ℤ) ^ (t + 1) * (-1) ^ t) = -1` using `fun t => by`. Rewrite using `[← pow_add]`. Conclude with `Odd.neg_one_pow ⟨t, by ring⟩`. Consider the cases of `q with`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[kD_apply, Fin.sum_univ_succ]`. Simplify using `[Fin.removeNth_zero]`. Consider the case `succ n`. Rewrite using `[kD_apply, Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[Fin.removeNth_zero]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_succ, Matrix.cons_val_succ, removeNth_succ_vecCons, map_vecCons_removeNth, map_zsmul, smul_smul, hs, neg_one_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kD_vecCons (T : P →ₗ[ℝ] Module.End ℂ M) {q : ℕ} (η : P [⋀^Fin q]→ₗ[ℝ] M) (x : P)
     (Y : Fin q → P) :
@@ -61,7 +61,7 @@ theorem kD_vecCons (T : P →ₗ[ℝ] Module.End ℂ M) {q : ℕ} (η : P [⋀^F
         map_zsmul, smul_smul, hs, neg_one_zsmul]
 
 /- English proof (translation)
-Rewrite using `[kDel_apply]`. Simplify using `only [kD_vecCons, map_sub, map_sum, Finset.sum_sub_distrib]`. Use `congr 1`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem kDel_kD {β : Type} [Fintype β] (T T' : P →ₗ[ℝ] Module.End ℂ M) (b : β → P) {q : ℕ}
     (η : P [⋀^Fin q]→ₗ[ℝ] M) (Y : Fin q → P) :

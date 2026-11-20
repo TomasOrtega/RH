@@ -23,12 +23,12 @@ Both sides reduce to the same expression.
 @[simp] theorem twv_apply (σ : O ≃+* O) {n : ℕ} (a : Fin n → O) (i : Fin n) : twv σ a i = σ (a i) := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun _ => map_zero σ`.
+A detailed English derivation is pending.
 -/
 theorem twv_zero (σ : O ≃+* O) (n : ℕ) : twv σ (0 : Fin n → O) = 0 := funext fun _ => map_zero σ
 
 /- English proof (translation)
-The claim follows from `funext fun _ => by simp [twv]`.
+A detailed English derivation is pending.
 -/
 theorem twv_smul (σ : O ≃+* O) {n : ℕ} (c : O) (a : Fin n → O) : twv σ (c • a) = σ c • twv σ a :=
   funext fun _ => by simp [twv]
@@ -39,13 +39,13 @@ Both sides reduce to the same expression.
 theorem twv_twv (σ τ : O ≃+* O) {n : ℕ} (a : Fin n → O) : twv τ (twv σ a) = twv (σ.trans τ) a := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun _ => σ.symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 theorem twv_symm_twv (σ : O ≃+* O) {n : ℕ} (a : Fin n → O) : twv σ.symm (twv σ a) = a :=
   funext fun _ => σ.symm_apply_apply _
 
 /- English proof (translation)
-The claim follows from `funext fun _ => σ.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem twv_twv_symm (σ : O ≃+* O) {n : ℕ} (a : Fin n → O) : twv σ (twv σ.symm a) = a :=
   funext fun _ => σ.apply_symm_apply _
@@ -60,13 +60,13 @@ def conjLin (σ : O ≃+* O) {n m : ℕ} (r : (Fin n → O) →ₗ[O] (Fin m →
     rw [twv_smul, map_smul, twv_smul, RingHom.id_apply, σ.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `twv_twv_symm σ _`.
+A detailed English derivation is pending.
 -/
 theorem twv_conjLin (σ : O ≃+* O) {n m : ℕ} (r : (Fin n → O) →ₗ[O] (Fin m → O)) (a : Fin n → O) :
     twv σ (conjLin σ r a) = r (twv σ a) := twv_twv_symm σ _
 
 /- English proof (translation)
-Introduce `b` and use `by obtain ⟨a, ha⟩ := hr (twv σ b) refine ⟨twv σ.symm a, ?_⟩ show twv σ.symm (r (twv σ (twv σ.symm a))) = b rw [twv_twv_symm, ha, twv_symm_twv]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjLin_surjective (σ : O ≃+* O) {n m : ℕ} {r : (Fin n → O) →ₗ[O] (Fin m → O)} (hr : Function.Surjective r) :
     Function.Surjective (conjLin σ r) := fun b => by
@@ -87,19 +87,19 @@ def IsOrbForm (v : LinearMap.BilinForm ℤ X₀) (σ : O ≃+* O) (n : ℕ) (B :
       B (twv σ a) (twv σ b) = v x y
 
 /- English proof (translation)
-Use `set r' := conjLin σ r`. Establish `hr' : Function.Surjective r'` using `conjLin_surjective σ hr`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, H⟩`. Take `⟨t, ht⟩` from `Module.projective_lifting_property r' LinearMap.id hr'`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrt : ∀ a, r' (t a) = a` using `fun a => LinearMap.congr_fun ht a`. Establish `hker : ∀ z, r' z = 0 → s z = 0`. Introduce `z hz`. Take `⟨x, hx⟩` from `Submodule.mkQ_surjective _ (s z)`. Rewrite using `[← hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Submodule.Quotient.mk_eq_zero _).2 fun c y => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hs (Submodule.Quotient.mk y)`. Establish `h1` using `H (c • z) b (c • x) y (by rw [Submodule.Quotient.mk_smul, map_smul]; exact congrArg _ hx) hb.symm`. Establish `h2` using `H 0 b 0 y (by rw [map_zero]; rfl) hb.symm`. Establish `e : r (twv σ (c • z)) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← twv_conjLin, map_smul, hz, smul_zero, twv_zero]`. Establish `e0 : r (twv σ 0) = 0` using `by rw [twv_zero, map_zero]`. Simplify using `only at h1 h2`. Rewrite `h1` using `[e]`. Rewrite `h2` using `[e0, map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1.symm.trans h2` after adjusting the coercions. Use `⟨s ∘ₗ t, fun y => ?_, fun a b x y hx hy => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hs y`. Use `⟨r' a, ?_⟩` and prove the remaining obligations. Establish `: s (a - t (r' a)) = 0` using `hker _ (by rw [map_sub, hrt, sub_self])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Establish `h` using `H (t a) (t b) x y hx hy dsimp only at h`. Rewrite `h` using `[← twv_conjLin, ← twv_conjLin, hrt, hrt]`. Then use the resulting hypothesis. Introduce and unpack `⟨s, hs, H⟩`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨s ∘ₗ r', hs.comp hr', fun a b x y hx hy => ?_⟩` and prove the remaining obligations. Establish `h` using `H (r' a) (r' b) x y hx hy`. Use `show B (r (twv σ a)) (r (twv σ b)) = _`. Rewrite `h` using `[twv_conjLin, twv_conjLin]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isOrbForm_comp_iff (v : LinearMap.BilinForm ℤ X₀) (σ : O ≃+* O) {n m : ℕ}
     {r : (Fin n → O) →ₗ[O] (Fin m → O)} (hr : Function.Surjective r) (B : (Fin m → O) → (Fin m → O) → ℝ) :
@@ -141,9 +141,9 @@ theorem isOrbForm_comp_iff (v : LinearMap.BilinForm ℤ X₀) (σ : O ≃+* O) {
     rwa [twv_conjLin, twv_conjLin] at h
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `h`. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Establish `hx : x ∈ (CarDim.orad v : Submodule O X₀)`. Take `⟨a, ha⟩` from `hs (Submodule.Quotient.mk x)`. Rewrite `ha` using `[Subsingleton.elim a 0, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).1 ha.symm`. Simplify using `using hx 1 y`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isOrbForm_zero {v : LinearMap.BilinForm ℤ X₀} {σ : O ≃+* O} {B : (Fin 0 → O) → (Fin 0 → O) → ℝ}
     (h : IsOrbForm v σ 0 B) : v = 0 := by
@@ -182,7 +182,7 @@ theorem orbFun_toFun (w0 : O) (v : LinearMap.BilinForm ℤ X₀) (n : ℕ) (B : 
     (orbFun O w0 v).toFun n B = if v ≠ 0 ∧ ∃ σ : O ≃+* O, σ w0 = w0 ∧ IsOrbForm v σ n B then 1 else 0 := rfl
 
 /- English proof (translation)
-Unfold `InvFun.eval`. Rewrite using `[orbFun_toFun]`. Use `split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem orbFun_eval_eq_zero_or_one (w0 : O) (v : LinearMap.BilinForm ℤ X₀) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] (B : X → X → ℝ) : (orbFun O w0 v).eval X B = 0 ∨ (orbFun O w0 v).eval X B = 1 := by
@@ -193,9 +193,9 @@ theorem orbFun_eval_eq_zero_or_one (w0 : O) (v : LinearMap.BilinForm ℤ X₀) {
   · exact Or.inl rfl
 
 /- English proof (translation)
-Take `⟨s, hs, H⟩` from `h`. Use `LinearMap.ext₂ fun x y => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hs (Submodule.Quotient.mk x)`. Take `⟨b, hb⟩` from `hs (Submodule.Quotient.mk y)`. Use `H a b x y ha.symm hb.symm` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.zero_apply]`. Establish `h0 : ((v x y : ℤ) : ℝ) = 0` using `this.symm`. Conclude with `h0` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isOrbForm_const {v : LinearMap.BilinForm ℤ X₀} {σ : O ≃+* O} {n : ℕ}
     (h : IsOrbForm v σ n fun _ _ => 0) : v = 0 := by
@@ -209,7 +209,7 @@ theorem eq_zero_of_isOrbForm_const {v : LinearMap.BilinForm ℤ X₀} {σ : O �
   exact_mod_cast h0
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[InvFun.evalZ, (orbFun O w0 v).eval_eq hr, orbFun_toFun, if_neg]`. Introduce and unpack `⟨-, σ, -, h⟩`. Use `hv (eq_zero_of_isOrbForm_const (σ := σ) (n := n) ?_)` and prove the remaining obligations. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem orbFun_evalZ_zero (w0 : O) {v : LinearMap.BilinForm ℤ X₀} (hv : v ≠ 0) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] : (orbFun O w0 v).evalZ (0 : LinearMap.BilinForm ℤ X) = 0 := by
@@ -220,11 +220,11 @@ theorem orbFun_evalZ_zero (w0 : O) {v : LinearMap.BilinForm ℤ X₀} (hv : v �
   simpa using h
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X₀`. Rewrite using `[InvFun.evalZ, (orbFun O w0 v).eval_eq hr, orbFun_toFun, if_pos]`. Use `⟨hv, RingEquiv.refl O, rfl, (CarDim.orad v).mkQ ∘ₗ r, (Submodule.mkQ_surjective _).comp hr, fun a b x y hx hy => ?_⟩` and prove the remaining obligations. Establish `hx' : x - r a ∈ (CarDim.orad v : Submodule O X₀)` using `(Submodule.Quotient.eq _).1 hx`. Establish `hy' : y - r b ∈ (CarDim.orad v : Submodule O X₀)` using `(Submodule.Quotient.eq _).1 hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : v x y = v (r a) y`. Use `hx' 1 y` as an intermediate fact. Rewrite `this` using `[one_smul, map_sub, LinearMap.sub_apply, sub_eq_zero]`. Conclude with `this`. Establish `e2 : v (r a) y = v (r a) (r b)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hy' 1 (r a)` as an intermediate fact. Rewrite `this` using `[one_smul, map_sub, LinearMap.sub_apply, sub_eq_zero, hsym, hsym (r b)]`. Conclude with `this`. Use `show ((v (r a) (r b) : ℤ) : ℝ) = (v x y : ℝ)`. Rewrite using `[e1, e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbFun_evalZ_self (w0 : O) {v : LinearMap.BilinForm ℤ X₀} [Module.Finite O X₀] (hv : v ≠ 0)
     (hsym : ∀ y z, v y z = v z y) : (orbFun O w0 v).evalZ v = 1 := by
@@ -252,11 +252,11 @@ section Host
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {X₀ : Type} [AddCommGroup X₀] [Module (𝓞 E) X₀]
 
 /- English proof (translation)
-Introduce `τ hτ n B`. Rewrite using `[orbFun_toFun, orbFun_toFun]`. Use `congr 2`. Apply `propext` to reduce the goal to its premises. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨σ, hσ, s, hs, h⟩`. Conclude with `⟨σ.trans τ, by simp [hσ, hτ], s, hs, fun a b x y hx hy => h a b x y hx hy⟩`. Introduce and unpack `⟨σ, hσ, s, hs, h⟩`. Use `⟨σ.trans τ.symm, by simp [hσ, RingEquiv.symm_apply_eq, hτ], s, hs, fun a b x y hx hy => ?_⟩` and prove the remaining obligations. Use `h a b x y hx hy` as an intermediate fact.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show B (twv τ (twv (σ.trans τ.symm) a)) (twv τ (twv (σ.trans τ.symm) b)) = _`. Rewrite using `[twv_twv, twv_twv]`. Apply the tactic sequence `convert this using 3 <;> ext i <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isTwInv_orbFun (H : Host E) (v : LinearMap.BilinForm ℤ X₀) : IsTwInv H (orbFun (𝓞 E) H.w0 v) := by
   intro τ hτ n B
@@ -276,7 +276,7 @@ theorem isTwInv_orbFun (H : Host E) (v : LinearMap.BilinForm ℤ X₀) : IsTwInv
 end Host
 
 /- English proof (translation)
-Use `⟨orbFun_evalZ_self 0 (fun h => by simpa using LinearMap.congr_fun₂ h 1 1) fun y z => by simp [mul_comm], ?_⟩` and prove the remaining obligations. Conclude with `orbFun_evalZ_zero 0 fun h => by simpa using LinearMap.congr_fun₂ h 1 1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example : (orbFun ℤ 0 mulForm).evalZ mulForm = 1 ∧ (orbFun ℤ 0 mulForm).evalZ (0 : LinearMap.BilinForm ℤ ℤ) = 0 := by
   refine ⟨orbFun_evalZ_self 0 (fun h => by simpa using LinearMap.congr_fun₂ h 1 1) fun y z => by simp [mul_comm], ?_⟩

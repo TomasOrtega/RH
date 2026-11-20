@@ -14,13 +14,13 @@ variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 abbrev iO (a : 𝓞 F) : Fv F v := algebraMap F (Fv F v) (algebraMap (𝓞 F) F a)
 
 /- English proof (translation)
-Conclude with `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 theorem vcoe (x : F) : Valued.v (algebraMap F (Fv F v) x) = v.valuation F x := by
   exact IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Break down `eq_or_ne g 0 with rfl | hg` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← WithZero.exp_log hg, ← WithZero.exp_zero, WithZero.exp_lt_exp, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem lt_one_iff_le_expm1 (g : WithZero (Multiplicative ℤ)) : g < 1 ↔ g ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne g 0 with rfl | hg
@@ -29,29 +29,27 @@ theorem lt_one_iff_le_expm1 (g : WithZero (Multiplicative ℤ)) : g < 1 ↔ g �
     omega
 
 /- English proof (translation)
-Rewrite using `[vcoe]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_le_one v a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_iO_le (a : 𝓞 F) : Valued.v (iO v a) ≤ 1 := by
   rw [vcoe]
   exact IsDedekindDomain.HeightOneSpectrum.valuation_le_one v a
 
 /- English proof (translation)
-Rewrite using `[vcoe]`. Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem v a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_iO_lt_iff (a : 𝓞 F) : Valued.v (iO v a) < 1 ↔ a ∈ v.asIdeal := by
   rw [vcoe]
   exact IsDedekindDomain.HeightOneSpectrum.valuation_lt_one_iff_mem v a
 
 /- English proof (translation)
-Establish `hx1 : Valued.v x ≤ 1` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).mp hx`. Establish `hd` using `IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap (R := 𝓞 F) F v`. Establish `hnhds : {y : Fv F v | Valued.v (y - x) < 1} ∈ 𝓝 x` using `Valued.mem_nhds.mpr ⟨1, fun y hy => by simpa using hy⟩`. Take `⟨_, hy, k, rfl⟩` from `mem_closure_iff_nhds.mp (hd x) _ hnhds`. Simplify using `only [Set.mem_setOf_eq] at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hk' : Valued.v (algebraMap F (Fv F v) k) ≤ 1`. Establish `e : algebraMap F (Fv F v) k = (algebraMap F (Fv F v) k - x) + x` using `by ring`. Rewrite using `[e]`. Conclude with `le_trans (Valuation.map_add _ _ _) (max_le hy.le hx1)`. Establish `hk : v.valuation F k ≤ 1` using `by rw [← vcoe]; exact hk'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `IsDedekindDomain.HeightOneSpectrum.exists_valuation_sub_lt_of_integer v hk 1`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e : x - iO v a = (x - algebraMap F (Fv F v) k) + -(iO v a - algebraMap F (Fv F v) k)` using `by ring`. Establish `e2 : iO v a - algebraMap F (Fv F v) k = algebraMap F (Fv F v) (algebraMap (𝓞 F) F a - k)`. Simplify using `[iO, map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `hy`. Rewrite using `[Valuation.map_neg, e2, vcoe]`.
-
-Simplify using `using ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_appr {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
     ∃ a : 𝓞 F, Valued.v (x - iO v a) < 1 := by
@@ -84,7 +82,7 @@ def appr (x : Fv F v) : 𝓞 F :=
   if h : ∃ a : 𝓞 F, Valued.v (x - iO v a) < 1 then h.choose else 0
 
 /- English proof (translation)
-Establish `h` using `exists_appr v hx`. Unfold `appr`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appr_spec {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
     Valued.v (x - iO v (appr v x)) < 1 := by
@@ -96,11 +94,11 @@ theorem appr_spec {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
 def red (x : Fv F v) : 𝓞 F ⧸ v.asIdeal := Ideal.Quotient.mk _ (appr v x)
 
 /- English proof (translation)
-Establish `hs` using `appr_spec v hx`. Unfold `red`. Rewrite using `[Ideal.Quotient.eq, ← v_iO_lt_iff]`. Establish `e : iO v (appr v x - a) = (x - iO v a) - (x - iO v (appr v x))`. Simplify using `only [iO, map_sub]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e2 : x - iO v a = (x - iO v (appr v x)) + ((x - iO v a) - (x - iO v (appr v x)))` using `by ring`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt hs h)`. Introduce `h`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h hs)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem red_eq_mk_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (a : 𝓞 F) :
     red v x = Ideal.Quotient.mk _ a ↔ Valued.v (x - iO v a) < 1 := by
@@ -120,13 +118,13 @@ theorem red_eq_mk_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) (a : 
     exact lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt h hs)
 
 /- English proof (translation)
-Conclude with `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).mpr (v_iO_le v a)`.
+A detailed English derivation is pending.
 -/
 theorem mem_O_iO (a : 𝓞 F) : iO v a ∈ v.adicCompletionIntegers F := by
   exact (IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).mpr (v_iO_le v a)
 
 /- English proof (translation)
-Use `(red_eq_mk_iff v (mem_O_iO v a) a).mpr ?_` and prove the remaining obligations. Rewrite using `[sub_self, map_zero]`. Conclude with `zero_lt_one`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_iO (a : 𝓞 F) : red v (iO v a) = Ideal.Quotient.mk _ a := by
   refine (red_eq_mk_iff v (mem_O_iO v a) a).mpr ?_
@@ -134,9 +132,9 @@ theorem red_iO (a : 𝓞 F) : red v (iO v a) = Ideal.Quotient.mk _ a := by
   exact zero_lt_one
 
 /- English proof (translation)
-Establish `hxy : x + y ∈ v.adicCompletionIntegers F` using `add_mem hx hy`. Establish `e1 : red v x + red v y = Ideal.Quotient.mk _ (appr v x + appr v y)`. Simplify using `only [red, map_add]`. Rewrite using `[e1, red_eq_mk_iff v hxy]`. Establish `e : x + y - iO v (appr v x + appr v y) = (x - iO v (appr v x)) + (y - iO v (appr v y))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [iO, map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (appr_spec v hx) (appr_spec v hy))`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_add {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F)
     (hy : y ∈ v.adicCompletionIntegers F) : red v (x + y) = red v x + red v y := by
@@ -151,13 +149,13 @@ theorem red_add {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F)
   exact lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt (appr_spec v hx) (appr_spec v hy))
 
 /- English proof (translation)
-Establish `hxy : x * y ∈ v.adicCompletionIntegers F` using `mul_mem hx hy`. Establish `e1 : red v x * red v y = Ideal.Quotient.mk _ (appr v x * appr v y)`. Simplify using `only [red, map_mul]`. Rewrite using `[e1, red_eq_mk_iff v hxy]`. Establish `e : x * y - iO v (appr v x * appr v y) = (x - iO v (appr v x)) * y + iO v (appr v x) * (y - iO v (appr v y))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [iO, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `hy1 : Valued.v y ≤ 1` using `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F v).mp hy`. Establish `ha1 : Valued.v (iO v (appr v x)) ≤ 1` using `v_iO_le v _`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `lt_of_le_of_lt (Valuation.map_add _ _ _)` to reduce the goal to its premises. Apply `max_lt` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem red_mul {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F)
     (hy : y ∈ v.adicCompletionIntegers F) : red v (x * y) = red v x * red v y := by
@@ -183,14 +181,14 @@ theorem red_mul {x y : Fv F v} (hx : x ∈ v.adicCompletionIntegers F)
       _ < 1 := by rw [one_mul]; exact appr_spec v hy
 
 /- English proof (translation)
-Establish `h` using `(red_eq_mk_iff v (one_mem _) 1).mpr (by simp [iO])`. Rewrite using `[h, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_one : red v 1 = 1 := by
   have h := (red_eq_mk_iff v (one_mem _) 1).mpr (by simp [iO])
   rw [h, map_one]
 
 /- English proof (translation)
-Rewrite using `[← map_zero (Ideal.Quotient.mk v.asIdeal), red_eq_mk_iff v hx]`. Simplify using `[iO]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem red_eq_zero_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
     red v x = 0 ↔ Valued.v x < 1 := by
@@ -198,16 +196,16 @@ theorem red_eq_zero_iff {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) :
   simp [iO]
 
 /- English proof (translation)
-Establish `h` using `(red_eq_mk_iff v (zero_mem _) 0).mpr (by simp [iO])`. Rewrite using `[h, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_zero : red v 0 = 0 := by
   have h := (red_eq_mk_iff v (zero_mem _) 0).mpr (by simp [iO])
   rw [h, map_zero]
 
 /- English proof (translation)
-Establish `hn : -x ∈ v.adicCompletionIntegers F` using `neg_mem hx`. Establish `e1 : -red v x = Ideal.Quotient.mk _ (-appr v x)`. Simplify using `only [red, map_neg]`. Rewrite using `[e1, red_eq_mk_iff v hn]`. Establish `e : -x - iO v (-appr v x) = -(x - iO v (appr v x))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [iO, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Valuation.map_neg]`. Conclude with `appr_spec v hx`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_neg {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : red v (-x) = -red v x := by
   have hn : -x ∈ v.adicCompletionIntegers F := neg_mem hx
@@ -221,16 +219,16 @@ theorem red_neg {x : Fv F v} (hx : x ∈ v.adicCompletionIntegers F) : red v (-x
   exact appr_spec v hx
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective t`. Conclude with `⟨iO v a, mem_O_iO v a, red_iO v a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem red_surj (t : 𝓞 F ⧸ v.asIdeal) : ∃ x ∈ v.adicCompletionIntegers F, red v x = t := by
   obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective t
   exact ⟨iO v a, mem_O_iO v a, red_iO v a⟩
 
 /- English proof (translation)
-Establish `hne : (WithZero.exp (-1 : ℤ) : WithZero (Multiplicative ℤ)) ≠ 0` using `WithZero.exp_ne_zero`. Rewrite using `[map_mul, map_inv₀, unifV_val, lt_one_iff_le_expm1]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `h`. Establish `h2 : WithZero.exp (-1 : ℤ) * ((WithZero.exp (-1 : ℤ))⁻¹ * Valued.v x) ≤ WithZero.exp (-1 : ℤ) * 1` using `by gcongr`. Rewrite `h2` using `[← mul_assoc, mul_inv_cancel₀ hne, one_mul, mul_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem lt_one_iff_unif (x : Fv F v) :
     Valued.v x < 1 ↔ Valued.v ((unifV v)⁻¹ * x) ≤ 1 := by
@@ -247,9 +245,9 @@ theorem lt_one_iff_unif (x : Fv F v) :
     rwa [← mul_assoc, mul_inv_cancel₀ hne, one_mul, mul_one] at h2
 
 /- English proof (translation)
-Establish `hfin` using `IsDedekindDomain.HeightOneSpectrum.Support.finite (𝓞 F) x`. Use `Filter.eventually_cofinite.mpr (hfin.subset ?_)` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw`. Rewrite `hw` using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers (𝓞 F) F w, vcoe, not_le]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem ev_int (x : F) : ∀ᶠ v in cofinite,
     algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
@@ -261,11 +259,9 @@ theorem ev_int (x : F) : ∀ᶠ v in cofinite,
   exact hw
 
 /- English proof (translation)
-Establish `h1` using `IsDedekindDomain.HeightOneSpectrum.Support.finite (𝓞 F) x`. Establish `h2` using `IsDedekindDomain.HeightOneSpectrum.Support.finite (𝓞 F) x⁻¹`. Use `Filter.eventually_cofinite.mpr ((h1.union h2).subset ?_)` and prove the remaining obligations. Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite `hw` using `[vcoe]`. Break down `lt_or_gt_of_ne hw with h | h` into its components or cases. Use `right show 1 < w.valuation F x⁻¹`. Rewrite using `[map_inv₀]`. Conclude with `one_lt_inv_iff₀.mpr ⟨by`.
-
-Rewrite using `[zero_lt_iff]`. Conclude with `(Valuation.ne_zero_iff _).mpr hx, h⟩`. Use `left`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_unit {x : F} (hx : x ≠ 0) : ∀ᶠ v in cofinite,
     Valued.v (algebraMap F (Fv F v) x) = 1 := by
@@ -290,21 +286,19 @@ end Res
 section Count
 
 /- English proof (translation)
-Use `choose xw hxwL hxw using hsurj`. Establish `hS : S.Finite` using `Set.toFinite S`. Establish `key : ∀ w x, -xw w + x ∈ (N : Set G) → x ∈ L ∧ φ x = w`. Introduce `w x hn`. Establish `hnL : -xw w + x ∈ L` using `hNL hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : xw w + (-xw w + x) = x` using `by abel`. Establish `hxL : x ∈ L`. Establish `h2` using `add_mem (hxwL w) hnL`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis. Use `⟨hxL, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hadd (xw w) (hxwL w) (-xw w + x) hnL`. Rewrite `h1` using `[e, hxw, (hker _ hnL).mpr hn, add_zero]`. Conclude with `h1`. Establish `hset : {x | x ∈ L ∧ φ x ∈ S} = ⋃ w ∈ hS.toFinset, (fun n => -xw w + n) ⁻¹' (N : Set G)`. Use extensionality with `x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_iUnion, Set.mem_preimage, Set.Finite.mem_toFinset, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hxL, hxS⟩`. Use `⟨φ x, hxS, ?_⟩` and prove the remaining obligations. Establish `hneg : -xw (φ x) ∈ L` using `neg_mem (hxwL _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : -xw (φ x) + x ∈ L` using `add_mem hneg hxL`. Rewrite using `[SetLike.mem_coe, ← hker _ hm]`. Establish `h1` using `hadd (-xw (φ x) + x) hm (xw (φ x)) (hxwL _)`. Establish `e : -xw (φ x) + x + xw (φ x) = x` using `by abel`. Rewrite `h1` using `[e, hxw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(add_eq_right.mp h1.symm)`. Introduce and unpack `⟨w, hwS, hn⟩`. Take `⟨hxL, hφ⟩` from `key w x hn`. Conclude with `⟨hxL, hφ ▸ hwS⟩`. Establish `hd : (↑hS.toFinset : Set V).PairwiseDisjoint (fun w => (fun n => -xw w + n) ⁻¹' (N : Set G))`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w _ w' _ hne`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `x hx hx'`. Conclude with `hne ((key w x hx).2.symm.trans (key w' x hx').2)`. Establish `hm : ∀ w ∈ hS.toFinset, MeasurableSet ((fun n => -xw w + n) ⁻¹' (N : Set G))` using `fun w _ => measurable_const_add _ hN`.
-
-Rewrite using `[hset, measure_biUnion_finset hd hm]`. Simplify using `only [measure_preimage_add]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul, Nat.card_eq_card_finite_toFinset hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measure_count {G V : Type} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
     [AddCommGroup V] [Finite V] (μ : Measure G) [μ.IsAddLeftInvariant] (L N : AddSubgroup G)

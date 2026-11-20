@@ -6,9 +6,9 @@ open scoped ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hint : Integrable (fun z => ‖z‖ ^ i * ‖iteratedFDeriv ℝ j f z‖) μ` using `SchwartzMap.integrable_pow_mul_iteratedFDeriv μ f i j`. Use `set C := SchwartzMap.seminorm ℝ i j f`. Use `(hint.const_mul C).mono' ?_ ?_` and prove the remaining obligations. Conclude with `(hint.aestronglyMeasurable.aemeasurable.pow_const 2).aestronglyMeasurable`. Use `Filter.Eventually.of_forall (fun z => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 0 ≤ ‖z‖ ^ i * ‖iteratedFDeriv ℝ j f z‖` using `by positivity`. Establish `hC : ‖z‖ ^ i * ‖iteratedFDeriv ℝ j f z‖ ≤ C` using `SchwartzMap.le_seminorm ℝ i j f z`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (by positivity), sq]`. Conclude with `mul_le_mul_of_nonneg_right hC h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_sq_pow_mul_iteratedFDeriv_schwartz
     {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]

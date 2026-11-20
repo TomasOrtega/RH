@@ -7,15 +7,15 @@ open scoped Matrix Topology
 namespace GlobalTheory.SBVanish
 
 /- English proof (translation)
-Proceed by induction on `P using Finset.induction_on with`. Consider the case `empty`. Introduce `_ f _ h3`. Use `W.zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `ht`. Simplify using `using h3 t ht`. Consider the case `insert s P _ ih`. Introduce `hsep f hf h3`. Take `⟨b, hbB, hb1, hne⟩` from `hsep s (Finset.mem_insert_self _ _)`.
+Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hne' : e b s - 1 ≠ 0` using `sub_ne_zero.2 hne`. Establish `h1 : (e b s • f - fun t => e b t * f t) ∈ W`. Use `ih (fun p hp => hsep p (Finset.mem_insert_of_mem hp)) _ (sub_mem (S.smul_mem _ hf) (hS f hf b)) fun t ht => ?_` and prove the remaining obligations. Establish `hft : f t ≠ 0` using `fun h => ht (by simp [h])`. Take `⟨p, hp, u, hu, rfl⟩` from `h3 t hft`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Break down `Finset.mem_insert.1 hp with rfl | hp` into its components or cases. Conclude with `absurd (by simp [he, hb1 u hu]) ht`. Conclude with `⟨p, hp, u, hu, rfl⟩`. Establish `h2` using `W.smul_mem (e b s - 1)⁻¹ (add_mem h1 (hW f hf b hbB))`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, Pi.add_apply, Pi.sub_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_of_sep {G β : Type} [AddCommGroup G] (e : β → G → ℂ) (B : Set β)
     (he : ∀ b t u, e b (t + u) = e b t * e b u) (S W : Submodule ℂ (G → ℂ))
@@ -51,27 +51,23 @@ theorem mem_of_sep {G β : Type} [AddCommGroup G] (e : β → G → ℂ) (B : Se
     ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ Y Y' _ _ _ _ ψ0 hc hn1 hne I φ hφ hv`. Set `ψk : AddChar k Circle` to `{ toFun := fun x => ⟨ψ0 x, mem_sphere_zero_iff_norm.2 (hn1 x)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun x y => Circle.ext (ψ0.map_add_eq_mul x y) }`. Establish `hψk : ∀ x, (ψk x : ℂ) = ψ0 x` using `fun _ => rfl`. Establish `hck : Continuous ψk` using `hc.subtype_mk _`. Establish `hk1 : ψk ≠ 1` using `fun h => hne (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[← hψk, h]`. Use the proof step `simp)`. Take `⟨n, hn, hinv, hsupp⟩` from `GlobalTheory.SBUnif.sb_lattice_bounds k Y Y' φ hφ`. Take `⟨P, hP⟩` from `GlobalTheory.IrredSB.cover (k := k) (Y := Y) (Y' := Y') hn hn`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn' : (n : k) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `mem_of_sep (fun b t => (ψk (GlobalTheory.IrredSB.pair b t) : ℂ)) {z | ∀ r q, (r, q) ∉ I → z r q = 0} (fun b t u => by rw [GlobalTheory.IrredSB.pair_add_right, AddChar.map_add_eq_mul, Circle.coe_mul]) (GlobalTheory.WeilM.SB (Matrix Y Y' k)) _ (fun f hf b => GlobalTheory.IrredSB.mo …` and prove the remaining obligations. Introduce `f hf b hb`. Use `Submodule.subset_span ⟨b, hb, f, hf, ?_⟩` and prove the remaining obligations. Simplify using `only [hψk, GlobalTheory.IrredSB.pair, mul_comm (b _ _)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Establish `hp0 : φ p ≠ 0` using `(Finset.mem_filter.1 hp).2`. Establish `: ¬ ∀ r q, (r, q) ∈ I → (n : k)⁻¹ * p r q ∈ 𝒪[k]` using `fun h => hp0 (by`. Set `u : Matrix Y Y' k` to `fun r q => if (r, q) ∈ I then -((n : k)⁻¹ * p r q) else 0`. Establish `hu : ∀ r q, u r q ∈ 𝒪[k]` using `fun r q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hI : (r, q) ∈ I`. Simplify using `only [u, if_pos hI]`. Conclude with `neg_mem (h r q hI)`. Simplify using `only [u, if_neg hI]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hinv u hu p]`. Use `hv _ fun r q hI => ?_` and prove the remaining obligations. Use `show p r q + n • u r q = 0`. Simplify using `only [u, if_pos hI, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring)`. Use `push Not at this`. Take `⟨r, q, hI, hrq⟩` from `this`. Take `⟨b, hb, hb'⟩` from `GlobalTheory.IrredSB.exists_sep ψk hck hk1 hrq`. Use `⟨Matrix.single r q (b * (n : k)⁻¹), fun r' q' h' => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.single_apply_of_ne _ _ _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h' hI`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Rewrite using `[GlobalTheory.IrredSB.pair_single]`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `: b * (n : k)⁻¹ * (nsmulAddMonoidHom n u : Matrix Y Y' k) r q = b * u r q` using `by show b * (n : k)⁻¹ * (n • u r q) = b * u r q`. Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, hb _ (hu r q)]`. Both sides reduce to the same expression.
-
-Rewrite using `[GlobalTheory.IrredSB.pair_single, mul_assoc]`. Conclude with `fun h => hb' (Circle.ext h)`. Introduce `t ht`. Take `⟨p, hp, _, ⟨u, hu, rfl⟩, rfl⟩` from `hP t (hsupp t ht)`. Use `⟨p, Finset.mem_filter.2 ⟨hp, ?_⟩, _, ⟨u, hu, rfl⟩, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[← hinv u hu p]`. Conclude with `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_vanish : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     {Y Y' : Type} [Fintype Y] [DecidableEq Y] [Fintype Y'] [DecidableEq Y'] (ψ0 : AddChar k ℂ), Continuous ψ0 →

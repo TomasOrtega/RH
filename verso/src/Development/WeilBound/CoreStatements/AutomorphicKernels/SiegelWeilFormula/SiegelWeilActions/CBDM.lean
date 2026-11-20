@@ -11,29 +11,27 @@ section Alg
 variable {R : Type} [CommRing R] {n k : ℕ} {i₀ : Fin n} {em : Fin k → Fin n}
 
 /- English proof (translation)
-Establish `hS : ∀ (w : Fin k → R) a b, (∑ j, Matrix.single i₀ (em j) (w j)) a b = if a = i₀ then ∑ j, (if em j = b then w j else 0) else 0`. Introduce `w a b`. Rewrite using `[Matrix.sum_apply]`. Use `split_ifs with ha`. Substitute `ha; exact Finset.sum_congr rfl fun j _ => by rw [Matrix.single_apply]; simp` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h`. Conclude with `absurd h.1.symm ha`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hT : ∀ (w : Fin k → R) a b, (∑ j, Matrix.single (em j) i₀ (w j)) a b = if b = i₀ then ∑ j, (if em j = a then w j else 0) else 0`. Introduce `w a b`. Rewrite using `[Matrix.sum_apply]`. Use `split_ifs with hb`. Substitute `hb; exact Finset.sum_congr rfl fun j _ => by rw [Matrix.single_apply]; simp` using the available equality.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `Finset.sum_eq_zero fun j _ => by`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h`. Conclude with `absurd h.2.symm hb`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hs0 : ∀ (w : Fin k → R), ∑ j, (if em j = i₀ then w j else 0) = 0` using `fun w => Finset.sum_eq_zero fun j _ => by rw [if_neg (hem j)]`. Establish `hsy : ∀ (w : Fin k → R) b, ∑ j, (if em j = b then y * w j else 0) = y * ∑ j, (if em j = b then w j else 0)`. Apply the tactic sequence `intro w b; rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by split_ifs <;> simp`. Rewrite using `[dM_eq_diag]`. Use extensionality with `p q`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `rcases p with a | a <;> rcases q with b | b`. Simplify using `only [cB, Matrix.fromBlocks_apply₁₁, Matrix.add_apply, Matrix.one_apply, hS, hsy, dg, Sum.inl.injEq, reduceCtorEq, if_false]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = i₀`. Substitute `ha` using the available equality. Simplify using `[hs0]`. Simplify using `[ha]`. Distinguish the cases in `ha : a = i₀`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `ha` using the available equality. Simplify using `only [if_neg hab, if_true, if_neg (Ne.symm hab), zero_add, mul_one]`. Rewrite using `[← mul_assoc, hxy, one_mul]`. Simplify using `[ha, hab]`. Simplify using `only [cB, Matrix.fromBlocks_apply₁₂, Matrix.single_apply, dg, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i₀ = a ∧ i₀ = b`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [and_self, if_true]`. Take the linear combination `(-(y * z)) * hxy`. Simplify using `only [if_neg h, zero_mul, mul_zero]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[cB]`. Simplify using `only [cB, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply, Matrix.one_apply, hT, hsy, dg, Sum.inr.injEq, reduceCtorEq, if_false]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Distinguish the cases in `ha : a = i₀`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Substitute `ha` using the available equality. Simplify using `[hs0]`. Simplify using `[ha]`. Distinguish the cases in `hb : b = i₀`. Substitute `hb` using the available equality.
-
-Simplify using `only [if_neg hab, if_true, if_neg hab, zero_sub]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hb, hab]`.
+A detailed English derivation is pending.
 -/
 theorem cB_dM (hem : ∀ j, em j ≠ i₀) (u v : Fin k → R) (z x y : R) (hxy : x * y = 1) :
     cB i₀ em u v z * dM i₀ x y = dM i₀ x y * cB i₀ em (fun j => y * u j) (fun j => y * v j) (y * y * z) := by

@@ -10,7 +10,7 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 namespace CharacterSeparation
 
 /- English proof (translation)
-Establish `h` using `PadicComplex.norm_extends' p (p : ℚ_[p])`. Establish `h2 : (((p : ℚ_[p]) : ℂ_[p])) = (p : ℂ_[p])` using `map_natCast (algebraMap ℚ_[p] ℂ_[p]) p`. Rewrite `h` using `[h2]`. Rewrite using `[h]`. Conclude with `Padic.norm_p_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_p_lt (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ < 1 := by
   have h := PadicComplex.norm_extends' p (p : ℚ_[p])
@@ -20,15 +20,15 @@ theorem norm_p_lt (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ < 1 := by
   exact Padic.norm_p_lt_one
 
 /- English proof (translation)
-The claim follows from `Real.rpow_lt_one (norm_nonneg _) (norm_p_lt p) (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem sqrt_norm_p_lt (p : ℕ) [Fact p.Prime] : ‖(p : ℂ_[p])‖ ^ (1 / 2 : ℝ) < 1 :=
   Real.rpow_lt_one (norm_nonneg _) (norm_p_lt p) (by norm_num)
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Rewrite using `[hx, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `algebraMap q`. Rewrite using `[eq_ratCast, map_ratCast, map_ratCast]`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `inv x _ hx => rw [map_inv₀, map_inv₀, hx]`. Consider the case `mul x y _ _ hx hy => rw [map_mul, map_mul, hx, hy]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem agree_on_adjoin {E L : Type*} [Field E] [CharZero E] [Field L] (ψ₁ ψ₂ : E →+* L) (δ : E)
     (h : ψ₁ δ = ψ₂ δ) : ∀ x ∈ IntermediateField.adjoin ℚ ({δ} : Set E), ψ₁ x = ψ₂ x := by
@@ -48,19 +48,17 @@ end CharacterSeparation
 open CharacterSeparation
 
 /- English proof (translation)
-Introduce `p _ hp E _ _ _ c s δ hδ hc hs hcc hss hsc H emb hinj hemb hpart hKur τ ρ hρ`. Take `⟨hn, hin, hun⟩` from `hI p hp E s δ (emb τ) hδ hs hss (hKur τ)`. Establish `hδint : IsIntegral ℤ δ`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (p : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hδ]`. Set `K : IntermediateField ℚ E` to `IntermediateField.adjoin ℚ ({δ} : Set E)`. Establish `hδK : δ ∈ K` using `IntermediateField.mem_adjoin_simple_self ℚ δ`. Establish `hδK' : IsIntegral ℤ (⟨δ, hδK⟩ : K)`. Rewrite using `[← isIntegral_algebraMap_iff (B := E) (algebraMap K E).injective]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hδint`. Set `π : 𝓞 K` to `⟨⟨δ, hδK⟩, hδK'⟩`. Establish `hπ : algebraMap K E (π : K) = δ` using `rfl`. Take `⟨y, hy⟩` from `hE p K E (emb τ) ((emb ρ).comp (c : E →+* E)) ((emb τ).comp (s : E →+* E)) ⟨π, by rw [hπ, hn]; exact sqrt_norm_p_lt p, by rw [hπ]; exact hun⟩ (fun x => agree_on_adjoin _ _ δ (by`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, hc, hs, map_neg, hemb ρ τ]) _ x.2)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use the proof step `(fun y => lt_of_le_of_lt (hin y) (sqrt_norm_p_lt p))`. Use the proof step `(by`. Introduce `heq`. Apply `hρ` to reduce the goal to its premises. Establish `h1 : ∀ z, emb ρ z = emb τ (s (c z))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Use `RingHom.congr_fun heq (c z)` as an intermediate fact. Simplify `this` using `only [RingHom.comp_apply, RingHom.coe_coe, hcc]`. Take `⟨b, t⟩` from `τ`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use extensionality with `z`. Consider the cases of `b with`. Consider the case `false => exact (h1 z).trans (hpart t z).symm`. Consider the case `true => show emb ρ z = emb (false, t) z`. Rewrite using `[h1 z, hpart t (s (c z)), hsc (s (c z)), hss, hcc])`.
-
-Conclude with `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem SepPairs_of (hE : EmbSep) (hI : InertiaRam) : SepPairs := by
   intro p _ hp E _ _ _ c s δ hδ hc hs hcc hss hsc H emb hinj hemb hpart hKur τ ρ hρ

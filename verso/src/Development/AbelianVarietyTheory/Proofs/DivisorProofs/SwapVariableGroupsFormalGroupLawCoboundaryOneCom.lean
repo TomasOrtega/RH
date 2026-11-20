@@ -4,7 +4,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.CobSwap
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun j => by cases j <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_swapVars {R : Type} [CommRing R] {d : ℕ} :
     HasSubst (Sum.elim (fun i => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R))
@@ -12,7 +12,7 @@ theorem hasSubst_swapVars {R : Type} [CommRing R] {d : ℕ} :
   hasSubst_of_constantCoeff_zero fun j => by cases j <;> simp
 
 /- English proof (translation)
-Unfold `swap at2`. Rewrite using `[map_subst hasSubst_swapVars]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `cases j <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_map {B Q : Type} [CommRing B] [CommRing Q] (h : B →+* Q) {d : ℕ}
     (c : MvPowerSeries (Fin d ⊕ Fin d) B) : swap (map h c) = map h (swap c) := by
@@ -23,7 +23,7 @@ theorem swap_map {B Q : Type} [CommRing B] [CommRing Q] (h : B →+* Q) {d : ℕ
   cases j <;> simp
 
 /- English proof (translation)
-Unfold `swap at2`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hν) hasSubst_swapVars]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem swap_subst {R : Type} [CommRing R] {d : ℕ} (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hν : ∀ i, constantCoeff (ν i) = 0) (f : MvPowerSeries (Fin d) R) :
@@ -32,7 +32,7 @@ theorem swap_subst {R : Type} [CommRing R] {d : ℕ} (ν : Fin d → MvPowerSeri
   rw [subst_comp_subst_apply (hasSubst_of_constantCoeff_zero hν) hasSubst_swapVars]
 
 /- English proof (translation)
-Unfold `swap at2 inL inR`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hasSubst_swapVars]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_X hasSubst_swapVars]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -47,7 +47,7 @@ theorem swap_inL {R : Type} [CommRing R] {d : ℕ} (f : MvPowerSeries (Fin d) R)
   rfl
 
 /- English proof (translation)
-Unfold `swap at2 inL inR`. Rewrite using `[subst_comp_subst_apply (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _) hasSubst_swapVars]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[subst_X hasSubst_swapVars]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -62,7 +62,7 @@ theorem swap_inR {R : Type} [CommRing R] {d : ℕ} (f : MvPowerSeries (Fin d) R)
   rfl
 
 /- English proof (translation)
-Unfold `swap at2`. Conclude with `subst_sub hasSubst_swapVars a b`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem swap_sub {R : Type} [CommRing R] {d : ℕ} (a b : MvPowerSeries (Fin d ⊕ Fin d) R) :
     swap (a - b) = swap a - swap b := by
@@ -70,9 +70,9 @@ theorem swap_sub {R : Type} [CommRing R] {d : ℕ} (a b : MvPowerSeries (Fin d �
   exact subst_sub hasSubst_swapVars a b
 
 /- English proof (translation)
-Introduce `B Q _ _ _ d μ h0 hs g`. Establish `h0' : ∀ i, constantCoeff (up Q μ i) = 0` using `fun i => by`. Simplify using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, h0 i]`. Establish `hs' : ∀ i, swap (up Q μ i) = up Q μ i` using `fun i => by`. Simplify using `only [up]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[swap_map, hs i]`. Unfold `cob1`. Rewrite using `[swap_sub, swap_sub, swap_subst _ h0', swap_inL, swap_inR]`. Simplify using `only [hs']`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem swap_cob1_eq_of_swap_eq : ∀ (B Q : Type) [CommRing B] [CommRing Q] [Algebra B Q] (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) B), (∀ i, constantCoeff (μ i) = 0) →

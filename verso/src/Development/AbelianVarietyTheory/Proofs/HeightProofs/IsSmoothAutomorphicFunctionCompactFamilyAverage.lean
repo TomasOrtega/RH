@@ -21,14 +21,14 @@ variable {D : D7} {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E 
   {K : Type} [TopologicalSpace K] {κ : K → Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-The claim follows from `(continuousOn_atTau hθ V τ).comp_continuous hκ hU`.
+A detailed English derivation is pending.
 -/
 theorem continuous_atTau (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
     Continuous fun k => atTau θ V τ (κ k) :=
   (continuousOn_atTau hθ V τ).comp_continuous hκ hU
 
 /- English proof (translation)
-Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Conclude with `hκ.congr fun k => ((atTau_spec hθ V τ' (hU k)).2.1).symm`. Conclude with `continuous_const.congr fun k => ((atTau_spec hθ V τ (hU k)).2.2 τ' c).symm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_infMat_atTau (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ))
     (τ' : D.what₂.Tau) : Continuous fun k => infMat D.sp.cm.sig V.gram (θ τ') (atTau θ V τ (κ k)) := by
@@ -38,7 +38,7 @@ theorem continuous_infMat_atTau (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : 
   · exact continuous_const.congr fun k => ((atTau_spec hθ V τ (hU k)).2.2 τ' c).symm
 
 /- English proof (translation)
-Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality. Establish `c1 : Continuous fun k => (gramAt D V τ')⁻¹ * (κ k)ᴴ * gramAt D V τ'` using `(continuous_const.matrix_mul hκ.matrix_conjTranspose).matrix_mul continuous_const`. Conclude with `c1.congr fun k => ((isAtTau_inv V τ' (hU k) (atTau_spec hθ V τ' (hU k))).2.1).symm`. Conclude with `continuous_const.congr fun k => ((isAtTau_inv V τ (hU k) (atTau_spec hθ V τ (hU k))).2.2 τ' c).symm`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_infMat_atTau_inv (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (τ' : D.what₂.Tau) :
@@ -51,7 +51,7 @@ theorem continuous_infMat_atTau_inv (hθ : IsInfFam θ) (hκ : Continuous κ)
   · exact continuous_const.congr fun k => ((isAtTau_inv V τ (hU k) (atTau_spec hθ V τ (hU k))).2.2 τ' c).symm
 
 /- English proof (translation)
-Unfold `normInf`. Use `continuous_finset_sum _ fun τ' _ => continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_infMat_atTau hθ hκ hU τ').matrix_elem i j).norm).add (((continuous_infMat_atTau_inv hθ hκ hU τ').matrix_elem i j).norm)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_normInf_atTau (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : Continuous fun k => normInf θ V (atTau θ V τ (κ k)) := by
@@ -61,7 +61,7 @@ theorem continuous_normInf_atTau (hθ : IsInfFam θ) (hκ : Continuous κ)
     (((continuous_infMat_atTau_inv hθ hκ hU τ').matrix_elem i j).norm)
 
 /- English proof (translation)
-The claim follows from `((continuous_infMat_atTau_inv hθ hκ hU τ').matrix_mul continuous_const).matrix_mul (continuous_infMat_atTau hθ hκ hU τ')`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adAt_atTau (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (τ' : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ) :
@@ -81,9 +81,9 @@ variable {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : Continuous κ)
 include hθ hκ hU h𝒟
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `(hc.comp continuous_fst).mul ((h𝒟 ψ hψ).cont.comp (continuous_snd.mul ((continuous_atTau hθ hκ hU).comp continuous_fst)))`. Consider the case `zero => exact continuous_const`. Consider the case `add x y _ _ hx hy => exact hx.add hy`. Consider the case `smul a x _ hx => exact continuous_const.mul hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famSpan_cont : ∀ F ∈ famSpan θ V τ κ 𝒟, Continuous fun p : K × GA D V => F p.1 p.2 := by
   haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _
@@ -99,9 +99,9 @@ theorem famSpan_cont : ∀ F ∈ famSpan θ V τ κ 𝒟, Continuous fun p : K �
 
 omit hκ in
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(SmFun θ V).smul_mem (c k) (rTr_mem hθ (isRealPt_atTau hθ τ (hU k)) (h𝒟 ψ hψ).smooth)`. Consider the case `zero => exact fun _ => zero_mem _`. Consider the case `add x y _ _ hx hy => exact fun k => add_mem (hx k) (hy k)`. Consider the case `smul a x _ hx => exact fun k => (SmFun θ V).smul_mem a (hx k)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famSpan_sm : ∀ F ∈ famSpan θ V τ κ 𝒟, ∀ k, F k ∈ SmFun θ V := by
   intro F hF
@@ -124,13 +124,11 @@ variable {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : Continuous κ)
 include hθ hκ hU h𝒟 hR
 
 /- English proof (translation)
-Use `set Z : Fin V.rank × Fin V.rank → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun a => Matrix.single a.1 a.2 1`. Use `set X1 := fun a => (1 / 2 : ℂ) • (Z a + conjAt V τ' (Z a))`. Use `set X2 := fun a => (1 / (2 * Complex.I) : ℂ) • (Z a - conjAt V τ' (Z a))`. Use `set Y := fun k => adAt θ (atTau θ V τ (κ k)) τ' X`. Establish `e : (fun k => Rder θ V τ' X (fun x => c k * ψ (x * atTau θ V τ (κ k)))) = ∑ a : Fin V.rank × Fin V.rank, ((fun k x => (c k * Y k a.1 a.2) * Rder θ V τ' (X1 a) ψ (x * atTau θ V τ (κ k))) + (fun k x => (c k * Y k a.1 a.2 * Complex.I) * Rder θ V τ' (X2 a) ψ (x * atTau θ V τ (κ k))))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hh` using `isRealPt_atTau hθ τ (hU k)`. Establish `hsm : ψ ∈ SmFun θ V` using `(h𝒟 ψ hψ).smooth`. Rewrite using `[show (fun x => c k * ψ (x * atTau θ V τ (κ k))) = c k • rTr V (atTau θ V τ (κ k)) ψ from rfl, Rder_smul, Rder_rTr hθ hh hX, GlobalTheory.Size.Rder_eq_sum_glDer hθ hsm (adAt_mem hh hX)]`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Pi.smul_apply, rTr, Finset.sum_apply, smul_eq_mul, GlobalTheory.Size.glDer, RderC, Pi.add_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Y, X1, X2, Z]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Establish `cY : ∀ a : Fin V.rank × Fin V.rank, Continuous fun k => c k * Y k a.1 a.2` using `fun a => hc.mul ((continuous_adAt_atTau hθ hκ hU τ' X).matrix_elem a.1 a.2)`. Use `Submodule.sum_mem _ fun a _ => add_mem (Submodule.subset_span ⟨_, cY a, _, hR ψ hψ τ' _ ?_, rfl⟩) (Submodule.subset_span ⟨_, (cY a).mul continuous_const, _, hR ψ hψ τ' _ ?_, rfl⟩)` and prove the remaining obligations. Conclude with `(GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).1`. Conclude with `(GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem famSpan_Rder_gen {c : K → ℂ} (hc : Continuous c) {ψ : GA D V → ℂ} (hψ : ψ ∈ 𝒟) (τ' : D.what₂.Tau)
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ') :
@@ -162,15 +160,13 @@ theorem famSpan_Rder_gen {c : K → ℂ} (hc : Continuous c) {ψ : GA D V → �
   · exact (GlobalTheory.SmoothAutCheck.parts_mem V τ' (Z a)).2
 
 /- English proof (translation)
-Introduce `F hF τ' X hX`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hx`. Conclude with `famSpan_Rder_gen hθ hκ hU h𝒟 hR hc hψ τ' hX`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Establish `e : (fun k => Rder θ V τ' X ((0 : K → GA D V → ℂ) k)) = 0`. Use function extensionality and compare the values at `k g`. Simplify using `[Rder]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y hx' hy' hx hy`. Establish `sx` using `famSpan_sm hθ hU h𝒟 x hx'`. Establish `sy` using `famSpan_sm hθ hU h𝒟 y hy'`. Establish `e : (fun k => Rder θ V τ' X ((x + y) k)) = (fun k => Rder θ V τ' X (x k)) + fun k => Rder θ V τ' X (y k)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Conclude with `Rder_add (sx k) (sy k) hX`. Rewrite using `[e]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx`.
-
-Establish `e : (fun k => Rder θ V τ' X ((a • x) k)) = a • fun k => Rder θ V τ' X (x k)`. Use function extensionality and compare the values at `k`. Conclude with `Rder_smul a (x k) τ' X`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famSpan_Rder : ∀ F ∈ famSpan θ V τ κ 𝒟, ∀ τ', ∀ X ∈ lieAt V τ',
     (fun k => Rder θ V τ' X (F k)) ∈ famSpan θ V τ κ 𝒟 := by
@@ -209,9 +205,9 @@ def growN (N : ℕ) : Set (GA D V → ℂ) :=
     ∀ x, ∃ C, ∀ g ∈ GinfC V, ‖l.foldr (fun p f => Rder θ V p.1 p.2 f) ψ (x * g)‖ ≤ C * normInf θ V g ^ N}
 
 /- English proof (translation)
-Introduce `ψ hψ τ' X hX`. Use `⟨GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX hψ.1, fun l hl x => ?_⟩` and prove the remaining obligations. Use `hψ.2 (l ++ [(τ', X)]) (fun p hp => ?_) x` as an intermediate fact. Simplify `this` using `only [List.foldr_append, List.foldr_cons, List.foldr_nil]`. Break down `List.mem_append.1 hp with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hl p h`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growN_Rder (hθ : IsInfFam θ) (N : ℕ) :
     ∀ ψ ∈ growN θ V N, ∀ τ' X, X ∈ lieAt V τ' → Rder θ V τ' X ψ ∈ growN θ V N := by
@@ -224,21 +220,19 @@ theorem growN_Rder (hθ : IsInfFam θ) (N : ℕ) :
     · rw [List.mem_singleton.1 h]; exact hX
 
 /- English proof (translation)
-Introduce `F hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨c, hc, ψ, hψ, rfl⟩` from `hF`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C', hC'⟩` from `hψ.2 [] (by simp) x`. Use `set Mc := ‖(⟨c, hc⟩ : C(K, ℂ))‖`. Use `set Mh := ‖(⟨_, continuous_normInf_atTau hθ hκ hU⟩ : C(K, ℝ))‖`. Use `⟨Mc * (|C'| * Mh ^ N), fun k g hg => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖c k‖ ≤ Mc` using `ContinuousMap.norm_coe_le_norm (⟨c, hc⟩ : C(K, ℂ)) k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : normInf θ V (atTau θ V τ (κ k)) ≤ Mh`. Use `ContinuousMap.norm_coe_le_norm (⟨_, continuous_normInf_atTau hθ hκ hU⟩ : C(K, ℝ)) k` as an intermediate fact. Conclude with `(le_abs_self _).trans (by simpa only [Real.norm_eq_abs, ContinuousMap.coe_mk] using this)`. Establish `h3` using `hC' (g * atTau θ V τ (κ k)) (mul_mem hg (atTau_mem (θ := θ) V τ (κ k)))`. Simplify using `only [List.foldr_nil] at h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : normInf θ V (g * atTau θ V τ (κ k)) ^ N ≤ (normInf θ V g * Mh) ^ N` using `pow_le_pow_left₀ (normInf_nonneg _) (((GlobalTheory.T.normInf_submultiplicative_le_adelicHeight D θ V).1 _ _).trans (mul_le_mul_of_nonneg_left h2 (normInf_nonneg _))) N`. Establish `h5 : ‖ψ (x * g * atTau θ V τ (κ k))‖ ≤ |C'| * (Mh ^ N * normInf θ V g ^ N)`. Rewrite using `[mul_assoc x]`. Use `h3.trans (mul_le_mul (le_abs_self _) ?_ (pow_nonneg (normInf_nonneg _) _) (abs_nonneg _))` and prove the remaining obligations. Rewrite using `[← mul_pow, mul_comm Mh]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Conclude with `h4`. Combine the equalities or inequalities in the displayed calculation. Consider the case `zero => exact fun x => ⟨0, fun k g _ => by simp⟩`. Consider the case `add F G _ _ hF hG`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C1, hC1⟩` from `hF x`. Take `⟨C2, hC2⟩` from `hG x`. Use `⟨|C1| + |C2|, fun k g hg => ?_⟩` and prove the remaining obligations. Establish `h0` using `pow_nonneg (normInf_nonneg (θ := θ) g) N`. Rewrite using `[add_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add ((hC1 k g hg).trans (mul_le_mul_of_nonneg_right (le_abs_self _) h0)) ((hC2 k g hg).trans (mul_le_mul_of_nonneg_right (le_abs_self _) h0)))`. Consider the case `smul a F _ hF`. Introduce `x`. Take `⟨C, hC⟩` from `hF x`. Use `⟨‖a‖ * C, fun k g hg => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC k g hg) (norm_nonneg a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famSpan_growth [CompactSpace K] (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (N : ℕ) :
@@ -287,7 +281,7 @@ theorem famSpan_growth [CompactSpace K] (hθ : IsInfFam θ) (hκ : Continuous κ
     exact mul_le_mul_of_nonneg_left (hC k g hg) (norm_nonneg a)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hF`. Consider the case `cons p l ih`. Conclude with `famSpan_Rder hθ hκ hU h𝒟 hR _ (ih fun q hq => hl q (List.mem_cons_of_mem _ hq)) p.1 p.2 (hl p List.mem_cons_self)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem famSpan_words {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : Continuous κ)
     (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (h𝒟 : ∀ ψ ∈ 𝒟, IsAutFunSm θ V ψ)
@@ -302,7 +296,7 @@ theorem famSpan_words {𝒟 : Set (GA D V → ℂ)} (hθ : IsInfFam θ) (hκ : C
       (hl p List.mem_cons_self)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ' Z`. Conclude with `isAutFunSm_add (GlobalTheory.CuspLie.isAutFunSm_Rder hθ h1 h) (isAutFunSm_smul _ (GlobalTheory.CuspLie.isAutFunSm_Rder hθ h2 h))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_RderC (hθ : IsInfFam θ) (τ' : D.what₂.Tau) (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     {ψ : GA D V → ℂ} (h : IsAutFunSm θ V ψ) : IsAutFunSm θ V (RderC θ V τ' Z ψ) := by
@@ -310,11 +304,11 @@ theorem isAutFunSm_RderC (hθ : IsInfFam θ) (τ' : D.what₂.Tau) (Z : Matrix (
   exact isAutFunSm_add (GlobalTheory.CuspLie.isAutFunSm_Rder hθ h1 h) (isAutFunSm_smul _ (GlobalTheory.CuspLie.isAutFunSm_Rder hθ h2 h))
 
 /- English proof (translation)
-Establish `key : ∀ l : List ((GA D V → ℂ) → GA D V → ℂ), (∀ f ∈ l, ∀ ψ, IsAutFunSm θ V ψ → IsAutFunSm θ V (f ψ)) → IsAutFunSm θ V (l.foldr (fun f acc => f acc) ψ)`. Introduce `l hl`. Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons f l ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `hl f List.mem_cons_self _ (ih fun g hg => hl g (List.mem_cons_of_mem _ hg))`. Unfold `gelf`. Use `(mem_AFs_iff D θ hθ V _).1 (Submodule.sum_mem _ fun idx _ => (mem_AFs_iff D θ hθ V _).2 (key _ ?_))` and prove the remaining obligations. Introduce `f hf`. Take `⟨a, rfl⟩` from `List.mem_ofFn.1 hf`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun ψ hψ => isAutFunSm_RderC hθ τ' _ hψ`.
+A detailed English derivation is pending.
 -/
 theorem isAutFunSm_gelf (hθ : IsInfFam θ) (τ' : D.what₂.Tau) (j : ℕ) {ψ : GA D V → ℂ} (h : IsAutFunSm θ V ψ) :
     IsAutFunSm θ V (gelf θ V τ' j ψ) := by
@@ -332,7 +326,7 @@ theorem isAutFunSm_gelf (hθ : IsInfFam θ) (τ' : D.what₂.Tau) (j : ℕ) {ψ 
   exact fun ψ hψ => isAutFunSm_RderC hθ τ' _ hψ
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Conclude with `(he.mul (hψ.comp (continuous_const.mul (continuous_atTau hθ hκ hU)))).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_avg [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ : Measure K) [IsFiniteMeasure μ]
     (hθ : IsInfFam θ) (hκ : Continuous κ) (hU : ∀ k, κ k ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) {e : K → ℂ}
@@ -343,29 +337,25 @@ theorem integrable_avg [CompactSpace K] [MeasurableSpace K] [BorelSpace K] (μ :
     (HasCompactSupport.of_compactSpace _)
 
 /- English proof (translation)
-Introduce `D θ hθ V τ K _ _ _ _ μ _ κ hκ hU e he φ hφ`. Use `set 𝒟 : Set (GA D V → ℂ) := {ψ | IsAutFunSm θ V ψ}`. Establish `h𝒟 : ∀ ψ ∈ 𝒟, IsAutFunSm θ V ψ` using `fun _ h => h`. Establish `hR : ∀ ψ ∈ 𝒟, ∀ τ' X, X ∈ lieAt V τ' → Rder θ V τ' X ψ ∈ 𝒟` using `fun _ h _ _ hX => GlobalTheory.CuspLie.isAutFunSm_Rder hθ hX h`. Establish `FAM` using `fun ψ (h : IsAutFunSm θ V ψ) => GlobalTheory.T.compactAverage_smoothFamily_closedUnderDerivatives D θ hθ V K μ (famSpan θ V τ κ 𝒟) (famSpan_cont hθ hκ hU h𝒟) (famSpan_sm hθ hU h𝒟) (famSpan_Rder hθ hκ hU h𝒟 hR) (fun k x => e k * ψ (x * atTau θ V τ (κ k))) (Submodule.subset_span ⟨e …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `F0` using `FAM φ hφ`. Use `{ left := fun γ hγ g => ?_, level := ?_, cont := F0.1, smooth := F0.2.1, zfin := ?_, growth := ?_ }` and prove the remaining obligations. Use `show ∫ k, e k * φ (γ * g * atTau θ V τ (κ k)) ∂μ = ∫ k, e k * φ (g * atTau θ V τ (κ k)) ∂μ`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_assoc, hφ.left γ hγ]`. Take `⟨U, hUo, hk⟩` from `hφ.level`. Use `⟨U, hUo, fun u hu hf g => ?_⟩` and prove the remaining obligations. Use `show ∫ k, e k * φ (g * u * atTau θ V τ (κ k)) ∂μ = ∫ k, e k * φ (g * atTau θ V τ (κ k)) ∂μ`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[mul_assoc, ← comm_of_mem V (atTau_mem (θ := θ) V τ (κ k)) hf, ← mul_assoc, hk u hu hf]`. Take `⟨W, hWf, hm, hs⟩` from `hφ.zfin`. Set `A : GlobalTheory.Mem.Th.AFs θ V →ₗ[ℂ] (GA D V → ℂ)` to `{ toFun := fun ψ x => ∫ k, e k * ψ.1 (x * atTau θ V τ (κ k)) ∂μ map_add' := fun ψ ψ' => by`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `c1` using `((mem_AFs_iff D θ hθ V _).1 ψ.2).cont`. Establish `c2` using `((mem_AFs_iff D θ hθ V _).1 ψ'.2).cont`. Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (integrable_avg μ hθ hκ hU he c1 x) (integrable_avg μ hθ hκ hU he c2 x)`. Use the proof step `map_smul' := fun c ψ => by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_left_comm _ c]`. Conclude with `integral_const_mul c _ }`. Set `Wa : Submodule ℂ (GlobalTheory.Mem.Th.AFs θ V)` to `W.comap (GlobalTheory.Mem.Th.AFs θ V).subtype`. Use `haveI : FiniteDimensional ℂ Wa := Module.Finite.of_injective (((GlobalTheory.Mem.Th.AFs θ V).subtype.comp Wa.subtype).codRestrict W fun x => x.2) fun a b hab => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg (fun z : W => (z : GA D V → ℂ)) hab`. Conclude with `Subtype.val_injective (Subtype.val_injective h)`. Use `⟨Wa.map A, Module.Finite.map Wa A, Submodule.mem_map.2 ⟨⟨φ, (mem_AFs_iff D θ hθ V φ).2 hφ⟩, hm, rfl⟩, fun τ' j f hf => ?_⟩` and prove the remaining obligations. Take `⟨ψ, hψ, rfl⟩` from `Submodule.mem_map.1 hf`. Establish `hψs` using `(mem_AFs_iff D θ hθ V _).1 ψ.2`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_map.2 ⟨⟨gelf θ V τ' j ψ.1, (mem_AFs_iff D θ hθ V _).2 (isAutFunSm_gelf hθ τ' j hψs)⟩, hs τ' j _ hψ, ?_⟩` and prove the remaining obligations. Establish `G` using `(FAM ψ.1 hψs).2.2.2 τ' j`. Use `show (fun x => ∫ k, e k * gelf θ V τ' j ψ.1 (x * atTau θ V τ (κ k)) ∂μ) = gelf θ V τ' j (fun x => ∫ k, e k * ψ.1 (x * atTau θ V τ (κ k)) ∂μ)`. Rewrite using `[G]`. Use function extensionality and compare the values at `x`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Establish `e1 : (fun x => e k * ψ.1 (x * atTau θ V τ (κ k))) = e k • rTr V (atTau θ V τ (κ k)) ψ.1` using `rfl`. Rewrite using `[e1, (linOnSm_gelf τ' j).smul, gelf_rTr hθ (isRealPt_atTau hθ τ (hU k)) τ' j hψs.smooth]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `hφ.growth`. Establish `h𝒟N : ∀ ψ ∈ growN θ V N, IsAutFunSm θ V ψ` using `fun _ h => h.1`. Establish `hRN` using `growN_Rder (V := V) hθ N`. Establish `hF0 : (fun k x => e k * φ (x * atTau θ V τ (κ k))) ∈ famSpan θ V τ κ (growN θ V N)` using `Submodule.subset_span ⟨e, he, φ, ⟨hφ, hN⟩, rfl⟩`. Establish `FN` using `GlobalTheory.T.compactAverage_smoothFamily_closedUnderDerivatives D θ hθ V K μ (famSpan θ V τ κ (growN θ V N)) (famSpan_cont hθ hκ hU h𝒟N) (famSpan_sm hθ hU h𝒟N) (famSpan_Rder hθ hκ hU h𝒟N hRN) _ hF0`.
-
-Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations. Rewrite using `[FN.2.2.1 l hl]`. Take `⟨C, hC⟩` from `famSpan_growth hθ hκ hU N _ (famSpan_words hθ hκ hU h𝒟N hRN hF0 l hl) x`. Use `⟨C * μ.real Set.univ, fun g hg => ?_⟩` and prove the remaining obligations. Use `norm_integral_le_of_norm_le_const (μ := μ) (Filter.Eventually.of_forall fun k => hC k g hg)` as an intermediate fact.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_average : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam (D := D) θ →
     ∀ (V : HSp D) (τ : D.what₂.Tau) (K : Type) [TopologicalSpace K] [CompactSpace K] [MeasurableSpace K] [BorelSpace K]

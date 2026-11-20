@@ -24,14 +24,14 @@ private noncomputable def tw {S : Type} [CommRing S] [Algebra ℂ S] (ev : S →
     · simp [h]; ring
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma tw_fst {S : Type} [CommRing S] [Algebra ℂ S] (ev : S →ₐ[ℂ] ℂ) (η : S →ₗ[ℂ] ℂ)
     (h : ∀ a b : S, η (a * b) = ev a * η b + ev b * η a) (a : S) : (tw ev η h a).fst = ev a := by
   simp [tw]
 
 /- English proof (translation)
-Simplify using `[tw]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma tw_snd {S : Type} [CommRing S] [Algebra ℂ S] (ev : S →ₐ[ℂ] ℂ) (η : S →ₗ[ℂ] ℂ)
     (h : ∀ a b : S, η (a * b) = ev a * η b + ev b * η a) (a : S) : (tw ev η h a).snd = η a := by
@@ -40,25 +40,25 @@ private lemma tw_snd {S : Type} [CommRing S] [Algebra ℂ S] (ev : S →ₐ[ℂ]
 end UpperTheory.EtaleExpansion
 
 /- English proof (translation)
-Set `T : S →+* TrivSqZeroExt ℂ ℂ` to `UpperTheory.EtaleExpansion.tw ev η hη`. Set `χ : A →+* TrivSqZeroExt ℂ ℂ` to `T.comp a2.toRingHom`. Set `fs : TrivSqZeroExt ℂ ℂ →+* ℂ` to `(TrivSqZeroExt.fstHom ℂ ℂ ℂ).toRingHom`. Use `letI iD : Algebra A (TrivSqZeroExt ℂ ℂ) := χ.toAlgebra`. Use `letI iC : Algebra A ℂ := (fs.comp χ).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `hT1 : ∀ s, (T s).fst = ev s` using `fun s => UpperTheory.EtaleExpansion.tw_fst ev η hη s`. Establish `hT2 : ∀ s, (T s).snd = η s` using `fun s => UpperTheory.EtaleExpansion.tw_snd ev η hη s`. Set `f : S →ₐ[A] ℂ` to `{ ev.toRingHom with commutes' := fun x => by`. Express the relevant statement in the definitionally equal form `ev (algebraMap A S x) = (T (a2 x)).fst`. Rewrite using `[hT1, hev] }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `g : TrivSqZeroExt ℂ ℂ →ₐ[A] ℂ` to `{ fs with commutes' := fun x => rfl }`. Establish `hg : Function.Surjective g` using `fun z => ⟨TrivSqZeroExt.inl z, rfl⟩`. Establish `hnil : IsNilpotent (RingHom.ker (g : TrivSqZeroExt ℂ ℂ →+* ℂ))`. Use `⟨2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_two, Submodule.zero_eq_bot, ← le_bot_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.mul_le.2 fun r hr s hs => ?_` and prove the remaining obligations. Rewrite `hr`, `hs` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `r.fst = 0 at hr`. Express the relevant statement in the definitionally equal form `s.fst = 0 at hs`. Rewrite using `[Ideal.mem_bot]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Simplify using `[hr, hs]`. Simplify using `[hr, hs]`. Set `L` to `Algebra.FormallySmooth.liftOfSurjective f g hg hnil`. Establish `hL1 : ∀ s, (L s).fst = ev s` using `fun s => Algebra.FormallySmooth.liftOfSurjective_apply f g hg hnil s`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL2 : ∀ x : A, L (algebraMap A S x) = T (a2 x)` using `fun x => L.commutes x`. Establish `hη1 : η 1 = 0`. Use `hη 1 1` as an intermediate fact. Simplify using `only [mul_one, map_one, one_mul] at this`. Take the linear combination `-this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hLc : ∀ c : ℂ, L (algebraMap ℂ S c) = TrivSqZeroExt.inl c`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ A S, hL2, a2.commutes]`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[hT1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hT2, Algebra.algebraMap_eq_smul_one, map_smul, hη1]`. Simplify using the standard rewrite rules. Use `⟨{ toFun := fun s => (L s).snd map_add' := fun a b => by simp map_smul' := fun c s => by` and prove the remaining obligations. Simplify using `only [RingHom.id_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Algebra.smul_def, map_mul, hLc]`. Simplify using `}, ?_, ?_⟩`. Introduce `a b`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, map_mul, TrivSqZeroExt.snd_mul, hL1]`. Simplify using `only [smul_eq_mul, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `x`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, hL2, hT2]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem exists_point_derivation_eq_on_image {A S : Type} [CommRing A] [CommRing S] [Algebra ℂ A] [Algebra ℂ S]
     [Algebra A S] [IsScalarTower ℂ A S] [Algebra.FormallySmooth A S] (a2 : A →ₐ[ℂ] S)
@@ -123,25 +123,25 @@ private theorem exists_point_derivation_eq_on_image {A S : Type} [CommRing A] [C
     simp only [LinearMap.coe_mk, AddHom.coe_mk, hL2, hT2]
 
 /- English proof (translation)
-Introduce `A S _ _ _ _ _ _ _ a2 ev hev d δ δ' hδ hδ' uδ uδ' τ τ' M M' hτ hM hτ' hM'`. Establish `F1 : ∀ (ε : S →ₗ[ℂ] (Fin d → ℂ)) (σ : Fin d → A), (∀ η : S →ₗ[ℂ] ℂ, (∀ a b : S, η (a * b) = ev a * η b + ev b * η a) → ∃ r : (Fin d → ℂ) →ₗ[ℂ] ℂ, ∀ a, η a = r (ε a)) → (∀ l, ε (algebraMap A S (σ l)) = Pi.single l 1) → ∀ η : S →ₗ[ℂ] ℂ, (∀ a b : S, η (a * b) = ev a * η b + ev b * η …`. Introduce `ε σ uε hσ η hη a`. Take `⟨r, hr⟩` from `uε η hη`. Establish `hsum : ε a = ∑ l, ε a l • (Pi.single l (1 : ℂ) : Fin d → ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using `[Pi.single_apply]`. Simplify using `only [hr, hσ]`. Use `conv_lhs => rw [hsum]`. Rewrite using `[map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Establish `Fδ` using `F1 δ τ uδ hτ`. Establish `Fδ'` using `F1 δ' τ' uδ' hτ'`. Establish `hproj : ∀ (ε : S →ₗ[ℂ] (Fin d → ℂ)), (∀ a b : S, ε (a * b) = ev a • ε b + ev b • ε a) → ∀ k : Fin d, ∀ a b : S, ((LinearMap.proj k).comp ε) (a * b) = ev a * ((LinearMap.proj k).comp ε) b + ev b * ((LinearMap.proj k).comp ε) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ε hε k a b`. Simplify using `[hε]`. Set `Q : Matrix (Fin d) (Fin d) ℂ` to `fun j l => δ (algebraMap A S (τ' j)) l`. Set `Q' : Matrix (Fin d) (Fin d) ℂ` to `fun j l => δ' (algebraMap A S (τ j)) l`. Establish `hQQ' : Q * Q' = 1`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j k`. Use `Fδ ((LinearMap.proj k).comp δ') (hproj δ' hδ' k) (algebraMap A S (τ' j))` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, hτ'] at this`. Establish `h1 : (1 : Matrix (Fin d) (Fin d) ℂ) j k = (Pi.single j (1 : ℂ) : Fin d → ℂ) k`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply, h1, this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Q, Q']`. Expand and normalize the polynomial expressions, which then agree. Establish `hQM : Q * M = M' * Q`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `j k`. Take `⟨η', hη', hη'a⟩` from `exists_point_derivation_eq_on_image a2 ev hev ((LinearMap.proj k).comp δ) (hproj δ hδ k)`. Establish `e1` using `Fδ η' hη' (algebraMap A S (τ' j))`. Establish `e2` using `Fδ' ((LinearMap.proj k).comp δ) (hproj δ hδ k) (a2 (τ' j))`. Rewrite `e1` using `[hη'a]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hη'a, LinearMap.comp_apply, LinearMap.proj_apply, hM, hM'] at e1 e2`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Q]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = δ (a2 (τ' j)) k := e1.symm`. Use `_ = ∑ l, M' j l * Q l k := by`. Rewrite using `[e2]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Q]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨Q, Matrix.isUnit_det_of_right_inverse hQQ', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_eq_right_inv hQQ', hQM, Matrix.mul_assoc, hQQ', Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.derivation_eq_of_formallyEtale_of_evaluation_eq :
     ∀ {A S : Type} [CommRing A] [CommRing S] [Algebra ℂ A] [Algebra ℂ S] [Algebra A S] [IsScalarTower ℂ A S] [Algebra.FormallyEtale A S] (a2 : A →ₐ[ℂ] S) (ev : S →ₐ[ℂ] ℂ), (∀ f : A, ev (algebraMap A S f) = ev (a2 f)) → ∀ (d : ℕ) (δ δ' : S →ₗ[ℂ] (Fin d → ℂ)), (∀ a b : S, δ (a * b) = ev a • δ b + ev b • δ a) → (∀ a b : S, δ' (a * b) = ev a • δ' b + ev b • δ' a) → (∀ η : S →ₗ[ℂ] ℂ, (∀ a b : S, η (a * b) = ev a * η b + ev b * η a) → ∃ r : (Fin d → ℂ) →ₗ[ℂ] ℂ, ∀ a, η a = r (δ a)) → (∀ η : S →ₗ[ℂ] ℂ, (∀ a b : S, η (a * b) = ev a * η b + ev b * η a) → ∃ r : (Fin d → ℂ) →ₗ[ℂ] ℂ, ∀ a, η a = r (δ' a)) → ∀ (τ τ' : Fin d → A) (M M' : Matrix (Fin d) (Fin d) ℂ), (∀ l, δ (algebraMap A S (τ l)) = Pi.single l 1) → (∀ j, δ (a2 (τ j)) = fun l => M j l) → (∀ l, δ' (algebraMap A S (τ' l)) = Pi.single l 1) → (∀ j, δ' (a2 (τ' j)) = fun l => M' j l) → ∃ P : Matrix (Fin d) (Fin d) ℂ, IsUnit P.det ∧ M' = P * M * P⁻¹ := by

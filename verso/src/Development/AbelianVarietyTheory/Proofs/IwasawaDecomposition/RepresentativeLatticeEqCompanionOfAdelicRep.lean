@@ -8,9 +8,7 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.Mem.Col2.starE Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Formalism.L2.PairingIndexBounds.F.latAd, Submodule.span_le]`. Introduce `x hx`. Conclude with `Formalism.L2.GlobalTheoryTheory.Br.latLocGlob_main (F := F) Λ hfin x ((h _).2 hx)`. Introduce `x hx`.
-
-Conclude with `Submodule.subset_span ((h _).1 (Submodule.subset_span ⟨x, hx, rfl⟩))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.AdT.latAd_eq_of_latS {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
     (y : GL (Fin n) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb Λ : Submodule (𝓞 E) (Fin n → E)) (hfin : Module.Finite (𝓞 E) Λ)
@@ -27,7 +25,7 @@ theorem GlobalTheory.Mem.Col2.AdT.latAd_eq_of_latS {F E : Type} [Field F] [Numbe
     exact Submodule.subset_span ((h _).1 (Submodule.subset_span ⟨x, hx, rfl⟩))
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Formalism.MainNotions.G.KAat.mvL, Submodule.mem_map, LinearMap.coe_restrictScalars, LinearEquiv.coe_coe, Formalism.MainNotions.G.KAat.toLE_apply, Units.val_one, Matrix.one_mulVec, exists_eq_right]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.Mem.Col2.AdT.mvL_one {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ} (Λ : Submodule (𝓞 E) (Fin N → E)) :
     Formalism.MainNotions.G.KAat.mvL (1 : GL (Fin N) E) Λ = Λ := by
@@ -36,9 +34,9 @@ theorem GlobalTheory.Mem.Col2.AdT.mvL_one {E : Type} [Field E] [NumberField E] [
     Formalism.MainNotions.G.KAat.toLE_apply, Units.val_one, Matrix.one_mulVec, exists_eq_right]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[GlobalTheory.Mem.Col2.MemLat.mem_N_iff d hd π hmem hcop, Submodule.mem_sup, Submodule.ideal_span_singleton_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, z, hz, rfl⟩`. Take `⟨b, hb, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hz`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy, b, hb, rfl⟩`. Introduce and unpack `⟨y, hy, b, hb, rfl⟩`. Conclude with `⟨y, hy, _, Submodule.smul_mem_pointwise_smul _ _ _ hb, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.Mem.Col2.AdT.sup_dual_eq_N {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
     (d : Deco E n ST SG) (hd : d.Ok) (π : 𝓞 E) (hmem : ∀ P : ST, π ∈ P.1.asIdeal) (hcop : IsCoprime π (cO E π)) :
@@ -56,13 +54,13 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u a i hi bad Ch chOf K k hR c`. Establish `hsp` using `(spaces_in_coordinates I hI hP l Z).2.2.2 i hi`. Establish `hG` using `hsp.1`. Establish `hL` using `(hsp.2.2 u a).1 c`. Establish `hf` using `(l.lat u a i c).fg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf` using `[← hL]`. Establish `hA` using `(GlobalTheory.Mem.Col2.AdT.latAd_eq_of_latS _ _ _ (Module.Finite.iff_fg.2 hf) ((K (chOf c)).y_lat ⟨c, rfl⟩)).trans hL`. Unfold `GlobalTheory.TwU.latCo`. Rewrite using `[hA, hG]`. Unfold `Formalism.L2.PairingIndexBounds.F.compan`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[GlobalTheory.Mem.Col2.AdT.mvL_one]`. Establish `key` using `GlobalTheory.Mem.Col2.TC.dualL_one_eq_dual (((I.rec7 l Z).sp.cm.sig : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E)) (fun x => rfl) ((I.stp u a i).rep c).1.1.deco.1.L`. Unfold `dualL at key`. Use `erw [key]`. Establish `hsep` using `sepElt_of_ok l.pr u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ P : (B.primes X).vT u, (B.primes X).piT u ∈ P.1.asIdeal` using `fun P => by`. Use `hsep.conj P` as an intermediate fact. Rewrite `this` using `[cO_cO]`. Then use the resulting hypothesis. Conclude with `(GlobalTheory.Mem.Col2.AdT.sup_dual_eq_N ((I.stp u a i).rep c).1.1.deco.1 ((I.stp u a i).rep c).1.1.deco.2 _ hmem (l.pr.piT_cop u)).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.AdT.lat_rep_eq_latCo : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ c : (I.stp u a i).Cl, ((I.stp u a i).rep c).1.1.deco.1.N = GlobalTheory.TwU.latCo (I.rec7 l Z).sp (gramN (I.rec7 l Z) i hi) 1 (B.fields.conjO (X.piT u)) ((K (chOf c)).y ⟨c, rfl⟩).1 (K (chOf c)).lev.Lb := by
   intro B X I hI hP l Z u a i hi bad Ch chOf K k hR c

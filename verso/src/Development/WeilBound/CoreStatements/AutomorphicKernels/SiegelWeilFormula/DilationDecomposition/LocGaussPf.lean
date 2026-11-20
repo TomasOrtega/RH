@@ -11,7 +11,7 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Kdil
 
 /- English proof (translation)
-Establish `h` using `GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (δ : ℂ)) (by simpa using hδ) 0 0`. Use `h.norm.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [zero_mul, add_zero, Complex.norm_exp]`. Rewrite using `[show (-(δ : ℂ) * (‖z‖ : ℂ) ^ 2) = ((-δ * ‖z‖ ^ 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem gauss_int_one (δ : ℝ) (hδ : 0 < δ) : Integrable (fun z : ℂ => Real.exp (-δ * ‖z‖ ^ 2)) := by
   have h := GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (δ : ℂ))
@@ -21,7 +21,7 @@ theorem gauss_int_one (δ : ℝ) (hδ : 0 < δ) : Integrable (fun z : ℂ => Rea
   rw [show (-(δ : ℂ) * (‖z‖ : ℂ) ^ 2) = ((-δ * ‖z‖ ^ 2 : ℝ) : ℂ) by push_cast; ring, Complex.ofReal_re]
 
 /- English proof (translation)
-Conclude with `Integrable.fintype_prod (f := fun _ (z : ℂ) => Real.exp (-δ * ‖z‖ ^ 2)) (fun _ => gauss_int_one δ hδ)`.
+A detailed English derivation is pending.
 -/
 theorem gauss_int_row {n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
     Integrable (fun u : Fin n → ℂ => ∏ j, Real.exp (-δ * ‖u j‖ ^ 2)) := by
@@ -29,7 +29,7 @@ theorem gauss_int_row {n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
     (fun _ => gauss_int_one δ hδ)
 
 /- English proof (translation)
-Conclude with `Integrable.fintype_prod (f := fun _ (w : Fin n → ℂ) => ∏ j, Real.exp (-δ * ‖w j‖ ^ 2)) (fun _ => gauss_int_row δ hδ)`.
+A detailed English derivation is pending.
 -/
 theorem gauss_int_mat {m n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
     Integrable (fun v : Fin m → Fin n → ℂ => ∏ a, ∏ j, Real.exp (-δ * ‖v a j‖ ^ 2)) := by
@@ -37,7 +37,7 @@ theorem gauss_int_mat {m n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
     (fun _ => gauss_int_row δ hδ)
 
 /- English proof (translation)
-Use `(gauss_int_mat (m := m) (n := n) δ hδ).congr (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [PositivityTheory.SiegelWeilFormula.Kdil.sq, Finset.mul_sum, ← Real.exp_sum]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gauss_int_pf {m n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
     Integrable (fun v : Fin m → Fin n → ℂ => Real.exp (-δ * sq v)) := by
@@ -45,7 +45,7 @@ theorem gauss_int_pf {m n : ℕ} (δ : ℝ) (hδ : 0 < δ) :
   simp only [PositivityTheory.SiegelWeilFormula.Kdil.sq, Finset.mul_sum, ← Real.exp_sum]
 
 /- English proof (translation)
-The claim follows from `@gauss_int_pf`.
+A detailed English derivation is pending.
 -/
 theorem gauss_int_closed : type_of% @gauss_int_pf := @gauss_int_pf
 

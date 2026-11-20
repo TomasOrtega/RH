@@ -8,13 +8,13 @@ namespace GlobalTheory
 open Formalism.HermitianLattices.GL2PrimeSums Formalism.HermitianLattices.GL2a2
 
 /- English proof (translation)
-Unfold `inPart outPart`. Rewrite using `[Finset.prod_filter, Finset.prod_filter, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `conv_rhs => rw [← Nat.factorization_prod_pow_eq_self hm.ne']`. Rewrite using `[Finsupp.prod, Nat.support_factorization]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul]`. Break down `Nat.even_or_odd' (m.factorization p) with ⟨k, hk | hk⟩` into its components or cases. Establish `h1 : ¬ Odd (m.factorization p)`. Rewrite using `[hk]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : m.factorization p / 2 * 2 = m.factorization p` using `by omega`. Rewrite using `[if_neg (fun h => h1 h.2), if_neg (fun h => h1 h.2), h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : Odd (m.factorization p)` using `⟨k, hk⟩`. Establish `h2 : m.factorization p = m.factorization p / 2 * 2 + 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : p ∣ m₀`. Rewrite using `[if_pos ⟨hp, h1⟩, if_neg (fun h => h.1 hp)] conv_rhs => rw [h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => hp h.1), if_pos ⟨hp, h1⟩] conv_rhs => rw [h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inPart_mul_outPart_mul_sq (m₀ m : ℕ) (hm : 0 < m) :
     inPart m₀ m * outPart m₀ m * (∏ p ∈ m.primeFactors, p ^ (m.factorization p / 2)) ^ 2 = m := by
@@ -42,11 +42,11 @@ theorem inPart_mul_outPart_mul_sq (m₀ m : ℕ) (hm : 0 < m) :
       ring
 
 /- English proof (translation)
-Introduce `m₀ m q hm hq`. Establish `h` using `inPart_mul_outPart_mul_sq m₀ m hm`. Use `set t := ∏ p ∈ m.primeFactors, p ^ (m.factorization p / 2) with ht`. Establish `htm : t ∣ m`. Use `Dvd.intro_left (inPart m₀ m * outPart m₀ m * t) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `htq : Nat.Coprime t q` using `Nat.Coprime.coprime_dvd_left htm hq`. Establish `hsq : jacobiSym ((t : ℤ) ^ 2) q = 1` using `jacobiSym.sq_one' (by simpa using htq)`. Establish `hz : (m : ℤ) = (inPart m₀ m : ℤ) * (outPart m₀ m : ℤ) * (t : ℤ) ^ 2` using `by exact_mod_cast h.symm`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem jacobiInOut : Formalism.HermitianLattices.GL2a2.JacobiInOut := by
   intro m₀ m q hm hq

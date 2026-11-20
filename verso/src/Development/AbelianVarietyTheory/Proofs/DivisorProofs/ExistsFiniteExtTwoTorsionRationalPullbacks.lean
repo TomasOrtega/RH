@@ -17,31 +17,29 @@ noncomputable section
 namespace GlobalTheory.TwoTorsPull
 
 /- English proof (translation)
-Introduce `R _ _ G _ A gen hgen`. Take `⟨K', _, _, hfin, H⟩` from `TorsRational.exists_ext_points (FractionRing R) (torsion A.A 2) (AbTorsionAnyBase.isFinite_and_flat_torsion _ A.A A.isAb 2 (by norm_num)).1`. Use `⟨K', inferInstance, inferInstance, hfin, ?_⟩` and prove the remaining obligations. Introduce `R₂ _ _ ρ i hi G₁ _ β hβ F _ _ x hx`. Set `f : FractionRing R →+* FractionRing R₂` to `i.comp (algebraMap (FractionRing R) K')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `letI : Algebra K' (FractionRing R₂) := i.toAlgebra`. Use `letI : Algebra (FractionRing R) (FractionRing R₂) := f.toAlgebra`. Use `haveI : IsScalarTower (FractionRing R) K' (FractionRing R₂) := IsScalarTower.of_algebraMap_eq' rfl`. Set `σ : FractionRing R₂ →+* F` to `algebraMap (FractionRing R₂) F`. Establish `hsq : spMap f ≫ jK R = jK R₂ ≫ spMap ρ`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[jK, jK, spMap, spMap, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use extensionality with `r`. Conclude with `hi r`. Establish `hx2 : x ^ 2 = 1` using `by rw [pow_two, hx]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x0` to `ObjPull.pushEquiv hβ _ x`. Establish `hx0 : x0 ^ 2 = 1` using `by simp only [x0, ← map_pow, hx2, map_one]`. Establish `hx0l : x0.left = x.left ≫ β` using `rfl`. Set `T : Over (Sp (FractionRing R))` to `Over.mk (spMap σ ≫ spMap f)`. Establish `hT : T.hom ≫ jK R = (Over.mk (spMap σ ≫ jK R₂)).hom ≫ spMap ρ` using `by show (spMap σ ≫ spMap f) ≫ jK R = (spMap σ ≫ jK R₂) ≫ spMap ρ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, hsq, Category.assoc]`. Set `e : Over.mk (T.hom ≫ jK R) ⟶ Over.mk ((Over.mk (spMap σ ≫ jK R₂)).hom ≫ spMap ρ)` to `Over.homMk (𝟙 _) (by simpa using hT.symm)`. Set `x1` to `preHom e x0`. Establish `hx1 : x1 ^ 2 = 1` using `by rw [← map_pow, hx0, map_one]`. Establish `hx1l : x1.left = x0.left` using `by show (e ≫ x0).left = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Over.comp_left]`. Conclude with `Category.id_comp _`. Set `hpb` to `isGrpPullback_pullback G (jK R)`. Set `x2` to `(ObjPull.pushEquiv hpb T).symm x1`. Establish `hx2' : x2 ^ 2 = 1` using `by simp only [x2, ← map_pow, hx1, map_one]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx2l : x2.left ≫ pullback.fst G.hom (jK R) = x1.left` using `ObjPull.pushEquiv_symm_left hpb T x1`. Set `x3` to `x2 ≫ gen.hom`. Establish `hx3 : x3 ^ 2 = 1`. Simplify using `only [x3, pow_two] at hx2' ⊢`. Rewrite using `[← MonObj.mul_comp, hx2', MonObj.one_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmul : x3 ≫ mulN A.A 2 = toUnit _ ≫ η`. Rewrite using `[GrpTangent.mulN_eq_pow, MonObj.comp_pow, Category.comp_id, hx3, Hom.one_def]`. Set `t0 : T ⟶ torsion A.A 2` to `pullback.lift x3 (toUnit _) hmul`. Establish `ht0 : t0 ≫ torsion.ι A.A 2 = x3` using `pullback.lift_fst _ _ _`. Establish `hs : T.hom = spMap (σ.comp (algebraMap (FractionRing R) (FractionRing R₂)))` using `by show spMap σ ≫ spMap f = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Take `⟨w, hw⟩` from `H (FractionRing R₂) F σ t0.left ((Over.w t0).trans hs)`. Establish `hw2 : w ≫ (torsion A.A 2).hom = spMap f`. Use `spec_map_field_cancel σ _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hw, Over.w t0]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Set `z : Sp (FractionRing R₂) ⟶ G.left` to `w ≫ (torsion.ι A.A 2).left ≫ gen.inv.left ≫ pullback.fst G.hom (jK R)`. Establish `hz : z ≫ G.hom = jK R₂ ≫ spMap ρ`. Simplify using `only [z, Category.assoc]`. Establish `hgi : gen.inv.left ≫ pullback.snd G.hom (jK R) = A.A.hom` using `Over.w gen.inv`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullback.condition, ← Category.assoc gen.inv.left, hgi, ← Category.assoc (torsion.ι A.A 2).left, Over.w (torsion.ι A.A 2), ← Category.assoc w, hw2, hsq]`. Set `y : Over.mk (jK R₂) ⟶ G₁` to `Over.homMk (hβ.1.lift z (jK R₂) hz) (hβ.1.lift_snd _ _ _)`. Use `⟨y, hβ.1.hom_ext ?_ ?_⟩` and prove the remaining obligations. Use `show x.left ≫ β = spMap σ ≫ hβ.1.lift z (jK R₂) hz ≫ β`. Rewrite using `[hβ.1.lift_fst, ← hx0l, ← hx1l, ← hx2l]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgh : gen.hom.left ≫ gen.inv.left = 𝟙 _` using `by rw [← Over.comp_left, Iso.hom_inv_id, Over.id_left]`. Simplify using `only [z, ← Category.assoc]`. Rewrite using `[hw, ← Over.comp_left, ht0]`. Use `show x2.left ≫ pullback.fst G.hom (jK R) = ((x2.left ≫ gen.hom.left) ≫ gen.inv.left) ≫ pullback.fst G.hom (jK R)`. Rewrite using `[Category.assoc x2.left, hgh, Category.comp_id]`.
-
-Use `show x.left ≫ G₁.hom = spMap σ ≫ hβ.1.lift z (jK R₂) hz ≫ G₁.hom`. Rewrite using `[hβ.1.lift_snd]`. Conclude with `Over.w x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoTorsRat_of_pullback : ∀ (R : Type) [CommRing R] [IsDomain R] (G : Over (Sp R)) [GrpObj G] (A : PolAV (Sp (FractionRing R))) (gen : ((Over.pullback (jK R)).obj G) ≅ A.A), IsMonHom gen.hom → ∃ (K' : Type) (_ : Field K') (_ : Algebra (FractionRing R) K'), Module.Finite (FractionRing R) K' ∧ ∀ (R₂ : Type) [CommRing R₂] [IsDomain R₂] (ρ : R →+* R₂) (i : K' →+* FractionRing R₂), (∀ r : R, i (algebraMap (FractionRing R) K' (algebraMap R (FractionRing R) r)) = algebraMap R₂ (FractionRing R₂) (ρ r)) → ∀ (G₁ : Over (Sp R₂)) [GrpObj G₁] (β : G₁.left ⟶ G.left), IsGrpPullback G₁ G (spMap ρ) β → TwoTorsRat G₁ := by
   intro R _ _ G _ A gen hgen

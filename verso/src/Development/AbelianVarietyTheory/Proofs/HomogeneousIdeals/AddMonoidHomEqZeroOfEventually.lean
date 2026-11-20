@@ -20,7 +20,7 @@ def latticeIsogeny (α : ℂ) (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice)
     fun l hl ↦ latticePoint_of_mem L' (hα l hl)).comp (latticePointEquiv L).symm.toAddMonoidHom
 
 /- English proof (translation)
-Rewrite using `[← latticePointEquiv_mk]`. Simplify using `[latticeIsogeny, -latticePointEquiv_mk]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 @[simp] lemma latticeIsogeny_latticePoint (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice) (z : ℂ) :
     latticeIsogeny α hα (latticePoint L z) = latticePoint L' (α * z) := by
@@ -29,9 +29,9 @@ Rewrite using `[← latticePointEquiv_mk]`. Simplify using `[latticeIsogeny, -la
   rfl
 
 /- English proof (translation)
-Establish `h1 : (latticeIsogeny α hα).ker = (L'.lattice.toAddSubgroup.comap (AddMonoidHom.mulLeft α)).map (latticePointHom L)`. Use extensionality with `P`. Take `⟨z, rfl⟩` from `latticePoint_surjective L P`. Rewrite using `[AddMonoidHom.mem_ker, latticeIsogeny_latticePoint, latticePoint_eq_zero_iff]`. Use `⟨fun h ↦ ⟨z, h, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨w, hw, e⟩`. Establish `hw' : α * w ∈ L'.lattice` using `hw`. Simplify `sub_mem hw' (hα _ ((latticePoint_eq_iff L).mp e))` using `[mul_sub]`. Establish `h2 : (L'.lattice.toAddSubgroup.comap (AddMonoidHom.mulLeft α)).map (AddMonoidHom.mulLeft α) = L'.lattice.toAddSubgroup` using `AddSubgroup.map_comap_eq_self_of_surjective (mul_left_surjective₀ hα0) _`. Rewrite using `[h1, ← AddSubgroup.relIndex_ker, ker_latticePointHom, ← AddSubgroup.relIndex_map_map_of_injective (f := AddMonoidHom.mulLeft α) _ _ (mul_right_injective₀ hα0), h2]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_ker_latticeIsogeny (hα0 : α ≠ 0) (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice) :
     Nat.card (latticeIsogeny α hα).ker =
@@ -54,9 +54,9 @@ theorem card_ker_latticeIsogeny (hα0 : α ≠ 0) (hα : ∀ l ∈ L.lattice, α
       (mul_right_injective₀ hα0), h2]
 
 /- English proof (translation)
-Establish `d` using `hasDerivAt_weierstrassP L (z := z) fun h ↦ hz (hα z h)`. Establish `d1` using `(hasDerivAt_weierstrassP L' hz).comp z ((hasDerivAt_id z).const_mul α)`. Establish `d2` using `((A.hasDerivAt _).comp z d).div ((D.hasDerivAt _).comp z d) hD`. Use `d1.unique (d2.congr_of_eventuallyEq (by filter_upwards [(continuous_const_mul α).continuousAt.eventually (eventually_notMem_periodLattice L' hz)] with w hw using h w hw))` as an intermediate fact. Simplify using `only [Function.comp_apply, mul_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm, this]`. Simplify using `only [eval_sub, eval_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma derivWeierstrassP_mul_eq (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice) {A D : ℂ[X]}
     (h : ∀ z, α * z ∉ L'.lattice → ℘[L'] (α * z) = A.eval (℘[L] z) / D.eval (℘[L] z))
@@ -75,11 +75,11 @@ lemma derivWeierstrassP_mul_eq (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice
   ring
 
 /- English proof (translation)
-Take `⟨A, D, c1, c2, c3, c4, c5, c6, c7, c8, c9⟩` from `exists_weierstrassP_mul_eq_div hα0 hα k h₂ h₃ hαk hk`. Use `⟨A, D, c1, c2, c3, c4, c5, by rw [c6, card_ker_latticeIsogeny hα0], c7, fun x y h ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `latticePoint_surjective L (.some x y h)`. Establish `hzL : z ∉ L.lattice` using `fun h' ↦ Affine.Point.some_ne_zero _ (hz.symm.trans (latticePoint_of_mem L h'))`. Rewrite using `[← hz, latticeIsogeny_latticePoint]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hz` using `[latticePoint_of_notMem L hzL, Affine.Point.some.injEq]`. Take `⟨rfl, rfl⟩` from `hz`. Use `⟨fun h0 ↦ latticePoint_of_mem L' ((c8 z hzL).mp h0), fun h0 ↦ ?_⟩` and prove the remaining obligations. Establish `hz'` using `(c8 z hzL).not.mp h0`. Establish `e : α⁻¹ * ((derivative A * D - A * derivative D).eval (℘[L] z) / D.eval (℘[L] z) ^ 2) * (℘'[L] z / 2) = ℘'[L'] (α * z) / 2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← mul_div_assoc, ← derivWeierstrassP_mul_eq hα c9 hz' h0]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, ← c9 z hz']`. Conclude with `⟨_, latticePoint_of_notMem L' hz'⟩`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_latticeIsogeny_eq_div (hα0 : α ≠ 0) (hα : ∀ l ∈ L.lattice, α * l ∈ L'.lattice)
     (k : Subfield ℂ) (h₂ : L.g₂ ∈ k) (h₃ : L.g₃ ∈ k) (hαk : α ∈ k)
@@ -110,9 +110,9 @@ theorem exists_latticeIsogeny_eq_div (hα0 : α ≠ 0) (hα : ∀ l ∈ L.lattic
   exact ⟨_, latticePoint_of_notMem L' hz'⟩
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun n : ℕ ↦ z₀ + z / n) atTop (𝓝 z₀)`. Simplify using `using (tendsto_const_div_atTop_nhds_zero_nat z).const_add z₀`. Take `⟨n, hn, hn0⟩` from `((h1.eventually h).and (eventually_gt_atTop 0)).exists`. Rewrite `hn` using `[map_add, h.self_of_nhds, zero_add]`. Establish `: z = n • (z / n)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (n : ℂ) ≠ 0` using `by exact_mod_cast hn0.ne'`. Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_nsmul, hn, nsmul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma addMonoidHom_eq_zero_of_eventually {G : Type*} [AddCommGroup G] (χ : ℂ →+ G) {z₀ : ℂ}
     (h : ∀ᶠ z in 𝓝 z₀, χ z = 0) (z : ℂ) : χ z = 0 := by
@@ -126,33 +126,29 @@ lemma addMonoidHom_eq_zero_of_eventually {G : Type*} [AddCommGroup G] (χ : ℂ 
   rw [this, map_nsmul, hn, nsmul_zero]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨z₁, h4, hF₁, h₁⟩ : ∃ z₁, (4 • ψ) z₁ ≠ 0 ∧ AnalyticAt ℂ F z₁ ∧ ∀ᶠ z in 𝓝 z₁, ∃ y h', ψ z = .some (F z) y h' := by`. Assume the negation of the conclusion as `hc`. Establish `h2` using `addMonoidHom_eq_zero_of_eventually (4 • ψ) (z₀ := z₀) (by filter_upwards [hF.eventually_analyticAt, h.eventually_nhds] with z h1 h2`. Assume the negation of the conclusion as `h3`. Conclude with `hc ⟨z, h3, h1, h2⟩) (z₀ / 4)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[AddMonoidHom.nsmul_apply, ← map_nsmul, show 4 • (z₀ / 4) = z₀ by simp; ring]`. Take `⟨y, h', e⟩` from `h.self_of_nhds`. Conclude with `Affine.Point.some_ne_zero _ (e.symm.trans h2)`. Take `⟨w, hw⟩` from `latticePoint_surjective L' (ψ z₁)`. Establish `hw4 : w + w + (w + w) ∉ L'.lattice` using `fun hc ↦ h4 (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Rewrite using `[AddMonoidHom.nsmul_apply, ← hw, ← latticePointHom_apply, ← map_nsmul, latticePointHom_apply, latticePoint_eq_zero_iff]`. Use `hc using 1` and compare the differences between its conclusion and the goal. Simplify using the standard rewrite rules. Use the proof step `ring)`. Establish `hw2 : w + w ∉ L'.lattice` using `fun hc ↦ hw4 (add_mem hc hc)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hw1 : w ∉ L'.lattice` using `fun hc ↦ hw2 (add_mem hc hc)`. Establish `hwF : ℘[L'] w = F z₁`. Take `⟨y, h', e⟩` from `h₁.self_of_nhds`. Rewrite `hw` using `[e, latticePoint_of_notMem L' hw1, Affine.Point.some.injEq]`. Conclude with `hw.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `L'.analyticOnNhd_weierstrassP w hw1`. Establish `hP' : deriv ℘[L'] w ≠ 0` using `by simpa [derivWeierstrassP_eq_zero_iff L' hw1] using hw2`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hg0, hg1⟩ : ∃ g : ℂ → ℂ, AnalyticAt ℂ g (F z₁) ∧ g (F z₁) = w ∧ ∀ᶠ x in 𝓝 (F z₁), ℘[L'] (g x) = x := by`. Rewrite using `[← hwF]`. Conclude with `⟨_, hP.analyticAt_localInverse hP', HasStrictFDerivAt.localInverse_apply_image .., HasStrictDerivAt.eventually_right_inverse ..⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `H : ℂ → ℂ` to `fun t ↦ g (F (z₁ + t))`. Establish `hH : AnalyticAt ℂ H 0` using `(hg.comp hF₁).comp_of_eq (f := fun t ↦ z₁ + t) (by fun_prop) (by simp)`. Establish `hH0 : H 0 = w` using `by simp [H, hg0]`. Establish `hc` using `hH.continuousAt`. Establish `hc' : ContinuousAt (fun t ↦ H (-t)) 0` using `ContinuousAt.comp_of_eq (f := fun t : ℂ ↦ -t) hc (by fun_prop) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ev : ∀ {f : ℂ → ℂ}, ContinuousAt f 0 → f 0 ∉ L'.lattice → ∀ᶠ t in 𝓝 0, f t ∉ L'.lattice` using `fun hf h0 ↦ hf.eventually (eventually_notMem_periodLattice L' h0)`. Establish `ht : Tendsto (fun t ↦ z₁ + t) (𝓝 0) (𝓝 z₁)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Establish `s1 : ∀ᶠ t in 𝓝 0, ψ (z₁ + t) = latticePoint L' (H t) ∨ ψ (z₁ + t) = latticePoint L' (-H t)` using `by filter_upwards [ht.eventually h₁, ht.eventually (hF₁.continuousAt.eventually hg1), ev hc (hH0 ▸ hw1)] with t ⟨y, h', e⟩ e' h3`. Rewrite using `[latticePoint_neg, e, latticePoint_of_notMem L' h3]`. Conclude with `Affine.Point.X_eq_iff.mp e'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `s2 : ∀ᶠ t in 𝓝 0, ψ t = latticePoint L' (H t - w)` using `by filter_upwards [s1, (continuous_neg.tendsto' 0 0 neg_zero).eventually s1, ev (f := fun t ↦ -H t + H (-t) - (w + w)) ((hc.neg.add hc').sub continuousAt_const) (by simpa [hH0, -neg_add_rev] using hw2), ev (f := fun t ↦ -H t + -H (-t) - (w + w)) ((hc.neg.add hc'.neg).sub continuo …`. Establish `key : ψ (z₁ + t) + ψ (z₁ + -t) = latticePoint L' (w + w)`. Rewrite using `[latticePoint_add, hw, ← map_add, ← map_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Break down `a with a | a` into its components or cases. Rewrite using `[← latticePointHom_apply, map_sub, latticePointHom_apply, latticePointHom_apply, ← a, hw, map_add, add_sub_cancel_left]`. Apply the tactic sequence `rcases b with b | b <;> rw [a, b, ← latticePoint_add, latticePoint_eq_iff] at key exacts [(c key).elim, (d key).elim]`. Set `u : ℂ → ℂ` to `fun t ↦ H t - w`. Establish `hu : AnalyticAt ℂ u 0` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : u 0 = 0` using `by simp [u, hH0]`. Establish `t1 : Tendsto (fun p : ℂ × ℂ ↦ p.1) (𝓝 (0, 0)) (𝓝 0)` using `continuous_fst.tendsto _`. Establish `t2 : Tendsto (fun p : ℂ × ℂ ↦ p.2) (𝓝 (0, 0)) (𝓝 0)` using `continuous_snd.tendsto _`. Establish `t3 : Tendsto (fun p : ℂ × ℂ ↦ p.1 + p.2) (𝓝 (0, 0)) (𝓝 0)` using `by simpa using t1.add t2`. Establish `tu : Tendsto u (𝓝 0) (𝓝 0)` using `by simpa [hu0] using hu.continuousAt.tendsto`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `s3 : ∀ᶠ p : ℂ × ℂ in 𝓝 (0, 0), u (p.1 + p.2) = u p.1 + u p.2`. Establish `t4 : Tendsto (fun p : ℂ × ℂ ↦ u (p.1 + p.2) - (u p.1 + u p.2)) (𝓝 (0, 0)) (𝓝 0)`. Simplify using `using (tu.comp t3).sub ((tu.comp t1).add (tu.comp t2))`. Use `filter_upwards [t1.eventually s2, t2.eventually s2, t3.eventually s2, t4.eventually (L'.compl_lattice_sdiff_singleton_mem_nhds 0)] with p a b c d`. Rewrite `c` using `[map_add, a, b, ← latticePoint_add, eq_comm, latticePoint_eq_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hne`. Conclude with `d ⟨c, fun e ↦ hne (sub_eq_zero.mp e)⟩`. Establish `s4 : ∀ᶠ s in 𝓝 0, deriv (fun t ↦ u t - deriv u 0 * t) s = 0` using `by filter_upwards [s3.curry_nhds, hu.eventually_analyticAt] with s a b`. Establish `d1 : HasDerivAt (fun t ↦ u (s + t)) (deriv u s) 0` using `HasDerivAt.comp_const_add s 0 (by simpa using b.differentiableAt.hasDerivAt)`. Establish `d2` using `d1.unique ((hu.differentiableAt.hasDerivAt.const_add (u s)).congr_of_eventuallyEq a)`.
-
-Establish `d3` using `(b.differentiableAt.hasDerivAt.sub ((hasDerivAt_id s).const_mul (deriv u 0))).deriv`. Simplify using `[d2] using! d3`. Establish `s5` using `analyticOrderAt_eq_top.mp ((analyticOrderAt_deriv_eq_top_iff_of_eq_zero (f := fun t ↦ u t - deriv u 0 * t) (z₀ := 0) (by fun_prop) (by simp [hu0])).mp (analyticOrderAt_eq_top.mpr s4))`. Use `⟨deriv u 0, fun z ↦ sub_eq_zero.mp (addMonoidHom_eq_zero_of_eventually (ψ - (latticePointHom L').comp (AddMonoidHom.mulLeft (deriv u 0))) (z₀ := 0) ?_ z)⟩` and prove the remaining obligations. Use `filter_upwards [s2, s5] with t a b`.
-
-Express the relevant statement in the definitionally equal form `ψ t - latticePoint L' (deriv u 0 * t) = 0`. Rewrite using `[a, ← sub_eq_zero.mp b, sub_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_latticePoint_mul (ψ : ℂ →+ (latticeCurve L').toAffine.Point) {F : ℂ → ℂ}
     {z₀ : ℂ} (hF : AnalyticAt ℂ F z₀) (h : ∀ᶠ z in 𝓝 z₀, ∃ y h', ψ z = .some (F z) y h') :
@@ -247,13 +243,13 @@ theorem exists_eq_latticePoint_mul (ψ : ℂ →+ (latticeCurve L').toAffine.Poi
   rw [a, ← sub_eq_zero.mp b, sub_self]
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩ : ∃ x, D.eval x ≠ 0` from `by by_contra! hc`. Conclude with `hD (Polynomial.funext (by simpa using hc))`. Take `⟨z₀, hz₀, rfl⟩` from `exists_weierstrassP_eq L x₀`. Establish `hP` using `L.analyticOnNhd_weierstrassP z₀ hz₀`. Establish `hP'` using `L.analyticOnNhd_derivWeierstrassP z₀ hz₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ Q : ℂ[X], AnalyticAt ℂ (fun z ↦ Q.eval (℘[L] z)) z₀` using `fun Q ↦ (Q.differentiable.analyticAt _).comp hP`. Take `⟨α, hα⟩` from `exists_eq_latticePoint_mul (φ.comp (latticePointHom L)) (z₀ := z₀) (F := fun z ↦ (A.eval (℘[L] z) + B.eval (℘[L] z) * (℘'[L] z / 2)) / D.eval (℘[L] z)) (((hp A).add ((hp B).mul (by fun_prop (disch := simp)))).div (hp D) hx₀) (by filter_upwards [eventually_notMem_periodLattice L h …`. Simplify `hφ _ _ (latticeCurve_nonsingular L h1) h2)` using `[latticePoint_of_notMem L h1]`. Simplify using `only [AddMonoidHom.comp_apply, latticePointHom_apply] at hα`. Use `⟨α, fun l hl ↦ ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← latticePoint_eq_zero_iff, ← hα, latticePoint_of_mem L hl, map_zero]`. Introduce and unpack `rfl`. Take `⟨y, h', e⟩` from `hφ _ _ (latticeCurve_nonsingular L hz₀) hx₀`. Rewrite `e` using `[← latticePoint_of_notMem L hz₀, hα, latticePoint_of_mem L' (by simp)]`. Conclude with `Affine.Point.some_ne_zero _ e.symm`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use extensionality with `P`. Take `⟨z, rfl⟩` from `latticePoint_surjective L P`. Rewrite using `[hα, latticeIsogeny_latticePoint]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_latticeIsogeny
     (φ : (latticeCurve L).toAffine.Point →+ (latticeCurve L').toAffine.Point) (A B D : ℂ[X])
@@ -286,7 +282,7 @@ theorem exists_eq_latticeIsogeny
     rw [hα, latticeIsogeny_latticePoint]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨latticeCurve_isElliptic, fun L ↦ ⟨latticePointEquiv L, fun _ hz ↦ ⟨_, latticePoint_of_notMem L hz⟩⟩, fun L ↦ ⟨exists_lattice_eq_mul_tau L, fun _ _ ha h ↦ latticeCurve_j ha h⟩, fun _ _ _ hα0 hα ↦ exists_weierstrassP_mul_eq_div hα0 hα _ (Subfield.subset_closure (by simp)) (Subfiel …`.
+Supply the required witnesses or components.
 -/
 theorem weierstrass_uniformisation :
     (∀ L : PeriodPair, (latticeCurve L).IsElliptic) ∧

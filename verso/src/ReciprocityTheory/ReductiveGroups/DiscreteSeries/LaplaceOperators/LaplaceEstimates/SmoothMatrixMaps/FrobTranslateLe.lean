@@ -20,9 +20,9 @@ Both sides reduce to the same expression.
 theorem frob_eq (g : Matrix (Fin n) (Fin n) ℂ) : frob g = Real.sqrt (Formalism.REAL.hs g) := rfl
 
 /- English proof (translation)
-Set `_ : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ)` to `Matrix.frobeniusNormedAddCommGroup`. Establish `hf : ∀ A : Matrix (Fin n) (Fin n) ℂ, frob A = ‖A‖`. Introduce `A`. Rewrite using `[Matrix.frobenius_norm_def, frob, Real.sqrt_eq_rpow]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Real.rpow_two]`. Rewrite using `[hf, hf, hf]`. Conclude with `Matrix.frobenius_norm_mul A B`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : frob (A * B) ≤ frob A * frob B := by
   let _ : NormedAddCommGroup (Matrix (Fin n) (Fin n) ℂ) := Matrix.frobeniusNormedAddCommGroup
@@ -36,7 +36,7 @@ theorem frob_mul_le (A B : Matrix (Fin n) (Fin n) ℂ) : frob (A * B) ≤ frob A
   exact Matrix.frobenius_norm_mul A B
 
 /- English proof (translation)
-Rewrite using `[frob]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Establish `h1 : ‖g i j‖ ^ 2 ≤ ∑ j', ‖g i j'‖ ^ 2` using `Finset.single_le_sum (f := fun j' => ‖g i j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)`. Establish `h2 : ∑ j', ‖g i j'‖ ^ 2 ≤ ∑ i', ∑ j', ‖g i' j'‖ ^ 2` using `Finset.single_le_sum (f := fun i' => ∑ j', ‖g i' j'‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem entry_le_frob (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j‖ ≤ frob g := by
   rw [frob]
@@ -48,7 +48,7 @@ theorem entry_le_frob (g : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) : ‖g i j�
   linarith
 
 /- English proof (translation)
-Rewrite using `[frob_eq]`. Establish `h` using `Formalism.REAL.dim_le_frobenius hg`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite using `[Real.one_le_sqrt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem frob_ge_one {ε : Fin n → Bool} (hn : 1 ≤ n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     1 ≤ frob g := by
@@ -59,7 +59,7 @@ theorem frob_ge_one {ε : Fin n → Bool} (hn : 1 ≤ n) {g : Matrix (Fin n) (Fi
   linarith
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le one_pos (frob_ge_one hn hg)`.
+A detailed English derivation is pending.
 -/
 theorem frob_pos {ε : Fin n → Bool} (hn : 1 ≤ n) {g : Matrix (Fin n) (Fin n) ℂ} (hg : Formalism.REAL.inUJ ε g) :
     0 < frob g := lt_of_lt_of_le one_pos (frob_ge_one hn hg)
@@ -74,9 +74,9 @@ Use linear arithmetic over natural numbers and integers.
 theorem n_pos : 1 ≤ 2 * r + k + 1 := by omega
 
 /- English proof (translation)
-Establish `e : (Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) i j = (if ε i then 1 else -1) * star (g j i) * (if ε j then 1 else -1)`. Simplify using `[Formalism.REAL.Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply]`. Rewrite using `[e, norm_mul, norm_mul, norm_star]`. Establish `n1 : ∀ b : Bool, ‖(if b = true then (1 : ℂ) else -1)‖ = 1`. Apply the tactic sequence `intro b; cases b <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[n1, n1, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem JgJ_entry (g : Mat k r) (i j : Fin (2 * r + k + 1)) :
     ‖(Formalism.REAL.Jm ε * gᴴ * Formalism.REAL.Jm ε) i j‖ = ‖g j i‖ := by
@@ -89,7 +89,7 @@ theorem JgJ_entry (g : Mat k r) (i j : Fin (2 * r + k + 1)) :
   rw [n1, n1, one_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[cJd_eq x₁ _ hg, cL, single_dotProduct, one_mul, Matrix.mulVec, dotProduct, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, JgJ_entry, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left (entry_le_frob g j c) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cJd_bound (x₁ : Fin (2 * r + k + 1) → ℂ) (c : Fin (2 * r + k + 1)) {g : Mat k r}
     (hg : Formalism.REAL.inUJ ε g) : ‖cJd x₁ (Pi.single c 1) g‖ ≤ (∑ j, ‖x₁ j‖) * frob g := by
@@ -99,11 +99,11 @@ theorem cJd_bound (x₁ : Fin (2 * r + k + 1) → ℂ) (c : Fin (2 * r + k + 1))
   exact mul_le_mul_of_nonneg_left (entry_le_frob g j c) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hy` using `Formalism.REAL.indefinite_unitary_mul_mem ε (inv_mem hx₀) hg`. Establish `hp` using `frob_pos n_pos hy`. Establish `hq` using `frob_pos n_pos hx₀`. Establish `hG` using `frob_pos n_pos hg`. Establish `hle : frob g ≤ frob x₀ * frob (x₀⁻¹ * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : g = x₀ * (x₀⁻¹ * g)` using `by rw [← Matrix.mul_assoc, mul_inv_self' hx₀, Matrix.one_mul]`. Use `conv_lhs => rw [e]`. Conclude with `frob_mul_le _ _`. Establish `h1 : frob g / frob x₀ ≤ frob (x₀⁻¹ * g)`. Rewrite using `[div_le_iff₀ hq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2` using `Real.rpow_le_rpow_of_nonpos (div_pos hG hq) h1 (neg_nonpos.mpr ha)`. Rewrite `h2` using `[Real.div_rpow hG.le hq.le, Real.rpow_neg hq.le, div_inv_eq_mul]`. Rewrite using `[mul_comm (frob x₀ ^ a)]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem frob_translate_le {a : ℝ} (ha : 0 ≤ a) {x₀ g : Mat k r} (hx₀ : Formalism.REAL.inUJ ε x₀)
     (hg : Formalism.REAL.inUJ ε g) : frob (x₀⁻¹ * g) ^ (-a) ≤ frob x₀ ^ a * frob g ^ (-a) := by
@@ -133,9 +133,9 @@ def Qp (ε : Fin (2 * r + k + 1) → Bool) (σ : Mat k r → (H →L[ℂ] H)) (x
     ∃ C : ℝ, ∀ g, Formalism.REAL.inUJ ε g → ‖coefX σ x₀ w m g‖ ≤ C * frob g ^ (-a)
 
 /- English proof (translation)
-Establish `e : coefX σ x₀ w 0 = fun _ => 0` using `by funext g; simp [coefX]`. Use `⟨?_, 0, fun g _ => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Formalism.REAL.smooth_on_group_const_fun 0`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Qp_zero (σ : Mat k r → (H →L[ℂ] H)) (x₀ : Mat k r) (w : H) (a : ℝ) : Qp ε σ x₀ w a 0 := by
   have e : coefX σ x₀ w 0 = fun _ => 0 := by funext g; simp [coefX]
@@ -144,13 +144,9 @@ theorem Qp_zero (σ : Mat k r → (H →L[ℂ] H)) (x₀ : Mat k r) (w : H) (a :
   · rw [e]; simp
 
 /- English proof (translation)
-Establish `e : coefX σ x₀ w (m₁ + c • m₂) = fun g => coefX σ x₀ w m₁ g + c * coefX σ x₀ w m₂ g`. Use function extensionality and compare the values at `g`. Conclude with `coefX_add_smul σ x₀ w m₁ m₂ c g`. Take `⟨s₁, C₁, b₁⟩` from `h₁`. Take `⟨s₂, C₂, b₂⟩` from `h₂`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, C₁ + ‖c‖ * C₂, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Formalism.REAL.smooth_on_group_add s₁ (Formalism.REAL.smooth_on_group_const_mul c s₂)`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← norm_mul]`. Conclude with `norm_add_le _ _`. Use `_ ≤ C₁ * frob g ^ (-a) + ‖c‖ * (C₂ * frob g ^ (-a)) := by gcongr`. Conclude with `b₁ g hg`. Conclude with `b₂ g hg`.
-
-Use `_ = (C₁ + ‖c‖ * C₂) * frob g ^ (-a) := by ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Qp_add_smul {σ : Mat k r → (H →L[ℂ] H)} {x₀ : Mat k r} {w : H} {a : ℝ} {m₁ m₂ : H} (c : ℂ)
     (h₁ : Qp ε σ x₀ w a m₁) (h₂ : Qp ε σ x₀ w a m₂) : Qp ε σ x₀ w a (m₁ + c • m₂) := by
@@ -170,11 +166,11 @@ theorem Qp_add_smul {σ : Mat k r → (H →L[ℂ] H)} {x₀ : Mat k r} {w : H} 
       _ = (C₁ + ‖c‖ * C₂) * frob g ^ (-a) := by ring
 
 /- English proof (translation)
-Establish `e : ∀ g, Formalism.REAL.inUJ ε g → coefX σ x₀ w ((Ewd E wd v : D) : H) g = Formalism.REAL.Eword ε wd (fun y => ψ (x₀⁻¹ * y)) g`. Introduce `g hg`. Rewrite using `[← coefX_Eword hσ hE hx₀ w v wd g hg]`. Conclude with `eword_congr hcoef wd g hg`. Use `⟨Formalism.REAL.smooth_on_group_congr (Formalism.REAL.smooth_iterated_lie_derivative (smooth_left hψs (inv_mem hx₀)) wd) (fun g hg => (e g hg).symm), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hψd wd`. Use `⟨max C 0 * frob x₀ ^ a, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[e g hg, eword_left]`. Establish `hy` using `Formalism.REAL.indefinite_unitary_mul_mem ε (inv_mem hx₀) hg`. Establish `hp : 0 ≤ frob (x₀⁻¹ * g) ^ (-a)` using `Real.rpow_nonneg (frob_pos n_pos hy).le _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem Qp_word {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
@@ -204,11 +200,9 @@ theorem Qp_word {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     _ = max C 0 * frob x₀ ^ a * frob g ^ (-a) := by ring
 
 /- English proof (translation)
-Use `sInf_le ⟨fun v hv => Submodule.subset_span ⟨v, hv, [], rfl⟩, fun a b x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, wd, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨v, hv, (a, b) :: wd, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem genSub_le_span {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M) (V : Submodule ℂ M) :
@@ -223,11 +217,11 @@ theorem genSub_le_span {M : Type*} [AddCommGroup M] [Module ℂ M]
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hm'` using `genSub_le_span E V hm`. Use `clear hm`. Proceed by induction on `hm' using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, wd, rfl⟩` from `hx`. Conclude with `hV v hv wd`. Consider the case `zero => simpa using Qp_zero (ε := ε) σ x₀ w a`. Consider the case `add x y _ _ hx hy`. Use `Qp_add_smul 1 hx hy` as an intermediate fact.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using this`. Consider the case `smul c x _ hx`. Use `Qp_add_smul c (Qp_zero (ε := ε) σ x₀ w a) hx` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Qp_genSub {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D} {V : Submodule ℂ D}
@@ -262,7 +256,7 @@ def Fw {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin (2 * r + k + 1) → 
   | p :: wd => fun f => LemK.tensVd E p.1 p.2 (Fw E wd f)
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => rfl | p :: wd, g, hg => by show Formalism.REAL.Eab ε p.1 p.2 (Formalism.REAL.Eword ε wd (tMapD σ x₁ x₀ w (fun c => (f c : H)))) g = _ rw [Formalism.REAL.lie_derivative_congr p.1 p.2 (fun x hx => tMapD_Eword hσ hE hx₀ x₁ w f wd x hx) hg] exact tMapD_Eab hσ hE hx₀ hg …`.
+A detailed English derivation is pending.
 -/
 theorem tMapD_Eword {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
     {E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ D}
@@ -278,7 +272,7 @@ theorem tMapD_Eword {σ : Mat k r → (H →L[ℂ] H)} {D : Submodule ℂ H}
       exact tMapD_Eab hσ hE hx₀ hg x₁ w (Fw E wd f) p.1 p.2
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[genSub, Submodule.mem_sInf]`. Introduce `T hT`. Conclude with `hT.2 a b x (hx T hT)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem genSub_stable {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M) (V : Submodule ℂ M)
@@ -288,7 +282,7 @@ theorem genSub_stable {M : Type*} [AddCommGroup M] [Module ℂ M]
   exact hT.2 a b x (hx T hT)
 
 /- English proof (translation)
-The claim follows from `| [], c => hf c | p :: wd, c => by show LemK.tensVd E p.1 p.2 (Fw E wd f) c ∈ genSub E V rw [tensVd_apply] refine Submodule.sub_mem _ (genSub_stable E V _ _ (Fw_mem E V hf wd c)) ?_ split_ifs · exact Fw_mem E V hf wd p.1 · exact Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem Fw_mem {M : Type*} [AddCommGroup M] [Module ℂ M]
     (E : Fin (2 * r + k + 1) → Fin (2 * r + k + 1) → Module.End ℂ M) (V : Submodule ℂ M)
@@ -304,7 +298,7 @@ theorem Fw_mem {M : Type*} [AddCommGroup M] [Module ℂ M]
       · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Use `Formalism.REAL.smooth_on_group_sum (ε := ε) Finset.univ (fun c g => cJd x₁ (Pi.single c 1) g * coefX σ x₀ w (f c) g) (fun c _ => Formalism.REAL.smooth_on_group_mul (cJd_smooth x₁ _) (hf c).1)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tMapD_smooth {σ : Mat k r → (H →L[ℂ] H)} {x₀ : Mat k r} {w : H} {a : ℝ}
     (x₁ : Fin (2 * r + k + 1) → ℂ) {f : Fin (2 * r + k + 1) → H} (hf : ∀ c, Qp ε σ x₀ w a (f c)) :
@@ -315,13 +309,11 @@ theorem tMapD_smooth {σ : Mat k r → (H →L[ℂ] H)} {x₀ : Mat k r} {w : H}
   exact this
 
 /- English proof (translation)
-Use `choose C hC using fun c => (hf c).2`. Use `⟨(∑ j, ‖x₁ j‖) * ∑ c, C c, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hG` using `frob_pos n_pos hg`. Establish `e : frob g ^ (1 - a) = frob g * frob g ^ (-a)`. Rewrite using `[sub_eq_add_neg, Real.rpow_add hG, Real.rpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Unfold `tMapD`. Use `(norm_sum_le Finset.univ (fun c => cJd x₁ (Pi.single c 1) g * coefX σ x₀ w (f c) g)).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (cJd_bound x₁ c hg) (hC c g hg) (norm_nonneg _) (mul_nonneg (Finset.sum_nonneg fun j _ => norm_nonneg _) hG.le)`. Use `_ = (∑ j, ‖x₁ j‖) * (∑ c, C c) * (frob g * frob g ^ (-a)) := by`. Establish `h3 : ∀ c, ((∑ j, ‖x₁ j‖) * frob g) * (C c * frob g ^ (-a)) = ((∑ j, ‖x₁ j‖) * (frob g * frob g ^ (-a))) * C c` using `fun c => by ring`. Rewrite using `[Finset.sum_congr rfl (fun c _ => h3 c), ← Finset.mul_sum]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tMapD_bound {σ : Mat k r → (H →L[ℂ] H)} {x₀ : Mat k r} {w : H} {a : ℝ}
     (x₁ : Fin (2 * r + k + 1) → ℂ) {f : Fin (2 * r + k + 1) → H} (hf : ∀ c, Qp ε σ x₀ w a (f c)) :

@@ -19,7 +19,7 @@ open Classical
 namespace GlobalTheory.FlagPush.DivOn
 
 /- English proof (translation)
-The claim follows from `(unitAt_iff h0).2 ⟨h, h'⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_of {Z : Scheme.{0}} [IsIntegral Z] {z : Z} {u : Z.functionField} (h0 : u ≠ 0)
     (h : u ∈ (algebraMap (Z.presheaf.stalk z) Z.functionField).range)
@@ -27,21 +27,19 @@ theorem unitAt_of {Z : Scheme.{0}} [IsIntegral Z] {z : Z} {u : Z.functionField} 
   (unitAt_iff h0).2 ⟨h, h'⟩
 
 /- English proof (translation)
-Take `⟨hP₁, h₁⟩` from `GlobalTheory.T.isCartierLocalEquation_diagonal_of_adaptedFrame F Y ι m E' gr B hB hgr _ A₁ hA₁`. Take `⟨hP₂, h₂⟩` from `GlobalTheory.T.isCartierLocalEquation_diagonal_of_adaptedFrame F Y ι m E' gr B hB hgr _ A₂ hA₂`. Use `choose s₁ e₁ q₁ using h₁`. Use `choose s₂ e₂ q₂ using h₂`. Establish `hT₁ : Par m ⊤ ((B * A₁⁻¹).map W.α₁)` using `hP₁.map W.α₁ fun _ _ => trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT₂ : Par m ⊤ ((B * A₂⁻¹).map W.α₂)` using `hP₂.map W.α₂ fun _ _ => trivial`. Establish `hloc` using `GlobalTheory.T.isUnit_stalk_transition_pulledBack_flagFrames F X Y ι m E E' φ f hf W hα z A₁ hA₁ A₂ hA₂`. Establish `dB₁ : ∀ σ, (B.map W.α₁ σ).det ≠ 0` using `fun σ => by`. Rewrite using `[Mat.det_map]`. Conclude with `(map_ne_zero _).2 (Fr.det_ne hB σ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `dB₂ : ∀ σ, (B.map W.α₂ σ).det ≠ 0` using `fun σ => by`. Rewrite using `[Mat.det_map]`. Conclude with `(map_ne_zero _).2 (Fr.det_ne hB σ)`. Establish `dA₁ : ∀ σ, (A₁.map W.α₁ σ).det ≠ 0` using `fun σ => by`. Rewrite using `[Mat.det_map]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(map_ne_zero _).2 (Fr.det_ne hA₁ σ)`. Establish `eg : A₁.map W.α₁ * (A₂.map W.α₂)⁻¹ = ((B * A₁⁻¹).map W.α₁)⁻¹ * (B.map W.α₁ * (B.map W.α₂)⁻¹) * (B * A₂⁻¹).map W.α₂`. Rewrite using `[Mat.map_mul, Mat.map_mul, Mat.map_inv, Mat.map_inv, Mat.mul_inv_rev, Mat.inv_inv dA₁, mul_assoc, mul_assoc, mul_assoc, ← mul_assoc (B.map W.α₂)⁻¹, Mat.inv_mul dB₂, one_mul, ← mul_assoc (B.map W.α₁)⁻¹, Mat.inv_mul dB₁, one_mul]`. Take `⟨hal, hd, hab', hmin⟩` from `GlobalTheory.T.minor_two_by_two_triangular_product ι m τ a b hab _ _ _ _ hT₁.inv hT₂ hC`. Rewrite `hal`, `hd`, `hab'`, `hmin` using `[← eg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨hu, hm0, hm1⟩` from `GlobalTheory.T.almostLowerTriangular_diag_minor_isUnit ι m τ a b hab _ _ _ hal hloc`. Establish `i₁ : ∀ x : Root m, ((B * A₁⁻¹).map W.α₁)⁻¹ x.1 x.2 x.2 = (W.α₁ (s₁ x))⁻¹` using `fun x => by`. Rewrite using `[(GlobalTheory.T.parabolicMatrixFamily_diag_isUnit ι m _ ⊤ _ hT₁ x).2.2.1, ← e₁ x]`. Both sides reduce to the same expression. Establish `i₂ : ∀ x : Root m, ((B * A₂⁻¹).map W.α₂) x.1 x.2 x.2 = W.α₂ (s₂ x)` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e₂ x]`. Both sides reduce to the same expression. Use `⟨fun x => Units.map W.α₁.toMonoidHom (s₁ x), fun x => Units.map W.α₂.toMonoidHom (s₂ x), fun x => hD₁ x _ _ (q₁ x) z rfl, fun x => hD₂ x _ _ (q₂ x) z rfl, hal, fun x hxa hxb => ?_, ?_, ?_, (hloc τ).1 a b⟩` and prove the remaining obligations. Use `unitAt_of (hu x hxa hxb).1 ((hloc x.1).1 x.2 x.2) (hu x hxa hxb).2` as an intermediate fact. Rewrite `this` using `[hd x hxa hxb, i₁, i₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `this`. Establish `hmem : minor τ a b (A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) ∈ (algebraMap (W.Z.presheaf.stalk z) W.Z.functionField).range` using `sub_mem (mul_mem ((hloc τ).1 _ _) ((hloc τ).1 _ _)) (mul_mem ((hloc τ).1 _ _) ((hloc τ).1 _ _))`. Use `unitAt_of hm0 hmem hm1` as an intermediate fact. Rewrite `this` using `[hmin, i₁ ⟨τ, a⟩, i₁ ⟨τ, b⟩, i₂ ⟨τ, a⟩, i₂ ⟨τ, b⟩]`. Conclude with `this`.
-
-Rewrite using `[hab', i₁ ⟨τ, a⟩, i₂ ⟨τ, b⟩]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem key {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι → ℕ} {E : Fr (ratOf X) m 0}
     {E' : Fr (ratOf Y) m m} {φ : X.Fn →ₐ[F] Y.Fn} {f : Y.X ⟶ X.X} (hf : Refines E E' φ f) {gr : Root m → Y.Dv}
@@ -101,27 +99,27 @@ theorem key {F : Type} [Field F] {X Y : Var F} {ι : Type} [Fintype ι] {m : ι 
     rfl
 
 /- English proof (translation)
-Introduce `F _ X Y ι _ m E E' φ f hf gr B hB hgr W hα τ a b hab hC`. Use `choose D₁ hD₁ using fun x => GlobalTheory.T.exists_cartierDivisor_pullback_of_dominant W.Z Y.X W.p₁ (gr x)`. Use `choose D₂ hD₂ using fun x => GlobalTheory.T.exists_cartierDivisor_pullback_of_dominant W.Z Y.X W.p₂ (gr x)`. Establish `hC0 : Par 0 ⊤ (B.map W.α₁ * (B.map W.α₂)⁻¹)` using `fun σ => ⟨fun _ _ => trivial, hC.1 σ, trivial, fun i j hi => absurd hi (by simp)⟩`. Take `⟨hCd, hCm, -⟩` from `GlobalTheory.T.almostLowerTriangular_diag_minor_isUnit ι m τ a b hab _ ⊤ _ hC hC0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `K` using `fun (z : W.Z) {A₁ A₂ : Mat m Y.Fn} (hA₁ : A₁ ∈ E'.S (W.p₁ z)) (hA₂ : A₂ ∈ E'.S (W.p₂ z)) => key hf hB hgr W hα hab hC hD₁ hD₂ z hA₁ hA₂`. Establish `hne : a ≠ b` using `fun h => by rw [h] at hab; omega`. Establish `hΘ : ∀ (z : W.Z) {A₁ A₂ : Mat m Y.Fn} (hA₁ : A₁ ∈ E'.S (W.p₁ z)) (hA₂ : A₂ ∈ E'.S (W.p₂ z)), ∃ g : W.Z.functionFieldˣ, (g : W.Z.functionField) = (A₁.map W.α₁ * (A₂.map W.α₂)⁻¹) τ a b ∧ (D₂ ⟨τ, b⟩ - D₁ ⟨τ, a⟩ + CartierDiv.principal (Units.mk0 _ hC.2.1)).IsEqn z g` using `fun z A₁ A₂ hA₁ hA₂ => by`. Take `⟨t₁, t₂, q₁, q₂, -, -, -, e, -⟩` from `K z hA₁ hA₂`. Use `⟨_, ?_, ((q₂ ⟨τ, b⟩).sub (q₁ ⟨τ, a⟩)).add (CartierDiv.isEqn_principal _ z)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, Units.val_mul, Units.val_div_eq_div_val, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨D₁, D₂, D₂ ⟨τ, b⟩ - D₁ ⟨τ, a⟩ + CartierDiv.principal (Units.mk0 _ hC.2.1), hD₁, hD₂, fun x hxa hxb => ?_, ?_, ?_, fun z => ?_, ?_⟩` and prove the remaining obligations. Establish `e : D₂ x + CartierDiv.principal (Units.mk0 _ (hCd x hxa hxb).1) = D₁ x` using `CartierDiv.ext_of_isEqn fun z => by`. Take `⟨A₁, hA₁⟩` from `E'.nonempty (W.p₁ z)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A₂, hA₂⟩` from `E'.nonempty (W.p₂ z)`. Take `⟨t₁, t₂, q₁, q₂, -, hu, -⟩` from `K z hA₁ hA₂`. Use `⟨_, (q₂ x).add (CartierDiv.isEqn_principal _ z), (q₁ x).iff_unitAt.2 ?_⟩` and prove the remaining obligations. Use `hu x hxa hxb using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Units.val_mul, Units.val_mk0]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e, map_add, toPic_principal, add_zero]`. Establish `e : D₂ ⟨τ, a⟩ + D₂ ⟨τ, b⟩ + CartierDiv.principal (Units.mk0 _ hCm) = D₁ ⟨τ, a⟩ + D₁ ⟨τ, b⟩` using `CartierDiv.ext_of_isEqn fun z => by`. Take `⟨A₁, hA₁⟩` from `E'.nonempty (W.p₁ z)`. Take `⟨A₂, hA₂⟩` from `E'.nonempty (W.p₂ z)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t₁, t₂, q₁, q₂, -, -, hu, -⟩` from `K z hA₁ hA₂`. Use `⟨_, ((q₂ _).add (q₂ _)).add (CartierDiv.isEqn_principal _ z), ((q₁ _).add (q₁ _)).iff_unitAt.2 ?_⟩` and prove the remaining obligations. Use `hu using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Units.val_mul, Units.val_mk0]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_add, ← map_add, ← e, map_add _ (_ + _), toPic_principal, add_zero]`. Rewrite using `[map_add, toPic_principal, add_zero, map_sub]`. Take `⟨A₁, hA₁⟩` from `E'.nonempty (W.p₁ z)`. Take `⟨A₂, hA₂⟩` from `E'.nonempty (W.p₂ z)`. Take `⟨g, e, hg⟩` from `hΘ z hA₁ hA₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t₁, t₂, -, -, -, -, -, -, hr⟩` from `K z hA₁ hA₂`. Conclude with `⟨g, hg, by rw [one_mul, e]; exact hr⟩`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce `hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A₁, hA₁⟩` from `E'.nonempty (W.p₁ z)`. Take `⟨A₂, hA₂⟩` from `E'.nonempty (W.p₂ z)`. Take `⟨g, e, hg⟩` from `hΘ z hA₁ hA₂`. Take `⟨t₁, t₂, -, -, hal, -⟩` from `K z hA₁ hA₂`. Apply the tactic sequence `refine GlobalTheory.T.mem_range_diagonal_of_not_unit_transitionEntry F X Y ι m E E' φ f hf W hα τ a b z A₁ hA₁ A₂ hA₂ hal ?_`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e]`. Conclude with `hg.mem_supp_iff.1 hz`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨A, hA⟩` from `E'.nonempty y`. Establish `e₁ : W.p₁ (W.δ y) = y` using `by rw [← Scheme.Hom.comp_apply, W.δ₁]; rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂ : W.p₂ (W.δ y) = y` using `by rw [← Scheme.Hom.comp_apply, W.δ₂]; rfl`. Take `⟨g, e, hg⟩` from `hΘ (W.δ y) (A₁ := A) (A₂ := A) (by rw [e₁]; exact hA) (by rw [e₂]; exact hA)`. Use `hg.mem_supp_iff.2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `GlobalTheory.T.not_isUnit_offDiagonal_transition_on_commonSection F X Y ι m E E' φ f hf W hα τ a b hne y A hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_divisors : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (gr : Root m → Y.Dv), ∀ B ∈ E'.S (genericPoint Y.X), (∀ (y : Y.X) (x : Root m), ∃ A ∈ E'.S y, ∃ t : Y.Fnˣ, (B * A⁻¹) x.1 x.2 x.2 = t ∧ (gr x).IsEqn y t) → ∀ W : Dbl Y, (∀ u : X.Fn, W.α₁ (φ u) = W.α₂ (φ u)) → ∀ (τ : ι) (a b : Fin (m τ)), (b : ℕ) = a + 1 → AlmostLow τ a b (B.map W.α₁ * (B.map W.α₂)⁻¹) → ∃ (D₁ D₂ : Root m → CartierDiv W.Z) (Θ : CartierDiv W.Z), (∀ x, IsPull W.p₁ (D₁ x) (gr x)) ∧ (∀ x, IsPull W.p₂ (D₂ x) (gr x)) ∧ (∀ x, x ≠ ⟨τ, a⟩ → x ≠ ⟨τ, b⟩ → toPic (D₁ x) = toPic (D₂ x)) ∧ toPic (D₁ ⟨τ, a⟩) + toPic (D₁ ⟨τ, b⟩) = toPic (D₂ ⟨τ, a⟩) + toPic (D₂ ⟨τ, b⟩) ∧ toPic Θ = toPic (D₂ ⟨τ, b⟩) - toPic (D₁ ⟨τ, a⟩) ∧ Θ.Eff ∧ (Θ.supp : Set W.Z) = Set.range W.δ := by
   intro F _ X Y ι _ m E E' φ f hf gr B hB hgr W hα τ a b hab hC

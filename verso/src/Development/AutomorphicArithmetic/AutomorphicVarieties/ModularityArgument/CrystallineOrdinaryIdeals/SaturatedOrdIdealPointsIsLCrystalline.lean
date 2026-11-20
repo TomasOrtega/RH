@@ -15,19 +15,17 @@ def glPart {G R : Type} [Group G] [CommRing R] {m : ℕ} (H : Subgroup G) (r : G
   map_mul' g g' := by simp [h g g.2]
 
 /- English proof (translation)
-Introduce `hP l _ O _ _ _ _ _ _ _ D U B _ _ _ _ _ _ _ f hf`. Take `⟨-, -, hemb, -, -⟩` from `GlobalTheory.T.galoisSubgroupL_basic_properties D`. Establish `hright : ∀ g ∈ D.HL, (push f U.r.hom g).right = 1` using `fun g hg => by`. Rewrite using `[show (push f U.r.hom g).right = (U.r.hom g).right from rfl, U.r.hasMult g]`. Conclude with `hg.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ρ` to `glPart D.HL (push f U.r.hom) hright`. Use `⟨ρ, fun _ => rfl, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.CrLocal.isCr_of_local D.HL.subtype hemb ρ (fun i j => ?_) ?_` and prove the remaining obligations. Establish `h` using `(ptCont (l := l) U.R B f).1 (GQ l) (fun g => (U.r.hom g).mat i j) (U.r.cont i j)`. Unfold `QCont at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `@Continuous.comp ↥D.HL (GQ l) B _ _ (moduleTopology ℚ_[l] B) Subtype.val (fun g => f ((U.r.hom g).mat i j)) h continuous_subtype_val`. Introduce `B' _ _ _ _ _ _`. Use `letI : Algebra O B' := ((algebraMap B B').comp (algebraMap O B)).toAlgebra`. Use `letI : Algebra ℤ_[l] B' := ((algebraMap B B').comp (algebraMap ℤ_[l] B)).toAlgebra`. Use `haveI : IsScalarTower ℤ_[l] O B' := IsScalarTower.of_algebraMap_eq fun x => by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `algebraMap B B' (algebraMap ℤ_[l] B x) = algebraMap B B' (algebraMap O B (algebraMap ℤ_[l] O x))`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] O B]`. Use `haveI : IsScalarTower ℤ_[l] ℚ_[l] B' := IsScalarTower.of_algebraMap_eq fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap B B' (algebraMap ℤ_[l] B x) = algebraMap ℚ_[l] B' (algebraMap ℤ_[l] ℚ_[l] x)`. Rewrite using `[IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] B, IsScalarTower.algebraMap_apply ℚ_[l] B B']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `f' : U.R →ₐ[O] B'` to `{ toRingHom := (algebraMap B B').comp (f : U.R →+* B) commutes' := fun x => by`. Express the relevant statement in the definitionally equal form `algebraMap B B' (f (algebraMap O U.R x)) = algebraMap B B' (algebraMap O B x)`. Rewrite using `[f.commutes] }`. Take `⟨ρ', hρ', hcr⟩` from `GlobalTheory.T.isLCrystalline_point_of_saturatedOrdIdeal hP D U B' f' (fun a ha => by`. Express the relevant statement in the definitionally equal form `algebraMap B B' (f a) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show f a = 0 from hf ha, map_zero])`. Establish `e : ρ' = (Matrix.GeneralLinearGroup.map (algebraMap B B')).comp ρ`. Use extensionality with `g i j`. Rewrite using `[hρ' g]`. Both sides reduce to the same expression.
-
-Conclude with `e ▸ hcr`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ptsCr_IY : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (U : D.Univ), GlobalTheory.OrdLoc.PtsCr D U (GlobalTheory.OrdLoc.IY D U) := by
   intro hP l _ O _ _ _ _ _ _ _ D U B _ _ _ _ _ _ _ f hf

@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.LevKFrame
 
 /- English proof (translation)
-Introduce `D S T C Lv ΛT hsd hAA βT hfr Pg hPg hJ k κ hk`. Take `⟨-, hmov, κ', hκ', hc⟩` from `hk`. Establish `hmovT` using `GlobalTheory.T.latticeTransport_of_polarisationIdealTimesLattice D C.X.Λ ΛT (fmt T k) hAA hmov`. Establish `hSt` using `GlobalTheory.T.finiteAdelic_mem_frameStabilizer_of_latticeTransport D T ΛT βT hfr k hmovT`. Use `⟨hSt, fun PP hPP => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨PP', hPP', hcj⟩` from `GlobalTheory.T.exists_conjugatePlace_cmField D PP`. Establish `hI : ∀ i j, κ' i j - (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E)) i j ∈ PP'.asIdeal`. Rewrite using `[hPP']`. Conclude with `hJ κ κ.2 κ' hκ' PP hPP`. Establish `h1` using `GlobalTheory.T.latticeTransport_congruence_of_frameVectors D C.X.Λ Lv.β Lv.𝔪 PP'.asIdeal Lv.β_mem Lv.β_span (hPP' ▸ hPg PP hPP) (fmt T k) κ' hI hmov hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.T.mulVec_sub_mem_latticeCompletion_of_lattice D C.X.Λ (PP'.asIdeal • C.X.Λ) (fmt T k) h1`. Take `⟨b, hb, h3⟩` from `GlobalTheory.T.congruenceModPrime_of_polarisationIdealTimesLattice D C.X.Λ ΛT PP'.asIdeal PP'.isPrime hAA (fmt T k) h2`. Establish `h4` using `GlobalTheory.T.lattice_reduction_eq_one_of_completion_congruence D T ΛT βT hfr k hSt PP' b hb h3`. Conclude with `GlobalTheory.T.reductionTrivial_of_conjugatePlace_selfDual D T ΛT hsd βT hfr k hSt PP PP' hcj h4`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levK_frame : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (Lv : GlobalTheory.SW.Level C.X) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ βT : GL (Fin T.rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame βT ΛT → ∀ Pg : Finset (Formalism.L2.DIV.Pl D.host.E), (∀ PP ∈ Pg, Lv.𝔪 ≤ conjI PP.asIdeal) → (∀ κ ∈ Lv.J, ∀ κ' : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E), κ'.map (Ideal.Quotient.mk Lv.𝔪) = (κ : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E ⧸ Lv.𝔪)) → ∀ PP ∈ Pg, ∀ i j, κ' i j - (1 : Matrix (Fin T.rank) (Fin T.rank) (𝓞 D.host.E)) i j ∈ conjI PP.asIdeal) → ∀ (k : GA D T) (κ : Lv.J), C.LevK Lv k κ → Lev.finE T k ∈ Formalism.L2.DIV.St βT ∧ ∀ PP ∈ Pg, Formalism.L2.DIV.redFn βT PP (Lev.finE T k) = 1 := by
   intro D S T C Lv ΛT hsd hAA βT hfr Pg hPg hJ k κ hk

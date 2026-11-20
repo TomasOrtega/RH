@@ -14,7 +14,7 @@ def liftR [IsTotallyReal F] (r : InfinitePlace F → ℝ) : AF F :=
     (fun w => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (r w))
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Express the relevant statement in the definitionally equal form `((InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w)) ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (r w)) : ℂ) = r w`. Use `congr 1`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (r w)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evInf_liftR [IsTotallyReal F] (r : InfinitePlace F → ℝ) (w : InfinitePlace F) :
     InfinitePlace.Completion.extensionEmbedding w (evInf F w (liftR r)) = r w := by
@@ -25,7 +25,7 @@ theorem evInf_liftR [IsTotallyReal F] (r : InfinitePlace F → ℝ) (w : Infinit
   exact (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (r w)
 
 /- English proof (translation)
-Establish `h : ∀ w : InfinitePlace F, Continuous (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm` using `fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).symm.continuous`. Conclude with `Continuous.prodMk (continuous_pi fun w => (h w).comp (continuous_apply w)) continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_liftR [IsTotallyReal F] : Continuous (liftR (F := F)) := by
   have h : ∀ w : InfinitePlace F, Continuous (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm :=
@@ -38,9 +38,9 @@ namespace GlobalTheory.RealLift.OneParam
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Use `h.2.1` as an intermediate fact. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom`. Use `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk τ))) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `star (τ x) = τ x`. Rewrite using `[← h.2.2.2 τ x, hc x]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, σ ξ ≠ ξ := by
   by_contra hc
@@ -53,7 +53,7 @@ theorem exists_moved {σ : E →ₐ[F] E} (h : IsCMExt F E σ) : ∃ ξ : E, σ 
   rw [← h.2.2.2 τ x, hc x]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hξ` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ ξ]`. Conclude with `Complex.conj_eq_iff_im.2 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_ne_zero {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {ξ : E} (hξ : σ ξ ≠ ξ) (τ : E →+* ℂ) : (τ ξ).im ≠ 0 := by
   intro h0
@@ -73,7 +73,7 @@ theorem piInf_tmul {w : InfinitePlace F} (τ : EmbOver E w) (a : AF F) (e : E) :
     piInf τ (a ⊗ₜ[F] e) = InfinitePlace.Completion.extensionEmbedding w (evInf F w a) * τ.1 e := rfl
 
 /- English proof (translation)
-Rewrite using `[liftC, map_add, piInf_tmul, piInf_tmul, evInf_liftR, evInf_liftR, map_one, mul_one]`. Use `hξ w` as an intermediate fact. Apply the tactic sequence `apply Complex.ext <;> simp <;> field_simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem piInf_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E} (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0)
     (c : InfinitePlace F → ℂ) (w : InfinitePlace F) : piInf (τ w) (liftC τ ξ c) = c w := by
@@ -82,9 +82,9 @@ theorem piInf_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w
   apply Complex.ext <;> simp <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `ht : ∀ e : E, Continuous fun a : AF F => a ⊗ₜ[F] e` using `fun e => by`. Establish `: (fun a : AF F => a ⊗ₜ[F] e) = fun a => a • ((1 : AF F) ⊗ₜ[F] e)` using `funext fun a => by`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `(continuous_id (X := AF F)).smul (continuous_const (y := ((1 : AF F) ⊗ₜ[F] e)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Use `((ht 1).comp (continuous_liftR.comp ?_)).add ((ht ξ).comp (continuous_liftR.comp ?_))` and prove the remaining obligations. Conclude with `continuous_pi fun w => (Complex.continuous_re.comp (continuous_apply w)).sub (((Complex.continuous_im.comp (continuous_apply w)).div_const _).mul continuous_const)`. Conclude with `continuous_pi fun w => (Complex.continuous_im.comp (continuous_apply w)).div_const _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E) :
     Continuous (liftC τ ξ) := by
@@ -100,15 +100,15 @@ theorem continuous_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOve
   · exact continuous_pi fun w => (Complex.continuous_im.comp (continuous_apply w)).div_const _
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem inf_eq_zero {u : AF F} (hu : evI F u = 0) : u.1 = 0 :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)
 
 /- English proof (translation)
-Establish `h1` using `inf_eq_zero hu`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * (liftR r).1 = 0`. Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `mul_zero _`.
+A detailed English derivation is pending.
 -/
 theorem mul_liftR [IsTotallyReal F] {u : AF F} (hu : evI F u = 0) (r : InfinitePlace F → ℝ) : u * liftR r = 0 := by
   have h1 := inf_eq_zero hu
@@ -119,7 +119,7 @@ theorem mul_liftR [IsTotallyReal F] {u : AF F} (hu : evI F u = 0) (r : InfiniteP
     exact mul_zero _
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [liftC, smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_liftR hu, mul_liftR hu, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E) (c : InfinitePlace F → ℂ) :
     At (evI F) (liftC τ ξ c) := fun u hu => by
@@ -127,9 +127,9 @@ theorem at_liftC [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (
     mul_liftR hu, mul_liftR hu, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[cA, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, piInf_tmul, piInf_tmul, map_mul, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), Complex.conj_ofReal]`. Use `congr 1`. Conclude with `h.2.2.2 τ.1 e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem piInf_cA {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = starRingEnd ℂ (piInf τ z) := by
@@ -148,11 +148,11 @@ namespace GlobalTheory.RealLift.OneParam
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Rewrite `hst` using `[zero_smul, add_zero, smul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hst.resolve_right one_ne_zero, rfl⟩`. It suffices to derive a contradiction. Apply `hξ` to reduce the goal to its premises. Establish `e : ξ = algebraMap F E (-(s / t))`. Rewrite using `[Algebra.algebraMap_eq_smul_one]`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: t • ξ = -(s • (1 : E))` using `eq_neg_of_add_eq_zero_right hst`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e, AlgHom.commutes]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem linInd_one {σ : E →ₐ[F] E} {ξ : E} (hξ : σ ξ ≠ ξ) : LinearIndependent F ![(1 : E), ξ] := by
   rw [LinearIndependent.pair_iff]
@@ -171,25 +171,21 @@ theorem linInd_one {σ : E →ₐ[F] E} {ξ : E} (hξ : σ ξ ≠ ξ) : LinearIn
     rw [e, AlgHom.commutes]
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Take `⟨ξ, hξ⟩` from `exists_moved h`. Establish `hcard : Fintype.card (Fin 2) = Module.finrank F E` using `by rw [h.2.2.1]; rfl`. Set `bE` to `basisOfLinearIndependentOfCardEqFinrank (linInd_one hξ) hcard`. Set `B` to `Algebra.TensorProduct.basis (AF F) bE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hB : ∀ i, B i = (1 : AF F) ⊗ₜ[F] ![(1 : E), ξ] i` using `fun i => by`. Simplify using `[B, bE, Algebra.TensorProduct.basis_apply]`. Use `set a := B.repr z with ha_def`. Establish `hz' : z = a 0 ⊗ₜ[F] (1 : E) + a 1 ⊗ₜ[F] ξ` using `by conv_lhs => rw [← B.sum_repr z]`. Rewrite using `[Fin.sum_univ_two, hB, hB, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, mul_one, mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `u : AF F` to `LinearMap.inr F (Ainf F) (Af F) 1`. Establish `hu : evI F u = 0`. Express the relevant statement in the definitionally equal form `InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ i, u * a i = 0` using `fun i => by`. Establish `e` using `congrArg (fun y => B.repr y i) (hz u hu)`. Simplify `e` using `[ha_def]`. Establish `hinf : ∀ w, evInf F w (a 0) = 0 ∧ evInf F w (a 1) = 0` using `fun w => by`. Establish `e` using `h0 w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hz', map_add, piInf_tmul, piInf_tmul, map_one, mul_one, ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w), ← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Use `set x := InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (evInf F w (a 0)) with hx`. Use `set y := InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal w) (evInf F w (a 1)) with hy`. Establish `hne` using `im_ne_zero h hξ (τ w).1`. Establish `him` using `congrArg Complex.im e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hre` using `congrArg Complex.re e`. Simplify using `at him hre`. Establish `y0 : y = 0`. Break down `him with h1 | h1` into its components or cases. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `absurd h1 hne`. Rewrite `hre` using `[y0, zero_mul, add_zero]`. Prove the components needed by the constructor for the conclusion. Conclude with `(map_eq_zero _).1 (hx ▸ hre)`. Conclude with `(map_eq_zero _).1 (hy ▸ y0)`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : ∀ i, a i = 0` using `fun i => by`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `evInf F w (a i) = 0`. Use `fin_cases i`.
-
-Conclude with `(hinf w).1`. Conclude with `(hinf w).2`. Establish `e` using `congrArg Prod.snd (hfin i)`. Express the relevant statement in the definitionally equal form `(1 : Af F) * (a i).2 = 0 at e`. Rewrite `e` using `[one_mul]`.
-
-Conclude with `e`. Rewrite using `[hz', ha 0, ha 1, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_at {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {z : AE F E} (hz : At (evI F) z) (h0 : ∀ w, piInf (τ w) z = 0) : z = 0 := by
@@ -252,37 +248,37 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {β : Type} [Fintype β] [DecidableEq β]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_sub, hX u hu, hY u hu, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_sub {X Y : Matrix β β (AE F E)} (hX : At (evI F) X) (hY : At (evI F) Y) : At (evI F) (X - Y) :=
   fun u hu => by rw [smul_sub, hX u hu, hY u hu, sub_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_add, hX u hu, hY u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add {X Y : Matrix β β (AE F E)} (hX : At (evI F) X) (hY : At (evI F) Y) : At (evI F) (X + Y) :=
   fun u hu => by rw [smul_add, hX u hu, hY u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.smul_mul, hX u hu, Matrix.zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right {X : Matrix β β (AE F E)} (hX : At (evI F) X) (Y : Matrix β β (AE F E)) : At (evI F) (X * Y) :=
   fun u hu => by rw [← Matrix.smul_mul, hX u hu, Matrix.zero_mul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.mul_smul, hX u hu, Matrix.mul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_left {X : Matrix β β (AE F E)} (hX : At (evI F) X) (Y : Matrix β β (AE F E)) : At (evI F) (Y * X) :=
   fun u hu => by rw [← Matrix.mul_smul, hX u hu, Matrix.mul_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← Matrix.transpose_smul, hX u hu, Matrix.transpose_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_transpose {X : Matrix β β (AE F E)} (hX : At (evI F) X) : At (evI F) Xᵀ :=
   fun u hu => by rw [← Matrix.transpose_smul, hX u hu, Matrix.transpose_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by have e := hX u hu ext i j have e' := congrFun (congrFun e i) j simp only [Matrix.smul_apply, Matrix.zero_apply] at e' ⊢ rw [Matrix.map_apply, ← map_smul, e', map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_map_cA (σ : E →ₐ[F] E) {X : Matrix β β (AE F E)} (hX : At (evI F) X) : At (evI F) (X.map (cA σ)) :=
   fun u hu => by
@@ -293,9 +289,9 @@ theorem at_map_cA (σ : E →ₐ[F] E) {X : Matrix β β (AE F E)} (hX : At (evI
     rw [Matrix.map_apply, ← map_smul, e', map_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `sub_eq_zero.1 (eq_zero_of_at h τ (fun u hu => ?_) fun w => ?_)` and prove the remaining obligations. Establish `e` using `congrFun (congrFun (hXY u hu) i) j`. Simplify using `using e`. Establish `e` using `congrFun (congrFun (hw w) i) j`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Matrix.map_apply] at e`. Rewrite using `[map_sub, e, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_at {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {X Y : Matrix β β (AE F E)} (hXY : At (evI F) (X - Y)) (hw : ∀ w, X.map (piInf (τ w)) = Y.map (piInf (τ w))) :
@@ -313,7 +309,7 @@ def liftM [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E)
   Matrix.of fun i j => liftC τ ξ fun w => M w i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `piInf_liftC τ hξ _ w`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem liftM_map [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) {ξ : E} (hξ : ∀ w, ((τ w).1 ξ).im ≠ 0)
     (M : InfinitePlace F → Matrix β β ℂ) (w : InfinitePlace F) : (liftM τ ξ M).map (piInf (τ w)) = M w := by
@@ -321,7 +317,7 @@ theorem liftM_map [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) 
   exact piInf_liftC τ hξ _ w
 
 /- English proof (translation)
-Introduce `u hu` and use `by ext i j exact at_liftC τ ξ _ u hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_liftM [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E)
     (M : InfinitePlace F → Matrix β β ℂ) : At (evI F) (liftM τ ξ M) := fun u hu => by
@@ -329,7 +325,7 @@ theorem at_liftM [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (
   exact at_liftC τ ξ _ u hu
 
 /- English proof (translation)
-The claim follows from `continuous_matrix fun i j => (continuous_liftC τ ξ).comp (continuous_pi fun w => ((continuous_apply w).matrix_elem i j))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_liftM [IsTotallyReal F] (τ : ∀ w : InfinitePlace F, EmbOver E w) (ξ : E) :
     Continuous (liftM (β := β) τ ξ) :=
@@ -343,25 +339,25 @@ open scoped Matrix
 variable {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ}
 
 /- English proof (translation)
-Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_mul_self : Jm R S * Jm R S = 1 := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_multiply, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]`.
+Simplify using the standard rewrite rules.
 -/
 theorem jm_transpose : (Jm R S)ᵀ = Jm R S := by
   simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]
 
 /- English proof (translation)
-Establish `hs : ∀ {m n : Type} (A : Matrix m n ℂ), A.map star = A.map (starRingEnd ℂ)` using `fun _ => rfl`. Use `set D := C.map (starRingEnd ℂ)`. Use `set D' := C'.map (starRingEnd ℂ)`. Establish `h1 : (Jm R S * Cᵀ * M) * D = 1`. Express the relevant statement in the definitionally equal form `Jm R S * Cᵀ * M * C.map star = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc Cᵀ, hF, jm_mul_self]`. Establish `h2 : D * D' = 1`. Rewrite using `[← Matrix.map_mul, hR, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : Jm R S * Cᵀ * M = D'`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : D' * D = 1` using `by rw [← h3, h1]`. Establish `h5 : (C' * C).map (starRingEnd ℂ) = 1` using `by rw [Matrix.map_mul]; exact h4`. Establish `h6` using `congrArg (fun A => A.map (starRingEnd ℂ)) h5`. Simplify using `only [Matrix.map_map, Matrix.map_one _ (map_zero _) (map_one _)] at h6`. Use `h6 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem frame_inv {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ}
     (hF : Cᵀ * M * C.map star = Jm R S) (hR : C * C' = 1) : C' * C = 1 := by
@@ -385,13 +381,13 @@ theorem frame_inv {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} {C' : Matr
   simp
 
 /- English proof (translation)
-Establish `hYh : Yᴴ = Jm R S * (-Y) * Jm R S`. Establish `e : Yᴴ * Jm R S + Jm R S * Y = 0` using `hY`. Establish `e2 : Yᴴ = -(Jm R S * Y) * Jm R S`. Use `congrArg (· * Jm R S) (eq_neg_of_add_eq_zero_left e)` as an intermediate fact. Simplify `this` using `[Matrix.mul_assoc, jm_mul_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e2, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hu : IsUnit (Jm R S)` using `⟨⟨Jm R S, Jm R S, jm_mul_self, jm_mul_self⟩, rfl⟩`. Establish `hinv : (Jm R S)⁻¹ = Jm R S` using `Matrix.inv_eq_left_inv jm_mul_self`. Establish `hH : (NormedSpace.exp (t • Y))ᴴ = Jm R S * NormedSpace.exp (-(t • Y)) * Jm R S`. Establish `key : t • Yᴴ = Jm R S * (-(t • Y)) * (Jm R S)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hinv, hYh, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_neg, Matrix.neg_mul, smul_neg, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, star_trivial, key, Matrix.exp_conj _ _ hu, hinv]`. Establish `hU : (NormedSpace.exp (t • Y))ᴴ * Jm R S * NormedSpace.exp (t • Y) = Jm R S`. Rewrite using `[hH, Matrix.mul_assoc _ (Jm R S) (Jm R S), jm_mul_self, Matrix.mul_one, Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ ((Commute.refl (t • Y)).neg_left), neg_add_cancel, NormedSpace.exp_zero, Matrix.mul_one]`. Use `congrArg Matrix.transpose hU` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, jm_transpose, Matrix.conjTranspose, Matrix.transpose_map, Matrix.transpose_transpose]`. Rewrite `this` using `[← Matrix.mul_assoc]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_unitary {Y : Mat R S} (hY : Y ∈ upq R S) (t : ℝ) :
     (NormedSpace.exp (t • Y))ᵀ * Jm R S * (NormedSpace.exp (t • Y)).map star = Jm R S := by
@@ -426,14 +422,14 @@ open scoped Matrix
 variable {β : Type} [Fintype β] [DecidableEq β] {R S : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := starRingEnd ℂ)`.
+A detailed English derivation is pending.
 -/
 theorem map_star_mul {m n p : Type} [Fintype n] (A : Matrix m n ℂ) (B : Matrix n p ℂ) :
     (A * B).map star = A.map star * B.map star :=
   Matrix.map_mul (f := starRingEnd ℂ)
 
 /- English proof (translation)
-Rewrite using `[add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Y).smul_left s).smul_right t)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc C' C, hL, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_add {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ} (hL : C' * C = 1) (Y : Mat R S) (s t : ℝ) :
     C * NormedSpace.exp ((s + t) • Y) * C' =
@@ -443,18 +439,16 @@ theorem conj_add {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ} (hL 
   rw [← Matrix.mul_assoc C' C, hL, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[zero_smul, NormedSpace.exp_zero, Matrix.mul_one, hR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_zero {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ} (hR : C * C' = 1) (Y : Mat R S) :
     C * NormedSpace.exp ((0 : ℝ) • Y) * C' = 1 := by
   rw [zero_smul, NormedSpace.exp_zero, Matrix.mul_one, hR]
 
 /- English proof (translation)
-Use `set X := NormedSpace.exp (t • Y)`. Establish `hX` using `exp_unitary hY t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_star_mul, map_star_mul, Matrix.transpose_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = C'ᵀ * (Cᵀ * N * C.map star) * C'.map star := by rw [hF, hX, ← hF]`. Use `_ = (C * C')ᵀ * N * (C * C').map star := by`. Rewrite using `[map_star_mul, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = N := by`.
-
-Rewrite using `[hR, Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (by simp) (by simp), Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_unitary {N : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ}
     (hF : Cᵀ * N * C.map star = Jm R S) (hR : C * C' = 1) {Y : Mat R S} (hY : Y ∈ upq R S) (t : ℝ) :
@@ -473,9 +467,9 @@ theorem conj_unitary {N : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} {C' : M
           rw [hR, Matrix.transpose_one, Matrix.one_mul, Matrix.map_one _ (by simp) (by simp), Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite `hF` using `[zero_smul, Matrix.mul_zero, Matrix.zero_mul]`. Establish `hI : IsEmpty (Ix R S)`. Use `⟨fun a => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun hF a) a`. Apply the tactic sequence `cases a <;> simp [Jm, Formalism.UG.Jpq] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun (congrFun hR i) i`. Simplify using `[Matrix.mul_apply] at e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem isEmpty_of_zero {M : Matrix β β ℂ} {C : Matrix β (Ix R S) ℂ} {C' : Matrix (Ix R S) β ℂ}
     (hF : Cᵀ * ((0 : ℂ) • M) * C.map star = Jm R S) (hR : C * C' = 1) : IsEmpty β := by
@@ -494,7 +488,7 @@ namespace GlobalTheory.RealLift.OneParam
 open scoped Matrix
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix ι ι ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℂ (Matrix ι ι ℂ) := Matrix.linftyOpNormedAlgebra`. Use `letI : NormedAlgebra ℚ (Matrix ι ι ℂ) := NormedAlgebra.restrictScalars ℚ ℂ (Matrix ι ι ℂ)`. Conclude with `NormedSpace.exp_continuous.comp (continuous_id.smul continuous_const)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_exp_smul {ι : Type} [Fintype ι] [DecidableEq ι] (Y : Matrix ι ι ℂ) :
     Continuous fun t : ℝ => NormedSpace.exp (t • Y) := by
@@ -510,29 +504,23 @@ open scoped Matrix
 open GlobalTheory.RealLift.OneParam
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ β _ _ R S τ J b C hCM hC Y hY`. Use `hCM.1` as an intermediate fact. Take `⟨ξ, hξ⟩` from `exists_moved hCM`. Establish `hξ' : ∀ w, ((τ w).1 ξ).im ≠ 0` using `fun w => im_ne_zero hCM hξ (τ w).1`. Use `choose C' hC' using fun w => (hC w).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ w, C' w * C w = 1` using `fun w => frame_inv (hC w).1 (hC' w)`. Use `set G : InfinitePlace F → ℝ → Matrix β β ℂ := fun w t => C w * NormedSpace.exp (t • Y w) * C' w with hG`. Use `set f : ℝ → Matrix β β (AE F E) := fun t => 1 + liftM τ ξ (fun w => G w t - 1) with hf`. Establish `hfπ : ∀ t w, (f t).map (piInf (τ w)) = G w t` using `fun t w => by`. Rewrite using `[hf, Matrix.map_add _ (map_add _), Matrix.map_one _ (map_zero _) (map_one _), OneParam.liftM_map τ hξ', add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfat : ∀ t, At (evI F) (f t - 1)` using `fun t => by`. Rewrite using `[hf, add_sub_cancel_left]`. Conclude with `at_liftM τ ξ _`. Establish `hfadd : ∀ s t, f (s + t) = f s * f t` using `fun s t => by`. Use `(eq_of_at hCM τ ?_ fun w => ?_).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : f s * f t - f (s + t) = (f s - 1) * f t + (f t - 1) - (f (s + t) - 1)` using `by noncomm_ring`. Rewrite using `[e]`. Conclude with `at_sub (at_add (at_mul_right (hfat s) _) (hfat t)) (hfat _)`. Rewrite using `[Matrix.map_mul, hfπ, hfπ, hfπ]`. Conclude with `(conj_add (hL w) (Y w) s t).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf0 : f 0 = 1`. Use `eq_of_at hCM τ (hfat 0) fun w => ?_` and prove the remaining obligations. Rewrite using `[hfπ, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `conj_zero (hC' w) (Y w)`. Establish `hfU : ∀ t, (f t)ᵀ * J * (f t).map (cA σ) = J` using `fun t => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Use `eq_of_at hCM τ ?_ fun w => ?_` and prove the remaining obligations. Establish `e : (f t)ᵀ * J * (f t).map (cA σ) - J = (f t - 1)ᵀ * J * (f t).map (cA σ) + J * (f t - 1).map (cA σ)`. Establish `e1 : (f t - 1).map (cA σ) = (f t).map (cA σ) - 1`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[e1, Matrix.transpose_sub, Matrix.transpose_one, Matrix.sub_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_sub, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `at_add (at_mul_right (at_mul_right (at_transpose (hfat t)) _) _) (at_mul_left (at_map_cA σ (hfat t)) _)`. Establish `hc : ((f t).map (cA σ)).map (piInf (τ w)) = (G w t).map star`. Rewrite using `[← hfπ t w, Matrix.map_map, Matrix.map_map]`.
+Consider separately whether the proposition holds or fails. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `z`. Conclude with `piInf_cA hCM (τ w) z`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hc, Matrix.transpose_map, hfπ]`. Distinguish the cases in `hb : b = 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI := isEmpty_of_zero (hb ▸ (hC w).1) (hC' w)`. Use extensionality with `i`. Conclude with `isEmptyElim i`. Establish `h1` using `conj_unitary (hC w).1 (hC' w) (hY w) t`. Rewrite `h1` using `[Matrix.mul_smul, Matrix.smul_mul]`.
-
-Conclude with `smul_right_injective _ hb h1`. Use `haveI : ContinuousAdd (AE F E) := IsModuleTopology.toContinuousAdd (AF F) (AE F E)`. Establish `hfc : Continuous f` using `continuous_const.add ((continuous_liftM τ ξ).comp (continuous_pi fun w => (((continuous_const.matrix_mul (continuous_exp_smul (Y w))).matrix_mul continuous_const).sub continuous_const)))`. Set `g : ℝ → UG (cA σ) J` to `fun t => ⟨⟨f t, f (-t), by rw [← hfadd, add_neg_cancel, hf0], by rw [← hfadd, neg_add_cancel, hf0]⟩, hfU t⟩`. Set `γ : Multiplicative ℝ →* UG (cA σ) J` to `{ toFun := fun t => g (Multiplicative.toAdd t) map_one' := Subtype.ext (Units.ext hf0) map_mul' := fun x y => Subtype.ext (Units.ext (hfadd _ _)) }`.
-
-Use `⟨γ, ⟨?_, fun t => hfat _⟩, fun t w => ?_⟩` and prove the remaining obligations. Establish `hu : Continuous fun t : Multiplicative ℝ => ((g (Multiplicative.toAdd t)).1 : GL β (AE F E))` using `Units.continuous_iff.2 ⟨hfc.comp continuous_toAdd, (hfc.comp continuous_neg).comp continuous_toAdd⟩`. Conclude with `hu.subtype_mk _`. Express the relevant statement in the definitionally equal form `(f t).map (piInf (τ w)) * C w = C w * NormedSpace.exp (t • Y w)`. Rewrite using `[hfπ, hG]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hL, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_line_of_upq : LineEx := by
   intro F E _ _ _ _ _ σ β _ _ R S τ J b C hCM hC Y hY

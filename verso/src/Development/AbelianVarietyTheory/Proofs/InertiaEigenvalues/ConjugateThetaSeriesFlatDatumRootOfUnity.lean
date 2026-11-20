@@ -18,19 +18,19 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjTwist.FlatSeries
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨n, a, f, h⟩` from `h1`. Use `⟨n, fun k => C * a k, f, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[h g, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n a f ha g`. Distinguish the cases in `hC0 : C = 0`. Substitute `hC0` using the available equality. Take `⟨n₀, b, e, hb⟩` from `h1`. Establish `hC' : C' = 0` using `by simp [hC]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ g, ∑ k, a k * J (f k) g = 0` using `fun g => by simpa using (ha g).symm`. Establish `hcat : ∀ g, Φ g = ∑ k, (Fin.append b a) k * J ((Fin.append e f) k) g` using `fun g => by`. Rewrite using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[hz g, add_zero, hb g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `h2 _ _ _ hcat g`. Establish `e2` using `h2 _ _ _ hb g`. Rewrite `e1` using `[Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right] at e1`. Rewrite `e1` using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : ∑ k, ζ * τ (a k) * J (f k) g = 0` using `by simpa using e1.symm`. Establish `e4 : ∑ k, ζ * η * τ (a k) * J (f k) g = η * ∑ k, ζ * τ (a k) * J (f k) g`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[e4, e3, hC']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hτ : τ C ≠ 0` using `fun h => hC0 ((map_eq_zero_iff τ τ.injective).1 h)`. Establish `hexp : ∀ g, Φ g = ∑ k, (C⁻¹ * a k) * J (f k) g` using `fun g => by`. Establish `: Φ g = C⁻¹ * (C * Φ g)` using `by field_simp`. Rewrite using `[this, ha g, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[h2 _ _ _ hexp g, hC, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem scale {X B : Type} (J : B → X → ℂ) (τ : ℂ ≃+* ℂ) (ζ η C C' : ℂ) (Φ Φ' : X → ℂ)
     (h1 : ∃ (n : ℕ) (a : Fin n → ℂ) (f : Fin n → B), ∀ g, Φ g = ∑ k, a k * J (f k) g)
@@ -83,7 +83,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   {T : CoreJ D} [Algebra T.Q.c.F D.what₂.LL] {R : RealDat D A T.Q.c.F} {i : Fin D.R.m} {Tp : Type} {tup : Tp → T0}
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.ConjTwist.FlatSeries.scale (fun (b : T.toCore.cuspA ((i : ℕ) + 1) (wtA κ) κ.n) (g : GA D (Wc D i)) => ((lieFac (T.Q.Dw ((i : ℕ) + 1)) (xiR D) (wtA κ) : ℂ) * O.phi (T.cE ((i : ℕ) + 1) O.s0) (b : T.toCore.R ((i : ℕ) + 1)) g)) τ ζ η C C' Φ Φ' h.1 (fun n a f ha g => h.2 …`. Conclude with `⟨key.1, fun n a f ha g => key.2 n a f ha g⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ConjTwist.FlatSeries.conjFun_scale (O : OMDat T.toCore R i Tp tup) (κ : WeightFamilies.Wt D ((i : ℕ) + 1)) (τ : ℂ ≃+* ℂ) {ζ η C C' : ℂ}
     {Φ Φ' : GA D (Wc D i) → ℂ} (h : ConjFun O κ τ ζ Φ Φ') (hC : C' = η * τ C) :
@@ -99,13 +99,13 @@ end
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hn hCore hT0 hFW hIo hQ i hPins hPh cc hcc u hu τ hFix`. Take `⟨ζ0, hζ0, hser⟩` from `GlobalTheory.T.conjugate_tuples_twisted_thetaSeries_conjugate hCI D G Pl0 T0 A T R F κ v₀ O ph hn hCore hT0 hFW hIo hQ i hPins hPh cc hcc u hu τ hFix`. Use `⟨ζ0, hζ0, fun t t' hConj f f' hf hf' => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `hser t t' hConj`. Take `⟨z, C, C', s₂, hz, rfl, rfl, hC⟩` from `GlobalTheory.T.heckeChoice_flatScalar_conj_twist D G Pl0 T0 A T R F κ v₀ hCore hQ i τ t t' hPins.2.lift.std hFix hConj f f' hf hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s * s₂, fun h hh x x' hx => ?_⟩` and prove the remaining obligations. Establish `hzG : z ∈ GfC (Vc D i)` using `hz.2.1`. Establish `base` using `hs (h * z) ((GfC (Vc D i)).mul_mem hh hzG) x x' hx`. Establish `sc` using `GlobalTheory.ConjTwist.FlatSeries.conjFun_scale (O i) (κ i) τ base hC`. Establish `e1 : (fun g => ph i * ser R i t (C • R.ωP i t (z, 1) (R.vP i t)) u h (cc x) g) = fun g => C * (ph i * ser R i t (R.vP i t) u (h * z) (cc x) g)` using `funext fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.thetaSeries_translated_datum_at_translated_class D G Pl0 T0 A T.Q.c.F R F hCore i t z C hzG u h (cc x) g]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (fun g => ph i * ser R i t' (C' • R.ωP i t' (z, 1) (R.vP i t')) u h (cc x') g) = fun g => C' * (ph i * ser R i t' (R.vP i t') u (h * z) (cc x') g)` using `funext fun g => by`. Rewrite using `[GlobalTheory.T.thetaSeries_translated_datum_at_translated_class D G Pl0 T0 A T.Q.c.F R F hCore i t' z C' hzG u h (cc x') g]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e1, e2]`. Establish `e3 : ζ0 * ((R.xi t' (s * s₂) : Circle) : ℂ) = ζ0 * ((R.xi t' s : Circle) : ℂ) * ((R.xi t' s₂ : Circle) : ℂ)`. Rewrite using `[map_mul, Circle.coe_mul, mul_assoc]`. Rewrite using `[e3]`. Conclude with `sc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConjTwist.FlatSeries.conj_flat_series : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec) (O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)) (ph : Fin D.R.m → ℂ), 8 * D.R.f * D.R.r + 4 ≤ D.R.nV → GlobalTheory.Hk3.Core R F → Finite T0 → Nonempty (FWTie T R κ v₀) → IoExt R → QGuard R → ∀ i : Fin D.R.m, OMPins T R κ v₀ O i → PhaseTie T R κ v₀ O ph i → ∀ (c : VsV D i ℂ →ₗ[ℂ] (R.cV i).W), ExtC R i (inC (O i).c') (O i).c0' c → ∀ u : (∀ ρ, lowT (R.MW i (sg0 D A)) ρ), (∀ ρ, (u ρ : (R.MW i (sg0 D A)).sm ρ) = v₀ i (sg0 D A) ρ) → ∀ τ : ℂ ≃+* ℂ, FixBase T R i τ → ∃ ζ0 : ℂ, IsRoot1 ζ0 ∧ ∀ t t' : T0, ConjTup R τ t t' → ∀ f f', IsFlatVec R i t f → IsFlatVec R i t' f' → ∃ s : (AE D)ˣ, ∀ h ∈ GfC (Vc D i), ∀ x x' : VsV D i ℂ, ConjVec i τ x x' → ConjFun (O i) (κ i) τ (ζ0 * ((R.xi t' s : Circle) : ℂ)) (fun g => ph i * ser R i t f u h (c x) g) (fun g => ph i * ser R i t' f' u h (c x') g) := by
   intro hCI D G _ _ Pl0 T0 A T _ R F κ v₀ O ph hn hCore hT0 hFW hIo hQ i hPins hPh cc hcc u hu τ hFix

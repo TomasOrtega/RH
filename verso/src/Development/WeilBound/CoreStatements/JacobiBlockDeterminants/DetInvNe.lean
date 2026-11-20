@@ -16,7 +16,7 @@ section Blocks
 variable {R : Type} [CommRing R] {p q : ℕ}
 
 /- English proof (translation)
-Establish `e` using `(hA.mul hB).eq_fromBlocks`. Rewrite `e` using `[← Matrix.submatrix_mul_equiv A B _ (blockEquiv p q) _, hA.eq_fromBlocks, hB.eq_fromBlocks, Matrix.fromBlocks_multiply, Matrix.fromBlocks_inj]`. Conclude with `⟨by simpa using e.1.symm, by simpa using e.2.2.2.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem bmul {A B : Matrix (Fin (p + q)) (Fin (p + q)) R} (hA : IsBlockDiag p A) (hB : IsBlockDiag p B) :
     omBlock (A * B) = omBlock A * omBlock B ∧ wBlock (A * B) = wBlock A * wBlock B := by
@@ -26,7 +26,7 @@ theorem bmul {A B : Matrix (Fin (p + q)) (Fin (p + q)) R} (hA : IsBlockDiag p A)
   exact ⟨by simpa using e.1.symm, by simpa using e.2.2.2.symm⟩
 
 /- English proof (translation)
-Introduce `a b h` and use `by rw [Matrix.conjTranspose_apply, hA b a fun e => h e.symm, star_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_ct {N j : ℕ} {A : Matrix (Fin N) (Fin N) ℂ} (hA : IsBlockDiag j A) : IsBlockDiag j Aᴴ := fun a b h => by
   rw [Matrix.conjTranspose_apply, hA b a fun e => h e.symm, star_zero]
@@ -35,28 +35,28 @@ def blk (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) : Matrix (
   (Matrix.fromBlocks a 0 0 b).submatrix (blockEquiv p q).symm (blockEquiv p q).symm
 
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blk_apply (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) (s t : Fin q ⊕ Fin p) :
     blk a b (blockEquiv p q s) (blockEquiv p q t) = Matrix.fromBlocks a 0 0 b s t := by
   simp [blk]
 
 /- English proof (translation)
-Use extensionality with `s t`. Conclude with `blk_apply a b (.inl s) (.inl t)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem om_blk (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) : omBlock (blk a b) = a := by
   ext s t; exact blk_apply a b (.inl s) (.inl t)
 
 /- English proof (translation)
-Use extensionality with `s t`. Conclude with `blk_apply a b (.inr s) (.inr t)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem w_blk (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) : wBlock (blk a b) = b := by
   ext s t; exact blk_apply a b (.inr s) (.inr t)
 
 /- English proof (translation)
-Introduce `s t h`. Take `⟨s, rfl⟩` from `(blockEquiv p q).surjective s`. Take `⟨t, rfl⟩` from `(blockEquiv p q).surjective t`. Rewrite using `[blk_apply]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (show (s : ℕ) < p + q - p ↔ (t : ℕ) < p + q - p by omega) h`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `absurd (show q + (s : ℕ) < p + q - p ↔ q + (t : ℕ) < p + q - p by omega) h`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bd_blk (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) : IsBlockDiag p (blk a b) := by
   intro s t h
@@ -70,9 +70,9 @@ theorem bd_blk (a : Matrix (Fin q) (Fin q) R) (b : Matrix (Fin p) (Fin p) R) : I
   · exact absurd (show q + (s : ℕ) < p + q - p ↔ q + (t : ℕ) < p + q - p by omega) h
 
 /- English proof (translation)
-Introduce `s t h`. Take `⟨s, rfl⟩` from `(blockEquiv p q).surjective s`. Take `⟨t, rfl⟩` from `(blockEquiv p q).surjective t`. Rewrite using `[blk_apply]`. Apply the tactic sequence `rcases s with s | s <;> rcases t with t | t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `ha (show (t : ℕ) < s from h)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `hb (show (t : ℕ) < s from Nat.lt_of_add_lt_add_left (show q + (t : ℕ) < q + s from h))`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tri_blk {a : Matrix (Fin q) (Fin q) R} {b : Matrix (Fin p) (Fin p) R} (ha : a.BlockTriangular id)
     (hb : b.BlockTriangular id) : (blk a b).BlockTriangular id := by
@@ -93,7 +93,7 @@ section Rev
 variable {F : Type} [Field F] {r : ℕ}
 
 /- English proof (translation)
-Use `letI := Matrix.invertibleOfIsUnitDet U hd.isUnit`. Introduce `a b h`. Rewrite using `[← Matrix.transpose_nonsing_inv]`. Conclude with `blockTriangular_inv_of_blockTriangular hU (show a.rev < b.rev from Fin.rev_lt_rev.2 h)`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_rev {U : Matrix (Fin r) (Fin r) F} (hU : U.BlockTriangular id) (hd : U.det ≠ 0) :
     (Uᵀ⁻¹.submatrix Fin.rev Fin.rev).BlockTriangular id := by
@@ -103,19 +103,19 @@ theorem tri_rev {U : Matrix (Fin r) (Fin r) F} (hU : U.BlockTriangular id) (hd :
   exact blockTriangular_inv_of_blockTriangular hU (show a.rev < b.rev from Fin.rev_lt_rev.2 h)
 
 /- English proof (translation)
-The claim follows from `Matrix.det_submatrix_equiv_self Fin.revPerm A`.
+A detailed English derivation is pending.
 -/
 theorem det_rev (A : Matrix (Fin r) (Fin r) F) : (A.submatrix Fin.rev Fin.rev).det = A.det :=
   Matrix.det_submatrix_equiv_self Fin.revPerm A
 
 /- English proof (translation)
-The claim follows from `(Matrix.isUnit_nonsing_inv_det _ (by rw [Matrix.det_transpose]; exact h.isUnit)).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_inv_ne {A : Matrix (Fin r) (Fin r) F} (h : A.det ≠ 0) : Aᵀ⁻¹.det ≠ 0 :=
   (Matrix.isUnit_nonsing_inv_det _ (by rw [Matrix.det_transpose]; exact h.isUnit)).ne_zero
 
 /- English proof (translation)
-Use `Matrix.det_permute' Fin.revPerm A` as an intermediate fact. Use `fun h0 => ?_` and prove the remaining obligations. Rewrite `this` using `[show A.submatrix id Fin.revPerm = A.submatrix id Fin.rev from rfl, h0]`. Use `mul_ne_zero ?_ h this.symm` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin r))) with e | e <;> simp [e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem det_col {A : Matrix (Fin r) (Fin r) F} (h : A.det ≠ 0) : (A.submatrix id Fin.rev).det ≠ 0 := by
   have := Matrix.det_permute' Fin.revPerm A
@@ -125,9 +125,9 @@ theorem det_col {A : Matrix (Fin r) (Fin r) F} (h : A.det ≠ 0) : (A.submatrix 
   rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin r))) with e | e <;> simp [e]
 
 /- English proof (translation)
-Use `letI := Matrix.invertibleOfIsUnitDet U hd.isUnit`. Establish `hi` using `blockTriangular_inv_of_blockTriangular hU`. Establish `e` using `congrFun (congrFun (Matrix.mul_nonsing_inv U hd.isUnit) k) k`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply_eq, Finset.sum_eq_single k]`. Conclude with `eq_inv_of_mul_eq_one_right e`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l _ hl`. Break down `lt_or_gt_of_ne hl with h | h` into its components or cases. Rewrite using `[hU h, zero_mul]`. Rewrite using `[hi h, mul_zero]`. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_diag {U : Matrix (Fin r) (Fin r) F} (hU : U.BlockTriangular id) (hd : U.det ≠ 0) (k : Fin r) :
     U⁻¹ k k = (U k k)⁻¹ := by
@@ -143,26 +143,26 @@ theorem inv_diag {U : Matrix (Fin r) (Fin r) F} (hU : U.BlockTriangular id) (hd 
   · simp
 
 /- English proof (translation)
-The claim follows from `Matrix.submatrix_mul_equiv A B f Fin.revPerm g`.
+A detailed English derivation is pending.
 -/
 theorem rev_mul (A B : Matrix (Fin r) (Fin r) F) (f g : Fin r → Fin r) :
     A.submatrix f Fin.rev * B.submatrix Fin.rev g = (A * B).submatrix f g :=
   Matrix.submatrix_mul_equiv A B f Fin.revPerm g
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_nonsing_inv A, Matrix.transpose_transpose, Matrix.nonsing_inv_nonsing_inv _ h.isUnit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tinv_tinv {A : Matrix (Fin r) (Fin r) F} (h : A.det ≠ 0) : Aᵀ⁻¹ᵀ⁻¹ = A := by
   rw [← Matrix.transpose_nonsing_inv A, Matrix.transpose_transpose, Matrix.nonsing_inv_nonsing_inv _ h.isUnit]
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_mul, Matrix.mul_inv_rev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tinv_mul (A B : Matrix (Fin r) (Fin r) F) : (A * B)ᵀ⁻¹ = Aᵀ⁻¹ * Bᵀ⁻¹ := by
   rw [Matrix.transpose_mul, Matrix.mul_inv_rev]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_submatrix_equiv Aᵀ Fin.revPerm Fin.revPerm`.
+A detailed English derivation is pending.
 -/
 theorem tinv_rev (A : Matrix (Fin r) (Fin r) F) : (A.submatrix Fin.rev Fin.rev)ᵀ⁻¹ = Aᵀ⁻¹.submatrix Fin.rev Fin.rev :=
   Matrix.inv_submatrix_equiv Aᵀ Fin.revPerm Fin.revPerm
@@ -178,7 +178,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Fl : 𝔐'.Flag} {pr : 𝔐'.X ⟶ 𝔐.X} {j : 𝔐.Li →+ 𝔐'.Li} {F : FrameData ι (CMType H) (D.p + D.q) M.Ω M.blk}
 
 /- English proof (translation)
-Use `⟨(hF.1 τ).1.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(hF.1 τ).2.isUnit.map _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapT (hF : M.IsFrame F) (τ : CMType H) :
     IsBlockDiag D.p ((F.T τ).map (algebraMap M.Ω Φ)) ∧ IsUnit ((F.T τ).map (algebraMap M.Ω Φ)).det := by
@@ -187,7 +187,7 @@ theorem mapT (hF : M.IsFrame F) (τ : CMType H) :
   exact (hF.1 τ).2.isUnit.map _
 
 /- English proof (translation)
-Use `⟨((mapT hF τ).1.inv (mapT hF τ).2).mul (M.g_block τ), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (mapT hF τ).2).ne_zero (M.g_indep.isUnit_det τ).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdA (hF : M.IsFrame F) (τ : CMType H) : IsBlockDiag D.p (((F.T τ).map (algebraMap M.Ω Φ))⁻¹ * M.g τ) ∧
     (((F.T τ).map (algebraMap M.Ω Φ))⁻¹ * M.g τ).det ≠ 0 := by
@@ -196,7 +196,7 @@ theorem bdA (hF : M.IsFrame F) (τ : CMType H) : IsBlockDiag D.p (((F.T τ).map 
   exact mul_ne_zero (Matrix.isUnit_nonsing_inv_det _ (mapT hF τ).2).ne_zero (M.g_indep.isUnit_det τ).ne_zero
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[ht.2.2.1 τ k, FlagTie.wFrame, map_colFrame ht.1.2.2.2.1.1, ← colFrame_mul, show (wBlock (F.T τ)).map (algebraMap M.Ω Φ) = wBlock ((F.T τ).map (algebraMap M.Ω Φ)) from rfl, ← (bmul (mapT hF τ).1 (bdA hF τ).1).2, Matrix.mul_nonsing_inv_cancel_left _ _ (mapT hF τ).2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem flagW (ht : Tot tie 𝔐' Fl pr j) (hF : M.IsFrame F) (τ : CMType H) :
     Fl.b (.inl τ) = colFrame (fun a => j (tie.wFrame F τ a)) (wBlock (((F.T τ).map (algebraMap M.Ω Φ))⁻¹ * M.g τ)) := by
@@ -206,15 +206,15 @@ theorem flagW (ht : Tot tie 𝔐' Fl pr j) (hF : M.IsFrame F) (τ : CMType H) :
     ← (bmul (mapT hF τ).1 (bdA hF τ).1).2, Matrix.mul_nonsing_inv_cancel_left _ _ (mapT hF τ).2]
 
 /- English proof (translation)
-Establish `hT : (omBlock (F.T τ)).det ≠ 0` using `fun h => (hF.1 τ).2 (by rw [(hF.1 τ).1.det_eq_blocks, h, zero_mul])`. Establish `e1 : colFrame (tie.omFrame F τ) (omBlock (F.T τ))⁻¹ = tie.eO τ`. Rewrite using `[FlagTie.omFrame, ← colFrame_mul, Matrix.mul_nonsing_inv _ hT.isUnit, colFrame_one]`. Establish `e2 : (omBlock (F.T τ))⁻¹ᵀ⁻¹ = (omBlock (F.T τ))ᵀ`. Rewrite using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hT.isUnit]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd` using `colFrame_dual _ _ hv (omBlock (F.T τ))⁻¹ (Matrix.isUnit_nonsing_inv_det _ hT.isUnit)`. Rewrite `hd` using `[e1, e2]`. Establish `e3 : (fun a => j ((colFrame v (omBlock (F.T τ))ᵀ a : 𝔐.Vgen (.inr τ)) : 𝔐.Li)) = colFrame (fun a => j (v a)) (omBlock ((F.T τ).map (algebraMap M.Ω Φ)))ᵀ`. Use `Eq.trans ?_ (map_colFrame ht.1.2.2.2.1.1 (fun a => (v a : 𝔐.Li)) (omBlock (F.T τ))ᵀ)` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[colFrame]`. Establish `e4 : omBlock ((F.T τ).map (algebraMap M.Ω Φ)) * omBlock (((F.T τ).map (algebraMap M.Ω Φ))⁻¹ * M.g τ) = omBlock (M.g τ)`. Rewrite using `[← (bmul (mapT hF τ).1 (bdA hF τ).1).1, Matrix.mul_nonsing_inv_cancel_left _ _ (mapT hF τ).2]`. Establish `hT' : IsUnit (omBlock ((F.T τ).map (algebraMap M.Ω Φ)))ᵀ.det`. Use `(mapT hF τ).2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[(mapT hF τ).1.det_eq_blocks]`. Rewrite using `[Matrix.det_transpose]`. Conclude with `isUnit_of_mul_isUnit_left this`. Use function extensionality and compare the values at `k`. Rewrite using `[ht.2.2.2 τ _ hd k, e3, ← colFrame_mul, ← e4, tinv_mul, Matrix.mul_nonsing_inv_cancel_left _ _ hT']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem flagO (ht : Tot tie 𝔐' Fl pr j) (hF : M.IsFrame F) (τ : CMType H) {v : Fin D.q → 𝔐.Vgen (.inr τ)}
     (hv : ∀ a b, tie.omFrame F τ a (v b) = if a = b then 1 else 0) :
@@ -245,7 +245,7 @@ theorem flagO (ht : Tot tie 𝔐' Fl pr j) (hF : M.IsFrame F) (τ : CMType H) {v
   rfl
 
 /- English proof (translation)
-Rewrite using `[ht.2.1 s]`. Conclude with `FlagPull.pull_isFrameAt ht.1.1 ht.1.2.2.2.1 ⟨centre z, 𝔐'.all _⟩ (𝔐.all _) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_up (ht : Tot tie 𝔐' Fl pr j) {z : Spec (CommRingCat.of ℂ) ⟶ 𝔐'.X} (s : CMType H ⊕ CMType H) {r : ℕ}
     {b : Fin r → 𝔐.Li} (hb : (𝔐.V s).IsFrameAt b ⟨centre (z ≫ pr), 𝔐.all _⟩) :
@@ -256,9 +256,9 @@ theorem frame_up (ht : Tot tie 𝔐' Fl pr j) {z : Spec (CommRingCat.of ℂ) ⟶
 end Tot
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ B h G ht hF hfr ⟨bB, tB, dB, bh, dh, hv⟩ bG pG _ hG k`. Establish `e : wBlock (hᴴ * G * h) = (wBlock h)ᴴ * wBlock G * wBlock h`. Rewrite using `[(bmul ((bd_ct bh).mul bG) bh).2, (bmul (bd_ct bh) bG).2]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `grNorm_of 𝔐' (frame_up ht (.inl τ) hfr) (gram_pull ht.1 hG) (pG.submatrix (wEmb_strictMono _ _).injective) (flagW ht hF τ) (U := wBlock B) (fun a b hab => tB (wEmb_strictMono _ _ hab)) (fun h0 => dB (by rw [bB.det_eq_blocks, h0, mul_zero])) (fun h0 => dh (by rw [bh.det_eq_blocks, …` and prove the remaining obligations. Rewrite using `[← (bmul (bdA hF τ).1 bB).2]`. Conclude with `hv _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c3w : GradedLineNormsW := by
   intro E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ B h G ht hF hfr ⟨bB, tB, dB, bh, dh, hv⟩ bG pG _ hG k
@@ -273,13 +273,11 @@ theorem c3w : GradedLineNormsW := by
   exact hv _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ B h G ht hF hfr ⟨bB, tB, dB, bh, dh, hv⟩ bG pG _ ⟨v, Γ, hv1, hG, hΓ⟩ k`. Establish `dB' : (omBlock B).det ≠ 0` using `fun h0 => dB (by rw [bB.det_eq_blocks, h0, zero_mul])`. Establish `dh' : (omBlock h).det ≠ 0` using `fun h0 => dh (by rw [bh.det_eq_blocks, h0, zero_mul])`. Establish `tB' : (omBlock B).BlockTriangular id` using `fun a b hab => tB (omEmb_strictMono _ _ hab)`. Establish `eΓ : Γ = (omBlock G)ᵀ⁻¹` using `(Matrix.inv_eq_right_inv hΓ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pG' : (omBlock G).PosDef` using `pG.submatrix (omEmb_strictMono _ _).injective`. Establish `e : revDual (omBlock (hᴴ * G * h)) = ((omBlock h)ᵀ⁻¹.submatrix id Fin.rev)ᴴ * Γ * (omBlock h)ᵀ⁻¹.submatrix id Fin.rev`. Rewrite using `[(bmul ((bd_ct bh).mul bG) bh).1, (bmul (bd_ct bh) bG).1, revDual, tinv_mul, tinv_mul, ← eΓ, Matrix.conjTranspose_submatrix, Matrix.conjTranspose_nonsing_inv]`. Both sides reduce to the same expression. Establish `e2 : (B (omEmb D.p D.q k.rev) (omEmb D.p D.q k.rev))⁻¹ = ((omBlock B)ᵀ⁻¹.submatrix Fin.rev Fin.rev) k k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.transpose_nonsing_inv]`. Conclude with `(inv_diag tB' dB' k.rev).symm`. Rewrite using `[e, e2]`. Use `grNorm_of 𝔐' (frame_up ht (.inr τ) ((omBundle_dualFrame 𝔐 τ _ hfr).2 v hv1)) (gram_pull ht.1 hG) (eΓ ▸ pG'.transpose.inv) (flagO ht hF τ hv1) (tri_rev tB' dB') (by rw [det_rev]; exact det_inv_ne dB') (det_col (det_inv_ne dh')) (fun a b => ?_) k` and prove the remaining obligations. Rewrite using `[rev_mul, ← tinv_mul, ← (bmul (bdA hF τ).1 bB).1]`.
-
-Conclude with `(val_inv (A := (omBlock (inFrame M F τ B))ᵀ) (h := (omBlock h)ᵀ) (𝔐'.all _) (fun a b => hv _ _) (by rwa [Matrix.det_transpose])).2 a b.rev`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c3o : GradedLineNormsDualOmega := by
   intro E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ B h G ht hF hfr ⟨bB, tB, dB, bh, dh, hv⟩ bG pG
@@ -306,19 +304,17 @@ theorem c3o : GradedLineNormsDualOmega := by
     (by rwa [Matrix.det_transpose])).2 a b.rev
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ ht hF hW hO`. Take `⟨⟨v, hv⟩, hv'⟩` from `omBundle_dualFrame 𝔐 τ _ hO`. Take `⟨U, h, tU, dU, dh, vU⟩` from `exists_adapt 𝔐'.tie.gen (𝔐'.all _) (frame_up ht (.inl τ) hW) (Fl.sub (.inl τ)) (flagW ht hF τ)`. Take `⟨U', h', tU', dU', dh', vU'⟩` from `exists_adapt 𝔐'.tie.gen (𝔐'.all _) (frame_up ht (.inr τ) (hv' v hv)) (Fl.sub (.inr τ)) (flagO ht hF τ hv)`. Take `⟨bA, dA⟩` from `bdA hF τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set A := ((F.T τ).map (algebraMap M.Ω Φ))⁻¹ * M.g τ with hA`. Establish `dA' : (omBlock A).det ≠ 0` using `fun h0 => dA (by rw [bA.det_eq_blocks, h0, zero_mul])`. Establish `d1 : (h'.submatrix id Fin.rev).det ≠ 0` using `det_col dh'`. Use `⟨blk (U'ᵀ⁻¹.submatrix Fin.rev Fin.rev) U, blk (h'.submatrix id Fin.rev)ᵀ⁻¹ h, bd_blk _ _, tri_blk (tri_rev tU' dU') tU, ?_, bd_blk _ _, ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[(bd_blk _ _).det_eq_blocks, om_blk, w_blk, det_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (det_inv_ne dU') dU`. Rewrite using `[(bd_blk _ _).det_eq_blocks, om_blk, w_blk]`. Conclude with `mul_ne_zero (det_inv_ne d1) dh`. Take `⟨a, rfl⟩` from `(blockEquiv D.p D.q).surjective a`. Take `⟨b, rfl⟩` from `(blockEquiv D.p D.q).surjective b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `congrFun (congrFun (bA.mul (bd_blk (U'ᵀ⁻¹.submatrix Fin.rev Fin.rev) U)).eq_fromBlocks a) b`. Rewrite `e` using `[Matrix.submatrix_apply, (bmul bA (bd_blk _ _)).1, (bmul bA (bd_blk _ _)).2, om_blk, w_blk]`. Rewrite using `[blk_apply]`. Use `show ValAt _ _ ((A * blk (U'ᵀ⁻¹.submatrix Fin.rev Fin.rev) U) (blockEquiv D.p D.q a) (blockEquiv D.p D.q b)) _`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z0 : ValAt 𝔐'.ξ z 0 0` using `⟨𝔐'.all _, 0, map_zero _, map_zero _⟩`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Establish `e1 : omBlock A * U'ᵀ⁻¹.submatrix Fin.rev Fin.rev = (((omBlock A)ᵀ⁻¹.submatrix id Fin.rev * U').submatrix id Fin.rev)ᵀ⁻¹`. Establish `e2 : ((omBlock A)ᵀ⁻¹.submatrix id Fin.rev * U').submatrix id Fin.rev = (omBlock A)ᵀ⁻¹ * U'.submatrix Fin.rev Fin.rev`. Establish `e3 : U' = (U'.submatrix Fin.rev id).submatrix Fin.rev id`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `s t`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [e3, rev_mul]`. Both sides reduce to the same expression. Rewrite using `[e2, tinv_mul, tinv_tinv dA', tinv_rev]`.
-
-Rewrite using `[e1]`. Conclude with `(val_inv (A := (((omBlock A)ᵀ⁻¹.submatrix id Fin.rev * U').submatrix id Fin.rev)ᵀ) (h := (h'.submatrix id Fin.rev)ᵀ) (𝔐'.all _) (fun a b => vU' _ _) (by rwa [Matrix.det_transpose])).2 a b`. Conclude with `z0`. Conclude with `z0`. Conclude with `vU a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c1 : C1 := by
   intro E _ _ _ H D l Xo c Y S K _ ι _ Φ _ y M 𝔐 tie 𝔐' Fl pr j z F τ ht hF hW hO

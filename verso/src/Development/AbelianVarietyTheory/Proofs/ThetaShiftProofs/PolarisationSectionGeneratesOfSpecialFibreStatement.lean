@@ -7,7 +7,7 @@ open AlgebraicGeometry CategoryTheory CategoryTheory.Limits NumberField IsDedeki
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj Formalism.L2.Pj.QAt GlobalTheory.ArcQ GlobalTheory.Frames
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GenDvr.generates_of_nonzero_on_special_fibre` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FThetaShiftProofs%2FPolarisationSectionGeneratesOfSpecialFibre.lean&line=85#L85)
 -/

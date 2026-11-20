@@ -14,7 +14,7 @@ section
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
 namespace GlobalTheory.ClosingSixth
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.T.prvG6_of_admissible_of_g6_decomposition _root_.GlobalTheory.T.centred_string_decomposition _root_.GlobalTheory.T.purity_string_weight _root_.GlobalTheory.T.hecke_char_eq_of_l_adic_realisation _root_.UpperTheory.GalS.muChar_holds_alt GlobalTheory.T.eigenchara …`.
+A detailed English derivation is pending.
 -/
 theorem conclusionG6_of_adm_alt : ∀ D : D7, _root_.Formalism.MainNotions.SumRepresentations.AdmissibleDatum D → RbEx D → SumRepresentations.ConclusionG6 D :=
   _root_.GlobalTheory.T.prvG6_of_admissible_of_g6_decomposition _root_.GlobalTheory.T.centred_string_decomposition _root_.GlobalTheory.T.purity_string_weight _root_.GlobalTheory.T.hecke_char_eq_of_l_adic_realisation _root_.UpperTheory.GalS.muChar_holds_alt GlobalTheory.T.eigencharacter_of_summand_charZero

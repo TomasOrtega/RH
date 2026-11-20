@@ -5,9 +5,9 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.LeviIso.BlockGS
 
 /- English proof (translation)
-Take `⟨l, hl, rfl⟩` from `(Finsupp.mem_span_image_iff_linearCombination ℂ).1 hv`. Use `⟨l, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy (hl (Finsupp.mem_support_iff.2 h))`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff_of_mem_span {ι V : Type} [Fintype ι] [AddCommGroup V] [Module ℂ V]
     (g : ι → V) (s : Set ι) (v : V) (hv : v ∈ Submodule.span ℂ (g '' s)) :
@@ -20,11 +20,9 @@ theorem exists_coeff_of_mem_span {ι V : Type} [Fintype ι] [AddCommGroup V] [Mo
     simp
 
 /- English proof (translation)
-Set `_ : LocallyFiniteOrderBot ι` to `LocallyFiniteOrderBot.ofIic ι (fun x => Finset.univ.filter (· ≤ x)) (by simp)`. Establish `: WellFoundedLT ι` using `Finite.to_wellFoundedLT`. Establish `hs : ∀ x, Submodule.span ℂ (InnerProductSpace.gramSchmidtNormed ℂ f '' Set.Iic x) = Submodule.span ℂ (f '' Set.Iic x)` using `fun x => by`. Rewrite using `[InnerProductSpace.span_gramSchmidtNormed, InnerProductSpace.span_gramSchmidt_Iic]`. Establish `h1 : ∀ x, ∃ c : ι → ℂ, (∀ y, y ∉ Set.Iic x → c y = 0) ∧ f x = ∑ y, c y • InnerProductSpace.gramSchmidtNormed ℂ f y` using `fun x => exists_coeff_of_mem_span _ _ _ (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `Submodule.subset_span ⟨x, le_refl x, rfl⟩)`. Establish `h2 : ∀ x, ∃ c : ι → ℂ, (∀ y, y ∉ Set.Iic x → c y = 0) ∧ InnerProductSpace.gramSchmidtNormed ℂ f x = ∑ y, c y • f y` using `fun x => exists_coeff_of_mem_span _ _ _ (by`. Rewrite using `[← hs]`. Conclude with `Submodule.subset_span ⟨x, le_refl x, rfl⟩)`.
-
-Use `choose P hP hP' using h1`. Use `choose Q hQ hQ' using h2`. Conclude with `⟨_, fun y x => P x y, fun y x => Q x y, InnerProductSpace.gramSchmidtNormed_orthonormal hf, fun y x h => ⟨hP x y (not_le.2 h), hQ x y (not_le.2 h)⟩, hP', hQ'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_orthonormal_triangular {ι V : Type} [Fintype ι] [LinearOrder ι]
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] (f : ι → V) (hf : LinearIndependent ℂ f) :
@@ -50,13 +48,13 @@ theorem exists_orthonormal_triangular {ι V : Type} [Fintype ι] [LinearOrder ι
     fun y x h => ⟨hP x y (not_le.2 h), hQ x y (not_le.2 h)⟩, hP', hQ'⟩
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce and unpack `c hc ⟨i, u⟩`. Establish `hr : ∀ r, ∑ x : (Σ i, Fin (j i)), c x * A x.1 r x.2 = 0` using `fun r => by`. Use `congrArg (fun v : EuclideanSpace ℂ (Fin n) => v r) hc` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h : ∑ x : (Σ i, Fin (j i)), c x * (C i * A x.1) u x.2 = 0`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Use `congrArg (fun z => C i u r * z) (hr r)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.mul_sum, mul_zero] at this`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun x _ => by ring`. Rewrite `h` using `[Fintype.sum_sigma, Finset.sum_eq_single i]`. Simplify `h` using `[h1, Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Simplify using `[h0 i k hk.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_columns (n a : ℕ) (j : Fin a → ℕ)
     (A : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (C : ∀ i, Matrix (Fin (j i)) (Fin n) ℂ)
@@ -84,27 +82,27 @@ theorem linearIndependent_columns (n a : ℕ) (j : Fin a → ℕ)
   · simp
 
 /- English proof (translation)
-Introduce `n a j A C h1 h0`. Set `_ : LinearOrder (Σ i, Fin (j i))` to `inferInstanceAs (LinearOrder (Σₗ i, Fin (j i)))`. Take `⟨g, P, Q, hg, htri, hf, hg'⟩` from `exists_orthonormal_triangular _ (linearIndependent_columns n a j A C h1 h0)`. Set `B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ` to `fun i => Matrix.of fun r u => g ⟨i, u⟩ r`. Set `p : ∀ k i, Matrix (Fin (j k)) (Fin (j i)) ℂ` to `fun k i => Matrix.of fun v u => P ⟨k, v⟩ ⟨i, u⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `q : ∀ k i, Matrix (Fin (j k)) (Fin (j i)) ℂ` to `fun k i => Matrix.of fun v u => Q ⟨k, v⟩ ⟨i, u⟩`. Establish `hBB : ∀ i k u v, ((B i)ᴴ * B k) u v = inner ℂ (g ⟨i, u⟩) (g ⟨k, v⟩)`. Introduce `i k u v`. Simplify using `[B, Matrix.mul_apply, PiLp.inner_apply, mul_comm]`. Establish `e1 : ∀ i, (B i)ᴴ * B i = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Use extensionality with `u v`. Rewrite using `[hBB, orthonormal_iff_ite.1 hg, Matrix.one_apply]`. Simplify using the standard rewrite rules. Establish `e2 : ∀ i k, i ≠ k → (B i)ᴴ * B k = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i k h`. Use extensionality with `u v`. Rewrite using `[hBB, orthonormal_iff_ite.1 hg]`. Simplify using `[h]`. Establish `e3 : ∀ k i, i < k → p k i = 0 ∧ q k i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k i h`. Apply the tactic sequence `constructor <;> ext v u`. Conclude with `(htri _ _ (Sigma.Lex.left _ _ h)).1`. Conclude with `(htri _ _ (Sigma.Lex.left _ _ h)).2`. Establish `e4 : ∀ i, A i = ∑ k, B k * p k i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `i`. Use extensionality with `r u`. Use `congrArg (fun v : EuclideanSpace ℂ (Fin n) => v r) (hf ⟨i, u⟩)` as an intermediate fact. Simplify using `only [Matrix.sum_apply, Matrix.mul_apply, B, p, Matrix.of_apply]`. Simplify `this` using `[Fintype.sum_sigma, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e5 : ∀ i, B i = ∑ k, A k * q k i`. Introduce `i`. Use extensionality with `r u`. Use `congrArg (fun v : EuclideanSpace ℂ (Fin n) => v r) (hg' ⟨i, u⟩)` as an intermediate fact. Simplify using `only [Matrix.sum_apply, Matrix.mul_apply, B, q, Matrix.of_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[Fintype.sum_sigma, mul_comm]`. Use `⟨B, p, q, e1, e2, e3, e4, e5, fun i => ?_⟩` and prove the remaining obligations. Establish `hp : ∀ k, (B i)ᴴ * A k = p i k`. Introduce `k`. Rewrite using `[e4 k, Matrix.mul_sum, Finset.sum_eq_single i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_assoc, e1, Matrix.one_mul]`. Introduce `l _ hl`. Rewrite using `[← Matrix.mul_assoc, e2 i l hl.symm, Matrix.zero_mul]`. Simplify using the standard rewrite rules. Establish `h : (B i)ᴴ * (∑ k, A k * q k i) = 1` using `by rw [← e5, e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[Matrix.mul_sum, Finset.sum_eq_single i]`. Rewrite using `[← h, ← Matrix.mul_assoc, hp]`. Introduce `l _ hl`. Rewrite using `[← Matrix.mul_assoc, hp]`. Break down `lt_or_gt_of_ne hl with hl | hl` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(e3 i l hl).1, Matrix.zero_mul]`. Rewrite using `[(e3 l i hl).2, Matrix.mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem block_gramSchmidt : ∀ (n a : ℕ) (j : Fin a → ℕ) (A : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (C : ∀ i, Matrix (Fin (j i)) (Fin n) ℂ), (∀ i, C i * A i = 1) → (∀ i k, i ≠ k → C i * A k = 0) → ∃ (B : ∀ i, Matrix (Fin n) (Fin (j i)) ℂ) (p q : ∀ k i, Matrix (Fin (j k)) (Fin (j i)) ℂ), (∀ i, (B i)ᴴ * B i = 1) ∧ (∀ i k, i ≠ k → (B i)ᴴ * B k = 0) ∧ (∀ k i, i < k → p k i = 0 ∧ q k i = 0) ∧ (∀ i, A i = ∑ k, B k * p k i) ∧ (∀ i, B i = ∑ k, A k * q k i) ∧ ∀ i, p i i * q i i = 1 := by
   classical

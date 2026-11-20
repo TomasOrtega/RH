@@ -13,11 +13,11 @@ open ReciprocityTheory.ChartRestriction.L3 ReciprocityTheory.ChartRestriction.L3
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hQi : IsIntegral ℚ e` using `Algebra.IsIntegral.isIntegral (R := ℚ) e`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy0, hint⟩ : ∃ y : ℤ, y ≠ 0 ∧ IsIntegral ℤ ((y : E) * e) := by`. Establish `hZ : IsAlgebraic ℤ e` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr hQi.isAlgebraic`. Take `⟨y, hy0, hi⟩` from `hZ.exists_integral_multiple`. Conclude with `⟨y, hy0, by simpa [zsmul_eq_mul] using hi⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hint' : IsIntegral ℤ ((y.natAbs : E) * e)`. Break down `Int.natAbs_eq y with h | h` into its components or cases. Rewrite `hint` using `[h]`. Rewrite `hint` using `[Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite `hint` using `[h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hint.neg`. Move the coercions through the operations in `at h2`. Simplify using `using h2`. Use `⟨y.natAbs, Int.natAbs_pos.mpr hy0, ?_⟩` and prove the remaining obligations. Conclude with `⟨IsIntegralClosure.mk' (𝓞 E) ((y.natAbs : E) * e) hint', (IsIntegralClosure.algebraMap_mk' (𝓞 E) _ hint').symm⟩`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem nat_denom (e : E) : ∃ m : ℕ, 0 < m ∧ ∃ r : 𝓞 E, (m : E) * e = algebraMap (𝓞 E) E r := by
   have hQi : IsIntegral ℚ e := Algebra.IsIntegral.isIntegral (R := ℚ) e
@@ -38,18 +38,18 @@ theorem nat_denom (e : E) : ∃ m : ℕ, 0 < m ∧ ∃ r : 𝓞 E, (m : E) * e =
     (IsIntegralClosure.algebraMap_mk' (𝓞 E) _ hint').symm⟩
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.DenominatorsAlt.goal1 .. | (apply Bl.DenominatorsAlt.goal1 <;> assumption) | (intros; apply Bl.DenominatorsAlt.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem vec_denom (M : Submodule (𝓞 E) (Fin n → E)) (hsp : Submodule.span E (M : Set (Fin n → E)) = ⊤)
     (v : Fin n → E) : ∃ m : ℕ, 0 < m ∧ (m : 𝓞 E) • v ∈ M := by
   first | exact Bl.DenominatorsAlt.goal1 .. | (apply Bl.DenominatorsAlt.goal1 <;> assumption) | (intros; apply Bl.DenominatorsAlt.goal1 <;> assumption)
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hL`. Use `choose f hf0 hfM using fun v : Fin n → E => vec_denom M hsp v`. Use `⟨∏ s ∈ S, f s, Finset.prod_pos (fun i _ => hf0 i), ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[← hS]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Submodule.span (𝓞 E) (S : Set (Fin n → E)) ≤ M.comap (((∏ s ∈ S, f s : ℕ) : 𝓞 E) • LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce `s hs`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem f (Finset.mem_coe.mp hs)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `M.smul_mem _ (hfM s)`. Establish `h2` using `hle hx`. Rewrite `h2` using `[Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lat_denom (L M : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
     (hsp : Submodule.span E (M : Set (Fin n → E)) = ⊤) :
@@ -72,9 +72,9 @@ theorem lat_denom (L M : Submodule (𝓞 E) (Fin n → E)) (hL : L.FG)
   rwa [Submodule.mem_comap, LinearMap.smul_apply, LinearMap.id_apply] at h2
 
 /- English proof (translation)
-Introduce and unpack `x ⟨t, ht, htx⟩`. Establish `hNh : (N : 𝓞 E) ∈ Formalism.HermitianLatticesTheory.hcompl (K` using `E) p := by`. Rewrite using `[mem_hcompl_iff hp, mem_conjIdeal_iff, map_natCast]`. Conclude with `⟨hNp, hNp⟩`. Use `⟨(N : 𝓞 E) * t, mul_mem hNh ht, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul]`. Conclude with `hN _ htx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_le_of_denom {L M : Submodule (𝓞 E) (Fin n → E)} {N : ℕ} (hN : ∀ x ∈ L, (N : 𝓞 E) • x ∈ M)
     {p : Ideal (𝓞 E)} (hp : p.IsPrime) (hNp : (N : 𝓞 E) ∉ p) :
@@ -87,11 +87,11 @@ theorem loc_le_of_denom {L M : Submodule (𝓞 E) (Fin n → E)} {N : ℕ} (hN :
   rw [mul_smul]; exact hN _ htx
 
 /- English proof (translation)
-Introduce `E _ _ _ n L M hLfg hMfg hLsp hMsp`. Take `⟨N₁, hN₁, h1⟩` from `lat_denom L M hLfg hMsp`. Take `⟨N₂, hN₂, h2⟩` from `lat_denom M L hMfg hLsp`. Establish `h0 : ((N₁ * N₂ : ℕ) : 𝓞 E) ≠ 0`. Rewrite using `[Nat.cast_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.mul_pos hN₁ hN₂).ne'`. Use `(Ring.HasFiniteQuotients.finite_setOfPred_mem _ h0).subset ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hne⟩`. Assume the negation of the conclusion as `hNp`. Apply `hne` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hp'` using `hp.isPrime`. Simplify using `only [Set.mem_setOf_eq, Nat.cast_mul] at hNp`. Establish `n1 : (N₁ : 𝓞 E) ∉ p` using `fun h => hNp (p.mul_mem_right _ h)`. Establish `n2 : (N₂ : 𝓞 E) ∉ p` using `fun h => hNp (p.mul_mem_left _ h)`. Conclude with `le_antisymm (loc_le_of_denom h2 hp' n2) (loc_le_of_denom h1 hp' n1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lattice_locally_finite : LocFinite := by
   intro E _ _ _ n L M hLfg hMfg hLsp hMsp

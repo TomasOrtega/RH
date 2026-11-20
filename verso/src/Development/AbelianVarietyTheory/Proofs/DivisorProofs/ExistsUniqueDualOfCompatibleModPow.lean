@@ -6,23 +6,21 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.PDiv
 
 /- English proof (translation)
-Introduce `O M _ _ _ a _ u hu`. Establish `sep : ∀ y : O, (∀ n : ℕ, y ∈ Ideal.span {a ^ n}) → y = 0`. Introduce `y hy`. Use `IsHausdorff.haus' (I := Ideal.span {a}) y fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy n`. Establish `key : ∀ w : M, ∃! y : O, ∀ n, Ideal.Quotient.mk (Ideal.span {a ^ n}) y = u n w`. Introduce `w`. Use `choose x hx using fun n => Ideal.Quotient.mk_surjective (u n w)`. Establish `step : ∀ n, x n - x (n + 1) ∈ Ideal.span {a ^ n}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Conclude with `Ideal.Quotient.eq.mp ((hx n).trans (hu n w (x (n + 1)) (hx (n + 1)).symm))`. Establish `cauchy : ∀ m n, m ≤ n → x m - x n ∈ Ideal.span {a ^ m}`. Introduce `m n hmn`. Proceed by induction on `n, hmn using Nat.le_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `base => simp`. Consider the case `succ k hmk ih`. Establish `h2 : x k - x (k + 1) ∈ Ideal.span {a ^ m}` using `(Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow a hmk)) (step k)`. Use `Ideal.add_mem _ ih h2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {a}) x (fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `cauchy m n hmn)`. Use `⟨L, fun n => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `hL n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Rewrite using `[← hx n]`. Conclude with `Ideal.Quotient.eq.mpr (by simpa using (Ideal.span {a ^ n}).neg_mem h)`. Use `sub_eq_zero.mp (sep _ fun n => ?_)` and prove the remaining obligations. Establish `h` using `hL n`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `Ideal.Quotient.eq.mp ((hy n).trans (hx n).symm) |> fun h' => by`. Simplify using `using Ideal.add_mem _ h' h`. Use `choose f hf huniq using key`. Use `⟨{ toFun := f, map_add' := ?_, map_smul' := ?_ }, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `w w'`. Use `(huniq (w + w') _ fun n => ?_).symm` and prove the remaining obligations. Rewrite using `[map_add, map_add, hf, hf]`. Introduce `c w`. Use `(huniq (c • w) _ fun n => ?_).symm` and prove the remaining obligations.
-
-Rewrite using `[RingHom.id_apply, smul_eq_mul, map_mul, map_smul, ← hf w n, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`. Conclude with `fun n w => hf w n`. Introduce `l hl`. Conclude with `LinearMap.ext fun w => huniq w (l w) fun n => hl n w`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_unique_dual_of_compatible_mod_pow :
     ∀ (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (a : O)

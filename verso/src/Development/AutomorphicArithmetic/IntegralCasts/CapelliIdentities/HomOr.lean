@@ -3,11 +3,11 @@ import Mathlib
 namespace UpperTheory.Reformulated.B.Qk44
 
 /- English proof (translation)
-Distinguish the cases in `hg : ∀ s ∈ I, f s = g s`. Conclude with `Or.inl hg`. Use `right`. Take `⟨a, ha⟩` from `not_forall.mp hg`. Take `⟨haI, hne⟩` from `Classical.not_imp.mp ha`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hah : f a = h a` using `(H a haI).resolve_left hne`. Introduce `b hbI`. Break down `H b hbI with hb | hb` into its components or cases. Break down `H (a * b) (I.mul_mem haI hbI) with hab | hab` into its components or cases. Rewrite `hab` using `[map_mul, map_mul, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd (mul_right_cancel hab) hne`. Rewrite `hab` using `[map_mul, map_mul, hah]`. Conclude with `mul_left_cancel hab`. Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem hom_or {Γ C : Type} [Group Γ] [CommGroup C] (I : Subgroup Γ) (f g h : Γ →* C)
     (H : ∀ s ∈ I, f s = g s ∨ f s = h s) :

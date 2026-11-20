@@ -26,7 +26,7 @@ section Witness
 variable (K : Type u) [Field K] [NumberField K]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨localLattice_isLocalLattice v _, localLattice_smulSub v _ _, Submodule.span_mono (Set.image_mono (smulSub_le _ _))⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocalLatticeIndex.witness (v : HeightOneSpectrum (𝓞 K)) :
     IsLocalLattice v (localLattice v (FullLattice.standard K 2).carrier) ∧
@@ -39,11 +39,11 @@ theorem LocalLatticeIndex.witness (v : HeightOneSpectrum (𝓞 K)) :
     Submodule.span_mono (Set.image_mono (smulSub_le _ _))⟩
 
 /- English proof (translation)
-The claim follows from `LocalLatticeIndex.witness ℚ (Classical.choice nonempty_heightOneSpectrum)`.
+A detailed English derivation is pending.
 -/
 example := LocalLatticeIndex.witness ℚ (Classical.choice nonempty_heightOneSpectrum)
 /- English proof (translation)
-The claim follows from `LocalLatticeIndex.witness GaussianField (Classical.choice nonempty_heightOneSpectrum)`.
+A detailed English derivation is pending.
 -/
 example := LocalLatticeIndex.witness GaussianField (Classical.choice nonempty_heightOneSpectrum)
 

@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem dil_eq (τ : ℝ) : dil k r τ = Matrix.diagonal (dd k r τ) := rfl
 
 /- English proof (translation)
-Unfold `dd wt`. Use `split_ifs`. Rewrite using `[_root_.zpow_natCast]`. Rewrite using `[_root_.zpow_zero]`. Rewrite using `[_root_.zpow_neg, _root_.zpow_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dd_eq_zpow {τ : ℝ} (hτ : τ ≠ 0) (i : Fin (2 * r + k + 1)) :
     dd k r τ i = (τ : ℂ) ^ wt k r i := by
@@ -34,7 +34,7 @@ theorem dd_eq_zpow {τ : ℝ} (hτ : τ ≠ 0) (i : Fin (2 * r + k + 1)) :
   · rw [_root_.zpow_neg, _root_.zpow_natCast]
 
 /- English proof (translation)
-Establish `h0 : (τ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hτ`. Rewrite using `[dd_eq_zpow (inv_ne_zero hτ), dd_eq_zpow hτ, Complex.ofReal_inv, _root_.inv_zpow', ← _root_.zpow_add₀ h0, neg_add_eq_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_inv_mul {τ : ℝ} (hτ : τ ≠ 0) (i j : Fin (2 * r + k + 1)) :
     dd k r τ⁻¹ i * dd k r τ j = (τ : ℂ) ^ (wt k r j - wt k r i) := by
@@ -43,7 +43,7 @@ theorem dd_inv_mul {τ : ℝ} (hτ : τ ≠ 0) (i j : Fin (2 * r + k + 1)) :
     neg_add_eq_sub]
 
 /- English proof (translation)
-Establish `h0 : (τ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hτ`. Rewrite using `[dd_eq_zpow hτ, dd_eq_zpow (inv_ne_zero hτ), Complex.ofReal_inv, _root_.inv_zpow', ← _root_.zpow_add₀ h0, add_neg_cancel, _root_.zpow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_mul_inv {τ : ℝ} (hτ : τ ≠ 0) (i : Fin (2 * r + k + 1)) :
     dd k r τ i * dd k r τ⁻¹ i = 1 := by
@@ -52,16 +52,16 @@ theorem dd_mul_inv {τ : ℝ} (hτ : τ ≠ 0) (i : Fin (2 * r + k + 1)) :
     add_neg_cancel, _root_.zpow_zero]
 
 /- English proof (translation)
-Unfold `dd`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_dd (τ : ℝ) (i : Fin (2 * r + k + 1)) : star (dd k r τ i) = dd k r τ i := by
   unfold dd
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h0 : (τ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr hτ`. Establish `hw : wt k r i + wt k r j = 0`. Use `i.isLt` as an intermediate fact. Use `j.isLt` as an intermediate fact. Unfold `wt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[dd_eq_zpow hτ, dd_eq_zpow hτ, ← _root_.zpow_add₀ h0, hw, _root_.zpow_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_pair {τ : ℝ} (hτ : τ ≠ 0) {i j : Fin (2 * r + k + 1)} (h : i.val < r ∨ j.val < r)
     (hs : i.val + j.val = 2 * r + k) : dd k r τ i * dd k r τ j = 1 := by
@@ -74,7 +74,7 @@ theorem dd_pair {τ : ℝ} (hτ : τ ≠ 0) {i j : Fin (2 * r + k + 1)} (h : i.v
   rw [dd_eq_zpow hτ, dd_eq_zpow hτ, ← _root_.zpow_add₀ h0, hw, _root_.zpow_zero]
 
 /- English proof (translation)
-Unfold `dd`. Rewrite using `[if_neg (by omega), if_pos h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_middle (τ : ℝ) {i : Fin (2 * r + k + 1)} (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) :
     dd k r τ i = 1 := by
@@ -82,14 +82,14 @@ theorem dd_middle (τ : ℝ) {i : Fin (2 * r + k + 1)} (h1 : r ≤ i.val) (h2 : 
   rw [if_neg (by omega), if_pos h2]
 
 /- English proof (translation)
-Rewrite using `[dil_eq, dil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dil_entry (a b : ℝ) (m : Mat k r) (i j : Fin (2 * r + k + 1)) :
     (dil k r a * m * dil k r b) i j = dd k r a i * m i j * dd k r b j := by
   rw [dil_eq, dil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[dil_eq, dil_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `dd_mul_inv hτ i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dil_mul_inv {τ : ℝ} (hτ : τ ≠ 0) : dil k r τ * dil k r τ⁻¹ = 1 := by
   rw [dil_eq, dil_eq, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -98,15 +98,13 @@ theorem dil_mul_inv {τ : ℝ} (hτ : τ ≠ 0) : dil k r τ * dil k r τ⁻¹ =
   exact dd_mul_inv hτ i
 
 /- English proof (translation)
-Conclude with `Matrix.inv_eq_right_inv (dil_mul_inv hτ)`.
+A detailed English derivation is pending.
 -/
 theorem dil_inv {τ : ℝ} (hτ : τ ≠ 0) : (dil k r τ)⁻¹ = dil k r τ⁻¹ := by
   exact Matrix.inv_eq_right_inv (dil_mul_inv hτ)
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`.
-
-Use `_ = Hpk k r := by rw [hg', hh']`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uh_mul {g h : Mat k r} (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r)) :
     g * h ∈ UH (Hpk k r) := by
@@ -118,11 +116,11 @@ theorem uh_mul {g h : Mat k r} (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r
     _ = Hpk k r := by rw [hg', hh']
 
 /- English proof (translation)
-Use `show (dil k r τ)ᴴ * Hpk k r * dil k r τ = Hpk k r`. Use extensionality with `i j`. Rewrite using `[dil_eq, Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Pi.star_apply, star_dd]`. Distinguish the cases in `h1 : (i.val < r ∨ j.val < r) ∧ i.val + j.val = 2 * r + k`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_right_comm, dd_pair hτ h1.1 h1.2, one_mul]`. Distinguish the cases in `h2 : r ≤ i.val ∧ i.val ≤ r + k ∧ i = j`. Take `⟨hr, hk, rfl⟩` from `h2`. Rewrite using `[dd_middle τ hr hk, one_mul, mul_one]`. Establish `h0 : Hpk k r i j = 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Hpk]`. Rewrite using `[if_neg (fun hc => h1 ⟨Or.inl hc.1, hc.2⟩), if_neg (fun hc => h1 ⟨Or.inr hc.1, hc.2⟩), if_neg h2]`. Rewrite using `[h0, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dil_mem {τ : ℝ} (hτ : τ ≠ 0) : dil k r τ ∈ UH (Hpk k r) := by
   show (dil k r τ)ᴴ * Hpk k r * dil k r τ = Hpk k r
@@ -141,9 +139,9 @@ theorem dil_mem {τ : ℝ} (hτ : τ ≠ 0) : dil k r τ ∈ UH (Hpk k r) := by
       rw [h0, mul_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hpo : ¬ (r ≤ p.val ∧ p.val ≤ r + k)` using `by omega`. Simplify using `only [Hpk]`. Break down `eq_or_ne t i with rfl | hti` into its components or cases. Rewrite using `[if_pos rfl]`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[if_neg (by omega), if_pos ⟨h, by omega⟩]`. Rewrite using `[if_pos ⟨by omega, by omega⟩]`. Establish `hv : t.val ≠ i.val` using `fun e => hti (Fin.ext e)`. Rewrite using `[if_neg hti, if_neg (by omega), if_neg (by omega), if_neg (fun hc => hpo ⟨hc.1, hc.2.1⟩)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hpk_row {i p t : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val)
     (hs : i.val + p.val = 2 * r + k) : Hpk k r p t = if t = i then 1 else 0 := by
@@ -158,13 +156,11 @@ theorem Hpk_row {i p t : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val)
     rw [if_neg hti, if_neg (by omega), if_neg (by omega), if_neg (fun hc => hpo ⟨hc.1, hc.2.1⟩)]
 
 /- English proof (translation)
-Establish `hcol : ∀ q : Fin (2 * r + k + 1), h *ᵥ bvec q = bvec q → h s q = if s = q then 1 else 0`. Introduce `q hq`. Establish `e` using `congrFun hq s`. Simplify `e` using `[bvec, Matrix.mulVec_single_one, Pi.single_apply]`. Establish `hpl` using `p.isLt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Break down `hp with hp | hp` into its components or cases. Establish `hq : eI k r ⟨p.val, hp⟩ = p` using `Fin.ext rfl`. Use `(hh.2.1 ⟨p.val, hp⟩).1` as an intermediate fact. Rewrite `this` using `[hq]`. Conclude with `hcol p this`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hq : esI k r ⟨2 * r + k - p.val, by omega⟩ = p`. Apply `Fin.ext` to reduce the goal to its premises. Use `show 2 * r + k - (2 * r + k - p.val) = p.val`. Use linear arithmetic over natural numbers and integers. Use `(hh.2.1 ⟨2 * r + k - p.val, by omega⟩).2` as an intermediate fact.
-
-Rewrite `this` using `[hq]`. Conclude with `hcol p this`.
+Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uw_col {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z)
     {p : Fin (2 * r + k + 1)} (hp : p.val < r ∨ r + k < p.val) (s : Fin (2 * r + k + 1)) :
@@ -188,15 +184,15 @@ theorem uw_col {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset
     exact hcol p this
 
 /- English proof (translation)
-Establish `hil` using `i.isLt`. Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Set `p : Fin (2 * r + k + 1)` to `⟨2 * r + k - i.val, by omega⟩`. Establish `hpv : p.val = 2 * r + k - i.val` using `rfl`. Establish `hpo : p.val < r ∨ r + k < p.val` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hip : i.val + p.val = 2 * r + k` using `by omega`. Establish `hcol` using `uw_col hh hpo`. Establish `hrow : ∀ t, Hpk k r p t = if t = i then 1 else 0` using `fun t => Hpk_row hi hip`. Establish `hleft : ∀ t, (hᴴ * Hpk k r) p t = Hpk k r p t`. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single p]`. Simplify using `[Matrix.conjTranspose_apply, hcol]`. Introduce `s _ hs`. Simplify using `[Matrix.conjTranspose_apply, hcol, hs]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e` using `congrFun (congrFun hU p) j`. Rewrite `e` using `[Matrix.mul_apply]`. Simplify using `only [hleft, hrow, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at e`. Establish `hji : j ≠ i` using `fun hc => by subst hc; omega`. Rewrite `e` using `[if_neg hji]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem uw_zero {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWset k r z)
     {i j : Fin (2 * r + k + 1)} (hi : i.val < r ∨ r + k < i.val) (hj1 : r ≤ j.val) (hj2 : j.val ≤ r + k) :
@@ -224,11 +220,11 @@ theorem uw_zero {z : Fin (2 * r + k + 1) → ℂ} {h : Mat k r} (hh : h ∈ UWse
   exact e
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[dil_eq, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[uw_col hh hj i] split_ifs with e`. Substitute `e` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[one_mul, mul_one]`. Rewrite using `[mul_zero, zero_mul]`. Establish `hj' : r ≤ j.val ∧ j.val ≤ r + k` using `by omega`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[uw_zero hh hi hj'.1 hj'.2, mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dd_middle τ (by omega) (by omega), dd_middle τ hj'.1 hj'.2, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dil_comm {z : Fin (2 * r + k + 1) → ℂ} (τ : ℝ) {h : Mat k r} (hh : h ∈ UWset k r z) :
     dil k r τ * h = h * dil k r τ := by
@@ -246,7 +242,7 @@ theorem dil_comm {z : Fin (2 * r + k + 1) → ℂ} (τ : ℝ) {h : Mat k r} (hh 
     · rw [dd_middle τ (by omega) (by omega), dd_middle τ hj'.1 hj'.2, one_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[dil_entry, h]`. Use `split_ifs with e`. Substitute `e` using the available equality. Rewrite using `[mul_one, dd_mul_inv hτ]`. Rewrite using `[mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_mem_lemma {τ : ℝ} (hτ : τ ≠ 0) (m : Mat k r) (i j : Fin (2 * r + k + 1))
     (h : m i j = if i = j then 1 else 0) :
@@ -258,9 +254,9 @@ private theorem conj_mem_lemma {τ : ℝ} (hτ : τ ≠ 0) (m : Mat k r) (i j : 
   · rw [mul_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hU : m ∈ UH (Hpk k r)` using `hm.1`. Establish `hc : ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → m i (eI k r a) = if i = eI k r a then 1 else 0` using `hm.2.1`. Establish `hb : ∀ i j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → r ≤ i.val → m i j = if i = j then 1 else 0` using `hm.2.2`. Use `⟨uh_mul (uh_mul (dil_mem hτ) hU) (dil_mem (inv_ne_zero hτ)), ?_, ?_⟩` and prove the remaining obligations. Introduce `a i hai`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `conj_mem_lemma hτ m i _ (hc a i hai)`. Introduce `i j h1 h2 h3`. Conclude with `conj_mem_lemma hτ m i j (hb i j h1 h2 h3)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem conj_mem {τ : ℝ} (hτ : τ ≠ 0) {m : Mat k r} (hm : m ∈ Nset k r) :
     dil k r τ * m * dil k r τ⁻¹ ∈ Nset k r := by
@@ -276,7 +272,7 @@ theorem conj_mem {τ : ℝ} (hτ : τ ≠ 0) {m : Mat k r} (hm : m ∈ Nset k r)
     exact conj_mem_lemma hτ m i j (hb i j h1 h2 h3)
 
 /- English proof (translation)
-Unfold `wt`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wt_lt {i j : Fin (2 * r + k + 1)} (hij : i.val < j.val) (hn : ¬ (r ≤ i.val ∧ j.val ≤ r + k)) :
     wt k r j + 1 ≤ wt k r i := by
@@ -284,24 +280,24 @@ theorem wt_lt {i j : Fin (2 * r + k + 1)} (hij : i.val < j.val) (hn : ¬ (r ≤ 
   split_ifs <;> omega
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.UnipotentUpperFacts.N_upper hm i i le_rfl`.
+A detailed English derivation is pending.
 -/
 private theorem apply_self_eq_one_of_mem_Nset {m : Mat k r} (hm : m ∈ Nset k r) (i : Fin (2 * r + k + 1)) :
     m i i = if i = i then 1 else 0 :=
   Formalism.FourierDecayAlt.P.UnipotentUpperFacts.N_upper hm i i le_rfl
 
 /- English proof (translation)
-Establish `hpos : 0 < τ` using `by linarith`. Establish `hτ0 : τ ≠ 0` using `hpos.ne'`. Establish `hb : ∀ i j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → r ≤ i.val → m i j = if i = j then 1 else 0` using `hm.2.2`. Rewrite using `[dil_inv hτ0, Matrix.sub_apply, Matrix.sub_apply, dil_entry, Matrix.one_apply]`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hij' : i.val < j.val` using `hij`. Rewrite using `[if_neg hij.ne, sub_zero, sub_zero]`. Distinguish the cases in `hmid : r ≤ i.val ∧ j.val ≤ r + k`. Establish `h0 : m i j = 0`. Establish `e` using `hb i j (by omega) hmid.2 hmid.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[if_neg hij.ne]`. Then use the resulting hypothesis. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hw` using `wt_lt (k := k) (r := r) hij' hmid`. Rewrite using `[mul_right_comm, dd_inv_mul hτ0, norm_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_le_mul_of_nonneg_right _ (norm_nonneg _)` to reduce the goal to its premises. Rewrite using `[norm_zpow, Complex.norm_real, Real.norm_of_nonneg hpos.le, ← _root_.zpow_neg_one]`. Conclude with `_root_.zpow_le_zpow_right₀ hτ (by omega)`. Establish `h1 : m i i = 1` using `by simpa using apply_self_eq_one_of_mem_Nset hm i`. Rewrite using `[h1, if_pos rfl, mul_one, dd_inv_mul hτ0, sub_self, _root_.zpow_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h0 : m i j = 0`. Establish `e` using `Formalism.FourierDecayAlt.P.UnipotentUpperFacts.N_upper hm i j hij.le`. Rewrite `e` using `[if_neg hij.ne']`. Then use the resulting hypothesis. Rewrite using `[if_neg hij.ne', h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem contract {τ : ℝ} (hτ : 1 ≤ τ) {m : Mat k r} (hm : m ∈ Nset k r) (i j : Fin (2 * r + k + 1)) :
     ‖((dil k r τ)⁻¹ * m * dil k r τ - 1) i j‖ ≤ τ⁻¹ * ‖(m - 1) i j‖ := by
@@ -334,9 +330,9 @@ theorem contract {τ : ℝ} (hτ : 1 ≤ τ) {m : Mat k r} (hm : m ∈ Nset k r)
     simp
 
 /- English proof (translation)
-Introduce `k r z _`. Use `⟨fun τ hτ => ⟨dil_mem hτ.ne', fun h hh => dil_comm τ hh, fun m hm => ⟨?_, ?_⟩⟩, fun τ hτ m hm i j => contract hτ hm i j⟩` and prove the remaining obligations. Rewrite using `[dil_inv hτ.ne']`. Conclude with `conj_mem hτ.ne' hm`. Establish `e` using `conj_mem (inv_ne_zero hτ.ne') hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e` using `[inv_inv, ← dil_inv hτ.ne']`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ), inWb k r z → (∀ τ : ℝ, 0 < τ → dil k r τ ∈ GG k r ∧ (∀ h ∈ UWset k r z, dil k r τ * h = h * dil k r τ) ∧ (∀ m ∈ Nset k r, dil k r τ * m * (dil k r τ)⁻¹ ∈ Nset k r ∧ (dil k r τ)⁻¹ * m * dil k r τ ∈ Nset k r)) ∧ (∀ τ : ℝ, 1 ≤ τ → ∀ m ∈ Nset k r, ∀ i j, ‖((dil k r τ)⁻¹ * m * dil k r τ - 1) i j‖ ≤ τ⁻¹ * ‖(m - 1) i j‖) := by
   intro k r z _

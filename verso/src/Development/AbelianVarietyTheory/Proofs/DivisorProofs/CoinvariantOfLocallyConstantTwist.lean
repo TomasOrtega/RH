@@ -5,19 +5,17 @@ open Matrix MeasureTheory ValuativeRel GlobalTheory.SplitFlip GlobalTheory.SmGL 
 namespace GlobalTheory.RankFibreKer
 
 /- English proof (translation)
-Use `set H : GL (Fin a) k → Matrix (Fin a) (Fin (a + b)) k → ℂ := fun r Y => χ Y * (tw ν (a + b) r * Φ (r.val * Y)) with hH`. Establish `hHSB : ∀ r, H r ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)`. Introduce `r`. Establish `hs : (fun Y => Φ (r.val * Y)) ∈ GlobalTheory.WeilM.SB (Matrix (Fin a) (Fin (a + b)) k)`. Use `comp_mul_mem_SB r 1 hΦ` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_one, Matrix.mul_one] at this`. Conclude with `this`. Take `⟨hs1, hs2⟩` from `hs`. Establish `e : H r = χ * ((fun _ => tw ν (a + b) r) * fun Y => Φ (r.val * Y))` using `rfl`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hχ.mul ((IsLocallyConstant.const _).mul hs1)`. Conclude with `HasCompactSupport.mul_left (HasCompactSupport.mul_left hs2)`. Establish `hom : ∀ r, omA ν β r 1 (H r) = fun Y => χ ((r⁻¹).val * Y) * Φ Y`. Introduce `r`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[omA_one_apply]`. Simplify using `only [hH, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Clear denominators, using `[tw_ne_zero ν (a + b) r]` for the nonvanishing conditions. Establish `hsumH : ∑ r ∈ R, H r = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply, Pi.zero_apply]`. Simplify using `only [hH, ← Finset.mul_sum]`. Conclude with `h2 Y`. Establish `hΦeq : Φ = ∑ r ∈ R, (omA ν β r 1 (H r) - H r)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_sub_distrib, hsumH, sub_zero]`. Use function extensionality and compare the values at `Y`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [hom]`. Conclude with `h1 Y`.
-
-Rewrite using `[hΦeq]`. Use `Submodule.sum_mem _ fun r _ => Submodule.subset_span ⟨r, H r, hHSB r, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_coinv_of_finset_sum (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ν β : kˣ →* ℂˣ) (a b : ℕ) (Φ χ : Matrix (Fin a) (Fin (a + b)) k → ℂ)

@@ -19,18 +19,18 @@ def contrML (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) : MultilinearMap ℂ X (X 
 def contr (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) : (PiTensorProduct ℂ X) →ₗ[ℂ] X j := GlobalTheory.MultilinearContraction.contract l j
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MultilinearContraction.contract_tprod l j x`.
+A detailed English derivation is pending.
 -/
 theorem contr_tprod (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β) (x : ∀ a, X a) :
     contr l j (PiTensorProduct.tprod ℂ x) = (∏ i ∈ Finset.univ.erase j, l i (x i)) • x j :=
   GlobalTheory.MultilinearContraction.contract_tprod l j x
 
 /- English proof (translation)
-Set `b` to `fun a => Module.Free.chooseBasis ℂ (X a)`. Set `B` to `Basis.piTensorProduct b`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, B.repr y p ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hy (B.repr.map_eq_zero_iff.1 (Finsupp.ext hcon))`. Use `⟨fun a => (b a).coord (p a), fun h => hp ?_⟩` and prove the remaining obligations. Establish `e : (b j).coord (p j) ∘ₗ contr (fun a => (b a).coord (p a)) j = B.coord p`. Use extensionality with `w`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, contr_tprod, map_smul, Module.Basis.coord_apply, B, Basis.piTensorProduct_repr_tprod_apply, smul_eq_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Finset.prod_erase_mul _ _ (Finset.mem_univ j)`. Use `LinearMap.congr_fun e y` as an intermediate fact. Rewrite `this` using `[LinearMap.comp_apply, h, map_zero]`. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_contr_ne_zero (j : β) {y : PiTensorProduct ℂ X} (hy : y ≠ 0) :
     ∃ l : ∀ a, X a →ₗ[ℂ] ℂ, contr l j y ≠ 0 := by
@@ -53,9 +53,9 @@ theorem exists_contr_ne_zero (j : β) {y : PiTensorProduct ℂ X} (hy : y ≠ 0)
 variable {Γ : β → Type} [∀ a, Group (Γ a)]
 
 /- English proof (translation)
-Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `smul_tprod c x`. Simplify using `only [map_smul, piTensor_tprod, contr_tprod, Pi.mulSingle_eq_same]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `Finset.prod_congr rfl fun a ha => by`. Rewrite using `[Pi.mulSingle_eq_of_ne (Finset.ne_of_mem_erase ha), map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contr_mulSingle (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (l : ∀ a, X a →ₗ[ℂ] ℂ) (j : β)
     (g : Γ j) (y : PiTensorProduct ℂ X) :
@@ -71,9 +71,9 @@ theorem contr_mulSingle (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (l : ∀ a
 omit [Fintype β] in
 
 /- English proof (translation)
-Rewrite using `[piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Pi.mulSingle_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tprod_update_mulSingle (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (x : ∀ a, X a) (j : β)
     (g : Γ j) (v : X j) :
@@ -87,15 +87,13 @@ theorem tprod_update_mulSingle (ρ : ∀ a, Representation ℂ (Γ a) (X a)) (x 
   · simp [h, Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Introduce `β _ Γ _ _ s s' ⟨φ⟩ j`. Use `haveI := fun a => nontrivial_of_irreducible (s a).irr`. Set `b` to `fun a => Module.Free.chooseBasis ℂ (s a).V`. Set `p : ∀ a, Module.Free.ChooseBasisIndex ℂ (s a).V` to `fun a => (b a).index_nonempty.some`. Set `x : ∀ a, (s a).V` to `fun a => b a (p a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hx : PiTensorProduct.tprod ℂ x ≠ 0`. Use `(Basis.piTensorProduct b).ne_zero p` as an intermediate fact. Rewrite `this` using `[Basis.piTensorProduct_apply]`. Then use the resulting hypothesis. Establish `hy : φ (PiTensorProduct.tprod ℂ x) ≠ 0` using `fun h => hx ((map_eq_zero_iff φ φ.injective).1 h)`. Take `⟨l, hl⟩` from `exists_contr_ne_zero j hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ψ : (s j).ρ.IntertwiningMap (s' j).ρ` to `{ toLinearMap := contr l j ∘ₗ φ.toLinearMap ∘ₗ (PiTensorProduct.tprod ℂ).toLinearMap x j isIntertwining' := fun g => by`. Use extensionality with `v`. Simplify using `only [LinearMap.comp_apply, MultilinearMap.toLinearMap_apply]`. Rewrite using `[tprod_update_mulSingle (fun a => (s a).ρ), ← contr_mulSingle (fun a => (s' a).ρ)]`. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun (φ.isIntertwining' (Pi.mulSingle j g)) _ }`. Establish `hψ : ψ ≠ 0` using `fun h => hl (by`. Establish `: ψ (x j) = 0` using `by rw [h]; rfl`. Rewrite using `[← this]`. Use `show _ = contr l j (φ (PiTensorProduct.tprod ℂ (Function.update x j (x j))))`.
-
-Rewrite using `[Function.update_eq_self])`. Use `haveI := (s j).irr`. Use `haveI := (s' j).irr`. Establish `hb` using `(Representation.IsIrreducible.bijective_or_eq_zero ψ).resolve_right hψ`. Conclude with `IrrRep.cl_eq_iff.2 ⟨ψ.ofBijective hb⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cl_eq_of_piTensor_equiv : ∀ (β : Type) [Fintype β] (Γ : β → Type) [∀ j, Group (Γ j)] [∀ j, TopologicalSpace (Γ j)] (s s' : ∀ j, GlobalTheory.SmGL.IrrRep (Γ j)), Nonempty ((GlobalTheory.SmGL.piTensor fun j => (s j).ρ).Equiv (GlobalTheory.SmGL.piTensor fun j => (s' j).ρ)) → ∀ j, (s j).cl = (s' j).cl := by
   intro β _ Γ _ _ s s' ⟨φ⟩ j

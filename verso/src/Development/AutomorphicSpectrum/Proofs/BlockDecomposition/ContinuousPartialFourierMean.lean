@@ -15,15 +15,15 @@ open GlobalTheory.CompanionTheory.PcB (chz_norm continuous_chz)
 variable {D : D7} {n ρ p : ℕ}
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_transpose (Continuous.matrix_map continuous_id GlobalTheory.AnnihBox.continuous_cA')`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adjMx : Continuous (adj : Mx D ρ p → Mx D p ρ) :=
   Continuous.matrix_transpose (Continuous.matrix_map continuous_id GlobalTheory.AnnihBox.continuous_cA')
 
 /- English proof (translation)
-Establish `h1 : Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => (u.1 : Mx D ρ ρ)` using `continuous_subtype_val.comp continuous_fst`. Establish `h2 : Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => u.2.1` using `continuous_fst.comp continuous_snd`. Establish `h3 : Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => adj u.2.1` using `continuous_adjMx.comp h2`. Establish `h4 : Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => (u.2.2 : Mx D p p)` using `continuous_subtype_val.comp (continuous_snd.comp continuous_snd)`. Establish `hbl : Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => bl hn (u.1 : Mx D ρ ρ) u.2.1 (adj u.2.1) (u.2.2 : Mx D p p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `bl`. Conclude with `(Continuous.matrix_fromBlocks h1 h2 h3 h4).matrix_submatrix _ _`. Unfold `bT`. Conclude with `hbl.subtype_mk _`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_bT (hn : ρ + p = n) :
     Continuous fun u : hermA D ρ × Mx D ρ p × hermA D p => bT hn u.1 u.2.1 u.2.2 := by
@@ -43,9 +43,9 @@ theorem continuous_bT (hn : ρ + p = n) :
   exact hbl.subtype_mk _
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := n)`. Take `⟨B, hB⟩` from `hK.exists_bound_of_continuousOn hΦ.continuousOn`. Use `⟨B, fun x => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγx⟩` from `hcov x`. Rewrite using `[← hper γ hγ x]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB _ hγx`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_of_isPer (Φ : hermA D n → ℂ) (hΦ : Continuous Φ) (hper : IsPer Φ) :
     ∃ B : ℝ, ∀ x, ‖Φ x‖ ≤ B := by
@@ -57,11 +57,9 @@ theorem exists_bound_of_isPer (Φ : hermA D n → ℂ) (hΦ : Continuous Φ) (hp
   exact hB _ hγx
 
 /- English proof (translation)
-Take `⟨K, hK, hcov⟩` from `GlobalTheory.CompanionTheory.FourierN.exists_compact_cover (D := D) (n := n)`. Establish `hc : Continuous fun w : hermA D n × hermA D n => ‖Φ (w.2 + w.1) - Φ w.2‖` using `((hΦ.comp (continuous_snd.add continuous_fst)).sub (hΦ.comp continuous_snd)).norm`. Establish `hev : ∀ᶠ v in 𝓝 (0 : hermA D n), ∀ k ∈ K, ‖Φ (k + v) - Φ k‖ < ε`. Use `hK.eventually_forall_of_forall_eventually fun k _ => ?_` and prove the remaining obligations. Establish `h0 : ‖Φ (k + 0) - Φ k‖ < ε`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using hε`. Conclude with `(hc.tendsto ((0 : hermA D n), k)).eventually (gt_mem_nhds h0)`. Use `filter_upwards [hev] with v hv a`. Take `⟨γ, hγ, hγa⟩` from `hcov a`. Establish `h1` using `hv _ hγa`.
-
-Rewrite `h1` using `[add_assoc, hper γ hγ, hper γ hγ]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem eventually_uniform_continuity_of_isPer (Φ : hermA D n → ℂ) (hΦ : Continuous Φ) (hper : IsPer Φ) {ε : ℝ}
     (hε : 0 < ε) : ∀ᶠ v in 𝓝 (0 : hermA D n), ∀ a, ‖Φ (a + v) - Φ a‖ < ε := by
@@ -79,7 +77,7 @@ private theorem eventually_uniform_continuity_of_isPer (Φ : hermA D n → ℂ) 
   rwa [add_assoc, hper γ hγ, hper γ hγ] at h1
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show bl hn (z + z').1 (x + x') (GlobalTheory.MixModel.adj (x + x')) (y + y').1 = bl hn z.1 x (GlobalTheory.MixModel.adj x) y.1 + bl hn z'.1 x' (GlobalTheory.MixModel.adj x') y'.1`. Rewrite using `[GlobalTheory.CompanionTheory.PcB.blockMatrix_add', GlobalTheory.MixModel.adj_add]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem bT_add (hn : ρ + p = n) (z z' : hermA D ρ) (x x' : Mx D ρ p) (y y' : hermA D p) :
     bT hn (z + z') (x + x') (y + y') = bT hn z x y + bT hn z' x' y' := by
@@ -90,37 +88,29 @@ private theorem bT_add (hn : ρ + p = n) (z z' : hermA D ρ) (x x' : Mx D ρ p) 
   rfl
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `exists_bound_of_isPer Φ hΦ hper`. Establish `hchz` using `continuous_chz hψ b₀`. Establish `hnorm` using `chz_norm hψ b₀`. Take `⟨-, -, hz1⟩` from `m.hz`. Take `⟨-, -, hμ1⟩` from `m.hμ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlz : m.lz.restrict m.𝓖 Set.univ < ⊤`. Rewrite using `[Measure.restrict_apply_univ, hz1]`. Conclude with `ENNReal.one_lt_top`. Establish `hμf : m.μ.restrict m.𝓕 Set.univ < ⊤`. Rewrite using `[Measure.restrict_apply_univ, hμ1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ENNReal.one_lt_top`. Use `haveI : IsFiniteMeasure (m.lz.restrict m.𝓖) := ⟨hlz⟩`. Use `haveI : IsFiniteMeasure (m.μ.restrict m.𝓕) := ⟨hμf⟩`. Establish `hrz : (m.lz.restrict m.𝓖 Set.univ).toReal = 1`. Rewrite using `[Measure.restrict_apply_univ, hz1, ENNReal.toReal_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrμ : (m.μ.restrict m.𝓕 Set.univ).toReal = 1`. Rewrite using `[Measure.restrict_apply_univ, hμ1, ENNReal.toReal_one]`. Use `haveI : OpensMeasurableSpace (Mx D ρ ρ) := ⟨le_rfl⟩`. Use `haveI : OpensMeasurableSpace (Mx D ρ p) := ⟨le_rfl⟩`. Use `haveI : OpensMeasurableSpace (hermA D ρ) := Subtype.opensMeasurableSpace (hermA D ρ : Set (Mx D ρ ρ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb0 : bT hn (0 : hermA D ρ) (0 : Mx D ρ p) (0 : hermA D p) = 0`. Simplify using `using bT_add hn (0 : hermA D ρ) 0 (0 : Mx D ρ p) 0 (0 : hermA D p) 0`. Establish `hgb : ∀ (x : Mx D ρ p) (y : hermA D p) (z : hermA D ρ), ‖Φ (bT hn z x y) * conj (chz ψ b₀ z)‖ ≤ B`. Introduce `x y z`. Rewrite using `[norm_mul, Complex.norm_conj, hnorm, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hB _`. Establish `hmz : ∀ (x : Mx D ρ p) (y : hermA D p), AEStronglyMeasurable (fun z => Φ (bT hn z x y) * conj (chz ψ b₀ z)) (m.lz.restrict m.𝓖)`. Introduce `x y`. Establish `hc : Continuous fun z : hermA D ρ => ((z, (x, y)) : hermA D ρ × Mx D ρ p × hermA D p)` using `continuous_id.prodMk continuous_const`. Conclude with `((hΦ.comp ((continuous_bT hn).comp hc)).mul (Complex.continuous_conj.comp hchz)).aestronglyMeasurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ (x : Mx D ρ p) (y : hermA D p), Integrable (fun z => Φ (bT hn z x y) * conj (chz ψ b₀ z)) (m.lz.restrict m.𝓖)` using `fun x y => (integrable_const B).mono' (hmz x y) (ae_of_all _ fun z => hgb x y z)`. Establish `hE : ∀ (y y' : hermA D p) (x x' : Mx D ρ p) (δ : ℝ), (∀ a, ‖Φ (a + bT hn 0 (x' - x) (y' - y)) - Φ a‖ ≤ δ) → ‖(∫ z in m.𝓖, Φ (bT hn z x' y') * conj (chz ψ b₀ z) ∂m.lz) - ∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz‖ ≤ δ`. Introduce `y y' x x' δ hδ`. Establish `hpt : ∀ z : hermA D ρ, ‖Φ (bT hn z x' y') * conj (chz ψ b₀ z) - Φ (bT hn z x y) * conj (chz ψ b₀ z)‖ ≤ δ`. Introduce `z`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : bT hn z x' y' = bT hn z x y + bT hn 0 (x' - x) (y' - y)`. Establish `h` using `bT_add hn z 0 x (x' - x) y (y' - y)`. Establish `h1 : x + (x' - x) = x'` using `by abel`. Establish `h2 : y + (y' - y) = y'` using `by abel`. Rewrite `h` using `[add_zero, h1, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `h`. Rewrite using `[← sub_mul, norm_mul, Complex.norm_conj, hnorm, mul_one, hs]`. Conclude with `hδ _`. Rewrite using `[← integral_sub (hint x' y') (hint x y)]`. Establish `h2 : ‖∫ z, (Φ (bT hn z x' y') * conj (chz ψ b₀ z) - Φ (bT hn z x y) * conj (chz ψ b₀ z)) ∂(m.lz.restrict m.𝓖)‖ ≤ δ * (m.lz.restrict m.𝓖 Set.univ).toReal` using `norm_integral_le_of_norm_le_const (ae_of_all _ hpt)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[hrz, mul_one]`. Conclude with `h2`. Establish `hIB : ∀ (x : Mx D ρ p) (y : hermA D p), ‖∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz‖ ≤ B`. Introduce `x y`. Establish `h : ‖∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz‖ ≤ B * (m.lz.restrict m.𝓖 Set.univ).toReal` using `norm_integral_le_of_norm_le_const (ae_of_all _ fun z => hgb x y z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hrz, mul_one]`. Then use the resulting hypothesis. Establish `hIc : ∀ y : hermA D p, Continuous fun x : Mx D ρ p => ∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz`. Introduce `y`. Use `continuous_iff_continuousAt.2 fun x₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hv : Tendsto (fun x : Mx D ρ p => bT hn (0 : hermA D ρ) (x - x₀) (y - y)) (𝓝 x₀) (𝓝 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Continuous fun x : Mx D ρ p => bT hn (0 : hermA D ρ) (x - x₀) (y - y)` using `(continuous_bT hn).comp (continuous_const.prodMk ((continuous_id.sub continuous_const).prodMk continuous_const))`. Simplify `hc.tendsto x₀` using `[hb0]`. Use `filter_upwards [hv.eventually (eventually_uniform_continuity_of_isPer Φ hΦ hper (half_pos hε))] with x hx`. Rewrite using `[dist_eq_norm]`. Conclude with `(hE y y x₀ x (ε / 2) fun a => (hx a).le).trans_lt (half_lt_self hε)`.
-
-Establish `hin : ∀ y : hermA D p, Integrable (fun x => ∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz) (m.μ.restrict m.𝓕)` using `fun y => (integrable_const B).mono' (hIc y).aestronglyMeasurable (ae_of_all _ fun x => hIB x y)`. Unfold `pm`. Use `continuous_iff_continuousAt.2 fun y₀ => Metric.tendsto_nhds.2 fun ε hε => ?_` and prove the remaining obligations. Establish `hv : Tendsto (fun y : hermA D p => bT hn (0 : hermA D ρ) (0 : Mx D ρ p) (y - y₀)) (𝓝 y₀) (𝓝 0)`. Establish `hc : Continuous fun y : hermA D p => bT hn (0 : hermA D ρ) (0 : Mx D ρ p) (y - y₀)` using `(continuous_bT hn).comp (continuous_const.prodMk (continuous_const.prodMk (continuous_id.sub continuous_const)))`.
-
-Simplify `hc.tendsto y₀` using `[hb0]`. Use `filter_upwards [hv.eventually (eventually_uniform_continuity_of_isPer Φ hΦ hper (half_pos hε))] with y hy`. Rewrite using `[dist_eq_norm, ← integral_sub (hin y) (hin y₀)]`. Establish `hpt : ∀ x : Mx D ρ p, ‖(∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz) - ∫ z in m.𝓖, Φ (bT hn z x y₀) * conj (chz ψ b₀ z) ∂m.lz‖ ≤ ε / 2`. Introduce `x`.
-
-Use `hE y₀ y x x (ε / 2) fun a => ?_` and prove the remaining obligations. Rewrite using `[sub_self]`. Conclude with `(hy a).le`. Establish `h2 : ‖∫ x, ((∫ z in m.𝓖, Φ (bT hn z x y) * conj (chz ψ b₀ z) ∂m.lz) - ∫ z in m.𝓖, Φ (bT hn z x y₀) * conj (chz ψ b₀ z) ∂m.lz) ∂(m.μ.restrict m.𝓕)‖ ≤ ε / 2 * (m.μ.restrict m.𝓕 Set.univ).toReal` using `norm_integral_le_of_norm_le_const (ae_of_all _ hpt)`. Rewrite `h2` using `[hrμ, mul_one]`.
-
-Conclude with `h2.trans_lt (half_lt_self hε)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_pm (hn : ρ + p = n) (m : Meas D ρ p) {ψ : AddChar (AF D.host.F) ℂ}
     (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (Φ : hermA D n → ℂ) (hΦ : Continuous Φ)

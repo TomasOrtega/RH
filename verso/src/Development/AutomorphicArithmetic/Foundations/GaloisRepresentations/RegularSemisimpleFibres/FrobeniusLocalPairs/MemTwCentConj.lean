@@ -13,9 +13,9 @@ namespace UpperTheory.Gal.InertialTypesAlt.L
 open PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-Unfold `GlobalTheory.LBC.norm normGL twNorm`. Use `congr 1`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules. Introduce `i h1 h2`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.getElem_ofFn, List.getElem_map, List.getElem_range]`. Use `show (sigmaGL (σ ^ i) : Monoid.End (GL (Fin n) E)) δ = _`. Rewrite using `[sigmaGL_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_eq {k E : Type} [Field k] [Field E] [Algebra k E] (σ : E ≃ₐ[k] E) (n : ℕ)
     (δ : GL (Fin n) E) : GlobalTheory.LBC.norm k σ δ = normGL σ δ := by
@@ -29,7 +29,7 @@ private theorem norm_eq {k E : Type} [Field k] [Field E] [Algebra k E] (σ : E �
     rw [sigmaGL_pow]
 
 /- English proof (translation)
-Use `show ((GeneralLinearGroup.map (algebraMap k E) γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly = _`. Rewrite using `[← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem charpoly_incl {k E : Type} [Field k] [Field E] [Algebra k E] {n : ℕ}
     (γ : GL (Fin n) k) :
@@ -40,7 +40,7 @@ private theorem charpoly_incl {k E : Type} [Field k] [Field E] [Algebra k E] {n 
   rfl
 
 /- English proof (translation)
-Unfold `twConj`. Simplify using `only [map_mul, map_inv, _root_.mul_inv_rev, inv_inv]`. Use `group`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem twConj_conj {G : Type} [Group G] (θ : Monoid.End G) (h x δ : G) :
     twConj θ (h⁻¹ * x * h) (twConj θ h δ) = h⁻¹ * twConj θ x δ * θ h := by
@@ -49,9 +49,9 @@ private theorem twConj_conj {G : Type} [Group G] (θ : Monoid.End G) (h x δ : G
   group
 
 /- English proof (translation)
-Use `show twConj θ x δ = δ ↔ twConj θ (h⁻¹ * x * h) (twConj θ h δ) = twConj θ h δ`. Rewrite using `[twConj_conj]`. Unfold `twConj`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx]`. Introduce `hx`. Use `congrArg (fun y => h * y * (θ h)⁻¹) hx` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem mem_twCent_conj {G : Type} [Group G] (θ : Monoid.End G) (h x δ : G) :
     x ∈ twCent θ δ ↔ h⁻¹ * x * h ∈ twCent θ (twConj θ h δ) := by
@@ -66,9 +66,9 @@ private theorem mem_twCent_conj {G : Type} [Group G] (θ : Monoid.End G) (h x δ
     simpa [mul_assoc] using this
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show twConj θ x δ = δ ↔ x * δ = δ * θ x`. Unfold `twConj`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `hx`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem twCent_eq {G : Type} [Group G] (θ : Monoid.End G) (δ : G) :
     twCent θ δ = GlobalTheory.BCT.twCent θ δ := by
@@ -85,23 +85,21 @@ private theorem twCent_eq {G : Type} [Group G] (θ : Monoid.End G) (δ : G) :
       _ = δ := by group
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n`. Establish `hcp : ∀ γ : GL (Fin n) k, ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly = (γ : Matrix (Fin n) (Fin n) k).charpoly.map (algebraMap k E)` using `fun γ => charpoly_incl γ`. Establish `hconj : ∀ (h a : GL (Fin n) E), ((h * a * h⁻¹ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly = (a : Matrix (Fin n) (Fin n) E).charpoly`. Introduce `h a`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.coe_units_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.charpoly_units_conj h a`. Establish `hpow : sigmaGL σ ^ Module.finrank k E = (1 : Monoid.End (GL (Fin n) E))`. Rewrite using `[← sigmaGL_pow, ← IsGalois.card_aut_eq_finrank, pow_card_eq_one', sigmaGL_one]`. Use `⟨rfl, fun δ => norm_eq σ n δ, fun δ => twCent_eq _ δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[Subgroup.mem_centralizer_singleton_iff]`. Conclude with `Iff.rfl`. Introduce `δ h γ hreg hN`. Establish `heq : (γ : Matrix (Fin n) (Fin n) k).charpoly.map (algebraMap k E) = ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, hconj, hcp]`. Establish `hγ : IsRegSemisimple γ`. Establish `hs : ((normGL σ δ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable` using `hreg`. Rewrite `hs` using `[← heq]`. Conclude with `(Polynomial.separable_map _).mp hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hγ, heq, ?_⟩` and prove the remaining obligations. Introduce `x`. Establish `hN' : normGL σ (twConj (sigmaGL σ) h δ) = incl γ`. Unfold `normGL`. Rewrite using `[twNorm_twConj_of_pow_eq_one _ hpow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `h⁻¹ * normGL σ δ * h = incl γ`. Rewrite using `[hN]`. Use `group`. Take `⟨_, hc⟩` from `twCentImg_holds k E σ hgen n _ γ hγ hN'`. Rewrite using `[mem_twCent_conj (sigmaGL σ) h x δ, hc, Subgroup.mem_map]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, hx⟩`. Conclude with `⟨t, ht, hx.symm⟩`. Introduce and unpack `⟨t, ht, hx⟩`. Conclude with `⟨t, ht, hx.symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `δ γ hγ heq`. Establish `hs : ((incl γ : GL (Fin n) E) : Matrix (Fin n) (Fin n) E).charpoly.Separable`. Rewrite using `[hcp]`. Conclude with `(Polynomial.separable_map _).mpr hγ`. Take `⟨g, hg⟩` from `GlobalTheory.BCT.ClsFin.conj_of_charpoly (incl γ) (normGL σ δ) hs (by rw [hcp, heq])`.
-
-Conclude with `⟨g⁻¹, by rw [hg, inv_inv]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dict : Dict := by
   intro k E _ _ _ _ _ _ _ _ _ _ _ _ _ σ hgen n

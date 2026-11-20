@@ -24,7 +24,7 @@ def gmap (s : Sec F X) : (free R).obj (yoneda.obj X) ⟶ F :=
   ⟨sheafifyLift Scheme.etaleTopology (eta R F X s) F.property⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun f => (f.app (op U)).hom (ModuleCat.freeMk (show uliftFunctor.{1, 0}.obj ((yoneda.obj X).obj (op U)) from ULift.up x))) (toSheafify_sheafifyLift Scheme.etaleTopology (eta R F X s) F.property)`. Conclude with `h.trans (ModuleCat.freeDesc_apply _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gmap_app (s : Sec F X) (U : Scheme.{0}) (x : U ⟶ X) :
     ((gmap R F X s).hom.app (op U)).hom (freeGen R (yoneda.obj X) U x) = Sec.res x s := by
@@ -34,9 +34,7 @@ theorem gmap_app (s : Sec F X) (U : Scheme.{0}) (x : U ⟶ X) :
   exact h.trans (ModuleCat.freeDesc_apply _ _)
 
 /- English proof (translation)
-Simplify using `[chainsN, AlgebraicTopology.alternatingFaceMapComplex_obj_d, AlgebraicTopology.AlternatingFaceMapComplex.objD, Fin.sum_univ_two, SimplicialObject.δ, sch]`. Use `first`. Consider the case `(erw [one_zsmul, neg_one_zsmul, add_neg_cancel])`. Consider the case `(erw [one_smul, neg_one_smul, add_neg_cancel])`. Consider the case `(erw [← add_smul]; norm_num)`.
-
-Apply the tactic sequence `all_goals rfl`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem etale_normalized_free_chains_differential_one_zero_eq_zero : ((chainsN R).obj (sch.obj X)).d 1 0 = 0 := by
   simp [chainsN, AlgebraicTopology.alternatingFaceMapComplex_obj_d, AlgebraicTopology.AlternatingFaceMapComplex.objD,
@@ -48,7 +46,7 @@ theorem etale_normalized_free_chains_differential_one_zero_eq_zero : ((chainsN R
   all_goals rfl
 
 /- English proof (translation)
-Simplify using `only [chainsXIso, chains, Functor.comp_obj]`. Use `erw [HomologicalComplex.extend_d_eq ((chainsN R).obj (sch.obj X)) ComplexShape.embeddingDownNat (i := 1) (j := 0) rfl rfl]`. Rewrite using `[etale_normalized_free_chains_differential_one_zero_eq_zero]`. Simplify using `only [Limits.zero_comp, Limits.comp_zero]`. Apply the tactic sequence `all_goals exact Limits.zero_comp`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem d10 : ((chains R).obj (sch.obj X)).d (-1) 0 ≫ (chainsXIso R (sch.obj X) 0).hom = 0 := by
   dsimp only [chainsXIso, chains, Functor.comp_obj]
@@ -58,7 +56,7 @@ theorem d10 : ((chains R).obj (sch.obj X)).d (-1) 0 ≫ (chainsXIso R (sch.obj X
   all_goals exact Limits.zero_comp
 
 /- English proof (translation)
-Rewrite using `[resι]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `erw [(injectiveResolution F).ι'.comm 0 1]`. Simplify using the standard rewrite rules. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resι_d : resι R F ≫ (res R F).d 0 1 = 0 := by
   rw [resι]
@@ -71,7 +69,7 @@ def fz (s : Sec F X) : ((chains R).obj (sch.obj X)).X (-((0 : ℕ) : ℤ)) ⟶ (
   (chainsXIso R (sch.obj X) 0).hom ≫ gmap R F X s ≫ resι R F
 
 /- English proof (translation)
-Establish `h : (gmap R F X s ≫ resι R F) ≫ (res R F).d 0 1 = 0`. Rewrite using `[Category.assoc, resι_d, Limits.comp_zero]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (fun t => (chainsXIso R (sch.obj X) 0).hom ≫ t) h).trans Limits.comp_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fz_d (s : Sec F X) : fz R F X s ≫ (res R F).d 0 1 = 0 := by
   have h : (gmap R F X s ≫ resι R F) ≫ (res R F).d 0 1 = 0 := by
@@ -80,7 +78,7 @@ theorem fz_d (s : Sec F X) : fz R F X s ≫ (res R F).d 0 1 = 0 := by
   exact (congrArg (fun t => (chainsXIso R (sch.obj X) 0).hom ≫ t) h).trans Limits.comp_zero
 
 /- English proof (translation)
-Simplify using `only [fz]`. Rewrite using `[← Category.assoc]`. Use `erw [d10]`. Conclude with `Limits.zero_comp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_fz (s : Sec F X) : ((chains R).obj (sch.obj X)).d (-1) (-((0 : ℕ) : ℤ)) ≫ fz R F X s = 0 := by
   simp only [fz]
@@ -94,7 +92,7 @@ def coc (s : Sec F X) : Cocycle ((chains R).obj (sch.obj X)) (res R F) 0 :=
       Cochain.single_zero, Cochain.single_zero, smul_zero, add_zero])
 
 /- English proof (translation)
-Rewrite using `[sec_res_map]`. Simplify using `only [ev, coc, Cocycle.mk_coe, Cochain.single_v, fz, Iso.inv_hom_id_assoc]`. Express the relevant statement in the definitionally equal form `((resι R F).hom.app (op U)).hom (((gmap R F X s).hom.app (op U)).hom (freeGen R (yoneda.obj X) U x)) = _`. Rewrite using `[gmap_app]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coc_ev (s : Sec F X) (U : Scheme.{0}) (x : U ⟶ X) :
     ev (coc R F X s).1 0 0 (by simp) U x = Sec.res x (Sec.map (resι R F) s) := by
@@ -108,7 +106,7 @@ end LateralTheory.KummerTheory.S0
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-Introduce `R _ F X s` and use `⟨S0.coc R F X s, S0.coc_ev R F X s⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Sec0Ex_of : DegreeZeroSectionExists := fun R _ F X s => ⟨S0.coc R F X s, S0.coc_ev R F X s⟩
 

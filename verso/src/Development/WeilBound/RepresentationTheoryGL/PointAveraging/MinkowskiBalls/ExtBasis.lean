@@ -16,13 +16,13 @@ theorem E_apply {R : Type*} [Semiring R] {a b j : ℕ} (i : Fin a) (l : Fin b) :
     E R a b j i l = if (i : ℕ) = l ∧ (l : ℕ) < j then 1 else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `only [mul_apply, E_apply]`. Distinguish the cases in `h : (i : ℕ) = l ∧ (l : ℕ) < j`. Rewrite using `[if_pos h]`. Take `⟨h1, h2⟩` from `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hi : (i : ℕ) < j` using `h1 ▸ h2`. Rewrite using `[Finset.sum_eq_single (⟨i, by omega⟩ : Fin b)]`. Simplify using `[hi, h1, h2]`. Introduce `m _ hm`. Establish `hne : ¬ ((i : ℕ) = m ∧ (m : ℕ) < j)` using `fun e => hm (Fin.ext e.1.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg hne, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`. Rewrite using `[if_neg h]`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : (i : ℕ) = m ∧ (m : ℕ) < j`. Establish `h2 : ¬ ((m : ℕ) = l ∧ (l : ℕ) < j)` using `fun h2 => h ⟨h1.1.trans h2.1, h2.2⟩`. Rewrite using `[if_neg h2, mul_zero]`. Rewrite using `[if_neg h1, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_mul {R : Type*} [Semiring R] {a b c j : ℕ} (hb : j ≤ b) :
     E R a b j * E R b c j = E R a c j := by
@@ -47,9 +47,9 @@ theorem E_mul {R : Type*} [Semiring R] {a b c j : ℕ} (hb : j ≤ b) :
     · rw [if_neg h1, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i l`. Simplify using `only [E_apply, diagonal_apply]`. Distinguish the cases in `h : i = l`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (i : ℕ) ≠ l` using `fun e => h (Fin.ext e)`. Simplify using `[h, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem E_diag {R : Type*} [Semiring R] {a j : ℕ} :
     E R a a j = diagonal fun i : Fin a => if (i : ℕ) < j then 1 else 0 := by
@@ -61,9 +61,9 @@ theorem E_diag {R : Type*} [Semiring R] {a j : ℕ} :
     simp [h, this]
 
 /- English proof (translation)
-Rewrite using `[E_diag, rank_diagonal]`. Use `(Fintype.card_congr ?_).trans (Fintype.card_fin j)` and prove the remaining obligations. Conclude with `{ toFun := fun i => ⟨i.1, by`. Use `i.2` as an intermediate fact. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `[hlt] at this⟩`. Use `invFun := fun l => ⟨Fin.castLE hj l, by simp [l.2]⟩`. Use `left_inv := fun i => Subtype.ext (Fin.ext rfl)`. Use `right_inv := fun l => Fin.ext rfl }`.
+A detailed English derivation is pending.
 -/
 theorem rank_E {k : Type*} [Field k] {a j : ℕ} (hj : j ≤ a) : (E k a a j).rank = j := by
   classical
@@ -79,11 +79,11 @@ theorem rank_E {k : Type*} [Field k] {a j : ℕ} (hj : j ≤ a) : (E k a a j).ra
       right_inv := fun l => Fin.ext rfl }
 
 /- English proof (translation)
-Establish `hE : (E k n n j).rank = j` using `rank_E hj`. Establish `heq : LinearMap.range (E k n n j).mulVecLin = LinearMap.range y.mulVecLin`. Apply `Submodule.eq_of_le_of_finrank_le hc` to reduce the goal to its premises. Conclude with `(hy.trans hE.ge : y.rank ≤ (E k n n j).rank)`. Establish `hEE : E k n n j * E k n n j = E k n n j` using `E_mul hj`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i l`. Establish `hcol : y.mulVecLin (Pi.single l 1) ∈ LinearMap.range (E k n n j).mulVecLin`. Rewrite using `[heq]`. Conclude with `LinearMap.mem_range_self _ _`. Take `⟨v, hv⟩` from `hcol`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : (E k n n j).mulVec v = y.mulVec (Pi.single l 1)` using `hv`. Establish `key : (E k n n j * y).mulVec (Pi.single l 1) = y.mulVec (Pi.single l 1)`. Rewrite using `[← Matrix.mulVec_mulVec, ← hv', Matrix.mulVec_mulVec, hEE]`. Use `congrFun key i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem what₂ {k : Type*} [Field k] {n r j : ℕ} (hj : j ≤ n) (y : Matrix (Fin n) (Fin r) k) (hy : y.rank ≤ j)
     (hc : LinearMap.range (E k n n j).mulVecLin ≤ LinearMap.range y.mulVecLin) : E k n n j * y = y := by
@@ -105,19 +105,17 @@ theorem what₂ {k : Type*} [Field k] {n r j : ℕ} (hj : j ≤ n) (y : Matrix (
   simpa [Matrix.mulVec_single_one] using this
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Submodule.exists_isCompl (Submodule.span k (Set.range v))`. Establish `hfin : Module.finrank k C = a - j`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hC`. Establish `h2 : Module.finrank k (Submodule.span k (Set.range v)) = j`. Rewrite using `[finrank_span_eq_card hv, Fintype.card_fin]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : Module.finrank k (Fin a → k) = a` using `Module.finrank_fin_fun k`. Use linear arithmetic over natural numbers and integers. Take `⟨bC, -⟩ : ∃ bC : Module.Basis (Fin (a - j)) k C, True` from `⟨Module.finBasisOfFinrankEq k C hfin, trivial⟩`. Establish `hw : LinearIndependent k (C.subtype ∘ bC)` using `bC.linearIndependent.map' C.subtype (Submodule.ker_subtype C)`. Establish `hdisj : Disjoint (Submodule.span k (Set.range v)) (Submodule.span k (Set.range (C.subtype ∘ bC)))`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Submodule.span k (Set.range (C.subtype ∘ bC)) ≤ C`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `(bC m).2`. Conclude with `hC.disjoint.mono_right hle`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvw` using `hv.sum_type hw hdisj`. Take `⟨e, he⟩ : ∃ e : Fin a ≃ Fin j ⊕ Fin (a - j), e = (finCongr (by omega : a = j + (a - j))).trans finSumFinEquiv.symm` from `⟨_, rfl⟩`. Establish `hf` using `hvw.comp e e.injective`. Take `⟨M, hM⟩ : ∃ M : Matrix (Fin a) (Fin a) k, M = Matrix.of fun i m => (Sum.elim v (C.subtype ∘ bC) (e m)) i` from `⟨_, rfl⟩`. Establish `hcolM : M.col = Sum.elim v (C.subtype ∘ bC) ∘ e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `m i`. Simplify using `[hM, Matrix.col]`. Establish `hMu : IsUnit M`. Rewrite using `[← linearIndependent_cols_iff_isUnit, hcolM]`. Conclude with `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hMu.unit, fun i l => ?_⟩` and prove the remaining obligations. Establish `hel : e (Fin.castLE hj l) = Sum.inl l`. Rewrite using `[he, Equiv.trans_apply, Equiv.symm_apply_eq]`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
-
-Use `show M i (Fin.castLE hj l) = v l i`. Rewrite using `[hM, Matrix.of_apply, hel]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ext_basis {k : Type*} [Field k] {a j : ℕ} (hj : j ≤ a) (v : Fin j → (Fin a → k))
     (hv : LinearIndependent k v) : ∃ H : GL (Fin a) k, ∀ i (l : Fin j), H.val i (Fin.castLE hj l) = v l i := by
@@ -161,11 +159,11 @@ theorem ext_basis {k : Type*} [Field k] {a j : ℕ} (hj : j ≤ a) (v : Fin j �
   rfl
 
 /- English proof (translation)
-Rewrite using `[mul_apply]`. Simplify using `only [E_apply]`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single (⟨i, by omega⟩ : Fin b)]`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _ ht`. Establish `hne : ¬ ((i : ℕ) = t ∧ (t : ℕ) < j)` using `fun e => ht (Fin.ext e.1.symm)`. Rewrite using `[if_neg hne, zero_mul]`. Introduce `h'`. Conclude with `absurd (Finset.mem_univ _) h'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Establish `hne : ¬ ((i : ℕ) = t ∧ (t : ℕ) < j)` using `fun e => h (by rw [e.1]; exact e.2)`. Rewrite using `[if_neg hne, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem E_mul_apply_eq_dite_lt {R : Type*} [Semiring R] {a b c j : ℕ} (hb : j ≤ b)
     (M : Matrix (Fin b) (Fin c) R) (i : Fin a) (m : Fin c) :
@@ -186,33 +184,29 @@ private theorem E_mul_apply_eq_dite_lt {R : Type*} [Semiring R] {a b c j : ℕ} 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hn : j ≤ n` using `hx ▸ (by simpa using x.rank_le_card_height)`. Establish `hr : j ≤ r` using `hx ▸ (by simpa using x.rank_le_card_width)`. Take `⟨bb, -⟩ : ∃ bb : Module.Basis (Fin j) k (LinearMap.range x.mulVecLin), True` from `⟨Module.finBasisOfFinrankEq k _ hx, trivial⟩`. Take `⟨H, hH⟩` from `ext_basis hn ((LinearMap.range x.mulVecLin).subtype ∘ bb) (bb.linearIndependent.map' _ (Submodule.ker_subtype _))`. Establish `hcol : LinearMap.range (H.val * E k n n j).mulVecLin ≤ LinearMap.range x.mulVecLin`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Matrix.range_mulVecLin, Submodule.span_le]`. Introduce and unpack `_ ⟨m, rfl⟩`. Distinguish the cases in `hm : (m : ℕ) < j`. Establish `hc : (H.val * E k n n j).col m = (bb ⟨m, hm⟩ : Fin n → k)`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `show (H.val * E k n n j) i m = _`. Simplify using `only [E_diag, mul_diagonal, hm, if_true, mul_one]`. Conclude with `hH i ⟨m, hm⟩`. Rewrite using `[hc]`. Conclude with `(bb ⟨m, hm⟩).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hc : (H.val * E k n n j).col m = 0`. Use extensionality with `i`. Use `show (H.val * E k n n j) i m = 0`. Simplify using `[E_diag, mul_diagonal, hm]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Take `⟨y, hy⟩ : ∃ y, y = (H⁻¹).val * x` from `⟨_, rfl⟩`. Establish `hcr : LinearMap.range (E k n n j).mulVecLin ≤ LinearMap.range y.mulVecLin`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨u, hu⟩` from `hcol (LinearMap.mem_range_self _ w)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, ?_⟩` and prove the remaining obligations. Establish `hu' : x.mulVec u = (H.val * E k n n j).mulVec w` using `hu`. Use `show y.mulVec u = (E k n n j).mulVec w`. Rewrite using `[hy, ← Matrix.mulVec_mulVec, hu', Matrix.mulVec_mulVec, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hyr : y.rank = j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, rank_mul_eq_right_of_isUnit_det _ _ ((isUnit_iff_isUnit_det _).1 (H⁻¹).isUnit), hx]`. Establish `hrows : E k n n j * y = y` using `what₂ hn y hyr.le hcr`. Establish `hzero : ∀ i : Fin n, ¬ (i : ℕ) < j → y i = 0`. Introduce `i hi`. Use extensionality with `m`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hrows, E_mul_apply_eq_dite_lt hn, dif_neg hi]`. Both sides reduce to the same expression. Take `⟨z, hzd⟩ : ∃ z : Fin j → (Fin r → k), z = fun l => y (Fin.castLE hn l)` from `⟨_, rfl⟩`. Establish `hz : LinearIndependent k z`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Establish `h1 : Submodule.span k (Set.range y) ≤ Submodule.span k (Set.range z)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Distinguish the cases in `hi : (i : ℕ) < j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨⟨i, hi⟩, by rw [hzd]; rfl⟩`. Rewrite using `[hzero i hi]`. Conclude with `zero_mem _`. Establish `h2` using `Submodule.finrank_mono h1`. Establish `h3 : y.rank = Module.finrank k (Submodule.span k (Set.range y))` using `rank_eq_finrank_span_row y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h2` using `[← h3, hyr]`. Conclude with `h2`. Simplify using `using finrank_range_le_card (R := k) (b := z)`. Take `⟨G', hG'⟩` from `ext_basis hr z hz`. Establish `hT : IsUnit (G'.val)ᵀ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[isUnit_iff_isUnit_det, det_transpose, ← isUnit_iff_isUnit_det]`. Conclude with `G'.isUnit`. Use `⟨H, hT.unit, ?_⟩` and prove the remaining obligations. Establish `hEG : E k n r j * hT.unit.val = y`. Use extensionality with `i m`.
-
-Rewrite using `[E_mul_apply_eq_dite_lt hr]`. Use `split_ifs with hi`. Use `hG' m ⟨i, hi⟩` as an intermediate fact. Rewrite `this` using `[hzd]`. Conclude with `this`.
-
-Rewrite using `[hzero i hi]`. Both sides reduce to the same expression. Rewrite using `[Matrix.mul_assoc, hEG, hy, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf1 {k : Type*} [Field k] {n r j : ℕ} (x : Matrix (Fin n) (Fin r) k) (hx : x.rank = j) :
     ∃ (H : GL (Fin n) k) (G : GL (Fin r) k), x = H.val * E k n r j * G.val := by
@@ -295,7 +289,7 @@ def Bd {a b : ℕ} (γ : ValueGroupWithZero k) (M : Matrix (Fin a) (Fin b) k) : 
   ∀ i l, valuation k (M i l) ≤ γ
 
 /- English proof (translation)
-Introduce `i m` and use `by rw [mul_apply] exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_mul' (hP i l) (hQ l m)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_mul {a b d : ℕ} {γ δ : ValueGroupWithZero k} {P : Matrix (Fin a) (Fin b) k}
     {Q : Matrix (Fin b) (Fin d) k} (hP : Bd γ P) (hQ : Bd δ Q) : Bd (γ * δ) (P * Q) := fun i m => by
@@ -303,7 +297,7 @@ theorem bd_mul {a b d : ℕ} {γ δ : ValueGroupWithZero k} {P : Matrix (Fin a) 
   exact Valuation.map_sum_le _ fun l _ => by rw [map_mul]; exact mul_le_mul' (hP i l) (hQ l m)
 
 /- English proof (translation)
-Introduce `i l`. Rewrite using `[Matrix.sub_apply]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (hP i l) (hQ i l))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bd_sub {a b : ℕ} {γ : ValueGroupWithZero k} {P Q : Matrix (Fin a) (Fin b) k}
     (hP : Bd γ P) (hQ : Bd γ Q) : Bd γ (P - Q) := by
@@ -312,13 +306,13 @@ theorem bd_sub {a b : ℕ} {γ : ValueGroupWithZero k} {P Q : Matrix (Fin a) (Fi
   exact (Valuation.map_sub _ _ _).trans (max_le (hP i l) (hQ i l))
 
 /- English proof (translation)
-Introduce `i l` and use `by rw [E_apply]; split_ifs <;> simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_E {a b j : ℕ} : Bd (1 : ValueGroupWithZero k) (E k a b j) := fun i l => by
   rw [E_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `i l`. Rewrite using `[one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bd_one {a : ℕ} : Bd (1 : ValueGroupWithZero k) (1 : Matrix (Fin a) (Fin a) k) := by
   intro i l
@@ -326,7 +320,7 @@ theorem bd_one {a : ℕ} : Bd (1 : ValueGroupWithZero k) (1 : Matrix (Fin a) (Fi
   split_ifs <;> simp
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hH`. Introduce `i l`. Use `show valuation k (algebraMap 𝒪[k] k (u.val i l)) ≤ 1`. Conclude with `(u.val i l).2`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bd_KO {a : ℕ} {H : GL (Fin a) k} (hH : H ∈ KO k (Fin a)) : Bd (1 : ValueGroupWithZero k) H.val := by
   obtain ⟨u, rfl⟩ := hH
@@ -335,21 +329,19 @@ theorem bd_KO {a : ℕ} {H : GL (Fin a) k} (hH : H ∈ KO k (Fin a)) : Bd (1 : V
   exact (u.val i l).2
 
 /- English proof (translation)
-Establish `hint : ∀ i l, valuation k (A i l) ≤ 1`. Introduce `i l`. Establish `h1 : A i l = (A - 1) i l + (1 : Matrix (Fin a) (Fin a) k) i l` using `by simp`. Rewrite using `[h1]`. Use `(Valuation.map_add _ _ _).trans (max_le ((hA i l).trans hc.le) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hI : (valuation k).Integers 𝒪[k]` using `Valuation.integer.integers (valuation k)`. Take `⟨B, hB⟩ : ∃ B : Matrix (Fin a) (Fin a) 𝒪[k], B = Matrix.of fun i l => ⟨A i l, hint i l⟩` from `⟨_, rfl⟩`. Establish `hsmall : ∀ x : 𝒪[k], valuation k (x : k) < 1 → x ∈ IsLocalRing.maximalIdeal 𝒪[k]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hI.isUnit_iff_valuation_eq_one]`. Conclude with `hx.ne`. Establish `hres : (IsLocalRing.residue 𝒪[k]).mapMatrix B = 1`. Use extensionality with `i l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hm : B i l - (1 : Matrix (Fin a) (Fin a) 𝒪[k]) i l ∈ IsLocalRing.maximalIdeal 𝒪[k]`. Apply `hsmall` to reduce the goal to its premises. Establish `e : ((B i l - (1 : Matrix (Fin a) (Fin a) 𝒪[k]) i l : 𝒪[k]) : k) = (A - 1) i l`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply, Matrix.one_apply, hB]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (hA i l) hc`. Establish `h0` using `(IsLocalRing.residue_eq_zero_iff _).2 hm`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.map_apply, h0, one_apply, one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : IsUnit B.det`. Assume the negation of the conclusion as `hnu`. Establish `hm : B.det ∈ IsLocalRing.maximalIdeal 𝒪[k]` using `(IsLocalRing.mem_maximalIdeal _).2 hnu`. Establish `h0` using `(IsLocalRing.residue_eq_zero_iff _).2 hm`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[RingHom.map_det, hres, det_one]`. Conclude with `one_ne_zero h0`. Establish `hBu : IsUnit B` using `(isUnit_iff_isUnit_det B).2 hdet`. Use `⟨GeneralLinearGroup.map (algebraMap 𝒪[k] k) hBu.unit, ⟨hBu.unit, rfl⟩, ?_⟩` and prove the remaining obligations. Substitute `hB` using the available equality.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_KO {a : ℕ} {γ : ValueGroupWithZero k} (hc : γ < 1) (A : Matrix (Fin a) (Fin a) k)
     (hA : Bd γ (A - 1)) : ∃ H ∈ KO k (Fin a), H.val = A := by
@@ -393,25 +385,25 @@ theorem mem_KO {a : ℕ} {γ : ValueGroupWithZero k} (hc : γ < 1) (A : Matrix (
   rfl
 
 /- English proof (translation)
-Establish `hn : j ≤ n` using `hx ▸ (by simpa using x.rank_le_card_height)`. Establish `hr : j ≤ r` using `hx ▸ (by simpa using x.rank_le_card_width)`. Establish `Enr_rn : E k n r j * E k r n j = E k n n j` using `E_mul hr`. Establish `Ern_nr : E k r n j * E k n r j = E k r r j` using `E_mul hn`. Establish `Enn_nr : E k n n j * E k n r j = E k n r j` using `E_mul hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Enr_rr : E k n r j * E k r r j = E k n r j` using `E_mul hr`. Establish `Err_rn : E k r r j * E k r n j = E k r n j` using `E_mul hr`. Establish `hE1 : ∀ {a b : ℕ}, Bd (1 : ValueGroupWithZero k) (E k a b j)` using `fun {a b} => bd_E`. Establish `hx' : Bd (valuation k (c : k)) (x - E k n r j)` using `fun i l => by`. Rewrite using `[Matrix.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb i l`. Establish `hh1 : x * E k r n j + (1 - E k n n j) - 1 = (x - E k n r j) * E k r n j`. Rewrite using `[Matrix.sub_mul, Enr_rn]`. Normalize the expressions using the abelian group laws. Take `⟨H, hHK, hH⟩` from `mem_KO hc (x * E k r n j + (1 - E k n n j)) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh1]`. Simplify using `using bd_mul hx' hE1)`. Establish `hxE : x * E k r r j = H.val * E k n r j`. Rewrite using `[hH, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, Ern_nr, Enn_nr, sub_self, add_zero]`. Take `⟨y, hy⟩ : ∃ y, y = (H⁻¹).val * x` from `⟨_, rfl⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyE : y * E k r r j = E k n r j`. Rewrite using `[hy, Matrix.mul_assoc, hxE, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`. Establish `hyEn : y * E k r n j = E k n n j`. Rewrite using `[← Err_rn, ← Matrix.mul_assoc, hyE, Enr_rn]`. Establish `hcr : LinearMap.range (E k n n j).mulVecLin ≤ LinearMap.range y.mulVecLin`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hyEn, Matrix.mulVecLin_mul]`. Conclude with `LinearMap.range_comp_le_range _ _`. Establish `hyr : y.rank ≤ j`. Rewrite using `[hy]`. Conclude with `(rank_mul_le_right _ _).trans hx.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrows : E k n n j * y = y` using `what₂ hn y hyr hcr`. Establish `hsplit : (x - E k n r j) * (1 - E k r r j) = x - x * E k r r j`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, Matrix.mul_sub, Matrix.mul_one, Matrix.mul_one, Enr_rr]`. Normalize the expressions using the abelian group laws. Establish `hyd : y - E k n r j = (H⁻¹).val * ((x - E k n r j) * (1 - E k r r j))`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hsplit, Matrix.mul_sub, ← Matrix.mul_assoc, ← hy, hyE]`. Establish `hinv : H⁻¹ ∈ KO k (Fin n)` using `(KO k (Fin n)).inv_mem hHK`. Establish `hyb : Bd (valuation k (c : k)) (y - E k n r j)`. Rewrite using `[hyd]`. Simplify using `using bd_mul (bd_KO hinv) (bd_mul hx' (bd_sub bd_one hE1))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hg1 : E k r n j * y + (1 - E k r r j) - 1 = E k r n j * (y - E k n r j)`. Rewrite using `[Matrix.mul_sub, Ern_nr]`. Normalize the expressions using the abelian group laws. Take `⟨G, hGK, hG⟩` from `mem_KO hc (E k r n j * y + (1 - E k r r j)) (by`. Rewrite using `[hg1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using bd_mul hE1 hyb)`. Use `⟨H, hHK, G, hGK, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG, Matrix.mul_add, Matrix.mul_sub, Matrix.mul_one, ← Matrix.mul_assoc, Enr_rn, hrows, Enr_rr, sub_self, add_zero]`. Use `_ = H.val * E k n r j * G.val := (Matrix.mul_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nf2 {n r j : ℕ} (x : Matrix (Fin n) (Fin r) k) (hx : x.rank = j) (c : kˣ)
     (hc : valuation k (c : k) < 1) (hb : ∀ i l, valuation k (x i l - E k n r j i l) ≤ valuation k (c : k)) :
@@ -475,7 +467,7 @@ end PositivityTheory.Rg.Ming.NfX
 namespace PositivityTheory.Rg.Ming
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n r j x hx`. Conclude with `⟨NfX.nf1 x hx, fun c hc hb => NfX.nf2 x hx c hc hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nf : NfSt := by
   intro k _ _ _ _ n r j x hx

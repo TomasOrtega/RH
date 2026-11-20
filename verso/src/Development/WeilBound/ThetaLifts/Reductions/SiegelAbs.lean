@@ -38,7 +38,7 @@ theorem inv_rIdU [IsTotallyReal F] (c : ℝ) :
     (↑(rIdU F E c)⁻¹ : AF F ⊗[F] E) = algebraMap (AF F) (AF F ⊗[F] E) (rId F (-c)) := rfl
 
 /- English proof (translation)
-Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank F`. Establish `h2` using `IsTotallyReal.nrComplexPlaces_eq_zero (K := F)`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_infinitePlace [IsTotallyReal F] : Fintype.card (InfinitePlace F) = Module.finrank ℚ F := by
   have h1 := InfinitePlace.card_add_two_mul_card_eq_rank F
@@ -47,7 +47,7 @@ theorem card_infinitePlace [IsTotallyReal F] : Fintype.card (InfinitePlace F) = 
   omega
 
 /- English proof (translation)
-Establish `e` using `rId_inf (F := F) w c`. Establish `e2 : evInf F w (rId F c) = (rId F c).1 w` using `rfl`. Rewrite using `[e2, ← (InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _) ((rId F c).1 w), e]`. Simplify using `[Real.abs_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_evInf_rId [IsTotallyReal F] (w : InfinitePlace F) (c : ℝ) : ‖evInf F w (rId F c)‖ = Real.exp c := by
   have e := rId_inf (F := F) w c
@@ -56,13 +56,13 @@ theorem norm_evInf_rId [IsTotallyReal F] (w : InfinitePlace F) (c : ℝ) : ‖ev
   simp [Real.abs_exp]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F) := by`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `(evInf F w).toRingHom.domain_nontrivial`. Establish `hn : Algebra.norm (AF F) (rIdU F E c : AF F ⊗[F] E) = rId F c ^ 2`. Rewrite using `[val_rIdU, Algebra.norm_algebraMap, Module.finrank_baseChange, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ v, GlobalTheory.Doubling.absEv F E v (GlobalTheory.Doubling.unitFin F E v (rIdU F E c)) = 1` using `fun v => by`. Rewrite using `[GlobalTheory.Doubling.absEv_unitFin, hn, map_pow]`. Establish `e : evFin F v (rId F c) = 1`. Rewrite using `[evFin, AlgHom.comp_apply, show sndA F (rId F c) = 1 from rId_snd c, map_one]`. Rewrite using `[e, one_pow, nnnorm_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : ∀ w : InfinitePlace F, w.mult = 1` using `fun w => by`. Rewrite using `[InfinitePlace.mult, if_pos (IsTotallyReal.isReal w)]`. Establish `hw : ∀ w : InfinitePlace F, (GlobalTheory.Doubling.absEw F E w (GlobalTheory.Doubling.unitInf F E w (rIdU F E c)) : ℝ) = Real.exp (2 * c)` using `fun w => by`. Rewrite using `[GlobalTheory.Doubling.absEw_unitInf, hn, map_pow, hm, pow_one, coe_nnnorm, norm_pow, norm_evInf_rId, ← Real.exp_nat_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[GlobalTheory.Doubling.absE_apply, finprod_eq_one_of_forall_eq_one hfin, mul_one, NNReal.coe_prod, Finset.prod_congr rfl fun w _ => hw w, Finset.prod_const, Finset.card_univ, card_infinitePlace, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem absE_rIdU [IsTotallyReal F] (h2 : Module.finrank F E = 2) (c : ℝ) :
     (GlobalTheory.Doubling.absE F E (rIdU F E c) : ℝ) = Real.exp (2 * Module.finrank ℚ F * c) := by
@@ -90,7 +90,7 @@ theorem absE_rIdU [IsTotallyReal F] (h2 : Module.finrank F E = 2) (c : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `e : δ p * δ p⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Conclude with `pos_iff_ne_zero.2 fun h0 => by rw [h0, zero_mul] at e; exact zero_ne_one e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pos_hom' {H : Type} [Group H] (δ : H →* ℝ≥0) (p : H) : 0 < δ p := by
   have e : δ p * δ p⁻¹ = 1 := by rw [← map_mul, mul_inv_cancel, map_one]
@@ -98,7 +98,7 @@ theorem pos_hom' {H : Type} [Group H] (δ : H →* ℝ≥0) (p : H) : 0 < δ p :
 
 variable (σ) in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [sigR, sigma_sigma h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigRA_sigRA (h : IsCMExt F E σ) (x : AF F ⊗[F] E) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ x) = x := by
   induction x using TensorProduct.induction_on with
@@ -107,13 +107,13 @@ theorem sigRA_sigRA (h : IsCMExt F E σ) (x : AF F ⊗[F] E) : Formalism.MainNot
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigRA_inclR (e : E) : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => by simp [cT, sigRA_inclR]`.
+A detailed English derivation is pending.
 -/
 theorem cT_map_inclR {a b : Type} (P : Matrix a b E) :
     (Formalism.UG.cT (σ : E →+* E) P).map (inclR (F := F) (AF F)) = Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (P.map (inclR (F := F) (AF F))) :=
@@ -132,20 +132,20 @@ section PFr
 variable {R : Type} [CommRing R] {s : R →+* R} {Jm : Matrix (Fin n) (Fin n) R} {Xm Ym : Matrix (Fin n) (Fin r) R}
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => hF.ss _`.
+A detailed English derivation is pending.
 -/
 theorem PFr.cc (hF : PFr s Jm Xm Ym) {a b : Type} (P : Matrix a b R) : cT s (cT s P) = P :=
   Matrix.ext fun _ _ => hF.ss _
 
 /- English proof (translation)
-Use `congrArg (cT s) hF.xy` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, Formalism.UG.cT_mul, hF.cc, hF.herm, Formalism.UG.cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PFr.yx (hF : PFr s Jm Xm Ym) : cT s Ym * Jm * Xm = 1 := by
   have := congrArg (cT s) hF.xy
   rwa [Formalism.UG.cT_mul, Formalism.UG.cT_mul, hF.cc, hF.herm, Formalism.UG.cT_one, ← Matrix.mul_assoc] at this
 
 /- English proof (translation)
-Use `conv_rhs => rw [← hg]`. Simplify using `only [Formalism.UG.cT_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pgram_unitary {g : Matrix (Fin n) (Fin n) R} (hg : cT s g * Jm * g = Jm) {a b : Type}
     (P : Matrix (Fin n) a R) (Q : Matrix (Fin n) b R) : cT s (g * P) * Jm * (g * Q) = cT s P * Jm * Q := by
@@ -153,7 +153,7 @@ theorem pgram_unitary {g : Matrix (Fin n) (Fin n) R} (hg : cT s g * Jm * g = Jm)
   simp only [Formalism.UG.cT_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h2 : cT s B * (cT s Xm * Jm * (g * Ym)) = 1`. Rewrite using `[← hF.xy, ← pgram_unitary hg Xm Ym, hB, Formalism.UG.cT_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `congrArg (cT s) h2` as an intermediate fact. Rewrite `this` using `[Formalism.UG.cT_mul, hF.cc, Formalism.UG.cT_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem PFr.inv_coef (hF : PFr s Jm Xm Ym) {g : Matrix (Fin n) (Fin n) R} (hg : cT s g * Jm * g = Jm)
     {B : Matrix (Fin r) (Fin r) R} (hB : g * Xm = Xm * B) : cT s (cT s Xm * Jm * (g * Ym)) * B = 1 := by
@@ -170,9 +170,9 @@ def coefM (s : R →+* R) (Jm : Matrix (Fin n) (Fin n) R) (Xm Ym : Matrix (Fin n
 end PFr
 
 /- English proof (translation)
-Use `⟨sigRA_sigRA σ h, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : Formalism.UG.cT (σ : E →+* E) J = J` using `Matrix.ext fun i j => hJ.1 i j`. Unfold `JR`. Rewrite using `[← cT_map_inclR, e]`. Unfold `JR`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← cT_map_inclR, ← Matrix.map_mul, ← Matrix.map_mul, hW.xx, Matrix.map_zero _ (map_zero _)]`. Unfold `JR`. Rewrite using `[← cT_map_inclR, ← Matrix.map_mul, ← Matrix.map_mul, hW.yy, Matrix.map_zero _ (map_zero _)]`. Unfold `JR`. Rewrite using `[← cT_map_inclR, ← Matrix.map_mul, ← Matrix.map_mul, hW.xy, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pfrA (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     PFr (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J) (GlobalTheory.SiegelSet.adMat F X) (GlobalTheory.SiegelSet.adMat F Y) := by
@@ -188,7 +188,7 @@ theorem pfrA (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X 
     rw [← cT_map_inclR, ← Matrix.map_mul, ← Matrix.map_mul, hW.xy, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `(show ↥(HR (AF F) σ J) from p).2`.
+A detailed English derivation is pending.
 -/
 theorem unitaryA_matHom (p : GAd σ J) :
     Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF F) σ) (matHom _ σ J p).1 * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J * (matHom _ σ J p).1 = Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (AF F) J :=
@@ -206,16 +206,16 @@ variable (hF : PFr (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.si
 include hF
 
 /- English proof (translation)
-Rewrite using `[Bm, coefM, e, ← Matrix.mul_assoc, hF.yx, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Bm_eq {p : GAd σ J} {B : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)}
     (e : (matHom _ σ J p).1 * GlobalTheory.SiegelSet.adMat F X = GlobalTheory.SiegelSet.adMat F X * B) : Bm σ J X Y p = B := by
   rw [Bm, coefM, e, ← Matrix.mul_assoc, hF.yx, Matrix.one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨B, hB, e⟩`. Rewrite using `[Bm_eq hF e]`. Conclude with `⟨hB, e⟩`. Introduce and unpack `⟨hB, e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, hB, e⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_minPar_iff {p : GAd σ J} : p ∈ minPar σ J X ↔
     (Bm σ J X Y p).BlockTriangular id ∧ (matHom _ σ J p).1 * GlobalTheory.SiegelSet.adMat F X = GlobalTheory.SiegelSet.adMat F X * Bm σ J X Y p := by
@@ -227,7 +227,7 @@ theorem mem_minPar_iff {p : GAd σ J} : p ∈ minPar σ J X ↔
     exact ⟨_, hB, e⟩
 
 /- English proof (translation)
-Establish `ep` using `((mem_minPar_iff hF).1 hp).2`. Establish `eq` using `((mem_minPar_iff hF).1 hq).2`. Apply `Bm_eq hF` to reduce the goal to its premises. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, eq, ← Matrix.mul_assoc, ep, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bm_mul {p q : GAd σ J} (hp : p ∈ minPar σ J X) (hq : q ∈ minPar σ J X) :
     Bm σ J X Y (p * q) = Bm σ J X Y p * Bm σ J X Y q := by
@@ -237,7 +237,7 @@ theorem Bm_mul {p q : GAd σ J} (hp : p ∈ minPar σ J X) (hq : q ∈ minPar σ
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, eq, ← Matrix.mul_assoc, ep, Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Bm_eq hF (by rw [map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem Bm_one : Bm σ J X Y (1 : GAd σ J) = 1 :=
   Bm_eq hF (by rw [map_one, Units.val_one, Matrix.one_mul, Matrix.mul_one])
@@ -245,9 +245,9 @@ theorem Bm_one : Bm σ J X Y (1 : GAd σ J) = 1 :=
 end Bm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with hl | hl` into its components or cases. Rewrite using `[hB hl, zero_mul]`. Rewrite using `[hC hl, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_mul_bt {R : Type} [CommRing R] {B C : Matrix (Fin r) (Fin r) R} (hB : B.BlockTriangular id)
     (hC : C.BlockTriangular id) (i : Fin r) : (B * C) i i = B i i * C i i := by
@@ -260,7 +260,7 @@ theorem diag_mul_bt {R : Type} [CommRing R] {B C : Matrix (Fin r) (Fin r) R} (hB
     exact absurd (Finset.mem_univ i) hi
 
 /- English proof (translation)
-Take `⟨B, hB, e⟩` from `hp`. Take `⟨C, hC, e'⟩` from `hq`. Use `⟨B * C, hB.mul hC, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Units.val_mul, Matrix.mul_assoc, e', ← Matrix.mul_assoc, e, Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_minimal_parabolic {p q : GAd σ J} (hp : p ∈ minPar σ J X) (hq : q ∈ minPar σ J X) :
     p * q ∈ minPar σ J X := by
@@ -270,11 +270,11 @@ theorem mul_mem_minimal_parabolic {p q : GAd σ J} (hp : p ∈ minPar σ J X) (h
   rw [map_mul, Units.val_mul, Matrix.mul_assoc, e', ← Matrix.mul_assoc, e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Take `⟨B, hB, e⟩` from `hp`. Take `⟨Q, h3⟩ : ∃ Q, Q * B = 1` from `⟨_, (pfrA h hJ hW).inv_coef (unitaryA_matHom p) e⟩`. Establish `h4 : B * Q = 1` using `mul_eq_one_comm.1 h3`. Use `haveI : Invertible B := ⟨Q, h3, h4⟩`. Establish `hinv : B⁻¹ = Q` using `Matrix.inv_eq_left_inv h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Q, by rw [← hinv]; exact Matrix.blockTriangular_inv_of_blockTriangular hB, ?_⟩` and prove the remaining obligations. Establish `e2 : (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h4, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (matHom _ σ J p⁻¹).1 * (matHom _ σ J p).1 * GlobalTheory.SiegelSet.adMat F X * Q := by`. Rewrite using `[← Matrix.mul_assoc (GlobalTheory.SiegelSet.adMat F X), ← e]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = GlobalTheory.SiegelSet.adMat F X * Q := by rw [e2, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mem_minimal_parabolic (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) : p⁻¹ ∈ minPar σ J X := by
@@ -294,13 +294,13 @@ theorem inv_mem_minimal_parabolic (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW 
     _ = GlobalTheory.SiegelSet.adMat F X * Q := by rw [e2, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp (isEmbedding_matHom (AF F) σ J).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matHom_val : Continuous fun p : GAd σ J => (matHom _ σ J p).1 :=
   Units.continuous_val.comp (isEmbedding_matHom (AF F) σ J).continuous
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Unfold `Bm coefM`. Conclude with `continuous_const.matrix_mul ((continuous_matHom_val (σ := σ) (J := J)).matrix_mul continuous_const)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_Bm : Continuous (Bm σ J X Y) := by
   have := GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)
@@ -308,11 +308,11 @@ theorem continuous_Bm : Continuous (Bm σ J X Y) := by
   exact continuous_const.matrix_mul ((continuous_matHom_val (σ := σ) (J := J)).matrix_mul continuous_const)
 
 /- English proof (translation)
-Establish `hF` using `pfrA h hJ hW`. Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := F) (E := E) (R := AF F)` as an intermediate fact. Use `haveI : T2Space (AF F) := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField F`. Use `haveI : T2Space (AF F ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`. Establish `hBc : Continuous (Bm σ J X Y)` using `continuous_Bm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : minPar σ J X = {p | (Bm σ J X Y p).BlockTriangular id} ∩ {p | (matHom _ σ J p).1 * GlobalTheory.SiegelSet.adMat F X = GlobalTheory.SiegelSet.adMat F X * Bm σ J X Y p}`. Use extensionality with `p`. Conclude with `mem_minPar_iff hF`. Establish `e' : {p : GAd σ J | (Bm σ J X Y p).BlockTriangular id} = ⋂ i : Fin r, ⋂ j : Fin r, ⋂ (_ : j < i), {p | Bm σ J X Y p i j = 0}`. Use extensionality with `p`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter, Matrix.BlockTriangular, id]`. Rewrite using `[e, e']`. Use `IsClosed.inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (hBc.matrix_elem i j) continuous_const) ?_` and prove the remaining obligations. Conclude with `isClosed_eq ((continuous_matHom_val (σ := σ) (J := J)).matrix_mul continuous_const) (continuous_const.matrix_mul hBc)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_minimal_parabolic (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) :
     IsClosed (minPar σ J X) := by
@@ -357,7 +357,7 @@ theorem val_uU (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J 
     (uU σ J X Y h hJ hW hp hp' i : AF F ⊗[F] E) = Bm σ J X Y p i i := rfl
 
 /- English proof (translation)
-The claim follows from `let ⟨B, hB, e, _⟩ := hp ⟨B, hB, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem minParOne_sub {p : GAd σ J} (hp : p ∈ minParOne σ J X) : p ∈ minPar σ J X :=
   let ⟨B, hB, e, _⟩ := hp
@@ -377,25 +377,23 @@ theorem val_uP (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J 
     (uP σ J X Y h hJ hW P hP p i : AF F ⊗[F] E) = Bm σ J X Y p.1 i i := rfl
 
 /- English proof (translation)
-Use `haveI := h.1`. Establish `hF` using `pfrA h hJ hW`. Establish `m1 : ∀ p : P, p.1 ∈ minPar σ J X` using `fun p => (hP _).1 p.2`. Establish `hpos : ∀ x : (AF F ⊗[F] E)ˣ, (0 : ℝ) < GlobalTheory.Doubling.absE F E x` using `fun x => NNReal.coe_pos.2 (pos_hom' _ x)`. Establish `h0 : 0 < Module.finrank ℚ F` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < 2 * (Module.finrank ℚ F : ℝ)` using `mul_pos two_pos (Nat.cast_pos.2 h0)`. Establish `hu_mul : ∀ p q : P, ∀ i, uP σ J X Y h hJ hW P hP (p * q) i = uP σ J X Y h hJ hW P hP p i * uP σ J X Y h hJ hW P hP q i` using `fun p q i => Units.ext (by`. Rewrite using `[Units.val_mul, val_uP, val_uP, val_uP, Subgroup.coe_mul, Bm_mul hF (m1 p) (m1 q), diag_mul_bt ((mem_minPar_iff hF).1 (m1 p)).1 ((mem_minPar_iff hF).1 (m1 q)).1])`. Establish `hcont : ∀ i, Continuous fun p : P => uP σ J X Y h hJ hW P hP p i` using `fun i => by`. Establish `hBc : Continuous (Bm σ J X Y)` using `continuous_Bm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(hBc.comp continuous_subtype_val).matrix_elem i i`. Conclude with `(hBc.comp (continuous_subtype_val.comp continuous_inv)).matrix_elem i i`. Establish `key : ∀ (p : P) (s : Fin r → ℝ), (∀ i, 2 * (Module.finrank ℚ F : ℝ) * s i = Real.log (GlobalTheory.Doubling.absE F E (uP σ J X Y h hJ hW P hP p i))) → p.1 * (a s)⁻¹ ∈ minParOne σ J X`. Introduce `p s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ha0 : a 0 = 1`. Establish `e` using `hadd 0 0`. Rewrite `e` using `[add_zero]`. Conclude with `mul_left_cancel (e.symm.trans (mul_one _).symm)`. Establish `hainv : (a s)⁻¹ = a (-s)` using `inv_eq_of_mul_eq_one_right (by rw [← hadd, add_neg_cancel, ha0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ep` using `((mem_minPar_iff hF).1 (m1 p)).2`. Establish `hBt` using `((mem_minPar_iff hF).1 (m1 p)).1`. Use `⟨Bm σ J X Y p.1 * Matrix.diagonal (fun i => algebraMap (AF F) (AF F ⊗[F] E) (rId F ((-s) i))), hBt.mul (Matrix.blockTriangular_diagonal _), ?_, fun i => ⟨uP σ J X Y h hJ hW P hP p i * rIdU F E ((-s) i), ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hainv, map_mul, Units.val_mul, Matrix.mul_assoc, honX, ← Matrix.mul_assoc, ep, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_diagonal, Units.val_mul, val_uP, val_rIdU]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[map_mul, NNReal.coe_mul, absE_rIdU h.2.2.1, NNReal.coe_one, Pi.neg_apply, mul_neg, hs i, Real.exp_neg, Real.exp_log (hpos _), mul_inv_cancel₀ (hpos _).ne']`. Use `⟨fun p i => Real.log (GlobalTheory.Doubling.absE F E (uP σ J X Y h hJ hW P hP p i)) / (2 * (Module.finrank ℚ F : ℝ)), ?_, ?_, ?_, ?_, fun p => key p _ fun i => by dsimp only; field_simp⟩` and prove the remaining obligations. Conclude with `continuous_pi fun i => (Continuous.log (NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (hcont i))) fun p => (hpos _).ne').div_const _`. Introduce `p q`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, hu_mul, map_mul, NNReal.coe_mul]`. Rewrite using `[Real.log_mul (hpos _).ne' (hpos _).ne', add_div]`. Introduce `t`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : uP σ J X Y h hJ hW P hP (ta t) i = rIdU F E (t i)` using `Units.ext (by`. Rewrite using `[val_uP, val_rIdU, hta, Bm_eq hF (honX t), Matrix.diagonal_apply_eq])`. Simplify using `only [e]`. Rewrite using `[absE_rIdU h.2.2.1, Real.log_exp, mul_div_cancel_left₀ _ hd.ne']`. Introduce `p hp`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Take `⟨B, -, e, hu⟩` from `id hp`. Take `⟨v, hv1, hv2⟩` from `hu i`. Establish `e2 : uP σ J X Y h hJ hW P hP ⟨p, (hP p).2 (minParOne_sub hp)⟩ i = v` using `Units.ext (by`. Rewrite using `[val_uP, Bm_eq hF e, hv1])`.
-
-Simplify using `only [e2, hv2, NNReal.coe_one, Real.log_one, zero_div, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_torus_section (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) (P : Subgroup (GAd σ J))
     (hP : ∀ p, p ∈ P ↔ p ∈ minPar σ J X) {a : (Fin r → ℝ) → GAd σ J} (hadd : ∀ s t, a (s + t) = a s * a t)

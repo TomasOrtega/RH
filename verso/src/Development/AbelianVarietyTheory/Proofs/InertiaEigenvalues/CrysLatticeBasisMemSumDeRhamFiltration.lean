@@ -31,7 +31,7 @@ def basisQ (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = 
         Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Unfold `basisQ`. Conclude with `Module.Basis.mk_apply _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem basisQ_apply (T : Submodule ℤ_[l] V) (hT : Submodule.span ℚ_[l] (T : Set V) = ⊤) {d : ℕ}
     (b : Module.Basis (Fin d) ℤ_[l] T) (i : Fin d) : basisQ T hT b i = (b i : V) := by
@@ -51,14 +51,14 @@ def coord {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d) : V ⊗[ℚ
   (TensorProduct.lid ℚ_[l] B).toLinearMap ∘ₗ TensorProduct.map (e.coord r) LinearMap.id
 
 /- English proof (translation)
-Simplify using `[coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_tmul {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d) (v : V) (x : B) :
     coord e r (v ⊗ₜ x) = e.repr v r • x := by
   simp [coord]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp [coord_tmul, mul_smul_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, mul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coord_mulLeft {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d) (c : B)
     (x : V ⊗[ℚ_[l]] B) :
@@ -70,7 +70,7 @@ theorem coord_mulLeft {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d)
   | add x y hx hy => simp only [map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hx`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simpa [coord_tmul] using F.smul_mem (e.repr v r) y.2`. Consider the case `add x y hx hy => simpa only [map_add] using F.add_mem hx hy`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coord_mem {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d) (F : Submodule ℚ_[l] B)
     (x : V ⊗[ℚ_[l]] B)
@@ -83,9 +83,9 @@ theorem coord_mem {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (r : Fin d) (F 
   | add x y hx hy => simpa only [map_add] using F.add_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y`. Simplify using `only [AlgebraTensorModule.map_tmul, coord_tmul, map_smul, smul_smul]`. Rewrite using `[← Finset.sum_smul, ← LinearMap.toMatrix_mulVec_repr e e f v]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add, Finset.sum_add_distrib]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem coord_map {d : ℕ} (e : Module.Basis (Fin d) ℚ_[l] V) (s : Fin d) (f : V →ₗ[ℚ_[l]] V)
     (τ : B →ₗ[ℚ_[l]] B) (x : V ⊗[ℚ_[l]] B) :
@@ -106,11 +106,11 @@ noncomputable section
 namespace GlobalTheory.CrysCoordDR
 
 /- English proof (translation)
-Rewrite using `[LinearMap.toMatrix_apply, LinearMap.toMatrix_apply]`. Establish `h : ρ g (basisQ L.T L.span b r) = ∑ s', ((b.repr (actT L g (b r)) s' : ℤ_[l]) : ℚ_[l]) • basisQ L.T L.span b s'`. Use `congrArg Subtype.val (b.sum_repr (actT L g (b r)))` as an intermediate fact. Rewrite `this` using `[AddSubmonoidClass.coe_finsetSum]`. Simplify using `only [SetLike.val_smul] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [basisQ_apply]`. Rewrite using `[show ρ g (b r : V) = ((actT L g (b r) : ↥L.T) : V) from rfl, ← this]`. Use `Finset.sum_congr rfl fun s' _ => ?_` and prove the remaining obligations. Rewrite using `[← algebraMap_smul ℚ_[l] (b.repr (actT L g (b r)) s') ((b s' : ↥L.T) : V)]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h, Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toMatrix_basisQ {l : ℕ} [Fact l.Prime] {V : Type} [AddCommGroup V] [Module ℚ_[l] V]
     [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] {G : Type} [Group G]
@@ -135,21 +135,21 @@ end GlobalTheory.CrysCoordDR
 
 open GlobalTheory.CrysCoordDR in
 /- English proof (translation)
-Introduce `l _ K P AI T V _ _ _ _ _ ρ L hcrys d b j`. Establish `hy : ((b j : ↥L.T) : V) ⊗ₜ[ℚ_[l]] (1 : P.R.BdR) ∈ FilV (P.PD K) (LL` using `ℚ_[l]) (V := V) 0 := ⟨((b j : ↥L.T) : V) ⊗ₜ ⟨1, (P.PD K).one_mem⟩, by simp [AlgebraTensorModule.map_tmul]⟩`. Take `⟨m, k, c, dd, hdd, hsum⟩` from `GlobalTheory.T.crystalline_filtered_deRham_comparison l P AI T K V ρ hcrys 0 _ hy`. Use `⟨m, k, fun i => T.eD (c i), fun i r => T.eD (coord (basisQ L.T L.span b) r (dd i)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `s`. Establish `hinv : actVdR (P.PD K) ρ g (dd i) = dd i`. Use `(hdd i).1` as an intermediate fact. Simplify using `only [DdR, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero] at this`. Conclude with `this g`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = T.eD (coord (basisQ L.T L.span b) s (dd i))`. Use `conv_rhs => rw [← hinv]`. Rewrite using `[actVdR, coord_map, map_sum]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[toMatrix_basisQ, Algebra.smul_def, map_mul, T.zD]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = T.eD ((P.PD K).actdR g _)`. Rewrite using `[P.PD_actdR K g, T.actD]`. Introduce `i r`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← T.fil K]`. Conclude with `coord_mem _ r (((P.PD K).Fil (k i)).restrictScalars ℚ_[l]) _ (hdd i).2.1`. Introduce `i`. Rewrite using `[← T.fil K]`. Simplify using `using (hdd i).2.2`.
+Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `r`. Establish `h1` using `congrArg (coord (basisQ L.T L.span b) r) hsum`. Rewrite `h1` using `[← basisQ_apply L.T L.span b j, coord_tmul, map_sum]`. Simplify using `only [coord_mulLeft, Module.Basis.repr_self] at h1`. Rewrite using `[Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Establish `h2` using `congrArg T.eD h1`. Rewrite `h2` using `[map_sum]`. Simplify using `only [map_mul] at h2`. Rewrite using `[← h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hr : r = j`. Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hr, Finsupp.single_apply, Pi.single_apply, Ne.symm hr]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.crysLattice_basis_mem_sum_fil_dR : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (V : Type) [AddCommGroup V] [Module ℚ_[l] V] [Module ℤ_[l] V] [IsScalarTower ℤ_[l] ℚ_[l] V] [FiniteDimensional ℚ_[l] V] (ρ : Representation ℚ_[l] ↥(GK K) V) (L : Lattice (O := ℤ_[l]) ρ), IsCrys (P.PD K) ρ → ∀ (d : ℕ) (b : Module.Basis (Fin d) ℤ_[l] ↥L.T), ∀ j : Fin d, ∃ (m : ℕ) (k : Fin m → ℤ) (c : Fin m → Per.BdR l) (v : Fin m → Fin d → Per.BdR l), (∀ i (g : ↥(GK K)), ((LinearMap.toMatrix b b (actT L g)).map (Per.zD l)).mulVec (fun r => Per.σD (g : GQ l) (v i r)) = v i) ∧ (∀ i r, v i r ∈ Per.FilD l (k i)) ∧ (∀ i, c i ∈ Per.FilD l (-k i)) ∧ (Pi.single j 1 : Fin d → Per.BdR l) = ∑ i, c i • v i := by
   intro l _ K P AI T V _ _ _ _ _ ρ L hcrys d b j

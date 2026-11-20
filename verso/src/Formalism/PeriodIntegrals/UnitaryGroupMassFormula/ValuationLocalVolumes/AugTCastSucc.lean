@@ -18,7 +18,7 @@ def augT {a : ℕ} (X : TupV (E := E) v n a) (w : Fin n → Fv F v ⊗[F] E) : T
   Fin.snoc (α := fun _ => Fin n → Fv F v ⊗[F] E) X w
 
 /- English proof (translation)
-Simplify using `[augT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem augT_castSucc {a : ℕ} (X : TupV (E := E) v n a) (w : Fin n → Fv F v ⊗[F] E) (i : Fin a) :
     augT v X w i.castSucc = X i := by
@@ -31,13 +31,13 @@ def IsoExt (a : ℕ) (Y : TupV (E := E) v n a) : Prop :=
       ∃ w : Fin n → Fv F v ⊗[F] E, IsPrim v Λ (augT v X w) ∧ gramR (Fv F v) σ J (augT v X w) = T
 
 /- English proof (translation)
-Introduce `h hG`. Establish `hR : Red.ResAlg σ J ψ v` using `Red.resAlg_of_sp σ J ψ v (Red.etaSp_holds σ J ψ v)`. Establish `hU : UnitV σ J ψ v Λ` using `unitV_of σ J ψ v Λ (PI.OmLocU.NormOneUnitFixedPoints.normOne_of σ J ψ v hR) (UnN.unitNorm_of_res σ J ψ v Λ hR)`. Take `⟨T, hTu, hext⟩` from `hI hG`. Take `⟨hS, hL, hSD, hUn, -, hP⟩` from `hG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨wY, hPY, hgY⟩` from `hext Y hP rfl`. Establish `hGY : GoodY σ J ψ v Λ (a + 1) (augT v Y wY)` using `⟨hS, hL, hSD, hUn, hn, hPY, by rw [hgY]; exact hTu⟩`. Establish `hE` using `extOrth_of σ J ψ v Λ (a + 1) (augT v Y wY) (oSub (E := E) v) (oSmul v Λ) (orthoB_of σ J ψ v Λ (a + 1) (augT v Y wY) hU)`. Establish `hT : IsUnit (gramR (Fv F v) σ J (augT v Y wY)).det`. Take `⟨u, -, -, hu⟩` from `hTu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hgY]`. Conclude with `⟨⟨_, u, hu, by rw [mul_comm]; exact hu⟩, rfl⟩`. Use `⟨gT v hn (gramR (Fv F v) σ J (augT v Y wY)), fun X hX hXY => ?_⟩` and prove the remaining obligations. Take `⟨wX, hPX, hgX⟩` from `hext X hX hXY`. Take `⟨Z, hZb, hZe, hZg⟩` from `hE hn hGY (augT v X wX) hPX.1 (by rw [hgX, hgY])`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Z, hZb, fun i => ?_, hZg, isUnit_det_colM σ J v hn _ hT Z hZg⟩` and prove the remaining obligations. Establish `e1 : eSp h (Sum.inl i) = eSp hn (Sum.inl i.castSucc)`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `[eSp]`. Rewrite using `[e1, hZe i.castSucc, augT_castSucc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extP_of (a : ℕ) (Y : TupV (E := E) v n a) (hn : a + 1 ≤ n) (hI : IsoExt σ J ψ v Λ a Y) :
     ExtP σ J ψ v Λ a Y := by

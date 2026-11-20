@@ -12,7 +12,7 @@ open AlgebraicGeometry CategoryTheory Limits NumberField ReciprocityTheory.Chart
 namespace GlobalTheory.CompanionTheory.Ar.FrameUnit
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.vecMul, dotProduct, Finset.sum_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_comb {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : ℕ}
     (C : Matrix (Fin n) (Fin n) R) (b : Fin n → U) (a : Fin n → R) :
@@ -23,17 +23,17 @@ theorem sum_smul_comb {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n
   simp only [Matrix.vecMul, dotProduct, Finset.sum_smul]
 
 /- English proof (translation)
-Establish `hDC : C⁻¹ * C = 1` using `Matrix.nonsing_inv_mul C hC`. Use `⟨?_, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Rewrite `hg` using `[sum_smul_comb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : Matrix.vecMul g C = 0`. Use function extensionality and compare the values at `k`. Conclude with `(Fintype.linearIndependent_iff.1 hb) _ hg k`. Establish `h1 : g = Matrix.vecMul (Matrix.vecMul g C) C⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv C hC, Matrix.vecMul_one]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h0, Matrix.zero_vecMul]`. Both sides reduce to the same expression. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h : b j = ∑ i, (C⁻¹ j i) • ∑ k, C i k • b k`. Rewrite using `[sum_smul_comb]`. Establish `: Matrix.vecMul (C⁻¹ j) C = Pi.single j 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrFun (congrArg (fun A : Matrix (Fin n) (Fin n) R => A) hDC) j` as an intermediate fact. Use function extensionality and compare the values at `k`. Establish `h2` using `congrFun this k`. Simplify `h2` using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Matrix.one_apply, Pi.single_apply, eq_comm]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[SetLike.mem_coe, h]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem comb_basis {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : ℕ}
     (C : Matrix (Fin n) (Fin n) R) (hC : IsUnit C.det) (b : Fin n → U) (hb : LinearIndependent R b) :
@@ -69,11 +69,11 @@ theorem comb_basis {R U : Type} [CommRing R] [AddCommGroup U] [Module R U] {n : 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Introduce `S R _ G _ _ x O _ act σ n u v C hu hv hC`. Take `⟨L, _, _, ⟨M⟩⟩` from `lieModel_exists S G R x`. Take `⟨ρ, hρ, -⟩` from `lieModel_exists_unique_act S G R x L M O act.act act.hom act.one act.mul act.add`. Take `⟨hc, hf⟩` from `GlobalTheory.T.lie_model_eigenvectors_action S R G x L M`. Establish `hf'` using `(hf O act ρ σ hρ).2 n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hex : ∀ k, ∃ e, M.pt e = u k` using `fun k => M.onto _ (hu.1 k).1`. Use `choose b hb using hex`. Take `rfl : u = fun k => M.pt (b k)` from `funext fun k => (hb k).symm`. Establish `hvv : v = fun i => M.pt (∑ k, C i k • b k)`. Use function extensionality and compare the values at `fun i => (hc n (C i) b (v i)).1 (hv i)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality.
 
-Substitute `hvv` using the available equality. Take `⟨hli, hsp⟩` from `(hf' b).1 hu`. Take `⟨h1, h2⟩` from `comb_basis C hC b hli`. Conclude with `(hf' _).2 ⟨h1, h2.trans hsp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEigFrame_of_isUnit_det : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] [IsCommMonObj G] (x : Sp R ⟶ S) (O : Type) [CommRing O] (act : OAct O G) (σ : O →+* R) (n : ℕ) (u v : Fin n → (epsAt x ⟶ G)) (C : Matrix (Fin n) (Fin n) R), IsEigFrame act x σ u → (∀ i, IsComb (C i) u (v i)) → IsUnit C.det → IsEigFrame act x σ v := by
   intro S R _ G _ _ x O _ act σ n u v C hu hv hC

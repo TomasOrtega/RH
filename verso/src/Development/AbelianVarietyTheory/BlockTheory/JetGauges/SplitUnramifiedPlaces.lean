@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     bar p OE (z ⊗ₜ a) = z ⊗ₜ star a := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bar_bar [StarRing OE] (x : Op p OE) : bar p OE (bar p OE x) = x := by
   induction x using TensorProduct.induction_on with
@@ -66,15 +66,13 @@ def conj [StarRing OE] (w : Place p OE) : Place p OE where
     · right; rw [← h1, bar_bar]
 
 /- English proof (translation)
-The claim follows from `Place.ext (bar_bar w.e)`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj [StarRing OE] (w : Place p OE) : w.conj.conj = w :=
   Place.ext (bar_bar w.e)
 
 /- English proof (translation)
-Establish `hi : IsIdempotentElem (w.e * u.e)` using `w.idem.mul u.idem`. Break down `u.primitive _ hi (by rw [mul_assoc, u.idem.eq]) with h0 | h1` into its components or cases. Conclude with `h0`. Break down `w.primitive _ hi (by rw [mul_right_comm, w.idem.eq]) with h0 | h2` into its components or cases. Conclude with `h0`.
-
-Conclude with `absurd (Place.ext (h2.symm.trans h1)) h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_ne {w u : Place p OE} (h : w ≠ u) : w.e * u.e = 0 := by
   have hi : IsIdempotentElem (w.e * u.e) := w.idem.mul u.idem
@@ -99,9 +97,9 @@ def Emb (w : Place p OE) (O : Type) [CommRing O] [Algebra ℤ_[p] O] : Type :=
   {σ : OE →+* O // w.Induces σ}
 
 /- English proof (translation)
-Establish `: ∀ x : Op p OE, extend σ (bar p OE x) = extend (σ.comp (starRingEnd OE)) x`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul z a => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, map_add, hx, hy]`. Unfold `Induces`. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_induces_iff [StarRing OE] (w : Place p OE) {O : Type} [CommRing O]
     [Algebra ℤ_[p] O] (σ : OE →+* O) :
@@ -150,13 +148,13 @@ def gaussIdem (s h : ℤ_[p]) : Op p GaussianInt :=
   h ⊗ₜ 1 + (-(h * s)) ⊗ₜ Zsqrtd.sqrtd
 
 /- English proof (translation)
-Simplify using `[gaussEmb, Zsqrtd.lift]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussEmb_sqrtd (s : ℤ_[p]) (hs : s * s = -1) : gaussEmb s hs Zsqrtd.sqrtd = s := by
   simp [gaussEmb, Zsqrtd.lift]
 
 /- English proof (translation)
-Simplify using `only [gaussIdem, map_add, extend_tmul, gaussEmb_sqrtd, map_one, Algebra.algebraMap_self, RingHom.id_apply]`. Take the linear combination `hh - h * hs`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem extend_gaussIdem (s h : ℤ_[p]) (hs : s * s = -1) (hh : 2 * h = 1) :
     extend (gaussEmb s hs) (gaussIdem s h) = 1 := by
@@ -165,7 +163,7 @@ theorem extend_gaussIdem (s h : ℤ_[p]) (hs : s * s = -1) (hh : 2 * h = 1) :
   linear_combination hh - h * hs
 
 /- English proof (translation)
-Apply the tactic sequence `have : star (Zsqrtd.sqrtd : GaussianInt) = -Zsqrtd.sqrtd := by ext <;> simp`. Simplify using `only [gaussIdem, map_add, bar_tmul, this, star_one, extend_tmul, map_neg, gaussEmb_sqrtd, map_one, Algebra.algebraMap_self, RingHom.id_apply]`. Take the linear combination `h * hs`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem extend_bar_gaussIdem (s h : ℤ_[p]) (hs : s * s = -1) :
     extend (gaussEmb s hs) (bar p GaussianInt (gaussIdem s h)) = 0 := by
@@ -175,17 +173,15 @@ theorem extend_bar_gaussIdem (s h : ℤ_[p]) (hs : s * s = -1) :
   linear_combination h * hs
 
 /- English proof (translation)
-Use `set I : Op p GaussianInt := 1 ⊗ₜ Zsqrtd.sqrtd with hI`. Use `set A := algebraMap ℤ_[p] (Op p GaussianInt) with hA`. Establish `hII : I * I = -1`. Apply the tactic sequence `have : (Zsqrtd.sqrtd * Zsqrtd.sqrtd : GaussianInt) = -1 := by ext <;> simp`. Rewrite using `[hI, Algebra.TensorProduct.tmul_mul_tmul, this, TensorProduct.tmul_neg, one_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hz : ∀ (z : ℤ_[p]) (a : GaussianInt), (z ⊗ₜ a : Op p GaussianInt) = A z * (1 ⊗ₜ a)`. Introduce `z a`. Simplify using `[hA]`. Establish `he : gaussIdem s h = A h - A h * A s * I`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[gaussIdem, hz h, hz (-(h * s)), map_neg, map_mul]`. Use `show A h * 1 + _ = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hS : A s * A s = -1` using `by rw [← map_mul, hs, map_neg, map_one]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `zero => simp`. Consider the case `tmul z a`. Apply the tactic sequence `have ha : a = (a.re : GaussianInt) + (a.im : GaussianInt) * Zsqrtd.sqrtd := by ext <;> simp`. Establish `h1 : (1 ⊗ₜ a : Op p GaussianInt) = (a.re : Op p GaussianInt) + (a.im : _) * I`. Use `congrArg (Algebra.TensorProduct.includeRight : GaussianInt →ₐ[ℤ] Op p GaussianInt) ha` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[map_add, map_mul, map_intCast, map_intCast]`. Conclude with `this`. Establish `h2 : gaussEmb s hs a = a.re + a.im * s` using `by conv_lhs => rw [ha]`. Rewrite using `[map_add, map_mul, map_intCast, map_intCast, gaussEmb_sqrtd]`. Rewrite using `[extend_tmul, hz, h1, h2, he]`.
-
-Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply, map_mul, map_add, map_intCast]`. Take the linear combination `(A z * (a.im : Op p GaussianInt) * A h) * (- A s * hII + I * hS)`. Consider the case `add x y hx hy => rw [add_mul, hx, hy, map_add, map_add, add_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_gaussIdem (s h : ℤ_[p]) (hs : s * s = -1) (x : Op p GaussianInt) :
     x * gaussIdem s h = algebraMap ℤ_[p] _ (extend (gaussEmb s hs) x) * gaussIdem s h := by
@@ -270,13 +266,13 @@ def gaussUnrPlace (s h : ℤ_[p]) (hs : s * s = -1) (hh : 2 * h = 1) : UnrPlace 
 local instance : Fact (Nat.Prime 5) := ⟨by norm_num⟩
 
 /- English proof (translation)
-Establish `h2 : ‖(2 : ℤ_[5])‖ = 1`. Use `(PadicInt.norm_natCast_eq_one_iff (p := 5) (n := 2)).2 (by norm_num)` as an intermediate fact. Simplify using `using this`. Take `⟨h, hh⟩` from `(PadicInt.isUnit_iff.2 h2).exists_right_inv`. Establish `h5 : ‖(5 : ℤ_[5])‖ < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `PadicInt.norm_p (p := 5)` as an intermediate fact. Simplify using `only [Nat.cast_ofNat] at this`. Rewrite using `[this]`. Evaluate the numerical expressions. Establish `hn : ‖(Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).aeval (2 : ℤ_[5])‖ < ‖(Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).derivative.aeval (2 : ℤ_[5])‖ ^ 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `e1 : (Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).aeval (2 : ℤ_[5]) = 5` using `by simp; norm_num`. Establish `e2 : (Polynomial.X ^ 2 + 1 : Polynomial ℤ_[5]).derivative.aeval (2 : ℤ_[5]) = 2 * 2` using `by simp; norm_num`. Rewrite using `[e1, e2, norm_mul, h2]`. Simplify using `using h5`. Take `⟨s, hs, -⟩` from `hensels_lemma hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨s, h, ?_, hh⟩` and prove the remaining obligations. Simplify using `at hs`. Take the linear combination `hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_sqrt_neg_one_five : ∃ s h : ℤ_[5], s * s = -1 ∧ 2 * h = 1 := by
   have h2 : ‖(2 : ℤ_[5])‖ = 1 := by
@@ -300,14 +296,14 @@ theorem exists_sqrt_neg_one_five : ∃ s h : ℤ_[5], s * s = -1 ∧ 2 * h = 1 :
   linear_combination hs
 
 /- English proof (translation)
-Take `⟨s, h, hs, hh⟩` from `exists_sqrt_neg_one_five`. Conclude with `⟨gaussPlace s h hs hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_splitPlace_five : Nonempty (SplitPlace 5 GaussianInt) := by
   obtain ⟨s, h, hs, hh⟩ := exists_sqrt_neg_one_five
   exact ⟨gaussPlace s h hs hh⟩
 
 /- English proof (translation)
-Take `⟨s, h, hs, hh⟩` from `exists_sqrt_neg_one_five`. Conclude with `⟨gaussUnrPlace s h hs hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_unrPlace_five : Nonempty (UnrPlace 5 GaussianInt) := by
   obtain ⟨s, h, hs, hh⟩ := exists_sqrt_neg_one_five
@@ -316,7 +312,7 @@ theorem nonempty_unrPlace_five : Nonempty (UnrPlace 5 GaussianInt) := by
 end Gauss
 
 /- English proof (translation)
-The claim follows from `w.IsDiffVal_vp vd ∧ 0 < w.degree`.
+A detailed English derivation is pending.
 -/
 example (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime]
     (w : Place p (NumberField.RingOfIntegers E)) (vd : ℝ) : Prop :=

@@ -14,21 +14,19 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 open UpperTheory.V.Z UpperTheory.V.Z.Ord
 /- English proof (translation)
-Set `z : MonoidAlgebra K H` to `MonoidAlgebra.of K H s`. Establish `hlz : ∀ i, MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ i)) z = ((ψ i s : Kˣ) : K)` using `fun i => by`. Simplify using `only [z, MonoidAlgebra.lift_of]`. Both sides reduce to the same expression. Establish `hPz : MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) H ((Units.coeHom _).comp r) z = W.mat r s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [z, MonoidAlgebra.lift_of]`. Both sides reduce to the same expression. Establish `hext` using `AlgebraTools.ord_ext (R := K) ((Units.coeHom (Matrix (Fin n) (Fin n) K)).comp r) (fun i => (Units.coeHom K).comp (ψ i)) h0`. Establish `hz : ∀ i j, i ≠ j → IsUnit (MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ i)) z - MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ j)) z)` using `fun i j hij => by`. Rewrite using `[hlz, hlz]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(sub_ne_zero.2 fun e => hij (hs (Units.ext e))).isUnit`. Take `⟨hc, hlow, hdiag⟩` from `AlgebraTools.lag_triangular (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) H ((Units.coeHom _).comp r)) (fun i => MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ i))) z hext hz`. Establish `hne` using `AlgebraTools.lag_ne_zero (fun i => MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ i)) z) (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) H ((Units.coeHom _).comp r) z) hz (by`. Rewrite using `[hPz, hch, Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlz]`. Use the proof step `simp)`. Take `⟨g, hg⟩` from `AlgebraTools.coi_conj_single _ hc hne`. Use `⟨g, fun t => ?_⟩` and prove the remaining obligations. Use `set f := AlgebraTools.lag (fun i => MonoidAlgebra.lift K K H ((Units.coeHom K).comp (ψ i)) z) (MonoidAlgebra.lift K (Matrix (Fin n) (Fin n) K) H ((Units.coeHom _).comp r) z) with hf`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ent : ∀ (M : Matrix (Fin n) (Fin n) K) a b, (Matrix.single a a (1 : K) * M * Matrix.single b b (1 : K) : Matrix (Fin n) (Fin n) K) a b = M a b` using `fun M a b => by`. Simplify using the standard rewrite rules. Establish `key : ∀ a b, (g * r t * g⁻¹ : GL (Fin n) K) a b = ((g : Matrix (Fin n) (Fin n) K) * (f a * (r t : Matrix (Fin n) (Fin n) K) * f b) * ((g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)) a b`. Introduce `a b`. Rewrite using `[← ent ((g * r t * g⁻¹ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) a b, ← hg a, ← hg b]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Units.val_mul, mul_assoc, Units.inv_mul_cancel_left]`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hlow (MonoidAlgebra.of K H t) i j hji`. Rewrite `h` using `[MonoidAlgebra.lift_of]`. Establish `h' : f i * (r t : Matrix (Fin n) (Fin n) K) * f j = 0` using `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[key, h']`. Simplify using the standard rewrite rules. Establish `h` using `hdiag (MonoidAlgebra.of K H t) i`. Simplify using `only [MonoidAlgebra.lift_of] at h`. Establish `h' : f i * (r t : Matrix (Fin n) (Fin n) K) * f i = (ψ i t : K) • f i` using `h`.
-
-Rewrite using `[key, h', Matrix.mul_smul, Matrix.smul_mul, hg i]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem flag_of_rel {K H : Type} [Field K] [Group H] {n : ℕ} (r : H →* GL (Fin n) K) (ψ : Fin n → H →* Kˣ)
     (h0 : ∀ g : Fin n → H, (List.ofFn fun i => ((r (g i) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) -
@@ -83,7 +81,7 @@ private theorem flag_of_rel {K H : Type} [Field K] [Group H] {n : ℕ} (r : H �
     rw [key, h', Matrix.mul_smul, Matrix.smul_mul, hg i]
     simp
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _`. Use `congr 1`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem chi_single {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (h : H) : (D.comap φ).chi (MonoidAlgebra.single h 1) = D.chi (MonoidAlgebra.single (φ h) 1) := by
@@ -92,15 +90,15 @@ private theorem chi_single {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Grou
   rw [map_sub]
   simp
 /- English proof (translation)
-Establish `hchi : ∀ h, D.chi (MonoidAlgebra.single (φ h) 1) = (W.GDet.ofRep (W.mat ρ)).chi (MonoidAlgebra.single h 1)` using `fun h => by rw [← hD, chi_single]`. Establish `hker : φ.ker ≤ ρ.ker` using `fun g hg => by`. Establish `h0` using `(Ws.Eb.trPlus ρ hF).1 (MonoidAlgebra.single g 1 - MonoidAlgebra.single 1 1) fun h => by`. Establish `e : (W.GDet.ofRep (W.mat ρ)).tr (MonoidAlgebra.single (h * g) 1) = (W.GDet.ofRep (W.mat ρ)).tr (MonoidAlgebra.single h 1)`. Unfold `W.GDet.tr W.GDet.lam`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hchi, ← hchi, map_mul, MonoidHom.mem_ker.1 hg, mul_one]`. Rewrite `e` using `[(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn, (AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn]`. Rewrite using `[(AlgebraTools.Det.repApi (W.mat ρ)).2.2.1 hn, mul_sub, map_sub, Matrix.trace_sub, MonoidAlgebra.single_mul_single, MonoidAlgebra.single_mul_single, mul_one, mul_one, e, sub_self]`. Rewrite `h0` using `[map_sub, sub_eq_zero]`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `h0` using `[W.GDet.repAlg, W.mat]`. Set `ρ₀ : G →* GL (Fin n) A` to `φ.liftOfSurjective hφ ⟨ρ, hker⟩`. Establish `h0 : ∀ h, ρ₀ (φ h) = ρ h` using `fun h => MonoidHom.liftOfRightInverse_comp_apply _ _ _ _ h`. Establish `hm : ∀ h, W.mat ρ₀ (φ h) = W.mat ρ h` using `fun h => congrArg Units.val (h0 h)`. Use `⟨ρ₀, MonoidHom.ext h0, ?_, CA.d_gext _ _ fun g i _ _ => ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `top_le_iff.1 (le_trans (le_of_eq (Eq.symm hF)) (Submodule.span_mono ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `⟨φ h, hm h⟩`. Take `⟨h, rfl⟩` from `hφ g`. Unfold `W.GDet.lam`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Rewrite using `[hchi, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1, hm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem descend {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (hφ : Function.Surjective φ) (ρ : H →* GL (Fin n) A) (hn : 1 ≤ n) (hF : Ws.Eb.Full ρ)
@@ -131,17 +129,17 @@ private theorem descend {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H
     unfold W.GDet.lam
     rw [hchi, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1, hm]
 /- English proof (translation)
-Introduce `H l _ L Ω _ _ _ _ _ _ s n V c r B Λ J hJ x h ρ hJx hA hx hirr v`. Establish `hn : 1 ≤ n`. Break down `Nat.eq_zero_or_pos n with rfl | h0` into its components or cases. Conclude with `absurd (Subsingleton.elim _ _) hirr.1`. Conclude with `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : Function.Surjective V.pr` using `fun g => by`. Take `⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1` from `QuotientGroup.mk_surjective g.1`. Take `⟨σ, rfl⟩` from `(V.hη τ).1 (by rw [hτ]; exact g.2)`. Conclude with `⟨σ, Subtype.ext hτ⟩`. Establish `hF : Ws.Eb.Full ρ` using `(AlgebraTools.Det.irrIffSpan (W.mat ρ)).1 fun N hN => by`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `hirr.2.2 N le_top fun g v hv => hN g v hv with h1 | h1` into its components or cases. Conclude with `Or.inl h1`. Conclude with `Or.inr h1`. Take `⟨ρ₀, rfl, hfull, hD⟩` from `descend x.D V.pr hs ρ hn hF hx`. Take `⟨hO, -⟩` from `Ws.Eb.relKill B x ρ₀ hfull hD`.
+Prove the second alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g₀, hg₀⟩` from `_root_.UpperTheory.V.Th.Nm.regular_arithmetic_hida_of_literal_automorphy H s h v (x.psi v) hA.1 (hA.2 v)`. Use `flag_of_rel _ (x.psi v) (hO v) (fun t => ?_) g₀ hg₀` and prove the remaining obligations. Set `xb : B.B ⧸ J →+* Qbar l` to `Ideal.Quotient.lift J (x : B.B →+* Qbar l) fun a ha => hJx ha`. Establish `e0 : xb.comp (Ideal.Quotient.mk J) = (x : B.B →+* Qbar l)` using `RingHom.ext fun a => rfl`. Establish `e1 : (B.DD J).map xb = W.GDet.ofRep (W.mat ρ₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (B.DD J).map xb = B.u.D.map (xb.comp (Ideal.Quotient.mk J))` using `(CA.d_gmap B.u.D).2.1 _ _`. Rewrite using `[h1, e0]`. Conclude with `hD`. Establish `e2` using `(AlgebraTools.Det.mapApi (B.DD J) xb).1 (MonoidAlgebra.single (V.frame.φ v t) 1)`. Rewrite `e2` using `[MonoidAlgebra.mapRingHom_single, map_one, e1, (AlgebraTools.Det.repApi _).2.1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `e2.trans ((congrArg (Polynomial.map xb) (hJ.O1 v t)).trans ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.flagJ_alt :
     _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis → FlagJ := by

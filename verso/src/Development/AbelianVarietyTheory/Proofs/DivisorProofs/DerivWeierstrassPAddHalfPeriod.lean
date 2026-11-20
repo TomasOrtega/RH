@@ -9,17 +9,17 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L a t ha h2 ht hta`. Establish `hd : L.derivWeierstrassP a = 0` using `(GlobalTheory.derivWeierstrassP_eq_zero_iff L ha).2 (by rw [← two_mul]; exact h2)`. Establish `hne : L.weierstrassP t ≠ L.weierstrassP a`. Introduce `h`. Break down `(GlobalTheory.weierstrassP_eq_iff L ht ha).1 h with h' | h'` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hta` to reduce the goal to its premises. Use `L.lattice.add_mem h' h2` as an intermediate fact. Rewrite `this` using `[show t - a + 2 * a = t + a by ring]`. Then use the resulting hypothesis. Conclude with `hta h'`. Take `⟨h1, h3⟩` from `GlobalTheory.weierstrassP_add L ht ha hne`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1` using `L.derivWeierstrassP_sq t ht`. Establish `e2` using `L.derivWeierstrassP_sq a ha`. Rewrite using `[h3, h1]`. Rewrite `e2`, the goal using `[hd]`. Establish `hd0 : L.weierstrassP t - L.weierstrassP a ≠ 0` using `sub_ne_zero.2 hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `L.weierstrassP t = x at *`. Generalize the expression as in `L.weierstrassP a = e at *`. Generalize the expression as in `L.derivWeierstrassP t = y at *`. Generalize the expression as in `L.g₂ = g at *`. Generalize the expression as in `L.g₃ = k at *`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hq : ((y - 0) / (x - e)) ^ 2 = (4 * (x ^ 2 + x * e + e ^ 2) - g) / (x - e)`. Rewrite using `[div_pow, div_eq_div_iff (pow_ne_zero 2 hd0) hd0]`. Take the linear combination `(x - e) * (e1 - e2)`. Rewrite using `[hq]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem derivWeierstrassP_add_half_period :
     ∀ (L : PeriodPair) (a t : ℂ), a ∉ L.lattice → 2 * a ∈ L.lattice → t ∉ L.lattice → t + a ∉ L.lattice → L.derivWeierstrassP (t + a) * (L.weierstrassP t - L.weierstrassP a) ^ 2 = -(3 * L.weierstrassP a ^ 2 - L.g₂ / 4) * L.derivWeierstrassP t := by

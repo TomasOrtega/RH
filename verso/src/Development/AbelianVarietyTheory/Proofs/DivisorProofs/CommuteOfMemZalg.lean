@@ -14,7 +14,7 @@ section Capelli
 variable {A : Type} [Ring A]
 
 /- English proof (translation)
-The claim follows from `| 0, f => by simp | n + 1, f => by have ih := comm_prod x (fun i : Fin n => f i.succ) have h0 : ∀ (y : A) (i : Fin n), Function.update f 0 y i.succ = f i.succ := fun y i => Function.update_of_ne (Fin.succ_ne_zero i) _ _ have h1 : ∀ (y : A) (k : Fin n), (fun i : Fin n => Function. …`.
+A detailed English derivation is pending.
 -/
 theorem comm_prod (x : A) : ∀ {n : ℕ} (f : Fin n → A),
     x * (List.ofFn f).prod - (List.ofFn f).prod * x =
@@ -39,7 +39,7 @@ theorem comm_prod (x : A) : ∀ {n : ℕ} (f : Fin n → A),
     noncomm_ring
 
 /- English proof (translation)
-The claim follows from `(MultilinearMap.mkPiAlgebraFin ℤ n A).map_update_sub f k y z`.
+A detailed English derivation is pending.
 -/
 theorem prod_update_sub {n : ℕ} (f : Fin n → A) (k : Fin n) (y z : A) :
     (List.ofFn (Function.update f k (y - z))).prod =
@@ -47,14 +47,14 @@ theorem prod_update_sub {n : ℕ} (f : Fin n → A) (k : Fin n) (y z : A) :
   (MultilinearMap.mkPiAlgebraFin ℤ n A).map_update_sub f k y z
 
 /- English proof (translation)
-The claim follows from `(MultilinearMap.mkPiAlgebraFin ℤ n A).map_update_zero f k`.
+A detailed English derivation is pending.
 -/
 theorem prod_update_zero {n : ℕ} (f : Fin n → A) (k : Fin n) :
     (List.ofFn (Function.update f k 0)).prod = 0 :=
   (MultilinearMap.mkPiAlgebraFin ℤ n A).map_update_zero f k
 
 /- English proof (translation)
-The claim follows from `| 0, k, _, _, _, _, _, _ => k.elim0 | n + 1, k, f₁, f₂, f₃, f₄, h, hr => by induction k using Fin.cases with | zero => have hh : ∀ i : Fin n, f₂ i.succ.succ = f₁ i.succ.succ ∧ f₃ i.succ.succ = f₁ i.succ.succ ∧ f₄ i.succ.succ = f₁ i.succ.succ := fun i => h _ (Fin.succ_ne_zero _) ( …`.
+A detailed English derivation is pending.
 -/
 theorem prod_adj : ∀ {n : ℕ} (k : Fin n) (f₁ f₂ f₃ f₄ : Fin (n + 1) → A),
     (∀ i, i ≠ k.castSucc → i ≠ k.succ → f₂ i = f₁ i ∧ f₃ i = f₁ i ∧ f₄ i = f₁ i) →
@@ -92,13 +92,13 @@ def GlRel (e : Fin n → Fin n → A) : Prop :=
   ∀ i j k l, e i j * e k l - e k l * e i j = (if j = k then e i l else 0) - (if l = i then e k j else 0)
 
 /- English proof (translation)
-Establish `h` using `he p q i j`. Establish `hc` using `Algebra.commutes u (e p q)`. Unfold `Tm`. Establish `: e p q * ((if i = j then algebraMap ℂ A u else 0) + e i j) - ((if i = j then algebraMap ℂ A u else 0) + e i j) * e p q = e p q * e i j - e i j * e p q` using `by split_ifs`. Rewrite using `[mul_add, add_mul, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite using `[this, h]`. Apply the tactic sequence `by_cases h1 : q = i <;> by_cases h2 : j = p`. Substitute `h1 h2` using the available equality.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using `[eq_comm]`. Substitute `h1` using the available equality. Simplify using `[h2, Ne.symm h2]`. Substitute `h2` using the available equality. Simplify using `[h1, Ne.symm h1]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem comm_Tm {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p q i j : Fin n) :
     e p q * Tm e u i j - Tm e u i j * e p q = (if q = i then Tm e u p j else 0) - (if j = p then Tm e u i q else 0) := by
@@ -118,7 +118,7 @@ theorem comm_Tm {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p q i j : 
   · simp [h1, h2]
 
 /- English proof (translation)
-Unfold `Tm`. Use `split_ifs`. Rewrite using `[map_sub, map_one]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Tm_sub_one (e : Fin n → Fin n → A) (u : ℂ) (i j : Fin n) :
     Tm e (u - 1) i j = Tm e u i j - if i = j then 1 else 0 := by
@@ -128,11 +128,11 @@ theorem Tm_sub_one (e : Fin n → Fin n → A) (u : ℂ) (i j : Fin n) :
   · simp
 
 /- English proof (translation)
-Establish `key : ∀ p q i j, Tm e v p q * Tm e v i j - Tm e v i j * Tm e v p q = (if q = i then Tm e v p j else 0) - (if j = p then Tm e v i q else 0)`. Introduce `p q i j`. Rewrite using `[← comm_Tm he v p q i j]`. Establish `hc` using `Algebra.commutes v (Tm e v i j)`. Use `conv_lhs => rw [show Tm e v p q = (if p = q then algebraMap ℂ A v else 0) + e p q from rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[mul_add, add_mul, hc]`. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish `h1` using `key a c b d`.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `key a d b c`. Simplify using `only [Tm_sub_one, mul_sub, mul_ite, mul_one, mul_zero]`. Rewrite using `[eq_add_of_sub_eq h1, eq_add_of_sub_eq h2]`. Simplify using `only [@eq_comm _ c b, @eq_comm _ d a, @eq_comm _ d b, @eq_comm _ c a]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Tm_rel {e : Fin n → Fin n → A} (he : GlRel e) (v : ℂ) (a b c d : Fin n) :
     Tm e v a c * Tm e (v - 1) b d + Tm e v a d * Tm e (v - 1) b c
@@ -161,11 +161,11 @@ theorem qminor_def (e : Fin n → Fin n → A) {t : ℕ} (I J : Fin t → Fin n)
       (List.ofFn fun k : Fin t => Tm e (u - (k : ℕ)) (I (σ k)) (J k)).prod := rfl
 
 /- English proof (translation)
-Rewrite using `[qminor_def]`. Use `Finset.sum_involution (fun σ _ => swap p q * σ) ?_ ?_ (fun _ _ => Finset.mem_univ _) ?_` and prove the remaining obligations. Introduce `σ _`. Establish `: ∀ k, I ((swap p q * σ) k) = I (σ k)` using `fun k => by`. Rewrite using `[Perm.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `apply_swap_eq_self h _`. Simplify using `only [this]`. Simplify using `[Perm.sign_swap hpq]`. Introduce `σ _ _ hs`. Conclude with `hpq (swap_eq_one_iff.1 (mul_eq_right.1 hs))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `σ _`. Simplify using `[← mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem qminor_rows (e : Fin n → Fin n → A) {t : ℕ} (I J : Fin t → Fin n) (u : ℂ) {p q : Fin t} (hpq : p ≠ q)
     (h : I p = I q) : qminor e I J u = 0 := by
@@ -182,13 +182,13 @@ theorem qminor_rows (e : Fin n → Fin n → A) {t : ℕ} (I J : Fin t → Fin n
     simp [← mul_assoc]
 
 /- English proof (translation)
-Establish `hk : k.castSucc ≠ k.succ` using `(Fin.castSucc_lt_succ).ne`. Rewrite using `[eq_neg_iff_add_eq_zero, qminor_def, qminor_def, ← Finset.sum_add_distrib]`. Use `Finset.sum_involution (fun σ _ => σ * swap k.castSucc k.succ) ?_ ?_ (fun _ _ => Finset.mem_univ _) ?_` and prove the remaining obligations. Introduce `σ _`. Use `prod_adj k (fun i : Fin (t + 1) => Tm e (u - (i : ℕ)) (I (σ i)) ((J ∘ swap k.castSucc k.succ) i)) (fun i : Fin (t + 1) => Tm e (u - (i : ℕ)) (I (σ i)) (J i)) (fun i : Fin (t + 1) => Tm e (u - (i : ℕ)) (I ((σ * swap k.castSucc k.succ) i)) ((J ∘ swap k.castSucc k.succ) i)) (fun i : …` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Tm_rel he (u - (k : ℕ)) (I (σ k.castSucc)) (I (σ k.succ)) (J k.succ) (J k.castSucc)` as an intermediate fact. Simplify using `only [Function.comp, Perm.mul_apply, swap_apply_left, swap_apply_right, Fin.val_castSucc, Fin.val_succ, Nat.cast_add, Nat.cast_one, ← sub_sub]`. Rewrite using `[← this]`. Use the proof step `abel)`. Establish `h2` using `congrArg (((Perm.sign σ : ℤ) : A) * ·) this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zero] at h2`. Rewrite using `[← h2, Perm.sign_mul, Perm.sign_swap hk]`. Use `push_cast`. Use `noncomm_ring`. Introduce `σ _ _ hs`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hk (swap_eq_one_iff.1 (mul_eq_left.1 hs))`. Introduce `σ _`. Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem qminor_adj {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I J : Fin (t + 1) → Fin n) (u : ℂ) (k : Fin t) :
     qminor e I (J ∘ swap k.castSucc k.succ) u = - qminor e I J u := by
@@ -217,13 +217,13 @@ theorem qminor_adj {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I J : F
     simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hs : s ∈ Submonoid.closure (Set.range fun i : Fin t => swap i.castSucc i.succ)`. Rewrite using `[Perm.mclosure_swap_castSucc_succ]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Take `⟨k, rfl⟩` from `hx`. Introduce `J`. Rewrite using `[qminor_adj he, Perm.sign_swap (Fin.castSucc_lt_succ).ne]`. Simplify using the standard rewrite rules. Consider the case `one => intro J`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `mul x y _ _ hx hy`. Introduce `J`. Rewrite using `[Perm.coe_mul, ← Function.comp_assoc, hy, hx, Perm.sign_mul, mul_comm (Perm.sign x)]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qminor_perm {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I : Fin (t + 1) → Fin n) (u : ℂ)
     (s : Perm (Fin (t + 1))) : ∀ J : Fin (t + 1) → Fin n,
@@ -244,11 +244,11 @@ theorem qminor_perm {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I : Fi
     rw [mul_assoc]
 
 /- English proof (translation)
-Consider the cases of `t with`. Consider the case `zero => exact p.elim0`. Consider the case `succ t`. Establish `h1` using `qminor_perm he I u (swap p q) J`. Establish `h2 : J ∘ swap p q = J` using `funext fun k => apply_swap_eq_self h k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2, Perm.sign_swap hpq]`. Establish `h3 : (2 : ℂ) • qminor e I J u = 0`. Rewrite using `[two_smul]`. Use `nth_rewrite 1 [h1]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg ((2 : ℂ)⁻¹ • ·) h3` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem qminor_cols {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I J : Fin t → Fin n) (u : ℂ) {p q : Fin t}
     (hpq : p ≠ q) (h : J p = J q) : qminor e I J u = 0 := by
@@ -264,17 +264,17 @@ theorem qminor_cols {e : Fin n → Fin n → A} (he : GlRel e) {t : ℕ} (I J : 
     simpa [smul_smul] using this
 
 /- English proof (translation)
-Rewrite using `[show qdet e u = qminor e id id u from rfl]`. Simplify using `only [qminor_def, Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← Int.cast_comm, mul_assoc, mul_assoc, ← mul_sub, ← mul_sub, comm_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [comm_Tm he, prod_update_sub, Finset.sum_sub_distrib, id]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (σ.symm q)]`. Use `congr 2`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : k = σ.symm q`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Establish `h' : σ k ≠ q` using `fun e => h (by rw [← e]; simp)`. Simplify using `[Function.update_of_ne h, Function.update_of_ne h']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `k _ h`. Establish `h' : q ≠ σ k` using `fun e => h (by rw [e]; simp)`. Rewrite using `[if_neg h', prod_update_zero]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single p]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`. Introduce `k _ h`. Rewrite using `[if_neg h, prod_update_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem comm_qdet_eq {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p q : Fin n) :
     e p q * qdet e u - qdet e u * e p q =
@@ -308,9 +308,9 @@ theorem comm_qdet_eq {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p q :
     · simp
 
 /- English proof (translation)
-Rewrite using `[Commute, SemiconjBy, ← sub_eq_zero, comm_qdet_eq he]`. Distinguish the cases in `h : p = q`. Substitute `h` using the available equality. Establish `: Function.update (id : Fin n → Fin n) p p = id` using `Function.update_eq_self p id`. Rewrite using `[this, sub_self]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qminor_rows e _ _ u h (by simp [Function.update_of_ne h]), qminor_cols he _ _ u h (by simp [Function.update_of_ne (Ne.symm h)]), sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem commute_gen_qdet {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p q : Fin n) :
     Commute (e p q) (qdet e u) := by
@@ -323,9 +323,9 @@ theorem commute_gen_qdet {e : Fin n → Fin n → A} (he : GlRel e) (u : ℂ) (p
       qminor_cols he _ _ u h (by simp [Function.update_of_ne (Ne.symm h)]), sub_self]
 
 /- English proof (translation)
-Rewrite using `[show qdet e u = qminor e id id u from rfl, qminor_def]`. Use `Commute.sum_left _ _ _ fun σ _ => Commute.mul_left (Int.cast_commute _ _) (Commute.list_prod_left _ _ ?_)` and prove the remaining obligations. Introduce `y hy`. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hy`. Unfold `Tm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Use `Commute.add_left ?_ (hx _ _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `Algebra.commutes _ _`. Conclude with `Commute.zero_left _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem commute_qdet_of_gen {e : Fin n → Fin n → A} {x : A} (hx : ∀ i j, Commute (e i j) x) (u : ℂ) :
     Commute (qdet e u) x := by
@@ -375,21 +375,21 @@ theorem rmul_apply (x y : Lie E a) : rmul y x = mulL x y := rfl
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Matrix.mul_one (Matrix.of x)`.
+A detailed English derivation is pending.
 -/
 theorem mulL_one (x : Lie E a) : mulL x (oneL E a) = x := Matrix.mul_one (Matrix.of x)
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Matrix.one_mul (Matrix.of x)`.
+A detailed English derivation is pending.
 -/
 theorem one_mulL (x : Lie E a) : mulL (oneL E a) x = x := Matrix.one_mul (Matrix.of x)
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Establish `hc : Continuous fun y : Lie E a => (Matrix.of y).det` using `Continuous.matrix_det (A := fun y : Lie E a => Matrix.of y) continuous_id`. Establish `: invSet E a = (fun y : Lie E a => (Matrix.of y).det) ⁻¹' {z | IsUnit z}`. Use extensionality with `y`. Conclude with `Matrix.isUnit_iff_isUnit_det _`. Establish `ho : IsOpen (invSet E a)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Units.isOpen.preimage hc`. Conclude with `ho.mem_nhds hx`.
+A detailed English derivation is pending.
 -/
 theorem inv_nhds {x : Lie E a} (hx : IsUnit (Matrix.of x)) : invSet E a ∈ nhds x := by
   have hc : Continuous fun y : Lie E a => (Matrix.of y).det :=
@@ -403,16 +403,16 @@ theorem inv_nhds {x : Lie E a} (hx : IsUnit (Matrix.of x)) : invSet E a ∈ nhds
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_oneL : IsUnit (Matrix.of (oneL E a)) := isUnit_one
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `e : Matrix.of (lmul x y) = Matrix.of x * Matrix.of y` using `rfl`. Simplify using `only [Function.comp]`. Unfold `chart`. Distinguish the cases in `hy : IsUnit (Matrix.of y)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Establish `hxy : IsUnit (Matrix.of (lmul x y))` using `e ▸ hx.mul hy`. Rewrite using `[dif_pos hy, dif_pos hxy, mul_assoc, ← map_mul]`. Use `congr 3`. Conclude with `Units.ext e.symm`. Establish `hxy : ¬ IsUnit (Matrix.of (lmul x y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `fun h => hy ((hx.mul_left_iff).1 h)`. Rewrite using `[dif_neg hy, dif_neg hxy]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_mul (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : IsUnit (Matrix.of x)) :
     chart φ (g * infGL E a hx.unit) = chart φ g ∘ lmul x := by
@@ -430,16 +430,16 @@ theorem chart_mul (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : IsUnit 
     rw [dif_neg hy, dif_neg hxy]
 
 /- English proof (translation)
-The claim follows from `((φ.2 g).contDiffAt (inv_nhds hx)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_chart (φ : Sm E a) (g : GA E a) {x : Lie E a} (hx : IsUnit (Matrix.of x)) :
     ContDiffAt ℝ 2 (chart φ.1 g) x :=
   ((φ.2 g).contDiffAt (inv_nhds hx)).of_le (WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤))
 
 /- English proof (translation)
-Establish `h1 : chart (lieD Y φ.1) g x = lieD Y φ.1 (g * infGL E a hx.unit)` using `dif_pos hx`. Rewrite using `[h1]`. Unfold `lieD`. Establish `hd : HasFDerivAt (chart φ.1 g) (fderiv ℝ (chart φ.1 g) x) (lmul x (oneL E a))`. Rewrite using `[lmul_apply, mulL_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((contDiffAt_chart φ g hx).differentiableAt (by norm_num)).hasFDerivAt`. Rewrite using `[chart_mul, (hd.comp _ (lmul x).hasFDerivAt).fderiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chart_lieD (φ : Sm E a) (g : GA E a) (Y : Lie E a) {x : Lie E a} (hx : IsUnit (Matrix.of x)) :
     chart (lieD Y φ.1) g x = fderiv ℝ (chart φ.1 g) x (rmul Y x) := by
@@ -453,9 +453,9 @@ theorem chart_lieD (φ : Sm E a) (g : GA E a) (Y : Lie E a) {x : Lie E a} (hx : 
   rfl
 
 /- English proof (translation)
-Establish `h1 : chart (lieD Y φ.1) g =ᶠ[nhds (oneL E a)] fun x => fderiv ℝ (chart φ.1 g) x (rmul Y x)` using `by filter_upwards [inv_nhds (isUnit_oneL (E := E) (a := a))] with x hx`. Conclude with `chart_lieD φ g Y hx`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ (chart φ.1 g)) (oneL E a)` using `((contDiffAt_chart φ g isUnit_oneL).fderiv_right (m := 1) (by norm_num)).differentiableAt (by norm_num)`. Establish `h2` using `(hd.hasFDerivAt.clm_apply (rmul Y).hasFDerivAt).fderiv`. Use `show fderiv ℝ (chart (lieD Y φ.1) g) (oneL E a) X = _ + fderiv ℝ (chart φ.1 g) (oneL E a) (mulL X Y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1.fderiv_eq, h2]`. Simplify using `[rmul_apply, one_mulL, add_comm]`.
+A detailed English derivation is pending.
 -/
 theorem lieD_lieD (φ : Sm E a) (g : GA E a) (X Y : Lie E a) :
     lieD X (lieD Y φ.1) g = fderiv ℝ (fderiv ℝ (chart φ.1 g)) (oneL E a) X Y + lieD (mulL X Y) φ.1 g := by
@@ -470,7 +470,7 @@ theorem lieD_lieD (φ : Sm E a) (g : GA E a) (X Y : Lie E a) :
   simp [rmul_apply, one_mulL, add_comm]
 
 /- English proof (translation)
-Use extensionality with `φ g`. Use `show lieD X (lieD Y φ.1) g - lieD Y (lieD X φ.1) g = lieD (mulL X Y) φ.1 g - lieD (mulL Y X) φ.1 g`. Establish `hs : IsSymmSndFDerivAt ℝ (chart φ.1 g) (oneL E a)` using `(contDiffAt_chart φ g isUnit_oneL).isSymmSndFDerivAt (by simp)`. Rewrite using `[lieD_lieD, lieD_lieD, hs X Y]`. Normalize the expressions using the abelian group laws.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem lie_bracket (X Y : Lie E a) :
     lie E a X * lie E a Y - lie E a Y * lie E a X = lie E a (mulL X Y) - lie E a (mulL Y X) := by
@@ -482,9 +482,9 @@ theorem lie_bracket (X Y : Lie E a) :
   abel
 
 /- English proof (translation)
-Establish `key : ∀ (i j k l : Fin a) (c d : Cinf E), lie E a (mulL (Matrix.single i j c) (Matrix.single k l d)) = if j = k then lieS E a i l (c * d) else 0`. Introduce `i j k l c d`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `congrArg (lie E a) (Matrix.single_mul_single_same c i j l d)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(congrArg (lie E a) (Matrix.single_mul_single_of_ne c i j k h d)).trans (map_zero _)`. Use `lie_bracket (E := E) (a := a) (Matrix.single i j c) (Matrix.single k l d)` as an intermediate fact. Rewrite `this` using `[key, key, mul_comm d c]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem lieS_bracket (i j k l : Fin a) (c d : Cinf E) :
     lieS E a i j c * lieS E a k l d - lieS E a k l d * lieS E a i j c =
@@ -501,7 +501,7 @@ theorem lieS_bracket (i j k l : Fin a) (c d : Cinf E) :
   exact this
 
 /- English proof (translation)
-Unfold `Eop`. Simplify using `only [smul_mul_assoc, mul_smul_comm, mul_sub, sub_mul]`. Use `module`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Eop_bracket (τ τ' : E →+* ℂ) (i j k l : Fin a) :
     Eop τ i j * Eop τ' k l - Eop τ' k l * Eop τ i j =
@@ -518,7 +518,7 @@ theorem Eop_bracket (τ τ' : E →+* ℂ) (i j k l : Fin a) :
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `atEmb`. Rewrite using `[← Pi.single_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atEmb_mul (τ : E →+* ℂ) (z w : ℂ) : atEmb τ z * atEmb τ w = atEmb τ (z * w) := by
   classical
@@ -528,7 +528,7 @@ theorem atEmb_mul (τ : E →+* ℂ) (z w : ℂ) : atEmb τ z * atEmb τ w = atE
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `atEmb`. Rewrite using `[← Pi.single_neg]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem atEmb_neg (τ : E →+* ℂ) (z : ℂ) : atEmb τ (-z) = - atEmb τ z := by
   classical
@@ -538,9 +538,9 @@ theorem atEmb_neg (τ : E →+* ℂ) (z : ℂ) : atEmb τ (-z) = - atEmb τ z :=
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `atEmb`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = InfinitePlace.mk τ`. Substitute `hv` using the available equality. Simplify using `[Pi.single_eq_of_ne h]`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne hv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem atEmb_mul_of_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ ≠ InfinitePlace.mk τ') (z w : ℂ) :
     atEmb τ z * atEmb τ' w = 0 := by
@@ -554,11 +554,9 @@ theorem atEmb_mul_of_ne {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ ≠ Infi
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Unfold `atEmb`. Rewrite using `[← h]`. Use `congr 1`. Distinguish the cases in `h1 : (InfinitePlace.mk τ).embedding = τ`. Rewrite using `[if_pos h1, if_neg (fun e => hne (h1.symm.trans e))]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (InfinitePlace.mk τ).embedding = τ'`. Break down `InfinitePlace.embedding_mk_eq τ with e | e` into its components or cases. Conclude with `absurd e h1`. Break down `InfinitePlace.mk_eq_iff.1 h with e' | e'` into its components or cases. Conclude with `absurd e' hne`.
-
-Conclude with `e.trans e'`. Rewrite using `[if_pos h2, if_neg h1, Complex.conj_conj]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atEmb_conj {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ = InfinitePlace.mk τ') (hne : τ ≠ τ') (w : ℂ) :
     atEmb τ' w = atEmb τ (starRingEnd ℂ w) := by
@@ -576,7 +574,7 @@ theorem atEmb_conj {τ τ' : E →+* ℂ} (h : InfinitePlace.mk τ = InfinitePla
     rw [if_pos h2, if_neg h1, Complex.conj_conj]
 
 /- English proof (translation)
-Introduce `i j k l`. Rewrite using `[Eop_bracket]`. Simplify using `only [lieS_bracket, atEmb_mul, Complex.I_mul_I, mul_one, one_mul, atEmb_neg, map_neg]`. Unfold `Eop`. Apply the tactic sequence `split_ifs <;> module`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_Eop (τ : E →+* ℂ) : GlRel (Eop (a := a) τ) := by
   intro i j k l
@@ -586,9 +584,9 @@ theorem glRel_Eop (τ : E →+* ℂ) : GlRel (Eop (a := a) τ) := by
   split_ifs <;> module
 
 /- English proof (translation)
-Rewrite using `[Commute, SemiconjBy, ← sub_eq_zero, Eop_bracket]`. Distinguish the cases in `h : InfinitePlace.mk τ = InfinitePlace.mk τ'`. Simplify using `only [lieS_bracket]`. Simplify using `only [atEmb_conj h hne, atEmb_mul, Complex.I_mul_I, mul_one, one_mul, atEmb_neg, map_neg, map_one, Complex.conj_I, mul_neg, neg_neg]`. Apply the tactic sequence `split_ifs <;> module`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[lieS_bracket, atEmb_mul_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem commute_Eop {τ τ' : E →+* ℂ} (hne : τ ≠ τ') (i j k l : Fin a) : Commute (Eop τ i j) (Eop τ' k l) := by
   rw [Commute, SemiconjBy, ← sub_eq_zero, Eop_bracket]
@@ -600,9 +598,7 @@ theorem commute_Eop {τ τ' : E →+* ℂ} (hne : τ ≠ τ') (i j k l : Fin a) 
   · simp [lieS_bracket, atEmb_mul_of_ne h]
 
 /- English proof (translation)
-Unfold `cap`. Use `commute_qdet_of_gen (fun i j => ?_) _` and prove the remaining obligations. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Conclude with `commute_gen_qdet (glRel_Eop τ) _ i j`.
-
-Conclude with `(commute_qdet_of_gen (fun k l => (commute_Eop h i j k l).symm) _).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem commute_cap (τ τ' : E →+* ℂ) (u v : ℂ) : Commute (cap (a := a) τ u) (cap τ' v) := by
   unfold cap
@@ -615,9 +611,9 @@ theorem commute_cap (τ τ' : E →+* ℂ) (u v : ℂ) : Commute (cap (a := a) �
 end Lie
 
 /- English proof (translation)
-Unfold `GlobalTheory.CuspRep.Zalg at hz hz'`. Use `Algebra.commute_of_mem_adjoin_of_forall_mem_commute hz' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨τ', v, rfl⟩`. Use `(Algebra.commute_of_mem_adjoin_of_forall_mem_commute hz ?_).symm` and prove the remaining obligations. Introduce and unpack `_ ⟨τ, u, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `commute_cap τ' τ v u`.
+A detailed English derivation is pending.
 -/
 theorem commute_of_mem_Zalg {E : Type} [Field E] [NumberField E] [NumberField.IsTotallyComplex E] {a : ℕ}
     {z z' : Module.End ℂ ↥(GlobalTheory.CuspRep.Sm E a)} (hz : z ∈ GlobalTheory.CuspRep.Zalg E a) (hz' : z' ∈ GlobalTheory.CuspRep.Zalg E a) :

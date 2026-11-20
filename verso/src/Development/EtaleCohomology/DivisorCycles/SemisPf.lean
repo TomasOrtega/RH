@@ -11,9 +11,9 @@ def img {A : Subalgebra C (Mat C N)} (I : Ideal A) : Submodule C (Fin N → C) :
   Submodule.span C {w | ∃ x ∈ I, ∃ v, w = (x : Mat C N) *ᵥ v}
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨y, hy, v, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨x * y, Submodule.mul_mem_mul hx hy, v, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mulVec_mulVec]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma img_step {A : Subalgebra C (Mat C N)} (J I : Ideal A) {x : A} (hx : x ∈ J) {u : Fin N → C}
     (hu : u ∈ img I) : (x : Mat C N) *ᵥ u ∈ img (J * I) := by
@@ -27,7 +27,7 @@ lemma img_step {A : Subalgebra C (Mat C N)} (J I : Ideal A) {x : A} (hx : x ∈ 
   | smul c a _ ha => rw [Matrix.mulVec_smul]; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Rewrite using `[img, Submodule.span_eq_bot]`. Introduce and unpack `w ⟨x, hx, v, rfl⟩`. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma img_bot {A : Subalgebra C (Mat C N)} : img (⊥ : Ideal A) = ⊥ := by
   rw [img, Submodule.span_eq_bot]
@@ -36,7 +36,7 @@ lemma img_bot {A : Subalgebra C (Mat C N)} : img (⊥ : Ideal A) = ⊥ := by
   simp [hx]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, ih, pow_succ B (n+1)]`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma conj_pow (P B Q : Mat C N) (h : Q * P = 1) (n : ℕ) : (P * B * Q) ^ (n + 1) = P * B ^ (n + 1) * Q := by
   induction n with
@@ -47,7 +47,7 @@ lemma conj_pow (P B Q : Mat C N) (h : Q * P = 1) (n : ℕ) : (P * B * Q) ^ (n + 
       _ = _ := by rw [h]; noncomm_ring
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hB`. Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[conj_pow P B Q h, pow_succ, hk]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma nil_conj (P B Q : Mat C N) (h : Q * P = 1) (hB : IsNilpotent B) : IsNilpotent (P * B * Q) := by
   obtain ⟨k, hk⟩ := hB
@@ -55,51 +55,47 @@ lemma nil_conj (P B Q : Mat C N) (h : Q * P = 1) (hB : IsNilpotent B) : IsNilpot
   rw [conj_pow P B Q h, pow_succ, hk]; simp
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inv_mul_rho {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin N) C) (g : Γ) :
     (ρ g⁻¹ : Mat C N) * (ρ g : Mat C N) = 1 := by
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma mul_inv_rho {Γ : Type} [Group Γ] (ρ : Γ →* GL (Fin N) C) (g : Γ) :
     (ρ g : Mat C N) * (ρ g⁻¹ : Mat C N) = 1 := by
   rw [← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Introduce `Γ C _ _ N ρ A hss hn hk Y hYA hY`. Set `S : Set (Mat C N)` to `{Z | Z ∈ A ∧ ∀ a ∈ A, IsNilpotent (a * Z)}`. Set `U : Submodule C (Fin N → C)` to `Submodule.span C {w | ∃ Z ∈ S, ∃ v, w = Z *ᵥ v}`. Establish `hUst : ∀ g, ∀ v ∈ U, (ρ g : Mat C N) *ᵥ v ∈ U`. Introduce `g v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨Z, ⟨hZA, hZ⟩, v, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨(ρ g : Mat C N) * Z * (ρ g⁻¹ : Mat C N), ⟨hn g Z hZA, ?_⟩, (ρ g : Mat C N) *ᵥ v, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha' : (ρ g⁻¹ : Mat C N) * a * (ρ g⁻¹⁻¹ : Mat C N) ∈ A` using `hn g⁻¹ a ha`. Rewrite `ha'` using `[inv_inv]`. Use `nil_conj (ρ g : Mat C N) ((ρ g⁻¹ : Mat C N) * a * (ρ g : Mat C N) * Z) (ρ g⁻¹ : Mat C N) (inv_mul_rho ρ g) (hZ ((ρ g⁻¹ : Mat C N) * a * (ρ g : Mat C N)) ha')` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_inv_rho]`. Simplify using the standard rewrite rules. Use `_ = _ := by noncomm_ring`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, mul_assoc ((ρ g : Mat C N) * Z), inv_mul_rho, mul_one]`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [Matrix.mulVec_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Take `⟨W, hcompl, hWst⟩` from `hss U hUst`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hWA` using `hk W hWst`. Establish `hkill : ∀ Z ∈ S, ∀ w ∈ W, Z *ᵥ w = 0`. Introduce `Z hZ w hw`. Establish `h1 : Z *ᵥ w ∈ U` using `Submodule.subset_span ⟨Z, hZ, w, rfl⟩`. Establish `h2 : Z *ᵥ w ∈ W` using `hWA Z hZ.1 w hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hcompl.inf_eq_bot` as an intermediate fact. Establish `h3 : Z *ᵥ w ∈ U ⊓ W` using `⟨h1, h2⟩`. Rewrite `h3` using `[this]`. Conclude with `(Submodule.mem_bot C).1 h3`. Establish `: IsArtinianRing A` using `IsArtinianRing.of_finite C A`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `J : Ideal A` to `Ideal.jacobson ⊥`. Establish `hSJ : ∀ Z (hZ : Z ∈ S), (⟨Z, hZ.1⟩ : A) ∈ J`. Introduce `Z hZ`. Rewrite using `[Ideal.mem_jacobson_iff]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hnil : IsNilpotent (y * (⟨Z, hZ.1⟩ : A))`. Take `⟨k, hk'⟩` from `hZ.2 y y.2`. Use `⟨k, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `using hk'`. Establish `hu` using `hnil.isUnit_one_add`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_bot]`. Establish `h1 : (↑hu.unit⁻¹ : A) * (1 + y * (⟨Z, hZ.1⟩ : A)) = 1` using `hu.val_inv_mul`. Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩` from `IsArtinianRing.isNilpotent_jacobson_bot (R := A)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `key : ∀ k : ℕ, U ≤ img (J ^ (k + 1))`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[Submodule.pow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `show Submodule.span C _ ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨Z, hZ, v, rfl⟩`. Conclude with `Submodule.subset_span ⟨⟨Z, hZ.1⟩, hSJ Z hZ, v, rfl⟩`. Consider the case `succ k ih => show Submodule.span C _ ≤ _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨Z, hZ, v, rfl⟩`. Establish `hv : v ∈ U ⊔ W` using `hcompl.sup_eq_top ▸ Submodule.mem_top`. Take `⟨u, hu, w', hw', rfl⟩` from `Submodule.mem_sup.1 hv`. Use `show Z *ᵥ (u + w') ∈ img (J ^ (k + 1 + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.mulVec_add, hkill Z hZ w' hw', add_zero, Ideal.IsTwoSided.pow_succ]`. Conclude with `img_step J _ (x := ⟨Z, hZ.1⟩) (hSJ Z hZ) (ih hu)`. Establish `hU : U = ⊥`. Establish `h` using `key m`. Establish `hb : J ^ (m + 1) = ⊥`.
-
-Rewrite using `[Submodule.pow_succ, hm, Submodule.zero_eq_bot, Submodule.bot_mul]`. Rewrite `h` using `[hb, img_bot]`. Conclude with `le_bot_iff.1 h`. Use extensionality with `i j`. Establish `hv : Y *ᵥ Pi.single j 1 ∈ U` using `Submodule.subset_span ⟨Y, ⟨hYA, hY⟩, Pi.single j 1, rfl⟩`.
-
-Rewrite `hv` using `[hU, Submodule.mem_bot]`. Simplify using `using congrFun hv i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem Semis_of : Semis := by
   intro Γ C _ _ N ρ A hss hn hk Y hYA hY

@@ -7,11 +7,11 @@ namespace GlobalTheory.CMSep
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Establish `hs : x + IsCMField.complexConj E x ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`. Simplify using `[add_comm]`. Establish `hp : x * IsCMField.complexConj E x ∈ maximalRealSubfield E`. Rewrite using `[← IsCMField.complexConj_eq_self_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Establish `h1` using `h ⟨_, hs⟩`. Establish `h2` using `h ⟨_, hp⟩`. Simplify using `only [map_add, map_mul, IsCMField.complexEmbedding_complexConj] at h1 h2`. Establish `key : (g x - f x) * (g x - starRingEnd ℂ (f x)) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take the linear combination `(-(g x)) * h1 + h2`. Break down `mul_eq_zero.mp key with e | e` into its components or cases. Conclude with `Or.inl (sub_eq_zero.mp e)`. Conclude with `Or.inr (sub_eq_zero.mp e)`.
+Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem pointwise {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) (x : E) :
     g x = f x ∨ g x = starRingEnd ℂ (f x) := by
@@ -29,11 +29,11 @@ theorem pointwise {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) 
   · exact Or.inr (sub_eq_zero.mp e)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, g x ≠ f x := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hne.1 (RingHom.ext hh)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, g y ≠ starRingEnd ℂ (f y) := by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`. Conclude with `hne.2 (RingHom.ext hh)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hx' : g x = starRingEnd ℂ (f x)` using `(pointwise h x).resolve_left hx`. Establish `hy' : g y = f y` using `(pointwise h y).resolve_right hy`. Break down `pointwise h (x + y) with e | e` into its components or cases. Simplify using `only [map_add] at e; exact hx (by linear_combination e - hy')`. Simplify using `only [map_add] at e; exact hy (by linear_combination e - hx')`.
+A detailed English derivation is pending.
 -/
 theorem eq_or_eq_conj {f g : E →+* ℂ} (h : ∀ x : FR E, f (x : E) = g (x : E)) :
     g = f ∨ g = ComplexEmbedding.conjugate f := by
@@ -54,13 +54,11 @@ end GlobalTheory.CMSep
 namespace GlobalTheory.CMSep
 
 /- English proof (translation)
-Introduce `E _ _ _ I φ hφ i k hik`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hext : ((φ i).comp (algebraMap (FR E) E)) = ((φ k).comp (algebraMap (FR E) E))`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 (FR E)))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Conclude with `hall a`. Establish `hres : ∀ x : FR E, φ i (x : E) = φ k (x : E)` using `fun x => RingHom.congr_fun hext x`. Break down `eq_or_eq_conj hres with e | e` into its components or cases. Take `⟨j, -, hj⟩` from `hφ (φ i)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hj i (Or.inl rfl)`. Establish `h2` using `hj k (Or.inl e.symm)`. Conclude with `hik (h1.trans h2.symm)`. Take `⟨j, -, hj⟩` from `hφ (φ k)`. Establish `h1` using `hj k (Or.inl rfl)`.
-
-Establish `h2` using `hj i (Or.inr e)`. Conclude with `hik (h2.trans h1.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_int_ne : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) (φ : I → E →+* ℂ), IsCMType φ →
     ∀ i k, i ≠ k → ∃ a : 𝓞 (FR E), φ i ((a : FR E) : E) ≠ φ k ((a : FR E) : E) := by

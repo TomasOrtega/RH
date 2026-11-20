@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.ThK.KernelZero
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH`. Take `⟨P, hP⟩` from `GlobalTheory.T.adapted_plane_left_inverse_exists F E σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH`. Conclude with `⟨GlobalTheory.T.adapted_plane_complement_skew_hermitian F E σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH, GlobalTheory.T.adapted_plane_complement_signature F E σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH P hP, GlobalTheory.T.adapted_plane_complement_lattice F E σ B hB n n₁ W W₁ H i₀ i₁ r s hW hH P …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSkew_complement : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁) (i₀ i₁ r s : ℕ),

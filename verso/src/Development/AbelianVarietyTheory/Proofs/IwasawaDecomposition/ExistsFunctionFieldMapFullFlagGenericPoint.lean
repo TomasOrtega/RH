@@ -10,21 +10,17 @@ open Classical
 set_option autoImplicit false
 
 /- English proof (translation)
-Take `⟨A, hA, h, hh, hb⟩` from `GlobalTheory.T.exists_pointCarriesFrameFlags_own_frame F ι m X Y₁ Eb S₁ φ₁ f₁ h₁ Y₁.Fn (ratOf Y₁).pt`. Take `⟨q, ⟨hq, hqb⟩, -⟩` from `h₂.2.2 Y₁.Fn ((ratOf Y₁).pt ≫ f₁) A hA h hh`. Establish `hcq : CoBear Eb S₁ φ₁ S₂ φ₂ ((ratOf Y₁).pt ≫ f₁) (ratOf Y₁).pt q` using `⟨A, hA, h, hh, hb, hqb⟩`. Take `⟨B, hB, g, hg, hgb⟩` from `GlobalTheory.T.exists_pointCarriesFrameFlags_own_frame F ι m X Y₂ Eb S₂ φ₂ f₂ h₂ Y₂.Fn (ratOf Y₂).pt`. Take `⟨r, ⟨hr, hrb⟩, -⟩` from `h₁.2.2 Y₂.Fn ((ratOf Y₂).pt ≫ f₂) B hB g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcr : CoBear Eb S₁ φ₁ S₂ φ₂ (r ≫ f₁) r (ratOf Y₂).pt` using `⟨B, hr ▸ hB, g, hg, hrb, hgb⟩`. Establish `hsp` using `GlobalTheory.T.fullFlagLift_genericPoint_specializes_residue F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ q hq hcq (r (IsLocalRing.closedPoint _)) (fun K _ p p' hp hpp hc => GlobalTheory.T.fullFlagBundle_point_at_genericLift_image F ι m X Y₁ Y₂ Eb S₁ φ₁ f₁ S₂ φ₂ f₂ h₁ h₂ r hr hcr K p …`. Establish `hs : q ≫ Y₂.str = spMap (algebraMap F Y₁.Fn)`. Establish `e1 : f₂ ≫ X.str = Y₂.str` using `h₂.1.inducedModelMorphism_comp_structureMap`. Establish `e2 : f₁ ≫ X.str = Y₁.str` using `h₁.1.inducedModelMorphism_comp_structureMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ((ratOf Y₁).pt : Sp Y₁.Fn ⟶ Y₁.X) ≫ Y₁.str = spMap (algebraMap F Y₁.Fn)` using `(ratOf Y₁).pt_s`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (q ≫ f₂) ≫ X.str := (Category.assoc _ _ _).symm`. Use `_ = ((ratOf Y₁).pt ≫ f₁) ≫ X.str := congrArg (· ≫ X.str) hq`. Use `_ = (ratOf Y₁).pt ≫ (f₁ ≫ X.str) := Category.assoc _ _ _`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `_ = (ratOf Y₁).pt ≫ Y₁.str := congrArg (((ratOf Y₁).pt : Sp Y₁.Fn ⟶ Y₁.X) ≫ ·) e2`. Use `_ = _ := e3`. Take `⟨ψ, rfl⟩` from `GlobalTheory.T.exists_algHom_functionField_of_specializes_genericPoint F Y₂ Y₁.Fn q hsp hs`. Use `⟨ψ, ?_, hcq⟩` and prove the remaining obligations. Establish `key : ∀ (σ : X.Fn →+* Y₁.Fn) (a : X.Fn), (ratOf X).val (spMap σ ≫ (ratOf X).pt) a = σ a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ a`. Establish `hm : a ∈ (ratOf X).O (genericPoint (ratOf X).Z)` using `(RatModel.O_genericPoint (ratOf X)).symm ▸ Algebra.mem_top`. Establish `h1` using `RatModel.val_spMap_comp σ (ratOf X).pt ((ratOf X).pt_specializes (IsLocalRing.closedPoint _) _) ⟨a, hm⟩`. Establish `h2` using `RatModel.valLoc_eq_val (M := ratOf X) (ratOf X).pt ((ratOf X).pt_specializes (IsLocalRing.closedPoint _) _) ⟨a, hm⟩`. Conclude with `h1.trans (congrArg σ (h2.trans (RatModel.val_pt (M := ratOf X) a)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `H1 : ((ratOf Y₁).pt : Sp Y₁.Fn ⟶ Y₁.X) ≫ f₁ = spMap φ₁.toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X)` using `h₁.1`. Establish `H2 : ((ratOf Y₂).pt : Sp Y₂.Fn ⟶ Y₂.X) ≫ f₂ = spMap φ₂.toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X)` using `h₂.1`. Establish `e : spMap (ψ.comp φ₂).toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X) = spMap φ₁.toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X)`. Establish `s1 : spMap (ψ.comp φ₂).toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X) = spMap ψ.toRingHom ≫ (spMap φ₂.toRingHom ≫ ((ratOf X).pt : Sp X.Fn ⟶ X.X))`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Conclude with `s1.trans ((congrArg (spMap ψ.toRingHom ≫ ·) H2.symm).trans ((Category.assoc _ _ _).symm.trans (hq.trans H1)))`. Use extensionality with `a`. Use `congrArg (fun y => (ratOf X).val y a) e` as an intermediate fact. Simplify using `only [key] at this`.
-
-Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagBundle.exists_fieldMap_coBear_generic (F : Type) [Field F] (ι : Type) [Fintype ι] (m : ι → ℕ)
     (X Y₁ Y₂ : Var F) (Eb : Fr (ratOf X) m 0) (S₁ : Fr (ratOf Y₁) m m) (φ₁ : X.Fn →ₐ[F] Y₁.Fn) (f₁ : Y₁.X ⟶ X.X)

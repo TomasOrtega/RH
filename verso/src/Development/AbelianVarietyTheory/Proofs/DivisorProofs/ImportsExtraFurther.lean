@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.IntegersComple
 namespace GlobalTheory.MulVecZeroDenominator
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply `IsFractionRing.injective O L` to reduce the goal to its premises. Rewrite using `[RingHom.map_mulVec, Pi.zero_apply, map_zero]`. Establish `hvx : (algebraMap O L ∘ v) = d • x` using `funext hv`. Rewrite using `[hvx, Matrix.mulVec_smul, hD, smul_zero, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma mulVec_eq_zero_of_map_mulVec_eq_zero {O L : Type} [CommRing O] [IsDomain O] [Field L] [Algebra O L]
     [IsFractionRing O L] {m c : ℕ} (D : Matrix (Fin m) (Fin c) O) (x : Fin c → L) (v : Fin c → O)
@@ -18,7 +18,7 @@ private lemma mulVec_eq_zero_of_map_mulVec_eq_zero {O L : Type} [CommRing O] [Is
   rw [hvx, Matrix.mulVec_smul, hD, smul_zero, Pi.zero_apply]
 
 /- English proof (translation)
-Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors O) x`. Use `choose v hv using hd`. Conclude with `⟨d, v, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2, hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma exists_common_denominator_divisor {O L : Type} [CommRing O] [IsDomain O] [Field L] [Algebra O L]
     [IsFractionRing O L] {c : ℕ} (x : Fin c → L) :
@@ -28,9 +28,9 @@ private lemma exists_common_denominator_divisor {O L : Type} [CommRing O] [IsDom
   exact ⟨d, v, IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors d.2, hv⟩
 
 /- English proof (translation)
-Take `⟨d, v, hd, hv⟩` from `exists_common_denominator_divisor (O := O) x`. Establish `hv0 : v = 0` using `h v (mulVec_eq_zero_of_map_mulVec_eq_zero B x v d hv hB) (mulVec_eq_zero_of_map_mulVec_eq_zero C x v d hv hC)`. Use function extensionality and compare the values at `i`. Establish `hi` using `hv i`. Rewrite `hi` using `[hv0, Pi.zero_apply, map_zero, Algebra.smul_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp hi.symm).resolve_left hd`.
+A detailed English derivation is pending.
 -/
 theorem main {O L : Type} [CommRing O] [IsDomain O] [Field L] [Algebra O L] [IsFractionRing O L]
     {a b c : ℕ} (B : GlobalTheory.WachPlace.Mx O a c) (C : GlobalTheory.WachPlace.Mx O b c)
@@ -48,9 +48,9 @@ theorem main {O L : Type} [CommRing O] [IsDomain O] [Field L] [Algebra O L] [IsF
   exact (mul_eq_zero.mp hi.symm).resolve_left hd
 
 /- English proof (translation)
-Introduce `O L _ _ _ _ _ a b c B C h x hB hC`. Take `⟨d, v, hd, hv⟩` from `exists_common_denominator_divisor (O := O) x`. Establish `hv0 : v = 0` using `h v (mulVec_eq_zero_of_map_mulVec_eq_zero B x v d hv hB) (mulVec_eq_zero_of_map_mulVec_eq_zero C x v d hv hC)`. Use function extensionality and compare the values at `i`. Establish `hi` using `hv i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `hi` using `[hv0, Pi.zero_apply, map_zero, Algebra.smul_def]`. Conclude with `(mul_eq_zero.mp hi.symm).resolve_left hd`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem target : ∀ {O L : Type} [inst : CommRing O] [IsDomain O] [inst_2 : Field L] [inst_3 : Algebra O L] [IsFractionRing O L] {a b c : ℕ} (B : GlobalTheory.WachPlace.Mx O a c) (C : GlobalTheory.WachPlace.Mx O b c), (∀ (v : Fin c → O), Matrix.mulVec B v = (0 : Fin a → O) → Matrix.mulVec C v = (0 : Fin b → O) → v = (0 : Fin c → O)) → ∀ (x : Fin c → L), Matrix.mulVec (Matrix.map B (⇑(Algebra.algebraMap O L) : O → L)) x = (0 : Fin a → L) → Matrix.mulVec (Matrix.map C (⇑(Algebra.algebraMap O L) : O → L)) x = (0 : Fin b → L) → x = (0 : Fin c → L) := by
   intro O L _ _ _ _ _ a b c B C h x hB hC

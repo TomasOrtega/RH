@@ -4,15 +4,15 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 namespace GlobalTheory.InertiaRootOfUnity
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hx : u - 1 ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hw1 : w u = 1`. Establish `h'` using `Valuation.map_add_eq_of_lt_right w (x := u - 1) (y := 1) (by rw [map_one]; exact h)`. Rewrite `h'` using `[sub_add_cancel, map_one]`. Then use the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hpow : ∀ i : ℕ, w (u ^ i - 1) < 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ i ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hr : u ^ (i + 1) - 1 = u * (u ^ i - 1) + (u - 1)` using `by ring`. Rewrite using `[hr]`. Use `Valuation.map_add_lt w ?_ h` and prove the remaining obligations. Rewrite using `[map_mul, hw1, one_mul]`. Conclude with `ih`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ i ∈ Finset.range N, u ^ i = 0`. Establish `hg` using `geom_sum_mul u N`. Rewrite `hg` using `[hu, sub_self]`. Conclude with `(mul_eq_zero.mp hg).resolve_right hx`. Establish `hNeq : (N : K) = -∑ i ∈ Finset.range N, (u ^ i - 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules. Apply `hN` to reduce the goal to its premises. Rewrite using `[hNeq, Valuation.map_neg]`. Conclude with `w.map_sum_lt one_ne_zero fun i _ => hpow i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_val_sub_lt {K Γ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ] (w : Valuation K Γ)
     (N : ℕ) (hN : ¬ w (N : K) < 1) (u : K) (hu : u ^ N = 1) (h : w (u - 1) < 1) : u = 1 := by
@@ -43,15 +43,13 @@ theorem eq_one_of_val_sub_lt {K Γ : Type*} [Field K] [LinearOrderedCommGroupWit
   exact w.map_sum_lt one_ne_zero fun i _ => hpow i
 
 /- English proof (translation)
-Establish `hN0 : N ≠ 0`. Introduce and unpack `rfl`. Conclude with `hN (by simpa using v.asIdeal.zero_mem)`. Establish `hζ0 : ζ ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `[zero_pow hN0] at hζ`. Establish `hwζ : B.valuation ζ = 1`. Establish `hp : B.valuation ζ ^ N = 1` using `by rw [← map_pow, hζ, map_one]`. Break down `lt_trichotomy (B.valuation ζ) 1 with hlt | heq | hgt` into its components or cases. Conclude with `absurd hp (pow_lt_one₀ zero_le' hlt hN0).ne`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `heq`. Conclude with `absurd hp (one_lt_pow₀ hgt hN0).ne'`. Establish `hI` using `(ReciprocityTheory.Gal.mem_Ine.mp hs).2 ζ hwζ.le`. Establish `hsζ : s ζ ^ N = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hone` using `eq_one_of_val_sub_lt B.valuation N ?_ (s ζ * ζ⁻¹) ?_ ?_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_inv_eq_one₀ hζ0).mp hone`. Introduce `hlt`. Conclude with `hN ((hB N).mp (by simpa using hlt))`. Rewrite using `[mul_pow, hsζ, inv_pow, hζ, inv_one, mul_one]`. Establish `hr : s ζ * ζ⁻¹ - 1 = (s ζ - ζ) * ζ⁻¹` using `by field_simp`.
-
-Rewrite using `[hr, map_mul, map_inv₀, hwζ, inv_one, mul_one]`. Conclude with `hI`.
+A detailed English derivation is pending.
 -/
 theorem inertia_fixes_root_of_unity {Ω : Type} [Field Ω] [Algebra ℚ Ω] (N : ℕ) (v : GlobalTheory.Ord2.Pl)
     (B : ValuationSubring Ω) (hB : Formalism.ConjugateSelfDual.IsPlaceOver B v)

@@ -7,7 +7,7 @@ open scoped RealInnerProductSpace FourierTransform
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [Real.fourier_eq']`. Rewrite using `[← integral_fintype_prod_volume_eq_prod, ← (volume_preserving_ofLp_complex I).integral_comp (MeasurableEquiv.toLp 2 (I → ℂ)).symm.measurableEmbedding]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[Finset.prod_mul_distrib, ← Complex.exp_sum, PiLp.inner_apply, Finset.mul_sum, Complex.ofReal_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fourier_prod_coord_complex (I : Type) [Fintype I] (f : I → ℂ → ℂ)
     (_hf : ∀ i, Integrable (f i)) (l : EuclideanSpace ℂ I) :

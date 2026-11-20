@@ -17,7 +17,7 @@ open GlobalTheory.HSShort GlobalTheory.HSChoice MvPolynomial
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Introduce `hQ` and use `GlobalTheory.T.explicit_arithmetic_hilbertSamuel_bound hQ (GlobalTheory.T.bertiniNumberField_of_hilbertSamuel₂ hQ) (GlobalTheory.HeightTieProof.heightTie GlobalTheory.HSShort.htMul) GlobalTheory.T.slopeLowerBound_topLattice_offHypersurface`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem geoBound_of_quoted' : Quoted → GeoBound := fun hQ =>
   GlobalTheory.T.explicit_arithmetic_hilbertSamuel_bound hQ (GlobalTheory.T.bertiniNumberField_of_hilbertSamuel₂ hQ) (GlobalTheory.HeightTieProof.heightTie GlobalTheory.HSShort.htMul) GlobalTheory.T.slopeLowerBound_topLattice_offHypersurface

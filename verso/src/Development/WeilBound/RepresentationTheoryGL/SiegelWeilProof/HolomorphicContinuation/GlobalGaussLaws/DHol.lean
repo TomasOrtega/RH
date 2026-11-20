@@ -14,31 +14,27 @@ namespace PositivityTheory.Rg.Sw.Glob
 open DHolH
 
 /- English proof (translation)
-Introduce `hP D n V hn hr θ hθ ν hν P _ _ U hU φ h1 h2 h3 h4 h5`. Introduce `F`. Establish `hfacts : ∀ (p₀ : P) (z₀ : ℂ), z₀ ∈ U → ∃ (N : Set (P × ℂ)) (M : Mx D V.rank n → ℂ), N ∈ 𝓝 (p₀, z₀) ∧ Continuous M ∧ absThetaInt V ν M < ⊤ ∧ ∀ pz ∈ N, pz.2 ∈ U → ∀ x, ‖φ pz.1 pz.2 x‖ ≤ ‖M x‖`. Introduce `p₀ z₀ hz₀`. Take `⟨N, M, hN, hM, hb⟩` from `h5 p₀ z₀ hz₀`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hMc, hMf⟩` from `sch_facts hP V hn hr θ hθ ν hν hM`. Conclude with `⟨N, M, hN, hMc, hMf, hb⟩`. Establish `hcontx : ∀ p, ∀ z ∈ U, Continuous (φ p z)`. Introduce `p z hz`. Conclude with `(h4 p).comp_continuous (continuous_const.prodMk continuous_id) fun x => ⟨hz, Set.mem_univ _⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : ∀ p, ∀ z ∈ U, absThetaInt V ν (φ p z) < ⊤`. Introduce `p z hz`. Take `⟨N, M, hN, -, hMf, hb⟩` from `hfacts p z hz`. Conclude with `lt_of_le_of_lt (absThetaInt_mono V ν (hb (p, z) (mem_of_mem_nhds hN) hz)) hMf`. Establish `hmeas : ∀ p, ∀ z ∈ U, AEStronglyMeasurable (descend (GQ V) (thS V (φ p z))) (autMeasure V ν)` using `fun p z hz => aestronglyMeasurable_thS V ν (hcontx p z hz) (hfin p z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfam : ∀ p, Fam V ν U (φ p)`. Introduce `p`. Use `⟨h2 p, fun z₀ hz₀ => ?_, hmeas p⟩` and prove the remaining obligations. Take `⟨N, M, hN, hMc, hMf, hb⟩` from `hfacts p z₀ hz₀`. Take `⟨u, hu, v, hv, huv⟩` from `mem_nhds_prod_iff.1 hN`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε₁, hε₁, hb₁⟩` from `Metric.mem_nhds_iff.1 hv`. Take `⟨ε₂, hε₂, hb₂⟩` from `Metric.mem_nhds_iff.1 (hU.mem_nhds hz₀)`. Use `⟨min ε₁ ε₂, lt_min hε₁ hε₂, (Metric.ball_subset_ball (min_le_right _ _)).trans hb₂, M, hMc, hMf, ?_⟩` and prove the remaining obligations. Introduce `z hz x`. Establish `hzv : z ∈ v` using `hb₁ (Metric.ball_subset_ball (min_le_left _ _) hz)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzU : z ∈ U` using `hb₂ (Metric.ball_subset_ball (min_le_right _ _) hz)`. Conclude with `hb (p, z) (huv ⟨mem_of_mem_nhds hu, hzv⟩) hzU x`. Use `⟨?_, fun p => ?_, fun p r z hz => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨p₀, z₀⟩ ⟨-, hz₀⟩`. Take `⟨N, M, hN, hMc, hMf, hb⟩` from `hfacts p₀ z₀ hz₀`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfinq` using `ae_absTheta_lt V ν hMc hMf`. Establish `hsumM : ∀ q : Quot (GQ V), descend (GQ V) (absTheta V M) q < ⊤ → Summable fun ξ : Matrix (Fin V.rank) (Fin n) D.host.E => ‖M (invPt V q.out ξ)‖`. Introduce `q hq`. Use `Summable.of_enorm ?_` and prove the remaining obligations. Simplify `hq.ne` using `[GlobalTheory.AutomorphicL2Unitary.descend, absTheta]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `htsM : ∀ q : Quot (GQ V), descend (GQ V) (absTheta V M) q < ⊤ → ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, ‖M (invPt V q.out ξ)‖ = (descend (GQ V) (absTheta V M) q).toReal`. Introduce `q hq`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, absTheta]`. Rewrite using `[ENNReal.tsum_toReal_eq fun ξ => enorm_ne_top]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Set.univ ×ˢ U ∈ 𝓝[Set.univ ×ˢ U] (p₀, z₀)` using `self_mem_nhdsWithin`. Establish `hNs : N ∩ Set.univ ×ˢ U ∈ 𝓝[Set.univ ×ˢ U] (p₀, z₀)` using `inter_mem (mem_nhdsWithin_of_mem_nhds hN) hs`. Establish `hint : ContinuousWithinAt (fun pz : P × ℂ => ∫ q, descend (GQ V) (thS V (φ pz.1 pz.2)) q ∂autMeasure V ν) (Set.univ ×ˢ U) (p₀, z₀)`. Use `continuousWithinAt_of_dominated (bound := fun q => (descend (GQ V) (absTheta V M) q).toReal) ?_ ?_ (integrable_absTheta_toReal V ν hMc hMf) ?_` and prove the remaining obligations. Conclude with `Eventually.mono hs fun pz hpz => hmeas pz.1 pz.2 hpz.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Eventually.mono hNs fun pz hpz => ?_ filter_upwards [hfinq] with q hq` and prove the remaining obligations. Establish `hs1` using `hsumM q hq`. Establish `hs' : Summable fun ξ => ‖φ pz.1 pz.2 (invPt V q.out ξ)‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun ξ => hb pz hpz.1 hpz.2.2 _) hs1`. Simplify using `only [GlobalTheory.AutomorphicL2Unitary.descend, thS]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `filter_upwards [hfinq] with q hq`. Establish `hs1` using `hsumM q hq`. Establish `hon : ContinuousOn (fun pz : P × ℂ => ∑' ξ, φ pz.1 pz.2 (invPt V q.out ξ)) (N ∩ Set.univ ×ˢ U)` using `continuousOn_tsum (fun ξ => (h3 _).mono Set.inter_subset_right) hs1 (fun ξ pz hpz => hb pz hpz.1 hpz.2.2 _)`. Conclude with `(hon.continuousWithinAt ⟨mem_of_mem_nhds hN, ⟨Set.mem_univ _, hz₀⟩⟩).mono_of_mem_nhdsWithin hNs`. Establish `: (fun pz : P × ℂ => F pz.1 pz.2) = fun pz => ((autMeasure V ν) Set.univ).toReal⁻¹ • ∫ q, descend (GQ V) (thS V (φ pz.1 pz.2)) q ∂autMeasure V ν`.
-
-Use function extensionality and compare the values at `pz`. Simplify using `only [F, average_eq]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hint.const_smul ((autMeasure V ν) Set.univ).toReal⁻¹`.
-
-Conclude with `differentiableOn_avg V ν hU (hfam p)`. Conclude with `iteratedDeriv_avg V ν hU (hfam p) r z hz`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dHol : DHol := by
   intro hP D n V hn hr θ hθ ν hν P _ _ U hU φ h1 h2 h3 h4 h5

@@ -22,13 +22,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Use `haveI := A.isAb.comm`. Take `⟨w, hg⟩` from `hw`. Take `⟨rig, hr, c, s, h₁, h₂, h₃, hm⟩` from `exists_isCPMap P mul A.L A.isLB w hg`. Set `β : (Over.mk q ⟶ A.A) →* (Over.mk (q ≫ f) ⟶ G)` to `toBaseHom mul (Over.mk q)`. Establish `hβ : ∀ y, (β y).left = y.left ≫ φ` using `fun y => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : Function.Injective β` using `fun a b e => Over.OverMorphism.ext (hφ.hom_ext ((hβ a).symm.trans ((congrArg CommaMorphism.left e).trans (hβ b))) ((Over.w a).trans (Over.w b).symm))`. Establish `surj : Function.Surjective β` using `fun x => ⟨Over.homMk (hφ.lift x.left q (Over.w x)) (hφ.lift_snd _ _ _), Over.OverMorphism.ext ((hβ _).trans (hφ.lift_fst _ _ _))⟩`. Establish `hp : ∀ y, y ^ N = 1 ↔ β y ^ N = 1` using `fun y => by`. Rewrite using `[← map_pow, ← map_one β, inj.eq_iff]`. Use `⟨?_, fun x hx h => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (hL.mulN S' A N h1).2.2.2.2 F q hN]`. Conclude with `(Nat.card_congr ((Equiv.ofBijective β ⟨inj, surj⟩).subtypeEquiv hp)).symm`. Take `⟨x, rfl⟩` from `surj x`. Establish `hx'` using `(hp x).2 hx`. Rewrite using `[GlobalTheory.ThetaRep.eq_one_of_weilIs hL A q hN x hx' fun y hy => ?_, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ζ, hζ, -⟩` from `existsUnique_cubWeil c hx' hy`. Establish `e` using `(cubWeil_map _ _ f G A.A P ⟨_, c, s, h₁, h₂, h₃⟩ φ _ w hm N (Over.mk q) x y ζ hζ).unique (h _ ((hp y).1 hy))`. Conclude with `(cubWeil_iff_weilIs hL.globalFns A.isAb hx' hy 1).1 (e ▸ hζ)`.
+A detailed English derivation is pending.
 -/
 theorem card_and_nondeg_of_pullback (hL : Laws) {S S' : Scheme.{0}} [IsLocallyNoetherian S'] (f : S' ⟶ S)
     (A : PolAV S') {G : Over S} [GrpObj G] [IsCommMonObj G] (P : CP G) (φ : A.A.left ⟶ G.left)
@@ -62,11 +62,9 @@ theorem card_and_nondeg_of_pullback (hL : Laws) {S S' : Scheme.{0}} [IsLocallyNo
     exact (cubWeil_iff_weilIs hL.globalFns A.isAb hx' hy 1).1 (e ▸ hζ)
 
 /- English proof (translation)
-Introduce `hL V _ _ _ A G _ _ s F _ _ _ N h1`. Use `haveI := s.gen_hom`. Use `haveI : CharZero V := s.cdvr.2.2`. Use `haveI : CharZero (FractionRing V) := charZero_of_injective_ringHom (IsFractionRing.injective V (FractionRing V))`. Use `haveI : CharZero F := charZero_of_injective_ringHom (algebraMap (FractionRing V) F).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `φ : A.A.left ⟶ G.left` to `s.gen.inv.left ≫ pullback.fst G.hom (jK V)`. Use `haveI : IsIso s.gen.inv.left := inferInstanceAs (IsIso ((Over.forget _).map s.gen.inv))`. Establish `hφ : IsPullback φ A.A.hom G.hom (jK V)`. Establish `a : IsPullback s.gen.inv.left A.A.hom (pullback.snd G.hom (jK V)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨(Over.w s.gen.inv).trans (Category.comp_id _).symm⟩`. Simplify using `using a.paste_horiz (IsPullback.of_hasPullback G.hom (jK V))`.
-
-Use `card_and_nondeg_of_pullback hL (jK V) A s.P φ hφ (fun T x y => ?_) ?_ (jFK F) h1 (Nat.cast_ne_zero.2 (by omega))` and prove the remaining obligations. Establish `e : ∀ a : T ⟶ A.A, toBase hφ.w a = toBase (A` using `G) (A' := (Over.pullback (jK V)).obj G) (g := pullback.fst G.hom (jK V)) pullback.condition (a ≫ s.gen.inv) := fun a => Over.OverMorphism.ext (Category.assoc _ _ _).symm`. Rewrite using `[e, e, e, MonObj.mul_comp, toBase_mul_pullback]`. Conclude with `LBIso.chartPull (chartPullSec A.L s.gen.hom.left s.gen.inv.left (congrArg CommaMorphism.left s.gen.inv_hom_id)) (chartPullSame s.P.L.L _ _ _ _ fun _ => rfl) ⟨s.wA, s.wA_gen⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_card_and_nondeg : Laws → AllSet fun {V} _ _ _ {A} {G} _ _ s => ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] (N : ℕ), 1 ≤ N → Nat.card {x : TF (R := V) F ⟶ G // x ^ N = 1} = N ^ (2 * A.g) ∧ ∀ x : TF (R := V) F ⟶ G, x ^ N = 1 → (∀ y : TF (R := V) F ⟶ G, y ^ N = 1 → CubWeil s.P.c N x y 1) → x = 1 := by
   intro hL V _ _ _ A G _ _ s F _ _ _ N h1

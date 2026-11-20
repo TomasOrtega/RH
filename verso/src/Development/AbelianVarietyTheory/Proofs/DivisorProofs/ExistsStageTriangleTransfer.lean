@@ -27,25 +27,25 @@ noncomputable section
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hP hK hL`. Establish `hM` using `GlobalTheory.T.local_matching_of_howe_duality hP.howeDualityReal hP hK hL`. Establish `hWe` using `GlobalTheory.T.triple_match_existence hP.howeDualityReal hP hK hL`. Establish `hAg` using `GlobalTheory.T.square_commutation_integral_identity hP hK hL`. Take `⟨c, hc⟩` from `GlobalTheory.SqTop.Model.gBig_and GlobalTheory.T.towerStage_seesawDictionary_tripleConditions (GlobalTheory.T.square_tower_stage_finite_factor hP hK hL)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ hL' G W S hW hN i j p q A A' WW X hX => ?_⟩` and prove the remaining obligations. Take `⟨h1, h3⟩` from `h C hC D large₂ a b r T Lc μ hL' G`. Take `⟨FA, FA', FW, ea, eb, hd⟩` from `h1 W i j p q A A' WW X hX`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hIs` using `hX.2.2.2.2.2.2.2`. Take `⟨Pr, qm, qm', hq, hq', hLM⟩` from `hM D W.ψ W.θ hW W.θ_is A A' WW FA FA' FW ea eb`. Take `⟨g, hg⟩` from `qm.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hq)`. Establish `key : ∀ t, ∃ l : ℂ, l ≠ 0 ∧ ∀ P', (∀ h, MeasureTheory.IntegrableOn (X.ker' W.ψ W.θ t P' h) X.fd' X.m') → X.I W.ψ W.θ t (g (qm' P')) = l • X.I' W.ψ W.θ t P'`. Introduce `t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hT, hE, hf, hf', hk, hk'⟩` from `hd t`. Take `⟨hex, hall⟩` from `hLM _ _ hT hE`. Take `⟨Pim, rf, rl, pm, pm', hm⟩` from `hWe D W.ψ W.θ hW W.θ_is A A' WW FA FA' FW _ _ hT hex (X.ω t) (X.ω' t) (hIs.weil t) (hIs.weil' t)`. Take `⟨Pf, r, r', e, -, -, hr, hr'⟩` from `hall _ _ _ _ _ _ _ hm`. Take `⟨κ, hκ, hrk⟩` from `h3 W i j p q A A' WW X hX FA FA' FW t hf hf' Pim rf rl pm pm' hm Pr Pf qm qm' r r' e hq hq' hr hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hcI⟩` from `hAg D W.ψ W.θ hW W.θ_is A A' WW FA FA' FW _ _ hT X.m X.fd X.m' X.fd' hIs.meas hIs.meas' _ _ _ _ _ _ _ hm`. Use `⟨c * κ, mul_ne_zero hc0 hκ, fun P' hP' => ?_⟩` and prove the remaining obligations. Establish `hΦ : GlobalTheory.SquareComm.fockF W.ψ W.θ true FA FW (X.f t) (g (qm' P')) ∈ GlobalTheory.SquareComm.algF W.ψ W.θ true FA FW` using `Submodule.subset_span ⟨X.f t, g (qm' P'), hf, rfl⟩`. Establish `hΦ0 : GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P' ∈ GlobalTheory.SquareComm.algF W.ψ W.θ false FA' FW` using `Submodule.subset_span ⟨X.f' t, P', hf', rfl⟩`. Establish `hΦ'` using `Submodule.smul_mem _ κ hΦ0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm : ∀ x h, thetaKO (X.ω' t) x h (κ • GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P') = κ * X.ker' W.ψ W.θ t P' h x`. Introduce `x h`. Rewrite using `[← hk' P' x h]`. Simplify using `[thetaKO, map_smul]`. Establish `hint : ∀ h, MeasureTheory.IntegrableOn (fun x => thetaKO (X.ω' t) x h (κ • GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P')) X.fd' X.m'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Repeatedly rewrite using `[hsm]`. Conclude with `(hP' h).const_mul κ`. Establish `hqg : qm (g (qm' P')) = qm' P'` using `LinearMap.congr_fun hg _`. Establish `hp : pm (GlobalTheory.SquareComm.fockF W.ψ W.θ true FA FW (X.f t) (g (qm' P'))) = pm' (κ • GlobalTheory.SquareComm.fockF W.ψ W.θ false FA' FW (X.f' t) P')`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hr _ hf, map_smul, hr' _ hf', hqg, hrk, TensorProduct.tmul_smul, map_smul]`. Establish `h1` using `hcI _ hΦ _ hΦ' hint hp`. Use function extensionality and compare the values at `h`. Establish `h2` using `congrFun h1 h`. Simplify using `only [GlobalTheory.SquareComm.thetaInt, Pi.smul_apply, smul_eq_mul] at h2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Tri.I, Tri.I', Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[← hk]`. Rewrite using `[h2]`. Repeatedly rewrite using `[hsm]`. Rewrite using `[MeasureTheory.integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `choose lam hlam using key`. Conclude with `⟨lam, g ∘ₗ qm', fun t => (hlam t).1, fun t P' hP' => (hlam t).2 P' hP'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.StageLift.lift_stage : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

@@ -18,16 +18,16 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {S : Finset (Fin r)}
 
 /- English proof (translation)
-The claim follows from `(GAd_ext σ J (fun w => by simp [mem_finPts_iff_forall.1 hk w]) fun v => by simp [mem_infPts_iff_forall.1 ha v] : a * k = k * a)`.
+A detailed English derivation is pending.
 -/
 theorem commute_real_fin {a k : GAd σ J} (ha : a ∈ infPts σ J) (hk : k ∈ finPts σ J) : Commute a k :=
   (GAd_ext σ J (fun w => by simp [mem_finPts_iff_forall.1 hk w]) fun v => by simp [mem_infPts_iff_forall.1 ha v] :
     a * k = k * a)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons γ l ih`. Rewrite using `[List.foldr_cons, ih, List.map_cons, List.foldr_cons]`. Use function extensionality and compare the values at `g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [lineDer]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `[mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem foldr_lineDer_rightConj (a : GAd σ J) (f : GAd σ J → ℂ) (l : List (ℝ → GAd σ J)) :
     l.foldr lineDer (fun x => f (x * a)) =
@@ -45,21 +45,17 @@ theorem foldr_lineDer_rightConj (a : GAd σ J) (f : GAd σ J → ℂ) (l : List 
 variable {K₁ K₂ : Subgroup (GAd σ J)} {a : GAd σ J}
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, fun γ hγ hγ' g => ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [mul_assoc]`. Conclude with `h.leftN u hu _`. Simplify using `only [mul_assoc]`. Conclude with `h.leftM γ hγ hγ' _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, hUψ⟩` from `h.level`. Use `⟨U, hU, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Use `show ψ (g * k * a) = ψ (g * a)`. Rewrite using `[mul_assoc, ← (commute_real_fin ha hkf).eq, ← mul_assoc]`. Conclude with `hUψ k hk hkf _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h.cont.comp (continuous_id.mul continuous_const)`. Conclude with `GlobalTheory.EisCont.CentreFinite.isSm_mul_right hCM h.smooth a`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hN (l.map fun γ t => a⁻¹ * γ t * a) (by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `γ' hγ'`. Take `⟨γ, hγ, rfl⟩` from `List.mem_map.1 hγ'`. Conclude with `GlobalTheory.EisCont.CentreFinite.isRealLine_conj hCM (hl γ hγ) a)`. Use `⟨max C 0 * (height σ J a : ℝ) ^ N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_lineDer_rightConj]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hh : (height σ J (g * a) : ℝ) ≤ (height σ J g : ℝ) * (height σ J a : ℝ)`. Conclude with `height_mul_le σ J g a` after adjusting the coercions. Establish `h0 : (0 : ℝ) ≤ (height σ J (g * a) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `h.kfin` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : K₂ => fun g => ψ (g * k))).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * a))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, hk⟩, rfl⟩`. Establish `hk2 : a⁻¹ * k * a ∈ K₂` using `(hK _).2 (by simpa [mul_assoc] using hk)`. Use `⟨fun g => ψ (g * (a⁻¹ * k * a)), Submodule.subset_span ⟨⟨_, hk2⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
-
-Simplify using `[LinearMap.funLeft_apply, Function.comp, mul_assoc]`. Use `h.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {f | ∃ z, IsCentral σ J z ∧ f = dop z ψ}).map (LinearMap.funLeft ℂ ℂ (fun y : GAd σ J => y * a))) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `⟨dop z ψ, Submodule.subset_span ⟨z, hz, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `g`. Conclude with `(hz.2 ψ h.smooth a ha g).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isAutOn_realConj (hCM : IsCMExt F E σ) (ha : a ∈ infPts σ J) (hK : ∀ k, k ∈ K₂ ↔ a * k * a⁻¹ ∈ K₁)
     {ψ : GAd σ J → ℂ} (h : IsAutOn σ J X Y S K₂ ψ) : IsAutOn σ J X Y S K₁ (fun y => ψ (y * a)) := by
@@ -111,7 +107,7 @@ theorem isAutOn_realConj (hCM : IsCMExt F E σ) (ha : a ∈ infPts σ J) (hK : �
     exact (hz.2 ψ h.smooth a ha g).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isAutOn_realConj hCM ha hK h.1, fun S' hS' μ 𝓕 h1 h2 h3 g => by have := h.2 S' hS' μ 𝓕 h1 h2 h3 (g * a) simpa only [mul_assoc, Pi.zero_apply] using this⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCuspOn_realConj (hCM : IsCMExt F E σ) (ha : a ∈ infPts σ J) (hK : ∀ k, k ∈ K₂ ↔ a * k * a⁻¹ ∈ K₁)
     {ψ : GAd σ J → ℂ} (h : IsCuspOn σ J X Y S K₂ ψ) : IsCuspOn σ J X Y S K₁ (fun y => ψ (y * a)) :=
@@ -120,9 +116,9 @@ theorem isCuspOn_realConj (hCM : IsCMExt F E σ) (ha : a ∈ infPts σ J) (hK : 
     simpa only [mul_assoc, Pi.zero_apply] using this⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J _ r X Y _ K₁ K₂ a ha hK S φ h`. Establish `hK' : ∀ k, k ∈ K₁ ↔ a⁻¹ * k * a⁻¹⁻¹ ∈ K₂` using `fun k => by`. Rewrite using `[hK]`. Simplify using `[mul_assoc]`. Take `⟨h0, c, hc, hs⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, c, hc, fun ψ hψ μ 𝓕 h1 h2 g g' => ?_⟩` and prove the remaining obligations. Conclude with `isCuspOn_realConj hCM (inv_mem ha) hK' h0`. Use `hs _ (isCuspOn_realConj hCM ha hK hψ) μ 𝓕 h1 h2 g (g' * a⁻¹)` as an intermediate fact. Simplify `this` using `only [mul_assoc, inv_mul_cancel, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isCuspComp_zero_realConj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E),

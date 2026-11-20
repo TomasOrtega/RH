@@ -20,7 +20,7 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.Trc.gauss_mul_integral_A_k C hG hR hO hs ha hb hbij hF κ hκ n t ht hu`.
+A detailed English derivation is pending.
 -/
 theorem gauss_mul_integral_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) (hs : CartF σ JS JT ξ₀ B θ s) {g : GAF σ JS} {h : GAF σ JT} {a b}

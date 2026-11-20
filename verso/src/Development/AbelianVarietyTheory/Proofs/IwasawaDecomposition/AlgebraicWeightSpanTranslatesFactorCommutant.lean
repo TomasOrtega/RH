@@ -7,27 +7,23 @@ open Matrix Formalism.L2.NG ReciprocityTheory.Aut Formalism.AUTREP NumberField G
 namespace GlobalTheory.AlgWtHW
 
 /- English proof (translation)
-Introduce `L _ _ _ n a ι _ _ b P hA τ v hv w`. Establish `hS` using `GlobalTheory.T.span_rationalPoint_orbit_algebraicWeight L n a ι b P hA v hv w`. Use `Submodule.span_mono ?_ hS` and prove the remaining obligations. Introduce and unpack `x ⟨γ₀, hγ, rfl⟩`. Take `⟨_, hmul⟩` from `GlobalTheory.T.algebraicWeight_polyMatrix_multiplicative L n a ι b P hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `set B : GL (Fin n) ℂ := Matrix.GeneralLinearGroup.map τ γ₀ with hBdef`. Establish `hBv : B.val = γ₀.val.map τ` using `rfl`. Use `set R : (L →+* ℂ) → Matrix (Fin n) (Fin n) ℂ := fun σ => if σ = τ ∨ σ = ComplexEmbedding.conjugate τ then 1 else ratPt γ₀.val σ with hRdef`. Establish `hU` using `isUPt_ratPt γ₀ hγ`. Establish `hR : IsUPt R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `σ`. Distinguish the cases in `h : σ = τ ∨ σ = ComplexEmbedding.conjugate τ`. Establish `h' : ComplexEmbedding.conjugate σ = τ ∨ ComplexEmbedding.conjugate σ = ComplexEmbedding.conjugate τ`. Break down `h with h | h` into its components or cases. Use `right`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Use `left`. Rewrite using `[h, conj_conj]`. Simplify using `only [R, if_pos h, if_pos h', Matrix.transpose_one, mul_one]`. Establish `h' : ¬ (ComplexEmbedding.conjugate σ = τ ∨ ComplexEmbedding.conjugate σ = ComplexEmbedding.conjugate τ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `(h' | h')`. Conclude with `h (Or.inr (by rw [← h', conj_conj]))`. Conclude with `h (Or.inl (by simpa [conj_conj] using congrArg ComplexEmbedding.conjugate h'))`. Simplify using `only [R, if_neg h, if_neg h']`. Conclude with `hU σ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hinv : ((B⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = (ratPt γ₀.val (ComplexEmbedding.conjugate τ))ᵀ`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Conclude with `hU τ`. Establish `hdec : ratPt γ₀.val = fun σ => tauPt τ B σ * R σ`. Use function extensionality and compare the values at `σ`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hne` using `conjugate_ne_self τ`. Distinguish the cases in `h1 : σ = τ`. Substitute `h1` using the available equality. Simplify using `[tauPt, R, hBv, ratPt]`. Distinguish the cases in `h2 : σ = ComplexEmbedding.conjugate τ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Simplify using `only [tauPt, if_neg h1, if_true, R, or_true, mul_one]`. Rewrite using `[hinv, Matrix.transpose_transpose]`. Simplify using `[tauPt, R, h1, h2]`. Establish `hcomm : ∀ A : GL (Fin n) ℂ, (fun σ => tauPt τ A σ * R σ) = (fun σ => R σ * tauPt τ A σ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ ∨ σ = ComplexEmbedding.conjugate τ`. Simplify using `[R, h]`. Establish `h1 : σ ≠ τ` using `fun e => h (Or.inl e)`.
-
-Establish `h2 : σ ≠ ComplexEmbedding.conjugate τ` using `fun e => h (Or.inr e)`. Simplify using `[tauPt, h1, h2]`. Use `⟨B, evM P (upt R), ?_, ?_⟩` and prove the remaining obligations. Introduce `A`. Rewrite using `[evPt_eq_upt, ← hmul _ _ hR (isUPt_tauPt τ A), ← hmul _ _ (isUPt_tauPt τ A) hR, hcomm A]`.
-
-Rewrite using `[hdec, hmul _ _ (isUPt_tauPt τ B) hR, evPt_eq_upt, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_tau_commutant : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : AlgWt L n) (ι : Type) [Fintype ι] [DecidableEq ι] (b : Module.Basis ι ℂ a.W) (P : ι → ι → MvPolynomial ((L →+* ℂ) × Fin n × Fin n) ℂ), Agrees a b P → ∀ (τ : L →+* ℂ) (v : ι → ℂ), v ≠ 0 → ∀ w : ι → ℂ, w ∈ Submodule.span ℂ {x | ∃ (B : GL (Fin n) ℂ) (M : Matrix ι ι ℂ), (∀ A : GL (Fin n) ℂ, M * evM P (evPt τ A) = evM P (evPt τ A) * M) ∧ x = evM P (evPt τ B) *ᵥ (M *ᵥ v)} := by
   intro L _ _ _ n a ι _ _ b P hA τ v hv w

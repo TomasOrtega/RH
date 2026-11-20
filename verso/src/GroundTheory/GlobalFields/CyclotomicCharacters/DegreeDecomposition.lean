@@ -16,7 +16,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 section Lift
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ ℚ⟮(b : ℚ̄)⟯` using `adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)`. Use `Subgroup.isOpen_mono (H₁ := (ℚ⟮(b : ℚ̄)⟯).fixingSubgroup) (fun σ hσ => ?_) (ℚ⟮(b : ℚ̄)⟯).fixingSubgroup_isOpen` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff]`. Conclude with `RingOfIntegers.ext ((mem_fixingSubgroup_iff _ σ).mp hσ (b : ℚ̄) (mem_adjoin_simple_self ℚ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_stabilizer_ringOfIntegers (b : 𝓞 ℚ̄) :
     IsOpen (MulAction.stabilizer Gal(ℚ̄/ℚ) b : Set Gal(ℚ̄/ℚ)) := by
@@ -38,15 +38,15 @@ theorem coe_ringOfIntegersIncl (L : IntermediateField ℚ ℚ̄) (a : 𝓞 L) :
   rfl
 
 /- English proof (translation)
-Set `G` to `L.fixingSubgroup`. Set `_ : Algebra (𝓞 L) (𝓞 ℚ̄)` to `(ringOfIntegersIncl L).toAlgebra`. Set `_ : TopologicalSpace (𝓞 ℚ̄)` to `⊥`. Establish `: DiscreteTopology (𝓞 ℚ̄)` using `⟨rfl⟩`. Establish `: CompactSpace G` using `isCompact_iff_compactSpace.mp (InfiniteGalois.fixingSubgroup_isClosed L).isCompact`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : ∀ (g : G) (a : 𝓞 L), g • ringOfIntegersIncl L a = ringOfIntegersIncl L a` using `fun g a => RingOfIntegers.ext ((mem_fixingSubgroup_iff _ _).1 g.2 _ (a : L).2)`. Establish `: SMulCommClass G (𝓞 L) (𝓞 ℚ̄)` using `⟨fun g a b => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', RingHom.algebraMap_toAlgebra, hfix]⟩`. Establish `: ContinuousSMul G (𝓞 ℚ̄)` using `continuousSMul_iff_stabilizer_isOpen.2 fun b => (isOpen_stabilizer_ringOfIntegers b).preimage continuous_subtype_val`. Establish `: Algebra.IsInvariant (𝓞 L) (𝓞 ℚ̄) G` using `⟨fun b hb => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (b : ℚ̄) ∈ fixedField L.fixingSubgroup`. Rewrite using `[mem_fixedField_iff]`. Introduce `f hf`. Conclude with `congrArg (fun c : 𝓞 ℚ̄ => (c : ℚ̄)) (hb ⟨f, hf⟩)`. Rewrite `hmem` using `[InfiniteGalois.fixedField_fixingSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ (⟨b, hmem⟩ : L)` using `(isIntegral_algHom_iff (IsScalarTower.toAlgHom ℤ L ℚ̄) (algebraMap L ℚ̄).injective).1 b.isIntegral_coe`. Conclude with `⟨⟨⟨b, hmem⟩, hint⟩, RingOfIntegers.ext rfl⟩⟩`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq_of_profinite (A := 𝓞 L) (G := G) P (τ⁻¹ • P) h.symm`. Use `⟨τ * g, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `τ ((g : Gal(ℚ̄/ℚ)) x) = τ x`. Rewrite using `[(mem_fixingSubgroup_iff _ _).1 g.2 x hx]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabilizer_of_comap_eq (L : IntermediateField ℚ ℚ̄) (P : Ideal (𝓞 ℚ̄))
     [P.IsPrime] (τ : Gal(ℚ̄/ℚ))
@@ -89,7 +89,7 @@ end Lift
 section Cyclotomic
 
 /- English proof (translation)
-The claim follows from `Units.ext (modCharacter_unique σ fun t ht => by rw [h t (subset_adjoin ℚ _ ht), modCharacter_spec τ ht])`.
+A detailed English derivation is pending.
 -/
 theorem modCharacter_eq_of_eqOn {M : ℕ} [NeZero M] {σ τ : Gal(ℚ̄/ℚ)}
     (h : ∀ x ∈ rootsOfUnityField M, σ x = τ x) : modCharacter M σ = modCharacter M τ :=
@@ -97,7 +97,7 @@ theorem modCharacter_eq_of_eqOn {M : ℕ} [NeZero M] {σ τ : Gal(ℚ̄/ℚ)}
     rw [h t (subset_adjoin ℚ _ ht), modCharacter_spec τ ht])
 
 /- English proof (translation)
-Rewrite using `[coe_redUnits, Units.coe_map]`. Express the relevant statement in the definitionally equal form `PadicInt.toZModPow k (toPadicInt q (character σ : ℤ̂)) = _`. Rewrite using `[toZModPow_toPadicInt]`. Conclude with `proj_character (primePowPNat q k) σ`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redUnits_character (q : Nat.Primes) (k : ℕ) (σ : Gal(ℚ̄/ℚ)) :
     (redUnits q k (Units.map (toPadicInt q).toMonoidHom (character σ)) : ZMod ((q : ℕ) ^ k)) =
@@ -108,15 +108,13 @@ theorem redUnits_character (q : Nat.Primes) (k : ℕ) (σ : Gal(ℚ̄/ℚ)) :
   exact proj_character (primePowPNat q k) σ
 
 /- English proof (translation)
-Use `set L := rootsOfUnityField M`. Set `Q : Ideal (𝓞 L)` to `P.comap (ringOfIntegersIncl L)`. Establish `: Q.LiesOver (Ideal.span {(p : ℤ)})` using `⟨by`. Rewrite using `[Ideal.under, Ideal.comap_comap, show (ringOfIntegersIncl L).comp (algebraMap ℤ (𝓞 L)) = algebraMap ℤ (𝓞 ℚ̄) from RingHom.ext_int _ _]`. Conclude with `hP.over⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨τ₀, hτ₀, -⟩` from `existsUnique_isArithFrobAt p L Q hM`. Set `τ : Gal(ℚ̄/ℚ)` to `τ₀.liftNormal ℚ̄`. Establish `hτ : ∀ x : L, τ (x : ℚ̄) = (τ₀ x : ℚ̄)` using `fun x => τ₀.liftNormal_commutes ℚ̄ x`. Establish `hstab` using `hτ₀.mem_stabilizer`. Establish `h : (τ⁻¹ • P).comap (ringOfIntegersIncl L) = P.comap (ringOfIntegersIncl L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`. Establish `h1 : τ • ringOfIntegersIncl L x = ringOfIntegersIncl L (τ₀ • x)` using `RingOfIntegers.ext (hτ x)`. Rewrite using `[h1, ← Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `τ₀ • x ∈ Q ↔ x ∈ Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← MulAction.mem_stabilizer_iff.1 hstab]`. Conclude with `Ideal.smul_mem_pointwise_smul_iff`. Take `⟨σ, hσ, hστ⟩` from `exists_mem_stabilizer_of_comap_eq L P τ h`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Establish `hres : σ.restrictNormal L = τ₀`.
-
-Use extensionality with `x`. Rewrite using `[← hτ x, ← hστ _ x.2]`. Conclude with `σ.restrictNormal_commutes L x`. Rewrite using `[← isArithFrobAt_restrictNormal_iff M p Q hM σ, hres]`. Conclude with `hτ₀`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabilizer_modCharacter_eq_prime {p : ℕ} [Fact p.Prime] (P : Ideal (𝓞 ℚ̄))
     [P.IsPrime] [hP : P.LiesOver (Ideal.span {(p : ℤ)})] {M : ℕ} [NeZero M] (hM : ¬ p ∣ M) :
@@ -150,13 +148,13 @@ theorem exists_mem_stabilizer_modCharacter_eq_prime {p : ℕ} [Fact p.Prime] (P 
   exact hτ₀
 
 /- English proof (translation)
-Set `L` to `rootsOfUnityField (p ^ (k + 1))`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ (p ^ (k + 1))`. Set `ζL : L` to `⟨ζ, subset_adjoin ℚ _ hζ.pow_eq_one⟩`. Establish `hζL : IsPrimitiveRoot ζL (p ^ (k + 1))` using `IsPrimitiveRoot.of_map_of_injective (f := algebraMap L ℚ̄) hζ (algebraMap L ℚ̄).injective`. Establish `hprime : Prime (hζL.toInteger - 1)` using `hζL.zeta_sub_one_prime`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmax : (Ideal.span {hζL.toInteger - 1}).IsMaximal` using `((Ideal.span_singleton_prime hprime.ne_zero).2 hprime).isMaximal (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hprime.ne_zero)`. Establish `key : ∀ Q : Ideal (𝓞 L), Q.IsPrime → (p : 𝓞 L) ∈ Q → Q = Ideal.span {hζL.toInteger - 1}`. Introduce `Q hQ hpQ`. Use `(hmax.eq_of_le hQ.ne_top ?_).symm` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem, ← Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: CharP (𝓞 L ⧸ Q) p` using `(CharP.charP_iff_prime_eq_zero hp.out).2 (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk Q), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hpQ)`. Establish `h1 : (Ideal.Quotient.mk Q (hζL.toInteger - 1)) ^ (p ^ (k + 1)) = 0`. Rewrite using `[map_sub, map_one, sub_pow_char_pow, ← map_pow, (hζL.toInteger_isPrimitiveRoot).pow_eq_one, map_one, one_pow, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_eq_zero_iff (pow_ne_zero _ hp.out.ne_zero)).1 h1`. Rewrite using `[key Q₁ ‹_› h₁, key Q₂ ‹_› h₂]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_natCast_mem_rootsOfUnityField {p : ℕ} [hp : Fact p.Prime] (k : ℕ)
     {Q₁ Q₂ : Ideal (𝓞 (rootsOfUnityField (p ^ (k + 1))))} [Q₁.IsPrime] [Q₂.IsPrime]
@@ -186,13 +184,11 @@ theorem eq_of_natCast_mem_rootsOfUnityField {p : ℕ} [hp : Fact p.Prime] (k : �
   rw [key Q₁ ‹_› h₁, key Q₂ ‹_› h₂]
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `exists_modCharacter_eq (p ^ (k + 1)) a`. Use `set L := rootsOfUnityField (p ^ (k + 1))`. Establish `hpP : ((p : ℕ) : 𝓞 ℚ̄) ∈ P`. Establish `h : (p : ℤ) ∈ P.under ℤ`. Rewrite using `[← hP.over]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Rewrite `h` using `[Ideal.under, Ideal.mem_comap, map_natCast]`. Conclude with `h`. Establish `hpP' : ((p : ℕ) : 𝓞 ℚ̄) ∈ τ⁻¹ • P`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `MulSemiringAction.toRingHom _ _ τ (p : 𝓞 ℚ̄) ∈ P`. Rewrite using `[map_natCast]`. Conclude with `hpP`. Establish `h : (τ⁻¹ • P).comap (ringOfIntegersIncl L) = P.comap (ringOfIntegersIncl L)` using `eq_of_natCast_mem_rootsOfUnityField k (by rw [Ideal.mem_comap, map_natCast]; exact hpP') (by rw [Ideal.mem_comap, map_natCast]; exact hpP)`. Take `⟨σ, hσ, hστ⟩` from `exists_mem_stabilizer_of_comap_eq L P τ h`.
-
-Conclude with `⟨σ, hσ, (modCharacter_eq_of_eqOn hστ).trans hτ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabilizer_modCharacter_eq_of_prime_pow {p : ℕ} [hp : Fact p.Prime]
     (P : Ideal (𝓞 ℚ̄)) [P.IsPrime] [hP : P.LiesOver (Ideal.span {(p : ℤ)})] (k : ℕ)
@@ -222,9 +218,9 @@ end Cyclotomic
 section Component
 
 /- English proof (translation)
-Take `⟨n, hn⟩ : ∃ n, PadicInt.toZModPow n (Multiplicative.toAdd (padicUnitsLog q w)) ≠ 0` from `by by_contra! hcon`. Apply `hw` to reduce the goal to its premises. Establish `h0 : Multiplicative.toAdd (padicUnitsLog q w) = 0` using `PadicInt.ext_of_toZModPow.mp fun n => by rw [hcon n, map_zero]`. Rewrite using `[← ofAdd_toAdd (padicUnitsLog q w), h0, ofAdd_zero]`. Use `⟨n + unitsLevel q, by have := unitsLevel_ne_zero q; omega, fun σ hσ h1 => hn ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hred : redUnits q (n + unitsLevel q) (Units.map (toPadicInt q).toMonoidHom (character σ)) = redUnits q (n + unitsLevel q) w` using `Units.ext (by rw [redUnits_character, hσ, coe_redUnits])`. Rewrite using `[toZModPow_padicUnitsLog, ← hred, ← toZModPow_padicUnitsLog, ← degreeComponent_apply, h1, toAdd_one, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_degreeComponent_ne_one (q : Nat.Primes) (w : ℤ_[q]ˣ)
     (hw : padicUnitsLog q w ≠ 1) :
@@ -244,7 +240,7 @@ theorem exists_degreeComponent_ne_one (q : Nat.Primes) (w : ℤ_[q]ˣ)
     toAdd_one, map_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `coprime_genLog ℓ` as an intermediate fact. Rewrite `this` using `[h, Nat.coprime_zero_right]`. Conclude with `hℓ.out.one_lt.ne' this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genLog_ne_zero (ℓ : ℕ) [hℓ : Fact ℓ.Prime] : genLog ℓ ≠ 0 := by
   intro h
@@ -253,17 +249,15 @@ theorem genLog_ne_zero (ℓ : ℕ) [hℓ : Fact ℓ.Prime] : genLog ℓ ≠ 0 :=
   exact hℓ.out.one_lt.ne' this
 
 /- English proof (translation)
-Establish `: NeZero (q : ℕ)` using `⟨q.2.ne_zero⟩`. Distinguish the cases in `hpq : p = q`. Establish `hw : padicUnitsLog q (genPadicUnit q) ≠ 1`. Introduce `h`. Use `padicUnitsLog_genPadicUnit (q : ℕ)` as an intermediate fact.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, toAdd_one]`. Conclude with `genLog_ne_zero q (Nat.cast_eq_zero.1 this.symm)`. Take `⟨N, hN, hσ⟩` from `exists_degreeComponent_ne_one q _ hw`. Take `⟨k, rfl⟩ : ∃ k, N = k + 1` from `⟨N - 1, by omega⟩`. Substitute `hpq` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσP, hσa⟩` from `exists_mem_stabilizer_modCharacter_eq_of_prime_pow P k (redUnits q (k + 1) (genPadicUnit q))`. Conclude with `⟨σ, hσP, hσ σ (by rw [hσa, coe_redUnits])⟩`. Establish `hcop : Nat.Coprime q p` using `(Nat.coprime_primes q.2 hp.out).2 (Ne.symm hpq)`. Establish `hw : padicUnitsLog q (isUnit_natCast_of_coprime (q : ℕ) hcop).unit ≠ 1`. Introduce `h`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[padicUnitsLog_eq_one_iff]`. Establish `h2` using `congrArg (fun u : ℤ_[q]ˣ => (u : ℤ_[q])) h`. Simplify using `only [Units.val_pow_eq_pow_val, IsUnit.unit_spec, Units.val_one] at h2`. Rewrite `h2` using `[← Nat.cast_pow, ← Nat.cast_one, Nat.cast_inj, Nat.pow_eq_one]`. Break down `h2 with h2 | h2` into its components or cases.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hp.out.one_lt.ne' h2`. Conclude with `(torsionExponent_pos q).ne' h2`. Take `⟨N, -, hσ⟩` from `exists_degreeComponent_ne_one q _ hw`. Establish `hM : ¬ p ∣ (q : ℕ) ^ N` using `fun h => hpq ((Nat.prime_dvd_prime_iff_eq hp.out q.2).1 (hp.out.dvd_of_dvd_pow h))`. Take `⟨σ, hσP, hσp⟩` from `exists_mem_stabilizer_modCharacter_eq_prime P hM`.
-
-Conclude with `⟨σ, hσP, hσ σ (by rw [hσp, IsUnit.unit_spec, map_natCast])⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_stabilizer_degreeComponent_ne_one {p : ℕ} [hp : Fact p.Prime]
     (P : Ideal (𝓞 ℚ̄)) [P.IsPrime] [P.LiesOver (Ideal.span {(p : ℤ)})] (q : Nat.Primes) :
@@ -302,17 +296,15 @@ end Component
 section Image
 
 /- English proof (translation)
-Set `_ : TopologicalSpace (𝓞 ℚ̄)` to `⊥`. Establish `: DiscreteTopology (𝓞 ℚ̄)` using `⟨rfl⟩`. Establish `: ContinuousSMul Gal(ℚ̄/ℚ) (𝓞 ℚ̄)` using `continuousSMul_iff_stabilizer_isOpen.2 isOpen_stabilizer_ringOfIntegers`. Establish `hset : (MulAction.stabilizer Gal(ℚ̄/ℚ) P : Set Gal(ℚ̄/ℚ)) = (⋂ x ∈ P, (fun σ : Gal(ℚ̄/ℚ) => σ • x) ⁻¹' (P : Set (𝓞 ℚ̄))) ∩ ⋂ x ∈ P, (fun σ : Gal(ℚ̄/ℚ) => σ⁻¹ • x) ⁻¹' (P : Set (𝓞 ℚ̄))`. Use extensionality with `σ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [SetLike.mem_coe, MulAction.mem_stabilizer_iff, Set.mem_inter_iff, Set.mem_iInter, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← h]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.smul_mem_pointwise_smul_iff.2 hx`. Rewrite using `[← Ideal.mem_pointwise_smul_iff_inv_smul_mem, h]`. Conclude with `hx`. Introduce and unpack `⟨h1, h2⟩`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite `hy` using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Use `h1 _ hy` as an intermediate fact. Rewrite `this` using `[smul_inv_smul]`. Then use the resulting hypothesis. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Conclude with `h2 y hy`. Rewrite using `[hset]`. Use `(isClosed_biInter fun x _ => ?_).inter (isClosed_biInter fun x _ => ?_)` and prove the remaining obligations. Conclude with `(isClosed_discrete (P : Set (𝓞 ℚ̄))).preimage (continuous_id.smul continuous_const)`.
-
-Conclude with `(isClosed_discrete (P : Set (𝓞 ℚ̄))).preimage (continuous_inv.smul continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_stabilizer (P : Ideal (𝓞 ℚ̄)) :
     IsClosed (MulAction.stabilizer Gal(ℚ̄/ℚ) P : Set Gal(ℚ̄/ℚ)) := by
@@ -370,7 +362,7 @@ theorem coe_decompositionComponentImage :
   rfl
 
 /- English proof (translation)
-The claim follows from `((isClosed_stabilizer P).isCompact.image (continuous_toAdd.comp (continuous_degreeComponent q))).isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_decompositionComponentImage :
     IsClosed (decompositionComponentImage q P : Set ℤ_[q]) :=
@@ -396,14 +388,14 @@ theorem coe_decompositionDegreeImage :
   rfl
 
 /- English proof (translation)
-The claim follows from `((isClosed_stabilizer P).isCompact.image (continuous_toAdd.comp continuous_degree)).isClosed`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_decompositionDegreeImage :
     IsClosed (decompositionDegreeImage P : Set ℤ̂) :=
   ((isClosed_stabilizer P).isCompact.image (continuous_toAdd.comp continuous_degree)).isClosed
 
 /- English proof (translation)
-The claim follows from `SetLike.coe_injective (by rw [AddSubgroup.topologicalClosure_coe, (isClosed_decompositionDegreeImage P).closure_eq])`.
+A detailed English derivation is pending.
 -/
 theorem topologicalClosure_decompositionDegreeImage :
     (decompositionDegreeImage P).topologicalClosure = decompositionDegreeImage P :=
@@ -411,7 +403,7 @@ theorem topologicalClosure_decompositionDegreeImage :
     rw [AddSubgroup.topologicalClosure_coe, (isClosed_decompositionDegreeImage P).closure_eq])
 
 /- English proof (translation)
-Take `⟨σ, hσ, hne⟩` from `exists_mem_stabilizer_degreeComponent_ne_one (p := p) P q`. Use `⟨_, ⟨σ, hσ, rfl⟩, fun h => hne ?_⟩` and prove the remaining obligations. Establish `h' : Multiplicative.toAdd (degreeComponent q σ) = 0` using `h`. Rewrite using `[← ofAdd_toAdd (degreeComponent q σ), h', ofAdd_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mem_decompositionComponentImage_ne_zero (p : ℕ) [Fact p.Prime] [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] :
@@ -422,7 +414,7 @@ theorem exists_mem_decompositionComponentImage_ne_zero (p : ℕ) [Fact p.Prime] 
   rw [← ofAdd_toAdd (degreeComponent q σ), h', ofAdd_zero]
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `exists_mem_decompositionComponentImage_ne_zero q P p`. Conclude with `isOpen_of_isClosed_of_ne_zero _ (isClosed_decompositionComponentImage q P) hx hx0`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isOpen_decompositionComponentImage (p : ℕ) [Fact p.Prime] [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] :
@@ -431,7 +423,7 @@ theorem isOpen_decompositionComponentImage (p : ℕ) [Fact p.Prime] [P.IsPrime]
   exact isOpen_of_isClosed_of_ne_zero _ (isClosed_decompositionComponentImage q P) hx hx0
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `exists_mem_decompositionComponentImage_ne_zero q P p`. Conclude with `infinite_of_ne_zero _ hx hx0`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem infinite_decompositionComponentImage (p : ℕ) [Fact p.Prime] [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] :
@@ -440,9 +432,9 @@ theorem infinite_decompositionComponentImage (p : ℕ) [Fact p.Prime] [P.IsPrime
   exact infinite_of_ne_zero _ hx hx0
 
 /- English proof (translation)
-Rewrite using `[topologicalClosure_decompositionDegreeImage]`. Use `nonempty_addEquiv_of_isClosed _ (isClosed_decompositionDegreeImage P) fun q => ?_` and prove the remaining obligations. Take `⟨σ, hσ, hne⟩` from `exists_mem_stabilizer_degreeComponent_ne_one (p := p) P q`. Use `⟨_, ⟨σ, hσ, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[toPadicInt_degree]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hne (by rw [← ofAdd_toAdd (degreeComponent q σ), h, ofAdd_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_addEquiv_decompositionDegreeImage (p : ℕ) [Fact p.Prime] [P.IsPrime]
     [P.LiesOver (Ideal.span {(p : ℤ)})] :

@@ -25,13 +25,13 @@ def rs {N : LB X} {M : LB X₁} (e : X₁ ⟶ X) (π : N.ι → M.ι) (J : (Z �
   fun ψ => π (J (ψ ≫ e))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => Iff.rfl, fun _ ψ _ _ _ _ _ => by rw [Category.comp_id]; rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPart.refl (M : LB X) : IsPart M M (𝟙 X) id :=
   ⟨fun _ _ => Iff.rfl, fun _ ψ _ _ _ _ _ => by rw [Category.comp_id]; rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun i x => (h.mem i (e' x)).trans (h'.mem _ x), fun Z ψ z i j hi hj => by rw [← Category.assoc] exact (h.g Z (ψ ≫ e') z i j ((h'.mem _ _).2 hi) ((h'.mem _ _).2 hj)).trans (h'.g Z ψ z _ _ hi hj)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsPart.trans {N : LB X} {M : LB X₁} {M' : LB X₂} {e : X₁ ⟶ X} {π : N.ι → M.ι} {e' : X₂ ⟶ X₁} {π' : M.ι → M'.ι}
     (h : IsPart N M e π) (h' : IsPart M M' e' π') : IsPart N M' (e' ≫ e) (π' ∘ π) :=
@@ -43,9 +43,9 @@ def cGen {A' A : LB Y} (c : ChartPull A' A (𝟙 Y)) (t : LB.Gen A) : LB.Gen A' 
   ⟨fun i => res (c.le i) (t.s (c.idx i))⟩
 
 /- English proof (translation)
-Introduce `i j`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ A.U (c.idx i) ⊓ A.U (c.idx j)` using `⟨c.le i hy.1, c.le j hy.2⟩`. Establish `e` using `congrArg (gm (𝟙 Y) y (A.U (c.idx i) ⊓ A.U (c.idx j))) (ht (c.idx i) (c.idx j))`. Rewrite `e` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm, ← c.g y i j hy.1 hy.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul, gm_res _ y _ hy, gm_res _ y _ hy]`. Conclude with `(gm_res _ y _ hy.1 _).trans (e.trans (congrArg _ (gm_res _ y _ hy.2 _).symm))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cGen_isGen {A' A : LB Y} (c : ChartPull A' A (𝟙 Y)) {t : LB.Gen A} (ht : t.IsGen) : (cGen c t).IsGen := by
   intro i j
@@ -70,7 +70,7 @@ variable {N : LB X} {M : LB X₁} {e : X₁ ⟶ X} {π : N.ι → M.ι} (h : IsP
 include h
 
 /- English proof (translation)
-Introduce `ψ` and use `(h.mem _ _).1 (hJ (ψ ≫ e))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsPart.good {z : Z} {J : (Z ⟶ X) → N.ι} (hJ : Good N z J) : Good M z (rs e π J) :=
   fun ψ => (h.mem _ _).1 (hJ (ψ ≫ e))
@@ -107,12 +107,12 @@ def IsPart.down (σ : M.ι → N.ι) (hσ : ∀ i, π (σ i) = i) (φ : K → (Y
 def IsPart.gen (t : LB.Gen (LB.LinComb M φ ε)) : LB.Gen (LB.LinComb N (fun k => φ k ≫ e) ε) := cGen (h.up φ ε) t
 
 /- English proof (translation)
-The claim follows from `cGen_isGen _ ht`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.gen_isGen {t : LB.Gen (LB.LinComb M φ ε)} (ht : t.IsGen) : (h.gen t).IsGen := cGen_isGen _ ht
 
 /- English proof (translation)
-The claim follows from `(gm_res r z _ (hJ.mem (fun k => φ k ≫ e) r) _).trans (val_of t r z _ _ (fun k => by rw [rs, Category.assoc]; rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.val_gen (t : LB.Gen (LB.LinComb M φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → N.ι} (hJ : Good N z J) :
     val (h.gen t) r z J = val t r z (rs e π J) :=
@@ -122,7 +122,7 @@ theorem IsPart.val_gen (t : LB.Gen (LB.LinComb M φ ε)) (r : Z ⟶ Y) (z : Z) {
 def IsPart.sec (s : LB.Sec (LB.LinComb M φ ε)) : LB.Sec (LB.LinComb N (fun k => φ k ≫ e) ε) := cSec (h.up φ ε) s
 
 /- English proof (translation)
-The claim follows from `(gs_res r z _ (hJ.mem (fun k => φ k ≫ e) r) _).trans (sval_of s r z _ _ (fun k => by rw [rs, Category.assoc]; rfl)).symm`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.sval_sec (s : LB.Sec (LB.LinComb M φ ε)) (r : Z ⟶ Y) (z : Z) {J : (Z ⟶ X) → N.ι} (hJ : Good N z J) :
     sval (h.sec s) r z J = sval s r z (rs e π J) :=
@@ -130,9 +130,9 @@ theorem IsPart.sval_sec (s : LB.Sec (LB.LinComb M φ ε)) (r : Z ⟶ Y) (z : Z) 
     (sval_of s r z _ _ (fun k => by rw [rs, Category.assoc]; rfl)).symm
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, h.g _ _ z _ _ (hj k) (e₀ k ▸ hj k)]`. Establish `: ∀ b, π (j k) = b → gm (r ≫ φ k) z (M.U (π (j k)) ⊓ M.U b) (M.g (π (j k)) b) = 1`. Introduce and unpack `_ rfl`. Conclude with `gm_self hM _ z (hj k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this _ (e₀ k), one_zpow]`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.trF_eq_one (hM : M.IsLB) (r : Z ⟶ Y) (z : Z) {j j' : K → N.ι} (e₀ : ∀ k, π (j k) = π (j' k))
     (hj : ∀ k, φ k (r z) ∈ M.U (π (j k))) : trF (fun k => φ k ≫ e) ε r z j j' = 1 := by
@@ -143,9 +143,9 @@ theorem IsPart.trF_eq_one (hM : M.IsLB) (r : Z ⟶ Y) (z : Z) {j j' : K → N.ι
   rw [this _ (e₀ k), one_zpow]
 
 /- English proof (translation)
-Use `choose σ hσ using hπ`. Use `⟨cSec (h.down σ hσ φ ε) s, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `m` using `(h.good hJ).mem φ r`. Establish `m'` using `(h.down σ hσ φ ε).le _ m`. Use `(gs_res r z _ m _).trans ((sec_trans s r z m' (hJ.mem (fun k => φ k ≫ e) r)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `h.trF_eq_one (φ := φ) (ε := ε) hM r z (j := fun k => σ (rs e π J (r ≫ φ k))) (j' := fun k => J (r ≫ φ k ≫ e)) (fun k => (hσ _).trans (by rw [rs, Category.assoc])) (fun k => by rw [hσ]; exact Set.mem_iInter.1 m k)`. Conclude with `(congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) e₁).trans (_root_.one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.exists_sec (hM : M.IsLB) (hπ : Function.Surjective π) (s : LB.Sec (LB.LinComb N (fun k => φ k ≫ e) ε)) :
     ∃ s' : LB.Sec (LB.LinComb M φ ε), ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good N z J →
@@ -160,9 +160,9 @@ theorem IsPart.exists_sec (hM : M.IsLB) (hπ : Function.Surjective π) (s : LB.S
   exact (congrArg (fun u : (Z.presheaf.stalk z)ˣ => u.val * _) e₁).trans (_root_.one_mul _)
 
 /- English proof (translation)
-Use `choose σ hσ using hπ`. Use `⟨cGen (h.down σ hσ φ ε) t, cGen_isGen _ ht, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `m` using `(h.good hJ).mem φ r`. Establish `m'` using `(h.down σ hσ φ ε).le _ m`. Use `(gm_res r z _ m _).trans ((gen_trans ht r z m' (hJ.mem (fun k => φ k ≫ e) r)).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `h.trF_eq_one (φ := φ) (ε := ε) hM r z (j := fun k => σ (rs e π J (r ≫ φ k))) (j' := fun k => J (r ≫ φ k ≫ e)) (fun k => (hσ _).trans (by rw [rs, Category.assoc])) (fun k => by rw [hσ]; exact Set.mem_iInter.1 m k)`. Conclude with `(congrArg (· * _) e₁).trans (_root_.one_mul _)`.
+A detailed English derivation is pending.
 -/
 theorem IsPart.exists_gen (hM : M.IsLB) (hπ : Function.Surjective π) (t : LB.Gen (LB.LinComb N (fun k => φ k ≫ e) ε))
     (ht : t.IsGen) : ∃ t' : LB.Gen (LB.LinComb M φ ε), t'.IsGen ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J), Good N z J →
@@ -189,7 +189,7 @@ def isoVal (w : LB.Iso (LB.LinComb M' φ' ε') ((LB.LinComb M φ ε).pull β)) (
   gm p z _ (w.s (fun _ k => J (p ≫ β ≫ φ k), fun k => J' (p ≫ φ' k)))
 
 /- English proof (translation)
-The claim follows from `(gm_div (LB.LinComb M' φ' ε') ((LB.LinComb M φ ε).pull β) p z a b ⟨ha, hb⟩).trans (congrArg₂ (· * ·) ((gm_pull_g (LB.LinComb M φ ε) β p z a.1 b.1 ha.1 hb.1).trans (gm_linComb M φ ε (p ≫ β) z _ _ (mem_pull.1 ha.1) (mem_pull.1 hb.1))) (congrArg (·⁻¹) (gm_linComb M' φ' ε' p z _ _ ha …`.
+A detailed English derivation is pending.
 -/
 theorem gm_div_pull (p : Z ⟶ Y) (z : Z) (a b : (PUnit.{1} → K → M.ι) × (K' → M'.ι))
     (ha : p z ∈ (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')).U a)
@@ -205,9 +205,9 @@ variable (h : IsPart N M e π) (h' : IsPart N M' e' π')
 include h h'
 
 /- English proof (translation)
-Rewrite using `[trF, trF, trF, Fintype.prod_sum_type, ← Finset.prod_inv_distrib]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) ?_) (Finset.prod_congr rfl fun k _ => (zpow_neg _ _).trans (congrArg (fun u => (u ^ ε' k)⁻¹) ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (h.g _ ((p ≫ β) ≫ φ k) z _ _ ((h.mem _ _).1 (Set.mem_iInter.1 hj (.inl k))) ((h.mem _ _).1 (Set.mem_iInter.1 hj' (.inl k))))` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Category.assoc]`. Use `Eq.trans ?_ (h'.g _ (p ≫ φ' k) z _ _ ((h'.mem _ _).1 (Set.mem_iInter.1 hj (.inr k))) ((h'.mem _ _).1 (Set.mem_iInter.1 hj' (.inr k))))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Sum.elim_inr, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trF_two (p : Z ⟶ Y) (z : Z) (j j' : K ⊕ K' → N.ι)
     (hj : p z ∈ LB.wchart N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) j)
@@ -226,9 +226,9 @@ theorem trF_two (p : Z ⟶ Y) (z : Z) (j j' : K ⊕ K' → N.ι)
     simp only [Sum.elim_inr, Category.assoc]
 
 /- English proof (translation)
-Establish `le : ∀ j : K ⊕ K' → N.ι, LB.wchart N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) j ≤ (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')).U (fun _ k => π (j (.inl k)), fun k => π' (j (.inr k)))` using `fun j y hy => ⟨mem_pull.2 (Set.mem_iInter.2 fun k => (h.mem _ _).1 (Set.mem_iInter.1 hy (.inl k))), Set.mem_iInter.2 fun k => (h'.mem _ _).1 (Set.mem_iInter.1 hy (.inr k))⟩`. Set `c : ChartPull (LB.LinComb N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) (Sum.elim ε (fun k => - ε' k))) (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')) (𝟙 Y)` to `{ idx := fun j => (fun _ k => π (j (.inl k)), fun k => π' (j (.inr k))) le := le g := fun y j j' hj hj' => (gm_linComb N _ _ (𝟙 Y) y j j' hj hj').trans ((trF_two h h' (𝟙 Y) y j j' hj hj').trans (gm_div_pull (𝟙 Y) y _ _ (le j hj) (le j' hj')).symm) }`. Use `⟨cGen c w, cGen_isGen c hw, fun Z p z J hJ => (gm_res p z _ (hJ.mem _ p) _).trans ?_⟩` and prove the remaining obligations. Establish `: ∀ a b, a = b → gm p z _ (w.s a) = gm p z _ (w.s b)` using `by rintro _ _ rfl; rfl`. Use `this _ _ (Prod.ext (funext fun _ => funext fun k => ?_) (funext fun k => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show π (J (p ≫ β ≫ φ k ≫ e)) = π (J ((p ≫ β ≫ φ k) ≫ e))`. Simplify using `only [Category.assoc]`. Use `show π' (J (p ≫ φ' k ≫ e')) = π' (J ((p ≫ φ' k) ≫ e'))`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gen_of_iso (w : LB.Iso (LB.LinComb M' φ' ε') ((LB.LinComb M φ ε).pull β)) (hw : w.IsGen) :
     ∃ t : LB.Gen (LB.LinComb N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) (Sum.elim ε (fun k => - ε' k))),
@@ -254,15 +254,13 @@ theorem exists_gen_of_iso (w : LB.Iso (LB.LinComb M' φ' ε') ((LB.LinComb M φ 
     simp only [Category.assoc]
 
 /- English proof (translation)
-Use `choose σ hσ using hπ`. Use `choose σ' hσ' using hπ'`. Set `ix : (PUnit.{1} → K → M.ι) × (K' → M'.ι) → K ⊕ K' → N.ι` to `fun a => Sum.elim (fun k => σ (a.1 PUnit.unit k)) (fun k => σ' (a.2 k))`. Establish `le : ∀ a, (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')).U a ≤ LB.wchart N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) (ix a)` using `fun a y hy => Set.mem_iInter.2 fun k => by`. Break down `k with k | k` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h.mem _ _).2 ((hσ _).symm ▸ Set.mem_iInter.1 (mem_pull.1 hy.1) k)`. Conclude with `(h'.mem _ _).2 ((hσ' _).symm ▸ Set.mem_iInter.1 hy.2 k)`. Establish `i₁ : ∀ a, (fun k => π (ix a (.inl k))) = a.1 PUnit.unit` using `fun a => funext fun k => hσ _`. Establish `i₂ : ∀ a, (fun k => π' (ix a (.inr k))) = a.2` using `fun a => funext fun k => hσ' _`. Set `c : ChartPull (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')) (LB.LinComb N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) (Sum.elim ε (fun k => - ε' k))) (𝟙 Y)` to `{ idx := ix le := le g := fun y a b ha hb => (gm_div_pull (𝟙 Y) y _ _ ha hb).trans (Eq.symm ((gm_linComb N _ _ (𝟙 Y) y _ _ (le a ha) (le b hb)).trans ((trF_two h h' (𝟙 Y) y _ _ (le a ha) (le b hb)).trans (congrArg₂ (· * ·) (congrArg₂ (trF φ ε (𝟙 Y ≫ β) y) (i₁ a) (i₁ b)) (congrArg …`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨cGen c t, cGen_isGen c ht, fun Z p z J hJ => ?_⟩` and prove the remaining obligations. Establish `m₁ : (p ≫ β) z ∈ LB.wchart M φ (fun k => rs e π J (p ≫ β ≫ φ k))` using `Set.mem_iInter.2 fun k => h.good hJ (p ≫ β ≫ φ k)`. Establish `m₂` using `(h'.good hJ).mem φ' p`. Establish `m : p z ∈ (LB.div ((LB.LinComb M φ ε).pull β) (LB.LinComb M' φ' ε')).U (fun _ k => rs e π J (p ≫ β ≫ φ k), fun k => rs e' π' J (p ≫ φ' k))` using `⟨mem_pull.2 m₁, m₂⟩`. Establish `n` using `hJ.mem (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(gm_res p z _ m _).trans ((gen_trans ht p z (le _ m) n).trans ?_)` and prove the remaining obligations. Establish `a₁ : (fun k => π (J (p ≫ Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e') (.inl k)))) = fun k => rs e π J (p ≫ β ≫ φ k)` using `funext fun k => by simp only [rs, Sum.elim_inl, Category.assoc]`. Establish `a₂ : (fun k => π' (J (p ≫ Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e') (.inr k)))) = fun k => rs e' π' J (p ≫ φ' k)` using `funext fun k => by simp only [rs, Sum.elim_inr, Category.assoc]`. Establish `b₁` using `(congrArg₂ (trF φ ε (p ≫ β) z) (i₁ (fun _ k => rs e π J (p ≫ β ≫ φ k), fun k => rs e' π' J (p ≫ φ' k))) a₁).trans (mul_eq_left.1 (trF_trans hM φ ε (p ≫ β) z m₁ m₁ m₁))`. Establish `b₂` using `(congrArg₂ (trF φ' ε' p z) (i₂ (fun _ k => rs e π J (p ≫ β ≫ φ k), fun k => rs e' π' J (p ≫ φ' k))) a₂).trans (mul_eq_left.1 (trF_trans hM' φ' ε' p z m₂ m₂ m₂))`.
-
-Establish `b` using `(trF_two (ε := ε) (ε' := ε') h h' p z _ _ (le _ m) n).trans ((congrArg₂ (fun u v => u * v⁻¹) b₁ b₂).trans (mul_inv_cancel 1))`. Conclude with `(congrArg (· * val t p z J) b).trans (_root_.one_mul _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_iso_of_gen (hM : M.IsLB) (hM' : M'.IsLB) (hπ : Function.Surjective π) (hπ' : Function.Surjective π')
     (t : LB.Gen (LB.LinComb N (Sum.elim (fun k => β ≫ φ k ≫ e) (fun k => φ' k ≫ e')) (Sum.elim ε (fun k => - ε' k))))
@@ -316,13 +314,13 @@ section Join
 variable {X₁ X₂ Z : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `h` and use `(isCompl_range_inl_inr X₁ X₂).1 (Set.singleton_subset_iff.2 ⟨x, rfl⟩) (Set.singleton_subset_iff.2 ⟨y, h.symm⟩) rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inl_ne_inr (x : X₁) (y : X₂) : (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ≠ (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) y := fun h =>
   (isCompl_range_inl_inr X₁ X₂).1 (Set.singleton_subset_iff.2 ⟨x, rfl⟩) (Set.singleton_subset_iff.2 ⟨y, h.symm⟩) rfl
 
 /- English proof (translation)
-The claim follows from `(isCompl_range_inl_inr X₁ X₂).sup_eq_top.ge (Set.mem_univ p)`.
+A detailed English derivation is pending.
 -/
 theorem inl_or_inr (p : (X₁ ⨿ X₂ : Scheme.{0})) :
     (∃ x, (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x = p) ∨ ∃ y, (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) y = p :=
@@ -332,7 +330,7 @@ def jU (U₁ : X₁.Opens) (U₂ : X₂.Opens) : (X₁ ⨿ X₂).Opens :=
   (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ''ᵁ U₁ ⊔ (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ''ᵁ U₂
 
 /- English proof (translation)
-Use `⟨?_, fun h => Or.inl ⟨x, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `(⟨y, hy, e⟩ | ⟨y, -, e⟩)`. Conclude with `(coprod.inl : X₁ ⟶ X₁ ⨿ X₂).isOpenEmbedding.injective e ▸ hy`. Conclude with `(inl_ne_inr x y e.symm).elim`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_jU_inl (U₁ : X₁.Opens) (U₂ : X₂.Opens) (x : X₁) : (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ∈ jU U₁ U₂ ↔ x ∈ U₁ := by
   refine ⟨?_, fun h => Or.inl ⟨x, h, rfl⟩⟩
@@ -341,7 +339,7 @@ theorem mem_jU_inl (U₁ : X₁.Opens) (U₂ : X₂.Opens) (x : X₁) : (coprod.
   · exact (inl_ne_inr x y e.symm).elim
 
 /- English proof (translation)
-Use `⟨?_, fun h => Or.inr ⟨x, h, rfl⟩⟩` and prove the remaining obligations. Introduce and unpack `(⟨y, -, e⟩ | ⟨y, hy, e⟩)`. Conclude with `(inl_ne_inr y x e).elim`. Conclude with `(coprod.inr : X₂ ⟶ X₁ ⨿ X₂).isOpenEmbedding.injective e ▸ hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_jU_inr (U₁ : X₁.Opens) (U₂ : X₂.Opens) (x : X₂) : (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) x ∈ jU U₁ U₂ ↔ x ∈ U₂ := by
   refine ⟨?_, fun h => Or.inr ⟨x, h, rfl⟩⟩
@@ -350,15 +348,11 @@ theorem mem_jU_inr (U₁ : X₁.Opens) (U₂ : X₂.Opens) (x : X₂) : (coprod.
   · exact (coprod.inr : X₂ ⟶ X₁ ⨿ X₂).isOpenEmbedding.injective e ▸ hy
 
 /- English proof (translation)
-Take `⟨b₁, e₁⟩` from `exists_ext_unit (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ⁻¹ᵁ W) (res h₁ a₁)`. Take `⟨b₂, e₂⟩` from `exists_ext_unit (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ⁻¹ᵁ W) (res h₂ a₂)`. Set `V : Bool → (X₁ ⨿ X₂).Opens` to `fun b => Bool.rec ((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ''ᵁ ((coprod.inl : X₁ ⟶ X₁ ⨿ X₂) ⁻¹ᵁ W)) ((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ''ᵁ ((coprod.inr : X₂ ⟶ X₁ ⨿ X₂) ⁻¹ᵁ W)) b`. Apply the tactic sequence `have le : ∀ b, V b ≤ W := by rintro (_ | _) _ ⟨y, hy, rfl⟩ <;> exact hy`. Take `⟨a, ha⟩` from `glue_unit W V le (fun p hp => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Break down `inl_or_inr p with ⟨x, rfl⟩ | ⟨x, rfl⟩` into its components or cases. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨false, x, hp, rfl⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨true, x, hp, rfl⟩)`. Use the proof step `(fun b => Bool.rec (motive := fun b => Γ(X₁ ⨿ X₂, V b)ˣ) b₁ b₂ b) (by`. Introduce and unpack `(_ | _) (_ | _) p ⟨hp, hp'⟩`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨x, -, e⟩` from `hp`. Take `⟨y, -, e'⟩` from `hp'`. Conclude with `(inl_ne_inr x y (e.trans e'.symm)).elim`. Take `⟨x, -, e⟩` from `hp`.
-
-Take `⟨y, -, e'⟩` from `hp'`. Conclude with `(inl_ne_inr y x (e'.trans e.symm)).elim`. Use the proof step `rfl)`. Use `⟨a, fun Z ψ z hz => ?_, fun Z ψ z hz => ?_⟩` and prove the remaining obligations. Conclude with `(gm_res _ z (le false) ⟨ψ z, hz, rfl⟩ a).symm.trans ((congrArg _ (ha false)).trans ((e₁ Z ψ z hz).trans (gm_res ψ z _ hz _)))`.
-
-Conclude with `(gm_res _ z (le true) ⟨ψ z, hz, rfl⟩ a).symm.trans ((congrArg _ (ha true)).trans ((e₂ Z ψ z hz).trans (gm_res ψ z _ hz _)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_glue (W : (X₁ ⨿ X₂).Opens) (U₁ : X₁.Opens) (U₂ : X₂.Opens)
     (h₁ : ∀ x, (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ∈ W → x ∈ U₁) (h₂ : ∀ x, (coprod.inr : X₂ ⟶ X₁ ⨿ X₂) x ∈ W → x ∈ U₂)
@@ -394,7 +388,7 @@ theorem exists_glue (W : (X₁ ⨿ X₂).Opens) (U₁ : X₁.Opens) (U₂ : X₂
       ((e₂ Z ψ z hz).trans (gm_res ψ z _ hz _)))
 
 /- English proof (translation)
-The claim follows from `unit_ext fun p hp => by rcases inl_or_inr p with ⟨x, rfl⟩ | ⟨x, rfl⟩ · exact gm_inj _ x hp hp (h₁ x hp) · exact gm_inj _ x hp hp (h₂ x hp)`.
+A detailed English derivation is pending.
 -/
 theorem unit_ext_coprod {W : (X₁ ⨿ X₂).Opens} {a b : Γ(X₁ ⨿ X₂, W)ˣ}
     (h₁ : ∀ x, (coprod.inl : X₁ ⟶ X₁ ⨿ X₂) x ∈ W → gm coprod.inl x W a = gm coprod.inl x W b)
@@ -407,7 +401,7 @@ theorem unit_ext_coprod {W : (X₁ ⨿ X₂).Opens} {a b : Γ(X₁ ⨿ X₂, W)�
 variable (M₁ : LB X₁) (M₂ : LB X₂)
 
 /- English proof (translation)
-Take `⟨a, h₁, h₂⟩` from `exists_glue (jU (M₁.U p.1) (M₂.U p.2) ⊓ jU (M₁.U q.1) (M₂.U q.2)) (M₁.U p.1 ⊓ M₁.U q.1) (M₂.U p.2 ⊓ M₂.U q.2) (fun x hx => ⟨(mem_jU_inl _ _ x).1 hx.1, (mem_jU_inl _ _ x).1 hx.2⟩) (fun x hx => ⟨(mem_jU_inr _ _ x).1 hx.1, (mem_jU_inr _ _ x).1 hx.2⟩) (M₁.g p.1 q.1) (M₂.g p.2 q.2)`. Conclude with `⟨a, fun Z ψ z a b => h₁ Z ψ z ⟨(mem_jU_inl _ _ _).2 a, (mem_jU_inl _ _ _).2 b⟩, fun Z ψ z a b => h₂ Z ψ z ⟨(mem_jU_inr _ _ _).2 a, (mem_jU_inr _ _ _).2 b⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_join_g (p q : M₁.ι × M₂.ι) :
     ∃ a : Γ(X₁ ⨿ X₂, jU (M₁.U p.1) (M₂.U p.2) ⊓ jU (M₁.U q.1) (M₂.U q.2))ˣ,
@@ -426,13 +420,13 @@ def join : LB (X₁ ⨿ X₂) :=
   ⟨M₁.ι × M₂.ι, fun p => jU (M₁.U p.1) (M₂.U p.2), fun p q => (exists_join_g M₁ M₂ p q).choose⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ x => mem_jU_inl _ _ x, fun Z ψ z p q => (exists_join_g M₁ M₂ p q).choose_spec.1 Z ψ z⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPart_inl : IsPart (join M₁ M₂) M₁ coprod.inl Prod.fst :=
   ⟨fun _ x => mem_jU_inl _ _ x, fun Z ψ z p q => (exists_join_g M₁ M₂ p q).choose_spec.1 Z ψ z⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ x => mem_jU_inr _ _ x, fun Z ψ z p q => (exists_join_g M₁ M₂ p q).choose_spec.2 Z ψ z⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPart_inr : IsPart (join M₁ M₂) M₂ coprod.inr Prod.snd :=
   ⟨fun _ x => mem_jU_inr _ _ x, fun Z ψ z p q => (exists_join_g M₁ M₂ p q).choose_spec.2 Z ψ z⟩
@@ -444,33 +438,33 @@ abbrev rl (J : (Z ⟶ X₁ ⨿ X₂) → (join M₁ M₂).ι) : (Z ⟶ X₁) →
 abbrev rr (J : (Z ⟶ X₁ ⨿ X₂) → (join M₁ M₂).ι) : (Z ⟶ X₂) → M₂.ι := rs (N := join M₁ M₂) coprod.inr Prod.snd J
 
 /- English proof (translation)
-The claim follows from `h.elim fun x => (exists_chart hM x).nonempty`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_idx {X : Scheme.{0}} {M : LB X} (hM : M.IsLB) [h : Nonempty X] : Nonempty M.ι :=
   h.elim fun x => (exists_chart hM x).nonempty
 
 /- English proof (translation)
-Introduce `i` and use `(nonempty_idx h₂).elim fun j => ⟨(i, j), rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fst_surjective (h₂ : M₂.IsLB) [Nonempty X₂] : Function.Surjective (Prod.fst : (join M₁ M₂).ι → M₁.ι) :=
   fun i => (nonempty_idx h₂).elim fun j => ⟨(i, j), rfl⟩
 
 /- English proof (translation)
-Introduce `j` and use `(nonempty_idx h₁).elim fun i => ⟨(i, j), rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem snd_surjective (h₁ : M₁.IsLB) [Nonempty X₁] : Function.Surjective (Prod.snd : (join M₁ M₂).ι → M₂.ι) :=
   fun j => (nonempty_idx h₁).elim fun i => ⟨(i, j), rfl⟩
 
 /- English proof (translation)
-Establish `p₁` using `isPart_inl M₁ M₂`. Establish `p₂` using `isPart_inr M₁ M₂`. Establish `g₁` using `fun x => p₁.g _ (𝟙 X₁) x`. Establish `g₂` using `fun x => p₂.g _ (𝟙 X₂) x`. Simplify using `only [Category.id_comp] at g₁ g₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 ?_, fun i => unit_ext_coprod (fun x hx => ?_) (fun x hx => ?_), fun i j k => unit_ext_coprod (fun x hx => ?_) (fun x hx => ?_)⟩` and prove the remaining obligations. Break down `inl_or_inr p with ⟨x, rfl⟩ | ⟨x, rfl⟩` into its components or cases. Take `⟨i, hi⟩` from `exists_chart h₁ x`. Take `⟨j⟩` from `nonempty_idx h₂`. Conclude with `⟨(i, j), (mem_jU_inl _ _ x).2 hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨j, hj⟩` from `exists_chart h₂ x`. Take `⟨i⟩` from `nonempty_idx h₁`. Conclude with `⟨(i, j), (mem_jU_inr _ _ x).2 hj⟩`. Establish `m` using `(p₁.mem _ _).1 hx`. Conclude with `(gm_res _ x _ hx _).trans ((g₁ x i i m m).trans ((gm_self h₁ (𝟙 _) x m).trans (map_one _).symm))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m` using `(p₂.mem _ _).1 hx`. Conclude with `(gm_res _ x _ hx _).trans ((g₂ x i i m m).trans ((gm_self h₂ (𝟙 _) x m).trans (map_one _).symm))`. Establish `a` using `(p₁.mem _ _).1 hx.1.1`. Establish `b` using `(p₁.mem _ _).1 hx.1.2`. Establish `c` using `(p₁.mem _ _).1 hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(map_mul _ _ _).trans ((congrArg₂ (· * ·) ((gm_res _ x _ hx _).trans (g₁ x i j a b)) ((gm_res _ x _ hx _).trans (g₁ x j k b c))).trans ((gm_cocycle h₁ (𝟙 _) x a b c).trans ((gm_res _ x _ hx _).trans (g₁ x i k a c)).symm))`. Establish `a` using `(p₂.mem _ _).1 hx.1.1`. Establish `b` using `(p₂.mem _ _).1 hx.1.2`. Establish `c` using `(p₂.mem _ _).1 hx.2`. Conclude with `(map_mul _ _ _).trans ((congrArg₂ (· * ·) ((gm_res _ x _ hx _).trans (g₂ x i j a b)) ((gm_res _ x _ hx _).trans (g₂ x j k b c))).trans ((gm_cocycle h₂ (𝟙 _) x a b c).trans ((gm_res _ x _ hx _).trans (g₂ x i k a c)).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem join_isLB (h₁ : M₁.IsLB) (h₂ : M₂.IsLB) [Nonempty X₁] [Nonempty X₂] : (join M₁ M₂).IsLB := by
   have p₁ := isPart_inl M₁ M₂
@@ -505,11 +499,9 @@ theorem join_isLB (h₁ : M₁.IsLB) (h₂ : M₂.IsLB) [Nonempty X₁] [Nonempt
         ((gm_res _ x _ hx _).trans (g₂ x i k a c)).symm))
 
 /- English proof (translation)
-Take `⟨i₀⟩` from `nonempty_idx h₁`. Take `⟨j₀⟩` from `nonempty_idx h₂`. Take `⟨J, hJ, e⟩` from `exists_good (join M₁ M₂) (join_isLB h₁ h₂) z (K := (Z ⟶ X₁) ⊕ (Z ⟶ X₂)) (Sum.elim (· ≫ coprod.inl) (· ≫ coprod.inr)) (Sum.elim (fun ψ => (J₁ ψ, j₀)) (fun ψ => (i₀, J₂ ψ))) (by`. Introduce and unpack `(a | a) (b | b) e`. Take `rfl : a = b` from `(cancel_mono (coprod.inl : X₁ ⟶ X₁ ⨿ X₂)).1 e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Conclude with `(inl_ne_inr (a z) (b z) (congrArg (fun q : Z ⟶ X₁ ⨿ X₂ => q z) e)).elim`. Conclude with `(inl_ne_inr (b z) (a z) (congrArg (fun q : Z ⟶ X₁ ⨿ X₂ => q z) e).symm).elim`. Take `rfl : a = b` from `(cancel_mono (coprod.inr : X₂ ⟶ X₁ ⨿ X₂)).1 e rfl) (by`. Introduce and unpack `(a | a)`.
-
-Conclude with `(mem_jU_inl _ _ _).2 (g₁ a)`. Conclude with `(mem_jU_inr _ _ _).2 (g₂ a))`. Conclude with `⟨J, hJ, funext fun ψ => congrArg Prod.fst (e (.inl ψ)), funext fun ψ => congrArg Prod.snd (e (.inr ψ))⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good_join (h₁ : M₁.IsLB) (h₂ : M₂.IsLB) [Nonempty X₁] [Nonempty X₂] {z : Z} {J₁ : (Z ⟶ X₁) → M₁.ι}
     {J₂ : (Z ⟶ X₂) → M₂.ι} (g₁ : Good M₁ z J₁) (g₂ : Good M₂ z J₂) :

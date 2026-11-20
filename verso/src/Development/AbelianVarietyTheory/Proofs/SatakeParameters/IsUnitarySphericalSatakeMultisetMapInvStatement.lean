@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.RpowNegLeNormOfC
 open GlobalTheory.LatHecke GlobalTheory.RowSatakeBound
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SatakeInv.isUnitarySatake_map_inv` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIsUnitarySphericalSatakeMultisetMapInv.lean&line=241#L241)
 -/

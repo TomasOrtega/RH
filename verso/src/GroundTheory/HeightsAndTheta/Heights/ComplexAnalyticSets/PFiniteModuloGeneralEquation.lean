@@ -8,35 +8,31 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter Matrix
 
 /- English proof (translation)
-Introduce `σ τ _ _ _ x k f L c hf ⟨n, e, he, hfin⟩ ⟨r, h, h', hh, hh', hpow⟩`. Establish `hproj : ∀ c', AnalyticAt ℂ (fun y : τ → ℂ => y c') (L x)` using `fun c' => (ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : τ => ℂ) c').analyticAt _`. Set `fs : Fin k → analyticAtSubring x` to `fun i => ⟨f i, hf i⟩`. Set `es : Fin n → analyticAtSubring x` to `fun m => ⟨e m, he m⟩`. Set `hs : Fin k → analyticAtSubring x` to `fun i => ⟨h i, hh i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `hs' : τ → analyticAtSubring x` to `fun c' => ⟨h' c', hh' c'⟩`. Set `T : analyticAtSubring (L x)` to `⟨fun y => (y c - L x c) ^ r, mem_analyticAtSubring.2 (((hproj c).sub analyticAt_const).pow r)⟩`. Set `D : τ → analyticAtSubring (L x)` to `fun c' => ⟨fun y => zeroCoordinate c y c' - zeroCoordinate c (L x) c', mem_analyticAtSubring.2 (by`. Simplify using `only [zeroCoordinate_apply]`. Use `split_ifs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `analyticAt_const`. Conclude with `(hproj c').sub analyticAt_const)⟩`. Use `choose b kk hb hkk hbk using fun (i : Fin n) (c' : τ) => hfin _ ((hh' c').mul (he i))`. Take `⟨b1, k1, hb1, hk1, h1eq⟩` from `hfin (fun _ => 1) analyticAt_const`. Set `bs : Fin n → τ → Fin n → analyticAtSubring (L x)` to `fun i c' j => ⟨b i c' j, hb i c' j⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `b1s : Fin n → analyticAtSubring (L x)` to `fun m => ⟨b1 m, hb1 m⟩`. Set `M : Matrix (Fin n) (Fin n) (analyticAtSubring (L x))` to `Matrix.of fun i j => (if i = j then T else 0) - ∑ c', bs i c' j * D c'`. Use `⟨r * n, ((M.det : analyticAtSubring (L x)) : (τ → ℂ) → ℂ), ?_⟩` and prove the remaining obligations. Set `J : Ideal (holGerms x)` to `Ideal.span (Set.range fun i => analyticAtGerm x (fs i))`. Set `ψ : analyticAtSubring x →+* holGerms x ⧸ J` to `(Ideal.Quotient.mk J).comp (analyticAtGerm x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `ψ' : analyticAtSubring (L x) →+* holGerms x ⧸ J` to `ψ.comp (analyticAtComp x L)`. Establish `hψf : ∀ i, ψ (fs i) = 0` using `fun i => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨i, rfl⟩)`. Establish `hψeq : ∀ a b : analyticAtSubring x, (a : (σ → ℂ) → ℂ) =ᶠ[𝓝 x] b → ψ a = ψ b` using `fun a b hab => by`. Simplify using `only [ψ, RingHom.comp_apply, (analyticAtGerm_eq_iff a b).2 hab]`. Establish `R1 : ψ' T = ∑ c', ψ (hs' c') * ψ' (D c')`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `hψeq (analyticAtComp x L T) (∑ i, hs i * fs i + ∑ c', hs' c' * analyticAtComp x L (D c')) (by filter_upwards [hpow] with z hz` as an intermediate fact. Simplify `hz)` using `[T, D, hs, hs', fs]`. Simplify `this` using `[ψ', map_add, map_sum, map_mul, hψf]`. Establish `R2 : ∀ i c', ψ (hs' c') * ψ (es i) = ∑ j, ψ' (bs i c' j) * ψ (es j)` using `fun i c' => by`. Use `hψeq (hs' c' * es i) (∑ j, analyticAtComp x L (bs i c' j) * es j + ∑ a, (⟨kk i c' a, hkk i c' a⟩ : analyticAtSubring x) * fs a) (by filter_upwards [hbk i c'] with z hz` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hz)` using `[bs, es, hs', fs]`. Simplify `this` using `[ψ', map_add, map_sum, map_mul, hψf]`. Establish `R3 : ∑ m, ψ' (b1s m) * ψ (es m) = 1`. Use `hψeq 1 (∑ m, analyticAtComp x L (b1s m) * es m + ∑ a, (⟨k1 a, hk1 a⟩ : analyticAtSubring x) * fs a) (by filter_upwards [h1eq] with z hz` as an intermediate fact. Simplify `hz)` using `[b1s, es, fs]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify `this.symm` using `[ψ', map_add, map_sum, map_mul, hψf]`. Establish `hMe : (ψ'.mapMatrix M) *ᵥ (fun j => ψ (es j)) = 0`. Use function extensionality and compare the values at `i`. Establish `hdiag : ∑ j, ψ' (if i = j then T else 0) * ψ (es j) = ψ' T * ψ (es i)`. Simplify using `[apply_ite ψ']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ c', ψ (hs' c') * ψ' (D c') * ψ (es i) = ∑ j, ψ' (bs i c' j) * ψ' (D c') * ψ (es j)`. Introduce `c'`. Rewrite using `[mul_right_comm, R2, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [Matrix.mulVec, dotProduct, RingHom.mapMatrix_apply, Matrix.map_apply, M, Matrix.of_apply, map_sub, map_sum, map_mul, sub_mul, Finset.sum_sub_distrib, Pi.zero_apply, hdiag, R1, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_congr rfl fun c' _ => key c', Finset.sum_comm, sub_eq_zero]`. Establish `hdet : ψ' M.det = 0`. Rewrite using `[RingHom.map_det]`. Conclude with `det_eq_zero_of_mulVec_eq_zero _ _ (fun m => ψ' (b1s m)) hMe R3`. Establish `hmem : analyticAtGerm x (analyticAtComp x L M.det) ∈ J` using `Ideal.Quotient.eq_zero_iff_mem.1 hdet`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩` from `Ideal.mem_span_range_iff_exists_fun.1 hmem`. Use `choose q hq using fun i => analyticAtGerm_surjective x (a i)`. Use `⟨fun i => q i, (M.det).2, fun i => (q i).2, ?_, ?_⟩` and prove the remaining obligations. Establish `hgerm : analyticAtGerm x (∑ i, q i * fs i) = analyticAtGerm x (analyticAtComp x L M.det)`. Rewrite using `[← ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[map_sum, map_mul, hq]`. Use `filter_upwards [(analyticAtGerm_eq_iff _ _).1 hgerm] with z hz`. Simplify `hz.symm` using `[fs]`. Establish `hev : ∀ s : ℂ, ((M.det : analyticAtSubring (L x)) : (τ → ℂ) → ℂ) (L x + Pi.single c s) = s ^ (r * n)`. Introduce `s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← analyticAtEval_apply, RingHom.map_det]`. Establish `hdg : (analyticAtEval (L x) (L x + Pi.single c s)).mapMatrix M = Matrix.diagonal fun _ => s ^ r`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, M, Matrix.of_apply, map_sub, map_sum, map_mul, apply_ite (analyticAtEval (L x) (L x + Pi.single c s)), map_zero, analyticAtEval_apply, Matrix.diagonal_apply]`. Establish `hD : ∀ c', ((D c' : analyticAtSubring (L x)) : (τ → ℂ) → ℂ) (L x + Pi.single c s) = 0`.
-
-Introduce `c'`. Simplify using `only [D, zeroCoordinate_apply]`. Use `split_ifs with hc`. Simplify using the standard rewrite rules. Simplify using `[hc]`.
-
-Simplify using `[hD, T]`. Rewrite using `[hdg, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin, pow_mul]`. Rewrite using `[show (fun s : ℂ => ((M.det : analyticAtSubring (L x)) : (τ → ℂ) → ℂ) (L x + Pi.single c s)) = fun s : ℂ => s ^ (r * n) from funext hev]`. Conclude with `((analyticAt_id (𝕜 := ℂ) (z := (0 : ℂ))).pow _).analyticOrderAt_eq_natCast.2 ⟨fun _ => 1, analyticAt_const, one_ne_zero, Eventually.of_forall fun s => by simp⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FiniteModuloGeneralEquation.proof : FiniteModuloGeneralEquation.Statement := by
   intro σ τ _ _ _ x k f L c hf ⟨n, e, he, hfin⟩ ⟨r, h, h', hh, hh', hpow⟩

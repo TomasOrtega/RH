@@ -14,17 +14,17 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.TripleAssembly
 /- English proof (translation)
-Introduce `hH hP D ψ θ hψ hθ W W₁ X A A₁ B α β hTr ωA ωB hA hB e Bs Γ Xc om om' h tA tB R Rf hm m f φ hφ hmem`. Establish `hg` using `hm.triple.geo`. Establish `hψ' : Bs.ψ = ψ` using `h.ψ`. Establish `hstd : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hψ' ▸ hm.triple.base.std`. Take `⟨w⟩ : Nonempty (InfinitePlace D.host.F)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `dV' : Γ.V'.J.det ≠ 0` using `Onto.det_ne_of_hasSig_map (Bs.emb w).1 1 (by rw [one_smul]; exact hg.hV'.sig w)`. Establish `dW : Γ.W.J.det ≠ 0` using `Onto.det_ne_of_hasSig_map (Bs.emb w).1 Complex.I (hg.hW.sig w)`. Establish `gB : (sgn false W₁).gram.det ≠ 0`. Establish `e1 : (sgn false W₁).gram = W₁.gram` using `rfl`. Rewrite `dV'` using `[h.JW₁, Matrix.det_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `right_ne_zero_of_mul dV'`. Take `⟨T, hT, hinj⟩` from `GlobalTheory.T.thetaTransform_darbouxModel_linear_injective D Γ.M' ψ (sgn false W₁).gram e (hψ' ▸ hg.hM') hstd dV' dW gB`. Establish `hS` using `GlobalTheory.T.darbouxModelAlgebraicVectors_le_adelicSchwartz _ _ _ Γ.M' Bs.ψ Bs.emb hg.hM'`. Establish `H : ∃ q : (Matrix (Fin X.rank) (Fin W₁.rank) (AE D) → ℂ) →ₗ[ℂ] PiT R Γ Rf, ∀ Ψ ∈ darbAlg Γ.M' Bs.ψ Bs.emb, q (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Ψ) = liftPure Γ.M' R.p' Rf.p' (vacIm Γ Rf) Ψ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `Onto.exists_factor T _ (fun x hx => hinj x (hS hx)) (liftPure Γ.M' R.p' Rf.p' (vacIm Γ Rf))`. Conclude with `⟨q, fun Ψ hΨ => by rw [← hT Ψ (hS hΨ)]; exact hq Ψ hΨ⟩`. Establish `h1 : mapB ψ e Bs Γ R Rf (GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i))) = liftPure Γ.M' R.p' Rf.p' (vacIm Γ Rf) (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ …`. Unfold `mapB thetaLift`. Rewrite using `[dif_pos H]`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `H.choose_spec _ hmem`. Establish `hs : ∀ᶠ v in Filter.cofinite, Rf.p' v (Γ.M'.vac v) = vacIm Γ Rf v` using `by filter_upwards [Xc.T.eventually_cofinite_notMem] with v hv using (hm.fin.sph v hv).1.symm`. Establish `HL` using `GlobalTheory.T.weil_model_projection_factorisation _ _ _ Γ.M' Bs.ψ hg.hM' _ R.p' _ Rf.p' (vacIm Γ Rf) hs`. Rewrite using `[h1, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `liftPure`. Rewrite using `[dif_pos HL]`. Conclude with `HL.choose_spec (f i) (φ i) (hφ i).1 (hφ i).2`.
+A detailed English derivation is pending.
 -/
 theorem secondFactorMap_theta_pure_tensor : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
@@ -90,7 +90,7 @@ open GlobalTheory.SquareComm
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor | exact _root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor | (intros; apply _root_.GlobalTheory.TripleAssembly.secondFactorMap_theta_pure_tensor <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.tripleProduct_secondMap_theta_pure : GlobalTheory.Published.HoweDualityReal → _root_.GlobalTheory.FunPr.ThetaLocalInputs →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

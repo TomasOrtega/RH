@@ -21,15 +21,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Sc
   {O : Type} [CommRing O] (x0 : R →+* O) (hu : IsUnit (x0 P'.f))
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_injective_divisor {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o b`. Establish `e : (o ⊗ₜ[Localization.Away P'.f] b : Bt P' x0 hu) = algebraMap O (Bt P' x0 hu) (show O from o) * inB P' x0 hu b`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ = (o ⊗ₜ[Localization.Away P'.f] (1 : P'.B)) * ((1 : OL P' x0 hu) ⊗ₜ b)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, _root_.mul_one, _root_.one_mul]`. Rewrite using `[e, map_mul, map_mul]`. Conclude with `congrArg₂ (· * ·) (RingHom.congr_fun h1 (show O from o)) (RingHom.congr_fun h2 b)`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ringHom_ext_Bt {S : Type} [CommRing S] {α β : Bt P' x0 hu →+* S}
     (h1 : α.comp (algebraMap O (Bt P' x0 hu)) = β.comp (algebraMap O (Bt P' x0 hu)))
@@ -49,11 +49,11 @@ theorem ringHom_ext_Bt {S : Type} [CommRing S] {α β : Bt P' x0 hu →+* S}
 variable {G' : Over (Sp O)} {π : G'.left ⟶ t.G.left}
 
 /- English proof (translation)
-Establish `hO : α.comp (algebraMap O (Bt P' x0 hu)) = β.comp (algebraMap O (Bt P' x0 hu))`. Establish `e` using `congrArg (· ≫ G'.hom) h`. Simplify using `only [Category.assoc, Over.w (aH P' x0 hu hπ)] at e`. Apply `spMap_injective_divisor` to reduce the goal to its premises. Conclude with `(GlobalTheory.HTMap.spc (algebraMap O (Bt P' x0 hu)) α).symm.trans (e.trans (GlobalTheory.HTMap.spc _ β))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hB : α.comp (inB P' x0 hu) = β.comp (inB P' x0 hu)`. Establish `e` using `congrArg (· ≫ π) h`. Simplify using `only [Category.assoc, aH_left_π] at e`. Establish `e2 : spMap (α.comp (inB P' x0 hu)) ≫ P'.u.left = spMap (β.comp (inB P' x0 hu)) ≫ P'.u.left` using `(GlobalTheory.HTMap.spc_assoc _ _ _).symm.trans (e.trans (GlobalTheory.HTMap.spc_assoc _ _ _))`. Use `P'.fin.mono S _ _ (GlobalTheory.HTMap.FP.alg_ext ?_) e2` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `α.comp ((inB P' x0 hu).comp P'.str) = β.comp ((inB P' x0 hu).comp P'.str)`. Rewrite using `[inB_str, ← RingHom.comp_assoc, ← RingHom.comp_assoc, hO]`. Conclude with `ringHom_ext_Bt P' x0 hu hO hB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_cancel_aff (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) {S : Type} [CommRing S]
     (α β : Bt P' x0 hu →+* S)
@@ -74,9 +74,9 @@ theorem aH_cancel_aff (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) {S 
   exact ringHom_ext_Bt P' x0 hu hO hB
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `T g h e`. Use `Scheme.Cover.hom_ext T.affineCover _ _ fun i => ?_` and prove the remaining obligations. Establish `ea` using `Spec.map_preimage (T.affineCover.f i ≫ g)`. Establish `eb` using `Spec.map_preimage (T.affineCover.f i ≫ h)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `aH_cancel_aff P' x0 hu hπ (Spec.preimage (T.affineCover.f i ≫ g)).hom (Spec.preimage (T.affineCover.f i ≫ h)).hom (by`. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage (T.affineCover.f i ≫ g)) ≫ _ = Spec.map (Spec.preimage (T.affineCover.f i ≫ h)) ≫ _`. Rewrite using `[ea, eb]`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (T.affineCover.f i ≫ ·) e).trans (Category.assoc _ _ _).symm))`. Conclude with `ea.symm.trans ((congrArg Spec.map (CommRingCat.hom_ext key)).trans eb)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aH_left_mono (hπ : IsPullback π G'.hom t.G.hom (spMap x0 ≫ ξ)) : Mono (aH P' x0 hu hπ).left := by
   constructor

@@ -18,14 +18,14 @@ def toMixed [IsTotallyComplex E] {R : Type} [CommRing R]
     (Pi.ringHom θ)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun w => (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1) w.2).elim) (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem mixed_ext [IsTotallyComplex E] {x y : mixedSpace E} (h : ∀ w, x.2 w = y.2 w) : x = y :=
   Prod.ext (funext fun w =>
     (InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex w.1) w.2).elim) (funext h)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `InfinitePlace.comap_surjective (k := F) (K := E) v`. Use `⟨⟨w, IsTotallyComplex.isComplex w⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.comap_mk, InfinitePlace.mk_embedding]`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_place_over [IsTotallyComplex E] [IsTotallyReal F] (v : InfinitePlace F) :
     ∃ w : {w : InfinitePlace E // w.IsComplex}, InfinitePlace.mk (w.1.embedding.comp (algebraMap F E)) = v := by
@@ -35,51 +35,47 @@ theorem exists_place_over [IsTotallyComplex E] [IsTotallyReal F] (v : InfinitePl
   exact hw
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hF hE h2 hσ`. Use `letI : TopologicalSpace (InfiniteAdeleRing F ⊗[F] E) := moduleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E)`. Use `haveI : IsModuleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (InfiniteAdeleRing F ⊗[F] E) := IsModuleTopology.toContinuousAdd (InfiniteAdeleRing F) _`. Use `haveI : FiniteDimensional F E := Module.finite_of_finrank_pos (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c : E ≃ₐ[F] E` to `AlgEquiv.ofBijective σ (Algebra.IsAlgebraic.algHom_bijective σ)`. Establish `hc' : ∀ (τ : E →+* ℂ) x, τ (c x) = starRingEnd ℂ (τ x)` using `hσ`. Establish `hnr : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate φ ≠ φ` using `fun φ hφ => IsTotallyComplex.complexEmbedding_not_isReal φ (ComplexEmbedding.isReal_iff.2 hφ)`. Establish `hc : c ≠ 1`. Introduce `h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `hnr φ (RingHom.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq, ← hc', h1]`. Both sides reduce to the same expression. Use `choose θ0 h0 h0' using fun φ : E →+* ℂ => GlobalTheory.InfAdeleCM.exists_hom (F := F) φ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hθ` using `fun φ => GlobalTheory.InfAdeleCM.hom_tmul φ (θ0 φ) (h0 φ) (h0' φ)`. Take `⟨δ, hδ0, hcδ, hs⟩` from `GlobalTheory.InfAdeleCM.exists_delta c h2 hc hc'`. Establish `hre : ∀ τ : E →+* ℂ, (τ δ).re = 0`. Introduce `τ`. Use `congrArg Complex.re (hc' τ δ)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hcδ, map_neg, Complex.neg_re, Complex.conj_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : ∀ τ : E →+* ℂ, (τ δ).im ≠ 0`. Introduce `τ h`. Conclude with `hδ0 (τ.injective (by rw [map_zero]; exact Complex.ext (hre τ) h))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : ∀ v : InfinitePlace F, v.Completion ≃ᵢ ℝ` to `fun v => InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal v)`. Establish `hr : ∀ v x, r v x = InfinitePlace.Completion.extensionEmbeddingOfIsReal (IsTotallyReal.isReal v) x` using `fun _ _ => rfl`. Set `p : {w : InfinitePlace E // w.IsComplex} → InfinitePlace F` to `fun w => InfinitePlace.mk (w.1.embedding.comp (algebraMap F E))`. Set `Θ : InfiniteAdeleRing F ⊗[F] E →+* mixedSpace E` to `toMixed fun w => θ0 w.1.embedding`. Establish `hΘ : ∀ z w, (Θ z).2 w = θ0 w.1.embedding z` using `fun _ _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hval : ∀ (w) (a b : InfiniteAdeleRing F), (Θ (a ⊗ₜ 1 + b ⊗ₜ δ)).2 w = ⟨r _ (a (p w)), r _ (b (p w)) * (w.1.embedding δ).im⟩`. Introduce `w a b`. Rewrite using `[hΘ, map_add, hθ, hθ, GlobalTheory.InfAdeleCM.ext_eq_ofReal, GlobalTheory.InfAdeleCM.ext_eq_ofReal, map_one, mul_one]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.re_ofReal_mul, hre, mul_zero, add_zero, hr, p]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.im_ofReal_mul, zero_add, hr, p]`. Use `choose t ht using exists_place_over (F := F) (E := E)`. Establish `ht' : ∀ v, p (t v) = v` using `ht`. Establish `htp : ∀ w, t (p w) = w`. Introduce `w`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← InfinitePlace.mk_embedding (t (p w)).1, ← InfinitePlace.mk_embedding w.1]`. Break down `GlobalTheory.InfAdeleCM.eq_or_conj c hc' hδ0 hcδ hs _ _ (GlobalTheory.InfAdeleCM.mk_eq_iff (ht (p w))) with e | e` into its components or cases. Rewrite using `[e]`. Rewrite using `[e, InfinitePlace.mk_conjugate_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `A : (({w : InfinitePlace E // w.IsComplex}) → ℝ) → InfiniteAdeleRing F` to `fun y v => (r v).symm (y (t v))`. Establish `hA : Continuous A` using `continuous_pi fun v => (r v).symm.continuous.comp (continuous_apply (t v))`. Establish `hA' : ∀ y w, r _ (A y (p w)) = y w`. Introduce `y w`. Simplify using `only [A, IsometryEquiv.apply_symm_apply, htp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `G : mixedSpace E → InfiniteAdeleRing F ⊗[F] E` to `fun z => A (fun w => (z.2 w).re) ⊗ₜ[F] (1 : E) + A (fun w => (z.2 w).im / (w.1.embedding δ).im) ⊗ₜ[F] δ`. Establish `hG : ∀ z, Θ (G z) = z`. Introduce `z`. Use `mixed_ext fun w => ?_` and prove the remaining obligations. Rewrite using `[hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Complex.ext (hA' (fun w => (z.2 w).re) w) ?_` and prove the remaining obligations. Establish `h` using `hA' (fun w => (z.2 w).im / (w.1.embedding δ).im) w`. Conclude with `(congrArg (· * (w.1.embedding δ).im) h).trans (div_mul_cancel₀ _ (him _))`. Establish `hinj : Function.Injective Θ`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `z hz`. Take `⟨a, b, rfl⟩` from `GlobalTheory.InfAdeleCM.exists_decomp hs z`. Establish `key : ∀ v, a v = 0 ∧ b v = 0`. Introduce `v`. Establish `h` using `hval (t v) a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h` using `[hz, ht' v]`. Establish `h1` using `congrArg Complex.re h`. Establish `h3` using `congrArg Complex.im h`. Simplify using `only [Prod.snd_zero, Pi.zero_apply, Complex.zero_re, Complex.zero_im] at h1 h3`. Establish `z0 : r v 0 = 0` using `by rw [hr, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(r v).injective (by rw [z0, ← h1]), (r v).injective (by rw [z0]; exact (mul_eq_zero.1 h3.symm).resolve_right (him _))⟩`. Establish `ha : a = 0` using `funext fun v => (key v).1`. Establish `hb : b = 0` using `funext fun v => (key v).2`. Rewrite using `[ha, hb, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`. Set `e : InfiniteAdeleRing F ⊗[F] E ≃+* mixedSpace E` to `RingEquiv.ofBijective Θ ⟨hinj, fun z => ⟨G z, hG z⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ∀ z, e z = Θ z` using `fun _ => rfl`. Establish `htm : ∀ x : E, Continuous fun a : InfiniteAdeleRing F => a ⊗ₜ[F] x`. Introduce `x`. Establish `: (fun a : InfiniteAdeleRing F => a ⊗ₜ[F] x) = fun a => a • ((1 : InfiniteAdeleRing F) ⊗ₜ[F] x)`. Use function extensionality and compare the values at `a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[this]`. Conclude with `Continuous.fun_smul continuous_id' continuous_const`. Use `⟨e, fun x => mixed_ext fun w => ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[he, hΘ, h0, mixedEmbedding_apply_isComplex]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (e.symm : mixedSpace E → _) = G`. Use function extensionality and compare the values at `z`. Rewrite using `[RingEquiv.symm_apply_eq, he, hG]`. Rewrite using `[this]`. Establish `c1 : Continuous fun z : mixedSpace E => (fun w => (z.2 w).re)` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c2 : Continuous fun z : mixedSpace E => (fun w => (z.2 w).im / (w.1.embedding δ).im)` using `by fun_prop`. Conclude with `Continuous.fun_add ((htm 1).comp' (hA.comp' c1)) ((htm δ).comp' (hA.comp' c2))`. Establish `hne : ∀ w, ((u : mixedSpace E).2 w).re ≠ 0`. Introduce `w h`. Establish `h1 : (u : mixedSpace E).2 w = 0` using `Complex.ext h (hu w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun z : mixedSpace E => z.2 w) u.mul_inv`. Simplify using `only [Prod.snd_mul, Pi.mul_apply, h1, zero_mul, Prod.snd_one, Pi.one_apply] at h3`. Conclude with `zero_ne_one h3`. Establish `hunit : IsUnit (A fun w => ((u : mixedSpace E).2 w).re)`. Use `Pi.isUnit_iff.2 fun v => IsUnit.mk0 _ fun h => hne (t v) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (r v).symm ((u : mixedSpace E).2 (t v)).re = 0` using `h`. Establish `h3` using `congrArg (r v) h1`. Rewrite `h3` using `[IsometryEquiv.apply_symm_apply, hr, map_zero]`. Then use the resulting hypothesis. Use `⟨hunit.unit, mixed_ext fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `hval w (A fun w => ((u : mixedSpace E).2 w).re) 0`.
-
-Rewrite `h` using `[TensorProduct.zero_tmul, add_zero]`. Rewrite using `[IsUnit.unit_spec, he, h]`. Use `Complex.ext (hA' (fun w => ((u : mixedSpace E).2 w).re) w) ?_` and prove the remaining obligations. Establish `z0 : r (p w) ((0 : InfiniteAdeleRing F) (p w)) = 0`. Rewrite using `[hr]`.
-
-Conclude with `map_zero _`. Rewrite using `[hu w]`. Simplify using `only [z0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equiv_mixedSpace : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsTotallyReal F → IsTotallyComplex E → Module.finrank F E = 2 → (∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) → letI : TopologicalSpace (InfiniteAdeleRing F ⊗[F] E) := moduleTopology (InfiniteAdeleRing F) (InfiniteAdeleRing F ⊗[F] E); ∃ θ : InfiniteAdeleRing F ⊗[F] E ≃+* mixedSpace E, (∀ x : E, θ (1 ⊗ₜ[F] x) = mixedEmbedding E x) ∧ Continuous θ.symm ∧ ∀ u : (mixedSpace E)ˣ, (∀ w, ((u : mixedSpace E).2 w).im = 0) → ∃ a : (InfiniteAdeleRing F)ˣ, θ ((a : InfiniteAdeleRing F) ⊗ₜ[F] 1) = u := by
   intro F E _ _ _ _ _ σ hF hE h2 hσ

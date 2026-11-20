@@ -16,7 +16,7 @@ section Zero
 variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Establish `h0 : charClassProf (0 : Additive G →ₜ+ QZ) = 0`. Unfold `charClassProf`. Rewrite using `[map_zero]`. Conclude with `map_zero _`. Rewrite using `[cupCharClassProf, ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_comp, LinearMap.comp_apply, cupRightProf_apply, h0, map_zero, map_zero]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupCharClassProf_zero (A : Rep ℤ G) [IsDiscreteRep A] (a : A.ρ.invariants) :
     (cupCharClassProf A 0).hom a = 0 := by
@@ -36,7 +36,7 @@ variable {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Take `⟨E, hE, rfl⟩ : ∃ E : IntermediateField K Ω, ∃ _ : FiniteDimensional K E, fixingOpenSubgroup E = S` from `⟨fixedField (S : Subgroup Gal(Ω/K)), inferInstance, OpenSubgroup.ext fun x => by`. Express the relevant statement in the definitionally equal form `x ∈ (fixedField (S : Subgroup Gal(Ω/K))).fixingSubgroup ↔ x ∈ (S : Subgroup Gal(Ω/K))`. Rewrite using `[fixingSubgroup_fixedField_openSubgroup]⟩`. Conclude with `localClassFormationZ_inv_cupCharClassProf_of_prime E χ π hπ σ hσ hχ`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localClassFormationZ_inv_cupCharClassProf_of_prime' (S : OpenSubgroup Gal(Ω/K))
     (χ : Additive Gal(Ω/K) →ₜ+ QZ) (π : Abstract.fixedModule Ωˣ (S : Subgroup Gal(Ω/K)))
@@ -64,33 +64,29 @@ variable {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-Use `isDiscreteModule_units (K := K) (Ω := Ω)` as an intermediate fact. Establish `hax` using `classFieldAxiom_units K Ω`. Set `U` to `charKerOpen χ`. Set `M : IntermediateField K Ω` to `fixedField (U : Subgroup Gal(Ω/K))`. Establish `: FiniteDimensional K M` using `inferInstanceAs (FiniteDimensional K (fixedFiniteGalois U).toIntermediateField)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsGalois K M` using `inferInstanceAs (IsGalois K (fixedFiniteGalois U).toIntermediateField)`. Establish `hMU : M.fixingSubgroup = (U : Subgroup Gal(Ω/K))` using `InfiniteGalois.fixingSubgroup_fixedField ⟨(U : Subgroup Gal(Ω/K)), U.toOpenSubgroup.isClosed⟩`. Establish `hker : ∀ x : Gal(Ω/K), x ∈ M.fixingSubgroup ↔ χ (Additive.ofMul x) = 0` using `fun x => by`. Rewrite using `[hMU]`. Express the relevant statement in the definitionally equal form `x ∈ charKer (charAdd χ) ↔ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mem_charKer]`. Conclude with `⟨fun h => QZ.toAddCircle.injective (h.trans (map_zero _).symm), fun h => (congrArg QZ.toAddCircle h).trans (map_zero _)⟩`. Establish `: IsMulCommutative (M ≃ₐ[K] M)` using `⟨⟨fun τ₁ τ₂ => by`. Take `⟨g₁, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := Ω) τ₁`. Take `⟨g₂, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (E := Ω) τ₂`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_mul, ← map_mul, ← mul_inv_eq_one, ← map_inv, ← map_mul, ← MonoidHom.mem_ker, IntermediateField.restrictNormalHom_ker, hker]`. Simplify using `only [mul_inv_rev, ofMul_mul, ofMul_inv, map_add, map_neg]`. Use the proof step `abel⟩⟩`. Establish `: IsAbelianGalois K M` using `⟨⟩`. Set `L` to `fixingOpenSubgroup M`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a'` to `(baseUnitsEquiv (K := K) (Ω := Ω)).symm a`. Take `⟨q, hq⟩` from `QuotientGroup.mk_surjective (((localClassFieldData K Ω).reciprocityAbEquiv (le_top : L ≤ ⊤) hax).symm (a' : tateZero Ωˣ _ (L : Subgroup Gal(Ω/K))))`. Take `⟨s, hs⟩` from `ClassFieldData.exists_frobeniusLift_mk (D := localClassFieldData K Ω) (le_top : L ≤ ⊤) q`. Set `S` to `s.field L le_top`. Set `π₀` to `((localClassFieldData K Ω).exists_prime S).choose`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ₀ : (localClassFieldData K Ω).valuation S π₀ = Multiplicative.ofAdd 1` using `((localClassFieldData K Ω).exists_prime S).choose_spec`. Establish `hrec : (QuotientGroup.mk a' : tateZero Ωˣ ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) (L : Subgroup Gal(Ω/K))) = (QuotientGroup.mk (norm Ωˣ _ (S : Subgroup Gal(Ω/K)) π₀) : tateZero Ωˣ ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) (L : Subgroup Gal(Ω/K)))`. Establish `h1` using `(localClassFieldData K Ω).reciprocityAbEquiv_of (le_top : L ≤ ⊤) hax ((⟨s.elt, s.mem⟩ : ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K))) : ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) ⧸ (L : Subgroup Gal(Ω/K)).subgroupOf ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)))`. Rewrite `h1` using `[ClassFieldData.reciprocity_mk, hs]`. Use `((MulEquiv.apply_symm_apply ((localClassFieldData K Ω).reciprocityAbEquiv (le_top : L ≤ ⊤) hax) _).symm.trans ?_).trans h1` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg _ hq.symm`. Take `⟨b, hb⟩` from `(QuotientGroup.eq (s := (norm Ωˣ ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) (L : Subgroup Gal(Ω/K))).range)).1 hrec`. Establish `hdec : a' = norm Ωˣ ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) (S : Subgroup Gal(Ω/K)) π₀ * norm Ωˣ ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)) (L : Subgroup Gal(Ω/K)) b⁻¹`. Rewrite using `[map_inv, hb]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hab : ((fixedToInvariants _ a' : Rep.res ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)).subtype (galUnitsZ K Ω)) : Additive Ωˣ) = ((unitsInvariant K Ω a : (galUnitsZ K Ω).ρ.invariants) : Additive Ωˣ)`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((a' : Ωˣ) : Ω) = algebraMap K Ω a`. Rewrite using `[← algebraMap_baseUnitsEquiv, MulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hres` using `cohomologyMapAlong_cupCharClassProf ((⊤ : OpenSubgroup Gal(Ω/K)) : Subgroup Gal(Ω/K)).subtype (continuous_subgroup_subtype _) (𝟙 _) χ (unitsInvariant K Ω a) (fixedToInvariants _ a') hab`. Establish `hL0 : contCharComp χ (L : Subgroup Gal(Ω/K)).subtype (continuous_subgroup_subtype _) = 0`. Use extensionality with `x`. Conclude with `(hker ((Additive.toMul x : (L : Subgroup Gal(Ω/K))) : Gal(Ω/K))).1 (Additive.toMul x).2`. Establish `hχS : ∀ x ∈ (S : Subgroup Gal(Ω/K)) ⊓ (localClassFieldData K Ω).deg.ker, χ (Additive.ofMul x) = 0` using `fun x hx => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx` using `[ClassFieldData.FrobeniusLift.field_inf_ker]`. Conclude with `(hker x).1 hx.1`. Rewrite using `[brauerInvZ_eq_inv_top, cohomologyRes_eq]`. Express the relevant statement in the definitionally equal form `(localClassFormationZ K Ω).inv ⊤ ((cohomologyMapAlong _ _ (𝟙 _) 2).hom ((cupCharClassProf (galUnitsZ K Ω) χ).hom (unitsInvariant K Ω a))) = _`. Rewrite using `[hres, hdec, fixedToInvariants_mul, map_add, map_add, fixedToInvariants_norm, fixedToInvariants_norm, ClassFormation.inv_cupCharClassProf_invariantsNormLE, ClassFormation.inv_cupCharClassProf_invariantsNormLE, hL0, cupCharClassProf_zero, map_zero, add_zero, localClassFormationZ_i …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsym : AlgEquiv.restrictNormalHom M s.elt = restrictAb M (le_maximalAbelianExtension M) (localArtinMap K Ω a)`. Apply `(bijective_abelianizationOf M).1` to reduce the goal to its premises. Rewrite using `[restrictAb_localArtinMap, of_localReciprocityAbelian_symm, show a = baseUnitsEquiv a' from (MulEquiv.apply_symm_apply _ a).symm, localReciprocity_symm_mk_baseUnitsEquiv, ← hq, ← hs]`. Both sides reduce to the same expression. Establish `hgy : ∀ y ∈ M, g y = s.elt y` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg y (le_maximalAbelianExtension M hy)]`. Establish `e` using `restrictAb_apply M (le_maximalAbelianExtension M) (localArtinMap K Ω a) ⟨y, hy⟩`. Rewrite `e` using `[← hsym]`. Rewrite using `[← e]`. Conclude with `AlgEquiv.restrictNormal_commutes s.elt M ⟨y, hy⟩`.
-
-Establish `hmem : g⁻¹ * s.elt ∈ M.fixingSubgroup` using `(mem_fixingSubgroup_iff _ _).2 fun y hy => by`. Rewrite using `[AlgEquiv.mul_apply, ← hgy y hy]`. Conclude with `g.symm_apply_apply y`. Establish `e` using `(hker _).1 hmem`. Rewrite `e` using `[ofMul_mul, map_add, ofMul_inv, map_neg, neg_add_eq_zero]`.
-
-Conclude with `e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInvZ_galCupClass (χ : Additive Gal(Ω/K) →ₜ+ QZ) (a : Kˣ) (g : Gal(Ω/K))
     (hg : ∀ (y : Ω) (hy : y ∈ maximalAbelianExtension K Ω),
@@ -206,7 +202,7 @@ variable {K Ω : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension K Ω]
 
 /- English proof (translation)
-The claim follows from `brauerInvZ_galCupClass χ a _ fun y hy => AlgEquiv.liftNormal_commutes (localArtinMap K Ω a) Ω ⟨y, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem brauerInvZ_galCupClass_liftNormal (χ : Additive Gal(Ω/K) →ₜ+ QZ) (a : Kˣ) :
     brauerInvZ K Ω (galCupClass K Ω χ a) =

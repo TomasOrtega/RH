@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.JR.GLift
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun k _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {n : ℕ}
     (A B : Matrix (Fin n) (Fin n) F) (hA : ∀ i j, ‖A i j‖ ≤ 1) (hB : ∀ i j, ‖B i j‖ ≤ 1) (i j : Fin n) :
@@ -19,7 +19,7 @@ theorem norm_mul_apply_le_one {F : Type} [NormedField F] [IsUltrametricDist F] {
   exact mul_le_one₀ (hA i k) (norm_nonneg _) (hB k j)
 
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_one_apply_le_one {F : Type} [NormedField F] {n : ℕ} (i j : Fin n) :
     ‖(1 : Matrix (Fin n) (Fin n) F) i j‖ ≤ 1 := by

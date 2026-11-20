@@ -10,7 +10,7 @@ open Matrix Real
 namespace KThetaNormMajorant
 
 /- English proof (translation)
-Establish `h` using `hY.isHermitian`. Unfold `Matrix.IsHermitian at h`. Rewrite `h` using `[Matrix.conjTranspose_eq_transpose_of_trivial]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSymm_of_posDef {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hY : Y.PosDef) : Y.IsSymm := by
   have h := hY.isHermitian
@@ -21,13 +21,13 @@ theorem isSymm_of_posDef {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} (hY : Y.PosD
 end KThetaNormMajorant
 
 /- English proof (translation)
-Introduce `g X Y a b u₁ u₂ hY`. Establish `hS` using `KThetaNormMajorant.isSymm_of_posDef hY`. Use `set z : Fin g → ℂ := periodMatrix X Y *ᵥ (fun i => (u₁ i : ℂ)) + fun i => (u₂ i : ℂ) with hz`. Use `set E : ℝ := exp (-π * qf Y u₁) with hE`. Establish `hEpos : 0 < E` using `exp_pos _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hterm : ∀ k : Fin g → ℤ, ‖thetaSummand X Y a b z k‖ = exp (-π * qf Y (intVec k + a + u₁)) * E⁻¹`. Introduce `k`. Rewrite using `[← h g X Y a b u₁ u₂ k hS, mul_inv_cancel_right₀ hEpos.ne']`. Establish `hG : Summable fun k : Fin g → ℤ => exp (-π * qf Y (intVec k + a + u₁))`. Use `KTheta.summable_exp_qf Y hY π Real.pi_pos (a + u₁)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [add_assoc]`. Establish `hsum : Summable fun k : Fin g → ℤ => ‖thetaSummand X Y a b z k‖`. Repeatedly rewrite using `[hterm]`. Conclude with `hG.mul_right _`. Establish `hN : thetaNorm X Y a b u₁ u₂ = ‖∑' k, thetaSummand X Y a b z k‖ * E` using `rfl`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hN]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[hterm, inv_mul_cancel_right₀ hEpos.ne']`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaNormMajorant.proof (h : ThetaSummandNorm.Statement) : ThetaNormMajorant.Statement := by
   intro g X Y a b u₁ u₂ hY

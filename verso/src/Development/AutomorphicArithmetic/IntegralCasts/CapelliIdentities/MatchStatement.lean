@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Ω _ W κ _ x ⟨j0, hj0⟩`. Establish `: Nonempty κ` using `⟨j0⟩`. Take `⟨c, hc⟩` from `Finite.exists_max (fun j => W.valuation (x j))`. Establish `hc0 : x c ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `hc j0`. Simplify using `only [h, map_zero] at h1`. Conclude with `hj0 ((Valuation.zero_iff _).1 (le_antisymm h1 zero_le))`. Use `⟨c, hc0, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← ValuationSubring.valuation_le_one_iff, map_div₀]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : W.valuation (x c) ≠ 0` using `(Valuation.ne_zero_iff _).2 hc0`. Conclude with `(div_le_one₀ (zero_lt_iff.2 hpos)).2 (hc j)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ValuationSubringDominantCoordinate.main.{u_1} :
     ∀ {Ω : Type} [inst : Field Ω] (W : ValuationSubring Ω) {κ : Type u_1} [Finite κ] (x : κ → Ω),

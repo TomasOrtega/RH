@@ -17,17 +17,15 @@ namespace GlobalTheory.Models.RankZeroFamily
 open RankZero
 
 /- English proof (translation)
-Use `hG.proper` as an intermediate fact. Use `hG.smooth` as an intermediate fact. Use `hG.comm` as an intermediate fact. Establish `: IsReduced G.left` using `isReduced_of_smooth_of_isReduced G.hom`. Establish `hcl` using `isClosedImmersion_of_section_of_isSeparated G.hom (eSec G) (section_w η[G])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : Surjective (eSec G)`. Use `⟨fun y => ?_⟩` and prove the remaining obligations. Take `⟨k, _, _, _, u, q, hu⟩` from `FamTest.exists_geom_specializes (G.hom ≫ s) y`. Use `(eSec G).isClosedEmbedding.isClosed_range.stableUnderSpecialization hu ?_` and prove the remaining obligations. Set `x` to `u ≫ G.hom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hp` using `isGrpPullback_pullback G x`. Establish `hB` using `isAbelianScheme_pullback_obj x G hG`. Use `hB.comm` as an intermediate fact. Establish `ht` using `h k ((𝟙_ (Over (Sp k))).hom ≫ x)`. Establish `hsB` using `surjective_unit GlobalTheory.card_torsion_abelianVariety _ hB one_lt_two (by simp) fun g hg => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `ht (pushHom hp _ g) (by rw [← map_pow, hg, map_one])`. Rewrite `e` using `[← map_one (pushHom hp (𝟙_ _))]`. Conclude with `Over.OverMorphism.ext (hp.1.hom_ext (congrArg (fun q => q.left) e) (by rw [Over.w, Over.w]))`. Take `⟨p, hp'⟩` from `hsB (hp.1.lift u (𝟙 _) (Category.id_comp _).symm q)`. Use `⟨x p, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e₁` using `congrArg (fun q => q p) (cubeMapOf hp).e_comm`. Establish `e₂` using `congrArg (fun r => r q) (hp.1.lift_fst u (𝟙 _) (Category.id_comp _).symm)`. Conclude with `e₁.symm.trans ((congrArg (pullback.fst G.hom x) hp').trans e₂)`. Establish `: IsIso (eSec G)` using `isIso_of_isClosedImmersion_of_surjective _`. Establish `: IsIso (eSec G ≫ G.hom)`.
-
-Rewrite using `[show eSec G ≫ G.hom = 𝟙 S from section_w η[G]]`. Conclude with `inferInstanceAs (IsIso (𝟙 S))`. Conclude with `IsIso.of_isIso_comp_left (eSec G) G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_of_no_two_torsion {R : Type} [CommRing R] [IsDomain R] [CharZero R] {S : Scheme.{0}} [IsReduced S]
     (s : S ⟶ Sp R) [Flat s] (G : Over S) [GrpObj G] (hG : IsAbelianScheme G)
@@ -65,9 +63,9 @@ theorem isIso_of_no_two_torsion {R : Type} [CommRing R] [IsDomain R] [CharZero R
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {n N : ℕ}
 
 /- English proof (translation)
-Establish `hz` using `isIso_zeroTriple (H := H) S`. Use `subsingleton_La hD` as an intermediate fact. Use `⟨Inhab.isProper_zeroTriple S, (Out.Inh.zeroPolAV S).ample, fun _ _ _ _ _ => hom_unique hz _ _, fun _ _ => (_root_.mul_one _).symm, fun _ => rfl, fun k _ _ _ x β _ => ?_⟩` and prove the remaining obligations. Take `⟨ζ, h₁, h₂, h₃⟩` from `FamTest.exists_roots β`. Use `⟨fun τ => ⟨fun _ => lieMult_zero hz _ _ _ (by omega), fun _ => lieMult_zero hz _ _ _ (by omega)⟩, ⟨ζ, h₁, h₂, fun _ _ => 1, fun _ _ _ => hom_unique hz _ _, fun _ _ _ => hom_unique hz _ _, fun _ _ _ => ⟨fun _ => ⟨0, Subsingleton.elim _ _⟩, fun _ => rfl⟩, fun _ _ _ => ⟨fun _ => ⟨0, …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : unitOn (ζ m ^ D.EF a b) = 1`. Rewrite using `[Subsingleton.elim b 0, map_zero, zpow_zero, unitOn, map_one]`. Rewrite using `[e]`. Conclude with `weilIs_zero hz (Inhab.zeroTriple H S).PP.isLB (triv_rig hz _) _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fullObj_zero (hD : D.p + D.q = 0) {S : Scheme.{0}} (s : S ⟶ Sp (RZ H n N)) :
     FullObj D s (Inhab.zeroTriple H S) (fun _ => 1) := by
@@ -87,9 +85,9 @@ theorem fullObj_zero (hD : D.p + D.q = 0) {S : Scheme.{0}} (s : S ⟶ Sp (RZ H n
   exact weilIs_zero hz (Inhab.zeroTriple H S).PP.isLB (triv_rig hz _) _ _ _
 
 /- English proof (translation)
-Use `isIso_of_no_two_torsion s _ ⟨t.semi.comm, t.semi.smooth, o.proper, t.semi.geomConnected⟩ fun k _ _ _ x g hg => ?_` and prove the remaining obligations. Take `⟨β, hβ⟩` from `exists_spMap (x ≫ s)`. Take `⟨-, I, -⟩` from `o.geom k x β hβ`. Use `subsingleton_La hD` as an intermediate fact. Take `⟨a, rfl⟩` from `(I.onto 2 two_pos g).1 hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(I.ker 2 two_pos a).2 ⟨0, Subsingleton.elim _ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem isIso_fullObj (hD : D.p + D.q = 0) {S : Scheme.{0}} [IsReduced S] {s : S ⟶ Sp (RZ H n N)} [Flat s]
     {t : SAB H S} {lv : D.La → (𝟙_ (Over S) ⟶ t.G)} (o : FullObj D s t lv) : IsIso t.G.hom := by
@@ -102,7 +100,7 @@ theorem isIso_fullObj (hD : D.p + D.q = 0) {S : Scheme.{0}} [IsReduced S] {s : S
   exact (I.ker 2 two_pos a).2 ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, isQProjOver_of_isIso _ inferInstance, inferInstance, fullObj_zero hD _, fun S s t lv hr _ hf o => ?_, fun k _ x _ _ _ _ e _ _ => by simpa using e⟩` and prove the remaining obligations. Establish `hz` using `isIso_zeroTriple (H := H) (Sp (RZ H n N))`. Take `⟨ν⟩` from `nonempty_sabMap (isIso_fullObj hD o) hz s`. Conclude with `⟨s, ⟨Category.comp_id _, ν, fun _ => sec_comm hz ν.cart.1.w _ _⟩, fun f hf => (Category.comp_id f).symm.trans hf.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem famCore (hD : D.p + D.q = 0) (n N : ℕ) :
     FamCore D (𝟙 (Sp (RZ H n N))) (Inhab.zeroTriple H _) (fun _ => 1) := by
@@ -114,7 +112,7 @@ theorem famCore (hD : D.p + D.q = 0) (n N : ℕ) :
     fun f hf => (Category.comp_id f).symm.trans hf.1⟩
 
 /- English proof (translation)
-Introduce `p hp hpn`. Establish `hz` using `isIso_zeroTriple (H := H) (Sp (RZ H n (n ^ J)))`. Take `⟨Ag, bas, e₁, e₂⟩` from `siegel_zero (H := H) GlobalTheory.card_torsion_abelianVariety hD (g := Module.finrank ℚ E / 2 * (D.p + D.q)) (by rw [hD, mul_zero]) hp (Nat.one_lt_pow (by omega) hn.one_lt) (((Nat.coprime_primes hn hp).2 hpn.symm).pow_left J)`. Conclude with `⟨Ag, bas, e₁, fun O _ _ z b _ _ _ T sT f tT ν levT hpb _ => e₂ O z T sT tT levT (MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) hpb (inferInstanceAs (IsIso (𝟙 _)))) (MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) ν.cart.1 hz)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem siegClause (hD : D.p + D.q = 0) (hn : n.Prime) {J : ℕ} (hJ : 1 ≤ J) :
     SiegClause D (𝟙 (Sp (RZ H n (n ^ J)))) (Inhab.zeroTriple H _) (fun _ => 1) := by
@@ -128,7 +126,7 @@ theorem siegClause (hD : D.p + D.q = 0) (hn : n.Prime) {J : ℕ} (hJ : 1 ≤ J) 
     (MorphismProperty.of_isPullback (P := MorphismProperty.isomorphisms _) ν.cart.1 hz)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isQProjOver_of_isIso _ (inferInstanceAs (IsIso (𝟙 _))), fun _ s o _ _ _ _ => ⟨s, ⟨Category.comp_id _, siegPB_zero (isIso_sieg GlobalTheory.card_torsion_abelianVariety hp h₁ hN o) (isIso_unit _) _⟩, fun f hf => (Category.comp_id f).symm.trans hf.1⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem siegRep {p : ℕ} (hp : p.Prime) (h₁ : 1 < N) (hN : N.Coprime p) :
     SiegRep (zeroFamily GlobalTheory.card_torsion_abelianVariety hp h₁ hN) :=
@@ -137,7 +135,7 @@ theorem siegRep {p : ℕ} (hp : p.Prime) (h₁ : 1 < N) (hN : N.Coprime p) :
       fun f hf => (Category.comp_id f).symm.trans hf.1⟩⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ J hD hn hJ` and use `⟨famCore hD _ _, siegClause hD hn.1 hJ, fun _ hp hpn => ⟨_, siegRep hp (Nat.one_lt_pow (by omega) hn.1.one_lt) (((Nat.coprime_primes hn.1 hp).2 hpn.symm).pow_left J)⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : Out.Laws → Out.Laws2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (n J : ℕ), D.p + D.q = 0 → AuxiliaryInertOddPrime H n → 1 ≤ J → FamCore D (𝟙 (Sp (RZ H n (n ^ J)))) (Inhab.zeroTriple H _) (fun _ => 1) ∧ SiegClause D (𝟙 (Sp (RZ H n (n ^ J)))) (Inhab.zeroTriple H _) (fun _ => 1) ∧ ∀ p : ℕ, p.Prime → p ≠ n → ∃ Ag : SiegelFamily 0 p (n ^ J), SiegRep Ag :=
   fun _ _ _ _ _ _ _ _ _ J hD hn hJ => ⟨famCore hD _ _, siegClause hD hn.1 hJ, fun _ hp hpn =>

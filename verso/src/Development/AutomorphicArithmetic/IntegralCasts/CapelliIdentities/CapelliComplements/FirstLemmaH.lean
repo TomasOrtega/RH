@@ -3,13 +3,13 @@ import Mathlib
 namespace Bl.FirstLemmaH
 
 /- English proof (translation)
-Introduce `A W hW`. Set `f : A → Module.Dual Complex W` to `fun a => (LinearMap.proj (R := Complex) (φ := fun _ : A => Complex) a).comp W.subtype`. Establish `hfg : (Submodule.span Complex (Set.range f)).FG` using `IsNoetherian.noetherian _`. Take `⟨s', hsub, heq⟩` from `(Submodule.fg_span_iff_fg_span_finset_subset _).1 hfg`. Establish `hmem : ∀ φ ∈ s', ∃ a, f a = φ` using `fun φ h => hsub h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose g hg using hmem`. Use `⟨s'.attach.image (fun φ => g φ.1 φ.2), ?_⟩` and prove the remaining obligations. Introduce `w hw h0`. Establish `hker : Submodule.span Complex (s' : Set (Module.Dual Complex W)) ≤ LinearMap.ker (Module.Dual.eval Complex W ⟨w, hw⟩)`. Rewrite using `[Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ`. Establish `e` using `hg φ hφ`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, Module.Dual.eval_apply]`. Rewrite using `[← e]`. Conclude with `h0 _ (Finset.mem_image.2 ⟨⟨φ, hφ⟩, Finset.mem_attach _ _, rfl⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Establish `ha : f a ∈ Submodule.span Complex (s' : Set (Module.Dual Complex W))` using `heq ▸ Submodule.subset_span ⟨a, rfl⟩`. Establish `h1` using `hker ha`. Rewrite `h1` using `[LinearMap.mem_ker, Module.Dual.eval_apply]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {A : Type} (W : Submodule.{0, 0} Complex (A → Complex)),

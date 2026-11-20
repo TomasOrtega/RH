@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.F
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [Matrix.gram_apply, Matrix.mul_apply, Matrix.transpose_apply, sum_inner, inner_sum, real_inner_smul_left, real_inner_smul_right, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_sum_smul_eq_transpose_mul {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     {ι κ : Type*} [Fintype ι] (v : ι → E) (P : Matrix ι κ ℝ) :
@@ -19,15 +19,15 @@ theorem gram_sum_smul_eq_transpose_mul {E : Type*} [NormedAddCommGroup E] [Inner
   ring
 
 /- English proof (translation)
-Set `e : ι ≃ κ` to `b.indexEquiv c`. Set `c' : Basis ι ℤ L` to `c.reindex e.symm`. Establish `hc' : (Matrix.gram ℝ (fun k => (c k : E))).det = (Matrix.gram ℝ (fun i => (c' i : E))).det`. Establish `hs : Matrix.gram ℝ (fun i => (c' i : E)) = (Matrix.gram ℝ (fun k => (c k : E))).submatrix e e`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[c', Matrix.gram_apply]`. Rewrite using `[hs, Matrix.det_submatrix_equiv_self]`. Rewrite using `[hc']`. Set `M : Matrix ι ι ℤ` to `c'.toMatrix b`. Establish `hb : (fun i => (b i : E)) = fun i => ∑ k, (M.map (Int.cast : ℤ → ℝ)) k i • (c' k : E)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [← c'.sum_repr (b i)]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, Matrix.map_apply, Int.cast_smul_eq_zsmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hb, gram_sum_smul_eq_transpose_mul (fun k => (c' k : E)) (M.map (Int.cast : ℤ → ℝ)), Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose]`. Establish `hdet : (M.map (Int.cast : ℤ → ℝ)).det ^ 2 = 1`. Establish `h2 : M.det * (b.toMatrix c').det = 1`. Rewrite using `[← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix_flip c' b, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : IsUnit M.det` using `⟨⟨M.det, (b.toMatrix c').det, h2, by rw [mul_comm]; exact h2⟩, rfl⟩`. Rewrite using `[← Int.cast_det]`. Apply the tactic sequence `rcases Int.isUnit_iff.1 h3 with h | h <;> rw [h] <;> norm_num`. Take the linear combination `(Matrix.gram ℝ (fun i => (c' i : E))).det * hdet`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_gram_basis_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
     (L : Submodule ℤ E) {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
@@ -61,7 +61,7 @@ theorem det_gram_basis_eq {E : Type*} [NormedAddCommGroup E] [InnerProductSpace 
   linear_combination (Matrix.gram ℝ (fun i => (c' i : E))).det * hdet
 
 /- English proof (translation)
-Introduce `E _ _ _ L hL ι _ _ b`. Unfold `covol`. Rewrite using `[dif_pos hL]`. Use `congr 1`. Conclude with `det_gram_basis_eq L (Module.finBasis ℤ L) b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem covol_eq_gram : CovolEqGram := by
   intro E _ _ _ L hL ι _ _ b

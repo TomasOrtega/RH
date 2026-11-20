@@ -13,15 +13,15 @@ open scoped Kronecker ComplexOrder TensorProduct
 namespace GlobalTheory.ClassFin
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `exists_nat_ge ((D : ℝ) * (B + 1))`. Establish `hDq : (D : ℚ) ≠ 0` using `by positivity`. Establish `hfin : ((fun z : ℤ => (z : ℚ) / D) '' (Set.Icc (-(N : ℤ)) N)).Finite` using `(Set.finite_Icc _ _).image _`. Use `(Set.Finite.pi' (fun _ : κ => hfin)).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨hw, hB⟩ k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨z, hz⟩` from `hw k`. Use `⟨z, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖((w k : ℚ) : ℂ)‖ ^ 2 ≤ B`. Use `le_trans ?_ hB` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ‖((w k : ℚ) : ℂ)‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ‖((w k : ℚ) : ℂ)‖ = |(w k : ℝ)|`. Rewrite using `[← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`. Rewrite `h1` using `[h2]`. Establish `h3 : |(w k : ℝ)| ≤ B + 1` using `by nlinarith [abs_nonneg (w k : ℝ), sq_nonneg (|(w k : ℝ)| - 1)]`. Establish `h4 : (z : ℝ) = D * (w k : ℝ)` using `by exact_mod_cast hz.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : |(z : ℝ)| ≤ N`. Rewrite using `[h4, abs_mul, Nat.abs_cast]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left h3 (by positivity)) hN`. Establish `h6 : |z| ≤ (N : ℤ)` using `by exact_mod_cast h5`. Conclude with `abs_le.mp h6`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only`. Rewrite using `[← hz]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem finite_bdd_denominator_vectors {κ : Type} [Fintype κ] (D : ℕ) (hD : 0 < D) (B : ℝ) :
     {w : κ → ℚ | (∀ k, ∃ z : ℤ, (D : ℚ) * w k = z) ∧ nsq (fun k => ((w k : ℚ) : ℂ)) ≤ B}.Finite := by
@@ -52,37 +52,33 @@ theorem finite_bdd_denominator_vectors {κ : Type} [Fintype κ] (D : ℕ) (hD : 
     rw [← hz]; field_simp
 
 /- English proof (translation)
-Introduce `ι _ _ m d t hcl D hD`. Use `letI : LinearOrder ι := LinearOrder.lift' (Fintype.equivFin ι) (Fintype.equivFin ι).injective`. Establish `hC` using `(GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℂ).2 m d`. Establish `hQ` using `(GlobalTheory.T.matrixKroneckerPower_tensorAction_algebra ι ℚ).2 m d`. Use `set tC : TIdx ι d → ℂ := fun k => ((t k : ℚ) : ℂ) with htC`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htR : (fun k => (((t k : ℚ) : ℝ) : ℂ)) = tC`. Use function extensionality and compare the values at `k`. Simplify using `[htC]`. Take `⟨g, hg, hmin⟩` from `GlobalTheory.T.exists_real_translate_isMinNormTensorInOrbit ι m d (fun k => ((t k : ℚ) : ℝ)) (by rw [htR]; exact GlobalTheory.T.exists_minNormTensor_of_isClosed_tensorSLOrbit ι m d tC hcl)`. Rewrite `hmin` using `[htR]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmap : ∀ x y : Matrix ι ι ℝ, (x * y).map (fun r : ℝ => (r : ℂ)) = x.map (fun r : ℝ => (r : ℂ)) * y.map (fun r : ℝ => (r : ℂ))` using `fun x y => Matrix.map_mul (f := Complex.ofRealHom)`. Establish `hgg : g * g.adjugate = 1` using `by rw [mul_adjugate, hg, one_smul]`. Use `set gC : Matrix ι ι ℂ := g.map (fun r : ℝ => (r : ℂ)) with hgC`. Establish `hgCd : gC.det = 1`. Use `(RingHom.map_det Complex.ofRealHom g)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hg, map_one]`. Conclude with `this.symm`. Establish `hgCadj : gC * gC.adjugate = 1` using `by rw [mul_adjugate, hgCd, one_smul]`. Use `set v := act d tC gC with hv`. Establish `horb : orb d v = orb d tC`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨gC * y, by rw [det_mul, hgCd, hy, one_mul], by rw [(hC tC).2.1]⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨gC.adjugate * y, by rw [det_mul, det_adjugate, hgCd, hy, one_pow, one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[hv, ← (hC tC).2.1, ← mul_assoc, hgCadj, one_mul]`. Take `⟨C, hSieg⟩` from `GlobalTheory.T.exists_siegel_decomposition_mul_int_matrix_of_det_eq_one ι`. Take `⟨B, hB⟩` from `GlobalTheory.T.nsq_act_le_of_isSiegel_of_entries_zero_or_ge ι m d v (GlobalTheory.T.tensorSLOrbit_map_proper_of_isClosed ι m d v (horb ▸ hcl)) (GlobalTheory.T.minNormTensor_stabilizer_conjTranspose_invariant ι m d v hmin) C (1 / D) (by positivity)`. Use `⟨(finite_bdd_denominator_vectors (κ := TIdx ι d) D hD B).toFinset, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h hh hint`. Establish `hhR : (h.map (fun q : ℚ => (q : ℝ))).det = 1`. Use `(RingHom.map_det (Rat.castHom ℝ) h)` as an intermediate fact. Rewrite `this` using `[hh, map_one]`. Conclude with `this.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨γ, hγ, k, a, n, hS, hkan⟩` from `hSieg (g.adjugate * h.map (fun q : ℚ => (q : ℝ))) (by rw [det_mul, det_adjugate, hg, hhR, one_pow, one_mul])`. Use `⟨γ, hγ, ?_⟩` and prove the remaining obligations. Use `set w := act d t (h * γ.map (Int.cast : ℤ → ℚ)) with hw`. Establish `hwint : ∀ j, ∃ z : ℤ, (D : ℚ) * w j = z`. Introduce `j`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h1` using `(hQ ((D : ℚ) • act d t h)).2.2.2.1 (Int.castRingHom ℚ).range (γ.map (Int.cast : ℤ → ℚ)) (fun k => by`. Take `⟨z, hz⟩` from `hint k`. Conclude with `⟨z, hz.symm⟩) (fun i j => ⟨γ i j, rfl⟩) j`. Rewrite `h1` using `[(hQ _).2.2.2.2.1, ← (hQ t).2.1]`. Take `⟨z, hz⟩` from `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `⟨z, hz.symm⟩`. Establish `hact : act d v ((k * diagonal a * n).map (fun r : ℝ => (r : ℂ))) = fun j => ((w j : ℚ) : ℂ)`. Rewrite using `[← hkan, hv, ← (hC tC).2.1, hgC, ← hmap, ← mul_assoc, ← mul_assoc, hgg, one_mul]`. Establish `h2` using `(hQ t).2.2.2.2.2 ℂ (Rat.castHom ℂ) (h * γ.map (Int.cast : ℤ → ℚ))`. Establish `h3 : (h.map (fun q : ℚ => (q : ℝ)) * γ.map (Int.cast : ℤ → ℝ)).map (fun r : ℝ => (r : ℂ)) = (h * γ.map (Int.cast : ℤ → ℚ)).map (Rat.castHom ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply]`. Rewrite using `[h3]`. Conclude with `h2`. Rewrite using `[Set.Finite.mem_toFinset]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Use `⟨hwint, ?_⟩` and prove the remaining obligations. Rewrite using `[← hact]`. Use `hB k a n hS ?_` and prove the remaining obligations. Introduce `j`. Rewrite using `[hact]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Take `⟨z, hz⟩` from `hwint j`. Distinguish the cases in `hz0 : z = 0`. Use `left`. Establish `: w j = 0`. Rewrite `hz` using `[hz0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDq : (D : ℚ) ≠ 0` using `by positivity`. Simplify `hz` using `[hD.ne']`. Simplify using `[this]`. Use `right`. Establish `h2 : ‖((w j : ℚ) : ℂ)‖ = |(w j : ℝ)|`.
-
-Rewrite using `[← Complex.ofReal_ratCast, Complex.norm_real, Real.norm_eq_abs]`. Establish `h4 : (z : ℝ) = D * (w j : ℝ)` using `by exact_mod_cast hz.symm`. Establish `h5 : (1 : ℝ) ≤ |(z : ℝ)|` using `by exact_mod_cast Int.one_le_abs hz0`. Use `show 1 / (D : ℝ) ≤ ‖((w j : ℚ) : ℂ)‖`. Rewrite using `[h2, div_le_iff₀ (by positivity)]`.
-
-Rewrite `h5` using `[h4, abs_mul, Nat.abs_cast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem finite_integral_classes_closed_orbit : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (m : ℕ) (d : Fin m → ℕ) (t : TIdx ι d → ℚ), IsClosed (orb d (fun k => ((t k : ℚ) : ℂ))) → ∀ D : ℕ, 0 < D → ∃ Z : Finset (TIdx ι d → ℚ), ∀ h : Matrix ι ι ℚ, h.det = 1 → (∀ k, ∃ z : ℤ, (D : ℚ) * act d t h k = z) → ∃ γ : Matrix ι ι ℤ, γ.det = 1 ∧ act d t (h * γ.map (Int.cast : ℤ → ℚ)) ∈ Z := by
   intro ι _ _ m d t hcl D hD

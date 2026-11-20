@@ -16,9 +16,9 @@ variable {G R M : Type*} [Group G] [Ring R] [AddCommGroup M] [Module R M] [Distr
   [SMulCommClass G R M]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, h⟩`. Rewrite using `[← MulAction.injective s h]` and apply the resulting hypothesis. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iff (s : G) (A : Submodule R M) (x : M) : s • x ∈ s • A ↔ x ∈ A := by
   rw [Submodule.mem_smul_pointwise_iff_exists]
@@ -28,7 +28,7 @@ theorem mem_iff (s : G) (A : Submodule R M) (x : M) : s • x ∈ s • A ↔ x 
   · intro h; exact ⟨x, h, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `y`. Take `⟨x, rfl⟩` from `MulAction.surjective s y`. Rewrite using `[mem_iff, h]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_smul (s : G) {A B : Submodule R M} (h : ∀ x, s • x ∈ A ↔ x ∈ B) : A = s • B := by
   ext y
@@ -36,31 +36,31 @@ theorem ext_smul (s : G) {A B : Submodule R M} (h : ∀ x, s • x ∈ A ↔ x �
   rw [mem_iff, h]
 
 /- English proof (translation)
-The claim follows from `ext_smul s fun x => by simp only [Submodule.mem_inf, mem_iff]`.
+A detailed English derivation is pending.
 -/
 theorem smul_inf (s : G) (A B : Submodule R M) : s • A ⊓ s • B = s • (A ⊓ B) :=
   ext_smul s fun x => by simp only [Submodule.mem_inf, mem_iff]
 
 /- English proof (translation)
-The claim follows from `(Submodule.smul_sup' s A B).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_sup (s : G) (A B : Submodule R M) : s • A ⊔ s • B = s • (A ⊔ B) :=
   (Submodule.smul_sup' s A B).symm
 
 /- English proof (translation)
-Simplify using `only [Submodule.pointwise_smul_def, Submodule.map_iSup]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_iSup {ι : Sort*} (s : G) (A : ι → Submodule R M) : ⨆ i, s • A i = s • ⨆ i, A i := by
   simp only [Submodule.pointwise_smul_def, Submodule.map_iSup]
 
 /- English proof (translation)
-The claim follows from `ext_smul s fun x => by simp only [Submodule.mem_prod, Prod.smul_fst, Prod.smul_snd, mem_iff]`.
+A detailed English derivation is pending.
 -/
 theorem smul_prod (s : G) (A B : Submodule R M) : (s • A).prod (s • B) = s • A.prod B :=
   ext_smul s fun x => by simp only [Submodule.mem_prod, Prod.smul_fst, Prod.smul_snd, mem_iff]
 
 /- English proof (translation)
-Simplify using `only [Submodule.pointwise_smul_def, Submodule.map_toAddSubgroup]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ (MulAction.injective s)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem relIndex_smul (s : G) (A B : Submodule R M) :
     (s • A).toAddSubgroup.relIndex (s • B).toAddSubgroup = A.toAddSubgroup.relIndex B.toAddSubgroup := by
@@ -76,25 +76,25 @@ variable {R K V : Type} [CommRing R] [Field K] [StarRing K] [Algebra R K] [AddCo
 
 omit [StarRing K] in
 /- English proof (translation)
-The claim follows from `mem_iff s A x`.
+A detailed English derivation is pending.
 -/
 theorem memR (s : V ≃ₗ[K] V) (A : Submodule R V) (x : V) : s x ∈ s • A ↔ x ∈ A := mem_iff s A x
 
 omit [StarRing K] in
 /- English proof (translation)
-The claim follows from `mem_iff s A x`.
+A detailed English derivation is pending.
 -/
 theorem memK (s : V ≃ₗ[K] V) (A : Submodule K V) (x : V) : s x ∈ s • A ↔ x ∈ A := mem_iff s A x
 
 omit [StarRing K] in
 /- English proof (translation)
-The claim follows from `ext_smul s fun x => memK s S x`.
+A detailed English derivation is pending.
 -/
 theorem rs_smul (s : V ≃ₗ[K] V) (S : Submodule K V) : rs R (s • S) = s • rs R S :=
   ext_smul s fun x => memK s S x
 
 /- English proof (translation)
-Use `ext_smul s fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_perp_iff, mem_perp_iff, s.surjective.forall]`. Use `forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[memK, LinearEquiv.smul_def, (mem_isomGrp H s).1 hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem perp_smul (hs : s ∈ isomGrp H) (S : Submodule K V) : perp H (s • S) = s • perp H S := by
   refine ext_smul s fun x => ?_
@@ -104,7 +104,7 @@ theorem perp_smul (hs : s ∈ isomGrp H) (S : Submodule K V) : perp H (s • S) 
 
 omit [StarRing K] in
 /- English proof (translation)
-Unfold `smulLat`. Simplify using `only [Submodule.pointwise_smul_def, ← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[LinearEquiv.smul_def]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smulLat_smul (s : V ≃ₗ[K] V) (g : R) (A : Submodule R V) : smulLat g (s • A) = s • smulLat g A := by
   unfold smulLat
@@ -115,7 +115,7 @@ theorem smulLat_smul (s : V ≃ₗ[K] V) (g : R) (A : Submodule R V) : smulLat g
 
 omit [StarRing K] in
 /- English proof (translation)
-Rewrite using `[Submodule.smul_span]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem span_smul (s : V ≃ₗ[K] V) (A : Submodule R V) :
     Submodule.span K ((s • A : Submodule R V) : Set V) = s • Submodule.span K (A : Set V) := by
@@ -123,7 +123,7 @@ theorem span_smul (s : V ≃ₗ[K] V) (A : Submodule R V) :
   rfl
 
 /- English proof (translation)
-Use `ext_smul s fun x => ?_` and prove the remaining obligations. Rewrite using `[mem_dual_iff, mem_dual_iff, span_smul, mem_iff, s.surjective.forall]`. Use `and_congr_right fun _ => forall_congr' fun y => ?_` and prove the remaining obligations. Rewrite using `[memR, LinearEquiv.smul_def, (mem_isomGrp H s).1 hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_smul (hs : s ∈ isomGrp H) (A : Submodule R V) : dual H (s • A) = s • dual H A := by
   refine ext_smul s fun x => ?_
@@ -132,9 +132,9 @@ theorem dual_smul (hs : s ∈ isomGrp H) (A : Submodule R V) : dual H (s • A) 
   rw [memR, LinearEquiv.smul_def, (mem_isomGrp H s).1 hs]
 
 /- English proof (translation)
-Establish `key : ∀ (t : V ≃ₗ[K] V) (B : Submodule R V), t ∈ isomGrp H → IsUnimod H B → IsUnimod H (t • B)`. Introduce and unpack `t B ht ⟨⟨⟨N, hN, hB⟩, hsp⟩, hd⟩`. Use `⟨⟨⟨t • N, hN.map _, ?_⟩, ?_⟩, by rw [dual_smul ht, hd]⟩` and prove the remaining obligations. Rewrite using `[hB]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[span_smul, hsp]`. Conclude with `(ext_smul t fun x => by simp).symm`. Use `⟨fun h => ?_, key s A hs⟩` and prove the remaining obligations. Simplify using `using key s⁻¹ _ ((isomGrp H).inv_mem hs) h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isUnimod_smul (hs : s ∈ isomGrp H) (A : Submodule R V) : IsUnimod H (s • A) ↔ IsUnimod H A := by
   have key : ∀ (t : V ≃ₗ[K] V) (B : Submodule R V), t ∈ isomGrp H → IsUnimod H B → IsUnimod H (t • B) := by
@@ -168,7 +168,7 @@ Both sides reduce to the same expression.
 theorem move_z : (mv hs F).z = s F.z := rfl
 
 /- English proof (translation)
-Unfold `FlagD.Xa`. Rewrite using `[Submodule.smul_span, ← Set.image_smul, Set.image_image]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mv_Xa (a : ℕ) : (mv hs F).Xa a = s • F.Xa a := by
   unfold FlagD.Xa
@@ -176,12 +176,12 @@ theorem mv_Xa (a : ℕ) : (mv hs F).Xa a = s • F.Xa a := by
   rfl
 
 /- English proof (translation)
-The claim follows from `mv_Xa hs F r`.
+A detailed English derivation is pending.
 -/
 theorem mv_X : (mv hs F).X = s • F.X := mv_Xa hs F r
 
 /- English proof (translation)
-Unfold `V0`. Rewrite using `[mv_X, mv_X, ← smul_sup, ← smul_sup, Submodule.smul_span, ← Set.image_smul, Set.image_pair]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isotropicFrameMapIsometry_pairComplement : V0 (mv hs F) (mv hs F') = s • V0 F F' := by
   unfold V0
@@ -189,19 +189,19 @@ theorem isotropicFrameMapIsometry_pairComplement : V0 (mv hs F) (mv hs F') = s �
   rfl
 
 /- English proof (translation)
-Simplify using `only [latL, uPerp, mv_X, smul_sup, perp_smul hs, rs_smul, smul_inf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mv_latL (Λ : Submodule R V) : latL (mv hs F) (mv hs F') (s • Λ) = s • latL F F' Λ := by
   simp only [latL, uPerp, mv_X, smul_sup, perp_smul hs, rs_smul, smul_inf]
 
 /- English proof (translation)
-Simplify using `only [flagPairDefinitePartLattice, wSp, mv_latL, isotropicFrameMapIsometry_pairComplement, perp_smul hs, rs_smul, smul_inf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem flagPairDefinitePartLattice_isometry (Λ : Submodule R V) : flagPairDefinitePartLattice (mv hs F) (mv hs F') (s • Λ) = s • flagPairDefinitePartLattice F F' Λ := by
   simp only [flagPairDefinitePartLattice, wSp, mv_latL, isotropicFrameMapIsometry_pairComplement, perp_smul hs, rs_smul, smul_inf]
 
 /- English proof (translation)
-Establish `hc : ∀ A : Submodule R V, (s • A).comap (LinearMap.snd R V V - LinearMap.fst R V V) = s • A.comap (LinearMap.snd R V V - LinearMap.fst R V V)` using `fun A => ext_smul s fun x => by`. Simplify using `only [Submodule.mem_comap, LinearMap.sub_apply, LinearMap.snd_apply, LinearMap.fst_apply, Prod.smul_fst, Prod.smul_snd, ← smul_sub, mem_iff]`. Simplify using `only [iotaGraph, flagPairDefinitePartLattice_isometry, mv_X, rs_smul, smulLat_smul, smul_prod, smul_inf, smul_sup, hc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mv_iotaGraph (Λ : Submodule R V) (g : R) :
     iotaGraph (mv hs F) (mv hs F') (s • Λ) g = s • iotaGraph F F' Λ g := by
@@ -213,7 +213,7 @@ theorem mv_iotaGraph (Λ : Submodule R V) (g : R) :
   simp only [iotaGraph, flagPairDefinitePartLattice_isometry, mv_X, rs_smul, smulLat_smul, smul_prod, smul_inf, smul_sup, hc]
 
 /- English proof (translation)
-Unfold `latLa fixLat`. Rewrite using `[mv_iotaGraph]`. Conclude with `ext_smul s fun x => mem_iff s (iotaGraph F F' Λ g) (x, x)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mv_latLa (Λ : Submodule R V) (g : R) : latLa (mv hs F) (mv hs F') (s • Λ) g = s • latLa F F' Λ g := by
   unfold latLa fixLat
@@ -221,7 +221,7 @@ theorem mv_latLa (Λ : Submodule R V) (g : R) : latLa (mv hs F) (mv hs F') (s �
   exact ext_smul s fun x => mem_iff s (iotaGraph F F' Λ g) (x, x)
 
 /- English proof (translation)
-Unfold `lead`. Rewrite using `[mv_Xa, rs_smul, smul_sup]`. Use extensionality with `t`. Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, LinearMap.toSpanSingleton_apply, mv_e, ← map_smul, memR]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mv_lead (Λ : Submodule R V) (a : Fin (r + 1)) : lead (mv hs F) (s • Λ) a = lead F Λ a := by
   unfold lead
@@ -231,9 +231,9 @@ theorem mv_lead (Λ : Submodule R V) (a : Fin (r + 1)) : lead (mv hs F) (s • �
     ← map_smul, memR]
 
 /- English proof (translation)
-Unfold `IsAdm`. Use `forall_congr' fun a => forall_congr' fun t => ?_` and prove the remaining obligations. Rewrite using `[s.surjective.forall]`. Use `forall_congr' fun x' => ?_` and prove the remaining obligations. Rewrite using `[s.surjective.exists]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mv_e, mv_Xa, smulLat_smul, ← map_smul, ← map_sub, memR, memK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mv_isAdm (Λ : Submodule R V) (g : R) : IsAdm (mv hs F) (mv hs F') (s • Λ) g ↔ IsAdm F F' Λ g := by
   unfold IsAdm
@@ -244,14 +244,14 @@ theorem mv_isAdm (Λ : Submodule R V) (g : R) : IsAdm (mv hs F) (mv hs F') (s �
   simp only [mv_e, mv_Xa, smulLat_smul, ← map_smul, ← map_sub, memR, memK]
 
 /- English proof (translation)
-Unfold `Dl Zhat`. Simplify using `only [mv_e, (mem_isomGrp H s).1 hs]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mv_Dl (l : ℕ) (h : l ≤ r + 1) : Dl (mv hs F) (mv hs F') l h = Dl F F' l h := by
   unfold Dl Zhat
   simp only [mv_e, (mem_isomGrp H s).1 hs]
 
 /- English proof (translation)
-Introduce `w`. Take `⟨w, rfl⟩` from `s.surjective w`. Simplify using `only [mv_e, mv_X, memK, (mem_isomGrp H s).1 hs]`. Conclude with `h w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mv_posDef (σ : K →+* ℂ) (h : F.PosDefAt σ) : (mv hs F).PosDefAt σ := by
   intro w
@@ -260,9 +260,9 @@ theorem mv_posDef (σ : K →+* ℂ) (h : F.PosDefAt σ) : (mv hs F).PosDefAt σ
   exact h w
 
 /- English proof (translation)
-Establish `e : ∀ x, ((MulAut.conj s n : V ≃ₗ[K] V) : V →ₗ[K] V) (s x) = s ((n : V →ₗ[K] V) x)` using `fun x => by`. Simplify using the standard rewrite rules. Unfold `FlagD.InN`. Use `and_congr ?_ (and_congr (iff_of_true (LinearEquiv.bijective _) (LinearEquiv.bijective _)) (and_congr ?_ ?_))` and prove the remaining obligations. Rewrite using `[s.surjective.forall₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e, (mem_isomGrp H s).1 hs]`. Simplify using `only [mv_e, e, mv_Xa, ← map_sub, memK]`. Rewrite using `[s.surjective.forall]`. Simplify using `only [mv_e, e, mv_X, ← map_sub, memK, (mem_isomGrp H s).1 hs]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mv_inN (n : V ≃ₗ[K] V) :
     (mv hs F).InN ((MulAut.conj s n : V ≃ₗ[K] V) : V →ₗ[K] V) ↔ F.InN (n : V →ₗ[K] V) := by
@@ -286,7 +286,7 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 
 omit [NumberField K] [StarRing K] in
 /- English proof (translation)
-Unfold `line`. Simplify using `only [Submodule.pointwise_smul_def, ← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[LinearEquiv.smul_def]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem line_smul (s : V ≃ₗ[K] V) (A : Submodule (𝓞 K) K) (v : V) : line A (s v) = s • line A v := by
   unfold line
@@ -322,7 +322,7 @@ def mvN (hs : s ∈ isomGrp H) (N : NF H r) : NF H r where
 variable (hs : s ∈ isomGrp H) (N : NF H r)
 
 /- English proof (translation)
-Unfold `NF.Ist`. Rewrite using `[Submodule.smul_span, ← Set.image_smul, Set.image_image]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mvN_Ist : (mvN hs N).Ist = s • N.Ist := by
   unfold NF.Ist
@@ -330,7 +330,7 @@ theorem mvN_Ist : (mvN hs N).Ist = s • N.Ist := by
   rfl
 
 /- English proof (translation)
-Unfold `NF.Wn`. Rewrite using `[mvN_Ist, ← perp_smul hs, ← smul_sup, ← smul_sup, ← mv_X hs, ← mv_X hs]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mvN_Wn : (mvN hs N).Wn = s • N.Wn := by
   unfold NF.Wn
@@ -338,7 +338,7 @@ theorem mvN_Wn : (mvN hs N).Wn = s • N.Wn := by
   rfl
 
 /- English proof (translation)
-Unfold `NF.P0`. Simplify using `only [← smul_sup, ← smul_iSup, ← line_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isotropicNormalFormMapIsometry_baseLattice : (mvN hs N).P0 = s • N.P0 := by
   unfold NF.P0
@@ -346,16 +346,16 @@ theorem isotropicNormalFormMapIsometry_baseLattice : (mvN hs N).P0 = s • N.P0 
   rfl
 
 /- English proof (translation)
-Unfold `NF.Ref`. Rewrite using `[isotropicNormalFormMapIsometry_baseLattice, mvN_Wn, rs_smul, smul_inf, smul_sup]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvN_Ref (L : Submodule (𝓞 K) V) : (mvN hs N).Ref (s • L) = s • N.Ref L := by
   unfold NF.Ref
   rw [isotropicNormalFormMapIsometry_baseLattice, mvN_Wn, rs_smul, smul_inf, smul_sup]
 
 /- English proof (translation)
-Unfold `NF.R`. Rewrite using `[MonoidHom.map_closure]`. Use `congr 1`. Use extensionality with `n`. Take `⟨n, rfl⟩` from `(MulAut.conj s).surjective n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Use `Iff.trans ?_ (Function.Injective.mem_set_image (MulAut.conj s).injective).symm` and prove the remaining obligations. Conclude with `and_congr (mv_inN hs N.F n) (mv_inN hs N.F' n)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mvN_R : (mvN hs N).R = N.R.map (MulAut.conj s).toMonoidHom := by
   unfold NF.R
@@ -367,7 +367,7 @@ theorem mvN_R : (mvN hs N).R = N.R.map (MulAut.conj s).toMonoidHom := by
   exact and_congr (mv_inN hs N.F n) (mv_inN hs N.F' n)
 
 /- English proof (translation)
-Unfold `NF.Gam`. Rewrite using `[mvN_R, MulAction.stabilizer_smul_eq_stabilizer_map_conj, Subgroup.map_inf_eq _ _ _ (MulAut.conj s).injective]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvN_Gam (L : Submodule (𝓞 K) V) :
     (mvN hs N).Gam (s • L) = (N.Gam L).map (MulAut.conj s).toMonoidHom := by
@@ -376,7 +376,7 @@ theorem mvN_Gam (L : Submodule (𝓞 K) V) :
     Subgroup.map_inf_eq _ _ _ (MulAut.conj s).injective]
 
 /- English proof (translation)
-Unfold `NF.om GlobalTheory.HL.invVol`. Establish `e : latL (mvN hs N).F (mvN hs N).F' (s • Λ) = s • latL N.F N.F' Λ` using `mv_latL hs _ _ Λ`. Rewrite using `[e, mvN_Ref, mvN_Gam, mvN_Gam, Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj s).injective, Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj s).injective]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mvN_om (Λ : Submodule (𝓞 K) V) : (mvN hs N).om (s • Λ) = N.om Λ := by
   unfold NF.om GlobalTheory.HL.invVol
@@ -385,7 +385,7 @@ theorem mvN_om (Λ : Submodule (𝓞 K) V) : (mvN hs N).om (s • Λ) = N.om Λ 
     Subgroup.relIndex_map_map_of_injective _ _ (MulAut.conj s).injective]
 
 /- English proof (translation)
-Use `and_congr (and_congr (isUnimod_smul hs Λ) ?_) (mv_isAdm hs N.F N.F' Λ _)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsFrame (mv hs N.F) _ N.aa ∧ IsFrame (mv hs N.F') _ N.aa ↔ _`. Simplify using `only [IsFrame, mv_lead]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mvN_isTerm (g : ℕ) (Λ : Submodule (𝓞 K) V) : (mvN hs N).IsTerm g (s • Λ) ↔ N.IsTerm g Λ := by
   refine and_congr (and_congr (isUnimod_smul hs Λ) ?_) (mv_isAdm hs N.F N.F' Λ _)
@@ -393,7 +393,7 @@ theorem mvN_isTerm (g : ℕ) (Λ : Submodule (𝓞 K) V) : (mvN hs N).IsTerm g (
   simp only [IsFrame, mv_lead]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `idx (flagPairDefinitePartLattice (mv hs N.F) (mv hs N.F') _) (latLa (mv hs N.F) (mv hs N.F') _ _) = _`. Rewrite using `[flagPairDefinitePartLattice_isometry, mv_latLa]`. Conclude with `relIndex_smul s _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvN_gI (g : ℕ) (Λ : Submodule (𝓞 K) V) : (mvN hs N).gI g (s • Λ) = N.gI g Λ := by
   change idx (flagPairDefinitePartLattice (mv hs N.F) (mv hs N.F') _) (latLa (mv hs N.F) (mv hs N.F') _ _) = _
@@ -401,7 +401,7 @@ theorem mvN_gI (g : ℕ) (Λ : Submodule (𝓞 K) V) : (mvN hs N).gI g (s • Λ
   exact relIndex_smul s _ _
 
 /- English proof (translation)
-Unfold `NF.nD`. Express the relevant statement in the definitionally equal form `(if h : l ≤ r + 1 then |((Algebra.norm ℚ (Dl (mv hs N.F) (mv hs N.F') l h) : ℚ) : ℝ)| * _ else 0) = _`. Simplify using `only [mv_Dl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mvN_nD (l : ℕ) : (mvN hs N).nD l = N.nD l := by
   unfold NF.nD
@@ -412,7 +412,7 @@ theorem mvN_nD (l : ℕ) : (mvN hs N).nD l = N.nD l := by
 end Form
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H _ r N s hs`. Conclude with `⟨mvN hs N, fun _ => ⟨rfl, rfl⟩, rfl, rfl, rfl, rfl, mvN_nD hs N, fun g Λ => ⟨mvN_om hs N Λ, mvN_isTerm hs N g Λ, mvN_gI hs N g Λ⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_moved : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ), ∀ (N : NF H r) (s : V ≃ₗ[K] V), s ∈ isomGrp H → ∃ N' : NF H r, (∀ a, N'.F.e a = s (N.F.e a) ∧ N'.F'.e a = s (N.F'.e a)) ∧ N'.j = N.j ∧ N'.c = N.c ∧ N'.T = N.T ∧ N'.𝔡 = N.𝔡 ∧ (∀ l, N'.nD l = N.nD l) ∧ ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), N'.om (s • Λ) = N.om Λ ∧ (N'.IsTerm g (s • Λ) ↔ N.IsTerm g Λ) ∧ N'.gI g (s • Λ) = N.gI g Λ := by
   intro K V _ _ _ _ _ _ _ _ H _ r N s hs

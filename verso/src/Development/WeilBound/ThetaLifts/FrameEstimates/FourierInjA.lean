@@ -5,9 +5,9 @@ open MeasureTheory BoundedContinuousFunction
 namespace PositivityTheory.ThKEst.FourInj
 
 /- English proof (translation)
-Set `_ : UniformSpace G` to `IsTopologicalAddGroup.rightUniformSpace G`. Establish `: IsUniformAddGroup G` using `isUniformAddGroup_of_addCommGroup`. Establish `: CompleteSpace G` using `IsRightUniformAddGroup.completeSpace_of_weaklyLocallyCompactSpace`. Establish `: (uniformity G).IsCountablyGenerated` using `IsUniformAddGroup.uniformity_countably_generated`. Establish `: TopologicalSpace.IsCompletelyMetrizableSpace G` using `inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem polish_of_lc (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [T2Space G]
     [LocallyCompactSpace G] [SecondCountableTopology G] : PolishSpace G := by
@@ -21,31 +21,27 @@ theorem polish_of_lc (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopolog
 variable {X A : Type} [TopologicalSpace X] [PolishSpace X] [MeasurableSpace X] [BorelSpace X]
 
 /- English proof (translation)
-Set `V : Submodule ℂ (X →ᵇ ℂ)` to `Submodule.span ℂ (Set.range e)`. Establish `hV1 : (1 : X →ᵇ ℂ) ∈ V` using `Submodule.subset_span h1`. Establish `hVmul : ∀ p ∈ V, ∀ q ∈ V, p * q ∈ V`. Introduce `p hp q hq`. Establish `: V * V ≤ V`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, rfl⟩, _, ⟨b, rfl⟩, rfl⟩`. Conclude with `hmul a b`. Conclude with `this (Submodule.mul_mem_mul hp hq)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hVstar : ∀ p ∈ V, star p ∈ V`. Introduce `p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span (hstar a)`. Consider the case `zero => rw [star_zero]`. Conclude with `V.zero_mem`. Consider the case `add x y _ _ hx hy => rw [star_add]`. Conclude with `V.add_mem hx hy`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `smul c x _ hx => rw [star_smul]`. Conclude with `V.smul_mem _ hx`. Set `S : StarSubalgebra ℂ (X →ᵇ ℂ)` to `{ toSubalgebra := V.toSubalgebra hV1 (fun p q hp hq => hVmul p hp q hq) star_mem' := fun {p} hp => hVstar p hp }`. Establish `hint : ∀ {k : X → ℝ}, Integrable k μ → ∀ g : X →ᵇ ℂ, Integrable (fun x => k x • g x) μ`. Introduce `k hk g`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `hk.smul_bdd ‖g‖ g.continuous.aestronglyMeasurable (Filter.Eventually.of_forall fun x => g.norm_coe_le_norm x)`. Establish `hV0 : ∀ g ∈ V, ∫ x, h x • g x ∂μ = 0`. Introduce `g hg`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `hx`. Conclude with `h0 a`. Consider the case `zero => simp`. Consider the case `add p q _ _ hp hq`. Simplify using `only [BoundedContinuousFunction.add_apply, smul_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_add (hint hi p) (hint hi q), hp, hq, add_zero]`. Consider the case `smul c p _ hp`. Simplify using `only [BoundedContinuousFunction.smul_apply, smul_comm (h _) c]`. Rewrite using `[integral_smul, hp, smul_zero]`. Establish `hfin : ∀ {k : X → ℝ}, Integrable k μ → IsFiniteMeasure (μ.withDensity fun x => ENNReal.ofReal (k x))` using `fun hk => isFiniteMeasure_withDensity_ofReal hk.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hwd : ∀ {k : X → ℝ}, Integrable k μ → ∀ g : X →ᵇ ℂ, ∫ x, g x ∂(μ.withDensity fun x => ENNReal.ofReal (k x)) = ∫ x, max (k x) 0 • g x ∂μ`. Introduce `k hk g`. Rewrite using `[integral_withDensity_eq_integral_toReal_smul₀ hk.aemeasurable.ennreal_ofReal (Filter.Eventually.of_forall fun x => ENNReal.ofReal_lt_top)]`. Simplify using `only [ENNReal.toReal_ofReal']`. Use `hfin hi` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `hfin hi.neg` as an intermediate fact. Establish `hPP : (μ.withDensity fun x => ENNReal.ofReal (h x)) = μ.withDensity fun x => ENNReal.ofReal ((-h) x)`. Use `ext_of_forall_mem_subalgebra_integral_eq_of_polish (𝕜 := ℂ) (A := S) ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Take `⟨a, ha⟩` from `hsep x y hxy`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨e a, ⟨(e a).toContinuousMap, ⟨e a, Submodule.subset_span ⟨a, rfl⟩, rfl⟩, rfl⟩, ha⟩`. Introduce `g hg`. Rewrite using `[hwd hi, hwd hi.neg, ← sub_eq_zero, ← integral_sub (hint hi.pos_part g) (hint hi.neg.pos_part g), ← hV0 g hg]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [← sub_smul, Pi.neg_apply, max_zero_sub_max_neg_zero_eq_self]`.
-
-Establish `hae` using `(withDensity_eq_iff hi.aemeasurable.ennreal_ofReal hi.neg.aemeasurable.ennreal_ofReal ((lintegral_ofReal_le_lintegral_enorm h).trans_lt hi.2).ne).1 hPP`. Use `filter_upwards [hae] with x hx`. Use `congrArg ENNReal.toReal hx` as an intermediate fact. Simplify using `only [ENNReal.toReal_ofReal', Pi.neg_apply] at this`. Establish `h2` using `max_zero_sub_max_neg_zero_eq_self (h x)`.
-
-Rewrite `h2` using `[this, sub_self]`. Conclude with `h2.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_ae_zero (μ : Measure X) (e : A → X →ᵇ ℂ) (h1 : ∃ a, e a = 1) (hmul : ∀ a b, ∃ c, e c = e a * e b)
     (hstar : ∀ a, ∃ c, e c = star (e a)) (hsep : ∀ x y, x ≠ y → ∃ a, e a x ≠ e a y) {h : X → ℝ}
@@ -119,17 +115,17 @@ theorem real_ae_zero (μ : Measure X) (e : A → X →ᵇ ℂ) (h1 : ∃ a, e a 
   exact h2.symm
 
 /- English proof (translation)
-Establish `hint : ∀ {k : X → ℂ}, Integrable k μ → ∀ g : X →ᵇ ℂ, Integrable (fun x => g x * k x) μ`. Introduce `k hk g`. Conclude with `hk.bdd_mul (c := ‖g‖) g.continuous.aestronglyMeasurable (Filter.Eventually.of_forall fun x => g.norm_coe_le_norm x)`. Establish `hic : Integrable (fun x => (starRingEnd ℂ) (H x)) μ` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).integrable_comp hi`. Establish `hc : ∀ a, ∫ x, e a x * (starRingEnd ℂ) (H x) ∂μ = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨c, hc⟩` from `hstar a`. Use `congrArg (starRingEnd ℂ) (h0 c)` as an intermediate fact. Rewrite `this` using `[← integral_conj, map_zero, hc]`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hre : (fun x => (H x).re) =ᵐ[μ] 0`. Use `real_ae_zero μ e h1 hmul hstar hsep hi.re fun a => ?_` and prove the remaining obligations. Establish `: ∀ x, (H x).re • e a x = (1 / 2 : ℂ) * (e a x * H x + e a x * (starRingEnd ℂ) (H x))` using `fun x => by`. Rewrite using `[← mul_add, Complex.add_conj, Complex.real_smul]`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this]`. Rewrite using `[integral_const_mul, integral_add (hint hi _) (hint hic _), h0, hc]`. Simplify using the standard rewrite rules. Establish `him : (fun x => (H x).im) =ᵐ[μ] 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `real_ae_zero μ e h1 hmul hstar hsep hi.im fun a => ?_` and prove the remaining obligations. Establish `: ∀ x, (H x).im • e a x = (-Complex.I / 2 : ℂ) * (e a x * H x - e a x * (starRingEnd ℂ) (H x))` using `fun x => by`. Rewrite using `[← mul_sub, Complex.sub_conj, Complex.real_smul]`. Use `push_cast`. Take the linear combination `((H x).im * e a x) * Complex.I_mul_I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [this]`. Rewrite using `[integral_const_mul, integral_sub (hint hi _) (hint hic _), h0, hc]`. Simplify using the standard rewrite rules. Use `filter_upwards [hre, him] with x h1 h2`. Conclude with `Complex.ext h1 h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem complex_ae_zero (μ : Measure X) (e : A → X →ᵇ ℂ) (h1 : ∃ a, e a = 1) (hmul : ∀ a b, ∃ c, e c = e a * e b)
     (hstar : ∀ a, ∃ c, e c = star (e a)) (hsep : ∀ x y, x ≠ y → ∃ a, e a x ≠ e a y) {H : X → ℂ}

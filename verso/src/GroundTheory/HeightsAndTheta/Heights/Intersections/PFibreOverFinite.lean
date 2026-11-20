@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW`. Use `(divSupp_finite P' (rename v s)).subset fun W' hW' => ?_` and prove the remaining obligations. Establish `hsW : s ∈ W` using `hW.1.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hsW' : rename v s ∈ W'`. Rewrite `hsW` using `[← hW'.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hsW`. Conclude with `((FibreDivSupp.proof h K ι K' ι' κ v P' n s α W hv hP' hQ hs hsQ hW W').mp ⟨hW', hsW'⟩).1`.
+A detailed English derivation is pending.
 -/
 theorem FibreOverFinite.proof (h : FibreIncomp.Statement) : FibreOverFinite.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW

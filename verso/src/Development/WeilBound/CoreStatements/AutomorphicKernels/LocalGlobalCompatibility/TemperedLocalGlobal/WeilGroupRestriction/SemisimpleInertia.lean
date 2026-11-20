@@ -21,13 +21,13 @@ namespace PositivityTheory.Pf1.CLGD.K
 namespace SemisimpleInertia
 
 /- English proof (translation)
-Establish `hX : (X - 1 : ℂ[X]) = X - C 1` using `by simp`. Establish `h1 : minpoly ℂ T ∣ (X - C (1 : ℂ)) ^ m`. Rewrite using `[← hX]`. Conclude with `(LinearMap.minpoly_dvd_charpoly T).trans hd`. Establish `hp : Prime (X - C (1 : ℂ))` using `prime_X_sub_C 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, -, hass⟩` from `(_root_.dvd_prime_pow hp m).1 h1`. Establish `hsq : Squarefree (minpoly ℂ T)` using `hs.minpoly_squarefree`. Establish `hi1 : i ≤ 1`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (X - C (1 : ℂ)) * (X - C 1) ∣ minpoly ℂ T`. Rewrite using `[← sq]`. Conclude with `(pow_dvd_pow _ hlt).trans hass.symm.dvd`. Conclude with `hp.not_isUnit (hsq _ h2)`. Establish `h3 : minpoly ℂ T ∣ X - C (1 : ℂ)` using `hass.dvd.trans (by simpa using pow_dvd_pow (X - C (1 : ℂ)) hi1)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : aeval T (X - C (1 : ℂ)) = 0`. Take `⟨q, hq⟩` from `h3`. Rewrite using `[hq, map_mul, minpoly.aeval, zero_mul]`. Simplify `h4` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_semisimple {V : Type*} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     (T : Module.End ℂ V) (hs : T.IsSemisimple) {m : ℕ} (hd : T.charpoly ∣ (X - 1 : ℂ[X]) ^ m) : T = 1 := by
@@ -55,7 +55,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨n, b, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpTw_mk, WD.charPol_mk, WD.charPol_mk, WDRep.tw_ρ, ht, zpow_zero, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_lpTw_of_deg (x : WD h) (s : ℝ) {t : Weil h} (ht : deg t = 0) :
     (x.lpTw s).charPol t = x.charPol t := by
@@ -67,19 +67,17 @@ end SemisimpleInertia
 open SemisimpleInertia in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h rc hrc a σ hσ`. Establish `hG : GlobalTheory.Published.GeometricLemma` using `GlobalTheory.CompanionTheory.GeoLink.geometricLemma`. Establish `hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness` using `GlobalTheory.bernsteinZelevinskyFiniteness_holds`. Establish `hSeg : GlobalTheory.Published.SegmentRepresentation` using `GlobalTheory.CompanionTheory.StdSubTop.segmentRepresentation`. Establish `hZ : GlobalTheory.Published.ZelevinskyPolynomialRing` using `GlobalTheory.zelevinskyPolynomialRing_of_parts hBZ hSeg (PositivityTheory.Groth.grothendieckRingPolynomial_of_seg hSeg)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨art, ha, ε, -, L⟩` from `id hrc`. Use `GlobalTheory.LocGL.UnramSupport.fixed_iwahori_ne_bot hG hZ hBZ (w.adicCompletion E) a σ.V σ.ρ σ.smooth σ.irred ?_` and prove the remaining obligations. Introduce `s hs y hy`. Establish `hs' : HasSupport (IrrGL.of σ.ρ σ.smooth σ.irred).rep s` using `hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred)`. Establish `hcusp : y.IsCusp` using `hs'.isCusp hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : ∀ t : Weil h, deg t = 0 → (rc y).charPol t ∣ (X - 1 : ℂ[X]) ^ a`. Introduce `t ht`. Establish `h1` using `L.supp _ s hs' t`. Establish `h2` using `hσ t ht`. Rewrite `h2` using `[rec_algNorm hrc σ, charPol_lpTw_of_deg _ _ ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2, h1]`. Conclude with `Multiset.dvd_prod (Multiset.mem_map_of_mem _ hy)`. Establish `hirr` using `(L.cusp y).1 hcusp`. Take `⟨n, b, hb, -⟩` from `id hirr`. Establish `hN : b.N = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `GlobalTheory.LocLanglands.TemperedRec.monodromy_zero_of_irreducible_weilDeligne E Ω A w h (rc y) hirr`. Rewrite `h0` using `[← hb, WD.monodromyZero_ofWeilDeligneRepClass_iff]`. Then use the resulting hypothesis. Establish `hI : ∀ τ : Ine (F` using `E) A, b.ρ (ineIncl h τ) = 1 := by`. Introduce `τ`. Establish `h0` using `hdiv (ineIncl h τ) (by simp)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[← hb, WD.charPol_mk]`. Conclude with `eq_one_of_semisimple _ (b.semisimple _) h0`. Establish `hunr : (rc y).unr`. Rewrite using `[← hb, WD.unr_mk]`. Conclude with `⟨hN, hI⟩`.
-
-Establish `: CharZero (w.adicCompletion E)` using `charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`. Conclude with `isUnramChar_of_isCusp_of_isSpherical hG hBZ hZ _ y hcusp ((hrc.isSpherical_iff y).2 hunr)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iwahori_fixed_vector_unipotent : K7 := by
   intro E Ω _ _ _ _ _ A w h rc hrc a σ hσ

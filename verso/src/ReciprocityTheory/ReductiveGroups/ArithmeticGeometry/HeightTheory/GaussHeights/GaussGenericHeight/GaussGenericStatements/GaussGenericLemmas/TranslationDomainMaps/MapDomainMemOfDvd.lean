@@ -12,14 +12,14 @@ noncomputable def diag (c : σ → K) : MvPolynomial σ K →ₐ[K] MvPolynomial
   aeval fun t => C (c t) * X t
 
 /- English proof (translation)
-Unfold `diag`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem diag_X (c : σ → K) (t : σ) : diag c (X t) = C (c t) * X t := by
   unfold diag
   rw [aeval_X]
 
 /- English proof (translation)
-Unfold `diag`. Rewrite using `[aeval_monomial, algebraMap_eq, monomial_eq, C_mul, mul_assoc]`. Use `congr 1`. Simplify using `only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, map_prod, map_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem diag_monomial (c : σ → K) (m : σ →₀ ℕ) (a : K) :
     diag c (monomial m a) = monomial m (a * m.prod fun t e => c t ^ e) := by
@@ -29,9 +29,9 @@ theorem diag_monomial (c : σ → K) (m : σ →₀ ℕ) (a : K) :
   simp only [mul_pow, Finsupp.prod, Finset.prod_mul_distrib, map_prod, map_pow]
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial m a`. Rewrite using `[diag_monomial, coeff_monomial, coeff_monomial]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Consider the case `add p q hp hq`. Rewrite using `[map_add, coeff_add, coeff_add, hp, hq, mul_add]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_diag (c : σ → K) (g : MvPolynomial σ K) (s : σ →₀ ℕ) :
     coeff s (diag c g) = (s.prod fun t e => c t ^ e) * coeff s g := by
@@ -46,7 +46,7 @@ theorem coeff_diag (c : σ → K) (g : MvPolynomial σ K) (s : σ →₀ ℕ) :
     rw [map_add, coeff_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Establish `hne : (s : σ →₀ ℕ) → (s.prod fun t e => c t ^ e) ≠ 0` using `fun s => Finset.prod_ne_zero_iff.mpr fun t _ => pow_ne_zero _ (hc t)`. Use extensionality with `s`. Simplify using `only [mem_support_iff, coeff_diag]`. Conclude with `⟨fun h => right_ne_zero_of_mul h, fun h => mul_ne_zero (hne s) h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem support_diag {c : σ → K} (hc : ∀ t, c t ≠ 0) (g : MvPolynomial σ K) :
     (diag c g).support = g.support := by
@@ -57,7 +57,7 @@ theorem support_diag {c : σ → K} (hc : ∀ t, c t ≠ 0) (g : MvPolynomial σ
   exact ⟨fun h => right_ne_zero_of_mul h, fun h => mul_ne_zero (hne s) h⟩
 
 /- English proof (translation)
-Simplify using `only [totalDegree, support_diag hc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem totalDegree_diag {c : σ → K} (hc : ∀ t, c t ≠ 0) (g : MvPolynomial σ K) :
     (diag c g).totalDegree = g.totalDegree := by
@@ -80,9 +80,9 @@ Both sides reduce to the same expression.
     diagEquiv hc g = diag c g := rfl
 
 /- English proof (translation)
-Take `⟨q, rfl⟩` from `hd`. Establish `hg : g ≠ 0` using `left_ne_zero_of_mul hh`. Establish `hq : q ≠ 0` using `right_ne_zero_of_mul hh`. Rewrite `hdeg` using `[totalDegree_mul_of_isDomain hg hq]`. Establish `hq0 : q.totalDegree = 0` using `by omega`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨q.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm]`. Use `congr 1`. Conclude with `totalDegree_eq_zero_iff_eq_C.mp hq0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eq_mul_C_of_dvd {g h : MvPolynomial σ K} (hd : g ∣ h)
     (hdeg : h.totalDegree = g.totalDegree) (hh : h ≠ 0) : ∃ a : K, h = C a * g := by
@@ -108,7 +108,7 @@ def cb (b : Fin (D + 1)) (μ : K) : Fin (D + 1) × Fin (N + 1) → K :=
   fun t => if t.1 = b then μ else 1
 
 /- English proof (translation)
-Unfold `cb`. Use `split_ifs`. Conclude with `hμ`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cb_ne_zero {μ : K} (hμ : μ ≠ 0) (b : Fin (D + 1)) (t : Fin (D + 1) × Fin (N + 1)) :
     cb b μ t ≠ 0 := by
@@ -118,7 +118,7 @@ theorem cb_ne_zero {μ : K} (hμ : μ ≠ 0) (b : Fin (D + 1)) (t : Fin (D + 1) 
   · exact one_ne_zero
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_prod_type, Fintype.prod_eq_single b]`. Simplify using `[cb, bdeg, Finset.prod_pow_eq_pow_sum]`. Introduce `i hi`. Simplify using `[cb, hi]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem prod_cb (b : Fin (D + 1)) (μ : K) (s : Fin (D + 1) × Fin (N + 1) →₀ ℕ) :
     (s.prod fun t e => cb b μ t ^ e) = μ ^ bdeg b s := by
@@ -129,13 +129,13 @@ theorem prod_cb (b : Fin (D + 1)) (μ : K) (s : Fin (D + 1) × Fin (N + 1) →�
     simp [cb, hi]
 
 /- English proof (translation)
-Establish `hg : g ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hs`. Establish `h2 : ∀ t : Fin (D + 1) × Fin (N + 1), cb b (2 : K) t ≠ 0` using `cb_ne_zero two_ne_zero b`. Establish `hne : diag (cb b (2 : K)) g ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Apply `hg` to reduce the goal to its premises. Rewrite using `[← support_eq_empty, ← support_diag h2 g, h, support_zero]`. Take `⟨a, ha⟩` from `eq_mul_C_of_dvd hd (totalDegree_diag h2 g) hne`. Establish `key : ∀ r ∈ g.support, (2 : K) ^ bdeg b r = a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hr`. Establish `h3` using `congrArg (coeff r) ha`. Rewrite `h3` using `[coeff_diag, prod_cb, coeff_C_mul]`. Conclude with `mul_right_cancel₀ (mem_support_iff.mp hr) h3`. Establish `e` using `(key s hs).trans (key s' hs').symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : ((2 ^ bdeg b s : ℕ) : K) = ((2 ^ bdeg b s' : ℕ) : K)`. Use `push_cast`. Conclude with `e`. Conclude with `Nat.pow_right_injective (le_refl 2) (Nat.cast_injective e')`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem bdeg_eq_of_dvd [CharZero K] (b : Fin (D + 1))
     {g : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K}
@@ -165,7 +165,7 @@ def eT (e : Equiv.Perm (Fin (D + 1))) : Fin (D + 1) × Fin (N + 1) ≃ Fin (D + 
   Equiv.prodCongr e (Equiv.refl _)
 
 /- English proof (translation)
-Unfold `bdeg`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h : ((e b, j) : Fin (D + 1) × Fin (N + 1)) = eT e (b, j)` using `rfl`. Rewrite using `[h, Finsupp.mapDomain_apply (eT e).injective]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem bdeg_mapDomain (e : Equiv.Perm (Fin (D + 1))) (b : Fin (D + 1))
     (s : Fin (D + 1) × Fin (N + 1) →₀ ℕ) :
@@ -176,15 +176,13 @@ theorem bdeg_mapDomain (e : Equiv.Perm (Fin (D + 1))) (b : Fin (D + 1))
   rw [h, Finsupp.mapDomain_apply (eT e).injective]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (eT (N` using `N) e) := (eT (N := N) e).injective`. Establish `hg : g ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hs`. Establish `hr : rename (eT e) g ≠ 0` using `(map_ne_zero_iff _ (rename_injective _ hinj)).mpr hg`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdeg : (rename (eT e) g).totalDegree = g.totalDegree`. Use `le_antisymm (totalDegree_rename_le _ g) ?_` and prove the remaining obligations. Take `⟨q, hq⟩` from `hd`. Establish `hq0 : q ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hq` using `[mul_zero]`. Conclude with `hr hq`. Rewrite using `[hq, totalDegree_mul_of_isDomain hg hq0]`. Use linear arithmetic over natural numbers and integers. Take `⟨a, ha⟩` from `eq_mul_C_of_dvd hd hdeg hr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (coeff (s.mapDomain (eT e))) ha`. Rewrite `h1` using `[coeff_rename_mapDomain _ hinj, coeff_C_mul]`. Rewrite `hs`, the goal using `[mem_support_iff]`. Introduce `h0`. Rewrite `h1` using `[h0, mul_zero]`.
-
-Conclude with `hs h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapDomain_mem_of_dvd (e : Equiv.Perm (Fin (D + 1)))
     {g : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K}
@@ -218,7 +216,7 @@ noncomputable def transl (a : Fin (N + 1) → K) :
   aeval fun t => if t.1 = 0 then X t + C (a t.2) else X t
 
 /- English proof (translation)
-Unfold `transl`. Rewrite using `[aeval_X]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_X (a : Fin (N + 1) → K) (t : Fin (D + 1) × Fin (N + 1)) :
     transl a (X t) = if t.1 = 0 then X t + C (a t.2) else X t := by
@@ -238,11 +236,11 @@ Both sides reduce to the same expression.
     (g : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) : translEquiv a g = transl a g := rfl
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on`. Use `next c =>`. Simplify using `only [algHom_C, eval_C, AlgHom.commutes, algebraMap_eq]`. Use `next p q hp hq =>`. Simplify using `only [map_add, hp, hq]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `next p t hp =>`. Take `⟨i, j⟩` from `t`. Simplify using `only [map_mul, hp, transl_X]`. Use `congr 1`. Distinguish the cases in `h : i = 0`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+A detailed English derivation is pending.
 -/
 theorem eval_transl (z : Fin (D + 1) × Fin (N + 1) → K)
     (f : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K) :
@@ -262,11 +260,11 @@ theorem eval_transl (z : Fin (D + 1) × Fin (N + 1) → K)
     · simp [h]
 
 /- English proof (translation)
-Establish `hz : ∀ z : Fin (D + 1) × Fin (N + 1) → K, eval (fun t => if t.1 = 0 then 0 else z t) g = 0`. Introduce `z`. Rewrite using `[eval_eq']`. Use `Finset.sum_eq_zero fun s hs => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, s (0, j) ≠ 0 := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1` using `h0 s hs`. Simplify using `[bdeg, hne] at h1`. Apply `mul_eq_zero_of_right` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ (0, j)) (by simp [hj])`. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`. Take `⟨q, hq⟩` from `hd (fun j => z (0, j))`. Rewrite using `[map_zero, ← eval_transl z g, hq, map_mul, hz, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_transl [Infinite K] {g : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K}
     (hd : ∀ a, g ∣ transl a g) (h0 : ∀ s ∈ g.support, 0 < bdeg 0 s) : g = 0 := by
@@ -288,17 +286,15 @@ theorem eq_zero_of_transl [Infinite K] {g : MvPolynomial (Fin (D + 1) × Fin (N 
   rw [map_zero, ← eval_transl z g, hq, map_mul, hz, zero_mul]
 
 /- English proof (translation)
-Establish `hc1 : ∀ b, ∀ r ∈ g.support, bdeg b r = bdeg b s` using `fun b r hr => bdeg_eq_of_dvd b (hsc b) hr hs`. Use `split_ifs with hb`. Substitute `hb show bdeg 0 s = 0` using the available equality. Assume the negation of the conclusion as `hne`. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`.
+Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : g = 0` using `eq_zero_of_transl htr fun r hr => by`. Rewrite using `[hc1 0 r hr]`. Conclude with `Nat.pos_of_ne_zero hne`. Rewrite `hs` using `[hg]`. Simplify using `at hs`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hD : (1 : Fin (D + 1)) ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Break down `D with _ | D` into its components or cases. Conclude with `Fin.ext (Nat.lt_one_iff.mp b.isLt)`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.ext_iff] at h`. Establish `hb1 : bdeg b s = bdeg 1 s`. Distinguish the cases in `h1 : b = 1`. Rewrite using `[h1]`. Establish `he0 : Equiv.swap (1 : Fin (D + 1)) b 0 = 0` using `Equiv.swap_apply_of_ne_of_ne hD.symm (Ne.symm hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem` using `mapDomain_mem_of_dvd (Equiv.swap 1 b) (hsw _ he0) hs`. Establish `h2` using `bdeg_mapDomain (Equiv.swap (1 : Fin (D + 1)) b) 1 s`. Rewrite `h2` using `[Equiv.swap_apply_left]`. Rewrite using `[← hc1 b _ hmem]`. Conclude with `h2`.
-
-Use `show bdeg b s = g.support.sup fun r => bdeg 1 r`. Rewrite using `[hb1]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Finset.le_sup (f := fun r => bdeg 1 r) hs`. Conclude with `Finset.sup_le fun r hr => (hc1 1 r hr).le`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem multiHom_of_dvd [CharZero K] {g : MvPolynomial (Fin (D + 1) × Fin (N + 1)) K}
     (hsc : ∀ b, g ∣ diag (cb b (2 : K)) g)

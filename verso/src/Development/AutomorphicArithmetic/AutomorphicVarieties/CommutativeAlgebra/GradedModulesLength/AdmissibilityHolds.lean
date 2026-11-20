@@ -10,9 +10,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Unfold `Irr`. Use `Finset.prod_induction _ Ideal.FG (fun a b ha hb => Submodule.FG.mul ha hb) ?_ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Ideal.one_eq_top]; exact ⟨{1}, by simp⟩`. Take `⟨t, ht⟩` from `h i`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ht]`. Conclude with `(Submodule.span_span_of_tower B R (t : Set R)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem irr_fg {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra B R]
     (𝒜 : Deg k → Submodule B R) (h : ∀ i, (𝒜 (e i)).FG) : (Irr 𝒜).FG := by
@@ -25,7 +25,7 @@ private theorem irr_fg {k : ℕ} {B R : Type} [CommRing B] [CommRing R] [Algebra
     exact (Submodule.span_span_of_tower B R (t : Set R)).symm
 
 /- English proof (translation)
-Introduce `i`. Use `fin_cases i`. Conclude with `h (-2)`. Conclude with `h 2`. Conclude with `Submodule.FG.sup (Submodule.fg_span_singleton _) (((h (-2)).mul (h (-2))).mul (h 2))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mN_fg {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜 : ℤ → Submodule O A)
     [GradedAlgebra 𝒜] (h : ∀ j, (oz 𝒜 j).FG) (F : A) : ∀ i, (mN 𝒜 F i).FG := by
@@ -36,21 +36,19 @@ private theorem mN_fg {O A : Type} [CommRing O] [CommRing A] [Algebra O A] (𝒜
   · exact Submodule.FG.sup (Submodule.fg_span_singleton _) (((h (-2)).mul (h (-2))).mul (h 2))
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q hF hG h2 h3 a h5 J hJ`. Establish `hstd : Std (mGr Q)` using `std_holds (𝒜 0) A 3 _ (mN_fg 𝒜 (fg_holds O A 𝒜 x hW) _)`. Establish `hfg : ((maximalIdeal (𝒜 0)).map (algebraMap (𝒜 0) (mR Q)) * Irr (mGr Q)).FG` using `Submodule.FG.mul (Ideal.FG.map (IsNoetherian.noetherian _) _) (irr_fg _ hstd.fg)`. Use `Ideal.exists_pow_le_of_le_radical_of_fg ?_ hfg` and prove the remaining obligations. Rewrite using `[Ideal.radical_eq_sInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hle, hp⟩`. Distinguish the cases in `hirr : Irr (mGr Q) ≤ p`. Conclude with `Ideal.mul_le_right.trans hirr`. Use `Ideal.mul_le_left.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsec : secs (ts Q) ≤ p`. Use `le_trans (Ideal.span_mono ?_) (le_sup_right.trans hle)` and prove the remaining obligations. Introduce and unpack `t ⟨d, hd⟩`. Conclude with `⟨d, List.mem_append_left _ hd⟩`. Establish `ha : algebraMap (𝒜 0) (mR Q) a ∈ p` using `(le_sup_right.trans hle) (Ideal.subset_span ⟨0, List.mem_append_right _ (List.mem_singleton_self _)⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ : ∀ i, algebraMap (𝒜 0) (mR Q) ⟨Q.Z i, (Q.hZ i).1⟩ ∈ p` using `fun i => hle (Ideal.mem_sup_left (hJ i))`. Establish `hzi` using `(zi_holds O A 𝒜 x hW r s r' s' m Q p hp hirr hsec hZ).1`. Establish `hP : (p.comap (algebraMap (𝒜 0) (mR Q))).IsPrime` using `Ideal.comap_isPrime _ _`. Break down `emb_holds O K A 𝒜 x Q.ideal h2 _ hP hzi with h | ⟨_, σ, hσ⟩` into its components or cases. Rewrite using `[Ideal.map_le_iff_le_comap, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `zii_holds O K A 𝒜 x hW r s r' s' m Q hF hG h2 h3 p hp hirr hsec hZ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap, ← hσ, idD, Ideal.span_le]`. Introduce and unpack `b ⟨f, hf, g, hg, hb⟩`. Assume the negation of the conclusion as `hne`. Take `⟨ξ, hξ, hres⟩` from `tsp_holds O K A 𝒜 x hW Q.ideal (hom_holds O A 𝒜 x hW r s r' s' m Q).1 σ (fun b hb => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: b ∈ RingHom.ker σ` using `by rw [hσ]; exact hzi b hb`. Conclude with `this)`. Establish `hval : ∀ c : 𝒜 0, ξ c = σ c` using `fun c => by rw [← hres]; rfl`. Establish `hfg0 : ξ f * ξ g ≠ 0`. Rewrite using `[← map_mul, ← hb, hval]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hne`. Use `h5.2.2 ξ hξ ⟨fun h => ?_, fun h => ?_⟩ ?_` and prove the remaining obligations. Conclude with `left_ne_zero_of_mul hfg0 (h (-2) (by norm_num) f hf)`. Conclude with `right_ne_zero_of_mul hfg0 (h 2 (by norm_num) g hg)`. Rewrite using `[hval]`.
-
-Establish `: a ∈ RingHom.ker σ` using `by rw [hσ]; exact ha`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.admissibility_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

@@ -12,7 +12,7 @@ open GlobalTheory.WeilDeligne GlobalTheory.ThetaExh GlobalTheory.RowTie
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `A.lpUnr_spec w {1} (by simp)`. Use `⟨(T.unr w _).1 h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.dim, h3]`. Both sides reduce to the same expression. Rewrite using `[← T.frobEig w _ h1, h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem tie_unit (T : WDTie N A) (w : PlE H) :
     (T.e w (A.lpUnr w {1})).unr ∧ (T.e w (A.lpUnr w {1})).lpDim = 1 ∧
@@ -23,13 +23,11 @@ theorem tie_unit (T : WDTie N A) (w : PlE H) :
   · rw [← T.frobEig w _ h1, h2]
 
 /- English proof (translation)
-Introduce `w`. Use `⟨fun a b χ h => (T.e w).injective ?_, fun χ h => (T.e w).injective ?_, fun a χ s h => (T.e w).injective ?_, fun a b χ h hab => ?_, fun a b c h => (T.e w).injective ?_⟩` and prove the remaining obligations. Rewrite using `[T.char _ _ _ h, T.sum, T.sum, T.char _ _ _ h, T.char _ _ _ h]`. Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ _ _ 0).1`. Rewrite using `[T.char _ _ _ h, T.zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ (WD.lpZero _) (WD.lpZero _) _ 0).2.2.2.2.1`. Rewrite using `[T.char _ _ _ h, T.tw, T.tw, T.char _ _ _ h]`. Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ (WD.lpZero _) _ s).2.1`. Apply `(T.e w).injective` to reduce the goal to its premises. Establish `hχ : (T.e w χ).lpDim = 1` using `by rw [T.dim, h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (T.e w) hab` as an intermediate fact. Rewrite `this` using `[T.char _ _ _ h, T.char _ _ _ h]`. Conclude with `GlobalTheory.T.weilDeligneParameter_tensor_oneDim_injective _ _ _ _ _ _ _ _ hχ this`. Use `congrArg (T.e w) h` as an intermediate fact. Rewrite `this` using `[T.sum, T.sum]`.
-
-Conclude with `GlobalTheory.T.directSum_cancel_right _ _ _ _ _ _ _ _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem paramLaws_of_tie (T : WDTie N A) : ParamLaws N A := by
   intro w
@@ -51,18 +49,16 @@ theorem paramLaws_of_tie (T : WDTie N A) : ParamLaws N A := by
     exact GlobalTheory.T.directSum_cancel_right _ _ _ _ _ _ _ _ this
 
 /- English proof (translation)
-Introduce `w a b c h` and use `(paramLaws_of_tie T w).2.2.2.2 a b c h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cancel_of_tie (T : WDTie N A) : Cancel N A := fun w a b c h => (paramLaws_of_tie T w).2.2.2.2 a b c h
 
 /- English proof (translation)
-Introduce `w a b χ χ' s h1 h2`. Establish `h3 : A.lpDim (A.lpTw χ s) = 1` using `by rw [A.lpDim_tw, h1]`. Establish `h4 : A.lpDim (A.lpChar χ χ') = 1` using `by rw [A.lpDim_char _ _ h2, h1]`. Establish `h5 : A.lpDim (A.lpUnr w {1}) = 1` using `(A.lpUnr_spec w {1} (by simp)).2.2`. Use `⟨(T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_, (T.e w).injective ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[T.char _ _ _ h1, T.sum, T.sum, T.char _ _ _ h1, T.char _ _ _ h1]`. Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ _ _ 0).1`. Rewrite using `[T.char _ _ _ h1, T.tw, T.tw, T.char _ _ _ h1]`. Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ (WD.lpZero _) _ s).2.1`. Rewrite using `[T.char _ _ _ h3, T.tw, T.tw, T.char _ _ _ h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ (WD.lpZero _) _ s).2.2.1`. Rewrite using `[T.char _ _ _ h2, T.char _ _ _ h1, T.char _ _ _ h4, T.char _ _ _ h2]`. Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ _ _ _ 0).2.2.2.1`. Rewrite using `[T.char _ _ _ h5]`. Take `⟨u1, u2, u3⟩` from `tie_unit T w`.
-
-Conclude with `(GlobalTheory.T.lp_char_compatibilities _ _ _ _ _ (T.e w a) (WD.lpZero _) _ 0).2.2.2.2.2 u1 u2 u3`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem charLaws_of_tie (T : WDTie N A) : CharLaws N A := by
   intro w a b χ χ' s h1 h2
@@ -88,7 +84,7 @@ end GlobalTheory.RowLaws
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ T` and use `⟨GlobalTheory.RowLaws.paramLaws_of_tie T, GlobalTheory.RowLaws.charLaws_of_tie T, GlobalTheory.RowLaws.cancel_of_tie T⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.RowLaws.main : ∀ (R : Ranks) (H : Host R) (what₂ : Rows.Data R) (N : NData R H what₂) (A : NAut N),
     GlobalTheory.RowTie.WDTie N A → GlobalTheory.ThetaExh.ParamLaws N A ∧ GlobalTheory.RowTie.CharLaws N A ∧ GlobalTheory.RowTie.Cancel N A :=

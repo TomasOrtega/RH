@@ -12,13 +12,13 @@ section Generic
 variable {S M : Type} [CommRing S] [AddCommGroup M] [Module S M] {T : ℕ}
 
 /- English proof (translation)
-Use `haveI : Finite M := Nat.finite_of_card_ne_zero (by rw [hM]; exact hT.ne_zero)`. Prove the components needed by the constructor for the conclusion. Introduce `h haveI : Nontrivial M := Finite.one_lt_card_iff_nontrivial.mp (by rw [hM]; exact hT.one_lt)`. Take `⟨a, ha⟩` from `exists_ne (0 : M)`. Establish `hord : addOrderOf a = T`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd` using `addOrderOf_dvd_natCard a`. Rewrite `hdvd` using `[hM]`. Break down `(Nat.dvd_prime hT).mp hdvd with h1 | h1` into its components or cases. It suffices to derive a contradiction. Apply `ha` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `addOrderOf_nsmul_eq_zero a` as an intermediate fact. Rewrite `this` using `[h1, one_smul]`. Then use the resulting hypothesis. Conclude with `h1`. Rewrite using `[← hord]`. Conclude with `addOrderOf_dvd_iff_zsmul_eq_zero.mpr (h a)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨c, rfl⟩ m`. Establish `hT0 : (T : ℤ) • m = 0`. Rewrite using `[natCast_zsmul, ← hM]`. Conclude with `card_nsmul_eq_zero'`. Rewrite using `[mul_comm, mul_smul, hT0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zsmul_eq_zero_iff (hT : T.Prime) (hM : Nat.card M = T) (n : ℤ) :
     (∀ m : M, n • m = 0) ↔ (T : ℤ) ∣ n := by
@@ -46,9 +46,9 @@ theorem zsmul_eq_zero_iff (hT : T.Prime) (hM : Nat.card M = T) (n : ℤ) :
     rw [mul_comm, mul_smul, hT0, smul_zero]
 
 /- English proof (translation)
-Use `haveI : Fact T.Prime := ⟨hT⟩`. Use `haveI : IsAddCyclic M := isAddCyclic_of_prime_card hM`. Take `⟨g, hg⟩` from `IsAddCyclic.exists_generator (α := M)`. Take `⟨k, hk⟩` from `AddSubgroup.mem_zmultiples_iff.mp (hg (s • g))`. Use `⟨k, fun m => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩` from `AddSubgroup.mem_zmultiples_iff.mp (hg m)`. Rewrite using `[smul_comm s j g, ← hk, smul_comm k j g]`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_smul (hT : T.Prime) (hM : Nat.card M = T) (s : S) :
     ∃ k : ℤ, ∀ m : M, s • m = k • m := by
@@ -61,7 +61,7 @@ theorem exists_int_smul (hT : T.Prime) (hM : Nat.card M = T) (s : S) :
   rw [smul_comm s j g, ← hk, smul_comm k j g]
 
 /- English proof (translation)
-Introduce `h`. Use `haveI : Finite M := Nat.finite_of_card_ne_zero (by rw [hM]; exact hT.ne_zero)`. Use `haveI : Nontrivial M := Finite.one_lt_card_iff_nontrivial.mp (by rw [hM]; exact hT.one_lt)`. Take `⟨a, ha⟩` from `exists_ne (0 : M)`. Conclude with `ha ((h.smul_eq_zero).mp (hu a))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_isUnit_of_kills (hT : T.Prime) (hM : Nat.card M = T) {u : S}
     (hu : ∀ m : M, u • m = 0) : ¬ IsUnit u := by
@@ -73,9 +73,9 @@ theorem not_isUnit_of_kills (hT : T.Prime) (hM : Nat.card M = T) {u : S}
   exact ha ((h.smul_eq_zero).mp (hu a))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨a, b, hab⟩` from `((Nat.prime_iff_prime_int.mp hT).coprime_iff_not_dvd).mpr h`. Apply `hI` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : ((a * (T : ℤ) + b * n : ℤ) : R) = 1` using `by rw [hab]; simp`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h1]`. Use `push_cast`. Conclude with `I.add_mem (I.mul_mem_left _ hTI) (I.mul_mem_left _ hn)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem int_dvd_of_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) (hT : T.Prime)
     (hTI : (T : R) ∈ I) {n : ℤ} (hn : (n : R) ∈ I) : (T : ℤ) ∣ n := by
@@ -91,17 +91,17 @@ theorem int_dvd_of_mem {R : Type} [CommRing R] {I : Ideal R} (hI : I ≠ ⊤) (h
 variable {A B : Type} [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B]
 
 /- English proof (translation)
-Take `⟨kA, hkA⟩` from `exists_int_smul hT hA (ψ y)`. Take `⟨kB, hkB⟩` from `exists_int_smul hT hB (ψ y)`. Establish `memA : y - (kA : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `not_isUnit_of_kills hT hA (u := ψ (y - kA)) (fun m => ?_) (hu.map ψ)` and prove the remaining obligations. Rewrite using `[map_sub, map_intCast, sub_smul, hkA, Int.cast_smul_eq_zsmul, sub_self]`. Establish `memB : y - (kB : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `not_isUnit_of_kills hT hB (u := ψ (y - kB)) (fun m => ?_) (hu.map ψ)` and prove the remaining obligations. Rewrite using `[map_sub, map_intCast, sub_smul, hkB, Int.cast_smul_eq_zsmul, sub_self]`. Establish `hTm : (T : O) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `not_isUnit_of_kills hT hB (u := ψ (T : O)) (fun m => ?_) (hu.map ψ)` and prove the remaining obligations. Rewrite using `[map_natCast, Nat.cast_smul_eq_nsmul, ← hB]`. Conclude with `card_nsmul_eq_zero'`. Establish `hd : ((kB - kA : ℤ) : O) ∈ IsLocalRing.maximalIdeal O`. Establish `he : ((kB - kA : ℤ) : O) = (y - kA) - (y - kB)` using `by push_cast; ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he]`. Conclude with `sub_mem memA memB`. Establish `hdvd` using `int_dvd_of_mem (IsLocalRing.maximalIdeal.isMaximal O).ne_top hT hTm hd`. Use `⟨kA, hkA, fun m => ?_⟩` and prove the remaining obligations. Establish `h0` using `(zsmul_eq_zero_iff hT hB (kB - kA)).mpr hdvd m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[sub_smul, sub_eq_zero]`. Rewrite using `[hkB, h0]`.
+A detailed English derivation is pending.
 -/
 theorem same_int_of_local {O : Type} [CommRing O] [IsLocalRing O] (ψ : O →+* S)
     (hT : T.Prime) (hA : Nat.card A = T) (hB : Nat.card B = T) (y : O) :
@@ -135,15 +135,15 @@ theorem same_int_of_local {O : Type} [CommRing O] [IsLocalRing O] (ψ : O →+* 
   rw [hkB, h0]
 
 /- English proof (translation)
-Take `⟨kA, hkA⟩` from `exists_int_smul hT hA X`. Take `⟨kB, hkB⟩` from `exists_int_smul hT hB X`. Establish `h1 : (T : ℤ) ∣ δ * kA - γ`. Use `(zsmul_eq_zero_iff hT hA _).mp fun m => ?_` and prove the remaining obligations. Use `hXA m` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hkA, hDA, hCA, smul_smul]`. Rewrite using `[sub_smul, this, sub_self]`. Establish `h2 : (T : ℤ) ∣ δ * kB - γ`. Use `(zsmul_eq_zero_iff hT hB _).mp fun m => ?_` and prove the remaining obligations. Use `hXB m` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hkB, hDB, hCB, smul_smul]`. Rewrite using `[sub_smul, this, sub_self]`. Establish `h3 : (T : ℤ) ∣ δ * (kB - kA)`. Establish `he : δ * (kB - kA) = (δ * kB - γ) - (δ * kA - γ)` using `by ring`. Rewrite using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_sub h2 h1`. Establish `h4 : (T : ℤ) ∣ kB - kA` using `((Nat.prime_iff_prime_int.mp hT).dvd_or_dvd h3).resolve_left hδ`. Use `⟨kA, hkA, fun m => ?_⟩` and prove the remaining obligations. Establish `h0` using `(zsmul_eq_zero_iff hT hB (kB - kA)).mpr h4 m`. Rewrite `h0` using `[sub_smul, sub_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkB, h0]`.
+A detailed English derivation is pending.
 -/
 theorem same_int_of_mul (hT : T.Prime) (hA : Nat.card A = T) (hB : Nat.card B = T)
     (X C D : S) (δ γ : ℤ) (hDA : ∀ m : A, D • m = δ • m) (hDB : ∀ m : B, D • m = δ • m)
@@ -207,7 +207,7 @@ theorem coe_inclO (w : HeightOneSpectrum (𝓞 F)) (o : 𝓞 E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_inclW, ← Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inclW_algebraMap (w : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) :
     ((inclW (E := E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) d) : intV E w) :
@@ -216,7 +216,7 @@ theorem inclW_algebraMap (w : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one, HeightOneSpectrum.algebraMap_adicCompletionIntegers_apply, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', HeightOneSpectrum.valuation_eq_one_iff_notMem]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap (w : HeightOneSpectrum (𝓞 F)) (d : 𝓞 F) (hd : d ∉ w.asIdeal) :
     IsUnit (algebraMap (𝓞 F) (w.adicCompletionIntegers F) d) := by
@@ -231,7 +231,7 @@ end Local
 section Main
 
 /- English proof (translation)
-Simplify using `only [add_mul, add_smul, mul_smul, hP, smul_zero, zero_add, add_zero]`. Conclude with `smul_comm _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_kill_eq {S M : Type} [CommRing S] [AddCommGroup M] [Module S M] (P P' X X' : S)
     (hP : ∀ m : M, P • m = 0) (m : M) : ((P + P') * X) • m = (X * P' + X' * P) • m := by
@@ -239,29 +239,27 @@ theorem sub_kill_eq {S M : Type} [CommRing S] [AddCommGroup M] [Module S M] (P P
   exact smul_comm _ _ _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ w hinv hfix T hT hTw p hd A B _ _ _ _ hA hB hpA hpB s`. Set `Q : intV E w → Prop` to `fun s => ∃ k : ℤ, (∀ m : A, s • m = k • m) ∧ ∀ m : B, s • m = k • m`. Establish `hadd : ∀ a b, Q a → Q b → Q (a + b)`. Introduce and unpack `a b ⟨k1, h1A, h1B⟩ ⟨k2, h2A, h2B⟩`. Conclude with `⟨k1 + k2, fun m => by rw [add_smul, add_smul, h1A, h2A], fun m => by rw [add_smul, add_smul, h1B, h2B]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hmul : ∀ a b, Q a → Q b → Q (a * b)`. Introduce and unpack `a b ⟨k1, h1A, h1B⟩ ⟨k2, h2A, h2B⟩`. Use `⟨k1 * k2, fun m => ?_, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, h2A, smul_comm, h1A, smul_smul, mul_comm]`. Rewrite using `[mul_smul, h2B, smul_comm, h1B, smul_smul, mul_comm]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : ∀ a, Q a → Q (-a)`. Introduce and unpack `a ⟨k, hkA, hkB⟩`. Conclude with `⟨-k, fun m => by rw [neg_smul, neg_smul, hkA], fun m => by rw [neg_smul, neg_smul, hkB]⟩`. Establish `h0 : Q 0` using `⟨0, fun m => by simp, fun m => by simp⟩`. Establish `h1 : Q 1` using `⟨1, fun m => by simp, fun m => by simp⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW : ∀ y, Q (inclW w y)` using `fun y => same_int_of_local (inclW w) hT hA hB y`. Establish `hσint : ∀ o : 𝓞 E, IsIntegral ℤ (σ (o : E))` using `fun o => map_isIntegral_int σ o.2`. Set `σO : 𝓞 E → 𝓞 E` to `fun o => ⟨σ (o : E), hσint o⟩`. Establish `hdesc : ∀ e : E, IsIntegral ℤ e → σ e = e → ∃ f : 𝓞 F, algebraMap F E (f : F) = e`. Introduce `e he hσe`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `hfix e hσe`. Establish `hfi : IsIntegral ℤ f` using `(isIntegral_algebraMap_iff (algebraMap F E).injective).mp (hf ▸ he)`. Conclude with `⟨⟨f, hfi⟩, hf⟩`. Establish `hE : ∀ o : 𝓞 E, Q (inclO w o)`. Introduce `o`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨d', hd'⟩` from `hdesc ((p : E) + σ p) (IsIntegral.add p.2 (hσint p)) (by rw [map_add, hinv, add_comm])`. Take `⟨c', hc'⟩` from `hdesc ((o : E) * σ p + σ o * p) (IsIntegral.add (IsIntegral.mul o.2 (hσint p)) (IsIntegral.mul (hσint o) p.2)) (by rw [map_add, map_mul, map_mul, hinv, hinv]; ring)`. Take `⟨δ, hδA, hδB⟩` from `hW (algebraMap (𝓞 F) _ d')`. Take `⟨γ, hγA, hγB⟩` from `hW (algebraMap (𝓞 F) _ c')`. Establish `hD : inclW (E` using `E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) d') = inclO w p + inclO w (σO p) := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_add]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[inclW_algebraMap, coe_inclO, hd']`. Both sides reduce to the same expression. Establish `hC : inclW (E` using `E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) c') = inclO w o * inclO w (σO p) + inclO w (σO o) * inclO w p := by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, ← map_add]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[inclW_algebraMap, coe_inclO, hc']`. Both sides reduce to the same expression. Establish `hPA : ∀ m : A, inclO w p • m = 0` using `hpA _ rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hPB : ∀ m : B, inclO w p • m = 0` using `hpB _ rfl`. Establish `hXA : ∀ m : A, inclW (E` using `E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) d') • inclO w o • m = inclW (E := E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) c') • m := by`. Introduce `m`. Rewrite using `[← mul_smul, hD, hC]`. Conclude with `sub_kill_eq _ _ _ _ hPA m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXB : ∀ m : B, inclW (E` using `E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) d') • inclO w o • m = inclW (E := E) w (algebraMap (𝓞 F) (w.adicCompletionIntegers F) c') • m := by`. Introduce `m`. Rewrite using `[← mul_smul, hD, hC]`. Conclude with `sub_kill_eq _ _ _ _ hPB m`. Establish `hδ : ¬ (T : ℤ) ∣ δ` using `fun h => not_isUnit_of_kills hT hA (u := inclW w (algebraMap (𝓞 F) _ d')) (fun m => by rw [hδA]; exact (zsmul_eq_zero_iff hT hA δ).mpr h m) ((isUnit_algebraMap w d' (hd d' hd')).map _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `same_int_of_mul hT hA hB _ _ _ δ γ hδA hδB hγA hγB hXA hXB hδ`. Establish `key : ∀ z (hz : z ∈ intV E w), Q ⟨z, hz⟩`. Introduce `z hz`. Use `Subring.closure_induction (p := fun z hz => Q ⟨z, hz⟩) ?_ h0 h1 (fun x y hx hy qx qy => hadd _ _ qx qy) (fun x hx qx => hneg _ qx) (fun x y hx hy qx qy => hmul _ _ qx qy) hz` and prove the remaining obligations. Introduce and unpack `x (⟨⟨_, o, rfl⟩, rfl⟩ | ⟨y, rfl⟩)`.
-
-Conclude with `hE o`. Conclude with `hW ⟨y.1, y.2⟩`. Conclude with `key s.1 s.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem acts_by_same_integer : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)), (∀ x, σ (σ x) = x) → (∀ x, σ x = x → x ∈ (algebraMap F E).range) → ∀ (T : ℕ), T.Prime → (T : 𝓞 F) ∈ w.asIdeal → ∀ (p : 𝓞 E), (∀ d : 𝓞 F, algebraMap F E (d : F) = (p : E) + σ (p : E) → d ∉ w.asIdeal) → ∀ (A B : Type) [AddCommGroup A] [Module (intV E w) A] [AddCommGroup B] [Module (intV E w) B], Nat.card A = T → Nat.card B = T → (∀ a : intV E w, (a : TensorProduct F E (w.adicCompletion F)) = inclE (F := F) (w.adicCompletion F) (p : E) → ∀ m : A, a • m = 0) → (∀ a : intV E w, (a : TensorProduct F E (w.adicCompletion F)) = inclE (F := F) (w.adicCompletion F) (p : E) → ∀ m : B, a • m = 0) → ∀ s : intV E w, ∃ k : ℤ, (∀ m : A, s • m = k • m) ∧ ∀ m : B, s • m = k • m := by
   intro F E _ _ _ _ _ σ w hinv hfix T hT hTw p hd A B _ _ _ _ hA hB hpA hpB s

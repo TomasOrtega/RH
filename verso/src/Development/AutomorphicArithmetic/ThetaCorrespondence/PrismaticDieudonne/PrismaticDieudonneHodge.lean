@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.PDivGroup GlobalTheory.Sandwich GlobalTheory.Inde
 namespace UpperTheory.Lit
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ ε hε`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Establish `hs : IsPrimitiveSystem ε` using `fun n => GlobalTheory.Dieudonne.isPrimitiveRoot_untilt_root hε n`. Conclude with `GlobalTheory.T.prismaticDieudonneHodge_of_hodgeTateDatum p C v O hv ε hs (GlobalTheory.T.pDivisibleGroup_datum_of_connected_dual_connected p C v O hv ε hs (hasDatum_biconn_of GlobalTheory.BRing.exists_bFrame GlobalTheory.QLog.WindowMat.window_matrices GlobalTheory.T.window_lift_t …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prismaticDieudonneHodge : GlobalTheory.Published.PrismaticDieudonneHodge := by
   intro p _ C _ _ _ v O _ _ hv _ _ ε hε
@@ -28,7 +28,7 @@ theorem prismaticDieudonneHodge : GlobalTheory.Published.PrismaticDieudonneHodge
       GlobalTheory.DatumOfMatrices.hasDatum_of_matrices p C v O hv ε hs))
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.Tls2.Jfarg.farguesExact_of_hodge prismaticDieudonneHodge`.
+A detailed English derivation is pending.
 -/
 theorem farguesExact : GlobalTheory.CompanionTheory.Ar.HT.FarguesExact :=
   PositivityTheory.Tls2.Jfarg.farguesExact_of_hodge prismaticDieudonneHodge

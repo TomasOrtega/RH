@@ -5,11 +5,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.LHCut
 
 /- English proof (translation)
-Introduce `Λ _ S C hi hz N m hl j hj U x hx`. Establish `: C.IsStrictlyGE (-1)` using `(CochainComplex.isStrictlyGE_iff _ _).2 (fun i hi => hz i hi)`. Take `⟨P, z, hP⟩` from `h1 Λ S U`. Take `⟨f, rfl⟩` from `(hP (C.X j)).2 x`. Take `⟨g, hg⟩` from `hG (SlShv Λ S) C hi N m (fun j hj => h2 Λ S C N j (hl j hj)) j hj P f ((hP _).1 (hx.trans rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨(g.hom.app (op U)).hom z, ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ : P ⟶ C.X j => (φ.hom.app (op U)).hom z) hg` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Generalize the expression as in `N ^ (m + 1) = k`. Proceed by induction on `k with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Consider the case `zero => simp only [zero_smul]`. Both sides reduce to the same expression. Consider the case `succ k ih => rw [succ_nsmul, succ_nsmul, ← ih]`. Both sides reduce to the same expression.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 theorem ghostSec_of (hG : Ghost) (h1 : Corep) (h2 : HomKill) : GhostSec := by
   intro Λ _ S C hi hz N m hl j hj U x hx
@@ -27,11 +27,11 @@ theorem ghostSec_of (hG : Ghost) (h1 : Corep) (h2 : HomKill) : GhostSec := by
   | succ k ih => rw [succ_nsmul, succ_nsmul, ← ih]; rfl
 
 /- English proof (translation)
-Introduce `Λ _ I J K μ hJ hK X S p r M γ hc N m hl j hj U x hx`. Take `⟨C, hi, hz, e, he, hd⟩` from `h1 Λ μ hJ hK p r M γ hc`. Establish `hloc : ∀ j : ℤ, j < m → CxLoc C N j`. Introduce `j hj U x hx u`. Take `⟨V, g, hg, y, hy⟩` from `hl j hj U (e j U x) (by rw [← hd j (j + 1) rfl, hx, map_zero]) u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨V, g, hg, (e _ V).symm y, (e j V).injective ?_⟩` and prove the remaining obligations. Rewrite using `[hd (j - 1) j (by omega), AddEquiv.apply_symm_apply, hy, map_nsmul, he]`. Take `⟨y, hy⟩` from `h2 Λ S C hi hz N m hloc j hj U ((e j U).symm x) ((e (j + 1) U).injective (by`. Rewrite using `[hd j (j + 1) rfl, AddEquiv.apply_symm_apply, hx, map_zero]))`. Use `⟨e _ U y, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hd (j - 1) j (by omega), hy, map_nsmul, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glob_of (h1 : ConeCx) (h2 : GhostSec) : Glob := by
   intro Λ _ I J K μ hJ hK X S p r M γ hc N m hl j hj U x hx
@@ -47,15 +47,13 @@ theorem glob_of (h1 : ConeCx) (h2 : GhostSec) : Glob := by
   rw [← hd (j - 1) j (by omega), hy, map_nsmul, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `Λ _ I X n`. Take `⟨_, d2, d3, d4, _⟩` from `hD Λ I X n`. Establish `h0 : IsCls (0 : CochainComplex.HomComplex.CohomologyClass ((chains Λ).obj (sch.obj X)) I n) 0`. Take `⟨a, ha⟩` from `d2 0`. Use `(d4 _ _ _ _ ha (d4 _ _ _ _ ha ha).2).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[add_neg_cancel, add_neg_cancel]`. Then use the resulting hypothesis. Use `⟨h0, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `N x a h`. Proceed by induction on `N with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `h0`. Consider the case `succ N ih => rw [succ_nsmul, succ_nsmul]`. Conclude with `(d4 _ _ _ _ ih h).1`. Introduce `ι _ x a h classical`. Proceed by induction on `(Finset.univ : Finset ι) using Finset.induction_on with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `empty => rw [Finset.sum_empty, Finset.sum_empty]`. Conclude with `h0`. Consider the case `insert t s ht ih => rw [Finset.sum_insert ht, Finset.sum_insert ht]`. Conclude with `(d4 _ _ _ _ (h t) ih).1`. Introduce `m hm x x' a a' h h'`.
-
-Take `rfl : m = n - 1` from `by omega`. Use `(d3 _ _ (d4 _ _ _ _ h (d4 _ _ _ _ h' h').2).1).2` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, ← sub_eq_add_neg, sub_eq_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem clsMore_of (hD : Dict) : ClsMore := by
   intro Λ _ I X n
@@ -80,7 +78,7 @@ theorem clsMore_of (hD : Dict) : ClsMore := by
     rwa [← sub_eq_add_neg, ← sub_eq_add_neg, sub_eq_zero] at this
 
 /- English proof (translation)
-The claim follows from `goal_of hD h1 h2 h3 (glob_of h5 (ghostSec_of hG h6 h7)) h4`.
+A detailed English derivation is pending.
 -/
 theorem lh_of (hD : Dict) (hG : Ghost) (h1 : LocKer) (h2 : LocCok) (h3 : LocCone) (h4 : ExIso) (h5 : ConeCx) (h6 : Corep)
     (h7 : HomKill) : LH :=

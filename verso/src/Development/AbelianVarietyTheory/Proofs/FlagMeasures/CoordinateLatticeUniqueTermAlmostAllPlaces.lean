@@ -30,43 +30,39 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.StdPlace
 
 /- English proof (translation)
-Establish `: IsArtinianRing E`. Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Conclude with `IsArtinianRing.of_finite F E`. Take `⟨u₀, hu₀, hE, hui, hup⟩` from `GlobalTheory.T.frameLattice_unimodular_generators_exponent_zero L r k S d Λ hT ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b₀, hbW, hΛ, hbi, hbp⟩` from `GlobalTheory.T.hermitianTerm_splits_unimodular_complement L r k S d Λ hT ha`. Take `⟨c₀, hcW, hΛ₁, hci, hcp⟩` from `GlobalTheory.T.hermitianTerm_splits_unimodular_complement L r k S d₁ Λ₁ hT₁ ha`. Take `⟨u, huo, hus⟩` from `GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm u₀ hui hup`. Take `⟨b, hbo, hbs⟩` from `GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm b₀ hbi hbp`. Take `⟨c, hco, hcs⟩` from `GlobalTheory.T.exists_orthonormal_same_integralSpan_unimodular L S.Hm S.herm c₀ hci hcp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsp : ∀ (w : Fin (k - 1) → S.V) (w₀ : Fin (k - 1) → S.V), (∀ i, w₀ i ∈ S.W0) → Submodule.span L.O (Set.range w) = Submodule.span L.O (Set.range w₀) → ∀ i, w i ∈ S.W0`. Introduce `w w₀ h0 he i`. Establish `h1 : w i ∈ Submodule.span L.O (Set.range w₀)`. Rewrite using `[← he]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Submodule.span L.O (Set.range w₀) ≤ S.W0.restrictScalars L.O` using `Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact h0 j)`. Conclude with `h2 h1`. Establish `hbW'` using `hsp b b₀ hbW hbs`. Establish `hcW'` using `hsp c c₀ hcW hcs`. Establish `huME : ∀ i, u i ∈ S.ME`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Establish `h1 : u i ∈ Submodule.span L.O (Set.range u₀)`. Rewrite using `[← hus]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Establish `h2 : Submodule.span L.O (Set.range u₀) ≤ S.ME.restrictScalars L.O` using `Submodule.span_le.2 (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[← hE]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `h2 h1`. Establish `horth : ∀ {w : S.V}, w ∈ S.W0 → ∀ i, hf L S.Hm w (u i) = 0` using `fun hw i => hw _ (huME i)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `horth' : ∀ {w : S.V}, w ∈ S.W0 → ∀ i, hf L S.Hm (u i) w = 0` using `fun hw i => by`. Rewrite using `[GlobalTheory.FrameBasic.hf_conj L S.herm.1, horth hw i, map_zero]`. Set `x : Fin (2 * (r + 1) + (k - 1)) → S.V` to `Fin.append u c`. Set `y : Fin (2 * (r + 1) + (k - 1)) → S.V` to `Fin.append u b`. Establish `gx : ∀ i j, hf L S.Hm (x i) (x j) = if i = j then 1 else 0`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Simplify using `[x, huo, Fin.ext_iff]`. Simplify using `[x, horth' (hcW' j), Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[x, horth (hcW' i), Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[x, hco, Fin.ext_iff]`. Establish `gy : ∀ i j, hf L S.Hm (y i) (y j) = if i = j then 1 else 0`. Introduce `i j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Simplify using `[y, huo, Fin.ext_iff]`. Simplify using `[y, horth' (hbW' j), Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Simplify using `[y, horth (hbW' i), Fin.ext_iff]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[y, hbo, Fin.ext_iff]`. Take `⟨g, hg, hgx⟩` from `GlobalTheory.HermTuple.witt_tuples L S.Hm S.herm _ x y (fun i j => by rw [gx, gy]) (by`. Establish `: (Matrix.of fun i j => hf L S.Hm (x i) (x j)) = 1`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[gx, Matrix.one_apply]`. Rewrite using `[this]`. Use the proof step `simp)`. Establish `hgu : ∀ i, g (u i) = u i` using `fun i => by`. Use `hgx (Fin.castAdd _ i)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[x, y]`. Establish `hgc : ∀ i, g (c i) = b i` using `fun i => by`. Use `hgx (Fin.natAdd _ i)` as an intermediate fact. Simplify `this` using `[x, y]`. Establish `hfix : ∀ v ∈ S.ME, g v = v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v hv`. Rewrite `hv` using `[← hE]`. Set `K : Submodule E S.V` to `LinearMap.eqLocus (g : S.V →ₗ[E] S.V) LinearMap.id`. Establish `h1 : Submodule.span L.O (Set.range u) ≤ K.restrictScalars L.O` using `Submodule.span_le.2 (by rintro _ ⟨i, rfl⟩; exact hgu i)`. Establish `h2 : Submodule.span E (Set.range u₀) ≤ K` using `Submodule.span_le.2 (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Apply `h1` to reduce the goal to its premises. Rewrite using `[hus]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `h2 hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hH0 : g ∈ S.H0` using `⟨hg, GlobalTheory.HL.FrameStab.mem_unipOn' bot_le g fun v hv => by rw [hfix v hv, sub_self]; exact Submodule.zero_mem _⟩`. Establish `hsm : ∀ s : Set S.V, g • Submodule.span L.O s = Submodule.span L.O (g '' s)` using `fun s => by`. Rewrite using `[Submodule.pointwise_smul_def, Submodule.map_span]`. Both sides reduce to the same expression. Establish `e1 : g • S.M d Λ = S.M d Λ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hu₀, ← hus, hsm, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hgu i`. Establish `e2 : g • Submodule.span L.O (Set.range c) = Submodule.span L.O (Set.range b)`.
-
-Rewrite using `[hsm, ← Set.range_comp]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Conclude with `hgc i`. Use `⟨g, hH0, ?_⟩` and prove the remaining obligations.
-
-Establish `e3 : ∀ A B : Submodule L.O S.V, g • (A ⊔ B) = g • A ⊔ g • B` using `fun A B => by`. Simplify using `only [Submodule.pointwise_smul_def, Submodule.map_sup]`. Rewrite using `[hΛ₁, ← hM, ← hcs, e3, e1, e2, hbs, ← hΛ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_orbit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (ha : S.a = 0)
     {d d₁ : S.Datum} {Λ Λ₁ : Submodule L.O S.V} (hT : S.IsTerm d Λ) (hT₁ : S.IsTerm d₁ Λ₁)
@@ -164,31 +160,27 @@ theorem term_orbit {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
   rw [hΛ₁, ← hM, ← hcs, e3, e1, e2, hbs, ← hΛ]
 
 /- English proof (translation)
-Take `⟨hvG, hvD⟩` from `GlobalTheory.T.goodPlace_gramInvariant_minors_valuation_zero L r k S hG`. Establish `hvth : S.vth = 0` using `by simp [Frames.vth, hG.gg]`. Establish `ha : S.a = 0` using `by simp [Frames.a, hvth, hvG]`. Take `⟨d₀, hd₀⟩` from `GlobalTheory.T.framesCoordinateLattice_isTerm_trivialWitnesses L r k S hG`. Establish `hT₀ : S.IsTerm d₀ (coordLat S)` using `⟨(1, 1), hd₀⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hom, hM₀, hFr₀, -, -⟩` from `GlobalTheory.HL.WitIndep.witness_independence L r k S d₀ _ _ _ hd₀`. Establish `hFr₁ : S.Fr d₀ (coordLat S) = S.frameCls S.f S.f'` using `hFr₀`. Establish `huniq` using `fun d Λ h => GlobalTheory.HL.UnimodTerm.term_unique L r k S d Λ h ha`. Take `⟨-, -, hall⟩` from `GlobalTheory.HL.GoodClass.one_class L r k S hG.gg hG.D_unit`. Establish `hint : ∀ d Λ, S.IsTerm d Λ → S.IsIntCls (S.Fr d Λ)` using `fun d Λ h => (TermBasic.term_basic L r k S d Λ h).2.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdd : ∀ d d' Λ, S.IsTerm d Λ → S.IsTerm d' Λ → d' = d` using `fun d d' Λ h h' => (TermBasic.term_basic L r k S d Λ h).2.2.2.2.2.2.2 d' h'`. Establish `hact` using `GlobalTheory.FrameAct.stabiliser_acts_on_terms L r k S`. Establish `hcom` using `GlobalTheory.HL.ComplAct.main L r k S`. Establish `hcls` using `GlobalTheory.HL.FrameClass.frame_classes L r k S`. Use `⟨(GlobalTheory.HL.GoodPlace.equality L r k S hk hG.gg hvG hvD).2.1, GlobalTheory.T.stabilizer_framesCoordinateLattice_goodPlace L r k S hG ha d₀ hd₀, d₀, hd₀, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hom]`. Establish `h1 : ∀ (g : Fin (r + 1) → S.V) (gs : Fin r → S.V), (∀ a j, hf L S.Hm (g a) (gs j) = if a = j.castSucc then 1 else 0) → S.psiOf g gs 1 = 1`. Introduce `g gs hd`. Establish `: ∀ j, S.coef g gs 1 j = 0` using `fun j => by`. Use `hd j.succ j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg (by simp [Fin.ext_iff])]`. Conclude with `this`. Simplify using `[Frames.psiOf, this]`. Establish `e1 : S.psi 1 = 1` using `h1 _ _ S.dual`. Establish `e2 : S.psi' 1 = 1` using `h1 _ _ S.dual'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[e1, e2]`. Use extensionality with `h`. Simplify using `only [Subgroup.mem_inf, Frames.complementReferenceCompactSubgroup, MulAction.mem_stabilizer_iff]`. Use `and_congr_right fun hh => ⟨fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `h1` using `hcom d₀ _ hT₀ h hh`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Use `(huniq d₀ _ hT₀).2 _ h1.1 h1.2.2.2.2.2` as an intermediate fact. Conclude with `this`. Establish `h1` using `hcom d₀ _ hT₀ h hh`. Establish `e' : h • coordLat S = coordLat S` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[e']`. Conclude with `hdd _ _ _ hT₀ h1.1`. Introduce `Λ hΛ`. Take `⟨h, hh, e⟩` from `hall _ (hint _ _ hΛ)`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `hact d₀ _ hT₀ h hh`. Conclude with `(huniq d₀ _ h2.1).2 _ hΛ (by rw [h2.2.2.2.2.1, hFr₁, e])`. Introduce `Λ hΛ e`. Conclude with `(huniq d₀ _ hT₀).2 _ hΛ (by rw [e, hFr₁])`. Introduce `d Λ hΛ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, e⟩` from `hall _ (hint _ _ hΛ)`. Establish `hsi` using `S.St.inv_mem hs`. Establish `h2` using `hact d _ hΛ _ hsi`. Establish `hT₂` using `h2.1`. Establish `hFr₂ : S.Fr d (s⁻¹ • Λ) = S.Fr d₀ (coordLat S)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2.2.2.2.2.1, e, hFr₁, smul_smul, inv_mul_cancel, one_smul]`. Establish `hM₂ : S.M d (s⁻¹ • Λ) = S.M d₀ (coordLat S)`. Establish `h3 : (S.fr d (s⁻¹ • Λ), S.fr' d (s⁻¹ • Λ)) ∈ S.Fr d₀ (coordLat S)`. Rewrite using `[← hFr₂]`. Conclude with `(hcls _ _).1`.
-
-Conclude with `((hcls _ _).2.1 _ h3).2`. Take `⟨h, hh, e₁⟩` from `term_orbit L r k S ha hT₂ hT₀ hM₂`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Establish `h4` using `(hcom d₀ _ hT₀ h hh).1`. Rewrite `h4` using `[e₁]`.
-
-Conclude with `hdd _ _ _ h4 hT₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_place {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) (r k : ℕ) (S : Frames L r k) (hk : 4 * r + 7 ≤ k) (hG : Good S) :
     S.Hp = 1 ∧ S.St ⊓ MulAction.stabilizer S.GLV (coordLat S) = S.K0 ∧ ∃ d₀, S.IsTermW d₀ (coordLat S) 1 1 ∧
@@ -261,7 +253,7 @@ theorem good_place {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [I
     exact hdd _ _ _ h4 hT₂
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G hk`. Use `(GlobalTheory.T.globalHermitianFrames_good_almost_all_places A r k G).subset fun p hp hg => hp ?_` and prove the remaining obligations. Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`. Conclude with `⟨hg.gg, good_place (A.L p) r k (G.S p) hk hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coordinate_lattice_standard : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k → {p | ¬ ((G.S p).gg = false ∧ (G.S p).Hp = 1 ∧ (G.S p).St ⊓ MulAction.stabilizer (G.S p).GLV (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) = (G.S p).K0 ∧ ∃ d₀, (G.S p).IsTermW d₀ (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) 1 1 ∧ (G.S p).om d₀ (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V))) = 1 ∧ (G.S p).H0 ⊓ MulAction.stabilizer (G.S p).GLV d₀ = (G.S p).complementReferenceCompactSubgroup ∧ (∀ Λ, (G.S p).IsTerm d₀ Λ → ∃ h ∈ (G.S p).St, Λ = h • (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V)))) ∧ (∀ Λ, (G.S p).IsTerm d₀ Λ → (G.S p).Fr d₀ Λ = (G.S p).frameCls (G.S p).f (G.S p).f' → Λ = (Submodule.span (A.L p).O (Set.range fun i => (Pi.single i 1 : (G.S p).V)))) ∧ ∀ d Λ, (G.S p).IsTerm d Λ → ∃ h ∈ (G.S p).H0, d = h • d₀)}.Finite := by
   intro F E _ _ _ _ _ sig A r k G hk

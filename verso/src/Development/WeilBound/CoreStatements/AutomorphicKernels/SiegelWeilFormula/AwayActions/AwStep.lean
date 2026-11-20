@@ -15,9 +15,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def eW (w : InfinitePlace F) : AF F := pairA F (Pi.single w 1) 0
 
 /- English proof (translation)
-Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v show (eW w).1 v * (eW w).1 v = (eW w).1 v`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using `[eW, pairA]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[eW, pairA, Pi.single_eq_of_ne h]`. Use `show (eW w).2 * (eW w).2 = (eW w).2`. Establish `: (eW w).2 = 0` using `rfl`. Rewrite using `[this, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eW_mul_self (w : InfinitePlace F) : eW w * eW w = eW w := by
   apply Prod.ext
@@ -32,9 +32,9 @@ theorem eW_mul_self (w : InfinitePlace F) : eW w * eW w = eW w := by
     rw [this, mul_zero]
 
 /- English proof (translation)
-Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v show (finOne F).1 v * (eW w).1 v = (0 : AF F).1 v`. Establish `: (finOne F).1 v = 0` using `rfl`. Rewrite using `[this, zero_mul]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (finOne F).2 * (eW w).2 = (0 : AF F).2`. Establish `: (eW w).2 = 0` using `rfl`. Rewrite using `[this, mul_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finOne_mul_eW (w : InfinitePlace F) : finOne F * eW w = 0 := by
   apply Prod.ext
@@ -49,9 +49,9 @@ theorem finOne_mul_eW (w : InfinitePlace F) : finOne F * eW w = 0 := by
     rfl
 
 /- English proof (translation)
-Rewrite using `[St.piInf_smul]`. Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `[eW, pairA]`. Rewrite using `[if_neg h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[eW, pairA, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem piInf_eW {w w' : InfinitePlace F} (τ : EmbOver E w') (z : AE F E) :
     piInf τ (eW w • z) = if w' = w then piInf τ z else 0 := by
@@ -65,7 +65,7 @@ theorem piInf_eW {w w' : InfinitePlace F} (τ : EmbOver E w') (z : AE F E) :
 variable (d : SD σ)
 
 /- English proof (translation)
-Simplify using `only [SD.cw]`. Conclude with `Matrix.map_mul`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cw_mul (w : InfinitePlace F) {p q r : Type} [Fintype q] (M : Matrix p q (AE F E)) (N : Matrix q r (AE F E)) :
     d.cw w (M * N) = d.cw w M * d.cw w N := by
@@ -73,44 +73,44 @@ theorem cw_mul (w : InfinitePlace F) {p q r : Type} [Fintype q] (M : Matrix p q 
   exact Matrix.map_mul
 
 /- English proof (translation)
-Simplify using `only [SD.cw]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cw_one (w : InfinitePlace F) {p : Type} [DecidableEq p] : d.cw w (1 : Matrix p p (AE F E)) = 1 := by
   simp only [SD.cw]
   exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Simplify using `only [SD.cw, Matrix.transpose_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cw_transpose (w : InfinitePlace F) {p q : Type} (M : Matrix p q (AE F E)) : d.cw w Mᵀ = (d.cw w M)ᵀ := by
   simp only [SD.cw, Matrix.transpose_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[SD.cw, piInf_eW]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_eW_self (w : InfinitePlace F) {p q : Type} (M : Matrix p q (AE F E)) : d.cw w (eW w • M) = d.cw w M := by
   ext i j
   simp [SD.cw, piInf_eW]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[SD.cw, piInf_eW, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_eW_ne {w w' : InfinitePlace F} (h : w' ≠ w) {p q : Type} (M : Matrix p q (AE F E)) : d.cw w' (eW w • M) = 0 := by
   ext i j
   simp [SD.cw, piInf_eW, h]
 
 /- English proof (translation)
-Rewrite using `[smul_smul, finOne_mul_eW, zero_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finOne_eW_smul (w : InfinitePlace F) {p q : Type} (M : Matrix p q (AE F E)) : finOne F • (eW w • M) = 0 := by
   rw [smul_smul, finOne_mul_eW, zero_smul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← cw_eW_self d w M, h, cw_eW_self]`. Introduce `h`. Apply `Place.cw_ext d` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w'`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Rewrite using `[cw_eW_self, cw_eW_self, h]`. Rewrite using `[cw_eW_ne d hw, cw_eW_ne d hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finOne_eW_smul, finOne_eW_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eW_smul_eq_iff (w : InfinitePlace F) {p q : Type} (M M' : Matrix p q (AE F E)) :
     eW w • M = eW w • M' ↔ d.cw w M = d.cw w M' := by
@@ -127,9 +127,9 @@ theorem eW_smul_eq_iff (w : InfinitePlace F) {p q : Type} (M M' : Matrix p q (AE
     · rw [finOne_eW_smul, finOne_eW_smul]
 
 /- English proof (translation)
-Apply `Place.cw_ext d` to reduce the goal to its premises. Introduce `w'`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Rewrite using `[cw_eW_self]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cw_eW_ne d hw, hZ w' hw]`. Rewrite using `[finOne_eW_smul, hf]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eW_smul_of_supp {w : InfinitePlace F} {p q : Type} {Z : Matrix p q (AE F E)}
     (hZ : ∀ w', w' ≠ w → d.cw w' Z = 0) (hf : finOne F • Z = 0) : eW w • Z = Z := by
@@ -142,7 +142,7 @@ theorem eW_smul_of_supp {w : InfinitePlace F} {p q : Type} {Z : Matrix p q (AE F
   · rw [finOne_eW_smul, hf]
 
 /- English proof (translation)
-Establish `: (a • Z).map (cA σ) = a • Z.map (cA σ)`. Use extensionality with `i j`. Simplify using `[map_smul]`. Simplify using `only [SD.gram, this, Matrix.mul_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gram_smul_right (a : AF F) (X Z : Mx F E d.m d.n) : d.gram X (a • Z) = a • d.gram X Z := by
   have : (a • Z).map (cA σ) = a • Z.map (cA σ) := by
@@ -151,13 +151,13 @@ theorem gram_smul_right (a : AF F) (X Z : Mx F E d.m d.n) : d.gram X (a • Z) =
   simp only [SD.gram, this, Matrix.mul_smul]
 
 /- English proof (translation)
-Simplify using `only [SD.gram, Matrix.transpose_smul, Matrix.smul_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_smul_left (a : AF F) (X Z : Mx F E d.m d.n) : d.gram (a • X) Z = a • d.gram X Z := by
   simp only [SD.gram, Matrix.transpose_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Simplify using `only [SD.gram, Matrix.transpose_add, Matrix.add_mul, Matrix.mul_add, Matrix.map_add _ (map_add _)]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gram_add (X Z : Mx F E d.m d.n) :
     d.gram (X + Z) (X + Z) = d.gram X X + (d.gram X Z + d.gram Z X + d.gram Z Z) := by
@@ -165,7 +165,7 @@ theorem gram_add (X Z : Mx F E d.m d.n) :
   abel
 
 /- English proof (translation)
-Rewrite using `[(eW_smul_eq_iff d w M 1).1 h, cw_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cw_eq_one_of (w : InfinitePlace F) {M : Mx F E d.n d.n} (h : eW w • M = eW w • (1 : Mx F E d.n d.n)) :
     d.cw w M = 1 := by
@@ -176,13 +176,13 @@ namespace Step
 variable {d} (R : RD d) (w : InfinitePlace F)
 
 /- English proof (translation)
-Establish `hP` using `hT.2.1 F E σ d`. Use `⟨fun f hf => hf, fun Ψ hΨ => ⟨?_, fun f hf Φ hΦ hTΦ => ?_⟩⟩` and prove the remaining obligations. Introduce `X Z hZ hf`. Establish `hZe : eW w • Z = Z` using `eW_smul_of_supp d hZ hf`. Establish `h1 : d.gram X Z = eW w • d.gram X Z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : d.gram Z X = eW w • d.gram Z X`. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : d.gram Z Z = eW w • d.gram Z Z`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `key : β * d.gram (X + Z) (X + Z) = β * d.gram X X`. Rewrite using `[gram_add, h1, h2, h3, ← smul_add, ← smul_add, Matrix.mul_add, Matrix.mul_smul, ← Matrix.smul_mul, hβ, Matrix.zero_mul, add_zero]`. Simplify using `only`. Rewrite using `[key, hΨ X Z hZ hf]`. Use function extensionality and compare the values at `X`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[(hP Φ hΦ).1 x β hx X, hTΦ]`. Simplify using `only [RD.tens, id]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stepN (hT : TAll) (x : d.G) (β : Mx F E d.n d.n) (hx : inFrame d.b x = Matrix.fromBlocks 1 β 0 1)
     (hβ : eW w • β = 0) :
@@ -211,13 +211,13 @@ theorem stepN (hT : TAll) (x : d.G) (β : Mx F E d.n d.n) (hx : inFrame d.b x = 
     ring
 
 /- English proof (translation)
-Establish `hP` using `hT.2.1 F E σ d`. Establish `hc : d.cw w (a'⁻¹).1 = 1`. Establish `h1 : d.cw w a'.1 = 1` using `cw_eq_one_of d w ha`. Establish `h2 : d.cw w ((a'⁻¹).1 * a'.1) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one, cw_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[cw_mul, h1, Matrix.mul_one]`. Then use the resulting hypothesis. Use `⟨fun f hf => hf, fun Ψ hΨ => ⟨?_, fun f hf Φ hΦ hTΦ => ?_⟩⟩` and prove the remaining obligations. Introduce `X Z hZ hf`. Simplify using `only`. Rewrite using `[Matrix.add_mul, hΨ (X * (a'⁻¹).1ᵀ) (Z * (a'⁻¹).1ᵀ) (fun w' hw' => by rw [cw_mul, hZ w' hw', Matrix.zero_mul]) (by rw [← Matrix.smul_mul, hf, Matrix.zero_mul])]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `X`. Rewrite using `[(hP Φ hΦ).2.1 x a a' hx X, hTΦ]`. Establish `hl : R.loc w (X * (a'⁻¹).1ᵀ) = R.loc w X`. Unfold `RD.loc`. Rewrite using `[cw_mul, cw_transpose, hc, Matrix.transpose_one, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RD.tens, id, hl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem stepM (hT : TAll) (x : d.G) (a a' : GL (Fin d.n) (AE F E))
     (hx : inFrame d.b x = Matrix.fromBlocks a.1 0 0 a'.1) (ha : eW w • a'.1 = eW w • (1 : Mx F E d.n d.n)) :

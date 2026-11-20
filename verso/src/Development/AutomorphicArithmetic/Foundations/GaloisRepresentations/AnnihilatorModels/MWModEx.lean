@@ -27,15 +27,13 @@ private def killedSub {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRin
         one_comp] }
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o w T`. Use `letI := ptModuleWvs o T`. Establish `htor : Module.IsTorsionBySet (𝓞 D.F) (killedSub o w T) (w : Set (𝓞 D.F))`. Introduce `x a`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (a : 𝓞 D.F) • (x : Additive (T ⟶ o.A)) = Additive.ofMul 1`. Conclude with `x.2 a a.2`. Use `letI : Module (𝓞 D.F ⧸ w) (killedSub o w T) := htor.module`. Use `⟨⟨killedSub o w T, fun x => Additive.toMul (x : Additive (T ⟶ o.A)), ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `x y h`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `Subtype.ext (Additive.toMul.injective h)`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `h.2`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `hg`. Conclude with `⟨⟨Additive.ofMul g, hg⟩, rfl⟩`. Introduce `x y`. Both sides reduce to the same expression. Introduce `a x`.
-
-Rewrite using `[Module.IsTorsionBySet.mk_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.wModEx_of :
     WModEx := by

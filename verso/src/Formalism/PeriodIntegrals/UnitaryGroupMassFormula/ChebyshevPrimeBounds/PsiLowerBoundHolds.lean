@@ -7,12 +7,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ChebyshevPrimeBounds.Ps
 namespace PI.PC
 
 /- English proof (translation)
-The claim follows from `chUpper_of chebyshevConstantNumeric dUpper sandwich`.
+A detailed English derivation is pending.
 -/
 theorem psiUpperBound_holds : CHUpper := chUpper_of chebyshevConstantNumeric dUpper sandwich
 
 /- English proof (translation)
-The claim follows from `chLower_of chebyshevConstantNumeric dLower sandwich`.
+A detailed English derivation is pending.
 -/
 theorem psiLowerBound_holds : CHLower := chLower_of chebyshevConstantNumeric dLower sandwich
 

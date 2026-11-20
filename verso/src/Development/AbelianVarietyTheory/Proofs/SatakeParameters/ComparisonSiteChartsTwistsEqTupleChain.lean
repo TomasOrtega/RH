@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Port
 
 /- English proof (translation)
-Establish `e' : (g : Matrix (Fin 1) (Fin 1) R).det = (h : Matrix (Fin 1) (Fin 1) R).det`. Use `congrArg Units.val e` as an intermediate fact. Simplify using `using this`. Use extensionality with `i k`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim k 0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify `e'` using `[Matrix.det_unique]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gl_one_eq_of_det_eq {R : Type*} [CommRing R] (g h : GL (Fin 1) R)
     (e : Matrix.GeneralLinearGroup.det g = Matrix.GeneralLinearGroup.det h) : g = h := by
@@ -22,11 +22,11 @@ theorem gl_one_eq_of_det_eq {R : Type*} [CommRing R] (g h : GL (Fin 1) R)
   simpa [Matrix.det_unique] using e'
 
 /- English proof (translation)
-Introduce `D X0 u w hg Tw μ Z Fl ht Gt Hh St hv hZ`. Take `⟨Fo, fin, S⟩` from `Z`. Simplify using `only at hZ`. Substitute `hZ` using the available equality. Use `⟨fun j hj => rfl, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j hj β x y hy`. Establish `hyx : y = detU D (j + 1) hj x`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `gl_one_eq_of_det_eq` to reduce the goal to its premises. Rewrite using `[det_detU]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Substitute `hyx` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem siteD_inTw_charts_tw : ∀ {D : D7} (X0 : Formalism.L2.Herm.Herm0 D) (u : D.what₂.Word) (w : D.what₂.places.Pl) (hg : GIdx D.host (D.mem u).A.T (D.what₂.places.resChar w)) (Tw : TwForms D) (μ : D.what₂.Tup) (Z : SiteD X0 u w hg (Tw.fm u μ)) (Fl : Fills (D.gat u w hg)) (ht : Fl.t = D.R.t) (Gt : GatTies D) (Hh : Formalism.L2.Herm.SymmetricHermitianColumns D) (St : GlobalTheory.TwU.ChainCharts D u μ) (hv : ValAll Tw St), Z.Fo = foOf Hh St hv → (∀ j hj, St (j + 1) hj = GlobalTheory.TwU.StepCharts.ofStepIn ((Z.inTw Fl ht Gt).at' j hj).st) ∧ ∀ j hj β (x : UPts (sigD D) (gramN D (j + 1) hj) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) (y : Formalism.L2.Herm.unitaryOneFiniteAdeles D.sp.cm), Formalism.L2.Herm.IsDetOf D.sp.cm y x.1 → (((Z.inTw Fl ht Gt).at' j hj).st.tw β).ch x = D.chiD (Hh.dt y) ^ cTw D (j + 1) := by
   intro D X0 u w hg Tw μ Z Fl ht Gt Hh St hv hZ

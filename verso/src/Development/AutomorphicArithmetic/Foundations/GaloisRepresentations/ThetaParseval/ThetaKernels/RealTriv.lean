@@ -18,11 +18,11 @@ variable {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup
 end Abstract
 variable {nS nT : ℕ}
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ _ hξ hc Λ w lam Om hR g hg h hh f`. Establish `hσ : ∀ z : E, σ (σ z) = z` using `fun z => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `H` using `isHeis_opFF hσ hS hT hξ hc hR.hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : Om (g, h) = LinearMap.id`. Use `LinearMap.ext_on hR.span ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, e, he, rfl⟩`. Establish `hfix : Om (g, h) e = e`. Rewrite using `[hR.vac _ e he]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `normOp_eq_self_of_le H lam (hR.sd' _) (by rintro _ ⟨a, ha, rfl⟩; rw [rhoFF_real hg hh]; exact ha) he`. Rewrite using `[hR.op, rhoFF_real hg hh, hfix, LinearMap.id_apply]`. Rewrite using `[key, LinearMap.id_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.TP.W.IsLatRepL.real_triv : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E),

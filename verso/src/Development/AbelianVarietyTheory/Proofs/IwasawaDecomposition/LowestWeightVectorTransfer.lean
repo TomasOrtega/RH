@@ -14,35 +14,35 @@ namespace GlobalTheory.JointHarm.OrbitMap
 variable {ι : Type} {n : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_K (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.REAL.Kset ε :=
   ⟨one_mem _, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isUnit_one, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_KC (ε : Fin n → Bool) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ GlobalTheory.Dec.KC ε :=
   ⟨isUnit_one, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Unitary.toUnits ⟨g, hg.1⟩, rfl⟩, hg.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem K_sub_KC {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     g ∈ GlobalTheory.Dec.KC ε :=
   ⟨⟨Unitary.toUnits ⟨g, hg.1⟩, rfl⟩, hg.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨mul_mem hg.1 hh.1, by rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mul_mem_K {ε : Fin n → Bool} {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε)
     (hh : h ∈ Formalism.REAL.Kset ε) : g * h ∈ Formalism.REAL.Kset ε :=
   ⟨mul_mem hg.1 hh.1, by rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Establish `h1 : gᴴ * g = 1` using `Unitary.star_mul_self_of_mem hg.1`. Establish `h2 : g * gᴴ = 1` using `Unitary.mul_star_self_of_mem hg.1`. Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Formalism.REAL.Jm ε * gᴴ := by`. Rewrite using `[← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_mem_K {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) :
     gᴴ ∈ Formalism.REAL.Kset ε := by
@@ -55,7 +55,7 @@ theorem star_mem_K {ε : Fin n → Bool} {g : Matrix (Fin n) (Fin n) ℂ} (hg : 
         rw [← hg.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `using hg`. Simplify `one_mem_KC _` using `[h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem single_mem_KC {ε : ι → Fin n → Bool} {τ : ι} {g : Matrix (Fin n) (Fin n) ℂ}
     (hg : g ∈ GlobalTheory.Dec.KC (ε τ)) (σ : ι) :
@@ -65,7 +65,7 @@ theorem single_mem_KC {ε : ι → Fin n → Bool} {τ : ι} {g : Matrix (Fin n)
   · simpa [h] using one_mem_KC _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `σ`. Distinguish the cases in `h : σ = τ`. Substitute `h` using the available equality. Simplify using `[hv]`. Simplify using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_comm {τ : ι} (g : Matrix (Fin n) (Fin n) ℂ) {v : ι → Matrix (Fin n) (Fin n) ℂ}
     (hv : v τ = 1) : Pi.mulSingle τ g * v = v * Pi.mulSingle τ g := by
@@ -75,17 +75,17 @@ theorem single_comm {τ : ι} (g : Matrix (Fin n) (Fin n) ℂ) {v : ι → Matri
   · simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, ∀ u : ι → Matrix (Fin n) (Fin n) ℂ, (∀ σ, u σ ∈ Formalism.REAL.Kset (ε σ)) → (∀ σ ∉ s, u σ = 1) → Q u`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `u _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: u = 1` using `funext fun σ => h σ (by simp)`. Rewrite using `[this]`. Conclude with `h1`. Consider the case `insert τ s _ ih`. Introduce `u hu h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hv : ∀ σ, Function.update u τ 1 σ ∈ Formalism.REAL.Kset (ε σ)`. Introduce `σ`. Distinguish the cases in `e : σ = τ`. Substitute `e` using the available equality. Simplify using `using one_mem_K _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hu σ` using `[e]`. Establish `e : u = Pi.mulSingle τ (u τ) * Function.update u τ 1`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `e : σ = τ`. Substitute `e` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `[e]`. Rewrite using `[e]`. Use `hs τ _ _ (hu τ) hv (by simp) (ih _ hv fun σ hσ => ?_)` and prove the remaining obligations. Distinguish the cases in `e : σ = τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify `h σ (by simp [e, hσ])` using `[e]`. Conclude with `key Finset.univ u hu (by simp)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fam_induction [Fintype ι] {ε : ι → Fin n → Bool} (Q : (ι → Matrix (Fin n) (Fin n) ℂ) → Prop)
     (h1 : Q 1)
@@ -123,11 +123,11 @@ variable {P : Type} [AddCommGroup P] [Module ℂ P] {B : P →ₗ⋆[ℂ] P →�
   {ϖ : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P} {ε : ι → Fin n → Bool} {μ : ι → Fin n → ℝ}
 
 /- English proof (translation)
-Use `fam_induction (ε := ε) (fun u => ∀ a b, B (ϖ u a) b = B a (ϖ (fun σ => (u σ)ᴴ) b)) ?_ ?_ u hu` and prove the remaining obligations. Introduce `a b`. Establish `: (fun σ => ((1 : ι → Matrix (Fin n) (Fin n) ℂ) σ)ᴴ) = 1` using `by funext σ; simp`. Rewrite using `[this, h.2.1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `τ k v hk hv _ ih a b`. Establish `e : (fun σ => ((Pi.mulSingle τ k * v : ι → Matrix (Fin n) (Fin n) ℂ) σ)ᴴ) = (fun σ => (v σ)ᴴ) * Pi.mulSingle τ kᴴ`. Use function extensionality and compare the values at `σ`. Distinguish the cases in `e : σ = τ`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[e]`. Rewrite using `[e, h.2.2.1 _ _ (single_mem_KC (K_sub_KC hk)) (fun σ => K_sub_KC (hv σ)), h.2.2.1 _ _ (fun σ => K_sub_KC (star_mem_K (hv σ))) (single_mem_KC (K_sub_KC (star_mem_K hk))), Module.End.mul_apply, Module.End.mul_apply, ← ih]`. Conclude with `(h.2.2.2 τ).2.2.2.1 k (K_sub_KC hk) _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_fam [Fintype ι] (h : IsHolFam ε B ϖ) (u : ι → Matrix (Fin n) (Fin n) ℂ)
     (hu : ∀ σ, u σ ∈ Formalism.REAL.Kset (ε σ)) :
@@ -149,11 +149,9 @@ theorem adj_fam [Fintype ι] (h : IsHolFam ε B ϖ) (u : ι → Matrix (Fin n) (
     exact (h.2.2.2 τ).2.2.2.1 k (K_sub_KC hk) _ _
 
 /- English proof (translation)
-Establish `c : ∀ g ∈ GlobalTheory.Dec.KC (ε τ), ϖ (Pi.mulSingle τ g) (ϖ v x) = ϖ v (ϖ (Pi.mulSingle τ g) x)`. Introduce `g hg`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← h.2.2.1 _ _ (single_mem_KC hg) (fun σ => K_sub_KC (hv σ)), ← h.2.2.1 _ _ (fun σ => K_sub_KC (hv σ)) (single_mem_KC hg), single_comm g hτ]`. Use `⟨fun g hg hl => ?_, fun θ => ?_⟩` and prove the remaining obligations. Use `show ϖ (Pi.mulSingle τ g) (ϖ v x) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c g hg]`. Conclude with `congrArg _ ((hx τ).1 g hg hl)`. Use `show ϖ (Pi.mulSingle τ _) (ϖ v x) = _`. Rewrite using `[c, ← map_smul]`. Conclude with `congrArg _ ((hx τ).2 θ)`.
-
-Use `⟨?_, by simp [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal, mul_comm]⟩` and prove the remaining obligations. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_diagonal, isUnit_iff_ne_zero]`. Conclude with `Finset.prod_ne_zero_iff.2 fun a _ => Complex.exp_ne_zero _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bottom_move (h : IsHolFam ε B ϖ) {x : P} (hx : IsBotFam ε ϖ μ x) {τ : ι}
     {v : ι → Matrix (Fin n) (Fin n) ℂ} (hv : ∀ σ, v σ ∈ Formalism.REAL.Kset (ε σ)) (hτ : v τ = 1) :
@@ -178,11 +176,11 @@ variable {P' : Type} [AddCommGroup P'] [Module ℂ P'] {B' : P' →ₗ⋆[ℂ] P
   {ϖ' : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P'}
 
 /- English proof (translation)
-Establish `hc : B' x' x' ≠ 0` using `fun e => h0 (h'.1 _ e)`. Use `fam_induction (ε := ε) (fun u => B x (ϖ u x) * B' x' x' = B x x * B' x' (ϖ' u x')) ?_ ?_ u hu` and prove the remaining obligations. Use `show B x (ϖ 1 x) * B' x' x' = B x x * B' x' (ϖ' 1 x')`. Rewrite using `[h.2.1, h'.2.1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ k v hk hv hτ ih`. Establish `e1` using `GlobalTheory.JointHarm.Sph.coeff_eq n (ε τ) (μ τ) P B _ P' B' _ x (ϖ v x) x' x' (h.2.2.2 τ) (h'.2.2.2 τ) (hx τ) (bottom_move h hx hv hτ) (hx' τ) (hx' τ) k hk`. Establish `e2` using `GlobalTheory.JointHarm.Sph.coeff_eq n (ε τ) (μ τ) P' B' _ P' B' _ x' (ϖ' v x') x' x' (h'.2.2.2 τ) (h'.2.2.2 τ) (hx' τ) (bottom_move h' hx' hv hτ) (hx' τ) (hx' τ) k hk`. Use `show B x (ϖ (Pi.mulSingle τ k * v) x) * B' x' x' = B x x * B' x' (ϖ' (Pi.mulSingle τ k * v) x')`. Rewrite using `[h.2.2.1 _ _ (single_mem_KC (K_sub_KC hk)) (fun σ => K_sub_KC (hv σ)), h'.2.2.1 _ _ (single_mem_KC (K_sub_KC hk)) (fun σ => K_sub_KC (hv σ)), Module.End.mul_apply, Module.End.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 
-Apply `mul_right_cancel₀ hc` to reduce the goal to its premises. Take the linear combination `(B' x' x') * e1 - (B x x) * e2 + (B' x' (ϖ' (Pi.mulSingle τ k) x')) * ih`.
+A detailed English derivation is pending.
 -/
 theorem coef_fam [Fintype ι] (h : IsHolFam ε B ϖ) (h' : IsHolFam ε B' ϖ') {x : P} {x' : P'}
     (hx : IsBotFam ε ϖ μ x) (hx' : IsBotFam ε ϖ' μ x') (h0 : x' ≠ 0)
@@ -205,7 +203,7 @@ theorem coef_fam [Fintype ι] (h : IsHolFam ε B ϖ) (h' : IsHolFam ε B' ϖ') {
     linear_combination (B' x' x') * e1 - (B x x) * e2 + (B' x' (ϖ' (Pi.mulSingle τ k) x')) * ih
 
 /- English proof (translation)
-Rewrite using `[adj_fam h u hu, adj_fam h' u hu, ← Module.End.mul_apply, ← Module.End.mul_apply, ← h.2.2.1 _ _ (fun σ => K_sub_KC (star_mem_K (hu σ))) (fun σ => K_sub_KC (hv σ)), ← h'.2.2.1 _ _ (fun σ => K_sub_KC (star_mem_K (hu σ))) (fun σ => K_sub_KC (hv σ))]`. Conclude with `coef_fam h h' hx hx' h0 _ fun σ => mul_mem_K (star_mem_K (hu σ)) (hv σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_fam [Fintype ι] (h : IsHolFam ε B ϖ) (h' : IsHolFam ε B' ϖ') {x : P} {x' : P'}
     (hx : IsBotFam ε ϖ μ x) (hx' : IsBotFam ε ϖ' μ x') (h0 : x' ≠ 0)
@@ -218,9 +216,9 @@ theorem gram_fam [Fintype ι] (h : IsHolFam ε B ϖ) (h' : IsHolFam ε B' ϖ') {
   exact coef_fam h h' hx hx' h0 _ fun σ => mul_mem_K (star_mem_K (hu σ)) (hv σ)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram`. Consider the case `exact _root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram`. Consider the case `(apply _root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_map_of_gram {U : Type} (f : U → P) (f' : U → P') (hB : ∀ y, B y y = 0 → y = 0)
     {c d : ℂ} (hc : c ≠ 0) (hg : ∀ u v, B (f u) (f v) * c = d * B' (f' u) (f' v)) :
@@ -234,7 +232,7 @@ theorem exists_map_of_gram {U : Type} (f : U → P) (f' : U → P') (hB : ∀ y,
   | (intros; exact _root_.GlobalTheory.GramLinearMap.exists_linearMap_of_gram ..)
 
 /- English proof (translation)
-Introduce `ι _ n ε μ P _ _ B ϖ P' _ _ B' ϖ' x x' h h' hx hx' h0`. Take `⟨ψ, hψ⟩` from `exists_map_of_gram (B := B) (B' := B') (U := {u : ι → Matrix (Fin n) (Fin n) ℂ // ∀ τ, u τ ∈ Formalism.REAL.Kset (ε τ)}) (fun u => ϖ u.1 x) (fun u => ϖ' u.1 x') h.1 (fun e => h0 (h'.1 _ e)) (fun u v => gram_fam h h' hx hx' h0 u.1 v.1 u.2 v.2)`. Conclude with `⟨ψ, fun u hu => hψ ⟨u, hu⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_orbit_map : ∀ (ι : Type) [Fintype ι] (n : ℕ) (ε : ι → Fin n → Bool) (μ : ι → Fin n → ℝ) (P : Type) [AddCommGroup P] [Module ℂ P] (B : P →ₗ⋆[ℂ] P →ₗ[ℂ] ℂ) (ϖ : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P) (P' : Type) [AddCommGroup P'] [Module ℂ P'] (B' : P' →ₗ⋆[ℂ] P' →ₗ[ℂ] ℂ) (ϖ' : (ι → Matrix (Fin n) (Fin n) ℂ) → Module.End ℂ P') (x : P) (x' : P'), IsHolFam ε B ϖ → IsHolFam ε B' ϖ' → IsBotFam ε ϖ μ x → IsBotFam ε ϖ' μ x' → x' ≠ 0 → ∃ ψ : P' →ₗ[ℂ] P, ∀ u : ι → Matrix (Fin n) (Fin n) ℂ, (∀ τ, u τ ∈ Formalism.REAL.Kset (ε τ)) → ψ (ϖ' u x') = ϖ u x := by
   intro ι _ n ε μ P _ _ B ϖ P' _ _ B' ϖ' x x' h h' hx hx' h0

@@ -28,7 +28,7 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.FormInner
 
 /- English proof (translation)
-Unfold `ipVia`. Use `split_ifs with h`. Rewrite using `[he h.1.choose_spec, he h.2.choose_spec]`. Conclude with `absurd ⟨⟨u, rfl⟩, ⟨v, rfl⟩⟩ h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ipVia_apply {H N : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [AddCommGroup N] [Module ℂ N]
     (e : H →ₗ[ℂ] N) (he : Function.Injective e) (u v : H) : ipVia e (e u) (e v) = ⟪u, v⟫_ℂ := by
@@ -43,15 +43,13 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3} {X0 : BaseLevelRowSide D}
 
 /- English proof (translation)
-Use `set t := Y.tupT μ`. Establish `hHV` using `hM.HV i t`. Establish `hcV` using `hM.cV i`. Establish `hrange : ∀ x : D.what₂.Mt μ (i.1 + 1), ∃ h, R.toRealDat.extV i t h = (Y.IL.jMt μ hμ i x).1` using `fun x => ((Y.IL.jMt μ hμ i x).2.1 : _)`. Use `choose hv hhv using hrange`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Fm : D.what₂.Mt μ (i.1 + 1) → Bridge.Gf (Vc D i) → (R.cV i).W` to `fun x => (R.HV i t).e (hv x)`. Establish `hFm : ∀ x, Fm x ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ` using `fun x => hHV.2.1 ▸ LinearMap.mem_range_self _ _`. Establish `hread : ∀ x g, ad.eW μ hμ i ((M μ (i.1 + 1) (by omega) (by omega)).real x g) = Fm x (frameEquiv (ad.PV i) g)`. Introduce `x g`. Rewrite using `[ad.read, ← hhv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (R.cV i).ρ ((ad.PV i).ψ g)⁻¹ (Fm x ((finHom (Vc D i)).rangeRestrict ((ad.PV i).ψ g))) = _`. Rewrite using `[hcV.1 _ ((GfC (Vc D i)).inv_mem ((ad.PV i).into g))]`. Both sides reduce to the same expression. Establish `hip : ∀ x x' : D.what₂.Mt μ (i.1 + 1), inner ℂ x x' = (((RealDat.nP F.lv2 false)⁻¹ : ℝ) : ℂ) * Bridge.adInner (Bridge.ratF (Vc D i)) (levEnv _ (R.βV i) (R.datVt i t)).J (R.B.L i t).pres.y (Fm x) (Fm x')`. Introduce `x x'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Y.tied.lift.mt μ hμ i x x']`. Use `show (((RealDat.nP F.lv2 false)⁻¹ : ℝ) : ℂ) * ipVia (R.toRealDat.extV i t) (Y.IL.jMt μ hμ i x).1 (Y.IL.jMt μ hμ i x').1 = _`. Rewrite using `[← hhv, ← hhv, ipVia_apply _ (Y.hinj i t), hHV.2.2]`. Establish `hnP : 0 < (RealDat.nP F.lv2 false)⁻¹`. Unfold `RealDat.nP`.
-
-Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`. Conclude with `classSum_of_read (M μ (i.1 + 1) (by omega) (by omega)) (Bridge.ratF (Vc D i)) (frameEquiv (ad.PV i)) (R.cV i).coef.ρ _ (levEnv _ (R.βV i) (R.datVt i t)).χ (ad.eW μ hμ i) Fm (R.B.L i t).pres.y (R.B.L i t).pres.reps (ratF_injective _) (RatFrame.iff (hrat i)) (fun δ a b => hcV.2.1 _ …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem classSum_of_ad (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.toRealDat.IsModels)
     (hB : ∀ i, IsBaseFrame (Vc D i) (R.βV i) (R.ΛV i) 1) {M : MtFam D} (ad : MtAd Y M) (hrat : ∀ i, RatFrame (ad.PV i))
@@ -89,7 +87,7 @@ theorem classSum_of_ad (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.toR
     hread _ hnP hip (fun _ => GlobalTheory.InvFormBdd.exists_isInvForm _ _ _)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hμ : Used0 D (D.what₂.muTw v)` using `Or.inr ⟨v, ((D.what₂.muAt_or v).resolve_left hv).symm⟩`. Conclude with `classSum_of_ad Y hM hB ad hrat _ hμ ⟨k, by omega⟩ ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using level_le_Umax hin v ⟨k, by omega⟩ hκ⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classSum_twisted (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.toRealDat.IsModels)
     (hB : ∀ i, IsBaseFrame (Vc D i) (R.βV i) (R.ΛV i) 1) {M : MtFam D} (ad : MtAd Y M) (hrat : ∀ i, RatFrame (ad.PV i))
@@ -102,15 +100,13 @@ theorem classSum_twisted (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.t
     ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using level_le_Umax hin v ⟨k, by omega⟩ hκ⟩⟩
 
 /- English proof (translation)
-Use `set t := Y.tupT μ`. Establish `hHV` using `hM.HV i t`. Establish `hcV` using `hM.cV i`. Establish `hrange : ∀ x : D.what₂.Mt μ (i.1 + 1), ∃ h, R.toRealDat.extV i t h = (Y.IL.jMt μ hμ i x).1` using `fun x => ((Y.IL.jMt μ hμ i x).2.1 : _)`. Use `choose hv hhv using hrange`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Fm : D.what₂.Mt μ (i.1 + 1) → Bridge.Gf (Vc D i) → (R.cV i).W` to `fun x => (R.HV i t).e (hv x)`. Establish `hFm : ∀ x, Fm x ∈ Bridge.AdForms (Bridge.ratF (Vc D i)) (R.cV i).coef.ρ (levEnv _ (R.βV i) (R.datVt i t)).J (levEnv _ (R.βV i) (R.datVt i t)).χ` using `fun x => hHV.2.1 ▸ LinearMap.mem_range_self _ _`. Establish `hread : ∀ x g, ad.eW μ hμ i ((M μ (i.1 + 1) (by omega) (by omega)).real x g) = Fm x (frameEquiv (ad.PV i) g)`. Introduce `x g`. Rewrite using `[ad.read, ← hhv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show (R.cV i).ρ ((ad.PV i).ψ g)⁻¹ (Fm x ((finHom (Vc D i)).rangeRestrict ((ad.PV i).ψ g))) = _`. Rewrite using `[hcV.1 _ ((GfC (Vc D i)).inv_mem ((ad.PV i).into g))]`. Both sides reduce to the same expression. Establish `hip : ∀ x x' : D.what₂.Mt μ (i.1 + 1), inner ℂ x x' = (((RealDat.nP F.lv2 false)⁻¹ : ℝ) : ℂ) * Bridge.adInner (Bridge.ratF (Vc D i)) (levEnv _ (R.βV i) (R.datVt i t)).J (R.B.L i t).pres.y (Fm x) (Fm x')`. Introduce `x x'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Y.tied.lift.mt μ hμ i x x']`. Use `show (((RealDat.nP F.lv2 false)⁻¹ : ℝ) : ℂ) * ipVia (R.toRealDat.extV i t) (Y.IL.jMt μ hμ i x).1 (Y.IL.jMt μ hμ i x').1 = _`. Rewrite using `[← hhv, ← hhv, ipVia_apply _ (Y.hinj i t), hHV.2.2]`. Establish `hnP : 0 < (RealDat.nP F.lv2 false)⁻¹`. Unfold `RealDat.nP`.
-
-Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`. Conclude with `classSum_of_frame (M μ (i.1 + 1) (by omega) (by omega)) (Bridge.ratF (Vc D i)) (frameEquiv (ad.PV i)) (R.cV i).coef.ρ _ (levEnv _ (R.βV i) (R.datVt i t)).χ (ad.eW μ hμ i) Fm (R.B.L i t).pres.y (R.B.L i t).pres.reps (ratF_injective _) (finite_stab_frame (hV i) (ad.std i)) (fun δ a …`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem classSum_of_std (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.toRealDat.IsModels)
     (hB : ∀ i, IsBaseFrame (Vc D i) (R.βV i) (R.ΛV i) 1) {M : MtFam D} (ad : MtAd Y M) (hV : ∀ i, GlobalTheory.StdFrame.OrthFrame (Vc D i))
@@ -148,7 +144,7 @@ theorem classSum_of_std (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.to
     hread _ hnP hip
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, j = k + 1` from `⟨j - 1, by omega⟩`. Establish `hμ : Used0 D (D.what₂.muTw v)` using `Or.inr ⟨v, ((D.what₂.muAt_or v).resolve_left hv).symm⟩`. Conclude with `classSum_of_std Y hM hB ad hV _ hμ ⟨k, by omega⟩ ⟨{1}, fun κ hκ => ⟨1, by simp, by simpa using level_le_Umax hin v ⟨k, by omega⟩ hκ⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem classSum_twisted_std (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM : R.toRealDat.IsModels)
     (hB : ∀ i, IsBaseFrame (Vc D i) (R.βV i) (R.ΛV i) 1) {M : MtFam D} (ad : MtAd Y M) (hV : ∀ i, GlobalTheory.StdFrame.OrthFrame (Vc D i))
@@ -163,15 +159,15 @@ theorem classSum_twisted_std (Y : R3.Read (A3 := A3) R.toRealDat F.lv2 X0) (hM :
 end Gen
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem classSum_mtL {D : D7} (L : LocAll (lay0 D)) (M : MtFam D) (μ : D.what₂.Tup) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (h : ClassSum (M μ j h1 h2)) : ClassSum (mtL L M μ j h1 h2) := h
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.Top.Bl.StepW.of_all fun K B f T w _ _ _ P x m hrat v j h1 h2 hv => ?_` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨hB, hM⟩ : (∀ i, IsBaseFrame (Vc (Dof x) i) (x.m.z.R.βV i) (x.m.z.R.ΛV i) 1) ∧ x.m.z.R.toRealDat.IsModels := by`. Use `⟨fun i => ?_, x.m.z.pins.char.base.models⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `x.m.z.pins.char.base.lev.βV i`. Rewrite `hc` using `[one_pow]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `classSum_twisted x.r.Y hM hB m.ad hrat m.mt v j h1 h2 hv`.
+A detailed English derivation is pending.
 -/
 theorem classSum_states : AllSt fun _ _ _ _ w P x => ∀ m : InMt x.r.Y (cfOf x) w.I.xi (QOf P), (∀ i, RatFrame (m.ad.PV i)) →
     ∀ v j h1 h2, TwistedAt (Dof x) v → ClassSum (m.M ((Dof x).what₂.muTw v) j h1 h2) := by
@@ -183,16 +179,16 @@ theorem classSum_states : AllSt fun _ _ _ _ w P x => ∀ m : InMt x.r.Y (cfOf x)
   exact classSum_twisted x.r.Y hM hB m.ad hrat m.mt v j h1 h2 hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, GlobalTheory.StdFrameModel.stdPsi_unitPsi h, fun g => by simpa using GlobalTheory.NJoin.Inh.rat_unit h.gram_eq g⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_std_rat {D : D7} {V : HSp D} (h : GlobalTheory.StdFrame.OrthFrame V) :
     ∃ P : principalLevelFrame.RowPsi V V.rank, StdFrame (GlobalTheory.StdFrameModel.hostF_eq D) P ∧ RatFrame P :=
   ⟨_, GlobalTheory.StdFrameModel.stdPsi_unitPsi h, fun g => by simpa using GlobalTheory.NJoin.Inh.rat_unit h.gram_eq g⟩
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.StdFrameCounterexample.vstd_iff i).1 h`. Use `⟨fun a b => (congrFun (congrFun h1 a) b).trans Matrix.one_apply, fun a => ?_⟩` and prove the remaining obligations. Use `(h2 (Pi.single a 1)).2 fun b => by` as an intermediate fact. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `isIntegral_one`. Conclude with `isIntegral_zero`. Simplify `this` using `[Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem orthFrame_of_vStd {D : D7} (i : Fin D.R.m) (h : Formalism.IndefR.FWT.VStd D i) : GlobalTheory.StdFrame.OrthFrame (Vc D i) := by
   obtain ⟨h1, h2⟩ := (GlobalTheory.StdFrameCounterexample.vstd_iff i).1 h
@@ -205,9 +201,9 @@ theorem orthFrame_of_vStd {D : D7} (i : Fin D.R.m) (h : Formalism.IndefR.FWT.VSt
   simpa [Pi.single_apply] using this
 
 /- English proof (translation)
-Use `(GlobalTheory.Mem.Top.evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun K _ _ _ _ hK => GlobalTheory.Mem.Top.GroupRetwisting.lg_all K fun B f T hO _ w _ Z Wt hX z p0 Y _ _ _ _ _ M tup Q a hin v hv j h1 h2 => ?_` and prove the remaining obligations. Take `⟨hV, -⟩` from `hK (w.st Z) hO`. Choose the witnesses or unpack the hypotheses as in `⟨hB, hM⟩ : (∀ i, Formalism.IndefR.Lev.IsBaseFrame (Formalism.IndefR.Links.Vc (w.st Z).toD7 i) (z.R.βV i) (z.R.ΛV i) 1) ∧ z.R.toRealDat.IsModels := by`. Use `⟨fun i => ?_, z.pins.char.base.models⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `z.pins.char.base.lev.βV i`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[one_pow]`. Then use the resulting hypothesis. Conclude with `classSum_twisted_std Y hM hB a (fun i => orthFrame_of_vStd i (hV i)) hin v j h1 h2 hv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sumTw_rows : OverRows fun _ _ _ _ w Z _ _ z _ Y => ∀ (M : MtFam (w.st Z).toD7) tup Q, MtAd Y M → MtInput (w.st Z).toD7 M tup Q → SumTw (w.st Z).toD7 M := by
   refine (GlobalTheory.Mem.Top.evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).imp fun K _ _ _ _ hK =>

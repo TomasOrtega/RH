@@ -14,7 +14,7 @@ variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] {ι : Type} [Decid
   {Q : Type} [Fintype Q] [DecidableEq Q] {N : ℕ} {C : Type} [DecidableEq C]
 
 /- English proof (translation)
-Rewrite using `[altPair, LinearMap.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Pi.smul_apply, pm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem altPair_apply (tl : Fin N → ι) (f : TV n M (Q ⊕ (Fin N ⊕ Fin N))) (I : Q ⊕ (Fin N ⊕ Fin N) → Fin n) :
     altPair tl f I = ∑ σ ∈ colG tl, ((Equiv.Perm.sign σ : ℤ) : ℂ) • f (I ∘ dbl σ) := by
@@ -27,29 +27,27 @@ def inF (Q : Type) (N : ℕ) : Fin N → Q ⊕ (Fin N ⊕ Fin N) := fun k => .in
 def inS (Q : Type) (N : ℕ) : Fin N → Q ⊕ (Fin N ⊕ Fin N) := fun k => .inr (.inr k)
 
 /- English proof (translation)
-Establish `hFtab : IsTab (col ∘ inF Q N) (b ∘ inF Q N)`. Use `isTab_comp col b hT (inF Q N) ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Simplify `hxy` using `[inF]`. Introduce `q y hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [inF] at hq`. Break down `q with q | k | k` into its components or cases. Conclude with `absurd hq (h1 q _)`. Conclude with `⟨k, rfl⟩`. Conclude with `absurd hq.symm (h2 y k)`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hStab : IsTab (col ∘ inS Q N) (b ∘ inS Q N)`. Use `isTab_comp col b hT (inS Q N) ?_ ?_` and prove the remaining obligations. Introduce `x y hxy`. Simplify `hxy` using `[inS]`. Introduce `q y hq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [inS] at hq`. Break down `q with q | k | k` into its components or cases. Conclude with `absurd hq (h1 q _)`. Conclude with `absurd hq (h2 k y)`. Conclude with `⟨k, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ColInj col (b ∘ dbl σ) → (∃ π ∈ colG (col ∘ inF Q N), (b ∘ inF Q N) ∘ ⇑π = (b ∘ inF Q N) ∘ ⇑σ) ∧ (∃ π ∈ colG (col ∘ inS Q N), (b ∘ inS Q N) ∘ ⇑π = (b ∘ inS Q N) ∘ ⇑σ)`. Introduce `hc`. Use `⟨exists_perm _ _ hFtab σ ?_, exists_perm _ _ hStab σ ?_⟩` and prove the remaining obligations. Introduce `k k' hk hb'`. Use `hc (inF Q N k) (inF Q N k') hk (by simpa [dbl, inF] using hb')` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[inF]`. Introduce `k k' hk hb'`. Use `hc (inS Q N k) (inS Q N k') hk (by simpa [dbl, inS] using hb')` as an intermediate fact. Simplify `this` using `[inS]`. Establish `hdup : ¬ ColInj col (b ∘ dbl σ) → alt (colG col) ξ (b ∘ dbl σ) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Introduce `hc`. Simplify using `only [ColInj, not_forall] at hc`. Take `⟨p, q, hcol, hbq, hpq⟩` from `hc`. Conclude with `alt_dup col ξ _ p q hpq hcol hbq`. Distinguish the cases in `hF : ∃ π ∈ colG (col ∘ inF Q N), (b ∘ inF Q N) ∘ ⇑π = (b ∘ inF Q N) ∘ ⇑σ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hS : ∃ π ∈ colG (col ∘ inS Q N), (b ∘ inS Q N) ∘ ⇑π = (b ∘ inS Q N) ∘ ⇑σ`. Take `⟨πF, hπF, eF⟩` from `hF`. Take `⟨πS, hπS, eS⟩` from `hS`. Rewrite using `[← eF, ← eS, sg_perm _ _ hFtab.1 πF hπF, sg_perm _ _ hStab.1 πS hπS]`. Rewrite `hπF`, `hπS` using `[mem_colG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hπ : (Equiv.refl Q).sumCongr (πF.sumCongr πS) ∈ colG col`. Rewrite using `[mem_colG]`. Introduce and unpack `(q | k | k)`. Both sides reduce to the same expression. Simplify `hπF k` using `[inF]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Simplify `hπS k` using `[inS]`. Establish `hb : b ∘ dbl σ = b ∘ ⇑((Equiv.refl Q).sumCongr (πF.sumCongr πS))`. Use function extensionality and compare the values at `p`. Break down `p with q | k | k` into its components or cases. Both sides reduce to the same expression.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify `(congrFun eF k).symm` using `[dbl, inF]`. Simplify `(congrFun eS k).symm` using `[dbl, inS]`. Rewrite using `[hb, alt_perm col ξ b _ hπ, Equiv.Perm.sign_sumCongr, Equiv.Perm.sign_sumCongr]`. Simplify using the standard rewrite rules. Rewrite using `[sg_zero _ _ _ hS, mul_zero, Int.cast_zero, zero_smul]`.
-
-Conclude with `hdup (fun hc => hS (key hc).2)`. Rewrite using `[sg_zero _ _ _ hF, zero_mul, Int.cast_zero, zero_smul]`. Conclude with `hdup (fun hc => hF (key hc).1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term (tl : Fin N → ι) (col : Q ⊕ (Fin N ⊕ Fin N) → C) (b : Q ⊕ (Fin N ⊕ Fin N) → Fin n)
     (hT : IsTab col b) (h1 : ∀ p k, col (.inl p) ≠ col (.inr k)) (h2 : ∀ k k', col (.inr (.inl k)) ≠ col (.inr (.inr k')))
@@ -124,11 +122,11 @@ end YoungTableau
 
 open YoungTableau in
 /- English proof (translation)
-Introduce `n M _ _ ι _ Q _ _ N tl C _ col b hT h1 h2 h3 h4 ξ h`. Rewrite using `[cA_apply]`. Establish `key : altPair tl (alt (colG col) ξ) b = ((kap tl (col ∘ inF Q N) (col ∘ inS Q N) (b ∘ inF Q N) (b ∘ inS Q N) : ℤ) : ℂ) • alt (colG col) ξ b`. Rewrite using `[altPair_apply, kap, Int.cast_sum, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[term tl col b hT h1 h2 ξ σ, smul_smul]`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite `key` using `[h]`. Establish `hk` using `kap_pos tl (col ∘ inF Q N) (col ∘ inS Q N) (b ∘ inF Q N) (b ∘ inS Q N) (fun k k' => h3 k k') (fun k k' => h4 k k') (fun k k' ht hr hc => by`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hT.1 (inF Q N k) (inF Q N k') ((h3 k k').mpr ⟨ht, hc⟩) hr` as an intermediate fact. Simplify `this)` using `[inF]`. Conclude with `(smul_eq_zero.mp key.symm).resolve_left (by exact_mod_cast hk.ne')`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem young_holds : Young := by
   intro n M _ _ ι _ Q _ _ N tl C _ col b hT h1 h2 h3 h4 ξ h

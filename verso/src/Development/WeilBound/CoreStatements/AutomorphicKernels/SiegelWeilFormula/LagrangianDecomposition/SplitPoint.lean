@@ -13,7 +13,7 @@ def sndHom (κ' κ'' A : Type) [AddCommGroup A] : (κ' ⊕ κ'' → A) →+ (κ'
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem split_point {κ' κ'' A : Type} [AddCommGroup A] (x : κ' ⊕ κ'' → A) :
     x = Sum.elim (x ∘ Sum.inl) (0 : κ'' → A) + Sum.elim (0 : κ' → A) (x ∘ Sum.inr) := by
@@ -21,35 +21,29 @@ theorem split_point {κ' κ'' A : Type} [AddCommGroup A] (x : κ' ⊕ κ'' → A
   rcases i with i | i <;> simp
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ' κ'' _ _ a ha g hg hg0`. Establish `H : ∀ N ∈ nhds (0 : κ' ⊕ κ'' → Af F), ∃ U : AddSubgroup (κ' ⊕ κ'' → Af F), IsOpen (U : Set (κ' ⊕ κ'' → Af F)) ∧ IsCompact (U : Set (κ' ⊕ κ'' → Af F)) ∧ (U : Set _) ⊆ N ∧ ∀ x₀ ∉ U, ∃ χ ∈ {χ : (κ' ⊕ κ'' → Af F) → ℂ | ∃ y : κ' ⊕ κ'' → Af F, χ = fun x => ψ (pairA F 0 (x ⬝ᵥ y))}, (∀ u …`. Introduce `N hN`. Take `⟨U, hUo, hUc, hUN, hsep⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ (κ' ⊕ κ'') N hN`. Use `⟨U, hUo, hUc, hUN, fun x₀ hx₀ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hyU, hy⟩` from `hsep x₀ hx₀`. Use `⟨_, ⟨y, rfl⟩, fun u hu => ?_, hy⟩` and prove the remaining obligations. Use `show ψ (pairA F 0 ((x₀ + u) ⬝ᵥ y)) = ψ (pairA F 0 (x₀ ⬝ᵥ y))`. Rewrite using `[add_dotProduct, GlobalTheory.CharInvForm.pairA_zero_add, AddChar.map_add_eq_mul, hyU u hu, mul_one]`. Take `⟨U₀, hU₀o, hU₀c, -, -, hper⟩` from `GlobalTheory.CharForm.exists_periodic H hg Filter.univ_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN'' : {u'' : κ'' → Af F | Sum.elim (0 : κ' → Af F) u'' ∈ U₀} ∈ nhds (0 : κ'' → Af F)`. Apply the tactic sequence `have hc : Continuous fun u'' : κ'' → Af F => (Sum.elim (0 : κ' → Af F) u'' : κ' ⊕ κ'' → Af F) := continuous_pi fun i => by rcases i with i | i <;> simp [continuous_const, continuous_apply]`. Use `(hU₀o.preimage hc).mem_nhds ?_` and prove the remaining obligations. Establish `: (Sum.elim (0 : κ' → Af F) (0 : κ'' → Af F) : κ' ⊕ κ'' → Af F) = 0`. Apply the tactic sequence `funext i; rcases i with i | i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show Sum.elim (0 : κ' → Af F) (0 : κ'' → Af F) ∈ U₀`. Rewrite using `[this]`. Conclude with `U₀.zero_mem`. Take `⟨U'', hU''o, -, hU''N, hsep''⟩` from `GlobalTheory.FinSepChar.finite_chars_separate F ψ hψ κ'' _ hN''`. Establish `hsc : Continuous (sndHom κ' κ'' (Af F))` using `continuous_pi fun i => continuous_apply _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set W : AddSubgroup (κ' ⊕ κ'' → Af F) := U''.comap (sndHom κ' κ'' (Af F)) with hW`. Establish `hWo : IsOpen (W : Set (κ' ⊕ κ'' → Af F))` using `hU''o.preimage hsc`. Use `set P : AddSubgroup (κ' ⊕ κ'' → Af F) := U₀ ⊓ W with hP`. Establish `hPo : IsOpen (P : Set (κ' ⊕ κ'' → Af F))`. Rewrite using `[hP, AddSubgroup.coe_inf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hU₀o.inter hWo`. Establish `hPc : IsCompact (P : Set (κ' ⊕ κ'' → Af F))`. Rewrite using `[hP, AddSubgroup.coe_inf]`. Conclude with `hU₀c.inter_right (AddSubgroup.isClosed_of_isOpen W hWo)`. Establish `hperP : ∀ x, ∀ u ∈ P, g (x + u) = g x` using `fun x u hu => hper x u (AddSubgroup.mem_inf.mp hu).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: DiscreteTopology ((κ' ⊕ κ'' → Af F) ⧸ P)` using `QuotientAddGroup.discreteTopology hPo`. Establish `hout : ∀ x : κ' ⊕ κ'' → Af F, g ((x : (κ' ⊕ κ'' → Af F) ⧸ P).out) = g x` using `fun x => by`. Take `⟨h, hh⟩` from `QuotientAddGroup.mk_out_eq_add P x`. Rewrite using `[hh]`. Conclude with `hperP x h h.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : (QuotientAddGroup.mk '' tsupport g : Set ((κ' ⊕ κ'' → Af F) ⧸ P)).Finite` using `(hg.2.isCompact.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Use `set T : Finset ((κ' ⊕ κ'' → Af F) ⧸ P) := hfin.toFinset with hT`. Establish `hsum : g = ∑ q ∈ T, g q.out • GlobalTheory.CharForm.cosetInd P q`. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, GlobalTheory.CharForm.cosetInd, mul_ite, mul_one, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hx`. Conclude with `(hout x).symm`. Apply `image_eq_zero_of_notMem_tsupport` to reduce the goal to its premises. Introduce `hxs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `hx (hfin.mem_toFinset.mpr ⟨x, hxs, rfl⟩)`. Establish `hterm : ∀ q : (κ' ⊕ κ'' → Af F) ⧸ P, g q.out * a (GlobalTheory.CharForm.cosetInd P q) = 0`. Introduce `q`. Distinguish the cases in `hq : q.out ∘ Sum.inr ∈ U''`. Establish `h0 : g q.out = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[split_point q.out, hper _ _ (hU''N hq)]`. Conclude with `hg0 _`. Rewrite using `[h0, zero_mul]`. Take `⟨y, hyU, hy⟩` from `hsep'' _ hq set χ : (κ' ⊕ κ'' → Af F) → ℂ := fun x => ψ (pairA F 0 ((x ∘ Sum.inr) ⬝ᵥ y)) with hχ`. Establish `hmul : (fun x => χ x * GlobalTheory.CharForm.cosetInd P q x) = χ q.out • GlobalTheory.CharForm.cosetInd P q`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.CharForm.cosetInd, Pi.smul_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Use `split_ifs with hxq`. Establish `hm : -q.out + x ∈ P`. Rewrite `hxq` using `[← QuotientAddGroup.out_eq' q]`.
-
-Conclude with `QuotientAddGroup.eq.mp hxq.symm`. Establish `hmW : (-q.out + x) ∘ Sum.inr ∈ U''` using `(AddSubgroup.mem_inf.mp hm).2`. Establish `hx : x = q.out + (-q.out + x)` using `by abel`. Rewrite using `[hx]`. Use `show ψ (pairA F 0 ((q.out ∘ Sum.inr + (-q.out + x) ∘ Sum.inr) ⬝ᵥ y)) = ψ (pairA F 0 ((q.out ∘ Sum.inr) ⬝ᵥ y))`.
-
-Rewrite using `[add_dotProduct, GlobalTheory.CharInvForm.pairA_zero_add, AddChar.map_add_eq_mul, hyU _ hmW, mul_one]`. Both sides reduce to the same expression. Establish `e` using `ha y _ (GlobalTheory.CharForm.cosetInd_mem_SB P hPo hPc q)`. Rewrite `e` using `[show (fun x => ψ (pairA F 0 ((x ∘ Sum.inr) ⬝ᵥ y)) * GlobalTheory.CharForm.cosetInd P q x) = χ q.out • GlobalTheory.CharForm.cosetInd P q from hmul, map_smul, smul_eq_mul]`. Establish `: (χ q.out - 1) * a (GlobalTheory.CharForm.cosetInd P q) = 0` using `by rw [sub_mul, e, one_mul, sub_self]`.
-
-Rewrite using `[(mul_eq_zero.mp this).resolve_left (sub_ne_zero.mpr hy), mul_zero]`. Rewrite using `[hsum, map_sum]`. Use `Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hterm q]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart : FinPart := by
   intro F _ _ ψ hψ κ' κ'' _ _ a ha g hg hg0

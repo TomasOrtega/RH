@@ -34,7 +34,7 @@ def Staircase.alt (R : Type) [CommRing R] (m : ℕ) : R →ₗ[R] R :=
   if m % 2 = 1 then LinearMap.id else 0
 
 /- English proof (translation)
-Unfold `Staircase.alt`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Staircase.alt_comm (R : Type) [CommRing R] (p q : ℕ) :
     (Staircase.alt R p).comp (Staircase.alt R q) = (Staircase.alt R q).comp (Staircase.alt R p) := by
@@ -42,14 +42,14 @@ theorem Staircase.alt_comm (R : Type) [CommRing R] (p q : ℕ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[Staircase.alt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Staircase.ker_alt_zero (R : Type) [CommRing R] :
     LinearMap.ker (Staircase.alt R 0) = LinearMap.range (LinearMap.id : R →ₗ[R] R) := by
   simp [Staircase.alt]
 
 /- English proof (translation)
-Unfold `Staircase.alt`. Break down `Nat.mod_two_eq_zero_or_one q with hq | hq` into its components or cases. Rewrite using `[if_pos (by omega), if_neg (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (by omega), if_pos (by omega)]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -63,7 +63,7 @@ theorem Staircase.ker_alt_succ (R : Type) [CommRing R] (q : ℕ) :
     simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Staircase.alt_comm ℤ, fun p => by simp, LinearMap.ker_id, Staircase.ker_alt_zero ℤ, Staircase.ker_alt_succ ℤ⟩`.
+Supply the required witnesses or components.
 -/
 theorem Staircase.hyps :
     (∀ p q : ℕ, (Staircase.alt ℤ p).comp (Staircase.alt ℤ q) = (Staircase.alt ℤ q).comp (Staircase.alt ℤ p)) ∧
@@ -74,7 +74,7 @@ theorem Staircase.hyps :
   ⟨Staircase.alt_comm ℤ, fun p => by simp, LinearMap.ker_id, Staircase.ker_alt_zero ℤ, Staircase.ker_alt_succ ℤ⟩
 
 /- English proof (translation)
-The claim follows from `hS ℤ (fun _ _ => ℤ) (fun p _ => Staircase.alt ℤ p) (fun _ q => Staircase.alt ℤ q) (fun _ => ℤ) (fun p => Staircase.alt ℤ p) (fun _ => LinearMap.id) (fun _ => ℤ) (fun q => Staircase.alt ℤ q) (fun _ => LinearMap.id) (fun p q => Staircase.hyps.1 p q) Staircase.hyps.2.1 Staircase.hyp …`.
+A detailed English derivation is pending.
 -/
 example (hS : Staircase.Statement) (n : ℕ) :
     Nonempty (Staircase.H (fun p => Staircase.alt ℤ p) n ≃ₗ[ℤ] Staircase.H (fun q => Staircase.alt ℤ q) n) :=

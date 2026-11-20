@@ -30,11 +30,11 @@ Both sides reduce to the same expression.
 @[simp] theorem labelC_inr (τ : CMType H) : labelC (.inr τ) = conjEmb τ.1 := rfl
 
 /- English proof (translation)
-Establish `h` using `H.sqrt_neg_disc_sq`. Establish `hd : (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Establish `hre` using `congrArg Complex.re h`. Establish `him` using `congrArg Complex.im h`. Simplify using `only [sq, Complex.mul_re, Complex.mul_im, Complex.neg_re, Complex.neg_im, Complex.natCast_re, Complex.natCast_im, neg_zero] at hre him`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : H.rt0.re = 0`. Assume the negation of the conclusion as `hne`. Establish `: H.rt0.im = 0`. Establish `: H.rt0.re * H.rt0.im = 0` using `by linarith`. Conclude with `(mul_eq_zero.1 this).resolve_left hne`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hre` using `[this]`. Use polynomial arithmetic with `[mul_self_nonneg H.rt0.re]`. Apply the tactic sequence `apply Complex.ext <;> simp [h0]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   have h := H.sqrt_neg_disc_sq
@@ -53,7 +53,7 @@ theorem rt0_conj_neg_ne_zero (H : Host E) : starRingEnd ℂ H.rt0 = -H.rt0 := by
   apply Complex.ext <;> simp [h0]
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `H.sqrt_neg_disc_sq`. Rewrite `h2` using `[h]`. Establish `: (H.d : ℂ) = 0` using `by simpa using h2`. Conclude with `H.d_prime.ne_zero (by exact_mod_cast this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   intro h
@@ -63,7 +63,7 @@ theorem rt0_ne_zero (H : Host E) : H.rt0 ≠ 0 := by
   exact H.d_prime.ne_zero (by exact_mod_cast this)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : starRingEnd ℂ (τ.1 (H.rt : E)) = H.rt0` using `h`. Rewrite `h1` using `[τ.2, rt0_conj_neg_ne_zero]`. Conclude with `rt0_ne_zero H (by linear_combination (-1 / 2 : ℂ) * h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjEmb_rt_ne (τ : CMType H) : conjEmb τ.1 (H.rt : E) ≠ H.rt0 := by
   intro h
@@ -72,9 +72,9 @@ theorem conjEmb_rt_ne (τ : CMType H) : conjEmb τ.1 (H.rt : E) ≠ H.rt0 := by
   exact rt0_ne_zero H (by linear_combination (-1 / 2 : ℂ) * h1)
 
 /- English proof (translation)
-Establish `h1 : (H.rt : E) ^ 2 = -(H.d : E)`. Use `congrArg (algebraMap (𝓞 E) E) H.rt_sq` as an intermediate fact. Simplify using `using this`. Establish `h2 : σ (H.rt : E) ^ 2 = H.rt0 ^ 2` using `by rw [← map_pow, h1, H.sqrt_neg_disc_sq]; simp`. Establish `h3 : σ (H.rt : E) = -H.rt0` using `(sq_eq_sq_iff_eq_or_eq_neg.1 h2).resolve_left h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show starRingEnd ℂ (σ (H.rt : E)) = H.rt0`. Rewrite using `[h3, map_neg, rt0_conj_neg_ne_zero, neg_neg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjEmb_rt_of_ne {σ : E →+* ℂ} (h : σ (H.rt : E) ≠ H.rt0) : conjEmb σ (H.rt : E) = H.rt0 := by
   have h1 : (H.rt : E) ^ 2 = -(H.d : E) := by
@@ -86,17 +86,15 @@ theorem conjEmb_rt_of_ne {σ : E →+* ℂ} (h : σ (H.rt : E) ≠ H.rt0) : conj
   rw [h3, map_neg, rt0_conj_neg_ne_zero, neg_neg]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[conjEmb]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjEmb_conjEmb (σ : E →+* ℂ) : conjEmb (conjEmb σ) = σ := by
   ext x; simp [conjEmb]
 
 /- English proof (translation)
-Use `⟨?_, fun σ => ?_⟩` and prove the remaining obligations. Introduce and unpack `(τ | τ) (τ' | τ') h`. Conclude with `congrArg _ (Subtype.ext h)`. Conclude with `absurd ((show τ.1 = conjEmb τ'.1 from h) ▸ τ.2) (conjEmb_rt_ne τ')`. Conclude with `absurd ((show τ'.1 = conjEmb τ.1 from h.symm) ▸ τ'.2) (conjEmb_rt_ne τ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `congrArg _ (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[← conjEmb_conjEmb τ.1, ← conjEmb_conjEmb τ'.1]`. Conclude with `congrArg conjEmb h`. Distinguish the cases in `h : σ (H.rt : E) = H.rt0`. Conclude with `⟨.inl ⟨σ, h⟩, rfl⟩`.
-
-Conclude with `⟨.inr ⟨conjEmb σ, conjEmb_rt_of_ne h⟩, conjEmb_conjEmb σ⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem labelC_bijective (H : Host E) : Function.Bijective (labelC (H := H)) := by
   refine ⟨?_, fun σ => ?_⟩
@@ -114,7 +112,7 @@ theorem labelC_bijective (H : Host E) : Function.Bijective (labelC (H := H)) := 
 def labelEquiv (H : Host E) : CMType H ⊕ CMType H ≃ (E →+* ℂ) := Equiv.ofBijective labelC (labelC_bijective H)
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Conclude with `if_pos τ.2`. Conclude with `if_neg (conjEmb_rt_ne τ)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mult_labelC (D : Datum H) (s : CMType H ⊕ CMType H) : D.mult (labelC s) = labelRk D s := by
   rcases s with τ | τ
@@ -122,7 +120,7 @@ theorem mult_labelC (D : Datum H) (s : CMType H ⊕ CMType H) : D.mult (labelC s
   · exact if_neg (conjEmb_rt_ne τ)
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Both sides reduce to the same expression. Use extensionality with `a show starRingEnd ℂ (τ.1 (a : E)) = τ.1 ((H.bar a : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem embK_labelC (c : Coeff l) (s : CMType H ⊕ CMType H) : embK c (labelC s) = labelEmb c s := by
   rcases s with τ | τ
@@ -141,7 +139,7 @@ Both sides reduce to the same expression.
     (labelFin D s i : ℕ) = i := rfl
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `(labelC_bijective H).2 σ`. Conclude with `⟨s, Fin.cast (mult_labelC D s) i, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_labelFin (D : Datum H) (σ : E →+* ℂ) (i : Fin (D.mult σ)) :
     ∃ (s : CMType H ⊕ CMType H) (k : Fin (labelRk D s)),
@@ -165,13 +163,13 @@ def ptF (y : FrPt Xo c S) : Sp S ⟶ Xo.XF c :=
     rw [y.x_over, sOf, ← Spec.map_comp, ← CommRingCat.ofHom_comp])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem ptF_fst (y : FrPt Xo c S) : ptF y ≫ pullback.fst _ _ = y.x :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem ptF_snd (y : FrPt Xo c S) :
     ptF y ≫ pullback.snd _ _ = spMap (algebraMap c.F S) :=
@@ -182,7 +180,7 @@ variable (Y : Model Xo c β)
 def ptY (y : FrPt Xo c S) : Sp S ⟶ Y.X := ptF y ≫ Y.j
 
 /- English proof (translation)
-Rewrite using `[ptY, Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ptF_snd_assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptY_over (y : FrPt Xo c S) : ptY Y y ≫ Y.s = spMap ((algebraMap c.F S).comp β) := by
   rw [ptY, Model.j, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over,
@@ -193,21 +191,21 @@ def tanF (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) : Sp (DualNu
     rw [(y.tan τ i).1, Category.assoc, ptF_fst])
 
 /- English proof (translation)
-The claim follows from `IsPullback.lift_fst _ _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem tanF_φ (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) :
     tanF Y y τ i ≫ Y.m0.toSABMap.φ = y.u τ i :=
   IsPullback.lift_fst _ _ _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.lift_snd _ _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc (attr := simp)] theorem tanF_hom (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) :
     tanF Y y τ i ≫ Y.oF.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ ptF y :=
   IsPullback.lift_snd _ _ _ _
 
 /- English proof (translation)
-The claim follows from `Y.m0.cart.1.hom_ext (h₁.trans (tanF_φ Y y τ i).symm) (h₂.trans (tanF_hom Y y τ i).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_tanF (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) (w : Sp (DualNumber S) ⟶ Y.oF.t.G.left)
     (h₁ : w ≫ Y.m0.toSABMap.φ = y.u τ i)
@@ -218,7 +216,7 @@ def tanY (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) : Sp (DualNu
   tanF Y y τ i ≫ Y.m.φ
 
 /- English proof (translation)
-Rewrite using `[tanY, Category.assoc, Y.m.cart.1.w, tanF_hom_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tanY_hom (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) :
     tanY Y y τ i ≫ Y.t.G.hom = spMap (algebraMap S (DualNumber S)) ≫ ptY Y y := by
@@ -226,7 +224,7 @@ theorem tanY_hom (y : FrPt Xo c S) (τ : E →+* ℂ) (i : Fin (D.mult τ)) :
   rfl
 
 /- English proof (translation)
-Use `haveI := Y.jQ_open`. Rewrite using `[← cancel_mono Y.jQ]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `h` using `only [ptY, Model.j, Category.assoc]`. Simplify using `only [Category.assoc, Y.jQ_over, ptF_snd]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptF_eq_of_ptY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') : ptF y = ptF y' := by
   haveI := Y.jQ_open
@@ -236,7 +234,7 @@ theorem ptF_eq_of_ptY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') : ptF y =
   · simp only [Category.assoc, Y.jQ_over, ptF_snd]
 
 /- English proof (translation)
-Establish `: tanF Y y τ i = tanF Y y' τ i` using `Y.m.cart.1.hom_ext h' (by rw [tanF_hom, tanF_hom, ptF_eq_of_ptY_eq Y h])`. Rewrite using `[← tanF_φ Y y, this, tanF_φ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem u_eq_of_tanY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') {τ : E →+* ℂ} {i : Fin (D.mult τ)}
     (h' : tanY Y y τ i = tanY Y y' τ i) : y.u τ i = y'.u τ i := by
@@ -247,7 +245,7 @@ theorem u_eq_of_tanY_eq {y y' : FrPt Xo c S} (h : ptY Y y = ptY Y y') {τ : E �
 variable {T : Type} [CommRing T] [Algebra c.F T]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, ptF_fst, ptF_fst, h.1]`. Rewrite using `[Category.assoc, ptF_snd, ptF_snd, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Conclude with `φ.comp_algebraMap.symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ptF_map {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) :
     ptF z = spMap φ.toRingHom ≫ ptF y := by
@@ -258,16 +256,16 @@ theorem ptF_map {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : 
     exact φ.comp_algebraMap.symm
 
 /- English proof (translation)
-Rewrite using `[ptY, ptY, ptF_map h, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ptY_map {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) :
     ptY Y z = spMap φ.toRingHom ≫ ptY Y y := by
   rw [ptY, ptY, ptF_map h, Category.assoc]
 
 /- English proof (translation)
-Rewrite using `[tanY, tanY, ← Category.assoc, eq_tanF Y z τ i (spMap (dualMap φ.toRingHom) ≫ tanF Y y τ i)]`. Rewrite using `[Category.assoc, tanF_φ, h.2.1]`. Both sides reduce to the same expression. Rewrite using `[Category.assoc, tanF_hom, ptF_map h, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext a <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tanY_map {φ : S →ₐ[c.F] T} {y : FrPt Xo c S} {z : FrPt Xo c T} (h : FrMap φ y z) (τ : E →+* ℂ)
     (i : Fin (D.mult τ)) : tanY Y z τ i = spMap (dualMap φ.toRingHom) ≫ tanY Y y τ i := by
@@ -305,23 +303,23 @@ variable {Or : RootOrigin Y S RM Fx} (Fr : GenFrame Or)
 def rd (f : Rul Xo c) : RM.Ω := letI := cstAlg Or; evR Xo c f Fr.y₀
 
 /- English proof (translation)
-The claim follows from `letI := cstAlg Or; Formalism.L2.Pj.evalAt_zero _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rd_zero : Fr.rd 0 = 0 := letI := cstAlg Or; Formalism.L2.Pj.evalAt_zero _ _ _
 
 /- English proof (translation)
-The claim follows from `letI := cstAlg Or; Formalism.L2.Pj.evalAt_one _ _ _ Fr.test`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rd_one : Fr.rd 1 = 1 := letI := cstAlg Or; Formalism.L2.Pj.evalAt_one _ _ _ Fr.test
 
 /- English proof (translation)
-The claim follows from `letI := cstAlg Or; Formalism.L2.Pj.evalAt_add _ _ f g _`.
+A detailed English derivation is pending.
 -/
 theorem rd_add (f g : Rul Xo c) : Fr.rd (f + g) = Fr.rd f + Fr.rd g :=
   letI := cstAlg Or; Formalism.L2.Pj.evalAt_add _ _ f g _
 
 /- English proof (translation)
-The claim follows from `letI := cstAlg Or; Formalism.L2.Pj.evalAt_mul _ _ f g _`.
+A detailed English derivation is pending.
 -/
 theorem rd_mul (f g : Rul Xo c) : Fr.rd (f * g) = Fr.rd f * Fr.rd g :=
   letI := cstAlg Or; Formalism.L2.Pj.evalAt_mul _ _ f g _
@@ -329,7 +327,7 @@ theorem rd_mul (f g : Rul Xo c) : Fr.rd (f * g) = Fr.rd f * Fr.rd g :=
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-The claim follows from `letI := cstAlg Or; Formalism.L2.Pj.evalAt_smul _ _ a f _`.
+A detailed English derivation is pending.
 -/
 theorem rd_smul (a : c.F) (f : Rul Xo c) : Fr.rd (a • f) = Or.𝔐.cst a * Fr.rd f :=
   letI := cstAlg Or; Formalism.L2.Pj.evalAt_smul _ _ a f _
@@ -347,18 +345,18 @@ Both sides reduce to the same expression.
 @[simp] theorem rdHom_apply (f : Rul Xo c) : Fr.rdHom f = Fr.rd f := rfl
 
 /- English proof (translation)
-The claim follows from `map_pow Fr.rdHom f n`.
+A detailed English derivation is pending.
 -/
 theorem rd_pow (f : Rul Xo c) (n : ℕ) : Fr.rd (f ^ n) = Fr.rd f ^ n := map_pow Fr.rdHom f n
 
 /- English proof (translation)
-The claim follows from `map_sum Fr.rdHom f s`.
+A detailed English derivation is pending.
 -/
 theorem rd_sum {I : Type} (s : Finset I) (f : I → Rul Xo c) : Fr.rd (∑ i ∈ s, f i) = ∑ i ∈ s, Fr.rd (f i) :=
   map_sum Fr.rdHom f s
 
 /- English proof (translation)
-Use `letI := cstAlg Or`. Use `⟨_, _, _, Fr.test.choose_spec.choose_spec.choose_spec, fun f => ?_⟩` and prove the remaining obligations. Conclude with `dif_pos Fr.test`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_spread : letI := cstAlg Or
     ∃ (p : TRing c.F) (φ : p.R →ₐ[c.F] RM.Ω) (y : FrPt Xo c p.R), FrMap φ y Fr.y₀ ∧ ∀ f, Fr.rd f = φ (f p y) := by
@@ -367,7 +365,7 @@ theorem exists_spread : letI := cstAlg Or
   exact dif_pos Fr.test
 
 /- English proof (translation)
-Use `letI := cstAlg Or`. Introduce `φ y h`. Take `⟨q, ψ, z, hz, hr⟩` from `Fr.exists_spread`. Rewrite using `[hr]`. Conclude with `hWD f hf _ q p ψ φ z y _ hz h`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_eq_of_frMap (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z))
     {f : Rul Xo c} (hf : IsNatural (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f)
@@ -380,14 +378,14 @@ theorem rd_eq_of_frMap (hWD : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun 
   exact hWD f hf _ q p ψ φ z y _ hz h
 
 /- English proof (translation)
-Use `letI := cstAlg Or`. Rewrite using `[← ptF_fst Fr.y₀, ← ptF_fst Fr'.y₀, ptF_eq_of_ptY_eq Y (Fr.pt_eq.trans Fr'.pt_eq.symm)]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 -/
 theorem x_eq (Fr' : GenFrame Or) : letI := cstAlg Or; Fr.y₀.x = Fr'.y₀.x := by
   letI := cstAlg Or
   rw [← ptF_fst Fr.y₀, ← ptF_fst Fr'.y₀, ptF_eq_of_ptY_eq Y (Fr.pt_eq.trans Fr'.pt_eq.symm)]
 
 /- English proof (translation)
-Use `letI := cstAlg Or`. Use function extensionality and compare the values at `σ i`. Take `⟨s, rfl⟩` from `(labelC_bijective H).2 σ`. Conclude with `u_eq_of_tanY_eq Y (Fr.pt_eq.trans Fr'.pt_eq.symm) ((Fr.tan_eq s (Fin.cast (mult_labelC D s) i)).trans (Fr'.tan_eq s (Fin.cast (mult_labelC D s) i)).symm)`.
+Equip the data with the indicated structure. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem u_eq (Fr' : GenFrame Or) : letI := cstAlg Or; Fr.y₀.u = Fr'.y₀.u := by
   letI := cstAlg Or
@@ -399,7 +397,7 @@ theorem u_eq (Fr' : GenFrame Or) : letI := cstAlg Or; Fr.y₀.u = Fr'.y₀.u := 
 set_option synthInstance.maxHeartbeats 200000 in
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, rd_smul, rd_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (a : c.F) : Fr.rd (algebraMap c.F (Rul Xo c) a) = Or.𝔐.cst a := by
   rw [Algebra.algebraMap_eq_smul_one, rd_smul, rd_one, _root_.mul_one]
@@ -409,19 +407,19 @@ end GenFrame
 end Gen
 
 /- English proof (translation)
-The claim follows from `mult_labelC D (.inr τ)`.
+A detailed English derivation is pending.
 -/
 example (τ : CMType H) : D.mult (conjEmb τ.1) = D.q := mult_labelC D (.inr τ)
 
 /- English proof (translation)
-Simplify using `[rootFrameIx, HodgeCpt.rootIdx, hp]`.
+Simplify using the standard rewrite rules.
 -/
 example (τ : CMType H) (hp : 0 < D.p) :
     rootFrameIx D (τ, ⟨0, by omega⟩) = labelIx D ⟨.inl τ, ⟨0, hp⟩⟩ := by
   simp [rootFrameIx, HodgeCpt.rootIdx, hp]
 
 /- English proof (translation)
-Establish `h : ¬ D.p + D.q - 1 < D.p` using `by omega`. Simplify using `[rootFrameIx, HodgeCpt.rootIdx, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (τ : CMType H) (hq : 0 < D.q) :
     rootFrameIx D (τ, ⟨D.p + D.q - 1, by omega⟩) = labelIx D ⟨.inr τ, ⟨0, hq⟩⟩ := by

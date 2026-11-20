@@ -13,23 +13,19 @@ namespace GlobalTheory.EigenSubquot
 open GlobalTheory.SmGL
 
 /- English proof (translation)
-Introduce `G _ V _ _ ρ S θ x hx hθ`. Set `S0 : Submodule ℂ V` to `Submodule.span ℂ (Set.range fun g : G => ρ g x)`. Establish `hS0 : ∀ (g : G) ⦃v : V⦄, v ∈ S0 → ρ g v ∈ S0`. Introduce `g v hv`. Establish `: S0 ≤ S0.comap (ρ g)` using `Submodule.span_le.2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `Submodule.subset_span ⟨g * h, by simp [map_mul]⟩)`. Conclude with `this hv`. Establish `hxS0 : x ∈ S0` using `Submodule.subset_span ⟨1, by simp⟩`. Establish `hgen : ∀ R : Submodule ℂ V, (∀ (g : G) ⦃v : V⦄, v ∈ R → ρ g v ∈ R) → x ∈ R → S0 ≤ R`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `R hR hxR`. Conclude with `Submodule.span_le.2 (by rintro _ ⟨h, rfl⟩; exact hR h hxR)`. Set `P : Set (Submodule ℂ V)` to `{T | T ≤ S0 ∧ x ∉ T ∧ ∀ (g : G) ⦃v : V⦄, v ∈ T → ρ g v ∈ T}`. Establish `hbot : (⊥ : Submodule ℂ V) ∈ P` using `⟨bot_le, by simpa using hx, fun g v hv => by`. Rewrite using `[(Submodule.mem_bot ℂ).1 hv, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _⟩`. Take `⟨T, -, hT⟩` from `zorn_le_nonempty₀ P (fun c hcP hc y hy => by`. Establish `hne : c.Nonempty` using `⟨y, hy⟩`. Establish `hdir : DirectedOn (· ≤ ·) c` using `hc.directedOn`. Use `⟨sSup c, ⟨sSup_le fun z hz => (hcP hz).1, fun hmem => ?_, fun g v hv => ?_⟩, fun z hz => le_sSup hz⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨z, hz, hxz⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hmem`. Conclude with `(hcP hz).2.1 hxz`. Take `⟨z, hz, hvz⟩` from `(Submodule.mem_sSup_of_directed hne hdir).1 hv`. Conclude with `(Submodule.mem_sSup_of_directed hne hdir).2 ⟨z, hz, (hcP hz).2.2 g hvz⟩) ⊥ hbot`. Take `⟨hTS, hxT, hTst⟩` from `hT.prop`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `Sr : Subrepresentation ρ` to `⟨S0, hS0⟩`. Set `Tr : Subrepresentation ρ` to `⟨T, hTst⟩`. Establish `hcov : Tr ⋖ Sr`. Use `⟨lt_of_le_of_ne (fun v hv => hTS hv) fun h => hxT ?_, fun R h1 h2 => ?_⟩` and prove the remaining obligations. Establish `: x ∈ Sr` using `hxS0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[← h]`. Conclude with `this`. Distinguish the cases in `hxR : x ∈ R.toSubmodule`. Conclude with `h2.not_ge fun v hv => hgen R.toSubmodule R.apply_mem_toSubmodule hxR hv`. Establish `hRP : R.toSubmodule ∈ P` using `⟨fun v hv => h2.le hv, hxR, R.apply_mem_toSubmodule⟩`.
-
-Establish `hle : T ≤ R.toSubmodule` using `fun v hv => h1.le hv`. Conclude with `h1.not_ge fun v hv => hT.2 hRP hle hv`. Use `⟨_, _, _, subQuot Sr Tr, isIrreducible_subQuot hcov, ⟨Sr, ⟨Submodule.mkQ _, fun _ => rfl⟩, Submodule.Quotient.mk_surjective _⟩, Submodule.Quotient.mk ⟨x, hxS0⟩, ?_, fun g hg => ?_⟩` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `(Submodule.Quotient.mk_eq_zero (T.comap S0.subtype) (x := (⟨x, hxS0⟩ : S0))).1 h0`.
-
-Conclude with `hxT h1`. Use `show Submodule.Quotient.mk (Sr.toRepresentation g ⟨x, hxS0⟩) = _`. Rewrite using `[← Submodule.Quotient.mk_smul]`. Use `congr 1`. Conclude with `Subtype.ext (hθ g hg)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_irreducible_subquotient_eigen : ∀ (G : Type) [Group G] (V : Type) [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) (S : Set G) (θ : G → ℂ) (x : V), x ≠ 0 →

@@ -14,11 +14,11 @@ namespace GlobalTheory.InertLocInj
 open TensorProduct
 
 /- English proof (translation)
-Introduce `L _ _ _ n v w Dv x y hx hy h`. Unfold `InertDatum.loc at h`. Establish `h1` using `mul_left_cancel (mul_right_cancel h)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `GlobalTheory.SplitAdelic.mat_ext` to reduce the goal to its premises. Introduce `u`. Take `rfl | hu` from `eq_or_ne u v`. Use extensionality with `i j`. Establish `h2` using `congrArg (fun g : GL (Fin n) (w.adicCompletion L) => g.val i j) h1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.GeneralLinearGroup.map] at h2`. Simplify using `only [Matrix.map_apply]`. Conclude with `Dv.e.injective h2`. Rewrite using `[hx u (by simpa using hu), hy u (by simpa using hu)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_injective : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ)
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L))

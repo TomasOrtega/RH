@@ -12,13 +12,13 @@ open Metric Set MeasureTheory
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `haff : MapsTo (fun x : Fin n → ℝ => a + r • x) (closedBall 0 1) (closedBall a r)`. Introduce `x hx`. Rewrite `hx` using `[mem_closedBall, dist_zero_right]`. Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg hr.le]`. Use polynomial arithmetic with `[norm_nonneg x]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hcont : ContinuousOn (fun x : Fin n → ℝ => a + r • x) (closedBall 0 1)` using `by fun_prop`. Establish `hcomp : ContinuousOn (fun x : Fin n → ℝ => h (a + r • x)) (closedBall 0 1)` using `hc.comp hcont haff`. Take `⟨x, hx, hfix⟩` from `hB n (fun x => r⁻¹ • (h (a + r • x) - a)) (by fun_prop) (by`. Introduce `x hx`. Establish `hy` using `hm (haff hx)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hy` using `[mem_closedBall, dist_eq_norm]`. Rewrite using `[mem_closedBall, dist_zero_right, norm_smul, Real.norm_of_nonneg (inv_nonneg.2 hr.le), inv_mul_le_iff₀ hr, mul_one]`. Conclude with `hy)`. Use `⟨a + r • x, haff hx, ?_⟩` and prove the remaining obligations. Establish `h2 : r • (r⁻¹ • (h (a + r • x) - a)) = r • x` using `by rw [hfix]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[smul_smul, mul_inv_cancel₀ hr.ne', one_smul]`. Conclude with `sub_eq_iff_eq_add'.mp h2`.
+A detailed English derivation is pending.
 -/
 theorem brouwer_closedBall (hB : BrouwerFixedPoint.Statement) {a : Fin n → ℝ} {r : ℝ} (hr : 0 < r)
     {h : (Fin n → ℝ) → Fin n → ℝ} (hc : ContinuousOn h (closedBall a r))
@@ -59,7 +59,7 @@ def smoothSubalgebra (n : ℕ) : Subalgebra ℝ C(Fin n → ℝ, ℝ) where
     simp
 
 /- English proof (translation)
-Introduce `x y hxy`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hxy`. Use `⟨fun z => z i, ⟨⟨fun z => z i, continuous_apply i⟩, ?_, rfl⟩, hi⟩` and prove the remaining obligations. Use `show ContDiff ℝ 1 fun z : Fin n → ℝ => z i`. Conclude with `contDiff_apply ℝ ℝ i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smoothSubalgebra_separatesPoints : (smoothSubalgebra n).SeparatesPoints := by
   intro x y hxy
@@ -69,9 +69,9 @@ theorem smoothSubalgebra_separatesPoints : (smoothSubalgebra n).SeparatesPoints 
   exact contDiff_apply ℝ ℝ i
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin n, ∃ g ∈ smoothSubalgebra n, ∀ y ∈ S, ‖(g : (Fin n → ℝ) → ℝ) y - G y i‖ < η` using `fun i => ContinuousMap.exists_mem_subalgebra_near_continuous_of_isCompact_of_separatesPoints smoothSubalgebra_separatesPoints ⟨fun y => G y i, (continuous_apply i).comp hG⟩ hS hη`. Use `choose g hg hgS using h`. Use `⟨fun y i => g i y, differentiable_pi.2 fun i => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Conclude with `(show ContDiff ℝ 1 (g i : (Fin n → ℝ) → ℝ) from hg i).differentiable one_ne_zero`. Rewrite using `[pi_norm_lt_iff hη]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `i`. Simplify using `using hgS i y hy`.
+A detailed English derivation is pending.
 -/
 theorem exists_differentiable_near {S : Set (Fin n → ℝ)} (hS : IsCompact S)
     (G : (Fin n → ℝ) → Fin n → ℝ) (hG : Continuous G) {η : ℝ} (hη : 0 < η) :
@@ -87,9 +87,9 @@ theorem exists_differentiable_near {S : Set (Fin n → ℝ)} (hS : IsCompact S)
     simpa using hgS i y hy
 
 /- English proof (translation)
-Establish `hnull : volume (P '' sphere c ρ) = 0` using `addHaar_image_eq_zero_of_differentiableOn_of_addHaar_eq_zero volume hP.differentiableOn (Measure.addHaar_sphere_of_ne_zero volume c hρ.ne')`. Use `by_contra! hall`. Establish `hsub : ball a δ ⊆ P '' sphere c ρ`. Introduce `z hz`. Take `⟨y, hy, hyz⟩` from `hall (z - a) (by rwa [mem_ball, dist_eq_norm] at hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy, by rw [hyz]; abel⟩`. Establish `hle` using `measure_mono (μ := volume) hsub`. Rewrite `hle` using `[hnull]`. Conclude with `(measure_ball_pos volume a hδ).ne' (nonpos_iff_eq_zero.mp hle)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small_avoid {P : (Fin n → ℝ) → Fin n → ℝ} (hP : Differentiable ℝ P) (c a : Fin n → ℝ)
     {ρ δ : ℝ} (hρ : 0 < ρ) (hδ : 0 < δ) :
@@ -107,7 +107,7 @@ theorem exists_small_avoid {P : (Fin n → ℝ) → Fin n → ℝ} (hP : Differe
   exact (measure_ball_pos volume a hδ).ne' (nonpos_iff_eq_zero.mp hle)
 
 /- English proof (translation)
-Break down `s.eq_empty_or_nonempty with rfl | hne` into its components or cases. Conclude with `⟨1, one_pos, by simp⟩`. Take `⟨y0, hy0, hmin⟩` from `hs.exists_isMinOn hne hg`. Conclude with `⟨g y0, hpos y0 hy0, fun y hy => hmin hy⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pos_le {s : Set (Fin n → ℝ)} (hs : IsCompact s) {g : (Fin n → ℝ) → ℝ}
     (hg : ContinuousOn g s) (hpos : ∀ y ∈ s, 0 < g y) : ∃ δ > 0, ∀ y ∈ s, δ ≤ g y := by
@@ -120,7 +120,7 @@ noncomputable def radialPush (c : Fin n → ℝ) (ρ : ℝ) (y : Fin n → ℝ) 
   c + max 1 (ρ / ‖y - c‖) • (y - c)
 
 /- English proof (translation)
-Rewrite `hy` using `[dist_eq_norm]`. Establish `hpos : 0 < ‖y - c‖` using `hρ.trans_le hy`. Establish `h1 : ρ / ‖y - c‖ ≤ 1` using `(div_le_one hpos).2 hy`. Rewrite using `[radialPush, max_eq_left h1, one_smul, add_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem radialPush_of_le {c y : Fin n → ℝ} {ρ : ℝ} (hρ : 0 < ρ) (hy : ρ ≤ dist y c) :
     radialPush c ρ y = y := by
@@ -130,7 +130,7 @@ theorem radialPush_of_le {c y : Fin n → ℝ} {ρ : ℝ} (hρ : 0 < ρ) (hy : �
   rw [radialPush, max_eq_left h1, one_smul, add_sub_cancel]
 
 /- English proof (translation)
-Rewrite `hy` using `[dist_eq_norm]`. Establish `hpos : 0 < ‖y - c‖` using `norm_pos_iff.2 (sub_ne_zero.2 hyc)`. Establish `h1 : 1 ≤ ρ / ‖y - c‖` using `(one_le_div hpos).2 hy.le`. Rewrite using `[mem_sphere, dist_eq_norm, radialPush, max_eq_right h1, add_sub_cancel_left, norm_smul, Real.norm_of_nonneg (div_nonneg (hpos.trans hy).le hpos.le), div_mul_cancel₀ ρ hpos.ne']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem radialPush_mem_sphere {c y : Fin n → ℝ} {ρ : ℝ} (hy : dist y c < ρ) (hyc : y ≠ c) :
     radialPush c ρ y ∈ sphere c ρ := by
@@ -141,9 +141,9 @@ theorem radialPush_mem_sphere {c y : Fin n → ℝ} {ρ : ℝ} (hy : dist y c < 
     Real.norm_of_nonneg (div_nonneg (hpos.trans hy).le hpos.le), div_mul_cancel₀ ρ hpos.ne']
 
 /- English proof (translation)
-Establish `hn : ContinuousOn (fun y : Fin n → ℝ => ρ / ‖y - c‖) {y | y ≠ c}`. Use `ContinuousOn.div continuousOn_const (by fun_prop) ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `norm_ne_zero_iff.2 (sub_ne_zero.2 hy)`. Establish `hm : ContinuousOn (fun y : Fin n → ℝ => max 1 (ρ / ‖y - c‖)) {y | y ≠ c}` using `continuousOn_const.sup hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `radialPush`. Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 theorem continuousOn_radialPush (c : Fin n → ℝ) (ρ : ℝ) : ContinuousOn (radialPush c ρ) {y | y ≠ c} := by
   have hn : ContinuousOn (fun y : Fin n → ℝ => ρ / ‖y - c‖) {y | y ≠ c} := by
@@ -156,37 +156,35 @@ theorem continuousOn_radialPush (c : Fin n → ℝ) (ρ : ℝ) : ContinuousOn (r
   fun_prop
 
 /- English proof (translation)
-Establish `hK : IsCompact (closedBall a r)` using `isCompact_closedBall a r`. Choose the witnesses or unpack the hypotheses as in `⟨G, hGf⟩ : ∃ G : C(Fin n → ℝ, Fin n → ℝ), ∀ x ∈ closedBall a r, G (f x) = x := by`. Establish `: CompactSpace (closedBall a r)` using `isCompact_iff_compactSpace.mp hK`. Establish `hce : Topology.IsClosedEmbedding ((closedBall a r).domRestrict f)` using `hc.domRestrict.isClosedEmbedding hi.injective`. Take `⟨G, hG⟩` from `ContinuousMap.exists_extension' hce ⟨Subtype.val, continuous_subtype_val⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨G, fun x hx => congrFun hG ⟨x, hx⟩⟩`. Establish `hGa : G (f a) = a` using `hGf a (mem_closedBall_self hr.le)`. Assume the negation of the conclusion as `hno`. Take `⟨ρ3, hρ3, hρG⟩` from `Metric.continuousAt_iff.mp G.continuous.continuousAt (r / 4) (by positivity)`. Take `⟨ρ, hρ, hρlt⟩ : ∃ ρ : ℝ, 0 < ρ ∧ 2 * ρ < ρ3` from `⟨ρ3 / 3, by positivity, by linarith⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGnear : ∀ y, dist y (f a) ≤ 2 * ρ → dist (G y) a < r / 4` using `fun y hy => by`. Establish `h1` using `hρG (show dist y (f a) < ρ3 by linarith)`. Rewrite `h1` using `[hGa]`. Then use the resulting hypothesis. Take `⟨c, hcball, hcK⟩ : ∃ c, dist c (f a) < ρ ∧ c ∉ f '' closedBall a r` from `by by_contra! hall`. Conclude with `hno (mem_interior_iff_mem_nhds.2 (Metric.mem_nhds_iff.2 ⟨ρ, hρ, fun c hc => hall c (mem_ball.1 hc)⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfK : IsCompact (f '' closedBall a r)` using `hK.image_of_continuousOn hc`. Establish `hS1c : IsCompact (f '' closedBall a r ∩ {y | ρ ≤ dist y c})` using `hfK.inter_right (isClosed_le continuous_const (continuous_id.dist continuous_const))`. Establish `hSc : IsCompact ((f '' closedBall a r ∩ {y | ρ ≤ dist y c}) ∪ sphere c ρ)` using `hS1c.union (isCompact_sphere c ρ)`. Establish `hS1pos : ∀ y ∈ f '' closedBall a r ∩ {y | ρ ≤ dist y c}, 0 < dist (G y) a`. Introduce and unpack `_ ⟨⟨x, hx, rfl⟩, hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGf x hx, dist_pos]`. Introduce `hxa`. Substitute `hxa` using the available equality. Rewrite `hy` using `[mem_ofPred_eq, dist_comm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨δ0, hδ0, hδ0le⟩` from `exists_pos_le hS1c (G.continuous.dist continuous_const).continuousOn hS1pos`. Take `⟨δ, hδ, hδδ0, hδr⟩ : ∃ δ : ℝ, 0 < δ ∧ δ ≤ δ0 ∧ δ ≤ r / 4` from `⟨min δ0 (r / 4), lt_min hδ0 (by positivity), min_le_left _ _, min_le_right _ _⟩`. Take `⟨P, hPd, hPS⟩` from `exists_differentiable_near hSc G G.continuous (half_pos hδ)`. Take `⟨v, hv, hPv⟩` from `exists_small_avoid hPd c a hρ (half_pos hδ)`. Establish `hQG : ∀ y ∈ (f '' closedBall a r ∩ {y | ρ ≤ dist y c}) ∪ sphere c ρ, ‖P y - v - G y‖ < δ` using `fun y hy => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hPS y hy`. Combine the equalities or inequalities in the displayed calculation. Establish `hQne : ∀ y ∈ (f '' closedBall a r ∩ {y | ρ ≤ dist y c}) ∪ sphere c ρ, P y - v ≠ a`. Introduce and unpack `y (hy | hy) hQa`. Establish `h1` using `hQG y (Or.inl hy)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hδ0le y hy`. Rewrite `h1` using `[hQa, norm_sub_rev]`. Rewrite `h2` using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hPv y hy (eq_add_of_sub_eq hQa)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : ∀ x ∈ closedBall a r, f x ≠ c` using `fun x hx h => hcK ⟨x, hx, h⟩`. Establish `hΦS : ∀ x ∈ closedBall a r, radialPush c ρ (f x) ∈ (f '' closedBall a r ∩ {y | ρ ≤ dist y c}) ∪ sphere c ρ`. Introduce `x hx`. Distinguish the cases in `hle : ρ ≤ dist (f x) c`. Rewrite using `[radialPush_of_le hρ hle]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl ⟨⟨x, hx, rfl⟩, hle⟩`. Conclude with `Or.inr (radialPush_mem_sphere (not_le.1 hle) (hfc x hx))`. Establish `hΦc : ContinuousOn (fun x => radialPush c ρ (f x)) (closedBall a r)` using `(continuousOn_radialPush c ρ).comp hc (fun x hx => hfc x hx)`. Establish `hPΦ : ContinuousOn (fun x => P (radialPush c ρ (f x))) (closedBall a r)` using `hPd.continuous.comp_continuousOn hΦc`. Establish `hH : ContinuousOn (fun x => x - (P (radialPush c ρ (f x)) - v - a)) (closedBall a r)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(hPΦ.sub (continuousOn_const (c := v))).sub (continuousOn_const (c := a))`. Conclude with `continuousOn_id.sub h1`. Take `⟨x, hxK, hfix⟩` from `brouwer_closedBall hB (a := a) hr (h := fun x => x - (P (radialPush c ρ (f x)) - v - a)) hH (by`. Introduce `x hx`. Establish `hGx : G (f x) = x` using `hGf x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_closedBall, dist_eq_norm]`. Use `show ‖x - (P (radialPush c ρ (f x)) - v - a) - a‖ ≤ r`. Distinguish the cases in `hle : ρ ≤ dist (f x) c`. Rewrite using `[radialPush_of_le hρ hle]`. Establish `h1` using `hQG (f x) (Or.inl ⟨⟨x, hx, rfl⟩, hle⟩)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hGx]`. Combine the equalities or inequalities in the displayed calculation. Establish `hzS` using `radialPush_mem_sphere (not_le.1 hle) (hfc x hx)`. Establish `hxa : dist x a < r / 4`. Rewrite using `[← hGx]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Apply `hGnear` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Generalize the expression as in `radialPush c ρ (f x) = z at hzS ⊢`. Establish `h1` using `hQG z (Or.inr hzS)`. Establish `hza : dist (G z) a < r / 4`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hGnear` to reduce the goal to its premises. Establish `hzc : dist z c = ρ` using `mem_sphere.mp hzS`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hxa`, `hza` using `[dist_eq_norm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `norm_sub_le _ _`. Use `_ ≤ r := by linarith)`. Conclude with `hQne _ (hΦS x hxK) (sub_eq_zero.mp (sub_eq_self.mp hfix))`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mem_interior_image (hB : BrouwerFixedPoint.Statement) {f : (Fin n → ℝ) → Fin n → ℝ}
     {a : Fin n → ℝ} {r : ℝ} (hr : 0 < r) (hc : ContinuousOn f (closedBall a r))
@@ -300,9 +298,9 @@ theorem mem_interior_image (hB : BrouwerFixedPoint.Statement) {f : (Fin n → �
   exact hQne _ (hΦS x hxK) (sub_eq_zero.mp (sub_eq_self.mp hfix))
 
 /- English proof (translation)
-Introduce `n U f hU hc hi`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.mp hU x hx`. Establish `hsub : closedBall x (r / 2) ⊆ U` using `(closedBall_subset_ball (half_lt_self hr)).trans hball`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `mem_interior_image hB (half_pos hr) (hc.mono hsub) (hi.mono hsub)`. Conclude with `Filter.mem_of_superset (mem_interior_iff_mem_nhds.mp h) (Set.image_mono hsub)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem proof (hB : BrouwerFixedPoint.Statement) : InvarianceOfDomain.Statement := by
   intro n U f hU hc hi

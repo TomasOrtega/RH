@@ -4,9 +4,9 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.Unita
 open scoped Classical
 
 /- English proof (translation)
-Establish `hq0 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Establish `hρ : (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) = (q : ℂ) ^ (((n : ℂ) - 1) / 2)`. Rewrite using `[Complex.ofReal_cpow (Nat.cast_nonneg q)]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hρ, ← Complex.cpow_nat_mul, ← Complex.cpow_natCast (q : ℂ) (j.choose 2), ← Complex.cpow_add _ _ hq0, Nat.cast_choose_two]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem cpow_key (q n j : ℕ) (hq : 0 < q) :
     (q : ℂ) ^ (j.choose 2) * (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - (j : ℂ))) / 2) =
@@ -22,17 +22,17 @@ private theorem cpow_key (q n j : ℕ) (hq : 0 < q) :
   ring
 
 /- English proof (translation)
-Introduce `q n hq B hB a c ϑ h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h0` using `h 0 (Nat.zero_le n)`. Simplify `h0` using `[GlobalTheory.LFun.satEig, Multiset.esymm]`. Use `set ρ : ℂ := (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) with hρ set s : Multiset ℂ := B.map (fun b : ℂˣ => (b : ℂ)) with hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hcard : Multiset.card s = n` using `by simp [hs, hB]`. Establish `e1 : (UpperTheory.V.Af.algSat n q B).map (· * c) = s.map (fun x => (ρ * c) • x)`. Establish `e0 : UpperTheory.V.Af.algSat n q B = s.map (fun α => ρ * α)` using `by show Multiset.map _ (B.bind fun b => ({(b : ℂ)} : Multiset ℂ)) = _`. Rewrite using `[Multiset.bind_singleton]`. Rewrite using `[e0, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : Multiset.card (s.map (fun x => (ρ * c) • x)) = n` using `by simp [hcard]`. Rewrite using `[e1, UpperTheory.Gal.crystallineComparison.rootPol, Multiset.prod_X_sub_X_eq_sum_esymm, e2, Finset.mul_sum, UpperTheory.Gal.crystallineComparison.heckePol]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `hjn : j ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Establish `hk : _ = ρ ^ j` using `cpow_key q n j hq`. Rewrite using `[h j hjn, ← Multiset.pow_smul_esymm, smul_eq_mul]`. Establish `e3 : (-1 : ℂ) ^ j * (q : ℂ) ^ (j.choose 2) * (a * GlobalTheory.LFun.satEig q n B j * c ^ j) = a * ((-1) ^ j * ((ρ * c) ^ j * s.esymm j))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : GlobalTheory.LFun.satEig q n B j = (q : ℂ) ^ (((j : ℂ) * ((n : ℂ) - (j : ℂ))) / 2) * s.esymm j` using `rfl`. Rewrite using `[e4, mul_pow]`. Take the linear combination `((-1) ^ j * a * s.esymm j * c ^ j) * hk`. Rewrite using `[e3]`. Simplify using `only [map_mul, map_pow, map_neg, map_one]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.pRootsAlg_of :
     UpperTheory.Gal.CertificateRingHomMap.RootsAlg := by

@@ -4,7 +4,7 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto Simplicial UpperTheory.Gal.KunnethLefschetz UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Substitute `hv hw` using the available equality. Use `heq_of_eq (Subtype.ext (Prod.ext h (Um.unit_unique w ?_)))` and prove the remaining obligations. Rewrite using `[← p.2, ← p'.2, h]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem arrow_heq {A : Type} [CommRing A] {N : ℕ} {v v' w w' : Um N A} (hv : v = v') (hw : w = w')
     (p : v ⟶ w) (p' : v' ⟶ w') (h : p.1.1 = p'.1.1) : HEq p p' := by
@@ -13,7 +13,7 @@ private theorem arrow_heq {A : Type} [CommRing A] {N : ℕ} {v v' w w' : Um N A}
   rw [← p.2, ← p'.2, h]
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun F : Fin (n + 1) ⥤ SingleObj (GL (Fin d) Γ(U, ⊤)) => (show GL (Fin d) Γ(U, ⊤) from F.map (homOfLE hij))) (P.S_comm z)).symm`.
+A detailed English derivation is pending.
 -/
 private theorem arrow_mat {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d) {n : ℕ} {U : Scheme.{0}}
     (z : Sx P.S n U) {i j : Fin (n + 1)} (hij : i ≤ j) :
@@ -24,11 +24,11 @@ private theorem arrow_mat {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData
     (show GL (Fin d) Γ(U, ⊤) from F.map (homOfLE hij))) (P.S_comm z)).symm
 
 /- English proof (translation)
-Introduce `T W r d P n U z z' h`. Establish `hp : ∀ i, pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) z) i = pts P.c (Sx.map (pullback.fst P.bunV (PGL.pr d)) z') i` using `fun i => congrArg Prod.fst (h i)`. Establish `hf : Sx.map (pullback.fst P.bunV (PGL.pr d)) z = Sx.map (pullback.fst P.bunV (PGL.pr d)) z'` using `pts_inj P.c (funext hp)`. Establish `hobj : ∀ i, (show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z).obj i = (show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z').obj i` using `fun i => congrArg Prod.snd (h i)`. Establish `hg : (show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z) = (show Fin (n + 1) ⥤ Um d Γ(U, ⊤) from Sx.map (pullback.snd P.bunV (PGL.pr d)) z')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CategoryTheory.Functor.hext hobj (fun i j a => ?_)` and prove the remaining obligations. Establish `hij : i ≤ j` using `leOfHom a`. Take `rfl : a = homOfLE hij` from `Subsingleton.elim _ _`. Use `arrow_heq (hobj i) (hobj j) _ _ ?_` and prove the remaining obligations. Rewrite using `[arrow_mat P z, arrow_mat P z']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.g_congr (hp i) (hp j) _ _`. Conclude with `(UpperTheory.existsUnique_simplex_pullback_of_map_eq P.bunV (PGL.pr d) n U _ _ (P.S_comm z)).unique ⟨rfl, rfl⟩ ⟨hf.symm, hg.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.projBundleData_simplex_ext_of_vertices :
     ∀ {T W : Scheme.{0}} {r : T ⟶ W} {d : ℕ} (P : PBData r d) {n : ℕ} {U : Scheme.{0}} (z z' : Sx P.S n U),

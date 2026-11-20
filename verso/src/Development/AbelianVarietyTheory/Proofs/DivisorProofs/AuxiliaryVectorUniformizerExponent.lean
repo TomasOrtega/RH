@@ -33,7 +33,7 @@ def box (ϖ : kˣ) (a a' : ℤ) : Set (Vars G) :=
 variable {G}
 
 /- English proof (translation)
-Establish `h1 : ∀ X, ((g X)⁻¹).val = diagonal fun i => (((d X i)⁻¹ : kˣ) : k)` using `fun X => by rw [hg]; rfl`. Simplify using `only [Grid.moveArgs, Assignment.read, invT_inv_val, invT_val]`. Rewrite using `[h1, hg, diagGL_val, diagonal_transpose, diagonal_transpose, mul_diagonal, diagonal_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem moveArgs_one_diag (g : G.VertexGroup) (d : ∀ X : ℕ × ℕ, Fin (G.rank X) → kˣ)
     (hg : ∀ X, g X = diagGL (d X)) (z : G.Args) (b : Edge) (r : Fin (G.rank b.tgt)) (s : Fin (G.rank b.src)) :
@@ -45,7 +45,7 @@ theorem moveArgs_one_diag (g : G.VertexGroup) (d : ∀ X : ℕ × ℕ, Fin (G.ra
 omit [ValuativeRel k] in
 
 /- English proof (translation)
-Break down `y with x | p` into its components or cases. Simplify using `[vtxExp, auxiliaryVectorUniformizerExponent, frame, finSumFinEquiv_apply_left, x.2]`. Simplify using `[vtxExp, auxiliaryVectorUniformizerExponent, frame, finSumFinEquiv_apply_right]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vtxExp_frame (a a' : ℤ) {t c b : ℕ} (h : t + c = b) (y : Fin t ⊕ Fin c) :
     vtxExp a a' c t (frame h y) = auxiliaryVectorUniformizerExponent a a' c y := by

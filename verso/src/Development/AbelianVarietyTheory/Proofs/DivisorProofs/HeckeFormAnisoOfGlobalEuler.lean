@@ -39,9 +39,9 @@ namespace GlobalTheory.BottomRallis
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `ψ A B ha hab hB χB omh homh a hmaj θ sS sB hθ hS hBc hKc ν 𝓕 hcov mH hmH φ hF`. Establish `hK` using `GlobalTheory.T.fock_vector_finite_under_compact_commuting_cartan D ψ θ (dblSp A) B 1 χB omh sS sB homh hθ hS hBc (Khat A a) (isCompact_Khat A a) hKc φ hF`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp A).gram (Khat A a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D A (frameLat A) a (GlobalTheory.WeilAtPlace.isSelfDualC_frameLat A) hmaj`. Establish `hB' : IsAniso B` using `wittIndex_eq_zero_iff_isAniso.1 hB`. Take `⟨hint, hv⟩` from `hSW D ψ A B ha (ha.trans hab.le) hB' χB omh homh a hmaj hI ν 𝓕 hcov mH hmH φ hF.1 hK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hv` using `[if_pos hab, one_smul]`. Conclude with `⟨hint, hv⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem siegelWeilFockAniso_of_siegelWeilAnisotropic (hSW : GlobalTheory.Published.SiegelWeilAnisotropicUnitary) (D : D7) :
     SiegelWeilFockAniso D := by
@@ -61,21 +61,21 @@ namespace GlobalTheory.BottomRallis
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hw LA LB Sf Φ₁ Φ₂ hF₁ hF₂ hU m mH hm hmH u₁ hu₁ u₂ hu₂ par hpar hsph hs`. Take `⟨s₁, hs₁, hint⟩` from `hs`. Take `⟨hUp₁, hUp₂, hZint, z, hz, hpet⟩` from `hG A LA hU.sdA ψ θ B χA χB sA sB t cA a om ν 𝓕 hP hw m mH hm hmH Φ₁ Φ₂ hF₁ hF₂ u₁ hu₁ u₂ hu₂`. Take `⟨hA1, ht1, hB, -⟩` from `hP.setting`. Establish `hs0 : sZero A B = (t : ℂ) / 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [sZero, hB]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hs0re : (sZero A B).re = (t : ℝ) / 2` using `by rw [hs0]; simp`. Take `⟨hcont, hbd, -⟩` from `GlobalTheory.T.doubledLatticeHeightFun_properties D A LA a hU.sdA hP.maj`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hflat : ∀ s, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s = GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral.flatIntegrand (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) (fun g => (hgtL A LA a g : ℝ)) (sZero A B) s`. Introduce `s`. Use function extensionality and compare the values at `g`. Simplify using `only [integrand, GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral.flatIntegrand, npow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hmeas : Measurable (fun g => (hgtL A LA a g : ℝ))` using `(NNReal.continuous_coe.comp hcont).measurable`. Establish `hfz` using `GlobalTheory.T.flatFamilyZeta_convergence_holomorphy (GA D A) (m.restrict (openOff A LA Sf)) (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) (fun g => (hgtL A LA a g : ℝ)) (sZero A B) (s₁ : ℂ) hmeas (fun g => by exact_mod_cast (hbd g).1) (fun g => by exact_mod_cast (hbd g).2) ( …`. Establish `hint0 : IntegrableOn (fun g => wcoef om ν 𝓕 Φ₁ Φ₂ g * rcoef m u₁ u₂ g) (openOff A LA Sf) m`. Use `hfz.1.1 (sZero A B) (by simp only [Set.mem_setOf_eq, Complex.ofReal_re, hs0re]; linarith)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral.flatIntegrand_self]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨hUp₁, hUp₂, hint0, fun l hl => ?_⟩` and prove the remaining obligations. Establish `hd` using `GlobalTheory.T.partialNormalizingFactorProduct_analytic_ne_zero D (Sf : Set (FinPl D)) A.rank B.rank`. Establish `hER : EqRight (fun s => ∫ g, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m) (fun s => LFun.LSD D Sf par χB (s + 1 / 2) / LFun.dSfun D.host.E (Sf : Set (FinPl D)) A.rank B.rank s * ∫ g in openOff A LA Sf, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m)`. Use `⟨(A.rank : ℝ) + 1, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : (A.rank : ℝ) + 1 < s.re` using `hs`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hE ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP LA LB Sf Φ₁ Φ₂ hF₁.1 hF₂.1 hU m hm u₁ hu₁ u₂ hu₂ par hpar hsph s hs' (hZint s ?_)` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ A.rank` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY : DifferentiableOn ℂ (fun s => ∫ g in openOff A LA Sf, integrand om m ν 𝓕 LA a Φ₁ Φ₂ u₁ u₂ s g ∂m) (rightOf s₁)`. Establish `h2` using `hfz.2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Complex.ofReal_re] at h2`. Use `h2.congr fun s _ => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral.flatZeta, hflat]`. Establish `hL : HolValueAt (fun s => LFun.LSD D Sf par χB (s + 1 / 2)) (sZero A B) l` using `by rw [hs0]; exact hl`. Establish `hmain` using `GlobalTheory.T.holomorphicContinuationValue_eq_div_mul _ _ _ _ (sZero A B) z l s₁ (by rw [hs0re]; positivity) (by rw [hs0re]; exact hs₁) hd.1 (fun s hs => (hd.2 s hs).1) hY hER hz hL`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpet, hmain, ← hs0]`. Simplify using `only [integrand_sZero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heckeFormAniso_of_global_euler (D : D7) (hG : GlobalFormAniso D) (hE : EulerRight D) : HeckeFormAniso D := by
   intro ψ θ A B χA χB sA sB t cA a om ν 𝓕 hP hw LA LB Sf Φ₁ Φ₂ hF₁ hF₂ hU m mH hm hmH u₁ hu₁ u₂ hu₂ par hpar
@@ -125,7 +125,7 @@ theorem heckeFormAniso_of_global_euler (D : D7) (hG : GlobalFormAniso D) (hE : E
   ring
 
 /- English proof (translation)
-Simplify using `[rcoef, petersson, pet, rTr, GlobalTheory.AutomorphicL2Unitary.descend, volQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rcoef_one {A : HSp D} (m : Measure (GA D A)) (g : GA D A) :
     rcoef m (fun _ : GA D A => (1 : ℂ)) (fun _ => 1) g = (volQ A m : ℂ) := by
@@ -138,13 +138,13 @@ namespace GlobalTheory.BottomRallis
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hU19` using `GlobalTheory.T.unramifiedDoublingIntegral_inert_place`. Establish `hPB` using `paramBoundOn_all_of_split_inert D (GlobalTheory.T.sphericalParameterBound_split_place D) (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D)`. Establish `hLZ` using `localZetaOn_all_of_split_inert D (GlobalTheory.T.unramifiedDoublingIntegral_splitPlace_adelic hP.unramifiedDoublingGL D) (GlobalTheory.T.unramified_doubling_integral_inert_adelic hU19 D (GlobalTheory.T.sphericalParameterBound_nonsplit_places hU19 D))`. Establish `hE : EulerRight D` using `GlobalTheory.T.doubling_eulerProduct_farRight hP.cuspRapidDecay D (GlobalTheory.T.doublingSphericalFactorization_of_weilDualPair hP.weilRepresentationUnitaryPair D) hLZ hPB`. Establish `hG : GlobalFormAniso D` using `GlobalTheory.T.siegelWeil_anisotropic_global_form_of_doubling hP.weilRepresentationUnitaryPair hP.cuspRapidDecay hP.doublingMethod D (siegelWeilFockAniso_of_siegelWeilAnisotropic hP.siegelWeilAnisotropicUnitary D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `heckeFormAniso_of_global_euler D hG hE`. Establish `h1 : (fun _ : GA D A => (1 : ℂ)) ∈ A0 θ A cA` using `GlobalTheory.T.one_mem_A0_of_wittIndex_eq_zero hPair.setting hA`. Establish `hpar` using `GlobalTheory.T.constantFunction_has_trivialRep_satakeParameters A LA Sf hU.sdA hU.two`. Establish `hsph : SphFun A LA Sf (fun _ : GA D A => (1 : ℂ))` using `fun _ _ _ _ _ => rfl`. Take `⟨-, -, -, hfin⟩` from `hH ψ θ A B χA χB sA sB t cA a om ν 𝓕 hPair hB LA LB Sf Φ Φ hF hF hU m mH inferInstance inferInstance _ h1 _ h1 (trivPar A.rank) hpar hsph hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hL : HolValueAt (fun s => LFun.LSD D Sf (trivPar A.rank) χB (s + 1 / 2)) ((t : ℂ) / 2) (∏ i ∈ Finset.range A.rank, l i)`. Use `HolValueAt.congr (holValueAt_prod (Finset.range A.rank) fun i hi => ?_) (GlobalTheory.T.partial_L_trivial_rep_twist_eq_prod_hecke_L χB Sf A.rank hU.unr)` and prove the remaining obligations. Establish `h2` using `hl i (Finset.mem_range.1 hi)`. Rewrite `h2` using `[show (t : ℂ) / 2 + (A.rank : ℂ) / 2 - i = (t : ℂ) / 2 + ((A.rank : ℂ) / 2 - i) by ring]`. Establish `h3` using `h2.comp_add`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h3` using `only [add_sub_assoc]`. Rewrite using `[hfin _ hL]`. Simplify using `only [rcoef_one]`. Rewrite using `[integral_mul_const]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_eq (hP : GlobalTheory.FunPr.Hypotheses₂) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {A B : HSp D}
     {χA χB : (AE D)ˣ →* Circle} {sA : RealMat A} {sB : RealMat B} {t : ℕ} {cA : CptF A} {a : GL (Fin A.rank) (AE D)}
@@ -191,11 +191,11 @@ end GlobalTheory.BottomRallis
 namespace GlobalTheory.BottomRallis
 
 /- English proof (translation)
-Use `Finset.prod_nbij' (fun i => (h : ℤ) - i) (fun s => ((h : ℤ) - s).toNat) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Simplify using `only [Finset.coe_range, Set.mem_Iio, Finset.mem_coe, Finset.mem_range] at hi`. Simplify using `only [Finset.coe_Icc, Set.mem_Icc, Finset.mem_coe, Finset.mem_Icc]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `s hs`. Simplify using `only [Finset.coe_Icc, Set.mem_Icc, Finset.mem_coe, Finset.mem_Icc] at hs`. Simplify using `only [Finset.coe_range, Set.mem_Iio, Finset.mem_coe, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `s hs`. Simplify using `only [Finset.coe_Icc, Set.mem_Icc, Finset.mem_coe, Finset.mem_Icc] at hs`. Use linear arithmetic over natural numbers and integers. Introduce `i _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/

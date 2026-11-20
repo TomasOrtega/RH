@@ -14,9 +14,9 @@ open PositivityTheory.RgTw (Mat G)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Introduce `hL n _ _ μ _ V _ _ f hf hc`. Take `⟨R, hR⟩` from `hc`. Establish `hmem : ∀ y : G n, y.val ∈ GLs n` using `fun y => ((Matrix.isUnit_iff_isUnit_det _).1 y.isUnit).ne_zero`. Establish `hcont : Continuous fun y : G n => f y.val` using `hf.continuousOn.comp_continuous Units.continuous_val hmem`. Establish `hsupp : HasCompactSupport fun y : G n => f y.val` using `HasCompactSupport.intro ((hL n).2.2.2.2.1 R) fun y hy => hR _ (hmem y) (not_le.1 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (Mat n)` using `inferInstanceAs (SecondCountableTopology (Fin n → Fin n → ℂ))`. Establish `: SecondCountableTopology (Mat n)ᵐᵒᵖ` using `MulOpposite.opHomeomorph.symm.secondCountableTopology`. Establish `: SecondCountableTopology (G n)` using `Units.isEmbedding_embedProduct.secondCountableTopology`. Conclude with `hcont.memLp_of_hasCompactSupport hsupp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem memLp_two_of_cpt : LgFacts → ∀ {n : ℕ} [MeasurableSpace (G n)] [BorelSpace (G n)] (μ : Measure (G n)) [μ.IsHaarMeasure] (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (f : Mat n → V), ContDiffOn ℝ ∞ f (GLs n) → Cpt f → MemLp (fun y : G n => f y.val) 2 μ := by
   intro hL n _ _ μ _ V _ _ f hf hc

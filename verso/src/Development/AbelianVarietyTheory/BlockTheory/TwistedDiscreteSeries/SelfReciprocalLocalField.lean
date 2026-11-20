@@ -22,9 +22,9 @@ def SelfRecip (r : ℕ) : Type := {P : E[X] // IsSelfRecip E r P}
 variable {E}
 
 /- English proof (translation)
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Simplify using `at ha`. Establish `hc : (IsCMField.complexConj E a)⁻¹ = a` using `(eq_inv_of_mul_eq_one_left ha).symm`. Use `⟨monic_X_sub_C a, irreducible_X_sub_C a, natDegree_X_sub_C a, by simpa using ha0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : reflect 1 (X : E[X]) = 1`. Simplify using `using reflect_monomial (R := E) 1 1`. Establish `h2 : C a * C (IsCMField.complexConj E a) = (1 : E[X])` using `by rw [← C_mul, ha, C_1]`. Simplify using `only [sharp, coeff_sub, coeff_X_zero, coeff_C_zero, zero_sub, map_neg, inv_neg, hc, Polynomial.map_sub, map_X, map_C, reflect_sub, h1, reflect_C, RingHom.coe_coe, pow_one]`. Take the linear combination `(-X) * h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isSelfRecip_X_sub_C {a : E} (ha : a * IsCMField.complexConj E a = 1) :
     IsSelfRecip E 1 (X - C a) := by
@@ -65,7 +65,7 @@ instance : FiniteDimensional E (Fld P) :=
   (AdjoinRoot.powerBasis (f := P.1) P.2.1.ne_zero).finite
 
 /- English proof (translation)
-The claim follows from `(AdjoinRoot.powerBasis (f := P.1) P.2.1.ne_zero).finrank.trans P.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem finrank_fld : Module.finrank E (Fld P) = r :=
   (AdjoinRoot.powerBasis (f := P.1) P.2.1.ne_zero).finrank.trans P.2.2.2.1
@@ -73,7 +73,7 @@ theorem finrank_fld : Module.finrank E (Fld P) = r :=
 def alpha : Fld P := AdjoinRoot.root P.1
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `AdjoinRoot.eval₂_root P.1`. Rewrite `h1` using `[h, eval₂_at_zero]`. Conclude with `P.2.2.2.2.1 ((map_eq_zero _).1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_ne_zero : AdjoinRoot.root P.1 ≠ 0 := by
   intro h
@@ -82,11 +82,11 @@ theorem root_ne_zero : AdjoinRoot.root P.1 ≠ 0 := by
   exact P.2.2.2.2.1 ((map_eq_zero _).1 h1)
 
 /- English proof (translation)
-Take `⟨-, -, hdeg, h0, hs⟩` from `P.2`. Establish `h1` using `AdjoinRoot.eval₂_root P.1`. Use `letI : Invertible (AdjoinRoot.root P.1)⁻¹ := invertibleOfNonzero (inv_ne_zero (root_ne_zero P))`. Establish `h2` using `eval₂_reflect_mul_pow (AdjoinRoot.of P.1) (AdjoinRoot.root P.1)⁻¹ r (P.1.map (IsCMField.complexConj E : E →+* E)) (natDegree_map_le.trans hdeg.le)`. Rewrite `h2` using `[invOf_eq_inv, inv_inv, eval₂_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : eval₂ (AdjoinRoot.of P.1) (AdjoinRoot.root P.1) (sharp E r P.1) = 0`. Rewrite using `[← hs]`. Conclude with `h1`. Rewrite `h3` using `[sharp, eval₂_mul, eval₂_C, mul_eq_zero]`. Break down `h3 with h3 | h3` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd h3 ((_root_.map_ne_zero _).2 (inv_ne_zero ((_root_.map_ne_zero _).2 h0)))`. Rewrite using `[← h2, h3, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eval₂_conj_inv_root :
     P.1.eval₂ ((AdjoinRoot.of P.1).comp (IsCMField.complexConj E : E →+* E))
@@ -113,22 +113,22 @@ def invol : Fld P →ₐ[maximalRealSubfield E] Fld P where
     rw [AdjoinRoot.lift_of, RingHom.comp_apply, RingHom.coe_coe, AlgEquiv.commutes]
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_of (eval₂_conj_inv_root P)`.
+A detailed English derivation is pending.
 -/
 theorem invol_algebraMap (e : E) :
     invol P (algebraMap E (Fld P) e) = algebraMap E (Fld P) (IsCMField.complexConj E e) :=
   AdjoinRoot.lift_of (eval₂_conj_inv_root P)
 
 /- English proof (translation)
-The claim follows from `AdjoinRoot.lift_root (eval₂_conj_inv_root P)`.
+A detailed English derivation is pending.
 -/
 theorem invol_alpha : invol P (alpha P) = (alpha P)⁻¹ :=
   AdjoinRoot.lift_root (eval₂_conj_inv_root P)
 
 /- English proof (translation)
-Establish `: ((invol P : Fld P →+* Fld P).comp (invol P : Fld P →+* Fld P)) = RingHom.id _`. Use `AdjoinRoot.ringHom_ext (RingHom.ext fun e => ?_) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `invol P (invol P (algebraMap E (Fld P) e)) = algebraMap E (Fld P) e`. Simplify using `[invol_algebraMap]`. Express the relevant statement in the definitionally equal form `invol P (invol P (alpha P)) = alpha P`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[invol_alpha]`. Conclude with `DFunLike.congr_fun this y`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem invol_invol (y : Fld P) : invol P (invol P y) = y := by
   have : ((invol P : Fld P →+* Fld P).comp (invol P : Fld P →+* Fld P)) = RingHom.id _ := by
@@ -180,9 +180,9 @@ def Isometric (G : Matrix (Fin r) (Fin r) E) (x : k ⊗[maximalRealSubfield E] p
     ∀ y y', gramForm k G (φ y) (φ y') = traceForm P k x y y'
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hn`. Establish `hc' : (c : k ⊗[maximalRealSubfield E] Fld P) * involBase P k c = inclPlus P k n` using `congrArg Units.val hc`. Take `⟨φ, h1, h2⟩` from `h`. Use `⟨(AddAut.mulLeft c).trans φ, fun e y => ?_, fun y y' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (c * (inclBase P k e * y)) = e • φ (c * y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← h1, mul_left_comm]`. Express the relevant statement in the definitionally equal form `gramForm k G (φ (c * y)) (φ (c * y')) = _`. Rewrite using `[h2, traceForm, traceForm, Units.val_mul, map_mul (inclPlus P k), map_mul (involBase P k), ← hc']`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Isometric.of_norm {G : Matrix (Fin r) (Fin r) E}
     {x n : (k ⊗[maximalRealSubfield E] plus P)ˣ} (hn : n ∈ norms P k)
@@ -211,11 +211,11 @@ def toLocalFld : maximalRealSubfield E ⊗[maximalRealSubfield E] Fld P →ₐ[m
   Algebra.TensorProduct.map (Algebra.ofId _ k) (AlgHom.id _ _)
 
 /- English proof (translation)
-Introduce and unpack `n ⟨c, hc⟩`. Establish `hc' : (c : maximalRealSubfield E ⊗[maximalRealSubfield E] Fld P) * involBase P _ c = inclPlus P _ n` using `congrArg Units.val hc`. Establish `e1 : ∀ y, toLocalFld P k (involBase P _ y) = involBase P k (toLocalFld P k y)` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [toLocalFld, involBase]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `e2 : ∀ y, toLocalFld P k (inclPlus P _ y) = inclPlus P k (toLocalPlus P k y)` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a b => simp [toLocalFld, toLocalPlus, inclPlus]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Use `⟨Units.map (toLocalFld P k).toMonoidHom c, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `toLocalFld P k c * involBase P k (toLocalFld P k c) = inclPlus P k (toLocalPlus P k n)`. Rewrite using `[← e1, ← e2, ← map_mul, hc']`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem norms_le : norms P (maximalRealSubfield E) ≤
     (norms P k).comap (Units.map (toLocalPlus P k).toMonoidHom) := by

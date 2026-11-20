@@ -26,7 +26,7 @@ set_option maxSynthPendingDepth 1
 namespace GlobalTheory.CompanionTheory.Ar.SegreChart
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.IncIdealDim.proof (GroundTheory.Heights₂.Heights.IncidenceGeneric.proof GroundTheory.Heights₂.Heights.FGNullstellensatz.proof) GroundTheory.Heights₂.Heights.GenericLinearTrdeg.proof GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.incIdealDim : GroundTheory.Heights₂.Heights.IncIdealDim.Statement :=
   GroundTheory.Heights₂.Heights.IncIdealDim.proof
@@ -34,140 +34,140 @@ theorem Chart.incIdealDim : GroundTheory.Heights₂.Heights.IncIdealDim.Statemen
     GroundTheory.Heights₂.Heights.GenericLinearTrdeg.proof GroundTheory.Heights₂.Heights.AffineChartTrdeg.proof
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.IncIdealPrime.proof (GroundTheory.Heights₂.Heights.IncidenceGeneric.proof GroundTheory.Heights₂.Heights.FGNullstellensatz.proof)`.
+A detailed English derivation is pending.
 -/
 theorem Chart.incIdealPrime : GroundTheory.Heights₂.Heights.IncIdealPrime.Statement :=
   GroundTheory.Heights₂.Heights.IncIdealPrime.proof
     (GroundTheory.Heights₂.Heights.IncidenceGeneric.proof GroundTheory.Heights₂.Heights.FGNullstellensatz.proof)
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof Chart.incIdealDim Chart.incIdealPrime`.
+A detailed English derivation is pending.
 -/
 theorem Chart.coneDimOfChowForm : GroundTheory.Heights₂.Heights.ConeDimOfChowForm.Statement :=
   GroundTheory.Heights₂.Heights.ConeDimOfChowForm.proof Chart.incIdealDim Chart.incIdealPrime
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GoodChartDim.proof GroundTheory.Heights₂.Heights.ConeVanishingHomog.proof GroundTheory.Heights₂.Heights.ConeSliceIdeal.proof GroundTheory.Heights₂.Heights.ChartDehomogPrime.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.GoodChartDim : GroundTheory.Heights₂.Heights.GoodChartDim.Statement :=
   @GroundTheory.Heights₂.Heights.GoodChartDim.proof GroundTheory.Heights₂.Heights.ConeVanishingHomog.proof GroundTheory.Heights₂.Heights.ConeSliceIdeal.proof GroundTheory.Heights₂.Heights.ChartDehomogPrime.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.GoodChartModel.proof GroundTheory.Heights₂.Heights.GoodChartZeroSet.proof Chart.GoodChartDim`.
+A detailed English derivation is pending.
 -/
 theorem Chart.GoodChartModel : GroundTheory.Heights₂.Heights.GoodChartModel.Statement :=
   @GroundTheory.Heights₂.Heights.GoodChartModel.proof GroundTheory.Heights₂.Heights.GoodChartZeroSet.proof Chart.GoodChartDim
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsGenericCount.proof Chart.GoodChartModel GroundTheory.Heights₂.Heights.ComponentsGenericCount.proof GroundTheory.Heights₂.Heights.SheetLift.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsGenericCount : GroundTheory.Heights₂.Heights.PtsGenericCount.Statement :=
   @GroundTheory.Heights₂.Heights.PtsGenericCount.proof Chart.GoodChartModel GroundTheory.Heights₂.Heights.ComponentsGenericCount.proof GroundTheory.Heights₂.Heights.SheetLift.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsSheetSimpleNull.proof Chart.PtsGenericCount`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsSheetSimpleNull : GroundTheory.Heights₂.Heights.PtsSheetSimpleNull.Statement :=
   @GroundTheory.Heights₂.Heights.PtsSheetSimpleNull.proof Chart.PtsGenericCount
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsSheetOnlyNull.proof GroundTheory.Heights₂.Heights.CriticalFibreInfinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsSheetOnlyNull : GroundTheory.Heights₂.Heights.PtsSheetOnlyNull.Statement :=
   @GroundTheory.Heights₂.Heights.PtsSheetOnlyNull.proof GroundTheory.Heights₂.Heights.CriticalFibreInfinite.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.proof Chart.PtsSheetSimpleNull Chart.PtsSheetOnlyNull GroundTheory.Heights₂.Heights.PtsPosPartLocal.proof GroundTheory.Heights₂.Heights.PtsPosDensMeasurable.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsPosPartProjIndep : GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.Statement :=
   @GroundTheory.Heights₂.Heights.PtsPosPartProjIndep.proof Chart.PtsSheetSimpleNull Chart.PtsSheetOnlyNull GroundTheory.Heights₂.Heights.PtsPosPartLocal.proof GroundTheory.Heights₂.Heights.PtsPosDensMeasurable.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsSegreChartFibreSum.proof GroundTheory.Heights₂.Heights.SegreChartZeroSet.proof GroundTheory.Heights₂.Heights.SegreChartProjFinite.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsSegreChartFibreSum : GroundTheory.Heights₂.Heights.PtsSegreChartFibreSum.Statement :=
   @GroundTheory.Heights₂.Heights.PtsSegreChartFibreSum.proof GroundTheory.Heights₂.Heights.SegreChartZeroSet.proof GroundTheory.Heights₂.Heights.SegreChartProjFinite.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.DiscriminantSheetCover.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.ComplexSets.DiscriminantCover`.
+A detailed English derivation is pending.
 -/
 theorem Chart.DiscriminantSheetCover : GroundTheory.Heights₂.Heights.DiscriminantSheetCover.Statement :=
   @GroundTheory.Heights₂.Heights.DiscriminantSheetCover.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.ComplexSets.DiscriminantCover
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ConeSliceSheetParam.proof Chart.DiscriminantSheetCover`.
+A detailed English derivation is pending.
 -/
 theorem Chart.ConeSliceSheetParam : GroundTheory.Heights₂.Heights.ConeSliceSheetParam.Statement :=
   @GroundTheory.Heights₂.Heights.ConeSliceSheetParam.proof Chart.DiscriminantSheetCover
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.AreaFormulaInjSet.proof GroundTheory.Heights₂.Heights.AreaFormulaLocal.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.AreaFormulaInjSet : GroundTheory.Heights₂.Heights.AreaFormulaInjSet.Statement :=
   @GroundTheory.Heights₂.Heights.AreaFormulaInjSet.proof GroundTheory.Heights₂.Heights.AreaFormulaLocal.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.AreaFormulaInj.proof Chart.AreaFormulaInjSet`.
+A detailed English derivation is pending.
 -/
 theorem Chart.AreaFormulaInj : GroundTheory.Heights₂.Heights.AreaFormulaInj.Statement :=
   @GroundTheory.Heights₂.Heights.AreaFormulaInj.proof Chart.AreaFormulaInjSet
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ConeMapAreaOne.proof Chart.AreaFormulaInj`.
+A detailed English derivation is pending.
 -/
 theorem Chart.ConeMapAreaOne : GroundTheory.Heights₂.Heights.ConeMapAreaOne.Statement :=
   @GroundTheory.Heights₂.Heights.ConeMapAreaOne.proof Chart.AreaFormulaInj
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ConeMapArea.proof Chart.ConeMapAreaOne`.
+A detailed English derivation is pending.
 -/
 theorem Chart.ConeMapArea : GroundTheory.Heights₂.Heights.ConeMapArea.Statement :=
   @GroundTheory.Heights₂.Heights.ConeMapArea.proof Chart.ConeMapAreaOne
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.proof Chart.ConeSliceSheetParam Chart.ConeMapArea`.
+A detailed English derivation is pending.
 -/
 theorem Chart.ConeSheetGramLintegral : GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.Statement :=
   @GroundTheory.Heights₂.Heights.ConeSheetGramLintegral.proof Chart.ConeSliceSheetParam Chart.ConeMapArea
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SliceMassFinite.proof' Chart.ConeSheetGramLintegral GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.MassFinite Chart.coneDimOfChowForm`.
+A detailed English derivation is pending.
 -/
 theorem Chart.SliceMassFinite : GroundTheory.Heights₂.Heights.SliceMassFinite.Statement :=
   @GroundTheory.Heights₂.Heights.SliceMassFinite.proof' Chart.ConeSheetGramLintegral GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.MassFinite Chart.coneDimOfChowForm
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SegreChartAbsIntegrable.proof Chart.SliceMassFinite GroundTheory.Heights₂.Heights.SegreChartSheetCompare.proof`.
+A detailed English derivation is pending.
 -/
 theorem Chart.SegreChartAbsIntegrable : GroundTheory.Heights₂.Heights.SegreChartAbsIntegrable.Statement :=
   @GroundTheory.Heights₂.Heights.SegreChartAbsIntegrable.proof Chart.SliceMassFinite GroundTheory.Heights₂.Heights.SegreChartSheetCompare.proof
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsSemiPosMassFinite.proof Chart.PtsPosPartProjIndep Chart.PtsSegreChartFibreSum Chart.SegreChartAbsIntegrable`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsSemiPosMassFinite : GroundTheory.Heights₂.Heights.PtsSemiPosMassFinite.Statement :=
   @GroundTheory.Heights₂.Heights.PtsSemiPosMassFinite.proof Chart.PtsPosPartProjIndep Chart.PtsSegreChartFibreSum Chart.SegreChartAbsIntegrable
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsPosDensIntegrable.proof Chart.PtsSemiPosMassFinite`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsPosDensIntegrable : GroundTheory.Heights₂.Heights.PtsPosDensIntegrable.Statement :=
   @GroundTheory.Heights₂.Heights.PtsPosDensIntegrable.proof Chart.PtsSemiPosMassFinite
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsIntegralProjIndep.proof Chart.PtsPosDensIntegrable Chart.PtsPosPartProjIndep`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsIntegralProjIndep : GroundTheory.Heights₂.Heights.PtsIntegralProjIndep.Statement :=
   @GroundTheory.Heights₂.Heights.PtsIntegralProjIndep.proof Chart.PtsPosDensIntegrable Chart.PtsPosPartProjIndep
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.PtsIntegralSegreChartProj.proof GroundTheory.Heights₂.Heights.SegreChartProjFinite.proof GroundTheory.Heights₂.Heights.SegreChartZeroSet.proof Chart.SegreChartAbsIntegrable Chart.PtsSegreChartFibreSum`.
+A detailed English derivation is pending.
 -/
 theorem Chart.PtsIntegralSegreChartProj : GroundTheory.Heights₂.Heights.PtsIntegralSegreChartProj.Statement :=
   @GroundTheory.Heights₂.Heights.PtsIntegralSegreChartProj.proof GroundTheory.Heights₂.Heights.SegreChartProjFinite.proof GroundTheory.Heights₂.Heights.SegreChartZeroSet.proof Chart.SegreChartAbsIntegrable Chart.PtsSegreChartFibreSum
 
 /- English proof (translation)
-The claim follows from `@GroundTheory.Heights₂.Heights.SegreChartIntegral.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.SegreCoordGoodProj Chart.PtsIntegralProjIndep Chart.PtsIntegralSegreChartProj`.
+A detailed English derivation is pending.
 -/
 theorem Chart.SegreChartIntegral : GroundTheory.Heights₂.Heights.SegreChartIntegral.Statement :=
   @GroundTheory.Heights₂.Heights.SegreChartIntegral.proof GroundTheory.Heights₂.Heights.HilbertSamuel.Closed.SegreCoordGoodProj Chart.PtsIntegralProjIndep Chart.PtsIntegralSegreChartProj

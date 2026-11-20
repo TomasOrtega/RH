@@ -9,47 +9,45 @@ namespace Formalism.MainNotions.Proposition5Numerics
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.SourceCleaning Formalism.MainNotions.Pf14 Formalism.MainNotions.PlaneGramData Formalism.MainNotions.TestSideCounting Formalism.MainNotions.TestSideWords
 
 /- English proof (translation)
-Use `⟨9, 4, by norm_num, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `C hC CLa p W Qq O Kf`. Introduce `_ _ _ _ _ _ _ _ _ _`. Introduce `ι σ j w n' m r`. Introduce `_ _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K`. Introduce `_ _`. Introduce `hk F nb B hD _`. Establish `hD'` using `hD`. Unfold `DataII at hD'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨-, hH, hF, -⟩` from `hD'`. Establish `hka : ((m + 1 : ℕ) : ℝ) ≤ a` using `k_le_a (by linarith) hH`. Establish `hH'` using `hH`. Unfold `Hyps at hH'`. Take `⟨hp13, hr2, hOrb, hN, hW, hY, -, hgap, -, -, hcs, hlast⟩` from `hH'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hF'` using `hF`. Unfold `FramesOK at hF'`. Take `⟨hF1, hV, -, -, -⟩` from `hF'`. Establish `hr : 1 ≤ r` using `by omega`. Establish `hN1 : 1 ≤ orbitWindowCount r de h x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `orbitWindowCount`. Use linear arithmetic over natural numbers and integers. Establish `hm : 2 ≤ m` using `by omega`. Establish `hT : 1 ≤ TT.card`. Assume the negation of the conclusion as `hc`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : TT.card = 0` using `by omega`. Rewrite `hN` using `[h0, mul_zero]`. Establish `: 1 ≤ orbitWindowCount r de h x ^ 2` using `Nat.one_le_pow _ _ hN1`. Use linear arithmetic over natural numbers and integers. Establish `hOrb'` using `hOrb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Unfold `tableLineDegreeFive.OrbitHyp at hOrb'`. Take `⟨-, -, hLU, -⟩` from `hOrb'`. Establish `hU : 1 ≤ goodU de` using `by omega`. Establish `hG : goodG' r de h x ≠ 0`. Unfold `goodG' goodEll`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Nat.mul_ne_zero (by omega) (Nat.mul_ne_zero (by omega) (by omega))`. Establish `hA1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (Nat.le_add_left 1 m)`. Establish `hr2R : (2 : ℝ) ≤ (r : ℝ)` using `by exact_mod_cast hr2`. Establish `hr1 : (1 : ℝ) ≤ (r : ℝ) ^ 2` using `by nlinarith`. Establish `hT1 : (1 : ℝ) ≤ (TT.card : ℝ)` using `by exact_mod_cast hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp1 : (1 : ℝ) ≤ (p : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ p)`. Establish `hpl : (1 : ℝ) < (p : ℝ)` using `by exact_mod_cast (by omega : 1 < p)`. Establish `hQ1 : (1 : ℝ) ≤ ((p : ℝ) ^ goodG' r de h x) ^ 5` using `one_le_pow₀ (one_le_pow₀ hp1)`. Establish `hpQ : (p : ℝ) ≤ ((p : ℝ) ^ goodG' r de h x) ^ 5` using `le_trans (le_self_pow₀ hp1 hG) (le_self_pow₀ (one_le_pow₀ hp1) (by norm_num))`. Establish `hc1 : (1 : ℝ) ≤ (cStar : ℝ)` using `by exact_mod_cast (by omega : 1 ≤ cStar)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : (1 : ℝ) ≤ (cStar : ℝ) + ((r : ℝ) * (TT.card : ℝ) * (c0 : ℝ) + 2 * (r : ℝ) * (n' : ℝ) * (cpp : ℝ))`. Establish `: (0 : ℝ) ≤ (r : ℝ) * (TT.card : ℝ) * (c0 : ℝ) + 2 * (r : ℝ) * (n' : ℝ) * (cpp : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hY1 : (1 : ℝ) ≤ Y` using `by linarith`. Establish `hC1 : (1 : ℝ) ≤ C` using `by linarith`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA3 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ hA1`. Establish `hCT : C * (TT.card : ℝ) ≤ a`. Establish `h1 : (1 : ℝ) ≤ ((m + 1 : ℕ) : ℝ) ^ 3 * (r : ℝ) ^ 2 * ((p : ℝ) ^ goodG' r de h x) ^ 5 * ((cStar : ℝ) + ((r : ℝ) * (TT.card : ℝ) * (c0 : ℝ) + 2 * (r : ℝ) * (n' : ℝ) * (cpp : ℝ))) * Y` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hA3 hr1) hQ1) hS) hY1`. Establish `h0 : (0 : ℝ) ≤ C * (TT.card : ℝ)` using `by positivity`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ?_ hlast` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hQa : ((p : ℝ) ^ goodG' r de h x) ^ 5 ≤ a`. Establish `h1 : (1 : ℝ) ≤ C * ((m + 1 : ℕ) : ℝ) ^ 3 * (r : ℝ) ^ 2 * (TT.card : ℝ) * ((cStar : ℝ) + ((r : ℝ) * (TT.card : ℝ) * (c0 : ℝ) + 2 * (r : ℝ) * (n' : ℝ) * (cpp : ℝ))) * Y` using `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hC1 hA3) hr1) hT1) hS) hY1`. Establish `h0 : (0 : ℝ) ≤ ((p : ℝ) ^ goodG' r de h x) ^ 5` using `by positivity`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left h1 h0`. Use `le_trans ?_ hlast` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hpa : (p : ℝ) ≤ a` using `le_trans hpQ hQa`. Establish `h7 : (7 : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : 7 ≤ m + 1)`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : 1 ≤ Real.logb p a`. Rewrite using `[← Real.logb_self_eq_one hpl]`. Conclude with `Real.logb_le_logb_of_le hpl (by linarith) hpa`. Establish `hnb : NB p m r TT.card a`. Use `⟨by linarith, hpa, ?_, ?_, hlog, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 4 * (TT.card : ℝ) ≤ C * (TT.card : ℝ)` using `mul_le_mul_of_nonneg_right hC (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (r : ℝ) ≤ ((m + 1 : ℕ) : ℝ)` using `by exact_mod_cast (by omega : r ≤ m + 1)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `one_le_mul_of_one_le_of_one_le (one_le_mul_of_one_le_of_one_le hT1 (one_le_pow₀ hA1)) hlog`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hW'` using `hW`. Unfold `tableLineDegreeFive.WeightHyp at hW'`. Take `⟨hBW, -, hab⟩` from `hW'`. Establish `hv : ((1 : Fin (m + 1)) : ℕ) = 1`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Establish `hfd : ∀ s ∈ TT, a ≤ (flatDeg lam0 s : ℝ) ∧ (flatDeg lam0 s : ℝ) ≤ 2 * a`. Introduce `s hs`. Take `⟨h0, -, hmid⟩` from `(hBW s).1 hs`. Establish `hl` using `hmid 1 (by omega) (by omega)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl' : |((lam0 s 1 : ℤ) : ℝ)| ≤ (cpp : ℝ)` using `by exact_mod_cast hl`. Take `⟨hl1, hl2⟩` from `abs_le.mp hl'`. Take `⟨haT1, haT2, -, -⟩` from `hab s hs`. Establish `hv0R : (0 : ℝ) ≤ ((aT s : ℤ) : ℝ) - ((lam0 s 1 : ℤ) : ℝ)` using `by linarith`. Establish `hv0 : 0 ≤ aT s - lam0 s 1` using `by exact_mod_cast hv0R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((flatDeg lam0 s : ℕ) : ℝ) = ((aT s : ℤ) : ℝ) - ((lam0 s 1 : ℤ) : ℝ)`. Unfold `flatDeg`. Rewrite using `[h0, ← Int.cast_natCast, Int.toNat_of_nonneg hv0, Int.cast_sub]`. Rewrite using `[e]`. Apply the tactic sequence `constructor <;> linarith`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sizeAt_of (K := K) hk hF hr hnb hka hfd (fun j : ZMod F.J => (F.LLset (segZ j)).card) rfl (fun _ => rfl)`. Introduce `j u hu`. Conclude with `sl_lt_Bo hV hr p (by omega) (flatDeg lam0) a (by linarith) (fun s hs => (hfd s (by rw [hF1] at hs; exact hs)).1) Y (r + K) (by linarith) (by omega) (fun j : ZMod F.J => (F.LLset (segZ j)).card) (fun _ => rfl) j u hu`. Unfold `cPrime`.
-
-Use linear arithmetic over natural numbers and integers. Establish `hV'` using `hV`. Unfold `Frames.Valid at hV'`. Conclude with `hV'.1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sizeStep' : ∃ CDn C₁ : ℝ, 0 < CDn ∧ 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → ∀ CLa : ℝ,
   ∀ (p : ℕ) (W Qq O Kf : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Qq] [Algebra W Qq]

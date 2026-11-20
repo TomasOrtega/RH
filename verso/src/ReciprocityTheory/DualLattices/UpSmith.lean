@@ -27,36 +27,36 @@ def consEquiv (a : R) {b : ℕ} (c : Fin b → R) :
     refine Fin.cases ?_ (fun k => ?_) j <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← Fin.insertNth_self_removeNth i0 x, ← Fin.insertNth_self_removeNth i0 y, h0, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_removeNth {b : ℕ} (i0 : Fin (b + 1)) {x y : Fin (b + 1) → R} (h0 : x i0 = y i0)
     (h : Fin.removeNth i0 x = Fin.removeNth i0 y) : x = y := by
   rw [← Fin.insertNth_self_removeNth i0 x, ← Fin.insertNth_self_removeNth i0 y, h0, h]
 
 /- English proof (translation)
-Use `set K'' := Submodule.span R (Set.range fun j => Fin.removeNth i0 (g j - s j • a • u)) with hK''`. Set `P : (Fin (b + 1) → R) →ₗ[R] (Fin (b + 1) → R)` to `LinearMap.id - (LinearMap.proj i0).smulRight u`. Set `rem : (Fin (b + 1) → R) →ₗ[R] (Fin b → R)` to `LinearMap.funLeft R R i0.succAbove`. Establish `hP : ∀ x, P x = x - x i0 • u` using `fun x => rfl`. Establish `hrem : ∀ x, rem x = Fin.removeNth i0 x` using `fun x => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Φ : (Fin (b + 1) → R) →ₗ[R] (R ⧸ Ideal.span {a}) × ((Fin b → R) ⧸ K'')` to `((Ideal.span {a}).mkQ ∘ₗ LinearMap.proj i0).prod (K''.mkQ ∘ₗ rem ∘ₗ P)`. Establish `hΦ : ∀ x, Φ x = (Submodule.Quotient.mk (x i0), Submodule.Quotient.mk (Fin.removeNth i0 (x - x i0 • u)))` using `fun x => rfl`. Establish `hsurj : Function.Surjective Φ`. Introduce and unpack `⟨q1, q2⟩`. Take `⟨r, rfl⟩` from `Submodule.Quotient.mk_surjective _ q1`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q2`. Use `⟨r • u + (Fin.insertNth i0 (0 : R) y : Fin (b + 1) → R), ?_⟩` and prove the remaining obligations. Establish `hx0 : (r • u + (Fin.insertNth i0 (0 : R) y : Fin (b + 1) → R)) i0 = r`. Simplify using `[hu]`. Rewrite using `[hΦ, hx0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use extensionality with `k`. Simplify using `[Fin.removeNth, Fin.insertNth_apply_succAbove]`. Establish `hker : LinearMap.ker Φ = Submodule.span R (Set.range g)`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, hΦ, Prod.mk_eq_zero, Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 h1`. Take `⟨cc, hcc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 h2`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : x = t • (a • u) + ∑ j, cc j • (g j - s j • a • u)`. Establish `hsum : x - x i0 • u = ∑ j, cc j • (g j - s j • a • u)`. Apply `eq_of_removeNth i0` to reduce the goal to its premises. Establish `hz : ∀ j, (cc j • (g j - s j • a • u)) i0 = 0`. Introduce `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Pi.sub_apply, smul_eq_mul, hs, hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_apply, Finset.sum_eq_zero (fun j _ => hz j)]`. Simplify using `[hu]`. Rewrite using `[← hcc]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `k`. Simplify using `[Fin.removeNth, Finset.sum_apply]`. Rewrite using `[← hsum, ← mul_smul, ht]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ (Submodule.smul_mem _ _ hau) (Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.sub_mem _ (Submodule.subset_span ⟨j, rfl⟩) (Submodule.smul_mem _ _ hau)))` and prove the remaining obligations. Introduce `hx`. Take `⟨r, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).1 hx`. Establish `hx0 : (∑ j, r j • g j) i0 = (∑ j, r j * s j) * a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hs, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `⟨Ideal.mem_span_singleton'.2 ⟨_, hx0.symm⟩, ?_⟩` and prove the remaining obligations. Establish `e : (∑ j, r j • g j) - (∑ j, r j • g j) i0 • u = ∑ j, r j • (g j - s j • a • u)`. Rewrite using `[hx0]`. Simplify using `only [smul_sub, Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_mul, Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [smul_smul, smul_smul, mul_assoc]`. Rewrite using `[e]`. Establish `hlin : Fin.removeNth i0 (∑ j, r j • (g j - s j • a • u)) = ∑ j, r j • Fin.removeNth i0 (g j - s j • a • u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k`. Simplify using `[Fin.removeNth, Finset.sum_apply]`. Rewrite using `[hlin]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans (Φ.quotKerEquivOfSurjective hsurj)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pivot_equiv {b : ℕ} {ι : Type} [Fintype ι] (g : ι → Fin (b + 1) → R) (i0 : Fin (b + 1))
     (a : R) (u : Fin (b + 1) → R) (s : ι → R) (hu : u i0 = 1)
@@ -143,17 +143,13 @@ end general
 variable {C : Type} [Field C] {v : Valuation C NNReal} {R : Type} [CommRing R] [Algebra R C]
 
 /- English proof (translation)
-Establish `: IsDomain R` using `hv.hom_inj.isDomain`. Distinguish the cases in `hall : ∀ j, g j = 0`. Use `⟨0, 0, Pi.single 0 1, 0, by simp, by simp, fun j => by simp [hall j], fun _ => hall, fun h => absurd rfl h⟩` and prove the remaining obligations. Use `push Not at hall`. Take `⟨j1, hj1⟩` from `hall`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i1, hi1⟩ : ∃ i, g j1 i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hj1 (funext h)`. Take `⟨⟨j0, i0⟩, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset (ι × Fin (b + 1))) (fun p => v (algebraMap R C (g p.1 p.2))) ⟨(j1, i1), Finset.mem_univ _⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a := g j0 i0 with ha`. Establish `hdvd : ∀ j i, a ∣ g j i` using `fun j i => hv.dvd_of_le (hmax (j, i) (Finset.mem_univ _))`. Establish `ha0 : a ≠ 0`. Introduce `h0`. Use `hmax (j1, i1) (Finset.mem_univ _)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, map_zero, map_zero, le_zero_iff, Valuation.zero_iff]`. Conclude with `hi1 (hv.hom_inj (by rw [this, map_zero]))`. Use `choose u hu using hdvd j0`. Use `choose s hs using fun j => hdvd j i0`. Establish `hu0 : u i0 = 1`.
-
-Establish `h1 : a * u i0 = a * 1` using `by rw [← hu i0, mul_one]`. Conclude with `mul_left_cancel₀ ha0 h1`. Establish `hau : a • u = g j0` using `by ext i; simp [hu i]`. Use `⟨i0, a, u, s, hu0, hau ▸ Submodule.subset_span ⟨j0, rfl⟩, hs, fun h => absurd h ha0, fun _ => ⟨j0, hau.symm, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : a * s j0 = a * 1` using `by rw [← hs j0, mul_one]`.
-
-Conclude with `mul_left_cancel₀ ha0 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_pivot (hv : v.Integers R) {b : ℕ} {ι : Type} [Fintype ι]
     (g : ι → Fin (b + 1) → R) :
@@ -191,7 +187,7 @@ theorem exists_pivot (hv : v.Integers R) {b : ℕ} {ι : Type} [Fintype ι]
     exact mul_left_cancel₀ ha0 h1
 
 /- English proof (translation)
-The claim follows from `| 0, _, _, g => ⟨Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩⟩ | b + 1, _, _, g => by obtain ⟨i0, a, u, s, hu, hau, hs, -, -⟩ := exists_pivot hv g obtain ⟨e1⟩ := pivot_equiv g i0 a u s hu hau hs obtain ⟨c', ⟨e2⟩⟩ := smith_gen hv b (fun j => Fin.removeNth i0 (g j - s j • a • u)) ex …`.
+A detailed English derivation is pending.
 -/
 theorem smith_gen (hv : v.Integers R) : ∀ (b : ℕ) {ι : Type} [Fintype ι] (g : ι → Fin b → R),
     ∃ c : Fin b → R, Nonempty (((Fin b → R) ⧸ Submodule.span R (Set.range g)) ≃ₗ[R]
@@ -204,7 +200,7 @@ theorem smith_gen (hv : v.Integers R) : ∀ (b : ℕ) {ι : Type} [Fintype ι] (
     exact ⟨Fin.cons a c', ⟨(e1.trans ((LinearEquiv.refl R _).prodCongr e2)).trans (consEquiv a c')⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨b, _, (smith_gen hv b g).choose_spec, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hasLen_coker_gen (hv : v.Integers R) {b : ℕ} {ι : Type} [Fintype ι] (g : ι → Fin b → R) :
     HasLen v R ((Fin b → R) ⧸ Submodule.span R (Set.range g))
@@ -212,13 +208,13 @@ theorem hasLen_coker_gen (hv : v.Integers R) {b : ℕ} {ι : Type} [Fintype ι] 
   ⟨b, _, (smith_gen hv b g).choose_spec, rfl⟩
 
 /- English proof (translation)
-Use `set V : Matrix (Fin (b + 1)) (Fin (b + 1)) R := Matrix.of fun k l => if l = j0 then (if k = j0 then 1 else 0) else ((if k = l then 1 else 0) - (if k = j0 then s l else 0)) with hV`. Establish `hXV : (Matrix.of fun i j => if j = j0 then X i j0 else X i j - s j * X i j0) = X * V`. Use extensionality with `i l`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, hV]`. Distinguish the cases in `hl : l = j0`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hl]`. Simplify using `only [hl, if_false, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `hV1 : V.det = 1`. Rewrite using `[Matrix.det_succ_column V j0, Finset.sum_eq_single j0]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : V.submatrix j0.succAbove j0.succAbove = 1`. Use extensionality with `k l`. Simplify using `only [Matrix.submatrix_apply, hV, Matrix.of_apply, Fin.succAbove_ne, if_false, sub_zero, Matrix.one_apply, (Fin.succAbove_right_injective).eq_iff]`. Rewrite using `[hsub, Matrix.det_one]`. Simplify using `[hV, ← two_mul, pow_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Simplify using `[hV, hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[hXV, Matrix.det_mul, hV1, mul_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_colop {b : ℕ} (X : Matrix (Fin (b + 1)) (Fin (b + 1)) R) (j0 : Fin (b + 1))
     (s : Fin (b + 1) → R) :
@@ -248,7 +244,7 @@ theorem det_colop {b : ℕ} (X : Matrix (Fin (b + 1)) (Fin (b + 1)) R) (j0 : Fin
   rw [hXV, Matrix.det_mul, hV1, mul_one]
 
 /- English proof (translation)
-The claim follows from `| 0, X => ⟨Fin.elim0, ⟨LinearEquiv.ofSubsingleton _ _⟩, by simp⟩ | b + 1, X => by classical set g : Fin (b + 1) → Fin (b + 1) → R := fun j i => X i j with hg have hrange : LinearMap.range X.mulVecLin = Submodule.span R (Set.range g) := by rw [Matrix.range_mulVecLin]; rfl obtain ⟨ …`.
+A detailed English derivation is pending.
 -/
 theorem smith_sq (hv : v.Integers R) : ∀ (b : ℕ) (X : Matrix (Fin b) (Fin b) R),
     ∃ c : Fin b → R, Nonempty (((Fin b → R) ⧸ LinearMap.range X.mulVecLin) ≃ₗ[R]
@@ -328,7 +324,7 @@ theorem smith_sq (hv : v.Integers R) : ∀ (b : ℕ) (X : Matrix (Fin b) (Fin b)
       · intro h'; exact absurd (Finset.mem_univ _) h'
 
 /- English proof (translation)
-Take `⟨c, e, h⟩` from `smith_sq hv n X`. Conclude with `⟨n, c, e, h.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasLen_coker_det (hv : v.Integers R) {n : ℕ} (X : Matrix (Fin n) (Fin n) R) :
     HasLen v R ((Fin n → R) ⧸ LinearMap.range X.mulVecLin) (v (algebraMap R C X.det)) := by

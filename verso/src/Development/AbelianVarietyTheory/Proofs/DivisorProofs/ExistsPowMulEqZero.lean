@@ -4,13 +4,13 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.ExistsDatNeZero
 namespace GlobalTheory.CocycleCoboundaryNumerator
 
 /- English proof (translation)
-Set `L` to `Localization.Away (u * v)`. Set `ψ₀ : D →ₐ[R] L` to `IsScalarTower.toAlgHom R D L`. Establish `hψ₀ : IsUnit (ψ₀ u * ψ₀ v)`. Rewrite using `[← map_mul]`. Conclude with `IsLocalization.Away.algebraMap_isUnit (u * v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, _, k, rfl⟩, hk⟩` from `IsLocalization.surj (Submonoid.powers (u * v)) (f L ψ₀)`. Use `⟨k, fun N hN => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Use `⟨a * (u * v) ^ j, fun E _ _ ψ hu hv => ?_⟩` and prove the remaining obligations. Establish `huv : IsUnit (ψ (u * v))` using `by rw [map_mul]; exact hu.mul hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `θ : L →ₐ[R] E` to `IsLocalization.Away.liftAlgHom (u * v) huv`. Establish `hθ : ∀ x : D, θ (algebraMap D L x) = ψ x` using `fun x => IsLocalization.Away.lift_eq (u * v) huv x`. Establish `hcomp : θ.comp ψ₀ = ψ` using `AlgHom.ext fun x => hθ x`. Establish `key` using `hf L E ψ₀ θ (isUnit_of_mul_isUnit_left hψ₀) (isUnit_of_mul_isUnit_right hψ₀)`. Rewrite `key` using `[hcomp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk'` using `congrArg θ hk`. Simplify using `only [map_mul, hθ] at hk'`. Rewrite using `[key, map_mul, ← hk']`. Simplify using `only [map_pow, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_numerator (R : Type) [CommRing R] (D : Type) [CommRing D] [Algebra R D] (u v : D)
     (f : (E : Type) → [CommRing E] → [Algebra R E] → (D →ₐ[R] E) → E)
@@ -42,9 +42,9 @@ theorem exists_numerator (R : Type) [CommRing R] (D : Type) [CommRing D] [Algebr
   ring
 
 /- English proof (translation)
-Set `L` to `Localization.Away u`. Establish `h0 : algebraMap D L x = 0` using `h L (IsScalarTower.toAlgHom R D L) (IsLocalization.Away.algebraMap_isUnit u)`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers u) L x).mp h0`. Use `⟨m, fun M hM => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hM`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hm' : u ^ m * x = 0` using `hm`. Rewrite using `[pow_add, mul_comm (u ^ m), mul_assoc, hm', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_eq_zero (R : Type) [CommRing R] (D : Type) [CommRing D] [Algebra R D]
     (u x : D)
@@ -60,7 +60,7 @@ theorem exists_pow_mul_eq_zero (R : Type) [CommRing R] (D : Type) [CommRing D] [
   rw [pow_add, mul_comm (u ^ m), mul_assoc, hm', mul_zero]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hx`. Establish `hw : θ (w : E) = ((Units.map θ.toMonoidHom w : E'ˣ) : E')` using `rfl`. Rewrite using `[Ring.inverse_unit, hw, Ring.inverse_unit]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_inverse_of_isUnit {E E' : Type} [CommRing E] [CommRing E'] (θ : E →+* E') {x : E}
     (hx : IsUnit x) : Ring.inverse (θ x) = θ (Ring.inverse x) := by
@@ -70,27 +70,27 @@ theorem map_inverse_of_isUnit {E E' : Type} [CommRing E] [CommRing E'] (θ : E �
   rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ a b : Fin n, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → ∃ c : D, ∀ (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), IsUnit (ψ (s a)) → IsUnit (ψ (s b)) → d a b E ψ * (ψ (s a) * ψ (s b)) ^ N = ψ c` using `fun a b => exists_numerator R D (s a) (s b) (d a b) (fun E _ _ E' _ _ ψ θ ha hb => hnat a b E E' ψ θ ha hb)`. Use `choose N₀ hN₀ using h1`. Take `⟨N, hN⟩ : ∃ N, ∀ a b, N₀ a b ≤ N` from `⟨Finset.univ.sup (fun p : Fin n × Fin n => N₀ p.1 p.2), fun a b => Finset.le_sup (f := fun p : Fin n × Fin n => N₀ p.1 p.2) (Finset.mem_univ (a, b))⟩`. Use `choose c hc using fun a b => hN₀ a b N (hN a b)`. Establish `h2 : ∀ a b k : Fin n, ∃ M₀ : ℕ, ∀ M, M₀ ≤ M → (s a * s b * s k) ^ M * (s k ^ N * c a b - s a ^ N * c k b + s b ^ N * c k a) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a b k`. Apply `exists_pow_mul_eq_zero R D` to reduce the goal to its premises. Introduce `E _ _ ψ hu`. Rewrite `hu` using `[map_mul, map_mul]`. Establish `ha` using `isUnit_of_mul_isUnit_left (isUnit_of_mul_isUnit_left hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `isUnit_of_mul_isUnit_right (isUnit_of_mul_isUnit_left hu)`. Establish `hk` using `isUnit_of_mul_isUnit_right hu`. Establish `e4` using `hcoc k a b E ψ hk ha hb`. Simplify using `only [map_add, map_sub, map_mul, map_pow]`. Rewrite using `[← hc a b E ψ ha hb, ← hc k b E ψ hk hb, ← hc k a E ψ hk ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(ψ (s a) * ψ (s b) * ψ (s k)) ^ N * e4`. Use `choose M₀ hM₀ using h2`. Take `⟨M, hM⟩ : ∃ M, ∀ a b k, M₀ a b k ≤ M` from `⟨Finset.univ.sup (fun p : Fin n × Fin n × Fin n => M₀ p.1 p.2.1 p.2.2), fun a b k => Finset.le_sup (f := fun p : Fin n × Fin n × Fin n => M₀ p.1 p.2.1 p.2.2) (Finset.mem_univ (a, b, k))⟩`. Choose the witnesses or unpack the hypotheses as in `⟨K, c', hc', hy⟩ : ∃ (K : ℕ) (c' : Fin n → Fin n → D), (∀ (a b : Fin n) (E : Type) [CommRing E] [Algebra R E] (ψ : D →ₐ[R] E), IsUnit (ψ (s a)) → IsUnit (ψ (s b)) → d a b E ψ * (ψ (s a) * ψ (s b)) ^ K = ψ (c' a b)) ∧ ∀ a b k, s k ^ K * c' a b = s a ^ K * c' k b - s b ^ K * c' k a …`. Use `⟨N + M, fun a b => c a b * (s a * s b) ^ M, fun a b E _ _ ψ ha hb => ?_, fun a b k => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[map_mul, ← hc a b E ψ ha hb, map_pow, map_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `hM₀ a b k M (hM a b k)`. Establish `hsK : Ideal.span (Set.range fun i => s i ^ K) = ⊤`. Establish `h` using `Ideal.span_pow_eq_top _ hs K`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[← Set.range_comp]`. Conclude with `h`. Establish `h1mem : (1 : D) ∈ Ideal.span (Set.range fun i => s i ^ K)`. Rewrite using `[hsK]`. Conclude with `Submodule.mem_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun D).mp h1mem`. Use `⟨fun a E _ _ ψ => ∑ k, ψ (g k * c' k a) * Ring.inverse (ψ (s a)) ^ K, ?_, ?_⟩` and prove the remaining obligations. Introduce `a E _ _ E' _ _ ψ θ ha`. Establish `hinv : Ring.inverse (θ (ψ (s a))) = θ (Ring.inverse (ψ (s a)))` using `map_inverse_of_isUnit (θ : E →+* E') ha`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, hinv]`. Simplify using `only [map_mul, map_pow]`. Introduce `a b E _ _ ψ ha hb`. Establish `hAK : ψ (s a) ^ K * Ring.inverse (ψ (s a)) ^ K = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, Ring.mul_inverse_cancel _ ha, one_pow]`. Establish `hBK : ψ (s b) ^ K * Ring.inverse (ψ (s b)) ^ K = 1`. Rewrite using `[← mul_pow, Ring.mul_inverse_cancel _ hb, one_pow]`. Establish `hab` using `hc' a b E ψ ha hb`. Establish `hsum : ∑ k, ψ (g k) * ψ (s k) ^ K = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `congrArg ψ hg`. Simplify `h` using `only [map_sum, smul_eq_mul, map_mul, map_pow, map_one]`. Establish `hd : d a b E ψ = ∑ k, ψ (g k) * ψ (s k) ^ K * d a b E ψ`. Rewrite using `[← Finset.sum_mul, hsum, one_mul]`. Rewrite using `[hd, ← Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hyk` using `congrArg ψ (hy a b k)`. Simplify using `only [map_mul, map_pow, map_sub] at hyk`. Simplify using `only [map_mul]`. Take the linear combination `(ψ (g k)) * ((Ring.inverse (ψ (s a)) ^ K * Ring.inverse (ψ (s b)) ^ K) * hyk + (ψ (s k) ^ K * Ring.inverse (ψ (s a)) ^ K * Ring.inverse (ψ (s b)) ^ K) * hab + (Ring.inverse (ψ (s b)) ^ K * ψ (c' k b) - ψ (s k) ^ K * d a b E ψ * ψ (s b) ^ K * Ring.inverse (ψ (s b)) ^ K) * hAK - (R …`.
+A detailed English derivation is pending.
 -/
 theorem cocycle_is_coboundary (R : Type) [CommRing R] (D : Type) [CommRing D] [Algebra R D]
     (n : ℕ) (s : Fin n → D) (hs : Ideal.span (Set.range s) = ⊤)

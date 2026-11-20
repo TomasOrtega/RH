@@ -12,11 +12,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.HeckeMultOne
 
 /- English proof (translation)
-Introduce `F _ _ η η' h`. Use `set S : Finset (HeightOneSpectrum (𝓞 F)) := (Filter.eventually_cofinite.mp h).toFinset with hS`. Establish `key : η * η'⁻¹ = 1`. Use `Subtype.ext (GlobalTheory.FrobDense.eq_one_of_away (η * η'⁻¹).1 (η * η'⁻¹).2.1 (η * η'⁻¹).2.2 S fun v hv => ?_)` and prove the remaining obligations. Establish `hv' : η.UnrAt v ∧ η'.UnrAt v ∧ η.val v = η'.val v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hv (by rw [hS, Set.Finite.mem_toFinset]; exact hc)`. Take `⟨h1, h2, h3⟩` from `hv'`. Introduce `x`. Use `GlobalTheory.FrobDense.eq_one_of_unif ((η * η'⁻¹).loc v) (fun y hy => ?_) x` and prove the remaining obligations.
-
-Rewrite using `[HChar.loc_mul, HChar.loc_inv, η.val_eq h1 y hy, η'.val_eq h2 y hy, h3, mul_inv_cancel]`. Conclude with `mul_inv_eq_one.mp key`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (η η' : HChar F), (∀ᶠ v : HeightOneSpectrum (𝓞 F) in Filter.cofinite, η.UnrAt v ∧ η'.UnrAt v ∧ η.val v = η'.val v) → η = η' := by
   intro F _ _ η η' h

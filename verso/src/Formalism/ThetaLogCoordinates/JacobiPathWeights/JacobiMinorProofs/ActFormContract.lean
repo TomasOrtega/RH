@@ -11,9 +11,7 @@ namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 variable {R : Type*} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Introduce `R R' _ _ φ n m I J`. Unfold `minorF`. Use `split_ifs with h`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
-
-Conclude with `map_zero φ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem minorMap : MinorMap := by
   intro R R' _ _ φ n m I J
@@ -24,13 +22,13 @@ theorem minorMap : MinorMap := by
   · exact map_zero φ
 
 /- English proof (translation)
-Rewrite using `[sg, ← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sg_mul_self (I : Finset (Fin n)) (m : Fin n) : sg I m * sg I m = 1 := by
   rw [sg, ← mul_pow, neg_one_mul, neg_neg, one_pow]
 
 /- English proof (translation)
-Unfold `sg`. Rewrite using `[Finset.filter_insert]`. Use `split_ifs with h`. Rewrite using `[Finset.card_insert_of_notMem (fun hmem => hm (Finset.mem_filter.mp hmem).1), pow_succ]`. Rewrite using `[mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sg_insert {I : Finset (Fin n)} {m : Fin n} (hm : m ∉ I) (m' : Fin n) :
     sg (insert m I) m' = sg I m' * (if m' < m then -1 else 1) := by
@@ -41,9 +39,9 @@ lemma sg_insert {I : Finset (Fin n)} {m : Fin n} (hm : m ∉ I) (m' : Fin n) :
   · rw [mul_one]
 
 /- English proof (translation)
-Unfold `sg`. Rewrite using `[Finset.filter_erase]`. Use `split_ifs with h`. Establish `hmem : m' ∈ I.filter (fun j => m < j)` using `Finset.mem_filter.mpr ⟨hm', h⟩`. Rewrite using `[Finset.card_erase_of_mem hmem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c, (I.filter fun j => m < j).card = c + 1` from `⟨_, (Nat.succ_pred_eq_of_pos (Finset.card_pos.mpr ⟨m', hmem⟩)).symm⟩`. Rewrite using `[hc, Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.erase_eq_of_notMem (fun hmem => h (Finset.mem_filter.mp hmem).2), mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sg_erase {I : Finset (Fin n)} {m' : Fin n} (hm' : m' ∈ I) (m : Fin n) :
     sg (I.erase m') m = sg I m * (if m < m' then -1 else 1) := by
@@ -59,29 +57,27 @@ lemma sg_erase {I : Finset (Fin n)} {m' : Fin n} (hm' : m' ∈ I) (m : Fin n) :
   · rw [Finset.erase_eq_of_notMem (fun hmem => h (Finset.mem_filter.mp hmem).2), mul_one]
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_mul, sg_mul_self, Int.cast_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma sgR_mul_self (I : Finset (Fin n)) (m : Fin n) : ((sg I m : ℤ) : R) * ((sg I m : ℤ) : R) = 1 := by
   rw [← Int.cast_mul, sg_mul_self, Int.cast_one]
 
 /- English proof (translation)
-Introduce `R _ n K X Y`. Use function extensionality and compare the values at `I`. Simplify using `only [contrF, wedgeF, Pi.sub_apply]`. Establish `hsgi : ∀ m, m ∉ I → sg (insert m I) m = sg I m` using `fun m hm => by`. Rewrite using `[sg_insert hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsge : ∀ m', m' ∈ I → sg (I.erase m') m' = sg I m'` using `fun m' hm' => by`. Rewrite using `[sg_erase hm']`. Simplify using the standard rewrite rules. Establish `hL : ∀ m ∈ Iᶜ, ∑ m' ∈ insert m I, ((sg (insert m I) m' : ℤ) : R) * K ((insert m I).erase m') * X m' = ((sg I m : ℤ) : R) * K I * X m + ∑ m' ∈ I, ((sg (insert m I) m' : ℤ) : R) * K ((insert m I).erase m') * X m'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite `hm` using `[Finset.mem_compl]`. Rewrite using `[Finset.sum_insert hm, Finset.erase_insert hm, hsgi m hm]`. Establish `hR : ∀ m' ∈ I, ∑ m ∈ (I.erase m')ᶜ, ((sg (I.erase m') m : ℤ) : R) * Y m * K (insert m (I.erase m')) = ((sg I m' : ℤ) : R) * Y m' * K I + ∑ m ∈ Iᶜ, ((sg (I.erase m') m : ℤ) : R) * Y m * K (insert m (I.erase m'))`. Introduce `m' hm'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.compl_erase, Finset.sum_insert (by simpa using hm'), Finset.insert_erase hm', hsge m' hm']`. Establish `hcross : ∀ m ∈ Iᶜ, ∀ m' ∈ I, ((sg I m : ℤ) : R) * Y m * (((sg (insert m I) m' : ℤ) : R) * K ((insert m I).erase m') * X m') = -(((sg I m' : ℤ) : R) * (((sg (I.erase m') m : ℤ) : R) * Y m * K (insert m (I.erase m'))) * X m')`. Introduce `m hm m' hm'`. Rewrite `hm` using `[Finset.mem_compl]`. Establish `hne : m ≠ m'` using `fun h => hm (h ▸ hm')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sg_insert hm, sg_erase hm', Finset.erase_insert_of_ne hne]`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Simplify using `[h, not_lt.mpr h.le]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h, not_lt.mpr h.le]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `d1 : ∀ m, ((sg I m : ℤ) : R) * Y m * (((sg I m : ℤ) : R) * K I * X m) = X m * Y m * K I`. Introduce `m`. Take the linear combination `(Y m * K I * X m) * sgR_mul_self (R := R) I m`. Establish `d2 : ∀ m, ((sg I m : ℤ) : R) * (((sg I m : ℤ) : R) * Y m * K I) * X m = X m * Y m * K I`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `m`. Take the linear combination `(Y m * K I * X m) * sgR_mul_self (R := R) I m`. Use `conv_lhs => rw [Finset.sum_congr rfl (fun m hm => by rw [hL m hm])]`. Establish `hRs : ∑ m' ∈ I, ((sg I m' : ℤ) : R) * (∑ m ∈ (I.erase m')ᶜ, ((sg (I.erase m') m : ℤ) : R) * Y m * K (insert m (I.erase m'))) * X m' = ∑ m' ∈ I, ((sg I m' : ℤ) : R) * (((sg I m' : ℤ) : R) * Y m' * K I + ∑ m ∈ Iᶜ, ((sg (I.erase m') m : ℤ) : R) * Y m * K (insert m (I.erase m'))) * X …` using `Finset.sum_congr rfl (fun m' hm' => by rw [hR m' hm'])`. Rewrite using `[hRs]`.
+Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_add, add_mul, Finset.sum_add_distrib, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_congr rfl (fun m hm => Finset.sum_congr rfl (fun m' hm' => hcross m hm m' hm')), Finset.sum_congr rfl (fun m _ => d1 m), Finset.sum_congr rfl (fun m _ => d2 m)]`. Simplify using `only [Finset.sum_neg_distrib]`. Use `conv_lhs => rw [Finset.sum_comm]`. Rewrite using `[← Finset.sum_add_sum_compl I (fun a => X a * Y a * K I)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem contractWedge : ContractWedge := by
   intro R _ n K X Y
@@ -136,7 +132,7 @@ theorem contractWedge : ContractWedge := by
   ring
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Unfold `minorF`. Rewrite using `[dif_pos hJ]`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma minorF_eq {d : ℕ} (m : Matrix (Fin n) (Fin n) R) {I J : Finset (Fin n)} (hI : I.card = d)
     (hJ : J.card = d) :
@@ -146,7 +142,7 @@ lemma minorF_eq {d : ℕ} (m : Matrix (Fin n) (Fin n) R) {I J : Finset (Fin n)} 
   rw [dif_pos hJ]
 
 /- English proof (translation)
-Unfold `minorF`. Rewrite using `[dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma minorF_ne (m : Matrix (Fin n) (Fin n) R) {I J : Finset (Fin n)} (h : J.card ≠ I.card) :
     minorF m I J = 0 := by
@@ -154,9 +150,9 @@ lemma minorF_ne (m : Matrix (Fin n) (Fin n) R) {I J : Finset (Fin n)} (h : J.car
   rw [dif_neg h]
 
 /- English proof (translation)
-Substitute `hJ'` using the available equality. Apply `Finset.orderEmbOfFin_unique h'` to reduce the goal to its premises. Introduce `x`. Rewrite using `[Finset.mem_erase]`. Conclude with `⟨fun heq => Fin.succAbove_ne j x ((J.orderEmbOfFin h).injective heq), Finset.orderEmbOfFin_mem J h _⟩`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `(J.orderEmbOfFin h).strictMono.comp (Fin.strictMono_succAbove j)`.
+A detailed English derivation is pending.
 -/
 lemma emb_succAbove {d : ℕ} {J J' : Finset (Fin n)} (h : J.card = d + 1) (j : Fin (d + 1))
     (hJ' : J' = J.erase (J.orderEmbOfFin h j)) (h' : J'.card = d) :
@@ -170,11 +166,11 @@ lemma emb_succAbove {d : ℕ} {J J' : Finset (Fin n)} (h : J.card = d + 1) (j : 
   · exact (J.orderEmbOfFin h).strictMono.comp (Fin.strictMono_succAbove j)
 
 /- English proof (translation)
-Establish `hf : (J.filter fun x => J.orderEmbOfFin h j < x) = (Finset.Ioi j).map (J.orderEmbOfFin h).toEmbedding`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_Ioi, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hlt⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `: x ∈ Set.range (J.orderEmbOfFin h)` using `by rw [Finset.range_orderEmbOfFin]; exact hx`. Take `⟨k, rfl⟩` from `this`. Conclude with `⟨k, (J.orderEmbOfFin h).lt_iff_lt.mp hlt, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨Finset.orderEmbOfFin_mem J h k, (J.orderEmbOfFin h).lt_iff_lt.mpr hk⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Unfold `sg`. Rewrite using `[hf, Finset.card_map, Fin.card_Ioi]`. Establish `hj` using `j.isLt`. Rewrite using `[show d + (j : ℕ) = (d + 1 - 1 - j) + 2 * j by omega, pow_add, pow_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sg_emb {d : ℕ} {J : Finset (Fin n)} (h : J.card = d + 1) (j : Fin (d + 1)) :
     sg J (J.orderEmbOfFin h j) = (-1) ^ (d + (j : ℕ)) := by
@@ -196,7 +192,7 @@ lemma sg_emb {d : ℕ} {J : Finset (Fin n)} (h : J.card = d + 1) (j : Fin (d + 1
   simp
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Finset.image_orderEmbOfFin_univ J h]`. Rewrite using `[Finset.sum_image (fun x _ y _ hxy => (J.orderEmbOfFin h).injective hxy)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_emb {d : ℕ} {J : Finset (Fin n)} (h : J.card = d) (f : Fin n → R) :
     ∑ b ∈ J, f b = ∑ j, f (J.orderEmbOfFin h j) := by
@@ -204,11 +200,11 @@ lemma sum_emb {d : ℕ} {J : Finset (Fin n)} (h : J.card = d) (f : Fin n → R) 
   rw [Finset.sum_image (fun x _ y _ hxy => (J.orderEmbOfFin h).injective hxy)]
 
 /- English proof (translation)
-Rewrite using `[sum_emb hJ, Matrix.det_succ_row _ i, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Establish `hcard : (J.erase (J.orderEmbOfFin hJ j)).card = d`. Rewrite using `[Finset.card_erase_of_mem (Finset.orderEmbOfFin_mem J hJ j), hJ]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[sg_emb hJ j, minorF_eq m hI' hcard, ← emb_succAbove hJ j rfl hcard, ← hr]`. Simplify using `only [Matrix.submatrix_apply, Matrix.submatrix_submatrix, Function.comp_def]`. Use `push_cast`. Establish `e : ((-1 : R) ^ (d + (i : ℕ))) * (-1) ^ ((i : ℕ) + (j : ℕ)) = (-1) ^ (d + (j : ℕ))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[← pow_add, show d + (i : ℕ) + ((i : ℕ) + (j : ℕ)) = d + j + 2 * i by ring, pow_add, pow_mul]`. Simplify using the standard rewrite rules. Take the linear combination `(m (r i) (J.orderEmbOfFin hJ j) * (m.submatrix (fun x => r (i.succAbove x)) (fun x => J.orderEmbOfFin hJ (j.succAbove x))).det) * e`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma det_rows_expand {d : ℕ} (m : Matrix (Fin n) (Fin n) R) (r : Fin (d + 1) → Fin n) (i : Fin (d + 1))
     {I' J : Finset (Fin n)} (hJ : J.card = d + 1) (hI' : I'.card = d)
@@ -231,23 +227,21 @@ lemma det_rows_expand {d : ℕ} (m : Matrix (Fin n) (Fin n) R) (r : Fin (d + 1) 
     (m.submatrix (fun x => r (i.succAbove x)) (fun x => J.orderEmbOfFin hJ (j.succAbove x))).det) * e
 
 /- English proof (translation)
-Take `⟨d, hd⟩ : ∃ d, I'.card = d` from `⟨_, rfl⟩`. Distinguish the cases in `hJ : J.card = d + 1`. Distinguish the cases in `ha : a ∈ I'`. Rewrite using `[if_pos ha]`. Establish `hr : (fun x => (Fin.cons a ⇑(I'.orderEmbOfFin hd) : Fin (d + 1) → Fin n) ((0 : Fin (d + 1)).succAbove x)) = I'.orderEmbOfFin hd`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Fin.succAbove_zero]`. Establish `hexp` using `det_rows_expand m (Fin.cons a ⇑(I'.orderEmbOfFin hd) : Fin (d + 1) → Fin n) 0 hJ hd hr`. Simplify using `only [Fin.cons_zero] at hexp`. Rewrite using `[← hexp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, I'.orderEmbOfFin hd k = a := by`. Establish `: a ∈ Set.range (I'.orderEmbOfFin hd)` using `by rw [Finset.range_orderEmbOfFin]; exact ha`. Conclude with `this`. Rewrite using `[Matrix.det_zero_of_row_eq (i := 0) (j := k.succ) (Fin.succ_ne_zero k).symm (by funext c; simp [hk]), mul_zero]`. Rewrite using `[if_neg ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : (insert a I').card = d + 1` using `by rw [Finset.card_insert_of_notMem ha, hd]`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (insert a I').orderEmbOfFin hcard i = a := by`. Establish `: a ∈ Set.range ((insert a I').orderEmbOfFin hcard)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `Finset.mem_insert_self a I'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hr` using `emb_succAbove hcard i (J' := I') (by rw [hi, Finset.erase_insert ha]) hd`. Establish `hexp` using `det_rows_expand m ((insert a I').orderEmbOfFin hcard) i hJ hd hr`. Rewrite `hexp` using `[hi]`. Rewrite using `[← hexp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `sg_emb hcard i`. Rewrite `hs` using `[hi]`. Rewrite using `[hs, minorF_eq m hcard hJ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero]`. Use `split_ifs with ha`. Both sides reduce to the same expression. Rewrite using `[minorF_ne, mul_zero]`. Rewrite using `[Finset.card_insert_of_notMem ha, hd]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hJ`. Introduce `b hb`. Rewrite using `[minorF_ne, mul_zero, zero_mul]`. Rewrite using `[Finset.card_erase_of_mem hb, hd]`. Use `Finset.card_pos.mpr ⟨b, hb⟩` as an intermediate fact.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 lemma lap_row (m : Matrix (Fin n) (Fin n) R) (I' J : Finset (Fin n)) (a : Fin n) :
     ∑ b ∈ J, ((sg J b : ℤ) : R) * minorF m I' (J.erase b) * m a b =
@@ -297,7 +291,7 @@ lemma lap_row (m : Matrix (Fin n) (Fin n) R) (I' J : Finset (Fin n)) (a : Fin n)
       omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [actF, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma actF_add (K K' : Form R n) (m : Matrix (Fin n) (Fin n) R) :
     actF (K + K') m = actF K m + actF K' m := by
@@ -305,7 +299,7 @@ lemma actF_add (K K' : Form R n) (m : Matrix (Fin n) (Fin n) R) :
   simp only [actF, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [actF, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma actF_smul (c : R) (K : Form R n) (m : Matrix (Fin n) (Fin n) R) :
     actF (c • K) m = c • actF K m := by
@@ -313,7 +307,7 @@ lemma actF_smul (c : R) (K : Form R n) (m : Matrix (Fin n) (Fin n) R) :
   simp only [actF, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [actF, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma actF_sub (K K' : Form R n) (m : Matrix (Fin n) (Fin n) R) :
     actF (K - K') m = actF K m - actF K' m := by
@@ -321,7 +315,7 @@ lemma actF_sub (K K' : Form R n) (m : Matrix (Fin n) (Fin n) R) :
   simp only [actF, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [wedgeF, Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma wedgeF_add (K K' : Form R n) (X : Fin n → R) :
     wedgeF (K + K') X = wedgeF K X + wedgeF K' X := by
@@ -329,7 +323,7 @@ lemma wedgeF_add (K K' : Form R n) (X : Fin n → R) :
   simp only [wedgeF, Pi.add_apply, mul_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [wedgeF, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m _`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma wedgeF_smul (c : R) (K : Form R n) (X : Fin n → R) :
     wedgeF (c • K) X = c • wedgeF K X := by
@@ -340,7 +334,7 @@ lemma wedgeF_smul (c : R) (K : Form R n) (X : Fin n → R) :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [contrF, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma contrF_add (K K' : Form R n) (X : Fin n → R) :
     contrF (K + K') X = contrF K X + contrF K' X := by
@@ -348,7 +342,7 @@ lemma contrF_add (K K' : Form R n) (X : Fin n → R) :
   simp only [contrF, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `only [contrF, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `m _`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma contrF_smul (c : R) (K : Form R n) (X : Fin n → R) :
     contrF (c • K) X = c • contrF K X := by
@@ -359,23 +353,23 @@ lemma contrF_smul (c : R) (K : Form R n) (X : Fin n → R) :
   ring
 
 /- English proof (translation)
-Introduce `R _ n K X m`. Use function extensionality and compare the values at `J`. Simplify using `only [actF, wedgeF]`. Establish `hR : ∑ b ∈ J, ((sg J b : ℤ) : R) * (∑ I', K I' * minorF m I' (J.erase b)) * Matrix.vecMul X m b = ∑ I', ∑ a, K I' * X a * ∑ b ∈ J, ((sg J b : ℤ) : R) * minorF m I' (J.erase b) * m a b`. Simplify using `only [Matrix.vecMul, dotProduct, Finset.mul_sum, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun a _ => Finset.sum_comm)]`. Rewrite using `[Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `I' _`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hR]`. Simplify using `only [lap_row]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm' (t' := Finset.univ) (s' := fun a => Finset.univ.filter (fun I => a ∈ I)) (by intro I a; simp)]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Establish `hZ : ∑ I', K I' * X a * (if a ∈ I' then 0 else ((sg (insert a I') a : ℤ) : R) * minorF m (insert a I') J) = ∑ I' ∈ Finset.univ.filter (fun I' => a ∉ I'), K I' * X a * (((sg (insert a I') a : ℤ) : R) * minorF m (insert a I') J)`. Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `I' _`. Apply the tactic sequence `split_ifs <;> simp_all`. Rewrite using `[hZ]`. Use `Finset.sum_nbij' (fun I => I.erase a) (fun I' => insert a I') ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `I hI`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `I' hI'`. Simplify using the standard rewrite rules. Introduce `I hI`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hI`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.insert_erase hI`. Introduce `I' hI'`. Simplify using `only [Finset.coe_filter, Finset.mem_filter, Finset.mem_univ, true_and, Set.mem_setOf_eq] at hI'`. Conclude with `Finset.erase_insert hI'`. Introduce `I hI`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hI`. Simplify using `only [Finset.insert_erase hI]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem actFormWedge : FactX2wedge := by
   intro R _ n K X m
@@ -434,15 +428,15 @@ Both sides reduce to the same expression.
 lemma basisF_empty : (basisF ∅ : Form R n) = oneF := rfl
 
 /- English proof (translation)
-Establish `has : a ∉ s` using `fun h => lt_irrefl a (hs a h)`. Establish `hsg : sg (insert a s) a = 1`. Unfold `sg`. Establish `: (insert a s).filter (fun j => a < j) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Break down `Finset.mem_insert.mp hx with rfl | hx` into its components or cases. Conclude with `lt_irrefl _`. Conclude with `lt_asymm (hs x hx)`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `I`. Simplify using `only [wedgeF, basisF, Pi.single_apply, mul_ite, mul_one, mul_zero]`. Simplify using `only [Finset.sum_ite_eq', Finset.sum_ite_eq]`. Distinguish the cases in `ha : a ∈ I`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos ha]`. Distinguish the cases in `hI : I = insert a s`. Substitute `hI` using the available equality. Rewrite using `[if_pos rfl, Finset.erase_insert has, if_pos rfl, hsg]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: I.erase a ≠ s` using `fun he => hI (by rw [← he, Finset.insert_erase ha])`. Rewrite using `[if_neg hI, if_neg this]`. Rewrite using `[if_neg ha, if_neg]`. Introduce and unpack `rfl`. Conclude with `ha (Finset.mem_insert_self a s)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma basisF_insert {a : Fin n} {s : Finset (Fin n)} (hs : ∀ x ∈ s, x < a) :
     (basisF (insert a s) : Form R n) = wedgeF (basisF s) (Pi.single a 1) := by
@@ -473,11 +467,9 @@ lemma basisF_insert {a : Fin n} {s : Finset (Fin n)} (hs : ∀ x ∈ s, x < a) :
     exact ha (Finset.mem_insert_self a s)
 
 /- English proof (translation)
-Establish `hzero : P 0`. Use `hsmul 0 oneF h1` as an intermediate fact. Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Establish `hbasis : ∀ I, P (basisF I)`. Introduce `I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.induction_on_max I (by rw [basisF_empty]; exact h1) (fun a s hs ih => by rw [basisF_insert hs]; exact hw _ _ ih)`. Establish `hK : K = ∑ I, K I • basisF I`. Use function extensionality and compare the values at `J`. Simplify using `[basisF, Finset.sum_apply]`. Rewrite using `[hK]`.
-
-Conclude with `Finset.sum_induction _ P hadd hzero (fun I _ => hsmul _ _ (hbasis I))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_induction {P : Form R n → Prop} (h1 : P oneF)
     (hadd : ∀ K K', P K → P K' → P (K + K')) (hsmul : ∀ (c : R) K, P K → P (c • K))
@@ -497,9 +489,9 @@ theorem form_induction {P : Form R n → Prop} (h1 : P oneF)
   exact Finset.sum_induction _ P hadd hzero (fun I _ => hsmul _ _ (hbasis I))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `only [actF, oneF, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Unfold `minorF`. Distinguish the cases in `hJ : J = ∅`. Substitute `hJ` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[dif_pos rfl, if_pos rfl]`. Apply the tactic sequence `exact Matrix.det_eq_one_of_card_eq_zero (by first | exact Fintype.card_fin 0 | rfl | decide)`. Rewrite using `[dif_neg, if_neg hJ]`. Simplify `hJ` using `[Finset.card_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma actF_oneF (m : Matrix (Fin n) (Fin n) R) : actF (oneF : Form R n) m = oneF := by
   funext J
@@ -513,27 +505,27 @@ lemma actF_oneF (m : Matrix (Fin n) (Fin n) R) : actF (oneF : Form R n) m = oneF
     simpa [Finset.card_eq_zero] using hJ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `I`. Simplify using `[contrF, oneF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma contrF_oneF (Y : Fin n → R) : contrF (oneF : Form R n) Y = 0 := by
   funext I
   simp [contrF, oneF]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Simplify using `[actF]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma actF_zero (m : Matrix (Fin n) (Fin n) R) : actF (0 : Form R n) m = 0 := by
   funext J
   simp [actF]
 
 /- English proof (translation)
-Introduce `R _ n K m m'`. Prove the components needed by the constructor for the conclusion. Use `form_induction (P := fun K => actF K 1 = K) ?_ ?_ ?_ ?_ K` and prove the remaining obligations. Conclude with `actF_oneF 1`. Apply the tactic sequence `intro K K' h h' try dsimp only at h h' ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[actF_add, h, h']`. Apply the tactic sequence `intro c K h try dsimp only at h ⊢`. Rewrite using `[actF_smul, h]`. Apply the tactic sequence `intro K X h try dsimp only at h ⊢`. Rewrite using `[actFormWedge R n K X 1, h, Matrix.vecMul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `form_induction (P := fun K => actF (actF K m) m' = actF K (m * m')) ?_ ?_ ?_ ?_ K` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[actF_oneF, actF_oneF, actF_oneF]`. Apply the tactic sequence `intro K K' h h' try dsimp only at h h' ⊢`. Rewrite using `[actF_add, actF_add, actF_add, h, h']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `intro c K h try dsimp only at h ⊢`. Rewrite using `[actF_smul, actF_smul, actF_smul, h]`. Apply the tactic sequence `intro K X h try dsimp only at h ⊢`. Rewrite using `[actFormWedge R n K X m, actFormWedge R n (actF K m) (Matrix.vecMul X m) m', h, actFormWedge R n K X (m * m'), Matrix.vecMul_vecMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actFormMul : FactX2mul := by
   intro R _ n K m m'
@@ -564,11 +556,11 @@ theorem actFormMul : FactX2mul := by
         actFormWedge R n K X (m * m'), Matrix.vecMul_vecMul]
 
 /- English proof (translation)
-Introduce `R _ n K Y g`. Establish `hc : ∀ X : Fin n → R, ∑ a, Matrix.vecMul X (↑g : Matrix (Fin n) (Fin n) R) a * Matrix.vecMul Y (↑g⁻¹ : Matrix (Fin n) (Fin n) R).transpose a = ∑ a, X a * Y a`. Introduce `X`. Use `show dotProduct (Matrix.vecMul X (↑g : Matrix (Fin n) (Fin n) R)) (Matrix.vecMul Y (↑g⁻¹ : Matrix (Fin n) (Fin n) R).transpose) = dotProduct X Y`. Rewrite using `[Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `form_induction (P := fun K => actF (contrF K Y) (↑g : Matrix (Fin n) (Fin n) R) = contrF (actF K (↑g : Matrix (Fin n) (Fin n) R)) (Matrix.vecMul Y (↑g⁻¹ : Matrix (Fin n) (Fin n) R).transpose)) ?_ ?_ ?_ ?_ K` and prove the remaining obligations. Apply the tactic sequence `try dsimp only`. Rewrite using `[contrF_oneF, actF_zero, actF_oneF, contrF_oneF]`. Apply the tactic sequence `intro K K' h h' try dsimp only at h h' ⊢`. Rewrite using `[contrF_add, actF_add, h, h', actF_add, contrF_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `intro c K h try dsimp only at h ⊢`. Rewrite using `[contrF_smul, actF_smul, h, actF_smul, contrF_smul]`. Apply the tactic sequence `intro K X h try dsimp only at h ⊢`. Rewrite using `[contractWedge R n K X Y, actF_sub, show (fun I => (∑ a, X a * Y a) * K I) = (∑ a, X a * Y a) • K from rfl, actF_smul, actFormWedge R n (contrF K Y) X _, h, actFormWedge R n K X _, contractWedge R n (actF K _) (Matrix.vecMul X _) _, hc X]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem actFormContract : FactX2contr := by
   intro R _ n K Y g

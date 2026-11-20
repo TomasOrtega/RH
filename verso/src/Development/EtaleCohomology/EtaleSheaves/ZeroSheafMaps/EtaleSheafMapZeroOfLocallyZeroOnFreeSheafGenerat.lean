@@ -17,9 +17,9 @@ def EtaleSheafMapZeroOfLocallyZeroOnFreeSheafGenerators : Prop := ∀ (B : Schem
   (∀ (U : B.Etale) (t : (F0 B q).obj U ⟶ H), Cov U (fun U' a => (F0 B q).map a ≫ t ≫ g = 0)) → g = 0
 
 /- English proof (translation)
-Introduce `B q H H' g h`. Apply `hG B q H H' g` to reduce the goal to its premises. Introduce `U t`. Use `(h U ((e0 B q).hom.app U ≫ t)).mono fun U' a ha => ?_` and prove the remaining obligations. Establish `n : (DerivedCategory.homologyFunctor (SShv B q) 0).map ((OU B q).map a) ≫ (e0 B q).hom.app U = (e0 B q).hom.app U' ≫ (F0 B q).map a` using `(e0 B q).hom.naturality a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← cancel_epi ((e0 B q).hom.app U'), comp_zero, ← Category.assoc, ← n, Category.assoc]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafGen_of (hG : EtaleSheafMapZeroOfLocallyZeroOnFreeSheafGenerators) : LeafGen := by
   intro B q H H' g h

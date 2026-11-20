@@ -17,9 +17,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.ConjDualParam
 
 /- English proof (translation)
-Introduce `hP hL D w w' c hc hA κ hκ hκE n σ σ' e he`. Set `π₁ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (w.adicCompletion D.host.E))` to `⟨σ.V, σ.ρ.comp (GlobalTheory.TypeTame.invTranspose n), fun v => (σ.smooth v).preimage (GlobalTheory.TypeTame.continuous_invTranspose n), GlobalTheory.GelfandKazhdan.isIrreducible_comp _ (fun g => ⟨_, GlobalTheory.TypeTame.invTranspose_invTranspose n g⟩) σ.irr⟩`. Establish `ha : GlobalTheory.PRep.IsAdmissible σ.ρ` using `(hP.bz _).1 (Fin n) σ.V σ.ρ σ.smooth σ.irr`. Establish `hE` using `GlobalTheory.GelfandKazhdan.equiv_contra _ n σ.V σ.ρ ha σ.irr`. Establish `hr` using `GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨b, b', h1, h2, h3, h4⟩` from `hL.2 _ _ _ _ _ _ _ _ _ _ _ _ hr (GlobalTheory.CuspRep.ParLaws.isRec_locRec hL (D.nd.plOm.2 w')) c (D.host.conj : D.host.E →+* D.host.E) κ (fun z => (hA z).symm) hc hκ hκE n π₁ σ' e he`. Take `⟨_, _, _, -, H⟩` from `hr`. Conclude with `⟨b, b', h1.trans (H.dual n σ π₁ hE), h2, h3, h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem main : GlobalTheory.NRows.Hypotheses₂ → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (w w' : PlE D.host) (c : D.nd.Om ≃+* D.nd.Om),
     (∀ x : D.host.E, c (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)) →

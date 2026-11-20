@@ -21,25 +21,25 @@ def mI (hv : v.Integers R) : Ideal R where
       _ < 1 := by rwa [one_mul]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_mI (hv : v.Integers R) (r : R) : r ∈ mI hv ↔ v (algebraMap R C r) < 1 := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_mI, not_lt]`. Conclude with `⟨fun h => h.ge, fun h => le_antisymm (hv.map_le_one r) h⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem v_eq_one_iff (hv : v.Integers R) (r : R) : v (algebraMap R C r) = 1 ↔ r ∉ mI hv := by
   rw [mem_mI, not_lt]
   exact ⟨fun h => h.ge, fun h => le_antisymm (hv.map_le_one r) h⟩
 
 /- English proof (translation)
-The claim follows from `hv.isUnit_of_one' ((v_eq_one_iff hv r).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_not_mem (hv : v.Integers R) {r : R} (h : r ∉ mI hv) : IsUnit r :=
   hv.isUnit_of_one' ((v_eq_one_iff hv r).2 h)
 
 /- English proof (translation)
-Rewrite using `[Ideal.isMaximal_iff]`. Use `⟨by simp [mem_mI], fun J x hle hx hxJ => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `isUnit_of_not_mem hv hx`. Establish `: (↑u⁻¹ : R) * u ∈ J` using `J.mul_mem_left _ hxJ`. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mI_isMaximal (hv : v.Integers R) : (mI hv).IsMaximal := by
   rw [Ideal.isMaximal_iff]
@@ -49,7 +49,7 @@ theorem mI_isMaximal (hv : v.Integers R) : (mI hv).IsMaximal := by
   simpa using this
 
 /- English proof (translation)
-Establish `: Nontrivial R` using `⟨0, 1, fun h => by`. Use `congrArg (fun r => v (algebraMap R C r)) h` as an intermediate fact. Simplify using `at this⟩`. Conclude with `hv.hom_inj.isDomain (algebraMap R C)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDomain (hv : v.Integers R) : IsDomain R := by
   have : Nontrivial R := ⟨0, 1, fun h => by
@@ -60,13 +60,13 @@ theorem isDomain (hv : v.Integers R) : IsDomain R := by
 abbrev res (hv : v.Integers R) : R →+* R ⧸ mI hv := Ideal.Quotient.mk (mI hv)
 
 /- English proof (translation)
-The claim follows from `Ideal.Quotient.eq_zero_iff_mem`.
+A detailed English derivation is pending.
 -/
 theorem res_eq_zero (hv : v.Integers R) (r : R) : res hv r = 0 ↔ v (algebraMap R C r) < 1 :=
   Ideal.Quotient.eq_zero_iff_mem
 
 /- English proof (translation)
-Rewrite using `[Ne, res_eq_zero, v_eq_one_iff hv, mem_mI]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_ne_zero (hv : v.Integers R) (r : R) : res hv r ≠ 0 ↔ v (algebraMap R C r) = 1 := by
   rw [Ne, res_eq_zero, v_eq_one_iff hv, mem_mI]
@@ -76,7 +76,7 @@ instance instField (hv : v.Integers R) : Field (R ⧸ mI hv) :=
   Ideal.Quotient.field _
 
 /- English proof (translation)
-Establish `h0 : ((p : R ⧸ mI hv)) = 0`. Rewrite using `[← map_natCast (res hv), res_eq_zero]`. Conclude with `hpv`. Conclude with `(CharP.charP_iff_prime_eq_zero hp.out).2 h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charP (p : ℕ) [hp : Fact p.Prime] (hv : v.Integers R)
     (hpv : v (algebraMap R C (p : R)) < 1) : CharP (R ⧸ mI hv) p := by
@@ -85,11 +85,11 @@ theorem charP (p : ℕ) [hp : Fact p.Prime] (hv : v.Integers R)
   exact (CharP.charP_iff_prime_eq_zero hp.out).2 h0
 
 /- English proof (translation)
-Establish `hmap : e.map (res hv) = 0`. Use extensionality with `a b`. Simplify `hm a b` using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `hdet : IsUnit (1 - e).det`. Apply `isUnit_of_not_mem hv` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Establish `h1 : res hv (1 - e).det = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h`. Rewrite `h1` using `[RingHom.map_det, map_sub, map_one, RingHom.mapMatrix_apply, hmap, sub_zero, Matrix.det_one]`. Conclude with `one_ne_zero h1`. Establish `hu : IsUnit (1 - e)` using `(Matrix.isUnit_iff_isUnit_det _).2 hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: e * (1 - e) = 0` using `by rw [mul_sub, mul_one, he, sub_self]`. Conclude with `(hu.mul_left_eq_zero).1 this`.
+A detailed English derivation is pending.
 -/
 theorem idem_eq_zero (hv : v.Integers R) {n : Type} [Fintype n] [DecidableEq n]
     (e : Matrix n n R) (he : e * e = e) (hm : ∀ a b, e a b ∈ mI hv) : e = 0 := by
@@ -107,17 +107,17 @@ theorem idem_eq_zero (hv : v.Integers R) {n : Type} [Fintype n] [DecidableEq n]
   exact (hu.mul_left_eq_zero).1 this
 
 /- English proof (translation)
-Use `isDomain hv` as an intermediate fact. Establish `hgeom` using `(Commute.all x y).geom_sum₂_mul n`. Rewrite `hgeom` using `[hx, hy, sub_self]`. Break down `mul_eq_zero.1 hgeom with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hres : res hv (∑ i ∈ range n, x ^ i * y ^ (n - 1 - i)) = (n : R ⧸ mI hv) * res hv x ^ (n - 1)`. Establish `hxy' : res hv x = res hv y`. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 hxy`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow, ← hxy']`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => res hv x ^ (n - 1)), Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Introduce `i hi`. Rewrite using `[← pow_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hn0 : n ≠ 0` using `by rintro rfl; simp at hn`. Establish `hx0 : res hv x ≠ 0`. Introduce `h0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (res hv) hx` as an intermediate fact. Rewrite `this` using `[map_pow, h0, zero_pow hn0, map_one]`. Conclude with `zero_ne_one this`. Establish `hnn : (n : R ⧸ mI hv) ≠ 0`. Rewrite using `[← map_natCast (res hv)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun h0 => hn (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Rewrite `hres` using `[h, map_zero]`. Conclude with `mul_ne_zero hnn (pow_ne_zero _ hx0) hres.symm`. Conclude with `sub_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem root_eq (hv : v.Integers R) {n : ℕ} (hn : (n : R) ∉ mI hv) {x y : R} (hx : x ^ n = 1)
     (hy : y ^ n = 1) (hxy : x - y ∈ mI hv) : x = y := by

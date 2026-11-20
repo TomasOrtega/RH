@@ -17,13 +17,11 @@ noncomputable section
 namespace GlobalTheory.GraphLocal.MaxGen
 
 /- English proof (translation)
-Set `F₀` to `IntermediateField.adjoin F (Set.range z)`. Use `haveI : Algebra.IsAlgebraic F₀ κ := hz.isAlgebraic_field`. Establish `hle : F₀ ≤ (RingHom.eqLocusField α β).toIntermediateField hc`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hzz i`. Establish `hcomp : α.comp (algebraMap F₀ κ) = β.comp (algebraMap F₀ κ)` using `RingHom.ext fun a => hle a.2`. Use extensionality with `x`. Establish `hsep : (minpoly F₀ x).Separable` using `Algebra.IsSeparable.isSeparable F₀ x`. Establish `ev : ∀ (γ : κ →+* D) (f : Polynomial F₀), (f.map (γ.comp (algebraMap F₀ κ))).eval (γ x) = γ (Polynomial.aeval x f)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ f`. Rewrite using `[Polynomial.eval_map, Polynomial.aeval_def, Polynomial.hom_eval₂]`. Use `IsLocalRing.eq_of_eval_eq_zero_of_not_isUnit_sub (f := (minpoly F₀ x).map (α.comp (algebraMap F₀ κ))) ?_ ?_ (hm x) ?_` and prove the remaining obligations. Rewrite using `[ev, minpoly.aeval, map_zero]`. Rewrite using `[hcomp, ev, minpoly.aeval, map_zero]`.
-
-Rewrite using `[Polynomial.derivative_map, ev]`. Conclude with `(IsUnit.mk0 _ (hsep.aeval_derivative_ne_zero (minpoly.aeval F₀ x))).map α`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_trBasis {F κ D ι : Type} [Field F] [Field κ] [CharZero κ] [Algebra F κ]
     [CommRing D] [IsLocalRing D] {z : ι → κ} (hz : IsTranscendenceBasis F z) (α β : κ →+* D)
@@ -51,11 +49,9 @@ theorem ringHom_eq_of_trBasis {F κ D ι : Type} [Field F] [Field κ] [CharZero 
     exact (IsUnit.mk0 _ (hsep.aeval_derivative_ne_zero (minpoly.aeval F₀ x))).map α
 
 /- English proof (translation)
-Use `letI : Algebra (R ⧸ RingHom.ker π) κ := (RingHom.kerLift π).toAlgebra`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker π) κ := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective π)`. Use `haveI : IsFractionRing (R ⧸ RingHom.ker π) κ := by`. Use `IsFractionRing.of_field _ _ fun f => ?_` and prove the remaining obligations. Take `⟨a, b, hb, e⟩` from `hfr f`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨Ideal.Quotient.mk _ a, Ideal.Quotient.mk _ b, (eq_div_iff hb).2 e⟩`. Set `g : R ⧸ RingHom.ker π →+* k'` to `Ideal.Quotient.lift _ r fun a ha => (hker a).1 ha`. Establish `hg : Function.Injective g`. Use `(injective_iff_map_eq_zero g).2 fun a ha => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 ((hker a).2 ha)`. Conclude with `⟨IsFractionRing.lift hg, fun a => IsFractionRing.lift_algebraMap hg (Ideal.Quotient.mk _ a)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extension {R κ k' : Type} [CommRing R] [Field κ] [Field k'] (π : R →+* κ)
     (r : R →+* k') (hker : ∀ a, π a = 0 ↔ r a = 0)
@@ -76,11 +72,11 @@ theorem exists_extension {R κ k' : Type} [CommRing R] [Field κ] [Field k'] (π
   exact ⟨IsFractionRing.lift hg, fun a => IsFractionRing.lift_algebraMap hg (Ideal.Quotient.mk _ a)⟩
 
 /- English proof (translation)
-Use `haveI := hp.isPrime`. Establish `h` using `IsLocalization.AtPrime.radical_map_of_mem_minimalPrimes (A := Localization.AtPrime p) p I hp`. Take `⟨n, hn⟩ : algebraMap R (Localization.AtPrime p) x ∈ (I.map (algebraMap R (Localization.AtPrime p))).radical` from `h ▸ Ideal.mem_map_of_mem _ hx`. Rewrite `hn` using `[IsLocalization.mem_map_algebraMap_iff (M := p.primeCompl)]`. Take `⟨⟨a, b⟩, hn⟩` from `hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[← map_pow, ← map_mul, IsLocalization.eq_iff_exists p.primeCompl]`. Take `⟨t, ht⟩` from `hn`. Use `⟨t * b, (t * b).2, n + 1, ?_⟩` and prove the remaining obligations. Simplify using `only at ht`. Establish `: (x * (t.1 * b.1)) ^ (n + 1) = (t.1 ^ n * b.1 ^ n * x * t.1) * a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, ← ht]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `I.mul_mem_left _ a.2`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_radical {R : Type} [CommRing R] {I p : Ideal R} (hp : p ∈ I.minimalPrimes)
     {x : R} (hx : x ∈ p) : ∃ s, s ∉ p ∧ x * s ∈ I.radical := by
@@ -120,7 +116,7 @@ def inr (E : Place (algebraMap ℂ K)) : κ' →+* tens (κ' := κ') (placeAlg E
   map_add' _ _ := Subtype.ext (by simp [TensorProduct.tmul_add])
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℂ K a ⊗ₜ[ℂ] (1 : κ') = (1 : K) ⊗ₜ[ℂ] algebraMap ℂ κ' a`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem inl_const (E : Place (algebraMap ℂ K)) (a : ℂ) :
     inl κ' E (E.const a) = inr E (algebraMap ℂ κ' a) := by
@@ -129,7 +125,7 @@ theorem inl_const (E : Place (algebraMap ℂ K)) (a : ℂ) :
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(e : K) ⊗ₜ[ℂ] b = ((e : K) ⊗ₜ[ℂ] (1 : κ')) * ((1 : K) ⊗ₜ[ℂ] b)`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem tensEquiv_tmul (E : Place (algebraMap ℂ K)) (e : placeAlg E) (b : κ') :
     tensEquiv (placeAlg E) (e ⊗ₜ b) = inl κ' E ⟨e.1, e.2⟩ * inr E b := by
@@ -138,9 +134,9 @@ theorem tensEquiv_tmul (E : Place (algebraMap ℂ K)) (e : placeAlg E) (b : κ')
   simp
 
 /- English proof (translation)
-Use `RingHom.ext fun w => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `(tensEquiv (placeAlg E)).surjective w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul e b => rw [tensEquiv_tmul, map_mul, map_mul, h₁, h₂]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Treat this case separately.
 -/
 theorem tens_ringHom_ext (E : Place (algebraMap ℂ K)) {T : Type} [CommRing T]
     {f g : tens (κ' := κ') (placeAlg E) →+* T} (h₁ : ∀ e, f (inl κ' E e) = g (inl κ' E e))
@@ -153,11 +149,11 @@ theorem tens_ringHom_ext (E : Place (algebraMap ℂ K)) {T : Type} [CommRing T]
   | add u v hu hv => simp only [map_add, hu, hv]
 
 /- English proof (translation)
-Use `letI : Algebra ℂ T := (v.comp (algebraMap ℂ κ')).toAlgebra`. Set `u' : placeAlg E →ₐ[ℂ] T` to `{ toFun := fun e => u ⟨e.1, e.2⟩ map_one' := map_one u map_mul' := fun a b => map_mul u ⟨a.1, a.2⟩ ⟨b.1, b.2⟩ map_zero' := map_zero u map_add' := fun a b => map_add u ⟨a.1, a.2⟩ ⟨b.1, b.2⟩ commutes' := h }`. Set `v' : κ' →ₐ[ℂ] T` to `{ v with commutes' := fun _ => rfl }`. Set `θ` to `(Algebra.TensorProduct.productMap u' v').comp (tensEquiv (κ' := κ') (placeAlg E)).symm.toAlgHom`. Establish `hθ : ∀ (e : E.ring) (b : κ'), θ (inl κ' E e * inr E b) = u e * v b` using `fun e b => by`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `tensEquiv_tmul E ⟨e.1, e.2⟩ b` as an intermediate fact. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.productMap u' v' ((tensEquiv (placeAlg E)).symm _) = _`. Use `erw [← this]`. Rewrite using `[AlgEquiv.symm_apply_apply, Algebra.TensorProduct.productMap_apply_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨θ.toRingHom, fun e => ?_, fun b => ?_⟩` and prove the remaining obligations. Simplify using `using hθ e 1`. Simplify using `using hθ 1 b`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_tens_lift (E : Place (algebraMap ℂ K)) {T : Type} [CommRing T] (u : E.ring →+* T)
     (v : κ' →+* T) (h : ∀ a, u (E.const a) = v (algebraMap ℂ κ' a)) :
@@ -185,7 +181,7 @@ theorem exists_tens_lift (E : Place (algebraMap ℂ K)) {T : Type} [CommRing T] 
   · simpa using hθ 1 b
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Use `⟨fun h hu => h.ne' (E.ord_eq_zero hu), fun h => ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_ne ((E.ord_nonneg_iff he).2 e.2) fun h0 => h ?_` and prove the remaining obligations. Conclude with `IsUnit.of_mul_eq_one ⟨_, ((E.ord_eq_zero_iff he).1 h0.symm).2⟩ (Subtype.ext (mul_inv_cancel₀ he))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ord_pos_iff (E : Place (algebraMap ℂ K)) (e : E.ring) (he : (e : K) ≠ 0) :
     0 < E.ord e ↔ e ∈ IsLocalRing.maximalIdeal E.ring := by
@@ -198,37 +194,33 @@ theorem ord_pos_iff (E : Place (algebraMap ℂ K)) (e : E.ring) (he : (e : K) �
 variable {κ : Type} [Field κ] [Algebra ℂ κ]
 
 /- English proof (translation)
-Use `haveI : CharZero κ := charZero_of_injective_algebraMap (algebraMap ℂ κ).injective`. Set `j : R →+* E.ring` to `R.subtype.codRestrict E.ring fun r => hER r r.2`. Take `⟨ι, hι⟩` from `exists_extension π ((IsLocalRing.residue E.ring).comp j) (fun a => by`. Distinguish the cases in `ha : (a : K) = 0`. Take `rfl : a = 0` from `Subtype.ext ha`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hker a ha, RingHom.comp_apply, IsLocalRing.residue_eq_zero_iff]`. Conclude with `ord_pos_iff E (j a) ha) hfr`. Establish `hmax : IsLocalRing.maximalIdeal E.ring = Ideal.span {t}` using `ht.maximalIdeal_eq`. Set `φ : IsLocalRing.ResidueField E.ring →+* D` to `Ideal.Quotient.lift _ (μ.comp (inl κ' E)) fun a ha => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `ha` using `[hmax, Ideal.mem_span_singleton]`. Take `⟨c, rfl⟩` from `ha`. Establish `h0 : μ (inl κ' E t) = 0` using `hg 0`. Rewrite using `[map_mul, RingHom.comp_apply, h0, zero_mul]`. Establish `hφ : ∀ e, φ (IsLocalRing.residue E.ring e) = μ (inl κ' E e)` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : κ' →+* D` to `μ.comp (inr E)`. Set `α : κ →+* D` to `φ.comp ι`. Set `β : κ →+* D` to `ψ.comp ρ.toRingHom`. Establish `hαβ : ∀ a : R, α (π a) - β (π a) = μ (inl κ' E (j a) - inr E (ρ (π a)))` using `fun a => by`. Rewrite using `[map_sub, ← hφ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun y => φ y - β (π a)) (hι a)`. Establish `hmR : ∀ a : R, α (π a) - β (π a) ∈ IsLocalRing.maximalIdeal D` using `fun a => by`. Rewrite using `[hαβ, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, hμ, not_not]`. Conclude with `h𝔭.1.2 (Ideal.subset_span (Or.inr ⟨a, rfl⟩))`. Establish `hιc : ∀ a, ι (algebraMap ℂ κ a) = IsLocalRing.residue E.ring (E.const a)` using `fun a => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hπc a (hRc a), hι]`. Both sides reduce to the same expression. Establish `heq : α = β`. Use `ringHom_eq_of_trBasis hz α β (fun a => ?_) (fun i => ?_) (fun x => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ (ι _) = μ (inr E (ρ _))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hιc, hφ, inl_const, AlgHom.commutes]`. Rewrite using `[← sub_eq_zero, hαβ]`. Conclude with `hg i.succ`. Take `⟨a, b, hb, e⟩` from `hfr x`. Introduce `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu' : IsUnit ((α x - β x) * α (π b))` using `hu.mul ((IsUnit.mk0 _ hb).map α)`. Establish `e' : (α x - β x) * α (π b) = (α (π a) - β (π a)) - β x * (α (π b) - β (π b))`. Rewrite using `[← e, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hu'` using `[e']`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(sub_mem (hmR a) (Ideal.mul_mem_left _ _ (hmR b))) hu'`. Use `letI : Algebra κ (IsLocalRing.ResidueField E.ring) := ι.toAlgebra`. Use `letI : Algebra κ κ' := ρ.toRingHom.toAlgebra`. Use `letI : Algebra κ D := α.toAlgebra`. Use `haveI : IsReduced (IsLocalRing.ResidueField E.ring ⊗[κ] κ') := GlobalTheory.ReducedAlg.isReduced_field_tensor _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `φ' : IsLocalRing.ResidueField E.ring →ₐ[κ] D` to `{ φ with commutes' := fun _ => rfl }`. Set `ψ' : κ' →ₐ[κ] D` to `{ ψ with commutes' := fun x => (RingHom.congr_fun heq x).symm }`. Set `χ` to `Algebra.TensorProduct.productMap φ' ψ'`. Set `u : IsLocalRing.ResidueField E.ring →ₐ[κ] IsLocalRing.ResidueField E.ring ⊗[κ] κ'` to `Algebra.TensorProduct.includeLeft`. Set `v : κ' →ₐ[κ] IsLocalRing.ResidueField E.ring ⊗[κ] κ'` to `Algebra.TensorProduct.includeRight`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `huv : ∀ x, u (ι x) = v (ρ x)` using `fun x => (u.commutes x).trans (v.commutes x).symm`. Take `⟨θ, hθ₁, hθ₂⟩` from `exists_tens_lift E (u.toRingHom.comp (IsLocalRing.residue E.ring)) v.toRingHom fun a => by`. Express the relevant statement in the definitionally equal form `u (IsLocalRing.residue E.ring (E.const a)) = v _`. Rewrite using `[← hιc, huv, AlgHom.commutes]`. Establish `hχ : χ.toRingHom.comp θ = μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `tens_ringHom_ext E (fun e => ?_) (fun b => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, hθ₁, ← hφ]`. Conclude with `Algebra.TensorProduct.productMap_left_apply φ' ψ' _`. Rewrite using `[RingHom.comp_apply, hθ₂]`. Conclude with `Algebra.TensorProduct.productMap_right_apply φ' ψ' _`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hI : graphIdeal E R π ρ ≤ RingHom.ker θ`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `b (⟨e, he, hb⟩ | ⟨a, hb⟩)`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Place.ord] at he`. Establish `hmem : e ∈ E.ring` using `(E.ord_nonneg_iff he0).1 he.le`. Take `rfl : b = inl κ' E ⟨e, hmem⟩` from `Subtype.ext hb`. Express the relevant statement in the definitionally equal form `θ _ = 0`. Rewrite using `[hθ₁, RingHom.comp_apply, (IsLocalRing.residue_eq_zero_iff _).2 ((ord_pos_iff E ⟨e, hmem⟩ he0).1 he), map_zero]`.
-
-Take `rfl : b = inl κ' E (j a) - inr E (ρ (π a))` from `Subtype.ext hb`. Express the relevant statement in the definitionally equal form `θ _ = 0`. Rewrite using `[map_sub, hθ₁, hθ₂, sub_eq_zero]`. Conclude with `(congrArg u (hι a).symm).trans (huv _)`. Introduce `b hb`.
-
-Take `⟨s, hs, n, hn⟩` from `exists_mul_mem_radical h𝔭 hb`. Establish `h1 : θ (b * s) = 0` using `IsNilpotent.eq_zero ⟨n, by rw [← map_pow]; exact hI hn⟩`. Establish `h2 : μ b * μ s = 0`. Rewrite using `[← map_mul, ← hχ, RingHom.comp_apply, h1, map_zero]`. Conclude with `((hμ s).2 hs).mul_left_eq_zero.1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_eq_zero_of_gens {k : ℕ} (R : Subring K) (π : R →+* κ) (ρ : κ →ₐ[ℂ] κ')
     (E : Place (algebraMap ℂ K)) (hER : E.Contains R) (t : E.ring) (zR : Fin k → R)
@@ -329,17 +321,15 @@ theorem map_eq_zero_of_gens {k : ℕ} (R : Subring K) (π : R →+* κ) (ρ : κ
   exact ((hμ s).2 hs).mul_left_eq_zero.1 h2
 
 /- English proof (translation)
-Introduce `K κ κ' L _ _ _ _ _ iκ _ _ _ k R π ρ E hER t zR 𝔭 _ _ hπc hRc hfr hker ht hz h𝔭`. Establish `hinj` using `IsFractionRing.injective (K ⊗[ℂ] κ') L`. Use `letI := isLocalRing_locAt (L := L) 𝔭 hinj`. Establish `hz' : IsTranscendenceBasis ℂ fun i => π (zR i)`. Establish `e : (algebraMap ℂ κ).toAlgebra = iκ` using `Algebra.algebra_ext _ _ fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `TrBasis at hz`. Rewrite `hz` using `[e]`. Conclude with `hz`. Use `set J : Ideal (locAt (L := L) 𝔭) := Ideal.span (Set.range fun i => toQ 𝔭 (gens E R π ρ hER t zR i)) with hJ`. Establish `hle : J ≤ IsLocalRing.maximalIdeal (locAt (L` using `L) 𝔭) := by`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `(toQ_mem_maximalIdeal_iff 𝔭 hinj).2 (h𝔭.1.2 (Ideal.subset_span ?_))` and prove the remaining obligations. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Conclude with `Or.inl ⟨t, by rw [E.ord_irreducible ht]; exact one_pos, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the first alternative. Prove the second alternative. Establish an intermediate fact.
 
-Conclude with `Or.inr ⟨zR i, rfl⟩`. Establish `hne : J ≠ ⊤` using `fun h => (IsLocalRing.maximalIdeal.isMaximal _).ne_top (top_le_iff.1 (h ▸ hle))`. Use `haveI : Nontrivial (locAt (L := L) 𝔭 ⧸ J) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsLocalRing (locAt (L := L) 𝔭 ⧸ J) := IsLocalRing.of_surjective' (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`. Use `haveI : IsLocalHom (Ideal.Quotient.mk J) := IsLocalHom.of_surjective (Ideal.Quotient.mk J) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `map_eq_zero_of_gens R π ρ E hER t zR 𝔭 hπc hRc hfr hker ht hz' h𝔭 ((Ideal.Quotient.mk J).comp (toQ 𝔭)) (fun b => (isUnit_map_iff (Ideal.Quotient.mk J) _).trans (isUnit_toQ_iff 𝔭 hinj)) (fun i => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨i, rfl⟩))`. Use `le_antisymm (fun x hx => ?_) hle` and prove the remaining obligations. Take `⟨a, s, hs, e⟩` from `exists_mul_toQ 𝔭 x`. Establish `ha : a ∈ 𝔭` using `(toQ_mem_maximalIdeal_iff 𝔭 hinj).1 (e ▸ Ideal.mul_mem_right _ _ hx)`. Establish `haJ : toQ (L` using `L) 𝔭 a ∈ J := Ideal.Quotient.eq_zero_iff_mem.1 (key a ha)`.
-
-Rewrite `haJ` using `[← e]`. Conclude with `(Ideal.mul_unit_mem_iff_mem J (isUnit_toQ 𝔭 hinj hs)).1 haJ`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_locAt_eq_span : ∀ {K κ κ' L : Type} [Field K] [Field κ] [Field κ'] [Field L] [Algebra ℂ K] [Algebra ℂ κ] [Algebra ℂ κ']
     [Algebra (K ⊗[ℂ] κ') L] [IsFractionRing (K ⊗[ℂ] κ') L]

@@ -16,7 +16,7 @@ noncomputable section
 namespace LevelTowerAlt.Comparison₂
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (fun f => Over.Hom.left f) h`. Simplify using `only [Over.comp_left, GenWeilModel.ext, Over.homMk_left] at h1`. Use `epi_sp i` as an intermediate fact. Conclude with `(cancel_epi _).1 h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lv_ext_cancel {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X} {k : Type} [Field k]
     (i : Ω →+* k) {x x' : Over.mk ξ ⟶ G} (h : GenWeilModel.ext i ≫ x = GenWeilModel.ext i ≫ x') : x = x' := by
@@ -32,7 +32,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {B : Type} [CommRing B] {b : Base l B} {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {s : Sp Ω ⟶ Sp B}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp only [pow_zero]`. Conclude with `push_one hp T`. Consider the case `succ n ih => rw [pow_succ, pow_succ, push_mul hp, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lv_push_pow {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (hp : IsGrpPullback G' G f φ) {T : Over S'} (a : T ⟶ G') (n : ℕ) :
@@ -42,15 +42,15 @@ theorem lv_push_pow {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] 
   | succ n ih => rw [pow_succ, pow_succ, push_mul hp, ih]
 
 /- English proof (translation)
-Establish `hp` using `m.cart`. Set `i : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω (AlgebraicClosure Ω)`. Take `⟨a, ha, hpa⟩` from `pull_point hp i y hy`. Take `⟨T⟩` from `exists_tate o i`. Take `⟨α, rfl⟩` from `(T.onto n hn a).1 ha`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hnr : 0 < n * r` using `Nat.mul_pos hn hr`. Take `⟨y', -, hy'a⟩` from `desc hp hf i (T.ev (n * r) α) ((T.onto (n * r) hnr _).2 ⟨α, rfl⟩)`. Set `x : Over.mk ξ ⟶ t.G` to `Over.homMk (y'.left ≫ m.cm.F) (by`. Rewrite using `[Category.assoc, hp.1.w, ← Category.assoc, Over.w y']`. Use the proof step `simp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : GenWeilModel.ext i ≫ x = pushPt hp.1.w (T.ev (n * r) α)`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hy'a]`. Simplify using `[x, pushPt, GenWeilModel.ext, ex]`. Establish `hcp : ∀ j : ℕ, GenWeilModel.ext i ≫ x ^ j = (GenWeilModel.ext i ≫ x) ^ j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`. Use `⟨x, lv_ext_cancel i ?_, lv_ext_cancel i ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hcp, hx, ← lv_push_pow hp, (T.onto (n * r) hnr _).2 ⟨α, rfl⟩, push_one hp, MonObj.comp_one]`. Rewrite using `[hcp, hx, ← lv_push_pow hp, T.tower n r hn hr α, hpa]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lv_div (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n r : ℕ} (hn : 0 < n) (hr : 0 < r)
     (hf : FullTorsion t.G ξ (n * r)) (y : Over.mk ξ ⟶ t.G) (hy : y ^ n = 1) :
@@ -80,19 +80,19 @@ theorem lv_div (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n r : ℕ}
   · rw [hcp, hx, ← lv_push_pow hp, T.tower n r hn hr α, hpa]
 
 /- English proof (translation)
-Take `⟨h0, W, f, h1, h2, h3⟩` from `h`. Use `⟨h0, W, f, h1, fun k _ _ i xk g c hW hxk hg hc => ?_, fun e v hev hv => ?_⟩` and prove the remaining obligations. Establish `hp` using `m.cart`. Establish `hg' : g ^ (n * r) = 1` using `by rw [pow_mul, hg, one_pow]`. Take `⟨g₀, hg₀⟩` from `hf k i g hg'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg₁ : g = GenWeilModel.ext i ≫ g₀` using `Over.OverMorphism.ext hg₀`. Establish `hg₂ : g₀ ^ n = 1` using `lv_ext_cancel i (by rw [MonObj.comp_pow, ← hg₁, hg, MonObj.comp_one])`. Take `⟨a, ha, hpa⟩` from `pull_point hp i x hx`. Take `⟨a', ha', hpa'⟩` from `pull_point hp i g₀ hg₂`. Establish `e1 : a'.left ≫ m.φ = g.left` using `(congrArg (fun z => z.left) hpa').trans hg₀.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : a.left ≫ m.φ = (GenWeilModel.ext i ≫ x).left` using `congrArg (fun z => z.left) hpa`. Establish `e3 : (a ^ r).left ≫ m.φ = xk.left`. Establish `h4` using `lv_push_pow hp a r`. Establish `h5 : pushPt hp.1.w (a ^ r) = GenWeilModel.ext i ≫ x ^ r`. Rewrite using `[MonObj.comp_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h4.trans (congrArg (· ^ r) hpa)`. Conclude with `(congrArg (fun z => z.left) h5).trans hxk.symm`. Use `h2 k i (GenWeilModel.ext i ≫ x) g c hW rfl hg' ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.T.weil_pairing_pullback_iff E H X (Sp Ω) t o.t ξ m k (spMap i) a a' _ g (n * r) c e2 e1]`. Rewrite `hc` using `[← GlobalTheory.T.weil_pairing_pullback_iff E H X (Sp Ω) t o.t ξ m k (spMap i) (a ^ r) a' xk g n c e3 e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : CharZero k` using `charZero_of_injective_ringHom i.injective`. Establish `hu : IsUnit ((n * r : ℕ) : Γ((Over.mk (spMap i)).left, ⊤))`. Establish `h6 : IsUnit ((n * r : ℕ) : k)` using `(Nat.cast_ne_zero.2 (Nat.mul_pos hn hr).ne').isUnit`. Establish `h7` using `h6.map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Rewrite `h7` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h8` using `((GlobalTheory.PairingLawZeroCounterexample.laws.1 _ (GlobalTheory.Obj.toPolAV o) n (Over.mk (spMap i))).2.2.2 r a a' (unitOn c) hu ha ha').2 hc`. Rewrite using `[Nat.cast_mul]`. Conclude with `h8`. Take `⟨u, hu, he⟩` from `h3 e v hev hv`. Use `⟨r * u, mul_mem (natCast_mem _ r) hu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[he]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lv_down [CharZero Ω] (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t ξ) {n r : ℕ} (hn : 0 < n) (hr : 0 < r)
     (hf : FullTorsion t.G ξ (n * r)) {V : Type} [AddCommGroup V] [Module Ω V] (M : LieModel t.G ξ V)
@@ -135,13 +135,13 @@ theorem lv_down [CharZero Ω] (o : Obj D l b s) (t : SAB H X) (m : SABMap o.t t 
 end obj
 
 /- English proof (translation)
-Unfold `HT.IsCp at h`. Use `split_ifs at h with h2`. Substitute `h2 h` using the available equality. Use `⟨4, ?_, by norm_num⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, hζ, rfl⟩` from `h`. Establish `hfact : Fact p.Prime` using `⟨hp⟩`. Establish `hmem : ζ ∈ primitiveRoots p Ω` using `(mem_primitiveRoots hp.pos).2 hζ`. Establish `hc` using `congrArg (Polynomial.eval 1) (Polynomial.cyclotomic_eq_prod_X_sub_primitiveRoots hζ)`. Rewrite `hc` using `[Polynomial.eval_one_cyclotomic_prime, Polynomial.eval_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C] at hc`. Rewrite `hc` using `[← Finset.mul_prod_erase _ _ hmem]`. Use `⟨-((p : Ω) ^ 3) * ∏ z ∈ (primitiveRoots p Ω).erase ζ, (1 - z), ?_, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.T.integral_element_regular X Ω ξ q hξ hq` to reduce the goal to its premises. Use `IsIntegral.mul (IsIntegral.neg (IsIntegral.pow (isIntegral_natCast p) 3)) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsIntegral.prod _ fun z hz => IsIntegral.sub isIntegral_one ?_` and prove the remaining obligations. Conclude with `((mem_primitiveRoots hp.pos).1 (Finset.mem_of_mem_erase hz)).isIntegral hp.pos`. Use `push_cast`. Rewrite using `[pow_succ, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lv_kappa {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp Ω ⟶ X} (hξ : IsCptGen ξ) (q : Cpt ξ)
     (hq : IsIntegrallyClosed (X.presheaf.stalk q.1)) {p : ℕ} (hp : p.Prime) {κ : Ω} (h : HT.IsCp p κ) :
@@ -169,25 +169,23 @@ theorem lv_kappa {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] {ξ : Sp 
       ring
 
 /- English proof (translation)
-Introduce `hF E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 p hpS hpq hfree q hq`. Establish `hp` using `𝔐.S_prime p hpS`. Use `haveI := Fact.mk hp`. Establish `: CharZero Ω` using `charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hmono : Mono (spMap (algebraMap (𝓞 c.F) c.F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `c.fin` as an intermediate fact. Establish `: NumberField c.F` using `{}`. Establish `: IsPreimmersion (spMap (algebraMap (𝓞 c.F) c.F))` using `IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 c.F))`. Use `infer_instance`. Take `⟨x₀, hx₀'⟩` from `GlobalTheory.T.hodge_component_factor_point E H D l Xo c _ _ Y S Ω K J y 𝔐 hmono`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx₀ : 𝔐.ξ ≫ 𝔐.f = (spMap 𝔐.fn ≫ x₀) ≫ Y.j`. Rewrite using `[Category.assoc, ← hx₀']`. Conclude with `𝔐.fn_over`. Take `⟨s0, o, ⟨m⟩⟩` from `GlobalTheory.T.abelian_scheme_point_object E H D l Xo c _ _ Y 𝔐.X 𝔐.f 𝔐.t 𝔐.m Ω 𝔐.ξ _ hx₀`. Establish `hno` using `((GlobalTheory.T.regAt_noetherian_model_noetherian _ Ω 𝔐.ξ ℤ _ _ 𝔐.tie).2 𝔐.all).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnc` using `(GlobalTheory.T.normal_cpt_iff_normal_scheme _ Ω 𝔐.ξ 𝔐.tie.gen 𝔐.all).2.2 𝔐.normal`. Take `⟨κ, hκ, hS⟩` from `GlobalTheory.T.exists_sandwich_of_hodge_tate_free hF E H D l Xo c _ _ Y S Ω K J y 𝔐 p hpS hpq hfree`. Establish `hR : p ^ 𝔐.R p = p ^ 4 * p ^ (𝔐.R p - 4)`. Rewrite using `[← pow_add, Nat.add_sub_cancel' (𝔐.R_ge p hpS)]`. Establish `hsw` using `(hS q hq).2.2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hf` using `𝔐.tors p hpS`. Unfold `HT.omP at hsw`. Rewrite `hsw`, `hf`, the goal using `[hR]`. Take `⟨a, ha, hae⟩` from `lv_kappa 𝔐.tie.gen q (𝔐.normal _).2 hp hκ`. Establish `hn : 0 < p ^ 4` using `pow_pos hp.pos _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hr : 0 < p ^ (𝔐.R p - 4)` using `pow_pos hp.pos _`. Generalize the expression as in `p ^ (𝔐.R p - 4) = r at *`. Generalize the expression as in `p ^ 4 = n at *`. Establish `hf' : FullTorsion 𝔐.t.G 𝔐.ξ n` using `fun k _ i g hg => hf k i g (by rw [pow_mul, hg, one_pow])`. Establish `hw : ∀ N, 0 < N → FullTorsion 𝔐.t.G 𝔐.ξ N → ∃ e, GenWeil 𝔐.t.G 𝔐.t.PP.L 𝔐.ξ N e` using `fun N hN hfN => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.T.exists_generic_weil_pairing GlobalTheory.PairingLawZeroCounterexample.laws.1 E H D l _ _ (Sp Ω) _ s0 o 𝔐.t 𝔐.ξ m Ω (𝟙 _) N hN (by rwa [Category.id_comp]) (root o 𝔐.t m hfN hN hpq)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Take `⟨e, he⟩` from `hw n hn hf'`. Take `⟨e', he'⟩` from `hw _ (Nat.mul_pos hn hr) hf`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w ⟨z, hz, hw⟩`. Take `⟨x, hx, rfl⟩` from `lv_div o 𝔐.t m hn hr hf z hz`. Take `⟨U, hU, w', hw'⟩` from `(GlobalTheory.T.hodge_tate_weil_local _ Ω 𝔐.ξ 𝔐.tie.gen hnc 𝔐.t.G 𝔐.t.semi 𝔐.t.PP.L _ (Nat.mul_pos hn hr) hf e' he' _ 𝔐.M q).1`. Establish `h1` using `hw' x hx q hU`. Take `⟨u, hu, rfl⟩` from `((GlobalTheory.T.hodge_tate_weil_local _ Ω 𝔐.ξ 𝔐.tie.gen hnc 𝔐.t.G 𝔐.t.semi 𝔐.t.PP.L _ hn hf' e he _ 𝔐.M q).2 _ _ w hz (lv_down o 𝔐.t m hn hr hf 𝔐.M x hx q _ h1)).1 hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem (Submodule.subset_span ⟨x, hx, h1⟩) ?_` and prove the remaining obligations. Establish `h2 : n • u = (⟨a, ha⟩ : regAt 𝔐.ξ q) • κ • u`. Rewrite using `[← Nat.cast_smul_eq_nsmul Ω, hae, mul_smul]`. Both sides reduce to the same expression. Conclude with `h2 ▸ Submodule.smul_mem _ _ (hsw u hu)`.
-
-Introduce and unpack `w ⟨x, hx, hw⟩`. Conclude with `Submodule.subset_span ⟨x ^ r, by rw [← pow_mul, Nat.mul_comm, hx], lv_down o 𝔐.t m hn hr hf 𝔐.M x hx q w hw⟩`.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem levelFree : LevelFree := by
   intro hF E _ _ _ H D l Xo c Y S Ω _ K _ J _ y 𝔐 p hpS hpq hfree q hq

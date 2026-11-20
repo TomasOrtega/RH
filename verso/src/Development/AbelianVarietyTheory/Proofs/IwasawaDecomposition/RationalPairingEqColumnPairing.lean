@@ -21,15 +21,15 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 namespace GlobalTheory.Mem.R3
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Introduce `x G`. Establish `key` using `GlobalTheory.span_range_inf_ker_le_of_basis D.what₂.embLL D.div.RR.b (jA.comp V.mulVecLin) D.jEE (D.what₂.iota D.what₂.mu0) (eRR.toLinearMap ∘ₗ Pq.mulVecLin) D.jEE_basis.1 hι`. Establish `hU : D.what₂.Usp D.what₂.mu0 = Submodule.span ℂ ((jA.comp V.mulVecLin) '' {x | (eRR.toLinearMap ∘ₗ Pq.mulVecLin) x = 0})`. Rewrite using `[← key, Formalism.BasicNotions.Rows.Data.Usp, hV]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hK : ∀ F ∈ D.what₂.Usp D.what₂.mu0, D.what₂.perCol u D.what₂.mu0 (D.jN u (eN x)) F = 0`. Introduce `F hF`. Rewrite `hF` using `[hU]`. Proceed by induction on `hF using Submodule.span_induction with`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Consider the case `mem F hF`. Take `⟨G', hG', rfl⟩` from `hF`. Establish `hG'' : Pq.mulVec G' = 0` using `eRR.map_eq_zero_iff.1 hG'`. Use `(hper x G').symm.trans ?_` and prove the remaining obligations. Rewrite using `[hvan x G' hG'', map_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => exact D.perCol_zero u _`. Consider the case `add F G _ _ hF hG => rw [D.perCol_add, hF, hG, add_zero]`. Consider the case `smul c F _ hF => rw [GlobalTheory.perCol_base_smul_form, hF, mul_zero]`. Establish `hmem : jA (V.mulVec G) ∈ D.what₂.V0 D.what₂.mu0`. Rewrite using `[hV]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨G, rfl⟩`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[← hBR u (eN x) (eRR (Pq.mulVec G)), ← hι G, hper x G]`. Conclude with `(GlobalTheory.perCol_eq_pairing_of_kills D hB u _ hK _ hmem).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bk_eq_of_coordinates (D : D7) (μ : D.what₂.Tup) (hμ : μ = D.what₂.mu0) {n nV d a : ℕ}
     (jA : (Fin n → D.what₂.LL) →ₛₗ[D.what₂.embLL] D.what₂.Amb μ) (V : Matrix (Fin n) (Fin nV) D.what₂.LL)
@@ -69,17 +69,15 @@ theorem bk_eq_of_coordinates (D : D7) (μ : D.what₂.Tup) (hμ : μ = D.what₂
   exact (GlobalTheory.perCol_eq_pairing_of_kills D hB u _ hK _ hmem).symm
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z C sEE hPins hHolds hBR hBt u x y`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hHolds.ok hHolds.sep hPins.char hHolds.prim`. Establish `hW` using `hR.wf true`. Establish `h2` using `(hR.what₂ true).1`. Establish `hI` using `(GlobalTheory.T.rowSide_definition_both_levels hC D G Pl0 I0 T A3 Ks R F cG X0 Y Z hPins hHolds).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPq` using `hW.Pq_surj A3.fam3.base3.μ0`. Establish `hRi` using `CxData.rinv_spec _ hPq`. Establish `hV` using `GlobalTheory.range_op_eq_span_of_formsTie D.what₂.embLL (Y.jA A3.fam3.base3.μ0) _ _ _ (rV0 D A3.A F.P1 F.ψ1 A3.fam3.base3.μ0) (Y.formsA A3.fam3.base3.μ0) (GlobalTheory.range_goodProjector_eq_range_goodCoordinates D A3.A 1 hHolds.ok.ok2 F.P1 F.ψ1 A3.fam3.base3.μ0)`. Establish `hι : ∀ G0, D.what₂.iota (Y.tup A3.fam3.base3.μ0) (Y.jA A3.fam3.base3.μ0 ((rV0 D A3.A F.P1 F.ψ1 A3.fam3.base3.μ0).mulVec G0)) = D.jEE (Z.eRR (((F.fc (R.toCx3 F).zs).Df1.Pq A3.fam3.base3.μ0).mulVec G0))`. Introduce `G0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hI.iota A3.fam3.base3.μ0 G0`. Rewrite `h` using `[Formalism.BasicNotions.Examples₂.NZ.sharp_iota]`. Use `h.trans ?_` and prove the remaining obligations. Use `show D.jEE (Z.eRR (((R.toCx3 F).rowMat F.cr true A3.fam3.base3.μ0).mulVec _)) = _`. Rewrite using `[CxData.rowMat_base _ F.cr true h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (fun v => D.jEE (Z.eRR v)) (Matrix.one_mulVec _)`. Establish `key` using `bk_eq_of_coordinates D (Y.tup A3.fam3.base3.μ0) Y.tup0 (Y.jA A3.fam3.base3.μ0) (rV0 D A3.A F.P1 F.ψ1 A3.fam3.base3.μ0) ((F.fc (R.toCx3 F).zs).Df1.Pq A3.fam3.base3.μ0) Z.eRR u (C.eNu u) (fun x G0 => (F.Dc (R.toCx3 F).zs).Pt (C.wU u) A3.fam3.base3.μ0 x G0) Y.bu hBR hV hι (fun x G0 …`. Establish `hy : ∀ v : Fin ((lv (F.fc (R.toCx3 F).zs) true).dQ A3.fam3.base3.μ0) → D.what₂.LL, ((F.fc (R.toCx3 F).zs).Df1.Pq A3.fam3.base3.μ0).mulVec ((CxData.rinv ((F.fc (R.toCx3 F).zs).Df1.Pq A3.fam3.base3.μ0)).mulVec v) = v`. Introduce `v`. Use `(Matrix.mulVec_mulVec _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg (fun M => Matrix.mulVec M v) hRi).trans (Matrix.one_mulVec v)`. Use `Eq.trans ?_ (key x ((CxData.rinv ((F.fc (R.toCx3 F).zs).Df1.Pq A3.fam3.base3.μ0)).mulVec y))` and prove the remaining obligations. Conclude with `congrArg (fun v => D.div.Bk u (C.eNu u x) (Z.eRR v)) (hy y).symm`. Introduce `x G0 hG0`. Apply `hBt (C.wU u) x G0` to reduce the goal to its premises.
-
-Conclude with `LinearMap.mem_ker.2 hG0`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem pairing_eq_colPairing : (GlobalTheory.Published.DiscreteSeriesCover ∧ GlobalTheory.Published.HarishChandraModules ∧ GlobalTheory.Published.CasselmanWallach ∧ GlobalTheory.Published.HarishChandraFinite ∧ GlobalTheory.Published.CuspRapidDecay) → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y) (C : ReadC R F X0 Y) (sEE : (R.toCx3 F).EE →ₗ⋆[ℂ] (F.fc (R.toCx3 F).zs).Sp.HH), Pins R F cG → Holds R F → D.BuRational → CxData.BtVanish (fc := F.fc) (R.toCx3 F) → ∀ u x y, D.div.Bk u (C.eNu u x) (Z.eRR y) = (colOf R F sEE).B (C.wU u) x y := by
   intro hC D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z C sEE hPins hHolds hBR hBt u x y

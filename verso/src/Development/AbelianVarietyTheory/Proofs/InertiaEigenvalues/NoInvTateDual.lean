@@ -23,9 +23,9 @@ open ReciprocityTheory.Gal (cycZ)
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `LL.2` as an intermediate fact. Use `GlobalTheory.HTW.isJumpV_of_injective (P.PD K) (Representation.trivial ↥LL.1 ↥(GK K) ↥LL.1) ρ (LinearMap.toSpanSingleton ↥LL.1 V x) (LinearMap.ker_eq_bot.1 (LinearMap.ker_toSpanSingleton _ hx)) (fun g v => by simp [h]) τ 0 fun h0 => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.CrysExt.finrank_fildR_trivial (P.PD K) (LL := ↥LL.1) τ 0`. Establish `h2` using `GlobalTheory.CrysExt.finrank_fildR_trivial (P.PD K) (LL := ↥LL.1) τ (0 + 1)`. Rewrite `h2` using `[h0, h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h2`.
+Simplify using the standard rewrite rules.
 -/
 theorem isJumpV_zero_of_invariant (P : LocPrime l) (K LL : FinExt l) {V : Type} [AddCommGroup V] [Module ↥LL.1 V]
     [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥LL.1 V] (ρ : Representation ↥LL.1 ↥(GK K) V) (x : V) (hx : x ≠ 0)
@@ -44,7 +44,7 @@ variable {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω] [IsAlgClosed Ω]
   (Bw : LocBridge l E Ω Gw O) (P : LocPrime l)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] ↥Bw.LL.1 (((P.PD Bw.Kw).χ g : ℚ_[l]ˣ) : ℚ_[l]) = _`. Rewrite using `[P.PD_χ, ← GlobalTheory.BlockJumps.cycZ_eq_chi Bw P g]`. Conclude with `(congrArg Subtype.val (Bw.eO_alg _)).symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cycLL_eq (g : ↥(GK Bw.Kw)) :
     ((cycLL (P.PD Bw.Kw) ↥Bw.LL.1 g : (↥Bw.LL.1)ˣ) : ↥Bw.LL.1) =
@@ -54,9 +54,9 @@ theorem cycLL_eq (g : ↥(GK Bw.Kw)) :
   exact (congrArg Subtype.val (Bw.eO_alg _)).symm
 
 /- English proof (translation)
-Establish `h1 : (ε • (A : Matrix (Fin m) (Fin m) O)⁻¹.transpose).map φ = φ ε • (((A : Matrix (Fin m) (Fin m) O)⁻¹).map φ).transpose`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Establish `h2 : ((A : Matrix (Fin m) (Fin m) O)⁻¹).map φ * (A : Matrix (Fin m) (Fin m) O).map φ = 1`. Rewrite using `[← Matrix.map_mul, ← Matrix.coe_units_inv, Units.inv_mul, Matrix.map_one _ φ.map_zero φ.map_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul, Matrix.dotProduct_mulVec, Matrix.vecMul_transpose, Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_dual {O L : Type} [CommRing O] [CommRing L] (φ : O →+* L) {m : ℕ} (A : GL (Fin m) O) (ε : O)
     (x y : Fin m → L) :
@@ -80,7 +80,7 @@ theorem rep_apply {m : ℕ} (r : ↥Gw →* GL (Fin m) O) (g : ↥(GK Bw.Kw)) (x
 
 omit [IsAlgClosed Ω] in
 /- English proof (translation)
-Establish `: FiniteDimensional ℚ_[l] ↥Bw.Kw.1` using `Bw.Kw.2`. Rewrite using `[← AlgHom.card ℚ_[l] ↥Bw.Kw.1 (Loc.Om l), ← Nat.card_eq_fintype_card]`. Conclude with `Nat.card_congr { toFun := fun τ => Bw.LL.1.val.comp τ invFun := fun τ => τ.codRestrict Bw.LL.1.toSubalgebra (Bw.LL_split τ) left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_emb : Nat.card (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥Bw.LL.1) = Module.finrank ℚ_[l] ↥Bw.Kw.1 := by
   have : FiniteDimensional ℚ_[l] ↥Bw.Kw.1 := Bw.Kw.2
@@ -92,7 +92,7 @@ theorem card_emb : Nat.card (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥Bw.LL.1) = Module.fin
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Establish `hi : Function.Injective (dotProductBilin L L : (Fin m → L) →ₗ[L] (Fin m → L) →ₗ[L] L)`. Introduce `x y h`. Use function extensionality and compare the values at `i`. Simplify using `using LinearMap.congr_fun h (Pi.single i 1)`. Conclude with `⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hi⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem dot_bijective {L : Type} [Field L] (m : ℕ) :
     Function.Bijective (dotProductBilin L L : (Fin m → L) →ₗ[L] (Fin m → L) →ₗ[L] L) := by
@@ -103,15 +103,15 @@ theorem dot_bijective {L : Type} [Field L] (m : ℕ) :
   exact ⟨hi, (LinearMap.injective_iff_surjective_of_finrank_eq_finrank (Subspace.dual_finrank_eq).symm).1 hi⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Establish `: FiniteDimensional ℚ_[l] ↥Bw.Kw.1` using `Bw.Kw.2`. Establish `hc` using `card_emb Bw`. Take `⟨⟨τ⟩, -⟩` from `Nat.card_pos_iff.1 (hc ▸ Module.finrank_pos (R := ℚ_[l]) (M := ↥Bw.Kw.1))`. Establish `hJ` using `isJumpV_zero_of_invariant P Bw.Kw Bw.LL (Bw.rep r') x h0 hx τ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `(GlobalTheory.DRDual.twisted_dual_deRham l P AI T Bw.Kw Bw.LL _ (Bw.rep r) _ (Bw.rep r') (dotProductBilin _ _) 1 (dot_bijective m) (fun g x y => by`. Rewrite using `[zpow_one, cycLL_eq, rep_apply, rep_apply, hd]`. Conclude with `dot_dual _ _ _ _ _) (by simpa [IsDR, LocBridge.IsdRW] using hdR)).2 τ (-1) hc`. Establish `h1 : multV (P.PD Bw.Kw) (Bw.rep r) τ (-1) = 0`. Unfold `multV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[not_not.1 (hj τ), sub_self]`. Rewrite `hm` using `[h1, show -(-1 : ℤ) - 1 = 0 by norm_num]`. Apply `hJ` to reduce the goal to its premises. Establish `hfin` using `(GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T Bw.Kw Bw.LL _ (Bw.rep r')).1`. Establish `hle : FildR (P.PD Bw.Kw) (Bw.rep r') τ 0 ≤ DdR (P.PD Bw.Kw) (Bw.rep r')` using `le_trans inf_le_left inf_le_left`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.finiteDimensional_of_le hle` as an intermediate fact. Use `Submodule.eq_of_le_of_finrank_eq (inf_le_inf_left _ ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul v b => exact ⟨v ⊗ₜ[ℚ_[l]] ⟨b.1, (P.PD Bw.Kw).Fil_anti 0 b.2⟩, rfl⟩`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Unfold `multV at hm`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem local_noInv (AI : LocAinf l P) (T : LocTied l P AI) {m : ℕ} (r r' : ↥Gw →* GL (Fin m) O)
     (hd : ∀ g, ((r' g : GL (Fin m) O) : Matrix (Fin m) (Fin m) O) =
@@ -164,23 +164,19 @@ end Global
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨AI, ⟨T⟩⟩ hH hJ v hv A hA x hx`. Set `φ` to `algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))`. Set `M : Gen.GE D.nd → Matrix (Fin D.R.r) (Fin D.R.r) (FractionRing (D.ntw.O0 i))` to `fun g => (Tdual i s g).map φ`. Establish `hmul : ∀ g h, M (g * h) = M g * M h` using `fun g h => by`. Simplify using `only [M, ← Matrix.map_mul]`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun Y => Matrix.map Y φ) ((dualHom i s).map_mul g h)`. Establish `hone : M 1 = 1`. Establish `: Tdual i s 1 = 1` using `(dualHom i s).map_one`. Simplify using `only [M, this, Matrix.map_one _ φ.map_zero φ.map_one]`. Take `⟨k, hk⟩` from `exists_smul_eq_of_isPlaceOver (F := D.host.E) hA (D.nd.plOm.2 v)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : ∀ g ∈ DecV D.nd v, (M g).mulVec ((M k).mulVec x) = (M k).mulVec x`. Introduce `g hg`. Establish `h1 : k⁻¹ * g * k ∈ Dec (F` using `D.host.E) A := by`. Establish `hg' : g • D.nd.plOm.1 v = D.nd.plOm.1 v` using `hg`. Express the relevant statement in the definitionally equal form `(k⁻¹ * g * k) • A = A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_smul, mul_smul, hk, hg', ← hk, inv_smul_smul]`. Establish `h2 : (M (k⁻¹ * g * k)).mulVec x = x` using `hx _ h1`. Use `conv_rhs => rw [← h2]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hmul, ← hmul]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `group`. Establish `: IsAlgClosed D.nd.Om` using `IsAlgClosure.isAlgClosed D.host.E`. Set `Bw` to `bkP.br i v hv`. Establish `hz` using `local_noInv Bw (D.loc (D.ntw.l i)) AI T ((Tgl i s).comp (DecV D.nd v).subtype) ((dualHom i s).toHomUnits.comp (DecV D.nd v).subtype) (fun g => by`. Express the relevant statement in the definitionally equal form `Tdual i s g = _ • (((Tgl i s g : GL (Fin D.R.r) (D.ntw.O0 i)) : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)))⁻¹.transpose`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Tgl_coe]`. Use the proof step `rfl)`. Use the proof step `(hH v hv _ (Set.mem_insert_of_mem _ rfl)).1`. Use the proof step `(fun τ h => by`. Use `hJ v hv τ (-1) h` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use the proof step `omega)`. Use the proof step `(fun a => Br.toLLK Bw ((M k).mulVec x a)) (fun g => by`. Rewrite using `[rep_apply]`. Use function extensionality and compare the values at `a`. Establish `h3` using `congrArg (Br.toLLK Bw) (congrFun (hy _ (Bw.e.symm g).2) a)`.
-
-Rewrite using `[← h3, RingHom.map_mulVec]`. Use `congr 1`. Use extensionality with `b c`. Conclude with `congrArg Subtype.val (Br.toLLK_alg Bw _).symm)`. Establish `h4 : (M k).mulVec x = 0` using `funext fun a => (Br.toLLK Bw).injective (by`.
-
-Rewrite using `[Pi.zero_apply, map_zero]`. Conclude with `congrFun hz a)`. Establish `h5` using `congrArg (M k⁻¹).mulVec h4`. Rewrite `h5` using `[Matrix.mulVec_mulVec, ← hmul, inv_mul_cancel, hone, Matrix.one_mulVec, Matrix.mulVec_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem noInv_tateDual : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i), (∃ AI, Nonempty (LocTied (D.ntw.l i) (D.loc (D.ntw.l i)) AI)) → HodgeL bkP i s → NoJump bkP i s → ∀ v ∈ placesOver D.host.E (D.ntw.l i), NoInv i (Tdual i s) v := by
   rintro D bkP i s ⟨AI, ⟨T⟩⟩ hH hJ v hv A hA x hx

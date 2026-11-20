@@ -8,11 +8,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.LeviShift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n n₁ d d₁ W W₁ H H' t h₁ m h l`. Establish `hv : Matrix.vecMulVec (incV F H.x) (incV F H'.y) * (mat m)ᵀ = cA σ (t⁻¹).1 • Matrix.vecMulVec (incV F H.x) (incV F H'.y)`. Rewrite using `[Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.2.1]`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_left_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hc : cA σ t.1 * cA σ (t⁻¹).1 = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Rewrite using `[shiftA, shiftA, Matrix.smul_mul, hv, smul_smul]`. Use `congr 1`. Simplify using `only [Units.val_mul, Units.coe_map, MonoidHom.coe_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_assoc, hc, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shiftA_mul_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n n₁ d d₁ : ℕ)
     (W : Spc F E d) (W₁ : Spc F E d₁) (H : Plane E n n₁) (H' : Plane E d d₁) (t : (AE F E)ˣ) (h₁ : UA σ W₁.J)

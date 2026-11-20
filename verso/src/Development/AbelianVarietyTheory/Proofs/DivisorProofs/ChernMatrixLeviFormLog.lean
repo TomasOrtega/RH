@@ -17,9 +17,9 @@ noncomputable section
 namespace GlobalTheory.MixDens
 
 /- English proof (translation)
-Establish `hξ : ξ = ∑ j, ξ j • EuclideanSpace.single j (1 : ℂ)`. Use extensionality with `i`. Simplify using `[Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq']`. Use `conv_rhs => rw [hξ]`. Simplify using `only [map_sum, ContinuousLinearMap.sum_apply, map_smul, map_smulₛₗ, ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_mul_apply_single_mul_conj {D : ℕ} (B : V D →L[ℂ] V D →L⋆[ℂ] ℂ) (ξ : V D) :
     ∑ j, ∑ l, ξ j * B (EuclideanSpace.single j 1) (EuclideanSpace.single l 1) * starRingEnd ℂ (ξ l) = B ξ ξ := by
@@ -34,13 +34,13 @@ theorem sum_mul_apply_single_mul_conj {D : ℕ} (B : V D →L[ℂ] V D →L⋆[�
   ring
 
 /- English proof (translation)
-Introduce `k _ X p σ D L g hg U t ht c y hy hU ξ`. Set `c₀ : VB.Chart L 1` to `⟨U, fun _ => t, ht⟩`. Establish `hi : y ∈ ptsIn p σ ((det L 1).U c₀)` using `hU`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) U)`. Establish `hm` using `ChartGlue.mem_over c.e hy hU`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun v => ((g.detWeight.φ c₀ (c.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => -((Real.log (g.form t t (c.e.symm v)).re : ℝ) : ℂ)` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[← Complex.ofReal_neg]`. Use `congr 1`. Use `show -Real.log (g.G c₀ (c.e.symm v)).det.re = -Real.log (g.form t t (c.e.symm v)).re`. Rewrite using `[Matrix.det_unique, ← g.form_frame c₀ hv.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ContDiffAt ℝ 2 (fun v => g.detWeight.φ c₀ (c.e.symm v)) (c.e y)` using `hg.detWeight.contDiffAt c hy hi`. Establish `hu` using `(contDiffAt_ofReal_comp hd).congr_of_eventuallyEq e.symm`. Establish `hB : ∀ j l, chernMat g.detWeight c y j l = -leviForm (fun v => Real.log (g.form t t (c.e.symm v)).re) (c.e y) (EuclideanSpace.single j 1) (EuclideanSpace.single l 1)`. Introduce `j l`. Rewrite using `[chernMat, c.hess_eq hg.detWeight hy hi (mem_pick _ y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ReciprocityTheory.L2DbarEstimates.cHess D (fun v => ((g.detWeight.φ c₀ (c.e.symm v) : ℝ) : ℂ)) (c.e y) j l = _`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, GlobalTheory.CurveDens.cHess_apply_eq_ddbar hu]`. Use `erw [ddbar_neg]`. Both sides reduce to the same expression. Repeatedly rewrite using `[hB, mul_neg, neg_mul, Finset.sum_neg_distrib, sum_mul_apply_single_mul_conj, Complex.neg_re]`.
+Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernMat_eq_neg_leviForm : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (D : ℕ) (L : X.Modules) (g : Met p σ L 1), g.IsCInf → ∀ (U : X.Opens) (t : Γ(L, U)), IsFrame (fun _ : Fin 1 => t) → ∀ (c : AlgChart p σ D), ∀ y ∈ c.e.source, y ∈ ptsIn p σ U → ∀ ξ : V D, (∑ j, ∑ l, ξ j * chernMat g.detWeight c y j l * starRingEnd ℂ (ξ l)).re = -(leviForm (fun v => Real.log (g.form t t (c.e.symm v)).re) (c.e y) ξ ξ).re := by
   intro k _ X p σ D L g hg U t ht c y hy hU ξ

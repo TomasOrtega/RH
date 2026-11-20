@@ -26,7 +26,7 @@ variable {D : RealPlaceData k r Wp Wq} {α : ℝ}
 
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
 /- English proof (translation)
-The claim follows from `H.2`.
+A detailed English derivation is pending.
 -/
 theorem SqIntegrable.integrable (H : SqIntegrable D α) : Integrable (fun g : Mt k r =>
     gN (Matrix.of g : Mat k r) ^ (-α) * gN (Matrix.of g : Mat k r) ^ (-α)) D.μG := H.2
@@ -34,9 +34,9 @@ theorem SqIntegrable.integrable (H : SqIntegrable D α) : Integrable (fun g : Mt
 omit [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] in
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ α` using `le_trans (P.B2.AB_nonneg k r) hα`. Use `⟨h0, ?_⟩` and prove the remaining obligations. Establish `hfin` using `norm_power_integrable_sharp k r D.μG α D.haarG hα`. Establish `hm : Measurable fun g : Mt k r => gN (Matrix.of g : Mat k r) ^ (-α)` using `(show Continuous fun g : Mt k r => gN (Matrix.of g : Mat k r) from gN_continuous).measurable.pow_const _`. Establish `hnn : ∀ g : Mt k r, 0 ≤ gN (Matrix.of g : Mat k r) ^ (-α)` using `fun g => Real.rpow_nonneg (gN_nonneg _) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : Integrable (fun g : Mt k r => gN (Matrix.of g : Mat k r) ^ (-α)) D.μG` using `⟨hm.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal (Eventually.of_forall hnn)).2 hfin⟩`. Use `hI.mono' (hm.mul hm).aestronglyMeasurable ?_` and prove the remaining obligations. Use `filter_upwards [haar_ae D.haarG] with g hg`. Rewrite using `[Real.norm_of_nonneg (mul_nonneg (hnn g) (hnn g))]`. Conclude with `mul_le_of_le_one_right (hnn g) (Real.rpow_le_one_of_one_le_of_nonpos (matrix_norm_ge_one k r _ hg) (by linarith))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqIntegrable_of_threshold (D : RealPlaceData k r Wp Wq) (hα : AB k r ≤ α) : SqIntegrable D α := by
   have h0 : 0 ≤ α := le_trans (P.B2.AB_nonneg k r) hα
@@ -54,9 +54,7 @@ theorem sqIntegrable_of_threshold (D : RealPlaceData k r Wp Wq) (hα : AB k r �
     (Real.rpow_le_one_of_one_le_of_nonpos (matrix_norm_ge_one k r _ hg) (by linarith))
 
 /- English proof (translation)
-Establish `hxy` using `inSS_mem D hp`. Establish `hAt : AEStronglyMeasurable (fun g : Mt k r => A (sgs p (Matrix.of g))) D.μG`. Simplify using `only [sgs_eq]`. Conclude with `admissible_ae_strongly_measurable (admissible_two_sided_translate H.1 hA (WeylGroupFacts.uh_inv hxy.1) hxy.2) D.haarG`. Establish `h1 : AEStronglyMeasurable (fun g : Mt k r => Sd D p (A (sgs p (Matrix.of g)))) D.μG` using `(Sd D p).continuous.comp_aestronglyMeasurable hAt`.
-
-Conclude with `hsInner_continuous.comp_aestronglyMeasurable (h1.prodMk (admissible_ae_strongly_measurable hB D.haarG))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrand_aestronglyMeasurable (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) :
@@ -70,11 +68,11 @@ theorem integrand_aestronglyMeasurable (H : SqIntegrable D α) {A B : Mat k r �
   exact hsInner_continuous.comp_aestronglyMeasurable (h1.prodMk (admissible_ae_strongly_measurable hB D.haarG))
 
 /- English proof (translation)
-Establish `hxy` using `inSS_mem D hp`. Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Establish `h1` using `admissible_norm_bound (admissible_two_sided_translate H.1 hA (WeylGroupFacts.uh_inv hxy.1) hxy.2) hg`. Rewrite `h1` using `[Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hxy.1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `admissible_norm_bound hB hg`. Establish `h3 : (gN (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r) * gN (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)⁻¹) ^ α ≤ M ^ α` using `Real.rpow_le_rpow (mul_nonneg (gN_nonneg _) (gN_nonneg _)) hM H.1`. Establish `hg0 : 0 ≤ gN g ^ (-α)` using `Real.rpow_nonneg (gN_nonneg g) _`. Establish `hM0 : 0 ≤ M ^ α` using `le_trans (Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _) h3`. Use `(hilbert_schmidt_integrand_bound D A B hp g).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `mul_le_mul_of_nonneg_left (mul_le_mul (h1.trans ?_) h2 (norm_nonneg _) (by positivity)) (by positivity)` and prove the remaining obligations. Use `gcongr`. Use `_ = _ := by ring`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrand_norm_le (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) {g : Mat k r} (hg : g ∈ GV k r) {M : ℝ} (hM : normProductOfPair p ≤ M) :
@@ -101,7 +99,7 @@ theorem integrand_norm_le (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[�
     _ = _ := by ring
 
 /- English proof (translation)
-Use `(H.integrable.const_mul ((Module.finrank ℂ Wq : ℝ) * (cA * normProductOfPair p ^ α * cB))).mono' (integrand_aestronglyMeasurable H hA hB hp) ?_` and prove the remaining obligations. Use `filter_upwards [haar_ae D.haarG] with g hg`. Conclude with `integrand_norm_le H hA hB hp hg le_rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coef_integrand_integrable (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : admitted α cA A) (hB : admitted α cB B) {p : SS k r} (hp : D.inSS p) :
@@ -112,11 +110,9 @@ theorem coef_integrand_integrable (H : SqIntegrable D α) {A B : Mat k r → (Wq
   exact integrand_norm_le H hA hB hp hg le_rfl
 
 /- English proof (translation)
-Introduce `p₀ hp₀`. Use `show ContinuousWithinAt (fun p => ∫ g : Mt k r, hsInner (rho D p A (Matrix.of g)) (B (Matrix.of g)) ∂D.μG) {p | D.inSS p} p₀`. Use `continuousWithinAt_of_dominated (bound := fun g : Mt k r => (Module.finrank ℂ Wq : ℝ) * (cA * (normProductOfPair p₀ + 1) ^ α * cB) * (gN (Matrix.of g : Mat k r) ^ (-α) * gN (Matrix.of g : Mat k r) ^ (-α))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with p hp`. Conclude with `integrand_aestronglyMeasurable H hA hB hp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ᶠ p in 𝓝[{p | D.inSS p}] p₀, normProductOfPair p < normProductOfPair p₀ + 1` using `(norm_product_continuous_on D p₀ hp₀).tendsto.eventually_lt_const (lt_add_one _) filter_upwards [self_mem_nhdsWithin, hN] with p hp hNp filter_upwards [haar_ae D.haarG] with g hg`. Conclude with `integrand_norm_le H hA hB hp hg hNp.le`. Conclude with `(SqIntegrable.integrable H).const_mul _`. Use `filter_upwards [haar_ae D.haarG] with g hg`. Establish `h1 : ContinuousWithinAt (fun p : SS k r => A (sgs p (Matrix.of g))) {p | D.inSS p} p₀` using `(hA.1.comp (conjugated_pair_continuous_on D (Matrix.of g)) (fun p hp => conj_product_mem_unitary_group D hp hg)) p₀ hp₀`.
-
-Establish `h2 : ContinuousWithinAt (fun p : SS k r => Sd D p (A (sgs p (Matrix.of g)))) {p | D.inSS p} p₀` using `(Sd_continuousOn D p₀ hp₀).clm_apply h1`. Conclude with `hsInner_continuous.continuousAt.comp_continuousWithinAt (h2.prodMk continuousWithinAt_const)`.
+A detailed English derivation is pending.
 -/
 theorem coef_continuousOn (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hB : admitted α cB B) : ContinuousOn (Ph D A B) {p | D.inSS p} := by
@@ -142,11 +138,11 @@ theorem coef_continuousOn (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[�
     exact hsInner_continuous.continuousAt.comp_continuousWithinAt (h2.prodMk continuousWithinAt_const)
 
 /- English proof (translation)
-Establish `hax` using `aDil_mem k r hx`. Establish `hay` using `aDil_inv_mem k r hy`. Establish `mpL : MeasurePreserving (lmulM (aDil k r x)) D.μG D.μG` using `⟨(BesselUnitaryEquiv.continuous_lmulM _).measurable, D.haarG.left _ hax⟩`. Establish `mpR : MeasurePreserving (rmulF (aDil k r y)⁻¹) D.μG D.μG` using `⟨(continuous_right_multiplication_map _).measurable, D.haarG.right _ hay⟩`. Establish `eL : MeasurableEmbedding (lmulM (k` using `k) (r := r) (aDil k r x)) := (BesselUnitaryEquiv.lmulE _ (WeylGroupFacts.isUnit_of_uh hax)).measurableEmbedding`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eR : MeasurableEmbedding (rmulF (aDil k r y)⁻¹)` using `(rightMulMeasurableEquiv _ (WeylGroupFacts.isUnit_of_uh hay)).measurableEmbedding`. Unfold `Ph`. Rewrite using `[← (mpR.comp mpL).integral_comp (eR.comp eL)]`. Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Establish `e : (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g) : Mat k r) = aDil k r x * Matrix.of g * (aDil k r y)⁻¹` using `rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show hsInner (rho D (dilation₂ (x, y) p) A (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g))) (B (Matrix.of ((rmulF (aDil k r y)⁻¹ ∘ lmulM (aDil k r x)) g))) = hsInner (rho D p (fun g => A (aDil k r x * g * (aDil k r y)⁻¹)) (Matrix.of g)) (B (aDil k r x * Matrix.of g * …`. Rewrite using `[e, rho_eq, rho_eq, sgs_dil P.dilation_unipotent_weyl_measure D hp hx hy, Sd_dil]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_dilate (_H : SqIntegrable D α) (A B : Mat k r → (Wq →L[ℂ] Wp)) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
     (hx : 0 < x) (hy : 0 < y) :
@@ -174,37 +170,31 @@ theorem coef_dilate (_H : SqIntegrable D α) (A B : Mat k r → (Wq →L[ℂ] Wp
   rw [e, rho_eq, rho_eq, sgs_dil P.dilation_unipotent_weyl_measure D hp hx hy, Sd_dil]
 
 /- English proof (translation)
-Establish `hα` using `H.1`. Establish `ht₀ : t₀ ∈ s` using `mem_of_mem_nhds hs`. Take `⟨hS1, hS2⟩` from `inSS_mem D hp`. Establish `hS1i` using `WeylGroupFacts.uh_inv hS1`. Establish `hK0 : 0 ≤ K` using `le_trans (gN_nonneg _) (hKa t₀ ht₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA` using `admissible_constant_nonneg hA`. Establish `hcB` using `admissible_constant_nonneg hB`. Take `⟨S1, hS1d⟩ : ∃ S1 : Mat k r, S1 = (Matrix.of p.1.2 * Matrix.of p.1.1 : Mat k r)⁻¹` from `⟨_, rfl⟩`. Take `⟨S2, hS2d⟩ : ∃ S2 : Mat k r, S2 = (Matrix.of p.2.2 * Matrix.of p.2.1 : Mat k r)` from `⟨_, rfl⟩`. Rewrite `hS1i` using `[← hS1d]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS2` using `[← hS2d]`. Establish `hsgs : ∀ g : Mat k r, sgs p g = S1 * g * S2`. Introduce `g`. Rewrite using `[sgs_eq, hS1d, hS2d]`. Take `⟨P, hPd⟩ : ∃ P : ℝ, P = (K * K) ^ α` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hMd⟩ : ∃ M : ℝ, M = (gN S1⁻¹ * gN S2⁻¹) ^ α` from `⟨_, rfl⟩`. Establish `hP0 : 0 ≤ P` using `by rw [hPd]; exact Real.rpow_nonneg (mul_nonneg hK0 hK0) _`. Establish `hM0 : 0 ≤ M` using `by rw [hMd]; exact Real.rpow_nonneg (mul_nonneg (gN_nonneg _) (gN_nonneg _)) _`. Establish `hG` using `haar_ae D.haarG`. Establish `ms2 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ t ∈ s, AEStronglyMeasurable (fun g : Mt k r => f (a t * sgs p (Matrix.of g) * b t)) D.μG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f c hf t ht`. Use `admissible_ae_strongly_measurable (admissible_two_sided_translate hα (admissible_two_sided_translate hα hf (ha t ht) (hb t ht)) hS1i hS2) D.haarG` as an intermediate fact. Simplify `this` using `only [hsgs]`. Establish `ms1 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ t ∈ s, AEStronglyMeasurable (fun g : Mt k r => f (a t * Matrix.of g * b t)) D.μG`. Introduce `f c hf t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `admissible_ae_strongly_measurable (admissible_two_sided_translate hα hf (ha t ht) (hb t ht)) D.haarG`. Establish `b2 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ g : Mt k r, (Matrix.of g : Mat k r) ∈ GV k r → ∀ t ∈ s, ‖f (a t * sgs p (Matrix.of g) * b t)‖ ≤ c * P * M * gN (Matrix.of g : Mat k r) ^ (-α)`. Introduce `f c hf g hg t ht`. Rewrite using `[hsgs, hPd, hMd]`. Conclude with `translated_norm_bound hα hf (ha t ht) (hb t ht) hS1i hS2 hg (hKa t ht) (hKb t ht)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `b1 : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)} {c : ℝ}, admitted α c f → ∀ g : Mt k r, (Matrix.of g : Mat k r) ∈ GV k r → ∀ t ∈ s, ‖f (a t * Matrix.of g * b t)‖ ≤ c * P * 1 * gN (Matrix.of g : Mat k r) ^ (-α)`. Introduce `f c hf g hg t ht`. Rewrite using `[hPd, mul_one]`. Conclude with `norm_admissible_of_double_translate_le hα hf (ha t ht) (hb t ht) hg (hKa t ht) (hKb t ht)`. Establish `hm0 : ∀ g : Mt k r, 0 ≤ gN (Matrix.of g : Mat k r) ^ (-α)` using `fun g => Real.rpow_nonneg (gN_nonneg _) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `parametric_derivative_under_integral (μ := D.μG) (Sd D p) (Sd_norm_le D hp) (u := fun t g => A (a t * sgs p (Matrix.of g) * b t)) (v := fun t g => B (a t * Matrix.of g * b t)) (u' := fun t g => κ t • A1 (a t * sgs p (Matrix.of g) * b t)) (v' := fun t g => κ t • B1 (a t * Matrix.o …`. Establish `hz : sgs p (Matrix.of g) ∈ GV k r`. Rewrite using `[hsgs]`. Conclude with `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hS1i hg) hS2`. Conclude with `dA _ hz t ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Conclude with `dB _ hg t ht)`. Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b2 hA g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := 1) (K := K) (c₀ := cA + cB) (M := M) zero_le_one (by linarith) hcA (by linarith) hP0 hM0 (by linarith) (hm0 g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b1 hB g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := 1) (K := K) (c₀ := cA + cB) (M := M) zero_le_one (by linarith) hcB (by linarith) hP0 zero_le_one (by linarith) (hm0 g)`. Use the proof step `linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b2 hA1 g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := |κ t|) (K := K) (c₀ := cA + cB) (M := M) (abs_nonneg _) (by have := hκ t ht; linarith) hcA (by linarith) hP0 hM0 (by linarith) (hm0 g)`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left h (abs_nonneg _)) h2)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by filter_upwards [hG] with g hg t ht`. Establish `h` using `b1 hB1 g hg t ht`. Establish `h2` using `product_bound_monotone_factors_le (e := |κ t|) (K := K) (c₀ := cA + cB) (M := M) (abs_nonneg _) (by have := hκ t ht; linarith) hcB (by linarith) hP0 zero_le_one (by linarith) (hm0 g)`. Rewrite using `[norm_smul, Real.norm_eq_abs]`. Conclude with `le_trans (mul_le_mul_of_nonneg_left h (abs_nonneg _)) h2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `i1` using `coef_integrand_integrable H (admissible_two_sided_translate hα hA1 (ha t₀ ht₀) (hb t₀ ht₀)) (admissible_two_sided_translate hα hB (ha t₀ ht₀) (hb t₀ ht₀)) hp`. Establish `i2` using `coef_integrand_integrable H (admissible_two_sided_translate hα hA (ha t₀ ht₀) (hb t₀ ht₀)) (admissible_two_sided_translate hα hB1 (ha t₀ ht₀) (hb t₀ ht₀)) hp`. Establish `e1 : (∫ g : Mt k r, (hsInner (Sd D p (κ t₀ • A1 (a t₀ * sgs p (Matrix.of g) * b t₀))) (B (a t₀ * Matrix.of g * b t₀)) + hsInner (Sd D p (A (a t₀ * sgs p (Matrix.of g) * b t₀))) (κ t₀ • B1 (a t₀ * Matrix.of g * b t₀))) ∂D.μG) = (κ t₀ : ℂ) * (Ph D (fun g => A1 (a t₀ * g * b t₀)) (f …`. Unfold `Ph`. Rewrite using `[← integral_add i1 i2, ← integral_const_mul]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [rho_eq]`. Rewrite using `[← Complex.coe_smul (κ t₀) (A1 _), ← Complex.coe_smul (κ t₀) (B1 _), map_smul, hsInner_smul_left, hsInner_smul_right, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← e1]`.
-
-Establish `e2 : (fun t => Ph D (fun g => A (a t * g * b t)) (fun g => B (a t * g * b t)) p) = fun t => ∫ g : Mt k r, hsInner (Sd D p (A (a t * sgs p (Matrix.of g) * b t))) (B (a t * Matrix.of g * b t)) ∂D.μG`. Use function extensionality and compare the values at `t`. Unfold `Ph`. Simplify using `only [rho_eq]`. Rewrite using `[e2]`.
-
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem coef_hasDerivAt (H : SqIntegrable D α) {A B A1 B1 : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : admitted α cA A) (hA1 : admitted α cA A1) (hB : admitted α cB B) (hB1 : admitted α cB B1)
@@ -326,17 +316,13 @@ theorem coef_hasDerivAt (H : SqIntegrable D α) {A B A1 B1 : Mat k r → (Wq →
   exact key
 
 /- English proof (translation)
-Take `⟨K1, hK1, hK1b⟩` from `aDil_gN_bound k r (a := y / 2) (b := 2 * y) (by linarith)`. Establish `hs : Set.Ioo (y / 2) (2 * y) ∈ 𝓝 y` using `Ioo_mem_nhds (by linarith) (by linarith)`. Establish `hpos : ∀ t ∈ Set.Ioo (y / 2) (2 * y), 0 < t` using `fun t ht => by have := ht.1; linarith`. Establish `hr` using `rr_pos r`. Establish `hd : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)}, DR f → ∀ z ∈ GV k r, ∀ t ∈ Set.Ioo (y / 2) (2 * y), HasDerivAt (fun t => f (aDil k r x * z * (aDil k r t)⁻¹)) ((-(rr r / t)) • Rr f (aDil k r x * z * (aDil k r t)⁻¹)) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f df z hz t ht`. Conclude with `curveR f (aDil k r x * z) (hpos t ht) (df _ (WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (aDil_mem k r hx) hz) (aDil_inv_mem k r (hpos t ht))))`. Establish `key` using `coef_hasDerivAt H hA hA' hB hB' hp (a := fun _ => aDil k r x) (b := fun t => (aDil k r t)⁻¹) (κ := fun t => -(rr r / t)) hs (K := K1 + gN (aDil k r x)⁻¹ + 2 * rr r / y) (fun t _ => aDil_mem k r hx) (fun t ht => aDil_inv_mem k r (hpos t ht)) (fun t _ => by`. Establish `h1 : 0 ≤ 2 * rr r / y` using `by positivity`. Use the proof step `linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun t ht => by`. Establish `h1 : 0 ≤ 2 * rr r / y` using `by positivity`. Establish `h2` using `gN_nonneg (aDil k r x)⁻¹`. Establish `h3` using `(hK1b t ⟨ht.1.le, ht.2.le⟩).1`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh (aDil_mem k r (hpos t ht)))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `linarith)`. Use the proof step `(fun t ht => by`. Establish `h2` using `gN_nonneg (aDil k r x)⁻¹`. Establish `h3 : |-(rr r / t)| ≤ 2 * rr r / y`. Rewrite using `[abs_neg, abs_of_pos (div_pos hr (hpos t ht)), div_le_div_iff₀ (hpos t ht) hy]`.
-
-Use `ht.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the proof step `linarith)`. Use the proof step `(hd dA) (hd dB)`. Rewrite using `[coef_dilate H (Rr A) B hp hx hy, coef_dilate H A (Rr B) hp hx hy]`.
-
-Use `key.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hs] with t ht`. Conclude with `coef_dilate H A B hp hx (hpos t ht)`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coef_hasDerivAt_right (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hA' : admitted α cA (Rr A)) (hB : admitted α cB B) (hB' : admitted α cB (Rr B)) (dA : DR A) (dB : DR B)
@@ -379,17 +365,15 @@ theorem coef_hasDerivAt_right (H : SqIntegrable D α) {A B : Mat k r → (Wq →
   exact coef_dilate H A B hp hx (hpos t ht)
 
 /- English proof (translation)
-Take `⟨K1, hK1, hK1b⟩` from `aDil_gN_bound k r (a := x / 2) (b := 2 * x) (by linarith)`. Establish `hs : Set.Ioo (x / 2) (2 * x) ∈ 𝓝 x` using `Ioo_mem_nhds (by linarith) (by linarith)`. Establish `hpos : ∀ t ∈ Set.Ioo (x / 2) (2 * x), 0 < t` using `fun t ht => by have := ht.1; linarith`. Establish `hr` using `rr_pos r`. Establish `hd : ∀ {f : Mat k r → (Wq →L[ℂ] Wp)}, DL f → ∀ z ∈ GV k r, ∀ t ∈ Set.Ioo (x / 2) (2 * x), HasDerivAt (fun t => f (aDil k r t * z * (aDil k r y)⁻¹)) ((-(rr r / t)) • Ll f (aDil k r t * z * (aDil k r y)⁻¹)) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f df z hz t ht`. Establish `h` using `curveL f (z * (aDil k r y)⁻¹) (hpos t ht) (df _ (WeylGroupFacts.uh_mul (aDil_mem k r (hpos t ht)) (WeylGroupFacts.uh_mul hz (aDil_inv_mem k r hy))))`. Simplify `h` using `only [Matrix.mul_assoc]`. Establish `key` using `coef_hasDerivAt H hA hA' hB hB' hp (a := fun t => aDil k r t) (b := fun _ => (aDil k r y)⁻¹) (κ := fun t => -(rr r / t)) hs (K := K1 + gN ((aDil k r y)⁻¹)⁻¹ + 2 * rr r / x) (fun t ht => aDil_mem k r (hpos t ht)) (fun t _ => aDil_inv_mem k r hy) (fun t ht => by`. Establish `h1 : 0 ≤ 2 * rr r / x` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `gN_nonneg ((aDil k r y)⁻¹)⁻¹`. Establish `h3` using `(hK1b t ⟨ht.1.le, ht.2.le⟩).2`. Use the proof step `linarith)`. Use the proof step `(fun t _ => by`. Establish `h1 : 0 ≤ 2 * rr r / x` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Use the proof step `(fun t ht => by`. Establish `h2` using `gN_nonneg ((aDil k r y)⁻¹)⁻¹`. Establish `h3 : |-(rr r / t)| ≤ 2 * rr r / x`. Rewrite using `[abs_neg, abs_of_pos (div_pos hr (hpos t ht)), div_le_div_iff₀ (hpos t ht) hx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ht.1` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the proof step `linarith)`. Use the proof step `(hd dA) (hd dB)`. Rewrite using `[coef_dilate H (Ll A) B hp hx hy, coef_dilate H A (Ll B) hp hx hy]`.
-
-Use `key.congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hs] with t ht`. Conclude with `coef_dilate H A B hp (hpos t ht) hy`.
+A detailed English derivation is pending.
 -/
 theorem coef_hasDerivAt_left (H : SqIntegrable D α) {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ} (hA : admitted α cA A)
     (hA' : admitted α cA (Ll A)) (hB : admitted α cB B) (hB' : admitted α cB (Ll B)) (dA : DL A) (dB : DL B)
@@ -432,9 +416,9 @@ theorem coef_hasDerivAt_left (H : SqIntegrable D α) {A B : Mat k r → (Wq →L
   exact coef_dilate H A B hp (hpos t ht) hy
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero`. Conclude with `coef_hasDerivAt_right H (hA.1 0 (by omega) 0 le_rfl) (hA.1 1 le_rfl 0 le_rfl) (hB.1 0 (by omega) 0 le_rfl) (hB.1 1 le_rfl 0 le_rfl) (hA.2.1 0 (by omega)) (hB.2.1 0 (by omega)) hp hx hy`. Consider the case `succ l ih`. Establish `h1` using `ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leibnizR_hasDerivAt_right (H : SqIntegrable D α) {l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA (l + 1) 0 A) (hB : AdmW α cB (l + 1) 0 B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -452,9 +436,9 @@ theorem leibnizR_hasDerivAt_right (H : SqIntegrable D α) {l : ℕ} {A B : Mat k
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `m generalizing A B with`. Consider the case `zero`. Conclude with `coef_hasDerivAt_left H (hA.1 0 le_rfl 0 (by omega)) (hA.1 0 le_rfl 1 le_rfl) (hB.1 0 le_rfl 0 (by omega)) (hB.1 0 le_rfl 1 le_rfl) (hA.2.2 0 le_rfl 0 (by omega)) (hB.2.2 0 le_rfl 0 (by omega)) hp hx hy`. Consider the case `succ m ih`. Establish `h1` using `ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB)`. Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leibnizL_hasDerivAt_left (H : SqIntegrable D α) {m : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA 0 (m + 1) A) (hB : AdmW α cB 0 (m + 1) B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -472,9 +456,9 @@ theorem leibnizL_hasDerivAt_left (H : SqIntegrable D α) {m : ℕ} {A B : Mat k 
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero => exact leibnizL_hasDerivAt_left H hA hB hp hx hy`. Consider the case `succ l ih`. Establish `h1` using `ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)`. Establish `h2` using `ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h1.add h2`. Rewrite `h3` using `[← mul_add]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leibnizR_hasDerivAt_left (H : SqIntegrable D α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l (m + 1) A) (hB : AdmW α cB l (m + 1) B) {p : SS k r} (hp : D.inSS p) {x y : ℝ}
@@ -490,9 +474,9 @@ theorem leibnizR_hasDerivAt_left (H : SqIntegrable D α) {m l : ℕ} {A B : Mat 
     exact h3
 
 /- English proof (translation)
-Proceed by induction on `m generalizing A B with`. Consider the case `zero`. Establish `h1` using `coef_continuousOn H (admissible_of_weighted hA) (admissible_of_weighted hB)`. Establish `h2 : ContinuousOn (fun q : SS k r × (ℝ × ℝ) => dilation₂ q.2 q.1) ({p | D.inSS p} ×ˢ Quad)` using `(dilationAction_continuousOn k r).mono (Set.prod_mono (Set.subset_univ _) le_rfl)`. Use `h1.comp h2 ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨p, t⟩ ⟨hp, ht⟩`. Conclude with `dil_inSS P.dilation_unipotent_measure D hp ht.1 ht.2`. Consider the case `succ m ih => exact (ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)).add (ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB))`.
+Assume the hypotheses and unpack their components. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem leibnizL_continuousOn (H : SqIntegrable D α) {m : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA 0 m A) (hB : AdmW α cB 0 m B) :
@@ -508,7 +492,7 @@ theorem leibnizL_continuousOn (H : SqIntegrable D α) {m : ℕ} {A B : Mat k r �
   | succ m ih => exact (ih (admissibleWeight_left_derivative hA) (admissibleWeight_of_succ_left_order hB)).add (ih (admissibleWeight_of_succ_left_order hA) (admissibleWeight_left_derivative hB))
 
 /- English proof (translation)
-Proceed by induction on `l generalizing A B with`. Consider the case `zero => exact leibnizL_continuousOn H hA hB`. Consider the case `succ l ih => exact (ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)).add (ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem leibnizR_continuousOn (H : SqIntegrable D α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l m A) (hB : AdmW α cB l m B) :
@@ -518,7 +502,7 @@ theorem leibnizR_continuousOn (H : SqIntegrable D α) {m l : ℕ} {A B : Mat k r
   | succ l ih => exact (ih (admissibleWeight_right_derivative hA) (admissible_weight_lower_order hB)).add (ih (admissible_weight_lower_order hA) (admissibleWeight_right_derivative hB))
 
 /- English proof (translation)
-The claim follows from `(leibnizR_continuousOn H hA hB).comp (Continuous.prodMk_right p).continuousOn (fun _ ht => ⟨hp, ht⟩)`.
+A detailed English derivation is pending.
 -/
 theorem leibnizR_continuousOn_param (H : SqIntegrable D α) {m l : ℕ} {A B : Mat k r → (Wq →L[ℂ] Wp)} {cA cB : ℝ}
     (hA : AdmW α cA l m A) (hB : AdmW α cB l m B) {p : SS k r} (hp : D.inSS p) :
@@ -526,7 +510,7 @@ theorem leibnizR_continuousOn_param (H : SqIntegrable D α) {m l : ℕ} {A B : M
   (leibnizR_continuousOn H hA hB).comp (Continuous.prodMk_right p).continuousOn (fun _ ht => ⟨hp, ht⟩)
 
 /- English proof (translation)
-The claim follows from `al2 (Wd_contDiff D) (Wd_tsupport D) (rr r) (fun m l x y => QR D p m l F F' x y) (fun l hl x hx y hy => leibnizR_hasDerivAt_right H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)) hp hx hy) (fun m hm l hl x hx y hy => leibnizR_has …`.
+A detailed English derivation is pending.
 -/
 theorem bracket_calculus (H : SqIntegrable D α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') {p : SS k r} (hp : D.inSS p) :
@@ -549,7 +533,7 @@ theorem bracket_calculus (H : SqIntegrable D α) {F F' : Mat k r → (Wq →L[�
     (regBracket D F F' p) (regBracket_eq D F F' p)
 
 /- English proof (translation)
-Use `stronglyMeasurable_indicator_of_continuousOn' ((measurableSet_inSS D).prod (measurableSet_Ioi.prod measurableSet_Ioi)) ?_` and prove the remaining obligations. Establish `e : (fun q : SS k r × (ℝ × ℝ) => regBracket D F F' q.1 q.2.1 q.2.2) = fun q => ((Wd D q.2.1 * Wd D q.2.2 : ℝ) : ℂ) * QR D q.1 0 0 F F' q.2.1 q.2.2`. Use function extensionality and compare the values at `fun q => regBracket_eq D F F' q.1 q.2.1 q.2.2`. Rewrite using `[e]`. Conclude with `((cutoff_square_product_continuous D).comp continuous_snd).continuousOn.mul (leibnizR_continuousOn H (admissibleWeight_mono hF (by omega) (by omega)) (admissibleWeight_mono hF' (by omega) (by omega)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutBracket_measurable (H : SqIntegrable D α) {F F' : Mat k r → (Wq →L[ℂ] Wp)} {c c' : ℝ} (hF : AdmW α c 2 2 F)
     (hF' : AdmW α c' 2 2 F') : StronglyMeasurable (Bt D F F') := by

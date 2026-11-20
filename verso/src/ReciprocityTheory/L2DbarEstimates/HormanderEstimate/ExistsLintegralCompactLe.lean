@@ -8,11 +8,11 @@ open scoped ENNReal
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hxe, he⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => by rw [he]`. Establish `hf` using `(hψ e hc).continuousOn.continuousAt (e.open_target.mem_nhds (e.map_source hxe))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hf.comp (e.continuousAt hxe)`. Establish `h3 : ContinuousAt (fun y => (ψ y : ℂ)) x`. Use `h2.congr (Filter.eventually_of_mem (e.open_source.mem_nhds hxe) (fun y hy => ?_))` and prove the remaining obligations. Simplify using `[Function.comp, e.left_inv hy]`. Establish `h4 : ContinuousAt (fun y => ((ψ y : ℂ)).re) x` using `Complex.continuous_re.continuousAt.comp h3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using h4`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_of_smoothR (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     (hz : IsLocalHomeomorph z) (ψ : M → ℝ) (hψ : SmoothR n z ψ) : Continuous ψ := by
@@ -29,13 +29,13 @@ theorem continuous_of_smoothR (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M 
   simpa using h4
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.bddAbove_image hψ.continuousOn`. Use `⟨Real.exp C, fun g => ?_⟩` and prove the remaining obligations. Unfold `wint`. Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hK.measurableSet (fun x hx => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hψx : ψ x ≤ C` using `hC ⟨x, hx, rfl⟩`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos C).le]`. Establish `h1 : ‖g x‖ₑ ^ 2 = ENNReal.ofReal (‖g x‖ ^ 2)`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _)]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hexp : 1 ≤ Real.exp C * Real.exp (-ψ x)`. Rewrite using `[← Real.exp_add]`. Conclude with `Real.one_le_exp (by linarith)`. Establish `h2 : Real.exp C * (‖g x‖ ^ 2 * Real.exp (-ψ x)) = ‖g x‖ ^ 2 * (Real.exp C * Real.exp (-ψ x))` using `by ring`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `le_mul_of_one_le_right (sq_nonneg _) hexp`. Use `_ = ENNReal.ofReal (Real.exp C) * ∫⁻ x in K, ENNReal.ofReal (‖g x‖ ^ 2 * Real.exp (-ψ x)) ∂vol n z := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `_ ≤ ENNReal.ofReal (Real.exp C) * ∫⁻ x, ENNReal.ofReal (‖g x‖ ^ 2 * Real.exp (-ψ x)) ∂vol n z := mul_le_mul_of_nonneg_left (setLIntegral_le_lintegral _ _) (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lintegral_compact_le (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M]
     [MeasurableSpace M] [BorelSpace M] (z : M → V n) (ψ : M → ℝ) (hψ : Continuous ψ)
@@ -69,11 +69,11 @@ theorem exists_lintegral_compact_le (n : ℕ) {M : Type*} [TopologicalSpace M] [
         mul_le_mul_of_nonneg_left (setLIntegral_le_lintegral _ _) (by simp)
 
 /- English proof (translation)
-Establish `h1 : e'.target ∈ 𝓝 (z x)`. Rewrite using `[he' hx']`. Conclude with `e'.open_target.mem_nhds (e'.map_source hx')`. Establish `h2 : ∀ᶠ w in 𝓝 (z x), e'.symm w ∈ e.source`. Establish `hc` using `e'.continuousAt_symm (e'.map_source hx')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[← he' hx']`. Establish `hs : e.source ∈ 𝓝 (e'.symm (z x))`. Rewrite using `[he' hx', e'.left_inv hx']`. Conclude with `e.open_source.mem_nhds hx`. Conclude with `hc hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `filter_upwards [h1, h2] with w hw1 hw2`. Establish `h3 : e (e'.symm w) = w`. Rewrite using `[← he hw2, he' (e'.map_target hw1), e'.right_inv hw1]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private theorem chart_symm_eventuallyEq_of_mem_sources (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     {e e' : OpenPartialHomeomorph M (V n)} (he : IsChart n z e) (he' : IsChart n z e') {x : M}
@@ -95,9 +95,9 @@ private theorem chart_symm_eventuallyEq_of_mem_sources (n : ℕ) {M : Type*} [To
     _ = e'.symm w := e.left_inv hw2
 
 /- English proof (translation)
-Establish `hex : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source` using `⟨e, he, hx⟩`. Unfold `db`. Rewrite using `[dif_pos hex]`. Establish `hspec` using `Classical.choose_spec hex`. Establish `heq : (f ∘ (Classical.choose hex).symm) =ᶠ[𝓝 (z x)] (f ∘ e.symm)` using `(chart_symm_eventuallyEq_of_mem_sources n z hspec.1 he hspec.2 hx).fun_comp f`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `wdb`. Rewrite using `[heq.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem db_eq_wdb_of_mem_chart_source (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     {e : OpenPartialHomeomorph M (V n)} (he : IsChart n z e) (j : Fin n) (f : M → ℂ) {x : M}
@@ -112,11 +112,11 @@ private theorem db_eq_wdb_of_mem_chart_source (n : ℕ) {M : Type*} [Topological
   rw [heq.fderiv_eq]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hxe, he⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => by rw [he]`. Establish `hsm` using `hφ e hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfd : ContinuousOn (fun w => fderiv ℝ (φ ∘ e.symm) w) e.target` using `hsm.continuousOn_fderiv_of_isOpen e.open_target (by simp)`. Establish `hw : ContinuousOn (wdb n j (φ ∘ e.symm)) e.target`. Unfold `wdb`. Conclude with `((hfd.clm_apply continuousOn_const).add (continuousOn_const.mul (hfd.clm_apply continuousOn_const))).div_const 2`. Establish `hat : ContinuousAt (fun y => wdb n j (φ ∘ e.symm) (e y)) x` using `(hw.continuousAt (e.open_target.mem_nhds (e.map_source hxe))).comp (e.continuousAt hxe)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hat.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hxe] with y hy`. Rewrite using `[db_eq_wdb_of_mem_chart_source n z hc j φ hy, hc hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem continuous_db_of_smooth (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (φ : M → ℂ) (hφ : Smooth n z φ) :
@@ -139,11 +139,11 @@ private theorem continuous_db_of_smooth (n : ℕ) {M : Type*} [TopologicalSpace 
   rw [db_eq_wdb_of_mem_chart_source n z hc j φ hy, hc hy]
 
 /- English proof (translation)
-Take `⟨e, hxe, he⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => by rw [he]`. Rewrite using `[db_eq_wdb_of_mem_chart_source n z hc j φ hxe]`. Establish `h0 : (φ ∘ e.symm) =ᶠ[𝓝 (z x)] fun _ => (0 : ℂ)`. Establish `h1 : φ =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.mp hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Filter.Tendsto e.symm (𝓝 (e x)) (𝓝 x)`. Establish `h2` using `e.continuousAt_symm (e.map_source hxe)`. Rewrite `h2` using `[ContinuousAt, e.left_inv hxe]`. Then use the resulting hypothesis. Rewrite using `[hc hxe]`. Conclude with `hcont.eventually h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `wdb`. Rewrite using `[h0.fderiv_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem db_eq_zero_of_not_mem_tsupport (n : ℕ) {M : Type*} [TopologicalSpace M] (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (φ : M → ℂ) {x : M} (hx : x ∉ tsupport φ) :
@@ -163,21 +163,19 @@ private theorem db_eq_zero_of_not_mem_tsupport (n : ℕ) {M : Type*} [Topologica
   simp
 
 /- English proof (translation)
-Unfold `vol`. Use `split_ifs with hadd`. Rewrite using `[Measure.ofMeasurable_apply _ hK.measurableSet] show volFun n z K < ⊤ choose e hxe he using fun x => hz x`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun x => (e x).source) (fun x => (e x).open_source) (fun x _ => Set.mem_iUnion.mpr ⟨x, hxe x⟩)`. Establish `hbound : ∀ y, (((K ∩ z ⁻¹' {y}).encard : ℕ∞) : ℝ≥0∞) ≤ (z '' K).indicator (fun _ => (t.card : ℝ≥0∞)) y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Distinguish the cases in `hy : y ∈ z '' K`. Rewrite using `[Set.indicator_of_mem hy]`. Establish `hcov : ∀ p, ∃ x, p ∈ K → x ∈ t ∧ p ∈ (e x).source` using `fun p => by`. Distinguish the cases in `hp : p ∈ K`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩ : ∃ x ∈ t, p ∈ (e x).source` from `by simpa using ht hp`. Conclude with `⟨x, fun _ => hx⟩`. Conclude with `⟨p, fun h => absurd h hp⟩`. Use `choose g hg using hcov`. Establish `key : (K ∩ z ⁻¹' {y}).encard ≤ (t : Set M).encard`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.encard_le_encard_of_injOn (f := g) ?_ ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `(hg p hp.1).1`. Introduce `p hp p' hp' hpp'`. Establish `h1` using `(hg p hp.1).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hg p' hp'.1).2`. Rewrite `h1` using `[hpp']`. Establish `e1 : z p = y` using `hp.2`. Establish `e2 : z p' = y` using `hp'.2`. Establish `hzp : z p = z p'` using `e1.trans e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hzp` using `[he (g p')]`. Conclude with `(e (g p')).injOn h1 h2 hzp`. Rewrite `key` using `[Set.encard_coe_eq_coe_finsetCard]`. Conclude with `key` after adjusting the coercions. Establish `hem : K ∩ z ⁻¹' {y} = ∅`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false]`. Introduce and unpack `⟨hp, hpy⟩`. Conclude with `hy ⟨p, hp, hpy⟩`. Rewrite using `[hem]`.
-
-Simplify using the standard rewrite rules. Establish `hKc : IsCompact (z '' K)` using `hK.image hz.continuous`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem vol_lt_infty_of_isCompact (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M]
     [MeasurableSpace M] [BorelSpace M] (z : M → V n) (hz : IsLocalHomeomorph z)
@@ -232,11 +230,11 @@ private theorem vol_lt_infty_of_isCompact (n : ℕ) {M : Type*} [TopologicalSpac
   · simp
 
 /- English proof (translation)
-Establish `hdb` using `continuous_db_of_smooth n z hz j φ hφ.1`. Establish `hK : IsCompact (tsupport φ)` using `hφ.2`. Establish `hfc : ContinuousOn (fun x => ‖db n z j φ x‖ ^ 2 * Real.exp (ψ x)) (tsupport φ)` using `((hdb.norm.pow 2).mul (Real.continuous_exp.comp hψ)).continuousOn`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hfc`. Establish `hle : ∀ x, ENNReal.ofReal (‖db n z j φ x‖ ^ 2 * Real.exp (ψ x)) ≤ (tsupport φ).indicator (fun _ => ENNReal.ofReal C) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ tsupport φ`. Rewrite using `[Set.indicator_of_mem hx]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h` using `hC x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans h`. Rewrite using `[db_eq_zero_of_not_mem_tsupport n z hz j φ hx]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lintegral_db_test_lt_top (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (z : M → V n)
@@ -265,7 +263,7 @@ theorem lintegral_db_test_lt_top (n : ℕ) {M : Type*} [TopologicalSpace M] [T2S
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top (vol_lt_infty_of_isCompact n z hz _ hK)
 
 /- English proof (translation)
-Establish `h` using `integral_db_mul n z hz j F φ (Smooth.ck n z 1 F (Holo.smooth n z F hF)) (Smooth.ck n z 1 φ hφ.1) hφ.2`. Establish `h0 : (fun x => db n z j F x * φ x) = fun _ => 0`. Use function extensionality and compare the values at `fun x => by simp [Holo.db_eq_zero n z F hF j x]`. Rewrite `h` using `[h0, integral_zero]`. Conclude with `neg_eq_zero.mp h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_holo_mul_db (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] (z : M → V n)
@@ -279,7 +277,7 @@ theorem integral_holo_mul_db (n : ℕ) {M : Type*} [TopologicalSpace M] [T2Space
   exact neg_eq_zero.mp h.symm
 
 /- English proof (translation)
-Establish `h` using `MeasureTheory.eLpNorm_nnreal_pow_eq_lintegral (f := g) (μ := μ) (p := (2 : NNReal)) two_ne_zero`. Evaluate the numerical expressions using `at h`. Simplify `h` using `[ENNReal.rpow_two]`.
+Establish an intermediate fact. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_eLpNorm_two {α : Type*} [MeasurableSpace α] (μ : Measure α) (g : α → ℂ) :
     eLpNorm g 2 μ ^ 2 = ∫⁻ x, ‖g x‖ₑ ^ 2 ∂μ := by

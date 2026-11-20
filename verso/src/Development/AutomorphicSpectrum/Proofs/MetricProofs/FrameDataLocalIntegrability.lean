@@ -18,25 +18,21 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.PFl.ChartRead
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw`. Take `⟨hflag, hbase, hread⟩` from `GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw`. Take `⟨z, hz, hzv, -⟩` from `GlobalTheory.T.frameData_local_degree_estimate K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc w hw`. Take `⟨hκ, -, hF, hBC, hr, -, hh⟩` from `hc`. Establish `hwV : pB ε w ∈ V` using `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hzb, -, hG, horb⟩` from `hBC.2.2.2.2 _ hwV`. Establish `hV : pB ε w ∈ (Rb.A.chart kb).target` using `hBC.2.1 hwV`. Establish `hr1 : r (bl (pB ε w)) = (Rb.A.chart kb).symm (pB ε w)` using `Rb.inj _ _ (fun hc => by simpa using hc.2 1 Submodule.mem_top) (orbit_trans (hr _ hzb) (orbit_symm horb))`. Use `set φ := pPhi M F keep v bl h ε w with hφ`. Establish `hMm : φ ∈ mcPts (mCoordIdeal (y ∘ v))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hzv]`. Conclude with `CPts.comp_mem_mcPts hκ (RingHom.id Φ) (x := y ∘ v) rfl hz`. Establish `hL : ∀ τ, IsLowerUni (pMat keep (pL ε w) τ)` using `fun τ => WMan.Read.lowMat_lowerUni _ τ`. Establish `hminor : ∀ (p : Ψ × Fin N) (k : K), keep p → M.blk p = some k → ∀ J : Finset (Fin N), twMinor M F (bl (pB ε w)) p.2 k (h p.1)⁻¹ (upV v φ) J = minorIJ (pMat keep (pL ε w) p.1) J (stepCols N j p.2)` using `fun p k hp hk J => by`. Use `WMan.Read.twMinor_eq M hF hzb hG hk (hflag p.1).1 (hread p k hp hk) (h p.1)⁻¹ J` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[show pH keep h ε p.1 w = h p.1 * pMat keep (pL ε w) p.1 from rfl, Matrix.nonsing_inv_mul_cancel_left _ _ (isUnit_iff_ne_zero.2 (hh p.1).2)]`. Then use the resulting hypothesis. Use `⟨⟨hMm, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hbase, hr1]`. Conclude with `(Rb.A.chart kb).map_target hV`. Rewrite using `[hbase, hr1, (Rb.A.chart kb).right_inv hV]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hwV`. Introduce `p k hp hk`. Rewrite using `[hbase, hminor p k hp hk, WMan.Read.minor_self_of_lowerUni (hL p.1)]`. Conclude with `one_ne_zero`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, rfl⟩` from `ε.surjective i`. Unfold `pRho`. Rewrite using `[Equiv.symm_apply_apply]`. Break down `s with l | q` into its components or cases. Use `show Rb.A.chart kb (r (pBase M v φ)) l = w (ε (Sum.inl l))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hbase, hr1, (Rb.A.chart kb).right_inv hV]`. Both sides reduce to the same expression. Use `show pRead M F keep (pBase M v φ) h (upV v φ) q.1.1.1 q.1.1.2.1 q.1.1.2.2 = w (ε (Sum.inr q))`. Apply the tactic sequence `obtain ⟨hkeep, hpr, hbS, haS, hent⟩ := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q M.j_le`. Take `⟨hval, hzero⟩` from `hent (pL ε w)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) = some k := by`. Break down `e' : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with _ | k` into its components or cases. Conclude with `absurd hpr ((M.blk_none _).1 e')`. Conclude with `⟨k, rfl⟩`. Take `⟨hsgn, hsgn0⟩` from `GlobalTheory.T.minorIJ_lowerUni_swap N (pMat keep (pL ε w) q.1.1.1) (stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2)) q.1.1.2.1 q.1.1.2.2 (hL _) haS hbS q.1.2.1 hzero`.
-
-Establish `e1` using `hminor _ k hkeep hk`. Rewrite using `[hbase]`. Unfold `pRead`. Rewrite using `[hk]`. Use `show twMinor M F (bl (pB ε w)) (pStep j keep q.1.1.1 q.1.1.2.2) k (h q.1.1.1)⁻¹ (upV v φ) _ / (_ * twMinor M F (bl (pB ε w)) (pStep j keep q.1.1.1 q.1.1.2.2) k (h q.1.1.1)⁻¹ (upV v φ) _) = _`.
-
-Rewrite using `[e1, e1, hsgn, WMan.Read.minor_self_of_lowerUni (hL _), mul_one, mul_div_cancel_left₀ _ hsgn0, hval]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chart_reads : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ w ∈ pD ε V, pPhi M F keep v bl h ε w ∈ pO M Rb keep v F kb V r h ∧ pRho M Rb keep v F kb r h ε (pPhi M F keep v bl h ε w) = w := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw

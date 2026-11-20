@@ -8,7 +8,7 @@ namespace PositivityTheory.NCmp
 open GlobalTheory.CuspRep GlobalTheory.ThetaPull
 
 /- English proof (translation)
-Introduce `L _ _ _ a π` and use `⟨thetaSub π, (pull L a).submoduleMap π.V, fun o φ => Subtype.ext (act_pull o φ.1).symm⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem thetaTw : ThetaTw := fun L _ _ _ a π =>
   ⟨thetaSub π, (pull L a).submoduleMap π.V, fun o φ => Subtype.ext (act_pull o φ.1).symm⟩

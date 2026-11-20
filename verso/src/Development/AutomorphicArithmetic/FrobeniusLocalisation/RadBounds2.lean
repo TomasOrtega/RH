@@ -11,31 +11,29 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H`. Establish `hd0 : (0:ℝ) < H.d` using `by exact_mod_cast (HostRaw.d_prime H.toHostRaw).pos`. Take `⟨h67, hle, h8, -, -⟩` from `rd_lower H`. Establish `hsq : 0 < √(H.d:ℝ)` using `Real.sqrt_pos.2 hd0`. Establish `hrd0 : 0 < H.rd` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : √(H.d:ℝ) < H.rd`. Establish `h1 : 1 < H.rd / √(H.d:ℝ)` using `by linarith`. Rewrite `h1` using `[lt_div_iff₀ hsq, one_mul]`. Then use the resulting hypothesis. Establish `hdrd : (H.d:ℝ) ≤ H.rd ^ 2`. Use polynomial arithmetic with `[Real.mul_self_sqrt hd0.le, hsq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hlogd : 1 / 2 * Real.log H.d ≤ Real.log H.rd`. Establish `h` using `Real.log_le_log hd0 hdrd`. Rewrite `h` using `[Real.log_pow]`. Move the coercions through the operations in `at h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨?_, hdrd, Dvd.intro_left _ (norm_diff_EK H).1, hlogd, ?_, ?_⟩` and prove the remaining obligations. Introduce `α β hα hβ`. Rewrite using `[(log_rd_sum H).1, Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `l hl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : l.Prime` using `Nat.prime_of_mem_primeFactors hl`. Establish `hv : 1 / 2 ≤ H.vdH l` using `(mem_ram H hp).2.2.2.1 hl`. Establish `hlog : 0 ≤ Real.log l` using `Real.log_natCast_nonneg l`. Use polynomial arithmetic with `[mul_nonneg (mul_nonneg hβ hlog) (by linarith : (0:ℝ) ≤ 2 * H.vdH l - 1)]`. Establish `hsub : H.ram ⊆ insert H.q (insert H.d H.small)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `hp : l.Prime` using `Nat.prime_of_mem_primeFactors hl`. Establish `hN` using `(log_rd_sum H).2.2.1 hl`. Establish `hdv : l ∣ H.QS * H.q * H.d` using `Nat.dvd_of_mem_primeFactors hN`. Break down `(Nat.Prime.dvd_mul hp).1 hdv with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(Nat.Prime.dvd_mul hp).1 h with h | h` into its components or cases. Rewrite using `[Finset.mem_insert, Finset.mem_insert] right`. Use `right`. Conclude with `(HostRaw.mem_small_iff H.toHostRaw).2 ⟨hp, h⟩`. Rewrite using `[Finset.mem_insert] left`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `(Nat.prime_dvd_prime_iff_eq hp (HostRaw.q_prime H.toHostRaw)).1 h`. Rewrite using `[Finset.mem_insert, Finset.mem_insert] right`. Use `left`. Conclude with `(Nat.prime_dvd_prime_iff_eq hp (HostRaw.d_prime H.toHostRaw)).1 h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.card_insert_le H.d H.small` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `_ = H.small.card + 2 := by ring`. Introduce `M L hM hL hlogM hrdL`. Establish `hlog2 : (0.6931471803:ℝ) < Real.log 2` using `Real.log_two_gt_d9`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hl2 : (0:ℝ) < Real.log 2` using `by linarith`. Establish `hram : (((discr H.E).natAbs.primeFactors.card : ℕ) : ℝ) ≤ 2 * Real.log H.rd / Real.log 2` using `(rad_bounds H).2.1`. Establish `hMcard : ((M.primeFactors.card : ℕ) : ℝ) ≤ Real.log M / Real.log 2`. Rewrite using `[le_div_iff₀ hl2, ← Real.log_pow]`. Establish `h1 : 2 ^ M.primeFactors.card ≤ ∏ p ∈ M.primeFactors, p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∏ p ∈ M.primeFactors, p ≤ M` using `Nat.le_of_dvd hM (Nat.prod_primeFactors_dvd M)`. Apply `Real.log_le_log (by positivity)` to reduce the goal to its premises. Conclude with `h1.trans h2` after adjusting the coercions. Distinguish the cases in `ha : (discr H.E).natAbs = 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha, zero_mul, Nat.primeFactors_zero, Finset.card_empty]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hcard : ((((discr H.E).natAbs * M).primeFactors.card : ℕ) : ℝ) ≤ ((discr H.E).natAbs.primeFactors.card : ℕ) + ((M.primeFactors.card : ℕ) : ℝ)`. Rewrite using `[Nat.primeFactors_mul ha hM.ne']`.
-
-Conclude with `Finset.card_union_le _ _` after adjusting the coercions. Establish `hsum : 2 * Real.log H.rd / Real.log 2 + Real.log M / Real.log 2 ≤ 44 * L`. Rewrite using `[← add_div, div_le_iff₀ hl2]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlog2.le hL]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.rad_bounds2 :
     ∀ {φ : Frame} (H : HostAx φ), (∀ α β : ℝ, 0 ≤ α → 0 ≤ β → ∑ l ∈ H.ram, (α * H.vdH l + β) * Real.log l ≤ (α + 2 * β) * Real.log H.rd) ∧ (H.d : ℝ) ≤ H.rd ^ 2 ∧ H.d ^ (2 * φ.ord) ∣ (discr H.E).natAbs ∧ 1 / 2 * Real.log H.d ≤ Real.log H.rd ∧ H.ram.card ≤ H.small.card + 2 ∧ ∀ (M : ℕ) (L : ℝ), 0 < M → 0 ≤ L → Real.log M ≤ 30 * L → Real.log H.rd ≤ L / 100 → ((((discr H.E).natAbs * M).primeFactors.card : ℕ) : ℝ) ≤ 44 * L := by

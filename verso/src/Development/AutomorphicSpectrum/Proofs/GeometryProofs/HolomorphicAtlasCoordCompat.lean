@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.ImmBlock
 
 /- English proof (translation)
-Simplify using `only [MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : ∑ i, d i = n`. Establish `h` using `hF (MvPolynomial.mem_support_iff.1 hd)`. Establish `h2 : Finsupp.degree d = n`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `h`. Rewrite using `[← h2, Finsupp.degree_apply]`. Conclude with `(Finset.sum_subset (Finset.subset_univ _) (fun i _ hi => by simpa using hi)).symm`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_mul_of_isHomogeneous {σ R : Type*} [Fintype σ] [CommRing R] {alg : Algebra ℤ R}
     {F : MvPolynomial σ ℤ} {n : ℕ}
@@ -31,7 +31,7 @@ theorem aeval_mul_of_isHomogeneous {σ R : Type*} [Fintype σ] [CommRing R] {alg
   simp only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg, _root_.mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp only [MvPolynomial.aeval_C, eq_intCast, map_intCast]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem aeval_ringHom {σ A B : Type*} [CommRing A] [CommRing B] {algA : Algebra ℤ A} {algB : Algebra ℤ B}
     (φ : A →+* B) (a : σ → A) (P : MvPolynomial σ ℤ) :
@@ -42,9 +42,9 @@ theorem aeval_ringHom {σ A B : Type*} [CommRing A] [CommRing B] {algA : Algebra
   | mul_X p i hp => simp only [map_mul, hp, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa using differentiable_const _`. Consider the case `add p q hp hq`. Simplify using `only [map_add]`. Conclude with `hp.add hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p i hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Conclude with `hp.mul (differentiable_apply _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_aeval {σ κ : Type*} [Fintype κ] (g : σ → κ) (P : MvPolynomial σ ℤ) :
     Differentiable ℂ (fun u : κ → ℂ => MvPolynomial.aeval (fun i => u (g i)) P) := by
@@ -58,9 +58,9 @@ theorem differentiable_aeval {σ κ : Type*} [Fintype κ] (g : σ → κ) (P : M
     exact hp.mul (differentiable_apply _)
 
 /- English proof (translation)
-Establish `hh` using `congrArg (MvPolynomial.C : Ω → MvPolynomial K Ω) h`. Simplify using `only [map_mul] at hh`. Rewrite using `[mCoordIdeal, RingHom.mem_ker]`. Simplify using `only [mConeMap, map_sub, map_mul, MvPolynomial.aeval_rename, MvPolynomial.aeval_X, Function.comp_def]`. Rewrite using `[aeval_mul_of_isHomogeneous hF (fun i : J k₀ => (MvPolynomial.C (y ⟨k₀, i⟩) : MvPolynomial K Ω)) (MvPolynomial.X k₀), aeval_mul_of_isHomogeneous hG (fun i : J k₀ => (MvPolynomial.C (y ⟨k₀, i⟩) : MvPolynomial K Ω)) (MvPolynomial.X k₀), aeval_ringHom MvPolynomial.C (fun i : J k₀ => …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(MvPolynomial.X k₀ ^ n * MvPolynomial.X k) * hh`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem form_mem {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {Ω : Type} [Field Ω]
     (y : (Σ k, J k) → Ω) (k₀ k : K) (n : ℕ) (F G : MvPolynomial (J k₀) ℤ) (hF : F.IsHomogeneous n)
@@ -80,7 +80,7 @@ theorem form_mem {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] 
   linear_combination (MvPolynomial.X k₀ ^ n * MvPolynomial.X k) * hh
 
 /- English proof (translation)
-Simplify using `only [div_eq_mul_inv]`. Conclude with `ha.mul (hb.inv h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiableAt_quot {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {a b : E → ℂ} {v : E}
     (ha : DifferentiableAt ℂ a v) (hb : DifferentiableAt ℂ b v) (h : b v ≠ 0) :
@@ -89,9 +89,9 @@ theorem differentiableAt_quot {E : Type*} [NormedAddCommGroup E] [NormedSpace �
   exact ha.mul (hb.inv h)
 
 /- English proof (translation)
-Rewrite `hk` using `[h.fderiv_eq, fderiv_comp v₀ hΨ hf]`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`. Establish `hu' : fderiv ℂ f v₀ u = 0` using `hu`. Establish `: u ∈ ((fderiv ℂ Ψ (f v₀)).comp (fderiv ℂ f v₀)).ker`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(fderiv ℂ Ψ (f v₀)) (fderiv ℂ f v₀ u) = 0`. Rewrite using `[hu', map_zero]`. Rewrite `this` using `[hk]`. Then use the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ker_bot_of_factor {E F₁ F₂ : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F₁]
     [NormedSpace ℂ F₁] [NormedAddCommGroup F₂] [NormedSpace ℂ F₂] {f : E → F₁} {a : E → F₂} {Ψ : F₁ → F₂} {v₀ : E}
@@ -107,35 +107,29 @@ theorem ker_bot_of_factor {E F₁ F₂ : Type*} [NormedAddCommGroup E] [NormedSp
   rwa [hk] at this
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ K _ J _ y k₀ hTie hEmb e M _ A U lam hE κ _ ix x p hp j hj`. Establish `hev : ∀ (z : (Σ k, J k) → ℂ) (f : MRing J), MvPolynomial.eval z (MvPolynomial.map (Int.castRingHom ℂ) f) = MvPolynomial.aeval z f` using `fun z f => by`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def]`. Use `congr 1`. Use `set G : (Fin e → ℂ) → (Σ k, J k) → ℂ := fun v => lam x ((A.chart j).symm v) with hGdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `set v₀ : Fin e → ℂ := A.chart j x with hv₀`. Establish `hG0 : G v₀ = lam x x`. Simplify using `only [hGdef, hv₀]`. Rewrite using `[(A.chart j).left_inv hj]`. Establish `hS : v₀ ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' U x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(A.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.chart j).symm (A.chart j x) ∈ U x`. Rewrite using `[(A.chart j).left_inv hj]`. Conclude with `hE.mem_U x`. Establish `hSo : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' U x)` using `(A.chart j).isOpen_inter_preimage_symm (hE.isOpen x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAn : ∀ q, DifferentiableAt ℂ (fun v => G v q) v₀` using `fun q => (hE.holo x q j v₀ hS).differentiableAt`. Establish `hCo : ∀ q, ContinuousAt (fun v => G v q) v₀` using `fun q => (hAn q).continuousAt`. Establish `hw : lam x x ∈ mcPts (mCoordIdeal y)` using `hE.mem x x (hE.mem_U x)`. Establish `hwpts : lam x x ∈ Small.ptsOver ℂ (mCoordIdeal y)` using `⟨hw.1, fun f hf => by rw [← hev]; exact hw.2 f hf⟩`. Use `choose r hr using hw.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set p' : (k : K) → J k := Function.update r k₀ (ix p) with hp'def`. Establish `hp'0 : p' k₀ = ix p` using `by simp [hp'def]`. Establish `hp' : ∀ k, lam x x ⟨k, p' k⟩ ≠ 0`. Introduce `k`. Distinguish the cases in `h : k = k₀`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Rewrite using `[hp'0]`. Conclude with `hp`. Rewrite using `[hp'def, Function.update_of_ne h]`. Conclude with `hr k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hblk` using `fun k => GlobalTheory.T.small_points_coord_ratio_bound X Ω ξ K J y k₀ hTie hEmb ℂ (lam x x) hwpts (ix p) k (p' k) hp (hp' k)`. Use `choose n F hFh hFr hFn using hblk`. Use `set f : (Fin e → ℂ) → κ → ℂ := fun v i => G v ⟨k₀, ix i⟩ / G v ⟨k₀, ix p⟩ with hfdef`. Establish `ht0 : G v₀ ⟨k₀, ix p⟩ ≠ 0` using `by rw [hG0]; exact hp`. Establish `hfd : DifferentiableAt ℂ f v₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `differentiableAt_pi.2 fun i => ?_` and prove the remaining obligations. Establish `h` using `differentiableAt_quot (hAn ⟨k₀, ix i⟩) (hAn ⟨k₀, ix p⟩) ht0`. Conclude with `h`. Use `set ev : MvPolynomial (J k₀) ℤ → (κ → ℂ) → ℂ := fun P u => MvPolynomial.aeval (fun i' : J k₀ => u (ix.symm i')) P with hevdef`. Establish `hevd : ∀ P, Differentiable ℂ (ev P)` using `fun P => differentiable_aeval (fun i' => ix.symm i') P`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hscale : ∀ v k (d : J k), ev (F k d) (f v) = MvPolynomial.aeval (fun i' : J k₀ => G v ⟨k₀, i'⟩) (F k d) * ((G v ⟨k₀, ix p⟩)⁻¹) ^ n k`. Introduce `v k d`. Rewrite using `[← aeval_mul_of_isHomogeneous (hFh k d)]`. Simplify using `only [hevdef, hfdef, Equiv.apply_symm_apply, div_eq_mul_inv]`. Establish `hden0 : ∀ k, ev (F k (p' k)) (f v₀) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `k`. Rewrite using `[hscale, hG0]`. Conclude with `mul_ne_zero (hFn k) (pow_ne_zero _ (inv_ne_zero hp))`. Use `set Ψ : (κ → ℂ) → (Σ k, J k) → ℂ := fun u q => ev (F q.1 q.2) u / ev (F q.1 (p' q.1)) u with hΨdef`. Establish `hΨd : DifferentiableAt ℂ Ψ (f v₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `differentiableAt_pi.2 fun q => ?_` and prove the remaining obligations. Establish `h` using `differentiableAt_quot (hevd (F q.1 q.2) (f v₀)) (hevd (F q.1 (p' q.1)) (f v₀)) (hden0 q.1)`. Conclude with `h`. Establish `e1 : ∀ᶠ v in nhds v₀, G v ∈ mcPts (mCoordIdeal y)` using `by filter_upwards [hSo.mem_nhds hS] with v hv`. Conclude with `hE.mem x _ hv.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∀ᶠ v in nhds v₀, ∀ k, G v ⟨k, p' k⟩ ≠ 0` using `Filter.eventually_all.2 fun k => (hCo ⟨k, p' k⟩).eventually_ne (by rw [hG0]; exact hp' k)`. Establish `e3 : ∀ᶠ v in nhds v₀, ∀ k, ev (F k (p' k)) (f v) ≠ 0` using `Filter.eventually_all.2 fun k => (((hevd _).continuous.continuousAt).comp hfd.continuousAt).eventually_ne (hden0 k)`. Establish `e4 : ∀ᶠ v in nhds v₀, G v ⟨k₀, ix p⟩ ≠ 0` using `(hCo _).eventually_ne ht0`. Establish `hfac : (fun v => affCoord p' (G v)) =ᶠ[nhds v₀] Ψ ∘ f` using `by filter_upwards [e1, e2, e3, e4] with v h1 h2 h3 h4`. Use function extensionality and compare the values at `q`.
-
-Take `⟨k, d⟩` from `q`. Establish `hmem` using `form_mem y k₀ k (n k) (F k d) (F k (p' k)) (hFh k d) (hFh k (p' k)) (p' k) d (hFr k d)`. Establish `h0` using `h1.2 _ hmem`. Rewrite `h0` using `[hev]`. Simplify using `only [map_sub, map_mul, MvPolynomial.aeval_rename, MvPolynomial.aeval_X, Function.comp_def] at h0`.
-
-Establish `hrel : ev (F k d) (f v) * G v ⟨k, p' k⟩ = ev (F k (p' k)) (f v) * G v ⟨k, d⟩`. Rewrite using `[hscale, hscale]`. Take the linear combination `((G v ⟨k₀, ix p⟩)⁻¹) ^ n k * h0`. Express the relevant statement in the definitionally equal form `G v ⟨k, d⟩ / G v ⟨k, p' k⟩ = ev (F k d) (f v) / ev (F k (p' k)) (f v)`. Rewrite using `[div_eq_div_iff (h2 k) (h3 k)]`.
-
-Take the linear combination `-hrel`. Establish `hk : (fderiv ℂ (fun v => affCoord p' (G v)) v₀).ker = ⊥` using `hE.immersion x p' hp' j hj`. Conclude with `⟨hfd, ker_bot_of_factor hfd hΨd hfac hk⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem immersion_block : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (k₀ : K), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → EmbedsGeneric ξ (fun i : J k₀ => y ⟨k₀, i⟩) → ∀ (e : ℕ) (M : Type) [TopologicalSpace M] (A : ReciprocityTheory.AnForm.M.FinHolAtlas e M) (U : M → Set M) (lam : M → M → (Σ k, J k) → ℂ), Cmp.IsEmbedded A (mCoordIdeal y) U lam → ∀ (κ : Type) [Fintype κ] (ix : κ ≃ J k₀) (x : M) (p : κ), lam x x ⟨k₀, ix p⟩ ≠ 0 → ∀ j, x ∈ (A.chart j).source → DifferentiableAt ℂ (fun (v : Fin e → ℂ) (i : κ) => lam x ((A.chart j).symm v) ⟨k₀, ix i⟩ / lam x ((A.chart j).symm v) ⟨k₀, ix p⟩) (A.chart j x) ∧ (fderiv ℂ (fun (v : Fin e → ℂ) (i : κ) => lam x ((A.chart j).symm v) ⟨k₀, ix i⟩ / lam x ((A.chart j).symm v) ⟨k₀, ix p⟩) (A.chart j x)).ker = ⊥ := by
   intro X Ω _ _ ξ K _ J _ y k₀ hTie hEmb e M _ A U lam hE κ _ ix x p hp j hj

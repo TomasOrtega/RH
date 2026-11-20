@@ -16,7 +16,7 @@ namespace GlobalTheory.ThetaRightTranslate
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, sigR]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ z := by
   induction z using TensorProduct.induction_on with
@@ -25,11 +25,11 @@ theorem cA_eq_sigR (σ : E →ₐ[F] E) (z : AE F E) : cA σ z = sigR (AF F) σ 
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `g`. Use `show (g : Matrix _ _ _)ᵀ * incM F J * (g : Matrix _ _ _).map (cA σ) = incM F J ↔ Formalism.UG.cT (sigR (AF F) σ) (g : Matrix _ _ _) * JR (AF F) Jᵀ * (g : Matrix _ _ _) = JR (AF F) Jᵀ`. Establish `hc : (g : Matrix (Fin n) (Fin n) (AE F E)).map (cA σ) = (g : Matrix _ _ _).map (sigR (AF F) σ)`. Use extensionality with `i j`. Conclude with `cA_eq_sigR σ _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ : JR (AF F) Jᵀ = (incM F J)ᵀ` using `rfl`. Rewrite using `[hc, hJ, Formalism.UG.cT]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Introduce `h`. Use `congrArg Matrix.transpose h` as an intermediate fact. Simplify `this` using `[Matrix.transpose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ug_eq_uj (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) :
     UG (cA σ) (incM F J) = Formalism.UG.UJ (sigR (AF F) σ) (JR (AF F) Jᵀ) := by
@@ -54,11 +54,11 @@ def toHA (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : UA σ J
   continuous_invFun := continuous_subtype_val.subtype_mk _
 
 /- English proof (translation)
-Establish `he : Measurable e` using `e.continuous.measurable`. Establish `hs : Measurable e.symm` using `e.symm.continuous.measurable`. Establish `hμ : μ = (μ.map e).map e.symm`. Rewrite using `[Measure.map_map hs he]`. Establish `: (e.symm : H → G) ∘ e = id` using `by ext x; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, Measure.map_id]`. Use `⟨fun g => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.map_mul_right_eq_self (e g)`. Establish `hc : (fun x : G => x * g) ∘ (e.symm : H → G) = (e.symm : H → G) ∘ (fun y : H => y * e g)`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Use `conv_lhs => rw [hμ]`. Rewrite using `[Measure.map_map (measurable_mul_const g) hs, hc, ← Measure.map_map hs (measurable_mul_const _), h1, ← hμ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_equiv {G H : Type} [Group G] [Group H]
     [TopologicalSpace G] [TopologicalSpace H] [IsTopologicalGroup G] [IsTopologicalGroup H]
@@ -80,9 +80,7 @@ theorem isMulRightInvariant_of_equiv {G H : Type} [Group G] [Group H]
     ← Measure.map_map hs (measurable_mul_const _), h1, ← hμ]
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ J) := ⟨rfl⟩`. Use `haveI : IsTopologicalGroup (HA (AF F) σ Jᵀ) := inferInstanceAs (IsTopologicalGroup (HR (AF F) σ Jᵀ))`. Use `haveI : BorelSpace (HA (AF F) σ Jᵀ) := ⟨rfl⟩`. Use `isMulRightInvariant_of_equiv (toHA σ J) μ ?_` and prove the remaining obligations.
-
-Use `haveI : (μ.map (toHA σ J)).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ (toHA σ J)`. Take `⟨d, hd'⟩` from `GlobalTheory.HermLineZeros.exists_conj_ne hcm`. Establish `hss` using `GlobalTheory.HermLineZeros.conj_invol hcm`. Establish `hJ' : IsHermND σ Jᵀ` using `⟨fun i j => hJ j i, by rw [Matrix.det_transpose]; exact hd.ne_zero⟩`. Conclude with `@GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_adelic F E _ _ _ _ _ σ hss (σ d - d) (sub_ne_zero.2 hd') (by rw [map_sub, hss]; abel) n Jᵀ hJ' (μ.map (toHA σ J)) this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (hJ : ∀ i j, σ (J j i) = J i j) (hd : IsUnit J.det) (μ : Measure (UA σ J)) [μ.IsHaarMeasure] :
@@ -100,7 +98,7 @@ theorem isMulRightInvariant (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {n : ℕ
     (by rw [map_sub, hss]; abel) n Jᵀ hJ' (μ.map (toHA σ J)) this
 
 /- English proof (translation)
-Establish `hc : (Set.range f).Countable` using `Set.countable_range f`. Use `haveI := hc.to_subtype`. Use `Function.Injective.countable (f := fun γ : (f.range).subgroupOf K => (⟨γ.1.1, MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 γ.2)⟩ : Set.range f)) ?_` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (Subtype.ext (Subtype.mk.inj hab))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem countable_subgroupOf_range {G H : Type} [Group G] [Group H] [Countable G] (f : G →* H)
     (K : Subgroup H) : Countable ((f.range).subgroupOf K) := by
@@ -112,7 +110,7 @@ theorem countable_subgroupOf_range {G H : Type} [Group G] [Group H] [Countable G
   exact Subtype.ext (Subtype.ext (Subtype.mk.inj hab))
 
 /- English proof (translation)
-Use `haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable`. Use `haveI : Countable (Matrix (Fin n) (Fin n) E) := inferInstanceAs (Countable (Fin n → Fin n → E))`. Use `haveI : Countable (GL (Fin n) E) := Function.Injective.countable (f := (Units.val : GL (Fin n) E → Matrix (Fin n) (Fin n) E)) (fun a b h => Units.ext h)`. Unfold `ratU`. Conclude with `countable_subgroupOf_range _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   haveI : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -122,17 +120,15 @@ theorem countable_ratU (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
   exact countable_subgroupOf_range _ _
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp g _ h Φ hΦ y`. Establish `hTB` using `GlobalTheory.T.theta_basic_properties hP F E σ B n d X W M χX χW om r s r' s' hp`. Establish `hinv : ∀ γ ∈ ratU σ X.J, ∀ x, theta om Φ (γ * x) (y * h) = theta om Φ x (y * h)`. Introduce `γ hγ x`. Use `(hTB.1 Φ hΦ).2.1 γ hγ 1 (one_mem _) x (y * h)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := hp.good.haar`. Use `haveI : M.μ.IsMulRightInvariant := isMulRightInvariant σ hp.base.cm X.J hp.herm.herm (GlobalTheory.isUnit_det_of_isHerm F E σ B n X r s hp.herm) M.μ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `haveI := countable_ratU σ X.J`. Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun c => measurable_const_mul (c : UA σ X.J)⟩`. Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun c s _ => measure_preimage_mul M.μ (c : UA σ X.J) s⟩`. Establish `hL : M.I om (om (g, h) Φ) y = ∫ x in M.dom, theta om Φ (x * g) (y * h) ∂M.μ`. Unfold `Model.I theta`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression. Establish `hmp` using `measurePreserving_mul_right M.μ g`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight g) (fun x => theta om Φ x (y * h)) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom)`. Establish `hpre : (fun x : UA σ X.J => x * g) ⁻¹' ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) = M.dom`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hpre]`.
-
-Establish `hfd' : IsFundamentalDomain (ratU σ X.J) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) M.μ` using `hp.good.dom.preimage_of_equiv (measurePreserving_mul_right M.μ g⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by show (γ.1 * x) * g⁻¹ = γ.1 * (x * g⁻¹)`. Conclude with `mul_assoc _ _ _)`. Establish `h2` using `hfd'.setIntegral_eq hp.good.dom (f := fun x => theta om Φ x (y * h)) (fun γ x => hinv γ.1 γ.2 x)`. Rewrite using `[hL, h1, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaIntegral_translate : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] (σ : E →ₐ[F] E)

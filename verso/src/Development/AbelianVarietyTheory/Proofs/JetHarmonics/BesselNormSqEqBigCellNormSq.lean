@@ -15,21 +15,19 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Use `set T := Tz P.k P.r p.T.base.z with hT`. Use `set T' := Tz P.k P.r p.T.base.z' with hT'`. Establish `hk : 2 ≤ P.k` using `p.hl.2.2`. Establish `hTT : 0 < T * T'` using `mul_pos p.T.base.T_pos p.T.base.T'_pos`. Establish `hw'` using `hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `bcWeight at hw'`. Use `split_ifs at hw' with hle`. Establish `hprod` using `left_ne_zero_of_mul hw'`. Establish `hgg` using `right_ne_zero_of_mul hw'`. Establish `hlt : T * T' < Complex.normSq (c (Fin.last P.r))`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hle.lt_or_eq with h | h` into its components or cases. Conclude with `h`. Use the proof step `exfalso; apply hgg; rw [← h, sub_self, zero_pow (by omega)]`. Establish `hc : ∀ a : Fin P.r, c a.castSucc ≠ 0`. Introduce `a ha`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `hprod` to reduce the goal to its premises. Use `Finset.prod_eq_zero (Finset.mem_univ a) ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[ha, norm_zero, zero_pow]`. Unfold `Mdim`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `a.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hlast : c (Fin.last P.r) ≠ 0`. Introduce `h0`. Rewrite `hlt` using `[h0, Complex.normSq_zero]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : ∀ a, c a ≠ 0`. Introduce `a`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact hlast`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `cast i => exact hc i`. Use `⟨hd, ?_⟩` and prove the remaining obligations. Use `show 0 < D.ptG (T * T') P.r (Formalism.FourierDecayAlt.P.PBJ.bigPt c)`. Unfold `D.ptG`. Rewrite using `[Formalism.FourierDecayAlt.P.PBM.ptMatN_bigPt_head, Formalism.FourierDecayAlt.P.PBJ.Dens.ptMatN_bigPt, Formalism.FourierDecayAlt.P.PBM.hMat_one, Matrix.det_diagonal, Matrix.det_diagonal, Fin.prod_univ_castSucc, Complex.normSq_mul]`.
-
-Establish `hp : 0 < Complex.normSq (∏ i : Fin P.r, c i.castSucc)` using `Complex.normSq_pos.2 (Finset.prod_ne_zero_iff.2 fun a _ => hc a)`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_left hlt hp]`. Conclude with `absurd rfl hw'`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem good_of_weight_ne_zero (p : KB.Pl P Wp Wq) (c : Fin (P.r + 1) → ℂ)
     (hw : bcWeight P.k P.r (Tz P.k P.r p.T.base.z) (Tz P.k P.r p.T.base.z')
@@ -73,11 +71,11 @@ theorem good_of_weight_ne_zero (p : KB.Pl P Wp Wq) (c : Fin (P.r + 1) → ℂ)
   · exact absurd rfl hw'
 
 /- English proof (translation)
-Distinguish the cases in `h : D.IsLocPt (TBB.bigPt P.r c) (P.r + 1) ∧ 0 < TBB.Gp p (TBB.bigPt P.r c)`. Take `⟨hl, hG⟩` from `h`. Establish `hd : ∀ a, c a ≠ 0` using `fun a => (hl.1 (1, c a) (by unfold TBB.bigPt; exact (List.mem_ofFn' _ _).2 ⟨a, rfl⟩)).2`. Establish `hG' : 0 < D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r (Formalism.FourierDecayAlt.P.PBJ.bigPt c)` using `hG`. Establish `hζ : Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' < Complex.normSq (c (Fin.last P.r))` using `Formalism.FourierDecayAlt.P.PBM.zeta_big _ c hG'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[TBBx2.Tri.Ew_top p F hl, hsVec_norm_V_bigPt p F c hd hG]`. Establish `hn : TBB.nPt P.k P.r (TBB.TTp p) (TBB.bigPt P.r c) = bcWeight P.k P.r (Tz P.k P.r p.T.base.z) (Tz P.k P.r p.T.base.z') ((fun j => c j.castSucc), c (Fin.last P.r))` using `nPt_bigPt P.k P.r _ _ c hζ.le`. Rewrite using `[hn, Real.mul_self_sqrt (bcWeight_nonneg0 _ _ _ _ _)]`. Establish `hw : bcWeight P.k P.r (Tz P.k P.r p.T.base.z) (Tz P.k P.r p.T.base.z') ((fun j => c j.castSucc), c (Fin.last P.r)) = 0`. Assume the negation of the conclusion as `hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨hd, hG⟩` from `good_of_weight_ne_zero p c hw`. Conclude with `h ⟨Formalism.FourierDecayAlt.P.PBJ.Dens.isLocPt_bigPt c hd, hG⟩`. Rewrite using `[TBBx4.ew_zero_of p F h, hw, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_eq (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : Fin (P.r + 1) → ℂ) :
     TBB.Ew p (fun _ => 1) F (P.r + 1) [] (TBB.bigPt P.r c) =
@@ -105,11 +103,11 @@ theorem pt_eq (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c :
     rw [TBBx4.ew_zero_of p F h, hw, zero_mul]
 
 /- English proof (translation)
-Introduce `P Wp Wq _ _ _ _ _ _ p F`. Set `e : (Fin (P.r + 1) → ℂ) ≃ᵐ (Fin P.r → ℂ) × ℂ` to `(MeasurableEquiv.piFinSuccAbove (fun _ => ℂ) (Fin.last P.r)).trans MeasurableEquiv.prodComm`. Establish `hmp : MeasurePreserving e volume volume` using `(Measure.measurePreserving_swap).comp (volume_preserving_piFinSuccAbove (fun _ : Fin (P.r + 1) => ℂ) (Fin.last P.r))`. Establish `he : ∀ c, e c = ((fun j => c j.castSucc), c (Fin.last P.r))`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[e, MeasurableEquiv.piFinSuccAbove]`. Both sides reduce to the same expression. Unfold `B.normSq jNormSq`. Rewrite using `[← hmp.lintegral_comp_emb e.measurableEmbedding]`. Unfold `TBB.jN2`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[he c, pt_eq p F c]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem besselNormSq_eq_bigCellNormSq : ∀ (P : M.Par) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]

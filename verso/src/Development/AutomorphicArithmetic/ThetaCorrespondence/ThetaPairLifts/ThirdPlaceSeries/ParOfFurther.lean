@@ -16,17 +16,15 @@ end GlobalTheory.ExpTie
 namespace GlobalTheory.ExpTie
 open Formalism.CohomologicalDescent.LogSmallConstantBounds Formalism.CohomologicalDescent.LargeParameterEstimates
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps he _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ?_⟩⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `ev_large eps he`. Use `⟨x0, fun x hx hle i p _ _ j => ?_⟩` and prove the remaining obligations. Take `⟨hxp, E1, E2, E3, E4⟩` from `hx0 x hle`. Establish `hxx : (Fm.L x i).sc.x = x` using `Fm.L_x x i hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hee : (Fm.L x i).sc.eps = eps` using `Fm.L_eps x i`. Establish `hsz` using `Fm.sizes x hx i`. Establish `hN : SizeN (Fm.L x i)` using `hsz.1`. Establish `hK : SizeK (Fm.L x i)` using `hsz.2.2.1`. Establish `hD` using `(Fm.params x hx i).logDel`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `(Fm.L x i).Sc_pos`. Rewrite `hS` using `[(Fm.L x i).Sc_eq]`. Unfold `SizeN szTh at hN`. Unfold `SizeK szTh at hK`. Rewrite `hN`, `hK`, `hD` using `[hxx, hee]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `show Real.exp ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) ^ ((4 : ℝ) / 5) ≤ (Fm.L x i).sc.x * Real.exp ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) / Real.exp ((Fm.L x i).sc.x ^ ((Fm.L x i).sc.eps / 3)) / ((Fm.L x i).sc.x * ((Fm.D x i).R.n : ℝ)) / (Fm.L x i).Sc`. Rewrite using `[(Fm.L x i).Sc_eq, hxx, hee]`. Establish `hk : (0 : ℝ) ≤ (Fm.D x i).R.k` using `Nat.cast_nonneg _`. Establish `hn : (0 : ℝ) < (Fm.D x i).R.n` using `lt_of_lt_of_le (Real.rpow_pos_of_pos hxp _) hN.1`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΔ : ((Fm.D x i).s.Del : ℝ) ≤ Real.exp (x ^ (eps / 4) / 2)`. Establish `h4 : 0 < 4 * ((Fm.D x i).s.Del : ℝ)` using `pos_of_mul_pos_right hS hk`. Conclude with `(Real.log_le_iff_le_exp (by linarith)).1 hD`. Conclude with `w_over_S_real hxp hk hn hS hK.2 hN.2 hΔ E1 E2 E3`. Use `show 4 * (Fm.L x i).sc.x ^ 2 * ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) ^ 2 * Real.exp ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) ^ ((4 : ℝ) / 7) < Real.exp ((Fm.L x i).sc.x ^ (Fm.L x i).sc.eps) ^ ((4 : ℝ) / 5)`.
-
-Rewrite using `[hxx, hee]`. Conclude with `pow_real hxp E4`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parOf_further_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m,
     (parOf (Fm.L x i) j).b ^ ((4 : ℝ) / 5) ≤ (parOf (Fm.L x i) j).w'' / (parOf (Fm.L x i) j).S ∧
@@ -64,7 +62,7 @@ theorem parOf_further_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ =>
     rw [hxx, hee]
     exact pow_real hxp E4
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ExpTie.atPts_mono (_root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.ExpTie.parOf_hyp_alt _root_.GlobalTheory.T.exists_large_parameter_estimates_at_pts) _root_.GlobalTheory.ExpTie.parOf_further_alt) fun _ _ …`.
+A detailed English derivation is pending.
 -/
 theorem parOf_large_at_pts : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m, (parOf (Fm.L x i) j).Large :=
   _root_.GlobalTheory.ExpTie.atPts_mono (_root_.GlobalTheory.ExpTie.atPts_and_alt (_root_.GlobalTheory.ExpTie.atPts_and_alt _root_.GlobalTheory.ExpTie.parOf_hyp_alt _root_.GlobalTheory.T.exists_large_parameter_estimates_at_pts) _root_.GlobalTheory.ExpTie.parOf_further_alt) fun _ _ _ _ _ H j => by

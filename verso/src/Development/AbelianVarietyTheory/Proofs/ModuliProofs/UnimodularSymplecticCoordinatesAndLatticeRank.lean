@@ -12,7 +12,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Complex.conj_eq_iff_im]`. Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, map_sum, map_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← h.apply j k, Complex.star_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -27,11 +27,9 @@ theorem hermForm_self_im_eq_zero {g : ℕ} {Hm : Matrix (Fin g) (Fin g) ℂ} (h 
   ring
 
 /- English proof (translation)
-Use `set L : Submodule ℤ (Fin g → ℂ) := LinearMap.range Q.toIntLinearMap with hL`. Use `haveI : DiscreteTopology L := hd`. Use `haveI : IsZLattice ℝ L := ⟨by`. Rewrite using `[hL, LinearMap.coe_range]`. Conclude with `hsp⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `e : La ≃ₗ[ℤ] L` to `LinearEquiv.ofInjective Q.toIntLinearMap hinj`. Use `haveI : Module.Free ℤ L := ZLattice.module_free ℝ L`. Use `haveI : Module.Finite ℤ L := ZLattice.module_finite ℝ L`. Use `⟨Module.Free.of_equiv e.symm, Module.Finite.equiv e.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[e.finrank_eq, ZLattice.rank ℝ L, Module.finrank_pi_fintype]`.
-
-Simplify using `[Complex.finrank_real_complex, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem free_finite_finrank_of_discrete_span {La : Type} [AddCommGroup La] {g : ℕ}
     (Q : La →+ (Fin g → ℂ)) (hinj : Function.Injective Q) (hd : DiscreteTopology Q.range)
@@ -50,11 +48,11 @@ theorem free_finite_finrank_of_discrete_span {La : Type} [AddCommGroup La] {g : 
   simp [Complex.finrank_real_complex, mul_comm]
 
 /- English proof (translation)
-Use `⟨fun La _ _ _ EF g hbij halt hrk => ?_, fun La _ EF g Q Hm ⟨hinj, hd, hsp, hH, _, hIm⟩ => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `exists_isSymplecticBasis_of_finrank (B := EF) halt hbij hrk`. Establish `hf : IsSymplecticFamily EF (fun i => b (Sum.inl i)) (fun i => b (Sum.inr i)) (fun _ => 1)` using `hb`. Use `⟨b.equivFun.symm, fun x y => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.Basis.equivFun_symm_apply, Fintype.sum_sum_type, map_add, LinearMap.add_apply, map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf.left_left, hf.right_right, hf.left_right, hf.right_left halt, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, _root_.mul_one, mul_neg, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_neg_distrib, omegaStd]`. Rewrite using `[neg_add_eq_sub, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Take `⟨h1, h2, h3⟩` from `free_finite_finrank_of_discrete_span Q hinj hd hsp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨h1, h2, h3, fun x => by`. Establish `e : ((EF x x : ℤ) : ℝ) = 0` using `by rw [← hIm x x]; exact hermForm_self_im_eq_zero hH _`. Conclude with `e⟩` after adjusting the coercions.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unimodular_symplectic_coordinates_and_lattice_rank :
     (∀ (La : Type) [AddCommGroup La] [Module.Free ℤ La] [Module.Finite ℤ La] (EF : LinearMap.BilinForm ℤ La) (g : ℕ), Function.Bijective EF → (∀ x, EF x x = 0) → Module.finrank ℤ La = 2 * g → ∃ bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] La, ∀ a b, EF (bas a) (bas b) = omegaStd a b) ∧ ∀ (La : Type) [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (g : ℕ) (Q : La →+ (Fin g → ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ), (Function.Injective Q ∧ DiscreteTopology (Q).range ∧ Submodule.span ℝ (Set.range Q) = ⊤ ∧ (Hm).IsHermitian ∧ (∀ z : Fin g → ℂ, z ≠ 0 → 0 < (hermForm Hm z z).re) ∧ ∀ x y, (hermForm Hm (Q x) (Q y)).im = EF x y) → Module.Free ℤ La ∧ Module.Finite ℤ La ∧ Module.finrank ℤ La = 2 * g ∧ ∀ x, EF x x = 0 := by

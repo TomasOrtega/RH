@@ -17,9 +17,9 @@ section Algebra
 variable {n : ℕ} [NeZero n]
 
 /- English proof (translation)
-Take `⟨y₁, hy₁⟩` from `hg.2 1`. Establish `hy : ∀ y, y = (g y).val • y₁` using `fun y => hg.1 (by`. Rewrite using `[map_nsmul, hy₁, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val])`. Establish `hfy : ∀ y, f y = f y₁ * g y` using `fun y => by conv_lhs => rw [hy y]`. Rewrite using `[map_nsmul, nsmul_eq_mul, ZMod.natCast_zmod_val, mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f y₁, ?_, hfy⟩` and prove the remaining obligations. Take `⟨y, hy1⟩` from `hf 1`. Conclude with `IsUnit.of_mul_eq_one (g y) ((hfy y).symm.trans hy1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_mul_of_surjective_of_bijective {Y : Type*} [AddCommGroup Y] (f g : Y →+ ZMod n)
     (hf : Function.Surjective f) (hg : Function.Bijective g) :
@@ -37,11 +37,11 @@ theorem exists_isUnit_mul_of_surjective_of_bijective {Y : Type*} [AddCommGroup Y
 omit [NeZero n] in
 
 /- English proof (translation)
-Establish `hF : Function.Bijective fun x => (c • T).comp (B.flip x)`. Use `⟨fun x x' h => hbij.1 (AddMonoidHom.ext fun y => ?_), fun χ => ?_⟩` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun h y`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, AddMonoidHom.smul_apply, smul_eq_mul] at e ⊢`. Conclude with `hc.mul_left_cancel e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx⟩` from `hbij.2 ((hc.unit⁻¹ : (ZMod n)ˣ) • χ)`. Use `⟨x, AddMonoidHom.ext fun y => ?_⟩` and prove the remaining obligations. Establish `e` using `DFunLike.congr_fun hx y`. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, AddMonoidHom.smul_apply, smul_eq_mul, Units.smul_def] at e ⊢`. Rewrite using `[e, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `bijective_of_bijective_comp hF eX.symm.bijective (γ := eY.symm.toAddMonoidHom) eY.symm.bijective fun x' y' => ?_` and prove the remaining obligations. Simplify using `only [AddMonoidHom.comp_apply, AddMonoidHom.flip_apply, AddMonoidHom.smul_apply, smul_eq_mul, AddEquiv.coe_toAddMonoidHom]`. Use `conv_lhs => rw [← eX.apply_symm_apply x', ← eY.apply_symm_apply y']`. Rewrite using `[hcup, hf]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_of_transport {X X' Y Y' W W' : Type*} [AddCommGroup X] [AddCommGroup X'] [AddCommGroup Y]
     [AddCommGroup Y'] [AddCommGroup W] [AddCommGroup W'] (B : Y →+ X →+ W) (B' : Y' →+ X' →+ W')
@@ -93,9 +93,9 @@ def GsLevelBijective (T : compactCohomologyRes (gsFinFamily S ιs) (gsRoots S n)
 set_option maxHeartbeats 3200000 in
 
 /- English proof (translation)
-Introduce `r s h`. Establish `hTL` using `hLev.1`. Set `f` to `(gsRootsOfUnityIso S hL n).symm`. Set `eW` to `(gsMackeyCompactIso hL ιs f 3).toLinearEquiv.toAddEquiv`. Set `eY` to `(gsMackeyCompactIso hL ιs f s).toLinearEquiv.toAddEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eX` to `(cohomologyIsoOfContinuousMulEquiv (gsBaseChange S hL) (zmodRepResIso (gsBaseChange S hL) n) r).toLinearEquiv.toAddEquiv`. Establish `hex` using `exists_isUnit_mul_of_surjective_of_bijective (t.comp (compactCores (gsFinFamily S ιs) (gsOpenSubgroup S hL) (gsRoots S n) 3).hom.toAddMonoidHom) (TL.comp eW.symm.toAddMonoidHom) hsurj (hTL.comp eW.symm.bijective)`. Conclude with `hex.elim fun c hcf => hcf.elim fun hc hfc => bijective_of_transport (bilinAddHom (compactCupRes (gsFinFamily (placesOver S) (gsMackeyEmbeddings hL ιs)) (zmodMulPairingRight n (gsRoots (K := L) (placesOver S) n) (nsmul_gsRoots (K := L) (placesOver S) n)) ((Nat.add_comm s r).trans …`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_zmodCompactDualityMap_gsOpenSubgroup
     (t : compactCohomologyRes (gsFinFamily S ιs) (gsRoots S n) 3 →+ ZMod n)

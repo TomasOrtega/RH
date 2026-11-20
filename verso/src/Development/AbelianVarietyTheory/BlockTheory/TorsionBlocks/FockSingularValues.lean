@@ -30,11 +30,11 @@ def HarmonicDecay : Prop :=
         (∏ i : Fin (min p q), Real.cosh (singVal X i) ^ (-(n : ℤ))) * ‖F.ι Φ₁‖ * ‖F.ι Φ₂‖
 
 /- English proof (translation)
-Rewrite using `[fockAct1_Eab, lowerOp, LinearMap.sum_apply, Fintype.sum_sum_type, ← Finset.sum_neg_distrib]`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Establish `hne : ((Sum.inr b, Sum.inl c) : Ln p q n 0) ≠ (Sum.inl a, Sum.inl c)` using `by simp`. Establish `hc : ∀ (i j : Ln p q n 0) (P : Pol p q n 0), MvPolynomial.pderiv i (MvPolynomial.pderiv j P) = MvPolynomial.pderiv j (MvPolynomial.pderiv i P)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add P Q hP hQ => simp [hP, hQ]`. Consider the case `mul_X P k hP`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, hP, MvPolynomial.pderiv_X]`. Apply the tactic sequence `by_cases h1 : k = i <;> by_cases h2 : k = j <;> simp [Pi.single_apply, h1, h2] <;> (try split_ifs) <;> (try simp) <;> (try ring)`. Simplify using `[omE, raiB, lowB, linePos, hne, hc (Sum.inr b, Sum.inl c) (Sum.inl a, Sum.inl c)]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem fockAct1_lower {p q n : ℕ} (a : Fin p) (b : Fin q) (Φ : Pol p q n 0) :
     fockAct1 p q n 0 (Eab (Sum.inr b) (Sum.inl a)) Φ = -lowerOp n a b Φ := by
@@ -56,13 +56,13 @@ theorem fockAct1_lower {p q n : ℕ} (a : Fin p) (b : Fin q) (Φ : Pol p q n 0) 
   simp [omE, raiB, lowB, linePos, hne, hc (Sum.inr b, Sum.inl c) (Sum.inl a, Sum.inl c)]
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `[lowerOp]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 example {p q n : ℕ} : KilledByPMinus (1 : Pol p q n 0) := by
   intro a b; simp [lowerOp]
 
 /- English proof (translation)
-Introduce `a' b`. Use `Finset.sum_eq_zero fun c' _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.pderiv_X_of_ne (by simp), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 example {p q n : ℕ} (a : Fin p) (c : Fin n) :
     KilledByPMinus (MvPolynomial.X (Sum.inl a, Sum.inl c) : Pol p q n 0) := by
@@ -71,7 +71,7 @@ example {p q n : ℕ} (a : Fin p) (c : Fin n) :
   rw [MvPolynomial.pderiv_X_of_ne (by simp), map_zero]
 
 /- English proof (translation)
-Introduce `h`. Use `h 0 0` as an intermediate fact. Simplify using `[lowerOp, MvPolynomial.pderiv_X, Pi.single_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : ¬ KilledByPMinus
     (MvPolynomial.X (Sum.inl 0, Sum.inl 0) * MvPolynomial.X (Sum.inr 0, Sum.inl 0) : Pol 1 1 1 0) := by

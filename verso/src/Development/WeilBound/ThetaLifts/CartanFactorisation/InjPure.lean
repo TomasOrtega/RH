@@ -26,13 +26,13 @@ namespace PositivityTheory.ThKF
 open GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hp _ hΦ g` and use `I_left unimodularity_holds hT hp hΦ g`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iLeft (hT : ThetaBasic) : ILeft := fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hp _ hΦ g =>
   I_left unimodularity_holds hT hp hΦ g
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.KCo.kCoinv_of_dict h.base.bernsteinUnitaryProductIrreducible PositivityTheory.KCo.dictionary_statement`.
+A detailed English derivation is pending.
 -/
 theorem kCoinv (h : KP) : KCoinv := PositivityTheory.KCo.kCoinv_of_dict h.base.bernsteinUnitaryProductIrreducible PositivityTheory.KCo.dictionary_statement
 

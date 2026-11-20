@@ -16,7 +16,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheor
 variable {R k : Type} [CommRing R] [CommRing k] {f : R →+* k} {d : ℕ}
 
 /- English proof (translation)
-Use extensionality with `m`. Apply `hf` to reduce the goal to its premises. Use `congrArg (coeff m) h` as an intermediate fact. Simplify `this` using `only [coeff_map]`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_inj (hf : Function.Injective f) {σ : Type} {a b : MvPowerSeries σ R}
     (h : MvPowerSeries.map f a = MvPowerSeries.map f b) : a = b := by
@@ -26,14 +26,14 @@ theorem map_inj (hf : Function.Injective f) {σ : Type} {a b : MvPowerSeries σ 
   simpa only [coeff_map] using this
 
 /- English proof (translation)
-The claim follows from `funext fun i => map_inj hf (congrFun h i)`.
+A detailed English derivation is pending.
 -/
 theorem mapPt_inj (hf : Function.Injective f) {n : ℕ} {a b : Pt R n d}
     (h : mapPt f a = mapPt f b) : a = b :=
   funext fun i => map_inj hf (congrFun h i)
 
 /- English proof (translation)
-Introduce `i` and use `by apply hf have := h i rw [mapPt, MvPowerSeries.constantCoeff_map] at this rw [this, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nc_of_map (hf : Function.Injective f) {n : ℕ} {a : Pt R n d} (h : NoConst (mapPt f a)) :
     NoConst a := fun i => by
@@ -57,13 +57,11 @@ local macro "push_map" : tactic =>
     mapPt_zero, mapPt_pt, mapPt_comp1, mapPt_addOf, FGLaw.add])
 
 /- English proof (translation)
-Establish `c : NoConst F` using `nc_of_map hf (hF ▸ nc_law G)`. Use `⟨⟨F, c, fun i => ?_, fun i => ?_, fun i => ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h` using `G.unit i`. Rewrite `h` using `[hF]`. Apply `map_inj hf` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_X]`. Use `push_map`. Conclude with `h`. Establish `h` using `G.comm i`. Rewrite `h` using `[hF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `map_inj hf` to reduce the goal to its premises. Use `push_map`. Conclude with `h`. Establish `h` using `G.assoc i`. Rewrite `h` using `[hF]`.
-
-Express the relevant statement in the definitionally equal form `ev (n := 3) ![addOf F (pt R d 0) (pt R d 1), pt R d 2] (F i) = ev (n := 3) ![pt R d 0, addOf F (pt R d 1) (pt R d 2)] (F i)`. Apply `map_inj hf` to reduce the goal to its premises. Use `push_map`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_law (hf : Function.Injective f) (G : FGLaw k d) (F : Pt R 2 d) (hF : G.F = mapPt f F) :
     ∃ G' : FGLaw R d, G'.F = F := by
@@ -91,17 +89,13 @@ theorem exists_law (hf : Function.Injective f) (G : FGLaw k d) (F : Pt R 2 d) (h
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `c : ∀ a, NoConst (act a)` using `fun a => nc_of_map hf (hA a ▸ nc_act A a)`. Use `⟨⟨act, c, fun a => ?_, fun a b => ?_, fun a b => ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `h` using `A.hom a`. Establish `ca` using `c a`. Simplify using `only [FGLaw.add, hF, hA] at h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mapPt_inj hf` to reduce the goal to its premises. Use `push_map`. Conclude with `h`. Establish `h` using `A.add_act a b`. Establish `ca` using `c a`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `cb` using `c b`. Simplify using `only [FGLaw.add, hF, hA] at h`. Apply `mapPt_inj hf` to reduce the goal to its premises. Use `push_map`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `A.mul_act a b`. Establish `ca` using `c a`. Establish `cb` using `c b`. Simplify using `only [hA] at h`. Apply `mapPt_inj hf` to reduce the goal to its premises.
-
-Use `push_map`. Conclude with `h`. Establish `h` using `A.one_act`. Simplify using `only [hA] at h`. Apply `mapPt_inj hf` to reduce the goal to its premises.
-
-Use `push_map`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_act (hf : Function.Injective f) {G : FGLaw k d} (A : OAct O G) (G' : FGLaw R d)
     (hF : G.F = mapPt f G'.F) (act : O → Pt R 1 d) (hA : ∀ a, A.act a = mapPt f (act a)) :
@@ -285,7 +279,7 @@ def descFB [StarRing O] (hf : Function.Injective f) (B : FB k d O) (G' : FGLaw R
     exact h
 
 /- English proof (translation)
-Take `⟨G', rfl⟩` from `exists_law hf B.G F (funext hF)`. Take `⟨A', rfl⟩` from `exists_act hf B.A G' (funext hF) act (fun a => funext (hA a))`. Conclude with `⟨descFB hf B G' A' ph1 ph2 sy ad (funext hF) (fun a => funext (hA a)) h1 h2 hs ha, rfl, rfl, rfl, rfl, rfl, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_fb [StarRing O] (hf : Function.Injective f) (B : FB k d O)
     (F : Pt R 2 d) (act : O → Pt R 1 d) (ph1 ph2 : PS R 3 d) (sy : PS R 2 d) (ad : O → PS R 2 d)
@@ -300,7 +294,7 @@ theorem exists_fb [StarRing O] (hf : Function.Injective f) (B : FB k d O)
     rfl, rfl, rfl, rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `only [coeff_map]`. Conclude with `IsScalarTower.algebraMap_apply R k F _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_tower {F : Type} [CommRing F] [Algebra R k] [Algebra k F] [Algebra R F] [IsScalarTower R k F]
     {σ : Type} (g : MvPowerSeries σ R) :
@@ -311,15 +305,11 @@ theorem map_tower {F : Type} [CommRing F] [Algebra R k] [Algebra k F] [Algebra R
   exact IsScalarTower.algebraMap_apply R k F _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H`. Use `⟨H.ax0, H.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← h1, ← hF]`. Conclude with `H.ph1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, ← hF]`. Conclude with `H.ph2`. Rewrite using `[← hs]`. Conclude with `H.sy`. Rewrite using `[← ha, ← hA, ← hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H.ad a`. Introduce `H`. Use `⟨H.ax0, H.ax1, ?_, ?_, ?_, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[h1, hF]`. Conclude with `H.ph1`.
-
-Rewrite using `[h2, hF]`. Conclude with `H.ph2`. Rewrite using `[hs]`. Conclude with `H.sy`. Rewrite using `[ha, hA, hA]`.
-
-Conclude with `H.ad a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauge_iff [StarRing O] (B' : FB R d O) (B : FB k d O) (F : Type) [CommRing F] [Algebra ℚ F]
     [Algebra R F] [Algebra k F] (hF : B'.FK F = B.FK F) (hA : ∀ a, B'.actK F a = B.actK F a)
@@ -341,15 +331,13 @@ theorem gauge_iff [StarRing O] (B' : FB R d O) (B : FB k d O) (F : Type) [CommRi
     · rw [ha, hA, hA]; exact H.ad a
 
 /- English proof (translation)
-Take `⟨B', rfl, rfl, rfl, rfl, rfl, rfl⟩` from `exists_fb hf B G act ph1 ph2 sy ad hF hA h1 h2 hs ha`. Use `⟨B', rfl, rfl, rfl, rfl, rfl, rfl, fun F _ _ _ _ _ => ?_⟩` and prove the remaining obligations. Establish `eF : B'.FK F = B.FK F`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B'.G.F i) = MvPowerSeries.map _ (B.G.F i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hF, ← map_tower]`. Establish `eA : ∀ a, B'.actK F a = B.actK F a`. Introduce `a`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `MvPowerSeries.map _ (B'.A.act a i) = MvPowerSeries.map _ (B.A.act a i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hA, ← map_tower]`. Use `⟨eF, eA, gauge_iff B' B F eF eA ?_ ?_ ?_ (fun a => ?_), ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `map_tower _`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_tower _`. Rewrite using `[hs]`. Conclude with `map_tower _`. Rewrite using `[ha]`. Conclude with `map_tower _`.
-
-Conclude with `GaugeBaseChange.isCanonGauge_map B (Algebra.ofId k F) H0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fb_gauge [StarRing O] [Algebra R k] [Algebra ℚ k] (hf : Function.Injective (algebraMap R k))
     (B : FB k d O) (h0 : PS k 2 d) (H0 : B.IsCanonGauge k h0)
@@ -395,9 +383,9 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C`. Use `letI := io.toAlgebra`. Take `⟨hF, hA, h1, h2, hs, ha, -⟩` from `C.gen.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Take `⟨B', e1, e2, e3, e4, e5, e6, e7⟩` from `FBDescent.exists_fb_gauge (IsFractionRing.injective T.V T.Fr) C.ch.B C.ch.h C.ch.gauge C.FT C.actT C.ph1T C.ph2T C.syT C.adT hF hA h1 h2 hs ha`. Conclude with `⟨B', e1, e2, e3, e4, e5, e6, fun F _ _ _ _ _ => e7 F⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem integralChart_formalBiext : IntFBSt := by
   intro E _ _ _ H Dw l Xo c

@@ -8,7 +8,7 @@ import Formalism.TameInertiaTowers.CentralOrderTwo.NormalOrderTwoCentral
 namespace Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨unitsTwoPow, quotCyclic, twoAdicOrder, twoAdicVal, decompModel, gmRank, gensModel, gamEModel, ggModel, centralExtAbelian, commGen, rankBound, normalOrderTwoCentral, twistVal, coinvLength, pGroupGen, genusModel, genusAbelian⟩`.
+Supply the required witnesses or components.
 -/
 theorem tower_group_foundations :
     UnitsTwoPow ∧ QuotCyclic ∧ TwoAdicOrder ∧ TwoAdicVal ∧ DecompModel ∧ GmRank ∧ GensModel ∧

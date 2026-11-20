@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.LocFrames
 
 /- English proof (translation)
-Establish `hl` using `hA.isLocalization_stalk x`. Establish `h1 : algebraMap Γ(X, A) (X.presheaf.stalk x.1) f ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk x.1)` using `(IsLocalization.AtPrime.to_map_mem_maximal_iff (X.presheaf.stalk x.1) (hA.primeIdealOf x).asIdeal f).2 hf`. Establish `h2 : ¬ IsUnit (algebraMap Γ(X, A) (X.presheaf.stalk x.1) f)` using `h1`. Assume the negation of the conclusion as `h0`. Conclude with `h2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Set `_` to `hF.toField`. Conclude with `IsUnit.mk0 _ h0)`.
+A detailed English derivation is pending.
 -/
 theorem mem_prime_germ_eq_zero {X : Scheme.{0}} {A : X.Opens} (hA : IsAffineOpen A) (x : A)
     (hF : IsField (X.presheaf.stalk x.1)) (f : Γ(X, A)) (hf : f ∈ (hA.primeIdealOf x).asIdeal) :
@@ -34,7 +34,7 @@ theorem mem_prime_germ_eq_zero {X : Scheme.{0}} {A : X.Opens} (hA : IsAffineOpen
     exact IsUnit.mk0 _ h0)
 
 /- English proof (translation)
-Establish `hl` using `hA.isLocalization_stalk x`. Conclude with `IsLocalization.injective (X.presheaf.stalk x.1) (M := (hA.primeIdealOf x).asIdeal.primeCompl) ((hA.primeIdealOf x).asIdeal.primeCompl_le_nonZeroDivisors)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem germ_injective {X : Scheme.{0}} {A : X.Opens} (hA : IsAffineOpen A) [IsDomain Γ(X, A)] (x : A) :
     Function.Injective (X.presheaf.germ A x.1 x.2) := by
@@ -44,17 +44,15 @@ theorem germ_injective {X : Scheme.{0}} {A : X.Opens} (hA : IsAffineOpen A) [IsD
     ((hA.primeIdealOf x).asIdeal.primeCompl_le_nonZeroDivisors)
 
 /- English proof (translation)
-Introduce `X Ω _ ξ A hA p hgen hdom hp z hz`. Establish `hx : genPt ξ ∈ A` using `p.2.mem_open A.2 hp`. Set `x : A` to `⟨genPt ξ, hx⟩`. Set `q : A` to `⟨p.1, hp⟩`. Establish `hF : IsField (X.presheaf.stalk x.1)` using `MulEquiv.isField (Field.toIsField Ω) (RingEquiv.ofBijective _ hgen.bij).toMulEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbot : (hA.primeIdealOf x).asIdeal = ⊥`. Use `le_antisymm (fun f hf => ?_) bot_le` and prove the remaining obligations. Establish `h0` using `mem_prime_germ_eq_zero hA x hF f hf`. Establish `h1 : X.presheaf.germ A p.1 hp f = 0`. Apply `hgen.inj p` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : X.presheaf.stalkSpecializes p.2 (X.presheaf.germ A p.1 hp f) = X.presheaf.germ A (genPt ξ) hx f`. Conclude with `congr($(X.presheaf.germ_stalkSpecializes hp p.2).hom f)`. Rewrite using `[map_zero]`. Express the relevant statement in the definitionally equal form `(Scheme.stalkClosedPointTo ξ).hom (X.presheaf.stalkSpecializes p.2 (X.presheaf.germ A p.1 hp f)) = 0`. Rewrite using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : X.presheaf.germ A (genPt ξ) hx f = 0` using `h0`. Rewrite using `[h3]`. Conclude with `map_zero (Scheme.stalkClosedPointTo ξ).hom`. Conclude with `germ_injective hA q (h1.trans (map_zero _).symm)`. Take `⟨t, rfl⟩ : z ∈ Set.range hA.fromSpec` from `by rwa [hA.range_fromSpec]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hs : hA.primeIdealOf x ⤳ t`. Use `(PrimeSpectrum.le_iff_specializes (hA.primeIdealOf x) t).1 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(hA.primeIdealOf x).asIdeal ≤ _`. Rewrite using `[hbot]`. Conclude with `bot_le`.
-
-Use `hs.map hA.fromSpec.continuous` as an intermediate fact. Rewrite `this` using `[hA.fromSpec_primeIdealOf]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem genPt_specializes_of_isDomain : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (A : X.Opens) (hA : IsAffineOpen A) (p : Cpt ξ), IsCptGen ξ → IsDomain Γ(X, A) → p.1 ∈ A → ∀ z ∈ A, genPt ξ ⤳ z := by
   intro X Ω _ ξ A hA p hgen hdom hp z hz

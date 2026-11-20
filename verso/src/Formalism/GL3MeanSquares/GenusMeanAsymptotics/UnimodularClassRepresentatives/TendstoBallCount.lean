@@ -16,25 +16,23 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `haveI : IsEmpty {w : InfinitePlace K // w.IsReal} := ⟨fun w => InfinitePlace.not_isReal_iff_isComplex.mpr (hK.1.isComplex w.1) w.2⟩`. Take `⟨b, hbL, ho⟩` from `BallB.exists_orth_basis_mem hK hs hd hL`. Establish `hBL : Submodule.span (𝓞 K) (Set.range b) ≤ L` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hbL i)`. Take `⟨N, hN, hNx⟩` from `LocF.exists_zsmul_le hL (BallB.isLattice_span b)`. Establish `hlat1 : BallD.lat b (Submodule.span (𝓞 K) (Set.range b)) = Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))` using `BallD.lat_span b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V)))) ≤ BallD.lat b L`. Rewrite using `[← hlat1]`. Introduce `y hy`. Rewrite `hy`, the goal using `[BallD.mem_lat]`. Take `⟨x, hx, rfl⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, hBL hx, rfl⟩`. Establish `hNy : ∀ y ∈ BallD.lat b L, N • y ∈ Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))`. Introduce `y hy`. Rewrite using `[← hlat1]`. Rewrite `hy`, the goal using `[BallD.mem_lat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨N • x, hNx x hx, map_zsmul (BallD.emb b) N x⟩`. Establish `hA : ∀ (w : {w : InfinitePlace K // w.IsComplex}) i, 0 < (w.1.embedding (h (b i) (b i))).re` using `fun w i => hd (b i) (b.ne_zero i) w.1.embedding`. Take `⟨hidx, hT⟩` from `BallA.tendsto_card_of_le (μ := MeasureTheory.volume) (Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))) (BallD.lat b L) hle hN hNy (BallD.isBounded_ballSet hA) BallD.measurableSet_ballSet (BallD.convex_ballSet hA)`. Establish `hfr : finrank ℝ (Fin (finrank K V) → NumberField.mixedEmbedding.mixedSpace K) = 2 * Formalism.HermitianLatticesTheory.fDeg K * finrank K V`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_pi_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, smul_eq_mul, NumberField.mixedEmbedding.finrank, finrank_eq_two_fDeg hK]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcov : ZLattice.covolume (Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))) MeasureTheory.volume = Formalism.HermitianLatticesTheory.vInv K ^ (Formalism.HermitianLatticesTheory.fDeg K * finrank K V)`. Rewrite using `[BallC.covolume_piBasis, covolume_integerLattice_eq hK, Fintype.card_fin, ← pow_mul]`. Establish `hidx' : (Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))).toAddSubgroup.relIndex (BallD.lat b L).toAddSubgroup = (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlat1]`. Conclude with `AddSubgroup.relIndex_map_map_of_injective _ _ (BallD.emb_injective b)`. Establish `hI0 : (Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup ≠ 0`. Rewrite using `[← hidx']`. Conclude with `hidx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnorm` using `BallB.normD_mul_relIndex hK hLi b hbL hI0`. Establish `hgdet` using `BallB.prod_place_gdet hK hs hd b ho`. Establish `hvol` using `BallD.volume_ballSet hA`. Establish `hP : 0 < ∏ w : {w : InfinitePlace K // w.IsComplex}, ∏ i, (w.1.embedding (h (b i) (b i))).re` using `Finset.prod_pos fun w _ => Finset.prod_pos fun i _ => hA w i`. Establish `hIr : ((Submodule.span (𝓞 K) (Set.range b)).toAddSubgroup.relIndex L.toAddSubgroup : ℝ) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hI0` after adjusting the coercions. Establish `hND : normD h L ≠ 0`. Introduce `h0`. Rewrite `hnorm` using `[h0, zero_mul, hgdet]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hV : Formalism.HermitianLatticesTheory.vInv K ^ (Formalism.HermitianLatticesTheory.fDeg K * finrank K V) ≠ 0` using `pow_ne_zero _ (vInv_pos K).ne'`. Establish `hlim : MeasureTheory.volume.real (BallD.ballSet h b) * ((Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))).toAddSubgroup.relIndex (BallD.lat b L).toAddSubgroup : ℝ) / ZLattice.covolume (Submodule.span ℤ (Set.range (BallC.piBasis K (Fin (finrank K V))))) MeasureT …`. Rewrite using `[hvol, hcov, hidx', ← hgdet, ← hnorm, nrComplexPlaces_eq_fDeg hK]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hlim]`.
-
-Use `Tendsto.congr' ?_ hT` and prove the remaining obligations. Use `filter_upwards [eventually_gt_atTop 0] with j hj`. Rewrite using `[BallD.card_eq hK ho L hj, hfr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_ballCount (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

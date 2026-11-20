@@ -31,11 +31,11 @@ def smoothings (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (φ : Sm E a) : Su
     ring
 
 /- English proof (translation)
-Introduce `hP E _ _ _ a ν _ φ hφ`. Take `⟨α, hα, hlim⟩` from `GlobalTheory.T.exists_conjInvariant_approxIdentity_realLieSmoothing E a ν`. Take `⟨V, hVf, -, hV⟩` from `GlobalTheory.T.exists_finiteDimensional_space_automorphic_smoothings hP E a ν φ hφ`. Set `V₀ : Submodule ℂ (GA E a → ℂ)` to `V.map (Sm E a).subtype`. Set `V' : Submodule ℂ (GA E a → ℂ)` to `smoothings ν φ ⊓ V₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hf : FiniteDimensional ℂ V'` using `Submodule.finiteDimensional_of_le (S₂ := V₀) inf_le_right`. Establish `hc : IsClosed (V' : Set (GA E a → ℂ))` using `Submodule.closed_of_finiteDimensional V'`. Establish `hmem : ∀ n, smoothing ν (α n) φ.1 ∈ V'` using `fun n => by`. Take `⟨h, hv⟩` from `hV (α n) (hα n).1 (hα n).2`. Conclude with `⟨⟨α n, (hα n).1, rfl⟩, ⟨_, hv, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hφ' : φ.1 ∈ V'` using `hc.mem_of_tendsto (tendsto_pi_nhds.2 fun g => hlim φ.1 φ.2 g) (Eventually.of_forall hmem)`. Conclude with `hφ'.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_smoothing_eq_self : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (E : Type) [Field E] [NumberField E]
     [IsTotallyComplex E] (a : ℕ) (ν : Measure (Lie E a)) [ν.IsAddHaarMeasure] (φ : Sm E a), IsAutForm φ →

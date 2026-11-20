@@ -20,7 +20,7 @@ variable {D : D7}
 def SameSp (V V' : HSp D) : Prop := ∃ L h1 h2, V' = reLat V L h1 h2
 
 /- English proof (translation)
-Use `⟨V.L0, V.standardTuple_isLattice, V.baseLattice_isUnimodular, ?_⟩` and prove the remaining obligations. Consider the cases of `V`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem SameSp.refl (V : HSp D) : SameSp V V := by
   refine ⟨V.L0, V.standardTuple_isLattice, V.baseLattice_isUnimodular, ?_⟩
@@ -28,14 +28,14 @@ theorem SameSp.refl (V : HSp D) : SameSp V V := by
   rfl
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Conclude with `⟨L, h1, (negSp (reLat V L h1 h2)).baseLattice_isUnimodular, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameSp.neg {V V' : HSp D} (h : SameSp V V') : SameSp (negSp V) (negSp V') := by
   obtain ⟨L, h1, h2, rfl⟩ := h
   exact ⟨L, h1, (negSp (reLat V L h1 h2)).baseLattice_isUnimodular, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem SameSp.rank {V V' : HSp D} (h : SameSp V V') : V'.rank = V.rank := by
   obtain ⟨L, h1, h2, rfl⟩ := h
@@ -44,7 +44,7 @@ theorem SameSp.rank {V V' : HSp D} (h : SameSp V V') : V'.rank = V.rank := by
 def SameL (X X' : LSp D) : Prop := ∃ L h1 h2, X' = ⟨reLat X.sp L h1 h2, X.lat⟩
 
 /- English proof (translation)
-Use `⟨X.sp.L0, X.sp.standardTuple_isLattice, X.sp.baseLattice_isUnimodular, ?_⟩` and prove the remaining obligations. Take `⟨sp, lat⟩` from `X`. Consider the cases of `sp`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem SameL.refl (X : LSp D) : SameL X X := by
   refine ⟨X.sp.L0, X.sp.standardTuple_isLattice, X.sp.baseLattice_isUnimodular, ?_⟩
@@ -53,28 +53,28 @@ theorem SameL.refl (X : LSp D) : SameL X X := by
   rfl
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Conclude with `⟨L, h1, h2, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameL.sp {X X' : LSp D} (h : SameL X X') : SameSp X.sp X'.sp := by
   obtain ⟨L, h1, h2, rfl⟩ := h
   exact ⟨L, h1, h2, rfl⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Conclude with `HEq.rfl`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SameL.lat {X X' : LSp D} (h : SameL X X') : HEq X'.lat X.lat := by
   obtain ⟨L, h1, h2, rfl⟩ := h
   exact HEq.rfl
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Conclude with `⟨hX.rank, hX.sigOK, hX.sig, hX.sd⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameL.isV {X X' : LSp D} (h : SameL X X') {ν q : ℕ} (hX : X.IsV ν q) : X'.IsV ν q := by
   obtain ⟨L, h1, h2, rfl⟩ := h
   exact ⟨hX.rank, hX.sigOK, hX.sig, hX.sd⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [← V.frame.sum_equivFun x, ← V.frame.sum_equivFun y]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, Finset.mul_sum, HSpace.gram, starRingEnd_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hT_frame (V : HSp D) (x y : V.V) :
     V.hT x y = ∑ i, ∑ j, star (V.frame.equivFun x i) * V.gram i j * V.frame.equivFun y j := by
@@ -86,19 +86,19 @@ theorem hT_frame (V : HSp D) (x y : V.V) :
   ring
 
 /- English proof (translation)
-Take `⟨hlat, hsd⟩` from `h`. Set `e : (Fin X.sp.rank → D.host.E) →ₗ[𝓞 D.host.E] X.sp.V` to `(X.sp.frame.equivFun.symm : (Fin X.sp.rank → D.host.E) →ₗ[D.host.E] X.sp.V).restrictScalars (𝓞 D.host.E)`. Establish `he : ∀ c, e c = ∑ i, c i • X.sp.frame i` using `fun c => X.sp.frame.equivFun_symm_apply c`. Establish `hinv : ∀ c, X.sp.frame.equivFun (e c) = c` using `fun c => X.sp.frame.equivFun.apply_symm_apply c`. Establish `hmem : ∀ c, e c ∈ X.lat.map e ↔ c ∈ X.lat` using `fun c => ⟨fun hc => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c', hc', hcc⟩` from `Submodule.mem_map.1 hc`. Establish `: c' = c` using `by rw [← hinv c', hcc, hinv]`. Conclude with `this ▸ hc', fun hc => Submodule.mem_map_of_mem hc⟩`. Establish `hsurj : ∀ v : X.sp.V, e (X.sp.frame.equivFun v) = v` using `fun v => X.sp.frame.equivFun.symm_apply_apply v`. Establish `h1 : Submodule.IsLattice D.host.E (X.lat.map e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hlat.fg.map e, ?_⟩` and prove the remaining obligations. Establish `himg : ((X.lat.map e : Submodule (𝓞 D.host.E) X.sp.V) : Set X.sp.V) = (X.sp.frame.equivFun.symm : (Fin X.sp.rank → D.host.E) →ₗ[D.host.E] X.sp.V) '' (X.lat : Set _)` using `Submodule.map_coe e X.lat`. Rewrite using `[himg, Submodule.span_image, hlat.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Establish `h2 : Formalism.HermitianLatticesTheory.IsUnimodular X.sp.hT (X.lat.map e)`. Unfold `Formalism.HermitianLatticesTheory.IsUnimodular Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Rewrite using `[← hsurj v, hmem, hsd]`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce `H a ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `H (e a) ((hmem a).2 ha)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, ht, hT_frame, hinv, hinv]`. Introduce `H y hy`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `H a ha`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← RingOfIntegers.coe_eq_algebraMap, ht, hT_frame, hinv, hinv]`. Use `⟨X.lat.map e, h1, h2, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe]`. Rewrite using `[← he x, hmem x]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_unimodular_lattice_eq_lat_of_isSelfDualC (X : LSp D) (h : IsSelfDualC X.sp X.lat) :
     ∃ (L : Submodule (𝓞 D.host.E) X.sp.V) (h1 : Submodule.IsLattice D.host.E L)
@@ -143,7 +143,7 @@ private theorem exists_unimodular_lattice_eq_lat_of_isSelfDualC (X : LSp D) (h :
   rw [← he x, hmem x]
 
 /- English proof (translation)
-Distinguish the cases in `hsd : IsSelfDualC X.sp X.lat`. Take `⟨L, h1, h2, hL⟩` from `exists_unimodular_lattice_eq_lat_of_isSelfDualC X hsd`. Conclude with `⟨⟨reLat X.sp L h1 h2, X.lat⟩, ⟨L, h1, h2, rfl⟩, fun _ => hL⟩`. Conclude with `⟨X, SameL.refl X, fun h => absurd h hsd⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_sameL (X : LSp D) : ∃ X', SameL X X' ∧ (IsSelfDualC X.sp X.lat → (X'.lat : Set _) = L0c D X'.sp) := by
   by_cases hsd : IsSelfDualC X.sp X.lat
@@ -152,7 +152,7 @@ theorem exists_sameL (X : LSp D) : ∃ X', SameL X X' ∧ (IsSelfDualC X.sp X.la
   · exact ⟨X, SameL.refl X, fun h => absurd h hsd⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `hX`. Take `⟨L', h1', h2', rfl⟩` from `hY`. Conclude with `⟨⟨d.ι, d.isom, d.a, d.gram, d.perp, d.rank⟩, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_orthogonalSum_lattice_sameLatticedSpace {X Y X' Y' : LSp D} (hX : SameL X X') (hY : SameL Y Y') {c : ℕ} {ε : D.host.E}
     (d : HermitianOrthogonalExtensionData X.sp Y.sp c ε) (𝔟 : Fin c → FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (h : Y.lat = d.lat X.lat 𝔟) :
@@ -164,19 +164,19 @@ theorem exists_orthogonalSum_lattice_sameLatticedSpace {X Y X' Y' : LSp D} (hX :
 variable {T : Type} {L : LevCh D T} {sc : Consts}
 
 /- English proof (translation)
-Use `choose f hf hfL using fun X : LSp D => exists_sameL X`. Establish `hV : ∀ i j, SameL (vtxOf L G.sp.Vs i j) (vtxOf L (fun i j => f (G.sp.Vs i j)) i j)`. Introduce `i j`. Consider the cases of `i with`. Consider the case `zero => exact SameL.refl _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ i => exact hf _`. Establish `hXo : ∀ j, SameL (xOf (G.sp.P D.R.m) G.sp.Xs j) (xOf (f (G.sp.P D.R.m)) (fun j => f (G.sp.Xs j)) j)`. Introduce `j`. Consider the cases of `j with`. Consider the case `zero => exact hf _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j => exact hf _`. Take `⟨d0, hd0⟩` from `exists_orthogonalSum_lattice_sameLatticedSpace (SameL.refl ⟨Yc D 0, L.ΛY 0⟩) (hf (G.sp.P 0)) G.sp.dec0 _ G.sp.lat0`. Use `choose cD hcD using fun i (h : 1 ≤ i) (h' : i ≤ D.R.m) => exists_orthogonalSum_lattice_sameLatticedSpace (hf (G.sp.P i)) (hV i 0) (G.sp.colDec i h h') _ (G.sp.colLat i h h')`. Use `choose rD hrD using fun j (h : j + 1 < D.R.m) => exists_orthogonalSum_lattice_sameLatticedSpace (hf (G.sp.Xs (j + 1))) (hV D.R.m (j + 1)) (G.sp.rowDecS j h) _ (G.sp.rowLat j h)`. Take `⟨tD, htD⟩` from `exists_orthogonalSum_lattice_sameLatticedSpace (hV D.R.m D.R.m) (hXo D.R.m) G.sp.topDec _ G.sp.topLat`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Use `⟨{ Vs := fun i j => f (G.sp.Vs i j), P := fun i => f (G.sp.P i), Xs := fun j => f (G.sp.Xs j), V_is := fun i j h1 h2 h3 => (hf _).isV (G.sp.V_is i j h1 h2 h3), P_is := fun i h => (hf _).isV (G.sp.P_is i h), X_is := fun j h1 h2 => (hf _).isV (G.sp.X_is j h1 h2), dec0 := d0, lat0 : …` and prove the remaining obligations. Introduce `X`. Consider the cases of `X with`. Consider the case `grid i j => exact hV i j`. Consider the case `core i => exact hf _`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `top j => exact hXo j`. Introduce `X hX h0`. Establish `hsd` using `(G.isV hX h0).sd`. Consider the cases of `X with`. Consider the case `grid i j`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `i with`. Consider the case `zero => exact absurd rfl (h0 j)`. Consider the case `succ i => exact hfL _ hsd`. Consider the case `core i => exact hfL _ hsd`. Consider the case `top j`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `j with`. Consider the case `zero => exact hfL _ hsd`. Consider the case `succ j => exact hfL _ hsd`.
+A detailed English derivation is pending.
 -/
 theorem exists_vertices (G : GridData L sc) : ∃ sp : Vertices L (G.pl.stA sc) (G.pl.stAbar sc),
     (∀ X, SameL (G.node X) ((⟨G.pl, G.ch, sp⟩ : GridData L sc).node X)) ∧
@@ -230,7 +230,7 @@ section Move
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Conclude with `⟨s, HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameSp.ex_mat {V V' : HSp D} (h : SameSp V V') (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) :
     ∃ s' : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V'.rank) ℂ, HEq s' s := by
@@ -238,7 +238,7 @@ theorem SameSp.ex_mat {V V' : HSp D} (h : SameSp V V') (s : D.what₂.Tau → Ma
   exact ⟨s, HEq.rfl⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Take `rfl` from `eq_of_heq e`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SameSp.cart {V V' : HSp D} (h : SameSp V V') {s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {s' : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V'.rank) ℂ} (e : HEq s' s) {τ} (hs : IsCartanInv (gramAt D V τ) (s τ)) :
@@ -248,7 +248,7 @@ theorem SameSp.cart {V V' : HSp D} (h : SameSp V V') {s : D.what₂.Tau → Matr
   exact hs
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Take `rfl` from `eq_of_heq e`. Take `rfl` from `eq_of_heq e'`. Conclude with `hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SameSp.onb {V V' : HSp D} (h : SameSp V V') {s b : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {s' b' : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V'.rank) ℂ} (e : HEq s' s) (e' : HEq b' b) {τ}
@@ -260,7 +260,7 @@ theorem SameSp.onb {V V' : HSp D} (h : SameSp V V') {s b : D.what₂.Tau → Mat
   exact hs
 
 /- English proof (translation)
-The claim follows from `funext fun _ => propext ⟨fun h => { h with }, fun h => { h with }⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isThetaFunO_reLat_reLat_eq {S U : HSp D} (L : Submodule (𝓞 D.host.E) S.V) (h1 : Submodule.IsLattice D.host.E L)
     (h2 : Formalism.HermitianLatticesTheory.IsUnimodular S.hT L) (L' : Submodule (𝓞 D.host.E) U.V) (h1' : Submodule.IsLattice D.host.E L')
@@ -269,9 +269,9 @@ private theorem isThetaFunO_reLat_reLat_eq {S U : HSp D} (L : Submodule (𝓞 D.
   funext fun _ => propext ⟨fun h => { h with }, fun h => { h with }⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Take `⟨L', h1', h2', rfl⟩` from `h'`. Establish `hE` using `isThetaFunO_reLat_reLat_eq (ψ := ψ) L h1 h2 L' h1' h2'`. Use `⟨ω, HEq.rfl, fun _ _ hω => ?_⟩` and prove the remaining obligations. Consider the cases of `hω`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Apply the tactic sequence `constructor <;> (try rw [hE]) <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ex_om {S S' U U' : HSp D} (h : SameSp S S') (h' : SameSp U U')
     (ω : GA D S × GA D U →* Module.End ℂ (WO S U → ℂ)) : ∃ ω' : GA D S' × GA D U' →* Module.End ℂ (WO S' U' → ℂ),
@@ -284,7 +284,7 @@ theorem ex_om {S S' U U' : HSp D} (h : SameSp S S') (h' : SameSp U U')
   constructor <;> (try rw [hE]) <;> assumption
 
 /- English proof (translation)
-The claim follows from `funext fun _ => propext ⟨fun h => { h with }, fun h => { h with }⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isThetaFunO_negSp_reLat_reLat_eq {V U : HSp D} (L : Submodule (𝓞 D.host.E) V.V) (h1 : Submodule.IsLattice D.host.E L)
     (h2 : Formalism.HermitianLatticesTheory.IsUnimodular V.hT L) (L' : Submodule (𝓞 D.host.E) U.V) (h1' : Submodule.IsLattice D.host.E L')
@@ -293,9 +293,9 @@ private theorem isThetaFunO_negSp_reLat_reLat_eq {V U : HSp D} (L : Submodule (�
   funext fun _ => propext ⟨fun h => { h with }, fun h => { h with }⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Take `⟨L', h1', h2', rfl⟩` from `h'`. Take `rfl` from `eq_of_heq e`. Take `rfl` from `eq_of_heq e'`. Use `⟨f, c, HEq.rfl, fun κ => ⟨κ, HEq.rfl⟩, fun κ => ⟨κ, HEq.rfl⟩, fun hv => ?_, fun _ hi κ => hi κ⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `IsVacO at hv ⊢`. Simplify using `only`. Rewrite using `[isThetaFunO_negSp_reLat_reLat_eq (ψ := ψ) L h1 h2 L' h1' h2']`. Conclude with `hv`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_vac {X X' Y Y' : LSp D} (h : SameL X X') (h' : SameL Y Y') (𝔪 : Ideal (𝓞 D.host.E))
     {s : D.what₂.Tau → Matrix (Fin X.sp.rank) (Fin X.sp.rank) ℂ} {s' : D.what₂.Tau → Matrix (Fin X'.sp.rank) (Fin X'.sp.rank) ℂ}
@@ -347,19 +347,17 @@ structure SameWeil {G G' : GridData L sc} (W : G.Weil) (W' : G'.Weil) : Prop whe
   cos : ∀ i, (∀ κ', ∃ κ, HEq (W'.cosVec i κ') (W.cosVec i κ)) ∧ ∀ κ, ∃ κ', HEq (W'.cosVec i κ') (W.cosVec i κ)
 
 /- English proof (translation)
-Take `⟨sp, hsp, hL⟩` from `exists_vertices G`. Set `G₁ : GridData L sc` to `⟨G.pl, G.ch, sp⟩`. Establish `hN : ∀ X, SameL (G.node X) (G₁.node X)` using `hsp`. Establish `hS : ∀ p : Pair T, SameSp (G.pS p) (G₁.pS p)`. Introduce `p`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `p with`. Consider the case `chi i j => exact (hN _).sp.neg`. Consider the case `mu t i j => exact (hN _).sp`. Consider the case `core i => exact (hN _).sp.neg`. Consider the case `top t j => exact (hN _).sp`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hT : ∀ p : Pair T, SameSp (G.pT p) (G₁.pT p)`. Introduce `p`. Apply the tactic sequence `cases p <;> exact (hN _).sp`. Establish `hcS : ∀ p, G₁.chrS p = G.chrS p` using `fun p => by`. Unfold `GridData.chrS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[(hS p).rank]`. Both sides reduce to the same expression. Establish `hcT : ∀ p, G₁.chrT p = G.chrT p` using `fun p => by`. Unfold `GridData.chrT`. Rewrite using `[(hT p).rank]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `choose cart' hcart' using fun X => (hN X).sp.ex_mat (W.cart X)`. Use `choose onb' honb' using fun X => (hN X).sp.ex_mat (W.onb X)`. Use `choose om' hom' hom'' using fun p => ex_om (ψ := W.ψ) (hS p) (hT p) (W.om p)`. Use `choose vac' cos' hvac' hcos1 hcos2 hvis hthe using fun i => ex_vac (ψ := W.ψ) (θ := W.θ) (hN (.grid (i + 1) 0)) (hN (.grid i 0)) G.modul (hcart' (.grid (i + 1) 0)) (hcart' (.grid i 0)) (W.vac i) (W.cosVec i)`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `W₁ : G₁.Weil` to `{ ψ := W.ψ, ψ_std := W.ψ_std, θ := W.θ, θ_is := W.θ_is, cart := cart', cart_is := fun X hX τ => (hN X).sp.cart (hcart' X) (W.cart_is X hX τ), onb := onb', onb_is := fun X hX τ => (hN X).sp.onb (hcart' X) (honb' X) (W.onb_is X hX τ), om := om', om_is := fun p hp => by`. Rewrite using `[hcS p, hcT p]`. Conclude with `hom'' p _ _ (W.om_is p hp),`. Use `vac := vac', vac_is := fun i hi => hvis i (W.vac_is i hi),`. Use `cosVec := cos', cosVec_is := by`.
-
-Take `⟨e, he, hc⟩` from `W.cosVec_is`. Conclude with `⟨e, he, fun i hi κ => hthe i e (hc i hi) κ⟩ }`. Conclude with `⟨G₁, W₁, { pl := rfl, chiH := rfl, chi := rfl, node := hN, ψ := rfl, θ := rfl, cart := hcart', onb := honb', om := hom', vac := hvac', cos := fun i => ⟨hcos1 i, hcos2 i⟩ }, hL⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sameWeil {G : GridData L sc} (W : G.Weil) : ∃ (G' : GridData L sc) (W' : G'.Weil), SameWeil W W' ∧
     ∀ X : Node, X.InRange D.R.m → (∀ j, X ≠ .grid 0 j) → (G'.Λ X : Set _) = L0c D (G'.V X) := by
@@ -407,7 +405,7 @@ theorem exists_sameWeil {G : GridData L sc} (W : G.Weil) : ∃ (G' : GridData L 
     om := hom', vac := hvac', cos := fun i => ⟨hcos1 i, hcos2 i⟩ }, hL⟩
 
 /- English proof (translation)
-Take `⟨L, h1, h2, rfl⟩` from `h`. Take `rfl` from `eq_of_heq e`. Conclude with `⟨σ', HEq.rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SameSp.perm {V V' : HSp D} (h : SameSp V V') {b : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
     {b' : D.what₂.Tau → Matrix (Fin V'.rank) (Fin V'.rank) ℂ} (e : HEq b' b) (σ' : D.what₂.Tau → Equiv.Perm (Fin V'.rank)) :
@@ -464,7 +462,7 @@ def Match (G : GlobalTheory.Grid.GridPre R) {G' : GlobalTheory.ChiGrid.GridData 
   SpMatch G W ∧ ArrAgree G W
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.ψ.trans hW.ψ, h.θ.trans hW.θ, fun j hj => (h.cart _).trans (hW.cartY j hj), (h.cart _).trans hW.cartX, fun j hj => (h.onb _).trans (hW.onbY j hj), (h.onb _).trans hW.onbX, fun t k hk => (h.om _).trans (hW.omY t k hk), fun t k hk => (h.om _).trans (hW.omX t k hk)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SameWeil.over {G G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} {W : G.Weil} {W' : G'.Weil} (h : SameWeil W W')
     (hW : W.Over R) : W'.Over R :=
@@ -473,9 +471,9 @@ theorem SameWeil.over {G G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} {W : G
     fun t k hk => (h.om _).trans (hW.omY t k hk), fun t k hk => (h.om _).trans (hW.omX t k hk)⟩
 
 /- English proof (translation)
-Establish `hN` using `h.node X`. Use `⟨?_, a.lat.trans hN.lat, a.cart.trans ((heq_of_eq (congrFun hc X)).trans (h.cart X)), fun hX => ?_⟩` and prove the remaining obligations. Rewrite using `[a.sp]`. Conclude with `hN.sp`. Use `choose σ₁ hσ₁ using hb hX`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨σ, hσ⟩` from `hN.sp.perm (h.onb X) σ₁`. Conclude with `⟨σ, a.onb.trans ((heq_of_eq (funext hσ₁)).trans hσ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem NodeAgree.nodeMatch_of {N : GlobalTheory.Grid.Node D} {G G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} {W : G.Weil} {W₁ W₂ : G'.Weil}
     (h : SameWeil W W₁) (hc : W₂.cart = W₁.cart) {X : GlobalTheory.ChiGrid.Node}
@@ -490,9 +488,9 @@ theorem NodeAgree.nodeMatch_of {N : GlobalTheory.Grid.Node D} {G G' : GlobalTheo
     exact ⟨σ, a.onb.trans ((heq_of_eq (funext hσ₁)).trans hσ)⟩
 
 /- English proof (translation)
-Use `⟨fun i j hi hj => (a.omX i j hi hj).trans ((heq_of_eq (congrFun ho _)).trans (h.om _)), fun t i j hi hj => (a.omT t i j hi hj).trans ((heq_of_eq (congrFun ho _)).trans (h.om _)), fun t j hj => (a.omC t j hj).trans ((heq_of_eq (congrFun ho _)).trans (h.om _)), fun i hi => (a.omD i …` and prove the remaining obligations. Take `⟨κ', hκ'⟩` from `(a.cos i hi).1 c`. Take `⟨κ, hκ⟩` from `(h.cos i).1 κ'`. Conclude with `⟨κ, (hκ'.trans (heq_of_eq (congrFun (congrFun hc i) κ'))).trans hκ⟩`. Take `⟨κ', hκ'⟩` from `(h.cos i).2 κ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc'⟩` from `(a.cos i hi).2 κ'`. Conclude with `⟨c, (hc'.trans (heq_of_eq (congrFun (congrFun hc i) κ'))).trans hκ'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ArrAgree.of_sameWeil {G₀ : GlobalTheory.Grid.GridPre R} {G G' : GlobalTheory.ChiGrid.GridData R.toLevCh sc} {W : G.Weil} {W₁ W₂ : G'.Weil}
     (h : SameWeil W W₁) (ho : W₂.om = W₁.om) (hv : W₂.vac = W₁.vac) (hc : W₂.cosVec = W₁.cosVec) (a : ArrAgree G₀ W₂) :

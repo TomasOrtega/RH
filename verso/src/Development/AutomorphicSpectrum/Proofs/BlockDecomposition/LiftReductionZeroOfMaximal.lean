@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.PerfVB
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on h ?_ ?_` and prove the remaining obligations. Introduce `r hr n _`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `J.mul_mem_right _ hr`. Introduce `x y hx hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `J.add_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem form_mem_of_mem_smul_top {A N : Type} [CommRing A] [AddCommGroup N] [Module A N]
     (J : Ideal A) (φ : N →ₗ[A] A) {n : N} (h : n ∈ J • (⊤ : Submodule A N)) : φ n ∈ J := by
@@ -25,9 +25,9 @@ theorem form_mem_of_mem_smul_top {A N : Type} [CommRing A] [AddCommGroup N] [Mod
     exact J.add_mem hx hy
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Conclude with `absurd (by simpa using hS) hne`. Consider the case `insert a S' _ ih`. Distinguish the cases in `h : K ⊔ Ideal.span (S' : Set A) = I`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ih h`. Use `⟨K ⊔ Ideal.span (S' : Set A), a, le_sup_left, h, ?_⟩` and prove the remaining obligations. Rewrite using `[← hS, Finset.coe_insert, Ideal.span_insert, sup_assoc, sup_comm (Ideal.span {a})]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_step_of_sup_span {A : Type} [CommRing A] (K I : Ideal A) (S : Finset A)
     (hS : K ⊔ Ideal.span (S : Set A) = I) (hne : K ≠ I) :
@@ -43,39 +43,33 @@ theorem exists_step_of_sup_span {A : Type} [CommRing A] (K I : Ideal A) (S : Fin
       rw [← hS, Finset.coe_insert, Ideal.span_insert, sup_assoc, sup_comm (Ideal.span {a})]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule A Q).FG)`. Set `v` to `Module.finBasis A N`. Set `g : Fin (Module.finrank A N) × S → A` to `fun p ↦ v.coord p.1 (b p.2)`. Set `I : Ideal A` to `Ideal.span (Set.range g)`. Establish `hIfg : I.FG` using `⟨(Set.finite_range g).toFinset, by simp [I]⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoord : ∀ q i, v.coord i (b q) ∈ I`. Introduce `q`. Establish `hq : q ∈ Submodule.span A (S : Set Q)` using `by rw [hS]; trivial`. Proceed by induction on `hq using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Introduce `i`. Conclude with `Ideal.subset_span ⟨(i, ⟨x, hx⟩), rfl⟩`. Consider the case `zero => intro i`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[map_add, map_add]`. Conclude with `I.add_mem (hx i) (hy i)`. Consider the case `smul r x _ hx`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, map_smul, smul_eq_mul]`. Conclude with `I.mul_mem_left _ (hx i)`. Establish `hval : ∀ q, b q ∈ I • (⊤ : Submodule A N)`. Introduce `q`. Rewrite using `[← v.sum_repr (b q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.sum_mem _ fun i _ ↦ Submodule.smul_mem_smul (hcoord q i) trivial`. Establish `hIm : I ≤ IsLocalRing.maximalIdeal A`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `form_mem_of_mem_smul_top _ _ (hb p.2)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : I = ⊥`. Assume the negation of the conclusion as `hI`. Use `set m := IsLocalRing.maximalIdeal A with hm`. Establish `hjac : m ≤ Ideal.jacobson (⊥ : Ideal A)`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : m * I ≠ I`. Introduce `h`. Conclude with `hI (Submodule.eq_bot_of_le_smul_of_le_jacobson_bot m I hIfg (by rw [smul_eq_mul, h]) hjac)`. Take `⟨T, hT⟩` from `hIfg`. Establish `hsup : m * I ⊔ Ideal.span (T : Set A) = I`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT' : Ideal.span (T : Set A) = I` using `hT`. Rewrite using `[hT']`. Conclude with `sup_eq_right.2 (Ideal.mul_le_right : m * I ≤ I)`. Take `⟨J, t, hKJ, hJI, hJt⟩` from `exists_step_of_sup_span (m * I) I T hsup hne`. Establish `hJle : J ≤ I` using `hJt ▸ le_sup_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `htI : t ∈ I`. Rewrite using `[← hJt]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self t)`. Establish `hJtop : J ≠ ⊤` using `fun h ↦ by`. Establish `: (1 : A) ∈ m` using `hIm (hJle (h ▸ Submodule.mem_top))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.ne_top_iff_one m).1 (IsLocalRing.maximalIdeal.isMaximal A).ne_top this`. Establish `hxt : ∀ x ∈ IsLocalRing.maximalIdeal A, x * t ∈ J` using `fun x hx ↦ hKJ (Ideal.mul_mem_mul hx htI)`. Establish `hstep : ∀ y ∈ I • (⊤ : Submodule A Q), b y ∈ J • (⊤ : Submodule A N)`. Introduce `y hy`. Use `Submodule.smul_induction_on hy ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `r hr q _`. Rewrite using `[map_smul]`. Establish `h1 : r • b q ∈ I • m • (⊤ : Submodule A N)` using `Submodule.smul_mem_smul hr (hb q)`. Establish `h2 : I • m • (⊤ : Submodule A N) ≤ J • (⊤ : Submodule A N)`. Rewrite using `[← Submodule.mul_smul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mono_left hKJ`. Conclude with `h2 h1`. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hzJ : ∀ z, b z ∈ J • (⊤ : Submodule A N)`. Introduce `z`. Take `⟨x, hx, hxz⟩` from `hL J t hJtop hxt z (by rw [hJt]; exact hval z)`. Rewrite `hxz` using `[hJt]`. Establish `h` using `Submodule.sub_mem _ hx (hstep _ hxz)`.
-
-Rewrite `h` using `[← map_sub, sub_sub_cancel]`. Then use the resulting hypothesis. Apply `hJI` to reduce the goal to its premises. Use `le_antisymm hJle (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `form_mem_of_mem_smul_top _ _ (hzJ p.2)`.
-
-Use extensionality with `q`. Apply `v.repr.injective` to reduce the goal to its premises. Use extensionality with `i`. Use `hcoord q i` as an intermediate fact. Rewrite `this` using `[hI, Ideal.mem_bot]`.
-
-Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_lift_of_mem_maximalIdeal_smul (A Q N : Type) [CommRing A] [IsLocalRing A]
     [AddCommGroup Q] [Module A Q] [Module.Finite A Q] [AddCommGroup N] [Module A N]

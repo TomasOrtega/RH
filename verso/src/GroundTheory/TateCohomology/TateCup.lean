@@ -14,7 +14,7 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 /- English proof (translation)
-Substitute `hp hr` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem tateCup_eqToHom_left {A B : Rep.{u} k G} {p p' q r r' : ℤ} (hp : p = p') (hr : r = r')
     (h : p + q = r) (h' : p' + q = r') (a : tateCohomology A p) (b : tateCohomology B q) :
@@ -24,7 +24,7 @@ theorem tateCup_eqToHom_left {A B : Rep.{u} k G} {p p' q r r' : ℤ} (hp : p = p
   simp
 
 /- English proof (translation)
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem eqToHom_tateMap_apply {X Y : Rep.{u} k G} (f : X ⟶ Y) {i j : ℤ} (hij : i = j)
     (x : tateCohomology X i) :
@@ -34,7 +34,7 @@ theorem eqToHom_tateMap_apply {X Y : Rep.{u} k G} (f : X ⟶ Y) {i j : ℤ} (hij
   simp
 
 /- English proof (translation)
-Substitute `e e'` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem tateIsoH_eqToHom_apply (A : Rep.{u} k G) {p₀ p p' : ℤ} (n : ℕ) [NeZero n] (e : p₀ = p)
     (e' : p₀ = p') (hp : p = n) (hp' : p' = n) (w : tateCohomology A p₀) :
@@ -63,7 +63,7 @@ variable (h1 : ∀ S : Subgroup G, IsZero (groupCohomology (res S.subtype M) 1))
 include h1 h2 h3
 
 /- English proof (translation)
-Apply `moduleIso_hom_injective (tateIsoH (res S.subtype M) 2 2 (by norm_num))` to reduce the goal to its premises. Rewrite using `[tateResClass, Iso.inv_hom_id_apply]`. Use `(tateIsoH_eqToHom_apply (res S.subtype M) 2 (show (0 : ℤ) + 1 + 1 = 2 by norm_num) (show (0 : ℤ) + 1 + 1 = 0 + 2 by norm_num) (by norm_num) (by norm_num) _).trans ?_` and prove the remaining obligations. Conclude with `tateTheoremIso_zero_apply M u h1 h2 h3 S`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateTheorem_δ_δ_tateOne :
     (eqToHom (congrArg (tateCohomology (res S.subtype M)) (show (0 : ℤ) + 1 + 1 = 2 by norm_num))).hom
@@ -79,11 +79,11 @@ theorem tateTheorem_δ_δ_tateOne :
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hE1` using `augTrivSES_res_shortExact ℤ S.subtype`. Establish `hE2` using `(shortExact_res S.subtype).2 (splittingSES_shortExact M u)`. Establish `hE1R` using `shortExact_tensorRight_unit hE1`. Establish `hE2R` using `shortExact_tensorRight_unit hE2`. Establish `hx : ((tateCohomologyFunctor n).map (ρ_ (𝟙_ (Rep ℤ S))).hom).hom (tateCup 0 n (𝟙_ (Rep ℤ S)) (𝟙_ (Rep ℤ S)) n (zero_add n) (tateOne ℤ S) x) = x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← unitors_equal]`. Conclude with `leftUnitor_tateCup_tateOne n _ x`. Establish `s1 : (TateCohomology.δ hE1 n).hom x = ((tateCohomologyFunctor (n + 1)).map (ρ_ (res S.subtype (augIdeal ℤ G))).hom).hom (tateCup (0 + 1) n (res S.subtype (augIdeal ℤ G)) (𝟙_ (Rep ℤ S)) (n + 1) (by omega) ((TateCohomology.δ hE1 0).hom (tateOne ℤ S)) x)` using `(congrArg (TateCohomology.δ hE1 n).hom hx.symm).trans ((δ_rightUnitor_apply hE1 hE1R n _).trans (congrArg _ (tateCup_δ_left hE1 (𝟙_ (Rep ℤ S)) hE1R 0 n n (zero_add n) (tateOne ℤ S) x)))`. Establish `s2 : (TateCohomology.δ hE2 (n + 1)).hom (((tateCohomologyFunctor (n + 1)).map (ρ_ (res S.subtype (augIdeal ℤ G))).hom).hom (tateCup (0 + 1) n (res S.subtype (augIdeal ℤ G)) (𝟙_ (Rep ℤ S)) (n + 1) (by omega) ((TateCohomology.δ hE1 0).hom (tateOne ℤ S)) x)) = ((tateCohomologyFuncto …` using `(δ_rightUnitor_apply hE2 hE2R (n + 1) _).trans (congrArg _ (tateCup_δ_left hE2 (𝟙_ (Rep ℤ S)) hE2R (0 + 1) n (n + 1) (by omega) _ x))`. Establish `hT : (tateTheoremIso M u h1 h2 h3 S n).hom.hom x = (eqToHom (congrArg (tateCohomology (res S.subtype M)) (show n + 1 + 1 = n + 2 by ring))).hom ((TateCohomology.δ hE2 (n + 1)).hom ((TateCohomology.δ hE1 n).hom x))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT, s1, s2]`. Use `(eqToHom_tateMap_apply (ρ_ (res S.subtype M)).hom (show n + 1 + 1 = n + 2 by ring) _).trans ?_` and prove the remaining obligations. Use `congrArg _ ((tateCup_eqToHom_left (show (0 : ℤ) + 1 + 1 = 2 by norm_num) (show n + 1 + 1 = n + 2 by ring) _ (add_comm 2 n) _ x).trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun t => tateCup 2 n (res S.subtype M) (Rep.trivial ℤ S ℤ) (n + 2) (add_comm 2 n) t x) (tateTheorem_δ_δ_tateOne M u S h1 h2 h3)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tateTheoremIso_hom_apply (n : ℤ) (x : tateCohomology (Rep.trivial ℤ S ℤ) n) :
     (tateTheoremIso M u h1 h2 h3 S n).hom.hom x =

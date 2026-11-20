@@ -10,11 +10,9 @@ open Formalism.UG (cT bc)
 namespace GlobalTheory.SphEis
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ N ν b hN hν h`. Use `haveI : LocallyCompactSpace N := hN.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Set `e` to `GlobalTheory.ResLine.conjNormalEquiv N b h`. Use `haveI : (ν.map e).IsHaarMeasure := e.isHaarMeasure_map ν`. Establish `hc` using `Measure.isMulLeftInvariant_eq_smul (ν.map e) ν`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `he : Measurable e` using `e.continuous.measurable`. Use `⟨(Measure.haarScalarFactor (ν.map e) ν : ℝ≥0∞), fun g hg => ?_⟩` and prove the remaining obligations. Establish `hg' : Measurable fun u : N => g u` using `hg.comp measurable_subtype_coe`. Establish `h1` using `lintegral_map (μ := ν) hg' he`. Rewrite `h1` using `[hc, lintegral_smul_measure]`.
-
-Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_conj_eq_const_mul :
   ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (N : Subgroup G) (ν : Measure N) (b : G), IsClosed (N : Set G) → ν.IsHaarMeasure → (∀ u, u ∈ N ↔ b * u * b⁻¹ ∈ N) → ∃ κ : ℝ≥0∞, ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ u : N, f (b * u * b⁻¹) ∂ν = κ * ∫⁻ u : N, f u ∂ν := by

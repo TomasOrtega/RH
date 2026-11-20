@@ -16,15 +16,13 @@ open GlobalTheory
 namespace GlobalTheory.SplitDegOne
 
 /- English proof (translation)
-Establish `h1 : ∑ i ∈ Finset.univ.erase a, g i = 1`. Use `Finset.add_sum_erase Finset.univ g (Finset.mem_univ a)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hcard : (Finset.univ.erase a).card ≤ 1`. Use `Finset.card_nsmul_le_sum (Finset.univ.erase a) g 1 (fun i _ => hpos i)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[smul_eq_mul, mul_one]`. Conclude with `this.trans h1.le`. Establish `hne : (Finset.univ.erase a).Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, Finset.sum_empty]`. Use linear arithmetic over natural numbers and integers. Take `⟨b, hb⟩` from `Finset.card_eq_one.1 (le_antisymm hcard hne.card_pos)`. Establish `hbm : b ∈ Finset.univ.erase a` using `hb ▸ Finset.mem_singleton_self b`. Use `⟨b, Finset.ne_of_mem_erase hbm, by rw [hb, Finset.sum_singleton] at h1; exact h1, fun c => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : c = a`. Conclude with `Or.inl hc`. Use `right`. Establish `: c ∈ Finset.univ.erase a` using `Finset.mem_erase.2 ⟨hc, Finset.mem_univ c⟩`. Rewrite `this` using `[hb]`.
-
-Conclude with `Finset.mem_singleton.1 this`.
+Prove the first alternative. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_other {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι → ℕ) (a : ι)
     (hpos : ∀ i, 1 ≤ g i) (hsum : ∑ i, g i = 2) (ha : g a = 1) :
@@ -52,25 +50,25 @@ theorem exists_unique_other {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι �
     exact Finset.mem_singleton.1 this
 
 /- English proof (translation)
-Introduce `E _ _ _ w hf he`. Set `v` to `w.under (𝓞 (maximalRealSubfield E))`. Establish `hwv : w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Establish `hv0 : v.asIdeal ≠ ⊥` using `v.ne_bot`. Establish `hfw : w.asIdeal.inertiaDeg (𝓞 (maximalRealSubfield E)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Ideal.inertiaDeg_tower (R := ℤ) v.asIdeal w.asIdeal` as an intermediate fact. Rewrite `this` using `[hf]`. Conclude with `(mul_eq_one.1 this.symm).2`. Establish `hew : w.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1`. Use `Ideal.ramificationIdx_tower (R := ℤ) v.asIdeal w.asIdeal` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[he]`. Conclude with `(mul_eq_one.1 this.symm).2`. Establish `h2 : Module.finrank (𝓞 (maximalRealSubfield E)) (𝓞 E) = 2`. Rewrite using `[← Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E]`. Conclude with `(Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 (maximalRealSubfield E)) (maximalRealSubfield E) (𝓞 E) E).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `_ : Fintype (v.asIdeal.primesOver (𝓞 E))` to `Fintype.ofFinite _`. Establish `hsum` using `Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)`. Rewrite `hsum` using `[h2]`. Set `a : v.asIdeal.primesOver (𝓞 E)` to `⟨w.asIdeal, w.isPrime, hwv⟩`. Take `⟨b, hba, hb1, hall⟩` from `exists_unique_other (fun q : v.asIdeal.primesOver (𝓞 E) => q.1.ramificationIdx (𝓞 (maximalRealSubfield E)) * q.1.inertiaDeg (𝓞 (maximalRealSubfield E))) a (fun q => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: q.1.IsPrime` using `q.2.1`. Conclude with `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (Ideal.ramificationIdx_pos q.1 _).ne' (Ideal.inertiaDeg_pos q.1 _).ne'))`. Use `hsum (by simp only [a, hew, hfw, mul_one])`. Establish `hbl : b.1.LiesOver v.asIdeal` using `b.2.2`. Set `B : HeightOneSpectrum (𝓞 E)` to `⟨b.1, b.2.1, Ideal.ne_bot_of_liesOver_of_ne_bot hv0 b.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hB : B.under (𝓞 (maximalRealSubfield E)) = v` using `HeightOneSpectrum.ext (Ideal.over_def b.1 v.asIdeal).symm`. Establish `hwB : w ≠ B` using `fun h => hba (Subtype.ext (congrArg HeightOneSpectrum.asIdeal h).symm)`. Establish `hmem : ∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 (maximalRealSubfield E)) = v → u = w ∨ u = B`. Introduce `u hu`. Establish `hul : u.asIdeal.LiesOver v.asIdeal` using `⟨by rw [← hu]; rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hall ⟨u.asIdeal, u.isPrime, hul⟩ with h | h` into its components or cases. Conclude with `Or.inl (HeightOneSpectrum.ext (congrArg Subtype.val h))`. Conclude with `Or.inr (HeightOneSpectrum.ext (congrArg Subtype.val h))`. Establish `hB1` using `mul_eq_one.1 hb1`. Establish `hnorm : ∀ u : HeightOneSpectrum (𝓞 E), u.under (𝓞 (maximalRealSubfield E)) = v → Ideal.absNorm u.asIdeal = Ideal.absNorm v.asIdeal ∧ u.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Introduce `u hu`. Establish `hul : u.asIdeal.LiesOver v.asIdeal` using `⟨by rw [← hu]; rfl⟩`. Establish `hf1 : u.asIdeal.inertiaDeg (𝓞 (maximalRealSubfield E)) = 1 ∧ u.asIdeal.ramificationIdx (𝓞 (maximalRealSubfield E)) = 1`. Break down `hmem u hu with rfl | rfl` into its components or cases. Conclude with `⟨hfw, hew⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hB1.2, hB1.1⟩`. Use `⟨?_, hf1.2⟩` and prove the remaining obligations. Rewrite using `[← Ideal.absNorm_pow_inertiaDeg v.asIdeal u.asIdeal, hf1.1, pow_one]`. Use `⟨GlobalTheory.LFun.isSplit_iff.2 ⟨w, B, hwB, rfl, hB⟩, ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.card_eq_two]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨w, B, hwB, Finset.ext fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LFun.mem_aboveF, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `⟨hmem u, by rintro (rfl | rfl); exacts [rfl, hB]⟩`. Establish `hu'` using `GlobalTheory.LFun.mem_aboveF.1 hu`. Conclude with `⟨(hnorm u hu').1.trans (hnorm w rfl).1.symm, (hnorm u hu').2⟩`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : HeightOneSpectrum (𝓞 E)),
     w.asIdeal.inertiaDeg ℤ = 1 → w.asIdeal.ramificationIdx ℤ = 1 →

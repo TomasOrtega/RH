@@ -13,7 +13,7 @@ set_option autoImplicit false
 namespace GlobalTheory.AdjRankTwo
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(GlobalTheory.VB.isVB_zero_iff.1 (fl.isVB 0)).iso (GlobalTheory.VB.isVB_zero_iff.1 (fl'.isVB 0)), (GlobalTheory.VB.isVB_zero_iff.1 (fl.isVB 0)).eq_of_src _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameStep_zero {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl fl' : Vert.Flag E N) :
     fl.SameStep fl' 0 :=
@@ -21,16 +21,16 @@ theorem sameStep_zero {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl fl' : Vert.
     (GlobalTheory.VB.isVB_zero_iff.1 (fl.isVB 0)).eq_of_src _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨asIso (fl.ι _) ≪≫ (asIso (fl'.ι _)).symm, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sameStep_last {X : Scheme.{0}} {E : X.Modules} {N : ℕ} (fl fl' : Vert.Flag E N) :
     fl.SameStep fl' (Fin.last N) :=
   ⟨asIso (fl.ι _) ≪≫ (asIso (fl'.ι _)).symm, by simp⟩
 
 /- English proof (translation)
-Establish `hb : b ∈ (Finset.univ.erase a)` using `Finset.mem_erase.2 ⟨hab.symm, Finset.mem_univ _⟩`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ _ hb, ← Finset.add_sum_erase _ g (Finset.mem_univ a), ← Finset.add_sum_erase _ g hb, ← add_assoc, ← add_assoc, h2]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Take `⟨hib, hi⟩` from `Finset.mem_erase.1 hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `h i (Finset.mem_erase.1 hi).1 hib`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_of_two {r : ℕ} (f g : Fin r → ℚ) (a b : Fin r) (hab : a ≠ b)
     (h : ∀ i, i ≠ a → i ≠ b → f i = g i) (h2 : f a + f b = g a + g b) : ∑ i, f i = ∑ i, g i := by
@@ -48,21 +48,21 @@ end GlobalTheory.AdjRankTwo
 set_option linter.overlappingInstances false in
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B _hB H E E' φ r P P' hadj k Q`. Take `⟨j, hj⟩` from `hadj`. Establish `hs : ∀ i : Fin (r + 1), ((i : ℕ) = 0 ∨ (i : ℕ) = r ∨ i ≠ j) → P.fl.SameStep P'.fl i ∧ P.fl'.SameStep P'.fl' i`. Introduce `i hi`. Break down `hi with h | h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Take `rfl : i = 0` from `Fin.ext h`. Conclude with `⟨GlobalTheory.AdjRankTwo.sameStep_zero _ _, GlobalTheory.AdjRankTwo.sameStep_zero _ _⟩`. Take `rfl : i = Fin.last r` from `Fin.ext h`. Conclude with `⟨GlobalTheory.AdjRankTwo.sameStep_last _ _, GlobalTheory.AdjRankTwo.sameStep_last _ _⟩`. Conclude with `hj i h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `good : ∀ i : Fin r, ((i : ℕ) + 1 ≠ j ∨ (j : ℕ) = r) → ((i : ℕ) ≠ j ∨ (j : ℕ) = 0) → (P.toFPair p).x i = (P'.toFPair p).x i ∧ (P.toFPair p).x' i = (P'.toFPair p).x' i ∧ (P.toFPair p).Dv i = (P'.toFPair p).Dv i`. Introduce `i h1 h2`. Establish `a1` using `hs i.castSucc (by`. Distinguish the cases in `hi : (i : ℕ) = 0`. Conclude with `Or.inl hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inr fun e => by have := congrArg Fin.val e; simp at this; omega))`. Establish `a2` using `hs i.succ (by`. Distinguish the cases in `hi : (i : ℕ) + 1 = r`. Conclude with `Or.inr (Or.inl hi)`. Conclude with `Or.inr (Or.inr fun e => by have := congrArg Fin.val e; simp at this; omega))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the second alternative. Replace the relevant objects with their definitions.
 
-Conclude with `GlobalTheory.T.flag_pair_same_steps_point_eq O p B E E' φ r P P' i a1.1 a2.1 a1.2 a2.2`. Unfold `ck`. Distinguish the cases in `hj0 : (j : ℕ) = 0 ∨ (j : ℕ) = r`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨e1, e2, e3⟩` from `good i (by omega) (by omega)`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, e3]`. Establish `hjr` using `j.isLt`. Take `⟨m, hm⟩ : ∃ m, (j : ℕ) = m + 1` from `⟨(j : ℕ) - 1, by omega⟩`. Establish `hmr : m + 2 ≤ r` using `by omega`. Establish `s0` using `hs ⟨m, by omega⟩ (Or.inr (Or.inr fun e => by rw [← e] at hm; simp at hm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `s2` using `hs ⟨m + 2, by omega⟩ (Or.inr (Or.inr fun e => by rw [← e] at hm; simp at hm))`. Take `⟨W, W', ψ, R, R', ⟨r1, r2, r3, r4, r5, r6⟩, ⟨q1, q2, q3, q4, q5, q6⟩⟩` from `GlobalTheory.T.flag_pair_two_step_exchange O p B E E' φ r m hmr P P' s0.1 s2.1 s0.2 s2.2`. Establish `hR` using `H W W' ψ R R' k Q`. Unfold `ck at hR`. Rewrite `hR` using `[Fin.sum_univ_two, Fin.sum_univ_two, r1, r2, r3, r4, r5, r6, q1, q2, q3, q4, q5, q6]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.AdjRankTwo.sum_eq_of_two _ _ ⟨m, by omega⟩ ⟨m + 1, by omega⟩ (fun e => by simp [Fin.ext_iff] at e) (fun i h1 h2 => ?_) hR` and prove the remaining obligations. Take `⟨e1, e2, e3⟩` from `good i (Or.inl fun e => h1 (Fin.ext (by simp; omega))) (Or.inl fun e => h2 (Fin.ext (by simp; omega)))`. Rewrite using `[e1, e2, e3]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AdjRankTwo.ck_eq_of_adj : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → (∀ (W W' : B.X.Modules) (ψ : B.GenIso W W') (R R' : GlobalTheory.Vert.Model.FlagPair ψ 2) (k : ℕ) (Q : PicSym B.X), ck (R.toFPair p) k Q = ck (R'.toFPair p) k Q) → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P P' : GlobalTheory.Vert.Model.FlagPair φ r), GlobalTheory.Vert.Model.FlagPair.Adj P P' → ∀ (k : ℕ) (Q : PicSym B.X), ck (P.toFPair p) k Q = ck (P'.toFPair p) k Q := by
   intro O _ _ _ p _ _ _ B _hB H E E' φ r P P' hadj k Q

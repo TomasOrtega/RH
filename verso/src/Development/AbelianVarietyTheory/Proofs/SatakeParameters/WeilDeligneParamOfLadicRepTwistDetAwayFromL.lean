@@ -18,9 +18,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {l : ℕ} [Fact l.Prime] {a : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `Matrix.isNilpotent_trace_of_isNilpotent hM`. Rewrite `h1` using `[Matrix.trace_fin_one]`. Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`.
-
-Simplify using `using h1.eq_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem matrix_eq_zero_of_isNilpotent {K : Type*} [Field K] {M : Matrix (Fin 1) (Fin 1) K}
     (hM : IsNilpotent M) : M = 0 := by
@@ -31,7 +29,7 @@ theorem matrix_eq_zero_of_isNilpotent {K : Type*} [Field K] {M : Matrix (Fin 1) 
   simpa using h1.eq_zero
 
 /- English proof (translation)
-Establish `h1` using `matrix_eq_zero_of_isNilpotent (hf.map (LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin 1 → ℂ) ≃ₐ[ℂ] Matrix (Fin 1) (Fin 1) ℂ))`. Establish `h2 : (LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin 1 → ℂ) ≃ₐ[ℂ] Matrix (Fin 1) (Fin 1) ℂ) f = (LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin 1 → ℂ) ≃ₐ[ℂ] Matrix (Fin 1) (Fin 1) ℂ) 0`. Rewrite using `[h1, map_zero]`. Conclude with `(LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin 1 → ℂ) ≃ₐ[ℂ] Matrix (Fin 1) (Fin 1) ℂ).injective h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem end_eq_zero_of_isNilpotent {f : Module.End ℂ (Fin 1 → ℂ)} (hf : IsNilpotent f) : f = 0 := by
   have h1 := matrix_eq_zero_of_isNilpotent (hf.map
@@ -42,7 +40,7 @@ theorem end_eq_zero_of_isNilpotent {f : Module.End ℂ (Fin 1 → ℂ)} (hf : Is
   exact (LinearMap.toMatrixAlgEquiv' : Module.End ℂ (Fin 1 → ℂ) ≃ₐ[ℂ] Matrix (Fin 1) (Fin 1) ℂ).injective h2
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.SumRepresentations.At.twGL, Matrix.det_unique, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twGL_det_val (ρ : G E Ω →* GL (Fin a) (Qbar l)) (χ : G E Ω →* GL (Fin 1) (Qbar l))
     (g : G E Ω) :
@@ -54,14 +52,14 @@ theorem twGL_det_val (ρ : G E Ω →* GL (Fin a) (Qbar l)) (χ : G E Ω →* GL
 variable {t : Ine (F := E) A →* Multiplicative ℤ_[l]}
 
 /- English proof (translation)
-Rewrite `hN` using `[matrix_eq_zero_of_isNilpotent hN.1]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isMonodromy_zero_of_line {χ : G E Ω →* GL (Fin 1) (Qbar l)} {N : Matrix (Fin 1) (Fin 1) (Qbar l)}
     (hN : IsMonodromy t χ N) : IsMonodromy t χ 0 := by
   rwa [matrix_eq_zero_of_isNilpotent hN.1] at hN
 
 /- English proof (translation)
-Take `⟨h1, U, hU, H⟩` from `hN`. Take `⟨-, U', hU', H'⟩` from `hχ`. Use `⟨h1, U ⊓ U', hU.inter hU', fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[twGL_det_val, H' σ hσ.2, H σ hσ.1]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMonodromy_twGL {ρ : G E Ω →* GL (Fin a) (Qbar l)} {χ : G E Ω →* GL (Fin 1) (Qbar l)}
     {N : Matrix (Fin a) (Fin a) (Qbar l)} (hN : IsMonodromy t ρ N) (hχ : IsMonodromy t χ 0) :
@@ -73,7 +71,7 @@ theorem isMonodromy_twGL {ρ : G E Ω →* GL (Fin a) (Qbar l)} {χ : G E Ω →
   simp
 
 /- English proof (translation)
-Rewrite using `[wdMat, wdMat, twGL_det_val, smul_mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wdMat_twGL {φ : Weil h} (hφ : deg φ = 1) (ρ : G E Ω →* GL (Fin a) (Qbar l))
     (χ : G E Ω →* GL (Fin 1) (Qbar l)) (N : Matrix (Fin a) (Fin a) (Qbar l)) (g : Weil h) :
@@ -82,9 +80,9 @@ theorem wdMat_twGL {φ : Weil h} (hφ : deg φ = 1) (ρ : G E Ω →* GL (Fin a)
   rw [wdMat, wdMat, twGL_det_val, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hψ : ∀ g, b₀.ρ g = ψ g` using `fun g => (sub_eq_zero.mp (end_eq_zero_of_isNilpotent (hb.2 g).2)).symm`. Use `⟨by rw [WDRep.tensor_N, ha.1, hb.1, LinearMap.lTensor_zero, add_zero], fun g => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[WDRep.tensor_ρ, hψ] show TensorProduct.map _ _ * TensorProduct.map _ _ = TensorProduct.map _ _ * TensorProduct.map _ _`. Rewrite using `[← TensorProduct.map_mul, ← TensorProduct.map_mul, (ha.2 g).1.eq]`. Rewrite using `[WDRep.tensor_ρ, hψ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : TensorProduct.map (ρ g) (ψ g) - TensorProduct.map (a₀.ρ g) (ψ g) = (ρ g - a₀.ρ g).rTensor (Fin 1 → ℂ) * (ψ g).lTensor V` using `TensorProduct.ext' fun x y => by simp [TensorProduct.sub_tmul]`. Rewrite using `[e1]`. Establish `hc : Commute ((ρ g - a₀.ρ g).rTensor (Fin 1 → ℂ)) ((ψ g).lTensor V)` using `by show _ * _ = _ * _`. Rewrite using `[Module.End.mul_eq_comp, Module.End.mul_eq_comp, LinearMap.lTensor_comp_rTensor, LinearMap.rTensor_comp_lTensor]`. Conclude with `hc.isNilpotent_mul_right ((ha.2 g).2.map (Module.End.rTensorAlgHom ℂ V (Fin 1 → ℂ)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrobSS_tensor_line {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     {ρ : Weil h → Module.End ℂ V} {N : Module.End ℂ V} {a₀ : WDRep h V}
@@ -113,7 +111,7 @@ def lineEquiv (V : Type) [AddCommGroup V] [Module ℂ V] : TensorProduct ℂ V (
     (TensorProduct.rid ℂ V)
 
 /- English proof (translation)
-Simplify using `[lineEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem lineEquiv_tmul (V : Type) [AddCommGroup V] [Module ℂ V] (x : V) (y : Fin 1 → ℂ) :
     lineEquiv V (x ⊗ₜ y) = y 0 • x := by
@@ -124,15 +122,15 @@ end TwistAway
 open TwistAway in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h l _ hl ι a ρ χ hρ hχ`. Establish `ht` using `isTameChar_tameL h hl`. Take `⟨N, hN⟩` from `exists_isMonodromy h hl ht hρ`. Take `⟨Nχ, hNχ⟩` from `exists_isMonodromy h hl ht hχ`. Establish `hχ0` using `isMonodromy_zero_of_line hNχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hN'` using `isMonodromy_twGL hN hχ0`. Take `⟨a₀, ha, ea⟩` from `hN.wdOf_spec hl ht (deg_frob (h := h)) ι`. Take `⟨b₀, hb, eb⟩` from `hχ0.wdOf_spec hl ht (deg_frob (h := h)) ι`. Take `⟨d, hd, ed⟩` from `hN'.wdOf_spec hl ht (deg_frob (h := h)) ι`. Rewrite using `[ea, eb, ed, WD.lpChar_mk]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `WD.sound (WDRep.Iso.symm ?_)` and prove the remaining obligations. Rewrite `hb` using `[map_zero]`. Use `(isFrobSS_tensor_line ha hb).iso hd (lineEquiv _) (fun g v => ?_) (fun v => ?_)` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul x y`. Simplify using `only [TensorProduct.map_tmul, lineEquiv_tmul, IsMonodromy.rep_apply, wdMat_twGL, wdMat_zero, toEndC_smul, map_smul, LinearMap.smul_apply]`. Rewrite using `[smul_smul]`. Use `congr 1`. Simplify using `[toEndC_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem wdOf_twGL_det : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver (F := E) A w) (l : ℕ) [Fact l.Prime] (hl : ((l : ℕ) : 𝓞 E) ∉ w.asIdeal) (ι : Qbar l ≃+* ℂ) (a : ℕ) (ρ : G E Ω →* GL (Fin a) (Qbar l)) (χ : G E Ω →* GL (Fin 1) (Qbar l)), Continuous (fun g => ((ρ g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l))) → Continuous (fun g => ((χ g : GL (Fin 1) (Qbar l)) : Matrix (Fin 1) (Fin 1) (Qbar l))) → GlobalTheory.WeilDeligne.wdOf h hl ι (Formalism.MainNotions.SumRepresentations.At.twGL ρ (Matrix.GeneralLinearGroup.det.comp χ)) = (GlobalTheory.WeilDeligne.wdOf h hl ι ρ).lpChar (GlobalTheory.WeilDeligne.wdOf h hl ι χ) := by
   intro E Ω _ _ _ _ _ A w h l _ hl ι a ρ χ hρ hχ

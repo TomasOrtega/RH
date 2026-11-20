@@ -13,9 +13,9 @@ namespace UpperTheory.EmbeddingGeneralLinear
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `hfr : Module.finrank ℚ E = 2`. Rewrite using `[Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Establish `h` using `GroundTheory.Automorphic.EllipticTorus.ideleModule_ideleNorm (K := ℚ) (L := E) (ideleEmbedding ℚ E a)`. Rewrite `h` using `[ideleNorm_ideleEmbedding, hfr, map_pow]`. Simplify using `only [ab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ab_emb (D : Dat ℚ E) (a : (A ℚ)ˣ) :
     ab (ideleEmbedding ℚ E a : (A E)ˣ) = ab a ^ 2 := by
@@ -29,11 +29,11 @@ private theorem ab_emb (D : Dat ℚ E) (a : (A ℚ)ˣ) :
   rfl
 
 /- English proof (translation)
-Establish `hinv : (((ideleEmbedding ℚ E a : (A E)ˣ)⁻¹ : (A E)ˣ) : A E) = AdeleBaseChange.adeleMap ℚ E ((a⁻¹ : (A ℚ)ˣ) : A ℚ)`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `AdeleBaseChange.adeleMap ℚ E ((nU b * mD a : G1 ℚ).1 i j) = (nU (AdeleBaseChange.adeleMap ℚ E b) * mD (ideleEmbedding ℚ E a : (A E)ˣ) : G1 E).1 i j`. Establish `hL : (nU b * mD a : G1 ℚ).1 = !![1, b; 0, 1] * !![(a : A ℚ), 0; 0, ((a⁻¹ : (A ℚ)ˣ) : A ℚ)]` using `rfl`. Establish `hR : (nU (AdeleBaseChange.adeleMap ℚ E b) * mD (ideleEmbedding ℚ E a : (A E)ˣ) : G1 E).1 = !![1, AdeleBaseChange.adeleMap ℚ E b; 0, 1] * !![AdeleBaseChange.adeleMap ℚ E (a : A ℚ), 0; 0, AdeleBaseChange.adeleMap ℚ E ((a⁻¹ : (A ℚ)ˣ) : A ℚ)]`. Rewrite using `[← hinv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hL, hR]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem em_gl (b : A ℚ) (a : (A ℚ)ˣ) :
     em E (gl (nU b * mD a)) =
@@ -54,7 +54,7 @@ private theorem em_gl (b : A ℚ) (a : (A ℚ)ˣ) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_em : Continuous (em E) :=
   Continuous.units_map _ (continuous_id.matrix_map AdeleBaseChange.continuous_adeleMap)
@@ -63,11 +63,11 @@ end UpperTheory.EmbeddingGeneralLinear
 
 open UpperTheory.EmbeddingGeneralLinear in
 /- English proof (translation)
-Introduce `E _ _ D ω φ hφ C hC c hc r`. Take `⟨B, hB⟩` from `hφ.decay (em E '' C) (hC.image continuous_em) (c ^ 2) (by positivity) r`. Use `⟨|B| * c⁻¹ ^ r, fun b a k hk hca => ?_⟩` and prove the remaining obligations. Establish `ha : 0 < ab a` using `hc.trans_le hca`. Establish `h1` using `hB (AdeleBaseChange.adeleMap ℚ E b) (ideleEmbedding ℚ E a : (A E)ˣ) (em E k) ⟨k, hk, rfl⟩ (by rw [ab_emb D]; gcongr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[ab_emb D]`. Rewrite using `[map_mul, em_gl]`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h2 : ((ab a ^ 2)⁻¹) ^ r = (ab a)⁻¹ ^ r * (ab a)⁻¹ ^ r`. Rewrite using `[← mul_pow, sq, mul_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (ab a)⁻¹ ^ r ≤ c⁻¹ ^ r` using `by gcongr`. Establish `h4 : 0 ≤ (ab a)⁻¹ ^ r` using `by positivity`. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem UpperTheory.norm_admissible_baseChange_siegelSet_le :
     ∀ {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →

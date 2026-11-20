@@ -38,7 +38,7 @@ def detDeg (A : HeightOneSpectrum (𝓞 K) → Matrix ι ι K) (Y : (K →+* ℂ
   GlobalTheory.FlatLine.lineDeg (fun σ => ‖(Y σ).det‖) (fun w => (vAdd w (A w).det : ℝ))
 
 /- English proof (translation)
-Use `⟨fun _ => by simp, ?_⟩` and prove the remaining obligations. Establish `h : ∀ w : HeightOneSpectrum (𝓞 K), IntAt w (1 : Matrix ι ι K)` using `fun w i j => by`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem isAdelic_one : IsAdelic (fun _ : HeightOneSpectrum (𝓞 K) => (1 : Matrix ι ι K)) := by
   refine ⟨fun _ => by simp, ?_⟩
@@ -73,7 +73,7 @@ def fibY (la : ∀ t, Fin (N t) → ℕ) (s : ℝ) (X : ∀ t, Matrix (Fin (N t)
   (s : ℂ) • kron fun t => onMat (la t) * rhoMat (la t) (X t)
 
 /- English proof (translation)
-Simplify using `[tval]`.
+Simplify using the standard rewrite rules.
 -/
 example (la : ∀ t, Fin (N t) → ℕ) (y : ∀ t, Matrix (Fin (N t)) (Fin (N t)) ℚ) : tval la 0 y = 0 := by simp [tval]
 

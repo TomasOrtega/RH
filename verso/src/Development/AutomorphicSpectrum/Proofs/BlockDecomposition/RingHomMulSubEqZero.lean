@@ -19,9 +19,9 @@ open RestrictedProduct InfinitePlace.Completion
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hpos : 0 < ∏ v ∈ S, Ideal.absNorm v.asIdeal` using `Finset.prod_pos fun v _ => Nat.pos_of_ne_zero (by`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot)`. Use `⟨2 * ∏ v ∈ S, Ideal.absNorm v.asIdeal, by omega, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩ : Ideal.absNorm v.asIdeal ∣ 2 * ∏ v ∈ S, Ideal.absNorm v.asIdeal` from `(Finset.dvd_prod_of_mem _ hv).mul_left 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Use `push_cast`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.absNorm_mem _)`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_nat_mem (S : Finset (HeightOneSpectrum (𝓞 F))) :
     ∃ N : ℕ, 2 ≤ N ∧ ∀ v ∈ S, ((N : ℕ) : 𝓞 F) ∈ v.asIdeal := by
@@ -38,7 +38,7 @@ theorem exists_nat_mem (S : Finset (HeightOneSpectrum (𝓞 F))) :
 def tau (N k : ℕ) : ℚ := (N : ℚ) ^ k / (1 + ((N : ℚ) ^ k) ^ 2)
 
 /- English proof (translation)
-Establish `: (0 : ℚ) < N` using `by exact_mod_cast (by omega : 0 < N)`. Unfold `tau`. Check the signs of the components of the expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem tau_pos {N : ℕ} (hN : 2 ≤ N) (k : ℕ) : 0 < tau N k := by
   have : (0 : ℚ) < N := by exact_mod_cast (by omega : 0 < N)
@@ -46,11 +46,11 @@ theorem tau_pos {N : ℕ} (hN : 2 ≤ N) (k : ℕ) : 0 < tau N k := by
   positivity
 
 /- English proof (translation)
-Establish `hv : Valued.v (N : v.adicCompletion F) < 1`. Establish `e : (N : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) (N : 𝓞 F)` using `(map_natCast _ N).symm`. Rewrite using `[e]`. Establish `h1` using `HeightOneSpectrum.valuedAdicCompletion_eq_valuation (K := F) v (N : 𝓞 F)`. Establish `h2` using `(HeightOneSpectrum.valuation_lt_one_iff_mem (K := F) v (N : 𝓞 F)).2 hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1 ▸ h2`. Establish `ht` using `Valued.tendsto_zero_pow_of_v_lt_one hv`. Establish `h2 : Tendsto (fun k : ℕ => 1 + ((N : v.adicCompletion F) ^ k) ^ 2) atTop (𝓝 1)`. Simplify using `using (ht.pow 2).const_add 1`. Establish `h3` using `ht.div h2 one_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[zero_div]`. Use `h3.congr fun k => ?_` and prove the remaining obligations. Simplify using `[tau, map_div₀, map_add, map_pow, map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tendsto_tau_fin (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (hN : ((N : ℕ) : 𝓞 F) ∈ v.asIdeal) :
     Tendsto (fun k => algebraMap F (v.adicCompletion F) ((tau N k : ℚ) : F)) atTop (𝓝 0) := by
@@ -70,13 +70,13 @@ theorem tendsto_tau_fin (v : HeightOneSpectrum (𝓞 F)) {N : ℕ} (hN : ((N : �
   simp [tau, map_div₀, map_add, map_pow, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Establish `hnorm : ∀ k, ‖algebraMap F w.Completion ((tau N k : ℚ) : F)‖ = (tau N k : ℝ)` using `fun k => by`. Rewrite using `[← (isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _)]`. Establish `h` using `map_ratCast ((extensionEmbedding w).comp (algebraMap F w.Completion)) (tau N k)`. Rewrite `h` using `[RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, Complex.norm_ratCast, abs_of_pos (by exact_mod_cast tau_pos hN k)]`. Simplify using `only [hnorm]`. Establish `hb : ∀ k, (tau N k : ℝ) ≤ (1 / 2 : ℝ) ^ k` using `fun k => by`. Establish `h2 : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`. Establish `hx : (2 : ℝ) ^ k ≤ (N : ℝ) ^ k` using `pow_le_pow_left₀ (by norm_num) h2 k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (0 : ℝ) < 2 ^ k` using `by positivity`. Establish `hxp : (0 : ℝ) < (N : ℝ) ^ k` using `by linarith`. Simplify using `only [tau]`. Use `push_cast`. Rewrite using `[one_div, inv_pow, div_le_iff₀ (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (2 : ℝ) ^ k * (N : ℝ) ^ k ≤ 1 + ((N : ℝ) ^ k) ^ 2` using `by nlinarith`. Rewrite using `[← div_eq_inv_mul, le_div_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `squeeze_zero (fun k => by exact_mod_cast (tau_pos hN k).le) hb ?_` and prove the remaining obligations. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_tau_inf (w : InfinitePlace F) {N : ℕ} (hN : 2 ≤ N) :
     Tendsto (fun k => algebraMap F w.Completion ((tau N k : ℚ) : F)) atTop (𝓝 0) := by
@@ -113,7 +113,7 @@ def finS (S : Finset (HeightOneSpectrum (𝓞 F))) (q : F) :
     exact zero_mem _⟩
 
 /- English proof (translation)
-Rewrite using `[le_principal_iff, mem_cofinite, compl_compl]`. Conclude with `S.finite_toSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cofinite_le (S : Finset (HeightOneSpectrum (𝓞 F))) :
     (cofinite : Filter (HeightOneSpectrum (𝓞 F))) ≤ 𝓟 ((S : Set (HeightOneSpectrum (𝓞 F)))ᶜ) := by
@@ -125,9 +125,9 @@ def sAd (S : Finset (HeightOneSpectrum (𝓞 F))) (q : F) : AF F :=
     RestrictedProduct.inclusion _ _ (cofinite_le S) (finS S q))
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun k => finS S (q k)) atTop (𝓝 0)`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.isInducing.tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `v`. Distinguish the cases in `hv : v ∈ S`. Use `(hf v hv).congr fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(if_pos hv).symm`. Use `tendsto_const_nhds.congr fun k => ?_ show (0 : v.adicCompletion F) = _` and prove the remaining obligations. Conclude with `(if_neg hv).symm`. Establish `h2` using `((RestrictedProduct.continuous_inclusion (cofinite_le S)).tendsto 0).comp h1`. Use `Tendsto.prodMk_nhds (tendsto_pi_nhds.2 hi) h2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_sAd (S : Finset (HeightOneSpectrum (𝓞 F))) (q : ℕ → F)
     (hi : ∀ w : InfinitePlace F, Tendsto (fun k => algebraMap F w.Completion (q k)) atTop (𝓝 0))
@@ -146,7 +146,7 @@ theorem tendsto_sAd (S : Finset (HeightOneSpectrum (𝓞 F))) (q : ℕ → F)
   refine Tendsto.prodMk_nhds (tendsto_pi_nhds.2 hi) h2
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_tmul_algebraMap {A E : Type} [CommRing A] [Algebra F A] [Field E] [Algebra F E] (q : F) :
     (1 : A) ⊗ₜ[F] algebraMap F E q = algebraMap F A q ⊗ₜ[F] (1 : E) := by
@@ -154,7 +154,7 @@ theorem one_tmul_algebraMap {A E : Type} [CommRing A] [Algebra F A] [Field E] [A
     TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Rewrite using `[map_sub, map_mul, hc, h, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ring_hom_mul_sub_eq_zero {A B : Type*} [CommRing A] [CommRing B] (f : A →+* B) (x e y : A) (c : B)
     (hc : f e = c) (h : f x * c = f y) : f (x * e - y) = 0 := by
@@ -163,13 +163,11 @@ theorem ring_hom_mul_sub_eq_zero {A B : Type*} [CommRing A] [CommRing B] (f : A 
 open Classical in
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `GlobalTheory.CompanionTheory.AdeleComp.tensor_eq_zero _ (fun w => ?_) (fun v => ?_)` and prove the remaining obligations. Use `ring_hom_mul_sub_eq_zero (compInf F E w) _ _ _ _ (hi w) ?_` and prove the remaining obligations. Rewrite using `[mul_one]`. Conclude with `one_tmul_algebraMap (A := w.Completion) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ring_hom_mul_sub_eq_zero (compFin F E v) _ _ _ _ (hf v) ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Rewrite using `[if_pos hv, mul_one]`. Establish `h : evFin F v (sAd S q) = algebraMap F (v.adicCompletion F) q` using `if_pos hv`. Use `show (1 : v.adicCompletion F) ⊗ₜ[F] _ = evFin F v (sAd S q) ⊗ₜ[F] (1 : E)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `one_tmul_algebraMap _`. Rewrite using `[if_neg hv, mul_zero]`. Establish `h : evFin F v (sAd S q) = 0` using `if_neg hv`. Use `show 0 = evFin F v (sAd S q) ⊗ₜ[F] (1 : E)`.
-
-Rewrite using `[h, TensorProduct.zero_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_key {E : Type} [Field E] [Algebra F E] (S : Finset (HeightOneSpectrum (𝓞 F)))
     (e : AF F ⊗[F] E) (hi : ∀ w, compInf F E w e = 1)
@@ -193,7 +191,7 @@ theorem tensor_key {E : Type} [Field E] [Algebra F E] (S : Finset (HeightOneSpec
       rw [h, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Establish `hq : ((q : ℚ) : D.host.E) = algebraMap D.host.F D.host.E ((q : ℚ) : D.host.F)` using `(map_ratCast (algebraMap D.host.F D.host.E) q).symm`. Establish `hs : sAd S ((q : ℚ) : D.host.F) • (1 : AE D) = sAd S ((q : ℚ) : D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)` using `by show _ • ((1 : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = _`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[hs, hq]`. Conclude with `tensor_key S e he.1 he.2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incA_mul_idem (D : D7) (S : Finset (Pl D)) (e : AE D) (he : IsIdem S e) (q : ℚ) :
     incA D ((q : ℚ) : D.host.E) * e = sAd S ((q : ℚ) : D.host.F) • (1 : AE D) := by
@@ -207,15 +205,13 @@ theorem incA_mul_idem (D : D7) (S : Finset (Pl D)) (e : AE D) (he : IsIdem S e) 
   exact tensor_key S e he.1 he.2 _
 
 /- English proof (translation)
-Introduce `_ D S e he V hV M`. Take `⟨N, hN, hmem⟩` from `exists_nat_mem S`. Establish `ht : Tendsto (fun k => sAd S ((tau N k : ℚ) : D.host.F)) atTop (𝓝 0)` using `tendsto_sAd S _ (fun w => tendsto_tau_inf w hN) (fun v hv => tendsto_tau_fin v (hmem v hv))`. Establish `hz : Tendsto (fun k => incA D ((tau N k : ℚ) : D.host.E) * e) atTop (𝓝 0)`. Establish `h` using `ht.smul_const (1 : AE D)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[zero_smul]`. Conclude with `h.congr fun k => (incA_mul_idem D S e he _).symm`. Establish `hall : ∀ᶠ k in atTop, ∀ j : Fin M, ((j.1 + 1 : ℕ) : AE D) * (incA D ((tau N k : ℚ) : D.host.E) * e) ∈ V`. Rewrite using `[Filter.eventually_all]`. Introduce `j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hz.const_mul ((j.1 + 1 : ℕ) : AE D)`. Rewrite `h` using `[mul_zero]`. Conclude with `h hV`. Take `⟨k, hk⟩` from `hall.exists`. Use `⟨fun j => ((j.1 + 1 : ℕ) : ℚ) * tau N k, fun i j hij => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `mul_right_cancel₀ (tau_pos hN k).ne' hij`. Establish `h2 : i.1 + 1 = j.1 + 1` using `by exact_mod_cast h`. Conclude with `Fin.ext (by omega)`. Establish `h` using `hk j`. Establish `e1 : incA D (((((j.1 + 1 : ℕ) : ℚ) * tau N k : ℚ)) : D.host.E) = ((j.1 + 1 : ℕ) : AE D) * incA D ((tau N k : ℚ) : D.host.E)`.
-
-Rewrite using `[Rat.cast_mul, map_mul, Rat.cast_natCast, map_natCast]`. Use `show incA D (((((j.1 + 1 : ℕ) : ℚ) * tau N k : ℚ)) : D.host.E) * e ∈ V`. Rewrite using `[e1, mul_assoc]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallRat : PositivityTheory.Rg.Rsw.L.IdemEx → PositivityTheory.Rg.Rsw.Cell.SmallRat := by
   intro _ D S e he V hV M

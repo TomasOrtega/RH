@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ((v ^ (-(n:ℤ)) : ℤ_[l]ˣ) : ℤ_[l]) • x = x ↔ ((v : ℤ_[l]) ^ n) • x = x`. Introduce `n`. Rewrite using `[← Units.val_pow_eq_pow_val, ← Units.smul_def, ← Units.smul_def, zpow_neg, zpow_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h conv_lhs => rw [← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `h conv_lhs => rw [← h]`. Simplify using the standard rewrite rules. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg e`. Simplify using `using key n`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[← Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem units_zpow_neg_smul_eq_self_iff (l : ℕ) [Fact l.Prime] (A : Type) [AddCommGroup A] [Module ℤ_[l] A]
     (v : ℤ_[l]ˣ) (e : ℤ) (x : A) :
@@ -28,9 +28,9 @@ private theorem units_zpow_neg_smul_eq_self_iff (l : ℕ) [Fact l.Prime] (A : Ty
   · simp [← Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Introduce `l _ Γ _ ψ e`. Use extensionality with `x`. Rewrite using `[KStar.TotallyRealRoots.mem_twistInv]`. Express the relevant statement in the definitionally equal form `(∀ g : Γ, (scalRep (QZ l) (ψ ^ (-e))) g x = x) ↔ _`. Simplify using `only [scalRep, MonoidHom.coe_mk, OneHom.coe_mk, LinearMap.smul_apply, LinearMap.id_apply, MonoidHom.zpow_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h u ⟨g, rfl⟩`. Conclude with `(units_zpow_neg_smul_eq_self_iff l (QZ l) (ψ g) e x).mp (h g)`. Introduce `h g`. Conclude with `(units_zpow_neg_smul_eq_self_iff l (QZ l) (ψ g) e x).mpr (h _ ⟨g, rfl⟩)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.H0_scalRep_inv_pow_eq_twistInv :
     ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (ψ : Γ →* ℤ_[l]ˣ) (e : ℤ), H0 (scalRep (QZ l) (ψ ^ (-e))) = KStar.TotallyRealRoots.twistInv l (QZ l) ψ.range e.natAbs := by

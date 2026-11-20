@@ -13,7 +13,7 @@ open NumberField Finset Formalism.MainNotions.S GlobalTheory.Count
 namespace GlobalTheory.FarTerms
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases hS : a ∈ S <;> by_cases hF : F a = 0 <;> simp [Set.indicator, hS, hF]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma indicator_eq_indicator_inter_support {α : Type} (S : Set α) (F : α → ℝ) :
     S.indicator F = ({a | a ∈ S ∧ F a ≠ 0} : Set α).indicator F := by
@@ -21,9 +21,9 @@ private lemma indicator_eq_indicator_inter_support {α : Type} (S : Set α) (F :
   by_cases hS : a ∈ S <;> by_cases hF : F a = 0 <;> simp [Set.indicator, hS, hF]
 
 /- English proof (translation)
-Take `⟨hs, hle⟩` from `h`. Establish `key` using `indicator_eq_indicator_inter_support S F`. Establish `hT : Summable (({a | a ∈ S ∧ F a ≠ 0} : Set α).indicator F)` using `(summable_subtype_iff_indicator (s := {a | a ∈ S ∧ F a ≠ 0}) (f := F)).1 hs`. Rewrite `hT` using `[← key]`. Use `⟨(summable_subtype_iff_indicator (s := S) (f := F)).2 hT, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tsum_subtype S F, key, ← tsum_subtype {a | a ∈ S ∧ F a ≠ 0} F]`. Conclude with `hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_of_support {α : Type} (S : Set α) (F : α → ℝ) (C : ℝ)
     (h : Summable (fun γ : {a // a ∈ S ∧ F a ≠ 0} => F γ.1) ∧
@@ -39,7 +39,7 @@ theorem summable_of_support {α : Type} (S : Set α) (F : α → ℝ) (C : ℝ)
   exact hle
 
 /- English proof (translation)
-Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace B.I.F))`. Establish `h1 : B.I.qAt v = q` using `(hS v).2`. Establish `h2 : B.I.qAt v ≤ B.I.n` using `by show (Finset.univ.filter fun a => B.I.ε v a = false).card ≤ B.I.n`. Conclude with `(Finset.card_filter_le _ _).trans (by simp)`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private lemma one_le_n_of_sigIs_of_one_le_q (B : RowsAut) (p q : ℕ) (hS : SigIs B p q) (hq : 1 ≤ q) :
     1 ≤ B.I.n := by
@@ -51,31 +51,27 @@ private lemma one_le_n_of_sigIs_of_one_le_q (B : RowsAut) (p q : ℕ) (hS : SigI
   omega
 
 /- English proof (translation)
-Introduce `hP B d p q h ep hDS hSig hqm hq1 hGap hep0 hepc hlog hhep hhep2 h120 x`. Establish `hn : 1 ≤ B.I.n` using `one_le_n_of_sigIs_of_one_le_q B p q hSig hq1`. Establish `h120' : 120 * (B.I.n : ℝ) * ((min p q : ℕ) : ℝ) ^ ((3 : ℝ) / 2) ≤ h`. Rewrite using `[← hqm]`. Conclude with `h120`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hdec, hbd, -, -, -, hK, -⟩` from `hP B d p q h hDS hSig hGap h120'`. Rewrite `hdec` using `[← hqm]`. Establish `hdec'` using `hdec hq1`. Establish `hne : ∀ γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0}, phe B d (x⁻¹ * γ.1 * x) ≠ 0`. Introduce `γ h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `γ.2.2 (by simp [h0])`. Establish `hM0 : 0 ≤ (∏ v, d v) * (B.e 1).re` using `(norm_nonneg _).trans (hbd 1)`. Break down `eq_or_lt_of_le hM0 with hM | hM` into its components or cases. Use `haveI : IsEmpty {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} := ⟨fun γ => hne γ (norm_eq_zero.1 (le_antisymm ((hbd _).trans_eq hM.symm) (norm_nonneg _)))⟩`. Use `summable_of_support (GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x) (fun a => ‖phe B d (x⁻¹ * a * x)‖) _ ⟨summable_empty, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[tsum_empty, ← hM]`. Simplify using the standard rewrite rules. Establish `hMne : (∏ v, d v) * (B.e 1).re ≠ 0` using `hM.ne'`. Establish `hA : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.latFactor B.I x`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.latFactor`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Establish `hq1r : (1 : ℝ) ≤ q` using `by exact_mod_cast hq1`. Establish `hc : 0 < Real.sqrt (2 * (q : ℝ))` using `Real.sqrt_pos.2 (by linarith)`. Establish `hdist : ∀ (γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0}) (v : InfinitePlace B.I.F), 0 ≤ GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v))`. Introduce `γ v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `GlobalTheory.Count.dHS`. Conclude with `Real.sqrt_nonneg _`. Establish `hcount : ∀ r : InfinitePlace B.I.F → ℝ, (∀ v, 0 ≤ r v) → {γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} | ∀ v, GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v)) ≤ r v}.Finite ∧ (({γ : {a // a ∈ GlobalTh …`. Introduce `r hr`. Take `⟨hfin, hcard⟩` from `GlobalTheory.AutBall.autBallCount B.I hn x r hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hmaps : ∀ γ ∈ {γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} | ∀ v, GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v)) ≤ r v}, (γ.1 : B.I.GA) ∈ GlobalTheory.IndefiniteRowSideFullHecke.AutomorphicBallCoun …`. Introduce `γ hγ`. Establish `hm : γ.1 ∈ B.I.GFset ∧ ¬ GlobalTheory.Count.IsNear B d ep x γ.1` using `γ.2.1`. Use `show γ.1 ∈ B.I.GFset ∧ (x⁻¹ * γ.1 * x).2 ∈ B.I.Kset ∧ ∀ v, GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v)) ≤ r v`. Conclude with `⟨hm.1, hK _ (hne γ), hγ⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Set.InjOn (fun γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} => γ.1) {γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} | ∀ v …` using `fun a _ b _ hab => Subtype.ext hab`. Use `⟨(hfin.preimage Subtype.val_injective.injOn).subset hmaps, ?_⟩` and prove the remaining obligations. Establish `hle` using `Set.ncard_le_ncard_of_injOn (fun γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} => γ.1) hmaps hinj hfin`. Establish `hAB : GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.latFactor B.I x = GlobalTheory.IndefiniteRowSideFullHecke.AutomorphicBallCount.bigA B.I x` using `rfl`. Rewrite using `[hAB]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `(Nat.cast_le.2 hle).trans hcard`. Establish `hfar : ∀ γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0}, ∃ v, ep < GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v))`. Introduce `γ`. Establish `hm : γ.1 ∈ B.I.GFset ∧ ¬ GlobalTheory.Count.IsNear B d ep x γ.1` using `γ.2.1`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Conclude with `hm.2 (by unfold GlobalTheory.Count.IsNear; exact ⟨hm.1, hne γ, hcon⟩)`. Establish `hw : ∀ γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0}, 0 ≤ ‖phe B d (x⁻¹ * γ.1 * x)‖ / ((∏ v, d v) * (B.e 1).re) ∧ ‖phe B d (x⁻¹ * γ.1 * x)‖ / ((∏ v, d v) * (B.e 1).re) ≤ ∏ v, Real.exp (-(h / 8) * min (Glo …`. Introduce `γ`. Use `⟨div_nonneg (norm_nonneg _) hM.le, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hM]`. Conclude with `le_of_le_of_eq (hdec' (x⁻¹ * γ.1 * x)) (mul_comm _ _)`. Take `⟨hsum, hle⟩` from `GlobalTheory.sum_over_dyadic_shells {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} (InfinitePlace B.I.F) (fun γ v => GlobalTheory.Count.dHS (uMat ((x⁻¹ * γ.1 * x).1 v))) (fun γ => ‖phe B d (x⁻¹ * γ.1 * x)‖ / ( …`. Establish `hfun : (fun γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} => ‖phe B d (x⁻¹ * γ.1 * x)‖) = fun γ => (∏ v, d v) * (B.e 1).re * (‖phe B d (x⁻¹ * γ.1 * x)‖ / ((∏ v, d v) * (B.e 1).re))`. Use function extensionality and compare the values at `γ`.
-
-Rewrite using `[mul_div_assoc', mul_comm, mul_div_assoc, div_self hMne, mul_one]`. Establish `hs' : Summable (fun γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0} => ‖phe B d (x⁻¹ * γ.1 * x)‖)`. Rewrite using `[hfun]`. Conclude with `hsum.mul_left _`. Establish `hle' : ∑' γ : {a // a ∈ GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x ∧ ‖phe B d (x⁻¹ * a * x)‖ ≠ 0}, ‖phe B d (x⁻¹ * γ.1 * x)‖ ≤ (∏ v, d v) * (B.e 1).re * GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.latFactor B.I x * (2 * (B.I.f : …`.
-
-Rewrite using `[hfun, tsum_mul_left]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `summable_of_support (GlobalTheory.IndefiniteRowSideFullHecke.FarTermsLatticeBound.farSet B d ep x) (fun a => ‖phe B d (x⁻¹ * a * x)‖) _ ⟨hs', hle'⟩`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem farBound_of_ptBound : GlobalTheory.Deep.PtBound → GlobalTheory.Deep.FarBound := by
   intro hP B d p q h ep hDS hSig hqm hq1 hGap hep0 hepc hlog hhep hhep2 h120 x

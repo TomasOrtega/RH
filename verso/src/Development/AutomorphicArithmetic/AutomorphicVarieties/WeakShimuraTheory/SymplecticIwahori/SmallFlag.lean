@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Pp
 
 /- English proof (translation)
-Introduce `l _ 𝔞 Γ _ _ r u hS`. Unfold `Amb.Small at hS ⊢`. Take `⟨A, _, _, _, f, P₁, hf, hc, hP⟩` from `hS`. Take `⟨A', _, _, _, f', g, hf', hcomp, hcl⟩` from `smallExt 𝔞 A f hf (Finset.univ.image (fun ij : Fin 4 × Fin 4 => 𝔞.toK (u ij.1 ij.2)))`. Establish `hinj : Function.Injective f'` using `hf'.inj`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hloc : IsLocalHom g`. Use `Amb.IsDvr.loc hf` as an intermediate fact. Use `⟨fun z hz => isUnit_of_map_unit f z ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp]`. Conclude with `hz.map f'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (maximalIdeal A).map g ≤ maximalIdeal A'`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `z hz`. Simplify using `only [Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff] at hz ⊢`. Conclude with `fun h => hz (isUnit_of_map_unit g z h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `huR : ∀ i j, u i j ∈ f'.range` using `fun i j => hcl _ (Subfield.subset_closure (Or.inr (Finset.mem_coe.2 (Finset.mem_image_of_mem _ (Finset.mem_univ (i, j))))))`. Set `e : 𝔞.V → A'` to `Function.invFun f'`. Establish `hE : ∀ i j, f' (e (u i j)) = u i j` using `fun i j => by`. Take `⟨y, hy⟩` from `huR i j`. Conclude with `Function.invFun_eq ⟨y, hy⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : ∀ γ i j, f (P₁.r γ i j) = r γ i j` using `fun γ i j => congrArg (fun P => PD.r P γ i j) hP`. Use `⟨A', inferInstance, inferInstance, inferInstance, f', ⟨(P₁.map g).r, fun _ => u.map e⟩, hf', ?_, ?_⟩` and prove the remaining obligations. Unfold `PD.Cont`. Introduce `i j N`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hA` using `(IsLocallyConstant.iff_eventually_eq _).1 (hc i j N) x`. Use `filter_upwards [hA] with y hy`. Rewrite `hy`, the goal using `[Ideal.Quotient.eq]`. Express the relevant statement in the definitionally equal form `g (P₁.r y i j) - g (P₁.r x i j) ∈ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← map_sub]`. Establish `h2` using `Ideal.mem_map_of_mem g hy`. Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono hle _ h2`. Apply `PD.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `γ i j`. Express the relevant statement in the definitionally equal form `((f' (g (P₁.r γ i j)) : 𝔞.K)) = (r γ i j : 𝔞.K)`. Rewrite using `[← RingHom.comp_apply f' g, hcomp, hr]`. Use extensionality with `v i j`. Conclude with `congrArg Subtype.val (hE i j)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Pp.smallFlag :
     ∀ {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) {Γ : Type} [Group Γ] [TopologicalSpace Γ] (r : Γ →* M4 𝔞.V) (u : M4 𝔞.V), 𝔞.Small (⟨r, fun _ => 1⟩ : PD Unit _ _) → 𝔞.Small (⟨r, fun _ => u⟩ : PD Unit _ _) := by

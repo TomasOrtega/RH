@@ -16,11 +16,11 @@ def Cube.above (w : Finset ι) : Cube.{0} ι R :=
     (fun _ _ _ => Finsupp.mapDomain_comp.symm)
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = Finset.univ`. Substitute `hw` using the available equality. Establish `: Subsingleton (Cube.Term (Cube.above R (Finset.univ : Finset ι)) p)`. Use `⟨fun x y => funext fun s => ?_⟩` and prove the remaining obligations. Use `Finsupp.ext fun a => absurd ?_ hp` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← s.2, Finset.univ_subset_iff.1 a.down, Finset.card_univ]`. Rewrite using `[HomologicalComplex.exactAt_iff_isZero_homology]`. Conclude with `ShortComplex.isZero_homology_of_isZero_X₂ _ (ModuleCat.isZero_of_subsingleton (ModuleCat.of R (Cube.Term _ p)))`. Take `⟨i, hi⟩ : ∃ i, i ∉ w` from `by by_contra! h`. Conclude with `hw (Finset.eq_univ_iff_forall.2 h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `cubeComplex_exactAt_of_bijective _ i (fun s _ => ?_) p` and prove the remaining obligations. Use `⟨Finsupp.mapDomain_injective fun _ _ _ => Subsingleton.elim _ _, Finsupp.mapDomain_surjective fun x => ⟨⟨?_⟩, Subsingleton.elim _ _⟩⟩` and prove the remaining obligations. Conclude with `(Finset.subset_insert_iff_of_notMem hi).1 x.down`.
+A detailed English derivation is pending.
 -/
 theorem cubeComplex_above_exactAt [LinearOrder ι] [Fintype ι] (w : Finset ι) {p : ℕ}
     (hp : p ≠ Fintype.card ι) : (cubeComplex (Cube.above R w)).ExactAt p := by
@@ -50,7 +50,7 @@ def monomialCoord {κ : Type} (T : κ → Finset ι) {s : Finset ι} {M : Type} 
     sigmaFinsuppLequivDFinsupp R
 
 /- English proof (translation)
-Simplify using `only [monomialCoord, LinearEquiv.trans_apply, Module.Basis.repr_self, Finsupp.domLCongr_single]`. Conclude with `sigmaFinsuppEquivDFinsupp_single _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monomialCoord_basis {κ : Type} [DecidableEq κ] (T : κ → Finset ι) {s : Finset ι} {M : Type}
     [AddCommGroup M] [Module R M] (b : Module.Basis {a : κ // T a ⊆ s} R M)
@@ -61,9 +61,7 @@ theorem monomialCoord_basis {κ : Type} [DecidableEq κ] (T : κ → Finset ι) 
   exact sigmaFinsuppEquivDFinsupp_single _ _
 
 /- English proof (translation)
-Set `e : A ≅ Cube.directSum fun a => Cube.above R (T a)` to `Cube.isoMk (fun s => monomialCoord T (b s)) fun {s t} h x => by`. Establish `: (monomialCoord T (b t)).toLinearMap ∘ₗ Cube.res A h = (DirectSum.lmap fun a => Finsupp.lmapDomain R R fun x : PLift (T a ⊆ s) => (⟨x.down.trans h⟩ : PLift (T a ⊆ t))) ∘ₗ (monomialCoord T (b s)).toLinearMap`. Use `(b s).ext fun a => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, hb, monomialCoord_basis, DirectSum.lmap_lof, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Conclude with `congr($this x)`.
-
-Conclude with `(exactAt_iff_of_quasiIsoAt ((cubeFunctor ι R).mapIso e).hom p).2 ((cubeComplex_directSum_exactAt_iff _ p).2 fun a => cubeComplex_above_exactAt R (T a) hp)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cubeComplex_exactAt_of_monomialBasis (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type)
     [CommRing R] (κ : Type) (T : κ → Finset ι) (A : Cube.{0} ι R)

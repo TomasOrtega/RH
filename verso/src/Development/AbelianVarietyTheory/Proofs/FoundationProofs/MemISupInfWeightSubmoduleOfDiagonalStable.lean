@@ -12,9 +12,9 @@ open scoped TensorProduct
 namespace GlobalTheory.WeightDecomp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem`. Consider the case `exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem`. Consider the case `(apply _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 lemma comp_mem {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V)
@@ -29,7 +29,7 @@ lemma comp_mem {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   | (intros; exact _root_.GlobalTheory.WeightSubspaceComponent.weight_component_mem ..)
 
 /- English proof (translation)
-Introduce `p q V _ _ act N hN x hx hx'`. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx'`. Establish `h` using `comp_mem act N hN f.support f hf hx`. Use `Submodule.sum_mem _ fun ν hν => ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem ν ⟨h ν hν, hf ν⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_iSup_inf_wtSub : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (N : Submodule ℂ V),

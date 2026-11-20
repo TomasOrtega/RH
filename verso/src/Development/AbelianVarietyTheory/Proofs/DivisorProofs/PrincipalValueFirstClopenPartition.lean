@@ -5,9 +5,9 @@ open ValuativeRel Matrix GlobalTheory.SplitFlip GlobalTheory.FullRankCoinv Globa
 namespace GlobalTheory.NormalCore
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ W`. Use `filter_upwards [hW.isOpen.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_mem hy, Set.indicator_of_mem hx]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hW.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]`.
+A detailed English derivation is pending.
 -/
 theorem indOne_isLocallyConstant {Z : Type} [TopologicalSpace Z] {W : Set Z} (hW : IsClopen W) :
     IsLocallyConstant (W.indicator (1 : Z → ℂ)) := by
@@ -20,17 +20,15 @@ theorem indOne_isLocallyConstant {Z : Type} [TopologicalSpace Z] {W : Set Z} (hW
     simp [Set.indicator_of_notMem hy, Set.indicator_of_notMem hx]
 
 /- English proof (translation)
-Introduce `h₁ hcl hdis hB`. Distinguish the cases in `h₂ : B₂.indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d`. Use `swap`. Establish `e : ∀ B : Set (Matrix (Fin n) (Fin d) k), pv Bf B B₂ = 0` using `fun B => by`. Rewrite using `[pv, dif_neg (fun h => h₂ h.2)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[e]`. Establish `hsub : ∀ i ∈ s, Kf i ⊆ B₁` using `fun i hi x hx => by`. Rewrite using `[hB]`. Conclude with `Set.mem_biUnion hi hx`. Establish `mem : ∀ i ∈ s, (Kf i).indicator (1 : Matrix (Fin n) (Fin d) k → ℂ) ∈ fullRk k n d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi`. Use `⟨⟨indOne_isLocallyConstant (hcl i hi), ?_⟩, fun Y hY => ?_⟩` and prove the remaining obligations. Use `h₁.1.2.mono ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[Function.mem_support, Set.indicator_apply_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hsub i hi hx.1, one_ne_zero⟩`. Establish `h0` using `h₁.2 Y hY`. Establish `: Y ∉ B₁` using `fun hY' => by simp [Set.indicator_of_mem hY'] at h0`. Conclude with `Set.indicator_of_notMem (fun hK => this (hsub i hi hK)) _`. Set `Ψ : ι → fullRk k n d` to `fun i => if hi : i ∈ s then ⟨_, mem i hi⟩ else 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΨ : ∀ i ∈ s, (Ψ i).1 = (Kf i).indicator 1` using `fun i hi => by simp [Ψ, dif_pos hi]`. Establish `hsum : (∑ i ∈ s, Ψ i).1 = B₁.indicator 1`. Rewrite using `[Submodule.coe_sum, Finset.sum_congr rfl hΨ, hB, Finset.indicator_biUnion s Kf hdis]`. Use extensionality with `x`. Simplify using `[Finset.sum_apply]`.
-
-Rewrite using `[pv_eq Bf (∑ i ∈ s, Ψ i) ⟨_, h₂⟩ hsum rfl, map_sum, LinearMap.sum_apply]`. Conclude with `Finset.sum_congr rfl fun i hi => (pv_eq Bf (Ψ i) ⟨_, h₂⟩ (hΨ i hi) rfl).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_sum_left_clopen (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n d : ℕ) (Bf : fullRk k n d →ₗ[ℂ] fullRk k n d →ₗ⋆[ℂ] ℂ) (ι : Type) (s : Finset ι)

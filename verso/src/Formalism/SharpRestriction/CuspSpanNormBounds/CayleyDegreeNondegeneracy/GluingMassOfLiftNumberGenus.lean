@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hT`. Conclude with `gluing_mass_of_lift_and_number D u (orth_space_posDef D u hT.pos) (fun hT h3 hsp F0 he hz Λ hΛ => (orthLattice_structure D u hT h3 hsp F0 he hz Λ hΛ).1) hL h4 h5 hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gluing_mass_of_lift_number_genus (D : D7) (u : D.what₂.Word) (hL : LiftsConjugateUnderStabilizer D u) (h4 : GluingNumber D u)
     (h5 : OrthLatticesOneGenus D u) : WordRowsGluing D u := by

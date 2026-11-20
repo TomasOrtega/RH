@@ -15,9 +15,7 @@ section SlopeTestRemainingChoices
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G)
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Apply `KNLevel.mem_laHat_of_repr b` to reduce the goal to its premises. Introduce `i`.
-
-Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul, KNLevel.isIntAf_iff]`. Conclude with `mul_mem ((KNLevel.isIntAf_iff _).mp hc) ((KNLevel.isIntAf_iff _).mp (KNLevel.repr_isIntAf b v hv i))`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_mem_laHat {c : AfP p} (hc : IsIntAf c) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) :
     c • v ∈ LaHat D := by
@@ -32,20 +30,18 @@ private theorem smul_mem_laHat {c : AfP p} (hc : IsIntAf c) {v : AfP p ⊗[ℚ] 
     ((KNLevel.isIntAf_iff _).mp (KNLevel.repr_isIntAf b v hv i))
 
 /- English proof (translation)
-Unfold `inAf LaHat`. Conclude with `AddSubgroup.subset_closure ⟨1, a, (KNLevel.isIntAf_iff 1).mpr (one_mem _), rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem inAf_mem_laHat (a : D.La) : inAf D a ∈ LaHat D := by
   unfold inAf LaHat
   exact AddSubgroup.subset_closure ⟨1, a, (KNLevel.isIntAf_iff 1).mpr (one_mem _), rfl⟩
 
 /- English proof (translation)
-Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Set `B` to `KNLevel.bA b`. Take `⟨m, hm, hden⟩` from `AfPCpctDen.exists_den p (Set.range fun ki : Module.Free.ChooseBasisIndex ℤ D.La × Module.Free.ChooseBasisIndex ℤ D.La => B.repr (L.actG g (B ki.1)) ki.2) (Set.finite_range _).isCompact`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨m, hm, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hy : ∀ k, m • L.actG g (B k) ∈ LaHat D`. Introduce `k`. Apply `KNLevel.mem_laHat_of_repr b` to reduce the goal to its premises. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul, Finsupp.smul_apply, nsmul_eq_mul, KNLevel.isIntAf_iff]`. Conclude with `hden _ ⟨(k, i), rfl⟩`. Rewrite using `[← B.sum_repr z, map_sum, Finset.smul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, smul_comm m]`.
-
-Conclude with `smul_mem_laHat (KNLevel.repr_isIntAf b z hz k) (hy k)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_den_act (g : G.GAf) :
     ∃ m : ℕ, 0 < m ∧ ∀ z ∈ LaHat D, m • L.actG g z ∈ LaHat D := by
@@ -70,7 +66,7 @@ private theorem exists_den_act (g : G.GAf) :
   exact smul_mem_laHat (KNLevel.repr_isIntAf b z hz k) (hy k)
 
 /- English proof (translation)
-Simplify using `only [rd]`. Rewrite using `[← Module.End.mul_apply (L.actG (h₂⁻¹ * h₁)), ← map_mul, mul_inv_cancel_right]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem rd_move (x : (AfP p ⊗[ℚ] G.C)ˣ) (h₁ h₂ : G.GAf) (w : VQ D) :
     rd L x h₂ w = L.actG (h₂⁻¹ * h₁) (rd L x h₁ w) := by
@@ -78,9 +74,9 @@ private theorem rd_move (x : (AfP p ⊗[ℚ] G.C)ˣ) (h₁ h₂ : G.GAf) (w : VQ
   rw [← Module.End.mul_apply (L.actG (h₂⁻¹ * h₁)), ← map_mul, mul_inv_cancel_right]
 
 /- English proof (translation)
-Take `⟨m, hm, hden⟩` from `exists_den_act L (h₂⁻¹ * h₁)`. Take `⟨w, e, he, rfl⟩` from `hd p D G L x h₁ m hm z`. Establish `h1 : rd L x h₁ w ∈ LaHat D`. Use `sub_mem hz (nsmul_mem he m)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : rd L x h₂ w ∈ LaHat D` using `(A₂ w).mp ((A₁ w).mpr h1)`. Rewrite using `[map_add, map_nsmul, ← rd_move L x h₁ h₂ w]`. Conclude with `add_mem h2 (hden e he)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stable (hd : RdDense) (x : (AfP p ⊗[ℚ] G.C)ˣ) (h₁ h₂ : G.GAf) (P : VQ D → Prop)
     (A₁ : ∀ w, P w ↔ rd L x h₁ w ∈ LaHat D) (A₂ : ∀ w, P w ↔ rd L x h₂ w ∈ LaHat D)
@@ -95,13 +91,13 @@ private theorem stable (hd : RdDense) (x : (AfP p ⊗[ℚ] G.C)ˣ) (h₁ h₂ : 
   exact add_mem h2 (hden e he)
 
 /- English proof (translation)
-Unfold `Link.CongOne`. Introduce `v hv`. Unfold `LaHat at hv`. Proceed by induction on `hv using AddSubgroup.closure_induction with`. Consider the case `mem z hz`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨c, y, hc, rfl⟩` from `hz`. Take `⟨u, hu, hgu⟩` from `gen y`. Establish `hcy : c ⊗ₜ[ℚ] ((1 : ℚ) ⊗ₜ[ℤ] y) = c • inAf D y`. Rewrite using `[inAf, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Use `⟨c • u, smul_mem_laHat hc hu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hcy, LinearMap.map_smul, hgu, smul_add, smul_comm c N u]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨w₁, hw₁, e₁⟩` from `hy`. Take `⟨w₂, hw₂, e₂⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w₁ + w₂, add_mem hw₁ hw₂, by rw [map_add, e₁, e₂, smul_add]; abel⟩`. Consider the case `neg y _ hy`. Take `⟨w, hw, e⟩` from `hy`. Conclude with `⟨-w, neg_mem hw, by rw [map_neg, e, neg_add, smul_neg]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem congOne_of_gen {N : ℕ} {g : G.GAf}
     (gen : ∀ a : D.La, ∃ u ∈ LaHat D, L.actG g (inAf D a) = inAf D a + N • u) : L.CongOne N g := by
@@ -128,21 +124,19 @@ private theorem congOne_of_gen {N : ℕ} {g : G.GAf}
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `hd p _ D G L x N hN hcop D' t j h₁ h₂ hc1`. Establish `memOf : ∀ {g : G.GAf}, L.CongOne N g → ∀ v ∈ LaHat D, L.actG g v ∈ LaHat D`. Introduce `g hC v hv`. Take `⟨w, hw, e⟩` from `hC v hv`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hv (nsmul_mem hw N)`. Establish `cong : ∀ k₁ k₂ : G.GAf, IsCoordA L x N D' t j k₁ → IsCoordA L x N D' t j k₂ → L.CongOne N (k₂⁻¹ * k₁)`. Introduce `k₁ k₂ hk₁ hk₂`. Establish `hst : ∀ z ∈ LaHat D, L.actG (k₂⁻¹ * k₁) z ∈ LaHat D` using `stable L hd x k₁ k₂ (fun w => ∃ r u, p ^ r • w = j u) hk₁.1 hk₂.1`. Apply `congOne_of_gen L` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨w₁, hw₁, e₁⟩` from `hk₁.2 a`. Take `⟨w₂, hw₂, e₂⟩` from `hk₂.2 a`. Use `⟨w₂ - L.actG (k₂⁻¹ * k₁) w₁, sub_mem hw₂ (hst w₁ hw₁), ?_⟩` and prove the remaining obligations. Establish `e₃` using `rd_move L x k₁ k₂ (j (t a))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e₃` using `[e₂, e₁, map_add, map_nsmul]`. Rewrite using `[smul_sub, ← add_sub_assoc, e₃]`. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Introduce `hc2`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨cong h₁ h₂ hc1 hc2, by rw [mul_inv_rev, inv_inv]; exact cong h₂ h₁ hc2 hc1⟩`. Introduce `hg`. Take `⟨hC, hCi⟩` from `hg`. Establish `hinv : (h₂⁻¹ * h₁)⁻¹ = h₁⁻¹ * h₂` using `by rw [mul_inv_rev, inv_inv]`. Use `⟨fun w => ?_, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc1.1 w]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Rewrite using `[rd_move L x h₁ h₂ w]`. Conclude with `memOf hC _ hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hw`. Rewrite using `[rd_move L x h₂ h₁ w, ← hinv]`. Conclude with `memOf hCi _ hw`. Take `⟨w₁, hw₁, e₁⟩` from `hc1.2 a`. Take `⟨w₃, hw₃, e₃⟩` from `hC _ (inAf_mem_laHat a)`.
-
-Use `⟨w₃ + L.actG (h₂⁻¹ * h₁) w₁, add_mem hw₃ (memOf hC _ hw₁), ?_⟩` and prove the remaining obligations. Rewrite using `[rd_move L x h₁ h₂, e₁, map_add, map_nsmul, e₃, smul_add, add_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordKN_of : RdDense → CoordKN := by
   intro hd p _ D G L x N hN hcop D' t j h₁ h₂ hc1

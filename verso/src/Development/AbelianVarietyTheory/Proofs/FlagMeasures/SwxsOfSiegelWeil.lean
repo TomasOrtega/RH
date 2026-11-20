@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.SiegelWeilVolumes
 namespace GlobalTheory.St
 
 /- English proof (translation)
-Introduce `h _ X` and use `GlobalTheory.St.siegelWeil_volumes h _ _ _ (MassDataVolumesW.stepCM X) _ _ (MassDataVolumesW.stepHerm X)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem swxs_of_siegelWeil :
     HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → PI.VolStabS.MassDataS.SWXS :=

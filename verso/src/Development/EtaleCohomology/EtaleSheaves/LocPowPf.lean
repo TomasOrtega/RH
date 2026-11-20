@@ -6,7 +6,7 @@ open Polynomial IsLocalRing
 namespace LateralTheory.E.LocPowPf
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `cyclotomic.dvd_X_pow_sub_one q ℤ`. Use `congrArg (aeval ξ) hp` as an intermediate fact. Rewrite `this` using `[map_mul, h, zero_mul, map_sub, map_pow, aeval_X, map_one]`. Conclude with `sub_eq_zero.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_of_aeval {q : ℕ} {A : Type} [CommRing A] (ξ : A) (h : aeval ξ (cyclotomic q ℤ) = 0) : ξ ^ q = 1 := by
   obtain ⟨p, hp⟩ := cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -15,9 +15,9 @@ theorem pow_eq_one_of_aeval {q : ℕ} {A : Type} [CommRing A] (ξ : A) (h : aeva
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Establish `hu : IsUnit ((q : ResidueField A))` using `by simpa using ξ.2.1.map (residue A)`. Establish `: NeZero (q : ResidueField A)` using `⟨hu.ne_zero⟩`. Take `⟨x, -, hx⟩` from `ξ`. Express the relevant statement in the definitionally equal form `IsPrimitiveRoot (residue A x) q`. Rewrite using `[← isRoot_cyclotomic_iff, IsRoot, ← map_cyclotomic_int, eval_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `aeval ((residue A).toIntAlgHom x) (cyclotomic q ℤ) = 0`. Rewrite using `[aeval_algHom_apply, hx, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem prim_res {q : ℕ} {A : Type} [CommRing A] [IsLocalRing A] (ξ : GlobalTheory.EtC.Prim q A) :
     IsPrimitiveRoot (residue A ξ.1) q := by
@@ -30,15 +30,15 @@ theorem prim_res {q : ℕ} {A : Type} [CommRing A] [IsLocalRing A] (ξ : GlobalT
   rw [aeval_algHom_apply, hx, map_zero]
 
 /- English proof (translation)
-Introduce `q A _ _ ξ ζ`. Establish `hq : IsUnit (q : A)` using `ξ.2.1`. Establish `hz` using `prim_res ζ`. Establish `hx` using `prim_res ξ`. Establish `: NeZero q` using `⟨by rintro rfl; simp at hq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, hi, he⟩` from `hz.eq_pow_of_pow_eq_one hx.pow_eq_one`. Establish `hcop : i.Coprime q` using `(hz.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) i).1 (he ▸ hx)`. Use `⟨ZMod.unitOfCoprime i hcop, ?_⟩` and prove the remaining obligations. Establish `hval : ((ZMod.unitOfCoprime i hcop : (ZMod q)ˣ) : ZMod q).val = i`. Simplify using `[ZMod.unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hval]`. Use `set η := ζ.1 ^ i with hη`. Establish `h1 : ξ.1 ^ q = 1` using `pow_eq_one_of_aeval ξ.1 ξ.2.2`. Establish `h2 : η ^ q = 1` using `by rw [hη, ← pow_mul, mul_comm, pow_mul, pow_eq_one_of_aeval ζ.1 ζ.2.2, one_pow]`. Establish `hres : residue A ξ.1 = residue A η` using `by rw [hη, map_pow]; exact he.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hηu : residue A η ≠ 0` using `hres ▸ hx.ne_zero (NeZero.ne q)`. Establish `hS : IsUnit (∑ j ∈ Finset.range q, ξ.1 ^ j * η ^ (q - 1 - j))`. Rewrite using `[← residue_ne_zero_iff_isUnit, map_sum]`. Simplify using `only [map_mul, map_pow, hres]`. Rewrite using `[geom_sum₂_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (by simpa using (hq.map (residue A)).ne_zero) (pow_ne_zero _ hηu)`. Establish `key` using `(Commute.all ξ.1 η).geom_sum₂_mul q`. Rewrite `key` using `[h1, h2, sub_self]`. Conclude with `sub_eq_zero.1 ((hS.mul_right_eq_zero).1 key)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocPow_of : LateralTheory.E.AugBijPf.LocPow := by
   intro q A _ _ ξ ζ

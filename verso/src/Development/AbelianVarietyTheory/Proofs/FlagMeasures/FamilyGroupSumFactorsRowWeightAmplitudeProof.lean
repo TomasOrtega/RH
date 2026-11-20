@@ -26,11 +26,11 @@ namespace GlobalTheory.FamilyNormRational
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hb : p.1.map Prod.snd = q.1.map Prod.snd` using `congrArg (fun x => x.1.blocks) h`. Establish `hl : p.1.length = q.1.length` using `by simpa using congrArg List.length hb`. Establish `hv : ∀ k (hk : k < p.1.length) (hk' : k < q.1.length), (p.1[k]).1 = (q.1[k]).1`. Introduce `k hk hk'`. Establish `key` using `congrArg (fun x : (Σ c : Composition (i + 1), (Fin c.length → K)) => if hk : k < x.1.length then x.2 ⟨k, hk⟩ else 0) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : k < (toPts p).1.length` using `by simpa [toPts, Composition.length] using hk`. Establish `e2 : k < (toPts q).1.length` using `by simpa [toPts, Composition.length] using hk'`. Simplify using `only [dif_pos e1, dif_pos e2] at key`. Simplify `key` using `[toPts]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `List.ext_getElem hl` to reduce the goal to its premises. Introduce `k hk hk'`. Establish `hs` using `congrArg (fun l => l[k]?) hb`. Simplify using `only [List.getElem?_map, List.getElem?_eq_getElem hk, List.getElem?_eq_getElem hk', Option.map_some, Option.some.injEq] at hs`. Conclude with `Prod.ext (hv k hk hk') hs`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem toPts_inj' {K : Type} [Zero K] {i : ℕ} (p q : Point K (i + 1)) (h : toPts p = toPts q) : p = q := by
   have hb : p.1.map Prod.snd = q.1.map Prod.snd := congrArg (fun x => x.1.blocks) h
@@ -52,57 +52,53 @@ theorem toPts_inj' {K : Type} [Zero K] {i : ℕ} (p q : Point K (i + 1)) (h : to
   exact Prod.ext (hv k hk hk') hs
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨one_mem _, fun j x _ => by simp, fun x _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_mem_nRat {D : D7} {T : D.host.E} (F : LFlag (VS D) D.R.rS T) : (1 : (VS D).V ≃ₗ[D.host.E] (VS D).V) ∈ NRat F :=
   ⟨one_mem _, fun j x _ => by simp, fun x _ => by simp⟩
 
 /- English proof (translation)
-Introduce `D X Y u u' hSt hk hCT ν hνP s hs0 hsw K S TS cls hFQ γ hγ Fm hFT c n`. Take `⟨w, F00, F'0, F'1, hw, -, -, -, hZ, hbase, hOm, hgood, -, -, -, -, hdat, -, -⟩` from `hFT`. Establish `hdc` using `hdat c n`. Establish `hL : Fm.toL.dat c n = Fm.dat c n` using `rfl`. Use `show ‖grpF Y u u' TS cls c γ n‖ ^ 2 / J2of Y u u' (sc s ν) γ = a2W Fm.toL (ampQ S Fm.toL) c n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `a2W`. Rewrite using `[hL]`. Break down `hd : Fm.dat c n with _ | d` into its components or cases. Rewrite `hdc` using `[hd]`. Establish `h0 : grpF Y u u' TS cls c γ n = 0`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `grpF`. Establish `h0 : ∀ t, (TS ∩ {t | cls t = c ∧ ptPN t = γ ∧ nmlOf Y u u' t = n}).indicator (Y.tO u u').vec t = 0`. Introduce `t`. Apply `Set.indicator_of_notMem` to reduce the goal to its premises. Introduce and unpack `⟨h1, h2, h3, h4⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `hdc ⟨t, h1, h2, h3, h4⟩`. Simplify using `[h0]`. Simplify using `[h0]`. Rewrite `hdc` using `[hd]`. Take `⟨⟨t0, ht0, hc0, hp0, hn0⟩, hall⟩` from `hdc`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hOv, hrw⟩` from `hall t0 ht0 hc0 hp0 hn0`. Take `⟨hTS, hCR, hRow⟩` from `hFQ`. Take `⟨t1, ht1, hv1, hp1⟩` from `hγ`. Establish `hGTS : ∀ t ∈ TS, t.G ≠ 0`. Introduce `t ht h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `ht` using `[hTS]`. Apply `ht.1` to reduce the goal to its premises. Use `show Formalism.L2.SG.TermOp.Gt t = 0`. Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_pos h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1` using `hGTS t1 ht1`. Establish `hG0` using `hGTS t0 ht0`. Establish `hrel1 : t1.relevant` using `(GlobalTheory.T.nonGeneric_family_classes_determine_rows D X Y u u' hCT).2.2 t1 hv1`. Take `⟨w1, hw1, hat1, -⟩` from `GlobalTheory.T.terms_at_point_of_relevant_term_relevant_finite D X Y u u' t1 hG1 hrel1`. Establish `hw1w : w1 = w` using `toPts_inj' _ _ (hw1.trans (hp1.trans hw.symm))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hw1w` using the available equality. Establish `hatOf : ∀ t : TauC Y u u', ptPN t = γ → t.relevant ∧ t.toTerm.atPt w1 ∧ Formalism.L2.SG.PairVal.ptOf t.toTerm = w1`. Introduce `t ht`. Take `⟨hr, hg, hcell⟩` from `hat1 t (ht.trans hp1.symm)`. Use `⟨hr, ⟨(Quot.out t.toTerm.cls).1, ⟨(Quot.out t.toTerm.cls).2, Quot.out_eq _⟩, hg, hcell⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `toPts_inj' _ _ (ht.trans hw.symm)`. Take `⟨hrel0, hat0, hpt0⟩` from `hatOf t0 hp0`. Take `⟨-, hat1', hpt1⟩` from `hatOf t1 hp1`. Establish `hAtB : ∀ p, AtBase (zOf Y) p F00 F'0 (Tu D u) (Tu D u') (Fm.FP p)` using `fun p => ⟨(hbase p).1, (hbase p).2.1, (hbase p).2.2.1, (hbase p).2.2.2⟩`. Establish `hGv : Gval F00 F'0 ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hg0, hcell0⟩` from `hat1 t0 (hp0.trans hp1.symm)`. Establish `hcell00 : IsInCell (ZhatOM (ZhatL F00 F'0)) w1` using `⟨1, 1, fun i j => ⟨fun h => Matrix.one_apply_ne (ne_of_lt h), fun h => h ▸ Matrix.one_apply_eq i⟩, fun i j => ⟨fun h => Matrix.one_apply_ne (ne_of_gt h), fun h => h ▸ Matrix.one_apply_eq i⟩, by rw [hZ, Matrix.one_mul, Matrix.mul_one]⟩`. Establish `e1` using `Formalism.L2.SG.WConst.gPoint_eq_gval F00 F'0 w1 hcell00`. Establish `e2` using `Formalism.L2.SG.WConst.gPoint_eq_gval (T := Tu D u) (T' := Tu D u') (lf D (X.Fu u)) (Quot.out t0.toTerm.cls).1 w1 hcell0`. Rewrite using `[← e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hg0`. Establish `hBase : ∀ p, AtBase (⟨Y.δ, Y.M, Y.agree⟩ : LocDat D) p F00 F'0 (Tu D u) (Tu D u') (Fm.FP p) ∧ (Fm.FP p).RelG (LocNG.theta (Y.M p))` using `fun p => ⟨hAtB p, (GlobalTheory.T.localisedBaseFrames_relevantPair D (zOf Y) u u' w1 F00 F'0 hZ hGv p).2 _ (hAtB p)⟩`. Take `⟨G, ⟨cc⟩⟩` from `GlobalTheory.T.exists_global_coordinates_rational_flagPair D X Y u u' hSt w1 F00 F'0 Fm.FP hZ hGv hBase`. Take `⟨ρ, U, U', hmv⟩` from `GlobalTheory.T.term_moves_to_baseFrames_up_to_unitriangular D X Y u u' hSt w1 F00 F'0 Fm.FP hZ hGv hBase t0 hat0`. Establish `hcore` using `GlobalTheory.T.row_doubleCoset_sum_norm_sq_bound D X Y u u' hSt hk w1 F00 F'0 Fm.FP hZ hGv hBase G cc ν hνP t0 ρ U U' hmv hrel0 hpt0 S`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hamp` using `GlobalTheory.T.globalAmplitude_eq_localAmplitudes D X Y u u' hSt hk w1 F00 F'0 Fm.FP hZ hGv hBase G cc t0 ρ U U' hmv Fm.R Fm.P Fm.Om (fun p => (d p).1) hgood hOm (fun p => hOv p.1 p.2) S`. Establish `hset : (TS ∩ {t | cls t = c ∧ ptPN t = γ ∧ nmlOf Y u u' t = n}) = {t : TauC Y u u' | (Y.tO u u').rowOf t = (Y.tO u u').rowOf t0 ∧ nmlOf Y u u' t = nmlOf Y u u' t0 ∧ S (¬ t.generic)}`. Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨htS, hct, -, hnt⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨hRow t htS t0 ht0 (hct.trans hc0.symm), hnt.trans hn0.symm, ?_⟩` and prove the remaining obligations. Establish `h2` using `htS`. Rewrite `h2` using `[hTS]`. Conclude with `h2.2`. Introduce and unpack `⟨hr, hnm, hS⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Take `⟨nn, mm, hnn, hmm, hlin⟩` from `(GlobalTheory.T.doubleCoset_eq_iff_isometry_unipotent_translate D X Y u u' hSt t0 t).1 hnm`. Take `⟨-, hGeq, hpteq, -, -⟩` from `GlobalTheory.T.flagTerm_invariants_const_on_rationalDoubleCoset D X Y u u' hSt t0 t nn mm hrel0 hG0 ⟨hnn, hmm, hlin⟩`. Establish `htS : t ∈ TS`. Rewrite using `[hTS]`. Use `⟨?_, hS⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Formalism.L2.SG.TermOp.Gt t ≠ 0`. Unfold `Formalism.L2.SG.TermOp.Gt`. Rewrite using `[if_neg (hGeq ▸ hG0)]`. Conclude with `one_ne_zero`. Use `⟨htS, ((hCR t htS t0 ht0 hnm).2 hr).trans hc0, ?_, hnm.trans hn0⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm) = γ`. Rewrite using `[hpteq]`. Conclude with `hp0`. Establish `hrep : ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w1 g` using `(GlobalTheory.T.orbital_integrals_terms_one_doubleCoset D X Y u u' hSt ν hνP t0 hrel0 hG0 w1 hpt0.symm).1`. Establish `hJ : J2of Y u u' (sc s ν) γ = (s (Formalism.L2.SG.RealObj.gamW X u u' w1) : ℝ) ^ 2 * ‖Formalism.L2.SG.PackageTie.hsEmb (Jw Y u u' ν w1)‖ ^ 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `J2of`. Establish `hex : ∃ w' : Point D.host.E (D.R.rS + 1), toPts w' = γ ∧ ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w' g` using `⟨w1, hw, hrep⟩`. Rewrite using `[dif_pos hex]`. Establish `hcw : hex.choose = w1` using `toPts_inj' _ _ (hex.choose_spec.1.trans hw.symm)`. Rewrite using `[hcw, Jw_sc, map_smul, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hJne : ‖Formalism.L2.SG.PackageTie.hsEmb (Jw Y u u' ν w1)‖ ≠ 0`. Introduce `h0`. Take `⟨ρ1, U1, U1', hmv1⟩` from `GlobalTheory.T.term_moves_to_baseFrames_up_to_unitriangular D X Y u u' hSt w1 F00 F'0 Fm.FP hZ hGv hBase t1 hat1'`. Take `⟨T, hT, hamp1⟩` from `GlobalTheory.T.rowTerm_amplitude_eq_mass_mul_phase D X Y u u' hSt hk w1 F00 F'0 Fm.FP hZ hGv hBase G cc ν hνP t1 ρ1 U1 U1' hmv1 hrel1 hpt1`. Establish `he` using `hamp1 t1 1 1 rfl ⟨one_mem_nRat _, one_mem_nRat _, by simp⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT0 : Formalism.L2.SG.PackageTie.hsEmb T = 0` using `norm_eq_zero.1 (hT.trans h0)`. Apply `hv1` to reduce the goal to its premises. Use `show Formalism.L2.SG.TermOp.vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t1 = 0`. Unfold `Formalism.L2.SG.TermOp.vec`. Rewrite using `[he, map_smul, hT0, smul_zero, smul_zero]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use extensionality with `q`. Simplify using the standard rewrite rules. Establish `hgi` using `hsw w1 hrep`. Establish `hspos : (0 : ℝ) < s (Formalism.L2.SG.RealObj.gamW X u u' w1)` using `by exact_mod_cast hs0 _`. Establish `hampeq : ‖G.amp (G.datOf (cc.lat ρ t0.lam)) (fun Γ => S (¬ G.Gen (G.datOf (cc.lat ρ t0.lam)) Γ))‖ = ‖ampQ S Fm.toL d‖`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hamp]`. Unfold `ampQ`. Use `congr 1`. Use `Finset.sum_congr rfl (fun A _ => Finset.prod_congr rfl (fun p _ => ?_))` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; tauto)`.
-
-Establish `hgrp : grpF Y u u' TS cls c γ n = ∑' t : TauC Y u u', {t : TauC Y u u' | (Y.tO u u').rowOf t = (Y.tO u u').rowOf t0 ∧ nmlOf Y u u' t = nmlOf Y u u' t0 ∧ S (¬ t.generic)}.indicator (Y.tO u u').vec t`. Unfold `grpF`. Rewrite using `[hset]`. Rewrite using `[hgrp, hcore, hJ, hampeq]`. Use `show _ = Fm.rw c * ‖ampQ S Fm.toL d‖ ^ 2`.
-
-Rewrite using `[hrw, ← hgi]`. Establish `hJp : 0 < ‖Formalism.L2.SG.PackageTie.hsEmb (Jw Y u u' ν w1)‖` using `lt_of_le_of_ne (norm_nonneg _) (Ne.symm hJne)`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem squaredGroupSum_classDoubleCoset_eq_rowWeight : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), Formalism.MainNotions.S.Cnt.Stand D u u' → 4 * D.R.rS + 7 ≤ D.R.k →
     ConcTie X Y → ∀ ν, Formalism.L2.SG.RealObj.NuQPin X u u' ν → ∀ s : X.B.I.Ginf → NNReal, (∀ γ, 0 < s γ) →
@@ -238,9 +234,9 @@ theorem squaredGroupSum_classDoubleCoset_eq_rowWeight : ∀ (D : D7) (X : HidaSe
     field_simp
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, le_rfl, 0, 0, fun C' Cl _ _ D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hBk ν hν => ?_⟩` and prove the remaining obligations. Establish `hk` using `four_rank_add_seven_le_k hc`. Take `⟨-, hSt, hCT⟩` from `hc`. Take `⟨s, hs1, hs0, hsle, hsw⟩` from `GlobalTheory.T.exists_scale_normalised_localReading D X u u'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨s, hs1, hs0, fun γ => ?_, fun K S TS cls hFQ γ hγ Fm hFT c n => squaredGroupSum_classDoubleCoset_eq_rowWeight D X Y u u' hSt hk hCT ν hν.2 s hs0 hsw K S TS cls hFQ γ hγ Fm hFT c n⟩` and prove the remaining obligations. Establish `h1 : (s γ : ℝ) ≤ 1` using `by exact_mod_cast hsle γ`. Establish `h0 : (0 : ℝ) ≤ s γ` using `(s γ).2`. Simplify using `only [zero_mul, Real.rpow_zero]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem familyGroupSumFactorsRowWeightAmplitude : GlobalTheory.SnFam.FamilyGroupSumFactorsWeightAmplitude := by
   intro Cg cb Cw cT CT C0

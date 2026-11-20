@@ -8,31 +8,27 @@ open scoped Classical
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hcard K M _ _ _ _ _ _ hn v w hns hunr _`. Establish `hw : (w : HeightOneSpectrum (𝓞 M)).asIdeal.LiesOver v.asIdeal` using `w.2`. Use `set f := (w : HeightOneSpectrum (𝓞 M)).asIdeal.inertiaDeg (𝓞 K) with hf`. Establish `hfconst : ∀ u : PlacesOver M v, (u : HeightOneSpectrum (𝓞 M)).asIdeal.inertiaDeg (𝓞 K) = f`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := u.2`. Conclude with `Ideal.inertiaDeg_eq_of_isGaloisGroup v.asIdeal _ _ Gal(M/K)`. Establish `heone : ∀ u : PlacesOver M v, (u : HeightOneSpectrum (𝓞 M)).asIdeal.ramificationIdx (𝓞 K) = 1`. Introduce `u`. Use `haveI := hunr u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Ideal.ramificationIdx_eq_one _ _`. Establish `hsum` using `GroundTheory.Global.SemiLocal.sum_ramificationIdx_mul_inertiaDeg M v`. Establish `hdvd : f ∣ Module.finrank K M`. Rewrite using `[← hsum]`. Apply `Finset.dvd_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `u _`. Rewrite using `[heone u, hfconst u, one_mul]`. Establish `hf1 : f ≠ 1`. Introduce `h1`. Apply `hns` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use `haveI := u.2`. Establish `hrk` using `GroundTheory.Global.SemiLocal.finrank_eq_ramificationIdx_mul_inertiaDeg M v (u : HeightOneSpectrum (𝓞 M))`. Rewrite `hrk` using `[heone u, hfconst u, h1, one_mul]`. Establish `htop` using `Subalgebra.bot_eq_top_of_finrank_eq_one hrk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `y`. Establish `hy : y ∈ (⊥ : Subalgebra (HeightOneSpectrum.adicCompletion K v) (HeightOneSpectrum.adicCompletion M (u : HeightOneSpectrum (𝓞 M))))`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨x, hx⟩` from `Algebra.mem_bot.mp hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `⟨x, hx⟩`. Establish `hfn : f = Module.finrank K M` using `(hn.eq_one_or_self_of_dvd f hdvd).resolve_left hf1`. Establish `hnormK : normV v = v.asIdeal.absNorm`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnormM : normV (w : HeightOneSpectrum (𝓞 M)) = (w : HeightOneSpectrum (𝓞 M)).asIdeal.absNorm`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Both sides reduce to the same expression. Establish `hpow : v.asIdeal.absNorm ^ f = (w : HeightOneSpectrum (𝓞 M)).asIdeal.absNorm` using `Ideal.absNorm_pow_inertiaDeg v.asIdeal _`. Establish `hK` using `hcard K v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM` using `hcard M (w : HeightOneSpectrum (𝓞 M))`. Establish `hge : 2 ≤ v.asIdeal.absNorm`. Establish `h0 : v.asIdeal.absNorm ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : v.asIdeal.absNorm ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers. Establish `hcardM : Nat.card 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] = Nat.card 𝓀[HeightOneSpectrum.adicCompletion K v] ^ Module.finrank K M`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hM, hK, hnormM, hnormK, ← hpow, hfn]`. Use `haveI : Finite 𝓀[HeightOneSpectrum.adicCompletion K v] := Nat.finite_of_card_ne_zero (by rw [hK, hnormK]; omega)`. Use `haveI : Finite 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] := Nat.finite_of_card_ne_zero (by rw [hcardM, hK, hnormK]; positivity)`. Use `letI := Fintype.ofFinite 𝓀[HeightOneSpectrum.adicCompletion K v]`. Use `haveI : Module.Finite 𝓀[HeightOneSpectrum.adicCompletion K v] 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))] := Module.Finite.of_finite`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hc` using `Module.natCard_eq_pow_finrank (K := 𝓀[HeightOneSpectrum.adicCompletion K v]) (V := 𝓀[HeightOneSpectrum.adicCompletion M (w : HeightOneSpectrum (𝓞 M))])`. Rewrite `hc` using `[hcardM]`. Establish `h2 : 2 ≤ Nat.card 𝓀[HeightOneSpectrum.adicCompletion K v]`. Rewrite using `[hK, hnormK]`.
-
-Conclude with `hge`. Conclude with `(Nat.pow_right_injective h2 hc).symm`. Use `⟨FiniteField.frobeniusAlgEquivOfAlgebraic _ _, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[FiniteField.frobeniusAlgEquivOfAlgebraic_apply, Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.resDeg :
     CardRes → ResDeg := by

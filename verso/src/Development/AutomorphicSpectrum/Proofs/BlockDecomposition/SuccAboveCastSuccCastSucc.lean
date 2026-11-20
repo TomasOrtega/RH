@@ -14,7 +14,7 @@ open Formalism.REAL Formalism.MainNotions.S PositivityTheory.UnitaryDecompositio
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Unfold `qminor Tm`. Simplify using `only [Function.comp, hι.eq_iff]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem qminor_restrict {n m t : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (ι : Fin m → Fin n)
     (hι : Function.Injective ι) (a b : Fin t → Fin m) (w : ℂ) :
@@ -23,7 +23,7 @@ theorem qminor_restrict {n m t : ℕ} (E : Fin n → Fin n → Module.End ℂ V)
   simp only [Function.comp, hι.eq_iff]
 
 /- English proof (translation)
-Unfold `Tm`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tm_of_ne {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (w : ℂ) {a b : Fin n} (h : a ≠ b) :
     Tm E w a b = E a b := by
@@ -31,9 +31,9 @@ theorem tm_of_ne {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (w : ℂ) 
   simp [h]
 
 /- English proof (translation)
-Set `τ : Equiv.Perm (Fin n)` to `Equiv.ofBijective r hr`. Establish `e : r = id ∘ τ` using `rfl`. Establish `h1 : qdet E u = qminor E id id u`. Unfold `qdet qminor Tm`. Simplify using `only [id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, e, quantumMinorRowSkew_holds, quantumMinorColSkew_holds _ _ _ _ hE, ← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qdet_eq_qminor {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) (r : Fin n → Fin n)
     (hr : Function.Bijective r) (u : ℂ) : qdet E u = qminor E r r u := by
@@ -47,14 +47,14 @@ theorem qdet_eq_qminor {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (hE 
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Nat.even_or_odd k with h | h <;> simp [h.neg_one_pow]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sign_apply (k : ℕ) (x : V) :
     ((((-1 : ℤ) ^ k : ℤ) : Module.End ℂ V)) x = ((-1 : ℂ) ^ k) • x := by
   rcases Nat.even_or_odd k with h | h <;> simp [h.neg_one_pow]
 
 /- English proof (translation)
-Conclude with `Fin.succAbove_of_le_castSucc _ _ (by`. Simplify `Nat.lt_succ_iff.1 c.isLt) |>.trans (by simp)` using `[Fin.le_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem succAbove_castSucc_last {N : ℕ} (c : Fin (N + 1)) :
     (Fin.castSucc c).succAbove (Fin.last N) = Fin.last (N + 1) := by
@@ -62,7 +62,7 @@ theorem succAbove_castSucc_last {N : ℕ} (c : Fin (N + 1)) :
     simpa [Fin.le_def] using Nat.lt_succ_iff.1 c.isLt) |>.trans (by simp)
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Fin.succAbove, Fin.lt_def, Fin.val_castSucc]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem succAbove_castSucc_castSucc {N : ℕ} (c : Fin (N + 1)) (j : Fin N) :
     (Fin.castSucc c).succAbove (Fin.castSucc j) = Fin.castSucc (c.succAbove j) := by
@@ -71,25 +71,25 @@ theorem succAbove_castSucc_castSucc {N : ℕ} (c : Fin (N + 1)) (j : Fin N) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Introduce `V _ _ N E ι z hE hι hz u v`. Set `r : Fin (N + 2) → Fin (N + 2)` to `Fin.snoc (α := fun _ => Fin (N + 2)) ι z`. Establish `rc : ∀ a, r (Fin.castSucc a) = ι a` using `fun a => by simp [r]`. Establish `rl : r (Fin.last (N + 1)) = z` using `by simp [r]`. Establish `hinj : Function.Injective r`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `cast b => rw [rl, rc]`. Conclude with `fun h => absurd h.symm (hz b)`. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Proceed by induction.
 
-Consider the case `last => rw [rl, rc]`. Conclude with `fun h => absurd h (hz a)`. Consider the case `cast b => rw [rc, rc]; exact fun h => by rw [hι h]`. Establish `hr : Function.Bijective r` using `Finite.injective_iff_bijective.1 hinj`. Establish `hrc : r ∘ Fin.castSucc = ι` using `funext rc`.
+Treat this case separately. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol : ∀ c : Fin (N + 1), qminor E ι (r ∘ (Fin.castSucc c).succAbove) (u - 1) = ∑ l : Fin (N + 1), (((-1 : ℤ) ^ (N + (l : ℕ)) : ℤ) : Module.End ℂ V) * (qminor E (ι ∘ l.succAbove) (ι ∘ c.succAbove) (u - 1) * E (ι l) z)`. Introduce `c`. Rewrite using `[quantum_minor_column_expansion.2 (Module.End ℂ V) (N + 2) N E ι (r ∘ (Fin.castSucc c).succAbove) (u - 1)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `h1 : (r ∘ (Fin.castSucc c).succAbove) ∘ Fin.castSucc = ι ∘ c.succAbove`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[succAbove_castSucc_castSucc, rc]`. Establish `h2 : (r ∘ (Fin.castSucc c).succAbove) (Fin.last N) = z`. Simplify using `[succAbove_castSucc_last, rl]`. Rewrite using `[h1, h2, tm_of_ne E _ (hz l)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[qdet_eq_qminor E hE r hr u, quantum_minor_row_expansion.2 (Module.End ℂ V) (N + 2) (N + 1) E hE r r u, Fin.sum_univ_castSucc, hrc, rl, LinearMap.add_apply, LinearMap.sum_apply]`. Establish `hlast : (((-1 : ℤ) ^ (N + 1 + ((Fin.last (N + 1) : Fin (N + 2)) : ℕ)) : ℤ) : Module.End ℂ V) * (qminor E ι (r ∘ (Fin.last (N + 1)).succAbove) (u - 1) * Tm E u z z) = qminor E ι ι (u - 1) * Tm E u z z`. Establish `: r ∘ (Fin.last (N + 1)).succAbove = ι`. Rewrite using `[Fin.succAbove_last]`. Conclude with `hrc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Fin.val_last, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules. Establish `hq : qdet (fun a b => E (ι a) (ι b)) (u - 1) = qminor E ι ι (u - 1)`. Unfold `qdet qminor Tm`. Simplify using `only [id, hι.eq_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlast, hq, Module.End.mul_apply, add_comm, sub_eq_add_neg ((qminor E ι ι (u - 1)) _), ← Finset.sum_neg_distrib]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[rc, tm_of_ne E _ (hz c).symm, hcol c, Th_apply, Module.End.mul_apply, sign_apply, Module.End.mul_apply, LinearMap.sum_apply, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.mul_apply, sign_apply, Module.End.mul_apply, qminor_restrict E ι hι, smul_smul, ← neg_smul]`. Use `congr 1`. Establish `: ((-1 : ℂ) ^ N) * (-1 : ℂ) ^ N = 1` using `by rw [← mul_pow]; simp`. Simplify using `only [Fin.val_castSucc, pow_add, pow_one]`. Take the linear combination `(-(-1 : ℂ) ^ (l : ℕ) * (-1 : ℂ) ^ (c : ℕ)) * this`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem algId : PositivityTheory.RgHe.SM.AlgId := by
   intro V _ _ N E ι z hE hι hz u v

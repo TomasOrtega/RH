@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory.NormAevalSubBound
 
 /- English proof (translation)
-Establish `hadd : ∀ (a b : k) (r : ℝ), ‖a‖ ≤ r → ‖b‖ ≤ r → ‖a + b‖ ≤ r` using `fun a b r ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a`. Establish `h : ‖(a : k)‖ ≤ 1` using `IsUltrametricDist.norm_intCast_le_one k a`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h`. Simplify using `using h`. Simplify using `using hδ`. Consider the case `add p q hp hq`. Take `⟨p1, p2, p3⟩` from `hp`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨q1, q2, q3⟩` from `hq`. Simplify using `only [map_add]`. Use `⟨hadd _ _ _ p1 q1, hadd _ _ _ p2 q2, ?_⟩` and prove the remaining obligations. Rewrite using `[add_sub_add_comm]`. Conclude with `hadd _ _ _ p3 q3`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `mul_X p j hp`. Take `⟨p1, p2, p3⟩` from `hp`. Simplify using `only [map_mul, MvPolynomial.aeval_X]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_one₀ p1 (norm_nonneg _) (hx j)`. Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ p2 (norm_nonneg _) (hy j)`. Establish `e : MvPolynomial.aeval x p * x j - MvPolynomial.aeval y p * y j = MvPolynomial.aeval x p * (x j - y j) + (MvPolynomial.aeval x p - MvPolynomial.aeval y p) * y j` using `by ring`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hadd _ _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_left (norm_nonneg _) p1).trans (hxy j)`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hy j)).trans p3`.
+A detailed English derivation is pending.
 -/
 theorem norm_aeval_sub_le {k : Type} [inst : NormedField k] [NormOneClass k] [IsUltrametricDist k]
     {J : Type} {x y : J → k} {δ : ℝ} (hδ : (0 : ℝ) ≤ δ) (hx : ∀ (j : J), ‖x j‖ ≤ (1 : ℝ))

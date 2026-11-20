@@ -17,9 +17,9 @@ noncomputable def hermLeft {K : UQ} (B : InvAlg K) (x z : B.A) : B.A →ₗ[K.E]
     rw [mul_smul_comm, smul_mul_assoc, map_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `hlin : hermLeft B x (e j) = e.coord j`. Use `e.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.coord_apply, e.repr_self, Finsupp.single_apply]`. Conclude with `h i j`. Use `LinearMap.congr_fun hlin y` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Module.Basis.coord_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem herm_basis {K : UQ} (B : InvAlg K) (x : B.A) (n : ℕ) (e : Module.Basis (Fin n) K.E B.A)
     (h : ∀ i j, B.herm x (e i) (e j) = if i = j then 1 else 0) (y : B.A) (j : Fin n) :
@@ -34,17 +34,15 @@ theorem herm_basis {K : UQ} (B : InvAlg K) (x : B.A) (n : ℕ) (e : Module.Basis
   exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨i, rfl⟩` from `hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Rewrite using `[e.repr_self, Finsupp.single_apply]`. Use `split_ifs`. Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero`. Introduce `j`. Rewrite using `[map_zero, Finsupp.zero_apply]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[map_add, Finsupp.add_apply]`. Conclude with `add_mem (ha j) (hb j)`. Consider the case `smul o a _ ha`. Introduce `j`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul K.E o a, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem ⟨o, rfl⟩ (ha j)`. Introduce `h`. Rewrite using `[← e.sum_repr y]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
-
-Take `⟨o, ho⟩` from `h j`. Rewrite using `[← ho, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨j, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma coord_lemma {K : UQ} (B : InvAlg K) (n : ℕ) (e : Module.Basis (Fin n) K.E B.A) (y : B.A) :
     y ∈ Submodule.span K.O (Set.range e) ↔ ∀ j, e.repr y j ∈ (algebraMap K.O K.E).range := by
@@ -78,15 +76,15 @@ private lemma coord_lemma {K : UQ} (B : InvAlg K) (n : ℕ) (e : Module.Basis (F
     exact Submodule.smul_mem _ o (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[coord_lemma B n e y]`. Prove the components needed by the constructor for the conclusion. Introduce `hy z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hw`. Rewrite using `[herm_basis B x n e h y j]`. Conclude with `hy j`. Consider the case `zero => simp [InvAlg.herm]`. Consider the case `add a b _ _ ha hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hadd : B.herm x y (a + b) = B.herm x y a + B.herm x y b`. Unfold `InvAlg.herm`. Rewrite using `[map_add, mul_add, map_add]`. Rewrite using `[hadd]`. Conclude with `add_mem ha hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul o a _ ha`. Take `⟨o', ho'⟩` from `K.c_int o`. Establish `hsmul : B.herm x y (o • a) = algebraMap K.O K.E o' * B.herm x y a`. Unfold `InvAlg.herm`. Rewrite using `[← algebraMap_smul K.E o a, Algebra.smul_def, map_mul B.σ, B.σ_alg, ho', mul_left_comm, ← Algebra.smul_def, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsmul]`. Conclude with `mul_mem ⟨o', rfl⟩ ha`. Introduce `hy j`. Rewrite using `[← herm_basis B x n e h y j]`. Conclude with `hy (e j) (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_selfDual (K : UQ) (B : InvAlg K) (x : B.A) (n : ℕ) (e : Module.Basis (Fin n) K.E B.A)
     (h : ∀ i j, B.herm x (e i) (e j) = if i = j then 1 else 0) (y : B.A) :

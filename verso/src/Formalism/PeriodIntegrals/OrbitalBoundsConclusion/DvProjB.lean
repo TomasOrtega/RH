@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.DivisionRowsRationalLattice
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MajorantVanishing.MajAtZeroRight
 
 /- English proof (translation)
-The claim follows from `PI.Dv.ProjBW.projB`.
+A detailed English derivation is pending.
 -/
 theorem projection_degree_bound : PI.Dv.ProjB := PI.Dv.ProjBW.projB

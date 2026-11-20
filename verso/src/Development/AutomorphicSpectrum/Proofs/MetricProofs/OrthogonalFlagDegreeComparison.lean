@@ -9,11 +9,11 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.FlagPair
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.FlagPair.IsOrthFull at h`. Take `⟨hort, hcard⟩` from `h`. Take `⟨hdeg, hrk⟩` from `GlobalTheory.T.normalized_degree_orthogonal_sum K E (Ψ ⊕ Ψ) A.part hort`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdeg, Fintype.sum_sum_type]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hW : ∀ τ, E.rank (A.part (Sum.inl τ)) = j` using `fun τ => by show E.rank ((A.W τ).F (Fin.last j)) = j`. Rewrite using `[(A.W τ).rank (Fin.last j), Fin.val_last]`. Establish `hS : ∀ τ, E.rank (A.part (Sum.inr τ)) = k` using `fun τ => by show E.rank ((A.S τ).F (Fin.last k)) = k`. Rewrite using `[(A.S τ).rank (Fin.last k), Fin.val_last]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrk, Fintype.sum_sum_type, ← hcard]`. Simplify using `only [hW, hS, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iSup_part_degree_rank {K : Type} [Field K] [NumberField K] {E : HermitianBundle.{0} K}
     {Ψ : Type} [Fintype Ψ] {j k : ℕ} (A : FlagPair E Ψ j k) (h : A.IsOrthFull) :
@@ -37,11 +37,11 @@ theorem iSup_part_degree_rank {K : Type} [Field K] [NumberField K] {E : Hermitia
     ring
 
 /- English proof (translation)
-Introduce `K _ _ E Ψ _ j k A h`. Take `⟨hdeg, hrk⟩` from `iSup_part_degree_rank A h`. Take `⟨hle, hge⟩` from `GlobalTheory.T.normalized_degree_full_rank_sublattice K E (⨆ a, A.part a) hrk`. Establish `hflat : ∑ τ, A.flatDeg τ = ∑ τ, E.normDegree (A.W τ).top - ∑ τ, E.normDegree (A.S τ).top`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.FlagPair.flatDeg, Finset.sum_sub_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hle` using `[hdeg]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hflat, Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `d hd hsub`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `hge d hd hsub`. Rewrite `hb` using `[hdeg]`. Rewrite using `[hflat, Finset.sum_neg_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem two_sum_neg_degree_W : ∀ (K : Type) [Field K] [NumberField K] (E : HermitianBundle.{0} K)
     (Ψ : Type) [Fintype Ψ] (j k : ℕ) (A : FlagPair E Ψ j k), A.IsOrthFull →

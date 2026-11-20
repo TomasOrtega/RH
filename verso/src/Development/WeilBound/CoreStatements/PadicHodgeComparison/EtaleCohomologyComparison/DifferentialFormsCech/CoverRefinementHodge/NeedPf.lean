@@ -16,7 +16,7 @@ open CategoryTheory AlgebraicGeometry
 namespace CrystallineSemistableComparison.Om.Nt2
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qm13.cov_of_local Q q h`.
+A detailed English derivation is pending.
 -/
 theorem cov_of_local' {O : Type} [CommRing O] {X : Scheme.{0}} (Q : X.Opens → Prop) (q : X ⟶ Spec (CommRingCat.of O))
     [IsSeparated q] [QuasiCompact q] (h : ∀ x : X, ∃ (V : X.Opens) (d : ℕ), x ∈ V ∧ Q V ∧ Nonempty (Pb.Coord q V d)) :
@@ -24,9 +24,9 @@ theorem cov_of_local' {O : Type} [CommRing O] {X : Scheme.{0}} (Q : X.Opens → 
   _root_.UpperTheory.Reformulated.B.Qm13.cov_of_local Q q h
 
 /- English proof (translation)
-Introduce `K _ X q _ _ _ κ V hV`. Use `cov_of_local' (fun W => ∃ k, W ≤ V k) q fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ iSup V` using `by rw [hV]; trivial`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Take `⟨W, hW, hxW, hWk⟩` from `exists_isAffineOpen_mem_and_subset (X := X) (U := V k) (x := x) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h : RingHom.Locally RingHom.IsStandardSmooth (q.appLE ⊤ W le_top).hom` using `RingHom.smooth_iff_locally_isStandardSmooth.1 (q.smooth_appLE (isAffineOpen_top _) hW le_top)`. Take `⟨f, hf, hst⟩` from `GlobalTheory.CompanionTheory.CovEx.exists_basicOpen RingHom.IsStandardSmooth RingHom.isStandardSmooth_respectsIso q hW h hxW`. Take `⟨n, g, hg, he⟩` from `hst.exists_etale_mvPolynomial`. Conclude with `⟨_, n, hf, ⟨k, fun y hy => hWk (X.basicOpen_le f hy)⟩, GlobalTheory.CompanionTheory.CovEx.coord_basicOpen q hW f g hg he⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cov_refine : CovRefine := by
   intro K _ X q _ _ _ κ V hV
@@ -42,12 +42,12 @@ theorem cov_refine : CovRefine := by
   exact ⟨_, n, hf, ⟨k, fun y hy => hWk (X.basicOpen_le f hy)⟩, GlobalTheory.CompanionTheory.CovEx.coord_basicOpen q hW f g hg he⟩
 
 /- English proof (translation)
-Introduce `q h a n x` and use `GlobalTheory.CompanionTheory.HodgePull.pullH_id _ _ q a n x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullH_id : PullHId := fun q h a n x => GlobalTheory.CompanionTheory.HodgePull.pullH_id _ _ q a n x
 
 /- English proof (translation)
-Introduce `q h a j x` and use `GlobalTheory.HodgeCoh.hodgePull_id q a j x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pullC_id : PullCId := fun q h a j x => GlobalTheory.HodgeCoh.hodgePull_id q a j x
 

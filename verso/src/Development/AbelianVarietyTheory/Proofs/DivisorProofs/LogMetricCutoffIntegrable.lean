@@ -20,13 +20,13 @@ noncomputable section
 namespace GlobalTheory.LogMean
 
 /- English proof (translation)
-Introduce `h2 hH hK D O x P hc hf hr`. Establish `hcore : O.Core` using `⟨x, P, hc⟩`. Establish `key : ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ), ∃ C t₀ : ℝ, 0 < C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ → ∀ (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (y : GlobalTheory.TrueGeo.Pts (O.var c) σ), y ∈ ch.e.source → Integrable (fun ξ => Real.log (O.met.r c σ (P.exph c σ …`. Introduce `c σ`. Use `GlobalTheory.T.kaehler_chart_log_mean_bound hK (P.om c σ) (P.exph c σ) (O.met.r c σ) ((P.om_kaehler c σ).of_anRead _) (P.exph_is c σ) (fun y => hcore.exp_le_r c σ y) fun y₀ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ch, U, Φ, H, I, hy, hU, hyU, hUt, hΦ, hbij, hHc, he⟩` from `GlobalTheory.T.chart_potential_representation h2 hH D O x P hc hf hr c σ y₀`. Conclude with `⟨ch, hy, GlobalTheory.T.log_ball_bound_local_chart U (ch.e y₀) Φ H _ I hU hyU hΦ hbij hHc (fun v => (Real.exp_pos 1).le.trans (hcore.exp_le_r c σ _)) he⟩`. Use `choose C t₀ hC ht₀ hb using key`. Take `⟨M, hM⟩` from `(Set.finite_range fun q : O.s.Comp × (D.what₂.LL →+* ℂ) => C q.1 q.2).bddAbove`. Take `⟨N, hN⟩` from `(Set.finite_range fun q : O.s.Comp × (D.what₂.LL →+* ℂ) => 1 / t₀ q.1 q.2).bddAbove`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max M 1, 1 / max N 2, by positivity, by positivity, fun t ht htt c σ ch y hy => ?_⟩` and prove the remaining obligations. Establish `hN' : 1 / t₀ c σ ≤ max N 2` using `(hN ⟨(c, σ), rfl⟩).trans (le_max_left _ _)`. Establish `htc : t ≤ t₀ c σ` using `htt.trans ((one_div_le (ht₀ c σ) (by positivity)).1 hN')`. Establish `ht1 : t < 1` using `htt.trans_lt ((one_div_le_one_div_of_le two_pos (le_max_right N 2)).trans_lt (by norm_num))`. Establish `hl : 0 < Real.log (1 / t)` using `Real.log_pos (one_lt_one_div ht ht1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2'⟩` from `hb c σ t ht htc ch y hy`. Conclude with `⟨h1, h2'.trans (Real.log_le_log (mul_pos (hC c σ) hl) (mul_le_mul_of_nonneg_right ((hM ⟨(c, σ), rfl⟩).trans (le_max_left _ _)) hl.le))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem regLog_le_log_log : GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.CovHt.HypothesesH → GlobalTheory.HeightParts.KernelSt → GlobalTheory.HeightParts.OnCore fun _ O _ P =>
     ∃ C t₀ : ℝ, 0 < C ∧ 0 < t₀ ∧ ∀ t : ℝ, 0 < t → t ≤ t₀ → ∀ (c : O.s.Comp) (σ : _ →+* ℂ)

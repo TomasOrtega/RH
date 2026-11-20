@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 @[simp] lemma vec1 (a b : ℂ) : vec a b ⟨(), 1⟩ = b := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨k, i⟩`. Consider the cases of `k`. Use `fin_cases i`. Conclude with `h0`. Conclude with `h1`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 lemma pt_ext {z z' : Pt} (h0 : z ⟨(), 0⟩ = z' ⟨(), 0⟩) (h1 : z ⟨(), 1⟩ = z' ⟨(), 1⟩) : z = z' := by
   funext ⟨k, i⟩
@@ -39,19 +39,19 @@ open scoped Classical in
 def lift (x y : OnePoint ℂ) : Pt := if x = ∞ then vec (crd1 y) 1 else vec 1 (crd0 y)
 
 /- English proof (translation)
-The claim follows from `if_pos rfl`.
+A detailed English derivation is pending.
 -/
 lemma lift_infty (y : OnePoint ℂ) : lift ∞ y = vec (crd1 y) 1 := if_pos rfl
 /- English proof (translation)
-The claim follows from `if_neg (coe_ne_infty z)`.
+A detailed English derivation is pending.
 -/
 lemma lift_coe (z : ℂ) (y : OnePoint ℂ) : lift (z : OnePoint ℂ) y = vec 1 (crd0 y) :=
   if_neg (coe_ne_infty z)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `h2 _ (Ideal.subset_span rfl)` as an intermediate fact. Simplify `this` using `[Xc]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hf`. Simplify using `[Xc, h2]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 lemma mem_J_iff (z : Pt) : z ∈ mcPts JJ ↔ (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ z ⟨(), 0⟩ = 0 := by
   constructor
@@ -65,22 +65,22 @@ lemma mem_J_iff (z : Pt) : z ∈ mcPts JJ ↔ (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     simp [Xc, h2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun f hf => by rw [Ideal.mem_bot.mp hf]; simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma mem_bot (z : Pt) (h : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : z ∈ mcPts (⊥ : Ideal (MRing (PBlk 2))) :=
   ⟨h, fun f hf => by rw [Ideal.mem_bot.mp hf]; simp⟩
 
 /- English proof (translation)
-Introduce `_` and use `⟨0, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma vec_ne (a b : ℂ) (h : a ≠ 0) : ∀ k, ∃ i, vec a b ⟨k, i⟩ ≠ 0 := fun _ => ⟨0, h⟩
 /- English proof (translation)
-Introduce `_` and use `⟨1, one_ne_zero⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma vec_ne' (a : ℂ) : ∀ k, ∃ i, vec a 1 ⟨k, i⟩ ≠ 0 := fun _ => ⟨1, one_ne_zero⟩
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `infty => rw [lift_infty]`. Conclude with `mem_bot _ (vec_ne' _)`. Consider the case `coe z => rw [lift_coe]`. Conclude with `mem_bot _ (vec_ne _ _ one_ne_zero)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lift_mem_bot (x y : OnePoint ℂ) : lift x y ∈ mcPts (⊥ : Ideal (MRing (PBlk 2))) := by
   induction x with
@@ -88,9 +88,9 @@ lemma lift_mem_bot (x y : OnePoint ℂ) : lift x y ∈ mcPts (⊥ : Ideal (MRing
   | coe z => rw [lift_coe]; exact mem_bot _ (vec_ne _ _ one_ne_zero)
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `infty`. Use `iff_of_true ?_ rfl` and prove the remaining obligations. Rewrite using `[lift_infty]`. Conclude with `(mem_J_iff _).2 ⟨vec_ne' _, by simp⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `coe z`. Use `iff_of_false (fun h => ?_) (coe_ne_infty z)` and prove the remaining obligations. Rewrite `h` using `[lift_coe]`. Conclude with `one_ne_zero ((mem_J_iff _).1 h).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lift_mem_J (x : OnePoint ℂ) : lift x x ∈ mcPts JJ ↔ x = ∞ := by
   induction x with
@@ -104,15 +104,13 @@ lemma lift_mem_J (x : OnePoint ℂ) : lift x x ∈ mcPts JJ ↔ x = ∞ := by
     exact one_ne_zero ((mem_J_iff _).1 h).2
 
 /- English proof (translation)
-Break down `p with ⟨⟨⟩, i⟩` into its components or cases. Proceed by induction on `x with`. Consider the case `infty`. Rewrite using `[fsPot_U_infty]`. Use `fin_cases i`.
+Separate the alternatives or extract the components of the hypothesis. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (fun y => lift ∞ y ⟨(), 0⟩) = crd1` using `funext fun y => by rw [lift_infty]; rfl show p1.HoloOn _ (fun y => lift ∞ y ⟨(), 0⟩)`. Rewrite using `[e]`. Conclude with `holomorphicOn_infiniteCoord`. Establish `e : (fun y => lift ∞ y ⟨(), 1⟩) = fun _ => 1` using `funext fun y => by rw [lift_infty]; rfl show p1.HoloOn _ (fun y => lift ∞ y ⟨(), 1⟩)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `holoOn_const _ 1`. Consider the case `coe z`. Rewrite using `[fsPot_U_coe]`. Use `fin_cases i`. Establish `e : (fun y => lift (z : OnePoint ℂ) y ⟨(), 0⟩) = fun _ => 1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun y => by rw [lift_coe]; rfl`. Use `show p1.HoloOn _ (fun y => lift (z : OnePoint ℂ) y ⟨(), 0⟩)`. Rewrite using `[e]`. Conclude with `holoOn_const _ 1`. Establish `e : (fun y => lift (z : OnePoint ℂ) y ⟨(), 1⟩) = crd0`.
-
-Use function extensionality and compare the values at `fun y => by rw [lift_coe]; rfl`. Use `show p1.HoloOn _ (fun y => lift (z : OnePoint ℂ) y ⟨(), 1⟩)`. Rewrite using `[e]`. Conclude with `holomorphicOn_finiteCoord`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holo (x : OnePoint ℂ) (p : Σ k, PBlk 2 k) :
     p1.HoloOn (fsPot.U x) (fun y => lift x y p) := by
@@ -140,21 +138,21 @@ theorem holo (x : OnePoint ℂ) (p : Σ k, PBlk 2 k) :
       rw [e]; exact holomorphicOn_finiteCoord
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => 1, fun _ => one_ne_zero, by funext p; simp⟩`.
+Supply the required witnesses or components.
 -/
 lemma sameOrbit_refl (z : Pt) : SameOrbit z z :=
   ⟨fun _ => 1, fun _ => one_ne_zero, by funext p; simp⟩
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `infty`. Proceed by induction on `x' with`. Consider the case `infty => exact sameOrbit_refl _`. Consider the case `coe z'`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite `hy` using `[fsPot_U_infty, fsPot_U_coe]`. Take `⟨h0, ⟨ζ, rfl⟩⟩` from `hy`. Establish `hζ : ζ ≠ 0` using `fun h => h0 (by rw [h])`. Rewrite using `[lift_infty, lift_coe]`. Use `⟨fun _ => ζ⁻¹, fun _ => inv_ne_zero hζ, pt_ext ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using `[hζ]`. Consider the case `coe z`. Proceed by induction on `x' with`. Consider the case `infty`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite `hy` using `[fsPot_U_infty, fsPot_U_coe]`. Take `⟨⟨ζ, rfl⟩, h0⟩` from `hy`. Establish `hζ : ζ ≠ 0` using `fun h => h0 (by rw [h])`. Rewrite using `[lift_infty, lift_coe]`. Use `⟨fun _ => ζ, fun _ => hζ, pt_ext ?_ ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hζ]`. Simplify using the standard rewrite rules. Consider the case `coe z'`. Rewrite using `[lift_coe, lift_coe]`. Conclude with `sameOrbit_refl _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compat (x x' : OnePoint ℂ) (y : OnePoint ℂ) (hy : y ∈ fsPot.U x ∩ fsPot.U x') :
     SameOrbit (lift x y) (lift x' y) := by
@@ -185,9 +183,9 @@ theorem compat (x x' : OnePoint ℂ) (y : OnePoint ℂ) (hy : y ∈ fsPot.U x �
       exact sameOrbit_refl _
 
 /- English proof (translation)
-Establish `h0 : z ⟨(), 0⟩ ≠ 0` using `fun h => hzJ ((mem_J_iff z).2 ⟨hz.1, h⟩)`. Use `⟨((z ⟨(), 1⟩ / z ⟨(), 0⟩ : ℂ) : OnePoint ℂ), fun _ => (z ⟨(), 0⟩)⁻¹, fun _ => inv_ne_zero h0, ?_⟩` and prove the remaining obligations. Rewrite using `[lift_coe]`. Use `pt_ext ?_ ?_` and prove the remaining obligations. Simplify using `[h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[div_eq_inv_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem surj (z : Pt) (hz : z ∈ mcPts (⊥ : Ideal (MRing (PBlk 2)))) (hzJ : z ∉ mcPts JJ) :
     ∃ x, SameOrbit (lift x x) z := by
@@ -200,11 +198,11 @@ theorem surj (z : Pt) (hz : z ∈ mcPts (⊥ : Ideal (MRing (PBlk 2)))) (hzJ : z
   · simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `infty => exact absurd ((lift_mem_J ∞).2 rfl) hx`. Consider the case `coe ζ`. Take `⟨c, hc, he⟩` from `h`. Proceed by induction on `x' with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `infty`. Establish `e0` using `congrFun he ⟨(), 0⟩`. Rewrite `e0` using `[lift_coe, lift_infty]`. Simplify using `at e0`. Consider the case `coe ζ'`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `e0` using `congrFun he ⟨(), 0⟩`. Establish `e1` using `congrFun he ⟨(), 1⟩`. Rewrite `e0`, `e1` using `[lift_coe, lift_coe]`. Simplify using `only [vec0, vec1, finiteCoord_coe, mul_one] at e0 e1`. Rewrite using `[e1, ← e0, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inj (x x' : OnePoint ℂ) (hx : lift x x ∉ mcPts JJ)
     (h : SameOrbit (lift x x) (lift x' x')) : x = x' := by
@@ -225,13 +223,11 @@ theorem inj (x x' : OnePoint ℂ) (hx : lift x x ∉ mcPts JJ)
       rw [e1, ← e0, one_mul]
 
 /- English proof (translation)
-Establish `h1` using `(hasFDerivAt_apply (𝕜 := ℂ) q (F y0)).comp y0 hF.hasFDerivAt`. Establish `e : (fun f : κ → ℂ => f q) ∘ F = g ∘ (fun y : Fin 1 → ℂ => y 0)` using `funext hq`. Rewrite `h1` using `[e]`. Establish `h2` using `hg.comp_hasFDerivAt y0 (hasFDerivAt_apply (𝕜 := ℂ) (0 : Fin 1) y0)`. Establish `he` using `h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Submodule.eq_bot_iff _).2 fun v hv => ?_` and prove the remaining obligations. Establish `hv' : fderiv ℂ F y0 v = 0` using `hv`. Establish `h3` using `congrArg (fun L : (Fin 1 → ℂ) →L[ℂ] ℂ => L v) he`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, smul_apply, hv', Pi.zero_apply, smul_eq_mul] at h3`. Establish `hv0 : v 0 = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `mul_eq_zero.1 h3.symm with h | h` into its components or cases. Conclude with `absurd h hd`. Conclude with `h`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`.
-
-Conclude with `hv0`.
+Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ker_eq_bot_of_coord {κ : Type*} [Fintype κ] {F : (Fin 1 → ℂ) → κ → ℂ} {y0 : Fin 1 → ℂ}
     (hF : DifferentiableAt ℂ F y0) (q : κ) (g : ℂ → ℂ) (d : ℂ) (hq : ∀ y, F y q = g (y 0))
@@ -255,11 +251,9 @@ lemma ker_eq_bot_of_coord {κ : Type*} [Fintype κ] {F : (Fin 1 → ℂ) → κ 
   exact hv0
 
 /- English proof (translation)
-Establish `hy0 : p1.chart j x ∈ (p1.chart j).target ∩ (p1.chart j).symm ⁻¹' fsPot.U x`. Use `⟨(p1.chart j).map_source hj, ?_⟩` and prove the remaining obligations. Use `show (p1.chart j).symm (p1.chart j x) ∈ fsPot.U x`. Rewrite using `[(p1.chart j).left_inv hj]`. Conclude with `fsPot.mem_U x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : ∀ q, DifferentiableAt ℂ (fun y => lift x ((p1.chart j).symm y) q) (p1.chart j x)` using `fun q => (holo x q j _ hy0).differentiableAt`. Use `differentiableAt_pi.2 fun q => ?_` and prove the remaining obligations. Use `show DifferentiableAt ℂ (fun y => lift x ((p1.chart j).symm y) q / lift x ((p1.chart j).symm y) ⟨q.1, p q.1⟩) _`. Establish `hne : lift x ((p1.chart j).symm (p1.chart j x)) ⟨q.1, p q.1⟩ ≠ 0`. Rewrite using `[(p1.chart j).left_inv hj]`.
-
-Conclude with `hp q.1`. Repeatedly rewrite using `[div_eq_mul_inv]`. Conclude with `(hd q).mul ((hd _).inv hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 lemma diffAt (x : OnePoint ℂ) (p : (k : Unit) → PBlk 2 k) (hp : ∀ k, lift x x ⟨k, p k⟩ ≠ 0)
     (j : Fin p1.n) (hj : x ∈ (p1.chart j).source) :
@@ -281,9 +275,7 @@ lemma diffAt (x : OnePoint ℂ) (p : (k : Unit) → PBlk 2 k) (hp : ∀ k, lift 
   exact (hd q).mul ((hd _).inv hne)
 
 /- English proof (translation)
-Generalize the expression as in `p () = i`. Use `fin_cases i`. Use `left`. Both sides reduce to the same expression. Use `right`.
-
-Both sides reduce to the same expression.
+Replace the chosen expression with an arbitrary variable. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma p_cases (p : (k : Unit) → PBlk 2 k) : p () = 0 ∨ p () = 1 := by
   generalize p () = i
@@ -292,15 +284,15 @@ lemma p_cases (p : (k : Unit) → PBlk 2 k) : p () = 0 ∨ p () = 1 := by
   · right; rfl
 
 /- English proof (translation)
-Establish `hD` using `diffAt x p hp j hj`. Proceed by induction on `x with`. Consider the case `infty => exact absurd ((lift_mem_J ∞).2 rfl) hx`. Consider the case `coe ζ`. Establish `hp0` using `hp ()`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `hp0` using `[lift_coe]`. Use `fin_cases j`. Break down `p_cases p with h | h` into its components or cases. Use `ker_eq_bot_of_coord hD ⟨(), 1⟩ id 1 (fun y => ?_) (hasDerivAt_id _) one_ne_zero` and prove the remaining obligations. Simplify using `[affCoord, lift_coe, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `hp0` using `[h]`. Establish `hζ : ζ ≠ 0` using `by simpa using hp0`. Use `ker_eq_bot_of_coord hD ⟨(), 0⟩ (fun w => w⁻¹) _ (fun y => ?_) (hasDerivAt_inv hζ) (neg_ne_zero.2 (inv_ne_zero (pow_ne_zero 2 hζ)))` and prove the remaining obligations. Simplify using `[affCoord, lift_coe, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hζ : ζ ≠ 0` using `fun h0 => hj (by rw [h0])`. Break down `p_cases p with h | h` into its components or cases. Use `ker_eq_bot_of_coord hD ⟨(), 1⟩ (fun w => w⁻¹) _ (fun y => ?_) (hasDerivAt_inv (inv_ne_zero hζ)) (neg_ne_zero.2 (inv_ne_zero (pow_ne_zero 2 (inv_ne_zero hζ))))` and prove the remaining obligations. Simplify using `[affCoord, lift_coe, h]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `finiteCoord_projLineChart1_symm y`. Use `ker_eq_bot_of_coord hD ⟨(), 0⟩ id 1 (fun y => ?_) (hasDerivAt_id _) one_ne_zero` and prove the remaining obligations. Simplify using `[affCoord, lift_coe, h]`. Conclude with `(congrArg (·⁻¹) (finiteCoord_projLineChart1_symm y)).trans (inv_inv _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem immersion (x : OnePoint ℂ) (hx : lift x x ∉ mcPts JJ) (p : (k : Unit) → PBlk 2 k)
     (hp : ∀ k, lift x x ⟨k, p k⟩ ≠ 0) (j : Fin p1.n) (hj : x ∈ (p1.chart j).source) :
@@ -334,7 +326,7 @@ theorem immersion (x : OnePoint ℂ) (hx : lift x x ∉ mcPts JJ) (p : (k : Unit
         exact (congrArg (·⁻¹) (finiteCoord_projLineChart1_symm y)).trans (inv_inv _)
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p n hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma eval_aeval (v : (Σ k, PBlk 2 k) → Polynomial ℂ) (F : MvPolynomial (Σ k, PBlk 2 k) ℂ)
     (w : ℂ) : (aeval v F).eval w = eval (fun q => (v q).eval w) F := by
@@ -344,7 +336,7 @@ lemma eval_aeval (v : (Σ k, PBlk 2 k) → Polynomial ℂ) (F : MvPolynomial (Σ
   | mul_X p n hp => simp [hp]
 
 /- English proof (translation)
-Rewrite using `[eval_aeval, show (fun q : Σ k, PBlk 2 k => ((![a, b] q.2 : Polynomial ℂ)).eval w) = vec (a.eval w) (b.eval w) from pt_ext rfl rfl]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma eval_vec_poly (a b : Polynomial ℂ) (F : MvPolynomial (Σ k, PBlk 2 k) ℂ) (w : ℂ) :
     (aeval (fun q : Σ k, PBlk 2 k => ![a, b] q.2) F).eval w = eval (vec (a.eval w) (b.eval w)) F := by
@@ -352,11 +344,11 @@ lemma eval_vec_poly (a b : Polynomial ℂ) (F : MvPolynomial (Σ k, PBlk 2 k) �
     vec (a.eval w) (b.eval w) from pt_ext rfl rfl]
 
 /- English proof (translation)
-Use `set G := aeval (fun q : Σ k, PBlk 2 k => ![(Polynomial.X : Polynomial ℂ), 1] q.2) F with hGdef`. Establish `hG : ∀ w, G.eval w = eval (vec w 1) F` using `fun w => by`. Rewrite using `[hGdef, eval_vec_poly]`. Simplify using the standard rewrite rules. Establish `hne : G ≠ 0` using `fun h0 => hF 1 one_ne_zero (by rw [← hG, h0, Polynomial.eval_zero])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hfac, hnd⟩` from `G.exists_eq_pow_rootMultiplicity_mul_and_not_dvd hne 0`. Establish `hev : ∀ w, eval (vec w 1) F = w ^ G.rootMultiplicity 0 * h.eval w` using `fun w => by`. Rewrite using `[← hG]`. Use `conv_lhs => rw [hfac]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `⟨h, G.rootMultiplicity 0, hev, fun w h0 => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Conclude with `hnd (Polynomial.dvd_iff_isRoot.2 h0)`. Conclude with `hF w hw (by rw [hev, h0, mul_zero])`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma factor (F : MvPolynomial (Σ k, PBlk 2 k) ℂ) (hF : ∀ w : ℂ, w ≠ 0 → eval (vec w 1) F ≠ 0) :
     ∃ (h : Polynomial ℂ) (m : ℕ), (∀ w, eval (vec w 1) F = w ^ m * h.eval w) ∧
@@ -377,36 +369,32 @@ lemma factor (F : MvPolynomial (Σ k, PBlk 2 k) ℂ) (hF : ∀ w : ℂ, w ≠ 0 
   · exact hF w hw (by rw [hev, h0, mul_zero])
 
 /- English proof (translation)
-Introduce `j w hw` and use `(P.differentiable.analyticAt _).comp (hc j w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma holoOn_poly {U : Set (OnePoint ℂ)} {c : OnePoint ℂ → ℂ} (hc : p1.HoloOn U c)
     (P : Polynomial ℂ) : p1.HoloOn U (fun y => P.eval (c y)) :=
   fun j w hw => (P.differentiable.analyticAt _).comp (hc j w hw)
 
 /- English proof (translation)
-Use `set F := map (Int.castRingHom ℂ) f with hFdef`. Establish `nz : ∀ a b : ℂ, a ≠ 0 → eval (vec a b) F ≠ 0` using `fun a b ha h0 => ha ((mem_J_iff _).1 (hf _ (mem_bot _ (vec_ne a b ha)) h0)).2`. Take `⟨h, m, hev, hh⟩` from `factor F fun w hw => nz w 1 hw`. Use `⟨1, ![m], ![{∞}], ?_⟩` and prove the remaining obligations. Introduce `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `x with`. Consider the case `infty`. Use `⟨projectiveLineChartAtInfinity, projLine_isCompatibleChart 1, OnePoint.infty_ne_coe 0, ?_, fun _ => Option.some 0, ?_, ?_, fun y => h.eval (crd1 y), holoOn_poly holomorphicOn_infiniteCoord h, fun y _ => hh _, ?_⟩` and prove the remaining obligations. Use `show projectiveLineChartAtInfinity.source ⊆ fsPot.U ∞`. Rewrite using `[fsPot_U_infty]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k k' i _ _`. Conclude with `Subsingleton.elim _ _`. Introduce `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Use extensionality with `y`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, hy2⟩`. Simplify using `only [Matrix.cons_val_fin_one, Set.mem_singleton_iff] at hy1`. Substitute `hy1` using the available equality. Conclude with `⟨hy2, 0, rfl, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨hy, i, _, hi⟩`. Use `⟨?_, hy⟩` and prove the remaining obligations. Simplify using `only [Matrix.cons_val_fin_one, Set.mem_singleton_iff]`. Proceed by induction on `y with`. Consider the case `infty => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `coe ζ`. Establish `hζ : ζ ≠ 0` using `fun e => hy (by rw [e])`. Conclude with `absurd hi (by simp [projLineChart1_apply, hζ])`. Introduce `y _`. Simplify using `only [Fin.prod_univ_one, Matrix.cons_val_fin_one, projLineChart1_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lift_infty, hev, mul_comm]`. Consider the case `coe z`. Use `⟨projectiveLineChartAtZero, projLine_isCompatibleChart 0, ⟨z, rfl⟩, ?_, fun _ => none, ?_, ?_, fun y => eval (vec 1 (crd0 y)) F, ?_, fun y _ => nz 1 _ one_ne_zero, ?_⟩` and prove the remaining obligations. Use `show projectiveLineChartAtZero.source ⊆ fsPot.U (z : OnePoint ℂ)`. Rewrite using `[fsPot_U_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Introduce `k k' i h`. Consider the cases of `h`. Introduce `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Use extensionality with `y`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Substitute using the available equality. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, hy2⟩`. Simplify using `only [Matrix.cons_val_fin_one, Set.mem_singleton_iff] at hy1`. Substitute `hy1` using the available equality. Conclude with `absurd hy2 OnePoint.infty_notMem_range_coe`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨_, i, h, _⟩`. Consider the cases of `h`. Establish `e : (fun y => eval (vec 1 (crd0 y)) F) = fun y => (aeval (fun q : Σ k, PBlk 2 k => ![(1 : Polynomial ℂ), Polynomial.X] q.2) F).eval (crd0 y)`. Use function extensionality and compare the values at `y`. Rewrite using `[eval_vec_poly]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `holoOn_poly holomorphicOn_finiteCoord _`. Introduce `y _`. Simplify using `only [Fin.prod_univ_one, mul_one]`.
-
-Rewrite using `[lift_coe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snc (f : MRing (PBlk 2)) (hf : ∀ z ∈ mcPts (⊥ : Ideal (MRing (PBlk 2))),
       eval z (map (Int.castRingHom ℂ) f) = 0 → z ∈ mcPts JJ) :
@@ -471,9 +459,9 @@ theorem snc (f : MRing (PBlk 2)) (hf : ∀ z ∈ mcPts (⊥ : Ideal (MRing (PBlk
       rw [lift_coe]
 
 /- English proof (translation)
-Use `measure_mono_null ?_ (measure_singleton (0 : Fin 1 → ℂ))` and prove the remaining obligations. Introduce and unpack `y ⟨_, hy⟩`. Establish `hy' : (p1.chart j).symm y = ∞` using `(lift_mem_J _).1 hy`. Use `fin_cases j`. Conclude with `absurd hy' (OnePoint.coe_ne_infty _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `infiniteCoord_projLineChart1_symm y`. Rewrite `h1` using `[show projectiveLineChartAtInfinity.symm y = ∞ from hy', infiniteCoord_infty]`. Conclude with `Set.mem_singleton_iff.2 (funext fun i => by rw [Subsingleton.elim i 0]; exact h1.symm)`.
+A detailed English derivation is pending.
 -/
 theorem null (j : Fin p1.n) : volume ((p1.chart j).target ∩
     (p1.chart j).symm ⁻¹' {x | lift x x ∈ mcPts JJ}) = 0 := by
@@ -487,9 +475,9 @@ theorem null (j : Fin p1.n) : volume ((p1.chart j).target ∩
     exact Set.mem_singleton_iff.2 (funext fun i => by rw [Subsingleton.elim i 0]; exact h1.symm)
 
 /- English proof (translation)
-Use `⟨{Xc 2 0}, ?_, rfl⟩` and prove the remaining obligations. Introduce and unpack `f rfl`. Use `⟨fun _ => 1, fun m hm k => ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Consider the cases of `k`. Simplify using `[Finsupp.single_apply]`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 -/
 theorem homog : IsMultiHomogIdeal JJ := by
   refine ⟨{Xc 2 0}, ?_, rfl⟩
@@ -501,7 +489,7 @@ theorem homog : IsMultiHomogIdeal JJ := by
   simp [Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `h` and use `X_ne_zero _ (Ideal.mem_bot.mp (h (Ideal.subset_span (Set.mem_singleton _))))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nondeg : ¬ JJ ≤ ⊥ := fun h =>
   X_ne_zero _ (Ideal.mem_bot.mp (h (Ideal.subset_span (Set.mem_singleton _))))

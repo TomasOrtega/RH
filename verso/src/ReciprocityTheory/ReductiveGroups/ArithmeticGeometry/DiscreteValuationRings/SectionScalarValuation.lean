@@ -20,7 +20,7 @@ section Gen
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z U h, map_sum, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (gs_eq f z U h (a i)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_sum (f : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : f z ∈ U) {n : ℕ} (a : Fin n → Γ(Y, U)) :
     gs f z U (∑ i, a i) = ∑ i, gs f z U (a i) := by
@@ -28,15 +28,13 @@ theorem gs_sum (f : Z ⟶ Y) (z : Z) (U : Y.Opens) (h : f z ∈ U) {n : ℕ} (a 
   exact Finset.sum_congr rfl fun i _ => (gs_eq f z U h (a i)).symm
 
 /- English proof (translation)
-Establish `hj : ∀ k, (Sum.elim (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)) : K₁ ⊕ K₂ → L.ι) k = J (r ≫ Sum.elim φ₁ (fun k => h ≫ φ₂ k) k)`. Apply the tactic sequence `intro k; cases k <;> rfl`. Establish `hcoh : LB.Coh L (Sum.elim φ₁ (fun k => h ≫ φ₂ k)) (Sum.elim (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)))` using `fun k₁ k₂ hk => by`. Rewrite using `[hj, hj, hk]`. Establish `H'` using `H (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)) hcoh`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm1 : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k))` using `show r.base z ∈ (⋂ k, ((φ₁ k).base ⁻¹' (L.U (J (r ≫ φ₁ k)) : Set X))) from Set.mem_iInter.2 fun k => hJ (r ≫ φ₁ k)`. Establish `hm2 : r z ∈ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))` using `show r.base z ∈ (⋂ k, ((h ≫ φ₂ k).base ⁻¹' (L.U (J (r ≫ h ≫ φ₂ k)) : Set X))) from Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ₂ k)`. Establish `hm : r z ∈ (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k)))` using `⟨hm1, hm2⟩`. Establish `hle2 : (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))) ≤ h ⁻¹ᵁ LB.wchart L φ₂ (fun k => J (r ≫ h ≫ φ₂ k))` using `inf_le_right.trans (wchart_comp_le φ₂ h (fun k => J (r ≫ h ≫ φ₂ k)))`. Establish `hle1 : (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))) ≤ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k))` using `inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l1 : gs r z (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))) ((Y'.presheaf.map (homOfLE hle2).op).hom ((h.app _).hom (s₂.f (fun k => J (r ≫ h ≫ φ₂ k))))) = gs (r ≫ h) z (LB.wchart L φ₂ (fun k => J (r ≫ h ≫ φ₂ k))) (s₂.f (fun k …` using `(gs_res r z hle2 hm _).trans (gs_pull r h z _ (hle2 hm) _)`. Establish `l2 : gs r z (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))) (resTop (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))) 1 * (Y'.presheaf.map (homOfLE hle1).op).hom (s₁.f (fun …`. Simplify using `only [resTop, map_one]`. Rewrite using `[_root_.one_mul]`. Conclude with `gs_res r z hle1 hm _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `congrArg (gs r z (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k)))) H'`. Establish `e : (fun k => J ((r ≫ h) ≫ φ₂ k)) = (fun k => J (r ≫ h ≫ φ₂ k))`. Use function extensionality and compare the values at `k`. Rewrite using `[Category.assoc]`. Use `show gs (r ≫ h) z (LB.wchart L φ₂ (fun k => J ((r ≫ h) ≫ φ₂ k))) (s₂.f (fun k => J ((r ≫ h) ≫ φ₂ k))) = gs r z (LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k))) (s₁.f (fun k => J (r ≫ φ₁ k)))`.
-
-Rewrite using `[e]`. Conclude with `l1.symm.trans (key.trans l2)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secScal_sval {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
     {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} {s₂ : LB.Sec (LB.LinComb L φ₂ ε₂)} {h : Y' ⟶ Y}
@@ -74,9 +72,9 @@ theorem secScal_sval {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ 
   exact l1.symm.trans (key.trans l2)
 
 /- English proof (translation)
-Introduce `j₁ j₂ hc`. Simplify using `only [resTop, map_one, _root_.one_mul]`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L hL y _ _ hc (by`. Introduce and unpack `(a | a)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Use `exacts [Set.mem_iInter.1 hy.1 a, Set.mem_iInter.1 hy.2 a])`. Use `H y J hJ` as an intermediate fact. Rewrite `this` using `[sval_of s₁ _ y J j₁ (fun k => by rw [Category.id_comp]; exact e (.inl k)), sval_of s₂ _ y J j₂ (fun k => by rw [Category.id_comp]; exact e (.inr k))]`. Establish `le : LB.wchart L (fun k => h ≫ φ₂ k) j₂ ≤ h ⁻¹ᵁ LB.wchart L φ₂ j₂` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`. Conclude with `((gs_res _ y _ hy _).trans (gs_pull _ h y _ (le hy.2) _)).trans (this.trans (gs_res _ y _ hy _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem secScal_of_sval (hL : L.IsLB) {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ}
     {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)} {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ}
@@ -97,9 +95,9 @@ theorem secScal_of_sval (hL : L.IsLB) {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K�
   exact ((gs_res _ y _ hy _).trans (gs_pull _ h y _ (le hy.2) _)).trans (this.trans (gs_res _ y _ hy _).symm)
 
 /- English proof (translation)
-Establish `hmem : r z ∈ LB.wchart L φ (fun k => J (r ≫ φ k))` using `by show r.base z ∈ (⋂ k, ((φ k).base ⁻¹' (L.U (J (r ≫ φ k)) : Set X)))`. Conclude with `Set.mem_iInter.2 fun k => hJ (r ≫ φ k)`. Use `show gs r z (LB.wchart L φ (fun k => J (r ≫ φ k))) (s.f (fun k => J (r ≫ φ k))) = _`. Rewrite using `[hs, gs_sum r z _ hmem]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[gs_mul _ z _ hmem]`. Use `congr 1`. Conclude with `gs_res r z le_top hmem (b i)`.
+A detailed English derivation is pending.
 -/
 theorem sval_lin {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s : LB.Sec (LB.LinComb L φ ε)}
     {n : ℕ} (b : Fin n → Γ(Y, ⊤)) (t : Fin n → LB.Sec (LB.LinComb L φ ε))
@@ -116,9 +114,9 @@ theorem sval_lin {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} 
   exact gs_res r z le_top hmem (b i)
 
 /- English proof (translation)
-Establish `hmem : r z ∈ LB.wchart L (fun k => h ≫ φ k) (fun k => J (r ≫ h ≫ φ k))` using `by show r.base z ∈ (⋂ k, ((h ≫ φ k).base ⁻¹' (L.U (J (r ≫ h ≫ φ k)) : Set X)))`. Conclude with `Set.mem_iInter.2 fun k => hJ (r ≫ h ≫ φ k)`. Combine the equalities or inequalities in the displayed calculation. Establish `e : (fun k => J ((r ≫ h) ≫ φ k)) = fun k => J (r ≫ h ≫ φ k)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Use `show _ = gs (r ≫ h) z (LB.wchart L φ (fun k => J ((r ≫ h) ≫ φ k))) (s.f (fun k => J ((r ≫ h) ≫ φ k)))`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sval_pullSec {K : Type} [Fintype K] (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (s : LB.Sec (LB.LinComb L φ ε)) (h : Y' ⟶ Y) (r : Z ⟶ Y') (z : Z) {J : (Z ⟶ X) → L.ι}
@@ -151,7 +149,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {v : AddValuation F (WithTop ℚ)}
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem gs_gF_comp {h : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).left}
     (hf : h ≫ (fst (TF (R := V) F) D.toPre.P.A).left = (fst (TF (R := V) F) D.toPre.P.A).left)
@@ -167,23 +165,19 @@ theorem gs_gF_comp {h : (DegPre.BF D.toPre F).left ⟶ (DegPre.BF D.toPre F).lef
         (gs_pull (𝟙 _) (fst (TF (R := V) F) D.toPre.P.A).left y ⊤ (by simp) _).symm
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Take `⟨n, a, σ, σF, hscal, hva, hsum⟩` from `hs`. Establish `e1 : ∀ i, ∃ t : D.toPre.SecB k χ, ∀ (Z : Scheme.{0}) (ρ : Z ⟶ D.toPre.P.A.left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ i) (ρ ≫ TB) z J * (val eB ρ z J).val` using `fun i => by`. Take `⟨t, ht⟩` from `exists_sec hL hform (pullMulSec (σ i) TB eB heB)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullMulSec _ _ _ heB ρ z hJ)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose σ' hσ' using e1`. Establish `hformF : FormEq (fun i => (DegPre.prB D.toPre F).left ≫ D.toPre.famφB χ i) (DegPre.famε k) (DegPre.famφ D.toPre F χ) (DegPre.famε k)` using `fun U _ g => Finset.prod_congr rfl fun i _ => by rw [GC.famφ_eq]`. Establish `e2 : ∀ i, ∃ t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε k)), ∀ (Z : Scheme.{0}) (ρ : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (J), Good D.toPre.P.L z J → sval t ρ z J = sval (σ' i) (ρ ≫ (DegPre.prB D.toPre F).left) z J` using `fun i => by`. Take `⟨t, ht⟩` from `exists_sec hL hformF (pullSec D.toPre.P.L _ _ (σ' i) (DegPre.prB D.toPre F).left)`. Conclude with `⟨t, fun Z ρ z J hJ => (ht Z ρ z J hJ).trans (sval_pullSec _ _ _ _ ρ z hJ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose σ'F hσ'F using e2`. Use `⟨n, fun i => c * a i, σ', σ'F, fun i => ?_, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations. Conclude with `secScal_of_sval hL fun y J hJ => (hσ'F i _ (𝟙 _) y J hJ).symm`. Rewrite using `[AddValuation.map_mul, WithTop.coe_add, add_comm ((r : ℚ) : WithTop ℚ)]`. Conclude with `add_le_add hq (hva i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show s'.f j = ∑ i, resTop _ (gF D.toPre F (c * a i)) * (σ'F i).f j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun ψ : (DegPre.BF D.toPre F).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hL (ψ y)`. Establish `hIy : Good D.toPre.P.L y I` using `hI`. Establish `m` using `hIy.mem (DegPre.famφ D.toPre F χ) (𝟙 _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy' : y ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j` using `hy`. Establish `T0` using `sec_trans s' (𝟙 _) y hy' m`. Use `set τ := (Geo.Tor.trF (DegPre.famφ D.toPre F χ) (DegPre.famε k) (𝟙 _) y j (fun k => I (𝟙 _ ≫ DegPre.famφ D.toPre F χ k))).val with hτ`. Establish `Ti : ∀ i, gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i)) * (show Γ((DegPre.BF D.toPre F).left, LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) from (σ'F i).f j)) = τ * (gs (𝟙 _ …` using `fun i => by`. Establish `S1 : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i))) = gs (𝟙 _) y ⊤ (gF D.toPre F (c * a i))` using `gs_res _ y le_top hy' _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gs_mul _ y _ hy', S1, sec_trans (σ'F i) (𝟙 _) y hy' m, hτ]`. Conclude with `mul_left_comm _ _ _`. Establish `RHS : gs (𝟙 _) y (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (∑ i, resTop (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (gF D.toPre F (c * a i)) * (show Γ((DegPre.BF D.toPre F).left, LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) from (σ'F i).f j)) = τ * ∑ i, gs …`. Rewrite using `[gs_sum _ y _ hy', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Ti i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `CORE : sval s' (𝟙 _) y I = ∑ i, gs (𝟙 _) y ⊤ (gF D.toPre F (c * a i)) * sval (σ'F i) (𝟙 _) y I`. Establish `H1` using `(secRel_iff hL _ _ s' _ _ s h _ _ u).1 hrel _ (𝟙 _) y I hIy`. Establish `H2` using `sval_lin (fun i => gF D.toPre F (a i)) σF (fun j => hsum j) (𝟙 _ ≫ h) y hIy`. Rewrite using `[H1, H2, hc y I hIy, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Establish `A1 : gs (𝟙 _ ≫ h) y ⊤ (gF D.toPre F (a i)) = gs (𝟙 _) y ⊤ (gF D.toPre F (a i))`. Rewrite using `[Category.id_comp]`. Conclude with `gs_gF_comp hfst y (a i)`. Establish `A2 : sval (σF i) (𝟙 _ ≫ h) y I = sval (σ i) ((DegPre.prB D.toPre F).left ≫ TB) y I`. Rewrite using `[← secScal_sval (hscal i) (𝟙 _ ≫ h) y hIy, Category.assoc, hh, Category.id_comp]`.
-
-Establish `A3 : sval (σ'F i) (𝟙 _) y I = sval (σ i) ((DegPre.prB D.toPre F).left ≫ TB) y I * (val eB (DegPre.prB D.toPre F).left y I).val`. Rewrite using `[hσ'F i _ (𝟙 _) y I hIy, Category.id_comp, hσ' i _ _ y I hIy]`. Rewrite using `[A1, A2, A3, map_mul, gs_mul _ y ⊤ (by trivial)]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `T0.trans ((congrArg (fun x => τ * x) CORE).trans RHS.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem vge_move {k : ℕ} {α χ : D.toPre.X}
     {s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))}

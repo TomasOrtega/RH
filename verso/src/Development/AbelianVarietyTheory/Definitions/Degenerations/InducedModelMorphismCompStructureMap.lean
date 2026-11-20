@@ -19,21 +19,19 @@ abbrev cPt (p : ℕ) [Fact p.Prime] : Sp (OO p) := IsLocalRing.closedPoint (OO p
 abbrev gPt (p : ℕ) [Fact p.Prime] : Sp (PadicAlgCl p) ⟶ Sp (OO p) := spMap (OO p).subtype
 
 /- English proof (translation)
-Rewrite using `[OO, Valuation.mem_valuationSubring_iff, PadicAlgCl.valuation_def, ← NNReal.coe_le_one, coe_nnnorm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_OO_iff {p : ℕ} [Fact p.Prime] (x : PadicAlgCl p) : x ∈ OO p ↔ ‖x‖ ≤ 1 := by
   rw [OO, Valuation.mem_valuationSubring_iff, PadicAlgCl.valuation_def, ← NNReal.coe_le_one, coe_nnnorm]
 
 /- English proof (translation)
-Establish `hx : ‖(x : PadicAlgCl p)‖ ≤ 1` using `(mem_OO_iff _).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `h'`. Establish `h1 : ‖(x : PadicAlgCl p)‖ = 1` using `le_antisymm hx (not_lt.1 h')`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h0 : (x : PadicAlgCl p) ≠ 0`. Introduce `e`. Rewrite `h1` using `[e, norm_zero]`. Conclude with `zero_ne_one h1`. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_iff_exists_inv.2 ⟨⟨(x : PadicAlgCl p)⁻¹, (mem_OO_iff _).2 (by rw [norm_inv, h1, inv_one])⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`. Introduce and unpack `h ⟨u, rfl⟩`. Establish `h2 : ‖(((u⁻¹ : (OO p)ˣ) : OO p) : PadicAlgCl p)‖ ≤ 1` using `(mem_OO_iff _).1 ((u⁻¹ : (OO p)ˣ) : OO p).2`. Establish `e : ((u : OO p) : PadicAlgCl p) * (((u⁻¹ : (OO p)ˣ) : OO p) : PadicAlgCl p) = 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun y : OO p => (y : PadicAlgCl p)) u.mul_inv` as an intermediate fact. Simplify `this` using `only [MulMemClass.coe_mul, OneMemClass.coe_one]`. Establish `e2 : ‖((u : OO p) : PadicAlgCl p)‖ * ‖(((u⁻¹ : (OO p)ˣ) : OO p) : PadicAlgCl p)‖ = 1`. Rewrite using `[← norm_mul, e, norm_one]`. Establish `e3` using `mul_le_mul_of_nonneg_left h2 (norm_nonneg ((u : OO p) : PadicAlgCl p))`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_isUnit_OO_iff {p : ℕ} [Fact p.Prime] (x : OO p) : ¬ IsUnit x ↔ ‖(x : PadicAlgCl p)‖ < 1 := by
   have hx : ‖(x : PadicAlgCl p)‖ ≤ 1 := (mem_OO_iff _).1 x.2
@@ -59,7 +57,7 @@ theorem not_isUnit_OO_iff {p : ℕ} [Fact p.Prime] (x : OO p) : ¬ IsUnit x ↔ 
     linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h _ ⟨w, rfl⟩`. Conclude with `h (show w ∈ (⊤ : Y.Opens) from trivial)`. Introduce `h w _`. Conclude with `h ⟨w, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_iff {X Y : Scheme.{0}} (y : Y ⟶ X) (U : X.Opens) :
     ⊤ ≤ y ⁻¹ᵁ U ↔ Set.range y ⊆ U := by
@@ -70,7 +68,7 @@ theorem top_le_preimage_iff {X Y : Scheme.{0}} (y : Y ⟶ X) (U : X.Opens) :
     exact h ⟨w, rfl⟩
 
 /- English proof (translation)
-Introduce `w _` and use `(h w).mem_open U.isOpen hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_of_specializes {X Y : Scheme.{0}} {y : Y ⟶ X} {z : X} (h : ∀ w, y w ⤳ z)
     {U : X.Opens} (hz : z ∈ U) : ⊤ ≤ y ⁻¹ᵁ U := fun w _ => (h w).mem_open U.isOpen hz
@@ -97,7 +95,7 @@ namespace RatModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-Establish `h : M.pt w ∈ Set.range M.pt` using `⟨w, rfl⟩`. Rewrite `h` using `[M.gen]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_apply (w : Sp Ω) : M.pt w = genericPoint M.Z := by
   have h : M.pt w ∈ Set.range M.pt := ⟨w, rfl⟩
@@ -105,21 +103,21 @@ theorem pt_apply (w : Sp Ω) : M.pt w = genericPoint M.Z := by
   exact h
 
 /- English proof (translation)
-Rewrite using `[M.pt_apply]`. Conclude with `genericPoint_specializes z`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_specializes (w : Sp Ω) (z : M.Z) : M.pt w ⤳ z := by
   rw [M.pt_apply]
   exact genericPoint_specializes z
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hU`. Conclude with `top_le_preimage_of_specializes (fun w => M.pt_specializes w z) hz`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem top_le_preimage_pt {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) : ⊤ ≤ M.pt ⁻¹ᵁ U := by
   obtain ⟨z, hz⟩ := hU
   exact top_le_preimage_of_specializes (fun w => M.pt_specializes w z) hz
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hU`. Take `⟨z', hz'⟩` from `hV`. Use `⟨M.pt (IsLocalRing.closedPoint Ω), ?_⟩` and prove the remaining obligations. Rewrite using `[TopologicalSpace.Opens.coe_inf]`. Conclude with `⟨(M.pt_specializes _ z).mem_open U.isOpen hz, (M.pt_specializes _ z').mem_open V.isOpen hz'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem nonempty_inf {U V : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) (hV : (V : Set M.Z).Nonempty) :
     ((U ⊓ V : M.Z.Opens) : Set M.Z).Nonempty := by
@@ -138,7 +136,7 @@ def res (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) : Γ(M.Z, U) →+* Ω :=
   (valMap M.pt U (M.top_le_preimage_pt hU)).hom
 
 /- English proof (translation)
-Rewrite using `[valF_eq_valR, valR_eq _ _ (M.top_le_preimage_pt hU)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_apply (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) (f : Γ(M.Z, U)) :
     M.res U hU f = valF M.pt U f := by
@@ -146,7 +144,7 @@ theorem res_apply (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) (f : Γ(M.Z, U))
   rfl
 
 /- English proof (translation)
-Rewrite using `[valF_eq_valR, valF_eq_valR]`. Conclude with `valR_res M.pt h (M.top_le_preimage_pt hV) f`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) (f : Γ(M.Z, U)) :
     valF M.pt V (resG M.Z h f) = valF M.pt U f := by
@@ -154,24 +152,22 @@ theorem valF_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) 
   exact valR_res M.pt h (M.top_le_preimage_pt hV) f
 
 /- English proof (translation)
-Rewrite using `[res_apply, res_apply, M.valF_resG h hV]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) (f : Γ(M.Z, U)) :
     M.res V hV (resG M.Z h f) = M.res U (hV.mono h) f := by
   rw [res_apply, res_apply, M.valF_resG h hV]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun f => M.res_resG h hV f`.
+A detailed English derivation is pending.
 -/
 theorem res_comp_resG {U V : M.Z.Opens} (h : V ≤ U) (hV : (V : Set M.Z).Nonempty) :
     (M.res V hV).comp (resG M.Z h) = M.res U (hV.mono h) := RingHom.ext fun f => M.res_resG h hV f
 
 /- English proof (translation)
-Establish `hG : ∀ x : M.Z, x = genericPoint M.Z → IsField (M.Z.presheaf.stalk x)`. Introduce and unpack `x rfl`. Conclude with `isField_stalk_of_closure_mem_irreducibleComponents M.Z _ (by simp [irreducibleComponents_eq_singleton])`. Establish `hF` using `hG _ (M.pt_apply (IsLocalRing.closedPoint Ω))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Assume the negation of the conclusion as `hne`. Take `⟨b, hb⟩` from `hF.mul_inv_cancel hne`. Establish `e` using `congrArg (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt).hom hb`. Rewrite `e` using `[map_mul, ha, zero_mul, map_one]`.
-
-Conclude with `zero_ne_one e`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stalkClosedPointTo_injective :
     Function.Injective (Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt).hom := by
@@ -189,9 +185,9 @@ private theorem stalkClosedPointTo_injective :
   exact zero_ne_one e
 
 /- English proof (translation)
-Establish `h` using `M.top_le_preimage_pt hU`. Establish `e` using `germ_stalkClosedPointTo_eq_valMap M.pt U h`. Establish `hf : ∀ a, M.res U hU a = (Scheme.stalkClosedPointTo (R` using `CommRingCat.of Ω) M.pt).hom (M.Z.presheaf.germ U _ ((le_preimage_iff M.pt U).1 h) a) := fun a => by`. Simplify using `only [res]`. Rewrite using `[← e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `f g hfg`. Rewrite `hfg` using `[hf, hf]`. Conclude with `germ_injective_of_isIntegral M.Z _ _ (M.stalkClosedPointTo_injective hfg)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_injective (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) : Function.Injective (M.res U hU) := by
   have h := M.top_le_preimage_pt hU
@@ -206,7 +202,7 @@ theorem res_injective (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) : Function.I
   exact germ_injective_of_isIntegral M.Z _ _ (M.stalkClosedPointTo_injective hfg)
 
 /- English proof (translation)
-Introduce `f g h`. Apply `M.res_injective U hU` to reduce the goal to its premises. Rewrite using `[res_apply, res_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem valF_injective {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) :
     Function.Injective (valF M.pt U) := by
@@ -215,7 +211,7 @@ theorem valF_injective {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) :
   rw [res_apply, res_apply, h]
 
 /- English proof (translation)
-Apply `M.valF_injective hW` to reduce the goal to its premises. Rewrite using `[M.valF_resG hU hW, M.valF_resG hV hW, h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_eq_of_valF_eq {U V W : M.Z.Opens} (hU : W ≤ U) (hV : W ≤ V) (hW : (W : Set M.Z).Nonempty)
     {f : Γ(M.Z, U)} {g : Γ(M.Z, V)} (h : valF M.pt U f = valF M.pt V g) : resG M.Z hU f = resG M.Z hV g := by
@@ -223,7 +219,7 @@ theorem resG_eq_of_valF_eq {U V W : M.Z.Opens} (hU : W ≤ U) (hV : W ≤ V) (hW
   rw [M.valF_resG hU hW, M.valF_resG hV hW, h]
 
 /- English proof (translation)
-Rewrite using `[valF_eq_valR]`. Conclude with `valR_constFn_of_over M.s (algebraMap o Ω) M.pt M.pt_s U (M.top_le_preimage_pt hU) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_constFn {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) (a : o) :
     valF M.pt U (constFn M.s U a) = algebraMap o Ω a := by
@@ -255,12 +251,12 @@ theorem mem_O {z : M.Z} {x : Ω} :
     x ∈ M.O z ↔ ∃ (U : M.Z.Opens) (f : Γ(M.Z, U)), z ∈ U ∧ valF M.pt U f = x := by rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨U, f, hz, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem valF_mem_O {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) : valF M.pt U f ∈ M.O z := ⟨U, f, hz, rfl⟩
 
 /- English proof (translation)
-Take `⟨W, g, hW, rfl⟩` from `hx`. Take `⟨U, hU, hzU, hUs⟩` from `exists_isAffineOpen_mem_and_subset (U := W ⊓ V) (x := z) ⟨hW, hV⟩`. Establish `hle : U ≤ W ⊓ V` using `fun a ha => hUs ha`. Conclude with `⟨U, resG M.Z (hle.trans inf_le_left) g, hU, hzU, hle.trans inf_le_right, M.valF_resG _ ⟨z, hzU⟩ g⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_affine_of_mem_O {z : M.Z} {x : Ω} (hx : x ∈ M.O z) {V : M.Z.Opens} (hV : z ∈ V) :
     ∃ (U : M.Z.Opens) (f : Γ(M.Z, U)), IsAffineOpen U ∧ z ∈ U ∧ U ≤ V ∧ valF M.pt U f = x := by
@@ -270,32 +266,30 @@ theorem exists_affine_of_mem_O {z : M.Z} {x : Ω} (hx : x ∈ M.O z) {V : M.Z.Op
   exact ⟨U, resG M.Z (hle.trans inf_le_left) g, hU, hzU, hle.trans inf_le_right, M.valF_resG _ ⟨z, hzU⟩ g⟩
 
 /- English proof (translation)
-Use `show x ∈ ⨅ z ∈ U, M.O z ↔ _`. Simplify using `only [Algebra.mem_iInf]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_ringOn {U : Set M.Z} {x : Ω} : x ∈ M.ringOn U ↔ ∀ z ∈ U, x ∈ M.O z := by
   show x ∈ ⨅ z ∈ U, M.O z ↔ _
   simp only [Algebra.mem_iInf]
 
 /- English proof (translation)
-Introduce `_ hx` and use `mem_ringOn.1 hx z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ringOn_le_O {U : Set M.Z} {z : M.Z} (hz : z ∈ U) : M.ringOn U ≤ M.O z := fun _ hx => mem_ringOn.1 hx z hz
 
 /- English proof (translation)
-Introduce `_ hx` and use `mem_ringOn.2 fun z hz => mem_ringOn.1 hx z (h hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ringOn_anti {U V : Set M.Z} (h : U ⊆ V) : M.ringOn V ≤ M.ringOn U := fun _ hx => mem_ringOn.2 fun z hz => mem_ringOn.1 hx z (h hz)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : ∀ z : U, ∃ (W : M.Z.Opens) (g : Γ(M.Z, W)), (z : M.Z) ∈ W ∧ valF M.pt W g = x` using `fun z => mem_O.1 (mem_ringOn.1 hx z z.2)`. Use `choose W g hzW hg using h1`. Set `V : U → M.Z.Opens` to `fun z => W z ⊓ U`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hVne : ∀ z, ((V z : M.Z.Opens) : Set M.Z).Nonempty` using `fun z => ⟨z, hzW z, z.2⟩`. Set `sf : ∀ z : U, Γ(M.Z, V z)` to `fun z => resG M.Z inf_le_left (g z)`. Establish `hsf : ∀ z, valF M.pt (V z) (sf z) = x` using `fun z => (M.valF_resG inf_le_left (hVne z) (g z)).trans (hg z)`. Establish `hcomp : TopCat.Presheaf.IsCompatible M.Z.sheaf.1 V sf`. Introduce `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `M.resG_eq_of_valF_eq inf_le_left inf_le_right (M.nonempty_inf (hVne i) (hVne j)) ((hsf i).trans (hsf j).symm)`. Establish `hcov : U ≤ iSup V`. Introduce `y hy`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨y, hy⟩, hzW ⟨y, hy⟩, hy⟩`. Take `⟨s, hs, -⟩` from `M.Z.sheaf.existsUnique_gluing' V U (fun z => homOfLE inf_le_right) hcov sf hcomp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z0, hz0⟩` from `hU`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[← M.valF_resG (inf_le_right : V ⟨z0, hz0⟩ ≤ U) (hVne _) s]`. Rewrite using `[show resG M.Z (inf_le_right : V ⟨z0, hz0⟩ ≤ U) s = sf ⟨z0, hz0⟩ from hs ⟨z0, hz0⟩, hsf]`. Introduce and unpack `⟨f, rfl⟩`.
-
-Conclude with `mem_ringOn.2 fun z hz => valF_mem_O hz f`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ringOn_iff_exists {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) {x : Ω} :
     x ∈ M.ringOn U ↔ ∃ f : Γ(M.Z, U), valF M.pt U f = x := by
@@ -328,7 +322,7 @@ theorem mem_ringOn_iff_exists {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) {x :
 variable (M) in
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_range, Subalgebra.mem_toSubring, mem_ringOn_iff_exists hU]`. Simplify using `only [res_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem range_res (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) :
     (M.res U hU).range = (M.ringOn U).toSubring := by
@@ -346,7 +340,7 @@ def sectionsEquiv (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) : Γ(M.Z, U) ≃
       exact ⟨f, Subtype.ext ((M.res_apply U hU f).trans hf)⟩⟩
 
 /- English proof (translation)
-The claim follows from `M.res_apply U hU f`.
+A detailed English derivation is pending.
 -/
 theorem coe_sectionsEquiv (U : M.Z.Opens) (hU : (U : Set M.Z).Nonempty) (f : Γ(M.Z, U)) :
     (M.sectionsEquiv U hU f : Ω) = valF M.pt U f := M.res_apply U hU f
@@ -358,9 +352,9 @@ def stalkHom (z : M.Z) : M.Z.presheaf.stalk z →+* Ω :=
     Scheme.stalkClosedPointTo (R := CommRingCat.of Ω) M.pt).hom
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ M.pt ⁻¹ᵁ U` using `M.top_le_preimage_pt ⟨z, hz⟩`. Establish `key : M.Z.presheaf.germ U z hz ≫ M.Z.presheaf.stalkSpecializes (M.pt_specializes (IsLocalRing.closedPoint Ω) z) ≫ Scheme.stalkClosedPointTo (R` using `CommRingCat.of Ω) M.pt = valMap M.pt U h' := by`. Rewrite using `[← Category.assoc, TopCat.Presheaf.germ_stalkSpecializes]`. Conclude with `germ_stalkClosedPointTo_eq_valMap M.pt U h'`. Rewrite using `[valF_eq_valR, valR_eq M.pt U h', ← key]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem stalkHom_germ {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) :
     M.stalkHom z (M.Z.presheaf.germ U z hz f) = valF M.pt U f := by
@@ -376,9 +370,9 @@ theorem stalkHom_germ {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) 
 variable (M) in
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨U, hz, f, rfl⟩` from `M.Z.presheaf.germ_exist a`. Rewrite `ha` using `[stalkHom_germ hz f]`. Establish `hf : f = 0` using `M.valF_injective ⟨z, hz⟩ (by rw [ha, ← M.res_apply U ⟨z, hz⟩ 0, map_zero])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hf, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stalkHom_injective (z : M.Z) : Function.Injective (M.stalkHom z) := by
   rw [injective_iff_map_eq_zero]
@@ -404,7 +398,7 @@ Both sides reduce to the same expression.
 theorem coe_stalkEquiv (z : M.Z) (a : M.Z.presheaf.stalk z) : (M.stalkEquiv z a : Ω) = M.stalkHom z a := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((coe_stalkEquiv z _).trans (stalkHom_germ hz f))`.
+A detailed English derivation is pending.
 -/
 theorem stalkEquiv_germ {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) :
     M.stalkEquiv z (M.Z.presheaf.germ U z hz f) = ⟨valF M.pt U f, valF_mem_O hz f⟩ := Subtype.ext ((coe_stalkEquiv z _).trans (stalkHom_germ hz f))
@@ -412,9 +406,9 @@ theorem stalkEquiv_germ {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)
 instance isLocalRing_O (z : M.Z) : IsLocalRing (M.O z) := (M.stalkEquiv z).isLocalRing
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : ((u : M.O z) : Ω) * (((u⁻¹ : (M.O z)ˣ) : M.O z) : Ω) = 1` using `congrArg Subtype.val u.mul_inv`. Use `⟨left_ne_zero_of_mul_eq_one h1, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right h1]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((u⁻¹ : (M.O z)ˣ) : M.O z).2`. Introduce and unpack `⟨h0, hi⟩`. Conclude with `⟨⟨x, ⟨_, hi⟩, Subtype.ext (by simp [h0]), Subtype.ext (by simp [h0])⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnit_O_iff {z : M.Z} (x : M.O z) : IsUnit x ↔ (x : Ω) ≠ 0 ∧ (x : Ω)⁻¹ ∈ M.O z := by
   constructor
@@ -427,14 +421,14 @@ theorem isUnit_O_iff {z : M.Z} (x : M.O z) : IsUnit x ↔ (x : Ω) ≠ 0 ∧ (x 
     exact ⟨⟨x, ⟨_, hi⟩, Subtype.ext (by simp [h0]), Subtype.ext (by simp [h0])⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← stalkEquiv_germ hz f, isUnit_map_iff (M.stalkEquiv z), M.Z.mem_basicOpen f z hz]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_valF_iff {z : M.Z} {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) :
     IsUnit (⟨valF M.pt U f, valF_mem_O hz f⟩ : M.O z) ↔ z ∈ M.Z.basicOpen f := by
   rw [← stalkEquiv_germ hz f, isUnit_map_iff (M.stalkEquiv z), M.Z.mem_basicOpen f z hz]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨U, f, hz, rfl⟩` from `mem_O.1 hx`. Conclude with `valF_mem_O (h.mem_open U.isOpen hz) f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem O_le_of_specializes {ξ z : M.Z} (h : ξ ⤳ z) : M.O z ≤ M.O ξ := by
   intro x hx
@@ -444,7 +438,7 @@ theorem O_le_of_specializes {ξ z : M.Z} (h : ξ ⤳ z) : M.O z ≤ M.O ξ := by
 variable (M) in
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨U, f, hU, rfl⟩` from `M.onto x`. Conclude with `valF_mem_O (((genericPoint_spec M.Z).mem_open_set_iff U.isOpen).2 (by simpa using hU)) f`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem O_genericPoint : M.O (genericPoint M.Z) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -452,15 +446,15 @@ theorem O_genericPoint : M.O (genericPoint M.Z) = ⊤ := by
   exact valF_mem_O (((genericPoint_spec M.Z).mem_open_set_iff U.isOpen).2 (by simpa using hU)) f
 
 /- English proof (translation)
-Take `⟨W, f, hW, rfl⟩` from `M.onto x`. Take `⟨z, hz⟩` from `M.nonempty_inf hne hW`. Simplify using `only [TopologicalSpace.Opens.coe_inf, Set.mem_inter_iff, SetLike.mem_coe] at hz`. Take `⟨hzV, hzW⟩` from `hz`. Take `⟨b, hbW, hzb⟩` from `hV.exists_basicOpen_le (V := W) ⟨z, hzW⟩ hzV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD : ((M.Z.basicOpen b : M.Z.Opens) : Set M.Z).Nonempty` using `⟨z, hzb⟩`. Establish `hb0 : valF M.pt V b ≠ 0` using `((isUnit_O_iff _).1 ((isUnit_valF_iff hzV b).2 hzb)).1`. Use `hV.isLocalization_basicOpen b` as an intermediate fact. Take `⟨⟨a, s⟩, hx⟩` from `IsLocalization.surj (Submonoid.powers b) (resG M.Z hbW f)`. Simplify using `only at hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `key : ∀ c : Γ(M.Z, V), M.res _ hD (algebraMap Γ(M.Z, V) Γ(M.Z, M.Z.basicOpen b) c) = valF M.pt V c` using `fun c => by`. Rewrite using `[← M.res_apply V hne]`. Conclude with `M.res_resG (M.Z.basicOpen_le b) hD c`. Establish `e : valF M.pt _ (resG M.Z hbW f) * valF M.pt V s = valF M.pt V a`. Use `congrArg (M.res _ hD) hx` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_mul, key, key, M.res_apply]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `(Submonoid.mem_powers_iff _ _).1 s.2`. Establish `hs0 : valF M.pt V s ≠ 0`. Rewrite using `[← hn, ← M.res_apply V hne, map_pow, M.res_apply]`. Conclude with `pow_ne_zero _ hb0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, s, hs0, ?_⟩` and prove the remaining obligations. Rewrite using `[← M.valF_resG hbW hD f, eq_div_iff hs0]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_div {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) (x : Ω) :
     ∃ a b : Γ(M.Z, V), valF M.pt V b ≠ 0 ∧ x = valF M.pt V a / valF M.pt V b := by
@@ -490,7 +484,7 @@ theorem exists_eq_div {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z)
   exact e
 
 /- English proof (translation)
-Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, h⟩` from `exists_eq_div hV hne x`. Conclude with `⟨⟨_, (mem_ringOn_iff_exists hne).2 ⟨a, rfl⟩⟩, ⟨_, (mem_ringOn_iff_exists hne).2 ⟨b, rfl⟩⟩, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isFractionRing_ringOn {V : M.Z.Opens} (hV : IsAffineOpen V) (hne : (V : Set M.Z).Nonempty) :
     IsFractionRing (M.ringOn V) Ω := by
@@ -507,7 +501,7 @@ instance isFractionRing_O (z : M.Z) : IsFractionRing (M.O z) Ω := by
 variable (M) in
 
 /- English proof (translation)
-Use `isOpen_iff_forall_mem_open.2 fun z hz => ?_` and prove the remaining obligations. Take `⟨U, f, hzU, rfl⟩` from `mem_O.1 (show x ∈ M.O z from hz)`. Conclude with `⟨U, fun w hw => valF_mem_O hw f, U.isOpen, hzU⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isOpen_setOf_mem_O (x : Ω) : IsOpen {z | x ∈ M.O z} := by
   refine isOpen_iff_forall_mem_open.2 fun z hz => ?_
@@ -515,7 +509,7 @@ theorem isOpen_setOf_mem_O (x : Ω) : IsOpen {z | x ∈ M.O z} := by
   exact ⟨U, fun w hw => valF_mem_O hw f, U.isOpen, hzU⟩
 
 /- English proof (translation)
-Use `(h z).2` as an intermediate fact. Conclude with `IsIntegrallyClosed.of_equiv (M.stalkEquiv z)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_O (h : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z) (z : M.Z) :
     IsIntegrallyClosed (M.O z) := by
@@ -536,11 +530,9 @@ def IsNm {J : Type} (t : J → Ω) : Prop := M.HasDiv t ∧ ∀ i, t i ≠ 0 →
   ∀ x, x ∈ M.ringOn U ↔ IsIntegral (Algebra.adjoin o (Set.range fun j => t j / t i)) x
 
 /- English proof (translation)
-Distinguish the cases in `h : t i = 0`. Establish `e : {z | M.Div t i z} = ∅`. Use extensionality with `z`. Simplify using `[Div, h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_empty`. Establish `e : {z | M.Div t i z} = ⋂ j, {z | t j / t i ∈ M.O z}`. Use extensionality with `z`. Simplify using `[Div, h]`. Rewrite using `[e]`.
-
-Conclude with `isOpen_iInter_of_finite fun j => M.isOpen_setOf_mem_O _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_setOf_div {J : Type} [Finite J] (t : J → Ω) (i : J) : IsOpen {z | M.Div t i z} := by
   by_cases h : t i = 0
@@ -558,24 +550,24 @@ theorem isOpen_setOf_div {J : Type} [Finite J] (t : J → Ω) (i : J) : IsOpen {
 variable {M}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun j => by rw [O_genericPoint]; exact Algebra.mem_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem div_genericPoint {J : Type} {t : J → Ω} {i : J} (h : t i ≠ 0) : M.Div t i (genericPoint M.Z) :=
   ⟨h, fun j => by rw [O_genericPoint]; exact Algebra.mem_top⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun j => O_le_of_specializes hs (h.2 j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Div.of_specializes {J : Type} {t : J → Ω} {i : J} {ξ z : M.Z} (h : M.Div t i z) (hs : ξ ⤳ z) :
     M.Div t i ξ :=
   ⟨h.1, fun j => O_le_of_specializes hs (h.2 j)⟩
 
 /- English proof (translation)
-Rewrite using `[isUnit_O_iff]`. Use `show (t k ≠ 0 ∧ ∀ j, t j / t k ∈ M.O z) ↔ t k / t i ≠ 0 ∧ (t k / t i)⁻¹ ∈ M.O z`. Establish `hi` using `h.1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hk, hk'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨div_ne_zero hk hi, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_div]`. Conclude with `hk' i`. Introduce and unpack `⟨h0, hinv⟩`. Establish `hk : t k ≠ 0` using `fun hk => h0 (by rw [hk, zero_div])`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hk, fun j => ?_⟩` and prove the remaining obligations. Establish `e : t j / t k = t j / t i * (t k / t i)⁻¹`. Rewrite using `[inv_div, div_mul_div_comm, mul_comm (t i) (t k), mul_div_mul_right _ _ hi]`. Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ (h.2 j) hinv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Div.div_iff_isUnit {J : Type} {t : J → Ω} {i : J} {z : M.Z} (h : M.Div t i z) (k : J) :
     M.Div t k z ↔ IsUnit (⟨t k / t i, h.2 k⟩ : M.O z) := by
@@ -596,9 +588,9 @@ theorem Div.div_iff_isUnit {J : Type} {t : J → Ω} {i : J} {z : M.Z} (h : M.Di
     exact Subalgebra.mul_mem _ (h.2 j) hinv
 
 /- English proof (translation)
-Simplify using `only [Div]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨right_ne_zero_of_mul h1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_div_mul_left (t j) (t i) hc]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 j`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨mul_ne_zero hc h1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_div_mul_left (t j) (t i) hc]`. Conclude with `h2 j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mul_iff {J : Type} {t : J → Ω} {i : J} {z : M.Z} {c : Ω} (hc : c ≠ 0) :
     M.Div (fun j => c * t j) i z ↔ M.Div t i z := by
@@ -614,7 +606,7 @@ theorem div_mul_iff {J : Type} {t : J → Ω} {i : J} {z : M.Z} {c : Ω} (hc : c
     exact h2 j
 
 /- English proof (translation)
-Take `⟨p, hp, hpx⟩` from `hx`. Use `⟨p.map (Subalgebra.inclusion hST).toRingHom, hp.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hpx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma isIntegral_of_isIntegral_of_le {S T : Subalgebra o Ω} (hST : S ≤ T) {x : Ω} (hx : IsIntegral S x) :
     IsIntegral T x := by
@@ -624,11 +616,11 @@ private lemma isIntegral_of_isIntegral_of_le {S T : Subalgebra o Ω} (hST : S �
   exact hpx
 
 /- English proof (translation)
-Use `⟨h.1, fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hset, hring⟩` from `h.2 i hi`. Use `⟨U, hU, hset, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← hring]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Conclude with `isIntegral_algebraMap (R := M.ringOn U) (A := Ω) (x := ⟨x, hx⟩)`. Introduce `hx`. Use `mem_ringOn.2 fun z hz => ?_` and prove the remaining obligations. Use `hn z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := M.O z) (K := Ω)).1 (isIntegral_of_isIntegral_of_le (ringOn_le_O hz) hx)`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsCl.isNm {J : Type} {t : J → Ω} (h : M.IsCl t) (hn : ∀ z, IsIntegrallyClosed (M.O z)) : M.IsNm t := by
   refine ⟨h.1, fun i hi => ?_⟩
@@ -661,9 +653,9 @@ section Val
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Establish `key : ∀ {V W : M.Z.Opens} (e : W ≤ V), Set.range y ⊆ W → ∀ g : Γ(M.Z, V), valF y W (resG M.Z e g) = valF y V g` using `fun e hW g => by`. Rewrite using `[valF_eq_valR, valF_eq_valR]`. Conclude with `valR_res y e ((top_le_preimage_iff y _).2 hW) g`. Establish `hex : ∃ q : (Σ U : M.Z.Opens, Γ(M.Z, U)), Set.range y ⊆ q.1 ∧ valF M.pt q.1 q.2 = x` using `⟨⟨U, f⟩, hy, hf⟩`. Unfold `RatModel.val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hex]`. Take `⟨hq1, hq2⟩` from `hex.choose_spec`. Establish `hy2 : Set.range y ⊆ ((hex.choose.1 ⊓ U : M.Z.Opens) : Set M.Z)` using `fun p hp => ⟨hq1 hp, hy hp⟩`. Establish `hW : ((hex.choose.1 ⊓ U : M.Z.Opens) : Set M.Z).Nonempty` using `⟨_, hy2 ⟨IsLocalRing.closedPoint K, rfl⟩⟩`. Rewrite using `[← key (inf_le_left : hex.choose.1 ⊓ U ≤ _) hy2 hex.choose.2, ← key (inf_le_right : hex.choose.1 ⊓ U ≤ U) hy2 f, M.resG_eq_of_valF_eq inf_le_left inf_le_right hW (hq2.trans hf.symm)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_eq {y : Sp K ⟶ M.Z} {U : M.Z.Opens} (hy : Set.range y ⊆ U) {f : Γ(M.Z, U)} {x : Ω}
     (hf : valF M.pt U f = x) : M.val y x = valF y U f := by
@@ -681,13 +673,13 @@ theorem val_eq {y : Sp K ⟶ M.Z} {U : M.Z.Opens} (hy : Set.range y ⊆ U) {f : 
     M.resG_eq_of_valF_eq inf_le_left inf_le_right hW (hq2.trans hf.symm)]
 
 /- English proof (translation)
-The claim follows from `val_eq hy rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_valF {y : Sp K ⟶ M.Z} {U : M.Z.Opens} (hy : Set.range y ⊆ U) (f : Γ(M.Z, U)) :
     M.val y (valF M.pt U f) = valF y U f := val_eq hy rfl
 
 /- English proof (translation)
-Unfold `RatModel.val`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨q, hq, rfl⟩`. Conclude with `hx (valF_mem_O (hq ⟨w, rfl⟩) q.2)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem val_of_notMem {y : Sp K ⟶ M.Z} (w : Sp K) {x : Ω} (hx : x ∉ M.O (y w)) : M.val y x = 0 := by
   unfold RatModel.val
@@ -696,14 +688,14 @@ theorem val_of_notMem {y : Sp K ⟶ M.Z} (w : Sp K) {x : Ω} (hx : x ∉ M.O (y 
   exact hx (valF_mem_O (hq ⟨w, rfl⟩) q.2)
 
 /- English proof (translation)
-Take `⟨U, f, hU, rfl⟩` from `M.onto x`. Conclude with `val_valF ((top_le_preimage_iff M.pt U).1 (M.top_le_preimage_pt hU)) f`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem val_pt (x : Ω) : M.val M.pt x = x := by
   obtain ⟨U, f, hU, rfl⟩ := M.onto x
   exact val_valF ((top_le_preimage_iff M.pt U).1 (M.top_le_preimage_pt hU)) f
 
 /- English proof (translation)
-Rewrite using `[← M.valF_constFn (U := ⊤) ⟨y (IsLocalRing.closedPoint K), trivial⟩ a, val_valF (U := ⊤) (fun _ _ => trivial), valF_eq_valR]`. Conclude with `valR_constFn_of_over M.s σ y hy ⊤ (le_preimage_top y) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_algebraMap {y : Sp K ⟶ M.Z} {σ : o →+* K} (hy : y ≫ M.s = spMap σ) (a : o) :
     M.val y (algebraMap o Ω a) = σ a := by
@@ -712,16 +704,16 @@ theorem val_algebraMap {y : Sp K ⟶ M.Z} {σ : o →+* K} (hy : y ≫ M.s = spM
   exact valR_constFn_of_over M.s σ y hy ⊤ (le_preimage_top y) a
 
 /- English proof (translation)
-Establish `hw : y w ∈ ({z} : Set M.Z)` using `h ▸ Set.mem_range_self w`. Rewrite using `[Set.mem_singleton_iff.1 hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem specializes_of_range_eq {y : Sp K ⟶ M.Z} {z : M.Z} (h : Set.range y = {z}) (w : Sp K) : y w ⤳ z := by
   have hw : y w ∈ ({z} : Set M.Z) := h ▸ Set.mem_range_self w
   rw [Set.mem_singleton_iff.1 hw]
 
 /- English proof (translation)
-Use extensionality with `p`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w', rfl⟩`. Rewrite using `[Subsingleton.elim w' w]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `rfl`. Conclude with `⟨w, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem range_eq_singleton (y : Sp K ⟶ M.Z) (w : Sp K) : Set.range y = {y w} := by
   ext p
@@ -740,7 +732,7 @@ def valLoc {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) (z : M.Z)
     (M.stalkEquiv z).symm.toRingHom
 
 /- English proof (translation)
-Establish `hy : ⊤ ≤ y ⁻¹ᵁ U` using `(le_preimage_iff y U).2 (h.mem_open U.isOpen hz)`. Establish `e : (M.stalkEquiv z).symm ⟨valF M.pt U f, valF_mem_O hz f⟩ = M.Z.presheaf.germ U z hz f`. Rewrite using `[RingEquiv.symm_apply_eq, stalkEquiv_germ]`. Rewrite using `[valR_eq y U hy, ← germ_stalkClosedPointTo_eq_valMap y U hy, ← TopCat.Presheaf.germ_stalkSpecializes M.Z.presheaf hz h]`. Simplify using `only [valLoc, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e, Category.assoc, CommRingCat.hom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem valLoc_valF {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) {z : M.Z}
     (h : y (IsLocalRing.closedPoint C) ⤳ z) {U : M.Z.Opens} (hz : z ∈ U) (f : Γ(M.Z, U)) :
@@ -754,9 +746,9 @@ theorem valLoc_valF {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) {
     Category.assoc, CommRingCat.hom_comp]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : ∀ p : y (IsLocalRing.closedPoint C) ⤳ y (IsLocalRing.closedPoint C), M.Z.presheaf.stalkSpecializes p = 𝟙 _` using `fun _ => M.Z.presheaf.stalkSpecializes_refl _`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Simplify using `only [valLoc, e1, Category.id_comp, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom] at ha`.
+Substitute using the available equality. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hu` using `(isUnit_map_iff (Scheme.stalkClosedPointTo (R := CommRingCat.of C) y).hom _).1 ha`. Simplify using `using hu.map (M.stalkEquiv _)`. Introduce `ha`. Conclude with `ha.map _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_valLoc_iff {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) {z : M.Z}
     (h : y (IsLocalRing.closedPoint C) = z) (x : M.O z) :
@@ -774,15 +766,15 @@ theorem isUnit_valLoc_iff {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ 
     exact ha.map _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a ha => (isUnit_valLoc_iff y h a).1 ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLocalHom_valLoc {C : Type} [CommRing C] [IsLocalRing C] (y : Sp C ⟶ M.Z) {z : M.Z}
     (h : y (IsLocalRing.closedPoint C) = z) : IsLocalHom (valLoc y z (h ▸ specializes_rfl)) := ⟨fun a ha => (isUnit_valLoc_iff y h a).1 ha⟩
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨U, f, hz, rfl⟩` from `mem_O.1 hx`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ U` using `(le_preimage_iff y U).2 (h.mem_open U.isOpen hz)`. Establish `hy' : ⊤ ≤ (spMap σ ≫ y) ⁻¹ᵁ U` using `le_preimage_comp (spMap σ) y hy (le_preimage_top _)`. Use `Eq.trans ?_ (congrArg σ (valLoc_valF y h hz f)).symm` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show M.val (spMap σ ≫ y) (valF M.pt U f) = _`. Rewrite using `[val_valF ((top_le_preimage_iff _ U).1 hy'), valF_eq_valR, valR_spMap_comp σ y U hy f]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_spMap_comp {C K : Type} [CommRing C] [IsLocalRing C] [Field K] (σ : C →+* K) (y : Sp C ⟶ M.Z)
     {z : M.Z} (h : y (IsLocalRing.closedPoint C) ⤳ z) (x : M.O z) :
@@ -800,9 +792,9 @@ section ValHom
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Take `⟨U, f, hz, rfl⟩` from `mem_O.1 hx`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ U` using `(le_preimage_iff y U).2 (h.mem_open U.isOpen hz)`. Use `(valLoc_valF y h hz f).trans ?_` and prove the remaining obligations. Use `show valR y U f = M.val y (valF M.pt U f)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_valF ((top_le_preimage_iff y U).1 hy), valF_eq_valR]`.
+A detailed English derivation is pending.
 -/
 theorem valLoc_eq_val (y : Sp K ⟶ M.Z) {z : M.Z} (h : y (IsLocalRing.closedPoint K) ⤳ z) (x : M.O z) :
     valLoc y z h x = M.val y x := by
@@ -832,7 +824,7 @@ Both sides reduce to the same expression.
     valHom y z h x = M.val y x := rfl
 
 /- English proof (translation)
-Establish `hz : y (IsLocalRing.closedPoint K) = z` using `Set.mem_singleton_iff.1 (h ▸ Set.mem_range_self (IsLocalRing.closedPoint K))`. Rewrite using `[← isUnit_valLoc_iff y hz x, valLoc_eq_val, isUnit_iff_ne_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_ne_zero_iff {y : Sp K ⟶ M.Z} {z : M.Z} (h : Set.range y = {z}) (x : M.O z) :
     M.val y x ≠ 0 ↔ IsUnit x := by
@@ -841,7 +833,7 @@ theorem val_ne_zero_iff {y : Sp K ⟶ M.Z} {z : M.Z} (h : Set.range y = {z}) (x 
   rw [← isUnit_valLoc_iff y hz x, valLoc_eq_val, isUnit_iff_ne_zero]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[RingHom.mem_ker, valHom_apply, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, ← val_ne_zero_iff h, not_not]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_valHom (y : Sp K ⟶ M.Z) (z : M.Z) (h : Set.range y = {z}) :
     RingHom.ker (valHom y z h) = IsLocalRing.maximalIdeal (M.O z) := by
@@ -852,7 +844,7 @@ theorem ker_valHom (y : Sp K ⟶ M.Z) (z : M.Z) (h : Set.range y = {z}) :
 variable {y : Sp K ⟶ M.Z} {z : M.Z}
 
 /- English proof (translation)
-Establish `e` using `map_add (valHomOf y z h) ⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `e` using `[valHomOf_apply, valHomOf_apply, valHomOf_apply]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_add (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈ M.O z) :
     M.val y (a + b) = M.val y a + M.val y b := by
@@ -861,7 +853,7 @@ theorem val_add (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈
   exact e
 
 /- English proof (translation)
-Establish `e` using `map_mul (valHomOf y z h) ⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `e` using `[valHomOf_apply, valHomOf_apply, valHomOf_apply]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_mul (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈ M.O z) :
     M.val y (a * b) = M.val y a * M.val y b := by
@@ -870,7 +862,7 @@ theorem val_mul (h : ∀ w, y w ⤳ z) {a b : Ω} (ha : a ∈ M.O z) (hb : b ∈
   exact e
 
 /- English proof (translation)
-Establish `h1 : valF M.pt ⊤ (1 : Γ(M.Z, ⊤)) = 1`. Rewrite using `[valF_eq_valR]`. Conclude with `valR_one _ _ (le_preimage_top _)`. Rewrite using `[val_eq (U := ⊤) (fun _ _ => trivial) h1, valF_eq_valR]`. Conclude with `valR_one _ _ (le_preimage_top _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_one (y : Sp K ⟶ M.Z) : M.val y 1 = 1 := by
   have h1 : valF M.pt ⊤ (1 : Γ(M.Z, ⊤)) = 1 := by
@@ -880,7 +872,7 @@ theorem val_one (y : Sp K ⟶ M.Z) : M.val y 1 = 1 := by
   exact valR_one _ _ (le_preimage_top _)
 
 /- English proof (translation)
-Establish `h0 : valF M.pt ⊤ (0 : Γ(M.Z, ⊤)) = 0`. Rewrite using `[valF_eq_valR]`. Conclude with `valR_zero _ _ (le_preimage_top _)`. Rewrite using `[val_eq (U := ⊤) (fun _ _ => trivial) h0, valF_eq_valR]`. Conclude with `valR_zero _ _ (le_preimage_top _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_zero (y : Sp K ⟶ M.Z) : M.val y 0 = 0 := by
   have h0 : valF M.pt ⊤ (0 : Γ(M.Z, ⊤)) = 0 := by
@@ -897,7 +889,7 @@ def IsHom {Ω' : Type} [Field Ω'] [Algebra o Ω'] (M' : RatModel o Ω') (φ : �
   M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt
 
 /- English proof (translation)
-Use `show M.pt ≫ 𝟙 M.Z = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ M.pt`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHom_id : M.IsHom M (AlgHom.id o Ω) (𝟙 M.Z) := by
   show M.pt ≫ 𝟙 M.Z = Spec.map (CommRingCat.ofHom (RingHom.id Ω)) ≫ M.pt
@@ -910,7 +902,7 @@ section Hom
 variable {Ω' : Type} [Field Ω'] [Algebra o Ω'] {M' : RatModel o Ω'} {φ : Ω →ₐ[o] Ω'} {f : M'.Z ⟶ M.Z}
 
 /- English proof (translation)
-Establish `hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt` using `hf`. Establish `hg' : M''.pt ≫ g = spMap ψ.toRingHom ≫ M'.pt` using `hg`. Use `show M''.pt ≫ g ≫ f = Spec.map (CommRingCat.ofHom (ψ.comp φ).toRingHom) ≫ M.pt`. Establish `e : (ψ.comp φ).toRingHom = ψ.toRingHom.comp φ.toRingHom` using `rfl`. Rewrite using `[e, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, ← hf', ← Category.assoc, ← Category.assoc, hg']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHom.comp {Ω'' : Type} [Field Ω''] [Algebra o Ω''] {M'' : RatModel o Ω''} {ψ : Ω' →ₐ[o] Ω''}
     {g : M''.Z ⟶ M'.Z} (hf : M.IsHom M' φ f) (hg : M'.IsHom M'' ψ g) : M.IsHom M'' (ψ.comp φ) (g ≫ f) := by
@@ -921,7 +913,7 @@ theorem IsHom.comp {Ω'' : Type} [Field Ω''] [Algebra o Ω''] {M'' : RatModel o
   rw [e, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, ← hf', ← Category.assoc, ← Category.assoc, hg']
 
 /- English proof (translation)
-Establish `hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt` using `hf`. Use `ext_of_isDominant M'.pt ?_` and prove the remaining obligations. Rewrite using `[reassoc_of% hf', M.pt_s, M'.pt_s, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun g => Spec.map (CommRingCat.ofHom g)) φ.comp_algebraMap`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHom.inducedModelMorphism_comp_structureMap (hf : M.IsHom M' φ f) : f ≫ M.s = M'.s := by
   have hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt := hf
@@ -930,7 +922,7 @@ theorem IsHom.inducedModelMorphism_comp_structureMap (hf : M.IsHom M' φ f) : f 
   exact congrArg (fun g => Spec.map (CommRingCat.ofHom g)) φ.comp_algebraMap
 
 /- English proof (translation)
-Establish `hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt` using `hf`. Establish `hg' : M'.pt ≫ g = spMap φ.toRingHom ≫ M.pt` using `hg`. Use `M.sep` as an intermediate fact. Conclude with `ext_of_isDominant_of_isSeparated M.s (by rw [hf.inducedModelMorphism_comp_structureMap, hg.inducedModelMorphism_comp_structureMap]) M'.pt (hf'.trans hg'.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsHom.unique {g : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) (hg : M.IsHom M' φ g) : f = g := by
   have hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt := hf
@@ -939,7 +931,7 @@ theorem IsHom.unique {g : M'.Z ⟶ M.Z} (hf : M.IsHom M' φ f) (hg : M.IsHom M' 
   exact ext_of_isDominant_of_isSeparated M.s (by rw [hf.inducedModelMorphism_comp_structureMap, hg.inducedModelMorphism_comp_structureMap]) M'.pt (hf'.trans hg'.symm)
 
 /- English proof (translation)
-Establish `hf' : M'.pt ≫ f = spMap φ.toRingHom ≫ M.pt` using `hf`. Rewrite using `[valF_eq_valR, valF_eq_valR]`. Use `(valR_comp M'.pt f U a).symm.trans ?_` and prove the remaining obligations. Rewrite using `[hf']`. Conclude with `valR_spMap_comp φ.toRingHom M.pt U (M.top_le_preimage_pt hU) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHom.valF_app (hf : M.IsHom M' φ f) {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) (a : Γ(M.Z, U)) :
     valF M'.pt (f ⁻¹ᵁ U) (f.app U a) = φ (valF M.pt U a) := by
@@ -950,16 +942,16 @@ theorem IsHom.valF_app (hf : M.IsHom M' φ f) {U : M.Z.Opens} (hU : (U : Set M.Z
   exact valR_spMap_comp φ.toRingHom M.pt U (M.top_le_preimage_pt hU) a
 
 /- English proof (translation)
-Take `⟨U, a, hz, rfl⟩` from `mem_O.1 hx`. Conclude with `mem_O.2 ⟨f ⁻¹ᵁ U, f.app U a, hz, hf.valF_app ⟨f z, hz⟩ a⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsHom.map_mem_O (hf : M.IsHom M' φ f) {z : M'.Z} {x : Ω} (hx : x ∈ M.O (f z)) : φ x ∈ M'.O z := by
   obtain ⟨U, a, hz, rfl⟩ := mem_O.1 hx
   exact mem_O.2 ⟨f ⁻¹ᵁ U, f.app U a, hz, hf.valF_app ⟨f z, hz⟩ a⟩
 
 /- English proof (translation)
-Take `⟨U, a, hz, rfl⟩` from `mem_O.1 hx`. Establish `hy : Set.range y ⊆ (f ⁻¹ᵁ U : Set M'.Z)`. Rewrite using `[range_eq_singleton y w]`. Conclude with `Set.singleton_subset_iff.2 hz`. Establish `hyf : Set.range (y ≫ f) ⊆ (U : Set M.Z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[range_eq_singleton (y ≫ f) w]`. Conclude with `Set.singleton_subset_iff.2 hz`. Rewrite using `[val_valF hyf, val_eq hy (hf.valF_app ⟨f (y w), hz⟩ a), valF_eq_valR, valF_eq_valR]`. Conclude with `valR_comp y f U a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHom.val_comp (hf : M.IsHom M' φ f) {K : Type} [Field K] (y : Sp K ⟶ M'.Z) (w : Sp K) {x : Ω}
     (hx : x ∈ M.O (f (y w))) : M.val (y ≫ f) x = M'.val y (φ x) := by
@@ -974,7 +966,7 @@ theorem IsHom.val_comp (hf : M.IsHom M' φ f) {K : Type} [Field K] (y : Sp K ⟶
   exact valR_comp y f U a
 
 /- English proof (translation)
-Use `show φ (t i) ≠ 0 ∧ ∀ j, φ (t j) / φ (t i) ∈ M'.O z`. Use `⟨(map_ne_zero φ).2 h.1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_div₀]`. Conclude with `hf.map_mem_O (h.2 j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHom.div (hf : M.IsHom M' φ f) {J : Type} {t : J → Ω} {i : J} {z : M'.Z} (h : M.Div t i (f z)) :
     M'.Div (fun j => φ (t j)) i z := by
@@ -995,20 +987,20 @@ section Classical
 variable {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {z : M.Z}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `(IsLocalRing.specializes_closedPoint _).map y.continuous`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gPt_specializes (h : y (cPt p) = z) (w : Sp (PadicAlgCl p)) : (gPt p ≫ y) w ⤳ z := by
   subst h
   exact (IsLocalRing.specializes_closedPoint _).map y.continuous
 
 /- English proof (translation)
-The claim follows from `val_spMap_comp (OO p).subtype y _ x`.
+A detailed English derivation is pending.
 -/
 theorem val_gPt (h : y (cPt p) = z) (x : M.O z) :
     M.val (gPt p ≫ y) x = (valLoc y z (h ▸ specializes_rfl) x : OO p) := val_spMap_comp (OO p).subtype y _ x
 
 /- English proof (translation)
-Establish `e : M.val (gPt p ≫ y) x = (valLoc y z (h ▸ specializes_rfl) ⟨x, hx⟩ : OO p)` using `val_gPt h ⟨x, hx⟩`. Rewrite using `[e]`. Conclude with `(mem_OO_iff _).1 (SetLike.coe_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_val_le_one (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) : ‖M.val (gPt p ≫ y) x‖ ≤ 1 := by
   have e : M.val (gPt p ≫ y) x = (valLoc y z (h ▸ specializes_rfl) ⟨x, hx⟩ : OO p) := val_gPt h ⟨x, hx⟩
@@ -1016,7 +1008,7 @@ theorem norm_val_le_one (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) : ‖M.v
   exact (mem_OO_iff _).1 (SetLike.coe_mem _)
 
 /- English proof (translation)
-Establish `e : M.val (gPt p ≫ y) x = (valLoc y z (h ▸ specializes_rfl) ⟨x, hx⟩ : OO p)` using `val_gPt h ⟨x, hx⟩`. Rewrite using `[e, ← not_isUnit_OO_iff, isUnit_valLoc_iff y h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_val_lt_one_iff (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) :
     ‖M.val (gPt p ≫ y) x‖ < 1 ↔ ¬ IsUnit (⟨x, hx⟩ : M.O z) := by
@@ -1024,9 +1016,9 @@ theorem norm_val_lt_one_iff (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) :
   rw [e, ← not_isUnit_OO_iff, isUnit_valLoc_iff y h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Assume the negation of the conclusion as `hn`. Use `(norm_val_lt_one_iff h hx).2 hn` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `hu`. Conclude with `le_antisymm (norm_val_le_one h hx) (not_lt.1 fun hl => (norm_val_lt_one_iff h hx).1 hl hu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem norm_val_eq_one_iff (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) :
     ‖M.val (gPt p ≫ y) x‖ = 1 ↔ IsUnit (⟨x, hx⟩ : M.O z) := by
@@ -1039,13 +1031,13 @@ theorem norm_val_eq_one_iff (h : y (cPt p) = z) {x : Ω} (hx : x ∈ M.O z) :
     exact le_antisymm (norm_val_le_one h hx) (not_lt.1 fun hl => (norm_val_lt_one_iff h hx).1 hl hu)
 
 /- English proof (translation)
-The claim follows from `RatModel.norm_val_le_one h.1 hx`.
+A detailed English derivation is pending.
 -/
 theorem Cen.norm_val_le_one {U : Set M.Z} (h : M.Cen U z y) {x : Ω} (hx : x ∈ M.O z) :
     ‖M.val (gPt p ≫ y) x‖ ≤ 1 := RatModel.norm_val_le_one h.1 hx
 
 /- English proof (translation)
-The claim follows from `RatModel.norm_val_lt_one_iff h.1 hx`.
+A detailed English derivation is pending.
 -/
 theorem Cen.norm_val_lt_one_iff {U : Set M.Z} (h : M.Cen U z y) {x : Ω} (hx : x ∈ M.O z) :
     ‖M.val (gPt p ≫ y) x‖ < 1 ↔ ¬ IsUnit (⟨x, hx⟩ : M.O z) := RatModel.norm_val_lt_one_iff h.1 hx
@@ -1084,15 +1076,13 @@ theorem const_E (z : M.Z) :
     (const M J).E z = Submodule.span (M.O z) (Set.range fun i => Pi.single i (1 : Ω)) := rfl
 
 /- English proof (translation)
-Rewrite using `[const_E]`. Prove the components needed by the constructor for the conclusion. Introduce `hv j`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨i, rfl⟩` from `hx`. Use `show (Pi.single i (1 : Ω) : J → Ω) j ∈ M.O z`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[Pi.smul_apply, Subalgebra.smul_def, smul_eq_mul]`. Conclude with `mul_mem c.2 hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h`. Establish `e : v = ∑ j, (⟨v j, h j⟩ : M.O z) • Pi.single j (1 : Ω)`. Use extensionality with `i`. Simplify using `[Subalgebra.smul_def, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_const_iff {z : M.Z} {v : J → Ω} : v ∈ (const M J).E z ↔ ∀ j, v j ∈ M.O z := by
   rw [const_E]
@@ -1145,7 +1135,7 @@ variable (o Ω) (A : Type) [CommRing A] [IsDomain A] [Algebra o A] [Algebra.Fini
 omit [IsDomain A] [IsFractionRing A Ω] in
 
 /- English proof (translation)
-Rewrite using `[valF_eq_valR]`. Conclude with `valR_specMap (CommRingCat.ofHom (algebraMap A Ω)) a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_spMap_algebraMap (a : A) :
     valF (spMap (algebraMap A Ω)) ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) = algebraMap A Ω a := by
@@ -1153,7 +1143,7 @@ theorem valF_spMap_algebraMap (a : A) :
   exact valR_specMap (CommRingCat.ofHom (algebraMap A Ω)) a
 
 /- English proof (translation)
-Establish `e` using `valF_spMap_algebraMap L B ((Scheme.ΓSpecIso (CommRingCat.of B)).hom y)`. Rewrite `e` using `[CategoryTheory.Iso.hom_inv_id_apply, valF_eq_valR]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem valR_global_eq_algebraMap_gammaSpecIso {L B : Type} [Field L] [CommRing B] [Algebra B L] (y : Γ(Sp B, ⊤)) :
     valR (spMap (algebraMap B L)) ⊤ y = algebraMap B L ((Scheme.ΓSpecIso (CommRingCat.of B)).hom y) := by
@@ -1162,7 +1152,7 @@ private theorem valR_global_eq_algebraMap_gammaSpecIso {L B : Type} [Field L] [C
   exact e
 
 /- English proof (translation)
-The claim follows from `valR_res _ ((Sp B).basicOpen_le r) h y`.
+A detailed English derivation is pending.
 -/
 private theorem valR_restrict_basicOpen_eq_valR_global {L B : Type} [Field L] [CommRing B] [Algebra B L] (r y : Γ(Sp B, ⊤))
     (h : ⊤ ≤ (spMap (algebraMap B L)) ⁻¹ᵁ (Sp B).basicOpen r) :
@@ -1171,7 +1161,7 @@ private theorem valR_restrict_basicOpen_eq_valR_global {L B : Type} [Field L] [C
   valR_res _ ((Sp B).basicOpen_le r) h y
 
 /- English proof (translation)
-The claim follows from `(le_preimage_basicOpen_iff (spMap (algebraMap B L)) (le_preimage_top _) ((Scheme.ΓSpecIso (CommRingCat.of B)).inv g)).2 (by rw [← valF_eq_valR, valF_spMap_algebraMap] exact hg.isUnit)`.
+A detailed English derivation is pending.
 -/
 private theorem le_spMap_preimage_basicOpen_of_algebraMap_ne_zero {L B : Type} [Field L] [CommRing B] [Algebra B L] (g : B)
     (hg : algebraMap B L g ≠ 0) :
@@ -1183,9 +1173,9 @@ private theorem le_spMap_preimage_basicOpen_of_algebraMap_ne_zero {L B : Type} [
 omit [IsDomain A] in
 
 /- English proof (translation)
-Establish `h` using `le_spMap_preimage_basicOpen_of_algebraMap_ne_zero b hb`. Set `s : Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b)` to `⟨_, Submonoid.mem_powers _⟩`. Use `⟨IsLocalization.mk' Γ(Sp A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b)) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) s, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (valR (spMap (algebraMap A Ω)) _) (IsLocalization.mk'_spec Γ(Sp A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b)) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) s)`. Rewrite `e` using `[valR_mul _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [s] at e`. Rewrite `e` using `[valR_global_eq_algebraMap_gammaSpecIso, valR_global_eq_algebraMap_gammaSpecIso, CategoryTheory.Iso.inv_hom_id_apply, CategoryTheory.Iso.inv_hom_id_apply]`. Rewrite using `[eq_div_iff hb, valF_eq_valR]`. Conclude with `e`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_valF_basicOpen_eq_div (a b : A) (hb : algebraMap A Ω b ≠ 0) :
     ∃ f : Γ(Sp A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b)),
@@ -1203,9 +1193,9 @@ theorem exists_valF_basicOpen_eq_div (a b : A) (hb : algebraMap A Ω b ≠ 0) :
   exact e
 
 /- English proof (translation)
-Establish `h` using `le_spMap_preimage_basicOpen_of_algebraMap_ne_zero g hg`. Take `⟨⟨x, s⟩, hs⟩` from `IsLocalization.surj (Submonoid.powers ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g)) f`. Take `⟨n, hn⟩` from `s.2`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom x, n, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (valR (spMap (algebraMap A Ω)) _) hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only at e`. Rewrite `e` using `[valR_mul _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h, valR_restrict_basicOpen_eq_valR_global _ _ h, ← hn, valR_pow _ _ (le_preimage_top _), valR_global_eq_algebraMap_gammaSpecIso, valR_global_eq_algebraMap_gammaSpecIso, CategoryTheory.Iso.inv_hom_id_apply]`. Rewrite using `[eq_div_iff (pow_ne_zero n hg), valF_eq_valR]`. Conclude with `e`.
+Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_valF_basicOpen_eq_div_pow (g : A) (hg : algebraMap A Ω g ≠ 0)
     (f : Γ(Sp A, (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g))) :
@@ -1222,9 +1212,9 @@ private theorem exists_valF_basicOpen_eq_div_pow (g : A) (hg : algebraMap A Ω g
   exact e
 
 /- English proof (translation)
-Take `⟨_, ⟨g, rfl⟩, hzg, hgU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.1 PrimeSpectrum.isBasis_basic_opens hz`. Establish `hzg' : g ∉ z.asIdeal` using `hzg`. Establish `hg : algebraMap A Ω g ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 fun h0 => hzg' (h0 ▸ z.asIdeal.zero_mem)`. Establish `hle : (Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv g) ≤ U` using `(basicOpen_eq_of_affine (R := CommRingCat.of A) g).le.trans hgU`. Take `⟨a, n, e⟩` from `exists_valF_basicOpen_eq_div_pow Ω A g hg (resG (Sp A) hle f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a, g ^ n, fun hn => hzg' (z.isPrime.mem_of_pow_mem n hn), ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, ← e, valF_eq_valR, valF_eq_valR]`. Conclude with `(valR_res _ hle (le_spMap_preimage_basicOpen_of_algebraMap_ne_zero g hg) f).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_valF_eq_div_of_not_mem_prime {z : PrimeSpectrum A} {U : (Sp A).Opens} (hz : z ∈ U) (f : Γ(Sp A, U)) :
     ∃ a b : A, b ∉ z.asIdeal ∧
@@ -1273,11 +1263,11 @@ def ofAffine : RatModel o Ω where
 variable {o Ω A}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨U, f, hz, rfl⟩` from `mem_O.1 hx`. Take `⟨a, b, hb, e⟩` from `exists_valF_eq_div_of_not_mem_prime Ω A hz f`. Conclude with `⟨a, b, hb, e⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, b, hb, rfl⟩`. Establish `hb0 : algebraMap A Ω b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 fun h0 => hb (h0 ▸ z.asIdeal.zero_mem)`. Take `⟨f, hf⟩` from `exists_valF_basicOpen_eq_div Ω A a b hb0`. Use `mem_O.2 ⟨_, f, ?_, hf⟩` and prove the remaining obligations. Rewrite using `[basicOpen_eq_of_affine]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem mem_O_ofAffine {z : PrimeSpectrum A} {x : Ω} :
     x ∈ (ofAffine o Ω A).O z ↔ ∃ a b : A, b ∉ z.asIdeal ∧ x = algebraMap A Ω a / algebraMap A Ω b := by
@@ -1295,17 +1285,17 @@ theorem mem_O_ofAffine {z : PrimeSpectrum A} {x : Ω} :
     exact hb
 
 /- English proof (translation)
-The claim follows from `mem_O.2 ⟨⊤, (Scheme.ΓSpecIso (CommRingCat.of A)).inv a, trivial, valF_spMap_algebraMap Ω A a⟩`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_O_ofAffine (z : PrimeSpectrum A) (a : A) : algebraMap A Ω a ∈ (ofAffine o Ω A).O z :=
   mem_O.2 ⟨⊤, (Scheme.ΓSpecIso (CommRingCat.of A)).inv a, trivial, valF_spMap_algebraMap Ω A a⟩
 
 /- English proof (translation)
-Establish `had : algebraMap A Ω a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 ha`. Prove the components needed by the constructor for the conclusion. Introduce `h ha'`. Take `⟨c, d, hd, e⟩` from `mem_O_ofAffine.1 h`. Establish `hd0 : algebraMap A Ω d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 fun h0 => hd (h0 ▸ z.asIdeal.zero_mem)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : algebraMap A Ω (a * c) = algebraMap A Ω d`. Establish `h1 : algebraMap A Ω a * (algebraMap A Ω c / algebraMap A Ω d) = 1`. Rewrite using `[← e, mul_inv_cancel₀ had]`. Rewrite `h1` using `[mul_div_assoc', div_eq_one_iff_eq hd0, ← map_mul]`. Then use the resulting hypothesis. Conclude with `hd (IsFractionRing.injective A Ω key ▸ z.asIdeal.mul_mem_right c ha')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `mem_O_ofAffine.2 ⟨1, a, h, by rw [map_one, one_div]⟩`.
+A detailed English derivation is pending.
 -/
 theorem inv_mem_O_ofAffine_iff {z : PrimeSpectrum A} {a : A} (ha : a ≠ 0) :
     (algebraMap A Ω a)⁻¹ ∈ (ofAffine o Ω A).O z ↔ a ∉ z.asIdeal := by
@@ -1324,11 +1314,11 @@ theorem inv_mem_O_ofAffine_iff {z : PrimeSpectrum A} {a : A} (ha : a ≠ 0) :
     exact mem_O_ofAffine.2 ⟨1, a, h, by rw [map_one, one_div]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hg : algebraMap A Ω b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective A Ω)).2 hb`. Establish `hx' : x ∈ (ofAffine o Ω A).ringOn (((Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b) : (Sp A).Opens) : Set (Sp A))`. Rewrite using `[basicOpen_eq_of_affine]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Establish `hmem : (⊥ : PrimeSpectrum A) ∈ PrimeSpectrum.basicOpen b` using `(PrimeSpectrum.mem_basicOpen b ⊥).2 (by simpa using hb)`. Establish `hne : (((Sp A).basicOpen ((Scheme.ΓSpecIso (CommRingCat.of A)).inv b) : (Sp A).Opens) : Set (Sp A)).Nonempty`. Rewrite using `[basicOpen_eq_of_affine]`. Conclude with `⟨_, hmem⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `(mem_ringOn_iff_exists hne).1 hx'`. Take `⟨a, n, e⟩` from `exists_valF_basicOpen_eq_div_pow Ω A b hg f`. Conclude with `⟨a, n, e⟩`. Introduce and unpack `⟨a, n, rfl⟩`. Use `mem_ringOn.2 fun z hz => mem_O_ofAffine.2 ⟨a, b ^ n, fun h => hz (z.isPrime.mem_of_pow_mem n h), by rw [map_pow]⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_ringOn_basicOpen_ofAffine {b : A} (hb : b ≠ 0) {x : Ω} :
     x ∈ (ofAffine o Ω A).ringOn {z : PrimeSpectrum A | b ∉ z.asIdeal} ↔
@@ -1352,9 +1342,9 @@ theorem mem_ringOn_basicOpen_ofAffine {b : A} (hb : b ≠ 0) {x : Ω} :
       ⟨a, b ^ n, fun h => hz (z.isPrime.mem_of_pow_mem n h), by rw [map_pow]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hU : ((⊤ : (ofAffine o Ω A).Z.Opens) : Set (ofAffine o Ω A).Z).Nonempty` using `⟨(⊥ : PrimeSpectrum A), trivial⟩`. Establish `hx' : x ∈ (ofAffine o Ω A).ringOn ((⊤ : (ofAffine o Ω A).Z.Opens) : Set (ofAffine o Ω A).Z)`. Rewrite using `[TopologicalSpace.Opens.coe_top]` and apply the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨f, rfl⟩` from `(mem_ringOn_iff_exists hU).1 hx'`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of A)).hom f, ?_⟩` and prove the remaining obligations. Conclude with `((valF_eq_valR _ _ _).trans (valR_global_eq_algebraMap_gammaSpecIso (L := Ω) (B := A) f)).symm`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `mem_ringOn.2 fun z _ => algebraMap_mem_O_ofAffine z a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ringOn_univ_ofAffine {x : Ω} :
     x ∈ (ofAffine o Ω A).ringOn Set.univ ↔ x ∈ (algebraMap A Ω).range := by
@@ -1371,7 +1361,7 @@ theorem mem_ringOn_univ_ofAffine {x : Ω} :
     exact mem_ringOn.2 fun z _ => algebraMap_mem_O_ofAffine z a
 
 /- English proof (translation)
-Establish `e` using `val_valF (M := ofAffine o Ω A) (y := spMap σ) (U := ⊤) (fun _ _ => trivial) ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a)`. Use `erw [valF_spMap_algebraMap Ω A a] at e`. Conclude with `e.trans ((valF_eq_valR (spMap σ) ⊤ _).trans (valR_specMap (CommRingCat.ofHom σ) a))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_ofAffine {K : Type} [Field K] (σ : A →+* K) (a : A) :
     (ofAffine o Ω A).val (spMap σ) (algebraMap A Ω a) = σ a := by
@@ -1381,11 +1371,11 @@ theorem val_ofAffine {K : Type} [Field K] (σ : A →+* K) (a : A) :
   exact e.trans ((valF_eq_valR (spMap σ) ⊤ _).trans (valR_specMap (CommRingCat.ofHom σ) a))
 
 /- English proof (translation)
-Set `_ : Algebra A ((ofAffine o Ω A).O z)` to `((algebraMap A Ω).codRestrict ((ofAffine o Ω A).O z) (algebraMap_mem_O_ofAffine z)).toAlgebra`. Establish `inj : Function.Injective (algebraMap A Ω)` using `IsFractionRing.injective A Ω`. Establish `ne0 : ∀ {b : A}, b ∉ z.asIdeal → algebraMap A Ω b ≠ 0` using `fun hb => (map_ne_zero_iff _ inj).2 fun h0 => hb (h0 ▸ z.asIdeal.zero_mem)`. Establish `: IsLocalization z.asIdeal.primeCompl ((ofAffine o Ω A).O z)`. Use `(isLocalization_iff z.asIdeal.primeCompl ((ofAffine o Ω A).O z)).2 ⟨fun s => ?_, fun y => ?_, fun {x y} h => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : (s : A) ∉ z.asIdeal` using `Ideal.mem_primeCompl_iff.1 s.2`. Use `isUnit_iff_exists_inv.2 ⟨⟨(algebraMap A Ω s)⁻¹, (inv_mem_O_ofAffine_iff ((map_ne_zero_iff _ inj).1 (ne0 hs))).2 hs⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ (ne0 hs))`. Take `⟨a, b, hb, e⟩` from `mem_O_ofAffine.1 y.2`. Use `⟨(a, ⟨b, Ideal.mem_primeCompl_iff.2 hb⟩), Subtype.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (y : Ω) * algebraMap A Ω b = algebraMap A Ω a`. Rewrite using `[e, div_mul_cancel₀ _ (ne0 hb)]`. Conclude with `⟨1, by rw [inj (congrArg Subtype.val h)]⟩`. Conclude with `isIntegrallyClosed_of_isLocalization _ z.asIdeal.primeCompl (fun s hs => mem_nonZeroDivisors_of_ne_zero fun h => Ideal.mem_primeCompl_iff.1 hs (h ▸ z.asIdeal.zero_mem))`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_O_ofAffine [IsIntegrallyClosed A] (z : PrimeSpectrum A) :
     IsIntegrallyClosed ((ofAffine o Ω A).O z) := by
@@ -1409,7 +1399,7 @@ theorem isIntegrallyClosed_O_ofAffine [IsIntegrallyClosed A] (z : PrimeSpectrum 
     (fun s hs => mem_nonZeroDivisors_of_ne_zero fun h => Ideal.mem_primeCompl_iff.1 hs (h ▸ z.asIdeal.zero_mem))
 
 /- English proof (translation)
-Use `show spMap (algebraMap B Ω') ≫ spMap ψ = spMap φ.toRingHom ≫ spMap (algebraMap A Ω)`. Establish `e : (algebraMap B Ω').comp ψ = φ.toRingHom.comp (algebraMap A Ω)` using `RingHom.ext h`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHom_ofAffine {Ω' B : Type} [Field Ω'] [Algebra o Ω'] [CommRing B] [IsDomain B] [Algebra o B]
     [Algebra.FiniteType o B] [Algebra B Ω'] [IsScalarTower o B Ω'] [IsFractionRing B Ω'] (φ : Ω →ₐ[o] Ω')
@@ -1422,19 +1412,17 @@ theorem isHom_ofAffine {Ω' B : Type} [Field Ω'] [Algebra o Ω'] [CommRing B] [
 end Affine
 
 /- English proof (translation)
-Establish `inj : Function.Injective (algebraMap o Ω)` using `IsFractionRing.injective o Ω`. Establish `invMem : ∀ (i : J) (S : Subalgebra o Ω), (∀ j, algebraMap o Ω (t j) / algebraMap o Ω (t i) ∈ S) → (algebraMap o Ω (t i))⁻¹ ∈ S`. Introduce `i S hS`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 (ht ▸ Submodule.mem_top : (1 : o) ∈ Ideal.span (Set.range t))`. Establish `key : (algebraMap o Ω (t i))⁻¹ = c.sum fun j a => algebraMap o Ω a * (algebraMap o Ω (t j) / algebraMap o Ω (t i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← one_div, ← map_one (algebraMap o Ω), ← hc]`. Simplify using `only [Finsupp.sum, map_sum, Finset.sum_div, smul_eq_mul, map_mul, mul_div_assoc]`. Rewrite using `[key]`. Conclude with `sum_mem fun j _ => mul_mem (Subalgebra.algebraMap_mem _ _) (hS j)`. Establish `divIff : ∀ (z : PrimeSpectrum o) (i : J), (ofAffine o Ω o).Div (fun j => algebraMap o Ω (t j)) i z ↔ t i ∉ z.asIdeal`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z i`. Prove the components needed by the constructor for the conclusion. Introduce `hd`. Take `⟨hi0, hdiv⟩` from `hd`. Establish `hti : t i ≠ 0` using `fun h => hi0 (by simp [h])`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(inv_mem_O_ofAffine_iff hti).1 (invMem i _ hdiv)`. Introduce `h`. Conclude with `And.intro ((map_ne_zero_iff _ inj).2 fun h0 => h (h0 ▸ z.asIdeal.zero_mem)) fun j => mem_O_ofAffine.2 ⟨t j, t i, h, rfl⟩`. Use `And.intro (fun (z : PrimeSpectrum o) => ?_) (fun i hi => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hz push Not at hz`.
+Prove both required implications or components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle : Ideal.span (Set.range t) ≤ z.asIdeal` using `Ideal.span_le.2 (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Assume the negation of the conclusion as `h`. Conclude with `hz j ((divIff z j).2 h))`. Conclude with `z.isPrime.ne_top (top_le_iff.1 (ht ▸ hle))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hti : t i ≠ 0` using `fun h => hi (by simp [h])`. Use `⟨PrimeSpectrum.basicOpen (t i), IsAffineOpen.Spec_basicOpen (R := CommRingCat.of o) (t i), ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Conclude with `(divIff z i).symm`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Introduce `x hx`. Take `⟨a, n, rfl⟩` from `(mem_ringOn_basicOpen_ofAffine (Ω := Ω) hti).1 hx`. Rewrite using `[div_eq_mul_inv, ← inv_pow]`. Conclude with `mul_mem (Subalgebra.algebraMap_mem _ a) (pow_mem (invMem i (Algebra.adjoin o (Set.range fun j => algebraMap o Ω (t j) / algebraMap o Ω (t i))) fun j => Algebra.subset_adjoin ⟨j, rfl⟩) n)`. Conclude with `Algebra.adjoin_le (Set.range_subset_iff.2 fun j => (mem_ringOn_basicOpen_ofAffine (Ω := Ω) hti).2 ⟨t j, 1, by rw [pow_one]⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCl_ofAffine_self [IsDomain o] [IsFractionRing o Ω] {J : Type} (t : J → o)
     (ht : Ideal.span (Set.range t) = ⊤) : (ofAffine o Ω o).IsCl fun j => algebraMap o Ω (t j) := by
@@ -1487,7 +1475,7 @@ variable (o) in
 abbrev affineLine [IsDomain o] : RatModel o (RatFunc o) := ofAffine o (RatFunc o) (Polynomial o)
 
 /- English proof (translation)
-Establish `h : (ofAffine ℤ ℚ ℤ).IsCl (fun j => algebraMap ℤ ℚ (![2, 3] j))`. Use `isCl_ofAffine_self _ ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[show (1 : ℤ) = 3 - 2 by norm_num]`. Conclude with `sub_mem (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)`. Conclude with `⟨h, h.isNm isIntegrallyClosed_O_ofAffine⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example : (ofAffine ℤ ℚ ℤ).IsCl (fun j => algebraMap ℤ ℚ (![2, 3] j)) ∧
     (ofAffine ℤ ℚ ℤ).IsNm (fun j => algebraMap ℤ ℚ (![2, 3] j)) := by
@@ -1498,14 +1486,14 @@ example : (ofAffine ℤ ℚ ℤ).IsCl (fun j => algebraMap ℤ ℚ (![2, 3] j)) 
   exact ⟨h, h.isNm isIntegrallyClosed_O_ofAffine⟩
 
 /- English proof (translation)
-The claim follows from `inv_mem_O_ofAffine_iff Polynomial.X_ne_zero`.
+A detailed English derivation is pending.
 -/
 example (z : PrimeSpectrum (Polynomial ℤ)) :
     (RatFunc.X : RatFunc ℤ)⁻¹ ∈ (affineLine ℤ).O z ↔ Polynomial.X ∉ z.asIdeal :=
   inv_mem_O_ofAffine_iff Polynomial.X_ne_zero
 
 /- English proof (translation)
-Rewrite using `[val_ofAffine]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 example : (affineLine ℤ).val (spMap (Polynomial.eval₂RingHom (Int.castRingHom ℚ) 2))
     (algebraMap (Polynomial ℤ) (RatFunc ℤ) (Polynomial.X ^ 2 + 1)) = 5 := by
@@ -1513,14 +1501,14 @@ example : (affineLine ℤ).val (spMap (Polynomial.eval₂RingHom (Int.castRingHo
   norm_num
 
 /- English proof (translation)
-The claim follows from `(Lat.mem_const_iff _).trans (forall_const Unit |>.trans (inv_mem_O_ofAffine_iff (o := ℤ) (Ω := ℚ) two_ne_zero))`.
+A detailed English derivation is pending.
 -/
 example (z : PrimeSpectrum ℤ) :
     (fun _ => (2 : ℚ)⁻¹) ∈ (Lat.const (ofAffine ℤ ℚ ℤ) Unit).E z ↔ 2 ∉ z.asIdeal :=
   (Lat.mem_const_iff _).trans (forall_const Unit |>.trans (inv_mem_O_ofAffine_iff (o := ℤ) (Ω := ℚ) two_ne_zero))
 
 /- English proof (translation)
-Use `⟨_, spMap (Int.castRingHom (OO p)), ⟨rfl, Set.subset_univ _⟩, ?_⟩` and prove the remaining obligations. Use `(val_algebraMap (σ := Int.castRingHom _) ?_ _).trans (by simp)` and prove the remaining obligations. Use `show (gPt p ≫ spMap (Int.castRingHom (OO p))) ≫ spMap (algebraMap ℤ ℤ) = _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun φ => spMap φ) (RingHom.ext_int _ _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (p : ℕ) [Fact p.Prime] : ∃ (z : (ofAffine ℤ ℚ ℤ).Z) (y : Sp (OO p) ⟶ (ofAffine ℤ ℚ ℤ).Z),
     (ofAffine ℤ ℚ ℤ).Cen Set.univ z y ∧ (ofAffine ℤ ℚ ℤ).val (gPt p ≫ y) (algebraMap ℤ ℚ p) = p := by
@@ -1531,9 +1519,9 @@ example (p : ℕ) [Fact p.Prime] : ∃ (z : (ofAffine ℤ ℚ ℤ).Z) (y : Sp (O
   exact congrArg (fun φ => spMap φ) (RingHom.ext_int _ _)
 
 /- English proof (translation)
-Use `⟨fun z => ⟨(), one_ne_zero, fun _ => by simp⟩, fun h => ?_⟩` and prove the remaining obligations. Take `⟨U, -, -, hR⟩` from `h.2 () one_ne_zero`. Establish `hX : algebraMap (Polynomial ℤ) (RatFunc ℤ) Polynomial.X ∈ (affineLine ℤ).ringOn U` using `mem_ringOn.2 fun z _ => algebraMap_mem_O_ofAffine z _`. Establish `hle : Algebra.adjoin ℤ (Set.range fun _ : Unit => (1 : RatFunc ℤ) / 1) ≤ ⊥` using `Algebra.adjoin_le (by rintro _ ⟨_, rfl⟩; exact ⟨1, by simp⟩)`. Take `⟨c, hc⟩` from `Algebra.mem_bot.1 (hle (hR ▸ hX))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hc` using `[IsScalarTower.algebraMap_apply ℤ (Polynomial ℤ) (RatFunc ℤ)]`. Conclude with `Polynomial.X_ne_C c (IsFractionRing.injective _ _ hc).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example : (affineLine ℤ).HasDiv (fun _ : Unit => 1) ∧ ¬ (affineLine ℤ).IsCl fun _ : Unit => 1 := by
   refine ⟨fun z => ⟨(), one_ne_zero, fun _ => by simp⟩, fun h => ?_⟩

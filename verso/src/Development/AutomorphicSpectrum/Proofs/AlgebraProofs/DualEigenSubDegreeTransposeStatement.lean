@@ -5,7 +5,7 @@ import Development.AutomorphicSpectrum.Definitions.CommutativeAlgebra.GapCondExa
 open GlobalTheory.CompanionTheory.Ar.Crv
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Crv.EigDual.eig_dual_deg` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FDualEigenSubDegreeTranspose.lean&line=10#L10)
 -/

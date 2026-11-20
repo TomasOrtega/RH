@@ -25,14 +25,14 @@ def BdAt (Q : Pl D.host.E) (N : ℕ) {a b : ℕ} (M : Matrix (Fin a) (Fin b) (Le
   ∀ i j, Valued.v (cpt Q ((N : Lev.EAf D) * M i j)) ≤ 1
 
 /- English proof (translation)
-Rewrite using `[map_natCast]`. Conclude with `natCast_mem (Q.adicCompletionIntegers D.host.E).toSubring N`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_natCast_le (Q : Pl D.host.E) (N : ℕ) : Valued.v (cpt Q (N : Lev.EAf D)) ≤ 1 := by
   rw [map_natCast]
   exact natCast_mem (Q.adicCompletionIntegers D.host.E).toSubring N
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Nat.cast_mul, mul_assoc, map_mul, Valuation.map_mul] exact mul_le_one' (v_natCast_le Q N') (h i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BdAt.mono {Q : Pl D.host.E} {N : ℕ} {a b : ℕ} {M : Matrix (Fin a) (Fin b) (Lev.EAf D)} (h : BdAt Q N M)
     (N' : ℕ) : BdAt Q (N' * N) M := fun i j => by
@@ -40,9 +40,9 @@ theorem BdAt.mono {Q : Pl D.host.E} {N : ℕ} {a b : ℕ} {M : Matrix (Fin a) (F
   exact mul_le_one' (v_natCast_le Q N') (h i j)
 
 /- English proof (translation)
-Introduce `i j`. Establish `: ((N * N' : ℕ) : Lev.EAf D) * (A * B) i j = ∑ k, ((N : Lev.EAf D) * A i k) * ((N' : Lev.EAf D) * B k j)`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_sum]`. Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_mul]`. Conclude with `mul_le_one' (hA i k) (hB k j)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BdAt.mul {Q : Pl D.host.E} {N N' : ℕ} {a b c : ℕ} {A : Matrix (Fin a) (Fin b) (Lev.EAf D)}
     {B : Matrix (Fin b) (Fin c) (Lev.EAf D)} (hA : BdAt Q N A) (hB : BdAt Q N' B) : BdAt Q (N * N') (A * B) := by
@@ -58,7 +58,7 @@ theorem BdAt.mul {Q : Pl D.host.E} {N N' : ℕ} {a b c : ℕ} {A : Matrix (Fin a
   exact mul_le_one' (hA i k) (hB k j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [map_mul, Valuation.map_mul] exact mul_le_one' (v_natCast_le Q N) (h i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem BdAt.of_int {Q : Pl D.host.E} {a b : ℕ} {M : Matrix (Fin a) (Fin b) (Lev.EAf D)}
     (h : ∀ i j, Valued.v (cpt Q (M i j)) ≤ 1) (N : ℕ) : BdAt Q N M := fun i j => by
@@ -66,7 +66,7 @@ theorem BdAt.of_int {Q : Pl D.host.E} {a b : ℕ} {M : Matrix (Fin a) (Fin b) (L
   exact mul_le_one' (v_natCast_le Q N) (h i j)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.FunObj.inBasis, MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, inv_inv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem inBasis_apply {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) (x : GL (Fin n) (Lev.EAf D))
     (i j : Fin n) : (GlobalTheory.FunObj.inBasis h β w x).val (finCongr h.symm i) (finCongr h.symm j) = cpt w ((β⁻¹ * x * β).val i j) := by
@@ -74,7 +74,7 @@ theorem inBasis_apply {n n' : ℕ} (h : n' = n) (β : GL (Fin n) (Lev.EAf D)) (w
   rfl
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `hd`. Rewrite using `[mul_comm]`. Conclude with `h.mono c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BdAt.dvd {Q : Pl D.host.E} {N N' : ℕ} {a b : ℕ} {M : Matrix (Fin a) (Fin b) (Lev.EAf D)} (h : BdAt Q N M)
     (hd : N ∣ N') : BdAt Q N' M := by
@@ -83,17 +83,17 @@ theorem BdAt.dvd {Q : Pl D.host.E} {N N' : ℕ} {a b : ℕ} {M : Matrix (Fin a) 
   exact h.mono c
 
 /- English proof (translation)
-Use `set p : ℕ := Ideal.absNorm w.asIdeal with hp`. Establish `hp0 : p ≠ 0` using `Ideal.absNorm_eq_zero_iff.not.2 w.ne_bot`. Establish `hv : Valued.v (p : w.adicCompletion E) < 1`. Use `(w.valuation_lt_one_iff_mem (K := E) (p : 𝓞 E)).2 (Ideal.absNorm_mem w.asIdeal)` as an intermediate fact. Rewrite `this` using `[← Formalism.UG.P.levelaf_valued_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Set `U : ℕ → Set (w.adicCompletion E)` to `fun m => {c | Valued.v ((p : w.adicCompletion E) ^ m * c) ≤ 1}`. Establish `hU : ∀ m, IsOpen (U m)` using `fun m => (GlobalTheory.Mem.UnitOpen.isOpen_val_le w 0).preimage (continuous_const.mul continuous_id)`. Establish `hmono : Monotone U`. Use `monotone_nat_of_le_succ fun m c hc => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v ((p : w.adicCompletion E) ^ (m + 1) * c) ≤ 1`. Rewrite using `[pow_succ', mul_assoc, Valuation.map_mul]`. Conclude with `mul_le_one' hv.le hc`. Establish `hcov : C ⊆ ⋃ m, U m`. Introduce `c _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Set.mem_iUnion.2 ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Valued.v c = 0`. Conclude with `⟨0, by change Valued.v (_ * c) ≤ 1; rw [Valuation.map_mul, h0, mul_zero]; exact zero_le⟩`. Take `⟨m, hm⟩` from `exists_pow_lt₀ hv (Units.mk0 _ h0)⁻¹`. Use `⟨m, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Valued.v (_ * c) ≤ 1`. Rewrite using `[Valuation.map_mul, Valuation.map_pow]`. Rewrite `hm` using `[Units.val_inv_eq_inv_val, Units.val_mk0]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩` from `hC.elim_directed_cover U hU hcov hmono.directed_le`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨p ^ m, pow_ne_zero _ hp0, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_pow]`. Conclude with `hm hc`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_le_one {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
     (C : Set (w.adicCompletion E)) (hC : IsCompact C) :
@@ -131,7 +131,7 @@ theorem exists_nat_mul_le_one {E : Type} [Field E] [NumberField E] (w : HeightOn
   exact hm hc
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `exists_nat_mul_le_one Q (Set.range fun p : Fin a × Fin b => cpt Q (M p.1 p.2)) (Set.finite_range _).isCompact`. Use `⟨N, hN, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_natCast]`. Conclude with `h _ ⟨(i, j), rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bdAt (Q : Pl D.host.E) {a b : ℕ} (M : Matrix (Fin a) (Fin b) (Lev.EAf D)) : ∃ N : ℕ, N ≠ 0 ∧ BdAt Q N M := by
   obtain ⟨N, hN, h⟩ := exists_nat_mul_le_one Q (Set.range fun p : Fin a × Fin b => cpt Q (M p.1 p.2))
@@ -141,15 +141,15 @@ theorem exists_bdAt (Q : Pl D.host.E) {a b : ℕ} (M : Matrix (Fin a) (Fin b) (L
   exact h _ ⟨(i, j), rfl⟩
 
 /- English proof (translation)
-Take `⟨M₁, h₁, hM₁⟩` from `exists_bdAt (cP w) (V.gram⁻¹.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)))`. Take `⟨M₂, h₂, hM₂⟩` from `exists_bdAt (cP w) (V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F)))`. Use `⟨M₁ * M₂, mul_ne_zero h₁ h₂, fun N x hx hN => ?_⟩` and prove the remaining obligations. Use `set J := V.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))`. Use `set J' := V.gram⁻¹.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hJ : J' * J = 1`. Simplify using `only [J, J']`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (Ne.isUnit (GlobalTheory.StabCompact.det_gram_ne_zero V)), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hu : Formalism.UG.cT (sg D) (x⁻¹).val * J * (x⁻¹).val = J` using `(UA D.sp.cm V.gram).inv_mem hx`. Establish `e : x.val = J' * Formalism.UG.cT (sg D) (x⁻¹).val * J`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (· * x.val) hu` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.mul_one] at this`. Rewrite using `[Matrix.mul_assoc, this, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `hc : BdAt (cP w) N (Formalism.UG.cT (sg D) (x⁻¹).val)` using `fun i j => by`. Establish `h1 : (N : Lev.EAf D) * Formalism.UG.cT (sg D) (x⁻¹).val i j = GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.cjA D ((N : Lev.EAf D) * (x⁻¹).val j i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = sg D _`. Rewrite using `[map_mul, map_natCast]`. Both sides reduce to the same expression. Rewrite using `[h1, GlobalTheory.AdIsom.cpt_cjA_le_iff]`. Conclude with `hN j i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Use `(hM₁.mul hc).mul hM₂` as an intermediate fact. Use `this.dvd ?_` and prove the remaining obligations. Conclude with `⟨1, by ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bdAt_cP (V : HSp D) (w : Pl D.host.E) : ∃ M : ℕ, M ≠ 0 ∧ ∀ (N : ℕ) (x : GL (Fin V.rank) (Lev.EAf D)),
     x ∈ UA D.sp.cm V.gram → BdAt w N (x⁻¹).val → BdAt (cP w) (M * N) x.val := by
@@ -180,9 +180,9 @@ theorem bdAt_cP (V : HSp D) (w : Pl D.host.E) : ∃ M : ℕ, M ≠ 0 ∧ ∀ (N 
   exact ⟨1, by ring⟩
 
 /- English proof (translation)
-Take `⟨C, hC, hKC⟩` from `hK`. Take `⟨N, hN, hb⟩` from `exists_nat_mul_le_one w.1 (⋃ p : Fin (n' w) × Fin (n' w), (fun g : GL (Fin (n' w)) (Kw w.1) => g.val p.1 p.2) '' C) (isCompact_iUnion fun p => hC.image (Units.continuous_val.matrix_elem p.1 p.2))`. Use `⟨N, hN, fun z hz i j => ?_⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.FunObj.inBasis (h w) β w.1 z ∈ K w` using `Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hz).1 w`. Rewrite using `[map_mul, map_natCast, ← inBasis_apply (h w)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb _ (Set.mem_iUnion.2 ⟨(finCongr (h w).symm i, finCongr (h w).symm j), _, hKC h1, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem bdAt_mem {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {n' : P → ℕ} (h : ∀ w, n' w = n)
     (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (w : P)
@@ -198,9 +198,9 @@ theorem bdAt_mem {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.
   exact hb _ (Set.mem_iUnion.2 ⟨(finCongr (h w).symm i, finCongr (h w).symm j), _, hKC h1, rfl⟩)
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.FunObj.inBasis rfl β Q z ∈ GlobalTheory.SplitWeil.KO (Kw Q) (Fin n)` using `Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hz).2 Q) hQ`. Establish `h2` using `((GlobalTheory.SplitFlip.mem_KO_iff _).1 h1).1 (finCongr rfl i) (finCongr rfl j)`. Rewrite `h2` using `[inBasis_apply rfl]`. Rewrite `h2` using `[Valuation.mem_integer_iff, ← Valuation.vle_one_iff]`. Establish `h3 : Valued.v (cpt Q ((β⁻¹ * z * β).val i j)) ≤ Valued.v (1 : Kw Q)` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem int_off {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {n' : P → ℕ} (h : ∀ w, n' w = n)
     (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))) (Q : Pl D.host.E)
@@ -215,17 +215,13 @@ theorem int_off {n : ℕ} (β : GL (Fin n) (Lev.EAf D)) (P : Finset (Pl D.host.E
   rwa [map_one] at h3
 
 /- English proof (translation)
-Use `choose N₁ hN₁ hb₁ using fun w : P => bdAt_mem β P h K w (hK w)`. Use `choose Nb hNb hbb using fun w : P => exists_bdAt w.1 β.val`. Use `choose Nb' hNb' hbb' using fun w : P => exists_bdAt w.1 (β⁻¹).val`. Use `choose M hM hbM using fun w : P => bdAt_cP V w.1`. Use `choose Nc hNc hbc using fun w : P => exists_bdAt (cP w.1) (β⁻¹).val`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Nc' hNc' hbc' using fun w : P => exists_bdAt (cP w.1) β.val`. Set `B : P → ℕ` to `fun w => Nc w * (M w * (Nb w * N₁ w * Nb' w)) * Nc' w`. Use `⟨∏ w : P, N₁ w * B w, Finset.prod_ne_zero_iff.2 fun w _ => mul_ne_zero (hN₁ w) (mul_ne_zero (mul_ne_zero (hNc w) (mul_ne_zero (hM w) (mul_ne_zero (mul_ne_zero (hNb w) (hN₁ w)) (hNb' w)))) (hNc' w)), fun z hz hu Q => ?_⟩` and prove the remaining obligations. Establish `hd : ∀ w : P, N₁ w * B w ∣ ∏ w : P, N₁ w * B w` using `fun w => Finset.dvd_prod_of_mem _ (Finset.mem_univ w)`. Establish `hy : ∀ w : P, BdAt (cP w.1) (B w) (β⁻¹ * z * β).val` using `fun w => by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (z⁻¹).val = β.val * (β⁻¹ * z⁻¹ * β).val * (β⁻¹).val`. Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `h1 : BdAt w.1 (Nb w * N₁ w * Nb' w) (z⁻¹).val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[e1]`. Conclude with `((hbb w).mul (hb₁ w _ (inv_mem hz))).mul (hbb' w)`. Establish `h2` using `hbM w _ z hu h1`. Establish `e2 : (β⁻¹ * z * β).val = (β⁻¹).val * z.val * β.val` using `by rw [Units.val_mul, Units.val_mul]`. Rewrite using `[e2]`.
-
-Conclude with `((hbc w).mul h2).mul (hbc' w)`. Distinguish the cases in `hQ : ∃ w ∈ P, Q.under (𝓞 D.host.F) = w.under (𝓞 D.host.F)`. Take `⟨w, hw, e⟩` from `hQ`. Break down `GlobalTheory.IdemSupport.eq_or_eq_cP e with rfl | rfl` into its components or cases. Conclude with `(hb₁ ⟨Q, hw⟩ z hz).dvd ((dvd_mul_right _ _).trans (hd ⟨Q, hw⟩))`.
-
-Conclude with `(hy ⟨w, hw⟩).dvd ((dvd_mul_left _ _).trans (hd ⟨w, hw⟩))`. Use `push Not at hQ`. Conclude with `BdAt.of_int (int_off β P h K Q hQ z hz) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_bd (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {n' : P → ℕ}
     (h : ∀ w, n' w = V.rank) (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1)))
@@ -264,17 +260,15 @@ theorem exists_bd (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl
     exact BdAt.of_int (int_off β P h K Q hQ z hz) _
 
 /- English proof (translation)
-Establish `: Module.Finite F E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsModuleTopology (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalRing (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` using `IsModuleTopology.isTopologicalRing (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) _`. Take `⟨C, hc, hCe⟩` from `(GlobalTheory.Mass.intTens_open_compact F E).2`. Use `set s := GlobalTheory.Mass.swapTens F E (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `β' : GL (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` to `Formalism.UG.bc (s.symm : _ →+* _) β`. Establish `hβ : Formalism.UG.bc (s : _ →+* _) β' = β` using `Units.ext (Matrix.ext fun i j => s.apply_symm_apply _)`. Set `c : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E` to `algebraMap F _ (N : F)⁻¹`. Establish `hc1 : c * (N : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) = 1`. Rewrite using `[← map_natCast (algebraMap F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)), ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hN), map_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `C₁ : Set (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E)` to `(fun t => c * t) '' C`. Establish `hC₁ : IsCompact C₁` using `hc.image (continuous_const.mul continuous_id)`. Set `S : Set (Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E))` to `Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => C₁`. Establish `hS : IsCompact S` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC₁`. Use `⟨⋃ p : Fin n × Fin n, (fun A : Matrix (Fin n) (Fin n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) => (β'.1 * A * (β'⁻¹).1) p.1 p.2) '' S, isCompact_iUnion fun p => hS.image (((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matr …` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx i j`. Use `Set.mem_iUnion.2 ⟨(i, j), (β'⁻¹ * x * β').1, fun a _ b _ => ?_, ?_⟩` and prove the remaining obligations. Establish `hs : Formalism.UG.bc (s : _ →+* _) (β'⁻¹ * x * β') = β⁻¹ * Formalism.UG.bc (s : _ →+* _) x * β`. Rewrite using `[map_mul, map_mul, map_inv, hβ]`. Use `⟨(N : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) * (β'⁻¹ * x * β').1 a b, hCe _ ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show s ((N : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) * (β'⁻¹ * x * β').1 a b) ∈ Formalism.L2.Herm.intAf F E`. Establish `h2 : s ((β'⁻¹ * x * β').1 a b) = (β⁻¹ * Formalism.UG.bc (s : _ →+* _) x * β).1 a b` using `congrArg (fun g : GL (Fin n) (E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F) => g.1 a b) hs`. Rewrite using `[map_mul, map_natCast, h2]`. Conclude with `hx a b`. Use `show c * ((N : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F ⊗[F] E) * (β'⁻¹ * x * β').1 a b) = _`.
-
-Rewrite using `[← mul_assoc, hc1, one_mul]`. Use `show (β' * (β'⁻¹ * x * β') * β'⁻¹).1 i j = x.1 i j group`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_entries_bd {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (β : GL (Fin n) (E ⊗[F] Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af F)) (N : ℕ) (hN : N ≠ 0) :
@@ -318,11 +312,11 @@ theorem exists_compact_entries_bd {F E : Type} [Field F] [NumberField F] [Field 
     group
 
 /- English proof (translation)
-Take `⟨θ₀, hθ₀⟩` from `(GlobalTheory.Member.infiniteAdele_bijective D).1`. Set `θ : D.what₂.Tau → (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)` to `fun ρ => θ₀ (tauE D ρ)`. Establish `hθ : IsInfFam θ` using `fun ρ => hθ₀ _`. Take `⟨C, hC, hCe⟩` from `exists_compact_entries_bd β N hN`. Take `⟨C', hC', hCe'⟩` from `GlobalTheory.StabCompact.exists_compact_adele D θ hθ 1 C hC`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField D.host.F` as an intermediate fact. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Take `⟨K, hK, hKe⟩` from `GlobalTheory.StabCompact.exists_compact_of_entries (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF D.host.F) D.sp.cm.sig V.gram (GlobalTheory.StabCompact.det_gram_ne_zero V) C' hC'`. Use `⟨K, hK, fun k h2 h1 => hKe k fun i j => hCe' _ (hCe (finHom V k) h1 i j) fun ρ => ?_⟩` and prove the remaining obligations. Establish `hU : infMat D.sp.cm.sig V.gram (θ ρ) k ∈ Matrix.unitaryGroup (Fin V.rank) ℂ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h3 : (infHom V k).1 = 1` using `congrArg Units.val (show infHom V k = 1 from h2)`. Establish `h4 : infMat D.sp.cm.sig V.gram (θ ρ) k = ((infHom V k).1).map (θ ρ)` using `rfl`. Rewrite using `[h4, h3, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `one_mem _`. Conclude with `_root_.entry_norm_bound_of_unitary hU i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_of_bd (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (N : ℕ) (hN : N ≠ 0) :
     ∃ C : Set (GA D V), IsCompact C ∧ ∀ k ∈ GfC V,
@@ -349,9 +343,9 @@ end GlobalTheory.ProdLevCompactC
 open GlobalTheory.ProdLevCompactC in
 
 /- English proof (translation)
-Introduce `D V β P n' h K hK ho`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Take `⟨N, hN, hb⟩` from `exists_bd V β P h K hK`. Take `⟨C, hC, hCm⟩` from `exists_compact_of_bd V β N hN`. Use `hC.of_isClosed_subset ((GlobalTheory.Ker.CongTop.isClosed_GfC V).inter (Subgroup.isClosed_of_isOpen _ ho)) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `k ⟨hk1, hk2⟩`. Use `hCm k hk1 fun i j => (mem_OA_iff _).2 fun Q => ?_` and prove the remaining obligations. Conclude with `hb _ hk2 (GlobalTheory.LevSplit.finE_mem_UA V k) Q i j`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ProdLevCompactC.isCompact_levA : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (P : Finset (Pl D.host.E)) {n' : P → ℕ} (h : ∀ w, n' w = V.rank) (K : ∀ w : P, Subgroup (GL (Fin (n' w)) (Kw w.1))), (∀ w, ∃ C : Set (GL (Fin (n' w)) (Kw w.1)), IsCompact C ∧ (K w : Set (GL (Fin (n' w)) (Kw w.1))) ⊆ C) → IsOpen (((prodLev β P h K).comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V)) → IsCompact ((Lev.levA V (prodLev β P h K) : Subgroup (GA D V)) : Set (GA D V)) := by
   intro D V β P n' h K hK ho

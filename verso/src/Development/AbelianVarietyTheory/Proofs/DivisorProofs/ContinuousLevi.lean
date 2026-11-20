@@ -20,7 +20,7 @@ def colMat {n₁ : ℕ} {A : Type} (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (
   (Matrix.of (cols ι x y))ᵀ
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[colMat, cols, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colMat_mulVec {n₁ : ℕ} {A : Type} [CommRing A] (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (x y : Fin (n₁ + 2) → A)
     (c : Fin (n₁ + 2) → A) :
@@ -30,7 +30,7 @@ theorem colMat_mulVec {n₁ : ℕ} {A : Type} [CommRing A] (ι : Matrix (Fin (n�
   simp [colMat, cols, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, mul_comm]
 
 /- English proof (translation)
-Use extensionality with `i k`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun k => Fin.lastCases ?_ (fun j => ?_) k) k <;>`. Simplify using `[colMat, cols, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mul_colMat {n₁ : ℕ} {A : Type} [CommRing A] (T : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) A)
     (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (x y : Fin (n₁ + 2) → A) :
@@ -40,7 +40,7 @@ theorem mul_colMat {n₁ : ℕ} {A : Type} [CommRing A] (T : Matrix (Fin (n₁ +
     simp [colMat, cols, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i k`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun k => Fin.lastCases ?_ (fun j => ?_) k) k <;> simp [colMat, cols]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colMat_map {n₁ : ℕ} {A A' : Type} (f : A → A') (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (x y : Fin (n₁ + 2) → A) :
     (colMat ι x y).map f = colMat (ι.map f) (fun i => f (x i)) (fun i => f (y i)) := by
@@ -48,9 +48,9 @@ theorem colMat_map {n₁ : ℕ} {A A' : Type} (f : A → A') (ι : Matrix (Fin (
   refine Fin.lastCases ?_ (fun k => Fin.lastCases ?_ (fun j => ?_) k) k <;> simp [colMat, cols]
 
 /- English proof (translation)
-Establish `hC : Continuous fun M : Matrix (Fin n₁) (Fin n₁) A => C * M` using `continuous_const.matrix_mul continuous_id`. Use `continuous_pi fun i => continuous_pi fun k => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun k => Fin.lastCases ?_ (fun j => ?_) k) k` and prove the remaining obligations. Simplify using `only [colMat, cols, Matrix.transpose_apply, Matrix.of_apply, Fin.snoc_last]`. Conclude with `continuous_const`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [colMat, cols, Matrix.transpose_apply, Matrix.of_apply, Fin.snoc_castSucc, Fin.snoc_last]`. Conclude with `continuous_const`. Simplify using `only [colMat, cols, Matrix.transpose_apply, Matrix.of_apply, Fin.snoc_castSucc]`. Conclude with `hC.matrix_elem i j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_colMat {n₁ : ℕ} {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     (C : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (x y : Fin (n₁ + 2) → A) :
@@ -67,21 +67,21 @@ section Indep
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v v' w : Fin n → E) :
     form σ J (v + v') w = form σ J v w + form σ J v' w := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (s : E) (v w : Fin n → E) :
     form σ J (s • v) w = s * form σ J v w := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[show (fun i => σ ((w + w') i)) = (fun i => σ (w i)) + (fun i => σ (w' i)) from funext fun i => by simp, Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → E) :
     form σ J v (w + w') = form σ J v w + form σ J v w' := by
@@ -90,7 +90,7 @@ theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
     Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `form`. Rewrite using `[show (fun i => σ ((s • w) i)) = σ s • (fun i => σ (w i)) from funext fun i => by simp, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (s : E) (v w : Fin n → E) :
     form σ J v (s • w) = σ s * form σ J v w := by
@@ -99,9 +99,9 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
     Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `form`. Establish `h1 : (fun i => σ ((ι *ᵥ u) i)) = ι.map σ *ᵥ (fun j => σ (u j))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[h1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.dotProduct_mulVec u' ιᵀ, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin n) E) (ι : Matrix (Fin n) (Fin n₁) E)
     (u' u : Fin n₁ → E) :
@@ -113,23 +113,19 @@ theorem form_mulVec (σ : E →ₐ[F] E) {n n₁ : ℕ} (J : Matrix (Fin n) (Fin
   rw [Matrix.dotProduct_mulVec u' ιᵀ, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Introduce `hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Rewrite `hc` using `[colMat_mulVec]`. Use `set u : Fin n₁ → E := fun j => c (Fin.castSucc (Fin.castSucc j)) with hu_def`. Use `set a := c (Fin.castSucc (Fin.last n₁)) with ha_def`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := c (Fin.last (n₁ + 1)) with hb_def`. Establish `hzero : ∀ w, form σ J 0 w = 0` using `fun w => by simp [form]`. Establish `hzero' : ∀ v, form σ J v 0 = 0` using `fun v => by`. Unfold `form`. Simplify using `only [Pi.zero_apply, map_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (fun _ : Fin (n₁ + 2) => (0 : E)) = 0 from rfl, Matrix.mulVec_zero, dotProduct_zero]`. Establish `ha : a = 0`. Establish `h` using `congrArg (fun v => form σ J v y) hc`. Simplify using `only [form_add_left, form_smul_left, (horth u).2, hxy, hyy, hzero] at h`. Simplify using `using h`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : u = 0`. Establish `h : ∀ u', u' ⬝ᵥ J₁ *ᵥ (fun j => σ (u j)) = 0`. Introduce `u'`. Establish `h` using `congrArg (fun v => form σ J (ι *ᵥ u') v) hc`. Simplify using `only [form_add_right, form_smul_right, (horth u').1, (horth u').2, hzero', mul_zero, add_zero, form_mulVec, hgram] at h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hz : J₁ *ᵥ (fun j => σ (u j)) = 0`. Use function extensionality and compare the values at `j`. Use `h (Pi.single j 1)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hσu` using `Matrix.eq_zero_of_mulVec_eq_zero hJ₁ hz`. Use function extensionality and compare the values at `j`. Use `congrFun hσu j` as an intermediate fact. Simplify using `using this`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hxy` using `[hzero']`. Conclude with `zero_ne_one hxy`. Establish `hb : b = 0`. Rewrite `hc` using `[hu, ha]`.
-
-Simplify using `only [Matrix.mulVec_zero, zero_smul, zero_add] at hc`. Conclude with `(smul_eq_zero.mp hc).resolve_right hy0`. Apply `hc0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Use `Fin.lastCases ?_ (fun k => Fin.lastCases ?_ (fun j => ?_) k) k` and prove the remaining obligations.
-
-Conclude with `hb`. Conclude with `ha`. Conclude with `congrFun hu j`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem det_colMat_ne_zero (σ : E →ₐ[F] E) {n₁ : ℕ} (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E)
     (J₁ : Matrix (Fin n₁) (Fin n₁) E) (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E) (x y : Fin (n₁ + 2) → E)
@@ -183,7 +179,7 @@ theorem det_colMat_ne_zero (σ : E →ₐ[F] E) {n₁ : ℕ} (J : Matrix (Fin (n
 end Indep
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem eq_colMat_mul {A : Type} [CommRing A] {n₁ : ℕ} (Q R : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) A) (hQR : Q * R = 1)
     (ι : Matrix (Fin (n₁ + 2)) (Fin n₁) A) (x y : Fin (n₁ + 2) → A) (hQ : Q = colMat ι x y)
@@ -194,7 +190,7 @@ theorem eq_colMat_mul {A : Type} [CommRing A] {n₁ : ℕ} (Q R : Matrix (Fin (n
     _ = _ := by rw [hQ, mul_colMat, hx, hy, hι]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mulVec_inv {A : Type} [CommRing A] {m : ℕ} (T T' : Matrix (Fin m) (Fin m) A) (hTT : T' * T = 1)
     (v : Fin m → A) (hv : T *ᵥ v = v) : T' *ᵥ v = v := by
@@ -202,7 +198,7 @@ theorem mulVec_inv {A : Type} [CommRing A] {m : ℕ} (T T' : Matrix (Fin m) (Fin
     _ = v := by rw [Matrix.mulVec_mulVec, hTT, Matrix.one_mulVec]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_inv_intertwine {A : Type} [CommRing A] {m n₁ : ℕ} (T T' : Matrix (Fin m) (Fin m) A)
     (Mh Mh' : Matrix (Fin n₁) (Fin n₁) A) (ι : Matrix (Fin m) (Fin n₁) A) (hTT : T' * T = 1) (hMM : Mh * Mh' = 1)
@@ -213,21 +209,19 @@ theorem mul_inv_intertwine {A : Type} [CommRing A] {m n₁ : ℕ} (T T' : Matrix
     _ = ι * Mh' := by rw [hTT, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d d₁ W W₁ H' i₀ i₁ r' s' r₁ s₁ hW hW₁ hH f hf`. Establish `hrank` using `hH.rank`. Substitute `hrank` using the available equality. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hJ₁ : W₁.J.det ≠ 0` using `GlobalTheory.SkewDet.det_ne_zero_of_isSkew F E σ B d₁ r₁ s₁ W₁ hW₁`. Use `set P := colMat H'.ι H'.x H'.y with hP`. Establish `hdet : P.det ≠ 0` using `det_colMat_ne_zero σ W.J W₁.J H'.ι H'.x H'.y hH.yy hH.xy hH.orth hH.gram hJ₁`. Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P (isUnit_iff_ne_zero.mpr hdet)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQR : incM F P * incM F P⁻¹ = 1`. Unfold `incM`. Rewrite using `[← Matrix.map_mul, hPP, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hQ : incM F P = colMat (incM F H'.ι) (incV F H'.x) (incV F H'.y)`. Unfold `incM incV`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hP, colMat_map]`. Establish `hlevi : ∀ (T : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) (AE F E)) (Mh : Matrix (Fin d₁) (Fin d₁) (AE F E)), T *ᵥ incV F H'.x = incV F H'.x → T *ᵥ incV F H'.y = incV F H'.y → T * incM F H'.ι = incM F H'.ι * Mh → T = colMat (incM F H'.ι * Mh) (incV F H'.x) (incV F H'.y) * incM F P⁻¹` using `fun T Mh hx hy hι => eq_colMat_mul _ _ hQR _ _ _ hQ T Mh hx hy hι`. Establish `hcont` using `continuous_colMat (incM F H'.ι) (incV F H'.x) (incV F H'.y)`. Establish `hval : Continuous fun h₁ : UA σ W₁.J => mat h₁` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hinv : Continuous fun h₁ : UA σ W₁.J => (((h₁ : GL (Fin d₁) (AE F E))⁻¹ : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E))` using `Units.continuous_coe_inv.comp continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx1 : ∀ h₁, mat (f h₁) *ᵥ incV F H'.x = incV F H'.x` using `fun h₁ => by simpa using (hf h₁).1`. Establish `hy1 : ∀ h₁, mat (f h₁) *ᵥ incV F H'.y = incV F H'.y` using `fun h₁ => by simpa using (hf h₁).2.1`. Establish `hι1 : ∀ h₁, mat (f h₁) * incM F H'.ι = incM F H'.ι * mat h₁` using `fun h₁ => (hf h₁).2.2`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Establish `heq : (Units.val ∘ Subtype.val ∘ f) = fun h₁ => colMat (incM F H'.ι * mat h₁) (incV F H'.x) (incV F H'.y) * incM F P⁻¹`. Use function extensionality and compare the values at `fun h₁ => hlevi _ _ (hx1 h₁) (hy1 h₁) (hι1 h₁)`. Rewrite using `[heq]`. Conclude with `(hcont.comp hval).matrix_mul continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heq : (fun h₁ => (((Subtype.val ∘ f) h₁)⁻¹ : GL (Fin (d₁ + 2)) (AE F E)).val) = fun h₁ : UA σ W₁.J => colMat (incM F H'.ι * (((h₁ : GL (Fin d₁) (AE F E))⁻¹ : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E))) (incV F H'.x) (incV F H'.y) * incM F P⁻¹`. Use function extensionality and compare the values at `h₁`. Establish `hTT : ((((f h₁ : GL (Fin (d₁ + 2)) (AE F E)))⁻¹ : GL (Fin (d₁ + 2)) (AE F E)) : Matrix (Fin (d₁ + 2)) (Fin (d₁ + 2)) (AE F E)) * mat (f h₁) = 1` using `Units.inv_mul _`. Establish `hMM : mat h₁ * (((h₁ : GL (Fin d₁) (AE F E))⁻¹ : GL (Fin d₁) (AE F E)) : Matrix (Fin d₁) (Fin d₁) (AE F E)) = 1` using `Units.mul_inv _`. Conclude with `hlevi _ _ (mulVec_inv _ _ hTT _ (hx1 h₁)) (mulVec_inv _ _ hTT _ (hy1 h₁)) (mul_inv_intertwine _ _ _ _ _ hTT hMM (hι1 h₁))`.
-
-Rewrite using `[heq]`. Conclude with `(hcont.comp hinv).matrix_mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levi : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (d d₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r' s' r₁ s₁ : ℕ),

@@ -28,7 +28,7 @@ noncomputable section
 namespace GlobalTheory.FibreLocality
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.vanishing_of_projection_support`.
+A detailed English derivation is pending.
 -/
 theorem lp : ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X] [LocallyCompactSpace X]
     [MeasurableSpace X] [BorelSpace X] (μ : Measure X) [μ.IsAddHaarMeasure] (P : X →+ X), Continuous P →
@@ -40,7 +40,7 @@ theorem lp : ∀ {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopological
       ∫⁻ x, h x * ‖Ψ x‖ₑ ^ 2 ∂μ = ∫⁻ x, h x * ‖Φ x‖ₑ ^ 2 ∂μ) → Ψ y = 0 := GlobalTheory.T.vanishing_of_projection_support
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_localizingWeight_equal_offPlaceMasses`.
+A detailed English derivation is pending.
 -/
 theorem lw : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → (∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1) →
@@ -56,7 +56,7 @@ theorem lw : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (
       ∫⁻ x, h x * ‖Ψ x‖ₑ ^ 2 ∂μ = ∫⁻ x, h x * ‖Φ x‖ₑ ^ 2 ∂μ := GlobalTheory.T.exists_localizingWeight_equal_offPlaceMasses
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.addCharDotMul_mem_adelicSchwartzSpace`.
+A detailed English derivation is pending.
 -/
 theorem lc : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → ∀ b : κ → AF F, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ,
@@ -64,13 +64,13 @@ theorem lc : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (
 
 open scoped Classical in
 /- English proof (translation)
-Use `set e := GlobalTheory.LatVac.liftV v (1 : Fv F v) with he_def`. Set `ι : FiniteAdeleRing (𝓞 F) F → AF F` to `fun a => (0, a)`. Establish `hι : Continuous ι` using `continuous_const.prodMk continuous_id`. Set `Θ : (κ → FiniteAdeleRing (𝓞 F) F) → (κ → AF F)` to `fun z => e • fun i => ι (z i)`. Establish `hΘ : Continuous Θ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_const_smul e).comp (continuous_pi fun i => ?_)` and prove the remaining obligations. Conclude with `hι.comp (continuous_apply i)`. Establish `he1 : e.1 = 0` using `rfl`. Use `⟨Θ '' tsupport g, hg.2.isCompact.image hΘ, fun x hx => ⟨fun i => (x i).2, ?_, ?_⟩⟩` and prove the remaining obligations. Use `subset_tsupport _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `only [GlobalTheory.WeilM.pureA]`. Rewrite using `[h0, mul_zero]`. Use function extensionality and compare the values at `i show e * ι (x i).2 = e * x i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use `show e.1 * 0 = e.1 * (x i).1`. Rewrite using `[he1, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ls_pure {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (f : SchwartzMap (κ → mixedEmbedding.mixedSpace F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
@@ -97,13 +97,13 @@ theorem ls_pure {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v
     rw [he1, zero_mul, zero_mul]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Conclude with `ls_pure v f g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact ⟨∅, isCompact_empty, fun x hx => (hx rfl).elim⟩`. Consider the case `add Φ₁ Φ₂ _ _ h1 h2`. Take `⟨K₁, hK₁, h₁⟩` from `h1`. Take `⟨K₂, hK₂, h₂⟩` from `h2`. Use `⟨K₁ ∪ K₂, hK₁.union hK₂, fun x hx => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx1 : Φ₁ x = 0`. Conclude with `Or.inr (h₂ x fun hx2 => hx (by simp [hx1, hx2]))`. Conclude with `Or.inl (h₁ x hx1)`. Consider the case `smul c Φ _ h`. Take `⟨K, hK, hs⟩` from `h`.
+Prove the second alternative. Prove the first alternative. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨K, hK, fun x hx => hs x fun h0 => hx (by simp [h0])⟩`.
+A detailed English derivation is pending.
 -/
 theorem ls : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F),
     ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, ∃ K : Set (κ → AF F), IsCompact K ∧ ∀ x, Φ x ≠ 0 → GlobalTheory.LatVac.liftV v 1 • x ∈ K := by
@@ -125,7 +125,7 @@ theorem ls : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (
     exact ⟨K, hK, fun x hx => hs x fun h0 => hx (by simp [h0])⟩
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) (GlobalTheory.LatVac.liftV v 1 - 1) (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self])`. Rewrite `h` using `[smul_eq_mul, sub_mul, one_mul, sub_eq_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftV_mul_self {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) * GlobalTheory.LatVac.liftV v 1 = GlobalTheory.LatVac.liftV v 1 := by
@@ -135,9 +135,9 @@ theorem liftV_mul_self {F : Type} [Field F] [NumberField F] (v : GlobalTheory.In
   exact h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `h (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Conclude with `h1.symm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h u hu`. Rewrite using `[← h, smul_smul]`. Use `GlobalTheory.LatVac.at_liftV v (1 : Fv F v) u hu` as an intermediate fact. Rewrite `this` using `[smul_eq_mul]`. Rewrite using `[this, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_iff {F : Type} [Field F] [NumberField F] {κ : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (z : κ → AF F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z ↔ GlobalTheory.LatVac.liftV v 1 • z = z := by
@@ -153,23 +153,21 @@ theorem at_iff {F : Type} [Field F] [NumberField F] {κ : Type} (v : GlobalTheor
     rw [this, zero_smul]
 
 /- English proof (translation)
-Introduce `F _ _ κ _ v ψ T hstd hnt hpres hiso hcomm Φ hΦ y hy`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `set e := GlobalTheory.LatVac.liftV v (1 : Fv F v) with he_def`. Establish `he0 : evFin F v (1 - e) = 0` using `by rw [map_sub, he_def, GlobalTheory.LatVac.evFin_liftV, map_one, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P : (κ → AF F) →+ (κ → AF F)` to `DistribMulAction.toAddMonoidHom _ e`. Establish `hPc : Continuous P` using `continuous_const_smul e`. Establish `hPP : ∀ x, P (P x) = P x` using `fun x => by show e • e • x = e • x`. Rewrite using `[smul_smul, he_def, liftV_mul_self]`. Establish `hTΦ` using `hpres Φ hΦ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨K, hK, hKs⟩` from `ls v Φ hΦ`. Set `μ : Measure (κ → AF F)` to `Measure.addHaar`. Use `lp μ P hPc hPP Φ (T Φ) (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ) (GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hTΦ) K hK hKs y (fun z hz => hy z ((at_iff v z).2 hz)) ?_` and prove the remaining obligations. Introduce `O hO hyO`. Establish `htrig : ∀ (s : Finset (κ → AF F)) (c : (κ → AF F) → ℂ), (∀ b ∈ s, e • b = 0) → ∫⁻ x, ‖(∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * T Φ x‖ₑ ^ 2 ∂μ = ∫⁻ x, ‖(∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * Φ x‖ₑ ^ 2 ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s c hs`. Establish `hchar : ∀ b ∈ s, ∀ Ψ ∈ schA F κ, T (fun x => ψ (x ⬝ᵥ b) * Ψ x) = fun x => ψ (x ⬝ᵥ b) * T Ψ x`. Introduce `b hb Ψ hΨ`. Establish `h1` using `hcomm (1 - e) he0 0 b Ψ hΨ`. Establish `hb' : (1 - e) • b = b` using `by rw [sub_smul, one_smul, hs b hb, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs0 : ∀ Ψ' : (κ → AF F) → ℂ, schr ψ ((1 - e) • (0 : κ → AF F), (1 - e) • b) Ψ' = fun x => ψ (x ⬝ᵥ b) * Ψ' x`. Introduce `Ψ'`. Use function extensionality and compare the values at `x`. Simplify using `[schr, hb']`. Rewrite `h1` using `[hs0, hs0]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Establish `hsum : ∀ G : (κ → AF F) → ℂ, (fun x => (∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * G x) = ∑ b ∈ s, c b • (fun x => ψ (x ⬝ᵥ b) * G x)`. Introduce `G`. Use function extensionality and compare the values at `x`. Simplify using `[Finset.sum_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : (fun x => (∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * Φ x) ∈ schA F κ`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (lc ψ hstd b Φ hΦ)`. Establish `hT : T (fun x => (∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * Φ x) = fun x => (∑ b ∈ s, c b * ψ (x ⬝ᵥ b)) * T Φ x`. Rewrite using `[hsum, hsum, map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hchar b hb Φ hΦ]`. Use `hiso μ inferInstance _ hmem` as an intermediate fact. Rewrite `this` using `[hT]`. Conclude with `this`.
-
-Conclude with `lw v ψ hstd hnt μ inferInstance Φ hΦ (T Φ) hTΦ htrig y O hO hyO`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_vanish_fibre : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (ψ : AddChar (AF F) ℂ) (T : Module.End ℂ ((κ → AF F) → ℂ)), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ → (∀ w : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∃ t, GlobalTheory.LatVac.psiAt ψ w t ≠ 1) →

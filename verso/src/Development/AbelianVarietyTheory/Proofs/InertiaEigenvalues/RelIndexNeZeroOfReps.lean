@@ -14,11 +14,11 @@ namespace GlobalTheory.FormInner
 variable {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ}
 
 /- English proof (translation)
-Set `q : GAf L n → DoubleCoset.Quotient (GQ L n : Set (GAf L n)) (J : Set (GAf L n))` to `DoubleCoset.mk (GQ L n) J`. Establish `hq : ∀ a b, q a = q b ↔ ∃ (γ : GQ L n) (κ : GAf L n), κ ∈ J ∧ b = (γ : GAf L n) * a * κ` using `fun a b => by`. Rewrite using `[DoubleCoset.eq]`. Conclude with `⟨fun ⟨h, hh, k, hk, e⟩ => ⟨⟨h, hh⟩, k, hk, e⟩, fun ⟨h, k, hk, e⟩ => ⟨h, h.2, k, hk, e⟩⟩`. Use `⟨S.image fun s => (q s).out, fun g => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, e⟩` from `hS g`. Establish `e1 : q s = q g` using `(hq _ _).2 e`. Establish `ho : ∀ c : DoubleCoset.Quotient (GQ L n : Set (GAf L n)) (J : Set (GAf L n)), q c.out = c` using `fun c => Quotient.out_eq c`. Use `⟨(q s).out, ⟨Finset.mem_image_of_mem _ hs, (hq _ _).1 ((ho _).trans e1)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨s', -, rfl⟩` from `Finset.mem_image.1 ht`. Use `(hq _ _).2 h` as an intermediate fact. Rewrite `this` using `[ho]`. Rewrite using `[this, e1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_reps (J : Subgroup (GAf L n)) (S : Finset (GAf L n))
     (hS : ∀ g : GAf L n, ∃ s ∈ S, ∃ (γ : GQ L n) (κ : GAf L n), κ ∈ J ∧ g = (γ : GAf L n) * s * κ) :
@@ -40,13 +40,13 @@ theorem exists_reps (J : Subgroup (GAf L n)) (S : Finset (GAf L n))
   rw [this, e1]
 
 /- English proof (translation)
-Establish `hfin : ∀ t : GAf L n, {γ : GQ L n | (γ : GAf L n) * t ∈ J}.Finite`. Introduce `t`. Break down `Set.eq_empty_or_nonempty {γ : GQ L n | (γ : GAf L n) * t ∈ J} with h | ⟨γ₀, h₀⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := GlobalTheory.StabFin.finite_conj_mem L n J hJ 1`. Use `Set.Finite.subset (Set.finite_range fun δ : {γ : GQ L n // (1 : GAf L n)⁻¹ * (γ : GAf L n) * 1 ∈ J} => δ.1 * γ₀) ?_` and prove the remaining obligations. Introduce `γ hγ`. Use `⟨⟨γ * γ₀⁻¹, ?_⟩, by simp⟩` and prove the remaining obligations. Use `J.mul_mem hγ (J.inv_mem h₀)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `this` using `[mul_assoc]`. Use `relIndex_ne_zero_of_cover (T.biUnion fun t => (hfin t).toFinset.image fun γ : GQ L n => (γ : GAf L n) * t) (fun κ hκ => ?_) hle` and prove the remaining obligations. Take `⟨t, ⟨ht, γ, k, hk, e⟩, -⟩` from `hT κ`. Use `⟨γ * t, Finset.mem_biUnion.2 ⟨t, ht, Finset.mem_image_of_mem _ ((Set.Finite.mem_toFinset _).2 ?_)⟩, by rw [e, inv_mul_cancel_left]; exact hk⟩` and prove the remaining obligations. Use `J.mul_mem hκ (J.inv_mem (hle hk))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[e]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_reps {J K : Subgroup (GAf L n)} (hJ : IsBounded J) (hle : K ≤ J) {T : Finset (GAf L n)}
     (hT : IsClassReps K T) : K.relIndex J ≠ 0 := by
@@ -69,17 +69,17 @@ theorem relIndex_ne_zero_of_reps {J K : Subgroup (GAf L n)} (hJ : IsBounded J) (
   simpa using this
 
 /- English proof (translation)
-Introduce `κ hκ g`. Establish `e : ∀ k : J, f (g * k) = ((χ k : ℂˣ) : ℂ) • f g` using `fun k => congrFun (hf.2 k) g`. Establish `e' : f' (g * κ) = ((χ ⟨κ, hκ⟩ : ℂˣ) : ℂ) • f' g` using `congrFun (hf'.2 ⟨κ, hκ⟩) g`. Rewrite using `[e ⟨κ, hκ⟩, e']`. Distinguish the cases in `h0 : f g = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Take `⟨N, hN, hinv⟩` from `hf.1.2`. Take `⟨F, hF⟩` from `(GlobalTheory.CongIndex.finite_index_conj L n J hJ 1 N hN).2.1`. Establish `hle : J ⊓ congSub L n N ≤ J` using `inf_le_left`. Establish `hne : (J ⊓ congSub L n N).relIndex J ≠ 0` using `by classical`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ f₀ ∈ F, ∃ u, (∃ κ ∈ J, f₀⁻¹ * κ ∈ congSub L n N) → u ∈ J ∧ f₀⁻¹ * u ∈ congSub L n N` using `fun f₀ _ => by`. Distinguish the cases in `h : ∃ κ ∈ J, f₀⁻¹ * κ ∈ congSub L n N`. Take `⟨u, hu⟩` from `h`. Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose! u hu using this`. Use `relIndex_ne_zero_of_cover (F.image u) (fun κ hκ => ?_) hle` and prove the remaining obligations. Take `⟨f₀, h₀, h₁⟩` from `hF κ hκ`. Take `⟨h2, h3⟩` from `hu f₀ h₀ ⟨κ, hκ, h₁⟩`. Use `⟨u f₀, Finset.mem_image_of_mem _ h₀, J.mul_mem (J.inv_mem h2) hκ, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congSub L n N).mul_mem ((congSub L n N).inv_mem h3) h₁` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Establish `hn` using `norm_eq_one_of_relIndex hle hne χ (fun k hk => by`. Establish `h1` using `e ⟨k, hle hk⟩`. Rewrite `h1` using `[hinv k hk.2 g]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (((χ ⟨k, hle hk⟩ : ℂˣ) : ℂ) - 1) • f g = 0` using `by rw [sub_smul, one_smul, ← h1, sub_self]`. Conclude with `Units.ext (sub_eq_zero.1 ((smul_eq_zero.1 h2).resolve_right h0))) ⟨κ, hκ⟩`. Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, smul_eq_mul, smul_eq_mul, ← mul_assoc, Complex.conj_mul', hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem form_inv {a : NG.AlgWt L n} (β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ) {J : Subgroup (GAf L n)} (hJ : IsBounded J) {χ : J →* ℂˣ}
     {f f' : GAf L n → a.W} (hf : f ∈ NG.TypeSp a.ρ J χ) (hf' : f' ∈ NG.TypeSp a.ρ J χ) :
@@ -116,7 +116,7 @@ theorem form_inv {a : NG.AlgWt L n} (β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ
   simp
 
 /- English proof (translation)
-Take `⟨F, h1, h2, h3⟩` from `exists_cosetReps hle hne`. Establish `hi` using `form_inv β hJ hf hf'`. Rewrite using `[GlobalTheory.ClassRefine.classSum_smaller_level L n a β hβ J K T T' hJ hle hne hT hT' f hf.1 f' hf'.1 (fun κ hκ => hi κ (hle hκ)) F h1 h2, classSum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun u hu => hi u (h1 u hu) t, Finset.sum_const, h3, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -133,17 +133,17 @@ theorem classSum_index {a : NG.AlgWt L n} {β : a.W →ₗ⋆[ℂ] a.W →ₗ[�
   ring
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `(GlobalTheory.CongIndex.finite_index_conj L n J' hJ' 1 N hN).2.1`. Establish `hne' : (J ⊓ J').relIndex J' ≠ 0`. Establish `: ∀ f₀ ∈ F, ∃ u, (∃ κ ∈ J', f₀⁻¹ * κ ∈ J) → u ∈ J' ∧ f₀⁻¹ * u ∈ J` using `fun f₀ _ => by`. Distinguish the cases in `h : ∃ κ ∈ J', f₀⁻¹ * κ ∈ J`. Take `⟨u, hu⟩` from `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨u, fun _ => hu⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose! u hu using this`. Use `relIndex_ne_zero_of_cover (F.image u) (fun κ hκ => ?_) inf_le_right` and prove the remaining obligations. Take `⟨f₀, h₀, h₁⟩` from `hF κ hκ`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h2, h3⟩` from `hu f₀ h₀ ⟨κ, hκ, hNJ _ h₁⟩`. Use `⟨u f₀, Finset.mem_image_of_mem _ h₀, ?_, J'.mul_mem (J'.inv_mem h2) hκ⟩` and prove the remaining obligations. Use `J.mul_mem (J.inv_mem h3) (hNJ _ h₁)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Take `⟨U, hU1, hU2, -⟩` from `exists_cosetReps (inf_le_right : J ⊓ J' ≤ J') hne'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T₀, hT₀⟩` from `exists_reps (J ⊓ J') ((T' ×ˢ U).image fun p => p.1 * p.2) fun g => by`. Take `⟨t, ⟨ht, γ, κ, hκ, e⟩, -⟩` from `hT' g`. Take `⟨u, ⟨hu, hu'⟩, -⟩` from `hU2 κ hκ`. Conclude with `⟨t * u, Finset.mem_image.2 ⟨(t, u), Finset.mem_product.2 ⟨ht, hu⟩, rfl⟩, γ, u⁻¹ * κ, hu', by rw [e]; group⟩`. Establish `hne : (J ⊓ J').relIndex J ≠ 0` using `relIndex_ne_zero_of_reps hJ inf_le_left hT₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `exists_reps J T₀ fun g => by`. Take `⟨t, ⟨ht, γ, κ, hκ, e⟩, -⟩` from `hT₀ g`. Conclude with `⟨t, ht, γ, κ, hκ.1, e⟩`. Use `⟨T, ((J ⊓ J').relIndex J : ℝ) / ((J ⊓ J').relIndex J' : ℝ), hT, div_pos (Nat.cast_pos.2 (Nat.pos_of_ne_zero hne)) (Nat.cast_pos.2 (Nat.pos_of_ne_zero hne')), ?_⟩` and prove the remaining obligations. Introduce `χ χ' f f' h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1` using `classSum_index hβ hJ inf_le_left hne hT hT₀ h1 h2`. Establish `e2` using `classSum_index hβ hJ' inf_le_right hne' hT' hT₀ h3 h4`. Establish `hc : (((J ⊓ J').relIndex J' : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hne'`. Use `push_cast`. Rewrite using `[div_mul_eq_mul_div, ← e1, e2, mul_div_cancel_left₀ _ hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classSum_compare {a : NG.AlgWt L n} {β : a.W →ₗ⋆[ℂ] a.W →ₗ[ℂ] ℂ} (hβ : IsInvForm a β) {J J' : Subgroup (GAf L n)}
     (hJ : IsBounded J) {N : ℕ} (hN : 0 < N) (hNJ : ∀ κ, NG.Cong L n N κ → κ ∈ J) (hJ' : IsBounded J') {T' : Finset (GAf L n)}
@@ -184,17 +184,15 @@ theorem classSum_compare {a : NG.AlgWt L n} {β : a.W →ₗ⋆[ℂ] a.W →ₗ[
   rw [div_mul_eq_mul_div, ← e1, e2, mul_div_cancel_left₀ _ hc]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective fun i => φ.symm (y i)` using `fun i j e => by`. Establish `e' : y i = y j` using `φ.symm.injective e`. Conclude with `(hy (y i)).unique ⟨1, 1, by simp⟩ ⟨1, 1, by simp [e']⟩`. Establish `key : ∀ g i, (∃ (γ : GQ L n) (κ : GAf L n), κ ∈ J.comap φ.toMonoidHom ∧ g = (γ : GAf L n) * φ.symm (y i) * κ) ↔ ∃ (γ : Γ) (k : J), φ g = ι γ * y i * k` using `fun g i => by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨γ, κ, hκ, rfl⟩`. Take `⟨δ, hδ⟩` from `(hrat _).1 γ.2`. Conclude with `⟨δ, ⟨φ κ, hκ⟩, by simp [hδ]⟩`. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨⟨φ.symm (ι γ), (hrat _).2 ⟨γ, by simp⟩⟩, φ.symm k, by simp, φ.injective (by simp [e])⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.image fun i => φ.symm (y i), fun g => ?_, fun a β f f' F F' h => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, hu⟩` from `hy (φ g)`. Use `⟨φ.symm (y i), ⟨Finset.mem_image_of_mem _ (Finset.mem_univ _), (key g i).2 hi⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨ht, h⟩`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 ht`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu j ((key g j).1 h)]`. Rewrite using `[classSum, Finset.sum_image fun i _ j _ e => hinj e, Formalism.IndefR.Bridge.adInner]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h, MulEquiv.apply_symm_apply]`. Use `congr 3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation.
 
-Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun δ : Formalism.IndefR.Bridge.stab ι J (y i) => (⟨⟨φ.symm (ι δ), (hrat _).2 ⟨δ, by simp⟩⟩, by simpa using (Formalism.IndefR.Bridge.mem_stab ι).1 δ.2⟩ : {γ : GQ L n // (φ.symm (y i))⁻¹ * (γ : GAf L n) * φ.symm (y i) ∈ J.comap φ.toMonoidHom})) ⟨ …` and prove the remaining obligations. Conclude with `Subtype.ext (hι (φ.symm.injective (congrArg (fun z => (z.1 : GAf L n)) e)))`. Take `⟨δ, hδ⟩` from `(hrat _).1 γ.1.2`. Use `⟨⟨δ, (Formalism.IndefR.Bridge.mem_stab ι).2 ?_⟩, Subtype.ext (Subtype.ext (by simp [hδ]))⟩` and prove the remaining obligations.
-
-Simplify `γ.2` using `[hδ]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem classSum_transport {G Γ W I : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Fintype I]
     (ι : Γ →* G) (hι : Function.Injective ι) (φ : GAf L n ≃* G) (hrat : ∀ h, h ∈ GQ L n ↔ ∃ γ, ι γ = φ h)

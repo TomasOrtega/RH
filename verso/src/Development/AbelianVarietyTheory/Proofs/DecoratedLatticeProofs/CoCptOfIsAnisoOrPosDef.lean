@@ -20,7 +20,7 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 namespace GlobalTheory.Unf.CoCptOf
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `h`. Use `⟨K, hK, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, k, hk, rfl⟩` from `h g`. Conclude with `⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coCpt_of_mul {D : D7} {V : HSp D}
     (h : ∃ K : Set (GA D V), IsCompact K ∧ ∀ g, ∃ γ ∈ GQ V, ∃ k ∈ K, g = γ * k) : CoCpt V := by
@@ -30,7 +30,7 @@ theorem coCpt_of_mul {D : D7} {V : HSp D}
   exact ⟨γ⁻¹, inv_mem hγ, by rwa [inv_mul_cancel_left]⟩
 
 /- English proof (translation)
-Introduce `D V` and use `⟨fun h => coCpt_of_mul (GlobalTheory.Mem.AnisoQuotient.exists_compact D V h), fun h => coCpt_of_mul (GlobalTheory.definite_unitary_cocompact V h)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem coCpt_of_isAniso_or_posDef :
     ∀ (D : D7) (V : HSp D), (IsAniso V → CoCpt V) ∧ ((∀ τ, (gramAt D V τ).PosDef) → CoCpt V) :=

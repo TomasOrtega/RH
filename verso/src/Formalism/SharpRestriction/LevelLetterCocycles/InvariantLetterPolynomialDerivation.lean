@@ -33,34 +33,34 @@ theorem derivation_on_wach_module_apply (x : W.DD T) : derivationOnWachModule W 
 
 variable {W} in
 /- English proof (translation)
-The claim follows from `Ring.mul_inverse_cancel _ hU`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_uniformizer_mul_inverse (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) :
     algebraMap (LetA O n) W.EE W.π₀ * uniformizerInverse W = 1 :=
   Ring.mul_inverse_cancel _ hU
 
 /- English proof (translation)
-Rewrite using `[derivation_on_wach_module_apply, ← smul_assoc, Algebra.smul_def, algebraMap_uniformizer_mul_inverse hU, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem uniformizer_smul_derivation (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (x : W.DD T) :
     W.π₀ • derivationOnWachModule W T x = W.γ T x - x := by
   rw [derivation_on_wach_module_apply, ← smul_assoc, Algebra.smul_def, algebraMap_uniformizer_mul_inverse hU, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE W.π₀ x, smul_smul, mul_comm, algebraMap_uniformizer_mul_inverse hU, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inverse_smul_uniformizer_smul (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀)) (x : W.DD T) :
     uniformizerInverse W • (W.π₀ • x) = x := by
   rw [← algebraMap_smul W.EE W.π₀ x, smul_smul, mul_comm, algebraMap_uniformizer_mul_inverse hU, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← smul_assoc a e x, Algebra.smul_def a e, mul_comm, mul_smul, algebraMap_smul W.EE a x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_comm_letA_EE (a : LetA O n) (e : W.EE) (x : W.DD T) : a • (e • x) = e • (a • x) := by
   rw [← smul_assoc a e x, Algebra.smul_def a e, mul_comm, mul_smul, algebraMap_smul W.EE a x]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show W.γ₀ g ((Pi.single c (1 : PowerSeries O) : LetA O n) i) = (Pi.single c (1 : PowerSeries O) : LetA O n) i`. Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem gammaA_idempotent (g : W.Gam) (c : ZMod n) : W.γA g (letE c : LetA O n) = letE c := by
   funext i
@@ -69,7 +69,7 @@ theorem gammaA_idempotent (g : W.Gam) (c : ZMod n) : W.γA g (letE c : LetA O n)
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `show (letE c : LetA O n) • W.γD T W.gam x = W.γD T W.gam ((letE c : LetA O n) • x)`. Rewrite using `[← algebraMap_smul W.EE (letE c : LetA O n) x, W.γD_smul, W.γE_ext, show letγ (W.γ₀ W.gam) (letE c : LetA O n) = letE c from gammaA_idempotent W W.gam c, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_smul_gamma (c : ZMod n) (x : W.DD T) :
     (letE c : LetA O n) • W.γ T x = W.γ T ((letE c : LetA O n) • x) := by
@@ -78,16 +78,16 @@ theorem idempotent_smul_gamma (c : ZMod n) (x : W.DD T) :
     show letγ (W.γ₀ W.gam) (letE c : LetA O n) = letE c from gammaA_idempotent W W.gam c, algebraMap_smul]
 
 /- English proof (translation)
-Use `show W.γD T δ (W.γD T W.gam x) = W.γD T W.gam (W.γD T δ x)`. Rewrite using `[← W.γD_mul, ← W.γD_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gammaD_gamma_comm (δ : W.Gam) (x : W.DD T) : W.γD T δ (W.γ T x) = W.γ T (W.γD T δ x) := by
   show W.γD T δ (W.γD T W.gam x) = W.γD T W.gam (W.γD T δ x)
   rw [← W.γD_mul, ← W.γD_mul, mul_comm]
 
 /- English proof (translation)
-Establish `ha' : ∀ δ ∈ W.DelF, W.γA δ a = a` using `ha`. Establish `hfix : W.γE δ (algebraMap (LetA O n) W.EE a) = algebraMap (LetA O n) W.EE a`. Rewrite using `[W.γE_ext]`. Conclude with `congrArg (algebraMap (LetA O n) W.EE) (ha' δ hδ)`. Take `⟨u, hu⟩` from `hU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hfix`, the goal using `[← hu]`. Rewrite using `[Ring.inverse_unit]`. Establish `h1 : (u : W.EE) * W.γE δ ↑u⁻¹ = 1`. Rewrite using `[← hfix, ← map_mul, Units.mul_inv, map_one]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right h1).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_fixes_inverse (a : LetA O n) (ha : a ∈ W.AΔ) (hU : IsUnit (algebraMap (LetA O n) W.EE a))
     (δ : W.Gam) (hδ : δ ∈ W.DelF) :
@@ -104,7 +104,7 @@ theorem delta_fixes_inverse (a : LetA O n) (ha : a ∈ W.AΔ) (hU : IsUnit (alge
   exact (Units.inv_eq_of_mul_eq_one_right h1).symm
 
 /- English proof (translation)
-Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm_letA_EE, h.1]`. Rewrite using `[W.γD_smul, he δ hδ, h.2 δ hδ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem invariantLetter_fixed_smul {c : ZMod n} (e : W.EE) (he : ∀ δ ∈ W.DelF, W.γE δ e = e) {x : W.DD T}
     (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x) : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (e • x) := by
@@ -113,7 +113,7 @@ theorem invariantLetter_fixed_smul {c : ZMod n} (e : W.EE) (he : ∀ δ ∈ W.De
   · rw [W.γD_smul, he δ hδ, h.2 δ hδ]
 
 /- English proof (translation)
-Use `⟨?_, fun δ hδ => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_sub, idempotent_smul_gamma, h.1]`. Rewrite using `[map_sub, gammaD_gamma_comm, h.2 δ hδ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem invariantLetter_gamma_sub {c : ZMod n} {x : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x) :
     Formalism.MainNotions.CrystallineLiftingInputs.DL W T c (W.γ T x - x) := by
@@ -122,7 +122,7 @@ theorem invariantLetter_gamma_sub {c : ZMod n} {x : W.DD T} (h : Formalism.MainN
   · rw [map_sub, gammaD_gamma_comm, h.2 δ hδ]
 
 /- English proof (translation)
-Rewrite using `[derivation_on_wach_module_apply]`. Conclude with `invariantLetter_fixed_smul W T (uniformizerInverse W) (fun δ hδ => delta_fixes_inverse W W.π₀ hπΔ hU δ hδ) (invariantLetter_gamma_sub W T h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantLetter_derivation (hπΔ : W.π₀ ∈ W.AΔ) (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     {c : ZMod n} {x : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x) :
@@ -132,7 +132,7 @@ theorem invariantLetter_derivation (hπΔ : W.π₀ ∈ W.AΔ) (hU : IsUnit (alg
     (fun δ hδ => delta_fixes_inverse W W.π₀ hπΔ hU δ hδ) (invariantLetter_gamma_sub W T h)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, Module.End.one_apply]`. Conclude with `h`. Consider the case `succ k ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `invariantLetter_derivation W T hπΔ hU ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem invariantLetter_derivation_pow (hπΔ : W.π₀ ∈ W.AΔ) (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     {c : ZMod n} (k : ℕ) {x : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x) :
@@ -142,9 +142,9 @@ theorem invariantLetter_derivation_pow (hπΔ : W.π₀ ∈ W.AΔ) (hU : IsUnit 
   | succ k ih => rw [pow_succ', Module.End.mul_apply]; exact invariantLetter_derivation W T hπΔ hU ih
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on'`. Use `next p q hp hq =>`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `⟨by rw [smul_add, hp.1, hq.1], fun δ hδ => by rw [map_add, hp.2 δ hδ, hq.2 δ hδ]⟩`. Use `next k a =>`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Establish `hk` using `invariantLetter_derivation_pow W T hπΔ hU k h`. Conclude with `⟨by rw [smul_comm _ a, hk.1], fun δ hδ => by rw [map_smul, hk.2 δ hδ]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem invariantLetter_polynomial_derivation (hπΔ : W.π₀ ∈ W.AΔ) (hU : IsUnit (algebraMap (LetA O n) W.EE W.π₀))
     {c : ZMod n} (P : Polynomial O) {x : W.DD T} (h : Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x) :
@@ -166,7 +166,7 @@ def QLattice (c : ZMod n) (k : ℕ) (x : W.DD T) : Prop :=
   Formalism.MainNotions.CrystallineLiftingInputs.DL W T c x ∧ Formalism.MainNotions.LiftingTheory.qp W ^ k • x ∈ W.N T
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.CrystallineLiftingInputs.InQN QLattice`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem qLattice_iff (c : ZMod n) (k : ℕ) (x : W.DD T) :
     Formalism.MainNotions.CrystallineLiftingInputs.InQN W T c (k : ℤ) x ↔ QLattice W T c k x := by
@@ -174,7 +174,7 @@ theorem qLattice_iff (c : ZMod n) (k : ℕ) (x : W.DD T) :
   simp
 
 /- English proof (translation)
-Use `⟨⟨?_, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, hx.1.1, hy.1.1]`. Rewrite using `[map_add, hx.1.2 δ hδ, hy.1.2 δ hδ]`. Rewrite using `[smul_add]`. Conclude with `add_mem hx.2 hy.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLattice_add {c : ZMod n} {k : ℕ} {x y : W.DD T} (hx : QLattice W T c k x)
     (hy : QLattice W T c k y) : QLattice W T c k (x + y) := by
@@ -185,7 +185,7 @@ theorem qLattice_add {c : ZMod n} {k : ℕ} {x y : W.DD T} (hx : QLattice W T c 
     exact add_mem hx.2 hy.2
 
 /- English proof (translation)
-Use `⟨⟨?_, fun δ hδ => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm _ a, hx.1.1]`. Rewrite using `[map_smul, hx.1.2 δ hδ]`. Rewrite using `[smul_comm _ a, ← algebraMap_smul (LetA O n) a]`. Conclude with `Submodule.smul_mem _ _ hx.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLattice_smul {c : ZMod n} {k : ℕ} (a : O) {x : W.DD T} (hx : QLattice W T c k x) :
     QLattice W T c k (a • x) := by
@@ -196,7 +196,7 @@ theorem qLattice_smul {c : ZMod n} {k : ℕ} (a : O) {x : W.DD T} (hx : QLattice
     exact Submodule.smul_mem _ _ hx.2
 
 /- English proof (translation)
-Use `⟨hx.1, ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hk`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `Submodule.smul_mem _ _ hx.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLattice_mono {c : ZMod n} {k k' : ℕ} (hk : k ≤ k') {x : W.DD T} (hx : QLattice W T c k x) :
     QLattice W T c k' x := by
@@ -206,7 +206,7 @@ theorem qLattice_mono {c : ZMod n} {k k' : ℕ} (hk : k ≤ k') {x : W.DD T} (hx
   exact Submodule.smul_mem _ _ hx.2
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← qLattice_iff]`. Rewrite using `[derivation_on_wach_module_apply]`. Conclude with `hDS hA T hT c (k : ℤ) x h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLattice_derivation [NeZero n] (hDS : DerivationPreservesQLattice W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hT : IsCrys PD T.ρ) (c : ZMod n) (k : ℕ)
@@ -216,11 +216,9 @@ theorem qLattice_derivation [NeZero n] (hDS : DerivationPreservesQLattice W) (hA
   exact hDS hA T hT c (k : ℤ) x h
 
 /- English proof (translation)
-Establish `hpow : ∀ j : ℕ, QLattice W T c k ((derivationOnWachModule W T ^ j) x)`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, Module.End.one_apply]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j ih => rw [pow_succ', Module.End.mul_apply]`. Conclude with `qLattice_derivation W T hDS hA hT c k ih`. Proceed by induction on `P using Polynomial.induction_on'`. Use `next p q hp hq =>`. Rewrite using `[map_add, LinearMap.add_apply]`.
-
-Conclude with `qLattice_add W T hp hq`. Use `next j a =>`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `qLattice_smul W T a (hpow j)`.
+Proceed by induction. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qLattice_polynomial_derivation [NeZero n] (hDS : DerivationPreservesQLattice W) (hA : Formalism.MainNotions.LiftingTheory.CaseA W)
     (hT : IsCrys PD T.ρ) (c : ZMod n) (k : ℕ)

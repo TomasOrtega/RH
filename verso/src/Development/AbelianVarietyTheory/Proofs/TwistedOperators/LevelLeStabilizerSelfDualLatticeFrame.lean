@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.LevelInLatStab
 
 /- English proof (translation)
-Introduce `z hz`. Rewrite `hz`, the goal using `[hP]`. Introduce `i`. Rewrite using `[GlobalTheory.LevelActionPinned.equiv_mulVec, hm, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, ← Matrix.mulVec_mulVec]`. Conclude with `Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (T i j).2 (hz j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_integral {A B : Type} [CommRing A] [CommRing B] {n : ℕ} (e : A ≃+* B) (S : Subring B)
     (β : GL (Fin n) B) {P : AddSubgroup (Fin n → A)}
@@ -36,21 +36,21 @@ theorem mulVec_mem_of_integral {A B : Type} [CommRing A] [CommRing B] {n : ℕ} 
   exact Subring.sum_mem (t := Finset.univ) _ fun j _ => mul_mem (T i j).2 (hz j)
 
 /- English proof (translation)
-Introduce `D V β Λ L hβ x hx`. Establish `hp` using `Formalism.L2.DIV.lev_le_parLev hx`. Establish `hUA` using `Formalism.L2.DIV.parLev_UA hp`. Establish `hSt` using `Formalism.L2.DIV.parLev_St hp`. Establish `hSD : Formalism.IndefR.Links.IsSDFrame V β Λ 1` using `⟨0, by rwa [pow_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ z, z ∈ Formalism.MainNotions.StandardLattice.latHat D.host.F D.host.E (L0c D V) ↔ ∀ i, ((β⁻¹).val *ᵥ fun i => GlobalTheory.LevelActionPinned.sw D (z i)) i ∈ GlobalTheory.LevelActionPinned.SI D`. Introduce `z`. Rewrite using `[← GlobalTheory.StdFrameCong.pj_latHat_eq]`. Conclude with `GlobalTheory.LevelActionPinned.mem_latHat_iff hSD z`. Take `⟨t', ht'⟩` from `(Formalism.L2.DIV.St β).inv_mem hSt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `hSt`. Set `u : UA D.sp.cm V.gram` to `⟨x, hUA⟩`. Set `g` to `(GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram).symm u`. Establish `hg : ((GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g : UA D.sp.cm V.gram) : GL (Fin V.rank) (Lev.EAf D)) = x`. Simplify using `only [g, MulEquiv.apply_symm_apply, u]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmat : (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g).1.map (GlobalTheory.LevelActionPinned.sw D) = x.val`. Establish `h1` using `congrArg Units.val (GlobalTheory.Mass.coe_swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g)`. Rewrite using `[← hg]`. Conclude with `h1.symm`. Use `⟨GlobalTheory.Mass.swapPts (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g, ⟨g, ?_, rfl⟩, hg⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Use `(GlobalTheory.Mass.Levels.mem_latStab V g).2 fun y => ?_` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `mulVec_mem_of_integral (GlobalTheory.LevelActionPinned.sw D) (GlobalTheory.LevelActionPinned.SI D) β hP _ t.val (by rw [hmat, ← ht]; rfl) y hy`. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `m'` to `(x⁻¹).val.map (GlobalTheory.LevelActionPinned.sw D).symm`. Establish `hm' : m'.map (GlobalTheory.LevelActionPinned.sw D) = (x⁻¹).val`. Use extensionality with `i j`. Simplify using `only [m', Matrix.map_apply, RingEquiv.apply_symm_apply]`. Establish `hinv : m' * (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g).1 = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Matrix.map_injective (GlobalTheory.LevelActionPinned.sw D).injective` to reduce the goal to its premises. Establish `e` using `Matrix.map_mul (f := (GlobalTheory.LevelActionPinned.sw D).toRingHom) (L := m') (M := (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g).1)`. Establish `e1` using `Matrix.map_one (GlobalTheory.LevelActionPinned.sw D) (map_zero _) (map_one _) (n := Fin V.rank)`. Use `(e.trans ?_).trans e1.symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m'.map (GlobalTheory.LevelActionPinned.sw D) * (HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram g).1.map (GlobalTheory.LevelActionPinned.sw D) = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hm', hmat, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `h2` using `mulVec_mem_of_integral (GlobalTheory.LevelActionPinned.sw D) (GlobalTheory.LevelActionPinned.SI D) β hP m' t'.val (by rw [hm', ← ht']; rfl) _ hy`. Rewrite `h2` using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem lev_le_latLev : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank), Formalism.IndefR.Lev.IsBaseFrame V β Λ 1 → Formalism.L2.DIV.lev D.sp.cm V.gram β L ≤ GlobalTheory.Mass.Levels.latLev V := by
   intro D V β Λ L hβ x hx

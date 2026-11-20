@@ -7,9 +7,9 @@ open Finset Matrix PositivityTheory.RgHe.Frame
 namespace GlobalTheory.CompanionTheory.RgHeSign
 
 /- English proof (translation)
-Establish `e : (-1 : ℝ) ^ (s.filter fun x => f x < 0).card = ∏ x ∈ s, (if f x < 0 then (-1 : ℝ) else 1)`. Rewrite using `[Finset.prod_ite]`. Simplify using the standard rewrite rules. Rewrite using `[e, ← Finset.prod_mul_distrib]`. Apply `Finset.prod_pos` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Use `split_ifs with hneg`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 0 < f x` using `lt_of_le_of_ne (not_lt.mp hneg) (Ne.symm (h x hx))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sign_prod {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h : ∀ x ∈ s, f x ≠ 0) :
     0 < (-1 : ℝ) ^ (s.filter fun x => f x < 0).card * ∏ x ∈ s, f x := by
@@ -25,9 +25,9 @@ theorem sign_prod {ι : Type*} (s : Finset ι) (f : ι → ℝ) (h : ∀ x ∈ s
     linarith
 
 /- English proof (translation)
-Establish `hQ0 : Q ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hQ`. Establish `e : a * b * (P / Q) = (a * P) * (b * Q) / Q ^ 2`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e]`. Conclude with `div_pos (mul_pos hP hQ) (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_div {a b P Q : ℝ} (hP : 0 < a * P) (hQ : 0 < b * Q) : 0 < a * b * (P / Q) := by
   have hQ0 : Q ≠ 0 := by
@@ -39,7 +39,7 @@ theorem sign_div {a b P Q : ℝ} (hP : 0 < a * P) (hQ : 0 < b * Q) : 0 < a * b *
   exact div_pos (mul_pos hP hQ) (by positivity)
 
 /- English proof (translation)
-Unfold `above`. Simplify using `only [Finset.card_filter, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr]`. Use `congr!`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem above_eq {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ) (r : ℝ) :
     above d d' r = (univ.filter fun k => r < d k).card + (univ.filter fun j => r < d' j).card := by
@@ -48,29 +48,27 @@ theorem above_eq {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ) (r : �
   congr!
 
 /- English proof (translation)
-Establish `hd : ∀ {i k}, k ≠ i → d i - d k ≠ 0`. Introduce `i k hk h`. Apply `hk` to reduce the goal to its premises. Use `hinj (a₁ := Sum.inl k) (a₂ := Sum.inl i) (by simpa using (sub_eq_zero.mp h).symm)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hd' : ∀ {j k}, k ≠ j → d' j - d' k ≠ 0`. Introduce `j k hk h`. Apply `hk` to reduce the goal to its premises. Use `hinj (a₁ := Sum.inr k) (a₂ := Sum.inr j) (by simpa using (sub_eq_zero.mp h).symm)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hx : ∀ i j, d i - d' j ≠ 0`. Introduce `i j h`. Use `hinj (a₁ := Sum.inl i) (a₂ := Sum.inr j) (by simpa using sub_eq_zero.mp h)` as an intermediate fact. Simplify using `at this`. Establish `hy : ∀ j i, d' j - d i ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j i h`. Conclude with `hx i j (by linarith)`. Prove the components needed by the constructor for the conclusion. Introduce `i`. Establish `h1` using `sign_prod (univ.erase i) (fun k => d i - d k) (fun k hk => hd (Finset.ne_of_mem_erase hk))`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sign_prod (univ : Finset (Fin m)) (fun j => d i - d' j) (fun j _ => hx i j)`. Establish `e1 : ((univ.erase i).filter fun k => d i - d k < 0) = univ.filter fun k => d i < d k`. Use extensionality with `k`. Simplify using `only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, and_true, true_and, sub_neg]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun h => h.2`. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : (univ.filter fun j => d i - d' j < 0) = univ.filter fun j => d i < d' j`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, sub_neg]`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[above_eq, pow_add]`. Conclude with `sign_div h1 h2`. Introduce `j`. Establish `h1` using `sign_prod (univ : Finset (Fin (m + 1))) (fun i => d' j - d i) (fun i _ => hy j i)`. Establish `h2` using `sign_prod (univ.erase j) (fun k => d' j - d' k) (fun k hk => hd' (Finset.ne_of_mem_erase hk))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `e1 : (univ.filter fun i => d' j - d i < 0) = univ.filter fun i => d' j < d i`. Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, sub_neg]`. Establish `e2 : ((univ.erase j).filter fun k => d' j - d' k < 0) = univ.filter fun k => d' j < d' k`. Use extensionality with `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_erase, Finset.mem_univ, and_true, true_and, sub_neg]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h`. Use `⟨?_, h⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ h`. Rewrite `h1` using `[e1]`. Rewrite `h2` using `[e2]`. Rewrite using `[above_eq, pow_add]`.
-
-Conclude with `sign_div h1 h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pfSign {m : ℕ} (d : Fin (m + 1) → ℝ) (d' : Fin m → ℝ)
     (hinj : Function.Injective (Sum.elim d d')) :

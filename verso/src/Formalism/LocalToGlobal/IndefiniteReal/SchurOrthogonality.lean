@@ -18,11 +18,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 section Alg
 
 /- English proof (translation)
-Take `⟨c10, h10⟩` from `h 1 0`. Take `⟨c01, h01⟩` from `h 0 1`. Take `⟨c11, h11⟩` from `h 1 1`. Take `⟨c1i, h1i⟩` from `h 1 Complex.I`. Use `⟨(((c11 : ℂ) - c10 - c01) - Complex.I * ((c1i : ℂ) - c10 - c01)) / 2, fun x y => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e10` using `h10 x y`. Establish `e01` using `h01 x y`. Establish `e11` using `h11 x y`. Establish `e1i` using `h1i x y`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right, one_smul, zero_smul, add_zero, zero_add, map_one, map_zero, one_mul, zero_mul, inner_zero_left, inner_zero_right, Complex.conj_I] at e10 e01 e11 e1i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `(1 / 2 : ℂ) * (e11 - e10 - e01) - (Complex.I / 2) * (e1i - e10 - e01) + ((⟪A₁ x, A₂ y⟫_ℂ - ⟪A₂ x, A₁ y⟫_ℂ) / 2 - Complex.I * ⟪A₂ x, A₂ y⟫_ℂ / 2) * Complex.I_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem polar {X H' : Type*} [AddCommGroup X] [Module ℂ X] [NormedAddCommGroup H'] [InnerProductSpace ℂ H']
     (A₁ A₂ : X →ₗ[ℂ] H') (ip : X → X → ℂ)
@@ -44,11 +44,11 @@ theorem polar {X H' : Type*} [AddCommGroup X] [Module ℂ X] [NormedAddCommGroup
     ((⟪A₁ x, A₂ y⟫_ℂ - ⟪A₂ x, A₁ y⟫_ℂ) / 2 - Complex.I * ⟪A₂ x, A₂ y⟫_ℂ / 2) * Complex.I_sq
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset ι, (∏ i ∈ s, ip i (e i) (e i)) * B v v' = (∏ i ∈ s, ip i (v i) (v' i)) * B (s.piecewise e v) (s.piecewise e v')`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Finset.piecewise_insert, Finset.piecewise_insert]`. Take `⟨c, hc⟩` from `h a (s.piecewise e v) (s.piecewise e v')`. Establish `hu : Function.update (s.piecewise e v) a (v a) = s.piecewise e v` using `Function.update_eq_self_iff.2 (Finset.piecewise_eq_of_notMem _ _ _ ha).symm`. Establish `hu' : Function.update (s.piecewise e v') a (v' a) = s.piecewise e v'` using `Function.update_eq_self_iff.2 (Finset.piecewise_eq_of_notMem _ _ _ ha).symm`. Establish `h1` using `hc (v a) (v' a)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hu, hu']`. Rewrite using `[hc]`. Take the linear combination `(ip a (e a) (e a)) * ih + (ip a (e a) (e a) * ∏ i ∈ s, ip i (v i) (v' i)) * h1`. Use `key Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.piecewise_univ, Finset.piecewise_univ]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prod_of_place {ι : Type*} [Fintype ι] [DecidableEq ι] {X : ι → Type*} (B : (∀ i, X i) → (∀ i, X i) → ℂ)
     (ip : ∀ i, X i → X i → ℂ)
@@ -97,7 +97,7 @@ theorem to_square_integrable_apply {X : Type*} [AddCommGroup X] [Module ℂ X] (
     (hL : ∀ w, MemLp (L w) 2 ν) (w : X) : toL2 L hL w = (hL w).toLp (L w) := rfl
 
 /- English proof (translation)
-Rewrite using `[L2.inner_def]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`. Simplify using `[RCLike.inner_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inner_toLp {f g : α → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     ⟪hf.toLp f, hg.toLp g⟫_ℂ = ∫ x, star (f x) * g x ∂ν := by
@@ -108,7 +108,7 @@ theorem inner_toLp {f g : α → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
   simp [RCLike.inner_apply, mul_comm]
 
 /- English proof (translation)
-Use `(L2.integrable_inner (𝕜 := ℂ) (hf.toLp f) (hg.toLp g)).congr ?_` and prove the remaining obligations. Use `filter_upwards [hf.coeFn_toLp, hg.coeFn_toLp] with x h1 h2`. Rewrite using `[h1, h2]`. Simplify using `[RCLike.inner_apply, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_star_mul {f g : α → ℂ} (hf : MemLp f 2 ν) (hg : MemLp g 2 ν) :
     Integrable (fun x => star (f x) * g x) ν := by
@@ -125,13 +125,13 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[], 0, by simp, fun w _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_zero : Sobolev₂ Lie σ (0 : H →ₗ[ℂ] ℂ) :=
   ⟨[], 0, by simp, fun w _ => by simp⟩
 
 /- English proof (translation)
-The claim follows from `List.sum_nonneg (fun x hx => by obtain ⟨l, -, rfl⟩ := List.mem_map.1 hx exact norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem sum_map_norm_nonneg (S : List (List (Matrix (Fin n) (Fin n) ℂ))) (w : H) :
     0 ≤ (S.map fun l => ‖l.foldr (dRep σ) w‖).sum :=
@@ -140,11 +140,11 @@ theorem sum_map_norm_nonneg (S : List (List (Matrix (Fin n) (Fin n) ℂ))) (w : 
     exact norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨S₁, C₁, hS₁, hb₁⟩` from `h₁`. Take `⟨S₂, C₂, hS₂, hb₂⟩` from `h₂`. Use `⟨S₁ ++ S₂, |C₁| + |C₂|, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `l hl X hX`. Break down `List.mem_append.1 hl with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Use `exacts [hS₁ l h X hX, hS₂ l h X hX]`. Establish `e₁` using `hb₁ w hw`. Establish `e₂` using `hb₂ w hw`. Establish `a₀` using `sum_map_norm_nonneg (σ := σ) S₁ w`. Establish `b₀` using `sum_map_norm_nonneg (σ := σ) S₂ w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.map_append, List.sum_append, LinearMap.add_apply]`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 (le_abs_self C₁)) a₀, mul_nonneg (abs_nonneg C₁) b₀, mul_nonneg (sub_nonneg.2 (le_abs_self C₂)) b₀, mul_nonneg (abs_nonneg C₂) a₀]`.
+Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sobCont_add {ℓ₁ ℓ₂ : H →ₗ[ℂ] ℂ} (h₁ : Sobolev₂ Lie σ ℓ₁) (h₂ : Sobolev₂ Lie σ ℓ₂) :
     Sobolev₂ Lie σ (ℓ₁ + ℓ₂) := by
@@ -165,9 +165,9 @@ theorem sobCont_add {ℓ₁ ℓ₂ : H →ₗ[ℂ] ℂ} (h₁ : Sobolev₂ Lie �
           mul_nonneg (sub_nonneg.2 (le_abs_self C₂)) b₀, mul_nonneg (abs_nonneg C₂) a₀]
 
 /- English proof (translation)
-Take `⟨S, C, hS, hb⟩` from `h`. Use `⟨S, ‖c‖ * |C|, hS, fun w hw => ?_⟩` and prove the remaining obligations. Establish `e` using `hb w hw`. Establish `a₀` using `sum_map_norm_nonneg (σ := σ) S w`. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (e.trans (mul_le_mul_of_nonneg_right (le_abs_self C) a₀)) (norm_nonneg c)`.
+A detailed English derivation is pending.
 -/
 theorem sobCont_smul {ℓ : H →ₗ[ℂ] ℂ} (c : ℂ) (h : Sobolev₂ Lie σ ℓ) : Sobolev₂ Lie σ (c • ℓ) := by
   obtain ⟨S, C, hS, hb⟩ := h
@@ -213,26 +213,26 @@ abbrev gm {τ : D.what₂.Tau} (g : Gt V τ) : Matrix (Fin V.rank) (Fin V.rank) 
   ((g : GL (Fin V.rank) ℂ) : Matrix (Fin V.rank) (Fin V.rank) ℂ)
 
 /- English proof (translation)
-The claim follows from `g.2`.
+A detailed English derivation is pending.
 -/
 theorem gm_mem {τ : D.what₂.Tau} (g : Gt V τ) : gm g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) := g.2
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`.
+A detailed English derivation is pending.
 -/
 theorem fr_mul_inv (M : DSModel V S) (τ : D.what₂.Tau) : M.fr τ * (M.fr τ)⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))`.
+A detailed English derivation is pending.
 -/
 theorem fr_inv_mul (M : DSModel V S) (τ : D.what₂.Tau) : (M.fr τ)⁻¹ * M.fr τ = 1 :=
   Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit τ))
 
 /- English proof (translation)
-Establish `hG` using `M.fr_gram τ`. Establish `hQ : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Establish `hinv` using `fr_mul_inv M τ`. Use `show (M.fr τ * g * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * g * (M.fr τ)⁻¹) = Formalism.REAL.Jm (M.ε τ)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ) * (M.fr τ)⁻¹ := by rw [hG, hQ]`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (M.ε τ) := by rw [hinv]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mem (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : M.fr τ * g * (M.fr τ)⁻¹ ∈ UJset (M.ε τ) := by
@@ -272,15 +272,15 @@ Both sides reduce to the same expression.
 theorem piR_apply (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) : piR M τ g = M.rep τ (gm g) := rfl
 
 /- English proof (translation)
-The claim follows from `(M.ds τ).2.2.1.2.1 _ (conj_mem M τ (gm_mem g)) x`.
+A detailed English derivation is pending.
 -/
 theorem piR_norm (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) (x : M.H τ) : ‖piR M τ g x‖ = ‖x‖ :=
   (M.ds τ).2.2.1.2.1 _ (conj_mem M τ (gm_mem g)) x
 
 /- English proof (translation)
-Establish `hh' : hᴴ * Formalism.REAL.Jm ε * h = Formalism.REAL.Jm ε` using `hh`. Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hl : (Formalism.REAL.Jm ε * hᴴ * Formalism.REAL.Jm ε) * h = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc hᴴ, hh', hJ]`. Conclude with `(Matrix.isUnit_iff_isUnit_det h).2 (Matrix.isUnit_det_of_left_inverse hl)`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_mem_UJ {n : ℕ} (ε : Fin n → Bool) {h : Matrix (Fin n) (Fin n) ℂ} (hh : h ∈ UJset ε) :
     IsUnit h := by
@@ -296,11 +296,11 @@ theorem isUnit_of_mem_UJ {n : ℕ} (ε : Fin n → Bool) {h : Matrix (Fin n) (Fi
   exact (Matrix.isUnit_iff_isUnit_det h).2 (Matrix.isUnit_det_of_left_inverse hl)
 
 /- English proof (translation)
-Establish `hh' : hᴴ * Formalism.REAL.Jm (M.ε τ) * h = Formalism.REAL.Jm (M.ε τ)` using `hh`. Use `set g : Matrix (Fin V.rank) (Fin V.rank) ℂ := (M.fr τ)⁻¹ * h * M.fr τ with hgdef`. Establish `hfu : IsUnit (M.fr τ)⁻¹` using `(Matrix.isUnit_nonsing_inv_iff).2 (M.fr_unit τ)`. Establish `hu : IsUnit g` using `(hfu.mul (isUnit_of_mem_UJ (M.ε τ) hh)).mul (M.fr_unit τ)`. Establish `hmem : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)` using `by show gᴴ * gramAt D V τ * g = gramAt D V τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← M.fr_gram τ, hgdef]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[fr_mul_inv]`. Simplify using `only [conjTranspose_one, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = (M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ := by rw [hh']`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨⟨hu.unit, hmem⟩, ?_⟩` and prove the remaining obligations. Use `show M.σ τ (M.fr τ * g * (M.fr τ)⁻¹) = M.σ τ h`. Use `congr 1`. Rewrite using `[hgdef]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_gt_of_UJ (M : DSModel V S) (τ : D.what₂.Tau) {h : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hh : h ∈ UJset (M.ε τ)) : ∃ g : Gt V τ, M.rep τ (gm g) = M.σ τ h := by
@@ -326,7 +326,7 @@ theorem exists_gt_of_UJ (M : DSModel V S) (τ : D.what₂.Tau) {h : Matrix (Fin 
     _ = h := by rw [fr_mul_inv]; simp
 
 /- English proof (translation)
-Set `L : M.H τ →ₗᵢ[ℂ] M.H τ` to `{ toLinearMap := (piR M τ g : M.H τ →ₗ[ℂ] M.H τ), norm_map' := piR_norm M τ g }`. Conclude with `L.inner_map_map x y`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem piR_inner (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) (x y : M.H τ) :
     ⟪piR M τ g x, piR M τ g y⟫_ℂ = ⟪x, y⟫_ℂ := by
@@ -334,13 +334,11 @@ theorem piR_inner (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) (x y : M.
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Introduce `B hB`. Establish `hstar : ∀ g, star (piR M τ g) = piR M τ g⁻¹`. Introduce `g`. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Rewrite using `[← piR_inner M τ g, ← ContinuousLinearMap.mul_apply, ← map_mul, mul_inv_cancel, map_one, ContinuousLinearMap.one_apply]`. Take `⟨c, hc⟩` from `Formalism.MainNotions.BridgeCSchur.schur_bounded (Set.range (piR M τ)) (by rintro U ⟨g, rfl⟩; exact ⟨g⁻¹, (hstar g).symm⟩) (by`. Introduce `W hW hinv`. Apply `(M.ds τ).2.2.2.1 W hW` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh v hv`. Take `⟨g, hg⟩` from `exists_gt_of_UJ M τ hh`. Rewrite using `[← hg]`. Conclude with `hinv _ ⟨g, rfl⟩ v hv)`. Use `B (by rintro U ⟨g, rfl⟩; exact hB g)`.
-
-Conclude with `⟨c, by rw [hc]; rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem commutant_scalar (M : DSModel V S) (τ : D.what₂.Tau) :
     ∀ B : M.H τ →L[ℂ] M.H τ, (∀ g, B.comp (piR M τ g) = (piR M τ g).comp B) →
@@ -366,13 +364,13 @@ theorem commutant_scalar (M : DSModel V S) (τ : D.what₂.Tau) :
   exact ⟨c, by rw [hc]; rfl⟩
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Take `⟨-, -, hU, -⟩` from `M.ds τ`. Establish `hb` using `Formalism.IndefR.PeterssonHilbertSpace.sm_isURepOn_bridge (M.ε τ) (M.σ τ) hU`. Rewrite using `[Submodule.dense_iff_topologicalClosure_eq_top, Submodule.topologicalClosure_eq_top_iff, Submodule.eq_bot_iff]`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ, hΦ, hΦc, -, hle⟩` from `PI.KFinSmoothW.dense_weak_vectors _ (M.ε τ) (M.H τ) (M.σ τ) hb (ℂ ∙ x) inferInstance`. Establish `hws` using `PI.KFinSmoothW.garding_vectors_smooth _ (M.ε τ) (M.H τ) (M.σ τ) hb Φ hΦ hΦc x`. Establish `hsv : SmoothVec (lieAt V τ) (M.rep τ) (PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x)` using `Formalism.IndefR.PeterssonHilbertSpace.sm_transfer (M.ε τ) (M.σ τ) (M.fr τ) _ (M.fr_unit τ) (M.fr_gram τ) (lieAt V τ) (fun X hX => hX) _ hws`. Establish `hw : PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x ∈ M.sm τ` using `Submodule.subset_span hsv`. Establish `h0 : ⟪PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x, x⟫_ℂ = 0` using `Submodule.inner_right_of_mem_orthogonal hw hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hle x (Submodule.mem_span_singleton_self x)`. Establish `h2 : ‖PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x - x‖ ^ 2 = ‖PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x‖ ^ 2 + ‖x‖ ^ 2`. Rewrite using `[@norm_sub_sq ℂ, h0]`. Simplify using the standard rewrite rules. Establish `h3 : ‖x‖ ^ 2 ≤ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg (PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x - x), norm_nonneg x, sq_nonneg ‖PI.KFinSmoothW.gv (M.ε τ) (M.σ τ) Φ x‖]`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 (le_antisymm h3 (sq_nonneg _)))`.
+A detailed English derivation is pending.
 -/
 theorem sm_dense (M : DSModel V S) (τ : D.what₂.Tau) : Dense (M.sm τ : Set (M.H τ)) := by
   haveI : CompleteSpace (M.H τ) := (M.ds τ).1
@@ -398,9 +396,7 @@ theorem sm_dense (M : DSModel V S) (τ : D.what₂.Tau) : Dense (M.sm τ : Set (
   exact norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 (le_antisymm h3 (sq_nonneg _)))
 
 /- English proof (translation)
-Use `show M.σ τ (M.fr τ * (a * b) * (M.fr τ)⁻¹) = (M.σ τ (M.fr τ * a * (M.fr τ)⁻¹)).comp (M.σ τ (M.fr τ * b * (M.fr τ)⁻¹))`. Establish `e : M.fr τ * (a * b) * (M.fr τ)⁻¹ = (M.fr τ * a * (M.fr τ)⁻¹) * (M.fr τ * b * (M.fr τ)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = M.fr τ * a * ((M.fr τ)⁻¹ * M.fr τ) * b * (M.fr τ)⁻¹ := by rw [fr_inv_mul]`.
-
-Use `_ = _ := by simp only [Matrix.mul_assoc]`. Rewrite using `[e]`. Conclude with `(M.ds τ).2.2.1.1.2 _ (conj_mem M τ ha) _ (conj_mem M τ hb)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) {a b : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (ha : a ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) (hb : b ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) :
@@ -416,7 +412,7 @@ theorem rep_mul (M : DSModel V S) (τ : D.what₂.Tau) {a b : Matrix (Fin V.rank
   exact (M.ds τ).2.2.1.1.2 _ (conj_mem M τ ha) _ (conj_mem M τ hb)
 
 /- English proof (translation)
-The claim follows from `| 0, Xs, t => by simp [Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 hg)] | k + 1, Xs, t => by have ih := conj_prod_exp g hg k (fun i => Xs i.succ) (fun i => t i.succ) beta_reduce at ih have hgi : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_d …`.
+A detailed English derivation is pending.
 -/
 theorem conj_prod_exp {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g) :
     ∀ (k : ℕ) (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (t : Fin k → ℝ),
@@ -440,19 +436,17 @@ theorem conj_prod_exp {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g)
       _ = _ := by rw [← hgi]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `k Xs hX`. Establish `hgu : IsUnit (gm g)` using `Units.isUnit _`. Establish `hgd` using `(Matrix.isUnit_iff_isUnit_det _).1 hgu`. Establish `hG : (gm g)ᴴ * gramAt D V τ * gm g = gramAt D V τ` using `gm_mem g`. Establish `hY : ∀ i, (gm g)⁻¹ * Xs i * gm g ∈ lieAt V τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Establish `hXi : (Xs i)ᴴ * gramAt D V τ + gramAt D V τ * Xs i = 0` using `hX i`. Establish `e1 : gramAt D V τ * (gm g)⁻¹ = (gm g)ᴴ * gramAt D V τ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hgd, Matrix.mul_one]`. Establish `e2 : ((gm g)⁻¹)ᴴ * gramAt D V τ = gramAt D V τ * gm g`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [Matrix.mul_nonsing_inv _ hgd]; simp`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `show ((gm g)⁻¹ * Xs i * gm g)ᴴ * gramAt D V τ + gramAt D V τ * ((gm g)⁻¹ * Xs i * gm g) = 0`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (gm g)ᴴ * ((Xs i)ᴴ * gramAt D V τ + gramAt D V τ * Xs i) * gm g := by`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hXi]; simp`. Establish `hsm : ContDiff ℝ ∞ (fun t : Fin k → ℝ => M.rep τ (gm g) (M.rep τ (List.ofFn fun i => NormedSpace.exp (t i • ((gm g)⁻¹ * Xs i * gm g))).prod w))` using `((M.rep τ (gm g)).restrictScalars ℝ).contDiff.comp (hw k (fun i => (gm g)⁻¹ * Xs i * gm g) hY)`. Use `hsm using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_mem (gramAt D V τ) k Xs (fun i => hX i) t`. Establish `hQ` using `Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_mem (gramAt D V τ) k (fun i => (gm g)⁻¹ * Xs i * gm g) (fun i => hY i) t`. Establish `hc` using `conj_prod_exp (gm g) hgu k Xs t`. Establish `e : (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod * gm g = gm g * (List.ofFn fun i => NormedSpace.exp (t i • ((gm g)⁻¹ * Xs i * gm g))).prod`. Rewrite using `[← hc, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hgd, Matrix.one_mul]`.
-
-Use `show M.rep τ (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod (M.rep τ (gm g) w) = M.rep τ (gm g) (M.rep τ (List.ofFn fun i => NormedSpace.exp (t i • ((gm g)⁻¹ * Xs i * gm g))).prod w)`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← rep_mul M τ hP (gm_mem g), e, rep_mul M τ (gm_mem g) hQ, ContinuousLinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothVec_rep (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) {w : M.H τ}
     (hw : SmoothVec (lieAt V τ) (M.rep τ) w) : SmoothVec (lieAt V τ) (M.rep τ) (M.rep τ (gm g) w) := by
@@ -497,9 +491,9 @@ theorem smoothVec_rep (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) {w : 
     ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span (smoothVec_rep M τ g hx)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 theorem sm_stable (M : DSModel V S) (τ : D.what₂.Tau) (g : Gt V τ) {w : M.H τ} (hw : w ∈ M.sm τ) :
     M.rep τ (gm g) w ∈ M.sm τ := by
@@ -553,21 +547,19 @@ variable {M θ} {J : Set (GA D V)} {χ : GA D V → ℂ} {μ : Measure (GA D V)}
 
 open Classical in
 /- English proof (translation)
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT => exact ⟨hL2 hθ hμ h𝓕 T hT, fun v => (hT.aut v).left, hT.equiv, hT.cont, fun v => (hT.aut v).cont⟩`. Consider the case `zero`. Use `⟨fun v => ?_, fun v γ _ x => ?_, fun τ g _ v w _ => ?_, fun τ v x => ⟨0, sobCont_zero, fun w => ?_⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.zero_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MemLp.zero`. Simplify using the standard rewrite rules. Rewrite using `[MultilinearMap.zero_apply, MultilinearMap.zero_apply]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.zero_apply]`. Conclude with `continuous_zero`. Consider the case `add T T' _ _ h h'`. Use `⟨fun v => ?_, fun v γ hγ x => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.add_apply]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h.l2 v).add (h'.l2 v)`. Rewrite using `[MultilinearMap.add_apply, Pi.add_apply, Pi.add_apply, h.left v γ hγ x, h'.left v γ hγ x]`. Rewrite using `[MultilinearMap.add_apply, MultilinearMap.add_apply, h.equiv τ g hg v w hw, h'.equiv τ g hg v w hw]`. Both sides reduce to the same expression. Take `⟨ℓ, hℓ, e⟩` from `h.cont τ v x`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ℓ', hℓ', e'⟩` from `h'.cont τ v x`. Conclude with `⟨ℓ + ℓ', sobCont_add hℓ hℓ', fun w => by`. Rewrite using `[LinearMap.add_apply, e, e', MultilinearMap.add_apply, Pi.add_apply]⟩`. Rewrite using `[MultilinearMap.add_apply]`. Conclude with `(h.cv v).add (h'.cv v)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a T _ h`. Use `⟨fun v => ?_, fun v γ hγ x => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[MultilinearMap.smul_apply]`. Conclude with `(h.l2 v).const_smul a`. Rewrite using `[MultilinearMap.smul_apply, Pi.smul_apply, Pi.smul_apply, h.left v γ hγ x]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.smul_apply, MultilinearMap.smul_apply, h.equiv τ g hg v w hw]`. Both sides reduce to the same expression. Take `⟨ℓ, hℓ, e⟩` from `h.cont τ v x`. Conclude with `⟨a • ℓ, sobCont_smul a hℓ, fun w => by`. Rewrite using `[LinearMap.smul_apply, e, MultilinearMap.smul_apply, Pi.smul_apply]⟩`.
-
-Rewrite using `[MultilinearMap.smul_apply]`. Conclude with `(h.cv v).const_smul a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_mem (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕) (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure)
     (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ) {T : MMap M} (hT : T ∈ Mult θ M J χ) : GoodMap θ M μ 𝓕 T := by
@@ -605,29 +597,27 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Use `haveI : CompleteSpace (M.H τ) := (M.ds τ).1`. Take `⟨π', hπ'n, hπ'⟩` from `hR hθ hμ h𝓕 τ`. Establish `h₁ : ∀ w, MemLp (T.toLinearMap v τ w) 2 (μ.restrict 𝓕)` using `fun w => hT.l2 _`. Establish `h₂ : ∀ w, MemLp (T'.toLinearMap v' τ w) 2 (μ.restrict 𝓕)` using `fun w => hT'.l2 _`. Establish `hab : ∀ a b : ℂ, ∀ w, MemLp ((a • T.toLinearMap v τ + b • T'.toLinearMap v' τ) w) 2 (μ.restrict 𝓕)` using `fun a b w => ((h₁ w).const_smul a).add ((h₂ w).const_smul b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomb : ∀ a b : ℂ, toL2 (a • T.toLinearMap v τ + b • T'.toLinearMap v' τ) (hab a b) = a • toL2 (T.toLinearMap v τ) h₁ + b • toL2 (T'.toLinearMap v' τ) h₂`. Introduce `a b`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Use `show (hab a b w).toLp _ = a • (h₁ w).toLp _ + b • (h₂ w).toLp _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← MemLp.toLp_const_smul, ← MemLp.toLp_const_smul, ← MemLp.toLp_add]`. Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (by simp))`. Take `⟨c, hc⟩` from `polar (toL2 (T.toLinearMap v τ) h₁) (toL2 (T'.toLinearMap v' τ) h₂) (fun x y : M.sm τ => ⟪(x : M.H τ), (y : M.H τ)⟫_ℂ) (fun a b => by`. Rewrite using `[← hcomb a b]`. Generalize the expression as in `hab a b = hL`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Generalize the expression as in `hLdef : a • T.toLinearMap v τ + b • T'.toLinearMap v' τ = L at hL ⊢`. Establish `hLw : ∀ w : M.sm τ, L w = a • T (Function.update v τ w) + b • T' (Function.update v' τ w)`. Introduce `w`. Rewrite using `[← hLdef]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hleft : ∀ (w : M.sm τ), ∀ γ ∈ GQ V, ∀ z, L w (γ * z) = L w z`. Introduce `w γ hγ z`. Rewrite using `[hLw, Pi.add_apply, Pi.add_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, hT.left _ γ hγ z, hT'.left _ γ hγ z]`. Establish `hequiv : ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), ∀ w w' : M.sm τ, (w' : M.H τ) = M.rep τ g w → L w' = rTr V (atTau θ V τ g) (L w)`. Introduce `g hg w w' hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hT.equiv τ g hg (Function.update v τ w) w' (by rw [Function.update_self]; exact hw)`. Establish `e2` using `hT'.equiv τ g hg (Function.update v' τ w) w' (by rw [Function.update_self]; exact hw)`. Rewrite `e1`, `e2` using `[Function.update_idem]`. Rewrite using `[hLw, hLw, e1, e2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ∀ z, ∃ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ ∧ ∀ w : M.sm τ, ℓ w = L w z`. Introduce `z`. Take `⟨ℓ₁, hℓ₁, e₁⟩` from `hT.cont τ v z`. Take `⟨ℓ₂, hℓ₂, e₂⟩` from `hT'.cont τ v' z`. Use `⟨a • ℓ₁ + b • ℓ₂, sobCont_add (sobCont_smul a hℓ₁) (sobCont_smul b hℓ₂), fun w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.add_apply, LinearMap.smul_apply, LinearMap.smul_apply, e₁, e₂, hLw]`. Both sides reduce to the same expression. Establish `hint : ∀ (g : Gt V τ) (x : M.sm τ) (hx : piR M τ g x ∈ M.sm τ), toL2 L hL ⟨piR M τ g x, hx⟩ = π' g (toL2 L hL x)`. Introduce `g x hx`. Take `⟨hF', he⟩` from `hπ' g (L x) (hleft x) (hL x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[to_square_integrable_apply, to_square_integrable_apply, he]`. Conclude with `MemLp.toLp_congr _ _ (Filter.EventuallyEq.of_eq (hequiv (gm g) (gm_mem g) x ⟨piR M τ g x, hx⟩ rfl))`. Establish `hcv : ∀ w : M.sm τ, Continuous (L w)`. Introduce `w`. Rewrite using `[hLw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `((hT.cv _).const_smul a).add ((hT'.cv _).const_smul b)`. Establish `hclo` using `hcl hθ hμ h𝓕 τ L hL hleft hequiv hcont hcv`. Establish `hclo' : ∀ (u : ℕ → M.sm τ) (y : Lp ℂ 2 (μ.restrict 𝓕)), Tendsto (fun n => (u n : M.H τ)) atTop (𝓝 0) → Tendsto (fun n => toL2 L hL (u n)) atTop (𝓝 y) → y = 0`. Introduce `u y h1 h2`. Simplify using `only [to_square_integrable_apply] at h2`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hclo u y h1 h2`. Take `⟨c, -, hc⟩` from `hSC (Gt V τ) (M.H τ) (Lp ℂ 2 (μ.restrict 𝓕)) (piR M τ) π' (piR_norm M τ) hπ'n (commutant_scalar M τ) (M.sm τ) (toL2 L hL) (sm_dense M τ) (fun g x hx => sm_stable M τ g hx) hint hclo'`. Conclude with `⟨c, fun x y => hc x y⟩)`. Use `⟨c, fun x y => ?_⟩` and prove the remaining obligations. Establish `e` using `hc x y`.
-
-Rewrite `e` using `[to_square_integrable_apply, to_square_integrable_apply, inner_toLp]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem place (hSC : Formalism.IndefR.Leaf.SchurClosable) (hR : RightRegularUnitary V θ μ 𝓕)
     (hcl : ClosableInSquareIntegrable M θ μ 𝓕) (hθ : IsInfFam θ) (hμ : μ.IsHaarMeasure) (h𝓕 : IsFundamentalDomain (GQ V) 𝓕 μ)
@@ -701,13 +691,13 @@ theorem place (hSC : Formalism.IndefR.Leaf.SchurClosable) (hR : RightRegularUnit
 open Classical in
 
 /- English proof (translation)
-Introduce `hθ hμ h𝓕 T hT T' hT'`. Establish `gT` using `good_of_mem hL2 hθ hμ h𝓕 hT`. Establish `gT'` using `good_of_mem hL2 hθ hμ h𝓕 hT'`. Establish `hne : ∀ τ, ∃ e : M.sm τ, ⟪(e : M.H τ), (e : M.H τ)⟫_ℂ ≠ 0`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨e, he⟩` from `Formalism.IndefR.PeterssonHilbertSpace.smNonzero M τ`. Use `⟨e, ?_⟩` and prove the remaining obligations. Rewrite using `[inner_self_ne_zero]`. Conclude with `fun h => he (Subtype.ext h)`. Use `choose e he using hne`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hP : (∏ τ, ⟪(e τ : M.H τ), (e τ : M.H τ)⟫_ℂ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => he τ`. Establish `key` using `prod_of_place (fun v v' : M.Vec => ∫ g in 𝓕, star (T v g) * T' v' g ∂μ) (fun τ (x y : M.sm τ) => ⟪(x : M.H τ), (y : M.H τ)⟫_ℂ) (fun τ v v' => place hSC hR hcl hθ hμ h𝓕 gT gT' τ v v') e`. Use `⟨(∫ g in 𝓕, star (T e g) * T' e g ∂μ) / ∏ τ, ⟪(e τ : M.H τ), (e τ : M.H τ)⟫_ℂ, fun v v' => ⟨integrable_star_mul (gT.l2 v) (gT'.l2 v'), ?_⟩⟩` and prove the remaining obligations. Use `key v v'` as an intermediate fact. Use `beta_reduce at this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[div_mul_eq_mul_div, eq_div_iff hP]`. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem schurMult_of (hSC : Formalism.IndefR.Leaf.SchurClosable) (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕)
     (hR : RightRegularUnitary V θ μ 𝓕) (hcl : ClosableInSquareIntegrable M θ μ 𝓕) : SchurMult θ M J χ μ 𝓕 := by
@@ -733,7 +723,7 @@ theorem schurMult_of (hSC : Formalism.IndefR.Leaf.SchurClosable) (hL2 : Multipli
   linear_combination this
 
 /- English proof (translation)
-The claim follows from `schurMult_of schur_closable hL2 hR hcl`.
+A detailed English derivation is pending.
 -/
 theorem schurMult (hL2 : MultiplicitySquareIntegrable M θ J χ μ 𝓕) (hR : RightRegularUnitary V θ μ 𝓕)
     (hcl : ClosableInSquareIntegrable M θ μ 𝓕) : SchurMult θ M J χ μ 𝓕 :=

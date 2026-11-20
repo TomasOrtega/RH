@@ -9,11 +9,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.AutQuot.Model
 
 /- English proof (translation)
-Set `E : Subrepresentation ρ ≃o Subrepresentation σ` to `{ toFun := fun S => ⟨S.toSubmodule.comap κ.symm.toLinearMap, fun g w hw => by`. Take `⟨v, rfl⟩` from `κ.surjective w`. Establish `hv : v ∈ S.toSubmodule` using `κ.symm_apply_apply v ▸ hw`. Simplify `S.apply_mem_toSubmodule g hv⟩` using `[← h]`. Use `invFun := fun T => ⟨T.toSubmodule.comap κ.toLinearMap, fun g v hv => by show κ (ρ g v) ∈ T.toSubmodule`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `T.apply_mem_toSubmodule _ hv⟩`. Use `left_inv := fun S => Subrepresentation.toSubmodule_injective (by ext v; simp)`. Use `right_inv := fun T => Subrepresentation.toSubmodule_injective (by ext v; simp)`. Use the proof step `map_rel_iff' := fun {S T} => ⟨fun hh v hv => by`.
-
-Establish `: κ.symm (κ v) ∈ S.toSubmodule` using `(κ.symm_apply_apply v).symm ▸ hv`. Establish `h2 : κ.symm (κ v) ∈ T.toSubmodule` using `hh this`. Conclude with `κ.symm_apply_apply v ▸ h2, fun hh v hv => hh hv⟩ }`. Conclude with `E.isSimpleOrder_iff.1 hρ`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_linearEquiv {F G V W : Type} [Field F] [Group G] [AddCommGroup V] [Module F V]
     [AddCommGroup W] [Module F W] {ρ : Representation F G V} {σ : Representation F G W} (κ : V ≃ₗ[F] W)
@@ -50,7 +48,7 @@ theorem conjRep_apply {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGrou
     (ρ : Representation ℂ (GQ L n) W) (γ : GQ L n) (x : W') : conjRep e ρ γ x = e (ρ γ (e.symm x)) := rfl
 
 /- English proof (translation)
-Take `⟨hfd, ι, i1, i2, b, P, hP⟩` from `h`. Use `⟨LinearEquiv.finiteDimensional e, ι, i1, i2, b.map e, P, fun γ γ₀ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hP γ γ₀ hγ]`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, conjRep_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isAlgWeight_conjRep {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (e : W ≃ₗ[ℂ] W')
     (ρ : Representation ℂ (GQ L n) W) (h : IsAlgWeight L n ρ) : IsAlgWeight L n (conjRep e ρ) := by
@@ -61,9 +59,7 @@ theorem isAlgWeight_conjRep {W W' : Type} [AddCommGroup W] [Module ℂ W] [AddCo
   simp [LinearMap.toMatrix_apply, conjRep_apply]
 
 /- English proof (translation)
-Introduce `L _ _ _ n a`. Use `haveI : FiniteDimensional ℂ a.W := a.alg.1`. Set `e : a.W ≃ₗ[ℂ] (Fin (Module.finrank ℂ a.W) → ℂ)` to `(Module.finBasis ℂ a.W).equivFun`. Use `⟨⟨Module.finrank ℂ a.W, conjRep e a.ρ, isAlgWeight_conjRep e a.ρ a.alg, isIrreducible_of_linearEquiv e (fun γ x => by simp [conjRep_apply]) a.irr⟩, e, fun γ x => ?_⟩` and prove the remaining obligations. Use `show e (a.ρ γ x) = conjRep e a.ρ γ (e x)`.
-
-Simplify using `[conjRep_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_model : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (a : NG.AlgWt L n),
     ∃ m : GlobalTheory.AutQuot.AlgWtM L n, a.Iso m.toAlgWt := by

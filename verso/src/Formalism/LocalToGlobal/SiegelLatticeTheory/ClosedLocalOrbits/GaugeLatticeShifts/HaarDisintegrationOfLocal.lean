@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.L2.SG.RealObj.InfCut.UnitaryIsometries
 
 /- English proof (translation)
-The claim follows from `h5 hJ DiagDCLoc_holds hS hU hN hR`.
+A detailed English derivation is pending.
 -/
 theorem haar_disintegration_of_local (h5 : JacobianCoordinates.P5) (hJ : JacobianCoordinates.JacLoc) (hS : JacobianCoordinates.SecMeasLoc) (hU : JacobianCoordinates.UnimodLoc)
     (hN : JacobianCoordinates.NHLoc) (hR : StepReal) : HaarDisintegrationReal :=

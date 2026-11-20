@@ -12,7 +12,7 @@ namespace GlobalTheory.CompanionTheory.NormPoly
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hu`. Establish `hθ : thetaE E n u = u⁻¹` using `eq_inv_of_mul_eq_one_right h2`. Rewrite using `[h1, map_mul, map_inv, hθ, inv_inv, nrm]`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_translate {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) :
     (d * u⁻¹) * thE E n (d * u⁻¹) = nrm d := by
@@ -22,16 +22,16 @@ theorem norm_translate {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) :
   group
 
 /- English proof (translation)
-Rewrite using `[polE, norm_translate hu]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polE_translate {u : GL (Fin n) E} (hu : IsTransl u) (d : GL (Fin n) E) :
     polE (d * u⁻¹) = (nrm d).val.charpoly := by
   rw [polE, norm_translate hu]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Establish `hv : ∀ g : GL (Fin n) E, ((GeneralLinearGroup.map τ g : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = g.val.map τ` using `fun _ => rfl`. Rewrite using `[hv, thetaR_val, thetaR_val, ← map_inv, hv]`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `IsCMField.complexEmbedding_complexConj E τ _`.
+A detailed English derivation is pending.
 -/
 theorem map_thetaE (τ : E →+* ℂ) (d : GL (Fin n) E) :
     GeneralLinearGroup.map τ (thetaE E n d) =
@@ -44,7 +44,7 @@ theorem map_thetaE (τ : E →+* ℂ) (d : GL (Fin n) E) :
   exact IsCMField.complexEmbedding_complexConj E τ _
 
 /- English proof (translation)
-Rewrite using `[← map_thetaE, ← map_mul, ← Matrix.charpoly_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_map_nrm (τ : E →+* ℂ) (d : GL (Fin n) E) :
     (GeneralLinearGroup.map τ d * thetaR (starRingEnd ℂ) n (GeneralLinearGroup.map τ d)).val.charpoly =
@@ -53,9 +53,9 @@ theorem charpoly_map_nrm (τ : E →+* ℂ) (d : GL (Fin n) E) :
   rfl
 
 /- English proof (translation)
-Establish `hm : (nrm d).val.charpoly.Monic` using `Matrix.charpoly_monic _`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨hm, by simp, h.1, fun τ z hz => ?_⟩` and prove the remaining obligations. Conclude with `h.2 τ z (Polynomial.isRoot_of_mem_roots hz)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨-, -, hs, hr⟩`. Conclude with `⟨hs, fun τ z hz => hr τ z ((Polynomial.mem_roots (hm.map τ).ne_zero).2 hz)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isRegEll_iff_mem_Ell (d : GL (Fin n) E) : IsRegEll d ↔ (nrm d).val.charpoly ∈ Ell E n := by
   have hm : (nrm d).val.charpoly.Monic := Matrix.charpoly_monic _
@@ -67,9 +67,9 @@ theorem isRegEll_iff_mem_Ell (d : GL (Fin n) E) : IsRegEll d ↔ (nrm d).val.cha
     exact ⟨hs, fun τ z hz => hr τ z ((Polynomial.mem_roots (hm.map τ).ne_zero).2 hz)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n u hu d`. Rewrite using `[polE_translate hu]`. Use `⟨isRegEll_iff_mem_Ell d, fun v => ⟨charpoly_map_nrm v.embedding d, fun h => ?_⟩⟩` and prove the remaining obligations. Unfold `EllC`. Rewrite using `[charpoly_map_nrm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h.1.map, fun z hz => h.2 v.embedding z hz⟩`.
+Supply the required witnesses or components.
 -/
 theorem polEq : PolEq := by
   intro E _ _ _ n u hu d

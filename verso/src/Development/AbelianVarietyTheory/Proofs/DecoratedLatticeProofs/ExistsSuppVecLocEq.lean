@@ -24,9 +24,9 @@ variable {D : D7}
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FinPl.KOpen.mem_latV_iff V L _ y hy, GlobalTheory.AdelicU.mem_latHat_iff hL]`. Use `⟨fun h => h v, fun h w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : w = v`. Substitute `e` using the available equality. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h0 : GlobalTheory.AdelicU.vecLoc w (finPart D ∘ y) = 0`. Use function extensionality and compare the values at `fun i => ((mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ _).1 (hy i)).2 w e`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_iff_latLoc (V : HSp D) (L : Lat V) (hL : L.FG) (v : Pl D) (y : Fin V.rank → AE D)
     (hy : ∀ i, y i ∈ idAt D (· = v)) :
@@ -41,11 +41,9 @@ theorem mem_latV_iff_latLoc (V : HSp D) (L : Lat V) (hL : L.FG) (v : Pl D) (y : 
     rw [h0]; exact zero_mem _
 
 /- English proof (translation)
-Use `choose lift hl1 hl2 using GlobalTheory.KStabBridge.exists_fin_lift (D := D)`. Set `y' : Fin n → Af D.host.F ⊗[D.host.F] D.host.E` to `fun i => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU (GlobalTheory.AdelicU.singleFin v) (GlobalTheory.AdelicU.singleFin_mul v) (z i)`. Establish `h1 : GlobalTheory.AdelicU.vecLoc v y' = z`. Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_self _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_self v) _`. Establish `h2 : ∀ u, u ≠ v → GlobalTheory.AdelicU.vecLoc u y' = 0` using `fun u hu =>`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun i => GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_ne hu) _`. Establish `h3 : finPart D ∘ (fun i => lift (y' i)) = y'` using `funext fun i => hl2 _`. Use `⟨fun i => lift (y' i), fun i => (mem_supportedOnPlacesIdeal_iff_components_zero_elsewhere D _ _).2 ⟨hl1 _, fun w hw => ?_⟩, by rw [h3, h1]⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.compFin D w (finPart D (lift (y' i))) = 0`. Rewrite using `[hl2]`.
-
-Conclude with `congrFun (h2 w hw) i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_supp_vecLoc_eq {n : ℕ} (v : Pl D) (z : Fin n → Fv D.host.F v ⊗[D.host.F] D.host.E) :
     ∃ y : Fin n → AE D, (∀ i, y i ∈ idAt D (· = v)) ∧ GlobalTheory.AdelicU.vecLoc v (finPart D ∘ y) = z := by
@@ -65,9 +63,7 @@ theorem exists_supp_vecLoc_eq {n : ℕ} (v : Pl D) (z : Fin n → Fv D.host.F v 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `key : ∀ y : Fin V.rank → AE D, (∀ i, y i ∈ idAt D (· = v)) → (mt V g *ᵥ y ∈ GlobalTheory.FinPl.latV V L (· = v) ↔ (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)).1 *ᵥ GlobalTheory.AdelicU.vecLoc v (finPart D ∘ y) ∈ GlobalTheor …` using `fun y hy => by`. Rewrite using `[mem_latV_iff_latLoc V L hL v _ (GlobalTheory.FinPl.KOpen.supp_mulVec V _ g hy), GlobalTheory.FinPl.KOpen.fin_mulVec]`. Conclude with `iff_of_eq (congrArg (· ∈ GlobalTheory.AdelicU.latLoc D.host.F L v) (GlobalTheory.AdelicU.vecLoc_mulVec D.sp.cm.sig V.gram v g _))`. Use `Iff.trans ⟨fun h z => ?_, fun h y hy => ?_⟩ GlobalTheory.AdelicU.mem_stabLoc.symm` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `exists_supp_vecLoc_eq v z`.
-
-Conclude with `(mem_latV_iff_latLoc V L hL v y hy).symm.trans ((h y hy).trans (key y hy))`. Conclude with `(mem_latV_iff_latLoc V L hL v y hy).trans ((h _).trans (key y hy).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem moves_iff_stabLoc (V : HSp D) (L : Lat V) (hL : L.FG) (v : Pl D) (g : GA D V) :
     Moves V g L L (· = v) ↔
@@ -85,7 +81,7 @@ theorem moves_iff_stabLoc (V : HSp D) (L : Lat V) (hL : L.FG) (v : Pl D) (g : GA
   · exact (mem_latV_iff_latLoc V L hL v y hy).trans ((h _).trans (key y hy).symm)
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite using `[hg y hy, hh _ (GlobalTheory.FinPl.KOpen.supp_mulVec V P g hy)]`. Use `show _ ↔ mt V (h * g) *ᵥ y ∈ _`. Rewrite using `[show mt V (h * g) = mt V h * mt V g from rfl, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_mul {V : HSp D} {g h : GA D V} {L M N : Lat V} {P : Pl D → Prop} (hg : Moves V g L M P)
     (hh : Moves V h M N P) : Moves V (h * g) L N P := by
@@ -95,7 +91,7 @@ theorem moves_mul {V : HSp D} {g h : GA D V} {L M N : Lat V} {P : Pl D → Prop}
   rw [show mt V (h * g) = mt V h * mt V g from rfl, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1` using `hg (mt V g⁻¹ *ᵥ y) (GlobalTheory.FinPl.KOpen.supp_mulVec V P g⁻¹ hy)`. Rewrite `h1` using `[Matrix.mulVec_mulVec, show mt V g * mt V g⁻¹ = mt V (g * g⁻¹) from rfl, mul_inv_cancel, show mt V (1 : GA D V) = 1 from rfl, Matrix.one_mulVec]`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moves_inv {V : HSp D} {g : GA D V} {L M : Lat V} {P : Pl D → Prop} (hg : Moves V g L M P) :
     Moves V g⁻¹ M L P := by
@@ -106,7 +102,7 @@ theorem moves_inv {V : HSp D} {g : GA D V} {L M : Lat V} {P : Pl D → Prop} (hg
   exact h1.symm
 
 /- English proof (translation)
-Use `⟨fun H => ?_, fun H => ?_⟩` and prove the remaining obligations. Use `moves_mul (moves_mul (moves_inv ht) H) ht` as an intermediate fact. Rewrite `this` using `[show t * (t⁻¹ * h * t * t⁻¹) = h by group]`. Then use the resulting hypothesis. Use `moves_mul (moves_mul ht H) (moves_inv ht)` as an intermediate fact. Rewrite `this` using `[← mul_assoc]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem moves_conj_iff {V : HSp D} {t : GA D V} (h : GA D V) {L M : Lat V} {P : Pl D → Prop} (ht : Moves V t L M P) :
     Moves V (t⁻¹ * h * t) L L P ↔ Moves V h M M P := by
@@ -117,7 +113,7 @@ theorem moves_conj_iff {V : HSp D} {t : GA D V} (h : GA D V) {L M : Lat V} {P : 
     rwa [← mul_assoc] at this
 
 /- English proof (translation)
-Introduce `D V β Λ M hβ hΛ _ t h _ _ ht`. Use `haveI : Submodule.IsLattice D.host.E Λ := hΛ.1`. Establish `hfg : Λ.FG` using `Submodule.IsLattice.fg (A := D.host.E)`. Rewrite using `[GlobalTheory.ChainOnto.LStab.finE_mem_St_iff_stabLoc D V β Λ hβ]`. Conclude with `forall_congr' fun v => (moves_iff_stabLoc V Λ hfg v _).symm.trans (moves_conj_iff h (ht _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_conj_mem_St_iff : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ M : GlobalTheory.FinPl.Lat V), Formalism.L2.DIV.IsFrame β Λ → IsSelfDualC V Λ → IsSelfDualC V M → ∀ t h : GA D V, t ∈ GfC V → h ∈ GfC V → (∀ P, GlobalTheory.FinPl.Moves V t Λ M P) → (Lev.finE V (t⁻¹ * h * t) ∈ Formalism.L2.DIV.St β ↔ ∀ v : GlobalTheory.FinPl.Pl D, GlobalTheory.FinPl.Moves V h M M (· = v)) := by
   intro D V β Λ M hβ hΛ _ t h _ _ ht

@@ -30,11 +30,11 @@ section Alg
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Establish `h1 : ∀ k : ℕ, (l : O) ∣ ε ^ (k + 1) - ε`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨y, hy⟩` from `hε`. Take `⟨z, hz⟩` from `ih`. Use `⟨ε * z + y, ?_⟩` and prove the remaining obligations. Establish `e : ε ^ (k + 1 + 1) - ε = ε * (ε ^ (k + 1) - ε) + (ε * ε - ε)` using `by ring`. Rewrite using `[e, hz, hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨m, rfl⟩ : ∃ m, l = m + 1` from `⟨l - 1, by omega⟩`. Establish `h2` using `dvd_sub_pow_of_dvd_sub (h1 m) n`. Rewrite using `[show (m + 1) ^ (n + 1) = (m + 1) * (m + 1) ^ n from pow_succ' _ _, pow_mul]`. Conclude with `h2`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_cong {l : ℕ} (hl : 2 ≤ l) {ε : O} (hε : ∃ y, ε * ε - ε = (l : O) * y) (n : ℕ) :
     ((l : O) ^ (n + 1)) ∣ ε ^ l ^ (n + 1) - ε ^ l ^ n := by
@@ -55,7 +55,7 @@ theorem pow_cong {l : ℕ} (hl : 2 ≤ l) {ε : O} (hε : ∃ y, ε * ε - ε = 
   exact h2
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hε`. Establish `h2` using `dvd_sub_pow_of_dvd_sub (⟨y, hy⟩ : (l : O) ∣ ε * ε - ε) n`. Rewrite `h2` using `[mul_pow]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sq_cong {l : ℕ} {ε : O} (hε : ∃ y, ε * ε - ε = (l : O) * y) (n : ℕ) :
     ((l : O) ^ (n + 1)) ∣ ε ^ l ^ n * ε ^ l ^ n - ε ^ l ^ n := by
@@ -66,7 +66,7 @@ theorem sq_cong {l : ℕ} {ε : O} (hε : ∃ y, ε * ε - ε = (l : O) * y) (n 
 variable [StarRing O]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hε`. Use `⟨star y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hy`. Simplify using `only [star_sub, star_mul, star_natCast] at h`. Rewrite using `[h, mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_rel {l : ℕ} {ε : O} (hε : ∃ y, ε * ε - ε = (l : O) * y) : ∃ y, star ε * star ε - star ε = (l : O) * y := by
   obtain ⟨y, hy⟩ := hε
@@ -82,9 +82,9 @@ section Val
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Introduce `w`. Take `⟨n0, hn⟩` from `h ⌈w⌉₊`. Use `⟨n0, fun n hn' => ?_⟩` and prove the remaining obligations. Establish `h1` using `hn n hn'`. Unfold `VF.Ge at h1 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `le_trans (WithTop.coe_le_coe.mpr (Nat.le_ceil w)) h1`.
+A detailed English derivation is pending.
 -/
 theorem tends_of_nat {s : ℕ → C} {x : C} (h : ∀ N : ℕ, ∃ n0 : ℕ, ∀ n ≥ n0, V.Ge N (x - s n)) : Tends V s x := by
   intro w
@@ -95,7 +95,7 @@ theorem tends_of_nat {s : ℕ → C} {x : C} (h : ∀ N : ℕ, ∃ n0 : ℕ, ∀
   exact le_trans (WithTop.coe_le_coe.mpr (Nat.le_ceil w)) h1
 
 /- English proof (translation)
-Establish `h` using `V.v.map_add (z - 1) 1`. Rewrite `h` using `[sub_add_cancel, V.v.map_one]`. Conclude with `le_trans (le_min hz.le le_rfl) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem v_nonneg_of_v_sub_one_pos {z : C} (hz : 0 < V.v (z - 1)) : 0 ≤ V.v z := by
   have h := V.v.map_add (z - 1) 1
@@ -103,13 +103,13 @@ private theorem v_nonneg_of_v_sub_one_pos {z : C} (hz : 0 < V.v (z - 1)) : 0 ≤
   exact le_trans (le_min hz.le le_rfl) h
 
 /- English proof (translation)
-Establish `hz0 : 0 < V.v (z - 1)` using `lt_of_lt_of_le (by exact_mod_cast hδ0) hz`. Establish `hzv : 0 ≤ V.v z` using `v_nonneg_of_v_sub_one_pos hz0`. Establish `hg : z ^ V.l - 1 = (∑ i ∈ Finset.range V.l, z ^ i) * (z - 1)` using `(geom_sum_mul z V.l).symm`. Establish `hs : ∑ i ∈ Finset.range V.l, z ^ i = ∑ i ∈ Finset.range V.l, (z ^ i - 1) + (V.l : C)`. Rewrite using `[Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hterm : ∀ i ∈ Finset.range V.l, ((δ : ℝ) : WithTop ℝ) ≤ V.v (z ^ i - 1)`. Introduce `i _`. Rewrite using `[← geom_sum_mul, V.v.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hsum : ((δ : ℝ) : WithTop ℝ) ≤ V.v (∑ i ∈ Finset.range V.l, z ^ i)`. Rewrite using `[hs]`. Use `le_trans (le_min (V.v.map_le_sum hterm) ?_) (V.v.map_add _ _)` and prove the remaining obligations. Rewrite using `[V.v_l]`. Conclude with `hδ1` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, V.v.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem v_sub_one_add_le_v_pow_l_sub_one {z : C} {δ : ℝ} (hδ1 : δ ≤ 1) (hδ0 : 0 < δ)
     (hz : ((δ : ℝ) : WithTop ℝ) ≤ V.v (z - 1)) :
@@ -136,19 +136,19 @@ private theorem v_sub_one_add_le_v_pow_l_sub_one {z : C} {δ : ℝ} (hδ1 : δ �
     _ ≤ _ := add_le_add hsum le_rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ0, hδ1, hδ⟩ : ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ ((δ : ℝ) : WithTop ℝ) ≤ V.v (x - 1) := by`. Unfold `VF.MM at hx`. Distinguish the cases in `htop : V.v (x - 1) = ⊤`. Conclude with `⟨1, one_pos, le_rfl, by rw [htop]; exact le_top⟩`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp htop`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[← hr]`. Establish `hr0 : 0 < r` using `by exact_mod_cast hx`. Use `⟨min r 1, lt_min hr0 one_pos, min_le_right _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hr]`. Conclude with `min_le_left r 1` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ n : ℕ, ((((n : ℝ) + 1) * δ : ℝ) : WithTop ℝ) ≤ V.v (x ^ V.l ^ n - 1)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hδ`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : x ^ V.l ^ (n + 1) = (x ^ V.l ^ n) ^ V.l` using `by rw [pow_succ, pow_mul]`. Rewrite using `[e]`. Establish `hn0 : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `h1 : ((δ : ℝ) : WithTop ℝ) ≤ V.v (x ^ V.l ^ n - 1)` using `le_trans (by exact_mod_cast (show δ ≤ ((n : ℝ) + 1) * δ by nlinarith)) ih`. Establish `h2 : ((((n + 1 : ℕ) : ℝ) + 1) * δ : ℝ) = ((n : ℝ) + 1) * δ + δ` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, WithTop.coe_add]`. Conclude with `le_trans (add_le_add ih le_rfl) (v_sub_one_add_le_v_pow_l_sub_one hδ1 hδ0 h1)`. Introduce `w`. Take `⟨N, hN⟩` from `exists_nat_gt (w / δ)`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `VF.Ge`. Use `show ((w : ℝ) : WithTop ℝ) ≤ V.v (1 - x ^ V.l ^ n)`. Rewrite using `[← neg_sub, V.v.map_neg]`. Use `le_trans ?_ (key n)` and prove the remaining obligations. Establish `h2 : (N : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : w = (w / δ) * δ` using `by field_simp`. Establish `: w ≤ ((n : ℝ) + 1) * δ`. Use polynomial arithmetic with `[mul_lt_mul_of_pos_right hN hδ0, mul_le_mul_of_nonneg_right h2 hδ0.le]`. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem tends_pow_one {x : C} (hx : V.MM (x - 1)) : Tends V (fun n => x ^ V.l ^ n) 1 := by
   obtain ⟨δ, hδ0, hδ1, hδ⟩ : ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ ((δ : ℝ) : WithTop ℝ) ≤ V.v (x - 1) := by
@@ -194,7 +194,7 @@ section Main
 variable {C : Type} [Field C] [CharZero C] {V : VF C} {O : Type} [CommRing O] [StarRing O] {dd : ℕ}
 
 /- English proof (translation)
-Introduce `μ`. Conclude with `tends_of_nat fun N => h N i μ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tends_of_endomorphism_limit (Y : FBChart C V O dd) {a : ℕ → O} {e : Pt C 1 dd}
     (h : ∀ (N : ℕ) i μ, ∃ n0 : ℕ, ∀ n ≥ n0,
@@ -204,25 +204,23 @@ theorem tends_of_endomorphism_limit (Y : FBChart C V O dd) {a : ℕ → O} {e : 
   exact tends_of_nat fun N => h N i μ
 
 /- English proof (translation)
-Unfold `VF.Ge at *`. Conclude with `le_trans (le_min ha hb) (V.v.map_sub a b)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem ge_sub {w : ℝ} {a b : C} (ha : V.Ge w a) (hb : V.Ge w b) : V.Ge w (a - b) := by
   unfold VF.Ge at *
   exact le_trans (le_min ha hb) (V.v.map_sub a b)
 
 /- English proof (translation)
-Unfold `VF.Ge at *`. Conclude with `le_trans (WithTop.coe_le_coe.mpr (Nat.le_ceil w)) ha`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem ge_of_ge_natCeil {w : ℝ} {a : C} (ha : V.Ge (⌈w⌉₊ : ℕ) a) : V.Ge w a := by
   unfold VF.Ge at *
   exact le_trans (WithTop.coe_le_coe.mpr (Nat.le_ceil w)) ha
 
 /- English proof (translation)
-Introduce `μ w`. Take `⟨n1, h1⟩` from `he i μ w`. Take `⟨n2, h2⟩` from `hL C V O dd Y x x' hx ⌈w⌉₊ i μ`. Use `⟨max n1 n2, fun n hn => ?_⟩` and prove the remaining obligations. Establish `a1` using `h1 n (le_of_max_le_left hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a2` using `ge_of_ge_natCeil (h2 n (le_of_max_le_right hn))`. Establish `a3` using `ge_sub a1 a2`. Establish `heq : MvPowerSeries.coeff μ (e i) - MvPowerSeries.coeff μ (Y.B.A.act (x n) i) = (MvPowerSeries.coeff μ (e i) - MvPowerSeries.coeff μ (Y.B.A.act (x' n) i)) - (MvPowerSeries.coeff μ (Y.B.A.act (x n) i) - MvPowerSeries.coeff μ (Y.B.A.act (x' n) i))` using `by ring`. Use `show V.Ge w (MvPowerSeries.coeff μ (e i) - MvPowerSeries.coeff μ (Y.B.A.act (x n) i))`. Rewrite using `[heq]`.
-
-Conclude with `a3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsS_of_small (hL : LSmallSt) (Y : FBChart C V O dd) {x x' : ℕ → O}
     (hx : ∀ n, ((V.l : O) ^ (n + 1)) ∣ x n - x' n) {e : Pt C 1 dd}
@@ -243,13 +241,13 @@ theorem tendsS_of_small (hL : LSmallSt) (Y : FBChart C V O dd) {x x' : ℕ → O
   exact a3
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Introduce `w`. Use `⟨0, fun n _ => ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Establish `hct : V.v c ≠ ⊤` using `fun h => hc ((V.v.top_iff).mp h)`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hct`. Introduce `w`. Take `⟨n0, h0⟩` from `hs (w - r)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨n0, fun n hn => ?_⟩` and prove the remaining obligations. Establish `h1` using `h0 n hn`. Unfold `VF.Ge at h1 ⊢`. Use `show ((w : ℝ) : WithTop ℝ) ≤ V.v (x * c - s n * c)`. Rewrite using `[← sub_mul, V.v.map_mul, ← hr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithTop.coe_add, sub_add_cancel]`. Use `_ ≤ _ := add_le_add h1 le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tends_mul_const {s : ℕ → C} {x : C} (hs : Tends V s x) (c : C) :
     Tends V (fun n => s n * c) (x * c) := by
@@ -273,9 +271,7 @@ private theorem tends_mul_const {s : ℕ → C} {x : C} (hs : Tends V s x) (c : 
       _ ≤ _ := add_le_add h1 le_rfl
 
 /- English proof (translation)
-Introduce `w`. Use `choose n0 hn0 using fun j => h j w`. Use `⟨Finset.univ.sup n0, fun n hn => ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`. Use `show ((w : ℝ) : WithTop ℝ) ≤ V.v (∑ j, x j - ∑ j, s j n)`.
-
-Rewrite using `[← Finset.sum_sub_distrib]`. Conclude with `V.v.map_le_sum fun j _ => hn0 j n (le_trans (Finset.le_sup (Finset.mem_univ j)) hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tends_fintype_sum {ι : Type} [Fintype ι] {s : ι → ℕ → C} {x : ι → C}
     (h : ∀ j, Tends V (s j) (x j)) : Tends V (fun n => ∑ j, s j n) (∑ j, x j) := by
@@ -288,7 +284,7 @@ private theorem tends_fintype_sum {ι : Type} [Fintype ι] {s : ι → ℕ → C
   exact V.v.map_le_sum fun j _ => hn0 j n (le_trans (Finset.le_sup (Finset.mem_univ j)) hn)
 
 /- English proof (translation)
-Use `show Tends V (fun n => ∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (φ n i) * v j) (∑ j, MvPowerSeries.coeff (Finsupp.single ((0 : Fin 1), j) 1) (Φ i) * v j)`. Conclude with `tends_fintype_sum fun j => tends_mul_const (hφ i _) (v j)`.
+A detailed English derivation is pending.
 -/
 theorem linAct_tends {φ : ℕ → Pt C 1 dd} {Φ : Pt C 1 dd} (hφ : ∀ i, TendsS V (fun n => φ n i) (Φ i))
     (v : Fin dd → C) (i : Fin dd) : Tends V (fun n => linAct (φ n) v i) (linAct Φ v i) := by
@@ -297,17 +293,17 @@ theorem linAct_tends {φ : ℕ → Pt C 1 dd} {Φ : Pt C 1 dd} (hφ : ∀ i, Ten
   exact tends_fintype_sum fun j => tends_mul_const (hφ i _) (v j)
 
 /- English proof (translation)
-Establish `hT` using `tends_of_endomorphism_limit Y he`. Establish `e0 : ∀ i, constantCoeff (e i) = 0` using `const_of_lim Y hT`. Establish `act0 : ∀ x i, constantCoeff (Y.B.A.act x i) = 0` using `Y.B.A.const`. Use `⟨e0, ?_, ?_, ?_, hLie _ V O dd Y d I p g ε hε hε1 hεx e he⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `L` using `TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun n => Y.B.A.act (ε ^ V.l ^ n)) (fun n => act0 _) e0 hT hT i`. Establish `R` using `tendsS_of_small hL Y (x := fun n => ε ^ V.l ^ n * ε ^ V.l ^ n) (sq_cong hε) hT i`. Establish `eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act (ε ^ V.l ^ n)) i) = fun n => Y.B.A.act (ε ^ V.l ^ n * ε ^ V.l ^ n) i` using `funext fun n => by rw [Y.B.A.mul_act]`. Rewrite `L` using `[eq]`. Conclude with `L.unique R`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use function extensionality and compare the values at `i`. Establish `L` using `TendsS.comp1 (φ := fun n => Y.B.A.act (ε ^ V.l ^ n)) (b := fun _ => Y.B.A.act a) (fun _ => act0 a) (act0 a) hT (fun _ => TendsS.const _) i`. Establish `R` using `TendsS.comp1 (φ := fun _ => Y.B.A.act a) (b := fun n => Y.B.A.act (ε ^ V.l ^ n)) (fun n => act0 _) e0 (fun _ => TendsS.const _) hT i`. Establish `eq : (fun n => comp1 (Y.B.A.act (ε ^ V.l ^ n)) (Y.B.A.act a) i) = fun n => comp1 (Y.B.A.act a) (Y.B.A.act (ε ^ V.l ^ n)) i` using `funext fun n => by`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Y.B.A.mul_act, ← Y.B.A.mul_act, mul_comm]`. Rewrite `L` using `[eq]`. Conclude with `L.unique R`. Introduce `c`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `L` using `linAct_tends hT (p.u g c) i`. Establish `eq : (fun n => linAct (Y.B.A.act (ε ^ V.l ^ n)) (p.u g c) i) = fun n => (p.em g (p.ty g c) ε) ^ V.l ^ n * p.u g c i` using `funext fun n => by`. Rewrite using `[p.u_eig, map_pow]`. Both sides reduce to the same expression. Rewrite `L` using `[eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `R` using `(tends_pow_one (hε1 (p.ty g c))).mul (tends_const (V := V) (p.u g c i))`. Rewrite `R` using `[one_mul]`. Conclude with `L.unique R`.
+A detailed English derivation is pending.
 -/
 theorem proj_one (hL : LSmallSt) (hLie : ProjLieSt) (Y : FBChart C V O dd) {d : ℕ} [NeZero d]
     {I : Fin 2 → Type} [∀ g, Fintype (I g)] (p : PairData Y d I) (g : Fin 2) (ε : O)
@@ -357,31 +353,23 @@ theorem proj_one (hL : LSmallSt) (hLie : ProjLieSt) (Y : FBChart C V O dd) {d : 
     exact L.unique R
 
 /- English proof (translation)
-Introduce `C _ _ V O _ _ dd Y d _ I _ p hE0`. Take `⟨ε, hε, hε1, hεx⟩` from `p.em_unr 0`. Establish `hl2 : 2 ≤ V.l` using `V.l_prime.two_le`. Establish `hεs` using `star_rel hε`. Establish `hεs1 : ∀ a, V.MM (p.em 1 a (star ε) - 1)` using `fun a => by rw [p.em_conj, star_star]; exact hε1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hεsx : ∀ x : O, (∀ a, V.MM (p.em 1 a x)) → ∃ y, star ε * x = (V.l : O) * y`. Introduce `x hx`. Take `⟨y, hy⟩` from `hεx (star x) fun a => by rw [← p.em_conj]; exact hx a`. Use `⟨star y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [star_mul, star_star, star_natCast] at h`. Rewrite using `[mul_comm, h, mul_comm]`. Establish `cvA : ActCv Y (fun n => ε ^ V.l ^ n)` using `fun N i μ => by`. Take `⟨n0, h⟩` from `hL C V O dd Y (fun n => ε ^ V.l ^ (n + 1)) (fun n => ε ^ V.l ^ n) (pow_cong hl2 hε) N i μ`. Conclude with `⟨n0, h⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `cvB : ActCv Y (fun n => star ε ^ V.l ^ n)` using `fun N i μ => by`. Take `⟨n0, h⟩` from `hL C V O dd Y (fun n => star ε ^ V.l ^ (n + 1)) (fun n => star ε ^ V.l ^ n) (pow_cong hl2 hεs) N i μ`. Conclude with `⟨n0, h⟩`. Establish `sA : (fun n => star (ε ^ V.l ^ n)) = fun n => star ε ^ V.l ^ n` using `funext fun n => star_pow _ _`. Establish `sB : (fun n => star (star ε ^ V.l ^ n)) = fun n => ε ^ V.l ^ n` using `funext fun n => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_pow, star_star]`. Take `⟨e, eb, -, -, he, heb, hhom, hexp⟩` from `hE0 (fun n => ε ^ V.l ^ n) cvA (by rw [sA]; exact cvB)`. Take `⟨e', eb', -, -, he', heb', hhom', hexp'⟩` from `hE0 (fun n => star ε ^ V.l ^ n) cvB (by rw [sB]; exact cvA)`. Simplify using `only [star_pow, star_star] at heb heb'`. Establish `hee : e' = eb` using `funext fun i => (tends_of_endomorphism_limit Y he' i).unique (tends_of_endomorphism_limit Y heb i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hee' : eb' = e` using `funext fun i => (tends_of_endomorphism_limit Y heb' i).unique (tends_of_endomorphism_limit Y he i)`. Substitute `hee hee'` using the available equality. Take `⟨c0, i0, cm0, fx0, sp0⟩` from `proj_one hL hLie Y p 0 ε hε hε1 hεx eb' he`. Take `⟨c1, i1, cm1, fx1, sp1⟩` from `proj_one hL hLie Y p 1 (star ε) hεs hεs1 hεsx e' he'`. Establish `hint0 : ∀ i, IntS V (eb' i)` using `fun i => (tends_of_endomorphism_limit Y he i).intS fun n => Y.intAct _ i`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hint1 : ∀ i, IntS V (e' i)` using `fun i => (tends_of_endomorphism_limit Y he' i).intS fun n => Y.intAct _ i`. Use `⟨![eb', e'], ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g i`. Use `fin_cases g`. Conclude with `hint0 i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hint1 i`. Introduce `g i`. Use `fin_cases g`. Conclude with `c0 i`. Conclude with `c1 i`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `fin_cases g`. Conclude with `hhom`. Conclude with `hhom'`. Introduce `g`.
-
-Use `fin_cases g`. Conclude with `i0`. Conclude with `i1`. Introduce `g a`. Use `fin_cases g`.
-
-Conclude with `cm0 a`. Conclude with `cm1 a`. Introduce `g c`. Use `fin_cases g`. Conclude with `fx0 c`.
-
-Conclude with `fx1 c`. Introduce `g v`. Use `fin_cases g`. Conclude with `sp0 v`. Conclude with `sp1 v`.
-
-Introduce `g`. Use `fin_cases g`. Conclude with `hexp`. Conclude with `hexp'`.
+A detailed English derivation is pending.
 -/
 theorem projFB_of (hL : LSmallSt) (hLie : ProjLieSt) : ProjFBSt := by
   intro C _ _ V O _ _ dd Y d _ I _ p hE0

@@ -16,14 +16,14 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Take `⟨Pr, hPr⟩` from `LinearMap.exists_leftInverse_of_injective (testFn G).subtype (Submodule.ker_subtype _)`. Conclude with `⟨Pr, fun f => LinearMap.congr_fun hPr f⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_testProj : ∃ Pr : (G → ℂ) →ₗ[ℂ] testFn G, ∀ f : testFn G, Pr f = f := by
   obtain ⟨Pr, hPr⟩ := LinearMap.exists_leftInverse_of_injective (testFn G).subtype (Submodule.ker_subtype _)
   exact ⟨Pr, fun f => LinearMap.congr_fun hPr f⟩
 
 /- English proof (translation)
-Use `finiteDimensional_range_heckeLin μ hρ f` as an intermediate fact. Conclude with `Submodule.finiteDimensional_of_le (LinearMap.range_comp_le_range _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fd_range_heckeLin_comp (μ : Measure G) [μ.IsHaarMeasure] {ρ : Representation ℂ G V}
     (hρ : IsAdmissible ρ) (f : locallyConstantCompactSupport G ℂ ℂ) (S : Module.End ℂ V) :
@@ -61,13 +61,13 @@ theorem traceD_apply (μ : Measure G) [μ.IsHaarMeasure] {ρ : Representation �
     traceD μ hρ Pr S f = finTrace (heckeLin μ hρ.1 (Pr f) ∘ₗ S) := rfl
 
 /- English proof (translation)
-Establish `e1 : Pr f = ⟨f, hf⟩` using `hPr ⟨f, hf⟩`. Establish `e2 : Pr (conjFn g f) = biTranslL g g ⟨f, hf⟩` using `hPr (biTranslL g g ⟨f, hf⟩)`. Rewrite using `[traceD_apply, traceD_apply, e1, e2]`. Use `finiteDimensional_range_heckeLin μ hρ ⟨f, hf⟩` as an intermediate fact. Establish `hB : heckeLin μ hρ.1 (biTranslL g g ⟨f, hf⟩) = (repEquiv ρ g).conj (heckeLin μ hρ.1 ⟨f, hf⟩)` using `LinearMap.ext fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.conj_apply, heckeLin_apply, heckeAct_biTranslL μ hρ.1 g _ v]`. Both sides reduce to the same expression. Rewrite using `[hB]`. Use `fd_range_heckeLin_comp μ hρ ⟨f, hf⟩ (ρ g⁻¹ * S * ρ g)` as an intermediate fact. Rewrite using `[← finTrace_conj (repEquiv ρ g) (heckeLin μ hρ.1 ⟨f, hf⟩ ∘ₗ (ρ g⁻¹ * S * ρ g))]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearEquiv.conj_apply, LinearMap.comp_apply, Module.End.mul_apply]`. Use `congr 3`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ρ g (ρ g⁻¹ v) = v`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem traceD_equiv (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] {ρ : Representation ℂ G V}
     (hρ : IsAdmissible ρ) (Pr : (G → ℂ) →ₗ[ℂ] testFn G) (hPr : ∀ f : testFn G, Pr f = f) (g : G)
@@ -93,7 +93,7 @@ theorem traceD_equiv (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Take `⟨Pr, hPr⟩` from `exists_testProj (G := G)`. Use `⟨traceD μ hρ Pr, fun g S f hf => traceD_equiv μ hρ Pr hPr g S f hf, fun S hS => ?_⟩` and prove the remaining obligations. Use `trace_faithful (μ := μ) hρ S fun f => ?_` and prove the remaining obligations. Use `hS f f.2` as an intermediate fact. Rewrite `this` using `[traceD_apply, hPr f]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hasTraceDistr_of_admissible (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMulRightInvariant]
     {ρ : Representation ℂ G V} (hρ : IsAdmissible ρ) [ρ.IsIrreducible] : HasTraceDistr ρ := by
@@ -106,7 +106,7 @@ theorem hasTraceDistr_of_admissible (μ : Measure G) [μ.IsHaarMeasure] [μ.IsMu
 end Gen
 
 /- English proof (translation)
-Introduce `n V _ _ π hadm hirr`. Use `borelize (GL (Fin (n + 1)) k)`. Use `hirr` as an intermediate fact. Use `GroundTheory.Automorphic.Measures.isMulRightInvariant_GL k (n + 1) (Measure.haar : Measure (GL (Fin (n + 1)) k))` as an intermediate fact. Conclude with `hasTraceDistr_of_admissible (Measure.haar : Measure (GL (Fin (n + 1)) k)) hadm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem traceDistrGL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     TraceDistrGL k := by
@@ -117,7 +117,7 @@ theorem traceDistrGL (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] 
   exact hasTraceDistr_of_admissible (Measure.haar : Measure (GL (Fin (n + 1)) k)) hadm
 
 /- English proof (translation)
-The claim follows from `kirillovEnd_of_theoremA k hA (traceDistrGL k)`.
+A detailed English derivation is pending.
 -/
 theorem kirillovEnd_of_theoremA' (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : TheoremA k) : KirillovEnd k :=

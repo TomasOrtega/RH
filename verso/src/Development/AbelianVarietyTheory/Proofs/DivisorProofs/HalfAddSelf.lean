@@ -9,9 +9,9 @@ namespace GlobalTheory.RealWeil.PosDet
 variable {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Establish `e : p * g + (1 - p) = (1 + p * (g * (1 - p))) * (p * g * p + (1 - p))`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Establish `e2 : g * (1 - p) * p = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [mul_sub, sub_mul, mul_assoc, pp, one_mul, mul_one, sub_self]`. Rewrite using `[e, det_mul, det_one_add_mul_comm, e2, add_zero, det_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_left {p : Matrix ι ι ℂ} (pp : p * p = p) (g : Matrix ι ι ℂ) :
     (p * g + (1 - p)).det = (p * g * p + (1 - p)).det := by
@@ -23,9 +23,9 @@ theorem det_left {p : Matrix ι ι ℂ} (pp : p * p = p) (g : Matrix ι ι ℂ) 
   rw [e, det_mul, det_one_add_mul_comm, e2, add_zero, det_one, one_mul]
 
 /- English proof (translation)
-Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Establish `e : g * p + (1 - p) = (p * g * p + (1 - p)) * (1 + ((1 - p) * g) * p)`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Establish `e2 : p * ((1 - p) * g) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Simplify using `only [mul_sub, sub_mul, pp', one_mul, sub_self]`. Rewrite using `[e, det_mul, det_one_add_mul_comm, e2, add_zero, det_one, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_right {p : Matrix ι ι ℂ} (pp : p * p = p) (g : Matrix ι ι ℂ) :
     (g * p + (1 - p)).det = (p * g * p + (1 - p)).det := by
@@ -37,9 +37,9 @@ theorem det_right {p : Matrix ι ι ℂ} (pp : p * p = p) (g : Matrix ι ι ℂ)
   rw [e, det_mul, det_one_add_mul_comm, e2, add_zero, det_one, mul_one]
 
 /- English proof (translation)
-Establish `qq : (1 - p) * (1 - p) = 1 - p`. Simplify using `only [mul_sub, sub_mul, pp, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Use `det_left qq g` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[add_comm p, ← this, ← det_mul, add_mul, mul_assoc p, hg, mul_one, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_compl {p : Matrix ι ι ℂ} (pp : p * p = p) {g h : Matrix ι ι ℂ} (hg : h * g = 1) :
     (p + (1 - p) * g * (1 - p)).det = (p * h + (1 - p)).det * g.det := by
@@ -50,7 +50,7 @@ theorem det_compl {p : Matrix ι ι ℂ} (pp : p * p = p) {g h : Matrix ι ι �
   rw [add_comm p, ← this, ← det_mul, add_mul, mul_assoc p, hg, mul_one, add_comm]
 
 /- English proof (translation)
-Establish `: (p - (1 - p)) * (p - (1 - p)) = 1`. Simplify using `only [mul_sub, sub_mul, pp, one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[← det_mul, this, det_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_sign {p : Matrix ι ι ℂ} (pp : p * p = p) : (p - (1 - p)).det * (p - (1 - p)).det = 1 := by
   have : (p - (1 - p)) * (p - (1 - p)) = 1 := by
@@ -58,12 +58,12 @@ theorem det_sign {p : Matrix ι ι ℂ} (pp : p * p = p) : (p - (1 - p)).det * (
   rw [← det_mul, this, det_one]
 
 /- English proof (translation)
-Use `module`.
+A detailed English derivation is pending.
 -/
 theorem half_add_self (X : Matrix ι ι ℂ) : (1 / 2 : ℂ) • (X + X) = X := by module
 
 /- English proof (translation)
-Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Establish `hg' : ∀ x, h * (g * x) = x` using `fun x => by rw [← mul_assoc, hg, one_mul]`. Rewrite using `[← half_add_self ((p - (1 - p)) * h * (p * g * p - (1 - p) * g * (1 - p)))]`. Use `congr 1`. Simplify using `only [mul_sub, sub_mul, mul_assoc, pp, hg, hg', one_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -77,7 +77,7 @@ theorem half_eq {p : Matrix ι ι ℂ} (pp : p * p = p) {g h : Matrix ι ι ℂ}
   simp only [mul_sub, sub_mul, mul_assoc, pp, hg, hg', one_mul, mul_one]; abel
 
 /- English proof (translation)
-Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Rewrite using `[← det_compl pp hg, det_left pp a, ← det_mul, ← det_mul]`. Use `congr 1`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem det_diag {p : Matrix ι ι ℂ} (pp : p * p = p) (a : Matrix ι ι ℂ) {g h : Matrix ι ι ℂ} (hg : h * g = 1) :
     (p * a * p - (1 - p) * g * (1 - p)).det =
@@ -88,11 +88,11 @@ theorem det_diag {p : Matrix ι ι ℂ} (pp : p * p = p) (a : Matrix ι ι ℂ) 
   simp only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp, pp', one_mul, mul_one]; abel
 
 /- English proof (translation)
-Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Establish `gh : g₂ * h₂ = 1` using `mul_eq_one_comm.1 hg₂`. Establish `gh' : ∀ x, g₂ * (h₂ * x) = x` using `fun x => by rw [← mul_assoc, gh, one_mul]`. Establish `hσ : fromBlocks p (1 - p) (1 - p) p * fromBlocks p (1 - p) (1 - p) p = 1`. Rewrite using `[fromBlocks_multiply, ← fromBlocks_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `congr 1 <;> (simp only [mul_sub, sub_mul, pp, one_mul, mul_one]; abel)`. Establish `e : fromBlocks p (1 - p) (1 - p) p * fromBlocks (p * g₁ * p - (1 - p) * g₁ * (1 - p)) (p * g₂) (-((1 - p) * g₁)) (p * g₂ * p - (1 - p) * g₂ * (1 - p)) * fromBlocks p (1 - p) (1 - p) p = fromBlocks ((p - (1 - p)) * g₂ * (h₂ * g₁ * p + (1 - p))) (p * g₂ * p - (1 - p) * g₁ * (1 - p) …`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`. Apply the tactic sequence `congr 1 <;> (simp only [mul_add, add_mul, mul_sub, sub_mul, mul_neg, neg_mul, mul_assoc, pp, pp', gh', one_mul, mul_one]; abel)`. Establish `d` using `congrArg det e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `dσ` using `congrArg det hσ`. Rewrite `dσ` using `[det_mul, det_one]`. Rewrite `d` using `[det_mul, det_mul, det_fromBlocks_zero₂₁, det_diag pp g₂ hg₁, det_mul, det_mul, det_right pp, ← det_left pp, mul_right_comm, dσ, one_mul]`. Rewrite using `[d]`. Take the linear combination `(g₁.det * g₂.det * ((p * h₁ + (1 - p)).det * (p * g₂ + (1 - p)).det * (p * (h₂ * g₁) + (1 - p)).det)) * det_sign pp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_block {p : Matrix ι ι ℂ} (pp : p * p = p) {g₁ h₁ g₂ h₂ : Matrix ι ι ℂ} (hg₁ : h₁ * g₁ = 1)
     (hg₂ : h₂ * g₂ = 1) :
@@ -122,29 +122,29 @@ theorem det_block {p : Matrix ι ι ℂ} (pp : p * p = p) {g₁ h₁ g₂ h₂ :
     (p * (h₂ * g₁) + (1 - p)).det)) * det_sign pp
 
 /- English proof (translation)
-Introduce `ι _ _ s hs ss`. Take `⟨p, hp⟩ : ∃ p : Matrix ι ι ℂ, p = (1 / 2 : ℂ) • (1 + s)` from `⟨_, rfl⟩`. Establish `pp : p * p = p`. Rewrite using `[hp]`. Simplify using `only [smul_mul_smul_comm, mul_add, add_mul, ss, one_mul, mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `pp' : ∀ x, p * (p * x) = p * x` using `fun x => by rw [← mul_assoc, pp]`. Establish `hpH : pᴴ = p`. Rewrite using `[hp, conjTranspose_smul, conjTranspose_add, conjTranspose_one, hs]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsp : s = p - (1 - p)` using `by rw [hp]; module`. Establish `hd : ∀ g, dP s g = (p * g + (1 - p)).det` using `fun g => by`. Unfold `dP`. Rewrite using `[hp, smul_mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `module`. Establish `key : ∀ g : Matrix ι ι ℂ, gᴴ * s * g = s → g⁻¹ * g = 1 ∧ gᴴ = s * g⁻¹ * s` using `fun g hg => by`. Establish `h1 : s * gᴴ * s * g = 1` using `by rw [mul_assoc s, mul_assoc s, hg, ss]`. Rewrite using `[inv_eq_left_inv h1]`. Use `⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← mul_assoc, ss, one_mul]`. Rewrite using `[mul_assoc, ss, mul_one]`. Establish `ds` using `det_sign pp`. Simplify using `only [hd]`. Use `⟨fun g hg => ?_, fun g₁ g₂ hg₁ hg₂ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Take `⟨h1, h2⟩` from `key g hg`. Generalize the expression as in `g⁻¹ = h at h1 h2`. Establish `dh` using `congrArg det h1`. Rewrite `dh` using `[det_mul, det_one]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← det_conjTranspose, conjTranspose_add, conjTranspose_mul, conjTranspose_sub, conjTranspose_one, hpH, h2]`. Establish `: s * h * s * p + (1 - p) = s * (h * p + (1 - p)) * s`. Rewrite using `[hsp]`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, det_mul, det_mul, det_right pp, ← det_left pp, hsp, mul_right_comm, ds, one_mul]`. Rewrite using `[h2, hsp, half_eq pp h1, det_mul, det_mul, det_diag pp g h1]`. Take the linear combination `((p * g + (1 - p)).det * (p * h + (1 - p)).det) * (h.det * g.det) * ds + ((p * g + (1 - p)).det * (p * h + (1 - p)).det) * dh`. Take `⟨a1, a2⟩` from `key g₁ hg₁`. Take `⟨b1, b2⟩` from `key g₂ hg₂`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `g₁⁻¹ = h₁ at a1 a2`. Generalize the expression as in `g₂⁻¹ = h₂ at b1 b2`. Establish `da` using `congrArg det a1`. Establish `db` using `congrArg det b1`. Rewrite `da`, `db` using `[det_mul, det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Matrix.fromBlocks ((1 / 2 : ℂ) • (1 + g₁ᴴ * g₁)) ((1 / 2 : ℂ) • (g₁ᴴ * (1 + s) * g₂)) ((1 / 2 : ℂ) • (g₂ᴴ * (1 - s) * g₁)) ((1 / 2 : ℂ) • (1 + g₂ᴴ * g₂)) = fromBlocks (s * h₁) 0 0 (s * h₂) * fromBlocks (p * g₁ * p - (1 - p) * g₁ * (1 - p)) (p * g₂) (-((1 - p) * g₁)) (p * g₂ * …`. Rewrite using `[fromBlocks_multiply, a2, b2, hsp, half_eq pp a1, half_eq pp b1]`. Simplify using `only [Matrix.zero_mul, add_zero, zero_add]`. Use `congr 1`. Rewrite using `[← half_add_self ((p - (1 - p)) * h₁ * (p * g₂))]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Simplify using `only [mul_add, add_mul, mul_sub, sub_mul, mul_assoc, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[← half_add_self ((p - (1 - p)) * h₂ * (-((1 - p) * g₁)))]`. Use `congr 1`.
+Normalize the expressions using the abelian group laws. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [mul_sub, sub_mul, mul_neg, mul_assoc, pp', one_mul, mul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, det_mul, det_fromBlocks_zero₂₁, det_block pp a1 b1, det_mul, det_mul, hsp]`. Generalize the expression as in `(p * h₁ + (1 - p)).det * (p * g₂ + (1 - p)).det * (p * (h₂ * g₁) + (1 - p)).det = T`. Take the linear combination `T * (h₁.det * g₁.det) * (h₂.det * g₂.det) * ds + T * (h₂.det * g₂.det) * da + T * db`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem detPlus_identities : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (s : Matrix ι ι ℂ), sᴴ = s → s * s = 1 →
     (∀ g : Matrix ι ι ℂ, gᴴ * s * g = s → dP s g⁻¹ = star (dP s g) ∧

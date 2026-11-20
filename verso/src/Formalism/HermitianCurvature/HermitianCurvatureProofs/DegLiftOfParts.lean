@@ -23,17 +23,15 @@ def KrHyp : Prop :=
       ∀ (l : C.Letter) (e : Fin 2), Kr Bs (D.vLet k r Bs.z Bs.z' j hj l e H) y = D.vLet k r Bs.z Bs.z' j hj l e (Kr Bs H) y
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F hF j s hj h τ ha w' a' b δ g hg`. Establish `hsz : D.ptSize (h ++ [(s, τ)]) = D.ptSize h + s` using `Formalism.FourierDecayAlt.P.Dx2.SL.ptSize_append h s τ`. Establish `hs1 : 1 ≤ s` using `(ha.1 (s, τ) (by simp)).1`. Establish `hj1 : 1 ≤ j` using `by rw [← ha.2, hsz]; omega`. Take `⟨X, _, μ, ℓ, sx, hsx, hFubG⟩` from `hLF P.k P.r Wp Wq p.T p.hT j hj hj1 (h ++ [(s, τ)]) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgG : g ∈ B.GV P.k (P.r - j)` using `hg.1`. Establish `hg' : D.castM (by rw [ha.2]) g ∈ B.GV P.k (P.r - D.ptSize (h ++ [(s, τ)]))` using `Formalism.FourierDecayAlt.P.PBE.castM_GV _ hgG`. Establish `hl : D.IsLocPt (h ++ [(s, τ)]) (D.ptSize (h ++ [(s, τ)]))` using `⟨ha.1, rfl⟩`. Take `⟨hx₁G, hxi, hy⟩` from `hNF P.k P.r (h ++ [(s, τ)]) (by rw [ha.2]; exact hj) _ hg' hl`. Use `set PC : (B.Mat P.k P.r → (Wq →L[ℂ] Wp)) → Prop := fun H => (∀ x ∈ B.GV P.k P.r, Dmin P.k P.r p.T.base.z p.T.base.z' x ⟨j, by omega⟩ ≠ 0 → CapelliWordSumExpansion.Loc (⊤ : ℕ∞) H x) ∧ (∃ R : ℝ, ∀ x ∈ B.GV P.k P.r, H x ≠ 0 → B.gN x ≤ R) with hPC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `liftDeg_core p.T F j s hj h τ ha w' a' b δ g X μ ℓ sx _ hsx hx₁G ?_ ?_ PC (fun H hH => hFubG g hg H (contOn_of_loc (fun x hx hxG => hH.1 x hxG hx)) hH.2) ?_ (fun H hH y hyG hyD => (hKr P.k P.r Wp Wq p.T.base j hj H hH.1 hH.2 y hyG hyD).1) (fun H hH y hyG hyD => (hKr P.k P.r Wp Wq …` and prove the remaining obligations. Introduce `a₀ q ha₀`. Rewrite using `[hxi a₀ q (by rw [hsz]; exact ha₀)]`. Distinguish the cases in `hq : q.val < D.ptSize h + s`. Rewrite using `[dif_pos (by rw [hsz]; exact hq), if_pos hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmat_zb h s τ hl a₀.val q.val _ _`. Rewrite using `[dif_neg (by rw [hsz]; exact hq), if_neg hq]`. Introduce `a₀ q ha₀`. Rewrite using `[hy a₀ q (by rw [hsz]; exact ha₀)]`. Distinguish the cases in `hq : P.r + P.k < q.val ∧ 2 * P.r + P.k - q.val < D.ptSize h + s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos (by rw [hsz]; exact hq), if_pos hq, hmat_zb h s τ hl a₀.val _ _ _]`. Rewrite using `[dif_neg (by rw [hsz]; exact hq), if_neg hq]`. Introduce `w e`. Use `⟨fun x hxG hxD => uwG_mem (E := Wq →L[ℂ] Wp) p.T.base.z p.T.base.z' j hj hF.1 w e x hxD hxG, ?_⟩` and prove the remaining obligations. Take `⟨R, hR⟩` from `hF.2.1`.
-
-Conclude with `⟨R, uwG_supp p.T.base.z p.T.base.z' F R hR j hj w e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftDegAll_of (hLF : LeftFubiniLemmas.LeftFubini) (hNF : LeftFubiniLemmas.NFHypL) (hKr : KrHyp) : LiftDegAll := by
   intro Wp Wq _ _ _ _ _ _ P p F hF j s hj h τ ha w' a' b δ g hg
@@ -70,7 +68,7 @@ theorem liftDegAll_of (hLF : LeftFubiniLemmas.LeftFubini) (hNF : LeftFubiniLemma
     exact ⟨R, uwG_supp p.T.base.z p.T.base.z' F R hR j hj w e⟩
 
 /- English proof (translation)
-The claim follows from `degLift_of (liftDegAll_of hLF LeftFubiniLemmas.normal_form_left_hypothesis hKr)`.
+A detailed English derivation is pending.
 -/
 theorem degLift_of_parts (hLF : LeftFubiniLemmas.LeftFubini) (hKr : KrHyp) : KB.DegLift :=
   degLift_of (liftDegAll_of hLF LeftFubiniLemmas.normal_form_left_hypothesis hKr)

@@ -15,11 +15,11 @@ namespace Formalism.NormUnitaryCountingLemmas
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Rewrite using `[discreteTopology_iff_isOpen_singleton_zero]`. Establish `hball : ({0} : Set L) = Metric.ball (0 : L) ε`. Use extensionality with `x`. Simplify using `only [Set.mem_singleton_iff, Metric.mem_ball, dist_zero_right]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `rfl`. Simplify using `using hε`. Introduce `hx`. Assume the negation of the conclusion as `hne`. Establish `hx0 : (x : E) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `h x x.2 hx0` as an intermediate fact. Rewrite `hx` using `[Submodule.coe_norm]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hball]`. Conclude with `Metric.isOpen_ball`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteTopology_of_norm_ge (L : Submodule ℤ E) {ε : ℝ} (hε : 0 < ε)
     (h : ∀ x ∈ L, x ≠ 0 → ε ≤ ‖x‖) : DiscreteTopology L := by
@@ -40,47 +40,43 @@ theorem discreteTopology_of_norm_ge (L : Submodule ℤ E) {ε : ℝ} (hε : 0 < 
   exact Metric.isOpen_ball
 
 /- English proof (translation)
-Use `set k := Module.finrank ℤ Q with hk`. Set `b` to `Module.finBasis ℤ Q`. Set `v : Fin k → E` to `fun i => (b i : E)`. Set `G` to `Matrix.gram ℝ v`. Establish `hcovQ : Formalism.F.covol Q = Real.sqrt G.det` using `Formalism.F.covol_eq_gram E Q (Fin k) b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < Formalism.F.covol Q` using `Formalism.F.covol_pos' E Q hQd`. Establish `hdet : 0 < G.det` using `Real.sqrt_pos.mp (hcovQ ▸ hpos)`. Establish `hdetu : IsUnit G.det` using `hdet.ne'.isUnit`. Set `P` to `G⁻¹`. Set `w : Fin k → E` to `fun j => ∑ i, P i j • v i`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hGP : G * P = 1` using `Matrix.mul_nonsing_inv G hdetu`. Establish `hbi : ∀ l j, inner ℝ (v l) (w j) = if l = j then 1 else 0`. Introduce `l j`. Establish `h1 : inner ℝ (v l) (w j) = (G * P) l j`. Simplify using `only [w, inner_sum, real_inner_smul_right, Matrix.mul_apply, G, Matrix.gram_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Rewrite using `[h1, hGP, Matrix.one_apply]`. Establish `hQv : ∀ x ∈ Q, ∃ a : Fin k → ℤ, x = ∑ i, (a i : ℝ) • v i`. Introduce `x hx`. Use `⟨fun i => b.repr ⟨x, hx⟩ i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Establish `h2 : ∑ i, (b.repr ⟨x, hx⟩ i) • (b i : E) = x` using `h1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Int.cast_smul_eq_zsmul, v]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Apply the tactic sequence `try rfl`. Set `D` to `Submodule.span ℤ (Set.range w)`. Establish `hint : ∀ y ∈ D, ∀ x ∈ Q, ∃ z : ℤ, inner ℝ x y = (z : ℝ)`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Introduce `x hx`. Take `⟨a, rfl⟩` from `hQv x hx`. Use `⟨a j, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [sum_inner, real_inner_smul_left, hbi]`. Simplify using the standard rewrite rules. Consider the case `zero => exact fun x _ => ⟨0, by simp⟩`. Consider the case `add y y' _ _ h1 h2`. Introduce `x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z1, e1⟩` from `h1 x hx`. Take `⟨z2, e2⟩` from `h2 x hx`. Conclude with `⟨z1 + z2, by rw [inner_add_right, e1, e2]; push_cast; ring⟩`. Consider the case `smul c y _ h1`. Introduce `x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨z1, e1⟩` from `h1 x hx`. Conclude with `⟨c * z1, by rw [← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, e1]; push_cast; ring⟩`. Establish `hDV : ∀ y ∈ D, y ∈ span ℝ (Q : Set E)`. Introduce `y hy`. Establish `hle : D ≤ (span ℝ (Q : Set E)).restrictScalars ℤ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `Submodule.sum_mem _ (fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (b i).2))`. Conclude with `hle hy`. Establish `hDl : ∀ y ∈ D, y ≠ 0 → l ≤ ‖y‖` using `fun y hy hy0 => hdual y (hDV y hy) hy0 (hint y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hDd : DiscreteTopology D` using `discreteTopology_of_norm_ge D hl hDl`. Establish `hli : LinearIndependent ℤ w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg l`. Establish `h1` using `congrArg (fun y => inner ℝ (v l) y) hg`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner_sum, inner_zero_right] at h1`. Simplify using `only [← Int.cast_smul_eq_zsmul ℝ, real_inner_smul_right, hbi, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true] at h1`. Conclude with `h1` after adjusting the coercions. Set `bw` to `Basis.span hli`. Establish `hcovD : Formalism.F.covol D = Real.sqrt (Matrix.gram ℝ w).det`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.F.covol_eq_gram E D (Fin k) bw]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Conclude with `congrArg Subtype.val (Basis.span_apply hli i)`. Establish `hgw : Matrix.gram ℝ w = P.transpose * G * P` using `Formalism.F.gram_sum_smul_eq_transpose_mul v P`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetw : (Matrix.gram ℝ w).det = G.det⁻¹`. Rewrite using `[hgw, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Clear the denominators using the available nonvanishing facts. Establish `hrkD : Formalism.F.rk D = k`. Simplify using `only [Formalism.F.rk]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Module.finrank_eq_card_basis bw, Fintype.card_fin]`. Establish `hrkQ : Formalism.F.rk Q = k` using `rfl`. Establish `hkpos : 0 < k`. Establish `: Nontrivial Q` using `Submodule.nontrivial_iff_ne_bot.mpr hQ`. Conclude with `Module.finrank_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hD0 : D ≠ ⊥`. Introduce `h`. Establish `hw0 : w ⟨0, hkpos⟩ ∈ D` using `Submodule.subset_span ⟨_, rfl⟩`. Rewrite `hw0` using `[h, Submodule.mem_bot]`. Establish `h2` using `hbi ⟨0, hkpos⟩ ⟨0, hkpos⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2` using `[hw0, inner_zero_right]`. Simplify using `at h2`. Take `⟨q, hqQ, hq0, hqn⟩` from `Formalism.F.shortVector_of Formalism.F.covol_eq_covolume' E Q hQd hQ`. Take `⟨y, hyD, hy0, hyn⟩` from `Formalism.F.shortVector_of Formalism.F.covol_eq_covolume' E D hDd hD0`. Use `⟨q, hqQ, hq0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hly` using `hDl y hyD hy0`. Rewrite `hyn` using `[hrkD, hcovD, hdetw, Real.sqrt_inv, ← hcovQ]`. Rewrite `hqn`, the goal using `[hrkQ]`. Establish `ht : 0 < Formalism.F.covol Q ^ ((1 : ℝ) / k)` using `Real.rpow_pos_of_pos hpos _`. Rewrite `hyn` using `[Real.inv_rpow hpos.le]`.
-
-Establish `hsk : Real.sqrt k * Real.sqrt k = k` using `Real.mul_self_sqrt (Nat.cast_nonneg k)`. Establish `h1 : l * Formalism.F.covol Q ^ ((1 : ℝ) / k) ≤ Real.sqrt k`. Establish `h2` using `hly.trans hyn`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[le_div_iff₀ hl]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_norm_le_rank_div_of_dualMinimum (Q : Submodule ℤ E) [hQd : DiscreteTopology Q] (hQ : Q ≠ ⊥) {l : ℝ}
     (hl : 0 < l)

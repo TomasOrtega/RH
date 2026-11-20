@@ -12,14 +12,14 @@ section Core
 variable {V W : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Use `h.conj_inner_symm x x` as an intermediate fact. Conclude with `Complex.conj_eq_iff_im.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem core_inner_self_im (h : InnerProductSpace.Core ℂ V) (x : V) : (h.inner x x).im = 0 := by
   have := h.conj_inner_symm x x
   exact Complex.conj_eq_iff_im.mp this
 
 /- English proof (translation)
-The claim follows from `h.definite x (Complex.ext hx (core_inner_self_im h x)) @[instance_reducible]`.
+A detailed English derivation is pending.
 -/
 theorem core_eq_zero_of_re (h : InnerProductSpace.Core ℂ V) (x : V)
     (hx : (h.inner x x).re = 0) : x = 0 :=
@@ -36,7 +36,7 @@ def coreComap (h : InnerProductSpace.Core ℂ W) (f : V →ₗ[ℂ] W) (hf : Fun
   definite x hx := hf (by rw [map_zero]; exact h.definite _ hx)
 
 /- English proof (translation)
-The claim follows from `rfl @[instance_reducible]`.
+A detailed English derivation is pending.
 -/
 theorem coreComap_inner (h : InnerProductSpace.Core ℂ W) (f : V →ₗ[ℂ] W)
     (hf : Function.Injective f) (x y : V) :
@@ -100,7 +100,7 @@ theorem fibreProd_tmul (z : ComplexAt σ) (e : E) (f : F) :
     fibreProd σ E F (z ⊗ₜ (e, f)) = (z ⊗ₜ e, z ⊗ₜ f) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Prod.fst_zero, Prod.snd_zero, Prod.mk_zero_zero]`. Consider the case `tmul z v => rfl`. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, map_add, Prod.fst_add, Prod.snd_add, map_add, map_add, Prod.mk_add_mk]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibreProd_conjMap (x : Fibre σ (E × F)) :
     fibreProd (conjugate σ) E F (conjMap σ (E × F) x) =
@@ -132,7 +132,7 @@ def HermitianBundle.prod (A B : HermitianBundle K) : HermitianBundle K :=
   ⟨A.carrier × B.carrier, A.metric.prod B.metric⟩
 
 /- English proof (translation)
-The claim follows from `gaussianIntegers.prod (gaussianStandard 2)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle GaussianField := gaussianIntegers.prod (gaussianStandard 2)
 

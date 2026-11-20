@@ -59,7 +59,7 @@ def thOneVal (K : CurveDat host embLL eTau) (s : LL →+* ℂ) : ℝ :=
 def guardPos (x : ℝ) : ℝ := if 0 < x then x else 1
 
 /- English proof (translation)
-Unfold `guardPos`. Use `split_ifs with h`. Conclude with `h`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem guardPos_pos (x : ℝ) : 0 < guardPos x := by
   unfold guardPos; split_ifs with h
@@ -67,7 +67,7 @@ theorem guardPos_pos (x : ℝ) : 0 < guardPos x := by
   · exact one_pos
 
 /- English proof (translation)
-The claim follows from `if_pos h`.
+A detailed English derivation is pending.
 -/
 theorem guardPos_of_pos {x : ℝ} (h : 0 < x) : guardPos x = x := if_pos h
 

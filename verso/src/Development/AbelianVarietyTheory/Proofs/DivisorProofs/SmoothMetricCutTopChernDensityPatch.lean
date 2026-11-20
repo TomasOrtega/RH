@@ -16,19 +16,17 @@ set_option autoImplicit false
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `F _ σ X m E O H H₀ hH hH₀ e S A W c hp ρ hρ hsupp`. Use `haveI := CxPts.secondCountableTopology_of_isProjOver σ X.isProjOver`. Establish `hcont : Continuous ρ` using `continuous_iff_continuousAt.2 fun y => (hρ y).continuousAt`. Establish `htop : ptsIn X.str σ ⊤ = Set.univ` using `Set.eq_univ_of_forall fun _ => mem_ptsIn_top`. Use `set f : V X.dim → ℂ := fun v => (ρ (e.symm v) : ℂ) * mixTop fun _ => curvAt (fun v => H₀ A (e.symm v) ()) v with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set g : V X.dim → ℝ := fun v => (Real.pi ^ X.dim)⁻¹ * (f v).re with hg`. Take `⟨hUo, -, hK⟩` from `GlobalTheory.T.goodPatch_chart_image_properties E O H hp`. Establish `hfi : IntegrableOn f (e '' W)`. Use `GlobalTheory.T.integrableOn_cutoff_topChernForm_smoothGram (e '' W) (e '' tsupport ρ) (fun v => H₀ A (e.symm v) ()) (fun v => ρ (e.symm v)) hUo (hK _ (isClosed_tsupport ρ) hsupp) (Set.image_mono hsupp) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.gramMatrix_smooth_isUnit_in_holomorphicChart E ⊤ H₀ hH₀ hp.holo mem_ptsIn_top (hp.sub hz) (hp.frame z hz)`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(GlobalTheory.T.contDiffAt_holomorphicComplexChart_of_smoothAt hp.holo (hp.sub hz) (hρ z)).contDiffWithinAt`. Introduce and unpack `_ ⟨z, hz, rfl⟩ hK'`. Rewrite using `[e.left_inv (hp.sub hz)]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hK' ⟨z, subset_tsupport ρ h0, rfl⟩`. Establish `hgi : IntegrableOn g (e '' W)` using `hfi.re.const_mul _`. Establish `key` using `GlobalTheory.T.topFormIntegral_of_support_in_holomorphicChart (fun c : AlgChart X.str σ X.dim => c.e) (fun i j => GlobalTheory.T.differentiableOn_holomorphicChart_trans_etaleChart i.holo j) (fun y => AlgChart.exists_mem_source y) (S := ptsIn X.str σ ⊤) (isOpen_ptsIn _).measurable …`. Rewrite `key` using `[htop, Set.univ_inter]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `key using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hg, integral_const_mul]`. Use `congr 1`. Conclude with `(integral_re hfi).symm`. Introduce `i y _ hyW _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: ρ y = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hyW (hsupp (subset_tsupport ρ h0))`. Simplify using `[this]`. Introduce `j y _ hyW hyj`.
-
-Establish `ht` using `GlobalTheory.T.top_chern_density_holomorphic_chart_etale E ⊤ H₀ hH₀ hp.holo j mem_ptsIn_top (hp.sub hyW) hyj (hp.frame y hyW)`. Simplify using `only [hg, hf, e.left_inv (hp.sub hyW), Complex.re_ofReal_mul]`. Rewrite using `[← mul_assoc, mul_comm _ (ρ y), mul_assoc, ht]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasInt_cut_topDens_patch : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {m : ℕ} (E : Fr (ratOf X) (fun _ : Unit => m) 0) (O : X.X.Opens) (H H₀ : Mat (fun _ : Unit => m) X.Fn → CxPts X.str σ → Mat (fun _ : Unit => m) ℂ), IsMetricOn E O H → IsMetricOn E ⊤ H₀ → ∀ {e : OpenPartialHomeomorph (CxPts X.str σ) (V X.dim)} {S : Finset (Fin X.dim)} {A : Mat (fun _ : Unit => m) X.Fn} {W : Set (CxPts X.str σ)} {c : ℝ}, GoodPatch E O H e S A W c → ∀ {ρ : CxPts X.str σ → ℝ}, (∀ y, CInfAt ρ y) → tsupport ρ ⊆ W → HasInt (fun c : AlgChart X.str σ X.dim => c.e) (fun c y => ρ y * topDens E H₀ c y) (ptsIn X.str σ ⊤) ((Real.pi ^ X.dim)⁻¹ * (∫ v in e '' W, (ρ (e.symm v) : ℂ) * mixTop fun _ => curvAt (fun v => H₀ A (e.symm v) ()) v).re) := by
   intro F _ σ X m E O H H₀ hH hH₀ e S A W c hp ρ hρ hsupp

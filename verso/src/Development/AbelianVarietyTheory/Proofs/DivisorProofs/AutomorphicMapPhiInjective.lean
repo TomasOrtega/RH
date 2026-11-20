@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image`. Consider the case `exact _root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image`. Consider the case `(apply _root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem multilinear_mem_span {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι → Type}
     [∀ i, AddCommGroup (M i)] [∀ i, Module ℂ (M i)] {N : Type} [AddCommGroup N] [Module ℂ N]
@@ -32,7 +32,7 @@ theorem multilinear_mem_span {ι : Type} [Fintype ι] [DecidableEq ι] {M : ι �
   | (intros; exact _root_.GlobalTheory.MultilinearSpanImage.multilinear_apply_mem_span_image ..)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ClassFin.span_range_eq_top_of_isIrreducible _ _ _ (GlobalTheory.Branching.isIrreducible_smallRep_unitary n mu)`.
+A detailed English derivation is pending.
 -/
 theorem span_smallRep_unitary (n : ℕ) (mu : DomWeight n) :
     Submodule.span ℂ (Set.range (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) mu)) = ⊤ :=
@@ -41,15 +41,15 @@ theorem span_smallRep_unitary (n : ℕ) (mu : DomWeight n) :
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce and unpack `Q -`. Take `⟨z, rfl⟩` from `GlobalTheory.PiTensorCommute.mem_range_piTensorHomMap Q`. Proceed by induction on `z using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_smul, PiTensorProduct.piTensorHomMap_tprod_eq_map]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `h` using `multilinear_mem_span (PiTensorProduct.mapMultilinear ℂ (fun v => nablaSq ℂ n (lam v)) (fun v => nablaSq ℂ n (lam v))) (fun v => Set.range (GlobalTheory.Branching.smallRep (GlobalTheory.Branching.unitaryIncl n) (lam v))) f (fun v => by rw [span_smallRep_unitary]; trivial)`. Use `Submodule.span_le.2 ?_ h` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `choose u hu using hg`. Take `⟨x, hx, hxc⟩` from `GlobalTheory.InfSurj.exists_infU_cAll_eq E n (fun v => GlobalTheory.Branching.unitaryIncl n (u v)) (fun v => (u v).2)`. Use `Submodule.subset_span ⟨⟨x, hx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[PiTensorProduct.mapMultilinear_apply]`. Express the relevant statement in the definitionally equal form `PiTensorProduct.map _ = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[← hu v]`. Establish `h1` using `congrFun hxc v`. Express the relevant statement in the definitionally equal form `cEmb v.embedding x = _ at h1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.Branching.sqRep ℂ n (lam v) (cEmb v.embedding x) = GlobalTheory.Branching.sqRep ℂ n (lam v) _`. Rewrite using `[h1]`. Consider the case `add a b ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_wInf (lam : InfinitePlace E → DomWeight n) :
     Submodule.span ℂ (Set.range fun k : infU E n => wInf lam k.1) = ⊤ := by
@@ -86,17 +86,17 @@ end GlobalTheory.BCT.TrKer
 namespace GlobalTheory.BCT.TrKer
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n _ S _ lam K' _`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Set `b` to `Module.finBasis ℂ (Wsp lam)`. Set `e` to `TensorProduct.equivFinsuppOfBasisRight (M := vecM S lam K') b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hxe : x = ∑ j, e x j ⊗ₜ b j` using `by conv_lhs => rw [← e.symm_apply_apply x]`. Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum_fintype]`. Simplify using the standard rewrite rules. Establish `hval : ∀ (x₀ : finU E n) (k : infU E n), ∑ j, (e x j).1 x₀ (wInf lam k.1 (b j)) = 0`. Introduce `x₀ k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrFun hx (x₀.1 * k.1)`. Establish `hw : wInf lam (x₀.1 * k.1) = wInf lam k.1` using `by rw [map_mul, wInf_fin, one_mul]`. Rewrite `h` using `[hxe, map_sum]`. Simplify `h` using `only [Phi_tmul, phiFun_apply, splitFin_mul, hw, Finset.sum_apply, Pi.zero_apply]`. Establish `hall : ∀ (x₀ : finU E n) (T : Module.End ℂ (Wsp lam)), ∑ j, (e x j).1 x₀ (T (b j)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `x₀ T`. Set `Λ : Module.End ℂ (Wsp lam) →ₗ[ℂ] ℂ` to `{ toFun := fun T => ∑ j, (e x j).1 x₀ (T (b j)) map_add' := fun T T' => by simp [Finset.sum_add_distrib] map_smul' := fun c T => by simp [Finset.mul_sum] }`. Establish `hS : Submodule.span ℂ (Set.range fun k : infU E n => wInf lam k.1) ≤ LinearMap.ker Λ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hval x₀ k`. Rewrite `hS` using `[span_wInf]`. Conclude with `hS (Submodule.mem_top (x := T))`. Establish `hc : e x = 0`. Use `Finsupp.ext fun j => Subtype.ext (funext fun x₀ => LinearMap.ext fun w => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hall x₀ ((b.coord j).smulRight w)`. Simplify using `[Finsupp.single_apply] at h`. Rewrite `h` using `[Finset.sum_eq_single j (fun i _ hi => by simp [hi]) (by simp), if_pos rfl]`. Then use the resulting hypothesis. Conclude with `e.injective (by rw [hc, map_zero])`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem Phi_injective : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ n : ℕ, 1 ≤ n →
     ∀ (S : Set (Pl E)), IsSection S → ∀ (lam : InfinitePlace E → DomWeight n)

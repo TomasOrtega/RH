@@ -9,9 +9,9 @@ open GroundTheory.GroupCoh
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ (B ⧸ S)` using `Module.Finite.of_surjective (QuotientAddGroup.mk' S).toIntLinearMap (QuotientAddGroup.mk'_surjective _)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `y`. Take `⟨x, rfl⟩` from `QuotientAddGroup.mk'_surjective S y`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show n • (QuotientAddGroup.mk' S x) = 0`. Rewrite using `[← map_zsmul, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Conclude with `h x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_quotient_of_smul_mem {B : Type*} [AddCommGroup B] [Module.Finite ℤ B]
     (S : AddSubgroup B) {n : ℤ} (hn : n ≠ 0) (h : ∀ y, n • y ∈ S) : Finite (B ⧸ S) := by
@@ -29,7 +29,7 @@ theorem finite_quotient_of_smul_mem {B : Type*} [AddCommGroup B] [Module.Finite 
 variable {G M M' : Type*} [Group G] [AddCommGroup M] [AddCommGroup M']
 
 /- English proof (translation)
-The claim follows from `herbrandQuotient_eq_of_injective_of_finite (fA := cycSub ρ σ) (gA := normHom ρ) (fB := cycSub ρ' σ) (gB := normHom ρ') hφ (fun a => by rw [cycSub_apply, cycSub_apply, map_sub, hcomm]) (fun a => by rw [normHom_apply, normHom_apply, map_sum]; simp only [hcomm]) (cycSub_normHom ρ' σ …`.
+A detailed English derivation is pending.
 -/
 theorem cyclicHerbrand_eq_of_injective [Fintype G] (ρ : Representation ℤ G M)
     (ρ' : Representation ℤ G M') (σ : G) (φ : M →+ M') (hφ : Function.Injective φ)
@@ -42,29 +42,27 @@ theorem cyclicHerbrand_eq_of_injective [Fintype G] (ρ : Representation ℤ G M)
     (cycSub_normHom ρ' σ) (normHom_cycSub ρ' σ)
 
 /- English proof (translation)
-Set `bR` to `Algebra.TensorProduct.basis ℝ b`. Set `bR'` to `Algebra.TensorProduct.basis ℝ b'`. Set `A : G → Matrix ι ι ℤ` to `fun g => LinearMap.toMatrix b b (ρ g)`. Set `A' : G → Matrix ι ι ℤ` to `fun g => LinearMap.toMatrix b' b' (ρ' g)`. Set `P : Matrix ι ι ℝ` to `LinearMap.toMatrix bR bR' e.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hP : P.det ≠ 0`. Establish `hid : e.symm.toLinearMap ∘ₗ e.toLinearMap = LinearMap.id` using `LinearMap.ext fun x => by simp`. Establish `h1` using `congrArg (LinearMap.toMatrix bR bR) hid`. Rewrite `h1` using `[LinearMap.toMatrix_comp bR bR' bR, LinearMap.toMatrix_id]`. Establish `h2` using `congrArg Matrix.det h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `right_ne_zero_of_mul_eq_one h2`. Establish `hPA : ∀ g, P * (A g).map (Int.cast : ℤ → ℝ) = (A' g).map (Int.cast : ℤ → ℝ) * P`. Introduce `g`. Establish `hc : e.toLinearMap ∘ₗ (ρ g).baseChange ℝ = (ρ' g).baseChange ℝ ∘ₗ e.toLinearMap` using `LinearMap.ext (he g)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (LinearMap.toMatrix bR bR') hc`. Rewrite `h1` using `[LinearMap.toMatrix_comp bR bR bR', LinearMap.toMatrix_comp bR bR' bR', LinearMap.toMatrix_baseChange, LinearMap.toMatrix_baseChange, algebraMap_int_eq]`. Conclude with `h1`. Take `⟨Q, hQ, hQA⟩` from `exists_rat_intertwiner (fun g => (A g).map (Int.cast : ℤ → ℚ)) (fun g => (A' g).map (Int.cast : ℤ → ℚ)) P hP (fun g => by`. Rewrite using `[Matrix.map_map, Matrix.map_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `convert hPA g using 3 <;> ext x <;> simp)`. Take `⟨⟨d, hd⟩, hdQ⟩` from `IsLocalization.exist_integer_multiples (R := ℤ) (M := nonZeroDivisors ℤ) (S := ℚ) Finset.univ (fun p : ι × ι => Q p.1 p.2)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Use `choose D hD using fun a b => RingHom.mem_rangeS.1 (hdQ (a, b) (Finset.mem_univ _))`. Set `Dm : Matrix ι ι ℤ` to `Matrix.of D`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hDm : Dm.map (Int.cast : ℤ → ℚ) = (d : ℚ) • Q`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Dm, Matrix.of_apply]`. Rewrite using `[← eq_intCast (algebraMap ℤ ℚ), hD a b, zsmul_eq_mul, smul_eq_mul]`. Establish `hdet : Dm.det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : (Dm.det : ℚ) = (d : ℚ) ^ Fintype.card ι * Q.det`. Rewrite using `[Int.cast_det]`. Express the relevant statement in the definitionally equal form `(Dm.map (Int.cast : ℤ → ℚ)).det = _`. Rewrite using `[hDm, Matrix.det_smul]`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h0, Int.cast_zero]`. Conclude with `mul_ne_zero (pow_ne_zero _ (by exact_mod_cast hd0)) hQ h1.symm`. Establish `hmap : ∀ X Y : Matrix ι ι ℤ, (X * Y).map (Int.cast : ℤ → ℚ) = X.map (Int.cast : ℤ → ℚ) * Y.map (Int.cast : ℤ → ℚ)` using `fun X Y => Matrix.map_mul (f := Int.castRingHom ℚ)`. Establish `hDA : ∀ g, Dm * A g = A' g * Dm`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Matrix.map_injective (f := (Int.cast : ℤ → ℚ)) Int.cast_injective` to reduce the goal to its premises. Use `show (Dm * A g).map (Int.cast : ℤ → ℚ) = (A' g * Dm).map (Int.cast : ℤ → ℚ)`. Rewrite using `[hmap, hmap, hDm, Matrix.smul_mul, Matrix.mul_smul, hQA g]`. Set `φ : M →ₗ[ℤ] M'` to `Matrix.toLin b b' Dm`. Use `⟨φ, ?_, ⟨Dm.det, hdet, fun y => ?_⟩, fun g x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Establish `h1` using `Matrix.repr_toLin (v₁ := b) (v₂ := b') Dm x`. Rewrite `h1` using `[show Matrix.toLin b b' Dm x = 0 from hx, map_zero]`. Establish `h2` using `Matrix.eq_zero_of_mulVec_eq_zero hdet h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `b.repr.map_eq_zero_iff.1 (Finsupp.ext fun i => congrFun h2 i)`. Use `⟨Matrix.toLin b' b Dm.adjugate y, ?_⟩ show (Matrix.toLin b b' Dm ∘ₗ Matrix.toLin b' b Dm.adjugate) y = _` and prove the remaining obligations. Rewrite using `[← Matrix.toLin_mul, Matrix.mul_adjugate, map_smul, Matrix.toLin_one, LinearMap.smul_apply, LinearMap.id_apply]`. Establish `h1 : φ ∘ₗ ρ g = ρ' g ∘ₗ φ`. Apply `(LinearMap.toMatrix b b').injective` to reduce the goal to its premises.
-
-Rewrite using `[LinearMap.toMatrix_comp b b b', LinearMap.toMatrix_comp b b' b', LinearMap.toMatrix_toLin]`. Conclude with `hDA g`. Conclude with `LinearMap.congr_fun h1 x`.
+A detailed English derivation is pending.
 -/
 theorem exists_injective_intertwiner_of_basis {ι : Type*} [Fintype ι]
     (ρ : Representation ℤ G M) (ρ' : Representation ℤ G M') (e : ℝ ⊗[ℤ] M ≃ₗ[ℝ] ℝ ⊗[ℤ] M')
@@ -149,7 +147,7 @@ theorem exists_injective_intertwiner_of_basis {ι : Type*} [Fintype ι]
 variable [Module.Finite ℤ M] [Module.Free ℤ M] [Module.Finite ℤ M'] [Module.Free ℤ M']
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ M`. Set `b₀` to `Module.Free.chooseBasis ℤ M'`. Establish `h1` using `e.finrank_eq`. Rewrite `h1` using `[Module.finrank_eq_card_basis (Algebra.TensorProduct.basis ℝ b), Module.finrank_eq_card_basis (Algebra.TensorProduct.basis ℝ b₀)]`. Conclude with `exists_injective_intertwiner_of_basis ρ ρ' e he b (b₀.reindex (Fintype.equivOfCardEq h1).symm)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_injective_intertwiner_of_real_equiv (ρ : Representation ℤ G M)
     (ρ' : Representation ℤ G M') (e : ℝ ⊗[ℤ] M ≃ₗ[ℝ] ℝ ⊗[ℤ] M')
@@ -165,7 +163,7 @@ theorem exists_injective_intertwiner_of_real_equiv (ρ : Representation ℤ G M)
     (b₀.reindex (Fintype.equivOfCardEq h1).symm)
 
 /- English proof (translation)
-Take `⟨φ, hφ, ⟨n, hn, hrange⟩, hcomm⟩` from `exists_injective_intertwiner_of_real_equiv ρ ρ' e he`. Establish `: Finite (M' ⧸ φ.toAddMonoidHom.range)` using `finite_quotient_of_smul_mem _ hn fun y => by`. Take `⟨x, hx⟩` from `hrange y`. Conclude with `⟨x, hx⟩`. Conclude with `cyclicHerbrand_eq_of_injective ρ ρ' σ φ.toAddMonoidHom hφ hcomm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cyclicHerbrand_eq_of_real_equiv [Fintype G] (ρ : Representation ℤ G M)
     (ρ' : Representation ℤ G M') (σ : G) (e : ℝ ⊗[ℤ] M ≃ₗ[ℝ] ℝ ⊗[ℤ] M')

@@ -17,9 +17,9 @@ section Helpers
 open MonoidalCategory CartesianMonoidalCategory MonObj Matrix
 
 /- English proof (translation)
-Establish `h1 : (1 : ptOver V V ⟶ G).left = η[G].left`. Establish `e : (1 : ptOver V V ⟶ G) = CartesianMonoidalCategory.toUnit _ ≫ η[G]` using `rfl`. Rewrite using `[e, Over.comp_left]`. Establish `e2 : (CartesianMonoidalCategory.toUnit (ptOver V V)).left = 𝟙 (Sp V)`. Use `Over.w (CartesianMonoidalCategory.toUnit (ptOver V V))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `((Category.comp_id _).symm.trans this).trans (Spec.map_id _)`. Rewrite using `[e2]`. Conclude with `Category.id_comp _`. Unfold `IsTan IsTangent`. Rewrite using `[h1]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isTan_iff {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G] (w : epsOver V V ⟶ G) :
     IsTan w ↔ IsTangent (R := V) w := by
@@ -35,9 +35,9 @@ private theorem isTan_iff {V : Type} [CommRing V] {G : Over (Sp V)} [GrpObj G] (
   rw [h1]
 
 /- English proof (translation)
-Set `y : Fin m → GlobalTheory.Serre.Lie act` to `fun i => GlobalTheory.Serre.Lie.mk act (x i) (ht i)`. Establish `hy : ∀ i, a • y i = s • y i` using `fun i => GlobalTheory.Serre.Lie.ext (Over.OverMorphism.ext (he i))`. Take `rfl` from `(GlobalTheory.Serre.Lie.isLieComb_iff c y w).1 hc`. Establish `: a • ∑ i, c i • y i = s • ∑ i, c i • y i`. Rewrite using `[Finset.smul_sum, Finset.smul_sum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [smul_comm a, hy, smul_comm]`. Conclude with `congrArg (fun z : GlobalTheory.Serre.Lie act => z.hom.left) this`.
+A detailed English derivation is pending.
 -/
 private theorem eig_of_comb {K O : Type} [CommRing K] [CommRing O] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
     (act : OAct O A) (a : O) (s : K) {m : ℕ} {x : Fin m → (epsR K ⟶ A)} (ht : ∀ i, IsTangent (x i))
@@ -52,9 +52,9 @@ private theorem eig_of_comb {K O : Type} [CommRing K] [CommRing O] {A : Over (Sp
   exact congrArg (fun z : GlobalTheory.Serre.Lie act => z.hom.left) this
 
 /- English proof (translation)
-Use `hG.comm` as an intermediate fact. Take `⟨n, e, e', -, he, he', h, -⟩` from `exists_frame (m := 0) (x := Fin.elim0) hG hφ (fun i => i.elim0)`. Take `⟨p, hp, -⟩` from `he.2 w hw`. Take `⟨q, hq, -⟩` from `he.2 w₀ hw₀`. Use `(Indep.of_basis he').2 _ _ w' ((GlobalTheory.lieComb_baseChange _ _ _ G A φ hφ n e w p e' w' h hp).1 o) ((GlobalTheory.lieComb_baseChange _ _ _ G A φ hφ n e w₀ q e' w' h hq).1 o₀)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `rfl : p = q` from `funext fun j => hf (congrFun this j)`. Conclude with `((GlobalTheory.LieComb.lieComb_algebra _ G n e he.1).1 p).unique hp hq`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem tangent_ext {V K : Type} [CommRing V] [IsLocalRing V] [CommRing K] {f : V →+* K}
     (hf : Function.Injective f) {G : Over (Sp V)} [GrpObj G] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
@@ -71,13 +71,13 @@ private theorem tangent_ext {V K : Type} [CommRing V] [IsLocalRing V] [CommRing 
   exact ((GlobalTheory.LieComb.lieComb_algebra _ G n e he.1).1 p).unique hp hq
 
 /- English proof (translation)
-Use `t.semi.comm` as an intermediate fact. Use `G.semi.comm` as an intermediate fact. Use `G.act.hom a` as an intermediate fact. Set `y : GlobalTheory.Serre.Lie G.act` to `GlobalTheory.Serre.Lie.mk G.act w hw`. Establish `key : w ≫ G.act.act a = (z • y).hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `tangent_ext hf G.semi m.cart (GlobalTheory.CM.DiffCoord.isTangent_comp_hom _ hw) (GlobalTheory.Serre.Lie.isTangent _) (w' := w' ≫ t.act.act a) ?_ ?_` and prove the remaining obligations. Unfold `GlobalTheory.IsVecOver at o ⊢`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc]`. Use `(congrArg (w'.left ≫ ·) (m.act a)).trans ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· ≫ _) o`. Unfold `GlobalTheory.IsVecOver at o ⊢`. Rewrite using `[he, Category.assoc]`. Use `(congrArg (spMap (epsScaleR (f z)) ≫ ·) o).trans ?_` and prove the remaining obligations. Use `show _ = spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR f) ≫ spMap (epsScaleR z) ≫ w.left`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, GlobalTheory.IntLie.spMap_comp₂, GlobalTheory.IntLie.spMap_comp₂]`. Use `congr 2`. Conclude with `(GlobalTheory.IntLie.dualMap_epsMul f z).symm`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem eig_descend {E : Type} [Field E] [NumberField E] [IsCMField E]
     {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {V K : Type} [CommRing V] [IsLocalRing V] [CommRing K] {f : V →+* K}
@@ -108,7 +108,7 @@ private theorem eig_descend {E : Type} [Field E] [NumberField E] [IsCMField E]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← h, WithZero.exp_log hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_exp_of_log {x : WithZero (Multiplicative ℤ)} (hx : x ≠ 0) {n : ℤ} (h : WithZero.log x = n) :
     x = WithZero.exp n := by
@@ -117,35 +117,29 @@ private theorem eq_exp_of_log {x : WithZero (Multiplicative ℤ)} (hx : x ≠ 0)
 end Helpers
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c K _ _ _ y t₀ m1 ρ v hv 𝔓 T iK e he hval`. Use `letI := (iK.comp (algebraMap c.F K)).toAlgebra`. Introduce `yT hmap td y' hbor hint`. Take `⟨G, t', m1', m2', ⟨ub, hubt, -, hubu, hl⟩, -⟩` from `hint`. Use `t'.semi.comm` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `G.semi.comm` as an intermediate fact. Establish `hx1 : yT.x = spMap iK ≫ y.x` using `hmap.1`. Establish `hx2 : y'.x = yT.x` using `hbor.1`. Take `⟨n', hn'⟩` from `(GlobalTheory.sabMap_cancel_and_comp_over E H _ _ _ _ _ _ _ _ (spMap iK) m1 m1' (hx2.trans hx1)).1`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose v' hv' _ using fun i => GlobalTheory.existsUnique_isVecOver (f := iK) n'.cart.1 (v i)`. Set `u : Fin (Dw.mult ρ) → (epsR T.V ⟶ G.G)` to `ub ρ`. Use `choose u' hu' huu using fun i => GlobalTheory.existsUnique_isVecOver (f := algebraMap T.V T.Fr) m2'.cart.1 (u i)`. Establish `hvy : ∀ i, (v' i).left ≫ m1'.φ = yT.u ρ i` using `fun i => by`. Rewrite using `[← hn', ← Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (· ≫ m1.φ) (hv' i)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hv i]`. Conclude with `(hmap.2.1 ρ i).symm`. Establish `huy : ∀ i, (u' i).left ≫ m1'.φ = y'.u ρ i` using `fun i => by`. Take `⟨z, hz1, hz2⟩` from `hl ρ i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: z = (u' i).left`. Apply `m2'.cart.1.hom_ext` to reduce the goal to its premises. Conclude with `hz2.trans (hu' i).symm`. Apply `GlobalTheory.IntLie.spMap_frac_cancel (V := T.V)` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, ← m2'.cart.1.w, ← Category.assoc, ← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congrArg (· ≫ _) (hz2.trans (hu' i).symm)`. Rewrite using `[← this, hz1]`. Establish `hvt : ∀ i, IsTangent (v' i)` using `fun i => (GlobalTheory.KSExist.FrameLift.tan_iff m1'.cart (v' i)).1 (by`. Use `yT.tan ρ i` as an intermediate fact. Rewrite `this` using `[← hvy, ← hx2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)`. Establish `hve : ∀ i (a : 𝓞 E), (v' i ≫ t'.act.act a).left = spMap (epsScaleR (iK (algebraMap c.F K (embK c ρ a)))) ≫ (v' i).left` using `fun i a => by`. Establish `h` using `(GlobalTheory.KSExist.FrameLift.eig_iff m1'.cart (m1'.act a) (v' i) (iK (algebraMap c.F K (embK c ρ a)))).1 (by`. Use `yT.eig ρ i a` as an intermediate fact. Rewrite `this` using `[← hvy]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Rewrite using `[h]`. Both sides reduce to the same expression. Use `choose C hCd hCl hCc using hbor.2.1 ρ`. Set `C' : Matrix (Fin (Dw.mult ρ)) (Fin (Dw.mult ρ)) T.Fr` to `C`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC : ∀ i, IsLieComb (C' i) v' (u' i)` using `fun i => GlobalTheory.KSExist.FrameLift.isLieComb_of_isCombAt m1'.cart v' _ _ (by`. Use `hCc i` as an intermediate fact. Rewrite `this` using `[← huy, ← funext hvy, ← hx2]`. Conclude with `this)`. Establish `hdet : C'.det = ∏ i : Fin (Dw.mult ρ), (td (some ⟨ρ, i⟩) : T.Fr)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_of_lowerTriangular C' (fun a b hab => hCl a b hab)]`. Conclude with `Finset.prod_congr rfl fun i _ => hCd i`. Establish `hne : C'.det ≠ 0`. Rewrite using `[hdet]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => Units.ne_zero _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hut : ∀ i, IsTangent (u i)` using `fun i => (isTan_iff _).1 (hubt ρ i)`. Use `⟨T.V, T.Fr, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, iK, e, G.G, inferInstance, t'.G, inferInstance, m2'.φ, n'.φ, v', u, u', C'⁻¹, -vV T.V C'.det, he, fun z => ?_, G.semi, m2'.cart, n'.cart, hv', fun i => ⟨hut i, hu' i, _, hC i⟩, f …` and prove the remaining obligations. Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using `[he.ne']`. Establish `h0 : 𝔓.valuation K z ≠ 0` using `by simpa using hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : valV T.V (iK z) ≠ 0` using `valV_ne_zero ((map_ne_zero iK).2 hz)`. Establish `h2` using `hval z`. Simplify using `only [vV, vAdd] at h2`. Use `(eq_exp_of_log h1 (n := (e : ℤ) * WithZero.log (𝔓.valuation K z)) (by linarith)).trans ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul, WithZero.exp_nsmul, WithZero.exp_log h0]`.
-
-Use `hubu ρ w ((isTan_iff _).2 hw) fun a z hz => ?_` and prove the remaining obligations. Use `eig_descend hinj m2' hw hw' a z ?_` and prove the remaining obligations. Rewrite using `[hz]`. Conclude with `eig_of_comb t'.act a _ hvt (fun i => hve i a) hb`. Rewrite using `[comb_comb hvt hC]`.
-
-Establish `: Matrix.vecMul (C'⁻¹ i) C' = Pi.single i 1`. Use `congrFun (Matrix.nonsing_inv_mul C' hne.isUnit) i` as an intermediate fact. Conclude with `this.trans (by ext j; simp [Matrix.one_apply, Pi.single_apply, eq_comm])`. Rewrite using `[this]`. Conclude with `(GlobalTheory.LieComb.lieComb_algebra _ _ _ v' hvt).2.2.2.1 i`.
-
-Rewrite using `[Matrix.det_nonsing_inv, Ring.inverse_eq_inv', map_inv₀, neg_neg, vV, WithZero.exp_neg, WithZero.exp_log (valV_ne_zero hne)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.tangent_vectors_reduction_prime :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [NumberField K] [Algebra c.F K] (y : FrPt Xo c K) (t₀ : SAB H (Sp K)) (m1 : SABMap t₀ Xo.univ.t y.x) (ρ : E →+* ℂ) (v : Fin (Dw.mult ρ) → (epsR K ⟶ t₀.G)), (∀ i, (v i).left ≫ m1.φ = y.u ρ i) → ∀ (𝔓 : HeightOneSpectrum (𝓞 K)) (T : CDVR) (iK : K →+* T.Fr) (e : ℕ), 0 < e → (∀ z : K, vV T.V (iK z) = (e : ℤ) * vAdd 𝔓 z) → letI := (iK.comp (algebraMap c.F K)).toAlgebra; ∀ (yT : FrPt Xo c T.Fr), FrMap ({ iK with commutes' := fun _ => rfl } : K →ₐ[c.F] T.Fr) y yT → ∀ (td : Ix Dw → T.Frˣ) (y' : FrPt Xo c T.Fr), FrBor td yT y' → Formalism.L2.Pj.Integral T (iK.comp (algebraMap c.F K)) y' → EigenvectorLieDegree.IsLocOrd t₀.G v 𝔓 (-(vV T.V (∏ i : Fin (Dw.mult ρ), (td (some ⟨ρ, i⟩) : T.Fr)) : ℝ) / (e : ℝ)) := by

@@ -12,9 +12,9 @@ namespace CuspidalSpectrum
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Take `⟨y, hy0, hyint⟩` from `IsAlgebraic.exists_integral_multiple ((IsFractionRing.isAlgebraic_iff ℤ ℚ K).2 (Algebra.IsAlgebraic.isAlgebraic k))`. Take `⟨c, hc | hc⟩` from `Int.eq_nat_or_neg y`. Use `⟨c, Nat.pos_of_ne_zero fun h => hy0 (by rw [hc, h, Nat.cast_zero]), ?_⟩` and prove the remaining obligations. Establish `: (c : K) * k = y • k` using `by rw [zsmul_eq_mul, hc]; push_cast; ring`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyint`. Use `⟨c, Nat.pos_of_ne_zero fun h => hy0 (by rw [hc, h, Nat.cast_zero, neg_zero]), ?_⟩` and prove the remaining obligations. Establish `: (c : K) * k = -(y • k)` using `by rw [zsmul_eq_mul, hc]; push_cast; ring`. Rewrite using `[this]`. Conclude with `hyint.neg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pos_natCast_mul_isIntegral (k : K) : ∃ c : ℕ, 0 < c ∧ IsIntegral ℤ ((c : K) * k) := by
   obtain ⟨y, hy0, hyint⟩ := IsAlgebraic.exists_integral_multiple
@@ -30,11 +30,11 @@ theorem exists_pos_natCast_mul_isIntegral (k : K) : ∃ c : ℕ, 0 < c ∧ IsInt
     exact hyint.neg
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles a`. Take `⟨c, hc0, hint⟩` from `exists_pos_natCast_mul_isIntegral K k`. Use `⟨c - 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.sub_add_cancel hc0]`. Establish `h1 : algebraMap K (FiniteAdeleRing (𝓞 K) K) ((c : K) * k) ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K` using `GroundTheory.Global.algebraMap_integers_mem_integralFiniteAdeles K ⟨_, hint⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ((c : ℕ) : FiniteAdeleRing (𝓞 K) K) * (a - algebraMap K (FiniteAdeleRing (𝓞 K) K) k) ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K` using `Subring.mul_mem _ (natCast_mem _ _) hk`. Establish `: ((c : ℕ) : FiniteAdeleRing (𝓞 K) K) * a = algebraMap K (FiniteAdeleRing (𝓞 K) K) ((c : K) * k) + ((c : ℕ) : FiniteAdeleRing (𝓞 K) K) * (a - algebraMap K (FiniteAdeleRing (𝓞 K) K) k)`. Rewrite using `[map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.add_mem _ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_natCast_mul_mem_integralFiniteAdeles (a : FiniteAdeleRing (𝓞 K) K) :
     ∃ c : ℕ, ((c + 1 : ℕ) : FiniteAdeleRing (𝓞 K) K) * a ∈
@@ -58,11 +58,11 @@ theorem exists_natCast_mul_mem_integralFiniteAdeles (a : FiniteAdeleRing (𝓞 K
   exact Subring.add_mem _ h1 h2
 
 /- English proof (translation)
-Use `set U : ℕ → Set (FiniteAdeleRing (𝓞 K) K) := fun c => {a | ((c + 1 : ℕ) : FiniteAdeleRing (𝓞 K) K) * a ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K}`. Establish `hU : ∀ c, IsOpen (U c)` using `fun c => GroundTheory.Global.isOpen_integralFiniteAdeles.preimage (continuous_const_mul _)`. Establish `hcov : 𝒦 ⊆ ⋃ c, U c` using `fun a _ => mem_iUnion.2 (exists_natCast_mul_mem_integralFiniteAdeles K a)`. Take `⟨t, ht⟩` from `h𝒦.elim_finite_subcover U hU hcov`. Use `⟨∏ c ∈ t, (c + 1), Finset.prod_pos fun c _ => Nat.succ_pos c, fun ξ hξ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hct, hc⟩` from `mem_iUnion₂.1 (ht hξ)`. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem (fun c => c + 1) hct`. Establish `hmem : algebraMap K (FiniteAdeleRing (𝓞 K) K) (((∏ c ∈ t, (c + 1) : ℕ) : K) * ξ) ∈ GroundTheory.Global.integralFiniteAdeles (𝓞 K) K`. Rewrite using `[map_mul, map_natCast, hq, Nat.cast_mul, mul_comm (((c + 1 : ℕ)) : FiniteAdeleRing (𝓞 K) K), mul_assoc]`. Conclude with `Subring.mul_mem _ (natCast_mem _ _) hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨z, hz⟩` from `GroundTheory.Global.exists_eq_of_forall_mem_adicCompletionIntegers K _ hmem`. Conclude with `⟨z, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_natCast_mul_integral_of_isCompact {𝒦 : Set (FiniteAdeleRing (𝓞 K) K)}
     (h𝒦 : IsCompact 𝒦) :
@@ -89,7 +89,7 @@ theorem exists_natCast_mul_integral_of_isCompact {𝒦 : Set (FiniteAdeleRing (�
 open scoped Classical in
 
 /- English proof (translation)
-The claim follows from `|(((RingOfIntegers.basis K).repr z i : ℤ) : ℝ)| ≤ C * ‖mixedEmbedding K (z : K)‖ := by set Lc := LinearMap.toContinuousLinearMap (mixedEmbedding.latticeBasis K).equivFun.toLinearMap refine ⟨‖Lc‖, norm_nonneg _, fun z i => ?_⟩ have hval : Lc (mixedEmbedding K (z : K)) i = (((RingO …`.
+A detailed English derivation is pending.
 -/
 theorem exists_abs_repr_le :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (z : 𝓞 K) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 K)),
@@ -107,21 +107,19 @@ theorem exists_abs_repr_le :
   exact (norm_le_pi_norm _ i).trans (Lc.le_opNorm _)
 
 /- English proof (translation)
-Take `⟨C₀, hC₀, hrepr⟩` from `exists_abs_repr_le K`. Use `set ι := Module.Free.ChooseBasisIndex ℤ (𝓞 K)`. Establish `hd : Fintype.card ι = Module.finrank ℚ K`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`. Use `⟨(3 + 2 * C₀) ^ Module.finrank ℚ K, by positivity, fun T hT => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set N : ℕ := ⌈C₀ * T⌉₊`. Use `set box : Finset (ι → ℤ) := Fintype.piFinset fun _ => Finset.Icc (-(N : ℤ)) N`. Use `set c : 𝓞 K → ι → ℤ := fun z i => (RingOfIntegers.basis K).repr z i`. Establish `hmaps : ∀ z ∈ {z : 𝓞 K | ∀ w : InfinitePlace K, w (z : K) ≤ T}, c z ∈ (box : Set (ι → ℤ))`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hnorm : ‖mixedEmbedding K (z : K)‖ ≤ T`. Rewrite using `[mixedEmbedding.norm_eq_sup'_normAtPlace]`. Use `Finset.sup'_le _ _ fun w _ => ?_` and prove the remaining obligations. Rewrite using `[mixedEmbedding.normAtPlace_apply]`. Conclude with `hz w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `i`. Establish `h1` using `(hrepr z i).trans (mul_le_mul_of_nonneg_left hnorm hC₀)`. Establish `h2 : C₀ * T ≤ N` using `Nat.le_ceil _`. Establish `h3 : |(c z i : ℝ)| ≤ N` using `h1.trans h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h3` using `[abs_le]`. Rewrite using `[Finset.mem_Icc]`. Apply the tactic sequence `constructor <;> [exact_mod_cast (by linarith [h3.1] : (-(N : ℝ)) ≤ c z i);`. Conclude with `h3.2]` after adjusting the coercions. Establish `hinj : InjOn c {z : 𝓞 K | ∀ w : InfinitePlace K, w (z : K) ≤ T}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z _ z' _ h`. Use `(RingOfIntegers.basis K).repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Conclude with `congrFun h i`. Establish `hfin : (box : Set (ι → ℤ)).Finite` using `Finset.finite_toSet _`. Use `⟨hfin.of_injOn hmaps hinj, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard` using `Set.ncard_le_ncard_of_injOn c hmaps hinj hfin`. Rewrite `hcard` using `[Set.ncard_coe_finset, Fintype.card_piFinset]`. Simplify using `only [Int.card_Icc, Finset.prod_const, Finset.card_univ] at hcard`. Establish `hN : ((N : ℤ) + 1 - -(N : ℤ)).toNat = 2 * N + 1` using `by omega`. Rewrite `hcard` using `[hN, hd]`.
-
-Establish `hNle : (2 * N + 1 : ℝ) ≤ (3 + 2 * C₀) * (1 + T)`. Establish `: (N : ℝ) ≤ C₀ * T + 1` using `(Nat.ceil_lt_add_one (by positivity)).le`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ncard_integers_le :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ T : ℝ, 0 ≤ T →
@@ -180,23 +178,21 @@ def ratGLBox (n : ℕ) (𝒦 : Set (FiniteAdeleRing (𝓞 K) K)) (T : ℝ) : Set
     ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T}
 
 /- English proof (translation)
-Take `⟨m, hm, hmint⟩` from `exists_natCast_mul_integral_of_isCompact K h𝒦`. Take `⟨C₂, hC₂, hcount⟩` from `exists_ncard_integers_le K`. Use `set d := Module.finrank ℚ K`. Use `⟨(C₂ * (m : ℝ) ^ d) ^ (n * n), d * (n * n), fun T hT => ?_⟩` and prove the remaining obligations. Establish `hmT : 0 ≤ (m : ℝ) * T` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hfinS, hcardS⟩` from `hcount (m * T) hmT`. Use `set F := hfinS.toFinset`. Use `set Φ : GL (Fin n) K → Fin n → Fin n → 𝓞 K := fun γ i j => if h : ∃ z : 𝓞 K, (z : K) = m * (γ : Matrix (Fin n) (Fin n) K) i j then h.choose else 0`. Use `set box : Finset (Fin n → Fin n → 𝓞 K) := Fintype.piFinset fun _ => Fintype.piFinset fun _ => F`. Establish `hΦ : ∀ γ ∈ ratGLBox n 𝒦 T, ∀ i j, ((Φ γ i j : 𝓞 K) : K) = m * (γ : Matrix (Fin n) (Fin n) K) i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `γ hγ i j`. Establish `h` using `hmint _ (hγ i j).1`. Simplify using `only [Φ, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hmaps : ∀ γ ∈ ratGLBox n 𝒦 T, Φ γ ∈ (box : Set (Fin n → Fin n → 𝓞 K))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Rewrite using `[Finset.mem_coe, Fintype.mem_piFinset]`. Introduce `i`. Rewrite using `[Fintype.mem_piFinset]`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.Finite.mem_toFinset]`. Introduce `w`. Rewrite using `[hΦ γ hγ i j, map_mul, InfinitePlace.map_natCast]`. Conclude with `mul_le_mul_of_nonneg_left ((hγ i j).2 w) (Nat.cast_nonneg m)`. Establish `hinj : InjOn Φ (ratGLBox n 𝒦 T)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ hγ γ' hγ' h`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1` using `hΦ γ hγ i j`. Establish `h2` using `hΦ γ' hγ' i j`. Rewrite `h1` using `[show Φ γ i j = Φ γ' i j from congrFun (congrFun h i) j, h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm0 : (m : K) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Conclude with `(mul_left_cancel₀ hm0 h1).symm`. Establish `hfin : (box : Set (Fin n → Fin n → 𝓞 K)).Finite` using `Finset.finite_toSet _`. Use `⟨hfin.of_injOn hmaps hinj, ?_⟩` and prove the remaining obligations. Establish `hcard` using `Set.ncard_le_ncard_of_injOn Φ hmaps hinj hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcard` using `[Set.ncard_coe_finset]`. Simplify using `only [box, Fintype.card_piFinset, Finset.prod_const, Finset.card_univ, Fintype.card_fin] at hcard`. Establish `hF : (F.card : ℝ) ≤ C₂ * (m : ℝ) ^ d * (1 + T) ^ d`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfinS]`. Use `hcardS.trans ?_` and prove the remaining obligations.
-
-Establish `hm1 : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `: 1 + (m : ℝ) * T ≤ m * (1 + T)` using `by nlinarith`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ncard_ratGLBox_le (n : ℕ) {𝒦 : Set (FiniteAdeleRing (𝓞 K) K)} (h𝒦 : IsCompact 𝒦) :
     ∃ C : ℝ, ∃ N : ℕ, ∀ T : ℝ, 0 ≤ T →

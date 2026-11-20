@@ -6,15 +6,15 @@ import Development.DiscreteGroups.GlobalIrreducibility.DzDigTot
 namespace DiscreteGroups.sglob.DzType
 
 /- English proof (translation)
-Introduce `p n hp hn h16 k k' _ _ H`. Establish `hp2` using `hp.two_le`. Establish `hn1 : 1 ≤ n` using `by omega`. Establish `hee` using `DzDig.ee_eq (n := n) hp2`. Establish `hN` using `DzDig.N_eq (n := n) hp2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `DzDig.ee_pos (p := p) hn1`. Establish `hNpos` using `DzDig.N_pos hp2 hn1`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hm : ∀ u < p ^ n - 1, (p ^ n - 1).Coprime u → ∃ j < n, p ^ j * (u * k % (p ^ n - 1)) % (p ^ n - 1) / DzDig.ee p n = u * k' % (p ^ n - 1) / DzDig.ee p n`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u _ hu`. Apply `DzDig.match_of_hyp hp2 hn1` to reduce the goal to its premises. Introduce `b`. Use `H u b (Nat.coprime_comm.mp hu)` as an intermediate fact. Rewrite `this` using `[hee]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `htot` using `DzDig.totient_le hNpos he (fun j _ => hno j) hm`. Establish `hineq` using `DzDig.two_n_N_lt hp hn h16`. Establish `h2 : (p - 1) * (2 * n * DzDig.ee p n) < (p - 1) * (p ^ n - 1).totient`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(Nat.mul_lt_mul_left (by omega : 0 < p - 1)).mp h2`. Establish `h5 : n * (2 * (DzDig.ee p n - 1)) ≤ 2 * n * DzDig.ee p n`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (lt_of_lt_of_le h3 (htot.trans h5)) (lt_irrefl _)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dig : Dig := by
   intro p n hp hn h16 k k' _ _ H

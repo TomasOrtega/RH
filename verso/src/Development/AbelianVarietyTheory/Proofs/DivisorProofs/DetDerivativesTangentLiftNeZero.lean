@@ -16,21 +16,21 @@ open scoped Classical
 noncomputable section
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS K _ _ z ho Q hz v hv zv hl i O hO g hzO hzv hJ`. Take `⟨O₁, hzO₁, x, w, hw, hdx⟩` from `GlobalTheory.T.exists_tangentVectors_functions_invertible_derivs M.str (dimFlag Dw) z`. Establish `hzi : ⊤ ≤ z ⁻¹ᵁ M.K.bundle.U i` using `fun s hs => hO (hzO hs)`. Establish `hzO' : ⊤ ≤ z ⁻¹ᵁ (O₁ ⊓ M.K.bundle.U i)` using `fun s hs => ⟨hzO₁ hs, hzi hs⟩`. Set `x' : Fin (dimFlag Dw) → Γ(M.X, O₁ ⊓ M.K.bundle.U i)` to `fun a => resG M.X inf_le_left (x a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hwO : ∀ b, ⊤ ≤ w b ⁻¹ᵁ O` using `fun b => le_preimage_of_dualNumber _ _ _ (by rw [hw b]; exact hzO)`. Establish `hwO' : ∀ b, ⊤ ≤ w b ⁻¹ᵁ (O₁ ⊓ M.K.bundle.U i)` using `fun b => le_preimage_of_dualNumber _ _ _ (by rw [hw b]; exact hzO')`. Establish `hwO₁ : ∀ b, ⊤ ≤ w b ⁻¹ᵁ O₁` using `fun b => le_preimage_of_dualNumber _ _ _ (by rw [hw b]; exact hzO₁)`. Establish `e1 : (Matrix.of fun a b => (evalPt (w b) (O₁ ⊓ M.K.bundle.U i) (hwO' b) (x' a)).snd) = Matrix.of fun a b => (evalPt (w b) O₁ (hwO₁ b) (x a)).snd`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, x']`. Rewrite using `[evalPt_res (w b) inf_le_left (hwO₁ b) (hwO' b)]`. Establish `hjc` using `GlobalTheory.T.det_derivatives_div_jacobian_independent M z i w hw O (O₁ ⊓ M.K.bundle.U i) hO inf_le_right g x' hzO hzO' hwO hwO'`. Rewrite `hjc` using `[e1]`. Establish `hdg : (Matrix.of fun a b => (evalPt (w b) O (hwO b) (g a)).snd).det ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hjc` using `[h0, zero_mul]`. Conclude with `mul_ne_zero (hdx hwO₁) hJ hjc.symm`. Establish `hQ` using `hKS K Q`. Establish `hspan : ∀ c0 : Fin (dimFlag Dw), ∃ C : TIx Dw (psiSet H) → K, ∀ a, (evalPt (w c0) O (hwO c0) (g a)).snd = ∑ t, C t * (evalPt (zv t) O (hzv t) (g a)).snd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c0`. Take `⟨wf, hdef, hlw⟩` from `GlobalTheory.T.exists_dualNumber_deformation_lift_modification M z ho hz (w c0) (hw c0)`. Take `⟨Mx, hMx, -⟩` from `hQ.existsUnique hdef.isTanX`. Take `⟨C, hC⟩` from `GlobalTheory.T.derivative_along_kodairaSpencer_deformation_lift M z ho hQ hz hv hl hdef hMx hlw`. Use `⟨Sum.elim Mx C, fun a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC O (g a) (hwO c0) hzv, Fintype.sum_sum_type]`. Both sides reduce to the same expression. Use `choose C hC using hspan`. Establish `hmat : (Matrix.of fun a b => (evalPt (w b) O (hwO b) (g a)).snd) = (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzv _) (g a)).snd) * Matrix.of (fun b c0 => C c0 (tanOrd Dw b))`. Use extensionality with `a c0`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply, Matrix.of_apply, hC c0 a, ← Equiv.sum_comp (tanOrd Dw)]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hdg` to reduce the goal to its premises. Rewrite using `[hmat, Matrix.det_mul, h0, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompHS.det_tanLift_ne_zero : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) (hKS : ∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), KSIso (psiSet H) y)
     {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {Q : FrPt Xo c K}

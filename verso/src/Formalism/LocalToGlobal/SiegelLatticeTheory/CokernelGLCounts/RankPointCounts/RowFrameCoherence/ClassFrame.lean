@@ -15,7 +15,7 @@ variable {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [Fini
   [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Rewrite using `[PiLp.norm_sq_eq_of_L2]`. Simplify using `[hsEmb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_hsEmb_sq_sum (A : Wq →L[ℂ] Wp) :
     ‖hsEmb A‖ ^ 2 = ∑ i, ‖A (stdOrthonormalBasis ℂ Wq i)‖ ^ 2 := by
@@ -23,11 +23,9 @@ theorem norm_hsEmb_sq_sum (A : Wq →L[ℂ] Wp) :
   simp [hsEmb]
 
 /- English proof (translation)
-Use `haveI : CompleteSpace Wq := FiniteDimensional.complete ℂ Wq`. Use `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp`. Establish `key : ∀ {κ : Type} [Fintype κ] (b : OrthonormalBasis κ ℂ Wq), ∑ i, ‖A (b i)‖ ^ 2 = ∑ k, ‖(ContinuousLinearMap.adjoint A) (stdOrthonormalBasis ℂ Wp k)‖ ^ 2`. Introduce `κ _ b`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `((stdOrthonormalBasis ℂ Wp).sum_sq_norm_inner_right (A (b i))).symm`. Use `_ = ∑ k, ∑ i, ‖inner ℂ (stdOrthonormalBasis ℂ Wp k) (A (b i))‖ ^ 2 := Finset.sum_comm`. Use `_ = ∑ k, ∑ i, ‖inner ℂ ((ContinuousLinearMap.adjoint A) (stdOrthonormalBasis ℂ Wp k)) (b i)‖ ^ 2 := by`. Simplify using `only [ContinuousLinearMap.adjoint_inner_left]`.
-
-Use `_ = ∑ k, ‖(ContinuousLinearMap.adjoint A) (stdOrthonormalBasis ℂ Wp k)‖ ^ 2 := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `b.sum_sq_norm_inner_left _`. Rewrite using `[key e, key e']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_norm_sq_indep {ι ι' : Type} [Fintype ι] [Fintype ι'] (A : Wq →L[ℂ] Wp)
     (e : OrthonormalBasis ι ℂ Wq) (e' : OrthonormalBasis ι' ℂ Wq) :
@@ -51,9 +49,9 @@ theorem sum_norm_sq_indep {ι ι' : Type} [Fintype ι] [Fintype ι'] (A : Wq →
   rw [key e, key e']
 
 /- English proof (translation)
-Establish `h2 : ‖hsEmb ((U : Wp →L[ℂ] Wp).comp (A.comp (U'.symm : Wq →L[ℂ] Wq)))‖ ^ 2 = ‖hsEmb A‖ ^ 2`. Rewrite using `[norm_hsEmb_sq_sum, norm_hsEmb_sq_sum]`. Establish `hU : ∀ i, ‖((U : Wp →L[ℂ] Wp).comp (A.comp (U'.symm : Wq →L[ℂ] Wq))) (stdOrthonormalBasis ℂ Wq i)‖ = ‖A (((stdOrthonormalBasis ℂ Wq).map U'.symm) i)‖`. Introduce `i`. Simplify using `[OrthonormalBasis.map_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[hU]`. Conclude with `sum_norm_sq_indep A _ _`. Establish `h3` using `congrArg Real.sqrt h2`. Rewrite `h3` using `[Real.sqrt_sq (norm_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Then use the resulting hypothesis.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_hsEmb_conj (U : Wp ≃ₗᵢ[ℂ] Wp) (U' : Wq ≃ₗᵢ[ℂ] Wq) (A : Wq →L[ℂ] Wp) :
     ‖hsEmb ((U : Wp →L[ℂ] Wp).comp (A.comp (U'.symm : Wq →L[ℂ] Wq)))‖ = ‖hsEmb A‖ := by
@@ -72,21 +70,21 @@ def opOf (x : HS Wq Wp) : Wq →L[ℂ] Wp :=
   ∑ i, (innerSL ℂ (stdOrthonormalBasis ℂ Wq i)).smulRight (x i)
 
 /- English proof (translation)
-Simplify using `[opOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opOf_apply (x : HS Wq Wp) (e : Wq) :
     opOf x e = ∑ i, inner ℂ (stdOrthonormalBasis ℂ Wq i) e • x i := by
   simp [opOf]
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[hsEmb, opOf_apply, orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ Wq).orthonormal]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem hsEmb_opOf (x : HS Wq Wp) : hsEmb (opOf x) = x := by
   ext j
   simp [hsEmb, opOf_apply, orthonormal_iff_ite.mp (stdOrthonormalBasis ℂ Wq).orthonormal]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[opOf_apply]`. Use `conv_rhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' e]`. Simplify using `[hsEmb, map_sum, map_smul]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem opOf_hsEmb (A : Wq →L[ℂ] Wp) : opOf (hsEmb A) = A := by
   ext e
@@ -119,7 +117,7 @@ def conjL (U : Wp ≃ₗᵢ[ℂ] Wp) (U' : Wq ≃ₗᵢ[ℂ] Wq) : HS Wq Wp →�
     rw [norm_hsEmb_conj, hsEmb_opOf]
 
 /- English proof (translation)
-Use `show hsEmb (conjOp U U' (opOf (hsEmb A))) = _`. Rewrite using `[opOf_hsEmb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conjL_hsEmb (U : Wp ≃ₗᵢ[ℂ] Wp) (U' : Wq ≃ₗᵢ[ℂ] Wq) (A : Wq →L[ℂ] Wp) :
     conjL U U' (hsEmb A) = hsEmb ((U : Wp →L[ℂ] Wp).comp (A.comp (U'.symm : Wq →L[ℂ] Wq))) := by
@@ -128,7 +126,7 @@ theorem conjL_hsEmb (U : Wp ≃ₗᵢ[ℂ] Wp) (U' : Wq ≃ₗᵢ[ℂ] Wq) (A : 
   rfl
 
 /- English proof (translation)
-Establish `hmap : (∑' s, conjL U U' (x s)) = conjL U U' (∑' s, x s)`. Establish `h : ((conjL U U').toLinearIsometryEquiv rfl).toContinuousLinearEquiv (∑' s, x s) = ∑' s, ((conjL U U').toLinearIsometryEquiv rfl).toContinuousLinearEquiv (x s)` using `ContinuousLinearEquiv.map_tsum _`. Simplify using `using h.symm`. Rewrite using `[tsum_const_smul'', hmap, norm_smul, LinearIsometry.norm_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_tsum_conj {ι : Type*} (U : Wp ≃ₗᵢ[ℂ] Wp) (U' : Wq ≃ₗᵢ[ℂ] Wq) (k : ℂ) (x : ι → HS Wq Wp) :
     ‖∑' s, k • conjL U U' (x s)‖ = ‖k‖ * ‖∑' s, x s‖ := by
@@ -172,11 +170,11 @@ def ClassFrameU : Prop :=
                 (U'.symm : X.Vpi u' →L[ℂ] X.Vpi u')))
 
 /- English proof (translation)
-Introduce `R ρ`. Take `⟨U, U', ζ, hζ, hs⟩` from `hU R ρ`. Use `set B := bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq with hB`. Use `set r : ℝ := (Real.sqrt (B.c0 * B.c0'))⁻¹ with hr`. Establish `hsum : (∑' s : LiftT X Y u u' κ R ρ, liftVec X Y u u' s.1) = ∑' s : LiftT X Y u u' κ R ρ, (ζ * (r : ℂ)) • ClassFrameOperators.conjL U U' ((((Formalism.L2.SG.TermOp.wt s.1 : ℝ) : ℂ) * Formalism.L2.SG.PairVal.cTerm vR s.1.toTerm) • Formalism.L2.SG.PackageTie.hsEmb (Formalism.L2.SG. …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `only [liftVec]`. Rewrite using `[hs s]`. Simplify using `only [map_smul, ClassFrameOperators.conjL_hsEmb, smul_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, ClassFrameOperators.norm_tsum_conj, norm_mul, hζ, one_mul, mul_pow]`. Use `congr 1`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs, hr, inv_pow, Real.sq_sqrt hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem classFrameC_of
     (hU : ClassFrameU X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq κ)
@@ -216,7 +214,7 @@ def ClassFrameOO : Prop :=
                 (U'.symm : X.Vpi u' →L[ℂ] X.Vpi u')))
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.TermOp.scl]`. Conclude with `Formalism.L2.SG.MassDataConc.scaled_volume_level_subgroup X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 (Formalism.L2.SG.LocVol.locOf X u u' ψ) hV (Formalism.L2.SG.MassDataConc.anOf (Y.tO u u') 0 0 0 0 0 0 0 0 0 0 ⟨0, 0⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem classFrame_scl (hV : 0 < X.volK2) :
     Formalism.L2.SG.TermOp.scl (Y.FN u) (Y.FN u') (X := X) (u := u) (u' := u') * X.volK2 =
@@ -227,9 +225,9 @@ theorem classFrame_scl (hV : 0 < X.volK2) :
     (Formalism.L2.SG.MassDataConc.anOf (Y.tO u u') 0 0 0 0 0 0 0 0 0 0 ⟨0, 0⟩)
 
 /- English proof (translation)
-Introduce `R ρ`. Take `⟨U, U', ζ, hζ, hs⟩` from `hOO R ρ`. Use `⟨U, U', ζ, hζ, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.TermOp.ampN]`. Rewrite using `[hs s, ← classFrame_scl (hb := hb) (X0 := X0) (ψ := ψ) (sd := sd) (C := C) (Th := Th) (Q := Q) (M := M) (δ := δ) (hV := hV), smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem classFrameU_of (hOO : ClassFrameOO X Y u u' vR i0 i0' νq κ) (hV : 0 < X.volK2) :
     ClassFrameU X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq κ := by
@@ -243,7 +241,7 @@ theorem classFrameU_of (hOO : ClassFrameOO X Y u u' vR i0 i0' νq κ) (hV : 0 < 
   ring
 
 /- English proof (translation)
-The claim follows from `classFrameC_of X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq κ (classFrameU_of X hb Y u u' X0 ψ sd C Th vR Q M δ i0 i0' νq κ hOO hV) hc`.
+A detailed English derivation is pending.
 -/
 theorem classFrameC_of_OO (hOO : ClassFrameOO X Y u u' vR i0 i0' νq κ) (hV : 0 < X.volK2)
     (hc : 0 ≤ (bCF X hb Y.hK (Y.FN u) (Y.FN u') u u' X0 ψ (Y.tO u u') sd C Th vR Q M δ i0 i0' νq).c0 *

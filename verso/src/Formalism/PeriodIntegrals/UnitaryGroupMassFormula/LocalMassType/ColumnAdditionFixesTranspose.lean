@@ -21,7 +21,7 @@ theorem smul_apply_lin (k : HA (Fv F v) σ J) {a : ℕ} (X : TupV (E := E) v n a
     (k • X) i = lin (Fv F v) σ J k (X i) := rfl
 
 /- English proof (translation)
-The claim follows from `(hk y).symm`.
+A detailed English derivation is pending.
 -/
 theorem kv_lin {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (y : Fin n → Fv F v ⊗[F] E) :
@@ -29,7 +29,7 @@ theorem kv_lin {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv �
   (hk y).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `show sc (E := E) v (alp v r a) • lin (Fv F v) σ J k (X a) = lin (Fv F v) σ J k (sc (E := E) v (alp v r a) • X a)`. Rewrite using `[map_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locF_smul (k : HA (Fv F v) σ J) {r : ℕ} (X : TupV (E := E) v n (r + 1)) :
     locF v (k • X) = k • locF v X := by
@@ -44,7 +44,7 @@ def GM (g : ℕ) (z : Fin n → Fv F v ⊗[F] E) : Prop :=
 variable {σ J v Λ}
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hz`. Take `⟨y', hy', rfl⟩` from `hw`. Conclude with `⟨y + y', Submodule.add_mem _ hy hy', by rw [smul_add]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gm_add {g : ℕ} {z w : Fin n → Fv F v ⊗[F] E} (hz : GM v Λ g z) (hw : GM v Λ g w) :
     GM v Λ g (z + w) := by
@@ -53,14 +53,14 @@ theorem gm_add {g : ℕ} {z w : Fin n → Fv F v ⊗[F] E} (hz : GM v Λ g z) (h
   exact ⟨y + y', Submodule.add_mem _ hy hy', by rw [smul_add]⟩
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hz`. Conclude with `⟨-y, Submodule.neg_mem _ hy, by rw [smul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gm_neg {g : ℕ} {z : Fin n → Fv F v ⊗[F] E} (hz : GM v Λ g z) : GM v Λ g (-z) := by
   obtain ⟨y, hy, rfl⟩ := hz
   exact ⟨-y, Submodule.neg_mem _ hy, by rw [smul_neg]⟩
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hz`. Conclude with `⟨lin (Fv F v) σ J k y, (kv_lin σ J v Λ hk y).2 hy, by rw [map_smul]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gm_lin {g : ℕ} {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     {z : Fin n → Fv F v ⊗[F] E} (hz : GM v Λ g z) : GM v Λ g (lin (Fv F v) σ J k z) := by
@@ -68,22 +68,22 @@ theorem gm_lin {g : ℕ} {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.Type
   exact ⟨lin (Fv F v) σ J k y, (kv_lin σ J v Λ hk y).2 hy, by rw [map_smul]⟩
 
 /- English proof (translation)
-The claim follows from `(Kloc (E := E) v Λ).inv_mem hk`.
+A detailed English derivation is pending.
 -/
 theorem kv_inv' {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) :
     k⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v := (Kloc (E := E) v Λ).inv_mem hk
 
 /- English proof (translation)
-The claim follows from `(Kloc (E := E) v Λ).mul_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem kv_mul' {a b : HA (Fv F v) σ J} (ha : a ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     (hb : b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) : a * b ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v :=
   (Kloc (E := E) v Λ).mul_mem ha hb
 
 /- English proof (translation)
-Use `⟨fun i => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_apply_lin, kv_lin σ J v Λ hk]`. Conclude with `hY.1 i`. Apply `hY.2 c` to reduce the goal to its premises. Establish `: (∑ i, c i • (k • Y) i) = lin (Fv F v) σ J k (∑ i, c i • Y i)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [smul_apply_lin, map_sum, map_smul]`. Rewrite `hc` using `[this, kv_lin σ J v Λ hk]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_smul {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v) {a : ℕ}
     {Y : TupV (E := E) v n a} (hY : IsPrim v Λ Y) : IsPrim v Λ (k • Y) := by
@@ -99,7 +99,7 @@ def CongL (g : ℕ) {r : ℕ} (X X' : TupV (E := E) v n (r + 1)) : Prop :=
   ∀ a, GM v Λ g (locF v X' a - locF v X a)
 
 /- English proof (translation)
-Introduce `a`. Rewrite using `[locF_smul, locF_smul, smul_apply_lin, smul_apply_lin, ← map_sub]`. Conclude with `gm_lin hk (h a)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congL_smul {g : ℕ} {r : ℕ} {k : HA (Fv F v) σ J} (hk : k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)
     {X X' : TupV (E := E) v n (r + 1)} (h : CongL (Λ := Λ) g X X') : CongL (Λ := Λ) g (k • X) (k • X') := by
@@ -108,7 +108,7 @@ theorem congL_smul {g : ℕ} {r : ℕ} {k : HA (Fv F v) σ J} (hk : k ∈ Formal
   exact gm_lin hk (h a)
 
 /- English proof (translation)
-Introduce `a`. Use `gm_add (h2 a) (h1 a)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem congL_trans {g : ℕ} {r : ℕ} {X Y Z : TupV (E := E) v n (r + 1)}
     (h1 : CongL (Λ := Λ) g X Y) (h2 : CongL (Λ := Λ) g Y Z) : CongL (Λ := Λ) g X Z := by
@@ -117,7 +117,7 @@ theorem congL_trans {g : ℕ} {r : ℕ} {X Y Z : TupV (E := E) v n (r + 1)}
   simpa using this
 
 /- English proof (translation)
-Introduce `a`. Use `gm_neg (h1 a)` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem congL_symm {g : ℕ} {r : ℕ} {X Y : TupV (E := E) v n (r + 1)}
     (h1 : CongL (Λ := Λ) g X Y) : CongL (Λ := Λ) g Y X := by
@@ -126,7 +126,7 @@ theorem congL_symm {g : ℕ} {r : ℕ} {X Y : TupV (E := E) v n (r + 1)}
   simpa using this
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_congruence_subgroup_iff {g : ℕ} {r : ℕ} {P : Frame E n r} {k : HA (Fv F v) σ J} :
     k ∈ K1 σ J v Λ g P ↔ k ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v ∧
@@ -134,7 +134,7 @@ theorem mem_congruence_subgroup_iff {g : ℕ} {r : ℕ} {P : Frame E n r} {k : H
   Iff.rfl
 
 /- English proof (translation)
-Rewrite `*` using `[mem_congruence_subgroup_iff]`. Use `⟨kv_mul' ha.1 hb.1, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul]`. Conclude with `congL_trans ha.2 (congL_smul ha.1 hb.2)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congruence_mul_mem {g : ℕ} {r : ℕ} {P : Frame E n r} {a b : HA (Fv F v) σ J}
     (ha : a ∈ K1 σ J v Λ g P) (hb : b ∈ K1 σ J v Λ g P) : a * b ∈ K1 σ J v Λ g P := by
@@ -144,7 +144,7 @@ theorem congruence_mul_mem {g : ℕ} {r : ℕ} {P : Frame E n r} {a b : HA (Fv F
   exact congL_trans ha.2 (congL_smul ha.1 hb.2)
 
 /- English proof (translation)
-Rewrite `*` using `[mem_congruence_subgroup_iff]`. Use `⟨kv_inv' ha.1, ?_⟩` and prove the remaining obligations. Use `congL_smul (kv_inv' ha.1) ha.2` as an intermediate fact. Rewrite `this` using `[inv_smul_smul]`. Conclude with `congL_symm this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem column_addition_fixes_transpose {g : ℕ} {r : ℕ} {P : Frame E n r} {a : HA (Fv F v) σ J}
     (ha : a ∈ K1 σ J v Λ g P) : a⁻¹ ∈ K1 σ J v Λ g P := by
@@ -155,7 +155,7 @@ theorem column_addition_fixes_transpose {g : ℕ} {r : ℕ} {P : Frame E n r} {a
   exact congL_symm this
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => congruence_mul_mem ha h⟩` and prove the remaining obligations. Use `congruence_mul_mem (column_addition_fixes_transpose ha) h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, inv_mul_cancel, one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem congruence_mul_mem_iff {g : ℕ} {r : ℕ} {P : Frame E n r} {a : HA (Fv F v) σ J}
     (ha : a ∈ K1 σ J v Λ g P) (m : HA (Fv F v) σ J) :
@@ -165,11 +165,11 @@ theorem congruence_mul_mem_iff {g : ℕ} {r : ℕ} {P : Frame E n r} {a : HA (Fv
   rwa [← mul_assoc, inv_mul_cancel, one_mul] at this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Establish `h1` using `kv_mul' (kv_mul' (kv_inv' hκ) hm.1) hκ`. Rewrite `h1` using `[show κ⁻¹ * (κ * h * κ⁻¹) * κ = h by group]`. Then use the resulting hypothesis. Introduce `hK`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : κ * h * κ⁻¹ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v` using `kv_mul' (kv_mul' hκ hK) (kv_inv' hκ)`. Use `(mem_congruence_subgroup_iff).2 ⟨hm, ?_⟩` and prove the remaining obligations. Establish `h1` using `congL_smul hm hc`. Rewrite using `[show (κ * h * κ⁻¹) • κ • ratTup (F := F) (Fv F v) (F0 P') = κ • ratTup (F := F) (Fv F v) (F0 P') by`. Rewrite `h1` using `[← mul_smul, show κ * h * κ⁻¹ * κ = κ * h by group, mul_smul, hh]]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `congL_trans hc (congL_symm h1)`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_congruence_iff {g : ℕ} {r : ℕ} {P P' : Frame E n r} {κ : HA (Fv F v) σ J}
     (hκ : κ ∈ Formalism.L2.SG.TypedSets.Kv σ J Λ v)

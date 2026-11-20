@@ -20,9 +20,9 @@ section
 variable {R V : Type} [CommRing R] [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-Establish `e : idx A (C ⊓ W) = idx A C`. Unfold `idx`. Rewrite using `[← AddSubgroup.inf_relIndex_right (C ⊓ W).toAddSubgroup, ← AddSubgroup.inf_relIndex_right C.toAddSubgroup]`. Use `congr 1`. Use extensionality with `x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `⟨fun hx => ⟨hx.1.1, hx.2⟩, fun hx => ⟨⟨hx.1, hAW hx.2⟩, hx.2⟩⟩`. Rewrite using `[e]`. Establish `hle : A.toAddSubgroup ≤ B.toAddSubgroup` using `hAB`. Conclude with `⟨fun h0 => h (AddSubgroup.relIndex_eq_zero_of_le_right hle h0), AddSubgroup.relIndex_le_of_le_right hle h⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem idx_inf_le (A B C W : Submodule R V) (hAB : A ≤ B) (hAW : A ≤ W) (h : idx B C ≠ 0) :
     idx A (C ⊓ W) ≠ 0 ∧ idx A (C ⊓ W) ≤ idx B C := by
@@ -38,15 +38,15 @@ theorem idx_inf_le (A B C W : Submodule R V) (hAB : A ≤ B) (hAW : A ≤ W) (h 
     AddSubgroup.relIndex_le_of_le_right hle h⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ x : V, ∃ a : V, x ∈ t → a ∈ A ∧ x - a ∈ C`. Introduce `x`. Distinguish the cases in `hx : x ∈ t`. Establish `: x ∈ A ⊔ C` using `by rw [h]; exact Submodule.mem_sup_right (Submodule.subset_span hx)`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, fun _ => ⟨ha, by simpa using hc⟩⟩`. Conclude with `⟨0, fun h => absurd h hx⟩`. Use `choose f hf using h1`. Establish `hsA : Submodule.span R ((t.image f : Finset V) : Set V) ≤ A`. Rewrite using `[Submodule.span_le]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `(hf x hx).1`. Use `⟨t.image f, Finset.card_image_le.trans ht, le_antisymm ?_ (sup_le hDA hsA)⟩` and prove the remaining obligations. Establish `h2 : A ≤ C ⊔ Submodule.span R ((t.image f : Finset V) : Set V)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (le_sup_left (b := C)) ?_` and prove the remaining obligations. Rewrite using `[h]`. Use `sup_le le_sup_left (Submodule.span_le.2 fun x hx => ?_)` and prove the remaining obligations. Establish `: x = (x - f x) + f x` using `by abel`. Rewrite using `[SetLike.mem_coe, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.add_mem_sup (hf x hx).2 (Submodule.subset_span (Finset.mem_coe.2 (Finset.mem_image_of_mem f hx)))`. Introduce `x hx`. Take `⟨c, hc, s, hs, rfl⟩` from `Submodule.mem_sup.1 (h2 hx)`. Use `Submodule.add_mem_sup (hD ⟨?_, hc⟩) hs` and prove the remaining obligations. Simplify using `using A.sub_mem hx (hsA hs)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gens_of_sup (A C D : Submodule R V) (hD : A ⊓ C ≤ D) (hDA : D ≤ A) (e : ℕ) (t : Finset V)
     (ht : t.card ≤ e) (h : A ⊔ C = C ⊔ Submodule.span R (t : Set V)) :
@@ -88,11 +88,9 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 omit [StarRing K] in
 
 /- English proof (translation)
-Take `⟨⟨M, hM, hL⟩, hsp⟩` from `hA`. Use `⟨⟨B ⊓ M, ?_, ?_⟩, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `haveI : IsNoetherian (𝓞 K) M := isNoetherian_of_fg_of_noetherian _ hM`. Conclude with `isNoetherian_submodule.1 this _ inf_le_right`. Rewrite using `[inf_sup_assoc_of_le _ hI, ← hL]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(inf_eq_left.2 hBA).symm`. Rewrite using `[← hsp]`. Conclude with `Submodule.span_mono hBA`. Rewrite using `[← hsp, Submodule.span_le]`. Introduce `x hx`.
-
-Establish `h1 : (idx A B) • x ∈ B` using `AddSubgroup.nsmul_relIndex_mem B.toAddSubgroup (K := A.toAddSubgroup) hx`. Establish `h2 : ((idx A B : K))⁻¹ • ((idx A B) • x) ∈ Submodule.span K (B : Set V)` using `Submodule.smul_mem _ _ (Submodule.subset_span h1)`. Rewrite `h2` using `[← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 h), one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isLatMod_of_idx (A B : Submodule (𝓞 K) V) (S I : Submodule K V) (hA : IsLatMod A S I) (hBA : B ≤ A)
     (hI : rs (𝓞 K) I ≤ B) (h : idx A B ≠ 0) : IsLatMod B S I := by
@@ -113,13 +111,13 @@ theorem isLatMod_of_idx (A B : Submodule (𝓞 K) V) (S I : Submodule K V) (hA :
 variable [FiniteDimensional K V] {H : HermSpace K V} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hw, -, hPD, -⟩` from `GlobalTheory.T.hermFramePairNormalForm_geometry_summary K V H hK r N`. Establish `h2 : ∀ x ∈ N.Wt ⊔ II N.F N.F', ∀ y ∈ II N.F N.F', H.B y x = 0`. Introduce `x hx y hy`. Rewrite `hx` using `[← hw]`. Rewrite using `[← H.herm, (mem_perp_iff H _ x).1 hx y (Submodule.mem_sup_left (Submodule.mem_sup_left hy.1)), star_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw]`. Use `⟨le_sup_right, fun x hx => ⟨fun hx0 => ?_, fun hxI y hy => h2 y hy x hxI⟩⟩` and prove the remaining obligations. Take `⟨a, ha, i, hi, rfl⟩` from `Submodule.mem_sup.1 hx`. Establish `haa` using `hx0 a (Submodule.mem_sup_left ha)`. Rewrite `haa` using `[map_add, LinearMap.add_apply, h2 a (Submodule.mem_sup_left ha) i hi, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨τ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `ha0 : a = 0`. Assume the negation of the conclusion as `hne`. Use `hPD τ ⟨a, ha⟩ (fun h => hne (congrArg Subtype.val h))` as an intermediate fact. Establish `e : GlobalTheory.Mass.hRes H.B.flip N.Wt ⟨a, ha⟩ ⟨a, ha⟩ = H.B a a` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, haa]`. Simplify using `at this`. Rewrite using `[ha0, zero_add]`. Conclude with `hi`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radical (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r) :
     II N.F N.F' ≤ wSp N.F N.F' ∧
@@ -147,29 +145,27 @@ theorem radical (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (N : NF H r
 end
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ`. Take `⟨hb0, -, hDel, hbar⟩` from `GlobalTheory.T.normal_form_terminal_determinant K V H hK r N g Λ hg hΛ`. Take `⟨hnB, -, h1L, hB, t, ht, hgen⟩` from `GlobalTheory.T.flagPairInnerLattice_indices_and_generators K V H hK r N g Λ hg hΛ`. Take `⟨hd0, -, -, hlat0, -⟩` from `GlobalTheory.T.flagPairDefinitePartLattice_discriminant_eq_quotient K V H hK r N g Λ hg hΛ`. Take `⟨hIW, hrad⟩` from `radical hK N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hww : wSp N.F' N.F = wSp N.F N.F'`. Unfold `wSp V0`. Rewrite using `[sup_comm N.F'.X, Set.pair_comm]`. Establish `hn0 : idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hnB` using `[h0]`. Simplify using `only [Nat.cast_zero, zero_mul] at hnB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB0 : cardB N.F N.F' Λ ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hnB` using `[h0]`. Simplify using `only [Nat.cast_zero, mul_zero] at hnB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hThLa : latTh N.F N.F' Λ ≤ latLa N.F N.F' Λ (g : 𝓞 K)`. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨⟨(h1L hx.1).2, by rw [hww]; exact hx.2⟩, ⟨(h1L hx.1).1, hx.2⟩⟩, ?_⟩` and prove the remaining obligations. Take `⟨l, hl, i, hi, rfl⟩` from `Submodule.mem_sup.1 hx.1.1`. Use `Submodule.mem_sup.2 ⟨(l, l), ⟨⟨hl.1, hl.1⟩, ?_⟩, (i, i), ⟨hi.2, hi.1⟩, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hLa0 : latLa N.F N.F' Λ (g : 𝓞 K) ≤ flagPairDefinitePartLattice N.F N.F' Λ` using `fun x hx => hx.1.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLaL : latLa N.F N.F' Λ (g : 𝓞 K) ≤ latL N.F N.F' Λ ⊓ latL N.F' N.F Λ` using `fun x hx => ⟨hx.1.2.1, hx.1.1.1⟩`. Establish `hmul : N.iI g Λ * N.gI g Λ = idx (flagPairDefinitePartLattice N.F N.F' Λ) (latTh N.F N.F' Λ)` using `AddSubgroup.relIndex_mul_relIndex _ _ _ hThLa hLa0`. Take `⟨hp0, hpn⟩ : idx (flagPairDefinitePartLattice N.F N.F' Λ) (latTh N.F N.F' Λ) ≠ 0 ∧ idx (flagPairDefinitePartLattice N.F N.F' Λ) (latTh N.F N.F' Λ) ≤ idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ)` from `idx_inf_le _ _ _ _ inf_le_left inf_le_right hn0`. Establish `hq0 : idx (latL N.F N.F' Λ ⊓ latL N.F' N.F Λ) (lamOne N.F N.F' Λ) ≠ 0` using `fun h0 => hn0 (AddSubgroup.relIndex_eq_zero_of_le_right (show (latL N.F N.F' Λ ⊓ latL N.F' N.F Λ).toAddSubgroup ≤ (latL N.F N.F' Λ).toAddSubgroup from fun x hx => hx.1) h0)`. Establish `hiB : N.iI g Λ ≤ cardB N.F N.F' Λ` using `(idx_inf_le _ _ _ (rs (𝓞 K) (wSp N.F N.F')) hLaL (hLa0.trans inf_le_right) hq0).2.trans hB`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi0 : N.iI g Λ ≠ 0` using `fun h0 => hp0 (by rw [← hmul, h0, zero_mul])`. Establish `hg0 : N.gI g Λ ≠ 0` using `fun h0 => hp0 (by rw [← hmul, h0, mul_zero])`. Establish `hmulR : (N.gI g Λ : ℝ) * N.iI g Λ = idx (flagPairDefinitePartLattice N.F N.F' Λ) (latTh N.F N.F' Λ)`. Rewrite using `[← hmul]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmain : (N.gI g Λ : ℝ) * (N.iI g Λ : ℝ) ^ 2 * (N.bI Λ : ℝ) ^ 2 ≤ N.Del`. Rewrite using `[← hDel, ← hnB, sq (N.iI g Λ : ℝ), ← mul_assoc, hmulR]`. Establish `e1 : (idx (flagPairDefinitePartLattice N.F N.F' Λ) (latTh N.F N.F' Λ) : ℝ) ≤ idx (latL N.F N.F' Λ) (lamOne N.F N.F' Λ)`. Conclude with `hpn` after adjusting the coercions.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (N.iI g Λ : ℝ) ≤ cardB N.F N.F' Λ` using `by exact_mod_cast hiB`. Use `gcongr`. Establish `hITh : rs (𝓞 K) (II N.F N.F') ≤ latTh N.F N.F' Λ`. Introduce `x hx`. Use `⟨⟨Submodule.mem_sup_right hx, ?_⟩, hIW hx⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_perp_iff H _ x).2 fun y hy => (mem_perp_iff H _ x).1 (hIW hx) y (Submodule.mem_sup_left hy)`. Establish `hlat : IsLatMod (latTh N.F N.F' Λ) (wSp N.F N.F') (II N.F N.F')` using `isLatMod_of_idx _ _ _ _ hlat0 (hThLa.trans hLa0) hITh hp0`. Use `⟨hThLa, Nat.pos_of_ne_zero hg0, Nat.pos_of_ne_zero hi0, hmain, le_trans ?_ hmain, ?_, ?_, hlat⟩` and prove the remaining obligations. Establish `e1 : (1 : ℝ) ≤ N.iI g Λ` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hi0`. Establish `e2 : (1 : ℝ) ≤ N.bI Λ` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 hb0`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : lamOne N.F N.F' Λ ≤ latL N.F N.F' Λ` using `h1L.trans inf_le_left`. Take `⟨t', ht', h'⟩` from `((GlobalTheory.Mass.LatticeGens.gens_and_count K V _ _ h1 hn0).2 N.j t ht hgen).2 (flagPairDefinitePartLattice N.F N.F' Λ ⊔ lamOne N.F N.F' Λ) le_sup_right (sup_le inf_le_left h1)`. Conclude with `gens_of_sup _ _ _ (le_trans (show flagPairDefinitePartLattice N.F N.F' Λ ⊓ lamOne N.F N.F' Λ ≤ latTh N.F N.F' Λ from fun x hx => ⟨hx.2, hx.1.2⟩) hThLa) hLa0 N.j t' ht' h'`. Rewrite using `[(DelScale.main K V H hK _ _ _ _ hIW hrad hlat0 hlat).2.2.1, hd0, hmulR]`.
-
-Establish `: idx (latTh N.F N.F' Λ) (flagPairDefinitePartLattice N.F N.F' Λ) = 1` using `AddSubgroup.relIndex_eq_one.2 (hThLa.trans hLa0)`. Rewrite using `[gidx, this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (H : HermSpace K V), Formalism.HermitianLatticesTheory.IsCMUnram K → ∀ (r : ℕ) (N : NF H r), ∀ (g : ℕ) (Λ : Submodule (𝓞 K) V), 1 ≤ g → N.IsTerm g Λ → latTh N.F N.F' Λ ≤ latLa N.F N.F' Λ (g : 𝓞 K) ∧ 0 < N.gI g Λ ∧ 0 < N.iI g Λ ∧ (N.gI g Λ : ℝ) * (N.iI g Λ : ℝ) ^ 2 * (N.bI Λ : ℝ) ^ 2 ≤ N.Del ∧ ((N.gI g Λ : ℝ) * N.iI g Λ ≤ N.Del) ∧ GenBy (flagPairDefinitePartLattice N.F N.F' Λ) (latLa N.F N.F' Λ (g : 𝓞 K)) N.j ∧ del H (latTh N.F N.F' Λ) = (N.gI g Λ : ℝ) * N.iI g Λ * N.NT ∧ IsLatMod (latTh N.F N.F' Λ) (wSp N.F N.F') (II N.F N.F') := by
   intro K V _ _ _ _ _ _ _ _ H hK r N g Λ hg hΛ

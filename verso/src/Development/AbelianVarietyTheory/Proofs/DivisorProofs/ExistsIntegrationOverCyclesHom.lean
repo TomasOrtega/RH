@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Unfold `Charts.perCl`. Rewrite using `[← map_add]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' f`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `algebraMap (Hol F.V) T'.C (r f.deg) = algebraMap (Hol F.V) T'.C (p f.deg) + algebraMap (Hol F.V) T'.C (q f.deg)`. Rewrite using `[h, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem perCl_add' {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F)
     (p q r : Λ →+ Hol F.V) (h : ∀ l, r l = p l + q l) : K.perCl r = K.perCl p + K.perCl q := by
@@ -32,7 +32,7 @@ theorem perCl_add' {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ
   rw [h, map_add]
 
 /- English proof (translation)
-Use `Eq.trans ?_ ((H1.mk K.Oc).map_smul a (K.perZ p))` and prove the remaining obligations. Use `congrArg (H1.mk K.Oc) (Subtype.ext ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `T T' f`. Express the relevant statement in the definitionally equal form `algebraMap (Hol F.V) T'.C (r f.deg) = a • algebraMap (Hol F.V) T'.C (p f.deg)`. Rewrite using `[h, map_mul, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem perCl_smul' {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup Λ] {F : Fam I g Λ} (K : Charts F)
     (a : Hol F.V) (p r : Λ →+ Hol F.V) (h : ∀ l, r l = a * p l) : K.perCl r = a • K.perCl p := by
@@ -43,25 +43,23 @@ theorem perCl_smul' {I : Type} [Fintype I] {g : ℕ} {Λ : Type} [AddCommGroup �
   rw [h, map_mul, Algebra.smul_def]
 
 /- English proof (translation)
-The claim follows from `Hol.ext_fn fun p hp ↦ by rw [Hol.fn_algebraMap _ hp, Subsingleton.elim p 0]`.
+A detailed English derivation is pending.
 -/
 theorem hol_point (f : Hol (⊤ : Opens (Empty → ℂ))) : algebraMap ℂ _ (f.fn 0) = f :=
   Hol.ext_fn fun p hp ↦ by rw [Hol.fn_algebraMap _ hp, Subsingleton.elim p 0]
 
 /- English proof (translation)
-Introduce `A _ g hA L u`. Establish `: IsProper A.hom` using `hA.proper`. Establish `: IsSeparated (A.hom ≫ 𝟙 _)` using `inferInstance`. Establish `hB : (fibUnif u).Based`. Set `f : Sp ℂ ⟶ A.left` to `(u.ex 0).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs : Subsingleton (Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Set `pt : Sp ℂ` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℂ)`. Take `⟨_, ⟨U, hU, rfl⟩, hx, -⟩` from `(A.left.isBasis_affineOpens).exists_subset_of_mem_open (Set.mem_univ (f pt)) isOpen_univ`. Use `⟨U, hU, fun z _ q _ ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim q pt]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Use `choose per hper using fun c : primDR A ↦ hE _ _ _ _ _ _ _ _ (fibUnif u) hB c.1`. Establish `hadd : ∀ c c' : primDR A, per (c + c') = per c + per c'` using `fun c c' ↦ hU _ _ _ _ _ _ _ _ (fibUnif u) _ _ _ (hper (c + c')) fun K r hr ↦ by`. Rewrite using `[perCl_add' K (per c) (per c') _ fun _ ↦ rfl, ← hper c K r hr, ← hper c' K r hr, ← map_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsmul : ∀ (a : ℂ) (c : primDR A), per (a • c) = (AddMonoidHom.mulLeft (algebraMap ℂ (Hol (fibFam u).V) a)).comp (per c)` using `fun a c ↦ hU _ _ _ _ _ _ _ _ (fibUnif u) _ _ _ (hper (a • c)) fun K r hr ↦ by`. Rewrite using `[perCl_smul' K (algebraMap ℂ (Hol (fibFam u).V) a) (per c) _ fun _ ↦ rfl, ← hper c K r hr, ← map_smulₛₗ]`. Both sides reduce to the same expression. Set `ev : Hol (fibFam u).V →ₐ[ℂ] ℂ` to `Hol.ev 0 trivial`. Use `⟨{ toFun x := { toFun c := ev (per c x) map_add' c c' := by rw [hadd, AddMonoidHom.add_apply, map_add] map_smul' a c := by` and prove the remaining obligations.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hsmul]`. Express the relevant statement in the definitionally equal form `ev (algebraMap ℂ _ a * per c x) = a * _`. Rewrite using `[map_mul, AlgHom.commutes]`. Use `rfl }`. Use the proof step `map_zero' := LinearMap.ext fun c ↦ by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ev (per c 0) = 0`. Rewrite using `[map_zero, map_zero]`. Use the proof step `map_add' x y := LinearMap.ext fun c ↦ by`. Express the relevant statement in the definitionally equal form `ev (per c (x + y)) = ev (per c x) + ev (per c y)`. Rewrite using `[map_add, map_add] }, fun c ↦ ?_⟩`.
-
-Use `hper c using 1` and compare the differences between its conclusion and the goal. Use `AddMonoidHom.ext fun x ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap ℂ (Hol (fibFam u).V) (ev (per c x)) = per c x`. Conclude with `(congrArg _ (Hol.ev_apply (W := (fibFam u).V) 0 trivial (per c x))).trans (hol_point _)`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem pHom_of (hE : PExist) (hU : PUniq) : PHom := by
   intro A _ g hA L u
@@ -106,7 +104,7 @@ theorem pHom_of (hE : PExist) (hU : PUniq) : PHom := by
   exact (congrArg _ (Hol.ev_apply (W := (fibFam u).V) 0 trivial (per c x))).trans (hol_point _)
 
 /- English proof (translation)
-The claim follows from `pHom_of GlobalTheory.T.periods_exist_affine_zero_section GlobalTheory.T.periods_of_deRham_classes_unique`.
+A detailed English derivation is pending.
 -/
 theorem pHom : PHom := pHom_of GlobalTheory.T.periods_exist_affine_zero_section GlobalTheory.T.periods_of_deRham_classes_unique
 

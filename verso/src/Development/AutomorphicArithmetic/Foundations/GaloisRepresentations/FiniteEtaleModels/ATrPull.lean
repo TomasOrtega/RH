@@ -16,43 +16,41 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `q _ D R _ b f c k N S S' s s' j o o' ψ o₁ o₁' m m' hT`. Take `⟨hmon, hact, heta, hgal, ⟨hlb⟩, hck⟩` from `hT`. Establish `hc1 : m.φ ≫ o.A.hom = o₁.A.hom ≫ j` using `m.cart.1.w`. Establish `hc2 : m'.φ ≫ o'.A.hom = o₁'.A.hom ≫ j` using `m'.cart.1.w`. Establish `hψw : ψ.left ≫ o'.A.hom = o.A.hom` using `Over.w ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `l : o₁.A.left ⟶ o₁'.A.left` to `m'.cart.1.lift (m.φ ≫ ψ.left) o₁.A.hom (by rw [Category.assoc, hψw, hc1])`. Establish `hl1 : l ≫ m'.φ = m.φ ≫ ψ.left` using `m'.cart.1.lift_fst _ _ _`. Establish `hl2 : l ≫ o₁'.A.hom = o₁.A.hom` using `m'.cart.1.lift_snd _ _ _`. Set `ψ₁ : o₁.A ⟶ o₁'.A` to `Over.homMk l hl2`. Establish `hψ₁ : ψ₁.left = l` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hext : ∀ {Z : Scheme} (u v : Z ⟶ o₁'.A.left), u ≫ m'.φ = v ≫ m'.φ → u ≫ o₁'.A.hom = v ≫ o₁'.A.hom → u = v` using `fun u v h1 h2 => m'.cart.1.hom_ext h1 h2`. Establish `hl1' : ∀ {Z : Scheme} (u : Z ⟶ o₁.A.left), u ≫ l ≫ m'.φ = u ≫ m.φ ≫ ψ.left`. Introduce `Z u`. Rewrite using `[hl1]`. Establish `hl2' : ∀ {Z : Scheme} (u : Z ⟶ o₁.A.left), u ≫ l ≫ o₁'.A.hom = u ≫ o₁.A.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Z u`. Rewrite using `[hl2]`. Use `⟨ψ₁, ⟨?_, ?_, ?_, ?_, ?_, hck⟩, hl1⟩` and prove the remaining obligations. Apply `isMonHom_of_mul` to reduce the goal to its premises. Introduce `T x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, hψ₁]`. Apply `hext` to reduce the goal to its premises. Establish `h1` using `m.cart.2 T x y (pushPt hc1 x) (pushPt hc1 y) rfl rfl`. Establish `h2` using `m'.cart.2 T (x ≫ ψ₁) (y ≫ ψ₁) (pushPt hc1 x ≫ ψ) (pushPt hc1 y ≫ ψ) (by simp only [Over.comp_left, hψ₁, Category.assoc, hl1]; rfl) (by simp only [Over.comp_left, hψ₁, Category.assoc, hl1]; rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hl1', ← h2, ← MonObj.mul_comp, Over.comp_left, h1, Category.assoc]`. Simplify using `only [Category.assoc, hl2', Over.w]`. Introduce `a`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, hψ₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hA : (o.act.act a).left ≫ ψ.left = ψ.left ≫ (o'.act.act a).left`. Rewrite using `[← Over.comp_left, hact a, Over.comp_left]`. Apply `hext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl1', ← Category.assoc, m.act a, Category.assoc, hA, Category.assoc, m'.act a, ← Category.assoc l, hl1, Category.assoc]`. Simplify using `only [Category.assoc, hl2', Over.w, hl2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, hψ₁]`. Apply `hext` to reduce the goal to its premises. Rewrite using `[m'.eta x, heta x, Over.comp_left, Category.assoc, hl1', ← Category.assoc (o₁.eta (f x)).left, m.eta (f x), Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, hl2', Over.w]`. Establish `hkey : ∀ y : D.La, (transl (o₁.eta y)).left ≫ m.φ = m.φ ≫ (transl (o.eta y)).left`. Introduce `y`. Set `e : Over.mk (o₁.A.hom ≫ j) ⟶ o.A` to `pushPt hc1 (𝟙 o₁.A)`. Establish `he : e.left = m.φ` using `by simp [e, pushPt]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `m.cart.2 o₁.A (𝟙 o₁.A) (toUnit o₁.A ≫ o₁.eta y) e (toUnit _ ≫ o.eta y) rfl (by simp [m.eta])`. Establish `h2 : e ≫ transl (o.eta y) = e * (toUnit _ ≫ o.eta y)`. Simplify using `only [transl, MonObj.comp_mul, Category.comp_id, comp_toUnit_assoc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpb : IsPullback m.φ ψ₁.left ψ.left m'.φ` using `IsPullback.of_bot (by rw [hψ₁, hl2, hψw]; exact m.cart.1) hl1.symm m'.cart.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `isGaloisCover_of_isPullback hgal hpb ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `show (transl (1 : 𝟙_ (Over S') ⟶ o₁.A)).left = _`. Rewrite using `[transl_one]`. Both sides reduce to the same expression. Introduce `a a'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, transl_mul, Over.comp_left]`. Introduce `a a' h`. Conclude with `Subtype.ext (transl_injective h)`. Introduce and unpack `⟨h, x, rfl⟩`. Simplify using `only [hψ₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hl1', ← Category.assoc, hkey, Category.assoc, hgal.inv ⟨o.eta (N • f x), mem_heckeSubA o f N x⟩, hl1]`. Simplify using `only [Category.assoc, hl2', Over.w, hl2]`. Introduce and unpack `⟨h, x, rfl⟩`. Conclude with `⟨⟨o.eta (N • f x), mem_heckeSubA o f N x⟩, hkey _⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h, x, rfl⟩`. Conclude with `⟨⟨o₁.eta (N • f x), mem_heckeSubA o₁ f N x⟩, hkey _⟩`. Establish `hsq : sq2 ψ₁ ≫ m'.φ₂ = m.φ₂ ≫ sq2 ψ`. Apply `grpScheme_square_hom_ext` to reduce the goal to its premises. Establish `e1 : m'.φ₂ ≫ (fst o'.A o'.A).left = (fst o₁'.A o₁'.A).left ≫ m'.φ` using `m'.sq.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : m.φ₂ ≫ (fst o.A o.A).left = (fst o₁.A o₁.A).left ≫ m.φ` using `m.sq.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, e1, Category.assoc]`. Use `_ = (fst o₁.A o₁.A).left ≫ m.φ ≫ ψ.left := by`. Rewrite using `[grpSchemeSquareProductMap_comp_fst, Category.assoc, hψ₁, hl1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (m.φ₂ ≫ (fst o.A o.A).left) ≫ ψ.left := by`. Rewrite using `[e2, Category.assoc]`. Use `_ = (m.φ₂ ≫ sq2 ψ) ≫ (fst o'.A o'.A).left := by`. Rewrite using `[Category.assoc, Category.assoc, grpSchemeSquareProductMap_comp_fst]`. Establish `e1 : m'.φ₂ ≫ (snd o'.A o'.A).left = (snd o₁'.A o₁'.A).left ≫ m'.φ` using `m'.sq.2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : m.φ₂ ≫ (snd o.A o.A).left = (snd o₁.A o₁.A).left ≫ m.φ` using `m.sq.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, e1, Category.assoc]`. Use `_ = (snd o₁.A o₁.A).left ≫ m.φ ≫ ψ.left := by`. Rewrite using `[grpSchemeSquareProductMap_comp_snd, Category.assoc, hψ₁, hl1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (m.φ₂ ≫ (snd o.A o.A).left) ≫ ψ.left := by`. Rewrite using `[e2, Category.assoc]`. Use `_ = (m.φ₂ ≫ sq2 ψ) ≫ (snd o'.A o'.A).left := by`. Rewrite using `[Category.assoc, Category.assoc, grpSchemeSquareProductMap_comp_snd]`. Establish `hL1 : (Hecke.lbPow o₁.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o₁.isLB _ _`.
-
-Establish `hL0 : (Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`. Use `⟨(GlobalTheory.CechPic.cls_eq_iff hL1 (pull_isLB o₁'.isLB (sq2 ψ₁))).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_heckePow o₁.isLB, GlobalTheory.CechPic.cls_pull o₁'.isLB, (GlobalTheory.CechPic.cls_eq_iff o₁.isLB (pull_isLB o.isLB m.φ₂)).2 m.pol, GlobalTheory.CechPic.cls_pull o.isLB, (GlobalTheory.CechPic.cls_eq_iff o₁'.isLB (pull_isLB o'.isLB m'.φ₂)).2 m'.pol, GlobalTheory.CechPic.cls_ …`.
+A detailed English derivation is pending.
 -/
 theorem trPull : TrPull := by
   intro q _ D R _ b f c k N S S' s s' j o o' ψ o₁ o₁' m m' hT

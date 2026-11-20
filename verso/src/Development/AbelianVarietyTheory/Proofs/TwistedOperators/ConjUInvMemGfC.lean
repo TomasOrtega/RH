@@ -33,7 +33,7 @@ def relD (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ 
   Submodule.span ℂ {Ψ | ∃ g ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ Y (evFin F v₁), ∃ Ψ₀ ∈ algD M ψ emb, Ψ = om (g, 1) Ψ₀ - Ψ₀}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_sub' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a b : (Fin n × Fin d → Fv F v₁) → ℂ) (r : (Fin n × Fin d → AF F) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) (a - b) r =
@@ -41,7 +41,7 @@ theorem tens_sub' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
   funext x; simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.sub_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_add' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (a b : (Fin n × Fin d → Fv F v₁) → ℂ) (r : (Fin n × Fin d → AF F) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) (a + b) r =
@@ -49,7 +49,7 @@ theorem tens_add' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMode
   funext x; simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.add_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_smul' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (c : ℂ) (a : (Fin n × Fin d → Fv F v₁) → ℂ)
     (r : (Fin n × Fin d → AF F) → ℂ) :
@@ -57,26 +57,24 @@ theorem tens_smul' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
   funext x; simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.zero_apply, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem tens_zero' (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (r : (Fin n × Fin d → AF F) → ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) (0 : (Fin n × Fin d → Fv F v₁) → ℂ) r = 0 := by
   funext x; simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, Pi.zero_apply, zero_mul]
 
 /- English proof (translation)
-Establish `hφstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hstd] with v h1 h2`. Rewrite using `[h1, h2]`. Establish `hupd : ∀ φ₀ ∈ SB (Fin n × Fin d → Fv F v₁), ∀ w, Function.update φ v₁ φ₀ w ∈ SB _`. Introduce `φ₀ hφ₀ w`. Distinguish the cases in `hw : w = v₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ₀`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `δ hδ`. Proceed by induction on `hδ using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨g, hg, φ₀, hφ₀, φ₁, hφ₁, hA, rfl⟩` from `hz`. Establish `hsch : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) φ₀ r ∈ schA F (Fin n × Fin d)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hrt]`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f _ (hupd φ₀ hφ₀) (GlobalTheory.PureFactor.update_eventually φ v₁ φ₀ hφstd)`. Establish `hact` using `hA r ⟨hr, hsch⟩`. Establish `hmem : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) φ₀ r ∈ algD M ψ emb`. Rewrite using `[hrt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.subset_span ⟨f, Function.update φ v₁ φ₀, hf, hupd φ₀ hφ₀, ?_, rfl⟩` and prove the remaining obligations. Use `filter_upwards [hcof, Filter.eventually_cofinite_ne v₁] with w h1 hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `h1`. Rewrite using `[tens_sub']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `Submodule.subset_span ⟨g, hg, _, hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[hact]`. Consider the case `zero => rw [tens_zero']`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [tens_add']`.
-
-Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha => rw [tens_smul']`. Conclude with `Submodule.smul_mem _ c ha`.
+A detailed English derivation is pending.
 -/
 theorem tens_mem_relD (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) (v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
@@ -116,23 +114,19 @@ theorem tens_mem_relD (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
   | smul c a _ ha => rw [tens_smul']; exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Introduce `ΦD hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨f, φ, hf, hSB, hcof, rfl⟩` from `hz`. Establish `hφstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hstd] with v h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Take `⟨r, hr, hrt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v₁ f φ hφstd`. Take `⟨φo, hφo, hp⟩` from `hex (p (φ v₁))`. Establish `hφoSB : φo ∈ SB _` using `hφo.1`. Establish `hδ : φ v₁ - φo ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.augAt om v₁` using `(hco _ (sub_mem (hSB v₁) hφoSB)).1 (by rw [map_sub, hp, sub_self])`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hupd : ∀ w, Function.update φ v₁ φo w ∈ SB _`. Introduce `w`. Distinguish the cases in `hw : w = v₁`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφoSB`. Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB w`. Establish `hcof' : ∀ᶠ w in Filter.cofinite, Function.update φ v₁ φo w = M.vac w` using `by filter_upwards [hcof, Filter.eventually_cofinite_ne v₁] with w h1 hne`. Rewrite using `[Function.update_of_ne hne]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f (Function.update φ v₁ φo), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨f, _, hf, hupd, hcof', rfl⟩`. Conclude with `Submodule.subset_span ⟨f, _, hupd, hcof', by rw [Function.update_self]; exact hφo, rfl⟩`. Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v₁) (φ v₁) r`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrt, Function.update_eq_self]`. Rewrite using `[e1, ← hrt, ← tens_sub']`. Conclude with `tens_mem_relD M om ψ emb v₁ hstd hf hSB hcof hr hrt _ hδ`. Consider the case `zero => exact ⟨0, zero_mem _, zero_mem _, by rw [sub_zero]; exact zero_mem _⟩`. Consider the case `add a b _ _ ha hb`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Take `⟨a₀, ha₀, ha₁, ha₂⟩` from `ha`. Take `⟨b₀, hb₀, hb₁, hb₂⟩` from `hb`. Use `⟨a₀ + b₀, add_mem ha₀ hb₀, add_mem ha₁ hb₁, ?_⟩` and prove the remaining obligations. Establish `e : a + b - (a₀ + b₀) = (a - a₀) + (b - b₀)` using `by abel`. Rewrite using `[e]`.
-
-Conclude with `add_mem ha₂ hb₂`. Consider the case `smul c a _ ha`. Take `⟨a₀, ha₀, ha₁, ha₂⟩` from `ha`. Use `⟨c • a₀, Submodule.smul_mem _ c ha₀, Submodule.smul_mem _ c ha₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_sub]`.
-
-Conclude with `Submodule.smul_mem _ c ha₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_So (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ Y Wd) (ψ : AddChar (AF F) ℂ)
     (emb : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.EmbOver E w) {v₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F} (t : E →ₐ[F] Fv F v₁)
@@ -181,35 +175,35 @@ theorem exists_So (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.
     rw [← smul_sub]; exact Submodule.smul_mem _ c ha₂
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_sub' (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))
     (Φ₁ Φ₂ : (Fin n × Fin d → AF F) → ℂ) : M.co.rho ψ u (Φ₁ - Φ₂) = M.co.rho ψ u Φ₁ - M.co.rho ψ u Φ₂ := by
   funext x; simp only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.sub_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_add' (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))
     (Φ₁ Φ₂ : (Fin n × Fin d → AF F) → ℂ) : M.co.rho ψ u (Φ₁ + Φ₂) = M.co.rho ψ u Φ₁ + M.co.rho ψ u Φ₂ := by
   funext x; simp only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.add_apply]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul' (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E))
     (c : ℂ) (Φ : (Fin n × Fin d → AF F) → ℂ) : M.co.rho ψ u (c • Φ) = c • M.co.rho ψ u Φ := by
   funext x; simp only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.zero_apply, mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rho_zero' (M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ Y Wd) (ψ : AddChar (AF F) ℂ) (u : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E)) :
     M.co.rho ψ u 0 = 0 := by
   funext x; simp only [GlobalTheory.WeilM.Darboux.rho, GlobalTheory.WeilM.schr, Pi.zero_apply, mul_zero]
 
 /- English proof (translation)
-The claim follows from `(summable_of_mem_schA F hA).tsum_sub (summable_of_mem_schA F hB)`.
+A detailed English derivation is pending.
 -/
 theorem thetaSum_sub' {κ : Type} [Fintype κ] {A B : (κ → AF F) → ℂ} (hA : A ∈ schA F κ) (hB : B ∈ schA F κ) :
     thetaSum F (A - B) = thetaSum F A - thetaSum F B :=
@@ -219,7 +213,7 @@ variable {M : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Model σ 
   {crd : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E) → Z}
 
 /- English proof (translation)
-Use `⟨sub_mem h₁.1 h₂.1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[rho_sub', thetaSum_sub' (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ₁ h₁.1) (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ₂ h₂.1), h₁.2 u, h₂.2 u]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isDatum_sub (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) {Φ₁ Φ₂ : (Fin n × Fin d → AF F) → ℂ} {f₁ f₂ : Z → ℂ}
     (h₁ : IsDatum M ψ crd Φ₁ f₁) (h₂ : IsDatum M ψ crd Φ₂ f₂) : IsDatum M ψ crd (Φ₁ - Φ₂) (f₁ - f₂) := by
@@ -229,7 +223,7 @@ theorem isDatum_sub (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
   rfl
 
 /- English proof (translation)
-Use `⟨add_mem h₁.1 h₂.1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[rho_add', thetaSum_add F (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ₁ h₁.1) (GlobalTheory.HeisSchA.rho_mem_schA M ψ hψ u Φ₂ h₂.1), h₁.2 u, h₂.2 u]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isDatum_add (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) {Φ₁ Φ₂ : (Fin n × Fin d → AF F) → ℂ} {f₁ f₂ : Z → ℂ}
     (h₁ : IsDatum M ψ crd Φ₁ f₁) (h₂ : IsDatum M ψ crd Φ₂ f₂) : IsDatum M ψ crd (Φ₁ + Φ₂) (f₁ + f₂) := by
@@ -239,7 +233,7 @@ theorem isDatum_add (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorMod
   rfl
 
 /- English proof (translation)
-Use `⟨Submodule.smul_mem _ c h.1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[rho_smul', thetaSum_smul, h.2 u]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isDatum_smul (c : ℂ) {Φ : (Fin n × Fin d → AF F) → ℂ} {f : Z → ℂ} (h : IsDatum M ψ crd Φ f) :
     IsDatum M ψ crd (c • Φ) (c • f) := by
@@ -248,7 +242,7 @@ theorem isDatum_smul (c : ℂ) {Φ : (Fin n × Fin d → AF F) → ℂ} {f : Z �
   rfl
 
 /- English proof (translation)
-Use `⟨zero_mem _, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[rho_zero']`. Simplify using `[GlobalTheory.WeilM.thetaSum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isDatum_zero : IsDatum M ψ crd 0 (0 : Z → ℂ) := by
   refine ⟨zero_mem _, fun u => ?_⟩
@@ -256,7 +250,7 @@ theorem isDatum_zero : IsDatum M ψ crd 0 (0 : Z → ℂ) := by
   simp [GlobalTheory.WeilM.thetaSum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Take `⟨u, rfl⟩` from `hs z`. Rewrite using `[← hf.2 u, hg.2 u]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDatum_unique (hs : Function.Surjective crd) {Φ : (Fin n × Fin d → AF F) → ℂ} {f g : Z → ℂ}
     (hf : IsDatum M ψ crd Φ f) (hg : IsDatum M ψ crd Φ g) : f = g := by
@@ -269,17 +263,15 @@ end Gen
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `set a : AF D.host.F := 1 - GlobalTheory.EmbChart.atPlace v 1 with ha`. Establish `h0 : evFin D.host.F v a = 0`. Rewrite using `[ha, map_sub, map_one, GlobalTheory.EmbChart.evFin_atPlace, sub_self]`. Establish `h1 : fstA D.host.F a = 1` using `by show (1 : Ainf D.host.F) - (0 : Ainf D.host.F) = 1`. Conclude with `sub_zero 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f` to `Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E)`. Establish `hf1 : f (sigR (AF D.host.F) D.sp.cm.sig (a ⊗ₜ[D.host.F] (1 : D.host.E))) = 1`. Simplify using `only [f, sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, map_one, AlgHom.coe_id, id_eq, h1]`. Both sides reduce to the same expression. Establish `hz : ∀ i j, f (sigR (AF D.host.F) D.sp.cm.sig ((GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x - 1) i j)) = 0`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Establish `k` using `congrFun (congrFun (hx a h0) i) j`. Rewrite `k` using `[Matrix.smul_apply, Matrix.zero_apply, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Establish `k2` using `congrArg (fun w => f (sigR (AF D.host.F) D.sp.cm.sig w)) k`. Simplify using `only [map_mul, map_zero] at k2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k2` using `[hf1, one_mul]`. Conclude with `k2`. Rewrite using `[GfC, MonoidHom.mem_ker]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show f (sigR (AF D.host.F) D.sp.cm.sig (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x i j)) = (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j`. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x i j = (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x - 1) i j + (1 : Matrix (Fin V.rank) (Fin V.rank) _) i j`. Rewrite using `[Matrix.sub_apply, sub_add_cancel]`. Rewrite using `[e, map_add, map_add, hz i j, zero_add]`. Distinguish the cases in `hij : i = j`.
-
-Substitute `hij` using the available equality. Rewrite using `[Matrix.one_apply_eq (α := AF D.host.F ⊗[D.host.F] D.host.E), map_one, map_one, Matrix.one_apply_eq (α := Ainf D.host.F ⊗[D.host.F] D.host.E)]`. Rewrite using `[Matrix.one_apply_ne (α := AF D.host.F ⊗[D.host.F] D.host.E) hij, map_zero, map_zero, Matrix.one_apply_ne (α := Ainf D.host.F ⊗[D.host.F] D.host.E) hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjUInv_mem_GfC {D : D7} (V : HSp D) (Yp : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc D.host.F D.host.E V.rank) (c : D.host.E)
     (hc : c ≠ 0) (h : Yp.J = c • V.gram) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F) (x : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB Yp.J)
@@ -320,19 +312,19 @@ theorem conjUInv_mem_GfC {D : D7} (V : HSp D) (Yp : GlobalTheory.IndefiniteRowSi
       Matrix.one_apply_ne (α := Ainf D.host.F ⊗[D.host.F] D.host.E) hij]
 
 /- English proof (translation)
-Introduce `D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB _hθ hO hT R Rf _hM hC Φ' hΦ'`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `by rw [← hO.psi]; exact hT.base.std`. Establish `hstd` using `hT.geo.hM'.std`. Take `⟨-, hco, hex, -⟩` from `hC.1 Bs.v₁ hT.chars.good`. Take `⟨ΦD, hΦD, hD⟩` from `hO.algB Φ' hΦ'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ₀D, h0a, h0s, hdiff⟩` from `exists_So Γ.M' om' Bs.ψ Bs.emb Bs.τ₁ hstd (Rf.p' Bs.v₁) hco (hex Bs.τ₁) ΦD hΦD`. Take `⟨Φ₀, hΦ₀, hD0⟩` from `hO.algB' Φ₀D h0a`. Establish `hc : (-1 : D.host.E) ≠ 0` using `neg_ne_zero.mpr one_ne_zero`. Establish `hk : kapX X e hO.JX 1 = 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[kapX]`. Establish `key : ∀ Ψ ∈ relD Γ.M' om' Bs.ψ Bs.emb Bs.v₁, ∃ Φ ∈ finRel ωB (algF ψ θ false A₁ B), IsDatum Γ.M' ψ cB Ψ Φ`. Introduce `Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem z hz`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨g, hg, Ψ₀, hΨ₀, rfl⟩` from `hz`. Take `⟨Φ₁, hΦ₁, hD1⟩` from `hO.algB' Ψ₀ hΨ₀`. Establish `hgu : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) hO.JW₁ (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ g) = g` using `(GlobalTheory.ConjUTransport.conjEquiv W₁ (-1) hc hO.JW₁).right_inv g`. Establish `hW` using `hO.weilB Ψ₀ Φ₁ hD1 (GlobalTheory.ConjUTransport.conjUInv W₁ (-1) hc hO.JW₁ g) 1`. Rewrite `hW` using `[hgu, hk]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, Submodule.subset_span ⟨_, conjUInv_mem_GfC W₁ Γ.V' (-1) hc hO.JW₁ Bs.v₁ g hg, Φ₁, hΦ₁, rfl⟩, isDatum_sub hψ hW hD1⟩`. Consider the case `zero => exact ⟨0, zero_mem _, isDatum_zero⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨Φa, ha, hDa⟩` from `ha`. Take `⟨Φb, hb, hDb⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Φa + Φb, add_mem ha hb, isDatum_add hψ hDa hDb⟩`. Consider the case `smul c a _ ha`. Take `⟨Φa, ha, hDa⟩` from `ha`. Conclude with `⟨c • Φa, Submodule.smul_mem _ c ha, isDatum_smul c hDa⟩`. Take `⟨Φ, hΦ, hDΦ⟩` from `key _ hdiff`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hsub` using `isDatum_sub hψ hD hD0`. Establish `hEq : Φ' - Φ₀ = Φ` using `isDatum_unique cB.surjective hsub hDΦ`. Conclude with `⟨Φ₀, hΦ₀, hEq ▸ hΦ, Φ₀D, hD0, h0s⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem coinv_passage : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

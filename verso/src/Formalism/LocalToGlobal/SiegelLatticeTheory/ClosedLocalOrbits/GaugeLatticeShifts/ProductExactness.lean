@@ -23,7 +23,7 @@ section Pure
 variable {n : ℕ} (ε : Fin n → Bool)
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hJ_smul_l (a : ℂ) (x y : Fin n → ℂ) : hJ ε (a • x) y = conj a * hJ ε x y := by
   unfold hJ
@@ -31,42 +31,42 @@ theorem hJ_smul_l (a : ℂ) (x y : Fin n → ℂ) : hJ ε (a • x) y = conj a *
   rfl
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul_r (a : ℂ) (x y : Fin n → ℂ) : hJ ε x (a • y) = a * hJ ε x y := by
   unfold hJ
   rw [mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[star_add, add_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_l (x x' y : Fin n → ℂ) : hJ ε (x + x') y = hJ ε x y + hJ ε x' y := by
   unfold hJ
   rw [star_add, add_dotProduct]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_r (x y y' : Fin n → ℂ) : hJ ε x (y + y') = hJ ε x y + hJ ε x y' := by
   unfold hJ
   rw [mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε x y`.
+A detailed English derivation is pending.
 -/
 theorem hJ_cj (x y : Fin n → ℂ) : hJ ε x y = conj (hJ ε y x) :=
   Formalism.L2.SG.PoincareInHH.Cut.hJ_conj ε x y
 
 /- English proof (translation)
-Rewrite using `[hJ_cj, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_zero_of_cj {x y : Fin n → ℂ} (h : hJ ε y x = 0) : hJ ε x y = 0 := by
   rw [hJ_cj, h, map_zero]
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin ι`. Establish `hM : (Matrix.of fun i j => hJ ε ((x ∘ e.symm) i) ((x ∘ e.symm) j)) = Matrix.reindex e e (Matrix.of fun i j => hJ ε (x i) (x j))`. Use extensionality with `i j`. Both sides reduce to the same expression. Take `⟨g, hg⟩` from `W n (Fintype.card ι) ε (x ∘ e.symm) (y ∘ e.symm) (fun i j => hG _ _) (by rw [hM, Matrix.det_reindex_self]; exact hnd)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, fun i => by simpa using hg (e i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem witt_idx (W : WittGram) {ι : Type} [Fintype ι] [DecidableEq ι] (x y : ι → Fin n → ℂ)
     (hG : ∀ i j, hJ ε (x i) (x j) = hJ ε (y i) (y j))
@@ -86,11 +86,11 @@ def tup {r : ℕ} (e f : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : (Fin r �
   | .inr _ => z
 
 /- English proof (translation)
-Establish `h1` using `Dl_diagonal c (r + 1) le_rfl`. Establish `h2` using `Dl_diagonal c r (Nat.le_succ r)`. Rewrite `h1` using `[Fin.prod_univ_castSucc]`. Use `set P := ∏ i : Fin r, c (Fin.castSucc i)`. Establish `e1 : (∏ i : Fin r, c (Fin.castLE le_rfl (Fin.castSucc i))) = P` using `Finset.prod_congr rfl fun i _ => by congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (∏ i : Fin r, c (Fin.castLE (Nat.le_succ r) i)) = P` using `Finset.prod_congr rfl fun i _ => by congr 1`. Establish `e3 : Fin.castLE (le_refl (r + 1)) (Fin.last r) = Fin.last r` using `Fin.ext rfl`. Rewrite `h1` using `[e1, e3]`. Rewrite `h2` using `[e2]`. Unfold `Gv at hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hG` using `[h1, h2, norm_mul, mul_pow]`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `hP : 0 ≤ ‖P‖ ^ 2` using `sq_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem normSq_last_sub_pos_of_Gv_diagonal_pos {r : ℕ} (T T' : ℝ) (c : Fin (r + 1) → ℂ) (hG : 0 < Gv T T' (Matrix.diagonal c)) :
     0 < ‖c (Fin.last r)‖ ^ 2 - T * T' := by
@@ -113,41 +113,37 @@ theorem normSq_last_sub_pos_of_Gv_diagonal_pos {r : ℕ} (T T' : ℝ) (c : Fin (
   nlinarith
 
 /- English proof (translation)
-Establish `hsc0 : (sc : ℂ) ≠ 0` using `by exact_mod_cast hsc.ne'`. Establish `hT0 : (T : ℂ) ≠ 0` using `by exact_mod_cast hT.ne'`. Establish `hT'0 : (T' : ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`. Establish `hfe : ∀ a b, hJ ε (f a) (e b) = if a = b then 1 else 0` using `fun a b => by`. Apply the tactic sequence `rw [hJ_cj, hef]; split_ifs with h1 h2 h2 <;> simp_all`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hze : ∀ a, hJ ε z (e a) = 0` using `fun a => hJ_zero_of_cj ε (hez a)`. Establish `hzf : ∀ a, hJ ε z (f a) = 0` using `fun a => hJ_zero_of_cj ε (hfz a)`. Establish `hz'e : ∀ a, hJ ε z' (e a) = 0` using `fun a => hJ_zero_of_cj ε (hez' a)`. Establish `hz'f : ∀ a, hJ ε z' (f a) = 0` using `fun a => hJ_zero_of_cj ε (hfz' a)`. Establish `hwe : ∀ a, hJ ε w (e a) = 0` using `fun a => hJ_zero_of_cj ε (hew a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwf : ∀ a, hJ ε w (f a) = 0` using `fun a => hJ_zero_of_cj ε (hfw a)`. Establish `hwz : hJ ε w z = 0` using `hJ_zero_of_cj ε hzw`. Use `set sf : Fin r → ℂ := fun b => ((sc : ℂ) ^ (r - b.1))⁻¹ with hsf`. Establish `hsf0 : ∀ b, sf b ≠ 0` using `fun b => inv_ne_zero (pow_ne_zero _ hsc0)`. Establish `hsfc : ∀ b, conj (sf b) = sf b` using `fun b => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hsf, map_inv₀, map_pow, Complex.conj_ofReal]`. Use `set lam : Fin r → ℂ := fun b => c (Fin.castSucc b) / (sf b * sf b) with hlam`. Establish `hlam0 : ∀ b, lam b ≠ 0` using `fun b => div_ne_zero (hc _) (mul_ne_zero (hsf0 b) (hsf0 b))`. Establish `hclam0 : ∀ b, conj (lam b) ≠ 0` using `fun b => (map_ne_zero _).2 (hlam0 b)`. Use `set cl := c (Fin.last r) with hcl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgap` using `normSq_last_sub_pos_of_Gv_diagonal_pos T T' c hG`. Use `set q : ℝ := ‖cl‖ ^ 2 / T - T' with hq`. Establish `hq0 : 0 ≤ q`. Rewrite using `[hq, div_sub' hT.ne']`. Conclude with `div_nonneg (by nlinarith) hT.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `set α : ℂ := -cl / T with hα`. Use `set β : ℂ := ((Real.sqrt q : ℝ) : ℂ) with hβ`. Establish `hββ : conj β * β = (q : ℂ)`. Rewrite using `[hβ, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt hq0]`. Establish `hαα : conj α * α * (-(T : ℂ)) + (q : ℂ) = -(T' : ℂ)`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Complex.normSq_eq_conj_mul_self, hα, Complex.normSq_div, Complex.normSq_neg, Complex.normSq_ofReal, Complex.normSq_eq_norm_sq, hq]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Set `x` to `tup e f z'`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Set `y` to `tup (fun b => lam b • f b) (fun b => (conj (lam b))⁻¹ • e b) (α • z + β • w)`. Establish `hGram : ∀ i j, hJ ε (x i) (x j) = hJ ε (y i) (y j)`. Introduce `i j`. Apply the tactic sequence `rcases i with (a | a) | ⟨⟩ <;> rcases j with (b | b) | ⟨⟩ <;>`. Simplify using `only [x, y, tup, hJ_smul_l, hJ_smul_r, hJ_add_l, hJ_add_r, hee, hff, hef, hfe, hez, hfz, hez', hfz', hze, hzf, hz'e, hz'f, hew, hfw, hzw, hwe, hwf, hwz, hww, hzz, hz'z', mul_zero, add_zero, zero_add, mul_one]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one, inv_mul_cancel₀ (hclam0 a)]`. Simplify using the standard rewrite rules. Use `split_ifs with h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `h` using the available equality. Simplify using `only [map_inv₀, Complex.conj_conj, mul_one]`. Conclude with `(mul_inv_cancel₀ (hlam0 a)).symm`. Simplify using the standard rewrite rules. Rewrite using `[← hαα, ← hββ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnd : (Matrix.of fun i j => hJ ε (x i) (x j)).det ≠ 0`. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Apply `hv0` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hA : ∀ a, v (.inl (.inr a)) = 0` using `fun a => by`. Establish `h1` using `congrFun hv (.inl (.inl a))`. Simplify `h1` using `[mulVec, dotProduct, Fintype.sum_sum_type, x, tup, hee, hef, hez']`. Establish `hB : ∀ a, v (.inl (.inl a)) = 0` using `fun a => by`. Establish `h1` using `congrFun hv (.inl (.inr a))`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1` using `[mulVec, dotProduct, Fintype.sum_sum_type, x, tup, hff, hfe, hfz']`. Establish `hC : v (.inr ()) = 0`. Establish `h1` using `congrFun hv (.inr ())`. Simplify using `[mulVec, dotProduct, Fintype.sum_sum_type, x, tup, hz'e, hz'f, hz'z'] at h1`. The claim follows by propositional logic.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Break down `i with (a | a) | ⟨⟩` into its components or cases. Conclude with `hB a`. Conclude with `hA a`. Conclude with `hC`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Take `⟨g, hg⟩` from `witt_idx ε W x y hGram hnd`. Establish `hge : ∀ b, uMat g *ᵥ e b = lam b • f b` using `fun b => hg (.inl (.inl b))`. Establish `hgz : uMat g *ᵥ z' = α • z + β • w` using `hg (.inr ())`. Use `⟨g, ?_⟩` and prove the remaining obligations. Establish `hne : ∀ b : Fin r, Fin.last r ≠ Fin.castSucc b` using `fun b h => Fin.castSucc_ne_last b h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Use extensionality with `a b`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun a => ?_) a <;> refine Fin.lastCases ?_ (fun b => ?_) b`. Simplify using `only [Zhat, famSc, fam, Fin.snoc_last, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul, hgz, hJ_add_r, hJ_smul_r, hzz, hzw, mul_zero, add_zero, Matrix.diagonal_apply_eq, hα, hcl]`. Clear the denominators using the available nonvanishing facts. Simplify using `only [Zhat, famSc, fam, Fin.snoc_last, Fin.snoc_castSucc, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul, mulVec_smul, hge, hJ_smul_r, hzf, mul_zero, Matrix.diagonal_apply_ne _ (hne b)]`.
-
-Simplify using `only [Zhat, famSc, fam, Fin.snoc_last, Fin.snoc_castSucc, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul, hgz, hJ_smul_l, hJ_add_r, hJ_smul_r, hez, hew, mul_zero, add_zero, Matrix.diagonal_apply_ne _ (hne a).symm]`. Simplify using `only [Zhat, famSc, fam, Fin.snoc_castSucc, Fin.val_castSucc, mulVec_smul, hge, hJ_smul_l, hJ_smul_r, hef, Matrix.diagonal_apply, Fin.castSucc_inj] split_ifs with h`. Substitute `h` using the available equality. Use `hsfc a` as an intermediate fact. Simplify using `only [hsf] at this`.
-
-Rewrite using `[this, hlam]`. Simplify using `only [hsf]`. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem real_loc (W : WittGram) {r : ℕ} (e f : Fin r → Fin n → ℂ) (z z' w : Fin n → ℂ) (T T' sc : ℝ)
     (hee : ∀ a b, hJ ε (e a) (e b) = 0) (hff : ∀ a b, hJ ε (f a) (f b) = 0)
@@ -267,27 +263,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q`.
+A detailed English derivation is pending.
 -/
 theorem hJ_X (v : InfinitePlace X.B.I.F) (p q : (Formalism.MainNotions.S.VS D).V) :
     hJ (X.B.I.ε v) (rv X.B.I v (X.crd p)) (rv X.B.I v (X.crd q)) = embS D (X.pl v) ((Formalism.MainNotions.S.VS D).hT p q) :=
   Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q
 
 /- English proof (translation)
-Unfold `Tw`. Conclude with `(D.mem u).A.T_prime.pos` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Tw_pos (u : D.what₂.Word) : 0 < Tw (D := D) u := by
   unfold Tw
   exact_mod_cast (D.mem u).A.T_prime.pos
 
 /- English proof (translation)
-Introduce `D X u u' sc hsc c hc`. Establish `hk : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Simplify using `only [Good, Set.mem_ofPred_eq] at hc`. Establish `key : ∀ v, ∃ g : Formalism.REAL.UJ (X.B.I.ε v), Zhat (X.B.I.ε v) (frm X u sc v) (frm X u' sc v) (uMat g) = Matrix.diagonal (c v)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.eR b)) = 0` using `fun a b => (hJ_X X v _ _).trans (by rw [X.ee]; simp)`. Establish `h1 : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.fR b)) = 0` using `fun a b => (hJ_X X v _ _).trans (by rw [X.ff]; simp)`. Apply the tactic sequence `have h2 : ∀ a b, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.fR b)) = if a = b then 1 else 0 := fun a b => (hJ_X X v _ _).trans (by rw [X.ef]; split_ifs <;> simp)`. Establish `h3 : ∀ (w : D.what₂.Word) a, hJ (X.B.I.ε v) (rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR w)) = 0` using `fun w a => (hJ_X X v _ _).trans (by rw [(X.zu_orth w a).1]; simp)`. Establish `h4 : ∀ (w : D.what₂.Word) a, hJ (X.B.I.ε v) (rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR w)) = 0` using `fun w a => (hJ_X X v _ _).trans (by rw [(X.zu_orth w a).2]; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ∀ (w : D.what₂.Word), hJ (X.B.I.ε v) (rv X.B.I v (X.zR w)) (rv X.B.I v (X.zR w)) = -(Tw (D` using `D) w : ℂ) := fun w => (hJ_X X v _ _).trans (by rw [X.zu_norm w]; simp [Tw])`. Establish `hw` using `X.wfr_perp u v ⟨0, hk⟩`. Establish `hww : hJ (X.B.I.ε v) (X.wfr u v ⟨0, hk⟩) (X.wfr u v ⟨0, hk⟩) = 1`. Rewrite using `[X.wfr_on]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `real_loc (X.B.I.ε v) W (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (rv X.B.I v (X.zR u')) (X.wfr u v ⟨0, hk⟩) (Tw u) (Tw u') sc h0 h1 h2 (h3 u) (h4 u) (h3 u') (h4 u') (h5 u) (h5 u') (fun a => (hw.1 a).1) (fun a => (hw.1 a).2) hw.2 hww (Tw_p …`. Use `choose γ hγ using key`. Conclude with `⟨γ, fun v => hγ v⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepReal_of_witt (W : WittGram) : StepReal := by
   intro D X u u' sc hsc c hc

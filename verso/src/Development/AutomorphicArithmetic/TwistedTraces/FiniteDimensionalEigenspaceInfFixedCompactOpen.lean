@@ -6,21 +6,19 @@ open GroundTheory.Automorphic.CuspidalSpectrum GlobalTheory.IndefiniteRowSideFul
 open scoped Classical
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ ν _ V a x r w hV hx hw U hCO`. Set `U' : ∀ v : Pl K, Subgroup (Gw n v)` to `fun v => if h : ∃ i, w i = v then h.choose_spec ▸ U h.choose else ⊥`. Establish `hU' : ∀ i, U' (w i) = U i`. Introduce `i`. Establish `h : ∃ j, w j = w i` using `⟨i, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ (j : Fin r) (e : w j = w i), (e ▸ U j : Subgroup (Gw n (w i))) = U i`. Introduce `j e`. Take `rfl` from `hw e`. Both sides reduce to the same expression. Simplify using `only [U', dif_pos h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Conclude with `key _ _`. Establish `hCO' : ∀ v ∈ Finset.univ.image w, CO (U' v)`. Introduce `v hv`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hU']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hCO i`. Establish `hfin` using `UpperTheory.ConvolutionTheory.C.eigAdm K n hn μ ν a x hx (Finset.univ.image w) U' hCO'`. Establish `hVc : V ≤ cuspidalL2 μ` using `hV.le`. Establish `hle : (eigIn V (Oinf μ ν a) x ⊓ sphOff μ (Finset.univ.image w)) ⊓ ⨅ i, fixL μ (w i) (U i) ≤ eigIn (cuspidalL2 μ) (Oinf μ ν a) x ⊓ sphOff μ (Finset.univ.image w) ⊓ ⨅ v ∈ Finset.univ.image w, fixL μ v (U' v)`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨he, hs⟩, hf⟩` from `hu`. Use `⟨⟨?_, hs⟩, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ (W : Submodule ℂ (LL μ)) (y : LL μ), y ∈ eigIn W (Oinf μ ν a) x ↔ y ∈ W ∧ Oinf μ ν a y = (x : ℂ) • y`. Introduce `W y`. Simplify using `[eigIn, Module.End.mem_eigenspace_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he'` using `(hmem V u).1 he`. Conclude with `(hmem _ u).2 ⟨hVc he'.1, he'.2⟩`. Establish `hf' : u ∈ ⨅ i, fixL μ (w i) (U i)` using `hf`. Rewrite `hf'` using `[Submodule.mem_iInf]`. Express the relevant statement in the definitionally equal form `u ∈ ⨅ v ∈ Finset.univ.image w, fixL μ v (U' v)`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Submodule.mem_iInf]`. Introduce `v hv`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hv`. Rewrite using `[hU']`. Conclude with `hf' i`.
-
-Use `haveI := hfin`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteDimensional_eigenspace_inf_fixed_compactOpen :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure] (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]

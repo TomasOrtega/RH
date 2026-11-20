@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Poinc.sharpOver_pullback_end` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FEighthPowerPresentationEndomorphismsPullback.lean&line=16#L16)
 -/

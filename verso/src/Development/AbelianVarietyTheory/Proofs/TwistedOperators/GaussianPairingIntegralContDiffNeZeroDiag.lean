@@ -19,14 +19,14 @@ Both sides reduce to the same expression.
 @[simp] theorem evalDiag_apply (x : V) (B : V →L[ℝ] V →L[ℝ] ℂ) : evalDiag x B = B x x := rfl
 
 /- English proof (translation)
-The claim follows from `ContinuousLinearMap.opNorm_le_bound _ (by positivity) (fun B => (B.le_opNorm₂ x x).trans_eq (by ring))`.
+A detailed English derivation is pending.
 -/
 theorem norm_evalDiag_le (x : V) : ‖evalDiag x‖ ≤ ‖x‖ * ‖x‖ :=
   ContinuousLinearMap.opNorm_le_bound _ (by positivity)
     (fun B => (B.le_opNorm₂ x x).trans_eq (by ring))
 
 /- English proof (translation)
-The claim follows from `continuous_clm_apply.2 fun B => by simpa using B.continuous.clm_apply continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_evalDiag : Continuous (evalDiag (V := V)) :=
   continuous_clm_apply.2 fun B => by simpa using B.continuous.clm_apply continuous_id
@@ -34,21 +34,21 @@ theorem continuous_evalDiag : Continuous (evalDiag (V := V)) :=
 def diagProd (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (x : V) : ℂ := (ys.map fun y => y x x).prod
 
 /- English proof (translation)
-The claim follows from `continuous_list_prod ys fun y _ => y.continuous.clm_apply continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_diagProd (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) : Continuous (diagProd ys) :=
   continuous_list_prod ys fun y _ => y.continuous.clm_apply continuous_id
 
 /- English proof (translation)
-The claim follows from `List.prod_nonneg (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem prod_norm_nonneg (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) : 0 ≤ (ys.map (‖·‖)).prod :=
   List.prod_nonneg (by simp)
 
 /- English proof (translation)
-Proceed by induction on `ys with`. Consider the case `nil => simp [diagProd]`. Consider the case `cons y ys ih`. Simplify using `only [diagProd, List.map_cons, List.prod_cons, List.length_cons] at ih ⊢`. Rewrite using `[norm_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `prod_norm_nonneg ys`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_diagProd_le (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (x : V) :
     ‖diagProd ys x‖ ≤ (ys.map (‖·‖)).prod * ‖x‖ ^ (2 * ys.length) := by
@@ -66,7 +66,7 @@ theorem norm_diagProd_le (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (x : V) :
 def negDef : Set (V →L[ℝ] V →L[ℝ] ℂ) := {B | ∃ ε > 0, ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)}
 
 /- English proof (translation)
-Establish `h1 : (B' x x).re = (B x x).re + ((B' - B) x x).re` using `by simp`. Establish `h2 : ((B' - B) x x).re ≤ ε / 2 * ‖x‖ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1]`. Combine the linear relations using `[hB x]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem re_le_of_norm_sub_le {B B' : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ}
     (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)) (hB' : ‖B' - B‖ ≤ ε / 2) (x : V) :
@@ -80,7 +80,7 @@ theorem re_le_of_norm_sub_le {B B' : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ}
   rw [h1]; linarith [hB x]
 
 /- English proof (translation)
-Rewrite using `[Metric.isOpen_iff]`. Introduce and unpack `B ⟨ε, hε, hB⟩`. Use `⟨ε / 2, by positivity, fun B' hB' => ⟨ε / 2, by positivity, re_le_of_norm_sub_le hB ?_⟩⟩` and prove the remaining obligations. Rewrite `hB'` using `[mem_ball, dist_eq_norm]`. Conclude with `hB'.le`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_negDef : IsOpen (negDef (V := V)) := by
   rw [Metric.isOpen_iff]
@@ -92,9 +92,9 @@ theorem isOpen_negDef : IsOpen (negDef (V := V)) := by
 variable [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial V with h | h` into its components or cases. Conclude with `Integrable.of_finite`. Rewrite using `[integrable_fun_norm_addHaar μ (f := fun r => r ^ n * Real.exp (-b * r ^ 2))]`. Use `integrableOn_rpow_mul_exp_neg_mul_sq hb (s := ((Module.finrank ℝ V - 1 + n : ℕ) : ℝ)) (lt_of_lt_of_le neg_one_lt_zero (by positivity))` as an intermediate fact. Use `this.congr_fun (fun x _ => ?_) measurableSet_Ioi` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Real.rpow_natCast, smul_eq_mul, pow_add, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem integrable_norm_pow_mul_exp (n : ℕ) {b : ℝ} (hb : 0 < b) :
     Integrable (fun x : V => ‖x‖ ^ n * Real.exp (-b * ‖x‖ ^ 2)) μ := by
@@ -111,7 +111,7 @@ def gaussMoment (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (B : V →L[ℝ] V →
 
 omit [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Rewrite using `[norm_mul, Complex.norm_exp]`. Establish `h0` using `prod_norm_nonneg ys`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_integrand_le {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ} (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2))
     (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (x : V) :
@@ -126,14 +126,14 @@ theorem norm_integrand_le {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ} (hB : ∀
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `(Complex.continuous_exp.comp (B.continuous.clm_apply continuous_id)).mul (continuous_diagProd ys)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_integrand (B : V →L[ℝ] V →L[ℝ] ℂ) (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) :
     Continuous fun x => Complex.exp (B x x) * diagProd ys x :=
   (Complex.continuous_exp.comp (B.continuous.clm_apply continuous_id)).mul (continuous_diagProd ys)
 
 /- English proof (translation)
-The claim follows from `((integrable_norm_pow_mul_exp μ _ hε).const_mul _).mono' (continuous_integrand B ys).aestronglyMeasurable (Eventually.of_forall (norm_integrand_le hB ys))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_integrand {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ} (hε : 0 < ε)
     (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)) (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) :
@@ -146,7 +146,7 @@ def integrandDeriv (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (B : V →L[ℝ] V 
   (Complex.exp (B x x) * diagProd ys x) • evalDiag x
 
 /- English proof (translation)
-Use `((evalDiag x).hasFDerivAt (x := B)).cexp.mul_const (diagProd ys x)` as an intermediate fact. Use `this.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `B'`. Simplify using `[integrandDeriv]`. Apply the tactic sequence `try ring`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integrand (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (B : V →L[ℝ] V →L[ℝ] ℂ) (x : V) :
     HasFDerivAt (fun B' : V →L[ℝ] V →L[ℝ] ℂ => Complex.exp (B' x x) * diagProd ys x)
@@ -158,7 +158,7 @@ theorem hasFDerivAt_integrand (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (B : V �
   try ring
 
 /- English proof (translation)
-Rewrite using `[integrandDeriv, norm_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_integrandDeriv_le {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ}
     (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)) (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) (x : V) :
@@ -172,7 +172,7 @@ theorem norm_integrandDeriv_le {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ}
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `((integrable_norm_pow_mul_exp μ _ hε).const_mul _).mono' (((continuous_integrand B ys).smul continuous_evalDiag).aestronglyMeasurable) (Eventually.of_forall (norm_integrandDeriv_le hB ys))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_integrandDeriv {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ} (hε : 0 < ε)
     (hB : ∀ x, (B x x).re ≤ -(ε * ‖x‖ ^ 2)) (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) :
@@ -182,7 +182,7 @@ theorem integrable_integrandDeriv {B : V →L[ℝ] V →L[ℝ] ℂ} {ε : ℝ} (
     (Eventually.of_forall (norm_integrandDeriv_le hB ys))
 
 /- English proof (translation)
-Take `⟨ε, hε, hBε⟩` from `hB`. Establish `hball : ∀ B' ∈ ball B (ε / 2), ∀ x, (B' x x).re ≤ -(ε / 2 * ‖x‖ ^ 2)` using `fun B' hB' => re_le_of_norm_sub_le hBε (by rw [mem_ball, dist_eq_norm] at hB'; exact hB'.le)`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun B' x => Complex.exp (B' x x) * diagProd ys x) (ball_mem_nhds B (by positivity : 0 < ε / 2)) (bound := fun x => (ys.map (‖·‖)).prod * (‖x‖ ^ (2 * ys.length + 2) * Real.exp (-(ε / 2) * ‖x‖ ^ 2))) (Eventually.of_forall fun B' …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_gaussMoment (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) {B : V →L[ℝ] V →L[ℝ] ℂ}
     (hB : B ∈ negDef) :
@@ -203,9 +203,9 @@ theorem hasFDerivAt_gaussMoment (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) {B : V
     (Eventually.of_forall fun x B' _ => hasFDerivAt_integrand ys B' x)
 
 /- English proof (translation)
-Take `⟨ε, hε, hBε⟩` from `id hB`. Rewrite using `[(hasFDerivAt_gaussMoment μ ys hB).fderiv, ContinuousLinearMap.integral_apply (integrable_integrandDeriv μ hε hBε ys)]`. Unfold `gaussMoment`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [integrandDeriv, diagProd, ContinuousLinearMap.smul_apply, evalDiag_apply, smul_eq_mul, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fderiv_gaussMoment_apply (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) {B : V →L[ℝ] V →L[ℝ] ℂ}
     (hB : B ∈ negDef) (y : V →L[ℝ] V →L[ℝ] ℂ) :
@@ -221,9 +221,9 @@ theorem fderiv_gaussMoment_apply (ys : List (V →L[ℝ] V →L[ℝ] ℂ)) {B : 
   ring
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `ys`. Conclude with `contDiffOn_zero.2 fun B hB => (hasFDerivAt_gaussMoment μ ys hB).continuousAt.continuousWithinAt`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ys`. Use `contDiffOn_succ_of_fderiv_apply (n := (n : WithTop ℕ∞)) (f := gaussMoment μ ys) (s := negDef) (fun B hB => (hasFDerivAt_gaussMoment μ ys hB).differentiableAt.differentiableWithinAt) (fun h => by simp at h) (fun y => (ih (y :: ys)).congr fun B hB => by` as an intermediate fact. Rewrite using `[fderivWithin_of_isOpen isOpen_negDef hB, fderiv_gaussMoment_apply μ ys hB])`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_gaussMoment (n : ℕ) :
     ∀ ys : List (V →L[ℝ] V →L[ℝ] ℂ), ContDiffOn ℝ n (gaussMoment μ ys) negDef := by
@@ -261,28 +261,26 @@ def pairForm (M : ℝ → V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (p : ℝ × ℝ) : V 
 
 omit [MeasurableSpace V] [BorelSpace V] in
 /- English proof (translation)
-Simplify using `[pairForm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pairForm_apply (M : ℝ → V →ₗ[ℝ] V →ₗ[ℝ] ℂ) (p : ℝ × ℝ) (x y : V) :
     pairForm M p x y = M p.1 x y + starRingEnd ℂ (M p.2 x y) := by
   simp [pairForm]
 
 /- English proof (translation)
-Establish `hneg' : ∀ t, ∃ ε > 0, ∀ x, (M t x x).re ≤ -(ε * ‖x‖ ^ 2)` using `fun t => by`. Take `⟨ε, hε, h⟩` from `hneg t`. Conclude with `⟨ε, hε, h.self_of_nhds⟩`. Prove the components needed by the constructor for the conclusion. Establish `hP : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (pairForm M)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite using `[contDiff_clm_apply_iff]`. Introduce `x`. Rewrite using `[contDiff_clm_apply_iff]`. Introduce `y`. Simplify using `only [pairForm_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `((hM x y).comp contDiff_fst).add (Complex.conjCLE.contDiff.comp ((hM x y).comp contDiff_snd))`. Establish `hmem : ∀ p, pairForm M p ∈ negDef` using `fun p => by`. Take `⟨ε₁, h₁, hb₁⟩` from `hneg' p.1`. Take `⟨ε₂, h₂, hb₂⟩` from `hneg' p.2`. Use `⟨ε₁ + ε₂, by positivity, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [pairForm_apply, Complex.add_re, Complex.conj_re]`. Combine the linear relations using `[hb₁ x, hb₂ x]`. Establish `heq : (fun p : ℝ × ℝ => ∫ x, Complex.exp (M p.1 x x) * starRingEnd ℂ (Complex.exp (M p.2 x x)) ∂μ) = gaussMoment μ [] ∘ pairForm M`. Use function extensionality and compare the values at `p`. Simplify using `only [Function.comp, gaussMoment, diagProd, List.map_nil, List.prod_nil, mul_one, pairForm_apply]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[← Complex.exp_conj, ← Complex.exp_add]`. Rewrite using `[heq]`. Conclude with `contDiff_infty.2 fun n => (contDiffOn_gaussMoment μ n []).comp_contDiff (contDiff_infty.1 hP n) hmem`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u`. Take `⟨ε, hε, hb⟩` from `hneg' u`. Establish `hpt : ∀ x, Complex.exp (M u x x) * starRingEnd ℂ (Complex.exp (M u x x)) = ((Real.exp (2 * (M u x x).re) : ℝ) : ℂ)` using `fun x => by`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, Complex.norm_exp, sq, ← Real.exp_add, two_mul]`. Simplify using `only [hpt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_complex_ofReal, Complex.ofReal_ne_zero]`. Establish `hc : Continuous fun x => M u x x` using `(toCont (M u)).continuous.clm_apply continuous_id`. Use `(integral_exp_pos ?_).ne'` and prove the remaining obligations. Use `(integrable_norm_pow_mul_exp μ 0 (by positivity : 0 < 2 * ε)).mono' ((Real.continuous_exp.comp (continuous_const.mul (Complex.continuous_re.comp hc))).aestronglyMeasurable) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_pos (Real.exp_pos _), pow_zero, one_mul]`.
-
-Conclude with `Real.exp_le_exp.2 (by linarith [hb x])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_pairing_smooth_ne_zero (M : ℝ → V →ₗ[ℝ] V →ₗ[ℝ] ℂ)
     (hM : ∀ x y, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => M t x y)

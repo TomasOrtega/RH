@@ -12,7 +12,7 @@ namespace PositivityTheory.ThKR
 open PositivityTheory.Sph GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-The claim follows from `Tr.closeSph PositivityTheory.BernsteinRamification.Close.kCoinv PositivityTheory.BernsteinRamification.Close.soCoinv PositivityTheory.BernsteinRamification.Close.ramifiedMultiplicityOne PositivityTheory.BernsteinRamification.Close.finRam PositivityTheory.BernsteinRamification.Clo …`.
+A detailed English derivation is pending.
 -/
 theorem theoremK_head2_of_mod (hM : PositivityTheory.Sph.ModSt) (h11 : GlobalTheory.ThK.Dbl.EisBL) (h12 : GlobalTheory.ThK.Dbl.SiegelWeilStd) :
     ThetaIntegralsAgree ∧ LocalMatching :=
@@ -23,14 +23,14 @@ theorem theoremK_head2_of_mod (hM : PositivityTheory.Sph.ModSt) (h11 : GlobalThe
     (siegel_of_core PositivityTheory.Prw.siegelCore_holds) h11 h12 PositivityTheory.ThKW.weilEx
 
 /- English proof (translation)
-The claim follows from `theoremK_head2_of_mod hM h11 h12`.
+A detailed English derivation is pending.
 -/
 theorem thetaIntegralsAgree_and_localMatching_of_siegelWeil (hM : PositivityTheory.Sph.ModSt) (_P : GlobalTheory.FunPr.Hypotheses₂) (h11 : GlobalTheory.ThK.Dbl.EisBL)
     (h12 : GlobalTheory.ThK.Dbl.SiegelWeilStd) : ThetaIntegralsAgree ∧ LocalMatching :=
   theoremK_head2_of_mod hM h11 h12
 
 /- English proof (translation)
-The claim follows from `theoremK_head2_of_mod PositivityTheory.Sph.modSt2 h11 h12`.
+A detailed English derivation is pending.
 -/
 theorem theoremK_head2 (h11 : GlobalTheory.ThK.Dbl.EisBL) (h12 : GlobalTheory.ThK.Dbl.SiegelWeilStd) : ThetaIntegralsAgree ∧ LocalMatching :=
   theoremK_head2_of_mod PositivityTheory.Sph.modSt2 h11 h12

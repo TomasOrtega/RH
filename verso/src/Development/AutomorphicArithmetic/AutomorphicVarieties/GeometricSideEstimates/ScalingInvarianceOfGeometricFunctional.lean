@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GeometricSideEstim
 open UpperTheory.V.Lit.Geo
 
 /- English proof (translation)
-Use `⟨h.1, fun s t hs hst => ⟨(h.2 s t hs hst).1, (h.2 s t hs hst).2.trans ?_⟩⟩` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (pow_le_pow_right₀ ((one_le_div hs).2 hst) hNM) ?_` and prove the remaining obligations. Conclude with `tsum_nonneg fun i => (Real.exp_pos _).le`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem scale_mono {ι : Type} {q : ι → ℝ} {N M : ℕ} (h : Scale q N) (hNM : N ≤ M) : Scale q M := by
   refine ⟨h.1, fun s t hs hst => ⟨(h.2 s t hs hst).1, (h.2 s t hs hst).2.trans ?_⟩⟩
@@ -12,7 +12,7 @@ private theorem scale_mono {ι : Type} {q : ι → ℝ} {N M : ℕ} (h : Scale q
   exact tsum_nonneg fun i => (Real.exp_pos _).le
 
 /- English proof (translation)
-Use `⟨fun i => h.1 _, fun s t hs hst => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(e.summable_iff (f := fun k => Real.exp (-Real.pi * (s * q k)))).2 (h.2 s t hs hst).1`. Rewrite using `[e.tsum_eq (fun k => Real.exp (-Real.pi * (s * q k))), e.tsum_eq (fun k => Real.exp (-Real.pi * (t * q k)))]`. Conclude with `(h.2 s t hs hst).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem scale_equiv {ι κ : Type} (e : ι ≃ κ) {q : κ → ℝ} {N : ℕ} (h : Scale q N) :
     Scale (fun i => q (e i)) N := by
@@ -22,21 +22,21 @@ private theorem scale_equiv {ι κ : Type} (e : ι ≃ κ) {q : κ → ℝ} {N :
     exact (h.2 s t hs hst).2
 
 /- English proof (translation)
-Introduce `A V _ _ _ _ φ ε hε hφ`. Set `W : Submodule ℝ V` to `Submodule.span ℝ (Set.range φ)`. Set `L : Submodule ℤ W` to `(φ.range.comap W.subtype.toAddMonoidHom).toIntSubmodule`. Establish `hmem : ∀ w : W, w ∈ L ↔ (w : V) ∈ Set.range φ` using `fun w => Iff.rfl`. Establish `hnorm : ∀ y : L, y ≠ 0 → ε ≤ ‖y‖`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨a, ha⟩` from `(hmem y).1 y.2`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Apply `hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using ha.symm`. Use `hφ a ha0` as an intermediate fact. Rewrite `this` using `[ha]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `haveI : DiscreteTopology L := by`. Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Rewrite using `[Metric.isOpen_singleton_iff]`. Use `⟨ε, hε, fun y hy => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Rewrite `hy` using `[dist_zero_right]`. Combine the linear relations using `[hnorm y hne]`. Use `haveI : IsZLattice ℝ L := by`. Use `⟨?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : (L : Set W) = ((↑) : W → V) ⁻¹' Set.range φ` using `rfl`. Rewrite using `[hs]`. Conclude with `Submodule.span_span_coe_preimage`. Establish `hinj : Function.Injective φ`. Introduce `a b hab`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `hne`. Establish `h0` using `hφ (a - b) (sub_ne_zero.mpr hne)`. Rewrite `h0` using `[map_sub, hab, sub_self, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `e : A ≃ L` to `Equiv.ofBijective (fun a => ⟨⟨φ a, Submodule.subset_span ⟨a, rfl⟩⟩, ⟨a, rfl⟩⟩) ⟨fun a b hab => hinj (congrArg (fun y : L => ((y : W) : V)) hab), fun y => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `(hmem y).1 y.2`. Conclude with `⟨a, Subtype.ext (Subtype.ext ha)⟩⟩`. Establish `hL` using `UpperTheory.geometric_side_estimate W L`. Establish `h1` using `scale_equiv e hL`. Conclude with `scale_mono h1 (Submodule.finrank_le W)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.scaling_invariance_of_geometric_functional :
     ScaleGen := by

@@ -30,7 +30,7 @@ def vdH (p : ℕ) : ℝ := (padicValNat p (NumberField.discr H.E).natAbs : ℝ) 
 def vdS : ℝ := ((H.small.sup fun l => padicValNat l (NumberField.discr H.E).natAbs : ℕ) : ℝ) / (Module.finrank ℚ H.E : ℝ)
 
 /- English proof (translation)
-Unfold `vdH`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem vdH_nonneg (p : ℕ) : 0 ≤ H.vdH p := by unfold vdH; positivity
 

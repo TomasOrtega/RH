@@ -16,7 +16,7 @@ def sumMap (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) {a ρ : ℕ} (z : Fin a
     ((Fintype.linearCombination D.host.E e).coprod (Fintype.linearCombination D.host.E f)))
 
 /- English proof (translation)
-Simplify using `[sumMap, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumMap_apply (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) {a ρ : ℕ} (z : Fin a → Y.V) (e f : Fin ρ → Y.V)
     (p : X.V × (Fin a → D.host.E) × (Fin ρ → D.host.E) × (Fin ρ → D.host.E)) :
@@ -24,22 +24,22 @@ theorem sumMap_apply (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) {a ρ : ℕ} 
   simp [sumMap, Fintype.linearCombination_apply]
 
 /- English proof (translation)
-The claim follows from `(Y.herm.eq y x).symm`.
+A detailed English derivation is pending.
 -/
 theorem hT_swap (Y : HSp D) (x y : Y.V) : Y.hT x y = star (Y.hT y x) := (Y.herm.eq y x).symm
 
 /- English proof (translation)
-Establish `hsub : Subsingleton (Fin a)`. Use `h.a_le` as an intermediate fact. Conclude with `⟨fun i j => Fin.ext (by omega)⟩`. Establish `zz : ∀ i j, Y.hT (z i) (z j) = if i = j then c else 0` using `fun i j => by`. Take `rfl` from `Subsingleton.elim i j`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos rfl]`. Conclude with `h.z_norm i`. Establish `zx : ∀ i x, Y.hT (z i) (ι x) = 0` using `fun i x => h.z_X i x`. Establish `xz : ∀ i x, Y.hT (ι x) (z i) = 0` using `fun i x => by rw [hT_swap, zx, star_zero]`. Establish `ex : ∀ i x, Y.hT (e i) (ι x) = 0` using `fun i x => (h.hyp_X i x).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `xe : ∀ i x, Y.hT (ι x) (e i) = 0` using `fun i x => by rw [hT_swap, ex, star_zero]`. Establish `fx : ∀ i x, Y.hT (f i) (ι x) = 0` using `fun i x => (h.hyp_X i x).2`. Establish `xf : ∀ i x, Y.hT (ι x) (f i) = 0` using `fun i x => by rw [hT_swap, fx, star_zero]`. Establish `ez : ∀ i j, Y.hT (e i) (z j) = 0` using `fun i x => (h.hyperbolicDecomp_hyp_orthogonal_line i x).1`. Establish `ze : ∀ i j, Y.hT (z j) (e i) = 0` using `fun i x => by rw [hT_swap, ez, star_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fz : ∀ i j, Y.hT (f i) (z j) = 0` using `fun i x => (h.hyperbolicDecomp_hyp_orthogonal_line i x).2`. Establish `zf : ∀ i j, Y.hT (z j) (f i) = 0` using `fun i x => by rw [hT_swap, fz, star_zero]`. Establish `ee : ∀ i j, Y.hT (e i) (e j) = 0` using `fun i j => h.ee j i`. Establish `ff : ∀ i j, Y.hT (f i) (f j) = 0` using `fun i j => h.ff j i`. Establish `fe : ∀ i j, Y.hT (f i) (e j) = if j = i then 1 else 0` using `fun i j => h.ef j i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ef : ∀ i j, Y.hT (e i) (f j) = if i = j then 1 else 0` using `fun i j => by`. Apply the tactic sequence `rw [hT_swap, fe]; split_ifs <;> simp`. Establish `xx : ∀ x y, Y.hT (ι x) (ι y) = X.hT x y` using `h.isom`. Rewrite using `[sumMap_apply, sumMap_apply]`. Simplify using `only [map_add, map_sum, LinearMap.map_smulₛₗ, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, zz, zx, xz, ex, xe, fx, xf, ez, ze, fz, zf, ee, ff, fe, ef, xx, smul_eq_mul, mul_zero, Finset.sum_const_zero, add_zero, zero_add, mul_ite, Finset.sum_ite_eq, Finset.sum_i …`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[add_comm (∑ i, star (p.2.2.1 i) * q.2.2.2 i)]`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem form_sumMap {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {a ρ : ℕ} {z : Fin a → Y.V} {c : D.host.E}
     {e f : Fin ρ → Y.V} (h : IsDec Y X ι z c e f)
@@ -81,11 +81,11 @@ theorem form_sumMap {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {a ρ : ℕ} {
   · congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨x, α, β, γ⟩ hp`. Establish `H` using `fun q => form_sumMap h (x, α, β, γ) q`. Simplify using `only [hp, map_zero, LinearMap.zero_apply] at H`. Establish `h1 : x = 0` using `X.nondeg.1 x fun y => by simpa using (H (y, 0, 0, 0)).symm`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : α = 0` using `funext fun i => by`. Simplify `(H (0, Pi.single i 1, 0, 0)).symm` using `[Pi.single_apply, hc]`. Establish `h3 : β = 0` using `funext fun i => by`. Simplify `(H (0, 0, 0, Pi.single i 1)).symm` using `[Pi.single_apply]`. Establish `h4 : γ = 0` using `funext fun i => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `(H (0, 0, Pi.single i 1, 0)).symm` using `[Pi.single_apply]`. Simplify using `[h1, h2, h3, h4]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem sumMap_injective {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {a ρ : ℕ} {z : Fin a → Y.V} {c : D.host.E}
     {e f : Fin ρ → Y.V} (h : IsDec Y X ι z c e f) (hc : c ≠ 0) : Function.Injective (sumMap Y X ι z e f) := by
@@ -117,9 +117,9 @@ theorem sumEquiv_apply {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {a ρ : ℕ
     sumEquiv h hc p = sumMap Y X ι z e f p := rfl
 
 /- English proof (translation)
-Establish `key : ∀ p, ((sumEquiv h hc).symm.trans (sumEquiv h' hc)) (sumMap Y X ι z e f p) = sumMap Y' X ι' z' e' f' p` using `fun p => by`. Rewrite using `[← sumEquiv_apply h hc, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply, sumEquiv_apply]`. Use `⟨(sumEquiv h hc).symm.trans (sumEquiv h' hc), fun x y => ?_, fun x => ?_, fun i => ?_, fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `(sumEquiv h hc).surjective x`. Take `⟨q, rfl⟩` from `(sumEquiv h hc).surjective y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sumEquiv_apply, sumEquiv_apply, LinearEquiv.coe_coe, key, key, form_sumMap h, form_sumMap h']`. Simplify `key (x, 0, 0, 0)` using `[sumMap_apply]`. Simplify `key (0, Pi.single i 1, 0, 0)` using `[sumMap_apply, Pi.single_apply]`. Simplify `key (0, 0, Pi.single i 1, 0)` using `[sumMap_apply, Pi.single_apply]`. Simplify `key (0, 0, 0, Pi.single i 1)` using `[sumMap_apply, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isom {Y Y' X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {ι' : X.V →ₗ[D.host.E] Y'.V} {a ρ : ℕ}
     {z : Fin a → Y.V} {z' : Fin a → Y'.V} {c : D.host.E} {e f : Fin ρ → Y.V} {e' f' : Fin ρ → Y'.V}
@@ -139,7 +139,7 @@ theorem exists_isom {Y Y' X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {ι' : X.V 
   · simpa [sumMap_apply, Pi.single_apply] using key (0, 0, 0, Pi.single i 1)
 
 /- English proof (translation)
-The claim follows from `(h.isom _ _).trans (hφ x y) a_le := h.a_le rank := by rw [hr, h.rank] z_norm i := by have := h.z_norm i simp only [HSpace.hD, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply] at this ⊢ rw [this]; ring z_X i x := by have := h.z_X i (φ x …`.
+A detailed English derivation is pending.
 -/
 theorem isDec_rescale {Y X X' : HSp D} {ι : X'.V →ₗ[D.host.E] Y.V} {a ρ : ℕ} {z : Fin a → Y.V} {c : D.host.E}
     {e f : Fin ρ → Y.V} (h : IsDec Y X' ι z c e f) (φ : X.V →ₗ[D.host.E] X'.V) (hφ : HSpace.IsIsomEmb X X' φ)
@@ -167,11 +167,11 @@ theorem isDec_rescale {Y X X' : HSp D} {ι : X'.V →ₗ[D.host.E] Y.V} {a ρ : 
     rw [this.1, this.2, mul_zero]; exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Introduce `D hR u`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨π, h1, h2, -⟩` from `D.T_norm u`. Conclude with `⟨π, h1, by rw [bridge_star_holds D.R D.host]; exact h2⟩`. Introduce `π hπ s a ρ Y X ι z e f Y' X' ι' z' e' f' h h' hX hX' hp hp' hr`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, hφ⟩` from `hR X X' hX hX' hr fun τ => by rw [hp τ, hp' τ, hr]`. Establish `h2` using `isDec_rescale h' φ.toLinearMap hφ hr (π : D.host.E)`. Rewrite `h2` using `[hπ.2]`. Establish `hc : ((s : ℤ) : D.host.E) * Tu D u ≠ 0` using `mul_ne_zero (Int.cast_ne_zero.mpr s.ne_zero) (Nat.cast_ne_zero.mpr (D.mem u).A.T_prime.ne_zero)`. Take `⟨io, a1, a2, a3, a4⟩` from `exists_isom h h2 hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨φ, io, hφ, a1, a2, a3, a4⟩`.
+Supply the required witnesses or components.
 -/
 theorem stdIsomSt_of_rationalSt : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.RationalSt D → GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.StdIsomSt D := by
   intro D hR u

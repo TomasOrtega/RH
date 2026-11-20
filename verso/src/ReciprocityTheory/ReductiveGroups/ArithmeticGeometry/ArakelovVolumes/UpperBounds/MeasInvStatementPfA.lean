@@ -7,7 +7,7 @@ open Matrix
 noncomputable section
 
 /- English proof (translation)
-Use `letI : LinearOrder m := LinearOrder.lift' (fun i => OrderDual.toDual (κ i)) (fun a b hab => hκ (OrderDual.toDual.injective hab))`. Conclude with `Matrix.det_of_upperTriangular (fun i j hij => h i j hij)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem det_of_key {m α : Type*} [Fintype m] [DecidableEq m] [LinearOrder α] {R : Type*} [CommRing R]
     (M : Matrix m m R) (κ : m → α) (hκ : Function.Injective κ)
@@ -29,7 +29,7 @@ def up (w : Ix ι r → ℂ) (τ : ι) : Matrix (Fin r) (Fin r) ℂ :=
 def lu (w : Ix ι r → ℂ) : Ix ι r → ℂ := fun i => ((1 + sl w i.1) * up w i.1) i.2.1 i.2.2
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [sl, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sl_add (h h' : Ix ι r → ℂ) (τ : ι) : sl (h + h') τ = sl h τ + sl h' τ := by
   ext a b
@@ -37,7 +37,7 @@ lemma sl_add (h h' : Ix ι r → ℂ) (τ : ι) : sl (h + h') τ = sl h τ + sl 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [up, Matrix.of_apply, Matrix.add_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma up_add (h h' : Ix ι r → ℂ) (τ : ι) : up (h + h') τ = up h τ + up h' τ := by
   ext a b
@@ -45,7 +45,7 @@ lemma up_add (h h' : Ix ι r → ℂ) (τ : ι) : up (h + h') τ = up h τ + up 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [sl, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sl_smul (c : ℂ) (h : Ix ι r → ℂ) (τ : ι) : sl (c • h) τ = c • sl h τ := by
   ext a b
@@ -53,7 +53,7 @@ lemma sl_smul (c : ℂ) (h : Ix ι r → ℂ) (τ : ι) : sl (c • h) τ = c �
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [up, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma up_smul (c : ℂ) (h : Ix ι r → ℂ) (τ : ι) : up (c • h) τ = c • up h τ := by
   ext a b
@@ -76,9 +76,9 @@ def key (e : ι ≃ Fin (Fintype.card ι)) (i : Ix ι r) : ℕ ×ₗ (ℕ ×ₗ 
   toLex ((i.2.1 : ℕ) + i.2.2, toLex ((i.2.1 : ℕ), e i.1))
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, a, b⟩ ⟨τ', a', b'⟩ h`. Simplify using `only [key, toLex_inj, Prod.mk.injEq] at h`. Take `⟨h1, h2, h3⟩` from `h`. Establish `ha : a = a'` using `Fin.ext h2`. Establish `hb : b = b'` using `Fin.ext (by omega)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : τ = τ'` using `e.injective h3`. Substitute `ha hb hτ` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma key_injective (e : ι ≃ Fin (Fintype.card ι)) : Function.Injective (key (r := r) e) := by
   rintro ⟨τ, a, b⟩ ⟨τ', a', b'⟩ h
@@ -91,9 +91,9 @@ lemma key_injective (e : ι ≃ Fin (Fintype.card ι)) : Function.Injective (key
   rfl
 
 /- English proof (translation)
-Rewrite using `[Prod.Lex.le_iff]`. Simplify using `only [key, ofLex_toLex]`. Break down `h1.lt_or_eq with h | h` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨h, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Prod.Lex.le_iff]`. Simplify using `only [ofLex_toLex]`. Break down `h2.lt_or_eq with h' | h'` into its components or cases. Conclude with `Or.inl h'`. Conclude with `Or.inr ⟨h', le_rfl⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 lemma key_le_of (e : ι ≃ Fin (Fintype.card ι)) (τ : ι) {a b a' b' : Fin r} (h1 : (a' : ℕ) + b' ≤ a + b)
     (h2 : (a' : ℕ) ≤ a) : key e (τ, a', b') ≤ key e (τ, a, b) := by
@@ -109,7 +109,7 @@ lemma key_le_of (e : ι ≃ Fin (Fintype.card ι)) (τ : ι) {a b a' b' : Fin r}
     · exact Or.inr ⟨h', le_rfl⟩
 
 /- English proof (translation)
-Use `show (sl h i.1 * up w i.1 + (1 + sl w i.1) * up h i.1) i.2.1 i.2.2 = _`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma luD_apply (w h : Ix ι r → ℂ) (i : Ix ι r) :
     luD w h i = ∑ k, sl h i.1 i.2.1 k * up w i.1 k i.2.2 + ∑ k, (1 + sl w i.1) i.2.1 k * up h i.1 k i.2.2 := by
@@ -117,22 +117,22 @@ lemma luD_apply (w h : Ix ι r → ℂ) (i : Ix ι r) :
   rw [Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne h.ne]`. Simplify using `[sl, not_lt.mpr h.le]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma one_add_sl_zero (w : Ix ι r → ℂ) (τ : ι) {a k : Fin r} (h : a < k) : (1 + sl w τ) a k = 0 := by
   rw [Matrix.add_apply, Matrix.one_apply_ne h.ne]
   simp [sl, not_lt.mpr h.le]
 
 /- English proof (translation)
-Take `⟨τ, a, b⟩` from `i`. Rewrite using `[LinearMap.toMatrix'_apply, luD_apply]`. Establish `hne : ∀ a' b' : Fin r, (a' : ℕ) + b' ≤ a + b → (a' : ℕ) ≤ a → (τ, a', b') ≠ j`. Introduce and unpack `a' b' h1 h2 rfl`. Conclude with `absurd (key_le_of e τ h1 h2) (not_le.mpr hij)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hs1 : ∀ k : Fin r, sl (Pi.single j (1 : ℂ)) τ a k * up w τ k b = 0`. Introduce `k`. Distinguish the cases in `hka : k < a`. Distinguish the cases in `hbk : b < k`. Simplify using `[Pi.single_apply, up, hbk]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hne a k (by omega) le_rfl` as an intermediate fact. Simplify using `[Pi.single_apply, sl, hka, this]`. Simplify using `[Pi.single_apply, sl, hka]`. Establish `hs2 : ∀ k : Fin r, (1 + sl w τ) a k * up (Pi.single j (1 : ℂ)) τ k b = 0`. Introduce `k`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hka : a < k`. Rewrite using `[one_add_sl_zero w τ hka, zero_mul]`. Distinguish the cases in `hbk : b < k`. Simplify using `[Pi.single_apply, up, hbk]`. Use `hne k b (by omega) (by omega)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_apply, up, hbk, this]`. Rewrite using `[Finset.sum_congr rfl (fun k _ => hs1 k), Finset.sum_congr rfl (fun k _ => hs2 k)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma toMatrix_luD_zero (e : ι ≃ Fin (Fintype.card ι)) (w : Ix ι r → ℂ) (i j : Ix ι r)
     (hij : key e i < key e j) : LinearMap.toMatrix' (luD w) i j = 0 := by
@@ -161,13 +161,13 @@ lemma toMatrix_luD_zero (e : ι ≃ Fin (Fintype.card ι)) (w : Ix ι r → ℂ)
   simp
 
 /- English proof (translation)
-Take `⟨τ, a, b⟩` from `i`. Rewrite using `[LinearMap.toMatrix'_apply, luD_apply]`. Establish `hs1 : ∀ k : Fin r, sl (Pi.single (τ, a, b) (1 : ℂ)) τ a k * up w τ k b = if k = b then (if b < a then w (τ, b, b) else 0) else 0`. Introduce `k`. Distinguish the cases in `hkb : k = b`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hkb` using the available equality. Apply the tactic sequence `by_cases hka : k < a <;> simp [Pi.single_apply, sl, up, hka]`. Simplify using `[Pi.single_apply, sl, hkb]`. Establish `hs2 : ∀ k : Fin r, (1 + sl w τ) a k * up (Pi.single (τ, a, b) (1 : ℂ)) τ k b = if k = a then (if b < a then 0 else 1) else 0`. Introduce `k`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hka : k = a`. Substitute `hka` using the available equality. Apply the tactic sequence `by_cases hbk : b < k <;> simp [Pi.single_apply, sl, up, hbk]`. Simplify using `[Pi.single_apply, up, hka]`. Rewrite using `[Finset.sum_congr rfl (fun k _ => hs1 k), Finset.sum_congr rfl (fun k _ => hs2 k)]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma toMatrix_luD_diag (w : Ix ι r → ℂ) (i : Ix ι r) :
     LinearMap.toMatrix' (luD w) i i = if i.2.2 < i.2.1 then w (i.1, i.2.2, i.2.2) else 1 := by
@@ -192,7 +192,7 @@ lemma toMatrix_luD_diag (w : Ix ι r → ℂ) (i : Ix ι r) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.det_toMatrix', det_of_key _ (key (r := r) (Fintype.equivFin ι)) (key_injective _) (fun i j h => toMatrix_luD_zero _ w i j h)]`. Conclude with `Finset.prod_congr rfl fun i _ => toMatrix_luD_diag w i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_luD (w : Ix ι r → ℂ) :
     LinearMap.det (luD w) = ∏ i : Ix ι r, if i.2.2 < i.2.1 then w (i.1, i.2.2, i.2.2) else 1 := by
@@ -204,11 +204,11 @@ def luD' (w : Ix ι r → ℂ) : (Ix ι r → ℂ) →L[ℝ] (Ix ι r → ℂ) :
   LinearMap.toContinuousLinearMap ((luD w).restrictScalars ℝ)
 
 /- English proof (translation)
-Distinguish the cases in `hk : k < a`. Rewrite using `[if_pos hk]`. Establish `hf : (fun v : Ix ι r → ℂ => (1 + sl v τ) a k) = fun v => (1 : Matrix (Fin r) (Fin r) ℂ) a k + v (τ, a, k)`. Use function extensionality and compare the values at `v`. Simplify using `[sl, hk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Conclude with `(hasFDerivAt_apply (𝕜 := ℝ) (τ, a, k) w).const_add _`. Rewrite using `[if_neg hk]`. Establish `hf : (fun v : Ix ι r → ℂ => (1 + sl v τ) a k) = fun _ => (1 : Matrix (Fin r) (Fin r) ℂ) a k`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[sl, hk]`. Rewrite using `[hf]`. Conclude with `hasFDerivAt_const _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_entry1 (w : Ix ι r → ℂ) (τ : ι) (a k : Fin r) :
     HasFDerivAt (fun v : Ix ι r → ℂ => (1 + sl v τ) a k)
@@ -230,11 +230,11 @@ lemma hasFDerivAt_entry1 (w : Ix ι r → ℂ) (τ : ι) (a k : Fin r) :
     exact hasFDerivAt_const _ _
 
 /- English proof (translation)
-Distinguish the cases in `hk : b < k`. Rewrite using `[if_pos hk]`. Establish `hf : (fun v : Ix ι r → ℂ => up v τ k b) = fun _ => (0 : ℂ)`. Use function extensionality and compare the values at `v`. Simplify using `[up, hk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Conclude with `hasFDerivAt_const _ _`. Rewrite using `[if_neg hk]`. Establish `hf : (fun v : Ix ι r → ℂ => up v τ k b) = fun v => v (τ, k, b)`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[up, hk]`. Rewrite using `[hf]`. Conclude with `hasFDerivAt_apply (𝕜 := ℝ) (τ, k, b) w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hasFDerivAt_entry2 (w : Ix ι r → ℂ) (τ : ι) (k b : Fin r) :
     HasFDerivAt (fun v : Ix ι r → ℂ => up v τ k b)
@@ -254,13 +254,13 @@ lemma hasFDerivAt_entry2 (w : Ix ι r → ℂ) (τ : ι) (k b : Fin r) :
     exact hasFDerivAt_apply (𝕜 := ℝ) (τ, k, b) w
 
 /- English proof (translation)
-Rewrite using `[hasFDerivAt_pi']`. Introduce and unpack `⟨τ, a, b⟩`. Establish `hf : (fun v : Ix ι r → ℂ => lu v (τ, a, b)) = fun v => ∑ k, (1 + sl v τ) a k * up v τ k b`. Use function extensionality and compare the values at `v`. Simplify using `only [lu, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Establish `hd` using `HasFDerivAt.sum (u := Finset.univ) (fun k _ => (hasFDerivAt_entry1 w τ a k).mul (hasFDerivAt_entry2 w τ k b))`. Use `hd using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [Finset.sum_apply, Pi.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply `ContinuousLinearMap.ext` to reduce the goal to its premises. Introduce `h`. Rewrite using `[ContinuousLinearMap.comp_apply, ContinuousLinearMap.proj_apply, ContinuousLinearMap.sum_apply]`. Express the relevant statement in the definitionally equal form `luD w h (τ, a, b) = _`. Rewrite using `[luD_apply, ← Finset.sum_add_distrib]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hka : k < a <;> by_cases hbk : b < k <;> simp [hka, hbk, sl, up] <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hasFDerivAt_lu (w : Ix ι r → ℂ) : HasFDerivAt lu (luD' w) w := by
   rw [hasFDerivAt_pi']
@@ -284,7 +284,7 @@ theorem hasFDerivAt_lu (w : Ix ι r → ℂ) : HasFDerivAt lu (luD' w) w := by
     by_cases hka : k < a <;> by_cases hbk : b < k <;> simp [hka, hbk, sl, up] <;> ring
 
 /- English proof (translation)
-Rewrite using `[← det_luD w, ← Algebra.norm_complex_apply]`. Use `show LinearMap.det ((luD w).restrictScalars ℝ) = _`. Conclude with `LinearMap.det_restrictScalars`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_luD' (w : Ix ι r → ℂ) :
     (luD' w).det = Complex.normSq (∏ i : Ix ι r, if i.2.2 < i.2.1 then w (i.1, i.2.2, i.2.2) else 1) := by

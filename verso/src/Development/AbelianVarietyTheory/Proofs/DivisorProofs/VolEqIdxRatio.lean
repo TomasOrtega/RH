@@ -12,15 +12,15 @@ namespace GlobalTheory.LKCount.OrbKProd
 open GlobalTheory.BCT GlobalTheory.BCT.OrbProd
 
 /- English proof (translation)
-Distinguish the cases in `hu : (Function.support u).Finite`. Distinguish the cases in `hv : (Function.support v).Finite`. Conclude with `finsum_prod_mul_of_finite u v hu hv`. Rewrite using `[finsum_of_infinite_support hv, mul_zero]`. Distinguish the cases in `h0 : ∀ a, u a = 0`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Use `push_neg at h0`. Take `⟨a, ha⟩` from `h0`. Apply `finsum_of_infinite_support` to reduce the goal to its premises. Introduce `hfin`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hv` to reduce the goal to its premises. Use `(hfin.image Prod.snd).subset ?_` and prove the remaining obligations. Introduce `b hb`. Conclude with `⟨(a, b), by simp only [Function.mem_support] at hb ⊢; exact mul_ne_zero ha hb, rfl⟩`. Rewrite using `[finsum_of_infinite_support hu, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : ∀ b, v b = 0`. Simplify using `[h0]`. Use `push_neg at h0`. Take `⟨b, hb⟩` from `h0`. Apply `finsum_of_infinite_support` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hfin`. Apply `hu` to reduce the goal to its premises. Use `(hfin.image Prod.fst).subset ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `⟨(a, b), by simp only [Function.mem_support] at ha ⊢; exact mul_ne_zero ha hb, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finsum_prod_mul {α β : Type} (u : α → ℂ) (v : β → ℂ) :
     ∑ᶠ z : α × β, u z.1 * v z.2 = (∑ᶠ a, u a) * ∑ᶠ b, v b := by
@@ -60,7 +60,7 @@ Both sides reduce to the same expression.
 theorem vol_eq_idxRatio (C H : Subgroup G) : vol C H = GlobalTheory.FunObj.idxRatio H C := rfl
 
 /- English proof (translation)
-Unfold `vol`. Rewrite using `[relIndex_prod_prod, relIndex_prod_prod]`. Use `push_cast`. Conclude with `mul_div_mul_comm _ _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem vol_prod {G' : Type} [Group G'] (C H : Subgroup G) (C' H' : Subgroup G') :
     vol (C.prod C') (H.prod H') = vol C H * vol C' H' := by
@@ -70,7 +70,7 @@ theorem vol_prod {G' : Type} [Group G'] (C H : Subgroup G) (C' H' : Subgroup G')
   exact mul_div_mul_comm _ _ _ _
 
 /- English proof (translation)
-Establish `h` using `map_conj_mul_three_subgroup_of_mem K K.one_mem t x`. Rewrite `h` using `[mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem map_conj_mul (K : Subgroup G) (t x : G) :
     K.map (MulAut.conj (t * x)).toMonoidHom =
@@ -79,7 +79,7 @@ theorem map_conj_mul (K : Subgroup G) (t x : G) :
   rwa [mul_one] at h
 
 /- English proof (translation)
-Rewrite using `[Subgroup.map_inf_eq _ _ _ (MulAut.conj t).injective, map_conj_self _ ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inf_map_conj (T A : Subgroup G) {t : G} (ht : t ∈ T) :
     T ⊓ A.map (MulAut.conj t).toMonoidHom = (T ⊓ A).map (MulAut.conj t).toMonoidHom := by
@@ -88,9 +88,9 @@ theorem inf_map_conj (T A : Subgroup G) {t : G} (ht : t ∈ T) :
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Establish `e : ((MulAut.conj g).toMonoidHom : G → G) = (fun y => y * g⁻¹) ∘ (fun y => g * y)`. Use function extensionality and compare the values at `y`. Simplify using `[MulAut.conj_apply]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isOpenMap_mul_right g⁻¹).comp (isOpenMap_mul_left g)) _ hKo`.
+A detailed English derivation is pending.
 -/
 theorem conj_isOpen {K : Subgroup G} (hKo : IsOpen (K : Set G)) (g : G) :
     IsOpen ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) := by
@@ -101,7 +101,7 @@ theorem conj_isOpen {K : Subgroup G} (hKo : IsOpen (K : Set G)) (g : G) :
   exact ((isOpenMap_mul_right g⁻¹).comp (isOpenMap_mul_left g)) _ hKo
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Conclude with `hKc.image (by show Continuous fun y : G => g * y * g⁻¹; fun_prop)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_isCompact {K : Subgroup G} (hKc : IsCompact (K : Set G)) (g : G) :
     IsCompact ((K.map (MulAut.conj g).toMonoidHom : Subgroup G) : Set G) := by
@@ -109,7 +109,7 @@ theorem conj_isCompact {K : Subgroup G} (hKc : IsCompact (K : Set G)) (g : G) :
   exact hKc.image (by show Continuous fun y : G => g * y * g⁻¹; fun_prop)
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.FunObj.idxRatio_cocycle T (conj_isOpen hKo (t * x)) (conj_isCompact hKc (t * x)) (conj_isOpen hKo t) (conj_isCompact hKc t) hKo hKc`. Rewrite `hc` using `[map_conj_mul, inf_map_conj T _ ht, inf_map_conj T _ ht, GlobalTheory.FunObj.idxRatio_map (MulAut.conj t).injective, show GlobalTheory.FunObj.idxRatio ((T ⊓ K).map (MulAut.conj t).toMonoidHom) (T ⊓ K) = 1 from hvol, mul_one]`. Rewrite using `[vol_eq_idxRatio, vol_eq_idxRatio]`. Conclude with `hc.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_conj (T K : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G))
     {t : G} (ht : t ∈ T) (hvol : vol (T ⊓ K) ((T ⊓ K).map (MulAut.conj t).toMonoidHom) = 1) (x : G) :
@@ -139,9 +139,9 @@ theorem orbC_eq (θ : G →* G) (K C : Subgroup G) (δ : G) (f : G → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `ht0 : t * δ = δ * θ t` using `ht`. Establish `ht' : θ t = δ⁻¹ * (t * δ)` using `eq_inv_mul_of_mul_eq ht0.symm`. Rewrite using `[← hf k hk (x⁻¹ * δ * θ x)]`. Use `congr 1`. Simplify using `only [map_mul, _root_.mul_inv_rev, ht']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem f_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (hf : ∀ k ∈ K, ∀ y, f (k⁻¹ * y * θ k) = f y)
     {t k : G} (ht : t ∈ twCent θ δ) (hk : k ∈ K) (x : G) :
@@ -156,7 +156,7 @@ theorem f_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (hf : �
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Unfold `oTerm`. Rewrite using `[f_inv θ K δ f hf ht hk x, map_conj_mul_three_subgroup_of_mem K hk, inf_map_conj _ _ ht, vol_conj _ K hKo hKc ht (hvol t ht) x]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem oTerm_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (hKc : IsCompact (K : Set G))
     (hKo : IsOpen (K : Set G)) (hf : ∀ k ∈ K, ∀ y, f (k⁻¹ * y * θ k) = f y)
@@ -168,7 +168,7 @@ theorem oTerm_inv (θ : G →* G) (K : Subgroup G) (δ : G) (f : G → ℂ) (hKc
     vol_conj _ K hKo hKc ht (hvol t ht) x]
 
 /- English proof (translation)
-Unfold `oTerm`. Rewrite using `[twCent_prod, map_conj_prod, prod_inf_prod, prod_inf_prod, vol_prod]`. Use `push_cast`. Rewrite using `[mul_inv, mul_mul_mul_comm]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oTerm_prod {G' : Type} [Group G'] (θ : G →* G) (θ' : G' →* G') (K : Subgroup G) (K' : Subgroup G')
     (δ : G) (δ' : G') (f : G → ℂ) (f' : G' → ℂ) (x : G) (x' : G') :
@@ -184,11 +184,11 @@ theorem oTerm_prod {G' : Type} [Group G'] (θ : G →* G) (θ' : G' →* G') (K 
 end Term
 
 /- English proof (translation)
-Introduce `G₁ G₂ _ _ _ _ _ _ _ _ θ₁ θ₂ K₁ K₂ δ₁ δ₂ f₁ f₂ _ _ hK₁c hK₁o hK₂c hK₂o hf₁ hf₂ hv₁ hv₂`. Unfold `orbK`. Rewrite using `[orbC_eq, orbC_eq, orbC_eq, twCent_prod]`. Establish `hz : ∀ z, oTerm (θ₁.prodMap θ₂) (K₁.prod K₂) ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂) ⊓ K₁.prod K₂) (δ₁, δ₂) (fun y => f₁ y.1 * f₂ y.2) (Quotient.out (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂) z)) = oTerm θ₁ K₁ (twCent θ₁ δ₁ ⊓ K₁) δ₁ f₁ (Quotient.out z.1) * …`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, b, ha, hb, e⟩` from `DoubleCoset.mk_out_eq_mul ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂)) (K₁.prod K₂) (Quotient.out z.1, Quotient.out z.2)`. Rewrite `ha`, `hb` using `[Subgroup.mem_prod]`. Establish `e2 : Quotient.out (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂) z) = (a.1 * Quotient.out z.1 * b.1, a.2 * Quotient.out z.2 * b.2)` using `e`. Rewrite using `[e2, oTerm_prod, oTerm_inv θ₁ K₁ δ₁ f₁ hK₁c hK₁o hf₁ hv₁ ha.1 hb.1, oTerm_inv θ₂ K₂ δ₂ f₂ hK₂c hK₂o hf₂ hv₂ ha.2 hb.2]`. Establish `hq` using `finsum_comp_equiv (Equiv.ofBijective _ (dcPair_bij (twCent θ₁ δ₁) K₁ (twCent θ₂ δ₂) K₂)) (f := fun q => oTerm (θ₁.prodMap θ₂) (K₁.prod K₂) ((twCent θ₁ δ₁).prod (twCent θ₂ δ₂) ⊓ K₁.prod K₂) (δ₁, δ₂) (fun y => f₁ y.1 * f₂ y.2) (Quotient.out q))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hq, finsum_congr hz]`. Conclude with `finsum_prod_mul (fun q => oTerm θ₁ K₁ (twCent θ₁ δ₁ ⊓ K₁) δ₁ f₁ (Quotient.out q)) (fun q => oTerm θ₂ K₂ (twCent θ₂ δ₂ ⊓ K₂) δ₂ f₂ (Quotient.out q))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbK_prod : ∀ {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSpace G₁] [TopologicalSpace G₂] [IsTopologicalGroup G₁] [IsTopologicalGroup G₂] [T2Space G₁] [T2Space G₂] (θ₁ : G₁ →* G₁) (θ₂ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (δ₁ : G₁) (δ₂ : G₂) (f₁ : G₁ → ℂ) (f₂ : G₂ → ℂ), Continuous θ₁ → Continuous θ₂ → IsCompact (K₁ : Set G₁) → IsOpen (K₁ : Set G₁) → IsCompact (K₂ : Set G₂) → IsOpen (K₂ : Set G₂) → (∀ k ∈ K₁, ∀ y, f₁ (k⁻¹ * y * θ₁ k) = f₁ y) → (∀ k ∈ K₂, ∀ y, f₂ (k⁻¹ * y * θ₂ k) = f₂ y) → (∀ t ∈ GlobalTheory.BCT.twCent θ₁ δ₁, vol (GlobalTheory.BCT.twCent θ₁ δ₁ ⊓ K₁) ((GlobalTheory.BCT.twCent θ₁ δ₁ ⊓ K₁).map (MulAut.conj t).toMonoidHom) = 1) → (∀ t ∈ GlobalTheory.BCT.twCent θ₂ δ₂, vol (GlobalTheory.BCT.twCent θ₂ δ₂ ⊓ K₂) ((GlobalTheory.BCT.twCent θ₂ δ₂ ⊓ K₂).map (MulAut.conj t).toMonoidHom) = 1) → orbK (θ₁.prodMap θ₂) (K₁.prod K₂) (δ₁, δ₂) (fun x => f₁ x.1 * f₂ x.2) = orbK θ₁ K₁ δ₁ f₁ * orbK θ₂ K₂ δ₂ f₂ := by
   intro G₁ G₂ _ _ _ _ _ _ _ _ θ₁ θ₂ K₁ K₂ δ₁ δ₂ f₁ f₂ _ _ hK₁c hK₁o hK₂c hK₂o hf₁ hf₂ hv₁ hv₂

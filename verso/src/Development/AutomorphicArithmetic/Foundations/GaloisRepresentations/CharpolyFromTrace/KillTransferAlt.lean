@@ -18,7 +18,7 @@ structure IneRel (x y : WD h) : Prop where
   eig : ∀ ξ, EigZero y ξ → EigZero x ξ
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => rfl, fun _ k => k⟩`.
+Supply the required witnesses or components.
 -/
 theorem IneRel.refl (x : WD h) : IneRel x x := ⟨fun _ => rfl, fun _ k => k⟩
 

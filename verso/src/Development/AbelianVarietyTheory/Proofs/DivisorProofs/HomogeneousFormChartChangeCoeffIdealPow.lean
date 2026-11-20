@@ -12,11 +12,9 @@ set_option autoImplicit false
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq, MvPolynomial.eval₂_eq]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h1 : (∏ l ∈ m.support, a l ^ m l) - ∏ l ∈ m.support, b l ^ m l ∈ I.map φ`. Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [map_prod, map_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun l _ => by rw [Ideal.Quotient.eq.2 (hab l)]`. Establish `h2 : φ (MvPolynomial.coeff m F) * ((∏ l ∈ m.support, a l ^ m l) - ∏ l ∈ m.support, b l ^ m l) ∈ (I ^ (e + 1)).map φ`. Rewrite using `[pow_succ, Ideal.map_mul]`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_map_of_mem _ (hF m)) h1`. Rewrite `h2` using `[hbot, Ideal.mem_bot, mul_sub, sub_eq_zero]`.
-
-Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_eq_of_sub_mem_of_coeff_mem_pow {R B σ : Type} [CommRing R] [CommRing B] (φ : R →+* B)
     (I : Ideal R) (e : ℕ) (hbot : (I ^ (e + 1)).map φ = ⊥) (F : MvPolynomial σ R)
@@ -36,7 +34,7 @@ theorem eval₂_eq_of_sub_mem_of_coeff_mem_pow {R B σ : Type} [CommRing R] [Com
   exact h2
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval₂_eq]`. Conclude with `Ideal.sum_mem _ fun m _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hF m))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_mem_map_of_coeff_mem {R B σ : Type} [CommRing R] [CommRing B] (φ : R →+* B)
     (J : Ideal R) (F : MvPolynomial σ R) (hF : ∀ m, MvPolynomial.coeff m F ∈ J) (a : σ → B) :
@@ -45,13 +43,13 @@ theorem eval₂_mem_map_of_coeff_mem {R B σ : Type} [CommRing R] [CommRing B] (
   exact Ideal.sum_mem _ fun m _ => Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ (hF m))
 
 /- English proof (translation)
-Take `⟨hbot, -⟩` from `GlobalTheory.T.thickeningTower_liftedRatios_generate_surjective R I Y β hpb n C`. Take `⟨-, hself, hcoc⟩` from `GlobalTheory.T.thickeningTower_liftedRatios_projective_relations R I Y β hpb n C`. Establish `h1 : C.ev e i F ∈ towerIdeal Y e (I ^ e) (C.D e i)` using `eval₂_mem_map_of_coeff_mem _ _ F hc _`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Ideal.mul_mem_mul (hself e i) h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h' : (C.ρ e i i - 1) * C.ev e i F ∈ towerIdeal Y e (I ^ (e + 1)) (C.D e i)`. Establish `hm : towerIdeal Y e (I ^ (e + 1)) (C.D e i) = towerIdeal Y e I (C.D e i) * towerIdeal Y e (I ^ e) (C.D e i)`. Unfold `towerIdeal`. Rewrite using `[← Ideal.map_mul, ← pow_succ']`. Rewrite using `[hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite `h'` using `[hbot, Ideal.mem_bot, sub_mul, one_mul, sub_eq_zero]`. Conclude with `h'`. Establish `hi : (rs (Y e).left (inf_le_left : C.D e i ⊓ C.D e j ≤ C.D e i)).comp (GlobalTheory.AbLaw.cst ((Y e).hom ≫ thick R I e) (C.D e i)) = GlobalTheory.AbLaw.cst ((Y e).hom ≫ thick R I e) (C.D e i ⊓ C.D e j)` using `RingHom.ext fun r => rs_cst _ _ r`. Establish `hj : (rs (Y e).left (inf_le_right : C.D e i ⊓ C.D e j ≤ C.D e j)).comp (GlobalTheory.AbLaw.cst ((Y e).hom ≫ thick R I e) (C.D e j)) = GlobalTheory.AbLaw.cst ((Y e).hom ≫ thick R I e) (C.D e i ⊓ C.D e j)` using `RingHom.ext fun r => rs_cst _ _ r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Charts.ev, MvPolynomial.coe_eval₂Hom]`. Rewrite using `[MvPolynomial.eval₂_comp_left, MvPolynomial.eval₂_comp_left, hi, hj, ← eval₂_scale _ _ _ hF]`. Conclude with `eval₂_eq_of_sub_mem_of_coeff_mem_pow _ I e (hbot e _) F hc _ _ fun l => hcoc e i j l`.
+A detailed English derivation is pending.
 -/
 theorem Charts.ev_change (R : Type) [CommRing R] (I : Ideal R)
     (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left)

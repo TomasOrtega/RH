@@ -15,14 +15,14 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : Formalism.BasicN
 def lin {ι : Type*} [Fintype ι] (u : ι → S.V) (c : ι → E) : S.V := ∑ i, c i • u i
 
 /- English proof (translation)
-Simplify using `[lin, map_sum, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hT_lin_right {ι : Type*} [Fintype ι] (u : ι → S.V) (c : ι → E) (x : S.V) :
     S.hT x (lin u c) = ∑ i, c i * S.hT x (u i) := by
   simp [lin, map_sum, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [lin, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hT_lin_left {ι : Type*} [Fintype ι] (u : ι → S.V) (c : ι → E) (x : S.V) :
     S.hT (lin u c) x = ∑ i, star (c i) * S.hT (u i) x := by
@@ -30,7 +30,7 @@ theorem hT_lin_left {ι : Type*} [Fintype ι] (u : ι → S.V) (c : ι → E) (x
     starRingEnd_apply]
 
 /- English proof (translation)
-Rewrite using `[hT_lin_left]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hT_lin_right, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hT_lin_lin {ι : Type*} [Fintype ι] (u : ι → S.V) (c d : ι → E) :
     S.hT (lin u c) (lin u d) = ∑ i, ∑ j, star (c i) * d j * S.hT (u i) (u j) := by
@@ -40,19 +40,19 @@ theorem hT_lin_lin {ι : Type*} [Fintype ι] (u : ι → S.V) (c d : ι → E) :
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `[lin, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_add {ι : Type*} [Fintype ι] (u : ι → S.V) (c d : ι → E) : lin u (c + d) = lin u c + lin u d := by
   simp [lin, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[lin, smul_smul, Finset.smul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_smul {ι : Type*} [Fintype ι] (u : ι → S.V) (t : E) (c : ι → E) : lin u (t • c) = t • lin u c := by
   simp [lin, smul_smul, Finset.smul_sum]
 
 /- English proof (translation)
-The claim follows from `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem lin_sub {ι : Type*} [Fintype ι] (u : ι → S.V) (c : ι → E) : lin u c ∈ Submodule.span E (Set.range u) :=
   Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
@@ -61,7 +61,7 @@ def pc {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (v : S.V) : �
   (gram S u u)⁻¹ *ᵥ fun k => S.hT (u k) v
 
 /- English proof (translation)
-Unfold `pc`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pc_add {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (x y : S.V) :
     pc u (x + y) = pc u x + pc u y := by
@@ -72,7 +72,7 @@ theorem pc_add {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (x y 
   simp
 
 /- English proof (translation)
-Unfold `pc`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pc_smul {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (t : E) (x : S.V) :
     pc u (t • x) = t • pc u x := by
@@ -83,7 +83,7 @@ theorem pc_smul {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (t :
   simp
 
 /- English proof (translation)
-Rewrite using `[hT_lin_right]`. Simplify using `[Matrix.mulVec, dotProduct, gram, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_u_lin {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (c : ι → E) (k : ι) :
     S.hT (u k) (lin u c) = (gram S u u *ᵥ c) k := by
@@ -91,7 +91,7 @@ theorem hT_u_lin {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (c 
   simp [Matrix.mulVec, dotProduct, gram, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[map_sub, hT_u_lin]`. Unfold `pc`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_u_rem {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (hdet : (gram S u u).det ≠ 0) (v : S.V)
     (k : ι) : S.hT (u k) (v - lin u (pc u v)) = 0 := by
@@ -101,11 +101,11 @@ theorem hT_u_rem {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (hd
   simp
 
 /- English proof (translation)
-Establish `first : S.hT z (v - lin u (pc u v)) = 0`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `hT_u_rem u hdet v k`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [LinearMap.map_smulₛₗ₂, hx]`. Use `⟨first, ?_⟩` and prove the remaining obligations. Rewrite using `[← S.herm.eq z, first]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem hT_span_rem {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (hdet : (gram S u u).det ≠ 0) (v z : S.V)
     (hz : z ∈ Submodule.span E (Set.range u)) : S.hT z (v - lin u (pc u v)) = 0 ∧ S.hT (v - lin u (pc u v)) z = 0 := by
@@ -135,7 +135,7 @@ theorem isoG_apply {ι : Type*} [Fintype ι] [DecidableEq ι] (u u' : ι → S.V
     isoG u u' v = v - lin u (pc u v) + lin u' (pc u v) := rfl
 
 /- English proof (translation)
-Establish `hcol : (fun k => S.hT (u k) (u m)) = gram S u u *ᵥ Pi.single m 1`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, gram, Pi.single_apply]`. Unfold `pc`. Rewrite using `[hcol, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pc_self {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (hdet : (gram S u u).det ≠ 0) (m : ι) :
     pc u (u m) = Pi.single m 1 := by
@@ -146,21 +146,21 @@ theorem pc_self {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (hde
   rw [hcol, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.one_mulVec]
 
 /- English proof (translation)
-Simplify using `[lin, Pi.single_apply, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_single {ι : Type*} [Fintype ι] [DecidableEq ι] (u : ι → S.V) (m : ι) : lin u (Pi.single m 1) = u m := by
   simp [lin, Pi.single_apply, ite_smul]
 
 /- English proof (translation)
-Establish `hlin : ∀ (w : ι → S.V) (c : ι → E), (∀ i, w i ∈ Submodule.span E (Set.range u)) → lin w c ∈ Submodule.span E (Set.range u)`. Introduce `w c hw`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (hw i)`. Establish `hu : ∀ i, u i ∈ Submodule.span E (Set.range u)` using `fun i => Submodule.subset_span ⟨i, rfl⟩`. Establish `hgram : ∀ (w : ι → S.V) (c d : ι → E), S.hT (lin w c) (lin w d) = ∑ i, ∑ j, star (c i) * d j * gram S w w i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w c d`. Rewrite using `[hT_lin_lin]`. Simplify using `[gram]`. Establish `ex : x = (x - lin u (pc u x)) + lin u (pc u x)` using `by abel`. Establish `ey : y = (y - lin u (pc u y)) + lin u (pc u y)` using `by abel`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gx : isoG u u' x = (x - lin u (pc u x)) + lin u' (pc u x)` using `by rw [isoG_apply]`. Establish `gy : isoG u u' y = (y - lin u (pc u y)) + lin u' (pc u y)` using `by rw [isoG_apply]`. Establish `o1` using `fun z hz => (hT_span_rem u hdet x z hz)`. Establish `o2` using `fun z hz => (hT_span_rem u hdet y z hz)`. Establish `A1` using `(o2 _ (hlin u' (pc u x) hsp)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A2` using `(o1 _ (hlin u' (pc u y) hsp)).2`. Establish `B1` using `(o2 _ (hlin u (pc u x) hu)).1`. Establish `B2` using `(o1 _ (hlin u (pc u y) hu)).2`. Use `conv_rhs => rw [ex, ey]`. Rewrite using `[gx, gy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[A1, A2, B1, B2, hgram u', hgram u, hG]`.
+A detailed English derivation is pending.
 -/
 private theorem hT_isoG_of_gram_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (u u' : ι → S.V) (hG : gram S u' u' = gram S u u)
     (hdet : (gram S u u).det ≠ 0) (hsp : ∀ i, u' i ∈ Submodule.span E (Set.range u)) (x y : S.V) :
@@ -191,19 +191,19 @@ private theorem hT_isoG_of_gram_eq {ι : Type*} [Fintype ι] [DecidableEq ι] (u
   rw [A1, A2, B1, B2, hgram u', hgram u, hG]
 
 /- English proof (translation)
-Use `haveI := S.fd`. Establish `hinj : Function.Injective (isoG u u')`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Apply `S.nondeg.1 x` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[← hT_isoG_of_gram_eq u u' hG hdet hsp x y, hx]`. Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective (isoG u u')` using `LinearMap.injective_iff_surjective.mp hinj`. Establish `hbij : Function.Bijective (isoG u u')` using `⟨hinj, hsurj⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LinearEquiv.ofBijective (isoG u u') hbij, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x y`. Conclude with `hT_isoG_of_gram_eq u u' hG hdet hsp x y`. Introduce `i`. Simplify using `only [LinearEquiv.ofBijective_apply, isoG_apply, pc_self u hdet, lin_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Introduce `w hw`. Establish `hp : pc u w = 0`. Unfold `pc`. Establish `: (fun k => S.hT (u k) w) = 0` using `funext hw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.mulVec_zero]`. Simplify using `only [LinearEquiv.ofBijective_apply, isoG_apply, hp]`. Simplify using `[lin]`. Introduce `v`. Simplify using `only [LinearEquiv.ofBijective_apply, isoG_apply]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : lin u' (pc u v) - lin u (pc u v) = ∑ k, S.hT (u k) v • ∑ m, (gram S u u)⁻¹ m k • (u' m - u m)`. Simplify using `only [lin, pc, Matrix.mulVec, dotProduct, ← Finset.sum_sub_distrib, ← smul_sub, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← key]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem isom_ext {ι : Type*} [Fintype ι] [DecidableEq ι] (u u' : ι → S.V) (hG : gram S u' u' = gram S u u)
     (hdet : (gram S u u).det ≠ 0) (hsp : ∀ i, u' i ∈ Submodule.span E (Set.range u)) :

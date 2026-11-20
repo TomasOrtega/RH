@@ -7,7 +7,7 @@ section HomTriv
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Introduce `h`. Use `map_mul φ g g⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one, h, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hom_ne_zero (φ : GL (Fin N) k →* NNReal) (g : GL (Fin N) k) : φ g ≠ 0 := by
   intro h
@@ -16,7 +16,7 @@ private lemma hom_ne_zero (φ : GL (Fin N) k →* NNReal) (g : GL (Fin N) k) : �
   exact one_ne_zero this
 
 /- English proof (translation)
-Rewrite using `[det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun m _ => hd m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_diagonal_ne_zero (d : Fin N → k) (hd : ∀ m, d m ≠ 0) :
     (diagonal d).det ≠ 0 := by
@@ -24,11 +24,9 @@ private lemma det_diagonal_ne_zero (d : Fin N → k) (hd : ∀ m, d m ≠ 0) :
   exact Finset.prod_ne_zero_iff.mpr fun m _ => hd m
 
 /- English proof (translation)
-Use `set G := nonsingInvUnit (diagonal d) (isUnit_iff_ne_zero.mpr (det_diagonal_ne_zero d hd))`. Establish `h1 : (σ.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) k) * σ.symm.toPEquiv.toMatrix = 1`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.self_trans_symm, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`. Establish `h2 : (σ.symm.toPEquiv.toMatrix : Matrix (Fin N) (Fin N) k) * σ.toPEquiv.toMatrix = 1`. Rewrite using `[← PEquiv.toMatrix_trans, ← Equiv.toPEquiv_trans, Equiv.symm_trans_self, Equiv.toPEquiv_refl, PEquiv.toMatrix_refl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `U : GL (Fin N) k` to `⟨σ.toPEquiv.toMatrix, σ.symm.toPEquiv.toMatrix, h1, h2⟩`. Establish `hconj : nonsingInvUnit (diagonal (d ∘ σ)) (isUnit_iff_ne_zero.mpr (det_diagonal_ne_zero _ fun m => hd (σ m))) = U * G * U⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Use `show diagonal (d ∘ σ) = σ.toPEquiv.toMatrix * diagonal d * σ.symm.toPEquiv.toMatrix`. Rewrite using `[PEquiv.toMatrix_toPEquiv_mul, PEquiv.mul_toMatrix_toPEquiv, submatrix_submatrix, Equiv.symm_symm]`.
-
-Conclude with `(submatrix_diagonal_equiv d σ).symm`. Rewrite using `[hconj, map_mul, map_mul, mul_comm (φ U), mul_assoc, ← map_mul, mul_inv_cancel, map_one, mul_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma diag_perm (φ : GL (Fin N) k →* NNReal) (σ : Equiv.Perm (Fin N))
     (d : Fin N → k) (hd : ∀ m, d m ≠ 0) :
@@ -62,7 +60,7 @@ section HomTriv2
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [diagonal_mul, mul_diagonal, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, Pi.mulSingle_apply]`. Apply the tactic sequence `by_cases ha : a = i <;> by_cases hb : b = j <;> by_cases hab : a = b <;>`. Apply the tactic sequence `simp_all [eq_comm] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma diag_conj_transvection (i j : Fin N) (hij : i ≠ j) (y c : k) :
     diagonal (Pi.mulSingle i y) * transvection i j c =
@@ -74,15 +72,15 @@ private lemma diag_conj_transvection (i j : Fin N) (hij : i ≠ j) (y c : k) :
     simp_all [eq_comm] <;> ring
 
 /- English proof (translation)
-Take `⟨x, hx0, hx1⟩` from `hx`. Establish `hdetT : ∀ c : k, (transvection i j c).det ≠ 0` using `fun c => by`. Rewrite using `[det_transvection_of_ne _ _ hij]`. Conclude with `one_ne_zero`. Set `T : k → GL (Fin N) k` to `fun c => nonsingInvUnit _ (isUnit_iff_ne_zero.mpr (hdetT c))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgT : g = T c` using `Units.ext hg`. Establish `hmulT : ∀ a b, T a * T b = T (a + b)` using `fun a b => Units.ext (transvection_mul_transvection_same i j hij a b)`. Establish `hscale : ∀ y : k, y ≠ 0 → ∀ c, φ (T (y * c)) = φ (T c)`. Introduce `y hy c`. Establish `hd : ∀ m, (Pi.mulSingle i y : Fin N → k) m ≠ 0` using `fun m => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m = i`. Rewrite using `[hm, Pi.mulSingle_eq_same]`. Conclude with `hy`. Rewrite using `[Pi.mulSingle_eq_of_ne hm]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `D : GL (Fin N) k` to `nonsingInvUnit (diagonal (Pi.mulSingle i y)) (isUnit_iff_ne_zero.mpr (det_diagonal_ne_zero _ hd))`. Establish `hc : D * T c = T (y * c) * D` using `Units.ext (diag_conj_transvection i j hij y c)`. Use `congrArg φ hc` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, mul_comm (φ (T (y * c)))]`. Conclude with `(mul_left_cancel₀ (hom_ne_zero φ D) this).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[hgT]`. Establish `key : φ (T c) = φ (T c) * φ (T c)`. Combine the equalities or inequalities in the displayed calculation. Establish `h0` using `hom_ne_zero φ (T c)`. Conclude with `(mul_right_eq_self₀.mp key.symm).resolve_right h0`.
+A detailed English derivation is pending.
 -/
 private lemma transvection_trivial (φ : GL (Fin N) k →* NNReal) (hx : ∃ x : k, x ≠ 0 ∧ x ≠ 1)
     (i j : Fin N) (hij : i ≠ j) (c : k) (g : GL (Fin N) k)
@@ -124,7 +122,7 @@ section HomTriv3
 variable {k : Type} [Field k] {N : ℕ}
 
 /- English proof (translation)
-Distinguish the cases in `ht : t = m`. Rewrite using `[ht, Pi.mulSingle_eq_same]`. Conclude with `a.ne_zero`. Rewrite using `[Pi.mulSingle_eq_of_ne ht]`. Conclude with `one_ne_zero`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mulSingle_unit_ne_zero (m : Fin N) (a : kˣ) (t : Fin N) :
     (Pi.mulSingle m (a : k) : Fin N → k) t ≠ 0 := by
@@ -143,7 +141,7 @@ private lemma elemDiag_coe (m : Fin N) (a : kˣ) :
     (elemDiag m a : Matrix (Fin N) (Fin N) k) = diagonal (Pi.mulSingle m (a : k)) := rfl
 
 /- English proof (translation)
-Establish `h1 : ((((List.finRange N).map fun m => elemDiag m (d m)).prod : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) = ((List.finRange N).map ((diagonalRingHom (Fin N) k) ∘ fun m => Pi.mulSingle m (d m : k))).prod`. Rewrite using `[show ((List.finRange N).map ((diagonalRingHom (Fin N) k) ∘ fun m => Pi.mulSingle m (d m : k))) = (List.finRange N).map ((Units.coeHom (Matrix (Fin N) (Fin N) k)) ∘ fun m => elemDiag m (d m)) from rfl, List.prod_map_hom]`. Both sides reduce to the same expression. Rewrite using `[h1, List.prod_map_hom, ← Fin.prod_univ_def, Finset.univ_prod_mulSingle (fun t => (d t : k))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma prod_elemDiag (d : Fin N → kˣ) :
     ((((List.finRange N).map fun m => elemDiag m (d m)).prod : GL (Fin N) k) :
@@ -160,9 +158,9 @@ private lemma prod_elemDiag (d : Fin N → kˣ) :
   rfl
 
 /- English proof (translation)
-Establish `hcomp : (Pi.mulSingle m' (a : k) : Fin N → k) ∘ (Equiv.swap m m') = Pi.mulSingle m (a : k)`. Use function extensionality and compare the values at `t`. Simplify using `only [Function.comp_apply, Pi.mulSingle_apply, Equiv.swap_apply_def]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `h` using `diag_perm φ (Equiv.swap m m') _ (mulSingle_unit_ne_zero m' a)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `he : elemDiag m a = nonsingInvUnit (diagonal ((Pi.mulSingle m' (a : k) : Fin N → k) ∘ (Equiv.swap m m'))) (isUnit_iff_ne_zero.mpr (det_diagonal_ne_zero _ fun t => mulSingle_unit_ne_zero m' a ((Equiv.swap m m') t)))` using `Units.ext (by rw [elemDiag_coe]; exact congrArg diagonal hcomp.symm)`. Rewrite using `[he, h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma elemDiag_swap (φ : GL (Fin N) k →* NNReal) (m m' : Fin N) (a : kˣ) :
     φ (elemDiag m a) = φ (elemDiag m' a) := by
@@ -180,9 +178,9 @@ private lemma elemDiag_swap (φ : GL (Fin N) k →* NNReal) (m m' : Fin N) (a : 
   rfl
 
 /- English proof (translation)
-Establish `hs : Matrix.GeneralLinearGroup.scalar (Fin N) a = ((List.finRange N).map fun t => elemDiag t ((fun _ => a) t)).prod`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[prod_elemDiag]`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`. Establish `h1` using `hφ a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[hs, map_list_prod, List.map_map, ← Fin.prod_univ_def]`. Simplify using `only [Function.comp_apply] at h1`. Rewrite `h1` using `[Finset.prod_congr rfl (fun t _ => elemDiag_swap φ t m a), Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hN : N ≠ 0` using `by rintro rfl; exact m.elim0`. Conclude with `(pow_eq_one_iff_of_nonneg zero_le hN).mp h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma elemDiag_trivial (φ : GL (Fin N) k →* NNReal)
     (hφ : ∀ z : kˣ, φ (Matrix.GeneralLinearGroup.scalar (Fin N) z) = 1) (m : Fin N) (a : kˣ) :
@@ -201,7 +199,7 @@ private lemma elemDiag_trivial (φ : GL (Fin N) k →* NNReal)
   exact (pow_eq_one_iff_of_nonneg zero_le hN).mp h1
 
 /- English proof (translation)
-Set `d : Fin N → kˣ` to `fun t => Units.mk0 (D t) (hD t)`. Establish `: g = ((List.finRange N).map fun m => elemDiag m (d m)).prod` using `Units.ext (by rw [prod_elemDiag, hg]; rfl)`. Rewrite using `[this, map_list_prod, List.map_map, ← Fin.prod_univ_def]`. Conclude with `Finset.prod_eq_one fun m _ => elemDiag_trivial φ hφ m (d m)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma diagonal_trivial (φ : GL (Fin N) k →* NNReal)
     (hφ : ∀ z : kˣ, φ (Matrix.GeneralLinearGroup.scalar (Fin N) z) = 1) (D : Fin N → k)
@@ -214,11 +212,11 @@ private lemma diagonal_trivial (φ : GL (Fin N) k →* NNReal)
   exact Finset.prod_eq_one fun m _ => elemDiag_trivial φ hφ m (d m)
 
 /- English proof (translation)
-Introduce `k _ hx N φ hφ g`. Establish `hdet : (g : Matrix (Fin N) (Fin N) k).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp g.isUnit).ne_zero`. Use `diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ g : GL (Fin N) k, (g : Matrix (Fin N) (Fin N) k) = M → φ g = 1) (g : Matrix (Fin N) (Fin N) k) hdet ?_ ?_ ?_ g rfl` and prove the remaining obligations. Introduce `D hD h hh`. Rewrite `hD` using `[det_diagonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `diagonal_trivial φ hφ D (fun t => (Finset.prod_ne_zero_iff.mp hD) t (Finset.mem_univ t)) h hh`. Introduce `t h hh`. Conclude with `transvection_trivial φ hx t.i t.j t.hij t.c h hh`. Introduce `A B hA hB hPA hPB h hh`. Set `uA : GL (Fin N) k` to `nonsingInvUnit A (isUnit_iff_ne_zero.mpr hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `uB : GL (Fin N) k` to `nonsingInvUnit B (isUnit_iff_ne_zero.mpr hB)`. Establish `: h = uA * uB` using `Units.ext hh`. Rewrite using `[this, map_mul, hPA uA rfl, hPB uB rfl, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gl_hom_nnreal_trivial_of_scalar :
     ∀ (k : Type) [Field k], (∃ x : k, x ≠ 0 ∧ x ≠ 1) → ∀ (N : ℕ) (φ : GL (Fin N) k →* NNReal),

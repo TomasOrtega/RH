@@ -22,11 +22,11 @@ def glueMapI (i : Fin (r + 1)) (c : Fin r → ℂ) (q : Cf r i × Mt k r) : (Fin
   (glue i c q.1, Matrix.of q.2)
 
 /- English proof (translation)
-Use `Continuous.prodMk ?_ continuous_snd` and prove the remaining obligations. Use `continuous_pi fun l => ?_` and prove the remaining obligations. Distinguish the cases in `h : i.val ≤ l.val`. Establish `e : (fun q : Cf r i × Mt k r => glue i c q.1 l) = fun q => q.1 ⟨l, h⟩`. Use function extensionality and compare the values at `q`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[glue, h]`. Rewrite using `[e]`. Conclude with `(continuous_apply _).comp continuous_fst`. Establish `e : (fun q : Cf r i × Mt k r => glue i c q.1 l) = fun _ => c l`. Use function extensionality and compare the values at `q`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[glue, h]`. Rewrite using `[e]`. Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueMapI_continuous (i : Fin (r + 1)) (c : Fin r → ℂ) : Continuous (glueMapI (k := k) i c) := by
   refine Continuous.prodMk ?_ continuous_snd
@@ -40,7 +40,7 @@ theorem glueMapI_continuous (i : Fin (r + 1)) (c : Fin r → ℂ) : Continuous (
     rw [e]; exact continuous_const
 
 /- English proof (translation)
-Rewrite using `[DomR_eq, Set.preimage_inter]`. Conclude with `((Formalism.FourierDecayAlt.P.Qx5.isOpen_OpR k r z z').preimage (glueMapI_continuous i c)).measurableSet.inter (((Formalism.FourierDecayAlt.P.Qx5.Glev_closed (Fin.last r)).preimage continuous_snd).preimage (glueMapI_continuous i c)).measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurableSet_glueMapI_DomR (i : Fin (r + 1)) (c : Fin r → ℂ) :
     MeasurableSet (glueMapI (k := k) i c ⁻¹' DomR k r z z') := by
@@ -50,9 +50,9 @@ theorem measurableSet_glueMapI_DomR (i : Fin (r + 1)) (c : Fin r → ℂ) :
       (glueMapI_continuous i c)).measurableSet
 
 /- English proof (translation)
-Establish `hmaps : Set.MapsTo (glueMapI (k` using `k) i c) (glueMapI (k := k) i c ⁻¹' DomR k r z z') (DomR k r z z') := fun q hq => hq`. Establish `hΦc` using `(radSp_continuousOn Φ).comp (glueMapI_continuous i c).continuousOn hmaps`. Establish `hΨc` using `(radSp_continuousOn Ψ).comp (glueMapI_continuous i c).continuousOn hmaps`. Use `measurable_of_continuousOn_zero (measurableSet_glueMapI_DomR i c) ((Formalism.FourierDecayAlt.P.B6.hsInner_continuous (Wp := Wp) (Wq := Wq)).comp_continuousOn (hΦc.prodMk hΨc)) ?_` and prove the remaining obligations. Introduce `q hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (Φ : Fn k r (Wq →L[ℂ] Wp)) (glue i c q.1) (Matrix.of q.2) = 0` using `radSp_zero_off Φ hq`. Use `show B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (glue i c q.1) (Matrix.of q.2)) _ = 0`. Rewrite using `[h0, Formalism.FourierDecayAlt.P.B6.hilbert_schmidt_inner_basis_sum]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_measurableI (i : Fin (r + 1)) (c : Fin r → ℂ) (Φ Ψ : RadSp k r z z' π π') :
     Measurable (fun q : Cf r i × Mt k r => B.hsInner ((Φ : Fn k r (Wq →L[ℂ] Wp)) (glue i c q.1) (Matrix.of q.2))
@@ -70,7 +70,7 @@ theorem pair_measurableI (i : Fin (r + 1)) (c : Fin r → ℂ) (Φ Ψ : RadSp k 
   simp
 
 /- English proof (translation)
-The claim follows from `(pair_measurableI i c u v).stronglyMeasurable.integral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem pairAt_measI (μ : Measure (Mt k r)) [SFinite μ] (i : Fin (r + 1)) (u v : RadSp k r z z' π π')
     (c : Fin r → ℂ) : StronglyMeasurable (fun c' : Cf r i => pairAt μ u v (glue i c c')) :=
@@ -79,7 +79,7 @@ theorem pairAt_measI (μ : Measure (Mt k r)) [SFinite μ] (i : Fin (r + 1)) (u v
 def wtI (i : Fin (r + 1)) (c' : Cf r i) : ℂ := ((∏ l, ‖c' l‖ ^ (-2 : ℤ) : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `wtI`. Establish `e : ∀ x : ℝ, x ^ (-2 : ℤ) = (x ^ 2)⁻¹` using `fun x => by rw [zpow_neg]; norm_cast`. Repeatedly rewrite using `[e]`. Conclude with `Complex.measurable_ofReal.comp (Finset.measurable_prod _ fun l _ => ((measurable_norm.comp (measurable_pi_apply l)).pow_const 2).inv)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtI_measurable (i : Fin (r + 1)) : Measurable (wtI i) := by
   unfold wtI
@@ -92,7 +92,7 @@ def LevelSquareIntegrable (μ : Measure (Mt k r)) (i : Fin (r + 1)) (u : RadSp k
   Integrable (fun c' : Cf r i => wtI i c' * pairAt μ u u (glue i c c'))
 
 /- English proof (translation)
-Unfold `B.hsInner`. Rewrite using `[inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (B.hsVec A)]`. Use `push_cast`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem hsInner_self_ofRealI (A : Wq →L[ℂ] Wp) : B.hsInner A A = ((‖B.hsVec A‖ ^ 2 : ℝ) : ℂ) := by
   unfold B.hsInner
@@ -101,7 +101,7 @@ theorem hsInner_self_ofRealI (A : Wq →L[ℂ] Wp) : B.hsInner A A = ((‖B.hsVe
   rfl
 
 /- English proof (translation)
-Unfold `pairAt`. Repeatedly rewrite using `[hsInner_self_ofRealI]`. Rewrite using `[integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun g => by positivity)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_pairAt_selfI (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c : Fin r → ℂ) :
     ‖pairAt μ u u c‖ = ∫ g : Mt k r, ‖B.hsInner ((u : Fn k r (Wq →L[ℂ] Wp)) c (Matrix.of g))
@@ -113,7 +113,7 @@ theorem norm_pairAt_selfI (μ : Measure (Mt k r)) (u : RadSp k r z z' π π') (c
   simp only [Complex.norm_real, Real.norm_of_nonneg (sq_nonneg _)]
 
 /- English proof (translation)
-Rewrite using `[norm_pairAt_selfI, norm_pairAt_selfI]`. Unfold `pairAt`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_add (int_lc μ hμ hu hu c).norm (int_lc μ hμ hv hv c).norm]`. Conclude with `integral_mono (int_lc μ hμ hu hv c).norm ((int_lc μ hμ hu hu c).norm.add (int_lc μ hμ hv hv c).norm) fun g => norm_hs_le _ _`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pairAt_leI (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
     {u v : RadSp k r z z' π π'} (hu : u ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (c : Fin r → ℂ) :
@@ -126,7 +126,7 @@ theorem norm_pairAt_leI (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin
     fun g => norm_hs_le _ _
 
 /- English proof (translation)
-Use `(Iu.norm.add Iv.norm).mono' ((wtI_measurable i).aestronglyMeasurable.mul (pairAt_measI μ i u v c).aestronglyMeasurable) (Filter.Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Use `show ‖wtI i c' * pairAt μ u v (glue i c c')‖ ≤ ‖wtI i c' * pairAt μ u u (glue i c c')‖ + ‖wtI i c' * pairAt μ v v (glue i c c')‖`. Rewrite using `[norm_mul, norm_mul, norm_mul, ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pairAt_leI μ hμ hu hv _) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_crossI (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (i : Fin (r + 1))
     {u v : RadSp k r z z' π π'} (hu : u ∈ lcSub k r z z' π π') (hv : v ∈ lcSub k r z z' π π') (c : Fin r → ℂ)
@@ -148,7 +148,7 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Repeatedly rewrite using `[Finset.mul_sum]`. Conclude with `integrable_finsetSum _ fun a _ => int_crossI μ hμ i (hu a) (hv a) c (Iu a) (Iv a)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formIntOuter_of_l2I {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : Measure (Mt k r)) [SFinite μ]
@@ -179,11 +179,9 @@ def HermitianSquareIntegrableAll : Prop :=
     ∀ i : Fin (P.r + 1), i.val < P.r → HermitianSquareIntegrableAt (S := S) P z z' π π' μ L st l0 D i
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw i c hc x y hx hy`. Distinguish the cases in `hi : i.val < P.r`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hD.2.1`. Establish `hle` using `herKc_le_lc (S := S) (st := st) (l0 := l0) X hD.2.2.1 (fun F Φ hF hΦ => jfCptLocAll Wp Wq P z z' π π' D F Φ hD.1 hz hz' hπ hπ' hF hΦ) i`. Establish `hRR` using `RRi_lc X μ L st l0 hD i w hw.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ a, act (RRi L st i w) x a ∈ lcSub P.k P.r z z' π π'` using `fun a => (lcSub P.k P.r z z' π π').sum_mem fun b _ => (hRR a b).1 _ (hle (hx b))`. Take `⟨hK, hR⟩` from `h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' i hi c hc`. Conclude with `formIntOuter_of_l2I μ hD.2.1 i _ y hu (fun a => hle (hy a)) c (hR w hw x hx) (fun a => hK _ (hy a))`. Establish `e : i = Fin.last P.r` using `Fin.ext (by have := i.isLt; simp only [Fin.val_last]; omega)`. Substitute `e` using the available equality.
-
-Conclude with `integrable_cf_last _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem outer_form_compact_of_square (h : HermitianSquareIntegrableAll) : FormIntOuterCpt := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw i c hc x y hx hy

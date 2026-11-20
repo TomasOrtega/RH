@@ -16,11 +16,11 @@ variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {
 include hi in
 
 /- English proof (translation)
-Establish `hcons : ∀ (j : ℕ) (hj : j + 1 < n), d ⟨j, by omega⟩ = d ⟨j + 1, hj⟩`. Introduce `j hj`. Break down `lt_trichotomy (d ⟨j, by omega⟩) (d ⟨j + 1, hj⟩) with hlt | heq | hgt` into its components or cases. Conclude with `absurd (step_up i hi hψ h0 τ π φ hφ L hL x d ⟨j, by omega⟩ ⟨j + 1, hj⟩ rfl hlt) h`. Conclude with `heq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (step_down i hi hψ τ hτ π φ hφ L hL x d ⟨j, by omega⟩ ⟨j + 1, hj⟩ rfl hgt) h`. Establish `hall : ∀ (j : ℕ) (hj : j < n), d ⟨j, hj⟩ = d ⟨0, by omega⟩`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro hj`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Consider the case `succ j ih => intro hj; rw [← hcons j hj, ih (by omega)]`. Introduce `a b`. Conclude with `(hall a.val a.isLt).trans (hall b.val b.isLt).symm`.
+A detailed English derivation is pending.
 -/
 theorem supp_const (hψ : ∀ x : ℤ_[g], ψ (i (x : ℚ_[g])) = ψ₀ (PadicInt.toZMod x)) (h0 : ψ₀ ≠ 1) {n : ℕ}
     (τ : FDRep ℂ (Gn g n)) (hτ : IsCusp τ.character) {V : Type} [AddCommGroup V] [Module ℂ V]

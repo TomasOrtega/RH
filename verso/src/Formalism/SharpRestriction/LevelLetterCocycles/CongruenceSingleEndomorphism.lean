@@ -19,11 +19,11 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {X : T
   (T : Subalgebra O (X → O)) (act : T →ₐ[O] Module.End O M)
 
 /- English proof (translation)
-Set `F : T → Module.End (FractionRing O) (TensorProduct O (FractionRing O) M)` to `fun f => actK T act f`. Establish `hc : ∀ f g, Commute (F f) (F g)` using `fun f g => by show actK T act f * actK T act g = actK T act g * actK T act f`. Rewrite using `[← map_mul, mul_comm, map_mul]`. Establish `h` using `Module.End.independent_iInf_maxGenEigenspace_of_forall_mapsTo F (fun f g φ => Module.End.mapsTo_maxGenEigenspace_of_comm (hc g f) φ)`. Set `χ : X → (T → FractionRing O)` to `fun x f => algebraMap O (FractionRing O) ((f : X → O) x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hχ : Function.Injective χ`. Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hfx⟩` from `hsep x y hne`. Conclude with `hfx (IsFractionRing.injective O (FractionRing O) (congrFun hxy ⟨f, hf⟩))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h.comp hχ).mono fun x => iInf_mono fun f => ?_` and prove the remaining obligations. Conclude with `((F f).genEigenspace _).monotone le_top`.
+A detailed English derivation is pending.
 -/
 theorem heckeEig_indep (hsep : ∀ x y : X, x ≠ y → ∃ f ∈ T, f x ≠ f y) :
     iSupIndep (heckeEig T act) := by
@@ -52,9 +52,7 @@ open Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br
 variable {D : D7}
 
 /- English proof (translation)
-Use `⟨(heckeEig_indep (D.nd.T i) (D.nd.act i) (D.nd.T_sep i)).disjoint_biSup_biSup disjoint_compl_right, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← EigSpan_holds D.nd i]`. Use `iSup_le fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ (S : Set (D.nd.X i))`. Conclude with `le_sup_of_le_left (le_biSup (heckeEig (D.nd.T i) (D.nd.act i)) hx)`.
-
-Conclude with `le_sup_of_le_right (le_biSup (heckeEig (D.nd.T i) (D.nd.act i)) (show x ∈ (S : Set (D.nd.X i))ᶜ from hx))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem eig_isCompl (i : D.nd.Loc) (S : Finset (D.nd.X i)) :
     IsCompl (D.nd.eigSum i ↑S) (D.nd.eigSum i (↑S)ᶜ) := by

@@ -23,7 +23,7 @@ def sv (v : SecM A L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z)
   sval (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) (SecM.toSec A v) r z J
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun j => sec_ext_val hL (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) (s := SecM.toSec A v) (s' := SecM.toSec A w) h j)`.
+A detailed English derivation is pending.
 -/
 theorem sv_ext (hL : L.IsLB) {v w : SecM A L k T}
     (h : ∀ y J, Good L y J → sv v (𝟙 _) y J = sv w (𝟙 _) y J) : v = w :=
@@ -31,14 +31,14 @@ theorem sv_ext (hL : L.IsLB) {v w : SecM A L k T}
     (s := SecM.toSec A v) (s' := SecM.toSec A w) h j)
 
 /- English proof (translation)
-The claim follows from `gs_add r z _ (hJ.mem (fun _ : Fin 1 => (snd T A).left) r) _ _`.
+A detailed English derivation is pending.
 -/
 theorem sv_add (v w : SecM A L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J} (hJ : Good L z J) :
     sv (v + w) r z J = sv v r z J + sv w r z J :=
   gs_add r z _ (hJ.mem (fun _ : Fin 1 => (snd T A).left) r) _ _
 
 /- English proof (translation)
-Establish `hm` using `hJ.mem (fun _ : Fin 1 => (snd T A).left) r`. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg (· * sv v r z J) ((gs_res r z le_top hm _).trans (gs_pull r (fst T A).left z ⊤ trivial c)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sv_smul (c : Γ(T.left, ⊤)) (v : SecM A L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J}
     (hJ : Good L z J) : sv (c • v) r z J = gs (r ≫ (fst T A).left) z ⊤ c * sv v r z J := by
@@ -47,13 +47,13 @@ theorem sv_smul (c : Γ(T.left, ⊤)) (v : SecM A L k T) {Z : Scheme.{0}} (r : Z
     ((gs_res r z le_top hm _).trans (gs_pull r (fst T A).left z ⊤ trivial c)))
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, translT, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem translT_snd (x : T ⟶ A) : (translT A x).left ≫ (snd T A).left = (translPt A x).left := by
   rw [← Over.comp_left, translT, lift_snd]
 
 /- English proof (translation)
-Use `show translT A x ≫ ((fst T A ≫ y) * snd T A) = (fst T A ≫ (y * x)) * snd T A`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, ← Category.assoc, translT, lift_fst, lift_snd, _root_.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem translT_translPt (x y : T ⟶ A) : translT A x ≫ translPt A y = translPt A (y * x) := by
   show translT A x ≫ ((fst T A ≫ y) * snd T A) = (fst T A ≫ (y * x)) * snd T A
@@ -61,7 +61,7 @@ theorem translT_translPt (x y : T ⟶ A) : translT A x ≫ translPt A y = transl
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left]`. Use `congr 1`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Rewrite using `[Category.assoc, translT.eq_1 A y, translT.eq_1 A (y * x), lift_snd, lift_snd, translT_translPt]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem translT_translT (x y : T ⟶ A) : (translT A x).left ≫ (translT A y).left = (translT A (y * x)).left := by
   rw [← Over.comp_left]
@@ -71,30 +71,28 @@ theorem translT_translT (x y : T ⟶ A) : (translT A x).left ≫ (translT A y).l
   · rw [Category.assoc, translT.eq_1 A y, translT.eq_1 A (y * x), lift_snd, lift_snd, translT_translPt]
 
 /- English proof (translation)
-Use `show (fst T A ≫ 1) * snd T A = snd T A`. Rewrite using `[MonObj.comp_one, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translPt_one : translPt A (1 : T ⟶ A) = snd T A := by
   show (fst T A ≫ 1) * snd T A = snd T A
   rw [MonObj.comp_one, _root_.one_mul]
 
 /- English proof (translation)
-Rewrite using `[translT, translPt_one, lift_fst_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem translT_one : (translT A (1 : T ⟶ A)).left = 𝟙 _ := by
   rw [translT, translPt_one, lift_fst_snd]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ (j : Fin 2 → L.ι) (y : (T ⊗ A).left) (hy : y ∈ LB.wchart L ![(snd T A).left, (translPt A θ.pt).left] j), gs (𝟙 _) y _ (((T ⊗ A).left.presheaf.map (homOfLE (chart_le_zero A L (translPt A θ.pt) j)).op).hom (s'.f (fun _ => j 0))) = gs (𝟙 _) y (LB.wchart L (fun _ : Fin 1 => ( …` using `fun j y hy => ⟨gs_res _ y _ hy _, (gs_mul _ y _ hy _ _).trans (congrArg₂ (· * ·) (gs_unit _ y _ hy _) ((gs_res _ y _ hy _).trans (gs_pull (𝟙 _) (translT A θ.pt).left y (LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 1)) (chart_le_pull A L (translT A θ.pt) (translPt A θ …`. Establish `e : (𝟙 _ ≫ (translT A θ.pt).left) ≫ (snd T A).left = 𝟙 _ ≫ (translPt A θ.pt).left`. Rewrite using `[Category.assoc, translT_snd]`. Prove the components needed by the constructor for the conclusion. Introduce `H y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm` using `hJ.mem ![(snd T A).left, (translPt A θ.pt).left] (𝟙 _)`. Take `⟨k₁, k₂⟩` from `key _ y hm`. Use `k₁.symm.trans ((congrArg (gs (𝟙 _) y _) (H _)).trans k₂)` as an intermediate fact. Use `this.trans (congrArg (_ * ·) (Eq.symm ?_))` and prove the remaining obligations. Conclude with `sval_of (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) s _ y J _ (fun _ => congrArg J e)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H j`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨k₁, k₂⟩` from `key j y hy`. Use `k₁.trans (Eq.trans ?_ k₂.symm)` and prove the remaining obligations. Use `choose J hJ using fun χ : (T ⊗ A).left ⟶ A.left => exists_chart hL (χ y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ' : Good L y J` using `hJ`. Establish `a₁` using `sec_trans (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) s' (𝟙 _) y (chart_le_zero A L (translPt A θ.pt) j hy) (hJ'.mem _ _)`. Establish `a₂` using `sec_trans (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) s (𝟙 _ ≫ (translT A θ.pt).left) y (chart_le_pull A L (translT A θ.pt) (translPt A θ.pt) (lift_snd _ _) j hy) (hJ'.mem _ _)`. Establish `a₃` using `gen_trans (φ := ![(snd T A).left, (translPt A θ.pt).left]) (ε := ![k, -k]) θ.isGen (𝟙 _) y hy (hJ'.mem _ _)`. Establish `a₄ : trF (fun _ : Fin 1 => (snd T A).left) (fun _ => k) (𝟙 _) y (fun _ => j 0) (fun _ => J (𝟙 _ ≫ (snd T A).left)) = trF ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] (𝟙 _) y j (fun i => J (𝟙 _ ≫ ![(snd T A).left, (translPt A θ.pt).left] i)) * trF (fun _ : Fin 1 => (snd T A) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[trF, trF, trF, Fin.prod_univ_two, Fin.prod_univ_one, Fin.prod_univ_one, e]`. Establish `h : ∀ a b : ((T ⊗ A).left.presheaf.stalk y)ˣ, a ^ k = a ^ k * b ^ (-k) * b ^ k` using `fun a b => by`. Rewrite using `[zpow_neg, inv_mul_cancel_right]`. Conclude with `h _ _`. Use `a₁.trans (Eq.trans ?_ (congrArg₂ (· * ·) (congrArg Units.val a₃) a₂).symm)` and prove the remaining obligations.
-
-Rewrite using `[a₄, Units.val_mul, Units.val_mul, _root_.mul_mul_mul_comm]`. Conclude with `congrArg (_ * ·) (H y J hJ')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isActOf_iff (hL : L.IsLB) (θ : ThetaGrp A L k T) (s s' : LB.Sec (LPow A L k T)) :
     IsActOf A L k θ s s' ↔ ∀ y J, Good L y J → sv (SecM.ofSec A s') (𝟙 _) y J =
@@ -152,9 +150,9 @@ theorem isActOf_iff (hL : L.IsLB) (θ : ThetaGrp A L k T) (s s' : LB.Sec (LPow A
     exact congrArg (_ * ·) (H y J hJ')
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `exists_sec hL (φ' := fun _ : Fin 1 => (snd T A).left) (ε' := fun _ => k) (fun U _ f => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Fin.prod_univ_one, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, translT_snd]`. Rewrite using `[_root_.mul_comm, inv_mul_cancel_right])`. Use the proof step `(pullMulSec (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => k) (SecM.toSec A v) (translT A θ.pt).left (φ₃ := ![(snd T A).left, (translPt A θ.pt).left]) (ε₃ := ![k, -k]) θ.φ θ.isGen)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨SecM.ofSec A w, fun Z r z J hJ => (hw Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ r z hJ).trans (_root_.mul_comm _ _))⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_act (hL : L.IsLB) (θ : ThetaGrp A L k T) (v : SecM A L k T) :
     ∃ w : SecM A L k T, ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J), Good L z J →
@@ -171,7 +169,7 @@ theorem exists_act (hL : L.IsLB) (θ : ThetaGrp A L k T) (v : SecM A L k T) :
     (hw Z r z J hJ).trans ((sval_pullMulSec _ _ _ _ r z hJ).trans (_root_.mul_comm _ _))⟩
 
 /- English proof (translation)
-Use `choose f hf using exists_act hL θ`. Use `⟨⟨⟨f, fun v w => sv_ext hL fun y J hJ => ?_⟩, fun c v => sv_ext hL fun y J hJ => ?_⟩, hf⟩` and prove the remaining obligations. Rewrite using `[sv_add _ _ _ _ hJ, hf _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, sv_add _ _ _ _ hJ, mul_add]`. Use `show sv (f (c • v)) _ y J = sv (c • f v) _ y J`. Rewrite using `[sv_smul _ (f v) _ _ hJ, hf (c • v) _ _ _ _ hJ, hf v _ _ _ _ hJ, sv_smul _ v _ _ hJ, Category.assoc, translT_fst, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lin (hL : L.IsLB) (θ : ThetaGrp A L k T) :
     ∃ f : SecM A L k T →ₗ[Γ(T.left, ⊤)] SecM A L k T, ∀ v (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J),
@@ -184,9 +182,9 @@ theorem exists_lin (hL : L.IsLB) (θ : ThetaGrp A L k T) :
       Category.assoc, translT_fst, mul_left_comm]
 
 /- English proof (translation)
-Establish `e₁ : (translT A θ.pt⁻¹).left ≫ (translPt A θ.pt).left = (snd T A).left`. Rewrite using `[← Over.comp_left, translT_translPt, mul_inv_cancel, translPt_one]`. Take `⟨t, ht, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (translPt A θ.pt⁻¹).left]) (ε' := ![k, -k]) (fun U _ f => by`. Simplify using `only [Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, translT_snd, e₁, inv_inv]`. Rewrite using `[_root_.mul_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(LB.invGen L _ _ (LB.pullGen L ![(snd T A).left, (translPt A θ.pt).left] ![k, -k] θ.φ (translT A θ.pt⁻¹).left))`. Use the proof step `(DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ θ.isGen _))`. Conclude with `⟨⟨θ.pt⁻¹, t, ht⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans ((val_inv _ _).trans (congrArg (·⁻¹) (val_pull hJ _ _ _)))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_inv (hL : L.IsLB) (θ : ThetaGrp A L k T) :
     ∃ θ' : ThetaGrp A L k T, θ'.pt = θ.pt⁻¹ ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J),
@@ -203,9 +201,9 @@ theorem exists_inv (hL : L.IsLB) (θ : ThetaGrp A L k T) :
     (congrArg (·⁻¹) (val_pull hJ _ _ _)))⟩
 
 /- English proof (translation)
-Establish `e₁ : (translT A θx.pt).left ≫ (translPt A θy.pt).left = (translPt A (θy.pt * θx.pt)).left`. Rewrite using `[← Over.comp_left, translT_translPt]`. Take `⟨t, ht, hv⟩` from `exists_gen hL (φ' := ![(snd T A).left, (translPt A (θy.pt * θx.pt)).left]) (ε' := ![k, -k]) (fun U _ f => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_two, Sum.elim_inl, Sum.elim_inr, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_neg, translT_snd, e₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.mul_assoc, inv_mul_cancel_left])`. Use the proof step `(LB.mulGen L ![(snd T A).left, (translPt A θx.pt).left] ![k, -k] _ _ θx.φ (LB.pullGen L ![(snd T A).left, (translPt A θy.pt).left] ![k, -k] θy.φ (translT A θx.pt).left))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ θx.isGen (DVR.pullGen_isGen _ _ _ _ θy.isGen _))`. Conclude with `⟨⟨_, t, ht⟩, rfl, fun Z r z J hJ => (hv Z r z J hJ).trans ((val_mul hJ _ _ _).trans (congrArg (tval θx r z J * ·) (val_pull hJ _ _ _)))⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul (hL : L.IsLB) (θx θy : ThetaGrp A L k T) :
     ∃ θ : ThetaGrp A L k T, θ.pt = θy.pt * θx.pt ∧ ∀ (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J),
@@ -225,9 +223,9 @@ theorem exists_mul (hL : L.IsLB) (θx θy : ThetaGrp A L k T) :
     (congrArg (tval θx r z J * ·) (val_pull hJ _ _ _)))⟩
 
 /- English proof (translation)
-Take `⟨θ', hp, hv⟩` from `exists_inv hL θ`. Take `⟨f, hf⟩` from `exists_lin hL θ`. Take `⟨g, hg⟩` from `exists_lin hL θ'`. Use `⟨LinearEquiv.ofLinear f g (LinearMap.ext fun v => sv_ext hL fun y J hJ => ?_) (LinearMap.ext fun v => sv_ext hL fun y J hJ => ?_), hf⟩` and prove the remaining obligations. Use `show sv (f (g v)) _ y J = sv v _ y J`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf _ _ _ _ _ hJ, hg _ _ _ _ _ hJ, hv _ _ _ _ hJ, hp, Category.assoc, translT_translT, inv_mul_cancel, translT_one, Category.comp_id, Units.mul_inv_cancel_left]`. Use `show sv (g (f v)) _ y J = sv v _ y J`. Rewrite using `[hg _ _ _ _ _ hJ, hf _ _ _ _ _ hJ, hv _ _ _ _ hJ, hp, Category.assoc, translT_translT, mul_inv_cancel, translT_one, Category.comp_id, Units.inv_mul_cancel_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_equiv (hL : L.IsLB) (θ : ThetaGrp A L k T) :
     ∃ f : SecM A L k T ≃ₗ[Γ(T.left, ⊤)] SecM A L k T, ∀ v (Z : Scheme.{0}) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J),
@@ -245,13 +243,13 @@ theorem exists_equiv (hL : L.IsLB) (θ : ThetaGrp A L k T) :
       translT_one, Category.comp_id, Units.inv_mul_cancel_left]
 
 /- English proof (translation)
-Take `⟨a, u, hu⟩` from `θ`. Take `⟨a', u', hu'⟩` from `θ'`. Take `rfl : a = a'` from `h`. Take `⟨ρ, hρ⟩` from `TLinPf.ratio_glue _ (TLinPf.linComb_cover L hL _ _) u' u hu' hu`. Take `⟨c, hc⟩` from `surj_fst hG hA T ρ.val`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `surj_fst hG hA T ρ.inv`. Establish `inj : Function.Injective (fst T A).left.appTop.hom`. Establish `e : (ptSecT A a).left ≫ (fst T A).left = 𝟙 _` using `by rw [← Over.comp_left, ptSecT, lift_fst]; rfl`. Use `Function.LeftInverse.injective (g := (ptSecT A a).left.appTop.hom) fun b => ?_` and prove the remaining obligations. Use `congrArg (fun q => q.appTop.hom b) e` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `only [Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.comp_apply, Scheme.Hom.id_appTop, CommRingCat.hom_id, RingHom.id_apply]`. Establish `hcd : c * d = 1` using `inj (by rw [map_mul, map_one, hc, hd]; exact ρ.val_inv)`. Use `⟨⟨c, d, hcd, by rw [_root_.mul_comm]; exact hcd⟩, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Establish `hm` using `hJ.mem ![(snd T A).left, (translPt A a).left] r`. Use `(congrArg Units.val ((congrArg (gm r z _) (hρ _)).trans (map_mul _ _ _))).trans ((Units.val_mul _ _).trans (congrArg (· * _) ?_))` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg Units.val (gm_res r z le_top hm _)).trans ((gs_unit r z ⊤ trivial _).symm.trans ((congrArg (gs r z ⊤) hc.symm).trans (gs_pull r _ z ⊤ trivial c)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratio (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (hL : L.IsLB)
     (θ θ' : ThetaGrp A L k T) (h : θ.pt = θ'.pt) : ∃ c : Γ(T.left, ⊤)ˣ,
@@ -284,13 +282,13 @@ namespace GlobalTheory
 open ThetaAct CommPairing in
 
 /- English proof (translation)
-Introduce `hG S P k T`. Establish `hL` using `P.isLB`. Use `P.isAb.comm` as an intermediate fact. Establish `cm : ∀ x y : T ⟶ P.A, x * y = y * x` using `fun x y => _root_.mul_comm x y`. Use `choose ρ hρ using fun θ : ThetaGrp P.A P.L k T => exists_equiv hL θ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ, fun θ s s' => ?_, fun θx θy c H v => sv_ext hL fun y J hJ => ?_, fun θ θ' h => ?_, fun θx θy => ?_⟩` and prove the remaining obligations. Rewrite using `[isActOf_iff hL]`. Conclude with `⟨fun H => sv_ext hL fun y J hJ => (hρ _ _ _ _ _ _ hJ).trans (H y J hJ).symm, fun H y J hJ => H ▸ hρ _ _ _ _ _ _ hJ⟩`. Establish `e` using `congrArg Units.val ((commIsOf_iff hL θx θy c).1 H _ (𝟙 _) y J hJ)`. Rewrite `e` using `[Units.val_mul, Units.val_mul, Units.val_mul, ← gs_unit _ _ ⊤ trivial]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sv_smul _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, Category.assoc, Category.assoc, translT_translT, translT_translT, cm θy.pt, ← _root_.mul_assoc, e]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc⟩` from `exists_ratio hG P.isAb hL θ θ' h`. Use `⟨c, fun v => sv_ext hL fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[sv_smul _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hc _ _ _ _ hJ, h, _root_.mul_assoc]`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hp, hv⟩` from `exists_mul hL θx θy`. Use `⟨θ, hp.trans (cm _ _), fun v => sv_ext hL fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hρ _ _ _ _ _ _ hJ, hv _ _ _ _ hJ, hp, Category.assoc, translT_translT, Units.val_mul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaGrp_acts_linearly : GlobalFnsSt → ∀ (S : Scheme.{0}) (P : PolAV S) (k : ℤ) (T : Over S), ∃ ρ : ThetaGrp P.A P.L k T → (SecM P.A P.L k T ≃ₗ[Γ(T.left, ⊤)] SecM P.A P.L k T), (∀ θ s s', IsActOf P.A P.L k θ s s' ↔ ρ θ (SecM.ofSec P.A s) = SecM.ofSec P.A s') ∧ (∀ θx θy c, CommIsOf P.A P.L k θx θy c → ∀ v, ρ θx (ρ θy v) = (c : Γ(T.left, ⊤)) • ρ θy (ρ θx v)) ∧ (∀ θ θ', θ.pt = θ'.pt → ∃ c : Γ(T.left, ⊤)ˣ, ∀ v, ρ θ' v = (c : Γ(T.left, ⊤)) • ρ θ v) ∧ ∀ θx θy, ∃ θ, θ.pt = θx.pt * θy.pt ∧ ∀ v, ρ θ v = ρ θx (ρ θy v) := by
   intro hG S P k T

@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A _ I J hJI e he hJ`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ m : ℕ, I ^ ((e + 1) * m) ≤ J ^ m` using `fun m => by`. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_right_mono ((Ideal.pow_le_pow_right (Nat.le_succ e)).trans he) m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨L, hL⟩` from `IsPrecomplete.prec hJ (f := fun n => f ((e + 1) * n)) (fun {m n} hmn => SModEq.mono (Submodule.smul_mono_left (h1 m)) (hf (Nat.mul_le_mul_left _ hmn)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Conclude with `(hf (Nat.le_mul_of_pos_left n (Nat.succ_pos e))).trans (SModEq.mono (Submodule.smul_mono_left (Ideal.pow_right_mono hJI n)) (hL n))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk41.precomplete_of_pow_le :
     ∀ {A : Type} [inst : CommRing A]

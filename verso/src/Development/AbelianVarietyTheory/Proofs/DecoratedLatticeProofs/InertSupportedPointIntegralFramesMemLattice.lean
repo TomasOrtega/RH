@@ -20,9 +20,9 @@ namespace GlobalTheory.InertFrameLoc
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
 
 /- English proof (translation)
-Establish `e : toCompl h (b ⊗ₜ[D.host.F] o) * algebraMap D.host.E (w.adicCompletion D.host.E) m = toCompl h (b ⊗ₜ[D.host.F] (o * m))`. Rewrite using `[toCompl_tmul, toCompl_tmul, map_mul, mul_assoc]`. Establish `e2 : toCompl h (b ⊗ₜ[D.host.F] (o * m)) = GlobalTheory.LFun.InertChart.complEquiv hw h (b ⊗ₜ[D.host.F] (o * m))` using `rfl`. Rewrite using `[e, e2]`. Use `show GlobalTheory.EmbChart.tensAt D.host.E v ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm _) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.symm_apply_apply, GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]`.
+A detailed English derivation is pending.
 -/
 theorem secW_toCompl_tmul_mul (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v)
     (b : Fv D.host.F v) (o m : D.host.E) :
@@ -37,15 +37,15 @@ theorem secW_toCompl_tmul_mul (hw : IsInertAt D.host.F D.host.E v w) (h : w.unde
   rw [RingEquiv.symm_apply_apply, GlobalTheory.EmbChart.tensAt_tmul, GlobalTheory.EmbChart.atPlace_apply]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `GlobalTheory.LFun.InertChart.toCompl_surjective h z`. Establish `hy` using `(GlobalTheory.LFun.InertChart.mem_intLoc_iff hw h y).2 hz`. Use `intLoc_induction (p := fun y => (Matrix.of fun i j => secW hw h (toCompl h y * algebraMap D.host.E (w.adicCompletion D.host.E) (a * t i * ∑ k, star (s k) * S.gram k j)) : WO S T) ∈ latO S T (frameLat S) (frameLat T) (fun u => u = v)) (fun b hb o => ?_) ?_ (fun y y' h1 h2 => ?_) ( …` and prove the remaining obligations. Use `AddSubgroup.subset_closure ⟨singleFin v b, fun u => ?_, fun u hu => evalV_singleFin_ne hu _, a, ha, s, hs, o • t, Submodule.smul_mem _ o ht, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : u = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Rewrite using `[evalV_singleFin_self]`. Conclude with `hb`. Rewrite using `[evalV_singleFin_ne e]`. Conclude with `zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, secW_toCompl_tmul_mul]`. Use `congr 1`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `zero_mem (latO S T (frameLat S) (frameLat T) (fun u => u = v)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using the standard rewrite rules. Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Matrix.of_apply, Matrix.add_apply, map_add, add_mul]`. Use `neg_mem h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.neg_apply, map_neg, neg_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secW_rank_one_mem (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) {S T : HSp D}
     {a : D.host.E} (ha : a ∈ D.host.AA) {s : Fin S.rank → D.host.E} (hs : s ∈ frameLat S)
@@ -80,25 +80,25 @@ theorem secW_rank_one_mem (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (�
     simp only [Matrix.of_apply, Matrix.neg_apply, map_neg, neg_mul]
 
 /- English proof (translation)
-Establish `hst : ∀ x : D.host.E, star x = D.sp.cm.sig x` using `fun _ => rfl`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem p hp`. Take `⟨t, ht, rfl⟩` from `hp`. Proceed by induction on `hy using Submodule.span_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨s, hs, rfl⟩` from `hy`. Introduce `z hz`. Use `secW_rank_one_mem hw h ha hs ht hz using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, GlobalTheory.LFun.InertChart.conj_algebraMap hc, map_mul, map_sum, hst]`. Put the polynomial expressions in normal form. Consider the case `zero`. Introduce `z hz`. Use `zero_mem (latO S T (frameLat S) (frameLat T) (fun u => u = v)) using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Put the polynomial expressions in normal form. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Simplify using the standard rewrite rules. Consider the case `add y y' _ _ h1 h2`. Introduce `z hz`. Use `add_mem (h1 z hz) (h2 z hz) using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, Matrix.add_apply, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib, mul_add]`. Consider the case `smul o y _ h1`. Introduce `z hz`. Use `h1 (z * c o) (mul_mem hz (GlobalTheory.LFun.InertChart.conj_mem hw hc o.2)) using 1` and compare the differences between its conclusion and the goal.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `i j`. Establish `e : ∀ k, c ((o • y) k) * algebraMap D.host.E (w.adicCompletion D.host.E) (S.gram k j) = c o * (c (y k) * algebraMap D.host.E (w.adicCompletion D.host.E) (S.gram k j))` using `fun k => by`. Rewrite using `[Pi.smul_apply, Subring.smul_def, smul_eq_mul, map_mul, mul_assoc]`. Simplify using `only [Matrix.of_apply, e, ← Finset.mul_sum]`. Use `congr 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero`. Introduce `z hz`. Use `zero_mem (latO S T (frameLat S) (frameLat T) (fun u => u = v)) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `add p p' _ _ h1 h2`. Introduce `z hz`. Use `add_mem (h1 z hz) (h2 z hz) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Matrix.add_apply, Pi.add_apply, map_add, add_mul, mul_add]`. Consider the case `smul o p _ h1`. Introduce `z hz`. Use `h1 (z * o) (mul_mem hz o.2) using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secW_span_mem (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v)
     {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E} (hc : IsConjAt D.sp.cm.sig h c) {S T : HSp D}
@@ -158,27 +158,25 @@ theorem secW_span_mem (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 
     ring
 
 /- English proof (translation)
-Introduce `D v w hw h S T k aS aT hk haS haT x hx`. Take `⟨-, ⟨a₀, ha₀, rfl⟩, -⟩` from `hk`. Take `⟨c, hc, -⟩` from `GlobalTheory.LFun.InertChart.existsUnique_isConjAt D.sp.cm.sig hw h`. Take `⟨ϖ, hU⟩` from `GlobalTheory.LFun.InertChart.exists_isUnramInv (isCMExt_host D) hw hc`. Establish `hcc : ∀ z, c (c z) = z` using `hU.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set ι := algebraMap D.host.E (w.adicCompletion D.host.E) with hι`. Use `set Gw := S.gram.map ι with hGw`. Use `set Gi := (S.gram⁻¹).map ι with hGi`. Establish `hGG : Gi * Gw = 1`. Rewrite using `[hGi, hGw, ← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit S), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N := (aS⁻¹).1 * Gi with hN`. Establish `hG : ∀ l i, c (ι (S.gram l i)) = ι (S.gram i l)` using `fun l i => by`. Rewrite using `[GlobalTheory.LFun.InertChart.conj_algebraMap hc, (GlobalTheory.Doubling.isHermND_gram S).1 i l]`. Establish `hY : ∀ j, (fun l => c (N j l)) ∈ latAt w (frameLat S)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LFun.InertChart.mem_latAt_iff hw hc (GlobalTheory.AdelicU.SelfDual.isSelfDualAt_frameLat D S v)]`. Introduce `y hy`. Establish `hu` using `(haS ((aS⁻¹).1 *ᵥ y)).2 (by rwa [Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]) j`. Establish `e : Formalism.UG.hform c (S.gram.map ι) y (fun l => c (N j l)) = c ((N *ᵥ (Gw *ᵥ y)) j)`. Simplify using `only [Formalism.UG.hform, Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, hG, hGw]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, Matrix.mulVec_mulVec, hN, Matrix.mul_assoc, hGG, Matrix.mul_one]`. Conclude with `GlobalTheory.LFun.InertChart.conj_mem hw hc hu`. Establish `hcol : ∀ j l, ∑ m, c (c (N j m)) * ι (S.gram m l) = (aS⁻¹).1 j l` using `fun j l => by`. Simplify using `only [hcc]`. Use `congrFun (congrFun (show N * Gw = (aS⁻¹).1 by rw [hN, Matrix.mul_assoc, hGG, Matrix.mul_one]) j) l` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← this, Matrix.mul_apply]`. Both sides reduce to the same expression. Establish `hT : ∀ i, (fun r => aT.1 r i) ∈ latAt w (frameLat T)` using `fun i => by`. Use `(haT (Pi.single i 1)).1 fun m => by` as an intermediate fact. Distinguish the cases in `e : m = i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e]`. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Establish `hdec : uPt hw h (ι a₀) aS aT x = ∑ i, ∑ j, (Matrix.of fun r l => secW hw h (x i j * ι a₀ * aT.1 r i * ∑ m, c (c (N j m)) * ι (S.gram m l)) : WO S T)`. Use extensionality with `r l`. Simplify using `only [uPt, Matrix.map_apply, Matrix.sum_apply, Matrix.of_apply, hcol]`. Rewrite using `[show ∀ f : Fin T.rank → Fin S.rank → w.adicCompletion D.host.E, ∑ i, ∑ j, secW hw h (f i j) = secW hw h (∑ i, ∑ j, f i j) from fun f => by simp only [map_sum]]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hdec]`. Conclude with `sum_mem fun i _ => sum_mem fun j _ => secW_span_mem hw h hc ha₀ (hT i) (hY j) (x i j) (hx i j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uPt_mem_latO : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (S T : HSp D) (k : w.adicCompletion D.host.E) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E)) (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)), GlobalTheory.InertLoc.IsGen D w k → IsFrameAt w (frameLat S) aS → IsFrameAt w (frameLat T) aT → ∀ x : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E), (∀ i j, x i j ∈ Formalism.UG.intL (w.adicCompletion D.host.E)) → uPt hw h k aS aT x ∈ latO S T (frameLat S) (frameLat T) (fun u => u = v) := by
   intro D v w hw h S T k aS aT hk haS haT x hx

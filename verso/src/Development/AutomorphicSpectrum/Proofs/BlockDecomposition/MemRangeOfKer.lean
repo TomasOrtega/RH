@@ -20,11 +20,11 @@ section Lin
 variable {A Y X : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup Y] [Module ℂ Y] [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Set `B` to `Module.Basis.ofVectorSpace ℂ Y`. Take `⟨c, rfl⟩` from `TensorProduct.eq_repr_basis_right B x`. Establish `hc : ∀ i, c i ∈ ⨅ j, LinearMap.ker (f j)`. Introduce `i`. Use `Submodule.mem_iInf _ |>.2 fun j => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (c.mapRange (f j) (map_zero _)).sum (fun i m => m ⊗ₜ[ℂ] B i) = 0`. Rewrite using `[Finsupp.sum_mapRange_index (by simp)]`. Simplify `h j` using `[Finsupp.sum, map_sum]`. Use `TensorProduct.sum_tmul_basis_right_eq_zero B _ e` as an intermediate fact. Simplify using `using DFunLike.congr_fun this i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Submodule.sum_mem _ fun i _ => ⟨(⟨c i, hc i⟩ : (⨅ j, LinearMap.ker (f j) : Submodule ℂ A)) ⊗ₜ[ℂ] B i, ?_⟩` and prove the remaining obligations. Simplify using `[TensorProduct.map_tmul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mem_range_of_ker {ι : Type} (f : ι → A →ₗ[ℂ] X) (x : A ⊗[ℂ] Y)
     (h : ∀ j, TensorProduct.map (f j) (LinearMap.id : Y →ₗ[ℂ] Y) x = 0) :
@@ -43,7 +43,7 @@ theorem mem_range_of_ker {ι : Type} (f : ι → A →ₗ[ℂ] X) (x : A ⊗[ℂ
   simp [TensorProduct.map_tmul]
 
 /- English proof (translation)
-Establish `: TensorProduct.map f g ∘ₗ (TensorProduct.comm ℂ N M).toLinearMap = (TensorProduct.comm ℂ Q P).toLinearMap ∘ₗ TensorProduct.map g f`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun this x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_comm' {P Q M N : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup Q] [Module ℂ Q] [AddCommGroup M] [Module ℂ M]
     [AddCommGroup N] [Module ℂ N] (f : M →ₗ[ℂ] P) (g : N →ₗ[ℂ] Q) (x : N ⊗[ℂ] M) :
@@ -55,9 +55,9 @@ theorem map_comm' {P Q M N : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup
   exact LinearMap.congr_fun this x
 
 /- English proof (translation)
-Establish `h' : ∀ j, TensorProduct.map (f j) (LinearMap.id : Y →ₗ[ℂ] Y) (TensorProduct.comm ℂ Y A x) = 0` using `fun j => by`. Rewrite using `[map_comm', h j, map_zero]`. Take `⟨z, hz⟩` from `mem_range_of_ker f _ h'`. Use `⟨TensorProduct.comm ℂ _ _ z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_comm', hz, ← TensorProduct.comm_symm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `LinearEquiv.symm_apply_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_ker' {ι : Type} (f : ι → A →ₗ[ℂ] X) (x : Y ⊗[ℂ] A)
     (h : ∀ j, TensorProduct.map (LinearMap.id : Y →ₗ[ℂ] Y) (f j) x = 0) :
@@ -70,9 +70,9 @@ theorem mem_range_of_ker' {ι : Type} (f : ι → A →ₗ[ℂ] X) (x : Y ⊗[�
   exact LinearEquiv.symm_apply_apply _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `: a = 0` using `Subtype.ext ((Submodule.mem_bot ℂ).1 a.2)`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem map_bot_left (K : Submodule ℂ A) (h : K = ⊥) (u : K ⊗[ℂ] Y) :
     TensorProduct.map K.subtype (LinearMap.id : Y →ₗ[ℂ] Y) u = 0 := by
@@ -85,9 +85,9 @@ theorem map_bot_left (K : Submodule ℂ A) (h : K = ⊥) (u : K ⊗[ℂ] Y) :
   | add a b ha hb => simp [ha, hb]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Establish `: b = 0` using `Subtype.ext ((Submodule.mem_bot ℂ).1 b.2)`.
+Substitute using the available equality. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `add a b ha hb => simp [ha, hb]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem map_bot_right (K : Submodule ℂ A) (h : K = ⊥) (u : Y ⊗[ℂ] K) :
     TensorProduct.map (LinearMap.id : Y →ₗ[ℂ] Y) K.subtype u = 0 := by
@@ -104,7 +104,7 @@ variable {G₁ G₂ A₁ A₂ X₁ X₂ : Type} [Group G₁] [Group G₂] [Topol
   [AddCommGroup X₂] [Module ℂ X₂]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem extTensor_left (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representation ℂ G₂ A₂) (u : G₁) :
     GlobalTheory.SmGL.extTensor σ₁ σ₂ (u, 1) = TensorProduct.map (σ₁ u) LinearMap.id := by
@@ -112,7 +112,7 @@ theorem extTensor_left (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Represent
   simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem extTensor_right (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representation ℂ G₂ A₂) (u : G₂) :
     GlobalTheory.SmGL.extTensor σ₁ σ₂ (1, u) = TensorProduct.map LinearMap.id (σ₂ u) := by
@@ -120,21 +120,21 @@ theorem extTensor_right (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Represen
   simp
 
 /- English proof (translation)
-Take `⟨W, hW, hxW⟩` from `hx`. Establish `hf : ∀ u ∈ W, GlobalTheory.SmGL.extTensor σ₁ σ₂ u x = x` using `fun u hu => GlobalTheory.LGrp.mem_fixed.1 hxW u hu`. Set `U₁ : Subgroup G₁` to `W.comap (MonoidHom.inl G₁ G₂)`. Set `U₂ : Subgroup G₂` to `W.comap (MonoidHom.inr G₁ G₂)`. Establish `hU₁ : IsOpen (U₁ : Set G₁)` using `hW.preimage (continuous_id.prodMk continuous_const)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU₂ : IsOpen (U₂ : Set G₂)` using `hW.preimage (continuous_const.prodMk continuous_id)`. Set `f₁ : U₁ → A₁ →ₗ[ℂ] A₁` to `fun u => σ₁ u.1 - LinearMap.id`. Set `f₂ : U₂ → A₂ →ₗ[ℂ] A₂` to `fun u => σ₂ u.1 - LinearMap.id`. Set `K₁` to `⨅ j, LinearMap.ker (f₁ j)`. Set `K₂` to `⨅ j, LinearMap.ker (f₂ j)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `m₁ : ∀ a ∈ K₁, SmVec σ₁ a` using `fun a ha => ⟨U₁, hU₁, GlobalTheory.LGrp.mem_fixed.2 fun u hu => by`. Use `(Submodule.mem_iInf _).1 ha ⟨u, hu⟩` as an intermediate fact. Simplify `this⟩` using `[f₁, sub_eq_zero]`. Establish `m₂ : ∀ a ∈ K₂, SmVec σ₂ a` using `fun a ha => ⟨U₂, hU₂, GlobalTheory.LGrp.mem_fixed.2 fun u hu => by`. Use `(Submodule.mem_iInf _).1 ha ⟨u, hu⟩` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this⟩` using `[f₂, sub_eq_zero]`. Use `⟨K₁, K₂, m₁, m₂, ?_⟩` and prove the remaining obligations. Take `⟨x₁, rfl⟩` from `mem_range_of_ker (Y := A₂) f₁ x fun j => by`. Establish `h1` using `hf (j.1, 1) j.2`. Rewrite `h1` using `[extTensor_left]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : TensorProduct.map (f₁ j) (LinearMap.id : A₂ →ₗ[ℂ] A₂) = TensorProduct.map (σ₁ j.1) LinearMap.id - LinearMap.id`. Use extensionality with `a b`. Simplify using `[f₁, TensorProduct.sub_tmul]`. Rewrite using `[e, LinearMap.sub_apply, h1, LinearMap.id_apply, sub_self]`. Establish `hinj : Function.Injective (TensorProduct.map K₁.subtype (LinearMap.id : A₂ →ₗ[ℂ] A₂))` using `Module.Flat.rTensor_preserves_injective_linearMap _ K₁.injective_subtype`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x₂, rfl⟩` from `mem_range_of_ker' (Y := K₁) f₂ x₁ fun j => by`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `hf (1, j.1) j.2`. Rewrite `h1` using `[extTensor_right]`. Rewrite using `[map_zero, ← LinearMap.comp_apply, ← TensorProduct.map_comp]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [f₂, LinearMap.comp_id, LinearMap.id_comp]`. Establish `e : TensorProduct.map K₁.subtype (σ₂ j.1 - LinearMap.id) = (TensorProduct.map LinearMap.id (σ₂ j.1) - LinearMap.id) ∘ₗ TensorProduct.map K₁.subtype (LinearMap.id : A₂ →ₗ[ℂ] A₂)`. Use extensionality with `a b`. Simplify using `[TensorProduct.tmul_sub]`. Rewrite using `[e, LinearMap.comp_apply, LinearMap.sub_apply, h1, LinearMap.id_apply, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x₂, ?_⟩` and prove the remaining obligations. Establish `e : TensorProduct.map K₁.subtype K₂.subtype = TensorProduct.map K₁.subtype (LinearMap.id : A₂ →ₗ[ℂ] A₂) ∘ₗ TensorProduct.map (LinearMap.id : K₁ →ₗ[ℂ] K₁) K₂.subtype`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Conclude with `LinearMap.congr_fun e x₂`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tens_smooth (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representation ℂ G₂ A₂) {x : A₁ ⊗[ℂ] A₂}
     (hx : SmVec (GlobalTheory.SmGL.extTensor σ₁ σ₂) x) :
@@ -185,9 +185,9 @@ theorem tens_smooth (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representati
   exact LinearMap.congr_fun e x₂
 
 /- English proof (translation)
-Take `⟨K₁, K₂, m₁, m₂, z, rfl⟩` from `tens_smooth σ₁ σ₂ hx`. Use `clear hx`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [h₁ _ _ (m₁ a.1 a.2), h₂ _ _ (m₂ b.1 b.2)]`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+A detailed English derivation is pending.
 -/
 theorem tens_equiv (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representation ℂ G₂ A₂) (τ₁ : Representation ℂ G₁ X₁)
     (τ₂ : Representation ℂ G₂ X₂) (L₁ : A₁ →ₗ[ℂ] X₁) (L₂ : A₂ →ₗ[ℂ] X₂)
@@ -202,9 +202,9 @@ theorem tens_equiv (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representatio
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hz : ∀ j₂, TensorProduct.map (LinearMap.id : A₁ →ₗ[ℂ] A₁) (g j₂) z = 0` using `fun j₂ => by`. Take `⟨u, hu⟩` from `mem_range_of_ker (Y := X₂) f (TensorProduct.map (LinearMap.id : A₁ →ₗ[ℂ] A₁) (g j₂) z) fun j₁ => by`. Use `h0 j₁ j₂` as an intermediate fact. Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Simplify using `using this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← hu]`. Conclude with `map_bot_left _ bf u`. Take `⟨u, hu⟩` from `mem_range_of_ker' (Y := A₁) g z hz`. Rewrite using `[← hu]`. Conclude with `map_bot_right _ bg u`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_joint {J₁ J₂ : Type} (f : J₁ → A₁ →ₗ[ℂ] X₁) (g : J₂ → A₂ →ₗ[ℂ] X₂)
     (bf : (⨅ j, LinearMap.ker (f j)) = ⊥) (bg : (⨅ j, LinearMap.ker (g j)) = ⊥) (z : A₁ ⊗[ℂ] A₂)
@@ -221,11 +221,11 @@ theorem tens_joint {J₁ J₂ : Type} (f : J₁ → A₁ →ₗ[ℂ] X₁) (g : 
   exact map_bot_right _ bg u
 
 /- English proof (translation)
-Take `⟨K₁, K₂, m₁, m₂, z, rfl⟩` from `tens_smooth σ₁ σ₂ hx`. Establish `bf : (⨅ j, LinearMap.ker (L₁ j ∘ₗ K₁.subtype)) = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun a ha => ?_` and prove the remaining obligations. Use `h₁ a.1 (m₁ a.1 a.2) fun j => (Submodule.mem_iInf _).1 ha j` as an intermediate fact. Conclude with `Subtype.ext this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bg : (⨅ j, LinearMap.ker (L₂ j ∘ₗ K₂.subtype)) = ⊥`. Use `(Submodule.eq_bot_iff _).2 fun a ha => ?_` and prove the remaining obligations. Use `h₂ a.1 (m₂ a.1 a.2) fun j => (Submodule.mem_iInf _).1 ha j` as an intermediate fact. Conclude with `Subtype.ext this`. Rewrite using `[tens_joint _ _ bf bg z fun j₁ j₂ => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h0 j₁ j₂` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, ← TensorProduct.map_comp]`. Conclude with `this, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem tens_sep (σ₁ : Representation ℂ G₁ A₁) (σ₂ : Representation ℂ G₂ A₂) {J₁ J₂ : Type}
     (L₁ : J₁ → A₁ →ₗ[ℂ] X₁) (L₂ : J₂ → A₂ →ₗ[ℂ] X₂)
@@ -271,14 +271,14 @@ def evAt (S : Submodule ℂ (Sm E r)) (a : GA E r) : S →ₗ[ℂ] ℂ where
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Use `(Submodule.eq_bot_iff _).2 fun φ hφ => Subtype.ext (Subtype.ext (funext fun a => ?_))` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).1 hφ a`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem iInf_ker_evAt (S : Submodule ℂ (Sm E r)) : (⨅ a, LinearMap.ker (evAt S a)) = ⊥ := by
   refine (Submodule.eq_bot_iff _).2 fun φ hφ => Subtype.ext (Subtype.ext (funext fun a => ?_))
   exact (Submodule.mem_iInf _).1 hφ a
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul u v => simp [prodFn_tmul, evAt]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv, Pi.add_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem lid_map_evAt (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm E s)) (a : GA E r) (b : GA E s) (x : S₁ ⊗[ℂ] S₂) :
     TensorProduct.lid ℂ ℂ (TensorProduct.map (evAt S₁ a) (evAt S₂ b) x) = prodFn S₁ S₂ x (a, b) := by
@@ -288,7 +288,7 @@ theorem lid_map_evAt (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm E
   | add u v hu hv => simp only [map_add, hu, hv, Pi.add_apply]
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Use `tens_joint _ _ (iInf_ker_evAt S₁) (iInf_ker_evAt S₂) x fun a b => ?_` and prove the remaining obligations. Apply `(TensorProduct.lid ℂ ℂ).injective` to reduce the goal to its premises. Rewrite using `[lid_map_evAt, hx, map_zero]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prodFn_injective (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm E s)) :
     Function.Injective (prodFn S₁ S₂) := by
@@ -302,7 +302,7 @@ def prodInv (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm E s)) : (G
   (LinearMap.exists_leftInverse_of_injective (prodFn S₁ S₂) (LinearMap.ker_eq_bot.2 (prodFn_injective S₁ S₂))).choose
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (LinearMap.exists_leftInverse_of_injective (prodFn S₁ S₂) (LinearMap.ker_eq_bot.2 (prodFn_injective S₁ S₂))).choose_spec x`.
+A detailed English derivation is pending.
 -/
 theorem prodInv_prodFn (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm E s)) (x : S₁ ⊗[ℂ] S₂) :
     prodInv S₁ S₂ (prodFn S₁ S₂ x) = x :=
@@ -310,7 +310,7 @@ theorem prodInv_prodFn (S₁ : Submodule ℂ (Sm E r)) (S₂ : Submodule ℂ (Sm
     (LinearMap.ker_eq_bot.2 (prodFn_injective S₁ S₂))).choose_spec x
 
 /- English proof (translation)
-Take `⟨n, ψ₁, ψ₂, h₁, h₂, rfl⟩` from `tensor_pair_finite_sum hF`. Establish `: (fun m : GA E r × GA E s => ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2) = prodFn S₁ S₂ (∑ i, (⟨ψ₁ i, h₁ i⟩ : S₁) ⊗ₜ[ℂ] (⟨ψ₂ i, h₂ i⟩ : S₂))`. Use function extensionality and compare the values at `m`. Simplify using `[map_sum, Finset.sum_apply, prodFn_tmul]`. Rewrite using `[this, prodInv_prodFn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodFn_prodInv {S₁ : Submodule ℂ (Sm E r)} {S₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 S₁ S₂) : prodFn S₁ S₂ (prodInv S₁ S₂ F) = F := by
@@ -340,9 +340,9 @@ def lw (w : HeightOneSpectrum (𝓞 E)) : GLw r w × GLw s w →* GA E r × GA E
   (embW r w).prodMap (embW s w)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Simplify using `only [sl_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `φ.1 (lev (Ad E) r s m * cf (r + s) k y * finGL E (r + s) h) = _`. Rewrite using `[cf, cf, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sl_fin (k : Kinf E (r + s)) (y h : GL (Fin (r + s)) (Af E)) (φ : Sm E (r + s)) :
     sl k y (finRep E (r + s) h φ) = sl k (y * h) φ := by
@@ -354,7 +354,7 @@ theorem sl_fin (k : Kinf E (r + s)) (y h : GL (Fin (r + s)) (Af E)) (φ : Sm E (
   simp only [mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => rfl`. Consider the case `add a b ha hb => simp only [map_add, Pi.add_apply, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prodFn_rt (w : HeightOneSpectrum (𝓞 E)) {S₁ : Submodule ℂ (Sm E r)} {S₂ : Submodule ℂ (Sm E s)}
     (h₁ : ∀ g, ∀ x ∈ S₁, ((finRep E r).comp (locGL E r w)) g x ∈ S₁)

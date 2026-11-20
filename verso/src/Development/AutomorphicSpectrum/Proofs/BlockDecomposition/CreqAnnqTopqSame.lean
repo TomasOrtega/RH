@@ -28,9 +28,9 @@ theorem creq_app (l : Lt n) (x : Cq n V) (B : Finset (Lt n)) :
     creq l x B = if l ∈ B then sgL l B • x (B.erase l) else 0 := rfl
 
 /- English proof (translation)
-Unfold `sgL`. Use `congr 2`. Use extensionality with `j`. Simplify using `only [mem_filter, mem_erase]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun h => ⟨h.1.2, h.2⟩`. Conclude with `fun h => ⟨⟨fun e => by subst e; exact lt_irrefl _ h.2, h.1⟩, h.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sgL_erase (l : Lt n) (B : Finset (Lt n)) : sgL l (B.erase l) = sgL l B := by
   unfold sgL
@@ -42,13 +42,13 @@ theorem sgL_erase (l : Lt n) (B : Finset (Lt n)) : sgL l (B.erase l) = sgL l B :
   · exact fun h => ⟨⟨fun e => by subst e; exact lt_irrefl _ h.2, h.1⟩, h.2⟩
 
 /- English proof (translation)
-Unfold `sgL`. Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sgL_sq (l : Lt n) (B : Finset (Lt n)) : sgL l B * sgL l B = 1 := by
   unfold sgL; rw [← pow_add, ← two_mul, pow_mul]; simp
 
 /- English proof (translation)
-Rewrite using `[creq_app]`. Use `split_ifs with h`. Rewrite using `[annq_app, if_neg (notMem_erase l B), insert_erase h, sgL_erase, smul_smul, sgL_sq, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem creq_annq (l : Lt n) (x : Cq n V) (B : Finset (Lt n)) :
     creq l (annq l x) B = if l ∈ B then x B else 0 := by
@@ -58,13 +58,13 @@ theorem creq_annq (l : Lt n) (x : Cq n V) (B : Finset (Lt n)) :
   · rfl
 
 /- English proof (translation)
-Simplify using `[omQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_omQ {lev : Fin n → ℕ} {l : Lt n} : l ∈ omQ lev ↔ l.1 = true ∧ lev l.2.1.1 < lev l.2.1.2 := by
   simp [omQ]
 
 /- English proof (translation)
-Unfold `topq`. Distinguish the cases in `h : B = omQ lev`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, Pi.single_eq_of_ne h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem topq_app (lev : Fin n → ℕ) (x : V) (B : Finset (Lt n)) :
     topq lev x B = if B = omQ lev then x else 0 := by
@@ -74,7 +74,7 @@ theorem topq_app (lev : Fin n → ℕ) (x : V) (B : Finset (Lt n)) :
   · rw [if_neg h, Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Rewrite using `[Pi.smul_apply, topq_app, topq_app]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topq_smul (lev : Fin n → ℕ) (c : ℂ) (x : V) : topq lev (c • x) = c • topq lev x := by
   funext B
@@ -82,7 +82,7 @@ theorem topq_smul (lev : Fin n → ℕ) (c : ℂ) (x : V) : topq lev (c • x) =
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Rewrite using `[topq_app]`. Apply the tactic sequence `split_ifs <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topq_zero (lev : Fin n → ℕ) : topq lev (0 : V) = 0 := by
   funext B
@@ -90,7 +90,7 @@ theorem topq_zero (lev : Fin n → ℕ) : topq lev (0 : V) = 0 := by
   split_ifs <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Use `show T (topq lev x B) = _`. Rewrite using `[topq_app, topq_app]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem liftq_topq (lev : Fin n → ℕ) (T : Module.End ℂ V) (x : V) :
     (liftq n T : Module.End ℂ (Cq n V)) (topq lev x) = topq lev (T x) := by
@@ -100,7 +100,7 @@ theorem liftq_topq (lev : Fin n → ℕ) (T : Module.End ℂ V) (x : V) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Rewrite using `[annq_app, topq_app]`. Establish `hne : insert l A ≠ omQ lev` using `fun e => h (e ▸ mem_insert_self l A)`. Rewrite using `[if_neg hne]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem annq_topq_of_notMem {lev : Fin n → ℕ} {l : Lt n} (x : V) (h : l ∉ omQ lev) :
     annq l (topq lev x) = 0 := by
@@ -111,9 +111,9 @@ theorem annq_topq_of_notMem {lev : Fin n → ℕ} {l : Lt n} (x : V) (h : l ∉ 
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Rewrite using `[creq_annq]`. Use `split_ifs with hB`. Both sides reduce to the same expression. Establish `hne : B ≠ omQ lev` using `fun e => hB (e ▸ h)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[topq_app, if_neg hne]`.
+A detailed English derivation is pending.
 -/
 theorem creq_annq_topq_same {lev : Fin n → ℕ} {l : Lt n} (x : V) (h : l ∈ omQ lev) :
     creq l (annq l (topq lev x)) = topq lev x := by
@@ -125,11 +125,11 @@ theorem creq_annq_topq_same {lev : Fin n → ℕ} {l : Lt n} (x : V) (h : l ∈ 
     rw [topq_app, if_neg hne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `B`. Rewrite using `[creq_app]`. Use `split_ifs with hB`. Rewrite using `[annq_app] split_ifs with h2`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi : insert l (B.erase m) ≠ omQ lev` using `fun e => by`. Establish `hm' : m ∈ insert l (B.erase m)` using `e ▸ hm`. Break down `mem_insert.1 hm' with h | h` into its components or cases. Conclude with `hne h`. Conclude with `notMem_erase _ _ h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[topq_app, if_neg hi]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem creq_annq_topq_ne {lev : Fin n → ℕ} {l m : Lt n} (x : V) (hm : m ∈ omQ lev) (hne : m ≠ l) :
     creq m (annq l (topq lev x)) = 0 := by
@@ -149,11 +149,9 @@ theorem creq_annq_topq_ne {lev : Fin n → ℕ} {l m : Lt n} (x : V) (hm : m ∈
   · rfl
 
 /- English proof (translation)
-Distinguish the cases in `h1 : q = i.1.1 ∧ k.1 = (p, i.1.2)`. Take `⟨e1, e2⟩` from `h1`. Rewrite using `[e2]`. Use `show lev p < lev i.1.2`. Rewrite using `[hpq, e1]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hi`. Distinguish the cases in `h2 : i.1.2 = p ∧ k.1 = (i.1.1, q)`. Take `⟨e1, e2⟩` from `h2`. Rewrite using `[e2]`. Use `show lev i.1.1 < lev q`.
-
-Rewrite using `[← hpq, ← e1]`. Conclude with `hi`. Conclude with `absurd (by simp [adC, h1, h2]) h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_of_adC_ne {lev : Fin n → ℕ} {p q : Fin n} {i k : Pos n} (hpq : lev p = lev q)
     (hi : lev i.1.1 < lev i.1.2) (h : adC p q i k ≠ 0) : lev k.1.1 < lev k.1.2 := by
@@ -172,9 +170,9 @@ theorem lev_of_adC_ne {lev : Fin n → ℕ} {p q : Fin n} {i k : Pos n} (hpq : l
     · exact absurd (by simp [adC, h1, h2]) h
 
 /- English proof (translation)
-Establish `h1 : ¬(q = i.1.1 ∧ i.1 = (p, i.1.2))` using `fun e => h (by`. Use `congrArg Prod.fst e.2` as an intermediate fact. Conclude with `(this.symm.trans e.1.symm))`. Establish `h2 : ¬(i.1.2 = p ∧ i.1 = (i.1.1, q))` using `fun e => h (by`. Use `congrArg Prod.snd e.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `e.1.symm.trans this)`. Simplify using `[adC, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem adC_diag_ne {p q : Fin n} (h : p ≠ q) (i : Pos n) : adC p q i i = 0 := by
   have h1 : ¬(q = i.1.1 ∧ i.1 = (p, i.1.2)) := fun e => h (by
@@ -186,7 +184,7 @@ theorem adC_diag_ne {p q : Fin n} (h : p ≠ q) (i : Pos n) : adC p q i i = 0 :=
   simp [adC, h1, h2]
 
 /- English proof (translation)
-Establish `e1 : (p = i.1.1 ∧ i.1 = (p, i.1.2)) ↔ i.1.1 = p` using `⟨fun h => h.1.symm, fun h => ⟨h.symm, Prod.ext h rfl⟩⟩`. Establish `e2 : (i.1.2 = p ∧ i.1 = (i.1.1, p)) ↔ i.1.2 = p` using `⟨fun h => h.1, fun h => ⟨h, Prod.ext rfl h⟩⟩`. Simplify using `only [adC, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adC_diag_self (p : Fin n) (i : Pos n) :
     adC p p i i = (if i.1.1 = p then 1 else 0) - (if i.1.2 = p then 1 else 0) := by
@@ -197,15 +195,15 @@ theorem adC_diag_self (p : Fin n) (i : Pos n) :
   simp only [adC, e1, e2]
 
 /- English proof (translation)
-Establish `hf : ∀ i : Pos n, ((false, i) : Lt n) ∉ omQ lev` using `fun i h => by simpa using (mem_omQ.1 h).1`. Unfold `adLq`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Rewrite using `[Fintype.sum_bool]`. Establish `h0 : (∑ i : Pos n, ∑ k : Pos n, adC p q i k • creq ((true == false), k) (annq (false, i) (topq lev x))) = 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun i _ => Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[annq_topq_of_notMem x (hf i), map_zero, smul_zero]`. Rewrite using `[h0, add_zero, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : lev i.1.1 < lev i.1.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hi, Finset.sum_eq_single i]`. Conclude with `congrArg _ (creq_annq_topq_same x (mem_omQ.2 ⟨rfl, hi⟩))`. Introduce `k _ hk`. Distinguish the cases in `hc : adC p q i k = 0`. Rewrite using `[hc, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : ((true, k) : Lt n) ≠ (true, i)` using `fun e => hk (congrArg Prod.snd e)`. Use `creq_annq_topq_ne (lev := lev) x (mem_omQ.2 ⟨rfl, lev_of_adC_ne hpq hi hc⟩) hk'` as an intermediate fact. Use `show adC p q i k • creq (true, k) (annq (true, i) (topq lev x)) = 0`. Rewrite using `[this, smul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ((true, i) : Lt n) ∉ omQ lev` using `fun h => hi (mem_omQ.1 h).2`. Rewrite using `[if_neg hi, zero_smul]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[annq_topq_of_notMem x hn, map_zero, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adLq_topq {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) (x : V) :
     adLq true p q (topq lev x) =
@@ -236,19 +234,17 @@ theorem adLq_topq {lev : Fin n → ℕ} {p q : Fin n} (hpq : lev p = lev q) (x :
     rw [annq_topq_of_notMem x hn, map_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hs : ∀ i : Pos n, (if lev i.1.1 < lev i.1.2 then adC p p i i else 0) = (if lev i.1.1 < lev i.1.2 ∧ i.1.1 = p then (1 : ℂ) else 0) - (if lev i.1.1 < lev i.1.2 ∧ i.1.2 = p then (1 : ℂ) else 0)`. Introduce `i`. Rewrite using `[adC_diag_self]`. Apply the tactic sequence `by_cases h : lev i.1.1 < lev i.1.2 <;> simp [h]`. Establish `c1 : (univ.filter fun i : Pos n => lev i.1.1 < lev i.1.2 ∧ i.1.1 = p).card = (univ.filter fun b => lev p < lev b).card`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `Finset.card_bij (fun i _ => i.1.2) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Take `⟨h1, h2⟩` from `(mem_filter.1 hi).2`. Conclude with `mem_filter.2 ⟨mem_univ _, h2 ▸ h1⟩`. Introduce `i hi j hj e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(mem_filter.1 hi).2.2`. Establish `h2` using `(mem_filter.1 hj).2.2`. Conclude with `Subtype.ext (Prod.ext (h1.trans h2.symm) e)`. Introduce `b hb`. Establish `hb'` using `(mem_filter.1 hb).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨⟨(p, b), hm.reflect_lt hb'⟩, mem_filter.2 ⟨mem_univ _, hb', rfl⟩, rfl⟩`. Establish `c2 : (univ.filter fun i : Pos n => lev i.1.1 < lev i.1.2 ∧ i.1.2 = p).card = (univ.filter fun b => lev b < lev p).card`. Use `Finset.card_bij (fun i _ => i.1.1) ?_ ?_ ?_` and prove the remaining obligations. Introduce `i hi`. Take `⟨h1, h2⟩` from `(mem_filter.1 hi).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mem_filter.2 ⟨mem_univ _, h2 ▸ h1⟩`. Introduce `i hi j hj e`. Establish `h1` using `(mem_filter.1 hi).2.2`. Establish `h2` using `(mem_filter.1 hj).2.2`. Conclude with `Subtype.ext (Prod.ext e (h1.trans h2.symm))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `b hb`. Establish `hb'` using `(mem_filter.1 hb).2`. Conclude with `⟨⟨(b, p), hm.reflect_lt hb'⟩, mem_filter.2 ⟨mem_univ _, hb', rfl⟩, rfl⟩`. Rewrite using `[Finset.sum_congr rfl fun i _ => hs i, Finset.sum_sub_distrib, Finset.sum_boole, Finset.sum_boole, c1, c2]`. Simplify using `only [rhoU]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_diag {lev : Fin n → ℕ} (hm : Monotone lev) (p : Fin n) :
     (∑ i : Pos n, if lev i.1.1 < lev i.1.2 then adC p p i i else 0) = ((2 * rhoU lev p : ℝ) : ℂ) := by
@@ -296,15 +292,15 @@ namespace GlobalTheory.CompanionTheory.PairMult.TopK
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Simplify using `only [rhoU, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoU_eq {lev : Fin n → ℕ} {a b : Fin n} (h : lev a = lev b) : rhoU lev a = rhoU lev b := by
   simp only [rhoU, h]
 
 /- English proof (translation)
-Establish `h1` using `g1 q p p q`. Establish `h2` using `g2 q p p q`. Simplify using `only [if_true] at h1 h2`. Establish `e : kF E1 E2 q p * kF E1 E2 p q - kF E1 E2 p q * kF E1 E2 q p = (E1 q p * E1 p q - E1 p q * E1 q p) + (E2 q p * E2 p q - E2 p q * E2 q p)`. Simplify using `only [kF, add_mul, mul_add, hc q p p q, hc p q q p]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e, h1, h2]`. Simplify using `only [kF]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem kF_bracket {E1 E2 : Fin n → Fin n → Module.End ℂ V} (g1 : GlRel E1) (g2 : GlRel E2)
     (hc : ∀ a b c d, E1 a b * E2 c d = E2 c d * E1 a b) (p q : Fin n) :
@@ -321,11 +317,11 @@ theorem kF_bracket {E1 E2 : Fin n → Fin n → Module.End ℂ V} (g1 : GlRel E1
   abel
 
 /- English proof (translation)
-Establish `hK : KHighest (fun _ => true) (kF E1 E2) (muQ lam lev) x` using `hx`. Break down `lt_trichotomy p q with h | rfl | h` into its components or cases. Rewrite using `[if_neg h.ne, hK.2 p q h rfl]`. Rewrite using `[if_pos rfl, hK.1 p]`. Rewrite using `[if_neg h.ne']`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmu : muQ lam lev q = muQ lam lev p`. Simplify using `only [muQ, rhoU_eq hpq.symm, hl.2 q p hpq.symm]`. Establish `hb` using `LinearMap.congr_fun (kF_bracket hA.gl1 hA.gl2 hA.comm p q) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hK.2 q p h rfl, map_zero, sub_zero, hK.1 q, hK.1 p, hmu, sub_self] at hb`. Establish `hn : ⟪kF E1 E2 p q x, kF E1 E2 p q x⟫_ℂ = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hA.unitK p q x, hb, inner_zero_right]`. Conclude with `inner_self_eq_zero.1 hn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K_act {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     (hA : AdmFor lam lev E1 E2) {x : V} (hx : x ∈ hwSp E1 E2 (muQ lam lev)) {p q : Fin n} (hpq : lev p = lev q) :
@@ -345,11 +341,11 @@ theorem K_act {lam : Fin n → ℤ} {lev : Fin n → ℕ} (hl : IsLev lam lev) {
     exact inner_self_eq_zero.1 hn
 
 /- English proof (translation)
-Introduce `n lam lev hl V _ _ E1 E2 hA x hx p q hpq`. Establish `hT : Ts E1 E2 true p q = kF E1 E2 p q` using `rfl`. Simplify using `only [lFq, LinearMap.add_apply]`. Rewrite using `[liftq_topq, hT, K_act hl hA hx hpq, adLq_topq hpq]`. Distinguish the cases in `h : p = q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl, sum_diag hl.1, topq_smul, ← add_smul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg h, topq_zero, zero_add, Finset.sum_eq_zero, zero_smul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _`. Rewrite using `[adC_diag_ne h]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem klChar : KlChar := by
   intro n lam lev hl V _ _ E1 E2 hA x hx p q hpq

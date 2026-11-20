@@ -77,7 +77,7 @@ def MaxSteps : Prop :=
       PositivityTheory.ThKR.JoinTri → PositivityTheory.ThKF.SoCoinv → PositivityTheory.ThKF.Kills)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PositivityTheory.KCo.kCoinv_of_dict h, PositivityTheory.KCo.so_coinvariants_of_bernstein h, PositivityTheory.ThKG.LocalRamifiedLeviRestriction.ramifiedMultiplicityOne_of_bernstein h, PositivityTheory.ThK.SplitAsm.finite_ramified_of_bernstein h, PositivityTheory.ThK.SplitAsm.fini …`.
+Supply the required witnesses or components.
 -/
 theorem splitFacts_of (h : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) : SplitFacts :=
   ⟨PositivityTheory.KCo.kCoinv_of_dict h, PositivityTheory.KCo.so_coinvariants_of_bernstein h, PositivityTheory.ThKG.LocalRamifiedLeviRestriction.ramifiedMultiplicityOne_of_bernstein h, PositivityTheory.ThK.SplitAsm.finite_ramified_of_bernstein h,

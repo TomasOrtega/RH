@@ -14,7 +14,7 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K} {h : V →ₗ⋆[K] V →ₗ[K] K}
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hv`. Use `Exists.intro (fun i => a * c i) ⟨fun i => S.mul_mem ha (hc i), ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.smul_sum, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem spanS_smul_mem {ι : Type} [Fintype ι] {b : ι → V} {a : K} (ha : a ∈ S) {v : V}
     (hv : v ∈ spanS S b) : a • v ∈ spanS S b := by
@@ -23,7 +23,7 @@ theorem spanS_smul_mem {ι : Type} [Fintype ι] {b : ι → V} {a : K} (ha : a �
   simp only [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Simplify using `only [map_sum, map_smul, smul_eq_mul]`. Rewrite using `[Finset.sum_eq_single i (fun j _ hji => by rw [ho i j (Ne.symm hji), mul_zero]) (fun hi => absurd (Finset.mem_univ i) hi)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_sum_orth {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     (c : ι → K) (i : ι) : h (b i) (∑ j, c j • b j) = c i * h (b i) (b i) := by
@@ -32,13 +32,13 @@ theorem form_sum_orth {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i �
     (fun hi => absurd (Finset.mem_univ i) hi)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨c, hc, rfl⟩, hv⟩`. Establish `hci : c i₀ = 0`. Rewrite `hv` using `[form_sum_orth ho c i₀]`. Conclude with `(mul_eq_zero.mp hv).resolve_right h0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Exists.intro (fun j => c j) ⟨fun j => hc j, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀, hci, zero_smul, zero_add]`. Introduce and unpack `⟨d, hd, rfl⟩`. Use `⟨Exists.intro (fun i => if hi : i = i₀ then 0 else d ⟨i, hi⟩) ⟨fun i => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs exacts [T.zero_mem, hd _]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_eq_add_sum_subtype_ne _ i₀] dsimp only`. Rewrite using `[dif_pos rfl, zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dif_neg j.2]`. Rewrite using `[map_sum]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ho i₀ j (Ne.symm j.2), smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_spanS_iff_sub {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (T : Subring K)
@@ -66,9 +66,9 @@ theorem mem_spanS_iff_sub {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → 
       rw [map_smul, ho i₀ j (Ne.symm j.2), smul_zero]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Conclude with `Exists.intro c ⟨fun _ => Subring.mem_top _, rfl⟩`. Introduce and unpack `⟨c, _, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨c, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_span_iff_spanS {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     v ∈ Submodule.span K (Set.range b) ↔ v ∈ spanS (⊤ : Subring K) b := by
@@ -80,7 +80,7 @@ theorem mem_span_iff_spanS {ι : Type} [Fintype ι] (b : ι → V) (v : V) :
     exact ⟨c, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [cutW, Submodule.mem_inf, LinearMap.mem_ker]`. Rewrite using `[mem_span_iff_spanS, mem_span_iff_spanS]`. Conclude with `mem_spanS_iff_sub ho h0 ⊤ v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cutW_span_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (v : V) :
@@ -91,7 +91,7 @@ theorem mem_cutW_span_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → 
   exact mem_spanS_iff_sub ho h0 ⊤ v
 
 /- English proof (translation)
-Simplify using `only [cutM, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker]`. Conclude with `mem_spanS_iff_sub ho h0 S v`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_cutM_spanS_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι → V}
     (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0) {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) (v : V) :
@@ -100,7 +100,7 @@ theorem mem_cutM_spanS_iff {ι : Type} [Fintype ι] [DecidableEq ι] {b : ι →
   exact mem_spanS_iff_sub ho h0 S v
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hm`. Rewrite using `[form_sum_orth ho c i₀, mul_inv_cancel_right₀ h0]`. Conclude with `hc i₀`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_mem {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j → h (b i) (b j) = 0)
     {i₀ : ι} (h0 : h (b i₀) (b i₀) ≠ 0) {m : V} (hm : m ∈ spanS S b) :
@@ -110,17 +110,17 @@ theorem coef_mem {ι : Type} [Fintype ι] {b : ι → V} (ho : ∀ i j, i ≠ j 
   exact hc i₀
 
 /- English proof (translation)
-Establish `hcut' : ∀ v, (v ∈ M ∧ h x v = 0) ↔ (g v ∈ N ∧ h X (g v) = 0)`. Introduce `v`. Use `hcut v` as an intermediate fact. Simplify using `only [cutM, AddSubgroup.mem_inf, Submodule.mem_toAddSubgroup, LinearMap.mem_ker] at this`. Conclude with `this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hiso : ∀ u w, h (g u) (g w) = h u w` using `hg`. Establish `hXX : h X X ≠ 0`. Rewrite using `[← hgx, hiso x x]`. Conclude with `hxx`. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `hαS : h x v * (h x x)⁻¹ ∈ S` using `hMx v hv`. Establish `h1 : v - (h x v * (h x x)⁻¹) • x ∈ M` using `M.sub_mem hv (hMs _ hαS x hx)`. Establish `h2 : h x (v - (h x v * (h x x)⁻¹) • x) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hxx, sub_self]`. Take `⟨h3, -⟩` from `(hcut' _).mp ⟨h1, h2⟩`. Rewrite `h3` using `[map_sub, map_smul, hgx]`. Use `N.add_mem h3 (hNs _ hαS X hX)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hv`. Establish `hβS : h X (g v) * (h X X)⁻¹ ∈ S` using `hNX _ hv`. Establish `h1 : g (v - (h X (g v) * (h X X)⁻¹) • x) ∈ N`. Rewrite using `[map_sub, map_smul, hgx]`. Conclude with `N.sub_mem hv (hNs _ hβS X hX)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : h X (g (v - (h X (g v) * (h X X)⁻¹) • x)) = 0`. Rewrite using `[map_sub, map_smul, hgx, map_sub, map_smul, smul_eq_mul, inv_mul_cancel_right₀ hXX, sub_self]`. Take `⟨h3, -⟩` from `(hcut' _).mpr ⟨h1, h2⟩`. Use `M.add_mem h3 (hMs _ hβS x hx)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_cut' {M N : AddSubgroup V} (hMs : ∀ a ∈ S, ∀ m ∈ M, a • m ∈ M)
     (hNs : ∀ a ∈ S, ∀ m ∈ N, a • m ∈ N) {x X : V} (hx : x ∈ M) (hX : X ∈ N)

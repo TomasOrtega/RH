@@ -24,9 +24,9 @@ example : MRing (fun k => Sum.elim ι ι₂ ((Function.Embedding.inl : K ↪ K �
     MRing ι F := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Consider the cases of `x with`. Consider the case `inl k`. Conclude with `(Sum.inl_injective.extend_apply b 0 k)`. Consider the case `inr l`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `Function.extend_apply' _ _ _ ?_` and prove the remaining obligations. Introduce and unpack `⟨k, hk⟩`. Conclude with `Sum.inl_ne_inr hk`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pullDeg_inl (b : K → ℤ) :
     pullDeg (Function.Embedding.inl : K ↪ K ⊕ L) b = IndefiniteRowSideFullHecke.FieldNumbers.pullDeg (L := L) b := by
@@ -40,11 +40,11 @@ theorem pullDeg_inl (b : K → ℤ) :
     exact Sum.inl_ne_inr hk
 
 /- English proof (translation)
-Unfold `IndefiniteRowSideFullHecke.FieldNumbers.pulledFunField homFracDegZero`. Rewrite using `[IntermediateField.adjoin_map]`. Use `congr 1`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨d, f, g, hf, hg, hgP, rfl⟩`. Use `⟨_, ⟨d, f, g, hf, hg, hgP, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[contractFracMap, contractQuot, map_div₀, IndefiniteRowSideFullHecke.FieldNumbers.blockIncl]`. Both sides reduce to the same expression. Introduce and unpack `⟨y, ⟨d, f, g, hf, hg, hgP, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Use `⟨d, f, g, hf, hg, hgP, ?_⟩` and prove the remaining obligations. Simplify using `[contractFracMap, contractQuot, map_div₀, IndefiniteRowSideFullHecke.FieldNumbers.blockIncl]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pulledFunField_eq [DecidableEq K] (P' : Ideal (MRing (Sum.elim ι ι₂) F)) [P'.IsPrime] :
     IndefiniteRowSideFullHecke.FieldNumbers.pulledFunField ι₂ P' =
@@ -65,7 +65,7 @@ theorem pulledFunField_eq [DecidableEq K] (P' : Ideal (MRing (Sum.elim ι ι₂)
     rfl
 
 /- English proof (translation)
-Unfold `relDeg IndefiniteRowSideFullHecke.FieldNumbers.fibreDeg`. Rewrite using `[pulledFunField_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem relDeg_inl [DecidableEq K] [DecidableEq L] (P' : Ideal (MRing (Sum.elim ι ι₂) F))
     [P'.IsPrime] :
@@ -98,9 +98,9 @@ def addBlockRingEquiv (ι : K → Type) (N : ℕ) :
   renameEquiv F (addBlockVarEquiv ι N)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Consider the cases of `o with`. Consider the case `some k => exact (Option.some_injective K).extend_apply c 0 k`. Consider the case `none`. Use `Function.extend_apply' _ _ _ ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨k, hk⟩`. Conclude with `Option.some_ne_none k hk`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem pullDeg_some (c : K → ℤ) :
     pullDeg (Function.Embedding.some : K ↪ Option K) c =

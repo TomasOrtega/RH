@@ -11,29 +11,25 @@ open scoped Formalism.Per
 namespace GlobalTheory.KunrDisj
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ n x hxK hx`. Establish `hN : 0 < l ^ n * e` using `Nat.mul_pos (pow_pos (Fact.out : l.Prime).pos n) (Nat.pos_of_ne_zero (NeZero.ne e))`. Establish `hπ : ϖ.seq n ^ (l ^ n * e) = -(l : Om l)` using `ϖ.seq_pow_mul n`. Use `set U := Kunr l a with hU`. Use `set π := ϖ.seq n with hπdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg` using `fun (E : Type) [Field E] [Algebra E (Om l)] (h : ∀ y : E, algebraMap E (Om l) y ∈ MaximalUnramifiedExtension l) => GlobalTheory.T.natDegree_minpoly_root_neg_prime_unramified l (l ^ n * e) π hN hπ E h`. Establish `hint : ∀ (E : Type) [Field E] [Algebra E (Om l)], (∀ y : E, algebraMap E (Om l) y ∈ MaximalUnramifiedExtension l) → IsIntegral E π`. Introduce `E _ _ h`. Assume the negation of the conclusion as `hni`. Use `hdeg E h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[minpoly.eq_zero hni, Polynomial.natDegree_zero]`. Use linear arithmetic over natural numbers and integers. Set `K2 : IntermediateField U (Om l)` to `IntermediateField.adjoin U {π}`. Establish `hxK2 : x ∈ K2`. Establish `: x ∈ K2.restrictScalars ℚ_[l]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[IntermediateField.restrictScalars_adjoin_eq_sup]`. Conclude with `hx`. Conclude with `this`. Set `K1 : IntermediateField U (Om l)` to `IntermediateField.adjoin U {x}`. Establish `hK1K2 : K1 ≤ K2` using `IntermediateField.adjoin_simple_le_iff.2 hxK2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hUK : ∀ y : U, algebraMap U (Om l) y ∈ MaximalUnramifiedExtension l` using `fun y => Kunr_le_Kur l a y.2`. Establish `hK1K : ∀ y : K1, algebraMap K1 (Om l) y ∈ MaximalUnramifiedExtension l`. Introduce `y`. Establish `hy : (y : Om l) ∈ K1.restrictScalars ℚ_[l]` using `y.2`. Rewrite `hy` using `[IntermediateField.restrictScalars_adjoin]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `(IntermediateField.adjoin_le_iff.2 ?_) hy` and prove the remaining obligations. Introduce and unpack `z (hz | hz)`. Conclude with `Kunr_le_Kur l a hz`. Rewrite using `[Set.mem_singleton_iff.1 hz]`. Conclude with `hxK`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Set `L : IntermediateField K1 (Om l)` to `IntermediateField.adjoin K1 {π}`. Establish `hLK2 : L.restrictScalars U = K2`. Rewrite using `[IntermediateField.restrictScalars_adjoin]`. Use `le_antisymm (IntermediateField.adjoin_le_iff.2 ?_) (IntermediateField.adjoin.mono _ _ _ Set.subset_union_right)` and prove the remaining obligations. Introduce and unpack `z (hz | hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hK1K2 hz`. Rewrite using `[Set.mem_singleton_iff.1 hz]`. Conclude with `IntermediateField.mem_adjoin_simple_self U π`. Establish `hK2r : Module.finrank U K2 = l ^ n * e`. Rewrite using `[IntermediateField.adjoin.finrank (hint U hUK)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hdeg U hUK`. Establish `hLr : Module.finrank K1 L = l ^ n * e`. Rewrite using `[IntermediateField.adjoin.finrank (hint K1 hK1K)]`. Conclude with `hdeg K1 hK1K`. Establish `hLU : Module.finrank U L = l ^ n * e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hK2r, ← hLK2]`. Both sides reduce to the same expression. Establish `htower` using `Module.finrank_mul_finrank U K1 L`. Rewrite `htower` using `[hLr, hLU]`. Establish `h1 : Module.finrank U K1 = 1`.
-
-Use `Nat.eq_of_mul_eq_mul_right hN (htower.trans (one_mul _).symm)` as an intermediate fact. Conclude with `this`. Establish `hbot : K1 = ⊥` using `IntermediateField.finrank_eq_one_iff.1 h1`. Establish `: x ∈ K1` using `IntermediateField.mem_adjoin_simple_self U x`. Rewrite `this` using `[hbot, IntermediateField.mem_bot]`.
-
-Take `⟨y, rfl⟩` from `this`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_Kunr_of_mem_Kur_of_mem_sup : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e]
     (ϖ : PiSys l e) (n : ℕ) (x : Om l), x ∈ MaximalUnramifiedExtension l →

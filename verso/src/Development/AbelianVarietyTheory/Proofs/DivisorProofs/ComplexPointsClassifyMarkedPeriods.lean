@@ -18,19 +18,19 @@ open GlobalTheory.UPel.HT
 namespace GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Introduce `p _ D R _ b N σ ρ M h hL hN hNp hty`. Establish `tr : ∀ (o : Obj b N (spMap σ)) (y : Sp ℂ ⟶ M.X) (m : ObjMap o M.univ y), y ≫ M.s = spMap σ → ∀ h' hL' (D' : PLat D.O D.inv) t Q, (∀ e', UnifAt (o.fam h' hL') σ ρ N D' t Q (𝟙 _) e' → ∃ e, UnifAt (M.univ.fam h hL) σ ρ N D' t Q y e) ∧ (∀ e, UnifAt (M.univ.fam h hL) σ ρ N D' t Q y e …`. Introduce `o y m hy h' hL' D' t Q`. Establish `key` using `GlobalTheory.T.uniformisationAt_correspond_of_cartesian D.O D.inv D.g ρ R R σ σ D.La (M.univ.fam h hL) (o.fam h' hL') N y m.φ m.cart m.act ((GlobalTheory.T.harrisTaylorObjectPullback_comp_diagonalBundle p D R b N M.X (Sp ℂ) (Sp ℂ) M.s (spMap σ) (spMap σ) M.univ o o y (𝟙 _)).2 m) …`. Use `erw [Category.id_comp] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun e' he' => (key.1 e' he').imp fun e he => he.1, fun e he => (key.2 e he).imp fun e' he' => he'.1⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨o, ⟨m⟩⟩` from `GlobalTheory.T.exists_harrisTaylorModuliObject_pullback p D R b N M.X (Sp ℂ) M.s (spMap σ) y hy M.univ`. Take `⟨h', hL'⟩` from `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle p D R b N (Sp ℂ) (spMap σ) o`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D', t, Q, e, hC, hU⟩` from `GlobalTheory.T.exists_complexUniformisation_harrisTaylor p D R b N σ ρ o h' hL' hN hNp hty`. Take `⟨e2, he2⟩` from `(tr o y m hy h' hL' D' t Q).1 e hU`. Conclude with `⟨D', t, Q, e2, hC, he2⟩`. Introduce `D' t Q hC hQ`. Take `⟨o, h', hL', e, hU⟩` from `GlobalTheory.T.exists_harrisTaylor_object_of_period p D R b N σ ρ D' t Q hN hNp hty hC hQ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨f, ⟨hf, ⟨m⟩⟩, -⟩` from `M.rep (Sp ℂ) (spMap σ) o`. Take `⟨e2, he2⟩` from `(tr o f m hf h' hL' D' t Q).1 e hU`. Conclude with `⟨f, e2, he2⟩`. Introduce `D' D'' t t' Q Q' y y' e e' hU hU' w u hw hQ`. Establish `hy : y ≫ M.s = spMap σ` using `hU.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : y' ≫ M.s = spMap σ` using `hU'.1`. Take `⟨o1, ⟨m1⟩⟩` from `GlobalTheory.T.exists_harrisTaylorModuliObject_pullback p D R b N M.X (Sp ℂ) M.s (spMap σ) y hy M.univ`. Take `⟨o2, ⟨m2⟩⟩` from `GlobalTheory.T.exists_harrisTaylorModuliObject_pullback p D R b N M.X (Sp ℂ) M.s (spMap σ) y' hy' M.univ`. Take `⟨h1, hL1⟩` from `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle p D R b N (Sp ℂ) (spMap σ) o1`. Take `⟨h2, hL2⟩` from `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle p D R b N (Sp ℂ) (spMap σ) o2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, he1⟩` from `(tr o1 y m1 hy h1 hL1 D' t Q).2 e hU`. Take `⟨e2, he2⟩` from `(tr o2 y' m2 hy' h2 hL2 D'' t' Q').2 e' hU'`. Apply the tactic sequence `obtain ⟨m12⟩ := GlobalTheory.T.nonempty_moduliMap_of_marked_period_isometry p D R b N σ ρ o1 o2 h1 hL1 h2 hL2 D' D'' t t' Q Q' e1 e2 w u hN he1 he2 hw hQ`. Establish `hc` using `(GlobalTheory.T.harrisTaylorObjectPullback_comp_diagonalBundle p D R b N M.X (Sp ℂ) (Sp ℂ) M.s (spMap σ) (spMap σ) M.univ o2 o1 y' (𝟙 _)).1 ⟨m12⟩ ⟨m2⟩`. Take `⟨f, -, huniq⟩` from `M.rep (Sp ℂ) (spMap σ) o1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1'` using `huniq y ⟨hy, ⟨m1⟩⟩`. Establish `e2'` using `huniq (𝟙 _ ≫ y') ⟨by erw [Category.id_comp]; exact hy', hc⟩`. Use `erw [Category.id_comp] at e2'`. Rewrite using `[e1', e2']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Model.fineAt_univ : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ)
     (σ : R →+* ℂ) (ρ : D.O →+* Matrix (Fin D.g) (Fin D.g) ℂ) (M : Model b N) h hL, 0 < N → N.Coprime p →

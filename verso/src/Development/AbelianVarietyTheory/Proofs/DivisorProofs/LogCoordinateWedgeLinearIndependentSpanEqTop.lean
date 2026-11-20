@@ -5,7 +5,7 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory.LogDR
 
 /- English proof (translation)
-Use `show s.orderEmbOfFin rfl ⟨k, hk⟩ = _`. Rewrite using `[Finset.orderEmbOfFin_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ofCard_symm_apply_eq_sort {n : ℕ} (s : Finset (Fin n)) (k : ℕ) (hk : k < s.card) :
     Set.powersetCard.ofFinEmbEquiv.symm (Set.powersetCard.ofCard (rfl : s.card = s.card)) ⟨k, hk⟩ =
@@ -19,7 +19,7 @@ noncomputable def dlogBasis {K : Type} [Field K] {n : ℕ} (x : Fin n → Kˣ) (
   (Module.Basis.mk hx.1 (by rw [hx.2])).unitsSMul fun i => (x i)⁻¹
 
 /- English proof (translation)
-Rewrite using `[dlogBasis, Module.Basis.unitsSMul_apply, Module.Basis.mk_apply, Units.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dlogBasis_apply {K : Type} [Field K] {n : ℕ} (x : Fin n → Kˣ) (hx : IsCoord x) (i : Fin n) :
     dlogBasis x hx i = dlog (x i) := by
@@ -27,9 +27,9 @@ theorem dlogBasis_apply {K : Type} [Field K] {n : ℕ} (x : Fin n → Kˣ) (hx :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[ExteriorAlgebra.basis_apply_ofCard _ rfl, ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply, logWedge]`. Use `congr 1`. Apply `List.ext_getElem` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Introduce `k h1 h2`. Simplify using `only [List.getElem_map, List.getElem_ofFn, Function.comp_apply, dlogBasis_apply]`. Rewrite using `[ofCard_symm_apply_eq_sort]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem logWedge_eq_basis {K : Type} [Field K] {n : ℕ} (x : Fin n → Kˣ) (hx : IsCoord x) :
     logWedge x = ⇑(dlogBasis x hx).ExteriorAlgebra := by
@@ -44,7 +44,7 @@ theorem logWedge_eq_basis {K : Type} [Field K] {n : ℕ} (x : Fin n → Kˣ) (hx
     rw [ofCard_symm_apply_eq_sort]
 
 /- English proof (translation)
-Introduce `K _ n x hx`. Rewrite using `[logWedge_eq_basis x hx]`. Conclude with `⟨(dlogBasis x hx).ExteriorAlgebra.linearIndependent, (dlogBasis x hx).ExteriorAlgebra.span_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem logWedge_basis : ∀ (K : Type) [Field K] (n : ℕ) (x : Fin n → Kˣ), IsCoord x →
     LinearIndependent K (logWedge x) ∧ Submodule.span K (Set.range (logWedge x)) = ⊤ := by

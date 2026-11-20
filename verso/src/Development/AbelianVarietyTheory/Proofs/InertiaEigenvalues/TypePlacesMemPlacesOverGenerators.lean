@@ -17,9 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TypePlacesOver
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC P hP`. Take `⟨k, hk⟩` from `(hC.lev.Pg P).1 hP`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `h1` using `Rl.C.P.pb_over k`. Rewrite `h1` using `[← hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) (D.host.g k : ℕ) ∈ P.asIdeal` using `h1`. Simplify `h2` using `[placesOver]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_placesOver : ∀ (D : D7) (Γ : Type) [Group Γ] [Fintype Γ] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL Γ Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (Rl : RealDat3 D A3 Ks) (F3 : Face3 D A3), Rl.Char3 F3 → ∀ P ∈ Rl.Pg, ∃ k, P ∈ placesOver D.host.E (D.host.g k) := by
   intro D Γ _ _ Pl0 I0 T A3 Ks _ _ _ Rl F3 hC P hP

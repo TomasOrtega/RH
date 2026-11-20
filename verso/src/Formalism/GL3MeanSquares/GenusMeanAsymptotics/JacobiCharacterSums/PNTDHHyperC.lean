@@ -9,9 +9,9 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions.Hyp
 variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 
 /- English proof (translation)
-Unfold `hH`. Rewrite using `[harmonic_eq_sum_Icc, show Finset.Ioc 0 k = Finset.Icc 1 k by`. Use extensionality with `a`. Simplify using `only [Finset.mem_Ioc, Finset.mem_Icc]`. Use the proof step `omega]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem hH_eq_harmonic' (k : ℕ) : hH k = ((harmonic k : ℚ) : ℝ) := by
   unfold hH
@@ -24,7 +24,7 @@ private theorem hH_eq_harmonic' (k : ℕ) : hH k = ((harmonic k : ℚ) : ℝ) :=
   rfl
 
 /- English proof (translation)
-The claim follows from `|hH (N / b) - (Real.log N + Real.eulerMascheroniConstant - Real.log b)| ≤ 2 * b / N := by have hbpos : 0 < b := by omega have hbb : b * b ≤ N := le_trans (Nat.mul_le_mul hbU hbU) hUN have hk1 : 1 ≤ N / b := by rw [Nat.le_div_iff_mul_le hbpos] nlinarith have hdm := Nat.div_add_mod …`.
+A detailed English derivation is pending.
 -/
 theorem term_bound (N U b : ℕ) (hb : 1 ≤ b) (hbU : b ≤ U) (hUN : U * U ≤ N) :
     |hH (N / b) - (Real.log N + Real.eulerMascheroniConstant - Real.log b)| ≤ 2 * b / N := by
@@ -67,29 +67,25 @@ theorem term_bound (N U b : ℕ) (hb : 1 ≤ b) (hbU : b ≤ U) (hUN : U * U ≤
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hUle : U ≤ N` using `le_trans (Nat.le_mul_of_pos_left U (by omega)) hUN`. Establish `hN : (0 : ℝ) < N` using `by exact_mod_cast (show 0 < N by omega)`. Establish `hU0 : (0 : ℝ) < U` using `by exact_mod_cast hU`. Rewrite using `[cF_split χ N U hUle]`. Establish `hX : (((Real.log N + Real.eulerMascheroniConstant : ℝ) : ℂ) * cS χ U - cT χ U) = ∑ b ∈ Ioc 0 U, χ (b : ZMod q) / (b : ℂ) * (((Real.log N + Real.eulerMascheroniConstant - Real.log b : ℝ)) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cS cT`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hX]`. Establish `hre : ∀ A B C : ℂ, A + B - C = (A - C) + B` using `fun A B C => by ring`. Rewrite using `[hre, ← Finset.sum_sub_distrib]`. Use `(norm_add_le _ _).trans (add_le_add ?_ ?_)` and prove the remaining obligations. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb` using `[Finset.mem_Ioc]`. Establish `hb0 : (0 : ℝ) < b` using `by exact_mod_cast hb.1`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_sub, norm_mul, norm_div, ← Complex.ofReal_sub, Complex.norm_real, Real.norm_eq_abs, Complex.norm_natCast]`. Establish `h1` using `term_bound N U b hb.1 hb.2 hUN`. Establish `h2 : ‖χ (b : ZMod q)‖ ≤ 1` using `DirichletCharacter.norm_le_one χ _`. Combine the equalities or inequalities in the displayed calculation. Use `_ = 2 * U / N := by simp; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `htail : ∀ a ∈ Ioc 0 N, ‖∑ b ∈ Ioc U (N / a), χ (b : ZMod q) / (b : ℂ)‖ ≤ 8 * ((q : ℝ) + 1) / U`. Introduce `a ha`. Distinguish the cases in `hM : N / a ≤ U`. Rewrite using `[Finset.Ioc_eq_empty (by omega), Finset.sum_empty, norm_zero]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `push_neg at hM`. Establish `hsplit : ∑ b ∈ Ioc U (N / a), χ (b : ZMod q) / (b : ℂ) = cS χ (N / a) - cS χ U`. Unfold `cS`. Rewrite using `[← Finset.sum_Ioc_consecutive _ (Nat.zero_le U) hM.le]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit]`. Establish `h1` using `cS_approx χ hχ U hU`. Establish `h2` using `cS_approx χ hχ (N / a) (by omega)`. Establish `hMR : (U : ℝ) ≤ ((N / a : ℕ) : ℝ)` using `by exact_mod_cast hM.le`. Establish `h3 : 4 * ((q : ℝ) + 1) / ((N / a : ℕ) : ℝ) ≤ 4 * ((q : ℝ) + 1) / U` using `div_le_div_of_nonneg_left (by positivity) hU0 hMR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ‖DirichletCharacter.LFunction χ 1 - cS χ U‖ + ‖DirichletCharacter.LFunction χ 1 - cS χ (N / a)‖ := norm_sub_le _ _`. Use `_ ≤ 4 * ((q : ℝ) + 1) / U + 4 * ((q : ℝ) + 1) / U := add_le_add h1 (h2.trans h3)`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = 8 * ((q : ℝ) + 1) / U := by ring`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a ha`.
-
-Rewrite using `[norm_mul, norm_inv, Complex.norm_natCast]`. Conclude with `mul_le_mul_of_nonneg_left (htail a ha) (by positivity)`. Use `_ = hH N * (8 * ((q : ℝ) + 1) / U) := by rw [hH, Finset.sum_mul]`. Use `_ ≤ (1 + Real.log N) * (8 * ((q : ℝ) + 1) / U) := by`. Establish `hh : hH N ≤ 1 + Real.log N`.
-
-Rewrite using `[hH_eq_harmonic']`. Conclude with `harmonic_le_one_add_log N`. Conclude with `mul_le_mul_of_nonneg_right hh (by positivity)`. Use `_ = 8 * ((q : ℝ) + 1) * (1 + Real.log N) / U := by ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cF_main (hχ : χ ≠ 1) (N U : ℕ) (hU : 1 ≤ U) (hUN : U * U ≤ N) :
     ‖cF χ N - (((Real.log N + Real.eulerMascheroniConstant : ℝ) : ℂ) * cS χ U - cT χ U)‖ ≤
@@ -166,23 +162,21 @@ theorem cF_main (hχ : χ ≠ 1) (N U : ℕ) (hU : 1 ≤ U) (hUN : U * U ≤ N) 
       _ = 8 * ((q : ℝ) + 1) * (1 + Real.log N) / U := by ring
 
 /- English proof (translation)
-Establish `hU : 1 ≤ Nat.sqrt N` using `Nat.le_sqrt.2 (by omega)`. Establish `hUN : Nat.sqrt N * Nat.sqrt N ≤ N` using `Nat.sqrt_le N`. Establish `hlt : N < (Nat.sqrt N + 1) * (Nat.sqrt N + 1)` using `Nat.lt_succ_sqrt N`. Establish `hNR : (0 : ℝ) < N` using `by exact_mod_cast (show 0 < N by omega)`. Establish `hUR : (1 : ℝ) ≤ (Nat.sqrt N : ℝ)` using `by exact_mod_cast hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs0 : 0 < √(N : ℝ)` using `Real.sqrt_pos.2 hNR`. Establish `hsq : √(N : ℝ) < (Nat.sqrt N : ℝ) + 1`. Establish `h` using `Real.sqrt_lt_sqrt (by positivity) (show (N : ℝ) < ((Nat.sqrt N : ℝ) + 1) * ((Nat.sqrt N : ℝ) + 1) by exact_mod_cast hlt)`. Rewrite `h` using `[Real.sqrt_mul_self (by positivity)]`. Then use the resulting hypothesis. Establish `hsq2 : (Nat.sqrt N : ℝ) ≤ √(N : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h` using `Real.sqrt_le_sqrt (show ((Nat.sqrt N : ℝ) * (Nat.sqrt N : ℝ)) ≤ N by exact_mod_cast hUN)`. Rewrite `h` using `[Real.sqrt_mul_self (by positivity)]`. Then use the resulting hypothesis. Establish `hL0 : 0 ≤ Real.log N` using `Real.log_nonneg (by exact_mod_cast hN)`. Establish `hγ0 : 0 ≤ Real.eulerMascheroniConstant`. Combine the linear relations using `[Real.one_half_lt_eulerMascheroniConstant]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hγ1 : Real.eulerMascheroniConstant ≤ 1`. Combine the linear relations using `[Real.eulerMascheroniConstant_lt_two_thirds]`. Establish `hc : 0 ≤ Real.log N + Real.eulerMascheroniConstant` using `by linarith`. Establish `h1` using `cF_main χ hχ N (Nat.sqrt N) hU hUN`. Establish `h2` using `cS_approx χ hχ (Nat.sqrt N) hU`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdec : cF χ N - (((Real.log N + Real.eulerMascheroniConstant : ℝ) : ℂ) * DirichletCharacter.LFunction χ 1 - cT χ (Nat.sqrt N)) = (cF χ N - (((Real.log N + Real.eulerMascheroniConstant : ℝ) : ℂ) * cS χ (Nat.sqrt N) - cT χ (Nat.sqrt N))) + ((Real.log N + Real.eulerMascheroniConstan …`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hdec]`. Establish `hw : 1 / (Nat.sqrt N : ℝ) ≤ 2 * (1 / √(N : ℝ))`. Establish `h` using `one_div_le_one_div_of_le hs0 (show √(N : ℝ) ≤ 2 * (Nat.sqrt N : ℝ) by linarith)`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hv : (Nat.sqrt N : ℝ) / N ≤ 1 / √(N : ℝ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.mul_self_sqrt hNR.le]`. Use `_ ≤ √(N : ℝ) / (√(N : ℝ) * √(N : ℝ)) := by gcongr`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = 1 / √(N : ℝ) := by field_simp`. Combine the equalities or inequalities in the displayed calculation. Use `add_le_add h1 ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hc, norm_sub_rev]`. Conclude with `mul_le_mul_of_nonneg_left h2 hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = 2 * ((Nat.sqrt N : ℝ) / N) + (8 * ((q : ℝ) + 1) * (1 + Real.log N) + 4 * ((q : ℝ) + 1) * (Real.log N + Real.eulerMascheroniConstant)) * (1 / (Nat.sqrt N : ℝ)) := by`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ 2 * (1 / √(N : ℝ)) + (8 * ((q : ℝ) + 1) * (1 + Real.log N) + 4 * ((q : ℝ) + 1) * (Real.log N + Real.eulerMascheroniConstant)) * (2 * (1 / √(N : ℝ))) := by gcongr`. Use `_ ≤ 26 * ((q : ℝ) + 1) * (Real.log N + 1) * (1 / √(N : ℝ)) := by`. Establish `hZ : 0 ≤ 1 / √(N : ℝ)` using `by positivity`.
-
-Establish `hq0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `a3 : ((q : ℝ) + 1) * (1 / √(N : ℝ)) * Real.eulerMascheroniConstant ≤ ((q : ℝ) + 1) * (1 / √(N : ℝ)) * 1` using `mul_le_mul_of_nonneg_left hγ1 (by positivity)`. Establish `a4 : 1 * (1 / √(N : ℝ)) ≤ ((q : ℝ) + 1) * (Real.log N + 1) * (1 / √(N : ℝ))` using `mul_le_mul_of_nonneg_right (by nlinarith) hZ`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = 26 * ((q : ℝ) + 1) * (Real.log N + 1) / √(N : ℝ) := by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem cF_approx (hχ : χ ≠ 1) (N : ℕ) (hN : 1 ≤ N) :
     ‖cF χ N - (((Real.log N + Real.eulerMascheroniConstant : ℝ) : ℂ) *

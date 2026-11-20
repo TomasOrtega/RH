@@ -12,32 +12,32 @@ namespace PositivityTheory.SiegelWeilFormula.KSing
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `kfour.sigma_sigma_of_good d.ok.good`.
+A detailed English derivation is pending.
 -/
 theorem sig2 (d : SD σ) : ∀ a, σ (σ a) = a := kfour.sigma_sigma_of_good d.ok.good
 
 /- English proof (translation)
-The claim follows from `kfour.nb_add h β β'`.
+A detailed English derivation is pending.
 -/
 theorem nb_add (d : SD σ) {nb : nA σ d.Y d.b → d.G} (h : IsNMap d.b nb) (β β' : nA σ d.Y d.b) :
     nb (β + β') = nb β * nb β' :=
   kfour.nb_add h β β'
 
 /- English proof (translation)
-The claim follows from `kfour.nb_rat h β hβ`.
+A detailed English derivation is pending.
 -/
 theorem nb_rat (d : SD σ) {nb : nA σ d.Y d.b → d.G} (h : IsNMap d.b nb) {β : nA σ d.Y d.b} (hβ : β ∈ nF σ d.Y d.b) :
     nb β ∈ rat2 σ d.Y :=
   kfour.nb_rat h β hβ
 
 /- English proof (translation)
-The claim follows from `kfour.nb_continuous (sig2 d) d.ok.frame h`.
+A detailed English derivation is pending.
 -/
 theorem continuous_nb (d : SD σ) {nb : nA σ d.Y d.b → d.G} (h : IsNMap d.b nb) : Continuous nb :=
   kfour.nb_continuous (sig2 d) d.ok.frame h
 
 /- English proof (translation)
-Take `⟨K, hK, hKx⟩` from `kfour.nF_cocompact (sig2 d) d.ok.frame`. Use `⟨K, hK, fun β => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, hγK⟩` from `hKx β`. Conclude with `⟨-γ, neg_mem hγ, by rwa [sub_neg_eq_add, add_comm]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nCocompact (d : SD σ) : ∃ K : Set (nA σ d.Y d.b), IsCompact K ∧ ∀ β, ∃ l ∈ nF σ d.Y d.b, β - l ∈ K := by
   obtain ⟨K, hK, hKx⟩ := kfour.nF_cocompact (sig2 d) d.ok.frame
@@ -46,7 +46,7 @@ theorem nCocompact (d : SD σ) : ∃ K : Set (nA σ d.Y d.b), IsCompact K ∧ �
   exact ⟨-γ, neg_mem hγ, by rwa [sub_neg_eq_add, add_comm]⟩
 
 /- English proof (translation)
-The claim follows from `kfour.aesm_of_continuous (sig2 d) d.ok.frame lam 𝓖 hu`.
+A detailed English derivation is pending.
 -/
 theorem aesm_of_continuous (d : SD σ) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (h : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) {u : nA σ d.Y d.b × (Fin d.n → Fin d.n → ℝ) → ℂ} (hu : Continuous u) :
@@ -54,7 +54,7 @@ theorem aesm_of_continuous (d : SD σ) {nb : nA σ d.Y d.b → d.G} {lam : Measu
   kfour.aesm_of_continuous (sig2 d) d.ok.frame lam 𝓖 hu
 
 /- English proof (translation)
-Establish `htr : Continuous (Algebra.trace (AF F) (AE F E))` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (Algebra.trace (AF F) (AE F E))`. Conclude with `d.ok.good.std.1.comp ((htr.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chi_cont (d : SD σ) (T : nF σ d.Y d.b) :
     Continuous fun β : nA σ d.Y d.b => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1)))) := by
@@ -63,7 +63,7 @@ theorem chi_cont (d : SD σ) (T : nF σ d.Y d.b) :
   exact d.ok.good.std.1.comp ((htr.comp (continuous_const.matrix_mul continuous_subtype_val).matrix_trace).neg)
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← LinearMap.trace_baseChange, Algebra.baseChange_lmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem trace_inclR (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -71,7 +71,7 @@ theorem trace_inclR (e : E) :
   rfl
 
 /- English proof (translation)
-Establish `e : Matrix.trace (incM F X) = inclR (F` using `F) (AF F) (Matrix.trace X) := by`. Simplify using `[Matrix.trace, incM, map_sum]`. Rewrite using `[e, trace_inclR, ← map_neg, hψ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_rat {ψ : AddChar (AF F) ℂ} (hψ : ∀ x : F, ψ (algebraMap F (AF F) x) = 1) {n : ℕ}
     (X : Matrix (Fin n) (Fin n) E) : ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (incM F X)))) = 1 := by
@@ -80,7 +80,7 @@ theorem psi_rat {ψ : AddChar (AF F) ℂ} (hψ : ∀ x : F, ψ (algebraMap F (AF
   rw [e, trace_inclR, ← map_neg, hψ]
 
 /- English proof (translation)
-Take `⟨T₀, hT₀⟩` from `(kfour.mem_nF_iff T.1).1 T.2`. Take `⟨l₀, hl₀⟩` from `(kfour.mem_nF_iff l).1 hl`. Rewrite using `[hT₀, hl₀, ← kfour.incM_mul']`. Conclude with `psi_rat d.ok.good.std.2.1 (T₀ * l₀)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_per (d : SD σ) (T : nF σ d.Y d.b) {l : nA σ d.Y d.b} (hl : l ∈ nF σ d.Y d.b) :
     d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * l.1)))) = 1 := by
@@ -90,7 +90,7 @@ theorem chi_per (d : SD σ) (T : nF σ d.Y d.b) {l : nA σ d.Y d.b} (hl : l ∈ 
   exact psi_rat d.ok.good.std.2.1 (T₀ * l₀)
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.coe_add, Matrix.mul_add, Matrix.trace_add, map_add, neg_add, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_add (d : SD σ) (T : nF σ d.Y d.b) (β β' : nA σ d.Y d.b) :
     d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * (β + β').1)))) =
@@ -101,21 +101,19 @@ theorem chi_add (d : SD σ) (T : nF σ d.Y d.b) (β β' : nA σ d.Y d.b) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨hN, hH, hD, -⟩` from `hCD`. Take `⟨iLC, iSC, iT2, iBo⟩` from `kfour.nA_top (sig2 d) d.ok.frame`. Use `set χ : nA σ d.Y d.b → ℂ := fun β => d.B.ψ (-(Algebra.trace (AF F) (AE F E) (Matrix.trace (T.1.1 * β.1)))) with hχ`. Use `set u : nA σ d.Y d.b → ℂ := fun β => f (nb β * z) * χ β with hu`. Establish `hca : ∀ a b, χ (a + b) = χ a * χ b` using `fun a b => chi_add d T a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcp : ∀ l ∈ nF σ d.Y d.b, χ l = 1` using `fun l hl => chi_per d T hl`. Establish `hper : ∀ (γ : nF σ d.Y d.b) (x : nA σ d.Y d.b), u (γ +ᵥ x) = u x`. Introduce `γ x`. Use `show f (nb (γ.1 + x) * z) * χ (γ.1 + x) = f (nb x * z) * χ x`. Rewrite using `[hca, hcp _ γ.2, one_mul, nb_add d hN, mul_assoc, hinv _ (nb_rat d hN γ.2)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : d.B.ψ (d.tt (T.1.1 * β₁.1)) * χ β₁ = 1`. Simplify using `only [hχ, SD.tt]`. Rewrite using `[← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one]`. Establish `e1 : ∀ β, f (nb β * (nb β₁ * z)) * χ β = d.B.ψ (d.tt (T.1.1 * β₁.1)) * u (β₁ + β)`. Introduce `β`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [hu]`. Rewrite using `[← mul_assoc, ← nb_add d hN, add_comm β₁ β, hca β β₁]`. Take the linear combination `(-(f (nb (β + β₁) * z) * χ β)) * hc`. Establish `eL : fc d.B.ψ d.b nb lam 𝓖 f T (nb β₁ * z) = d.B.ψ (d.tt (T.1.1 * β₁.1)) * ∫ β in 𝓖, u (β₁ + β) ∂lam`. Unfold `fc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `β`. Conclude with `e1 β`. Rewrite using `[eL]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hmp` using `measurePreserving_add_left lam β₁`. Establish `hme : MeasurableEmbedding fun β : nA σ d.Y d.b => β₁ + β` using `measurableEmbedding_addLeft β₁`. Establish `hs : (fun β : nA σ d.Y d.b => β₁ + β) ⁻¹' ((fun β => -β₁ + β) ⁻¹' 𝓖) = 𝓖`. Use extensionality with `β`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws.
 
-Simplify using the standard rewrite rules. Establish `h2 : IsAddFundamentalDomain (nF σ d.Y d.b) ((fun β => -β₁ + β) ⁻¹' 𝓖) lam`. Use `hD.preimage_of_equiv (measurePreserving_add_left lam (-β₁)).quasiMeasurePreserving (e := id) Function.bijective_id fun γ x => ?_` and prove the remaining obligations. Use `show -β₁ + (γ.1 + x) = γ.1 + (-β₁ + x)`. Normalize the expressions using the abelian group laws.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fc_shift (d : SD σ) {nb : nA σ d.Y d.b → d.G} {lam : Measure (nA σ d.Y d.b)} {𝓖 : Set (nA σ d.Y d.b)}
     (hCD : CoefData (σ := σ) (Y := d.Y) d.b nb lam 𝓖) (f : d.G → ℂ) (hinv : ∀ γ ∈ rat2 σ d.Y, ∀ g, f (γ * g) = f g)

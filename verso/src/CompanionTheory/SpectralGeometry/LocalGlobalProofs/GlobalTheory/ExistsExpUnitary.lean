@@ -8,9 +8,9 @@ open Matrix
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Set `_ : NormedRing (Matrix m m ℂ)` to `Matrix.instL2OpNormedRing`. Set `_ : NormedRing (Matrix n n ℂ)` to `Matrix.instL2OpNormedRing`. Set `_ : NormedAlgebra ℂ (Matrix m m ℂ)` to `Matrix.instL2OpNormedAlgebra`. Set `_ : NormedAlgebra ℂ (Matrix n n ℂ)` to `Matrix.instL2OpNormedAlgebra`. Set `_ : NormedAlgebra ℚ (Matrix m m ℂ)` to `NormedAlgebra.restrictScalars ℚ ℂ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `_ : NormedAlgebra ℚ (Matrix n n ℂ)` to `NormedAlgebra.restrictScalars ℚ ℂ _`. Conclude with `NormedSpace.map_exp f hf S`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem map_exp_matrix {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (f : Matrix m m ℂ ≃ₐ[ℂ] Matrix n n ℂ) (hf : Continuous f) (S : Matrix m m ℂ) :

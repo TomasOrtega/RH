@@ -24,47 +24,47 @@ def torusMat (c : R →+* R) (j : Matrix (Fin d) (Fin d) R) (x y : Fin d → R) 
 variable {c : R →+* R} {j : Matrix (Fin d) (Fin d) R}
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mulVec, dotProduct, vecMulVec_apply, Finset.mul_sum, mul_comm, mul_left_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem vecMulVec_mulVec_eq (x a v : Fin d → R) : vecMulVec x a *ᵥ v = (v ⬝ᵥ a) • x := by
   ext i
   simp [mulVec, dotProduct, vecMulVec_apply, Finset.mul_sum, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Simplify using `only [torusMat, add_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec_eq, sesq, smul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem torusMat_mulVec (x y : Fin d → R) (t s : R) (v : Fin d → R) :
     torusMat c j x y t s *ᵥ v = v + ((t - 1) * sesq c j v y) • x + ((1 - s) * sesq c j v x) • y := by
   simp only [torusMat, add_mulVec, one_mulVec, smul_mulVec, vecMulVec_mulVec_eq, sesq, smul_smul]
 
 /- English proof (translation)
-Simplify using `[sesq, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_add_left (u u' w : Fin d → R) : sesq c j (u + u') w = sesq c j u w + sesq c j u' w := by
   simp [sesq, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[sesq, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_smul_left (r : R) (u w : Fin d → R) : sesq c j (r • u) w = r * sesq c j u w := by
   simp [sesq, smul_dotProduct]
 
 /- English proof (translation)
-Establish `: (fun i => c ((w + w') i)) = (fun i => c (w i)) + fun i => c (w' i)` using `by ext; simp`. Simplify using `only [sesq, this, mulVec_add, dotProduct_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sesq_add_right (u w w' : Fin d → R) : sesq c j u (w + w') = sesq c j u w + sesq c j u w' := by
   have : (fun i => c ((w + w') i)) = (fun i => c (w i)) + fun i => c (w' i) := by ext; simp
   simp only [sesq, this, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Establish `: (fun i => c ((r • w) i)) = c r • fun i => c (w i)` using `by ext; simp`. Simplify using `only [sesq, this, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem sesq_smul_right (r : R) (u w : Fin d → R) : sesq c j u (r • w) = c r * sesq c j u w := by
   have : (fun i => c ((r • w) i)) = c r • fun i => c (w i) := by ext; simp
   simp only [sesq, this, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [sesq, dotProduct, mulVec, map_sum, map_mul, hcc, hj]`. Simplify using `only [Finset.mul_sum, neg_mul, mul_neg, Finset.sum_neg_distrib, neg_neg]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sesq_skew (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k) (u w : Fin d → R) :
     sesq c j u w = -c (sesq c j w u) := by
@@ -74,9 +74,9 @@ theorem sesq_skew (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k) 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Establish `hyx : sesq c j y x = -1` using `by rw [sesq_skew hcc hj, hxy, map_one]`. Establish `hxw : sesq c j x w = -c (sesq c j w x)` using `sesq_skew hcc hj _ _`. Establish `hyw : sesq c j y w = -c (sesq c j w y)` using `sesq_skew hcc hj _ _`. Rewrite using `[torusMat_mulVec, torusMat_mulVec]`. Simplify using `only [sesq_add_left, sesq_add_right, sesq_smul_left, sesq_smul_right, hxx, hyy, hxy, hyx, hxw, hyw, map_mul, map_sub, map_one, hcc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(sesq c j v y * c (sesq c j w x))) * h1 + (sesq c j v x * c (sesq c j w y)) * h2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sesq_torusMat (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k) {x y : Fin d → R}
     (hxx : sesq c j x x = 0) (hyy : sesq c j y y = 0) (hxy : sesq c j x y = 1) {t s : R} (h1 : t * c s = 1)
@@ -91,7 +91,7 @@ theorem sesq_torusMat (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i
   linear_combination (-(sesq c j v y * c (sesq c j w x))) * h1 + (sesq c j v x * c (sesq c j w y)) * h2
 
 /- English proof (translation)
-Establish `: (fun i => c ((A *ᵥ w) i)) = A.map c *ᵥ fun i => c (w i)`. Use extensionality with `i`. Conclude with `RingHom.map_mulVec c A w i`. Rewrite using `[sesq, this, ← mulVec_mulVec, ← mulVec_mulVec, mulVec_transpose, dotProduct_comm (A *ᵥ v), dotProduct_mulVec, dotProduct_comm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sesq_mulVec (A : Matrix (Fin d) (Fin d) R) (v w : Fin d → R) :
     sesq c j (A *ᵥ v) (A *ᵥ w) = v ⬝ᵥ (Aᵀ * j * A.map c) *ᵥ fun i => c (w i) := by
@@ -101,11 +101,11 @@ theorem sesq_mulVec (A : Matrix (Fin d) (Fin d) R) (v w : Fin d → R) :
     dotProduct_comm]
 
 /- English proof (translation)
-Use extensionality with `i k`. Establish `h` using `sesq_torusMat hcc hj hxx hyy hxy h1 h2 (Pi.single i 1) (Pi.single k 1)`. Establish `hs : ∀ (M : Matrix (Fin d) (Fin d) R), (Pi.single i (1 : R)) ⬝ᵥ M *ᵥ (fun l => c ((Pi.single k (1 : R) : Fin d → R) l)) = M i k`. Introduce `M`. Establish `: (fun l => c ((Pi.single k (1 : R) : Fin d → R) l)) = Pi.single k 1`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hl]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using `[mulVec_single_one]`. Rewrite `h` using `[sesq_mulVec, hs, sesq]`. Rewrite using `[h, hs j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusMat_unitary (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k) {x y : Fin d → R}
     (hxx : sesq c j x x = 0) (hyy : sesq c j y y = 0) (hxy : sesq c j x y = 1) {t s : R} (h1 : t * c s = 1)
@@ -123,9 +123,9 @@ theorem torusMat_unitary (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -
   rw [h, hs j]
 
 /- English proof (translation)
-Establish `hyx : sesq c j y x = -1` using `by rw [sesq_skew hcc hj, hxy, map_one]`. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec, one_mulVec]`. Generalize the expression as in `(Pi.single k 1 : Fin d → R) = v`. Rewrite using `[torusMat_mulVec (c := c) (j := j) x y t' s' v, torusMat_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sesq_add_left, sesq_smul_left, hxx, hyy, hxy, hyx]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(sesq c j v y * x i) * ht - (sesq c j v x * y i) * hs`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem torusMat_mul (hcc : ∀ z, c (c z) = z) (hj : ∀ i k, c (j k i) = -j i k) {x y : Fin d → R}
     (hxx : sesq c j x x = 0) (hyy : sesq c j y y = 0) (hxy : sesq c j x y = 1) {t s t' s' : R} (ht : t * t' = 1)
@@ -147,7 +147,7 @@ section Spec
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := ⟨(IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom⟩
@@ -155,7 +155,7 @@ theorem sigma_sigma (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp [cA, sigma_sigma h]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   induction z using TensorProduct.induction_on with
@@ -164,13 +164,13 @@ theorem cA_cA (h : IsCMExt F E σ) (z : AE F E) : cA σ (cA σ z) = z := by
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (AF F) (σ e) := by
   simp [cA, inclR]
 
 /- English proof (translation)
-Simplify using `[sesq, form, dotProduct, mulVec, incV, incM, map_sum, map_mul, cA_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sesq_incV {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (u w : Fin d → E) :
     sesq (cA σ).toRingHom (incM F J) (incV F u) (incV F w) = inclR (AF F) (form σ J u w) := by
@@ -179,21 +179,21 @@ theorem sesq_incV {d : ℕ} (J : Matrix (Fin d) (Fin d) E) (u w : Fin d → E) :
 end Spec
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP d₁ W₁ H' i₀ i₁ M₁ om₁ r₁ s₁ hH hP₁ t`. Establish `hcm : IsCMExt F E σ` using `hP.base.cm`. Use `set c : AE F E →+* AE F E := (cA σ).toRingHom with hc`. Establish `hcc : ∀ z, c (c z) = z` using `fun z => cA_cA hcm z`. Establish `hj : ∀ i k, c (incM F W.J k i) = -incM F W.J i k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k`. Simplify using `[c, incM, cA_inclR, hP.skew.skew i k]`. Establish `hxx : sesq c (incM F W.J) (incV F H'.x) (incV F H'.x) = 0` using `by rw [sesq_incV, hH.xx, map_zero]`. Establish `hyy : sesq c (incM F W.J) (incV F H'.y) (incV F H'.y) = 0` using `by rw [sesq_incV, hH.yy, map_zero]`. Establish `hxy : sesq c (incM F W.J) (incV F H'.x) (incV F H'.y) = 1` using `by rw [sesq_incV, hH.xy, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : sesq c (incM F W.J) (incV F H'.y) (incV F H'.x) = -1` using `by rw [sesq_skew hcc hj, hxy, map_one]`. Establish `h1 : t.1 * c (cA σ (t⁻¹).1) = 1` using `by simp [c, cA_cA hcm]`. Establish `h2 : c t.1 * cA σ (t⁻¹).1 = 1` using `by simp [c, ← map_mul]`. Establish `h3 : cA σ (t⁻¹).1 * c t.1 = 1` using `by rw [mul_comm, h2]`. Set `m` to `torusMat c (incM F W.J) (incV F H'.x) (incV F H'.y) t.1 (cA σ (t⁻¹).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m'` to `torusMat c (incM F W.J) (incV F H'.x) (incV F H'.y) (t⁻¹).1 (c t.1)`. Establish `hmm' : m * m' = 1` using `torusMat_mul hcc hj hxx hyy hxy (by simp) h3`. Establish `hm'm : m' * m = 1` using `torusMat_mul hcc hj hxx hyy hxy (by simp) (by rw [mul_comm, h3])`. Set `g : GL (Fin d) (AE F E)` to `⟨m, m', hmm', hm'm⟩`. Establish `hg : g ∈ UG (cA σ) (incM F W.J)` using `torusMat_unitary hcc hj hxx hyy hxy h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, hg⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show m *ᵥ incV F H'.x = t.1 • incV F H'.x`. Rewrite using `[torusMat_mulVec, hxy, hxx]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show m *ᵥ incV F H'.y = cA σ (t⁻¹).1 • incV F H'.y`. Rewrite using `[torusMat_mulVec, hyy, hyx]`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `show m * incM F H'.ι = incM F H'.ι * (1 : Matrix (Fin d₁) (Fin d₁) (AE F E))`. Use `(?_ : m * incM F H'.ι = incM F H'.ι).trans (Matrix.mul_one _).symm` and prove the remaining obligations. Use `Matrix.ext_of_mulVec_single fun k => ?_` and prove the remaining obligations. Rewrite using `[← mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : incM F H'.ι *ᵥ Pi.single k 1 = incV F (H'.ι *ᵥ Pi.single k 1)`. Use extensionality with `i`. Simplify using `[mulVec_single_one, incV, incM]`. Rewrite using `[hcol, torusMat_mulVec, sesq_incV, sesq_incV, (hH.orth _).1, (hH.orth _).2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_torus_exists : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

@@ -18,7 +18,7 @@ namespace GlobalTheory.FinPl.OrbitCoset
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `congGrp`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, Units.ext_iff]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_congGrp_iff' (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
     g ∈ congGrp V I ↔ (mt V g).map (Ideal.Quotient.mk I) = 1 := by
@@ -27,7 +27,7 @@ theorem mem_congGrp_iff' (V : HSp D) (I : Ideal (AE D)) (g : GA D V) :
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← Matrix.mul_one (mt S (d.emb0 h)), ← d.sum_eq_one]`. Simplify using `only [Matrix.mul_add, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclY]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrixTransform_wittCoreEmbedding {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (h : GA D S₀) :
     mt S (d.emb0 h) = d.jX ⬝ d.pX + d.j0 ⬝ mt S₀ h ⬝ d.p0 + d.jY ⬝ d.pY := by
@@ -35,9 +35,9 @@ theorem matrixTransform_wittCoreEmbedding {S S₀ : HSp D} {ρ : ℕ} (d : HypDe
   simp only [Matrix.mul_add, ← Matrix.mul_assoc, d.wittDecomp_anisotropicEmbedding_inclX, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, d.wittDecomp_anisotropicEmbedding_inclY]
 
 /- English proof (translation)
-Rewrite `hh`, the goal using `[grpAt, mem_congGrp_iff']`. Establish `hadd : ∀ A B : Matrix (Fin S.rank) (Fin S.rank) (AE D), (A + B).map (Ideal.Quotient.mk (idAt D P)) = A.map (Ideal.Quotient.mk (idAt D P)) + B.map (Ideal.Quotient.mk (idAt D P))` using `fun A B => Matrix.map_add _ (Ideal.Quotient.mk (idAt D P)).map_add A B`. Establish `key : (mt S (d.emb0 h)).map (Ideal.Quotient.mk (idAt D P)) = (d.jX ⬝ d.pX + d.j0 ⬝ d.p0 + d.jY ⬝ d.pY).map (Ideal.Quotient.mk (idAt D P))`. Rewrite using `[matrixTransform_wittCoreEmbedding]`. Simplify using `only [hadd, Matrix.map_mul, hh, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, d.sum_eq_one]`. Conclude with `Matrix.map_one _ (Ideal.Quotient.mk (idAt D P)).map_zero (Ideal.Quotient.mk (idAt D P)).map_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittCoreEmbedding_mem_supportedSubgroup {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (P : Pl D → Prop) {h : GA D S₀}
     (hh : h ∈ grpAt S₀ P) : d.emb0 h ∈ grpAt S P := by
@@ -52,9 +52,9 @@ theorem wittCoreEmbedding_mem_supportedSubgroup {S S₀ : HSp D} {ρ : ℕ} (d :
   exact Matrix.map_one _ (Ideal.Quotient.mk (idAt D P)).map_zero (Ideal.Quotient.mk (idAt D P)).map_one
 
 /- English proof (translation)
-Rewrite `ha`, the goal using `[grpAt, mem_congGrp_iff']`. Establish `hadd : ∀ M N : Matrix (Fin S.rank) (Fin S.rank) (AE D), (M + N).map (Ideal.Quotient.mk (idAt D P)) = M.map (Ideal.Quotient.mk (idAt D P)) + N.map (Ideal.Quotient.mk (idAt D P))` using `fun M N => Matrix.map_add _ (Ideal.Quotient.mk (idAt D P)).map_add M N`. Establish `key : (mt S (o.emb (a, 1))).map (Ideal.Quotient.mk (idAt D P)) = (o.jA ⬝ o.pA + o.jB ⬝ o.pB).map (Ideal.Quotient.mk (idAt D P))`. Rewrite using `[o.mt_emb, mt_one]`. Simplify using `only [hadd, Matrix.map_mul, ha, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, o.sum_eq_one]`. Conclude with `Matrix.map_one _ (Ideal.Quotient.mk (idAt D P)).map_zero (Ideal.Quotient.mk (idAt D P)).map_one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_mem_grpAt' {S A B : HSp D} (o : OrthDec S A B) {P : Pl D → Prop} {a : GA D A} (ha : a ∈ grpAt A P) :
     o.emb (a, 1) ∈ grpAt S P := by
@@ -69,7 +69,7 @@ theorem emb_mem_grpAt' {S A B : HSp D} (o : OrthDec S A B) {P : Pl D → Prop} {
   exact Matrix.map_one _ (Ideal.Quotient.mk (idAt D P)).map_zero (Ideal.Quotient.mk (idAt D P)).map_one
 
 /- English proof (translation)
-Use `⟨mul_mem ha.1 hb.1, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy' : ∀ i, (mt S b *ᵥ y) i ∈ idAt D P` using `fun i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Ideal.sum_mem _ fun j _ => Ideal.mul_mem_left _ _ (hy j)`. Rewrite using `[mt_mul, ← Matrix.mulVec_mulVec, ← ha.2 _ hy', hb.2 y hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inK_mul' {S : HSp D} {L : Lat S} {P : Pl D → Prop} {a b : GA D S} (ha : InK S L P a) (hb : InK S L P b) :
     InK S L P (a * b) := by
@@ -84,7 +84,7 @@ end GlobalTheory.FinPl.OrbitCoset
 namespace GlobalTheory.FinPl.OrbitCoset
 
 /- English proof (translation)
-Introduce `D σ B L L₀ v hM n hn hnv a ha κ₀ hκ₀ κ hκ`. Use `⟨n * embA B.d B.o a, mul_mem (Subgroup.mem_sup_left hn) (Subgroup.mem_sup_right ⟨a, rfl⟩), mul_mem hnv (wittCoreEmbedding_mem_supportedSubgroup B.d _ (emb_mem_grpAt' B.o ha)), B.d.emb0 κ₀ * κ, inK_mul' ⟨wittCoreEmbedding_mem_supportedSubgroup B.d _ hκ₀.1, (carriesLattice_wittEmbe …` and prove the remaining obligations. Rewrite using `[map_mul, embA_apply]`. Use `group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_coset : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ) (L : Lat B.V) (L₀ : Lat B.V₀) (v : Pl D), MonoAt B.d L L₀ v →
     ∀ n ∈ flagN B.d, n ∈ grpAt B.V (· = v) → ∀ a ∈ grpAt B.A (· = v), ∀ κ₀, InK B.V₀ L₀ (· = v) κ₀ → ∀ κ,

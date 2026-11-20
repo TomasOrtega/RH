@@ -11,18 +11,18 @@ noncomputable section
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Rewrite using `[u.ex_add, (u.ker l).2 l.2, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ex_add_lattice {A : Over (Sp ℂ)} [GrpObj A] {g : ℕ} {L : LB A.left} (u : HolUnif A L g) (l : u.Λ) (z : Fin g → ℂ) :
     u.ex (z + l) = u.ex z := by
   rw [u.ex_add, (u.ker l).2 l.2, _root_.mul_one]
 
 /- English proof (translation)
-Introduce `A _ g L u`. Use `⟨fun U ↦ (u.hol U 0).1, fun U b ↦ (u.hol U b).2, fun U l z ↦ ?_, fun U b l z ↦ ?_, fun U V ↦ ?_, fun U V h z hz ↦ top_le_preimage_mono _ h hz, fun K W z ↦ ?_, fun U z hz ↦ ?_, fun U V h b z hz ↦ valAt'_map (u.ex z).left (homOfLE h).op b hz, fun U z hz ↦ ?_, fun U b z ↦ top_le_pre …` and prove the remaining obligations. Simplify using `only [pre, Set.mem_setOf_eq, ex_add_lattice]`. Simplify using `only [val, ex_add_lattice]`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Conclude with `top_le_preimage_inf _ U V`. Use `(top_le_preimage_iff_mem (u.ex z).left _).trans (TopologicalSpace.Opens.mem_iSup.trans ?_)` and prove the remaining obligations. Conclude with `exists_congr fun i ↦ (top_le_preimage_iff_mem (u.ex z).left _).symm`. Establish `h1` using `(top_le_preimage_iff_mem (u.ex z).left _).1 hz`. Take `⟨W, hW, h2, h3⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.1 A.left.isBasis_affineOpens) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨W, hW⟩, h3, (top_le_preimage_iff_mem (u.ex z).left _).2 h2⟩`. Use `⟨{ toRingHom := valAtHom (u.ex z).left U hz, commutes' := fun a ↦ ?_ }, fun b ↦ valAt'_eq_valAtHom _ hz b⟩` and prove the remaining obligations. Use `(valAt'_eq_valAtHom (u.ex z).left hz _).symm.trans ?_` and prove the remaining obligations. Use `valAt'_constFn (u.ex z).left (str A) ?_ U a hz` and prove the remaining obligations. Conclude with `(congrArg _ (Category.comp_id _)).trans (Over.w (u.ex z))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pre_val_rules : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), (∀ U, IsOpen (pre u.ex U)) ∧ (∀ U b, DifferentiableOn ℂ (val u.ex U b) (pre u.ex U)) ∧ (∀ U (l : u.Λ) (z : Fin g → ℂ), z + l ∈ pre u.ex U ↔ z ∈ pre u.ex U) ∧ (∀ U b (l : u.Λ) (z : Fin g → ℂ), val u.ex U b (z + l) = val u.ex U b z) ∧ (∀ U V, pre u.ex (U ⊓ V) = pre u.ex U ∩ pre u.ex V) ∧ (∀ U V, V ≤ U → pre u.ex V ⊆ pre u.ex U) ∧ (∀ (K : Type) (W : K → A.left.Opens) z, z ∈ pre u.ex (⨆ i, W i) ↔ ∃ i, z ∈ pre u.ex (W i)) ∧ (∀ U z, z ∈ pre u.ex U → ∃ W : A.left.affineOpens, W.1 ≤ U ∧ z ∈ pre u.ex W.1) ∧ (∀ U V (h : V ≤ U) (b : Sec (str A) U), ∀ z ∈ pre u.ex V, val u.ex V (Sec.res (str A) h b) z = val u.ex U b z) ∧ (∀ U, ∀ z ∈ pre u.ex U, ∃ e : Sec (str A) U →ₐ[ℂ] ℂ, ∀ b, val u.ex U b z = e b) ∧ (∀ U b z, z ∈ pre u.ex (A.left.basicOpen b) ↔ val u.ex U b z ≠ 0) ∧ ∀ z, z ∈ pre u.ex ⊤ := by
   intro A _ g L u

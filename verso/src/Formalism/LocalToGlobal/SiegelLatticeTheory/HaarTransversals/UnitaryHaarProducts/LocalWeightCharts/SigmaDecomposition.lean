@@ -12,21 +12,21 @@ section Cayley
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).mp hP)`.
+A detailed English derivation is pending.
 -/
 lemma cay_inv_mul {P : Mat k r} (hP : IsUnit P) : P⁻¹ * P = 1 :=
   Matrix.nonsing_inv_mul P ((Matrix.isUnit_iff_isUnit_det P).mp hP)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hP)`.
+A detailed English derivation is pending.
 -/
 lemma cay_mul_inv {P : Mat k r} (hP : IsUnit P) : P * P⁻¹ = 1 :=
   Matrix.mul_nonsing_inv P ((Matrix.isUnit_iff_isUnit_det P).mp hP)
 
 /- English proof (translation)
-Establish `h2` using `cay_mul_inv hP.1`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`. Use `show (P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹) = Formalism.REAL.Jm ε`. Rewrite `hg'` using `[← hP.2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (P⁻¹)ᴴ * (Pᴴ * Formalism.REAL.Jm ε * P) * P⁻¹ := by rw [hg']`. Use `_ = (P * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * P⁻¹) := by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [h2]; simp`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cay_mem {P : Mat k r} (hP : IsCayley k r ε P) {g : Mat k r} (hg : g ∈ Gr k r) :
     P * g * P⁻¹ ∈ UJset ε := by
@@ -43,7 +43,7 @@ lemma cay_mem {P : Mat k r} (hP : IsCayley k r ε P) {g : Mat k r} (hg : g ∈ G
     _ = Formalism.REAL.Jm ε := by rw [h2]; simp
 
 /- English proof (translation)
-Establish `h1` using `cay_inv_mul hP`. Establish `h2` using `cay_mul_inv hP`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma cay_back {P : Mat k r} (hP : IsUnit P) (g : Mat k r) : P⁻¹ * (P * g * P⁻¹) * P = g := by
   have h1 := cay_inv_mul hP
@@ -54,17 +54,17 @@ lemma cay_back {P : Mat k r} (hP : IsUnit P) (g : Mat k r) : P⁻¹ * (P * g * P
 end Cayley
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ σ hσ`. Take `⟨P, hP, hDS⟩` from `hσ`. Take `⟨⟨h1, hmul⟩, hiso, hcont⟩` from `hDS.2.2.1`. Establish `hPu` using `hP.1.1`. Establish `hσ' : ∀ g, σ g = σ (P⁻¹ * (P * g * P⁻¹) * P)` using `fun g => by rw [cay_back hPu]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `h1` as an intermediate fact. Simplify using `only [Matrix.mul_one, cay_inv_mul hPu] at this`. Conclude with `this`. Introduce `a ha b hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hab : P * (a * b) * P⁻¹ = P * a * P⁻¹ * (P * b * P⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cay_inv_mul hPu]`. Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = P * a * P⁻¹ * (P * b * P⁻¹) := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hσ' (a * b), hab]`. Use `hmul _ (cay_mem hP.1 ha) _ (cay_mem hP.1 hb)` as an intermediate fact. Simplify using `only at this`. Rewrite using `[this, cay_back hPu, cay_back hPu]`. Introduce `g hg v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hσ' g]`. Conclude with `hiso _ (cay_mem hP.1 hg) v`. Introduce `v`. Establish `hc : Continuous fun g : Mat k r => P * g * P⁻¹` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Use `(hcont v).comp hc.continuousOn (fun g hg => cay_mem hP.1 hg)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `this.congr (fun g _ => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp]`. Rewrite using `[cay_back hPu]`.
+A detailed English derivation is pending.
 -/
 theorem sigma_decomposition : SigmaG := by
   intro k r ε lam H _ _ σ hσ

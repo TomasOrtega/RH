@@ -15,11 +15,11 @@ namespace GlobalTheory.HeisTranslCR
 open GlobalTheory.FockCompare GlobalTheory.VacUnique
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℝ => w + t • u) u 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const u).const_add w`. Establish `h2 : HasDerivAt (fun t : ℝ => F (w + t • u)) (fderiv ℝ F w u) 0`. Establish `h` using `(hF (w + (0 : ℝ) • u)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Simplify `h` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3 : HasDerivAt (fun t : ℝ => -(Real.pi * Complex.I) * (om a (t • u) : ℂ)) (-(Real.pi * Complex.I) * (om a u : ℂ)) 0`. Establish `e : (fun t : ℝ => -(Real.pi * Complex.I) * (om a (t • u) : ℂ)) = fun t : ℝ => (t : ℂ) * (-(Real.pi * Complex.I) * (om a u : ℂ))`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.map_smul, smul_eq_mul, Complex.ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (-(Real.pi * Complex.I) * (om a u : ℂ))`. Establish `h4` using `(h3.cexp.mul h2).deriv`. Use `Eq.trans h4 ?_` and prove the remaining obligations. Simplify using `only [zero_smul, map_zero, Complex.ofReal_zero, mul_zero, Complex.exp_zero, add_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -47,7 +47,7 @@ theorem deriv_twisted_line_at {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ
   ring
 
 /- English proof (translation)
-Establish `h : Differentiable ℝ fun w : R => ((om a w : ℝ) : ℂ)` using `Complex.ofRealCLM.differentiable.comp (LinearMap.toContinuousLinearMap (om a)).differentiable`. Conclude with `((differentiable_const _).mul h).cexp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiable_phase {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R]
     (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (a : R) :
@@ -57,11 +57,11 @@ theorem differentiable_phase {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ 
   exact ((differentiable_const _).mul h).cexp
 
 /- English proof (translation)
-Establish `hG : Differentiable ℝ fun w : R => Complex.exp (-(Real.pi * Complex.I) * (om a w : ℂ)) * F w` using `(differentiable_phase om a).mul hF`. Establish `h1 : HasDerivAt (fun t : ℝ => w + t • u) u 0`. Simplify using `using ((hasDerivAt_id (0 : ℝ)).smul_const u).const_add w`. Establish `h2` using `(hG (w + (0 : ℝ) • u)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`. Simplify using `only [zero_smul, add_zero, Function.comp_def] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h2.deriv]`. Establish `e : (fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * (om a (w + t • u) : ℂ)) * F (w + t • u)) = fun t : ℝ => Complex.exp (-(Real.pi * Complex.I) * (om a w : ℂ)) * (Complex.exp (-(Real.pi * Complex.I) * (om a (t • u) : ℂ)) * F (w + t • u))`. Use function extensionality and compare the values at `t`. Rewrite using `[LinearMap.map_add, Complex.ofReal_add, mul_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, deriv_const_mul_field, deriv_twisted_line_at F hF om a w u]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_phase_mul {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ R] [FiniteDimensional ℝ R] (F : R → ℂ)
     (hF : Differentiable ℝ F) (om : R →ₗ[ℝ] R →ₗ[ℝ] ℝ) (a w u : R) :
@@ -86,7 +86,7 @@ theorem fderiv_phase_mul {R : Type} [NormedAddCommGroup R] [NormedSpace ℝ R] [
 variable {D : D7} {θ : InfFam D} {σ : (D.what₂.Tau → ℂ) →+ AE D}
 
 /- English proof (translation)
-Unfold `heisO`. Rewrite using `[GlobalTheory.OrientedChar.char_symplOH D θ ψ h.inf hψ S T _ _ (Or.inr (h.real_iota T S w)), h.pi_iota]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisO_real_at (h : Chart θ σ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (f : WO S T → ℂ) (y : WO S T) (w : RW T S) :
@@ -98,7 +98,7 @@ theorem heisO_real_at (h : Chart θ σ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : 
 open Classical in
 
 /- English proof (translation)
-Use `Eq.trans ?_ (deriv_twisted_line_at _ hF (omO S T) (piW θ T S y + w) w (Pi.single τ z))` and prove the remaining obligations. Unfold `Formalism.IndefR.Datum.dRho`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[GlobalTheory.VacUnique.Ann.lineAt_eq h S T τ z t, heisO_real_at h hψ, (piW θ T S).map_add, h.pi_iota, add_assoc, ← (iotaW σ T S).map_add]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem dRho_eq_at (h : Chart θ σ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) (S T : HSp D)
     (f : WO S T → ℂ) (y : WO S T) (hF : Differentiable ℝ fun v : RW T S => f (y + iotaW σ T S v)) (τ : D.what₂.Tau)
@@ -116,19 +116,17 @@ theorem dRho_eq_at (h : Chart θ σ) {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsS
 open Classical in
 
 /- English proof (translation)
-Introduce `D θ σ h ψ hψ S T A B f hf y`. Establish `hF : Differentiable ℝ fun v : RW T S => f (y + iotaW σ T S v)` using `(GlobalTheory.OrientedHeis.theta_sm h hf.1 y).differentiable (by simp)`. Establish `hG : (fun w : RW T S => heisO ψ S T (iotaW σ T S w) f y) = fun w : RW T S => Complex.exp (-(Real.pi * Complex.I) * (omO S T (piW θ T S y) w : ℂ)) * f (y + iotaW σ T S w)`. Use function extensionality and compare the values at `w`. Conclude with `heisO_real_at h hψ S T f y w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG]`. Use `⟨(differentiable_phase (omO S T) (piW θ T S y)).mul hF, fun w z => ?_⟩` and prove the remaining obligations. Rewrite using `[fderiv_phase_mul _ hF, fderiv_phase_mul _ hF]`. Rewrite using `[heisO_real_at h hψ S T f y w]`. Use `set a := piW θ T S y with ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `set Fd := fderiv ℝ (fun v : RW T S => f (y + iotaW σ T S v)) w with hFd`. Use `set Fw := f (y + iotaW σ T S w) with hFw`. Set `L : RW T S →+ ℂ` to `{ toFun := fun s => Fd s - Real.pi * Complex.I * (omO S T (a + w) s : ℂ) * Fw map_zero' := by simp map_add' := fun x x' => by`. Rewrite using `[ContinuousLinearMap.map_add, LinearMap.map_add, Complex.ofReal_add]`. Use `ring }`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL : L z + Complex.I * L (jO S T A.cart B.cart z) = 0`. Rewrite using `[← Finset.univ_sum_single z, map_sum, map_sum, map_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun τ _ => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (hf.2 τ (z τ)) (y + iotaW σ T S w)`. Establish `h2 : Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ (z τ) f (y + iotaW σ T S w) + Complex.I * Formalism.IndefR.Datum.dRho (heisO ψ S T) θ τ (cplxO (A.cart τ) (B.cart τ) (z τ)) f (y + iotaW σ T S w) = 0` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `dRho_eq_at h hψ S T f y hF τ (z τ) w`. Establish `h4` using `dRho_eq_at h hψ S T f y hF τ (cplxO (A.cart τ) (B.cart τ) (z τ)) w`. Establish `h5` using `GlobalTheory.VacUnique.Ann.jO_single S T A.cart B.cart τ (z τ)`. Establish `h6 : L (Pi.single τ (z τ)) + Complex.I * L (Pi.single τ (cplxO (A.cart τ) (B.cart τ) (z τ))) = 0` using `(congrArg₂ (fun a b : ℂ => a + Complex.I * b) h3 h4).symm.trans h2`. Conclude with `(congrArg (fun b => L (Pi.single τ (z τ)) + Complex.I * L b) h5).trans h6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : L z = Fd z - Real.pi * Complex.I * ((omO S T a z : ℂ) + (omO S T w z : ℂ)) * Fw` using `by show Fd z - Real.pi * Complex.I * (omO S T (a + w) z : ℂ) * Fw = _`. Rewrite using `[LinearMap.map_add, LinearMap.add_apply, Complex.ofReal_add]`. Establish `e2 : L (jO S T A.cart B.cart z) = Fd (jO S T A.cart B.cart z) - Real.pi * Complex.I * ((omO S T a (jO S T A.cart B.cart z) : ℂ) + (omO S T w (jO S T A.cart B.cart z) : ℂ)) * Fw` using `by show Fd _ - Real.pi * Complex.I * (omO S T (a + w) _ : ℂ) * Fw = _`. Rewrite using `[LinearMap.map_add, LinearMap.add_apply, Complex.ofReal_add]`. Rewrite `hL` using `[e1, e2]`.
-
-Take the linear combination `(Complex.exp (-(Real.pi * Complex.I) * (omO S T a w : ℂ))) * hL`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heis_translate_cauchy_riemann : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), GlobalTheory.FockCompare.Chart θ σ → ∀ (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (A : GlobalTheory.ChainFr.Fr S) (B : GlobalTheory.ChainFr.Fr T) (f : WO S T → ℂ), GlobalTheory.ChainFr.IsVacF ψ θ A B f → ∀ y : WO S T, Differentiable ℝ (fun w : GlobalTheory.FockCompare.RW T S => heisO ψ S T (GlobalTheory.FockCompare.iotaW σ T S w) f y) ∧ ∀ w z : GlobalTheory.FockCompare.RW T S, fderiv ℝ (fun w : GlobalTheory.FockCompare.RW T S => heisO ψ S T (GlobalTheory.FockCompare.iotaW σ T S w) f y) w z + Complex.I * fderiv ℝ (fun w : GlobalTheory.FockCompare.RW T S => heisO ψ S T (GlobalTheory.FockCompare.iotaW σ T S w) f y) w (GlobalTheory.VacUnique.jO S T A.cart B.cart z) = (Real.pi : ℂ) * Complex.I * ((GlobalTheory.VacUnique.omO S T w z : ℂ) + Complex.I * (GlobalTheory.VacUnique.omO S T w (GlobalTheory.VacUnique.jO S T A.cart B.cart z) : ℂ)) * heisO ψ S T (GlobalTheory.FockCompare.iotaW σ T S w) f y := by
   intro D θ σ h ψ hψ S T A B f hf y

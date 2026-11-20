@@ -27,11 +27,11 @@ def RowTop1 : Prop :=
         Continuous c
 
 /- English proof (translation)
-Introduce `n hn hpl`. Use `⟨fun c hc => ?_, h1 n hn hpl⟩` and prove the remaining obligations. Establish `h` using `hT n hn hpl`. Establish `h2` using `(KBKa.cont_iff _ h _).1 hc`. Establish `h3 : Continuous fun g => c (Br.iota D.nbr i _ hpl g)` using `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hm, hhm⟩` from `KBKa.iotaHomeo_rec (i := i) (dc := dc) hpl`. Establish `hc' : c = (fun g => c (Br.iota D.nbr i _ hpl g)) ∘ hm.symm`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, ← hhm]`. Conclude with `congrArg c (hm.apply_symm_apply x).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc']`. Conclude with `h3.comp hm.symm.continuous`.
+A detailed English derivation is pending.
 -/
 theorem rowTop_of
     (hT : ∀ n ∈ K.rowsN i dc, ∀ hn : K.plOf i dc n ∈ placesOver D.host.E (D.nd.l i),

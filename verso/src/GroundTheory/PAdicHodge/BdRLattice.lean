@@ -13,13 +13,11 @@ section Binomial
 variable {A : Type*} [CommRing A]
 
 /- English proof (translation)
-Rewrite using `[add_comm, add_pow, Finset.sum_range_succ']`. Simplify using `only [one_pow, mul_one, pow_zero, Nat.choose_zero_right, Nat.cast_one, add_sub_cancel_right]`. Use `Ideal.sum_mem _ fun j hj => ?_` and prove the remaining obligations. Distinguish the cases in `hjk : k ≤ j + 1`. Conclude with `Ideal.mem_sup_right (mul_mem_right _ _ (mem_span_singleton.2 (pow_dvd_pow y hjk)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Ideal.mem_sup_left` to reduce the goal to its premises. Establish `hj' : j + 1 ≤ p ^ N` using `Finset.mem_range.1 hj`. Establish `h1 : (j + 1).factorization p < r`. Establish `h2 : p ^ (j + 1).factorization p ≤ j + 1` using `Nat.le_of_dvd (Nat.succ_pos j) (Nat.ordProj_dvd (j + 1) p)`. Conclude with `(Nat.pow_lt_pow_iff_right hp.one_lt).1 (lt_of_le_of_lt h2 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : p ^ (N - r) ∣ Nat.choose (p ^ N) (j + 1)`. Establish `h4` using `Nat.factorization_choose_prime_pow hp hj' (Nat.succ_ne_zero j)`. Use `(Nat.pow_dvd_pow p (by omega : N - r ≤ N - (j + 1).factorization p)).trans ?_` and prove the remaining obligations. Rewrite using `[← h4]`. Conclude with `Nat.ordProj_dvd _ p`.
-
-Use `mul_mem_left _ _ (mem_span_singleton.2 ?_)` and prove the remaining obligations. Conclude with `Nat.cast_dvd_cast (α := A) h3` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_add_pow_prime_pow_sub_one_mem {p : ℕ} (hp : p.Prime) (y : A) (N r k : ℕ)
     (hk : k ≤ p ^ r) :
@@ -59,7 +57,7 @@ local notation "𝔸" => Localization.Away (p : WittVector p (PreTilt (normInteg
 omit [CharZero K] in
 
 /- English proof (translation)
-Use `isAdicComplete (K := K) p` as an intermediate fact. Use `IsHausdorff.haus (I := span {(p : 𝒪)}) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, mul_top, span_singleton_pow]`. Conclude with `h n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mem_span_p_pow {b : 𝒪} (h : ∀ M : ℕ, b ∈ span {(p : 𝒪) ^ M}) : b = 0 := by
   have := isAdicComplete (K := K) p
@@ -70,7 +68,7 @@ theorem eq_zero_of_forall_mem_span_p_pow {b : 𝒪} (h : ∀ M : ℕ, b ∈ span
 omit [IsPerfectoidField K p] in
 
 /- English proof (translation)
-Introduce `h`. Establish `h2 : ((p : 𝒪) : K) = 0` using `by rw [h]; rfl`. Rewrite `h2` using `[Subring.coe_natCast]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_p_ne_zero : (p : 𝒪) ≠ 0 := by
   intro h
@@ -81,15 +79,13 @@ theorem natCast_p_ne_zero : (p : 𝒪) ≠ 0 := by
 variable {ξ : WittVector p (PreTilt (normInteger K) p)}
 
 /- English proof (translation)
-Establish `hnz` using `mem_nonZeroDivisors_of_ker_eq_span hξ`. Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hx1 : (p : 𝕎𝒪♭) ^ s * x ∈ RingHom.ker θ`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hξ]`. Conclude with `(Ideal.span_singleton_le_span_singleton.2 (dvd_pow_self ξ (Nat.succ_ne_zero k))) h`. Establish `hx2 : x ∈ RingHom.ker θ`. Rewrite `hx1` using `[RingHom.mem_ker, map_mul, map_pow, map_natCast]`. Rewrite using `[RingHom.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 hx1).resolve_left (pow_ne_zero _ natCast_p_ne_zero)`. Rewrite `hx2` using `[hξ, mem_span_singleton]`. Take `⟨x', rfl⟩` from `hx2`. Take `⟨c, hc⟩` from `mem_span_singleton.1 h`. Establish `h3 : (p : 𝕎𝒪♭) ^ s * x' = ξ ^ k * c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ξ * ((p : 𝕎𝒪♭) ^ s * x' - ξ ^ k * c) = 0`. Rewrite `hc` using `[pow_succ]`. Take the linear combination `hc`. Conclude with `sub_eq_zero.1 ((mem_nonZeroDivisors_iff.1 hnz).1 _ h4)`. Establish `h5` using `ih (mem_span_singleton.2 ⟨c, h3⟩)`.
-
-Take `⟨d, hd⟩` from `mem_span_singleton.1 h5`. Conclude with `mem_span_singleton.2 ⟨d, by rw [hd, pow_succ]; ring⟩`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_span_xi_pow_of_p_pow_mul_mem (hξ : RingHom.ker θ = span {ξ}) {x : 𝕎𝒪♭} {s k : ℕ}
     (h : (p : 𝕎𝒪♭) ^ s * x ∈ span {ξ ^ k}) : x ∈ span {ξ ^ k} := by
@@ -117,19 +113,19 @@ theorem mem_span_xi_pow_of_p_pow_mul_mem (hξ : RingHom.ker θ = span {ξ}) {x :
     exact mem_span_singleton.2 ⟨d, by rw [hd, pow_succ]; ring⟩
 
 /- English proof (translation)
-Establish `hnz` using `mem_nonZeroDivisors_of_ker_eq_span hξ`. Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hθ : θ x = 0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `eq_zero_of_forall_mem_span_p_pow (p := p) fun M => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (h M)`. Take `⟨a', rfl⟩` from `mem_span_singleton.1 ha`. Take `⟨b', rfl⟩` from `mem_span_singleton.1 hb`. Establish `hξ0 : θ ξ = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.mem_ker, hξ]`. Conclude with `mem_span_singleton_self ξ`. Rewrite using `[← hab, map_add, map_mul, map_mul, map_pow, map_pow, map_natCast, hξ0, zero_pow (Nat.succ_ne_zero k), zero_mul, add_zero]`. Conclude with `mem_span_singleton.2 ⟨_, rfl⟩`. Establish `hx2 : x ∈ span {ξ}` using `by rw [← hξ]; exact hθ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', rfl⟩` from `mem_span_singleton.1 hx2`. Establish `h' : ∀ M : ℕ, x' ∈ span {(p : 𝕎𝒪♭) ^ M} ⊔ span {ξ ^ k}`. Introduce `M`. Take `⟨a, ha, b, hb, hab⟩` from `Submodule.mem_sup.1 (h M)`. Take `⟨a', rfl⟩` from `mem_span_singleton.1 ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b', rfl⟩` from `mem_span_singleton.1 hb`. Establish `ha1 : (p : 𝕎𝒪♭) ^ M * a' ∈ span {ξ ^ 1}`. Rewrite using `[pow_one, mem_span_singleton]`. Conclude with `⟨x' - ξ ^ k * b', by rw [← sub_eq_iff_eq_add.2 hab.symm, pow_succ]; ring⟩`. Take `⟨a'', ha''⟩` from `mem_span_singleton.1 (mem_span_xi_pow_of_p_pow_mul_mem hξ ha1)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ξ * (x' - (p : 𝕎𝒪♭) ^ M * a'' - ξ ^ k * b') = 0`. Rewrite `ha''` using `[pow_one]`. Rewrite `hab` using `[ha'', pow_succ]`. Take the linear combination `-hab`. Establish `h5` using `sub_eq_zero.1 ((mem_nonZeroDivisors_iff.1 hnz).1 _ h4)`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.mem_sup.2 ⟨_, mem_span_singleton.2 ⟨a'', rfl⟩, _, mem_span_singleton.2 ⟨b', rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← h5]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨d, hd⟩` from `mem_span_singleton.1 (ih h')`. Conclude with `mem_span_singleton.2 ⟨d, by rw [hd, pow_succ]; ring⟩`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_span_xi_pow_of_forall_mem_sup (hξ : RingHom.ker θ = span {ξ}) {x : 𝕎𝒪♭} {k : ℕ}
     (h : ∀ M : ℕ, x ∈ span {(p : 𝕎𝒪♭) ^ M} ⊔ span {ξ ^ k}) : x ∈ span {ξ ^ k} := by
@@ -170,11 +166,11 @@ theorem mem_span_xi_pow_of_forall_mem_sup (hξ : RingHom.ker θ = span {ξ}) {x 
     exact mem_span_singleton.2 ⟨d, by rw [hd, pow_succ]; ring⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Take `⟨⟨c', m⟩, hcm⟩` from `IsLocalization.mk'_surjective (Submonoid.powers (p : 𝕎𝒪♭)) c`. Take `⟨s, hs⟩` from `Submonoid.mem_powers_iff _ _ |>.1 m.2`. Establish `h2 : algebraMap 𝕎𝒪♭ 𝔸 (z * (m : 𝕎𝒪♭)) = algebraMap 𝕎𝒪♭ 𝔸 (ξ ^ k * c')`. Rewrite using `[map_mul, hc, ← hcm, mul_assoc, IsLocalization.mk'_spec, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (p : 𝕎𝒪♭)) h2`. Take `⟨r', hr'⟩` from `Submonoid.mem_powers_iff _ _ |>.1 r.2`. Use `⟨r' + s, mem_span_singleton.2 ⟨(p : 𝕎𝒪♭) ^ r' * c', ?_⟩⟩` and prove the remaining obligations. Rewrite `hr` using `[← hs, ← hr']`. Rewrite using `[pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hr`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_p_pow_mul_mem_of_dvd {z : 𝕎𝒪♭} {k : ℕ}
     (h : algebraMap 𝕎𝒪♭ 𝔸 (ξ ^ k) ∣ algebraMap 𝕎𝒪♭ 𝔸 z) :
@@ -192,17 +188,17 @@ theorem exists_p_pow_mul_mem_of_dvd {z : 𝕎𝒪♭} {k : ℕ}
   linear_combination hr
 
 /- English proof (translation)
-Use `set ξ₀ := kerThetaGenerator K p`. Establish `hξ` using `ker_fontaineTheta_eq_span_kerThetaGenerator K p`. Establish `hm : maximalIdeal 𝔹 ^ k = span {wittToBDeRhamPlus 𝒪 p (ξ₀ ^ k)}`. Rewrite using `[maximalIdeal_bDeRhamPlus_eq_span hξ, span_singleton_pow, map_pow]`. Take `⟨a₀, ha₀⟩` from `h 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha₀` using `[pow_zero, one_mul]`. It suffices to establish `hs : a₀ ∈ span {ξ₀ ^ k} by`. Establish `h1 : wittToBDeRhamPlus 𝒪 p a₀ ∈ maximalIdeal 𝔹 ^ k`. Rewrite using `[hm]`. Take `⟨d, rfl⟩` from `mem_span_singleton.1 hs`.
+Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `mul_mem_right _ _ (mem_span_singleton_self _)`. Use `add_mem ha₀ h1` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `mem_span_xi_pow_of_forall_mem_sup hξ fun M => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `h M`. Establish `h2 : wittToBDeRhamPlus 𝒪 p (a₀ - (p : 𝕎𝒪♭) ^ M * a) ∈ maximalIdeal 𝔹 ^ k`. Use `sub_mem ha ha₀` as an intermediate fact. Rewrite using `[map_sub, map_mul, map_pow, map_natCast]`. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[hm]`. Establish `h3 : toBDeRhamPlus 𝒪 p (algebraMap 𝕎𝒪♭ 𝔸 (a₀ - (p : 𝕎𝒪♭) ^ M * a)) ∈ span {wittToBDeRhamPlus 𝒪 p ξ₀ ^ k}`. Rewrite using `[← map_pow]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h3` using `[toBDeRhamPlus_mem_span_pow_iff hξ, ← map_pow]`. Take `⟨s, hs⟩` from `exists_p_pow_mul_mem_of_dvd h3`. Establish `h4` using `mem_span_xi_pow_of_p_pow_mul_mem hξ hs`. Use `Submodule.mem_sup.2 ⟨(p : 𝕎𝒪♭) ^ M * a, mem_span_singleton.2 ⟨a, rfl⟩, _, h4, ?_⟩` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_maximalIdeal_pow_of_forall_sub_mem {y : 𝔹} {k : ℕ}
     (h : ∀ M : ℕ, ∃ a : 𝕎𝒪♭, y - (p : 𝔹) ^ M * wittToBDeRhamPlus 𝒪 p a ∈ maximalIdeal 𝔹 ^ k) :

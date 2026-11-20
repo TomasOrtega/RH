@@ -14,9 +14,9 @@ open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.Bas
 namespace GlobalTheory.BlockWindow
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h2, h⟩`. Use `⟨h2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c⟩` from `h w hw`. Conclude with `⟨a, b, fun C hs Y hc hY => c C.LL C.le hs Y hc hY⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h2, h⟩`. Use `⟨h2, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, b, c⟩` from `h w hw`. Conclude with `⟨a, b, fun CL hL hs Y hc hY => c ⟨CL, hL⟩ hs Y hc hY⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem jointTB_iff_jointCond (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (i : D.nd.Loc)
     (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (M0 h0 cB : ℕ) :
@@ -32,7 +32,7 @@ theorem jointTB_iff_jointCond (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA
     exact ⟨a, b, fun CL hL hs Y hc hY => c ⟨CL, hL⟩ hs Y hc hY⟩
 
 /- English proof (translation)
-Take `⟨ht, hW⟩` from `GlobalTheory.T.hodgeTateJumpWindow_of_jumpSets D large₂ hJ hA`. Establish `hT` using `GlobalTheory.T.jumpWindowBlockExponentCondition_of_jumpWindow D HW F i r π ⌊2 * large₂.sc.b⌋₊ h2 hq hd ht (hW i r hG π)`. Conclude with `⟨_, _, (jointTB_iff_jointCond D HW F i r π _ _ _).1 (hT.mono hc)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem jointCond_TB_at_range (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (large₂ : SizeData₂ D)
     (hJ : AdmissibleParameterJ.JumpConditions large₂) (hA : EmbeddingTypeJumps.ParametersPolynomiallyBounded large₂) (i : D.nd.Loc)

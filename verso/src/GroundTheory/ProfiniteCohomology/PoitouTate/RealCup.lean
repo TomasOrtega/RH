@@ -16,9 +16,9 @@ section LeibnizNatural
 variable {k : Type u} [CommRing k] {M M' N P P' : CochainComplex (ModuleCat.{u} k) ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `homologyπ_hom_surjective M r x`. Take `⟨y, rfl⟩` from `homologyπ_hom_surjective N s y`. Rewrite using `[hom_apply_hom_apply_eq_of_comp_eq (HomologicalComplex.homologyπ_naturality f r) x, LeibnizPairing.homology_homologyπ, LeibnizPairing.homology_homologyπ, homologyMap_homologyπ_apply]`. Use `congr 1`. Apply `iCycles_hom_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply, LeibnizPairing.iCycles_cycles, iCycles_cyclesMap_apply]`. Conclude with `hfψ h _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeibnizPairing.homologyMap_homology_of_comm (μ₁ : LeibnizPairing M N P)
     (μ₂ : LeibnizPairing M' N P') (f : M ⟶ M') (ψ : P ⟶ P')
@@ -53,13 +53,11 @@ noncomputable abbrev tateForgetRes (A : Rep.{u} k G) [IsDiscreteRep A] :=
     (fun w => Rep.res (ψ w).toMonoidHom A) (fun _ => 𝟙 _)
 
 /- English proof (translation)
-Use `revert p`. Introduce `(p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X r × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) r)`. Take `⟨⟨x, e⟩, b⟩` from `p`. Use `Prod.ext rfl ?_` and prove the remaining obligations. Break down `r with _ | r` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `n with _ | n` into its components or cases. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(prodFst _ _ |>.f n).hom (0 + tateCupHomotopyL ψ (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map μ) (Cᵥ := fun v => Rep.res (φ v).toMonoidHom C) (by omega) e z) = 0`. Rewrite using `[zero_add]`. Use `erw [tateCupHomotopyL_apply]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Break down `n with _ | n` into its components or cases. Use linear arithmetic over natural numbers and integers. Express the relevant statement in the definitionally equal form `(prodFst _ _ |>.f n).hom ((tateLocalCup φ ψ (fun v => (Rep.resFunctor (φ v).toMonoidHom).map μ) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map μ)).μ (show r + s = n by omega) b (((tateLocalResB φ ψ B).f s).hom z) + 0) = _`. Rewrite using `[add_zero]`.
-
-Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tateForgetRes_cup (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n)
     (p : (tateCompactCochains φ ψ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _)
@@ -91,7 +89,7 @@ theorem tateForgetRes_cup (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n)
       rfl
 
 /- English proof (translation)
-The claim follows from `LeibnizPairing.homologyMap_homology_of_comm _ _ _ _ (fun h p z => tateForgetRes_cup φ ψ μ h p z) h x z`.
+A detailed English derivation is pending.
 -/
 theorem tateForget_tateCompactCupRes (μ : A ⊗ B ⟶ C) {r s n : ℕ} (h : r + s = n)
     (x : tateCompactCohomologyRes φ ψ A r) (z : cohomology B s) :
@@ -115,9 +113,9 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `σ`. Rewrite using `[cochainOf_normHomotopy]`. Express the relevant statement in the definitionally equal form `g.hom (cochainOf Z (normHomotopy μ h e y) σ) = _`. Rewrite using `[cochainOf_normHomotopy]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `g.hom (∑ a : F', Z.ρ a (μ.hom _)) = ∑ a : F', Z'.ρ a (g.hom (μ.hom _))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => Rep.hom_comm_apply g a _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochainsMap_normHomotopy {F' : Type u} [Group F'] [TopologicalSpace F'] [IsTopologicalGroup F'] [Fintype F'] {X Y Z Z' : Rep.{u} k F'}
     [IsDiscreteRep Y] [IsDiscreteRep Z] [IsDiscreteRep Z'] (μ : X ⊗ Y ⟶ Z) (g : Z ⟶ Z')
@@ -135,21 +133,17 @@ theorem cochainsMap_normHomotopy {F' : Type u} [Group F'] [TopologicalSpace F'] 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `revert p`. Introduce `(p : (tateGlobalComplex A fun w => Rep.res (ψ w).toMonoidHom A).X r × shiftNegOneX (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom A) fun w => Rep.res (ψ w).toMonoidHom A) r)`. Take `⟨⟨x, e⟩, b⟩` from `p`. Use `Prod.ext (Prod.ext ?_ ?_) ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Break down `r with _ | r` into its components or cases. Break down `s with _ | s` into its components or cases. Take `rfl : n = 0` from `by omega`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `rfl : n = s + 1` from `by omega`. Conclude with `Subsingleton.elim _ _`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Conclude with `Subsingleton.elim _ _`. Break down `r with _ | r` into its components or cases.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `s with _ | t` into its components or cases. Take `rfl : n = 0` from `by omega`. Conclude with `Subsingleton.elim (α := PUnit) _ _`. Take `rfl : n = t + 1` from `by omega`. Express the relevant statement in the definitionally equal form `((tateLocalMap (fun v => (Rep.resFunctor (φ v).toMonoidHom).map g) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map g)).f t).hom ((0 : (tateLocalComplex (fun v => Rep.res (φ v).toMonoidHom C) fun w => Rep.res (ψ w).toMonoidHom C).X t) + tateCupHomotopyL ψ (fun w => (Rep.resFuncto …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[zero_add, zero_add]`. Use `erw [tateCupHomotopyL_apply, tateCupHomotopyL_apply]`. Use `Prod.ext ?_ (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((piMap fun v => cochainsMap ((Rep.resFunctor (φ v).toMonoidHom).map g)).f t).hom 0 = 0`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((cochainsMap ((Rep.resFunctor (ψ w).toMonoidHom).map g)).f t).hom (-(tateNormHomotopy ψ (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map μ) rfl e z w)) = -(tateNormHomotopy ψ (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map (μ ≫ g)) rfl e z w)`. Rewrite using `[map_neg]`. Conclude with `congrArg Neg.neg (cochainsMap_normHomotopy _ _ _ _ _)`. Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨r + s, by omega⟩`. Express the relevant statement in the definitionally equal form `((tateLocalMap (fun v => (Rep.resFunctor (φ v).toMonoidHom).map g) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map g)).f m).hom ((tateLocalCup φ ψ (fun v => (Rep.resFunctor (φ v).toMonoidHom).map μ) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map μ)).μ (show r + s = m by omega) …`.
-
-Rewrite using `[add_zero, add_zero]`. Use `Prod.ext (funext fun v => ?_) (funext fun w => ?_)` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Both sides reduce to the same expression. Apply `cochainOf_injective` to reduce the goal to its premises.
-
-Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tateCompactCochainsResMap_cup (μ : A ⊗ B ⟶ C) (g : C ⟶ C') {r s n : ℕ} (h : r + s = n)
     (p : (tateCompactCochains φ ψ A (fun v => Rep.res (φ v).toMonoidHom A) (fun _ => 𝟙 _)
@@ -214,7 +208,7 @@ theorem tateCompactCochainsResMap_cup (μ : A ⊗ B ⟶ C) (g : C ⟶ C') {r s n
         rfl
 
 /- English proof (translation)
-Establish `e` using `LeibnizPairing.homologyMap_homology_of_comm (tateCompactCupResLeibniz φ ψ μ) (tateCompactCupResLeibniz φ ψ (μ ≫ g)) (𝟙 _) (tateCompactCochainsResMap φ ψ g) (fun h p z => tateCompactCochainsResMap_cup φ ψ μ g h p z) h x z`. Rewrite `e` using `[HomologicalComplex.homologyMap_id]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCompactCohomologyResMap_tateCompactCupRes (μ : A ⊗ B ⟶ C) (g : C ⟶ C') {r s n : ℕ}
     (h : r + s = n) (x : tateCompactCohomologyRes φ ψ A r) (z : cohomology B s) :

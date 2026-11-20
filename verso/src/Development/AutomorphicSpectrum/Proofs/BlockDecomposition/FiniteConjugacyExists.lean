@@ -22,13 +22,13 @@ def cj (v : PlF E) : Av v →+* Av v :=
     (Pi.evalRingHom (fun u : Above v => u.1.adicCompletion E) (conjAbove w))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (conjLoc_spec (IsCMField.complexConj E).toRingEquiv w.1).1.comp (continuous_apply (conjAbove w))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cj (v : PlF E) : Continuous (cj v) :=
   continuous_pi fun w => (conjLoc_spec (IsCMField.complexConj E).toRingEquiv w.1).1.comp (continuous_apply (conjAbove w))
 
 /- English proof (translation)
-The claim follows from `funext fun _ => pLoc_conjFin _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem projv_conjFin (v : PlF E) (x : Af E) :
     projv v (conjFin (IsCMField.complexConj E).toRingEquiv x) = cj v (projv v x) :=
@@ -37,7 +37,7 @@ theorem projv_conjFin (v : PlF E) (x : Af E) :
 end GlobalTheory.CompanionTheory.CjEx
 
 /- English proof (translation)
-Introduce `_ _ _ _ v` and use `⟨GlobalTheory.CompanionTheory.CjEx.cj v, GlobalTheory.CompanionTheory.CjEx.continuous_cj v, GlobalTheory.CompanionTheory.CjEx.projv_conjFin v⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.CjEx.cjEx : PositivityTheory.Rg.BcB.G8.Fin.CjEx := fun _ _ _ _ v =>
   ⟨GlobalTheory.CompanionTheory.CjEx.cj v, GlobalTheory.CompanionTheory.CjEx.continuous_cj v, GlobalTheory.CompanionTheory.CjEx.projv_conjFin v⟩

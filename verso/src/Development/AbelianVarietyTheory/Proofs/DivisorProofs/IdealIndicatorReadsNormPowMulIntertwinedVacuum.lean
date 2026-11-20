@@ -37,7 +37,7 @@ abbrev stdMat (D : D7) (a d : ℕ) : AddSubgroup (Matrix (Fin d) (Fin a) D.host.
 
 open GlobalTheory.IndefiniteRowSideFullHecke.PolarLatticePairs GlobalTheory.ThetaLatticePoints GlobalTheory.MatrixLatticeIndex GlobalTheory.NormSum.MovedLattice in
 /- English proof (translation)
-Establish `hcoef : coefLat D ⊤ = (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E)`. Rewrite using `[coefLat_eq, ext, Ideal.map_top, FractionalIdeal.coeIdeal_top, one_mul]`. Rewrite using `[La0_eq_map, lat0, hcoef]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem La0_eq (δ : ℂ) (a d : ℕ) : La0 D (tor0 D ⊤ δ) a d = (stdMat D a d).map (ptHom D ⊤ δ a d) := by
   have hcoef : coefLat D ⊤ = (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) := by
@@ -45,14 +45,14 @@ theorem La0_eq (δ : ℂ) (a d : ℕ) : La0 D (tor0 D ⊤ δ) a d = (stdMat D a 
   rw [La0_eq_map, lat0, hcoef]
 
 /- English proof (translation)
-Introduce `i j` and use `Submodule.smul_mem _ c (hz i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_skewMat {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} (c : 𝓞 D.host.E) {z : Matrix (Fin d) (Fin a) D.host.E}
     (hz : z ∈ skewMat D 𝔪 a d) : (c : D.host.E) • z ∈ skewMat D 𝔪 a d := fun i j =>
   Submodule.smul_mem _ c (hz i j)
 
 /- English proof (translation)
-Introduce `i j` and use `by have hn0 := GlobalTheory.SkewLatSelfDual.coe_ne_zero (GlobalTheory.SkewLatSelfDual.conj_smul_ne_bot h𝔪) have h2 := FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_coeIdeal_of_mem (𝓞 D.host.E)⁰ (P := D.host.E) hc) (hz i j) rw [mul_left_comm, skewEnt, mul_div_cancel₀ _ hn0] at …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_stdMat {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ} {c : 𝓞 D.host.E} (hc : c ∈ D.host.conj • 𝔪)
     {z : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ skewMat D 𝔪 a d) : (c : D.host.E) • z ∈ stdMat D a d := fun i j => by
@@ -64,7 +64,7 @@ theorem smul_mem_stdMat {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a
   exact h3 h2
 
 /- English proof (translation)
-The claim follows from `Or.inr ⟨_, _, GlobalTheory.NormSum.VacMove.sd_of_moves (GlobalTheory.NormSum.VacMove.moves_one D a), GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 d, rfl⟩`.
+Prove the second alternative.
 -/
 theorem klat_skew (δ : ℂ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) (a d : ℕ) :
     KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)) :=
@@ -72,7 +72,7 @@ theorem klat_skew (δ : ℂ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ �
     GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 d, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SkewIndex.La_skew_eq_map]`. Conclude with `⟨z, hz, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pt_mem (δ : ℂ) {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} {z : Matrix (Fin d) (Fin a) D.host.E}
     (hz : z ∈ skewMat D 𝔪 a d) : pt D (tor0 D ⊤ δ) δ z ∈ La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) := by
@@ -80,7 +80,7 @@ theorem pt_mem (δ : ℂ) {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} {z : Matrix
   exact ⟨z, hz, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[ee, ← Complex.exp_int_mul_two_pi_mul_I m]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ee_int (m : ℤ) : ee (m : ℝ) = 1 := by
   rw [ee, ← Complex.exp_int_mul_two_pi_mul_I m]
@@ -89,9 +89,9 @@ theorem ee_int (m : ℤ) : ee (m : ℝ) = 1 := by
   ring
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨w, -, hw⟩` from `GlobalTheory.FinWeil.WdCocycle.wd_cocycle D h1 ⊤ δ hc`. Take `⟨m, hm⟩` from `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.1 _ (pt_mem δ (smul_mem_skewMat w hz)) _ (pt_mem δ hy)`. Establish `h2` using `(hw a d ((w : D.host.E) • z) y).1`. Rewrite `h2` using `[hm, ← Int.cast_neg, ee_int]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[(hw a d z y).2.2 F]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h2`. Rewrite using `[← h2, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem wd_pt_mul {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ}
     {z y : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ skewMat D 𝔪 a d) (hy : y ∈ skewMat D 𝔪 a d) (F : VC D a d → ℂ) :
@@ -108,17 +108,17 @@ theorem wd_pt_mul {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)} 
   rw [← h2, one_smul]
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hq` using `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ (klat_skew δ h𝔪 a d)).2.2.2.2.2.2`. Take `⟨n1, hn1⟩` from `hq _ (pt_mem δ (smul_mem_skewMat (k + 1) hz))`. Take `⟨n2, hn2⟩` from `hq _ (pt_mem δ (smul_mem_skewMat k hz))`. Take `⟨n3, hn3⟩` from `hq _ (pt_mem δ hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hk : D.host.conj (k : D.host.E) = k`. Use `congrArg D.host.conj hm` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, GlobalTheory.NormSum.VacMove.conj_conj, mul_comm, hm, map_ofNat]`. Conclude with `(mul_left_cancel₀ (by norm_num) this).symm`. Establish `key : Hf D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) = 2 * (Hf D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (((k + 1 : 𝓞 D.host.E) : D.host.E) • z)) (pt D (tor0 D ⊤ δ) δ (((k + 1 : 𝓞 D.host.E) : D.host.E) • z)) - Hf D (tor0 D ⊤ δ) ( …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : ∀ c : D.host.E, ∑ i, ∑ j, (c • z) i j * D.host.conj ((c • z) i j) = c * D.host.conj c * ∑ i, ∑ j, z i j * D.host.conj (z i j)` using `fun c => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `hk1 : ((k + 1 : 𝓞 D.host.E) : D.host.E) = (k : D.host.E) + 1` using `rfl`. Simplify using `only [GlobalTheory.FinWeil.WdCocycle.hf_pt, hs, hm, hk1, map_add D.host.conj, map_one, hk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(∑ i, ∑ j, z i j * D.host.conj (z i j)) = c`. Rewrite using `[← mul_sub, ← mul_sub, mul_left_comm (2 : ℂ), ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib, Finset.mul_sum (a := (2 : ℂ))]`. Use `congr 1`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [map_mul, map_add, map_one, map_ofNat]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2 : qH D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) / 2 = ((n1 - n2 - n3 : ℤ) : ℝ)`. Use `push_cast`. Rewrite using `[← hn1, ← hn2, ← hn3, qH, qH, qH, qH, key]`. Simplify using `only [Complex.mul_re, Complex.sub_re, Complex.re_ofNat, Complex.im_ofNat]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[wdPh, h2, ee_int]`.
+A detailed English derivation is pending.
 -/
 theorem wdPh_eq_one {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ}
     {z : Matrix (Fin d) (Fin a) D.host.E} (hz : z ∈ skewMat D 𝔪 a d) {m k : 𝓞 D.host.E}
@@ -159,13 +159,11 @@ theorem wdPh_eq_one {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)
   rw [wdPh, h2, ee_int]
 
 /- English proof (translation)
-Use `set q₀ : B ⧸ A.addSubgroupOf B := QuotientAddGroup.mk ⟨p z₀, hz₀⟩ with hq₀`. Establish `h1 : ∀ q, g (z (q + q₀)) = g (z q) * g z₀` using `fun q => by`. Establish `h2 : (QuotientAddGroup.mk (Quotient.out q + ⟨p z₀, hz₀⟩) : B ⧸ A.addSubgroupOf B) = QuotientAddGroup.mk (Quotient.out (q + q₀))`. Rewrite using `[QuotientAddGroup.mk_add, QuotientAddGroup.out_eq', QuotientAddGroup.out_eq']`. Rewrite `h2` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy, hye⟩` from `hA h2`. Establish `h3 : z (q + q₀) = z q + z₀ + y`. Apply `hp` to reduce the goal to its premises. Rewrite using `[map_add, map_add, hye, hz, hz]`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[h3, hg, hg, h0 y hy, mul_one]`. Establish `h4 : ∑ q, g (z q) = (∑ q, g (z q)) * g z₀`. Rewrite using `[Finset.sum_mul, ← Equiv.sum_comp (Equiv.addRight q₀)]`. Conclude with `Finset.sum_congr rfl fun q _ => h1 q`.
-
-Establish `h5 : (∑ q, g (z q)) * (1 - g z₀) = 0` using `by linear_combination h4`. Conclude with `(mul_eq_zero.1 h5).resolve_right (sub_ne_zero.2 hne.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem char_sum {M V : Type} [AddCommGroup M] [AddCommGroup V] (p : M →+ V) (hp : Function.Injective p)
     (Y₀ : AddSubgroup M) (A B : AddSubgroup V) (hA : A ≤ Y₀.map p) [Fintype (B ⧸ A.addSubgroupOf B)]
@@ -194,7 +192,7 @@ theorem char_sum {M V : Type} [AddCommGroup M] [AddCommGroup V] (p : M →+ V) (
 variable {S T : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {δ : ℂ}
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pairA D.host.F 0 1 ⊗ₜ[D.host.F] (-((1 : D.host.E)⁻¹ * z i j)) = pairA D.host.F 0 1 ⊗ₜ[D.host.F] (-(z i j))`. Rewrite using `[inv_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPt_eq (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     finPt (rfl : S.rank = S.rank) (rfl : T.rank = T.rank) 1 z = finTens 1 (-z) := by
@@ -203,7 +201,7 @@ theorem finPt_eq (z : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
   rw [inv_one, one_mul]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ((1 : AF D.host.F) ⊗ₜ[D.host.F] c) * (pairA D.host.F 0 1 ⊗ₜ[D.host.F] z i j)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finTens_smul {m n : ℕ} (c : D.host.E) (z : Matrix (Fin m) (Fin n) D.host.E) :
     finTens 1 (c • z) = incA D c • finTens 1 z := by
@@ -213,7 +211,7 @@ theorem finTens_smul {m n : ℕ} (c : D.host.E) (z : Matrix (Fin m) (Fin n) D.ho
   rfl
 
 /- English proof (translation)
-The claim follows from `finTens_mem_latO (one_mem_intAf _) ((mem_latRat_iff hc hS mem_stdL z).2 fun i j => by rw [mul_one]; exact hz i j)`.
+A detailed English derivation is pending.
 -/
 theorem finTens_mem_std (hc : D.host.ccK = ⊤) (hS : S.gram = 1) {z : Matrix (Fin T.rank) (Fin S.rank) D.host.E}
     (hz : z ∈ stdMat D S.rank T.rank) : finTens 1 z ∈ latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E))
@@ -221,7 +219,7 @@ theorem finTens_mem_std (hc : D.host.ccK = ⊤) (hS : S.gram = 1) {z : Matrix (F
   finTens_mem_latO (one_mem_intAf _) ((mem_latRat_iff hc hS mem_stdL z).2 fun i j => by rw [mul_one]; exact hz i j)
 
 /- English proof (translation)
-The claim follows from `isSelfDualC_of_sd hV (GlobalTheory.NormSum.VacMove.sd_of_moves (GlobalTheory.NormSum.VacMove.moves_one D _))`.
+A detailed English derivation is pending.
 -/
 theorem sdC_std {V : HSp D} (hV : V.gram = 1) : IsSelfDualC V (stdL D V.rank) :=
   isSelfDualC_of_sd hV (GlobalTheory.NormSum.VacMove.sd_of_moves (GlobalTheory.NormSum.VacMove.moves_one D _))
@@ -229,35 +227,33 @@ theorem sdC_std {V : HSp D} (hV : V.gram = 1) : IsSelfDualC V (stdL D V.rank) :=
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `h𝔪` using `h.ne_bot`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Take `⟨n, hn⟩ : ∃ n, n = Ideal.absNorm 𝔪` from `⟨_, rfl⟩`. Establish `hn0 : 0 < n` using `hn ▸ Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)`. Establish `hnm : (n : 𝓞 D.host.E) ∈ 𝔪` using `hn ▸ Ideal.absNorm_mem 𝔪`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnc : (n : 𝓞 D.host.E) ∈ D.host.conj • 𝔪`. Use `starO_mem_conj hnm` as an intermediate fact. Rewrite `this` using `[show starO (n : 𝓞 D.host.E) = n from map_natCast Formalism.L2.DIV.starOHom n]`. Then use the resulting hypothesis. Take `⟨μ, s, hsi, hμ, hμ1, k, hk⟩` from `exists_near_idem h (N := 2 * (2 * n * n)) (by positivity) (by push_cast; exact Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hnm))`. Establish `hm1` using `starO_mem_conj hμ1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hm1` using `[starO_one_sub]`. Take `⟨m, hm⟩ : ∃ m, m = starO μ` from `⟨_, rfl⟩`. Rewrite `hm1`, `hk` using `[← hm]`. Establish `hmc : D.host.conj (m : D.host.E) = μ`. Rewrite using `[hm, starO_coe, ← GlobalTheory.SkewLatSelfDual.star_eq_conj, star_star]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmm : (m : D.host.E) * D.host.conj m = 4 * ((n * n * k : 𝓞 D.host.E) : D.host.E)`. Use `congrArg (algebraMap (𝓞 D.host.E) D.host.E) hk` as an intermediate fact. Simplify using `only [map_mul, map_natCast] at this`. Rewrite using `[hmc]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 D.host.E) D.host.E m * algebraMap (𝓞 D.host.E) D.host.E μ = 4 * algebraMap (𝓞 D.host.E) D.host.E _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_mul, map_natCast]`. Rewrite using `[mul_comm, this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `k0 : KLat D (tor0 D ⊤ δ) (La0 D (tor0 D ⊤ δ) S.rank T.rank)` using `GlobalTheory.NormSum.VacMove.klat _ (GlobalTheory.NormSum.VacMove.moves_one D _) (GlobalTheory.NormSum.VacMove.moves_one D _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hfix : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (((1 - m : 𝓞 D.host.E) : D.host.E) • z)) G = G` using `GlobalTheory.NormSum.VacMove.wd_fix h1 hs.crv k0 hG (by rw [La0_eq]; exact ⟨_, smul_mem_stdMat h𝔪 hm1 hz, rfl⟩)`. Establish `hW` using `wd_pt_mul hs.crv h𝔪 (smul_mem_skewMat m hz) (smul_mem_skewMat (1 - m) hz) G`. Establish `hsum : (m : D.host.E) • z + ((1 - m : 𝓞 D.host.E) : D.host.E) • z = z`. Rewrite using `[← add_smul, show ((1 - m : 𝓞 D.host.E) : D.host.E) = 1 - (m : D.host.E) from rfl, add_sub_cancel, one_smul]`. Rewrite `hW` using `[hfix, hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hU : Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) G = U D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ ((m : D.host.E) • z)) G`. Use function extensionality and compare the values at `y`. Rewrite using `[Wd, wdPh_eq_one hs.crv h𝔪 hz hmm, one_mul]`. Establish `hR` using `GlobalTheory.NormExact.heisO_finPt_reads ψ θ S T rfl rfl ⊤ δ 1 hs G v hr ((m : D.host.E) • z)`. Rewrite using `[← hW, hU]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hR using 1` and compare the differences between its conclusion and the goal. Rewrite using `[finPt_eq, ← smul_neg, finTens_smul]`. Establish `hnu : ∀ c : ℕ, (c * n) • finTens 1 (-z) ∈ latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True` using `fun c => by`. Use `finTens_mem_std hc hs.gS (smul_mem_stdMat h𝔪 hnc (neg_mem hz))` as an intermediate fact. Rewrite `this` using `[finTens_smul, show ((n : 𝓞 D.host.E) : D.host.E) = n from rfl, map_natCast, Nat.cast_smul_eq_nsmul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_smul]`. Conclude with `nsmul_mem this c`. Establish `hu0 : ∀ i j, infPart D (finTens 1 (-z) i j) = 0` using `fun i j => infPart_pair _ _`. Generalize the expression as in `finTens 1 (-z) = u at hnu hu0 ⊢`. Establish `hcs : finPart D (cA D s) ∈ intAE D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.IndefR.Fin.finPart_cA]`. Conclude with `Formalism.IndefR.Fin.cF_int hsi`. Establish `hce : finPart D (cA D e) ∈ intAE D`. Take `⟨SS, c, he, -⟩` from `h`. Rewrite using `[Formalism.IndefR.Fin.finPart_cA]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.IndefR.Fin.cF_int (GlobalTheory.PlaceDatum.finPart_mem_of_toEAf (GlobalTheory.IdemSumIdeal.isIdemSum_props e SS c he).2.1)`. Establish `h4 : finPart D (incA D (m : D.host.E)) = finPart D (cA D e + ((2 * (2 * n * n) : ℕ) : AE D) * cA D s)`. Rewrite using `[hm, starO_coe, ← GlobalTheory.DualPairCheck.cA_incA, Formalism.IndefR.Fin.finPart_cA, hμ, ← Formalism.IndefR.Fin.finPart_cA, RingHom.map_add (cA D), RingHom.map_mul (cA D), map_natCast (cA D)]`. Establish `hl` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hcs _ (hnu 1)`. Establish `hx` using `GlobalTheory.LatticeStable.smul_mem_latO D S T _ _ _ _ hce _ (hnu 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h5 : incA D (m : D.host.E) • u = cA D e • u + 2 • ((2 * n) • (cA D s • ((1 * n) • u)))`. Use `Matrix.ext fun i j => GlobalTheory.SplitScalar.adele_ext ?_ ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, RingHom.map_add, RingHom.map_mul, hu0, mul_zero, add_zero]`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, nsmul_eq_mul, RingHom.map_add, RingHom.map_mul, h4, map_natCast]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h6` using `heisO_heisO ψ (cA D e • u) (2 • ((2 * n) • (cA D s • ((1 * n) • u)))) v`. Rewrite `h6` using `[hv.1 _ (nsmul_mem hl _), ← h5]`. Establish `h7 : ψ (symplOH S T (cA D e • u) (2 • ((2 * n) • (cA D s • ((1 * n) • u))))) = 1`. Establish `h8 : ∀ x w : WO S T, symplOH S T x (2 • w) = symplO S T x w` using `fun x w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[two_nsmul, symplOH, symplO_add_right, mul_add, ← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]`. Rewrite using `[h8]`. Use `((GlobalTheory.PlaceModel.isBichar_symplO S T ψ).nsmul (2 * n) _ _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← smul_comm]`. Conclude with `char_sympl_eq_one hs.std (sdC_std hs.gS) (sdC_std hs.gT) hx hl`.
-
-Rewrite using `[h6, h7, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_reads (hc : D.host.ccK = ⊤) (hs : Setup ψ θ S T ⊤ δ 1) {v : WO S T → ℂ}
     (hv : IsLatVac (heisO ψ S T) (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E))
@@ -350,21 +346,19 @@ theorem term_reads (hc : D.host.ccK = ⊤) (hs : Setup ψ θ S T ⊤ δ 1) {v : 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `h𝔪` using `h.ne_bot`. Establish `hn0` using `GlobalTheory.SkewLatSelfDual.coe_ne_zero (GlobalTheory.SkewLatSelfDual.conj_smul_ne_bot h𝔪)`. Establish `hcos : cosInd e 𝔪 rfl rfl 0 t = if IsHalf e t ∧ ∀ i j, toEAf D (t i j) ∈ idGrp 𝔪 then 1 else 0`. Simplify using `only [cosInd, Matrix.zero_apply, RingHom.map_zero, mul_zero, sub_zero, inId_iff]`. Rewrite using `[hcos, ← Finset.sum_mul, halfInd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ht : IsHalf e t`. Use `swap`. Rewrite using `[if_neg fun hh => ht hh.2, if_neg fun hh => ht hh.1, mul_zero, mul_zero]`. Establish `h0 : ∀ i j, infPart D (t i j) = 0` using `fun i j => by`. Take `⟨SS, c, he, -⟩` from `h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht i j, RingHom.map_mul, (GlobalTheory.IdemSumIdeal.isIdemSum_props e SS c he).1, zero_mul]`. Establish `hsym : ∀ y, symplO S T t (cA D e • y) = symplO S T t y` using `fun y => by`. Rewrite using `[← GlobalTheory.PlaceModel.symplO_smul, show e • t = t from Matrix.ext ht]`. Simplify using `only [hsym]`. Establish `hsk` using `isSelfDualC_of_sd hs.gT (GlobalTheory.SkewLatSelfDual.skewLat_SD h𝔪 T.rank)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrat` using `mem_latRat_iff (S := S) (T := T) hc hs.gS (GlobalTheory.SkewLatSelfDual.mem_skewLat (𝔪 := 𝔪))`. Distinguish the cases in `hI : ∀ i j, toEAf D (t i j) ∈ idGrp 𝔪`. Establish `h1` using `mem_of_inId hc hs.gS mem_stdL FractionalIdeal.coeIdeal_le_one h0 hI`. Establish `h2` using `mem_of_inId hc hs.gS (GlobalTheory.SkewLatSelfDual.mem_skewLat (𝔪 := 𝔪)) (by`. Rewrite using `[FractionalIdeal.le_div_iff_mul_le hn0]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using mul_le_mul' (le_refl (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)) (FractionalIdeal.coeIdeal_le_one (I := D.host.conj • 𝔪))) h0 hI`. Rewrite using `[if_pos ⟨h1, ht⟩, if_pos ⟨ht, hI⟩, Finset.sum_congr rfl fun q _ => char_sympl_eq_one hs.std (sdC_std hs.gS) hsk h2 (finTens_mem_latO (one_mem_intAf _) ((hrat _).2 (neg_mem (hz q))))]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (fun hh => hI hh.2 : ¬ (IsHalf e t ∧ ∀ i j, toEAf D (t i j) ∈ idGrp 𝔪)), mul_zero] split_ifs with h1 swap`. Conclude with `mul_zero _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_one]`. Establish `h2 : ¬ ∀ ℓ ∈ latRat S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (skewLat D 𝔪 T.rank : Set (Fin T.rank → D.host.E)), ψ (symplO S T t (finTens 1 ℓ)) = 1` using `fun hh => hI fun i j => by`. Use `inId_of_mem hc hs.gS h (mem_of_char_rat hs.std (sdC_std hs.gS) hsk h0 hh) i j` as an intermediate fact. Rewrite `this` using `[ht i j]`. Then use the resulting hypothesis. Use `push Not at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ℓ, hℓ, hne⟩` from `h2`. Establish `hℓ' : ℓ ∈ skewMat D 𝔪 S.rank T.rank` using `(hrat _).1 hℓ`. Use `char_sum (ptHom D ⊤ δ S.rank T.rank) (GlobalTheory.ThetaLatticePoints.ptHom_injective D ⊤ (GlobalTheory.NormExact.delta_ne_zero hs.crv) _ _) _ A B hA.le z hz' (fun x => ψ (symplO S T t (finTens 1 (-x)))) (fun x y => ?_) (fun x hx => ?_) (z₀ := -ℓ) ?_ (by rwa [neg_neg])` and prove the remaining obligations. Rewrite using `[neg_add, finTens_add, symplO_add_right, ψ.map_add_eq_mul]`. Conclude with `char_sympl_eq_one hs.std (sdC_std hs.gS) (sdC_std hs.gT) h1.1 (finTens_mem_std hc hs.gS (neg_mem hx))`.
-
-Rewrite using `[hB]`. Conclude with `⟨_, neg_mem hℓ', rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sum_char (hc : D.host.ccK = ⊤) (hs : Setup ψ θ S T ⊤ δ 1) {e : AE D} {𝔪 : Ideal (𝓞 D.host.E)} (h : GoodMod e 𝔪)
     (A B : AddSubgroup (VC D S.rank T.rank)) (hA : A = (stdMat D S.rank T.rank).map (ptHom D ⊤ δ S.rank T.rank))
@@ -421,7 +415,7 @@ theorem sum_char (hc : D.host.ccK = ⊤) (hs : Setup ψ θ S T ⊤ δ 1) {e : AE
       exact ⟨_, neg_mem hℓ', rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h₀.smul 0`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi]`. Conclude with `(h i).add ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reads_sum {ι : Type} (s : Finset ι) {a d : ℕ} {hS : S.rank = a} {hT : T.rank = d} (G : ι → VC D a d → ℂ)
     (f : ι → WO S T → ℂ) {G₀ : VC D a d → ℂ} {f₀ : WO S T → ℂ} (h₀ : Reads ψ θ hS hT ⊤ δ 1 G₀ f₀)
@@ -433,27 +427,25 @@ theorem reads_sum {ι : Type} (s : Finset ι) {a d : ℕ} {hS : S.rank = a} {hT 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D ψ θ S T a d hS hT δ hc hs v hv G hG hr e 𝔪 h Tm hTm`. Substitute `hS hT` using the available equality. Establish `h𝔪` using `h.ne_bot`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `hidx` using `GlobalTheory.SkewIndex.index_inter_skew D δ hs.crv 𝔪 h𝔪 (coprime_conj h) S.rank T.rank`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `GlobalTheory.SkewIndex.La_skew_eq_map D δ 𝔪 S.rank T.rank`. Establish `hA` using `La0_eq (D := D) δ S.rank T.rank`. Establish `hW` using `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hs.crv _ _ _ (klat_skew δ h𝔪 S.rank T.rank)).2.1`. Establish `hn : 0 < Ideal.absNorm 𝔪 ^ (S.rank * T.rank)` using `pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 h𝔪)) _`. Rewrite using `[cosV, GlobalTheory.NormSum.VacMove.pt_zero, GlobalTheory.NormSum.VacMove.wd_zero, ← Nat.cast_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `La0 D (tor0 D ⊤ δ) S.rank T.rank = A at hidx hA ⊢`. Generalize the expression as in `La D (tor0 D ⊤ δ) (stdL D S.rank) (skewLat D 𝔪 T.rank) = B at hidx hB hW ⊢`. Generalize the expression as in `Ideal.absNorm 𝔪 ^ (S.rank * T.rank) = n at hidx hn ⊢`. Use `haveI : Finite (B ⧸ A.addSubgroupOf B) := Nat.finite_of_card_ne_zero (by`. Express the relevant statement in the definitionally equal form `(A.addSubgroupOf B).index ≠ 0`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hidx]`. Conclude with `hn.ne')`. Use `haveI := Fintype.ofFinite (B ⧸ A.addSubgroupOf B)`. Establish `hcard : Fintype.card (B ⧸ A.addSubgroupOf B) = n` using `by rw [← hidx, AddSubgroup.index, Nat.card_eq_fintype_card]`. Use `choose z hz hz' using fun q : B ⧸ A.addSubgroupOf B => hB.le (Quotient.out q : B).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hee : cA D e * cA D e = cA D e`. Take `⟨SS, c, he, -⟩` from `h`. Rewrite using `[← RingHom.map_mul, GlobalTheory.PlaceDatum.idemSum_mul_self he]`. Establish `hSB : IsSBHalf e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) (halfInd e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True))`. Use `⟨fun t ht => ?_, 1, one_pos, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hh`. Conclude with `ht (if_neg fun h' => hh h'.2)`. Establish `: IsHalf e (t + u) ↔ IsHalf e t`. Rewrite using `[GlobalTheory.PlaceModel.isHalf_iff, GlobalTheory.PlaceModel.isHalf_iff]`. Conclude with `add_mem_cancel_right ((GlobalTheory.PlaceModel.isHalf_iff S T).1 hue)`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [one_smul, halfInd, add_mem_cancel_right hu, this]`. Rewrite using `[one_smul]`. Assume the negation of the conclusion as `hh`. Conclude with `ht (if_neg fun h' => hh h'.1)`. Establish `hvac` using `hTm.vac`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hvac` using `[one_smul]`. Establish `hsum` using `reads_sum Finset.univ _ _ hr fun q => term_reads hc hs hv.2.lat hG hr h (hz q)`. Establish `hT : ∑ q, heisO ψ S T (cA D e • finTens 1 (-z q)) v = (n : ℂ) • Tm (cosInd e 𝔪 rfl rfl 0)`. Rewrite using `[← map_smul, ← hcard, show (Fintype.card (B ⧸ A.addSubgroupOf B) : ℂ) • cosInd e 𝔪 rfl rfl 0 = ∑ q, fun t => ψ (symplO S T t (cA D e • finTens 1 (-z q))) * halfInd e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => Tru …`. Use function extensionality and compare the values at `fun t => by rw [Finset.sum_apply]; exact (sum_char hc hs h A B hA hB z hz hz' t).symm, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[hTm.modul _ hSB _ fun i j => by rw [Matrix.smul_apply, smul_eq_mul, ← mul_assoc, hee], hvac]`. Rewrite `hsum` using `[hT]`. Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `h2` using `hsum.smul (n : ℂ)⁻¹`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hn', one_smul]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Establish `hsq : ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ * ((Real.sqrt (n : ℝ) : ℝ) : ℂ)⁻¹ = (n : ℂ)⁻¹`. Rewrite using `[← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg n), Complex.ofReal_natCast]`.
-
-Simplify using `only [Iop, hidx, Pi.smul_apply, smul_eq_mul, finsum_eq_sum_of_fintype, Finset.sum_apply]`. Rewrite using `[← mul_assoc, hsq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.ThetaLatticePoints.ptHom_apply, hz', hW _ (Quotient.out q : B).2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indicator_reads : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) {a d : ℕ} (hS : S.rank = a) (hT : T.rank = d) (δ : ℂ),
   D.host.ccK = ⊤ → Setup ψ θ S T ⊤ δ 1 → ∀ v : WO S T → ℂ, IsVacO ψ θ S T (fun _ => 1) (fun _ => 1) (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) v →

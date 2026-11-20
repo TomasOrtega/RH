@@ -16,7 +16,7 @@ namespace Formalism.L2.SG.Pf
 open Formalism.L2.SG.SplitPrimeNormLemmas Formalism.L2.SG.Pf.WuDec
 
 /- English proof (translation)
-Introduce `k r ε lam H _ _ σ z c u Wp _ _ π hl hds hz hT hc hπ B1 B2 h1 h2`. Establish `h1'` using `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff z _ σ π B1).1 h1`. Establish `h2'` using `(Formalism.MainNotions.BridgeCS3d.isBesselMapSm_iff z _ σ π B2).1 h2`. Take `⟨a, b, hab, hlin⟩` from `h k r ε lam H σ z c u Wp π hl hds hz hT hc hπ B1 B2 h1' h2'`. Conclude with `⟨a, b, hab, fun v hv => hlin v hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem besselMultOne_of_uniq (h : PI.BesselMapUniq.BesselMapUniq) : Formalism.L2.SG.LitS.BesselMultOne := by
   intro k r ε lam H _ _ σ z c u Wp _ _ π hl hds hz hT hc hπ B1 B2 h1 h2
@@ -28,7 +28,7 @@ theorem besselMultOne_of_uniq (h : PI.BesselMapUniq.BesselMapUniq) : Formalism.L
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `wuDecay_of_gap Formalism.L2.SG.Closed.BesselNVGap_holds Formalism.L2.SG.Closed.CoefWeightedLoc_holds Formalism.L2.SG.Closed.WlocExists_holds (Formalism.MainNotions.BridgeCS3dBOW.besselOfW_of_local_decomposition hDI hMU) (besselMultOne_of_uniq hMU) hQK hHN hNU hS hU`.
+A detailed English derivation is pending.
 -/
 theorem wuDecay_of_gap_closed (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hMU : PI.BesselMapUniq.BesselMapUniq)
     (hQK : Formalism.L2.SG.Pf.WFL.QuotProdK) (hHN : Formalism.L2.SG.Pf.WFL.LocHNProps) (hNU : Formalism.L2.SG.Pf.WFL.NUnimodLoc)
@@ -40,7 +40,7 @@ theorem wuDecay_of_gap_closed (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecI
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `wuDecay_of_gap_closed hDI hMU Formalism.L2.SG.Closed.QuotProdK_holds Formalism.L2.SG.Pf.WFL.locHNProps_holds Formalism.L2.SG.Closed.NUnimodLoc_holds hS hU`.
+A detailed English derivation is pending.
 -/
 theorem bessel_decay_of_gap (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hMU : PI.BesselMapUniq.BesselMapUniq)
     (hS : LocScalarStep) (hU : LocUniqStep) : WuDecayOfGap :=
@@ -50,7 +50,7 @@ theorem bessel_decay_of_gap (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `bessel_decay_of_gap hDI hMU hS local_uniqueness_reduction`.
+A detailed English derivation is pending.
 -/
 theorem wuDecay_of_gap_scalar (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecInf) (hMU : PI.BesselMapUniq.BesselMapUniq)
     (hS : LocScalarStep) : WuDecayOfGap :=
@@ -59,7 +59,7 @@ theorem wuDecay_of_gap_scalar (hDI : Formalism.FourierDecayAlt.ThreeDimData.DecI
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `wuDecay_of_gap_scalar Formalism.L2.SG.BesselDiscreteSeries.decInf hMU hS`.
+A detailed English derivation is pending.
 -/
 theorem wuDecay_of_gap_jsz (hMU : PI.BesselMapUniq.BesselMapUniq) (hS : LocScalarStep) : WuDecayOfGap :=
   wuDecay_of_gap_scalar Formalism.L2.SG.BesselDiscreteSeries.decInf hMU hS
@@ -67,7 +67,7 @@ theorem wuDecay_of_gap_jsz (hMU : PI.BesselMapUniq.BesselMapUniq) (hS : LocScala
 variable [Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc] [Fact Formalism.L2.SG.SplitPrimeNormLemmas.BesselNVGap] [Fact Formalism.FourierDecayAlt.ThreeDimData.DecLow] in
 
 /- English proof (translation)
-The claim follows from `wuDecay_of_gap_jsz hMU local_scalar_reduction`.
+A detailed English derivation is pending.
 -/
 theorem wuDecayOfGap_of_jsz (hMU : PI.BesselMapUniq.BesselMapUniq) : WuDecayOfGap :=
   wuDecay_of_gap_jsz hMU local_scalar_reduction

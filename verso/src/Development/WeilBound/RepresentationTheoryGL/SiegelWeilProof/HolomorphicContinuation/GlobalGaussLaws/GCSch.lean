@@ -10,23 +10,23 @@ namespace PositivityTheory.Rg.Sw.Glob
 open GCSchH
 
 /- English proof (translation)
-Introduce `m n ε t c hc htc Z Z' hZ hZ'`. Use `set S := Finset.univ.filter (fun a => epsT t ε a = true) with hS`. Use `set S' := Finset.univ.filter (fun a => epsT t ε a = false) with hS'`. Use `set B := qB S S' c Z Z' with hB`. Establish `hgC : gC ε t c Z Z' = fun u => Complex.exp (-(B u u))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [gC, hB, qB_apply, qF, neg_neg, trace_gramB]`. Both sides reduce to the same expression. Establish `hP1 : ((-(Complex.I / 2)) • (Zᵀ - Zᵀᴴ)).PosDef`. Establish `h` using `hZ.transpose`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.transpose_smul, Matrix.transpose_sub, Matrix.conjTranspose_transpose]`. Then use the resulting hypothesis. Establish `hP2 : ((-(Complex.I / 2)) • (-Z'ᵀ - (-Z'ᵀ)ᴴ)).PosDef`. Establish `h` using `hZ'.transpose`. Unfold `IsSiegel at h`. Rewrite `h` using `[Matrix.conjTranspose_conjTranspose, Matrix.transpose_smul, Matrix.transpose_sub, Matrix.conjTranspose_transpose]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.conjTranspose_neg, sub_neg_eq_add, neg_add_eq_sub]` and apply the resulting hypothesis. Establish `hre : ∀ u : Fin m → Fin n → ℂ, (B u u).re = c * (∑ a ∈ S, (star (u a) ⬝ᵥ (((-(Complex.I / 2)) • (Zᵀ - Zᵀᴴ)) *ᵥ u a)).re + ∑ a ∈ S', (star (u a) ⬝ᵥ (((-(Complex.I / 2)) • (-Z'ᵀ - (-Z'ᵀ)ᴴ)) *ᵥ u a)).re)`. Introduce `u`. Rewrite using `[hB, qB_apply, qF, Complex.neg_re, Complex.sub_re, re_I_mul, re_I_mul, Complex.im_sum, Complex.im_sum]`. Establish `e2 : ∀ a, (star (u a) ⬝ᵥ (Z'ᵀ *ᵥ u a)).im = -(star (u a) ⬝ᵥ ((-Z'ᵀ) *ᵥ u a)).im`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `a`. Rewrite using `[Matrix.neg_mulVec, dotProduct_neg, Complex.neg_im, neg_neg]`. Simplify using `only [e2, Finset.sum_neg_distrib, im_quad]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : ∀ u : Fin m → Fin n → ℂ, u ≠ 0 → 0 < (B u u).re`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu`. Take `⟨a, ha⟩` from `Function.ne_iff.1 hu`. Rewrite using `[hre]`. Apply `mul_pos hc` to reduce the goal to its premises. Establish `n1 : 0 ≤ ∑ a ∈ S, (star (u a) ⬝ᵥ (((-(Complex.I / 2)) • (Zᵀ - Zᵀᴴ)) *ᵥ u a)).re` using `Finset.sum_nonneg fun a _ => quad_nonneg hP1 _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Establish an intermediate fact.
 
-Establish `n2 : 0 ≤ ∑ a ∈ S', (star (u a) ⬝ᵥ (((-(Complex.I / 2)) • (-Z'ᵀ - (-Z'ᵀ)ᴴ)) *ᵥ u a)).re` using `Finset.sum_nonneg fun a _ => quad_nonneg hP2 _`. Consider the cases of `hb : epsT t ε a`. Establish `haS : a ∈ S'` using `by simp [hS', hb]`. Establish `p2` using `Finset.sum_pos' (fun a _ => quad_nonneg hP2 (u a)) ⟨a, haS, quad_pos hP2 ha⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `haS : a ∈ S` using `by simp [hS, hb]`. Establish `p1` using `Finset.sum_pos' (fun a _ => quad_nonneg hP1 (u a)) ⟨a, haS, quad_pos hP1 ha⟩`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨κ, hκ, hco⟩` from `coercive_of_pos B hpos`. Take `⟨g, hg, -⟩` from `GlobalTheory.GaussComplexForm.exists_schwartz_cexp_neg_form _ B κ hκ hco`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[hgC]`. Use function extensionality and compare the values at `u`. Conclude with `hg u`.
+A detailed English derivation is pending.
 -/
 theorem gCSch : GCSch := by
   intro m n ε t c hc htc Z Z' hZ hZ'
@@ -79,7 +79,7 @@ theorem gCSch : GCSch := by
   exact hg u
 
 /- English proof (translation)
-Introduce `m n ε t c hc htc Z hZ`. Use `show IsSch (gC ε t c Z Zᴴ)`. Conclude with `gCSch m n ε t c hc htc Z Zᴴ hZ (by rw [Matrix.conjTranspose_conjTranspose]; exact hZ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gZSch : GZSch := by
   intro m n ε t c hc htc Z hZ

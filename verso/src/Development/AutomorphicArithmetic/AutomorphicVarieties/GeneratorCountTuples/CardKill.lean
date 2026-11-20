@@ -6,11 +6,11 @@ open scoped TensorProduct
 open GlobalTheory.TateLimit
 
 /- English proof (translation)
-Introduce `l _ X _ _ _ c Y hY`. Use `le_trans ?_ (UpperTheory.V.K.cardQuotPow l X c)` and prove the remaining obligations. Set `f : X →ₗ[ℤ_[l]] X` to `LinearMap.lsmul ℤ_[l] X ((l : ℤ_[l]) ^ c)`. Establish `hr : lpow l X c = LinearMap.range f` using `rfl`. Establish `hYk : Y ≤ LinearMap.ker f` using `fun y hy => hY y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Nat.card Y ≤ Nat.card (LinearMap.ker f)` using `Nat.card_le_card_of_injective (Submodule.inclusion hYk) (Submodule.inclusion_injective hYk)`. Establish `h2` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.ker f)`. Establish `h3` using `Submodule.card_eq_card_quotient_mul_card (LinearMap.range f)`. Establish `h4 : Nat.card (X ⧸ LinearMap.ker f) = Nat.card (LinearMap.range f)` using `Nat.card_congr f.quotKerEquivRange.toEquiv`. Establish `hpos : 0 < Nat.card (LinearMap.range f)` using `Nat.card_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `h1.trans (le_of_eq (Nat.eq_of_mul_eq_mul_left hpos ?_))` and prove the remaining obligations. Rewrite `h2` using `[h4]`. Rewrite using `[← h3, h2, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.K.cardKill :
     ∀ (l : ℕ) [Fact l.Prime] (X : Type) [AddCommGroup X] [Module ℤ_[l] X] [Finite X] (c : ℕ) (Y : Submodule ℤ_[l] X), (∀ y ∈ Y, (l : ℤ_[l]) ^ c • y = 0) → Nat.card Y ≤ Nat.card (X ⧸ lpow l X 1) ^ c := by

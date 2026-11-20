@@ -13,7 +13,7 @@ section ChirpQ
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem eval_map_hom {R S ι : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (p : MvPolynomial ι R) (v : ι → R) :
@@ -24,9 +24,7 @@ private theorem eval_map_hom {R S ι : Type*} [CommRing R] [CommRing S] (f : R �
   | mul_X p i hp => simp [hp]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simpa using continuous_const`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.add hq`. Consider the case `mul_X p i hp => simp only [map_mul, MvPolynomial.eval_X]`.
-
-Conclude with `hp.mul (continuous_apply i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem continuous_eval_poly {R ι : Type*} [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] (p : MvPolynomial ι R) :
@@ -42,9 +40,9 @@ private noncomputable def lT : mixedEmbedding.mixedSpace F →L[ℝ] ℝ :=
   LinearMap.toContinuousLinearMap (-((mixedTraceForm F).flip 1))
 
 /- English proof (translation)
-Establish `h` using `adelicChar_mul_eq (K := F) x 1`. Rewrite `h` using `[mul_one]`. Establish `h1 : homeomorphMixedSpace F (1 : A F).1 = 1`. Conclude with `map_one (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Rewrite `h` using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : x.2 * (1 : A F).2 = adeleFinHom x`. Express the relevant statement in the definitionally equal form `x.2 * 1 = x.2`. Rewrite using `[mul_one]`. Rewrite `h` using `[h2]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem psi_split (x : A F) :
     ψ x = ((Real.fourierChar (lT F (adeleInfHom x)) : Circle) : ℂ) *
@@ -61,15 +59,15 @@ private theorem psi_split (x : A F) :
   exact h
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun f _ => (fun v => ψ (MvPolynomial.eval v p) * f v) ∈ schwartzBruhatPi F (Fin 4)) ?_ ?_ ?_ ?_ hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨φ0, g, hg, rfl⟩`. Establish `hT` using `chirpInf F (Fin 4) (p.map adeleInfHom) (lT F)`. Establish `hloc : IsLocallyConstant fun w : Fin 4 → FiniteAdeleRing (𝓞 F) F => ((finiteAdelicChar F (MvPolynomial.eval w (p.map adeleFinHom)) : Circle) : ℂ)`. Establish `h1` using `(isLocallyConstant_finiteAdelicChar_mul (K := F) 1).comp_continuous (continuous_eval_poly (p.map (adeleFinHom (K := F))))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h1` using `[Function.comp_def]`. Establish `hg' : (fun w => ((finiteAdelicChar F (MvPolynomial.eval w (p.map adeleFinHom)) : Circle) : ℂ) * g w) ∈ finiteSchwartzBruhatPi F (ι` using `Fin 4) := ⟨hloc.mul hg.1, hg.2.mul_left⟩`. Use `schwartzBruhatTensorPi_mem (SchwartzMap.smulLeftCLM ℂ (fun x : Fin 4 → mixedEmbedding.mixedSpace F => ((Real.fourierChar (lT F (MvPolynomial.eval x (p.map adeleInfHom))) : Circle) : ℂ)) φ0) hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [schwartzBruhatTensorPi]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[SchwartzMap.smulLeftCLM_apply_apply hT, psi_split]`. Simplify using `only [smul_eq_mul, infPartPi_eq_adeleInfHom, finPartPi_eq_adeleFinHom, eval_map_hom]`. Expand and normalize the polynomial expressions, which then agree. Use `(schwartzBruhatPi F (Fin 4)).zero_mem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Introduce `f g _ _ hf hg`. Use `(schwartzBruhatPi F (Fin 4)).add_mem hf hg using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `[mul_add]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `a f _ hf`. Use `(schwartzBruhatPi F (Fin 4)).smul_mem a hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `v`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem chirp_poly (p : MvPolynomial (Fin 4) (A F)) (φ : V4 F → ℂ)
     (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) :
@@ -110,7 +108,7 @@ private theorem chirp_poly (p : MvPolynomial (Fin 4) (A F)) (φ : V4 F → ℂ)
 end ChirpQ
 
 /- English proof (translation)
-Introduce `F _ _ δ b y φ hφ`. Use `open MvPolynomial in`. Establish `h` using `chirp_poly (F := F) (C b * (X 2 ^ 2 - C (rt δ) * X 3 ^ 2 - X 1 * X 0) + (2 * (X 2 * C (y 2) - C (rt δ) * (X 3 * C (y 3))) - X 1 * C (y 0) - X 0 * C (y 1))) φ hφ`. Use `h using 3 with v` and compare the differences between its conclusion and the goal. Simplify using `[q4, B4]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.chirpQ :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F) (b : A F) (y : V4 F) (φ : V4 F → ℂ), φ ∈ schwartzBruhatPi F (Fin 4) →

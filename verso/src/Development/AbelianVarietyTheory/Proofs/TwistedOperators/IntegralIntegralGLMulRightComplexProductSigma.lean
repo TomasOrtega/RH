@@ -20,7 +20,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Establish `h1 : IntegrableOn (fun x => f (x * g)) (KO k n : Set (GL n k)) μ` using `(hf.comp (continuous_mul_const g)).continuousOn.integrableOn_compact isCompact_KO`. Establish `h2 : IntegrableOn f (KO k n : Set (GL n k)) μ` using `hf.continuousOn.integrableOn_compact isCompact_KO`. Rewrite using `[integral_eq_lintegral_pos_part_sub_lintegral_neg_part h1, integral_eq_lintegral_pos_part_sub_lintegral_neg_part h2, UnitInd.lintegral_KO_mul_right e μ (φ := fun x => ENNReal.ofReal (f x)) hf.measurable.ennreal_ofReal (fun p x => by rw [hlaw, ENNReal.ofReal_mul (modulus_pos k _). …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_KO_mul_right_real (μ : Measure (GL n k)) [μ.IsHaarMeasure] {f : GL n k → ℝ}
     (hf : Continuous f) (hlaw : ∀ (p : parab k e) x, f (p * x) = modulus k m (leviProj k e p) * f x)
@@ -37,9 +37,9 @@ theorem integral_KO_mul_right_real (μ : Measure (GL n k)) [μ.IsHaarMeasure] {f
       (fun p x => by rw [hlaw, ← mul_neg, ENNReal.ofReal_mul (modulus_pos k _).le]) g]
 
 /- English proof (translation)
-Establish `h1 : IntegrableOn (fun x => F (x * g)) (KO k n : Set (GL n k)) μ` using `(hF.comp (continuous_mul_const g)).continuousOn.integrableOn_compact isCompact_KO`. Establish `h2 : IntegrableOn F (KO k n : Set (GL n k)) μ` using `hF.continuousOn.integrableOn_compact isCompact_KO`. Establish `hre` using `integral_KO_mul_right_real e μ (Complex.continuous_re.comp hF) (fun p x => by simp [hlaw]) g`. Establish `him` using `integral_KO_mul_right_real e μ (Complex.continuous_im.comp hF) (fun p x => by simp [hlaw]) g`. Use `Complex.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((integral_re h1).symm.trans hre).trans (integral_re h2)`. Conclude with `((integral_im h1).symm.trans him).trans (integral_im h2)`.
+A detailed English derivation is pending.
 -/
 theorem integral_integralGL_mul_right_complex_productSigma (μ : Measure (GL n k)) [μ.IsHaarMeasure] {F : GL n k → ℂ}
     (hF : Continuous F) (hlaw : ∀ (p : parab k e) x, F (p * x) = (modulus k m (leviProj k e p) : ℂ) * F x)
@@ -59,7 +59,7 @@ theorem integral_integralGL_mul_right_complex_productSigma (μ : Measure (GL n k
 end Real
 
 /- English proof (translation)
-Introduce `k _ _ _ _ α n m _ _ _ _ _ _ e M hM μ _ F hF hlaw g`. Use `borelize k`. Take `rfl : M = Units.instMeasurableSpace` from `hM.measurable_eq.trans (SplitFlip.borel_GL (k := k) (n := n)).measurable_eq.symm`. Conclude with `integral_integralGL_mul_right_complex_productSigma e μ hF hlaw g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_KO_mul_right : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (α n : Type) (m : α → Type) [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) [MeasurableSpace (GL n k)] [BorelSpace (GL n k)] (μ : Measure (GL n k)) [μ.IsHaarMeasure] (F : GL n k → ℂ), Continuous F → (∀ (p : parab k e) (g : GL n k), F (p * g) = (modulus k m (leviProj k e p) : ℂ) * F g) → ∀ g : GL n k, ∫ x in (KO k n : Set (GL n k)), F (x * g) ∂μ = ∫ x in (KO k n : Set (GL n k)), F x ∂μ := by
   intro k _ _ _ _ α n m _ _ _ _ _ _ e M hM μ _ F hF hlaw g

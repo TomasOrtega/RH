@@ -14,15 +14,15 @@ open scoped Real ContDiff
 namespace GlobalTheory.TorsionForm.FlatAcyc
 
 /- English proof (translation)
-Introduce `E _ _ _ g B τ M j h hD hC b hb f hf hharm z I hI`. Take `⟨hτ, hM, hj, hh⟩` from `hD`. Establish `hcov : ∀ z' : Fin g → ℂ, (b, z') ∈ cov B g` using `fun z' => ⟨hb, Set.mem_univ _⟩`. Establish `hHs : ContDiff ℝ ∞ (fun z' : Fin g → ℂ => h (b, z'))` using `hh.1.comp_contDiff (contDiff_prodMk_right b) hcov`. Establish `hHpos : ∀ z' : Fin g → ℂ, 0 < h (b, z')` using `fun z' => hh.2.1 _ (hcov z')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiffh : ∀ z' : Fin g → ℂ, DifferentiableAt ℝ h (b, z')` using `fun z' => (hh.1.contDiffAt ((hτ.1.prod isOpen_univ).mem_nhds (hcov z'))).differentiableAt (by simp)`. Establish `hfd : Differentiable ℝ f` using `hf.1.differentiable (by simp)`. Establish `h1 : ∀ z', fibreOp ((2 : ℂ) • imPart τ b) (fun z' => (Real.log (h (b, z')) : ℂ)) f z' = 0` using `fun z' => by rw [← GlobalTheory.T.dbar_adjoint_fibre_operator τ h b z' f hfd (hdiffh z') (hHpos z')]; exact hharm z'`. Establish `hψs : ContDiff ℝ 2 (fun z' => (Real.log (h (b, z')) : ℂ))` using `(Complex.ofRealCLM.contDiff.comp (hHs.log fun z' => (hHpos z').ne')).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `h3` using `GlobalTheory.T.harmonic_section_laplacian _ _ (GlobalTheory.T.siegel_imag_inverse_identity (τ b) (hτ.2.2 b hb)) _ hψs (GlobalTheory.T.flat_chern_log_hessian hτ hh.1 hh.2.1 hC hb) f (hf.1.of_le (WithTop.coe_le_coe.2 le_top)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI' : (0 : ℝ) < I.card`. Conclude with `Finset.card_pos.2 (Finset.nonempty_iff_ne_empty.2 hI)` after adjusting the coercions. Use `GlobalTheory.T.periodic_metric_section_bound (τ b) (hτ.2.2 b hb) M hM (fun z' => h (b, z')) hHs hHpos (fun z' => f z' I) ((contDiff_apply ℝ ℂ I).comp hf.1) (fun l z' => j l (b, z')) ?_ ?_ ?_ (2 * π * I.card) (by positivity) ?_ z` and prove the remaining obligations. Introduce `l hl z'`. Use `congrFun (hf.2 l hl z') I` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Introduce `l hl z' c`. Conclude with `GlobalTheory.T.dbar_section_periodicity hτ.1 hj hb f hf l hl z' c I`. Introduce `l hl z'`. Conclude with `hh.2.2 l hl (b, z') (hcov z')`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Introduce `z'`. Use `h3 z' I` as an intermediate fact. Use `push_cast`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem flatAcyclic : FlatAcyclic := by
   intro E _ _ _ g B τ M j h hD hC b hb f hf hharm z I hI

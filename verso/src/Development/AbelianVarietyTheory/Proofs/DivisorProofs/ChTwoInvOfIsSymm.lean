@@ -11,9 +11,9 @@ namespace GlobalTheory.HodgeChTwo
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SubQuotChTwo.chTwo_eq_trace, curv_changeFrame h hu hA hAu hA0]`. Establish `hc : ∀ P Q : Matrix (Fin g) (Fin g) ℂ, ((A z)⁻¹ * P * A z * ((A z)⁻¹ * Q * A z)).trace = (P * Q).trace`. Introduce `P Q`. Rewrite using `[show (A z)⁻¹ * P * A z * ((A z)⁻¹ * Q * A z) = (A z)⁻¹ * (P * Q) * A z by`. Simplify using `only [Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ hAu], Matrix.trace_mul_cycle,`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `mul_nonsing_inv _ hAu, Matrix.one_mul]`. Simplify using `only [hc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chTwo_changeFrame {g : ℕ} {H A : E → Matrix (Fin g) (Fin g) ℂ} {z : E} (h : MContDiffAt 2 H z)
     (hu : IsUnit (H z).det) (hA : MContDiffAt 2 A z) (hAu : IsUnit (A z).det)
@@ -29,9 +29,9 @@ theorem chTwo_changeFrame {g : ℕ} {H A : E → Matrix (Fin g) (Fin g) ℂ} {z 
   simp only [hc]
 
 /- English proof (translation)
-Establish `he : (fun x => (Y x)⁻¹) =ᶠ[𝓝 z] fun x => GlobalTheory.HermFrame.dualGram (Y x)` using `hs.mono fun x hx => by show (Y x)⁻¹ = (Y x)⁻¹ᵀ`. Rewrite using `[transpose_nonsing_inv, hx.eq]`. Establish `hc : ∀ ξ η, curv (fun x => (Y x)⁻¹) z ξ η = -(curv Y z ξ η)ᵀ` using `fun ξ η => by`. Rewrite using `[curv_congr he, curv_dual h hu]`. Establish `ht : ∀ P Q : Matrix (Fin g) (Fin g) ℂ, (-Pᵀ * -Qᵀ).trace = (Q * P).trace` using `fun P Q => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[neg_mul_neg, ← Matrix.transpose_mul, Matrix.trace_transpose]`. Rewrite using `[GlobalTheory.SubQuotChTwo.chTwo_eq_trace, GlobalTheory.SubQuotChTwo.chTwo_eq_trace, hc, hc, hc, hc, ht, ht, ht, ht]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chTwo_inv_of_isSymm {g : ℕ} {Y : E → Matrix (Fin g) (Fin g) ℂ} {z : E} (h : MContDiffAt 2 Y z)
     (hu : IsUnit (Y z).det) (hs : ∀ᶠ x in 𝓝 z, (Y x).IsSymm) (ξ₁ η₁ ξ₂ η₂ : E) :
@@ -47,7 +47,7 @@ theorem chTwo_inv_of_isSymm {g : ℕ} {Y : E → Matrix (Fin g) (Fin g) ℂ} {z 
   ring
 
 /- English proof (translation)
-Simplify using `[chTwo, wedge]`.
+Simplify using the standard rewrite rules.
 -/
 example (g : ℕ) (C : Matrix (Fin g) (Fin g) ℂ) (z ξ₁ η₁ ξ₂ η₂ : E) : chTwo (fun _ => C) z ξ₁ η₁ ξ₂ η₂ = 0 := by
   simp [chTwo, wedge]

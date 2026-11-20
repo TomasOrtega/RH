@@ -14,9 +14,9 @@ open NumberField IsDedekindDomain
 open scoped TensorProduct
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Set `z` to `(GlobalTheory.FinPartIso.finEquiv D.sp.cm.sig V.gram).symm (GlobalTheory.AdelicU.projFin D.sp.cm.sig V.gram g)`. Establish `hz : GlobalTheory.AdelicU.projFin D.sp.cm.sig V.gram z.1 = GlobalTheory.AdelicU.projFin D.sp.cm.sig V.gram g` using `(GlobalTheory.FinPartIso.finEquiv D.sp.cm.sig V.gram).apply_symm_apply _`. Take `⟨e, he⟩` from `GlobalTheory.FinPartIso.exists_finIso D V _ rfl`. Use `⟨z.1, z.2, congrArg Subtype.val hz, (e ⟨z.1, z.2⟩).1, (e ⟨z.1, z.2⟩).2, fun i j => ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_fin {D : D7} (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V) :
     ∃ g' : GA D V, g' ∈ GfC V ∧ finHom V g' = finHom V g ∧
@@ -33,9 +33,7 @@ theorem exists_fin {D : D7} (V : HSp D) (n : ℕ) (hn : V.rank = n) (g : GA D V)
   rfl
 
 /- English proof (translation)
-Establish `h1 : R.B.jR t x = 0`. Use function extensionality and compare the values at `k`. Take `⟨g, hg⟩` from `(finHom D.sp.X').rangeRestrict_surjective k`. Conclude with `(congrFun (h t x) k).symm.trans ((congrArg ((R.HX t).e (R.jX t x)) hg.symm).trans (hx g))`. Establish `h2 : Function.Injective (R.B.jR t)` using `GlobalTheory.PresBasic.extL_injective (R.B.R t).pres`.
-
-Conclude with `(injective_iff_map_eq_zero (R.B.jR t)).1 h2 x h1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_models {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (h : R.models_jX) (t : T) (x : A.fam.amb.FR t)
@@ -48,7 +46,7 @@ theorem eq_zero_of_models {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Typ
   exact (injective_iff_map_eq_zero (R.B.jR t)).1 h2 x h1
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `⟨ok', h⟩` from `h`. Conclude with `(LinearEquiv.map_eq_zero_iff _).1 (eq_of_heq h)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isRes {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : Col2.TC B X) (a : I.ι) (φ : Frm I a) τ (e : I.tup a = τ)
     (ok : (Formalism.L2.Col.mtildeKGSD (Pr := B.primes X) B.wts I.Ch I.sel τ).Ok)
@@ -60,9 +58,9 @@ theorem eq_zero_of_isRes {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} (I : Col
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `mk Dc Sp Zsc lam err lam_eq x pack intersectionNumber_baseChange hκ hv hfw htup htupT hjA hjA0 heMt hPY hPW heFT hIL heE heW hjW heRR`. Consider the cases of `x with`. Consider the case `mk G Pl0 I0 T' A3 core R F cG geo pins err' Y Z' C' sEE div JA amb0 JM mjH`. Consider the cases of `pack`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Establish `hT' : Y.tup = t.r.Y.tup` using `eq_of_heq htup`. Introduce `s φ h`. Establish `e : w.I.tup (Y.tup s) = s.1` using `(congrArg w.I.tup ((congrFun hT' s).trans (t.r.tup_ix s))).trans (R3.tup_ixOf w.I s)`. Conclude with `eq_zero_of_isRes w.I _ φ s.1 e _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T : TwDat B) (w : Bl.ColW B f T) (Z : w.Lt)
     (Wt : Set B.places.Pl) (L : SizeData₂ (w.st Z).toD7) (hT : GatTies (w.st Z).toD7) (Gi : G.Inst (w.st Z).toD7 L)
@@ -81,7 +79,7 @@ theorem eq_zero_twArgs (K : Ctx) (B : GlobalTheory.Mem.Base) (f : Fr B.toPre) (T
   exact eq_zero_of_isRes w.I _ φ s.1 e _ h
 
 /- English proof (translation)
-Take `⟨g', h1, h2, y, h3, h4⟩` from `exists_fin _ _ (Formalism.L2.Forms.rankP D) g`. Establish `h6 : y ∈ Formalism.UG.UPts _ (Formalism.L2.Forms.gramP D) _` using `h3`. Rewrite `h6` using `[gP]`. Conclude with `⟨g', y, ⟨h1, h4⟩, h6, Subtype.ext h2.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_hasMat {D : D7} (gP : Formalism.L2.Forms.gramP D = 1) (g : GA D D.sp.X') :
     ∃ g' y, GlobalTheory.Core.Rk.Top.HasMat g' y ∧ y ∈ Formalism.L2.Herm.UstdAf D.sp.cm (D.R.N D.R.m - 1) ∧
@@ -92,7 +90,7 @@ theorem exists_hasMat {D : D7} (gP : Formalism.L2.Forms.gramP D = 1) (g : GA D D
   exact ⟨g', y, ⟨h1, h4⟩, h6, Subtype.ext h2.symm⟩
 
 /- English proof (translation)
-Use `eq_zero_of_models R h t x fun g => ?_` and prove the remaining obligations. Conclude with `(exists_hasMat gP g).elim fun g' h1 => h1.elim fun y h2 => (congrArg ((R.HX t).e (R.jX t x)) h2.2.2).trans (hx g' y h2.1 h2.2.1)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hasMat {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (h : R.models_jX) (gP : Formalism.L2.Forms.gramP D = 1)
@@ -104,7 +102,7 @@ theorem eq_zero_of_hasMat {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Typ
     (congrArg ((R.HX t).e (R.jX t x)) h2.2.2).trans (hx g' y h2.1 h2.2.1)
 
 /- English proof (translation)
-Conclude with `eq_zero_of_hasMat (pk W) W.Q.charW.base.models.jX gP t x hz`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pkAt {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : Col2.TC B X} {l : I.Laws} {Z : Col2.TC.Later B (I.cols l)}
     {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)}
@@ -116,11 +114,11 @@ theorem eq_zero_of_pkAt {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : Col2
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b hw t φ x hx hz d`. Establish `hx0 : x = 0` using `eq_zero_of_pkAt (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) (Col2.TC.spaces_in_coordinates q.w.I q.w.ok q.w.pins q.w.l q.Z).2.1 t x hz`. Substitute `hx0` using the available equality. Take `⟨x, a, ax, y, -⟩` from `hw`. Establish `e : a.x = x` using `eq_of_heq ax`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Establish `h0` using `eq_zero_twArgs _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a`. Establish `key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → ∀ (s : k.P.T) (φ : Frm q.w.I (k.P.I.tup s)), IsRes φ (0 : k.P.A3.A.fam.amb.FR s) → φ = 0`. Introduce `k hk`. Substitute `hk` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `h0`. Rewrite using `[key (Bl.rpkB b) y.eq t φ hx]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_eq_zero : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → ∀ (t : (packB b).P.T) (φ : GlobalTheory.TopVal.Frm q.w.I ((packB b).P.I.tup t)) (x : (packB b).P.A3.A.fam.amb.FR t), GlobalTheory.TopVal.IsRes φ x → (∀ g y, GlobalTheory.Core.Rk.Top.HasMat g y → GlobalTheory.TopVal.IsUni q.B y → GlobalTheory.TopVal.pkAt (I := q.w.I) (l := q.w.l) (Z := q.Z) (packB b) t x g = 0) → ∀ d, GlobalTheory.TopVal.val φ d = 0 := by
   intro hL p K q c b hw t φ x hx hz d

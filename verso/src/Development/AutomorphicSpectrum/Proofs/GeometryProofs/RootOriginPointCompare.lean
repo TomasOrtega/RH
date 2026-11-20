@@ -19,7 +19,7 @@ section Lines
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `h0 : ∀ k, ‖c k‖ ≠ 0` using `fun k => norm_ne_zero_iff.mpr (hc k)`. Rewrite using `[A.smul c w hc, Real.log_mul (Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (h0 k)) (A.pos w hw).ne', Real.log_prod (fun k _ => zpow_ne_zero _ (h0 k))]`. Simplify using `only [Real.log_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem log_h_torus (A : HermLine ι) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {w : (Σ k, ι k) → ℂ}
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
@@ -30,7 +30,7 @@ theorem log_h_torus (A : HermLine ι) {c : K → ℂ} (hc : ∀ k, c k ≠ 0) {w
   simp only [Real.log_zpow]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Rewrite using `[log_h_torus A hc hw, log_h_torus B hc hw, hAB]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_sub_of_sameOrbit {A B : HermLine ι} (hAB : A.a = B.a) {z w : (Σ k, ι k) → ℂ}
     (h : SameOrbit z w) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
@@ -40,9 +40,9 @@ theorem log_sub_of_sameOrbit {A B : HermLine ι} (hAB : A.a = B.a) {z w : (Σ k,
   ring
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `h`. Simplify using `only [log_h_torus _ hc hw, Finset.sum_add_distrib]`. Establish `h1 : ∑ k, (A.a k : ℝ) * Real.log ‖c k‖ = -∑ j ∈ T, ∑ k, ((B j).a k : ℝ) * Real.log ‖c k‖`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA, Pi.neg_apply, Finset.sum_apply, Int.cast_neg, Int.cast_sum, neg_mul, Finset.sum_mul]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_add_sum_of_sameOrbit {α : Type} (T : Finset α) {A : HermLine ι} (B : α → HermLine ι)
     (hA : A.a = -∑ j ∈ T, (B j).a) {z w : (Σ k, ι k) → ℂ} (h : SameOrbit z w)
@@ -62,15 +62,15 @@ theorem log_add_sum_of_sameOrbit {α : Type} (T : Finset α) {A : HermLine ι} (
 end Lines
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' w₁ w₂ v t ht0 htle hw₁ hw₂ hx hx' hπ hop hv τ p`. Establish `hop₀ : o₀.Re.π x' ∈ Sys.open'` using `hπ ▸ hop`. Establish `hreg` using `o.fund_reg τ p t ht0 htle w₁ hw₁`. Establish `hline` using `o.Re.line_eq (some (τ, p)) t ht0 htle x`. Establish `hsc` using `log_sub_of_sameOrbit (o.Re.line_deg (some (τ, p)) t) hx hw₁.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `o.fund_sing τ p x hop`. Establish `hs₀` using `o₀.fund_sing τ p x' hop₀`. Establish `hdeg : ∀ (N : Top.RootModel (CMType H) (D.p + D.q)) (S' : Finset ℕ) (Fx' : FixedData Y Sys) (q : RootOrigin Y S' N Fx'), (q.Re.ref (some (τ, p))).a = -∑ k ∈ Finset.Iic p, (q.sing (τ, k)).a`. Introduce `N S' Fx' q`. Rewrite using `[q.fund_deg τ p]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [q.sing_deg]`. Establish `hb` using `log_add_sum_of_sameOrbit (Finset.Iic p) (fun k => o.sing (τ, k)) (hdeg _ _ _ o) hx hw₁.1`. Establish `hb₀` using `log_add_sum_of_sameOrbit (Finset.Iic p) (fun k => o₀.sing (τ, k)) (hdeg _ _ _ o₀) hx' hw₂.1`. Establish `hsum : ∑ k ∈ Finset.Iic p, Real.log ((o.sing (τ, k)).h w₁) = ∑ k ∈ Finset.Iic p, Real.log (v (τ, k)) + ∑ k ∈ Finset.Iic p, Real.log ((o₀.sing (τ, k)).h w₂)`. Rewrite using `[← Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨h0, h1⟩` from `hv (τ, k)`. Rewrite using `[← h1, Real.log_mul h0.ne' ((o₀.sing (τ, k)).pos w₂ hw₂.1).ne']`. Rewrite `hs`, `hline` using `[hπ]`. Simplify using `only [Finset.sum_sub_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hπ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem defect_eq_regWeight_add_bracket :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S S₀ : Finset ℕ) (M R : Top.RootModel (CMType H) (D.p + D.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (D.p + D.q)) (Option (RootIx D))) (Fx : FixedData Y Sys) (o : RootOrigin Y S M Fx) (o₀ : RootOrigin Y S₀ R Fx) (x : o.Re.R.X) (x' : o₀.Re.R.X) (w₁ : (Σ k, M.ι k) → ℂ) (w₂ : (Σ k, R.ι k) → ℂ) (v : RootIx D → ℝ) (t : ℝ), 0 < t → t ≤ Sys.t₀ → w₁ ∈ mcPts M.P → w₂ ∈ mcPts R.P → ReciprocityTheory.ChartRestriction.G.Geo.SameOrbit (o.Re.R.lift x x) w₁ → ReciprocityTheory.ChartRestriction.G.Geo.SameOrbit (o₀.Re.R.lift x' x') w₂ → o.Re.π x = o₀.Re.π x' → o.Re.π x ∈ Sys.open' → (∀ r, 0 < v r ∧ v r * (o₀.sing r).h w₂ = (o.sing r).h w₁) → ∀ (τ : CMType H) (p : Fin (D.p + D.q)), -∑ k ∈ Finset.Iic p, (Real.log ((M.x t (τ, k)).h w₁) - Real.log ((R.x 1 (τ, k)).h w₂) - Real.log (v (τ, k))) = Sys.phT (some (τ, p)) t (o.Re.π x) + (Real.log ((o₀.Re.ref (some (τ, p))).h w₂) + ∑ k ∈ Finset.Iic p, Real.log ((R.x 1 (τ, k)).h w₂)) := by

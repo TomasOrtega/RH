@@ -23,28 +23,28 @@ noncomputable def genEval {L : Type*} [Field L] [Algebra F L] :
   | .some _ _ h, ht => liftPoint E h.1 ht
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isGenPt_some {L : Type*} [Field L] [Algebra F L] {x y : L}
     (h : (E.baseChange L).toAffine.Nonsingular x y) :
     IsGenPt E (.some x y h) ↔ Transcendental F x := Iff.rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem genEval_congr {L : Type*} [Field L] [Algebra F L] {P P' : (E.baseChange L).toAffine.Point}
     (h : P = P') (hP : IsGenPt E P) (hP' : IsGenPt E P') : genEval E P hP = genEval E P' hP' := by
   subst h; rfl
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Conclude with `hP`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isGenPt_ne_zero {L : Type*} [Field L] [Algebra F L] {P : (E.baseChange L).toAffine.Point}
     (hP : IsGenPt E P) : P ≠ 0 := by
   rintro rfl; exact hP
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact hP.elim`. Consider the case `some x y h => exact liftPoint_genX E h.1 hP`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem genEval_genX {L : Type*} [Field L] [Algebra F L] (P : (E.baseChange L).toAffine.Point)
     (hP : IsGenPt E P) : genEval E P hP (genX E) = xOf _ P := by
@@ -53,7 +53,7 @@ theorem genEval_genX {L : Type*} [Field L] [Algebra F L] (P : (E.baseChange L).t
   | some x y h => exact liftPoint_genX E h.1 hP
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact hP.elim`. Consider the case `some x y h => exact liftPoint_genY E h.1 hP`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem genEval_genY {L : Type*} [Field L] [Algebra F L] (P : (E.baseChange L).toAffine.Point)
     (hP : IsGenPt E P) : genEval E P hP (genY E) = yOf _ P := by
@@ -64,7 +64,7 @@ theorem genEval_genY {L : Type*} [Field L] [Algebra F L] (P : (E.baseChange L).t
 variable [E.IsElliptic]
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact hP.elim`. Consider the case `some x y h => exact map_liftPoint_genericPoint E h hP`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem map_genEval_genericPoint {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -74,7 +74,7 @@ theorem map_genEval_genericPoint {L : Type*} [Field L] [Algebra F L] [DecidableE
   | some x y h => exact map_liftPoint_genericPoint E h hP
 
 /- English proof (translation)
-Use `show Transcendental F (σ (genX E))`. Conclude with `fun h => transcendental_genX E ((isAlgebraic_algHom_iff σ σ.toRingHom.injective).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isGenPt_map_genericPoint {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (σ : E.toAffine.FunctionField →ₐ[F] L) : IsGenPt E (Point.map σ (genericPoint E)) := by
@@ -82,7 +82,7 @@ theorem isGenPt_map_genericPoint {L : Type*} [Field L] [Algebra F L] [DecidableE
   exact fun h => transcendental_genX E ((isAlgebraic_algHom_iff σ σ.toRingHom.injective).mp h)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Apply `algHom_ext_gen E` to reduce the goal to its premises. Rewrite using `[genEval_genX]`. Both sides reduce to the same expression. Rewrite using `[genEval_genY]`.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -95,7 +95,7 @@ theorem eq_genEval {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
   · rw [genEval_genY]; rfl
 
 /- English proof (translation)
-Rewrite using `[eq_genEval E σ rfl (isGenPt_map_genericPoint E σ), eq_genEval E τ h.symm (isGenPt_map_genericPoint E σ)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_eq_of_map_genericPoint' {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     {σ τ : E.toAffine.FunctionField →ₐ[F] L}
@@ -104,7 +104,7 @@ theorem algHom_eq_of_map_genericPoint' {L : Type*} [Field L] [Algebra F L] [Deci
     (isGenPt_map_genericPoint E σ)]
 
 /- English proof (translation)
-Rewrite using `[← map_genEval_genericPoint E P hP, Point.map_map]`. Conclude with `isGenPt_map_genericPoint E _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_map {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F L']
     [DecidableEq L] [DecidableEq L'] (σ : L →ₐ[F] L') {P : (E.baseChange L).toAffine.Point}
@@ -113,7 +113,7 @@ theorem isGenPt_map {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F
   exact isGenPt_map_genericPoint E _
 
 /- English proof (translation)
-The claim follows from `(eq_genEval E _ (by rw [← Point.map_map, map_genEval_genericPoint]) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem genEval_map {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F L']
     [DecidableEq L] [DecidableEq L'] (σ : L →ₐ[F] L') {P : (E.baseChange L).toAffine.Point}
@@ -128,9 +128,9 @@ section App
 variable {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨x, y, h, rfl, hx⟩, hr⟩`. Conclude with `⟨hx, hr⟩`. Introduce and unpack `⟨hg, hr⟩`. Consider the cases of `Q with`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact hg.elim`. Consider the case `some x y h => exact ⟨⟨x, y, h, rfl, hg⟩, hr⟩`.
+Treat this case separately. Treat this case separately.
 -/
 theorem isIsogeny_iff (Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point) :
     IsIsogeny E E' Q ↔ IsGenPt E' Q ∧ RespectsAdd E E' Q := by
@@ -145,13 +145,13 @@ theorem isIsogeny_iff (Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Poi
 omit [E.IsElliptic] [E'.IsElliptic] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hQ L _ _ _ P₁ P₂ h₁ h₂ h₃`. Consider the cases of `P₁ with`. Consider the case `zero => exact h₁.elim`. Consider the case `some u₁ v₁ k₁`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `P₂ with`. Consider the case `zero => exact h₂.elim`. Consider the case `some u₂ v₂ k₂`. Generalize the expression as in `hs : Point.some u₁ v₁ k₁ + Point.some u₂ v₂ k₂ = P₃ at h₃ ⊢`. Consider the cases of `P₃ with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Replace the chosen expression with an arbitrary variable. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact h₃.elim`. Consider the case `some u₃ v₃ k₃ => exact hQ L u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ h₁ h₂ h₃ hs`. Introduce `hQ L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Establish `key` using `hQ L (.some u₁ v₁ k₁) (.some u₂ v₂ k₂) t₁ t₂ (hs ▸ t₃)`. Rewrite `key` using `[genEval_congr E hs _ t₃]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem respectsAdd_iff (Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point) :
     RespectsAdd E E' Q ↔ ∀ (L : Type u) [Field L] [Algebra F L] [DecidableEq L]
@@ -177,7 +177,7 @@ theorem respectsAdd_iff (Q : (E'.baseChange E.toAffine.FunctionField).toAffine.P
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Introduce `L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ _`. Simplify using `only [ratMapValue, map_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem respectsAdd_zero : RespectsAdd E E' 0 := by
   intro L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ _
@@ -185,7 +185,7 @@ theorem respectsAdd_zero : RespectsAdd E E' 0 := by
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Introduce `L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Establish `e₁` using `h₁ L u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Establish `e₂` using `h₂ L u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Simplify using `only [ratMapValue, map_add] at e₁ e₂ ⊢`. Rewrite using `[e₁, e₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -200,7 +200,7 @@ theorem RespectsAdd.add {Q₁ Q₂ : (E'.baseChange E.toAffine.FunctionField).to
 
 omit [E.IsElliptic] [E'.IsElliptic] in
 /- English proof (translation)
-Introduce `L _ _ _ u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Establish `e` using `h L u₁ v₁ u₂ v₂ u₃ v₃ k₁ k₂ k₃ t₁ t₂ t₃ hs`. Simplify using `only [ratMapValue, map_neg] at e ⊢`. Rewrite using `[e, neg_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem RespectsAdd.neg {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point}
     (h : RespectsAdd E E' Q) : RespectsAdd E E' (-Q) := by
@@ -218,7 +218,7 @@ def isogHom : AddSubgroup (E'.baseChange E.toAffine.FunctionField).toAffine.Poin
   neg_mem' := RespectsAdd.neg
 
 /- English proof (translation)
-Rewrite using `[respectsAdd_iff]`. Introduce `L _ _ _ P₁ P₂ h₁ h₂ h₃`. Rewrite using `[map_genEval_genericPoint, map_genEval_genericPoint, map_genEval_genericPoint]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem respectsAdd_genericPoint : RespectsAdd E E (genericPoint E) := by
   rw [respectsAdd_iff]
@@ -228,22 +228,22 @@ theorem respectsAdd_genericPoint : RespectsAdd E E (genericPoint E) := by
 namespace Isogeny
 
 /- English proof (translation)
-The claim follows from `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem ext' {φ ψ : Isogeny E E'} (h : φ.1 = ψ.1) : φ = ψ := Subtype.ext h
 
 /- English proof (translation)
-The claim follows from `((isIsogeny_iff _).mp φ.2).1`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt (φ : Isogeny E E') : IsGenPt E' φ.1 := ((isIsogeny_iff _).mp φ.2).1
 
 /- English proof (translation)
-The claim follows from `φ.2.2`.
+A detailed English derivation is pending.
 -/
 theorem respectsAdd (φ : Isogeny E E') : RespectsAdd E E' φ.1 := φ.2.2
 
 /- English proof (translation)
-Take `⟨⟨x, y, h, he, -⟩, -⟩` from `φ.2`. Rewrite using `[comap, map_liftPoint_genericPoint E' φ.nonsingular φ.transcendental_alt]`. Simplify using `only [he, Isogeny.x, Isogeny.y]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_comap_genericPoint (φ : Isogeny E E') :
     Point.map φ.comap (genericPoint E') = φ.1 := by
@@ -253,7 +253,7 @@ theorem map_comap_genericPoint (φ : Isogeny E E') :
   rfl
 
 /- English proof (translation)
-The claim follows from `eq_genEval E' φ.comap φ.map_comap_genericPoint φ.isGenPt`.
+A detailed English derivation is pending.
 -/
 theorem comap_eq_genEval (φ : Isogeny E E') : φ.comap = genEval E' φ.1 φ.isGenPt :=
   eq_genEval E' φ.comap φ.map_comap_genericPoint φ.isGenPt
@@ -264,7 +264,7 @@ noncomputable def app (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [D
   Point.map (genEval E P hP) φ.1
 
 /- English proof (translation)
-Rewrite using `[app, ← Point.map_map, map_comap_genericPoint]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem app_eq_map_comp (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -272,14 +272,14 @@ theorem app_eq_map_comp (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] 
   rw [app, ← Point.map_map, map_comap_genericPoint]
 
 /- English proof (translation)
-Rewrite using `[app_eq_map_comp]`. Conclude with `isGenPt_map_genericPoint E' _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_app (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) : IsGenPt E' (φ.app P hP) := by
   rw [app_eq_map_comp]; exact isGenPt_map_genericPoint E' _
 
 /- English proof (translation)
-The claim follows from `(eq_genEval E' _ (φ.app_eq_map_comp P hP).symm _).symm`.
+A detailed English derivation is pending.
 -/
 theorem genEval_app (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -287,7 +287,7 @@ theorem genEval_app (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L] [Dec
   (eq_genEval E' _ (φ.app_eq_map_comp P hP).symm _).symm
 
 /- English proof (translation)
-Apply the tactic sequence `rw [app, ← eq_genEval E (AlgHom.id F _) (by cases genericPoint E <;> rfl) h]`. Apply the tactic sequence `cases φ.1 <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem app_genericPoint (φ : Isogeny E E') (h : IsGenPt E (genericPoint E)) :
     φ.app (genericPoint E) h = φ.1 := by
@@ -295,7 +295,7 @@ theorem app_genericPoint (φ : Isogeny E E') (h : IsGenPt E (genericPoint E)) :
   cases φ.1 <;> rfl
 
 /- English proof (translation)
-The claim follows from `(respectsAdd_iff _).mp φ.respectsAdd L P₁ P₂ h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 theorem app_add (φ : Isogeny E E') {L : Type u} [Field L] [Algebra F L] [DecidableEq L]
     {P₁ P₂ : (E.baseChange L).toAffine.Point} (h₁ : IsGenPt E P₁) (h₂ : IsGenPt E P₂)
@@ -303,7 +303,7 @@ theorem app_add (φ : Isogeny E E') {L : Type u} [Field L] [Algebra F L] [Decida
   (respectsAdd_iff _).mp φ.respectsAdd L P₁ P₂ h₁ h₂ h₃
 
 /- English proof (translation)
-Rewrite using `[app, app, Point.map_map, genEval_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_app (φ : Isogeny E E') {L L' : Type*} [Field L] [Algebra F L] [Field L'] [Algebra F L']
     [DecidableEq L] [DecidableEq L'] (σ : L →ₐ[F] L') (P : (E.baseChange L).toAffine.Point)
@@ -326,14 +326,14 @@ noncomputable def comp (ψ : Isogeny E' E'') (φ : Isogeny E E') : Isogeny E E''
     congr 1⟩⟩
 
 /- English proof (translation)
-Rewrite using `[comap_eq_genEval]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_val (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     (ψ.comp φ).1 = Point.map φ.comap ψ.1 := by
   rw [comap_eq_genEval]; rfl
 
 /- English proof (translation)
-Use `show Point.map _ (ψ.app φ.1 φ.isGenPt) = _`. Rewrite using `[map_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem app_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') {L : Type*} [Field L] [Algebra F L]
     [DecidableEq L] (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P) :
@@ -343,7 +343,7 @@ theorem app_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') {L : Type*} [Field L]
   rfl
 
 /- English proof (translation)
-Apply `algHom_eq_of_map_genericPoint' E''` to reduce the goal to its premises. Rewrite using `[map_comap_genericPoint, ← Point.map_map, map_comap_genericPoint, comp_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     (ψ.comp φ).comap = φ.comap.comp ψ.comap := by
@@ -351,11 +351,11 @@ theorem comap_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
   rw [map_comap_genericPoint, ← Point.map_map, map_comap_genericPoint, comp_val]
 
 /- English proof (translation)
-Establish `h1 : (ψ.comp φ).comap.fieldRange = ψ.comap.fieldRange.map φ.comap`. Rewrite using `[comap_comp, ← map_top_eq_fieldRange, ← map_top_eq_fieldRange, ← IntermediateField.map_map]`. Establish `h2 : φ.comap.fieldRange = (⊤ : IntermediateField F E'.toAffine.FunctionField).map φ.comap` using `(map_top_eq_fieldRange _).symm`. Establish `hle : (ψ.comp φ).comap.fieldRange ≤ φ.comap.fieldRange`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IntermediateField.map_mono _ le_top`. Establish `t` using `relfinrank_mul_relfinrank hle (le_top : φ.comap.fieldRange ≤ ⊤)`. Establish `e : relfinrank (ψ.comp φ).comap.fieldRange φ.comap.fieldRange = ψ.degree`. Rewrite using `[h1, h2, relfinrank_map_map, relfinrank_top_right]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hd : (ψ.comp φ).degree = relfinrank (ψ.comp φ).comap.fieldRange ⊤`. Rewrite using `[degree, relfinrank_top_right]`. Rewrite using `[hd, ← t, e, relfinrank_top_right]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem degree_comp (ψ : Isogeny E' E'') (φ : Isogeny E E') :
     (ψ.comp φ).degree = ψ.degree * φ.degree := by
@@ -382,7 +382,7 @@ section AlgClosed
 variable [IsAlgClosed F] [DecidableEq F]
 
 /- English proof (translation)
-Establish `hint` using `hu.isIntegral`. Establish `hdeg` using `IsAlgClosed.degree_eq_one_of_irreducible F (minpoly.irreducible hint)`. Take `⟨c, hc⟩` from `minpoly.natDegree_eq_one_iff.mp (natDegree_eq_of_degree_eq_some hdeg)`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_algebraMap_eq_of_isAlgebraic' {L : Type*} [Field L] [Algebra F L] {u : L}
     (hu : IsAlgebraic F u) : ∃ c : F, algebraMap F L c = u := by
@@ -397,7 +397,7 @@ noncomputable def constMap (E : WeierstrassCurve F) (L : Type*) [Field L] [Algeb
 
 omit [IsAlgClosed F] in
 /- English proof (translation)
-The claim follows from `Point.map_injective (W' := E) (Algebra.ofId F L)`.
+A detailed English derivation is pending.
 -/
 theorem constMap_injective (E : WeierstrassCurve F) (L : Type*) [Field L] [Algebra F L]
     [DecidableEq L] : Function.Injective (constMap E L) :=
@@ -405,7 +405,7 @@ theorem constMap_injective (E : WeierstrassCurve F) (L : Type*) [Field L] [Algeb
 
 omit [IsAlgClosed F] in
 /- English proof (translation)
-Consider the cases of `c with`. Consider the case `zero => rfl`. Consider the case `some x y h => show Point.some _ _ _ = Point.some _ _ _`. Simplify using `only [Point.some.injEq]`. Conclude with `⟨σ.commutes x, σ.commutes y⟩`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem map_constMap (E : WeierstrassCurve F) {L L' : Type*} [Field L] [Algebra F L] [Field L']
     [Algebra F L'] [DecidableEq L] [DecidableEq L'] (σ : L →ₐ[F] L') (c : E.toAffine.Point) :
@@ -418,17 +418,15 @@ theorem map_constMap (E : WeierstrassCurve F) {L L' : Type*} [Field L] [Algebra 
     exact ⟨σ.commutes x, σ.commutes y⟩
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `some x y h`. Establish `hx : IsAlgebraic F x`. Assume the negation of the conclusion as `hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hP hx`. Take `⟨c, hc⟩` from `exists_algebraMap_eq_of_isAlgebraic' hx`. Establish `heq` using `(equation_iff _ _).mp h.1`. Simplify using `only [WeierstrassCurve.baseChange, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆] at heq`. Establish `hyalg : IsAlgebraic F y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X ^ 2 + C (E.a₁ * c + E.a₃) * X - C (c ^ 3 + E.a₂ * c ^ 2 + E.a₄ * c + E.a₆), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg natDegree h0` as an intermediate fact. Rewrite `this` using `[natDegree_zero]`. Establish `h2 : (X ^ 2 + C (E.a₁ * c + E.a₃) * X - C (c ^ 3 + E.a₂ * c ^ 2 + E.a₄ * c + E.a₆) : F[X]).natDegree = 2` using `by compute_degree!`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [map_sub, map_add, map_mul, map_pow, aeval_X, aeval_C, hc]`. Take the linear combination `heq`. Take `⟨d, hd⟩` from `exists_algebraMap_eq_of_isAlgebraic' hyalg`. Establish `hcd : E.toAffine.Nonsingular c d`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h'` using `h`. Rewrite `h'` using `[← hc, ← hd]`. Conclude with `(E.toAffine.baseChange_nonsingular (f := Algebra.ofId F L) (algebraMap F L).injective c d).mp h'`. Use `⟨.some c d hcd, ?_⟩` and prove the remaining obligations. Use `show Point.some _ _ _ = Point.some _ _ _`.
-
-Simplify using `only [Point.some.injEq]`. Conclude with `⟨hc, hd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_not_isGenPt (E : WeierstrassCurve F) {L : Type*} [Field L] [Algebra F L]
     [DecidableEq L] (P : (E.baseChange L).toAffine.Point) (hP : ¬ IsGenPt E P) :
@@ -467,12 +465,12 @@ theorem exists_map_eq_of_not_isGenPt (E : WeierstrassCurve F) {L : Type*} [Field
 variable {E E' E'' : WeierstrassCurve F} [E.IsElliptic] [E'.IsElliptic] [E''.IsElliptic]
 
 /- English proof (translation)
-The claim follows from `transcendental_genX E`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_genericPoint : IsGenPt E (genericPoint E) := transcendental_genX E
 
 /- English proof (translation)
-Rewrite using `[← two_zsmul]`. Conclude with `(mulIsogeny E 2 two_ne_zero).isGenPt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_two_smul_genericPoint : IsGenPt E (genericPoint E + genericPoint E) := by
   rw [← two_zsmul]
@@ -480,7 +478,7 @@ theorem isGenPt_two_smul_genericPoint : IsGenPt E (genericPoint E + genericPoint
 
 omit [IsAlgClosed F] [DecidableEq F] in
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => exact hP.elim`. Consider the case `some x y h => exact hP`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem isGenPt_neg {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     {P : (E.baseChange L).toAffine.Point} (hP : IsGenPt E P) : IsGenPt E (-P) := by
@@ -490,7 +488,7 @@ theorem isGenPt_neg {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
 
 omit [IsAlgClosed F] [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[← map_genEval_genericPoint E P hP, ← map_add]`. Conclude with `isGenPt_map E _ (by rw [← two_zsmul]; exact (mulIsogeny E 2 two_ne_zero).isGenPt)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenPt_add_self {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
     {P : (E.baseChange L).toAffine.Point} (hP : IsGenPt E P) : IsGenPt E (P + P) := by
@@ -500,9 +498,9 @@ theorem isGenPt_add_self {L : Type*} [Field L] [Algebra F L] [DecidableEq L]
 omit [IsAlgClosed F] [DecidableEq F] in
 
 /- English proof (translation)
-Establish `e₁` using `(respectsAdd_iff Q).mp hQ L P P hP hP (isGenPt_add_self hP)`. Establish `h2 : IsGenPt E (P + P + -P)` using `by rw [add_neg_cancel_right]; exact hP`. Establish `e₂` using `(respectsAdd_iff Q).mp hQ L (P + P) (-P) (isGenPt_add_self hP) (isGenPt_neg hP) h2`. Rewrite `e₂` using `[genEval_congr E (add_neg_cancel_right P P) h2 hP, e₁]`. Rewrite using `[eq_neg_iff_add_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (· - Point.map (genEval E P hP) Q) e₂` as an intermediate fact. Rewrite using `[← sub_eq_zero.mpr this.symm]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem map_genEval_neg {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point}
     (hQ : RespectsAdd E E' Q) {L : Type u} [Field L] [Algebra F L] [DecidableEq L]
@@ -518,7 +516,7 @@ theorem map_genEval_neg {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.P
   abel
 
 /- English proof (translation)
-Establish `e` using `(respectsAdd_iff _).mp h E.toAffine.FunctionField (genericPoint E) (genericPoint E) isGenPt_genericPoint isGenPt_genericPoint isGenPt_two_smul_genericPoint`. Simplify using `only [map_constMap, left_eq_add] at e`. Conclude with `constMap_injective E' _ (by rw [e, map_zero])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_respectsAdd_map (c : E'.toAffine.Point)
     (h : RespectsAdd E E' (constMap E' E.toAffine.FunctionField c)) : c = 0 := by
@@ -528,9 +526,9 @@ theorem eq_zero_of_respectsAdd_map (c : E'.toAffine.Point)
   exact constMap_injective E' _ (by rw [e, map_zero])
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hQ`. Distinguish the cases in `hg : IsGenPt E' Q`. Conclude with `Or.inr ((isIsogeny_iff Q).mpr ⟨hg, hQ⟩)`. Take `⟨c, rfl⟩` from `exists_map_eq_of_not_isGenPt E' Q hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Rewrite using `[eq_zero_of_respectsAdd_map c hQ, map_zero]`. Conclude with `Or.inl rfl`. Introduce and unpack `(rfl | h)`. Conclude with `zero_mem _`. Conclude with `h.2`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_isogHom_iff {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point} :
     Q ∈ isogHom E E' ↔ Q = 0 ∨ IsIsogeny E E' Q := by
@@ -546,7 +544,7 @@ theorem mem_isogHom_iff {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.P
     · exact h.2
 
 /- English proof (translation)
-The claim follows from `((isIsogeny_iff Q).mp ((mem_isogHom_iff.mp hQ).resolve_left h0)).1`.
+A detailed English derivation is pending.
 -/
 theorem isGenPt_of_mem_isogHom {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point}
     (hQ : Q ∈ isogHom E E') (h0 : Q ≠ 0) : IsGenPt E' Q :=
@@ -555,9 +553,9 @@ theorem isGenPt_of_mem_isogHom {Q : (E'.baseChange E.toAffine.FunctionField).toA
 omit [IsAlgClosed F] [DecidableEq F] in
 
 /- English proof (translation)
-Rewrite `hQ`, `hR`, the goal using `[respectsAdd_iff]`. Introduce `L _ _ _ P₁ P₂ h₁ h₂ h₃`. Establish `key : ∀ (P : (E.baseChange L).toAffine.Point) (hP : IsGenPt E P), Point.map (genEval E P hP) (Point.map (genEval E' Q hg) R) = Point.map (genEval E' (Point.map (genEval E P hP) Q) (isGenPt_map E' _ hg)) R`. Introduce `P hP`. Rewrite using `[Point.map_map, genEval_map]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, key, key]`. Establish `e` using `hQ L P₁ P₂ h₁ h₂ h₃`. Establish `h₃' : IsGenPt E' (Point.map (genEval E P₁ h₁) Q + Point.map (genEval E P₂ h₂) Q)` using `e ▸ isGenPt_map E' _ hg`. Rewrite using `[genEval_congr E' e _ h₃']`. Conclude with `hR L _ _ _ _ h₃'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem respectsAdd_map_genEval {Q : (E'.baseChange E.toAffine.FunctionField).toAffine.Point}
     (hQ : RespectsAdd E E' Q) (hg : IsGenPt E' Q)
@@ -587,21 +585,21 @@ noncomputable def homComp (R : isogHom E' E'') (Q : isogHom E E') : isogHom E E'
     respectsAdd_map_genEval Q.2 h R.2⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[homComp, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homComp_of_isGenPt (R : isogHom E' E'') (Q : isogHom E E') (h : IsGenPt E' Q.1) :
     (homComp R Q).1 = Point.map (genEval E' Q.1 h) R.1 := by
   rw [homComp, dif_pos h]
 
 /- English proof (translation)
-Rewrite using `[homComp, dif_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem homComp_of_not_isGenPt (R : isogHom E' E'') (Q : isogHom E E') (h : ¬ IsGenPt E' Q.1) :
     homComp R Q = 0 := by
   rw [homComp, dif_neg h]
 
 /- English proof (translation)
-Break down `mem_isogHom_iff.mp Q.2 with h0 | h1` into its components or cases. Conclude with `Subtype.ext h0`. Conclude with `absurd ((isIsogeny_iff _).mp h1).1 h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_not_isGenPt (Q : isogHom E E') (h : ¬ IsGenPt E' Q.1) : Q = 0 := by
   rcases mem_isogHom_iff.mp Q.2 with h0 | h1
@@ -609,13 +607,13 @@ theorem eq_zero_of_not_isGenPt (Q : isogHom E E') (h : ¬ IsGenPt E' Q.1) : Q = 
   · exact absurd ((isIsogeny_iff _).mp h1).1 h
 
 /- English proof (translation)
-The claim follows from `homComp_of_not_isGenPt _ _ (fun h => h)`.
+A detailed English derivation is pending.
 -/
 theorem homComp_zero_right (R : isogHom E' E'') : homComp R (0 : isogHom E E') = 0 :=
   homComp_of_not_isGenPt _ _ (fun h => h)
 
 /- English proof (translation)
-Distinguish the cases in `h : IsGenPt E' Q.1`. Conclude with `Subtype.ext (by rw [homComp_of_isGenPt _ _ h]; exact map_zero _)`. Conclude with `homComp_of_not_isGenPt _ _ h`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem homComp_zero_left (Q : isogHom E E') : homComp (0 : isogHom E' E'') Q = 0 := by
   by_cases h : IsGenPt E' Q.1
@@ -623,7 +621,7 @@ theorem homComp_zero_left (Q : isogHom E E') : homComp (0 : isogHom E' E'') Q = 
   · exact homComp_of_not_isGenPt _ _ h
 
 /- English proof (translation)
-Distinguish the cases in `h : IsGenPt E' Q.1`. Conclude with `Subtype.ext (by`. Simplify using `only [AddSubgroup.coe_add, homComp_of_isGenPt _ _ h]`. Conclude with `map_add _ _ _)`. Rewrite using `[homComp_of_not_isGenPt _ _ h, homComp_of_not_isGenPt _ _ h, homComp_of_not_isGenPt _ _ h, add_zero]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homComp_add_left (R₁ R₂ : isogHom E' E'') (Q : isogHom E E') :
     homComp (R₁ + R₂) Q = homComp R₁ Q + homComp R₂ Q := by
@@ -634,13 +632,13 @@ theorem homComp_add_left (R₁ R₂ : isogHom E' E'') (Q : isogHom E E') :
       homComp_of_not_isGenPt _ _ h, add_zero]
 
 /- English proof (translation)
-Distinguish the cases in `h₁ : IsGenPt E' Q₁.1`. Distinguish the cases in `h₂ : IsGenPt E' Q₂.1`. Distinguish the cases in `h₃ : IsGenPt E' (Q₁ + Q₂).1`. Use `Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [AddSubgroup.coe_add, homComp_of_isGenPt _ _ h₁, homComp_of_isGenPt _ _ h₂, homComp_of_isGenPt _ _ h₃]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `(respectsAdd_iff R.1).mp R.2 E.toAffine.FunctionField Q₁.1 Q₂.1 h₁ h₂ h₃`. Establish `h0 : Q₁ + Q₂ = 0` using `eq_zero_of_not_isGenPt _ h₃`. Establish `hQ₂ : Q₂ = -Q₁` using `eq_neg_of_add_eq_zero_right h0`. Rewrite using `[h0, homComp_zero_right, eq_comm, add_eq_zero_iff_eq_neg]`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Substitute `hQ₂` using the available equality. Simplify using `only [AddSubgroup.coe_neg, homComp_of_isGenPt _ _ h₁]`. Rewrite using `[homComp_of_isGenPt _ _ h₂]`. Use `map_genEval_neg R.2 h₁` as an intermediate fact. Rewrite using `[genEval_congr E' (AddSubgroup.coe_neg (isogHom E E') Q₁) h₂ (isGenPt_neg h₁), this, neg_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_zero_of_not_isGenPt _ h₂, add_zero, homComp_zero_right, add_zero]`. Rewrite using `[eq_zero_of_not_isGenPt _ h₁, zero_add, homComp_zero_right, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homComp_add_right (R : isogHom E' E'') (Q₁ Q₂ : isogHom E E') :
     homComp R (Q₁ + Q₂) = homComp R Q₁ + homComp R Q₂ := by
@@ -665,11 +663,11 @@ theorem homComp_add_right (R : isogHom E' E'') (Q₁ Q₂ : isogHom E E') :
   · rw [eq_zero_of_not_isGenPt _ h₁, zero_add, homComp_zero_right, zero_add]
 
 /- English proof (translation)
-Distinguish the cases in `hQ : IsGenPt E' Q.1`. Distinguish the cases in `hR : IsGenPt E'' R.1`. Establish `hRQ : IsGenPt E'' (homComp R Q).1`. Rewrite using `[homComp_of_isGenPt _ _ hQ]`. Conclude with `isGenPt_map E'' _ hR`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[homComp_of_isGenPt _ _ hQ, homComp_of_isGenPt _ _ hR, homComp_of_isGenPt _ _ hRQ, Point.map_map]`. Use `congr 1`. Rewrite using `[genEval_congr E'' (homComp_of_isGenPt R Q hQ) hRQ (isGenPt_map E'' _ hR), genEval_map]`. Rewrite using `[eq_zero_of_not_isGenPt _ hR, homComp_zero_right, homComp_zero_left, homComp_zero_left, homComp_zero_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_zero_of_not_isGenPt _ hQ, homComp_zero_right, homComp_zero_right, homComp_zero_right]`.
+A detailed English derivation is pending.
 -/
 theorem homComp_assoc {E''' : WeierstrassCurve F} [E'''.IsElliptic] (S : isogHom E'' E''')
     (R : isogHom E' E'') (Q : isogHom E E') : homComp (homComp S R) Q = homComp S (homComp R Q) := by
@@ -689,7 +687,7 @@ theorem homComp_assoc {E''' : WeierstrassCurve F} [E'''.IsElliptic] (S : isogHom
 noncomputable def homId : isogEnd E := ⟨genericPoint E, respectsAdd_genericPoint⟩
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[homComp_of_isGenPt _ _ isGenPt_genericPoint]`. Use `show Point.map (genEval E (genericPoint E) isGenPt_genericPoint) Q.1 = Q.1`. Apply the tactic sequence `rw [← eq_genEval E (AlgHom.id F _) (by cases genericPoint E <;> rfl) isGenPt_genericPoint]`. Apply the tactic sequence `cases Q.1 <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem homComp_id_right (Q : isogHom E E') : homComp Q homId = Q := by
   refine Subtype.ext ?_
@@ -699,7 +697,7 @@ theorem homComp_id_right (Q : isogHom E E') : homComp Q homId = Q := by
   cases Q.1 <;> rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : IsGenPt E' Q.1`. Conclude with `Subtype.ext (by rw [homComp_of_isGenPt _ _ h]; exact map_genEval_genericPoint E' _ h)`. Rewrite using `[homComp_of_not_isGenPt _ _ h, eq_zero_of_not_isGenPt _ h]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homComp_id_left (Q : isogHom E E') : homComp homId Q = Q := by
   by_cases h : IsGenPt E' Q.1

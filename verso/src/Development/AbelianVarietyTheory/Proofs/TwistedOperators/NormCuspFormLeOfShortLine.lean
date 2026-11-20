@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.ShortLineCusp
 
 /- English proof (translation)
-Establish `h1` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun _ => (1 : ℝ)) (fun i => Real.sqrt (a i))`. Simplify using `only [one_pow, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, one_mul, Real.sq_sqrt (ha _)] at h1`. Rewrite using `[← Real.sqrt_mul (Nat.cast_nonneg _)]`. Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Simplify `h1` using `[Real.sq_sqrt (ha _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_sqrt_le (ι : Type) [Fintype ι] (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i) :
     ∑ i, Real.sqrt (a i) ≤ Real.sqrt (Fintype.card ι) * Real.sqrt (∑ i, a i) := by
@@ -35,7 +35,7 @@ theorem sum_sqrt_le (ι : Type) [Fintype ι] (a : ι → ℝ) (ha : ∀ i, 0 ≤
   simpa [Real.sq_sqrt (ha _)] using h1
 
 /- English proof (translation)
-Introduce `ι _ a b ha hb`. Rewrite using `[Finset.sum_add_distrib, mul_add]`. Conclude with `add_le_add (sum_sqrt_le ι a ha) (sum_sqrt_le ι b hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sqrt_add_le : ∀ (ι : Type) [Fintype ι] (a b : ι → ℝ), (∀ i, 0 ≤ a i) → (∀ i, 0 ≤ b i) → ∑ i, (Real.sqrt (a i) + Real.sqrt (b i)) ≤ Real.sqrt (Fintype.card ι) * (Real.sqrt (∑ i, a i) + Real.sqrt (∑ i, b i)) := by
   intro ι _ a b ha hb
@@ -43,9 +43,9 @@ theorem sum_sqrt_add_le : ∀ (ι : Type) [Fintype ι] (a b : ι → ℝ), (∀ 
   exact add_le_add (sum_sqrt_le ι a ha) (sum_sqrt_le ι b hb)
 
 /- English proof (translation)
-Introduce `D`. Use `haveI := D.sp.cm.totReal`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.card_congr (Formalism.L2.Host.tauPl D), ← NumberField.InfinitePlace.card_add_two_mul_card_eq_rank, NumberField.IsTotallyReal.nrComplexPlaces_eq_zero, mul_zero, add_zero, NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, NumberField.IsTotallyReal.nrCompl …`. Unfold `rdisc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.finrank_mul_finrank ℚ D.host.F D.host.E, D.sp.cm.deg2]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem finrank_eq_card_and_rd : ∀ D : D7, Module.finrank ℚ D.host.F = Fintype.card D.what₂.Tau ∧ |(discr D.host.E : ℝ)| ^ ((1 : ℝ) / (2 * (Module.finrank ℚ D.host.F : ℝ))) = rdisc D := by
   intro D
@@ -62,9 +62,9 @@ theorem finrank_eq_card_and_rd : ∀ D : D7, Module.finrank ℚ D.host.F = Finty
     ring
 
 /- English proof (translation)
-Introduce `I x`. Unfold `GlobalTheory.Count.least Formalism.HN.leastSize`. Apply `Real.sInf_nonneg` to reduce the goal to its premises. Introduce and unpack `t ⟨R, -, -, rfl⟩`. Unfold `Formalism.HN.size Formalism.HN.ht Formalism.F.covol`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions.
 
-Apply `Real.rpow_nonneg` to reduce the goal to its premises. Apply `mul_nonneg (mul_nonneg (by positivity) (Real.rpow_nonneg (abs_nonneg _) _))` to reduce the goal to its premises. Apply the tactic sequence `split_ifs <;> positivity`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem least_nonneg : ∀ (I : Formalism.MainNotions.S.AutInst) (x : I.GA), 0 ≤ GlobalTheory.Count.least I x := by
   intro I x
@@ -81,29 +81,27 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D θ hθ V A Λ hΛ g q hg hq hn hrk φ hφ hcusp hlev c hc hlip x s hs hs2 hlong`. Take `⟨fr, hfrΛ, hfr⟩` from `GlobalTheory.T.exists_instanceFrames_of_diagonalFrame_selfDual D V A Λ hΛ`. Substitute `hfrΛ` using the available equality. Take `⟨hfF, hrdE⟩` from `finrank_eq_card_and_rd D`. Establish `hfI : (Formalism.IndefR.Eqv.UI.instV fr).f = Fintype.card D.what₂.Tau` using `hfF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrdI : (Formalism.IndefR.Eqv.UI.instV fr).rd = rdisc D` using `hrdE`. Use `set x0 := (Formalism.IndefR.Eqv.UI.brg fr).symm x with hx0`. Establish `hbx : Formalism.IndefR.Eqv.UI.brg fr x0 = x` using `by simp [hx0]`. Establish `hl0 : 0 ≤ GlobalTheory.Count.least (Formalism.IndefR.Eqv.UI.instV fr) x0` using `least_nonneg _ x0`. Establish `hlt : GlobalTheory.Count.least (Formalism.IndefR.Eqv.UI.instV fr) x0 < s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Apply `hlong` to reduce the goal to its premises. Introduce `𝔪 h𝔪 w hw hw0`. Establish `hL` using `GlobalTheory.T.adelicPointRationalLattice_unitaryModelIso_eq D V fr x0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hL` using `[hbx]`. Rewrite `hw` using `[hL]`. Establish `h1` using `GlobalTheory.T.leastSize_pow_mul_sqrt_absNorm_le_prod_norms (Formalism.IndefR.Eqv.UI.instV fr) x0 𝔪 h𝔪 w hw hw0`. Rewrite `h1` using `[GlobalTheory.T.rationalVectorNorm_adelicPoint_twoModels_eq D θ hθ V A fr (fun τ => (hfr τ).2) x0 w, hbx, hfI]`. Conclude with `le_trans (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ hs.le hge _) (Real.sqrt_nonneg _)) h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrkI : ∀ v, GlobalTheory.Count.rkR ((Formalism.IndefR.Eqv.UI.instV fr).ε v) ≤ q`. Introduce `(v : InfinitePlace D.host.F)`. Establish `h` using `(hfr ((Formalism.L2.Host.tauPl D).symm v)).1`. Establish `e : (Formalism.L2.Host.tauPl D) ((Formalism.L2.Host.tauPl D).symm v) = v` using `Equiv.apply_symm_apply _ _`. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show GlobalTheory.Count.rkR (fr.ε v) ≤ q`. Rewrite using `[h]`. Conclude with `hrk _`. Take `⟨W, hW, hmv⟩` from `GlobalTheory.T.automorphicPoint_exists_isotropic_reduction_of_small_size (Formalism.IndefR.Eqv.UI.instV fr) x0 g q hg hq hn hrkI (hlt.trans_le hs2)`. Take `⟨hGQ, -, hN⟩` from `GlobalTheory.BridgeDict.bridge_dict D θ hθ V fr`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, C₀, hC₀, hNI⟩` from `hN W hW`. Apply `GlobalTheory.CuspGeo.norm_le_of_unipRad_variation D V φ hφ hcusp r C₀ hC₀ x` to reduce the goal to its premises. Introduce `m hm`. Establish `hm' : (Formalism.IndefR.Eqv.UI.brg fr).symm m ∈ (Formalism.IndefR.Eqv.UI.instV fr).NA W` using `hNI _ (by simpa using hm)`. Take `⟨γ, hγ, k, hk, u, Av, Z, hAZ, hu, heq, hbd⟩` from `hmv _ hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmx : m * x = Formalism.IndefR.Eqv.UI.brg fr γ * (x * Formalism.IndefR.Eqv.UI.brg fr (u, 1)) * Formalism.IndefR.Eqv.UI.brg fr (1, k)`. Establish `h2` using `congrArg (Formalism.IndefR.Eqv.UI.brg fr) heq`. Establish `h3 : ((u, k) : (Formalism.IndefR.Eqv.UI.instV fr).GA) = (u, 1) * (1, k)` using `by simp`. Rewrite `h2` using `[h3]`. Simplify using `only [map_mul, hbx, ContinuousMulEquiv.apply_symm_apply] at h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2]`. Use `group`. Rewrite using `[hmx, hlev _ (GlobalTheory.T.principalCongruence_mem_latticeCongruenceLevel D V fr g hg k hk), hφ.left _ ((hGQ γ).2 hγ)]`. Establish `h6` using `GlobalTheory.T.lipschitz_bound_real_unipotent_action D θ hθ V A fr (fun τ => (hfr τ).2) φ c hc hlip u Av Z hAZ hu x`. Establish `h7` using `sum_sqrt_add_le (InfinitePlace D.host.F) (fun v => Formalism.REAL.hs (Av v)) (fun v => Formalism.REAL.hs (Z v)) (fun v => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _) (fun v => Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (InfinitePlace D.host.F) = Fintype.card D.what₂.Tau` using `Fintype.card_congr (Formalism.L2.Host.tauPl D).symm`. Rewrite `h7` using `[hcard]`. Rewrite `hbd` using `[hfI, hrdI]`. Establish `hL : (2 * GlobalTheory.Count.least (Formalism.IndefR.Eqv.UI.instV fr) x0) ^ ((1 : ℝ) / q) ≤ (2 * s) ^ ((1 : ℝ) / q)` using `Real.rpow_le_rpow (by positivity) (by linarith) (by positivity)`. Establish `hL0 : 0 ≤ (2 * GlobalTheory.Count.least (Formalism.IndefR.Eqv.UI.instV fr) x0) ^ ((1 : ℝ) / q)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Establish `hrd0 : 0 ≤ rdisc D` using `by unfold rdisc; positivity`. Establish `hN : Real.sqrt (Fintype.card D.what₂.Tau) * Real.sqrt (Fintype.card D.what₂.Tau) = Fintype.card D.what₂.Tau` using `Real.mul_self_sqrt (Nat.cast_nonneg _)`. Establish `hP : 0 ≤ (V.rank : ℝ) ^ 2 * (Fintype.card D.what₂.Tau : ℝ) * (g : ℝ) * rdisc D` using `by positivity`. Establish `hbd' : Real.sqrt (Fintype.card D.what₂.Tau) * (Real.sqrt (∑ v, Formalism.REAL.hs (Av v)) + Real.sqrt (∑ v, Formalism.REAL.hs (Z v))) ≤ (V.rank : ℝ) ^ 2 * Fintype.card D.what₂.Tau * g * rdisc D * (2 * s) ^ ((1 : ℝ) / q)`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_not_long : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (A : Fr V) (Λ : Lat V), IsSelfDualC V Λ → ∀ (g q : ℕ), 1 ≤ g → 1 ≤ q → 1 ≤ V.rank → (∀ τ, min (Finset.univ.filter fun a => A.ε τ a = true).card (Finset.univ.filter fun a => A.ε τ a = false).card ≤ q) → ∀ φ : GA D V → ℂ, IsAutFun V φ → IsCuspFun V φ → (∀ k ∈ Lev.levA V (congLev D.sp.cm V.gram Λ (Ideal.span {((g : ℕ) : 𝓞 D.host.E)})), ∀ x, φ (x * k) = φ x) → ∀ c : ℝ, 0 ≤ c → Lip θ A φ c → ∀ (x : GA D V) (s : ℝ), 0 < s → s ≤ 1 / 2 → ¬ Long θ A Λ x s → ‖φ x‖ ≤ c * ((V.rank : ℝ) ^ 2 * Fintype.card D.what₂.Tau * g * rdisc D * (2 * s) ^ ((1 : ℝ) / q)) := by
   intro D θ hθ V A Λ hΛ g q hg hq hn hrk φ hφ hcusp hlev c hc hlip x s hs hs2 hlong

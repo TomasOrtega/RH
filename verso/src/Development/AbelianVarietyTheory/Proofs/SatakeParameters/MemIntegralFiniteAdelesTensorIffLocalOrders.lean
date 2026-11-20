@@ -9,7 +9,7 @@ namespace GlobalTheory.PlaceComp.IntLocal
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨k, s, hs⟩` from `Module.Finite.exists_fin (R := ℤ) (M := 𝓞 E)`. Use `⟨k, s, fun w => ?_⟩` and prove the remaining obligations. Establish `: w ∈ Submodule.span ℤ (Set.range s)` using `hs ▸ Submodule.mem_top`. Take `⟨n, hn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 this`. Conclude with `⟨n, hn.symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_generators (E : Type) [Field E] [NumberField E] :
     ∃ (k : ℕ) (x : Fin k → 𝓞 E), ∀ w : 𝓞 E, ∃ n : Fin k → ℤ, w = ∑ j, n j • x j := by
@@ -22,11 +22,11 @@ theorem exists_int_generators (E : Type) [Field E] [NumberField E] :
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `h` using `Subring.mem_closure_iff.1 hy`. Use `AddSubgroup.closure_mono ?_ h` and prove the remaining obligations. Introduce `z hz`. Proceed by induction on `hz using Submonoid.closure_induction with`. Consider the case `mem z hz => exact hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact ⟨1, one_mem _, 1, rfl⟩`. Consider the case `mul z w _ _ hz hw`. Take `⟨a, ha, x, rfl⟩` from `hz`. Take `⟨b, hb, x', rfl⟩` from `hw`. Conclude with `⟨a * b, mul_mem ha hb, x * x', by`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Use the proof step `rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_addClosure_of_mem_ordAt (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v ⊗[F] E)
     (hy : y ∈ ordAt E v) :
@@ -47,15 +47,13 @@ theorem mem_addClosure_of_mem_ordAt (v : HeightOneSpectrum (𝓞 F)) (y : Fv F v
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `hy'` using `mem_addClosure_of_mem_ordAt v y hy`. Use `clear hy`. Proceed by induction on `hy' using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, w, rfl⟩` from `hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `hx w`. Use `⟨fun j => n j • a, fun j => zsmul_mem ha _, ?_⟩` and prove the remaining obligations. Use `show a ⊗ₜ[F] (algebraMap (𝓞 E) E (∑ j, n j • x j)) = ∑ j, (n j • a) ⊗ₜ[F] (algebraMap (𝓞 E) E (x j))`. Simplify using `only [map_sum, map_zsmul, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[TensorProduct.smul_tmul]`. Consider the case `zero => exact ⟨0, fun _ => zero_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, ea⟩` from `hy`. Take `⟨b, hb, eb⟩` from `hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨a + b, fun j => add_mem (ha j) (hb j), by`. Simplify using `only [Pi.add_apply, ea, eb, TensorProduct.add_tmul, Finset.sum_add_distrib]⟩`. Consider the case `neg y _ hy`. Take `⟨a, ha, ea⟩` from `hy`. Conclude with `⟨-a, fun j => neg_mem (ha j), by`.
-
-Simplify using `only [Pi.neg_apply, ea, TensorProduct.neg_tmul, Finset.sum_neg_distrib]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coeff {k : ℕ} (x : Fin k → 𝓞 E)
     (hx : ∀ w : 𝓞 E, ∃ n : Fin k → ℤ, w = ∑ j, n j • x j) (v : HeightOneSpectrum (𝓞 F))
@@ -86,15 +84,13 @@ theorem exists_coeff {k : ℕ} (x : Fin k → 𝓞 E)
       simp only [Pi.neg_apply, ea, TensorProduct.neg_tmul, Finset.sum_neg_distrib]⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ z`. Prove the components needed by the constructor for the conclusion. Introduce `hz v`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨a, ha, x, rfl⟩` from `hy`. Conclude with `Subring.subset_closure ⟨_, ha v, x, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [map_neg]`. Conclude with `neg_mem hy`. Introduce `h`. Take `⟨k, x, hx⟩` from `exists_int_generators E`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose a ha ea using fun v => exists_coeff x hx v _ (h v)`. Set `A : Fin k → Af F` to `fun j => ⟨fun v => a v j, Filter.Eventually.of_forall fun v => ha v j⟩`. Establish `e : z = ∑ j, A j ⊗ₜ[F] (x j : E)`. Apply `evF_ext` to reduce the goal to its premises. Introduce `v`.
-
-Rewrite using `[ea v, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => rfl`. Rewrite using `[e]`. Conclude with `sum_mem fun j _ => AddSubgroup.subset_closure ⟨A j, fun v => ha v j, x j, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intA_iff :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]

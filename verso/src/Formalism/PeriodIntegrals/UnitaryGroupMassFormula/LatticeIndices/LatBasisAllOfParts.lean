@@ -26,14 +26,14 @@ def starE (a : 𝓞 X.B.I.E) : 𝓞 X.B.I.E :=
   ⟨star (a : X.B.I.E), (RingOfIntegers.isIntegral_coe a).map (starRingEnd X.B.I.E).toIntAlgHom⟩
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_zero_left (x : Fin X.B.I.n → X.B.I.E) :
     Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J 0 x = 0 := by
   simp [Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_add_left (y y' x : Fin X.B.I.n → X.B.I.E) :
     Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (y + y') x =
@@ -41,9 +41,9 @@ theorem hform_add_left (y y' x : Fin X.B.I.n → X.B.I.E) :
   simp only [Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show star ((a • y) i) * X.B.I.J i j * x j = star (a : X.B.I.E) * (star (y i) * X.B.I.J i j * x j)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Use `show star ((a : X.B.I.E) * y i) * _ * _ = _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hform_smul_left (a : 𝓞 X.B.I.E) (y x : Fin X.B.I.n → X.B.I.E) :
     Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (a • y) x =
@@ -57,23 +57,21 @@ theorem hform_smul_left (a : 𝓞 X.B.I.E) (y x : Fin X.B.I.n → X.B.I.E) :
   ring
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨S, hS⟩` from `X.B.I.L_fg`. Establish `hSL : ∀ g ∈ S, g ∈ X.B.I.L` using `fun g hg => hS ▸ Submodule.subset_span hg`. Establish `hg : ∀ g ∈ S, ∃ s : 𝓞 X.B.I.F, s ∉ p.1.asIdeal ∧ ∃ c : 𝓞 X.B.I.E, (c : X.B.I.E) = algebraMap X.B.I.F X.B.I.E s * Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J g x` using `fun g hgS => hN _ (hx g (hSL g hgS)).1 (hx g (hSL g hgS)).2`. Use `choose! s hs c hc using hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : 𝓞 X.B.I.F := ∏ g ∈ S, s g with ht_def`. Establish `ht : t ∉ p.1.asIdeal`. Introduce `h`. Use `p.1.isPrime` as an intermediate fact. Take `⟨g, hgS, hg⟩` from `Ideal.IsPrime.prod_mem_iff.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs g hgS hg`. Use `set T : X.B.I.E := algebraMap X.B.I.F X.B.I.E (t : X.B.I.F) with hT`. Establish `hkey : ∀ g ∈ S, Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J g (T • x) ∈ (algebraMap (𝓞 X.B.I.E) X.B.I.E).range`. Introduce `g hgS`. Rewrite using `[hform_smul_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨liftE X (∏ h ∈ S.erase g, s h) * c g, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `show ((liftE X (∏ h ∈ S.erase g, s h) : 𝓞 X.B.I.E) : X.B.I.E) * ((c g : 𝓞 X.B.I.E) : X.B.I.E) = _`. Rewrite using `[hc g hgS, liftE_coe, hT, ht_def, ← Finset.mul_prod_erase S s hgS]`. Establish `hm : ((s g * ∏ x ∈ S.erase g, s x : 𝓞 X.B.I.F) : X.B.I.F) = (s g : X.B.I.F) * ((∏ x ∈ S.erase g, s x : 𝓞 X.B.I.F) : X.B.I.F)` using `map_mul (algebraMap _ _) _ _`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hTx : T • x ∈ X.B.I.L`. Use `(X.B.I.L_dual _).2 fun y hy => ?_` and prove the remaining obligations. Rewrite `hy` using `[← hS]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem g hg => exact hkey g hg`. Consider the case `zero => rw [hform_zero_left]`. Conclude with `⟨0, map_zero _⟩`. Consider the case `add y y' _ _ h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, e1⟩` from `h1`. Take `⟨c2, e2⟩` from `h2`. Conclude with `⟨c1 + c2, by rw [map_add, e1, e2, hform_add_left]⟩`. Consider the case `smul a y _ h1`. Take `⟨c1, e1⟩` from `h1`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨starE X a * c1, by rw [map_mul, e1, hform_smul_left]; rfl⟩`. Take `⟨hinv, hne⟩` from `unit_of_notMem X p t ht`. Establish `hM : (fun j => iota2 X p θ ((T • x) j)) ∈ Mlat2 X p θ` using `Submodule.subset_span ⟨T • x, hTx, rfl⟩`. Establish `heq : (fun j => iota2 X p θ (x j)) = (⟨(algebraMap X.B.I.F (FpX X p) (t : X.B.I.F))⁻¹, hinv⟩ : OpX X p) • (fun j => iota2 X p θ ((T • x) j))`. Use function extensionality and compare the values at `j`.
-
-Use `show iota2 X p θ (x j) = (algebraMap X.B.I.F (FpX X p) (t : X.B.I.F))⁻¹ * iota2 X p θ (T * x j)`. Rewrite using `[map_mul, hT, secondEmbedding_algebraMap, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ hM`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locGlob_of (hN : DenomP X p θ) : LocGlob X p θ := by
   classical
@@ -127,7 +125,7 @@ theorem locGlob_of (hN : DenomP X p θ) : LocGlob X p θ := by
   exact Submodule.smul_mem _ _ hM
 
 /- English proof (translation)
-The claim follows from `latBasisAll_of_back X p (fun θ hθ => dualBack_of X p θ (locGlob_of X p θ (hN θ hθ)) (hA θ hθ))`.
+A detailed English derivation is pending.
 -/
 theorem latBasisAll_of_parts
     (hN : ∀ θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p, IsSplitEquiv X p θ → DenomP X p θ)

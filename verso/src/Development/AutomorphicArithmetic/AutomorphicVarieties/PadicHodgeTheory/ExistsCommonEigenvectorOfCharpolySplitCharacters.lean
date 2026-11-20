@@ -10,75 +10,67 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `Γ I W _ _ _ _ _ n i Φ ρ μ hnorm hgen hfin hchar j`. Establish `htr : ∀ σ, LinearMap.trace ℂ W (ρ σ) = ∑ k, (μ k σ : ℂ)`. Introduce `σ`. Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Module.Free.chooseBasis ℂ W), Matrix.trace_eq_neg_charpoly_nextCoeff, LinearMap.charpoly_toMatrix, hchar, Polynomial.prod_X_sub_C_nextCoeff, neg_neg]`. Establish `heig : ∀ σ k, (ρ σ).HasEigenvalue (μ k σ : ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ k`. Rewrite using `[Module.End.hasEigenvalue_iff_isRoot_charpoly, hchar, Polynomial.IsRoot, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ k) (by simp)`. Set `φ : I →* (Module.End ℂ W)ˣ` to `(ρ.toHomUnits).comp i`. Establish `hφ : ∀ s, ((φ s : (Module.End ℂ W)ˣ) : Module.End ℂ W) = ρ (i s)` using `fun s => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ k, φ.ker ≤ ((μ k).comp i).ker`. Introduce `k s hs`. Rewrite `hs`, the goal using `[MonoidHom.mem_ker]`. Establish `h1 : ρ (i s) = 1` using `by rw [← hφ, hs]; rfl`. Take `⟨v, hv⟩` from `(heig (i s) k).exists_hasEigenvector`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hv1` using `hv.apply_eq_smul`. Rewrite `hv1` using `[h1, Module.End.one_apply]`. Establish `h2 : ((μ k (i s) : ℂ) - 1) • v = 0` using `by rw [sub_smul, one_smul, ← hv1, sub_self]`. Break down `smul_eq_zero.mp h2 with h | h` into its components or cases. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [MonoidHom.comp_apply, Units.val_one]`. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hv.2`. Establish `hfinU : (Set.range φ).Finite`. Use `(Set.Finite.preimage (Function.Injective.injOn (fun a b h => Units.ext h)) hfin).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `⟨s, rfl⟩`. Establish `hr : ∀ q : I ⧸ φ.ker, QuotientGroup.kerLift φ q ∈ Set.range φ`. Introduce `q`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Conclude with `⟨s, (QuotientGroup.kerLift_mk φ s).symm⟩`. Use `haveI : Finite (I ⧸ φ.ker) := by haveI := hfinU.to_subtype`. Conclude with `Finite.of_injective (fun q => (⟨_, hr q⟩ : Set.range φ)) (fun a b hab => QuotientGroup.kerLift_injective φ (congrArg Subtype.val hab))`. Use `letI : Fintype (I ⧸ φ.ker) := Fintype.ofFinite _`. Set `R : I ⧸ φ.ker →* Module.End ℂ W` to `(Units.coeHom (Module.End ℂ W)).comp (QuotientGroup.kerLift φ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c : Fin n → (I ⧸ φ.ker →* ℂˣ)` to `fun k => QuotientGroup.lift φ.ker ((μ k).comp i) (hker k)`. Establish `hR : ∀ s : I, R (s : I ⧸ φ.ker) = ρ (i s)` using `fun s => rfl`. Establish `hc : ∀ k (s : I), c k (s : I ⧸ φ.ker) = μ k (i s)` using `fun k s => rfl`. Set `E : Submodule ℂ W` to `⨅ s, (ρ (i s)).eigenspace (μ j (i s) : ℂ)`. Establish `hmemE : ∀ y, y ∈ E ↔ ∀ s, ρ (i s) y = (μ j (i s) : ℂ) • y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `y`. Simplify using `only [E, Submodule.mem_iInf, Module.End.mem_eigenspace_iff]`. Establish `hEinv : ∀ y ∈ E, ρ Φ y ∈ E`. Introduce `y hy`. Rewrite `hy`, the goal using `[hmemE]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `s`. Take `⟨t, ht⟩` from `hnorm Φ⁻¹ s`. Establish `e1 : i s * Φ = Φ * i t`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : μ j (i s) = μ j (i t)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (μ j) e1`. Simplify using `only [map_mul] at h3`. Rewrite `h3` using `[mul_comm (μ j Φ)]`. Conclude with `mul_right_cancel h3`. Combine the equalities or inequalities in the displayed calculation.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmain : ∃ y ∈ E, y ≠ 0 ∧ ρ Φ y = (μ j Φ : ℂ) • y`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Set `A : Module.End ℂ E` to `(ρ Φ).restrict hEinv`. Set `p` to `LinearMap.charpoly A`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp : p.eval (μ j Φ : ℂ) ≠ 0`. Introduce `h0`. Establish `hA : A.HasEigenvalue (μ j Φ : ℂ)` using `(Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).mpr h0`. Take `⟨v, hv⟩` from `hA.exists_hasEigenvector`. Establish `hv0 : (v : W) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `h`. Apply `hv.2` to reduce the goal to its premises. Conclude with `Subtype.ext h`. Apply `hno v v.2 hv0` to reduce the goal to its premises. Establish `h5` using `congrArg Subtype.val hv.apply_eq_smul`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `h5` using `[A]`. Set `S` to `Finset.univ.filter (fun k : Fin n => (μ k Φ : ℂ) ≠ μ j Φ)`. Set `h` to `∏ k ∈ S, (Polynomial.X - Polynomial.C (μ k Φ : ℂ))`. Set `f` to `h * p`. Establish `key : ∀ y (hy : y ∈ E), Polynomial.aeval (ρ Φ) p y = ((Polynomial.aeval A p) ⟨y, hy⟩ : W)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Rewrite using `[Polynomial.aeval_eq_sum_range, Polynomial.aeval_eq_sum_range]`. Simplify using `[A, Module.End.pow_restrict, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun m _ => ?_)` and prove the remaining obligations. Rewrite using `[Module.End.pow_restrict]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hfE : ∀ y ∈ E, Polynomial.aeval (ρ Φ) f y = 0`. Introduce `y hy`. Rewrite using `[Polynomial.aeval_mul, Module.End.mul_apply, key y hy, LinearMap.aeval_self_charpoly]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Set `P : Module.End ℂ W` to `∑ q : I ⧸ φ.ker, (((c j q)⁻¹ : ℂˣ) : ℂ) • R q`. Establish `hRP : ∀ a, R a * P = ((c j a : ℂˣ) : ℂ) • P`. Introduce `a`. Simplify using `only [P, Finset.mul_sum, mul_smul_comm, ← map_mul, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft a) _ _ (fun q => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Equiv.coe_mulLeft, smul_smul, map_mul]`. Use `congr 1`. Rewrite using `[← Units.val_mul, _root_.mul_inv_rev, mul_left_comm, mul_inv_cancel, mul_one]`. Establish `hPE : ∀ w, P w ∈ E`. Introduce `w`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmemE]`. Introduce `s`. Rewrite using `[← hR s, ← Module.End.mul_apply, hRP, LinearMap.smul_apply, hc]`. Establish `hfP : Polynomial.aeval (ρ Φ) f * P = 0`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Rewrite using `[Module.End.mul_apply, LinearMap.zero_apply]`. Conclude with `hfE _ (hPE w)`. Establish `htrq : ∀ s : I, LinearMap.trace ℂ W (Polynomial.aeval (ρ Φ) f * ρ (i s)) = ∑ k, f.eval (μ k Φ : ℂ) * (μ k (i s) : ℂ)`. Introduce `s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Polynomial.aeval_eq_sum_range, Finset.sum_mul, map_sum]`. Repeatedly rewrite using `[smul_mul_assoc, map_smul, ← map_pow, ← map_mul, htr]`. Simplify using `only [map_mul, map_pow, Units.val_mul, Units.val_pow_eq_pow_val, Polynomial.eval_eq_sum_range, Finset.sum_mul, Finset.mul_sum, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun m _ => by ring))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq : ∀ q, LinearMap.trace ℂ W (Polynomial.aeval (ρ Φ) f * R q) = ∑ k, f.eval (μ k Φ : ℂ) * (c k q : ℂ)`. Introduce `q`. Take `⟨s, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite using `[hR, htrq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htot : LinearMap.trace ℂ W (Polynomial.aeval (ρ Φ) f * P) = ∑ k, f.eval (μ k Φ : ℂ) * ∑ q : I ⧸ φ.ker, (((c k q : ℂˣ) : ℂ) * (((c j q)⁻¹ : ℂˣ) : ℂ))`. Simplify using `only [P, Finset.mul_sum, mul_smul_comm, map_sum, map_smul, smul_eq_mul, hq]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun k _ => Finset.sum_congr rfl (fun q _ => by ring))`. Establish `hψ : ∀ k, ∑ q : I ⧸ φ.ker, (((c k q : ℂˣ) : ℂ) * (((c j q)⁻¹ : ℂˣ) : ℂ)) = ((if (Units.coeHom ℂ).comp (c k / c j) = 1 then Fintype.card (I ⧸ φ.ker) else 0 : ℕ) : ℂ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Rewrite using `[← sum_hom_units]`. Use `Finset.sum_congr rfl (fun q _ => ?_)` and prove the remaining obligations. Simplify using `[div_eq_mul_inv]`. Establish `hzero : ∀ k, (μ k Φ : ℂ) ≠ μ j Φ → f.eval (μ k Φ : ℂ) = 0`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k hk`. Simplify using `only [f, Polynomial.eval_mul, h, Polynomial.eval_prod]`. Rewrite using `[Finset.prod_eq_zero (i := k) (Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk⟩) (by simp), zero_mul]`. Establish `hfl : f.eval (μ j Φ : ℂ) ≠ 0`. Simplify using `only [f, Polynomial.eval_mul, h, Polynomial.eval_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_ne_zero (Finset.prod_ne_zero_iff.mpr (fun k hk => ?_)) hp` and prove the remaining obligations. Simplify using `only [Polynomial.eval_sub, Polynomial.eval_X, Polynomial.eval_C]`. Conclude with `sub_ne_zero.mpr (Ne.symm (Finset.mem_filter.mp hk).2)`. Set `N : ℕ` to `∑ k ∈ Finset.univ.filter (fun k : Fin n => (μ k Φ : ℂ) = μ j Φ), (if (Units.coeHom ℂ).comp (c k / c j) = 1 then Fintype.card (I ⧸ φ.ker) else 0)`. Establish `hN : N ≠ 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : j ∈ Finset.univ.filter (fun k : Fin n => (μ k Φ : ℂ) = μ j Φ)` using `by simp`. Establish `h7 : (Units.coeHom ℂ).comp (c j / c j) = 1` using `by simp`. Introduce `h8`. Establish `h9` using `(Finset.sum_eq_zero_iff.mp h8) j hj`. Rewrite `h9` using `[if_pos h7]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `Fintype.card_ne_zero h9`. Establish `heq : LinearMap.trace ℂ W (Polynomial.aeval (ρ Φ) f * P) = f.eval (μ j Φ : ℂ) * N`. Rewrite using `[htot]`. Simplify using `only [hψ, N, Nat.cast_sum, Finset.mul_sum]`. Rewrite using `[Finset.sum_filter]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Distinguish the cases in `hk : (μ k Φ : ℂ) = μ j Φ`. Rewrite using `[if_pos hk, hk]`. Rewrite using `[if_neg hk, hzero k hk, zero_mul]`. Rewrite `heq` using `[hfP, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero hfl (Nat.cast_ne_zero.mpr hN) heq.symm`. Take `⟨y, hyE, hy0, hyΦ⟩` from `hmain`. Use `⟨y, hy0, ?_⟩` and prove the remaining obligations. Set `G : Subgroup Γ` to `{ carrier := {σ | ρ σ y = (μ j σ : ℂ) • y} mul_mem' := by`. Introduce `a b ha hb`.
-
-Use `show ρ (a * b) y = (μ j (a * b) : ℂ) • y`. Rewrite using `[map_mul, Module.End.mul_apply, hb, map_smul, ha, smul_smul, map_mul, Units.val_mul, mul_comm]`. Use the proof step `one_mem' := by show ρ 1 y = (μ j 1 : ℂ) • y`. Simplify using the standard rewrite rules. Use the proof step `inv_mem' := by`.
-
-Introduce `a ha`. Use `show ρ a⁻¹ y = (μ j a⁻¹ : ℂ) • y`. Establish `h4 : y = ρ a⁻¹ (ρ a y)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h4` using `[ha, map_smul]`.
-
-Rewrite using `[map_inv (μ j), Units.val_inv_eq_inv_val]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ (Units.ne_zero _), one_smul]`. Use `_ = (μ j a : ℂ)⁻¹ • y := by rw [← h4] }`. Introduce `σ`.
-
-Take `⟨m, s, rfl⟩` from `hgen σ`. Establish `h1 : Φ ∈ G` using `hyΦ`. Establish `h2 : i s ∈ G` using `(hmemE y).1 hyE s`. Conclude with `G.mul_mem (G.zpow_mem h1 m) h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_common_eigenvector_of_charpoly_split_characters :
     ∀ {Γ I W : Type} [Group Γ] [Group I] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] {n : ℕ} (i : I →* Γ) (Φ : Γ) (ρ : Γ →* Module.End ℂ W) (μ : Fin n → Γ →* ℂˣ), (∀ σ s, ∃ t, σ * i s = i t * σ) → (∀ σ, ∃ (m : ℤ) (s : I), σ = Φ ^ m * i s) → (Set.range fun s => ρ (i s)).Finite → (∀ σ, (ρ σ).charpoly = ∏ j, (X - C (μ j σ : ℂ))) → ∀ j, ∃ y : W, y ≠ 0 ∧ ∀ σ, ρ σ y = (μ j σ : ℂ) • y := by

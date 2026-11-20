@@ -26,9 +26,9 @@ section
 variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, h₀, h⟩`. Take `⟨h₁, h₂⟩` from `(ConstLie.isZero_iff_zeroAlong (ρ := origin R) h).1 h₀`. Use `⟨h₁, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Use `h₂ χ _ (𝟙 _) y J hJ` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Category.id_comp]`. Then use the resulting hypothesis. Introduce and unpack `⟨h₁, h₂⟩`. Take `⟨g₀, h⟩` from `ConstLie.exists_isPullGt (origin R) ν`. Take `⟨b, v⟩` from `(TorusModel.isPull_iff _ _ _).1 h`. Conclude with `⟨g₀, ⟨b.trans h₁, fun χ => corr_of_val D.P.isLB fun y J hJ => (v χ y J hJ).trans ((h₂ χ y J hJ).trans (val_one _).symm)⟩, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gtTanR_iff (ν : GtPt D (epsR R)) : GtTanR ν ↔ origin R ≫ ν.b = 1 ∧
     ∀ χ y J, Good D.P.L y J → val (ν.s χ) (origin R).left y J = 1 := by
@@ -45,16 +45,16 @@ theorem gtTanR_iff (ν : GtPt D (epsR R)) : GtTanR ν ↔ origin R ≫ ν.b = 1 
       (v χ y J hJ).trans ((h₂ χ y J hJ).trans (val_one _).symm)⟩, h⟩
 
 /- English proof (translation)
-Establish `hb : ν.b = 1` using `h.1`. Conclude with `(gtTanR_iff ν).2 ⟨by rw [hb, MonObj.comp_one], fun χ y J hJ => (val_corr hJ (h.2 χ) _).trans (val_one _)⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gtTanR_of_isZero {ν : GtPt D (epsR R)} (h : ν.IsZero) : GtTanR ν := by
   have hb : ν.b = 1 := h.1
   exact (gtTanR_iff ν).2 ⟨by rw [hb, MonObj.comp_one], fun χ y J hJ => (val_corr hJ (h.2 χ) _).trans (val_one _)⟩
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `(gtTanR_iff ν).1 ht`. Establish `s : (origin R).left ≫ spMap (epsScaleR a) = (origin R).left` using `(spMap_comp _ _).symm.trans (congrArg spMap (RingHom.ext fun x => by simp [epsScaleR]))`. Use `(gtTanR_iff ν').2 ⟨Over.OverMorphism.ext ?_, fun χ y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[← h₁, Over.comp_left, Over.comp_left, h.1, ← Category.assoc, s]`. Use `(val_corr hJ (h.2 χ) _).trans ((val_pull hJ _ _ _).trans ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[s]`. Conclude with `h₂ χ y J hJ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gtTanR_of_scale {a : R} {ν ν' : GtPt D (epsR R)} (h : GtPt.IsPull (spMap (epsScaleR a)) ν ν')
     (ht : GtTanR ν) : GtTanR ν' := by
@@ -68,9 +68,9 @@ theorem gtTanR_of_scale {a : R} {ν ν' : GtPt D (epsR R)} (h : GtPt.IsPull (spM
     exact h₂ χ y J hJ
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `(gtTanR_iff ν).1 ht`. Take `⟨h₁', h₂'⟩` from `(gtTanR_iff ν').1 ht'`. Establish `hb : ν''.b = ν.b * ν'.b` using `h.1`. Use `(gtTanR_iff ν'').2 ⟨by rw [hb, MonObj.comp_mul, h₁, h₁', _root_.mul_one], fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ (h.2 χ) (origin R).left).trans (val_mul hJ _ _ _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c` using `val_cub D.cub (origin R) hJ (DegPre.cT D (epsR R) χ) ν.b ν'.b`. Rewrite `c` using `[h₁', (isCub_cubV D.cub hJ).face₃]`. Establish `e'` using `(congrArg₂ (· * ·) rfl c).symm.trans (e.trans (congrArg₂ (· * ·) (h₂ χ y J hJ) (h₂' χ y J hJ)))`. Simplify using `using e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem gtTanR_of_isAdd {ν ν' ν'' : GtPt D (epsR R)} (h : ν.IsAdd ν' ν'') (ht : GtTanR ν) (ht' : GtTanR ν') :
     GtTanR ν'' := by
@@ -85,7 +85,7 @@ theorem gtTanR_of_isAdd {ν ν' ν'' : GtPt D (epsR R)} (h : ν.IsAdd ν' ν'') 
   simpa using e'
 
 /- English proof (translation)
-Take `⟨u, p, hu, h₀, ha, rfl⟩` from `h`. Establish `: ∀ i, GtTanR (p i)` using `fun i => Fin.induction (gtTanR_of_isZero h₀) (fun j ih => gtTanR_of_isAdd (ha j) ih (gtTanR_of_scale (hu j) (he j))) i`. Conclude with `this _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gtTanR_of_gtComb {m : ℕ} {cf : Fin m → R} {e : Fin m → GtPt D (epsR R)} {ν : GtPt D (epsR R)}
     (h : GtComb cf e ν) (he : ∀ i, GtTanR (e i)) : GtTanR ν := by
@@ -104,9 +104,9 @@ open Formalism.L2.Pj Formalism.L2.PjFree Formalism.L2.Pj.QAt Formalism.L2.LamCM 
 open scoped LaurentSeries
 
 /- English proof (translation)
-Take `⟨-, hadd, -, hint, -⟩` from `GlobalTheory.ArcQ.pairE_properties E X ξ`. Establish `hi : ∀ x, IsIntegral ℤ (((NumberField.discr E : ℤ) : K₁) * τK (cc (pairE ξ x)))` using `fun x => by`. Establish `h` using `(hint x).map (τK.comp (IsCMField.complexConj E).toRingEquiv.toRingHom).toIntAlgHom`. Simplify `h` using `[cc]`. Use `⟨AddMonoidHom.mk' (fun x => ⟨_, hi x⟩) fun x y => ?_, fun x => rfl⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show _ * τK (cc (pairE ξ (x + y))) = _ * τK (cc (pairE ξ x)) + _ * τK (cc (pairE ξ y))`. Rewrite using `[hadd]`. Simplify using `[cc, mul_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_intHom {E : Type} [Field E] [NumberField E] [IsCMField E] {K₁ : Type} [Field K₁] [NumberField K₁]
     (τK : E →+* K₁) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (ξ : Module.Dual ℤ X) :
@@ -122,17 +122,17 @@ theorem exists_intHom {E : Type} [Field E] [NumberField E] [IsCMField E] {K₁ :
   simp [cc, mul_add]
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ _ hρ _ _ _ τ k hk`. Establish `hG : Out.GlobalFnsSt` using `hK.laws.globalFns`. Take `⟨φ, hφ⟩` from `exists_intHom (labK c K₁ τ) s.ξ`. Take `⟨hb, hd⟩` from `s.xi τ k hk`. Take `⟨hw1, -, hw3⟩` from `GlobalTheory.TorusTangent.main hG Tv.V M.aw.D₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hK3⟩` from `GlobalTheory.TorusTangent.main hG K₁ d.a.D₀`. Take `⟨hF1, hF2, -⟩` from `GlobalTheory.TorusTangent.main hG Tv.Fr M.aK.D₀`. Take `⟨-, hadd, -⟩` from `GlobalTheory.ArcQ.pairE_properties E d.a.D₀.X s.ξ`. Set `φw : M.aw.D₀.X →+ Tv.V` to `ρ.toAddMonoidHom.comp (φ.comp (M.pK.xe.toAddMonoidHom.comp M.pw.xe.symm.toAddMonoidHom))`. Set `φ₀ : d.a.D₀.X →+ K₁` to `AddMonoidHom.mk' (fun x => labK c K₁ τ (cc (pairE s.ξ x))) fun x y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[hadd]`. Simplify using `[cc]`. Set `φ₂ : M.aK.D₀.X →+ Tv.Fr` to `io.toAddMonoidHom.comp (φ₀.comp M.pK.xe.toAddMonoidHom)`. Take `⟨ν, ⟨hν, hνb, hνd⟩, -⟩` from `hw1 φw`. Take `⟨ν₁, h₁, -⟩` from `GlobalTheory.ArcQBC.existsUnique_letBC M.pw hG ν`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂, h₂, -⟩` from `GlobalTheory.ArcQBC.existsUnique_letBC M.pK hG (d.e τ k)`. Establish `t₁` using `GlobalTheory.ArcQBC.gtTanR_of_letBC M.pw hG h₁ hν`. Establish `t₂` using `GlobalTheory.ArcQBC.gtTanR_of_letBC M.pK hG h₂ (s.tan τ k)`. Take `⟨b₁, d₁⟩` from `hw3 Tv.Fr M.aK.D₀ _ M.pw φw ν ν₁ hνb hνd h₁`. Take `⟨b₂, d₂⟩` from `hK3 Tv.Fr M.aK.D₀ _ M.pK φ₀ (d.e τ k) e₂ hb hd h₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ν', hν'⟩` from `GlobalTheory.ConstLie.exists_gtComb ![((NumberField.discr E : ℤ) : Tv.Fr)] ![e₂]`. Establish `t₃ : GtTanR ν'` using `gtTanR_of_gtComb hν' fun i => by fin_cases i; exact t₂`. Take `⟨b₃, d₃⟩` from `hF2 φ₂ _ e₂ ν' t₂ b₂ d₂ hν'`. Establish `key : ∀ x, algebraMap Tv.V Tv.Fr (φw (M.pw.xe x)) = (((NumberField.discr E : ℤ) : Tv.Fr) • φ₂) x` using `fun x => by show algebraMap Tv.V Tv.Fr (ρ (φ (M.pK.xe (M.pw.xe.symm (M.pw.xe x))))) = ((NumberField.discr E : ℤ) : Tv.Fr) * io (labK c K₁ τ (cc (pairE s.ξ (M.pK.xe x))))`. Rewrite using `[AddEquiv.symm_apply_apply, hρ, hφ, map_mul, map_intCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ν₁ = ν'` using `(hF1 (((NumberField.discr E : ℤ) : Tv.Fr) • φ₂)).unique ⟨t₁, b₁, fun x j hj => (d₁ x j hj).trans (congrArg _ (key x))⟩ ⟨t₃, b₃, d₃⟩`. Conclude with `⟨ν, ν₁, e₂, hν, h₁, h₂, e ▸ hν'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem discr_mul_xi_integral : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (n' : ℕ) (La c₁ : ℝ) (s : CMIn d.a d.e d.th d.jj n' La c₁) (w : HeightOneSpectrum (𝓞 K₁)) (Tv : CDVR) (io : K₁ →+* Tv.Fr) (Wl : ValuationSubring ℂ) (M : IntModel d Tv io Wl) (ρ : 𝓞 K₁ →+* Tv.V) (ψ : M.aw.D₀.P.A.left ⟶ s.B.A.left), OverLa w Tv.V io 1 → (∀ x, algebraMap Tv.V Tv.Fr (ρ x) = io (x : K₁)) → IsPolFibre ρ s.B M.aw.D₀.P ψ → prj M.pw ≫ ψ = prj M.pK ≫ s.φB → TauCan M.aw.D₀ n' → ∀ (τ : E →+* ℂ) (k : Fin (Dw.mult τ)), s.kind τ k = none → ∃ (ν : Out.GtPt M.aw.D₀ (epsR Tv.V)) (ν₁ e₂ : Out.GtPt M.aK.D₀ (epsR Tv.Fr)), GtTanR ν ∧ LetBC M.pw ν ν₁ ∧ LetBC M.pK (d.e τ k) e₂ ∧ GtComb ![((NumberField.discr E : ℤ) : Tv.Fr)] ![e₂] ν₁ := by
   intro hK E _ _ _ H Dw l Xo c K₁ _ _ _ d n' La c₁ s w Tv io Wl M ρ ψ _ hρ _ _ _ τ k hk

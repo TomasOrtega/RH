@@ -31,7 +31,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h` using `mem_levA.1 hκ`. Establish `hP : (prinDat (Vc D i) (R.Pg ∪ R.Q t)).P.H = ⊥`. Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.PrincipalLevel.mem_lev_whole _ _ _ rfl rfl hP _).1 h.2`. Conclude with `⟨h.1, h1, h2, h3⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem redFn_of_mem_prin (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA D (Vc D i)}
     (hκ : κ ∈ prin (Vc D i) (R.βV i) (R.Pg ∪ R.Q t)) :
@@ -44,9 +44,9 @@ theorem redFn_of_mem_prin (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA 
   exact ⟨h.1, h1, h2, h3⟩
 
 /- English proof (translation)
-Take `⟨h0, h1, h2, h3⟩` from `redFn_of_mem_prin R i t hκ`. Use `⟨h0, mem_parLev.2 ⟨h1, h2, fun PP hPP => ?_, fun PP hPP => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h3 PP (Finset.mem_union_left _ hPP)]`. Conclude with `Subgroup.one_mem _`. Rewrite using `[h3 PP (Finset.mem_union_right _ hPP)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Subgroup.one_mem _`. Use function extensionality and compare the values at `PP show upperLeftBlock _ (redFn (R.βV i) PP.1 (finE (Vc D i) κ)) = 1`. Rewrite using `[h3 PP.1 (Finset.mem_union_left _ PP.2)]`. Conclude with `blockDiagonalExtendByOnePrimeField_one _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem is_lift_of_mem_principal_congruence (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA D (Vc D i)}
     (hκ : κ ∈ prin (Vc D i) (R.βV i) (R.Pg ∪ R.Q t)) : IsLevelLift (Vc D i) (R.βV i) (R.datVt i t) 1 κ := by
@@ -62,13 +62,13 @@ theorem is_lift_of_mem_principal_congruence (R : RealDat D A Ks) (i : Fin D.R.m)
     exact blockDiagonalExtendByOnePrimeField_one _ _
 
 /- English proof (translation)
-Take `⟨-, -, -, h3⟩` from `redFn_of_mem_prin R i t hκ`. Establish `e : levFn (R.βV i) (flagL (R.datVt i t)) (finE (Vc D i) κ) = levFn (R.βV i) (flagL (R.datVt i t)) 1`. Establish `hr : rTup (R.βV i) (flagL (R.datVt i t)) (finE (Vc D i) κ) = rTup (R.βV i) (flagL (R.datVt i t)) 1`. Use function extensionality and compare the values at `PP`. Use `show upperLeftBlock _ (redFn (R.βV i) PP.1 (finE (Vc D i) κ)) = upperLeftBlock _ (redFn (R.βV i) PP.1 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 PP.1 (Finset.mem_union_left _ PP.2), redFn_one]`. Unfold `levFn`. Rewrite using `[hr]`. Use `congr 1`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun PP hPP => Finset.prod_congr rfl fun c _ => by`. Rewrite using `[h3 PP (Finset.mem_union_left _ hPP), redFn_one]`. Conclude with `Finset.prod_congr rfl fun PP hPP => by`. Rewrite using `[h3 PP (Finset.mem_union_right _ hPP), redFn_one]`. Establish `h1` using `GlobalTheory.RawLift.LevelFix.levChi_flag_one R i t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `levChi at h1 ⊢`. Rewrite using `[e]`. Rewrite `h1` using `[(finE (Vc D i)).map_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem levChi_flag_of_mem_prin (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ : GA D (Vc D i)}
     (hκ : κ ∈ prin (Vc D i) (R.βV i) (R.Pg ∪ R.Q t)) : levChi (Vc D i) (R.βV i) (flagL (R.datVt i t)) κ = 1 := by
@@ -93,7 +93,7 @@ theorem levChi_flag_of_mem_prin (R : RealDat D A Ks) (i : Fin D.R.m) (t : T) {κ
   exact h1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩`.
+Supply the required witnesses or components.
 -/
 theorem is_lift_one_principal_level (R : RealDat D A Ks) (i : Fin D.R.m) : IsLevelLift (Wc D i) (R.βW i) (R.datWp i R.triv) 1 1 :=
   ⟨Subgroup.one_mem _, by rw [map_one]; exact Subgroup.one_mem _, by rw [map_one]; exact rTup_one⟩
@@ -103,23 +103,23 @@ end GlobalTheory.ThPFock
 open GlobalTheory.ThPFock in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t P`. Establish `hC` using `hG.core`. Establish `hθ : IsInfFam R.θ` using `hC.models.inf`. Establish `hψ : IsStdChar D R.ψ (-1)` using `(hC.thP.ωP i t).std`. Establish `cS : ∀ τ, IsCartanInv (gramAt D (Vc D i) τ) 1` using `fun τ => GlobalTheory.RawLift.isCartanInv_one_of_onb (hC.models.BV i τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cT : ∀ τ, IsCartanInv (gramAt D (Wc D i) τ) (cart (R.MW i (sg0 D A)) τ)` using `fun τ => GlobalTheory.AdTh.VecFock.isCartanInv_cart (R.MW i (sg0 D A)) τ`. Establish `hpt : ∀ φ, IsThetaFunO R.ψ (Vc D i) (Wc D i) (pureTensorO R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t) φ)` using `hC.thP.pt_theta i t`. Establish `hvθ : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Use `hC.thP.pt_theta i t 1` as an intermediate fact. Unfold `RealDat.ptP pureTensorO at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `this` using `[GlobalTheory.AdTh.VecFock.pureTensorL_one]`. Then use the resulting hypothesis. Establish `hvv : ∀ τ, IsFockVacAt (heisO R.ψ (Vc D i) (Wc D i)) R.θ τ (cplxO 1 (cart (R.MW i (sg0 D A)) τ)) (R.vP i t)` using `GlobalTheory.DatumFock.isFockVacAt_thPVec _ _ _ _ (fun _ => 1) _ _ _ _ _ _ _ _ _ _ (hC.thP.vP i t) hvθ`. Use `⟨cT, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.FockSph.isFockVec_pureTensorO hψ hθ cS cT (R.BV i) (onb (R.MW i (sg0 D A))) hvθ hvv P`. Take `⟨hvac, e, he, hth⟩` from `hC.thP.vP i t`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hV : (R.ΛV i : Set (Fin (Vc D i).rank → D.host.E)) = (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _)`. Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.StandardHermitianSpace.baseLat_eq hC.lev i, GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]`. Establish `hW : (R.ΛW i : Set (Fin (Wc D i).rank → D.host.E)) = (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _)`. Rewrite using `[← GlobalTheory.AdelicU.hermitianSpaceBaseLattice_eq_frameLattice]`. Take `⟨c, -, -, -, h1, h2⟩` from `hC.lev.βW i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Simplify using `using h2 x hx`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1 x hx`. Establish `hle : latO (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _) (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _) (fun v => v ∉ under (R.Pg ∪ R.Q t)) ≤ latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True`. Rewrite using `[hV, hW]`. Conclude with `GlobalTheory.PlaceTensor.latO_mono fun _ _ => trivial`. Establish `hz : ∀ u ∈ latO (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _) (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _) (fun v => v ∉ under (R.Pg ∪ R.Q t)), ∀ a b, cA D (cA D e) * u a b = 0 ∧ cA D e * u a b = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `u hu a b`. Take `⟨h1, h2⟩` from `GlobalTheory.FockSph.idemSum_mul_of (P := fun v => v ∉ under (R.Pg ∪ R.Q t)) he (fun PP hPP hn => hn (Finset.mem_image_of_mem _ hPP)) hu a b`. Rewrite using `[Formalism.L2.Theta.cA_cA]`. Conclude with `⟨h1, h2⟩`. Establish `hlat` using `hvac.2.lat`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `fix : ∀ u ∈ latO (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i) : Set _) (GlobalTheory.AdelicU.frameLat (Wc D i) : Set _) (fun v => v ∉ under (R.Pg ∪ R.Q t)), heisO R.ψ (Vc D i) (Wc D i) u (R.vacP i) = R.vacP i → heisO R.ψ (Vc D i) (Wc D i) u (R.ptP i t P) = R.ptP i t …` using `fun u hu h0 => GlobalTheory.Hk3.FiniteHeis.heisO_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) hθ (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.BV i) (onb (R.MW i (sg0 D A))) (R.vP i t) hpt u (GlobalTheory.VacGood.infPart_latO (hle hu)) (GlobalTheory.Hk3.heisO_fix_thetaAt_off R.ψ ( …`. Conclude with `⟨fun u hu => fix (2 • u) (AddSubgroup.nsmul_mem _ hu 2) (hlat.1 u (hle hu)), fun e' he' u hu hh => fix u hu (hlat.2 e' he' u (hle hu) hh)⟩`. Introduce `κ hκ`. Establish `hl` using `is_lift_of_mem_principal_congruence R i t hκ`. Establish `hv : R.ωP i t (κ, 1) (R.vP i t) = (1 : ℂ) • R.vP i t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.weilAction_liftPair_stepVector_invLevelChar R hC.lev hC.models.inf hC.thP.ωP hC.thP.vP i t 1 κ 1 hl (is_lift_one_principal_level R i), levChi_flag_of_mem_prin R i t hκ, inv_one]`. Use `GlobalTheory.FiniteFock.om_pureTensorO_of_finite R.ψ R.θ (Vc D i) (Wc D i) _ _ (R.ωP i t) hθ (hC.thP.ωP i t) _ _ _ _ _ hpt κ hl.1 1 (Subgroup.one_mem _) 1 hv P` as an intermediate fact. Conclude with `this.trans (one_smul ℂ _)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThPFock.fock_sph_prin : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t P, (∀ τ, IsCartanInv (gramAt D (Wc D i) τ) (cart (R.MW i (sg0 D A)) τ)) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsFockVec R.ψ R.θ (Vc D i) (Wc D i) (fun _ => 1) (cart (R.MW i (sg0 D A))) (R.ptP i t P) ∧ GlobalTheory.IndefiniteRowSideFullHecke.SphericalVolumeLift.IsSphOff R.ψ (Vc D i) (Wc D i) (GlobalTheory.AdelicU.frameLat (Vc D i)) (GlobalTheory.AdelicU.frameLat (Wc D i)) (under (R.Pg ∪ R.Q t)) (R.ptP i t P) ∧ ∀ κ ∈ prin (Vc D i) (R.βV i) (R.Pg ∪ R.Q t), R.ωP i t (κ, 1) (R.ptP i t P) = R.ptP i t P := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG _ i t P

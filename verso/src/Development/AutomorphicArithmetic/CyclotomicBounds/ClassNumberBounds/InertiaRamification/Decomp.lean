@@ -8,9 +8,9 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Introduce `u hu`. Unfold `inertiaUnits at hu`. Unfold `decompUnits`. Rewrite `hu` using `[MonoidHom.mem_ker]`. Rewrite using `[Subgroup.mem_comap, hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.one_mem _`.
+A detailed English derivation is pending.
 -/
 private lemma inertia_le_decomp : inertiaUnits N l ≤ decompUnits N l := by
   intro u hu
@@ -21,7 +21,7 @@ private lemma inertia_le_decomp : inertiaUnits N l ≤ decompUnits N l := by
   exact Subgroup.one_mem _
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex_eq_one]`. Conclude with `sup_le le_rfl ((Subgroup.zpowers_le).2 h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma relIndex_sup_zpowers_of_mem {G : Type*} [CommGroup G] (A : Subgroup G) (c : G)
     (h : c ∈ A) : A.relIndex (A ⊔ Subgroup.zpowers c) = 1 := by
@@ -29,11 +29,9 @@ private lemma relIndex_sup_zpowers_of_mem {G : Type*} [CommGroup G] (A : Subgrou
   exact sup_le le_rfl ((Subgroup.zpowers_le).2 h)
 
 /- English proof (translation)
-Rewrite using `[Subgroup.relIndex_sup_left, Subgroup.relIndex_eq_two_iff_exists_notMem_and]`. Use `⟨c, Subgroup.mem_zpowers c, h, ?_⟩` and prove the remaining obligations. Introduce and unpack `b ⟨k, rfl⟩`. Establish `h2 : c ^ (2 : ℤ) = 1` using `by rw [zpow_two, hc]`. Break down `Int.even_or_odd' k with ⟨m, rfl | rfl⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `right`. Simplify using `only [zpow_mul, h2, one_zpow]`. Conclude with `A.one_mem`. Use `left`. Simplify using `only [zpow_add, zpow_mul, h2, one_zpow, one_mul, zpow_one, hc]`.
-
-Conclude with `A.one_mem`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma relIndex_sup_zpowers_of_notMem {G : Type*} [CommGroup G] (A : Subgroup G) (c : G)
     (hc : c * c = 1) (h : c ∉ A) : A.relIndex (A ⊔ Subgroup.zpowers c) = 2 := by
@@ -51,7 +49,7 @@ private lemma relIndex_sup_zpowers_of_notMem {G : Type*} [CommGroup G] (A : Subg
 
 omit [NeZero N] in
 /- English proof (translation)
-Unfold `charKer`. Simplify using `only [Subgroup.mem_iInf, MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private lemma mem_charKer_iff' (X : Subgroup (DirichletCharacter ℂ N)) (u : (ZMod N)ˣ) :
     u ∈ charKer X ↔ ∀ ψ ∈ X, ψ (u : ZMod N) = 1 := by
@@ -60,13 +58,13 @@ private lemma mem_charKer_iff' (X : Subgroup (DirichletCharacter ℂ N)) (u : (Z
     Units.val_one]
 
 /- English proof (translation)
-Establish `key : evenPart X = annihilator ℂ ((charKer X ⊔ Subgroup.zpowers (-1) : Subgroup (ZMod N)ˣ) : Set (ZMod N)ˣ)`. Use extensionality with `ψ`. Establish `h1 : ψ ∈ X ↔ charKer X ≤ (MulChar.toUnitHom ψ).ker` using `by conv_lhs => rw [← (annihilator_charKer X ⊥).1]`. Rewrite using `[mem_annihilator_iff]`. Use `forall_congr' fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Establish `h2 : ∀ K : Subgroup (ZMod N)ˣ, ψ ∈ annihilator ℂ (K : Set (ZMod N)ˣ) ↔ K ≤ (MulChar.toUnitHom ψ).ker`. Introduce `K`. Rewrite using `[mem_annihilator_iff]`. Use `forall_congr' fun u => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Unfold `evenPart`. Rewrite using `[h2, sup_le_iff, Subgroup.mem_inf, h1, Subgroup.zpowers_le, mem_annihilator_iff]`. Simplify using `only [Set.mem_singleton_iff, forall_eq]`. Simplify using `only [MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Conclude with `(annihilator_charKer X _).2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma charKer_evenPart' (X : Subgroup (DirichletCharacter ℂ N)) :
     charKer (evenPart X) = charKer X ⊔ Subgroup.zpowers (-1) := by
@@ -94,7 +92,7 @@ private lemma charKer_evenPart' (X : Subgroup (DirichletCharacter ℂ N)) :
   exact (annihilator_charKer X _).2.1
 
 /- English proof (translation)
-Rewrite using `[ramIdx_eq_ramIdxUnits, ramIdxUnits, ← Subgroup.relIndex_ker, QuotientGroup.ker_mk', Subgroup.relIndex_sup_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma ramIdx_eq_relIndex' (X : Subgroup (DirichletCharacter ℂ N)) :
     ramIdx l X = (charKer X).relIndex (inertiaUnits N l ⊔ charKer X) := by
@@ -102,17 +100,17 @@ private lemma ramIdx_eq_relIndex' (X : Subgroup (DirichletCharacter ℂ N)) :
     Subgroup.relIndex_sup_right]
 
 /- English proof (translation)
-Use `⟨inertia_le_decomp l, ?_⟩` and prove the remaining obligations. Unfold `SplitsFor`. Rewrite using `[← mem_subgroupOfPrimitiveMapToOne_iff]`. Simplify using `only [subgroupOfPrimitiveMapToOne, Subgroup.mem_map, mem_annihilator_iff, Set.mem_singleton_iff, forall_eq]`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨χ, hχ, rfl⟩ u hu`. Unfold `decompUnits at hu`. Rewrite `hu` using `[Subgroup.mem_comap]`. Take `⟨k, hk⟩` from `hu`. Establish `h1 : MulChar.toUnitHom χ (ZMod.unitOfCoprime l (Nat.coprime_ordCompl (Fact.out : l.Prime) (NeZero.ne N))) = 1`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Units.ext_iff, MulChar.coe_toUnitHom, hχ, Units.val_one]`. Rewrite using `[← MulChar.coe_toUnitHom, changeLevel_toUnitHom, MonoidHom.comp_apply, ← hk]`. Simplify using `only [map_zpow, h1, one_zpow, Units.val_one]`. Introduce `h`. Establish `hf : ψ.FactorsThrough (ordCompl[l] N)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[factorsThrough_iff_ker_unitsMap (Nat.ordCompl_dvd N l)]`. Introduce `u hu`. Rewrite using `[MonoidHom.mem_ker, Units.ext_iff, MulChar.coe_toUnitHom, Units.val_one]`. Conclude with `h u (inertia_le_decomp l hu)`. Take `⟨hd, χ, rfl⟩` from `hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨χ, ?_, rfl⟩` and prove the remaining obligations. Take `⟨u, hu⟩` from `ZMod.unitsMap_surjective hd (ZMod.unitOfCoprime l (Nat.coprime_ordCompl (Fact.out : l.Prime) (NeZero.ne N)))`. Establish `hmem : u ∈ decompUnits N l`. Unfold `decompUnits`. Rewrite using `[Subgroup.mem_comap, hu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Subgroup.mem_zpowers _`. Use `h u hmem` as an intermediate fact. Rewrite `this` using `[← MulChar.coe_toUnitHom, changeLevel_toUnitHom, MonoidHom.comp_apply, hu, MulChar.coe_toUnitHom]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitsFor_iff (ψ : DirichletCharacter ℂ N) :
     inertiaUnits N l ≤ decompUnits N l ∧
@@ -152,7 +150,7 @@ theorem splitsFor_iff (ψ : DirichletCharacter ℂ N) :
     exact this
 
 /- English proof (translation)
-Establish `h : inertiaUnits N l ⊔ charKer X ≤ decompUnits N l ⊔ charKer X` using `sup_le_sup_right (inertia_le_decomp l) _`. Rewrite using `[ramIdx_eq_relIndex', resDeg, numPlaces, Subgroup.relIndex_mul_relIndex _ _ _ le_sup_right h, Subgroup.relIndex_mul_index le_sup_right, (annihilator_charKer X ⊥).2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramIdx_mul_resDeg_mul_numPlaces (X : Subgroup (DirichletCharacter ℂ N)) :
     ramIdx l X * resDeg l X * numPlaces l X = Nat.card X := by
@@ -163,21 +161,19 @@ theorem ramIdx_mul_resDeg_mul_numPlaces (X : Subgroup (DirichletCharacter ℂ N)
     Subgroup.relIndex_mul_index le_sup_right, (annihilator_charKer X ⊥).2.2]
 
 /- English proof (translation)
-Establish `hc : (-1 : (ZMod N)ˣ) * (-1) = 1` using `by simp`. Prove the components needed by the constructor for the conclusion. Unfold `numPlaces ConjIn`. Rewrite using `[charKer_evenPart', ← sup_assoc]`. Use `set A := decompUnits N l ⊔ charKer X`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `Subgroup.relIndex_mul_index (le_sup_left : A ≤ A ⊔ Subgroup.zpowers (-1))`. Establish `h0 : (A ⊔ Subgroup.zpowers (-1)).index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Distinguish the cases in `h : (-1 : (ZMod N)ˣ) ∈ A`. Rewrite `h1` using `[relIndex_sup_zpowers_of_mem A _ h]`. Simplify using `only [h, not_true_eq_false, iff_false]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[relIndex_sup_zpowers_of_notMem A _ hc h]`. Simplify using `only [h, not_false_eq_true, iff_true]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨ψ, hψ, hodd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hH : (-1 : (ZMod N)ˣ) ∉ charKer X`. Introduce `h`. Use `(mem_charKer_iff' X _).1 h ψ hψ` as an intermediate fact. Use `ψ.not_even_and_odd ⟨?_, hodd⟩` and prove the remaining obligations. Simplify `this` using `[DirichletCharacter.Even]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Unfold `ConjIn`. Rewrite using `[ramIdx_eq_relIndex', ramIdx_eq_relIndex', charKer_evenPart', ← sup_assoc]`. Use `set H := charKer X`. Use `set A := inertiaUnits N l ⊔ H with hA`. Establish `hHA : H ≤ A` using `le_sup_right`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Subgroup.relIndex_mul_relIndex H A (A ⊔ Subgroup.zpowers (-1)) hHA le_sup_left`. Establish `h2` using `Subgroup.relIndex_mul_relIndex H (H ⊔ Subgroup.zpowers (-1)) (A ⊔ Subgroup.zpowers (-1)) le_sup_left (sup_le_sup_right hHA _)`. Rewrite `h2` using `[relIndex_sup_zpowers_of_notMem H _ hc hH]`. Establish `h0 : (H ⊔ Subgroup.zpowers (-1)).relIndex (A ⊔ Subgroup.zpowers (-1)) ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Distinguish the cases in `h : (-1 : (ZMod N)ˣ) ∈ A`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h1` using `[relIndex_sup_zpowers_of_mem A _ h]`. Simplify using `only [h, not_true_eq_false, iff_false]`. Use linear arithmetic over natural numbers and integers. Rewrite `h1` using `[relIndex_sup_zpowers_of_notMem A _ hc h]`. Simplify using `only [h, not_false_eq_true, iff_true]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem conjIn_iff (X : Subgroup (DirichletCharacter ℂ N)) :
     (numPlaces l X = 2 * numPlaces l (evenPart X) ↔ ¬ ConjIn X (decompUnits N l)) ∧

@@ -6,7 +6,7 @@ import Formalism.SharpRestriction.GlobalSchurBounds.ProductFirstZerothParts
 open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions NumberField Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TypeSize.typePrimeSizeBound_of_eps_lt_one_div_fiftyTwo` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FTypePrimeSizesLeBudgetFamily.lean&line=136#L136)
 -/

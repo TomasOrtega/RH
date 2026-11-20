@@ -24,21 +24,21 @@ open MeasureTheory Filter Topology GlobalTheory.KFourier
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[toMK_expK hX t, Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toMK_expK_real {ε : Fin n → Bool} {X : Mx n} (hX : inK ε X) (t : ℝ) :
     toMK (expK ε X t) = NormedSpace.exp (t • X) := by
   rw [toMK_expK hX t, Complex.coe_smul]
 
 /- English proof (translation)
-The claim follows from `K_le_UJ (toMK_mem_K k)`.
+A detailed English derivation is pending.
 -/
 theorem toMK_mem_UJ {ε : Fin n → Bool} (k : KG ε) : toMK k ∈ UJset ε := K_le_UJ (toMK_mem_K k)
 
 /- English proof (translation)
-Establish `h1` using `integral_mul_left_eq_self (μ := muK ε) (fun k => e k * φ (g * toMK κ * toMK k)) κ⁻¹`. Establish `h2` using `integral_mul_right_eq_self (μ := muK ε) (fun k => e (κ⁻¹ * k) * φ (g * toMK k)) κ`. Establish `ea : ∀ k, g * toMK κ * toMK (κ⁻¹ * k) = g * toMK k` using `fun k => by`. Rewrite using `[mul_assoc, ← toMK_mul, mul_inv_cancel_left]`. Establish `eb : ∀ k, e (κ⁻¹ * (k * κ)) = e k` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `he κ⁻¹ k` as an intermediate fact. Rewrite `this` using `[inv_inv, mul_assoc]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 -/
 theorem integral_conj_swap {ε : Fin n → Bool} (e : KG ε → ℂ) (he : ∀ a k : KG ε, e (a * k * a⁻¹) = e k)
     (φ : Mx n → ℂ) (g : Mx n) (κ : KG ε) :
@@ -59,15 +59,15 @@ theorem integral_conj_swap {ε : Fin n → Bool} (e : KG ε → ℂ) (he : ∀ a
 variable {ε : Fin n → Bool} {F : List (Mx n) → Mx n → ℂ}
 
 /- English proof (translation)
-Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ a ha b hb`. Establish `hm : ∀ k : KG ε, a * toMK k * b ∈ UJset ε` using `fun k => mul_mem_UJ (mul_mem_UJ ha (toMK_mem_UJ k)) hb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : (fun k : KG ε => F [] (a * toMK k * b)) = fun k => f (a * toMK k * b)`. Use function extensionality and compare the values at `fun k => hF0 _ (hm k)`. Rewrite using `[e1]`. Conclude with `(hf.comp_continuous ((continuous_const.mul (continuous_toMK ε)).mul continuous_const) hm).measurable`. Consider the case `cons X l ih`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hl a ha b hb`. Establish `hX : X ∈ lieSet ε` using `hl X List.mem_cons_self`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`. Set `s : ℕ → ℝ` to `fun m => 1 / ((m : ℝ) + 1)`. Establish `hs0 : Tendsto s atTop (𝓝[≠] 0)` using `tendsto_nhdsWithin_iff.2 ⟨tendsto_one_div_add_atTop_nhds_zero_nat, Eventually.of_forall fun m => by simp only [Set.mem_compl_iff, Set.mem_singleton_iff, s]; positivity⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ m : ℕ, Measurable fun k : KG ε => (s m)⁻¹ • (F l (a * toMK k * (b * NormedSpace.exp (s m • X))) - F l (a * toMK k * b))` using `fun m => by`. Use `((ih hl' a ha _ (mul_mem_UJ hb (exp_mem_UJ hX (s m)))).sub (ih hl' a ha b hb)).const_smul (s m)⁻¹` as an intermediate fact. Conclude with `this`. Use `measurable_of_tendsto_metrizable hmeas (tendsto_pi_nhds.2 fun k => ?_)` and prove the remaining obligations. Establish `hg : a * toMK k * b ∈ UJset ε` using `mul_mem_UJ (mul_mem_UJ ha (toMK_mem_UJ k)) hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd` using `(hasDerivAt_iff_tendsto_slope.1 (hD l hl' X hX _ hg)).comp hs0`. Use `hd.congr fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, slope_def_module, sub_zero, zero_smul, NormedSpace.exp_zero, mul_one, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_fam (hD : IsDerFam ε F) {f : Mx n → ℂ} (hf : ContinuousOn f (UJset ε))
     (hF0 : ∀ g ∈ UJset ε, F [] g = f g) :
@@ -102,21 +102,19 @@ theorem measurable_fam (hD : IsDerFam ε F) {f : Mx n → ℂ} (hf : ContinuousO
       mul_assoc]
 
 /- English proof (translation)
-Establish `hXl : X ∈ lieSet ε` using `hX.1`. Establish `hl' : ∀ Y ∈ X :: l, Y ∈ lieSet ε`. Introduce `Y hY`. Break down `List.mem_cons.1 hY with rfl | h` into its components or cases. Use `exacts [hXl, hl Y h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hre : (fun t : ℝ => ∫ k, e k * F l (g * toMK (expK ε X t) * toMK k) ∂(muK ε)) = fun t => ∫ k, e k * F l (g * toMK k * NormedSpace.exp (t • X)) ∂(muK ε)`. Use function extensionality and compare the values at `t`. Rewrite using `[integral_conj_swap e he, toMK_expK_real hX]`. Rewrite using `[hre]`. Take `⟨M, hM⟩` from `isCompact_univ.exists_bound_of_continuousOn hec.continuousOn`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hG (X :: l) hl'`. Take `⟨C0, hC0⟩` from `hG l hl`. Establish `hmem : ∀ (k : KG ε) (s : ℝ), g * toMK k * NormedSpace.exp (s • X) ∈ UJset ε` using `fun k s => mul_mem_UJ (mul_mem_UJ hg (toMK_mem_UJ k)) (exp_mem_UJ hXl s)`. Establish `hhs : ∀ (k : KG ε) (s : ℝ), hs (g * toMK k * NormedSpace.exp (s • X)) = hs g` using `fun k s => by`. Rewrite using `[← toMK_expK_real hX, mul_assoc, ← toMK_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((hermitian_small_ball n ε).2 _ _ (toMK_mem_K _)).1`. Establish `hem : Measurable e` using `hec.measurable`. Establish `hbd : ∀ (l' : List (Mx n)) (C' : ℝ), (∀ h ∈ UJset ε, ‖F l' h‖ ≤ C' * (1 + hs h) ^ N) → ∀ (k : KG ε) (s : ℝ), ‖e k * F l' (g * toMK k * NormedSpace.exp (s • X))‖ ≤ M * (C' * (1 + hs g) ^ N)` using `fun l' C' hC' k s => by`. Rewrite using `[norm_mul]`. Use `mul_le_mul (hM k trivial) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hM k trivial))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hhs k s]`. Conclude with `hC' _ (hmem k s)`. Establish `hmeasF : ∀ t : ℝ, AEStronglyMeasurable (fun k => e k * F l (g * toMK k * NormedSpace.exp (t • X))) (muK ε)` using `fun t => (hem.mul (measurable_fam hD hf hF0 l hl g hg _ (exp_mem_UJ hXl t))).aestronglyMeasurable`. Establish `hmeasF' : AEStronglyMeasurable (fun k => e k * F (X :: l) (g * toMK k * NormedSpace.exp ((0 : ℝ) • X))) (muK ε)` using `(hem.mul (measurable_fam hD hf hF0 (X :: l) hl' g hg _ (exp_mem_UJ hXl 0))).aestronglyMeasurable`. Establish `hint : Integrable (fun k => e k * F l (g * toMK k * NormedSpace.exp ((0 : ℝ) • X))) (muK ε)` using `Integrable.mono' (integrable_const (M * (C0 * (1 + hs g) ^ N))) (hmeasF 0) (ae_of_all _ fun k => hbd l C0 hC0 k 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdif : ∀ (k : KG ε) (s : ℝ), HasDerivAt (fun t : ℝ => e k * F l (g * toMK k * NormedSpace.exp (t • X))) (e k * F (X :: l) (g * toMK k * NormedSpace.exp (s • X))) s` using `fun k s => by`. Establish `h1` using `hD l hl X hXl _ (hmem k s)`. Establish `h2 : HasDerivAt (fun t : ℝ => F l (g * toMK k * NormedSpace.exp (s • X) * NormedSpace.exp ((t - s) • X))) (F (X :: l) (g * toMK k * NormedSpace.exp (s • X))) s` using `HasDerivAt.comp_sub_const (f := fun t : ℝ => F l (g * toMK k * NormedSpace.exp (s • X) * NormedSpace.exp (t • X))) s s (by rw [sub_self]; exact h1)`. Establish `e2 : (fun t : ℝ => F l (g * toMK k * NormedSpace.exp (s • X) * NormedSpace.exp ((t - s) • X))) = fun t => F l (g * toMK k * NormedSpace.exp (t • X))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc (g * toMK k), ← exp_add_smul, add_sub_cancel]`. Rewrite `h2` using `[e2]`. Conclude with `h2.const_mul (e k)`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := muK ε) (x₀ := (0 : ℝ)) (F := fun t k => e k * F l (g * toMK k * NormedSpace.exp (t • X))) (F' := fun t k => e k * F (X :: l) (g * toMK k * NormedSpace.exp (t • X))) (bound := fun _ => M * (C * (1 + hs g) ^ N)) (s := Set.univ) …`. Establish `e3 : (fun k => e k * F (X :: l) (g * toMK k * NormedSpace.exp ((0 : ℝ) • X))) = fun k => e k * F (X :: l) (g * toMK k)`.
-
-Use function extensionality and compare the values at `k`. Rewrite using `[zero_smul, NormedSpace.exp_zero, mul_one]`. Simplify `key.2` using `only [e3]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_avg (hD : IsDerFam ε F) {N : ℕ} (hG : FamGrowth ε N F) {f : Mx n → ℂ}
     (hf : ContinuousOn f (UJset ε)) (hF0 : ∀ g ∈ UJset ε, F [] g = f g) {e : KG ε → ℂ} (hec : Continuous e)
@@ -181,13 +179,13 @@ theorem hasDerivAt_avg (hD : IsDerFam ε F) {N : ℕ} (hG : FamGrowth ε N F) {f
   simpa only [e3] using key.2
 
 /- English proof (translation)
-Introduce `u`. Proceed by induction on `u with`. Consider the case `nil`. Introduce `_ k'`. Rewrite using `[rder_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (ae_of_all _ fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hF0 _ (mul_mem_UJ (mul_mem_UJ hy (toMK_mem_UJ k')) (toMK_mem_UJ k))]`. Consider the case `cons X l ih`. Introduce `hu k'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hX : inK ε X` using `hu X List.mem_cons_self`. Establish `hlK : ∀ Y ∈ l, inK ε Y` using `fun Y hY => hu Y (List.mem_cons_of_mem _ hY)`. Establish `hl : ∀ Y ∈ l, Y ∈ lieSet ε` using `fun Y hY => (hlK Y hY).1`. Rewrite using `[rder_cons]`. Establish `e1 : (fun t : ℝ => rder ε l (avgK ε e f y) (k' * expK ε X t)) = fun t => ∫ k, e k * F l (y * toMK k' * toMK (expK ε X t) * toMK k) ∂(muK ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[ih hlK, toMK_mul, mul_assoc y]`. Rewrite using `[e1]`. Conclude with `(hasDerivAt_avg hD hG hf hF0 hec he hl hX (mul_mem_UJ hy (toMK_mem_UJ k'))).deriv`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rder_avgK_all (hD : IsDerFam ε F) {N : ℕ} (hG : FamGrowth ε N F) {f : Mx n → ℂ}
     (hf : ContinuousOn f (UJset ε)) (hF0 : ∀ g ∈ UJset ε, F [] g = f g) {e : KG ε → ℂ} (hec : Continuous e)
@@ -216,7 +214,7 @@ theorem rder_avgK_all (hD : IsDerFam ε F) {N : ℕ} (hG : FamGrowth ε N F) {f 
     exact (hasDerivAt_avg hD hG hf hF0 hec he hl hX (mul_mem_UJ hy (toMK_mem_UJ k'))).deriv
 
 /- English proof (translation)
-Rewrite using `[rder_avgK_all hD hG hf hF0 hec he hy u hu 1, toMK_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rder_avgK_one (ε : Fin n → Bool) (N : ℕ) (F : List (Mx n) → Mx n → ℂ) (hD : IsDerFam ε F)
     (hG : FamGrowth ε N F) (f : Mx n → ℂ) (hf : ContinuousOn f (UJset ε)) (hF0 : ∀ g ∈ UJset ε, F [] g = f g)

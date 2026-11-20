@@ -9,14 +9,14 @@ namespace GlobalTheory.CompanionTheory.OntoDLog
 variable {K A : Type} [CommRing K] [CommRing A] [Algebra K A]
 
 /- English proof (translation)
-Simplify using `only [form, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_mul_left {a : ℕ} (c g₀ : A) (g : Fin a → A) :
     form K (c * g₀) g = c • form K g₀ g := by
   simp only [form, mul_smul]
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨h, Fin.cons f g, Or.inr ⟨0, by rw [Fin.cons_zero]; exact Ideal.mem_span_singleton_self f⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 theorem form_cons_mem {a : ℕ} (f h : A) (g : Fin a → A) :
     form K h (Fin.cons f g : Fin (a + 1) → A) ∈ relOm K (Ideal.span {f}) (a + 1) := by
@@ -24,15 +24,15 @@ theorem form_cons_mem {a : ℕ} (f h : A) (g : Fin a → A) :
   exact ⟨h, Fin.cons f g, Or.inr ⟨0, by rw [Fin.cons_zero]; exact Ideal.mem_span_singleton_self f⟩, rfl⟩
 
 /- English proof (translation)
-Use `set v : Fin (a + 1) → Ω[A⁄K] := fun i => KaehlerDifferential.D K A ((Fin.cons f (Function.update g k h) : Fin (a + 1) → A) i) with hv`. Establish `hcons : (fun i => KaehlerDifferential.D K A ((Fin.cons f g : Fin (a + 1) → A) i)) = Function.update v k.succ (f • KaehlerDifferential.D K A h + h • KaehlerDifferential.D K A f)`. Use function extensionality and compare the values at `i`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simp [v, Function.update_apply, (Fin.succ_ne_zero k).symm]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hk, Derivation.leibniz]`. Simplify using `[v, hj, Function.update_apply]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv1 : Function.update v k.succ (KaehlerDifferential.D K A h) = v`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = k.succ`. Substitute `hi` using the available equality. Simplify using `[v]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_apply, hi]`. Establish `hv2 : exteriorPower.ιMulti A (a + 1) (Function.update v k.succ (KaehlerDifferential.D K A f)) = 0`. Apply `AlternatingMap.map_eq_zero_of_eq _ _ (i := 0) (j := k.succ)` to reduce the goal to its premises. Simplify using `[v, Function.update_apply, (Fin.succ_ne_zero k).symm]`. Conclude with `(Fin.succ_ne_zero k).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form]`. Rewrite using `[hcons, AlternatingMap.map_update_add, AlternatingMap.map_update_smul, AlternatingMap.map_update_smul, hv1, hv2, smul_zero, add_zero, smul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem form_cons_eq_smul {a : ℕ} (f h g₀ : A) (g : Fin a → A) (k : Fin a)
     (hk : g k = f * h) :
@@ -65,17 +65,17 @@ theorem form_cons_eq_smul {a : ℕ} (f h g₀ : A) (g : Fin a → A) (k : Fin a)
     AlternatingMap.map_update_smul, hv1, hv2, smul_zero, add_zero, smul_comm]
 
 /- English proof (translation)
-Unfold `DLog`. Introduce `K A _ _ _ a f hf w hw ω hω`. Establish `hex : ∀ ω ∈ relOm K (Ideal.span {f}) a, ∃ η ∈ relOm K (Ideal.span {f}) (a + 1), f • η = w ω`. Introduce `ω hω`. Proceed by induction on `hω using Submodule.span_induction with`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨g₀, g, hg, rfl⟩` from `hx`. Break down `hg with hg₀ | ⟨k, hk⟩` into its components or cases. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton.mp hg₀`. Use `⟨form K c (Fin.cons f g), form_cons_mem f c g, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hw, ← form_mul_left]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton.mp hk`. Use `⟨form K g₀ (Fin.cons f (Function.update g k c)), form_cons_mem f g₀ _, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, form_cons_eq_smul f c g₀ g k hc]`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨η₁, h₁, e₁⟩` from `hx`. Take `⟨η₂, h₂, e₂⟩` from `hy`. Conclude with `⟨η₁ + η₂, Submodule.add_mem _ h₁ h₂, by rw [smul_add, e₁, e₂, map_add]⟩`. Consider the case `smul c x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨η, h₁, e₁⟩` from `hx`. Conclude with `⟨c • η, Submodule.smul_mem _ c h₁, by rw [smul_comm, e₁, map_smul]⟩`. Take `⟨η, hη, e⟩` from `hex ω hω`. Use `⟨η, ⟨hη, e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `η' ⟨_, e'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hz : f • (η' - η) = 0` using `by rw [smul_sub, e, e', sub_self]`. Conclude with `sub_eq_zero.mp (hf _ hz)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dLog : DLog := by
   unfold DLog

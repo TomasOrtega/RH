@@ -195,7 +195,7 @@ def LevelGroup : Prop :=
 def NormAndLevel : Prop := IdeleNormScale ∧ LevelGroup
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example (K : Type) [Field K] [NumberField K] : IsNormScale (1 : (Adelic K)ˣ) 1 :=
   ⟨by simp, by simp⟩

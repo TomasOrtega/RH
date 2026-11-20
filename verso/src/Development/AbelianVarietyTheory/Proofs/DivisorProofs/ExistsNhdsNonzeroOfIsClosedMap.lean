@@ -9,13 +9,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `Z Y p hp L V u y hy h`. Establish `hO : IsOpen ((p ⁻¹ᵁ V).ι '' (nonzeroLocus u : Set (p ⁻¹ᵁ V).toScheme))` using `(p ⁻¹ᵁ V).ι.isOpenEmbedding.isOpenMap _ (nonzeroLocus u).isOpen`. Establish `hC : IsClosed (p.base '' ((p ⁻¹ᵁ V).ι '' (nonzeroLocus u : Set (p ⁻¹ᵁ V).toScheme))ᶜ)` using `hp _ hO.isClosed_compl`. Use `⟨V ⊓ ⟨_, hC.isOpen_compl⟩, ⟨hy, ?_⟩, inf_le_left, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc, hcy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hcV : c ∈ p ⁻¹ᵁ V`. Express the relevant statement in the definitionally equal form `p c ∈ V`. Establish `: p c = y` using `hcy`. Rewrite using `[this]`. Conclude with `hy`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc ⟨⟨c, hcV⟩, h ⟨c, hcV⟩ hcy, rfl⟩`. Introduce `z hz`. Establish `h2 : (p ⁻¹ᵁ V).ι z ∈ (p ⁻¹ᵁ V).ι '' (nonzeroLocus u : Set (p ⁻¹ᵁ V).toScheme)`. Assume the negation of the conclusion as `hn`. Conclude with `hz.2 ⟨_, hn, rfl⟩`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨w, hw, hwz⟩` from `h2`. Establish `: w = z` using `(p ⁻¹ᵁ V).ι.isOpenEmbedding.injective hwz`. Substitute `this` using the available equality. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_nhds_nonzero_of_isClosedMap :
     ∀ (Z Y : Scheme.{0}) (p : Z ⟶ Y), IsClosedMap p.base → ∀ (L : LB Z) (V : Y.Opens) (u : LB.Sec (L.pull (p ⁻¹ᵁ V).ι)) (y : Y), y ∈ V → (∀ z : (p ⁻¹ᵁ V).toScheme, p ((p ⁻¹ᵁ V).ι z) = y → z ∈ nonzeroLocus u) → ∃ V₁ : Y.Opens, y ∈ V₁ ∧ V₁ ≤ V ∧ ∀ z : (p ⁻¹ᵁ V).toScheme, p ((p ⁻¹ᵁ V).ι z) ∈ V₁ → z ∈ nonzeroLocus u := by

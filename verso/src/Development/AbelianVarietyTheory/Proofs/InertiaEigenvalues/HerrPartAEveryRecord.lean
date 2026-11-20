@@ -6,7 +6,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory.HerrFull
 
 /- English proof (translation)
-Introduce `D HW F` and use `herr_a_and_natural D HW F`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem herr_part_a_every_record :
     ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW),

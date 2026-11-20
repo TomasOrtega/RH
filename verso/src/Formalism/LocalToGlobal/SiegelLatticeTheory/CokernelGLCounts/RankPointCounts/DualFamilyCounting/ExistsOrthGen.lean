@@ -10,9 +10,9 @@ variable {K V : Type*} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {π : K}
 
 /- English proof (translation)
-Establish `key` using `RingHom.map_det S.subtype (Matrix.of fun i j => (⟨h (x i) (x j), hx i j⟩ : S))`. Establish `e : S.subtype.mapMatrix (Matrix.of fun i j => (⟨h (x i) (x j), hx i j⟩ : S)) = U0.gram h x`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `key` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← key]`. Conclude with `Subtype.mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} (x : Fin n → V) (hx : ∀ i j, h (x i) (x j) ∈ S) :
     (U0.gram h x).det ∈ S := by
@@ -25,13 +25,13 @@ theorem det_mem {h : V →ₗ⋆[K] V →ₗ[K] K} {n : ℕ} (x : Fin n → V) (
   exact Subtype.mem _
 
 /- English proof (translation)
-Simplify using `only [LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem smul_apply' (h : V →ₗ⋆[K] V →ₗ[K] K) (c : K) (x y : V) : (c • h) x y = c * h x y := by
   simp only [LinearMap.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_apply', smul_apply', map_mul, hs.eq x y, starRingEnd_apply, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSymm_smul {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {c : K} (hc : star c = c) :
     (c • h).IsSymm := by
@@ -39,57 +39,51 @@ theorem isSymm_smul {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {c : K} (
   rw [smul_apply', smul_apply', map_mul, hs.eq x y, starRingEnd_apply, hc]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ihn`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `_ N ihN`. Introduce `h hs x hx hdet`. Take `_ | m` from `n`. Conclude with `⟨x, fun i => i.elim0, rfl⟩`. Establish `hπ0 : π ≠ 0` using `hπ.ne`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Distinguish the cases in `hall : ∀ i j, Dv S π (h (x i) (x j))`. Establish `hc : star (π⁻¹) = π⁻¹` using `by rw [star_inv₀, hπ.fix]`. Establish `hs' : (π⁻¹ • h).IsSymm` using `isSymm_smul hs hc`. Establish `hx' : ∀ i j, (π⁻¹ • h) (x i) (x j) ∈ S`. Introduce `i j`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_apply', mul_comm]`. Conclude with `hall i j`. Establish `hgram : U0.gram (π⁻¹ • h) x = π⁻¹ • U0.gram h x`. Use extensionality with `i j`. Simplify using `only [U0.gram, Matrix.of_apply, Matrix.smul_apply, smul_apply', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet' : (U0.gram (π⁻¹ • h) x).det = π⁻¹ ^ (m + 1) * (U0.gram h x).det`. Rewrite using `[hgram, Matrix.det_smul, Fintype.card_fin]`. Establish `hmem' : (U0.gram (π⁻¹ • h) x).det ∈ S` using `det_mem x hx'`. Establish `hN : m + 1 ≤ N`. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hlt`. Apply `hdet` to reduce the goal to its premises. Establish `hd : (U0.gram h x).det = π ^ (m + 1) * (U0.gram (π⁻¹ • h) x).det`. Rewrite using `[hdet', ← mul_assoc, ← mul_pow, mul_inv_cancel₀ hπ0, one_pow, one_mul]`. Establish `hp : π ^ (m + 1) * π⁻¹ ^ N = π ^ (m + 1 - N)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_sub₀ π hπ0 hlt.le, inv_pow]`. Rewrite using `[hd, mul_comm (π ^ (m + 1)) _, mul_assoc, hp]`. Conclude with `S.mul_mem hmem' (S.pow_mem hπ.mem _)`. Establish `hlt : N - (m + 1) < N` using `by omega`. Establish `hdet2 : (U0.gram (π⁻¹ • h) x).det * π⁻¹ ^ (N - (m + 1)) ∉ S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdet', mul_comm (π⁻¹ ^ (m + 1)), mul_assoc, ← pow_add, Nat.add_sub_cancel' hN]` and apply the resulting hypothesis. Take `⟨y, hyo, hys⟩` from `ihN (N - (m + 1)) hlt (π⁻¹ • h) hs' x hx' hdet2`. Use `⟨y, fun i j hij => ?_, hys⟩` and prove the remaining obligations. Establish `h0` using `hyo i j hij`. Rewrite `h0` using `[smul_apply']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_left (inv_ne_zero hπ0)`. Use `push_neg at hall`. Take `⟨i₀, r, hr, hu⟩` from `exists_pivot hS hπ hs x hx hall`. Generalize the expression as in `hf : x i₀ + r = f at hu`. Take `⟨ha0, haS, hainv⟩` from `hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : spanS S (x ∘ i₀.succAbove) ≤ spanS S x`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `mem_spanS x _`. Establish `hfx : f ∈ spanS S x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf]`. Conclude with `Submodule.add_mem _ (mem_spanS x i₀) (hsub hr)`. Establish `hint` using `int_spanS hS hx`. Take `⟨c, hc⟩ : ∃ c : Fin m → K, ∀ k, c k = (h f f)⁻¹ * h f (x (i₀.succAbove k))` from `⟨_, fun _ => rfl⟩`. Establish `hcS : ∀ k, c k ∈ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hc k]`. Conclude with `S.mul_mem hainv (hint f hfx _ (mem_spanS x _))`. Take `⟨y, hy⟩ : ∃ y : Fin m → V, ∀ k, y k = x (i₀.succAbove k) - c k • f` from `⟨_, fun _ => rfl⟩`. Establish `hf0 : ∀ k, h f (y k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[hy k, map_sub, map_smul, smul_eq_mul, hc k, mul_comm (h f f)⁻¹, mul_assoc, inv_mul_cancel₀ ha0, mul_one, sub_self]`. Establish `hyx : ∀ k, y k ∈ spanS S x`. Introduce `k`. Rewrite using `[hy k]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Submodule.sub_mem _ (mem_spanS x _) (smul_mem_spanS (hcS k) hfx)`. Establish `hyS : ∀ i j, h (y i) (y j) ∈ S` using `fun i j => hint _ (hyx i) _ (hyx j)`. Establish `hfP : f ∈ spanS S (Fin.cons f y : Fin (m + 1) → V)`. Establish `h1` using `mem_spanS (S := S) (Fin.cons f y : Fin (m + 1) → V) 0`. Rewrite `h1` using `[Fin.cons_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hyP : ∀ k, y k ∈ spanS S (Fin.cons f y : Fin (m + 1) → V)`. Introduce `k`. Establish `h1` using `mem_spanS (S := S) (Fin.cons f y : Fin (m + 1) → V) k.succ`. Rewrite `h1` using `[Fin.cons_succ]`. Then use the resulting hypothesis. Establish `hxP : ∀ k, x (i₀.succAbove k) ∈ spanS S (Fin.cons f y : Fin (m + 1) → V)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `k`. Rewrite using `[show x (i₀.succAbove k) = y k + c k • f by rw [hy k, sub_add_cancel]]`. Conclude with `Submodule.add_mem _ (hyP k) (smul_mem_spanS (hcS k) hfP)`. Establish `hrP : r ∈ spanS S (Fin.cons f y : Fin (m + 1) → V)`. Use `(Submodule.span_le.mpr ?_ : spanS S (x ∘ i₀.succAbove) ≤ _) hr` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hxP k`. Establish `hspan : spanS S (Fin.cons f y : Fin (m + 1) → V) = spanS S x`. Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero => simpa only [Fin.cons_zero, SetLike.mem_coe] using hfx`. Consider the case `succ k => simpa only [Fin.cons_succ, SetLike.mem_coe] using hyx k`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Rewrite using `[show x i = f - r by rw [← hf, add_sub_cancel_right]]`. Conclude with `Submodule.sub_mem _ hfP hrP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, rfl⟩` from `Fin.exists_succAbove_eq hi`. Conclude with `hxP k`. Establish `hdety : (U0.gram h y).det * π⁻¹ ^ N ∉ S`. Introduce `hmem`. Apply `hdet` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Take `⟨e, heS, he⟩` from `gram_det_of_le (h := h) hS (x := x) (y := (Fin.cons f y : Fin (m + 1) → V)) (fun i => by rw [hspan]; exact mem_spanS x i)`. Rewrite using `[he, gram_det_cons hs f y hf0, mul_assoc, mul_assoc]`. Conclude with `S.mul_mem heS (S.mul_mem haS hmem)`. Take `⟨z, hzo, hzs⟩` from `ihn m (Nat.lt_succ_self m) N h hs y hyS hdety`. Establish `hfz : ∀ k, h f (z k) = 0`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce `k`. Establish `hzk : z k ∈ spanS S y`. Rewrite using `[← hzs]`. Conclude with `mem_spanS z k`. Conclude with `spanS_induction (x := y) (p := fun v => h f v = 0) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero]) (fun c _ a ha => by rw [map_smul, ha, smul_zero]) hf0 (z k) hzk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(Fin.cons f z : Fin (m + 1) → V), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Proceed by induction on `i using Fin.cases with`. Consider the case `zero`. Proceed by induction on `j using Fin.cases with`.
-
-Consider the case `zero => exact absurd rfl hij`. Consider the case `succ l`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Conclude with `hfz l`. Consider the case `succ k`.
-
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[← hs.eq f (z k), hfz k, map_zero]`. Consider the case `succ l`.
-
-Simplify using `only [Fin.cons_succ]`. Conclude with `hzo k l (fun hkl => hij (by rw [hkl]))`. Rewrite using `[spanS_cons, hzs, ← spanS_cons, hspan]`.
+A detailed English derivation is pending.
 -/
 theorem exists_orth_gen (hS : IsHermSemilocal S) (hπ : IsUnif S π) :
     ∀ (n N : ℕ) (h : V →ₗ⋆[K] V →ₗ[K] K), h.IsSymm → ∀ x : Fin n → V, (∀ i j, h (x i) (x j) ∈ S) →

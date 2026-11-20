@@ -7,7 +7,7 @@ open MvPolynomial Finset
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 /- English proof (translation)
-Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `m hm`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hm ⊢`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma qc_colH_succ_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu (c + 1) ≤ colH mu c := by
   apply Finset.card_le_card
@@ -16,9 +16,9 @@ lemma qc_colH_succ_le {n : ℕ} (mu : Fin n → ℤ) (c : ℤ) : colH mu (c + 1)
   omega
 
 /- English proof (translation)
-Introduce `c hc t`. Apply `Finset.card_le_card` to reduce the goal to its premises. Apply `Finset.filter_subset_filter` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [canT, Finset.mem_map, Finset.mem_univ, true_and] at hx ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨⟨a.1, lt_of_lt_of_le a.2 (qc_colH_succ_le mu c)⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma qc_canT_std {n : ℕ} [NeZero n] (mu : Fin n → ℤ) : StdT (canT mu) := by
   intro c hc t
@@ -34,13 +34,13 @@ section SMu
 variable {n : ℕ} [NeZero n] {M : GLMod n} {mu : Fin n → ℤ} {β : M.ι → GLCoord ℤ n}
 
 /- English proof (translation)
-Establish `: Fintype {I : TIdx mu // StdT I}` using `Fintype.ofFinite _`. Use `choose q hq using hm`. Establish `hy : ∑ i, q i • β i ∈ Submodule.span ℤ (Set.range fun I : {I : TIdx mu // StdT I} => brk mu I.1)`. Rewrite using `[(hS n mu hmu).2, ← hβ.2.1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, hr⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 hy`. Establish `hcan : brk mu (canT mu) = m • ∑ i, q i • β i`. Rewrite using `[← hph]`. Simplify using `only [zsmul_eq_mul, Finset.mul_sum, hq, Int.cast_mul, mul_assoc]`. Set `c0 : {I : TIdx mu // StdT I}` to `⟨canT mu, qc_canT_std mu⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∑ I : {I : TIdx mu // StdT I}, ((if I = c0 then 1 else 0) - m * r I) • brk mu I.1 = 0`. Establish `h2 : ∀ I : {I : TIdx mu // StdT I}, ((if I = c0 then 1 else 0) - m * r I) • brk mu I.1 = (if I = c0 then brk mu I.1 else 0) - (m : GLCoord ℤ n) * (r I • brk mu I.1)`. Introduce `I`. Apply the tactic sequence `split_ifs <;> simp [zsmul_eq_mul, sub_mul, mul_assoc]`. Simplify using `only [h2, Finset.sum_sub_distrib, ← Finset.mul_sum, hr, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_zero, ← zsmul_eq_mul]`. Conclude with `hcan`. Establish `h1` using `Fintype.linearIndependent_iff.1 (hS n mu hmu).1 _ h0 c0`. Simplify using `only [if_true] at h1`. Conclude with `⟨r c0, by linarith⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma qc_prim (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β)
     (ph : Matrix M.ι (TIdx mu) ℤ) (hph : ∀ I, ∑ i, ph i I • β i = brk mu I) (m : ℤ)
@@ -69,15 +69,15 @@ lemma qc_prim (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β)
   exact ⟨r c0, by linarith⟩
 
 /- English proof (translation)
-Establish `hex : ∀ I : TIdx mu, ∃ c : M.ι → ℤ, ∑ i, c i • β i = brk mu I` using `fun I => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (by rw [hβ.2.1]; exact Submodule.subset_span ⟨I, rfl⟩)`. Use `choose c hc using hex`. Set `ph : Matrix M.ι (TIdx mu) ℤ` to `fun i I => c I i`. Establish `hph : ∀ I, ∑ i, ph i I • β i = brk mu I` using `hc`. Establish `hpr` using `qc_prim hS hmu hβ ph hph`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ J := Unit, mu := fun _ => mu, dom := fun _ => hmu, ph := fun _ => ph, equiv := fun _ => qc_equiv hA hS hmu hβ ph hph, indepP := ?_, indepQ := ?_, rank := ?_ }⟩` and prove the remaining obligations. Introduce `p hp nu`. Use `Fact.mk hp` as an intermediate fact. Rewrite using `[linearIndependent_subsingleton_index_iff]`. Introduce `j h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hpr (p : ℤ) fun i => (ZMod.intCast_zmod_eq_zero_iff_dvd _ p).1 (congrFun h0 i)`. Establish `h2 : p ∣ 1` using `by exact_mod_cast h1`. Conclude with `hp.one_lt.ne' (Nat.dvd_one.1 h2)`. Introduce `nu`. Rewrite using `[linearIndependent_subsingleton_index_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j h0`. Establish `h1` using `hpr 0 fun i => by`. Use `congrFun h0 i` as an intermediate fact. Simplify using `only [Pi.zero_apply, Int.cast_eq_zero] at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Simplify using `[qc_card_eq hS hmu hβ]`.
+A detailed English derivation is pending.
 -/
 theorem qc_colFam_SMu (hA : LemmaA) (hS : SBasis) (hmu : Dominant mu) (hβ : IsSMu M mu β) :
     Nonempty (ColFam M) := by
@@ -110,13 +110,13 @@ theorem qc_colFam_SMu (hA : LemmaA) (hS : SBasis) (hmu : Dominant mu) (hβ : IsS
 end SMu
 
 /- English proof (translation)
-Establish `hE : IsEmpty ↥(TCols (0 : Fin n → ℤ))` using `⟨fun x => by simpa [TCols] using x.2⟩`. Take `⟨i0, hi0⟩` from `Fintype.card_eq_one_iff.1 h1`. Establish `hU : Unique M.ι` using `⟨⟨i0⟩, hi0⟩`. Use `⟨{ J := Unit, mu := fun _ => 0, dom := fun _ => fun _ _ _ => le_rfl, ph := fun _ => fun _ _ => 1, equiv := ?_, indepP := ?_, indepQ := ?_, rank := ?_ }⟩` and prove the remaining obligations. Introduce `_`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i I`. Use `show (∑ k, M.A i k * (Int.castRingHom (GLCoord ℤ n)) 1) = ∑ K : TIdx (0 : Fin n → ℤ), (Int.castRingHom (GLCoord ℤ n)) 1 * TMat 0 K I`. Simplify using `[hA, TMat]`. Introduce `p hp nu`. Use `Fact.mk hp` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linearIndependent_subsingleton_index_iff]`. Introduce `j h0`. Simplify using `using congrFun h0 i0`. Introduce `nu`. Rewrite using `[linearIndependent_subsingleton_index_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j h0`. Simplify using `using congrFun h0 i0`. Establish `: Unique {I : TIdx (0 : Fin n → ℤ) // StdT I}` using `⟨⟨⟨canT 0, qc_canT_std 0⟩⟩, fun I => Subtype.ext (Subsingleton.elim _ _)⟩`. Simplify using `[h1, dMu]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qc_colFam_triv {n : ℕ} [NeZero n] (M : GLMod n) (h1 : Fintype.card M.ι = 1) (hA : ∀ i j, M.A i j = 1) :
     Nonempty (ColFam M) := by

@@ -11,15 +11,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegFormalAssemble
 
 /- English proof (translation)
-Introduce `g n B _ ζ R _ _ I hI s s' c c' t ce φ ψ β hc hφ hψ hβφ hβψ`. Establish `H` using `GlobalTheory.FormalAlgMorphisms.formalAlgebraisation_morphisms`. Establish `hp : GlobalTheory.AbLaw.IsProjBy c.A.hom` using `GlobalTheory.WtTower.isProjBy_of_relAmple c.A (pull_isLB c.isLB _) hc.1`. Take `⟨G, hG, hGφ, -, -, hGP⟩` from `GlobalTheory.AlgUniq.exists_iso_algebraisation H R I hI (fun e => (ce e).A) β c.A c'.A c.ab c'.ab hp φ ψ (fun e => (hφ e).1) hβφ (fun e => (hψ e).1) hβψ`. Use `choose b₂ hb₂ hb₂P using fun e => (hφ e).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose b₂' hb₂' hb₂'P using fun e => (hψ e).2.1`. Establish `hP` using `hGP c.P c'.P b₂ b₂' c.isLB c'.isLB hb₂ hb₂' fun e => LBIso.trans (pull_isLB c.isLB _) (ce e).isLB (pull_isLB c'.isLB _) (LBIso.symm (hb₂P e)) (hb₂'P e)`. Use `⟨G.hom.left, (G.hom ⊗ₘ G.hom).left, isGrpPullback_of_iso G, ⟨?_, ?_⟩, hP, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← Over.comp_left, tensorHom_fst, Over.comp_left]`. Rewrite using `[← Over.comp_left, tensorHom_snd, Over.comp_left]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper c'.A.hom` using `c'.ab.proper`. Establish `: IsProper (𝟙_ (Over (Sp R))).hom` using `show IsProper (𝟙 _) from inferInstance`. Establish `key : c.lev a ≫ G.hom = c'.lev a`. Use `GlobalTheory.Published.FormalAlgebraisation.Morphisms.hom_ext H hI fun e => ?_` and prove the remaining obligations. Establish `hw : pullback.fst (𝟙_ (Over (Sp R))).hom (Out.thick R I e) = pullback.snd (𝟙_ (Over (Sp R))).hom (Out.thick R I e) ≫ Out.thick R I e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pullback.condition]`. Conclude with `(Category.comp_id _).symm`. Establish `l1` using `(hφ e).2.2 a`. Establish `l2` using `(hψ e).2.2 a`. Simplify using `only [pow_one] at l1 l2`.
-
-Rewrite using `[hw, Over.comp_left, Category.assoc, Category.assoc, ← reassoc_of% l1, ← l2, ← hGφ e]`. Rewrite using `[Category.id_comp, ← key, Over.comp_left]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegPB_id_of_tower : ∀ (g n : ℕ) (B : Type) [CommRing B] (ζ : B) (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R), IsAdicComplete I R → ∀ (s s' : Sp R ⟶ Sp B) (c : SiegPre g n ζ s) (c' : SiegPre g n ζ s') (t : ∀ e : ℕ, Sp (R ⧸ I ^ (e + 1)) ⟶ Sp B) (ce : ∀ e, SiegPre g n ζ (t e)) (φ : ∀ e, (ce e).A.left ⟶ c.A.left) (ψ : ∀ e, (ce e).A.left ⟶ c'.A.left) (β : ∀ e, (ce e).A.left ⟶ (ce (e + 1)).A.left), c.Principal → (∀ e, SRelBy (ce e) c 1 1 (Out.thick R I e) (φ e)) → (∀ e, SRelBy (ce e) c' 1 1 (Out.thick R I e) (ψ e)) → (∀ e, β e ≫ φ (e + 1) = φ e) → (∀ e, β e ≫ ψ (e + 1) = ψ e) → SiegPB c c' (𝟙 _) := by
   intro g n B _ ζ R _ _ I hI s s' c c' t ce φ ψ β hc hφ hψ hβφ hβψ

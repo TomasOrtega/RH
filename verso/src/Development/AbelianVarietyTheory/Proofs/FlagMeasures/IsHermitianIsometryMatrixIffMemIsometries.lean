@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CovDomGrp
 
 /- English proof (translation)
-Establish `h : (fun i => σ ((γ *ᵥ y) i)) = (fun i => σ (y i)) ᵥ* GlobalTheory.SgAlg.cT σ γ`. Use function extensionality and compare the values at `i`. Simplify using `[GlobalTheory.SgAlg.cT, Matrix.mulVec, Matrix.vecMul, dotProduct, mul_comm]`. Simplify using `only [GlobalTheory.SgAlg.form]`. Rewrite using `[h, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec_mulVec {E : Type} [CommRing E] (σ : E →+* E) {m : ℕ} (J γ : Matrix (Fin m) (Fin m) E)
     (x y : Fin m → E) :
@@ -21,16 +21,16 @@ theorem form_mulVec_mulVec {E : Type} [CommRing E] (σ : E →+* E) {m : ℕ} (J
   rw [h, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Simplify using `[GlobalTheory.SgAlg.form, dotProduct, Pi.single_apply, Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_single_single {E : Type} [CommRing E] (σ : E →+* E) {m : ℕ} (M : Matrix (Fin m) (Fin m) E)
     (i j : Fin m) : GlobalTheory.SgAlg.form σ M (Pi.single j 1) (Pi.single i 1) = M i j := by
   simp [GlobalTheory.SgAlg.form, dotProduct, Pi.single_apply, Matrix.mulVec_single]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hU`. Express the relevant statement in the definitionally equal form `∀ x y, (VS D).hT (n x) (n y) = (VS D).hT x y`. Introduce `x y`. Rewrite using `[← vecOf_crdH X x, ← vecOf_crdH X y, n_vecOf hγ, n_vecOf hγ, hT_vecOf, hT_vecOf, form_mulVec_mulVec, hU]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hn`. Establish `hn' : ∀ x y, (VS D).hT (n x) (n y) = (VS D).hT x y` using `hn`. Use extensionality with `i j`. Rewrite using `[← form_single_single _ (GlobalTheory.SgAlg.cT _ γ * Jc X * γ) i j, ← form_mulVec_mulVec, ← hT_vecOf X, ← n_vecOf hγ, ← n_vecOf hγ, hn', hT_vecOf, form_single_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isUn_iff_mem_isom {D : D7} (X : HidaSetting D) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (γ : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) D.host.E)

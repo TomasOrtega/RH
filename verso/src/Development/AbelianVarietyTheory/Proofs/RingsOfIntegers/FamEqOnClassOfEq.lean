@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← Geo.Tor.gs_res (𝟙 X) y hle hy a, ← Geo.Tor.gs_res (𝟙 X) y hle hy b, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma gs_id_eq_of_presheaf_map_eq {X : Scheme.{0}} {U V : X.Opens} (hle : V ≤ U) {a b : Γ(X, U)} (y : X) (hy : y ∈ V)
     (e : (X.presheaf.map (homOfLE hle).op).hom a = (X.presheaf.map (homOfLE hle).op).hom b) :
@@ -19,13 +19,13 @@ private lemma gs_id_eq_of_presheaf_map_eq {X : Scheme.{0}} {U V : X.Opens} (hle 
   rw [← Geo.Tor.gs_res (𝟙 X) y hle hy a, ← Geo.Tor.gs_res (𝟙 X) y hle hy b, e]
 
 /- English proof (translation)
-Introduce `hG R _ _ D F _ _ k s t α h m j`. Take `⟨⟨u, hu, hc⟩, -⟩` from `gen_fe (D := D) (F := F) hG k m α`. Establish `Hs` using `s.fe`. Establish `Ht` using `t.fe`. Unfold `DegPre.FamFE at Hs Ht`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `Hs'` using `Hs m α u hu hc`. Establish `Ht'` using `Ht m α u hu hc`. Unfold `GeneratorPullback.SecRel at Hs' Ht'`. Use `Geo.Tor.sec_ext_val D.P.isLB (fun y J hJ => ?_) j` and prove the remaining obligations. Establish `hcoh : D.P.L.Coh (Sum.elim (D.famφ F (α + k • m)) (Sum.elim (fun i => (D.trF F m).left ≫ D.famφ F α i) (D.deltaφ F k α m))) (Sum.elim (fun i => J (D.famφ F (α + k • m) i)) (Sum.elim (fun i => J ((D.trF F m).left ≫ D.famφ F α i)) (fun i => J (D.deltaφ F k α m i))))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `a b hab`. Apply the tactic sequence `rcases a with a | a | a <;> rcases b with b | b | b <;>`. Apply the tactic sequence `simp only [Sum.elim_inl, Sum.elim_inr] at hab ⊢ <;> exact congrArg J hab`. Establish `e` using `Hs' _ _ _ hcoh`. Use `erw [h, ← Ht' _ _ _ hcoh] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Geo.Tor.sval_of _ _ _ _ (fun i => J (D.famφ F (α + k • m) i)) (fun i => by simp), Geo.Tor.sval_of _ _ _ _ (fun i => J (D.famφ F (α + k • m) i)) (fun i => by simp)]`. Use `gs_id_eq_of_presheaf_map_eq _ y ?_ e` and prove the remaining obligations. Simplify using `only [TopologicalSpace.Opens.mem_inf]`. Conclude with `⟨⟨Set.mem_iInter.2 fun i => hJ _, Set.mem_iInter.2 fun i => hJ _⟩, Set.mem_iInter.2 fun i => hJ _⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fam_eq_on_class_of_eq : GlobalFnsSt → ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (F : Type) [Field F]
     [Algebra (FractionRing R) F] (k : ℕ) (s t : Fam D F k) (α : D.X), (∀ j, (s.s α).f j = (t.s α).f j) →

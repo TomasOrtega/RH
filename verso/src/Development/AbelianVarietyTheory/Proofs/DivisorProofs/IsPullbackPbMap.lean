@@ -32,9 +32,9 @@ def pbMap {T T' : Scheme.{0}} (a : T' ⟶ T) (y : (functor A B r).obj (op T)) :
   (y.2.1.comapIso (bc A B y.1 a)).hom ≫ pullback.snd _ _
 
 /- English proof (translation)
-Establish `H : IsPullback (pullback.snd (bc A B y.1 a) y.2.1.subschemeι) (pullback.fst (bc A B y.1 a) y.2.1.subschemeι ≫ pullback.snd _ (a ≫ y.1)) (y.2.1.subschemeι ≫ pullback.snd _ y.1) a` using `(IsPullback.of_hasPullback (bc A B y.1 a) y.2.1.subschemeι).flip.paste_vert (isPullback_bc A B y.1 a)`. Use `IsPullback.of_iso H (y.2.1.comapIso (bc A B y.1 a)).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `only [pbMap, Iso.symm_hom, Iso.refl_hom, Category.comp_id, Category.id_comp]`. Conclude with `(Iso.inv_hom_id_assoc _ _).symm`. Simplify using `[proj, functor_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullback_pbMap {T T' : Scheme.{0}} (a : T' ⟶ T) (y : (functor A B r).obj (op T)) :
     IsPullback (pbMap a y) (proj ((functor A B r).map a.op y)) (proj y) a := by
@@ -52,7 +52,7 @@ theorem isPullback_pbMap {T T' : Scheme.{0}} (a : T' ⟶ T) (y : (functor A B r)
   · simp
 
 /- English proof (translation)
-Simplify using `only [pbMap, functor_map, Category.assoc]`. Rewrite using `[← pullback.condition_assoc, Scheme.IdealSheafData.comapIso_hom_fst_assoc]`. Use `congr 1`. Conclude with `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pbMap_fst {T T' : Scheme.{0}} (a : T' ⟶ T) (y : (functor A B r).obj (op T)) :
     pbMap a y ≫ y.2.1.subschemeι ≫ pullback.fst _ y.1 =

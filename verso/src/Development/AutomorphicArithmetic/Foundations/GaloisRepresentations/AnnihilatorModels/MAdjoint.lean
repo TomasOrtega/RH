@@ -11,27 +11,25 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `hPC hTF p _ D R _ b N k _ s c o o' ψ ψ' hψ hψ' hc T x y`. Establish `hpos : 0 < c` using `hψ.pos`. Take `⟨a₁, a₂, -, -, hsim⟩` from `hPC p D R b N _ s o`. Take `⟨a₁', a₂', -, -, -⟩` from `hPC p D R b N _ s o'`. Take `⟨-, hmon, -, -, hiso, -⟩` from `hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsim'` using `(hsim o' ψ c).1 hiso`. Use `haveI := hmon`. Use `haveI := hψ'`. Establish `hsym : ∀ (q : Obj b N s) {Y : Over (Sp k)} (u v : Y ⟶ q.A), evc q.isLB u v = evc q.isLB v u`. Introduce `q Y u v`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.CechPic.cls_eq_iff q.isLB (pull_isLB q.isLB _)).2 q.symm`. Establish `h2` using `congrArg (GlobalTheory.CechPic.pull (lift u v).left) h1`. Rewrite `h2` using `[GlobalTheory.AbDual.cls_ev q.isLB, GlobalTheory.AbDual.pull_evc, lift_snd, lift_fst]`. Conclude with `h2`. Establish `hL1` using `pull_isLB o'.isLB (lift (fst o.A o'.A ≫ ψ) (snd o.A o'.A)).left`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL2` using `pull_isLB o.isLB (lift (fst o.A o'.A) (snd o.A o'.A ≫ ψ')).left`. Establish `hL` using `LB.isLB_div hL1 hL2`. Establish `cL` using `GlobalTheory.CechPic.cls_div hL1 hL2 hL`. Establish `hev : ∀ {Y : Over (Sp k)} (u : Y ⟶ o.A) (v : Y ⟶ o'.A), evc hL u v = evc o'.isLB (u ≫ ψ) v - evc o.isLB u (v ≫ ψ')`. Introduce `Y u v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.AbDual.evc, cL, map_sub, GlobalTheory.AbDual.cls_ev o'.isLB, GlobalTheory.AbDual.cls_ev o.isLB, GlobalTheory.AbDual.pull_evc, GlobalTheory.AbDual.pull_evc, lift_fst_assoc, lift_snd, lift_fst, lift_snd_assoc]`. Establish `add₁` using `(GlobalTheory.AbDual.isAdditive_iff o.isLB).1 a₁`. Establish `add₁'` using `(GlobalTheory.AbDual.isAdditive_iff o'.isLB).1 a₁'`. Establish `add₂` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff o.isLB).1 a₂`. Establish `add₂'` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff o'.isLB).1 a₂'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `bL₁ : IsAdditive (A` using `o.A) (T := o'.A) _ := (GlobalTheory.AbDual.isAdditive_iff hL).2 fun Y u u' v ↦ by`. Rewrite using `[hev, hev, hev, MonObj.mul_comp, add₁', add₁]`. Normalize the expressions using the abelian group laws. Establish `bL₂ : IsAdditive (swap _)` using `(GlobalTheory.BirigidLift.isAdditive_swap_iff hL).2 fun Y u v v' ↦ by`. Rewrite using `[hev, hev, hev, MonObj.mul_comp, add₂', add₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Normalize the expressions using the abelian group laws. Establish `hpow : ∀ {Y : Over (Sp k)} (u : Y ⟶ o'.A) (v : Y ⟶ o'.A) (n : ℕ), evc o'.isLB u (v ^ n) = n • evc o'.isLB u v`. Introduce `Y u v n`. Proceed by induction on `n with`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `add₂' Y u 1 1`. Rewrite `e` using `[_root_.mul_one]`. Rewrite using `[pow_zero, zero_smul]`. Conclude with `left_eq_add.1 e`. Consider the case `succ n ih => rw [pow_succ, add₂', ih, succ_nsmul]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcm : ∀ {Y : Over (Sp k)} (u : Y ⟶ o.A) (v : Y ⟶ o'.A), c • evc o'.isLB (u ≫ ψ) v = c • evc o.isLB u (v ≫ ψ')`. Introduce `Y u v`. Rewrite using `[← hsim' Y u (v ≫ ψ'), ← hpow, Category.assoc, hc, MonObj.comp_pow, Category.comp_id]`. Establish `hcls : GlobalTheory.CechPic.cls _ hL = evc hL (fst o.A o'.A) (snd o.A o'.A)`. Rewrite using `[GlobalTheory.AbDual.evc, lift_fst_snd, Over.id_left, GlobalTheory.CechPic.pull_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : GlobalTheory.CechPic.cls _ hL = 0` using `hTF k o.A o'.A o.ab o'.ab _ hL bL₁ bL₂ c hpos (by`. Rewrite using `[hcls, hev, smul_sub, hcm, sub_self])`. Establish `hmain : ∀ {Y : Over (Sp k)} (u : Y ⟶ o.A) (v : Y ⟶ o'.A), evc o'.isLB (u ≫ ψ) v = evc o.isLB u (v ≫ ψ')`. Introduce `Y u v`. Rewrite using `[← sub_eq_zero, ← hev, GlobalTheory.AbDual.evc, hz, map_zero]`.
-
-Conclude with `⟨hmain x y, by rw [hsym o', hmain, hsym o]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.adjoint_of :
     PairCalc → TorsFree → Adjoint := by

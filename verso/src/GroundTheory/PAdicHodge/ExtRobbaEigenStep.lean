@@ -14,13 +14,13 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Simplify using `using convAll_π_pow (T := T) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem convAll_π : T.ConvAll (algebraMap Γ T.B T.π) := by
   simpa using convAll_π_pow (T := T) 1
 
 /- English proof (translation)
-Introduce `ρ _ _` and use `by rw [coeffB_invSelf]; exact convergesAt_pi_single _ _ _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem convAll_invSelf : T.ConvAll (IsLocalization.Away.invSelf T.π) := fun ρ _ _ => by
   rw [coeffB_invSelf]; exact convergesAt_pi_single _ _ _
@@ -34,9 +34,9 @@ variable (T) in
 def piInvE (σ : Set.Ioo (0 : ℝ) 1) : T.RobbaExt σ := T.ofAll _ convAll_invSelf σ
 
 /- English proof (translation)
-Establish `: algebraMap Γ T.B T.π * IsLocalization.Away.invSelf T.π = 1` using `IsLocalization.Away.mul_invSelf T.π`. Establish `h1 : T.ofAll _ (convAll_π.mul convAll_invSelf) σ = ((1 : T.Econ σ) : T.RobbaExt σ)`. Rewrite using `[ofAll]`. Use `congr 1`. Conclude with `Subtype.ext this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[piE, piInvE, ← ofAll_mul, h1, Completion.coe_one]`.
+A detailed English derivation is pending.
 -/
 theorem piE_mul_piInvE (σ : Set.Ioo (0 : ℝ) 1) : T.piE σ * T.piInvE σ = 1 := by
   have : algebraMap Γ T.B T.π * IsLocalization.Away.invSelf T.π = 1 :=
@@ -46,20 +46,20 @@ theorem piE_mul_piInvE (σ : Set.Ioo (0 : ℝ) 1) : T.piE σ * T.piInvE σ = 1 :
   rw [piE, piInvE, ← ofAll_mul, h1, Completion.coe_one]
 
 /- English proof (translation)
-The claim follows from `res_ofAll _ h`.
+A detailed English derivation is pending.
 -/
 theorem res_piE {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) : T.res h (T.piE ρ0) = T.piE ρ1 :=
   res_ofAll _ h
 
 /- English proof (translation)
-The claim follows from `res_ofAll _ h`.
+A detailed English derivation is pending.
 -/
 theorem res_piInvE {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1} (h : (ρ1 : ℝ) ≤ ρ0) :
     T.res h (T.piInvE ρ0) = T.piInvE ρ1 :=
   res_ofAll _ h
 
 /- English proof (translation)
-Rewrite using `[piE, extNorm_ofAll, coeffB_algebraMap, ← pow_one T.π, zcoeff_π_pow, gaussNorm_pi_single _ _ ρ.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extNorm_piE {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) : T.extNorm σ ρ (T.piE σ) = ρ := by
   rw [piE, extNorm_ofAll, coeffB_algebraMap, ← pow_one T.π, zcoeff_π_pow,
@@ -67,7 +67,7 @@ theorem extNorm_piE {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) : T.e
   simp
 
 /- English proof (translation)
-Rewrite using `[piInvE, extNorm_ofAll, coeffB_invSelf, gaussNorm_pi_single _ _ ρ.2.1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem extNorm_piInvE {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) :
     T.extNorm σ ρ (T.piInvE σ) = (ρ : ℝ)⁻¹ := by
@@ -75,7 +75,7 @@ theorem extNorm_piInvE {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, extNorm_one]`. Consider the case `succ k ih => rw [pow_succ, extNorm_mul, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem extNorm_pow' {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) (x : T.RobbaExt σ) (k : ℕ) :
     T.extNorm σ ρ (x ^ k) = T.extNorm σ ρ x ^ k := by
@@ -84,13 +84,13 @@ theorem extNorm_pow' {σ : Set.Ioo (0 : ℝ) 1} (ρ : Set.Ioc (0 : ℝ) σ) (x :
   | succ k ih => rw [pow_succ, extNorm_mul, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← zpow_natCast, ← zpow_mul, ← zpow_natCast x q, ← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_pow_comm (x : ℝ) (n : ℤ) (q : ℕ) : (x ^ n) ^ q = (x ^ q) ^ n := by
   rw [← zpow_natCast, ← zpow_mul, ← zpow_natCast x q, ← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Rewrite using `[max_eq_right h]`. Conclude with `h2`. Rewrite using `[max_eq_left h]`. Conclude with `h1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem max_pow_le {a b M : ℝ} {q : ℕ} (ha : 0 ≤ a) (hb : 0 ≤ b) (h1 : a ^ q ≤ M) (h2 : b ^ q ≤ M) :
     max a b ^ q ≤ M := by
@@ -111,7 +111,7 @@ variable {F}
 variable {ρ : Set.Ioo (0 : ℝ) 1} (A : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (N : ℕ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistFrob, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem twistFrob_add {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ)
     (w w' : Fin n → T.RobbaExt τ) :
@@ -120,7 +120,7 @@ theorem twistFrob_add {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.I
   simp only [twistFrob, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistFrob, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem twistFrob_neg {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ)
     (w : Fin n → T.RobbaExt τ) : F.twistFrob A N τ hτ (-w) = -F.twistFrob A N τ hτ w := by
@@ -128,7 +128,7 @@ theorem twistFrob_neg {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.I
   simp only [twistFrob, Pi.neg_apply, map_neg, mul_neg, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, twistFrob_add, twistFrob_neg, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem twistFrob_sub {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ)
     (w w' : Fin n → T.RobbaExt τ) :
@@ -136,7 +136,7 @@ theorem twistFrob_sub {τ : Set.Ioo (0 : ℝ) 1} (hτ : ((F.powRadius τ : Set.I
   rw [sub_eq_add_neg, twistFrob_add, twistFrob_neg, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistFrob, map_mul, map_pow, map_sum, res_piInvE, res_res, ← F.res_extFrob]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem twistFrob_res {τ τ' : Set.Ioo (0 : ℝ) 1} (h : (τ' : ℝ) ≤ τ)
     (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ)
@@ -147,7 +147,7 @@ theorem twistFrob_res {τ τ' : Set.Ioo (0 : ℝ) 1} (h : (τ' : ℝ) ≤ τ)
   simp only [twistFrob, map_mul, map_pow, map_sum, res_piInvE, res_res, ← F.res_extFrob]
 
 /- English proof (translation)
-Rewrite using `[twistFrob, extNorm_mul, extNorm_pow', extNorm_piInvE, coe_powRad, inv_pow]`. Use `mul_le_mul_of_nonneg_left (extNorm_sum_le _ _ _ (mul_nonneg hK hM) fun j _ => ?_) (inv_nonneg.2 (pow_nonneg (pow_nonneg r.2.1.le _) _))` and prove the remaining obligations. Rewrite using `[extNorm_mul, extNorm_res, extNorm_extFrob]`. Conclude with `mul_le_mul (hA i j) (hw j) (pow_nonneg (T.extNorm_nonneg _ _) _) hK`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_twistFrob_le {τ : Set.Ioo (0 : ℝ) 1}
     (hτ : ((F.powRadius τ : Set.Ioo (0 : ℝ) 1) : ℝ) ≤ ρ) (w : Fin n → T.RobbaExt τ)
@@ -167,16 +167,16 @@ def untwist (A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (N : ℕ) (w : Fin n �
   fun i => F.extFrobSymm ρ (T.piE ρ ^ N * (A'.mulVec w) i)
 
 /- English proof (translation)
-The claim follows from `Real.self_le_rpow_of_le_one τ.2.1.le τ.2.2.le (inv_le_one_of_one_le₀ (by exact_mod_cast Nat.one_le_iff_ne_zero.2 F.q_pos.ne'))`.
+A detailed English derivation is pending.
 -/
 theorem le_rootRadius (τ : Set.Ioo (0 : ℝ) 1) : (τ : ℝ) ≤ F.rootRadius τ :=
   Real.self_le_rpow_of_le_one τ.2.1.le τ.2.2.le
     (inv_le_one_of_one_le₀ (by exact_mod_cast Nat.one_le_iff_ne_zero.2 F.q_pos.ne'))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [twistFrob, untwist]`. Establish `h1 : ∀ j, F.extFrob ρ (T.res (F.le_rootRadius ρ) (F.extFrobSymm ρ (T.piE ρ ^ N * (A'.mulVec w) j))) = T.res (F.powRadius_le_self ρ) (T.piE ρ ^ N * (A'.mulVec w) j)` using `fun j => F.extFrob_res_extFrobSymm _ _ _`. Simplify using `only [h1, ← map_mul, ← map_sum]`. Establish `h2 : ∑ j, A i j * (T.piE ρ ^ N * (A'.mulVec w) j) = T.piE ρ ^ N * w i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∑ j, A i j * (T.piE ρ ^ N * (A'.mulVec w) j) = T.piE ρ ^ N * (A.mulVec (A'.mulVec w)) i`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations. Rewrite using `[this, Matrix.mulVec_mulVec, hAA, Matrix.one_mulVec]`. Rewrite using `[h2, map_mul, map_pow, res_piE, ← mul_assoc, ← mul_pow, mul_comm (T.piInvE _), piE_mul_piInvE, one_pow, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistFrob_res_untwist (A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1)
     (w : Fin n → T.RobbaExt ρ) :
@@ -200,7 +200,7 @@ theorem twistFrob_res_untwist (A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA
     piE_mul_piInvE, one_pow, one_mul]
 
 /- English proof (translation)
-Rewrite using `[untwist, extNorm_extFrobSymm, extNorm_mul, extNorm_pow', extNorm_piE, coe_powRadRoot]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `mul_le_mul_of_nonneg_left (extNorm_sum_le _ _ _ (mul_nonneg hK hM) fun j _ => ?_) (pow_nonneg (pow_nonneg s.2.1.le _) _)` and prove the remaining obligations. Rewrite using `[extNorm_mul]`. Conclude with `mul_le_mul (hA i j) (hw j) (T.extNorm_nonneg _ _) hK`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extNorm_untwist_pow_le (A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (w : Fin n → T.RobbaExt ρ)
     (s : Set.Ioc (0 : ℝ) (F.rootRadius ρ)) {K M : ℝ} (hK : 0 ≤ K) (hM : 0 ≤ M)
@@ -231,7 +231,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
   [CharP L p] [PerfectRing L p] {Γ : Type*} [CommRing Γ] {T : TeichLift p L Γ}
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, q = k + 1` from `⟨q - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_pow_mul_pow_pred_le {c S θ : ℝ} {q : ℕ} (hq : 1 ≤ q) (hθ : 0 ≤ θ) (hθc : θ ≤ c)
     (hS : 0 ≤ S) : c * S ^ q * θ ^ (q - 1) ≤ (c * S) ^ q := by
@@ -256,45 +256,39 @@ def radPow2 (ρ : Set.Ioo (0 : ℝ) 1) : Set.Ioc (0 : ℝ) ρ :=
 variable {F}
 
 /- English proof (translation)
-Establish `hq2 : 2 ≤ p ^ F.a` using `F.two_le_q ha`. Establish `hq0 : p ^ F.a ≠ 0` using `by omega`. Establish `hρ0 : (0 : ℝ) < ρ` using `ρ.2.1`. Establish `hρ1 : (ρ : ℝ) < 1` using `ρ.2.2`. Establish `hσ0 : (0 : ℝ) < F.powRadius ρ` using `(F.powRadius ρ).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ1 : (F.powRadius ρ : ℝ) < 1` using `(F.powRadius ρ).2.2`. Establish `hσρ : (F.powRadius ρ : ℝ) ≤ ρ` using `F.powRadius_le_self ρ`. Establish `hρr : (ρ : ℝ) ≤ F.rootRadius ρ` using `F.le_rootRadius ρ`. Establish `hC0 : 0 < C` using `zero_lt_one.trans_le hC`. Establish `hκ0 : 0 < (F.powRadius ρ : ℝ) ^ N` using `pow_pos hσ0 N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ1 : (F.powRadius ρ : ℝ) ^ N ≤ 1` using `pow_le_one₀ hσ0.le hσ1.le`. Establish `hlam0 : 0 ≤ (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))` using `pow_nonneg hσ0.le _`. Use `set θ : ℝ := ((F.powRadius ρ : ℝ) ^ N / (2 * C)) ^ (((p ^ F.a - 1 : ℕ) : ℝ)⁻¹) with hθdef`. Establish `h2C : 0 < 2 * C` using `mul_pos two_pos hC0`. Establish `hθ0 : 0 < θ` using `Real.rpow_pos_of_pos (div_pos hκ0 h2C) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hθq : θ ^ (p ^ F.a - 1) = (F.powRadius ρ : ℝ) ^ N / (2 * C)` using `Real.rpow_inv_natCast_pow (div_pos hκ0 h2C).le (by omega)`. Establish `hθC : θ ^ (p ^ F.a - 1) ≤ C`. Rewrite using `[hθq, div_le_iff₀ h2C]`. Use the polynomial consequences of the given equalities and inequalities. Use `set ys : Fin n → T.B := fun i => T.smallPart θ (y i) with hysdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set yb : Fin n → T.B := fun i => T.bigPart θ (y i) with hybdef`. Establish `hys : ∀ i, T.ConvAll (ys i)` using `fun i r h0 h1 => (convergesAt_of_norm_le h0 (T.norm_coeffB_smallPart_le hθ0 _) (hy i r h0 h1)).1`. Establish `hyb : ∀ i, T.ConvAll (yb i)` using `fun i r h0 h1 => (convergesAt_of_norm_le h0 (T.norm_coeffB_bigPart_le θ _) (hy i r h0 h1)).1`. Establish `hysσ : ∀ i, gaussNorm (T.coeffB (ys i)) (F.powRadius ρ) ≤ Y` using `fun i => (convergesAt_of_norm_le hσ0 (T.norm_coeffB_smallPart_le hθ0 _) (hy i _ hσ0 hσ1)).2.trans (hY i)`. Establish `hybσ : ∀ i, gaussNorm (T.coeffB (yb i)) (F.powRadius ρ) ≤ Y` using `fun i => (convergesAt_of_norm_le hσ0 (T.norm_coeffB_bigPart_le θ _) (hy i _ hσ0 hσ1)).2.trans (hY i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS1 : ∀ i, T.extNorm ρ (topRad ρ) (T.ofAll (ys i) (hys i) ρ) ^ p ^ F.a ≤ θ ^ (p ^ F.a - 1) * Y` using `fun i => by`. Rewrite using `[extNorm_ofAll]`. Use `(T.gaussNorm_pow_le hθ0.le (fun k => (T.norm_coeffB_smallPart_lt hθ0 _ k).le) (by omega) hρ0 hρ1).trans (mul_le_mul_of_nonneg_left (hysσ i) (by positivity))` and prove the remaining obligations. Establish `hB1 : ∀ i, gaussNorm (T.coeffB (yb i)) ((F.powRadius (F.powRadius ρ) : ℝ)) ≤ Y ^ p ^ F.a / θ ^ (p ^ F.a - 1)` using `fun i => gaussNorm_le fun k => by`. Break down `T.coeffB_bigPart_eq_zero_or θ (y i) k with h | h` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, norm_zero, zero_mul]`. Conclude with `div_nonneg (pow_nonneg hY0 _) (pow_nonneg hθ0.le _)`. Establish `hw : ‖T.coeffB (yb i) k‖ * (F.powRadius ρ : ℝ) ^ k ≤ Y` using `(mul_le_mul_of_nonneg_right (T.norm_coeffB_bigPart_le θ _ k) (zpow_pos hσ0 k).le).trans (((hy i _ hσ0 hσ1).le_gaussNorm k).trans (hY i))`. Rewrite using `[le_div_iff₀ (pow_pos hθ0 _)]`. Use `show ‖T.coeffB (yb i) k‖ * ((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ k * θ ^ (p ^ F.a - 1) ≤ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← zpow_pow_comm]`. Conclude with `(mul_pow_mul_pow_pred_le (by omega) hθ0.le h (zpow_pos hσ0 k).le).trans (pow_le_pow_left₀ (mul_nonneg (norm_nonneg _) (zpow_pos hσ0 k).le) hw _)`. Use `set w : Fin n → T.RobbaExt ρ := fun j => T.ofAll (yb j) (hyb j) ρ with hwdef`. Use `set z : Fin n → T.RobbaExt ρ := fun i => -T.ofAll (ys i) (hys i) ρ + T.res hρr (F.untwist A' N w i) with hzdef`. Set `sσ : Set.Ioc (0 : ℝ) (F.rootRadius ρ)` to `⟨F.powRadius ρ, hσ0, hσρ.trans hρr⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `sρ : Set.Ioc (0 : ℝ) (F.rootRadius ρ)` to `⟨ρ, hρ0, hρr⟩`. Establish `hBσ : ∀ i, T.extNorm (F.rootRadius ρ) sσ (F.untwist A' N w i) ≤ Y / 2` using `fun i => by`. Establish `h1` using `extNorm_untwist_pow_le N A' w sσ hC0.le (div_nonneg (pow_nonneg hY0 _) (pow_nonneg hθ0.le _)) (fun i j => hA'σ2 i j) (fun j => by rw [extNorm_ofAll]; exact hB1 j) i`. Establish `hlam : ((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ N = (F.powRadius ρ : ℝ) ^ N * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))`. Rewrite using `[← pow_mul, ← pow_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Nat.mul_sub_one, Nat.add_sub_cancel' (Nat.le_mul_of_pos_right N (by omega)), mul_comm]`. Establish `h2 : ((F.powRadius ρ : ℝ) ^ p ^ F.a) ^ N * (C * (Y ^ p ^ F.a / θ ^ (p ^ F.a - 1))) ≤ (Y / 2) ^ p ^ F.a`. Rewrite using `[hlam, hθq, div_pow]`. Establish `h8 : 2 * 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1)) ≤ 1`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[le_div_iff₀ (by positivity)]`. Establish `e : (F.powRadius ρ : ℝ) ^ N * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1)) * (C * (Y ^ p ^ F.a / ((F.powRadius ρ : ℝ) ^ N / (2 * C)))) * 2 ^ p ^ F.a = (2 * 2 ^ p ^ F.a * C ^ 2 * (F.powRadius ρ : ℝ) ^ (N * (p ^ F.a - 1))) * Y ^ p ^ F.a`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e]`. Conclude with `(mul_le_mul_of_nonneg_right h8 (pow_nonneg hY0 _)).trans (one_mul _).le`. Conclude with `(pow_le_pow_iff_left₀ (T.extNorm_nonneg _ _) (by linarith) hq0).1 (h1.trans h2)`. Establish `hBρ : ∀ i, T.extNorm (F.rootRadius ρ) sρ (F.untwist A' N w i) ^ p ^ F.a ≤ C * Y` using `fun i => by`. Establish `h1` using `extNorm_untwist_pow_le N A' w sρ hC0.le hY0 (fun i j => hA'σ i j) (fun j => by rw [extNorm_ofAll]; exact hybσ j) i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `h1.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨z, fun i => ?_, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hz : z = -(fun j => T.ofAll (ys j) (hys j) ρ) + (fun j => T.res hρr (F.untwist A' N w j))`. Use function extensionality and compare the values at `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hzdef, Pi.add_apply, Pi.neg_apply]`. Establish `e3 : F.twistFrob A N ρ (F.powRadius_le_self ρ) z i = -F.twistFrob A N ρ (F.powRadius_le_self ρ) (fun j => T.ofAll (ys j) (hys j) ρ) i + T.ofAll (yb i) (hyb i) (F.powRadius ρ)`. Rewrite using `[hz, twistFrob_add, twistFrob_neg, twistFrob_res_untwist A N A' hAA]`. Simplify using `only [Pi.add_apply, Pi.neg_apply, hwdef, res_ofAll]`. Establish `e1 : T.res (F.powRadius_le_self ρ) (z i) = -T.ofAll (ys i) (hys i) (F.powRadius ρ) + T.res (hσρ.trans hρr) (F.untwist A' N w i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hzdef, map_add, map_neg, res_ofAll, res_res]`. Establish `e2 : T.ofAll (y i) (hy i) (F.powRadius ρ) = T.ofAll (ys i) (hys i) (F.powRadius ρ) + T.ofAll (yb i) (hyb i) (F.powRadius ρ)`. Rewrite using `[← ofAll_add]`. Conclude with `ofAll_congr _ _ (T.smallPart_add_bigPart θ (y i)).symm _`. Rewrite using `[e3, e1, e2]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : -F.twistFrob A N ρ (F.powRadius_le_self ρ) (fun j => T.ofAll (ys j) (hys j) ρ) i + T.ofAll (yb i) (hyb i) (F.powRadius ρ) - (-T.ofAll (ys i) (hys i) (F.powRadius ρ) + T.res (hσρ.trans hρr) (F.untwist A' N w i)) - (T.ofAll (ys i) (hys i) (F.powRadius ρ) + T.ofAll (yb i) (hyb i …` using `by ring`. Rewrite using `[e]`. Use `(T.extNorm_add_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg]`. Establish `h1` using `extNorm_twistFrob_le A N (F.powRadius_le_self ρ) (fun j => T.ofAll (ys j) (hys j) ρ) (topRad ρ) hC0.le (by positivity) (fun i j => hAσ i j) hS1 i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Use `show (((ρ : ℝ) ^ p ^ F.a) ^ N)⁻¹ * (C * (θ ^ (p ^ F.a - 1) * Y)) = Y / 2`. Rewrite using `[hθq]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
-
-Rewrite using `[extNorm_neg, extNorm_res]`. Conclude with `hBσ i`. Simplify using `only [hzdef]`. Use `(T.extNorm_add_le _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg, extNorm_ofAll]`.
-
-Conclude with `hysσ i`. Rewrite using `[extNorm_res]; exact (hBσ i).trans (by linarith)`. Simplify using `only [hzdef]`. Use `(pow_le_pow_left₀ (T.extNorm_nonneg _ _) (T.extNorm_add_le _ _ _) _).trans (max_pow_le (T.extNorm_nonneg _ _) (T.extNorm_nonneg _ _) ?_ ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg]`.
-
-Conclude with `(hS1 i).trans (mul_le_mul_of_nonneg_right hθC hY0)`. Rewrite using `[extNorm_res]`. Conclude with `hBρ i`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_solve_approx (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (N : ℕ) {C : ℝ} (hC : 1 ≤ C)
@@ -462,11 +456,11 @@ namespace TeichFrob
 variable {F : T.TeichFrob} {n : ℕ}
 
 /- English proof (translation)
-Use `choose d hd hde using fun i => exists_approx_convAll (e i) (topRad (F.powRadius ρ)) (half_pos hY)`. Establish `hdY : ∀ i, gaussNorm (T.coeffB (d i)) (F.powRadius ρ) ≤ Y` using `fun i => by`. Establish `h` using `extNorm_ofAll (hd i) (topRad (F.powRadius ρ))`. Express the relevant statement in the definitionally equal form `T.extNorm _ _ _ = gaussNorm (T.coeffB (d i)) (F.powRadius ρ) at h`. Rewrite using `[← h, show T.ofAll (d i) (hd i) (F.powRadius ρ) = e i + -(e i - T.ofAll (d i) (hd i) _) by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(T.extNorm_add_le _ _ _).trans (max_le (he i) (by`. Rewrite using `[extNorm_neg]; exact (hde i _ le_rfl).trans (by linarith)))`. Take `⟨z, h1, h2, h3⟩` from `exists_solve_approx ha A A' hAA N hC hAσ hA'σ hA'σ2 hN d hd hY.le hdY`. Use `⟨z, fun i => ?_, h2, h3⟩` and prove the remaining obligations. Establish `e1 : e i - (F.twistFrob A N ρ (F.powRadius_le_self ρ) z i - T.res (F.powRadius_le_self ρ) (z i)) = (e i - T.ofAll (d i) (hd i) _) + -(F.twistFrob A N ρ (F.powRadius_le_self ρ) z i - T.res (F.powRadius_le_self ρ) (z i) - T.ofAll (d i) (hd i) _)` using `by ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Use `(T.extNorm_add_le _ _ _).trans (max_le (hde i _ le_rfl) ?_)` and prove the remaining obligations. Rewrite using `[extNorm_neg]`. Conclude with `h1 i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_solve (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (N : ℕ) {C : ℝ} (hC : 1 ≤ C)
@@ -498,15 +492,13 @@ theorem exists_solve (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
   rw [extNorm_neg]; exact h1 i
 
 /- English proof (translation)
-Establish `step : ∀ (e : Fin n → T.RobbaExt (F.powRadius ρ)) (Y : ℝ), ∃ z : Fin n → T.RobbaExt ρ, 0 < Y → (∀ i, T.extNorm (F.powRadius ρ) (topRad _) (e i) ≤ Y) → (∀ i, T.extNorm (F.powRadius ρ) (topRad _) (e i - (F.twistFrob A N ρ (F.powRadius_le_self ρ) z i - T.res (F.powRadius_le_self ρ) …`. Introduce `e Y`. Distinguish the cases in `h : 0 < Y ∧ ∀ i, T.extNorm (F.powRadius ρ) (topRad _) (e i) ≤ Y`. Take `⟨z, hz⟩` from `exists_solve ha A A' hAA N hC hAσ hA'σ hA'σ2 hN e h.1 h.2`. Conclude with `⟨z, fun _ _ => hz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Use `choose g hg using step`. Set `D : (Fin n → T.RobbaExt ρ) → Fin n → T.RobbaExt (F.powRadius ρ)` to `fun z => F.twistFrob A N ρ (F.powRadius_le_self ρ) z - fun i => T.res (F.powRadius_le_self ρ) (z i)`. Set `e : ℕ → Fin n → T.RobbaExt (F.powRadius ρ)` to `fun j => Nat.rec e0 (fun j ej => ej - D (g ej (E / 2 ^ j))) j`. Establish `he : ∀ j i, T.extNorm (F.powRadius ρ) (topRad _) (e j i) ≤ E / 2 ^ j`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `i`. Use `show T.extNorm _ _ (e0 i) ≤ E / 2 ^ 0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using he0 i`. Consider the case `succ j ih`. Introduce `i`. Use `(hg (e j) (E / 2 ^ j) (by positivity) ih).1 i` as an intermediate fact. Rewrite using `[pow_succ, ← div_div]`.
-
-Conclude with `this`. Use `⟨e, fun j => g (e j) (E / 2 ^ j), rfl, fun j => rfl, he, fun j i => ?_, fun j i => ?_⟩` and prove the remaining obligations. Conclude with `(hg (e j) (E / 2 ^ j) (by positivity) (he j)).2.1 i`. Conclude with `(hg (e j) (E / 2 ^ j) (by positivity) (he j)).2.2 i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_solve_seq (ha : 0 < F.a) {ρ : Set.Ioo (0 : ℝ) 1}
     (A A' : Matrix (Fin n) (Fin n) (T.RobbaExt ρ)) (hAA : A * A' = 1) (N : ℕ) {C : ℝ} (hC : 1 ≤ C)

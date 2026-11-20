@@ -25,7 +25,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose O hF hO using fun i => GlobalTheory.RefPins.exists_pins_ref T R κ v₀ hR hv ht hpb hG i (hV i)`. Use `⟨fun i => { O i with lev := lev i }, fun i => ⟨hF i, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `hact` using `fun c => GlobalTheory.LevelActFromLevel.actLev_of_levIs D G Pl0 T0 A T R hR.lev ht.laws hpb i c (lev i) (hlev i)`. Establish `h` using `hO i`. Conclude with `⟨⟨h.lift.field, h.lift.std, h.lift.v0, h.lift.c0, hlev i⟩, h.tuple, ⟨hact _, hact _⟩, h.bad, h.reps, h.ep, h.io, h.w, h.cov, h.cxi, h.model₂⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_omPins_lev (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F)
     (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec)
@@ -55,16 +55,16 @@ def LevOver (i : Fin D.R.m) (Pg : Finset (Formalism.L2.DIV.Pl D.host.E)) (βW : 
           (finVec (Wc D i) ((LinearMap.funLeft (𝓞 D.host.E) D.host.E (Fin.cast (rank_Wc i)) ∘ₗ iota ((i : ℕ) + 1)) a)) = l.M • w
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem levOver_iff (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (i : Fin D.R.m)
     (lev : G → (T.Q.Dw ((i : ℕ) + 1)).La →ₗ[𝓞 D.host.E] (T.Q.Dw ((i : ℕ) + 1)).La) :
     LevOver D i R.Pg R.βW R.eG T.Q.l T.Q.Dw T.iota lev ↔ LevIs R i (iotaW T i) T.Q.l.M (Mfr T.Q.l) lev := Iff.rfl
 
 /- English proof (translation)
-Substitute `hS` using the available equality. Consider the cases of `hP`. Consider the cases of `hβ`. Consider the cases of `he`. Consider the cases of `hH`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hl`. Consider the cases of `hD`. Consider the cases of `hι`. Conclude with `⟨lev₁, h, fun i i' e => by obtain rfl := Fin.ext e; exact HEq.rfl⟩`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem levOver_cast {S₁ S₂ : Finset (HeightOneSpectrum (𝓞 D.host.E))} {Pg₁ Pg₂ : Finset (Formalism.L2.DIV.Pl D.host.E)}
     {β₁ β₂ : ∀ i, GL (Fin (Wc D i).rank) (EAf D)}

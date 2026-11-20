@@ -5,13 +5,13 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `R S V _ _ _ _ _ _ _ _`. Establish `hinj : Function.Injective (IsScalarTower.toAlgHom R V (FractionRing V))` using `IsFractionRing.injective V (FractionRing V)`. Prove the components needed by the constructor for the conclusion. Introduce `z z' h`. Use extensionality with `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Apply `hinj` to reduce the goal to its premises. Simplify `AlgHom.congr_fun h s` using `only [AlgHom.comp_apply]`. Introduce `φ`. Establish `hmem : ∀ s, φ s ∈ (IsScalarTower.toAlgHom R V (FractionRing V)).range`. Introduce `s`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : IsIntegral R (φ s)` using `(Algebra.IsIntegral.isIntegral s).map φ`. Establish `h2 : IsIntegral V (φ s)` using `h1.tower_top`. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`. Conclude with `(AlgHom.mem_range _).2 ⟨v, hv⟩`. Set `e` to `AlgEquiv.ofInjective (IsScalarTower.toAlgHom R V (FractionRing V)) hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e.symm.toAlgHom.comp (φ.codRestrict _ hmem), ?_⟩` and prove the remaining obligations. Use extensionality with `s`. Establish `h` using `e.apply_symm_apply ⟨φ s, hmem s⟩`. Conclude with `congrArg Subtype.val h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.valPts_of :
     ValPts := by

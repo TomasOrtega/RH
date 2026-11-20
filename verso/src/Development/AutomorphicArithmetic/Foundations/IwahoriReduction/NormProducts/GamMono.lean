@@ -6,7 +6,7 @@ open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.Kd.K4 Polynomial
 open scoped Matrix MatrixGroups
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `only [← ZMod.intCast_zmod_eq_zero_iff_dvd, Int.cast_sub, Int.cast_one, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem one_eq_zero_of_products_vanish (N : ℕ) (γ : SL(2, ℤ)) :
     γ ∈ CongruenceSubgroup.Gamma N ↔
@@ -15,7 +15,7 @@ private theorem one_eq_zero_of_products_vanish (N : ℕ) (γ : SL(2, ℤ)) :
   simp only [← ZMod.intCast_zmod_eq_zero_iff_dvd, Int.cast_sub, Int.cast_one, sub_eq_zero]
 
 /- English proof (translation)
-Establish `h' : (N : ℤ) ∣ (P : ℤ)` using `Int.natCast_dvd_natCast.2 h`. Rewrite `hγ`, the goal using `[one_eq_zero_of_products_vanish]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`. Conclude with `⟨h'.trans h1, h'.trans h2, h'.trans h3, h'.trans h4⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem mem_gamma_of_dvd_of_mem_gamma {N P : ℕ} (h : N ∣ P) (γ : SL(2, ℤ)) (hγ : γ ∈ CongruenceSubgroup.Gamma P) :
     γ ∈ CongruenceSubgroup.Gamma N := by
@@ -25,25 +25,19 @@ private theorem mem_gamma_of_dvd_of_mem_gamma {N P : ℕ} (h : N ∣ P) (γ : SL
   exact ⟨h'.trans h1, h'.trans h2, h'.trans h3, h'.trans h4⟩
 
 /- English proof (translation)
-Take `⟨s, r, hsr⟩` from `Nat.isCoprime_iff_coprime.2 hAR`. Use `set P : ℤ := (A : ℤ) * R with hP`. Use `set c : ℤ := s * A - r * R with hcdef`. Use `set j : ℤ := -4 * s * r with hj`. Establish `hc : c ^ 2 = 1 + P * j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hcdef, hP, hj]`. Take the linear combination `(s * A + r * R + 1) * hsr`. Establish `hdet : Matrix.det !![c, P; -P * j ^ 2, c * (1 - P * j)] = 1`. Rewrite using `[Matrix.det_fin_two_of]`. Take the linear combination `(1 - P * j) * hc`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `z : SL(2, ℤ)` to `⟨!![c, P; -P * j ^ 2, c * (1 - P * j)], hdet⟩`. Use `⟨z, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[one_eq_zero_of_products_vanish]`. Use `⟨⟨-2 * s, ?_⟩, ⟨-(R : ℤ), ?_⟩, ⟨R * j ^ 2, ?_⟩, ⟨-2 * s + c * R * j, ?_⟩⟩` and prove the remaining obligations. Use `show -c - 1 = (A : ℤ) * (-2 * s)`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hsr - hcdef`. Use `show -P = (A : ℤ) * (-(R : ℤ))`. Take the linear combination `-hP`. Use `show -(-P * j ^ 2) = (A : ℤ) * (R * j ^ 2)`. Take the linear combination `j ^ 2 * hP`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show -(c * (1 - P * j)) - 1 = (A : ℤ) * (-2 * s + c * R * j)`. Take the linear combination `hsr - hcdef + c * j * hP`. Rewrite using `[one_eq_zero_of_products_vanish]`. Use `⟨⟨-2 * r, ?_⟩, ⟨(A : ℤ), ?_⟩, ⟨-(A : ℤ) * j ^ 2, ?_⟩, ⟨-2 * r - c * A * j, ?_⟩⟩` and prove the remaining obligations. Use `show c - 1 = (R : ℤ) * (-2 * r)`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hcdef + hsr`. Use `show P = (R : ℤ) * A`. Take the linear combination `hP`. Use `show -P * j ^ 2 = (R : ℤ) * (-(A : ℤ) * j ^ 2)`. Take the linear combination `-j ^ 2 * hP`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show c * (1 - P * j) - 1 = (R : ℤ) * (-2 * r - c * A * j)`. Take the linear combination `hcdef + hsr - c * j * hP`. Introduce `γ set π : SL(2, ℤ) →* SL(2, ZMod (A * R)) := Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod (A * R))) with hπ`. Establish `hz : ((π z : SL(2, ZMod (A * R))) : Matrix (Fin 2) (Fin 2) (ZMod (A * R))) = (c : ZMod (A * R)) • (1 : Matrix (Fin 2) (Fin 2) (ZMod (A * R)))`. Establish `hP0 : ((P : ℤ) : ZMod (A * R)) = 0`.
-
-Rewrite using `[hP]`. Use `push_cast`. Conclude with `ZMod.natCast_self (A * R)` after adjusting the coercions. Apply the tactic sequence `have hentry : ∀ i k, ((π z : SL(2, ZMod (A * R))) : Matrix (Fin 2) (Fin 2) (ZMod (A * R))) i k = (((z : Matrix (Fin 2) (Fin 2) ℤ) i k : ℤ) : ZMod (A * R)) := fun _ _ => rfl`. Use extensionality with `i k`.
-
-Rewrite using `[hentry]`. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> simp [z, hP0]`. Establish `hcomm : ∀ g : SL(2, ZMod (A * R)), g * π z = π z * g`. Introduce `g`. Use `ext1`.
-
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, hz, Matrix.mul_smul, Matrix.smul_mul, mul_one, one_mul]`. Use `show γ * z * γ⁻¹ * z⁻¹ ∈ π.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, map_mul, map_inv, map_inv, hcomm, mul_assoc (π z), mul_inv_cancel (π γ), mul_one, mul_inv_cancel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_sl2_neg_mem_gamma_commutator_mem_gamma_mul (A R : ℕ) (hAR : Nat.Coprime A R) :
     ∃ z : SL(2, ℤ), -z ∈ CongruenceSubgroup.Gamma A ∧ z ∈ CongruenceSubgroup.Gamma R ∧
@@ -100,23 +94,21 @@ private theorem exists_sl2_neg_mem_gamma_commutator_mem_gamma_mul (A R : ℕ) (h
       mul_inv_cancel (π γ), mul_one, mul_inv_cancel]
 
 /- English proof (translation)
-Use `set S := hfin.toFinset with hS`. Establish `memS : ∀ s, s ∈ S ↔ ∃ p, res p = s` using `fun s => by`. Rewrite using `[hS, Set.Finite.mem_toFinset, Set.mem_range]`. Set `tt : (E →* K) → K` to `fun s => if h : ∃ p, res p = s then t h.choose else 0`. Establish `htt : ∀ q, tt (res q) = t q` using `fun q => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : ∃ p, res p = res q` using `⟨q, rfl⟩`. Simplify using `only [tt, dif_pos h]`. Conclude with `hwd _ _ h.choose_spec`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : E, ∑ s ∈ S, tt s * s y ≠ 0 := by`. Assume the negation of the conclusion as `hcon`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `push_neg at hcon`. Establish `hli` using `linearIndependent_iff'.1 (linearIndependent_monoidHom E K) S (fun s => tt s) (by`. Use function extensionality and compare the values at `y`. Simplify `hcon y)` using `[Finset.sum_apply, smul_eq_mul]`. Establish `h1` using `hli (res 1) ((memS _).2 ⟨1, rfl⟩)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `h1` using `[htt]`. Conclude with `ht0 1 h1`. Establish `hres' : ∀ p q, (act q).toMonoidHom.comp (res p) = res (p * q)` using `fun p q => by`. Use extensionality with `x`. Simplify using `[hres]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ q, act q (∑ s ∈ S, tt s * s y) = (t q)⁻¹ * ∑ s ∈ S, tt s * s y`. Introduce `q`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_nbij' (fun s => (act q).toMonoidHom.comp s) (fun s => (act q⁻¹).toMonoidHom.comp s) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨p, rfl⟩` from `(memS s).1 hs`. Conclude with `(memS _).2 ⟨p * q, (hres' p q).symm⟩`. Introduce `s hs`. Take `⟨p, rfl⟩` from `(memS s).1 hs`. Conclude with `(memS _).2 ⟨p * q⁻¹, (hres' p q⁻¹).symm⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs`. Take `⟨p, rfl⟩` from `(memS s).1 hs`. Rewrite using `[hres', hres', mul_inv_cancel_right]`. Introduce `s hs`. Take `⟨p, rfl⟩` from `(memS s).1 hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hres', hres', inv_mul_cancel_right]`. Introduce `s hs`. Take `⟨p, rfl⟩` from `(memS s).1 hs`. Rewrite using `[hres', htt, htt, map_mul, hcoc]`. Establish `: ((act q).toMonoidHom.comp (res p)) y = act q (res p y)` using `rfl`.
-
-Rewrite `this` using `[← hres]`. Rewrite using `[← hres]`. Clear denominators, using `[ht0 q]` for the nonvanishing conditions. Use `⟨(∑ s ∈ S, tt s * s y)⁻¹, inv_ne_zero hy, fun q => ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, key, mul_inv, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_ne_zero_act_eq_mul_of_cocycle {K : Type} [Field K] {Q : Type} [Group Q] (E : Type) [Monoid E]
     (act : Q → K ≃+* K) (res : Q → (E →* K))
@@ -174,9 +166,7 @@ private theorem exists_ne_zero_act_eq_mul_of_cocycle {K : Type} [Field K] {Q : T
   rw [map_inv₀, key, mul_inv, inv_inv]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hint : IsIntegral Ω r` using `IsIntegral.of_pow hm (by rw [hr]; exact isIntegral_one)`. Establish `hdeg : (minpoly Ω r).natDegree = 1` using `Polynomial.natDegree_eq_of_degree_eq_some (IsAlgClosed.degree_eq_one_of_irreducible Ω (minpoly.irreducible hint))`. Take `⟨c, hc⟩` from `minpoly.natDegree_eq_one_iff.1 hdeg`. Rewrite using `[← hc]`.
-
-Conclude with `(X.sl g).commutes c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sl_apply_eq_of_pow_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ}
     (X : Tower Ω ε) (g : GQ) (m : ℕ) (hm : 0 < m) (r : X.K) (hr : r ^ m = 1) :
@@ -191,65 +181,55 @@ private theorem sl_apply_eq_of_pow_eq_one {Ω : Type} [Field Ω] [Algebra ℚ Ω
   exact (X.sl g).commutes c
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X H M L m a hM hm hL hMH _hneg hInv v N hN hLN`. Establish `hmul : ∀ (γ δ : SL(2, ℤ)) (f : X.K), X.sl (ofSL (γ * δ)) f = X.sl (ofSL δ) (X.sl (ofSL γ) f)`. Introduce `γ δ f`. Rewrite using `[map_mul]`. Conclude with `X.sl_mul _ _ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : (a : X.K) ≠ 0` using `a.ne_zero`. Take `⟨Ma, hMa, hfixa⟩` from `X.level (a : X.K)`. Use `set W0 := M * Ma with hW0`. Establish `hW0pos : 0 < W0` using `Nat.mul_pos hM hMa`. Use `haveI : NeZero W0 := ⟨hW0pos.ne'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set π0 : SL(2, ℤ) →* SL(2, ZMod W0) := Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod W0)) with hπ0`. Establish `hrep : ∀ w : SL(2, ZMod W0), ∃ g : SL(2, ℤ), (∃ γ ∈ H, π0 γ = w) → (g ∈ H ∧ π0 g = w)`. Introduce `w`. Distinguish the cases in `h : ∃ γ ∈ H, π0 γ = w`. Take `⟨γ, hγ, hw⟩` from `h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨γ, fun _ => ⟨hγ, hw⟩⟩`. Conclude with `⟨1, fun h' => absurd h' h⟩`. Use `choose rep hrep using hrep`. Establish `hu : ∀ w : SL(2, ZMod W0), ∃ u : X.K, u ≠ 0 ∧ (rep w ∈ H → X.sl (ofSL (rep w)) (a : X.K) = (a : X.K) * u ^ m)`. Introduce `w`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Distinguish the cases in `h : rep w ∈ H`. Take `⟨u, hu⟩` from `hInv _ h`. Conclude with `⟨u, u.ne_zero, fun _ => hu⟩`. Conclude with `⟨1, one_ne_zero, fun h' => absurd h' h⟩`. Use `choose uq huq0 huq using hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlev : ∀ w : SL(2, ZMod W0), ∃ Lw : ℕ, 0 < Lw ∧ ∀ γ ∈ CongruenceSubgroup.Gamma Lw, X.sl (ofSL γ) (uq w) = uq w` using `fun w => X.level (uq w)`. Use `choose Lw hLw0 hLw using hlev`. Use `set W := W0 * ∏ w, Lw w with hWdef`. Establish `hWpos : 0 < W` using `Nat.mul_pos hW0pos (Finset.prod_pos fun w _ => hLw0 w)`. Establish `hW0W : W0 ∣ W` using `Dvd.intro _ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLwW : ∀ w, Lw w ∣ W` using `fun w => (Finset.dvd_prod_of_mem Lw (Finset.mem_univ w)).trans (Dvd.intro_left _ rfl)`. Establish `hfixW : ∀ c ∈ CongruenceSubgroup.Gamma W, X.sl (ofSL c) (a : X.K) = a` using `fun c hc => hfixa c (mem_gamma_of_dvd_of_mem_gamma ((Dvd.intro_left _ rfl : Ma ∣ W0).trans hW0W) c hc)`. Establish `hWH : ∀ c ∈ CongruenceSubgroup.Gamma W, c ∈ H` using `fun c hc => hMH (mem_gamma_of_dvd_of_mem_gamma ((Dvd.intro _ rfl : M ∣ W0).trans hW0W) c hc)`. Establish `hUfix : ∀ w, ∀ c ∈ CongruenceSubgroup.Gamma W, X.sl (ofSL c) (uq w) = uq w` using `fun w c hc => hLw w c (mem_gamma_of_dvd_of_mem_gamma (hLwW w) c hc)`. Establish `hU : ∀ γ ∈ H, X.sl (ofSL γ) (a : X.K) = (a : X.K) * uq (π0 γ) ^ m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `γ hγ`. Take `⟨hr1, hr2⟩` from `hrep (π0 γ) ⟨γ, hγ, rfl⟩`. Establish `hc : rep (π0 γ) * γ⁻¹ ∈ CongruenceSubgroup.Gamma W0` using `by show rep (π0 γ) * γ⁻¹ ∈ π0.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, hr2, mul_inv_cancel]`. Rewrite using `[← huq _ hr1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: rep (π0 γ) = (rep (π0 γ) * γ⁻¹) * γ` using `by group`. Rewrite using `[this, hmul, hfixa _ (mem_gamma_of_dvd_of_mem_gamma (Dvd.intro_left _ rfl) _ hc)]`. Use `set P := W * N * L ^ v with hPdef`. Establish `hP0 : P ≠ 0`. Establish `: 0 < P` using `Nat.mul_pos (Nat.mul_pos hWpos hN) (pow_pos hL.pos v)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.ne'`. Use `set A := L ^ P.factorization L with hAdef`. Use `set R := P / A with hRdef`. Establish `hAR : A * R = P` using `Nat.ordProj_mul_ordCompl_eq_self P L`. Establish `hcop : Nat.Coprime A R` using `(Nat.coprime_ordCompl hL hP0).pow_left _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz1, hz2, hz3⟩` from `exists_sl2_neg_mem_gamma_commutator_mem_gamma_mul A R hcop`. Establish `hLvA : L ^ v ∣ A`. Apply `pow_dvd_pow` to reduce the goal to its premises. Conclude with `(hL.pow_dvd_iff_le_factorization hP0).1 (Dvd.intro_left _ rfl)`. Establish `hNR : N ∣ R`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hNA : Nat.Coprime N A` using `Nat.Coprime.pow_right _ hLN.symm`. Establish `hNP : N ∣ A * R` using `by rw [hAR, hPdef]; exact ⟨W * L ^ v, by ring⟩`. Conclude with `(Nat.Coprime.dvd_mul_left hNA).1 hNP`. Establish `hWP : W ∣ A * R` using `by rw [hAR, hPdef]; exact ⟨N * L ^ v, by ring⟩`. Establish `hcomm : ∀ γ : SL(2, ℤ), γ * z * γ⁻¹ * z⁻¹ ∈ CongruenceSubgroup.Gamma W` using `fun γ => mem_gamma_of_dvd_of_mem_gamma hWP _ (hz3 γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcz : ∀ (γ : SL(2, ℤ)) (x : X.K), (∀ c ∈ CongruenceSubgroup.Gamma W, X.sl (ofSL c) x = x) → X.sl (ofSL z) (X.sl (ofSL γ) x) = X.sl (ofSL γ) (X.sl (ofSL z) x)`. Introduce `γ x hx`. Rewrite using `[← hmul, ← hmul]`. Establish `: γ * z = (γ * z * γ⁻¹ * z⁻¹) * (z * γ)` using `by group`. Rewrite using `[this, hmul, hx _ (hcomm γ)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : NeZero W := ⟨hWpos.ne'⟩`. Use `set πW : SL(2, ℤ) →* SL(2, ZMod W) := Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod W)) with hπW`. Set `E : Submonoid X.K` to `{ carrier := {x | ∀ c ∈ CongruenceSubgroup.Gamma W, X.sl (ofSL c) x = x} mul_mem' := by`. Introduce `x y hx hy c hc`. Simplify using `only [Set.mem_setOf_eq] at hx hy ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Rewrite using `[map_mul, hx c hc, hy c hc]`. Use the proof step `one_mem' := by`. Introduce `c _`. Simplify using `}`. Set `act : H → X.K ≃+* X.K` to `fun q => (X.sl (ofSL (q : SL(2, ℤ)))).toRingEquiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Set `res : H → (E →* X.K)` to `fun q => { toFun := fun x => X.sl (ofSL (q : SL(2, ℤ))) (x : X.K) map_one' := by simp map_mul' := by intro x y; simp }`. Set `U : H → X.K` to `fun q => uq (π0 q)`. Set `t : H → X.K` to `fun q => U q / X.sl (ofSL z) (U q)`. Establish `hszne : ∀ x : X.K, x ≠ 0 → X.sl (ofSL z) x ≠ 0` using `fun x hx => (_root_.map_ne_zero _).2 hx`. Establish `hres : ∀ p q x, res (p * q) x = act q (res p x)` using `fun p q x => hmul _ _ _`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin : (Set.range res).Finite`. Set `g : SL(2, ZMod W) → (E →* X.K)` to `fun w => if h : ∃ q : H, πW q = w then res h.choose else 1`. Establish `hg : ∀ q, res q = g (πW q)`. Introduce `q`. Establish `h : ∃ q' : H, πW q' = πW q` using `⟨q, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [g, dif_pos h]`. Use extensionality with `x`. Establish `hc : (h.choose : SL(2, ℤ)) * (q : SL(2, ℤ))⁻¹ ∈ CongruenceSubgroup.Gamma W` using `by show _ ∈ πW.ker`. Rewrite using `[MonoidHom.mem_ker, map_mul, map_inv, h.choose_spec, mul_inv_cancel]`. Use `show X.sl (ofSL q) x = X.sl (ofSL h.choose) x`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (h.choose : SL(2, ℤ)) = ((h.choose : SL(2, ℤ)) * (q : SL(2, ℤ))⁻¹) * q` using `by group`. Rewrite using `[e, hmul, x.2 _ hc]`. Use `(Set.finite_range g).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨πW q, (hg q).symm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht0 : ∀ q, t q ≠ 0` using `fun q => div_ne_zero (huq0 _) (hszne _ (huq0 _))`. Establish `hcoc : ∀ p q, t (p * q) = t q * act q (t p)`. Introduce `p q`. Establish `e1` using `hU _ (p * q).2`. Establish `e2 : ((p * q : H) : SL(2, ℤ)) = (p : SL(2, ℤ)) * q` using `rfl`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e1` using `[e2, hmul, hU _ p.2, map_mul, map_pow, hU _ q.2]`. Establish `hpq : U (p * q) ^ m = (U q * X.sl (ofSL (q : SL(2, ℤ))) (U p)) ^ m`. Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises. Use `show (a : X.K) * uq (π0 ((p * q : H) : SL(2, ℤ))) ^ m = _`. Rewrite using `[e2, ← e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hden : U q * X.sl (ofSL (q : SL(2, ℤ))) (U p) ≠ 0` using `mul_ne_zero (huq0 _) ((_root_.map_ne_zero _).2 (huq0 _))`. Use `set ζ := U (p * q) / (U q * X.sl (ofSL (q : SL(2, ℤ))) (U p)) with hζdef`. Establish `hζm : ζ ^ m = 1` using `by rw [hζdef, div_pow, hpq, div_self (pow_ne_zero _ hden)]`. Establish `hζ : X.sl (ofSL z) ζ = ζ` using `sl_apply_eq_of_pow_eq_one X _ m hm ζ hζm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hζ0 : ζ ≠ 0` using `div_ne_zero (huq0 _) hden`. Establish `hUpq : U (p * q) = ζ * (U q * X.sl (ofSL (q : SL(2, ℤ))) (U p))`. Rewrite using `[hζdef, div_mul_cancel₀ _ hden]`. Use `show U (p * q) / X.sl (ofSL z) (U (p * q)) = U q / X.sl (ofSL z) (U q) * X.sl (ofSL (q : SL(2, ℤ))) (U p / X.sl (ofSL z) (U p))`. Rewrite using `[hUpq, map_mul, map_mul, hζ, map_div₀, ← hcz q (U p) (hUfix _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : X.sl (ofSL z) (X.sl (ofSL (q : SL(2, ℤ))) (U p)) ≠ 0` using `hszne _ ((_root_.map_ne_zero _).2 (huq0 _))`. Establish `h4` using `hszne _ (huq0 (π0 q))`. Clear the denominators using the available nonvanishing facts. Establish `hwd : ∀ p q, res p = res q → t p = t q`. Introduce `p q h`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : X.sl (ofSL (p : SL(2, ℤ))) (a : X.K) = X.sl (ofSL (q : SL(2, ℤ))) (a : X.K)` using `DFunLike.congr_fun h ⟨(a : X.K), hfixW⟩`. Rewrite `e` using `[hU _ p.2, hU _ q.2]`. Establish `hpq : U p ^ m = U q ^ m` using `mul_left_cancel₀ ha0 e`. Use `set ζ := U p / U q with hζdef`. Establish `hζm : ζ ^ m = 1` using `by rw [hζdef, div_pow, hpq, div_self (pow_ne_zero _ (huq0 _))]`.
-
-Establish `hζ : X.sl (ofSL z) ζ = ζ` using `sl_apply_eq_of_pow_eq_one X _ m hm ζ hζm`. Establish `hζ0 : ζ ≠ 0` using `div_ne_zero (huq0 _) (huq0 _)`. Establish `hUp : U p = ζ * U q` using `by rw [hζdef, div_mul_cancel₀ _ (huq0 _)]`. Use `show U p / X.sl (ofSL z) (U p) = U q / X.sl (ofSL z) (U q)`. Rewrite using `[hUp, map_mul, hζ, mul_div_mul_left _ _ hζ0]`.
-
-Take `⟨β, hβ0, hβ⟩` from `exists_ne_zero_act_eq_mul_of_cocycle (↥E) act res hres hfin t ht0 hcoc hwd`. Establish `hinv : ∀ γ ∈ H, X.sl (ofSL γ) ((a : X.K) / X.sl (ofSL z) (a : X.K) / β ^ m) = (a : X.K) / X.sl (ofSL z) (a : X.K) / β ^ m`. Introduce `γ hγ`. Establish `hb : X.sl (ofSL γ) β = t ⟨γ, hγ⟩ * β` using `hβ ⟨γ, hγ⟩`. Rewrite using `[map_div₀, map_div₀, map_pow, hb, ← hcz γ _ hfixW, hU γ hγ, map_mul, map_pow]`.
-
-Establish `h1` using `hszne _ ha0`. Establish `h2` using `hszne _ (huq0 (π0 γ))`. Establish `h3` using `huq0 (π0 γ)`. Use `show (a : X.K) * uq (π0 γ) ^ m / (X.sl (ofSL z) (a : X.K) * X.sl (ofSL z) (uq (π0 γ)) ^ m) / (uq (π0 γ) / X.sl (ofSL z) (uq (π0 γ)) * β) ^ m = _`. Rewrite using `[mul_pow, div_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Use `⟨z, mem_gamma_of_dvd_of_mem_gamma hLvA _ hz1, mem_gamma_of_dvd_of_mem_gamma hNR _ hz2, fun γ => hWH _ (hcomm γ), ?_, (a : X.K) / X.sl (ofSL z) (a : X.K) / β ^ m, ?_, β, hβ0, ?_⟩` and prove the remaining obligations. Introduce `γ`. Rewrite using `[hmul, hmul]`. Conclude with `hcz γ _ hfixW`.
-
-Simplify using `only [GlobalTheory.K4.lev, Subfield.mem_iInf]`. Introduce `γ hγ`. Conclude with `hinv γ hγ`. Rewrite using `[div_mul_cancel₀ _ (pow_ne_zero _ hβ0)]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.h90 :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (H : Subgroup SL(2, ℤ)) (M L m : ℕ) (a : X.Kˣ), 0 < M → 0 < m → L.Prime → CongruenceSubgroup.Gamma M ≤ H → -1 ∉ H → InvH X H m a → ∀ v N : ℕ, 0 < N → Nat.Coprime L N →

@@ -3,17 +3,15 @@ import Formalism.GradedWeylDivisibility.FinalD
 open MvPolynomial Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Distinguish the cases in `h : n - m ≤ (i : ℕ)`. Rewrite using `[if_pos h, Finset.sum_eq_single (⟨i - (n - m), by have := i.isLt; omega⟩ : Fin m)]`. Rewrite using `[if_pos]`. Use `ext`. Rewrite using `[hg]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `show n - m + ((i : ℕ) - (n - m)) = (i : ℕ)`. Use linear arithmetic over natural numbers and integers. Introduce `p _ hp`. Rewrite using `[if_neg]`. Introduce `he`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hp` to reduce the goal to its premises. Use `ext`. Use `hg p` as an intermediate fact. Rewrite `this` using `[he]`. Use `show (p : ℕ) = (i : ℕ) - (n - m)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p _`. Rewrite using `[if_neg]`. Introduce `he`. Apply `h` to reduce the goal to its premises. Use `hg p` as an intermediate fact.
-
-Rewrite `this` using `[he]`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sum_ite_eq_of_shifted_index {n m : ℕ} (g : Fin m → Fin n) (hg : ∀ p, (g p : ℕ) = n - m + p)
     (hm : m ≤ n) (i : Fin n) :
@@ -47,19 +45,17 @@ private theorem sum_ite_eq_of_shifted_index {n m : ℕ} (g : Fin m → Fin n) (h
     omega
 
 /- English proof (translation)
-Distinguish the cases in `h : m + (i : ℕ) = n + j`. Rewrite using `[if_pos h, Finset.sum_eq_single (⟨j, by have := i.isLt; omega⟩ : Fin m)]`. Rewrite using `[if_pos]`. Use `Prod.ext (Fin.ext ?_) (Fin.ext ?_)` and prove the remaining obligations. Use `show ((g _ : Fin n) : ℕ) = (i : ℕ)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Use `show n - m + (j : ℕ) = (i : ℕ)`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce `p _ hp`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `he`. Apply `hp` to reduce the goal to its premises. Use `ext`. Use `congrArg (fun x => (x.2 : ℕ)) he` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fin.coe_castLE] at this`. Use `show (p : ℕ) = (j : ℕ)`. Conclude with `this`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg h]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p _`. Rewrite using `[if_neg]`. Introduce `he`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `h` to reduce the goal to its premises. Establish `h1` using `congrArg (fun x => (x.1 : ℕ)) he`. Establish `h2` using `congrArg (fun x => (x.2 : ℕ)) he`. Simplify using `only [Fin.coe_castLE] at h1 h2`. Rewrite `h1` using `[hg]`.
-
-Use `p.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sum_ite_pair_castLE_eq_of_shifted_index {n m : ℕ} (hm : m ≤ n) (g : Fin m → Fin n)
     (hg : ∀ p, (g p : ℕ) = n - m + p) (i j : Fin n) :
@@ -99,9 +95,9 @@ private theorem sum_ite_pair_castLE_eq_of_shifted_index {n m : ℕ} (hm : m ≤ 
     omega
 
 /- English proof (translation)
-Establish `h1` using `Finset.card_le_card_of_injOn f (s := Finset.Ici p) (t := Finset.Ici (f p)) (by`. Introduce `q hq`. Simplify using `only [Finset.coe_Ici, Set.mem_Ici, Finset.mem_Ici] at hq ⊢`. Conclude with `hf.monotone hq)`. Use the proof step `(fun a _ b _ h => hf.injective h)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Fin.card_Ici] at h1`. Use `p.isLt` as an intermediate fact. Use `(f p).isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem strictMono_apply_add_le {n m : ℕ} (f : Fin m → Fin n) (hf : StrictMono f) (p : Fin m) :
     (f p : ℕ) + m ≤ n + p := by
@@ -117,9 +113,9 @@ private theorem strictMono_apply_add_le {n m : ℕ} (f : Fin m → Fin n) (hf : 
   omega
 
 /- English proof (translation)
-Use `push_cast`. Simplify using `only [Finset.mul_sum, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem sum_mul_count_eq_sum_sum_apply {n K : ℕ} (sz : Fin K → ℕ) (f : ∀ k, Fin (sz k) → Fin n)
     (a : Fin n → ℤ) :
@@ -134,9 +130,9 @@ private theorem sum_mul_count_eq_sum_sum_apply {n K : ℕ} (sz : Fin K → ℕ) 
   simp
 
 /- English proof (translation)
-Simplify using `only [rowWt, rowDeg, bidetExp, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Prod.mk.injEq]`. Distinguish the cases in `h : I k p = i`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem rowWt_bidetExp_eq_count {n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin n) (i : Fin n) :
@@ -152,9 +148,9 @@ private theorem rowWt_bidetExp_eq_count {n K : ℕ} (sz : Fin K → ℕ) (hsz : 
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_congr rfl fun k _ => sum_ite_eq_of_shifted_index (J k) (hJ k) (hsz k) i, shapeDeg, Finset.card_filter]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.val_rev]`. Use `i.isLt` as an intermediate fact. Distinguish the cases in `h : n - sz k ≤ (i : ℕ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (by omega)]`. Rewrite using `[if_neg h, if_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem shapeDeg_rev_eq_count_of_shifted {n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (J : ∀ k, Fin (sz k) → Fin n) (hJ : ∀ k p, (J k p : ℕ) = n - sz k + p) (i : Fin n) :
@@ -169,7 +165,7 @@ private theorem shapeDeg_rev_eq_count_of_shifted {n K : ℕ} (sz : Fin K → ℕ
   · rw [if_neg h, if_neg (by omega)]
 
 /- English proof (translation)
-Simplify using `only [bidetExp, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Rewrite using `[Finset.card_filter]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `sum_ite_pair_castLE_eq_of_shifted_index (hsz k) (I k) (fun p => by have := hcan k p; have := hsz k; omega) i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem bidetExp_apply_eq_card_of_canonical {n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin n) (hcan : ∀ k p, (I k p : ℕ) + sz k = n + p) (i j : Fin n) :
@@ -180,7 +176,7 @@ private theorem bidetExp_apply_eq_card_of_canonical {n K : ℕ} (sz : Fin K → 
   exact sum_ite_pair_castLE_eq_of_shifted_index (hsz k) (I k) (fun p => by have := hcan k p; have := hsz k; omega) i j
 
 /- English proof (translation)
-Simplify using `only [Finset.card_filter, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem card_lt_eq_card_eq_succ_add_card_succ_lt {K : ℕ} (s : Fin K → ℕ) (t : ℕ) :
     (Finset.univ.filter fun k => t < s k).card
@@ -191,35 +187,35 @@ private theorem card_lt_eq_card_eq_succ_add_card_succ_lt {K : ℕ} (s : Fin K �
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce `n K sz hsz I hI`. Take `⟨J, hJ⟩ : ∃ J : ∀ k, Fin (sz k) → Fin n, ∀ k p, (J k p : ℕ) = n - sz k + p` from `⟨fun k p => ⟨n - sz k + p, by have := p.isLt; have := hsz k; omega⟩, fun _ _ => rfl⟩`. Establish `hrow` using `rowWt_bidetExp_eq_count sz hsz I`. Establish `hsh` using `shapeDeg_rev_eq_count_of_shifted sz hsz J hJ`. Establish `hle : ∀ k p, (I k p : ℕ) + sz k ≤ n + p` using `fun k p => strictMono_apply_add_le (I k) (hI k) p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hws : ∀ a : Fin n → ℤ, ∑ i, a i * (shapeDeg sz (Fin.rev i) : ℤ) = ∑ k, ∑ p, a (J k p)`. Introduce `a`. Simplify using `only [hsh]`. Conclude with `sum_mul_count_eq_sum_sum_apply sz J a`. Establish `hwr : ∀ a : Fin n → ℤ, ∑ i, a i * (rowWt (bidetExp sz hsz I) i : ℤ) = ∑ k, ∑ p, a (I k p)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Simplify using `only [hrow]`. Conclude with `sum_mul_count_eq_sum_sum_apply sz I a`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hws, hwr]`. Use `Finset.sum_le_sum fun k _ => Finset.sum_le_sum fun p _ => ha ?_` and prove the remaining obligations. Rewrite using `[Fin.le_iff_val_le_val, hJ]`. Use `hle k p` as an intermediate fact. Use `hsz k` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h k p`. Establish `e1` using `hws (fun i : Fin n => (n : ℤ) - 1 - ((i : ℕ) : ℤ))`. Establish `e2` using `hwr (fun i : Fin n => (n : ℤ) - 1 - ((i : ℕ) : ℤ))`. Use `beta_reduce at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[e1, e2]`. Assume the negation of the conclusion as `hne`. Use `absurd h (not_le.2 ?_)` and prove the remaining obligations. Apply `Finset.sum_lt_sum` to reduce the goal to its premises. Introduce `k' _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p' _`. Use `hle k' p'` as an intermediate fact. Use `hJ k' p'` as an intermediate fact. Use `hsz k'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `⟨k, Finset.mem_univ _, Finset.sum_lt_sum (fun p' _ => ?_) ⟨p, Finset.mem_univ _, ?_⟩⟩` and prove the remaining obligations. Use `hle k p'` as an intermediate fact. Use `hJ k p'` as an intermediate fact. Use `hsz k` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `hle k p` as an intermediate fact. Use `hJ k p` as an intermediate fact. Use `hsz k` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `hcan`. Establish `hIJ : I = J`. Use function extensionality and compare the values at `k p`. Use `ext`. Rewrite using `[hJ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `hcan k p` as an intermediate fact. Use `hsz k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨fun i => by rw [hrow i, hsh i, hIJ], ?_⟩` and prove the remaining obligations. Introduce `K' sz' hsz' I' hcan' hshape`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Take `⟨i, j⟩` from `x`. Rewrite using `[bidetExp_apply_eq_card_of_canonical sz' hsz' I' hcan' i j, bidetExp_apply_eq_card_of_canonical sz hsz I hcan i j]`. Establish `hc : ∀ t : ℕ, (Finset.univ.filter fun k => t < sz' k).card = (Finset.univ.filter fun k => t < sz k).card`. Introduce `t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `ht : t < n`. Use `congrFun hshape ⟨t, ht⟩` as an intermediate fact. Simplify `this` using `only [shapeDeg, Fin.val_mk]`. Establish `e1 : (Finset.univ.filter fun k => t < sz' k) = ∅` using `Finset.filter_eq_empty_iff.2 fun k _ => by have := hsz' k; omega`. Establish `e2 : (Finset.univ.filter fun k => t < sz k) = ∅` using `Finset.filter_eq_empty_iff.2 fun k _ => by have := hsz k; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, Finset.card_empty, Finset.card_empty]`. Establish `e1 : (Finset.univ.filter fun k => sz' k + (i : ℕ) = n + j) = Finset.univ.filter fun k => sz' k = (n + j - i - 1) + 1` using `Finset.filter_congr fun k _ => by have := i.isLt; omega`. Establish `e2 : (Finset.univ.filter fun k => sz k + (i : ℕ) = n + j) = Finset.univ.filter fun k => sz k = (n + j - i - 1) + 1` using `Finset.filter_congr fun k _ => by have := i.isLt; omega`. Rewrite using `[e1, e2]`. Establish `h1` using `card_lt_eq_card_eq_succ_add_card_succ_lt sz' (n + j - i - 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `card_lt_eq_card_eq_succ_add_card_succ_lt sz (n + j - i - 1)`. Establish `h3` using `hc (n + j - i - 1)`. Establish `h4` using `hc (n + j - i - 1 + 1)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.bideterminant_row_weight_dominance :
     ∀ (n K : ℕ) (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n) (I : ∀ k, Fin (sz k) → Fin n), (∀ k, StrictMono (I k)) → (∀ a : Fin n → ℤ, Antitone a → ∑ i, a i * (shapeDeg sz (Fin.rev i) : ℤ) ≤ ∑ i, a i * (rowWt (bidetExp sz hsz I) i : ℤ)) ∧ (∑ i : Fin n, ((n : ℤ) - 1 - (i : ℕ)) * (rowWt (bidetExp sz hsz I) i : ℤ) ≤ ∑ i : Fin n, ((n : ℤ) - 1 - (i : ℕ)) * (shapeDeg sz (Fin.rev i) : ℤ) → ∀ k p, (I k p : ℕ) + sz k = n + p) ∧ ((∀ k p, (I k p : ℕ) + sz k = n + p) → (∀ i, rowWt (bidetExp sz hsz I) i = shapeDeg sz (Fin.rev i)) ∧ ∀ (K' : ℕ) (sz' : Fin K' → ℕ) (hsz' : ∀ k, sz' k ≤ n) (I' : ∀ k, Fin (sz' k) → Fin n), (∀ k p, (I' k p : ℕ) + sz' k = n + p) → (shapeDeg sz' : Fin n → ℕ) = shapeDeg sz → bidetExp sz' hsz' I' = bidetExp sz hsz I) := by

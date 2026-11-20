@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.RamQ
 
 /- English proof (translation)
-Take `⟨htw, hq, -⟩` from `GlobalTheory.Mem.ReadTwist.isTwist_of_reads X.B.R X.B.host X.B.fields.K X.B.embLL I.S (I.tup a) (I.xi a) (hI.xi_reads a)`. Rewrite using `[hq]`. Use `⟨fun h => ⟨PP, rfl, h⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨P, hP, hn⟩ hu`. Apply `hn` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Establish `h1` using `GlobalTheory.Mem.Chr.twist_pow_units_of_under_eq X.B.R X.B.host I.S (I.xi a) htw P PP hP 1 (fun y hy => by rw [pow_one]; exact hu y hy) x hx`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_unr_iff_under_mem (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hI : I.Ok) (a : I.ι)
     (PP : HeightOneSpectrum (𝓞 X.B.host.E)) :
@@ -35,17 +35,13 @@ theorem not_unr_iff_under_mem (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn
   simpa using h1
 
 /- English proof (translation)
-Rewrite using `[not_unr_iff_under_mem X px I hI a PP]`. Establish `hf` using `Formalism.L2.DIV.auxiliary_primes_finite X.B.fields.F X.B.fields.E X.B.fields.K (I.tup a : Chr X.B.fields.F X.B.fields.E X.B.fields.K) (I.tup a).2.1.1.1.1.2`. Establish `hsel : ∀ v, (I.sel v).under (𝓞 X.B.fields.F) = v` using `fun v => HeightOneSpectrum.ext (hI.sel_ok v)`. Establish `memQ : ∀ v ∈ Qprime (I.tup a : Chr X.B.fields.F X.B.fields.E X.B.fields.K), I.sel v ∈ I.Q a` using `fun v hv => by`. Unfold `ColIn.Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Formalism.L2.Col.QE, dif_pos hf]`. Conclude with `Finset.mem_image_of_mem _ (hf.mem_toFinset.2 hv)`. Establish `under_of_mem : ∀ P ∈ I.Q a, P.under (𝓞 X.B.host.F) ∈ Qprime (I.tup a : Chr X.B.fields.F X.B.fields.E X.B.fields.K)` using `fun P hP => by`. Take `⟨v, hv, hs, -⟩` from `ColIn.exists_of_mem_Q I hP`. Rewrite using `[← hs, hsel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hv`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Establish `key : ∀ Q P : Pl X.toD7.host.E, Q.under (𝓞 X.toD7.host.F) = P.under (𝓞 X.toD7.host.F) → Q = P ∨ Q = Formalism.DivisionValues.conjPl P` using `fun Q P h => GlobalTheory.GoodPrimes.eq_or_conj_of_under_eq h`. Establish `e : PP.under (𝓞 X.B.host.F) = (I.sel (PP.under (𝓞 X.B.host.F))).under (𝓞 X.B.fields.F)` using `(hsel _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `key PP (I.sel (PP.under (𝓞 X.B.host.F))) e with h | h` into its components or cases. Use `left`. Rewrite using `[h]`. Conclude with `memQ _ hv`. Use `right`.
-
-Conclude with `⟨_, memQ _ hv, GlobalTheory.GoodPrimes.isConjPl_iff.2 h⟩`. Introduce and unpack `(h | ⟨PP', h, hc⟩)`. Conclude with `under_of_mem _ h`. Establish `e : PP'.under (𝓞 X.B.host.F) = PP.under (𝓞 X.B.host.F)` using `GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc`. Rewrite using `[← e]`.
-
-Conclude with `under_of_mem _ h`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupleTwist_ramified_iff_chosenPrime_or_conj_host (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (hI : I.Ok) (a : I.ι)
     (PP : HeightOneSpectrum (𝓞 X.B.host.E)) :
@@ -82,7 +78,7 @@ theorem tupleTwist_ramified_iff_chosenPrime_or_conj_host (X : Stages) (px : PreX
       exact under_of_mem _ h
 
 /- English proof (translation)
-Introduce `X px I hI a PP` and use `tupleTwist_ramified_iff_chosenPrime_or_conj_host X px I hI a PP`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ram_iff : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px), I.Ok → ∀ (a : I.ι) (PP : Pl X.toD7.host.E),
     ¬ (I.xi a).UnrAt PP ↔ PP ∈ I.Q a ∨ ∃ PP' ∈ I.Q a, Formalism.IndefR.Lev.IsConjPl (D := X.toD7) PP' PP :=

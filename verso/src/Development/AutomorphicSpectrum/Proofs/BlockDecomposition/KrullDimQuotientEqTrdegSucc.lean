@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry
 namespace GlobalTheory.CompanionTheory.DimChart
 
 /- English proof (translation)
-Use `(ConcreteCategory.isIso_iff_bijective _).mpr ⟨(j.residueFieldMap x).hom.injective, ?_⟩` and prove the remaining obligations. Introduce `a`. Take `⟨b, rfl⟩` from `X.residue_surjective x a`. Take `⟨c, rfl⟩` from `j.stalkMap_surjective x b`. Use `⟨Y.residue _ c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← CommRingCat.comp_apply, Scheme.residue_residueFieldMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isIso_residueFieldMap {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenImmersion j] (x : X) :
     IsIso (j.residueFieldMap x) := by
@@ -26,9 +26,9 @@ noncomputable def residueFieldEquiv {Y : Scheme.{0}} {B : Type} [CommRing B] (j 
   (asIso (j.residueFieldMap q) ≪≫ Scheme.Spec.residueFieldIso (.of B) q).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Take `rfl : ‹Algebra ℤ A› = Ring.toIntAlgebra A` from `Subsingleton.elim _ _`. Take `rfl : ‹Algebra ℤ L› = Ring.toIntAlgebra L` from `Subsingleton.elim _ _`. Establish `: FaithfulSMul A L` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (IsFractionRing.injective A L)`. Establish `: FaithfulSMul ℤ A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hA`. Establish `: Algebra.IsAlgebraic A L` using `IsLocalization.isAlgebraic L (nonZeroDivisors A)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← trdeg_add_eq ℤ A (A := L), trdeg_eq_zero (R := A) (A := L), add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trdeg_int_eq_of_isFractionRing (A : Type) [CommRing A] [IsDomain A] [Algebra ℤ A] (L : Type)
     [Field L] [Algebra ℤ L] [Algebra A L] [IsFractionRing A L]
@@ -43,7 +43,7 @@ theorem trdeg_int_eq_of_isFractionRing (A : Type) [CommRing A] [IsDomain A] [Alg
   rw [← trdeg_add_eq ℤ A (A := L), trdeg_eq_zero (R := A) (A := L), add_zero]
 
 /- English proof (translation)
-Take `rfl : ‹Algebra ℤ L› = Ring.toIntAlgebra L` from `Subsingleton.elim _ _`. Take `rfl : ‹Algebra ℤ L'› = Ring.toIntAlgebra L'` from `Subsingleton.elim _ _`. Conclude with `e.toIntAlgEquiv.trdeg_eq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem trdeg_int_eq_of_ringEquiv {L L' : Type} [CommRing L] [CommRing L'] [Algebra ℤ L]
     [Algebra ℤ L'] (e : L ≃+* L') : Algebra.trdeg ℤ L = Algebra.trdeg ℤ L' := by
@@ -52,9 +52,9 @@ theorem trdeg_int_eq_of_ringEquiv {L L' : Type} [CommRing L] [CommRing L'] [Alge
   exact e.toIntAlgEquiv.trdeg_eq
 
 /- English proof (translation)
-Establish `e` using `residueFieldEquiv j q`. Establish `: CharZero q.asIdeal.ResidueField` using `charZero_of_injective_ringHom (f := e.toRingHom) e.injective`. Establish `hinj : Function.Injective (algebraMap ℤ (B ⧸ q.asIdeal))`. Establish `hK : Function.Injective ((algebraMap (B ⧸ q.asIdeal) q.asIdeal.ResidueField).comp (algebraMap ℤ (B ⧸ q.asIdeal)))`. Rewrite using `[show (algebraMap (B ⧸ q.asIdeal) q.asIdeal.ResidueField).comp (algebraMap ℤ (B ⧸ q.asIdeal)) = Int.castRingHom _ from Subsingleton.elim _ _]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Int.cast_injective`. Rewrite `hK` using `[RingHom.coe_comp]`. Conclude with `Function.Injective.of_comp hK`. Establish `: Algebra.FiniteType ℤ (B ⧸ q.asIdeal)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℤ q.asIdeal) (Ideal.Quotient.mkₐ_surjective _ _)`. Rewrite using `[GroundTheory.Heights₂.Heights.IntDomainDim.proof (B ⧸ q.asIdeal) hinj, trdeg_int_eq_of_isFractionRing (B ⧸ q.asIdeal) q.asIdeal.ResidueField hinj, trdeg_int_eq_of_ringEquiv e.symm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quotient_eq (Y : Scheme.{0}) (B : Type) [CommRing B] [Algebra ℤ B]
     [Algebra.FiniteType ℤ B] (j : Spec (.of B) ⟶ Y) [IsOpenImmersion j] (q : PrimeSpectrum B)

@@ -19,26 +19,26 @@ noncomputable section
 universe u v w
 
 /- English proof (translation)
-The claim follows from `SnapperFinite.proof Extension.proof Extension.proof TwistTilde.proof TwistTilde.proof TildeShift.proof (TildeFiniteE.proof SerreFinite.full)`.
+A detailed English derivation is pending.
 -/
 theorem SnapperFinite.closed : SnapperFinite.Statement.{u, v, w} :=
   SnapperFinite.proof Extension.proof Extension.proof TwistTilde.proof TwistTilde.proof TildeShift.proof
     (TildeFiniteE.proof SerreFinite.full)
 
 /- English proof (translation)
-The claim follows from `SnapperSubquotFinite.proof SnapperFinite.closed`.
+A detailed English derivation is pending.
 -/
 theorem SnapperSubquotFinite.closed : SnapperSubquotFinite.Statement.{u, v, w} :=
   SnapperSubquotFinite.proof SnapperFinite.closed
 
 /- English proof (translation)
-The claim follows from `SnapperQuotAdd.proof SnapperSubquotFinite.closed`.
+A detailed English derivation is pending.
 -/
 theorem SnapperQuotAdd.closed : SnapperQuotAdd.Statement.{u, v, w} :=
   SnapperQuotAdd.proof SnapperSubquotFinite.closed
 
 /- English proof (translation)
-The claim follows from `SnapperQuotDevissage.proof SnapperQuotFilt.proof SnapperQuotIso.proof SnapperQuotAdd.closed SubFamilyTwist.proof`.
+A detailed English derivation is pending.
 -/
 theorem SnapperQuotDevissage.closed : SnapperQuotDevissage.Statement.{u, v, w} :=
   SnapperQuotDevissage.proof SnapperQuotFilt.proof SnapperQuotIso.proof SnapperQuotAdd.closed SubFamilyTwist.proof

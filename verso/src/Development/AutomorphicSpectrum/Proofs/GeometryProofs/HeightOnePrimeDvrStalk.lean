@@ -7,11 +7,9 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 namespace GlobalTheory.CompanionTheory.Ar.LieStalk.HeightOne
 
 /- English proof (translation)
-Establish `hf : ¬ IsField B` using `fun hB => by`. Rewrite `h` using `[ringKrullDim_eq_zero_of_isField hB]`. Conclude with `zero_ne_one h`. Establish `hle : Ring.KrullDimLE 1 B` using `Ring.krullDimLE_iff.2 (by rw [h]; rfl)`. Establish `hmax` using `Ring.krullDimLE_one_iff_of_noZeroDivisors.1 hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `(IsDiscreteValuationRing.TFAE B hf).out 0 3`. Use `hT.2 ⟨inferInstance, ExistsUnique.intro (IsLocalRing.maximalIdeal B) ⟨?_, inferInstance⟩ ?_⟩` and prove the remaining obligations. Conclude with `fun h0 => hf (IsLocalRing.isField_iff_maximalIdeal_eq.2 h0)`. Introduce and unpack `Q ⟨h0, hQ⟩`. Use `hmax Q h0 hQ` as an intermediate fact.
-
-Conclude with `IsLocalRing.eq_maximalIdeal this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDVR_of_ringKrullDim_eq_one (B : Type*) [CommRing B] [IsDomain B] [IsLocalRing B] [IsNoetherianRing B]
     [IsIntegrallyClosed B] (h : ringKrullDim B = 1) : IsDiscreteValuationRing B := by
@@ -28,9 +26,9 @@ theorem isDVR_of_ringKrullDim_eq_one (B : Type*) [CommRing B] [IsDomain B] [IsLo
     exact IsLocalRing.eq_maximalIdeal this
 
 /- English proof (translation)
-Establish `e` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk h`. Establish `e3 : (Spec.map (X.presheaf.stalkSpecializes h) ≫ X.fromSpecStalk y) (IsLocalRing.closedPoint (X.presheaf.stalk x) : Spec (X.presheaf.stalk x)) = x`. Rewrite using `[e]`. Conclude with `Scheme.fromSpecStalk_closedPoint`. Establish `e2 : X.fromSpecStalk y (Spec.map (X.presheaf.stalkSpecializes h) (IsLocalRing.closedPoint (X.presheaf.stalk x) : Spec (X.presheaf.stalk x))) = X.fromSpecStalk y P` using `(Scheme.Hom.comp_apply _ _ _).symm.trans (e3.trans hP.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : Function.Injective (X.fromSpecStalk y)` using `(X.fromSpecStalk y).isEmbedding.injective`. Conclude with `congrArg PrimeSpectrum.asIdeal (inj e2)`.
+A detailed English derivation is pending.
 -/
 theorem comap_maximalIdeal_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y)
     (P : PrimeSpectrum (X.presheaf.stalk y)) (hP : X.fromSpecStalk y P = x) :
@@ -47,11 +45,11 @@ theorem comap_maximalIdeal_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x �
   exact congrArg PrimeSpectrum.asIdeal (inj e2)
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := y) (U := ⊤) trivial`. Establish `hxU : x ∈ U` using `h.mem_open U.isOpen hyU`. Use `letI := TopCat.Presheaf.algebra_section_stalk X.presheaf (⟨x, hxU⟩ : U)`. Establish `loc` using `hU.isLocalization_stalk ⟨x, hxU⟩`. Take `⟨⟨r, t⟩, ht⟩` from `IsLocalization.surj (hU.primeIdealOf ⟨x, hxU⟩).asIdeal.primeCompl b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg : ∀ r : Γ(X, U), (X.presheaf.stalkSpecializes h).hom ((X.presheaf.germ U y hyU).hom r) = algebraMap Γ(X, U) (X.presheaf.stalk x) r` using `fun r => ConcreteCategory.congr_hom (TopCat.Presheaf.germ_stalkSpecializes X.presheaf hyU h) r`. Establish `hu : IsUnit (algebraMap Γ(X, U) (X.presheaf.stalk x) (t : Γ(X, U)))` using `IsLocalization.map_units _ t`. Use `⟨(X.presheaf.germ U y hyU).hom t, fun hm => ?_, (X.presheaf.germ U y hyU).hom r, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[← hP, Ideal.mem_comap, hg]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 hm hu`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, hg, mul_comm]`. Conclude with `ht`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_stalkSpecializes {X : Scheme.{0}} {x y : X} (h : x ⤳ y)
     (P : Ideal (X.presheaf.stalk y))
@@ -78,27 +76,25 @@ end GlobalTheory.CompanionTheory.Ar.LieStalk.HeightOne
 namespace GlobalTheory.CompanionTheory.Ar.LieStalk.HeightOne
 
 /- English proof (translation)
-Introduce `X Ω _ ξ hgen hN hnorm p P hP`. Set `P' : PrimeSpectrum (X.presheaf.stalk p.1)` to `⟨Ideal.comap (regIso hgen p) P.asIdeal, inferInstance⟩`. Establish `hP' : P'.asIdeal.height = 1` using `((regIso hgen p).height_comap P.asIdeal).trans hP`. Establish `hmem : ∀ a, a ∈ P'.asIdeal ↔ regIso hgen p a ∈ P.asIdeal` using `fun a => Iff.rfl`. Establish `hs : X.fromSpecStalk p.1 P' ⤳ p.1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : X.fromSpecStalk p.1 P' ∈ Set.range (X.fromSpecStalk p.1)` using `⟨P', rfl⟩`. Rewrite `h` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hgq : genPt ξ ⤳ X.fromSpecStalk p.1 P'`. Establish `e1 : genPt ξ = X.fromSpecStalk p.1 (spMap (genMap ξ p) (IsLocalRing.closedPoint Ω : Sp Ω))` using `(congrArg (fun g : Sp Ω ⟶ X => g (IsLocalRing.closedPoint Ω : Sp Ω)) (spMap_genMap_fromSpecStalk p)).symm.trans (Scheme.Hom.comp_apply _ _ _)`. Use `(specializes_of_eq e1).trans (Specializes.map ?_ (X.fromSpecStalk p.1).continuous)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(PrimeSpectrum.le_iff_specializes _ _).1 ?_` and prove the remaining obligations. Introduce `a ha`. Establish `h0 : genMap ξ p a ∈ IsLocalRing.maximalIdeal Ω` using `ha`. Rewrite `h0` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`. Establish `: a = 0` using `hgen.inj p (h0.trans (map_zero _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.zero_mem _`. Set `q : Cpt ξ` to `⟨X.fromSpecStalk p.1 P', hgq⟩`. Establish `hs' : q.1 ⤳ p.1` using `hs`. Take `⟨hdom, hic⟩` from `hnorm q.1`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI := hN`. Set `f : X.presheaf.stalk p.1 →+* X.presheaf.stalk q.1` to `(X.presheaf.stalkSpecializes hs').hom`. Establish `hcomap : (IsLocalRing.maximalIdeal (X.presheaf.stalk q.1)).comap f = P'.asIdeal` using `comap_maximalIdeal_stalkSpecializes hs' P' rfl`. Establish `hgf : ∀ a, genMap ξ q (f a) = genMap ξ p a` using `genMap_specializes hs'`. Establish `hfinj : Function.Injective f` using `fun a b hab => hgen.inj p (by rw [← hgf, ← hgf, hab])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hunit : ∀ a, a ∉ P'.asIdeal → IsUnit (f a)` using `fun a ha => by`. Assume the negation of the conclusion as `hu`. Conclude with `ha (hcomap ▸ (IsLocalRing.mem_maximalIdeal _).2 hu)`. Establish `hfrac : ∀ b, ∃ a, a ∉ P'.asIdeal ∧ ∃ c, f a * b = f c` using `exists_mul_stalkSpecializes hs' P'.asIdeal hcomap`. Establish `hdim : ringKrullDim (X.presheaf.stalk q.1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `letI : Algebra (X.presheaf.stalk p.1) (X.presheaf.stalk q.1) := f.toAlgebra`. Use `haveI : IsLocalization.AtPrime (X.presheaf.stalk q.1) P'.asIdeal := { map_units := fun s => hunit s.1 s.2 surj := fun b => by`. Take `⟨a, ha, c, hc⟩` from `hfrac b`. Conclude with `⟨⟨c, ⟨a, ha⟩⟩, by rw [mul_comm]; exact hc⟩`. Use `exists_of_eq := fun {a b} h => ⟨1, by rw [hfinj h]⟩ }`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalization.AtPrime.ringKrullDim_eq_height P'.asIdeal (X.presheaf.stalk q.1), hP']`. Both sides reduce to the same expression. Use `⟨q, hs', ⟨hdom, isDVR_of_ringKrullDim_eq_one _ hdim⟩, fun s hsP => ?_, ?_⟩` and prove the remaining obligations. Establish `ha : (regIso hgen p).symm s ∉ P'.asIdeal`. Rewrite using `[hmem, RingEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hsP`. Take `⟨u, hu⟩` from `(hunit _ ha).exists_right_inv`. Use `⟨u, ?_⟩` and prove the remaining obligations. Use `eq_inv_of_mul_eq_one_right ?_` and prove the remaining obligations. Establish `h1` using `congrArg (genMap ξ q) hu`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[map_mul, map_one, hgf, genMap_regIso_symm]`. Conclude with `h1`. Introduce and unpack `_ ⟨b, rfl⟩`. Take `⟨a, ha, c, hc⟩` from `hfrac b`. Use `⟨regIso hgen p a, fun h => ha ((hmem a).2 h), ⟨c, ?_⟩⟩` and prove the remaining obligations.
-
-Establish `h1` using `congrArg (genMap ξ q) hc`. Rewrite `h1` using `[map_mul, hgf, hgf]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_generisation_of_height_eq_one : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X), IsCptGen ξ → IsLocallyNoetherian X → IsNormalScheme X → ∀ (p : Cpt ξ) (P : PrimeSpectrum (regAt ξ p)), P.asIdeal.height = 1 → ∃ (q : Cpt ξ) (hs : q.1 ⤳ p.1), (∃ _ : IsDomain (X.presheaf.stalk q.1), IsDiscreteValuationRing (X.presheaf.stalk q.1)) ∧ (∀ s : regAt ξ p, s ∉ P.asIdeal → (s : Ω)⁻¹ ∈ regAt ξ q) ∧ ∀ a ∈ regAt ξ q, ∃ s : regAt ξ p, s ∉ P.asIdeal ∧ (s : Ω) * a ∈ regAt ξ p := by
   intro X Ω _ ξ hgen hN hnorm p P hP

@@ -7,25 +7,21 @@ open Module NumberField GlobalTheory.CompanionTheory.Ar.HT TensorProduct
 namespace PositivityTheory.HtPt.Gc
 
 /- English proof (translation)
-Introduce `A K _ _ _ _ _ _ _ C _ v O _ _ hv _ q M _ _ L x hq h1 hinj hcen hx`. Use `haveI : IsDomain O := hv.hom_inj.isDomain`. Use `haveI : ValuationRing O := ValuationRing.of_integers _ hv`. Use `haveI := dvr_of_height_one q h1`. Establish `hu : ∀ s : q.primeCompl, IsUnit (algebraMap A O s)` using `fun s => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Rewrite using `[hv.isUnit_iff_valuation_eq_one]`. Conclude with `le_antisymm (hv.map_le_one _) (not_lt.1 fun h => s.2 ((hcen s).2 h))`. Set `R` to `Localization.AtPrime q`. Use `letI : Algebra R O := (IsLocalization.lift (M := q.primeCompl) hu).toAlgebra`. Establish `hcomp : ∀ a : A, algebraMap R O (algebraMap A R a) = algebraMap A O a` using `fun a => IsLocalization.lift_eq hu a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsScalarTower A R O := IsScalarTower.of_algebraMap_eq fun a => (hcomp a).symm`. Establish `hinjR : Function.Injective (algebraMap R O)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `r hr`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : algebraMap A O a = 0`. Rewrite using `[← hcomp, ← IsLocalization.mk'_spec R a s, map_mul]`. Simplify using `only at hr`. Rewrite using `[hr, zero_mul]`. Establish `: a = 0` using `hinj (by simpa using h2)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[this]`. Use `haveI : IsLocalHom (algebraMap R O) := ⟨fun r hr => by`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective q.primeCompl r`. Simplify using `only at hr ⊢`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff R q]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsUnit (algebraMap A O a)`. Rewrite using `[← hcomp, ← IsLocalization.mk'_spec R a s, map_mul, hcomp]`. Conclude with `hr.mul (hu s)`. Rewrite `h2` using `[hv.isUnit_iff_valuation_eq_one]`. Introduce `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `((hcen a).1 ha).ne h2⟩`. Use `haveI : FaithfulSMul R O := (faithfulSMul_iff_algebraMap_injective R O).2 hinjR`. Use `haveI : Module.Flat R O := by`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, ← Submodule.isTorsionFree_iff_torsion_eq_bot]`. Use `infer_instance`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.FaithfullyFlat R O := Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `h0 : (1 : O) ⊗ₜ[A] (L.mkQ x) = 0`. Establish `: Submodule.span O ((fun y : M => (1 : O) ⊗ₜ[A] y) '' (L : Set M)) ≤ LinearMap.ker (L.mkQ.baseChange O)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Simplify using `[(Submodule.Quotient.mk_eq_zero L).2 hy]`. Simplify using `using this hx`. Establish `h2 : (1 : O) ⊗ₜ[R] ((1 : R) ⊗ₜ[A] (L.mkQ x)) = 0`. Apply `(AlgebraTensorModule.cancelBaseChange A R O O (M ⧸ L)).injective` to reduce the goal to its premises. Simplify using `using h0`.
-
-Rewrite `h2` using `[Module.FaithfullyFlat.one_tmul_eq_zero_iff]`. Take `⟨s, hs⟩` from `(IsLocalizedModule.eq_zero_iff q.primeCompl (TensorProduct.mk A R (M ⧸ L) 1)).1 h2`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem test_descend : ∀ (A K : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] [Field K] [Algebra A K] [IsFractionRing A K] (C : Type) [Field C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] (hv : v.Integers O) [Algebra A O] (𝔮 : Ideal A) (M : Type) [AddCommGroup M] [Module A M] (L : Submodule A M) (x : M), 𝔮.IsPrime → 𝔮.height = 1 → Function.Injective (algebraMap A O) → (∀ a, a ∈ 𝔮 ↔ v (algebraMap O C (algebraMap A O a)) < 1) → (1 : O) ⊗ₜ[A] x ∈ Submodule.span O ((fun y : M => (1 : O) ⊗ₜ[A] y) '' (L : Set M)) → ∃ s : A, s ∉ 𝔮 ∧ s • x ∈ L := by
   intro A K _ _ _ _ _ _ _ C _ v O _ _ hv _ q M _ _ L x hq h1 hinj hcen hx

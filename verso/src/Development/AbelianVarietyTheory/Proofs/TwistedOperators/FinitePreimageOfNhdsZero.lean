@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.TrFinite
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨V, hV0, hV⟩ : ∃ V ∈ 𝓝 (0 : G), ∀ a ∈ V, ∀ b ∈ V, a - b ∈ U := by`. Establish `ht : Tendsto (fun p : G × G => p.1 - p.2) (𝓝 ((0 : G), (0 : G))) (𝓝 0)`. Simplify using `using (continuous_sub.tendsto ((0 : G), (0 : G)))`. Establish `h2` using `ht hU`. Rewrite `h2` using `[nhds_prod_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨V1, h1, V2, h2', hs⟩` from `Filter.mem_prod_iff.1 h2`. Conclude with `⟨V1 ∩ V2, inter_mem h1 h2', fun a ha b hb => @hs (a, b) ⟨ha.1, hb.2⟩⟩`. Take `⟨t, -, ht⟩` from `hK.elim_nhds_subcover (fun k => (fun y => y - k) ⁻¹' V) (fun k _ => by`. Establish `hc : Continuous fun y : G => y - k` using `continuous_id.sub continuous_const`. Conclude with `hc.continuousAt.preimage_mem_nhds (by simpa using hV0))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : {x | f x ∈ K} ⊆ ⋃ k ∈ t, {x | f x - k ∈ V}` using `fun x hx => by`. Use `ht hx` as an intermediate fact. Simplify using `only [Set.mem_iUnion, Set.mem_preimage] at this ⊢`. Conclude with `this`. Use `Set.Finite.subset (Set.Finite.biUnion t.finite_toSet fun k _ => ?_) hsub` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.Subsingleton.finite fun x hx y hy => ?_` and prove the remaining obligations. Establish `hm : f (x - y) ∈ U`. Use `hV _ hx _ hy` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right, ← map_sub]`. Then use the resulting hypothesis. Conclude with `sub_eq_zero.1 (h _ hm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_preimage_of_nhds_zero {A G : Type} [AddCommGroup A] [AddCommGroup G] [TopologicalSpace G]
     [IsTopologicalAddGroup G] (f : A →+ G) {U : Set G} (hU : U ∈ 𝓝 (0 : G)) (h : ∀ x, f x ∈ U → x = 0)
@@ -46,7 +46,7 @@ theorem finite_preimage_of_nhds_zero {A G : Type} [AddCommGroup A] [AddCommGroup
   exact sub_eq_zero.1 (h _ hm)
 
 /- English proof (translation)
-Establish `h : (fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i) = fun M => MvPolynomial.eval (fun ij : Fin n × Fin n => M ij.1 ij.2) ((Matrix.charpoly.univ K (Fin n)).coeff i)`. Use function extensionality and compare the values at `M`. Conclude with `(Matrix.charpoly.univ_coeff_eval₂Hom (Fin n) (RingHom.id K) (fun ij : Fin n × Fin n => M ij.1 ij.2) i).symm`. Rewrite using `[h]`. Conclude with `(MvPolynomial.continuous_eval _).comp (continuous_pi fun ij => (continuous_apply ij.2).comp (continuous_apply ij.1))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_coeff_charpoly {K : Type} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] (n i : ℕ) :
     Continuous fun M : Matrix (Fin n) (Fin n) K => M.charpoly.coeff i := by
@@ -67,7 +67,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj']`. Conclude with `Matrix.charpoly_map _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_conj_ratEmb (γ : GRat σ J) (x : GAd σ J) :
     (((matHom (AF F) σ J (x⁻¹ * ratEmb σ J γ * x) : GL (Fin n) (AF F ⊗[F] E)) :
@@ -77,9 +77,7 @@ theorem charpoly_conj_ratEmb (γ : GRat σ J) (x : GAd σ J) :
   exact Matrix.charpoly_map _ _
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (ratPts σ J) := GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ J`. Establish `hcl : IsClosed (ratPts σ J : Set (GAd σ J))` using `Subgroup.isClosed_of_discrete`. Establish `hfin : ((Subtype.val : ratPts σ J → GAd σ J) ⁻¹' K).Finite` using `(hcl.isClosedEmbedding_subtypeVal.isCompact_preimage hK).finite_of_discrete`. Set `g : GRat σ J → ratPts σ J` to `fun γ => ⟨ratEmb σ J γ, range_ratEmb σ J ▸ ⟨γ, rfl⟩⟩`. Establish `hg : Function.Injective g` using `fun a b h => ratEmb_injective σ J (congrArg Subtype.val h)`.
-
-Conclude with `Set.Finite.preimage (f := g) hg.injOn hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_ratEmb_mem {K : Set (GAd σ J)} (hK : IsCompact K) : {γ : GRat σ J | ratEmb σ J γ ∈ K}.Finite := by
   haveI : DiscreteTopology (ratPts σ J) := GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ J
@@ -91,17 +89,15 @@ theorem finite_ratEmb_mem {K : Set (GAd σ J)} (hK : IsCompact K) : {γ : GRat �
   exact Set.Finite.preimage (f := g) hg.injOn hfin
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n J C hC`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing (F := F) (E := E)`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Set `c : Fin (n + 1) → GAd σ J → AF F ⊗[F] E` to `fun i g => (((matHom (AF F) σ J g : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))).charpoly.coeff i`. Establish `hc : ∀ i, Continuous (c i)` using `fun i => (continuous_coeff_charpoly n i).comp (Units.continuous_val.comp continuous_subtype_val)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hU0⟩` from `GlobalTheory.RationalDiscrete.exists_nhds_zero_inclR (F := F) (E := E)`. Set `T : Fin (n + 1) → Set E` to `fun i => {e | (inclR (AF F)).toAddMonoidHom e ∈ c i '' C}`. Establish `hT : ∀ i, (T i).Finite` using `fun i => finite_preimage_of_nhds_zero _ hU hU0 (hC.image (hc i))`. Set `S` to `{Q : E[X] | ∃ γ : GRat σ J, γ.1.1.charpoly = Q ∧ ∃ x, x⁻¹ * ratEmb σ J γ * x ∈ C}`. Set `φ : E[X] → Fin (n + 1) → E` to `fun Q i => Q.coeff i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdeg : ∀ Q ∈ S, Q.natDegree = n`. Introduce and unpack `Q ⟨γ, rfl, -⟩`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hinj : Set.InjOn φ S` using `fun P hP Q hQ h => by`. Use extensionality with `i`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i ≤ n`. Conclude with `congrFun h ⟨i, Nat.lt_succ_of_le hi⟩`. Use `push_neg at hi`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [hdeg P hP]; exact hi), coeff_eq_zero_of_natDegree_lt (by rw [hdeg Q hQ]; exact hi)]`. Establish `himg : φ '' S ⊆ Set.pi Set.univ T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce and unpack `_ ⟨Q, ⟨γ, rfl, x, hx⟩, rfl⟩ i -`. Use `⟨_, hx, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(((matHom (AF F) σ J (x⁻¹ * ratEmb σ J γ * x) : GL (Fin n) (AF F ⊗[F] E)) : Matrix (Fin n) (Fin n) (AF F ⊗[F] E))).charpoly.coeff i = inclR (AF F) (γ.1.1.charpoly.coeff i)`. Rewrite using `[charpoly_conj_ratEmb, coeff_map]`. Conclude with `Set.Finite.of_finite_image ((Set.Finite.pi hT).subset himg) hinj`.
-
-Establish `hK : IsCompact ((fun g => x * g * x⁻¹) '' C)` using `hC.image ((continuous_const.mul continuous_id).mul continuous_const)`. Use `(finite_ratEmb_mem σ J hK).subset fun γ hγ => ⟨_, hγ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x * (x⁻¹ * ratEmb σ J γ * x) * x⁻¹ = ratEmb σ J γ`. Use `group`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem finite_charpoly_and_ratPts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (C : Set (GAd σ J)), IsCompact C →

@@ -23,7 +23,7 @@ variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ
   {fr : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AvgOtherPlace.atTau_comm hθ hne (conj_mem_UH (hfr τ).1 (hfr τ).2 k) (conj_mem_UH (hfr τ').1 (hfr τ').2 k')`.
+A detailed English derivation is pending.
 -/
 theorem kAt_comm (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) {τ τ' : D.what₂.Tau} (hne : τ' ≠ τ) (k : Formalism.REAL.KG (ε τ))
     (k' : Formalism.REAL.KG (ε τ')) :
@@ -31,11 +31,11 @@ theorem kAt_comm (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) {τ τ' : D.what
   GlobalTheory.AvgOtherPlace.atTau_comm hθ hne (conj_mem_UH (hfr τ).1 (hfr τ).2 k) (conj_mem_UH (hfr τ').1 (hfr τ').2 k')
 
 /- English proof (translation)
-Set `f : (∀ τ, Formalism.REAL.KG (ε τ)) → D.what₂.Tau → GA D V` to `fun κ τ => kAt θ V τ (ε τ) (fr τ) (κ τ)`. Establish `hperm : (Finset.univ : Finset D.what₂.Tau).toList.Perm (a :: (Finset.univ.erase a).toList)`. Use `Finset.toList_insert (Finset.notMem_erase a (Finset.univ : Finset D.what₂.Tau))` as an intermediate fact. Rewrite `this` using `[Finset.insert_erase (Finset.mem_univ a)]`. Then use the resulting hypothesis. Use `⟨((Finset.univ.erase a).toList.map (f κ)).prod, fun κ' hκ' => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpw : ((Finset.univ : Finset D.what₂.Tau).toList.map (f κ')).Pairwise Commute` using `List.pairwise_map.2 ((Finset.nodup_toList _).imp fun {τ τ'} hne => kAt_comm hθ hfr (Ne.symm hne) _ _)`. Establish `e1 : kInf θ V ε fr κ' = f κ' a * ((Finset.univ.erase a).toList.map (f κ')).prod`. Rewrite using `[kInf, (hperm.map (f κ')).prod_eq' hpw, List.map_cons, List.prod_cons]`. Establish `e2 : (Finset.univ.erase a).toList.map (f κ') = (Finset.univ.erase a).toList.map (f κ)` using `List.map_congr_left fun τ hτ => by`. Simplify using `only [f, hκ' τ (Finset.ne_of_mem_erase (Finset.mem_toList.1 hτ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Use `(Commute.list_prod_right _ _ fun x hx => ?_).eq` and prove the remaining obligations. Take `⟨τ, hτ, rfl⟩` from `List.mem_map.1 hx`. Conclude with `kAt_comm hθ hfr (Finset.ne_of_mem_erase (Finset.mem_toList.1 hτ)) _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_kInf_eq_mul (hθ : IsInfFam θ) (hfr : IsFrameFam V ε fr) (κ : ∀ τ, Formalism.REAL.KG (ε τ)) (a : D.what₂.Tau) :
     ∃ y : GA D V, ∀ κ' : ∀ τ, Formalism.REAL.KG (ε τ), (∀ τ, τ ≠ a → κ' τ = κ τ) →

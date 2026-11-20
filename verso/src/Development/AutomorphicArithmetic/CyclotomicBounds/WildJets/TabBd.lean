@@ -8,17 +8,15 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 
 /- English proof (translation)
-Introduce `D hI S dl hL cc hcc δ t0 hC ht a b e0 he0 Ls Lt hLs hLt l _ hEs hEt k hk hsp κ n g r s hκ hκ1 hs hr lam mon`. Establish `hp : l.Prime` using `Fact.out`. Establish `hp0 : (0 : ℝ) < l` using `by exact_mod_cast hp.pos`. Take `⟨β, M, hβ, hloc, hM, hMl, hcmb⟩` from `UpperTheory.WildA.cmbIop D hI cc hcc δ t0 hC ht a b e0 he0 Ls Lt hLs hLt l lam hEs hEt k hk`. Establish `hv : padicValNat l (M * k) = padicValNat l k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[padicValNat.mul hM.ne' hk.ne', padicValNat.eq_zero_of_not_dvd (hp.coprime_iff_not_dvd.1 hMl.symm), zero_add]`. Establish `hsp' : l ∣ M * k → SplitIn D l` using `fun h => hsp (hMl.symm.dvd_of_dvd_mul_left h)`. Establish `hkn` using `Term.norm_natCast_inv l hk.ne'`. Establish `hk0 : 0 < ‖(k : ℂ_[l])‖` using `norm_pos_iff.2 (by exact_mod_cast hk.ne')`. Establish `hrb : ∀ i, KernelAt.Bd lam ((l : ℝ) ^ ((g : ℝ) * (padicValNat l k : ℝ))) (r i : ℂ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Use `⟨(r i).2, ?_⟩` and prove the remaining obligations. Establish `h1 : ‖lam ((k : Qbar) ^ g * r i)‖ ≤ 1` using `KernelAt.norm_le_one_of_isIntegral (by`. Apply the tactic sequence `convert map_isIntegral_int lam (hr i) <;> exact Subsingleton.elim _ _)`. Rewrite `h1` using `[map_mul, map_pow, map_natCast, norm_mul, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm, Real.rpow_mul_natCast hp0.le, ← hkn, inv_pow, ← one_div, le_div_iff₀ (pow_pos hk0 g), mul_comm]`. Conclude with `h1`. Establish `hκb : KernelAt.Bd lam 1 κ`. Take `⟨h, -⟩` from `hκ`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hκ1 lam`. Rewrite `h1` using `[lamC, dif_pos h]`. Conclude with `h1.le`. Establish `hall` using `KernelAt.Cmb.smul hκb (KernelAt.Cmb.sum fun i => KernelAt.Cmb.smul (hrb i) (hcmb (s i) (hs i)))`. Establish `h` using `UpperTheory.WildA.cmbJet D hI S dl hL cc hcc δ t0 hC ht a b _ l lam β hβ hloc (M * k) (Nat.mul_pos hM hk) hsp' _ (by positivity) _ hall mon`.
-
-Rewrite `h` using `[hv, one_mul, mul_one, ← Real.rpow_add hp0, add_comm]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.tabBd :
     ∀ (D : D7), Inp D → ∀ (S : Finset ℕ) (dl : ℕ → ℝ), Letters D S dl → ∀ (cc : Ideal (𝓞 D.host.K)), cc = ⊤ → ∀ (δ t0 : ℂ), Crv D cc δ →

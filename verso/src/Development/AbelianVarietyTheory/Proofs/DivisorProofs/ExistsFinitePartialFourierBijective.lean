@@ -32,7 +32,7 @@ variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 def chiF (t : FiniteAdeleRing (𝓞 F) F) : ℂ := (finiteAdelicChar F t : ℂ)
 
 /- English proof (translation)
-Use `(GlobalTheory.AdelicSvN.Weyl.isStd_eq hψ _).trans ?_` and prove the remaining obligations. Rewrite using `[chiF, finiteAdelicChar_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psi_fin_eq {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : FiniteAdeleRing (𝓞 F) F) :
     ψ (((0, t) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F) : AF F) = chiF t := by
@@ -48,7 +48,7 @@ def pf (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (w : κ ⊕ κ �
   finiteFourierPi F (slice g (w ∘ Sum.inl)) (w ∘ Sum.inr)
 
 /- English proof (translation)
-Apply the tactic sequence `have hc : Continuous fun ξ : κ → FiniteAdeleRing (𝓞 F) F => (Sum.elim v ξ : κ ⊕ κ → _) := continuous_pi fun i => by cases i <;> simp [continuous_const, continuous_apply]`. Use `⟨hg.1.comp_continuous hc, ?_⟩` and prove the remaining obligations. Use `HasCompactSupport.intro ((hg.2.isCompact).image (continuous_pi fun i => continuous_apply (Sum.inr i))) fun ξ hξ => ?_` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport (f := g) (x := Sum.elim v ξ) fun h => hξ ⟨_, h, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slice_mem {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F)
     (v : κ → FiniteAdeleRing (𝓞 F) F) : slice g v ∈ finiteSchwartzBruhatPi F := by
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem slice_smul (c : ℂ) (f : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (v) : slice (c • f) v = c • slice f v := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [pf, slice_add, Pi.add_apply]`. Rewrite using `[finiteFourierPi_add (integrable_of_mem_finiteSchwartzBruhatPi (slice_mem hf _)) (integrable_of_mem_finiteSchwartzBruhatPi (slice_mem hg _))]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pf_add {f g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hf : f ∈ finiteSchwartzBruhatPi F)
     (hg : g ∈ finiteSchwartzBruhatPi F) : pf (f + g) = pf f + pf g := by
@@ -80,7 +80,7 @@ theorem pf_add {f g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hf : 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [pf, slice_smul, Pi.smul_apply]`. Rewrite using `[finiteFourierPi_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pf_smul (c : ℂ) (f : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) : pf (c • f) = c • pf f := by
   funext w
@@ -89,7 +89,7 @@ theorem pf_smul (c : ℂ) (f : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → �
   rfl
 
 /- English proof (translation)
-Use `pf_smul (F := F) (κ := κ) 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pf_zero : pf (0 : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) = 0 := by
   have := pf_smul (F := F) (κ := κ) 0 0
@@ -99,9 +99,9 @@ def gmap (c : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F → ℂ) : κ ⊕ κ → 
   Sum.elim (c ∘ Sum.inl) (fun j => finiteFourier F (c (Sum.inr j)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `hs : slice (finiteTensor c) (w ∘ Sum.inl) = (∏ j, c (Sum.inl j) (w (Sum.inl j))) • finiteTensor (c ∘ Sum.inr)`. Use function extensionality and compare the values at `ξ`. Simplify using `[slice, finiteTensor, Fintype.prod_sum_type]`. Rewrite using `[pf, hs, finiteFourierPi_smul, finiteFourierPi_finiteTensor]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[finiteTensor, gmap, Fintype.prod_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pf_tensor (c : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F → ℂ) :
     pf (finiteTensor c) = finiteTensor (gmap c) := by
@@ -114,13 +114,13 @@ theorem pf_tensor (c : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F → ℂ) :
   simp [finiteTensor, gmap, Fintype.prod_sum_type]
 
 /- English proof (translation)
-Rewrite `hg` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Rewrite using `[pf_tensor]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `finiteTensor_mem fun i => ?_` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl j => exact cosetIndicator_mem_finiteSchwartzBruhat _ _`. Consider the case `inr j => exact finiteFourier_mem_finiteSchwartzBruhat (cosetIndicator_mem_finiteSchwartzBruhat _ _)`. Consider the case `zero => rw [pf_zero]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add g h hg hh ihg ihh`. Rewrite `hg`, `hh` using `[← finiteSchwartzBruhatPi_eq_span]`. Rewrite using `[pf_add hg hh]`. Conclude with `add_mem ihg ihh`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c g _ ih`. Rewrite using `[pf_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+A detailed English derivation is pending.
 -/
 theorem pf_mem {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F) :
     pf g ∈ finiteSchwartzBruhatPi F := by
@@ -143,7 +143,7 @@ theorem pf_mem {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g 
     exact Submodule.smul_mem _ c ih
 
 /- English proof (translation)
-Establish `h2` using `finiteFourier_mem_finiteSchwartzBruhat (finiteFourier_mem_finiteSchwartzBruhat hf)`. Rewrite using `[finiteFourier_finiteFourier h2, finiteFourier_finiteFourier hf]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fourier_four {f : FiniteAdeleRing (𝓞 F) F → ℂ} (hf : f ∈ finiteSchwartzBruhat F) :
     finiteFourier F (finiteFourier F (finiteFourier F (finiteFourier F f))) = f := by
@@ -153,15 +153,15 @@ theorem fourier_four {f : FiniteAdeleRing (𝓞 F) F → ℂ} (hf : f ∈ finite
   simp
 
 /- English proof (translation)
-Rewrite `hh` using `[finiteSchwartzBruhatPi_eq_span]`. Proceed by induction on `hh using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨⟨I, a⟩, rfl⟩` from `hg`. Set `c : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F → ℂ` to `fun i => cosetIndicator I (a i)`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hc : ∀ i, c i ∈ finiteSchwartzBruhat F` using `fun i => cosetIndicator_mem_finiteSchwartzBruhat _ _`. Set `d : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F → ℂ` to `Sum.elim (c ∘ Sum.inl) (fun j => finiteFourier F (finiteFourier F (finiteFourier F (c (Sum.inr j)))))`. Use `⟨finiteTensor d, finiteTensor_mem fun i => ?_, ?_⟩` and prove the remaining obligations. Consider the cases of `i with`. Consider the case `inl j => exact hc _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inr j => exact finiteFourier_mem_finiteSchwartzBruhat (finiteFourier_mem_finiteSchwartzBruhat (finiteFourier_mem_finiteSchwartzBruhat (hc _)))`. Rewrite using `[pf_tensor]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Consider the cases of `i with`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the case `inl j => rfl`. Consider the case `inr j => exact fourier_four (hc _)`. Consider the case `zero => exact ⟨0, zero_mem _, pf_zero⟩`. Consider the case `add g h _ _ ihg ihh`. Take `⟨g1, hg1, e1⟩` from `ihg`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨g2, hg2, e2⟩` from `ihh`. Conclude with `⟨g1 + g2, add_mem hg1 hg2, by rw [pf_add hg1 hg2, e1, e2]⟩`. Consider the case `smul c g _ ih`. Take `⟨g1, hg1, e1⟩` from `ih`. Conclude with `⟨c • g1, Submodule.smul_mem _ c hg1, by rw [pf_smul, e1]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pf_surj {h : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hh : h ∈ finiteSchwartzBruhatPi F) :
     ∃ g ∈ finiteSchwartzBruhatPi F, pf g = h := by
@@ -194,13 +194,13 @@ theorem pf_surj {h : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hh : h
     exact ⟨c • g1, Submodule.smul_mem _ c hg1, by rw [pf_smul, e1]⟩
 
 /- English proof (translation)
-Simplify using `only [chiF, AddChar.map_add_eq_mul, Circle.coe_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiF_add (a b : FiniteAdeleRing (𝓞 F) F) : chiF (a + b) = chiF a * chiF b := by
   simp only [chiF, AddChar.map_add_eq_mul, Circle.coe_mul]
 
 /- English proof (translation)
-Use `letI : NonarchimedeanAddGroup (FiniteAdeleRing (𝓞 F) F) := { is_nonarchimedean := fun U hU => by`. Take `⟨J, hJ⟩` from `exists_idealFiniteAdeles_subset hU`. Conclude with `⟨⟨idealFiniteAdeles J, isOpen_idealFiniteAdeles J⟩, hJ⟩ }`. Use `GlobalTheory.WeilM.isLocallyConstant_addChar (Circle.coeHom.compAddChar (finiteAdelicChar F)) (continuous_subtype_val.comp continuous_finiteAdelicChar)` as an intermediate fact. Conclude with `this`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_chiF : IsLocallyConstant (chiF (F := F)) := by
   letI : NonarchimedeanAddGroup (FiniteAdeleRing (𝓞 F) F) :=
@@ -218,19 +218,19 @@ def phiInv (w : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) : κ ⊕ κ → Finite
   Sum.elim (w ∘ Sum.inl + w ∘ Sum.inr) (w ∘ Sum.inr)
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> simp [phi, phiInv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phiInv_phi (u : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) : phiInv (phi u) = u := by
   funext i; cases i <;> simp [phi, phiInv]
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> simp [phi, phiInv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem phi_phiInv (w : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) : phi (phiInv w) = w := by
   funext i; cases i <;> simp [phi, phiInv]
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => by cases i with | inl j => exact (continuous_apply (Sum.inl j)).sub (continuous_apply (Sum.inr j)) | inr j => exact continuous_apply (Sum.inr j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phi : Continuous (phi (F := F) (κ := κ)) :=
   continuous_pi fun i => by
@@ -239,7 +239,7 @@ theorem continuous_phi : Continuous (phi (F := F) (κ := κ)) :=
     | inr j => exact continuous_apply (Sum.inr j)
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => by cases i with | inl j => exact (continuous_apply (Sum.inl j)).add (continuous_apply (Sum.inr j)) | inr j => exact continuous_apply (Sum.inr j)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_phiInv : Continuous (phiInv (F := F) (κ := κ)) :=
   continuous_pi fun i => by
@@ -248,7 +248,7 @@ theorem continuous_phiInv : Continuous (phiInv (F := F) (κ := κ)) :=
     | inr j => exact continuous_apply (Sum.inr j)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg.1.comp_continuous ha, HasCompactSupport.intro (hg.2.isCompact.image hb) fun u hu => image_eq_zero_of_notMem_tsupport (f := g) (x := a u) fun h => hu ⟨_, h, hba u⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_mem {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F)
     {a b : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)}
@@ -261,14 +261,14 @@ def B0 (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) : (κ ⊕ κ →
   pf g ∘ phi
 
 /- English proof (translation)
-The claim follows from `comp_mem (pf_mem hg) continuous_phi continuous_phiInv phiInv_phi`.
+A detailed English derivation is pending.
 -/
 theorem finitePartialFourier_mem_finiteSchwartzBruhatPi {g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F) :
     B0 g ∈ finiteSchwartzBruhatPi F :=
   comp_mem (pf_mem hg) continuous_phi continuous_phiInv phiInv_phi
 
 /- English proof (translation)
-Take `⟨g, hg, e⟩` from `pf_surj (comp_mem hh continuous_phiInv continuous_phi phi_phiInv)`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `u`. Simplify using `only [B0, Function.comp_apply, e, phiInv_phi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem finitePartialFourier_surjective {h : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hh : h ∈ finiteSchwartzBruhatPi F) :
     ∃ g ∈ finiteSchwartzBruhatPi F, B0 g = h := by
@@ -278,22 +278,22 @@ theorem finitePartialFourier_surjective {h : (κ ⊕ κ → FiniteAdeleRing (�
   simp only [B0, Function.comp_apply, e, phiInv_phi]
 
 /- English proof (translation)
-Simplify using `only [B0, pf_add hf hg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem finitePartialFourier_add' {f g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hf : f ∈ finiteSchwartzBruhatPi F)
     (hg : g ∈ finiteSchwartzBruhatPi F) : B0 (f + g) = B0 f + B0 g := by
   simp only [B0, pf_add hf hg]; rfl
 
 /- English proof (translation)
-Simplify using `only [B0, pf_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem finitePartialFourier_smul' (c : ℂ) (f : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) : B0 (c • f) = c • B0 f := by
   simp only [B0, pf_smul]; rfl
 
 /- English proof (translation)
-Simplify using `only [pf, finiteFourierPi, slice, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ξ => ?_)` and prove the remaining obligations. Establish `e1 : Sum.elim (w ∘ Sum.inl) ξ ⬝ᵥ z = (w ∘ Sum.inl) ⬝ᵥ (z ∘ Sum.inl) + ∑ i, ξ i * z (Sum.inr i)`. Simplify using `[dotProduct, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∑ i, ξ i * (w ∘ Sum.inr + z ∘ Sum.inr) i = ∑ i, ξ i * (w ∘ Sum.inr) i + ∑ i, ξ i * z (Sum.inr i)`. Simplify using `[mul_add, Finset.sum_add_distrib]`. Express the relevant statement in the definitionally equal form `chiF _ * g _ * chiF _ = chiF _ * (g _ * chiF _)`. Rewrite using `[e1, e2, chiF_add, chiF_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pf_mul_char (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (z w : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) :
     pf (fun u => chiF (u ⬝ᵥ z) * g u) w =
@@ -310,13 +310,13 @@ theorem pf_mul_char (g : (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (z 
   ring
 
 /- English proof (translation)
-Establish `hμ` using `Measure.isAddLeftInvariant_eq_smul (Measure.addHaar : Measure (κ → FiniteAdeleRing (𝓞 F) F)) (finiteMeasurePi F)`. Use `set c := (Measure.addHaar : Measure (κ → FiniteAdeleRing (𝓞 F) F)).addHaarScalarFactor (finiteMeasurePi F) with hcdef`. Establish `hc : 0 < c` using `Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _`. Use `⟨(c : ℂ), by exact_mod_cast hc.ne', fun g hg => ?_⟩` and prove the remaining obligations. Establish `hphi : ∀ v : κ → FiniteAdeleRing (𝓞 F) F, phi (Sum.elim v v) = Sum.elim (0 : κ → FiniteAdeleRing (𝓞 F) F) v`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro v; funext i; cases i <;> simp [phi]`. Establish `h1 : ∀ v, B0 g (Sum.elim v v) = finiteFourierPi F (slice g 0) v`. Introduce `v`. Simplify using `only [B0, Function.comp_apply, hphi, pf, Sum.elim_comp_inl, Sum.elim_comp_inr]`. Repeatedly rewrite using `[h1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hμ, integral_smul_nnreal_measure]`. Establish `e : finiteFourierPi F (finiteFourierPi F (slice g 0)) 0 = ∫ v, finiteFourierPi F (slice g 0) v ∂finiteMeasurePi F`. Rewrite using `[finiteFourierPi]`. Simplify using the standard rewrite rules. Establish `h2` using `congrFun (finiteFourierPi_finiteFourierPi (slice_mem hg 0)) 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, h2]`. Simplify using `[slice, NNReal.smul_def]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_diag :
     ∃ C : ℂ, C ≠ 0 ∧ ∀ g ∈ finiteSchwartzBruhatPi F (ι := κ ⊕ κ),
@@ -347,15 +347,15 @@ end GlobalTheory.PartialFourierFin
 open GlobalTheory.PartialFourierFin in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _`. Set `L : SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) →ₗ[ℂ] ((κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ)` to `{ toFun := fun g => B0 g.1 map_add' := fun f g => finitePartialFourier_add' f.2 g.2 map_smul' := fun c f => finitePartialFourier_smul' c f.1 }`. Take `⟨B, hB⟩` from `LinearMap.exists_extend L`. Establish `hB' : ∀ g ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F), B g = B0 g` using `fun g hg => LinearMap.congr_fun hB ⟨g, hg⟩`. Take `⟨C, hC0, hC⟩` from `integral_diag (F := F) (κ := κ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨B, fun g hg => ?_, fun g hg => ?_, fun z => ⟨z ∘ Sum.inr, z ∘ Sum.inl, fun g hg => ?_⟩, C, hC0, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[hB' g hg]`. Conclude with `finitePartialFourier_mem_finiteSchwartzBruhatPi hg`. Take `⟨g', hg', e⟩` from `finitePartialFourier_surjective hg`. Conclude with `⟨g', hg', by rw [hB' g' hg', e]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `only [psi_fin_eq hψ]`. Establish `hcont : Continuous fun u : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F => u ⬝ᵥ z` using `continuous_finset_sum _ fun i _ => (continuous_apply i).mul continuous_const`. Establish `hm : (fun u => chiF (u ⬝ᵥ z) * g u) ∈ SB (κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)` using `⟨(isLocallyConstant_chiF.comp_continuous hcont).mul hg.1, hg.2.mul_left⟩`. Rewrite using `[hB' _ hm, hB' g hg]`. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [B0, Function.comp_apply, pf_mul_char]`. Establish `e1 : (phi u ∘ Sum.inl) ⬝ᵥ (z ∘ Sum.inl) = u ⬝ᵥ Sum.elim (z ∘ Sum.inl) (-(z ∘ Sum.inl))`. Simplify using `[phi, dotProduct, Fintype.sum_sum_type, sub_eq_add_neg, add_mul, Finset.sum_add_distrib]`. Establish `e2 : Sum.elim (phi u ∘ Sum.inl) (phi u ∘ Sum.inr + z ∘ Sum.inr) = phi (u + Sum.elim (z ∘ Sum.inr) (z ∘ Sum.inr))`. Apply the tactic sequence `funext i; cases i <;> simp [phi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Rewrite using `[hB' g hg]`. Conclude with `hC g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PartialFourierFin.exists_partialFourier_diag : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ],
     ∃ B : ((κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ) →ₗ[ℂ] ((κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) → ℂ),

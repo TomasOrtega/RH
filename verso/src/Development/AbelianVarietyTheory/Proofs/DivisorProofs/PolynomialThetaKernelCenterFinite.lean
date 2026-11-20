@@ -16,7 +16,7 @@ namespace GlobalTheory.ThKZFinSmall
 open GlobalTheory.WeakHolFamily in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [dop, Pi.add_apply, Finsupp.sum]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[foldr_add (J := J) hf hh l (hz l hl), Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dop_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : ∀ l ∈ z.support, ∀ γ ∈ l, IsRealLine σ J γ)
@@ -28,15 +28,13 @@ theorem dop_add {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   rw [foldr_add (J := J) hf hh l (hz l hl), Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_empty, dop, Pi.zero_apply, Finsupp.sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.WeakHolFamily.foldr_zero (J := J) l]`. Simplify using the standard rewrite rules. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi]`. Establish `hs : IsSm σ J (∑ j ∈ s, ψ j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ∀ t : Finset ι, (∀ j ∈ t, IsSm σ J (ψ j)) → IsSm σ J (∑ j ∈ t, ψ j)`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => intro _`. Conclude with `GlobalTheory.WeakHolFamily.smoothLines_zero (J := J)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert j t hj iht`. Introduce `h`. Rewrite using `[Finset.sum_insert hj]`. Conclude with `GlobalTheory.WeakHolFamily.smoothLines_add (J := J) (h j (Finset.mem_insert_self _ _)) (iht fun k hk => h k (Finset.mem_insert_of_mem hk))`. Conclude with `this s fun j hj => hψ j (Finset.mem_insert_of_mem hj)`.
-
-Rewrite using `[dop_add hz (hψ i (Finset.mem_insert_self _ _)) hs, ih fun j hj => hψ j (Finset.mem_insert_of_mem hj)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dop_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {z : List (ℝ → GAd σ J) →₀ ℂ} (hz : ∀ l ∈ z.support, ∀ γ ∈ l, IsRealLine σ J γ)
@@ -66,17 +64,15 @@ theorem dop_sum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
     rw [dop_add hz (hψ i (Finset.mem_insert_self _ _)) hs, ih fun j hj => hψ j (Finset.mem_insert_of_mem hj)]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hK hT c hc hcs Φ hΦ`. Take `⟨m, f, φ, hgood, rfl⟩` from `GlobalTheory.T.polarized_data_tensor_decomposition F E σ B a a' G X om om' hT Φ hΦ`. Establish `hD : ∀ i, pure (f i) (φ i) ∈ GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁` using `fun i => ⟨Submodule.subset_span ⟨f i, (hgood i).1, φ i, (hgood i).2.1, (hgood i).2.2.1, rfl⟩, Submodule.subset_span ⟨f i, φ i, (hgood i).2.1, (hgood i).2.2.1, (hgood i).2.2.2, rfl⟩⟩`. Take `⟨Lin, hLin⟩` from `GlobalTheory.ThKLinT.thetaIntegral_linear_of_triple F E σ B a a' G X om om' hK hT`. Set `θi : Fin m → GAd σ (c • G.W.J.map σ) → ℂ` to `fun i x => G.M'.I om' (pure (f i) (φ i)) ((toGAd hσ G.W.J hc).symm x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hI : G.M'.I om' (∑ i, pure (f i) (φ i)) = ∑ i, G.M'.I om' (pure (f i) (φ i))`. Establish `h1` using `hLin ⟨∑ i, pure (f i) (φ i), Submodule.sum_mem _ fun i _ => hD i⟩`. Establish `h2 : (⟨∑ i, pure (f i) (φ i), Submodule.sum_mem _ fun i _ => hD i⟩ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) = ∑ i, ⟨pure (f i) (φ i), hD i⟩` using `by ext1; simp`. Rewrite using `[← h1, h2, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hLin _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : (fun x => G.M'.I om' (∑ i, pure (f i) (φ i)) ((toGAd hσ G.W.J hc).symm x)) = ∑ i, θi i`. Use function extensionality and compare the values at `x`. Rewrite using `[hI]`. Simplify using `[θi, Finset.sum_apply]`. Establish `hfd : ∀ i, FiniteDimensional ℂ (Submodule.span ℂ {g | ∃ z, IsCentral σ (c • G.W.J.map σ) z ∧ g = dop z (θi i)})`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Take `⟨hsm, hline, hk, hrank⟩` from `GlobalTheory.T.weil_theta_imaginary_scalar F E σ hσ B a a' G X om om' hK hT c hc hcs (φ i) (hgood i).2.1 (hgood i).2.2.1 (hgood i).2.2.2`. Take `⟨L, hL⟩` from `GlobalTheory.T.weil_theta_imaginary_vanish F E σ hσ B a a' G X om om' hK hT c hc hcs (φ i) (hgood i).2.1 (hgood i).2.2.1 (hgood i).2.2.2`. Conclude with `GlobalTheory.T.smooth_module_finite_rank F E σ _ (c • G.W.J.map σ) _ ((toGAd hσ G.W.J hc) '' KInf σ G.W B.emb) (by rintro _ ⟨k, hk, rfl⟩; exact GlobalTheory.T.unitary_to_GAd_inf_points F E σ hσ _ G.W c hc k hk.1) hsm hline (by rintro _ ⟨k, hk', rfl⟩ ψ hψ; exact hk k hk' ψ hψ) hra …`. Establish `hsm : ∀ i, IsSm σ (c • G.W.J.map σ) (θi i)` using `fun i => (GlobalTheory.T.weil_theta_imaginary_scalar F E σ hσ B a a' G X om om' hK hT c hc hcs (φ i) (hgood i).2.1 (hgood i).2.2.1 (hgood i).2.2.2).1 _ (Submodule.subset_span ⟨f i, (hgood i).1, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := hfd`. Use `Submodule.finiteDimensional_of_le (S₂ := ⨆ i, Submodule.span ℂ {g | ∃ z, IsCentral σ (c • G.W.J.map σ) z ∧ g = dop z (θi i)}) ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Rewrite using `[hsum, dop_sum hz.1 Finset.univ θi fun i _ => hsm i]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i (Submodule.subset_span ⟨z, hz, rfl⟩)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zfin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

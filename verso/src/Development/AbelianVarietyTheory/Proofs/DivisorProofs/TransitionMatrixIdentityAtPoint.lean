@@ -9,11 +9,9 @@ open GlobalTheory.ArLieBase
 namespace GlobalTheory.ArLieBase
 
 /- English proof (translation)
-Introduce `X M r U f hf K _ x h c a`. Establish `e : trCo hf f c a = if c = a then 1 else 0`. Unfold `trCo`. Establish `: Twist.resM M (inf_le_right : U ⊓ U ≤ U) (f a) = (hf.basis (inf_le_left : U ⊓ U ≤ U)) a`. Rewrite using `[VB.IsFrame.basis_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [eq_comm]`. Rewrite using `[e]`. Use `split_ifs`. Conclude with `map_one _`.
-
-Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalPt_trCo_self : ∀ {X : Scheme.{0}} {M : X.Modules} {r : ℕ} {U : X.Opens} {f : Fin r → Γ(M, U)} (hf : VB.IsFrame f) {K : Type} [CommRing K] (x : Sp K ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ (U ⊓ U)) (c a : Fin r), TangentOrigin.evalPt x _ h (trCo hf f c a) = if c = a then 1 else 0 := by
   intro X M r U f hf K _ x h c a

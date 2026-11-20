@@ -15,14 +15,14 @@ def logReg (u : Fin n → ℂ) (ε : ℝ) (x : Fin n → ℂ) : ℝ :=
   Real.log (‖linEval u x‖ ^ 2 + ε) / 2
 
 /- English proof (translation)
-Unfold `linEval`. Conclude with `ContDiff.sum fun j _ => contDiff_const.mul ((contDiff_apply ℝ ℂ j).restrict_scalars ℝ)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_linEval (u : Fin n → ℂ) : ContDiff ℝ ∞ (fun x : Fin n → ℂ => linEval u x) := by
   unfold linEval
   exact ContDiff.sum fun j _ => contDiff_const.mul ((contDiff_apply ℝ ℂ j).restrict_scalars ℝ)
 
 /- English proof (translation)
-Unfold `logReg`. Use `ContDiff.div_const (ContDiff.log (((contDiff_norm_sq ℝ).comp (contDiff_linEval u)).add contDiff_const) fun x => ?_) _` and prove the remaining obligations. Establish `: 0 ≤ ‖linEval u x‖ ^ 2` using `sq_nonneg _`. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem contDiff_logReg (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) : ContDiff ℝ ∞ (logReg u ε) := by
   unfold logReg
@@ -33,7 +33,7 @@ theorem contDiff_logReg (u : Fin n → ℂ) {ε : ℝ} (hε : 0 < ε) : ContDiff
   linarith
 
 /- English proof (translation)
-Unfold `logReg`. Rewrite using `[add_zero, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logReg_zero (u : Fin n → ℂ) (x : Fin n → ℂ) :
     logReg u 0 x = Real.log ‖linEval u x‖ := by

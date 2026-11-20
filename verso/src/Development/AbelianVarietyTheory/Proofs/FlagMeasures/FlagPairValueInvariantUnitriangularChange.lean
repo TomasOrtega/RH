@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.UniChange
 
 /- English proof (translation)
-Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `c hc`. Apply `hf` to reduce the goal to its premises. Assume the negation of the conclusion as `hlt`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hc ⟨⟨c.val, by omega⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_castLE {R : Type} [AddCommMonoid R] {l N : ℕ} (h : l ≤ N) (f : Fin N → R)
     (hf : ∀ c : Fin N, l ≤ c.val → f c = 0) :
@@ -25,19 +25,17 @@ theorem sum_castLE {R : Type} [AddCommMonoid R] {l N : ℕ} (h : l ≤ N) (f : F
   exact hc ⟨⟨c.val, by omega⟩, rfl⟩
 
 /- English proof (translation)
-Unfold `leadMinorE`. Use `split_ifs with h`. Use `set e := Fin.castLE h with he`. Establish `hsub : (L * Z * A).submatrix e e = L.submatrix e e * Z.submatrix e e * A.submatrix e e`. Use extensionality with `i j`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[sum_castLE h]`. Use `Finset.sum_congr rfl (fun d _ => ?_)` and prove the remaining obligations. Use `congr 1`. Rewrite using `[sum_castLE h]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Rewrite using `[hL0 _ _ (by rw [Fin.lt_def]; simp [he]; omega), zero_mul]`. Introduce `d hd`. Rewrite using `[hA0 _ _ (by rw [Fin.lt_def]; simp [he]; omega), mul_zero]`. Establish `hLd : (L.submatrix e e).det = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Conclude with `Finset.prod_eq_one (fun i _ => by simp only [Matrix.submatrix_apply]; exact hL1 _)`. Introduce `i j hij`. Simplify using `only [Matrix.submatrix_apply]`. Apply `hL0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.lt_def]`. Conclude with `(show (i:ℕ) < j from OrderDual.toDual_lt_toDual.mp hij)`. Establish `hAd : (A.submatrix e e).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Conclude with `Finset.prod_eq_one (fun i _ => by simp only [Matrix.submatrix_apply]; exact hA1 _)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j hij`. Simplify using `only [Matrix.submatrix_apply]`. Apply `hA0` to reduce the goal to its premises. Rewrite using `[Fin.lt_def]`. Conclude with `(show (j:ℕ) < i from hij)`.
-
-Rewrite using `[hsub, Matrix.det_mul, Matrix.det_mul, hLd, hAd, one_mul, mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem leadMinorE_mul_uni {K : Type} [Field K] {N : ℕ} (L Z A : Matrix (Fin N) (Fin N) K)
     (hL0 : ∀ a b : Fin N, a < b → L a b = 0) (hL1 : ∀ a : Fin N, L a a = 1)
@@ -81,11 +79,11 @@ end GlobalTheory.UniChange
 
 open GlobalTheory.UniChange in
 /- English proof (translation)
-Introduce `D T T' F G F' G' A A' hA hA' hZ`. Establish `key : ∀ l, leadMinorE (ZhatL G G') l = leadMinorE (ZhatL F F') l`. Introduce `l`. Rewrite using `[hZ]`. Use `leadMinorE_mul_uni _ _ _ ?_ ?_ hA'.1 hA'.2 l` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Simplify using `[Matrix.map_apply, Matrix.transpose_apply, hA.1 b a hab]`. Introduce `a`. Simplify using `[Matrix.map_apply, Matrix.transpose_apply, hA.2 a]`. Establish `k1` using `key (D.R.rS + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k2` using `key D.R.rS`. Simplify using `only [Gval, Gflag, Dl]`. Simplify using `only [ZhatL] at k1 k2`. Rewrite using `[k1, k2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.LocOver.gval_uni_change : ∀ (D : D7) {T T' : D.host.E} (F G : LFlag (VS D) D.R.rS T) (F' G' : LFlag (VS D) D.R.rS T') (A A' : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E), Uni A → Uni A' → ZhatL G G' = A.transpose.map star * ZhatL F F' * A' → Gval G G' = Gval F F' := by
   intro D T T' F G F' G' A A' hA hA' hZ

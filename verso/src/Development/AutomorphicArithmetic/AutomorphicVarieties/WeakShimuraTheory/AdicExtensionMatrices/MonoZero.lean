@@ -5,17 +5,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Sgn
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Establish `hF : ∀ a b : A, a ∈ E → b ∈ E → (Matrix.diagonal (fun k => a * (d k - b)) : M4 A) ∈ S`. Introduce `a b ha hb`. Establish `h : (Matrix.diagonal (fun k => a * (d k - b)) : M4 A) = (⟨a, ha⟩ : E) • (Matrix.diagonal d - algebraMap E (M4 A) ⟨b, hb⟩)`. Use extensionality with `k l`. Distinguish the cases in `hkl : k = l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hkl` using the available equality. Simplify using `[Matrix.diagonal_apply, Algebra.algebraMap_eq_smul_one, Matrix.one_apply, Subring.smul_def, mul_sub]`. Simplify using `[Matrix.diagonal_apply, Algebra.algebraMap_eq_smul_one, Matrix.one_apply, hkl, Subring.smul_def]`. Rewrite using `[h]`. Conclude with `S.smul_mem (S.sub_mem hd (S.algebraMap_mem _)) _`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hP` using `S.mul_mem (S.mul_mem (hF u1 (d j1) m1 (hE j1)) (hF u2 (d j2) m2 (hE j2))) (hF u3 (d j3) m3 (hE j3))`. Rewrite `hP` using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `hP using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k l`. Distinguish the cases in `hkl : k = l`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hkl` using the available equality. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Simplify using `[Matrix.single_apply, e1, e2, e3]`. Break down `hc k with h | h | h | h` into its components or cases.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Conclude with `absurd h hki`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply, Ne.symm n1]`. Substitute `h` using the available equality. Simplify using `[Matrix.single_apply, Ne.symm n2]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.single_apply, Ne.symm n3]`. Simplify using `[Matrix.single_apply, Matrix.diagonal_apply, hkl]`. Introduce and unpack `rfl rfl`. Conclude with `absurd rfl hkl`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem {A : Type} [CommRing A] (E : Subring A)
     (S : Subalgebra E (M4 A)) (d : Fin 4 → A) (hd : Matrix.diagonal d ∈ S) (hE : ∀ i, d i ∈ E)
@@ -54,13 +54,11 @@ private theorem UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem {A :
     exact absurd rfl hkl
 
 /- English proof (translation)
-Use `fin_cases i`. Take `⟨u1, m1, e1⟩` from `hu 0 1 (by decide)`. Take `⟨u2, m2, e2⟩` from `hu 0 2 (by decide)`. Take `⟨u3, m3, e3⟩` from `hu 0 3 (by decide)`. Conclude with `UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem E S d hd hE 0 1 2 3 (by decide) (by decide) (by decide) (by decide) u1 u2 u3 m1 m2 m3 e1 e2 e3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u1, m1, e1⟩` from `hu 1 0 (by decide)`. Take `⟨u2, m2, e2⟩` from `hu 1 2 (by decide)`. Take `⟨u3, m3, e3⟩` from `hu 1 3 (by decide)`. Conclude with `UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem E S d hd hE 1 0 2 3 (by decide) (by decide) (by decide) (by decide) u1 u2 u3 m1 m2 m3 e1 e2 e3`. Take `⟨u1, m1, e1⟩` from `hu 2 0 (by decide)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u2, m2, e2⟩` from `hu 2 1 (by decide)`. Take `⟨u3, m3, e3⟩` from `hu 2 3 (by decide)`. Conclude with `UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem E S d hd hE 2 0 1 3 (by decide) (by decide) (by decide) (by decide) u1 u2 u3 m1 m2 m3 e1 e2 e3`. Take `⟨u1, m1, e1⟩` from `hu 3 0 (by decide)`. Take `⟨u2, m2, e2⟩` from `hu 3 1 (by decide)`.
-
-Take `⟨u3, m3, e3⟩` from `hu 3 2 (by decide)`. Conclude with `UpperTheory.V.Ws.single_diag_mem_of_inverse_differences_mem E S d hd hE 3 0 1 2 (by decide) (by decide) (by decide) (by decide) u1 u2 u3 m1 m2 m3 e1 e2 e3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Ws.single_mem_of_diag {A : Type} [CommRing A] (E : Subring A) (S : Subalgebra E (M4 A)) (d : Fin 4 → A)
     (hd : Matrix.diagonal d ∈ S) (hE : ∀ i, d i ∈ E) (hu : ∀ i j, i ≠ j → ∃ u ∈ E, u * (d i - d j) = 1) (i : Fin 4) :
@@ -88,33 +86,29 @@ private theorem UpperTheory.V.Ws.single_mem_of_diag {A : Type} [CommRing A] (E :
       u1 u2 u3 m1 m2 m3 e1 e2 e3
 
 /- English proof (translation)
-Introduce `A Γ _ _ E r g0 hν htr hdiag hE hu`. Set `S : Subalgebra E (M4 A)` to `Algebra.adjoin E (Set.range r)`. Establish `hcl : ∀ y ∈ Submonoid.closure (Set.range r), ∃ g, r g = y`. Introduce `y hy`. Proceed by induction on `hy using Submonoid.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx => exact hx`. Consider the case `one => exact ⟨1, map_one r⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a * b, map_mul r a b⟩`. Establish `hsp : ∀ x ∈ S, x ∈ Submodule.span E (Submonoid.closure (Set.range r) : Set (M4 A))`. Introduce `x hx`. Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htrSp : ∀ x ∈ Submodule.span E (Submonoid.closure (Set.range r) : Set (M4 A)), Matrix.trace x ∈ E`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hcl y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `htr g`. Consider the case `zero`. Rewrite using `[Matrix.trace_zero]`. Conclude with `E.zero_mem`. Consider the case `add y z _ _ hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.trace_add]`. Conclude with `E.add_mem hy hz`. Consider the case `smul c y _ hy => show Matrix.trace ((c : A) • y) ∈ E`. Rewrite using `[Matrix.trace_smul, smul_eq_mul]`. Conclude with `E.mul_mem c.2 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `htrS : ∀ x ∈ S.toSubring, Matrix.trace x ∈ E` using `fun x hx => htrSp x (hsp x hx)`. Establish `hadj0 : adj (0 : M4 A) = 0`. Establish `h0` using `(grp A).2.2.2.1 0 0`. Simplify using `using h0`. Establish `hadjSp : ∀ x ∈ Submodule.span E (Submonoid.closure (Set.range r) : Set (M4 A)), adj x ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hcl y hy`. Take `⟨ν, hνE, hG⟩` from `hν g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `hinv : r g * r g⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel, map_one]`. Rewrite using `[(grp A).2.2.2.2.2.2.1 ν (r g) (r g⁻¹) hG hinv]`. Conclude with `S.smul_mem (Algebra.subset_adjoin ⟨g⁻¹, rfl⟩) (⟨ν, hνE⟩ : E)`. Consider the case `zero`. Rewrite using `[hadj0]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `S.zero_mem`. Consider the case `add y z _ _ hy hz`. Rewrite using `[(grp A).2.2.1]`. Conclude with `S.add_mem hy hz`. Consider the case `smul c y _ hy => show adj ((c : A) • y) ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(grp A).2.2.2.1]`. Conclude with `S.smul_mem hy c`. Establish `hadjS : ∀ x ∈ S.toSubring, adj x ∈ S.toSubring` using `fun x hx => hadjSp x (hsp x hx)`. Establish `hdg : Matrix.diagonal (fun i => r g0 i i) = r g0` using `(Matrix.isDiag_iff_diagonal_diag _).1 hdiag`. Establish `hsing : ∀ i, Matrix.single i i (1 : A) ∈ S.toSubring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i`. Use `UpperTheory.V.Ws.single_mem_of_diag E S (fun i => r g0 i i) ?_ hE hu i` and prove the remaining obligations. Rewrite using `[hdg]`. Conclude with `Algebra.subset_adjoin ⟨g0, rfl⟩`. Introduce `x hx`.
-
-Take `⟨L, hL0, rfl⟩` from `hx`. Establish `hres` using `sxGma E S.toSubring hsing htrS hadjS (L.map fun a => (r a.1, a.2)) (by`. Introduce `y hy`. Take `⟨a, _, rfl⟩` from `List.mem_map.1 hy`. Conclude with `Algebra.subset_adjoin ⟨a.1, rfl⟩)`.
-
-Use the proof step `(by rw [List.map_map]; exact hL0)`. Rewrite `hres` using `[List.map_map]`. Conclude with `hres`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxMonoZero :
     ∀ {A Γ : Type} [CommRing A] [Group Γ] (E : Subring A) (r : Γ →* M4 A) (g0 : Γ), (∀ g, ∃ ν ∈ E, IsGSp ν (r g)) → (∀ g, (r g).trace ∈ E) → (r g0).IsDiag → (∀ i, r g0 i i ∈ E) → (∀ i j, i ≠ j → ∃ u ∈ E, u * (r g0 i i - r g0 j j) = 1) → mono r 0 ⊆ E := by

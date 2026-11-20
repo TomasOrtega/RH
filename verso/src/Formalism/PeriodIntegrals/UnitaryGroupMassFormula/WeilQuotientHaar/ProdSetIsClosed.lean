@@ -11,9 +11,9 @@ section
 variable {G : Type} [TopologicalSpace G] [Group G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `only [prodSet, Set.mem_setOf_eq, Set.mem_mul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h, hh, rfl⟩`. Conclude with `⟨m, hm, h, hh, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨m, hm, h, hh, rfl⟩`. Conclude with `⟨m, hm, h, hh, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem prodSet_eq_mul (N H : Set G) : prodSet N H = N * H := by
   ext s
@@ -25,9 +25,9 @@ theorem prodSet_eq_mul (N H : Set G) : prodSet N H = N * H := by
     exact ⟨m, hm, h, hh, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[prodSet_eq_mul]`. Use `first`. Consider the case `exact hN.mul_isCompact hH`. Consider the case `exact IsClosed.mul_isCompact hN hH`. Consider the case `exact hN.mul_right_of_isCompact hH`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact IsClosed.mul_right_of_isCompact hN hH`. Consider the case `exact hN.mul_isCompact_right hH`. Consider the case `exact (hN.smul_left_of_isCompact hH)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prodSet_isClosed {N H : Set G} (hN : IsClosed N) (hH : IsCompact H) :
     IsClosed (prodSet N H) := by
@@ -41,11 +41,11 @@ theorem prodSet_isClosed {N H : Set G} (hN : IsClosed N) (hH : IsCompact H) :
     | exact (hN.smul_left_of_isCompact hH)
 
 /- English proof (translation)
-Take `⟨n1, nmul, ninv⟩` from `hN`. Take `⟨h1, hmul, hinv⟩` from `hH`. Use `⟨⟨1, n1, 1, h1, (mul_one 1).symm⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, h, hh, rfl⟩ _ ⟨m', hm', h', hh', rfl⟩`. Use `⟨m * (h * m' * h⁻¹), nmul _ hm _ (hnorm h hh m' hm'), h * h', hmul _ hh _ hh', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `first`. Consider the case `group`. Consider the case `simp [mul_assoc]`. Introduce and unpack `_ ⟨m, hm, h, hh, rfl⟩`. Use `⟨h⁻¹ * m⁻¹ * h⁻¹⁻¹, hnorm _ (hinv _ hh) _ (ninv _ hm), h⁻¹, hinv _ hh, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `first`. Consider the case `group`. Consider the case `simp [mul_assoc]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prodSet_isGrp {N H : Set G} (hN : IsGrp N) (hH : IsGrp H)
     (hnorm : ∀ h ∈ H, ∀ m ∈ N, h * m * h⁻¹ ∈ N) : IsGrp (prodSet N H) := by
@@ -65,11 +65,11 @@ theorem prodSet_isGrp {N H : Set G} (hN : IsGrp N) (hH : IsGrp H)
 end
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ muG _ N H hN hH gN gH hnorm hR`. Take `⟨μN, hNinv, hNf, hNpos⟩` from `hE G N hN gN`. Take `⟨μH, hHinv, hHf, hHpos⟩` from `hE G H hH.isClosed gH`. Establish `hconj` using `hC G N H hN hH gN gH hnorm μN hNinv hNf hNpos`. Take `⟨hPinv, hPf, hPpos, hPright, hPinvol⟩` from `hS G N H hN hH gN gH hnorm hR μN μH hNinv hNf hNpos hHinv hHf hHpos hconj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, hβm, hβ⟩` from `hB G (prodSet N H) (prodSet_isClosed hN hH) (prodSet_isGrp gN gH hnorm) (mulMap μN μH) hPinv hPf hPpos hPright`. Use `⟨μN, μH, β, hNinv, hHinv, hPinv, hβm, hβ, ?_⟩` and prove the remaining obligations. Introduce `F hF`. Use `haveI := hPf`. Establish `hsf : SigmaFinite (mulMap μN μH)` using `by first`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact inferInstance`. Consider the case `exact MeasureTheory.sigmaFinite_of_isFiniteMeasureOnCompacts _`. Conclude with `hW G muG (mulMap μN μH) hsf hPinvol β hβm hβ F hF`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem locPack_of (hE : HaarExist) (hC : ConjInv) (hS : SMeas) (hB : Bruhat) (hW : LocWeil) :
     LocPack := by

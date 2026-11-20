@@ -10,9 +10,9 @@ namespace Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Set `c` to `Module.finBasis F E`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image c)`. Establish `hyF : IsUnit ((y : ℤ) : F)` using `(Int.cast_ne_zero.mpr hy0).isUnit`. Use `⟨_, c.isUnitSMul (w := fun _ => ((y : ℤ) : F)) (fun _ => hyF), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.isUnitSMul_apply, Int.cast_smul_eq_zsmul F]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, (mem_integralClosure_iff ℤ E).mpr (hy _ (Finset.mem_image_of_mem c (Finset.mem_univ i)))⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_basis_mem_intOE :
     ∃ n : ℕ, ∃ b : Module.Basis (Fin n) F E, ∀ i, b i ∈ intOE E := by
@@ -25,9 +25,7 @@ private theorem exists_basis_mem_intOE :
   exact ⟨⟨_, (mem_integralClosure_iff ℤ E).mpr (hy _ (Finset.mem_image_of_mem c (Finset.mem_univ i)))⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis_mem_intOE (F := F) (E := E)`. Use `choose u hu using fun i => exists_sub_mem_intAd (F := F) (coord b i x)`. Use `⟨∑ i, u i • b i, mem_SS_of_coord b hb _ fun i => ?_⟩` and prove the remaining obligations. Establish `h1 : inclE (F` using `F) (AF F) (∑ j, u j • b j) = (∑ j, u j • b j) ⊗ₜ[F] (1 : AF F) := rfl`. Rewrite using `[map_sub, h1, coord_tmul, b.repr_sum_self, ← Algebra.algebraMap_eq_smul_one]`.
-
-Conclude with `hu i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem (x : AE F E) : ∃ e : E, x - inclE (F := F) (AF F) e ∈ SS F E := by
   obtain ⟨n, b, hb⟩ := exists_basis_mem_intOE (F := F) (E := E)
@@ -38,13 +36,13 @@ theorem exists_sub_mem (x : AE F E) : ∃ e : E, x - inclE (F := F) (AF F) e ∈
   exact hu i
 
 /- English proof (translation)
-Set `g` to `NumberField.RingOfIntegers.basis E`. Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image (fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin n => b.repr (algebraMap (𝓞 E) E (g p.1)) p.2))`. Use `⟨y, hy0, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩ i`. Establish `hz : algebraMap (𝓞 E) E z = ∑ j, g.repr z j • algebraMap (𝓞 E) E (g j)` using `by conv_lhs => rw [← g.sum_repr z]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [map_sum, map_zsmul]`. Establish `key : (y : F) * b.repr (algebraMap (𝓞 E) E z) i = ∑ j, g.repr z j • ((y : F) * b.repr (algebraMap (𝓞 E) E (g j)) i)`. Rewrite using `[hz, map_sum, Finsupp.finset_sum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, mul_smul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `sum_mem fun j _ => zsmul_mem ?_ _` and prove the remaining obligations. Establish `h2 : IsIntegral ℤ ((y : F) * b.repr (algebraMap (𝓞 E) E (g j)) i)`. Establish `h` using `hy _ (Finset.mem_image_of_mem _ (Finset.mem_univ (j, i)))`. Rewrite `h` using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Conclude with `⟨⟨_, (mem_integralClosure_iff ℤ F).mpr h2⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_int_ne_zero_mul_repr_mem_range {n : ℕ} (b : Module.Basis (Fin n) F E) :
     ∃ y : ℤ, y ≠ 0 ∧ ∀ e ∈ intOE E, ∀ i, (y : F) * b.repr e i ∈ (algebraMap (𝓞 F) F).range := by
@@ -72,13 +70,13 @@ private theorem exists_int_ne_zero_mul_repr_mem_range {n : ℕ} (b : Module.Basi
   exact ⟨⟨_, (mem_integralClosure_iff ℤ F).mpr h2⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis_mem_intOE (F := F) (E := E)`. Take `⟨y, hy0, hy⟩` from `exists_int_ne_zero_mul_repr_mem_range b`. Establish `hyF : ((y : 𝓞 F) : F) = (y : F)`. Rewrite using `[show ((y : 𝓞 F) : F) = algebraMap (𝓞 F) F (y : 𝓞 F) from rfl, map_intCast]`. Use `⟨(y : 𝓞 F), fun h => hy0 ?_, fun e he => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h'` using `congrArg (algebraMap (𝓞 F) F) h`. Rewrite `h'` using `[map_intCast, map_zero]`. Conclude with `h'` after adjusting the coercions. Establish `hc : ∀ i, (y : F) * b.repr e i ∈ (algebraMap (𝓞 F) F).range`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `coord_mem_of_mem_SS b (y : 𝓞 F) (by rw [hyF]; exact hy) he i`. Rewrite `h` using `[hyF, show inclE (F := F) (AF F) e = e ⊗ₜ[F] (1 : AF F) from rfl, coord_tmul, smul_smul, ← Algebra.algebraMap_eq_smul_one]`. Conclude with `mem_range_of_mem_intAd _ h`. Rewrite using `[hyF, ← b.sum_repr e, Finset.smul_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_smul]`. Take `⟨r, hr⟩` from `hc i`. Rewrite using `[← hr, Algebra.smul_def]`. Use `mul_mem ?_ (hb i)` and prove the remaining obligations. Conclude with `⟨⟨_, (mem_integralClosure_iff ℤ E).mpr ((r.isIntegral_coe).map (IsScalarTower.toAlgHom ℤ F E))⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_den_of_incl (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] :
@@ -106,27 +104,23 @@ theorem exists_den_of_incl (F E : Type) [Field F] [NumberField F] [Field E] [Num
   exact ⟨⟨_, (mem_integralClosure_iff ℤ E).mpr ((r.isIntegral_coe).map (IsScalarTower.toAlgHom ℤ F E))⟩, rfl⟩
 
 /- English proof (translation)
-Use `letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)`. Introduce `C hC`. Take `⟨n, b, hb⟩` from `exists_basis_mem_intOE (F := F) (E := E)`. Establish `hsm : ∀ (r : 𝓞 F) (a : AF F), a ∈ intAd F → algebraMap (𝓞 F) F r • a ∈ intAd F`. Introduce `r a ha`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def]`. Conclude with `mul_mem (algebraMap_mem_intAd r) ha`. Establish `pt : ∀ a : AF F, ∃ d : 𝓞 F, d ≠ 0 ∧ algebraMap (𝓞 F) F d • a ∈ intAd F`. Introduce `a`. Take `⟨u, hu⟩` from `exists_sub_mem_intAd (F := F) a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ({u} : Finset F)`. Establish `hyu : IsIntegral ℤ ((y : F) * u)`. Establish `h` using `hy u (Finset.mem_singleton_self u)`. Rewrite `h` using `[zsmul_eq_mul]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `m : 𝓞 F` to `⟨(y : F) * u, (mem_integralClosure_iff ℤ F).mpr hyu⟩`. Establish `hm : algebraMap (𝓞 F) F m = (y : F) * u` using `rfl`. Use `⟨(y : 𝓞 F), fun h => hy0 ?_, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (algebraMap (𝓞 F) F) h`. Rewrite `h'` using `[map_intCast, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'` after adjusting the coercions. Establish `e : algebraMap (𝓞 F) F (y : 𝓞 F) • a = algebraMap F (AF F) (algebraMap (𝓞 F) F (y : 𝓞 F)) * (a - algebraMap F (AF F) u) + algebraMap F (AF F) (algebraMap (𝓞 F) F m)`. Rewrite using `[hm, map_intCast, Algebra.smul_def, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem (mul_mem (algebraMap_mem_intAd _) hu) (algebraMap_mem_intAd m)`. Establish `den : ∀ K : Set (AF F), IsCompact K → ∃ d : 𝓞 F, d ≠ 0 ∧ ∀ a ∈ K, algebraMap (𝓞 F) F d • a ∈ intAd F`. Introduce `K hK`. Use `choose dp hdp0 hdp using pt`. Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun a : AF F => (fun z => z - a) ⁻¹' (intAd F : Set (AF F))) (fun a => (isOpen_intAd (F := F)).preimage (continuous_id.sub continuous_const)) (fun z _ => Set.mem_iUnion.mpr ⟨z, by show z - z ∈ intAd F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sub_self]`. Conclude with `zero_mem _⟩)`. Use `⟨∏ c ∈ t, dp c, Finset.prod_ne_zero_iff.mpr fun c _ => hdp0 c, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz'` using `ht hz`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe] at hz'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Take `⟨c, hct, hzc⟩` from `hz'`. Rewrite using `[← Finset.mul_prod_erase t dp hct]`. Establish `e : algebraMap (𝓞 F) F (dp c * ∏ c' ∈ t.erase c, dp c') • z = algebraMap (𝓞 F) F (dp c * ∏ c' ∈ t.erase c, dp c') • (z - c) + algebraMap (𝓞 F) F (∏ c' ∈ t.erase c, dp c') • (algebraMap (𝓞 F) F (dp c) • c)`. Rewrite using `[map_mul, mul_comm]`. Simplify using `only [smul_sub, mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `add_mem (hsm _ _ hzc) (hsm _ _ (hdp c))`. Establish `hK : ∀ i, IsCompact (coord b i '' C)` using `fun i => hC.image (continuous_coord b i)`. Use `choose d hd0 hd using fun i => den _ (hK i)`.
-
-Use `⟨∏ i, d i, Finset.prod_ne_zero_iff.mpr fun i _ => hd0 i, fun x hx => ?_⟩` and prove the remaining obligations. Use `mem_SS_of_coord b hb _ fun i => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← Finset.mul_prod_erase Finset.univ d (Finset.mem_univ i)]`. Use `show algebraMap (𝓞 F) F (d i * ∏ j ∈ Finset.univ.erase i, d j) • coord b i x ∈ intAd F`. Rewrite using `[map_mul, mul_comm, mul_smul]`.
-
-Conclude with `hsm _ _ (hd i _ ⟨x, hx, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den_of_isCompact :
     letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)

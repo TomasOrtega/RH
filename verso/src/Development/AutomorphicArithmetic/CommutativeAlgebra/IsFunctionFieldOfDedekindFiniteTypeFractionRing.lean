@@ -7,9 +7,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `k K _ _ _ B hD hF hB hFr`. Establish `hdim : ringKrullDim B = 1`. Apply `eq_of_le_of_not_lt ?_ fun h' ↦ hB ?_` to reduce the goal to its premises. Rewrite using `[← Nat.cast_one, ← Ring.krullDimLE_iff] infer_instance`. Establish `h'' : ringKrullDim B ≤ 0` using `Order.le_of_lt_succ h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h''` using `[← Nat.cast_zero, ← Ring.krullDimLE_iff]`. Conclude with `Ring.KrullDimLE.isField_of_isDomain`. Conclude with `GroundTheory.Arith.SchemeCoh.isFunctionField_of_ringKrullDim_eq_one k B K hdim`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isFunctionField_of_dedekind_finiteType_fractionRing :
     ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (B : Subalgebra k K), IsDedekindDomain B → Algebra.FiniteType k B → ¬ IsField B → IsFractionRing B K → IsFunctionField k K := by

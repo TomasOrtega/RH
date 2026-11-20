@@ -6,7 +6,7 @@ open GlobalTheory.KZ GlobalTheory.CyclotomicQExpansion GlobalTheory.Glue
 open scoped MatrixGroups
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.normInv_gamma1` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeNormGamma1PrimePowInvariant.lean&line=78#L78)
 -/

@@ -13,17 +13,17 @@ noncomputable section
 variable {K : Type} [Field K] [NumberField K] [Algebra.IsQuadraticExtension ℚ K]
 
 /- English proof (translation)
-Introduce `s`. Use `S.isTotallyComplex` as an intermediate fact. Establish `hK : finrank ℚ K = 2` using `Algebra.IsQuadraticExtension.finrank_eq_two ℚ K`. Take `⟨I, c, hc, h⟩` from `CMFamily.exists_periodLattice_eq S F s`. Set `P` to `idealPeriodPair (F.restrict s) hK I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `L' : PeriodPair` to `{ ω₁ := c * P.ω₁ ω₂ := c * P.ω₂ indep := by`. Use `P.indep` as an intermediate fact. Rewrite `this`, the goal using `[LinearIndependent.pair_iff]`. Introduce `a b hab`. Apply `this a b` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hab' : c * (a • P.ω₁ + b • P.ω₂) = 0`. Rewrite using `[← hab]`. Simplify using `only [Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `(mul_eq_zero.1 hab').resolve_left hc }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hlat : (L'.lattice : Set ℂ) = (c * ·) '' P.lattice`. Use extensionality with `z`. Simplify using `only [SetLike.mem_coe, PeriodPair.mem_lattice, Set.mem_image, L']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨m * P.ω₁ + n * P.ω₂, ⟨m, n, rfl⟩, by ring⟩`. Introduce and unpack `⟨w, ⟨m, n, rfl⟩, rfl⟩`. Conclude with `⟨m, n, by ring⟩`. Use `⟨L', ?_, ?_⟩` and prove the remaining obligations. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hlat, h, lattice_idealPeriodPair]`. Rewrite using `[latticeEnd_eq_of_homothetic hc hlat]`. Conclude with `latticeEnd_idealPeriodPair (F.restrict s) hK I`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PeriodLatticeCM.proof (S : PrimeDiscriminant K) (F : CMFamily K) :
     PeriodLatticeCM.Statement S F := by

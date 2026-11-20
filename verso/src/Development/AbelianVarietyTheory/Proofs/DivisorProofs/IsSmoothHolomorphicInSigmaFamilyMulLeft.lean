@@ -9,7 +9,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 namespace GlobalTheory.HeckeTwoMul
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `h : fderiv ℝ (fun z => c * g z) z = c • fderiv ℝ g z`. Use `congrFun (fderiv_const_smul_field (𝕜 := ℝ) (f := g) c) z` as an intermediate fact. Simplify `this` using `[Pi.smul_def, smul_eq_mul]`. Simplify using `only [wirt, h, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,7 +23,7 @@ theorem wirt_const_mul {Φ : Type} [Fintype Φ] (τ : Φ) (bar : Bool) (c : ℂ)
   ring
 
 /- English proof (translation)
-Proceed by induction on `ws with`. Consider the case `nil => rfl`. Consider the case `cons w ws ih => rw [wirtWord_cons, wirtWord_cons, ih, wirt_const_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem wirtWord_const_mul {Φ : Type} [Fintype Φ] (ws : List (Φ × Bool)) (c : ℂ) (g : (Φ → ℂ) → ℂ) :
     wirtWord ws (fun z => c * g z) = fun z => c * wirtWord ws g z := by
@@ -32,7 +32,7 @@ theorem wirtWord_const_mul {Φ : Type} [Fintype Φ] (ws : List (Φ × Bool)) (c 
   | cons w ws ih => rw [wirtWord_cons, wirtWord_cons, ih, wirt_const_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hP`. Use `⟨fun σ hσ => contDiffOn_const.mul (h1 σ hσ), fun w z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [wirtWord_const_mul]`. Conclude with `hk.mul (h2 w z hz)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isGood_mul (F : Type) [Field F] [NumberField F] (k : ℂ → ℂ)
     (P : ℂ → (GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Emb F → ℂ) → ℂ) (hk : DifferentiableOn ℂ k GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.halfPlane)

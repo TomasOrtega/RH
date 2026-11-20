@@ -1,19 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `O σ inst I s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `_ f hf`. Establish `h0 : f = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `n`. Rewrite using `[hf n (by simp), map_zero]`. Rewrite using `[h0]`. Conclude with `I.zero_mem`. Consider the case `insert a s ha ih`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hX f hf`. Set `g : MvPowerSeries σ O` to `fun n => if n a = 0 then MvPowerSeries.coeff n f else 0`. Establish `hg : ∀ n : σ →₀ ℕ, MvPowerSeries.coeff n g = if n a = 0 then MvPowerSeries.coeff n f else 0` using `fun n => rfl`. Establish `hgI : g ∈ I`. Use `ih (fun i hi => hX i (Finset.mem_insert_of_mem hi)) g ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn`. Rewrite using `[hg]`. Use `split_ifs with h`. Use `hf n ?_` and prove the remaining obligations. Introduce `i hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `h`. Conclude with `hn i hi`. Both sides reduce to the same expression. Establish `hd : MvPowerSeries.X a ∣ f - g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.X_dvd_iff]`. Introduce `n hn`. Rewrite using `[map_sub, hg, if_pos hn, sub_self]`. Establish `hfg : f - g ∈ I` using `I.mem_of_dvd hd (hX a (Finset.mem_insert_self a s))`. Use `I.add_mem hfg hgI` as an intermediate fact.
-
-Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.SpanOfVariable.span_X :
     ∀ {O σ : Type} [inst : CommRing O] (I : Ideal (MvPowerSeries σ O))

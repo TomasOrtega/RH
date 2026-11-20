@@ -12,7 +12,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.LieHt.SemiFib
 
 /- English proof (translation)
-Introduce `K _ _ F` and use `⟨GlobalTheory.T.semiFib_lie_lattice_full K F, F.exists_isHerm, fun h hh => GlobalTheory.T.hermitian_family_conj_invariant K F h hh, F.exists_isRho⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem full_herm_conj_rho : ∀ (K : Type) [Field K] [NumberField K] (F : SemiFib K), Full F.lieLat ∧
     (∃ h, F.IsHerm h) ∧ (∀ h, F.IsHerm h → GlobalTheory.Published.ConjInv h) ∧ (0 < F.P₀.g → ∃ ρ, F.IsRho ρ ∧ ∀ σ, 0 < ρ σ) :=

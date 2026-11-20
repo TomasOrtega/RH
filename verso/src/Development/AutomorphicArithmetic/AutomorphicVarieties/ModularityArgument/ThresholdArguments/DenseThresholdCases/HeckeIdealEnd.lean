@@ -25,7 +25,7 @@ section SlopeTestRemainingChoices
 open Formalism.MainNotions.N
 variable {Γ Γ' k : Type} [Group Γ] [Group Γ'] [Field k] {n : ℕ}
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb).comp (Ideal.quotientKerAlgEquivOfSurjective hf).symm.toAlgHom, fun b => by have : (Ideal.quotientKerAlgEquivOfSurjective hf).symm (f b) = Ideal.Quotient.mk _ b := by rw [AlgEquiv.symm_apply_eq]; rfl exact (congrArg (Idea …`.
+Supply the required witnesses or components.
 -/
 private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [CommRing K] [Algebra O A] [Algebra O T]
     [Algebra O K] (f : A →ₐ[O] T) (hf : Function.Surjective f) (x : A →ₐ[O] K) (hx : RingHom.ker f ≤ RingHom.ker x) :
@@ -36,7 +36,7 @@ private theorem factor {O A T K : Type} [CommRing O] [CommRing A] [CommRing T] [
         rw [AlgEquiv.symm_apply_eq]; rfl
       exact (congrArg (Ideal.Quotient.liftₐ (RingHom.ker f) x fun _ hb => hx hb) this).trans rfl⟩
 /- English proof (translation)
-Take `rfl : x = y.comp f` from `RingHom.ext fun b => (h b).symm`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem map_comp {n : ℕ} {A T K Γ : Type} [CommRing A] [CommRing T] [CommRing K] [Group Γ] (D : W.GDet n A Γ)
     (f : A →+* T) (y : T →+* K) (x : A →+* K) (h : ∀ b, y (f b) = x b) : (D.map f).map y = D.map x := by
@@ -44,7 +44,7 @@ private theorem map_comp {n : ℕ} {A T K Γ : Type} [CommRing A] [CommRing T] [
   rfl
 end SlopeTestRemainingChoices
 /- English proof (translation)
-Take `⟨y, hy⟩` from `factor f hf x hx`. Establish `e1 : y.toRingHom.comp (algebraMap A _) = (x.comp j).toRingHom` using `RingHom.ext fun b => (congrArg y (hj b)).symm.trans (hy _)`. Take `⟨ρ, hc, hs, hP, hD, -⟩` from `out.pt lam hl y (e1 ▸ har)`. Conclude with `⟨ρ, hc, hs, hP, (map_comp D₀ f.toRingHom y.toRingHom x hy).symm.trans hD⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem absPt {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime]
     {n : ℕ} {c : Coef l} (H : HSet L Ω l n c) {A : Type} [CommRing A] [Algebra c.O A] [IsLocalRing A] (θ : H.X.I.T →* Aˣ)
@@ -62,11 +62,9 @@ private theorem absPt {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebr
   obtain ⟨ρ, hc, hs, hP, hD, -⟩ := out.pt lam hl y (e1 ▸ har)
   exact ⟨ρ, hc, hs, hP, (map_comp D₀ f.toRingHom y.toRingHom x hy).symm.trans hD⟩
 /- English proof (translation)
-Break down `hJ with ⟨_, rfl⟩ | ⟨i1, i2, f, -, hmap, hsurj, hlam, rfl⟩` into its components or cases. Conclude with `absurd (hx (Submodule.mem_top (x := 1))) (by simp)`. Take `⟨⟨lam, hl⟩, hb⟩` from `_root_.UpperTheory.V.Hi.arith_good_iff_hset_of_theta_incr_weight H.litN l L Ω s n hn V Q c R.m R.τ₀ r B Λ R.θ R.theta h ha.1`. Establish `har` using `(hb lam hl x).1.1 ha`. Establish `out` using `_root_.UpperTheory.V.Z.Ord.core_hecke_of_automorphic_hecke_dense_weight H.litN L Ω l n c (hset Q R.τ₀) (_root_.UpperTheory.V.Hi.axU_s H.litN l L Ω s n hn V Q c R.m R.τ₀) Λ.Λ R.θ R.isWt ι (_root_.UpperTheory.V.Hi.CaseU.UnitaryPointProperties r ι) (_root_.UpperTheory.V.Hi.automorph …`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hc, hs, hP, e3⟩` from `absPt (hset Q R.τ₀) R.θ R.a K B.u.D (Λ.toPair B.u) f hsurj hlam out x hx lam (Set.mem_univ _) har`. Use `⟨lam, ρ, hc, hs, hP, ?_⟩` and prove the remaining obligations. Use `replace e3 : x.D = W.GDet.ofRep (W.mat ρ) := e3`. Express the relevant statement in the definitionally equal form `x.D.comap V.pr = _`. Rewrite using `[e3]`.
-
-Conclude with `(AlgebraTools.Det.repApi (W.mat ρ)).2.2.2.2.2.2.1 V.pr`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_ideal_end (H : _root_.UpperTheory.V.Af.HypothesesH') {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω]
     [Algebra L Ω] [IsAlgClosure L Ω] {s : HidaSetting l L Ω} {n : ℕ} (hn : 1 ≤ n) {V : s.Lev} {Q : QData V} {c : Coef l}

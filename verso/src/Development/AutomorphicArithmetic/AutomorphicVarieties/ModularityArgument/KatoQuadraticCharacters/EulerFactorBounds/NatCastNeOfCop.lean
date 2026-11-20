@@ -20,9 +20,9 @@ def aVT (l L N p : ℕ) : Fin 2 → ℤ :=
   ![bar l L N p * (topT l L N : ℤ) * (l : ℤ) ^ L * p, bar l L N p * N * p + N * (l : ℤ) ^ L]
 
 /- English proof (translation)
-Use `⟨a i / M, ?_⟩` and prove the remaining obligations. Establish `hM : (M : ℚ) ≠ 0` using `by exact_mod_cast NeZero.ne M`. Establish `hv : (((a i : ZMod M).val : ℤ)) = a i % M` using `ZMod.val_intCast (a i)`. Establish `k : a i % M + M * (a i / M) = a i` using `by rw [Int.emod_def]; ring`. Simplify using `only [toQ, rz]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_add' _ _ _ hM, div_left_inj' hM]`. Establish `e : (((a i : ZMod M).val : ℕ) : ℚ) = ((a i % M : ℤ) : ℚ)` using `by exact_mod_cast hv`. Rewrite using `[e]`. Establish `k' : ((a i % M + M * (a i / M) : ℤ) : ℚ) = ((a i : ℤ) : ℚ)` using `by exact_mod_cast k`. Move the coercions through the operations in `at k' ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -41,25 +41,25 @@ theorem rz_toQ (M : ℕ) [NeZero M] (a : Fin 2 → ℤ) (i : Fin 2) :
   linarith
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mpr (h i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rz_congr {M : ℕ} {a b : Fin 2 → ℤ} (h : ∀ i, (M : ℤ) ∣ b i - a i) : rz M a = rz M b := by
   funext i
   exact (ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).mpr (h i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[rz]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem smul_rz (M : ℕ) (k : ℤ) (a : Fin 2 → ℤ) : (k : ZMod M) • rz M a = rz M (k • a) := by
   funext i
   simp [rz]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [up, rz, Pi.smul_apply, smul_eq_mul]`. Establish `hv : (((a i : ZMod M).val : ℤ)) = a i % M` using `ZMod.val_intCast (a i)`. Rewrite using `[show ((k * (a i : ZMod M).val : ℕ) : ZMod (k * M)) = (((k * (a i % M) : ℤ)) : ZMod (k * M)) by`. Rewrite using `[← hv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use the proof step `rfl]`. Apply `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).2` to reduce the goal to its premises. Use `⟨a i / M, ?_⟩` and prove the remaining obligations. Establish `k' : a i % M + M * (a i / M) = a i` using `by rw [Int.emod_def]; ring`.
+Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `(-(k : ℤ)) * k'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem up_rz (k M : ℕ) [NeZero M] (a : Fin 2 → ℤ) : up k M (rz M a) = rz (k * M) ((k : ℤ) • a) := by
   funext i
@@ -74,11 +74,9 @@ theorem up_rz (k M : ℕ) [NeZero M] (a : Fin 2 → ℤ) : up k M (rz M a) = rz 
   linear_combination (-(k : ℤ)) * k'
 
 /- English proof (translation)
-Use `haveI := Fact.mk hl`. Introduce `hz`. Establish `h'` using `congrFun hz i`. Simplify using `only [Pi.smul_apply, Pi.zero_apply, smul_eq_mul, rz] at h'`. Establish `h''` using `congrArg (ZMod.castHom h (ZMod l)) h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h''` using `[map_mul, map_intCast, map_zero, map_ofNat]`. Break down `mul_eq_zero.1 h'' with h2' | h2'` into its components or cases. Establish `h3 : ((2 : ℕ) : ZMod l) = 0` using `by exact_mod_cast h2'`. Establish `h4` using `(CharP.cast_eq_zero_iff (ZMod l) l 2).1 h3`. Conclude with `h2 ((Nat.prime_dvd_prime_iff_eq hl Nat.prime_two).1 h4)`.
-
-Conclude with `ha h2'`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_smul_rz_ne {M l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (h : l ∣ M) (a : Fin 2 → ℤ) (i : Fin 2)
     (ha : ((a i : ℤ) : ZMod l) ≠ 0) : (2 : ZMod M) • rz M a ≠ 0 := by
@@ -95,7 +93,7 @@ theorem two_smul_rz_ne {M l : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (h : l ∣ M) (
   · exact ha h2'
 
 /- English proof (translation)
-Introduce `h0`. Establish `hd` using `(CharP.cast_eq_zero_iff (ZMod l) l N).1 h0`. Conclude with `hl.ne_one (Nat.Coprime.eq_one_of_dvd hc hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natCast_ne_of_cop {l N : ℕ} (hl : l.Prime) (hc : Nat.Coprime l N) : (N : ZMod l) ≠ 0 := by
   intro h0
@@ -103,9 +101,9 @@ theorem natCast_ne_of_cop {l N : ℕ} (hl : l.Prime) (hc : Nat.Coprime l N) : (N
   exact hl.ne_one (Nat.Coprime.eq_one_of_dvd hc hd)
 
 /- English proof (translation)
-Establish `h1 : Nat.Coprime p l` using `Nat.Coprime.coprime_dvd_right (dvd_mul_right l N) hp`. Establish `h2 : Nat.Coprime p N` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left N l) hp`. Establish `hcop : Nat.Coprime p (N * l ^ L)` using `Nat.Coprime.mul_right h2 (Nat.Coprime.pow_right L h1)`. Use `haveI : NeZero (N * l ^ L) := ⟨mul_ne_zero hN (pow_ne_zero _ hl)⟩`. Apply `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 _ _).1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `bar`. Use `push_cast`. Rewrite using `[ZMod.natCast_zmod_val]`. Conclude with `(ZMod.coe_mul_inv_eq_one p hcop).symm.trans (mul_comm _ _)`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bar_mul {l N p : ℕ} (L : ℕ) (hl : l ≠ 0) (hN : N ≠ 0) (hp : Nat.Coprime p (l * N)) :
     ((N * l ^ L : ℕ) : ℤ) ∣ bar l L N p * p - 1 := by
@@ -120,7 +118,7 @@ theorem bar_mul {l N p : ℕ} (L : ℕ) (hl : l ≠ 0) (hN : N ≠ 0) (hp : Nat.
   exact (ZMod.coe_mul_inv_eq_one p hcop).symm.trans (mul_comm _ _)
 
 /- English proof (translation)
-Establish `h6` using `bar_mul L hl hN hp`. Establish `hl' : (l : ℤ) ∣ ((N * l ^ L : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.2 (Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N)`. Establish `hd` using `(ZMod.intCast_eq_intCast_iff_dvd_sub 1 (bar l L N p * p) l).2 (dvd_trans hl' h6)`. Move the coercions through the operations in `at hd`. Conclude with `hd.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem bar_mul_l {l N p L : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp : Nat.Coprime p (l * N)) :
     ((bar l L N p : ℤ) : ZMod l) * (p : ZMod l) = 1 := by
@@ -132,7 +130,7 @@ theorem bar_mul_l {l N p L : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (
   exact hd.symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [aU, Matrix.cons_val_zero]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_pow (by omega), mul_zero, add_zero]`. Simplify using `[aU]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aU_mod {l L N : ℕ} (hL : 1 ≤ L) (x : ZMod N) :
     ((aU l L N x 0 : ℤ) : ZMod l) = N ∧ ((aU l L N x 1 : ℤ) : ZMod l) = 0 := by
@@ -143,7 +141,7 @@ theorem aU_mod {l L N : ℕ} (hL : 1 ≤ L) (x : ZMod N) :
   · simp [aU]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `only [aV, Matrix.cons_val_zero]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_pow (by omega), mul_zero]`. Simplify using `[aV]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aV_mod {l L N : ℕ} (hL : 1 ≤ L) :
     ((aV l L N 0 : ℤ) : ZMod l) = 0 ∧ ((aV l L N 1 : ℤ) : ZMod l) = N := by
@@ -154,9 +152,9 @@ theorem aV_mod {l L N : ℕ} (hL : 1 ≤ L) :
   · simp [aV]
 
 /- English proof (translation)
-Establish `hb` using `bar_mul_l hL hl hN hp`. Prove the components needed by the constructor for the conclusion. Simplify using `only [aUT, Matrix.cons_val_zero]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_pow (by omega)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(N : ZMod l) * hb`. Simplify using `[aUT]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem aUT_mod {l L N p : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp : Nat.Coprime p (l * N)) (x : ZMod N) :
     ((aUT l L N p x 0 : ℤ) : ZMod l) = N ∧ ((aUT l L N p x 1 : ℤ) : ZMod l) = 0 := by
@@ -169,9 +167,9 @@ theorem aUT_mod {l L N p : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp
   · simp [aUT]
 
 /- English proof (translation)
-Establish `hb` using `bar_mul_l hL hl hN hp`. Prove the components needed by the constructor for the conclusion. Simplify using `only [aVT, Matrix.cons_val_zero]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_pow (by omega)]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [aVT, Matrix.cons_val_one, Matrix.head_cons]`. Use `push_cast`. Rewrite using `[ZMod.natCast_self, zero_pow (by omega)]`. Take the linear combination `(N : ZMod l) * hb`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem aVT_mod {l L N p : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp : Nat.Coprime p (l * N)) :
     ((aVT l L N p 0 : ℤ) : ZMod l) = 0 ∧ ((aVT l L N p 1 : ℤ) : ZMod l) = N := by
@@ -187,11 +185,11 @@ theorem aVT_mod {l L N p : ℕ} (hL : 1 ≤ L) (hl : l ≠ 0) (hN : N ≠ 0) (hp
     linear_combination (N : ZMod l) * hb
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hne` using `two_smul_rz_ne hl h2 h a 0 (by rw [ha]; exact natCast_ne_of_cop hl hc)`. Introduce `hz`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hj` using `congrFun hz j`. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at hj ⊢`. Simplify `hj` using `[two_nsmul, two_zsmul, two_smul]`. Establish `hne` using `two_smul_rz_ne hl h2 h b 1 (by rw [hb]; exact natCast_ne_of_cop hl hc)`. Introduce `hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Establish `hj` using `congrFun hz j`. Simplify using `only [Pi.smul_apply, Pi.zero_apply] at hj ⊢`. Simplify `hj` using `[two_nsmul, two_zsmul, two_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ok_of_mod {M l N : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (hc : Nat.Coprime l N) (h : l ∣ M) {a b : Fin 2 → ℤ}
     (ha : ((a 0 : ℤ) : ZMod l) = N) (hb : ((b 1 : ℤ) : ZMod l) = N) : Ok (rz M a) (rz M b) := by
@@ -212,21 +210,21 @@ theorem ok_of_mod {M l N : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (hc : Nat.Coprime 
     simpa [two_nsmul, two_zsmul, two_smul] using hj
 
 /- English proof (translation)
-The claim follows from `ok_of_mod hl h2 hc h (aU_mod hL x).1 (aV_mod hL).2`.
+A detailed English derivation is pending.
 -/
 theorem ok_UV {M l L N : ℕ} (hl : l.Prime) (h2 : l ≠ 2) (hc : Nat.Coprime l N) (hL : 1 ≤ L) (h : l ∣ M) (x : ZMod N) :
     Ok (rz M (aU l L N x)) (rz M (aV l L N)) :=
   ok_of_mod hl h2 hc h (aU_mod hL x).1 (aV_mod hL).2
 
 /- English proof (translation)
-The claim follows from `ok_of_mod hl h2 hc h (aUT_mod hL hl.ne_zero (NeZero.ne N) hp x).1 (aVT_mod hL hl.ne_zero (NeZero.ne N) hp).2`.
+A detailed English derivation is pending.
 -/
 theorem ok_UVT {M l L N p : ℕ} [NeZero N] (hl : l.Prime) (h2 : l ≠ 2) (hc : Nat.Coprime l N) (hL : 1 ≤ L) (h : l ∣ M)
     (hp : Nat.Coprime p (l * N)) (x : ZMod N) : Ok (rz M (aUT l L N p x)) (rz M (aVT l L N p)) :=
   ok_of_mod hl h2 hc h (aUT_mod hL hl.ne_zero (NeZero.ne N) hp x).1 (aVT_mod hL hl.ne_zero (NeZero.ne N) hp).2
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Take `⟨j, hj⟩` from `rz_toQ (N * l ^ L) (aU l L N x) i`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ixU_toQ {M l L N : ℕ} [NeZero M] (hM : M = N * l ^ L) (x : ZMod N) (i : Fin 2) :
     ∃ j : ℤ, ixU l L N x i = toQ M (rz M (aU l L N x)) i + j := by
@@ -237,7 +235,7 @@ theorem ixU_toQ {M l L N : ℕ} [NeZero M] (hM : M = N * l ^ L) (x : ZMod N) (i 
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Take `⟨j, hj⟩` from `rz_toQ (N * l ^ L) (aV l L N) i`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ixV_toQ {M l L N : ℕ} [NeZero M] (hM : M = N * l ^ L) (i : Fin 2) :
     ∃ j : ℤ, ixV l L N i = toQ M (rz M (aV l L N)) i + j := by
@@ -248,7 +246,7 @@ theorem ixV_toQ {M l L N : ℕ} [NeZero M] (hM : M = N * l ^ L) (i : Fin 2) :
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Take `⟨j, hj⟩` from `rz_toQ (N * l ^ L * p) (aUT l L N p x) i`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ixUT_toQ {M l L N p : ℕ} [NeZero M] (hM : M = N * l ^ L * p) (x : ZMod N) (i : Fin 2) :
     ∃ j : ℤ, ixUT l L N p x i = toQ M (rz M (aUT l L N p x)) i + j := by
@@ -259,7 +257,7 @@ theorem ixUT_toQ {M l L N p : ℕ} [NeZero M] (hM : M = N * l ^ L * p) (x : ZMod
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Take `⟨j, hj⟩` from `rz_toQ (N * l ^ L * p) (aVT l L N p) i`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[← hj]`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ixVT_toQ {M l L N p : ℕ} [NeZero M] (hM : M = N * l ^ L * p) (i : Fin 2) :
     ∃ j : ℤ, ixVT l L N p i = toQ M (rz M (aVT l L N p)) i + j := by
@@ -270,9 +268,9 @@ theorem ixVT_toQ {M l L N p : ℕ} [NeZero M] (hM : M = N * l ^ L * p) (i : Fin 
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Use `⟨Nat.pos_of_ne_zero (mul_ne_zero hN (pow_ne_zero _ hl)), ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : c.Coprime l` using `Nat.Coprime.coprime_dvd_right (Dvd.intro (6 * N) (by ring)) H.cc`. Establish `h2 : c.Coprime N` using `Nat.Coprime.coprime_dvd_right (Dvd.intro_left (6 * l) rfl) H.cc`. Conclude with `Nat.Coprime.mul_right h2 (Nat.Coprime.pow_right L h1)`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : d.Coprime l` using `Nat.Coprime.coprime_dvd_right (Dvd.intro (6 * N) (by ring)) H.cd`. Establish `h2 : d.Coprime N` using `Nat.Coprime.coprime_dvd_right (Dvd.intro_left (6 * l) rfl) H.cd`. Conclude with `Nat.Coprime.mul_right h2 (Nat.Coprime.pow_right L h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Hyp.lv {l N c d : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (hl : l ≠ 0) (hN : N ≠ 0) {M L : ℕ} (hM : M = N * l ^ L) :
     Lv c d M := by
@@ -286,7 +284,7 @@ theorem Hyp.lv {l N c d : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (hl : l ≠ 
     exact Nat.Coprime.mul_right h2 (Nat.Coprime.pow_right L h1)
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Take `⟨h0, h1, h2⟩` from `H.lv hl hN (rfl : N * l ^ L = N * l ^ L)`. Conclude with `⟨Nat.mul_pos h0 (Nat.pos_of_ne_zero hp0), h1.mul_right (Nat.Coprime.coprime_mul_left_right (Nat.Coprime.coprime_mul_right_right hp)).symm, h2.mul_right (Nat.Coprime.coprime_mul_left_right hp).symm⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Hyp.lvT {l N c d p : ℕ} {g : SL(2, ℤ)} (H : Hyp l N c d g) (hl : l ≠ 0) (hN : N ≠ 0) (hp0 : p ≠ 0)
     (hp : Nat.Coprime p (l * N * c * d)) {M L : ℕ} (hM : M = N * l ^ L * p) : Lv c d M := by

@@ -14,7 +14,7 @@ def invT : GL (Fin d) k →* GL (Fin d) k where
   map_mul' x y := Units.ext (transpose_mul _ _)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+A detailed English derivation is pending.
 -/
 theorem cont_invT : Continuous (invT (k := k) (d := d)) :=
   Units.continuous_iff.2 ⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩
@@ -24,20 +24,20 @@ open Classical in
 noncomputable def toGL (X : Matrix (Fin d) (Fin d) k) : GL (Fin d) k := if h : IsUnit X then h.unit else 1
 
 /- English proof (translation)
-Rewrite using `[toGL, dif_pos ((isUnit_iff_isUnit_det X).2 h.isUnit)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toGL_val {X : Matrix (Fin d) (Fin d) k} (h : X.det ≠ 0) : (toGL X).1 = X := by
   rw [toGL, dif_pos ((isUnit_iff_isUnit_det X).2 h.isUnit)]; rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (toGL_val x.det_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem toGL_coe (x : GL (Fin d) k) : toGL x.1 = x := Units.ext (toGL_val x.det_ne_zero)
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict, Units.continuous_iff]`. Use `⟨continuous_subtype_val.congr fun X => (toGL_val X.2).symm, ?_⟩` and prove the remaining obligations. Establish `: ContinuousOn (fun X : Matrix (Fin d) (Fin d) k => X⁻¹) {X | X.det ≠ 0}` using `fun X hX => (continuousAt_matrix_inv X (by rw [Ring.inverse_eq_inv']; exact continuousAt_inv₀ hX)).continuousWithinAt`. Use `this.restrict.congr fun X => ?_` and prove the remaining obligations. Rewrite using `[coe_units_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ (toGL_val X.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem cont_toGL : ContinuousOn (toGL (k := k) (d := d)) {X | X.det ≠ 0} := by
   rw [continuousOn_iff_continuous_restrict, Units.continuous_iff]
@@ -49,15 +49,15 @@ theorem cont_toGL : ContinuousOn (toGL (k := k) (d := d)) {X | X.det ≠ 0} := b
   exact congrArg _ (toGL_val X.2).symm
 
 /- English proof (translation)
-Establish `hU : IsOpen {X : Matrix (Fin d) (Fin d) k | X.det ≠ 0}` using `isOpen_ne_fun (by fun_prop) continuous_const`. Apply the tactic sequence `let m : (GL (Fin d) k → ℂ) →ₗ[ℂ] ℂ := { toFun := fun ψ => l fun X => if X.det ≠ 0 then ψ (toGL X) else 0 map_add' := fun F F' => by rw [← map_add]; congr 1; ext z; by_cases h : z.det = 0 <;> simp [h] map_smul' := fun a F => by rw [← map_smul]; congr 1; ext z; by_cases h : z.det = …`. Establish `hm : ∀ ψ, m ψ = l fun X => if X.det ≠ 0 then ψ (toGL X) else 0` using `fun _ => rfl`. Establish `a` using `left_of_right ((Units.coeHom ℂ).comp (ξ.comp GeneralLinearGroup.det)) invT cont_invT (fun x => Units.ext (transpose_transpose _)) (g := g) (inv_injective (Units.ext hg)) m (fun ψ hψ h => ?_) (φ := fun x => φ x.1) (sb_chart (U := Set.univ) (T := {X : Matrix (Fin d) (Fin d) k | X.d …`. Rewrite `a` using `[hm, hm]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `a using 3 with X` and compare the differences between its conclusion and the goal. Use `split_ifs with h`. Rewrite using `[Units.val_mul, toGL_val h]`. Conclude with `h0 _ (by rw [det_mul, not_not.1 h, mul_zero])`. Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `X split_ifs with h`. Rewrite using `[toGL_val h]`. Conclude with `h0 _ (not_not.1 h)`. Rewrite using `[hm, hm]`. Use `Eq.trans ?_ (hl (fun X => if X.det ≠ 0 then ψ (toGL X) else 0) (sb_chart (T := Set.univ) hU cont_toGL Units.continuous_val.continuousOn (fun X hX => toGL_val hX) (fun x _ => x.det_ne_zero) hψ (fun _ h => absurd trivial h) (fun X hX => if_pos hX) fun X hX => if_neg hX) h)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use `congr 1`. Use extensionality with `X`. Distinguish the cases in `hX : X.det = 0`. Simplify using `[hX]`. Establish `: (X * h.1).det ≠ 0` using `by rw [det_mul]; exact mul_ne_zero hX h.det_ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[if_pos hX, if_pos this]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, toGL_val hX, toGL_val this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_cell (ξ : kˣ →* ℂˣ) (l : (Matrix (Fin d) (Fin d) k → ℂ) →ₗ[ℂ] ℂ)
     (hl : ∀ φ ∈ SB _, ∀ h : GL (Fin d) k, l (fun y => φ (y * h.1)) = ξ (GeneralLinearGroup.det h) * l φ)
@@ -100,11 +100,11 @@ theorem top_cell (ξ : kˣ →* ℂˣ) (l : (Matrix (Fin d) (Fin d) k → ℂ) �
 variable [NonarchimedeanAddGroup k] [LocallyCompactSpace k]
 
 /- English proof (translation)
-Set `c : k → ℂ` to `fun a => if h : a = 0 then 0 else ξ (Units.mk0 a h)`. Establish `hc : ∀ a : kˣ, c a = ξ a` using `fun a => by simp [c]`. Use `claim (c := c) (ϖ := ϖ) (fun a ha => ?_) ϖ.ne_zero (fun h => hξ 1 one_pos ?_) (fun t ht h => hξ t⁻¹ (inv_pos.2 ht) ?_) n d l (fun h hh => ⟨1, one_pos, fun φ hφ => ?_⟩) hd` and prove the remaining obligations. Simplify using `[c, ha]`. Rewrite using `[Units.val_eq_one.1 h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hc, Complex.ofReal_inv]`. Conclude with `eq_inv_of_mul_eq_one_left h`. Use `hl φ hφ (toGL h)` as an intermediate fact. Rewrite `this` using `[← hc, GeneralLinearGroup.val_det_apply, toGL_val hh]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem vanish (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (hξ : ∀ t : ℝ, 0 < t → (ξ ϖ : ℂ) ≠ t) {n : ℕ}
     (l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ)
@@ -123,7 +123,7 @@ theorem vanish (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (hξ : ∀ t : ℝ, 0 < t → (�
     simpa using this
 
 /- English proof (translation)
-Use `vanish ξ ϖ hξ l hl fun φ _ h => ?_` and prove the remaining obligations. Rewrite using `[show φ = 0 from funext fun X => h X ?_, map_zero]`. Take `⟨v, hv, h0⟩` from `(Submodule.ne_bot_iff _).1 (LinearMap.ker_ne_bot_of_finrank_lt (f := X.mulVecLin) (by simpa using hn))`. Conclude with `⟨v, h0, hv⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lt_case (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (hξ : ∀ t : ℝ, 0 < t → (ξ ϖ : ℂ) ≠ t) {n : ℕ} (hn : n < d)
     (l : (Matrix (Fin n) (Fin d) k → ℂ) →ₗ[ℂ] ℂ)
@@ -135,26 +135,26 @@ theorem lt_case (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (hξ : ∀ t : ℝ, 0 < t → (
   exact ⟨v, h0, hv⟩
 
 /- English proof (translation)
-The claim follows from `sb_comp (g.1 * ·) ((g⁻¹).1 * ·) (by fun_prop) (by fun_prop) (fun x => g.inv_mul_cancel_left x) hφ`.
+A detailed English derivation is pending.
 -/
 theorem sb_left {φ : Matrix (Fin d) (Fin d) k → ℂ} (hφ : φ ∈ SB _) (g : GL (Fin d) k) :
     (fun y => φ (g.1 * y)) ∈ SB (Matrix (Fin d) (Fin d) k) :=
   sb_comp (g.1 * ·) ((g⁻¹).1 * ·) (by fun_prop) (by fun_prop) (fun x => g.inv_mul_cancel_left x) hφ
 
 /- English proof (translation)
-Set `P : Matrix (Fin d) (Fin d) k → Prop` to `fun M => ∀ g : GL (Fin d) k, g.1 = M → ∀ φ ∈ SB _, l (fun y => φ (g.1 * y)) = ξ (GeneralLinearGroup.det g) * l φ`. Establish `sym : ∀ M, Mᵀ = M → P M`. Introduce and unpack `_ hg g rfl φ hφ`. Use `sub_eq_zero.1 (vanish ξ ϖ hξ (l ∘ₗ LinearMap.funLeft ℂ ℂ (g.1 * ·) - (ξ (GeneralLinearGroup.det g) : ℂ) • l) (fun ψ hψ h => ?_) (fun ψ hψ h0 => sub_eq_zero.2 (top_cell ξ l hl hg hψ fun X hX => h0 X ?_)) φ hφ)` and prove the remaining obligations. Establish `a` using `hl _ (sb_left hψ g) h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [← Matrix.mul_assoc] at a`. Use `show (l fun y => ψ (g.1 * y * h.1)) - _ * (l fun y => ψ (y * h.1)) = _ * ((l fun y => ψ (g.1 * y)) - _ * l ψ)`. Rewrite using `[a, hl ψ hψ h]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `exists_mulVec_eq_zero_iff.2 hX`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mul : ∀ A B : Matrix (Fin d) (Fin d) k, A.det ≠ 0 → B.det ≠ 0 → P A → P B → P (A * B)`. Introduce `A B hA hB pA pB g hg φ hφ`. Establish `e : g = toGL A * toGL B` using `Units.ext (by rw [hg, Units.val_mul, toGL_val hA, toGL_val hB])`. Establish `a` using `pB _ (toGL_val hB) _ (sb_left hφ (toGL A))`. Rewrite `a` using `[pA _ (toGL_val hA) _ hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, map_mul, map_mul, Units.val_mul, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[a]`. Expand and normalize the polynomial expressions, which then agree. Use `diagonal_transvection_induction_of_det_ne_zero P g.1 g.det_ne_zero (fun D _ => sym _ (diagonal_transpose D)) (fun t => ?_) mul g rfl` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : (swap k t.i t.j).det ≠ 0` using `(isUnit_det_of_left_inverse (swap_mul_self _ _)).ne_zero`. Use `mul _ (swap k t.i t.j * t.toMatrix) hs (by rw [det_mul, t.det, mul_one]; exact hs) (sym _ (transpose_swap _ _)) (sym _ ?_)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, swap_mul_self, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `e : swap k t.i t.j * single t.i t.j t.c = single t.j t.j t.c`. Use extensionality with `a b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h1 : a = t.i`. Rewrite using `[h1, swap_mul_apply_left]`. Simplify using `[single_apply, t.hij, t.hij.symm]`. Distinguish the cases in `h2 : a = t.j`. Rewrite using `[h2, swap_mul_apply_right]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[single_apply]`. Rewrite using `[swap_mul_of_ne h1 h2]`. Simplify using `[single_apply, Ne.symm h1, Ne.symm h2]`. Rewrite using `[TransvectionStruct.toMatrix, transvection, Matrix.mul_add, Matrix.mul_one, e, transpose_add, transpose_swap, transpose_single]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_case (ξ : kˣ →* ℂˣ) (ϖ : kˣ) (hξ : ∀ t : ℝ, 0 < t → (ξ ϖ : ℂ) ≠ t)
     (l : (Matrix (Fin d) (Fin d) k → ℂ) →ₗ[ℂ] ℂ)

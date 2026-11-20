@@ -16,7 +16,7 @@ open GlobalTheory.OnCmp GlobalTheory.BigOn GlobalTheory.RealIndexBound
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor (Datum Level Moduli Coeff)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevelActionOnto.levelPin_actionPin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteGroupLevelStructureActionFixedRuns.lean&line=68#L68)
 -/

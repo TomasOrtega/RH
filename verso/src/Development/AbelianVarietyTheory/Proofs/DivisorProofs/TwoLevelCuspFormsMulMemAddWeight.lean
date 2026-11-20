@@ -8,11 +8,11 @@ open NumberField Module ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.Ind
 namespace GlobalTheory.CuspEmb
 
 /- English proof (translation)
-Introduce `E _ _ _ r U C _ _ M la mu F G hF hG c`. Establish `hP` using `hF c`. Establish `hQ` using `(hG c).1`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.AR.Up.ss_mul_pow (M.comp c).toData hP hQ 1`. Establish `hw : castWt (M.comp_Ψ c) (la + mu) = castWt (M.comp_Ψ c) la + 1 • castWt (M.comp_Ψ c) mu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_smul]`. Use function extensionality and compare the values at `τ`. Both sides reduce to the same expression. Rewrite using `[hw]`. Rewrite `h` using `[pow_one]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem twoLevels_mul_mem_SS : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (U C : Type) [Group U] [MulAction U C] (M : TwoLevels E r U C) (la mu : Wt M.Ψ r) (F G : C → Frame M.Ψ r → ℂ), F ∈ M.SS la → G ∈ M.SS mu → F * G ∈ M.SS (la + mu) := by
   intro E _ _ _ r U C _ _ M la mu F G hF hG c

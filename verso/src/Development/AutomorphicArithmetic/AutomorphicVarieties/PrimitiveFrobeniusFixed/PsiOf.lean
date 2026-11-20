@@ -10,25 +10,25 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `hR E Ω _ _ _ _ _ _ _ _ _ _ N _ ρ hρ l _ hl2 hlE O _ _ e he ψ hodd a ha`. Use `haveI : IsGalois ℚ E := inferInstance`. Set `c : HV.Coef l` to `⟨O, inferInstance, inferInstance⟩`. Set `ψ' : DirichletCharacter (↥c.O) N` to `MulChar.ofUnitHom (ψ.comp ρ)`. Establish `hcomp : MulChar.ringHomComp ψ' c.O.val.toRingHom = chiOf ρ ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `b`. Simplify using `[ψ', chiOf, MulChar.ringHomComp_apply]`. Establish `hord : ¬ l ∣ orderOf ψ'`. Introduce `hdiv`. Apply `hlE` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hdiv.trans ?_` and prove the remaining obligations. Rewrite using `[← IsGalois.card_aut_eq_finrank]`. Apply `orderOf_dvd_of_pow_eq_one` to reduce the goal to its premises. Use extensionality with `b`. Simplify using `only [ψ', MulChar.pow_apply_coe, MulChar.ofUnitHom_coe, MulChar.one_apply_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ψ (ρ b) ^ Fintype.card Gal(E/ℚ) = 1`. Rewrite using `[← map_pow, pow_card_eq_one, map_one]`. Establish `h3` using `congrArg (fun u : (↥O)ˣ => ((u : ↥O) : PadicAlgCl l)) h2`. Simplify using `using h3`. Establish `hodd' : ψ' (-1) = (-1) ^ (e + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun χ => χ (-1)) hcomp`. Simplify using `only [MulChar.ringHomComp_apply] at h1`. Apply `Subtype.val_injective` to reduce the goal to its premises. Rewrite `h1` using `[hodd]`. Simplify using `using h1`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key` using `vChar hR Ω l c hl2 N ψ' e he hord hodd' a (by rw [hcomp]; exact ha)`. Take `⟨_, hker, hlift⟩` from `galQuot ℚ E Ω`. Establish `hρσ : ∀ σ : G ℚ Ω, ρ (Chr.cls ℚ Ω N σ) = AlgEquiv.restrictNormalHom E σ`. Introduce `σ`. Establish `h1` using `hρ (Chr.cls ℚ Ω N σ) σ.toRingEquiv (fun x hx => Chr.cls_spec N σ x hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hlift σ`. Use extensionality with `x`. Apply `(algebraMap E Ω).injective` to reduce the goal to its premises. Conclude with `(h1 x).symm.trans (h2 x)`. Establish `hdir : Chr.dirG ℚ Ω ψ' = ψ.comp (AlgEquiv.restrictNormalHom E)`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `σ`. Simplify using `[Chr.dirG, ψ', hρσ]`. Take `⟨_, hopen, hidx⟩` from `galEmbTop ℚ E Ω`. Use `haveI : (galOf ℚ E Ω).Normal := by`. Rewrite using `[← hker]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Establish `hle : galOf ℚ E Ω ≤ (ψ.comp (AlgEquiv.restrictNormalHom E)).ker`. Rewrite using `[← hker]`. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg]`. Establish `heig` using `Chr.eigV ℚ Ω l O e (ψ.comp (AlgEquiv.restrictNormalHom E)) (galOf ℚ E Ω) hopen hle (by rw [hidx]; exact hlE)`. Establish `hpsi : psiLen Ω e ψ = Chr.eigL l e (galOf ℚ E Ω) (ψ.comp (AlgEquiv.restrictNormalHom E))` using `rfl`. Rewrite using `[hpsi, heig, ← hdir]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.psiOf :
     Rec → PsiBound := by

@@ -20,14 +20,14 @@ open GlobalTheory.ChainDesc
 namespace GlobalTheory.ChainDesc.UpLocJ
 
 /- English proof (translation)
-Rewrite using `[mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mv_one {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') {h : ℕ} (x : Fin h → A) :
     mv φ 1 x = piMap φ (Fin h) x := by
   rw [mv, Matrix.map_one _ Int.cast_zero Int.cast_one, Matrix.one_mulVec]; rfl
 
 /- English proof (translation)
-Take `⟨w, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem_pointwise_smul _ _ _ trivial`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piMap_mem_baseOf {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') {ϖ : A} {h : ℕ} {v : Fin h → A}
     (hv : v ∈ baseOf ϖ h) : piMap φ (Fin h) v ∈ baseOf (φ ϖ) h := by
@@ -36,9 +36,9 @@ theorem piMap_mem_baseOf {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* 
   exact Submodule.smul_mem_pointwise_smul _ _ _ trivial
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨w, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).1 hv`. Establish `e : φ ϖ • w = ∑ i, w i • piMap φ (Fin h) (ϖ • Pi.single i 1)`. Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, apply_ite φ, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, Submodule.smul_mem_pointwise_smul _ _ _ trivial, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseOf_le_span {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (ϖ : A) (h : ℕ) :
     baseOf (φ ϖ) h ≤ Submodule.span A' (piMap φ (Fin h) '' (baseOf ϖ h : Set (Fin h → A))) := by
@@ -52,7 +52,7 @@ theorem baseOf_le_span {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A'
     (Submodule.subset_span ⟨_, Submodule.smul_mem_pointwise_smul _ _ _ trivial, rfl⟩)
 
 /- English proof (translation)
-Establish `e1` using `k.j y x ⟨_, k.mem 0 _ x.2⟩ rfl hx.symm`. Rewrite `e1` using `[e, hx']`. Establish `e2` using `(Submodule.Quotient.eq _).1 e1.symm`. Rewrite using `[← mv_one]`. Conclude with `e2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_mem_of_map {A A' : Type} [CommRing A] [CommRing A'] {p h o : ℕ} {π : A} {γ : ℕ → A} {Lie Om : Type}
     [AddCommGroup Lie] [Module A Lie] [AddCommGroup Om] [Module A Om] {π' : A'} {γ' : ℕ → A'} {Lie' Om' : Type}
@@ -67,7 +67,7 @@ theorem sub_mem_of_map {A A' : Type} [CommRing A] [CommRing A'] {p h o : ℕ} {�
   exact e2
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.Twist.app_resM]`. Use `congr 1`. Conclude with `(pullbackSections_res f F le_rfl hle s).trans (res_pullbackSections f F le_rfl (f.preimage_mono hle) s).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem app_pull_resM {X Y : Scheme.{0}} (f : X ⟶ Y) {F : Y.Modules} {Q : X.Modules}
     (j : (Scheme.Modules.pullback f).obj F ⟶ Q) {U U' : Y.Opens} (hle : U' ≤ U) (s : Γ(F, U)) :
@@ -79,7 +79,7 @@ theorem app_pull_resM {X Y : Scheme.{0}} (f : X ⟶ Y) {F : Y.Modules} {Q : X.Mo
     (res_pullbackSections f F le_rfl (f.preimage_mono hle) s).symm
 
 /- English proof (translation)
-Use `Subtype.ext (congrArg (algebraMap B.X.functionField (GlobalTheory.GroupBplus.Kbar B.X)) ?_)` and prove the remaining obligations. Conclude with `(B.X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).trans (B.X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem res_cstBp {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : GlobalTheory.Vert.Model O}
     {U U' : AffOp B.X} (hle : U'.1 ≤ U.1) (a : Γ(B.X, ⊤)) : AffOp.res hle (cstBp U a) = cstBp U' a := by
@@ -88,7 +88,7 @@ theorem res_cstBp {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing 
     (B.X.presheaf.germ_res_apply (homOfLE le_top) _ _ a).symm
 
 /- English proof (translation)
-Establish `k` using `N.add_mem h1 (e ▸ h2)`. Rewrite `k` using `[sub_add_sub_cancel, ← map_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sub_mem_trans {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') {h : ℕ} {N : Submodule A' (Fin h → A')}
     {a b : Fin h → A} {c c' : Fin h → A'} (h1 : piMap φ (Fin h) a - c ∈ N) (e : c = c')
@@ -97,9 +97,9 @@ theorem sub_mem_trans {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A')
   rwa [sub_add_sub_cancel, ← map_sub] at k
 
 /- English proof (translation)
-Establish `hp` using `f.f.preimage_mono hle`. Establish `e3 : t.app _ (x' - resM E hp x) = 0`. Rewrite using `[map_sub, GlobalTheory.Twist.app_resM, e, sub_self]`. Establish `e4` using `piMap_mem_baseOf (g U') (((hQ.2 _ (hC.isAffineOpen U')).2.1 _).1 e3)`. Establish `e5 : piMap (g U') (Fin h) (crd ι _ (x' - resM E hp x)) = piMap (g U') (Fin h) (crd ι _ x') - piMap (AffOp.res hle) (Fin h) (piMap (g U) (Fin h) (crd ι _ x))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(crd ι _).map_sub, (piMap (g U') (Fin h)).map_sub, crd_resM]`. Conclude with `congrArg _ (funext fun i => hC.2.2.2.2 U U' hle _)`. Rewrite using `[← hC.map_cst U' π, ← e5]`. Conclude with `e4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crd_sub_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B B' : GlobalTheory.Vert.Model O} {Λ : Type}
     [CommRing Λ] {h : ℕ} {π : Γ(B.X, ⊤)} {M : Λ →+* Matrix (Fin h) (Fin h) ℤ} {f : GlobalTheory.Vert.Model.Hom B' B}
@@ -121,7 +121,7 @@ theorem crd_sub_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   exact e4
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hzV, hle⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show z ∈ ((U.1 ⊓ U₁.1 : X.Opens) : Set X) from ⟨hz, hz₁⟩) (U.1 ⊓ U₁.1).2`. Conclude with `⟨⟨V, hV, ⟨⟨z, hzV⟩⟩⟩, hzV, fun w hw => (hle hw).1, fun w hw => (hle hw).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affOp_le {X : Scheme.{0}} (U U₁ : AffOp X) {z : X} (hz : z ∈ U.1) (hz₁ : z ∈ U₁.1) :
     ∃ U' : AffOp X, z ∈ U'.1 ∧ U'.1 ≤ U.1 ∧ U'.1 ≤ U₁.1 := by
@@ -130,9 +130,9 @@ theorem exists_affOp_le {X : Scheme.{0}} (U U₁ : AffOp X) {z : X} (hz : z ∈ 
   exact ⟨⟨V, hV, ⟨⟨z, hzV⟩⟩⟩, hzV, fun w hw => (hle hw).1, fun w hw => (hle hw).2⟩
 
 /- English proof (translation)
-Take `⟨x', y', hy', hj', ht'⟩` from `hU' (resM Lie.V hle s)`. Take `⟨-, l, m, hl, -, hM⟩` from `hS.1 U U' hle`. Establish `e2` using `sub_mem_of_map hM (hl s) hy hj'`. Establish `e3 : t.app _ x' = resM Q.V (f.f.preimage_mono hle) (t.app _ x)`. Rewrite using `[hx, ← ht']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `app_pull_resM f.f j hle s`. Conclude with `sub_mem_trans (AffOp.res hle) e2 hy' (crd_sub_mem hC hQ hle e3)`.
+A detailed English derivation is pending.
 -/
 theorem res_sub_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {p : ℕ} {B B' : GlobalTheory.Vert.Model O}
     {Λ : Type} [CommRing Λ] {h o : ℕ} {Lie Om : AM B Λ} {π : Γ(B.X, ⊤)} {γ : ℕ → Γ(B.X, ⊤)}
@@ -152,11 +152,11 @@ theorem res_sub_mem {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   exact sub_mem_trans (AffOp.res hle) e2 hy' (crd_sub_mem hC hQ hle e3)
 
 /- English proof (translation)
-Introduce `O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j hS hC hL hQ hloc U s`. Take `⟨x, hx⟩` from `(hQ.2 _ (hC.isAffineOpen U)).1 (j.hom.app _ (pullbackSections f.f Lie.V le_rfl s))`. Take `⟨y₀, hy₀⟩` from `Submodule.Quotient.mk_surjective _ ((C U).j (1 ⊗ₜ s))`. Establish `hy : piMap (g U) (Fin h) (crd (ι 0) _ x) ∈ (C U).L 0`. Establish `h1 : crd (ι 0) _ x ∈ latOf (ι 0) (f.f ⁻¹ᵁ U.1)` using `⟨x, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[((hL 0).2.2 U).1, Nat.zero_min]`. Conclude with `h1`. Use `⟨x, ⟨_, hy⟩, rfl, hy₀.symm.trans ((Submodule.Quotient.eq _).2 ?_), hx.symm⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y₀.1 - piMap (g U) (Fin h) (crd (ι 0) _ x) ∈ baseOf (cstBp U π) h`. Use `GlobalTheory.ChainDesc.mem_of_locally_mem_span B.X U h _ _ fun z hz => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hz₁, hU₁⟩` from `hloc z`. Take `⟨U', hz', h1, h2⟩` from `exists_affOp_le U U₁ hz hz₁`. Use `⟨U', h1, hz', baseOf_le_span _ _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[res_cstBp]`. Conclude with `res_sub_mem hS hC hQ h1 (hU₁ U' h2) hx hy₀`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jUp_of_local : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) (B B' : GlobalTheory.Vert.Model O) (Λ : Type) [CommRing Λ] (h o : ℕ) (Lie Om : AM B Λ) (π : Γ(B.X, ⊤)) (γ : ℕ → Γ(B.X, ⊤)) (M : Λ →+* Matrix (Fin h) (Fin h) ℤ) (C : ChainsBp p h o Lie Om π γ) (f : GlobalTheory.Vert.Model.Hom B' B) (g : ∀ U : AffOp B.X, Γ(B'.X, f.f ⁻¹ᵁ U.1) →+* U.Bp) (E : ℕ → B'.X.Modules) (ι : ∀ n, E n ⟶ freeModule B'.X (Fin h)) (Q : AM B' Λ) (t : E 0 ⟶ Q.V) (j : (pullA f.f).obj Lie ⟶ Q), IsSys C M → IsCov f g → IsLatOf C f g ι → IsQuot M (ι 0) (baseOn h (f.f.appTop π)) Q t → (∀ z : B.X, ∃ U : AffOp B.X, z ∈ U.1 ∧ ∀ U' : AffOp B.X, U'.1 ≤ U.1 → JUp C f g U' (ι 0) t j.hom) → ∀ U : AffOp B.X, JUp C f g U (ι 0) t j.hom := by
   intro O _ _ _ p B B' Λ _ h o Lie Om π γ M C f g E ι Q t j hS hC hL hQ hloc U s

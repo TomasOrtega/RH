@@ -24,11 +24,11 @@ open GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Establish `hm : GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E (x : AE D) w * GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E ((x⁻¹ : (AE D)ˣ) : AE D) w = 1`. Rewrite using `[← ev_mul, Units.mul_inv, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Set `u : (w.adicCompletion D.host.E)ˣ` to `⟨_, _, hm, by rw [mul_comm]; exact hm⟩`. Establish `hU : Formalism.L2.Host.IsUnitAt w u`. Rewrite using `[GlobalTheory.LFun.EulerTie.isUnitAt_iff]`. Conclude with `⟨(hΦ.int _).1 h1 w, (hΦ.int _).1 h2 w⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GlobalTheory.LFun.locIdele D.host.F w u, (GlobalTheory.LFun.EulerTie.glue_eq_locIdele hd rfl).symm, ?_⟩` and prove the remaining obligations. Use `congrArg (fun z : ℂˣ => (z : ℂ)) (hu u hU)` as an intermediate fact. Conclude with `Circle.ext this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_glue_kill {χ : (AE D)ˣ →* Circle} {w : HeightOneSpectrum (𝓞 D.host.E)} (hu : UnrAt χ w)
     {e : AE D} (hd : GlobalTheory.IdemSupport.IsDelta (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E) w e)
@@ -51,13 +51,13 @@ theorem exists_glue_kill {χ : (AE D)ˣ →* Circle} {w : HeightOneSpectrum (�
   exact Circle.ext this
 
 /- English proof (translation)
-Introduce `D v w hw χ hχ e f hp x hx h1 h2`. Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Establish `hd` using `(of_isPrimeIdem hΦ hp).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Break down `hp with ⟨hi, rfl⟩ | ⟨rfl, -, -⟩` into its components or cases. Establish `hd'` using `delta_conj hΦ hd`. Take `⟨y, hy, hy1⟩` from `exists_glue_kill (hχ w hw) hd x h1 h2`. Take `⟨z, hz, hz1⟩` from `exists_glue_kill (hχ (cP w) ((under_cP w).trans hw)) hd' x h1 h2`. Establish `ho : e * cA D e = 0` using `hi.1.2.1`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : x = y * z` using `Units.ext (by`. Rewrite using `[Units.val_mul, hy, hz]`. Take the linear combination `(-1 : AE D) * hx - ((x : AE D) - 1) ^ 2 * ho)`. Rewrite using `[e1, map_mul, hy1, hz1, one_mul]`. Take `⟨y, hy, hy1⟩` from `exists_glue_kill (hχ w hw) hd x h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e1 : x = y` using `Units.ext (by rw [hy]; linear_combination (-1 : AE D) * hx)`. Rewrite using `[e1, hy1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unrPl_of_unrAt : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)),
     w.under (𝓞 D.host.F) = v → ∀ χ : (AE D)ˣ →* Circle,

@@ -28,59 +28,59 @@ namespace FSInv
 open CP
 
 /- English proof (translation)
-The claim follows from `LinChange.proof`.
+A detailed English derivation is pending.
 -/
 theorem LinChange.full : LinChange.Statement := LinChange.proof
 /- English proof (translation)
-The claim follows from `Radial.proof`.
+A detailed English derivation is pending.
 -/
 theorem Radial.full : Radial.Statement := Radial.proof
 /- English proof (translation)
-The claim follows from `AmbChart.proof LinChange.full Radial.full`.
+A detailed English derivation is pending.
 -/
 theorem AmbChart.full : AmbChart.Statement := AmbChart.proof LinChange.full Radial.full
 /- English proof (translation)
-The claim follows from `AmbEq.proof AmbChart.full`.
+A detailed English derivation is pending.
 -/
 theorem AmbEq.full : AmbEq.Statement := AmbEq.proof AmbChart.full
 /- English proof (translation)
-The claim follows from `ChartIndep.proof AmbChart.full`.
+A detailed English derivation is pending.
 -/
 theorem ChartIndep.full : ChartIndep.Statement := ChartIndep.proof AmbChart.full
 /- English proof (translation)
-The claim follows from `AmbUnitary.proof LinChange.full`.
+A detailed English derivation is pending.
 -/
 theorem AmbUnitary.full : AmbUnitary.Statement := AmbUnitary.proof LinChange.full
 /- English proof (translation)
-The claim follows from `UnitaryInv.proof AmbEq.full AmbUnitary.full`.
+A detailed English derivation is pending.
 -/
 theorem UnitaryInv.full : UnitaryInv.Statement := UnitaryInv.proof AmbEq.full AmbUnitary.full
 /- English proof (translation)
-The claim follows from `FormIntegral.proof ChartIndep.full`.
+A detailed English derivation is pending.
 -/
 theorem FormIntegral.full : FormIntegral.Statement := FormIntegral.proof ChartIndep.full
 /- English proof (translation)
-The claim follows from `PairMk.proof`.
+A detailed English derivation is pending.
 -/
 theorem PairMk.full : PairMk.Statement := PairMk.proof
 /- English proof (translation)
-The claim follows from `InnerSelf.proof`.
+A detailed English derivation is pending.
 -/
 theorem InnerSelf.full : InnerSelf.Statement := InnerSelf.proof
 /- English proof (translation)
-The claim follows from `Sesq.proof PairMk.full`.
+A detailed English derivation is pending.
 -/
 theorem Sesq.full : Sesq.Statement := Sesq.proof PairMk.full
 /- English proof (translation)
-The claim follows from `Orth.proof UnitaryInv.full PairMk.full`.
+A detailed English derivation is pending.
 -/
 theorem Orth.full : Orth.Statement := Orth.proof UnitaryInv.full PairMk.full
 /- English proof (translation)
-The claim follows from `Parseval.proof Orth.full Sesq.full InnerSelf.full`.
+A detailed English derivation is pending.
 -/
 theorem Parseval.full : Parseval.Statement := Parseval.proof Orth.full Sesq.full InnerSelf.full
 /- English proof (translation)
-The claim follows from `Definite.proof Parseval.full InnerSelf.full`.
+A detailed English derivation is pending.
 -/
 theorem Definite.full : Definite.Statement := Definite.proof Parseval.full InnerSelf.full
 

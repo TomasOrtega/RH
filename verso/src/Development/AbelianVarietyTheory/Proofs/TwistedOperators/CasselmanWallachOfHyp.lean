@@ -38,11 +38,9 @@ section KFin
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial H with hs | hn` into its components or cases. Introduce `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `subset_closure (smoothAll (Jm ε) σ).zero_mem`. Use `dense_of_irred hi (fun g hg v hv k x hx hxG => ?_) ?_` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `h1` using `hv k (fun t => x t * g) (hx.mul contDiff_const) fun t => mul_mem_UJ (hxG t) hg`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `(sigma_mul hσ (hxG t) hg v).symm`.
-
-Take `⟨v, hv, hs⟩` from `GlobalTheory.GardingVec.exists_garding hσ`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dense_smoothAll_of_irred (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn (UJset ε) σ) :
     Dense (smoothAll (Jm ε) σ : Set H) := by
@@ -60,7 +58,7 @@ theorem dense_smoothAll_of_irred (hσ : IsURepOn (UJset ε) σ) (hi : IsIrredOn 
       exact (Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩
 
 /- English proof (translation)
-Use `hHC.smoothVec hσ hi hv (P := 1) (G := Jm ε) isUnit_one (by simp)` as an intermediate fact. Rewrite `this` using `[conj_one_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sm_of_isKFin (hHC : GlobalTheory.Published.HarishChandraModules) (hσ : IsURepOn (UJset ε) σ)
     (hi : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) : Sm ε σ v := by
@@ -68,17 +66,17 @@ theorem sm_of_isKFin (hHC : GlobalTheory.Published.HarishChandraModules) (hσ : 
   rwa [conj_one_eq] at this
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3⟩` from `hv`. Establish `hS : S ≤ smooth (Jm ε) σ` using `fun s hs => sm_of_isKFin hHC hσ hi ⟨S, h1, hs, h3⟩`. Set `b` to `Module.finBasis ℝ (lie (Jm ε))`. Set `L : Fin (Module.finrank ℝ (lie (Jm ε))) → (S →ₗ[ℂ] H)` to `fun i => (smooth (Jm ε) σ).subtype ∘ₗ dOp (isUnit_Jm ε) hσ (b i).2 ∘ₗ Submodule.inclusion hS`. Set `T : Submodule ℂ H` to `⨆ i, LinearMap.range (L i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hT : ∀ Y ∈ lieSet ε, ∀ s ∈ S, dRep σ Y s ∈ T`. Introduce `Y hY s hs`. Establish `e : Y = ∑ i, b.repr ⟨Y, hY⟩ i • (b i : Mx n)`. Use `congrArg Subtype.val (b.sum_repr ⟨Y, hY⟩)` as an intermediate fact. Simplify `this.symm` using `only [AddSubmonoidClass.coe_finsetSum, SetLike.val_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e, GlobalTheory.LowTypeDetermined.dRep_sum (isUnit_Jm ε) hσ (dense_smoothAll_of_irred hσ hi) (fun i => (b i).2) (hS hs)]`. Use `T.sum_mem fun i _ => T.smul_mem _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem i ⟨⟨s, hs⟩, rfl⟩`. Use `⟨T, inferInstance, hT X hX v h2, fun k hk w hw => ?_⟩` and prove the remaining obligations. Establish `hg` using `K_le_UJ hk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: T ≤ T.comap (σ k : H →ₗ[ℂ] H)`. Use `iSup_le fun i => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Establish `hinv : (k⁻¹)⁻¹ = k` using `Matrix.inv_eq_left_inv (mul_inv_UJ hg)`. Establish `hY : k * (b i : Mx n) * k⁻¹ ∈ lieSet ε`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conj_mem_lie (isUnit_Jm ε) (inv_mem_UJ hg) (b i).2` as an intermediate fact. Rewrite `this` using `[hinv]`. Then use the resulting hypothesis. Establish `e` using `Dw_translate hσ hg (hS s.2) (l := [k * (b i : Mx n) * k⁻¹]) (by simpa using hY)`. Establish `e2 : k⁻¹ * (k * (b i : Mx n) * k⁻¹) * k = b i`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_UJ hg, one_mul, mul_assoc, inv_mul_UJ hg, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Dw, List.map_cons, List.map_nil, List.foldr_cons, List.foldr_nil, e2] at e`. Use `show σ k (dRep σ (b i) s) ∈ T`. Rewrite using `[← e]`. Conclude with `hT _ hY _ (h3 k hk s s.2)`. Conclude with `this hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKFin_dRep_of_irred (hHC : GlobalTheory.Published.HarishChandraModules) (hσ : IsURepOn (UJset ε) σ)
     (hi : IsIrredOn (UJset ε) σ) {v : H} (hv : IsKFin ε σ v) {X : Mx n} (hX : X ∈ lieSet ε) :

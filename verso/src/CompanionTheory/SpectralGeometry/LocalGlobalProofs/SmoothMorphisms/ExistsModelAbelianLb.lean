@@ -14,11 +14,11 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Introduce `R _ A _ hA L hL`. Take `⟨S0, B, gB, φ, -, hft, hB, hpb⟩` from `GlobalTheory.T.abelianScheme_spreads_out_finiteType_subring R A ∅ hA`. Establish `hpb' : IsGrpPullback A B (spMap (algebraMap S0 R)) φ` using `hpb`. Use `haveI : IsProper B.hom := IsAbelianScheme.proper (A := B)`. Establish `hqc : QuasiCompact B.hom` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep : IsSeparated B.hom` using `inferInstance`. Take `⟨R', hR', M, hM, hσ⟩` from `GlobalTheory.T.line_bundle_spreads_out S0 R B.left A.left B.hom A.hom φ hqc hsep hpb'.1 L hL`. Take `⟨gB', φ₁, hB'B, hAB', hφ₁⟩` from `GlobalTheory.T.abelianScheme_model_baseChange_subalgebra S0 R A B φ hpb' R'`. Use `⟨R'.toSubring, Over.mk (pullback.snd B.hom (spMap (algebraMap S0 R'))), gB', φ₁, M, ?_, ?_, hAB', hM, ?_⟩` and prove the remaining obligations. Establish `h1 : Algebra.FiniteType S0 R'` using `(Subalgebra.fg_iff_finiteType R').mp hR'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Algebra.FiniteType ℤ R'` using `Algebra.FiniteType.trans hft h1`. Conclude with `h2`. Conclude with `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB hB'B`. Conclude with `hσ φ₁ hφ₁ hAB'.1.w`.
+A detailed English derivation is pending.
 -/
 theorem exists_model_abelian_lb : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A],
     IsAbelianScheme A → ∀ L : LB A.left, L.IsLB →

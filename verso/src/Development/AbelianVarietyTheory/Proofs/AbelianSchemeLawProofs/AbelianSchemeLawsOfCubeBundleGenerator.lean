@@ -37,31 +37,31 @@ abbrev CubeGen : Prop :=
     ∃ t : LB.Gen (Theta P.A M), t.IsGen
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AbLaw.Cube.cube_of_gen GlobalTheory.T.abelianScheme_laws_without_cohomology.1 h`.
+A detailed English derivation is pending.
 -/
 theorem cube (h : CubeGen) : CubeSt :=
   GlobalTheory.AbLaw.Cube.cube_of_gen GlobalTheory.T.abelianScheme_laws_without_cohomology.1 h
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AbSquare.square_of_cube h).2`.
+A detailed English derivation is pending.
 -/
 theorem square (h : CubeGen) : SquareSt :=
   (GlobalTheory.AbSquare.square_of_cube h).2
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.MulPull.mulPull_of_cube_of_symm h (GlobalTheory.exists_gen_negLB GlobalTheory.T.abelianScheme_laws_without_cohomology.1)).2`.
+A detailed English derivation is pending.
 -/
 theorem mulPull (h : CubeGen) : MulPullSt :=
   (GlobalTheory.MulPull.mulPull_of_cube_of_symm h (GlobalTheory.exists_gen_negLB GlobalTheory.T.abelianScheme_laws_without_cohomology.1)).2
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.1`.
+A detailed English derivation is pending.
 -/
 theorem kerPow (h : CubeGen) : KerPowSt :=
   (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.1
 
 /- English proof (translation)
-The claim follows from `have g := GlobalTheory.T.abelianScheme_laws_without_cohomology.1 have lift := (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2 have w₁ := GlobalTheory.CommutatorPairing.existsUnique_weilIs g lift GlobalTheory.weilSt_of_parts w₁ (GlobalTheory.weilIs_m …`.
+A detailed English derivation is pending.
 -/
 theorem weil (h : CubeGen) : WeilSt :=
   have g := GlobalTheory.T.abelianScheme_laws_without_cohomology.1
@@ -71,14 +71,14 @@ theorem weil (h : CubeGen) : WeilSt :=
     (GlobalTheory.weilIs_alternating_skew_natural g lift) (GlobalTheory.PairingLevels.weilIs_mul_iff g h lift w₁)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.symmetric_lift_odd_order_exists_unique GlobalTheory.T.abelianScheme_laws_without_cohomology.1 (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2 (GlobalTheory.exists_gen_negLB GlobalTheory.T.abelianScheme_laws_without_cohomology.1)).2`.
+A detailed English derivation is pending.
 -/
 theorem symLift (h : CubeGen) : SymLiftSt :=
   (GlobalTheory.T.symmetric_lift_odd_order_exists_unique GlobalTheory.T.abelianScheme_laws_without_cohomology.1 (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2
     (GlobalTheory.exists_gen_negLB GlobalTheory.T.abelianScheme_laws_without_cohomology.1)).2
 
 /- English proof (translation)
-The claim follows from `have gi := GlobalTheory.forall_geometricallyIntegral_of_smooth_of_geometricallyConnected GlobalTheory.AbLaw.MulN.mulA_finite_flat_surjective_etale (GlobalTheory.MulFinite.isFinite_mulA (GlobalTheory.MulPull.mulPull_of_cube_of_symm h (GlobalTheory.exists_gen_negLB GlobalTheory.T.a …`.
+A detailed English derivation is pending.
 -/
 theorem mulA_props (h : CubeGen) :
     ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left) :=
@@ -91,7 +91,7 @@ theorem mulA_props (h : CubeGen) :
     GlobalTheory.flat_of_isFinite_of_flat_geometric_fibres GlobalTheory.T.formallyUnramified_mul_invertible_integer
 
 /- English proof (translation)
-The claim follows from `have g := GlobalTheory.T.abelianScheme_laws_without_cohomology.1 have lift := (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2 GlobalTheory.weilNondeg_of_descent (GlobalTheory.torsion_invariant_descends (mulA_props h)) (GlobalTheory.DescentPairing.ex …`.
+A detailed English derivation is pending.
 -/
 theorem weilNondeg (h : CubeGen) : WeilNondegSt :=
   have g := GlobalTheory.T.abelianScheme_laws_without_cohomology.1
@@ -102,7 +102,7 @@ theorem weilNondeg (h : CubeGen) : WeilNondegSt :=
         (GlobalTheory.T.symmetric_lift_odd_order_exists_unique g lift (GlobalTheory.exists_gen_negLB g)).1) (weil h))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.charPair_of_weil (weil h) (GlobalTheory.weilIs_alternating_skew_natural GlobalTheory.T.abelianScheme_laws_without_cohomology.1 (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2) (weilNondeg h) (mulA_props h)`.
+A detailed English derivation is pending.
 -/
 theorem charPair (h : CubeGen) : CharPairSt :=
   GlobalTheory.charPair_of_weil (weil h)
@@ -111,7 +111,7 @@ theorem charPair (h : CubeGen) : CharPairSt :=
     (weilNondeg h) (mulA_props h)
 
 /- English proof (translation)
-The claim follows from `have g := GlobalTheory.T.abelianScheme_laws_without_cohomology.1 have lift := (GlobalTheory.kerPow_of_square (GlobalTheory.AbSquare.square_of_cube h).1).2.2 GlobalTheory.sections_mulPull_split (GlobalTheory.MulPull.mulPull_of_cube_of_symm h (GlobalTheory.exists_gen_negLB g)).1 (m …`.
+A detailed English derivation is pending.
 -/
 theorem sec_split (h : CubeGen) :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (n j : ℕ), (n : K) ≠ 0 → 1 ≤ j → Nonempty (SecM P.A P.L ((n ^ 2 * j : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K))) ≃ₗ[Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)] ({x : baseOver (Spec (CommRingCat.of K)) ⟶ P.A // x ^ n = 1} → SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K))))) :=
@@ -126,7 +126,7 @@ theorem sec_split (h : CubeGen) :
     (GlobalTheory.twisted_pow_translate (GlobalTheory.AbSquare.square_of_cube h).1 (mulA_props h))
 
 /- English proof (translation)
-Introduce `h` and use `⟨cube h, square h, mulPull h, kerPow h, weil h, symLift h, weilNondeg h, charPair h, mulA_props h, sec_split h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem all_of_cubeGen :
     (∀ (S : Scheme.{0}) (P : PolAV S) (M : LB P.A.left), M.IsLB → ∃ t : LB.Gen (Theta P.A M), t.IsGen) → CubeSt ∧ SquareSt ∧ MulPullSt ∧ KerPowSt ∧ WeilSt ∧ SymLiftSt ∧ WeilNondegSt ∧ CharPairSt ∧ (∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : PolAV S) (n : ℕ), 1 ≤ n → IsFinite (mulA P.A n).left ∧ Flat (mulA P.A n).left ∧ Surjective (mulA P.A n).left ∧ (IsUnit (n : Γ(S, ⊤)) → Etale (mulA P.A n).left)) ∧ (∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (n j : ℕ), (n : K) ≠ 0 → 1 ≤ j → Nonempty (SecM P.A P.L ((n ^ 2 * j : ℕ) : ℤ) (baseOver (Spec (CommRingCat.of K))) ≃ₗ[Γ((baseOver (Spec (CommRingCat.of K))).left, ⊤)] ({x : baseOver (Spec (CommRingCat.of K)) ⟶ P.A // x ^ n = 1} → SecM P.A P.L (j : ℤ) (baseOver (Spec (CommRingCat.of K)))))) :=

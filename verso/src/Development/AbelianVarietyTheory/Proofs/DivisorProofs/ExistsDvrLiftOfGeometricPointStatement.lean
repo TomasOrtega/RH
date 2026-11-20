@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mean4 GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.GeomTrait.exists_trait_through` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsDvrLiftOfGeometricPoint.lean&line=180#L180)
 -/

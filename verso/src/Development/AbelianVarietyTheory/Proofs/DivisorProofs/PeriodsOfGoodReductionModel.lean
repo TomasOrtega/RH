@@ -22,13 +22,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PeriodDet
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset J, ∀ v : J → M, (∀ i ∉ s, v i ∈ S) → f v = g v`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro v hv; exact h v (fun i ↦ hv i (by simp))`. Consider the case `insert i s hi ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `v hv`. Establish `hl` using `hS (f.toLinearMap v i) (g.toLinearMap v i) (fun x hx ↦ by`. Simplify using `only [MultilinearMap.toLinearMap_apply]`. Apply `ih` to reduce the goal to its premises. Introduce `j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Simplify using `using hx`. Rewrite using `[Function.update_of_ne hji]; exact hv j (by simp [hji, hj]))`. Establish `h2` using `LinearMap.congr_fun hl (v i)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h2` using `[MultilinearMap.toLinearMap_apply, Function.update_eq_self]`. Use extensionality with `v`. Conclude with `key Finset.univ v (by simp)`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem multilinear_ext_of {K M N : Type} [CommSemiring K] [AddCommMonoid M] [Module K M] [AddCommMonoid N] [Module K N]
     {J : Type} [Fintype J] [DecidableEq J] (S : Set M)
@@ -55,39 +55,39 @@ theorem multilinear_ext_of {K M N : Type} [CommSemiring K] [AddCommMonoid M] [Mo
 open GlobalTheory.RealMult.Obj in
 
 /- English proof (translation)
-Introduce `_hAb E _ _ _ I _ φ L 𝔠 R _ X₀ X U p hp e a ha δ₀ u₀ hu₀ heq`. Use `letI : Algebra R ℂ := R.subtype.toAlgebra`. Take `⟨δ, hδ, -⟩` from `Obj.IsPullBy.existsUnique_detGen R.subtype hp δ₀`. Take `⟨eL, heL, -⟩` from `Obj.exists_lieEquiv (R := R) (R' := ℂ) (φ := p) hp`. Take `⟨h1, h2⟩` from `UnifTangent.tangent_bijection U.u X.dim`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb : ∀ k : Fin (Module.finrank ℚ (FR E)), ∃ t : X.Lie, U.u.IsDiff (Pi.single k 1) t.hom` using `fun k ↦ by`. Take `⟨t, ⟨ht, hd⟩, -⟩` from `h2 (Pi.single k 1)`. Conclude with `⟨Serre.Lie.mk X.rm t ht, hd⟩`. Use `choose b hb using hb`. Set `T : (Fin (Module.finrank ℚ (FR E)) → ℂ) →ₗ[ℂ] X.Lie` to `Fintype.linearCombination ℂ b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ w, U.u.IsDiff w (T w).hom` using `fun w ↦ by`. Establish `hc : IsLieComb w (fun k ↦ (b k).hom) (T w).hom`. Rewrite using `[Serre.Lie.isLieComb_iff]`. Simplify using `[T, Fintype.linearCombination_apply]`. Use `UnifDifferential.isDiff_of_isLieComb X.A (X.diag U.c) _ _ U.u (fun k ↦ Pi.single k 1) (fun k ↦ (b k).hom) w (T w).hom (fun k ↦ (b k).isTangent) hb hc` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Establish `hTu : ∀ (w : Fin (Module.finrank ℚ (FR E)) → ℂ) (v : X.Lie), U.u.IsDiff w v.hom → v = T w` using `fun w v hw ↦ Serre.Lie.ext ((h2 w).unique ⟨v.isTangent, hw⟩ ⟨(T w).isTangent, hT w⟩)`. Establish `hTinj : Function.Injective T` using `fun w w' h ↦ (h1 (T w).hom (T w).isTangent).unique (hT w) (h ▸ hT w')`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTsurj : Function.Surjective T` using `fun v ↦ by`. Take `⟨w, hw, -⟩` from `h1 v.hom v.isTangent`. Conclude with `⟨w, (hTu w v hw).symm⟩`. Set `Te` to `LinearEquiv.ofBijective T ⟨hTinj, hTsurj⟩`. Establish `hS : ∀ l₁ l₂ : X.Lie →ₗ[ℂ] ℂ, (∀ x ∈ Set.range (fun y : X₀.Lie ↦ eL (1 ⊗ₜ y)), l₁ x = l₂ x) → l₁ = l₂`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l₁ l₂ h`. Establish `hc : l₁ ∘ₗ eL.toLinearMap = l₂ ∘ₗ eL.toLinearMap`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `x y`. Establish `hx : x ⊗ₜ[R] y = x • ((1 : ℂ) ⊗ₜ[R] y)` using `by rw [TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, hx, map_smul]`. Rewrite using `[h _ ⟨y, rfl⟩]`. Use `LinearMap.ext fun x ↦ ?_` and prove the remaining obligations. Simplify using `using LinearMap.congr_fun hc (eL.symm x)`. Set `eh : I → X.Lie →ₗ[ℂ] ℂ` to `fun i ↦ (LinearMap.liftBaseChange ℂ ((Algebra.linearMap R ℂ) ∘ₗ e i)) ∘ₗ eL.symm.toLinearMap`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `heh : ∀ i y, eh i (eL (1 ⊗ₜ y)) = ((e i y : R) : ℂ)`. Introduce `i y`. Simplify using `[eh, LinearMap.liftBaseChange_tmul]`. Both sides reduce to the same expression. Establish `hper : ∀ i, eh i = (a i • LinearMap.proj (U.e.symm i)) ∘ₗ Te.symm.toLinearMap`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Apply `hS` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hW : U.u.IsDiff (Te.symm (eL (1 ⊗ₜ y))) (eL (1 ⊗ₜ y)).hom`. Establish `h3` using `hT (Te.symm (eL (1 ⊗ₜ y)))`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : T (Te.symm (eL (1 ⊗ₜ y))) = eL (1 ⊗ₜ y)` using `Te.apply_symm_apply _`. Rewrite `h3` using `[h4]`. Then use the resulting hypothesis. Rewrite using `[heh]`. Establish `h5` using `ha i y (eL (1 ⊗ₜ y)) _ ((heL _ _).2 rfl) hW`. Rewrite using `[h5]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Set `D : X.DetOmega` to `Matrix.detRowAlternating.compLinearMap (LinearMap.pi fun k ↦ eh (U.e k))`. Establish `hD : ((u₀ : ℂ) • δ.1 : X.DetOmega) = D`. Apply `AlternatingMap.coe_multilinearMap_injective` to reduce the goal to its premises. Apply `PeriodDet.multilinear_ext_of _ hS` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Use `choose y hy using hv`. Take `rfl : v = fun j ↦ eL (1 ⊗ₜ y j)` from `funext fun j ↦ (hy j).symm`. Establish `hc` using `hδ y (fun j ↦ eL (1 ⊗ₜ y j)) (fun j ↦ (heL _ _).2 rfl)`. Establish `hq : (Matrix.detRowAlternating.compLinearMap (LinearMap.pi fun k ↦ e (U.e k)) : X₀.DetOmega) y = (u₀ • δ₀.1) y` using `DFunLike.congr_fun heq y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hD1 : D (fun j ↦ eL (1 ⊗ₜ y j)) = R.subtype ((Matrix.detRowAlternating.compLinearMap (LinearMap.pi fun k ↦ e (U.e k)) : X₀.DetOmega) y)`. Express the relevant statement in the definitionally equal form `Matrix.det (fun j ↦ (LinearMap.pi fun k ↦ eh (U.e k)) (eL (1 ⊗ₜ y j))) = R.subtype (Matrix.det (fun j ↦ (LinearMap.pi fun k ↦ e (U.e k)) (y j)))`. Use `Eq.trans ?_ (RingHom.map_det R.subtype _).symm` and prove the remaining obligations. Use `congr 1`. Use extensionality with `j k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `heh _ _`. Simplify using `only [AlternatingMap.coe_multilinearMap, AlternatingMap.smul_apply, smul_eq_mul]`. Rewrite using `[hc, hD1, hq]`. Simplify using the standard rewrite rules. Use `⟨δ, hδ, fun v W hW ↦ ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : ∀ j, Te.symm (v j) = W j` using `fun j ↦ by`. Rewrite using `[hTu (W j) (v j) (hW j)]`. Conclude with `Te.symm_apply_apply (W j)`. Establish `hu : (u₀ : ℂ) ≠ 0` using `fun h ↦ hu₀ (Subtype.ext h)`. Establish `hDv : D v = (∏ i, a i) * W.det`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Matrix.det (fun j ↦ (LinearMap.pi fun k ↦ eh (U.e k)) (v j)) = _`. Establish `hM : (fun j ↦ (LinearMap.pi fun k ↦ eh (U.e k)) (v j)) = Matrix.of fun j k ↦ a (U.e k) * W j k`. Use function extensionality and compare the values at `j k`. Rewrite using `[Matrix.of_apply, LinearMap.pi_apply, hper]`. Simplify using `[hv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hM, Matrix.det_mul_row, Equiv.prod_comp U.e a]`. Establish `h6` using `DFunLike.congr_fun hD v`. Rewrite `h6` using `[AlternatingMap.smul_apply, hDv, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `h6`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_detGen_isDet : GlobalTheory.Published.AbelianDeRham → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (I : Type) [Fintype I] (φ : I → E →+* ℂ)
     (L : Set E) (𝔠 : FracId (FR E)) (R : Subring ℂ) [IsDiscreteValuationRing R]

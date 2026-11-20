@@ -7,35 +7,35 @@ open scoped Matrix
 namespace GlobalTheory.PELU
 
 /- English proof (translation)
-Introduce `O _ bar g ρ R _ σ Λ F N D' D'' t t' P P' y e w h hN hU hW hPP' hP'`. Take `⟨hy, hP, hexp, hker, hact, hweil, heta⟩` from `hU`. Take `⟨hiso, hmark⟩` from `hW`. Establish `hQs : ∀ x, h.symm (P' x) = P (w.symm x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h.symm_apply_eq, ← hPP', w.apply_symm_apply]`. Establish `hcomm : ∀ a z, h (ρ a *ᵥ z) = ρ a *ᵥ h z`. Introduce `a z`. Establish `hL : ((h.toLinearMap ∘ₗ Matrix.mulVecLin (ρ a)).restrictScalars ℝ) = ((Matrix.mulVecLin (ρ a) ∘ₗ h.toLinearMap).restrictScalars ℝ)`. Apply `LinearMap.ext_on hP.2.2.2.1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.coe_comp, Function.comp_apply, Matrix.mulVecLin_apply, LinearEquiv.coe_coe]`. Rewrite using `[← hP.1, ← hPP', ← hPP', map_smul, hP'.1]`. Conclude with `congrArg (fun f => f z) hL`. Establish `hcomm' : ∀ a z, h.symm (ρ a *ᵥ z) = ρ a *ᵥ h.symm z`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a z`. Rewrite using `[h.symm_apply_eq, hcomm, h.apply_symm_apply]`. Use `set hc := h.symm.toContinuousLinearEquiv with hhc`. Establish `hcc : ∀ z, hc z = h.symm z` using `fun z => rfl`. Establish `hder : ∀ u v, IsDerivAt0 (fun z => (e (h.symm z)).left) u v ↔ IsDerivAt0 (fun z => (e z).left) (h.symm u) v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `u v`. Unfold `IsDerivAt0`. Simplify using `only [map_zero]`. Use `and_congr Iff.rfl (forall_congr' fun U => forall_congr' fun hU => forall_congr' fun f => ?_)` and prove the remaining obligations. Establish `key` using `hc.comp_right_fderiv (f := fun z => valAt' (e z).left U f) (x := 0)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ((fun z => valAt' (e z).left U f) ∘ hc) = (fun z => valAt' (e (h.symm z)).left U f)` using `rfl`. Rewrite `key` using `[e1, map_zero]`. Rewrite using `[key]`. Both sides reduce to the same expression. Use `⟨hy, hP', ⟨?_, ?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `z z'`. Simplify using `only [map_add]`. Conclude with `hexp.1 _ _`. Conclude with `hexp.2.1.comp h.symm.surjective`. Introduce `U f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨ho, hd⟩` from `hexp.2.2.1 U f`. Establish `hs : {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ (e (h.symm b)).left ⁻¹ᵁ U} = hc ⁻¹' {b ∈ (Set.univ : Set (Fin g → ℂ)) | ⊤ ≤ (e b).left ⁻¹ᵁ U}`. Use extensionality with `b`. Simplify using `[hcc]`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ho.preimage hc.continuous, hd.comp hc.differentiableOn (Set.mapsTo_preimage _ _)⟩`. Introduce `u`. Take `⟨v, hv, huniq⟩` from `hexp.2.2.2.1 (h.symm u)`. Conclude with `⟨v, (hder u v.left).2 hv, fun v' hv' => huniq v' ((hder u v'.left).1 hv')⟩`. Introduce `v hv dsimp only at hv`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hv` using `[map_zero]`. Take `⟨u, hu, huniq⟩` from `hexp.2.2.2.2 v hv`. Use `⟨h u, (hder (h u) v.left).2 (by rwa [h.symm_apply_apply]), fun u' hu' => ?_⟩` and prove the remaining obligations. Rewrite using `[← huniq (h.symm u') ((hder u' v.left).1 hu'), h.apply_symm_apply]`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hker]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Conclude with `⟨w x, by rw [hPP', hx, h.apply_symm_apply]⟩`. Introduce and unpack `⟨x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions.
 
-Conclude with `⟨w.symm x, (hQs x).symm⟩`. Introduce `a z dsimp only`. Rewrite using `[hcomm', hact]`. Introduce `k a b c hk hc'`. Establish `h1` using `hweil k (w.symm a) (w.symm b) c hk (by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hc', ← hiso (w.symm a) (w.symm b), w.apply_symm_apply, w.apply_symm_apply])`. Simplify `h1` using `only [map_smul, hQs]`. Introduce `a`. Take `⟨x, hx⟩` from `hmark a`. Rewrite using `[heta a]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : t' a = w (t a - N • w.symm x)`. Rewrite using `[map_sub, map_nsmul, w.apply_symm_apply, hx, add_sub_cancel_right]`. Establish `hN' : ((N : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Establish `h2 : h.symm ((N : ℂ)⁻¹ • P' (t' a)) = (N : ℂ)⁻¹ • P (t a) + P (-(w.symm x))`. Rewrite using `[h1, hPP', map_smul, h.symm_apply_apply, map_sub, map_nsmul, smul_sub, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hN', one_smul, map_neg, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[h2, hexp.1, (hker _).2 ⟨_, rfl⟩, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem unifAt_transport : ∀ (O : Type) [Ring O] (bar : O → O) (g : ℕ) (ρ : O →+* Matrix (Fin g) (Fin g) ℂ) (R : Type) [CommRing R] (σ : R →+* ℂ) (Λ : Type) (F : Fam R O Λ g) (N : ℕ) (D' D'' : PLat O bar) (t : Λ → D'.La) (t' : Λ → D''.La) P P' (y : Sp ℂ ⟶ F.X) e (w : D'.La ≃ₗ[O] D''.La) (h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)), 0 < N → UnifAt F σ ρ N D' t P y e → IsMarkedIsom N D' D'' t t' w → (∀ x, P' (w x) = h (P x)) → IsPeriod D'' ρ P' → UnifAt F σ ρ N D'' t' P' y (fun z => e (h.symm z)) := by
   intro O _ bar g ρ R _ σ Λ F N D' D'' t t' P P' y e w h hN hU hW hPP' hP'

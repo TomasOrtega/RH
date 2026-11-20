@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Opposite
 open ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.IndefiniteRowSideFullHecke.SpecialFibreUnits GlobalTheory.Cartier
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_reducedSpecialFibre_of_not_mem_basicOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsReducedFibrePoint.lean&line=10#L10)
 -/

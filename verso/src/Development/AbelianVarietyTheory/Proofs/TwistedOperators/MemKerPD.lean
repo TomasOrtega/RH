@@ -27,13 +27,13 @@ def kerPD (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) {W W₁ X : HSp D} (A
     ∃ Φ₀ ∈ algF ψ θ false A₁ B, IsDatum Γ.M' ψ cB Φ₀D Φ₀ ∧ p' Φ₀ = 0}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Establish `hl` using `isDatum_linear Γ.M' ψ hψ (⇑cB)`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨Submodule.zero_mem _, 0, Submodule.zero_mem _, hl.1, map_zero p'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨hx1, Φx, hΦx, hDx, hpx⟩` from `hx`. Take `⟨hy1, Φy, hΦy, hDy, hpy⟩` from `hy`. Use `⟨Submodule.add_mem _ hx1 hy1, Φx + Φy, Submodule.add_mem _ hΦx hΦy, ?_, by rw [map_add, hpx, hpy, add_zero]⟩` and prove the remaining obligations. Use `hl.2 x y Φx Φy 1 hDx hDy` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`. Consider the case `smul c x _ hx`. Take `⟨hx1, Φx, hΦx, hDx, hpx⟩` from `hx`. Use `⟨Submodule.smul_mem _ c hx1, c • Φx, Submodule.smul_mem _ c hΦx, ?_, by rw [map_smul, hpx, smul_zero]⟩` and prove the remaining obligations. Use `hl.2 0 x 0 Φx c hl.1 hDx` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_kerPD {ψ : AddChar (AF D.host.F) ℂ} (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ) (θ : InfFam D) {W W₁ X : HSp D}
     (A₁ : Fr W₁) (B : Fr X) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base D.host.F D.host.E)

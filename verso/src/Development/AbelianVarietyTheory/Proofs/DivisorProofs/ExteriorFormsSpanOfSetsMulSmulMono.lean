@@ -9,14 +9,14 @@ section
 variable {K : Type} [CommRing K] {V : Type} [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.subset_closure ⟨b, hb, v, hv, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem forms_gen_mem {B : Set K} {L : Set V} {q : ℕ} {b : K} (hb : b ∈ B) (v : Fin q → V)
     (hv : ∀ k, v k ∈ L) : b • ExteriorAlgebra.ιMulti K q v ∈ forms B L q :=
   AddSubgroup.subset_closure ⟨b, hb, v, hv, rfl⟩
 
 /- English proof (translation)
-Use `show AddSubgroup.closure _ ≤ _`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `x ⟨b, hb, v, hv, rfl⟩`. Conclude with `h b hb v hv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem forms_le_comap_of_gen {B B' : Set K} {L L' : Set V} {q q' : ℕ}
     (φ : ExteriorAlgebra K V →+ ExteriorAlgebra K V)
@@ -29,7 +29,7 @@ theorem forms_le_comap_of_gen {B B' : Set K} {L L' : Set V} {q q' : ℕ}
   exact h b hb v hv
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ι_mul_ιMulti_eq (u : V) {q : ℕ} (w : Fin q → V) :
     ExteriorAlgebra.ι K u * ExteriorAlgebra.ιMulti K q w =
@@ -38,25 +38,23 @@ theorem ι_mul_ιMulti_eq (u : V) {q : ℕ} (w : Fin q → V) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, ExteriorAlgebra.ιMulti_zero_apply, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ιMulti_one_eq (u : Fin 1 → V) : ExteriorAlgebra.ιMulti K 1 u = ExteriorAlgebra.ι K (u 0) := by
   rw [ExteriorAlgebra.ιMulti_succ_apply, ExteriorAlgebra.ιMulti_zero_apply, mul_one]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `forms_gen_mem (B := (A : Set K)) (L := L) A.one_mem (Fin.elim0 : Fin 0 → V) (fun k => k.elim0)`. Simplify using `using h`. Introduce `q x y hx hy`. Establish `key : ∀ a ∈ (A : Set K), ∀ u : Fin 1 → V, (∀ k, u k ∈ L) → a • ExteriorAlgebra.ιMulti K 1 u * y ∈ forms (A : Set K) L (q + 1)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha u hu`. Use `forms_le_comap_of_gen (B := (A : Set K)) (L := L) (B' := (A : Set K)) (L' := L) (q := q) (q' := q + 1) (AddMonoidHom.mulLeft (a • ExteriorAlgebra.ιMulti K 1 u)) ?_ hy` as an intermediate fact. Conclude with `this`. Introduce `b hb w hw`. Use `show a • ExteriorAlgebra.ιMulti K 1 u * (b • ExteriorAlgebra.ιMulti K q w) ∈ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_smul_comm, ιMulti_one_eq, ι_mul_ιMulti_eq]`. Use `forms_gen_mem (A.mul_mem ha hb) _ ?_` and prove the remaining obligations. Introduce `k`. Use `Fin.cases ?_ (fun k => ?_) k` and prove the remaining obligations. Simplify using `using hu 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using hw k`. Conclude with `forms_le_comap_of_gen (B' := (A : Set K)) (L' := L) (q' := q + 1) (AddMonoidHom.mulRight y) (fun a ha u hu => key a ha u hu) hx`. Introduce `q c y hc hy`. Use `forms_le_comap_of_gen (B' := (A : Set K)) (L' := L) (q' := q) (DistribMulAction.toAddMonoidHom _ c) ?_ hy` and prove the remaining obligations. Introduce `b hb v hv`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show c • b • ExteriorAlgebra.ιMulti K q v ∈ _`. Rewrite using `[smul_smul]`. Conclude with `forms_gen_mem (A.mul_mem hc hb) v hv`. Introduce `B q c y hy`. Use `forms_le_comap_of_gen (B' := (fun b => c * b) '' B) (L' := L) (q' := q) (DistribMulAction.toAddMonoidHom _ c) ?_ hy` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb v hv`. Use `show c • b • ExteriorAlgebra.ιMulti K q v ∈ _`. Rewrite using `[smul_smul]`. Conclude with `forms_gen_mem (B := (fun b => c * b) '' B) (Set.mem_image_of_mem _ hb) v hv`. Introduce `B B' L' q hB hL`.
-
-Use `(forms_le_comap_of_gen (B' := B') (L' := L') (q' := q) (AddMonoidHom.id _) ?_)` and prove the remaining obligations. Introduce `b hb v hv`. Conclude with `forms_gen_mem (hB hb) v (fun k => hL (hv k))`.
+A detailed English derivation is pending.
 -/
 theorem forms_mul_smul_mono (A : Subring K) (L : Set V) :
     (1 : ExteriorAlgebra K V) ∈ forms (A : Set K) L 0 ∧

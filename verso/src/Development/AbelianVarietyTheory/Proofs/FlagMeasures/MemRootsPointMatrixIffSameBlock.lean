@@ -9,7 +9,7 @@ namespace GlobalTheory.RootsBijection
 
 open Formalism.L2.SG.RealObj in
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, h, _, _, _ => by simp [Formalism.MainNotions.S.ptEntry] at h | (t, s) :: bs, i, j, a, b, h1, h2, hab, hji => by rw [Formalism.MainNotions.S.ptEntry] at h1 h2 by_cases ha : a < s · by_cases hb : b < s · simp [blkOf, ha, hb] · exfalso rw [if_neg (show ¬ (j < s ∧ b …`.
+A detailed English derivation is pending.
 -/
 theorem fwd {K : Type*} [Zero K] : ∀ (bs : List (K × ℕ)) (i j a b : ℕ), Formalism.MainNotions.S.ptEntry bs i a ≠ 0 →
     Formalism.MainNotions.S.ptEntry bs j b ≠ 0 → a < b → j < i → blkOf bs a = blkOf bs b
@@ -41,7 +41,7 @@ theorem fwd {K : Type*} [Zero K] : ∀ (bs : List (K × ℕ)) (i j a b : ℕ), F
 
 open Formalism.L2.SG.RealObj in
 /- English proof (translation)
-The claim follows from `| [], _, _, _, _, hb, _ => by simp at hb | (t, s) :: bs, hnz, a, b, hab, hbs, hbl => by have ht : t ≠ 0 := hnz (t, s) (by simp) simp only [List.map_cons, List.sum_cons] at hbs ⊢ by_cases ha : a < s · have hb : b < s := by by_contra hb simp [blkOf, ha, hb] at hbl refine ⟨s - 1 - a …`.
+A detailed English derivation is pending.
 -/
 theorem bwd {K : Type*} [Zero K] : ∀ (bs : List (K × ℕ)), (∀ p ∈ bs, p.1 ≠ 0) → ∀ (a b : ℕ), a < b →
     b < (bs.map Prod.snd).sum → blkOf bs a = blkOf bs b →
@@ -69,11 +69,11 @@ theorem bwd {K : Type*} [Zero K] : ∀ (bs : List (K × ℕ)), (∀ p ∈ bs, p.
 end GlobalTheory.RootsBijection
 
 /- English proof (translation)
-Introduce `K _ n w a b`. Unfold `GlobalTheory.LoopV.roots`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Simplify using `only [ptMat]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hab, i, j, hji, hi, hj⟩`. Conclude with `⟨hab, GlobalTheory.RootsBijection.fwd w.1 i.1 j.1 a.1 b.1 hi hj hab hji⟩`. Introduce and unpack `⟨hab, hbl⟩`. Take `⟨i, j, hji, hin, hi, hj⟩` from `GlobalTheory.RootsBijection.bwd w.1 (fun p hp => (w.2.1 p hp).1) a.1 b.1 hab (by rw [w.2.2]; exact b.2) hbl`. Rewrite `hin` using `[w.2.2]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hab, ⟨i, hin⟩, ⟨j, by omega⟩, hji, hi, hj⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlobalTheory.roots_ptMat_iff : ∀ (K : Type) [Field K] (n : ℕ) (w : Point K n) (a b : Fin n),
     (a, b) ∈ GlobalTheory.LoopV.roots (ptMat w) ↔ a < b ∧ Formalism.L2.SG.RealObj.blkOf w.1 a.1 = Formalism.L2.SG.RealObj.blkOf w.1 b.1 := by

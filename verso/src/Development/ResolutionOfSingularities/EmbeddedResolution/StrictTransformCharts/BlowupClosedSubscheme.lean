@@ -21,7 +21,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `(mem_strictTransform_ideal_iff π Z D V t ht (t * f)).mp hf`. Use `(mem_strictTransform_ideal_iff π Z D V t ht f).mpr ⟨n + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc]`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_strictTransform_of_mul_mem {X X₁ : Scheme.{u}} (π : X₁ ⟶ X)
     (Z D : X.IdealSheafData) [QuasiCompact (strictTransformι π Z D)]
@@ -35,7 +35,7 @@ private theorem mem_strictTransform_of_mul_mem {X X₁ : Scheme.{u}} (π : X₁ 
   exact hn
 
 /- English proof (translation)
-Establish `e' : (V : X.Opens) ≤ (𝟙 X) ⁻¹ᵁ (U : X.Opens)` using `e`. Establish `h` using `Scheme.IdealSheafData.comap_ideal_eq_map_appLE I (𝟙 X) U V e'`. Rewrite `h` using `[Scheme.IdealSheafData.comap_id]`. Use `⟨(Scheme.Hom.appLE (𝟙 X) (U : X.Opens) (V : X.Opens) e').hom t, ?_⟩` and prove the remaining obligations. Rewrite using `[h, ht, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_ideal_eq_span_singleton_of_le {X : Scheme.{u}} (I : X.IdealSheafData)
     (U V : X.affineOpens) (e : (V : X.Opens) ≤ (U : X.Opens)) (t : Γ(X, (U : X.Opens)))
@@ -48,7 +48,7 @@ private theorem exists_ideal_eq_span_singleton_of_le {X : Scheme.{u}} (I : X.Ide
   rw [h, ht, Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-Use `P.2.isLocalization_basicOpen d` as an intermediate fact. Establish `halg : (algebraMap Γ(W, (P : W.Opens)) Γ(W, W.basicOpen d)) = (W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom` using `rfl`. Establish `h : algebraMap Γ(W, (P : W.Opens)) Γ(W, W.basicOpen d) u ∈ nonZeroDivisors Γ(W, W.basicOpen d)` using `IsLocalization.nonZeroDivisors_le_comap (M := Submonoid.powers d) (S := Γ(W, W.basicOpen d)) hu`. Rewrite `h` using `[halg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} (P : W.affineOpens)
     (d : Γ(W, (P : W.Opens))) {u : Γ(W, (P : W.Opens))}
@@ -65,9 +65,9 @@ private theorem restrict_basicOpen_mem_nonZeroDivisors {W : Scheme.{u}} (P : W.a
   rwa [halg] at h
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hab`. Establish `key : ∀ z : R, a * z = 0 → z = 0`. Introduce `z hz`. Use `(mem_nonZeroDivisors_iff.mp hb).1 z ?_` and prove the remaining obligations. Rewrite using `[hc, mul_assoc, mul_comm c z, ← mul_assoc, hz, zero_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_nonZeroDivisors_iff.mpr ⟨key, fun z hz => key z (by rw [mul_comm]; exact hz)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mem_nonZeroDivisors_of_dvd {R : Type u} [CommRing R] {a b : R}
     (hb : b ∈ nonZeroDivisors R) (hab : a ∣ b) : a ∈ nonZeroDivisors R := by
@@ -79,9 +79,7 @@ private theorem mem_nonZeroDivisors_of_dvd {R : Type u} [CommRing R] {a b : R}
   exact mem_nonZeroDivisors_iff.mpr ⟨key, fun z hz => key z (by rw [mul_comm]; exact hz)⟩
 
 /- English proof (translation)
-Use `choose P hP hmem hzero using h`. Use `TopCat.Sheaf.eq_of_locally_eq' W.sheaf (fun w : { w : ↥W // w ∈ U } => P w.1 w.2) U (fun w => homOfLE (hP w.1 w.2)) ?_ x 0 ?_` and prove the remaining obligations. Conclude with `fun w hw => Opens.mem_iSup.mpr ⟨⟨w, hw⟩, hmem w hw⟩`. Introduce `w`. Rewrite using `[map_zero]`.
-
-Conclude with `hzero w.1 w.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_locally_eq_zero {W : Scheme.{u}} (U : W.Opens) (x : Γ(W, U))
     (h : ∀ w ∈ U, ∃ (P : W.Opens) (hP : P ≤ U), w ∈ P ∧
@@ -97,7 +95,7 @@ private theorem eq_zero_of_locally_eq_zero {W : Scheme.{u}} (U : W.Opens) (x : �
     exact hzero w.1 w.2
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.ker_comp, Scheme.IdealSheafData.ker_subschemeι, Scheme.IdealSheafData.le_map_iff_comap_le]`. Conclude with `comap_le_strictTransform π Z j.ker`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_ker_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}}
     (j : S ⟶ X) (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
@@ -107,7 +105,7 @@ theorem ker_le_ker_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}}
   exact comap_le_strictTransform π Z j.ker
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgebraicGeometry.IsClosedImmersion.lift j ((Blowup.strictTransform π Z j.ker).subschemeι ≫ π) (ker_le_ker_strictTransform_subschemeι_comp j π Z), AlgebraicGeometry.IsClosedImmersion.lift_fac j _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_comp_eq_strictTransform_subschemeι_comp {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
@@ -123,7 +121,7 @@ def strictTransformLiftOfClosedImmersion {X X₁ S : Scheme.{u}} (j : S ⟶ X)
   (exists_comp_eq_strictTransform_subschemeι_comp j π Z).choose
 
 /- English proof (translation)
-The claim follows from `(exists_comp_eq_strictTransform_subschemeι_comp j π Z).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformLiftOfClosedImmersion_comp {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] (π : X₁ ⟶ X) (Z : X.IdealSheafData) :
@@ -131,53 +129,47 @@ theorem strictTransformLiftOfClosedImmersion_comp {X X₁ S : Scheme.{u}} (j : S
   (exists_comp_eq_strictTransform_subschemeι_comp j π Z).choose_spec
 
 /- English proof (translation)
-Establish `: QuasiCompact (strictTransformι π Z j.ker)` using `FunctorialResolution.EmbeddedResolution.quasiCompact_strictTransformι_of_isLocallyNoetherian π Z j.ker`. Establish `hcomap : (Z.comap j).comap (strictTransformLiftOfClosedImmersion j π Z) = (Z.comap π).comap (Blowup.strictTransform π Z j.ker).subschemeι`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, strictTransformLiftOfClosedImmersion_comp, Scheme.IdealSheafData.comap_comp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Take `⟨V, t, hxV, -, hVspan⟩` from `h.1 ((Blowup.strictTransform π Z j.ker).subschemeι.base x)`. Use `⟨⟨(Blowup.strictTransform π Z j.ker).subschemeι ⁻¹ᵁ (V : X₁.Opens), V.2.preimage (Blowup.strictTransform π Z j.ker).subschemeι⟩, ((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)).hom t, hxV, ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ z : Γ((Blowup.strictTransform π Z j.ker).subscheme, (Blowup.strictTransform π Z j.ker).subschemeι ⁻¹ᵁ (V : X₁.Opens)), z * ((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)).hom t = 0 → z = 0`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective ⇑(((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom)`. Introduce `A B hAB`. Establish `h1 : ((((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom ≫ ((Blowup.strictTransform π Z j.ker).subschemeObjIso V).inv).hom) A = ((((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom ≫ ((Blowup.strictTransform π Z j.ker).subschemeObjIso V).inv).hom) B`. Simplify using `only [CommRingCat.hom_comp, RingHom.coe_comp, Function.comp_apply, hAB]`. Simplify using `using h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcompo : ((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)) ≫ ((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom = CommRingCat.ofHom (Ideal.Quotient.mk ((Blowup.strictTransform π Z j.ker).ideal V))`. Rewrite using `[Scheme.IdealSheafData.subschemeι_app, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Establish `hft : (((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) (((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)).hom t) = Ideal.Quotient.mk ((Blowup.strictTransform π Z j.ker).ideal V) t`. Establish `h2 : ((((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)) ≫ ((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom).hom) t = (((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) (((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)).ho …`. Rewrite using `[CommRingCat.hom_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← h2, hcompo]`. Both sides reduce to the same expression. Take `⟨z₀, hz₀⟩` from `Ideal.Quotient.mk_surjective ((((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) z)`. Establish `h1 : (((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) z * (((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) (((Blowup.strictTransform π Z j.ker).subschemeι.app (V : X₁.Opens)).hom t) = 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hz, map_zero]`. Rewrite `h1` using `[hft, ← hz₀]`. Establish `h2 : Ideal.Quotient.mk ((Blowup.strictTransform π Z j.ker).ideal V) (z₀ * t) = 0`. Rewrite using `[map_mul]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : z₀ * t ∈ (Blowup.strictTransform π Z j.ker).ideal V` using `(Ideal.Quotient.eq_zero_iff_mem).mp h2`. Establish `h4 : z₀ ∈ (Blowup.strictTransform π Z j.ker).ideal V` using `mem_strictTransform_of_mul_mem π Z j.ker V t hVspan z₀ (by rwa [mul_comm] at h3)`. Establish `h5 : (((Blowup.strictTransform π Z j.ker).subschemeObjIso V).hom.hom) z = 0`. Rewrite using `[← hz₀]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem).mpr h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hinj ?_` and prove the remaining obligations. Rewrite using `[h5, map_zero]`. Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨fun z hz => key z (by rw [mul_comm]; exact hz), key⟩`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (Z.comap π) (Blowup.strictTransform π Z j.ker).subschemeι V ⟨(Blowup.strictTransform π Z j.ker).subschemeι ⁻¹ᵁ (V : X₁.Opens), V.2.preimage (Blowup.strictTransform π Z j.ker).subschemeι⟩ le_rfl, hVspan, Ideal.map_span, Scheme.Hom.ap …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `W g hg`. Establish `hECg : Blowup.IsLocallyGeneratedByNonZeroDivisor (Z.comap (g ≫ j))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `hg`. Take `⟨a, hacomp⟩ : ∃ a : W ⟶ X₁, a ≫ π = g ≫ j` from `⟨h.lift (g ≫ j) hECg, h.lift_comp (g ≫ j) hECg⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hWcomap : (Z.comap j).comap g = (Z.comap π).comap a`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, hacomp]`. Establish `hDker : (j.ker).comap π ≤ Scheme.Hom.ker a`. Rewrite using `[← Scheme.IdealSheafData.le_map_iff_comap_le, ← Scheme.Hom.ker_comp, hacomp]`. Apply `Scheme.Hom.le_ker_comp` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hD'ker : Blowup.strictTransform π Z j.ker ≤ Scheme.Hom.ker a`. Establish `hker : Scheme.Hom.ker a = Scheme.IdealSheafData.ofIdeals (fun U : X₁.affineOpens => RingHom.ker ((a.app (U : X₁.Opens)).hom))` using `rfl`. Rewrite using `[hker, Scheme.IdealSheafData.le_ofIdeals_iff]`. Introduce `V s hs`. Rewrite using `[RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `eq_zero_of_locally_eq_zero (a ⁻¹ᵁ (V : X₁.Opens)) ((a.app (V : X₁.Opens)).hom s) ?_` and prove the remaining obligations. Introduce `w hw`. Take `⟨V₀, t₀, hyV₀, -, hV₀span⟩` from `h.1 (a.base w)`. Take `⟨c, hcle, hcmem⟩` from `V.2.exists_basicOpen_le (⟨a.base w, hyV₀⟩ : ↥(V₀ : X₁.Opens)) hw`. Take `⟨P₀, u, hwP₀, hunzd, hP₀span⟩` from `hg w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwc : w ∈ a ⁻¹ᵁ (X₁.basicOpen c)` using `hcmem`. Take `⟨d, hdle, hdmem⟩` from `P₀.2.exists_basicOpen_le (⟨w, hwc⟩ : ↥(a ⁻¹ᵁ (X₁.basicOpen c))) hwP₀`. Establish `hcle' : ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ≤ ((V₀ : X₁.affineOpens) : X₁.Opens)` using `hcle`. Establish `hdle' : ((W.affineBasicOpen d : W.affineOpens) : W.Opens) ≤ a ⁻¹ᵁ ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens)` using `hdle`. Establish `hPU' : ((W.affineBasicOpen d : W.affineOpens) : W.Opens) ≤ a ⁻¹ᵁ (V : X₁.Opens)` using `fun z hz => X₁.basicOpen_le c (hdle hz)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hCV : ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ≤ (V : X₁.Opens)` using `X₁.basicOpen_le c`. Take `⟨t', ht'⟩` from `exists_ideal_eq_span_singleton_of_le (Z.comap π) V₀ (X₁.affineBasicOpen c) hcle' t₀ hV₀span`. Establish `hs₁ : (X₁.presheaf.map (homOfLE hCV).op).hom s ∈ (Blowup.strictTransform π Z j.ker).ideal (X₁.affineBasicOpen c)`. Rewrite using `[← Scheme.IdealSheafData.map_ideal_basicOpen]`. Conclude with `Ideal.mem_map_of_mem _ hs`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(mem_strictTransform_ideal_iff π Z j.ker (X₁.affineBasicOpen c) t' ht' ((X₁.presheaf.map (homOfLE hCV).op).hom s)).mp hs₁`. Establish `hkerapp : (a.app ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens)).hom (t' ^ n * (X₁.presheaf.map (homOfLE hCV).op).hom s) = 0`. Establish `h1` using `(Scheme.IdealSheafData.le_def.mp hDker) (X₁.affineBasicOpen c) hn`. Conclude with `RingHom.mem_ker.mp (Scheme.Hom.ideal_ker_le a _ h1)`. Establish `hφ : Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle' = a.app ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ≫ W.presheaf.map (homOfLE hdle').op` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hzero1 : (Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom (t' ^ n * (X₁.presheaf.map (homOfLE hCV).op).hom s) = 0`. Rewrite using `[hφ, CommRingCat.hom_comp, RingHom.comp_apply, hkerapp, map_zero]`. Establish `hmulzero : ((Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom t') ^ n * (Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) h …`. Rewrite using `[← map_pow, ← map_mul]`. Conclude with `hzero1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPspan : ((Z.comap π).comap a).ideal (W.affineBasicOpen d) = Ideal.span {(W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom u}`. Rewrite using `[← Scheme.IdealSheafData.map_ideal_basicOpen, ← hWcomap, hP₀span, Ideal.map_span, Set.image_singleton]`. Establish `hPspan' : ((Z.comap π).comap a).ideal (W.affineBasicOpen d) = Ideal.span {(Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom t'}`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (Z.comap π) a (X₁.affineBasicOpen c) (W.affineBasicOpen d) hdle', ht', Ideal.map_span, Set.image_singleton]`. Establish `hu'nzd : (W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom u ∈ nonZeroDivisors _` using `restrict_basicOpen_mem_nonZeroDivisors P₀ d hunzd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : (Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom t' ∣ (W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom u`. Establish `hmem : (W.presheaf.map (homOfLE (W.basicOpen_le d)).op).hom u ∈ Ideal.span {(Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom t'}`. Rewrite using `[← hPspan', hPspan]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `Ideal.mem_span_singleton.mp hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `htnzd` using `mem_nonZeroDivisors_of_dvd hu'nzd hdvd`. Establish `hpownzd` using `Submonoid.pow_mem (nonZeroDivisors _) htnzd n`. Establish `happLE : (Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom ((X₁.presheaf.map (homOfLE hCV).op).hom s) = 0` using `(mem_nonZeroDivisors_iff.mp hpownzd).1 _ hmulzero`. Use `⟨((W.affineBasicOpen d : W.affineOpens) : W.Opens), hPU', hdmem, ?_⟩` and prove the remaining obligations. Establish `hsplit` using `Scheme.Hom.map_appLE a hdle' (homOfLE hCV).op`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h0 : ((X₁.presheaf.map (homOfLE hCV).op ≫ Scheme.Hom.appLE a ((X₁.affineBasicOpen c : X₁.affineOpens) : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hdle').hom) s = 0`. Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply]`. Conclude with `happLE`. Rewrite `h0` using `[hsplit]`. Establish `hEq : (W.presheaf.map (homOfLE hPU').op).hom ((a.app (V : X₁.Opens)).hom s) = (Scheme.Hom.appLE a (V : X₁.Opens) ((W.affineBasicOpen d : W.affineOpens) : W.Opens) hPU').hom s` using `rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hEq]`. Conclude with `h0`. Establish `hkerι : Scheme.Hom.ker (Blowup.strictTransform π Z j.ker).subschemeι ≤ Scheme.Hom.ker a`. Rewrite using `[Scheme.IdealSheafData.ker_subschemeι]` and apply the resulting hypothesis. Establish `hbι : AlgebraicGeometry.IsClosedImmersion.lift (Blowup.strictTransform π Z j.ker).subschemeι a hkerι ≫ (Blowup.strictTransform π Z j.ker).subschemeι = a` using `AlgebraicGeometry.IsClosedImmersion.lift_fac _ _ _`.
-
-Use `⟨AlgebraicGeometry.IsClosedImmersion.lift (Blowup.strictTransform π Z j.ker).subschemeι a hkerι, ?_, ?_⟩` and prove the remaining obligations. Establish `hfac : (AlgebraicGeometry.IsClosedImmersion.lift (Blowup.strictTransform π Z j.ker).subschemeι a hkerι ≫ strictTransformLiftOfClosedImmersion j π Z) ≫ j = g ≫ j`. Rewrite using `[Category.assoc, strictTransformLiftOfClosedImmersion_comp, ← Category.assoc, hbι, hacomp]`. Conclude with `(cancel_mono j).mp hfac`. Introduce `y hy`.
-
-Establish `h1 : (y ≫ (Blowup.strictTransform π Z j.ker).subschemeι) ≫ π = g ≫ j`. Rewrite using `[Category.assoc, ← strictTransformLiftOfClosedImmersion_comp, ← Category.assoc, hy]`. Establish `h2 : ((AlgebraicGeometry.IsClosedImmersion.lift (Blowup.strictTransform π Z j.ker).subschemeι a hkerι) ≫ (Blowup.strictTransform π Z j.ker).subschemeι) ≫ π = g ≫ j`. Rewrite using `[hbι, hacomp]`. Establish `h3` using `h.hom_ext_of_comp_eq hECg h1 h2`.
-
-Conclude with `(cancel_mono (Blowup.strictTransform π Z j.ker).subschemeι).mp h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S : Scheme.{u}} (j : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion j] [AlgebraicGeometry.IsLocallyNoetherian X₁]
@@ -378,7 +370,7 @@ theorem isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion {X X₁ S :
       exact (cancel_mono (Blowup.strictTransform π Z j.ker).subschemeι).mp h3
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.IsProper π` using `Blowup.blowupIsProper X X₁ π Z h`. Conclude with `AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian π`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}}
     [AlgebraicGeometry.IsLocallyNoetherian X] (π : X₁ ⟶ X) (Z : X.IdealSheafData)
@@ -387,7 +379,7 @@ theorem isLocallyNoetherian_of_isBlowupAlongIdealSheaf {X X₁ : Scheme.{u}}
   exact AlgebraicGeometry.LocallyOfFiniteType.isLocallyNoetherian π
 
 /- English proof (translation)
-Introduce `X X₁ S hX j hj π Z hπ _`. Use `hX` as an intermediate fact. Use `hj` as an intermediate fact. Use `isLocallyNoetherian_of_isBlowupAlongIdealSheaf π Z hπ` as an intermediate fact. Conclude with `⟨strictTransformLiftOfClosedImmersion j π Z, strictTransformLiftOfClosedImmersion_comp j π Z, isBlowupAlongIdealSheaf_strictTransformLiftOfClosedImmersion j π Z hπ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem strictTransformIsBlowupOfClosedSubscheme : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u} := by
   intro X X₁ S hX j hj π Z hπ _

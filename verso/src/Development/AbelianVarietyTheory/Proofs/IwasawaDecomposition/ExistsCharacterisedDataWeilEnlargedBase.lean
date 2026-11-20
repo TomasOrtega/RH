@@ -40,7 +40,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw.WeilExt
 
 /- English proof (translation)
-The claim follows from `Step.of_evG (((evG_of_ev GlobalTheory.Mem.StdSize.vstd_size_ev).inter (evG_of_ev GlobalTheory.Mem.HostFrames.hostHyp_frames_ev)).imp fun _ _ _ _ _ H _ _ _ hO _ _ _ _ _ X e => ⟨(H.2 X (e ▸ hO)).1, (H.1 X (e ▸ hO)).2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem stepW_host_rank (p : WP) :
     StepW p fun _ B _ _ _ => ∀ X : Stages, X.B.toPre = B.toPre →
@@ -49,7 +49,7 @@ theorem stepW_host_rank (p : WP) :
     fun _ _ _ _ _ H _ _ _ hO _ _ _ _ _ X e => ⟨(H.2 X (e ▸ hO)).1, (H.1 X (e ▸ hO)).2⟩)
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Take `rfl` from `eq_of_heq h`. Conclude with `h'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIdG_of_heq (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl X.toD7.host.E)} (e : Gc X.B px ≃* G0 Pg X.toD7.R.r)
     (e' : Gc X.B px ≃* G0 Pg' X.toD7.R.r) (hP : Pg = Pg') (h : HEq e e') (h' : IsPlacewiseIdentity X (px := px) e') : IsPlacewiseIdentity X (px := px) e := by
@@ -58,7 +58,7 @@ theorem isIdG_of_heq (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl X.t
   exact h'
 
 /- English proof (translation)
-Substitute `hP` using the available equality. Take `rfl` from `eq_of_heq h`. Take `rfl` from `eq_of_heq hc`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem trans_eq_of_heq (X : Stages) {px : PreX X.B.toPre} {Pg Pg' : Finset (Pl X.toD7.host.E)} (e : Gc X.B px ≃* G0 Pg X.toD7.R.r)
     (e' : Gc X.B px ≃* G0 Pg' X.toD7.R.r) (c : G0 Pg X.toD7.R.r ≃* G0g X.toD7.nd) (c' : G0 Pg' X.toD7.R.r ≃* G0g X.toD7.nd)
@@ -76,7 +76,7 @@ variable {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : T
   {Xg : Finset (Gc B' w'.px → B'.LL)} {tr : TrI B' w'.px}
 
 /- English proof (translation)
-The claim follows from `show B'.toPre.R.m = B.toPre.R.m from congrArg (fun P => P.R.m) hE.1`.
+A detailed English derivation is pending.
 -/
 theorem m_eq (hE : Enl0 B B') : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m :=
   show B'.toPre.R.m = B.toPre.R.m from congrArg (fun P => P.R.m) hE.1
@@ -84,9 +84,9 @@ theorem m_eq (hE : Enl0 B B') : (w'.st Z').toD7.R.m = (w.st Z).toD7.R.m :=
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `key` using `fun i' : Fin (w'.st Z').toD7.R.m => GlobalTheory.T.exists_copies_reference_objects_over_enlarged_base z Wt' R₀ hE h (Fin.cast (m_eq hE) i') i' rfl`. Use `choose ω v H th g ν fd k using key`. Use `⟨fun i _ => H i, fun i _ => ν i, fun i _ => fd i, fun i _ => ω i, fun i _ => v i, fun i _ => th i, fun i _ => g i, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (h :))`. Introduce `i i' e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e' : i = Fin.cast (m_eq hE) i'` using `Fin.ext e`. Substitute `e'` using the available equality. Conclude with `(by with_unfolding_all exact (k i' :))`.
+A detailed English derivation is pending.
 -/
 theorem exists_rSide (z : Dat (w.st Z) w.I hX T Wt) (Wt' : Set B'.places.Pl)
     (R₀ : RealDat3 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr) Ks) (hE : Enl0 B B') (h : RSideW z Wt' R₀) :
@@ -107,17 +107,15 @@ end
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7`. Use `(stepW_host_rank Pinned).trans (StepW.of_all ?_)` and prove the remaining obligations. Introduce `K B' f' T' w' _ _ H B f T w hE hf _ hpx Z hX Wt z hG _ hFine hHolds Z' hX' hG' _ _ core' alg' _ _ _ _ _ _ _ _`. Introduce `Xg tr₀ R₀ cG hyp`. Take `⟨hLev, hId, hGood, hMu, hIdem, hPre, hIn, hTup, hAll, hKeep, hBrg, hSide⟩` from `hyp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `letI := alg'`. Generalize the expression as in `{v | B'.places.resChar v ∈ T'.pl} = Wt' at *`. Establish `hHH` using `(H (w'.st Z') rfl).1`. Establish `hn` using `(H (w.st Z) hE.1.symm).2`. Use `obt ⟨HV, νV, fdV, ωP, vP, thF, thG, hS⟩ := exists_rSide z Wt' R₀ hE hSide`.
+Equip the data with the indicated structure. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `hR₁ : (⟨updM R₀.toRealDat R₀.HX HV R₀.HE R₀.gE R₀.jX (fun _ _ => 0) R₀.νY R₀.fdY R₀.ν0 R₀.fd0 R₀.νX R₀.fdX νV fdV ωP vP thF thG, R₀.plI, R₀.SF, R₀.phs, R₀.lam3⟩ : RealDat3 (w'.st Z').toD7 (famR (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr₀) core'.Q.c.F) = R₁ at hS`. Establish `move : ∃ cG₁ : G0 R₁.Pg (w'.st Z').toD7.R.r ≃* G0g (w'.st Z').toD7.nd, LevOf (w'.st Z') w'.I (usedOf w'.I T' Wt') R₁.toLevCh ∧ IsPlacewiseIdentity (w'.st Z') (px` using `w'.px) R₁.eG ∧ GoodSet (w'.st Z') (px := w'.px) (R₁.eG.trans cG₁) Xg ∧ MuOf (w'.st Z') w'.I T' Wt' R₁.mu R₁.twPl ∧ R₁.toRealDat.Pre0 (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' Wt') Xg tr₀).lv2 ∧ R₁.IsInert ∧ R₁.IsTup ∧ R₁.AllPlaces ∧ Keep R₁.toRealDat (face0 (w'.st Z') w'.I hX' ( …`. Substitute `hR₁` using the available equality. Conclude with `⟨cG, hLev, hId, hGood, hMu, realDatum_prerequisites_update_models hPre _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _, ⟨hIn.tie, hIn.onto, hIn.hR, hIn.hL, hIn.SF⟩, ⟨hTup.mu_off, hTup.mu_used, hTup.mu_ne, hTup.mu_conj, hTup.mu_on⟩, hAll, ⟨hKeep.std, hKeep.signs, hKeep.frames, hKeep.beta, hKe …`. Use `clear hR₁ hLev hId hGood hMu hPre hIn hTup hAll hKeep hBrg hSide`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨cG₁, hLev, hId, hGood, hMu, hPre, hIn, hTup, hAll, hKeep, hBrg⟩` from `move`. Establish `hL` using `GlobalTheory.T.liftCharacters_agree_over_enlarged_base z Wt' R₁ hE hf hpx hLev`. Establish `hI` using `GlobalTheory.T.goodIdempotent_coefficients_agree_enlarged_base z Wt' R₁ hE hf hpx hG hG' hS.1 cG₁ hKeep`. Establish `hz` using `ratAt_of_geo z.R z.F z.pins.char hFine.1 hn z.geo hFine.2.1 hHolds.unif`. Use `obt ⟨tr, R, cG', hPins, hEx, hLevEq, hEG, hCG, hmu, htw, hBrg', hS', hSame⟩ := charW_keep (w'.st Z') w'.px w'.I hX' (usedOf w'.I T' Wt') Xg tr₀ core'.Q.c.F R₁ cG₁ (GlobalTheory.T.linksAnalyticHypotheses_of_weilRep_harishChandra h5 h6 h7 h3 _) hIdem (fun R hP hc ht => GlobalTheory …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hPg : R.Pg = R₁.Pg` using `congrArg LevCh.Pg hLevEq`. Use `⟨tr, R, cG', hPins, hLevEq ▸ hLev, isIdG_of_heq _ R.eG R₁.eG hPg hEG hId, ?_, ?_, hBrg', hEx, ?_, fun i i' e => ?_⟩` and prove the remaining obligations. Rewrite using `[trans_eq_of_heq _ R.eG R₁.eG cG' cG₁ hPg hEG hCG]`. Conclude with `hGood`. Rewrite using `[hmu, htw]`.
-
-Conclude with `hMu`. Conclude with `(by with_unfolding_all exact (hS' :))`. Use `obt ⟨a1, a2, a3, a4, a5, a6, a7⟩ := hS.2 i i' e obt ⟨b1, b2, b3, b4, b5, b6, b7⟩ := hSame i'`. Conclude with `⟨(heq_of_eq b1).trans a1, (heq_of_eq b2).trans a2, b3.trans a3, b4.trans a4, b5.trans a5, (heq_of_eq b6).trans a6, (heq_of_eq b7).trans a7⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pins_rSide : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

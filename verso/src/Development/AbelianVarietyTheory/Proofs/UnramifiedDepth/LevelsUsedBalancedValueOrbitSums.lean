@@ -8,7 +8,7 @@ open Formalism.L2.FormalSeriesBounds Formalism.L2.DIV Formalism.BasicNotions For
 namespace GlobalTheory.LevelsOrbits
 
 /- English proof (translation)
-Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt ((k : ℝ) ^ ((3 : ℝ) / 2)) (show (1 : ℝ) < l by linarith)`. Use `⟨2 * n + 3, ⟨n + 1, by ring⟩, by omega, hn.trans_le ?_⟩` and prove the remaining obligations. Conclude with `pow_le_pow_right₀ (by linarith) (by omega)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma levels_nonempty (k l : ℕ) (hl : 2 ≤ l) :
     {i : ℕ | Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i}.Nonempty := by
@@ -18,9 +18,9 @@ lemma levels_nonempty (k l : ℕ) (hl : 2 ≤ l) :
   exact pow_le_pow_right₀ (by linarith) (by omega)
 
 /- English proof (translation)
-Introduce `k l _ hl`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hm` using `Nat.sInf_mem (levels_nonempty k l hl)`. Use `⟨hm.1, hm.2.1, hm.2.2, ?_⟩` and prove the remaining obligations. Unfold `thl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `IsGreatest.csSup_eq ⟨⟨_, hm.1, hm.2.1, hm.2.2, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `t ⟨i, h1, h2, h3, rfl⟩`. Establish `hi : i0 k l ≤ i` using `Nat.sInf_le ⟨h1, h2, h3⟩`. Conclude with `inv_anti₀ (by positivity) (pow_le_pow_right₀ (by linarith) hi)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thlEq : ThlEq := by
   intro k l _ hl
@@ -34,15 +34,15 @@ theorem thlEq : ThlEq := by
   exact inv_anti₀ (by positivity) (pow_le_pow_right₀ (by linarith) hi)
 
 /- English proof (translation)
-Introduce `k l hk hl`. Establish `hl' : (5 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hk' : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hlog : 0 ≤ Real.log k` using `Real.log_nonneg hk'`. Take `⟨⟨r, hr⟩, h3, -, -⟩` from `thlEq k l hk (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : i0 k l = 3`. Rewrite using `[h]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, hj⟩ : ∃ j, i0 k l = j + 2` from `⟨i0 k l - 2, by omega⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hn : j ∉ {i : ℕ | Odd i ∧ 3 ≤ i ∧ (k : ℝ) ^ ((3 : ℝ) / 2) < (l : ℝ) ^ i}` using `Nat.notMem_of_lt_sInf (show j < i0 k l by omega)`. Establish `hle : (l : ℝ) ^ j ≤ (k : ℝ) ^ ((3 : ℝ) / 2)`. Assume the negation of the conclusion as `hc`. Conclude with `hn ⟨⟨r - 1, by omega⟩, by omega, not_le.1 hc⟩`. Establish `h1` using `Real.log_le_log (by positivity) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Real.log_pow, Real.log_rpow (by linarith)]`. Establish `h2 : 1 ≤ Real.log l`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h4 : (j : ℝ) ≤ j * Real.log l` using `le_mul_of_one_le_right (by positivity) h2`. Rewrite using `[hj]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levelBound : LevelBound := by
   intro k l hk hl
@@ -68,7 +68,7 @@ theorem levelBound : LevelBound := by
     rw [hj]; push_cast; linarith
 
 /- English proof (translation)
-Unfold `Formalism.IncomingBounds.oddLevels`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Simplify using `[Finset.mem_range.1 hi]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma sum_range_ite (d : ℕ) (f : ℕ → ℝ) :
     ∑ i ∈ Finset.range d, (if Odd i ∧ i < d then f i else 0) = ∑ i ∈ Formalism.IncomingBounds.oddLevels d, f i := by
@@ -78,9 +78,7 @@ lemma sum_range_ite (d : ℕ) (f : ℕ → ℝ) :
   simp [Finset.mem_range.1 hi]
 
 /- English proof (translation)
-Unfold `Formalism.IncomingBounds.oddLevels`. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Both sides reduce to the same expression.
-
-Conclude with `hf i h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma sum_range_eq (d : ℕ) (f : ℕ → ℝ) (hf : ∀ i, ¬ Odd i → f i = 0) :
     ∑ i ∈ Finset.range d, f i = ∑ i ∈ Formalism.IncomingBounds.oddLevels d, f i := by
@@ -92,15 +90,15 @@ lemma sum_range_eq (d : ℕ) (f : ℕ → ℝ) (hf : ∀ i, ¬ Odd i → f i = 0
   · exact hf i h
 
 /- English proof (translation)
-Use extensionality with `t`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, h0, h1, h2, rfl⟩`. Establish `e : ∀ s, ∑ i ∈ Finset.range d, x s i = ∑ i ∈ Formalism.IncomingBounds.oddLevels d, x s i` using `fun s => sum_range_eq d _ fun i hi => h1 s i (Or.inl hi)`. Use `⟨x, ⟨h0, fun s => ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2 s` as an intermediate fact. Rewrite `this` using `[sum_range_eq d _ fun i hi => by rw [h1 s i (Or.inl hi), mul_zero], sum_range_eq d (fun i => x (s - (i : ZMod d)) i) fun i hi => h1 _ i (Or.inl hi)]`. Then use the resulting hypothesis. Simplify using `only [Formalism.IncomingBounds.flowVal, e]`. Introduce and unpack `⟨x, ⟨h0, h2⟩, rfl⟩`. Use `⟨fun s i => if Odd i ∧ i < d then x s i else 0, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `s i dsimp only split_ifs`. Conclude with `h0 s i`. Conclude with `le_rfl`. Introduce `s i h`. Establish `: ¬ (Odd i ∧ i < d)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨a, b⟩`. Break down `h with h | h` into its components or cases. Conclude with `h a`. Use linear arithmetic over natural numbers and integers. Simplify using `only [this, if_false]`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `s`. Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[sum_range_ite, sum_range_ite]`. Conclude with `h2 s`. Simplify using `only [Formalism.IncomingBounds.flowVal, sum_range_ite]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma lpFeasible_eq (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) :
     lpFeasible l d D = {t : ℝ | ∃ x, Formalism.IncomingBounds.IsFlow l d D x ∧ Formalism.IncomingBounds.flowVal d x = t} := by
@@ -135,26 +133,26 @@ lemma lpFeasible_eq (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) :
     · simp only [Formalism.IncomingBounds.flowVal, sum_range_ite]
 
 /- English proof (translation)
-Unfold `lpF Formalism.IncomingBounds.Fnum Formalism.IncomingBounds.maxFlow Formalism.IncomingBounds.gam`. Rewrite using `[lpFeasible_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma lpF_eq (l d : ℕ) [NeZero d] (D : ZMod d → ℝ) : lpF l d D = Formalism.IncomingBounds.Fnum l d D := by
   unfold lpF Formalism.IncomingBounds.Fnum Formalism.IncomingBounds.maxFlow Formalism.IncomingBounds.gam
   rw [lpFeasible_eq]
 
 /- English proof (translation)
-Introduce `l d _ hl hd _ D _ hD`. Establish `hl' : (2 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hp : (0 : ℝ) < l + 1` using `by linarith`. Establish `hg : IsGreatest (lpFeasible l d D) ((∑ a, D a) / ((l : ℝ) + 1))`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨x, ⟨h0, h1, h2⟩, h3⟩` from `GlobalTheory.FlowProgramme.balanced l d D hl hd (fun a b => hD b a)`. Use `⟨x, h0, fun s i h => ?_, h2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Take `⟨a, b⟩` from `h1 s i hc`. Break down `h with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h a`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← h3]`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `t ⟨x, h0, h1, h2, rfl⟩`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `(GlobalTheory.FlowProgramme.duality l d D hl x ⟨h0, fun a i h => ?_, h2⟩).1` as an intermediate fact. Rewrite using `[le_div_iff₀ hp]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hc`. Use `h (h1 a i ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ho : Odd i`. Conclude with `Or.inr (not_lt.1 fun hh => hc ⟨ho, hh⟩)`. Conclude with `Or.inl ho`. Rewrite using `[← lpF_eq]`. Unfold `lpF`.
+Prove the second alternative. Prove the first alternative. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg.csSup_eq]`. Establish `h1 : (l : ℝ) - 1 ≠ 0` using `by linarith`. Establish `h2 : (l : ℝ) ^ 2 - 1 = (l - 1) * (l + 1)` using `by ring`. Use `show _ = 1 / ((l : ℝ) ^ 2 - 1) * _`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lemmaFe : LemmaFe := by
   intro l d _ hl hd _ D _ hD
@@ -190,9 +188,9 @@ theorem lemmaFe : LemmaFe := by
   ring
 
 /- English proof (translation)
-Unfold `NumDatum.pos`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`. Apply the tactic sequence `by_cases h : N.cls l = PrimeClass.signal <;> by_cases hs : Odd s <;> by_cases ht : Odd t <;>`. Simplify using `[h, hs, ht, Nat.odd_add, ← Nat.not_odd_iff_even]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[add_smul, add_assoc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma pos_add (N : NumDatum) (l : ℕ) (z : RPl N.R) (s t : ℕ) :
     N.pos l (N.pos l z s) t = N.pos l z (s + t) := by
@@ -205,13 +203,13 @@ lemma pos_add (N : NumDatum) (l : ℕ) (z : RPl N.R) (s t : ℕ) :
     rw [add_smul, add_assoc]
 
 /- English proof (translation)
-Unfold `NumDatum.pos NumDatum.ordP`. Distinguish the cases in `h : N.cls l = PrimeClass.signal`. Rewrite using `[if_pos h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Establish `: ¬ Odd (2 * addOrderOf (2 • N.hP l) * c)`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.not_odd_iff_even, mul_assoc]`. Conclude with `even_two_mul _`. Simplify using `only`. Rewrite using `[decide_eq_false (fun hh => this hh.2), Bool.xor_false]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show 2 * addOrderOf (2 • N.hP l) * c = c * addOrderOf (2 • N.hP l) * 2 by ring, mul_smul, mul_smul, addOrderOf_nsmul_eq_zero, smul_zero, add_zero]`. Rewrite using `[if_neg h]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `[h]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_smul, addOrderOf_nsmul_eq_zero, smul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 lemma pos_mul_period (N : NumDatum) (l : ℕ) (z : RPl N.R) (c : ℕ) :
     N.pos l z (N.ordP l * c) = z := by
@@ -233,14 +231,14 @@ lemma pos_mul_period (N : NumDatum) (l : ℕ) (z : RPl N.R) (c : ℕ) :
       rw [mul_comm, mul_smul, addOrderOf_nsmul_eq_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← Nat.div_add_mod e (N.ordP l), ← pos_add, pos_mul_period]`.
+A detailed English derivation is pending.
 -/
 lemma pos_mod (N : NumDatum) (l : ℕ) (z : RPl N.R) (e : ℕ) :
     N.pos l z (e % N.ordP l) = N.pos l z e := by
   conv_rhs => rw [← Nat.div_add_mod e (N.ordP l), ← pos_add, pos_mul_period]
 
 /- English proof (translation)
-Unfold `NumDatum.FOrb`. Rewrite using `[← lpF_shift l (N.ordP l) (fun s => ((N.R.k : ℝ) - 1) * N.w j (N.pos l z s.val)) c]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[pos_add, ZMod.val_add, pos_mod, add_comm]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma FOrb_step (N : NumDatum) (j l : ℕ) (z : RPl N.R) (c : ZMod (N.ordP l)) :
     N.FOrb j l (N.pos l z c.val) = N.FOrb j l z := by
@@ -251,9 +249,9 @@ lemma FOrb_step (N : NumDatum) (j l : ℕ) (z : RPl N.R) (c : ZMod (N.ordP l)) :
   rw [pos_add, ZMod.val_add, pos_mod, add_comm]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_product']`. Use `symm`. Use `Finset.sum_bij (fun p _ => N.pos l p.1 p.2.val) (fun _ _ => Finset.mem_univ _) ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `p hp q hq h`. Conclude with `(hZ _).unique ⟨(Finset.mem_product.1 hp).1, h⟩ ⟨(Finset.mem_product.1 hq).1, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z _`. Take `⟨p, hp, -⟩` from `hZ z`. Conclude with `⟨p, Finset.mem_product.2 ⟨hp.1, Finset.mem_univ _⟩, hp.2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma sum_reps (N : NumDatum) (l : ℕ) (Z : Finset (RPl N.R)) (hZ : IsReps N l Z)
     (f : RPl N.R → ℝ) :
@@ -269,11 +267,11 @@ lemma sum_reps (N : NumDatum) (l : ℕ) (Z : Finset (RPl N.R)) (hZ : IsReps N l 
     exact ⟨p, Finset.mem_product.2 ⟨hp.1, Finset.mem_univ _⟩, hp.2⟩
 
 /- English proof (translation)
-Introduce `N j l Z hZ hc hn`. Prove the components needed by the constructor for the conclusion. Unfold `NumDatum.FInert`. Rewrite using `[if_neg hn, sum_reps N l Z hZ]`. Establish `hd : (N.ordP l : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 (NeZero.ne _)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [FOrb_step, Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]`. Rewrite using `[← Finset.mul_sum, mul_div_cancel_left₀ _ hd]`. Use `Finset.sum_congr rfl fun z _ => ?_` and prove the remaining obligations. Unfold `NumDatum.FOrb alongOrb`. Conclude with `lpF_eq _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0 h1 hX`. Unfold `NumDatum.FjP`. Establish `hr : N.cls l ≠ PrimeClass.ramD`. Apply the tactic sequence `rcases hc with h | h <;> rw [h] <;> simp`. Rewrite using `[if_neg (by tauto), if_neg hr, if_pos ⟨hc, hX⟩]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fInertReps : FInertReps := by
   intro N j l Z hZ hc hn
@@ -293,7 +291,7 @@ theorem fInertReps : FInertReps := by
     rw [if_neg (by tauto), if_neg hr, if_pos ⟨hc, hX⟩]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thlEq, levelBound, lemmaFe, fInertReps⟩`.
+Supply the required witnesses or components.
 -/
 theorem main : ThlEq ∧ LevelBound ∧ LemmaFe ∧ FInertReps :=
   ⟨thlEq, levelBound, lemmaFe, fInertReps⟩

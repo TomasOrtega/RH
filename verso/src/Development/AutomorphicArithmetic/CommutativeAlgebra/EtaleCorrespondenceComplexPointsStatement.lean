@@ -14,7 +14,7 @@ section Local
 variable {Y : Scheme.{0}} [IsIntegral Y] {p : Y ⟶ Sp ℂ}
 
 /- English proof (translation)
-The claim follows from `Y.presheaf.germ_res_apply (homOfLE h) (genericPoint Y) hW f`.
+A detailed English derivation is pending.
 -/
 private theorem germ_resG {W W' : Y.Opens} (h : W ≤ W') (hW : genericPoint Y ∈ W) (hW' : genericPoint Y ∈ W')
     (f : Γ(Y, W')) :
@@ -22,18 +22,18 @@ private theorem germ_resG {W W' : Y.Opens} (h : W ≤ W') (hW : genericPoint Y �
   Y.presheaf.germ_res_apply (homOfLE h) (genericPoint Y) hW f
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec Y).mem_open_set_iff W.isOpen).2 ⟨_, trivial, CxPts.mem_ptsIn.1 hy⟩`.
+A detailed English derivation is pending.
 -/
 private theorem generic_mem_of_pt {W : Y.Opens} {y : CxPts p (RingHom.id ℂ)}
     (hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) W) : genericPoint Y ∈ W :=
   ((genericPoint_spec Y).mem_open_set_iff W.isOpen).2 ⟨_, trivial, CxPts.mem_ptsIn.1 hy⟩
 
 /- English proof (translation)
-Establish `hy : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (W1 ⊓ W2 ⊓ W3)` using `CxPts.mem_ptsIn_inf.2 ⟨CxPts.mem_ptsIn_inf.2 ⟨y1, y2⟩, y3⟩`. Establish `hg : genericPoint Y ∈ W1 ⊓ W2 ⊓ W3` using `generic_mem_of_pt hy`. Establish `l1 : W1 ⊓ W2 ⊓ W3 ≤ W1` using `inf_le_left.trans inf_le_left`. Establish `l2 : W1 ⊓ W2 ⊓ W3 ≤ W2` using `inf_le_left.trans inf_le_right`. Establish `l3 : W1 ⊓ W2 ⊓ W3 ≤ W3` using `inf_le_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : resG Y l1 a * resG Y l2 b = resG Y l3 c`. Apply `germ_injective_of_isIntegral Y (genericPoint Y) hg` to reduce the goal to its premises. Rewrite using `[map_mul, germ_resG l1 hg g1, germ_resG l2 hg g2, germ_resG l3 hg g3, e]`. Use `congrArg (CxPts.evHom hy) h` as an intermediate fact. Rewrite `this` using `[map_mul, ← CxPts.ev_eq, ← CxPts.ev_eq, ← CxPts.ev_eq, CxPts.ev_res _ hy, CxPts.ev_res _ hy, CxPts.ev_res _ hy]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem ev_germ_mul {W1 W2 W3 : Y.Opens} (g1 : genericPoint Y ∈ W1) (g2 : genericPoint Y ∈ W2)
     (g3 : genericPoint Y ∈ W3) (a : Γ(Y, W1)) (b : Γ(Y, W2)) (c : Γ(Y, W3)) (y : CxPts p (RingHom.id ℂ))
@@ -59,17 +59,15 @@ variable [Algebra ℂ Y.functionField] {V W : Y.Opens} {hg : genericPoint Y ∈ 
   {e : B →ₐ[ℂ] ℂ} {y : CxPts p (RingHom.id ℂ)}
 
 /- English proof (translation)
-Take `⟨β, hβW, hβy⟩` from `hV.exists_basicOpen_le (V := W) ⟨_, CxPts.mem_ptsIn.1 hy⟩ (CxPts.mem_ptsIn.1 hM.1)`. Establish `hyD : y ∈ CxPts.ptsIn p (RingHom.id ℂ) (Y.basicOpen β)` using `CxPts.mem_ptsIn.2 hβy`. Establish `hgD : genericPoint Y ∈ Y.basicOpen β` using `generic_mem_of_pt hyD`. Use `hV.isLocalization_basicOpen β` as an intermediate fact. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj β (resG Y hβW g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha' : resG Y hβW g * resG Y (Y.basicOpen_le β) β ^ n = resG Y (Y.basicOpen_le β) a` using `ha`. Use `set G := (Y.presheaf.germ V (genericPoint Y) hg).hom with hG`. Establish `e1 : G (β ^ n) * (Y.presheaf.germ W (genericPoint Y) hW).hom g = G a`. Use `congrArg (Y.presheaf.germ _ (genericPoint Y) hgD).hom ha'` as an intermediate fact. Rewrite `this` using `[map_mul, map_pow, germ_resG hβW hgD hW, germ_resG _ hgD hg, germ_resG _ hgD hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, map_pow]`. Conclude with `mul_comm _ _`. Establish `hb : G (β ^ n) ∈ B` using `(hB _).2 ⟨_, rfl⟩`. Establish `hbv : G (β ^ n) * (Y.presheaf.germ W (genericPoint Y) hW).hom g ∈ B` using `e1 ▸ (hB _).2 ⟨a, rfl⟩`. Establish `hne : CxPts.ev p (RingHom.id ℂ) V (β ^ n) y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CxPts.ev_eq hM.1, map_pow, ← CxPts.ev_eq hM.1]`. Conclude with `pow_ne_zero n ((CxPts.mem_ptsIn_basicOpen hM.1 β).1 hyD)`. Use `⟨_, hb, hbv, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM.2 (β ^ n) hb]`. Conclude with `hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM.2 (β ^ n) hb]`. Establish `h2 : e ⟨_, hbv⟩ = CxPts.ev p (RingHom.id ℂ) V a y`. Rewrite using `[← hM.2 a ((hB _).2 ⟨a, rfl⟩)]`. Conclude with `congrArg e (Subtype.ext e1)`. Rewrite using `[h2]`.
-
-Conclude with `(ev_germ_mul hg hW hg _ _ _ y hM.1 hy hM.1 e1).symm`.
+A detailed English derivation is pending.
 -/
 private theorem val_of_regular (hV : IsAffineOpen V)
     (hB : ∀ v, v ∈ B ↔ ∃ f : Γ(Y, V), (Y.presheaf.germ V (genericPoint Y) hg).hom f = v)
@@ -102,11 +100,9 @@ private theorem val_of_regular (hV : IsAffineOpen V)
     exact (ev_germ_mul hg hW hg _ _ _ y hM.1 hy hM.1 e1).symm
 
 /- English proof (translation)
-Take `⟨b, hb, hbv, hne, hv⟩` from `hc`. Take `⟨f1, rfl⟩` from `(hB b).1 hb`. Take `⟨f2, h2⟩` from `(hB _).1 hbv`. Establish `m` using `ev_germ_mul hg hW hg f1 g f2 y hM.1 hy hM.1 h2.symm`. Establish `v1` using `hM.2 f1 hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2 : e ⟨_, hbv⟩ = CxPts.ev p (RingHom.id ℂ) V f2 y`. Rewrite using `[← hM.2 f2 ((hB _).2 ⟨f2, rfl⟩)]`. Conclude with `congrArg e (Subtype.ext h2.symm)`. Rewrite `hv` using `[v2, v1, ← m]`. Rewrite `hne` using `[v1]`.
-
-Conclude with `(mul_left_cancel₀ hne hv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_unique
     (hB : ∀ v, v ∈ B ↔ ∃ f : Γ(Y, V), (Y.presheaf.germ V (genericPoint Y) hg).hom f = v)
@@ -126,9 +122,9 @@ private theorem val_unique
   exact (mul_left_cancel₀ hne hv).symm
 
 /- English proof (translation)
-Take `⟨b, hb, hbv, hne, -⟩` from `hc`. Take `⟨f1, rfl⟩` from `(hB b).1 hb`. Take `⟨f2, h2⟩` from `(hB _).1 hbv`. Establish `e1 : (Y.presheaf.germ W (genericPoint Y) hW).hom g * (Y.presheaf.germ V (genericPoint Y) hg).hom f2 = (Y.presheaf.germ V (genericPoint Y) hg).hom f1`. Rewrite using `[h2, mul_left_comm, hv, mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `m` using `ev_germ_mul hW hg hg g f2 f1 y hy hM.1 hM.1 e1`. Rewrite `hne` using `[hM.2 f1 hb, ← m]`. Conclude with `left_ne_zero_of_mul hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ne_zero_of_val
     (hB : ∀ v, v ∈ B ↔ ∃ f : Γ(Y, V), (Y.presheaf.germ V (genericPoint Y) hg).hom f = v)
@@ -155,7 +151,7 @@ variable {Z : Scheme.{0}} [IsIntegral Z] {s : Z ⟶ Sp ℂ} [Algebra ℂ Z.funct
   {U : Fin (d + 1) → Z.Opens}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hU.ring I hI b`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem ring_of_eq (hU : IsAffCover s U (rB ℂ Z.functionField x)) (I : Finset (Fin (d + 1))) (hI : I.Nonempty)
     (V' : Z.Opens) (e : V' = I.inf U) (hV' : genericPoint Z ∈ V') (b : Z.functionField) :
@@ -164,34 +160,32 @@ private theorem ring_of_eq (hU : IsAffCover s U (rB ℂ Z.functionField x)) (I :
   exact hU.ring I hI b
 
 /- English proof (translation)
-The claim follows from `(integralClosure (rA ℂ x I) Z.functionField).algebraMap_mem ⟨x j / x i, Algebra.subset_adjoin ⟨i, hi, j, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem ratio_mem (I : Finset (Fin (d + 1))) (i j : Fin (d + 1)) (hi : i ∈ I) :
     algebraMap F Z.functionField (x j / x i) ∈ rB ℂ Z.functionField x I :=
   (integralClosure (rA ℂ x I) Z.functionField).algebraMap_mem ⟨x j / x i, Algebra.subset_adjoin ⟨i, hi, j, rfl⟩⟩
 
 /- English proof (translation)
-Distinguish the cases in `hli : l = i`. Substitute `hli` using the available equality. Conclude with `hP`. Establish `eW : U l ⊓ U i = ({l, i} : Finset (Fin (d + 1))).inf U` using `by simp`. Establish `hW : IsAffineOpen (U l ⊓ U i)` using `eW ▸ hU.affine {l, i} ⟨l, by simp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUl : IsAffineOpen (U l)` using `by simpa using hU.affine {l} ⟨l, by simp⟩`. Establish `hgW : genericPoint Z ∈ U l ⊓ U i` using `eW ▸ hU.ne {l, i}`. Establish `ringW` using `ring_of_eq hU {l, i} ⟨l, by simp⟩ (U l ⊓ U i) eW hgW`. Establish `ringl` using `ring_of_eq hU {l} ⟨l, by simp⟩ (U l) (by simp) hgl`. Establish `hloc` using `(GlobalTheory.PD.rB_mono_loc ℂ F Z.functionField d x hx {l, i} l (by simp)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∏ j ∈ ({l, i} : Finset (Fin (d + 1))), x j / x l = x i / x l`. Rewrite using `[Finset.prod_pair hli, div_self (hx.pd.ne l), one_mul]`. Rewrite `hloc` using `[hprod]`. Establish `hle : U l ⊓ U i ≤ U l` using `inf_le_left`. Take `⟨vf, hvf⟩` from `(ringW _).1 (ratio_mem (x := x) {l, i} i l (by simp))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hwv : resG Z hle wf * vf = 1`. Apply `germ_injective_of_isIntegral Z (genericPoint Z) hgW` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, germ_resG hle hgW hgl, hw, hvf, ← map_mul, div_mul_div_comm, mul_comm (x i), div_self (mul_ne_zero (hx.pd.ne _) (hx.pd.ne _)), map_one]`. Use `letI : Algebra Γ(Z, U l) Γ(Z, U l ⊓ U i) := (resG Z hle).toAlgebra`. Establish `hres : ∀ f, algebraMap Γ(Z, U l) Γ(Z, U l ⊓ U i) f = resG Z hle f` using `fun _ => rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : IsLocalization.Away wf Γ(Z, U l ⊓ U i) := by`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Rewrite using `[hres, map_pow]`. Conclude with `(IsUnit.of_mul_eq_one _ hwv).pow n`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `t`. Take `⟨N, hN⟩` from `(hloc _).1 ((ringW _).2 ⟨t, rfl⟩)`. Take `⟨a, ha⟩` from `(ringl _).1 hN`. Use `⟨⟨a, ⟨wf ^ N, N, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Apply `germ_injective_of_isIntegral Z (genericPoint Z) hgW` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hres]`. Rewrite using `[map_mul, germ_resG hle hgW hgl, germ_resG hle hgW hgl, ha, map_pow, hw]`. Introduce `a b hab`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: a = b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `germ_injective_of_isIntegral Z (genericPoint Z) hgl` to reduce the goal to its premises. Rewrite using `[← germ_resG hle hgW hgl, ← germ_resG hle hgW hgl]`. Conclude with `congrArg _ hab`. Rewrite using `[this]`. Establish `hunit : IsUnit (CxPts.evHom hP wf)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← CxPts.ev_eq hP]`. Conclude with `isUnit_iff_ne_zero.2 hne`. Set `φ : Γ(Z, U l ⊓ U i) →+* ℂ` to `IsLocalization.Away.lift wf hunit`. Establish `hφ : ∀ f, φ (resG Z hle f) = CxPts.evHom hP f` using `fun f => IsLocalization.Away.lift_eq wf hunit f`. Establish `hC : ∀ a : ℂ, φ (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX s (U l ⊓ U i) a) = RingHom.id ℂ a` using `fun a => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `RingHom.congr_fun (GlobalTheory.TopForm.resG_comp_algX s hle) a`. Rewrite `h1` using `[RingHom.comp_apply]`. Rewrite using `[← h1, hφ, ← CxPts.ev_eq hP, CxPts.ev_algX hP]`. Establish `hq` using `CxPts.ofHom_mem hW φ hC`. Establish `hPq : P = CxPts.ofHom hW φ hC`.
-
-Use `Subtype.ext (GlobalTheory.Points.ext_of_valR hUl hP (CxPts.ptsIn_mono hle hq) fun f => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `CxPts.ev s (RingHom.id ℂ) (U l) f P = CxPts.ev s (RingHom.id ℂ) (U l) f _`. Rewrite using `[← CxPts.ev_res hle hq f, CxPts.ev_ofHom, hφ, CxPts.ev_eq hP]`. Rewrite using `[hPq]`. Conclude with `CxPts.ptsIn_mono inf_le_right hq`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_chart_of_ne_zero (hx : IsFinCover ℂ Z.functionField x)
     (hU : IsAffCover s U (rB ℂ Z.functionField x)) (l i : Fin (d + 1)) (P : CxPts s (RingHom.id ℂ))
@@ -260,27 +254,25 @@ end UpperTheory.FixIff
 
 open UpperTheory.FixIff in
 /- English proof (translation)
-Introduce `d Z Y _ _ s s' _ _ hP c1 c2 h1 h2 _ _ _ _ instK instL hK hL _ _ g1 j2 g2 F _ _ _ _ _ _ _ x U hx hU i hg e y hM`. Establish `hgZ : ∀ j, genericPoint Z ∈ U j` using `fun j => by simpa using hU.ne {j}`. Establish `hg2 : ∀ j, genericPoint Y ∈ c2 ⁻¹ᵁ U j` using `fun j => by`. Express the relevant statement in the definitionally equal form `c2 (genericPoint Y) ∈ U j`. Rewrite using `[UpperTheory.A.generic_map c2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgZ j`. Establish `affU : ∀ j, IsAffineOpen (U j)` using `fun j => by simpa using hU.affine {j} ⟨j, by simp⟩`. Establish `hV : IsAffineOpen (c1 ⁻¹ᵁ U i)` using `(affU i).preimage c1`. Establish `hB : ∀ v, v ∈ rB ℂ Y.functionField x {i} ↔ ∃ f : Γ(Y, c1 ⁻¹ᵁ U i), (Y.presheaf.germ (c1 ⁻¹ᵁ U i) (genericPoint Y) hg).hom f = v` using `fun v => UpperTheory.A.mem_rB_pull h1 hK hL g1 hU {i} ⟨i, by simp⟩ (c1 ⁻¹ᵁ U i) (by simp) hg v`. Establish `ringZ : ∀ j b, b ∈ rB ℂ Z.functionField x {j} ↔ ∃ f : Γ(Z, U j), (Z.presheaf.germ (U j) (genericPoint Z) (hgZ j)).hom f = b` using `fun j b => ring_of_eq hU {j} ⟨j, by simp⟩ (U j) (by simp) (hgZ j) b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz1 : UpperTheory.A.zpt c1 h1 y ∈ CxPts.ptsIn s (RingHom.id ℂ) (U i)` using `hM.1`. Establish `hval1 : ∀ (f : Γ(Z, U i)) (hb1 : algebraMap Z.functionField Y.functionField ((Z.presheaf.germ (U i) (genericPoint Z) (hgZ i)).hom f) ∈ rB ℂ Y.functionField x {i}), e ⟨_, hb1⟩ = CxPts.ev s (RingHom.id ℂ) (U i) f (UpperTheory.A.zpt c1 h1 y)`. Introduce `f hb1`. Establish `hf : (Y.presheaf.germ (c1 ⁻¹ᵁ U i) (genericPoint Y) hg).hom ((c1.app (U i)).hom f) ∈ rB ℂ Y.functionField x {i}` using `(hB _).2 ⟨_, rfl⟩`. Establish `h` using `hM.2 _ hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (⟨_, hb1⟩ : rB ℂ Y.functionField x {i}) = ⟨_, hf⟩` using `Subtype.ext (g1 _ (hgZ i) hg f).symm`. Rewrite using `[e1, h]`. Conclude with `(GlobalTheory.Points.valR_comp y.1 c1 (U i) f).symm`. Establish `hev2 : ∀ (j : Fin (d + 1)) (f : Γ(Z, U j)), CxPts.ev s' (RingHom.id ℂ) (c2 ⁻¹ᵁ U j) ((c2.app (U j)).hom f) y = CxPts.ev s (RingHom.id ℂ) (U j) f (UpperTheory.A.zpt c2 h2 y)` using `fun j f => (GlobalTheory.Points.valR_comp y.1 c2 (U j) f).symm`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hF`. Take `⟨l, hl⟩` from `CxPts.exists_mem_ptsIn hU.cover (UpperTheory.A.zpt c2 h2 y)`. Establish `hyl : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) (c2 ⁻¹ᵁ U l)` using `hl`. Take `⟨wf, hwf⟩` from `(ringZ l _).1 (ratio_mem (x := x) {l} l i (by simp))`. Take `⟨bf, hbf⟩` from `(ringZ i _).1 (ratio_mem (x := x) {i} i l (by simp))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb1 : algebraMap Z.functionField Y.functionField ((Z.presheaf.germ (U i) (genericPoint Z) (hgZ i)).hom bf) ∈ rB ℂ Y.functionField x {i}`. Rewrite using `[← g1 _ (hgZ i) hg bf]`. Conclude with `(hB _).2 ⟨_, rfl⟩`. Establish `hVal` using `hF _ ((ringZ i _).2 ⟨bf, rfl⟩) hb1`. Establish `hmul : (Y.presheaf.germ (c2 ⁻¹ᵁ U l) (genericPoint Y) (hg2 l)).hom ((c2.app (U l)).hom wf) * j2 ((Z.presheaf.germ (U i) (genericPoint Z) (hgZ i)).hom bf) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← g2 _ (hgZ l) (hg2 l) wf, ← map_mul, hwf, hbf, ← map_mul, div_mul_div_comm, mul_comm (x i), div_self (mul_ne_zero (hx.pd.ne _) (hx.pd.ne _)), map_one, map_one]`. Establish `hne` using `ne_zero_of_val hB hM _ hyl (hg2 l) hVal hmul`. Rewrite `hne` using `[hev2]`. Establish `hz2` using `mem_chart_of_ne_zero hx hU l i _ hl wf (hgZ l) hwf hne`. Establish `hyi : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) (c2 ⁻¹ᵁ U i)` using `hz2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.Points.ext_of_valR (affU i) hz1 hz2 fun f => ?_` and prove the remaining obligations. Establish `hf1 : algebraMap Z.functionField Y.functionField ((Z.presheaf.germ (U i) (genericPoint Z) (hgZ i)).hom f) ∈ rB ℂ Y.functionField x {i}`. Rewrite using `[← g1 _ (hgZ i) hg f]`. Conclude with `(hB _).2 ⟨_, rfl⟩`. Establish `hVf` using `hF _ ((ringZ i _).2 ⟨f, rfl⟩) hf1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hVf` using `[g2 _ (hgZ i) (hg2 i) f]`. Use `val_unique hB hM _ hyi (hg2 i) hVf` as an intermediate fact. Rewrite `this` using `[hval1 f hf1, hev2]`. Conclude with `this`. Introduce `hfix b hb hb1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, rfl⟩` from `(ringZ i b).1 hb`. Establish `hzz : UpperTheory.A.zpt c1 h1 y = UpperTheory.A.zpt c2 h2 y` using `Subtype.ext hfix`. Establish `hyi : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) (c2 ⁻¹ᵁ U i)`. Establish `: UpperTheory.A.zpt c2 h2 y ∈ CxPts.ptsIn s (RingHom.id ℂ) (U i)` using `hzz ▸ hz1`. Conclude with `this`.
-
-Rewrite using `[hval1 f hb1, g2 _ (hgZ i) (hg2 i) f, hzz, ← hev2]`. Conclude with `val_of_regular hV hB hM _ hyi (hg2 i)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.etaleCorrespondence_complexPoints_statement :
     ∀ (d : ℕ) (Z Y : Scheme.{0}) [IsIntegral Z] [IsIntegral Y] (s : Z ⟶ Sp ℂ) (s' : Y ⟶ Sp ℂ) [SmoothOfRelativeDimension d s] [SmoothOfRelativeDimension d s'] (hP : IsProjOver s) (c1 c2 : Y ⟶ Z) (h1 : c1 ≫ s = s') (h2 : c2 ≫ s = s') [IsFinite c1] [Etale c1] [IsFinite c2] [Etale c2] [instK : Algebra ℂ Z.functionField] [instL : Algebra ℂ Y.functionField] (hK : instK = ffAlg s) (hL : instL = ffAlg s') [Algebra Z.functionField Y.functionField] [IsScalarTower ℂ Z.functionField Y.functionField] (g1 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c1 ⁻¹ᵁ V) (g : Γ(Z, V)), (Y.presheaf.germ (c1 ⁻¹ᵁ V) (genericPoint Y) hV').hom ((c1.app V).hom g) = algebraMap Z.functionField Y.functionField ((Z.presheaf.germ V (genericPoint Z) hV).hom g)) (j2 : Z.functionField →ₐ[ℂ] Y.functionField) (g2 : ∀ (V : Z.Opens) (hV : genericPoint Z ∈ V) (hV' : genericPoint Y ∈ c2 ⁻¹ᵁ V) (g : Γ(Z, V)), j2 ((Z.presheaf.germ V (genericPoint Z) hV).hom g) = (Y.presheaf.germ (c2 ⁻¹ᵁ V) (genericPoint Y) hV').hom (c2.app V g)) (F : Type) [Field F] [Algebra ℂ F] [Algebra F Z.functionField] [Algebra F Y.functionField] [IsScalarTower ℂ F Z.functionField] [IsScalarTower F Z.functionField Y.functionField] [IsScalarTower ℂ F Y.functionField] (x : Fin (d + 1) → F) (U : Fin (d + 1) → Z.Opens) (hx : IsFinCover ℂ Z.functionField x) (hU : IsAffCover s U (rB ℂ Z.functionField x)) (i : Fin (d + 1)) (hg : genericPoint Y ∈ c1 ⁻¹ᵁ U i) (e : rB ℂ Y.functionField x {i} →ₐ[ℂ] ℂ) (y : CxPts s' (RingHom.id ℂ)), UpperTheory.A.Mt s' (c1 ⁻¹ᵁ U i) hg _ e y → (IsFix (rB ℂ Y.functionField x {i}) e j2 (rB ℂ Z.functionField x {i}) ↔ y.1 ≫ c1 = y.1 ≫ c2) := by

@@ -21,9 +21,9 @@ def conjEquiv {H H' : Subgroup G} {g : G} (hH' : ∀ x, x ∈ H' ↔ g * x * g�
 variable [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableSingletonClass G]
 
 /- English proof (translation)
-Unfold `IsQuotNormaliser at hρ ⊢`. Use `⟨hρ.1.comp (measurable_const_mul g), fun y => ?_⟩` and prove the remaining obligations. Establish `h1` using `hρ.2 (g * y)`. Rewrite `h1`, the goal using `[lintegral_count]`. Rewrite using `[← h1, ← (conjEquiv hH').tsum_eq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun x => ?_` and prove the remaining obligations. Use `show ρ (g * ((x : G) * y)) = ρ (g * (x : G) * g⁻¹ * (g * y))`. Use `congr 1`. Use `group`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem normaliser_conj {H H' : Subgroup G} {g : G} (hH' : ∀ x, x ∈ H' ↔ g * x * g⁻¹ ∈ H)
     {ρ : G → ℝ≥0∞} (hρ : IsQuotNormaliser H Measure.count ρ) :
@@ -39,7 +39,7 @@ theorem normaliser_conj {H H' : Subgroup G} {g : G} (hH' : ∀ x, x ∈ H' ↔ g
   group
 
 /- English proof (translation)
-Establish `h2 : ∀ x, x ∈ H ↔ g⁻¹ * x * g⁻¹⁻¹ ∈ H'`. Introduce `x`. Rewrite using `[hH', show g * (g⁻¹ * x * g⁻¹⁻¹) * g⁻¹ = x by group]`. Conclude with `normaliser_conj h2 hρ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normaliser_unconj {H H' : Subgroup G} {g : G} (hH' : ∀ x, x ∈ H' ↔ g * x * g⁻¹ ∈ H)
     {ρ : G → ℝ≥0∞} (hρ : IsQuotNormaliser H' Measure.count ρ) :
@@ -50,13 +50,13 @@ theorem normaliser_unconj {H H' : Subgroup G} {g : G} (hH' : ∀ x, x ∈ H' ↔
   exact normaliser_conj h2 hρ
 
 /- English proof (translation)
-Introduce `hI G _ _ _ _ _ μ _ _ H H' _ F g hF hFH hH'`. Use `haveI : Countable H' := Countable.of_equiv _ (conjEquiv hH').symm`. Distinguish the cases in `hex : ∃ ρ, IsQuotNormaliser H Measure.count ρ`. Take `⟨ρ, hρ⟩` from `hex`. Establish `hρ'` using `normaliser_conj hH' hρ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : Measurable fun x => F (g * x)` using `hF.comp (measurable_const_mul g)`. Establish `hinv : ∀ h ∈ H', ∀ x, F (g * (h * x)) = F (g * x)`. Introduce `h hh x`. Use `hFH (g * h * g⁻¹) ((hH' h).1 hh) (g * x)` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `group`. Rewrite using `[hI G μ H' (fun x => F (g * x)) (fun x => ρ (g * x)) hmeas hinv hρ', hI G μ H F ρ hF hFH hρ]`. Conclude with `integral_mul_left_eq_self (fun x => F x * ((ρ x).toReal : ℂ)) g`. Establish `hex' : ¬ ∃ ρ, IsQuotNormaliser H' Measure.count ρ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨ρ, hρ⟩`. Conclude with `hex ⟨_, normaliser_unconj hH' hρ⟩`. Unfold `quotIntegral`. Rewrite using `[dif_neg hex, dif_neg hex']`.
+A detailed English derivation is pending.
 -/
 theorem qConjOf_holds : QConjOf := by
   intro hI G _ _ _ _ _ μ _ _ H H' _ F g hF hFH hH'

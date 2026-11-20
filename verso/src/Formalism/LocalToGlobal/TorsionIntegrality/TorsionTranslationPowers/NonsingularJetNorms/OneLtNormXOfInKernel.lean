@@ -16,26 +16,24 @@ section Tools
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Take `⟨a, V, ha, hV, rfl⟩` from `h`. Simplify using `[hV.1, ha]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem norm_cc_of_unitAt {f : K⟦X⟧} (h : UnitAt 0 f) : ‖constantCoeff f‖ = 1 := by
   obtain ⟨a, V, ha, hV, rfl⟩ := h
   simp [hV.1, ha]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, oMul, oPow, oInv, -⟩` from `intRules K`. Take `⟨uMul, uPow, -, -, -⟩` from `unitAtRules K`. Establish `key` using `Power.closed g (fun j => C (c ^ 2) * ψ j) 1 (g 0) n (by simp) (fun j _ h => hne j (by rw [h, map_zero])) (fun j _ => hrec j) n le_rfl`. Establish `hprod : ∃ (r : ℕ) (f : K⟦X⟧), UnitAt 0 f ∧ ∏ j ∈ Finset.range n, (C (c ^ 2) * ψ (j + 1)) ^ (n - j) = C (c ^ r) * f`. Apply `Finset.prod_induction _ (fun f => ∃ (r : ℕ) (f' : K⟦X⟧), UnitAt 0 f' ∧ f = C (c ^ r) * f')` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ _ ⟨r1, g1, h1, rfl⟩ ⟨r2, g2, h2, rfl⟩`. Conclude with `⟨r1 + r2, g1 * g2, uMul 0 0 _ _ h1 h2, by rw [pow_add, map_mul]; ring⟩`. Conclude with `⟨0, 1, Main.unitAt_one, by simp⟩`. Introduce `j _`. Conclude with `⟨2 * (n - j), _, by simpa using uPow 0 (n - j) _ (hψ (j + 1)), by rw [mul_pow, ← map_pow, ← pow_mul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Take `⟨r, _, ⟨a, V, ha, hV, rfl⟩, hpr⟩` from `hprod`. Rewrite `key` using `[hpr, hper, one_pow, one_mul, pow_zero, mul_one, ← pow_succ']`. Establish `hh` using `hne 1`. Establish `hcc` using `congrArg constantCoeff key`. Rewrite `hcc` using `[map_pow, h0.1, one_pow, map_mul, map_pow, map_mul, map_mul, constantCoeff_C, constantCoeff_C, hV.1, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `hh' : constantCoeff (g 1) = h at hh hcc ⊢`. Establish `hV0 : constantCoeff V ≠ 0` using `by rw [hV.1]; exact one_ne_zero`. Establish `hVi : V * V⁻¹ = 1` using `PowerSeries.mul_inv_cancel V hV0`. Establish `hinv : h⁻¹ ^ (n + 1) = c ^ r * a`. Rewrite using `[inv_pow]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_eq_of_mul_eq_one_right hcc.symm`. Establish `hY : (C h⁻¹ * g 1) ^ (n + 1) = V⁻¹ * g 0 ^ (n + 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hVi, one_mul, mul_pow, map_pow]`. Use `_ = V⁻¹ * (g 1 ^ (n + 1) * (C (c ^ r) * (C a * V))) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hinv, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [← key]`. Establish `hone : constantCoeff (C h⁻¹ * g 1) = 1`. Rewrite using `[map_mul, constantCoeff_C, hh', inv_mul_cancel₀ hh]`.
-
-Use `⟨hone, rootInt K (n + 1) _ hn hone ?_⟩` and prove the remaining obligations. Rewrite using `[hY]`. Conclude with `(oMul _ _ (oInv _ _ hV hVi) (oPow _ _ h0)).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tele [IsUltrametricDist K] (g ψ : ℕ → K⟦X⟧) (c : K) (n : ℕ) (hn : ‖((n + 1 : ℕ) : K)‖ = 1)
     (h0 : OneUnit (g 0)) (hper : g (n + 1) = g 0) (hne : ∀ j, constantCoeff (g j) ≠ 0)
@@ -86,7 +84,7 @@ section Pts
 variable {K : Type} [NormedField K] (W : WeierstrassCurve K)
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero => trivial`. Consider the case `some x y hxy => exact h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem in_kernel_of_one_lt_norm_x (R : W.toAffine.Point) (h : 1 < ‖px W R‖) : Formalism.ELL.InFormalGroupPoints R := by
   cases R with
@@ -94,7 +92,7 @@ theorem in_kernel_of_one_lt_norm_x (R : W.toAffine.Point) (h : 1 < ‖px W R‖)
   | some x y hxy => exact h
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero => exact absurd rfl hR`. Consider the case `some x y hxy => exact h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem one_lt_norm_x_of_in_kernel (R : W.toAffine.Point) (hR : R ≠ 0) (h : Formalism.ELL.InFormalGroupPoints R) : 1 < ‖px W R‖ := by
   cases R with
@@ -102,7 +100,7 @@ theorem one_lt_norm_x_of_in_kernel (R : W.toAffine.Point) (hR : R ≠ 0) (h : Fo
   | some x y hxy => exact h
 
 /- English proof (translation)
-Consider the cases of `R with`. Consider the case `zero => simp [py]`. Consider the case `some x y hxy => exact Formalism.ELL.TorsionIntegralEllipticTorsion.y_int W hW hxy.1 h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem py_int [IsUltrametricDist K] (hW : Formalism.ELL.IntegralModel W) (R : W.toAffine.Point)
     (h : ‖px W R‖ ≤ 1) : ‖py W R‖ ≤ 1 := by
@@ -113,7 +111,7 @@ theorem py_int [IsUltrametricDist K] (hW : Formalism.ELL.IntegralModel W) (R : W
 end Pts
 
 /- English proof (translation)
-Establish `h` using `card_nsmul_eq_zero' (G := A) (x := ⟨P, hP⟩)`. Simplify `congrArg Subtype.val h` using `only [AddSubgroup.coe_nsmul, AddSubgroup.coe_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_kill {G : Type} [AddCommGroup G] (A : AddSubgroup G) [Finite A] (P : G) (hP : P ∈ A) :
     Nat.card A • P = 0 := by
@@ -125,23 +123,21 @@ end Shift
 open Shift
 
 /- English proof (translation)
-Introduce `K _ _ inst W hW A _ hcard S hSA hSS hSx hSy`. Establish `hTor` using `torsion_integral K W hW`. Take `⟨h1, h2, h3, h4, h6, hΔ⟩` from `hW`. Establish `hM : Formalism.ELL.IntegralModel W` using `⟨h1, h2, h3, h4, h6⟩`. Establish `hSub : ∀ P Q : W.toAffine.Point, Formalism.ELL.InFormalGroupPoints P → Formalism.ELL.InFormalGroupPoints Q → Formalism.ELL.InFormalGroupPoints (P + Q) ∧ Formalism.ELL.InFormalGroupPoints (-P)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : inst = (fun a b => Classical.propDecidable (a = b))` using `Subsingleton.elim _ _`. Substitute `e` using the available equality. Conclude with `Formalism.ELL.formal_group_points_subgroup.{0} K W hM hΔ`. Establish `hNoT : ∀ (n : ℕ), ‖(n : K)‖ = 1 → ∀ P : W.toAffine.Point, Formalism.ELL.InFormalGroupPoints P → n • P = 0 → P = 0`. Establish `e : inst = (fun a b => Classical.propDecidable (a = b))` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `e` using the available equality. Conclude with `Formalism.ELL.formal_group_points_no_torsion.{0} K W hM hΔ`. Use `⟨fun Q hQ hQ0 => hTor Q _ hcard (card_kill A Q hQ) hQ0, fun P hP => ?_⟩` and prove the remaining obligations. Establish `hS0 : S ≠ 0` using `fun h => hSA (h ▸ A.zero_mem)`. Establish `hPS0 : P + S ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hSA` to reduce the goal to its premises. Establish `: S = -P` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact h`. Rewrite using `[this]`. Conclude with `A.neg_mem hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx : ‖px W (P + S)‖ ≤ 1`. Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Establish `hE : Formalism.ELL.InFormalGroupPoints (P + S)` using `in_kernel_of_one_lt_norm_x W _ hx`. Establish `hE2 : Formalism.ELL.InFormalGroupPoints ((P + S) + (P + S))` using `(hSub _ _ hE hE).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : (P + S) + (P + S) = P + P`. Establish `: (P + S) + (P + S) = (P + P) + (S + S)` using `by abel`. Rewrite using `[this, hSS, add_zero]`. Establish `hPP : P + P = 0`. Rewrite `hE2` using `[e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hNoT _ hcard _ hE2 (card_kill A _ (A.add_mem hP hP))`. Distinguish the cases in `h2 : 2 ∣ Nat.card A`. Establish `hn2 : ‖((2 : ℕ) : K)‖ = 1` using `Main.norm_natCast_of_dvd h2 hcard`. Apply `hPS0` to reduce the goal to its premises. Apply `hNoT 2 hn2 _ hE` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[two_nsmul, e2, hPP]`. Establish `hP0 : P = 0`. Establish `hd1 : addOrderOf P ∣ 2` using `addOrderOf_dvd_of_nsmul_eq_zero (by rw [two_nsmul, hPP])`. Establish `hd2 : addOrderOf P ∣ Nat.card A` using `addOrderOf_dvd_of_nsmul_eq_zero (card_kill A P hP)`. Establish `hco : Nat.Coprime 2 (Nat.card A)` using `(Nat.Prime.coprime_iff_not_dvd Nat.prime_two).2 h2`.
-
-Use `Nat.eq_one_of_dvd_coprimes hco hd1 hd2` as an intermediate fact. Conclude with `AddMonoid.addOrderOf_eq_one_iff.1 this`. Rewrite `hx` using `[hP0, zero_add]`. Conclude with `absurd hSx (not_le.2 hx)`. Conclude with `⟨hx, py_int W hM _ hx⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shifted_points_integral : ShiftPtsInt := by
   intro K _ _ inst W hW A _ hcard S hSA hSS hSx hSy
@@ -193,39 +189,35 @@ theorem shifted_points_integral : ShiftPtsInt := by
   exact ⟨hx, py_int W hM _ hx⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ W hW A _ hcard S hSA hAint hSint H c hsys`. Take `⟨hH0, hc0, hid⟩` from `hsys`. Take `⟨-, -, -, -, uC⟩` from `unitAtRules K`. Establish `hS0 : ∀ P ∈ A, P + S ≠ 0`. Introduce `P hP h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hSA` to reduce the goal to its premises. Establish `: S = -P` using `by rw [eq_neg_iff_add_eq_zero, add_comm]; exact h`. Rewrite using `[this]`. Conclude with `A.neg_mem hP`. Establish `hfac : ∀ P ∈ A, ∀ Q ∈ A, Q ≠ 0 → UnitAt 0 (C (px W Q) - xT W (P + S))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP Q hQ hQ0`. Establish `e1 : P + S + Q = (P + Q) + S` using `by abel`. Establish `e2 : P + S - Q = (P - Q) + S` using `by abel`. Use `(facShape K W hW (P + S) Q (hS0 P hP) hQ0 (hSint P hP).1 (hSint P hP).2 (hAint Q hQ hQ0).1 (hAint Q hQ hQ0).2 ?_ ?_).1 ?_ ?_` and prove the remaining obligations. Introduce `_`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(hSint _ (A.add_mem hP hQ)).1`. Introduce `_`. Rewrite using `[e2]`. Conclude with `(hSint _ (A.sub_mem hP hQ)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `hS0 _ (A.add_mem hP hQ)`. Rewrite using `[e2]`. Conclude with `hS0 _ (A.sub_mem hP hQ)`. Establish `hcc : ∀ P ∈ A, ∀ Q ∈ A, Q ≠ 0 → ∃ b : K, ‖b‖ = 1 ∧ constantCoeff (H (P + Q)) * constantCoeff (H (P - Q)) = b * c Q ^ 2 * constantCoeff (H P) ^ 2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `P hP Q hQ hQ0`. Take `⟨ρ, hρ, h⟩` from `hid P hP Q hQ hQ0`. Use `⟨ρ * constantCoeff (C (px W Q) - xT W (P + S)), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, hρ, norm_cc_of_unitAt (hfac P hP Q hQ hQ0), one_mul]`. Use `congrArg constantCoeff h` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[map_mul, map_mul, map_mul, map_pow, constantCoeff_C]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hne : ∀ P ∈ A, constantCoeff (H P) ≠ 0`. Introduce `P hP`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hP0 : P = 0`. Rewrite using `[hP0, hH0.1]`. Conclude with `one_ne_zero`. Take `⟨b, hb, h⟩` from `hcc 0 A.zero_mem P hP hP0`. Rewrite `h` using `[zero_add, hH0.1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `h'`. Rewrite `h` using `[h', zero_mul]`. Establish `hb0 : b ≠ 0` using `by rintro rfl; simp at hb`. Conclude with `mul_ne_zero (mul_ne_zero hb0 (pow_ne_zero 2 (hc0 P hP hP0))) (by simp) h.symm`. Establish `hone : ∀ t ∈ A, OneUnit (C (constantCoeff (H t))⁻¹ * H t)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Distinguish the cases in `ht0 : t = 0`. Rewrite using `[ht0, hH0.1]`. Simplify using `using hH0`. Establish `hdvd : addOrderOf t ∣ Nat.card A` using `addOrderOf_dvd_of_nsmul_eq_zero (card_kill A t ht)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn0 : addOrderOf t ≠ 0`. Introduce `h`. Rewrite `hdvd` using `[h]`. Conclude with `Nat.card_pos.ne' (Nat.eq_zero_of_zero_dvd hdvd)`. Take `⟨n, hn⟩ : ∃ n, addOrderOf t = n + 1` from `Nat.exists_eq_succ_of_ne_zero hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hnn : ‖((n + 1 : ℕ) : K)‖ = 1` using `hn ▸ Main.norm_natCast_of_dvd hdvd hcard`. Use `choose ρ hρ hρid using fun j : ℕ => hid (j • t) (A.nsmul_mem ht j) t ht ht0`. Establish `h` using `tele (fun j => H (j • t)) (fun j => C (ρ j) * (C (px W t) - xT W (j • t + S))) (c t) n hnn (by simpa using hH0) (by rw [← hn, addOrderOf_nsmul_eq_zero, zero_nsmul]) (fun j => hne _ (A.nsmul_mem ht j)) (fun j => uC 0 _ _ (hρ j) (hfac _ (A.nsmul_mem ht j) t ht ht0)) (by`. Introduce `j`. Establish `h` using `hρid (j + 1)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : (j + 1) • t + t = (j + 2) • t` using `by rw [← succ_nsmul]`. Establish `e2 : (j + 1) • t - t = j • t` using `by rw [succ_nsmul]; abel`. Rewrite `h` using `[e1, e2]`. Rewrite using `[h, map_mul]`. Use the proof step `ring)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `using h`. Establish `hpar` using `parSumTwo A (fun P => Real.log ‖constantCoeff (H (P : W.toAffine.Point))‖) (fun Q => Real.log ‖c (Q : W.toAffine.Point)‖) (by`. Introduce and unpack `⟨P, hP⟩ ⟨Q, hQ⟩ hQ0`. Establish `hQ0' : Q ≠ 0` using `fun h => hQ0 (Subtype.ext h)`. Take `⟨b, hb, h⟩` from `hcc P hP Q hQ hQ0'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hl` using `congrArg (fun z => Real.log ‖z‖) h`. Simplify using `only [norm_mul, norm_pow, hb, one_mul] at hl`. Rewrite `hl` using `[Real.log_mul (norm_ne_zero_iff.mpr (hne _ (A.add_mem hP hQ))) (norm_ne_zero_iff.mpr (hne _ (A.sub_mem hP hQ))), Real.log_mul (pow_ne_zero _ (norm_ne_zero_iff.mpr (hc0 Q hQ hQ0'))) (pow_ne_zero _ (norm_ne_zero_iff.mpr (hne P hP))), Real.log_pow, Real.log_pow]`. Move the coercions through the operations in `at hl`. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_sub]`.
-
-Use the proof step `linarith)`. Take `⟨hm, hM⟩` from `hpar`. Use `⟨fun Q hQ hQ0 => ?_, fun P hP => ⟨?_, hone P hP⟩⟩` and prove the remaining obligations. Use `hm ⟨Q, hQ⟩ (fun h => hQ0 (congrArg Subtype.val h))` as an intermediate fact. Conclude with `Real.eq_one_of_pos_of_log_eq_zero (norm_pos_iff.mpr (hc0 Q hQ hQ0)) this`.
-
-Use `hM ⟨P, hP⟩` as an intermediate fact. Simplify using `only [AddSubgroup.coe_zero, hH0.1, norm_one, Real.log_one] at this`. Conclude with `Real.eq_one_of_pos_of_log_eq_zero (norm_pos_iff.mpr (hne P hP)) this`.
+A detailed English derivation is pending.
 -/
 theorem shift_unit' : ShiftUnit := by
   intro K _ _ _ W hW A _ hcard S hSA hAint hSint H c hsys

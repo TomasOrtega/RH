@@ -7,18 +7,18 @@ namespace GlobalTheory.CompanionTheory.EisCross
 open PositivityTheory.RgEis
 
 /- English proof (translation)
-Unfold `pos`. Conclude with `tsum_nonneg fun _ => (Real.exp_pos _).le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pos_nonneg' {G : Type} [Group G] (Δ P : Subgroup G) (l : G → ℝ) (g : G) : 0 ≤ pos Δ P l g := by
   unfold pos
   exact tsum_nonneg fun _ => (Real.exp_pos _).le
 
 /- English proof (translation)
-Unfold `pos`. Establish `hle : ∀ q : Cos P Δ, Real.exp (l (rep q * (y * v))) ≤ Real.exp A * Real.exp (l (rep q * y))`. Introduce `q`. Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h` using `hA (rep q * y) v hv`. Rewrite `h` using `[mul_assoc]`. Establish `h'` using `(abs_le.mp h).2`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : Summable fun q : Cos P Δ => Real.exp A * Real.exp (l (rep q * y))` using `(hc y).mul_left _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[← tsum_mul_left]`. Conclude with `Summable.tsum_le_tsum hle (Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) hle hs) hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pos_mul_le {G : Type} [Group G] (Δ P : Subgroup G) (l : G → ℝ) (C : Set G) (A : ℝ)
     (hA : ∀ g, ∀ u ∈ C, |l (g * u) - l g| ≤ A) (hc : Conv Δ P l) (y v : G) (hv : v ∈ C) :
@@ -37,9 +37,9 @@ theorem pos_mul_le {G : Type} [Group G] (Δ P : Subgroup G) (l : G → ℝ) (C :
   exact Summable.tsum_le_tsum hle (Summable.of_nonneg_of_le (fun _ => (Real.exp_pos _).le) hle hs) hs
 
 /- English proof (translation)
-Break down `le_total 0 s with hs | hs` into its components or cases. Establish `h3 : t * s ≤ e₂ * s` using `mul_le_mul_of_nonneg_right h₂ hs`. Establish `h4` using `Real.exp_le_exp.mpr h3`. Establish `h5` using `Real.exp_pos (e₁ * s)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : t * s ≤ e₁ * s` using `mul_le_mul_of_nonpos_right h₁ hs`. Establish `h4` using `Real.exp_le_exp.mpr h3`. Establish `h5` using `Real.exp_pos (e₂ * s)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_between (e₁ e₂ t s : ℝ) (h₁ : e₁ ≤ t) (h₂ : t ≤ e₂) :
     Real.exp (t * s) ≤ Real.exp (e₁ * s) + Real.exp (e₂ * s) := by
@@ -54,9 +54,9 @@ theorem exp_between (e₁ e₂ t s : ℝ) (h₁ : e₁ ≤ t) (h₂ : t ≤ e₂
     linarith
 
 /- English proof (translation)
-Rewrite using `[← Real.exp_add]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `h1 : e * (a - b) ≤ |e| * |a - b|`. Rewrite using `[← abs_mul]`. Conclude with `le_abs_self _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : |e| * |a - b| ≤ |e| * A` using `mul_le_mul_of_nonneg_left h (abs_nonneg e)`. Establish `h3 : e * (a - b) = e * a - e * b` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exp_shift (e a b A : ℝ) (h : |a - b| ≤ A) :
     Real.exp (e * a) ≤ Real.exp (|e| * A) * Real.exp (e * b) := by
@@ -70,21 +70,19 @@ theorem exp_shift (e a b A : ℝ) (h : |a - b| ≤ A) :
   linarith
 
 /- English proof (translation)
-Introduce `G _ _ _ _ X _ _ Γ Δ P P' ξ l₁ l₂ H a b e₁ e₂ M hξ hl₁ hl₂ hc₁ hc₂ hH s11 s21 s12 s22 g`. Take `⟨C, hC1, -, hCc⟩` from `local_compact_nhds (x := (1 : G)) Filter.univ_mem`. Take `⟨Aξ, hAξ⟩` from `hξ C hCc`. Take `⟨A₁, hA₁⟩` from `hl₁ C hCc`. Take `⟨A₂, hA₂⟩` from `hl₂ C hCc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hU : (fun g' => g⁻¹ * g') ⁻¹' C ∈ 𝓝 g`. Apply `(continuous_mul_left g⁻¹).continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using hC1`. Use `⟨(fun g' => g⁻¹ * g') ⁻¹' C, hU, fun r => |M| * (Real.exp (|e₁| * Aξ) * Real.exp A₁ * (Real.exp (e₁ * ξ (rep r * g)) * pos Δ P l₁ (rep r * g)) + Real.exp (|e₂| * Aξ) * Real.exp A₁ * (Real.exp (e₂ * ξ (rep r * g)) * pos Δ P l₁ (rep r * g)) + Real.exp (|e₁| * Aξ) * Real.exp A₂ * (R …` and prove the remaining obligations. Conclude with `Summable.mul_left |M| ((((s11 g).mul_left (Real.exp (|e₁| * Aξ) * Real.exp A₁)).add ((s21 g).mul_left (Real.exp (|e₂| * Aξ) * Real.exp A₁))).add ((s12 g).mul_left (Real.exp (|e₁| * Aξ) * Real.exp A₂)) |>.add ((s22 g).mul_left (Real.exp (|e₂| * Aξ) * Real.exp A₂)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hb ha he₁ he₂ g' hg' r`. Establish `hw : g⁻¹ * g' ∈ C` using `hg'`. Establish `hy : rep r * g' = rep r * g * (g⁻¹ * g')`. Rewrite using `[mul_assoc, mul_inv_cancel_left]`. Establish `hnorm : ‖Complex.exp (l.2 * ξ (rep r * g')) • H l.1 (rep r * g')‖ = Real.exp (l.2.re * ξ (rep r * g')) * ‖H l.1 (rep r * g')‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_smul, Complex.norm_exp]`. Simplify using `[Complex.mul_re]`. Establish `hξw` using `hAξ (rep r * g) (g⁻¹ * g') hw`. Rewrite `hξw` using `[← hy]`. Establish `hexp : Real.exp (l.2.re * ξ (rep r * g')) ≤ Real.exp (|e₁| * Aξ) * Real.exp (e₁ * ξ (rep r * g)) + Real.exp (|e₂| * Aξ) * Real.exp (e₂ * ξ (rep r * g))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `exp_between e₁ e₂ l.2.re (ξ (rep r * g')) he₁ he₂`. Establish `h1` using `exp_shift e₁ (ξ (rep r * g')) (ξ (rep r * g)) Aξ hξw`. Establish `h2` using `exp_shift e₂ (ξ (rep r * g')) (ξ (rep r * g)) Aξ hξw`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hp1 : pos Δ P l₁ (rep r * g') ≤ Real.exp A₁ * pos Δ P l₁ (rep r * g)`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `pos_mul_le Δ P l₁ C A₁ hA₁ hc₁ (rep r * g) (g⁻¹ * g') hw`. Establish `hp2 : pos Δ P' l₂ (rep r * g') ≤ Real.exp A₂ * pos Δ P' l₂ (rep r * g)`. Rewrite using `[hy]`. Conclude with `pos_mul_le Δ P' l₂ C A₂ hA₂ hc₂ (rep r * g) (g⁻¹ * g') hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH1` using `hH l.1 hb ha (rep r * g')`. Establish `hs0 : 0 ≤ pos Δ P l₁ (rep r * g') + pos Δ P' l₂ (rep r * g')` using `add_nonneg (pos_nonneg' _ _ _ _) (pos_nonneg' _ _ _ _)`. Establish `hH2 : ‖H l.1 (rep r * g')‖ ≤ |M| * (pos Δ P l₁ (rep r * g') + pos Δ P' l₂ (rep r * g'))` using `hH1.trans (mul_le_mul_of_nonneg_right (le_abs_self M) hs0)`. Establish `hE0 : 0 ≤ Real.exp (|e₁| * Aξ) * Real.exp (e₁ * ξ (rep r * g)) + Real.exp (|e₂| * Aξ) * Real.exp (e₂ * ξ (rep r * g))` using `by positivity`. Rewrite using `[hnorm]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dom : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     (X : Type) [NormedAddCommGroup X] [NormedSpace ℂ X] (Γ Δ P P' : Subgroup G) (ξ l₁ l₂ : G → ℝ) (H : ℂ → G → X)

@@ -14,14 +14,14 @@ open CategoryTheory AlgebraicGeometry CategoryTheory.Limits
 namespace FunctorialResolution.Blowup
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ideal_map_inv_map_hom {A B : CommRingCat.{u}} (e : A ≅ B) (K : Ideal A) :
     Ideal.map e.inv.hom (Ideal.map e.hom.hom K) = K := by
   rw [Ideal.map_map, ← CommRingCat.hom_comp, e.hom_inv_id, CommRingCat.hom_id, Ideal.map_id]
 
 /- English proof (translation)
-The claim follows from `(h.2 W g hg).exists`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.exists_lift {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} (g : W ⟶ X)
@@ -37,7 +37,7 @@ noncomputable def IsBlowupAlongIdealSheaf.lift {X X' : Scheme.{u}} {π : X' ⟶ 
   (h.exists_lift g hg).choose
 
 /- English proof (translation)
-The claim follows from `(h.exists_lift g hg).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.lift_comp {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} (g : W ⟶ X)
@@ -48,7 +48,7 @@ theorem IsBlowupAlongIdealSheaf.lift_comp {X X' : Scheme.{u}} {π : X' ⟶ X} {I
 end
 
 /- English proof (translation)
-The claim follows from `h.hom_ext_of_comp_eq hg ha hb`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.hom_ext {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} {g : W ⟶ X}
@@ -57,11 +57,11 @@ theorem IsBlowupAlongIdealSheaf.hom_ext {X X' : Scheme.{u}} {π : X' ⟶ X} {I :
   h.hom_ext_of_comp_eq hg ha hb
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[← Scheme.IdealSheafData.comap_comp, Category.assoc, e.hom_inv_id, Category.comp_id]`. Conclude with `h.1`. Introduce `W g hg`. Rewrite `hg` using `[← Scheme.IdealSheafData.comap_comp]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hu⟩` from `h.2 W (g ≫ e.inv) hg`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Use `show a ≫ π ≫ e.hom = g`. Rewrite using `[← Category.assoc, ha, Category.assoc, e.inv_hom_id, Category.comp_id]`. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : b ≫ π ≫ e.hom = g` using `hb`. Use `hu b ?_` and prove the remaining obligations. Use `show b ≫ π = g ≫ e.inv`. Rewrite using `[← hb']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.comp_iso_hom {X X' Y : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (e : X ≅ Y) :
@@ -83,13 +83,13 @@ theorem IsBlowupAlongIdealSheaf.comp_iso_hom {X X' Y : Scheme.{u}} {π : X' ⟶ 
       simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h1 : (I.comap f).comap (pullback.snd π f) = (I.comap π).comap (pullback.fst π f)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, pullback.condition]`. Rewrite using `[h1]`. Conclude with `h.1.comap_of_isOpenImmersion (pullback.fst π f)`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W g hg`. Rewrite `hg` using `[← Scheme.IdealSheafData.comap_comp]`. Take `⟨a, ha, hu⟩` from `h.2 W (g ≫ f) hg`. Use `⟨pullback.lift a g ha, pullback.lift_snd _ _ _, ?_⟩` and prove the remaining obligations. Introduce `b hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb' : b ≫ pullback.snd π f = g` using `hb`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[pullback.lift_fst]`. Use `hu _ ?_` and prove the remaining obligations. Use `show (b ≫ pullback.fst π f) ≫ π = g ≫ f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hb']`. Rewrite using `[pullback.lift_snd, hb']`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.pullback_snd_of_isOpenImmersion {X X' U : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (f : U ⟶ X) [IsOpenImmersion f] :
@@ -115,9 +115,9 @@ theorem IsBlowupAlongIdealSheaf.pullback_snd_of_isOpenImmersion {X X' U : Scheme
     · rw [pullback.lift_snd, hb']
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨J, hJ⟩ : ∃ J : Ideal R, specIdealSheaf J = I := by`. Use `⟨Ideal.map (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (I.ideal ⟨⊤, isAffineOpen_top _⟩), ?_⟩` and prove the remaining obligations. Use `Scheme.IdealSheafData.ext_of_isAffine ?_` and prove the remaining obligations. Rewrite using `[specIdealSheaf_ideal_top, ideal_map_inv_map_hom]`. Use `⟨affineBlowup J, AffineBlowup.toSpec J, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hJ]`. Conclude with `isBlowupAlongIdealSheaf_affineBlowup_toSpec J`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) [CommRing R]
     (I : (Spec (CommRingCat.of R)).IdealSheafData) :
@@ -132,14 +132,14 @@ private theorem exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) [Co
   exact isBlowupAlongIdealSheaf_affineBlowup_toSpec J
 
 /- English proof (translation)
-The claim follows from `exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) I`.
+A detailed English derivation is pending.
 -/
 theorem exists_isBlowupAlongIdealSheaf_spec (R : CommRingCat.{u}) (I : (Spec R).IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ Spec R), IsBlowupAlongIdealSheaf π I :=
   exists_isBlowupAlongIdealSheaf_spec_of_commRing (R : Type u) I
 
 /- English proof (translation)
-Take `⟨Y, π, hπ⟩` from `exists_isBlowupAlongIdealSheaf_spec Γ(X, ⊤) (I.comap X.isoSpec.inv)`. Use `⟨Y, π ≫ X.isoSpec.inv, ?_⟩` and prove the remaining obligations. Establish `h2` using `hπ.comp_iso_hom X.isoSpec.symm`. Simplify using `only [Iso.symm_hom, Iso.symm_inv] at h2`. Rewrite `h2` using `[← Scheme.IdealSheafData.comap_comp, Iso.hom_inv_id, Scheme.IdealSheafData.comap_id]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_isBlowupAlongIdealSheaf_of_isAffine (X : Scheme.{u}) [IsAffine X] (I : X.IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ X), IsBlowupAlongIdealSheaf π I := by
@@ -157,7 +157,7 @@ private theorem comp_base_apply {A B C : Scheme.{u}} (u : A ⟶ B) (z : B ⟶ C)
     (u ≫ z).base p = z.base (u.base p) := by simp
 
 /- English proof (translation)
-Establish `h : U.ι.base v ∈ Set.range ⇑U.ι.base` using `Set.mem_range_self v`. Rewrite `h` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem ι_base_mem {X : Scheme.{u}} (U : X.Opens) (v : U.toScheme) :
     U.ι.base v ∈ U := by
@@ -165,7 +165,7 @@ private theorem ι_base_mem {X : Scheme.{u}} (U : X.Opens) (v : U.toScheme) :
   rwa [Scheme.Opens.range_ι] at h
 
 /- English proof (translation)
-Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `hz.comap_of_isOpenImmersion u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp {X P Z : Scheme.{u}} (I : X.IdealSheafData)
     (u : P ⟶ Z) [IsOpenImmersion u] (z : Z ⟶ X) (hz : IsLocallyGeneratedByNonZeroDivisor (I.comap z)) :
@@ -174,7 +174,7 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp {X P
   exact hz.comap_of_isOpenImmersion u
 
 /- English proof (translation)
-Use `Set.eq_univ_of_forall (fun v => ⟨v, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem range_id_base (Z : Scheme.{u}) :
     Set.range ⇑(𝟙 Z : Z ⟶ Z).base = Set.univ := by
@@ -182,9 +182,7 @@ private theorem range_id_base (Z : Scheme.{u}) :
   simp
 
 /- English proof (translation)
-Establish `h1 : u ≫ pullback.fst a b = v ≫ pullback.fst a b`. Rewrite using `[← cancel_mono a, Category.assoc, Category.assoc]`. Conclude with `h`. Establish `h2 : u ≫ pullback.snd a b = v ≫ pullback.snd a b`. Rewrite using `[← cancel_mono b, Category.assoc, Category.assoc, ← pullback.condition]`.
-
-Conclude with `h`. Conclude with `pullback.hom_ext h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullback_hom_ext_of_mono {Z A B : Scheme.{u}} (a : A ⟶ Z) (b : B ⟶ Z)
     [Mono a] [Mono b] {P : Scheme.{u}} {u v : P ⟶ pullback a b}
@@ -204,7 +202,7 @@ private def IsBlowupAlongIdealSheafOver {X : Scheme.{u}} (I : X.IdealSheafData) 
       Set.range ⇑y.base ⊆ (S : Set X) → ∃! a : Y ⟶ Z, a ≫ z = y
 
 /- English proof (translation)
-Take `⟨c, -, hu⟩` from `hz.2.2 y hy hr`. Rewrite using `[hu a ha, hu b hb]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem blowupOver_hom_ext {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) {Y : Scheme.{u}} (y : Y ⟶ X)
@@ -219,7 +217,7 @@ private noncomputable def liftOfIsBlowupAlongIdealSheafOver {X Z : Scheme.{u}} {
   (hz.2.2 y hy hr).choose
 
 /- English proof (translation)
-The claim follows from `(hz.2.2 y hy hr).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 private theorem blowupOverLift_comp {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) {Y : Scheme.{u}} (y : Y ⟶ X)
@@ -228,15 +226,15 @@ private theorem blowupOverLift_comp {X Z : Scheme.{u}} {I : X.IdealSheafData} {S
   (hz.2.2 y hy hr).choose_spec.1
 
 /- English proof (translation)
-Establish `hrange : Set.range ⇑(W.ι).base = (W : Set X)` using `W.range_ι`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrange]`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨p.base v, by simp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Scheme.IdealSheafData.comap_comp]`. Conclude with `h.1`. Introduce `Y y hy hry`. Establish `hr : Set.range ⇑y.base ⊆ Set.range ⇑W.ι.base`. Rewrite using `[hrange]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hry`. Establish `hfac : IsOpenImmersion.lift W.ι y hr ≫ W.ι = y` using `IsOpenImmersion.lift_fac W.ι y hr`. Establish `hy2 : IsLocallyGeneratedByNonZeroDivisor ((I.comap W.ι).comap (IsOpenImmersion.lift W.ι y hr))`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, hfac]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, hu⟩` from `h.2 Y (IsOpenImmersion.lift W.ι y hr) hy2`. Use `⟨a, ?_, ?_⟩` and prove the remaining obligations. Use `show a ≫ p ≫ W.ι = y`. Rewrite using `[← Category.assoc, ha, hfac]`. Introduce `b hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbb : b ≫ (p ≫ W.ι) = y` using `hb`. Use `hu b ?_` and prove the remaining obligations. Establish `hbb2 : (b ≫ p) ≫ W.ι = IsOpenImmersion.lift W.ι y hr ≫ W.ι`. Rewrite using `[Category.assoc, hbb, hfac]`. Conclude with `(cancel_mono W.ι).mp hbb2`.
+A detailed English derivation is pending.
 -/
 private theorem blowupOver_of_isBlowupAlongIdealSheaf {X Z : Scheme.{u}} {I : X.IdealSheafData} {W : X.Opens}
     {p : Z ⟶ W.toScheme} (h : IsBlowupAlongIdealSheaf p (I.comap W.ι)) : IsBlowupAlongIdealSheafOver I W (p ≫ W.ι) := by
@@ -265,15 +263,13 @@ private theorem blowupOver_of_isBlowupAlongIdealSheaf {X Z : Scheme.{u}} {I : X.
       exact (cancel_mono W.ι).mp hbb2
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[comp_base_apply]`. Use `TopologicalSpace.Opens.mem_inf.mpr ⟨hz.1 (Set.mem_range_self _), ?_⟩` and prove the remaining obligations. Conclude with `ι_base_mem (z ⁻¹ᵁ T) p`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ z hz.2.1`. Introduce `Y y hy hr`. Establish `hrS : Set.range ⇑y.base ⊆ (S : Set X)` using `fun p hp => (TopologicalSpace.Opens.mem_inf.mp (hr hp)).1`. Take `⟨a, ha, hu⟩` from `hz.2.2 y hy hrS`. Establish `hra : Set.range ⇑a.base ⊆ Set.range ⇑(z ⁻¹ᵁ T).ι.base`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `show z.base (a.base p) ∈ T`. Rewrite using `[← comp_base_apply, ha]`. Conclude with `(TopologicalSpace.Opens.mem_inf.mp (hr (Set.mem_range_self p))).2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨IsOpenImmersion.lift _ a hra, ?_, ?_⟩` and prove the remaining obligations. Use `show IsOpenImmersion.lift (z ⁻¹ᵁ T).ι a hra ≫ ((z ⁻¹ᵁ T).ι ≫ z) = y`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, ha]`. Introduce `b hb`. Establish `hbb : b ≫ ((z ⁻¹ᵁ T).ι ≫ z) = y` using `hb`.
-
-Establish `hb' : (b ≫ (z ⁻¹ᵁ T).ι) ≫ z = y` using `by rw [Category.assoc]; exact hbb`. Establish `h1 : b ≫ (z ⁻¹ᵁ T).ι = a` using `hu _ hb'`. Establish `h2 : IsOpenImmersion.lift (z ⁻¹ᵁ T).ι a hra ≫ (z ⁻¹ᵁ T).ι = a` using `IsOpenImmersion.lift_fac _ _ _`. Conclude with `(cancel_mono (z ⁻¹ᵁ T).ι).mp (by rw [h1, h2])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem blowupOver_inf_preimage {X Z : Scheme.{u}} {I : X.IdealSheafData} {S : X.Opens}
     {z : Z ⟶ X} (hz : IsBlowupAlongIdealSheafOver I S z) (T : X.Opens) :
@@ -306,7 +302,7 @@ private theorem blowupOver_inf_preimage {X Z : Scheme.{u}} {I : X.IdealSheafData
       exact (cancel_mono (z ⁻¹ᵁ T).ι).mp (by rw [h1, h2])
 
 /- English proof (translation)
-Establish `: IsAffine (U : X.Opens).toScheme` using `U.2`. Conclude with `exists_isBlowupAlongIdealSheaf_of_isAffine _ _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem exists_isBlowupAlongIdealSheaf_affineOpen {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     ∃ (Z : Scheme.{u}) (p : Z ⟶ (U : X.Opens).toScheme),
@@ -323,7 +319,7 @@ private noncomputable def localBlowupProjection {X : Scheme.{u}} (I : X.IdealShe
   (exists_isBlowupAlongIdealSheaf_affineOpen I U).choose_spec.choose
 
 /- English proof (translation)
-The claim follows from `(exists_isBlowupAlongIdealSheaf_affineOpen I U).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem isBlowupAlongIdealSheaf_localBlowupProj {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     IsBlowupAlongIdealSheaf (localBlowupProjection I U) (I.comap (U : X.Opens).ι) :=
@@ -334,7 +330,7 @@ private noncomputable def localBlowupToBase {X : Scheme.{u}} (I : X.IdealSheafDa
   localBlowupProjection I U ≫ (U : X.Opens).ι
 
 /- English proof (translation)
-The claim follows from `blowupOver_of_isBlowupAlongIdealSheaf (isBlowupAlongIdealSheaf_localBlowupProj I U)`.
+A detailed English derivation is pending.
 -/
 private theorem blowupOver_localBlowupMap {X : Scheme.{u}} (I : X.IdealSheafData) (U : X.affineOpens) :
     IsBlowupAlongIdealSheafOver I (U : X.Opens) (localBlowupToBase I U) :=
@@ -355,7 +351,7 @@ private theorem overlapIncl_eq {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.
     overlapInclusion I i j = (overlap I i j).ι := rfl
 
 /- English proof (translation)
-Rewrite using `[overlapIncl_eq]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpenImmersion_overlapIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) : IsOpenImmersion (overlapInclusion I i j) := by
@@ -373,7 +369,7 @@ private theorem overlapMap_eq {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.a
     overlapToBase I i j = overlapInclusion I i j ≫ localBlowupToBase I i := rfl
 
 /- English proof (translation)
-The claim follows from `blowupOver_inf_preimage (blowupOver_localBlowupMap I i) (j : X.Opens)`.
+A detailed English derivation is pending.
 -/
 private theorem blowupOver_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) :
@@ -381,7 +377,7 @@ private theorem blowupOver_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData)
   blowupOver_inf_preimage (blowupOver_localBlowupMap I i) (j : X.Opens)
 
 /- English proof (translation)
-The claim follows from `(blowupOver_overlapMap I i j).1 (Set.mem_range_self p)`.
+A detailed English derivation is pending.
 -/
 private theorem overlapMap_base_mem_inf {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) (p : (overlap I i j).toScheme) :
@@ -389,7 +385,7 @@ private theorem overlapMap_base_mem_inf {X : Scheme.{u}} (I : X.IdealSheafData)
   (blowupOver_overlapMap I i j).1 (Set.mem_range_self p)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `TopologicalSpace.Opens.mem_inf.mpr ⟨(TopologicalSpace.Opens.mem_inf.mp (overlapMap_base_mem_inf I i j p)).2, (TopologicalSpace.Opens.mem_inf.mp (overlapMap_base_mem_inf I i j p)).1⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem range_overlapMap_subset_inf_swap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j : X.affineOpens) :
@@ -405,18 +401,16 @@ private noncomputable def overlapTransition {X : Scheme.{u}} (I : X.IdealSheafDa
     (blowupOver_overlapMap I i j).2.1 (range_overlapMap_subset_inf_swap I i j)
 
 /- English proof (translation)
-The claim follows from `blowupOverLift_comp _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem overlapTrans_comp_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapTransition I i j ≫ overlapToBase I j i = overlapToBase I i j :=
   blowupOverLift_comp _ _ _ _
 
 /- English proof (translation)
-Use `isOpenImmersion_overlapIncl I i i` as an intermediate fact. Establish `e2 : ((overlap I i i : (localBlowup I i).Opens) : Set (localBlowup I i)) = Set.univ`. Use extensionality with `v`. Simplify using `only [Set.mem_univ, iff_true]`. Use `show (localBlowupToBase I i).base v ∈ (i : X.Opens)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(blowupOver_localBlowupMap I i).1 (Set.mem_range_self v)`. Establish `h1 : Set.range ⇑(overlapInclusion I i i).base = Set.range ⇑(𝟙 (localBlowup I i) : localBlowup I i ⟶ localBlowup I i).base`. Rewrite using `[overlapIncl_eq, Scheme.Opens.range_ι, e2, range_id_base]`. Establish `h2` using `IsOpenImmersion.isoOfRangeEq_hom_fac (overlapInclusion I i i) (𝟙 (localBlowup I i)) h1`. Rewrite `h2` using `[Category.comp_id]`.
-
-Rewrite using `[← h2]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isIso_overlapIncl_self {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : IsIso (overlapInclusion I i i) := by
@@ -435,9 +429,9 @@ private theorem isIso_overlapIncl_self {X : Scheme.{u}} (I : X.IdealSheafData)
   infer_instance
 
 /- English proof (translation)
-Use `isOpenImmersion_overlapIncl I i i` as an intermediate fact. Rewrite using `[← cancel_mono (overlapInclusion I i i)]`. Use `blowupOver_hom_ext (blowupOver_localBlowupMap I i) (overlapToBase I i i) (blowupOver_overlapMap I i i).2.1 ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(TopologicalSpace.Opens.mem_inf.mp (overlapMap_base_mem_inf I i i p)).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← overlapMap_eq, overlapTrans_comp_overlapMap]`. Rewrite using `[Category.id_comp, ← overlapMap_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem overlapTrans_self {X : Scheme.{u}} (I : X.IdealSheafData) (i : X.affineOpens) :
     overlapTransition I i i = 𝟙 ((overlap I i i).toScheme) := by
@@ -463,9 +457,9 @@ private theorem overlapPullbackMap_eq {X : Scheme.{u}} (I : X.IdealSheafData)
       = pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapToBase I i j := rfl
 
 /- English proof (translation)
-Use `isOpenImmersion_overlapIncl I i j` as an intermediate fact. Use `isOpenImmersion_overlapIncl I i k` as an intermediate fact. Establish `h : tripleOverlapToBase I i j k = (pullback.fst (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapInclusion I i j) ≫ localBlowupToBase I i`. Rewrite using `[overlapPullbackMap_eq, overlapMap_eq, Category.assoc]`. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ (localBlowupToBase I i) (blowupOver_localBlowupMap I i).2.1`.
+A detailed English derivation is pending.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -480,7 +474,7 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap {X :
   exact isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ (localBlowupToBase I i) (blowupOver_localBlowupMap I i).2.1
 
 /- English proof (translation)
-Rewrite using `[overlapPullbackMap_eq, comp_base_apply]`. Conclude with `(blowupOver_overlapMap I i j).1 (Set.mem_range_self _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem overlapPullbackMap_base_mem_inf_left {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) (p : ↥(pullback (overlapInclusion I i j) (overlapInclusion I i k))) :
@@ -489,7 +483,7 @@ private theorem overlapPullbackMap_base_mem_inf_left {X : Scheme.{u}} (I : X.Ide
   exact (blowupOver_overlapMap I i j).1 (Set.mem_range_self _)
 
 /- English proof (translation)
-Establish `h : tripleOverlapToBase I i j k = pullback.snd (overlapInclusion I i j) (overlapInclusion I i k) ≫ overlapToBase I i k`. Rewrite using `[overlapPullbackMap_eq, overlapMap_eq, overlapMap_eq, ← Category.assoc, ← Category.assoc, pullback.condition]`. Rewrite using `[h, comp_base_apply]`. Conclude with `(blowupOver_overlapMap I i k).1 (Set.mem_range_self _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem overlapPullbackMap_base_mem_inf_right {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) (p : ↥(pullback (overlapInclusion I i j) (overlapInclusion I i k))) :
@@ -502,7 +496,7 @@ private theorem overlapPullbackMap_base_mem_inf_right {X : Scheme.{u}} (I : X.Id
   exact (blowupOver_overlapMap I i k).1 (Set.mem_range_self _)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem range_overlapPullbackMap_subset_source {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -511,7 +505,7 @@ private theorem range_overlapPullbackMap_subset_source {X : Scheme.{u}} (I : X.I
   exact (TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).1
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `(TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem range_overlapPullbackMap_subset_target {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -520,7 +514,7 @@ private theorem range_overlapPullbackMap_subset_target {X : Scheme.{u}} (I : X.I
   exact (TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).2
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `TopologicalSpace.Opens.mem_inf.mpr ⟨(TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_left I i j k p)).2, (TopologicalSpace.Opens.mem_inf.mp (overlapPullbackMap_base_mem_inf_right I i j k p)).2⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem range_overlapPullbackMap_subset_inf {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -538,7 +532,7 @@ private noncomputable def tripleOverlapLift {X : Scheme.{u}} (I : X.IdealSheafDa
     (isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap I i j k) (range_overlapPullbackMap_subset_inf I i j k)
 
 /- English proof (translation)
-The claim follows from `blowupOverLift_comp _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem overlapPullbackLift_comp_overlapMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -546,7 +540,7 @@ private theorem overlapPullbackLift_comp_overlapMap {X : Scheme.{u}} (I : X.Idea
   blowupOverLift_comp _ _ _ _
 
 /- English proof (translation)
-Use `blowupOver_hom_ext (blowupOver_localBlowupMap I j) (tripleOverlapToBase I i j k) (isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap I i j k) (range_overlapPullbackMap_subset_target I i j k) ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← overlapMap_eq, overlapPullbackLift_comp_overlapMap]`. Rewrite using `[Category.assoc, ← overlapMap_eq, Category.assoc, overlapTrans_comp_overlapMap, overlapPullbackMap_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem overlapPullbackLift_comp_overlapIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -578,7 +572,7 @@ private theorem overlapTransPullback_eq {X : Scheme.{u}} (I : X.IdealSheafData)
           (overlapPullbackLift_comp_overlapIncl I i j k) := rfl
 
 /- English proof (translation)
-Rewrite using `[overlapTransPullback_eq]`. Conclude with `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem overlapTransPullback_comp_snd {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -588,7 +582,7 @@ private theorem overlapTransPullback_comp_snd {X : Scheme.{u}} (I : X.IdealSheaf
   exact pullback.lift_snd _ _ _
 
 /- English proof (translation)
-Rewrite using `[overlapPullbackMap_eq, overlapTransPullback_eq, ← Category.assoc, pullback.lift_fst, overlapPullbackLift_comp_overlapMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem overlapTransPullback_comp_overlapPullbackMap {X : Scheme.{u}} (I : X.IdealSheafData)
     (i j k : X.affineOpens) :
@@ -598,9 +592,9 @@ private theorem overlapTransPullback_comp_overlapPullbackMap {X : Scheme.{u}} (I
     overlapPullbackLift_comp_overlapMap]
 
 /- English proof (translation)
-Use `isOpenImmersion_overlapIncl I i j` as an intermediate fact. Use `isOpenImmersion_overlapIncl I i k` as an intermediate fact. Use `pullback_hom_ext_of_mono (overlapInclusion I i j) (overlapInclusion I i k) ?_` and prove the remaining obligations. Use `blowupOver_hom_ext (blowupOver_localBlowupMap I i) (tripleOverlapToBase I i j k) (isLocallyGeneratedByNonZeroDivisor_comap_overlapPullbackMap I i j k) (range_overlapPullbackMap_subset_source I i j k) ?_ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← overlapMap_eq, ← overlapPullbackMap_eq, overlapTransPullback_comp_overlapPullbackMap, overlapTransPullback_comp_overlapPullbackMap, overlapTransPullback_comp_overlapPullbackMap]`. Simplify using `only [Category.id_comp, Category.assoc]`. Rewrite using `[← overlapMap_eq, ← overlapPullbackMap_eq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem overlapTransPullback_cocycle {X : Scheme.{u}} (I : X.IdealSheafData) (i j k : X.affineOpens) :
     tripleOverlapTransition I i j k ≫ tripleOverlapTransition I j k i ≫ tripleOverlapTransition I k i j
@@ -645,14 +639,14 @@ private noncomputable def localBlowupToGlued {X : Scheme.{u}} (I : X.IdealSheafD
   (blowupGlueData I).ι i
 
 /- English proof (translation)
-The claim follows from `(blowupGlueData I).ι_isOpenImmersion i`.
+A detailed English derivation is pending.
 -/
 private theorem isOpenImmersion_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : IsOpenImmersion (localBlowupToGlued I i) :=
   (blowupGlueData I).ι_isOpenImmersion i
 
 /- English proof (translation)
-The claim follows from `(blowupGlueData I).glue_condition i j`.
+A detailed English derivation is pending.
 -/
 private theorem overlapTrans_comp_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData) (i j : X.affineOpens) :
     overlapTransition I i j ≫ overlapInclusion I j i ≫ localBlowupToGlued I j
@@ -660,7 +654,7 @@ private theorem overlapTrans_comp_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafDa
   (blowupGlueData I).glue_condition i j
 
 /- English proof (translation)
-Take `⟨j, y, hy⟩` from `(blowupGlueData I).ι_jointly_surjective p`. Conclude with `⟨j, y, hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem gluedIncl_jointly_surjective {X : Scheme.{u}} (I : X.IdealSheafData)
     (p : gluedBlowup I) :
@@ -669,9 +663,9 @@ private theorem gluedIncl_jointly_surjective {X : Scheme.{u}} (I : X.IdealSheafD
   exact ⟨j, y, hy⟩
 
 /- English proof (translation)
-Take `⟨m, hm1, hm2⟩` from `PullbackCone.IsLimit.lift' ((blowupGlueData I).vPullbackConeIsLimit x y) (pullback.fst (localBlowupToGlued I x) (localBlowupToGlued I y)) (pullback.snd (localBlowupToGlued I x) (localBlowupToGlued I y)) pullback.condition`. Establish `e1 : m ≫ overlapInclusion I x y = pullback.fst (localBlowupToGlued I x) (localBlowupToGlued I y)` using `hm1`. Establish `e2 : m ≫ (overlapTransition I x y ≫ overlapInclusion I y x) = pullback.snd (localBlowupToGlued I x) (localBlowupToGlued I y)` using `hm2`. Establish `key : overlapInclusion I x y ≫ localBlowupToBase I x = (overlapTransition I x y ≫ overlapInclusion I y x) ≫ localBlowupToBase I y`. Rewrite using `[Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(overlapTrans_comp_overlapMap I x y).symm`. Establish `A : pullback.fst (localBlowupToGlued I x) (localBlowupToGlued I y) ≫ localBlowupToBase I x = m ≫ (overlapInclusion I x y ≫ localBlowupToBase I x)` using `(congrArg (fun t => t ≫ localBlowupToBase I x) e1).symm.trans (Category.assoc m (overlapInclusion I x y) (localBlowupToBase I x))`. Establish `B : pullback.snd (localBlowupToGlued I x) (localBlowupToGlued I y) ≫ localBlowupToBase I y = m ≫ ((overlapTransition I x y ≫ overlapInclusion I y x) ≫ localBlowupToBase I y)` using `(congrArg (fun t => t ≫ localBlowupToBase I y) e2).symm.trans (Category.assoc m (overlapTransition I x y ≫ overlapInclusion I y x) (localBlowupToBase I y))`. Conclude with `A.trans ((congrArg (fun t => m ≫ t) key).trans B.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pullback_fst_comp_localBlowupMap_eq {X : Scheme.{u}} (I : X.IdealSheafData)
     (x y : X.affineOpens) :
@@ -703,14 +697,14 @@ private noncomputable def gluedBlowupProjection {X : Scheme.{u}} (I : X.IdealShe
     (fun x y => pullback_fst_comp_localBlowupMap_eq I x y)
 
 /- English proof (translation)
-The claim follows from `(blowupGlueData I).openCover.ι_glueMorphisms _ _ i`.
+A detailed English derivation is pending.
 -/
 private theorem gluedIncl_comp_gluedProj {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) : localBlowupToGlued I i ≫ gluedBlowupProjection I = localBlowupToBase I i :=
   (blowupGlueData I).openCover.ι_glueMorphisms _ _ i
 
 /- English proof (translation)
-Rewrite using `[← comp_base_apply, gluedIncl_comp_gluedProj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem gluedProj_base_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData)
     (i : X.affineOpens) (v : localBlowup I i) :
@@ -718,11 +712,11 @@ private theorem gluedProj_base_gluedIncl {X : Scheme.{u}} (I : X.IdealSheafData)
   rw [← comp_base_apply, gluedIncl_comp_gluedProj]
 
 /- English proof (translation)
-Take `⟨j, y, hy⟩` from `gluedIncl_jointly_surjective I p`. Establish `h1 : (localBlowupToBase I j).base y ∈ (i : X.Opens)`. Rewrite using `[← gluedProj_base_gluedIncl I j y, hy]`. Conclude with `hp`. Establish `h2 : y ∈ Set.range ⇑(overlapInclusion I j i).base`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[overlapIncl_eq, Scheme.Opens.range_ι]`. Conclude with `h1`. Take `⟨v, hv⟩` from `h2`. Establish `hcb : (overlapTransition I j i ≫ overlapInclusion I i j ≫ localBlowupToGlued I i).base v = (overlapInclusion I j i ≫ localBlowupToGlued I j).base v`. Rewrite using `[overlapTrans_comp_gluedIncl I j i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hcb` using `[comp_base_apply, comp_base_apply, comp_base_apply]`. Use `⟨(overlapInclusion I i j).base ((overlapTransition I j i).base v), ?_⟩` and prove the remaining obligations. Rewrite using `[hcb, hv]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_range_gluedIncl_of_mem {X : Scheme.{u}} (I : X.IdealSheafData) (i : X.affineOpens)
     (p : gluedBlowup I) (hp : (gluedBlowupProjection I).base p ∈ (i : X.Opens)) :
@@ -744,9 +738,9 @@ private theorem mem_range_gluedIncl_of_mem {X : Scheme.{u}} (I : X.IdealSheafDat
   exact hy
 
 /- English proof (translation)
-Establish `hxy : Set.range ⇑q.base ⊆ (((x : X.Opens) ⊓ (y : X.Opens)) : Set X)` using `fun w hw => TopologicalSpace.Opens.mem_inf.mpr ⟨hx hw, hy hw⟩`. Establish `hb1 : liftOfIsBlowupAlongIdealSheafOver (blowupOver_overlapMap I x y) q hq hxy ≫ overlapToBase I x y = q` using `blowupOverLift_comp _ _ _ _`. Establish `e1 : ax = liftOfIsBlowupAlongIdealSheafOver (blowupOver_overlapMap I x y) q hq hxy ≫ overlapInclusion I x y`. Use `blowupOver_hom_ext (blowupOver_localBlowupMap I x) q hq hx hax ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← overlapMap_eq, hb1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ay = (liftOfIsBlowupAlongIdealSheafOver (blowupOver_overlapMap I x y) q hq hxy ≫ overlapTransition I x y) ≫ overlapInclusion I y x`. Use `blowupOver_hom_ext (blowupOver_localBlowupMap I y) q hq hy hay ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, ← overlapMap_eq, Category.assoc, overlapTrans_comp_overlapMap, hb1]`. Rewrite using `[e1, e2]`. Simplify using `only [Category.assoc, ← overlapTrans_comp_gluedIncl I x y]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem comp_gluedIncl_eq_of_comp_localBlowupMap {X P : Scheme.{u}} (I : X.IdealSheafData)
     (x y : X.affineOpens) (q : P ⟶ X) (hq : IsLocallyGeneratedByNonZeroDivisor (I.comap q))
@@ -784,7 +778,7 @@ private theorem preimageAffineOpenToBase_eq {X W : Scheme.{u}} (g : W ⟶ X) (i 
     preimageAffineOpenToBase g i = (preimageAffineOpen g i).ι ≫ g := rfl
 
 /- English proof (translation)
-The claim follows from `isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ g hg`.
+A detailed English derivation is pending.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_preimageAffineOpenToBase {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
@@ -792,7 +786,7 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_preimageAffineOpenToBas
   isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ g hg
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[preimageAffineOpenToBase_eq, comp_base_apply]`. Conclude with `ι_base_mem (preimageAffineOpen g i) p`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem range_preimageAffineOpenToBase_subset {X W : Scheme.{u}} (g : W ⟶ X) (i : X.affineOpens) :
     Set.range ⇑(preimageAffineOpenToBase g i).base ⊆ ((i : X.Opens) : Set X) := by
@@ -807,7 +801,7 @@ private noncomputable def localBlowupLift {X W : Scheme.{u}} (I : X.IdealSheafDa
     (range_preimageAffineOpenToBase_subset g i)
 
 /- English proof (translation)
-The claim follows from `blowupOverLift_comp _ _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem liftChart_comp_localBlowupMap {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
@@ -826,7 +820,7 @@ private noncomputable def preimageAffineOpensCover {X W : Scheme.{u}} (g : W ⟶
       exact ⟨i, v, hv⟩)
 
 /- English proof (translation)
-Use `(preimageAffineOpensCover g).hom_ext a b (fun i => ?_)` and prove the remaining obligations. Conclude with `h i`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem hom_ext_of_preimageAffineOpen_ι_comp {X W : Scheme.{u}} (g : W ⟶ X) {Z : Scheme.{u}} (a b : W ⟶ Z)
     (h : ∀ i : X.affineOpens, (preimageAffineOpen g i).ι ≫ a = (preimageAffineOpen g i).ι ≫ b) : a = b := by
@@ -834,13 +828,13 @@ private theorem hom_ext_of_preimageAffineOpen_ι_comp {X W : Scheme.{u}} (g : W 
   exact h i
 
 /- English proof (translation)
-Establish `hxy : pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x = pullback.snd (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g y`. Rewrite using `[preimageAffineOpenToBase_eq, preimageAffineOpenToBase_eq, ← Category.assoc, ← Category.assoc, pullback.condition]`. Establish `hcart : IsLocallyGeneratedByNonZeroDivisor (I.comap (pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x))`. Establish `h : pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x = (pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ (preimageAffineOpen g x).ι) ≫ g`. Rewrite using `[preimageAffineOpenToBase_eq, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `isLocallyGeneratedByNonZeroDivisor_comap_openImmersion_comp I _ g hg`. Establish `hrx : Set.range ⇑(pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x).base ⊆ ((x : X.Opens) : Set X)`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[comp_base_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `range_preimageAffineOpenToBase_subset g x (Set.mem_range_self _)`. Establish `hry : Set.range ⇑(pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x).base ⊆ ((y : X.Opens) : Set X)`. Rewrite using `[hxy]`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[comp_base_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `range_preimageAffineOpenToBase_subset g y (Set.mem_range_self _)`. Rewrite using `[← Category.assoc, ← Category.assoc]`. Use `comp_gluedIncl_eq_of_comp_localBlowupMap I x y (pullback.fst (preimageAffineOpen g x).ι (preimageAffineOpen g y).ι ≫ preimageAffineOpenToBase g x) hcart hrx hry ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, liftChart_comp_localBlowupMap]`. Rewrite using `[Category.assoc, liftChart_comp_localBlowupMap, hxy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem liftChart_pullback_condition {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (x y : X.affineOpens) :
@@ -880,7 +874,7 @@ private noncomputable def gluedBlowupLift {X W : Scheme.{u}} (I : X.IdealSheafDa
     (fun x y => liftChart_pullback_condition I g hg x y)
 
 /- English proof (translation)
-The claim follows from `(preimageAffineOpensCover g).ι_glueMorphisms _ _ i`.
+A detailed English derivation is pending.
 -/
 private theorem ι_comp_liftGlued {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (i : X.affineOpens) :
@@ -888,7 +882,7 @@ private theorem ι_comp_liftGlued {X W : Scheme.{u}} (I : X.IdealSheafData) (g :
   (preimageAffineOpensCover g).ι_glueMorphisms _ _ i
 
 /- English proof (translation)
-Use `hom_ext_of_preimageAffineOpen_ι_comp g (gluedBlowupLift I g hg ≫ gluedBlowupProjection I) g (fun i => ?_)` and prove the remaining obligations. Rewrite using `[← Category.assoc, ι_comp_liftGlued, Category.assoc, gluedIncl_comp_gluedProj, liftChart_comp_localBlowupMap, preimageAffineOpenToBase_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem liftGlued_comp_gluedProj {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) : gluedBlowupLift I g hg ≫ gluedBlowupProjection I = g := by
@@ -897,11 +891,11 @@ private theorem liftGlued_comp_gluedProj {X W : Scheme.{u}} (I : X.IdealSheafDat
     preimageAffineOpenToBase_eq]
 
 /- English proof (translation)
-Use `hom_ext_of_preimageAffineOpen_ι_comp g b (gluedBlowupLift I g hg) (fun i => ?_)` and prove the remaining obligations. Rewrite using `[ι_comp_liftGlued]`. Establish `hr : Set.range ⇑((preimageAffineOpen g i).ι ≫ b).base ⊆ Set.range ⇑(localBlowupToGlued I i).base`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `mem_range_gluedIncl_of_mem I i _ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← comp_base_apply, Category.assoc, hb]`. Conclude with `range_preimageAffineOpenToBase_subset g i (Set.mem_range_self p)`. Use `isOpenImmersion_gluedIncl I i` as an intermediate fact. Establish `hc : IsOpenImmersion.lift (localBlowupToGlued I i) ((preimageAffineOpen g i).ι ≫ b) hr ≫ localBlowupToGlued I i = (preimageAffineOpen g i).ι ≫ b` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hc2 : IsOpenImmersion.lift (localBlowupToGlued I i) ((preimageAffineOpen g i).ι ≫ b) hr ≫ localBlowupToBase I i = preimageAffineOpenToBase g i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← gluedIncl_comp_gluedProj I i, ← Category.assoc, hc, Category.assoc, hb, preimageAffineOpenToBase_eq]`. Establish `hc3 : IsOpenImmersion.lift (localBlowupToGlued I i) ((preimageAffineOpen g i).ι ≫ b) hr = localBlowupLift I g hg i` using `blowupOver_hom_ext (blowupOver_localBlowupMap I i) (preimageAffineOpenToBase g i) (isLocallyGeneratedByNonZeroDivisor_comap_preimageAffineOpenToBase I g hg i) (range_preimageAffineOpenToBase_subset g i) hc2 (liftChart_comp_localBlowupMap I g hg i)`. Rewrite using `[← hc, hc3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_liftGlued_of_comp_eq {X W : Scheme.{u}} (I : X.IdealSheafData) (g : W ⟶ X)
     (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) (b : W ⟶ gluedBlowup I)
@@ -926,11 +920,11 @@ private theorem eq_liftGlued_of_comp_eq {X W : Scheme.{u}} (I : X.IdealSheafData
   rw [← hc, hc3]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `: ∀ i : X.affineOpens, IsOpenImmersion (localBlowupToGlued I i)` using `fun i => isOpenImmersion_gluedIncl I i`. Use `IsLocallyGeneratedByNonZeroDivisor.of_isOpenImmersion_cover (I.comap (gluedBlowupProjection I)) (fun i => localBlowup I i) (fun i => localBlowupToGlued I i) ?_ ?_` and prove the remaining obligations. Introduce `p`. Take `⟨j, y, hy⟩` from `gluedIncl_jointly_surjective I p`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨j, y, hy⟩`. Introduce `i`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, gluedIncl_comp_gluedProj]`. Conclude with `(blowupOver_localBlowupMap I i).2.1`. Introduce `W g hg`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨gluedBlowupLift I g hg, liftGlued_comp_gluedProj I g hg, fun b hb => eq_liftGlued_of_comp_eq I g hg b hb⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isBlowupAlongIdealSheaf_gluedProj {X : Scheme.{u}} (I : X.IdealSheafData) :
     IsBlowupAlongIdealSheaf (gluedBlowupProjection I) I := by
@@ -950,7 +944,7 @@ private theorem isBlowupAlongIdealSheaf_gluedProj {X : Scheme.{u}} (I : X.IdealS
       fun b hb => eq_liftGlued_of_comp_eq I g hg b hb⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gluedBlowup I, gluedBlowupProjection I, isBlowupAlongIdealSheaf_gluedProj I⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isBlowupAlongIdealSheaf (X : Scheme.{u}) (I : X.IdealSheafData) :
     ∃ (Y : Scheme.{u}) (π : Y ⟶ X), IsBlowupAlongIdealSheaf π I :=
@@ -967,7 +961,7 @@ noncomputable def blowup.proj {X : Scheme.{u}} (I : X.IdealSheafData) : blowup I
 end
 
 /- English proof (translation)
-The claim follows from `(exists_isBlowupAlongIdealSheaf X I).choose_spec.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem blowup.isBlowupAlongIdealSheaf_proj {X : Scheme.{u}} (I : X.IdealSheafData) :
     IsBlowupAlongIdealSheaf (blowup.proj I) I :=

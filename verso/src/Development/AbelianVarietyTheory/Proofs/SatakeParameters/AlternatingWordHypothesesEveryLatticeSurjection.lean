@@ -13,9 +13,9 @@ open NumberField IsDedekindDomain GlobalTheory.HTW GlobalTheory.HTW.Rec Formalis
 namespace GlobalTheory.HTW.RecS
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero (l : Om l) := ⟨Nat.cast_ne_zero.2 hl.ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) l`. Establish `hmem : ζ ∈ Ks K 1`. Use `(le_sup_right : _ ≤ Ks K 1) (IntermediateField.subset_adjoin _ _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hζ.pow_eq_one`. Establish `hLL : ζ ∈ LL.1` using `hG.2.2.2 (Ks K 1).val ⟨ζ, hmem⟩`. Use `⟨⟨ζ, hLL⟩, ?_⟩` and prove the remaining obligations. Conclude with `IsPrimitiveRoot.of_map_of_injective (f := LL.1.val) hζ LL.1.val.toRingHom.injective`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_primitiveRoot_of_good {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (hG : Good K 1 LL) :
     ∃ ζ : ↥LL.1, IsPrimitiveRoot ζ l := by
@@ -30,27 +30,25 @@ theorem exists_primitiveRoot_of_good {l : ℕ} [Fact l.Prime] {K LL : FinExt l} 
   exact IsPrimitiveRoot.of_map_of_injective (f := LL.1.val) hζ LL.1.val.toRingHom.injective
 
 /- English proof (translation)
-Take `⟨hev, hup, -, -, hbig⟩` from `hA`. Establish `hp : (P.PD K).p = l` using `P.PD_p K`. Establish `hle : K.1 ≤ K0 K` using `le_inf le_rfl hK`. Take `⟨a₀, -, hsup⟩` from `Finset.exists_mem_eq_sup (Finset.univ : Finset (ZMod (Module.finrank ℚ_[l] ↥(K0 K)))) Finset.univ_nonempty Wd.sz`. Establish `hgr : IsGreatest (Set.range Wd.sz) (Finset.univ.sup Wd.sz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨a₀, hsup.symm⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `Finset.le_sup (Finset.mem_univ a)`. Establish `hbig'` using `hbig _ hgr`. Use `⟨⟨?_, hs, by omega⟩, by omega, hev, ?_, by rw [hp]; exact exists_primitiveRoot_of_good hG, ⟨c₁, c₂, hF⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun x => ⟨⟨x.1, hle x.2⟩, Subtype.ext rfl⟩⟩` and prove the remaining obligations. Conclude with `(goodO_finExt_integers l LL).1`. Introduce `a τ hτ u hu`. Establish `hw` using `hj a τ hτ u hu`. Establish `hua` using `hup a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `NWord.win at hw`. Unfold `RamifiedCoefficientChains.JumpWinS`. Distinguish the cases in `hpar : (a.val + d) % 2 = 1`. Establish `h0 : ¬ (a.val + d) % 2 = 0` using `by omega`. Establish `hu1 : Wd.up a = true` using `by simpa [hpar] using hua`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hu1, if_true, Set.mem_setOf_eq, abs_le] at hw`. Simplify using `only [h0, if_false, Set.mem_union, Set.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `h0 : (a.val + d) % 2 = 0` using `by omega`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hu1 : Wd.up a = false` using `by simpa [hpar] using hua`. Simplify using `only [hu1, Bool.false_eq_true, if_false, Set.mem_setOf_eq, abs_le] at hw`. Simplify using `only [h0, if_true, Set.mem_union, Set.mem_Icc]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Introduce `a τ hτ haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Use `letI ft : Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) := Fintype.ofFinite _`. Establish `h` using `hlow ft a`. Unfold `TruncatedSeriesCountingBounds.lowCount at h`. Establish `hfil : (Finset.univ.filter (fun τ' => Formalism.MainNotions.LiftingTheory.Over Wc τ' a)) = {τ}`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `τ'`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton]`. Conclude with `⟨fun h' => (existsUnique_over P K LL Wc hK a).unique h' hτ, fun h' => h' ▸ hτ⟩`. Rewrite `h` using `[hfil, Finset.sum_singleton]`. Conclude with `h`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `h` using `(hbig' a).2`. Rewrite using `[hp]`. Unfold `RamifiedCoefficientChains.aR RamifiedCoefficientChains.lam RamifiedCoefficientChains.hpar`. Use `push_cast`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `h`. Introduce `a`. Establish `h` using `(hbig' a).1`. Unfold `RamifiedCoefficientChains.hpar`. Use `push_cast`.
-
-Conclude with `h`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem setCS_of_wordsAT {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K LL : FinExt l}
     (hG : Good K 1 LL) (Wc : Wach P K LL) (hs : Wc.s = 1) (hK : K.1 ≤ MaximalUnramifiedExtension l) (h11 : 11 ≤ l)
@@ -116,7 +114,7 @@ theorem setCS_of_wordsAT {l : ℕ} [Fact l.Prime] {P : LocPrime l} {K LL : FinEx
     exact h
 
 /- English proof (translation)
-Introduce `D L HW i r ρ π w hw Cx hG Wd d h11 hB hA nz T₁ T₂ F h₁ h₂ hF`. Establish `hT1` using `hB.t1 T₁ h₁`. Establish `hT2` using `hB.t2 T₂ h₂`. Conclude with `setCS_of_wordsAT hG (WW HW i w hw Cx hG) ((HW (D.nd.l i)).W_s _ 1 _ hG) hB.unram h11 Wd d hA T₁ T₂ F hF hT1.1 hT2.1 hT1.2.1 hT2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem settingC_of_wordsAT : ∀ {D : D7} (L : SizeData₂ D) (HW : HWOf D.loc) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i)) (Cx : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (hG : Good (D.nbr i w hw).Kw 1 Cx.LL) (Wd : NWord (RecS.nLet i w hw)) (d : ℕ), 11 ≤ D.nd.l i → RecS.WordBase L HW i r ρ π w hw Cx hG Wd → WordsAT (D.nd.l i) Wd d → RecS.AlternatingWordLatticeSurjectionHypotheses HW i r ρ π w hw Cx hG Wd d := by
   intro D L HW i r ρ π w hw Cx hG Wd d h11 hB hA nz T₁ T₂ F h₁ h₂ hF

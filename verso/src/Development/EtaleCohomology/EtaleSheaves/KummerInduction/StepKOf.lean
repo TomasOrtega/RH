@@ -15,21 +15,21 @@ def ChaseB : Prop := Hyp → MV → ∀ (q : ℕ) {J : Type} [SmallCategory J] [
     ∃ (l : J) (g : l ⟶ k), pull _ (sch.map (D.map g)) _ _ y = 0
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.resLE_comp_ι _ _`.
+A detailed English derivation is pending.
 -/
 theorem rL_ι {D : J ⥤ Scheme.{0}} (c : Cone D) {j0 : J} {X : Scheme.{0}} (e : D.obj j0 ≅ X) (U : X.Opens) {k : J}
     (f : k ⟶ j0) : rL c e U f ≫ (lv D e U f).ι = (lm c e U).ι ≫ c.π.app k :=
   Scheme.Hom.resLE_comp_ι _ _
 
 /- English proof (translation)
-The claim follows from `Scheme.Hom.resLE_comp_ι _ _`.
+A detailed English derivation is pending.
 -/
 theorem rD_ι (D : J ⥤ Scheme.{0}) {j0 : J} {X : Scheme.{0}} (e : D.obj j0 ≅ X) (U : X.Opens) {k l : J}
     (f : k ⟶ j0) (g : l ⟶ k) : rD D e U f g ≫ (lv D e U f).ι = (lv D e U (g ≫ f)).ι ≫ D.map g :=
   Scheme.Hom.resLE_comp_ι _ _
 
 /- English proof (translation)
-Establish `h0 : pull _ (sch.map (rL c e U f)) _ _ (pull _ (sch.map (lv D e U f).ι) _ _ y) = 0`. Rewrite using `[← pull_comp, ← Functor.map_comp, rL_ι, Functor.map_comp, pull_comp, hy, map_zero]`. Take `⟨l, a, ha⟩` from `(hR n i).2 k f _ h0`. Use `⟨l, a, ?_⟩` and prove the remaining obligations. Rewrite using `[← pull_comp, ← Functor.map_comp, ← rD_ι, Functor.map_comp, pull_comp, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kerU {q : ℕ} {D : J ⥤ Scheme.{0}} {c : Cone D} {j0 : J} {X : Scheme.{0}} {e : D.obj j0 ≅ X} {U : X.Opens}
     (hR : RC q c e U) {n i : ℤ} {k : J} (f : k ⟶ j0) (y : Ht q (sch.obj (D.obj k)) n i)
@@ -42,7 +42,7 @@ theorem kerU {q : ℕ} {D : J ⥤ Scheme.{0}} {c : Cone D} {j0 : J} {X : Scheme.
   rw [← pull_comp, ← Functor.map_comp, ← rD_ι, Functor.map_comp, pull_comp, ha]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `e1 : (m ≫ a) ≫ f = m ≫ (a ≫ f)` using `Category.assoc _ _ _`. Rewrite using `[e1, D.map_comp, Functor.map_comp, pull_comp, ← pull_comp, ← Functor.map_comp, ← rD_ι, Functor.map_comp, pull_comp, h, map_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab {q : ℕ} (D : J ⥤ Scheme.{0}) {j0 : J} {X : Scheme.{0}} (e : D.obj j0 ≅ X) (U : X.Opens) {n i : ℤ}
     {k l l' : J} (f : k ⟶ j0) (y : Ht q (sch.obj (D.obj k)) n i) (a : l ⟶ k) (m : l' ⟶ l) (g : l' ⟶ k) (hg : g = m ≫ a)
@@ -54,11 +54,11 @@ theorem stab {q : ℕ} (D : J ⥤ Scheme.{0}) {j0 : J} {X : Scheme.{0}} (e : D.o
     pull_comp, h, map_zero]
 
 /- English proof (translation)
-Introduce `h hmv q J _ _ D c hc j0 X e U V hUV rU rV rW n i k f y hy`. Take `⟨l1, a, ha⟩` from `kerU rU f y hy`. Take `⟨l2, b, hb⟩` from `kerU rV f y hy`. Set `p` to `IsCofiltered.minToLeft l1 l2`. Set `r` to `IsCofiltered.minToRight l1 l2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m` to `IsCofiltered.eqHom (p ≫ a) (r ≫ b)`. Establish `hm : m ≫ p ≫ a = m ≫ r ≫ b` using `IsCofiltered.eq_condition _ _`. Set `g` to `m ≫ p ≫ a`. Establish `hU` using `stab D e U f y a (m ≫ p) g (by simp only [g, Category.assoc]) ha`. Establish `hV` using `stab D e V f y b (m ≫ r) g (by simp only [g, Category.assoc]; exact hm) hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : pull _ (sch.map (c.π.app _)) _ _ (pull _ (sch.map (D.map g)) _ _ y) = 0`. Rewrite using `[← pull_comp, ← Functor.map_comp, c.w]`. Conclude with `hy`. Take `⟨l, g', hg'⟩` from `hB h hmv q D c hc j0 X e U V hUV rU rV rW n i _ (g ≫ f) _ hy' hU hV`. Conclude with `⟨l, g' ≫ g, by rw [D.map_comp, Functor.map_comp, pull_comp]; exact hg'⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Chase_of (hB : ChaseB) : DiagramChase₂ := by
   intro h hmv q J _ _ D c hc j0 X e U V hUV rU rV rW n i k f y hy
@@ -77,7 +77,7 @@ theorem Chase_of (hB : ChaseB) : DiagramChase₂ := by
   exact ⟨l, g' ≫ g, by rw [D.map_comp, Functor.map_comp, pull_comp]; exact hg'⟩
 
 /- English proof (translation)
-The claim follows from `StepK_of hR (Chase_of hB)`.
+A detailed English derivation is pending.
 -/
 theorem StepK_of' (hR : Restr) (hB : ChaseB) : StepK := StepK_of hR (Chase_of hB)
 

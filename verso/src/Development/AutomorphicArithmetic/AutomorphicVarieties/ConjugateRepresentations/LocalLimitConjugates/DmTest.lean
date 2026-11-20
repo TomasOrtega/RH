@@ -22,7 +22,7 @@ private noncomputable def spl : GA E a ≃ₜ* archGroup E a × GL (Fin a) (Af E
     ((archEquiv E a).symm.continuous.prodMap continuous_id)
 
 /- English proof (translation)
-Use `(AdelicGLn.prodEquiv E a).injective ?_` and prove the remaining obligations. Rewrite using `[map_mul, prodEquiv_infEmb, prodEquiv_finEmb, Prod.mk_mul_mk, one_mul, mul_one]`. Conclude with `(AdelicGLn.prodEquiv E a).apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spl_symm (x : archGroup E a) (b : GL (Fin a) (Af E)) :
     (spl E a).symm (x, b) = finEmb E a b * infEmb E a x := by
@@ -31,13 +31,13 @@ private theorem spl_symm (x : archGroup E a) (b : GL (Fin a) (Af E)) :
   exact (AdelicGLn.prodEquiv E a).apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[spl_symm, map_one, mul_one, UpperTheory.V.Fb.finEmb_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem spl_fin (b : GL (Fin a) (Af E)) : (spl E a).symm (1, b) = finGL E a b := by
   rw [spl_symm, map_one, mul_one, UpperTheory.V.Fb.finEmb_eq]
 
 /- English proof (translation)
-Simplify using `only [spl_symm]`. Use `⟨fun h b => h (finEmb E a b), fun h g => ?_⟩` and prove the remaining obligations. Rewrite using `[← infEmb_mul_finEmb g, infEmb_mul_finEmb_comm, archSlice_mul]`. Conclude with `((isExpLieAlgebra E a).leftTranslateEnd _ ⟨_, h _⟩).2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem arch_iff (φ : GA E a → ℂ) :
     IsArchSmooth φ ↔ ∀ b, (isExpLieAlgebra E a).IsSmoothFun fun x => φ ((spl E a).symm (x, b)) := by
@@ -56,7 +56,7 @@ private def stab (φ : Sm E a) : Subgroup (GL (Fin a) (Af E)) where
     rw [← hk (g * finGL E a k⁻¹), mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]
 
 /- English proof (translation)
-Establish `: {k | act (.fin k) φ = φ} = (stab φ : Set (GL (Fin a) (Af E)))`. Use extensionality with `k`. Conclude with `⟨fun h g => congrFun (congrArg Subtype.val h) g, fun h => Subtype.ext (funext h)⟩`. Rewrite using `[HasLev, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_iff (φ : Sm E a) : HasLev φ ↔ IsOpen (stab φ : Set (GL (Fin a) (Af E))) := by
   have : {k | act (.fin k) φ = φ} = (stab φ : Set (GL (Fin a) (Af E))) := by
@@ -65,7 +65,7 @@ private theorem lev_iff (φ : Sm E a) : HasLev φ ↔ IsOpen (stab φ : Set (GL 
   rw [HasLev, this]
 
 /- English proof (translation)
-Establish `ho : IsOpen ((stab φ ⊓ AdelicGLn.integralFiniteGL E a : Subgroup (GL (Fin a) (Af E))) : Set (GL (Fin a) (Af E)))` using `((lev_iff φ).1 h).inter (AdelicGLn.isOpen_integralFiniteGL E a)`. Use `⟨(arch_iff φ.1).1 (UpperTheory.V.Cm.isArchSmooth_of_mem φ.2), _, ho, (AdelicGLn.isCompact_integralFiniteGL E a).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) fun _ h => h.2, fun x v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[spl_fin]`. Conclude with `hv.1 x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smooth_of (φ : Sm E a) (h : HasLev φ) :
     ProdSmooth.IsSmooth (isExpLieAlgebra E a) (spl E a) φ.1 := by
@@ -78,9 +78,9 @@ private theorem smooth_of (φ : Sm E a) (h : HasLev φ) :
   exact hv.1 x
 
 /- English proof (translation)
-Take `⟨h1, V, hV, -, h2⟩` from `h`. Use `⟨⟨φ, UpperTheory.V.Cm.mem_Sm_of ((arch_iff _).2 h1)⟩, ⟨φ.hasCompactSupport, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[lev_iff]`. Use `Subgroup.isOpen_mono (H₁ := V) (fun v hv g => ?_) hV` and prove the remaining obligations. Rewrite using `[← spl_fin]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 g v hv`.
+A detailed English derivation is pending.
 -/
 private theorem test_of (φ : CompactlySupportedContinuousMap (GA E a) ℂ)
     (h : ProdSmooth.IsSmooth (isExpLieAlgebra E a) (spl E a) φ) : ∃ u : Sm E a, IsTest u ∧ u.1 = φ := by
@@ -94,11 +94,9 @@ private theorem test_of (φ : CompactlySupportedContinuousMap (GA E a) ℂ)
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ a μ _ f hf`. Set `F : CompactlySupportedContinuousMap (GA E a) ℂ` to `⟨⟨f.1, ((testOps E a f).1 hf.2).1⟩, hf.1⟩`. Take `⟨n, φ, ψ, h, e⟩` from `GroundTheory.Automorphic.ProdSmooth.exists_sum_conv _ (spl E a) μ F (smooth_of f hf.2)`. Use `choose u hu eu using fun i => test_of (φ i) (h i).1`. Use `choose v hv ev using fun i => test_of (ψ i) (h i).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n, u, v, fun i => ⟨hu i, hv i⟩, funext fun x => ?_⟩` and prove the remaining obligations. Use `congrArg (fun G : CompactlySupportedContinuousMap (GA E a) ℂ => G x) e` as an intermediate fact. Simplify using `only [CompactlySupportedContinuousMap.sum_apply, GroundTheory.Automorphic.conv_apply] at this`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [eu, ev]`.
-
-Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.dmTest :
     UpperTheory.V.Cj.H.DmTest := by

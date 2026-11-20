@@ -12,11 +12,11 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Introduce `D X X0 Y μ hμ j`. Establish `key : ∀ (t : _) (μ : D.what₂.Tup) (h : Y.tup t = μ) (hμ : Used0 D μ), ∃ e : (Fin (lDim D X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j t) → D.what₂.LL) ≃ₗ[D.what₂.LL] D.what₂.MtL μ (j.1 + 1), (∀ x, HEq (Y.IL.jMt μ hμ j (D.what₂.jMt μ (j.1 + 1) (e x))).1 (X.R.toRealDat.extV j t (X.R.jV j t (Glob …`. Introduce `t μ h hμ`. Substitute `h` using the available equality. Use `⟨Y.eMt j t, fun x => heq_of_eq (Y.mtRead j t hμ x), Y.latL j t, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff, ← (Y.formsL j t).span]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, rfl⟩`. Take `⟨e, h1, h2, h3⟩` from `key (Y.tupT μ) μ (Y.tupTie μ hμ) hμ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨e, fun x => ?_, h2, h3⟩` and prove the remaining obligations. Establish `h4 : formOf Y hμ j (D.what₂.jMt μ (j.1 + 1) (e x)) = X.R.jV j (Y.tupT μ) (GlobalTheory.Mem.R3.liftForm X.A3.A X.F.lv2.P0 X.F.lv2.ψ0 j (Y.tupT μ) x)` using `Y.hinj j _ ((extV_formOf Y hμ j _).trans (eq_of_heq (h1 x)))`. Rewrite using `[h4]`. Conclude with `X.char.models.jV _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.exists_rational_structure_lowest_form_space :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (μ : D.what₂.Tup) (hμ : Used0 D μ) (j : Fin D.R.m),

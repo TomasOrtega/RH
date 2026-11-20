@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
     (wedgeOm R B h x y : DR R B) = x * y := rfl
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `dDR R B (x.1 * y.1) = dDR R B x.1 * y.1 + (-1 : ℤ) ^ q • (x.1 * dDR R B y.1)`. Rewrite using `[dDR_mul, sgn_of_mem x.2, add_comm, zsmul_eq_mul, mul_assoc]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dOm_wedgeOm {q q' Q : ℕ} (h : q + q' = Q) (x : Om R B q) (y : Om R B q') :
     dOm R B Q (wedgeOm R B h x y) = wedgeOm R B (show q + 1 + q' = Q + 1 by omega) (dOm R B q x) y +
@@ -44,7 +44,7 @@ theorem dOm_wedgeOm {q q' Q : ℕ} (h : q + q' = Q) (x : Om R B q) (y : Om R B q
   simp
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_mul e.mDR x.1 y.1)`.
+A detailed English derivation is pending.
 -/
 theorem mOm_wedgeOm {R' B' : Type} [CommRing R'] [CommRing B'] [Algebra R' B'] {σ : R →+* R'}
     {α : B →+* B'} (e : SemiHom σ α) {q q' Q : ℕ} (h : q + q' = Q) (x : Om R B q) (y : Om R B q') :
@@ -63,7 +63,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_oneOm : (oneOm R B : DR R B) = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by change dDR R B 1 = 0 rw [← map_one (algebraMap B (DR R B)), dDR_algebraMap, Derivation.map_one_eq_zero, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem dOm_oneOm : dOm R B 0 (oneOm R B) = 0 := Subtype.ext (by
   change dDR R B 1 = 0
@@ -100,7 +100,7 @@ theorem cupTerm_apply {a a' A q q' Q : ℕ} (ha : a + a' = A) (hq : q + q' = Q) 
       (ev (F := OmF F q') s (bk a a' A ha.le) (bk_mono _ _ _ _) (Fin.last A) (Fin.le_last _) g) := rfl
 
 /- English proof (translation)
-Use `(mOm_wedgeOm (semiHom_mp F (s.map (homOfLE hj))) hq _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (fun x y ↦ wedgeF F hq _ x y) (map_ev s (p ∘ fr a A (by omega)) (hp.comp (fr_mono _ _ _)) (hp (Fin.le_last _)) hj f) (map_ev s (p ∘ bk a a' A ha.le) (hp.comp (bk_mono _ _ _ _)) (hp (Fin.le_last _)) hj g)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ev_cupTerm {a a' A q q' Q K : ℕ} (ha : a + a' = A) (hq : q + q' = Q) (f : Term F a q)
     (g : Term F a' q') (s : ComposableArrows C K)
@@ -114,7 +114,7 @@ theorem ev_cupTerm {a a' A q q' Q K : ℕ} (ha : a + a' = A) (hq : q + q' = Q) (
     (map_ev s (p ∘ bk a a' A ha.le) (hp.comp (bk_mono _ _ _ _)) (hp (Fin.le_last _)) hj g)
 
 /- English proof (translation)
-Rewrite using `[ev_congr s p p' hp hp' e1, ev_congr s r r' hr hr' e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wedgeF_ev_congr {m n k q q' Q : ℕ} (hq : q + q' = Q) (s : ComposableArrows C k) (j : Fin (k + 1))
     (f : Term F m q) (g : Term F n q')
@@ -126,15 +126,15 @@ theorem wedgeF_ev_congr {m n k q q' Q : ℕ} (hq : q + q' = Q) (s : ComposableAr
   rw [ev_congr s p p' hp hp' e1, ev_congr s r r' hr hr' e2]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Use function extensionality and compare the values at `s`. Rewrite using `[Pi.add_apply, Pi.smul_apply, cupTerm_apply, cupTerm_apply, ev_d, ev_d, d_apply_ev]`. Use `(Finset.sum_congr rfl fun (i : Fin (m + n + 2)) _ ↦ congrArg (fun z ↦ (-1 : ℤ) ^ (i : ℕ) • z) (ev_cupTerm rfl hq f g s _ (Fin.succAboveOrderEmb i).monotone _ (Fin.le_last _))).trans ?_` and prove the remaining obligations. Simplify using `only [map_sum, LinearMap.sum_apply, map_zsmul, LinearMap.smul_apply]`.
+Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← (finCongr (show m + 1 + (n + 1) = m + n + 1 + 1 by omega)).sum_comp, Fin.sum_univ_add, Fin.sum_univ_castSucc (n := m + 1), Fin.sum_univ_succ (n := n + 1), smul_add, Finset.smul_sum]`. Use `add_rearrange_of_cancel_middle (Finset.sum_congr rfl fun i _ ↦ ?_) (Finset.sum_congr rfl fun j _ ↦ ?_) ?_` and prove the remaining obligations. Use `i.isLt` as an intermediate fact. Use `congrArg₂ (· • ·) rfl (wedgeF_ev_congr hq s _ f g (fun a ↦ ?_) (fun b ↦ ?_))` and prove the remaining obligations. Use `a.isLt` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases lt_or_ge (a : ℕ) i with h1 | h1 <;> fin_index_simp`. Use `b.isLt fin_index_simp` as an intermediate fact. Use `j.isLt` as an intermediate fact. Rewrite using `[smul_smul, ← pow_add]`. Use `congrArg₂ (· • ·) (congrArg _ (by simp [Fin.val_succ]; omega)) (wedgeF_ev_congr hq s _ f g (fun a ↦ ?_) (fun b ↦ ?_))` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `a.isLt fin_index_simp` as an intermediate fact. Use `b.isLt` as an intermediate fact. Apply the tactic sequence `rcases lt_or_ge (b : ℕ) (j + 1) with h1 | h1 <;> fin_index_simp`. Rewrite using `[Fin.val_last, Fin.val_zero]`. Use `neg_one_pow_boundary_terms_cancel m (wedgeF_ev_congr hq s _ f g (fun a ↦ ?_) (fun b ↦ ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `a.isLt fin_index_simp` as an intermediate fact. Use `b.isLt fin_index_simp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact.
 -/
 theorem dH_cupTerm {m n k q q' Q : ℕ} (h : m + n = k) (hq : q + q' = Q) (f : Term F m q)
     (g : Term F n q') :
@@ -171,7 +171,7 @@ theorem dH_cupTerm {m n k q q' Q : ℕ} (h : m + n = k) (hq : q + q' = Q) (f : T
       fin_index_simp
 
 /- English proof (translation)
-The claim follows from `(pOm_dOm F (s.map (homOfLE h)) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem dOm_ev {n k q : ℕ} (s : ComposableArrows C k) (p : Fin (n + 1) → Fin (k + 1)) (hp : Monotone p)
     (j : Fin (k + 1)) (h : p (Fin.last n) ≤ j) (f : Term F n q) :
@@ -179,7 +179,7 @@ theorem dOm_ev {n k q : ℕ} (s : ComposableArrows C k) (p : Fin (n + 1) → Fin
   (pOm_dOm F (s.map (homOfLE h)) _).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[dV_apply, cupTerm_apply]`. Use `(dOm_wedgeOm hq _ _).trans ?_` and prove the remaining obligations. Conclude with `congrArg₂ (· + ·) (congrArg (fun z ↦ wedgeF F _ _ z _) (dOm_ev s _ _ _ _ f)) (congrArg (fun z ↦ (-1 : ℤ) ^ q • wedgeF F _ _ _ z) (dOm_ev s _ _ _ _ g))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dV_cupTerm {m n k q q' Q : ℕ} (h : m + n = k) (hq : q + q' = Q) (f : Term F m q)
     (g : Term F n q') :
@@ -192,7 +192,7 @@ theorem dV_cupTerm {m n k q q' Q : ℕ} (h : m + n = k) (hq : q + q' = Q) (f : T
     (congrArg (fun z ↦ (-1 : ℤ) ^ q • wedgeF F _ _ _ z) (dOm_ev s _ _ _ _ g))
 
 /- English proof (translation)
-Rewrite using `[ev_congr s p id hp monotone_id e (Fin.last m) h le_rfl f, ev_apply]`. Establish `hid : s.map (homOfLE (le_rfl : (id (Fin.last m)) ≤ Fin.last m)) = 𝟙 _`. Rewrite using `[show homOfLE (le_rfl : (id (Fin.last m)) ≤ Fin.last m) = 𝟙 _ from rfl, s.map_id]`. Rewrite using `[hid, M.map_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_self {M : C ⥤ ModuleCat.{0} R} {m : ℕ} (s : ComposableArrows C m) (p : Fin (m + 1) → Fin (m + 1))
     (hp : Monotone p) (e : ∀ a, (p a : ℕ) = a) (h : p (Fin.last m) ≤ Fin.last m) (f : Cn M m) :
@@ -208,7 +208,7 @@ variable (F) in
 def oneTerm : Term F 0 0 := fun s ↦ oneOm R (F.obj (s.obj (Fin.last 0)))
 
 /- English proof (translation)
-The claim follows from `map_one (semiHom_mp F (s.map (homOfLE h))).mDR`.
+A detailed English derivation is pending.
 -/
 theorem coe_ev_oneTerm {k : ℕ} (s : ComposableArrows C k) (p : Fin 1 → Fin (k + 1)) (hp : Monotone p)
     (j : Fin (k + 1)) (h : p (Fin.last 0) ≤ j) :
@@ -216,7 +216,7 @@ theorem coe_ev_oneTerm {k : ℕ} (s : ComposableArrows C k) (p : Fin 1 → Fin (
   map_one (semiHom_mp F (s.map (homOfLE h))).mDR
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[cupTerm_apply, ev_self s (bk 0 a a ha.le) _ (fun _ ↦ by simp)]`. Conclude with `Subtype.ext ((congrArg (· * (f s).1) (coe_ev_oneTerm s _ _ _ _)).trans (one_mul _))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneTerm_cupTerm {a q : ℕ} (ha : 0 + a = a) (hq : 0 + q = q) (f : Term F a q) :
     cupTerm F ha hq (oneTerm F) f = f := by
@@ -240,26 +240,26 @@ def Tot.sg {a q n : ℕ} (h : a + q = n) : Term F a q →ₗ[R] Tot F n :=
 variable {F}
 
 /- English proof (translation)
-The claim follows from `Pi.single_eq_same (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) _ _`.
+A detailed English derivation is pending.
 -/
 theorem Tot.sg_same {a q n : ℕ} (h : a + q = n) (c : Term F a q) : Tot.sg F h c ⟨(a, q), h⟩ = c :=
   Pi.single_eq_same (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) _ _
 
 /- English proof (translation)
-The claim follows from `Pi.single_eq_of_ne (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) (fun e ↦ hb (by rw [e])) _`.
+A detailed English derivation is pending.
 -/
 theorem Tot.sg_of_ne {a q n : ℕ} (h : a + q = n) (c : Term F a q) (b : Bidegree n) (hb : b.1.2 ≠ q) :
     Tot.sg F h c b = 0 :=
   Pi.single_eq_of_ne (M := fun b : Bidegree n ↦ Term F b.1.1 b.1.2) (fun e ↦ hb (by rw [e])) _
 
 /- English proof (translation)
-The claim follows from `Finset.univ_sum_single c`.
+A detailed English derivation is pending.
 -/
 theorem Tot.sum_sg {n : ℕ} (c : Tot F n) : ∑ b : Bidegree n, Tot.sg F b.2 (c b) = c :=
   Finset.univ_sum_single c
 
 /- English proof (translation)
-Rewrite using `[← Tot.sum_sg c]`. Conclude with `Finset.sum_induction _ P ha h0 fun b _ ↦ hs _ _ b.2 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tot.induction {n : ℕ} {P : Tot F n → Prop} (h0 : P 0) (ha : ∀ x y, P x → P y → P (x + y))
     (hs : ∀ (a q : ℕ) (h : a + q = n) (c : Term F a q), P (Tot.sg F h c)) (c : Tot F n) : P c := by
@@ -267,13 +267,13 @@ theorem Tot.induction {n : ℕ} {P : Tot F n → Prop} (h0 : P 0) (ha : ∀ x y,
   exact Finset.sum_induction _ P ha h0 fun b _ ↦ hs _ _ b.2 _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨(A, Q), hb⟩`. Simplify using `only at hb`. Rewrite using `[dTot_apply, Pi.add_apply, Pi.smul_apply]`. Use `congr 1`. Distinguish the cases in `hQ : Q = q`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Substitute `hQ` using the available equality. Take `rfl : A = a + 1` from `by omega`. Rewrite using `[totH_succ, Tot.sg_same, Tot.sg_same]`. Rewrite using `[Tot.sg_of_ne _ _ _ hQ]`. Break down `A with _ | A` into its components or cases.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Rewrite using `[totH_succ, Tot.sg_of_ne _ _ _ hQ, map_zero]`. Distinguish the cases in `hQ : Q = q + 1`. Substitute `hQ` using the available equality. Take `rfl : A = a` from `by omega`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Rewrite using `[totV_succ, Tot.sg_same, Tot.sg_same]`. Rewrite using `[Tot.sg_of_ne _ _ _ hQ, smul_zero]`. Break down `Q with _ | Q` into its components or cases. Both sides reduce to the same expression. Rewrite using `[totV_succ, Tot.sg_of_ne _ _ _ (fun e ↦ hQ (congrArg (· + 1) e)), map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem dTot_sg {a q n : ℕ} (h : a + q = n) (c : Term F a q) :
     dTot F n (Tot.sg F h c) = Tot.sg F (show a + 1 + q = n + 1 by omega) (dH F a q c) +
@@ -307,7 +307,7 @@ def Tot.cup {m n N : ℕ} (h : m + n = N) : Tot F m →ₗ[R] Tot F n →ₗ[R] 
       (Tot.sg F (show b.1.1 + b'.1.1 + (b.1.2 + b'.1.2) = N by have := b.2; have := b'.2; omega))
 
 /- English proof (translation)
-Simplify using `only [Tot.cup, LinearMap.sum_apply, LinearMap.smul_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem Tot.cup_apply {m n N : ℕ} (h : m + n = N) (x : Tot F m) (y : Tot F n) :
     Tot.cup F h x y = ∑ b : Bidegree m, ∑ b' : Bidegree n, (-1 : ℤ) ^ (b.1.2 * b'.1.1) •
@@ -317,9 +317,9 @@ theorem Tot.cup_apply {m n N : ℕ} (h : m + n = N) (x : Tot F m) (y : Tot F n) 
   rfl
 
 /- English proof (translation)
-Substitute `ha hq` using the available equality. Rewrite using `[Tot.cup_apply, Finset.sum_eq_single (⟨(a, q), h₁⟩ : Bidegree m), Finset.sum_eq_single (⟨(a', q'), h₂⟩ : Bidegree n), Tot.sg_same, Tot.sg_same]`. Introduce `b _ hb`. Rewrite using `[Tot.sg_of_ne h₂ g b (fun e ↦ hb (Subtype.ext (Prod.ext (by have := b.2; dsimp only; omega) e))), map_zero, map_zero, smul_zero]`. Conclude with `fun e ↦ absurd (Finset.mem_univ _) e`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Introduce `b _ hb`. Use `Finset.sum_eq_zero fun b' _ ↦ ?_` and prove the remaining obligations. Rewrite using `[Tot.sg_of_ne h₁ f b (fun e ↦ hb (Subtype.ext (Prod.ext (by have := b.2; dsimp only; omega) e))), map_zero, LinearMap.zero_apply, map_zero, smul_zero]`. Conclude with `fun e ↦ absurd (Finset.mem_univ _) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Tot.cup_sg {m n N a q a' q' A Q : ℕ} (h : m + n = N) (h₁ : a + q = m) (h₂ : a' + q' = n)
     (ha : a + a' = A) (hq : q + q' = Q) (h₃ : A + Q = N) (f : Term F a q) (g : Term F a' q') :
@@ -339,15 +339,15 @@ theorem Tot.cup_sg {m n N a q a' q' A Q : ℕ} (h : m + n = N) (h₁ : a + q = m
   · exact fun e ↦ absurd (Finset.mem_univ _) e
 
 /- English proof (translation)
-Proceed by induction on `x using Tot.induction with`. Consider the case `h0 => simp`. Consider the case `ha x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx', smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `hs a q h₁ f`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Proceed by induction on `y using Tot.induction with`. Consider the case `h0 => simp`. Consider the case `ha y y' hy hy' => simp only [map_add, hy, hy', smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `hs a' q' h₂ g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Establish `e₁ : a + a' + 1 + (q + q') = N + 1` using `by omega`. Establish `e₂ : a + a' + (q + q' + 1) = N + 1` using `by omega`. Rewrite using `[Tot.cup_sg h h₁ h₂ rfl rfl (by omega), map_zsmul, dTot_sg, dTot_sg, dTot_sg, dH_cupTerm, dV_cupTerm]`. Simplify using `only [map_add, map_zsmul, LinearMap.add_apply, LinearMap.smul_apply]`. Rewrite using `[Tot.cup_sg _ _ h₂ (show a + 1 + a' = a + a' + 1 by omega) rfl e₁, Tot.cup_sg _ _ h₂ rfl (show q + 1 + q' = q + q' + 1 by omega) e₂, Tot.cup_sg _ h₁ _ (show a + (a' + 1) = a + a' + 1 by omega) rfl e₁, Tot.cup_sg _ h₁ _ rfl (show q + (q' + 1) = q + q' + 1 by omega) e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (-1 : ℤ) ^ m = (-1) ^ (a + q) by rw [h₁]]`. Establish `hq : ((-1 : ℤ) ^ q) ^ 2 = 1` using `by rw [← pow_mul, mul_comm, pow_mul]; simp`. Simplify using `only [pow_add, add_mul, mul_add, one_mul, mul_one]`. Use `match_scalars`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(-1 : ℤ) ^ (q * a') * (-1) ^ a) * hq`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem dTot_cup {m n N : ℕ} (h : m + n = N) (x : Tot F m) (y : Tot F n) :
     dTot F N (Tot.cup F h x y) = Tot.cup F (show m + 1 + n = N + 1 by omega) (dTot F m x) y +
@@ -382,7 +382,7 @@ variable (F) in
 def Tot.one : Tot F 0 := Tot.sg F rfl (oneTerm F)
 
 /- English proof (translation)
-Proceed by induction on `x using Tot.induction with`. Consider the case `h0 => simp`. Consider the case `ha x x' hx hx' => simp only [map_add, hx, hx']`. Consider the case `hs a q e f`. Rewrite using `[Tot.one, Tot.cup_sg h rfl e (zero_add a) (zero_add q) e, oneTerm_cupTerm, zero_mul, pow_zero, one_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tot.one_cup {n : ℕ} (h : 0 + n = n) (x : Tot F n) : Tot.cup F h (Tot.one F) x = x := by
   induction x using Tot.induction with
@@ -393,9 +393,9 @@ theorem Tot.one_cup {n : ℕ} (h : 0 + n = n) (x : Tot F n) : Tot.cup F h (Tot.o
       one_smul]
 
 /- English proof (translation)
-Establish `h1 : dH F 0 0 (oneTerm F) = 0`. Use function extensionality and compare the values at `s`. Rewrite using `[d_apply_ev, Fin.sum_univ_two]`. Establish `e : ∀ i : Fin 2, ev s (Fin.succAboveOrderEmb i) (Fin.succAboveOrderEmb i).monotone (Fin.last _) (Fin.le_last _) (oneTerm F) = (oneOm R (F.obj (s.obj (Fin.last 1))) : (OmF F 0).obj _)` using `fun i ↦ Subtype.ext (coe_ev_oneTerm s _ _ _ _)`. Rewrite using `[e, e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one]`. Conclude with `zsmul_add_cancel _`. Establish `h2 : dV F 0 0 (oneTerm F) = 0` using `funext fun _ ↦ dOm_oneOm`. Express the relevant statement in the definitionally equal form `dTot F 0 _ = 0`. Rewrite using `[Tot.one, dTot_sg, h1, h2, map_zero, map_zero, smul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tot.one_mem : Tot.one F ∈ ZTot F 0 := by
   have h1 : dH F 0 0 (oneTerm F) = 0 := by
@@ -412,7 +412,7 @@ theorem Tot.one_mem : Tot.one F ∈ ZTot F 0 := by
   rw [Tot.one, dTot_sg, h1, h2, map_zero, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `dTot F N _ = 0`. Rewrite using `[dTot_cup, show dTot F m x = 0 from hx, show dTot F n y = 0 from hy, map_zero, LinearMap.zero_apply, map_zero, smul_zero, add_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem Tot.cup_mem_ZTot {m n N : ℕ} (h : m + n = N) {x : Tot F m} {y : Tot F n}
     (hx : x ∈ ZTot F m) (hy : y ∈ ZTot F n) : Tot.cup F h x y ∈ ZTot F N := by
@@ -421,9 +421,9 @@ theorem Tot.cup_mem_ZTot {m n N : ℕ} (h : m + n = N) {x : Tot F m} {y : Tot F 
     LinearMap.zero_apply, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero => rw [show x = 0 from hx, map_zero, LinearMap.zero_apply]`. Conclude with `zero_mem _`. Consider the case `succ m`. Take `⟨x, rfl⟩` from `hx`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Use `⟨Tot.cup F (show m + n = N by omega) x y, ?_⟩` and prove the remaining obligations. Rewrite using `[dTot_cup, show dTot F n y = 0 from hy, map_zero, smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tot.cup_mem_BTot_left {m n N : ℕ} (h : m + n = N) {x : Tot F m} {y : Tot F n}
     (hx : x ∈ BTot F m) (hy : y ∈ ZTot F n) : Tot.cup F h x y ∈ BTot F N := by
@@ -436,9 +436,9 @@ theorem Tot.cup_mem_BTot_left {m n N : ℕ} (h : m + n = N) {x : Tot F m} {y : T
     rw [dTot_cup, show dTot F n y = 0 from hy, map_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => rw [show y = 0 from hy, map_zero]`. Conclude with `zero_mem _`. Consider the case `succ n`. Take `⟨y, rfl⟩` from `hy`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, rfl⟩ : ∃ N', N = N' + 1` from `⟨N - 1, by omega⟩`. Use `⟨(-1 : ℤ) ^ m • Tot.cup F (show m + n = N by omega) x y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zsmul, dTot_cup, show dTot F m x = 0 from hx, map_zero, LinearMap.zero_apply, zero_add, smul_smul, ← mul_pow, neg_one_mul, neg_neg, one_pow, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tot.cup_mem_BTot_right {m n N : ℕ} (h : m + n = N) {x : Tot F m} {y : Tot F n}
     (hx : x ∈ ZTot F m) (hy : y ∈ BTot F n) : Tot.cup F h x y ∈ BTot F N := by
@@ -472,14 +472,14 @@ variable (F) in
 def Hyp.one : Hyp F 0 := Hyp.mk F 0 ⟨Tot.one F, Tot.one_mem⟩
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `Hyp.mk_surjective F n x`. Conclude with `congrArg (Hyp.mk F n) (Subtype.ext (Tot.one_cup h x.1))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Hyp.one_cup {n : ℕ} (h : 0 + n = n) (x : Hyp F n) : Hyp.cup F h (Hyp.one F) x = x := by
   obtain ⟨x, rfl⟩ := Hyp.mk_surjective F n x
   exact congrArg (Hyp.mk F n) (Subtype.ext (Tot.one_cup h x.1))
 
 /- English proof (translation)
-The claim follows from `fun h ↦ by have h1 : Tot.one F = 0 := Hyp.mk_eq_zero.1 h have h2 := (Tot.sg_same rfl (oneTerm F)).symm.trans (congrFun h1 ⟨(0, 0), rfl⟩) exact _root_.one_ne_zero (α := DR R (F.obj T)) (congrArg Subtype.val (congrFun h2 (ComposableArrows.mk₀ T)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Hyp.one_ne_zero (T : C) [Nontrivial (F.obj T)] : Hyp.one F ≠ 0 := fun h ↦ by
   have h1 : Tot.one F = 0 := Hyp.mk_eq_zero.1 h
@@ -511,7 +511,7 @@ variable {C : Type u} [Category.{v} C] {F : C ⥤ CommAlgCat.{0} R}
   (e : ∀ T : C, B →ₐ[R] F.obj T) (he : ∀ ⦃T T' : C⦄ (φ : T ⟶ T') (b : B), mp F φ (e T b) = e T' b)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[cupTerm_apply, ev_self s (fr 0 0 le_rfl) _ (fun _ ↦ rfl), ev_self s (bk 0 0 0 le_rfl) _ (fun _ ↦ by simp)]`. Conclude with `(mOm_wedgeOm _ h ω η).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cupTerm_coneTerm {m n N : ℕ} (h : m + n = N) (ω : Om R B m) (η : Om R B n) :
     cupTerm F rfl h (coneTerm e m ω) (coneTerm e n η) = coneTerm e N (wedgeOm R B h ω η) := by
@@ -520,7 +520,7 @@ theorem cupTerm_coneTerm {m n N : ℕ} (h : m + n = N) (ω : Om R B m) (η : Om 
   exact (mOm_wedgeOm _ h ω η).symm
 
 /- English proof (translation)
-Use `congrArg (Hyp.mk F N) (Subtype.ext ?_)` and prove the remaining obligations. Use `(Tot.cup_sg h (zero_add m) (zero_add n) rfl h (zero_add N) _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mul_zero, pow_zero, one_smul, cupTerm_coneTerm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coneCl_cup {m n N : ℕ} (h : m + n = N) (ω : LinearMap.ker (dOm R B m))
     (η : LinearMap.ker (dOm R B n)) :
@@ -544,12 +544,12 @@ def HdR.one (s : X ⟶ Sp k) : HdR s 0 := Hyp.one (OPt s)
 variable {s : X ⟶ Sp k} {a b n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Hyp.one_cup h x`.
+A detailed English derivation is pending.
 -/
 theorem HdR.one_cup (h : 0 + n = n) (x : HdR s n) : HdR.cup s h (HdR.one s) x = x := Hyp.one_cup h x
 
 /- English proof (translation)
-The claim follows from `coneCl_cup (R := k) (B := B) (C := AffPt (algStr k B)) (F := OPt (algStr k B)) (fun T ↦ toPt T) (fun _ _ φ b ↦ toPt_comp φ b) h ω η`.
+A detailed English derivation is pending.
 -/
 theorem HdR.ofForm_cup {B : Type} [CommRing B] [Algebra k B] (h : a + b = n)
     (ω : LinearMap.ker (dOm k B a)) (η : LinearMap.ker (dOm k B b)) :
@@ -558,7 +558,7 @@ theorem HdR.ofForm_cup {B : Type} [CommRing B] [Algebra k B] (h : a + b = n)
     (fun _ _ φ b ↦ toPt_comp φ b) h ω η
 
 /- English proof (translation)
-The claim follows from `(coe_eq_algebraMap_zeroEquiv _).trans (congrArg _ ((fn0 (R := k) B).apply_symm_apply x))`.
+A detailed English derivation is pending.
 -/
 theorem coe_functionsZero_symm {B : Type} [CommRing B] [Algebra k B] (x : B) :
     (((fn0 (R := k) B).symm x : Om k B 0) : DR k B) = algebraMap B (DR k B) x :=
@@ -571,7 +571,7 @@ theorem HdR.pointEquiv_apply (x : k) :
     HdR.pointEquiv k x = HdR.ofForm 0 ⟨(fn0 k).symm x, dOm_zero_self k _⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[HdR.pointEquiv_apply, HdR.pointEquiv_apply, HdR.pointEquiv_apply, HdR.ofForm_cup]`. Use `congrArg (HdR.ofForm 0) (Subtype.ext (Subtype.ext ?_))` and prove the remaining obligations. Conclude with `(congrArg₂ (· * ·) (coe_functionsZero_symm x) (coe_functionsZero_symm y)).trans ((map_mul _ _ _).symm.trans (coe_functionsZero_symm (x * y)).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HdR.pointEquiv_cup (x y : k) :
     HdR.cup (algStr k k) (zero_add 0) (HdR.pointEquiv k x) (HdR.pointEquiv k y) = HdR.pointEquiv k (x * y) := by
@@ -583,20 +583,20 @@ theorem HdR.pointEquiv_cup (x y : k) :
 end Scheme
 
 /- English proof (translation)
-The claim follows from `HdR.pointEquiv_cup 2 3`.
+A detailed English derivation is pending.
 -/
 example : HdR.cup (algStr ℤ ℤ) rfl (HdR.pointEquiv ℤ 2) (HdR.pointEquiv ℤ 3) = HdR.pointEquiv ℤ 6 :=
   HdR.pointEquiv_cup 2 3
 
 /- English proof (translation)
-Rewrite using `[HdR.one_cup]`. Conclude with `HdR.ofForm_tdt_ne_zero rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : HdR.cup (algStr (ZMod 2) (Polynomial (ZMod 2))) rfl (HdR.one _)
     (HdR.ofForm 1 (tdtForm (ZMod 2))) ≠ 0 := by
   rw [HdR.one_cup]; exact HdR.ofForm_tdt_ne_zero rfl
 
 /- English proof (translation)
-Rewrite using `[Tot.cup_sg (A := 1) (Q := 1) _ (zero_add 1) (add_zero 1) rfl rfl rfl, Pi.smul_apply, Tot.sg_same]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 example {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (ω : Term F 0 1) (g : Term F 1 0) :

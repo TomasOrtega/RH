@@ -28,7 +28,7 @@ namespace GlobalTheory.FrameMove
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `levChi levFn`. Simplify using `[datY]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem levChi_datY (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t : ℕ) (hr : r ≤ V.rank) (Pg : Finset (Pl D.host.E))
     (P : LevelP Pg r ℂ) (χ : ℕ → ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ) (ξ : ∀ PP : Pl D.host.E, (kP PP)ˣ →* ℂˣ)
@@ -42,15 +42,15 @@ theorem levChi_datY (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (r t : ℕ) (
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hC i n hF PY PW hY hW P`. Take `⟨c, hc⟩` from `hC.lev.βY 0 (Fin.pos i)`. Take `⟨c', hc'⟩` from `hC.lev.βW i`. Establish `hrk : (Yc D 0).rank = (Wc D i).rank` using `GlobalTheory.PartDims.rank_zeroth_component_eq.trans (GlobalTheory.PartDims.rank_weight_component_eq i).symm`. Take `⟨j, Φ, hΦ⟩` from `GlobalTheory.FinIsoExists.exists_isFinIso (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg hrk hc hc' (GlobalTheory.TypePlaces.not_isConjPl R.C.P R.Pg hC.lev.Pg)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.KapIsot.frames_inner (Yc D 0) (Wc D i) hF PY PW hY hW (by rw [GlobalTheory.PartDims.rank_zeroth_component_eq]; exact GlobalTheory.KapIsot.odd_r D.R) _ _ _ j Φ hΦ`. Use `⟨h, fun κ hκ => ?_⟩` and prove the remaining obligations. Establish `hx` using `hh (h⁻¹ * κ * h)`. Rewrite `hx` using `[show h * (h⁻¹ * κ * h) * h⁻¹ = κ by group]`. Take `⟨l1, l2⟩` from `GlobalTheory.LevTrans.levtrans (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) D.R.r D.R.t (r_le_Y 0) (r_le_rank_Wc i) R.Pg R.chi (fun _ _ => 1) j Φ hΦ ⟨PY.ψ (h⁻¹ * κ * h), PY.into _⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `l1`, `l2` using `[hx]`. Take `⟨hp, hH⟩` from `mem_lev.1 hκ.2`. Establish `hpY` using `l1.2 hp`. Establish `hrt : rTup (R.βW i) (R.datWp i P) (finE (Wc D i) (PW.ψ κ)) = rTup (R.βY 0) (R.dat0 P) (finE (Yc D 0) (PY.ψ (h⁻¹ * κ * h)))` using `l2 hpY`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show PY.ψ (h⁻¹ * κ * h) ∈ (GfC (Yc D 0) ⊓ (lev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 P)).comap (finE (Yc D 0)) : Subgroup _)`. Use `Subgroup.mem_inf.2 ⟨PY.into _, ?_⟩` and prove the remaining obligations. Use `show finE (Yc D 0) (PY.ψ (h⁻¹ * κ * h)) ∈ lev D.sp.cm (Yc D 0).gram (R.βY 0) (R.dat0 P)`. Use `mem_lev.2 ⟨hpY, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrt]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hH`. Establish `e1 : levChi (Wc D i) (R.βW i) (R.datWp i P) (PW.ψ κ) = ((ext1 P.H P.chi (rTup (R.βW i) (R.datWp i P) (finE (Wc D i) (PW.ψ κ))) : ℂˣ) : ℂ)` using `levChi_datY (Wc D i) (R.βW i) D.R.r D.R.t (r_le_rank_Wc i) R.Pg P (fun _ _ => 1) (fun _ => 1) (PW.ψ κ)`. Establish `e2 : levChi (Yc D 0) (R.βY 0) (R.dat0 P) (PY.ψ (h⁻¹ * κ * h)) = ((ext1 P.H P.chi (rTup (R.βY 0) (R.dat0 P) (finE (Yc D 0) (PY.ψ (h⁻¹ * κ * h)))) : ℂˣ) : ℂ)` using `levChi_datY (Yc D 0) (R.βY 0) D.R.r D.R.t (r_le_Y 0) R.Pg P R.chi (fun _ => 1) (PY.ψ (h⁻¹ * κ * h))`. Rewrite using `[e1, e2, hrt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_move : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Core R F → ∀ (i : Fin D.R.m) {n : ℕ} (hF : D.host.F = maximalRealSubfield D.host.E) (PY : principalLevelFrame.RowPsi (Yc D 0) n) (PW : principalLevelFrame.RowPsi (Wc D i) n), StdPsi hF PY → StdPsi hF PW → ∀ P : LevelP R.Pg D.R.r ℂ, ∃ h : Formalism.AUTREP.GAf D.host.E n, ∀ κ, PW.ψ κ ∈ levS _ (R.βW i) (R.datWp i P) → PY.ψ (h⁻¹ * κ * h) ∈ levS _ (R.βY 0) (R.dat0 P) ∧ levChi _ (R.βW i) (R.datWp i P) (PW.ψ κ) = levChi _ (R.βY 0) (R.dat0 P) (PY.ψ (h⁻¹ * κ * h)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hC i n hF PY PW hY hW P

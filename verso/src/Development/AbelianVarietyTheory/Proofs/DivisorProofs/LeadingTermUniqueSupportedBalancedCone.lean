@@ -8,25 +8,23 @@ open IsLocalRing GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan Glo
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `O _ bar φ d X _ _ _ _ _ _ hF r m γ a hγ hS β k c hk hc hβ hpos e N hN he hd`. Establish `hkβ : ∀ y z, (k : ℤ) * β y z = ∑ j, (c j : ℤ) * γ j y z` using `fun y z => by`. Use `LinearMap.congr_fun₂ hβ y z` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, nsmul_eq_mul]`. Establish `hk0 : (k : ℤ) ≠ 0` using `by exact_mod_cast hk.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hbal : β ∈ balForms bar X`. Use `⟨fun y z => mul_left_cancel₀ hk0 ?_, fun o y z => mul_left_cancel₀ hk0 ?_⟩` and prove the remaining obligations. Rewrite using `[hkβ, hkβ]; exact Finset.sum_congr rfl fun j _ => by rw [(hγ.mem j).1]`. Rewrite using `[hkβ, hkβ]; exact Finset.sum_congr rfl fun j _ => by rw [(hγ.mem j).2]`. Establish `hbal' : pull e.toLinearMap β ∈ balForms bar X` using `pull_mem _ hbal`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnn' : ∀ y, 0 ≤ pull e.toLinearMap β y y` using `fun y => by`. Rewrite using `[pull_apply]`. Distinguish the cases in `h0 : e.toLinearMap y = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hpos _ h0).le`. Take `⟨k', c', hk', hβ'⟩` from `hS.only _ hbal' hnn' (by rw [evalZ_pull φ e.surjective]; exact hd)`. Establish `hsum : ∑ j, (k' * c j) • pull e.toLinearMap (γ j) = ∑ j, (k * c' j) • γ j`. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations. Establish `h1` using `hkβ (e y) (e z)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `LinearMap.congr_fun₂ hβ' y z`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, pull_apply, nsmul_eq_mul, LinearEquiv.coe_coe] at h1 h2 ⊢`. Establish `e1 : ∑ j, ((k' * c j : ℕ) : ℤ) * γ j (e y) (e z) = k' * ∑ j, (c j : ℤ) * γ j (e y) (e z)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by push_cast; ring`. Establish `e2 : ∑ j, ((k * c' j : ℕ) : ℤ) * γ j y z = k * ∑ j, (c' j : ℤ) * γ j y z`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by push_cast; ring`. Rewrite using `[e1, e2, ← h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hγe : IsCone bar φ fun j => pull e.toLinearMap (γ j)` using `hγ.pull_equiv e`. Use `choose σ hσ using GlobalTheory.T.smoothCone_face_of_interior_common_point O bar φ X hF r r _ γ hγe hγ (fun j => k' * c j) (fun j => k * c' j) (fun j => Nat.mul_pos hk' (hc j)) hsum`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσinj : Function.Injective σ` using `fun i j hij => hγe.injective (by simp only [hσ, hij])`. Set `σe` to `Equiv.ofBijective σ (Finite.injective_iff_bijective.1 hσinj)`. Establish `hG : ∀ y z, (∑ j, γ j) (e y) (e z) = (∑ j, γ j) y z`. Introduce `y z`. Simplify using `only [LinearMap.sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hGpos : ∀ x, x ≠ 0 → 0 < (∑ j, γ j) x x`. Introduce `x hx`. Establish `h2 : 0 < (k : ℤ) * β x x` using `mul_pos (by exact_mod_cast hk) (hpos x hx)`. Rewrite `h2` using `[hkβ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨j, -, hj⟩` from `Finset.exists_lt_of_sum_lt (show ∑ j : Fin r, (0 : ℤ) < _ by simpa using h2)`. Establish `hj' : 0 < γ j x x` using `pos_of_mul_pos_right hj (by positivity)`. Simplify using `only [LinearMap.sum_apply]`. Conclude with `hj'.trans_le (Finset.single_le_sum (fun i _ => hγ.nonneg i x) (Finset.mem_univ j))`. Establish `key` using `GlobalTheory.T.isometry_eq_refl_of_congr_mod_ge_three X (∑ j, γ j) hGpos e.toAddEquiv.toIntLinearEquiv (fun y z => hG y z) N hN he`.
-
-Introduce `x`. Simplify using `using LinearEquiv.congr_fun key x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem leadingTerm_unique : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (d : ℕ) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] [Module.Projective O X] [Module.Free ℤ X] [Module.Finite ℤ X], IsPolFanOn bar φ X →

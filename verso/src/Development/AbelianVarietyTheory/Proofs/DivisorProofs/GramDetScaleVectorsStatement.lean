@@ -5,7 +5,7 @@ import ReciprocityTheory.GeometryOfNumbers.LatticeCovolumes.ConjSymm
 open NumberField ReciprocityTheory.GeometryOfNumbersTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.hermFam_gram_det_re_smul` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FGramDetScaleVectors.lean&line=12#L12)
 -/

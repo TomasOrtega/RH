@@ -5,17 +5,15 @@ open NumberField Matrix GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen GlobalTheo
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hF1 : ¬ (p : ℤ) ∣ 2 * r - tr`. Introduce `h`. Apply `hd` to reduce the goal to its premises. Establish `h2 : (p : ℤ) ∣ (2 * r - tr) ^ 2` using `dvd_pow h two_ne_zero`. Establish `h3 : (p : ℤ) ∣ 4 * (r ^ 2 - tr * r + nm)` using `dvd_mul_of_dvd_right hr 4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `dvd_sub h2 h3`. Establish `: (2 * r - tr) ^ 2 - 4 * (r ^ 2 - tr * r + nm) = tr ^ 2 - 4 * nm` using `by ring`. Rewrite `h4` using `[this]`. Then use the resulting hypothesis. Use `set F : Polynomial ℤ := Polynomial.X ^ 2 - Polynomial.C tr * Polynomial.X + Polynomial.C nm with hFdef`. Establish `hval : Polynomial.aeval (r : ℤ_[p]) F = ((r ^ 2 - tr * r + nm : ℤ) : ℤ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hFdef]`. Establish `hder : Polynomial.aeval (r : ℤ_[p]) (Polynomial.derivative F) = ((2 * r - tr : ℤ) : ℤ_[p])`. Simplify using `[hFdef]`. Use `left`. Conclude with `map_ofNat _ 2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn1 : ‖Polynomial.aeval (r : ℤ_[p]) (Polynomial.derivative F)‖ = 1`. Rewrite using `[hder]`. Use `le_antisymm (PadicInt.norm_le_one _) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hF1 ((PadicInt.norm_int_lt_one_iff_dvd _).1 hlt)`. Establish `hn0 : ‖Polynomial.aeval (r : ℤ_[p]) F‖ < 1`. Rewrite using `[hval]`. Conclude with `(PadicInt.norm_int_lt_one_iff_dvd _).2 hr`. Take `⟨z, hz, -⟩` from `hensels_lemma (F := F) (a := (r : ℤ_[p])) (by rw [hn1]; simpa using hn0)`.
-
-Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify `hz` using `[hFdef]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma hensel_root (p : ℕ) [Fact p.Prime] (tr nm r : ℤ) (hd : ¬ (p : ℤ) ∣ tr ^ 2 - 4 * nm)
     (hr : (p : ℤ) ∣ r ^ 2 - tr * r + nm) :
@@ -49,23 +47,21 @@ private lemma hensel_root (p : ℕ) [Fact p.Prime] (tr nm r : ℤ) (hd : ¬ (p :
   simpa [hFdef] using hz
 
 /- English proof (translation)
-Introduce `E _ _ _ A p _ hsplit Kq hω hspan τ`. Unfold `Arith.SplitK at hsplit`. Take `⟨hd, r, hr⟩` from `hsplit`. Take `⟨ρ, hρ⟩` from `hensel_root p A.tr A.nm r hd hr`. Use `set ι := algebraMap ℚ_[p] (PadicAlgCl p) with hι`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ι` using `ι.injective`. Use `set w := τ ((A.ω : 𝓞 E) : E) with hwdef`. Establish `h0 : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0`. Rewrite using `[← A.tr_eq, ← A.nm_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((A.ω : E)) ^ 2 - (A.tr : E) * (A.ω : E) + (A.nm : E) = 0`. Use `congrArg (fun x : 𝓞 E => (x : E)) h0` as an intermediate fact. Simplify using `using this`. Establish `hw : w ^ 2 - (A.tr : PadicAlgCl p) * w + (A.nm : PadicAlgCl p) = 0`. Use `congrArg τ h1` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[hwdef]`. Establish `hc : ι (ρ : ℚ_[p]) ^ 2 - (A.tr : PadicAlgCl p) * ι (ρ : ℚ_[p]) + (A.nm : PadicAlgCl p) = 0`. Use `congrArg (fun t : ℤ_[p] => ι (t : ℚ_[p])) hρ` as an intermediate fact. Simplify using `using this`. Establish `hprod : (w - ι (ρ : ℚ_[p])) * (w - ((A.tr : PadicAlgCl p) - ι (ρ : ℚ_[p]))) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take the linear combination `hw - hc`. Choose the witnesses or unpack the hypotheses as in `⟨ρ₀, hρ₀⟩ : ∃ ρ₀ : ℤ_[p], w = ι (ρ₀ : ℚ_[p]) := by`. Break down `mul_eq_zero.1 hprod with h | h` into its components or cases. Conclude with `⟨ρ, sub_eq_zero.1 h⟩`. Use `⟨(A.tr : ℤ_[p]) - ρ, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sub_eq_zero.1 h]`. Simplify using the standard rewrite rules. Establish `hex : ∀ x : Kq, ∃ q : ℚ_[p], ι q = τ (x : E)`. Introduce `x`. Take `⟨a, b, hab⟩` from `hspan x x.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(a : ℚ_[p]) + (b : ℚ_[p]) * (ρ₀ : ℚ_[p]), ?_⟩` and prove the remaining obligations. Rewrite using `[hab]`. Simplify using `[← hρ₀, hwdef]`. Use `choose f hf using hex`. Set `u : Kq →+* ℚ_[p]` to `{ toFun := f map_one' := hinj (by rw [hf]; simp) map_mul' := fun x y => hinj (by rw [hf, map_mul, hf, hf]; simp) map_zero' := hinj (by rw [hf]; simp) map_add' := fun x y => hinj (by rw [hf, map_add, hf, hf]; simp) }`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨u, ρ₀, ?_, ?_⟩` and prove the remaining obligations. Unfold `LiesOver`. Introduce `x`. Conclude with `(hf x).symm`. Apply `hinj show ι (f ⟨_, hω⟩) = _` to reduce the goal to its premises.
-
-Rewrite using `[hf, ← hρ₀]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.Seed.pUEx :
     UEx := by

@@ -11,43 +11,41 @@ def mon {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : R[X] := X ^ d + �
 def low {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : R[X] := ∑ j, C (a j) * X ^ (j : ℕ)
 
 /- English proof (translation)
-Simplify using `[mon, Polynomial.map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mon_map {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (a : Fin d → R) (f : R →+* S) :
     (mon a).map f = mon fun j => f (a j) := by
   simp [mon, Polynomial.map_sum]
 
 /- English proof (translation)
-Simplify using `[low, eval₂_finset_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval₂_low {R S : Type} [CommRing R] [CommRing S] {d : ℕ} (a : Fin d → R) (f : R →+* S) (x : S) :
     eval₂ f x (low a) = ∑ j, f (a j) * x ^ (j : ℕ) := by
   simp [low, eval₂_finset_sum]
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_add (degree_sum_fin_lt a)`.
+A detailed English derivation is pending.
 -/
 theorem mon_monic {R : Type} [CommRing R] {d : ℕ} (a : Fin d → R) : (mon a).Monic :=
   monic_X_pow_add (degree_sum_fin_lt a)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional Ω₀ Ω := Module.finite_of_finrank_pos (hfin ▸ hd)`. Use `haveI : CharZero Ω₀ := (algebraMap Ω₀ Ω).charZero`. Set `pb` to `Field.powerBasisOfFiniteOfSeparable Ω₀ Ω`. Take `rfl : pb.dim = d` from `pb.finrank.symm.trans hfin`. Establish `hint : IsIntegral Ω₀ pb.gen` using `pb.isIntegral_gen`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a₀ : Fin pb.dim → Ω₀` to `fun j => (minpoly Ω₀ pb.gen).coeff j`. Establish `hP : mon a₀ = minpoly Ω₀ pb.gen` using `by conv_rhs => rw [(minpoly.monic hint).as_sum, pb.natDegree_minpoly, Finset.sum_range]`. Both sides reduce to the same expression. Set `cf₀ : σ → Fin pb.dim → Ω₀` to `fun s j => pb.basis.repr (t s) j`. Establish `hcf : ∀ s, ∑ j, algebraMap Ω₀ Ω (cf₀ s j) * pb.gen ^ (j : ℕ) = t s` using `fun s => by conv_rhs => rw [← pb.basis.sum_repr (t s)]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[pb.basis_eq_pow, Algebra.smul_def]`. Take `⟨G₀, hG₀⟩` from `pb.exists_eq_aeval' γ`. Choose the witnesses or unpack the hypotheses as in `⟨Q₀, hQ₀⟩ : ∃ Q₀ : MvPolynomial σ Ω₀, MvPolynomial.aeval t Q₀ = pb.gen := by`. Establish `: pb.gen ∈ Algebra.adjoin Ω₀ (Set.range t)` using `ht ▸ Algebra.mem_top`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `this`. Take `⟨u₀, v₀, huv⟩ : (minpoly Ω₀ pb.gen).Separable` from `Algebra.IsSeparable.isSeparable Ω₀ pb.gen`. Use `⟨pb.gen, Set.range a₀ ∪ Set.range (fun q : σ × Fin pb.dim => cf₀ q.1 q.2) ∪ G₀.coeffs ∪ Q₀.coeffs ∪ u₀.coeffs ∪ v₀.coeffs, by` and prove the remaining obligations. Simplify using `only [Set.finite_union, Set.finite_range, Finset.finite_toSet, and_self], ?_⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Introduce `R _ i hi hT`. Simplify using `only [Set.union_subset_iff] at hT`. Take `⟨⟨⟨⟨⟨h1, h2⟩, h3⟩, h4⟩, h5⟩, h6⟩` from `hT`. Use `choose a ha using fun j => h1 ⟨j, rfl⟩`. Use `choose cf hcf' using fun s j => h2 ⟨(s, j), rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨G, hG⟩` from `(mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h3)`. Take `⟨u, hu⟩` from `(mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h5)`. Take `⟨v, hv⟩` from `(mem_lifts _).1 ((lifts_iff_coeffs_subset_range _).2 h6)`. Take `⟨Q, hQ⟩` from `MvPolynomial.mem_range_map_iff_coeffs_subset.2 h4`. Establish `hm : (mon a).map i = minpoly Ω₀ pb.gen`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mon_map, ← hP]`. Conclude with `congrArg mon (funext ha)`. Establish `hev : ∀ F : R[X], eval₂ ((algebraMap Ω₀ Ω).comp i) pb.gen F = aeval pb.gen (F.map i)` using `fun F => by`. Rewrite using `[aeval_def, eval₂_map]`. Use `⟨a, cf, G, Q, ⟨u, v, ?_⟩, fun F => ?_, fun s => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `map_injective i hi` to reduce the goal to its premises. Rewrite using `[Polynomial.map_add, Polynomial.map_mul, Polynomial.map_mul, ← derivative_map, hm, hu, hv, huv, Polynomial.map_one]`. Rewrite using `[hev, ← map_dvd_map i hi (mon_monic a), hm, minpoly.dvd_iff]`. Rewrite using `[eval₂_low, ← hcf s]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[RingHom.comp_apply, hcf']`. Rewrite using `[hev, hG, hG₀]`. Rewrite using `[← MvPolynomial.eval₂_map, hQ, ← hQ₀, MvPolynomial.aeval_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prim (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω] [Algebra Ω₀ Ω] (d : ℕ) (hd : 0 < d)
     (hfin : Module.finrank Ω₀ Ω = d) {σ : Type} [Fintype σ] (t : σ → Ω)

@@ -3,19 +3,15 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Use `haveI : Module.Finite A (AdjoinRoot χ) := (AdjoinRoot.powerBasis' hχ).finite`. Use `haveI : Algebra.IsIntegral A (AdjoinRoot χ) := Algebra.IsIntegral.of_finite A _`. Assume the negation of the conclusion as `hnu`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ (mt Ideal.span_singleton_eq_top.mp hnu)`. Establish `hmem : AdjoinRoot.mk χ (∑ i ∈ Finset.range m, X ^ i) ∈ M` using `hle (Ideal.mem_span_singleton_self _)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Field (AdjoinRoot χ ⧸ M) := Ideal.Quotient.field M`. Use `set π : AdjoinRoot χ →+* AdjoinRoot χ ⧸ M := Ideal.Quotient.mk M with hπdef`. Use `set φ : A →+* AdjoinRoot χ ⧸ M := π.comp (algebraMap A (AdjoinRoot χ)) with hφdef`. Establish `hcomap : Ideal.comap (algebraMap A (AdjoinRoot χ)) M = IsLocalRing.maximalIdeal A` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M)`. Establish `hker : ∀ a ∈ IsLocalRing.maximalIdeal A, φ a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `a ha`. Rewrite `ha` using `[← hcomap, Ideal.mem_comap]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr ha`. Use `set ψ : IsLocalRing.ResidueField A →+* AdjoinRoot χ ⧸ M := Ideal.Quotient.lift (IsLocalRing.maximalIdeal A) φ hker with hψdef`. Establish `hψ : ψ.comp (IsLocalRing.residue A) = φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `Ideal.Quotient.lift_mk (IsLocalRing.maximalIdeal A) φ hker`. Establish `key : ∀ p : A[X], π (AdjoinRoot.mk χ p) = eval₂ φ (π (AdjoinRoot.root χ)) p`. Introduce `p`. Rewrite using `[← AdjoinRoot.aeval_eq, aeval_def, hom_eval₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hroot : π (AdjoinRoot.root χ) = 1`. Establish `h0` using `key χ`. Rewrite `h0` using `[AdjoinRoot.mk_self, map_zero, ← hψ, ← eval₂_map, hr]`. Simplify using `only [eval₂_pow, eval₂_sub, eval₂_X, eval₂_one] at h0`. Conclude with `sub_eq_zero.mp (eq_zero_of_pow_eq_zero h0.symm)`.
-
-Establish `hs` using `key (∑ i ∈ Finset.range m, X ^ i)`. Establish `hz : π (AdjoinRoot.mk χ (∑ i ∈ Finset.range m, X ^ i)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hmem`. Rewrite `hs` using `[hz, hroot]`. Simplify using `only [eval₂_finset_sum, eval₂_X_pow, one_pow, Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one] at hs`. Establish `hu` using `hm.map φ`.
-
-Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero hs.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pr.T.unipTorsion_unit {A : Type} [CommRing A] [IsLocalRing A] (χ : A[X]) (n m : ℕ)
     (hχ : χ.Monic) (hr : χ.map (IsLocalRing.residue A) = (X - 1) ^ n) (hm : IsUnit (m : A)) :
@@ -56,13 +52,13 @@ private theorem UpperTheory.V.Pr.T.unipTorsion_unit {A : Type} [CommRing A] [IsL
   exact hu.ne_zero hs.symm
 
 /- English proof (translation)
-Introduce `A E _ _ _ _ γ χ n m hχ hγ hr hm hγm`. Establish `hu` using `UpperTheory.V.Pr.T.unipTorsion_unit χ n m hχ hr hm`. Take `⟨b, hb⟩` from `hu.exists_right_inv`. Take `⟨p, rfl⟩` from `AdjoinRoot.mk_surjective b`. Rewrite `hb` using `[← map_mul, ← map_one (AdjoinRoot.mk χ), AdjoinRoot.mk_eq_mk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, hq⟩` from `hb`. Establish `h1 : aeval γ (∑ i ∈ Finset.range m, (X : A[X]) ^ i) * aeval γ p = 1`. Rewrite using `[← map_mul, ← sub_eq_zero, ← map_one (aeval (R := A) γ), ← map_sub, hq, map_mul, hγ, zero_mul]`. Establish `h2 : (1 - γ) * aeval γ (∑ i ∈ Finset.range m, (X : A[X]) ^ i) = 0`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, aeval_X]`. Rewrite using `[mul_neg_geom_sum, hγm, sub_self]`. Establish `h3 : 1 - γ = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by rw [← mul_assoc, h2, zero_mul]`. Conclude with `(sub_eq_zero.mp h3).symm`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.T.unipTorsion :
     ∀ {A E : Type} [CommRing A] [IsLocalRing A] [Ring E] [Algebra A E] (γ : E) (χ : A[X]) (n m : ℕ),

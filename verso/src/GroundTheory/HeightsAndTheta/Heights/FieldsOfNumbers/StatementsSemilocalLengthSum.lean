@@ -11,7 +11,7 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Unfold `degZeroLoc`. Apply `Algebra.adjoin_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨b, f, g, hf, hg, hgP, hgW, rfl⟩`. Conclude with `⟨b, f, g, hf, hg, hgP, fun W hW => hgW W (h𝒲 hW), rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem degZeroLoc_anti {K : Type*} [DecidableEq K] {ι : K → Type*} {F : Type*} [Field F]
     (P : Ideal (MRing ι F)) [P.IsPrime] {𝒲₁ 𝒲₂ : Set (Ideal (MRing ι F))} (h𝒲 : 𝒲₁ ⊆ 𝒲₂) :
@@ -27,7 +27,7 @@ variable {K K' : Type} [DecidableEq K] [DecidableEq K'] {F : Type*} [Field F]
   (j : K ↪ K') {ι' : K' → Type}
 
 /- English proof (translation)
-Use `⟨fun W' => if hm : contractFracMap j P' (α : _) ∈ degZeroLoc P' {W'} then ⟨_, hm⟩ else 0, fun W' hW' => ?_⟩` and prove the remaining obligations. Establish `hm : contractFracMap j P' (α : _) ∈ degZeroLoc P' {W'}` using `degZeroLoc_anti P' (Set.singleton_subset_iff.mpr hW') (map_degZeroLoc_le j P' W (Subalgebra.mem_map.mpr ⟨_, α.2, rfl⟩))`. Simplify using `only [dif_pos hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_fibreLift (P' : Ideal (MRing ι' F)) [P'.IsPrime]
     (W : Ideal (MRing (fun k => ι' (j k)) F)) (α : degZeroLoc (contractPrime j P') {W}) :
@@ -43,7 +43,7 @@ theorem exists_fibreLift (P' : Ideal (MRing ι' F)) [P'.IsPrime]
   simp only [dif_pos hm]
 
 /- English proof (translation)
-The claim follows from `hW'.isPrime d W' = relDeg j W' := by classical exact ⟨fun W' => if hp : W'.IsPrime then haveI := hp; relDeg j W' else 0, fun W' hW' => dif_pos hW'.isPrime⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_relDegFn :
     ∃ d : Ideal (MRing ι' F) → ℕ, ∀ W' (hW' : IsMultiProjPrime W'),

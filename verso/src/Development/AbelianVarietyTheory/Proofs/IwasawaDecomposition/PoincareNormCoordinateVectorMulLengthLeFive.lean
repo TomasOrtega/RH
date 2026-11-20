@@ -7,9 +7,9 @@ open scoped ComplexOrder Topology
 namespace GlobalTheory.PoinLen
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨i, -, rfl⟩` from `Finset.mem_map.1 h`. Simplify using the standard rewrite rules. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_map.2 ⟨⟨k.val, h⟩, Finset.mem_univ _, Fin.ext (by simp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_castLE_iff {n a : ℕ} (ha : a ≤ n) (k : Fin n) :
     k ∈ Finset.univ.map (Fin.castLEEmb ha) ↔ k.val < a := by
@@ -21,7 +21,7 @@ theorem mem_castLE_iff {n a : ℕ} (ha : a ≤ n) (k : Fin n) :
     exact Finset.mem_map.2 ⟨⟨k.val, h⟩, Finset.mem_univ _, Fin.ext (by simp)⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HermFrame.gnorm, GlobalTheory.HermFrame.form_single, GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.poincareGram, diagonal_apply_eq]`. Simplify using `only [Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gnorm_poincareGram_single {n : ℕ} (a : ℕ) (z : Fin n → ℂ) (k : Fin n) :
     GlobalTheory.HermFrame.gnorm (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.poincareGram a z) (Pi.single k 1) =
@@ -30,7 +30,7 @@ theorem gnorm_poincareGram_single {n : ℕ} (a : ℕ) (z : Fin n → ℂ) (k : F
   simp only [Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[show (5:ℝ) = √(5 ^ 2) by rw [Real.sqrt_sq (by norm_num)]]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Use polynomial arithmetic with `[Real.pi_lt_d2, Real.pi_pos]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqrt_two_mul_pi_le : √(2 * Real.pi ^ 2) ≤ 5 := by
   rw [show (5:ℝ) = √(5 ^ 2) by rw [Real.sqrt_sq (by norm_num)]]
@@ -38,15 +38,15 @@ theorem sqrt_two_mul_pi_le : √(2 * Real.pi ^ 2) ≤ 5 := by
   nlinarith [Real.pi_lt_d2, Real.pi_pos]
 
 /- English proof (translation)
-Introduce `n a ha ρ hρ v hv k`. Rewrite using `[gnorm_poincareGram_single, GlobalTheory.GoodMetric.poinWt]`. Distinguish the cases in `hk : k.val < a`. Rewrite using `[if_pos hk, if_pos ((mem_castLE_iff ha k).2 hk)]`. Establish `h0 : v.ofLp k ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hv.2 ⟨k.val, hk⟩` as an intermediate fact. Simplify `this` using `[Fin.castLE]`. Establish `h1 : ‖v.ofLp k‖ < 1` using `lt_of_lt_of_le (hv.1 k) (by linarith)`. Establish `ht` using `GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog_pos h0 h1`. Establish `hx : 0 < ‖v.ofLp k‖` using `norm_pos_iff.2 h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : |Real.log ‖v.ofLp k‖| = 2 * Real.pi * GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog (v.ofLp k)`. Rewrite using `[abs_of_neg (Real.log_neg hx h1), GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog]`. Clear the denominators using the available nonvanishing facts. Express the relevant statement in the definitionally equal form `√(1 / (2 * (‖v.ofLp k‖ ^ 2 * GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog (v.ofLp k) ^ 2))) * (‖v.ofLp k‖ * |Real.log ‖v.ofLp k‖|) ≤ 5`. Rewrite using `[hlog]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `set x := ‖v.ofLp k‖`. Use `set t := GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.tlog (v.ofLp k)`. Establish `hB : 0 ≤ x * (2 * Real.pi * t)` using `by positivity`. Rewrite using `[← Real.sqrt_sq hB, ← Real.sqrt_mul (by positivity)]`. Use `sqrt_two_mul_pi_le using 2` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg hk, if_neg (fun h => hk ((mem_castLE_iff ha k).1 h)), mul_one]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gnorm_mul_poinWt_le_five : ∀ (n a : ℕ) (ha : a ≤ n) (ρ : ℝ), ρ ≤ 1 / 2 → ∀ v : ReciprocityTheory.L2DbarEstimates.V n,
     v.ofLp ∈ GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.punctured ha ρ → ∀ k : Fin n,

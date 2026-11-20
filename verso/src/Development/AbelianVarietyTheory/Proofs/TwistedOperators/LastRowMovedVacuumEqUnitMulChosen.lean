@@ -21,7 +21,7 @@ set_option synthInstance.maxHeartbeats 400000
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GlobalTheory.ChiGrid.GridData L sc} {U : Set T}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS`. Conclude with `Submodule.subset_span ⟨s, hs, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma eToEAf_mem_hatL_of_mem {n : ℕ} (C : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (s : Fin n → D.host.E) (hs : s ∈ C) :
     (fun j => Formalism.IndefR.Datum.eToEAf D (s j)) ∈ Formalism.L2.Herm.hatL (F := D.host.F) C := by
@@ -29,7 +29,7 @@ private lemma eToEAf_mem_hatL_of_mem {n : ℕ} (C : Submodule (𝓞 D.host.E) (F
   exact Submodule.subset_span ⟨s, hs, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.MovedHomLat.bridge]`. Conclude with `(hb _).1 (eToEAf_mem_hatL_of_mem C s hs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fwd_gen (V : HSp D) (k : Formalism.L2.Theta.GA D V) (C Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hb : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) C ↔
@@ -43,7 +43,7 @@ theorem fwd_gen (V : HSp D) (k : Formalism.L2.Theta.GA D V) (C Λ : Submodule (�
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Apply `GlobalTheory.MovedHomLat.bwd V k C s` to reduce the goal to its premises. Rewrite using `[GlobalTheory.MovedHomLat.mem_globLat_iff]`. Apply `(hb _).2` to reduce the goal to its premises. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `eToEAf_mem_hatL_of_mem Λ s hs`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwd_gen (V : HSp D) (k : Formalism.L2.Theta.GA D V) (C Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (hb : ∀ v, v ∈ Formalism.L2.Herm.hatL (F := D.host.F) C ↔
@@ -58,23 +58,23 @@ theorem bwd_gen (V : HSp D) (k : Formalism.L2.Theta.GA D V) (C Λ : Submodule (�
   exact eToEAf_mem_hatL_of_mem Λ s hs
 
 /- English proof (translation)
-Establish `hW` using `W.om_is p hp`. Unfold `IsVacO at hf ⊢`. Take `⟨hstd, hvac⟩` from `hf`. Take `⟨hθ, hth, hlat, hfock, hnrm⟩` from `hvac`. Take `⟨-, -, -, -, -, hpres, hint, -, -, hunit, -⟩` from `hW`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hth'` using `hpres (g, h) f hth`. Establish `⟨_, _, hc, _⟩` using `hth`. Establish `⟨_, _, hc', _⟩` using `hth'`. Use `⟨hstd, hθ, hth', ⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, rfl⟩` from `hact u hu`. Rewrite using `[← GlobalTheory.WeilVacMove.actO_two_nsmul, ← hint g h _ f hth, hlat.1 w hw]`. Introduce `e he u hu hhalf`. Take `⟨w, hw, rfl⟩` from `hact u hu`. Establish `hw' : IsHalf e w`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.WeilVacMove.isHalf_actO e g⁻¹ h⁻¹ hhalf` as an intermediate fact. Rewrite `this` using `[GlobalTheory.WeilVacMove.actO_inv_actO]`. Then use the resulting hypothesis. Rewrite using `[← hint g h _ f hth, hlat.2 e he w hw hw']`. Introduce `τ`. Establish `hg1` using `GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ _ hg τ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hh1` using `GlobalTheory.OrientedHeis.compAt_mt_of_mem_GfC W.θ _ hh τ`. Establish `hgi : compAt W.θ τ (Formalism.L2.Theta.mt _ g⁻¹) = 1`. Use `GlobalTheory.WeilVacMove.compAt_mt_mul_inv W.θ τ _ g` as an intermediate fact. Rewrite `this` using `[hg1, one_mul]`. Then use the resulting hypothesis. Establish `key : ∀ z', W.om p (g, h) (Formalism.IndefR.Datum.dRho (heisO W.ψ _ _) W.θ τ z' f) = Formalism.IndefR.Datum.dRho (heisO W.ψ _ _) W.θ τ z' (W.om p (g, h) f)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `z'`. Use `GlobalTheory.WeilVacMove.om_dRho (W.om_is p hp) hθ g h τ z' hth` as an intermediate fact. Rewrite `this` using `[hh1, hgi, Matrix.one_mul, Matrix.mul_one]`. Then use the resulting hypothesis. Establish `h0` using `hfock τ`. Unfold `IsFockVacAt at h0 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `z`. Establish `h1` using `h0 z`. Unfold `annih at h1 ⊢`. Rewrite using `[← key, ← key, ← map_smul, ← map_add, h1, map_zero]`. Use `⟨hnrm.1, fun a ha => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : nrm2 a.1 a.2 f = 1` using `hnrm.2 a ha`. Use `show nrm2 a.1 a.2 _ = 1`. Unfold `IsCovolOne at ha`. Take `⟨hμ, hF, -⟩` from `ha`. Rewrite `h1` using `[GlobalTheory.WeilVacMove.sqNormIntegralFundamentalDomain_eq_l2Norm_sq _ _ hc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.WeilVacMove.sqNormIntegralFundamentalDomain_eq_l2Norm_sq _ _ hc', hunit a.1 a.2 hμ hF (g, h) f hth]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem isVacO_om (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (g : Formalism.L2.Theta.GA D (G.pS p)) (h : Formalism.L2.Theta.GA D (G.pT p))
     (hg : g ∈ GfC (G.pS p)) (hh : h ∈ GfC (G.pT p)) (AS BS : Set (Fin (G.pS p).rank → D.host.E))
@@ -127,7 +127,7 @@ theorem isVacO_om (W : G.Weil) (p : Pair T) (hp : p.InRange D.R.m) (g : Formalis
     exact h1
 
 /- English proof (translation)
-Unfold `GfC at hg ⊢`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Conclude with `hg`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_mem_GfC (V : HSp D) {g : Formalism.L2.Theta.GA D V} (hg : g ∈ GfC V) : negGA V g ∈ GfC (negSp V) := by
   unfold GfC at hg ⊢
@@ -137,15 +137,13 @@ theorem neg_mem_GfC (V : HSp D) {g : Formalism.L2.Theta.GA D V} (hg : g ∈ GfC 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hdp : DefPair D.R.m (Pair.chi i D.R.m : Pair T)` using `⟨hi, rfl⟩`. Establish `hbig : DefNode D.R.m (Node.grid (i + 1) D.R.m)` using `⟨hi, rfl⟩`. Establish `hsmall : DefNode D.R.m (Node.grid i D.R.m)` using `⟨hi.le, rfl⟩`. Establish `hp : (Pair.chi i D.R.m : Pair T).InRange D.R.m` using `⟨hi, le_rfl⟩`. Establish `hU` using `N.u_lat _ hbig`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV` using `N.u_lat _ hsmall`. Establish `hg : negGA (G.V (.grid (i + 1) D.R.m)) (N.u (.grid (i + 1) D.R.m)).1 ∈ GfC (negSp (G.V (.grid (i + 1) D.R.m)))` using `neg_mem_GfC (G.V (.grid (i + 1) D.R.m)) (N.u (.grid (i + 1) D.R.m)).2`. Establish `hh : (N.u (.grid i D.R.m)).1 ∈ GfC (G.V (.grid i D.R.m))` using `(N.u (.grid i D.R.m)).2`. Establish `hv` using `Z.vac_is _ hdp`. Establish `hact : ∀ w' ∈ latO (G.pS (.chi i D.R.m)) (G.pT (.chi i D.R.m)) (G.latS (.chi i D.R.m) : Set _) (G.latT (.chi i D.R.m) : Set _) (fun _ => True), ∃ w ∈ latO (G.pS (.chi i D.R.m)) (G.pT (.chi i D.R.m)) (N.latS (.chi i D.R.m) : Set _) (N.latT (.chi i D.R.m) : Set _) (fun _ => True), …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.MovedHomLat.actO_latO_onto _ _ _ _ (N.latS (.chi i D.R.m)) (G.latS (.chi i D.R.m)) (N.latT (.chi i D.R.m)) (G.latT (.chi i D.R.m)) ?_ ?_ ?_ ?_).2` and prove the remaining obligations. Introduce `s hs`. Rewrite using `[mt_negGA]`. Conclude with `fwd_gen _ _ _ _ hU s hs`. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fwd_gen _ _ _ _ hV t ht`. Introduce `s hs`. Rewrite using `[← map_inv, mt_negGA]`. Conclude with `bwd_gen _ _ _ _ hU s hs`. Introduce `t ht`.
-
-Conclude with `bwd_gen _ _ _ _ hV t ht`. Conclude with `isVacO_om W (.chi i D.R.m) hp _ _ hg hh _ _ _ _ hact _ hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem moved_isVac (W : G.Weil) (N : Std G U) (Z : Normal W N) (i : ℕ) (hi : i < D.R.m) :
     W.IsVac (.chi i D.R.m) (W.om (.chi i D.R.m) (G.toPair (.chi i D.R.m) (N.u (Pair.chi i D.R.m : Pair T).small).1
@@ -180,9 +178,9 @@ theorem moved_isVac (W : G.Weil) (N : Std G U) (Z : Normal W N) (i : ℕ) (hi : 
   exact isVacO_om W (.chi i D.R.m) hp _ _ hg hh _ _ _ _ hact _ hv
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha1` into its components or cases. Use `show (columnBlock L b).sp.SigOK ∧ IsSelfDualC (columnBlock L b).sp (columnBlock L b).lat`. Break down `lt_or_eq_of_le hb with hb' | rfl` into its components or cases. Rewrite using `[colY_lt L hb']`. Conclude with `⟨D.sp.Y_sig _, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ (hL.βY b hb')⟩`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[colY_m L]`. Conclude with `⟨D.sp.X'_sig, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame _ _ _ _ _ hL.βX⟩`. Establish `hv` using `G.isV (X := .grid a b) ⟨ha, hb⟩ (by intro j h; injection h with h1 h2; omega)`. Conclude with `⟨hv.sigOK, hv.sd⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma sigOK_and_isSelfDualC_grid {μ₀ : T} (hL : L.Is μ₀) (a b : ℕ) (ha : a ≤ D.R.m) (hb : b ≤ D.R.m) :
     (G.V (.grid a b)).SigOK ∧ IsSelfDualC (G.V (.grid a b)) (G.Λ (.grid a b)) := by
@@ -197,11 +195,11 @@ private lemma sigOK_and_isSelfDualC_grid {μ₀ : T} (hL : L.Is μ₀) (a b : �
     exact ⟨hv.sigOK, hv.sd⟩
 
 /- English proof (translation)
-Unfold `GridData.Weil.IsVac at hf hf'`. Take `⟨hp1, hp2⟩` from `hp`. Take `⟨hs1, hd1⟩` from `sigOK_and_isSelfDualC_grid hL (i + 1) j hp1 hp2`. Take `⟨hs2, hd2⟩` from `sigOK_and_isSelfDualC_grid hL i j (by omega) hp2`. Establish `key` using `VacUnique.vacUniqueO D W.ψ W.θ W.ψ_std W.θ_is _ _ _ _ (GlobalTheory.GridWeil.sigOK_neg hs1) hs2 (fun τ => GlobalTheory.ChiGrid.isCartanInv_neg (W.cart_is (.grid (i + 1) j) ⟨hp1, hp2⟩ τ)) (W.cart_is (.grid i j) ⟨by omega, hp2⟩) _ _ (isSelfDualC_neg hd1) hd2 f f' hf hf'`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc, hcf⟩` from `key`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, norm_zero]`. Conclude with `zero_ne_one hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mk0 c hc0, hcf⟩`.
+A detailed English derivation is pending.
 -/
 theorem isVac_unique (W : G.Weil) {μ₀ : T} (hL : L.Is μ₀) (i j : ℕ) (hp : (Pair.chi i j : Pair T).InRange D.R.m) {f f'}
     (hf : W.IsVac (.chi i j) f) (hf' : W.IsVac (.chi i j) f') : ∃ κ : ℂˣ, f' = (κ : ℂ) • f := by
@@ -221,7 +219,7 @@ theorem isVac_unique (W : G.Weil) {μ₀ : T} (hL : L.Is μ₀) (i j : ℕ) (hp 
   exact ⟨Units.mk0 c hc0, hcf⟩
 
 /- English proof (translation)
-Introduce `D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch hch i hi`. Establish `hL : R.toLevCh.Is A.μ0`. Take `⟨-, -, -, -, hcore, -⟩` from `hS`. Conclude with `hcore.lev`. Conclude with `isVac_unique ch.W hL i D.R.m ⟨hi, le_rfl⟩ (ch.rm.vX_is i D.R.m hi le_rfl) (moved_isVac ch.W ch.S.N ch.S.Z i hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem moved_vac_eq : ∀ {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn D.what₂.LL Γ Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} (large₂ : SizeData₂ D) (F : Face D A), HidaSetting large₂ R F → ∀ (ch : Choice R), ch.Is → ∀ i : ℕ, i < D.R.m → ∃ κ : ℂˣ, ch.W.om (.chi i D.R.m) (ch.G.toPair (.chi i D.R.m) (ch.S.N.u (Pair.chi i D.R.m : Pair T).small).1 (ch.S.N.u (Pair.chi i D.R.m : Pair T).big).1) (ch.S.Z.vac (.chi i D.R.m)) = (κ : ℂ) • ch.rm.vX i D.R.m := by
   intro D Γ _ _ Pl0 T A Ks _ _ _ R large₂ F hS ch hch i hi

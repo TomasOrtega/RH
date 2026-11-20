@@ -9,17 +9,15 @@ open scoped Classical
 namespace GlobalTheory.AbsIrrDescent
 
 /- English proof (translation)
-Establish `hE : Nontrivial (Module.End R M)` using `Module.nontrivial_of_finrank_eq_succ h`. Establish `hM : Nontrivial M`. Assume the negation of the conclusion as `hM`. Rewrite `hM` using `[not_nontrivial_iff_subsingleton]`. Conclude with `not_subsingleton (Module.End R M) inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Nontrivial (Submodule R M)` using `(Submodule.nontrivial_iff R).2 hM`. Use `{ eq_bot_or_eq_top := fun U => ?_ }` and prove the remaining obligations. Take `⟨U', hU⟩` from `exists_isCompl U`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (1 : Module.End R M) one_ne_zero).1 h (U.subtype ∘ₗ U.projectionOnto U' hU)`. Distinguish the cases in `h0 : c = 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `x hx`. Use `LinearMap.congr_fun hc x` as an intermediate fact. Rewrite `this` using `[h0, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : (U.subtype ∘ₗ U.projectionOnto U' hU) x = x`. Simplify using `using congrArg Subtype.val (Submodule.projectionOnto_apply_left hU ⟨x, hx⟩)`. Rewrite using `[← h2, ← this]`. Both sides reduce to the same expression. Use `right`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Use `LinearMap.congr_fun hc (c⁻¹ • x)` as an intermediate fact. Establish `h2 : (c • (1 : Module.End R M)) (c⁻¹ • x) = x`. Simplify using `[smul_smul, h0]`.
-
-Rewrite using `[← h2, this]`. Conclude with `Subtype.property _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSimpleModule_of_finrank_end {k R M : Type} [Field k] [Ring R] [Algebra k R] [AddCommGroup M] [Module R M]
     [Module k M] [IsScalarTower k R M] [SMulCommClass R k M] [IsSemisimpleModule R M]
@@ -53,9 +51,9 @@ theorem isSimpleModule_of_finrank_end {k R M : Type} [Field k] [Ring R] [Algebra
     exact Subtype.property _
 
 /- English proof (translation)
-Establish `hc : (Nat.card G : k) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Use `invertibleOfNonzero hc` as an intermediate fact. Establish `: NeZero (Nat.card G : k)` using `⟨hc⟩`. Establish `h` using `Representation.card_inv_mul_sum_char_mul_char_eq_finrank ρ ρ`. Rewrite `h` using `[hn, inv_mul_cancel₀ hc, eq_comm, Nat.cast_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Representation.irreducible_iff_isSimpleModule_asModule]`. Use `isSimpleModule_of_finrank_end (k := k) ?_` and prove the remaining obligations. Rewrite using `[← h]`. Conclude with `(Representation.IntertwiningMap.equivAlgEnd (ρ := ρ)).toLinearEquiv.finrank_eq.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_of_norm_one {k G V : Type} [Field k] [CharZero k] [Group G] [Fintype G] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] (ρ : Representation k G V)
@@ -71,17 +69,15 @@ theorem isIrreducible_of_norm_one {k G V : Type} [Field k] [CharZero k] [Group G
   exact (Representation.IntertwiningMap.equivAlgEnd (ρ := ρ)).toLinearEquiv.finrank_eq.symm
 
 /- English proof (translation)
-Introduce `K _ σ G _ _ χ h`. Take `⟨V, hV, hχ⟩` from `h`. Use `haveI : CharZero K := σ.charZero`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Set `τ : AlgebraicClosure K →ₐ[K] ℂ` to `IsAlgClosed.lift`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra (AlgebraicClosure K) ℂ := τ.toRingHom.toAlgebra`. Establish `hτ : ∀ x : K, algebraMap (AlgebraicClosure K) ℂ (algebraMap K (AlgebraicClosure K) x) = σ x` using `fun x => τ.commutes x`. Establish `hinj : Function.Injective (algebraMap (AlgebraicClosure K) ℂ)` using `RingHom.injective _`. Establish `hm : Nat.card G ≠ 0` using `Nat.card_pos.ne'`. Use `haveI : NeZero (Nat.card G) := ⟨hm⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : NeZero (Nat.card G : AlgebraicClosure K) := ⟨Nat.cast_ne_zero.2 hm⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (AlgebraicClosure K) (Nat.card G)`. Establish `hch : GlobalTheory.BI.IsChar ℂ ℂ (fun t => σ (χ t))`. Establish `h` using `(GlobalTheory.BI.isChar_and_isIrrChar_of_rep ℂ ℂ G V V.ρ).1`. Establish `e : (fun t => σ (χ t)) = fun g => algebraMap ℂ ℂ (Representation.character V.ρ g)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `g`. Conclude with `(hχ g).symm`. Rewrite using `[e]`. Conclude with `h`. Take `⟨n, ρ, hρ⟩` from `GlobalTheory.BI.isChar_of_isPrimitiveRoot (AlgebraicClosure K) ℂ (Nat.card G) ζ hm hζ G (fun g => pow_card_eq_one') _ hch`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hρ' : ∀ t, ρ.character t = algebraMap K (AlgebraicClosure K) (χ t)` using `fun t => hinj (by rw [hτ]; exact (hρ t).symm)`. Use `⟨n, ρ, isIrreducible_of_norm_one ρ (hinj ?_), hρ'⟩` and prove the remaining obligations. Establish `hn` using `(FDRep.simple_iff_char_is_norm_one V).1 hV`. Rewrite using `[map_natCast, ← hn, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_mul, hρ', hρ', hτ, hτ, hχ, hχ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAbsIrrChar_of_isIrr : ∀ (K : Type) [Field K] (σ : K →+* ℂ) (G : Type) [Group G] [Fintype G] (χ : G → K), IsIrr (fun t => σ (χ t)) → Formalism.L2.DIV.IsAbsIrrChar χ := by
   intro K _ σ G _ _ χ h

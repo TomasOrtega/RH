@@ -5,7 +5,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.GlobalTheory.Bernstein
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness`.
+A detailed English derivation is pending.
 -/
 theorem bernsteinZelevinskyFiniteness_holds : GlobalTheory.Published.BernsteinZelevinskyFiniteness :=
   GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness

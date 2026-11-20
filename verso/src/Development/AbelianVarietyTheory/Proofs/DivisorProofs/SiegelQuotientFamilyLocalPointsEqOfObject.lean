@@ -12,17 +12,13 @@ open GlobalTheory.ZM GlobalTheory.SiegLev GlobalTheory.SiegelTor
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-Introduce `h n N o o' _ _ ζ ζ' F j Q R _ _ x y s' c hxy hx hy`. Use `haveI := Q.fin`. Use `haveI := Q.etale`. Use `haveI := Q.onto`. Take `⟨R1, _, _, φ1, hl1, hφ1, x1, hx1⟩` from `GlobalTheory.T.exists_lift_localPoint_along_affine_flat_surjection R Q.X F.X Q.π x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R2, _, _, φ2, hl2, hφ2, y2, hy2⟩` from `GlobalTheory.T.exists_lift_localPoint_along_affine_flat_surjection R1 Q.X F.X Q.π (spMap φ1 ≫ y)`. Use `set g : Sp R2 ⟶ Sp R := spMap φ2 ≫ spMap φ1 with hg`. Use `set x2 : Sp R2 ⟶ F.X := spMap φ2 ≫ x1 with hx2d`. Establish `hx2 : x2 ≫ Q.π = g ≫ x` using `by simp only [x2, g, Category.assoc, hx1]`. Establish `hy2' : y2 ≫ Q.π = g ≫ y` using `by simp only [g, Category.assoc, hy2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hid : spMap (RingHom.id o) = 𝟙 (Sp o)` using `Spec.map_id _`. Take `⟨c2, hc2⟩` from `(GlobalTheory.SiegelRingChange.siegPre_pull_ringChange h n o o ζ ζ (RingHom.id o) (Sp R) (Sp R2) s' (g ≫ s') g rfl (by rw [hid, Category.comp_id])).1 c`. Establish `key : ∀ z : Sp R ⟶ Q.X, ∀ z2 : Sp R2 ⟶ F.X, z2 ≫ Q.π = g ≫ z → SiegPB c Q.univ z → SRel c2 F.univ 1 (N / n) z2`. Introduce `z z2 hz hcz`. Establish `A` using `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n n n o o o ζ ζ ζ Q.X (Sp R) (Sp R2) Q.s s' (g ≫ s') Q.univ c c2 z g 1 1 1 ((sRel_one_one_iff _ _ _).2 hcz)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `B : SRel c2 Q.univ 1 1 (g ≫ z)` using `A.1 ((sRel_one_one_iff _ _ _).2 hc2)`. Establish `C` using `(GlobalTheory.T.siegelObjectPullbackLevelPower_calculus h n N n o o' o ζ ζ' ζ Q.X F.X (Sp R2) Q.s F.s (g ≫ s') Q.univ F.univ c2 Q.π z2 1 (N / n) 1 Q.low).1`. Rewrite `C` using `[hz]`. Conclude with `C.2 B`. Establish `e` using `Q.fibre R2 x2 y2 (g ≫ s') c2 (by`.
-
-Rewrite using `[← Q.base, ← Category.assoc, ← Category.assoc y2, hx2, hy2', Category.assoc, Category.assoc, hxy]`. Simplify using `only [g, Category.assoc])`. Use the proof step `(key x x2 hx2 hx) (key y y2 hy2' hy)`. Rewrite `e` using `[hx2, hy2']`. Establish `hcomp : spMap (φ2.comp φ1) = g`.
-
-Simplify using `only [g, spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `GlobalTheory.T.spec_localRing_hom_ext_of_injective_localHom R R2 (φ2.comp φ1) inferInstance (hφ2.comp hφ1) Q.X x y (by rw [hcomp]; exact e)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SiegLev.SQuot.eq_of_siegPB : ∀ (h n N : ℕ) (o o' : Type) [CommRing o] [CommRing o'] (ζ : o) (ζ' : o') (F : SFam h N ζ') (j : o →+* o') (Q : SQuot F n ζ j) (R : Type) [CommRing R] [IsLocalRing R] (x y : Sp R ⟶ Q.X) (s' : Sp R ⟶ Sp o) (c : SiegPre h n ζ s'), x ≫ Q.s = y ≫ Q.s → SiegPB c Q.univ x → SiegPB c Q.univ y → x = y := by
   intro h n N o o' _ _ ζ ζ' F j Q R _ _ x y s' c hxy hx hy

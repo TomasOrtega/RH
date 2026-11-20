@@ -16,19 +16,19 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 variable {L : LocE F E} {r k : ℕ} (S : Frames L r k)
 
 /- English proof (translation)
-Simplify using `only [Frames.h, hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_left (a b y : S.V) : S.h (a + b) y = S.h a y + S.h b y := by
   simp only [Frames.h, hf, Pi.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Frames.h, hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem h_add_right (a y z : S.V) : S.h a (y + z) = S.h a y + S.h a z := by
   simp only [Frames.h, hf, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Frames.h, hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_smul_left (c : E) (a y : S.V) : S.h (c • a) y = c * S.h a y := by
   simp only [Frames.h, hf, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -36,7 +36,7 @@ theorem h_smul_left (c : E) (a y : S.V) : S.h (c • a) y = c * S.h a y := by
   ring
 
 /- English proof (translation)
-Simplify using `only [Frames.h, hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem h_smul_right (c : E) (a y : S.V) : S.h a (c • y) = L.cj c * S.h a y := by
   simp only [Frames.h, hf, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -44,21 +44,21 @@ theorem h_smul_right (c : E) (a y : S.V) : S.h a (c • y) = L.cj c * S.h a y :=
   ring
 
 /- English proof (translation)
-Simplify using `[Frames.h, hf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem h_zero_left' (y : S.V) : S.h 0 y = 0 := by
   simp [Frames.h, hf]
 
 /- English proof (translation)
-Simplify using `[Frames.h, hf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem h_zero_right_flag_measures (a : S.V) : S.h a 0 = 0 := by
   simp [Frames.h, hf]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem b hb => exact hst a ha b hb`. Consider the case `zero => exact h_zero_right_flag_measures S a`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add u v _ _ hu hv => rw [h_add_right, hu, hv, add_zero]`. Consider the case `smul c u _ hu => rw [h_smul_right, hu, mul_zero]`. Consider the case `zero => exact h_zero_left' S y`. Consider the case `add u v _ _ hu hv => rw [h_add_left, hu, hv, add_zero]`. Consider the case `smul c u _ hu => rw [h_smul_left, hu, mul_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem h_eq_zero_of_span_orth {s t : Set S.V} (hst : ∀ a ∈ s, ∀ b ∈ t, S.h a b = 0) {x y : S.V}
     (hx : x ∈ Submodule.span E s) (hy : y ∈ Submodule.span E t) : S.h x y = 0 := by
@@ -74,9 +74,9 @@ private theorem h_eq_zero_of_span_orth {s t : Set S.V} (hst : ∀ a ∈ s, ∀ b
   | smul c u _ hu => rw [h_smul_left, hu, mul_zero]
 
 /- English proof (translation)
-Unfold `Frames.spanTo at hx hy`. Use `h_eq_zero_of_span_orth S ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩ _ ⟨j, hj, rfl⟩`. Express the relevant statement in the definitionally equal form `hf L S.Hm (g i) (g j) = 0`. Rewrite using `[hg, if_neg]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨rfl, -⟩`. Simplify using `at hi`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem iso_of (g : Fin (r + 1) → S.V) (t : E)
     (hg : ∀ a b, hf L S.Hm (g a) (g b) = if a = Fin.last r ∧ b = Fin.last r then t else 0)
@@ -90,14 +90,14 @@ theorem iso_of (g : Fin (r + 1) → S.V) (t : E)
   simp at hi
 
 /- English proof (translation)
-Unfold `Frames.spanTo`. Conclude with `Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < r) => Nat.lt_succ_of_lt hi)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem spanTo_mono (g : Fin (r + 1) → S.V) : S.spanTo g r ≤ S.spanTo g (r + 1) := by
   unfold Frames.spanTo
   exact Submodule.span_mono (Set.image_mono fun i (hi : (i : ℕ) < r) => Nat.lt_succ_of_lt hi)
 
 /- English proof (translation)
-Establish `h` using `(linearIndependent_sum.1 hli).2.2`. Simplify using `only [Sum.elim_comp_inl, Sum.elim_comp_inr] at h`. Unfold `Frames.spanTo`. Conclude with `h.mono (Submodule.span_mono (Set.image_subset_range _ _)) (Submodule.span_mono (Set.image_subset_range _ _))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem disj (hli : LinearIndependent E (Sum.elim S.f S.f')) :
     Disjoint (S.spanTo S.f (r + 1)) (S.spanTo S.f' (r + 1)) := by
@@ -108,13 +108,15 @@ theorem disj (hli : LinearIndependent E (Sum.elim S.f S.f')) :
     (Submodule.span_mono (Set.image_subset_range _ _))
 
 /- English proof (translation)
-Establish `hinv : ∀ v : S.V, algebraMap F E S.th • algebraMap F E S.th⁻¹ • v = v`. Introduce `v`. Rewrite using `[smul_smul, ← map_mul, mul_inv_cancel₀ h0, map_one, one_smul]`. Unfold `Frames.Mof at hm`. Proceed by induction on `hm using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction.
 
-Consider the case `mem x hx`. Break down `hx with ⟨b, rfl⟩ | ⟨b, rfl⟩` into its components or cases. Conclude with `⟨algebraMap F E S.th • g b, Submodule.smul_mem _ _ (hg b), 0, Submodule.zero_mem _, Submodule.zero_mem _, by rw [add_zero]⟩`. Use `⟨-g b, Submodule.neg_mem _ (hg b), g' b, (hg' b).2, (hg' b).1, ?_⟩ dsimp only` and prove the remaining obligations. Rewrite using `[hinv]`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Normalize the expressions using the abelian group laws. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, 0, Submodule.zero_mem _, Submodule.zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, a', ha', hΛ, he⟩` from `hx`. Take `⟨b, hb, b', hb', hΛ', he'⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, Submodule.add_mem _ ha hb, a' + b', Submodule.add_mem _ ha' hb', Submodule.add_mem _ hΛ hΛ', by rw [smul_add, he, he']; abel⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, a', ha', hΛ, he⟩` from `hx`. Use `⟨(c : E) • a, Submodule.smul_mem _ _ ha, (c : E) • a', Submodule.smul_mem _ _ ha', Λ.smul_mem c hΛ, ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, smul_comm, he, smul_add]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
+
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_split (Λ : Submodule L.O S.V) (g g' : Fin (r + 1) → S.V) (h0 : S.th ≠ 0)
     (hg : ∀ b, g b ∈ S.spanTo S.f (r + 1))
@@ -147,7 +149,7 @@ theorem frame_split (Λ : Submodule L.O S.V) (g g' : Fin (r + 1) → S.V) (h0 : 
     rw [Subring.smul_def, smul_comm, he, smul_add]
 
 /- English proof (translation)
-Rewrite using `[L.O_def]`. Use `isIntegral_algebraMap (R := 𝒪[F]) (A := E) (x := ⟨x, hx⟩)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Rewrite using `[IsScalarTower.algebraMap_apply 𝒪[F] F E]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem algebraMap_mem_O_of_mem_valuationInteger (L : LocE F E) {x : F} (hx : x ∈ 𝒪[F]) : algebraMap F E x ∈ L.O := by
   rw [L.O_def]
@@ -157,39 +159,37 @@ private theorem algebraMap_mem_O_of_mem_valuationInteger (L : LocE F E) {x : F} 
   rfl
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S d Λ hT hB B₀ hB₀ hrep hpair`. Take `⟨hli, -, -, -, -, h0, hthF, -⟩` from `GlobalTheory.FrameBasic.main L r k S`. Take `⟨hSD, -, hMsat, hfr, hfr', -, -, -⟩` from `GlobalTheory.HL.TermBasic.term_basic L r k S d Λ hT`. Establish `hlev` using `(GlobalTheory.T.termLevel_zero_and_bounded_representatives L r k S d Λ hT).2.1`. Establish `hthO : algebraMap F E S.th ∈ L.O` using `algebraMap_mem_O_of_mem_valuationInteger L hthF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcj : L.cj (algebraMap F E S.th) = algebraMap F E S.th` using `L.cj.commutes S.th`. Establish `hinv : ∀ v : S.V, algebraMap F E S.th⁻¹ • algebraMap F E S.th • v = v`. Introduce `v`. Rewrite using `[smul_smul, ← map_mul, inv_mul_cancel₀ h0, map_one, one_smul]`. Establish `hint : ∀ v ∈ Λ, ∀ w ∈ Λ, S.h v w ∈ L.O` using `fun v hv w hw => (hSD.2 w).2 hw v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXX : ∀ v ∈ S.X, ∀ w ∈ S.X, S.h v w = 0` using `fun v hv w hw => iso_of S S.f (-algebraMap F E S.T) S.gram hv hw`. Establish `hXX' : ∀ v ∈ S.X', ∀ w ∈ S.X', S.h v w = 0` using `fun v hv w hw => iso_of S S.f' (-algebraMap F E S.T') S.gram' hv hw`. Establish `hXME : S.X ≤ S.ME` using `(spanTo_mono S S.f).trans le_sup_left`. Establish `hX'ME : S.X' ≤ S.ME` using `(spanTo_mono S S.f').trans le_sup_right`. Establish `hsatΛ : S.sat Λ ≤ Λ` using `inf_le_left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ∀ b, S.fr d Λ b ∈ S.spanTo S.f (r + 1)` using `fun b => ((hfr (r + 1) le_rfl _).2 (Submodule.subset_span (Set.mem_image_of_mem _ b.2))).2`. Establish `hg' : ∀ b, S.fr' d Λ b ∈ Λ ∧ S.fr' d Λ b ∈ S.spanTo S.f' (r + 1)` using `fun b => (hfr' (r + 1) le_rfl _).2 (Submodule.subset_span (Set.mem_image_of_mem _ b.2))`. Establish `hdisj` using `Submodule.disjoint_def.1 (disj S hli)`. Establish `key : ∀ x ∈ S.X, ∀ x' ∈ S.X', S.InTh Λ (x + x') → ∃ u ∈ S.X, ∃ u' ∈ S.X', u + u' ∈ B₀ ∧ u + u' ∈ Λ ∧ x' - algebraMap F E S.th • u' ∈ Λ ∧ ∃ m ∈ Λ, (x - algebraMap F E S.th • u) + (x' - algebraMap F E S.th • u') = algebraMap F E S.th • m`. Introduce and unpack `x hx x' hx' ⟨y, hyΛ, hxy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hyME : y ∈ S.ME`. Rewrite using `[← hinv y, ← hxy]`. Conclude with `Submodule.smul_mem _ _ (Submodule.add_mem _ (hXME hx) (hX'ME hx'))`. Establish `hysat : y ∈ S.sat Λ` using `Submodule.mem_inf.2 ⟨hyΛ, hyME⟩`. Take `⟨y₀, hy₀, hmM⟩` from `hrep y hysat`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hy₀Λ, hy₀X⟩` from `hB₀ y₀ hy₀`. Take `⟨u, hu, u', hu', rfl⟩` from `Submodule.mem_sup.1 hy₀X`. Establish `hmΛ : y - (u + u') ∈ Λ` using `hsatΛ (hMsat hmM)`. Take `⟨b, hb, b', hb', hb'Λ, hbb⟩` from `frame_split S Λ _ _ h0 hg hg' hmM`. Establish `hsum : (x - algebraMap F E S.th • u) + (x' - algebraMap F E S.th • u') = algebraMap F E S.th • (y - (u + u'))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_sub, ← hxy, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hdiff : b' - (x' - algebraMap F E S.th • u') = 0`. Apply `hdisj` to reduce the goal to its premises. Establish `he : b' - (x' - algebraMap F E S.th • u') = (x - algebraMap F E S.th • u) - b`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hsum.trans hbb`. Take the linear combination `-h2`. Rewrite using `[he]`. Conclude with `Submodule.sub_mem _ (spanTo_mono S S.f (Submodule.sub_mem _ hx (Submodule.smul_mem _ _ hu))) hb`. Conclude with `Submodule.sub_mem _ hb' (spanTo_mono S S.f' (Submodule.sub_mem _ hx' (Submodule.smul_mem _ _ hu')))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : x' - algebraMap F E S.th • u' = b'` using `(sub_eq_zero.1 hdiff).symm`. Conclude with `⟨u, hu, u', hu', hy₀, hy₀Λ, by rw [ha']; exact hb'Λ, y - (u + u'), hmΛ, hsum⟩`. Use `⟨hB, ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨y₀, hy₀, hm⟩` from `hrep y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(hlev y hy r).2 ⟨y₀, (hB₀ y₀ hy₀).2, hm⟩`. Introduce `x₁ hx₁ x₁' hx₁' x₂ hx₂ x₂' hx₂' h1 h2`. Take `⟨u₁, hu₁, u₁', hu₁', hB1, hy1, ha1', m₁, hm₁, he1⟩` from `key x₁ hx₁ x₁' hx₁' h1`. Take `⟨u₂, hu₂, u₂', hu₂', hB2, hy2, ha2', m₂, hm₂, he2⟩` from `key x₂ hx₂ x₂' hx₂' h2`. Generalize the expression as in `ht : algebraMap F E S.th = t at *`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set a₁ := x₁ - t • u₁ with ha₁`. Use `set a₁' := x₁' - t • u₁' with ha₁d`. Use `set a₂' := x₂' - t • u₂' with ha₂d`. Establish `ha₁X : a₁ ∈ S.X` using `Submodule.sub_mem _ hx₁ (Submodule.smul_mem _ _ hu₁)`. Establish `ha₁'X : a₁' ∈ S.X'` using `Submodule.sub_mem _ hx₁' (Submodule.smul_mem _ _ hu₁')`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha₂'X : a₂' ∈ S.X'` using `Submodule.sub_mem _ hx₂' (Submodule.smul_mem _ _ hu₂')`. Establish `hB1' : algebraMap F E S.th⁻¹ • (t • u₁ + t • u₁') ∈ B₀` using `by rw [← smul_add, hinv]; exact hB1`. Establish `hB2' : algebraMap F E S.th⁻¹ • (t • u₂ + t • u₂') ∈ B₀` using `by rw [← smul_add, hinv]; exact hB2`. Take `⟨c₀, hc₀, hc₀e⟩` from `hpair (t • u₁) (Submodule.smul_mem _ _ hu₁) (t • u₁') (Submodule.smul_mem _ _ hu₁') (t • u₂) (Submodule.smul_mem _ _ hu₂) (t • u₂') (Submodule.smul_mem _ _ hu₂') hB1' hB2'`. Establish `ex₁ : x₁ = t • u₁ + a₁` using `by rw [ha₁]; abel`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ex₂' : x₂' = t • u₂' + a₂'` using `by rw [ha₂d]; abel`. Establish `eA : S.h x₁ x₂' = S.h (t • u₁) (t • u₂') + S.h (t • u₁) a₂' + S.h a₁ (t • u₂') + S.h a₁ a₂'`. Rewrite using `[ex₁, ex₂', h_add_left, h_add_right, h_add_right]`. Expand and normalize the polynomial expressions, which then agree. Establish `eB : S.h (t • u₁) a₂' = t * S.h u₁ a₂'` using `h_smul_left S _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eC : S.h (u₁ + u₁') a₂' = S.h u₁ a₂' + S.h u₁' a₂'` using `h_add_left S _ _ _`. Establish `eD : S.h u₁' a₂' = 0` using `hXX' _ hu₁' _ ha₂'X`. Establish `eE : S.h a₁ (t • u₂') = t * S.h a₁ u₂'` using `by rw [h_smul_right, hcj]`. Establish `eF : S.h a₁ (u₂ + u₂') = S.h a₁ u₂ + S.h a₁ u₂'` using `h_add_right S _ _ _`. Establish `eG : S.h a₁ u₂ = 0` using `hXX _ ha₁X _ hu₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `eH : S.h (a₁ + a₁') a₂' = S.h a₁ a₂' + S.h a₁' a₂'` using `h_add_left S _ _ _`. Establish `eI : S.h (t • m₁) a₂' = t * S.h m₁ a₂'` using `h_smul_left S _ _ _`. Establish `eJ : S.h a₁' a₂' = 0` using `hXX' _ ha₁'X _ ha₂'X`. Establish `eK : S.h (t • m₁) (u₂ + u₂') = t * S.h m₁ (u₂ + u₂')` using `h_smul_left S _ _ _`. Establish `eL : S.h (a₁ + a₁') (u₂ + u₂') = S.h a₁ (u₂ + u₂') + S.h a₁' (u₂ + u₂')` using `h_add_left S _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `eH`, `eL` using `[he1]`. Establish `hO1 : S.h (u₁ + u₁') a₂' ∈ L.O` using `hint _ hy1 _ ha2'`. Establish `hO2 : S.h m₁ (u₂ + u₂') ∈ L.O` using `hint _ hm₁ _ hy2`. Establish `hO3 : S.h a₁' (u₂ + u₂') ∈ L.O` using `hint _ ha1' _ hy2`. Establish `hO4 : S.h m₁ a₂' ∈ L.O` using `hint _ hm₁ _ ha2'`.
-
-Use `⟨c₀ + S.h (u₁ + u₁') a₂' + (t * S.h m₁ (u₂ + u₂') - S.h a₁' (u₂ + u₂')) + S.h m₁ a₂', ?_, ?_⟩` and prove the remaining obligations. Conclude with `L.O.add_mem (L.O.add_mem (L.O.add_mem hc₀ hO1) (L.O.sub_mem (L.O.mul_mem hthO hO2) hO3)) hO4`. Rewrite using `[eA, hc₀e]`. Take the linear combination `eB - t * eC - t * eD + eE - t * eF - t * eG - eH + eI - eJ + t * eK - t * eL`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), ∀ (d : S.Datum) (Λ : Submodule L.O S.V), S.IsTerm d Λ → ¬ S.BBzero d Λ → ∀ B₀ : Set S.V, (∀ y ∈ B₀, y ∈ Λ ∧ y ∈ S.X ⊔ S.X') → (∀ y ∈ S.sat Λ, ∃ y₀ ∈ B₀, y - y₀ ∈ S.M d Λ) → (∀ x₁ ∈ S.X, ∀ x₁' ∈ S.X', ∀ x₂ ∈ S.X, ∀ x₂' ∈ S.X', algebraMap F E S.th⁻¹ • (x₁ + x₁') ∈ B₀ → algebraMap F E S.th⁻¹ • (x₂ + x₂') ∈ B₀ → ∃ c ∈ L.O, S.h x₁ x₂' = algebraMap F E S.th * c) → S.TypeBe d Λ := by
   intro F _ _ _ _ _ E _ _ _ L r k S d Λ hT hB B₀ hB₀ hrep hpair

@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.RowsExhaust
 open Formalism.BasicNotions Formalism.ConjugateSelfDual ReciprocityTheory.Gal ReciprocityTheory.Aut Formalism.AUTREP Formalism.L2 Formalism.L2.DIV Formalism.L2.Indef NumberField IsDedekindDomain GlobalTheory.EtaJoin
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EtaJoinSum.sum_etaLoc_eq_etaRat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FSumLocalCongruenceLengthEqRationalLength.lean&line=102#L102)
 -/

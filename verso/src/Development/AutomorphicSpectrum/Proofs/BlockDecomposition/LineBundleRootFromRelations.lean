@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.FormalAlg
 abbrev wordSet {k : ℕ} {τ : Type} (w : Fin k → τ) : Multiset τ := Finset.univ.val.map w
 
 /- English proof (translation)
-Establish `key : ∀ g : Fin k → τ, wordSet g = g l ::ₘ ((Finset.univ.erase l).val.map g)`. Introduce `g`. Rewrite using `[← Multiset.map_cons, Finset.erase_val, Multiset.cons_erase (Finset.mem_univ_val l)]`. Establish `e : (Finset.univ.erase l).val.map (Function.update f l a) = (Finset.univ.erase l).val.map f` using `Multiset.map_congr rfl fun x hx => Function.update_of_ne (Finset.ne_of_mem_erase (show x ∈ Finset.univ.erase l from hx)) _ _`. Rewrite using `[key, key f, Function.update_self, e, ← Multiset.singleton_add, ← Multiset.singleton_add (f l)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -26,7 +26,7 @@ theorem wordSet_update_add {k : ℕ} {τ : Type} (f : Fin k → τ) (l : Fin k) 
   abel
 
 /- English proof (translation)
-Use `add_right_cancel (b := ({f l} : Multiset τ)) ?_` and prove the remaining obligations. Establish `e₁` using `wordSet_update_add f l a`. Establish `e₂` using `wordSet_update_add g l' a`. Rewrite `e₂` using `[← h]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem wordSet_update_rel {k : ℕ} {τ : Type} (f g : Fin k → τ) (l l' : Fin k) (a : τ) (h : f l = g l') :
     wordSet f + wordSet (Function.update g l' a) = wordSet (Function.update f l a) + wordSet g := by
@@ -46,7 +46,7 @@ section Ring
 variable {B τ : Type} [CommRing B] {k : ℕ} {x : (Fin k → τ) → B}
 
 /- English proof (translation)
-Use `hu.mul_right_cancel ?_` and prove the remaining obligations. Use `hrel _ _ _ _ (wordSet_update_rel w (fun _ => i) l l₀ j hw)` as an intermediate fact. Rewrite `this` using `[← hr]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_word_update
     (hrel : ∀ w₁ w₂ w₃ w₄ : Fin k → τ, wordSet w₁ + wordSet w₂ = wordSet w₃ + wordSet w₄ →
@@ -61,15 +61,15 @@ theorem mul_word_update
   ring
 
 /- English proof (translation)
-Establish `key : ∀ n, n ≤ k → r ^ n * x (fun _ => i) = x (fun l => if l.val < n then j else i)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `hn`. Establish `hlt : n < k` using `hn`. Use `mul_word_update hrel hu hr (fun l => if l.val < n then j else i) ⟨n, hlt⟩ (by simp)` as an intermediate fact. Rewrite using `[pow_succ', mul_assoc, ih hlt.le, this]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `l`. Distinguish the cases in `h : l = ⟨n, hlt⟩`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: l.val ≠ n` using `fun e => h (Fin.ext e)`. Rewrite using `[Function.update_of_ne h]`. Distinguish the cases in `h' : l.val < n`. Simplify using `[h', Nat.lt_succ_of_lt h']`. Establish `: ¬ l.val < n + 1` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h', this]`. Rewrite using `[key k le_rfl]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pow_mul_word_const
     (hrel : ∀ w₁ w₂ w₃ w₄ : Fin k → τ, wordSet w₁ + wordSet w₂ = wordSet w₃ + wordSet w₄ →
@@ -104,9 +104,9 @@ theorem pow_mul_word_const
 end Ring
 
 /- English proof (translation)
-Establish `key : ∀ w : Fin k → τ, ∏ l, φ (w l) = ((wordSet w).map φ).prod`. Introduce `w`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Use `congrArg (fun s => (s.map φ).prod) (wordSet_update_add f l a)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify `this` using `[Multiset.map_add, Multiset.prod_add, key]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_update_mul {M τ : Type} [CommMonoid M] {k : ℕ} (φ : τ → M) (f : Fin k → τ) (l : Fin k) (a : τ) :
     (∏ m, φ (Function.update f l a m)) * φ (f l) = (∏ m, φ (f m)) * φ a := by
@@ -134,7 +134,7 @@ def rootRatio (i j : τ) : Γ(X, rootChart u i) := secRatio (u fun _ => i) (u (o
 variable {u}
 
 /- English proof (translation)
-Rewrite using `[← map_mul, ← map_mul, h _ _ _ _ hw c]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem VeroneseRel.resG (h : VeroneseRel u) {W : X.Opens} {c : Q.ι} (hc : W ≤ Q.U c)
     (w₁ w₂ w₃ w₄ : Fin k → τ) (hw : wordSet w₁ + wordSet w₂ = wordSet w₃ + wordSet w₄) :
@@ -145,7 +145,7 @@ theorem VeroneseRel.resG (h : VeroneseRel u) {W : X.Opens} {c : Q.ι} (hc : W �
 variable (u)
 
 /- English proof (translation)
-The claim follows from `(secRatio_on _ _ c hi hc).symm`.
+A detailed English derivation is pending.
 -/
 theorem rootRatio_chart {W : X.Opens} {i : τ} (j : τ) {c : Q.ι} (hi : W ≤ rootChart u i) (hc : W ≤ Q.U c) :
     resG X hi (rootRatio hk u i j) * resG X hc ((u fun _ => i).f c) =
@@ -153,7 +153,7 @@ theorem rootRatio_chart {W : X.Opens} {i : τ} (j : τ) {c : Q.ι} (hi : W ≤ r
   (secRatio_on _ _ c hi hc).symm
 
 /- English proof (translation)
-Establish `: oneLetter hk i i = fun _ => i` using `Function.update_eq_self (⟨0, hk⟩ : Fin k) (fun _ : Fin k => i)`. Rewrite using `[rootRatio, this]`. Conclude with `secRatio_self _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootRatio_self (i : τ) : rootRatio hk u i i = 1 := by
   have : oneLetter hk i i = fun _ => i := Function.update_eq_self (⟨0, hk⟩ : Fin k) (fun _ : Fin k => i)
@@ -163,11 +163,11 @@ theorem rootRatio_self (i : τ) : rootRatio hk u i i = 1 := by
 variable {u}
 
 /- English proof (translation)
-Use `ext_charts (u fun _ => i) hi fun c => ?_` and prove the remaining obligations. Establish `hc : W ⊓ Q.U c ≤ Q.U c` using `inf_le_right`. Establish `hi' : W ⊓ Q.U c ≤ rootChart u i` using `inf_le_left.trans hi`. Establish `hj' : W ⊓ Q.U c ≤ rootChart u j` using `inf_le_left.trans hj`. Establish `ui : IsUnit (resG X hc ((u fun _ => i).f c))` using `isUnit_resG_sec _ c hi' hc`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `uj : IsUnit (resG X hc ((u fun _ => j).f c))` using `isUnit_resG_sec _ c hj' hc`. Use `ui.mul_right_cancel ?_` and prove the remaining obligations. Rewrite using `[map_mul, resG_resG, resG_resG, resG_resG]`. Establish `e3` using `mul_word_update (x := fun w => resG X hc ((u w).f c)) (h.resG hc) (i := j) (j := l) (l₀ := ⟨0, hk⟩) uj (rootRatio_chart hk u l hj' hc) (oneLetter hk i j) ⟨0, hk⟩ (by simp [oneLetter])`. Establish `e4 : Function.update (oneLetter hk i j) ⟨0, hk⟩ l = oneLetter hk i l` using `Function.update_idem _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[e4]`. Rewrite using `[rootRatio_chart hk u l hi' hc, mul_right_comm, rootRatio_chart hk u j hi' hc, mul_comm]`. Conclude with `e3`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootRatio_mul (h : VeroneseRel u) {W : X.Opens} {i j : τ} (l : τ) (hi : W ≤ rootChart u i)
     (hj : W ≤ rootChart u j) :
@@ -190,7 +190,7 @@ theorem rootRatio_mul (h : VeroneseRel u) {W : X.Opens} {i j : τ} (l : τ) (hi 
   exact e3
 
 /- English proof (translation)
-The claim follows from `pow_mul_word_const (x := fun w => resG X hc ((u w).f c)) (h.resG hc) (l₀ := ⟨0, hk⟩) (isUnit_resG_sec _ c hi hc) (rootRatio_chart hk u j hi hc)`.
+A detailed English derivation is pending.
 -/
 theorem rootRatio_pow (h : VeroneseRel u) {W : X.Opens} {i : τ} (j : τ) {c : Q.ι}
     (hi : W ≤ rootChart u i) (hc : W ≤ Q.U c) :
@@ -210,7 +210,7 @@ def rootG (h : VeroneseRel u) (i j : τ) : Γ(X, rootChart u i ⊓ rootChart u j
 def rootLB (h : VeroneseRel u) : LB X := ⟨τ, rootChart u, rootG hk h⟩
 
 /- English proof (translation)
-The claim follows from `Units.ext (by change resG X _ (resG X _ (rootRatio hk u i i)) = 1 rw [rootRatio_self, map_one, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem rootG_self (h : VeroneseRel u) (i : τ) :
     res (le_inf le_rfl le_rfl : rootChart u i ≤ rootChart u i ⊓ rootChart u i) (rootG hk h i i) = 1 :=
@@ -219,7 +219,7 @@ theorem rootG_self (h : VeroneseRel u) (i : τ) :
     rw [rootRatio_self, map_one, map_one])
 
 /- English proof (translation)
-The claim follows from `Units.ext (by change resG X _ (resG X _ (rootRatio hk u i j)) * resG X _ (resG X _ (rootRatio hk u j l)) = resG X _ (resG X _ (rootRatio hk u i l)) simp only [resG_resG] exact rootRatio_mul hk h l _ _)`.
+A detailed English derivation is pending.
 -/
 theorem rootG_cocycle (h : VeroneseRel u) (i j l : τ) :
     res (inf_le_left : rootChart u i ⊓ rootChart u j ⊓ rootChart u l ≤ rootChart u i ⊓ rootChart u j)
@@ -235,7 +235,7 @@ theorem rootG_cocycle (h : VeroneseRel u) (i j l : τ) :
     exact rootRatio_mul hk h l _ _)
 
 /- English proof (translation)
-The claim follows from `hc g_self := rootG_self hk h cocycle := rootG_cocycle hk h`.
+A detailed English derivation is pending.
 -/
 theorem rootLB_isLB (h : VeroneseRel u) (hc : ⨆ i : τ, nonzeroLocus (u fun _ => i) = ⊤) :
     (rootLB hk h).IsLB where
@@ -247,13 +247,13 @@ def rootIso (h : VeroneseRel u) : LB.Iso (pw (rootLB hk h) (k : ℤ)) Q where
   s p := (isUnit_resG_sec (u fun _ => (show τ from p.2)) p.1 inf_le_right inf_le_left).unit
 
 /- English proof (translation)
-Introduce and unpack `⟨c, i⟩ ⟨c', i'⟩`. Set `A` to `pw (rootLB hk h) (k : ℤ)`. Establish `hp : Q.U c ⊓ A.U i ⊓ (Q.U c' ⊓ A.U i') ≤ Q.U c` using `inf_le_left.trans inf_le_left`. Establish `hq : Q.U c ⊓ A.U i ⊓ (Q.U c' ⊓ A.U i') ≤ A.U i` using `inf_le_left.trans inf_le_right`. Establish `hp' : Q.U c ⊓ A.U i ⊓ (Q.U c' ⊓ A.U i') ≤ Q.U c'` using `inf_le_right.trans inf_le_left`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : Q.U c ⊓ A.U i ⊓ (Q.U c' ⊓ A.U i') ≤ A.U i'` using `inf_le_right.trans inf_le_right`. Establish `key : res (le_inf hp hq) (@id (Γ(X, Q.U c ⊓ A.U i)ˣ) ((rootIso hk h).s (c, i))) * res (le_inf hq hq') (A.g i i') = res (le_inf hp hp') (Q.g c c') * res (le_inf hp' hq') (@id (Γ(X, Q.U c' ⊓ A.U i')ˣ) ((rootIso hk h).s (c', i')))`. Use `Units.ext ?_` and prove the remaining obligations. Establish `eg : resG X (le_inf hq hq') (A.g i i').val = resG X (show _ ≤ rootChart u (show τ from i) from hq) (rootRatio hk u i i') ^ k`. Establish `: A.g i i' = (rootG hk h i i') ^ k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(rootG hk h i i') ^ (k : ℤ) = _`. Conclude with `zpow_natCast _ _`. Rewrite using `[this, Units.val_pow_eq_pow_val]`. Conclude with `(map_pow (resG X (le_inf hq hq')) _ k).trans (congrArg (· ^ k) (resG_resG _ _ _))`. Express the relevant statement in the definitionally equal form `resG X (le_inf hp hq) (resG X inf_le_left ((u fun _ => (show τ from i)).f c)) * resG X (le_inf hq hq') (A.g i i').val = resG X (le_inf hp hp') (Q.g c c').val * resG X (le_inf hp' hq') (resG X inf_le_left ((u fun _ => (show τ from i')).f c'))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[resG_resG, resG_resG, ← sec_compat _ c c' hp hp', eg, mul_comm]`. Conclude with `rootRatio_pow hk h _ _ _`. Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (@id (Γ(X, Q.U c ⊓ A.U i)ˣ) ((rootIso hk h).s (c, i))) = res (le_inf hp hp') (Q.g c c') * (res (le_inf hq hq') (A.g i i'))⁻¹ * res (le_inf hp' hq') (@id (Γ(X, Q.U c' ⊓ A.U i')ˣ) ((rootIso hk h).s (c', i')))`. Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootIso_isGen (h : VeroneseRel u) : (rootIso hk h).IsGen := by
   rintro ⟨c, i⟩ ⟨c', i'⟩
@@ -291,7 +291,7 @@ variable {Y : Scheme.{0}} (b : Y ⟶ X) {L : LB Y} {d D : ℤ} (hD : d * k = D)
 
 include hk in
 /- English proof (translation)
-The claim follows from `(nonzeroLocus_secPull _ _).ge.trans (((hm _).nonzeroLocus_eq (LB.isLB_pull hQ b) (isLB_pw hL D)).le.trans (nonzeroLocus_secMono_const hD a i hk).le)`.
+A detailed English derivation is pending.
 -/
 theorem preimage_rootChart_le (hQ : Q.IsLB) (hL : L.IsLB)
     (hm : ∀ w, SecMaps θ (secPull (u w) b) (secMono hD a w)) (i : τ) :
@@ -301,7 +301,7 @@ theorem preimage_rootChart_le (hQ : Q.IsLB) (hL : L.IsLB)
       (nonzeroLocus_secMono_const hD a i hk).le)
 
 /- English proof (translation)
-Establish `hW : W ≤ b ⁻¹ᵁ (rootChart u i ⊓ Q.U c)` using `le_inf hi hc`. Establish `e` using `congrArg (b.appLE (rootChart u i ⊓ Q.U c) W hW).hom (rootRatio_chart hk u j (inf_le_left : rootChart u i ⊓ Q.U c ≤ _) inf_le_right)`. Rewrite `e` using `[map_mul, appLE_resG, appLE_resG, appLE_resG]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem appLE_rootRatio_chart {W : Y.Opens} {i : τ} (j : τ) {c : Q.ι} (hi : W ≤ b ⁻¹ᵁ rootChart u i)
     (hc : W ≤ b ⁻¹ᵁ Q.U c) :
@@ -313,17 +313,17 @@ theorem appLE_rootRatio_chart {W : Y.Opens} {i : τ} (j : τ) {c : Q.ι} (hi : W
   rwa [map_mul, appLE_resG, appLE_resG, appLE_resG] at e
 
 /- English proof (translation)
-Establish `hnz : W ≤ nonzeroLocus (secPull (u fun _ => i) b)` using `hi.trans (nonzeroLocus_secPull _ _).ge`. Use `ext_charts (secPull (u fun _ => i) b) hnz fun c' => ?_` and prove the remaining obligations. Establish `hc' : W ⊓ (Q.pull b).U c' ≤ (Q.pull b).U c'` using `inf_le_right`. Establish `hp' : W ⊓ (Q.pull b).U c' ≤ L.U p` using `inf_le_left.trans hp`. Establish `hi' : W ⊓ (Q.pull b).U c' ≤ b ⁻¹ᵁ rootChart u i` using `inf_le_left.trans hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcb : W ⊓ (Q.pull b).U c' ≤ b ⁻¹ᵁ Q.U (c' ⟨⟩)` using `hc'.trans (pull_U Q b c').le`. Set `α : τ → Γ(Y, W ⊓ (Q.pull b).U c')` to `fun i => resG Y hp' (chartFn (a i) p)`. Set `β : (Fin k → τ) → Γ(Y, W ⊓ (Q.pull b).U c')` to `fun w => (b.appLE (Q.U (c' ⟨⟩)) _ hcb).hom ((u w).f (c' ⟨⟩))`. Set `ρ : Γ(Y, W ⊓ (Q.pull b).U c')` to `(b.appLE _ _ hi').hom (rootRatio hk u i j)`. Set `t : Γ(Y, W ⊓ (Q.pull b).U c')` to `resG Y (le_inf hp' hc' : _ ≤ (pw L D).U p ⊓ (Q.pull b).U c') (@id (Γ(Y, (pw L D).U p ⊓ (Q.pull b).U c')ˣ) (θ.s (p, c'))).val`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `S : ∀ w, ∏ l, α (w l) = t * β w` using `fun w => by`. Establish `e : resG Y (le_inf hp' hc' : _ ≤ (pw L D).U p ⊓ (Q.pull b).U c') (resG Y inf_le_left (∏ l, chartFn (a (w l)) p)) = resG Y (le_inf hp' hc' : _ ≤ (pw L D).U p ⊓ (Q.pull b).U c') ((@id (Γ(Y, (pw L D).U p ⊓ (Q.pull b).U c')ˣ) (θ.s (p, c'))).val * resG Y inf_le_right ((secPull (u w) b …` using `congrArg _ (hm w (p, c'))`. Rewrite `e` using `[map_mul, resG_resG, resG_resG]`. Use `(map_prod (resG Y hp') _ _).symm.trans (e.trans (congrArg (t * ·) ?_))` and prove the remaining obligations. Conclude with `(resG_resG _ _ _).trans rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hρ : ρ * β (fun _ => i) = β (oneLetter hk i j)` using `appLE_rootRatio_chart hk b j hi' hcb`. Establish `e1` using `prod_update_mul α (fun _ : Fin k => i) ⟨0, hk⟩ j`. Establish `hP` using `S fun _ => i`. Establish `uα : IsUnit (α i)` using `isUnit_resG_sec (a i) p (hi'.trans (preimage_rootChart_le hk b hD a θ hQ hL hm i)) hp'`. Establish `uP : IsUnit (∏ _l : Fin k, α i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_const]`. Conclude with `uα.pow _`. Rewrite using `[map_mul, resG_appLE, resG_resG, resG_resG]`. Express the relevant statement in the definitionally equal form `ρ * α i = α j`. Use `uP.mul_left_cancel ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (∏ l, α (oneLetter hk i j l)) * α i := by rw [hρ, S]`. Use `_ = _ := e1`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem appLE_rootRatio_mul (hQ : Q.IsLB) (hL : L.IsLB)
     (hm : ∀ w, SecMaps θ (secPull (u w) b) (secMono hD a w)) {W : Y.Opens} {i : τ} (j : τ)
@@ -376,15 +376,15 @@ def rootPullIso (h : VeroneseRel u) (hQ : Q.IsLB) (hL : L.IsLB)
       (preimage_rootChart_le hk b hD a θ hQ hL hm _))) inf_le_left).unit
 
 /- English proof (translation)
-Introduce and unpack `⟨l, i⟩ ⟨l', i'⟩`. Set `P` to `(rootLB hk h).pull b`. Set `M` to `pw L d`. Establish `hp : M.U l ⊓ P.U i ⊓ (M.U l' ⊓ P.U i') ≤ M.U l` using `inf_le_left.trans inf_le_left`. Establish `hq : M.U l ⊓ P.U i ⊓ (M.U l' ⊓ P.U i') ≤ P.U i` using `inf_le_left.trans inf_le_right`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp' : M.U l ⊓ P.U i ⊓ (M.U l' ⊓ P.U i') ≤ M.U l'` using `inf_le_right.trans inf_le_left`. Establish `hq' : M.U l ⊓ P.U i ⊓ (M.U l' ⊓ P.U i') ≤ P.U i'` using `inf_le_right.trans inf_le_right`. Establish `hi : M.U l ⊓ P.U i ⊓ (M.U l' ⊓ P.U i') ≤ b ⁻¹ᵁ rootChart u (i ⟨⟩)` using `hq.trans (pull_U (rootLB hk h) b i).le`. Establish `key : res (le_inf hp hq) (@id (Γ(Y, M.U l ⊓ P.U i)ˣ) ((rootPullIso hk b hD a θ h hQ hL hm).s (l, i))) * res (le_inf hq hq') (P.g i i') = res (le_inf hp hp') (M.g l l') * res (le_inf hp' hq') (@id (Γ(Y, M.U l' ⊓ P.U i')ˣ) ((rootPullIso hk b hD a θ h hQ hL hm).s (l', i')))`. Use `Units.ext ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eg : resG Y (le_inf hq hq') (P.g i i').val = (b.appLE _ _ hi).hom (rootRatio hk u (i ⟨⟩) (i' ⟨⟩))`. Establish `e` using `congrArg (fun v => resG Y (le_inf hq hq') (Units.val v)) (pull_g (rootLB hk h) b i i')`. Use `e.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `resG Y _ (resG Y _ ((b.app _).hom (resG X inf_le_left (rootRatio hk u (i ⟨⟩) (i' ⟨⟩))))) = _`. Use `(resG_resG _ _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (resG Y _) (app_resG b _ _)).trans ?_` and prove the remaining obligations. Use `(resG_resG _ _ _).trans ?_` and prove the remaining obligations. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `resG Y (le_inf hp hq) (resG Y inf_le_left ((a (i ⟨⟩)).f l)) * resG Y (le_inf hq hq') (P.g i i').val = resG Y (le_inf hp hp') (M.g l l').val * resG Y (le_inf hp' hq') (resG Y inf_le_left ((a (i' ⟨⟩)).f l'))`. Rewrite using `[resG_resG, resG_resG, ← sec_compat _ l l' hp hp', eg, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `appLE_rootRatio_mul hk b hD a θ hQ hL hm _ hi l hp`. Express the relevant statement in the definitionally equal form `res (le_inf hp hq) (@id (Γ(Y, M.U l ⊓ P.U i)ˣ) ((rootPullIso hk b hD a θ h hQ hL hm).s (l, i))) = res (le_inf hp hp') (M.g l l') * (res (le_inf hq hq') (P.g i i'))⁻¹ * res (le_inf hp' hq') (@id (Γ(Y, M.U l' ⊓ P.U i')ˣ) ((rootPullIso hk b hD a θ h hQ hL hm).s (l', i')))`. Rewrite using `[mul_right_comm, ← key, mul_inv_cancel_right]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rootPullIso_isGen (h : VeroneseRel u) (hQ : Q.IsLB) (hL : L.IsLB)
     (hm : ∀ w, SecMaps θ (secPull (u w) b) (secMono hD a w)) :
@@ -431,7 +431,7 @@ end Pull
 end Root
 
 /- English proof (translation)
-Introduce `X Q hQ k hk τ u hrel hcov`. Establish `h : VeroneseRel u` using `hrel`. Conclude with `⟨rootLB hk h, rootIso hk h, rootLB_isLB hk h hcov, rootIso_isGen hk h, fun Y b L d D hD a θ hL _ hm => ⟨rootPullIso hk b hD a θ h hQ hL hm, rootPullIso_isGen hk b hD a θ h hQ hL hm⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_root_of_veronese : ∀ (X : Scheme.{0}) (Q : LB X), Q.IsLB → ∀ (k : ℕ), 1 ≤ k → ∀ (τ : Type) (u : (Fin k → τ) → LB.Sec Q), (∀ w₁ w₂ w₃ w₄ : Fin k → τ, (Finset.univ.val.map w₁ + Finset.univ.val.map w₂ = Finset.univ.val.map w₃ + Finset.univ.val.map w₄) → ∀ c, (u w₁).f c * (u w₂).f c = (u w₃).f c * (u w₄).f c) → (⨆ i : τ, nonzeroLocus (u (fun _ => i)) = ⊤) → ∃ (A : LB X) (ω : LB.Iso (pw A (k : ℤ)) Q), A.IsLB ∧ ω.IsGen ∧ ∀ (Y : Scheme.{0}) (b : Y ⟶ X) (L : LB Y) (d D : ℤ) (hD : d * k = D) (a : τ → LB.Sec (pw L d)) (θ : LB.Iso (Q.pull b) (pw L D)), L.IsLB → θ.IsGen → (∀ w, SecMaps θ (secPull (u w) b) (secMono hD a w)) → LBIso (A.pull b) (pw L d) := by
   intro X Q hQ k hk τ u hrel hcov

@@ -11,7 +11,7 @@ open scoped NumberField.AdeleRing ValuativeRel
 namespace GlobalTheory.CompanionTheory.AdelicIntegral
 
 /- English proof (translation)
-Introduce `S g₀ U hU hint`. Establish `h₁ : ∀ᶠ g in nhds g₀, ∀ v ∈ S, finAt v g ∈ U v` using `(Filter.eventually_all_finset S).2 fun v hv => (GroundTheory.Automorphic.Reduction.continuous_finAt v).continuousAt.eventually_mem (hU v hv)`. Establish `h₂ : ∀ᶠ g in nhds g₀, ∀ v ∉ S, finAt v g ∈ integralGL (Qv v) 2` using `(GroundTheory.Automorphic.Reduction.isOpen_setOf_forall_not_mem_imp S).mem_nhds hint`. Conclude with `h₁.and h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_finAt_mem_and_integralGL :
     ∀ (S : Finset Pl) (g₀ : G2) (U : ∀ v : Pl, Set (GL (Fin 2) (Qv v))), (∀ v ∈ S, U v ∈ nhds (finAt v g₀)) →

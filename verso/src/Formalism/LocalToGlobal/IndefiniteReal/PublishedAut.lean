@@ -45,7 +45,7 @@ def AtTauExists (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E �
   ∀ τ (g : Matrix (Fin V.rank) (Fin V.rank) ℂ), g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ) → ∃ x, IsAtTau θ V τ g x
 
 /- English proof (translation)
-Introduce `τ g hg`. Take `⟨x, hx, -⟩` from `Formalism.IndefR.Eqv.atTauExUnique_holds (D := D) θ hθ V τ g hg`. Conclude with `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem atTauExists_of {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)} (hθ : IsInfFam θ) (V : HSp D) :
     AtTauExists θ V := by

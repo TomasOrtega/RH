@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.IndefiniteRowS
 open scoped ContDiff nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HoloWirt.iterD_eq_wirtWord` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIteratedComplexPartialDerivativeEqWirtingerWord.lean&line=66#L66)
 -/

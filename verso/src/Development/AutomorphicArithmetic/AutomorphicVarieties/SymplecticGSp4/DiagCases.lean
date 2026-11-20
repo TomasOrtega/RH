@@ -6,15 +6,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Con
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D hD hS r hr hT`. Take `⟨κ, m, -, hm, hdiag, -⟩` from `diagChar D hD r hr hT`. Break down `hm with rfl | rfl` into its components or cases. Use `left`. Use `⟨fun s hs => ?_, fun i j hij hG => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hdiag 0 s hs` using `[Raw.ps]`. Establish `hne : i ≠ j`. Introduce and unpack `rfl`. Simplify using `[wt] at hij`. Establish `hlt` using `diagonal_character_order_lt_of_stable_flag D hD hS r hr hT id Function.injective_id hdiag i j hne hG`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `revert hij hlt`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wt, muW, lamW]`. Use `right`. Use `⟨fun s hs => ?_, fun i j hij hG => ?_⟩` and prove the remaining obligations. Simplify `hdiag 0 s hs` using `[Raw.ps]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hne : i ≠ j`. Introduce and unpack `rfl`. Simplify using `[wt] at hij`. Establish `hinj : Function.Injective (![2, 3, 0, 1] : Fin 4 → Fin 4)` using `by decide`. Establish `hlt` using `diagonal_character_order_lt_of_stable_flag D hD hS r hr hT _ hinj hdiag i j hne hG`.
-
-Use `revert hij hlt`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wt, muW, lamW]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.GradeZeroInterpolatingElement.diagCases :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → SoV Ω l → ∀ r, D.EPt r → DiagType r → ((∀ s ∈ D.Ip l, r s 0 0 = ((D.th s : c.O) : PadicAlgCl l)) ∧ ∀ i j, (wt i j).2 < 0 → ¬ Ge r i j) ∨ ((∀ s ∈ D.Ip l, r s 0 0 = ((D.al s : c.O) : PadicAlgCl l)) ∧ ∀ i j, 0 < (wt i j).2 → ¬ Ge r i j) := by

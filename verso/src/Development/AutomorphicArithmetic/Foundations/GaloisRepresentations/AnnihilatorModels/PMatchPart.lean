@@ -5,37 +5,37 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hSN hMatch hPerm B _ ϖ hϖ ι _ I I' _ _ N hI hI' u u' hsame e he hdiv hcmp`. Take `⟨ρ, hρ⟩ : ∃ ρ : B →+* B ⧸ Ideal.span {1 - e}, ρ = Ideal.Quotient.mk _` from `⟨_, rfl⟩`. Establish `hsurj : Function.Surjective ρ`. Substitute `hρ` using the available equality. Conclude with `Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hker : ∀ a b : B, ρ a = ρ b ↔ a - b ∈ Ideal.span {1 - e}`. Substitute `hρ` using the available equality. Conclude with `fun a b => Ideal.Quotient.eq`. Establish `he' : e * e = e` using `he`. Establish `hρe : ρ e = 1`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one ρ]`. Conclude with `(hker e 1).mpr (Ideal.mem_span_singleton'.mpr ⟨-1, by ring⟩)`. Establish `L1 : ∀ a b : B, ρ a = ρ b → e * a = e * b`. Introduce `a b hab`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.mp ((hker a b).mp hab)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-e) * hc + (-c) * he'`. Establish `L2 : ∀ a b : B, ρ a ∣ ρ b → a ∣ e * b`. Introduce and unpack `a b ⟨c', hc'⟩`. Take `⟨c, rfl⟩` from `hsurj c'`. Rewrite `hc'` using `[← map_mul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `L1 _ _ hc'` as an intermediate fact. Conclude with `⟨e * c, by rw [this]; ring⟩`. Establish `L3 : ∀ a b : B, a ∣ e * b → ρ a ∣ ρ b`. Introduce `a b h`. Use `map_dvd ρ h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[map_mul, hρe, one_mul]`. Then use the resulting hypothesis. Distinguish the cases in `hu : IsUnit (ρ ϖ)`. Take `⟨σ⟩ : Nonempty (I ≃ I')` from `⟨Fintype.equivOfCardEq (hI.trans hI'.symm)⟩`. Use `⟨σ, fun i k => L2 _ _ hu.dvd⟩` and prove the remaining obligations. Establish `hnzd : ρ ϖ ∈ nonZeroDivisors (B ⧸ Ideal.span {1 - e})`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hr : ∀ z' : B ⧸ Ideal.span {1 - e}, z' * ρ ϖ = 0 → z' = 0`. Introduce `z' hz'`. Take `⟨z, rfl⟩` from `hsurj z'`. Rewrite `hz'` using `[← map_mul, ← map_zero ρ]`. Establish `h1` using `L1 _ _ hz'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : e * z * ϖ = 0`. Rewrite `h1` using `[mul_zero]`. Rewrite using `[mul_assoc]`. Conclude with `h1`. Establish `h3 : e * z = 0` using `(mem_nonZeroDivisors_iff.mp hϖ).2 _ h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← one_mul (ρ z), ← hρe, ← map_mul, h3, map_zero]`. Rewrite using `[mem_nonZeroDivisors_iff]`. Conclude with `⟨fun z hz => hr z (by rw [mul_comm]; exact hz), hr⟩`. Establish `hle : Ideal.span {ϖ ^ (N + 1) ^ N} ≤ (Ideal.span {ρ ϖ ^ (N + 1) ^ N}).comap ρ`. Rewrite using `[Ideal.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Introduce `x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Rewrite using `[SetLike.mem_coe, Ideal.mem_comap, map_pow]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `hsame' : SameNorm (redMod (ρ ϖ ^ (N + 1) ^ N) (Multiset.map (fun i k => ρ (u i k)) Finset.univ.val)) (redMod (ρ ϖ ^ (N + 1) ^ N) (Multiset.map (fun i k => ρ (u' i k)) Finset.univ.val))`. Use `(hSN (B ⧸ Ideal.span {ϖ ^ (N + 1) ^ N}) ι).1 _ (Ideal.quotientMap _ ρ hle) _ _ hsame` as an intermediate fact. Apply the tactic sequence `convert this using 1 <;>`. Simplify using `[redMod, Multiset.map_map, Function.comp_def, Ideal.quotientMap_mk]`. Establish `hM` using `hMatch (B ⧸ Ideal.span {1 - e}) (ρ ϖ) hnzd hu ι N (Multiset.map (fun i k => ρ (u i k)) Finset.univ.val) (Multiset.map (fun i k => ρ (u' i k)) Finset.univ.val) (by simp [hI]) (by simp [hI']) hsame' ?_ ?_`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [redMod, Multiset.map_map] at hM`. Take `⟨σ, hσ⟩` from `hPerm I I' _ _ _ hM`. Use `⟨σ, fun i k => ?_⟩` and prove the remaining obligations. Use `congrFun (hσ i) k` as an intermediate fact. Simplify using `only [Function.comp_apply] at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, ← map_sub]`. Conclude with `L2 _ _ this`. Introduce `x hx y hy k k' hxy`. Simplify using `only [Multiset.mem_map, Finset.mem_val, Finset.mem_univ, true_and] at hx hy`. Take `⟨i, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Take `⟨i', rfl⟩` from `hy`. Rewrite `hxy` using `[← map_sub, ← map_pow]`. Rewrite using `[← map_sub, ← map_sub]`. Break down `hcmp i i' k k' (L2 _ _ hxy) with h | h` into its components or cases. Conclude with `Or.inl (L3 _ _ h)`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Or.inr (L3 _ _ h)`. Introduce `x hx y hy k j hj`. Simplify using `only [Multiset.mem_map, Finset.mem_val, Finset.mem_univ, true_and] at hx hy`. Take `⟨i, rfl⟩` from `hx`. Take `⟨i', rfl⟩` from `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Establish `hm : (N + 1) ^ j ≤ (N + 1) ^ N` using `Nat.pow_le_pow_right (Nat.succ_pos N) hj`. Rewrite using `[← map_sub, ← map_pow]`. Break down `hdiv i i' k _ hm with h | h` into its components or cases. Conclude with `Or.inl (L3 _ _ h)`. Conclude with `Or.inr (L3 _ _ h)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.matchPart_of :
     SameNormBasic → Matching → PermOfMap → MatchPart := by

@@ -18,11 +18,11 @@ namespace GlobalTheory.SplitChart
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
 
 /- English proof (translation)
-Use `GlobalTheory.AutFunCompare.HA_ext σ Y.Jᵀ fun r s => ?_` and prove the remaining obligations. Establish `hat : At (evFin F v) ((mat g.1 - 1) r s)` using `fun u hu => by`. Use `congrFun (congrFun (g.2 u hu) r) s` as an intermediate fact. Simplify `this` using `[smul_sub]`. Establish `h0` using `(at_evFin_iff.1 hat).2 w hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `(HA.mat (Fv F w) σ Y.Jᵀ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Y.Jᵀ (evFin F w) (GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1)) : Matrix (Fin n) (Fin n) (Fv F w ⊗[F] E)) r s = _`. Rewrite using `[GlobalTheory.AutFunCompare.mat_mapH]`. Express the relevant statement in the definitionally equal form `compFin F E w (mat g.1 r s) = _`. Rewrite using `[h0, show HA.mat _ σ Y.Jᵀ 1 = 1 from map_one (matHom _ σ Y.Jᵀ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem proj_eq_one_of_ne {Y : Spc F E n} {v w : Pl F} (g : UAtSub σ Y (evFin F v)) (hw : w ≠ v) :
     proj σ Y.Jᵀ w (GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1) = 1 := by
@@ -42,11 +42,11 @@ theorem proj_eq_one_of_ne {Y : Spc F E n} {v w : Pl F} (g : UAtSub σ Y (evFin F
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use `GlobalTheory.AutFunCompare.HA_ext σ Y.Jᵀ fun r s => ?_` and prove the remaining obligations. Establish `hat : At (evFin F v) ((mat g.1 - 1) r s)` using `fun u hu => by`. Use `congrFun (congrFun (g.2 u hu) r) s` as an intermediate fact. Simplify `this` using `[smul_sub]`. Establish `h0` using `(at_evFin_iff.1 hat).1 w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h0` using `[Matrix.sub_apply, map_sub, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `(HA.mat w.Completion σ Y.Jᵀ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Y.Jᵀ (evInf F w) (GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1)) : Matrix (Fin n) (Fin n) (w.Completion ⊗[F] E)) r s = _`. Rewrite using `[GlobalTheory.AutFunCompare.mat_mapH]`. Express the relevant statement in the definitionally equal form `compInf F E w (mat g.1 r s) = _`. Rewrite using `[h0, show HA.mat _ σ Y.Jᵀ 1 = 1 from map_one (matHom _ σ Y.Jᵀ)]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : r = s`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem projArch_eq_one {Y : Spc F E n} {v : Pl F} (g : UAtSub σ Y (evFin F v)) (w : InfinitePlace F) :
     projArch σ Y.Jᵀ w (GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1) = 1 := by
@@ -66,15 +66,15 @@ theorem projArch_eq_one {Y : Spc F E n} {v : Pl F} (g : UAtSub σ Y (evFin F v))
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y hcm hY hL v hSD K hK t b hb`. Establish `hJt : IsHermND σ Y.Jᵀ` using `⟨fun i j => hY.1 j i, by rw [Matrix.det_transpose]; exact hY.2⟩`. Use `⟨(GlobalTheory.LocUnitaryUnimod.locEquiv σ v Y).trans (splitEquivIn hcm hJt t b), fun g => ?_, fun g => ?_⟩` and prove the remaining obligations. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(b⁻¹).1 * ((matHom _ σ Y.Jᵀ (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.mapH σ Y.Jᵀ (evFin F v) (GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1))).1.map (splitProj t)) * b.1 = (b⁻¹).1 * (mat g.1).map (piW t) * b.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `congr 2`. Use `set h := GlobalTheory.LocUnitaryUnimod.toHAe σ Y.J g.1 with hh`. Establish `hg : GlobalTheory.IwLine.ofGAd σ Y.J h = g.1` using `Subtype.ext rfl`. Establish `hloc : (GlobalTheory.LocUnitaryUnimod.locEquiv σ v Y) g = proj σ Y.Jᵀ v h` using `rfl`. Rewrite using `[(hK _).trans (GlobalTheory.StabHaar.isStab_stabK B Y _).symm, ← hg]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ↔ splitEquivIn hcm hJt t b ((GlobalTheory.LocUnitaryUnimod.locEquiv σ v Y) g) ∈ Formalism.UG.GLint (Fin n) (v.adicCompletionIntegers F).toSubring`. Rewrite using `[hloc, ← mem_stabLoc_iff_GLint hcm hJt hSD hb]`. Prove the components needed by the constructor for the conclusion. Introduce `H`. Conclude with `(GlobalTheory.KBridgeConv.local_of_ofGAd_mem_stabK F E σ B n Y hL h H).2 v`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `H`. Use `GlobalTheory.KBridge.ofGAd_mem_stabK F E σ B n Y hL h (fun w => ?_) (fun w => ?_)` and prove the remaining obligations. Rewrite using `[hh, projArch_eq_one g w]`. Simplify using the standard rewrite rules. Distinguish the cases in `hw : w = v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hw` using the available equality. Conclude with `H`. Rewrite using `[hh, proj_eq_one_of_ne g hw]`. Conclude with `one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n : ℕ) (Y : Spc F E n), IsCMExt F E σ → IsHermND σ Y.J → Y.L.IsLattice E →

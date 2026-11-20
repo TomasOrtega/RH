@@ -5,9 +5,9 @@ namespace GlobalTheory.IntegralPi
 open Polynomial
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Use `choose p hpm hp using hx`. Use `⟨∏ i, p i, monic_prod_of_monic _ _ (fun i _ => hpm i), ?_⟩` and prove the remaining obligations. Rewrite using `[← aeval_def]`. Use function extensionality and compare the values at `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (aeval x (∏ i, p i)) j = aeval (x j) (∏ i, p i)`. Use `(aeval_algHom_apply (Pi.evalAlgHom O R j) x (∏ i, p i)).symm` as an intermediate fact. Simplify using `using this`. Rewrite using `[key, map_prod, Pi.zero_apply]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ j) (by rw [aeval_def]; exact hp j)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_pi {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
     [∀ i, CommRing (R i)] [∀ i, Algebra O (R i)] (x : ∀ i, R i)
@@ -25,7 +25,7 @@ theorem isIntegral_pi {O : Type} [CommRing O] {ι : Type} [Finite ι] {R : ι �
   exact Finset.prod_eq_zero (Finset.mem_univ j) (by rw [aeval_def]; exact hp j)
 
 /- English proof (translation)
-Introduce `x hx` and use `isIntegral_pi x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [inst : CommRing O] {ι : Type} [Finite ι] {R : ι → Type}
     [inst_2 : (i : ι) → CommRing (R i)] [inst_3 : (i : ι) → Algebra O (R i)] (x : (i : ι) → R i),

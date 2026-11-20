@@ -16,7 +16,7 @@ open GlobalTheory.MixModel GlobalTheory.UnipMean
 variable {D : D7} {V V' W : HSp D} {r : ℕ}
 
 /- English proof (translation)
-Establish `a1 : x1 * (p * m) = 0` using `by rw [← Matrix.mul_assoc, hp, Matrix.zero_mul]`. Establish `a2 : x1 * (p * m * q) = 0` using `by rw [← Matrix.mul_assoc, a1, Matrix.zero_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem corner_alg {R a b c : Type} [CommRing R] [Fintype b] [Fintype c] {x1 : Matrix a b R} {m p q : Matrix b b R}
     {C' : Matrix b c R} {B : Matrix c b R} (hq : q = C' * B) (hp : x1 * p = 0)
@@ -28,7 +28,7 @@ theorem corner_alg {R a b c : Type} [CommRing R] [Fintype b] [Fintype c] {x1 : M
     _ = x1 * m * C' * B := by rw [a1, a2, zero_add, sub_zero, hq]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hO_eq_trace, rat_mul, rat_conjTranspose, adj_mul, adj_mul, adj_adj, ← gA, adj_gA]`. Simplify using `only [Matrix.mul_assoc, giA_gA_cancel]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hO_iso (C : Matrix (Fin V.rank) (Fin r) D.host.E) (x : WO V W) (y : Mx D W.rank r) :
     hO V W x (y ⬝ rat (Cᴴ * V.gram)) = (adj y ⬝ (gA W ⬝ (x ⬝ rat C))).trace := by
@@ -38,18 +38,18 @@ theorem hO_iso (C : Matrix (Fin V.rank) (Fin r) D.host.E) (x : WO V W) (y : Mx D
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[symplO_eq, hO_iso, hx, Matrix.mul_zero, Matrix.mul_zero, Matrix.trace_zero, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_iso_of (C : Matrix (Fin V.rank) (Fin r) D.host.E) {x : WO V W} (hx : x ⬝ rat C = 0)
     (y : Mx D W.rank r) : symplO V W x (y ⬝ rat (Cᴴ * V.gram)) = 0 := by
   rw [symplO_eq, hO_iso, hx, Matrix.mul_zero, Matrix.mul_zero, Matrix.trace_zero, mul_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨u, hu⟩ : ∃ u : Mx D W.rank r, u = gA W ⬝ (x ⬝ rat C)` from `⟨_, rfl⟩`. Establish `hu0 : u = 0`. Use extensionality with `i j`. Establish `key : ∀ w : AE D, Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * u i j * w) = 0` using `fun w => by`. Use `h (adj (Matrix.single j i w : Mx D r W.rank))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[symplO_eq, hO_iso, adj_adj, ← hu, trace_single_mul', ← mul_assoc]`. Conclude with `this`. Establish `hz` using `eq_zero_of_trace_mul (F := D.host.F) (E := D.host.E) (R := AF D.host.F) _ key`. Establish `hξ : incA D D.host.xi0⁻¹ * incA D D.host.xi0 = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (incA D D.host.xi0⁻¹ * ·) hz` as an intermediate fact. Simplify `this` using `[← mul_assoc, hξ]`. Establish `e : giA W ⬝ u = giA W ⬝ (gA W ⬝ (x ⬝ rat C))` using `by rw [hu]`. Rewrite `e` using `[giA_gA_cancel, hu0, Matrix.mul_zero]`. Conclude with `e.symm`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulC_eq_zero_of_symplO (C : Matrix (Fin V.rank) (Fin r) D.host.E) {x : WO V W}
     (h : ∀ y : Mx D W.rank r, symplO V W x (y ⬝ rat (Cᴴ * V.gram)) = 0) : x ⬝ rat C = 0 := by
@@ -70,7 +70,7 @@ theorem mulC_eq_zero_of_symplO (C : Matrix (Fin V.rank) (Fin r) D.host.E) {x : W
   exact e.symm
 
 /- English proof (translation)
-Establish `h : Cᴴ * V.gram * C = 0` using `hC.2.2`. Rewrite using `[Matrix.mul_assoc, ← rat_mul, h, rat_zero, Matrix.mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_mulC {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C) (y : Mx D W.rank r) :
     y ⬝ rat (Cᴴ * V.gram) ⬝ rat C = 0 := by
@@ -78,9 +78,9 @@ theorem iso_mulC {C : Matrix (Fin V.rank) (Fin r) D.host.E} (hC : IsIsoFrame V C
   rw [Matrix.mul_assoc, ← rat_mul, h, rat_zero, Matrix.mul_zero]
 
 /- English proof (translation)
-Establish `h0 : Cᴴ * V.gram * B = 0` using `hs.orth`. Establish `h1 : Bᴴ * (V.gram * C) = 0`. Use `congrArg Matrix.conjTranspose h0` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, gram_conjTranspose, Matrix.conjTranspose_zero]`. Then use the resulting hypothesis. Rewrite using `[Matrix.mul_assoc, ← rat_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, h1, Matrix.mul_zero, rat_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mid_mulC {C : Matrix (Fin V.rank) (Fin r) D.host.E} {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
     (hs : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B) (x : WO V' W) :
@@ -99,7 +99,7 @@ variable {C : Matrix (Fin V.rank) (Fin r) D.host.E} {C' : Matrix (Fin V.rank) (F
   {L B₀ : Matrix (Fin r) (Fin V.rank) D.host.E}
 
 /- English proof (translation)
-Establish `e1 : rat B₀ ⬝ mt V g = rat B₀`. Rewrite `g2` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e2 : rat B₀ ⬝ mt V g⁻¹ = rat B₀`. Rewrite using `[← e1, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one, e1]`. Rewrite using `[actO_eq, mt_one, Matrix.one_mul, ← h.hB, Matrix.mul_assoc, e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gen_fix_iso (h : IsDualPair V C C' L B₀) {g : GA D V} (g2 : rat B₀ ⬝ (mt V g - 1) = 0)
     (y : Mx D W.rank r) : actO V W g 1 (y ⬝ rat (Cᴴ * V.gram)) = y ⬝ rat (Cᴴ * V.gram) := by
@@ -110,11 +110,11 @@ theorem gen_fix_iso (h : IsDualPair V C C' L B₀) {g : GA D V} (g2 : rat B₀ �
   rw [actO_eq, mt_one, Matrix.one_mul, ← h.hB, Matrix.mul_assoc, e2]
 
 /- English proof (translation)
-Establish `e1 : mt V g ⬝ rat C = rat C`. Rewrite `g1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Then use the resulting hypothesis. Establish `e2 : mt V g⁻¹ ⬝ rat C = rat C`. Rewrite using `[← e1, ← Matrix.mul_assoc, mt_inv_mul, Matrix.one_mul, e1]`. Take `⟨x1, hx1⟩ : ∃ x1 : WO V W, x1 = x ⬝ mt V g⁻¹` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hx1C : x1 ⬝ rat C = 0` using `by rw [hx1, Matrix.mul_assoc, e2, hx]`. Establish `hx1p : x1 ⬝ rat (C * L) = 0` using `by rw [rat_mul, ← Matrix.mul_assoc, hx1C, Matrix.zero_mul]`. Establish `hx1g : x1 ⬝ mt V g = x` using `by rw [hx1, Matrix.mul_assoc, mt_inv_mul, Matrix.mul_one]`. Establish `k : x1 ⬝ (mt V g - 1) = x1 ⬝ (mt V g - 1) ⬝ rat C' ⬝ rat B₀` using `corner_alg (rat_mul C' B₀) hx1p r3`. Use `⟨-(x1 ⬝ (mt V g - 1) ⬝ rat C'), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[actO_eq, mt_one, Matrix.one_mul, ← h.hB, Matrix.neg_mul, ← k, Matrix.mul_sub, hx1g, Matrix.mul_one, ← hx1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gen_move (h : IsDualPair V C C' L B₀) {g : GA D V} (g1 : (mt V g - 1) ⬝ rat C = 0)
     (r3 : mt V g - 1 = rat (C * L) * (mt V g - 1) + (mt V g - 1) * rat (C' * B₀) -
@@ -143,37 +143,37 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {χS χT : (AE D)ˣ →* Circle}
   {ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)}
 
 /- English proof (translation)
-Establish `: (g * g', (1 : GA D W)) = (g, 1) * (g', 1)` using `by simp`. Rewrite using `[this, map_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weilRepresentation_source_mul (g g' : GA D V) (f : WO V W → ℂ) : ω (g * g', 1) f = ω (g, 1) (ω (g', 1) f) := by
   have : (g * g', (1 : GA D W)) = (g, 1) * (g', 1) := by simp
   rw [this, map_mul]; rfl
 
 /- English proof (translation)
-Establish `: ((1 : GA D V), (1 : GA D W)) = 1` using `rfl`. Rewrite using `[this, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weilRepresentation_source_one (f : WO V W → ℂ) : ω (1, 1) f = f := by
   have : ((1 : GA D V), (1 : GA D W)) = 1 := rfl
   rw [this, map_one]; rfl
 
 /- English proof (translation)
-Establish `hC` using `hs.frame`. Take `⟨C', L, B₀, h⟩` from `exists_dualPair hC`. Establish `hP : (1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E).rank = W.rank`. Rewrite using `[Matrix.rank_one, Fintype.card_fin]`. Establish `hQ : (Cᴴ * V.gram).rank = r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Simplify using `using Matrix.rank_le_card_height (Cᴴ * V.gram)`. Use `Matrix.rank_mul_le_left (Cᴴ * V.gram) C'` as an intermediate fact. Rewrite `this`, the goal using `[← h.hB]`. Rewrite `this` using `[h.BC', Matrix.rank_one, Fintype.card_fin]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `eI : ∀ y : Mx D W.rank r, (HMul.hMul (HMul.hMul ((1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)) (y : Matrix (Fin W.rank) (Fin r) (AE D))) ((Cᴴ * V.gram).map (incA D)) : Matrix (Fin W.rank) (Fin V.rank) (AE D)) = y ⬝ rat (Cᴴ * V.gram)` using `fun y => by show rat (1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E) ⬝ y ⬝ rat (Cᴴ * V.gram) = _`. Rewrite using `[rat_one, Matrix.one_mul]`. Unfold `NI at hg`. Use `Subgroup.closure_induction (p := fun g _ => ∃ c : ℂ, c ≠ 0 ∧ ∀ f, IsThetaFunO ψ V W f → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B μ 𝓨 (ω (g, 1) f) = c • GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res V V' W C B …` and prove the remaining obligations. Introduce and unpack `g ⟨g1, g2, g3⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `g1' : (mt V g - 1) ⬝ rat C = 0` using `g1`. Take `⟨r1, r2, r3⟩` from `gen_relations h (x := mt V g - 1) g1' (by rw [h.hB]; exact g2) (fun v hv => g3 v (by rw [← h.hB']; exact hv))`. Establish `g2' : rat B₀ ⬝ (mt V g - 1) = 0` using `by rw [h.hB]; exact g2`. Take `⟨c, hc⟩` from `GlobalTheory.T.isotropicMean_changes_by_scalar_of_trivial_action D V W W.rank r 1 (Cᴴ * V.gram) hP hQ (fun y y' => by rw [eI, eI]; exact symplO_iso_of C (iso_mulC hC y) y') ψ χS χT ω hω μ 𝓨 hcov g 1 (fun y => by rw [eI]; exact gen_fix_iso h g2' y) (fun x hx => by`. Take `⟨y, hy⟩` from `gen_move h g1' r3 (mulC_eq_zero_of_symplO C fun y => by rw [← eI]; exact hx y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, by rw [eI]; exact hy⟩)`. Use `⟨c, Circle.coe_ne_zero c, fun f hf => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x'`. Establish `hm` using `mid_mulC hs (W := W) x'`. Establish `hh : ∀ (F : WO V W → ℂ) (y : Mx D W.rank r), heisO ψ V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W B x') F (HMul.hMul (HMul.hMul ((1 : Matrix (Fin W.rank) (Fin W.rank) D.host.E).map (incA D)) (y : Matrix (Fin W.rank) (Fin r) (AE D))) (( …` using `fun F y => by`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[eI]`. Use `show ψ (symplOH V W _ _) * F _ = _`. Establish `h0 : symplO V W (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W B x') (y ⬝ rat (Cᴴ * V.gram)) = 0` using `symplO_iso_of C hm y`. Rewrite using `[symplOH_skew]`. Unfold `symplOH`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, mul_zero, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Both sides reduce to the same expression. Use `hc f hf (GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart V V' W B x') (fun y => by rw [eI]; exact symplO_iso_of C hm y)` as an intermediate fact. Simplify using `only [hh] at this`. Use `show ∫ y in 𝓨, ω (g, 1) f _ ∂μ = (c : ℂ) • ∫ y in 𝓨, f _ ∂μ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this, smul_eq_mul]`. Conclude with `⟨1, one_ne_zero, fun f _ => by rw [weilRepresentation_source_one, one_smul]⟩`. Introduce and unpack `a b - - ⟨c, hc, ha⟩ ⟨d, hd, hb⟩`. Conclude with `⟨c * d, mul_ne_zero hc hd, fun f hf => by`. Rewrite using `[weilRepresentation_source_mul, ha _ (hω.om_pres _ _ hf), hb f hf, smul_smul]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a - ⟨c, hc, ha⟩`. Use `⟨c⁻¹, inv_ne_zero hc, fun f hf => ?_⟩` and prove the remaining obligations. Use `ha _ (hω.om_pres (a⁻¹, 1) f hf)` as an intermediate fact. Rewrite `this` using `[← weilRepresentation_source_mul, mul_inv_cancel, weilRepresentation_source_one]`. Rewrite using `[this, smul_smul, inv_mul_cancel₀ hc, one_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_product_rescale_disjoint_finsets {C : Matrix (Fin V.rank) (Fin r) D.host.E} {B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E}
     (hs : GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit V V' C B) (hω : IsWeilDatumO ψ V W χS χT ω)
@@ -247,7 +247,7 @@ end GlobalTheory.SourceUnip
 open GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition
 
 /- English proof (translation)
-Introduce `D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hcov g hg`. Take `⟨c, -, hc⟩` from `GlobalTheory.SourceUnip.unit_product_rescale_disjoint_finsets hs hω hcov hg`. Conclude with `⟨c, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.SourceUnip.scal : ∀ (D : D7) (V V' W : HSp D) (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin V'.rank) D.host.E), IsIsoSplit V V' C B → ∀ (ψ : AddChar (AF D.host.F) ℂ) (χS χT : (AE D)ˣ →* Circle) (ω : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)), IsWeilDatumO ψ V W χS χT ω → ∀ (μ : Measure (Mx D W.rank r)) (𝓨 : Set (Mx D W.rank r)), IsCovolOne (ratMx D W.rank r) μ 𝓨 → ∀ g : GA D V, g ∈ NI V C → ∃ c : ℂ, ∀ f, IsThetaFunO ψ V W f → res V V' W C B μ 𝓨 (ω (g, 1) f) = c • res V V' W C B μ 𝓨 f := by
   intro D V V' W r C B hs ψ χS χT ω hω μ 𝓨 hcov g hg

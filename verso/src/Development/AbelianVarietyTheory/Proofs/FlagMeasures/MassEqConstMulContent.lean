@@ -24,15 +24,15 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (pow_mem ϖ.2 e)`.
+A detailed English derivation is pending.
 -/
 theorem unif_pow_mem (L : LocE F E) (ϖ : 𝒪[F]) (e : ℕ) : algebraMap F E ((ϖ : F) ^ e) ∈ L.O :=
   (GlobalTheory.UnramOrder.algebraMap_mem_iff L _).2 (pow_mem ϖ.2 e)
 
 /- English proof (translation)
-Use `L.free` as an intermediate fact. Establish `: Module.Finite F E` using `Module.finite_of_finrank_pos (by rw [L.rank]; omega)`. Establish `hx : IsAlgebraic 𝒪[F] c` using `(IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨d, hd0, hd⟩` from `hx.exists_integral_multiple`. Take `⟨e, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hd0 hϖ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e, (L.O_def _).2 ?_⟩` and prove the remaining obligations. Establish `h1` using `hd.smul (↑u⁻¹ : 𝒪[F])`. Rewrite `h1` using `[smul_smul, hu, Units.inv_mul_cancel_left, Algebra.smul_def]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (c : E) :
     ∃ e : ℕ, algebraMap F E ((ϖ : F) ^ e) * c ∈ L.O := by
@@ -48,7 +48,7 @@ theorem exists_pow_mul (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (c :
   exact h1
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' h`. Rewrite using `[pow_add, map_mul, mul_smul]`. Conclude with `Λ.smul_mem (⟨_, unif_pow_mem L ϖ k⟩ : L.O) hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_mono (L : LocE F E) (ϖ : 𝒪[F]) {n : ℕ} (Λ : Submodule L.O (Fin n → E))
     {v : Fin n → E} {e e' : ℕ} (h : e ≤ e') (hv : algebraMap F E ((ϖ : F) ^ e) • v ∈ Λ) :
@@ -58,15 +58,15 @@ theorem pow_smul_mono (L : LocE F E) (ϖ : 𝒪[F]) {n : ℕ} (Λ : Submodule L.
   exact Λ.smul_mem (⟨_, unif_pow_mem L ϖ k⟩ : L.O) hv
 
 /- English proof (translation)
-Establish `h1 : ∀ v : Fin n → E, ∃ e : ℕ, algebraMap F E ((ϖ : F) ^ e) • v ∈ Λ`. Introduce `v`. Establish `hv : v ∈ Submodule.span E (Λ : Set (Fin n → E))` using `by rw [hΛ.2]; trivial`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact ⟨0, by simpa using hv⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨e, he⟩` from `ha`. Take `⟨f, hf⟩` from `hb`. Use `⟨max e f, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Conclude with `Λ.add_mem (pow_smul_mono L ϖ Λ (le_max_left _ _) he) (pow_smul_mono L ϖ Λ (le_max_right _ _) hf)`. Consider the case `smul c a _ ha`. Take `⟨e, he⟩` from `ha`. Take `⟨f, hf⟩` from `exists_pow_mul L ϖ hϖ c`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f + e, ?_⟩` and prove the remaining obligations. Establish `: algebraMap F E ((ϖ : F) ^ (f + e)) • c • a = (algebraMap F E ((ϖ : F) ^ f) * c) • algebraMap F E ((ϖ : F) ^ e) • a`. Rewrite using `[smul_smul, smul_smul, pow_add, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Λ.smul_mem (⟨_, hf⟩ : L.O) he`. Use `choose e he using h1`. Conclude with `⟨Finset.univ.sup fun a => e (x a), fun a => pow_smul_mono L ϖ Λ (Finset.le_sup (f := fun a => e (x a)) (Finset.mem_univ a)) (he _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
     {Λ : Submodule L.O (Fin n → E)} (hΛ : IsLat L Λ) {m : ℕ} (x : Fin m → Fin n → E) :
@@ -100,27 +100,25 @@ theorem exists_pow_smul (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n 
 variable [CharZero F]
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `(GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 1).2.2 Λ' hΛ'`. Establish `hN'` using `(GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ' hΛ' 1).2.1 le_rfl`. Take `⟨C, hC, hCi, hCn⟩` from `(GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 (max N 1)).1`. Establish `hC1` using `(GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λ hΛ.1 (max N 1)).2.1 (le_max_right _ _)`. Take `⟨e, he⟩` from `exists_pow_smul L ϖ hϖ hΛ.1 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, hi0, hth⟩` from `GlobalTheory.T.thick_orbit_selfDual_unramified_lattice L ϖ hϖ Hm hH Λs hs Λ hΛ m _ hx (max N 1) e`. Use `⟨i0, fun i hi => ?_⟩` and prove the remaining obligations. Use `set U := isomG L Hm with hU`. Use `set H := fixG L Hm (Submodule.span E (Set.range x)) with hHdef`. Establish `hHU : H ≤ U` using `inf_le_left`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCS : C ≤ stabL L Λ` using `fun g hg => ((hC g).1 hg).1`. Establish `hCS' : C ≤ stabL L Λ'`. Introduce `g hg`. Use `hN' g (hN g fun v hv => ?_)` and prove the remaining obligations. Take `⟨w, hw, hgw⟩` from `((hC g).1 hg).2 v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (le_max_left N 1)`. Use `⟨algebraMap F E ((ϖ : F) ^ k) • w, Λ.smul_mem (⟨_, unif_pow_mem L ϖ k⟩ : L.O) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hgw, hk, pow_add, map_mul, mul_smul]`. Establish `h12 : U ⊓ C ≤ U ⊓ (stabL L Λ ⊓ stabL L Λ')` using `inf_le_inf_left _ (le_inf hCS hCS')`. Establish `h1 : U ⊓ (stabL L Λ ⊓ stabL L Λ') ≤ U ⊓ stabL L Λ` using `inf_le_inf_left _ inf_le_left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnorm : ∀ a ∈ U ⊓ stabL L Λ, MulAut.conj a • (U ⊓ C) = U ⊓ C`. Introduce `a ha`. Rewrite using `[Subgroup.smul_inf, hCn a ha.2, Subgroup.conj_smul_eq_self_of_mem ha.1]`. Establish `hfin : ∀ K : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)), ∀ T, T ≤ stabL L Λ → (K ⊓ C).relIndex (K ⊓ T) ≠ 0`. Introduce `K T hT`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Subgroup.relIndex_ne_zero_trans (H := C) (K := stabL L Λ) (L := K ⊓ T)`. Establish `h2 : C.relIndex (K ⊓ T) ≠ 0` using `fun h0 => hCi (Subgroup.relIndex_eq_zero_of_le_right (inf_le_right.trans hT) h0)`. Rewrite using `[← Subgroup.inf_relIndex_right (K ⊓ C), show K ⊓ C ⊓ (K ⊓ T) = C ⊓ (K ⊓ T) by` and apply the resulting hypothesis. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `tauto, Subgroup.inf_relIndex_right]`. Take `⟨hco, hst⟩` from `hth i hi (U ⊓ C) (h12.trans h1) (fun g hg hg' => ⟨hg, (hC g).2 ⟨hC1 g hg', hg'⟩⟩) x he rfl`. Establish `e1` using `GlobalTheory.T.content_thickenedTupleOrbit_normalSubgroup L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ stabL L Λ) (U ⊓ C) inf_le_left (h12.trans h1) hnorm (hfin U _ le_rfl) i (hi0.trans hi) hst hco`. Establish `e2` using `GlobalTheory.T.content_thickenedTupleOrbit_normalSubgroup L ϖ hϖ Hm hH Λs hs m x hx (U ⊓ (stabL L Λ ⊓ stabL L Λ')) (U ⊓ C) inf_le_left h12 (fun a ha => hnorm a (h1 ha)) (hfin U _ inf_le_left) i (hi0.trans hi) hst hco`. Establish `hHi : ∀ T, H ⊓ (U ⊓ T) = H ⊓ T` using `fun T => by rw [← inf_assoc, inf_eq_left.2 hHU]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[← hHdef]`. Simplify using `only [hHi] at e1 e2`. Establish `m1` using `Subgroup.relIndex_mul_relIndex _ _ _ h12 h1`. Establish `m2` using `Subgroup.relIndex_mul_relIndex (H ⊓ C) (H ⊓ (stabL L Λ ⊓ stabL L Λ')) (H ⊓ stabL L Λ) (inf_le_inf_left _ (le_inf hCS hCS')) (inf_le_inf_left _ inf_le_left)`. Establish `m3 : (U ⊓ (stabL L Λ ⊓ stabL L Λ')).relIndex (U ⊓ stabL L Λ) = (U ⊓ stabL L Λ').relIndex (U ⊓ stabL L Λ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[← Subgroup.inf_relIndex_right (U ⊓ stabL L Λ')]`. Use `congr 1`. Use extensionality with `g`. Simplify using `only [Subgroup.mem_inf]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite `e1` using `[← m1, ← m2, m3]`. Move the coercions through the operations in `at e1`. Establish `hne : ((H ⊓ C).relIndex (H ⊓ (stabL L Λ ⊓ stabL L Λ')) : ℝ) ≠ 0`. Conclude with `hfin H _ inf_le_left` after adjusting the coercions. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises.
-
-Take the linear combination `e1 - ((U ⊓ stabL L Λ').relIndex (U ⊓ stabL L Λ) : ℝ) * e2`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cont_inf (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
     {Hm : Matrix (Fin n) (Fin n) E} (hH : IsHermND L Hm) {Λs : Submodule L.O (Fin n → E)}
@@ -187,11 +185,11 @@ theorem cont_inf (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) {n : ℕ}
   linear_combination e1 - ((U ⊓ stabL L Λ').relIndex (U ⊓ stabL L Λ) : ℝ) * e2
 
 /- English proof (translation)
-Take `⟨g, hg, hgΛ⟩` from `(GlobalTheory.HL.SelfDual.orthonormal_basis_and_one_orbit L Hm hH).2 Λ Λ' hΛ hΛ'`. Establish `hfix : fixG L Hm (Submodule.span E (Set.range (Fin.elim0 : Fin 0 → Fin n → E))) = isomG L Hm`. Rewrite using `[Set.range_eq_empty, Submodule.span_empty]`. Use `inf_eq_left.2 fun a _ => ⟨fun v => by simp, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[(Submodule.mem_bot E).1 hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h` using `GlobalTheory.T.unitaryGroup_orthogonalComplement_unimodular L Hm hH 0 Fin.elim0 (by simp) Λ Λ hΛ.1 hΛ.1 g (by rwa [hfix])`. Rewrite `h` using `[hfix, hgΛ]`. Establish `hne : ((isomG L Hm ⊓ stabL L Λ).relIndex (isomG L Hm ⊓ stabL L Λ') : ℝ) ≠ 0`. Conclude with `(GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L Λ' Λ hΛ'.1 hΛ.1 (isomG L Hm)).1` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [invVol, Subgroup.relIndex_self, Nat.cast_one, div_one] at h`. Conclude with `(div_eq_one_iff_eq hne).1 h`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_symm (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (hH : IsHermND L Hm)
     {Λ Λ' : Submodule L.O (Fin n → E)} (hΛ : IsSD L Hm Λ) (hΛ' : IsSD L Hm Λ') :
@@ -213,23 +211,21 @@ theorem relIndex_symm (L : LocE F E) {n : ℕ} {Hm : Matrix (Fin n) (Fin n) E} (
 end
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hs m x hx Λ0 h0`. Establish `hΓ : IsHerm L (gramT L Hm x)`. Use function extensionality and compare the values at `a b`. Conclude with `DualInter.cj_hf hH _ _`. Take `⟨e, he⟩` from `exists_pow_smul L ϖ hϖ hs.1 x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hth⟩` from `GlobalTheory.T.thick_orbit_selfDual_unramified_lattice L ϖ hϖ Hm hH Λs hs Λs hs m _ hx 1 e`. Establish `hth'` using `fun i hi => hth i hi (isomG L Hm ⊓ stabL L Λs) le_rfl (fun g hg hg' => ⟨hg, (GlobalTheory.T.congruence_subgroup_lattice_stabilizer L ϖ hϖ Λs hs.1 1).2.1 le_rfl g hg'⟩) x he rfl`. Establish `h1K` using `fun i hi => GlobalTheory.T.matrixCongruentOneModUniformizerPow_group_and_orbits L ϖ hϖ m i hi`. Establish `hcpos : 0 < cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ stabL L Λs) x) j)` using `(GlobalTheory.T.commensurableCosetUnionContent_independent_nonneg _ _).2.2.2 (hth' j le_rfl).1 ⟨_, _, ⟨1, Subgroup.one_mem _, rfl⟩, 1, (h1K j hj).1, rfl⟩`. Establish `hhpos` using `((h1K j hj).2.2 _ hΓ hx).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := fixG L Hm (Submodule.span E (Set.range x)) with hHdef`. Establish `hcomm : ∀ A B, IsLat L A → IsLat L B → (H ⊓ stabL L B).relIndex (H ⊓ stabL L A) ≠ 0` using `fun A B hA hB => (GlobalTheory.T.latticeStabilizer_commensurable_unramified_hermitian L A B hA hB H).1`. Establish `hvpos : 0 < invVol (H ⊓ stabL L Λ0) (H ⊓ stabL L Λs)` using `(GlobalTheory.HL.invVol_mul_pos_le_conj _ (H ⊓ stabL L Λs) _ (hcomm _ _ hs.1 h0) (hcomm _ _ h0 hs.1) (hcomm _ _ hs.1 h0) (hcomm _ _ h0 hs.1)).2.1`. Use `⟨invVol (H ⊓ stabL L Λ0) (H ⊓ stabL L Λs) * cont (hermLat L m) (horb L ϖ (gramT L Hm x) j) / cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ stabL L Λs) x) j), by positivity, ?_⟩` and prove the remaining obligations. Introduce `Λ hΛ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i1, k1⟩` from `cont_inf L ϖ hϖ hH hs x hx hΛ hs.1`. Take `⟨i2, k2⟩` from `cont_inf L ϖ hϖ hH hs x hx hs hΛ.1`. Use `⟨max j (max i1 i2), fun i hi => ?_⟩` and prove the remaining obligations. Establish `hij : j ≤ i` using `(le_max_left _ _).trans hi`. Establish `k1` using `k1 i ((le_max_left _ _).trans ((le_max_right _ _).trans hi))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k2` using `k2 i ((le_max_right _ _).trans ((le_max_right _ _).trans hi))`. Rewrite `k1`, `k2` using `[← hHdef]`. Rewrite `k2` using `[inf_comm (stabL L Λs) (stabL L Λ), ← relIndex_symm L hH hΛ hs]`. Establish `lev` using `GlobalTheory.T.normalisedContent_thickenedSet_independent_of_level L ϖ hϖ Hm hH Λs hs m _ hΓ hx (torb (isomG L Hm ⊓ stabL L Λs) x) (by`. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `a b`. Conclude with `hg.1 _ _) j i hj hij (hth' j le_rfl).2 (hth' i hij).1`. Establish `hsplit : H ⊓ (stabL L Λ ⊓ stabL L Λs) = (H ⊓ stabL L Λ) ⊓ (H ⊓ stabL L Λs)` using `inf_inf_distrib_left _ _ _`. Establish `a1 : (H ⊓ (stabL L Λ ⊓ stabL L Λs)).relIndex (H ⊓ stabL L Λ0) ≠ 0`. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subgroup.relIndex_inf_ne_zero (hcomm _ _ h0 hΛ.1) (hcomm _ _ h0 hs.1)`. Establish `a2 : (H ⊓ stabL L Λ0).relIndex (H ⊓ (stabL L Λ ⊓ stabL L Λs)) ≠ 0` using `fun h => hcomm _ _ hΛ.1 h0 (Subgroup.relIndex_eq_zero_of_le_right (inf_le_inf_left _ inf_le_left) h)`. Establish `v1` using `(GlobalTheory.HL.invVol_mul_pos_le_conj _ (H ⊓ stabL L Λ) _ (hcomm _ _ hΛ.1 h0) (hcomm _ _ h0 hΛ.1) a2 a1).2.2.1 (inf_le_inf_left _ inf_le_left)`. Establish `v2` using `(GlobalTheory.HL.invVol_mul_pos_le_conj _ (H ⊓ stabL L Λs) _ (hcomm _ _ hs.1 h0) (hcomm _ _ h0 hs.1) a2 a1).2.2.1 (inf_le_inf_left _ inf_le_right)`. Establish `hne : ((H ⊓ (stabL L Λ ⊓ stabL L Λs)).relIndex (H ⊓ stabL L Λ) : ℝ) ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hsplit, inf_comm, Subgroup.inf_relIndex_right]`. Conclude with `hcomm _ _ hΛ.1 hs.1` after adjusting the coercions. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hcpos.ne']`. Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite `v2` using `[v1]`.
-
-Rewrite `k2` using `[← k1]`. Take the linear combination `(cont (hermLat L m) (horb L ϖ (gramT L Hm x) i) * cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ stabL L Λs) x) j)) * v2 + (invVol (H ⊓ stabL L Λ0) (H ⊓ stabL L Λs) * ((H ⊓ (stabL L Λ ⊓ stabL L Λs)).relIndex (H ⊓ stabL L Λs) : ℝ)) * lev + (invVol (H ⊓ stabL L Λ0) (H ⊓ stabL …`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mass_eq_const_mul_content : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n : ℕ} (Hm : Matrix (Fin n) (Fin n) E), IsHermND L Hm → ∀ Λs, IsSD L Hm Λs → ∀ (m : ℕ) (x : Fin m → Fin n → E), IsUnit (gramT L Hm x).det → ∀ Λ0, IsLat L Λ0 → ∃ κ : ℝ, 0 < κ ∧ ∀ Λ, IsSD L Hm Λ → ∃ i0 : ℕ, ∀ i ≥ i0, invVol (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ0) (fixG L Hm (Submodule.span E (Set.range x)) ⊓ stabL L Λ) * cont (hermLat L m) (horb L ϖ (gramT L Hm x) i) = κ * cont (tupLat L Λs m) (thick L ϖ (torb (isomG L Hm ⊓ stabL L Λ) x) i) := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n Hm hH Λs hs m x hx Λ0 h0

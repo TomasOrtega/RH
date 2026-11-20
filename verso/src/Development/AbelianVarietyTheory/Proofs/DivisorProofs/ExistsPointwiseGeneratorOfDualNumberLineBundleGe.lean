@@ -16,14 +16,14 @@ namespace GlobalTheory.PtExt
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Simplify using `[epsEv, DualNumber.lift_apply_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsGen_epsEv_apply {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E) (u : DualNumber E) :
     epsEv e u = u.fst + u.snd * ptAlg (D := DualNumber R) e DualNumber.eps := by
   simp [epsEv, DualNumber.lift_apply_apply]
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `dualNumberAlgHomMap_fst_snd_logDerivative R E E' ψ u`. Rewrite using `[epsGen_epsEv_apply, epsGen_epsEv_apply, h1, h2, ptAlg_comp, map_add, map_mul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem epsGen_epsEv_nat {E E' : Type} [CommRing E] [Algebra R E] [CommRing E'] [Algebra R E']
     (ψ : E →ₐ[R] E') (e : Pt (epsR R) E) (u : DualNumber E) :
@@ -33,11 +33,11 @@ theorem epsGen_epsEv_nat {E E' : Type} [CommRing E] [Algebra R E] [CommRing E'] 
   rfl
 
 /- English proof (translation)
-Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use extensionality with `u`. Express the relevant statement in the definitionally equal form `u ∈ (PrimeSpectrum.comap (epsEv e : DualNumber E →+* E) p).asIdeal ↔ u ∈ (PrimeSpectrum.comap (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E) p).asIdeal`. Simplify using `only [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Establish `hc : ptAlg (D` using `DualNumber R) e DualNumber.eps ∈ p.asIdeal := p.isPrime.mem_of_pow_mem 2 (by rw [pow_two, ← map_mul, DualNumber.eps_mul_eps, map_zero]; exact p.asIdeal.zero_mem)`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `epsEv e u ∈ p.asIdeal ↔ u.fst ∈ p.asIdeal`. Rewrite using `[epsGen_epsEv_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `p.asIdeal.sub_mem h (p.asIdeal.mul_mem_left u.snd hc)` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `h`. Conclude with `p.asIdeal.add_mem h (p.asIdeal.mul_mem_left u.snd hc)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem epsGen_spMap_eq {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E) (p : Sp E) :
     (spMap (epsEv e : DualNumber E →+* E)).base p = (spMap (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E)).base p := by
@@ -58,7 +58,7 @@ theorem epsGen_spMap_eq {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E
     exact p.asIdeal.add_mem h (p.asIdeal.mul_mem_left u.snd hc)
 
 /- English proof (translation)
-Introduce `p _`. Use `h (Set.mem_univ p)` as an intermediate fact. Express the relevant statement in the definitionally equal form `y.base ((spMap (epsEv e : DualNumber E →+* E)).base p) ∈ U at this`. Express the relevant statement in the definitionally equal form `y.base ((spMap (TrivSqZeroExt.fstHom R E E : DualNumber E →+* E)).base p) ∈ U`. Rewrite using `[← epsGen_spMap_eq e p]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem epsGen_mem {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E) {Y : Scheme.{0}}
     (y : Sp (DualNumber E) ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ (spMap (epsEv e : DualNumber E →+* E) ≫ y) ⁻¹ᵁ U) :
@@ -72,13 +72,13 @@ theorem epsGen_mem {E : Type} [CommRing E] [Algebra R E] (e : Pt (epsR R) E) {Y 
 variable {A B : Over (Sp R)} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Establish `hv' : spOver (TrivSqZeroExt.fstHom R R R) ≫ v = toUnit _ ≫ η[B]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `hv.trans ?_` and prove the remaining obligations. Simplify using `[spMap]`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ptV, Category.assoc, lift_fst, Category.comp_id]`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `: (TrivSqZeroExt.fstHom R E E).comp (TrivSqZeroExt.inlAlgHom R E E) = AlgHom.id R E` using `by ext; simp`. Rewrite using `[this]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[spOver, spMap]`. Simplify using `only [ptV, Category.assoc, lift_snd]`. Rewrite using `[← Category.assoc, spOver_comp]`. Establish `: (TrivSqZeroExt.fstHom R E E).comp (EpsWeil.epsMap R E) = (Algebra.ofId R E).comp (TrivSqZeroExt.fstHom R R R)`. Apply `DualNumber.algHom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[EpsWeil.epsMap]`. Rewrite using `[this, ← spOver_comp, Category.assoc, hv', Hom.one_def, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem epsGen_red_ptV {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRing E] [Algebra R E] (x : Pt A E) :
     spOver (TrivSqZeroExt.fstHom R E E) ≫ ptV v x = x ≫ AbDual.inl A B := by
@@ -104,11 +104,11 @@ theorem epsGen_red_ptV {v : epsR R ⟶ B} (hv : IsTangent v) {E : Type} [CommRin
     exact toUnit_unique _ _
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `only [ptV, Category.assoc, lift_fst]`. Rewrite using `[← Category.assoc (spOver _), spOver_comp]`. Establish `: (epsEv (z ≫ snd _ _)).comp (TrivSqZeroExt.inlAlgHom R E E) = AlgHom.id R E`. Use extensionality with `a`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[epsEv, DualNumber.lift_apply_inl]`. Rewrite using `[this, spOver_id, Category.id_comp]`. Simplify using `only [ptV, Category.assoc, lift_snd]`. Rewrite using `[← Category.assoc (spOver _), spOver_comp]`. Establish `: (epsEv (z ≫ snd _ _)).comp (EpsWeil.epsMap R E) = ptAlg (z ≫ snd _ _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `DualNumber.algHom_ext` to reduce the goal to its premises. Simplify using `[EpsWeil.epsMap, epsEv]`. Rewrite using `[this, spOver_ptAlg, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem epsGen_key (v : epsR R ⟶ B) {E : Type} [CommRing E] [Algebra R E] (z : Pt (A ⊗ epsR R) E) :
     z ≫ lift (fst A (epsR R)) (snd A (epsR R) ≫ v) =
@@ -127,17 +127,17 @@ theorem epsGen_key (v : epsR R ⟶ B) {E : Type} [CommRing E] [Algebra R E] (z :
     rw [this, spOver_ptAlg, Category.assoc]
 
 /- English proof (translation)
-Introduce `R _ A B _ _ P _ v hv T hT`. Take `⟨T1, T2, T3⟩` from `hT`. Establish `memV : ∀ (E : Type) [CommRing E] [Algebra R E] (x : Pt A E) (i : P.ι), ⊤ ≤ x.left ⁻¹ᵁ chartsA P i → ⊤ ≤ (ptV v x).left ⁻¹ᵁ P.U i`. Introduce `E _ _ x i h`. Apply `(evU_dl_rules.2.2.2.2.2) _ E (ptV v x).left (P.U i)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ⊤ ≤ (x ≫ AbDual.inl A B).left ⁻¹ᵁ P.U i` using `h`. Rewrite `h1` using `[← epsGen_red_ptV hv x]`. Conclude with `h1`. Establish `memA : ∀ (E : Type) [CommRing E] [Algebra R E] (z : Pt (A ⊗ epsR R) E) (i : P.ι), ⊤ ≤ (z ≫ CartesianMonoidalCategory.lift (fst A (epsR R)) (snd A (epsR R) ≫ v)).left ⁻¹ᵁ P.U i → ⊤ ≤ (z ≫ fst _ _).left ⁻¹ᵁ chartsA P i`. Introduce `E _ _ z i h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[epsGen_key v z, Over.comp_left, spOver_left]`. Establish `h2` using `epsGen_mem (z ≫ snd _ _) _ _ h`. Establish `h3 : ⊤ ≤ (spOver (TrivSqZeroExt.fstHom R E E) ≫ ptV v (z ≫ fst _ _)).left ⁻¹ᵁ P.U i` using `h2`. Rewrite `h3` using `[epsGen_red_ptV hv]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun E _ _ z i ↦ epsEv (z ≫ snd _ _) (T E (z ≫ fst _ _) i), ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `E _ _ z i h`. Conclude with `(T1 E (z ≫ fst _ _) i (memA E z i h)).map _`. Introduce `E _ _ E' _ _ ψ z i h`. Establish `h'` using `memA E z i h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc]`. Rewrite using `[T2 E E' ψ (z ≫ fst _ _) i h', epsGen_epsEv_nat]`. Introduce `E _ _ z i j hi hj`. Establish `hi'` using `memA E z i hi`. Establish `hj'` using `memA E z j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hij : ⊤ ≤ (ptV v (z ≫ fst _ _)).left ⁻¹ᵁ (P.U i ⊓ P.U j)` using `fun p hp ↦ ⟨memV E _ i hi' hp, memV E _ j hj' hp⟩`. Simplify using `only`. Rewrite using `[T3 E (z ≫ fst _ _) i j hi' hj', map_mul, epsGen_key v z, Over.comp_left, spOver_left, (evU_dl_rules.1) _ _ E (epsEv (z ≫ snd _ _) : DualNumber E →+* E) _ _ _ hij]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isPtGen_of_isEpsGen : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) [GrpObj A] [GrpObj B]
     (P : LB (A ⊗ B).left), P.IsLB → ∀ v : epsR R ⟶ B, IsTangent v → ∀ T, IsEpsGen P v T →

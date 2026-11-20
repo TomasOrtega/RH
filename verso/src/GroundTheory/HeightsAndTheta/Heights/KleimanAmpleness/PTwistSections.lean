@@ -19,7 +19,7 @@ variable {S : Type u} [CommRing S] {N : ℕ}
 variable {M : Type*} [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M]
 
 /- English proof (translation)
-Use `revert x`. Use `LocalizedModule.induction_on ?_` and prove the remaining obligations. Introduce `m s`. Rewrite using `[locRes_mk, locRes_mk, locRes_mk]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRes_locRes {I J K : Finset (Fin (N + 1))} (h1 : I ⊆ J) (h2 : J ⊆ K) (x : LocMod S N M I) :
     locRes h2 (locRes h1 x) = locRes (h1.trans h2) x := by
@@ -29,7 +29,7 @@ theorem locRes_locRes {I J K : Finset (Fin (N + 1))} (h1 : I ⊆ J) (h2 : J ⊆ 
   rw [locRes_mk, locRes_mk, locRes_mk]
 
 /- English proof (translation)
-Use `revert x`. Use `LocalizedModule.induction_on ?_` and prove the remaining obligations. Introduce `m s`. Rewrite using `[locRes_mk]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRes_self {I : Finset (Fin (N + 1))} (h : I ⊆ I) (x : LocMod S N M I) : locRes h x = x := by
   revert x
@@ -38,9 +38,7 @@ theorem locRes_self {I : Finset (Fin (N + 1))} (h : I ⊆ I) (x : LocMod S N M I
   rw [locRes_mk]
 
 /- English proof (translation)
-Establish `key : degLoc 𝓜 c I ≤ (degLoc 𝓜 c J).comap (locResS I J h)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, s, a, e, hm, hs, hae, rfl⟩`. Use `show locRes h (LocalizedModule.mk m s : LocalizedModule (monos (S := S) I.1) M) ∈ degLoc 𝓜 c J`. Rewrite using `[locRes_mk]`.
-
-Conclude with `Submodule.subset_span ⟨m, ⟨s, monos_mono h s.2⟩, a, e, hm, hs, hae, rfl⟩`. Conclude with `key hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locRes_mem_degLoc (𝓜 : GradedPMod S N M) (c : ℤ) (I J : StdCell N) (h : I.1 ⊆ J.1)
     {x : LocMod S N M I.1} (hx : x ∈ degLoc 𝓜 c I) : locRes h x ∈ degLoc 𝓜 c J := by
@@ -63,9 +61,9 @@ def primeQuotGraded : GradedPMod S N (Poly S N ⧸ primeOf (S := S) y) :=
   quotGraded (primeOf (S := S) y) fun _ hf d => homogeneousComponent_mem_primeOf y hf d
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.span S _ ≤ _`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨f, e, hf, he, rfl⟩`. Simplify using `only [SetLike.mem_coe, SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem]`. Introduce `I`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Submodule.subset_span ⟨f, 1, 0, e, one_mem _, hf, isHomogeneous_one _ _, by simp [he], by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem coordGraded_piece_le_secs (n : ℕ) :
     (coordGraded S y).piece (n : ℤ) ≤ (twistSys S y (n : ℤ)).secs := by
@@ -78,9 +76,9 @@ theorem coordGraded_piece_le_secs (n : ℕ) :
     by simp⟩
 
 /- English proof (translation)
-Rewrite `hz` using `[twistMod_eq_span (n : ℤ) (singleChart hj) (Finset.mem_singleton_self j), Submodule.mem_span_singleton]`. Take `⟨b, rfl⟩` from `hz`. Take `⟨f, s, e, hs, hf, hse, hb⟩` from `b.2`. Establish `hs0 : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos (singleChart hj) hs`. Use `⟨f * X j ^ n, s, e, hs, hse, hf.mul (isHomogeneous_X_pow j n), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[chartRing_smul_def, hb, map_mul, map_pow, aeval_X, zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem exists_rep_of_mem_twistMod (n : ℕ) {j : Fin (N + 1)} (hj : y j ≠ 0) {z : Ω}
     (hz : z ∈ twistMod S y (n : ℤ) (singleChart hj)) :
@@ -96,7 +94,7 @@ theorem exists_rep_of_mem_twistMod (n : ℕ) {j : Fin (N + 1)} (hj : y j ≠ 0) 
   field_simp
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (q * f) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right f _ hq`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_quot_eq_zero {q : Poly S N} (hq : q ∈ primeOf (S := S) y)
     (m : Poly S N ⧸ primeOf (S := S) y) : q • m = 0 := by
@@ -106,9 +104,9 @@ theorem smul_quot_eq_zero {q : Poly S N} (hq : q ∈ primeOf (S := S) y)
   exact Ideal.mul_mem_right f _ hq
 
 /- English proof (translation)
-Use `revert x`. Use `LocalizedModule.induction_on ?_` and prove the remaining obligations. Introduce `m s`. Use `show (LocalizedModule.mk m s : LocalizedModule (monos (S := S) J) _) = 0`. Rewrite using `[← LocalizedModule.zero_mk s]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LocalizedModule.mk_eq.mpr ⟨⟨X i, X_mem_monos hi⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_zero, smul_zero, Submonoid.smul_def]`. Conclude with `smul_quot_eq_zero y ((mem_primeOf_of_isHomogeneous y (isHomogeneous_X S i)).mpr (by rw [aeval_X, hyi])) _`.
+A detailed English derivation is pending.
 -/
 theorem locMod_quot_eq_zero {J : Finset (Fin (N + 1))} {i : Fin (N + 1)} (hi : i ∈ J) (hyi : y i = 0)
     (x : LocMod S N (Poly S N ⧸ primeOf (S := S) y) J) : x = 0 := by
@@ -123,9 +121,9 @@ theorem locMod_quot_eq_zero {J : Finset (Fin (N + 1))} {i : Fin (N + 1)} (hi : i
     ((mem_primeOf_of_isHomogeneous y (isHomogeneous_X S i)).mpr (by rw [aeval_X, hyi])) _
 
 /- English proof (translation)
-Rewrite using `[locRes_mk, locRes_mk]`. Use `LocalizedModule.mk_eq.mpr ⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, one_smul, Submonoid.smul_def, Submonoid.smul_def]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (sb * ga) = Ideal.Quotient.mk _ (sa * gb)`. Rewrite using `[Ideal.Quotient.eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (sb * ga).IsHomogeneous (eb + (ea + n))` using `hsbe.mul hga`. Establish `h2 : (sa * gb).IsHomogeneous (eb + (ea + n))`. Use `hsae.mul hgb` as an intermediate fact. Rewrite `this` using `[show ea + (eb + n) = eb + (ea + n) by omega]`. Then use the resulting hypothesis. Rewrite using `[mem_primeOf_of_isHomogeneous y (h1.sub h2), map_sub, map_mul, map_mul, hza, hzb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -154,37 +152,33 @@ theorem locRes_rep_eq {n : ℕ} {z : Ω} {J : Finset (Fin (N + 1))} {a b : Fin (
   ring
 
 /- English proof (translation)
-Introduce `z hz`. Establish `hloc : ∀ j : Fin (N + 1), ∃ w : LocMod S N (Poly S N ⧸ primeOf (S` using `S) y) {j}, w ∈ degLoc (primeQuotGraded (S := S) y) (n : ℤ) ⟨{j}, Finset.singleton_nonempty j, Finset.subset_univ _⟩ ∧ ∀ _ : y j ≠ 0, ∃ (g s : Poly S N) (e : ℕ) (hs : s ∈ monos ({j} : Finset (Fin (N + 1)))), s.IsHomogeneous e ∧ g.IsHomogeneous (e + n) ∧ aeval y g = z * aeval y s ∧ …`. Introduce `j`. Distinguish the cases in `hj : y j = 0`. Conclude with `⟨0, Submodule.zero_mem _, fun h => absurd hj h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Establish `hzj : z ∈ twistMod S y (n : ℤ) (singleChart hj)`. Establish `h'` using `hz`. Simplify using `only [SubSystem.secs, Submodule.mem_iInf, Submodule.restrictScalars_mem] at h'`. Conclude with `h' (singleChart hj)`. Take `⟨g, s, e, hs, hse, hg, hgz⟩` from `exists_rep_of_mem_twistMod y n hj hzj`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨LocalizedModule.mk (Ideal.Quotient.mk (primeOf (S := S) y) g) ⟨s, hs⟩, Submodule.subset_span ⟨Ideal.Quotient.mk (primeOf (S := S) y) g, ⟨s, hs⟩, ((e + n : ℕ) : ℤ), e, mem_quotGraded_piece.mpr ⟨g, isWeightedHomogeneous_int_of_isHomogeneous hg, rfl⟩, hse, by push_cast; ring, rfl⟩, …` and prove the remaining obligations. Use `choose w hwdeg hwrep using hloc`. Establish `hcompat : ∀ (J : Finset (Fin (N + 1))) (a b : Fin (N + 1)) (ha : a ∈ J) (hb : b ∈ J), locRes (Finset.singleton_subset_iff.mpr ha) (w a) = locRes (Finset.singleton_subset_iff.mpr hb) (w b)`. Introduce `J a b ha hb`. Distinguish the cases in `h0 : ∃ i ∈ J, y i = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi, hyi⟩` from `h0`. Rewrite using `[locMod_quot_eq_zero y hi hyi (locRes (Finset.singleton_subset_iff.mpr ha) (w a)), locMod_quot_eq_zero y hi hyi (locRes (Finset.singleton_subset_iff.mpr hb) (w b))]`. Use `push Not at h0`. Take `⟨ga, sa, ea, hsa, hsae, hga, hza, hwa⟩` from `hwrep a (h0 a ha)`. Take `⟨gb, sb, eb, hsb, hsbe, hgb, hzb, hwb⟩` from `hwrep b (h0 b hb)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hwa, hwb]`. Conclude with `locRes_rep_eq y ha hb ga sa gb sb ea eb hsa hsb hsae hsbe hga hgb hza hzb`. Set `v : ∀ I : StdCell N, LocMod S N (Poly S N ⧸ primeOf (S` to `S) y) I.1 := fun I => locRes (Finset.singleton_subset_iff.mpr (I.1.min'_mem I.2.1)) (w (I.1.min' I.2.1))`. Establish `hv : ∀ (I : StdCell N) (a : Fin (N + 1)) (ha : a ∈ I.1), v I = locRes (Finset.singleton_subset_iff.mpr ha) (w a)` using `fun I a ha => hcompat I.1 _ a (I.1.min'_mem I.2.1) ha`. Establish `hvres : ∀ (I J : StdCell N) (h : I.1 ⊆ J.1), locResS I J h (v I) = v J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `I J h`. Express the relevant statement in the definitionally equal form `locRes h (v I) = v J`. Take `⟨a, ha⟩` from `I.2.1`. Rewrite using `[hv I a ha, hv J a (h ha), locRes_locRes]`. Set `ζ : Cech.Cochain (locSys S N (Poly S N ⧸ primeOf (S` to `S) y)) 0 := fun I => v I.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hζ : ζ ∈ Cech.cocyDeg (locSys S N (Poly S N ⧸ primeOf (S` using `S) y)) (degLoc (primeQuotGraded (S := S) y) (n : ℤ)) locResS 0 := by`. Use `Submodule.mem_inf.mpr ⟨LinearMap.mem_ker.mpr (Cech.d_zero_of_compat (G := locSys S N (Poly S N ⧸ primeOf (S := S) y)) (ρ := locResS) v hvres), ?_⟩` and prove the remaining obligations. Rewrite using `[Cech.Cdeg, Submodule.mem_pi]`. Introduce `I _`. Take `⟨a, ha⟩` from `I.1.2.1`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `v I.1 ∈ _`. Rewrite using `[hv I.1 a ha]`. Conclude with `locRes_mem_degLoc _ _ ⟨{a}, Finset.singleton_nonempty a, Finset.subset_univ _⟩ I.1 _ (hwdeg a)`. Take `⟨m, hm⟩` from `hsurj (Submodule.Quotient.mk ⟨ζ, hζ⟩)`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, y j ≠ 0 := by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hy (funext h)`. Establish `heq : constCochain (m : Poly S N ⧸ primeOf (S` using `S) y) = ζ := by`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (⟨constCochain (m : Poly S N ⧸ primeOf (S := S) y), constCochain_mem _ _ _ m.2⟩ : Cech.cocyDeg (locSys S N (Poly S N ⧸ primeOf (S := S) y)) (degLoc (primeQuotGraded (S := S) y) (n : ℤ)) locResS 0) = _ at hm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `(Submodule.Quotient.eq _).mp hm`. Rewrite `h2` using `[Submodule.mem_comap]`. Express the relevant statement in the definitionally equal form `_ ∈ (⊥ : Submodule S (Cech.Cochain (locSys S N (Poly S N ⧸ primeOf (S := S) y)) 0)) at h2`. Rewrite `h2` using `[Submodule.mem_bot, map_sub]`. Conclude with `sub_eq_zero.mp h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hj1` using `congrFun heq ⟨⟨{j}, Finset.singleton_nonempty j, Finset.subset_univ _⟩, Finset.card_singleton j⟩`. Establish `hvj : v ⟨{j}, Finset.singleton_nonempty j, Finset.subset_univ _⟩ = w j`. Rewrite using `[hv _ j (Finset.mem_singleton_self j), locRes_self]`. Take `⟨g, s, e, hs, hse, hg, hgz, hwj⟩` from `hwrep j hj`. Take `⟨f, hf, hfm⟩` from `mem_quotGraded_piece.mp m.2`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `LocalizedModule.mk (m : Poly S N ⧸ primeOf (S := S) y) 1 = v ⟨{j}, Finset.singleton_nonempty j, Finset.subset_univ _⟩ at hj1`. Rewrite `hj1` using `[hvj, hwj, ← hfm]`. Take `⟨u, hu⟩` from `LocalizedModule.mk_eq.mp hj1`. Rewrite `hu` using `[one_smul, Submonoid.smul_def, Submonoid.smul_def, Submonoid.smul_def]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ ((u : Poly S N) * (s * f)) = Ideal.Quotient.mk _ ((u : Poly S N) * g) at hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[Ideal.Quotient.eq, ← mul_sub]`. Establish `hu0 : (u : Poly S N) ∉ primeOf (S` using `S) y := by`. Take `⟨eu, heu⟩` from `monos_isHomogeneous u.2`. Rewrite using `[mem_primeOf_of_isHomogeneous y heu]`. Conclude with `eval_ne_zero_of_mem_monos (singleChart hj) u.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hsf` using `(Ideal.IsPrime.mem_or_mem inferInstance hu).resolve_left hu0`. Establish `hfh : f.IsHomogeneous n` using `isHomogeneous_of_isWeightedHomogeneous_one hf`. Establish `h1 : (s * f - g).IsHomogeneous (e + n)` using `(hse.mul hfh).sub hg`. Rewrite `hsf` using `[mem_primeOf_of_isHomogeneous y h1, map_sub, map_mul, hgz]`. Establish `hs0 : aeval y s ≠ 0` using `eval_ne_zero_of_mem_monos (singleChart hj) hs`.
-
-Establish `hzf : z = aeval y f`. Establish `h3 : aeval y s * (aeval y f - z) = 0` using `by linear_combination hsf`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `absurd h hs0`. Conclude with `(sub_eq_zero.mp h).symm`.
-
-Rewrite using `[hzf]`. Conclude with `Submodule.subset_span ⟨f, n, hfh, rfl, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem secs_le_of_surjective (hy : y ≠ 0) (n : ℕ)
     (hsurj : Function.Surjective (toH0 (primeQuotGraded (S := S) y) (n : ℤ))) :
@@ -291,7 +285,7 @@ theorem secs_le_of_surjective (hy : y ≠ 0) (n : ℕ)
 end Proof
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N y hy`. Take `⟨c₀, hc₀⟩` from `h S N (Poly S N ⧸ primeOf (S := S) y) (primeQuotGraded y) (finite_quot _)`. Rewrite using `[Filter.eventually_atTop]`. Use `⟨c₀.toNat, fun n hn => le_antisymm ?_ (coordGraded_piece_le_secs y n)⟩` and prove the remaining obligations. Conclude with `secs_le_of_surjective y hy n (hc₀ n ((Int.self_le_toNat c₀).trans (by exact_mod_cast hn)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem TwistSections.proof (h : SerreOnto.Statement.{u, u}) : TwistSections.Statement.{u, w} := by
   intro S _ _ Ω _ _ N y hy

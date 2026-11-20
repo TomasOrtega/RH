@@ -19,9 +19,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorusAction
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI := hA.proper`. Take `⟨d, hd⟩` from `GlobalTheory.AbelianDim.exists_relDim ℂ A hA`. Take `⟨H, m, s, hH, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple ℂ A hA`. Establish `hamp : Out.RelAmple A H` using `(GlobalTheory.relAmple_iff_isAmpleLB_of_isAffine A hH).2 (GlobalTheory.isAmpleLB_of_veryAmpleBy hs)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u₀⟩` from `RealMultChart.exists_holUnif_of_compact A d hd (RealMultChart.compactSpace_points A H hamp) (fun a n hn => RealMultChart.exists_pow_eq A hA a n hn)`. Take `⟨h₁, h₂⟩` from `TorusTransfer.tangent_bijective u₀ hd`. Take `⟨T, hT, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A hA _ d g u₀ h₁ h₂ u.ex u.ex_add (fun U f => by simpa only [Set.mem_univ, true_and] using u.hol U f)`. Rewrite using `[Obj.holUnif_dim_eq_of_linear u u₀ T hT]`. Conclude with `hd`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_holUnif (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) {L : LB A.left}
     {g : ℕ} (u : HolUnif A L g) : SmoothOfRelativeDimension g A.hom := by
@@ -42,13 +42,11 @@ theorem smoothOfRelativeDimension_of_holUnif (A : Over (Sp ℂ)) [GrpObj A] (hA 
 open GlobalTheory.ComplexPoints in
 
 /- English proof (translation)
-Introduce `g A _ hA L u O _ ρ hρ`. Use `haveI := hA.comm`. Use `haveI := hA.smooth`. Use `haveI := hA.proper`. Use `haveI : IsReduced A.left := isReduced_of_smooth_complex _ A.hom hA.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ψ hhom hlift using fun a => GlobalTheory.HolUnifEnd.exists_isMonHom_of_map_lattice A g hA (smoothOfRelativeDimension_of_holUnif A hA u) L u (ρ a) (hρ a)`. Establish `hext : ∀ f f' : A ⟶ A, (∀ z, u.ex z ≫ f = u.ex z ≫ f') → f = f'` using `fun f f' h => over_hom_ext_of_complexPoints fun x => by`. Take `⟨z, rfl⟩` from `u.ex_onto x`. Conclude with `h z`. Use `⟨⟨ψ, hhom, ?_, ?_, ?_⟩, hlift⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hext _ _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← hlift, map_one, Module.End.one_apply, Category.comp_id]`. Introduce `a b`. Use `hext _ _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← hlift, ← Category.assoc, ← hlift, ← hlift, mul_comm, map_mul, Module.End.mul_apply]`.
-
-Introduce `a b`. Use `hext _ _ fun z => ?_` and prove the remaining obligations. Rewrite using `[← hlift, comp_mul, ← hlift, ← hlift, map_add, LinearMap.add_apply, u.ex_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_oAct_of_map_lattice :
     ∀ (g : ℕ) (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A →

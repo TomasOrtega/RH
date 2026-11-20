@@ -16,40 +16,40 @@ namespace GlobalTheory.CompanionTheory.WS.Decomp
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨add_mem hu.1 hv.1, add_mem hu.2 hv.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem add_mem_Ln {n : ℤ} {u v : F × F} (hu : u ∈ Ln F n) (hv : v ∈ Ln F n) :
     u + v ∈ Ln F n :=
   ⟨add_mem hu.1 hv.1, add_mem hu.2 hv.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨neg_mem hu.1, neg_mem hu.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem neg_mem_Ln {n : ℤ} {u : F × F} (hu : u ∈ Ln F n) : -u ∈ Ln F n :=
   ⟨neg_mem hu.1, neg_mem hu.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨zero_mem _, zero_mem _⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero_mem_Ln (n : ℤ) : (0 : F × F) ∈ Ln F n :=
   ⟨zero_mem _, zero_mem _⟩
 
 /- English proof (translation)
-Introduce `_ hv` and use `⟨valBall_antitone h hv.1, valBall_antitone h hv.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem Ln_anti {m n : ℤ} (h : m ≤ n) : Ln F n ⊆ Ln F m :=
   fun _ hv => ⟨valBall_antitone h hv.1, valBall_antitone h hv.2⟩
 
 /- English proof (translation)
-The claim follows from `((isOpen_valBall n).preimage continuous_fst).inter ((isOpen_valBall n).preimage continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Ln (n : ℤ) : IsOpen (Ln F n) :=
   ((isOpen_valBall n).preimage continuous_fst).inter ((isOpen_valBall n).preimage continuous_snd)
 
 /- English proof (translation)
-Rewrite `hU` using `[show (0 : F × F) = ((0 : F), (0 : F)) from rfl, mem_nhds_prod_iff]`. Take `⟨u, hu, v, hv, huv⟩` from `hU`. Take `⟨a, -, ha⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp hu`. Take `⟨b, -, hb⟩` from `hasBasis_nhds_zero_valBall.mem_iff.mp hv`. Use `⟨max a b, fun w hw => huv ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨ha (valBall_antitone (le_max_left a b) hw.1), hb (valBall_antitone (le_max_right a b) hw.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_Ln_subset {U : Set (F × F)} (hU : U ∈ 𝓝 (0 : F × F)) : ∃ n : ℤ, Ln F n ⊆ U := by
   rw [show (0 : F × F) = ((0 : F), (0 : F)) from rfl, mem_nhds_prod_iff] at hU
@@ -61,17 +61,17 @@ theorem exists_Ln_subset {U : Set (F × F)} (hU : U ∈ 𝓝 (0 : F × F)) : ∃
     hb (valBall_antitone (le_max_right a b) hw.2)⟩
 
 /- English proof (translation)
-Establish `hloc : ∀ x : F × F, ∃ n : ℤ, ∀ h ∈ Ln F n, Ψ (x + h) = Ψ x`. Introduce `x`. Establish `ho : IsOpen {h : F × F | Ψ (x + h) = Ψ x}` using `(hl.isOpen_fiber (Ψ x)).preimage (continuous_const.add continuous_id)`. Take `⟨n, hn⟩` from `exists_Ln_subset (ho.mem_nhds (by simp))`. Conclude with `⟨n, fun h hh => hn hh⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose n hn using hloc`. Take `⟨t, -, ht⟩` from `hc.isCompact.elim_nhds_subcover (fun x => {z : F × F | z - x ∈ Ln F (n x)}) (fun x _ => ((isOpen_Ln _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simpa using zero_mem_Ln (n x)))`. Take `⟨N, hN⟩` from `(t.image n).exists_le`. Establish `hval : ∀ y ∈ tsupport Ψ, ∀ h ∈ Ln F N, Ψ (y + h) = Ψ y`. Introduce `y hy h hh`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `ht hy` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hxt, hyx⟩` from `this`. Establish `hN' : h ∈ Ln F (n x)` using `Ln_anti (hN _ (Finset.mem_image_of_mem n hxt)) hh`. Establish `e1 : Ψ y = Ψ x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hn x (y - x) hyx` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `e2 : Ψ (y + h) = Ψ x`. Use `hn x (y + h - x) (by rw [show y + h - x = (y - x) + h by abel]; exact add_mem_Ln hyx hN')` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Use `⟨N, fun y h hh => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport Ψ`. Conclude with `hval y hy h hh`. Distinguish the cases in `hyh : y + h ∈ tsupport Ψ`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hval (y + h) hyh (-h) (neg_mem_Ln hh)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyh]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_periodic {Ψ : F × F → ℂ} (hl : IsLocallyConstant Ψ) (hc : HasCompactSupport Ψ) :
     ∃ n : ℤ, ∀ y, ∀ h ∈ Ln F n, Ψ (y + h) = Ψ y := by
@@ -111,7 +111,7 @@ theorem exists_periodic {Ψ : F × F → ℂ} (hl : IsLocallyConstant Ψ) (hc : 
   · rw [image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyh]
 
 /- English proof (translation)
-Unfold `cosetInd`. Rewrite using `[Set.indicator_of_mem (show y ∈ {v | v - x ∈ Ln F n} from h)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cosetInd_of_mem {n : ℤ} {x y : F × F} (h : y - x ∈ Ln F n) : cosetInd n x y = 1 := by
   unfold cosetInd
@@ -119,16 +119,16 @@ theorem cosetInd_of_mem {n : ℤ} {x y : F × F} (h : y - x ∈ Ln F n) : cosetI
   rfl
 
 /- English proof (translation)
-Unfold `cosetInd`. Conclude with `Set.indicator_of_notMem (show y ∉ {v | v - x ∈ Ln F n} from h) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cosetInd_of_notMem {n : ℤ} {x y : F × F} (h : y - x ∉ Ln F n) : cosetInd n x y = 0 := by
   unfold cosetInd
   exact Set.indicator_of_notMem (show y ∉ {v | v - x ∈ Ln F n} from h) _
 
 /- English proof (translation)
-Distinguish the cases in `hy : y - x ∈ Ln F n`. Rewrite using `[cosetInd_of_mem hy, cosetInd_of_mem]`. Rewrite using `[show y + h - x = (y - x) + h by abel]`. Conclude with `add_mem_Ln hy hh`. Rewrite using `[cosetInd_of_notMem hy, cosetInd_of_notMem]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hyh`. Apply `hy` to reduce the goal to its premises. Use `add_mem_Ln hyh (neg_mem_Ln hh)` as an intermediate fact. Rewrite `this` using `[show y + h - x + -h = y - x by abel]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cosetInd_add {n : ℤ} (x y : F × F) {h : F × F} (hh : h ∈ Ln F n) :
     cosetInd n x (y + h) = cosetInd n x y := by
@@ -143,19 +143,19 @@ theorem cosetInd_add {n : ℤ} (x y : F × F) {h : F × F} (hh : h ∈ Ln F n) :
     rwa [show y + h - x + -h = y - x by abel] at this
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `Ψ _ hs`. Establish `: Ψ = 0`. Use function extensionality and compare the values at `y`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `hy`. Take `⟨x, hx, -⟩` from `hs y hy`. Simplify using `at hx`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert x t _ ih`. Introduce `Ψ hp hs`. Establish `hmem : Ψ - Ψ x • cosetInd n x ∈ Submodule.span ℂ (Set.range (cosetInd (F` using `F) n)) := by`. Use `ih _ (fun y h hh => ?_) (fun y hy => ?_)` and prove the remaining obligations. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp y h hh, cosetInd_add x y hh]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, smul_eq_mul] at hy`. Distinguish the cases in `hyx : y - x ∈ Ln F n`. It suffices to derive a contradiction. Apply `hy` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `hp x (y - x) hyx` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Rewrite using `[cosetInd_of_mem hyx, this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hy` using `[cosetInd_of_notMem hyx, mul_zero, sub_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', hyx'⟩` from `hs y hy`. Break down `Finset.mem_insert.mp hx' with rfl | hx''` into its components or cases. Conclude with `absurd hyx' hyx`. Conclude with `⟨x', hx'', hyx'⟩`. Establish `hx : cosetInd n x ∈ Submodule.span ℂ (Set.range (cosetInd (F` using `F) n)) := Submodule.subset_span ⟨x, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `add_mem hmem (Submodule.smul_mem _ (Ψ x) hx)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_cover (n : ℤ) (t : Finset (F × F)) :
     ∀ Ψ : F × F → ℂ, (∀ y, ∀ h ∈ Ln F n, Ψ (y + h) = Ψ y) →
@@ -197,9 +197,9 @@ theorem mem_span_of_cover (n : ℤ) (t : Finset (F × F)) :
     rwa [sub_add_cancel] at this
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ Ψ hΨ`. Take `⟨n, hn⟩` from `exists_periodic hΨ.1 hΨ.2`. Take `⟨t, -, ht⟩` from `hΨ.2.isCompact.elim_nhds_subcover (fun x => {z : F × F | z - x ∈ Ln F n}) (fun x _ => ((isOpen_Ln _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simpa using zero_mem_Ln n))`. Establish `hspan` using `mem_span_of_cover n t Ψ hn (fun y hy => by`. Use `ht (subset_tsupport Ψ (Function.mem_support.mpr hy))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hx, hyx⟩` from `this`. Conclude with `⟨x, hx, hyx⟩)`. Take `⟨c, hc⟩` from `(Finsupp.mem_span_range_iff_exists_finsupp).1 hspan`. Conclude with `⟨n, c.support, c, by rw [← hc]; rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sum_cosetInd : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (Ψ : F × F → ℂ),

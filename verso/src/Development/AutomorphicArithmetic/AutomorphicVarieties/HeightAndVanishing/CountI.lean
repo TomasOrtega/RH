@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CMFieldExponential
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ N` using `by linarith`. Establish `h1 : A ≤ N ^ k` using `hk.trans (pow_le_pow_left₀ (by norm_num) hN k)`. Establish `h2 : e ^ 7 ≤ t ^ (k + 19)` using `(pow_le_pow_left₀ he het 7).trans (pow_le_pow_right₀ ht (by omega))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem absorb (A N t e : ℝ) (k : ℕ) (hA : 0 ≤ A) (hk : A ≤ 16 ^ k) (hN : 16 ≤ N) (he : 0 ≤ e) (het : e ≤ t)
     (ht : 1 ≤ t) : A * N * N ^ 18 * e ^ 7 ≤ (N * t) ^ (k + 19) := by
@@ -20,35 +20,29 @@ private theorem absorb (A N t e : ℝ) (k : ℕ) (hA : 0 ≤ A) (hk : A ≤ 16 ^
     _ = (N * t) ^ (k + 19) := by ring
 
 /- English proof (translation)
-Introduce and unpack `⟨c5, hG⟩ χ`. Take `⟨⟨hp, hp4, -, -⟩, -⟩` from `pK_pOne_prime_conditions χ`. Take `⟨hdisc, -, -, -⟩` from `kstar (pK χ) hp hp4`. Establish `hd : (discr (Kstar (pK χ))).natAbs = pK χ` using `by rw [hdisc]; simp`. Establish `hq : 0 < χ.N` using `NeZero.pos _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r₁, hr₁, hr₁p⟩` from `Nat.exists_infinite_primes (30 + χ.N + pK χ)`. Take `⟨r₂, hr₂, hr₂p⟩` from `Nat.exists_infinite_primes (r₁ + 1)`. Use `set A : ℝ := 4 * |c5| * (pK χ : ℝ) ^ 5 * (Real.log r₁ + Real.log r₂) with hAdef`. Establish `hlog : 0 ≤ Real.log r₁ + Real.log r₂` using `add_nonneg (Real.log_natCast_nonneg _) (Real.log_natCast_nonneg _)`. Establish `hA : 0 ≤ A` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt A (by norm_num : (1 : ℝ) < 16)`. Use `⟨k + 19, r₁, r₂, hr₁p, hr₂p, ?_⟩` and prove the remaining obligations. Introduce and unpack `h rfl a1 a2 a3 a4 t hB e he het Ω _ _ _ c Ls hLs`. Take `⟨-, -, h16, -, -, hpr, -⟩` from `hostIndex h`. Establish `hnd : ∀ r : ℕ, r.Prime → 30 + h.chi.N + pK h.chi ≤ r → r < h.q1 → r < h.d → ¬ r ∣ 30 * h.N * (discr (Kstar (pK h.chi))).natAbs`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr b1 b2 b3 hdv`. Rewrite `hdv` using `[hd]`. Break down `(Nat.Prime.dvd_mul hr).1 hdv with hdv | hdv` into its components or cases. Break down `(Nat.Prime.dvd_mul hr).1 hdv with hdv | hdv` into its components or cases. Use `Nat.le_of_dvd (by norm_num) hdv` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Break down `(hpr r hr).1 hdv with b | b | b | b` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `: r ≤ h.chi.N` using `Nat.le_of_dvd hq b`. Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Use `Nat.le_of_dvd hp.pos hdv` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Algebra (Kstar (pK h.chi)) Ω := (IsAlgClosed.lift (R := ℚ) (S := Kstar (pK h.chi)) (M := Ω)).toRingHom.toAlgebra`. Establish `key` using `fun H : Subgroup (ZMod h.N)ˣ => hG Ω (Kstar (pK h.chi)) e h.N H r₁ r₂ hr₁p hr₂p (by omega) (hnd r₁ hr₁p hr₁ a1 a2) (hnd r₂ hr₂p (by omega) a3 a4) c (Ls.filter fun l => ∃ ψ ∈ h.X (c l) e, ψ.toUnitHom.ker = H) (by`. Introduce `l hl`. Take `⟨hl, ψ, hψ, hH⟩` from `Finset.mem_filter.1 hl`. Use `Host.mem_X h |>.1 hψ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨ψ, (mem_orb _).2 hH, gdOfHost h t hB Ω l e (hLs l hl).1 he het (hLs l hl).2 _ ψ this.1 this.2⟩)`. Use `⟨fun l hl ψ hψ => (key ψ.toUnitHom.ker).1 l (Finset.mem_filter.2 ⟨hl, ψ, hψ, rfl⟩) ψ ((mem_orb _).2 rfl), ?_⟩` and prove the remaining obligations. Use `set T : Finset (Subgroup (ZMod h.N)ˣ) := Ls.biUnion fun l => (h.X (c l) e).image fun ψ => ψ.toUnitHom.ker with hT`. Establish `hcyc : ∀ H ∈ T, IsCyclic ((ZMod h.N)ˣ ⧸ H)`. Introduce `H hH`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, -, hl⟩` from `Finset.mem_biUnion.1 hH`. Take `⟨ψ, -, rfl⟩` from `Finset.mem_image.1 hl`. Conclude with `(orbFacts _ h.N ψ).2.1`. Establish `hsum : ∑ H ∈ T, (Nat.totient H.index : ℝ) ≤ h.N`. Establish `h1` using `orbSum _ T hcyc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[Nat.card_eq_fintype_card, ZMod.card_units_eq_totient]`. Conclude with `h1.trans (Nat.totient_le _)` after adjusting the coercions. Establish `hN : (16 : ℝ) ≤ h.N` using `by exact_mod_cast Nat.le_of_dvd h.N_pos h16`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.mul_sum]`. Use `congr 1`. Use `(Finset.sum_fiberwise_of_maps_to (s := h.X (c l) e) (t := T) (g := fun ψ => ψ.toUnitHom.ker) (fun ψ hψ => Finset.mem_biUnion.2 ⟨l, hl, Finset.mem_image.2 ⟨ψ, hψ, rfl⟩⟩) (fun ψ => Vn Ω (c l) e ψ)).symm` and compare the differences between its conclusion and the goal. Use `_ ≤ ∑ H ∈ T, ∑ l ∈ Ls.filter (fun l => ∃ ψ ∈ h.X (c l) e, ψ.toUnitHom.ker = H), Real.log (l : ℕ) * ∑ ψ ∈ orb (c l) H, Vn Ω (c l) e ψ := by`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_le_sum fun H _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with hc`. Use `mul_le_mul_of_nonneg_left ?_ (Real.log_natCast_nonneg _)` and prove the remaining obligations.
-
-Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (fun ψ hψ => (mem_orb _).2 (Finset.mem_filter.1 hψ).2) fun ψ _ _ => Vn_nonneg _ _ _ _`. Rewrite using `[Finset.filter_false_of_mem fun ψ hψ hk => hc ⟨ψ, hψ, hk⟩]`. Simplify using the standard rewrite rules. Use `_ ≤ ∑ H ∈ T, A * (Nat.totient H.index : ℝ) * (h.N : ℝ) ^ 18 * (e : ℝ) ^ 7 := by`. Use `Finset.sum_le_sum fun H _ => (key H).2.trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hd, hAdef]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = A * (∑ H ∈ T, (Nat.totient H.index : ℝ)) * (h.N : ℝ) ^ 18 * (e : ℝ) ^ 7 := by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`. Use `_ ≤ A * h.N * (h.N : ℝ) ^ 18 * (e : ℝ) ^ 7 := by gcongr`.
-
-Use `_ ≤ _ := absorb A h.N t e k hA hk.le hN (Nat.cast_nonneg _) (by exact_mod_cast het.le) (by exact_mod_cast (by omega : 1 ≤ t))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.countI :
     CorG → CountI := by

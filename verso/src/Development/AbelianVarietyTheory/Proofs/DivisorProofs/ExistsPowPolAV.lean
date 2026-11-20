@@ -45,9 +45,9 @@ def siegLam (hG : Out.GlobalFnsSt) {R : Type} [CommRing R] (P : PolAV (Sp R)) [I
     exact GlobalTheory.EighthPowerFactor.weilIs_one_one hG P.isAb (pull_isLB (LB.isLB_linComb P.isLB _ _) _) _
 
 /- English proof (translation)
-Establish `h₁` using `hpd.det_pos`. Establish `h₂ : ((W + W.transpose).map (Int.cast : ℤ → ℝ)).det = (((W + W.transpose).det : ℤ) : ℝ)` using `((Int.castRingHom ℝ).map_det _).symm`. Rewrite `h₁` using `[h₂]`. Break down `Int.isUnit_iff.1 hdet with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₁` using `[h]`. Evaluate the numerical expressions using `at h₁`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem det_eq_one {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (hpd : ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef)
     (hdet : IsUnit (W + W.transpose).det) : (W + W.transpose).det = 1 := by
@@ -60,19 +60,19 @@ theorem det_eq_one {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (hpd : ((W + W.tra
   · rw [h] at h₁; norm_num at h₁
 
 /- English proof (translation)
-Introduce `R _ _ _ _ P r W hpd hdet`. Use `P.isAb.comm` as an intermediate fact. Take `⟨L₁, -⟩` from `abelianSchemeLaws_all`. Establish `hG` using `L₁.globalFns`. Set `c` to `siegLam hG P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hP : c.P.IsLB` using `c.isLB`. Establish `hD : c.diag.IsLB` using `pull_isLB hP _`. Establish `hfin : IsFinite (𝟙 P.A : P.A ⟶ P.A).left` using `inferInstanceAs (IsFinite (𝟙 P.A.left))`. Establish `hamp : RelAmple c.A c.diag`. Establish `e` using `lbIso_diag L₁ P`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `relAmple_finite_pow_iso (Sp R) P.A P.A (𝟙 _) P.L 2 two_pos P.isAb P.isAb P.isLB hfin`. Conclude with `(relAmple_finite_pow_iso (Sp R) P.A P.A (𝟙 _) (lbPow P.L 2) 1 one_pos P.isAb P.isAb (LB.isLB_linComb P.isLB _ _) hfin).2.2.2 _ hD e (h.2.1.2 P.ample)`. Set `G` to `Out.powObj P.A r`. Set `pr : Fin r → (G ⟶ P.A)` to `Out.powPr P.A`. Establish `hpr : ∀ u, IsMonHom (pr u)` using `fun u => inferInstance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ (T : Over (Sp R)) (y : Fin r → (T ⟶ P.A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u` using `fun T y => ⟨(Out.powIsLimit P.A r).lift (Fan.mk T y), fun u => (Out.powIsLimit P.A r).fac (Fan.mk T y) ⟨u⟩, fun x hx => (Out.powIsLimit P.A r).uniq (Fan.mk T y) x fun u => hx u.as⟩`. Establish `hB : ∀ (T : Over (Sp R)) (x x' y : T ⟶ c.A), bi hP (x * x') y = bi hP x y + bi hP x' y` using `fun T x x' y => by`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 (GlobalTheory.T.biadditive_of_trivial_on_axes hG (Sp R) c.A c.diag c.ab hD hamp c.P hP c.rig₁ c.rig₂ T x x' y).1`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero, ← e]`. Simplify using `only [bi]`. Normalize the expressions using the abelian group laws. Establish `hs : ∀ (T : Over (Sp R)) (x y : T ⟶ c.A), bi hP x y = bi hP y x` using `fun T x y => by`. Establish `e : cls c.P hP = bi hP (snd c.A c.A) (fst c.A c.A)` using `(cls_eq_iff hP (pull_isLB hP _)).2 c.symm`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bi, e, pull_bi, lift_fst, lift_snd]`. Establish `hLB : (sharp c.P pr W).IsLB` using `LB.isLB_linComb hP _ _`. Use `⟨{ A := G isAb := isAbelianScheme_powObj_of_isAbelianScheme P.A P.isAb r g := r * P.g smoothDim := powObj_smoothOfRelativeDimension_mul _ _ _ r P.smoothDim L := sharp c.P pr W isLB := hLB rigid := rigidified_sharp hP pr W hpr hB sym := sym_sharp hP pr W hpr hB hs ample := GlobalT …` and prove the remaining obligations. Use `lbIso_nested P.isLB _ _ (fun uv : Fin r × Fin r => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2) _ _ ?_` and prove the remaining obligations. Simplify using `only [prod_lam (pr _) (pr _) (PrimNorm.cls P.L)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.prod_prod_type (f := fun k : (Fin r × Fin r) × Fin 4 => PrimNorm.cls P.L (tensφ pr k) ^ tensε W k)]`. Use `Finset.prod_congr rfl fun uv _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.prod_univ_four, tensφ, tensε, GlobalTheory.PolDeg.lamPts, Oε, diff₂, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, zpow_mul]`. Simplify using `only [zpow_one, zpow_neg, mul_zpow, inv_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pow_polAV : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] (P : PolAV (Sp R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∃ (P' : PolAV (Sp R)) (pr : Fin r → (P'.A ⟶ P.A)), (∀ i, IsMonHom (pr i)) ∧ Nonempty (IsLimit (Fan.mk P'.A pr)) ∧ P'.g = r * P.g ∧ LBIso P'.L (LB.LinComb P.L (tensφ pr) (tensε W)) := by
   intro R _ _ _ _ P r W hpd hdet

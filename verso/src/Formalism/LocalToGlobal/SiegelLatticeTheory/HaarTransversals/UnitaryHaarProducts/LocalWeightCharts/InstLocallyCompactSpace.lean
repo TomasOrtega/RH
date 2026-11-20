@@ -26,12 +26,12 @@ variable {k r : ℕ} {U : Set (Mx k r)} {h : ClSub U}
 
 def val (a : Grp U h) : Mx k r := Subtype.val a
 /- English proof (translation)
-The claim follows from `Subtype.property a`.
+A detailed English derivation is pending.
 -/
 lemma mem (a : Grp U h) : a.val ∈ U := Subtype.property a
 def mk (x : Mx k r) (hx : x ∈ U) : Grp U h := (⟨x, hx⟩ : U)
 /- English proof (translation)
-The claim follows from `Subtype.ext e`.
+A detailed English derivation is pending.
 -/
 lemma ext' {a b : Grp U h} (e : a.val = b.val) : a = b := Subtype.ext e
 
@@ -58,12 +58,12 @@ Both sides reduce to the same expression.
 lemma val_one : (1 : Grp U h).val = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `h.closed.isClosedEmbedding_subtypeVal`.
+A detailed English derivation is pending.
 -/
 lemma emb : IsClosedEmbedding (val : Grp U h → Mx k r) := h.closed.isClosedEmbedding_subtypeVal
 
 /- English proof (translation)
-The claim follows from `Subtype.range_val`.
+A detailed English derivation is pending.
 -/
 lemma range_val : Set.range (val : Grp U h → Mx k r) = U := Subtype.range_val
 
@@ -90,7 +90,7 @@ instance : T2Space (Grp U h) := emb.isEmbedding.t2Space
 def vt (a : Grp U h) : Mt k r := a.val
 
 /- English proof (translation)
-The claim follows from `emb`.
+A detailed English derivation is pending.
 -/
 lemma embt : IsClosedEmbedding (vt : Grp U h → Mt k r) := emb
 
@@ -106,19 +106,19 @@ def hmeas (U : Set (Mx k r)) (h : ClSub U) : Measure (Mt k r) :=
   (Measure.haar : Measure (Grp U h)).map Grp.vt
 
 /- English proof (translation)
-The claim follows from `Grp.embt`.
+A detailed English derivation is pending.
 -/
 lemma val_cemb (U : Set (Mx k r)) (h : ClSub U) :
     IsClosedEmbedding (Grp.vt : Grp U h → Mt k r) := Grp.embt
 
 /- English proof (translation)
-The claim follows from `(val_cemb U h).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 lemma val_memb (U : Set (Mx k r)) (h : ClSub U) :
     MeasurableEmbedding (Grp.vt : Grp U h → Mt k r) := (val_cemb U h).measurableEmbedding
 
 /- English proof (translation)
-Unfold `hmeas`. Rewrite using `[Measure.map_apply (val_cemb U h).continuous.measurable hK.isClosed.measurableSet]`. Conclude with `((val_cemb U h).isCompact_preimage hK).measure_lt_top`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma hmeas_compact (U : Set (Mx k r)) (h : ClSub U) (K : Set (Mt k r)) (hK : IsCompact K) :
     hmeas U h K < ⊤ := by
@@ -130,7 +130,7 @@ instance hmeas_fc (U : Set (Mx k r)) (h : ClSub U) : IsFiniteMeasureOnCompacts (
   ⟨fun K hK => hmeas_compact U h K hK⟩
 
 /- English proof (translation)
-Establish `: IsFiniteMeasureOnCompacts μ` using `⟨hμ⟩`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sigma_of_compact (μ : Measure (Mt k r)) (hμ : ∀ K : Set (Mt k r), IsCompact K → μ K < ⊤) :
     SigmaFinite μ := by
@@ -138,17 +138,17 @@ lemma sigma_of_compact (μ : Measure (Mt k r)) (hμ : ∀ K : Set (Mt k r), IsCo
   infer_instance
 
 /- English proof (translation)
-Establish `hφ` using `val_cemb U h`. Establish `hmeas' : Measurable (Grp.vt : Grp U h → Mt k r)` using `hφ.continuous.measurable`. Establish `hUc : @IsClosed (Mt k r) _ U` using `h.closed`. Use `⟨sigma_of_compact _ (hmeas_compact U h), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun μ : Measure (Mt k r) => μ Set.univ) h0`. Simplify using `only [hmeas, Measure.map_apply hmeas' MeasurableSet.univ, Measure.coe_zero, Pi.zero_apply] at h1`. Rewrite `h1` using `[Set.preimage_univ]`. Conclude with `(NeZero.ne (Measure.haar : Measure (Grp U h))) (Measure.measure_univ_eq_zero.mp h1)`. Establish `hm : MeasurableSet {x : Mt k r | Matrix.of x ∉ U}` using `hUc.measurableSet.compl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `hmeas`. Rewrite using `[Measure.map_apply hmeas' hm]`. Establish `: (Grp.vt : Grp U h → Mt k r) ⁻¹' {x : Mt k r | Matrix.of x ∉ U} = ∅`. Apply `Set.eq_empty_of_forall_notMem` to reduce the goal to its premises. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha a.mem`. Rewrite using `[this, measure_empty]`. Introduce `s hs`. Establish `hl : Measurable (lmulM (k` using `k) (r := r) s) := by`. Establish `: Continuous (lmulM (k` using `k) (r := r) s) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `lmulM`. Conclude with `Continuous.matrix_mul continuous_const continuous_id`. Conclude with `this.measurable`. Unfold `hmeas`. Rewrite using `[Measure.map_map hl hmeas']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Establish `: lmulM s ∘ (Grp.vt : Grp U h → Mt k r) = (Grp.vt : Grp U h → Mt k r) ∘ (fun x => Grp.mk s hs * x)`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Rewrite using `[this, ← Measure.map_map hmeas' (measurable_const_mul _), map_mul_left_eq_self]`.
+A detailed English derivation is pending.
 -/
 theorem hmeas_haar (U : Set (Mx k r)) (h : ClSub U) : IsHaarOn U (hmeas U h) := by
   have hφ := val_cemb U h
@@ -184,29 +184,25 @@ theorem hmeas_haar (U : Set (Mx k r)) (h : ClSub U) : IsHaarOn U (hmeas U h) := 
     rw [this, ← Measure.map_map hmeas' (measurable_const_mul _), map_mul_left_eq_self]
 
 /- English proof (translation)
-Take `⟨hσ, h0, hconc, hinv⟩` from `hμ`. Establish `hE` using `val_memb U h`. Use `set ψ := (Grp.vt : Grp U h → Mt k r) with hψdef`. Use `set ν := μ.comap ψ with hνdef`. Establish `hmapν : ν.map ψ = μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hνdef, hE.map_comap]`. Apply `Measure.restrict_eq_self_of_ae_mem` to reduce the goal to its premises. Rewrite using `[ae_iff]`. Use `measure_mono_null ?_ hconc` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hc`. Apply `hx` to reduce the goal to its premises. Use `⟨Grp.mk (h := h) (Matrix.of x) ?_, rfl⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Conclude with `hc h'`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hσν : SigmaFinite ν` using `SigmaFinite.of_map ν hE.measurable.aemeasurable (by rw [hmapν]; exact hσ)`. Establish `hinj : ∀ a b : Measure (Grp U h), a.map ψ = b.map ψ → a = b`. Introduce `a b hab`. Rewrite using `[← hE.comap_map a, ← hE.comap_map b, hab]`. Establish `hleft : ν.IsMulLeftInvariant`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises. Establish `hcomp : ψ ∘ (fun x : Grp U h => g * x) = lmulM (k` using `k) (r := r) g.val ∘ ψ := by`. Use function extensionality and compare the values at `x`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : Measurable (fun x : Grp U h => g * x)` using `measurable_const_mul g`. Establish `hlm : Measurable (lmulM (k` using `k) (r := r) g.val) := by`. Establish `: Continuous (lmulM (k` using `k) (r := r) g.val) := by`. Unfold `lmulM`. Conclude with `Continuous.matrix_mul continuous_const continuous_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.measurable`. Rewrite using `[Measure.map_map hE.measurable hmul, hcomp, ← Measure.map_map hlm hE.measurable, hmapν]`. Conclude with `hinv _ g.mem`. Take `⟨K, hK, hKn⟩` from `exists_compact_mem_nhds (1 : Grp U h)`. Establish `hK0 : (Measure.haar : Measure (Grp U h)) K ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hKn).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hKt : (Measure.haar : Measure (Grp U h)) K ≠ ∞` using `hK.measure_lt_top.ne`. Establish `heq` using `measure_eq_div_smul ν (Measure.haar : Measure (Grp U h)) hK0 hKt`. Use `set c := ν K / (Measure.haar : Measure (Grp U h)) K with hc`. Establish `hcne0 : c ≠ 0`. Introduce `hc0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `h0` to reduce the goal to its premises. Rewrite using `[← hmapν, heq, hc0, zero_smul, Measure.map_zero]`. Establish `hcnetop : c ≠ ∞`. Introduce `htop`. Establish `hnull : ∀ i, (Measure.haar : Measure (Grp U h)) (spanningSets ν i) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `hlt` using `measure_spanningSets_lt_top ν i`. Establish `hS : ν (spanningSets ν i) = (c • (Measure.haar : Measure (Grp U h))) (spanningSets ν i)` using `congrArg (fun m : Measure (Grp U h) => m (spanningSets ν i)) heq`. Rewrite `hlt` using `[hS, Measure.smul_apply, smul_eq_mul, htop]`. Assume the negation of the conclusion as `hne`.
-
-Rewrite `hlt` using `[ENNReal.top_mul hne]`. Conclude with `lt_irrefl _ hlt`. Establish `: (Measure.haar : Measure (Grp U h)) Set.univ = 0`. Rewrite using `[← iUnion_spanningSets ν]`. Conclude with `measure_iUnion_null hnull`.
-
-Conclude with `(NeZero.ne (Measure.haar : Measure (Grp U h))) (Measure.measure_univ_eq_zero.mp this)`. Use `⟨c, hcne0, hcnetop, ?_⟩` and prove the remaining obligations. Rewrite using `[← hmapν, heq, Measure.map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem haar_unique (U : Set (Mx k r)) (h : ClSub U) (μ : Measure (Mt k r)) (hμ : IsHaarOn U μ) :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ μ = c • hmeas U h := by
@@ -278,7 +274,7 @@ def tau (k r : ℕ) (i : Fin (2 * r + k + 1)) : Fin (2 * r + k + 1) :=
 def sgn (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℂ := if i.val = r + k then -1 else 1
 
 /- English proof (translation)
-Unfold `Hpk tau sgn`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_row (i m : Fin (2 * r + k + 1)) :
     Hpk k r i m = if m = tau k r i then sgn k r i else 0 := by
@@ -287,9 +283,9 @@ theorem hpk_row (i m : Fin (2 * r + k + 1)) :
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (tau k r i)]`. Rewrite using `[hpk_row, if_pos rfl]`. Introduce `m _ hm`. Rewrite using `[hpk_row, if_neg hm, zero_mul]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem hpk_mul_apply (A : Mx k r) (i j : Fin (2 * r + k + 1)) :
     (Hpk k r * A) i j = sgn k r i * A (tau k r i) j := by
@@ -301,7 +297,7 @@ theorem hpk_mul_apply (A : Mx k r) (i j : Fin (2 * r + k + 1)) :
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `tau`. Apply `Fin.ext` to reduce the goal to its premises. Simplify using `only`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tau_tau (i : Fin (2 * r + k + 1)) : tau k r (tau k r i) = i := by
   unfold tau
@@ -310,7 +306,7 @@ theorem tau_tau (i : Fin (2 * r + k + 1)) : tau k r (tau k r i) = i := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `sgn tau`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_tau (i : Fin (2 * r + k + 1)) : sgn k r (tau k r i) = sgn k r i := by
   unfold sgn tau
@@ -318,14 +314,14 @@ theorem sgn_tau (i : Fin (2 * r + k + 1)) : sgn k r (tau k r i) = sgn k r i := b
   split_ifs <;> first | rfl | (exfalso; omega)
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_mul_self (i : Fin (2 * r + k + 1)) : sgn k r i * sgn k r i = 1 := by
   unfold sgn
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[hpk_mul_apply, hpk_row, tau_tau, sgn_tau, Matrix.one_apply]`. Distinguish the cases in `h : j = i`. Rewrite using `[if_pos h, if_pos h.symm, sgn_mul_self]`. Rewrite using `[if_neg h, if_neg (Ne.symm h), mul_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -335,7 +331,7 @@ theorem hpk_sq : Hpk k r * Hpk k r = 1 := by
   · rw [if_neg h, if_neg (Ne.symm h), mul_zero]
 
 /- English proof (translation)
-Apply `Matrix.isUnit_det_of_left_inverse (B := Hpk k r * gᴴ * Hpk k r)` to reduce the goal to its premises. Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hg', hpk_sq]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_of_uh {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
   apply Matrix.isUnit_det_of_left_inverse (B := Hpk k r * gᴴ * Hpk k r)
@@ -345,16 +341,16 @@ theorem isUnit_of_uh {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := by
     _ = 1 := by rw [hg', hpk_sq]
 
 /- English proof (translation)
-Use `show (1 : Mx k r)ᴴ * Hpk k r * 1 = Hpk k r`. Rewrite using `[conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uh_one : (1 : Mx k r) ∈ UH (Hpk k r) := by
   show (1 : Mx k r)ᴴ * Hpk k r * 1 = Hpk k r
   rw [conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hh' : hᴴ * Hpk k r * h = Hpk k r` using `hh`. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Rewrite using `[conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by rw [hg', hh']`.
+A detailed English derivation is pending.
 -/
 theorem uh_mul {g h : Mx k r} (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r)) : g * h ∈ UH (Hpk k r) := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -366,9 +362,9 @@ theorem uh_mul {g h : Mx k r} (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r)
     _ = Hpk k r := by rw [hg', hh']
 
 /- English proof (translation)
-Establish `hg' : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Establish `hu` using `isUnit_of_uh hg`. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uh_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := by
   have hg' : gᴴ * Hpk k r * g = Hpk k r := hg
@@ -381,7 +377,7 @@ theorem uh_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) 
         rw [Matrix.mul_nonsing_inv _ hu, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Mx k r => gᴴ * Hpk k r * g` using `((continuous_id.matrix_conjTranspose).matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_singleton.preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uh_closed : IsClosed (UH (Hpk k r) : Set (Mx k r)) := by
   have hc : Continuous fun g : Mx k r => gᴴ * Hpk k r * g :=
@@ -389,7 +385,7 @@ theorem uh_closed : IsClosed (UH (Hpk k r) : Set (Mx k r)) := by
   exact isClosed_singleton.preimage hc
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uh_one, fun _ ha _ hb => uh_mul ha hb, fun _ ha => uh_inv ha, fun _ ha => isUnit_of_uh ha, uh_closed⟩`.
+Supply the required witnesses or components.
 -/
 theorem uh_clsub : ClSub (UH (Hpk k r) : Set (Mx k r)) :=
   ⟨uh_one, fun _ ha _ hb => uh_mul ha hb, fun _ ha => uh_inv ha, fun _ ha => isUnit_of_uh ha, uh_closed⟩
@@ -399,11 +395,9 @@ def col (k r : ℕ) (g : Mx k r) : Prop :=
     g i j = if i = j then 1 else 0
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hU, h2, h3⟩`. Use `⟨hU, fun i j hj hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hjr : j.val < r`. Establish `e : eI k r ⟨j.val, hjr⟩ = j` using `Fin.ext rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `h2 ⟨j.val, hjr⟩ i (by simp only [eI] at *; omega)` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this`. Conclude with `h3 i j (by omega) hj (by omega)`. Introduce and unpack `⟨hU, hc⟩`.
-
-Use `⟨hU, fun a i hi => ?_, fun i j h1 h2 h3 => ?_⟩` and prove the remaining obligations. Conclude with `hc i (eI k r a) (by simp only [eI]; omega) (by simp only [eI]; omega)`. Conclude with `hc i j h2 (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nset_iff (g : Mx k r) : g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ col k r g := by
   constructor
@@ -421,18 +415,18 @@ theorem nset_iff (g : Mx k r) : g ∈ Nset k r ↔ g ∈ UH (Hpk k r) ∧ col k 
     · exact hc i j h2 (by omega)
 
 /- English proof (translation)
-Introduce `i j _ _`. Rewrite using `[Matrix.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem col_one : col k r (1 : Mx k r) := by
   intro i j _ _
   rw [Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `i j hj hi`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite using `[hh j j hj (by omega), if_pos rfl, mul_one]`. Conclude with `hg i j hj hi`. Introduce `m _ hmj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[hh m j hj hm, if_neg hmj, mul_zero]`. Use `push Not at hm`. Establish `hne : i ≠ m`. Introduce `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers.
 
-Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[hg i m (by omega) (by omega), if_neg hne, zero_mul]`. Introduce `hj'`. Conclude with `absurd (Finset.mem_univ j) hj'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem col_mul {g h : Mx k r} (hg : col k r g) (hh : col k r h) : col k r (g * h) := by
   intro i j hj hi
@@ -452,15 +446,15 @@ theorem col_mul {g h : Mx k r} (hg : col k r g) (hh : col k r h) : col k r (g * 
     exact absurd (Finset.mem_univ j) hj'
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∀ i j : Fin (2 * r + k + 1), j.val < n → j.val ≤ r + k → (j.val ≤ i.val ∨ r ≤ i.val) → g' i j = if i = j then 1 else 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i j h`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Consider the case `succ n ih`. Introduce `i j hjn hj hi`. Establish `e` using `congrFun (congrFun hm i) j`. Rewrite `e` using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Rewrite `e` using `[hg j j hj (by omega), if_pos rfl, mul_one]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e, Matrix.one_apply]`. Introduce `m _ hmj`. Distinguish the cases in `hmc : j.val ≤ m.val ∨ r ≤ m.val`. Rewrite using `[hg m j hj hmc, if_neg hmj, mul_zero]`. Use `push Not at hmc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : i ≠ m`. Introduce `e`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite using `[ih i m (by omega) (by omega) (by omega), if_neg hne, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj'`. Conclude with `absurd (Finset.mem_univ j) hj'`. Introduce `i j hj hi`. Conclude with `key (j.val + 1) i j (by omega) hj hi`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem col_of_left_inv {g g' : Mx k r} (hg : col k r g) (hm : g' * g = 1) : col k r g' := by
   have key : ∀ n : ℕ, ∀ i j : Fin (2 * r + k + 1), j.val < n → j.val ≤ r + k →
@@ -489,9 +483,9 @@ theorem col_of_left_inv {g g' : Mx k r} (hg : col k r g) (hm : g' * g = 1) : col
   exact key (j.val + 1) i j (by omega) hj hi
 
 /- English proof (translation)
-Establish `he : ∀ i j : Fin (2 * r + k + 1), Continuous fun g : Mx k r => g i j` using `fun i j => continuous_id.matrix_elem i j`. Establish `e : Nset k r = UH (Hpk k r) ∩ ((⋂ (a : Fin r) (i : Fin (2 * r + k + 1)) (_ : a.val ≤ i.val), {g : Mx k r | g i (eI k r a) = if i = eI k r a then 1 else 0}) ∩ (⋂ (i : Fin (2 * r + k + 1)) (j : Fin (2 * r + k + 1)) (_ : r ≤ j.val) (_ : j.val ≤ r + k) (_ : r ≤ i.val), {g : Mx k r | …`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 
-Rewrite using `[e]`. Use `uh_closed.inter (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (he _ _) continuous_const`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (he _ _) continuous_const`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem n_closed : IsClosed (Nset k r : Set (Mx k r)) := by
   have he : ∀ i j : Fin (2 * r + k + 1), Continuous fun g : Mx k r => g i j := fun i j =>
@@ -511,9 +505,9 @@ theorem n_closed : IsClosed (Nset k r : Set (Mx k r)) := by
       isClosed_iInter fun _ => isClosed_eq (he _ _) continuous_const
 
 /- English proof (translation)
-Use `⟨(nset_iff _).2 ⟨uh_one, col_one⟩, ?_, ?_, fun a ha => isUnit_of_uh ha.1, n_closed⟩` and prove the remaining obligations. Introduce `g hg h hh`. Rewrite `*` using `[nset_iff]`. Conclude with `⟨uh_mul hg.1 hh.1, col_mul hg.2 hh.2⟩`. Introduce `g hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `*` using `[nset_iff]`. Conclude with `⟨uh_inv hg.1, col_of_left_inv hg.2 (Matrix.nonsing_inv_mul _ (isUnit_of_uh hg.1))⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem n_clsub : ClSub (Nset k r : Set (Mx k r)) := by
   refine ⟨(nset_iff _).2 ⟨uh_one, col_one⟩, ?_, ?_, fun a ha => isUnit_of_uh ha.1, n_closed⟩
@@ -532,17 +526,17 @@ Both sides reduce to the same expression.
 theorem haarNm_eq : haarNm k r = (Measure.haar : Measure (Grp (Nset k r : Set (Mx k r)) n_clsub)).map Grp.vt := rfl
 
 /- English proof (translation)
-The claim follows from `hmeas_haar _ _`.
+A detailed English derivation is pending.
 -/
 theorem haarNm_haar : IsHaarOn (Nset k r) (haarNm k r) := hmeas_haar _ _
 
 /- English proof (translation)
-The claim follows from `hmeas_compact _ _ K hK`.
+A detailed English derivation is pending.
 -/
 theorem haarNm_compact (K : Set (Mt k r)) (hK : IsCompact K) : haarNm k r K < ⊤ := hmeas_compact _ _ K hK
 
 /- English proof (translation)
-The claim follows from `haar_unique _ _ μ hμ`.
+A detailed English derivation is pending.
 -/
 theorem n_unique (μ : Measure (Mt k r)) (hμ : IsHaarOn (Nset k r) μ) :
     ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ∞ ∧ μ = c • haarNm k r :=

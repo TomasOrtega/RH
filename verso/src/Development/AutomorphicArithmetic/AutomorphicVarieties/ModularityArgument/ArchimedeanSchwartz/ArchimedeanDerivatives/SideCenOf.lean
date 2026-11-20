@@ -10,7 +10,7 @@ open GroundTheory.Automorphic.GLnLocal GroundTheory.Automorphic.GJStandardLCuspi
 attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `h0 (funext fun x => AnalyticOnNhd.eqOn_zero_of_preconnected_of_eventuallyEq_zero (hA.differentiableOn.analyticOnNhd isOpen_univ) isPreconnected_univ (Set.mem_univ ((c + 1 : ℝ) : ℂ)) ?_ trivial)` and prove the remaining obligations. Use `filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show c < ((c + 1 : ℝ) : ℂ).re by simp)] with s hs using h s hs`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem far_ne {A : ℂ → ℂ} (hA : Differentiable ℂ A) (h0 : A ≠ 0) (c : ℝ) : ∃ s : ℂ, c < s.re ∧ A s ≠ 0 := by
   by_contra h

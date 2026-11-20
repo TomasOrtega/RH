@@ -18,7 +18,7 @@ def IsWit (X : Tower Ω ε) (N l n : ℕ) [Fact l.Prime] (b : X.Fn l) (f : X.Kˣ
       ∃ g : X.K, Inv X (CongruenceSubgroup.Gamma1 (N * l ^ n)) g ∧ (f : X.K) * X.sl (ofSL δ) f = g ^ (l ^ n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨f, a, b, c, d⟩ => ⟨f, ⟨a, b, c⟩, d⟩, fun ⟨f, ⟨a, b, c⟩, d⟩ => ⟨f, a, b, c, d⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isThB_iff (X : Tower Ω ε) (A : ValuationSubring Ω) (N l n : ℕ) [Fact l.Prime] (b : X.Fn l) (φ : HahnSeries ℚ Ω) :
     IsThB X A N l n b φ ↔ ∃ f : X.Kˣ, IsWit X N l n b f ∧ IsDl X A l n 1 (f : X.K) φ :=

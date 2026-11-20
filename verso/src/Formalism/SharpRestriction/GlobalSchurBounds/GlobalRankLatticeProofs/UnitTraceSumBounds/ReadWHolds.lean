@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.ExpIntW
 namespace Formalism.MainNotions.GL3Theta
 
 /- English proof (translation)
-The claim follows from `expIntegralWitt`.
+A detailed English derivation is pending.
 -/
 theorem readW_holds : readW := expIntegralWitt
 

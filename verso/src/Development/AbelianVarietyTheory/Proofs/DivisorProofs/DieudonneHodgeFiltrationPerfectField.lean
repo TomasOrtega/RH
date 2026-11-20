@@ -16,11 +16,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu.Theory
 
 /- English proof (translation)
-Use `letI := (frobRing (p_eq_zero p k)).toAlgebra`. Introduce `t`. Take `⟨x, rfl⟩` from `(omega_baseChange_bijective G k (p_eq_zero p k)).2 t`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, (map_zero _).trans (map_zero _).symm⟩`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, (map_add _ a b).trans ((congrArg₂ (· + ·) ha hb).trans (map_add _ x y).symm)⟩`. Consider the case `tmul r w`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨(frobeniusEquiv k p).symm r • w, ?_⟩` and prove the remaining obligations. Rewrite using `[liftSemi_tmul, map_smulₛₗ]`. Use `congr 1`. Use `show frobRing (p_eq_zero p k) _ = r`. Rewrite using `[frobRing_apply, frobeniusEquiv_symm_pow_p]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobProj_omega_surjective {p : ℕ} [Fact p.Prime] {k : Type} [Field k] [CharP k p] [PerfectRing k p]
     (G : PDivGroup p k) : Function.Surjective (frobProj (p_eq_zero p k) G).omega := by
@@ -41,27 +41,27 @@ theorem frobProj_omega_surjective {p : ℕ} [Fact p.Prime] {k : Type} [Field k] 
     rw [frobRing_apply, frobeniusEquiv_symm_pow_p]
 
 /- English proof (translation)
-Introduce `p _ T k _ _ _ G`. Take `⟨-, hVinj, hVsm, -, -⟩` from `GlobalTheory.T.dieudonneTheory_V_eq_verschiebung_injective p T k G`. Take `⟨hbij, -, -⟩` from `GlobalTheory.T.dieudonne_frobeniusTwist_bijective_relFrobenius p T.base k G`. Take `⟨-, -, -, hver, -, -, -⟩` from `rigExt_field_of_charP p k (p_eq_zero p k) G`. Establish `key : ∀ m, (frobProj (p_eq_zero p k) G).rig (T.red G (T.V G m)) = rigExtMap (verschiebung (p_eq_zero p k) G) (T.red G m)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[← T.base.red_smap trivial trivial (frobProj (p_eq_zero p k) G), hVsm]`. Rewrite using `[← SemiHom.ofHom_rig]`. Conclude with `T.base.red_smap trivial trivial (SemiHom.ofHom _) m`. Establish `rinj : Function.Injective (frobProj (p_eq_zero p k) G).rig`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨m, rfl⟩` from `T.base.red_surjective G trivial x`. Rewrite `hx` using `[← T.base.red_smap trivial trivial (frobProj (p_eq_zero p k) G), T.base.red_eq_zero]`. Take `⟨n, hn⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n', rfl⟩` from `hbij.2 n`. Establish `hm : m = p • n'` using `hbij.1 (by rw [hn, map_nsmul])`. Conclude with `(T.base.red_eq_zero G trivial m).2 ⟨n', hm⟩`. Establish `osurj` using `frobProj_omega_surjective G`. Establish `h1 : ∀ x : G.RigExt, (∃ m, T.red G (T.V G m) = x) ↔ x ∈ LinearMap.range G.rigOfOmega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, rfl⟩`. Establish `hm : (frobProj (p_eq_zero p k) G).rig (T.red G (T.V G m)) ∈ LinearMap.range (frobTwist (p_eq_zero p k) G).rigOfOmega`. Rewrite using `[key, ← hver]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, rfl⟩`. Take `⟨w', hw'⟩` from `hm`. Take `⟨w, rfl⟩` from `osurj w'`. Conclude with `⟨w, rinj ((SemiHom.rig_rigOfOmega _ w).trans hw')⟩`. Introduce and unpack `⟨w, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : (frobTwist (p_eq_zero p k) G).rigOfOmega ((frobProj (p_eq_zero p k) G).omega w) ∈ LinearMap.range (rigExtMap (verschiebung (p_eq_zero p k) G))`. Rewrite using `[hver]`. Conclude with `⟨_, rfl⟩`. Take `⟨y, hy⟩` from `hw`. Take `⟨m, rfl⟩` from `T.base.red_surjective G trivial y`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨m, rinj ((key m).trans (hy.trans (SemiHom.rig_rigOfOmega _ w).symm))⟩`. Establish `h2 : ∀ m, T.red G (T.V G m) = 0 ↔ ∃ n, m = T.F G n`. Introduce `m`. Use `(T.base.red_eq_zero G trivial _).trans ⟨fun ⟨n, hn⟩ => ⟨n, hVinj ?_⟩, fun ⟨n, hn⟩ => ⟨n, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(T.V_F G n).symm`. Rewrite using `[hn]`. Conclude with `T.V_F G n`. Use `⟨h1, h2, fun m => ?_, G.rigOfOmega_injective_of_eq_zero (p_eq_zero p k)⟩` and prove the remaining obligations. Rewrite using `[G.exact_rigOfOmega_rigToLie (p_eq_zero p k) (T.red G m)]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hm`. Take `⟨m', hm'⟩` from `(h1 _).2 (by simpa using hm)`. Establish `h0 : T.red G (m - T.V G m') = 0` using `by rw [map_sub, hm', sub_self]`. Take `⟨n, hn⟩` from `(T.base.red_eq_zero G trivial _).1 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨m' + T.F G n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, T.V_F G n, ← hn, add_sub_cancel]`. Introduce and unpack `⟨n, rfl⟩`. Take `⟨w, hw⟩` from `(h1 (T.red G (T.V G n))).1 ⟨n, rfl⟩`. Conclude with `⟨w, hw⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hodge_filtration : ∀ (p : ℕ) [Fact p.Prime] (T : Theory p) (k : Type) [Field k] [CharP k p] [PerfectRing k p] (G : PDivGroup p k), (∀ x : G.RigExt, (∃ m, T.red G (T.V G m) = x) ↔ x ∈ LinearMap.range G.rigOfOmega) ∧ (∀ m, T.red G (T.V G m) = 0 ↔ ∃ n, m = T.F G n) ∧ (∀ m, G.rigToLie (p_eq_zero p k) (T.red G m) = 0 ↔ ∃ n, m = T.V G n) ∧ Function.Injective G.rigOfOmega := by
   intro p _ T k _ _ _ G

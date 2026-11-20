@@ -14,15 +14,15 @@ namespace GlobalTheory.CompanionTheory.EqForm
 section LinAlg
 
 /- English proof (translation)
-Set `I : Ideal R` to `LinearMap.ker (LinearMap.toSpanSingleton R Q q₀)`. Establish `hI : ∀ r : R, r ∈ I ↔ r • q₀ = 0` using `fun r => by simp [I, LinearMap.mem_ker]`. Use `haveI : Module.Finite R Q := Module.Finite.of_restrictScalars_finite k R Q`. Establish `hne : I • (⊤ : Submodule R Q) ≠ ⊤`. Introduce `htop`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr1, hr2⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul I (⊤ : Submodule R Q) Module.Finite.fg_top (by rw [htop])`. Establish `hr0 : r = 0` using `hf r fun x => hr2 x trivial`. Rewrite `hr1` using `[hr0, zero_sub, hI]`. Apply `h0` to reduce the goal to its premises. Simplify using `using hr1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `M : Submodule k Q` to `(I • (⊤ : Submodule R Q)).restrictScalars k`. Establish `hM : M < ⊤`. Use `lt_top_iff_ne_top.2 fun h => hne ?_` and prove the remaining obligations. Apply `Submodule.restrictScalars_injective k` to reduce the goal to its premises. Simplify `h` using `[M]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ0, hμ⟩` from `Submodule.exists_le_ker_of_lt_top M hM`. Use `⟨μ, hμ0, fun r c hr x => ?_⟩` and prove the remaining obligations. Establish `hmem : r - algebraMap k R c ∈ I`. Rewrite using `[hI, sub_smul, hr, algebraMap_smul, sub_self]`. Establish `hx : (r - algebraMap k R c) • x ∈ M`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (r - algebraMap k R c) • x ∈ I • (⊤ : Submodule R Q)` using `Submodule.smul_mem_smul hmem (Submodule.mem_top)`. Conclude with `(Submodule.restrictScalars_mem k _ _).2 h2`. Establish `h1 : μ ((r - algebraMap k R c) • x) = 0` using `hμ hx`. Rewrite `h1` using `[sub_smul, algebraMap_smul, map_sub, μ.map_smul c x, smul_eq_mul, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_of_faithful {k Q : Type} [Field k] [AddCommGroup Q] [Module k Q] [FiniteDimensional k Q]
     (R : Type) [CommRing R] [Algebra k R] [Module R Q] [IsScalarTower k R Q]
@@ -57,9 +57,9 @@ theorem exists_form_of_faithful {k Q : Type} [Field k] [AddCommGroup Q] [Module 
   exact h1
 
 /- English proof (translation)
-Establish `hcomm : ∀ a ∈ Set.range A, ∀ b ∈ Set.range A, a * b = b * a`. Introduce and unpack `_ ⟨i, rfl⟩ _ ⟨j, rfl⟩`. Conclude with `hc i j`. Use `letI : CommRing (Algebra.adjoin ℂ (Set.range A)) := Algebra.adjoinCommRingOfComm ℂ hcomm`. Take `⟨μ, hμ0, hμ⟩` from `exists_form_of_faithful (k := ℂ) (Q := Q) (Algebra.adjoin ℂ (Set.range A)) (fun r hr => Subtype.ext (LinearMap.ext hr)) q₀ h0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨μ, hμ0, fun i x => ?_⟩` and prove the remaining obligations. Conclude with `hμ ⟨A i, Algebra.subset_adjoin ⟨i, rfl⟩⟩ (ξ i) (hq i) x`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenform_of_commute {Q : Type} [AddCommGroup Q] [Module ℂ Q] [FiniteDimensional ℂ Q] {ι : Type}
     (A : ι → Module.End ℂ Q) (hc : ∀ i j, Commute (A i) (A j))
@@ -81,9 +81,9 @@ section Smooth
 variable {Γ W : Type} [Group Γ] [TopologicalSpace Γ] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Establish `h1` using `h ⟨k, hk⟩`. Simplify using `using h1`. Introduce `h k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `h k k.2`. Simplify using `using h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff (ρ : Representation ℂ Γ W) (K : Subgroup Γ) (v : W) :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -96,21 +96,21 @@ theorem mem_fixed_iff (ρ : Representation ℂ Γ W) (K : Subgroup Γ) (v : W) :
     simpa using h1
 
 /- English proof (translation)
-Establish `hst : ∀ t, ∀ v ∈ fixed ρ K, ρ t v ∈ fixed ρ K`. Introduce `t v hv`. Use `(mem_fixed_iff ρ K _).2 fun k hk => ?_` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply, (mem_fixed_iff ρ K v).1 hv k hk]`. Set `A : Γ → Module.End ℂ (fixed ρ K)` to `fun t => (ρ t).restrict (hst t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hA : ∀ t (s : fixed ρ K), ((A t s : fixed ρ K) : W) = ρ t s` using `fun t s => rfl`. Establish `hAc : ∀ a b, Commute (A a) (A b)`. Introduce `a b`. Use `LinearMap.ext fun s => Subtype.ext ?_` and prove the remaining obligations. Use `show ρ a (ρ b s) = ρ b (ρ a s)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, hcomm, map_mul, Module.End.mul_apply]`. Establish `hw₀ : w₀ ∈ fixed ρ K` using `(mem_fixed_iff ρ K _).2 fun k hk => by rw [hw, hξ k hk, one_smul]`. Take `⟨μ, hμ0, hμ⟩` from `exists_eigenform_of_commute A hAc ξ ⟨w₀, hw₀⟩ (fun h => h0 (congrArg Subtype.val h)) (fun t => Subtype.ext (hw t))`. Establish `hnorm : ∀ t : Γ, t ∈ Subgroup.normalizer (K : Set Γ)`. Introduce `t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subgroup.mem_normalizer_iff.2 fun h => ?_` and prove the remaining obligations. Establish `e : t * h * t⁻¹ = h` using `by rw [hcomm t h, mul_inv_cancel_right]`. Rewrite using `[e]`. Establish `hE : ∀ t w, GlobalTheory.LocGL.idem hρ hK (ρ t w) = ρ t (GlobalTheory.LocGL.idem hρ hK w)`. Introduce `t w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : w - GlobalTheory.LocGL.idem hρ hK w ∈ twKer ρ K 1`. Rewrite using `[← GlobalTheory.LocGL.idem_eq_zero_iff hρ hK, map_sub, GlobalTheory.LocGL.idem_of_mem hρ hK (GlobalTheory.LocGL.idem_mem hρ hK w), sub_self]`. Establish `h2` using `twKer_le_comap ρ K t (hnorm t) h1`. Rewrite `h2` using `[Submodule.mem_comap, ← GlobalTheory.LocGL.idem_eq_zero_iff hρ hK, map_sub, map_sub, GlobalTheory.LocGL.idem_of_mem hρ hK (hst t _ (GlobalTheory.LocGL.idem_mem hρ hK w)), sub_eq_zero]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : W →ₗ[ℂ] fixed ρ K` to `(GlobalTheory.LocGL.idem hρ hK).codRestrict _ (GlobalTheory.LocGL.idem_mem hρ hK)`. Use `⟨μ ∘ₗ e, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Apply `hμ0` to reduce the goal to its premises. Use `LinearMap.ext fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : e (s : W) = s` using `Subtype.ext (GlobalTheory.LocGL.idem_of_mem hρ hK s.2)`. Establish `h2` using `LinearMap.congr_fun h (s : W)`. Simplify `h2` using `[h1]`. Introduce `t w`. Establish `h1 : e (ρ t w) = A t (e w)` using `Subtype.ext (hE t w)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[h1, hμ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigenform_of_smooth [IsTopologicalGroup Γ] (ρ : Representation ℂ Γ W) (hρ : IsSmooth ρ)
     (K : Subgroup Γ) (hK : IsCompact (K : Set Γ)) (hcomm : ∀ a b : Γ, a * b = b * a)
@@ -166,11 +166,11 @@ section Diag
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `key : ∀ a : GL (Fin n) L, IsDiagM a → (a : Matrix (Fin n) (Fin n) L) = Matrix.diagonal fun i => (a : Matrix (Fin n) (Fin n) L) i i`. Introduce `a ha`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[ha i j hij, Matrix.diagonal_apply_ne _ hij]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, key g hg, key h hh, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem isDiagM_commute {n : ℕ} {g h : GL (Fin n) L} (hg : IsDiagM g) (hh : IsDiagM h) : g * h = h * g := by
   have key : ∀ a : GL (Fin n) L, IsDiagM a →
@@ -190,33 +190,29 @@ theorem isDiagM_commute {n : ℕ} {g h : GL (Fin n) L} (hg : IsDiagM g) (hh : Is
 end Diag
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n V _ _ ρ hu hadm ξ y hy hyt hyk`. Take `⟨D, hJ, hN, hNm, hT⟩` from `hIw L ϖ σ q hu n`. Take `⟨-, -, hIK, t, htD, htS⟩` from `hKU L ϖ σ q n hu`. Establish `hdom : D.IsStrDom ⟨t, (hT t).2 htD⟩` using `(hDom L ϖ σ q hu n D hJ hN hNm hT ⟨t, (hT t).2 htD⟩).2 htS`. Establish `a4` using `(hA4 (GU σ n) D V ρ hadm ⟨_, hdom⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : twKer ρ D.N 1 = jacU ρ` using `twKer_eq_jacSub D _ hN ρ`. Use `haveI hfJ : FiniteDimensional ℂ (fixed ρ D.J) := hadm.2 D.J D.isOpen_J D.isCompact_J`. Establish `hfin : FiniteDimensional ℂ (fixed (D.piN ρ) D.JT)`. Set `f : fixed ρ D.J →ₗ[ℂ] Jacquet ρ D.N` to `(twKer ρ D.N 1).mkQ ∘ₗ (fixed ρ D.J).subtype`. Establish `hle : fixed (D.piN ρ) D.JT ≤ LinearMap.range f`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Take `⟨v, hv⟩` from `a4 w hw`. Conclude with `⟨v, hv⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`. Establish `hsm : IsSmooth (D.piN ρ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `w`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Set `Sg : Subgroup D.T` to `{ carrier := {g | D.piN ρ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk v} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at *`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `hop : IsOpen {g : D.T | ρ (g : GU σ n) v = v}` using `(hadm.1 v).preimage continuous_subtype_val`. Use `Sg.isOpen_of_mem_nhds (g := 1) (Filter.mem_of_superset (hop.mem_nhds (by simp)) ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Use `show D.piN ρ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk v`. Establish `hp : D.piN ρ g (Submodule.Quotient.mk v) = Submodule.Quotient.mk (ρ (g : GU σ n) v)` using `rfl`. Rewrite using `[hp, show ρ (g : GU σ n) v = v from hg]`. Establish `hcpt : IsCompact (D.JT : Set D.T)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[Subtype.isCompact_iff]`. Establish `e : Subtype.val '' (D.JT : Set D.T) = (D.J : Set (GU σ n)) ∩ D.T`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨ha, a.2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`. Rewrite using `[e]`. Conclude with `D.isCompact_J.inter_right D.isClosed_alt`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomm : ∀ a b : D.T, a * b = b * a`. Introduce `a b`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `isDiagM_commute ((hT _).1 a.2) ((hT _).1 b.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmk : ∀ x : V, x ∈ jacU ρ ↔ (Submodule.Quotient.mk x : Jacquet ρ D.N) = 0`. Introduce `x`. Rewrite using `[Submodule.Quotient.mk_eq_zero, hker]`. Take `⟨lam₀, hlam0, hlam⟩` from `exists_eigenform_of_smooth (D.piN ρ) hsm D.JT hcpt hcomm hfin (fun a => ξ (a : GU σ n)) (Submodule.Quotient.mk y) (fun h => hy ((hmk y).2 h)) (fun a => by`. Establish `hp : D.piN ρ a (Submodule.Quotient.mk y) = Submodule.Quotient.mk (ρ (a : GU σ n) y)` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hp, ← Submodule.Quotient.mk_smul, ← sub_eq_zero, ← Submodule.Quotient.mk_sub]`. Conclude with `(hmk _).1 (hyt _ ((hT _).1 a.2)))`. Use the proof step `(fun k hk => hyk _ (hIK (hJ ▸ hk)) ((hT _).1 k.2))`. Use `⟨lam₀ ∘ₗ (twKer ρ D.N 1).mkQ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`.
-
-Establish `h1 : (twKer ρ D.N 1).mkQ x = 0` using `(hmk x).1 hx`. Simplify using `[h1]`. Introduce `h`. Apply `hlam0` to reduce the goal to its premises. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
-
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ w`. Conclude with `LinearMap.congr_fun h v`. Introduce `s hs v`. Conclude with `hlam ⟨s, (hT s).2 hs⟩ (Submodule.Quotient.mk v)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eqFormU_of (hA4 : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G], A4 G)
     (hIw : IwahoriU) (hDom : DomU) (hKU : KUFacts) : EqFormU := by
@@ -295,7 +291,7 @@ theorem eqFormU_of (hA4 : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopol
     exact hlam ⟨s, (hT s).2 hs⟩ (Submodule.Quotient.mk v)
 
 /- English proof (translation)
-The claim follows from `eqFormU_of (fun G _ _ _ => GlobalTheory.T.jacquet_lemma_holds G) GlobalTheory.T.iwahori_unipotent_datum GlobalTheory.CompanionTheory.DomUnitary.domU GlobalTheory.CompanionTheory.KUFactsU.kuFacts`.
+A detailed English derivation is pending.
 -/
 theorem eqFormU : EqFormU :=
   eqFormU_of (fun G _ _ _ => GlobalTheory.T.jacquet_lemma_holds G) GlobalTheory.T.iwahori_unipotent_datum GlobalTheory.CompanionTheory.DomUnitary.domU GlobalTheory.CompanionTheory.KUFactsU.kuFacts

@@ -30,14 +30,14 @@ def Carried (L : (GA D T → ℂ) → (GA D T → ℂ)) : Prop :=
     ∀ f, IsThetaFunO ψ S T f → ∀ g w, L (fun h => om (g, h) f w) = fun h => om (g, h) (Δ f) w
 
 /- English proof (translation)
-The claim follows from `t.theta (x := f) hf`.
+A detailed English derivation is pending.
 -/
 theorem theta_of_tame {r : ℕ} {Δ : (WO S T → ℂ) → (WO S T → ℂ)} (t : Tame ψ θ LinearMap.id r Δ)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) : IsThetaFunO ψ S T (Δ f) :=
   t.theta (x := f) hf
 
 /- English proof (translation)
-Take `⟨Δ₁, r₁, t₁, e₁⟩` from `h₁`. Take `⟨Δ₂, r₂, t₂, e₂⟩` from `h₂`. Use `⟨fun f => Δ₁ (Δ₂ f), r₁ + r₂, t₁.comp t₂, fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e₂ f hf g w, e₁ (Δ₂ f) (theta_of_tame t₂ hf) g w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Carried.comp {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁ : Carried ψ θ om L₁) (h₂ : Carried ψ θ om L₂) :
     Carried ψ θ om fun φ => L₁ (L₂ φ) := by
@@ -48,9 +48,9 @@ theorem Carried.comp {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)} (h₁ :
   rw [e₂ f hf g w, e₁ (Δ₂ f) (theta_of_tame t₂ hf) g w]
 
 /- English proof (translation)
-Take `⟨Δ₁, r₁, t₁, e₁⟩` from `h₁`. Take `⟨Δ₂, r₂, t₂, e₂⟩` from `h₂`. Use `⟨fun f => Δ₁ f + Δ₂ f, max r₁ r₂, (t₁.mono (le_max_left _ _)).add hψ hθ (t₂.mono (le_max_right _ _)), fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e₁ f hf g w, e₂ f hf g w]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Simplify using `only [Pi.add_apply, map_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Carried.add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L₁ L₂ : (GA D T → ℂ) → (GA D T → ℂ)}
     (h₁ : Carried ψ θ om L₁) (h₂ : Carried ψ θ om L₂) : Carried ψ θ om fun φ => L₁ φ + L₂ φ := by
@@ -64,9 +64,9 @@ theorem Carried.add (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {L₁ L₂ :
   simp only [Pi.add_apply, map_add]
 
 /- English proof (translation)
-Take `⟨Δ, r, t, e⟩` from `hL`. Use `⟨fun f => c • Δ f, r, t.smul c, fun f hf g w => ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[e f hf g w]`. Use function extensionality and compare the values at `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, map_smul]`.
+A detailed English derivation is pending.
 -/
 theorem Carried.smul (c : ℂ) {L : (GA D T → ℂ) → (GA D T → ℂ)} (hL : Carried ψ θ om L) :
     Carried ψ θ om fun φ => c • L φ := by

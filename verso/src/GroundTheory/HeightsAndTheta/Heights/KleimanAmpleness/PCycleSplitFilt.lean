@@ -14,7 +14,7 @@ open MvPolynomial Filter
 universe u w
 
 /- English proof (translation)
-The claim follows from `| 0, a, b, _ => by simp | n + 1, a, b, h => by have ih := CycleSplit.Filt.telescope (fun m => a m.castSucc) (fun l => b l.castSucc) (fun l => by have := h l.castSucc simpa only [Fin.succ_castSucc] using this) have hl := h (Fin.last n) rw [Fin.succ_last] at hl rw [Fin.sum_univ_cas …`.
+A detailed English derivation is pending.
 -/
 theorem CycleSplit.Filt.telescope : ∀ {n : ℕ} (a : Fin (n + 1) → ℤ) (b : Fin n → ℤ),
     (∀ l : Fin n, a l.castSucc = a l.succ + b l) → a 0 = a (Fin.last n) + ∑ l, b l
@@ -33,37 +33,33 @@ theorem CycleSplit.Filt.telescope : ∀ {n : ℕ} (a : Fin (n + 1) → ℤ) (b :
 open SectionCount.Drop.Filt in
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x 𝔪 h𝔪 J hJhom hJx hJ𝔪`. Establish `hkill : ∀ p ∈ primeOf (S` using `S) x, ∀ m : Poly S N ⧸ J, p • m = 0 := by`. Introduce `p hp m`. Take `⟨m, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (p * m) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr (J.mul_mem_right m (hJx hp))`. Take `⟨⟨Fl⟩, hcount⟩` from `PrimeFiltration.Exists.proof.{u, u, w} S Ω N x (Poly S N ⧸ J) (quotGraded J hJhom) (finite_quot J) hkill`. Rewrite `hcount` using `[Ideal.annihilator_quotient]`. Establish `hann : ∀ l, J ≤ Fl.prime l` using `fun l => by`. Use `Fl.ann_le l` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Ideal.annihilator_quotient]`. Then use the resulting hypothesis. Establish `hlift : ∀ l : Fin Fl.n, ∃ (g : Poly S N) (e : ℕ), g.IsHomogeneous e ∧ Ideal.Quotient.mk J g = Fl.gen l`. Introduce `l`. Take `⟨g, hg, hgm⟩` from `mem_quotGraded_piece.mp (Fl.gen_mem l)`. Distinguish the cases in `h0 : 0 ≤ Fl.deg l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, (Fl.deg l).toNat, isHomogeneous_of_isWeightedHomogeneous_one ?_, hgm⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg h0]` and apply the resulting hypothesis. Use `⟨0, 0, isHomogeneous_zero _ _ _, ?_⟩` and prove the remaining obligations. Establish `hg0 : g = 0`. Use extensionality with `m`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h1` using `hg hne`. Rewrite `h1` using `[weight_one_int]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hgm, hg0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose g eK hgH hgm using hlift`. Set `Jk : Fin (Fl.n + 1) → Ideal (Poly S N)` to `fun l => (Fl.step l).comap J.mkQ`. Establish `hJ0 : Jk 0 = J`. Simplify using `only [Jk, Fl.step_zero, Submodule.comap_bot, Submodule.ker_mkQ]`. Establish `hJlast : Jk (Fin.last _) = ⊤`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Jk, Fl.step_last, Submodule.comap_top]`. Establish `hmkQ : ∀ (c : Poly S N) (l : Fin Fl.n), J.mkQ (c * g l) = c • Fl.gen l`. Introduce `c l`. Rewrite using `[← hgm l]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJsucc : ∀ l : Fin Fl.n, Jk l.succ = Jk l.castSucc ⊔ Ideal.span {g l}`. Introduce `l`. Use extensionality with `f`. Simplify using `only [Jk, Fl.step_succ, Submodule.mem_comap]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hf`. Take `⟨a, ha, y, hy, hay⟩` from `Submodule.mem_sup.mp hf`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Establish `h1 : f - c * g l ∈ (Fl.step l.castSucc).comap J.mkQ`. Rewrite using `[Submodule.mem_comap, map_sub, hmkQ, ← hay, add_sub_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `ha`. Establish `h2` using `Submodule.add_mem_sup h1 (Ideal.mul_mem_left _ c (Ideal.mem_span_singleton_self (g l)))`. Rewrite `h2` using `[sub_add_cancel]`. Then use the resulting hypothesis. Introduce `hf`. Take `⟨a, ha, y, hy, rfl⟩` from `Submodule.mem_sup.mp hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[map_add, hmkQ]`. Conclude with `Submodule.add_mem_sup ha (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _))`. Establish `hJkp : ∀ (l : Fin Fl.n) (f : Poly S N), f ∈ Fl.prime l ↔ f * g l ∈ Jk l.castSucc`. Introduce `l f`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Fl.mem_prime, ← hgm l]`. Conclude with `Iff.rfl`. Establish `hJk_ge : ∀ l, J ≤ Jk l` using `fun l f hf => by`. Simplify using `only [Jk, Submodule.mem_comap, Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero J).mpr hf, zero_mem]`. Establish `hJk_hom : ∀ l, ∀ f ∈ Jk l, ∀ d : ℕ, homogeneousComponent d f ∈ Jk l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `l`. Proceed by induction on `l using Fin.induction with`. Consider the case `zero => rw [hJ0]`. Conclude with `hJhom`. Consider the case `succ l ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJsucc l]`. Conclude with `hom_sup ih (hom_span fun g' hg' => ⟨eK l, by rw [Set.mem_singleton_iff.mp hg']; exact hgH l⟩)`. Use `⟨Fl.n, Fl.prime, fun l => -((eK l : ℕ) : ℤ), fun l => ⟨Fl.isPrime l, Fl.isHomogeneous l, hann l⟩, fun G _ hG => hcount Fl G hG, fun Q => ?_⟩` and prove the remaining obligations. Establish `hstep : ∀ l : Fin Fl.n, ∀ᶠ c : ℕ in atTop, restrLen (Jk l.castSucc) (Q.twist (twistSys S x (c : ℤ))) = restrLen (Jk l.succ) (Q.twist (twistSys S x (c : ℤ))) + restrLen (Fl.prime l) (Q.twist (twistSys S x ((c : ℤ) - (eK l : ℕ))))`. Introduce `l`.
-
-Rewrite using `[hJsucc l]`. Conclude with `hS S Ω N x 𝔪 h𝔪 (Jk l.castSucc) (Fl.prime l) (g l) (eK l) (hJk_hom _) (hJx.trans (hJk_ge _)) (hJ𝔪.trans (hJk_ge _)) (hgH l) (Fl.isHomogeneous l) (hJkp l) Q`. Use `filter_upwards [Filter.eventually_all.mpr hstep] with c hc`. Establish `htel` using `CycleSplit.Filt.telescope (fun m => restrLen (Jk m) (Q.twist (twistSys S x (c : ℤ)))) (fun l => restrLen (Fl.prime l) (Q.twist (twistSys S x ((c : ℤ) - (eK l : ℕ))))) hc`. Simplify using `only [hJ0, hJlast, restrLen_of_irrelevant ⊤ (fun i => Submodule.mem_top), zero_add] at htel`.
-
-Rewrite using `[htel]`. Simplify using `only [sub_eq_add_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CycleSplit.Filt.proof (hS : CycleSplit.Filt.Step.Statement.{u, w}) :
     CycleSplit.Filt.Statement.{u, w} := by

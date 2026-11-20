@@ -22,7 +22,7 @@ namespace GlobalTheory.ExpandDenomUniform
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `⟨((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)), ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0`. Conclude with `map_zero _`. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (1 : FiniteAdeleRing (𝓞 F) F) = 1`. Conclude with `map_one _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finOne : ∃ e : AF F, evI F e = 0 ∧ ∀ v, evFin F v e = 1 := by
   refine ⟨((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)), ?_, fun v => ?_⟩
@@ -32,13 +32,13 @@ theorem exists_finOne : ∃ e : AF F, evI F e = 0 ∧ ∀ v, evFin F v e = 1 := 
     exact map_one _
 
 /- English proof (translation)
-The claim follows from `map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem evI_mul (a b : AF F) : evI F (a * b) = evI F a * evI F b :=
   map_mul (InfiniteAdeleRing.ringEquiv_mixedSpace F) a.1 b.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, add_dotProduct, dotProduct_add]`. Rewrite using `[show x + w'.1 + w.1 = x + w.1 + w'.1 by abel]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (w w' : (κ → R) × (κ → R)) (φ : (κ → R) → ℂ) :
@@ -50,9 +50,9 @@ theorem schr_comm {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R �
   ring
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hJ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {d : ℕ} {J : Matrix (Fin d) (Fin d) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (v w : Fin d → E) : form σ J w v = -σ (form σ J v w) := by
@@ -65,7 +65,7 @@ theorem form_swap (σ : E →ₐ[F] E) (hσ : ∀ a, σ (σ a) = a) {d : ℕ} {J
   ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.symplectic_pair_rank_one_trace σ J K ξ β x y t`.
+A detailed English derivation is pending.
 -/
 theorem L2 (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (K : Matrix (Fin d) (Fin d) E)
     (ξ β : Fin n → E) (x y : Fin d → E) (t : AF F) :
@@ -75,14 +75,14 @@ theorem L2 (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (K : 
   GlobalTheory.T.symplectic_pair_rank_one_trace σ J K ξ β x y t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.standard_character_kernel_integral_trace (E := F) ψ hψ t a ht hv h1`.
+A detailed English derivation is pending.
 -/
 theorem L3 (ψ : AddChar (AF F) ℂ) (hψ : IsStd ψ) (t : AF F) (a : F) (ht : evI F t = 0)
     (hv : ∀ v, evFin F v t = algebraMap F (Fv F v) a) (h1 : ψ t = 1) : ∃ z : ℤ, Algebra.trace ℚ F a = z :=
   GlobalTheory.T.standard_character_kernel_integral_trace (E := F) ψ hψ t a ht hv h1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hermitian_dual_lattice_denominator σ J hJ c hc`.
+A detailed English derivation is pending.
 -/
 theorem L4 (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : J.det ≠ 0) (c : E) (hc : c ≠ 0) :
     ∃ N : ℕ, 1 ≤ N ∧ ∀ ξ : Fin n → E, (∀ β : Fin n → 𝓞 E, ∃ z : ℤ, Algebra.trace ℚ E (c * form σ J ξ (fun i => (β i : E))) = z) →
@@ -90,7 +90,7 @@ theorem L4 (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (hJ : J
   GlobalTheory.T.hermitian_dual_lattice_denominator σ J hJ c hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.model_rank_one_bounded_denominator M ψ hM x`.
+A detailed English derivation is pending.
 -/
 theorem uniform_denominator_integral_vectors {σ : E →ₐ[F] E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ)
     (hM : M.IsGood ψ) (x : Fin d → E) : ∃ D : ℕ, 1 ≤ D ∧ ∀ β : Fin n → 𝓞 E, ∃ y z : Fin n × Fin d → 𝓞 F,
@@ -99,7 +99,7 @@ theorem uniform_denominator_integral_vectors {σ : E →ₐ[F] E} {n d : ℕ} {X
   GlobalTheory.T.model_rank_one_bounded_denominator M ψ hM x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.schwartz_bruhat_congruence_level ψ hψ g hg`.
+A detailed English derivation is pending.
 -/
 theorem uniform_denominator_expansion_local (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) {κ : Type} [Fintype κ]
     (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -111,9 +111,9 @@ theorem uniform_denominator_expansion_local (ψ : AddChar (AF F) ℂ) (hψ : Con
   GlobalTheory.T.schwartz_bruhat_congruence_level ψ hψ g hg
 
 /- English proof (translation)
-Establish `h1 : M.co.rho B.ψ w (M.co.rho B.ψ u Ψ) = B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) w u) • M.co.rho B.ψ u (M.co.rho B.ψ w Ψ)`. Simplify using `only [Darboux.rho]`. Rewrite using `[schr_comm, M.co.form]`. Establish `h2 : e₀ (M.co.rho B.ψ w Ψ) = B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) w u) • e₀ (M.co.rho B.ψ w Ψ)` using `by conv_lhs => rw [← hinv, h1, map_smul, he.inv u hu _ (GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hψ w Ψ hΨ)]`. Take `⟨y, hy⟩` from `Function.ne_iff.1 hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `congrFun h2 y`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h3 hy`. Conclude with `(mul_eq_right₀ hy).1 h3.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_eq_one {σ : E →ₐ[F] E} {B : Base F E} {n d d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
     {M : Model σ X W} {M₁ : Model σ X W₁} {H' : Plane E d d₁} {e₀ : Fn F n d →ₗ[ℂ] Fn F n d₁}
@@ -133,25 +133,23 @@ theorem psi_eq_one {σ : E →ₐ[F] E} {B : Base F E} {n d d₁ : ℕ} {X : Spc
   exact (mul_eq_right₀ hy).1 h3.symm
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH _ e₀ he hB hM hsig g hg`. Take `⟨r, s, r', s', hX, hW⟩` from `hsig`. Establish `hψ : IsStd B.ψ` using `hB.std`. Establish `hσ : ∀ a, σ (σ a) = a` using `fun a => by`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `τ.injective (by rw [hB.cm.2.2.2, hB.cm.2.2.2, star_star])`. Establish `hyx : form σ W.J H'.y H'.x = -1` using `by rw [form_swap σ hσ hW.skew, hH.xy, map_one]`. Take `⟨D, hD1, hD⟩` from `uniform_denominator_integral_vectors M B.ψ hM H'.x`. Take `⟨M₀', hM₀'1, hM₀'⟩` from `uniform_denominator_expansion_local B.ψ hψ.1 g hg`. Take `⟨N, hN1, hN⟩` from `L4 σ X.J (GlobalTheory.FinUniq.det_ne_zero_herm hX) ((M₀' * D : ℕ) : E) (Nat.cast_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he0, he1⟩` from `exists_finOne (F := F)`. Use `⟨N, hN1, fun f ξ hne => hN ξ fun β => ?_⟩` and prove the remaining obligations. Use `set t : AF F := ((M₀' * D : ℕ) : AF F) * e with ht`. Establish `htI : evI F t = 0`. Rewrite using `[ht, evI_mul, he0, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htv : ∀ v, evFin F v t = ((M₀' * D : ℕ) : Fv F v)` using `fun v => by`. Rewrite using `[ht, map_mul, he1 v, mul_one, map_natCast]`. Use `set u := Matrix.vecMulVec (t • incV F (fun i => (β i : E))) (incV F H'.x) with hu`. Establish `hu0 : u ∈ iso0 n H'` using `⟨_, rfl⟩`. Establish `hΨ : pureA F f g ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hinv : M.co.rho B.ψ u (pureA F f g) = pureA F f g`. Establish `hu' : u = t • incM F (Matrix.vecMulVec (fun i => (β i : E)) H'.x)`. Use extensionality with `i j`. Simplify using `[hu, incM, incV, Matrix.vecMulVec_apply, smul_mul_assoc]`. Take `⟨y, z, hyz⟩` from `hD β`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show schr B.ψ (M.co.e u) _ = _`. Rewrite using `[hu', map_smul, hyz]`. Use `hM₀' f _ _ fun k => ⟨?_, ?_, fun v => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show evI F (t * _) = 0`. Rewrite using `[evI_mul, htI, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show evI F (t * _) = 0`. Rewrite using `[evI_mul, htI, zero_mul]`. Use `show ∃ c ∈ v.adicCompletionIntegers F, evFin F v (t * _) = _`. Use `⟨(y k : Fv F v), HeightOneSpectrum.coe_mem_adicCompletionIntegers v (y k), ?_⟩` and prove the remaining obligations. Establish `hD0 : (D : F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_mul, htv, AlgHom.commutes, ← map_natCast (algebraMap F (Fv F v)) (M₀' * D), ← map_mul, show ((M₀' * D : ℕ) : F) * ((y k : F) / D) = (M₀' : F) * (y k : F) by field_simp; push_cast; ring, map_mul, map_natCast]`. Both sides reduce to the same expression. Use `show ∃ c ∈ v.adicCompletionIntegers F, evFin F v (t * _) = _`. Use `⟨(z k : Fv F v), HeightOneSpectrum.coe_mem_adicCompletionIntegers v (z k), ?_⟩` and prove the remaining obligations. Establish `hD0 : (D : F) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_mul, htv, AlgHom.commutes, ← map_natCast (algebraMap F (Fv F v)) (M₀' * D), ← map_mul, show ((M₀' * D : ℕ) : F) * ((z k : F) / D) = (M₀' : F) * (z k : F) by field_simp; push_cast; ring, map_mul, map_natCast]`. Both sides reduce to the same expression. Establish `hch` using `psi_eq_one he hψ hΨ hu0 hinv _ hne`. Rewrite `hch` using `[L2]`. Take `⟨z, hz⟩` from `L3 B.ψ hψ _ (((M₀' * D : ℕ) : F) * Algebra.trace F E (-(form σ X.J ξ (fun i => (β i : E)) * form σ W.J H'.y H'.x))) (by rw [evI_mul, htI, zero_mul]) (fun v => by rw [map_mul, htv, AlgHom.commutes, map_mul, map_natCast]) hch`.
-
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[← hz, hyx, mul_neg_one, neg_neg, ← Algebra.trace_trace (S := F)]`. Use `congr 1`. Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

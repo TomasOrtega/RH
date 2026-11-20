@@ -28,27 +28,25 @@ namespace GlobalTheory.FlagPlucker
 open GlobalTheory.FlagMod Formalism.L2.Pj in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X z`. Establish `hprop : IsProper X.π` using `X.proper`. Distinguish the cases in `hz : z ∈ Set.range X.π.base`. Take `⟨y, rfl⟩` from `hz`. Take `⟨k0, hk0⟩` from `TopologicalSpace.Opens.mem_iSup.1 (X.F.cover.ge (Set.mem_univ y))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hzM : X.π y ∈ (X.F.M k0).U` using `X.F.le k0 hk0`. Take `⟨_, ⟨V, hV, rfl⟩, hzV, hVM⟩` from `Y.X.isBasis_affineOpens.exists_subset_of_mem_open (show X.π y ∈ ((X.F.M k0).U : Set Y.X) from hzM) (X.F.M k0).U.isOpen`. Use `⟨V, hzV, hV, ?_⟩` and prove the remaining obligations. Establish `hg : ⊤ ≤ ((X.π ⁻¹ᵁ V).ι ≫ X.π) ⁻¹ᵁ (X.F.M k0).toMChart.U` using `fun p _ => hVM (by show X.π ((X.π ⁻¹ᵁ V).ι p) ∈ V`. Establish `: (X.π ⁻¹ᵁ V).ι p ∈ X.π ⁻¹ᵁ V`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Scheme.Opens.range_ι (X.π ⁻¹ᵁ V)`. Conclude with `(h.le ⟨p, rfl⟩ : _)`. Conclude with `this)`. Establish `hf : IsProper ((X.π ∣_ V) ≫ hV.isoSpec.hom)` using `inferInstance`. Use `choose t ht using fun (p : Σ σ : E →+* ℂ, Fin (Dw.mult σ)) (q : Fin (plkNum (X.F.M k0).toMChart p.2 + 1)) => GlobalTheory.T.pluckerMinors_sections_inverseDetFlagBundle X.F (X.F.M k0).toMChart (X.π ⁻¹ᵁ V).ι hg p.1 p.2 q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnz : ∀ p, ⨆ q, nonzeroLocus (t p q) = ⊤` using `fun p => GlobalTheory.T.sections_of_pulled_back_line_bundles_on_frames X.F (X.F.M k0).toMChart (X.π ⁻¹ᵁ V).ι hg p.1 p.2 (t p) (ht p)`. Use `isAmpleLB_of_finite_fibres Γ(Y.X, V) _ ((X.π ∣_ V) ≫ hV.isoSpec.hom) hf (Σ σ : E →+* ℂ, Fin (Dw.mult σ)) (fun p => (X.F.LL (ind p.1 p.2)).pull (X.π ⁻¹ᵁ V).ι) (fun p => LB.isLB_pull (X.F.isLB_LL _) _) (fun p => plkNum (X.F.M k0).toMChart p.2) t hnz ?_ (fun _ => 1) (fun _ => le_rfl …` and prove the remaining obligations. Introduce `K _ _ a`. Establish `hfin` using `X.fin K (a ≫ (X.π ⁻¹ᵁ V).ι)`. Use `(hfin.preimage (f := fun a' : Sp K ⟶ _ => a' ≫ (X.π ⁻¹ᵁ V).ι) fun b _ b' _ e => (cancel_mono _).1 e).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a' ⟨h1, h2⟩`. Establish `e : (X.π ⁻¹ᵁ V).ι ≫ X.π = ((X.π ∣_ V) ≫ hV.isoSpec.hom) ≫ hV.fromSpec`. Rewrite using `[← hV.isoSpec_inv_ι, Category.assoc, Iso.hom_inv_id_assoc, morphismRestrict_ι]`. Establish `hx : a ≫ (X.π ⁻¹ᵁ V).ι ≫ X.π = a' ≫ (X.π ⁻¹ᵁ V).ι ≫ X.π`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ hV.fromSpec) h1.symm).trans (Category.assoc _ _ _))`. Conclude with `GlobalTheory.T.lieFlag_eq_of_pluckerPoints_eq_field_points X.F (X.F.M k0).toMChart (X.π ⁻¹ᵁ V).ι hg (fun σ m => t ⟨σ, m⟩) (fun σ m => ht ⟨σ, m⟩) (fun σ m => hnz ⟨σ, m⟩) _ K a a' hx (fun σ m => (h2 ⟨σ, m⟩).symm)`. Establish `he : (fun ix : Ix Dw => ix.elim 0 fun p => (Dw.mult p.1 : ℤ) - ((p.2 : ℕ) : ℤ)) = ∑ p : Σ σ : E →+* ℂ, Fin (Dw.mult σ), ind p.1 p.2`. Use function extensionality and compare the values at `ix`. Break down `ix with _ | ⟨σ, i⟩` into its components or cases.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[ind]`. Rewrite using `[Finset.sum_apply, Fintype.sum_sigma, Finset.sum_eq_single σ]`. Simplify using `only [ind, Option.elim, true_and]`. Rewrite using `[Finset.sum_boole]`. Establish `: (Finset.univ.filter fun m : Fin (Dw.mult σ) => (i : ℕ) ≤ m) = Finset.Ici i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `m`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Ici, Fin.le_def]`. Simplify using `only [this, Fin.card_Ici]`. Move the coercions through the operations in `[Nat.cast_sub i.2.le]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `σ' _ h`. Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Simplify using `[ind, Ne.symm h]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ p : Σ σ : E →+* ℂ, Fin (Dw.mult σ), 1 • CechPic.cls ((X.F.LL (ind p.1 p.2)).pull (X.π ⁻¹ᵁ V).ι) (LB.isLB_pull (X.F.isLB_LL _) _) = CechPic.pull (X.π ⁻¹ᵁ V).ι (CechPic.cls (X.F.LL (ind p.1 p.2)) (X.F.isLB_LL _))` using `fun p => one_smul _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[CechPic.cls_pull (X.F.isLB_LL _), Finset.sum_congr rfl fun p _ => h2 p, ← map_sum, ← GlobalTheory.T.cechPicardClass_gradedTensorBundle_finset_sum X.F Finset.univ (fun p : Σ σ : E →+* ℂ, Fin (Dw.mult σ) => ind p.1 p.2)]`. Use `congr 2`. Conclude with `congrArg _ he`. Establish `hcl : IsClosed (Set.range X.π.base)` using `X.π.isClosedMap.isClosed_range`. Take `⟨_, ⟨V, hV, rfl⟩, hzV, hVc⟩` from `Y.X.isBasis_affineOpens.exists_subset_of_mem_open (show z ∈ (Set.range X.π.base)ᶜ from hz) hcl.isOpen_compl`.
-
-Use `⟨V, hzV, hV, ?_⟩` and prove the remaining obligations. Use `haveI : IsEmpty (X.π ⁻¹ᵁ V).toScheme := ⟨fun p => hVc p.2 ⟨p.1, rfl⟩⟩`. Use `haveI : IsAffine (X.π ⁻¹ᵁ V).toScheme := isAffine_of_isEmpty`. Conclude with `isAmpleLB_of_isAffine (LB.isLB_pull (X.F.isLB_LL _) _)`.
+A detailed English derivation is pending.
 -/
 theorem isAmpleLB_LL_flagModel : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} (X : GlobalTheory.FlagMod.FlagModel Y) (z : Y.X), ∃ V : Y.X.Opens, z ∈ V ∧ IsAffineOpen V ∧ IsAmpleLB ((X.F.LL (fun ix => ix.elim 0 fun p => (Dw.mult p.1 : ℤ) - ((p.2 : ℕ) : ℤ))).pull (X.π ⁻¹ᵁ V).ι) := by
   intro E _ _ _ H Dw l Xo c Y X z

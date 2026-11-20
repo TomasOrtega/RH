@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ PartialDerivEval
 variable {C : Type} [Field C] {V : VF C}
 
 /- English proof (translation)
-Unfold `VF.MM at h ⊢`. Rewrite using `[AddValuation.map_neg]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_neg {a : C} (h : V.MM a) : V.MM (-a) := by
   unfold VF.MM at h ⊢
@@ -25,21 +25,21 @@ theorem mm_neg {a : C} (h : V.MM a) : V.MM (-a) := by
   exact h
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `mm_add ha (mm_neg hb)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_sub {a b : C} (ha : V.MM a) (hb : V.MM b) : V.MM (a - b) := by
   rw [sub_eq_add_neg]
   exact mm_add ha (mm_neg hb)
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mm_mul_ge hb ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_mul_ge' {a b : C} (ha : V.Ge 0 a) (hb : V.MM b) : V.MM (a * b) := by
   rw [mul_comm]
   exact mm_mul_ge hb ha
 
 /- English proof (translation)
-Unfold `VF.MM`. Unfold `VF.Ge at h`. Establish `h0 : (0 : WithTop ℝ) < ((1 : ℝ) : WithTop ℝ)` using `by exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)`. Conclude with `lt_of_lt_of_le h0 h`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maximal_of_valuation_ge_one {a : C} (h : V.Ge 1 a) : V.MM a := by
   unfold VF.MM
@@ -48,7 +48,7 @@ theorem maximal_of_valuation_ge_one {a : C} (h : V.Ge 1 a) : V.MM a := by
   exact lt_of_lt_of_le h0 h
 
 /- English proof (translation)
-Use `mm_mul_ge ?_ hx` and prove the remaining obligations. Unfold `VF.MM`. Rewrite using `[V.v_l]`. Conclude with `(zero_lt_one : (0 : ℝ) < 1)` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_l_mul {x : C} (hx : V.Ge 0 x) : V.MM ((V.l : C) * x) := by
   refine mm_mul_ge ?_ hx
@@ -57,7 +57,7 @@ theorem mm_l_mul {x : C} (hx : V.Ge 0 x) : V.MM ((V.l : C) * x) := by
   exact_mod_cast (zero_lt_one : (0 : ℝ) < 1)
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Use `push_cast`. Conclude with `mm_l_mul (ge_natCast k)`.
+Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem mm_natCast_of_dvd {n : ℕ} (h : V.l ∣ n) : V.MM (n : C) := by
   obtain ⟨k, rfl⟩ := h
@@ -65,7 +65,7 @@ theorem mm_natCast_of_dvd {n : ℕ} (h : V.l ∣ n) : V.MM (n : C) := by
   exact mm_l_mul (ge_natCast k)
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg z with ⟨n, rfl | rfl⟩` into its components or cases. Rewrite using `[Int.cast_natCast]`. Conclude with `ge_natCast n`. Rewrite using `[Int.cast_neg, Int.cast_natCast]`. Conclude with `VF.Ge.neg (ge_natCast n)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ge_intCast (z : ℤ) : V.Ge 0 (z : C) := by
   rcases Int.eq_nat_or_neg z with ⟨n, rfl | rfl⟩
@@ -75,11 +75,11 @@ theorem ge_intCast (z : ℤ) : V.Ge 0 (z : C) := by
     exact VF.Ge.neg (ge_natCast n)
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime V.l n` using `(Nat.Prime.coprime_iff_not_dvd V.l_prime).2 h`. Establish `hb : ((V.l : ℤ) * Nat.gcdA V.l n + (n : ℤ) * Nat.gcdB V.l n) = 1`. Rewrite using `[← Nat.gcd_eq_gcd_ab, Nat.Coprime.gcd_eq_one hcop]`. Simplify using the standard rewrite rules. Establish `hbC : ((V.l : C) * (Nat.gcdA V.l n : C) + (n : C) * (Nat.gcdB V.l n : C)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z : ℤ => (z : C)) hb`. Move the coercions through the operations in `at h2`. Conclude with `h2`. Establish `hx' : x = (V.l : C) * ((Nat.gcdA V.l n : C) * x) + (Nat.gcdB V.l n : C) * ((n : C) * x)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbC, one_mul]`. Use `_ = _ := by ring`. Rewrite using `[hx']`. Conclude with `mm_add (mm_l_mul (VF.Ge.mul_int (ge_intCast _) hx)) (mm_mul_ge' (ge_intCast _) hm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_of_natCast_mul {n : ℕ} (h : ¬ V.l ∣ n) {x : C} (hx : V.Ge 0 x) (hm : V.MM ((n : C) * x)) :
     V.MM x := by
@@ -99,9 +99,9 @@ theorem mm_of_natCast_mul {n : ℕ} (h : ¬ V.l ∣ n) {x : C} (hx : V.Ge 0 x) (
   exact mm_add (mm_l_mul (VF.Ge.mul_int (ge_intCast _) hx)) (mm_mul_ge' (ge_intCast _) hm)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Conclude with `VF.Ge.one`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Conclude with `VF.Ge.mul_int ih hx`.
+A detailed English derivation is pending.
 -/
 private theorem ge_pow_lemma {x : C} (hx : V.Ge 0 x) (k : ℕ) : V.Ge 0 (x ^ k) := by
   induction k with
@@ -113,7 +113,7 @@ private theorem ge_pow_lemma {x : C} (hx : V.Ge 0 x) (k : ℕ) : V.Ge 0 (x ^ k) 
     exact VF.Ge.mul_int ih hx
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn`. Rewrite using `[pow_succ]`. Conclude with `mm_mul_ge' (ge_pow_lemma (le_of_lt hx) k) hx`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_pow {x : C} (hx : V.MM x) {n : ℕ} (hn : n ≠ 0) : V.MM (x ^ n) := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hn
@@ -121,9 +121,9 @@ theorem mm_pow {x : C} (hx : V.MM x) {n : ℕ} (hn : n ≠ 0) : V.MM (x ^ n) := 
   exact mm_mul_ge' (ge_pow_lemma (le_of_lt hx) k) hx
 
 /- English proof (translation)
-Unfold `VF.MM at h ⊢`. Assume the negation of the conclusion as `hc`. Establish `hle : V.v x ≤ 0` using `not_lt.1 hc`. Establish `h2 : V.v (x ^ V.l) ≤ 0`. Rewrite using `[AddValuation.map_pow]`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `nsmul_nonpos hle V.l`. Conclude with `absurd h (not_lt.2 h2)`.
+A detailed English derivation is pending.
 -/
 theorem mm_of_pow {x : C} (h : V.MM (x ^ V.l)) : V.MM x := by
   unfold VF.MM at h ⊢
@@ -135,9 +135,9 @@ theorem mm_of_pow {x : C} (h : V.MM (x ^ V.l)) : V.MM x := by
   exact absurd h (not_lt.2 h2)
 
 /- English proof (translation)
-Unfold `VF.Ge at h ⊢`. Assume the negation of the conclusion as `hc`. Establish `hc' : V.v x < 0` using `not_le.1 hc`. Establish `hl : V.l = (V.l - 1) + 1` using `(Nat.sub_add_cancel V.l_prime.one_le).symm`. Rewrite `h` using `[AddValuation.map_pow, hl, succ_nsmul]`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (V.l - 1) • V.v x ≤ 0` using `nsmul_nonpos hc'.le (V.l - 1)`. Establish `h2 : (V.l - 1) • V.v x + V.v x ≤ V.v x`. Combine the equalities or inequalities in the displayed calculation. Conclude with `absurd (le_trans h h2) (not_le.2 hc')`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ge_of_pow {x : C} (h : V.Ge 0 (x ^ V.l)) : V.Ge 0 x := by
   unfold VF.Ge at h ⊢
@@ -152,11 +152,11 @@ theorem ge_of_pow {x : C} (h : V.Ge 0 (x ^ V.l)) : V.Ge 0 x := by
   exact absurd (le_trans h h2) (not_le.2 hc')
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, V.l = k + 2` from `⟨V.l - 2, by have := V.l_prime.two_le; omega⟩`. Establish `hdvd : ∀ i ∈ Finset.range (k + 1), V.l ∣ (k + 2).choose (i + 1)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Prime.dvd_choose_self (hk ▸ V.l_prime) (Nat.succ_ne_zero i) (by omega)`. Establish `hexp : (x + y) ^ V.l - x ^ V.l - y ^ V.l = ∑ i ∈ Finset.range (k + 1), x ^ (i + 1) * y ^ (k + 2 - (i + 1)) * ((k + 2).choose (i + 1) : C)`. Rewrite using `[hk, add_pow, Finset.sum_range_succ, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_mul, mul_one, Nat.choose_self, Nat.choose_zero_right, Nat.cast_one, Nat.sub_zero, Nat.sub_self]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Apply `mm_sum` to reduce the goal to its premises. Introduce `i hi`. Conclude with `mm_mul_ge' (VF.Ge.mul_int (ge_pow_lemma hx _) (ge_pow_lemma hy _)) (mm_natCast_of_dvd (hdvd i hi))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mm_add_pow {x y : C} (hx : V.Ge 0 x) (hy : V.Ge 0 y) : V.MM ((x + y) ^ V.l - x ^ V.l - y ^ V.l) := by
   obtain ⟨k, hk⟩ : ∃ k, V.l = k + 2 := ⟨V.l - 2, by have := V.l_prime.two_le; omega⟩
@@ -181,7 +181,7 @@ def MMS {σ : Type} (V : VF C) (f : MvPowerSeries σ C) : Prop := ∀ μ, V.MM (
 variable {σ τ : Type}
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_zero]`. Conclude with `mm_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_zero : MMS V (0 : MvPowerSeries σ C) := by
   intro μ
@@ -189,7 +189,7 @@ theorem mms_zero : MMS V (0 : MvPowerSeries σ C) := by
   exact mm_zero
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_add]`. Conclude with `mm_add (hf μ) (hg μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.add {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : MMS V g) : MMS V (f + g) := by
   intro μ
@@ -197,7 +197,7 @@ theorem MMS.add {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : MMS V g) : MMS V
   exact mm_add (hf μ) (hg μ)
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_neg]`. Conclude with `mm_neg (hf μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.neg {f : MvPowerSeries σ C} (hf : MMS V f) : MMS V (-f) := by
   intro μ
@@ -205,7 +205,7 @@ theorem MMS.neg {f : MvPowerSeries σ C} (hf : MMS V f) : MMS V (-f) := by
   exact mm_neg (hf μ)
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_sub]`. Conclude with `mm_sub (hf μ) (hg μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.sub {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : MMS V g) : MMS V (f - g) := by
   intro μ
@@ -213,7 +213,7 @@ theorem MMS.sub {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : MMS V g) : MMS V
   exact mm_sub (hf μ) (hg μ)
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_sum]`. Conclude with `mm_sum s _ (fun i hi => hf i hi μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_sum {ι : Type} (s : Finset ι) {f : ι → MvPowerSeries σ C} (hf : ∀ i ∈ s, MMS V (f i)) :
     MMS V (∑ i ∈ s, f i) := by
@@ -222,7 +222,7 @@ theorem mms_sum {ι : Type} (s : Finset ι) {f : ι → MvPowerSeries σ C} (hf 
   exact mm_sum s _ (fun i hi => hf i hi μ)
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `mm_sum _ _ (fun p _ => mm_mul_ge' (hf p.1) (hg p.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.mul_left {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : MMS V g) : MMS V (f * g) := by
   intro μ
@@ -230,7 +230,7 @@ theorem MMS.mul_left {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : MMS V g) :
   exact mm_sum _ _ (fun p _ => mm_mul_ge' (hf p.1) (hg p.2))
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_mul]`. Conclude with `mm_sum _ _ (fun p _ => mm_mul_ge (hf p.1) (hg p.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.mul_right {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : IntS V g) : MMS V (f * g) := by
   intro μ
@@ -238,9 +238,9 @@ theorem MMS.mul_right {f g : MvPowerSeries σ C} (hf : MMS V f) (hg : IntS V g) 
   exact mm_sum _ _ (fun p _ => mm_mul_ge (hf p.1) (hg p.2))
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_pderiv]`. Use `mm_mul_ge (hf _) ?_` and prove the remaining obligations. Use `first`. Consider the case `exact ge_natCast _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately.
 
-Consider the case `exact VF.Ge.add (ge_natCast _) VF.Ge.one`. Consider the case `(push_cast; exact VF.Ge.add (ge_natCast _) VF.Ge.one)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem MMS.pderiv {f : MvPowerSeries σ C} (hf : MMS V f) (i : σ) : MMS V (MvPowerSeries.pderiv C i f) := by
   intro μ
@@ -252,7 +252,7 @@ theorem MMS.pderiv {f : MvPowerSeries σ C} (hf : MMS V f) (i : σ) : MMS V (MvP
     | (push_cast; exact VF.Ge.add (ge_natCast _) VF.Ge.one)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_zero ha0`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_zero ha0`. Consider the case `exact MvPowerSeries.HasSubst.of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)`. Consider the case `exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hasSubst_lemma_2 [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) : MvPowerSeries.HasSubst a := by
@@ -263,7 +263,7 @@ private theorem hasSubst_lemma_2 [Finite σ] {a : σ → MvPowerSeries τ C}
     | exact MvPowerSeries.hasSubst_of_constantCoeff_nilpotent (fun s => by rw [ha0 s]; exact IsNilpotent.zero)
 
 /- English proof (translation)
-Rewrite using `[finsum_def]`. Use `split_ifs`. Conclude with `mm_sum _ _ (fun i _ => h i)`. Conclude with `mm_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mm_finsum_lemma_3 {ι : Type} {g : ι → C} (h : ∀ i, V.MM (g i)) : V.MM (∑ᶠ i, g i) := by
   rw [finsum_def]
@@ -272,9 +272,7 @@ private theorem mm_finsum_lemma_3 {ι : Type} {g : ι → C} (h : ∀ i, V.MM (g
   · exact mm_zero
 
 /- English proof (translation)
-Rewrite using `[finsum_def]`. Use `split_ifs`. Conclude with `Finset.sum_induction _ (V.Ge 0) (fun _ _ ha hb => VF.Ge.add ha hb) (by unfold VF.Ge; rw [AddValuation.map_zero]; exact le_top) (fun i _ => h i)`. Unfold `VF.Ge`. Rewrite using `[AddValuation.map_zero]`.
-
-Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ge_finsum_lemma_8 {ι : Type} {g : ι → C} (h : ∀ i, V.Ge 0 (g i)) : V.Ge 0 (∑ᶠ i, g i) := by
   rw [finsum_def]
@@ -286,7 +284,7 @@ private theorem ge_finsum_lemma_8 {ι : Type} {g : ι → C} (h : ∀ i, V.Ge 0 
     exact le_top
 
 /- English proof (translation)
-Unfold `Finsupp.prod`. Conclude with `Finset.prod_induction _ (IntS V) (fun _ _ hx hy => intS_mul hx hy) intS_one (fun s _ => intS_pow (ha s) _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem intS_fprod_lemma_4 {a : σ → MvPowerSeries τ C} (ha : ∀ s, IntS V (a s)) (d : σ →₀ ℕ) :
     IntS V (d.prod fun s e => a s ^ e) := by
@@ -295,9 +293,9 @@ private theorem intS_fprod_lemma_4 {a : σ → MvPowerSeries τ C} (ha : ∀ s, 
     (fun s _ => intS_pow (ha s) _)
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_lemma_2 ha0`. Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_subst hs]`. Apply `mm_finsum_lemma_3` to reduce the goal to its premises. Introduce `d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul]`. Conclude with `mm_mul_ge (hf d) (intS_fprod_lemma_4 ha d μ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MMS.subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0)
     (ha : ∀ s, IntS V (a s)) {f : MvPowerSeries σ C} (hf : MMS V f) : MMS V (MvPowerSeries.subst a f) := by
@@ -310,7 +308,7 @@ theorem MMS.subst [Finite σ] {a : σ → MvPowerSeries τ C} (ha0 : ∀ s, MvPo
   exact mm_mul_ge (hf d) (intS_fprod_lemma_4 ha d μ)
 
 /- English proof (translation)
-Conclude with `MMS.subst (a := fun p : Fin m × Fin d => a p.1 p.2) (fun p => ha p.1 p.2) (fun p => hi p.1 p.2) hf`.
+A detailed English derivation is pending.
 -/
 theorem MMS.ev_of {d m n : ℕ} {a : Fin m → Pt C n d} (ha : Z0 a) (hi : ∀ k i, IntS V (a k i)) {f : PS C m d}
     (hf : MMS V f) : MMS V (ev a f) := by
@@ -325,7 +323,7 @@ def intSer (V : VF C) (σ : Type) : Subring (MvPowerSeries σ C) where
   neg_mem' := fun ha => intS_neg ha
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Conclude with `mm_l_mul (hf μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_l_mul {f : MvPowerSeries σ C} (hf : IntS V f) : MMS V ((V.l : MvPowerSeries σ C) * f) := by
   intro μ
@@ -333,7 +331,7 @@ theorem mms_l_mul {f : MvPowerSeries σ C} (hf : IntS V f) : MMS V ((V.l : MvPow
   exact mm_l_mul (hf μ)
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[mul_comm, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`. Conclude with `mm_mul_ge (mm_natCast_of_dvd hn) (hh μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mms_mul_natCast_lemma_5 {h : MvPowerSeries σ C} (hh : IntS V h) {n : ℕ} (hn : V.l ∣ n) :
     MMS V (h * (n : MvPowerSeries σ C)) := by
@@ -342,11 +340,11 @@ private theorem mms_mul_natCast_lemma_5 {h : MvPowerSeries σ C} (hh : IntS V h)
   exact mm_mul_ge (mm_natCast_of_dvd hn) (hh μ)
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, V.l = k + 2` from `⟨V.l - 2, by have := V.l_prime.two_le; omega⟩`. Establish `hdvd : ∀ i ∈ Finset.range (k + 1), V.l ∣ (k + 2).choose (i + 1)`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.Prime.dvd_choose_self (hk ▸ V.l_prime) (Nat.succ_ne_zero i) (by omega)`. Establish `hexp : (f + g) ^ V.l - f ^ V.l - g ^ V.l = ∑ i ∈ Finset.range (k + 1), f ^ (i + 1) * g ^ (k + 2 - (i + 1)) * ((k + 2).choose (i + 1) : MvPowerSeries σ C)`. Rewrite using `[hk, add_pow, Finset.sum_range_succ, Finset.sum_range_succ']`. Simplify using `only [pow_zero, one_mul, mul_one, Nat.choose_self, Nat.choose_zero_right, Nat.cast_one, Nat.sub_zero, Nat.sub_self]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Apply `mms_sum` to reduce the goal to its premises. Introduce `i hi`. Conclude with `mms_mul_natCast_lemma_5 (intS_mul (intS_pow hf _) (intS_pow hg _)) (hdvd i hi)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mms_add_pow {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g) :
     MMS V ((f + g) ^ V.l - f ^ V.l - g ^ V.l) := by
@@ -369,11 +367,11 @@ theorem mms_add_pow {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g) :
   exact mms_mul_natCast_lemma_5 (intS_mul (intS_pow hf _) (intS_pow hg _)) (hdvd i hi)
 
 /- English proof (translation)
-Use `revert hf`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Establish `e : ((∑ i ∈ (∅ : Finset ι), f i) ^ V.l - ∑ i ∈ (∅ : Finset ι), f i ^ V.l) = 0`. Simplify using `[zero_pow V.l_prime.ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `mms_zero`. Introduce `a s ha ih hf`. Establish `hfa : IntS V (f a)` using `hf a (Finset.mem_insert_self a s)`. Establish `hfs : ∀ i ∈ s, IntS V (f i)` using `fun i hi => hf i (Finset.mem_insert_of_mem hi)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Establish `e : (f a + ∑ i ∈ s, f i) ^ V.l - (f a ^ V.l + ∑ i ∈ s, f i ^ V.l) = ((f a + ∑ i ∈ s, f i) ^ V.l - f a ^ V.l - (∑ i ∈ s, f i) ^ V.l) + ((∑ i ∈ s, f i) ^ V.l - ∑ i ∈ s, f i ^ V.l)` using `by ring`. Rewrite using `[e]`. Conclude with `MMS.add (mms_add_pow hfa (intS_sum s hfs)) (ih hfs)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_sum_pow {ι : Type} (s : Finset ι) (f : ι → MvPowerSeries σ C) (hf : ∀ i ∈ s, IntS V (f i)) :
     MMS V ((∑ i ∈ s, f i) ^ V.l - ∑ i ∈ s, f i ^ V.l) := by
@@ -402,7 +400,7 @@ theorem coeff_frobTw (l : ℕ) (c : MvPowerSeries σ C) (μ : σ →₀ ℕ) :
       if ∀ s, l ∣ μ s then (MvPowerSeries.coeff (μ.mapRange (fun n => n / l) (Nat.zero_div l)) c) ^ l else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[Finsupp.mapRange_apply, Finsupp.smul_apply, smul_eq_mul, Nat.mul_div_cancel_left _ hl]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem divl_smul {l : ℕ} (hl : 0 < l) (ν : σ →₀ ℕ) :
     (l • ν).mapRange (fun n => n / l) (Nat.zero_div l) = ν := by
@@ -410,7 +408,7 @@ theorem divl_smul {l : ℕ} (hl : 0 < l) (ν : σ →₀ ℕ) :
   rw [Finsupp.mapRange_apply, Finsupp.smul_apply, smul_eq_mul, Nat.mul_div_cancel_left _ hl]
 
 /- English proof (translation)
-Use extensionality with `s`. Rewrite using `[Finsupp.smul_apply, smul_eq_mul, Finsupp.mapRange_apply, Nat.mul_div_cancel' (h s)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_divl {l : ℕ} {μ : σ →₀ ℕ} (h : ∀ s, l ∣ μ s) :
     l • μ.mapRange (fun n => n / l) (Nat.zero_div l) = μ := by
@@ -418,7 +416,7 @@ theorem smul_divl {l : ℕ} {μ : σ →₀ ℕ} (h : ∀ s, l ∣ μ s) :
   rw [Finsupp.smul_apply, smul_eq_mul, Finsupp.mapRange_apply, Nat.mul_div_cancel' (h s)]
 
 /- English proof (translation)
-Introduce `s`. Rewrite using `[Finsupp.mapRange_apply]`. Conclude with `Nat.div_le_self _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divl_le (l : ℕ) (μ : σ →₀ ℕ) : μ.mapRange (fun n => n / l) (Nat.zero_div l) ≤ μ := by
   intro s
@@ -426,9 +424,7 @@ theorem divl_le (l : ℕ) (μ : σ →₀ ℕ) : μ.mapRange (fun n => n / l) (N
   exact Nat.div_le_self _ _
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[coeff_frobTw]`. Use `split_ifs`. Conclude with `ge_pow_lemma (hc _) _`. Unfold `VF.Ge`.
-
-Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intS_frobTw {c : MvPowerSeries σ C} (hc : IntS V c) : IntS V (frobTw V.l c) := by
   intro μ
@@ -440,9 +436,7 @@ theorem intS_frobTw {c : MvPowerSeries σ C} (hc : IntS V c) : IntS V (frobTw V.
     exact le_top
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_sub, map_add, coeff_frobTw, coeff_frobTw, coeff_frobTw]`. Use `split_ifs`. Rewrite using `[map_add, ← sub_sub]`. Conclude with `mm_add_pow (hf _) (hg _)`.
-
-Rewrite using `[add_zero, sub_zero]`. Conclude with `mm_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_frobTw_add {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g) :
     MMS V (frobTw V.l (f + g) - (frobTw V.l f + frobTw V.l g)) := by
@@ -455,9 +449,9 @@ theorem mms_frobTw_add {f g : MvPowerSeries σ C} (hf : IntS V f) (hg : IntS V g
     exact mm_zero
 
 /- English proof (translation)
-Establish `h` using `mm_neg (mm_add_pow (VF.Ge.neg ha) ha)`. Establish `e : -((-a + a) ^ V.l - (-a) ^ V.l - a ^ V.l) = (-a) ^ V.l + a ^ V.l`. Rewrite using `[show -a + a = 0 by ring, zero_pow V.l_prime.ne_zero]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem mm_neg_pow_add_lemma_6 {a : C} (ha : V.Ge 0 a) : V.MM ((-a) ^ V.l + a ^ V.l) := by
   have h := mm_neg (mm_add_pow (VF.Ge.neg ha) ha)
@@ -468,9 +462,7 @@ private theorem mm_neg_pow_add_lemma_6 {a : C} (ha : V.Ge 0 a) : V.MM ((-a) ^ V.
   exact h
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[map_add, coeff_frobTw, coeff_frobTw]`. Use `split_ifs`. Rewrite using `[map_neg]`. Conclude with `mm_neg_pow_add_lemma_6 (hf _)`.
-
-Rewrite using `[add_zero]`. Conclude with `mm_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_frobTw_neg {f : MvPowerSeries σ C} (hf : IntS V f) :
     MMS V (frobTw V.l (-f) + frobTw V.l f) := by
@@ -483,9 +475,9 @@ theorem mms_frobTw_neg {f : MvPowerSeries σ C} (hf : IntS V f) :
     exact mm_zero
 
 /- English proof (translation)
-Introduce `ν`. Establish `h1` using `h (V.l • ν)`. Establish `hd : ∀ s, V.l ∣ (V.l • ν) s` using `fun s => by`. Rewrite using `[Finsupp.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[coeff_frobTw, if_pos hd, divl_smul V.l_prime.pos]`. Conclude with `mm_of_pow h1`.
+A detailed English derivation is pending.
 -/
 theorem mms_of_frobTw {e : MvPowerSeries σ C} (h : MMS V (frobTw V.l e)) : MMS V e := by
   intro ν
@@ -497,7 +489,7 @@ theorem mms_of_frobTw {e : MvPowerSeries σ C} (h : MMS V (frobTw V.l e)) : MMS 
   exact mm_of_pow h1
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [MvPowerSeries.monomial_zero_one]`. Consider the case `succ k ih => rw [pow_succ, ih, MvPowerSeries.monomial_mul_monomial, succ_nsmul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem monomial_pow_lemma_9 (ν : σ →₀ ℕ) (c : C) (k : ℕ) :
     (MvPowerSeries.monomial ν c) ^ k = MvPowerSeries.monomial (k • ν) (c ^ k) := by
@@ -506,9 +498,7 @@ private theorem monomial_pow_lemma_9 (ν : σ →₀ ℕ) (c : C) (k : ℕ) :
   | succ k ih => rw [pow_succ, ih, MvPowerSeries.monomial_mul_monomial, succ_nsmul, pow_succ]
 
 /- English proof (translation)
-Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_monomial]`. Use `split_ifs`. Conclude with `hc`. Unfold `VF.Ge`.
-
-Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intS_monomial_lemma_10 {ν : σ →₀ ℕ} {c : C} (hc : V.Ge 0 c) :
     IntS V (MvPowerSeries.monomial ν c) := by
@@ -521,29 +511,25 @@ private theorem intS_monomial_lemma_10 {ν : σ →₀ ℕ} {c : C} (hc : V.Ge 0
     exact le_top
 
 /- English proof (translation)
-Introduce `μ`. Use `set S : Finset (σ →₀ ℕ) := Finset.Iic μ with hS`. Use `set P : MvPowerSeries σ C := ∑ ν ∈ S, MvPowerSeries.monomial ν (MvPowerSeries.coeff ν f) with hP`. Establish `hcoeffP : ∀ ν, MvPowerSeries.coeff ν P = if ν ∈ S then MvPowerSeries.coeff ν f else 0`. Introduce `ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hP, map_sum]`. Simplify using `only [MvPowerSeries.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq]`. Establish `hlow : ∀ ν, ν ≤ μ → MvPowerSeries.coeff ν (f - P) = 0`. Introduce `ν hν`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hcoeffP, if_pos (Finset.mem_Iic.2 hν)]`. Conclude with `sub_self _`. Establish `h1 : MvPowerSeries.coeff μ (f ^ V.l) = MvPowerSeries.coeff μ (P ^ V.l)`. Take `⟨Q, hQ⟩` from `sub_dvd_pow_sub_pow f P V.l`. Establish `h2 : MvPowerSeries.coeff μ (f ^ V.l - P ^ V.l) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hQ, MvPowerSeries.coeff_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `p hp`. Use `first`. Consider the case `rw [Finset.HasAntidiagonal.mem_antidiagonal] at hp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `rw [Finset.mem_antidiagonal] at hp`. Consider the case `simp only [Finset.mem_antidiagonal] at hp`. Rewrite using `[hlow p.1 (by rw [← hp]; exact le_self_add), zero_mul]`. Rewrite `h2` using `[map_sub, sub_eq_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h3 : MvPowerSeries.coeff μ (frobTw V.l f) = MvPowerSeries.coeff μ (frobTw V.l P)`. Rewrite using `[coeff_frobTw, coeff_frobTw]`. Use `split_ifs`. Rewrite using `[hcoeffP, if_pos (Finset.mem_Iic.2 (divl_le _ _))]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : frobTw V.l P = ∑ ν ∈ S, (MvPowerSeries.monomial ν (MvPowerSeries.coeff ν f)) ^ V.l`. Use extensionality with `μ'`. Rewrite using `[coeff_frobTw]`. Simplify using `only [hP, map_sum, monomial_pow_lemma_9, MvPowerSeries.coeff_monomial]`. Use `split_ifs with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_ite_eq]`. Establish `e : ∀ ν : σ →₀ ℕ, (μ' = V.l • ν) ↔ (ν = μ'.mapRange (fun n => n / V.l) (Nat.zero_div V.l))`. Introduce `ν`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(divl_smul V.l_prime.pos ν).symm`. Introduce and unpack `rfl`. Conclude with `(smul_divl hd).symm`. Simplify using `only [e]`. Rewrite using `[Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [zero_pow V.l_prime.ne_zero]`. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `ν _`. Rewrite using `[if_neg]`.
-
-Introduce and unpack `rfl`. Apply `hd` to reduce the goal to its premises. Introduce `s`. Rewrite using `[Finsupp.smul_apply, smul_eq_mul]`. Conclude with `dvd_mul_right _ _`.
-
-Establish `h5 : MMS V (P ^ V.l - ∑ ν ∈ S, (MvPowerSeries.monomial ν (MvPowerSeries.coeff ν f)) ^ V.l)` using `mms_sum_pow S _ (fun ν _ => intS_monomial_lemma_10 (hf ν))`. Establish `h6` using `h5 μ`. Rewrite `h6`, the goal using `[map_sub]`. Rewrite using `[h1, h3, h4]`. Conclude with `h6`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_pow_frobTw [Finite σ] {f : MvPowerSeries σ C} (hf : IntS V f) : MMS V (f ^ V.l - frobTw V.l f) := by
   classical
@@ -610,9 +596,9 @@ theorem mms_pow_frobTw [Finite σ] {f : MvPowerSeries σ C} (hf : IntS V f) : MM
   exact h6
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_lemma_2 ha0`. Introduce `μ`. Rewrite using `[MvPowerSeries.coeff_subst hs]`. Apply `ge_finsum_lemma_8` to reduce the goal to its premises. Introduce `d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_eq_mul]`. Conclude with `VF.Ge.mul_int (hf d) (intS_fprod_lemma_4 ha d μ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intS_subst_lemma_7 [Finite σ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (ha : ∀ s, IntS V (a s)) {f : MvPowerSeries σ C}
@@ -626,11 +612,11 @@ private theorem intS_subst_lemma_7 [Finite σ] {a : σ → MvPowerSeries τ C}
   exact VF.Ge.mul_int (hf d) (intS_fprod_lemma_4 ha d μ)
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_lemma_2 ha0`. Establish `hpow : MvPowerSeries.subst a (f ^ V.l) = (MvPowerSeries.subst a f) ^ V.l` using `by first`. Consider the case `exact MvPowerSeries.subst_pow hs _ _`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_pow _ _ _)`. Establish `hsub : MvPowerSeries.subst a (f ^ V.l - frobTw V.l f) = MvPowerSeries.subst a (f ^ V.l) - MvPowerSeries.subst a (frobTw V.l f)` using `by first`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `exact MvPowerSeries.subst_sub hs _ _`. Consider the case `(rw [← MvPowerSeries.coe_substAlgHom hs]; exact map_sub _ _ _)`. Establish `e : MvPowerSeries.subst a (frobTw V.l f) - frobTw V.l (MvPowerSeries.subst a f) = -(MvPowerSeries.subst a (f ^ V.l - frobTw V.l f)) + ((MvPowerSeries.subst a f) ^ V.l - frobTw V.l (MvPowerSeries.subst a f))`. Rewrite using `[hsub, hpow]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Conclude with `MMS.add (MMS.neg (MMS.subst ha0 ha (mms_pow_frobTw hf))) (mms_pow_frobTw (intS_subst_lemma_7 ha0 ha hf))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mms_subst_frobTw [Finite σ] [Finite τ] {a : σ → MvPowerSeries τ C}
     (ha0 : ∀ s, MvPowerSeries.constantCoeff (a s) = 0) (ha : ∀ s, IntS V (a s)) {f : MvPowerSeries σ C}

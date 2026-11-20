@@ -7,15 +7,13 @@ namespace Formalism.GradedWeylDivisibility
 open scoped MonomialOrder
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_iff']`. Introduce `s g hsum i hi`. Assume the negation of the conclusion as `hgi`. Establish `htne : (s.filter fun j => g j ≠ 0).Nonempty` using `⟨i, Finset.mem_filter.mpr ⟨hi, hgi⟩⟩`. Take `⟨j, hj, hjmax⟩` from `(s.filter fun j => g j ≠ 0).exists_max_image (fun j => o.toSyn (o.degree (v j))) htne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcoeff` using `congrArg (MvPolynomial.coeff (o.degree (v j))) hsum`. Rewrite `hcoeff` using `[coeff_zero, coeff_sum, Finset.sum_eq_single j]`. Rewrite `hcoeff` using `[coeff_smul, smul_eq_mul]`. Establish `hone : (v j).coeff (o.degree (v j)) = 1` using `hlc j`. Rewrite `hcoeff` using `[hone, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Finset.mem_filter.mp hj).2 hcoeff`. Introduce `k hk hkj`. Rewrite using `[coeff_smul]`. Distinguish the cases in `hgk : g k = 0`. Rewrite using `[hgk, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle` using `hjmax k (Finset.mem_filter.mpr ⟨hk, hgk⟩)`. Establish `hne : o.degree (v k) ≠ o.degree (v j)` using `fun h => hkj (hinj h)`. Establish `hlt : o.toSyn (o.degree (v k)) < o.toSyn (o.degree (v j))` using `lt_of_le_of_ne hle (fun h => hne (o.toSyn.injective h))`. Rewrite using `[o.coeff_eq_zero_of_lt hlt, smul_zero]`. Introduce `hj'`.
-
-Conclude with `absurd (Finset.mem_filter.mp hj).1 hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ldbasis_linearIndependent {σ R ι : Type*} [CommRing R] (o : MonomialOrder σ)
     (v : ι → MvPolynomial σ R) (hinj : Function.Injective fun i => o.degree (v i))
@@ -46,18 +44,18 @@ theorem ldbasis_linearIndependent {σ R ι : Type*} [CommRing R] (o : MonomialOr
     exact absurd (Finset.mem_filter.mp hj).1 hj'
 
 /- English proof (translation)
-Conclude with `Equiv.sum_comp σ (fun p => (Pi.single (I p) 1 : Fin r → ℕ))`.
+A detailed English derivation is pending.
 -/
 theorem ldbasis_sum_single_perm {r s : ℕ} (I : Fin s → Fin r) (σ : Equiv.Perm (Fin s)) :
     (∑ q : Fin s, (Pi.single (I (σ q)) 1 : Fin r → ℕ)) = ∑ p : Fin s, Pi.single (I p) 1 := by
   exact Equiv.sum_comp σ (fun p => (Pi.single (I p) 1 : Fin r → ℕ))
 
 /- English proof (translation)
-Unfold `initMinor`. Rewrite using `[Matrix.det_apply]`. Apply `IsWeightedHomogeneous.sum` to reduce the goal to its premises. Introduce `σ _`. Establish `hprod : IsWeightedHomogeneous (rowW r n) (∏ i, (X (I (σ i), Fin.castLE hs i) : MvPolynomial (Fin r × Fin n) R)) (∑ p, Pi.single (I p) 1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← ldbasis_sum_single_perm I σ]`. Conclude with `IsWeightedHomogeneous.prod _ _ _ (fun i _ => isWeightedHomogeneous_X R (rowW r n) _)`. Introduce `d hd`. Apply `hprod` to reduce the goal to its premises. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hd` to reduce the goal to its premises. Use `show coeff d ((Equiv.Perm.sign σ) • ∏ i, (X (I (σ i), Fin.castLE hs i) : MvPolynomial (Fin r × Fin n) R)) = 0`. Rewrite using `[Units.smul_def, coeff_smul, h0, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ldbasis_initMinor_rowHom (R : Type*) [CommRing R] {r n s : ℕ} (I : Fin s → Fin r) (hs : s ≤ n) :
     IsWeightedHomogeneous (rowW r n) (initMinor R (n := n) I hs) (∑ p : Fin s, Pi.single (I p) 1) := by
@@ -79,7 +77,7 @@ theorem ldbasis_initMinor_rowHom (R : Type*) [CommRing R] {r n s : ℕ} (I : Fin
   rw [Units.smul_def, coeff_smul, h0, smul_zero]
 
 /- English proof (translation)
-Unfold `bideterminant`. Conclude with `IsWeightedHomogeneous.prod _ _ _ (fun k _ => ldbasis_initMinor_rowHom R (I k) (hsz k))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ldbasis_bidet_rowHom (R : Type*) [CommRing R] {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin r) :
@@ -89,9 +87,9 @@ theorem ldbasis_bidet_rowHom (R : Type*) [CommRing R] {r n K : ℕ} (sz : Fin K 
   exact IsWeightedHomogeneous.prod _ _ _ (fun k _ => ldbasis_initMinor_rowHom R (I k) (hsz k))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [rowWt, rowDeg, bidetExp, Finsupp.finset_sum_apply, Finset.sum_apply, Finsupp.single_apply, Pi.single_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun p _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : I k p = a`. Substitute `h` using the available equality. Simplify using `[Prod.ext_iff]`. Simplify using `[Prod.ext_iff, h, Ne.symm h]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ldbasis_rowWt_bidetExp {r n K : ℕ} (sz : Fin K → ℕ) (hsz : ∀ k, sz k ≤ n)
     (I : ∀ k, Fin (sz k) → Fin r) :

@@ -11,11 +11,11 @@ namespace GlobalTheory.CharPair
 variable {P Q R : ℕ}
 
 /- English proof (translation)
-Set `g : Fin P × Fin P → Ix P Q × Ix R 0` to `fun ac => (Sum.inl ac.1, Sum.inl (Fin.castLE h ac.2))`. Establish `: detR P Q R h = rename g (Matrix.det (Matrix.mvPolynomialX (Fin P) (Fin P) ℂ))`. Rewrite using `[detR, ← AlgHom.coe_toRingHom, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[g, Matrix.mvPolynomialX]`. Rewrite using `[this]`. Apply `pderiv_eq_zero_of_notMem_vars` to reduce the goal to its premises. Introduce `hv`. Take `⟨x, -, hx⟩` from `Finset.mem_image.1 (vars_rename g _ hv)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `[g] at hx`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_detR_wLetter (h : P ≤ R) (b : Fin Q) (c : Fin R) :
     pderiv (Sum.inr b, Sum.inl c) (detR P Q R h) = 0 := by
@@ -29,13 +29,13 @@ theorem pderiv_detR_wLetter (h : P ≤ R) (b : Fin Q) (c : Fin R) :
   simp [g] at hx
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C r => simp`. Consider the case `add p q hp hq => simp only [map_add, mul_add, Finset.sum_add_distrib, hp, hq]`. Consider the case `mul_X p n hp`. Establish `key : ∑ c : Fin R, X (Sum.inr b', Sum.inl c) * pderiv (Sum.inr b, Sum.inl c) (mR P Q R n.1 n.2) = aeval (fun ab : Fin P × Fin Q => mR P Q R ab.1 ab.2) (∑ a, X (a, b') * pderiv (a, b) (X n : Mdl P Q))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨a, b''⟩` from `n`. Distinguish the cases in `hb : b'' = b`. Substitute `hb` using the available equality. Simplify using `[mR, pderiv_X, Pi.single_apply, mul_comm]`. Simplify using `[mR, pderiv_X, Pi.single_apply, hb]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e1 : ∀ (A B : Pol P Q R 0), ∑ c : Fin R, X (Sum.inr b', Sum.inl c) * pderiv (Sum.inr b, Sum.inl c) (A * B) = (∑ c : Fin R, X (Sum.inr b', Sum.inl c) * pderiv (Sum.inr b, Sum.inl c) A) * B + A * ∑ c : Fin R, X (Sum.inr b', Sum.inl c) * pderiv (Sum.inr b, Sum.inl c) B`. Introduce `A B`. Simplify using `only [pderiv_mul, mul_add, Finset.sum_add_distrib]`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Conclude with `congrArg₂ (· + ·) (Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm) (Finset.sum_congr rfl fun _ _ => mul_left_comm _ _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ (A B : Mdl P Q), ∑ a, X (a, b') * pderiv (a, b) (A * B) = (∑ a, X (a, b') * pderiv (a, b) A) * B + A * ∑ a, X (a, b') * pderiv (a, b) B`. Introduce `A B`. Simplify using `only [pderiv_mul, mul_add, Finset.sum_add_distrib, Finset.sum_mul, Finset.mul_sum]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun _ _ => by ring`. Rewrite using `[map_mul, aeval_X, e1, hp, key, e2, map_add, map_mul, map_mul, aeval_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wPolarize_aeval_mR (b b' : Fin Q) (G : Mdl P Q) :
     ∑ c : Fin R, X (Sum.inr b', Sum.inl c) * pderiv (Sum.inr b, Sum.inl c)
@@ -69,11 +69,11 @@ theorem wPolarize_aeval_mR (b b' : Fin Q) (G : Mdl P Q) :
     rw [map_mul, aeval_X, e1, hp, key, e2, map_add, map_mul, map_mul, aeval_X]
 
 /- English proof (translation)
-Introduce `P Q R h k b b' G`. Establish `hD : ∀ c : Fin R, pderiv (Sum.inr b, Sum.inl c) (detR P Q R h ^ k) = 0` using `fun c => by`. Simplify using `[Derivation.leibniz_pow, pderiv_detR_wLetter]`. Establish `hw` using `wPolarize_aeval_mR (R := R) b b' G`. Rewrite using `[fockAct1_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, add_zero, GlobalTheory.CompactHarm.omE_nn (Sum.inr b, Sum.inl _) (Sum.inr b', Sum.inl _) rfl rfl]`. Simplify using `only [embR, opR, LinearMap.comp_apply, LinearMap.mulRight_apply, AlgHom.toLinearMap_apply, pderiv_mul, hD, mul_zero, add_zero, LinearMap.sub_apply, LinearMap.neg_apply, LinearMap.sum_apply, Module.End.mul_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_neg, map_sm …`. Establish `e : ∀ x : Fin P, (mulM x b') ((derM x b) G) = X (x, b') * pderiv (x, b) G` using `fun _ => rfl`. Simplify using `only [e, ← hw, Finset.sum_sub_distrib, Finset.sum_neg_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, Finset.sum_mul, mul_assoc]`. Rewrite using `[sub_right_inj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fockAct1_inr_inr_embR : ∀ (P Q R : ℕ) (h : P ≤ R) (k : ℕ) (b b' : Fin Q) (G : Mdl P Q),
     fockAct1 P Q R 0 (Eab (Sum.inr b) (Sum.inr b')) (embR P Q R h k G) =

@@ -18,11 +18,11 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
 open GlobalTheory.TopLaw GlobalTheory.CoupledLaw in
 
 /- English proof (translation)
-Establish `e0 : phiT X.K q.deco.1 p'.deco.1 x = phiT X.K p.deco.1 p'.deco.1 x`. Unfold `phiT Deco.at`. Rewrite using `[hN, hf]`. Unfold `XiCpl1`. Rewrite using `[e0, mul_assoc, mul_left_comm _ (phiT _ _ _ _), ← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, Units.coe_prod, ← Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg _ (Finset.prod_congr rfl fun P _ => ?_)` and prove the remaining obligations. Establish `e1 : inFr (frsF sel mu q P) (frsF sel mu p' P) x = inFr (frsF sel mu p P) (frsF sel mu p' P) x ∘ₗ ((κ P)⁻¹).1.toLinearMap`. Rewrite using `[hκ]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `psiAt_source hX hPr hL (ha P).inv _ _`.
+A detailed English derivation is pending.
 -/
 theorem firstCoupledDatum_source_level_law {u : Pr.Word} (hX : X.Ok) (hPr : Pr.Ok) (hL : L.Ok Ch sel mu cst G m2) {al : L.β m2}
     {p q : ChPt (R := R) sel mu u m2} (p' : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1))))
@@ -55,15 +55,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold `GlobalTheory.TwV.UnderTie`. Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPins hTie _hEx hMu i hi hi2 hAway β β' x x₁ x' κ p p' p₁ hx hp hp' hp₁ w`. Substitute `hi2` using the available equality. Establish `hlt : t.m2 < D.R.m` using `hi`. Take `⟨g, z, hgz, hchi⟩` from `GlobalTheory.T.firstCoupledStep_level_local_elements_values A dtU a hPins hTie hlt β κ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, κP, c, hfr, hlev, hN, hf, hcz, hrho, hin⟩` from `GlobalTheory.T.exists_chart_point_frames_moved_by_level A dtU a hPins hTie hlt β κ p g z hgz`. Establish `hq : IsPtAd A a t.m2 hlt.le β x₁ q` using `GlobalTheory.T.chart_base_point_adelic_right_mul_level A dtU a hPins hTie t.m2 hlt.le β κ x x₁ p q (fun P => ((κP P)⁻¹).1) hx hp hN hf hfr (fun P => ((κP P)⁻¹).2) hin`. Establish `hD` using `GlobalTheory.T.firstCoupledStepCharacter_at_levelDet_mul_tameValues A dtU a hPins hTie hMu hlt β κ g z hgz`. Establish `eA : xiPt A t.m2 hi β β' p₁ p' w = xiPt A t.m2 hi β β' q p' w` using `congrFun (hAway β β' x₁ x' x₁ x' q p' p₁ p' hq hp' hp₁ hp' (fun _ _ => ⟨rfl, rfl⟩)) w`. Rewrite using `[eA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `xiPt`. Rewrite using `[dif_neg (lt_irrefl _), if_pos rfl, dif_neg (lt_irrefl _), if_pos rfl]`. Establish `hsrc` using `firstCoupledDatum_source_level_law (G := t.glob) (cst := t.cst μ) (Ch := t.Ch) hPins.fields.ok t.pr_ok (t.idx_ok μ) (al := A.ib t.m2 hlt β) p' (cosetOf A (t.m2 + 1) hi β' p') hfr hlev hN hf w`. Establish `hprod : ((∏ P, c P : t.X.Kˣ) : t.X.K) * ∏ P, z P = 1`. Rewrite using `[Units.coe_prod, ← Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_one fun P _ => hcz P`. Rewrite `hsrc` using `[hrho]`. Establish `e4` using `congrArg t.seam.σ₀ hsrc`. Establish `e2` using `congrArg t.seam.σ₀ hprod`. Establish `e3 : t.seam.σ₀ (((∏ P, c P)⁻¹ : t.X.Kˣ) : t.X.K) * t.seam.σ₀ ((∏ P, c P : t.X.Kˣ) : t.X.K) = 1`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Rewrite `e4` using `[map_mul, map_mul]`. Rewrite `e2` using `[map_mul, map_one]`. Take the linear combination `(t.seam.σ₀ (XiCpl1 t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.m2 (A.ib t.m2 hlt β) q p' (cosetOf A (t.m2 + 1) hi β' p') w) * t.seam.σ₀ ((∏ P, c P : t.X.Kˣ) : t.X.K)) * hchi - (t.seam.σ₀ (XiCpl1 t.Ch t.sel (t.tup μ) (t.cst μ) (t.idx μ) t.m2 (A.ib t.m2 hlt β) q p' (cosetOf A (t.m2 …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem levSrc_cpl : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a => PtEx A a → MuLaw t u μ dtU → ∀ i hi, i = t.m2 → PtAway A a i hi →
   ∀ β β' (x x₁ : UA D i (Nat.le_of_succ_le hi)) (x' : UA D (i + 1) hi) (κ : ((St i (Nat.le_of_succ_le hi)).K β).lev.U) p p' p₁,

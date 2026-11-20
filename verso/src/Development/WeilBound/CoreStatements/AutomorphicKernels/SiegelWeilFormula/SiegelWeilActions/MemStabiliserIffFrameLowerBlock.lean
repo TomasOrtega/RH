@@ -12,19 +12,17 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E}
 
 /- English proof (translation)
-Take `⟨-, t₀, ht₀⟩` from `hb`. Rewrite using `[GlobalTheory.ThK.Dbl.mem_parabolic_GL2_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩`. Conclude with `((kunf.isPar_frame ht₀ p t).1 ht).1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h set M := inFrame b p with hM`. Establish `hMi : M * inFrame b p⁻¹ = 1`. Rewrite using `[hM, ← GlobalTheory.EisBL.DoubledParabolic.inFrame_mul, mul_inv_cancel, GlobalTheory.EisBL.DoubledParabolic.inFrame_one]`. Establish `hdet : IsUnit M.det` using `Matrix.isUnit_det_of_right_inverse hMi`. Establish `hsplit : M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ 0 M.toBlocks₂₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, Matrix.fromBlocks_toBlocks]`. Establish `hdet2 : M.det = M.toBlocks₁₁.det * M.toBlocks₂₂.det`. Rewrite using `[hsplit, Matrix.det_fromBlocks_zero₂₁]`. Simplify using `[Matrix.toBlocks₁₁, Matrix.toBlocks₂₂, Matrix.fromBlocks]`. Establish `hA : IsUnit M.toBlocks₁₁.det` using `isUnit_of_mul_isUnit_left (hdet2 ▸ hdet)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A := M.toBlocks₁₁`. Use `set T0 := incM F t₀.1`. Use `set T0i := incM F (t₀⁻¹).1`. Establish `e1 : T0 * T0i = 1`. Simplify using `only [T0, T0i, incM, ← Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show t₀.1 * (t₀⁻¹).1 = 1 from t₀.mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `e2 : T0i * T0 = 1`. Simplify using `only [T0, T0i, incM, ← Matrix.map_mul]`. Rewrite using `[show (t₀⁻¹).1 * t₀.1 = 1 from t₀.inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hAA : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `hAA' : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Set `t : GL (Fin n) (AE F E)` to `⟨T0 * A * T0i, T0 * A⁻¹ * T0i, by`. Combine the equalities or inequalities in the displayed calculation.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `⟨t, (kunf.isPar_frame ht₀ p t).2 ⟨h, rfl⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stabiliser_iff_frame_lower_block (hb : IsFrame2 σ Y b) (p : G2 σ Y) :
     p ∈ par2 σ Y ↔ (inFrame b p).toBlocks₂₁ = 0 := by

@@ -8,9 +8,9 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← Finset.univ_prod_mulSingle g]`. Use `Submonoid.prod_mem _ fun s _ => ?_` and prove the remaining obligations. Establish `hs : Pi.mulSingle s (g s) = (Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (n s))) : ∀ s, Multiplicative (ZMod (n s))) ^ (Multiplicative.toAdd (g s)).val`. Rewrite using `[← Pi.mulSingle_pow, ← ofAdd_nsmul, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hs]`. Conclude with `Submonoid.pow_mem _ (h s) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grEx_gen {σ : Type} [Fintype σ] [DecidableEq σ] (n : σ → ℕ) [∀ s, NeZero (n s)]
     (S : Submonoid (∀ s, Multiplicative (ZMod (n s))))
@@ -27,35 +27,29 @@ private theorem grEx_gen {σ : Type} [Fintype σ] [DecidableEq σ] (n : σ → �
   exact Submonoid.pow_mem _ (h s) _
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ l hl hlm σ _ _ e`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Use `haveI hNZ : ∀ s, NeZero (l ^ e s) := fun s => ⟨pow_ne_zero _ hl.ne_zero⟩`. Establish `hpg : IsPGroup l (∀ s, Multiplicative (ZMod (l ^ e s)))`. Apply `IsPGroup.of_card (n := ∑ s, e s)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Nat.card_pi, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_congr Multiplicative.toAdd, Nat.card_zmod]`. Take `⟨hloc, hmax, -, -⟩` from `UpperTheory.V.CF.grLocal l Λ (∀ s, Multiplicative (ZMod (l ^ e s))) hlm hpg`. Use `haveI := hloc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI hCOΛ : UpperTheory.V.Alg.IsCO Λ Λ := inferInstance`. Use `haveI hCO : UpperTheory.V.Alg.IsCO Λ (MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s)))) := by`. Apply `UpperTheory.V.Alg.co_finite Λ Λ` to reduce the goal to its premises. Introduce `x`. Use `⟨UpperTheory.V.CF.aug Λ _ x, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmax, Ideal.mem_comap, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules. Use `set gen : σ → MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s))) := fun s => MonoidAlgebra.of Λ (∀ s, Multiplicative (ZMod (l ^ e s))) (Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (l ^ e s)))) with hgen`. Establish `haug_of : ∀ g, UpperTheory.V.CF.aug Λ (∀ s, Multiplicative (ZMod (l ^ e s))) (MonoidAlgebra.of Λ _ g) = 1`. Introduce `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `[UpperTheory.V.CF.aug]`. Establish `hamem : ∀ s, gen s - 1 ∈ IsLocalRing.maximalIdeal (MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s))))`. Introduce `s`. Rewrite using `[hmax, Ideal.mem_comap, map_sub, map_one, hgen, haug_of, sub_self]`. Conclude with `Ideal.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ, ⟨hφC, hφX⟩, -⟩` from `UpperTheory.V.Alg.co_ev Λ Λ (MonoidAlgebra Λ (∀ s, Multiplicative (ZMod (l ^ e s)))) σ (Algebra.ofId Λ _) (fun s => gen s - 1) hamem`. Establish `hφ1 : ∀ s, φ (1 + MvPowerSeries.X s) = gen s`. Introduce `s`. Rewrite using `[map_add, map_one, hφX]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hofrange : ∀ g, MonoidAlgebra.of Λ _ g ∈ φ.range`. Introduce `g`. Set `S : Submonoid (∀ s, Multiplicative (ZMod (l ^ e s)))` to `{ carrier := {g | MonoidAlgebra.of Λ _ g ∈ φ.range} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul] at *`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `Subalgebra.mul_mem _ ha hb`. Use the proof step `one_mem' := by`. Simplify using `only [Set.mem_setOf_eq, map_one]`. Conclude with `Subalgebra.one_mem _ }`. Conclude with `grEx_gen (fun s => l ^ e s) S (fun s => ⟨1 + MvPowerSeries.X s, hφ1 s⟩) g`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : Function.Surjective φ`. Introduce `y`. It suffices to establish `y ∈ φ.range by simpa using this`. Proceed by induction on `y using MonoidAlgebra.induction_on with`. Consider the case `of g => exact hofrange g`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Consider the case `add f g hf hg => exact Subalgebra.add_mem _ hf hg`. Consider the case `smul r f hf => exact Subalgebra.smul_mem _ hf r`. Use `⟨φ, hφ1, hsurj, hloc, ?_⟩` and prove the remaining obligations. Establish `hker` using `(UpperTheory.V.CF.augKer Λ (∀ s, Multiplicative (ZMod (l ^ e s)))).1`. Express the relevant statement in the definitionally equal form `_ = RingHom.ker (UpperTheory.V.CF.aug Λ _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hker, Ideal.map_span, ← Set.range_comp]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨s, rfl⟩`. Apply `Ideal.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Pi.mulSingle s (Multiplicative.ofAdd (1 : ZMod (l ^ e s))), (hφX s).symm⟩`. Rewrite using `[UpperTheory.V.CF.augIdeal, Ideal.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `set J := Ideal.span (Set.range (⇑φ ∘ MvPowerSeries.X))`. Set `S : Submonoid (∀ s, Multiplicative (ZMod (l ^ e s)))` to `{ carrier := {g | MonoidAlgebra.of Λ _ g - 1 ∈ J} mul_mem' := by`.
-
-Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq, map_mul] at *`. Establish `: MonoidAlgebra.of Λ _ a * MonoidAlgebra.of Λ _ b - 1 = (MonoidAlgebra.of Λ _ a - 1) * MonoidAlgebra.of Λ _ b + (MonoidAlgebra.of Λ _ b - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `J.add_mem (J.mul_mem_right _ ha) hb`.
-
-Use the proof step `one_mem' := by`. Simplify using `only [Set.mem_setOf_eq, map_one, sub_self]`. Conclude with `J.zero_mem }`. Use `grEx_gen (fun s => l ^ e s) S (fun s => ?_) g` and prove the remaining obligations. Use `show gen s - 1 ∈ J`.
-
-Rewrite using `[← hφX]`. Conclude with `Ideal.subset_span ⟨s, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.exists_groupRing_surj :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (IsLocalRing.maximalIdeal Λ) Λ] (l : ℕ), l.Prime → (l : Λ) ∈ IsLocalRing.maximalIdeal Λ → ∀ (σ : Type) [Fintype σ] [DecidableEq σ] (e : σ → ℕ),

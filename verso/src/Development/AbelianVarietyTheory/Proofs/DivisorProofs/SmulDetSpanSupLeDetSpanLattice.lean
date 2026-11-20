@@ -12,11 +12,11 @@ open NumberField MvPolynomial in
 variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
   [IsScalarTower (𝓞 F) F V] {d : ℕ} in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.mp hi`. Take `⟨b, hb⟩` from `Submodule.mem_span_singleton.mp hk`. Distinguish the cases in `hb0 : algebraMap (𝓞 F) F b = 0`. Establish `hwk : w k = 0`. Rewrite using `[← hb, ← algebraMap_smul F b u, hb0, zero_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.map_coord_zero k hwk`. Establish `hwi : w i = (algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b) • w k`. Rewrite using `[← ha, ← hb, ← algebraMap_smul F a u, ← algebraMap_smul F b u, smul_smul, div_mul_cancel₀ _ hb0]`. Establish `hfw : f w = f (Function.update w i ((algebraMap (𝓞 F) F a / algebraMap (𝓞 F) F b) • w k))`. Rewrite using `[← hwi, Function.update_eq_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfw, f.map_update_smul]`. Establish `h0 : f (Function.update w i (w k)) = 0` using `f.map_eq_zero_of_eq (Function.update w i (w k)) (i := i) (j := k) (by simp [Function.update_of_ne hik.symm]) hik`. Rewrite using `[h0, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma exterior_form_eq_zero_of_two_mem_span_singleton {ι : Type*} [DecidableEq ι]
     (f : V [⋀^ι]→ₗ[F] F) (u : V) (w : ι → V) {i k : ι} (hik : i ≠ k)
@@ -44,17 +44,15 @@ open NumberField MvPolynomial in
 variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
   [IsScalarTower (𝓞 F) F V] {d : ℕ} in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `i w _ _ hN _`. Conclude with `Submodule.subset_span ⟨w, fun j => hN j (by simp), rfl⟩`. Consider the case `@insert k s hks ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i w his hi hN hs`. Establish `hik : i ≠ k` using `fun h => his (h ▸ Finset.mem_insert_self k s)`. Establish `his' : i ∉ s` using `fun h => his (Finset.mem_insert_of_mem h)`. Take `⟨n, hn, z, hz, hnz⟩` from `Submodule.mem_sup.mp (hs k (Finset.mem_insert_self k s))`. Establish `hsplit : f w = f (Function.update w k n) + f (Function.update w k z)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← f.map_update_add, hnz, Function.update_eq_self]`. Rewrite using `[hsplit]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Use `ih i _ his' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hik]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk, Function.update_self]`. Conclude with `hn`. Rewrite using `[Function.update_of_ne hjk]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hN j (by simp [hjk, hj])`. Introduce `j hj`. Establish `hjk : j ≠ k` using `fun h => hks (h ▸ hj)`. Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hs j (Finset.mem_insert_of_mem hj)`.
-
-Rewrite using `[exterior_form_eq_zero_of_two_mem_span_singleton f u _ hik (by rwa [Function.update_of_ne hik]) (by rw [Function.update_self]; exact hz)]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma multilinear_mem_span_of_entry_mem_span_singleton {ι : Type*} [DecidableEq ι]
     (f : V [⋀^ι]→ₗ[F] F) (N : Submodule (𝓞 F) V) (u : V) (s : Finset ι) :
@@ -94,21 +92,19 @@ open NumberField MvPolynomial in
 variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]
   [IsScalarTower (𝓞 F) F V] {d : ℕ} in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `w hN _`. Conclude with `Submodule.smul_mem _ π (Submodule.subset_span ⟨w, fun j => hN j (by simp), rfl⟩)`. Consider the case `@insert k s hks ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hN hs`. Take `⟨n, hn, z, hz, hnz⟩` from `Submodule.mem_sup.mp (hs k (Finset.mem_insert_self k s))`. Establish `hsplit : f w = f (Function.update w k n) + f (Function.update w k z)`. Rewrite using `[← f.map_update_add, hnz, Function.update_eq_self]`. Rewrite using `[hsplit, smul_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Use `ih _ ?_ ?_` and prove the remaining obligations. Introduce `j hj`. Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk, Function.update_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hn`. Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hN j (by simp [hjk, hj])`. Introduce `j hj`. Establish `hjk : j ≠ k` using `fun h => hks (h ▸ hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hs j (Finset.mem_insert_of_mem hj)`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.mp hz`. Establish `key : π • f (Function.update w k (a • u)) = f (Function.update w k ((π * a) • u))`. Rewrite using `[mul_smul, ← algebraMap_smul F π (a • u), f.map_update_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key]`. Use `multilinear_mem_span_of_entry_mem_span_singleton f N u s k _ hks ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Function.update_self]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self u)`. Introduce `j hj`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Distinguish the cases in `hjk : j = k`. Rewrite using `[hjk, Function.update_self, mul_comm, mul_smul]`. Conclude with `N.smul_mem a hπ`. Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hN j (by simp [hjk, hj])`.
-
-Introduce `j hj`. Establish `hjk : j ≠ k` using `fun h => hks (h ▸ hj)`. Rewrite using `[Function.update_of_ne hjk]`. Conclude with `hs j (Finset.mem_insert_of_mem hj)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma smul_multilinear_mem_span {ι : Type*} [DecidableEq ι] (f : V [⋀^ι]→ₗ[F] F)
     (N : Submodule (𝓞 F) V) (u : V) (π : 𝓞 F) (hπ : π • u ∈ N) (s : Finset ι) :
@@ -159,11 +155,9 @@ variable {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V] [M
   [IsScalarTower (𝓞 F) F V] {d : ℕ} in
 
 /- English proof (translation)
-Introduce `F V _ _ _ _ _ _ d b N u π hπ y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨v, hv, rfl⟩` from `hx`. Conclude with `smul_multilinear_mem_span b.det N u π hπ Finset.univ v (fun j hj => absurd (Finset.mem_univ j) hj) (fun j _ => hv j)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
-
-Rewrite using `[smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DetColon.smul_detSpan_sup_le :
     ∀ (F V : Type) [Field F] [NumberField F] [AddCommGroup V] [Module F V] [Module (𝓞 F) V]

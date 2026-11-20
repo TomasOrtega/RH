@@ -18,9 +18,7 @@ namespace GlobalTheory.RowMoveAt
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Introduce `h0`. Establish `h3` using `S.N.off w h0`. Break down `Finset.mem_union.1 hw with h | h` into its components or cases. Take `⟨v, hv, rfl⟩` from `Finset.mem_image.1 h`. Conclude with `h3.1 (by rw [G.pl.under_w hv]; exact hv)`.
-
-Conclude with `h3.2.1 t ht w h rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem notOff (S : GridChoice W U) {t : T} (ht : t ∈ U) {w : Pl D.host.E} (hw : w ∈ locPl G t) : ¬ Off S.N.S w := by
   classical
@@ -32,9 +30,9 @@ theorem notOff (S : GridChoice W U) {t : T} (ht : t ∈ U) {w : Pl D.host.E} (hw
   · exact h3.2.1 t ht w h rfl
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `he`. Rewrite using `[map_sum, ← Finset.sum_add_distrib, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun w' hw' => ?_` and prove the remaining obligations. Take `⟨hne, hnc⟩` from `GlobalTheory.StdHalfLat.ne_and_not_conj hw (hoff w' hw')`. Rewrite using `[map_add, map_add, (cpt_of_isIdemAt (hes w' hw')).2 w hne, (cpt_of_isIdemAt (GlobalTheory.MovedIdem.isIdemAt_conj (hes w' hw') (GlobalTheory.IdemSupport.mem_cP w'))).2 w ?_, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Apply `hnc` to reduce the goal to its premises. Introduce `c hc`. Conclude with `⟨GlobalTheory.IdemSupport.cO D c, (GlobalTheory.IdemSupport.mem_cP w' c).1 hc, by simp [GlobalTheory.IdemSupport.cO]⟩`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem cpt_supp_zero {S : Finset ℕ} {w : Pl D.host.E} (hw : ¬ Off S w) {P : Finset (Pl D.host.E)} {e : AE D}
     (he : IsIdemSum e P) (hoff : ∀ w' ∈ P, Off S w') : cpt w (toEAf D (e + cA D e)) = 0 := by
@@ -50,9 +48,9 @@ theorem cpt_supp_zero {S : Finset ℕ} {w : Pl D.host.E} (hw : ¬ Off S w) {P : 
   exact ⟨GlobalTheory.IdemSupport.cO D c, (GlobalTheory.IdemSupport.mem_cP w' c).1 hc, by simp [GlobalTheory.IdemSupport.cO]⟩
 
 /- English proof (translation)
-Establish `h0` using `cpt_supp_zero hw he hoff`. Establish `h1 : (mt V g - 1).map ((cpt w).comp (toEAf D)) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, ← hg i j, RingHom.comp_apply, map_mul, map_mul, h0, zero_mul, Matrix.zero_apply]`. Establish `h2 : (mt V g).map ((cpt w).comp (toEAf D)) = (mt V g - 1).map ((cpt w).comp (toEAf D)) + (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)).map ((cpt w).comp (toEAf D))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_add _ (map_add _), sub_add_cancel]`. Rewrite using `[h2, h1, zero_add, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mt_eq_one {S : Finset ℕ} {w : Pl D.host.E} (hw : ¬ Off S w) {P : Finset (Pl D.host.E)} {e : AE D}
     (he : IsIdemSum e P) (hoff : ∀ w' ∈ P, Off S w') {V : HSp D} {g : GA D V} (hg : SuppAt e V g) :
@@ -72,7 +70,7 @@ namespace GlobalTheory.RowMoveAt
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T}
 
 /- English proof (translation)
-Simplify using `only [actO, GridData.toPair, Prod.fst_inv, Prod.snd_inv, inv_inv, inv_one]`. Rewrite using `[show mt (G.pT (.chi j D.R.m : Pair T)) 1 = 1 from rfl, Matrix.one_mul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem actO_chi_right (j : ℕ) (M : GA D (G.V (.grid (j + 1) D.R.m)))
     (x : WO (G.pS (.chi j D.R.m : Pair T)) (G.pT (.chi j D.R.m : Pair T))) :
@@ -83,7 +81,7 @@ theorem actO_chi_right (j : ℕ) (M : GA D (G.V (.grid (j + 1) D.R.m)))
   rfl
 
 /- English proof (translation)
-Simplify using `only [actO, GridData.toPair, Prod.fst_inv, Prod.snd_inv, inv_inv, map_one, inv_one]`. Rewrite using `[show mt (G.pS (.chi (j + 1) D.R.m : Pair T)) 1 = 1 from rfl, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_chi_left (j : ℕ) (M : GA D (G.V (.grid (j + 1) D.R.m)))
     (x : WO (G.pS (.chi (j + 1) D.R.m : Pair T)) (G.pT (.chi (j + 1) D.R.m : Pair T))) :
@@ -93,7 +91,7 @@ theorem actO_chi_left (j : ℕ) (M : GA D (G.V (.grid (j + 1) D.R.m)))
   rw [show mt (G.pS (.chi (j + 1) D.R.m : Pair T)) 1 = 1 from rfl, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.submatrix_mul _ _ (Fin.cast ha) (Fin.cast hb) (Fin.cast hb) (finCongr hb).bijective]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc, Units.mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem sub_mul_cast {K : Type} [Field K] {a b a' b' : ℕ} (ha : a' = a) (hb : b' = b) (P : GL (Fin a) K) (Q : GL (Fin b) K)
     (Y : Matrix (Fin a) (Fin b) K) (X : Matrix (Fin b) (Fin b) K) :
@@ -104,7 +102,7 @@ theorem sub_mul_cast {K : Type} [Field K] {a b a' b' : ℕ} (ha : a' = a) (hb : 
   simp only [Matrix.mul_assoc, Units.mul_inv_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.submatrix_mul _ _ (Fin.cast ha) (Fin.cast ha) (Fin.cast hb) (finCongr ha).bijective]`. Use `congr 1`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (P.val), Units.mul_inv, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_sub_cast {K : Type} [Field K] {a b a' b' : ℕ} (ha : a' = a) (hb : b' = b) (P : GL (Fin a) K) (Q : GL (Fin b) K)
     (Y : Matrix (Fin a) (Fin b) K) (X : Matrix (Fin a) (Fin a) K) :
@@ -116,7 +114,7 @@ theorem mul_sub_cast {K : Type} [Field K] {a b a' b' : ℕ} (ha : a' = a) (hb : 
   rw [← Matrix.mul_assoc (P.val), Units.mul_inv, Matrix.one_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[GlobalTheory.FunObj.ProdOpen.inBasis_apply, ← map_inv, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem inBasis_val {n n' : ℕ} (h : n' = n) (β x : GL (Fin n) (Lev.EAf D)) (w : Pl D.host.E) :
     (inBasis h β w x).val = (((loc w β)⁻¹).val * (loc w x).val * (loc w β).val).submatrix (Fin.cast h) (Fin.cast h) := by
@@ -129,21 +127,21 @@ end GlobalTheory.RowMoveAt
 namespace GlobalTheory.RowMoveAt
 
 /- English proof (translation)
-Introduce `D T L sc G W U S t ht j hj k w hw y`. Establish `hX : DefNode D.R.m (.grid (j + 1) D.R.m)` using `⟨by omega, rfl⟩`. Take `⟨P, e, he, hsupp, hoff⟩` from `S.N.u_supp _ hX`. Establish `hn` using `notOff S ht hw`. Establish `hu` using `map_mt_eq_one hn he hoff hsupp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu'` using `map_mt_eq_one hn he hoff (GlobalTheory.StdHalfLat.suppAt_inv' hsupp)`. Establish `hM : (mt _ (moved S j k)).map ((cpt w).comp (toEAf D)) = (loc w (finG (G.V (.grid (j + 1) D.R.m)) k)).val`. Rewrite using `[show mt _ (moved S j k) = mt _ (S.N.u (.grid (j + 1) D.R.m)).1⁻¹ * mt _ k.1 * mt _ (S.N.u (.grid (j + 1) D.R.m)).1 from rfl, Matrix.map_mul, Matrix.map_mul, hu, hu', Matrix.one_mul, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `hM' : (mt _ (moved S j k)⁻¹).map ((cpt w).comp (toEAf D)) = (loc w (finG (G.V (.grid (j + 1) D.R.m)) k⁻¹)).val`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[show mt _ (moved S j k)⁻¹ = mt _ (S.N.u (.grid (j + 1) D.R.m)).1⁻¹ * mt _ k.1⁻¹ * mt _ (S.N.u (.grid (j + 1) D.R.m)).1 from by`. Rewrite using `[RowVertexInv.moved]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, mul_inv_rev, inv_inv, mul_assoc]`. Use the proof step `rfl,`. Use the proof step `Matrix.map_mul, Matrix.map_mul, hu, hu', Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Distinguish the cases in `h1 : i = j + 1`. Substitute `h1` using the available equality. Rewrite using `[Function.update_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GridChoice.rowAt, dif_pos hj, Function.update_self, Frames.coord]`. Rewrite using `[actO_chi_left, Matrix.map_mul, hM']`. Use `erw [Matrix.transpose_transpose, Matrix.transpose_transpose, id_eq]`. Rewrite using `[← map_inv (inBasis _ (S.B.β (j + 1) D.R.m) w), map_inv (finG (G.V (Node.grid (j + 1) D.R.m))) k, inBasis_val, mul_sub_cast]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h2 : i = j`. Substitute `h2` using the available equality. Rewrite using `[Function.update_of_ne (by omega), Function.update_self]`. Establish `hj' : i < D.R.m` using `by omega`. Simplify using `only [GridChoice.rowAt, dif_pos hj', Frames.coord]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Function.update_of_ne (fun h => by simp [Fin.ext_iff] at h), Function.update_self, actO_chi_right, Matrix.map_mul, hM]`. Use `erw [Matrix.transpose_transpose, Matrix.transpose_transpose, id_eq]`. Rewrite using `[inBasis_val, sub_mul_cast]`. Both sides reduce to the same expression. Rewrite using `[Function.update_of_ne h1, Function.update_of_ne h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GridChoice.rowAt]`. Distinguish the cases in `hi : i < D.R.m`. Rewrite using `[dif_pos hi, dif_pos hi, Function.update_of_ne (fun h => h1 (by simpa [Fin.ext_iff] using h)), Function.update_of_ne (fun h => h2 (by simpa [Fin.ext_iff] using h))]`. Rewrite using `[dif_neg hi, dif_neg hi]`.
+A detailed English derivation is pending.
 -/
 theorem rowAt_move : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {W : G.Weil} {U : Set T} (S : GridChoice W U) {t : T}, t ∈ U → ∀ (j : ℕ) (hj : j + 1 < D.R.m) (k : FinPt G (.grid (j + 1) D.R.m)) (w : Pl D.host.E), w ∈ locPl G t →
     ∀ (y : ∀ i : Fin D.R.m, WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T))),

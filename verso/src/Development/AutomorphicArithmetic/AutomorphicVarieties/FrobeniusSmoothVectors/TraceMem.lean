@@ -12,18 +12,18 @@ variable {O R : Type} [CommRing O] [IsLocalRing O] [CommRing R] [Algebra O R] [I
   [IsCO O A]
 
 /- English proof (translation)
-Rewrite using `[← res_eq_zero_iff O, ← res_eq_zero_iff O, ← res_map A.val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mem_max (a : A) : (a : R) ∈ maximalIdeal R ↔ a ∈ maximalIdeal A := by
   rw [← res_eq_zero_iff O, ← res_eq_zero_iff O, ← res_map A.val]
   rfl
 
 /- English proof (translation)
-Use `choose c hc hx using hx`. Establish `hsep : ⨅ N : ℕ, maximalIdeal R ^ N = ⊥` using `Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal R).ne_top`. Take `⟨y, hy⟩` from `alg_closed A (maximalIdeal R) ⟨inferInstance, Subtype.val_injective, hsep, Ideal.ext (mem_max A), fun d => by`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) d`. Conclude with `⟨algebraMap O A a, ha⟩⟩ (fun N => ⟨c (N + 1), hc _⟩) (fun N => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `h` using `sub_mem (hx (N + 1)) (Ideal.pow_le_pow_right (Nat.le_succ _) (hx (N + 1 + 1)))`. Rewrite `h` using `[sub_sub_sub_cancel_left]`. Conclude with `h)`. Establish `h : x - y ∈ ⨅ N : ℕ, maximalIdeal R ^ N` using `Ideal.mem_iInf.2 fun N => by`. Establish `h` using `sub_mem (hx (N + 1)) (show (y : R) - c (N + 1) ∈ _ from hy N)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[sub_sub_sub_cancel_right]`. Conclude with `Ideal.pow_le_pow_right (Nat.le_succ _) h`. Rewrite `h` using `[hsep, Ideal.mem_bot, sub_eq_zero]`. Conclude with `h ▸ y.2`.
+A detailed English derivation is pending.
 -/
 private theorem closed {x : R} (hx : ∀ N : ℕ, ∃ y ∈ A, x - y ∈ maximalIdeal R ^ N) : x ∈ A := by
   choose c hc hx using hx
@@ -44,17 +44,17 @@ private theorem closed {x : R} (hx : ∀ N : ℕ, ∃ y ∈ A, x - y ∈ maximal
   exact h ▸ y.2
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h2.exists_left_inv`. Establish `hu' : (u : R) * 2 = 1` using `congrArg A.val hu`. Establish `h1 : ζ ^ 2 ∈ A`. Use `mul_mem u.2 h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hu', one_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) ζ`. Establish `ha' : IsUnit (algebraMap O A a)`. Assume the negation of the conclusion as `hn`. Use `add_mem ha ((mem_max A _).2 hn)` as an intermediate fact. Conclude with `this (by simpa using hζ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hd'⟩` from `HenselianRing.is_henselian (I := maximalIdeal A) (Polynomial.X ^ 2 - Polynomial.C (⟨ζ ^ 2, h1⟩ : A)) (Polynomial.monic_X_pow_sub_C _ two_ne_zero) (algebraMap O A a) (by`. Rewrite using `[← mem_max]`. Establish `: (((Polynomial.X ^ 2 - Polynomial.C (⟨ζ ^ 2, h1⟩ : A)).eval (algebraMap O A a) : A) : R) = -(ζ + algebraMap O R a) * (ζ - algebraMap O R a)` using `by simp; ring`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ ha) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `IsUnit.map _ ?_` and prove the remaining obligations. Simplify `h2.mul ha')` using `[one_add_one_eq_two]`. Establish `e1 : ((d : R) + ζ) * (d - ζ) = 0`. Use `congrArg A.val hd` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `this`. Establish `e2 : IsUnit ((d : R) + ζ)`. Assume the negation of the conclusion as `hn`. Establish `h3 : (d : R) - algebraMap O R a ∈ maximalIdeal R` using `(mem_max A _).2 hd'`. Establish `h4` using `add_mem (sub_mem (show (d : R) + ζ ∈ maximalIdeal R from hn) h3) ha`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : (d : R) + ζ - (d - algebraMap O R a) + (ζ - algebraMap O R a) = 2 * ζ` using `by ring`. Rewrite `h4` using `[h5]`. Conclude with `h4 ((IsUnit.of_mul_eq_one_right _ hu').mul hζ)`. Conclude with `sub_eq_zero.1 (e2.mul_right_eq_zero.1 e1) ▸ d.2`.
+A detailed English derivation is pending.
 -/
 private theorem sqrt_mem (h2 : IsUnit (2 : A)) {ζ : R} (hζ : IsUnit ζ) (h : 2 * ζ ^ 2 ∈ A) : ζ ∈ A := by
   obtain ⟨u, hu⟩ := h2.exists_left_inv
@@ -94,7 +94,7 @@ private theorem sqrt_mem (h2 : IsUnit (2 : A)) {ζ : R} (hζ : IsUnit ζ) (h : 2
 end Sub
 
 /- English proof (translation)
-Apply the tactic sequence `rcases hn with rfl | rfl <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem w_facts {n : ℕ} (hn : n = 2 ∨ n = 3) :
     (∀ i, w n i = 1 ∨ w n i = 0 ∨ w n i = -1) ∧ (∀ i j, w n i = w n j → i = j) ∧ (∀ i, w n i.rev = - w n i) ∧
@@ -103,19 +103,19 @@ private theorem w_facts {n : ℕ} (hn : n = 2 ∨ n = 3) :
   rcases hn with rfl | rfl <;> decide
 
 /- English proof (translation)
-Take `⟨w1, w2, -⟩` from `w_facts hn`. Take `⟨u, hu⟩` from `h2.exists_left_inv`. Establish `hu' : algebraMap C K u * 2 = 1`. Use `congrArg (algebraMap C K) hu` as an intermediate fact. Rewrite `this` using `[map_mul, map_ofNat, map_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hyy` using `span_mul r hy hy`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) K) ∈ Submodule.span C (Set.range r)` using `Submodule.subset_span ⟨1, map_one r⟩`. Establish `key : ∀ f : Fin n → K, f i = 1 → (∀ j, w n j ≠ w n i → f j = 0) → diagonal f = Matrix.single i i (1 : K)`. Introduce `f e1 e2`. Rewrite using `[← Matrix.diagonal_single]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Rewrite using `[h, e1, Pi.single_eq_same]`. Rewrite using `[e2 j fun e => h (w2 _ _ e), Pi.single_eq_of_ne h]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hyy` using `[diagonal_mul_diagonal]`. Break down `w1 i with h | h | h` into its components or cases. Use `Submodule.smul_mem _ u (add_mem hyy hy)` as an intermediate fact. Rewrite `this` using `[diagonal_add, ← diagonal_smul]`. Use `key _ ?_ (fun j hj => ?_) ▸ this` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[h, Algebra.smul_def, one_add_one_eq_two, hu']`. Rewrite `hj` using `[h]`. Apply the tactic sequence `rcases w1 j with e | e | e <;> simp [e] at hj ⊢`. Use `sub_mem h1 hyy` as an intermediate fact. Rewrite `this` using `[← diagonal_one, diagonal_sub]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `key _ ?_ (fun j hj => ?_) ▸ this` and prove the remaining obligations. Simplify using `[h]`. Rewrite `hj` using `[h]`. Apply the tactic sequence `rcases w1 j with e | e | e <;> simp [e] at hj ⊢`. Use `Submodule.smul_mem _ u (sub_mem hyy hy)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[diagonal_sub, ← diagonal_smul]`. Use `key _ ?_ (fun j hj => ?_) ▸ this` and prove the remaining obligations. Simplify using `[h, Algebra.smul_def, one_add_one_eq_two, hu']`. Rewrite `hj` using `[h]`. Apply the tactic sequence `rcases w1 j with e | e | e <;> simp [e] at hj ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem units_mem {G C K : Type} [Monoid G] [CommRing C] [CommRing K] [Algebra C K] {n : ℕ}
     (hn : n = 2 ∨ n = 3) (r : G →* Matrix (Fin n) (Fin n) K) (h2 : IsUnit (2 : C))
@@ -158,11 +158,11 @@ private theorem units_mem {G C K : Type} [Monoid G] [CommRing C] [CommRing K] [A
       rcases w1 j with e | e | e <;> simp [e] at hj ⊢
 
 /- English proof (translation)
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨g, rfl⟩ := hx`. Conclude with `ht g`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, h1⟩` from `hx`. Take `⟨d, h2⟩` from `hy`. Conclude with `⟨c + d, by rw [map_add, h1, h2, trace_add]⟩`. Consider the case `smul a x _ hx`. Take `⟨c, h1⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a * c, by rw [map_mul, h1, trace_smul, Algebra.smul_def]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem trace_mem {G C K : Type} [Monoid G] [CommRing C] [CommRing K] [Algebra C K] {n : ℕ}
     (r : G →* Matrix (Fin n) (Fin n) K) (ht : ∀ g, ∃ c, algebraMap C K c = (r g).trace)
@@ -183,23 +183,19 @@ section Mon
 variable {l : ℕ} [Fact l.Prime] {k : Type} [Field k] [CharP k l] {F : Frame l k} {C₀ : ℕ} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hs⟩` from `UpperTheory.V.Fr.star hF`. Take `⟨-, w2, w3, w4, -⟩` from `w_facts hn`. Take `⟨L, hL, rfl⟩` from `hx`. Set `E : Fin n → Fin n → Submodule C K` to `fun i j => Submodule.span C (Set.range fun g => ρ.r g i j)`. Establish `hmem : ∀ g i j, ρ.r g i j ∈ E i j` using `fun g i j => Submodule.subset_span ⟨g, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrev : ∀ i j, ∀ x ∈ E i j, x ∈ E j.rev i.rev` using `fun i j => by`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Establish `h` using `hmem (F.star g) j.rev i.rev`. Rewrite `h` using `[hs, Fin.rev_rev, Fin.rev_rev]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hdiag : ∀ i, ∀ x ∈ E i i, ∃ c, algebraMap C K c = x` using `fun i x hx => by`. Simplify using `using trace_mem ρ.r ht (single_mem hE hx)`. Set `N : ℤ → Set K` to `fun a => {x | ∃ i j, w n i - w n j = a ∧ x ∈ E i j}`. Establish `step : ∀ i j k, ∀ x ∈ E i j, ∀ y ∈ E j k, ∀ s, s = w n i - w n k → x * y ∈ N s ∧ (s = 0 → ∃ c ∈ (⊤ : Ideal C), algebraMap C K c = x * y)`. Introduce `i j k x hx y hy s hs'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨i, k, hs'.symm, ent_mul hE hx hy⟩, fun h => ?_⟩` and prove the remaining obligations. Take `rfl : i = k` from `w2 i k (by omega)`. Take `⟨c, hc⟩` from `hdiag i _ (ent_mul hE hx hy)`. Conclude with `⟨c, trivial, hc⟩`. Take `⟨c, h1, -⟩` from `cycles (⊤ : Ideal C) N (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `x ⟨i, j, h, hx⟩`. Take `rfl : i = j` from `w2 i j (by omega)`. Conclude with `hdiag i x hx)`. Use the proof step `(by`. Introduce and unpack `_ _ ha hb x ⟨i, j, rfl, hx⟩ y ⟨k, m, rfl, hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `w3 i`. Establish `e2` using `w3 j`. Break down `w4 i j k m ha hb with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `step _ _ _ x hx y hy _ (by omega)`. Rewrite using `[mul_comm]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `step _ _ _ y hy x hx _ (by omega)`. Conclude with `step _ _ _ x (hrev _ _ x hx) y hy _ (by omega)`. Rewrite using `[mul_comm]`. Conclude with `step _ _ _ y hy x (hrev _ _ x hx) _ (by omega))`. Use the proof step `((L : Multiset (F.G0 × Fin n × Fin n)).map fun s => (w n s.2.1 - w n s.2.2, ρ.r s.1 s.2.1 s.2.2))`.
-
-Use the proof step `(fun p hp => by`. Take `⟨s, -, rfl⟩` from `Multiset.mem_map.1 hp`. Conclude with `⟨_, _, rfl, hmem _ _ _⟩)`. Use the proof step `(by rw [Multiset.map_map, Multiset.map_coe, Multiset.sum_coe]; exact hL)`. Use `⟨c, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h1, Multiset.map_map, Multiset.map_coe, Multiset.prod_coe]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem mon_mem (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) {C K : Type} [CommRing C] [CommRing K] [Algebra C K]
     (ρ : NRep F n K) (ht : ∀ g, ∃ c, algebraMap C K c = (ρ.r g).trace)
@@ -251,11 +247,11 @@ private theorem mon_mem (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) {C K : Type} [Co
   rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hs⟩` from `UpperTheory.V.Fr.star hF`. Take `⟨w1, w2, w3, -⟩` from `w_facts hn`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply]`. Distinguish the cases in `h : i = j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[diagonal_apply_eq, Matrix.sub_apply, Matrix.sub_apply, hs, hs]`. Establish `e` using `w3 i`. Break down `w1 i with h | h | h` into its components or cases. Rewrite using `[w2 i i₀ (by omega), h0]; simp`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[w2 i.rev i (by omega), h]; simp`. Rewrite using `[← w2 i.rev i₀ (by omega), h]; simp`. Rewrite using `[ρ.diag i j h, diagonal_apply_ne _ h, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem z_diag (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) {K : Type} [CommRing K] (ρ : NRep F n K) {i₀ : Fin n}
     (h0 : w n i₀ = 1) : ρ.r F.g0 - ρ.r (F.star F.g0) =
@@ -277,25 +273,23 @@ private theorem z_diag (hF : F.Ok C₀) (hn : n = 2 ∨ n = 3) {K : Type} [CommR
 end Mon
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S C _ _ _ φ ht hψ`. Use `haveI : IsCO O φ.range := co_quot O C φ.range φ.rangeRestrict φ.rangeRestrict_surjective`. Generalize the expression as in `φ.range = A at *`. Take `⟨-, -, hΨ, -, -⟩` from `UpperTheory.V.Fr.star hF`. Take `⟨-, -, -, -, w5, i₀, h0⟩` from `w_facts hn`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht' : ∀ g, ∃ c, algebraMap A S.R c = (S.ρ.r g).trace` using `fun g => ⟨⟨_, ht g⟩, rfl⟩`. Establish `h2 : IsUnit (2 : A)`. Assume the negation of the conclusion as `h`. Establish `h3` using `(res_eq_zero_iff O A _).2 h`. Rewrite `h3` using `[map_ofNat]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hF.l_odd ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 ((CharP.cast_eq_zero_iff (ResidueField O) l 2).1 h3))`. Establish `hz` using `z_diag hF hn S.ρ h0`. Establish `hzm : S.ρ.r F.g0 - S.ρ.r (F.star F.g0) ∈ Submodule.span A (Set.range S.ρ.r)` using `sub_mem (Submodule.subset_span ⟨_, rfl⟩) (Submodule.subset_span ⟨_, rfl⟩)`. Establish `hζ : IsUnit ((S.ρ.r F.g0 - S.ρ.r (F.star F.g0)) i₀ i₀)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(res_eq_zero_iff O S.R _).2 h`. Establish `h4 : ∀ g, res O S.R (S.ρ.r g i₀ i₀) = (F.Ψ g : ResidueField O)` using `fun g => by`. Simplify `S.lift.2.1.1 g i₀` using `[h0]`. Rewrite `h3` using `[Matrix.sub_apply, map_sub, h4, h4, hΨ, sub_eq_zero]`. Use `hF.baseSubgroup_spec ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[sq, mul_eq_one_iff_eq_inv]`. Conclude with `Units.ext h3`. Generalize the expression as in `(S.ρ.r F.g0 - S.ρ.r (F.star F.g0)) i₀ i₀ = ζ at hz hζ`. Rewrite `hzm` using `[hz]`. Establish `hζA : ζ ∈ A`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `sqrt_mem A h2 hζ ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `trace_mem _ ht' (span_mul _ hzm hzm)`. Establish `h3 : ∑ i, (w n i : S.R) * w n i = 2`. Use `congrArg (Int.cast : ℤ → S.R) w5` as an intermediate fact. Simplify `this` using `[sq]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hc` using `[smul_mul_smul_comm, diagonal_mul_diagonal, trace_smul, trace_diagonal, h3, smul_eq_mul, mul_comm, ← sq]`. Conclude with `hc ▸ c.2`. Establish `hu : IsUnit (⟨ζ, hζA⟩ : A)`. Assume the negation of the conclusion as `h`. Conclude with `(mem_max A _).2 h hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hu.exists_left_inv`. Establish `hE` using `units_mem hn S.ρ.r h2 (by`. Use `Submodule.smul_mem _ u hzm` as an intermediate fact. Rewrite using `[Subalgebra.smul_def, smul_smul, show (u : S.R) * ζ = 1 from congrArg A.val hu, one_smul] at this)` and apply the resulting hypothesis. Establish `hadj : Algebra.adjoin O (S.ρ.mon 0 ∪ {x | ∃ v i g, x = (S.ρ.ψ v i g : S.R)}) ≤ A`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `x (hx | ⟨v, i, g, rfl⟩)`. Take `⟨c, rfl⟩` from `mon_mem hF hn S.ρ ht' hE hx`. Conclude with `c.2`. Conclude with `hψ v i g`.
-
-Introduce `x hx`. Use `closed A fun N => ?_` and prove the remaining obligations. Take `⟨y, hy, h⟩` from `hx N`. Conclude with `⟨y, hadj hy, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.B_gen :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ S : Space O F n, ∀ (C : Type) [CommRing C] [Algebra O C] [IsCO O C] (φ : C →ₐ[O] S.R), (∀ g, (S.ρ.r g).trace ∈ φ.range) → (∀ v i g, (S.ρ.ψ v i g : S.R) ∈ φ.range) → S.B ≤ φ.range := by

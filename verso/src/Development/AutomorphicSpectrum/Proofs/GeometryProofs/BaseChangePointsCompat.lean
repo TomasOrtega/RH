@@ -9,13 +9,13 @@ open GlobalTheory.CompanionTheory.Ar.BT GroundTheory.PAdicHodge
 namespace GlobalTheory.CompanionTheory.Ar.BT
 
 /- English proof (translation)
-Use extensionality with `b`. Take `⟨r, s, hs, hrs⟩` from `IsFractionRing.div_surjective (A := R) (j b)`. Establish `hs0 : algebraMap R (FractionRing R) s ≠ 0`. Simplify using `using IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := FractionRing R) hs`. Establish `e1 : algebraMap R (FractionRing R) s * j b = algebraMap R (FractionRing R) r`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hrs]`. Clear the denominators using the available nonvanishing facts. Establish `hjs : ∀ x : R, j (i x) = algebraMap R (FractionRing R) x` using `fun x => RingHom.congr_fun hji x`. Establish `e2 : i s * b = i r`. Apply `hj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, hjs, hjs, e1]`. Establish `hj's : ∀ x : R, j' (i x) = κ (algebraMap R (FractionRing R) x)` using `fun x => (RingHom.congr_fun hj'i x).trans (RingHom.congr_fun hκ x).symm`. Establish `e3 : κ (algebraMap R (FractionRing R) s) * j' b = κ (algebraMap R (FractionRing R) r)`. Rewrite using `[← hj's, ← hj's, ← map_mul, e2]`. Establish `e4 : κ (algebraMap R (FractionRing R) s) * κ (j b) = κ (algebraMap R (FractionRing R) r)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, e1]`. Establish `hκs : κ (algebraMap R (FractionRing R) s) ≠ 0`. Simplify using `using hs0`. Conclude with `mul_left_cancel₀ hκs (e3.trans e4.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem genericBaseChange_ringHom_eq {R : Type} [CommRing R] [IsDomain R]
     {R' : Type} [CommRing R'] [IsDomain R'] [Algebra R R'] {B : Type} [CommRing B]
@@ -47,7 +47,7 @@ theorem genericBaseChange_ringHom_eq {R : Type} [CommRing R] [IsDomain R]
   exact mul_left_cancel₀ hκs (e3.trans e4.symm)
 
 /- English proof (translation)
-Introduce `R _ _ T _ _ Γ R' _ _ _ Γ' F hF κ hκ t`. Take `⟨B, _, i, j, j', σ, hj, hji, hj'i, -, hσ, hσ'⟩` from `hF.pts`. Establish `hjj : j' = κ.comp j` using `genericBaseChange_ringHom_eq i j j' κ hκ hj hji hj'i`. Rewrite using `[← hσ' t, ← hσ t, hjj, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem genericPoint_baseChange :
     ∀ (R : Type) [CommRing R] [IsDomain R] (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (R' : Type) [CommRing R'] [IsDomain R'] [Algebra R R'] (Γ' : QFGroup R' T) (F : Γ'.G.left ⟶ Γ.G.left), Γ'.IsBaseChange Γ (algebraMap R R') F → ∀ κ : FractionRing R →+* FractionRing R', κ.comp (algebraMap R _) = (algebraMap R' _).comp (algebraMap R R') → ∀ t, (Γ'.pt t).left ≫ F = Spec.map (CommRingCat.ofHom κ) ≫ (Γ.pt t).left := by

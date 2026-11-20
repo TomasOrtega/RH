@@ -7,9 +7,9 @@ open UpperTheory.Gal.Gen (IsLevel fixedBy)
 open UpperTheory.Gal.Wt
 
 /- English proof (translation)
-Introduce `a y`. Take `⟨k, hk, b, hg, hb⟩` from `GlobalTheory.T.iwasawa_unitary_upper_triangular (y : Matrix (Fin a) (Fin a) ℂ) y.isUnit`. Set `u : Matrix.unitaryGroup (Fin a) ℂ` to `⟨k, hk⟩`. Establish `hu : ((unitaryIncl a u : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) = k` using `rfl`. Use `⟨u, (unitaryIncl a u)⁻¹ * y, ?_, (mul_inv_cancel_left _ _).symm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbm : (((unitaryIncl a u)⁻¹ * y : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) = b`. Rewrite using `[Units.val_mul, hg, ← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Introduce `i j hij`. Rewrite using `[hbm]`. Conclude with `hb hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Wt.qR_of :
     UpperTheory.Gal.Wt.QR := by

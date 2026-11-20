@@ -10,13 +10,13 @@ open scoped TensorProduct Matrix
 open Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[setIntegral_congr_fun hΛ (fun x hx => h x hx), setIntegral_const]`. Simplify using the standard rewrite rules. Use `push Not at h`. Take `⟨x0, hx0, hne⟩` from `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ x, (Λ : Set G).indicator χ (x + x0) = χ x0 * (Λ : Set G).indicator χ x`. Introduce `x`. Simplify using `only [Set.indicator]`. Distinguish the cases in `hx : x ∈ Λ`. Establish `: x + x0 ∈ Λ` using `Λ.add_mem hx hx0`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [SetLike.mem_coe, hx, this, if_true, hχ, mul_comm]`. Establish `: x + x0 ∉ Λ` using `fun h' => hx (by simpa using Λ.sub_mem h' hx0)`. Simplify using `only [SetLike.mem_coe, hx, this, if_false, mul_zero]`. Establish `key : ∫ x in (Λ : Set G), χ x ∂ν = χ x0 * ∫ x in (Λ : Set G), χ x ∂ν`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `: (1 - χ x0) * ∫ x in (Λ : Set G), χ x ∂ν = 0` using `by rw [sub_mul, one_mul, ← key, sub_self]`. Break down `mul_eq_zero.1 this with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h1).symm hne`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_char_subgroup {G : Type*} [AddCommGroup G] [MeasurableSpace G] [MeasurableAdd G]
     (ν : Measure G) [ν.IsAddRightInvariant] (Λ : AddSubgroup G) (hΛ : MeasurableSet (Λ : Set G))
@@ -63,7 +63,7 @@ section Pair
 variable (R : Type) [CommRing R] [Algebra F R] {n : ℕ}
 
 /- English proof (translation)
-Unfold `trPair`. Use `congr 2`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => mul_comm _ _`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trPair_comm (S T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : trPair R S T = trPair R T S := by
   unfold trPair
@@ -72,7 +72,7 @@ theorem trPair_comm (S T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : trPair R S T =
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `trPair`. Simplify using `only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem trPair_add_right (S T T' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     trPair R S (T + T') = trPair R S T + trPair R S T' := by
@@ -80,28 +80,28 @@ theorem trPair_add_right (S T T' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
   simp only [Matrix.add_apply, mul_add, Finset.sum_add_distrib, map_add]
 
 /- English proof (translation)
-Unfold `trPair`. Simplify using `only [Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib, map_neg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem trPair_neg_right (S T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : trPair R S (-T) = -trPair R S T := by
   unfold trPair
   simp only [Matrix.neg_apply, mul_neg, Finset.sum_neg_distrib, map_neg]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, trPair_add_right, trPair_neg_right, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trPair_sub_right (S T T' : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     trPair R S (T - T') = trPair R S T - trPair R S T' := by
   rw [sub_eq_add_neg, trPair_add_right, trPair_neg_right, ← sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[trPair_comm, trPair_add_right, trPair_comm R T, trPair_comm R T]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trPair_add_left (S S' T : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     trPair R (S + S') T = trPair R S T + trPair R S' T := by
   rw [trPair_comm, trPair_add_right, trPair_comm R T, trPair_comm R T]
 
 /- English proof (translation)
-Unfold `trPair`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem trPair_zero_right (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : trPair R S 0 = 0 := by
   unfold trPair; simp
@@ -109,7 +109,7 @@ theorem trPair_zero_right (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : trPair R S
 end Pair
 
 /- English proof (translation)
-Set `τ` to `(Classical.arbitrary (InfinitePlace E)).embedding`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hσ, hσ, star_star]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol' (σ : E →ₐ[F] E) (hσ : ∀ (τ : E →+* ℂ) (x : E), τ (σ x) = star (τ x)) (x : E) :
     σ (σ x) = x := by
@@ -118,7 +118,7 @@ theorem sigma_invol' (σ : E →ₐ[F] E) (hσ : ∀ (τ : E →+* ℂ) (x : E),
   rw [hσ, hσ, star_star]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => simp [sigR, hσ]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_invol' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x)
     (x : R ⊗[F] E) : sigR R σ (sigR R σ x) = x := by
@@ -128,9 +128,9 @@ theorem sigR_invol' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `a b`. Establish `hJR : ∀ i j, sigR R σ (JR R J i j) = JR R J j i`. Introduce `i j`. Simplify using `[JR, inclR, sigR, hJ]`. Simplify using `only [gramR, hR, hform, map_sum, map_mul, sigR_invol' R σ hσ, hJR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramR_mem' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) {M n : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, σ (J j i) = J i j)
@@ -145,9 +145,9 @@ theorem gramR_mem' (R : Type) [CommRing R] [Algebra F R] (σ : E →ₐ[F] E) (h
 variable {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `h' : ‖(fun i j => crd v (x i j))‖ < nM v x`. Rewrite using `[pi_norm_lt_iff h]`. Introduce `i`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pi_norm_lt_iff h]`. Introduce `j`. Conclude with `hne i j`. Conclude with `lt_irrefl _ h'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_entry_ge {p q : ℕ} {x : Fin p → Fin q → Fv F v ⊗[F] E} (h : 0 < nM v x) :
     ∃ i j, nM v x ≤ nA v (x i j) := by
@@ -164,7 +164,7 @@ theorem exists_entry_ge {p q : ℕ} {x : Fin p → Fin q → Fv F v ⊗[F] E} (h
 section Inv
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply]`. Simplify using `[sigR]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap (σ : E →ₐ[F] E) (t : Fv F v) :
     sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) t) = algebraMap (Fv F v) (Fv F v ⊗[F] E) t := by
@@ -172,14 +172,14 @@ theorem sigR_algebraMap (σ : E →ₐ[F] E) (t : Fv F v) :
   simp [sigR]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, sigR_algebraMap, ← Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sigR_smul (σ : E →ₐ[F] E) (t : Fv F v) (x : Fv F v ⊗[F] E) :
     sigR (Fv F v) σ (t • x) = t • sigR (Fv F v) σ x := by
   rw [Algebra.smul_def, map_mul, sigR_algebraMap, ← Algebra.smul_def]
 
 /- English proof (translation)
-Set `f : (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fv F v ⊗[F] E)` to `{ toFun := sigR (Fv F v) σ, map_add' := map_add _, map_smul' := fun t x => sigR_smul σ t x }`. Conclude with `IsModuleTopology.continuous_of_linearMap f`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR (Fv F v) σ) := by
   let f : (Fv F v ⊗[F] E) →ₗ[Fv F v] (Fv F v ⊗[F] E) :=
@@ -187,9 +187,9 @@ theorem continuous_sigR (σ : E →ₐ[F] E) : Continuous (sigR (Fv F v) σ) := 
   exact IsModuleTopology.continuous_of_linearMap f
 
 /- English proof (translation)
-Establish `: (HermR (Fv F v) σ n : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) = ⋂ a, ⋂ b, {S | sigR (Fv F v) σ (S b a) = S a b}`. Use extensionality with `S`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `Iff.rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun a => isClosed_iInter fun b => isClosed_eq ((continuous_sigR σ).comp ((continuous_apply a).comp (continuous_apply b))) ((continuous_apply b).comp (continuous_apply a))`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_HermR' (σ : E →ₐ[F] E) (n : ℕ) :
     IsClosed (HermR (Fv F v) σ n : Set (Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))) := by
@@ -202,11 +202,11 @@ theorem isClosed_HermR' (σ : E →ₐ[F] E) (n : ℕ) :
       ((continuous_apply b).comp (continuous_apply a))
 
 /- English proof (translation)
-Set `f : (Fv F v ⊗[F] E) →ₐ[Fv F v] (Fv F v ⊗[F] E)` to `Algebra.TensorProduct.map (AlgHom.id (Fv F v) (Fv F v)) σ`. Establish `hf : ∀ y, f y = sigR (Fv F v) σ y`. Introduce `y`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul r e => rfl`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz]`. Establish `hinv : Function.Involutive f` using `fun y => by`. Rewrite using `[hf, hf]`. Conclude with `sigR_invol' (Fv F v) σ hσ y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Algebra.trace_eq_of_algEquiv (AlgEquiv.ofBijective f hinv.bijective) x`. Rewrite `h` using `[AlgEquiv.ofBijective_apply, hf]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem trace_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (x : Fv F v ⊗[F] E) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (sigR (Fv F v) σ x) = Algebra.trace (Fv F v) (Fv F v ⊗[F] E) x := by
@@ -223,7 +223,7 @@ theorem trace_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (x : Fv F v
   rwa [AlgEquiv.ofBijective_apply, hf] at h
 
 /- English proof (translation)
-Unfold `trPair`. Simplify using `only [Matrix.smul_apply, smul_mul_assoc, ← Finset.smul_sum, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trPair_smul_left {n : ℕ} (t : Fv F v) (S T : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) :
     trPair (Fv F v) (t • S) T = t * trPair (Fv F v) S T := by
@@ -232,16 +232,16 @@ theorem trPair_smul_left {n : ℕ} (t : Fv F v) (S T : Matrix (Fin n) (Fin n) (F
   ring
 
 /- English proof (translation)
-Rewrite using `[show (2 : Fv F v) = algebraMap F (Fv F v) 2 from (map_ofNat _ 2).symm, ← map_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem half_mul_two : algebraMap F (Fv F v) (1 / 2) * 2 = 1 := by
   rw [show (2 : Fv F v) = algebraMap F (Fv F v) 2 from (map_ofNat _ 2).symm, ← map_mul]
   norm_num
 
 /- English proof (translation)
-Establish `hD' : ∀ a b, sigR (Fv F v) σ (D b a) = D a b` using `hD`. Establish `h2 : ∑ a, ∑ c, sigR (Fv F v) σ (X c a) * D c a = ∑ a, ∑ c, sigR (Fv F v) σ (X a c) * sigR (Fv F v) σ (D c a)`. Rewrite using `[Finset.sum_comm]`. Repeatedly rewrite using `[hD']`. Establish `h1 : ∑ a, ∑ c, (X + (X.map (sigR (Fv F v) σ))ᵀ) a c * D c a = (∑ a, ∑ c, X a c * D c a) + sigR (Fv F v) σ (∑ a, ∑ c, X a c * D c a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.add_apply, Matrix.transpose_apply, Matrix.map_apply, add_mul, Finset.sum_add_distrib, map_sum, map_mul]`. Rewrite using `[h2]`. Unfold `trPair`. Rewrite using `[h1, map_add, trace_sigR σ hσ, ← two_mul, ← mul_assoc, half_mul_two, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem trPair_herm {n : ℕ} (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (X D : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))
     (hD : D ∈ HermR (Fv F v) σ n) :
@@ -278,7 +278,7 @@ theorem coe_ballH (σ : E →ₐ[F] E) (n : ℕ) (R : ℝ) (hR : 0 ≤ R) :
     (ballH v σ n R hR : Set (HermR (Fv F v) σ n)) = Subtype.val ⁻¹' {x | nM v x ≤ R} := rfl
 
 /- English proof (translation)
-Rewrite using `[coe_ballH]`. Conclude with `(isClosed_HermR' σ n).isClosedEmbedding_subtypeVal.isCompact_preimage (isCompact_ballM R)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ballH (σ : E →ₐ[F] E) (n : ℕ) (R : ℝ) (hR : 0 ≤ R) :
     IsCompact (ballH v σ n R hR : Set (HermR (Fv F v) σ n)) := by
@@ -287,7 +287,7 @@ theorem isCompact_ballH (σ : E →ₐ[F] E) (n : ℕ) (R : ℝ) (hR : 0 ≤ R) 
     (isCompact_ballM R)
 
 /- English proof (translation)
-Rewrite using `[coe_ballH]`. Conclude with `IsOpen.preimage (X := HermR (Fv F v) σ n) continuous_subtype_val (isOpen_ballM (v := v) (p := n) (q := n) hR)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ballH (σ : E →ₐ[F] E) (n : ℕ) (R : ℝ) (hR : 0 < R) :
     IsOpen (ballH v σ n R hR.le : Set (HermR (Fv F v) σ n)) := by
@@ -295,31 +295,27 @@ theorem isOpen_ballH (σ : E →ₐ[F] E) (n : ℕ) (R : ℝ) (hR : 0 < R) :
   exact IsOpen.preimage (X := HermR (Fv F v) σ n) continuous_subtype_val (isOpen_ballM (v := v) (p := n) (q := n) hR)
 
 /- English proof (translation)
-Take `⟨y0, hy0⟩` from `exists_psiV_ne_one (v := v) hcm hψ`. Take `⟨c, hc, htr⟩` from `exists_trace_ge (E := E) v`. Take `⟨Cσ, hCσ0, hCσ⟩` from `exists_nA_sig v σ`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_invol' σ hcm.2.2.2`. Establish `hy0n : 0 < ‖y0‖`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_pos_iff]`. Introduce and unpack `rfl`. Conclude with `hy0 (psiV_zero ψ)`. Use `set C1 : ℝ := max 1 Cσ with hC1`. Establish `hC1pos : 0 < C1` using `lt_of_lt_of_le one_pos (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨‖y0‖ * C1 / c, by positivity, ?_⟩` and prove the remaining obligations. Introduce `R hR D hD hperp`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hpos : 0 < nM v D` using `lt_of_le_of_lt (by positivity) hlt`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `key : ‖y0‖ * C1 < c * nM v D * R`. Rewrite `hlt` using `[div_lt_iff₀ hR, div_lt_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨i, j, hij⟩` from `exists_entry_ge hpos`. Take `⟨a', ha'1, ha'2⟩` from `htr (D i j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set w := Algebra.trace (Fv F v) (Fv F v ⊗[F] E) (a' * D i j) with hw`. Establish `hwpos : c * nM v D ≤ ‖w‖` using `le_trans (mul_le_mul_of_nonneg_left hij hc.le) ha'2`. Establish `hcD : 0 < c * nM v D` using `mul_pos hc hpos`. Establish `hw0 : w ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite `hwpos` using `[h0, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `X : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)` to `Matrix.of fun a b => if a = j ∧ b = i then a' else 0`. Set `M : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)` to `X + (X.map (sigR (Fv F v) σ))ᵀ`. Set `t : Fv F v` to `y0 / w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : ∀ a b, nA v (X a b) ≤ 1`. Introduce `a b`. Simplify using `only [X, Matrix.of_apply]`. Use `split_ifs`. Conclude with `ha'1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nA_zero]`. Conclude with `zero_le_one`. Establish `hMle : nM v M ≤ C1`. Use `(nM_le_iff (v := v) (x := (M : Fin n → Fin n → Fv F v ⊗[F] E)) hC1pos.le).2 ?_` and prove the remaining obligations. Introduce `a b`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [M, Matrix.add_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `(nA_add_le _ _).trans (max_le ((hX a b).trans (le_max_left _ _)) ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hM : t • M ∈ HermR (Fv F v) σ n`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [M, Matrix.smul_apply, Matrix.add_apply, Matrix.transpose_apply, Matrix.map_apply, sigR_smul, map_add, sigR_invol' (Fv F v) σ hσ]`. Rewrite using `[add_comm]`. Establish `hnM : nM v (t • M) ≤ R`. Establish `e1 : nM v (t • M) = ‖t‖ * nM v M` using `nM_smul t M`. Rewrite using `[e1, norm_div]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ hcD]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ a, ∑ c, X a c * D c a = a' * D i j`. Simplify using `[X, Matrix.of_apply, ite_and]`.
-
-Establish `hval : trPair (Fv F v) (t • M) D = y0`. Rewrite using `[trPair_smul_left, trPair_herm σ hσ X D hD, hsum, ← hw]`. Conclude with `div_mul_cancel₀ y0 hw0`. Establish `h` using `hperp ⟨t • M, hM⟩ hnM`. Rewrite `h` using `[hval]`.
-
-Conclude with `hy0 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perp_bound (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ) (n : ℕ) :
     ∃ C₀ : ℝ, 0 ≤ C₀ ∧ ∀ R : ℝ, 0 < R → ∀ D : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E), D ∈ HermR (Fv F v) σ n →
@@ -390,11 +386,11 @@ section Units
 variable {v}
 
 /- English proof (translation)
-Set `b` to `bA E v`. Establish `h : (fun x : Fv F v ⊗[F] E => Algebra.norm (Fv F v) x) = fun x => (Algebra.leftMulMatrix b x).det`. Use function extensionality and compare the values at `x`. Conclude with `Algebra.norm_eq_matrix_det b x`. Rewrite using `[h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.matrix_det ?_` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun x : Fv F v ⊗[F] E => Algebra.leftMulMatrix b x i j) = fun x => (b.coord i) ((LinearMap.mulRight (Fv F v) (b j)) x)`. Use function extensionality and compare the values at `x`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `IsModuleTopology.continuous_of_linearMap ((b.coord i).comp (LinearMap.mulRight (Fv F v) (b j)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_algNorm : Continuous (fun x : Fv F v ⊗[F] E => Algebra.norm (Fv F v) x) := by
   classical
@@ -411,11 +407,9 @@ theorem continuous_algNorm : Continuous (fun x : Fv F v ⊗[F] E => Algebra.norm
   exact IsModuleTopology.continuous_of_linearMap ((b.coord i).comp (LinearMap.mulRight (Fv F v) (b j)))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.map (Algebra.norm (Fv F v))`. Introduce `h`. Establish `h1 : IsUnit (Algebra.lmul (Fv F v) (Fv F v ⊗[F] E) x)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.isUnit_iff_isUnit_det]`. Conclude with `h`. Take `⟨u, hu⟩` from `h1`. Establish `key` using `LinearMap.congr_fun u.mul_inv 1`. Rewrite `key` using `[hu]`.
-
-Conclude with `IsUnit.of_mul_eq_one _ (by simpa using key)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_algNorm (x : Fv F v ⊗[F] E) : IsUnit x ↔ IsUnit (Algebra.norm (Fv F v) x) := by
   constructor
@@ -429,9 +423,9 @@ theorem isUnit_iff_algNorm (x : Fv F v ⊗[F] E) : IsUnit x ↔ IsUnit (Algebra.
     exact IsUnit.of_mul_eq_one _ (by simpa using key)
 
 /- English proof (translation)
-Establish `hU : IsOpen {x : Fv F v ⊗[F] E | IsUnit x}`. Establish `: {x : Fv F v ⊗[F] E | IsUnit x} = (fun x => Algebra.norm (Fv F v) x) ⁻¹' {r | r ≠ 0}`. Use extensionality with `x`. Simplify using `[isUnit_iff_algNorm]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isOpen_ne.preimage continuous_algNorm`. Conclude with `(hU.preimage continuous_id.matrix_det).preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_unitHerm' (σ : E →ₐ[F] E) (n : ℕ) :
     IsOpen {S : HermR (Fv F v) σ n | IsUnit (S : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)).det} := by
@@ -442,9 +436,9 @@ theorem isOpen_unitHerm' (σ : E →ₐ[F] E) (n : ℕ) :
   exact (hU.preimage continuous_id.matrix_det).preimage continuous_subtype_val
 
 /- English proof (translation)
-Rewrite `hU` using `[mem_nhds_subtype]`. Take `⟨W, hW, hWU⟩` from `hU`. Establish `h0 : {x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) | T.1 + x ∈ W} ∈ 𝓝 (0 : Matrix (Fin n) (Fin n) _)`. Establish `hc : Continuous fun x : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E) => T.1 + x` using `continuous_const.add continuous_id`. Use `hc.continuousAt (x := 0) (by simpa using hW)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨r, hr, hsub⟩` from `exists_ballM_subset (v := v) (p := n) (q := n) h0`. Use `⟨r, hr, fun S hS => hWU ?_⟩` and prove the remaining obligations. Establish `h1 : T.1 + (S.1 - T.1) ∈ W` using `hsub (show nM v (S.1 - T.1 : Fin n → Fin n → Fv F v ⊗[F] E) ≤ r from hS)`. Rewrite `h1` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_ballH_sub {σ : E →ₐ[F] E} {n : ℕ} {T : HermR (Fv F v) σ n} {U : Set (HermR (Fv F v) σ n)}
     (hU : U ∈ 𝓝 T) : ∃ r > 0, ∀ S : HermR (Fv F v) σ n, nM v (S.1 - T.1) ≤ r → S ∈ U := by
@@ -466,13 +460,13 @@ section Cont
 variable {v}
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trace : Continuous (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)) :=
   IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E))
 
 /- English proof (translation)
-Unfold `trPair`. Use `continuous_const.mul (continuous_trace.comp ?_)` and prove the remaining obligations. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp ((continuous_apply i).comp hf)).mul ((continuous_apply i).comp ((continuous_apply j).comp hg))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_trPair {n : ℕ} {α : Type*} [TopologicalSpace α] {f g : α → Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)}
     (hf : Continuous f) (hg : Continuous g) : Continuous fun a => trPair (Fv F v) (f a) (g a) := by
@@ -483,7 +477,7 @@ theorem continuous_trPair {n : ℕ} {α : Type*} [TopologicalSpace α] {f g : α
     ((continuous_apply i).comp ((continuous_apply j).comp hg))
 
 /- English proof (translation)
-Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [gramR, hR, hform]`. Use `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `(((continuous_sigR σ).comp ((continuous_apply i).comp (continuous_apply a))).mul continuous_const).mul ((continuous_apply j).comp (continuous_apply b))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_gramR' (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) :
     Continuous (fun X : Fin n → Fin M → Fv F v ⊗[F] E => gramR (Fv F v) σ J X) := by

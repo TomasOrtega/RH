@@ -10,9 +10,9 @@ namespace GlobalTheory.LocDual
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.DenominatorTheorem.main_theorem`. Consider the case `exact _root_.GlobalTheory.DenominatorTheorem.main_theorem`. Consider the case `(apply _root_.GlobalTheory.DenominatorTheorem.main_theorem <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.DenominatorTheorem.main_theorem <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.DenominatorTheorem.main_theorem <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.DenominatorTheorem.main_theorem ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (G : Submodule (𝓞 E) (Fin n → E))
     (h : Submodule.span E (G : Set (Fin n → E)) = ⊤) (y : Fin n → E) :
@@ -26,9 +26,9 @@ theorem exists_smul_mem (G : Submodule (𝓞 E) (Fin n → E))
   | (intros; exact _root_.GlobalTheory.DenominatorTheorem.main_theorem ..)
 
 /- English proof (translation)
-Establish `hc1 : φ (algebraMap (𝓞 E) E c) ≠ 0` using `by simpa using hc`. Establish `e : (fun l => φ (y l)) = (φ (algebraMap (𝓞 E) E c))⁻¹ • fun l => φ ((c • y) l)`. Use function extensionality and compare the values at `l`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, map_mul, Algebra.algebraMap_self, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e, Matrix.mulVec_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hy, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locFlag_of_smul (φ : E →+* ℂ) (P : Matrix (Fin n) (Fin n) ℂ)
     (F : ℕ → Submodule (𝓞 E) (Fin n → E)) (b : ℕ) {c : 𝓞 E} (hc : c ≠ 0) {y : Fin n → E}
@@ -43,9 +43,9 @@ theorem mem_locFlag_of_smul (φ : E →+* ℂ) (P : Matrix (Fin n) (Fin n) ℂ)
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨y, hy, rfl⟩ := hx`. Conclude with `h y hy`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul]`. Conclude with `W.smul_mem _ hx`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_span (φ : E →+* ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) (S : Set (Fin n → E))
     (W : Submodule ℂ (Fin n → ℂ)) (h : ∀ y ∈ S, (Q *ᵥ fun l => φ (y l)) ∈ W) {u : Fin n → ℂ}
@@ -57,7 +57,7 @@ theorem mulVec_mem_of_span (φ : E →+* ℂ) (Q : Matrix (Fin n) (Fin n) ℂ) (
   | smul c x _ hx => rw [Matrix.mulVec_smul]; exact W.smul_mem _ hx
 
 /- English proof (translation)
-Establish `hd : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `e : (P⁻¹)ᴴ * Pᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hd, Matrix.conjTranspose_one]`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, ← h, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_frame {P K M : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (h : Pᴴ * K * P = M)
     (u v : Fin n → ℂ) : star (P⁻¹ *ᵥ u) ⬝ᵥ (M *ᵥ v) = star u ⬝ᵥ (K *ᵥ (P *ᵥ v)) := by
@@ -69,7 +69,7 @@ theorem form_frame {P K M : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (h : P�
 
 omit [NumberField E] in
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, map_sum, map_mul, hφ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_emb [StarRing E] (φ : E →+* ℂ) (hφ : ∀ x, φ (star x) = starRingEnd ℂ (φ x))
     (J : Matrix (Fin n) (Fin n) E) (x y : Fin n → E) :
@@ -77,31 +77,31 @@ theorem form_emb [StarRing E] (φ : E →+* ℂ) (hφ : ∀ x, φ (star x) = sta
   simp [dotProduct, Matrix.mulVec, map_sum, map_mul, hφ]
 
 /- English proof (translation)
-Introduce `E _ _ _ n m J φ P ε F hφ hP hJ hF hsp`. Take `⟨hmono, h0, hm, hd⟩` from `hF`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hP`. Establish `hinv : ∀ z : Fin n → ℂ, P⁻¹ *ᵥ (P *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hdet, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv' : ∀ z : Fin n → ℂ, P *ᵥ (P⁻¹ *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `htop : locFlag φ P F m = ⊤`. Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Rewrite using `[← hinv z]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `mulVec_mem_of_span φ _ _ _ ?_ (GlobalTheory.PerpBaseChange.mem_span_of_forms φ ∅ (P *ᵥ z) (by simp))` and prove the remaining obligations. Introduce `y _`. Take `⟨c, hc, hy⟩` from `exists_smul_mem _ hsp y`. Conclude with `mem_locFlag_of_smul φ P F m hc hy`. Use `⟨⟨?_, ?_, ?_, ?_⟩, htop⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `Submodule.span_mono (Set.image_mono (hmono hab))`. Unfold `locFlag`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy` using `[h0]`. Establish `: y = 0` using `by simpa using hy`. Substitute `this` using the available equality. Establish `e : (fun l => φ ((0 : Fin n → E) l)) = 0` using `by funext l; simp`. Simplify using `only [e, Matrix.mulVec_zero]`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `b hb`. Unfold `locFlag`. Rewrite using `[hm b hb]`. Introduce `b hb z`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hz`. Use `⟨by rw [htop]; trivial, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.mulVec_add, dotProduct_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [Matrix.mulVec_smul, dotProduct_smul, hx, smul_zero]`. Consider the case `mem z hz`. Take `⟨y, hy, rfl⟩` from `hz`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [star_add, add_dotProduct, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [star_smul, smul_dotProduct, ha, smul_zero]`. Consider the case `mem a ha`. Take `⟨v, hv, rfl⟩` from `ha`. Rewrite using `[form_frame hP hJ, hinv', form_emb φ hφ, ((hd b hb y).1 hy).2 v hv, map_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨-, hz⟩`. Rewrite using `[← hinv z]`. Set `f : (Fin n → E) → Module.Dual E (Fin n → E)` to `fun x => { toFun := fun y => star x ⬝ᵥ (J *ᵥ y) map_add' := fun y y' => by rw [Matrix.mulVec_add, dotProduct_add] map_smul' := fun c y => by rw [Matrix.mulVec_smul, dotProduct_smul]; rfl }`. Establish `hf : ∀ x y, f x y = star x ⬝ᵥ (J *ᵥ y)` using `fun _ _ => rfl`. Use `mulVec_mem_of_span φ _ _ _ ?_ (GlobalTheory.PerpBaseChange.mem_span_of_forms φ (f '' (F b : Set _)) (P *ᵥ z) ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨c, hc, hcy⟩` from `exists_smul_mem _ hsp y`. Use `mem_locFlag_of_smul φ P F _ hc ((hd b hb _).2 ⟨hcy, fun x hx => ?_⟩)` and prove the remaining obligations. Establish `h1 : star x ⬝ᵥ (J *ᵥ y) = 0` using `hy (f x) ⟨x, hx, rfl⟩`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, h1, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1` using `hz _ (Submodule.subset_span ⟨x, hx, rfl⟩)`. Rewrite `h1` using `[form_frame hP hJ]`. Rewrite using `[← h1]`. Generalize the expression as in `P *ᵥ z = u`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf, Matrix.mulVec_single_one]`. Simplify using `only [dotProduct, Matrix.mulVec, map_sum, map_mul, hφ, Finset.sum_mul, Finset.mul_sum, Pi.star_apply, Matrix.map_apply, Matrix.col_apply, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem locDual : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n m : ℕ) (J : Matrix (Fin n) (Fin n) E) (φ : E →+* ℂ) (P : Matrix (Fin n) (Fin n) ℂ) (ε : Fin n → Bool) (F : ℕ → Submodule (𝓞 E) (Fin n → E)), (∀ x, φ (star x) = starRingEnd ℂ (φ x)) → IsUnit P → Pᴴ * J.map φ * P = Formalism.REAL.Jm ε → IsDualFlag J F m → Submodule.span E (F m : Set (Fin n → E)) = ⊤ → IsDualFlag (Formalism.REAL.Jm ε) (locFlag φ P F) m ∧ locFlag φ P F m = ⊤ := by
   intro E _ _ _ n m J φ P ε F hφ hP hJ hF hsp

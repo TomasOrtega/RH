@@ -12,19 +12,17 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 namespace UpperTheory.NonzeroTypeTheory
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h rc hrc n χ ho`. Take `⟨J, lam, m, V0, v0, -, -, hsm, hv0, hvec, himp, hemb⟩` from `TD E Ω A w h rc hrc n χ ho`. Establish `: CompactSpace (GlobalTheory.LFun.KGL w n)` using `isCompact_iff_compactSpace.1 (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n).2`. Take `⟨S, p, hS0, hSst, hSirr, hpS, hpid, hpeq, hpv⟩` from `h2 _ m V0 hsm v0 hv0`. Take `⟨d, ξ, ι, hι, hrange, hint, hirr, hsmξ⟩` from `h3 _ m V0 hsm S hS0 hSst hSirr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨d, ξ, hirr, hsmξ, fun π => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨g, hg0, hg⟩`. Establish `hgi : Function.Injective g` using `h4 _ d ξ hirr π.V (π.ρ.comp (GlobalTheory.LFun.KGL w n).subtype) g hg0 hg`. Take `⟨z, hz⟩ : p v0 ∈ LinearMap.range ι` from `hrange ▸ hpS v0`. Use `himp π ⟨g z, fun h0 => hpv ?_, fun j => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: z = 0` using `hgi (h0.trans (map_zero g).symm)`. Rewrite using `[← hz, this, map_zero]`. Establish `hξz : ξ (j : ↥(GlobalTheory.LFun.KGL w n)) z = ((lam j : ℂˣ) : ℂ) • z` using `hι (by`. Rewrite using `[← hint, hz, ← hpeq, hvec j, map_smul, ← hz, map_smul])`. Use `hg (j : ↥(GlobalTheory.LFun.KGL w n)) z` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hξz, map_smul]`. Conclude with `this.symm`. Introduce `hc`. Take `⟨f, hf, hfeq⟩` from `hemb π hc`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : Fin d → ℂ, z ≠ 0 := by`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `: S = ⊥`. Rewrite using `[← hrange, LinearMap.range_eq_bot]`. Conclude with `LinearMap.ext fun v => by rw [hne v, map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hS0 this`. Use `⟨f ∘ₗ ι, fun h0 => hz (hι (hf ?_)), fun k v => ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, map_zero]`. Conclude with `LinearMap.congr_fun h0 z`. Simplify using `only [LinearMap.comp_apply]`.
-
-Rewrite using `[← hint, hfeq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_of_typeData_alt (h2 : SmoothRepIrreducibleSubcontainingVector) (h3 : SmoothRepMinimalSubrepresentation) (h4 : SchurInjectiveFromIrreducible) (TD : _root_.UpperTheory.NonzeroTypeTheory.TypeDataAlt) : _root_.UpperTheory.NonzeroTypeTheory.NonzeroTypes := by
   intro E Ω _ _ _ _ _ A w h rc hrc n χ ho

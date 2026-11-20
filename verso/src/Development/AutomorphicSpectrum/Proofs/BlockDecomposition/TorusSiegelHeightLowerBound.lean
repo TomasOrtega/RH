@@ -27,9 +27,9 @@ def rIdele [IsTotallyReal F] (c : ℝ) : GroundTheory.Global.IdeleGroup F where
   inv_val := by rw [← rId_add, neg_add_cancel, rId_zero']
 
 /- English proof (translation)
-Establish `hm : ∀ w : InfinitePlace F, w.mult = 1` using `fun w => by`. Rewrite using `[InfinitePlace.mult, if_pos (IsTotallyReal.isReal w)]`. Establish `hinf : ∀ w : InfinitePlace F, ‖(rId F c).1 w‖ ^ w.mult = Real.exp c` using `fun w => by`. Rewrite using `[hm, pow_one]`. Conclude with `norm_evInf_rId w c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), ‖(rId F c).2 v‖ = 1` using `fun v => by`. Rewrite using `[rId_snd]`. Conclude with `norm_one`. Establish `e : (GroundTheory.Global.IdeleGroup.ideleModule F (rIdele c) : ℝ) = (∏ w : InfinitePlace F, ‖(rId F c).1 w‖ ^ w.mult) * ∏ᶠ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), ‖(rId F c).2 v‖` using `GroundTheory.Global.IdeleGroup.ideleModule_eq _`. Rewrite using `[e, finprod_eq_one_of_forall_eq_one hfin, mul_one, Finset.prod_congr rfl fun w _ => hinf w, Finset.prod_const, Finset.card_univ, card_infinitePlace, ← Real.exp_nat_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleModule_rIdele [IsTotallyReal F] (c : ℝ) :
     (GroundTheory.Global.IdeleGroup.ideleModule F (rIdele c) : ℝ) = Real.exp ((Module.finrank ℚ F : ℝ) * c) := by
@@ -51,9 +51,9 @@ theorem ideleModule_rIdele [IsTotallyReal F] (c : ℝ) :
 variable {n r : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1 : (M *ᵥ ratV F (Xᵀ 0)) i = (M * adMat F X) i 0` using `rfl`. Rewrite using `[h1, h, Matrix.mul_apply, Finset.sum_eq_single 0]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Rewrite using `[hB (show id (0 : Fin (r + 1)) < id j from Fin.pos_of_ne_zero hj), mul_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_ratV_col {X : Matrix (Fin n) (Fin (r + 1)) E} {M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)}
     {B : Matrix (Fin (r + 1)) (Fin (r + 1)) (AF F ⊗[F] E)} (hB : B.BlockTriangular id)
@@ -68,14 +68,14 @@ theorem mulVec_ratV_col {X : Matrix (Fin n) (Fin (r + 1)) E} {M : Matrix (Fin n)
   · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_smul (e : E) (w : Fin n → E) : ratV F (e • w) = inclR (F := F) (AF F) e • ratV F w := by
   funext i
   simp [ratV, map_mul]
 
 /- English proof (translation)
-Establish `e : algebraMap (AF F) (AF F ⊗[F] E) c • ξ = c • ξ`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, ← Algebra.smul_def]`. Rewrite using `[e]`. Use `conv_lhs => rw [← ofResVec_resVec (Module.finBasis F E) (AF F) ξ, ← ofResVec_smul, resVec_ofResVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resVec_algebraMap_smul [Algebra.IsQuadraticExtension F E] (c : AF F) (ξ : Fin n → AF F ⊗[F] E) :
     resVec (ι := Fin n) (Module.finBasis F E) (AF F) (algebraMap (AF F) (AF F ⊗[F] E) c • ξ) =
@@ -89,7 +89,7 @@ theorem resVec_algebraMap_smul [Algebra.IsQuadraticExtension F E] (c : AF F) (ξ
 variable {σ : E →ₐ[F] E} {J : Matrix (Fin n) (Fin n) E} {X Y : Matrix (Fin n) (Fin (r + 1)) E}
 
 /- English proof (translation)
-Establish `h0 : a 0 = 1`. Use `ha.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Rewrite using `[inv_eq_iff_mul_eq_one, ← ha.add, add_neg_cancel, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTorus.inv_eq {a : (Fin (r + 1) → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) (s : Fin (r + 1) → ℝ) :
     (a s)⁻¹ = a (-s) := by
@@ -100,9 +100,9 @@ theorem IsTorus.inv_eq {a : (Fin (r + 1) → ℝ) → GAd σ J} (ha : IsTorus σ
   rw [inv_eq_iff_mul_eq_one, ← ha.add, add_neg_cancel, h0]
 
 /- English proof (translation)
-Take `⟨B, hB, hpB⟩` from `hp`. Establish `h1` using `mulVec_ratV_col hB hpB`. Establish `h2` using `mulVec_ratV_col (Matrix.blockTriangular_diagonal _) (ha.onX (-s))`. Rewrite `h2` using `[Matrix.diagonal_apply_eq]`. Rewrite using `[IsTorus.inv_eq ha, ratV_smul, Matrix.mulVec_smul, h1, Matrix.mulVec_smul, Matrix.mulVec_smul, h2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Pi.neg_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem torus_inv_mulVec {a : (Fin (r + 1) → ℝ) → GAd σ J} (ha : IsTorus σ J X Y a) {p : GAd σ J}
     (hp : p ∈ minPar σ J X) (s : Fin (r + 1) → ℝ) (e : E) :
@@ -118,7 +118,7 @@ theorem torus_inv_mulVec {a : (Fin (r + 1) → ℝ) → GAd σ J} (ha : IsTorus 
   ring
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrFun (congrFun hW.xy 0) 0`. Establish `hc : ∀ i, X i 0 = 0` using `fun i => congrFun h0 i`. Simplify using `[cT, Matrix.mul_apply, hc] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem col_ne_zero (hW : IsWittFrame σ J X Y) : Xᵀ 0 ≠ 0 := by
   intro h0
@@ -131,7 +131,7 @@ end Helpers
 open GroundTheory.Automorphic GroundTheory.Automorphic.Anisotropic GlobalTheory.CompanionTheory.RedCov.Bridge in
 
 /- English proof (translation)
-Establish `step : ∀ (g : GAd σ J) (ξ : Fin n → AF F ⊗[F] E), resVec (ι` using `Fin n) (Module.finBasis F E) (AF F) ξ ᵥ* (trG σ J g).1 = resVec (ι := Fin n) (Module.finBasis F E) (AF F) ((matHom _ σ J g⁻¹).1 *ᵥ ξ) := fun g ξ => by`. Rewrite using `[trG, MonoidHom.comp_apply, map_inv]`. Conclude with `resVec_vecMul_trHom _ _ _ _`. Rewrite using `[ratVec_cvec, step, step, torus_inv_mulVec ha hω, resVec_algebraMap_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem vecMul_trG_torus {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [Algebra.IsQuadraticExtension F E] [IsTotallyReal F] {σ : E →ₐ[F] E} {n r : ℕ} {J : Matrix (Fin n) (Fin n) E}
@@ -151,17 +151,15 @@ theorem vecMul_trG_torus {F E : Type} [Field F] [NumberField F] [Field E] [Numbe
 open GroundTheory.Automorphic GlobalTheory.CompanionTheory.RedCov.Bridge in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW a ha Ω C hΩ hΩP hC`. Use `haveI : Algebra.IsQuadraticExtension F E := ⟨h.2.2.1⟩`. Use `haveI : IsTotallyReal F := h.1`. Establish `hcont : Continuous fun g : GAd σ J => (trG σ J g)⁻¹` using `(continuous_trG σ J).inv`. Take `⟨P₁, hP₁, hb₁⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul (hC.image hcont)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P₂, hP₂, hb₂⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul (hΩ.image hcont)`. Use `⟨P₁ * P₂, mul_pos hP₁ hP₂, fun ω hω s κ hκ e he => ?_⟩` and prove the remaining obligations. Establish `hv : e • Xᵀ 0 ≠ 0` using `smul_ne_zero he (col_ne_zero hW)`. Establish `hc0` using `cvec_ne_zero (F := F) hv`. Use `set y₀ := Reduction.ratVec (cvec F (e • Xᵀ 0)) with hy₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf₀ : Reduction.HasFiniteContent y₀` using `Reduction.hasFiniteContent_ratVec hc0`. Use `set y₁ := y₀ ᵥ* (trG σ J ω).1 with hy₁`. Establish `hf₁ : Reduction.HasFiniteContent y₁` using `hf₀.vecMul (trG σ J ω)`. Use `set u := rIdele (F := F) (-s 0) with hu`. Establish `hkey : y₁ ᵥ* (trG σ J (a s)).1 = (u : AF F) • y₁` using `vecMul_trG_torus ha (inv_mem_minPar h hJ hW (hΩP hω)) s e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : hgt σ J (ω * a s * κ) (e • Xᵀ 0) = Reduction.adelicNorm (((u : AF F) • y₁) ᵥ* (trG σ J κ).1)`. Rewrite using `[hgt_eq, Reduction.height, map_mul, map_mul, Units.val_mul, Units.val_mul, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, ← hy₀, ← hy₁, hkey]`. Establish `hf₂ : Reduction.HasFiniteContent (((u : AF F) • y₁) ᵥ* (trG σ J κ).1)` using `(hf₁.smul u).vecMul (trG σ J κ)`. Establish `hb3 : Reduction.adelicNorm ((u : AF F) • y₁) ≤ P₁ * hgt σ J (ω * a s * κ) (e • Xᵀ 0)`. Use `hb₁ _ ⟨κ, hκ, rfl⟩ _ hf₂` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one, ← hg]`. Then use the resulting hypothesis. Establish `hb4 : Reduction.adelicNorm y₀ ≤ P₂ * Reduction.adelicNorm y₁`. Use `hb₂ _ ⟨ω, hω, rfl⟩ _ hf₁` as an intermediate fact. Rewrite `this` using `[hy₁, Matrix.vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.vecMul_one]`. Then use the resulting hypothesis. Establish `h1 : 1 ≤ Reduction.adelicNorm y₀` using `Reduction.one_le_adelicNorm_ratVec hc0`.
-
-Establish `hsm : Reduction.adelicNorm ((u : AF F) • y₁) = Real.exp (- ((Module.finrank ℚ F : ℝ) * s 0)) * Reduction.adelicNorm y₁`. Rewrite using `[Reduction.adelicNorm_smul hf₁ u, hu, ideleModule_rIdele, mul_neg]`. Establish `hexp` using `Real.exp_pos (- ((Module.finrank ℚ F : ℝ) * s 0))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exp_le_hgt : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsWittFrame σ J X Y → ∀ a, IsTorus σ J X Y a → ∀ (Ω C : Set (GAd σ J)), IsCompact Ω → Ω ⊆ minPar σ J X → IsCompact C → ∃ P : ℝ, 0 < P ∧ ∀ ω ∈ Ω, ∀ s : Fin (r + 1) → ℝ, ∀ κ ∈ C, ∀ e : E, e ≠ 0 → Real.exp (- ((Module.finrank ℚ F : ℝ) * s 0)) ≤ P * hgt σ J (ω * a s * κ) (e • Xᵀ 0) := by
   intro F E _ _ _ _ _ σ h n J hJ r X Y hW a ha Ω C hΩ hΩP hC

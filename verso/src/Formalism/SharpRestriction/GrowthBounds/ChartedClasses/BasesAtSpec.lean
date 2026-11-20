@@ -21,9 +21,9 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
     [StarRing E] [Algebra F E] {sp : Spaces R F E}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e1 : J.reindex (finCongr rfl) (finCongr rfl) = J`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `e2 : Formalism.L2.PairingIndexBounds.F.reGL (finCongr (rfl : N = N)) y = y`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `[Formalism.L2.PairingIndexBounds.F.reGL]`. Rewrite using `[e1, e2, map_reE_rfl, map_reE_rfl]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem latK_re {N n : ℕ} (h : N = n) (J : Matrix (Fin N) (Fin N) E) (a : 𝓞 E)
     (y : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (Lb : Submodule (𝓞 E) (Fin N → E)) :
@@ -66,9 +66,9 @@ def ptAt (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `e` using `latK_re (sp := D.sp) ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm (gramN D (i + 1) hi) a (ptAt Ch std vp unif eO eO_spec dG dG_spec om I i hi La) ((I.at' i hi).st.K ((I.at' i hi).st.eC.symm La.1).1).lev.Lb`. Establish `e0 : (fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).kerN (i + 1) La = (latK D.sp (gramN D (i + 1) hi) a (ptAt Ch std vp unif eO eO_spec dG dG_spec om I i hi La) ((I.at' i hi).st.K ((I.at' i hi).st.eC.symm La.1).1).lev.Lb).map ((reE (E` using `D.host.E) ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).rk.symm).toLinearMap.restrictScalars (𝓞 D.host.E)) := by`. Rewrite using `[← e]`. Simplify using `only [fdAtL, fdAt, fdOfCharts, cpAt, chAt, dif_pos hi]`. Conclude with `map_reE_rfl _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Conclude with `map_reE_symm _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem kerN_succ (i : ℕ) (hi : i + 1 ≤ D.R.m) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :
     ((fdAtL Ch std vp unif eO eO_spec dG dG_spec om I L0 a bad).kerN (i + 1) La).map
@@ -105,7 +105,7 @@ variable {D : D7} {u : D.what₂.Word} {w : D.what₂.places.Pl} {h : GIdx D.hos
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `(isLattice_iff _ ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).latAt v (i + 1) Lt)).1 (hL v)`. Conclude with `Classical.epsilon_spec (p := fun g : GL (Fin (((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (i + 1)).m + 1)) ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).G.P.Qq v) => (sysAt Ch std vp unif eO eO_spec dG dG_spec om).latAt v (i + 1) Lt = colSpan ((sysAt Ch std vp unif eO …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem basesAt_spec (i : ℕ) (Lt : ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (i + 1)).Tup) (hL : ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pj (i + 1)).IsLatTup Lt) (v : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Pl) :
     (sysAt Ch std vp unif eO eO_spec dG dG_spec om).latAt v (i + 1) Lt = colSpan ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).G.P.W v) (basesAt Ch std vp unif eO eO_spec dG dG_spec om (i + 1) Lt v : Matrix _ _ _) := by
@@ -114,7 +114,7 @@ theorem basesAt_spec (i : ℕ) (Lt : ((sysAt Ch std vp unif eO eO_spec dG dG_spe
     colSpan ((sysAt Ch std vp unif eO eO_spec dG dG_spec om).G.P.W v) (g : Matrix _ _ _)) ⟨g, by rw [hg, colSpan_eq]⟩
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec (p := fun x => ((I.at' i hi).st.loc ((I.at' i hi).st.eC.symm La.1).1).IsPt ((I.at' i hi).st.eC.symm La.1).2 (basesAt Ch std vp unif eO eO_spec dG dG_spec om (i + 1) La.2) x ∧ x ∈ Formalism.UG.UPts (sigD D) (gramN D (i + 1) hi) (FiniteAdeleRing (𝓞 D.host.F) …`.
+A detailed English derivation is pending.
 -/
 theorem ptAt_spec (I : CmpJIn Tw u μ w h Lv) (i : ℕ) (hi : i + 1 ≤ D.R.m)
     (hG : ∀ β, LocGood (sigD D) (gramN D (i + 1) hi) ((I.at' i hi).st.loc β)) (La : (sysAt Ch std vp unif eO eO_spec dG dG_spec om).Lt (i + 1)) :

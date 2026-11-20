@@ -14,7 +14,7 @@ variable {X : Scheme.{0}}
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← cancel_mono (invOpen f m).ι]`. Simplify using `[Scheme.homOfLE_ι]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma toOpen_homOfLE (f : X ⟶ SpecZ) (R : Type) [CommRing R] (W : X.Opens)
     (hW : Set.range (baseChangeMap f R) ⊆ Set.range W.ι) {m : ℤ} (hm : IsUnit (m : R))

@@ -13,15 +13,13 @@ open MeasureTheory Matrix Ad3.K.LC Ad3.K.LC.B
 namespace GlobalTheory.CompanionTheory.MajC
 
 /- English proof (translation)
-Introduce `h hdet`. Establish `hn : ∀ w : Fin 2 → ℂ, ‖w‖ = max ‖w 0‖ ‖w 1‖`. Introduce `w`. Use `le_antisymm ((pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_) (max_le (norm_le_pi_norm w 0) (norm_le_pi_norm w 1))` and prove the remaining obligations. Use `fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `le_max_left _ _`. Conclude with `le_max_right _ _`. Establish `hD : 0 < dt h` using `norm_pos_iff.mpr hdet`. Establish `he0 : eta h 0 = (Matrix.of h).det⁻¹ * (-h 1 0)`. Simplify using `[eta, Matrix.inv_def, Matrix.adjugate_fin_two]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `he1 : eta h 1 = (Matrix.of h).det⁻¹ * h 0 0`. Simplify using `[eta, Matrix.inv_def, Matrix.adjugate_fin_two]`. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hc`. Establish `hc0 : col h = 0` using `le_antisymm (not_lt.mp hc) (le_max_of_le_left (norm_nonneg _))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : h 0 0 = 0`. Establish `: ‖h 0 0‖ ≤ 0` using `hc0 ▸ le_max_left _ _`. Conclude with `norm_le_zero_iff.mp this`. Establish `h1 : h 1 0 = 0`. Establish `: ‖h 1 0‖ ≤ 0` using `hc0 ▸ le_max_right _ _`.
-
-Conclude with `norm_le_zero_iff.mp this`. Conclude with `hdet (by simp [Matrix.det_fin_two, h0, h1])`. Rewrite using `[hn, he0, he1, norm_mul, norm_mul, norm_neg, norm_inv, ← mul_max_of_nonneg _ _ (by positivity), col, dt, max_comm]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem L_eta : ∀ h : M22, (Matrix.of h).det ≠ 0 → 0 < col h ∧ ‖eta h‖ = col h / dt h := by
   intro h hdet
@@ -52,11 +50,11 @@ theorem L_eta : ∀ h : M22, (Matrix.of h).det ≠ 0 → 0 < col h ∧ ‖eta h�
     field_simp
 
 /- English proof (translation)
-Introduce `f`. Set `e` to `MeasurableEquiv.piFinTwo (fun _ : Fin 2 => Fin 2 → ℂ)`. Establish `he : MeasurePreserving e volume volume` using `volume_preserving_piFinTwo _`. Set `s : M22 ≃ᵐ M22` to `e.trans (MeasurableEquiv.prodComm.trans e.symm)`. Establish `hs : MeasurePreserving s volume volume`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : MeasurePreserving (Prod.swap : (Fin 2 → ℂ) × (Fin 2 → ℂ) → (Fin 2 → ℂ) × (Fin 2 → ℂ)) volume volume` using `Measure.measurePreserving_swap`. Conclude with `((he.symm e).comp hw).comp he`. Establish `hsw : ∀ h, s h = swp h`. Introduce `h`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> rfl`. Use `hs.lintegral_comp_emb s.measurableEmbedding f` as an intermediate fact. Simplify `this` using `only [hsw]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem L_swp : ∀ f : M22 → ENNReal, ∫⁻ h : M22, f (swp h) = ∫⁻ h : M22, f h := by
   intro f
@@ -75,11 +73,11 @@ theorem L_swp : ∀ f : M22 → ENNReal, ∫⁻ h : M22, f (swp h) = ∫⁻ h : 
   simpa only [hsw] using this
 
 /- English proof (translation)
-Introduce `ε β m`. Establish `h00 : Measurable fun h : M22 => h 0 0` using `(measurable_pi_apply 0).comp (measurable_pi_apply 0)`. Establish `h01 : Measurable fun h : M22 => h 0 1` using `(measurable_pi_apply 1).comp (measurable_pi_apply 0)`. Establish `h10 : Measurable fun h : M22 => h 1 0` using `(measurable_pi_apply 0).comp (measurable_pi_apply 1)`. Establish `h11 : Measurable fun h : M22 => h 1 1` using `(measurable_pi_apply 1).comp (measurable_pi_apply 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : Measurable fun h : M22 => h 1 1 - h 1 0 / h 0 0 * h 0 1` using `h11.sub ((h10.div h00).mul h01)`. Establish `hk : Measurable (kern ε β)`. Unfold `kern`. Use `fun_prop`. Establish `hset : MeasurableSet {h : M22 | ‖h 1 0‖ ≤ ‖h 0 0‖ ∧ h 0 0 ≠ 0}` using `(measurableSet_le h10.norm h00.norm).inter (h00 (measurableSet_singleton 0).compl)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `gm`. Use `Measurable.ite hset ?_ measurable_const` and prove the remaining obligations. Use `hk.comp hz` as an intermediate fact. Simplify using `only [Function.comp_def] at this`. Conclude with `((((measurable_const.mul (h00.norm.pow_const _)).mul ((measurable_const.add h00.norm).pow_const m).inv).mul ((measurable_const.add h01.norm).pow_const m).inv).mul this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem L_measgm : ∀ (ε β : ℝ) (m : ℕ), Measurable (gm ε β m) := by
   intro ε β m
@@ -103,15 +101,13 @@ theorem L_measgm : ∀ (ε β : ℝ) (m : ℕ), Measurable (gm ε β m) := by
     ((measurable_const.add h01.norm).pow_const m).inv).mul this)
 
 /- English proof (translation)
-Take `⟨C, hC, hg⟩` from `GlobalTheory.T.lintegral_majorant_le_pow_neg ε K m hε hK hk h3 hm2`. Use `⟨2 * C, by positivity, fun N hN β hβ => ?_⟩` and prove the remaining obligations. Establish `hg0 : ∀ h, 0 ≤ gm ε β m h`. Introduce `h`. Unfold `gm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Unfold `kern`. Check the signs of the components of the expression. Conclude with `le_rfl`. Establish `hmeas : Measurable (gm ε β m)` using `L_measgm ε β m`.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_add (hg0 _) (hg0 _)]`. Conclude with `ENNReal.ofReal_le_ofReal (GlobalTheory.T.majorant_le_sum_swap ε β m N hε hβ hm2 hN h)`. Use `_ = (∫⁻ h : M22, ENNReal.ofReal (gm ε β m h)) + ∫⁻ h : M22, ENNReal.ofReal (gm ε β m (swp h)) := lintegral_add_left hmeas.ennreal_ofReal _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = (∫⁻ h : M22, ENNReal.ofReal (gm ε β m h)) + ∫⁻ h : M22, ENNReal.ofReal (gm ε β m h) := by`. Rewrite using `[L_swp (fun h => ENNReal.ofReal (gm ε β m h))]`. Use `_ ≤ ENNReal.ofReal (C * β ^ (-ε)) + ENNReal.ofReal (C * β ^ (-ε)) := add_le_add (hg β hβ) (hg β hβ)`. Use `_ = ENNReal.ofReal (2 * C * β ^ (-ε)) := by`. Rewrite using `[← ENNReal.ofReal_add (by positivity) (by positivity)]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hm_int (ε : ℝ) (hε : 0 < ε) (m : ℕ) (h3 : 3 ≤ m) (hm2 : 2 * ε ≤ m) (K : ℝ) (hK : 0 ≤ K)
     (hk : ∀ T₀ : ℝ, 0 < T₀ → ∫⁻ z : ℂ, ENNReal.ofReal (kern ε T₀ z) ≤ ENNReal.ofReal K) :
@@ -143,29 +139,27 @@ theorem hm_int (ε : ℝ) (hε : 0 < ε) (m : ℕ) (h3 : 3 ≤ m) (hm2 : 2 * ε 
         ring
 
 /- English proof (translation)
-Introduce `ε hε`. Take `⟨K1, hK1, hk1⟩` from `GlobalTheory.T.lintegral_kernel_uniform_bound ε hε`. Take `⟨K2, hK2, hk2⟩` from `GlobalTheory.T.lintegral_kernel_uniform_bound (2 * ε) (by positivity)`. Use `set m : ℕ := max 3 ⌈2 * ε⌉₊ with hmdef`. Establish `h3 : 3 ≤ m` using `le_max_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : 2 * ε ≤ m` using `(Nat.le_ceil _).trans (by exact_mod_cast le_max_right _ _)`. Take `⟨C, hC, hH⟩` from `hm_int ε hε m h3 hm2 K1 hK1 hk1`. Use `⟨2 * m, fun N hN => ⟨K2 * C, fun a b ha hb => ?_⟩⟩` and prove the remaining obligations. Establish `hNε : 2 * ε ≤ N`. Establish `: (2 * m : ℝ) ≤ N` using `by exact_mod_cast hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) ≤ m` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA : 0 < ‖a‖` using `norm_pos_iff.mpr ha`. Establish `hB : 0 < ‖b‖` using `norm_pos_iff.mpr hb`. Use `set f : M22 × ℂ → ℝ := fun p => (‖(Matrix.of p.1).det‖ ^ 2)⁻¹ * jm N p.1 p.2 a b with hf`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : Measurable f` using `GlobalTheory.T.measurable_det_inv_mul_majorant N a b`. Establish `hf0 : ∀ p, 0 ≤ f p`. Introduce `p`. Simplify using `only [hf, jm]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hper : ∀ h : M22, ∫⁻ t : ℂ, ENNReal.ofReal (f (h, t)) ≤ ENNReal.ofReal (K2 * ‖a‖ ^ (-ε)) * ENNReal.ofReal (hm ε N ‖b‖ h)`. Introduce `h`. Distinguish the cases in `hdet : (Matrix.of h).det = 0`. Simplify using `[hf, hdet]`. Establish `hD : 0 < dt h` using `norm_pos_iff.mpr hdet`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hc, hE⟩` from `L_eta h hdet`. Establish `hE0 : 0 < ‖eta h‖` using `by rw [hE]; positivity`. Establish `hfe : ∀ t : ℂ, ENNReal.ofReal (f (h, t)) = ENNReal.ofReal ((dt h ^ 2)⁻¹) * ENNReal.ofReal (jm N h t a b)`. Introduce `t`. Rewrite using `[← ENNReal.ofReal_mul (by positivity)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Both sides reduce to the same expression. Repeatedly rewrite using `[hfe]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `(mul_le_mul_right (GlobalTheory.T.lintegral_majorant_fiber_bound ε K2 hε hK2 hk2 N hNε h a b ha hD hE0) _).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ENNReal.ofReal_le_ofReal (le_of_eq ?_)` and prove the remaining obligations. Establish `hpow : (dt h ^ 2)⁻¹ * dt h ^ (-2 + ε) * ‖eta h‖ ^ (-2 + 2 * ε) = dt h ^ (-(2 + ε)) * col h ^ (-2 + 2 * ε)`. Rewrite using `[hE, Real.div_rpow hc.le hD.le, Real.rpow_add hD, Real.rpow_neg hD.le (2 + ε), Real.rpow_add hD, Real.rpow_add hD, two_mul ε, Real.rpow_add hD ε ε, Real.rpow_neg hD.le 2, Real.rpow_two]`. Establish `hP` using `Real.rpow_pos_of_pos hD ε`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hm]`. Rewrite using `[← hE]`. Combine the equalities or inequalities in the displayed calculation. Establish `hlin : ∫⁻ p, ENNReal.ofReal (f p) ≤ ENNReal.ofReal (K2 * C * (‖a‖ * ‖b‖) ^ (-ε))`. Rewrite using `[Measure.volume_eq_prod, lintegral_prod _ hfm.ennreal_ofReal.aemeasurable]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (by positivity), Real.mul_rpow hA.le hB.le]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable f`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hfm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall hf0)]`. Conclude with `hlin.trans_lt ENNReal.ofReal_lt_top`. Use `⟨hint, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall hf0) hfm.aestronglyMeasurable]`.
-
-Conclude with `ENNReal.toReal_le_of_le_ofReal (by positivity) hlin`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : Ad3.K.LC.B.MajScaled := by
   intro ε hε

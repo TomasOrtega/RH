@@ -16,7 +16,7 @@ variable {V W S : Type} [AddCommGroup V] [Module k V] [Module A V] [IsScalarTowe
   [AddCommGroup S] [Module A S]
 
 /- English proof (translation)
-Unfold `cp`. Rewrite using `[← LinearEquiv.charpoly_conj (e.restrictScalars k) (Algebra.lsmul k k V a)]`. Use `congr 1`. Use extensionality with `w`. Simplify using `[LinearEquiv.conj_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cp_congr [FiniteDimensional k V] [FiniteDimensional k W] (e : V ≃ₗ[A] W) (a : A) :
     cp k V a = cp k W a := by
@@ -27,7 +27,7 @@ theorem cp_congr [FiniteDimensional k V] [FiniteDimensional k W] (e : V ≃ₗ[A
   simp [LinearEquiv.conj_apply]
 
 /- English proof (translation)
-Unfold `cp`. Rewrite using `[← LinearMap.charpoly_prodMap]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem cp_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
     cp k (V × W) a = cp k V a * cp k W a := by
@@ -36,7 +36,7 @@ theorem cp_prod [FiniteDimensional k V] [FiniteDimensional k W] (a : A) :
   congr 1
 
 /- English proof (translation)
-Conclude with `Bl.general_b_fact_second_version.goal1 (k := k) h`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_hom [FiniteDimensional k W] [IsSemisimpleModule A W] [IsSimpleModule A S]
     (h : ∀ a : A, (∀ w : W, a • w = 0) → ∀ s : S, a • s = 0) : ∃ f : W →ₗ[A] S, f ≠ 0 := by
@@ -51,31 +51,31 @@ instance (N : Submodule A V) [FiniteDimensional k V] : FiniteDimensional k (V �
 end
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `V W _ _ _ _ _ _ _ _ _ _ hn hV hW h`. Establish `hdim : Module.finrank k V = Module.finrank k W`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg natDegree (h 0)` as an intermediate fact. Simplify `this` using `[cp, LinearMap.charpoly_natDegree]`. Distinguish the cases in `hV0 : Subsingleton V`. Establish `hW0 : Subsingleton W`. Rewrite `hV0`, the goal using `[← Module.finrank_zero_iff (R := k)]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨0⟩`. Rewrite `hV0` using `[not_subsingleton_iff_nontrivial]`. Take `⟨S, hS⟩` from `IsSemisimpleModule.exists_simple_submodule A V`. Establish `key : ∀ a : A, (∀ w : W, a • w = 0) → ∀ s : S, a • s = 0`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a ha s`. Assume the negation of the conclusion as `hne`. Take `⟨u, hu⟩` from `IsSimpleModule.toSpanSingleton_surjective A hne s`. Establish `hu' : (u * a) • s = s` using `by simpa [mul_smul] using hu`. Establish `hcW : Algebra.lsmul k k W (u * a) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `w`. Simplify using `[ha]`. Establish `hnil : IsNilpotent (Algebra.lsmul k k V (u * a))`. Rewrite using `[LinearMap.isNilpotent_iff_charpoly]`. Establish `h1` using `h (u * a)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cp at h1`. Rewrite using `[h1, hcW, hdim]`. Conclude with `(LinearMap.isNilpotent_iff_charpoly (0 : Module.End k W)).mp IsNilpotent.zero`. Take `⟨m, hm⟩` from `hnil`. Establish `hfix : ∀ j : ℕ, ((Algebra.lsmul k k V (u * a)) ^ j) (s : V) = s`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ihj`. Rewrite using `[pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Algebra.lsmul k k V (u * a)) (s : V) = s`. Use `congrArg (Subtype.val) hu'` as an intermediate fact. Simplify `this` using `[mul_smul]`. Rewrite using `[this, ihj]`. Establish `hs0 : (s : V) = 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hfix m, hm]`. Simplify using the standard rewrite rules. Apply `hne` to reduce the goal to its premises. Establish `: s = 0` using `by exact_mod_cast hs0`. Rewrite using `[this, smul_zero]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `exists_ne_zero_hom (k := k) key`. Establish `hsurj : Function.Surjective f` using `LinearMap.surjective_of_ne_zero hf`. Take `⟨V', hV'⟩` from `exists_isCompl S`. Take `⟨C, hC⟩` from `exists_isCompl (LinearMap.ker f)`. Set `eV : (S × V') ≃ₗ[A] V` to `Submodule.prodEquivOfIsCompl S V' hV'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `eC : C ≃ₗ[A] S` to `(Submodule.quotientEquivOfIsCompl (LinearMap.ker f) C hC).symm ≪≫ₗ f.quotKerEquivOfSurjective hsurj`. Set `eW : (S × LinearMap.ker f) ≃ₗ[A] W` to `(LinearEquiv.prodCongr eC.symm (LinearEquiv.refl A _)) ≪≫ₗ (LinearEquiv.prodComm A _ _) ≪≫ₗ Submodule.prodEquivOfIsCompl (LinearMap.ker f) C hC`. Establish `h' : ∀ a : A, cp k V' a = cp k (LinearMap.ker f) a`. Introduce `a`. Establish `h1 : cp k S a * cp k V' a = cp k S a * cp k (LinearMap.ker f) a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cp_prod, ← cp_prod, cp_congr eV, cp_congr eW, h a]`. Conclude with `mul_left_cancel₀ (LinearMap.charpoly_monic _).ne_zero h1`. Establish `hlt : Module.finrank k V' < n`. Establish `h1 : Module.finrank k (S × V') = Module.finrank k V` using `LinearEquiv.finrank_eq (eV.restrictScalars k)`. Rewrite `h1` using `[Module.finrank_prod]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial S` using `IsSimpleModule.nontrivial A S`. Establish `h2 : 0 < Module.finrank k S` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Take `⟨e'⟩` from `ih _ hlt V' (LinearMap.ker f) rfl inferInstance inferInstance h'`. Conclude with `⟨eV.symm ≪≫ₗ (LinearEquiv.prodCongr (LinearEquiv.refl A _) e') ≪≫ₗ eW⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_eq_one_of_covolume_identity {k A : Type} [Field k] [Ring A] [Algebra k A] : ∀ (n : ℕ) (V W : Type)
     [AddCommGroup V] [Module k V] [Module A V] [IsScalarTower k A V]
@@ -159,7 +159,7 @@ end Formalism.IrreducibleCountingLemmas.Z.BN
 namespace Formalism.IrreducibleCountingLemmas.Z
 
 /- English proof (translation)
-Introduce `k A V W _ _ _ _ _ _ _ _ _ _ _ _ _ hV hW h`. Conclude with `BN.mul_eq_one_of_covolume_identity _ V W rfl hV hW h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem brauer_nesbitt_algebra : BrauerNesbittAlg := by
   intro k A V W _ _ _ _ _ _ _ _ _ _ _ _ _ hV hW h

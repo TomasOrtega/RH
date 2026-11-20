@@ -7,13 +7,13 @@ namespace Formalism.L2.PairingIndexBounds.Rec
 open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 
 /- English proof (translation)
-The claim follows from `halvesRec_of_clos closure_character_holds low_approximation_holds hA hB`.
+A detailed English derivation is pending.
 -/
 theorem HalvesRec_of (hA : HfIntRec) (hB : SelfDualRec) : HalvesRec :=
   halvesRec_of_clos closure_character_holds low_approximation_holds hA hB
 
 /- English proof (translation)
-The claim follows from `modelXi_all (HalvesRec_of hA hB) D`.
+A detailed English derivation is pending.
 -/
 theorem modelXi_of_parts (hA : HfIntRec) (hB : SelfDualRec) (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.GL3Theta.modelXi D :=
   modelXi_all (HalvesRec_of hA hB) D

@@ -19,7 +19,7 @@ open GlobalTheory.Doubling (absE)
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Establish `h3 : ∀ᶠ v in cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(h2.and hM.std).mono fun _ hv => hv.1.trans hv.2`. Conclude with `Submodule.subset_span ⟨f, _, ⟨GlobalTheory.WeilM.isLocallyConstant_finprod_evalV φ h1 h3, GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem polData_le {n d : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} (hM : M.IsGood B.ψ) :
     PolData B M ≤ schA F (Fin n × Fin d) := by
@@ -31,7 +31,7 @@ theorem polData_le {n d : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} {M
     GlobalTheory.AdelicCoordSupport.hasCompactSupport_finprod φ h1 h3⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `γ hγ h` and use `by have hi := ((hT F E σ B n d X W M χX χW om r s r' s' hp).1 Φ (polData_le hp.good hΦ)).2.1 simp only [Model.I] congr 1 funext g simpa using hi 1 (one_mem _) γ hγ g h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem I_rat (hT : ThetaBasic) {n d : ℕ} {B : Base F E} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW om r s r' s'} (hp : IsPair B M χX χW om r s r' s') {Φ} (hΦ : Φ ∈ PolData B M) :
@@ -43,7 +43,7 @@ theorem I_rat (hT : ThetaBasic) {n d : ℕ} {B : Base F E} {X : Spc F E n} {W : 
   simpa using hi 1 (one_mem _) γ hγ g h
 
 /- English proof (translation)
-Introduce `e` and use `by have := congrArg norm e simp only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg (absE F E t)) _)] at this exact (Real.rpow_lt_rpow_of_exponent_lt ht h).ne this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem law_ne (α β : Chr F E) {t : (AE F E)ˣ} (ht : 1 < (absE F E t : ℝ)) {x y : ℝ} (h : x < y) :
     (α t : ℂ) * (((absE F E t : ℝ) ^ x : ℝ) : ℂ) ≠ (β t : ℂ) * (((absE F E t : ℝ) ^ y : ℝ) : ℂ) := fun e => by
@@ -53,19 +53,19 @@ theorem law_ne (α β : Chr F E) {t : (AE F E)ˣ} (ht : 1 < (absE F E t : ℝ)) 
   exact (Real.rpow_lt_rpow_of_exponent_lt ht h).ne this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' h3 d₁ W₁ H' i₀ i₁ hH f hf fa fb hs`. Take `⟨p1, p2, -⟩` from `hP F E σ B a a' G X om om' h3`. Establish `hinv : ∀ γ ∈ ratU σ G.W.J, ∀ h, f (γ * h) = f h`. Break down `hf with ⟨Φ, hΦ, rfl⟩ | ⟨Φ, hΦ, -, rfl⟩` into its components or cases. Use `exacts [I_rat hT p1 hΦ, I_rat hT p2 hΦ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun h0 => split_uniq hU h3 hH hs ⟨fun μ 𝓕 _ _ _ h => by simp [h0], fun t m _ h => by simp, fun t m _ h => by simp⟩⟩` and prove the remaining obligations. Take `⟨⟨ν, 𝓕, a1, a2, a3⟩, -, -, a4, ⟨lev, -, hl, -⟩, -, t, ht⟩` from `hU F E σ B _ _ G.W W₁ H' i₀ i₁ _ _ h3.base (Or.inr h3.geo.hW) hH`. Take `⟨-, -, hn⟩` from `hS F E σ B _ _ G.W W₁ H' i₀ i₁ _ _ h3.base (Or.inr h3.geo.hW) hH`. Take `⟨-, -, -, b4, -⟩` from `hG F E σ h3.base.cm _ G.W.J (hE F E σ B h3.base _ G.W _ _ (Or.inr h3.geo.hW)).1`. Establish `: BorelSpace (UA σ G.W.J)` using `⟨rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (AF F) _`. Establish `: IsTopologicalGroup (UA σ G.W.J)` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Establish `: IsTopologicalGroup (unip σ G.W H')` using `Subgroup.instIsTopologicalGroupSubtypeMem _`. Establish `: BorelSpace (unip σ G.W H')` using `Subtype.borelSpace _`. Use `a4 ν a1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Countable ((ratU σ G.W.J).subgroupOf (unip σ G.W H'))` using `Function.Injective.countable (f := fun x => (⟨x.1.1, x.2⟩ : ratU σ G.W.J)) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : ratU σ G.W.J => z.1) e))`. Establish `hc : ∀ u ∈ unip σ G.W H', ∀ h, fa (u * h) + fb (u * h) = fa h + fb h` using `fun u hu h => by`. Establish `e1` using `hs.1 ν 𝓕 a1 a2 a3 (u * h)`. Establish `e2` using `hs.1 ν 𝓕 a1 a2 a3 h`. Rewrite `e1`, `e2` using `[Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← PositivityTheory.ThKF.L2.integral_right a2 (fun v => f (v.1 * h)) (fun γ hγ x => by rw [Subgroup.coe_mul, mul_assoc]; exact hinv γ.1 hγ _) ⟨u, hu⟩]`. Simplify using `only [Subgroup.coe_mul, mul_assoc]`. Introduce `u hu h`. Establish `hu'` using `hn _ _ _ (hl t⁻¹ 1) u hu`. Establish `e : lev (t⁻¹, 1) = (lev (t, 1))⁻¹` using `by rw [← map_inv, Prod.inv_mk, inv_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1` using `hc _ hu' (lev (t, 1) * h)`. Rewrite `s1` using `[e, inv_inv, mul_assoc, inv_mul_cancel_left, mul_assoc, hs.2.1 t _ (hl t 1), hs.2.1 t _ (hl t 1), hs.2.2 t _ (hl t 1), hs.2.2 t _ (hl t 1)]`. Establish `s0` using `hc u hu h`. Establish `hne` using `law_ne X.α X.β ht (show (a' : ℝ) / 2 < (a : ℝ) / 2 by`. Establish `: (a' : ℝ) < a` using `by exact_mod_cast h3.geo.lt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Establish `k : fa (u * h) = fa h`. Use `sub_eq_zero.1 (mul_left_cancel₀ (sub_ne_zero.2 hne) ?_)` and prove the remaining obligations. Take the linear combination `s1 - (X.β t : ℂ) * (((absE F E t : ℝ) ^ ((a : ℝ) / 2) : ℝ) : ℂ) * s0`. Conclude with `⟨k, by linear_combination s0 - k⟩`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem splitInv2_of (hU : UnipEx) (hS : StabDec) (hT : ThetaBasic) (hP : TriplePair) (hG : GrpTop) (hE : EpsOf) :
     PositivityTheory.ThKG.Loc.SplitInv2 := by

@@ -26,29 +26,27 @@ namespace GlobalTheory.TateUnr
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ ν v hν μ hμ 𝔞 h𝔞 s hs`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI := hμ.1`. Set `N : aboveF (L` to `E) F v → ℂ := fun w : aboveF (L := E) F v => ((Ideal.absNorm w.1.asIdeal : ℕ) : ℂ)`. Set `r : aboveF (L` to `E) F v → ℂ := fun w : aboveF (L := E) F v => (val ν w.1 : ℂ) * (N w ^ s)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `a : aboveF (L` to `E) F v → ℤ := fun w : aboveF (L := E) F v => FractionalIdeal.count E w.1 𝔞`. Set `g : (aboveF (L` to `E) F v → ℤ) → ℂ := fun k => if (∀ i, a i ≤ k i) then ∏ i, r i ^ k i else 0`. Establish `hN1 : ∀ w : aboveF (L` using `E) F v, (1 : ℝ) < ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ) := fun w => by`. Conclude with `one_lt_absNorm w.1` after adjusting the coercions. Establish `hN0 : ∀ w, N w ≠ 0` using `fun w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hN1 w` as an intermediate fact. Simplify using `only [N]; exact_mod_cast (by linarith : ((Ideal.absNorm w.1.asIdeal : ℕ) : ℝ) ≠ 0)`. Establish `hr0 : ∀ w, r w ≠ 0` using `fun w => mul_ne_zero (Units.ne_zero _) (inv_ne_zero (pow_ne_zero _ (hN0 w)))`. Establish `hr1 : ∀ w, ‖r w‖ < 1` using `fun w => by`. Simplify using `only [r, N, norm_mul, norm_val, one_mul, norm_inv, norm_pow, Complex.norm_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `inv_lt_one_of_one_lt₀ (one_lt_pow₀ (hN1 w) (by omega))`. Take `⟨hsum, htsum⟩` from `GlobalTheory.T.geometric_series_multi_index a r hr0 hr1`. Use `choose b hb using GlobalTheory.T.idele_with_given_orders (E := E) v`. Set `U : Set (idelesAt E (evFin F v))` to `{l | l.1 ∈ unitsAt E v}`. Set `S : (aboveF (L` to `E) F v → ℤ) → Set (idelesAt E (evFin F v)) := fun k => (fun l => (b k)⁻¹ * l) ⁻¹' U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : ∀ k l, l ∈ S k ↔ ordV v l = k` using `fun k l => by`. Express the relevant statement in the definitionally equal form `((b k)⁻¹ * l).1 ∈ unitsAt E v ↔ _`. Rewrite using `[GlobalTheory.T.local_unit_iff_order_zero, ordV_mul, ordV_inv, hb, neg_add_eq_zero, eq_comm]`. Establish `hSm : ∀ k, MeasurableSet (S k)` using `fun k => ((isCompact_isOpen_unitsAt (E := E) v).2.preimage (continuous_const_mul _)).measurableSet`. Establish `hSμ : ∀ k, μ (S k) = 1` using `fun k => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `μ ((fun l => (b k)⁻¹ * l) ⁻¹' U) = 1`. Rewrite using `[measure_preimage_mul]`. Conclude with `hμ.2`. Establish `hSd : Pairwise (Function.onFun Disjoint S)` using `fun k k' hk => by`. Use `Set.disjoint_left.2 fun l h1 h2 => hk ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1`, `h2` using `[hS]`. Rewrite using `[← h1, ← h2]`. Establish `hSc : ∀ l, ∃ k, l ∈ S k` using `fun l => ⟨ordV v l, (hS _ l).2 rfl⟩`. Rewrite using `[GlobalTheory.T.integral_piecewise_constant μ S hSm hSd hSc hSμ g hsum _ ?_, htsum]`. Rewrite using `[unrFac, Lv, ← Finset.prod_coe_sort (aboveF (L := E) F v), ← Finset.prod_coe_sort (aboveF (L := E) F v), ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[locL, charFam_of_unrAt (hν w.1 w.2), eulerFac_singleton]`. Establish `e1 : npow w.1 (-(s : ℂ)) = (N w ^ s)⁻¹`. Rewrite using `[npow, Complex.cpow_neg, Complex.cpow_natCast]`. Establish `e2 : npow w.1 (-((s : ℂ) * (FractionalIdeal.count E w.1 𝔞 : ℂ))) = (N w ^ s)⁻¹ ^ a w`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[npow, show -((s : ℂ) * (FractionalIdeal.count E w.1 𝔞 : ℂ)) = ((-((s : ℤ) * a w) : ℤ) : ℂ) by push_cast; ring, Complex.cpow_intCast, inv_zpow', ← zpow_natCast, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Units.val_zpow_eq_zpow_val]`. Simplify using `only [r, a, mul_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k l hl`. Rewrite `hl` using `[hS]`. Substitute `hl` using the available equality. Simplify using `only [g]`. Rewrite using `[GlobalTheory.T.local_ideal_mem_iff_order v 𝔞 h𝔞 l]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with h`. Rewrite using `[GlobalTheory.T.unramified_char_value_product ν v hν l, GlobalTheory.T.ideles_abs_norm_product v l, Complex.ofReal_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [r]`. Rewrite using `[Units.val_zpow_eq_zpow_val, mul_zpow, Complex.ofReal_zpow, Complex.ofReal_natCast]`.
-
-Use `congr 1`. Rewrite using `[inv_zpow', ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tate_unr : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ν : Chr F E) (v : Pl F),
     (∀ w ∈ aboveF (L := E) F v, UnrAt ν w) → ∀ μ : Measure (idelesAt E (evFin F v)), IsNormE E v μ →

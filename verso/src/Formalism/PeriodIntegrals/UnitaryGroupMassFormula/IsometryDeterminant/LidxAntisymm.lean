@@ -14,19 +14,17 @@ variable {R : Type*} [CommRing R] {W : Type*} [AddCommGroup W] [Module R W]
 def relative₂ (X Z : Submodule R W) : ℕ∞ := Module.length R (Z ⧸ X.comap Z.subtype)
 
 /- English proof (translation)
-Unfold `relative₂`. Set `f : (Y ⧸ X.comap Y.subtype) →ₗ[R] (Z ⧸ X.comap Z.subtype)` to `Submodule.mapQ _ _ (Submodule.inclusion h2) (fun y hy => by simpa using hy)`. Set `g : (Z ⧸ X.comap Z.subtype) →ₗ[R] (Z ⧸ Y.comap Z.subtype)` to `Submodule.mapQ _ _ LinearMap.id (fun z hz => by`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, LinearMap.id_apply] at hz ⊢`. Conclude with `h1 hz)`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.length_eq_add_of_exact f g ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `q hq`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_inclusion] at hq ⊢`. Conclude with `hq`. Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H z => exact ⟨Submodule.Quotient.mk z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H z`. Simplify using `only [g, Submodule.mapQ_apply, LinearMap.id_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion.
+Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `hz`. Conclude with `⟨Submodule.Quotient.mk ⟨z, hz⟩, rfl⟩`. Introduce and unpack `⟨q', hq'⟩`. Proceed by induction on `q' using Submodule.Quotient.induction_on with`. Consider the case `H y`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [f, Submodule.mapQ_apply] at hq'`. Rewrite `hq'` using `[Submodule.Quotient.eq]`. Simplify using `only [Submodule.mem_comap, Submodule.subtype_apply, Submodule.coe_sub, Submodule.coe_inclusion] at hq'`. Establish `h3 : (z : W) = (y : W) - ((y : W) - (z : W))` using `by abel`. Rewrite using `[h3]`.
-
-Conclude with `Y.sub_mem y.2 (h1 hq')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlen_add {X Y Z : Submodule R W} (h1 : X ≤ Y) (h2 : Y ≤ Z) :
     relative₂ X Z = relative₂ X Y + relative₂ Y Z := by
@@ -68,7 +66,7 @@ theorem rlen_add {X Y Z : Submodule R W} (h1 : X ≤ Y) (h2 : Y ≤ Z) :
           exact Y.sub_mem y.2 (h1 hq')
 
 /- English proof (translation)
-Rewrite using `[rlen_add hX (hXZ.trans hZ), rlen_add hXZ hZ]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem rlen_mono {X X' Z Z' : Submodule R W} (hX : X' ≤ X) (hXZ : X ≤ Z) (hZ : Z ≤ Z') :
     relative₂ X Z ≤ relative₂ X' Z' := by
@@ -77,9 +75,9 @@ theorem rlen_mono {X X' Z Z' : Submodule R W} (hX : X' ≤ X) (hXZ : X ≤ Z) (h
     _ ≤ relative₂ X' X + (relative₂ X Z + relative₂ Z Z') := le_add_self
 
 /- English proof (translation)
-Unfold `relative₂`. Rewrite using `[Module.length_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `a b`. Proceed by induction on `a using Submodule.Quotient.induction_on with`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `H x`. Proceed by induction on `b using Submodule.Quotient.induction_on with`. Consider the case `H y`. Rewrite using `[Submodule.Quotient.eq]`. Simplify using the standard rewrite rules.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rlen_self (X : Submodule R W) : relative₂ X X = 0 := by
   unfold relative₂
@@ -94,11 +92,11 @@ theorem rlen_self (X : Submodule R W) : relative₂ X X = 0 := by
     simp
 
 /- English proof (translation)
-Unfold `relative₂`. Use `symm`. Use `LinearEquiv.length_eq (Submodule.Quotient.equiv _ _ (Submodule.equivMapOfInjective f hf Z) ?_)` and prove the remaining obligations. Use extensionality with `⟨w, hw⟩`. Take `⟨z, hz, rfl⟩` from `Submodule.mem_map.mp hw`.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Submodule.mem_map, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨z', hz'⟩, hz'X, he⟩`. Establish `: f z' = f z` using `congrArg Subtype.val he`. Rewrite using `[← hf this]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨z', hz'X, rfl⟩`. Introduce and unpack `⟨z', hz'X, he⟩`. Use `⟨⟨z, hz⟩, ?_, ?_⟩` and prove the remaining obligations. Use `hf he` as an intermediate fact. Simplify `hz'X` using `[this]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
 Both sides reduce to the same expression.
 -/
@@ -130,19 +128,19 @@ variable {R : Type*} [CommRing R] {W : Type*} [AddCommGroup W] [Module R W]
 variable (p : Ideal R) [p.IsPrime]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locP {A : Submodule R W} {x : W} :
     x ∈ localization₂ p A ↔ ∃ s ∈ p.primeCompl, s • x ∈ A := Iff.rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `⟨1, p.primeCompl.one_mem, by simpa using hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_locP (A : Submodule R W) : A ≤ localization₂ p A :=
   fun x hx => ⟨1, p.primeCompl.one_mem, by simpa using hx⟩
 
 /- English proof (translation)
-Introduce `_ ⟨s, hs, hx⟩` and use `⟨s, hs, h hx⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem localization_mono {A B : Submodule R W} (h : A ≤ B) : localization₂ p A ≤ localization₂ p B :=
   fun _ ⟨s, hs, hx⟩ => ⟨s, hs, h hx⟩
@@ -155,21 +153,21 @@ theorem lidx_eq (A B : Submodule R W) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[lidx_eq, lidx_eq, inf_comm]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lidx_antisymm (A B : Submodule R W) : lidx p A B = - lidx p B A := by
   rw [lidx_eq, lidx_eq, inf_comm]; ring
 
 /- English proof (translation)
-Rewrite using `[lidx_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lidx_self (A : Submodule R W) : lidx p A A = 0 := by
   rw [lidx_eq]; ring
 
 /- English proof (translation)
-Establish `e1` using `rlen_add (localization_mono p hD) (localization_mono p (inf_le_left : A ⊓ B ≤ A))`. Establish `e2` using `rlen_add (localization_mono p hD) (localization_mono p (inf_le_right : A ⊓ B ≤ B))`. Rewrite `hA`, the goal using `[e1]`. Rewrite `hB`, the goal using `[e2]`. Rewrite using `[lidx_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `l1 : ∀ a b : ℕ∞, a + b ≠ ⊤ → a ≠ ⊤` using `fun a b h ha => h (by simp [ha])`. Establish `l2 : ∀ a b : ℕ∞, a + b ≠ ⊤ → b ≠ ⊤` using `fun a b h hb => h (by simp [hb])`. Rewrite using `[ENat.toNat_add (l1 _ _ hA) (l2 _ _ hA), ENat.toNat_add (l1 _ _ hB) (l2 _ _ hB)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lidx_eq_of_le {A B D : Submodule R W} (hD : D ≤ A ⊓ B)
     (hA : relative₂ (localization₂ p D) (localization₂ p A) ≠ ⊤) (hB : relative₂ (localization₂ p D) (localization₂ p B) ≠ ⊤) :
@@ -186,7 +184,7 @@ theorem lidx_eq_of_le {A B D : Submodule R W} (hD : D ≤ A ⊓ B)
   ring
 
 /- English proof (translation)
-Rewrite using `[lidx_eq_of_le p (le_inf hDA hDC) hA hC, lidx_eq_of_le p (le_inf hDA hDB) hA hB, lidx_eq_of_le p (le_inf hDB hDC) hB hC]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lidx_cocycle {A B C D : Submodule R W} (hDA : D ≤ A) (hDB : D ≤ B) (hDC : D ≤ C)
     (hA : relative₂ (localization₂ p D) (localization₂ p A) ≠ ⊤) (hB : relative₂ (localization₂ p D) (localization₂ p B) ≠ ⊤)
@@ -197,11 +195,11 @@ theorem lidx_cocycle {A B C D : Submodule R W} (hDA : D ≤ A) (hDB : D ≤ B) (
   ring
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [mem_locP, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, a, ha, hay⟩`. Take `⟨x, rfl⟩` from `hsat s y hs ⟨a, hay⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨x, ⟨s, hs, ?_⟩, rfl⟩` and prove the remaining obligations. Establish `: f (s • x) = f a` using `by rw [map_smul, hay]`. Rewrite using `[hf this]`. Conclude with `ha`. Introduce and unpack `⟨x, ⟨s, hs, hx⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨s, hs, s • x, hx, by rw [map_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem localization_map₂ {W' : Type*} [AddCommGroup W'] [Module R W'] (f : W →ₗ[R] W')
     (hf : Function.Injective f)
@@ -219,7 +217,7 @@ theorem localization_map₂ {W' : Type*} [AddCommGroup W'] [Module R W'] (f : W 
     exact ⟨s, hs, s • x, hx, by rw [map_smul]⟩
 
 /- English proof (translation)
-Rewrite using `[lidx_eq, lidx_eq, ← Submodule.map_inf f hf, localization_map₂ p f hf hsat, localization_map₂ p f hf hsat, localization_map₂ p f hf hsat, rlen_map f hf, rlen_map f hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lidx_map {W' : Type*} [AddCommGroup W'] [Module R W'] (f : W →ₗ[R] W')
     (hf : Function.Injective f)
@@ -229,7 +227,7 @@ theorem lidx_map {W' : Type*} [AddCommGroup W'] [Module R W'] (f : W →ₗ[R] W
     localization_map₂ p f hf hsat, rlen_map f hf, rlen_map f hf]
 
 /- English proof (translation)
-Rewrite using `[localization_map₂ p f hf hsat, localization_map₂ p f hf hsat, rlen_map f hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relativeLength_localized_map {W' : Type*} [AddCommGroup W'] [Module R W'] (f : W →ₗ[R] W')
     (hf : Function.Injective f)
@@ -247,9 +245,9 @@ variable {W W' : Type*} [AddCommGroup W] [Module K W] [Module R W] [IsScalarTowe
   [AddCommGroup W'] [Module K W'] [Module R W'] [IsScalarTower R K W']
 
 /- English proof (translation)
-Establish `hs0 : algebraMap R K s ≠ 0`. Introduce `h`. Establish `: s = 0` using `(FaithfulSMul.algebraMap_injective R K) (by simpa using h)`. Conclude with `hs (this ▸ p.zero_mem)`. Take `⟨x, hx⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(algebraMap R K s)⁻¹ • x, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_restrictScalars, map_smul] at hx ⊢`. Rewrite using `[hx, ← algebraMap_smul K s y, smul_smul, inv_mul_cancel₀ hs0, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sat_of_linear (p : Ideal R) [p.IsPrime] (f : W →ₗ[K] W') (s : R) (y : W')
     (hs : s ∈ p.primeCompl) (hy : s • y ∈ LinearMap.range (f.restrictScalars R)) :

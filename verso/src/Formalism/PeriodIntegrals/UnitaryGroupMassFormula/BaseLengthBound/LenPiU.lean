@@ -7,19 +7,17 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 namespace PoleLengthBounds
 
 /- English proof (translation)
-Introduce `R E V _ _ _ _ _ ι _ A B U hU`. Use `set A' : Submodule R (ι → E) := Submodule.pi Set.univ fun _ => A with hA'`. Use `set B' : Submodule R (ι → E) := Submodule.pi Set.univ fun _ => B with hB'`. Set `e : ↥A' ≃ₗ[R] ↥(A'.map U)` to `Submodule.equivMapOfInjective U hU A'`. Establish `he : ∀ x : ↥A', ((e x : ↥(A'.map U)) : V) = U x` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hmap : (B'.comap A'.subtype).map (e : ↥A' →ₗ[R] ↥(A'.map U)) = (B'.map U).comap (A'.map U).subtype`. Use extensionality with `y`. Rewrite using `[Submodule.mem_map_equiv, Submodule.mem_comap, Submodule.mem_comap, Submodule.subtype_apply, Submodule.subtype_apply]`. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[LinearEquiv.symm_apply_apply, he]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun h => ⟨x, h, rfl⟩, fun ⟨z, hz, h⟩ => hU h ▸ hz⟩`. Rewrite using `[← (Submodule.Quotient.equiv _ _ e hmap).length_eq]`. Set `f : ↥A' →ₗ[R] (ι → ↥A ⧸ B.comap A.subtype)` to `LinearMap.pi fun i => (B.comap A.subtype).mkQ ∘ₗ LinearMap.codRestrict A ((LinearMap.proj i : (ι → E) →ₗ[R] E) ∘ₗ A'.subtype) (fun x => x.2 i (Set.mem_univ i))`. Establish `hf : Function.Surjective f`. Introduce `g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `choose a ha using fun i => Submodule.Quotient.mk_surjective _ (g i)`. Use `⟨⟨fun i => a i, fun i _ => (a i).2⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Conclude with `ha i`. Establish `hker : LinearMap.ker f = B'.comap A'.subtype`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `h i _`. Establish `h' : (B.comap A.subtype).mkQ (LinearMap.codRestrict A ((LinearMap.proj i : (ι → E) →ₗ[R] E) ∘ₗ A'.subtype) (fun x => x.2 i (Set.mem_univ i)) x) = 0` using `congrFun h i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h'`. Introduce `h`. Use function extensionality and compare the values at `i`. Use `show (B.comap A.subtype).mkQ (LinearMap.codRestrict A ((LinearMap.proj i : (ι → E) →ₗ[R] E) ∘ₗ A'.subtype) (fun x => x.2 i (Set.mem_univ i)) x) = 0`.
-
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h i (Set.mem_univ i)`. Rewrite using `[← hker, (f.quotKerEquivOfSurjective hf).length_eq, Module.length_pi, ENat.card_eq_coe_fintype_card]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenPiU_holds : LenPiU := by
   intro R E V _ _ _ _ _ ι _ A B U hU

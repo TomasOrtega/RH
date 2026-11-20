@@ -34,85 +34,85 @@ namespace GlobalTheory.ActFin
 open ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.symmetricBiextensionHyp_pullback_of_groupPullback`.
+A detailed English derivation is pending.
 -/
 theorem qHyp_pull : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] (A' : Over S') [GrpObj A'] (φ : A'.left ⟶ A.left) (φ₂ : (A' ⊗ A').left ⟶ (A ⊗ A).left) (Q : LB (A ⊗ A).left), IsGrpPullback A' A f φ → IsSquare φ φ₂ → QHyp A Q → QHyp A' (Q.pull φ₂) :=
   GlobalTheory.T.symmetricBiextensionHyp_pullback_of_groupPullback
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.matrixWeightedPairBundle_rigidified_ample`.
+A detailed English derivation is pending.
 -/
 theorem formLB_props : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (r : ℕ) (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsAbelianScheme (Out.powObj A r) ∧ (formLB A Q (Out.powPr A (n := r)) W).IsLB ∧ Out.Rigidified (Out.powObj A r) (formLB A Q (Out.powPr A (n := r)) W) ∧ Out.RelAmple (Out.powObj A r) (formLB A Q (Out.powPr A (n := r)) W) :=
   GlobalTheory.T.matrixWeightedPairBundle_rigidified_ample
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.diagonalPullbackPower_isRigidified_relAmple`.
+A detailed English derivation is pending.
 -/
 theorem diagPow_props : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (d : ℕ), 0 < d → (diagPow A Q d).IsLB ∧ Out.Rigidified A (diagPow A Q d) ∧ Out.RelAmple A (diagPow A Q d) :=
   GlobalTheory.T.diagonalPullbackPower_isRigidified_relAmple
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_closedSubscheme_finite_intersection`.
+A detailed English derivation is pending.
 -/
 theorem closed_inter : ∀ (H : Scheme.{0}) (Idx : Type) [Finite Idx] (Z : Idx → Scheme.{0}) (i : ∀ k, Z k ⟶ H), (∀ k, IsClosedImmersion (i k)) → ∃ (Z₀ : Scheme.{0}) (i₀ : Z₀ ⟶ H), IsClosedImmersion i₀ ∧ ∀ (T : Scheme.{0}) (h : T ⟶ H), (∃ z, z ≫ i₀ = h) ↔ ∀ k, ∃ z, z ≫ i k = h :=
   GlobalTheory.T.exists_closedSubscheme_finite_intersection
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_closedSubscheme_intersection`.
+A detailed English derivation is pending.
 -/
 theorem closed_inter₂ : ∀ (H Z₁ Z₂ : Scheme.{0}) (i₁ : Z₁ ⟶ H) (i₂ : Z₂ ⟶ H), IsClosedImmersion i₁ → IsClosedImmersion i₂ → ∃ (Z₀ : Scheme.{0}) (i₀ : Z₀ ⟶ H), IsClosedImmersion i₀ ∧ ∀ (T : Scheme.{0}) (h : T ⟶ H), (∃ z, z ≫ i₀ = h) ↔ (∃ z, z ≫ i₁ = h) ∧ ∃ z, z ≫ i₂ = h :=
   GlobalTheory.T.exists_closedSubscheme_intersection
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.groupScheme_ringAction_iff_endomorphism_relations`.
+A detailed English derivation is pending.
 -/
 theorem exists_act_iff_rels : ∀ (O : Type) [Ring O] (r : ℕ) (e : Fin r → O), Submodule.span ℤ (Set.range e) = ⊤ → ∃ (m : ℕ) (N : Fin m → Fin r → ℤ) (c1 : Fin r → ℤ) (cm : Fin r → Fin r → Fin r → ℤ), ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (f : Fin r → (A ⟶ A)), (∀ k, IsMonHom (f k)) → ((∃ act : O → (A ⟶ A), IsRAct A act ∧ ∀ k, act (e k) = f k) ↔ ((∀ j, ∏ k, f k ^ N j k = 1) ∧ ∏ k, f k ^ c1 k = 𝟙 A ∧ ∀ i j, f i ≫ f j = ∏ k, f k ^ cm i j k)) :=
   GlobalTheory.T.groupScheme_ringAction_iff_endomorphism_relations
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ringActionOnGroupScheme_intCombination_eq_prod_zpow`.
+A detailed English derivation is pending.
 -/
 theorem act_sum_smul : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (O : Type) [Ring O] (act : O → (A ⟶ A)), IsRAct A act → ∀ (r : ℕ) (e : Fin r → O) (c : Fin r → ℤ), act (∑ k, c k • e k) = ∏ k, act (e k) ^ c k :=
   GlobalTheory.T.ringActionOnGroupScheme_intCombination_eq_prod_zpow
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.ringAction_adjoint_of_adjoint_on_spanning_family`.
+A detailed English derivation is pending.
 -/
 theorem adj_of_span : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (e : Fin r → O), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range e) = ⊤ → ∀ (act : O → (A ⟶ A)), IsRAct A act → (∀ i, LBIso (Q.pull (lift (fst A A ≫ act (e i)) (snd A A)).left) (Q.pull (lift (fst A A) (snd A A ≫ act (bar (e i)))).left)) → Adj A Q bar act :=
   GlobalTheory.T.ringAction_adjoint_of_adjoint_on_spanning_family
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.lineBundleIso_pullback_pair_transfer`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_congr : ∀ (X Y : Scheme.{0}) (Q₁ Q₂ : LB X) (m m' : Y ⟶ X), Q₁.IsLB → Q₂.IsLB → LBIso Q₁ Q₂ → LBIso (Q₁.pull m) (Q₁.pull m') → LBIso (Q₂.pull m) (Q₂.pull m') :=
   GlobalTheory.T.lineBundleIso_pullback_pair_transfer
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_groupScheme_baseChange_hom_of_grpPullback`.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_baseChange : ∀ (S S' : Scheme.{0}) (f : S' ⟶ S) (G A : Over S) [GrpObj G] [GrpObj A] (G' A' : Over S') [GrpObj G'] [GrpObj A'] (φG : G'.left ⟶ G.left) (φA : A'.left ⟶ A.left) (p : G ⟶ A), IsGrpPullback G' G f φG → IsGrpPullback A' A f φA → IsMonHom p → ∃ p' : G' ⟶ A', IsMonHom p' ∧ p'.left ≫ φA = φG ≫ p.left :=
   GlobalTheory.T.exists_groupScheme_baseChange_hom_of_grpPullback
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_grpPullback_powObj_projections`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_baseChange : ∀ (S T : Scheme.{0}) (t : T ⟶ S) (A : Over S) [GrpObj A] (A' : Over T) [GrpObj A'] (φ' : A'.left ⟶ A.left) (B' : Over T) [GrpObj B'] (r : ℕ) (φB : B'.left ⟶ (Out.powObj A r).left), IsGrpPullback A' A t φ' → IsGrpPullback B' (Out.powObj A r) t φB → ∃ pr' : Fin r → (B' ⟶ A'), (∀ u, IsMonHom (pr' u)) ∧ (∀ u, (pr' u).left ≫ φ' = φB ≫ (Out.powPr A u).left) ∧ ∀ (X : Over T) (y : Fin r → (X ⟶ A')), ∃! x : X ⟶ B', ∀ u, x ≫ pr' u = y u :=
   GlobalTheory.T.exists_grpPullback_powObj_projections
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isMonHom_of_components_into_groupScheme_product`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_of_components : ∀ (T : Scheme.{0}) (A' B' C : Over T) [GrpObj A'] [GrpObj B'] [GrpObj C] (r : ℕ) (pr' : Fin r → (B' ⟶ A')), (∀ u, IsMonHom (pr' u)) → (∀ (X : Over T) (y : Fin r → (X ⟶ A')), ∃! x : X ⟶ B', ∀ u, x ≫ pr' u = y u) → ∀ Φ : C ⟶ B', (∀ u, IsMonHom (Φ ≫ pr' u)) → IsMonHom Φ :=
   GlobalTheory.T.isMonHom_of_components_into_groupScheme_product
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.groupSchemeEndProductPowers_transport_grpPullback`.
+A detailed English derivation is pending.
 -/
 theorem prodPow_transport : ∀ (S S' : Scheme.{0}) (t : S' ⟶ S) (A : Over S) [GrpObj A] [IsCommMonObj A] (A' : Over S') [GrpObj A'] [IsCommMonObj A'] (φ : A'.left ⟶ A.left), IsGrpPullback A' A t φ → ∀ (r : ℕ) (g : Fin r → (A' ⟶ A')) (f : Fin r → (A ⟶ A)) (c : Fin r → ℤ), (∀ k, (g k).left ≫ φ = φ ≫ (f k).left) → (∏ k, g k ^ c k).left ≫ φ = φ ≫ (∏ k, f k ^ c k).left :=
   GlobalTheory.T.groupSchemeEndProductPowers_transport_grpPullback
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.formBundle_pullback_adjointAction_eq_diagonalPower`.
+A detailed English derivation is pending.
 -/
 theorem homFix_iso_of_act : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), QHyp A Q → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (e : Fin r → O) (W : Matrix (Fin r) (Fin r) ℤ) (d : ℕ), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range e) = ⊤ → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → 0 < d → ∑ i, ∑ j, W i j • (e j * bar (e i)) = (d : O) → ∀ (T : Scheme.{0}) (t : T ⟶ S) (A' : Over T) [GrpObj A'] [IsCommMonObj A'] (φ' : A'.left ⟶ A.left) (φ₂' : (A' ⊗ A').left ⟶ (A ⊗ A).left) (B' : Over T) [GrpObj B'] (φB : B'.left ⟶ (Out.powObj A r).left) (pr' : Fin r → (B' ⟶ A')), IsGrpPullback A' A t φ' → IsSquare φ' φ₂' → IsGrpPullback B' (Out.powObj A r) t φB → (∀ u, IsMonHom (pr' u)) → (∀ u, (pr' u).left ≫ φ' = φB ≫ (Out.powPr A u).left) → (∀ (X : Over T) (y : Fin r → (X ⟶ A')), ∃! x : X ⟶ B', ∀ u, x ≫ pr' u = y u) → ∀ (act : O → (A' ⟶ A')), IsRAct A' act → Adj A' (Q.pull φ₂') bar act → ∀ Φ : A' ⟶ B', (∀ u, Φ ≫ pr' u = act (e u)) → LBIso ((diagPow A Q d).pull φ') (((formLB A Q (Out.powPr A (n := r)) W).pull φB).pull Φ.left) :=
   GlobalTheory.T.formBundle_pullback_adjointAction_eq_diagonalPower
@@ -123,69 +123,63 @@ namespace GlobalTheory.ActFin
 open ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-Introduce `S _ A _ _ Q hab hQ hr1 hr2 hsym hamp O _ bar r e W d hbar hspan hW hd hcas`. Establish `hQQ : QHyp A Q` using `⟨hab, hQ, hr1, hr2, hsym, hamp⟩`. Take `⟨hGab, hMLB, hMrig, hMamp⟩` from `formLB_props S A Q hQQ r W hW`. Take `⟨hLLB, hLrig, hLamp⟩` from `diagPow_props S A Q hQQ d hd`. Take `⟨R, hfin, -⟩` from `GlobalTheory.T.exists_finite_unramified_representing_polarizedHoms S A (Out.powObj A r) (diagPow A Q d) (formLB A Q (Out.powPr A (n := r)) W) hab hGab hLLB hMLB hLrig hMrig hLamp hMamp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFinite R.π := hfin`. Use `haveI : IsLocallyNoetherian R.H := LocallyOfFiniteType.isLocallyNoetherian R.π`. Use `haveI : IsCommMonObj R.AH := GlobalTheory.isCommMonObj_of_grpPullback _ _ A R.AH R.π R.φA R.pbA`. Set `φ₂H` to `sqMap R.π R.φA R.pbA.1.w`. Establish `hsqH : IsSquare R.φA φ₂H` using `isSquare_sqMap _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨habH, hQHLB, hr1H, hr2H, hsymH, hampH⟩` from `qHyp_pull S R.H R.π A R.AH R.φA φ₂H Q R.pbA hsqH hQQ`. Take `⟨prH, hprHhom, hprH, -⟩` from `exists_pow_baseChange S R.H R.π A R.AH R.φA R.BH r R.φB R.pbA R.pbB`. Set `f : Fin r → (R.AH ⟶ R.AH)` to `fun k => R.Φ ≫ prH k`. Establish `hfhom : ∀ k, IsMonHom (f k)` using `fun k => by haveI := R.hom; haveI := hprHhom k; exact inferInstanceAs (IsMonHom (R.Φ ≫ prH k))`. Take `⟨m, N, c1, cm, halg⟩` from `exists_act_iff_rels O r e hspan`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcb : ∀ i, ∃ c : Fin r → ℤ, ∑ k, c k • e k = bar (e i)` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℤ).1 (hspan ▸ Submodule.mem_top)`. Use `choose cb hcb using hcb`. Establish `hN` using `fun j => GlobalTheory.T.abelianScheme_homAgreeLocus_closedSubscheme R.H R.AH R.AH (∏ k, f k ^ N j k) 1 habH habH (isMonHom_prodPow f hfhom _) GlobalTheory.Serre.isMonHom_one`. Use `choose ZN iN hiN hZN using hN`. Take `⟨Z1, i1, hi1, hZ1⟩` from `GlobalTheory.T.abelianScheme_homAgreeLocus_closedSubscheme R.H R.AH R.AH (∏ k, f k ^ c1 k) (𝟙 _) habH habH (isMonHom_prodPow f hfhom _) inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM` using `fun ij : Fin r × Fin r => GlobalTheory.T.abelianScheme_homAgreeLocus_closedSubscheme R.H R.AH R.AH (f ij.1 ≫ f ij.2) (∏ k, f k ^ cm ij.1 ij.2 k) habH habH (by haveI := hfhom ij.1; haveI := hfhom ij.2; exact inferInstance) (isMonHom_prodPow f hfhom _)`. Use `choose ZM iM hiM hZM using hM`. Establish `hA` using `fun i : Fin r => GlobalTheory.T.exists_closedSubscheme_pullback_adjoint_endomorphism_pair R.H R.AH (Q.pull φ₂H) habH hQHLB hr1H hr2H hsymH hampH (f i) (∏ k, f k ^ cb i k) (hfhom i) (isMonHom_prodPow f hfhom _)`. Use `choose ZA iA hiA hZA using hA`. Take `⟨ZN0, iN0, hiN0, hZN0⟩` from `closed_inter R.H (Fin m) ZN iN hiN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ZM0, iM0, hiM0, hZM0⟩` from `closed_inter R.H (Fin r × Fin r) ZM iM hiM`. Take `⟨ZA0, iA0, hiA0, hZA0⟩` from `closed_inter R.H (Fin r) ZA iA hiA`. Take `⟨Y1, j1, hj1, hY1⟩` from `closed_inter₂ R.H ZN0 Z1 iN0 i1 hiN0 hi1`. Take `⟨Y2, j2, hj2, hY2⟩` from `closed_inter₂ R.H Y1 ZM0 j1 iM0 hj1 hiM0`. Take `⟨Z, iZ, hiZ, hZ⟩` from `closed_inter₂ R.H Y2 ZA0 j2 iA0 hj2 hiA0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `key : ∀ (T : Scheme.{0}) (h : T ⟶ R.H) (A' : Over T) [GrpObj A'] [IsCommMonObj A'] (ψ : A'.left ⟶ R.AH.left) (ψ₂ : (A' ⊗ A').left ⟶ (R.AH ⊗ R.AH).left) (g : Fin r → (A' ⟶ A')), IsGrpPullback A' R.AH h ψ → IsSquare ψ ψ₂ → (∀ k, (g k).left ≫ ψ = ψ ≫ (f k).left) → ((∃ z : T ⟶ Z, z ≫ …`. Introduce `T h A' _ _ ψ ψ₂ g hpb hsq hg`. Establish `canc : ∀ (a b : A' ⟶ A'), a.left ≫ ψ = b.left ≫ ψ → a = b` using `fun a b hab => Over.OverMorphism.ext (hpb.1.hom_ext hab (by rw [Over.w a, Over.w b]))`. Establish `tr` using `fun c => prodPow_transport R.H T h R.AH A' ψ hpb r g f c hg`. Establish `t0 : (1 : A' ⟶ A').left ≫ ψ = ψ ≫ (1 : R.AH ⟶ R.AH).left`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using tr (fun _ => 0)`. Establish `eN : ∀ j, (∃ z, z ≫ iN j = h) ↔ ∏ k, g k ^ N j k = 1` using `fun j => by`. Rewrite using `[← hZN j T h A' ψ hpb, ← tr, ← t0]`. Conclude with `⟨canc _ _, fun e => by rw [e]⟩`. Establish `e1 : (∃ z, z ≫ i1 = h) ↔ ∏ k, g k ^ c1 k = 𝟙 A'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hZ1 T h A' ψ hpb, ← tr, Over.id_left, Category.comp_id]`. Use `⟨fun e => canc _ _ (by rw [e, Over.id_left, Category.id_comp]), fun e => by rw [e, Over.id_left, Category.id_comp]⟩` and prove the remaining obligations. Establish `eM : ∀ ij : Fin r × Fin r, (∃ z, z ≫ iM ij = h) ↔ g ij.1 ≫ g ij.2 = ∏ k, g k ^ cm ij.1 ij.2 k` using `fun ij => by`. Rewrite using `[← hZM ij T h A' ψ hpb, ← tr]`. Establish `: (g ij.1 ≫ g ij.2).left ≫ ψ = ψ ≫ (f ij.1 ≫ f ij.2).left`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, hg, ← Category.assoc, hg, Category.assoc]`. Rewrite using `[← this]`. Conclude with `⟨canc _ _, fun e => by rw [e]⟩`. Establish `eA : ∀ i, (∃ z, z ≫ iA i = h) ↔ LBIso (((Q.pull φ₂H).pull ψ₂).pull (lift (fst A' A' ≫ g i) (snd A' A')).left) (((Q.pull φ₂H).pull ψ₂).pull (lift (fst A' A') (snd A' A' ≫ ∏ k, g k ^ cb i k)).left)` using `fun i => (hZA i T h A' ψ ψ₂ (g i) (∏ k, g k ^ cb i k) hpb hsq (hg i) (tr (cb i))).symm`. Rewrite using `[hZ, hY2, hY1, hZN0, hZM0, hZA0]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨hN', h1'⟩, hM'⟩, hA'⟩`. Conclude with `⟨⟨fun j => (eN j).1 (hN' j), e1.1 h1', fun i j => (eM (i, j)).1 (hM' (i, j))⟩, fun i => (eA i).1 (hA' i)⟩`. Introduce and unpack `⟨⟨hN', h1', hM'⟩, hA'⟩`. Conclude with `⟨⟨⟨fun j => (eN j).2 (hN' j), e1.2 h1'⟩, fun ij => (eM ij).2 (hM' ij.1 ij.2)⟩, fun i => (eA i).2 (hA' i)⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsClosedImmersion iZ := hiZ`. Set `AZ : Over Z` to `(Over.pullback iZ).obj R.AH`. Set `ψZ : AZ.left ⟶ R.AH.left` to `pullback.fst R.AH.hom iZ`. Establish `pbZ : IsGrpPullback AZ R.AH iZ ψZ` using `isGrpPullback_pullback R.AH iZ`. Use `haveI : IsCommMonObj AZ := GlobalTheory.isCommMonObj_of_grpPullback _ _ R.AH AZ iZ ψZ pbZ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `ψ₂Z` to `sqMap iZ ψZ pbZ.1.w`. Establish `hsqZ : IsSquare ψZ ψ₂Z` using `isSquare_sqMap _ _ _`. Establish `hgZ` using `fun k => exists_hom_baseChange R.H Z iZ R.AH R.AH AZ AZ ψZ ψZ (f k) pbZ pbZ (hfhom k)`. Use `choose gZ hgZhom hgZ using hgZ`. Take `⟨hrelZ, hadjZ⟩` from `(key Z iZ AZ ψZ ψ₂Z gZ pbZ hsqZ hgZ).1 ⟨𝟙 Z, Category.id_comp _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨actZ, hactZ, hactZe⟩` from `(halg Z AZ gZ hgZhom).2 hrelZ`. Establish `hbZ : ∀ i, ∏ k, gZ k ^ cb i k = actZ (bar (e i))` using `fun i => by`. Rewrite using `[← hcb i, act_sum_smul Z AZ O actZ hactZ r e (cb i)]`. Simplify using `only [hactZe]`. Establish `hQZ : QHyp AZ (Q.pull (ψ₂Z ≫ φ₂H))` using `qHyp_pull S Z (iZ ≫ R.π) A AZ (ψZ ≫ R.φA) (ψ₂Z ≫ φ₂H) Q (pbZ.comp R.pbA) (isSquare_comp hsqZ hsqH) hQQ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `isoZ : LBIso ((Q.pull φ₂H).pull ψ₂Z) (Q.pull (ψ₂Z ≫ φ₂H))` using `GlobalTheory.ArcDataDescent.lbIso_pull_pull hQ _ _ rfl`. Establish `hadjZ' : Adj AZ (Q.pull (ψ₂Z ≫ φ₂H)) bar actZ` using `adj_of_span Z AZ _ hQZ O bar r e hbar hspan actZ hactZ fun i => by`. Use `lbIso_pull_congr _ _ _ _ _ _ (pull_isLB (pull_isLB hQ _) _) hQZ.2.1 isoZ (hadjZ i)` as an intermediate fact. Rewrite `this` using `[hbZ i, ← hactZe i]`. Then use the resulting hypothesis. Use `⟨{ H := Z π := iZ ≫ R.π AH := AZ φ := ψZ ≫ R.φA φ₂ := ψ₂Z ≫ φ₂H pb := pbZ.comp R.pbA sq := isSquare_comp hsqZ hsqH act := actZ isAct := hactZ adj := hadjZ' rep := ?_ }, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `T t A' _ φ' φ₂' act' hpb hsq hact hadj haveI : IsCommMonObj A' := GlobalTheory.isCommMonObj_of_grpPullback _ _ A A' t φ' hpb`. Set `B'` to `(Over.pullback t).obj (Out.powObj A r)`. Set `φB : B'.left ⟶ (Out.powObj A r).left` to `pullback.fst _ t`. Establish `hB : IsGrpPullback B' (Out.powObj A r) t φB` using `isGrpPullback_pullback _ t`. Take `⟨pr', hpr'hom, hpr', hprod'⟩` from `exists_pow_baseChange S T t A A' φ' B' r φB hpb hB`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Φ', hΦ', -⟩` from `hprod' A' (fun u => act' (e u))`. Establish `hΦhom : IsMonHom Φ'` using `isMonHom_of_components T A' B' A' r pr' hpr'hom hprod' Φ' fun u => by`. Rewrite using `[hΦ' u]`. Conclude with `hact.1 _`. Establish `hiso` using `homFix_iso_of_act S A Q hQQ O bar r e W d hbar hspan hW hd hcas T t A' φ' φ₂' B' φB pr' hpb hsq hB hpr'hom hpr' hprod' act' hact hadj Φ' hΦ'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Take `⟨h₀, ⟨hh₀, ψA, ψB, hψA, hψB, hψAφ, hψBφ, hΦψ⟩, huniq⟩` from `R.rep T t A' B' φ' φB Φ' hpb hB hΦhom hiso`. Set `g : Fin r → (A' ⟶ A')` to `fun k => act' (e k)`. Establish `hprc : ∀ k, (pr' k).left ≫ ψA = ψB ≫ (prH k).left` using `fun k => by`. Apply `R.pbA.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hψAφ, hprH k]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpr' k, ← Category.assoc, hψBφ]`. Simplify using `only [Category.assoc, hψA.1.w, Over.w (prH k), hψB.1.w]`. Rewrite using `[← Category.assoc, Over.w (pr' k)]`. Establish `hg : ∀ k, (g k).left ≫ ψA = ψA ≫ (f k).left` using `fun k => by show (act' (e k)).left ≫ ψA = ψA ≫ (R.Φ ≫ prH k).left`. Rewrite using `[← hΦ' k, Over.comp_left, Over.comp_left, Category.assoc, hprc k, ← Category.assoc, hΦψ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `ψ₂A` to `sqMap h₀ ψA hψA.1.w`. Establish `hsqA : IsSquare ψA ψ₂A` using `isSquare_sqMap _ _ _`. Establish `hrel'` using `(halg T A' g (fun k => hact.1 _)).1 ⟨act', hact, fun k => rfl⟩`. Establish `e₂ : φ₂' = ψ₂A ≫ φ₂H`. Establish `hc : IsSquare φ' (ψ₂A ≫ φ₂H)` using `hψAφ ▸ isSquare_comp hsqA hsqH`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pullback.hom_ext (hsq.1.trans hc.1.symm) (hsq.2.trans hc.2.symm)`. Establish `isoA : LBIso (Q.pull φ₂') ((Q.pull φ₂H).pull ψ₂A)`. Rewrite using `[e₂]`. Conclude with `LBIso.symm (GlobalTheory.ArcDataDescent.lbIso_pull_pull hQ _ _ rfl)`. Establish `hadj' : ∀ i, LBIso (((Q.pull φ₂H).pull ψ₂A).pull (lift (fst A' A' ≫ g i) (snd A' A')).left) (((Q.pull φ₂H).pull ψ₂A).pull (lift (fst A' A') (snd A' A' ≫ ∏ k, g k ^ cb i k)).left)` using `fun i => by`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb : ∏ k, g k ^ cb i k = act' (bar (e i))`. Rewrite using `[← hcb i, act_sum_smul T A' O act' hact r e (cb i)]`. Rewrite using `[hb]`. Conclude with `lbIso_pull_congr _ _ _ _ _ _ (pull_isLB hQ _) (pull_isLB (pull_isLB hQ _) _) isoA (hadj (e i))`. Take `⟨z₀, hz₀⟩` from `(key T h₀ A' ψA ψ₂A g hψA hsqA hg).2 ⟨hrel', hadj'⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `ψ : A'.left ⟶ AZ.left` to `pullback.lift ψA (A'.hom ≫ z₀) (by rw [hψA.1.w, Category.assoc, hz₀])`. Establish `hψ1 : ψ ≫ ψZ = ψA` using `pullback.lift_fst _ _ _`. Establish `hpbψ : IsGrpPullback A' AZ z₀ ψ` using `IsGrpPullback.cancel pbZ (IsGrpPullback.congr hψA hz₀.symm hψ1.symm) (pullback.lift_snd _ _ _)`. Establish `hgψ : ∀ k, (g k).left ≫ ψ = ψ ≫ (gZ k).left` using `fun k => by`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Category.assoc, hψ1, hgZ k, ← Category.assoc, hψ1, hg k]`. Rewrite using `[Category.assoc, Category.assoc] erw [pullback.lift_snd, Over.w (gZ k), pullback.lift_snd]`. Rewrite using `[← Category.assoc, Over.w (g k)]`. Use `⟨z₀, ⟨by rw [← Category.assoc, hz₀, hh₀], ψ, hpbψ, by rw [← Category.assoc, hψ1, hψAφ], fun a => ?_⟩, ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).1 (hspan ▸ Submodule.mem_top : a ∈ Submodule.span ℤ (Set.range e))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc, act_sum_smul T A' O act' hact r e c, act_sum_smul Z AZ O actZ hactZ r e c]`. Simplify using `only [hactZe]`. Conclude with `prodPow_transport Z T z₀ AZ A' ψ hpbψ r g gZ c hgψ`. Introduce and unpack `h ⟨hπ, ψ₁, hpb₁, hφ₁, hact₁⟩`. Establish `hpb₁'` using `hpb₁.comp pbZ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ψB₁ : B'.left ⟶ R.BH.left` to `R.pbB.1.lift φB (B'.hom ≫ h ≫ iZ) (by`. Rewrite using `[hB.1.w, ← hπ]`. Simplify using `only [Category.assoc])`. Establish `hψB₁φ : ψB₁ ≫ R.φB = φB` using `R.pbB.1.lift_fst _ _ _`. Establish `hB₁ : IsGrpPullback B' R.BH (h ≫ iZ) ψB₁` using `IsGrpPullback.cancel R.pbB (IsGrpPullback.congr hB (by rw [Category.assoc, hπ]) hψB₁φ.symm) (by rw [R.pbB.1.lift_snd])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ∀ k, (g k).left ≫ (ψ₁ ≫ ψZ) = (ψ₁ ≫ ψZ) ≫ (f k).left` using `fun k => by`. Rewrite using `[← Category.assoc, hact₁ (e k), Category.assoc, hactZe k, hgZ k, Category.assoc]`. Establish `hH : Φ'.left ≫ ψB₁ ≫ R.BH.hom = ψ₁ ≫ ψZ ≫ R.Φ.left ≫ R.BH.hom`. Establish `w1` using `hpb₁'.1.w`. Establish `w2` using `Over.w Φ'`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `w3` using `Over.w R.Φ`. Establish `w4 : ψB₁ ≫ R.BH.hom = B'.hom ≫ h ≫ iZ` using `R.pbB.1.lift_snd _ _ _`. Simplify using `only [Category.assoc] at w1 w4 ⊢`. Rewrite using `[w4, w3, w1, ← Category.assoc, w2]`. Establish `hΦ₁ : Φ'.left ≫ ψB₁ = (ψ₁ ≫ ψZ) ≫ R.Φ.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `R.pbB.1.hom_ext` to reduce the goal to its premises. Apply `powext A r` to reduce the goal to its premises. Use `congrArg (· ≫ R.π) hH` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Rewrite using `[R.pbB.1.w]`.
-
-Simplify `this` using `only [Category.assoc]`. Introduce `k`. Establish `l1 : Φ'.left ≫ φB ≫ (Out.powPr A k).left = (g k).left ≫ φ'`. Rewrite using `[← hpr' k, ← Category.assoc, ← Over.comp_left, hΦ' k]`. Establish `l2 : R.Φ.left ≫ R.φB ≫ (Out.powPr A k).left = (f k).left ≫ R.φA`.
-
-Rewrite using `[← hprH k, ← Category.assoc, ← Over.comp_left]`. Establish `hc` using `hcomp k`. Simplify using `only [Category.assoc] at hc ⊢`. Rewrite using `[← Category.assoc ψB₁ R.φB, hψB₁φ, l1, l2, ← hφ₁]`. Rewrite using `[show (g k).left ≫ ψ₁ ≫ ψZ ≫ R.φA = ((g k).left ≫ ψ₁ ≫ ψZ) ≫ R.φA by simp only [Category.assoc], hc]`.
-
-Simplify using `only [Category.assoc]`. Simplify `hH` using `only [Category.assoc]`. Establish `e₀ : h ≫ iZ = h₀` using `huniq (h ≫ iZ) ⟨by rw [Category.assoc, hπ], ψ₁ ≫ ψZ, ψB₁, hpb₁', hB₁, by rw [Category.assoc, hφ₁], hψB₁φ, hΦ₁⟩`. Conclude with `(cancel_mono iZ).1 (e₀.trans hz₀.symm)`. Use `show IsFinite (iZ ≫ R.π) infer_instance`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_actRep_finite : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (A : Over S) [GrpObj A] [IsCommMonObj A] (Q : LB (A ⊗ A).left), IsAbelianScheme A → Q.IsLB → (∃ t : (Q.pull (lift (1 : A ⟶ A) (𝟙 A)).left).Gen, t.IsGen) → (∃ t : (Q.pull (lift (𝟙 A) (1 : A ⟶ A)).left).Gen, t.IsGen) → LBIso Q (Q.pull (lift (snd A A) (fst A A)).left) → Out.RelAmple A (Q.pull (lift (𝟙 A) (𝟙 A)).left) → ∀ (O : Type) [Ring O] (bar : O → O) (r : ℕ) (e : Fin r → O) (W : Matrix (Fin r) (Fin r) ℤ) (d : ℕ), (∀ a b, bar (a + b) = bar a + bar b) → Submodule.span ℤ (Set.range e) = ⊤ → ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → 0 < d → ∑ i, ∑ j, W i j • (e j * bar (e i)) = (d : O) → ∃ R : ActRep A Q bar, IsFinite R.π := by
   intro S _ A _ _ Q hab hQ hr1 hr2 hsym hamp O _ bar r e W d hbar hspan hW hd hcas

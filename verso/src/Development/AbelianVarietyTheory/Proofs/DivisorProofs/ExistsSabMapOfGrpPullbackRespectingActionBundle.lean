@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UCanon.TriplePull
 
 /- English proof (translation)
-Introduce `E _ _ _ H S S' t' t f π hp gp hact h`. Establish `hp' : IsProper t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) gp.1 hp`. Conclude with `GlobalTheory.CartTriple.exists_tripleMap GlobalTheory.lawsFieldsSeparately.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.1 E H S S' f t' t π ⟨t'.semi.comm, t'.semi.smooth, hp', t'.semi.geomConnected⟩ gp hact h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sabMap_of_isProper : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}} (t' : SAB H S') (t : SAB H S) (f : S' ⟶ S) (π : t'.G.left ⟶ t.G.left), IsProper t.G.hom → IsGrpPullback t'.G t.G f π → (∀ a, (t'.act.act a).left ≫ π = π ≫ (t.act.act a).left) → LBIso t'.PP.L (t.PP.L.pull π) → ∃ m : SABMap t' t f, m.φ = π := by
   intro E _ _ _ H S S' t' t f π hp gp hact h

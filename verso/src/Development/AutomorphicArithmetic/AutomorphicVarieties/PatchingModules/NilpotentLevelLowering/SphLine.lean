@@ -10,15 +10,15 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨S, ⟨hS0, hS⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ U)).has_min {S | S ≠ ⊥ ∧ ∀ t, ∀ v ∈ S, (θ t).restrict (hθ t) v ∈ S} ⟨⊤, by haveI : Nontrivial U := Submodule.nontrivial_iff_ne_bot.2 hU`. Conclude with `top_ne_bot, fun _ _ _ => trivial⟩`. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hS0`. Establish `key : ∀ t, ∃ c : ℂ, ∀ v ∈ S, (θ t).restrict (hθ t) v = c • v` using `fun t => by`. Take `⟨c, hc'⟩` from `Module.End.exists_eigenvalue (((θ t).restrict (hθ t)).restrict (hS t))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hc'.exists_hasEigenvector`. Establish `hw1 : (θ t).restrict (hθ t) w = c • (w : U)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : S ⊓ Module.End.eigenspace ((θ t).restrict (hθ t)) c = S`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmin _ ⟨?_, ?_⟩ (lt_of_le_of_ne inf_le_left hne)` and prove the remaining obligations. Conclude with `(Submodule.ne_bot_iff _).2 ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.2 hw1⟩, fun h => hw.2 (Subtype.ext h)⟩`. Introduce and unpack `s x ⟨hx, hx'⟩`. Use `⟨hS s x hx, Module.End.mem_eigenspace_iff.2 (Subtype.ext ?_)⟩` and prove the remaining obligations. Establish `h2 : θ t x = c • (x : V)` using `congrArg Subtype.val (Module.End.mem_eigenspace_iff.1 hx')`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `θ t (θ s x) = c • θ s x`. Rewrite using `[hc t s x x.2, h2, map_smul]`. Rewrite `hv` using `[← h1]`. Conclude with `Module.End.mem_eigenspace_iff.1 hv.2`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hS0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨v, v.2, fun h => hv0 (Subtype.ext h), fun t => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `key t`. Conclude with `⟨c, congrArg Subtype.val (hc v hv)⟩`.
+A detailed English derivation is pending.
 -/
 private theorem sphLine_eig {T V : Type} [AddCommGroup V] [Module ℂ V] (U : Submodule ℂ V) [FiniteDimensional ℂ U]
     (hU : U ≠ ⊥) (θ : T → Module.End ℂ V) (hθ : ∀ t, ∀ v ∈ U, θ t v ∈ U)
@@ -53,11 +53,11 @@ private theorem sphLine_eig {T V : Type} [AddCommGroup V] [Module ℂ V] (U : Su
   exact ⟨c, congrArg Subtype.val (hc v hv)⟩
 
 /- English proof (translation)
-Use `letI : Fintype (MulAction.orbit K (g : G ⧸ K)) := hfin.fintype`. Use `haveI : Nonempty (MulAction.orbit K (g : G ⧸ K)) := ⟨⟨_, MulAction.mem_orbit_self _⟩⟩`. Use `⟨(Fintype.card (MulAction.orbit K (g : G ⧸ K)) : ℂ), Nat.cast_ne_zero.2 Fintype.card_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[dc, finsum_eq_sum_of_fintype, LinearMap.sum_apply, Nat.cast_smul_eq_nsmul, ← Finset.card_univ, ← Finset.sum_const, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨q, a, ha⟩ -`. Establish `h : (((a : G) * g : G) : G ⧸ K) = (q.out : G ⧸ K)`. Rewrite using `[QuotientGroup.out_eq']`. Conclude with `ha`. Establish `h1` using `hw _ (QuotientGroup.eq.mp h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ρ q.out w = ρ a (ρ g w)` using `by conv_rhs => rw [← h1]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_inv_cancel_left]`. Express the relevant statement in the definitionally equal form `ρ q.out w - ρ g w ∈ _`. Rewrite using `[h2]`. Conclude with `GlobalTheory.IwahoriInj.sub_mem_twKer a.2 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sphLine_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (K : Subgroup G) (g : G) (hfin : (MulAction.orbit K (g : G ⧸ K)).Finite) {w : V} (hw : w ∈ fixd ρ K) :
@@ -80,23 +80,21 @@ private theorem sphLine_dc {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V
   exact GlobalTheory.IwahoriInj.sub_mem_twKer a.2 _
 
 /- English proof (translation)
-Introduce `hBZ k _ _ _ _ n σ v hv v' hv' hv0`. Take `⟨hfin, hcomm, -⟩` from `sphComm k n ℂ σ.V σ.ρ`. Establish `hfix : fixd σ.ρ (KO k (Fin n)) = GlobalTheory.PRep.fixed σ.ρ (KO k (Fin n))`. Use extensionality with `u`. Conclude with `GlobalTheory.IwahoriInj.mem_fixed.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hfd : FiniteDimensional ℂ (fixd σ.ρ (KO k (Fin n)))`. Rewrite using `[hfix]`. Conclude with `((hBZ k).1 _ σ.V σ.ρ σ.smooth σ.irred).2 _ GlobalTheory.SplitFlip.isOpen_KO GlobalTheory.SplitFlip.isCompact_KO`. Take `⟨w, hw, hw0, hwe⟩` from `sphLine_eig (fixd σ.ρ (KO k (Fin n))) ((Submodule.ne_bot_iff _).2 ⟨v, hv, hv0⟩) (fun x => dc σ.ρ (KO k (Fin n)) (KO k (Fin n)) x) (fun x => (dcSum ℂ _ σ.V σ.ρ _ _ x (hfin x)).2.1) hcomm`. Use `set J := GlobalTheory.PRep.twKer σ.ρ (KO k (Fin n)) 1 with hJ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `T : Subrepresentation σ.ρ` to `⟨⨅ g, ((ℂ ∙ w) ⊔ J).comap (σ.ρ g), fun g u hu => by`. Rewrite `hu`, the goal using `[Submodule.mem_iInf]`. Introduce `h`. Use `hu (h * g)` as an intermediate fact. Rewrite using `[Submodule.mem_comap, map_mul, Module.End.mul_apply] at this⟩` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hwT : w ∈ T.toSubmodule`. Use `(Submodule.mem_iInf _).2 fun g => ?_` and prove the remaining obligations. Take `⟨N, hN, h⟩` from `sphLine_dc σ.ρ _ g (hfin g) hw`. Take `⟨c, hc⟩` from `hwe g`. Rewrite `h` using `[hc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, ← Submodule.smul_mem_iff _ hN]`. Establish `h3 : N • σ.ρ g w = c • w - (c • w - N • σ.ρ g w)` using `by abel`. Rewrite using `[h3]`. Conclude with `sub_mem (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self w))) (Submodule.mem_sup_right h)`. Establish `hT : T = ⊤` using `by haveI := σ.irred`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(eq_bot_or_eq_top T).resolve_left fun h => hw0 ?_` and prove the remaining obligations. Rewrite `hwT` using `[h]`. Conclude with `hwT`. Establish `key : ∀ u ∈ fixd σ.ρ (KO k (Fin n)), ∃ c : ℂ, u = c • w`. Introduce `u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1 : u ∈ T.toSubmodule` using `by rw [hT]; trivial`. Establish `h2` using `(Submodule.mem_iInf _).1 h1 1`. Rewrite `h2` using `[Submodule.mem_comap, map_one, Module.End.one_apply, Submodule.mem_sup]`. Take `⟨y, hy, z, hz, hyz⟩` from `h2`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : z = u - c • w` using `by rw [← hyz]; abel`. Establish `h4 : z = 0` using `GlobalTheory.IwahoriInj.eq_zero_of_fixed σ.smooth GlobalTheory.SplitFlip.isCompact_KO (by rw [← hfix, h3]; exact sub_mem hu (Submodule.smul_mem _ _ hw)) hz`. Conclude with `⟨c, by rw [← hyz, h4, add_zero]⟩`. Take `⟨a, rfl⟩` from `key v hv`. Take `⟨b, rfl⟩` from `key v' hv'`.
-
-Establish `ha : a ≠ 0` using `fun h => hv0 (by rw [h, zero_smul])`. Conclude with `⟨b / a, by rw [smul_smul, div_mul_cancel₀ _ ha]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.sphLine :
     GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (σ : SmIrr (GL (Fin n) k)), ∀ v ∈ fixd σ.ρ (KO k (Fin n)), ∀ v' ∈ fixd σ.ρ (KO k (Fin n)), v ≠ 0 → ∃ c : ℂ, v' = c • v := by

@@ -13,135 +13,135 @@ import Formalism.RealPlaceAnalysis.RealPlaceTaylor.FirstSlotSliceSlotMixedCasimi
 
 namespace Formalism.REAL
 /- English proof (translation)
-The claim follows from `compact_haar_holds`.
+A detailed English derivation is pending.
 -/
 theorem kHaar : KHaar := compact_haar_holds
 /- English proof (translation)
-The claim follows from `compact_exponential_surjective`.
+A detailed English derivation is pending.
 -/
 theorem kExp : KExp := compact_exponential_surjective
 /- English proof (translation)
-The claim follows from `genExp_of kExp`.
+A detailed English derivation is pending.
 -/
 theorem genExp : GenExp := genExp_of kExp
 /- English proof (translation)
-The claim follows from `vector_right_derivative_extends`.
+A detailed English derivation is pending.
 -/
 theorem rdExtV : RdExtV := vector_right_derivative_extends
 /- English proof (translation)
-The claim follows from `vector_right_derivative_left_invariant`.
+A detailed English derivation is pending.
 -/
 theorem rdLeftV : RdLeftV := vector_right_derivative_left_invariant
 /- English proof (translation)
-The claim follows from `rdSmoothV_of rdExtV`.
+A detailed English derivation is pending.
 -/
 theorem rdSmoothV : RdSmoothV := rdSmoothV_of rdExtV
 /- English proof (translation)
-The claim follows from `rdLinV_of rdExtV`.
+A detailed English derivation is pending.
 -/
 theorem rdLinV : RdLinV := rdLinV_of rdExtV
 /- English proof (translation)
-The claim follows from `rdBracketV_of rdExtV rdSmoothV`.
+A detailed English derivation is pending.
 -/
 theorem rdBracketV : RdBracketV := rdBracketV_of rdExtV rdSmoothV
 /- English proof (translation)
-The claim follows from `eabGlV_of rdLinV rdBracketV rdSmoothV`.
+A detailed English derivation is pending.
 -/
 theorem eabGlV : EabGlV := eabGlV_of rdLinV rdBracketV rdSmoothV
 /- English proof (translation)
-The claim follows from `rdVPair_of rdExtV`.
+A detailed English derivation is pending.
 -/
 theorem rdVPair : RdVPair := rdVPair_of rdExtV
 /- English proof (translation)
-The claim follows from `ecSumV_of rdLinV`.
+A detailed English derivation is pending.
 -/
 theorem ecSumV : EcSumV := ecSumV_of rdLinV
 /- English proof (translation)
-The claim follows from `compact_weight_orthogonal`.
+A detailed English derivation is pending.
 -/
 theorem kWtOrth : KWtOrth := compact_weight_orthogonal
 /- English proof (translation)
-The claim follows from `compact_lowering_holds`.
+A detailed English derivation is pending.
 -/
 theorem kLow : KLow := compact_lowering_holds
 /- English proof (translation)
-The claim follows from `compact_casimir_span_holds`.
+A detailed English derivation is pending.
 -/
 theorem kCasSpan : KCasSpan := compact_casimir_span_holds
 /- English proof (translation)
-The claim follows from `kOrth_of kLow kWtOrth`.
+A detailed English derivation is pending.
 -/
 theorem kOrth : KOrth := kOrth_of kLow kWtOrth
 /- English proof (translation)
-The claim follows from `kHiUniq_of kLow kWtOrth kOrth`.
+A detailed English derivation is pending.
 -/
 theorem kHiUniq : KHiUniq := kHiUniq_of kLow kWtOrth kOrth
 /- English proof (translation)
-The claim follows from `highestWeightExists_holds`.
+A detailed English derivation is pending.
 -/
 theorem kHiExist : KHiExist := highestWeightExists_holds
 /- English proof (translation)
-The claim follows from `kIrr_of kHiExist kHiUniq`.
+A detailed English derivation is pending.
 -/
 theorem kIrr : KIrr := kIrr_of kHiExist kHiUniq
 /- English proof (translation)
-The claim follows from `kDecomp_of kHiExist kOrth`.
+A detailed English derivation is pending.
 -/
 theorem kDecomp : KDecomp := kDecomp_of kHiExist kOrth
 /- English proof (translation)
-The claim follows from `kIsoSplit_of kDecomp kOrth`.
+A detailed English derivation is pending.
 -/
 theorem kIsoSplit : KIsoSplit := kIsoSplit_of kDecomp kOrth
 /- English proof (translation)
-The claim follows from `kWtBound_of kCasSpan`.
+A detailed English derivation is pending.
 -/
 theorem kWtBound : KWtBound := kWtBound_of kCasSpan
 /- English proof (translation)
-The claim follows from `kCasBound_of kDecomp kCasSpan kOrth`.
+A detailed English derivation is pending.
 -/
 theorem kCasBound : KCasBound := kCasBound_of kDecomp kCasSpan kOrth
 /- English proof (translation)
-The claim follows from `casimir_on_cyclic_holds`.
+A detailed English derivation is pending.
 -/
 theorem casOnCyc : CasOnCyc := casimir_on_cyclic_holds
 /- English proof (translation)
-The claim follows from `pfil_facts_hold`.
+A detailed English derivation is pending.
 -/
 theorem pfilFacts : PfilFacts := pfil_facts_hold
 /- English proof (translation)
-The claim follows from `arr_module_facts`.
+A detailed English derivation is pending.
 -/
 theorem arrModule : ArrModule := arr_module_facts
 /- English proof (translation)
-The claim follows from `theta_filtration_holds`.
+A detailed English derivation is pending.
 -/
 theorem thetaFil : ThetaFil := theta_filtration_holds
 /- English proof (translation)
-The claim follows from `hVCoeff_of kLow kWtOrth arrModule`.
+A detailed English derivation is pending.
 -/
 theorem hVCoeff : HVCoeff := hVCoeff_of kLow kWtOrth arrModule
 /- English proof (translation)
-The claim follows from `typesSplit_of hVCoeff kIsoSplit arrModule`.
+A detailed English derivation is pending.
 -/
 theorem typesSplit : TypesSplit := typesSplit_of hVCoeff kIsoSplit arrModule
 /- English proof (translation)
-The claim follows from `casArr_of kCasSpan`.
+A detailed English derivation is pending.
 -/
 theorem casArr : CasArr := casArr_of kCasSpan
 /- English proof (translation)
-The claim follows from `symmetricSliceMixedCasimir_holds`.
+A detailed English derivation is pending.
 -/
 theorem omSymSlice : OmSymSlice := symmetricSliceMixedCasimir_holds
 /- English proof (translation)
-The claim follows from `positiveArraysInvariant_holds`.
+A detailed English derivation is pending.
 -/
 theorem nStable : NStable := positiveArraysInvariant_holds
 /- English proof (translation)
-The claim follows from `omPlus_of kDecomp kOrth kCasSpan casArr arrModule`.
+A detailed English derivation is pending.
 -/
 theorem omPlus : OmPlus := omPlus_of kDecomp kOrth kCasSpan casArr arrModule
 /- English proof (translation)
-The claim follows from `nPos_of casArr omSymSlice omPlus`.
+A detailed English derivation is pending.
 -/
 theorem nPos : NPos := nPos_of casArr omSymSlice omPlus
 end Formalism.REAL

@@ -5,7 +5,7 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, Complex.sq_norm]`. Apply the tactic sequence `apply Complex.ext <;>`. Apply the tactic sequence `simp [Complex.normSq_apply, pow_succ, Complex.mul_re, Complex.mul_im] <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem complex_mul_conj_eq_polarization (a b : ℂ) :
     a * starRingEnd ℂ b = (1 / 4 : ℂ) * ∑ k ∈ Finset.range 4,
@@ -15,7 +15,7 @@ theorem complex_mul_conj_eq_polarization (a b : ℂ) :
     simp [Complex.normSq_apply, pow_succ, Complex.mul_re, Complex.mul_im] <;> ring
 
 /- English proof (translation)
-Use `(h.memLp 2 μ).integrable_norm_pow (by norm_num)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem schwartz_integrable_sq_norm_of_addHaar {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
@@ -25,11 +25,11 @@ theorem schwartz_integrable_sq_norm_of_addHaar {V : Type} [NormedAddCommGroup V]
   simpa using this
 
 /- English proof (translation)
-Repeatedly rewrite using `[complex_mul_conj_eq_polarization (u _)]`. Rewrite using `[integral_const_mul, integral_finset_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← integral_complex_ofReal]`. Simplify using `[smul_eq_mul]`. Introduce `k _`. Use `Integrable.const_mul ?_ _` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(schwartz_integrable_sq_norm_of_addHaar μ (u + (Complex.I ^ k) • v)).ofReal (𝕜 := ℂ)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem schwartz_integral_mul_conj_eq_polarization {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V)
@@ -50,7 +50,7 @@ theorem schwartz_integral_mul_conj_eq_polarization {V : Type} [NormedAddCommGrou
     simpa using this
 
 /- English proof (translation)
-Introduce `hT f g`. Rewrite using `[schwartz_integral_mul_conj_eq_polarization, schwartz_integral_mul_conj_eq_polarization]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← map_smul, ← map_add, hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem schwartz_L2_isometry_preserves_inner {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (T : SchwartzMap V ℂ →ₗ[ℂ] SchwartzMap V ℂ) :
     (∀ f, ∫ x, ‖T f x‖ ^ 2 ∂μ = ∫ x, ‖f x‖ ^ 2 ∂μ) →

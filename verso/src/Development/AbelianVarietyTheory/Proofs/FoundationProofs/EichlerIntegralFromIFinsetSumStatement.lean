@@ -6,7 +6,7 @@ open scoped MatrixGroups ModularForm
 open scoped Manifold
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.EichlerSum.eichler_finset_sum | exact GlobalTheory.EichlerSum.eichler_finset_sum | (intros; apply GlobalTheory.EichlerSum.eichler_finset_sum <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eichlerIntegralFromI_finset_sum : ∀ (w : ℕ) {ι : Type} [Fintype ι] (g : ι → ℍ → ℂ), (∀ i, MDifferentiable 𝓘(ℂ) 𝓘(ℂ) (g i)) → ∀ τ : ℍ, eichler w (∑ i, g i) τ = ∑ i, eichler w (g i) τ := by
   first | exact @GlobalTheory.EichlerSum.eichler_finset_sum | exact GlobalTheory.EichlerSum.eichler_finset_sum | (intros; apply GlobalTheory.EichlerSum.eichler_finset_sum <;> assumption)

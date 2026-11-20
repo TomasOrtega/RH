@@ -9,15 +9,15 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ e`. Use `(Set.Finite.pi (t := fun p : (Σ k, ι k) => Set.Icc (-|e p.1|) |e p.1|) (fun p => Set.finite_Icc _ _)).subset ?_` and prove the remaining obligations. Introduce and unpack `a ⟨hsum, hneg⟩ ⟨k, i⟩ -`. Use `show a ⟨k, i⟩ ∈ Set.Icc (-|e k|) |e k|`. Rewrite using `[Set.mem_Icc, ← abs_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : ∑ j, a ⟨k, j⟩ = e k` using `congrFun hsum k`. Break down `hneg k with h | h` into its components or cases. Establish `hnn : ∀ j, 0 ≤ a ⟨k, j⟩`. Introduce `j`. Assume the negation of the conclusion as `hj`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hj2 : a ⟨k, j⟩ < 0` using `lt_of_not_ge hj`. Establish `hj' : j ∈ negSet a k` using `by simp [negSet, hj2]`. Rewrite `hj'` using `[h]`. Simplify using `at hj'`. Establish `h1 : a ⟨k, i⟩ ≤ ∑ j, a ⟨k, j⟩` using `Finset.single_le_sum (f := fun j => a ⟨k, j⟩) (fun j _ => hnn j) (Finset.mem_univ i)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_nonneg (hnn i)]`. Combine the linear relations using `[le_abs_self (e k)]`. Establish `hng : ∀ j, a ⟨k, j⟩ < 0`. Introduce `j`. Establish `hj : j ∈ negSet a k` using `by rw [h]; exact Finset.mem_univ j`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hj` using `[negSet]`. Establish `h1 : -a ⟨k, i⟩ ≤ ∑ j, -a ⟨k, j⟩` using `Finset.single_le_sum (f := fun j => -a ⟨k, j⟩) (fun j _ => by linarith [hng j]) (Finset.mem_univ i)`. Rewrite `h1` using `[Finset.sum_neg_distrib]`. Rewrite using `[abs_of_neg (hng i)]`. Combine the linear relations using `[neg_abs_le (e k)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem KHFreeBadFinite.full : KHFreeBadFinite.Statement := by
   intro K _ ι _ e

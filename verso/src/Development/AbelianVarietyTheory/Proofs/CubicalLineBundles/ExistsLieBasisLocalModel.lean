@@ -20,7 +20,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.Frames GlobalTheory.LamT
 namespace GlobalTheory.LamT
 
 /- English proof (translation)
-Use `choose ψ hψ using h`. Apply the tactic sequence `refine ⟨⟨⟨⟨ψ, hb ?_⟩, fun x y => hb ?_⟩, hb ?_, fun x y => hb ?_⟩, RingHom.ext fun r => hψ r⟩ <;>`. Simplify using `[hψ]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_restrict_ringHom {R K V F : Type} [CommRing R] [CommRing K] [CommRing V] [CommRing F]
     (a : R →+* K) (b : V →+* F) (hb : Function.Injective b) (i : K →+* F)
@@ -30,21 +30,21 @@ theorem exists_restrict_ringHom {R K V F : Type} [CommRing R] [CommRing K] [Comm
     simp [hψ]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ z p T iK M hT A hA`. Take `⟨R, _, _, _, _, _, ρ, xR, φR, hg, hρ, hR, ⟨hfib, -⟩, -, hv⟩` from `hA`. Establish `hinj : Function.Injective (algebraMap T.V T.Fr)` using `IsFractionRing.injective _ _`. Take `⟨ψ, hψ⟩` from `exists_restrict_ringHom (algebraMap R z.K) (algebraMap T.V T.Fr) hinj iK (fun r => (hT _).2 ((hR _).1 ⟨r, rfl⟩))`. Establish `hρψ : M.ρ = ψ.comp ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `RingHom.ext fun x => hinj ?_` and prove the remaining obligations. Establish `h₁` using `RingHom.congr_fun M.hρ x`. Establish `h₂` using `RingHom.congr_fun hψ (ρ x)`. Establish `h₃` using `RingHom.congr_fun hρ x`. Simplify using `only [RingHom.comp_apply] at h₁ h₂ h₃ ⊢`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h₁, h₂, h₃]`. Establish `hp : IsGrpPullback xR.P.A z.B.t.G (spMap ρ) φR` using `hfib`. Establish `e : spMap M.ρ = spMap ψ ≫ spMap ρ` using `by rw [hρψ]; exact spMap_comp ρ ψ`. Establish `hn : IsGrpPullback M.G.t.G z.B.t.G (spMap M.ρ) M.n.φ` using `M.n.cart`. Establish `w : M.n.φ ≫ z.B.t.G.hom = (M.G.t.G.hom ≫ spMap ψ) ≫ spMap ρ` using `by rw [hn.1.w, e, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : IsGrpPullback M.G.t.G xR.P.A (spMap ψ) (hp.1.lift _ _ w)` using `IsGrpPullback.cancel hp (hn.congr e (hp.1.lift_fst _ _ w).symm) (hp.1.lift_snd _ _ w)`. Use `xR.P.isAb.comm` as an intermediate fact. Take `⟨v', hb, hv'⟩` from `GlobalTheory.exists_isLieBasis_baseChange R T.V ψ _ _ _ hq xR.P.isAb.smooth _ xR.v xR.basis`. Establish `hb' : ∀ (k : ℕ) (hk : xR.P.g = k), IsLieBasis fun i : Fin k => v' (i.cast hk.symm)`. Introduce and unpack `k rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hb`. Use `⟨fun k => v' (k.cast hg.symm), hb' _ hg, fun k => ?_⟩` and prove the remaining obligations. Take `⟨wK, hw, hw'⟩` from `hv k`. Use `⟨wK, hw, ?_⟩` and prove the remaining obligations. Establish `ed : (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr)).comp (Chart.dualMapR ψ) = (Formalism.L2.Pj.dualMap iK).comp (Formalism.L2.Pj.dualMap (algebraMap R z.K))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `h₁` using `RingHom.congr_fun hψ x.fst`. Establish `h₂` using `RingHom.congr_fun hψ x.snd`. Simplify using `only [RingHom.comp_apply] at h₁ h₂`. Use `TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h₁` using `[Formalism.L2.Pj.dualMap, Chart.dualMapR]`. Simplify using `only [Formalism.L2.Pj.dualMap, Chart.dualMapR, RingHom.comp_apply, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add]`. Conclude with `h₂`. Establish `es : spMap (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr)) ≫ spMap (Chart.dualMapR ψ) = spMap (Formalism.L2.Pj.dualMap iK) ≫ spMap (Formalism.L2.Pj.dualMap (algebraMap R z.K))`. Rewrite using `[← spMap_comp, ← spMap_comp, ed]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : (v' (k.cast hg.symm)).left ≫ M.n.φ = spMap (Chart.dualMapR ψ) ≫ (xR.v (k.cast hg.symm)).left ≫ φR`. Rewrite using `[← Category.assoc, ← hv', Category.assoc, hp.1.lift_fst]`. Conclude with `(congrArg (_ ≫ ·) e₁).trans <| (Category.assoc _ _ _).symm.trans <| (congrArg (· ≫ _) es).trans <| (Category.assoc _ _ _).trans (congrArg (_ ≫ ·) hw'.symm)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_locMod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (z : CMPt Xo c) (p : HeightOneSpectrum (𝓞 z.K)) (T : CDVR) (iK : z.K →+* T.Fr) (M : LocMod z T iK), (∀ y : z.K, iK y ∈ Set.range (algebraMap T.V T.Fr) ↔ p.valuation z.K y ≤ 1) → ∀ A : Matrix (Fin z.Φ.T.g) (Fin z.Φ.T.g) z.K, LamF.IsModelAt z.B.pol z.Φ.key z.m'.φ p A → ∃ vV : Fin z.Φ.T.g → (epsR T.V ⟶ M.G.t.G), IsLieBasis vV ∧ ∀ k, ∃ wK : epsR z.K ⟶ z.Φ.T.t.G, IsLieComb (A k) z.Φ.v wK ∧ spMap (Formalism.L2.Pj.dualMap (algebraMap T.V T.Fr)) ≫ (vV k).left ≫ M.n.φ = spMap (Formalism.L2.Pj.dualMap iK) ≫ wK.left ≫ z.m'.φ := by
   intro E _ _ _ H Dw l Xo c _ z p T iK M hT A hA

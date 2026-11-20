@@ -23,7 +23,7 @@ theorem ext0CLM_apply {κ ι κ₁ V : Type} [Fintype κ] [Fintype κ₁] [Norme
     [FiniteDimensional ℝ V] (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → V) : extendByZeroCLM eq a = ext0 eq a := rfl
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => ?_` and prove the remaining obligations. Establish `h` using `norm_le_pi_norm (ext0 eq a) (eq.symm (Sum.inr j))`. Rewrite `h` using `[ext0_inr]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_le_norm_extend_by_zero_block {κ ι κ₁ V : Type} [Fintype κ] [Fintype κ₁] [NormedAddCommGroup V]
     (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → V) : ‖a‖ ≤ ‖ext0 eq a‖ := by
@@ -32,7 +32,7 @@ theorem norm_le_norm_extend_by_zero_block {κ ι κ₁ V : Type} [Fintype κ] [F
   rwa [ext0_inr] at h
 
 /- English proof (translation)
-Use `continuous_pi fun k => ?_` and prove the remaining obligations. Simplify using `only [ext0]`. Consider the cases of `eq k with`. Consider the case `inl i => exact continuous_const`. Consider the case `inr j => exact continuous_apply j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem continuous_extend_by_zero_block {κ ι κ₁ R : Type} [Zero R] [TopologicalSpace R] (eq : κ ≃ ι ⊕ κ₁) :
     Continuous (ext0 (R := R) eq) := by
@@ -45,15 +45,15 @@ theorem continuous_extend_by_zero_block {κ ι κ₁ R : Type} [Zero R] [Topolog
 def res2 {κ ι κ₁ R : Type} (eq : κ ≃ ι ⊕ κ₁) (x : κ → R) : κ₁ → R := fun j => x (eq.symm (Sum.inr j))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `ext0_inr eq a j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem restrict_extend_by_zero {κ ι κ₁ R : Type} [Zero R] (eq : κ ≃ ι ⊕ κ₁) (a : κ₁ → R) : res2 eq (ext0 eq a) = a := by
   funext j; exact ext0_inr eq a j
 
 /- English proof (translation)
-Establish `hr : Continuous (res2 (R` using `R) eq) := continuous_pi fun j => continuous_apply _`. Use `IsCompact.of_isClosed_subset (hg.image hr) (isClosed_tsupport _) ?_` and prove the remaining obligations. Use `(closure_minimal (fun y hy => ?_) ((isClosed_tsupport g).preimage (continuous_extend_by_zero_block eq))).trans ?_` and prove the remaining obligations. Conclude with `subset_tsupport g hy`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨ext0 eq y, hy, restrict_extend_by_zero eq y⟩`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_comp_extend_by_zero {κ ι κ₁ R : Type} [Zero R] [TopologicalSpace R]
     (eq : κ ≃ ι ⊕ κ₁) {g : (κ → R) → ℂ} (hg : HasCompactSupport g) : HasCompactSupport (g ∘ ext0 eq) := by
@@ -70,13 +70,13 @@ open GlobalTheory.ThK.AdaptEv in
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F _ _ κ ι κ₁ _ _ _ eq Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨SchwartzMap.compCLM ℝ (extendByZeroCLM (V := mixedEmbedding.mixedSpace F) eq).hasTemperateGrowth ⟨1, 1, fun y => ?_⟩ f, g ∘ ext0 eq, ⟨hg.1.comp_continuous (continuous_extend_by_zero_block eq), hasCompactSupport_comp_extend_by_zero eq hg.2⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_one, one_mul, ext0CLM_apply]`. Combine the linear relations using `[norm_le_norm_extend_by_zero_block eq y]`. Establish `h1 : (0 : AdeleRing (𝓞 F) F).1 = 0` using `rfl`. Establish `h2 : (0 : AdeleRing (𝓞 F) F).2 = 0` using `rfl`. Use function extensionality and compare the values at `y`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [restrL_apply, pureA, SchwartzMap.compCLM_apply, Function.comp_apply, ext0CLM_apply]`. Use `congr 2`. Apply the tactic sequence `funext k; simp only [ext0]; cases eq k <;> simp only [Sum.elim_inl, Sum.elim_inr, h1, map_zero]`. Apply the tactic sequence `funext k; simp only [ext0]; cases eq k <;> simp [h1, h2]`. Consider the case `zero => simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThK.AdaptEv.restrL_mem_schA : ∀ (F : Type) [Field F] [NumberField F] {κ ι κ₁ : Type} [Fintype κ] [Fintype ι] [Fintype κ₁] (eq : κ ≃ ι ⊕ κ₁),
     ∀ Φ ∈ schA F κ, restrL eq Φ ∈ schA F κ₁ := by

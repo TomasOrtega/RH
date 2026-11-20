@@ -13,9 +13,9 @@ namespace GlobalTheory.TubeLie
 open GlobalTheory.OmegaFrobenius (realify unrealify_realify)
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_bool, Complex.sq_norm, Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [unrealify, Real.norm_eq_abs, sq_abs]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_unrealify {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     ‖x‖ ^ 2 = ∑ i, ∑ j, ‖unrealify x i j‖ ^ 2 := by
@@ -28,7 +28,7 @@ theorem norm_sq_unrealify {m : ℕ} (x : EuclideanSpace ℝ (Fin m × Fin m × B
   ring
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive k 1 (X : EuclideanSpace ℝ _) (by simp)).1 X.2`. Establish `h'` using `congrFun (congrFun h i) j`. Simplify `h'` using `[Matrix.conjTranspose_apply, Complex.star_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem skew_top {k : ℕ} (X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))) (i j : Fin k) :
     conj (unrealify (X : EuclideanSpace ℝ _) j i) + unrealify (X : EuclideanSpace ℝ _) i j = 0 := by
@@ -37,7 +37,7 @@ theorem skew_top {k : ℕ} (X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))) (i j
   simpa [Matrix.conjTranspose_apply, Complex.star_def] using h'
 
 /- English proof (translation)
-Simplify using `[Hd, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lie_entry {k : ℕ} (η : ℝ) (M : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (i j : Fin (k + 1)) :
     (Mᴴ * Hd k η + Hd k η * M) i j =
@@ -45,7 +45,7 @@ theorem lie_entry {k : ℕ} (η : ℝ) (M : Matrix (Fin (k + 1)) (Fin (k + 1)) �
   simp [Hd, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Unfold `Hd`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `split_ifs <;> rcases hη with rfl | rfl <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem Hd_mul_self_eq_one {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) : Hd k η * Hd k η = 1 := by
   unfold Hd
@@ -55,9 +55,9 @@ private theorem Hd_mul_self_eq_one {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -
   split_ifs <;> rcases hη with rfl | rfl <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive _ _ _ (Hd_mul_self_eq_one hη), GlobalTheory.OmegaFrobenius.unrealify_realify]`. Establish `hs` using `skew_top v.1`. Use extensionality with `i j`. Rewrite using `[lie_entry, Matrix.zero_apply]`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [tang, blk, hv, hs] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tang_mem {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) (v : Par k) :
     realify (k + 1) (tang η v) ∈ lieE (UH (Hd k η)) := by
@@ -69,7 +69,7 @@ theorem tang_mem {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) (v : Par k) :
     simp [tang, blk, hv, hs] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_add {m : ℕ} (x y : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (x + y) = unrealify x + unrealify y := by
@@ -77,7 +77,7 @@ theorem unrealify_add {m : ℕ} (x y : EuclideanSpace ℝ (Fin m × Fin m × Boo
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_smul {m : ℕ} (c : ℝ) (x : EuclideanSpace ℝ (Fin m × Fin m × Bool)) :
     unrealify (c • x) = c • unrealify x := by
@@ -85,7 +85,7 @@ theorem unrealify_smul {m : ℕ} (c : ℝ) (x : EuclideanSpace ℝ (Fin m × Fin
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`. Apply the tactic sequence `simp [tang, blk, hv, unrealify_add, add_div] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tang_add {k : ℕ} (η : ℝ) (v w : Par k) : tang η (v + w) = tang η v + tang η w := by
   ext i j
@@ -93,7 +93,7 @@ theorem tang_add {k : ℕ} (η : ℝ) (v w : Par k) : tang η (v + w) = tang η 
     simp [tang, blk, hv, unrealify_add, add_div] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j <;>`. Apply the tactic sequence `simp [tang, blk, hv, unrealify_smul, Complex.real_smul] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tang_smul {k : ℕ} (η c : ℝ) (v : Par k) : tang η (c • v) = c • tang η v := by
   ext i j
@@ -106,20 +106,20 @@ def tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) : Par k →ₗ[ℝ] li
   map_smul' c v := by ext1; simp [tang_smul]
 
 /- English proof (translation)
-Conclude with `GlobalTheory.OmegaFrobenius.unrealify_realify (tang η v)`.
+A detailed English derivation is pending.
 -/
 theorem unrealify_tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) (v : Par k) :
     unrealify (tangL hη v : EuclideanSpace ℝ _) = tang η v := by
   exact GlobalTheory.OmegaFrobenius.unrealify_realify (tang η v)
 
 /- English proof (translation)
-Apply the tactic sequence `have hη1 : ‖(η : ℂ)‖ = 1 := by rcases hη with rfl | rfl <;> simp`. Establish `e1 : ‖tangL hη v‖ ^ 2 = ∑ i, ∑ j, ‖tang η v i j‖ ^ 2`. Establish `h` using `norm_sq_unrealify (tangL hη v).1`. Rewrite `h` using `[unrealify_tangL]`. Rewrite using `[← h, Submodule.coe_norm]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ‖v.1‖ ^ 2 = ∑ i, ∑ j, ‖unrealify v.1.1 i j‖ ^ 2`. Rewrite using `[← norm_sq_unrealify, Submodule.coe_norm]`. Establish `e3 : ‖v.2.2‖ ^ 2 = ∑ j, ‖v.2.2 j‖ ^ 2` using `EuclideanSpace.norm_sq_eq _`. Rewrite using `[e1, e2, e3]`. Simplify using `only [Fin.sum_univ_castSucc, tang, blk, Fin.lastCases_castSucc, Fin.lastCases_last, hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ z : ℂ, ‖z / (√2 : ℝ)‖ ^ 2 = ‖z‖ ^ 2 / 2`. Introduce `z`. Rewrite using `[norm_div, div_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (by norm_num)]`. Establish `hb : ∀ z : ℂ, ‖-(η : ℂ) * (starRingEnd ℂ) (z / (√2 : ℝ))‖ ^ 2 = ‖z‖ ^ 2 / 2`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, norm_neg, hη1, one_mul, Complex.norm_conj, hc]`. Establish `hd : ‖((v.2.1 : ℝ) : ℂ) * Complex.I‖ ^ 2 = ‖v.2.1‖ ^ 2`. Rewrite using `[norm_mul, Complex.norm_I, mul_one, Complex.norm_real]`. Simplify using `only [hb, hc, hd, Finset.sum_add_distrib]`. Combine the linear relations using `[Finset.sum_div Finset.univ (fun x => ‖v.2.2.ofLp x‖ ^ 2) (2 : ℝ)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_sq_tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) (v : Par k) :
     ‖tangL hη v‖ ^ 2 = ‖v.1‖ ^ 2 + (‖v.2.1‖ ^ 2 + ‖v.2.2‖ ^ 2) := by
@@ -145,21 +145,19 @@ theorem norm_sq_tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) (v : Par k
   linarith [Finset.sum_div Finset.univ (fun x => ‖v.2.2.ofLp x‖ ^ 2) (2 : ℝ)]
 
 /- English proof (translation)
-Introduce `y`. Use `set M := unrealify (y : EuclideanSpace ℝ (Fin (k + 1) × Fin (k + 1) × Bool)) with hMdef`. Establish `hM` using `(GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive _ _ _ (Hd_mul_self_eq_one hη)).1 y.2`. Establish `e : ∀ i j, (starRingEnd ℂ) (M j i) * (if j = Fin.last k then (η : ℂ) else 1) + (if i = Fin.last k then (η : ℂ) else 1) * M i j = 0`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hM i) j`. Rewrite `h` using `[lie_entry, Matrix.zero_apply]`. Then use the resulting hypothesis. Set `A : Matrix (Fin k) (Fin k) ℂ` to `fun i j => M i.castSucc j.castSucc`. Establish `hA : GlobalTheory.OmegaFrobenius.realify k A ∈ lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))`. Rewrite using `[GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive _ _ _ (by simp), GlobalTheory.OmegaFrobenius.unrealify_realify]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Establish `h` using `e i.castSucc j.castSucc`. Simplify using `[Fin.castSucc_ne_last] at h`. Simplify using `only [Matrix.mul_one, Matrix.one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hll : (M (Fin.last k) (Fin.last k)).re = 0`. Establish `h` using `congrArg Complex.re (e (Fin.last k) (Fin.last k))`. Apply the tactic sequence `rcases hη with rfl | rfl <;> simp at h <;> linarith`. Establish `h2 : ((√2 : ℝ) : ℂ) ≠ 0`. Conclude with `(Real.sqrt_pos.2 (by norm_num : (0 : ℝ) < 2)).ne'` after adjusting the coercions.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(⟨GlobalTheory.OmegaFrobenius.realify k A, hA⟩, (M (Fin.last k) (Fin.last k)).im, WithLp.toLp 2 (fun j => ((√2 : ℝ) : ℂ) * M (Fin.last k) j.castSucc)), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← (GlobalTheory.OmegaFrobenius.realify (k + 1)).apply_symm_apply (y : EuclideanSpace ℝ _)]`. Use `show GlobalTheory.OmegaFrobenius.realify (k + 1) (tang η _) = GlobalTheory.OmegaFrobenius.realify (k + 1) M`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) i <;> refine Fin.lastCases ?_ (fun j => ?_) j`. Apply the tactic sequence `apply Complex.ext <;> simp [tang, blk, hll]`. Simplify using `[tang, blk, hv, h2]`. Establish `h` using `e i.castSucc (Fin.last k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `[Fin.castSucc_ne_last] at h`. Simplify using `[tang, blk, hv, h2]`. Take the linear combination `-h`. Establish `hu : unrealify (GlobalTheory.OmegaFrobenius.realify k A) = A` using `GlobalTheory.OmegaFrobenius.unrealify_realify A`. Simplify using `only [tang, blk, Fin.lastCases_castSucc]`.
-
-Conclude with `congrFun (congrFun hu i) j`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tangL_surjective {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) : Function.Surjective (tangL (k := k) hη) := by
   intro y
@@ -212,7 +210,7 @@ def tangIsom {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) :
     exact norm_sq_tangL hη _
 
 /- English proof (translation)
-Establish `h1 : MeasurePreserving (Prod.map (id : A → A) (WithLp.toLp 2 : B × C → WithLp 2 (B × C))) (volume.prod (volume.prod volume)) (volume.prod volume)` using `(MeasurePreserving.id volume).prod (WithLp.volume_preserving_toLp B C)`. Establish `h2` using `WithLp.volume_preserving_toLp A (WithLp 2 (B × C))`. Establish `h3` using `(LinearIsometryEquiv.ofSurjective J hs).measurePreserving`. Conclude with `h3.comp (h2.comp h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurePreserving_of_isom {A B C D : Type} [NormedAddCommGroup A] [InnerProductSpace ℝ A]
     [FiniteDimensional ℝ A] [MeasurableSpace A] [BorelSpace A] [NormedAddCommGroup B] [InnerProductSpace ℝ B]
@@ -230,7 +228,7 @@ theorem measurePreserving_of_isom {A B C D : Type} [NormedAddCommGroup A] [Inner
   exact h3.comp (h2.comp h1)
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (tangIsom (k` using `k) hη) := by`. Introduce `y`. Take `⟨v, rfl⟩` from `tangL_surjective hη y`. Conclude with `⟨WithLp.toLp 2 (v.1, WithLp.toLp 2 (v.2.1, v.2.2)), rfl⟩`. Conclude with `measurePreserving_of_isom (tangIsom hη) hsurj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measurePreserving_tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) :
     MeasurePreserving (tangL (k := k) hη) (volume.prod (volume.prod volume)) volume := by
@@ -241,21 +239,21 @@ theorem measurePreserving_tangL {k : ℕ} {η : ℝ} (hη : η = 1 ∨ η = -1) 
   exact measurePreserving_of_isom (tangIsom hη) hsurj
 
 /- English proof (translation)
-Introduce `k η hk hη`. Establish `hinj : Function.Injective (tangL (k` using `k) hη) := by`. Use `(injective_iff_map_eq_zero (tangL hη)).2 fun v hv => ?_` and prove the remaining obligations. Establish `h` using `norm_sq_tangL hη v`. Rewrite `h` using `[hv, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a` using `sq_nonneg ‖v.1‖`. Establish `b` using `sq_nonneg ‖v.2.1‖`. Establish `c` using `sq_nonneg ‖v.2.2‖`. Establish `h1 : ‖v.1‖ ^ 2 = 0` using `by nlinarith`. Establish `h2 : ‖v.2.1‖ ^ 2 = 0` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖v.2.2‖ ^ 2 = 0` using `by nlinarith`. Simplify using `only [pow_eq_zero_iff two_ne_zero, norm_eq_zero] at h1 h2 h3`. Conclude with `Prod.ext h1 (Prod.ext h2 h3)`. Set `Lₗ` to `LinearEquiv.ofBijective (tangL hη) ⟨hinj, tangL_surjective hη⟩`. Set `L : Par k ≃L[ℝ] lieE (UH (Hd k η))` to `Lₗ.toContinuousLinearEquiv`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun v => unrealify_tangL hη v, fun ρ hρ => ?_⟩` and prove the remaining obligations. Set `e` to `L.toHomeomorph.toMeasurableEquiv`. Establish `hmp : MeasurePreserving e (volume.prod (volume.prod volume)) volume` using `⟨(measurePreserving_tangL hη).measurable, (measurePreserving_tangL hη).map_eq⟩`. Establish `hpre` using `hmp.measure_preimage_equiv (e '' Metric.ball (0 : Par k) ρ)`. Rewrite `hpre` using `[MeasurableEquiv.preimage_image]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `volume (e '' Metric.ball (0 : Par k) ρ) = _`. Rewrite using `[← hpre]`. Establish `: Nonempty (Fin k)` using `⟨⟨0, hk⟩⟩`. Establish `hz : (0 : Par k) = (0, 0, 0)` using `rfl`. Rewrite using `[hz, ← ball_prod_same, ← ball_prod_same, Measure.prod_prod, Measure.prod_prod, Real.volume_ball, InnerProductSpace.volume_ball (0 : EuclideanSpace ℂ (Fin k))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : Module.finrank ℝ (EuclideanSpace ℂ (Fin k)) = 2 * k`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ, Complex.finrank_real_complex, finrank_euclideanSpace_fin]`. Establish `hG : Real.Gamma (((2 * k : ℕ) : ℝ) / 2 + 1) = (k.factorial : ℝ)`. Rewrite using `[show ((2 * k : ℕ) : ℝ) / 2 = (k : ℝ) by push_cast; ring, Real.Gamma_nat_eq_factorial]`. Establish `hπ : √Real.pi ^ (2 * k) = Real.pi ^ k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul, Real.sq_sqrt Real.pi_pos.le]`. Rewrite using `[hf, hG, hπ]`. Use `congr 1`. Establish `hfac : (0 : ℝ) < k.factorial` using `by exact_mod_cast k.factorial_pos`. Rewrite using `[← ENNReal.ofReal_pow hρ.le, ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ ρ ^ (2 * k)), ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ 2 * ρ)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_tang_equiv : ∀ (k : ℕ) (η : ℝ), 1 ≤ k → (η = 1 ∨ η = -1) → ∃ L : Par k ≃L[ℝ] lieE (UH (Hd k η)), (∀ v : Par k, unrealify ((L v : lieE (UH (Hd k η))) : EuclideanSpace ℝ _) = tang η v) ∧ ∀ ρ : ℝ, 0 < ρ → volume (L '' Metric.ball (0 : Par k) ρ) = volume (Metric.ball (0 : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))) ρ) * ENNReal.ofReal (2 * ρ * (Real.pi ^ k * ρ ^ (2 * k) / (k.factorial : ℝ))) := by
   intro k η hk hη

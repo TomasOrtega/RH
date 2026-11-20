@@ -24,13 +24,11 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E)
 
 /- English proof (translation)
-Set `f : 𝒪[F] →+* L.O` to `(algebraMap 𝒪[F] E).codRestrict L.O (fun x => (L.O_def _).2 isIntegral_algebraMap)`. Use `letI : Algebra 𝒪[F] L.O := f.toAlgebra`. Use `haveI : IsScalarTower 𝒪[F] L.O E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.IsIntegral 𝒪[F] L.O := by`. Use `⟨fun x => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : IsIntegral 𝒪[F] (x : E)` using `(L.O_def (x : E)).1 x.2`. Conclude with `(isIntegral_algHom_iff (IsScalarTower.toAlgHom 𝒪[F] L.O E) Subtype.val_injective).1 h1`. Use `Ideal.mem_sInf.2 ?_` and prove the remaining obligations. Introduce and unpack `P ⟨-, hP⟩`. Use `haveI := hP`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmax : (P.comap (algebraMap 𝒪[F] L.O)).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal P`. Establish `hm : ϖ ∈ P.comap (algebraMap 𝒪[F] L.O)`. Rewrite using `[IsLocalRing.eq_maximalIdeal hmax]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).2 h.not_isUnit`. Establish `he : algebraMap 𝒪[F] L.O ϖ = w`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hw]`. Both sides reduce to the same expression. Rewrite `hm` using `[Ideal.mem_comap, he]`. Conclude with `hm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniformiser_mem_jacobson (ϖ : 𝒪[F]) (h : Irreducible ϖ) (w : L.O)
     (hw : (w : E) = algebraMap F E (ϖ : F)) : w ∈ (⊥ : Ideal L.O).jacobson := by
@@ -58,17 +56,15 @@ theorem uniformiser_mem_jacobson (ϖ : 𝒪[F]) (h : Irreducible ϖ) (w : L.O)
   exact hm
 
 /- English proof (translation)
-Establish `hO : algebraMap F E (ϖ : F) ∈ L.O` using `(L.O_def _).2 (by`. Establish `: IsIntegral 𝒪[F] (algebraMap 𝒪[F] E ϖ)` using `isIntegral_algebraMap`. Conclude with `this)`. Set `w : L.O` to `⟨_, hO⟩`. Establish `hw : w ∈ (⊥ : Ideal L.O).jacobson` using `uniformiser_mem_jacobson L ϖ h w rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : m • Λ ≤ Λ`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨y, hy, e⟩` from `hm x hx`. Establish `: m x = x + w • y`. Rewrite using `[eq_add_of_sub_eq' e]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `m x ∈ Λ`. Rewrite using `[this]`. Conclude with `Λ.add_mem hx (Λ.smul_mem w hy)`. Establish `hge : Λ ≤ m • Λ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Submodule.le_of_le_smul_of_le_jacobson_bot (I := Ideal.span {w}) hΛ ((Ideal.span_singleton_le_iff_mem _).2 hw) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨y, hy, e⟩` from `hm x hx`. Establish `hx' : x = m x - w • y`. Establish `: m x = x + w • y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[eq_add_of_sub_eq' e]`. Both sides reduce to the same expression. Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx']`.
-
-Use `Submodule.sub_mem_sup ?_ ?_` and prove the remaining obligations. Conclude with `Submodule.smul_mem_pointwise_smul x m Λ hx`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self w) hy`. Conclude with `MulAction.mem_stabilizer_iff.2 (le_antisymm hle hge)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stabilises_of_close {n : ℕ} (Λ : Submodule L.O (Fin n → E)) (hΛ : Λ.FG) (ϖ : 𝒪[F])
     (h : Irreducible ϖ) (m : (Fin n → E) ≃ₗ[E] (Fin n → E))
@@ -116,14 +112,14 @@ def extMap (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) (p : HeightOneSpectrum (�
   ((RatExt.rational_extend A n p).2.2.1 g).choose
 
 /- English proof (translation)
-The claim follows from `((RatExt.rational_extend A n p).2.2.1 g).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem extMap_spec (g : (Fin n → E) ≃ₗ[E] (Fin n → E)) (p : HeightOneSpectrum (𝓞 F)) :
     A.Ext p g (extMap A n g p) :=
   ((RatExt.rational_extend A n p).2.2.1 g).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `((RatExt.rational_extend A n p).2.2.1 g).choose_spec.2 g' h`.
+A detailed English derivation is pending.
 -/
 theorem extMap_unique {g : (Fin n → E) ≃ₗ[E] (Fin n → E)} {p : HeightOneSpectrum (𝓞 F)}
     {g' : (Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep)} (h : A.Ext p g g') :
@@ -140,11 +136,11 @@ def extHom : ((Fin n → E) ≃ₗ[E] (Fin n → E)) →*
       rw [extMap_spec A n b p x, extMap_spec A n a p (b x)])).symm
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce `h p`. Conclude with `⟨extMap A n g p, (Subgroup.mem_pi _).1 h p (Set.mem_univ p), extMap_spec A n g p⟩`. Introduce `h`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Subgroup.mem_pi _).2 fun p _ => ?_` and prove the remaining obligations. Take `⟨g', hg, he⟩` from `h p`. Establish `e : extMap A n g p = g'` using `(extMap_unique A n he).symm`. Express the relevant statement in the definitionally equal form `extMap A n g p ∈ K p`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem comap_pi (K : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p).Ep] (Fin n → (A.loc p).Ep))) :
     (Subgroup.pi Set.univ K).comap (extHom A n) = A.rat K := by
@@ -163,41 +159,37 @@ theorem comap_pi (K : ∀ p, Subgroup ((Fin n → (A.loc p).Ep) ≃ₗ[(A.loc p)
 end Global
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A r k G hk Λ hΛ`. Take `⟨-, hlat, hcoord⟩` from `GlobalTheory.T.numberField_lattice_determined_by_local_lattices A (k + 2 * r + 1) Λ hΛ`. Establish `hstd` using `GlobalTheory.T.coordinateLattice_unique_term_almost_all_places A r k G hk`. Set `U : ∀ p, Subgroup (G.S p).GLV` to `fun p => (G.S p).St ⊓ MulAction.stabilizer (G.S p).GLV (A.lat p Λ)`. Set `K : ∀ p, Subgroup (G.S p).GLV` to `fun p => (G.S p).K0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfin : {p | U p ≠ K p}.Finite`. Use `(hstd.union hcoord).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hcon`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not] at hcon`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2⟩` from `hcon`. Apply `hp` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(G.S p).St ⊓ MulAction.stabilizer (G.S p).GLV (A.lat p Λ) = (G.S p).K0`. Rewrite using `[h2]`. Conclude with `h1.2.2.1`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hKSt : ∀ p, K p ≤ (G.S p).St` using `fun p x hx => hx.1.1`. Establish `hUSt : ∀ p, U p ≤ (G.S p).St` using `fun p x hx => hx.1`. Set `c : ∀ p, ((A.loc p).Fp)ˣ` to `fun p => if U p ≠ K p then haveI := (A.loc p).lf Units.mk0 (((G.S p).ϖ : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) (fun h0 => (G.S p).ϖ_irr.ne_zero (Subtype.ext h0)) else 1`. Establish `hc : {p | ¬ ∃ u : (𝒪[(A.loc p).Fp])ˣ, ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) = c p}.Finite`. Use `hfin.subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hcon`. Apply `hp` to reduce the goal to its premises. Establish `hu : U p = K p` using `not_not.1 hcon`. Establish `h1 : c p = 1` using `if_neg (not_not.2 hu)`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨1, by rw [h1]; simp⟩`. Set `φ` to `extHom A (k + 2 * r + 1)`. Establish `hdense : ∀ g, g ∈ Subgroup.pi Set.univ K ∨ g ∈ Subgroup.pi Set.univ U → ∃ γ, (φ γ)⁻¹ * g ∈ Subgroup.pi Set.univ K ⊓ Subgroup.pi Set.univ U`. Introduce `g hg`. Establish `hgSt : ∀ p, g p ∈ (G.S p).St`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Break down `hg with h | h` into its components or cases. Conclude with `hKSt p ((Subgroup.mem_pi _).1 h p (Set.mem_univ p))`. Conclude with `hUSt p ((Subgroup.mem_pi _).1 h p (Set.mem_univ p))`. Establish `hgfin : {p | g p ∉ (G.S p).K0}.Finite`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hg with h | h` into its components or cases. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `hp ((Subgroup.mem_pi _).1 h p (Set.mem_univ p))`. Use `hfin.subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `p hp he`. Apply `hp` to reduce the goal to its premises. Use `(Subgroup.mem_pi _).1 h p (Set.mem_univ p)` as an intermediate fact. Rewrite `this` using `[he]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, -, hγ⟩` from `GlobalTheory.T.exists_mem_St_approximating_local_elements A r k G Λ hΛ c hc g hgSt hgfin`. Use `⟨γ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ p, (g p)⁻¹ * φ γ p ∈ K p ⊓ U p`. Introduce `p`. Take `⟨h1, h2⟩` from `hγ p (φ γ p) (extMap_spec A _ γ p)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : U p = K p`. Rewrite using `[he]`. Conclude with `h1`. Use `⟨hKSt p h1, ?_⟩ haveI := (A.loc p).lf` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcp : ((c p : ((A.loc p).Fp)ˣ) : (A.loc p).Fp) = (((G.S p).ϖ : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp)`. Establish `h3 : c p = Units.mk0 (((G.S p).ϖ : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) (fun h0 => (G.S p).ϖ_irr.ne_zero (Subtype.ext h0))` using `if_pos he`. Rewrite using `[h3]`. Both sides reduce to the same expression. Use `stabilises_of_close (A.L p) (A.lat p Λ) (hlat p).1 (G.S p).ϖ (G.S p).ϖ_irr _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨y, hy, e⟩` from `h2 x hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hcp]`. Conclude with `e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key2 : ∀ p, ((φ γ)⁻¹ * g) p ∈ K p ⊓ U p`. Introduce `p`. Use `(K p ⊓ U p).inv_mem (key p)` as an intermediate fact. Simplify `this` using `[mul_inv_rev]`. Conclude with `⟨(Subgroup.mem_pi _).2 fun p _ => (key2 p).1, (Subgroup.mem_pi _).2 fun p _ => (key2 p).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hKU, hUK⟩` from `GlobalTheory.T.relIndex_comap_pair_of_dense_image φ (Subgroup.pi Set.univ K) (Subgroup.pi Set.univ U) hdense`. Establish `hidx : ∀ p, (K p).relIndex (U p) ≠ 0 ∧ (U p).relIndex (K p) ≠ 0`. Introduce `p`. Use `haveI := (A.loc p).lf`. Use `haveI := (A.loc p).char0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨a, b, -⟩` from `(GlobalTheory.HL.volSt (A.L p) r k (G.S p)).1 (A.lat p Λ) (hlat p)`. Conclude with `⟨a, b⟩`. Establish `hKU' : {p | K p ≠ U p}.Finite` using `hfin.subset fun p hp h => hp h.symm`. Take `⟨-, -, hprod⟩` from `GlobalTheory.T.haarInvVolumeRelIndex_pi_univ_eq_finprod K U hKU' hidx`. Use `⟨hfin, ?_⟩` and prove the remaining obligations.
-
-Establish `e1 : G.K0 = (Subgroup.pi Set.univ K).comap φ` using `(comap_pi A _ K).symm`. Establish `e2 : G.stabL Λ = (Subgroup.pi Set.univ U).comap φ` using `(comap_pi A _ U).symm`. Establish `hmu : G.mu Λ = invVol (Subgroup.pi Set.univ K) (Subgroup.pi Set.univ U)`. Unfold `GFrames.mu invVol`. Rewrite using `[e1, e2, hKU, hUK]`.
-
-Rewrite using `[hmu, hprod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mass_eq_finprod : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig), ∀ (r k : ℕ) (G : GFrames A r k), 4 * r + 7 ≤ k →

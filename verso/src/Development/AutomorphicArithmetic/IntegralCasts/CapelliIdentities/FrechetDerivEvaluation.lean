@@ -2,11 +2,11 @@ import Mathlib
 
 open MvPolynomial in
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simpa using hasFDerivAt_const a z`. Consider the case `add p q hp hq`. Establish `h` using `hp.add hq`. Simplify using `only [map_add, add_smul, Finset.sum_add_distrib]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Consider the case `mul_X p n hp`. Establish `h` using `hp.mul (hasFDerivAt_apply (𝕜 := ℂ) n z)`. Simplify using `only [map_mul, eval_X]`. Use `HasFDerivAt.congr_fderiv h ?_` and prove the remaining obligations.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `[Derivation.leibniz, pderiv_X, Pi.single_apply, Finset.mul_sum, mul_add, add_mul, Finset.sum_add_distrib, apply_ite (eval z), mul_assoc, mul_comm, mul_left_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.FrechetDerivEvaluation.aux {σ : Type*} [Fintype σ] (g : MvPolynomial σ ℂ) (z : σ → ℂ) :
     HasFDerivAt (fun x : σ → ℂ => eval x g)
@@ -26,7 +26,7 @@ private theorem UpperTheory.Reformulated.B.FrechetDerivEvaluation.aux {σ : Type
     simp [Derivation.leibniz, pderiv_X, Pi.single_apply, Finset.mul_sum, mul_add, add_mul, Finset.sum_add_distrib, apply_ite (eval z), mul_assoc, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Introduce `σ _ g z`. Conclude with `UpperTheory.Reformulated.B.FrechetDerivEvaluation.aux g z`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.FrechetDerivEvaluation.hasFDerivAt_eval.{u_1} :
     ∀ {σ : Type u_1} [inst : Fintype σ] (g : @MvPolynomial σ Complex Complex.instCommSemiring) (z : σ → Complex),

@@ -28,11 +28,11 @@ def S6.LatticeAsBundle.Statement : Prop :=
               (GroundTheory.Heights₂.Heights.diagMetric d) b c)
 
 /- English proof (translation)
-Introduce `a d b c`. Use `⟨fun _ => one_ne_zero, fun _ _ => one_pos, fun _ _ => rfl, ?_, rfl⟩` and prove the remaining obligations. Establish `h : Sum.elim b c = (Pi.basisFun ℚ (Fin 2)) ∘ finSumFinEquiv`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[b, Pi.basisFun_apply]`. Both sides reduce to the same expression. Simplify using `[c, Pi.basisFun_apply]`. Both sides reduce to the same expression. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun ℚ (Fin 2)).linearIndependent.comp _ finSumFinEquiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem S6.LatticeAsBundle.hypotheses_inhabited :
     let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1

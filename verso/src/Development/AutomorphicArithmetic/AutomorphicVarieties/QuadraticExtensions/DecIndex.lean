@@ -6,17 +6,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `Ω _ _ _ p c A₀ hp hc hA`. Establish `: CharZero Ω` using `charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed ℚ`. Establish `: IsGalois ℚ Ω` using `IsAlgClosure.isGalois ℚ Ω`. Establish `: Fact p.Prime` using `⟨hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hgζ⟩` from `decFrob Ω p A₀ hA`. Establish `hodd : Nat.Coprime 2 p`. Rewrite using `[Nat.coprime_two_left, Nat.odd_iff]`. Use linear arithmetic over natural numbers and integers. Establish `hu : ((cycZ ℚ Ω 2 g : ℤ_[2]ˣ) : ℤ_[2]) = p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `PadicInt.ext_of_toZModPow.1 fun n => ?_` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (2 ^ n)`. Establish `h1 : g ζ = ζ ^ (PadicInt.toZModPow n ((cycZ ℚ Ω 2 g : ℤ_[2]ˣ) : ℤ_[2])).val` using `cyclotomicCharacter.spec 2 (n := n) (MulSemiringAction.toRingAut (G ℚ Ω) Ω g) ζ hζ.pow_eq_one`. Establish `h2` using `hgζ (2 ^ n) (Nat.Coprime.pow_left n hodd) ζ hζ.pow_eq_one`. Rewrite `h1` using `[h2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : p ≡ (PadicInt.toZModPow n ((cycZ ℚ Ω 2 g : ℤ_[2]ˣ) : ℤ_[2])).val [MOD 2 ^ n]`. Establish `hfin : IsOfFinOrder ζ` using `hζ.isOfFinOrder (by positivity)`. Rewrite `h1` using `[hfin.pow_eq_pow_iff_modEq, ← hζ.eq_orderOf]`. Then use the resulting hypothesis. Rewrite using `[map_natCast, (ZMod.natCast_eq_natCast_iff _ _ _).2 h3, ZMod.natCast_zmod_val]`. Establish `hcl : IsClosed ((decImage ℚ 2 A₀ : Subgroup ℤ_[2]ˣ) : Set ℤ_[2]ˣ)` using `((isClosed_Dec (F := ℚ) A₀).isCompact.image (continuous_cycZ ℚ Ω 2)).isClosed`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨h0, hle⟩` from `idxAdic (decImage ℚ 2 A₀) (cycZ ℚ Ω 2 g) p c hcl ⟨g, hg, rfl⟩ hu hc`. Establish `e : (cycZ ℚ Ω 2).ker ⊔ Dec (F` using `ℚ) A₀ = (decImage ℚ 2 A₀).comap (cycZ ℚ Ω 2) := by`. Rewrite using `[decImage, Subgroup.comap_map_eq, sup_comm]`. Rewrite using `[e, Subgroup.index_comap]`. Establish `hrel0 : (decImage ℚ 2 A₀).relIndex ⊤ ≠ 0` using `by rwa [Subgroup.relIndex_top_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun h => hrel0 (Subgroup.relIndex_eq_zero_of_le_right le_top h), ?_⟩` and prove the remaining obligations. Use `(Subgroup.relIndex_le_of_le_right le_top hrel0).trans ?_` and prove the remaining obligations. Rewrite using `[Subgroup.relIndex_top_right]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.Two.decIndex :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (p c : ℕ) (A₀ : ValuationSubring Ω), p.Prime → (p % 8 = 3 ∧ c = 2 ∨ p % 16 = 7 ∧ c = 4) → A₀.valuation (p : Ω) < 1 →

@@ -15,21 +15,19 @@ open ReciprocityTheory.PGsh.Up GlobalTheory.Sandwich Matrix
 namespace GlobalTheory.DetInv
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ h D d b`. Take `⟨hdom, hloc, -⟩` from `GlobalTheory.AinfXi.ainf_local_xi_order p C v O hv ε hε`. Use `haveI := hdom`. Use `haveI := hloc`. Take `⟨-, hmu, -⟩` from `GlobalTheory.DetInv.mu_coeff_zero_ne_zero p C v O hv ε hε`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, y, hN, hy, hcp⟩` from `GlobalTheory.T.exists_rep_basis_charpoly p Λ h d b D.ρT`. Take `⟨k, _, _, _, r, hr⟩` from `GlobalTheory.T.exists_residue_field_tilt p C v O hv`. Take `⟨hscal, -⟩` from `GlobalTheory.T.sandwich_datum_scalar_action p C v O hv ε hε Λ h D`. Set `j : Ainf p O →+* WittVector p k` to `WittVector.map r`. Set `s : ℤ_[p] →+* WittVector p k` to `j.comp (ofPadic p O)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : Λ →+* Matrix (Fin h) (Fin h) (WittVector p k)` to `(RingHom.mapMatrix j).comp D.ρM`. Establish `hρscal : ∀ c : ℤ_[p], ρ (algebraMap ℤ_[p] Λ c) = s c • (1 : Matrix (Fin h) (Fin h) (WittVector p k))`. Introduce `c`. Simplify using `only [ρ, s, RingHom.comp_apply, hscal c, RingHom.mapMatrix_apply]`. Use extensionality with `i l`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases hil : i = l <;> simp [hil]`. Establish `hcpM : ∀ a : Λ, (D.ρM a).charpoly = ((LinearMap.mulLeft ℤ_[p] a).charpoly ^ N).map (ofPadic p O)`. Introduce `a`. Rewrite using `[GlobalTheory.DetInv.charpoly_eq_of_intertwined (Ainf p O) h (mu ε) D.F D.G ((D.ρT a).map (ofPadic p O)) (D.ρM a) hmu D.G_mul_F (D.F_act a), Matrix.charpoly_map, hcp a]`. Establish `hcpρ : ∀ a, (ρ a).charpoly = ((LinearMap.mulLeft ℤ_[p] a).charpoly ^ N).map s`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Use `show ((D.ρM a).map j).charpoly = _`. Rewrite using `[Matrix.charpoly_map, hcpM a, Polynomial.map_map]`. Take `⟨xb, hxb⟩` from `GlobalTheory.T.witt_rep_reduction_structure p Λ k h d N b s ρ hρscal hcpρ`. Set `c : Ainf p O →+* k` to `WittVector.constantCoeff.comp j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : Function.Surjective c`. Introduce `z`. Take `⟨w, rfl⟩` from `hr z`. Use `⟨WittVector.teichmuller p w, ?_⟩` and prove the remaining obligations. Simplify using `[c, j, WittVector.map_teichmuller, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `choose lift hlift using hc`. Use `⟨N, fun i l => lift (xb i l), y, hN, ?_, hy⟩` and prove the remaining obligations. Apply `GlobalTheory.DetInv.span_top_of_residue_span_top (Ainf p O) k (Fin N × Fin d) h c _ (fun z => ⟨lift z, hlift z⟩)` to reduce the goal to its premises. Use `hxb using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `ij l`.
-
-Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Conclude with `hlift _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_span_top_of_datum : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O], v.Integers O → ∀ ε : PreTilt O p, IsPrimitiveRoot (root ε).untilt p → ∀ (Λ : Type) [CommRing Λ] [IsDomain Λ] [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Free ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ], ∀ (h : ℕ) (D : Datum ε h Λ), ∀ (d : ℕ) (b : Module.Basis (Fin d) ℤ_[p] Λ), ∃ (N : ℕ) (x : Fin N → Fin h → Ainf p O) (y : Fin N → Fin h → ℤ_[p]), h = N * d ∧ Submodule.span (Ainf p O) (Set.range fun ij : Fin N × Fin d => D.ρM (b ij.2) *ᵥ x ij.1) = ⊤ ∧ Submodule.span ℤ_[p] (Set.range fun ij : Fin N × Fin d => D.ρT (b ij.2) *ᵥ y ij.1) = ⊤ := by
   intro p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ _ _ _ _ h D d b

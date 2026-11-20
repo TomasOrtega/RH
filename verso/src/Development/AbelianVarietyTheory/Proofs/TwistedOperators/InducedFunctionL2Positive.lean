@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.RealInd
 
 /- English proof (translation)
-Introduce `n ε D f hf g hg`. Take `⟨k, hk, hp⟩` from `GlobalTheory.RealIwasawa.exists_stab_mul_compact D.flag g`. Take `⟨u, hu, m, hm, x, t, ht, hpe⟩` from `exists_langlands_decomp D.flag D.pos hp`. Establish `hkK : k ∈ KG ε`. Establish `: k ∈ (KG ε : Set (UJ ε))` using `(KG_eq ε).symm ▸ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hfk : f k ≠ 0`. Introduce `h0`. Apply `hg` to reduce the goal to its premises. Establish `e` using `(mem_indFun_top.1 hf).2 u hu m hm x t ht k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← hpe, inv_mul_cancel_right, h0, map_zero, smul_zero]`. Conclude with `e`. Establish `hcont : Continuous fun k : KG ε => ‖f k‖ ^ 2` using `((mem_indFun_top.1 hf).1.comp continuous_subtype_val).norm.pow 2`. Use `haveI : (muK ε).IsOpenPosMeasure := by unfold muK; infer_instance`. Conclude with `hcont.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := ⟨k, hkK⟩) (HasCompactSupport.of_compactSpace _) (fun _ => by positivity) (by simpa using hfk)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_norm_sq_pos_of_ne_zero : ∀ (n : ℕ) (ε : Fin n → Bool) (D : Datum ε) (f : UJ ε → D.V), f ∈ D.fns →
     ∀ g, f g ≠ 0 → 0 < ∫ k : KG ε, ‖f k‖ ^ 2 ∂muK ε := by

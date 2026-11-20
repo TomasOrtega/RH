@@ -26,9 +26,9 @@ namespace GlobalTheory.CompanionTheory.BZPsiPG.FibOnto
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hu : ((GlobalTheory.CompanionTheory.BZPsiPG.uM k n y : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = 1 + GlobalTheory.BZMir.colMat k n y` using `by first`. Consider the case `rfl`. Consider the case `(ext a c; simp [GlobalTheory.CompanionTheory.BZPsiPG.uM, GlobalTheory.BZMir.unip])`. Establish `hL : ((GlobalTheory.BZMir.levi k n b : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = GlobalTheory.BZMir.glEmbMat k n (b : Matrix (Fin n) (Fin n) k)` using `rfl`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [GlobalTheory.CompanionTheory.MirLevi.colv, Subgroup.coe_mul, Units.val_mul, hu, hL]`. Rewrite using `[Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `[GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colv_uM_mul_levi (n : ℕ) (y : Fin n → k) (b : GL (Fin n) k) :
     GlobalTheory.CompanionTheory.MirLevi.colv (uM k n y * levi k n b) = y := by
@@ -45,9 +45,9 @@ theorem colv_uM_mul_levi (n : ℕ) (y : Fin n → k) (b : GL (Fin n) k) :
   simp [GlobalTheory.BZMir.glEmbMat, GlobalTheory.BZMir.colMat, Matrix.one_apply, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Establish `h1 : GlobalTheory.BZMir.mirabolicProjection k n (p * (GlobalTheory.BZMir.levi k n (GlobalTheory.BZMir.mirabolicProjection k n p))⁻¹) = 1`. Rewrite using `[map_mul, map_inv, GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.mirProj_levi_eq, mul_inv_cancel]`. Take `⟨y, hy⟩` from `GlobalTheory.CompanionTheory.BZPsiPG.exists_uM_of_mem k n (GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one k n _ h1)`. Establish `hp : p = GlobalTheory.CompanionTheory.BZPsiPG.uM k n y * GlobalTheory.BZMir.levi k n (GlobalTheory.BZMir.mirabolicProjection k n p)`. Rewrite using `[← hy, inv_mul_cancel_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : GlobalTheory.CompanionTheory.MirLevi.colv p = y`. Rewrite using `[hp]`. Conclude with `GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.colv_uM_mul_levi n y _`. Rewrite using `[hy']`. Conclude with `hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_uM_colv_mul_levi (n : ℕ) (p : Mir k n) :
     p = uM k n (GlobalTheory.CompanionTheory.MirLevi.colv p) * levi k n (mirabolicProjection k n p) := by
@@ -68,7 +68,7 @@ theorem eq_uM_colv_mul_levi (n : ℕ) (p : Mir k n) :
 variable [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `show Continuous fun p : GlobalTheory.BZMir.Mir k n => fun i : Fin n => ((p : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) (Fin.castSucc i) (Fin.last n)`. Use `first`. Consider the case `exact continuous_pi fun i => (Units.continuous_val.comp continuous_subtype_val).matrix_elem (Fin.castSucc i) (Fin.last n)`. Consider the case `exact continuous_pi fun i => (continuous_apply (Fin.last n)).comp ((continuous_apply (Fin.castSucc i)).comp (Units.continuous_val.comp continuous_subtype_val))`. Consider the case `fun_prop`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_colv (n : ℕ) : Continuous (GlobalTheory.CompanionTheory.MirLevi.colv : Mir k n → Fin n → k) := by
   show Continuous fun p : GlobalTheory.BZMir.Mir k n => fun i : Fin n =>
@@ -81,9 +81,9 @@ theorem continuous_colv (n : ℕ) : Continuous (GlobalTheory.CompanionTheory.Mir
   | fun_prop
 
 /- English proof (translation)
-Use extensionality with `p`. Express the relevant statement in the definitionally equal form `(∃ y ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt n c, ∃ b ∈ K₁, p = GlobalTheory.CompanionTheory.BZPsiPG.uM k n y * GlobalTheory.BZMir.levi k n b) ↔ (GlobalTheory.CompanionTheory.MirLevi.colv p ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt n c ∧ GlobalTheory.BZMir.m …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, b, hb, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.colv_uM_mul_levi]` and apply the resulting hypothesis. Rewrite using `[map_mul, GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.mirProj_uM, GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.mirProj_levi_eq, one_mul]` and apply the resulting hypothesis. Introduce and unpack `⟨hy, hb⟩`. Conclude with `⟨_, hy, _, hb, GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.eq_uM_colv_mul_levi n p⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coe_Bgrp_eq (n : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin n) k)) (h : K₁ ≤ KO k (Fin n)) :
     (Bgrp n c K₁ h : Set (Mir k n)) =
@@ -101,9 +101,9 @@ theorem coe_Bgrp_eq (n : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin n) k)) (h : K�
     exact ⟨_, hy, _, hb, GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.eq_uM_colv_mul_levi n p⟩
 
 /- English proof (translation)
-Use extensionality with `p`. Express the relevant statement in the definitionally equal form `(∃ y ∈ GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.latt n c, ∃ b ∈ K₁, p = GlobalTheory.CompanionTheory.BZPsiPG.uM k n y * GlobalTheory.BZMir.levi k n b) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, b, hb, rfl⟩`. Conclude with `⟨(y, b), ⟨hy, hb⟩, rfl⟩`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨y, b⟩, ⟨hy, hb⟩, rfl⟩`. Conclude with `⟨y, hy, b, hb, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem coe_Bgrp_eq_image (n : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin n) k)) (h : K₁ ≤ KO k (Fin n)) :
     (Bgrp n c K₁ h : Set (Mir k n)) =
@@ -119,9 +119,9 @@ theorem coe_Bgrp_eq_image (n : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin n) k)) (
     exact ⟨y, hy, b, hb, rfl⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n c K₁ h hK`. Establish `hc` using `GlobalTheory.CompanionTheory.BZPsiPG.continuous_levi_uM_mirProj k n`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.coe_Bgrp_eq]`. Conclude with `((GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.isOpen_latt n c).preimage (GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.continuous_colv n)).inter (hK.preimage hc.2.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.coe_Bgrp_eq_image]`. Establish `hK₁ : IsCompact (K₁ : Set (GL (Fin n) k))` using `(GlobalTheory.SplitFlip.isCompact_KO (k := k) (n := Fin n)).of_isClosed_subset (K₁.isClosed_of_isOpen hK) (SetLike.coe_subset_coe.mpr h)`. Conclude with `((GlobalTheory.CompanionTheory.BZPsiPG.FibOnto.isCompact_latt n c).prod hK₁).image ((hc.2.1.comp continuous_fst).mul (hc.1.comp continuous_snd))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_isCompact_Bgrp : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (c : kˣ) (K₁ : Subgroup (GL (Fin n) k))

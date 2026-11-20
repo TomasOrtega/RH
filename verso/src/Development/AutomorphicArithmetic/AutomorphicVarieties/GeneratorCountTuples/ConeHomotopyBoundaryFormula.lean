@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.ZK UpperTheory.V.ZK.PM
 
 /- English proof (translation)
-The claim follows from `| 0, z => by rw [hprism_zero]; rfl | m + 1, z => ch_ext A (fun x => by have h := hprism_cone A (· * k) (x 0) m (Finsupp.single (Fin.tail (α := fun _ => G) x) 1) rw [← hmap_cone A (· * k), cone_single, Fin.cons_self_tail] at h rw [h, hp, Finsupp.linearCombination_single, one_smul, …`.
+A detailed English derivation is pending.
 -/
 private theorem hp_eq (A : Type) [CommRing A] (G : Type) [Group G] (k : G) :
     ∀ (m : ℕ) (z : Ch A G m), hp A k m z = hprism A (· * k) m z
@@ -15,7 +15,7 @@ private theorem hp_eq (A : Type) [CommRing A] (G : Type) [Group G] (k : G) :
       rfl) z
 
 /- English proof (translation)
-Introduce `A _ G _ k m z`. Rewrite using `[hp_eq]`. Conclude with `(prism_toInh A k m z).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.coneHomotopy_boundary_formula :
     ∀ (A : Type) [CommRing A] (G : Type) [Group G] (k : G) (m : ℕ) (z : Ch A G (m + 1)), pr A G (m + 1) (hp A k (m + 1) z) = prism A k m (pr A G m z) := by

@@ -16,7 +16,7 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 open GlobalTheory.AdLat GlobalTheory.UnRep
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.IsomLift.exists_lift` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSiegelThetaTransformation%2FExistsLiftHermitianIsometryModLevelSelfDual.lean&line=213#L213)
 -/

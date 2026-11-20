@@ -13,19 +13,19 @@ section TRingF
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Set `e` to `Fintype.equivFin J`. Set `f1 : Fin p.n → S` to `fun k => φ (Ideal.Quotient.mk p.I (MvPolynomial.X k))`. Set `vals : Fin (p.n + Fintype.card J) → S` to `fun i => Fin.addCases f1 (fun k => g (e.symm k)) i`. Set `Φ : MvPolynomial (Fin (p.n + Fintype.card J)) K →ₐ[K] S` to `MvPolynomial.aeval vals`. Establish `hrad : (RingHom.ker Φ).IsRadical` using `(RingHom.ker_isPrime Φ).isRadical`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r0 : TRing K` to `⟨p.n + Fintype.card J, RingHom.ker Φ, hrad⟩`. Establish `hφ : (MvPolynomial.aeval f1 : MvPolynomial (Fin p.n) K →ₐ[K] S) = φ.comp (Ideal.Quotient.mkₐ K p.I)` using `MvPolynomial.algHom_ext fun k => by simp [f1]`. Establish `hvals : vals ∘ Fin.castAdd (Fintype.card J) = f1` using `funext fun k => by`. Simplify using `[vals, Fin.addCases_left]`. Establish `hker : ∀ a ∈ p.I, (Ideal.Quotient.mkₐ K (RingHom.ker Φ)).comp (MvPolynomial.rename (Fin.castAdd (Fintype.card J))) a = 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a ha`. Rewrite using `[AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem, RingHom.mem_ker]`. Use `show MvPolynomial.aeval vals (MvPolynomial.rename (Fin.castAdd (Fintype.card J)) a) = 0`. Rewrite using `[MvPolynomial.aeval_rename, hvals, hφ, AlgHom.comp_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem.mpr ha, map_zero]`. Set `al : p.R →ₐ[K] r0.R` to `Ideal.Quotient.liftₐ p.I ((Ideal.Quotient.mkₐ K (RingHom.ker Φ)).comp (MvPolynomial.rename (Fin.castAdd (Fintype.card J)))) hker`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ch : r0.R →ₐ[K] S` to `Ideal.kerLiftAlg Φ`. Use `⟨r0, al, ch, fun j => Ideal.Quotient.mk (RingHom.ker Φ) (MvPolynomial.X (Fin.natAdd p.n (e j))), Ideal.kerLiftAlg_injective Φ, ?_, ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ch (al (Ideal.Quotient.mk p.I (MvPolynomial.X k))) = φ (Ideal.Quotient.mk p.I (MvPolynomial.X k))`. Establish `h1 : al (Ideal.Quotient.mk p.I (MvPolynomial.X k)) = Ideal.Quotient.mk (RingHom.ker Φ) (MvPolynomial.X (Fin.castAdd (Fintype.card J) k))`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (RingHom.ker Φ) (MvPolynomial.rename (Fin.castAdd (Fintype.card J)) (MvPolynomial.X k)) = _`. Rewrite using `[MvPolynomial.rename_X]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.aeval vals (MvPolynomial.X (Fin.castAdd (Fintype.card J) k)) = _`. Rewrite using `[MvPolynomial.aeval_X]`. Express the relevant statement in the definitionally equal form `Fin.addCases (motive := fun _ => S) f1 (fun k => g (e.symm k)) (Fin.castAdd (Fintype.card J) k) = _`. Rewrite using `[Fin.addCases_left]`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `MvPolynomial.aeval vals (MvPolynomial.X (Fin.natAdd p.n (e j))) = g j`. Rewrite using `[MvPolynomial.aeval_X]`. Express the relevant statement in the definitionally equal form `Fin.addCases (motive := fun _ => S) f1 (fun k => g (e.symm k)) (Fin.natAdd p.n (e j)) = g j`. Rewrite using `[Fin.addCases_right, Equiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_tring (p : TRing K) {S : Type} [Field S] [Algebra K S] (φ : p.R →ₐ[K] S) {J : Type} [Fintype J]
     (g : J → S) :
@@ -94,41 +94,41 @@ section Eps
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtfA_epsMul_alg (a : S) :
     (epsMul a).comp (algebraMap S (DualNumber S)) = algebraMap S (DualNumber S) := by
   ext r <;> simp [epsMul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtfA_fst_epsMul (a : S) :
     (TrivSqZeroExt.fstHom S S S).toRingHom.comp (epsMul a) = (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext r <;> simp [epsMul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [epsMul, mul_assoc, smul_smul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtfA_epsMul_mul (a b : S) : (epsMul a).comp (epsMul b) = epsMul (a * b) := by
   ext r <;> simp [epsMul, mul_assoc, smul_smul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtfA_epsMul_zero :
     epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
   ext r <;> simp [epsMul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wtfA_fst_alg :
     (TrivSqZeroExt.fstHom S S S).toRingHom.comp (algebraMap S (DualNumber S)) = RingHom.id S := by
   ext r <;> simp
 
 /- English proof (translation)
-Simplify using `[spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wtfA_spMap_id : spMap (RingHom.id S) = 𝟙 (Sp S) := by
   simp [spMap]
@@ -169,13 +169,13 @@ def wtfA_post {A : Over Xo.X} (g : Xo.univ.t.G ⟶ Xo.univ.t.G) [IsMonHom g] :
   map_mul' U V := MonObj.mul_comp U V g
 
 /- English proof (translation)
-The claim follows from `map_prod (wtfA_pre f) F Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem wtfA_pre_prod {A B : Over Xo.X} (f : A ⟶ B) {m : ℕ} (F : Fin m → (B ⟶ Xo.univ.t.G)) :
     f ≫ ∏ j, F j = ∏ j, f ≫ F j := map_prod (wtfA_pre f) F Finset.univ
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (epsMul a) ≫ spMap (epsMul b) = spMap (epsMul (a * b))`. Rewrite using `[spMap_comp_spMap, wtfA_epsMul_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_sO_comp (a b : S) : wtfA_sO x a ≫ wtfA_sO x b = wtfA_sO x (a * b) := by
   apply Over.OverMorphism.ext
@@ -183,7 +183,7 @@ theorem wtfA_sO_comp (a b : S) : wtfA_sO x a ≫ wtfA_sO x b = wtfA_sO x (a * b)
   rw [spMap_comp_spMap, wtfA_epsMul_mul]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ spMap (epsMul a) = spMap (TrivSqZeroExt.fstHom S S S).toRingHom`. Rewrite using `[spMap_comp_spMap, wtfA_fst_epsMul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualNumberZero_comp_scalar (a : S) : dualNumberZeroSection x ≫ wtfA_sO x a = dualNumberZeroSection x := by
   apply Over.OverMorphism.ext
@@ -192,12 +192,12 @@ theorem dualNumberZero_comp_scalar (a : S) : dualNumberZeroSection x ≫ wtfA_sO
   rw [spMap_comp_spMap, wtfA_fst_epsMul]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext h.2`.
+A detailed English derivation is pending.
 -/
 theorem dualNumberZero_comp_tangent {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x V.left) : dualNumberZeroSection x ≫ V = 1 := Over.OverMorphism.ext h.2
 
 /- English proof (translation)
-Establish `hq : wtfA_sO x 0 = wtfA_q x ≫ dualNumberZeroSection x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap (epsMul 0) = spMap (algebraMap S (DualNumber S)) ≫ spMap (TrivSqZeroExt.fstHom S S S).toRingHom`. Rewrite using `[spMap_comp_spMap, wtfA_epsMul_zero]`. Rewrite using `[hq, Category.assoc, dualNumberZero_comp_tangent x h, MonObj.comp_one]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_zero {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x V.left) : wtfA_sO x 0 ≫ V = 1 := by
   have hq : wtfA_sO x 0 = wtfA_q x ≫ dualNumberZeroSection x := by
@@ -208,13 +208,13 @@ theorem wtfA_zero {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x V.left) : wtfA_sO 
   rw [hq, Category.assoc, dualNumberZero_comp_tangent x h, MonObj.comp_one]
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (hA S x V.left h a b _ _ rfl rfl)`.
+A detailed English derivation is pending.
 -/
 theorem wtfA_add (hA : TanAddSt Xo) {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x V.left) (a b : S) :
     (wtfA_sO x a ≫ V) * (wtfA_sO x b ≫ V) = wtfA_sO x (a + b) ≫ V := Over.OverMorphism.ext (hA S x V.left h a b _ _ rfl rfl)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.sum_empty, wtfA_zero x h]`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, wtfA_add x hA h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem wtfA_sum (hA : TanAddSt Xo) {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x V.left) {Jt : Type}
     (s : Finset Jt) (c : Jt → S) : ∏ i ∈ s, (wtfA_sO x (c i) ≫ V) = wtfA_sO x (∑ i ∈ s, c i) ≫ V := by
@@ -224,11 +224,9 @@ theorem wtfA_sum (hA : TanAddSt Xo) {V : tEps x ⟶ Xo.univ.t.G} (h : IsTanAt x 
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, wtfA_add x hA h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Establish `hu' : u = fun j => wtfA_sO x (a j) ≫ wtfA_lt x (v j) (hv j)`. Use function extensionality and compare the values at `fun j => Over.OverMorphism.ext (hu j)`. Substitute `hu'` using the available equality.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Substitute using the available equality.
 
-Rewrite `hw` using `[List.prod_ofFn]`. Conclude with `hw`. Introduce `hw`. Use `⟨fun j => wtfA_sO x (a j) ≫ wtfA_lt x (v j) (hv j), fun i => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[List.prod_ofFn]`.
-
-Conclude with `hw`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_isComb_iff {m : ℕ} (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.t.G.left)) (hv : ∀ j, IsTanAt x (v j))
     (a : Fin m → S) (w : Sp (DualNumber S) ⟶ Xo.univ.t.G.left) :
@@ -246,9 +244,7 @@ theorem wtfA_isComb_iff {m : ℕ} (v : Fin m → (Sp (DualNumber S) ⟶ Xo.univ.
     exact hw
 
 /- English proof (translation)
-Unfold `wtfA_comb`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[wtfA_pre_prod]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [← Category.assoc, wtfA_sO_comp]`. Use `_ = ∏ j, ∏ i, wtfA_sO x (a i * M i j) ≫ V j := Finset.prod_comm`.
-
-Use `_ = ∏ j, wtfA_sO x (Matrix.vecMul a M j) ≫ V j := Finset.prod_congr rfl fun j _ => wtfA_sum x hA (hV j) Finset.univ (fun i => a i * M i j)`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_comb_change (hA : TanAddSt Xo) {m : ℕ} (V : Fin m → (tEps x ⟶ Xo.univ.t.G))
     (hV : ∀ j, IsTanAt x (V j).left) (M : Matrix (Fin m) (Fin m) S) (a : Fin m → S) :
@@ -263,9 +259,9 @@ theorem wtfA_comb_change (hA : TanAddSt Xo) {m : ℕ} (V : Fin m → (tEps x ⟶
         wtfA_sum x hA (hV j) Finset.univ (fun i => a i * M i j)
 
 /- English proof (translation)
-Use `⟨Over.w _, ?_⟩` and prove the remaining obligations. Establish `h1 : dualNumberZeroSection x ≫ wtfA_comb x V a = 1`. Unfold `wtfA_comb`. Rewrite using `[wtfA_pre_prod]`. Use `(Finset.prod_congr rfl fun j _ => ?_).trans Finset.prod_const_one` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.assoc, dualNumberZero_comp_scalar, dualNumberZero_comp_tangent x (hV j)]`. Conclude with `congrArg CommaMorphism.left h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_comb_tan {m : ℕ} (V : Fin m → (tEps x ⟶ Xo.univ.t.G)) (hV : ∀ j, IsTanAt x (V j).left)
     (a : Fin m → S) : IsTanAt x (wtfA_comb x V a).left := by
@@ -279,9 +275,9 @@ theorem wtfA_comb_tan {m : ℕ} (V : Fin m → (tEps x ⟶ Xo.univ.t.G)) (hV : �
 
 variable (c : Coeff l) in
 /- English proof (translation)
-Introduce `a'`. Use `haveI := Xo.univ.t.act.hom a'`. Establish `hV' : ∀ j, V j ≫ Xo.univ.t.act.act a' = wtfA_sO x (algebraMap c.F S (embK c τ a')) ≫ V j` using `fun j => Over.OverMorphism.ext (hV j a')`. Establish `key : wtfA_comb x V a ≫ Xo.univ.t.act.act a' = wtfA_sO x (algebraMap c.F S (embK c τ a')) ≫ wtfA_comb x V a`. Unfold `wtfA_comb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wtfA_pre_prod, show (∏ j, wtfA_sO x (a j) ≫ V j) ≫ Xo.univ.t.act.act a' = ∏ j, (wtfA_sO x (a j) ≫ V j) ≫ Xo.univ.t.act.act a' from map_prod (wtfA_post (Xo.univ.t.act.act a')) _ _]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show (wtfA_sO x (a j) ≫ V j) ≫ Xo.univ.t.act.act a' = _`. Rewrite using `[Category.assoc, hV', ← Category.assoc, ← Category.assoc, wtfA_sO_comp, wtfA_sO_comp, mul_comm]`. Conclude with `congrArg CommaMorphism.left key`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_comb_eig [Algebra c.F S] (τ : E →+* ℂ) {m : ℕ} (V : Fin m → (tEps x ⟶ Xo.univ.t.G))
     (hV : ∀ j, IsEigAt c τ (V j).left) (a : Fin m → S) : IsEigAt c τ (wtfA_comb x V a).left := by
@@ -309,14 +305,14 @@ section Scal
 variable {S : Type} [CommRing S]
 
 /- English proof (translation)
-Simplify using `only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wtfA_scal_mul (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x a i * scal x b i = scal x (a * b) i := by
   simp only [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wtfA_res_res {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (g : Γ(X, ⊤)) :
     (X.presheaf.map (homOfLE h).op).hom ((X.presheaf.map (homOfLE (le_top : U ≤ ⊤)).op).hom g) =
@@ -325,7 +321,7 @@ theorem wtfA_res_res {X : Scheme.{0}} {U V : X.Opens} (h : V ≤ U) (g : Γ(X, �
   rfl
 
 /- English proof (translation)
-Unfold `scal ReciprocityTheory.ChartRestriction.G.Out.liftFun`. Conclude with `(wtfA_res_res _ _).trans (wtfA_res_res _ _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wtfA_scal_res (x : Sp S ⟶ Xo.X) (a : S) {i j : (PPx x).ι} :
     ((Gx x).presheaf.map (homOfLE (inf_le_left : (PPx x).U i ⊓ (PPx x).U j ≤ (PPx x).U i)).op).hom (scal x a i) =
@@ -339,7 +335,7 @@ def wtfA_bcPmE {T : Type} [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) (x' 
   ((Over.homMk (spMap ψ) h : Over.mk x' ⟶ Over.mk x) ▷ Xo.univ.t.G).left
 
 /- English proof (translation)
-Unfold `wtfA_bcPmE`. Rewrite using `[← Over.comp_left, whiskerRight_snd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wtfA_bcPmE_snd {T : Type} [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X)
     (h : spMap ψ ≫ x = x') :
@@ -348,7 +344,7 @@ theorem wtfA_bcPmE_snd {T : Type} [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo
   rw [← Over.comp_left, whiskerRight_snd]
 
 /- English proof (translation)
-Unfold `wtfA_bcPmE`. Rewrite using `[← Over.comp_left, whiskerRight_fst, Over.comp_left]`. Apply the tactic sequence `try rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtfA_bcPmE_fst {T : Type} [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo.X) (x' : Sp T ⟶ Xo.X)
     (h : spMap ψ ≫ x = x') :
@@ -359,18 +355,18 @@ theorem wtfA_bcPmE_fst {T : Type} [CommRing T] (ψ : S →+* T) (x : Sp S ⟶ Xo
   try rfl
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem wtfA_gx_ext {W : Scheme.{0}} {x : Sp S ⟶ Xo.X} (f₁ f₂ : W ⟶ Gx x)
     (h₁ : f₁ ≫ (fst (Over.mk x) Xo.univ.t.G).left = f₂ ≫ (fst (Over.mk x) Xo.univ.t.G).left)
     (h₂ : f₁ ≫ (snd (Over.mk x) Xo.univ.t.G).left = f₂ ≫ (snd (Over.mk x) Xo.univ.t.G).left) : f₁ = f₂ := pullback.hom_ext h₁ h₂
 
 /- English proof (translation)
-Unfold `scal ReciprocityTheory.ChartRestriction.G.Out.liftFun toΓ`. Establish `hT : (Scheme.ΓSpecIso (CommRingCat.of T)).inv.hom (ψ a) = (spMap ψ).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom a)` using `congrArg (fun f => f.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ψ))`. Rewrite using `[hT]`. Generalize the expression as in `(Scheme.ΓSpecIso (CommRingCat.of S)).inv.hom a = r`. Establish `h2 : (fst (Over.mk x') Xo.univ.t.G).left.appTop.hom ((spMap ψ).appTop.hom r) = pm.appTop.hom ((fst (Over.mk x) Xo.univ.t.G).left.appTop.hom r)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun f => f.appTop.hom r) hf`. Use `first`. Consider the case `exact h3.symm`. Consider the case `simpa [Scheme.comp_appTop] using h3.symm`. Rewrite using `[h2]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(fst (Over.mk x) Xo.univ.t.G).left.appTop.hom r = s`. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wtfA_scal_pull {T : Type} [CommRing T] (ψ : S →+* T) {x : Sp S ⟶ Xo.X} {x' : Sp T ⟶ Xo.X}
     (pm : Gx x' ⟶ Gx x)

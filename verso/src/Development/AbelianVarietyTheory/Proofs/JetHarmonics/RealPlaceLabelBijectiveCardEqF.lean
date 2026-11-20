@@ -9,13 +9,11 @@ open GlobalTheory.RunDepth GlobalTheory.CharDepth
 namespace GlobalTheory.RunDepth
 
 /- English proof (translation)
-Use `⟨?_, D.what₂.card_Tau⟩` and prove the remaining obligations. Establish `hb` using `D.R.toFrame.iota_bijective`. Use `D.eTau.symm.bijective.comp (f := fun z : RPl D.R => (if z.1 then ⟨D.R.tau2 z.2, rfl⟩ else ⟨D.R.tau1 z.2, rfl⟩ : D.R.Psi)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, s⟩ ⟨b, t⟩ h`. Establish `h'` using `congrArg Subtype.val h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `cases a <;> cases b <;>`. Simplify using `only [Formalism.HC.Frame.tau1, Formalism.HC.Frame.tau2, Bool.false_eq_true, if_true, if_false, Prod.mk.injEq] at h'`. Conclude with `Prod.ext rfl (hb.1 h'.2)`. Conclude with `absurd h'.1.1 (by decide)`. Conclude with `absurd h'.1.1 (by decide)`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Prod.ext rfl (hb.1 h'.2)`. Introduce and unpack `⟨⟨⟨a, b⟩, h⟩, hg⟩`. Take `⟨t, rfl⟩` from `hb.2 h`. Establish `hb1 : b = 1` using `hg`. Substitute `hb1` using the available equality.
-
-Break down `Int.units_eq_one_or a with rfl | rfl` into its components or cases. Conclude with `⟨(false, t), rfl⟩`. Conclude with `⟨(true, t), rfl⟩`.
+Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem plOf_bijective_card (D : D7) :
     Function.Bijective (plOf D) ∧ Fintype.card D.what₂.Tau = D.R.f := by

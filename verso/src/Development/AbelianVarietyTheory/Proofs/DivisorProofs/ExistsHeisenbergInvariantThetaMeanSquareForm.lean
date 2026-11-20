@@ -15,19 +15,15 @@ noncomputable section
 namespace GlobalTheory.ThetaMeanSquareF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT _ _ ξ₀ _ _ M hM μ 𝓕 hμ h𝓕`. Establish `hψ : IsCharAF F B.ψ` using `GlobalTheory.StdCharFromIsStd.isCharAF hB.std`. Take `⟨i1, i2, i3, i4, i5, K, hK, hKc⟩` from `GlobalTheory.AdelicMatrixLatticeF.lattice F E nS nT`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : Countable (ratLF F E nS nT) := countable_of_discrete_addSubgroup _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hμ`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := ⟨by`. Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (G := WOF F E nS nT) (ratLF F E nS nT) hK hKc μ h𝓕⟩`. Establish `hb : ∀ f ∈ M, ∃ C : ℝ, ∀ w, ‖f w‖ ≤ C` using `fun f hf => by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hp : ∀ γ ∈ ratLF F E nS nT, ∀ w, ‖f (γ + w)‖ = ‖f w‖`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Conclude with `(congrArg norm ((hM f hf).quasi γ w)).trans (by rw [norm_mul, hψ.2.1, one_mul])`. Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn (hM f hf).cont.continuousOn`. Use `⟨C, fun w => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨γ, hγ, h⟩` from `hKc w`. Rewrite using `[← hp γ hγ w]`. Conclude with `hC _ h`. Take `⟨Bf, hBf, hN⟩` from `GlobalTheory.ThetaMeanSquareForm.exists_form (μ.restrict 𝓕) M (fun f hf => (hM f hf).cont.measurable) hb`. Use `⟨Bf, fun u f g f' g' hf hg => ?_, hN⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hBf, hBf, hf, hg]`. Establish `key` using `GlobalTheory.HeisOrtho.setIntegral_add_right (G := WOF F E nS nT) (ratLF F E nS nT) μ 𝓕 h𝓕 (fun w => (f : WOF F E nS nT → ℂ) w * (starRingEnd ℂ) ((g : WOF F E nS nT → ℂ) w)) (by`. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Establish `h0` using `GlobalTheory.HeisOrtho.mul_conj_of_norm_one (hψ.2.1 (-(symplOHF σ JS JT ξ₀ (ratWF γ) w)))`. Establish `h1` using `(hM f f.2).quasi γ w`.
-
-Establish `h2` using `(hM g g.2).quasi γ w`. Use `show (f : WOF F E nS nT → ℂ) (ratWF γ + w) * (starRingEnd ℂ) ((g : WOF F E nS nT → ℂ) (ratWF γ + w)) = _`. Rewrite using `[h1, h2, map_mul, mul_mul_mul_comm, h0, one_mul]) u`. Rewrite using `[← key]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations.
-
-Establish `h0` using `GlobalTheory.HeisOrtho.mul_conj_of_norm_one (hψ.2.1 (symplOHF σ JS JT ξ₀ w u))`. Use `show B.ψ (symplOHF σ JS JT ξ₀ w u) * (f : WOF F E nS nT → ℂ) (w + u) * (starRingEnd ℂ) (B.ψ (symplOHF σ JS JT ξ₀ w u) * (g : WOF F E nS nT → ℂ) (w + u)) = _`. Rewrite using `[map_mul, mul_mul_mul_comm, h0, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_form : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

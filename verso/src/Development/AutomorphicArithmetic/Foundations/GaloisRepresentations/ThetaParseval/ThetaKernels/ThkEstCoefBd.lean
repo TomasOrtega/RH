@@ -19,17 +19,15 @@ variable {E : Type} [Field E] [NumberField E] [Algebra F E] {n d : ℕ}
 end W
 open W
 /- English proof (translation)
-Introduce `hR F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ φ₁ h₁ φ₂ h₂ N`. Use `haveI := hP.base.cm.1`. Take `⟨p, C, K, hp, hC, hK, h⟩` from `coef_split hR hP.base.std μ hμ h₁ h₂ N`. Take `⟨L, hL, hsz⟩` from `sz_le B.emb M.co.e.symm.toLinearMap`. Establish `hLN : 0 ≤ C * L ^ N` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(NNReal.mk (1 + C * L ^ N) (by positivity)) • p, (fun q => M.co.e.symm (spl F _ (0, q.1), spl F _ (0, q.2))) '' K, hp.const_smul _, hK.image ((lin_cont M.co.e.symm.toLinearMap).comp ((spl_cont.comp (continuous_const.prodMk continuous_fst)).prodMk (spl_cont.comp (continuous_const …` and prove the remaining obligations. Take `⟨w, rfl⟩` from `M.co.e.symm.surjective z`. Take `⟨x, hx⟩` from `(spl F _).surjective w.1`. Take `⟨y, hy⟩` from `(spl F _).surjective w.2`. Take `rfl : w = (spl F _ x, spl F _ y)` from `Prod.ext hx.symm hy.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Take `⟨a, b⟩` from `h f₁ f₂ x y`. Distinguish the cases in `h0 : coef F B.ψ μ (pureA F f₁ φ₁) (pureA F f₂ φ₂) (spl F _ x, spl F _ y) = 0`. Rewrite using `[h0, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg (apply_nonneg _ _) (apply_nonneg _ _)) (LatticeQuotientCompactness.maj_nonneg _ _ _ _)`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `s0` using `LatticeQuotientCompactness.sz_nonneg B.emb (M.co.e.symm (spl F _ x, spl F _ y))`. Rewrite using `[maj, if_pos, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Establish `q` using `mul_nonneg (apply_nonneg p f₁) (apply_nonneg p f₂)`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[mul_nonneg hLN q, mul_nonneg (mul_nonneg hLN hLN) q]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, ⟨_, b h0, rfl⟩, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_sub, ← map_smul, map_eq_zero_iff _ M.co.e.symm.injective, Prod.mk_sub_mk, ← map_sub, ← map_sub]`. Establish `: ∀ x : (Fin n × Fin d → mixedSpace F) × (Fin n × Fin d → Af F), u • spl F _ (x - (0, x.2)) = 0` using `fun x =>`. Use function extensionality and compare the values at `fun i => by show u * (re F _ + fi F (x.2 i - x.2 i)) = 0`. Rewrite using `[sub_self, map_zero, add_zero, ← re_add_fi u, hu, map_zero, zero_add, mul_comm, re_mul_fi]`.
-
-Conclude with `Prod.ext (this x) (this y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefBd_of_k : CoefReal → _root_.PositivityTheory.ThKEst.CoefBd_k := by
   intro hR F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP μ hμ φ₁ h₁ φ₂ h₂ N

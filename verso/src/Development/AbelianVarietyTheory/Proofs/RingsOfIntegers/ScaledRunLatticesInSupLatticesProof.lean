@@ -13,7 +13,7 @@ namespace GlobalTheory.PlaceTop
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `hX`.
+A detailed English derivation is pending.
 -/
 theorem integralityCondition_of_addedPoints_secondNorm {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (n : GlobalTheory.RunIn.SecNorm B) (X : PJ D B P j)
     (E : PtExt X) (hM : IntAtExt X E) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (hX : H2 X S ka wL wF) :
@@ -22,11 +22,9 @@ theorem integralityCondition_of_addedPoints_secondNorm {D : D7} {B : WeightFamil
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `key : ∀ (w : WeightFamilies.Wt D j) (k : ℕ), (∀ τ i, w.aP τ i = wF.aP τ i + k * wL.aP τ i) → (∀ τ i, w.aM τ i = wF.aM τ i + k * wL.aM τ i) → (recPJ h j hj).Thc ((zOwnP D p w : 𝓞 (recB h.toLawsCore).KO) * nnW (recB h.toLawsCore) hinj EX wL ^ k * nnW (recB h.toLawsCore) hinj EX wF …`. Introduce `w k h1 h2`. Take `⟨e, a, b⟩` from `GlobalTheory.T.nnW_eq_pow_mul_and_c2_cHalf_le_of_weight_sum D (recB h.toLawsCore) hinj EX j wL wF w k h1 h2`. Use `GlobalTheory.T.scaledShortLattice_le_of_shortGenerator_bound GlobalTheory.T.shortGeneratorPlaceValuationBound_proof D T h hs j hj hinj EX ho w _ _ _ a b ?_` and prove the remaining obligations. Rewrite using `[hp, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (· * _) (mul_assoc _ _ _)`. Use `⟨GlobalTheory.T.scaledThetaLattice_le_supLattice_every_weight D T h j hj hinj EX ho wL, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.scaledShortLattice_le_of_shortGenerator_bound GlobalTheory.T.shortGeneratorPlaceValuationBound_proof D T h hs j hj hinj EX ho wF _ _ _ le_rfl le_rfl ?_` and prove the remaining obligations. Rewrite using `[hp]`. Both sides reduce to the same expression.
-
-Conclude with `key (wadd wF (wsmul (WeightFamilies.dimY D j) wL)) (WeightFamilies.dimY D j) (fun _ _ => rfl) (fun _ _ => rfl)`. Conclude with `key ka T₀ (fun τ i => by have := hF.2.1 τ i; zify; linarith) (fun τ i => by have := hF.2.2 τ i; zify; linarith)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integralityCondition_algebraicPoints (D : D7) (T : Top D) (h : LawsP T) (hs : LawsSh T) (j : ℕ) (hj : InR D j)
     (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (ho : Oriented T EX) (p : ℕ) (hp : ∀ n, (T.dδ j n).pd = p)
@@ -53,7 +51,7 @@ theorem integralityCondition_algebraicPoints (D : D7) (T : Top D) (h : LawsP T) 
       (fun τ i => by have := hF.2.2 τ i; zify; linarith)
 
 /- English proof (translation)
-Introduce `D T h hs j hj hinj EX ho p hp ka wL wF T₀ nP hF`. Establish `H` using `integralityCondition_algebraicPoints D T h hs j hj hinj EX ho p hp ka wL wF T₀ nP hF`. Conclude with `⟨H, fun n => integralityCondition_of_addedPoints_secondNorm n _ _ _ _ ka wL wF H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem scaledRunLatticesInSupLattices_proof : ScaledLatticesInSupLattices := by
   intro D T h hs j hj hinj EX ho p hp ka wL wF T₀ nP hF

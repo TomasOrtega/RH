@@ -19,46 +19,46 @@ variable {n : ℕ}
 def wM {R : Type} [CommRing R] (n : ℕ) (e : R) : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R := Matrix.fromBlocks 0 1 (e • 1) 0
 
 /- English proof (translation)
-Rewrite using `[wM, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem wM_sq {R : Type} [CommRing R] (e : R) : wM n e * wM n e = e • (1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) R) := by
   rw [wM, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_smul]
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc (wM n e * wM n e), wM_sq, smul_mul_smul_comm, Matrix.one_mul, he, one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem wM_four {R : Type} [CommRing R] (e : R) (he : e * e = 1) : wM n e * wM n e * wM n e * wM n e = 1 := by
   rw [Matrix.mul_assoc (wM n e * wM n e), wM_sq, smul_mul_smul_comm, Matrix.one_mul, he, one_smul]
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_multiply, smul_smul]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dZ_mul (a b : ℂ) : dZ n a * dZ n b = dZ n (a * b) := by
   simp [dZ, Matrix.fromBlocks_multiply, smul_smul]
   rw [mul_comm]
 
 /- English proof (translation)
-Simplify using `[dZ, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_one : dZ n 1 = 1 := by
   simp [dZ, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Simplify using `[dZ, nU, Matrix.fromBlocks_multiply, smul_smul, mul_inv_cancel₀ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_conj_nU {ζ : ℂ} (h : ζ ≠ 0) (x : Matrix (Fin n) (Fin n) ℂ) : dZ n ζ⁻¹ * nU x * dZ n ζ = nU (ζ • x) := by
   simp [dZ, nU, Matrix.fromBlocks_multiply, smul_smul, mul_inv_cancel₀ h]
 
 /- English proof (translation)
-Simplify using `[dZ, nbLoc, Matrix.fromBlocks_multiply, smul_smul, mul_inv_cancel₀ h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dZ_conj_nb {ζ : ℂ} (h : ζ ≠ 0) (c : Matrix (Fin n) (Fin n) ℂ) :
     dZ n ζ⁻¹ * nbLoc c * dZ n ζ = nbLoc (ζ⁻¹ • c) := by
   simp [dZ, nbLoc, Matrix.fromBlocks_multiply, smul_smul, mul_inv_cancel₀ h]
 
 /- English proof (translation)
-Rewrite using `[wM_sq]`. Simplify using `[wM, nU, nbLoc, Matrix.fromBlocks_multiply, smul_smul, he]`. Rewrite using `[Matrix.fromBlocks_smul]`. Simplify using `[smul_smul, he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weyl_cube_conj_unipotent (e : ℂ) (he : e * e = 1) (x : Matrix (Fin n) (Fin n) ℂ) :
     wM n e * wM n e * wM n e * nU x * wM n e = nbLoc (e • x) := by

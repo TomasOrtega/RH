@@ -11,25 +11,23 @@ noncomputable section
 namespace GlobalTheory.FibreLinInd
 
 /- English proof (translation)
-Take `⟨P, p, π, h1, h2, h3, h4⟩` from `exists_fibrePower f r`. Establish `hxt : ∀ t, x t = z` using `fun t => by`. Rewrite using `[← Set.mem_singleton_iff, ← hx]`. Conclude with `⟨t, rfl⟩`. Set `t₀ : Sp K` to `IsLocalRing.closedPoint K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Take `⟨a, ha⟩` from `exists_det_ne_zero (fun (a : {g : Sp K ⟶ G // g ≫ f = x} × L.ι) i => valF a.1.1 (L.U a.2) ((s i).f a.2)) fun c hc => hz c fun g j hg => hc (⟨g, hg⟩, j)`. Set `j : Fin r → L.ι` to `fun k => (a k).2`. Set `U : P.Opens` to `LB.wchart L π j`. Establish `hU : ∀ k, U ≤ π k ⁻¹ᵁ L.U (j k)` using `LB.wchart_le L π j`. Set `M : Matrix (Fin r) (Fin r) Γ(P, U)` to `Matrix.of fun k i => (π k).appLE (L.U (j k)) U (hU k) ((s i).f (j k))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : ∀ {K : Type} [Field K] (h : Sp K ⟶ P) (hh : ⊤ ≤ h ⁻¹ᵁ U), evalHom h U hh M.det = (Matrix.of fun k i => valF (h ≫ π k) (L.U (j k)) ((s i).f (j k))).det`. Introduce `K _ h hh`. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `k i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `evalHom_appLE h U hh (π k) _ (hU k) _`. Set `O : P.Opens` to `P.basicOpen M.det`. Establish `hmem : z ∈ p '' (O : Set P)`. Take `⟨h, hp, hπ⟩` from `h4 (Sp K) x (fun k => (a k).1.1) fun k => (a k).1.2`. Establish `hle : ⊤ ≤ h ⁻¹ᵁ U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Establish `hk : ⊤ ≤ (a k).1.1 ⁻¹ᵁ L.U (j k)`. Assume the negation of the conclusion as `hn`. Conclude with `ha (Matrix.det_eq_zero_of_row_eq_zero k fun i => dif_neg hn)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hk ht` as an intermediate fact. Rewrite `this` using `[← hπ k]`. Conclude with `this`. Use `⟨h t₀, (mem_basicOpen_iff h U hle M.det t₀).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hπ]`. Conclude with `ha`. Rewrite using `[← Scheme.Hom.comp_apply, hp, hxt]`. Take `⟨w, hw, rfl⟩` from `hmem`. Set `t : Sp K'` to `IsLocalRing.closedPoint K'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `ht : x' t = p w`. Rewrite using `[← Set.mem_singleton_iff, ← hx']`. Conclude with `⟨t, rfl⟩`. Take `⟨h, hh⟩` from `exists_lift (O.ι ≫ p) x' ⟨w, hw⟩ t ht.symm`. Establish `hO : (h ≫ O.ι) t ∈ O` using `(h t).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ⊤ ≤ (h ≫ O.ι) ⁻¹ᵁ U` using `(top_le_iff _ U t).2 (P.basicOpen_le _ hO)`. Establish `hd` using `(mem_basicOpen_iff _ U hle M.det t).1 hO`. Rewrite `hd` using `[hM]`. Use `Matrix.eq_zero_of_mulVec_eq_zero hd (funext fun k => ?_)` and prove the remaining obligations. Use `hc ((h ≫ O.ι) ≫ π k) (j k) (by rw [Category.assoc, h3, Category.assoc, hh])` as an intermediate fact.
-
-Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem geometric_of_field (G Z : Scheme.{0}) (f : G ⟶ Z) [Flat f]
     [LocallyOfFinitePresentation f] (L : LB G) (r : ℕ) (s : Fin r → LB.Sec L) (z : Z)
@@ -92,9 +90,9 @@ theorem geometric_of_field (G Z : Scheme.{0}) (f : G ⟶ Z) [Flat f]
   simpa [Matrix.mulVec, dotProduct, mul_comm] using this
 
 /- English proof (translation)
-Introduce `G Z π _ f _ _ L hL r s P h z`. Set `U : Z.Opens` to `⟨{z | P z}, isOpen_setOf_linearIndependent_on_fibres G Z f L hL r s⟩`. Establish `hU : U = ⊤` using `(GlobalTheory.jacobson_closedPoints_tools_int Z π).2.2.1 U ⊤ fun y hy => by`. Use `⟨fun _ => trivial, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨K, _, x, hx, hz⟩` from `h y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `K' _ _ x' hx' c hc`. Conclude with `geometric_of_field G Z f L r s y K x hx hz K' x' hx' c hc`. Establish `: z ∈ U` using `by rw [hU]; trivial`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem linearIndependent_on_fibres_of_closedPoints :
     ∀ (G Z : Scheme.{0}) (π : Z ⟶ Sp ℤ) [LocallyOfFiniteType π] (f : G ⟶ Z) [Flat f] [LocallyOfFinitePresentation f] (L : LB G), L.IsLB → ∀ (r : ℕ) (s : Fin r → LB.Sec L), let P : Z → Prop := fun z => ∀ (K : Type) [Field K] [IsAlgClosed K] (x : Sp K ⟶ Z), Set.range x = {z} → ∀ c : Fin r → K, (∀ (g : Sp K ⟶ G) (j : L.ι), g ≫ f = x → ∑ i, c i * valF g (L.U j) ((s i).f j) = 0) → c = 0; (∀ z, IsClosed ({z} : Set Z) → ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ Z), Set.range x = {z} ∧ ∀ c : Fin r → K, (∀ (g : Sp K ⟶ G) (j : L.ι), g ≫ f = x → ∑ i, c i * valF g (L.U j) ((s i).f j) = 0) → c = 0) → ∀ z, P z := by

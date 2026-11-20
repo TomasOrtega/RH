@@ -16,13 +16,13 @@ section Lin
 variable {K : Type} [Field K] {W : Type} [AddCommGroup W] [Module K W] [FiniteDimensional K W]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0r, hw0⟩ : ∃ w0 ∈ LinearMap.range p, w0 ≠ 0 := by`. Establish `: LinearMap.range p ≠ ⊥`. Introduce `h`. Rewrite `h1` using `[h, finrank_bot]`. Conclude with `zero_ne_one h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot this`. Establish `hline : ∀ x ∈ LinearMap.range p, ∃ c : K, x = c • w0`. Introduce `x hx`. Take `⟨c, hc⟩` from `(finrank_eq_one_iff_of_nonzero' (⟨w0, hw0r⟩ : LinearMap.range p) (by simpa using hw0)).mp h1 ⟨x, hx⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `using this.symm`. Take `⟨c, hc⟩` from `hline (p (X w0)) ⟨_, rfl⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨μ, hμ⟩` from `hline (p w) ⟨w, rfl⟩`. Simplify using `only [Module.End.mul_apply, LinearMap.smul_apply]`. Rewrite using `[hμ, map_smul, map_smul, hc, smul_smul, smul_smul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma rank_one_sandwich (p : Module.End K W) (_hp : p * p = p) (h1 : finrank K (LinearMap.range p) = 1)
     (X : Module.End K W) : ∃ c : K, p * X * p = c • p := by
@@ -45,13 +45,13 @@ lemma rank_one_sandwich (p : Module.End K W) (_hp : p * p = p) (h1 : finrank K (
   rw [hμ, map_smul, map_smul, hc, smul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent'.{0} K v`. Establish `: Finite κ` using `Finite.of_injective a ha`. Establish `: Fintype κ` using `Fintype.ofFinite κ`. Establish `hcard : Fintype.card κ = n`. Rewrite using `[← finrank_span_eq_card hli, hsp, hn]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e : Fin n ≃ κ` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨a ∘ e, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hli.comp e e.injective`. Rewrite using `[← hsp]`. Use `congr 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_range, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨e i, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, rfl⟩; exact ⟨e.symm k, by simp⟩`.
+A detailed English derivation is pending.
 -/
 lemma select {ι M : Type} [Fintype ι] [AddCommGroup M] [Module K M] (v : ι → M) (n : ℕ)
     (hn : finrank K (Submodule.span K (Set.range v)) = n) :
@@ -75,9 +75,9 @@ lemma select {ι M : Type} [Fintype ι] [AddCommGroup M] [Module K M] (v : ι �
     · rintro ⟨k, rfl⟩; exact ⟨e.symm k, by simp⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hinv : N⁻¹ * N = 1` using `Matrix.nonsing_inv_mul N ((Matrix.isUnit_iff_isUnit_det N).mp hN)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by simp [h]`.
+A detailed English derivation is pending.
 -/
 lemma unit_vec {n : ℕ} {V : Type} [AddCommGroup V] [Module K V] (N : Matrix (Fin n) (Fin n) K) (hN : IsUnit N)
     (y : Fin n → V) (h : ∀ j, ∑ i, N j i • y i = 0) : y = 0 := by
@@ -92,9 +92,7 @@ lemma unit_vec {n : ℕ} {V : Type} [AddCommGroup V] [Module K V] (N : Matrix (F
     _ = 0 := by simp [h]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual K W, f w0 ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hw0 ((Module.forall_dual_apply_eq_zero_iff K w0).mp h)`. Use `⟨((f w0)⁻¹ • f).smulRight w, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearMap.smulRight_apply, LinearMap.smul_apply, smul_eq_mul, inv_mul_cancel₀ hf, one_smul]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_map_to (w0 w : W) (hw0 : w0 ≠ 0) : ∃ X : Module.End K W, X w0 = w := by
   obtain ⟨f, hf⟩ : ∃ f : Module.Dual K W, f w0 ≠ 0 := by
@@ -111,47 +109,41 @@ section GrpAlg
 variable {K : Type} [Field K] [CharZero K] {G : Type} [Group G] [Fintype G]
 
 /- English proof (translation)
-Use `set n := nS T P s with hn`. Use `set τ := (T.tau s).asAlgebraHom with hτ`. Use `set p := τ (eps P0) with hpdef`. Establish `hp : p * p = p` using `by rw [hpdef, ← map_mul, eps_idem]`. Establish `h1 : finrank K (LinearMap.range p) = 1` using `hM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose cB hcB using fun a : MonoidAlgebra K G => rank_one_sandwich p hp h1 (τ a)`. Establish `hcB' : ∀ a, τ (eps P0 * a * eps P0) = cB a • p` using `fun a => by`. Rewrite using `[map_mul, map_mul]`. Conclude with `hcB a`. Establish `hlift : ∀ a, eps P0 * a * eps P0 * eS T s = cB a • (eps P0 * eS T s)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[mul_eS, hcB', map_smul, ← mul_eS]`. Use `⟨cB, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0r, hw0⟩ : ∃ w0 ∈ LinearMap.range p, w0 ≠ 0 := by`. Establish `: LinearMap.range p ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `h1` using `[h, finrank_bot]`. Conclude with `zero_ne_one h1`. Conclude with `Submodule.exists_mem_ne_zero_of_ne_bot this`. Establish `hpw0 : p w0 = w0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨y, rfl⟩` from `hw0r`. Rewrite using `[← Module.End.mul_apply, hp]`. Use `set u : G → T.W s := fun g => τ (eps P * MonoidAlgebra.of K G g) w0 with hu`. Establish `hallu : ∀ a, τ (eps P * a) w0 ∈ Submodule.span K (Set.range u)`. Introduce `a`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Proceed by induction on `a using MonoidAlgebra.induction_on with`. Consider the case `of y => exact Submodule.subset_span ⟨y, rfl⟩`. Consider the case `add x y hx hy => rw [mul_add, map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x hx => rw [mul_smul_comm, map_smul, LinearMap.smul_apply]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Establish `hspanu : Submodule.span K (Set.range u) = LinearMap.range (τ (eps P))`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨τ (MonoidAlgebra.of K G y) w0, by rw [hu]; simp only [map_mul, Module.End.mul_apply]⟩`. Introduce and unpack `_ ⟨w, rfl⟩`. Take `⟨X, hX⟩` from `exists_map_to (K := K) w0 w hw0`. Take `⟨a, rfl⟩` from `T.irr s X`. Rewrite using `[← hX, ← Module.End.mul_apply, ← map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hallu a`. Establish `hfinu : finrank K (Submodule.span K (Set.range u)) = n` using `by rw [hspanu]; rfl`. Take `⟨g, hgli, -⟩` from `select u n hfinu`. Use `set r : G → (Fin n → K) := fun h i => cB (MonoidAlgebra.of K G h * eps P * MonoidAlgebra.of K G (g i)) with hr`. Establish `hkey : ∀ h i, p (τ (MonoidAlgebra.of K G h) (u (g i))) = cB (MonoidAlgebra.of K G h * eps P * MonoidAlgebra.of K G (g i)) • w0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h i`. Use `congrArg (fun X : Module.End K (T.W s) => X w0) (hcB' (MonoidAlgebra.of K G h * eps P * MonoidAlgebra.of K G (g i)))` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, hpw0] at this`. Rewrite using `[← this, hu]`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hpdef, hpw0]`. Establish `hspanr : Submodule.span K (Set.range r) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨ψ, hψ0, hψ⟩` from `Submodule.exists_dual_map_eq_bot_of_lt_top (lt_top_iff_ne_top.mpr hne) inferInstance`. Use `set lam : Fin n → K := fun i => ψ (fun j => if i = j then 1 else 0) with hlam`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hψr : ∀ h, ∑ i, r h i * lam i = 0`. Introduce `h`. Establish `hmem : ψ (r h) ∈ (Submodule.span K (Set.range r)).map ψ` using `Submodule.mem_map_of_mem (Submodule.subset_span ⟨h, rfl⟩)`. Rewrite `hmem` using `[hψ, Submodule.mem_bot]`. Rewrite `hmem` using `[LinearMap.pi_apply_eq_sum_univ ψ (r h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify `hmem` using `[smul_eq_mul, hlam]`. Use `set u' := ∑ i, lam i • u (g i) with hu'`. Establish `hpu : ∀ a, p (τ a u') = 0`. Introduce `a`. Proceed by induction on `a using MonoidAlgebra.induction_on with`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `of h`. Rewrite using `[hu', map_sum, map_sum]`. Simplify using `only [map_smul, hkey, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Establish `: ∑ i, lam i * cB (MonoidAlgebra.of K G h * eps P * MonoidAlgebra.of K G (g i)) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hψr h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `add x y hx hy => rw [map_add, LinearMap.add_apply, map_add, hx, hy, add_zero]`. Consider the case `smul c x hx => rw [map_smul, LinearMap.smul_apply, map_smul, hx, smul_zero]`. Establish `hu'0 : u' = 0`. Assume the negation of the conclusion as `hne'`. Take `⟨X, hX⟩` from `exists_map_to (K := K) u' w0 hne'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, rfl⟩` from `T.irr s X`. Use `hpu a` as an intermediate fact. Rewrite `this` using `[hX, hpw0]`. Conclude with `hw0 this`. Establish `hlam0 : lam = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(Fintype.linearIndependent_iff.mp hgli) lam (by` as an intermediate fact. Establish `h0` using `hu'0`. Rewrite `h0` using `[hu']`. Simplify `h0)` using `[Function.comp_apply]`. Use function extensionality and compare the values at `i`.
-
-Conclude with `this i`. Apply `hψ0` to reduce the goal to its premises. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.pi_apply_eq_sum_univ ψ x]`. Simplify using `only [LinearMap.zero_apply]`.
-
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Establish `: ψ (fun j => if i = j then 1 else 0) = 0` using `congrFun hlam0 i`. Rewrite using `[this, smul_zero]`. Establish `hfinr : finrank K (Submodule.span K (Set.range r)) = n`. Rewrite using `[hspanr, finrank_top, Module.finrank_fin_fun]`.
-
-Take `⟨h, hhli, -⟩` from `select r n hfinr`. Use `⟨g, h, hlift, ?_⟩` and prove the remaining obligations. Apply `Matrix.linearIndependent_rows_iff_isUnit.mp` to reduce the goal to its premises. Conclude with `hhli`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem choose_gh (T : GoodSet K G) (s : T.S) (P0 P : Pair K G) (hM : nS T P0 s = 1) :
     ∃ (cB : MonoidAlgebra K G → K) (g h : Fin (nS T P s) → G),

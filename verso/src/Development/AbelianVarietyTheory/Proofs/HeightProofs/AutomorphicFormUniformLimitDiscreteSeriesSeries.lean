@@ -24,7 +24,7 @@ namespace GlobalTheory.ClosureSeries
 open GlobalTheory.TypeSum
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.discreteSeries_gKMap_values_eq_generalisedCoefficients`.
+A detailed English derivation is pending.
 -/
 theorem coef_of_gkMap : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (τ : D.what₂.Tau), IsInfFam (D := D) θ → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
@@ -38,7 +38,7 @@ theorem coef_of_gkMap : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[
       ∀ y ∈ UJset ε, T v (x * atTau θ V τ (P⁻¹ * y * P)) = ℓ (σ y v) := GlobalTheory.T.discreteSeries_gKMap_values_eq_generalisedCoefficients
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.matrix_coefficient_frame_change_discrete_series`.
+A detailed English derivation is pending.
 -/
 theorem coef_transport : GlobalTheory.Published.DiscreteSeriesUpqUnique → ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ),
     Formalism.QuantumDeterminants.IsHCParam lam →
@@ -53,7 +53,7 @@ theorem coef_transport : GlobalTheory.Published.DiscreteSeriesUpqUnique → ∀ 
       SmoothVec (GlobalTheory.SmoothGlob.lieSet ε) σ v' ∧ ∀ y ∈ UJset ε, F (P⁻¹ * y * P) = ℓ' (σ y v') := GlobalTheory.T.matrix_coefficient_frame_change_discrete_series
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.hasAllKTypes_of_closure_discreteSeriesCoefficients`.
+A detailed English derivation is pending.
 -/
 theorem closure_model : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach →
     ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ), Formalism.QuantumDeterminants.IsHCParam lam →
@@ -66,7 +66,7 @@ theorem closure_model : GlobalTheory.Published.HarishChandraModules → GlobalTh
     GlobalTheory.TypeSum.HasTypeAll (GlobalTheory.TypeSum.lieOf (Formalism.REAL.Jm ε)) (Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε)) σ f := GlobalTheory.T.hasAllKTypes_of_closure_discreteSeriesCoefficients
 
 /- English proof (translation)
-Establish `: UJset ε = {g : Matrix (Fin n) (Fin n) ℂ | gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε}` using `rfl`. Rewrite using `[this]`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_UJset {n : ℕ} (ε : Fin n → Bool) : IsClosed (UJset ε) := by
   have : UJset ε = {g : Matrix (Fin n) (Fin n) ℂ | gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε} := rfl
@@ -75,7 +75,7 @@ theorem isClosed_UJset {n : ℕ} (ε : Fin n → Bool) : IsClosed (UJset ε) := 
     continuous_const
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AE D) := inferInstance`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `(continuous_mul_left _).comp continuous_induced_dom`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_mul_left_GA {D : D7} (V : HSp D) (x : GA D V) : Continuous fun y : GA D V => x * y := by
   haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩
@@ -84,31 +84,29 @@ theorem continuous_mul_left_GA {D : D7} (V : HSp D) (x : GA D V) : Continuous fu
   exact (continuous_mul_left _).comp continuous_induced_dom
 
 /- English proof (translation)
-Introduce `D θ V τ S φ hEx hUn hHC hCW hθ hV hS hφ hT`. Take `⟨lam₀, ε₀, hE₀, hP₀, hp, hq⟩` from `hS`. Take `⟨H, i1, i2, σ, hc, hnt, hU, hI, hL2, hK, hmin⟩` from `hEx _ ε₀ lam₀ hP₀`. Establish `hσ : IsDS ε₀ lam₀ σ` using `⟨hc, hnt, hU, hI, hL2, hK, hmin⟩`. Take `⟨P, hPu, hPG⟩` from `GlobalTheory.Published.exists_frame_of_hasSignature (hV (tauE D τ)) ε₀ hp hq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨H, i1, i2, σ, lam₀, ε₀, P, hE₀, hσ, hPu, hPG, fun x => ?_⟩` and prove the remaining obligations. Establish `hfin : ∀ ψ ∈ GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.finPartOfType θ V τ S, ∃ (m : ℕ) (ℓ : Fin m → (H →ₗ[ℂ] ℂ)) (v : Fin m → H), (∀ j, Sobolev₂ (GlobalTheory.SmoothGlob.lieSet ε₀) σ (ℓ j)) ∧ (∀ j, SmoothVec (GlobalTheory.SmoothGlob.lieSet ε₀) σ (v j)) ∧ ∀ y ∈ UJse …`. Introduce `ψ hψ`. Rewrite `hψ` using `[GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.finPartOfType, sSup_eq_iSup']`. Use `Submodule.iSup_induction (motive := fun ψ : GA D V → ℂ => ∃ (m : ℕ) (ℓ : Fin m → (H →ₗ[ℂ] ℂ)) (v : Fin m → H), (∀ j, Sobolev₂ (GlobalTheory.SmoothGlob.lieSet ε₀) σ (ℓ j)) ∧ (∀ j, SmoothVec (GlobalTheory.SmoothGlob.lieSet ε₀) σ (v j)) ∧ ∀ y ∈ UJset ε₀, ψ (x * atTau θ V τ (P⁻¹ * y …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨W, H', j1, j2, σ', lam, ε, P', T, hE, hHC', hD', hP', hJ', hGK, rfl⟩ ψ ⟨w, rfl⟩`. Take `⟨rfl, rfl⟩` from `GlobalTheory.SignedParTest.isEnum_unique hE hE₀`. Take `⟨ℓ, hℓ, hv, he⟩` from `coef_of_gkMap θ V τ hθ hHC hCW H' σ' lam ε P' T hHC' hD' hP' hJ' hGK w x`. Take `⟨ℓ', v', hℓ', hv', he'⟩` from `coef_transport hUn _ ε lam hHC' H H' σ σ' hσ hD' P P' _ hPu hP' hPG hJ' (fun y => T w (x * atTau θ V τ y)) ℓ w hℓ hv he`. Conclude with `⟨1, fun _ => ℓ', fun _ => v', fun _ => hℓ', fun _ => hv', fun y hy => by simpa using he' y hy⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `a b ⟨m, ℓ, v, h1, h2, h3⟩ ⟨m', ℓ', v', h1', h2', h3'⟩`. Use `⟨m + m', Fin.append ℓ ℓ', Fin.append v v', fun j => ?_, fun j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `using h1 i`. Simplify using `using h1' i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) j` and prove the remaining obligations. Simplify using `using h2 i`. Simplify using `using h2' i`. Use `show a _ + b _ = _`. Rewrite using `[h3 y hy, h3' y hy, Fin.sum_univ_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `set f : Matrix (Fin V.rank) (Fin V.rank) ℂ → ℂ := fun y => φ (x * atTau θ V τ (P⁻¹ * y * P)) with hf`. Establish `hcont : ContinuousOn (fun y : Matrix (Fin V.rank) (Fin V.rank) ℂ => x * atTau θ V τ (P⁻¹ * y * P)) (UJset ε₀)`. Use `(continuous_mul_left_GA V x).comp_continuousOn ?_` and prove the remaining obligations. Use `(GlobalTheory.PointAtPlaceHom.continuousOn_atTau hθ V τ).comp ((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).continuousOn ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Conclude with `GlobalTheory.LowTypeDetermined.conj_inv_mem hPu hPG hy`. Establish `hfc : ContinuousOn f (UJset ε₀)` using `hφ.cont.comp_continuousOn hcont`. Establish `hB` using `closure_model hHC hCW _ ε₀ lam₀ hP₀ H σ hσ f hfc (GlobalTheory.TypeSum.GrowthAtPlace.umg_atTau D θ hθ V τ φ hφ ε₀ P hPu hPG x) (by`. Introduce `C hC δ hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hK : IsCompact ((fun y => x * atTau θ V τ (P⁻¹ * y * P)) '' (C ∩ UJset ε₀))` using `(hC.inter_right (isClosed_UJset ε₀)).image_of_continuousOn (hcont.mono Set.inter_subset_right)`. Take `⟨ψ, hψ, happ⟩` from `hT _ hK δ hδ`. Take `⟨m, ℓ, v, h1, h2, h3⟩` from `hfin ψ hψ`. Use `⟨m, ℓ, v, h1, h2, fun y hyC hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← h3 y hy]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `happ _ ⟨y, ⟨hyC, hy⟩, rfl⟩)`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 hPu`. Establish `a1` using `Matrix.mul_nonsing_inv _ hd`. Establish `a2` using `Matrix.nonsing_inv_mul _ hd`. Establish `hi : P⁻¹⁻¹ = P` using `Matrix.nonsing_inv_nonsing_inv _ hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Establish `t3` using `GlobalTheory.TypeSum.hasTypeAll_transport _ H H σ (fun g => σ (P * g * P⁻¹)) (Formalism.REAL.Jm ε₀) (gramAt D V τ) P⁻¹ (GlobalTheory.TypeSum.isUnit_Jm ε₀) (IsUnit.of_mul_eq_one _ a2) (by`. Rewrite using `[show gramAt D V τ = Pᴴ * Formalism.REAL.Jm ε₀ * P from hPG.symm]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [a1]; simp) (LinearIsometryEquiv.refl ℂ H) (fun g _ v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : P * (P⁻¹ * g * P⁻¹⁻¹) * P⁻¹ = g`. Rewrite using `[hi]`. Combine the equalities or inequalities in the displayed calculation. Use `show σ g v = σ (P * (P⁻¹ * g * P⁻¹⁻¹) * P⁻¹) v`. Rewrite using `[e]) f hB`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e' : (fun y => f (P⁻¹⁻¹ * y * P⁻¹)) = fun y => φ (x * atTau θ V τ y)`. Use function extensionality and compare the values at `y`. Use `show φ (x * atTau θ V τ (P⁻¹ * (P⁻¹⁻¹ * y * P⁻¹) * P)) = φ (x * atTau θ V τ y)`. Rewrite using `[hi]`. Use `congr 3`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `t3` using `[e']`. Conclude with `GlobalTheory.TypeSum.hasTypeAll_iff.1 t3`.
+A detailed English derivation is pending.
 -/
 theorem closure_to_series : ∀ {D : D7} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (τ : D.what₂.Tau) (S : SPar) (φ : GA D V → ℂ),

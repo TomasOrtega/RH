@@ -4,9 +4,9 @@ import Formalism.LocalRingCardinality.SpanPowerMembership.NDLocA
 open UpperTheory.V.Z.Kato.Joint
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ A hA`. Take `⟨v, hv, hl⟩` from `hA`. Establish `hAl : A.valuation ((l : ℕ) : Ω) < 1`. Use `(hv ((l : ℕ) : NumberField.RingOfIntegers ℚ)).2 hl` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨(ValuationSubring.mem_nonunits_iff _).2 hAl, Formalism.BasicNotions.Examples₂.LB.exists_emb A hAl⟩`.
+Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Kato.Joint.jEx :
     UpperTheory.V.Z.Kato.Joint.JEx := by

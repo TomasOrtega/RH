@@ -12,21 +12,21 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 namespace GlobalTheory.CompanionTheory.PfSWUS.MonoSplit
 
 /- English proof (translation)
-Introduce `D n V l s fr e c hne hfr`. Take `⟨τ0⟩` from `hne`. Take `⟨PG, hPG⟩ : ∃ PG : D.what₂.Tau → PositivityTheory.Rg.Sw.PX V.rank n, ∀ τ, PG τ = MvPolynomial.C (if τ = τ0 then c else 1) * ∏ k ∈ e.support, (if k.1 = τ then PositivityTheory.PfSWUS.SwSpanR.lz (fr τ).1 k.2 else 1) ^ (e k)` from `⟨_, fun τ => rfl⟩`. Use `⟨PG, fun z => ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ τ, (fr τ).1 * ((fr τ)⁻¹).1 = 1` using `fun τ => Units.mul_inv (fr τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hZ : ∀ τ, (fr τ).1 * (((fr τ)⁻¹).1 * z τ) = z τ` using `fun τ => by`. Rewrite using `[← Matrix.mul_assoc, hinv τ, Matrix.one_mul]`. Establish `hG : gauss V l s z = ∏ τ, PositivityTheory.Rg.Sw.gs (2 * Real.pi * |l τ|) (((fr τ)⁻¹).1 * z τ)`. Unfold `gauss PositivityTheory.Rg.Sw.gs`. Rewrite using `[← Complex.exp_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[PositivityTheory.PfSWUS.SwSpanR.trace_frame (fr τ).1 ((fr τ)⁻¹).1 _ _ (hinv τ) (hfr τ), PositivityTheory.PfSWUS.SwSpanR.trace_ct_mul_self]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hP : evalPoly (MvPolynomial.monomial e c) z = ∏ τ, PositivityTheory.Rg.Sw.evX (PG τ) (((fr τ)⁻¹).1 * z τ)` using `by set f : D.what₂.Tau × Fin V.rank × Fin n × Bool → ℂ := fun k => if k.2.2.2 then (starRingEnd ℂ) (z k.1 k.2.1 k.2.2.1) else z k.1 k.2.1 k.2.2.1 with hf`. Establish `hτ : ∀ τ, PositivityTheory.Rg.Sw.evX (PG τ) (((fr τ)⁻¹).1 * z τ) = (if τ = τ0 then c else 1) * ∏ k ∈ e.support, (if k.1 = τ then f k else 1) ^ (e k)` using `fun τ => by`. Rewrite using `[hPG τ]`. Simplify using `only [PositivityTheory.Rg.Sw.evX, map_mul, MvPolynomial.eval_C, map_prod, map_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : k.1 = τ`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, if_pos rfl]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `PositivityTheory.PfSWUS.SwSpanR.evX_lz (fr k.1).1 (((fr k.1)⁻¹).1 * z k.1) k.2` as an intermediate fact. Unfold `PositivityTheory.Rg.Sw.evX at this`. Rewrite using `[this, hZ k.1, hf]`. Simplify using `only [starRingEnd_apply]`. Rewrite using `[if_neg h, if_neg h, map_one]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hτ]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_ite_eq' Finset.univ τ0, if_pos (Finset.mem_univ _), Finset.prod_comm]`. Unfold `evalPoly`. Rewrite using `[MvPolynomial.eval_monomial]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [ite_pow, one_pow]`. Rewrite using `[Finset.prod_ite_eq Finset.univ k.1, if_pos (Finset.mem_univ _)]`. Simplify using `only [hf, ite_pow]`. Rewrite using `[hP, hG, ← Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem main : ∀ (D : D7) (n : ℕ) (V : HSp D) (l : D.what₂.Tau → ℝ) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) (fr : D.what₂.Tau → GL (Fin V.rank) ℂ) (e : D.what₂.Tau × Fin V.rank × Fin n × Bool →₀ ℕ) (c : ℂ), Nonempty D.what₂.Tau → (∀ τ, ((fr τ).1)ᴴ * (gramAt D V τ * s τ) * (fr τ).1 = 1) → ∃ P : D.what₂.Tau → PositivityTheory.Rg.Sw.PX V.rank n, ∀ z : D.what₂.Tau → Matrix (Fin V.rank) (Fin n) ℂ, evalPoly (MvPolynomial.monomial e c) z * gauss V l s z = ∏ τ, PositivityTheory.Rg.Sw.evX (P τ) (((fr τ)⁻¹).1 * z τ) * PositivityTheory.Rg.Sw.gs (2 * Real.pi * |l τ|) (((fr τ)⁻¹).1 * z τ) := by
   classical

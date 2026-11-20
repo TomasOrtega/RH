@@ -15,7 +15,7 @@ omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Valua
   [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension F Ω] in
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun φ => φ.hom y) (unitsInflationOfLE_comp_unitsInflation (L := Ω) h 2)`. Simplify `e` using `only [ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem brauerInflation_unitsInflationOfLE {E E' : IntermediateField F Ω} (h : E ≤ E')
     [FiniteDimensional F E] [Normal F E] [FiniteDimensional F E'] [Normal F E']
@@ -25,33 +25,29 @@ theorem brauerInflation_unitsInflationOfLE {E E' : IntermediateField F Ω} (h : 
   simpa only [ModuleCat.hom_comp, LinearMap.comp_apply] using e
 
 /- English proof (translation)
-Use `set n := Module.finrank F E with hn_def`. Establish `hn : n ≠ 0` using `Module.finrank_pos.ne'`. Establish `hNn : (N : ℕ) = n` using `hEN.symm`. Use `set q := Nat.card 𝓀[F] with hq_def`. Use `set f := Module.finrank 𝓀[F] 𝓀[E] with hf_def`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ : Nat.card 𝓀[E] = q ^ f`. Use `Fintype.ofFinite 𝓀[F]` as an intermediate fact. Use `Fintype.ofFinite 𝓀[E]` as an intermediate fact. Rewrite using `[hq_def, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, Module.card_eq_pow_finrank (K := 𝓀[F]) (V := 𝓀[E])]`. Establish `hf : f ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `ramificationIndex_mul_residueDegree F E` as an intermediate fact. Rewrite `this` using `[residueDegree_eq_finrank]`. Conclude with `right_ne_zero_of_mul (this.trans_ne hn)`. Use `IsSepClosure.sep_closed F (K := Ω)` as an intermediate fact. Take `⟨ζ, hζE⟩` from `exists_isPrimitiveRoot_card_pow_sub_one (K := E) (Ksep := Ω) hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hζ : IsPrimitiveRoot ζ (q ^ (f * n) - 1)` using `by rwa [hQ, ← pow_mul] at hζE`. Establish `hKζ` using `(isUnramifiedSubextension_adjoin (K := F) (Ksep := Ω) (mul_ne_zero hf hn) hζ).1`. Establish `: FiniteDimensional F F⟮ζ⟯` using `hKζ.1`. Establish `: IsGalois F F⟮ζ⟯` using `IsUnramifiedSubextension.isGalois hKζ`. Use `set M : IntermediateField F Ω := E ⊔ F⟮ζ⟯ with hM_def`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEM : E ≤ M` using `le_sup_left`. Set `_ : Algebra E M` to `(IntermediateField.inclusion hEM).toRingHom.toAlgebra`. Establish `: IsScalarTower F E M` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: FiniteDimensional E M` using `Module.Finite.of_restrictScalars_finite F E M`. Establish `: ValuativeExtension E M` using `IntermediateField.valuativeExtension_inclusion hEM`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `ζM : M` to `⟨ζ, (le_sup_right : F⟮ζ⟯ ≤ M) (mem_adjoin_simple_self F ζ)⟩`. Establish `hζM : IsPrimitiveRoot ζM (Nat.card 𝓀[E] ^ n - 1)` using `(IsPrimitiveRoot.map_iff_of_injective (f := M.val) M.val.injective).1 hζE`. Establish `htop : E⟮ζM⟯ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `x -`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : M ≤ ((E⟮ζM⟯).restrictScalars F).map M.val`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `y hy`. Conclude with `⟨algebraMap E M ⟨y, hy⟩, (E⟮ζM⟯).algebraMap_mem _, rfl⟩`. Rewrite using `[adjoin_simple_le_iff]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨ζM, mem_adjoin_simple_self E ζM, rfl⟩`. Take `⟨y, hy, hyx⟩` from `hle x.2`. Establish `: y = x` using `Subtype.ext hyx`. Conclude with `this ▸ hy`. Establish `: IsUnramified E M` using `⟨ramificationIndex_eq_one_of_adjoin_eq_top hζM (natCast_card_pow_sub_one_ne_zero (K := E) hn) htop⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNM : unramifiedLevel F Ω N ≤ M` using `(IsUnramifiedSubextension.le_adjoin (isUnramifiedSubextension_unramifiedLevel F Ω N) (mul_ne_zero hf hn) (by rw [finrank_unramifiedLevel, hNn]; exact dvd_mul_left n f) hζ).trans le_sup_right`. Set `_ : Algebra (unramifiedLevel F Ω N) M` to `(IntermediateField.inclusion hNM).toRingHom.toAlgebra`. Establish `: IsScalarTower F (unramifiedLevel F Ω N) M` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: ValuativeExtension (unramifiedLevel F Ω N) M` using `IntermediateField.valuativeExtension_inclusion hNM`. Establish `hvanish` using `unitsInfl_comp_unitsRes_eq_zero F E (unramifiedLevel F Ω N) M (by rw [finrank_unramifiedLevel, hNn])`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hAB : LinearMap.range (unitsInfl F (unramifiedLevel F Ω N) M 2).hom ≤ LinearMap.range (unitsInfl F E M 2).hom`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[range_unitsInfl_two_eq_ker_unitsRes F E M, LinearMap.mem_ker]`. Conclude with `congrArg (fun φ => φ.hom w) hvanish`. Establish `hcardA : Nat.card (LinearMap.range (unitsInfl F (unramifiedLevel F Ω N) M 2).hom) = n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Nat.card_congr (LinearEquiv.ofInjective _ (unitsInfl_two_injective F (unramifiedLevel F Ω N) M)).toEquiv, natCard_groupCohomology_two_galUnits, finrank_unramifiedLevel, hNn]`. Establish `hcardB : Nat.card (LinearMap.range (unitsInfl F E M 2).hom) = n`. Rewrite using `[← Nat.card_congr (LinearEquiv.ofInjective _ (unitsInfl_two_injective F E M)).toEquiv, natCard_groupCohomology_two_galUnits]`. Establish `: Finite (LinearMap.range (unitsInfl F E M 2).hom)` using `Nat.finite_of_card_ne_zero (hcardB.trans_ne hn)`. Establish `hBA : LinearMap.range (unitsInfl F E M 2).hom ≤ LinearMap.range (unitsInfl F (unramifiedLevel F Ω N) M 2).hom`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: Finite (LinearMap.range (unitsInfl F E M 2).hom).toAddSubgroup` using `this`. Establish `h` using `AddSubgroup.eq_of_le_of_card_ge (H := (LinearMap.range (unitsInfl F (unramifiedLevel F Ω N) M 2).hom).toAddSubgroup) (K := (LinearMap.range (unitsInfl F E M 2).hom).toAddSubgroup) hAB (by`. Express the relevant statement in the definitionally equal form `Nat.card (LinearMap.range (unitsInfl F E M 2).hom) ≤ Nat.card (LinearMap.range (unitsInfl F (unramifiedLevel F Ω N) M 2).hom)`. Rewrite using `[hcardA, hcardB])`. Introduce `v hv`.
-
-Establish `hv' : v ∈ (LinearMap.range (unitsInfl F E M 2).hom).toAddSubgroup` using `hv`. Rewrite `hv'` using `[← h]`. Conclude with `hv'`. Take `⟨z, hz⟩` from `hBA ⟨y, rfl⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← brauerInflation_unitsInflationOfLE F Ω hNM, ← brauerInflation_unitsInflationOfLE F Ω hEM]`. Conclude with `congrArg (brauerInflation M).hom hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unramifiedLevel_brauerInflation_eq (E : IntermediateField F Ω) [FiniteDimensional F E]
     [IsGalois F E] (N : ℕ+) (hEN : Module.finrank F E = N) (y : groupCohomology (galUnits F E) 2) :
@@ -152,7 +148,7 @@ theorem exists_unramifiedLevel_brauerInflation_eq (E : IntermediateField F Ω) [
   exact congrArg (brauerInflation M).hom hz
 
 /- English proof (translation)
-Take `⟨E, y, rfl⟩` from `exists_brauerInflation_eq x`. Take `⟨z, hz⟩` from `exists_unramifiedLevel_brauerInflation_eq F Ω E.toIntermediateField ⟨Module.finrank F E.toIntermediateField, Module.finrank_pos⟩ rfl y`. Conclude with `⟨_, z, hz⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_brauerInflation_unramifiedLevel (x : galoisBrauerGroup F Ω) :
     ∃ (n : ℕ+) (y : groupCohomology (galUnits F (unramifiedLevel F Ω n)) 2),
@@ -179,7 +175,7 @@ noncomputable def brauerInv : galoisBrauerGroup F Ω →+ QZ where
     exact map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `brauerInvFun_brauerInflation F Ω n y`.
+A detailed English derivation is pending.
 -/
 theorem brauerInv_brauerInflation (n : ℕ+)
     (y : groupCohomology (galUnits F (unramifiedLevel F Ω n)) 2) :
@@ -187,15 +183,15 @@ theorem brauerInv_brauerInflation (n : ℕ+)
   brauerInvFun_brauerInflation F Ω n y
 
 /- English proof (translation)
-The claim follows from `(unramifiedInv_injective F (unramifiedLevel F Ω n)).comp (h2GalUnitsAddEquiv F _).injective`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedLevelInv_injective (n : ℕ+) : Function.Injective (unramifiedLevelInv F Ω n) :=
   (unramifiedInv_injective F (unramifiedLevel F Ω n)).comp (h2GalUnitsAddEquiv F _).injective
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨n, y, rfl⟩` from `exists_brauerInflation_unramifiedLevel F Ω x`. Rewrite `hx` using `[brauerInv_brauerInflation]`. Establish `hy : y = 0` using `unramifiedLevelInv_injective F Ω n (hx.trans (map_zero _).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem brauerInv_injective : Function.Injective (brauerInv F Ω) := by
   rw [injective_iff_map_eq_zero]
@@ -206,9 +202,9 @@ theorem brauerInv_injective : Function.Injective (brauerInv F Ω) := by
   rw [hy, map_zero]
 
 /- English proof (translation)
-Introduce `a`. Choose the witnesses or unpack the hypotheses as in `⟨n, hna⟩ : ∃ n : ℕ+, (n : ℕ) • a = 0 := by`. Take `⟨k, hk, hka⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 (isAddTorsion_QZ a)`. Conclude with `⟨⟨k, hk⟩, hka⟩`. Establish `hmem : a ∈ (unramifiedInv F (unramifiedLevel F Ω n)).range`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[mem_range_unramifiedInv_iff, finrank_unramifiedLevel]`. Conclude with `hna`. Take `⟨w, hw⟩` from `hmem`. Use `⟨(brauerInflation (unramifiedLevel F Ω n)).hom ((h2GalUnitsAddEquiv F _).symm w), ?_⟩` and prove the remaining obligations. Rewrite using `[brauerInv_brauerInflation, unramifiedLevelInv_apply, AddEquiv.apply_symm_apply, hw]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInv_surjective : Function.Surjective (brauerInv F Ω) := by
   intro a
@@ -223,7 +219,7 @@ theorem brauerInv_surjective : Function.Surjective (brauerInv F Ω) := by
   rw [brauerInv_brauerInflation, unramifiedLevelInv_apply, AddEquiv.apply_symm_apply, hw]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨brauerInv_injective F Ω, brauerInv_surjective F Ω⟩`.
+Supply the required witnesses or components.
 -/
 theorem brauerInv_bijective : Function.Bijective (brauerInv F Ω) :=
   ⟨brauerInv_injective F Ω, brauerInv_surjective F Ω⟩

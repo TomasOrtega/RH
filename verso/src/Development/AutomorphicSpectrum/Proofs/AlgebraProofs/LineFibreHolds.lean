@@ -9,7 +9,7 @@ import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.LineFibre
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.ForSecondHalf.LineFibre.full`.
+A detailed English derivation is pending.
 -/
 theorem lineFibre_holds : ReciprocityTheory.ChartRestriction.G.AI.I4.LineFibreStatement :=
   GroundTheory.Heights₂.Heights.ForSecondHalf.LineFibre.full

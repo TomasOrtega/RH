@@ -17,7 +17,7 @@ open scoped TensorProduct
 open Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspGK.exists_finite_sum_gkMult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FKFiniteCuspFormAsMultiplicitySum.lean&line=27#L27)
 -/

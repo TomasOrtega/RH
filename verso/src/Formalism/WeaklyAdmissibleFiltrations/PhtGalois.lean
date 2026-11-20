@@ -15,27 +15,27 @@ import Formalism.WeaklyAdmissibleFiltrations.CrystallineStableLifts.WindowCountI
 namespace Formalism.WeaklyAdmissibleFiltrations
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hodgeDegreeWindow_and_multiplicitySum.1, hodgeDegreeWindow_and_multiplicitySum.2, jumpsIcc_and_subTopBot.1, jumpsIcc_and_subTopBot.2, rankOneWA, exWA⟩`.
+Supply the required witnesses or components.
 -/
 theorem pht_filphi : THWindow ∧ DimSum ∧ JumpsIcc ∧ SubTopBot ∧ RankOneWA ∧ ExWA :=
   ⟨hodgeDegreeWindow_and_multiplicitySum.1, hodgeDegreeWindow_and_multiplicitySum.2, jumpsIcc_and_subTopBot.1, jumpsIcc_and_subTopBot.2, rankOneWA,
     exWA⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨finiteCocycles_properties.1, finiteCocycles_properties.2.1, finiteCocycles_properties.2.2.1, finiteCocycles_properties.2.2.2, trivialIsCrystalline_holds, existsStableLattice_holds, existsPeriodRingData_holds, cokernelLengthEqWach_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem pht_galois : CobF ∧ TorsFreeT ∧ CocyclesFunctorial ∧ ImFLe ∧ TrivCrys ∧ ExLattice ∧ ExPD ∧ WachCol :=
   ⟨finiteCocycles_properties.1, finiteCocycles_properties.2.1, finiteCocycles_properties.2.2.1, finiteCocycles_properties.2.2.2, trivialIsCrystalline_holds,
     existsStableLattice_holds, existsPeriodRingData_holds, cokernelLengthEqWach_holds⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨liftGal, negativeJumpsSum_holds, windowCountAlt⟩`.
+Supply the required witnesses or components.
 -/
 theorem pht_lift : LiftGal ∧ NegJumps ∧ WindowCount :=
   ⟨liftGal, negativeJumpsSum_holds, windowCountAlt⟩
 
 /- English proof (translation)
-The claim follows from `dPotCrisStable_and_existsPotentiallyCrystallineData`.
+A detailed English derivation is pending.
 -/
 theorem pht_pc : DpcrisStable ∧ ExPC := dPotCrisStable_and_existsPotentiallyCrystallineData
 

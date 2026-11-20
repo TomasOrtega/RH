@@ -10,9 +10,9 @@ open scoped DirectSum TensorProduct Kronecker Matrix
 namespace GlobalTheory.GLDuality
 
 /- English proof (translation)
-Establish `: (rename (R` using `ℂ) (Prod.swap : Fin n' × Fin n → Fin n × Fin n')).comp (sub (((1 : GL (Fin n') ℂ) : Matrix (Fin n') (Fin n') ℂ) ⊗ₖ (g : Matrix (Fin n) (Fin n) ℂ))ᵀ) = (rowAct ℂ (g : Matrix (Fin n) (Fin n) ℂ)ᵀ).comp (rename Prod.swap) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, s⟩`. Simplify using `[sub, rowAct, Fintype.sum_prod_type, Matrix.one_apply, apply_ite C]`. Rewrite using `[matRep_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `DFunLike.congr_fun this v`.
+A detailed English derivation is pending.
 -/
 theorem rename_swap_matRep_one_right {n n' : ℕ} (g : GL (Fin n) ℂ) (v : MvPolynomial (Fin n' × Fin n) ℂ) :
     rename Prod.swap (matRep n n' (g, 1) v) =
@@ -27,9 +27,9 @@ theorem rename_swap_matRep_one_right {n n' : ℕ} (g : GL (Fin n) ℂ) (v : MvPo
   exact DFunLike.congr_fun this v
 
 /- English proof (translation)
-Proceed by induction on `v using MvPolynomial.induction_on with`. Consider the case `C a => simp [colAdd, rowGen]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, Polynomial.eval_add]`. Consider the case `mul_X p v hp`. Take `⟨a, s⟩` from `v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, hp, Polynomial.eval_mul]`. Use `congr 1`. Apply the tactic sequence `by_cases h : s = j <;> simp [colAdd, rowGen, h, mul_comm (C c)]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rename_swap_colAdd {n n' : ℕ} (l j : Fin n) (c : ℂ) (v : MvPolynomial (Fin n' × Fin n) ℂ) :
     rename Prod.swap (colAdd ℂ l j c v) =
@@ -44,9 +44,9 @@ theorem rename_swap_colAdd {n n' : ℕ} (l j : Fin n) (c : ℂ) (v : MvPolynomia
     by_cases h : s = j <;> simp [colAdd, rowGen, h, mul_comm (C c)]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.coeff_zero_eq_eval_zero]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [rowGen]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, Polynomial.eval_add]`. Consider the case `mul_X p v hp`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, hp, Polynomial.eval_mul]`. Use `congr 1`. Apply the tactic sequence `by_cases h : v.1 = b <;> simp [rowGen, h]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rowGen_coeff_zero_eq {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r × Fin n) ℂ) :
     (rowGen ℂ a b f).coeff 0 = f := by
@@ -60,13 +60,13 @@ theorem rowGen_coeff_zero_eq {r n : ℕ} (a b : Fin r) (f : MvPolynomial (Fin r 
     by_cases h : v.1 = b <;> simp [rowGen, h]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (rename (R` using `ℂ) (Prod.swap : Fin n' × Fin n → Fin n × Fin n')) := rename_injective _ Prod.swap_injective`. Set `M : Submodule ℂ (MvPolynomial (Fin n × Fin n') ℂ)` to `N.map (rename (R := ℂ) (Prod.swap : Fin n' × Fin n → Fin n × Fin n')).toLinearMap`. Establish `hU : ∀ u ∈ Matrix.unitaryGroup (Fin n) ℂ, ∀ f ∈ M, rowAct ℂ u f ∈ M`. Introduce and unpack `u hu _ ⟨f, hf, rfl⟩`. Set `t : Matrix.unitaryGroup (Fin n) ℂ` to `Matrix.UnitaryGroup.transpose ⟨u, hu⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `⟨_, hst (unitaryIncl n t) f hf, rename_swap_matRep_one_right (unitaryIncl n t) f⟩`. Establish `hcl` using `rowDivClosed_of_rowAct_stable M (rowAct_mem_of_unitary_stable M hU)`. Establish `hne : M ≠ ⊥` using `fun e => hN (Submodule.map_injective_of_injective hinj (e.trans (Submodule.map_bot _).symm))`. Take `⟨_, ⟨v, hv, rfl⟩, hv0, hkill⟩` from `exists_killed_of_rowDivClosed M hcl hne`. Use `⟨v, hv, fun e => hv0 (by rw [e, map_zero]), fun l j hlj c => hinj ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC : rowGen ℂ l j (rename Prod.swap v) = Polynomial.C (rename Prod.swap v)` using `by ext1 k`. Break down `Nat.eq_zero_or_pos k with rfl | hk` into its components or cases. Rewrite using `[rowGen_coeff_zero_eq, Polynomial.coeff_C_zero]`. Rewrite using `[Polynomial.coeff_C_of_ne_zero hk.ne']`. Conclude with `hkill l j hlj k hk`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rename_swap_colAdd, hC, Polynomial.eval_C]`.
+A detailed English derivation is pending.
 -/
 theorem exists_colAdd_fixed_of_stable (n n' : ℕ) (N : Submodule ℂ (MvPolynomial (Fin n' × Fin n) ℂ)) (hN : N ≠ ⊥)
     (hst : ∀ g : GL (Fin n) ℂ, ∀ v ∈ N, matRep n n' (g, 1) v ∈ N) :

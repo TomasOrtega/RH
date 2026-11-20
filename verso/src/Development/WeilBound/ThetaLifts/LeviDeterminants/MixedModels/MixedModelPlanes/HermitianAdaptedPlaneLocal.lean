@@ -10,7 +10,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact @PositivityTheory.ThKF0.hermitian_plane_theta_restriction | exact @PositivityTheory.ThKF0.hermitian_plane_theta_restriction | exact PositivityTheory.ThKF0.hermitian_plane_theta_restriction | exact @PositivityTheory.ThKF0.hermitian_plane_theta_restriction trivial`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.Mix.T.hermitian_adapted_plane_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

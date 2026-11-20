@@ -13,7 +13,7 @@ section
 variable (V : Type*) [NormedAddCommGroup V] [InnerProductSpace ℝ V] [FiniteDimensional ℝ V]
 
 /- English proof (translation)
-Introduce `Λ _ _`. Take `⟨ι, _, _, e, he⟩` from `exists_basis_span_eq Λ`. Use `isLattice_of_eq_span (LinearMap.BilinForm.dualBasis (innerₗ V) dualLattice_innerₗ_nondegenerate e) (dual Λ) ?_` and prove the remaining obligations. Rewrite using `[← he, dualLattice_dual_span_eq e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualIsLattice : DualIsLattice V := by
   intro Λ _ _
@@ -23,7 +23,7 @@ theorem dualIsLattice : DualIsLattice V := by
   rw [← he, dualLattice_dual_span_eq e]
 
 /- English proof (translation)
-Introduce `Λ _ _`. Take `⟨ι, _, _, e, he⟩` from `exists_basis_span_eq Λ`. Rewrite using `[← he, dualLattice_dual_span_eq e, dualLattice_dual_span_eq, LinearMap.BilinForm.dualBasis_dualBasis _ innerₗ_isSymm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualDual : DualDual V := by
   intro Λ _ _
@@ -32,7 +32,7 @@ theorem dualDual : DualDual V := by
     LinearMap.BilinForm.dualBasis_dualBasis _ innerₗ_isSymm]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace V` to `borel V`. Establish `: BorelSpace V` using `⟨rfl⟩`. Conclude with `thetaSummable_of (poisson_periodization V) (gaussian_fourier_transform V)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaSummable : ThetaSummable V := by
   let _ : MeasurableSpace V := borel V
@@ -40,7 +40,7 @@ theorem thetaSummable : ThetaSummable V := by
   exact thetaSummable_of (poisson_periodization V) (gaussian_fourier_transform V)
 
 /- English proof (translation)
-Set `_ : MeasurableSpace V` to `borel V`. Establish `: BorelSpace V` using `⟨rfl⟩`. Conclude with `thetaPos_of (thetaSummable V)`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem thetaPos : ThetaPos V := by
   let _ : MeasurableSpace V := borel V
@@ -50,11 +50,11 @@ theorem thetaPos : ThetaPos V := by
 variable [MeasurableSpace V] [BorelSpace V]
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _`. Take `⟨ι, _, _, e, he⟩` from `exists_basis_span_eq Λ`. Substitute `he` using the available equality. Establish `h` using `covolDual_det_mul ((stdOrthonormalBasis ℝ V).reindex ((stdOrthonormalBasis ℝ V).toBasis.indexEquiv e)) e`. Use `set o := (stdOrthonormalBasis ℝ V).reindex ((stdOrthonormalBasis ℝ V).toBasis.indexEquiv e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set eD := LinearMap.BilinForm.dualBasis (innerₗ V) covolDual_nondegenerate e with heD`. Establish `hli : LinearIndependent ℤ e` using `e.linearIndependent.restrict_scalars' ℤ`. Establish `hliD : LinearIndependent ℤ eD` using `eD.linearIndependent.restrict_scalars' ℤ`. Establish `heq : Submodule.span ℤ (Set.range eD) = dual (Submodule.span ℤ (Set.range e))` using `(dualLattice_dual_span_eq e).symm`. Establish `hb : ((↑) : Submodule.span ℤ (Set.range e) → V) ∘ Module.Basis.span hli = e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun i => congrArg Subtype.val (Module.Basis.span_apply hli i)`. Establish `hbD : ((↑) : dual (Submodule.span ℤ (Set.range e)) → V) ∘ (Module.Basis.span hliD).map (LinearEquiv.ofEq _ _ heq) = eD`. Use function extensionality and compare the values at `fun i => by simp [Module.Basis.span_apply]`. Rewrite using `[ZLattice.covolume_eq_det_mul_measureReal _ MeasureTheory.volume ((Module.Basis.span hliD).map (LinearEquiv.ofEq _ _ heq)) o.toBasis, ZLattice.covolume_eq_det_mul_measureReal _ MeasureTheory.volume (Module.Basis.span hli) o.toBasis, hb, hbD, covolDual_vol_fd, mul_one, mul_one, ← …`. Conclude with `congrArg abs (eq_inv_of_mul_eq_one_left h)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem covolumeDual : CovolumeDual V := by
   intro Λ _ _ _ _
@@ -80,23 +80,23 @@ theorem covolumeDual : CovolumeDual V := by
   exact congrArg abs (eq_inv_of_mul_eq_one_left h)
 
 /- English proof (translation)
-The claim follows from `poissonDecay_of (dualIsLattice V) (lattice_summable_decay V) (poisson_periodization V) (unfolding_fourier_coefficient V) (lattice_fourier_series V)`.
+A detailed English derivation is pending.
 -/
 theorem poissonDecay : PoissonDecay V := poissonDecay_of (dualIsLattice V) (lattice_summable_decay V) (poisson_periodization V)
   (unfolding_fourier_coefficient V) (lattice_fourier_series V)
 
 /- English proof (translation)
-The claim follows from `poissonSchwartz_of (poissonDecay V) (schwartz_decay_gaussian V)`.
+A detailed English derivation is pending.
 -/
 theorem poissonSchwartz : PoissonSchwartz V := poissonSchwartz_of (poissonDecay V) (schwartz_decay_gaussian V)
 
 /- English proof (translation)
-The claim follows from `thetaShiftInversion_of (poissonDecay V) (poisson_periodization V) (gaussian_fourier_transform V)`.
+A detailed English derivation is pending.
 -/
 theorem thetaShiftInversion : ThetaShiftInversion V := thetaShiftInversion_of (poissonDecay V) (poisson_periodization V) (gaussian_fourier_transform V)
 
 /- English proof (translation)
-The claim follows from `thetaInversion_of (thetaShiftInversion V)`.
+A detailed English derivation is pending.
 -/
 theorem thetaInversion : ThetaInversion V := thetaInversion_of (thetaShiftInversion V)
 

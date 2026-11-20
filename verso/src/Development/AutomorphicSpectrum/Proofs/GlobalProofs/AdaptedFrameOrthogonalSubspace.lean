@@ -4,7 +4,7 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.MidConj
 
 /- English proof (translation)
-Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, mul_ite, ite_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mul_single_one_mul_apply {l m o s : Type*} [Fintype m] [Fintype o] [DecidableEq m] [DecidableEq o]
     (A : Matrix l m ℂ) (C : Matrix o s ℂ) (x : m) (y : o) (i : l) (k : s) :
@@ -12,21 +12,19 @@ theorem mul_single_one_mul_apply {l m o s : Type*} [Fintype m] [Fintype o] [Deci
   simp [Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq, mul_ite, ite_mul]
 
 /- English proof (translation)
-Establish `hPP : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hP`. Set `Pm : Matrix (Fin n) (Fin n') ℂ` to `fun i s => P i ⟨a + s.val, by omega⟩`. Establish `hJm : J = Pm * B`. Use extensionality with `i j`. Rewrite using `[hJ i j]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hmid : Jp * Pm = Bi`. Combine the equalities or inequalities in the displayed calculation. Establish `hN_mid : ∀ (q : Fin n') (s : Fin n'), (Jp * P) q ⟨a + s.val, by omega⟩ = Bi q s`. Introduce `q s`.
+Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hN_out : ∀ (q : Fin n') (b : Fin n), (b.val < a ∨ n ≤ b.val + a) → (Jp * P) q b = 0`. Introduce `q b hb`. Establish `h` using `congrFun (hout b hb) q`. Simplify `h` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hJp : ∀ (q : Fin n') (k : Fin n), Jp q k = ∑ u : Fin n', Bi q u * P⁻¹ ⟨a + u.val, by omega⟩ k`. Introduce `q k`. Combine the equalities or inequalities in the displayed calculation. Use `symm`. Use `Fintype.sum_of_injective (fun u : Fin n' => (⟨a + u.val, by omega⟩ : Fin n)) ?_ _ _ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u v huv`. Simplify using `only [Fin.mk.injEq] at huv`. Conclude with `Fin.ext (by omega)`. Introduce `b hb`. Establish `hb' : b.val < a ∨ n ≤ b.val + a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [not_or, not_lt] at hc`. Conclude with `hb (Set.mem_range.mpr ⟨⟨b.val - a, by omega⟩, Fin.ext (show a + (b.val - a) = b.val by omega)⟩)`. Rewrite using `[hN_out q b hb', zero_mul]`. Introduce `u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hN_mid q u]`. Use extensionality with `i k`. Simplify using `only [Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, mul_single_one_mul_apply]`. Rewrite using `[hJ i p, hJp q k, Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl (fun r _ => Finset.sum_congr rfl (fun u _ => ?_))` and prove the remaining obligations.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem conj_units_of_mid (n n' a : ℕ) (hdim : a + n' + a = n) (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P.det)
     (J : Matrix (Fin n) (Fin n') ℂ) (Jp : Matrix (Fin n') (Fin n) ℂ) (B Bi : Matrix (Fin n') (Fin n') ℂ)

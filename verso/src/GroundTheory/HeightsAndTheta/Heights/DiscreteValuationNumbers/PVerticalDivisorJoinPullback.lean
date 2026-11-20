@@ -20,9 +20,9 @@ theorem joinCoords_inl {Ω : Type*} [Field Ω] (y : (Σ k, ι k) → Ω) (y' : (
     (i : ι k) : joinCoords y y' ⟨Sum.inl k, i⟩ = y ⟨k, i⟩ := rfl
 
 /- English proof (translation)
-Simplify using `only [pointConeMap, joinForm, aeval_rename]`. Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [algebraMap_eq]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p v hp`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨k, i⟩` from `v`. Simplify using `[hp, joinCoords_inl]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem pointConeMap_joinCoords_joinForm {Ω : Type*} [Field Ω] (R : Type*) [CommRing R]
     [Algebra R Ω] (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω) (f : MRing ι R) :
@@ -37,7 +37,7 @@ theorem pointConeMap_joinCoords_joinForm {Ω : Type*} [Field Ω] (R : Type*) [Co
     simp [hp, joinCoords_inl]
 
 /- English proof (translation)
-Simplify using `only [pointIdeal, RingHom.mem_ker, pointConeMap_joinCoords_joinForm]`. Conclude with `map_eq_zero_iff _ (rename_injective _ Sum.inl_injective)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem joinForm_mem_pointIdeal_iff {Ω : Type*} [Field Ω] (R : Type*) [CommRing R] [Algebra R Ω]
     (y : (Σ k, ι k) → Ω) (y' : (Σ k, ι' k) → Ω) (f : MRing ι R) :
@@ -46,11 +46,11 @@ theorem joinForm_mem_pointIdeal_iff {Ω : Type*} [Field Ω] (R : Type*) [CommRin
   exact map_eq_zero_iff _ (rename_injective _ Sum.inl_injective)
 
 /- English proof (translation)
-Unfold `IsMultiHomog at hf ⊢`. Proceed by induction on `hf using IsWeightedHomogeneous.induction_on with`. Consider the case `zero => simpa [joinForm] using isWeightedHomogeneous_zero R _ _`. Consider the case `add p q hp hq ihp ihq => simpa [joinForm, map_add] using ihp.add ihq`. Consider the case `monomial d r hr`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [joinForm, rename_monomial]`. Apply `isWeightedHomogeneous_monomial` to reduce the goal to its premises. Substitute `hr` using the available equality. Rewrite using `[Finsupp.weight_apply, Finsupp.sum_mapDomain_index (by simp) (by intros; simp [add_smul]), Finsupp.weight_apply]`. Use function extensionality and compare the values at `s`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, blockWeight]`. Break down `s with k | k` into its components or cases. Simplify using `[Pi.single_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_joinForm [DecidableEq K] [DecidableEq K'] {R : Type*} [CommRing R]
     {f : MRing ι R} {bf : K → ℕ} (hf : IsMultiHomog f bf) :
@@ -74,17 +74,17 @@ theorem isMultiHomog_joinForm [DecidableEq K] [DecidableEq K'] {R : Type*} [Comm
 end JoinPullback
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ Ω _ _ K _ _ ι _ K' _ _ ι' _ y y' b f g hD`. Use `IsVerticalDivisor.of_unit_off_special ?_ ?_ ?_ ?_` and prove the remaining obligations. Take `⟨bf, bg, hf, hg, hb⟩` from `hD.degrees`. Use `⟨Sum.elim bf 0, Sum.elim bg 0, isMultiHomog_joinForm hf, isMultiHomog_joinForm hg, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `s with k | k` into its components or cases. Simplify using `[joinDeg, ← hb]`. Simplify using `[joinDeg]`. Rewrite using `[joinForm_mem_pointIdeal_iff]`. Conclude with `hD.num_not_mem`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[joinForm_mem_pointIdeal_iff]`. Conclude with `hD.den_not_mem`. Introduce `W hW hPW hrel hϖ`. Set `φ : MRing ι O →ₐ[O] MRing (Sum.elim ι ι') O` to `rename (fun p : (Σ k, ι k) => (⟨Sum.inl p.1, p.2⟩ : Σ s : K ⊕ K', Sum.elim ι ι' s))`. Establish `hφ : ∀ h, joinForm (ι'` using `ι') h = φ h := fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : pointIdeal O y ≤ W.comap φ`. Introduce `h hh`. Rewrite using `[Ideal.mem_comap, ← hφ]`. Conclude with `hPW ((joinForm_mem_pointIdeal_iff O y y' h).mpr hh)`. Establish `hrel' : IsRelevant (W.comap φ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `k`. Take `⟨i, hi⟩` from `hrel (Sum.inl k)`. Conclude with `⟨i, by rw [Ideal.mem_comap]; simpa [φ, rename_X] using hi⟩`. Establish `hϖ' : (C ϖ : MRing ι O) ∉ W.comap φ`. Rewrite using `[Ideal.mem_comap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hϖ` using `[φ, rename_C]`. Take `⟨u, v, hu, hv, huv⟩` from `hD.unit_off_special (W.comap φ) (Ideal.comap_isPrime φ W) hle hrel' hϖ'`. Use `⟨joinForm u, joinForm v, hu, hv, ?_⟩` and prove the remaining obligations. Use `(joinForm_mem_pointIdeal_iff O y y' _).mpr huv` as an intermediate fact. Simplify `this` using `[hφ, map_sub, map_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem VerticalDivisorJoinPullback.proof : VerticalDivisorJoinPullback.Statement := by
   intro O _ _ _ ϖ Ω _ _ K _ _ ι _ K' _ _ ι' _ y y' b f g hD

@@ -9,71 +9,61 @@ namespace Formalism.L2.SG.Pf.NcX.IntWittAlg
 open Matrix Formalism.UG
 
 /- English proof (translation)
-Introduce `S _ s O hs hsO n J J' hJ hJJ hJO hJ'O a β β' hβ hβ' hββ hch x y hx hy hxx hyy`. Establish `hconj` using `hform_conj s J hs hJ`. Establish `mkGL : ∀ M : Matrix (Fin n) (Fin n) S, cT s M * J * M = J → (∀ i j, M i j ∈ O) → ∃ g : GL (Fin n) S, (g : Matrix (Fin n) (Fin n) S) = M ∧ g ∈ UJ s J ∧ ∀ i j, ((g⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) i j ∈ O`. Introduce `M hM hMO`. Establish `hL : (J' * cT s M * J) * M = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hR : M * (J' * cT s M * J) = 1` using `mul_eq_one_comm.mp hL`. Use `⟨⟨M, J' * cT s M * J, hR, hL⟩, rfl, hM, ?_⟩` and prove the remaining obligations. Introduce `i j`. Use `show (J' * cT s M * J) i j ∈ O`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_mem' O _ _ (mul_mem' O _ _ hJ'O (cT_mem O s hsO M hMO)) hJO i j`. Establish `hsβ : ∀ i, s (β i) = β i`. Introduce `i`. Use `hconj (y i) (y i)` as an intermediate fact. Rewrite `this` using `[hyy i i, if_pos rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this`. Establish `hsβ' : ∀ i, s (β' i) = β' i`. Introduce `i`. Combine the equalities or inequalities in the displayed calculation. Establish `main : ∀ m ≤ a, ∃ g : GL (Fin n) S, g ∈ UJ s J ∧ (∀ i j, (g : Matrix (Fin n) (Fin n) S) i j ∈ O) ∧ (∀ i j, ((g⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) i j ∈ O) ∧ ∀ i : Fin a, i.val < m → (g : Matrix (Fin n) (Fin n) S) *ᵥ y i = x i`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `_`. Use `⟨1, (UJ s J).one_mem, ?_, ?_, fun i h => absurd h (Nat.not_lt_zero _)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Units.val_one]`. Conclude with `one_mem' O i j`. Introduce `i j`. Rewrite using `[inv_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `one_mem' O i j`. Consider the case `succ m ih`. Introduce `hm`. Take `⟨g, hg, hgO, hgiO, hgy⟩` from `ih (by omega)`. Set `i0 : Fin a` to `⟨m, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set G := (g : Matrix (Fin n) (Fin n) S) with hG`. Use `set Gi := ((g⁻¹ : GL (Fin n) S) : Matrix (Fin n) (Fin n) S) with hGi`. Establish `hGiG : Gi * G = 1` using `by rw [hG, hGi, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hGGi : G * Gi = 1` using `by rw [hG, hGi, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hgi : g⁻¹ ∈ UJ s J` using `(UJ s J).inv_mem hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hGiU : ∀ z w, hform s J (Gi *ᵥ z) (Gi *ᵥ w) = hform s J z w`. Introduce `z w`. Rewrite using `[PI.VolStabW.TopoGram.hform_mulVec]`. Conclude with `congrArg (fun K => hform s K z w) hgi`. Establish `hyGi : ∀ i : Fin a, i.val < m → Gi *ᵥ x i = y i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `i hi`. Rewrite using `[← hgy i hi, mulVec_mulVec, hGiG, one_mulVec]`. Use `set xp := Gi *ᵥ x i0 with hxpdef`. Establish `hxpO : ∀ k, xp k ∈ O` using `mulVec_mem O _ hgiO _ (hx i0)`. Establish `hxpy : ∀ i : Fin a, i.val < m → hform s J xp (y i) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i hi`. Rewrite using `[hxpdef, ← hyGi i hi, hGiU, hxx, if_neg]`. Introduce `h`. Rewrite `hi` using `[← h]`. Conclude with `lt_irrefl _ hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hxpxp : hform s J xp xp = hform s J (y i0) (y i0)`. Rewrite using `[hxpdef, hGiU, hxx, hyy, if_pos rfl]`. Establish `htO : hform s J xp (y i0) ∈ O` using `hform_mem O s hsO J hJO _ _ hxpO (hy i0)`. Take `⟨lam, hlamO, hlam, ci, hciO, hci⟩` from `hch i0 _ htO`. Establish `hβ0 : β i0 = hform s J (y i0) (y i0)` using `by rw [hyy, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `set c := hform s J (y i0) (y i0) - s lam * hform s J xp (y i0) with hcdef`. Establish `e2 : ci * c = 1` using `by rw [mul_comm, hcdef, ← hβ0]; exact hci`. Use `set u := y i0 - lam • xp with hudef`. Establish `huO : ∀ k, u k ∈ O`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hudef, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `O.sub_mem (hy i0 k) (O.mul_mem hlamO (hxpO k))`. Establish `hux : hform s J u (y i0) = c`. Rewrite using `[hudef, hform_sub_left, hform_smul_left]`. Establish `huu : hform s J u u = c + s c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hudef, hcdef]`. Simplify using `only [hform_sub_left, hform_sub_right, hform_smul_left, hform_smul_right, map_sub, map_mul, hs, hconj]`. Take the linear combination `(s lam * lam) * hxpxp + hform s J (y i0) (y i0) * hlam`. Establish `huy : ∀ i : Fin a, i.val < m → hform s J u (y i) = 0`. Introduce `i hi`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hudef, hform_sub_left, hform_smul_left, hxpy i hi, hyy, if_neg, mul_zero, sub_zero]`. Introduce `h`. Rewrite `hi` using `[← h]`. Conclude with `lt_irrefl _ hi`. Use `set T := rT s J u ci lam with hTdef`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTy0 : T *ᵥ y i0 = xp`. Rewrite using `[hTdef, rT_mulVec, hux, e2, one_smul, hudef, sub_sub_cancel, smul_smul, mul_comm, hlam, one_smul]`. Establish `hTy : ∀ i : Fin a, i.val < m → T *ᵥ y i = s lam • y i`. Introduce `i hi`. Rewrite using `[hTdef, rT_mulVec, huy i hi, mul_zero, zero_smul, sub_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hTU` using `rT_preserves s J hs hJ u c ci lam hlam huu e2`. Set `t : Finset (Fin a)` to `Finset.univ.filter (fun i => i.val < m)`. Establish `hmt : ∀ i, i ∈ t ↔ i.val < m` using `fun i => by simp [t]`. Use `set Pm := pM s J t y β' with hPm`. Use `set Dm := (1 : Matrix (Fin n) (Fin n) S) + (lam - 1) • Pm with hDm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hPy : ∀ i : Fin a, i.val < m → Pm *ᵥ y i = y i`. Introduce `i hi`. Rewrite using `[hPm, pM_mulVec, Finset.sum_eq_single i]`. Rewrite using `[hyy, if_pos rfl, mul_comm, hββ, one_smul]`. Introduce `j _ hji`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hyy, if_neg hji, mul_zero, zero_smul]`. Introduce `h`. Conclude with `absurd ((hmt i).2 hi) h`. Establish `hPy0 : Pm *ᵥ y i0 = 0`. Rewrite using `[hPm, pM_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hyy, if_neg, mul_zero, zero_smul]`. Introduce `h`. Use `(hmt j).1 hj` as an intermediate fact. Rewrite `this` using `[h]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_irrefl _ this`. Establish `hDy : ∀ i : Fin a, i.val < m → Dm *ᵥ y i = lam • y i`. Introduce `i hi`. Rewrite using `[hDm, add_mulVec, one_mulVec, smul_mulVec, hPy i hi, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hDy0 : Dm *ᵥ y i0 = y i0`. Rewrite using `[hDm, add_mulVec, one_mulVec, smul_mulVec, hPy0, smul_zero, add_zero]`. Establish `hDU : ∀ z w, hform s J (Dm *ᵥ z) (Dm *ᵥ w) = hform s J z w`. Introduce `z w`. Use `set p := ∑ j ∈ t, β' j * hform s J (y j) w * hform s J z (y j) with hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : hform s J z (Pm *ᵥ w) = p`. Rewrite using `[hPm, pM_mulVec, hform_sum_right]`. Establish `h2 : hform s J (Pm *ᵥ z) w = p`. Rewrite using `[hPm, pM_mulVec, hform_sum_left, hp]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, hsβ', hconj]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : hform s J (Pm *ᵥ z) (Pm *ᵥ w) = p`. Rewrite using `[hPm, pM_mulVec, hform_sum_left, hp]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPm, pM_mulVec, hform_sum_right, Finset.sum_eq_single j]`. Rewrite using `[hyy, if_pos rfl, map_mul, hsβ', hconj]`. Take the linear combination `(β' j * hform s J (y j) w * hform s J z (y j)) * hββ j`. Introduce `l _ hlj`. Rewrite using `[hyy, if_neg (Ne.symm hlj), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h`. Conclude with `absurd hj h`. Rewrite using `[hDm, add_mulVec, add_mulVec, one_mulVec, one_mulVec, smul_mulVec, smul_mulVec, hform_add_left, hform_add_right, hform_add_right, hform_smul_left, hform_smul_left, hform_smul_right, hform_smul_right, h1, h2, h3, map_sub, map_one]`. Take the linear combination `p * hlam`. Use `set M := T * Dm with hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hMU : cT s M * J * M = J`. Use `unitary_of s J M fun z w => ?_` and prove the remaining obligations. Rewrite using `[hM, ← mulVec_mulVec, ← mulVec_mulVec, hTU, hDU]`. Establish `hMO : ∀ i j, M i j ∈ O`. Introduce `i j`.
-
-Use `mul_mem' O _ _ (rT_mem O s hsO J hJO u huO ci lam hciO hlamO) ?_ i j` and prove the remaining obligations. Introduce `i j`. Simplify using `only [hDm, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `O.add_mem (one_mem' O i j) (O.mul_mem (O.sub_mem hlamO O.one_mem) (pM_mem O s hsO J hJO t y hy β' hβ' i j))`. Take `⟨g', hg'M, hg'U, hg'iO⟩` from `mkGL M hMU hMO`.
-
-Use `⟨g * g', (UJ s J).mul_mem hg hg'U, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Units.val_mul, hg'M]`. Conclude with `mul_mem' O _ _ hgO hMO i j`. Introduce `i j`.
-
-Rewrite using `[_root_.mul_inv_rev, Units.val_mul]`. Conclude with `mul_mem' O _ _ hg'iO hgiO i j`. Introduce `i hi`. Rewrite using `[Units.val_mul, hg'M, ← mulVec_mulVec, hM, ← mulVec_mulVec]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hi with hi | hi` into its components or cases.
-
-Rewrite using `[hDy i hi, mulVec_smul, hTy i hi, smul_smul, hlam, one_smul]`. Conclude with `hgy i hi`. Establish `: i = i0` using `Fin.ext hi`. Rewrite using `[this, hDy0, hTy0, hxpdef, mulVec_mulVec, ← hG, hGGi, one_mulVec]`. Take `⟨g, hg, hgO, hgiO, hgy⟩` from `main a le_rfl`.
-
-Conclude with `⟨g, hg, hgO, hgiO, fun i => hgy i i.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem algWitt : Formalism.L2.SG.Pf.NcX.IntWittPf.AlgWitt := by
   intro S _ s O hs hsO n J J' hJ hJJ hJO hJ'O a β β' hβ hβ' hββ hch x y hx hy hxx hyy

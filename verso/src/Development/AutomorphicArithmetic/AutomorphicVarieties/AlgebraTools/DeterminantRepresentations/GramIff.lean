@@ -3,21 +3,19 @@ import Mathlib
 open Polynomial Matrix
 
 /- English proof (translation)
-Establish `hrow : ∀ (c : ι × ι → K) a, (v a * ∑ b, c b • v b).trace = ((Matrix.of fun a b => (v a * v b).trace) *ᵥ c) a`. Introduce `c a`. Rewrite using `[Finset.mul_sum, Matrix.trace_sum]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.trace_smul, mul_comm]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hv hdet`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 hdet`. Establish `htop : Submodule.span K (Set.range v) = ⊤` using `hv.span_eq_top_of_card_eq_finrank' (by simp [Module.finrank_matrix, Fintype.card_prod])`. Establish `hall : ∀ X ∈ Submodule.span K (Set.range v), (X * ∑ b, c b • v b).trace = 0`. Introduce `X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hX using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, rfl⟩` from `hx`. Rewrite using `[hrow, hc]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Matrix.add_mul, Matrix.trace_add, hx, hy, add_zero]`. Consider the case `smul r x _ hx => rw [Matrix.smul_mul, Matrix.trace_smul, hx, smul_zero]`. Establish `hY : ∑ b, c b • v b = 0`. Use extensionality with `i j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h` using `hall (Matrix.single j i 1) (htop ▸ Submodule.mem_top)`. Rewrite `h` using `[Matrix.trace_single_mul, one_smul]`. Simplify using `using h`. Conclude with `hc0 (funext (Fintype.linearIndependent_iff.1 hv c hY))`. Introduce `hdet`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨i, hi⟩` from `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hdet` to reduce the goal to its premises. Rewrite using `[← Matrix.exists_mulVec_eq_zero_iff]`. Use `⟨c, fun h => hi (congrFun h i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Rewrite using `[← hrow, hc, Matrix.mul_zero, Matrix.trace_zero]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem linearIndependent_iff_det_trace_gram_ne_zero {K ι : Type} [Field K] [Fintype ι] [DecidableEq ι]
     (v : ι × ι → Matrix ι ι K) :
@@ -62,15 +60,15 @@ private theorem linearIndependent_iff_det_trace_gram_ne_zero {K ι : Type} [Fiel
     rfl
 
 /- English proof (translation)
-Introduce `K G ι _ _ _ _ ρ`. Establish `hcard : Fintype.card (ι × ι) = Module.finrank K (Matrix ι ι K)`. Simplify using `[Module.finrank_matrix, Fintype.card_prod]`. Prove the components needed by the constructor for the conclusion. Introduce `hspan`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hsr, hss, hli⟩` from `exists_linearIndependent K (Set.range ρ)`. Establish `hs_top : Submodule.span K s = ⊤` using `hss.trans hspan`. Set `bs` to `Module.Basis.mk hli (by rw [Subtype.range_coe]; exact hs_top.ge)`. Use `haveI : Fintype s := (hli.setFinite).fintype`. Establish `hcs : Fintype.card (ι × ι) = Fintype.card s` using `hcard.trans (Module.finrank_eq_card_basis bs)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `e : ι × ι ≃ s` to `Fintype.equivOfCardEq hcs`. Establish `hmem : ∀ a, ∃ y, ρ y = (e a : Matrix ι ι K)` using `fun a => hsr (e a).2`. Use `⟨fun a => (hmem a).choose, ?_⟩` and prove the remaining obligations. Establish `hv : (fun a => ρ (hmem a).choose) = fun a => ((e a : s) : Matrix ι ι K)`. Use function extensionality and compare the values at `fun a => (hmem a).choose_spec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hvli : LinearIndependent K (fun a => ρ (hmem a).choose)`. Rewrite using `[hv]`. Conclude with `hli.comp e e.injective`. Simplify `(linearIndependent_iff_det_trace_gram_ne_zero _).1 hvli` using `only [map_mul]`. Introduce and unpack `⟨g, hg⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvli : LinearIndependent K (fun a => ρ (g a))` using `(linearIndependent_iff_det_trace_gram_ne_zero (fun a => ρ (g a))).2 (by simpa only [map_mul] using hg)`. Establish `htop` using `hvli.span_eq_top_of_card_eq_finrank' hcard`. Rewrite using `[eq_top_iff, ← htop]`. Conclude with `Submodule.span_mono (Set.range_comp_subset_range g ρ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.gramIff :
     ∀ {K G ι : Type} [Field K] [Monoid G] [Fintype ι] [DecidableEq ι] (ρ : G →* Matrix ι ι K),

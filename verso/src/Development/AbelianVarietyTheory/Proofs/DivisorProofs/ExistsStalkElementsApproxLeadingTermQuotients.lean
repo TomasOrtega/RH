@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.CoverElements
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp₁ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
@@ -35,11 +35,9 @@ theorem spMap_comp₁ {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `letI := g.toAlgebra`. Use `haveI : Algebra.IsIntegral A B := ⟨hi⟩`. Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ`. Take `⟨Q, -, hQ, hQ'⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (R := A) (S := B) (RingHom.ker ψ) ⊥ (by`. Introduce `x hx`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: x = 0` using `hg ((Ideal.mem_bot.1 hx).trans (map_zero g).symm)`. Simplify using `[this])`. Use `haveI : Q.LiesOver (RingHom.ker ψ) := ⟨hQ'.symm⟩`. Use `letI : Algebra (A ⧸ RingHom.ker ψ) K := (RingHom.kerLift ψ).toAlgebra`. Use `haveI : FaithfulSMul (A ⧸ RingHom.ker ψ) K := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective ψ)`.
-
-Use `haveI : Algebra.IsIntegral (A ⧸ RingHom.ker ψ) (B ⧸ Q) := inferInstance`. Set `l : (B ⧸ Q) →ₐ[A ⧸ RingHom.ker ψ] K` to `IsAlgClosed.lift`. Use `⟨l.toRingHom.comp (Ideal.Quotient.mk Q), RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Conclude with `l.commutes (Ideal.Quotient.mk _ a)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_extend_algClosed {A B K : Type} [CommRing A] [CommRing B] [Field K] [IsAlgClosed K] (g : A →+* B)
     (hg : Function.Injective g) (hi : g.IsIntegral) (ψ : A →+* K) : ∃ φ : B →+* K, φ.comp g = ψ := by
@@ -64,9 +62,9 @@ section Points
 variable {K : Type} [Field K] {k₀ : Subfield K} {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h₁ : IsIntegral k₀ z`. Take `⟨P, hP, hPz⟩` from `hz`. Use `⟨P.map (θ.codRestrict k₀ hθ), hP.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `hPz`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `minpoly.mem_range_of_degree_eq_one k₀ z (IsAlgClosed.degree_eq_one_of_irreducible k₀ (minpoly.irreducible h₁))`. Conclude with `hw ▸ w.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_isIntegralElem {O : Type} [CommRing O] (hk : IsAlgClosed k₀) (θ : O →+* K) (hθ : ∀ a, θ a ∈ k₀) {z : K}
     (hz : θ.IsIntegralElem z) : z ∈ k₀ := by
@@ -80,11 +78,11 @@ theorem mem_of_isIntegralElem {O : Type} [CommRing O] (hk : IsAlgClosed k₀) (�
   exact hw ▸ w.2
 
 /- English proof (translation)
-Take `⟨P₀, hP⟩` from `h`. Establish `hs : P₀ (closedPoint k₀) ⤳ y`. Establish `h₁ : (spMap k₀.subtype ≫ P₀) (closedPoint K) ∈ Set.range (Y.fromSpecStalk y)`. Rewrite using `[hP]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h₁` using `[Scheme.range_fromSpecStalk]`. Establish `h₃ : (spMap k₀.subtype ≫ P₀) (closedPoint K) = P₀ (closedPoint k₀)` using `(Scheme.Hom.comp_apply _ _ _).trans (congrArg P₀ (Subsingleton.elim _ _))`. Conclude with `h₃ ▸ h₁`. Establish `h₂ : Spec.map (Y.presheaf.stalkSpecializes hs ≫ Scheme.stalkClosedPointTo (R` using `.of k₀) P₀ ≫ CommRingCat.ofHom k₀.subtype) ≫ Y.fromSpecStalk y = spMap θ ≫ Y.fromSpecStalk y := by`. Rewrite using `[Spec.map_comp, Spec.map_comp, Category.assoc, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h₂` using `[cancel_mono]`. Establish `h₃` using `congrArg (fun f => f.hom a) (Spec.map_injective h₂)`. Conclude with `(h₃ ▸ (Scheme.stalkClosedPointTo (R := .of k₀) P₀ (Y.presheaf.stalkSpecializes hs a)).2 : θ a ∈ k₀)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_defOver {y : Y} (θ : Y.presheaf.stalk y →+* K) (h : DefOver k₀ (spMap θ ≫ Y.fromSpecStalk y)) (a) :
     θ a ∈ k₀ := by
@@ -105,13 +103,13 @@ theorem mem_of_defOver {y : Y} (θ : Y.presheaf.stalk y →+* K) (h : DefOver k�
   exact (h₃ ▸ (Scheme.stalkClosedPointTo (R := .of k₀) P₀ (Y.presheaf.stalkSpecializes hs a)).2 : θ a ∈ k₀)
 
 /- English proof (translation)
-Establish `hs : X.fromSpecStalk x (spMap θ (closedPoint K)) ⤳ x`. Establish `h₁ : X.fromSpecStalk x (spMap θ (closedPoint K)) ∈ Set.range (X.fromSpecStalk x)` using `⟨_, rfl⟩`. Rewrite `h₁` using `[Scheme.range_fromSpecStalk]`. Then use the resulting hypothesis. Establish `hd` using `(f.isDiscrete_preimage_singleton (f x)).to_subtype`. Establish `e : f (X.fromSpecStalk x (spMap θ (closedPoint K))) = f x` using `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (⟨_, e⟩ : f ⁻¹' {f x}) ⤳ ⟨x, rfl⟩` using `(subtype_specializes_iff _ _).mpr hs`. Establish `h3 : X.fromSpecStalk x (spMap θ (closedPoint K)) = X.fromSpecStalk x (closedPoint _)` using `(congrArg Subtype.val h2.eq).trans Scheme.fromSpecStalk_closedPoint.symm`. Establish `h4 : spMap θ (closedPoint K) = closedPoint _` using `(X.fromSpecStalk x).isEmbedding.injective h3`. Establish `hl : IsLocalHom θ` using `(isLocalHom_iff_comap_closedPoint θ).2 h4`. Use `⟨hl, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₁ : ∀ a, θ.comp (f.stalkMap x).hom a ∈ k₀` using `mem_of_defOver _ (by`. Establish `e₁ : spMap (f.stalkMap x).hom ≫ Y.fromSpecStalk (f x) = X.fromSpecStalk x ≫ f` using `Scheme.SpecMap_stalkMap_fromSpecStalk f`. Rewrite using `[spMap_comp₁, Category.assoc, e₁]`. Conclude with `h)`. Use `mem_of_isIntegralElem hk _ h₁ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf` using `(GlobalTheory.residueField_map_finite_of_quasiFinite (f.stalkMap x).hom (f.quasiFiniteAt x)).to_isIntegral`. Establish `hi` using `(RingHom.isIntegral_of_surjective _ (residue_surjective (R := Y.presheaf.stalk (f x)))).trans _ _ hf (residue _ a)`. Conclude with `hi.map (ResidueField.lift θ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem values_of_finite (hk : IsAlgClosed k₀) (f : X ⟶ Y) [IsFinite f] {x : X} (θ : X.presheaf.stalk x →+* K)
     (hc : (spMap θ ≫ X.fromSpecStalk x ≫ f) (closedPoint K) = f x)
@@ -140,11 +138,11 @@ theorem values_of_finite (hk : IsAlgClosed k₀) (f : X ⟶ Y) [IsFinite f] {x :
 end Points
 
 /- English proof (translation)
-Establish `hz : z = p (ξ (closedPoint R))`. Establish `h1 : (ξ ≫ p) (closedPoint R) = z`. Rewrite using `[h]`. Conclude with `(congrArg (Z.fromSpecStalk z) (comap_closedPoint ev)).trans Scheme.fromSpecStalk_closedPoint`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hz` using the available equality. Use `⟨(p.stalkMap _).hom f, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : FinalTheorems.stalkId ((I.map p).comap p) (ξ (closedPoint R)) ≤ FinalTheorems.stalkId I (ξ (closedPoint R))` using `iSup₂_mono fun U hx => Ideal.map_mono (Scheme.IdealSheafData.comap_map_le I p U)`. Use `h1 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.VanStalk.stalkId_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ hf`. Establish `h₂ : Spec.map (p.stalkMap _ ≫ Scheme.stalkClosedPointTo (R` using `.of R) ξ) ≫ Z.fromSpecStalk _ = spMap ev ≫ Z.fromSpecStalk _ := by`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, ← Category.assoc, Scheme.Spec_stalkClosedPointTo_fromSpecStalk, h]`. Rewrite `h₂` using `[cancel_mono]`. Conclude with `congrArg (fun g => g.hom f) (Spec.map_injective h₂)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stalk_of_map {S Z : Scheme.{0}} (p : S ⟶ Z) (I : S.IdealSheafData) {z : Z} {R : Type} [CommRing R]
     [IsLocalRing R] (ξ : Sp R ⟶ S) (ev : Z.presheaf.stalk z →+* R) [IsLocalHom ev]
@@ -170,9 +168,9 @@ theorem exists_stalk_of_map {S Z : Scheme.{0}} (p : S ⟶ Z) (I : S.IdealSheafDa
     exact congrArg (fun g => g.hom f) (Spec.map_injective h₂)
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Establish `: FaithfulSMul R S` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hf`. Establish `: IsLocalHom (algebraMap R S)` using `‹IsLocalHom f›`. Establish `: Module.Flat R S` using `inferInstance`. Establish `: Module.FaithfullyFlat R S` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := S) I]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_map_mem {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] [CommRing S] [IsDomain S]
     [IsLocalRing S] (f : R →+* S) (hf : Function.Injective f) [IsLocalHom f] {I : Ideal R} {a : R}
@@ -186,7 +184,7 @@ theorem mem_of_map_mem {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuati
   exact h
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, f, hx, hf, hI⟩` from `h x`. Use `⟨U, f ^ k, hx, pow_mem hf k, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, hI, Ideal.span_singleton_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem effCartier_pow {X : Scheme.{0}} {I : X.IdealSheafData} (h : FinalTheorems.EffCartier I) (k : ℕ) : FinalTheorems.EffCartier (I ^ k) := by
   intro x
@@ -195,13 +193,11 @@ theorem effCartier_pow {X : Scheme.{0}} {I : X.IdealSheafData} (h : FinalTheorem
   rw [Scheme.IdealSheafData.ideal_pow, Pi.pow_apply, hI, Ideal.span_singleton_pow]
 
 /- English proof (translation)
-Establish `hx : p (genericPoint S) = genericPoint M.Z`. Use `((genericPoint_spec S).image p.continuous).eq ?_` and prove the remaining obligations. Rewrite using `[Set.image_univ, p.denseRange.closure_range]`. Conclude with `genericPoint_spec M.Z`. Establish `h0 : CharZero (M.Z.presheaf.stalk (M.pt (closedPoint Ω)))` using `(Scheme.stalkClosedPointTo (R := .of Ω) M.pt).hom.charZero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[M.pt_apply (closedPoint Ω), ← hx]`. Establish `hF : IsField (M.Z.presheaf.stalk (p (genericPoint S)))`. Rewrite using `[hx]`. Conclude with `Field.toIsField M.Z.functionField`. Establish `hinj : Function.Injective (p.stalkMap (genericPoint S)).hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI := hF.toField`. Conclude with `RingHom.injective _`. Establish `: CharZero S.functionField` using `((p.stalkMap (genericPoint S)).hom.charZero_iff hinj).1 h0`. Use `GlobalTheory.ZH.ClosureLifting.flat_of_charZero (K := S.functionField) (S.fromSpecStalk (genericPoint S)) ?_ π` and prove the remaining obligations. Rewrite using `[Scheme.range_fromSpecStalk]`.
-
-Use extensionality with `y`. Conclude with `⟨fun h => (h.antisymm (genericPoint_specializes y)).eq, fun h => h ▸ specializes_rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flat_of_dominant {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [CharZero Ω] (M : RatModel o Ω)
     {S : Scheme.{0}} [IsIntegral S] (p : S ⟶ M.Z) [IsDominant p] (π : S ⟶ Sp ℤ) : Flat π := by
@@ -224,7 +220,7 @@ theorem flat_of_dominant {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [C
   exact ⟨fun h => (h.antisymm (genericPoint_specializes y)).eq, fun h => h ▸ specializes_rfl⟩
 
 /- English proof (translation)
-Take `rfl : mX = AddCommGroup.toIntModule _` from `Subsingleton.elim _ _`. Rewrite using `[← evalZ_pull φ (r := e.toIntLinearEquiv.toLinearMap) e.surjective β']`. Use `congr 1`. Conclude with `LinearMap.ext₂ h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem evalZ_eq_of_addEquiv (φ : InvFun ℤ) {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (mX : Module ℤ X)
     (fX : @Module.Finite ℤ X _ _ mX) [Module.Finite ℤ Y] (e : X ≃+ Y)
@@ -236,9 +232,9 @@ theorem evalZ_eq_of_addEquiv (φ : InvFun ℤ) {X Y : Type} [AddCommGroup X] [Ad
   exact LinearMap.ext₂ h
 
 /- English proof (translation)
-Rewrite using `[← spMap_comp₁]`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Establish `: w.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ w.isPrime`. Express the relevant statement in the definitionally equal form `w.asIdeal.comap _ = ⊥`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.comap_bot_of_injective _ ((IsFractionRing.injective B (FractionRing B)).comp hρ)`.
+A detailed English derivation is pending.
 -/
 theorem jK_spMap_apply {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDomain B] (ρ : A →+* B)
     (hρ : Function.Injective ρ) (w : Sp (FractionRing B)) : (jK B ≫ spMap ρ) w = (⊥ : PrimeSpectrum A) := by
@@ -250,9 +246,9 @@ theorem jK_spMap_apply {A B : Type} [CommRing A] [IsDomain A] [CommRing B] [IsDo
   exact Ideal.comap_bot_of_injective _ ((IsFractionRing.injective B (FractionRing B)).comp hρ)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `hR`. Use `⟨⟨⋂ x ∈ s, {w | x ∈ M.O w}, isOpen_biInter_finset fun x _ => M.isOpen_setOf_mem_O x⟩, ?_, ?_⟩` and prove the remaining obligations. Use `Set.mem_iInter₂.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨U, f, hU, hf⟩` from `M.onto x`. Conclude with `⟨U, f, (genericPoint_specializes hU.some).mem_open U.isOpen hU.some_mem, hf⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `w hw a ha`. Rewrite `ha` using `[← hs]`. Use `(Algebra.adjoin_le (S := M.O w) ?_) ha` and prove the remaining obligations. Introduce `x hx`. Conclude with `Set.mem_iInter₂.1 hw x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_reg_open {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (R : Subalgebra o Ω)
     (hR : R.FG) : ∃ U : M.Z.Opens, genericPoint M.Z ∈ U ∧ ∀ w ∈ U, ∀ a ∈ R, a ∈ M.O w := by
@@ -268,25 +264,23 @@ theorem exists_reg_open {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M 
     exact Set.mem_iInter₂.1 hw x hx
 
 /- English proof (translation)
-Use `X₁.ar.char` as an intermediate fact. Use `X₁.M.lft` as an intermediate fact. Use `X₁.M.qc` as an intermediate fact. Establish `: LocallyOfFiniteType (spMap (algebraMap ℤ X₁.o₁))` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).2 (RingHom.finiteType_algebraMap.2 X₁.ar.ft)`. Use `flat_of_dominant X₁.M p₁ (p₁ ≫ X₁.M.s ≫ spMap (algebraMap ℤ X₁.o₁))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨E, hE'⟩` from `EffCartierData.exists_idealSheaf_eq (effCartier_pow hE D)`. Take `⟨V₀, hg₀, hV₀⟩` from `exists_reg_open X₁.M X₁.S.R X₁.S.fg`. Establish `hU : ((p₁ ⁻¹ᵁ (V₀ ⊓ X₁.π ⁻¹ᵁ i.opensRange) : S₁.Opens) : Set S₁).Nonempty`. Take `⟨x, hx⟩` from `p₁.denseRange.exists_mem_open (V₀ ⊓ X₁.π ⁻¹ᵁ i.opensRange).isOpen ⟨genericPoint _, hg₀, by`. Rewrite using `[← X₁.M.pt_apply (closedPoint _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(X₁.M.pt ≫ X₁.π) (closedPoint _) ∈ Set.range i`. Rewrite using `[X₁.comp]`. Conclude with `⟨_, rfl⟩⟩`. Conclude with `⟨x, hx⟩`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_correction_approximate_ideal_sections X₁.M.Z S₁ (X₁.M.s ≫ spMap (algebraMap ℤ X₁.o₁)) p₁ hn _ hU E z₁ k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨e, fun f hf => hE' ▸ he f fun V _ _ _ _ hc ξ ev hev hξ hr => ?_⟩` and prove the remaining obligations. Establish `hr' : Set.range (jK V ≫ ξ ≫ p₁ ≫ X₁.π) ⊆ Set.range i`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(hr ⟨w, rfl⟩).2`. Take `⟨T, f₁, fK, hf₁, hl₁, -, hfK, hy⟩` from `GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR g n _ _ F V ⟨⟨inferInstance, inferInstance, inferInstance, hc⟩, inferInstance⟩ inferInstance (IsOpenImmersion.lift i _ hr')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsq : jK T.V ≫ spMap f₁ = spMap fK ≫ jK V`. Rewrite using `[← spMap_comp₁, ← spMap_comp₁]`. Use `congr 1`. Conclude with `RingHom.ext fun a => (hfK a).symm`. Establish `hgen : jK T.V ≫ spMap f₁ ≫ ξ ≫ p₁ ≫ X₁.π = T.y ≫ i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, Category.assoc, IsOpenImmersion.lift_fac, ← Category.assoc, hsq, Category.assoc]`. Establish `hreg : RegAt X₁ z₁ (f₁.comp ev)`. Introduce `a ha`. Establish `e : jK T.V ≫ spMap (f₁.comp ev) ≫ X₁.M.Z.fromSpecStalk z₁ = spMap fK ≫ jK V ≫ ξ ≫ p₁`. Rewrite using `[spMap_comp₁, Category.assoc, hξ, ← Category.assoc, hsq, Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e]`. Conclude with `hV₀ _ (hr ⟨_, rfl⟩).1 a ha`. Take `⟨y, f₂, e₂, hm, hP, hf₂, hl₂, hev₂, hδ⟩ : ∃ (y : Φ.Y) (f : T.V →+* Φ.V y) (e : Φ.X y ≃+ T.D.toPre.X), Φ.m y = 1 ∧ IsPrincipalIdealRing (Φ.V y) ∧ Function.Injective f ∧ IsLocalHom f ∧ f.comp (f₁.comp ev) = Φ.ev y ∧ ∀ k, Φ.t y k = f T.ϖ ∧ ∀ a b, Φ.δ y k a b = T.β (e a) (e b)` from `hT T (f₁.comp ev) inferInstance hreg (by`. Rewrite using `[← hgen, spMap_comp₁, Category.assoc, ← Category.assoc (spMap ev), hξ, Category.assoc])`. Take `⟨a, ha, hJ⟩` from `valOn_pow F i φ J d D hval T _ hgen`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `k₀ : Fin (Φ.m y)` to `⟨0, by omega⟩`. Establish `hm` using `hf.mem y hP hm k₀ a (by`. Rewrite using `[ha]`. Use `congr 1`. Conclude with `(evalZ_eq_of_addEquiv φ _ _ e₂ (hδ k₀).2).symm)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `mem_of_map_mem (f₂.comp f₁) (hf₂.comp hf₁) ?_` and prove the remaining obligations. Establish `hpow : ∀ {Y : Scheme.{0}} (I : Y.IdealSheafData) (χ : Sp V ⟶ Y), idlAlong (I ^ D) χ = idlAlong I χ ^ D`. Introduce `Y I χ`. Rewrite using `[idlAlong, stalkId_pow', Ideal.map_pow, ← idlAlong]`. Establish `h1 : (idlAlong E.idealSheaf ξ).map (f₂.comp f₁) = Ideal.span {Φ.t y k₀ ^ a}`.
-
-Rewrite using `[hE', hpow, GlobalTheory.PullAlong.idlAlong_comap_eq, ← hpow, ← Ideal.map_map, ← GlobalTheory.TraitOrder.idlAlong_comp, hJ, Ideal.map_span, Set.image_singleton, map_pow, (hδ k₀).1]`. Rewrite using `[Ideal.map_sup, h1, Ideal.map_pow, Ideal.map_map, RingHom.comp_assoc, hev₂, ← RingHom.comp_apply, RingHom.comp_assoc, hev₂]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_of_ordGe {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.{0}} {i : F.X ⟶ Z} [IsOpenImmersion i]
     {W : Matrix (Fin 8) (Fin 8) ℤ} {φ : InvFun ℤ} {d : ℕ} {J : Z.IdealSheafData} (hval : ValOn F i φ J d) {N₁ : ℕ}
@@ -351,33 +345,31 @@ theorem exists_mem_of_ordGe {g n : ℕ} {F : SFam g n (zetaAway n)} {Z : Scheme.
   exact hm
 
 /- English proof (translation)
-Introduce `g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hW φ d J S π j hJ hval hbl hji hpf V _ _ _ Q m t δ hrk ht hsym hnn hdef hmono ga M hM hcone hδ ξ hU N₁ X₁ z₁ Φ y ρ e h hT hC K _ _ ev k₀ hk hcen hdo ga' hga'`. Take `⟨hρi, hρf, hsq, htδ, -⟩` from `hC`. Take `⟨b, hb, hJb⟩` from `GlobalTheory.T.blowup_chart_idealSheaf_eq_span_monomial g hg n hn hodd F Z z i hproj hnorm hiz hdense W φ d J S π j hJ hval hbl hji hpf V Q m t δ hrk ht hsym hnn hdef hmono ga M hcone hδ ξ hU`. Take `⟨S₁, _, p₁, ν, hn₁, _, _, _, hν, -, hE, hlift⟩` from `GlobalTheory.T.exists_normalisation_normalisedBlowup_siegelModel g hg n hn hodd F Z z i hproj hnorm hiz hdense W J S π hJ hbl X₁`. Establish `hgen : (ξ ≫ π) (⊥ : PrimeSpectrum V) ∈ Set.range i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R', _, _, _, ρ', r, D, e', hCN', hρi', hρf', -, -, hrefn, -⟩` from `GlobalTheory.PolDeg.refine_monomial_of_polarised V Q m t δ hU.1 hmono (fun k => (ht k).1) (fun k => (ht k).2) hsym hnn hdef`. Take `⟨_, _, _, _, _, y', _, _, -, hy', -⟩` from `hU.2 R' ρ' hCN' hρi' hρf' D e' hrefn`. Use `⟨y' (closedPoint _), ?_⟩` and prove the remaining obligations. Rewrite using `[← jK_spMap_apply ρ' hρi' (closedPoint _), ← hji]`. Conclude with `congrArg (fun u => (u ≫ π) (closedPoint (FractionRing R'))) hy'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(Φ.cn y).2.1` as an intermediate fact. Use `Φ.ev_loc y` as an intermediate fact. Take `⟨ξ₁, hξν, hξp⟩` from `hlift (Φ.V y) (spMap ρ ≫ ξ) (spMap (Φ.ev y) ≫ X₁.M.Z.fromSpecStalk z₁) (by simp only [Category.assoc]; exact hsq.symm) (by`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[Category.assoc, hsq, ← Category.assoc, Scheme.Hom.comp_apply, jK_spMap_apply ρ hρi]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hgen)`. Take `⟨ev₁, hev₁⟩` from `exists_extend_algClosed ρ hρi hρf.to_isIntegral ev`. Set `s` to `(Scheme.stalkClosedPointTo (R := .of (Φ.V y)) ξ₁).hom`. Establish `hsl : IsLocalHom s` using `Scheme.isLocalHom_stalkClosedPointTo' (R := Φ.V y) ξ₁`. Establish `hs : spMap s ≫ S₁.fromSpecStalk _ = ξ₁` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk (R := .of (Φ.V y)) ξ₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : spMap (ev₁.comp s) ≫ S₁.fromSpecStalk _ ≫ ν = spMap ev ≫ ξ`. Rewrite using `[spMap_comp₁, Category.assoc, ← Category.assoc (spMap s), hs, hξν, ← Category.assoc, ← spMap_comp₁, hev₁]`. Establish `hρl : IsLocalHom ρ` using `hρf.to_isIntegral.isLocalHom hρi`. Take `⟨hθl, hθ⟩` from `values_of_finite hk ν (ev₁.comp s) (by`. Rewrite using `[hP]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(hcen _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (ξ₁ ≫ ν) (closedPoint _)`. Rewrite using `[hξν]`. Conclude with `congrArg ξ (comap_closedPoint ρ).symm) (hP ▸ hdo)`. Take `⟨U, f, hxU, -, hf⟩` from `hE (ξ₁ (closedPoint _))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hst : FinalTheorems.stalkId (J.comap (p₁ ≫ X₁.π)) (ξ₁ (closedPoint _)) = Ideal.span {(S₁.presheaf.germ U.1 _ hxU).hom f}`. Rewrite using `[ds_stalkId_eq_map _ U _ hxU, hf, Ideal.map_span, Set.image_singleton]`. Generalize the expression as in `(S₁.presheaf.germ U.1 _ hxU).hom f = f₀ at hst`. Use `⟨ev₁, hev₁, s.range, s f₀, fun k => b (h k), ?_, fun k => ?_, ?_, fun D l a ha c e₀ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hθ u, fun hu => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `(mem_maximalIdeal _).1 hu (((isUnit_map_iff (ev₁.comp s) u).1 (Ne.isUnit h0)).map s)`. Rewrite using `[hb]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(evalZ_eq_of_addEquiv φ _ _ e (htδ k).2).symm`. Rewrite using `[← Ideal.span_singleton_eq_span_singleton]`. Establish `h1 : idlAlong (J.comap (p₁ ≫ X₁.π)) ξ₁ = Ideal.span {s f₀}`. Rewrite using `[idlAlong, hst, Ideal.map_span, Set.image_singleton]`. Rewrite using `[← h1, GlobalTheory.PullAlong.idlAlong_comap_eq, ← hν, ← Category.assoc, hξν, Category.assoc, GlobalTheory.TraitOrder.idlAlong_comp, ← GlobalTheory.PullAlong.idlAlong_comap_eq, hJb, Ideal.map_span, Set.image_singleton, map_prod, ← Equiv.prod_comp h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_pow, (htδ _).1]`. Establish `hle : ∀ {R : Type} [CommRing R] (I J : Ideal R) {a b : ℕ}, a ≤ b → J ⊔ I ^ b ≤ J ⊔ I ^ a` using `fun I J _ _ h => sup_le_sup_left (Ideal.pow_le_pow_right h) J`. Take `⟨e₁, he₁⟩` from `exists_mem_of_ordGe hval X₁ z₁ Φ hT p₁ hn₁ hE D e₀`. Take `⟨fe, hord, hlead⟩` from `GlobalTheory.T.exists_approximate_series_leading_term_fourierSystem ℤ id bddAct_int_and_cm.1 g φ hpf 8 W Φ.posW N₁ _ Φ y ga' M hM (fun k => LinearMap.ext₂ fun u v => by`. Rewrite using `[(htδ k).2, hδ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[hga']) (D * d) l a ha c (max e₀ e₁)`. Establish `hmem` using `he₁ fe fun y' hP' hm' k => hle _ _ (le_max_right e₀ e₁) (hord y' hP' hm' k)`. Take `⟨f₁, hf₁, r, hr, rfl⟩` from `Submodule.mem_sup.1 hmem`. Take `⟨u, hu, hu'⟩` from `exists_stalk_of_map p₁ _ ξ₁ (Φ.ev y) hξp hf₁`. Rewrite `hu` using `[stalkId_pow', hst, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, rfl⟩` from `hu`. Use `⟨s v, ⟨v, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : Φ.ev y r ∈ maximalIdeal (Φ.V y) ^ e₀`. Use `Ideal.mem_map_of_mem (Φ.ev y) hr` as an intermediate fact. Rewrite `this` using `[Ideal.map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Ideal.pow_right_mono ((Ideal.map_le_iff_le_comap (f := Φ.ev y) (K := maximalIdeal (Φ.V y))).2 fun x hx => map_nonunit (Φ.ev y) x hx) _ this`. Establish `h2` using `hle _ _ (le_max_left e₀ e₁) hlead`. Establish `h3 : s v * s f₀ ^ D = Φ.ev y f₁` using `by rw [← hu', ← map_pow, ← map_mul]`. Establish `h4` using `sub_mem h2 (Ideal.mem_sup_right h1)`. Rewrite using `[h3]`.
-
-Use `h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_elements : ∀ g : ℕ, 1 ≤ g → ∀ n : ℕ, 3 ≤ n → Odd n → ∀ (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)) (i : F.X ⟶ Z) [IsOpenImmersion i], IsProjOver z → ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Z → i ≫ z = F.s → Dense (Set.range i) → ∀ W : Matrix (Fin 8) (Fin 8) ℤ, IsE8 W → ∀ (φ : InvFun ℤ) (d : ℕ) (J : Z.IdealSheafData) (S : Scheme.{0}) (π : S ⟶ Z) (j : F.X ⟶ S), (∀ x ∈ J.support, x ∉ Set.range i) → ValOn F i φ J d → IsNormBl π J → j ≫ π = i → IsPolFan id g φ → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (Q : Data V) (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ Q.X), Module.finrank ℤ Q.X ≤ g → (∀ k, t k ∈ maximalIdeal V ∧ t k ≠ 0) → (∀ k a b, δ k a b = δ k b a) → (∀ k a, 0 ≤ δ k a a) → (∀ a, a ≠ 0 → ∃ k, 0 < δ k a a) → Q.IsMonomialTau t δ → ∀ (ga : Fin m → LinearMap.BilinForm ℤ Q.X) (M : ℕ), 1 ≤ M → IsCone id φ ga → (∀ k, δ k = (M : ℤ) • ga k) → ∀ ξ : Sp V ⟶ S, UnifOver F j ξ Q → ∀ (N₁ : ℕ) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (Φ : VSys (id : ℤ → ℤ) g W N₁ (X₁.M.Z.presheaf.stalk z₁)) (y : Φ.Y) (ρ : V →+* Φ.V y) (e : Φ.X y ≃+ Q.X) (h : Fin (Φ.m y) ≃ Fin m), HasTraitsR X₁ z₁ Φ.pre → IsChartMember X₁ z₁ Φ Q (ξ ≫ π) t δ y ρ e h → ∀ (K : Type) [Field K] [IsAlgClosed K] (ev : V →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∀ p, (spMap ev ≫ ξ) p = ξ (closedPoint V)) → DefOver k₀ (spMap ev ≫ ξ) → ∀ ga' : Fin (Φ.m y) → LinearMap.BilinForm ℤ (Φ.X y), (∀ k a b, ga' k a b = ga (h k) (e a) (e b)) → ∃ ev₁ : Φ.V y →+* K, ev₁.comp ρ = ev ∧ Elements Φ y φ d ga' ev₁ k₀ := by
   intro g hg n hn hodd F Z z i _ hproj hnorm hiz hdense W hW φ d J S π j hJ hval hbl hji hpf V _ _ _ Q m t δ hrk ht hsym hnn

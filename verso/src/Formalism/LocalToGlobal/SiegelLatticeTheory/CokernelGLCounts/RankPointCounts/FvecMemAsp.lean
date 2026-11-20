@@ -17,19 +17,19 @@ def Asp (F : FlagG S r T) (F' : FlagG S r T') : Submodule E S.V :=
 def Hsp (F : FlagG S r T) (F' : FlagG S r T') : Submodule E S.V := Lat.orth S (Asp F F')
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨Sum.inl a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fvec_mem_Asp (F : FlagG S r T) (F' : FlagG S r T') (a : Fin (r + 1)) : F.fvec a ∈ Asp F F' :=
   Submodule.subset_span ⟨Sum.inl a, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨Sum.inr a, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem fvec'_mem_Asp (F : FlagG S r T) (F' : FlagG S r T') (a : Fin (r + 1)) : F'.fvec a ∈ Asp F F' :=
   Submodule.subset_span ⟨Sum.inr a, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[FlagG.X, Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`. Use `fvec_mem_Asp F F' (Fin.castSucc a)` as an intermediate fact. Simplify `this` using `[FlagG.fvec, Fin.snoc_castSucc]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_le_Asp (F : FlagG S r T) (F' : FlagG S r T') : F.X ≤ Asp F F' := by
   rw [FlagG.X, Submodule.span_le]
@@ -38,33 +38,33 @@ theorem X_le_Asp (F : FlagG S r T) (F' : FlagG S r T') : F.X ≤ Asp F F' := by
   simpa [FlagG.fvec, Fin.snoc_castSucc] using this
 
 /- English proof (translation)
-Use `fvec_mem_Asp F F' (Fin.last r)` as an intermediate fact. Simplify `this` using `[FlagG.fvec, Fin.snoc_last]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem z_mem_Asp (F : FlagG S r T) (F' : FlagG S r T') : F.z ∈ Asp F F' := by
   have := fvec_mem_Asp F F' (Fin.last r)
   simpa [FlagG.fvec, Fin.snoc_last] using this
 
 /- English proof (translation)
-Unfold `Asp`. Rewrite using `[Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Asp_symm (F : FlagG S r T) (F' : FlagG S r T') : Asp F' F = Asp F F' := by
   unfold Asp
   rw [Set.Sum.elim_range, Set.Sum.elim_range, Set.union_comm]
 
 /- English proof (translation)
-The claim follows from `(PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hw a ha`.
+A detailed English derivation is pending.
 -/
 theorem hT_A_H {F : FlagG S r T} {F' : FlagG S r T'} {a w : S.V} (ha : a ∈ Asp F F') (hw : w ∈ Hsp F F') :
     S.hT a w = 0 := (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hw a ha
 
 /- English proof (translation)
-Rewrite using `[hT_swap, hT_A_H ha hw, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_H_A {F : FlagG S r T} {F' : FlagG S r T'} {a w : S.V} (ha : a ∈ Asp F F') (hw : w ∈ Hsp F F') :
     S.hT w a = 0 := by rw [hT_swap, hT_A_H ha hw, star_zero]
 
 /- English proof (translation)
-Rewrite using `[Asp, finrank_span_eq_card (PI.PairCorankPos.W.linIndep F F' hG), Fintype.card_sum, Fintype.card_fin]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_Asp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) :
     finrank E (Asp F F') = 2 * r + 2 := by
@@ -72,7 +72,7 @@ theorem finrank_Asp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0
   ring
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Take `⟨hxA, hxH⟩` from `Submodule.mem_inf.1 hx`. Conclude with `(Submodule.mem_bot E).2 (CorankRelation.span_pair_orth_eq_zero F F' hG x hxA fun i => (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hxH _ (Submodule.subset_span ⟨i, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Asp_inf_Hsp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) : Asp F F' ⊓ Hsp F F' = ⊥ := by
   rw [eq_bot_iff]
@@ -82,7 +82,7 @@ theorem Asp_inf_Hsp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0
     (PI.UnitaryGroupMassFormula.BetaLUniq.mem_orth S).1 hxH _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-Use `PI.UnitaryGroupMassFormula.BetaLUniq.finrank_orth_add S (Asp F F')` as an intermediate fact. Rewrite `this` using `[finrank_Asp F F' hG]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_Hsp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0) :
     finrank E (Hsp F F') + (2 * r + 2) = finrank E S.V := by
@@ -91,7 +91,7 @@ theorem finrank_Hsp (F : FlagG S r T) (F' : FlagG S r T') (hG : Gflag F F' ≠ 0
   exact this
 
 /- English proof (translation)
-Use `⟨disjoint_iff.2 (Asp_inf_Hsp F F' hG), codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Use `Submodule.eq_top_of_finrank_eq ?_` and prove the remaining obligations. Establish `h1` using `Submodule.finrank_sup_add_finrank_inf_eq (Asp F F') (Hsp F F')`. Rewrite `h1` using `[Asp_inf_Hsp F F' hG, finrank_bot, add_zero, finrank_Asp F F' hG]`. Establish `h2` using `finrank_Hsp F F' hG`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/

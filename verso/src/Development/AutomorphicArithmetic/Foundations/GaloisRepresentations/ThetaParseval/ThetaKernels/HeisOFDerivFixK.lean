@@ -14,11 +14,11 @@ namespace GlobalTheory.HeisDerivCM
 open Formalism.IndefR.DatumF
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ _ f L _ hL u hu hf`. Use function extensionality and compare the values at `w`. Establish `key : ∀ t : ℝ, B.ψ (symplOHF σ JS JT ξ₀ w u) * heisOF σ JS JT ξ₀ B.ψ (L t) f (w + u) = heisOF σ JS JT ξ₀ B.ψ (L t) f w`. Introduce `t`. Take `⟨h1, h2⟩` from `symplOHF_fin_real σ JS JT ξ₀ u (L t) hu (hL t)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfx` using `congrFun hf (w + L t)`. Simplify using `only [heisOF] at hfx ⊢`. Use `conv_rhs => rw [← hfx]`. Rewrite using `[symplOHF_add_left, symplOHF_add_left, h1, h2, add_zero, add_zero, show w + u + L t = w + L t + u by abel]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `show B.ψ (symplOHF σ JS JT ξ₀ w u) * deriv (fun t : ℝ => heisOF σ JS JT ξ₀ B.ψ (L t) f (w + u)) 0 = _`. Rewrite using `[← deriv_const_mul_field]`. Conclude with `congrArg (fun g : ℝ → ℂ => deriv g 0) (funext key)`.
+A detailed English derivation is pending.
 -/
 theorem heisOF_deriv_fix_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

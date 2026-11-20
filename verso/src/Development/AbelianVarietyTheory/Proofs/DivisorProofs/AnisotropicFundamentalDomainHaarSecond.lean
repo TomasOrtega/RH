@@ -14,11 +14,9 @@ namespace GlobalTheory.ThK.DefCovol
 open scoped Pointwise
 
 /- English proof (translation)
-Use `⟨?_, fun φ hφ hinv => ?_⟩` and prove the remaining obligations. Establish `hsub : 𝓕 ⊆ ⋃ γ : Γ, γ • C ∩ 𝓕`. Introduce `x hx`. Take `⟨γ, hγ, s, hs, rfl⟩` from `hcov x`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, Set.mem_smul_set.2 ⟨s, hs, rfl⟩, hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hφ.continuousOn`. Use `⟨M, fun h => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, rfl⟩` from `hcov h`. Rewrite using `[hinv γ hγ s]`.
-
-Conclude with `hM s hs`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_compact_cover {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [SecondCountableTopology G] (Γ : Subgroup G) [Countable Γ] (C : Set G) (hC : IsCompact C)

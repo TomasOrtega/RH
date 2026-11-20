@@ -13,13 +13,13 @@ section dec
 variable {K V I : Type} [Field K] [AddCommGroup V] [Module K V] {W : I → Submodule K V} {e : I → Module.End K V}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hle : (⨆ a ∈ pi, W a) ≤ ⨅ a ∈ piᶜ, LinearMap.ker (e a)`. Use `iSup₂_le fun b hb => ?_` and prove the remaining obligations. Use `le_iInf₂ fun a ha => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Conclude with `h.zero_on a b (fun hab => ha (hab ▸ hb)) y hy`. Use `hle hx` as an intermediate fact. Introduce `a ha`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this a ha`. Introduce `hx`. Take `⟨T, hT⟩` from `h.cover x`. Rewrite using `[hT]`. Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmu : mu ∈ pi`. Conclude with `Submodule.mem_iSup_of_mem mu (Submodule.mem_iSup_of_mem hmu (h.mem mu x))`. Rewrite using `[hx mu hmu]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_iSup_components_iff (h : DecSys W e) (pi : Set I) (x : V) : x ∈ (⨆ a ∈ pi, W a) ↔ ∀ a, a ∉ pi → e a x = 0 := by
   constructor
@@ -42,7 +42,7 @@ theorem mem_iSup_components_iff (h : DecSys W e) (pi : Set I) (x : V) : x ∈ (�
     · rw [hx mu hmu]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.id_on a x, fun hx => hx ▸ h.mem a x⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_component_iff_fixed (h : DecSys W e) (a : I) (x : V) : x ∈ W a ↔ e a x = x := ⟨h.id_on a x, fun hx => hx ▸ h.mem a x⟩
 
@@ -56,18 +56,18 @@ variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] {κ : Type} {Λ : 
 def componentSum (i : κ) (pi : Set (Λ i)) : Submodule K V := ⨆ a ∈ pi, J.W i a
 
 /- English proof (translation)
-The claim follows from `mem_iSup_components_iff (J.sys i) pi x`.
+A detailed English derivation is pending.
 -/
 theorem mem_component_sum_iff (i : κ) (pi : Set (Λ i)) (x : V) : x ∈ componentSum J i pi ↔ ∀ a, a ∉ pi → J.e i a x = 0 := mem_iSup_components_iff (J.sys i) pi x
 
 /- English proof (translation)
-Conclude with `LinearMap.congr_fun (J.comm i j a c) x`.
+A detailed English derivation is pending.
 -/
 theorem projectors_commute (i j : κ) (a : Λ i) (c : Λ j) (x : V) : J.e i a (J.e j c x) = J.e j c (J.e i a x) := by
   exact LinearMap.congr_fun (J.comm i j a c) x
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_component_sum_iff]`. Introduce `a ha`. Rewrite using `[projectors_commute, hx a ha, map_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem component_sum_stable (i : κ) (pi : Set (Λ i)) (j : κ) (c : Λ j) (x : V) (hx : x ∈ componentSum J i pi) :
     J.e j c x ∈ componentSum J i pi := by
@@ -76,19 +76,19 @@ theorem component_sum_stable (i : κ) (pi : Set (Λ i)) (j : κ) (c : Λ j) (x :
   rw [projectors_commute, hx a ha, map_zero]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[mem_component_iff_fixed (J.sys i)]`. Rewrite using `[projectors_commute, hx]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem component_stable (i : κ) (a : Λ i) (j : κ) (c : Λ j) (x : V) (hx : x ∈ J.W i a) : J.e j c x ∈ J.W i a := by
   rw [mem_component_iff_fixed (J.sys i)] at hx ⊢
   rw [projectors_commute, hx]
 
 /- English proof (translation)
-The claim follows from `le_iSup₂_of_le (f := fun a (_ : a ∈ pi) => J.W i a) a ha le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem component_le_component_sum (i : κ) (pi : Set (Λ i)) (a : Λ i) (ha : a ∈ pi) : J.W i a ≤ componentSum J i pi := le_iSup₂_of_le (f := fun a (_ : a ∈ pi) => J.W i a) a ha le_rfl
 
 /- English proof (translation)
-Rewrite using `[← J.span]`. Conclude with `Submodule.subset_span ⟨x, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_mem_plane (x : X) : J.b x ∈ J.Pl := by
   rw [← J.span]
@@ -105,7 +105,7 @@ theorem projector_product_cons (lam : ∀ i, Λ i) (i : κ) (l : List κ) (x : V
     projectorProduct J lam (i :: l) x = J.e i (lam i) (projectorProduct J lam l x) := rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons, projector_product_cons, projectors_commute, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem projector_product_commute (lam : ∀ i, Λ i) (l : List κ) (j : κ) (c : Λ j) (x : V) :
     J.e j c (projectorProduct J lam l x) = projectorProduct J lam l (J.e j c x) := by
@@ -115,7 +115,7 @@ theorem projector_product_commute (lam : ∀ i, Λ i) (l : List κ) (j : κ) (c 
     rw [projector_product_cons, projector_product_cons, projectors_commute, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons, ih]`. Conclude with `(J.sys i).id_on _ x (hx i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projector_product_fixed (lam : ∀ i, Λ i) (l : List κ) (x : V) (hx : ∀ i, x ∈ J.W i (lam i)) :
     projectorProduct J lam l x = x := by
@@ -126,9 +126,9 @@ theorem projector_product_fixed (lam : ∀ i, Λ i) (l : List κ) (x : V) (hx : 
     exact (J.sys i).id_on _ x (hx i)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at hj`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons]`. Break down `List.mem_cons.mp hj with rfl | hj'` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[projector_product_commute, hy, map_zero]`. Rewrite using `[ih hj', map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem projector_product_kill (lam : ∀ i, Λ i) (l : List κ) (j : κ) (hj : j ∈ l) (y : V) (hy : J.e j (lam j) y = 0) :
     projectorProduct J lam l y = 0 := by
@@ -141,9 +141,9 @@ theorem projector_product_kill (lam : ∀ i, Λ i) (l : List κ) (j : κ) (hj : 
     · rw [ih hj', map_zero]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp at hj`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons]`. Break down `List.mem_cons.mp hj with rfl | hj'` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(J.sys _).mem _ _`. Conclude with `component_stable J j (lam j) i (lam i) _ (ih hj')`.
+A detailed English derivation is pending.
 -/
 theorem projector_product_mem_component (lam : ∀ i, Λ i) (l : List κ) (j : κ) (hj : j ∈ l) (x : V) :
     projectorProduct J lam l x ∈ J.W j (lam j) := by
@@ -156,7 +156,7 @@ theorem projector_product_mem_component (lam : ∀ i, Λ i) (l : List κ) (j : �
     · exact component_stable J j (lam j) i (lam i) _ (ih hj')
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact hx`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons]`. Conclude with `hS i (lam i) _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projector_product_stable (lam : ∀ i, Λ i) (l : List κ) (S : Submodule K V) (hS : ∀ i a, ∀ x ∈ S, J.e i a x ∈ S) (x : V)
     (hx : x ∈ S) : projectorProduct J lam l x ∈ S := by
@@ -171,13 +171,13 @@ def lowerLabels (lam : ∀ i, Λ i) (i : κ) : Set (Λ i) := {a | J.dom i a ∧ 
 def strictLowerLabels (lam : ∀ i, Λ i) (i : κ) : Set (Λ i) := {a | J.dom i a ∧ J.le i a (lam i) ∧ a ≠ lam i}
 
 /- English proof (translation)
-The claim follows from `J.low i (lowerLabels J lam i) (fun a ha => ha.1) (fun a ha c hc hca => ⟨hc, J.le_trans i c a (lam i) hca ha.2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem lower_part_eq_span (lam : ∀ i, Λ i) (i : κ) :
     J.Pl ⊓ componentSum J i (lowerLabels J lam i) = Submodule.span K (J.b '' {x | J.P x i ∈ lowerLabels J lam i}) := J.low i (lowerLabels J lam i) (fun a ha => ha.1) (fun a ha c hc hca => ⟨hc, J.le_trans i c a (lam i) hca ha.2⟩)
 
 /- English proof (translation)
-Conclude with `J.low i (strictLowerLabels J lam i) (fun a ha => ha.1) (fun a ha c hc hca => ⟨hc, J.le_trans i c a (lam i) hca ha.2.1, fun hcl => ha.2.2 (J.le_antisymm i a (lam i) ha.2.1 (hcl ▸ hca))⟩)`.
+A detailed English derivation is pending.
 -/
 theorem strict_lower_part_eq_span (lam : ∀ i, Λ i) (i : κ) :
     J.Pl ⊓ componentSum J i (strictLowerLabels J lam i) = Submodule.span K (J.b '' {x | J.P x i ∈ strictLowerLabels J lam i}) := by
@@ -191,7 +191,7 @@ def strictLowerPart (lam : ∀ i, Λ i) (j : κ) : Submodule K V := jointLowerPa
 def strictJointLower (lam : ∀ i, Λ i) : Submodule K V := ⨆ j, strictLowerPart J lam j
 
 /- English proof (translation)
-Simplify using `only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx ⊢`. Conclude with `⟨J.stab i a x hx.1, fun k => component_sum_stable J k _ i a x (hx.2 k)⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem joint_lower_part_stable (lam : ∀ i, Λ i) (i : κ) (a : Λ i) (x : V) (hx : x ∈ jointLowerPart J lam) :
     J.e i a x ∈ jointLowerPart J lam := by
@@ -199,18 +199,18 @@ theorem joint_lower_part_stable (lam : ∀ i, Λ i) (i : κ) (a : Λ i) (x : V) 
   exact ⟨J.stab i a x hx.1, fun k => component_sum_stable J k _ i a x (hx.2 k)⟩
 
 /- English proof (translation)
-The claim follows from `iSup_le fun j => inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem strict_joint_lower_le (lam : ∀ i, Λ i) : strictJointLower J lam ≤ jointLowerPart J lam := iSup_le fun j => inf_le_left
 
 /- English proof (translation)
-Establish `hxM` using `hx`. Simplify using `only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hxM`. Simplify using `only [strictLowerPart, Submodule.mem_inf]`. Use `⟨Submodule.sub_mem _ hx (joint_lower_part_stable J lam k (lam k) x hx), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_component_sum_iff]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite using `[map_sub]`. Distinguish the cases in `hal : a = lam k`. Substitute `hal` using the available equality. Rewrite using `[(J.sys k).id_on _ _ ((J.sys k).mem _ x), sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : J.e k a x = 0`. Use `(mem_component_sum_iff J k _ x).mp (hxM.2 k)` as an intermediate fact. Apply `this` to reduce the goal to its premises. Introduce `hle`. Conclude with `ha ⟨hle.1, hle.2, hal⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : J.e k a (J.e k (lam k) x) = 0` using `(J.sys k).zero_on a (lam k) (Ne.symm hal) _ ((J.sys k).mem _ x)`. Rewrite using `[h1, h2, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_projector_mem_strict (lam : ∀ i, Λ i) (k : κ) (x : V) (hx : x ∈ jointLowerPart J lam) :
     x - J.e k (lam k) x ∈ strictLowerPart J lam k := by
@@ -233,9 +233,9 @@ theorem sub_projector_mem_strict (lam : ∀ i, Λ i) (k : κ) (x : V) (hx : x �
     rw [h1, h2, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [projectorProduct]`. Consider the case `cons i l ih`. Rewrite using `[projector_product_cons]`. Establish `hy : projectorProduct J lam l x ∈ jointLowerPart J lam` using `projector_product_stable J lam l _ (fun i a z hz => joint_lower_part_stable J lam i a z hz) x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `sub_projector_mem_strict J lam i _ hy`. Establish `: x - J.e i (lam i) (projectorProduct J lam l x) = (x - projectorProduct J lam l x) + (projectorProduct J lam l x - J.e i (lam i) (projectorProduct J lam l x))` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ ih (Submodule.mem_iSup_of_mem i h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_projector_product_mem_strict (lam : ∀ i, Λ i) (l : List κ) (x : V) (hx : x ∈ jointLowerPart J lam) :
     x - projectorProduct J lam l x ∈ strictJointLower J lam := by
@@ -252,9 +252,7 @@ theorem sub_projector_product_mem_strict (lam : ∀ i, Λ i) (l : List κ) (x : 
     exact Submodule.add_mem _ ih (Submodule.mem_iSup_of_mem i h2)
 
 /- English proof (translation)
-Simplify using `only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf]`. Use `⟨basis_mem_plane J x, fun i => ?_⟩` and prove the remaining obligations. Establish `: J.b x ∈ J.Pl ⊓ componentSum J i (lowerLabels J lam i)`. Rewrite using `[lower_part_eq_span]`. Conclude with `Submodule.subset_span ⟨x, hx i, rfl⟩`.
-
-Conclude with `this.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basis_mem_joint_lower_part (lam : ∀ i, Λ i) (x : X) (hx : ∀ i, J.P x i ∈ lowerLabels J lam i) : J.b x ∈ jointLowerPart J lam := by
   simp only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf]
@@ -265,11 +263,11 @@ theorem basis_mem_joint_lower_part (lam : ∀ i, Λ i) (x : X) (hx : ∀ i, J.P 
   exact this.2
 
 /- English proof (translation)
-Take `⟨k0⟩` from `‹Nonempty ι'›`. Take `⟨l0, hl0, hl0x⟩` from `(Finsupp.mem_span_image_iff_linearCombination K).mp (hA k0)`. Use `(Finsupp.mem_span_image_iff_linearCombination K).mpr ⟨l0, ?_, hl0x⟩` and prove the remaining obligations. Rewrite using `[Finsupp.mem_supported]`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.mem_iInter]`. Introduce `k`. Take `⟨lk, hlk, hlkx⟩` from `(Finsupp.mem_span_image_iff_linearCombination K).mp (hA k)`. Establish `hkk : lk = l0` using `J.li (hlkx.trans hl0x.symm)`. Rewrite `hlk` using `[hkk, Finsupp.mem_supported]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hlk hy`.
+A detailed English derivation is pending.
 -/
 private theorem mem_span_image_iInter_of_forall_mem_span {ι' : Type} [Nonempty ι'] (A : ι' → Set X) (x : V)
     (hA : ∀ k, x ∈ Submodule.span K (J.b '' A k)) : x ∈ Submodule.span K (J.b '' ⋂ k, A k) := by
@@ -286,13 +284,11 @@ private theorem mem_span_image_iInter_of_forall_mem_span {ι' : Type} [Nonempty 
   exact hlk hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx'` using `hx`. Simplify using `only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx'`. Establish `hA : ∀ i, x ∈ Submodule.span K (J.b '' {y | J.P y i ∈ lowerLabels J lam i})` using `fun i => by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← lower_part_eq_span]`. Conclude with `Submodule.mem_inf.mpr ⟨hx'.1, hx'.2 i⟩`. Use `mem_span_image_iInter_of_forall_mem_span J (fun i => {y | J.P y i ∈ lowerLabels J lam i}) x hA` as an intermediate fact. Establish `hset : {y | ∀ i, J.P y i ∈ lowerLabels J lam i} = ⋂ i, {y | J.P y i ∈ lowerLabels J lam i}`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hset]`. Conclude with `this`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
-
-Conclude with `basis_mem_joint_lower_part J lam y hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem joint_lower_part_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
     jointLowerPart J lam = Submodule.span K (J.b '' {x | ∀ i, J.P x i ∈ lowerLabels J lam i}) := by
@@ -311,19 +307,17 @@ theorem joint_lower_part_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
     exact basis_mem_joint_lower_part J lam y hy
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun j => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `hx`. Simplify using `only [strictLowerPart, jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf] at hx'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `A : Option κ → Set X` to `fun o => o.elim {y | J.P y j ∈ strictLowerLabels J lam j} (fun i => {y | J.P y i ∈ lowerLabels J lam i})`. Establish `hA : ∀ o, x ∈ Submodule.span K (J.b '' A o)`. Introduce `o`. Consider the cases of `o with`. Consider the case `none => show x ∈ Submodule.span K (J.b '' {y | J.P y j ∈ strictLowerLabels J lam j})`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[← strict_lower_part_eq_span]`. Conclude with `Submodule.mem_inf.mpr ⟨hx'.1.1, hx'.2⟩`. Consider the case `some i => show x ∈ Submodule.span K (J.b '' {y | J.P y i ∈ lowerLabels J lam i})`. Rewrite using `[← lower_part_eq_span]`. Conclude with `Submodule.mem_inf.mpr ⟨hx'.1.1, hx'.1.2 i⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_span_image_iInter_of_forall_mem_span J A x hA` as an intermediate fact. Use `Submodule.span_mono (Set.image_mono ?_) this` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[Set.mem_iInter]`. Use `⟨fun i => hy (some i), fun h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : J.P y j ∈ strictLowerLabels J lam j` using `hy none`. Conclude with `h0.2.2 (congrFun h j)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, ⟨hy1, hy2⟩, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, J.P y j ≠ lam j := by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hy2 (funext hcon)`. Use `Submodule.mem_iSup_of_mem j ?_` and prove the remaining obligations. Simplify using `only [strictLowerPart, Submodule.mem_inf]`.
-
-Use `⟨basis_mem_joint_lower_part J lam y hy1, ?_⟩` and prove the remaining obligations. Establish `: J.b y ∈ J.Pl ⊓ componentSum J j (strictLowerLabels J lam j)`. Rewrite using `[strict_lower_part_eq_span]`. Conclude with `Submodule.subset_span ⟨y, ⟨J.Pdom y j, (hy1 j).2, hj⟩, rfl⟩`. Conclude with `(Submodule.mem_inf.mp this).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem strict_joint_lower_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
     strictJointLower J lam = Submodule.span K (J.b '' {x | (∀ i, J.P x i ∈ lowerLabels J lam i) ∧ J.P x ≠ lam}) := by
@@ -367,35 +361,29 @@ theorem strict_joint_lower_eq_span [Nonempty κ] (lam : ∀ i, Λ i) :
 end main
 
 /- English proof (translation)
-Introduce `K V _ _ _ κ _ _ Λ X _ J lam`. Use `haveI : Fintype X := Fintype.ofFinite X`. Use `haveI hPl : FiniteDimensional K J.Pl := J.span ▸ FiniteDimensional.span_of_finite K (Set.finite_range J.b)`. Use `set U := J.Pl ⊓ ⨅ i, J.W i (lam i) with hU`. Use `haveI : FiniteDimensional K U := Submodule.finiteDimensional_of_le (inf_le_left : U ≤ J.Pl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional K (strictJointLower J lam) := Submodule.finiteDimensional_of_le ((strict_joint_lower_le J lam).trans inf_le_left)`. Establish `hl : ∀ i, i ∈ (Finset.univ : Finset κ).toList` using `fun i => Finset.mem_toList.mpr (Finset.mem_univ i)`. Use `set l := (Finset.univ : Finset κ).toList`. Establish `hPU : ∀ x ∈ J.Pl, projectorProduct J lam l x ∈ U` using `fun x hx => Submodule.mem_inf.mpr ⟨projector_product_stable J lam l J.Pl J.stab x hx, (Submodule.mem_iInf _).mpr fun i => projector_product_mem_component J lam l i (hl i) x⟩`. Establish `hfix : ∀ x ∈ U, projectorProduct J lam l x = x` using `fun x hx => projector_product_fixed J lam l x fun i => (Submodule.mem_iInf _).mp (Submodule.mem_inf.mp hx).2 i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hkill : ∀ y ∈ strictJointLower J lam, projectorProduct J lam l y = 0`. Introduce `y hy`. Use `Submodule.iSup_induction (fun j => strictLowerPart J lam j) (motive := fun z => projectorProduct J lam l z = 0) hy (fun j z hz => ?_) (map_zero _) (fun a b ha hb => by rw [map_add, ha, hb, add_zero])` and prove the remaining obligations. Establish `hz'` using `(Submodule.mem_inf.mp hz).2`. Rewrite `hz'` using `[mem_component_sum_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `projector_product_kill J lam l j (hl j) z (hz' (lam j) (fun h => h.2.2 rfl))`. Establish `hUle : U ≤ jointLowerPart J lam`. Introduce `x hx`. Establish `hx'` using `Submodule.mem_inf.mp hx`. Simplify using `only [jointLowerPart, Submodule.mem_inf, Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Use `⟨hx'.1, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_component_sum_iff]`. Introduce `a ha`. Establish `hxi` using `(Submodule.mem_iInf _).mp hx'.2 i`. Distinguish the cases in `hal : a = lam i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hal` using the available equality. Establish `hnd : ¬ J.dom i (lam i)` using `fun hd => ha ⟨hd, J.le_refl i _⟩`. Rewrite `hxi` using `[J.bot i _ hnd, Submodule.mem_bot]`. Rewrite using `[hxi, map_zero]`. Conclude with `(J.sys i).zero_on a (lam i) (Ne.symm hal) x hxi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsup : U ⊔ strictJointLower J lam = jointLowerPart J lam`. Apply `le_antisymm (sup_le hUle (strict_joint_lower_le J lam))` to reduce the goal to its premises. Introduce `x hx`. Establish `hxP : x ∈ J.Pl` using `(Submodule.mem_inf.mp hx).1`. Establish `hsplit : x = projectorProduct J lam l x + (x - projectorProduct J lam l x)` using `by abel`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit]`. Conclude with `Submodule.add_mem_sup (hPU x hxP) (sub_projector_product_mem_strict J lam l x hx)`. Establish `hinf : U ⊓ strictJointLower J lam = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hfix x (Submodule.mem_inf.mp hx).1`. Establish `h2` using `hkill x (Submodule.mem_inf.mp hx).2`. Rewrite using `[Submodule.mem_bot, ← h1, h2]`. Establish `hfin : ∀ s : Set X, Module.finrank K (Submodule.span K (J.b '' s)) = Nat.card s`. Introduce `s`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.image_eq_range]`. Conclude with `(finrank_span_eq_card (J.li.comp _ Subtype.val_injective)).trans Nat.card_eq_fintype_card.symm`. Establish `hdim` using `Submodule.finrank_sup_add_finrank_inf_eq U (strictJointLower J lam)`. Rewrite `hdim` using `[hsup, hinf, finrank_bot, add_zero, joint_lower_part_eq_span, strict_joint_lower_eq_span, hfin, hfin]`. Establish `hset : {x | ∀ i, J.P x i ∈ lowerLabels J lam i} = {x | (∀ i, J.P x i ∈ lowerLabels J lam i) ∧ J.P x ≠ lam} ∪ {x | J.P x = lam}`.
+Prove the second alternative. Prove the first alternative. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Distinguish the cases in `hx : J.P x = lam`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inr hx`. Conclude with `Or.inl ⟨h, hx⟩`. Introduce and unpack `(h | h)`. Conclude with `h.1`. Introduce `i`.
-
-Establish `hd` using `J.Pdom x i`. Rewrite `hd`, the goal using `[h]`. Conclude with `⟨hd, J.le_refl i _⟩`. Establish `hdisj : Disjoint {x | (∀ i, J.P x i ∈ lowerLabels J lam i) ∧ J.P x ≠ lam} {x | J.P x = lam}`. Rewrite using `[Set.disjoint_left]`.
-
-Introduce `x h1 h2`. Conclude with `h1.2 h2`. Establish `hcard : Nat.card {x | ∀ i, J.P x i ∈ lowerLabels J lam i} = Nat.card {x | (∀ i, J.P x i ∈ lowerLabels J lam i) ∧ J.P x ≠ lam} + Nat.card {x // J.P x = lam}`. Rewrite using `[hset, Nat.card_coe_set_eq, Set.ncard_union_eq hdisj (Set.toFinite _) (Set.toFinite _), ← Nat.card_coe_set_eq, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
-
-Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem restJointDim : RestJointDim := by
   intro K V _ _ _ κ _ _ Λ X _ J lam
@@ -485,17 +473,17 @@ variable {K V : Type} [Field K] [AddCommGroup V] [Module K V] {κ : Type} {Λ : 
   (J : JointData K V κ Λ X)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y q hq _ hW`. Use `Submodule.mem_iSup_of_mem q (Submodule.mem_iSup_of_mem hq ?_)` and prove the remaining obligations. Conclude with `(Submodule.mem_iInf _).mpr fun i => hW i (by simp)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `@insert k s hks ih`. Introduce `y q hq hT hW`. Take `⟨T, hTy⟩` from `(J.sys k).cover y`. Rewrite using `[hTy]`. Use `Submodule.sum_mem _ fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `ha : a ∈ pi k`. Apply `ih (J.e k a y) (Function.update q k a)` to reduce the goal to its premises. Introduce `i`. Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using ha`. Simplify `hq i` using `[hik]`. Introduce `i`. Conclude with `component_sum_stable J i (pi i) k a y (hT i)`. Introduce `i hi`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hik : i = k`. Substitute `hik` using the available equality. Simplify using `using (J.sys i).mem a y`. Establish `hW'` using `hW i (fun h => by`. Break down `Finset.mem_insert.mp h with h' | h'` into its components or cases.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hik h'`. Conclude with `hi h')`. Simplify `component_stable J i (q i) k a y hW'` using `[hik]`. Rewrite using `[(mem_component_sum_iff J k (pi k) y).mp (hT k) a ha]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_iSup_of_split [DecidableEq κ] (pi : ∀ i, Set (Λ i)) (s : Finset κ) :
     ∀ (y : V) (q : ∀ i, Λ i), (∀ i, q i ∈ pi i) → (∀ i, y ∈ componentSum J i (pi i)) → (∀ i, i ∉ s → y ∈ J.W i (q i)) →
@@ -531,15 +519,15 @@ theorem mem_iSup_of_split [DecidableEq κ] (pi : ∀ i, Set (Λ i)) (s : Finset 
 end sum
 
 /- English proof (translation)
-Introduce `K V _ _ _ κ _ _ Λ X _ J pi hdom hdown`. Establish `hlowi : ∀ i, J.Pl ⊓ componentSum J i (pi i) = Submodule.span K (J.b '' {x | J.P x i ∈ pi i})` using `fun i => J.low i (pi i) (hdom i) (hdown i)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨hxP, hxS⟩` from `Submodule.mem_inf.mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hle : (⨆ q ∈ {q : ∀ i, Λ i | ∀ i, q i ∈ pi i}, ⨅ i, J.W i (q i)) ≤ ⨅ i, componentSum J i (pi i)` using `iSup₂_le fun q hq => le_iInf fun i => (iInf_le _ i).trans (component_le_component_sum J i (pi i) (q i) (hq i))`. Establish `hxT` using `(Submodule.mem_iInf _).mp (hle hxS)`. Establish `hA : ∀ i, x ∈ Submodule.span K (J.b '' {y | J.P y i ∈ pi i})` using `fun i => by`. Rewrite using `[← hlowi]`. Conclude with `Submodule.mem_inf.mpr ⟨hxP, hxT i⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `mem_span_image_iInter_of_forall_mem_span J (fun i => {y | J.P y i ∈ pi i}) x hA` as an intermediate fact. Establish `hset : {y | ∀ i, J.P y i ∈ pi i} = ⋂ i, {y | J.P y i ∈ pi i}` using `by ext y; simp`. Rewrite using `[hset]`. Conclude with `this`. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `Submodule.mem_inf.mpr ⟨basis_mem_plane J y, ?_⟩` and prove the remaining obligations. Apply `mem_iSup_of_split J pi Finset.univ (J.b y) (J.P y) hy` to reduce the goal to its premises. Introduce `i`. Establish `: J.b y ∈ J.Pl ⊓ componentSum J i (pi i)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hlowi]`. Conclude with `Submodule.subset_span ⟨y, hy i, rfl⟩`. Conclude with `(Submodule.mem_inf.mp this).2`. Introduce `i hi`. Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem restJointSum : RestJointSum := by
   intro K V _ _ _ κ _ _ Λ X _ J pi hdom hdown

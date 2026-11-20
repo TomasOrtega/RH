@@ -26,12 +26,12 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {K : Ty
 def ptMap {S : Type} [CommRing S] (y : Sp S ⟶ Sp K) : K →+* S := (Spec.preimage y).hom
 
 /- English proof (translation)
-The claim follows from `Spec.map_preimage y`.
+A detailed English derivation is pending.
 -/
 theorem spMap_ptMap {S : Type} [CommRing S] (y : Sp S ⟶ Sp K) : spMap (ptMap y) = y := Spec.map_preimage y
 
 /- English proof (translation)
-Establish `h : spMap (φ.comp (ptMap y)) = spMap (ptMap y')`. Rewrite using `[spMap_ptMap y', ← e]`. Use `conv_rhs => rw [← spMap_ptMap y]`. Conclude with `Spec.map_comp _ _`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective h).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') (y : Sp S ⟶ Sp K) (y' : Sp S' ⟶ Sp K)
     (e : spMap φ ≫ y = y') : ptMap y' = φ.comp (ptMap y) := by
@@ -44,15 +44,15 @@ theorem ptMap_comp {S S' : Type} [CommRing S] [CommRing S'] (φ : S →+* S') (y
 variable {tK} in
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `hp : ∃ t' : SAB H (Sp S), Nonempty (SABMap t' tK (spMap f))`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull ReciprocityTheory.ChartRestriction.G.Out.CubePf.cubePull (spMap f) tK`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨t', ⟨m⟩⟩` from `hp`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨v', hb, hv'⟩` from `GlobalTheory.exists_isLieBasis_baseChange K S f tK.G t'.G m.φ m.cart tK.semi.smooth d v hv`. Set `u : Fin d → TanM (spMap f) tK.G` to `fun j => mkT (pushHom m.cart (epsR S) (v' j)) ((PullbackSections.isTangent_iff m.cart _).1 (hb.1 j))`. Establish `hcomb : ∀ (a : Fin d → S) (w : epsR S ⟶ t'.G), IsLieComb a v' w ↔ pushHom m.cart (epsR S) w = tv (∑ i, a i • u i)` using `fun a w => by`. Rewrite using `[PullbackSections.isLieComb_iff m.cart, tv_sum']`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hbij : Function.Bijective (Fintype.linearCombination S u)`. Rewrite using `[Function.bijective_iff_existsUnique]`. Introduce `W`. Take `⟨p, hp⟩` from `PullbackSections.push_surj m.cart (tv W)`. Establish `ht : IsTangent p` using `(PullbackSections.isTangent_iff m.cart p).2 (by rw [hp]; exact tv_mem W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(existsUnique_congr fun a => ?_).1 (hb.2 p ht)` and prove the remaining obligations. Rewrite using `[hcomb, hp, Fintype.linearCombination_apply]`. Conclude with `⟨fun e => (tanM_ext e).symm, fun e => by rw [e]⟩`. Set `e` to `LinearEquiv.ofBijective _ hbij`. Establish `he : ∀ j, (Pi.basisFun S (Fin d)).map e j = u j` using `fun j => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[e, Fintype.linearCombination_apply_single]`. Conclude with `⟨(Pi.basisFun S (Fin d)).map e, fun j => by rw [he]; exact hv' j⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_basis {d : ℕ} {v : Fin d → (epsR K ⟶ tK.G)} (hv : IsLieBasis v) {S : Type} [CommRing S]
     (f : K →+* S) (x : Sp S ⟶ Sp K) (hx : spMap f = x) :
@@ -83,7 +83,7 @@ theorem exists_basis {d : ℕ} {v : Fin d → (epsR K ⟶ tK.G)} (hv : IsLieBasi
   exact ⟨(Pi.basisFun S (Fin d)).map e, fun j => by rw [he]; exact hv' j⟩
 
 /- English proof (translation)
-Take `⟨d, v, hv⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.exists_isLieBasis tK.G tK.semi.smooth`. Establish `hB` using `fun (S : Type) [CommRing S] (y : Sp S ⟶ Sp K) => exists_basis hv (ptMap y) y (spMap_ptMap y)`. Use `⟨d, fun S _ y => (hB S y).choose, fun S S' _ _ φ y y' e j => ?_⟩` and prove the remaining obligations. Apply `tan_ext_left` to reduce the goal to its premises. Rewrite using `[tanPull_left, (hB S y).choose_spec j, (hB S' y').choose_spec j, ptMap_comp φ y y' e, GlobalTheory.FlagMod.dualMap_comp, ← spMap_comp', Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lieFrame (tK : SAB H (Sp K)) :
     ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),
@@ -98,7 +98,7 @@ theorem exists_lieFrame (tK : SAB H (Sp K)) :
     ← spMap_comp', Category.assoc]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ tK` and use `exists_lieFrame tK`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lieFrame_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (K : Type) [Field K]
     (tK : SAB H (Sp K)), ∃ (d : ℕ) (B : ∀ (S : Type) [CommRing S] (y : Sp S ⟶ Sp K),

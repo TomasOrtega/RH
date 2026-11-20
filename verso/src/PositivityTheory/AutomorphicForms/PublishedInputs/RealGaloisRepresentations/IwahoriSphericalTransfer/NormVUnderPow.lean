@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.AttResTower
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 K)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 K)).isMaximal` as an intermediate fact. Use `show Ideal.absNorm w.asIdeal = Ideal.absNorm (w.under (𝓞 K)).asIdeal ^ w.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[← Ideal.absNorm_relNorm (𝓞 K) (𝓞 K') w.asIdeal, Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_under_pow {K K' : Type} [Field K] [NumberField K] [Field K'] [NumberField K'] [Algebra K K']
     (w : HeightOneSpectrum (𝓞 K')) : normV w = normV (w.under (𝓞 K)) ^ w.asIdeal.inertiaDeg (𝓞 K) := by
@@ -25,9 +25,9 @@ theorem normV_under_pow {K K' : Type} [Field K] [NumberField K] [Field K'] [Numb
     Ideal.relNorm_eq_pow_of_isMaximal w.asIdeal (w.under (𝓞 K)).asIdeal, map_pow]
 
 /- English proof (translation)
-Use `show 2 ≤ Ideal.absNorm v.asIdeal`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem two_le_normV {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) : 2 ≤ normV v := by
   show 2 ≤ Ideal.absNorm v.asIdeal
@@ -38,9 +38,9 @@ theorem two_le_normV {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum
   omega
 
 /- English proof (translation)
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap _ (Ideal.comap _ w.asIdeal) = Ideal.comap _ w.asIdeal`. Rewrite using `[Ideal.comap_comap]`. Use `congr 1`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Treat this case separately.
 
-Use `first`. Consider the case `exact (IsScalarTower.algebraMap_eq (𝓞 F) (𝓞 K) (𝓞 M)).symm ▸ rfl`. Consider the case `(apply RingOfIntegers.coe_injective; simp only [RingHom.comp_apply, RingOfIntegers.algebraMap_coe]; exact (IsScalarTower.algebraMap_apply F K M (x : F)).symm)`. Consider the case `(apply RingOfIntegers.ext; simp [IsScalarTower.algebraMap_apply F K M])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem under_under {F K M : Type} [Field F] [NumberField F] [Field K] [NumberField K] [Field M] [NumberField M]
     [Algebra F K] [Algebra F M] [Algebra K M] [IsScalarTower F K M] (w : HeightOneSpectrum (𝓞 M)) :
@@ -58,13 +58,13 @@ theorem under_under {F K M : Type} [Field F] [NumberField F] [Field K] [NumberFi
 end GlobalTheory.AttResTower
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ K _ _ _ _ _ _ M _ _ _ _ _ _ _ _ _ l _ ι a π r hatt`. Unfold `AttRes at hatt ⊢`. Use `filter_upwards [(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K M).eventually hatt] with w h f hf`. Establish `huv` using `GlobalTheory.AttResTower.under_under (F := F) (K := K) w`. Establish `h1` using `GlobalTheory.AttResTower.normV_under_pow (K := F) (w.under (𝓞 K))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.AttResTower.normV_under_pow (K := K) w`. Take `⟨B, hB, hF⟩` from `h _ h1`. Rewrite `hB`, `hF`, `h1` using `[huv]`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Establish `h3` using `(UpperTheory.frobenius_power_compatibility K M Ω l ι w _ h2).1 a r _ hF`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hff : f = (w.under (𝓞 K)).asIdeal.inertiaDeg (𝓞 F) * w.asIdeal.inertiaDeg (𝓞 K)`. Apply `Nat.pow_right_injective (GlobalTheory.AttResTower.two_le_normV (w.under (𝓞 F)))` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[← hf, h2, h1, ← pow_mul]`. Rewrite `h3` using `[Multiset.map_map]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hff]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Simplify using `[Function.comp_def, pow_mul]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AttResTower.attRes_comp_res : ∀ (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [Algebra F M] [Algebra M Ω] [IsScalarTower F M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower F K M] [IsScalarTower K M Ω] (l : ℕ) [Fact l.Prime] (ι : Qbar l ≃+* ℂ) (a : ℕ) (π : TR.CuspSub F a) (r : G K Ω →* GL (Fin a) (Qbar l)), AttRes π ι K r → AttRes π ι M (r.comp (res K Ω M)) := by
   intro F Ω _ _ _ _ _ _ K _ _ _ _ _ _ M _ _ _ _ _ _ _ _ _ l _ ι a π r hatt

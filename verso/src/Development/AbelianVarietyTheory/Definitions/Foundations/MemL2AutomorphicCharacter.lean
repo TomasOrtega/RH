@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
 omit [μ.IsMulLeftInvariant] in
 
 /- English proof (translation)
-Use `exists_eventuallyEq_const_of_forall_separating MeasurableSet fun U hU => ?_` and prove the remaining obligations. Use `eventuallyConst_set.1 (aeconst_of_forall_preimage_smul_ae_eq Gᵐᵒᵖ (s := φ ⁻¹' U) (hφ.aemeasurable.nullMeasurable hU) fun g => ((h g.unop).mono fun x hx => ?_).set_eq)` and prove the remaining obligations. Conclude with `iff_of_eq (congrArg (· ∈ U) hx)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ae_const {φ : G → ℂ} (hφ : AEStronglyMeasurable φ μ) (h : ∀ g, (fun x => φ (x * g)) =ᵐ[μ] φ) :
     ∃ c, φ =ᵐ[μ] fun _ => c := by
@@ -29,11 +29,11 @@ theorem ae_const {φ : G → ℂ} (hφ : AEStronglyMeasurable φ μ) (h : ∀ g,
   exact iff_of_eq (congrArg (· ∈ U) hx)
 
 /- English proof (translation)
-Establish `hm : AEStronglyMeasurable (lift Γ F) μ` using `aestronglyMeasurable_quotMeasure_iff_lift.1 (Lp.aestronglyMeasurable F)`. Establish `hc : Continuous fun x => ((χ x⁻¹ : Circle) : ℂ)` using `continuous_subtype_val.comp (hχ.comp continuous_inv)`. Take `⟨c, hc⟩` from `ae_const (φ := fun x => lift Γ F x * ((χ x⁻¹ : Circle) : ℂ)) (hm.mul hc.aestronglyMeasurable) fun g => by`. Establish `e : lift Γ (((χ g : ℂ) • F : L2 Γ μ)) =ᵐ[μ] (χ g : ℂ) • lift Γ F` using `ae_quotMeasure_iff.1 (Lp.coeFn_smul (χ g : ℂ) F)`. Use `filter_upwards [lift_R g F, e] with x h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, h g, h2]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_inv_rev, map_mul, map_inv, Circle.coe_mul, Circle.coe_inv]`. Clear the denominators using the available nonvanishing facts. Use `⟨c, hc.mono fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← show _ = c from hx]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_ae_eq_char {χ : G →* Circle} (hχ : Continuous χ) {F : L2 Γ μ} (h : ∀ g, R Γ μ g F = (χ g : ℂ) • F) :
     ∃ c : ℂ, lift Γ F =ᵐ[μ] fun x => c * χ x := by
@@ -54,21 +54,21 @@ theorem exists_ae_eq_char {χ : G →* Circle} (hχ : Continuous χ) {F : L2 Γ 
 omit [SFinite μ] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-The claim follows from `EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul c F)) (e.const_smul c)`.
+A detailed English derivation is pending.
 -/
 theorem lift_smul (c : ℂ) {F : L2 Γ μ} {φ : G → ℂ} (e : lift Γ F =ᵐ[μ] φ) : lift Γ (c • F : L2 Γ μ) =ᵐ[μ] c • φ :=
   EventuallyEq.trans (ae_quotMeasure_iff.1 (Lp.coeFn_smul c F)) (e.const_smul c)
 
 /- English proof (translation)
-Establish `hl` using `h.lift_toL2_ae_eq`. Generalize the expression as in `h.toL2 = F₀ at hl`. Establish `h0 : F₀ ≠ 0` using `fun e => by`. Establish `h2 : lift Γ (0 : L2 Γ μ) =ᵐ[μ] 0` using `ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)`. Take `⟨x, hx⟩` from `(hl.symm.trans (show lift Γ F₀ =ᵐ[μ] 0 from e ▸ h2)).exists`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Circle.coe_ne_zero _ hx`. Establish `key : ∀ T ∈ homIn (charRep χ) (R Γ μ) U, ∃ c : ℂ, T = c • ContinuousLinearMap.toSpanSingleton ℂ F₀`. Introduce `T hT`. Take `⟨c, hc⟩` from `exists_ae_eq_char (Γ := Γ) (μ := μ) hχ (F := T 1) fun g => by`. Rewrite using `[← map_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hT.2 g 1).symm`. Use `⟨c, ContinuousLinearMap.ext_ring ?_⟩` and prove the remaining obligations. Simplify using `using l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (hc.trans (lift_smul c hl).symm)`. Use `⟨fun hU => ?_, fun hU => multIn_eq_zero_iff.2 (eq_bot_iff.2 fun T hT => ?_)⟩` and prove the remaining obligations. Establish `h1 : ContinuousLinearMap.toSpanSingleton ℂ F₀ ∈ homIn (charRep χ) (R Γ μ) U` using `⟨fun c => U.smul_mem c hU, fun g c => by`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `: R Γ μ g F₀ = (χ g : ℂ) • F₀` using `l2DiscreteQuotient_ext_iff_lift_ae_eq.2 ((lift_R g _).trans (EventuallyEq.trans ((measurePreserving_mul_right μ g).quasiMeasurePreserving.ae hl) (EventuallyEq.trans (.of_forall fun x => by simp [mul_comm]) (lift_smul (χ g : ℂ) hl).symm)))`. Express the relevant statement in the definitionally equal form `((χ g : ℂ) * c) • F₀ = R Γ μ g (c • F₀)`. Rewrite using `[map_smul, this, smul_smul, mul_comm]⟩`. Establish `h2 : homIn (charRep χ) (R Γ μ) U = ℂ ∙ ContinuousLinearMap.toSpanSingleton ℂ F₀` using `le_antisymm (fun T hT => Submodule.mem_span_singleton.2 ((key T hT).imp fun _ => Eq.symm)) ((Submodule.span_singleton_le_iff_mem _ _).2 h1)`. Establish `h3 : ContinuousLinearMap.toSpanSingleton ℂ F₀ ≠ 0` using `fun e => h0 (by simpa using DFunLike.congr_fun e 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[multIn, h2, ← Module.finrank_eq_rank, finrank_span_singleton h3, Nat.cast_one]`. Take `⟨c, rfl⟩` from `key T hT`. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Conclude with `absurd (by simpa [hc] using U.smul_mem c⁻¹ (hT.1 1)) hU`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multIn_char [NeZero μ] {χ : G →* Circle} (hχ : Continuous χ) (h : MemL2Quotient Γ μ fun x => (χ x : ℂ))
     (U : Submodule ℂ (L2 Γ μ)) :
@@ -104,11 +104,9 @@ theorem multIn_char [NeZero μ] {χ : G →* Circle} (hχ : Continuous χ) (h : 
     · exact absurd (by simpa [hc] using U.smul_mem c⁻¹ (hT.1 1)) hU
 
 /- English proof (translation)
-Use `multIn_eq_zero_iff.2 (eq_bot_iff.2 fun T hT => ?_)` and prove the remaining obligations. Take `⟨c, hc⟩` from `exists_ae_eq_char (Γ := Γ) (μ := μ) hχ (F := T 1) fun g => by`. Rewrite using `[← map_smul]`. Conclude with `(hT.2 g 1).symm`. Establish `h1` using `(measurePreserving_mul_left μ γ).quasiMeasurePreserving.ae hc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hx'⟩` from `(hc.and h1).exists`. Establish `h2 : c * χ x = c * χ (γ * x)` using `hx.symm.trans ((leftInv_lift _ γ hγ x).symm.trans hx')`. Establish `h3 : c = 0`. Assume the negation of the conclusion as `hc0`. Conclude with `h (mul_eq_right.1 ((map_mul χ γ x).symm.trans (Circle.ext (mul_left_cancel₀ hc0 h2)).symm))`.
-
-Establish `h4 : lift Γ (0 : L2 Γ μ) =ᵐ[μ] 0` using `ae_quotMeasure_iff.1 (Lp.coeFn_zero ℂ 2 _)`. Conclude with `ContinuousLinearMap.ext_ring (l2DiscreteQuotient_ext_iff_lift_ae_eq.2 (hc.trans (EventuallyEq.trans (.of_forall fun x => by simp [h3]) h4.symm)))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multIn_char_eq_zero [NeZero μ] {χ : G →* Circle} (hχ : Continuous χ) {γ : G} (hγ : γ ∈ Γ) (h : χ γ ≠ 1)
     (U : Submodule ℂ (L2 Γ μ)) : multIn (charRep χ) (R Γ μ) U = 0 := by
@@ -128,9 +126,9 @@ theorem multIn_char_eq_zero [NeZero μ] {χ : G →* Circle} (hχ : Continuous �
 end General
 
 /- English proof (translation)
-Use `LinearEquiv.rank_eq { toFun := fun T => ⟨T.1 1, (mem_homTensor.1 T.2).1 1, fun g x => ?_⟩ invFun := fun S => ⟨LinearMap.toSpanSingleton ℂ _ S.1, mem_homTensor.2 ⟨fun w y => U.smul_mem w (S.2.1 y), fun g w y => ?_, fun g w y => ?_⟩⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ …` and prove the remaining obligations. Take `⟨a, b, rfl⟩` from `hj g`. Rewrite using `[map_mul ρ, mul_apply_eq_comp]`. Conclude with `((mem_homTensor.1 T.2).2.2 a 1 x).trans (congrArg _ ((mem_homTensor.1 T.2).2.1 b 1 x))`. Use `S.2.2 (j₁ g) y` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `w • S.1 y = ρ (j₁ g) (w • S.1 y)`. Rewrite using `[map_smul, ← this]`. Conclude with `congrArg (w • S.1 ·) (one_mul y).symm`. Express the relevant statement in the definitionally equal form `w • S.1 (charRep 1 (j₂ g) y) = ρ (j₂ g) (w • S.1 y)`. Rewrite using `[map_smul, ← S.2.2 (j₂ g) y]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multTensor_one {G G₁ G₂ K : Type} [Group G] [Group G₁] [Group G₂] [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     (j₁ : G₁ →* G) (j₂ : G₂ →* G) (hj : ∀ g, ∃ a b, j₂ a * j₁ b = g) (ρ : G →* (K →L[ℂ] K)) (U : Submodule ℂ K) :
@@ -154,9 +152,9 @@ theorem multTensor_one {G G₁ G₂ K : Type} [Group G] [Group G₁] [Group G₂
     rw [map_smul, ← S.2.2 (j₂ g) y]
 
 /- English proof (translation)
-Rewrite using `[multTensorPi, Ne, Submodule.rank_eq_zero, ← Ne, Submodule.ne_bot_iff]`. Use `⟨LinearMap.toSpanSingleton ℂ _ (ContinuousMultilinearMap.mkPiRing ℂ _ F), mem_homTensorPi.2 ⟨fun w y => U.smul_mem w (U.smul_mem _ hd), fun g w y => ?_, fun i g w y => ?_⟩, fun e => h0 ?_⟩` and prove the remaining obligations. Simplify using `[hR]`. Establish `: charRep (1 : Γ i →* Circle) g (y i) = y i` using `one_mul _`. Simplify using `[hR, this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using DFunLike.congr_fun (DFunLike.congr_fun e 1) fun _ => 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem multTensorPi_one_ne_zero {ι G G₁ K : Type} {Γ : ι → Type} [Fintype ι] [DecidableEq ι] [Group G] [Group G₁]
     [∀ i, Group (Γ i)] [NormedAddCommGroup K] [InnerProductSpace ℂ K] (j : G₁ →* G) (e : ∀ i, Γ i →* G)
@@ -178,72 +176,72 @@ variable {D : D7} {V : HSp D} (μ : Measure (GA D V)) [μ.IsHaarMeasure] [μ.IsM
 omit [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-The claim follows from `memL2_of_bounded_continuous_invariant (C := 1) (fun γ hγ g => by simp [h γ hγ]) (continuous_subtype_val.comp hχ) fun g => (Circle.norm_coe _).le`.
+A detailed English derivation is pending.
 -/
 theorem memL2_automorphic_character (hχ : Continuous χ) (h : ∀ γ ∈ GQ V, χ γ = 1) : MemL2Quotient (GQ V) μ fun x => (χ x : ℂ) :=
   memL2_of_bounded_continuous_invariant (C := 1) (fun γ hγ g => by simp [h γ hγ]) (continuous_subtype_val.comp hχ) fun g => (Circle.norm_coe _).le
 
 /- English proof (translation)
-The claim follows from `(mDisc_eq_top (isIrrUnitary_charRep hχ)).trans ((multIn_char hχ (memL2_automorphic_character μ hχ h) ⊤).1 trivial)`.
+A detailed English derivation is pending.
 -/
 theorem mDisc_char_eq_one (hχ : Continuous χ) (h : ∀ γ ∈ GQ V, χ γ = 1) : mDisc V μ (charRep χ) = 1 :=
   (mDisc_eq_top (isIrrUnitary_charRep hχ)).trans ((multIn_char hχ (memL2_automorphic_character μ hχ h) ⊤).1 trivial)
 
 /- English proof (translation)
-The claim follows from `multIn_char_eq_zero hχ hγ h _`.
+A detailed English derivation is pending.
 -/
 theorem mDisc_char_eq_zero (hχ : Continuous χ) {γ : GA D V} (hγ : γ ∈ GQ V) (h : χ γ ≠ 1) :
     mDisc V μ (charRep χ) = 0 := multIn_char_eq_zero hχ hγ h _
 
 /- English proof (translation)
-The claim follows from `mDisc_char_eq_one μ continuous_const fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem mDisc_one : mDisc V μ (charRep 1) = 1 := mDisc_char_eq_one μ continuous_const fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `(multIn_char (χ := 1) continuous_const (memL2_const 1) _).1 ((constant_one_cuspidal_iff_anisotropic μ).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem mCusp_one_of_aniso (h : wittIndex V = 0) : mCusp V μ (charRep 1) = 1 :=
   (multIn_char (χ := 1) continuous_const (memL2_const 1) _).1 ((constant_one_cuspidal_iff_anisotropic μ).2 h)
 
 /- English proof (translation)
-The claim follows from `(multIn_char (χ := 1) continuous_const (memL2_const 1) _).2 (constant_one_not_cuspidal_of_isotropic μ h)`.
+A detailed English derivation is pending.
 -/
 theorem mCusp_one_of_iso (h : 0 < wittIndex V) : mCusp V μ (charRep 1) = 0 :=
   (multIn_char (χ := 1) continuous_const (memL2_const 1) _).2 (constant_one_not_cuspidal_of_isotropic μ h)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isDiscreteRep_one _ μ, fun h => h.2 (mCusp_one_of_iso μ (by rw [wittIndex_plane]; exact one_pos))⟩`.
+Supply the required witnesses or components.
 -/
 theorem plane_disc_not_cusp (μ : Measure (GA D (plane D))) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] :
     IsDiscreteRep (plane D) μ (charRep 1) ∧ ¬ IsCuspidalRep (plane D) μ (charRep 1) :=
   ⟨isDiscreteRep_one _ μ, fun h => h.2 (mCusp_one_of_iso μ (by rw [wittIndex_plane]; exact one_pos))⟩
 
 /- English proof (translation)
-The claim follows from `right_translate_toL2 (memL2_const 1) g`.
+A detailed English derivation is pending.
 -/
 theorem right_regular_constant_one (g : GA D V) : RG V μ g (constantOneDividedPowerChartLift V μ) = constantOneDividedPowerChartLift V μ := right_translate_toL2 (memL2_const 1) g
 
 /- English proof (translation)
-The claim follows from `(multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mDisc_one μ)`.
+A detailed English derivation is pending.
 -/
 theorem mDiscT_one : mDiscT V μ (Representation.trivial ℂ (GfC V) ℂ) (charRep 1) = 1 :=
   (multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mDisc_one μ)
 
 /- English proof (translation)
-The claim follows from `(multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mCusp_one_of_aniso μ h)`.
+A detailed English derivation is pending.
 -/
 theorem mCuspT_one_of_aniso (h : wittIndex V = 0) : mCuspT V μ (Representation.trivial ℂ (GfC V) ℂ) (charRep 1) = 1 :=
   (multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mCusp_one_of_aniso μ h)
 
 /- English proof (translation)
-The claim follows from `(multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mCusp_one_of_iso μ h)`.
+A detailed English derivation is pending.
 -/
 theorem mCuspT_one_of_iso (h : 0 < wittIndex V) : mCuspT V μ (Representation.trivial ℂ (GfC V) ℂ) (charRep 1) = 0 :=
   (multTensor_one (GfC V).subtype (GinfC V).subtype (fun g => ⟨toInf V g, toFin V g, toInf_mul_toFin g⟩) _ _).trans (mCusp_one_of_iso μ h)
 
 /- English proof (translation)
-Conclude with `multTensorPi_one_ne_zero _ _ (isIrredSubrep_const.le_disc (Submodule.mem_span_singleton_self _)) (right_regular_constant_one μ) (constant_one_L2_ne_zero μ)`.
+A detailed English derivation is pending.
 -/
 theorem mDiscPi_one_ne_zero :
     mDiscPi V μ (Hs := fun _ => ℂ) (Representation.trivial ℂ (GfC V) ℂ) (fun _ => charRep 1) ≠ 0 := by
@@ -254,7 +252,7 @@ theorem mDiscPi_one_ne_zero :
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-The claim follows from `eq_top_iff.2 fun x _ => ⟨⟨⊤, inferInstance, fun _ _ => trivial⟩, by change IsOpen {g : GfC V | _ = x} convert isOpen_univ exact Set.eq_univ_of_forall fun g => one_mul x⟩`.
+A detailed English derivation is pending.
 -/
 theorem finVec_one (θ : InfF D) (A : CptF V) : finVec V θ A (charRep 1) = ⊤ :=
   eq_top_iff.2 fun x _ => ⟨⟨⊤, inferInstance, fun _ _ => trivial⟩, by
@@ -266,7 +264,7 @@ def constEmb (θ : InfF D) (A : CptF V) : finVec V θ A (charRep 1) →ₗ[ℂ] 
   LinearMap.pi fun _ => (finVec V θ A (charRep 1)).subtype
 
 /- English proof (translation)
-Use `⟨fun x => ⟨⟨isAutFunSm_const θ V _, .of_invariant fun _ _ _ => rfl⟩, continuous_const, fun _ _ _ => rfl, fun r C hC => absurd hC (wittIndex_eq_zero_iff_isAniso.1 h r C)⟩, ContinuousLinearMap.toSpanSingleton ℂ (constantOneDividedPowerChartLift V μ), ⟨fun c => Submodule.smul_mem _ …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((1 : ℂ) * c) • constantOneDividedPowerChartLift V μ = RG V μ g (c • constantOneDividedPowerChartLift V μ)`. Rewrite using `[map_smul, one_mul, right_regular_constant_one]`. Conclude with `(lift_smul_ae (x : ℂ) (memL2_const 1).lift_toL2_ae_eq).trans (.of_forall fun _ => mul_one _)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constEmb_mem (θ : InfF D) (A : CptF V) (h : wittIndex V = 0) : constEmb θ A ∈ formHom V θ A μ (charRep 1) := by
   refine ⟨fun x => ⟨⟨isAutFunSm_const θ V _, .of_invariant fun _ _ _ => rfl⟩, continuous_const, fun _ _ _ => rfl,
@@ -280,15 +278,15 @@ theorem constEmb_mem (θ : InfF D) (A : CptF V) (h : wittIndex V = 0) : constEmb
 omit [μ.IsHaarMeasure] [μ.IsMulRightInvariant] in
 
 /- English proof (translation)
-Introduce `e` and use `one_ne_zero (congrFun (DFunLike.congr_fun e ⟨1, finVec_one θ A ▸ Submodule.mem_top⟩) 1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constEmb_ne_zero (θ : InfF D) (A : CptF V) : constEmb θ A ≠ 0 := fun e =>
   one_ne_zero (congrFun (DFunLike.congr_fun e ⟨1, finVec_one θ A ▸ Submodule.mem_top⟩) 1)
 
 /- English proof (translation)
-Establish `h1` using `petersson_eq_beF (isIrrUnitary_charRep continuous_const) (constEmb_mem μ θ A h) (constEmb_mem μ θ A h) ⟨1, finVec_one θ A ▸ Submodule.mem_top⟩ ⟨1, finVec_one θ A ▸ Submodule.mem_top⟩`. Establish `h2 : beF μ (constEmb θ A) (constEmb θ A) = (autMeasure V μ).real Set.univ`. Rewrite `h1` using `[Submodule.coe_inner]`. Establish `h3 : petersson V μ (fun _ => 1) (fun _ => 1) = (autMeasure V μ).real Set.univ`. Simplify using `[petersson, pet, AutomorphicL2Unitary.descend]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h1.symm.trans h3`. Conclude with `⟨h2, by rw [beF_smul_left, h2]⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem beF_constEmb (θ : InfF D) (A : CptF V) (h : wittIndex V = 0) :
     beF μ (constEmb θ A) (constEmb θ A) = (autMeasure V μ).real Set.univ ∧
@@ -303,13 +301,13 @@ theorem beF_constEmb (θ : InfF D) (A : CptF V) (h : wittIndex V = 0) :
   exact ⟨h2, by rw [beF_smul_left, h2]⟩
 
 /- English proof (translation)
-The claim follows from `mCusp_one_of_aniso μ (wittIndex_line D)`.
+A detailed English derivation is pending.
 -/
 theorem line_mCusp (μ : Measure (GA D (line D))) [μ.IsHaarMeasure] [μ.IsMulRightInvariant] :
     mCusp (line D) μ (charRep 1) = 1 := mCusp_one_of_aniso μ (wittIndex_line D)
 
 /- English proof (translation)
-Introduce `hc` and use `by obtain ⟨T, hT, h0⟩ := (Submodule.ne_bot_iff _).1 (IsIsotypic.homIn_ne_bot hc) refine h (MonoidHom.ext fun g => Circle.ext ?_) have h1 : T ((ψ g : ℂ) • (1 : ℂ)) = 1 * T 1 := hT.2 g 1 rw [map_smul] at h1 exact mul_right_cancel₀ (fun e => h0 (ContinuousLinearMap.ext_ring e)) h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_hasLocComp_one {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.F)} {ψ : Gv V v →* Circle}
     (h : ψ ≠ 1) : ¬ HasLocComp V v (charRep ψ) (charRep 1) := fun hc => by
@@ -320,7 +318,7 @@ theorem not_hasLocComp_one {v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.host.
   exact mul_right_cancel₀ (fun e => h0 (ContinuousLinearMap.ext_ring e)) h1
 
 /- English proof (translation)
-Establish `h : homIn (charRep 1) (1 : G →* (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) ⊤ = ⊤` using `eq_top_iff.2 fun T _ => mem_homIn_top.2 fun g x => congrArg T (one_mul x)`. Rewrite using `[multIn, h, rank_top, ← LinearMap.toContinuousLinearMap.rank_eq, (LinearMap.ringLmapEquivSelf ℂ ℂ _).rank_eq, ← Module.finrank_eq_rank]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem multIn_one_euclidean {G : Type} [Group G] (n : ℕ) :
     multIn (charRep 1) (1 : G →* (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))) ⊤ = n := by
@@ -331,7 +329,7 @@ theorem multIn_one_euclidean {G : Type} [Group G] (n : ℕ) :
   simp
 
 /- English proof (translation)
-Introduce `h` and use `by have h1 := (uEquiv_of_multIn_ne_zero (isIrrUnitary_charRep (χ := 1) continuous_const) h (by rw [multIn_one_euclidean]; simp)).multIn_eq (ρ := (1 : G →* (EuclideanSpace ℂ (Fin 2) →L[ℂ] _))) (U := ⊤) rw [multIn_one_euclidean, multIn_self h] at h1 exact absurd (show (2 : ℕ) = 1 b …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isIrrUnitary_two {G : Type} [Group G] [TopologicalSpace G] :
     ¬ IsIrrUnitary (1 : G →* (EuclideanSpace ℂ (Fin 2) →L[ℂ] EuclideanSpace ℂ (Fin 2))) := fun h => by

@@ -42,7 +42,7 @@ def ThS (ψ : AddChar (AF D.host.F) ℂ) (V W : HSp D) : Submodule ℂ (WA V W �
   Submodule.span ℂ {f | IsThetaFun ψ V W f}
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `GlobalTheory.FockCompare.exists_thetaSubmodule D ψ V W`. Use `⟨fun h => (hM f).1 ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 fun g hg => (hM g).2 hg : ThS ψ V W ≤ M) h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_ThS {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {f : WA V W → ℂ} : f ∈ ThS ψ V W ↔ IsThetaFun ψ V W f := by
   obtain ⟨M, hM⟩ := GlobalTheory.FockCompare.exists_thetaSubmodule D ψ V W
@@ -50,18 +50,18 @@ theorem mem_ThS {ψ : AddChar (AF D.host.F) ℂ} {V W : HSp D} {f : WA V W → �
   exact (Submodule.span_le.2 fun g hg => (hM g).2 hg : ThS ψ V W ≤ M) h
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem CuspS_le (θ : InfF D) (V : HSp D) : CuspS θ V ≤ AFs θ V := Submodule.span_mono fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span (isAutFunSm_const θ V c)`.
+A detailed English derivation is pending.
 -/
 theorem const_mem_AFs (θ : InfF D) (V : HSp D) (c : ℂ) : (fun _ => c) ∈ AFs θ V :=
   Submodule.subset_span (isAutFunSm_const θ V c)
 
 /- English proof (translation)
-Unfold `CuspS AFs`. Use `congr 1`. Use extensionality with `φ`. Conclude with `⟨fun h => h.1, fun hφ => ⟨hφ, fun r C hC => absurd hC (h r C)⟩⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem CuspS_eq_of_aniso (θ : InfF D) {V : HSp D} (h : IsAniso V) : CuspS θ V = AFs θ V := by
   unfold CuspS AFs
@@ -70,11 +70,11 @@ theorem CuspS_eq_of_aniso (θ : InfF D) {V : HSp D} (h : IsAniso V) : CuspS θ V
   exact ⟨fun h => h.1, fun hφ => ⟨hφ, fun r C hC => absurd hC (h r C)⟩⟩
 
 /- English proof (translation)
-Take `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨H, i1, i2, σ, lam, ε, P, h1, h2, h3, h4, fun x => ?_⟩` and prove the remaining obligations. Take `⟨v, hv, ℓ, hℓ, ⟨L, C, k1, k2, k3, k4⟩, k5⟩` from `h5 x`. Use `⟨v, hv, fun i => c • ℓ i, fun i => ?_, ⟨L, fun i => ‖c‖ * C i, k1, fun i w hw => ?_, ?_, k4⟩, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨L', C', m1, m2⟩` from `hℓ i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨L', ‖c‖ * C', m1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (m2 w hw) (norm_nonneg _)`. Rewrite using `[LinearMap.smul_apply, norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (k2 i w hw) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `S' hS'`. Simplify `(k3 S' hS').mul_left ‖c‖` using `only [mul_assoc]`. Conclude with `(k5 g hg).const_smul c`.
+A detailed English derivation is pending.
 -/
 theorem isTypeAt_smul {θ : InfF D} {V : HSp D} {τ : D.what₂.Tau} {S : SPar} {φ : GA D V → ℂ} (c : ℂ)
     (h : IsTypeAt θ V τ S φ) : IsTypeAt θ V τ S (c • φ) := by
@@ -126,7 +126,7 @@ def OrthEx (D : D7) : Prop := ∀ V : HSp D, V.SigOK → ∃ (A : CptF V) (Q : M
   ∀ τ a i j, (A τ * Q.map (tauE D τ)) a i ≠ 0 → (A τ * Q.map (tauE D τ)) a j ≠ 0 → i = j
 
 /- English proof (translation)
-Use `choose A Q h1 h2 h3 h4 using h`. Apply the tactic sequence `refine ⟨⟨fun V => if hV : V.SigOK then A V hV else 0, fun V hV => ?_, fun V => if hV : V.SigOK then Q V hV else 0, fun V hV => ?_, fun V hV => ?_, fun V hV => ?_⟩⟩ <;> simp only [dif_pos hV]`. Use `exacts [h1 V hV, h2 V hV, h3 V hV, h4 V hV]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem nonempty_orthDec (h : OrthEx D) : Nonempty (OrthDec D) := by
   classical
@@ -139,9 +139,9 @@ def KfinS (ψ : AddChar (AF D.host.F) ℂ) (θ : InfF D) (Dc : OrthDec D) (V W :
   Submodule.span ℂ {Φ | IsPolFock ψ θ V W (Dc.cpt V) (Dc.cpt W) Φ.1}
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `(GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).1 _ (Dc.bas_unit V hV)`. Establish `ho : ∀ i j, i ≠ j → V.hT (b i) (b j) = 0` using `fun i j hij => by`. Rewrite using `[← ((GlobalTheory.T.frame_basis_matrix_orthogonal_properties D V).2 b).2.1 i j, ← hb]`. Conclude with `Dc.bas_orth V hV i j hij`. Use `⟨fun τ => b.constr D.host.E fun i => if 0 < (tauE D τ (V.hT (b i) (b i))).re then b i else -b i, fun τ => GlobalTheory.FockCompare.rel_of_monomial hV τ b ho (fun i => b.constr_basis _ _ i) (Dc.cpt_gram V hV τ) ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb]`. Conclude with `Dc.cpt_bas V hV τ`.
+A detailed English derivation is pending.
 -/
 theorem OrthDec.exists_rel (Dc : OrthDec D) {V : HSp D} (hV : V.SigOK) :
     ∃ s : GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.InvFam V, ∀ τ, GlobalTheory.FockCompare.Rel V τ (Dc.cpt V τ) (s τ) := by
@@ -156,7 +156,7 @@ theorem OrthDec.exists_rel (Dc : OrthDec D) {V : HSp D} (hV : V.SigOK) :
   exact Dc.cpt_bas V hV τ
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Dc.exists_rel hV`. Take `⟨s', hs'⟩` from `Dc.exists_rel hW`. Establish `key` using `fun Φ : ThS ψ V W => GlobalTheory.FockCompare.isPolFock_iff hθ hψ hV hW hs hs' (mem_ThS.1 Φ.2)`. Use `⟨fun h => (key Φ).2 ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 fun g hg => (key g).1 hg : KfinS ψ θ Dc V W ≤ (GlobalTheory.IndefiniteRowSideFullHecke.FockOrthogonalDecomposition.polFun ψ θ V W s s').comap (ThS ψ V W).subtype) h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_KfinS {ψ : AddChar (AF D.host.F) ℂ} {θ : InfF D} (hθ : IsInfFam θ) (hψ : IsStdChar D ψ (-1)) (Dc : OrthDec D)
     {V W : HSp D} (hV : V.SigOK) (hW : W.SigOK) (Φ : ThS ψ V W) :
@@ -257,14 +257,14 @@ def core : WeilCore D ψ :=
     Wf.om_unit V W χ χ' ha, Wf.om_split V W χ χ' ha⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Wf.twW, Wf.twV, Wf.om_swap, Wf.om_unr⟩`.
+Supply the required witnesses or components.
 -/
 theorem rules : Wf.core.Rules := ⟨Wf.twW, Wf.twV, Wf.om_swap, Wf.om_unr⟩
 
 def ker (V W : HSp D) (χ χ' : IdC D) (Φ : ThS ψ V W) (g : GA D V) (h : GA D W) : ℂ := (Wf.om V W χ χ' (g, h) Φ).1 0
 
 /- English proof (translation)
-Establish `e : Wf.om V W χ χ' (γ * g, δ * h) = Wf.om V W χ χ' (γ, δ) * Wf.om V W χ χ' (g, h)` using `by rw [← map_mul]; rfl`. Unfold `ker`. Rewrite using `[e, Module.End.mul_apply]`. Conclude with `Wf.om_aut V W χ χ' ha γ hγ δ hδ _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_left {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ') (Φ : ThS ψ V W) {γ : GA D V} (hγ : γ ∈ GQ V)
     {δ : GA D W} (hδ : δ ∈ GQ W) (g h) : Wf.ker V W χ χ' Φ (γ * g) (δ * h) = Wf.ker V W χ χ' Φ g h := by
@@ -276,13 +276,13 @@ theorem ker_left {V W : HSp D} {χ χ' : IdC D} (ha : admitted V W χ χ') (Φ :
 end WeilFun
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨continuous_const, fun _ => rfl⟩, fun _ => ⟨0, 0, by simp, GlobalTheory.Member.exists_isInfFam_family D, fun _ _ _ _ _ => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHC_one (D : D7) : IsHC D 1 :=
   ⟨⟨continuous_const, fun _ => rfl⟩, fun _ => ⟨0, 0, by simp, GlobalTheory.Member.exists_isInfFam_family D, fun _ _ _ _ _ => by simp⟩⟩
 
 /- English proof (translation)
-Establish `h0 : ResEta D 1 0` using `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩`. Conclude with `⟨h, isHC_one D, isHC_one D, resEta_parity h0 (by rw [Nat.even_iff] at hV; omega), resEta_parity h0 (by rw [Nat.even_iff] at hW; omega)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAdmissibleIntegralBasisChange_one {V W : HSp D} (h : V.rank ≠ W.rank) (hV : Even V.rank) (hW : Even W.rank) : admitted V W 1 1 := by
   have h0 : ResEta D 1 0 := ⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun _ _ _ => by simp⟩
@@ -290,9 +290,9 @@ theorem isAdmissibleIntegralBasisChange_one {V W : HSp D} (h : V.rank ≠ W.rank
     resEta_parity h0 (by rw [Nat.even_iff] at hW; omega)⟩
 
 /- English proof (translation)
-Use `haveI : IsEmpty (Fin W.rank) := by rw [hW]; infer_instance`. Establish `hs : ∀ x y : WA V W, x = y` using `fun x y => Matrix.ext fun _ j => isEmptyElim j`. Use `⟨fun g h w₀ Φ Φ' e => ?_, fun _ _ _ _ _ => rfl, fun Φ w => (continuous_const : Continuous fun _ : GA D V × GA D W => Φ.1 w), fun _ _ _ _ _ _ => rfl, fun e _ g h _ _ x y _ hy => ⟨1, one_pos, fun ℓ _ Φ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hs (actHom V W g h w₀) w₀]`. Conclude with `e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hy1 : y = 1` using `Units.ext (by rw [hy, Matrix.det_isEmpty]; simp)`. Simplify using `[splitFac, hy1]`.
+A detailed English derivation is pending.
 -/
 theorem isWeilOn_rank_zero (ψ : AddChar (AF D.host.F) ℂ) {V W : HSp D} (hV : 0 < V.rank) (hW : W.rank = 0) (χ : IdC D) :
     IsWeilOn ψ V W χ 1 1 := by
@@ -326,17 +326,17 @@ structure Tow (D : D7) where
   iYXm_rec : HEq (iYXm D.R.t) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap)
 
 /- English proof (translation)
-Introduce `j hj τ`. Establish `hτ : ∀ a, τ (star a) = starRingEnd ℂ (τ a)` using `D.sp.cm.cmUnram.2.1 τ`. Establish `hk` using `D.R.m_add_three_le_k`. Break down `D.sp.X_def j hj τ with h | h` into its components or cases. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `hsX` using `D.sp.X_sig j τ`. Rewrite `hsX` using `[h]`. Break down `hj.lt_or_eq with hlt | rfl` into its components or cases. Establish `hw : (Matrix.of fun a b => (D.sp.Y j).hT (D.sp.iXY j ((D.sp.X j).frame a)) (D.sp.iXY j ((D.sp.X j).frame b))) = (D.sp.X j).gram`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Conclude with `D.sp.iXY_isom j hlt _ _`. Rewrite `hsX` using `[← hw]`. Establish `hsY` using `D.sp.Y_sig j τ`. Establish `hsum` using `sig_sum _ (D.sp.Y_sig j) τ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsY`, `hsum` using `[D.Y_sigval j hj τ]`. Establish `key` using `(sig_family (D.sp.Y j) τ hτ _ hsX hsY).2`. Rewrite `key` using `[D.sp.X_rank j hj]`. Simplify using `only [sigYD, Ranks.N] at key hsum`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsY` using `D.sp.Y_sig D.R.m τ`. Rewrite `hsY` using `[D.Y_sigval _ hj τ]`. Establish `hw : (Matrix.of fun a b => (D.sp.X D.R.m).hT (D.sp.iX' (D.sp.eYm.symm ((D.sp.Y D.R.m).frame a))) (D.sp.iX' (D.sp.eYm.symm ((D.sp.Y D.R.m).frame b)))) = (D.sp.Y D.R.m).gram`. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Rewrite using `[Matrix.of_apply, D.sp.iX'_isom, ← D.sp.eYm_isom]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[HSpace.gram]`. Rewrite `hsY` using `[← hw]`. Establish `key` using `(sig_family (D.sp.X D.R.m) τ hτ _ hsY hsX).1`. Simplify using `only [sigYD, Ranks.rankY, Ranks.r] at key`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem X_posDef (D : D7) : ∀ j, j ≤ D.R.m → (D.sp.X j).IsPosDef := by
   intro j hj τ
@@ -376,17 +376,17 @@ def WittLowEx (D : D7) : Prop := ∀ (V : HSp D) (i : ℕ), (∃ C : Matrix (Fin
   ∃ V' : HSp D, IsWittLower V V' i ∧ V'.SigOK
 
 /- English proof (translation)
-Distinguish the cases in `ht : t = D.R.t`. Substitute `ht` using the available equality. Use `⟨D.sp.X, D.sp.Y, D.sp.iXY, D.sp.iX'.comp D.sp.eYm.symm.toLinearMap, fun j hj => D.sp.X_rank j hj, fun j hj => ⟨D.sp.X_sig j, X_posDef D j hj⟩, fun j hj => D.sp.Y_rank j hj, D.sp.Y_sig, D.Y_sigval, fun j hj => D.sp.iXY_isom j hj, ?_, fun _ => ⟨fun _ => rfl, fun _ => rfl, fun _ => …` and prove the remaining obligations. Introduce `x y`. Establish `h1` using `D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y)`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply] at h2`. Conclude with `h1.trans h2.symm`. Establish `hs : ∀ x : D.host.E, IsIntegral ℤ x → IsIntegral ℤ (star x)` using `Examples₂.star_isIntegral`. Establish `hm` using `D.R.two_le_m`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use `⟨fun j => Examples₂.posSpace hs (D.R.k + j * (t + 1)), fun j => DiagSp.signSpace hs (D.R.r + j * t) (DiagSp.cut _ (D.R.r + j * t - (D.R.m - j) / 2)), fun j => DiagSp.extTo _ _, DiagSp.extTo _ _, fun _ _ => rfl, fun j _ => ⟨Examples₂.posSpace_sigOK hs _, fun _ => rfl⟩, fun _ _ => …` and prove the remaining obligations. Rewrite using `[DiagSp.signSpace_cut_sig hs _ _ (Nat.sub_le _ _)]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Use `a.2` as an intermediate fact. Establish `e : j * (t + 1) = j * t + j` using `by ring`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [DiagSp.cut, Fin.val_castLE, decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Use `a.2` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use symmetry to reverse the relation.
 
-Use `symm`. Simplify using `only [DiagSp.cut, decide_eq_false_iff_not]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_towerSpaces (D : D7) (t : ℕ) :
     ∃ (X Y : ℕ → HSp D) (i : ∀ j, (X j).V →ₗ[D.host.E] (Y j).V) (i' : (Y D.R.m).V →ₗ[D.host.E] (X D.R.m).V),
@@ -433,11 +433,11 @@ theorem exists_towerSpaces (D : D7) (t : ℕ) :
       omega
 
 /- English proof (translation)
-Use `choose X Y i i' hXr hXs hYr hYs hYv hi hi' hrec using exists_towerSpaces D`. Establish `hL : ∀ t j n, ∃ V' : HSp D, (n = 0 → V' = Y t j) ∧ ((∃ C : Matrix (Fin (Y t j).rank) (Fin n) D.host.E, IsIsoSub (Y t j) C) → IsWittLower (Y t j) V' n ∧ V'.SigOK)`. Introduce `t j n`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Conclude with `⟨Y t j, fun _ => rfl, fun _ => ⟨GlobalTheory.VolHeckeCheck.isWittLower_self D _, hYs t j⟩⟩`. Distinguish the cases in `hC : ∃ C : Matrix (Fin (Y t j).rank) (Fin n) D.host.E, IsIsoSub (Y t j) C`. Take `⟨V', hV'⟩` from `h _ n hC`. Conclude with `⟨V', fun e => absurd e hn, fun _ => hV'⟩`. Conclude with `⟨Y t j, fun _ => rfl, fun e => absurd e hC⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose L h0 hL using hL`. Conclude with `⟨{ Xs := X, Xs_rank := hXr, Xs_sig := hXs, Ys := Y, Ys_rank := hYr Ys_sig := fun t j hj => ⟨hYs t j, hYv t j hj⟩ iXYs := i, iXYs_isom := hi, iYXm := i', iYXm_isom := hi', YsLow := L YsLow_zero := fun t j => h0 t j 0 rfl YsLow_witt := hL Xs_rec := fun j _ => (hrec _ rfl).1 j Ys_re …`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_tow (h : WittLowEx D) : Nonempty (Tow D) := by
   choose X Y i i' hXr hXs hYr hYs hYv hi hi' hrec using exists_towerSpaces D
@@ -470,13 +470,11 @@ structure RealMeas (D : D7) where
   petR_minf : ∀ p q, 0 < p → 0 < q → OmegaDensity (ENNReal.ofReal (petR p q) • D.cd.cd p q) (minfDensity (p + q))
 
 /- English proof (translation)
-Establish `h : ∀ p q : ℕ, ∃ r : ℝ, 0 < r ∧ OmegaDensity (ENNReal.ofReal r • D.cd.cd p q) (minfDensity (p + q))`. Introduce `p q`. Take `⟨c, h0, ht, hc, -⟩` from `D.cd.trick p q`. Establish `hm0 : minfDensity (p + q) ≠ 0` using `ENNReal.inv_ne_zero.2 (ENNReal.pow_ne_top (by simp))`. Establish `hmt : minfDensity (p + q) ≠ ⊤` using `ENNReal.inv_ne_top.2 (pow_ne_zero _ two_ne_zero)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne0 : minfDensity (p + q) / c ≠ 0` using `ENNReal.div_ne_zero.2 ⟨hm0, ht⟩`. Establish `hnet : minfDensity (p + q) / c ≠ ⊤` using `ENNReal.div_ne_top hmt h0`. Use `lift minfDensity (p + q) / c to NNReal using hnet with t htc`. Establish `h` using `GlobalTheory.CompactDualUnique.omegaDensity_smul t hc`. Rewrite `h` using `[htc, ENNReal.div_mul_cancel h0 ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, by exact_mod_cast pos_iff_ne_zero.2 hne0, ?_⟩` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_coe_nnreal]`. Conclude with `h`. Use `choose r hr hd using h`. Use `⟨⟨fun p q => if p = 0 ∨ q = 0 then 1 else r p q, fun p q => ?_, fun N => by simp, fun p q hp hq => ?_⟩⟩` and prove the remaining obligations.
-
-Use `split_ifs`. Conclude with `one_pos`. Conclude with `hr p q`. Rewrite using `[if_neg (by omega)]; exact hd p q`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_realMeas (D : D7) : Nonempty (RealMeas D) := by
   have h : ∀ p q : ℕ, ∃ r : ℝ, 0 < r ∧ OmegaDensity (ENNReal.ofReal r • D.cd.cd p q) (minfDensity (p + q)) := by
@@ -503,7 +501,7 @@ def memberBes (D : D7) (u : D.what₂.Word) : BesDat (D.sp.X 0) (D.sp.Y 0) (D.sp
   GlobalTheory.BesselCompare.toBes (GlobalTheory.IndefiniteRowSideFullHecke.BesselData.memberDatum D u)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem memberBes_spec (D : D7) (u : D.what₂.Word) :
     (memberBes D u).e = GlobalTheory.BesselCompare.eMat (D.sp.Y 0) D.sp.hypE ∧
@@ -511,9 +509,9 @@ theorem memberBes_spec (D : D7) (u : D.what₂.Word) :
     ((memberBes D u).y : GA D (D.sp.Y 0)) = 1 := ⟨rfl, rfl, fun _ => rfl, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[(memberBes_spec D u).2.1, GlobalTheory.BesselCompare.hform_co]`. Unfold `D7.zmOf`. Rewrite using `[map_smul, LinearMap.map_smulₛₗ (D.sp.Y 0).hT, LinearMap.smul_apply, D.sp.zm_norm, D.sp_T, ← D.cOf_eq u, ← bridge_star_holds D.R D.host]`. Establish `hc` using `D.cOf_ne u`. Establish `hc' : star (D.cOf u) ≠ 0` using `star_ne_zero.2 hc`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [smul_eq_mul, starRingEnd_apply, star_inv₀]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem memberBes_norm (D : D7) (u : D.what₂.Word) :
     Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) (D.sp.Y 0).gram (memberBes D u).z (memberBes D u).z =
@@ -613,7 +611,7 @@ structure OfRecord (Wf : WeilFun D ψ) : Prop where
   phi_pol : ∀ μ j, j < D.R.m → IsPolFock ψ θ _ _ (Rc.dec.cpt _) (Rc.dec.cpt _) (Rc.Phi μ j).1
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨⟨m, hm⟩, h2⟩` from `h μ j hj x x`. Use `(h2 m hm).2` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem RowIsom.injective (h : Rc.RowIsom) (μ) {j} (hj : j ≤ D.R.m) : Function.Injective (Rc.row μ j) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -635,15 +633,11 @@ def ChrEx (D : D7) : Prop :=
   ∀ j : Fin D.R.m, ∃ χ : IdC D, IsHeckeChar D χ ∧ (∀ τ, HasInfExp D χ τ (-(D.hc τ).e j)) ∧ ResEta D χ 0
 
 /- English proof (translation)
-Take `⟨η, h1, h4, h3, h2⟩` from `hη`. Take `⟨M⟩` from `nonempty_realMeas D`. Use `choose χ k1 k2 k3 using hχ`. Establish `hm` using `D.R.two_le_m`. Establish `hP : ∀ V W : HSp D, ∃ Φ : ThS ψ V W, IsStdChar D ψ (-1) → Φ ≠ 0` using `fun V W => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : IsStdChar D ψ (-1)`. Take `⟨f, hf, h0⟩` from `hΦ h V W`. Conclude with `⟨⟨f, mem_ThS.2 hf⟩, fun _ e => h0 (congrArg Subtype.val e)⟩`. Conclude with `⟨0, fun e => absurd e h⟩`. Use `choose Φ hΦ' using hP`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨{ chr := fun _ j => χ ⟨(j - 1) % D.R.m, Nat.mod_lt _ (by omega)⟩ chr_hc := fun _ _ => ⟨k1 _, fun τ => ⟨_, k2 _ τ⟩⟩ chr_inf := fun _ j τ => by`. Establish `e : (⟨(j.1 + 1 - 1) % D.R.m, Nat.mod_lt _ (by omega)⟩ : Fin D.R.m) = j` using `Fin.ext (by simp [Nat.mod_eq_of_lt j.2])`. Rewrite using `[e]`. Conclude with `k2 j τ`. Use `chr_res := fun _ _ _ _ => k3 _`.
-
-Use `eta := η, eta_hc := h1, eta_inf := h4, eta_res := h3, eta_unr := h2`. Use `col := fun _ _ _ => 0, row := fun _ _ => 0`. Use `Phi := fun _ _ => Φ _ _`. Use `Phi_ne := fun h _ _ _ => hΦ' _ _ h`. Use `mY := fun _ _ => 1, mY_pos := fun _ _ => one_pos, adelicDataRowMeasureScale_trivialTuple := fun _ => rfl, mY_zero := fun _ => rfl`.
-
-Use `petF := fun _ => 1, petF_pos := fun _ => one_pos, meas := M, dec := Dc, per1 := P }⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_recFun (θ : InfF D) (ψ : AddChar (AF D.host.F) ℂ) (hχ : ChrEx D) (hη : EtaEx D)
     (hΦ : IsStdChar D ψ (-1) → ∀ V W : HSp D, ∃ f, IsThetaFun ψ V W f ∧ f ≠ 0) (Dc : OrthDec D) (P : Pos1 D) :
@@ -730,7 +724,7 @@ def IsQuot (V : HSp D) (μ : Measure (GA D V)) (𝓕 : Set (GA D V)) : Prop :=
 def FormSub (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ (V : HSp D) (φ : GA D V → ℂ), φ ∈ AFs θ V ↔ IsAutFunSm θ V φ
 
 /- English proof (translation)
-Use `⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩` and prove the remaining obligations. Establish `h1` using `(h θ hθ V φ).1 (CuspS_le θ V hφ)`. Use `⟨h1, (GlobalTheory.AutFunCompare.isCuspFun_iff V φ h1.cont h1.left).2 ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.span_le.2 fun g hg => (GlobalTheory.AutFunCompare.isCuspFun_iff V g hg.1.cont hg.1.left).1 hg.2 : CuspS θ V ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.cuspidal D.sp.cm V) hφ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_CuspS (h : FormSub D) {θ : InfF D} (hθ : IsInfFam θ) {V : HSp D} {φ : GA D V → ℂ} :
     φ ∈ CuspS θ V ↔ IsCuspForm θ V φ := by
@@ -775,9 +769,9 @@ def TypAdd (D : D7) : Prop := ∀ θ : InfF D, IsInfFam θ → ∀ V : HSp D, V.
       IsTypeAt θ V τ S φ → IsTypeAt θ V τ S φ' → IsTypeAt θ V τ S (φ + φ')
 
 /- English proof (translation)
-Use `⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩` and prove the remaining obligations. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨(h θ hθ V 0).1 (zero_mem _), fun τ => (ht θ hθ V hV τ _ (hP τ)).1⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨(h θ hθ V _).1 (add_mem ((h θ hθ V x).2 hx.1) ((h θ hθ V y).2 hy.1)), fun τ => (ht θ hθ V hV τ _ (hP τ)).2 x y hx.1 hy.1 (hx.2 τ) (hy.2 τ)⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨(h θ hθ V _).1 (Submodule.smul_mem _ c ((h θ hθ V x).2 hx.1)), fun τ => isTypeAt_smul c (hx.2 τ)⟩`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem mem_TypS (h : FormSub D) (ht : TypAdd D) {θ : InfF D} (hθ : IsInfFam θ) {V : HSp D} (hV : V.SigOK)
     {P : D.what₂.Tau → SPar} (hP : ∀ τ, GoodPar V.rank (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 (P τ)) {φ : GA D V → ℂ} :
@@ -799,7 +793,7 @@ def WeilRules (D : D7) : Prop := ∀ ψ, IsStdChar D ψ (-1) → ∀ Wc : WeilCo
 def WeilEx (D : D7) : Prop := ∀ ψ, IsStdChar D ψ (-1) → Nonempty (WeilFun D ψ)
 
 /- English proof (translation)
-Introduce `ψ hψ` and use `(h ψ hψ).elim fun Wc => ⟨Wc.toFun (hr ψ hψ Wc)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilEx_of (h : WeilCoreEx D) (hr : WeilRules D) : WeilEx D :=
   fun ψ hψ => (h ψ hψ).elim fun Wc => ⟨Wc.toFun (hr ψ hψ Wc)⟩
@@ -817,18 +811,18 @@ variable {θ : InfF D} {X : ThetaX D} {T : ThetaTied D X} {W : WeilTied D X T} {
 include h
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.AutFunCompare.isInfFam_iff θ').1 h').trans ((GlobalTheory.AutFunCompare.isInfFam_iff θ).1 h.inf).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_isInfFam {θ' : InfF D} (h' : IsInfFam θ') : θ' = θ :=
   ((GlobalTheory.AutFunCompare.isInfFam_iff θ').1 h').trans ((GlobalTheory.AutFunCompare.isInfFam_iff θ).1 h.inf).symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨θ, h.inf⟩, fun _ h' V _ => by rw [h.eq_of_isInfFam h']; exact h.forms V⟩`.
+Supply the required witnesses or components.
 -/
 theorem afTiedSm : ThetaSmoothnessCondition T := ⟨⟨θ, h.inf⟩, fun _ h' V _ => by rw [h.eq_of_isInfFam h']; exact h.forms V⟩
 
 /- English proof (translation)
-Introduce `θ' h' V φ` and use `by rw [h.eq_of_isInfFam h'] refine ⟨fun hφ => ?_, fun hφ => Submodule.subset_span hφ⟩ have : AFs θ V ≤ LinearMap.range (T.ev V) := Submodule.span_le.2 (by rw [LinearMap.coe_range, h.forms V]) have h2 : φ ∈ Set.range (T.ev V) := this hφ rwa [h.forms V] at h2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem formSub : FormSub D := fun θ' h' V φ => by
   rw [h.eq_of_isInfFam h']
@@ -838,7 +832,7 @@ theorem formSub : FormSub D := fun θ' h' V φ => by
   rwa [h.forms V] at h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨θ, h.inf⟩, fun _ h' V hV P hP => by intros rename_i F rw [h.eq_of_isInfFam h', h.typ, mem_TypS h.formSub ht h.inf hV hP] have : T.ev V F ∈ Set.range (T.ev V) := ⟨F, rfl⟩ rw [h.forms V] at this exact ⟨fun k => k.2, fun k => ⟨this, k⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem typTied (ht : TypAdd D) : TypTied T := ⟨⟨θ, h.inf⟩, fun _ h' V hV P hP => by
   intros
@@ -849,7 +843,7 @@ theorem typTied (ht : TypAdd D) : TypTied T := ⟨⟨θ, h.inf⟩, fun _ h' V hV
   exact ⟨fun k => k.2, fun k => ⟨this, k⟩⟩⟩
 
 /- English proof (translation)
-Introduce `V V' χ χ' hr h1 h2 S u1 u2 k hk k' hk' Φ hΦ` and use `by have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by have : T.eChr χ ∈ Set.range T.eChr := ⟨χ, rfl⟩ rwa [T.eChr_range] at this have hf : W.evS V V' Φ ∈ Set.range (W.evS V V') := ⟨Φ, rfl⟩ rw [h.sch] at hf refine W.evS_inj V V' ?_ rw [h.om V V' χ χ' (k, k') Φ ⟨_, mem_ThS.2 hf⟩ rfl, W …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem weilUnrTied : WeilUnramifiedCondition W := fun V V' χ χ' hr h1 h2 S u1 u2 k hk k' hk' Φ hΦ => by
   have hc : ∀ χ, IsHC D (T.eChr χ) := fun χ => by
@@ -862,20 +856,20 @@ theorem weilUnrTied : WeilUnramifiedCondition W := fun V V' χ χ' hr h1 h2 S u1
     Wf.om_unr V V' _ _ ⟨hr, hc χ, hc χ', h1, h2⟩ S u1 u2 k hk k' hk' _ hΦ]
 
 /- English proof (translation)
-Take `⟨K, -⟩` from `h.kfin`. Conclude with `⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem allTied (ht : TypAdd D) {A : ProvA} (hr : RealTied D) (hp : ProvisionCompatibility D A) : Nonempty (AllTied D X A) := by
   obtain ⟨K, -⟩ := h.kfin
   exact ⟨⟨T, h.afTiedSm, h.typTied ht, W, h.weilUnrTied, K, h.phiUp, B, hr, hp⟩⟩
 
 /- English proof (translation)
-Unfold `ThetaTied.petC RecFun.petC`. Rewrite using `[h.petF, h.petR]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem petC_eq (V : HSp D) : T.petC V = Rc.petC V := by
   unfold ThetaTied.petC RecFun.petC; rw [h.petF, h.petR]
 
 /- English proof (translation)
-Introduce `μ j hj x y` and use `by obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y have e := T.pet _ (D.sp.Y_sig j) m.1 m.2 hm (X.rowAF μ j x) (X.rowAF μ j y) unfold ThetaX.petY rw [e, (h2 m hm).2, h.row, h.row, h.mY, ← h.petC_eq] simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
   obtain ⟨⟨m, hm⟩, h2⟩ := hi μ j hj x y
@@ -885,7 +879,7 @@ theorem tieRowIsom (hi : Rc.RowIsom) : X.TieRowIsom := fun μ j hj x y => by
   simp only [ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `u μ φ F` and use `by have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by have h1 := D.sp.iX'_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y) have h2 := D.sp.eYm_isom (D.sp.eYm.symm x) (D.sp.eYm.symm y) simp only [LinearEquiv.coe_coe, LinearE …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
   have hι : HSpace.IsIsomEmb (D.sp.Y D.R.m) (D.sp.X D.R.m) (D.sp.iX'.comp D.sp.eYm.symm.toLinearMap) := fun x y => by
@@ -899,7 +893,7 @@ theorem tieBm (hi : Rc.TopTie) : X.TieBm := fun u μ φ F => by
   simp only [T.conj, star_star, h.col, h.row, h.mY, ← h.petC_eq, ThetaTied.petC, Complex.ofReal_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `ThetaX.carY RecFun.carY`. Use `split_ifs`. Rewrite using `[map_mul, map_inv, h.chr, h.eta]`. Conclude with `h.chr _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
   unfold ThetaX.carY RecFun.carY
@@ -908,7 +902,7 @@ theorem carY_eq (μ s i) : T.eChr (X.carY μ s i) = Rc.carY μ s i := by
   · exact h.chr _ _
 
 /- English proof (translation)
-Introduce `μ j hj y x` and use `by obtain ⟨L, hL, hx⟩ := hi μ j hj y obtain ⟨⟨m, hm⟩, h2⟩ := hx x have e : T.ev _ (X.dnY μ j (X.rowAF μ (j + 1) y)) = L := by funext g obtain ⟨⟨n, hn⟩, h3⟩ := hL g have k := W.th _ _ _ _ (rank_Y_ne X j hj) (row_lift_ok T μ (j + 1) (by omega) hj (j + 1) hj) (row_lift_ok T μ (j + 1 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieIo (hi : Rc.IoTie Wf) : X.TieIo := fun μ j hj y x => by
   obtain ⟨L, hL, hx⟩ := hi μ j hj y

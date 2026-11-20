@@ -23,7 +23,7 @@ open GlobalTheory.Unf
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ iA := 1 iB := 0 isoA := by simp isoB := funext fun i => Fin.elim0 i orth := funext fun i => Fin.elim0 i rank_add := rfl }⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_orthDec_zero (D : D7) (S : HSp D) : Nonempty (OrthDec S S (diagSp D 0 ![] 0 0)) :=
   ⟨{ iA := 1
@@ -34,21 +34,21 @@ theorem nonempty_orthDec_zero (D : D7) (S : HSp D) : Nonempty (OrthDec S S (diag
      rank_add := rfl }⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem s_finite_of_sigma_finite {X : Type} [MeasurableSpace X] (ν : Measure X) [SigmaFinite ν] : SFinite ν :=
   inferInstance
 
 /- English proof (translation)
-Introduce `D hD ψ ρ B J s φ G Φ hφ hG hΦ ν₀ 𝓝₀ hν₀ h𝓝₀ h1`. Take `⟨om', hom'⟩` from `(hD ψ B.V J.W s.χV s.χW s.om s.weil).1 B.V₀ ρ B.d`. Take `⟨i1, i2, i3⟩` from `GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D J.W`. Take `⟨j1, j2, j3⟩` from `GlobalTheory.UnitU.topology D ρ`. Establish `: BorelSpace (GA D J.W)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace (UX D ρ)` using `⟨rfl⟩`. Use `s.vW.haar` as an intermediate fact. Use `s.vU.unit.1` as an intermediate fact. Establish `: SigmaCompactSpace (UX D ρ)` using `inferInstance`. Establish `: IsFiniteMeasureOnCompacts s.vU.ν` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyFiniteMeasure s.vU.ν` using `inferInstance`. Establish `: SigmaFinite s.vU.ν` using `inferInstance`. Establish `: SFinite s.vU.ν` using `s_finite_of_sigma_finite s.vU.ν`. Take `⟨hc0, hH0, hI0, hI, hF⟩` from `GlobalTheory.T.fourierJacobi_measure_unitriangular_coordinates D ρ J s.vU ν₀ 𝓝₀ hν₀ h𝓝₀ h1`. Take `⟨o⟩` from `nonempty_orthDec_zero D J.W₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨hc, hH⟩, -⟩` from `GlobalTheory.T.fourierJacobi_bessel_groups_closed_haar_product D J.W J.W₀ J.W₀ (diagSp D 0 ![] 0 0) ρ J.d o J.vN.ν J.vN.𝓝 J.vN.unit`. Take `⟨hcont, hinv⟩` from `GlobalTheory.T.besselUnfolding_evaluationIntegrand_continuous_invariant D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ`. Establish `hrel` using `GlobalTheory.T.flatPeriod_eq_integral_evaluationPeriods D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ`. Establish `habs` using `GlobalTheory.T.evaluationForm_absolute_convergence D ψ ρ B J s om' hom' φ G Φ hφ hG hΦ`. Establish `hU` using `GlobalTheory.T.besselPeriod_thetaLift_unfolding D hD ψ ρ B J s φ G Φ hφ hG hΦ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hU` using `[funext fun h => (hrel h).2]`. Conclude with `GlobalTheory.T.invariant_integral_in_stages_alt (GA D J.W) s.vW.μ (radX J.d ⊔ J.d.emb0.range) (jacGrp J.d) hc0 hc (semiMeas (radX J.d) J.d.emb0 J.v0.μ ν₀) J.μR hH0 hI0 (hH _ J.v0.haar) hI (UX D ρ) s.vU.ν (fun u => J.d.levi u.1) (J.d.continuous_levi.comp continuous_subtype_val).me …`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalBF_of_descent : ∀ D : D7, Descent D → EvalBF D := by
   intro D hD ψ ρ B J s φ G Φ hφ hG hΦ ν₀ 𝓝₀ hν₀ h𝓝₀ h1

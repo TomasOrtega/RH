@@ -15,9 +15,9 @@ def ext0 {M : Type*} [AddCommMonoid M] {n : ℕ} (F : Fin n → M) (i : ℕ) : M
   if h : i < n then F ⟨i, h⟩ else 0
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hp`. Establish `hm : p + m - p = m` using `by omega`. Rewrite using `[Fin.sum_univ_add]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl (fun b _ => congrArg F (Fin.ext rfl))) ?_` and prove the remaining obligations. Use `Fintype.sum_equiv (finCongr hm.symm) _ _ (fun i => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg F (Fin.ext (by simp [kap]))`.
+A detailed English derivation is pending.
 -/
 lemma sum_split {M : Type*} [AddCommMonoid M] {n p : ℕ} (hp : p ≤ n) (F : Fin n → M) :
     ∑ c : Fin n, F c = ∑ b : Fin p, F (Fin.castLE hp b) + ∑ a : Fin (n - p), F (kap hp a) := by
@@ -29,7 +29,7 @@ lemma sum_split {M : Type*} [AddCommMonoid M] {n p : ℕ} (hp : p ≤ n) (F : Fi
   exact congrArg F (Fin.ext (by simp [kap]))
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Fin.val h`. Establish `hb` using `b.isLt`. Simplify using `[kap] at h1`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma kap_ne_castLE {n p : ℕ} (hp : p ≤ n) (a : Fin (n - p)) (b : Fin p) : kap hp a ≠ Fin.castLE hp b := by
   intro h
@@ -39,7 +39,7 @@ lemma kap_ne_castLE {n p : ℕ} (hp : p ≤ n) (a : Fin (n - p)) (b : Fin p) : k
   omega
 
 /- English proof (translation)
-Establish `hc` using `c.isLt`. Distinguish the cases in `h : (c : ℕ) < p`. Conclude with `Or.inl ⟨⟨c, h⟩, Fin.ext rfl⟩`. Use `Or.inr ⟨⟨c - p, by omega⟩, Fin.ext ?_⟩ show (c : ℕ) = p + (c - p)` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 -/
 lemma fin_cases_split {n p : ℕ} (hp : p ≤ n) (c : Fin n) :
     (∃ b : Fin p, c = Fin.castLE hp b) ∨ ∃ a : Fin (n - p), c = kap hp a := by
@@ -51,13 +51,13 @@ lemma fin_cases_split {n p : ℕ} (hp : p ≤ n) (c : Fin n) :
     omega
 
 /- English proof (translation)
-Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[h b]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ (fun b' _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b', rfl⟩))`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b'', rfl⟩`. Establish `hone : ∀ b', ∑ b, A⁻¹ b b'' * A b' b = (1 : Matrix (Fin n) (Fin n) ℂ) b' b''`. Introduce `b'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_nonsing_inv A hu, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl (fun b _ => mul_comm _ _)`. Establish `key : f b'' = ∑ b, A⁻¹ b b'' • g b`. Repeatedly rewrite using `[h, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← Finset.sum_smul, hone, Matrix.one_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma span_eq_of_mat {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (f g : Fin n → V)
     (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.det ≠ 0) (h : ∀ b, g b = ∑ b', A b' b • f b') :
@@ -83,7 +83,7 @@ lemma span_eq_of_mat {V : Type*} [AddCommGroup V] [Module ℂ V] {n : ℕ} (f g 
     exact Submodule.sum_mem _ (fun b _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨b, rfl⟩))
 
 /- English proof (translation)
-Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sgn_mul_self (p0 a : ℕ) : ((sgn p0 a : ℝ) : ℂ) * ((sgn p0 a : ℝ) : ℂ) = 1 := by
   unfold sgn
@@ -103,21 +103,21 @@ def Neg (x : Frame X.Ψ r) (τ : X.Ψ) (y : Fin r → ℂ) : ℝ :=
   ∑ a : Fin (r - X.p0), ‖hermC τ.1 X.Gm y (col (mat x τ) (kap X.p0_le a))‖ ^ 2
 
 /- English proof (translation)
-Unfold `Pos`. Conclude with `Finset.sum_nonneg (fun _ _ => by positivity)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma Pos_nonneg (x : Frame X.Ψ r) (τ : X.Ψ) (y : Fin r → ℂ) : 0 ≤ Pos X x τ y := by
   unfold Pos
   exact Finset.sum_nonneg (fun _ _ => by positivity)
 
 /- English proof (translation)
-Unfold `Neg`. Conclude with `Finset.sum_nonneg (fun _ _ => by positivity)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma Neg_nonneg (x : Frame X.Ψ r) (τ : X.Ψ) (y : Fin r → ℂ) : 0 ≤ Neg X x τ y := by
   unfold Neg
   exact Finset.sum_nonneg (fun _ _ => by positivity)
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun (hx τ) c) d`. Simplify `h` using `[gram, Matrix.diagonal_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma ortho_apply {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (c d : Fin r) :
     hermC τ.1 X.Gm (col (mat x τ) c) (col (mat x τ) d) = if c = d then ((sgn X.p0 c : ℝ) : ℂ) else 0 := by
@@ -125,13 +125,11 @@ lemma ortho_apply {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (c d : Fin r
   simpa [gram, Matrix.diagonal_apply] using h
 
 /- English proof (translation)
-Establish `hu : IsUnit (mat x τ).det` using `isUnit_iff_ne_zero.mpr hdet`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Fin r → ℂ, y = ∑ c, t c • col (mat x τ) c := by`. Use `⟨(mat x τ)⁻¹ *ᵥ y, ?_⟩` and prove the remaining obligations. Establish `h1 : mat x τ *ᵥ ((mat x τ)⁻¹ *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← h1]`. Use function extensionality and compare the values at `k`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, col]`. Conclude with `Finset.sum_congr rfl (fun c _ => mul_comm _ _)`. Establish `hc : ∀ c, hermC τ.1 X.Gm y (col (mat x τ) c) = t c * ((sgn X.p0 c : ℝ) : ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[ht, hermC_sum_left]`. Repeatedly rewrite using `[hermC_smul_left, ortho_apply X hx τ]`. Simplify using the standard rewrite rules. Use `conv_lhs => rw [ht]`.
-
-Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[hc c, mul_comm (t c), ← mul_assoc, sgn_mul_self, one_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma expand {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0) (y : Fin r → ℂ) :
     y = ∑ c : Fin r, (((sgn X.p0 (c : ℕ) : ℝ) : ℂ) * hermC τ.1 X.Gm y (col (mat x τ) c)) • col (mat x τ) c := by
@@ -154,13 +152,13 @@ lemma expand {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ
   rw [hc c, mul_comm (t c), ← mul_assoc, sgn_mul_self, one_mul]
 
 /- English proof (translation)
-Establish `hs : ∀ c : Fin r, sgn X.p0 c * sgn X.p0 c = 1`. Introduce `c`. Unfold `sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Use `conv_lhs => rw [expand X hx τ hdet y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermC_quad]`. Repeatedly rewrite using `[ortho_apply X hx τ]`. Simplify using `only [mul_ite, ite_mul, mul_zero, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Complex.conj_ofReal]`. Establish `e : ((sgn X.p0 c : ℝ) : ℂ) * hermC τ.1 X.Gm y (col (mat x τ) c) * ((sgn X.p0 c : ℝ) : ℂ) * (((sgn X.p0 c : ℝ) : ℂ) * conj (hermC τ.1 X.Gm y (col (mat x τ) c))) = ((sgn X.p0 c * sgn X.p0 c * sgn X.p0 c * Complex.normSq (hermC τ.1 X.Gm y (col (mat x τ) c)) : ℝ) : ℂ)`. Use `push_cast`. Rewrite using `[← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Complex.ofReal_re, hs, one_mul, Complex.normSq_eq_norm_sq]`.
+A detailed English derivation is pending.
 -/
 lemma re_self {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0) (y : Fin r → ℂ) :
     (hermC τ.1 X.Gm y y).re = ∑ c : Fin r, sgn X.p0 (c : ℕ) * ‖hermC τ.1 X.Gm y (col (mat x τ) c)‖ ^ 2 := by
@@ -184,21 +182,21 @@ lemma re_self {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x �
   rw [e, Complex.ofReal_re, hs, one_mul, Complex.normSq_eq_norm_sq]
 
 /- English proof (translation)
-Unfold `sgn`. Rewrite using `[if_pos (by simp [b.isLt])]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sgn_castLE (b : Fin X.p0) : sgn X.p0 (Fin.castLE X.p0_le b : ℕ) = 1 := by
   unfold sgn
   rw [if_pos (by simp [b.isLt])]
 
 /- English proof (translation)
-Unfold `sgn`. Rewrite using `[if_neg (by show ¬ (X.p0 + (a : ℕ) < X.p0); omega)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma sgn_kap (a : Fin (r - X.p0)) : sgn X.p0 (kap X.p0_le a : ℕ) = -1 := by
   unfold sgn
   rw [if_neg (by show ¬ (X.p0 + (a : ℕ) < X.p0); omega)]
 
 /- English proof (translation)
-Rewrite using `[re_self X hx τ hdet y, sum_split X.p0_le]`. Simplify using `only [sgn_castLE X, sgn_kap X, one_mul, neg_one_mul, Finset.sum_neg_distrib]`. Unfold `Pos Neg`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma re_self_split {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0)
     (y : Fin r → ℂ) : (hermC τ.1 X.Gm y y).re = Pos X x τ y - Neg X x τ y := by
@@ -208,13 +206,13 @@ lemma re_self_split {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (m
   ring
 
 /- English proof (translation)
-Unfold `Pos at hP`. Unfold `Neg at hN`. Establish `hP' : ∀ b : Fin X.p0, hermC τ.1 X.Gm y (col (mat x τ) (Fin.castLE X.p0_le b)) = 0`. Introduce `b`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖hermC τ.1 X.Gm y (col (mat x τ) (Fin.castLE X.p0_le i))‖)).mp hP b (Finset.mem_univ _)`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using h1`. Establish `hN' : ∀ a : Fin (r - X.p0), hermC τ.1 X.Gm y (col (mat x τ) (kap X.p0_le a)) = 0`. Introduce `a`. Establish `h1` using `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg ‖hermC τ.1 X.Gm y (col (mat x τ) (kap X.p0_le i))‖)).mp hN a (Finset.mem_univ _)`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hall : ∀ c, hermC τ.1 X.Gm y (col (mat x τ) c) = 0`. Introduce `c`. Break down `fin_cases_split X.p0_le c with ⟨b, rfl⟩ | ⟨a, rfl⟩` into its components or cases. Conclude with `hP' b`. Conclude with `hN' a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[expand X hx τ hdet y]`. Simplify using `[hall]`.
+A detailed English derivation is pending.
 -/
 lemma eq_zero_of_Pos_Neg {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0)
     (y : Fin r → ℂ) (hP : Pos X x τ y = 0) (hN : Neg X x τ y = 0) : y = 0 := by
@@ -239,9 +237,9 @@ lemma eq_zero_of_Pos_Neg {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet
   simp [hall]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨b, rfl⟩` from `hz`. Rewrite using `[ortho_apply X hx τ, if_neg (kap_ne_castLE X.p0_le a b).symm]`. Consider the case `zero => exact hermC_zero_left _ _ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add z1 z2 _ _ h1 h2 => rw [hermC_add_left, h1, h2, add_zero]`. Consider the case `smul c z _ h => rw [hermC_smul_left, h, mul_zero]`.
+Treat this case separately. Treat this case separately.
 -/
 lemma perp_kap {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (w : Fin r → ℂ) (hw : w ∈ Spos X x τ)
     (a : Fin (r - X.p0)) : hermC τ.1 X.Gm w (col (mat x τ) (kap X.p0_le a)) = 0 := by
@@ -254,7 +252,7 @@ lemma perp_kap {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (w : Fin r → 
   | smul c z _ h => rw [hermC_smul_left, h, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[re_self_split X hx τ hdet w]`. Establish `hN : Neg X x τ w = 0`. Unfold `Neg`. Conclude with `Finset.sum_eq_zero (fun a _ => by rw [perp_kap X hx τ w hw a]; simp)`. Rewrite using `[hN, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma re_self_of_mem {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0)
     (w : Fin r → ℂ) (hw : w ∈ Spos X x τ) : (hermC τ.1 X.Gm w w).re = Pos X x τ w := by
@@ -265,7 +263,7 @@ lemma re_self_of_mem {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (
   rw [hN, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[re_self_split X hx τ hdet w]`. Establish `hP : Pos X x τ w = 0`. Unfold `Pos`. Conclude with `Finset.sum_eq_zero (fun b _ => by rw [hw b]; simp)`. Rewrite using `[hP, zero_sub]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma re_self_of_perp {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0)
     (w : Fin r → ℂ) (hw : ∀ b : Fin X.p0, hermC τ.1 X.Gm w (col (mat x τ) (Fin.castLE X.p0_le b)) = 0) :
@@ -277,9 +275,7 @@ lemma re_self_of_perp {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : 
   rw [hP, zero_sub]
 
 /- English proof (translation)
-Establish `hre` using `re_self_of_mem X hx τ hdet w hw`. Rewrite `hre` using `[h0, Complex.zero_re]`. Establish `hN : Neg X x τ w = 0`. Unfold `Neg`. Conclude with `Finset.sum_eq_zero (fun a _ => by rw [perp_kap X hx τ w hw a]; simp)`.
-
-Conclude with `eq_zero_of_Pos_Neg X hx τ hdet w hre.symm hN`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma zero_of_mem_self {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet : (mat x τ).det ≠ 0)
     (w : Fin r → ℂ) (hw : w ∈ Spos X x τ) (h0 : hermC τ.1 X.Gm w w = 0) : w = 0 := by
@@ -291,18 +287,18 @@ lemma zero_of_mem_self {x : Frame X.Ψ r} (hx : X.IsOrtho x) (τ : X.Ψ) (hdet :
   exact eq_zero_of_Pos_Neg X hx τ hdet w hre.symm hN
 
 /- English proof (translation)
-Unfold `Data.ppos`. Conclude with `Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma ppos_mem (x : Frame X.Ψ r) (τ : X.Ψ) (w : Fin r → ℂ) : X.ppos x τ w ∈ Spos X x τ := by
   unfold Data.ppos
   exact Submodule.sum_mem _ (fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩))
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).mp hw`. Establish `hu : IsUnit (X.gramPos x τ).det` using `by open scoped ComplexOrder in`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (X.gramPos_posDef hx τ).isUnit`. Establish `hin : ∀ b, hermC τ.1 X.Gm (∑ a, t a • col (mat x τ) (Fin.castLE X.p0_le a)) (col (mat x τ) (Fin.castLE X.p0_le b)) = ∑ a, t a * X.gramPos x τ a b`. Introduce `b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermC_sum_left]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hermC_smul_left, X.gramPos_apply]`. Both sides reduce to the same expression. Unfold `Data.ppos`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hin]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Use `congr 1`. Establish `e : ∑ b, (∑ a', t a' * X.gramPos x τ a' b) * (X.gramPos x τ)⁻¹ b a = Matrix.vecMul (Matrix.vecMul t (X.gramPos x τ)) (X.gramPos x τ)⁻¹ a` using `rfl`. Rewrite using `[e, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ppos_of_mem {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ) (hw : w ∈ Spos X x τ) :
     X.ppos x τ w = w := by
@@ -326,11 +322,11 @@ lemma ppos_of_mem {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (w : Fin r �
   rw [e, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu, Matrix.vecMul_one]
 
 /- English proof (translation)
-Establish `hu : IsUnit (X.gramPos x τ).det` using `by open scoped ComplexOrder in`. Conclude with `(Matrix.isUnit_iff_isUnit_det _).mp (X.gramPos_posDef hx τ).isUnit`. Establish `h1 : hermC τ.1 X.Gm (X.ppos x τ w) (col (mat x τ) (Fin.castLE X.p0_le b)) = 0`. Rewrite using `[hw, hermC_zero_left]`. Unfold `Data.ppos at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hermC_sum_left]`. Rewrite `h1` using `[hermC_smul_left]`. Establish `e2 : ∀ a, hermC τ.1 X.Gm (col (mat x τ) (Fin.castLE X.p0_le a)) (col (mat x τ) (Fin.castLE X.p0_le b)) = X.gramPos x τ a b` using `fun a => (X.gramPos_apply x τ a b).symm`. Rewrite `h1` using `[e2]`. Establish `e : ∑ a, (∑ b', hermC τ.1 X.Gm w (col (mat x τ) (Fin.castLE X.p0_le b')) * (X.gramPos x τ)⁻¹ b' a) * X.gramPos x τ a b = Matrix.vecMul (Matrix.vecMul (fun b' => hermC τ.1 X.Gm w (col (mat x τ) (Fin.castLE X.p0_le b'))) (X.gramPos x τ)⁻¹) (X.gramPos x τ) b` using `rfl`.
+Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hu, Matrix.vecMul_one]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 lemma perp_of_ppos_zero {x : Frame X.Ψ r} (hx : x ∈ X.dom) (τ : X.Ψ) (w : Fin r → ℂ)
     (hw : X.ppos x τ w = 0) (b : Fin X.p0) : hermC τ.1 X.Gm w (col (mat x τ) (Fin.castLE X.p0_le b)) = 0 := by

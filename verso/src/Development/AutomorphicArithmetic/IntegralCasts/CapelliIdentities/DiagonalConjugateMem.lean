@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `hdet : (Matrix.of a).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular (M := Matrix.of a) (fun i j hij => hlow i j hij)]`. Simplify using `[hd]`. Set `H : GL (Fin n) R` to `Matrix.GeneralLinearGroup.mk'' (Matrix.of a) (by rw [hdet]; exact isUnit_one)`. Use `⟨H, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[SetLike.mem_coe, MonoidHom.mem_ker]`. Use extensionality with `i j`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Establish `: Ideal.Quotient.mk I (a i j) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (hI i j hij)`. Simplify `this` using `[H, Matrix.one_apply, hij.ne]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[H, hd]`. Simplify using `[H, hlow i j hij, Matrix.one_apply, hij.ne']`. Use extensionality with `i j`. Simplify using `[H, ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma liftUnitri {R K : Type} [CommRing R] [CommRing K] (f : R →+* K) (I : Ideal R) {n : ℕ}
     (h : GL (Fin n) K) (a : Fin n → Fin n → R)
@@ -30,31 +30,31 @@ private lemma liftUnitri {R K : Type} [CommRing R] [CommRing K] (f : R →+* K) 
     simp [H, ha]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n ϖ hϖ c z g hz hg hb hd`. Take `⟨g0, hg0⟩` from `hg`. Establish `hg0' : ∀ i j, algebraMap (↥(ValuativeRel.valuation k).integer) k ((g0 : Matrix (Fin n) (Fin n) _) i j) = (g : Matrix (Fin n) (Fin n) k) i j`. Introduce `i j`. Rewrite using `[← hg0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `p : ↥(ValuativeRel.valuation k).integer` to `⟨(ϖ : k), hϖ.le⟩`. Establish `hp : p ∈ IsLocalRing.maximalIdeal ↥(ValuativeRel.valuation k).integer`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, hq⟩` from `hu.exists_right_inv`. Establish `h1 : ValuativeRel.valuation k ((p * q : ↥(ValuativeRel.valuation k).integer) : k) = 1`. Rewrite using `[hq]`. Simplify using the standard rewrite rules. Establish `h2 : ValuativeRel.valuation k ((q : ↥(ValuativeRel.valuation k).integer) : k) ≤ 1` using `q.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[Subring.coe_mul, map_mul]`. Establish `h3 : ValuativeRel.valuation k (ϖ : k) * ValuativeRel.valuation k ((q : ↥(ValuativeRel.valuation k).integer) : k) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hϖ`. Conclude with `absurd h1 h3.ne`. Set `t : Fin n → kˣ` to `fun i => ϖ ^ ((n : ℤ) - 1 - ((i : ℕ) : ℤ))`. Establish `hz1 : ((z ^ c : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.diagonal (fun i => (((t i) ^ c : kˣ) : k))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_pow_eq_pow_val, hz, Matrix.diagonal_pow]`. Use `congr 1`. Establish `hz2 : (((z ^ c)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) = Matrix.diagonal (fun i => ((((t i) ^ c)⁻¹ : kˣ) : k))`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hz1, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i`. Rewrite using `[← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `hent : ∀ i j, ((z ^ c * g * (z ^ c)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j = (((t i) ^ c : kˣ) : k) * (g : Matrix (Fin n) (Fin n) k) i j * ((((t j) ^ c)⁻¹ : kˣ) : k)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Rewrite using `[Units.val_mul, Units.val_mul, hz2, hz1, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hpow : ∀ i j : Fin n, i < j → (((t i) ^ c : kˣ) : k) * ((((t j) ^ c)⁻¹ : kˣ) : k) = (ϖ : k) ^ (((j : ℕ) - (i : ℕ)) * c)`. Introduce `i j hij`. Rewrite using `[← Units.val_mul, ← Units.val_pow_eq_pow_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hle : (i : ℕ) ≤ (j : ℕ)` using `hij.le`. Simplify using `only [t]`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_neg, ← zpow_add]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[Nat.cast_sub hle]`. Expand and normalize the polynomial expressions, which then agree. Use `liftUnitri _ _ _ (fun i j => if i < j then p ^ (((j : ℕ) - (i : ℕ)) * c) * (g0 : Matrix (Fin n) (Fin n) _) i j else if i = j then 1 else 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hent]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[if_pos hij, map_mul, hg0', map_pow, mul_right_comm, hpow i j hij]`. Both sides reduce to the same expression. Rewrite using `[if_neg (lt_irrefl _), if_pos rfl, hd, map_one, mul_one, ← Units.val_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hij.not_gt, if_neg hij.ne', hb hij]`. Simplify using the standard rewrite rules. Introduce `i j hij`. Rewrite using `[if_neg hij.not_gt, if_neg hij.ne']`. Introduce `i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i j hij`. Rewrite using `[if_pos hij]`. Apply `Ideal.mul_mem_right` to reduce the goal to its premises. Establish `hpos : (j : ℕ) - (i : ℕ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (i : ℕ) < (j : ℕ)` using `hij`. Use linear arithmetic over natural numbers and integers. Rewrite using `[pow_mul]`. Conclude with `Ideal.pow_mem_pow (Ideal.pow_mem_of_mem _ hp _ (Nat.pos_of_ne_zero hpos)) c`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.diagonal_conjugate_mem :
     ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ} (ϖ : kˣ), ValuativeRel.valuation k (ϖ : k) < 1 →

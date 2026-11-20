@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.FinalTheorems
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.HV GlobalTheory.Ord2
 open scoped Matrix
 /- English proof (citation)
-Apply `GlobalTheory.Ord2.GwCount.dual_classes_unbounded` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsDualSelmerClassesUnboundedOrder.lean&line=16#L16)
 -/

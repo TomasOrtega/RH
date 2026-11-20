@@ -82,7 +82,7 @@ variable {D : D7} (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV)
   (hc : TruncatedSeriesCountingIdentities.FamilyContinuous (D := D) i r) (cB : ℕ)
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Apply `QS.locClause (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c' := c') (hS := QS.locS (hE := hE) (hN := hN) (hG5 := hG5) (h5x := h5x) (c' := c'))` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem locPos (hE : QS.Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r)
     (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π) (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i)
@@ -92,7 +92,7 @@ theorem locPos (hE : QS.Ev r π Dd) (hN : RepresentationBoundsCohomology.NormAt 
     (hQP := hQP) (c' := c') (hS := QS.locS (hE := hE) (hN := hN) (hG5 := hG5) (h5x := h5x) (c' := c'))
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Use function extensionality and compare the values at `w`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem FS_eq (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) :
     St.FS i r π dc g0 eB e₁ s Dd hD hc c = QS.Fpos i dc Dd c := by
@@ -101,7 +101,7 @@ theorem FS_eq (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) :
   rfl
 
 /- English proof (translation)
-Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `[QS.c1] at h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem first_character_index_ne_zero : (QS.c1 (D := D)) ≠ 0 := by
   intro h
@@ -112,7 +112,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hE` using `QS.ev_of (hD := hD)`. Unfold `ClauseLoc1`. Rewrite using `[FS_eq (dc := dc) (hD := hD) (hc := hc) (c := QS.c1) (hc0 := first_character_index_ne_zero)]`. Conclude with `locPos (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c := QS.c1) (hc0 := first_character_index_ne_zero)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem first_local_clause_of (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i) :
@@ -127,9 +127,9 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hE` using `QS.ev_of (hD := hD)`. Unfold `ClauseChi`. Introduce `c hc2`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hc2`. Use `And.intro ?_ ?_` and prove the remaining obligations. Rewrite using `[FS_eq (dc := dc) (hD := hD) (hc := hc) (c := c) (hc0 := hc0)]`. Conclude with `locPos (dc := dc) (hE := hE) (hN := hN) (hG4 := hG4) (hdec := hdec) (hG5 := hG5) (h5x := h5x) (hQP := hQP) (c := c) (hc0 := hc0)`. Conclude with `ShaT.tieSel2_full (dc := dc) (hD := hD) (hN := hN) (F0 := St.FirstBlockLocalConditions i r π dc g0 eB e₁ s Dd hD hc) (c := c) (hc := hc2)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_of (hN : RepresentationBoundsCohomology.NormAt D.nd r ρ π) (hG4 : TruncatedSeriesCountingIdentities.admG4 i r) (hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π)
     (hG5 : TruncatedSeriesCountingIdentities.admG5 i r) (h5x : TruncatedSeriesCountingIdentities.TameGeneratorConditions i) (hQP : QS.QPow i) :
@@ -152,7 +152,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨c', rfl⟩` from `Fin.exists_succ_eq.mpr hc0`. Use `show QS.Fpos i dc Dd c'.succ w = TB.Fc i dc Dd c'.succ w`. Rewrite using `[QS.Fpos_row (Dd := Dd) (c := c'.succ) (hw := hw)]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem FS_row (c : Fin (D.R.t + 1)) (hc0 : c ≠ 0) {w : ℕ} (hw : w ∈ rowsN i dc) :
     St.FS i r π dc g0 eB e₁ s Dd hD hc c w = TB.Fc i dc Dd c w := by
@@ -166,9 +166,9 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `c hc1 w hw`. Establish `hc0 : c ≠ 0` using `fun h => by`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_zero] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hF : St.FS i r π dc g0 eB e₁ s Dd hD hc c w = TB.Fc i dc Dd c w` using `FS_row i r π dc g0 eB e₁ s Dd hD hc c hc0 hw`. Establish `hx` using `hT w hw c hc1`. Use `rewrite [← hF] at hx`. Conclude with `⟨hx.2.2.1, hx.2.2.2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tb_of_target (hT : TB.TBTarget i dc Dd cB) : ClauseTB i r π dc g0 eB e₁ s Dd hD hc cB := by
   intro c hc1 w hw

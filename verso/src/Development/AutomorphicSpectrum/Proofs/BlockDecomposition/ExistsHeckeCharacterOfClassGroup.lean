@@ -29,11 +29,9 @@ theorem coe_classCircle (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) (c :
   rfl
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one _ ?_` and prove the remaining obligations. Establish `hU : IsOpen ((IdeleClassGroup.mk F) '' (standardOpenSubgroup F : Set (IdeleGroup F)))` using `IdeleClassGroup.isOpenMap_mk (K := F) _ (isOpen_standardOpenSubgroup F)`. Establish `h1 : (1 : IdeleClassGroup F) ∈ (IdeleClassGroup.mk F) '' (standardOpenSubgroup F : Set (IdeleGroup F))` using `⟨1, (standardOpenSubgroup F).one_mem, map_one _⟩`. Rewrite using `[ContinuousAt, map_one]`. Use `tendsto_nhds_of_eventually_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hU.mem_nhds h1] with y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Establish `hx1 : IdeleGroup.toFractionalIdeal x = 1`. Rewrite using `[← MonoidHom.mem_ker, IdeleGroup.ker_toFractionalIdeal]`. Conclude with `hx`.
-
-Rewrite using `[MonoidHom.comp_apply, IdeleClassGroup.toClassGroup_mk, IdeleGroup.toClassGroup_apply, hx1, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_comp_toClassGroup (φ : ClassGroup (𝓞 F) →* Circle) :
     Continuous (φ.comp (IdeleClassGroup.toClassGroup (K := F))) := by
@@ -64,7 +62,7 @@ theorem classHecke_toIdele (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) (
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Establish `h1 : IdeleGroup.toFractionalIdeal x = 1`. Rewrite using `[← MonoidHom.mem_ker, IdeleGroup.ker_toFractionalIdeal]`. Conclude with `hx`. Rewrite using `[MonoidHom.mem_ker, classHecke_toIdele, IdeleGroup.toClassGroup_apply, h1, map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem standardOpenSubgroup_le_ker (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) :
     standardOpenSubgroup F ≤ (classHecke ψ).toIdele.ker := by
@@ -75,9 +73,7 @@ theorem standardOpenSubgroup_le_ker (ψ : AddChar (Additive (ClassGroup (𝓞 F)
   rw [MonoidHom.mem_ker, classHecke_toIdele, IdeleGroup.toClassGroup_apply, h1, map_one, map_one]
 
 /- English proof (translation)
-Use `show finiteLevel (fun v => multiplicity v.asIdeal (⊤ : Ideal (𝓞 F))) = finiteLevel 0`. Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[Pi.zero_apply, multiplicity_eq_zero]`. Introduce `h`.
-
-Conclude with `v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem idealLevel_top : idealLevel (⊤ : Ideal (𝓞 F)) = finiteLevel 0 := by
   show finiteLevel (fun v => multiplicity v.asIdeal (⊤ : Ideal (𝓞 F))) = finiteLevel 0
@@ -88,11 +84,11 @@ theorem idealLevel_top : idealLevel (⊤ : Ideal (𝓞 F)) = finiteLevel 0 := by
   exact v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))
 
 /- English proof (translation)
-Establish `hne : (⊤ : Ideal (𝓞 F)) ≠ ⊥` using `top_ne_bot`. Establish `hle : Subgroup.map ofFinite (idealLevel (⊤ : Ideal (𝓞 F))) ≤ (classHecke ψ).toIdele.ker`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Apply `standardOpenSubgroup_le_ker ψ` to reduce the goal to its premises. Rewrite using `[mem_standardOpenSubgroup_iff_ord]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite `hz` using `[idealLevel_top]`. Apply `ord_eq_zero_of_mem_unitsLevel (n := 0)` to reduce the goal to its premises. Rewrite using `[← finiteComponent_toFinite, toFinite_ofFinite]`. Conclude with `Subgroup.mem_comap.mp (Subgroup.mem_iInf.mp hz v)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `((classHecke ψ).map_idealLevel_le_ker_iff hne).mp hle`. Conclude with `top_le_iff.mp (Ideal.le_of_dvd hd)`.
+A detailed English derivation is pending.
 -/
 theorem conductor_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ) :
     (classHecke ψ).conductor = ⊤ := by
@@ -110,17 +106,15 @@ theorem conductor_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
   exact top_le_iff.mp (Ideal.le_of_dvd hd)
 
 /- English proof (translation)
-Establish `hprime : ∀ v : IsDedekindDomain.HeightOneSpectrum (𝓞 F), (classHecke ψ).coeff v.asIdeal = ψ (Additive.ofMul (ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩))`. Introduce `v`. Establish `hv : ¬ v.asIdeal ∣ (classHecke ψ).conductor`. Rewrite using `[conductor_classHecke]`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `v.isPrime.ne_top (top_le_iff.mp (Ideal.le_of_dvd h))`. Rewrite using `[HeckeCharacter.coeff_asIdeal_of_not_dvd _ hv]`. Take `⟨x, hx, hxI⟩` from `exists_mem_primeToLevel (primeIdealUnit_mem_idealsPrimeTo hv)`. Establish `heq : (primeIdealUnit v : (FractionalIdeal (𝓞 F)⁰ F)ˣ) = FractionalIdeal.mk0 F ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩` using `Units.ext (by rw [coe_primeIdealUnit, FractionalIdeal.coe_mk0])`. Rewrite using `[HeckeCharacter.idealCharacter_apply _ hx ⟨primeIdealUnit v, primeIdealUnit_mem_idealsPrimeTo hv⟩ hxI, classHecke_toIdele, coe_classCircle, IdeleGroup.toClassGroup_apply, hxI, heq, ClassGroup.mk_mk0]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `UniqueFactorizationMonoid.induction_on_prime (P := fun I : Ideal (𝓞 F) => ∀ hI : I ≠ ⊥, (classHecke ψ).coeff I = ψ (Additive.ofMul (ClassGroup.mk0 ⟨I, mem_nonZeroDivisors_of_ne_zero hI⟩))) J ?_ ?_ ?_ hJ` and prove the remaining obligations. Introduce `h`. Conclude with `absurd Ideal.zero_eq_bot h`. Introduce `x hx hx0`. Take `rfl` from `Ideal.isUnit_iff.mp hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (⟨⊤, mem_nonZeroDivisors_of_ne_zero hx0⟩ : (Ideal (𝓞 F))⁰) = 1` using `Subtype.ext Ideal.one_eq_top.symm`. Rewrite using `[HeckeCharacter.coeff_top, h1, map_one, ofMul_one, AddChar.map_zero_eq_one]`. Introduce `a p ha hp ih hpa`. Establish `ha' : a ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `hp0 : p ≠ ⊥`. Rewrite using `[← Ideal.zero_eq_bot]`. Conclude with `hp.ne_zero`. Establish `hv` using `hprime ⟨p, Ideal.isPrime_of_prime hp, hp0⟩`.
-
-Establish `hmk : (⟨p * a, mem_nonZeroDivisors_of_ne_zero hpa⟩ : (Ideal (𝓞 F))⁰) = ⟨p, mem_nonZeroDivisors_of_ne_zero hp0⟩ * ⟨a, mem_nonZeroDivisors_of_ne_zero ha'⟩` using `Subtype.ext rfl`. Rewrite using `[HeckeCharacter.coeff_mul, ih ha', hmk, map_mul, ofMul_mul, AddChar.map_add_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem coeff_classHecke (ψ : AddChar (Additive (ClassGroup (𝓞 F))) ℂ)
     (J : Ideal (𝓞 F)) (hJ : J ≠ ⊥) :

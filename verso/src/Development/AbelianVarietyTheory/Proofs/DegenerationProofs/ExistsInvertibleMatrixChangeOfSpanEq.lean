@@ -10,9 +10,9 @@ open GlobalTheory.ZH ReciprocityTheory.ChartRestriction.G.Out
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ n : J → R, ∑ k, n k • B k = b i` using `fun i => (Submodule.mem_span_range_iff_exists_fun R).1 (h (Submodule.subset_span ⟨i, rfl⟩))`. Use `choose n hn using h1`. Establish `e : b = (Matrix.of fun i k => (n i k : Ω)) * B`. Use extensionality with `i k`. Rewrite using `[← hn i, Matrix.mul_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e, Matrix.mul_assoc, hc, Matrix.mul_one]`. Conclude with `(n i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_inv_apply_mem_of_span_le {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {J : Type} [Fintype J] [DecidableEq J] {b B c : Matrix J J Ω}
@@ -29,9 +29,9 @@ theorem mul_inv_apply_mem_of_span_le {o Ω : Type} [CommRing o] [Field Ω] [Alge
   exact (n i j).2
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ n : J → R, ∑ k, n k • b k = B i` using `fun i => (Submodule.mem_span_range_iff_exists_fun R).1 (h (Submodule.subset_span ⟨i, rfl⟩))`. Use `choose n hn using h1`. Establish `e : B = (Matrix.of fun i k => (n i k : Ω)) * b`. Use extensionality with `i k`. Rewrite using `[← hn i, Matrix.mul_apply, Finset.sum_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `⟨c * Matrix.of fun i k => (n i k : Ω), mul_eq_one_comm.1 ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← e, hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_one_of_span_le {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω)
     {J : Type} [Fintype J] [DecidableEq J] {b B c : Matrix J J Ω}
@@ -48,7 +48,7 @@ theorem exists_mul_eq_one_of_span_le {o Ω : Type} [CommRing o] [Field Ω] [Alge
   rw [Matrix.mul_assoc, ← e, hc]
 
 /- English proof (translation)
-Use `choose m hm using fun i j => (RatModel.mem_ringOn_iff_exists hU).1 (RatModel.mem_ringOn.2 fun z hz => h z hz i j)`. Use `⟨Matrix.of m, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `(M.res_apply U hU _).trans (hm i j)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem RatModel.exists_matrix_map_valF {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     {J : Type} {U : M.Z.Opens} (hU : (U : Set M.Z).Nonempty) (n : Matrix J J Ω)
@@ -60,11 +60,11 @@ theorem RatModel.exists_matrix_map_valF {o Ω : Type} [CommRing o] [Field Ω] [A
   exact (M.res_apply U hU _).trans (hm i j)
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M J _ _ W W' b B c h hc`. Distinguish the cases in `hne : ((W ⊓ W' : M.Z.Opens) : Set M.Z).Nonempty`. Use `swap`. Conclude with `⟨1, 1, Matrix.mul_one _, fun h' => absurd h' hne⟩`. Take `⟨z₀, hz₀⟩` from `id hne`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc' : B * c.map (valF M.pt W') = 1` using `mul_eq_one_comm.1 hc`. Take `⟨d, hd⟩` from `exists_mul_eq_one_of_span_le (M.O z₀) (h z₀ hz₀).ge hc`. Take `⟨m, hm⟩` from `M.exists_matrix_map_valF hne (b * c.map (valF M.pt W')) fun z hz => mul_inv_apply_mem_of_span_le (M.O z) (h z hz).le hc'`. Take `⟨m', hm'⟩` from `M.exists_matrix_map_valF hne (B * d) fun z hz => mul_inv_apply_mem_of_span_le (M.O z) (h z hz).ge hd`. Use `⟨m, m', ?_, fun _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.map_injective (M.res_injective _ hne) dsimp only` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, hm, hm', Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_assoc, ← Matrix.mul_assoc _ B, hc, Matrix.one_mul, hd]`. Rewrite using `[← hm]`. Use extensionality with `i j`. Conclude with `(M.res_apply _ hne _).symm`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_matrix_mul_eq_one_of_span_eq : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (J : Type) [Fintype J] [DecidableEq J] (W W' : M.Z.Opens) (b B : Matrix J J Ω) (c : Matrix J J Γ(M.Z, W')), (∀ z ∈ W ⊓ W', Submodule.span (M.O z) (Set.range b) = Submodule.span (M.O z) (Set.range B)) → c.map (valF M.pt W') * B = 1 → ∃ m m' : Matrix J J Γ(M.Z, W ⊓ W'), m * m' = 1 ∧ (((W ⊓ W' : M.Z.Opens) : Set M.Z).Nonempty → m.map (valF M.pt (W ⊓ W')) = b * c.map (valF M.pt W')) := by
   intro o Ω _ _ _ M J _ _ W W' b B c h hc

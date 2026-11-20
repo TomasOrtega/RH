@@ -21,17 +21,15 @@ noncomputable section
 namespace GlobalTheory.PullIsoExt
 
 /- English proof (translation)
-Establish `w₁ : (fst G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `w₂ : (snd G G).left ≫ G.hom = (G ⊗ G).hom` using `Over.w _`. Establish `v₁ : (fst A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `v₂ : (snd A A).left ≫ A.hom = (A ⊗ A).hom` using `Over.w _`. Establish `h₁` using `h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₂` using `h.2`. Use `⟨⟨by rw [← w₁, reassoc_of% h₁, hA.w, reassoc_of% v₁]⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => pullback.lift (hA.lift (s.fst ≫ (fst G G).left) s.snd (by rw [Category.assoc, w₁, s.condition])) (hA.lift (s.fst ≫ (snd G G).left) s.snd (by rw [Category.assoc, w₂, s.condition])) (by rw [ …` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ ≫ (fst G G).left = _ ≫ (fst G G).left`. Rewrite using `[Category.assoc, h₁, ← Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· ≫ a) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Express the relevant statement in the definitionally equal form `_ ≫ (snd G G).left = _ ≫ (snd G G).left`. Rewrite using `[Category.assoc, h₂, ← Category.assoc]`. Conclude with `(congrArg (· ≫ a) (pullback.lift_snd _ _ _)).trans (IsPullback.lift_fst _ _ _ _)`. Rewrite using `[← v₁, ← Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (· ≫ A.hom) (pullback.lift_fst _ _ _)).trans (IsPullback.lift_snd _ _ _ _)`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `Eq.trans ?_ (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (fst A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₁]`. Rewrite using `[IsPullback.lift_snd, ← h2, ← v₁, Category.assoc]`. Use `Eq.trans ?_ (pullback.lift_snd _ _ _).symm` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ≫ (snd A A).left = _`. Apply `hA.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[IsPullback.lift_fst, ← h1, Category.assoc, Category.assoc, h₂]`. Rewrite using `[IsPullback.lift_snd, ← h2, ← v₂, Category.assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_sq {S S' : Scheme.{0}} {G : Over S} {A : Over S'} {f : S' ⟶ S}
     {a : A.left ⟶ G.left} (hA : IsPullback a A.hom G.hom f)
@@ -71,9 +69,9 @@ theorem isPullback_sq {S S' : Scheme.{0}} {G : Over S} {A : Over S'} {f : S' ⟶
       · rw [IsPullback.lift_snd, ← h2, ← v₂, Category.assoc]
 
 /- English proof (translation)
-Introduce `W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hφ hsq P P' hP hP' hPP' a b a' b' ha hb h`. Establish `hpb : IsPullback φ₂ (G2 A).hom (G2 G).hom (spMap (algebraMap W L))` using `isPullback_sq hφ.1 hsq`. Establish `hG2 : IsAbelianScheme (G2 G)` using `ReciprocityTheory.ChartRestriction.G.Geo.Tor.AbelianSchemeGerms.isAbelianScheme_tensor G G hG hG`. Establish `side : ∀ (c : G2 A ⟶ G2 A) (c' : G2 G ⟶ G2 G), c.left ≫ φ₂ = φ₂ ≫ c'.left → LBIso ((P'.pull c'.left).pull φ₂) (P.pull c.left)` using `fun c c' hc => LBIso.trans (pull_isLB (pull_isLB hP' _) _) (pull_isLB hP' _) (pull_isLB hP _) (GlobalTheory.GenSpread.lbIso_pull_pull hP' φ₂ hc).symm (GlobalTheory.GenSpread.lbIso_pull_of_lbIso hPP' c.left rfl).symm`. Establish `key : LBIso ((P'.pull a'.left).pull φ₂) ((P'.pull b'.left).pull φ₂)` using `LBIso.trans (pull_isLB (pull_isLB hP' _) _) (pull_isLB hP _) (pull_isLB (pull_isLB hP' _) _) (side a a' ha) (LBIso.trans (pull_isLB hP _) (pull_isLB hP _) (pull_isLB (pull_isLB hP' _) _) h (side b b' hb).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.GenericIsoAb.lbIso_of_generic_pullback W L (G2 G) (G2 A).left (G2 A).hom φ₂ hG2 hpb (P'.pull a'.left) (P'.pull b'.left) (pull_isLB hP' _) (pull_isLB hP' _) key`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_ext : ∀ (W L : Type) [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field L] [Algebra W L] [IsFractionRing W L] (G : Over (Sp W)) [GrpObj G] (A : Over (Sp L)) [GrpObj A] (φ : A.left ⟶ G.left) (φ₂ : (G2 A).left ⟶ (G2 G).left), IsAbelianScheme G → IsGrpPullback A G (spMap (algebraMap W L)) φ → IsSquare φ φ₂ → ∀ (P : LB (G2 A).left) (P' : LB (G2 G).left), P.IsLB → P'.IsLB → LBIso P (P'.pull φ₂) → ∀ (a b : G2 A ⟶ G2 A) (a' b' : G2 G ⟶ G2 G), a.left ≫ φ₂ = φ₂ ≫ a'.left → b.left ≫ φ₂ = φ₂ ≫ b'.left → LBIso (P.pull a.left) (P.pull b.left) → LBIso (P'.pull a'.left) (P'.pull b'.left) := by
   intro W L _ _ _ _ _ _ G _ A _ φ φ₂ hG hφ hsq P P' hP hP' hPP' a b a' b' ha hb h

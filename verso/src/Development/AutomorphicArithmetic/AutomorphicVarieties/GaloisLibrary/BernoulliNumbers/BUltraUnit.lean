@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `Ω)).integer y := h.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := Ω))).mem_of_integral h1`. Establish `h3 : ‖y‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem b_ultra_int {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] {y : Ω}
     (h : IsIntegral ℤ y) : ‖y‖ ≤ 1 := by
@@ -14,11 +14,11 @@ private theorem b_ultra_int {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] 
   exact_mod_cast h3
 
 /- English proof (translation)
-Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Take `⟨a, b, hab⟩` from `(hp.irreducible.coprime_iff_not_dvd).mpr hm`. Establish `h1 : (a : Ω) * l + b * m = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) hab`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hlt : ‖(l : Ω)‖ < 1` using `by rw [hn]; exact inv_lt_one_of_one_lt₀ hl1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_antisymm (IsUltrametricDist.norm_intCast_le_one Ω m) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `ha` using `IsUltrametricDist.norm_intCast_le_one Ω a`. Establish `hb` using `IsUltrametricDist.norm_intCast_le_one Ω b`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `IsUltrametricDist.norm_add_le_max ((a : Ω) * l) ((b : Ω) * m)`. Rewrite `h2` using `[h1, norm_one, norm_mul, norm_mul]`. Establish `h3 : ‖(a : Ω)‖ * ‖(l : Ω)‖ < 1` using `mul_lt_one_of_nonneg_of_lt_one_right ha (norm_nonneg _) hlt`. Establish `h4 : ‖(b : Ω)‖ * ‖(m : Ω)‖ < 1` using `mul_lt_one_of_nonneg_of_lt_one_right hb (norm_nonneg _) hc`. Conclude with `absurd h2 (not_le.mpr (max_lt h3 h4))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem b_ultra_unit {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] (l : ℕ)
     [hl : Fact l.Prime] (hn : ‖(l : Ω)‖ = (l : ℝ)⁻¹) (m : ℤ) (hm : ¬ (l : ℤ) ∣ m) :
@@ -40,11 +40,9 @@ private theorem b_ultra_unit {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω]
   exact absurd h2 (not_le.mpr (max_lt h3 h4))
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `padicValInt_dvd (p := l) M`. Establish `hnd : ¬ (l : ℤ) ∣ m`. Introduce and unpack `⟨c, hc⟩`. Establish `: (l : ℤ) ^ (padicValInt l M + 1) ∣ M` using `⟨c, by conv_lhs => rw [hm, hc] ring⟩`. Break down `(padicValInt_dvd_iff _ _).mp this with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hM h`. Use linear arithmetic over natural numbers and integers. Establish `h1 : (M : Ω) = (l : Ω) ^ padicValInt l M * m`. Conclude with `congrArg (Int.cast : ℤ → Ω) hm` after adjusting the coercions. Rewrite using `[h1, norm_mul, b_ultra_unit l hn m hnd, mul_one, norm_pow, hn, Real.log_pow, Real.log_inv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem b_ultra_log {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] (l : ℕ)
     [hl : Fact l.Prime] (hn : ‖(l : Ω)‖ = (l : ℝ)⁻¹) (M : ℤ) (hM : M ≠ 0) :
@@ -64,13 +62,13 @@ private theorem b_ultra_log {Ω : Type} [NormedField Ω] [IsUltrametricDist Ω] 
   ring
 
 /- English proof (translation)
-Introduce `Ω ι _ _ _ l _ hn S x D M hS hM hint hprod`. Rewrite `hprod` using `[finprod_mem_eq_finite_toFinset_prod _ hS]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, ← b_ultra_log l hn M hM, ← hprod, norm_prod]`. Establish `hM' : (M : Ω) ≠ 0` using `by exact_mod_cast hM`. Establish `hne : ∀ i ∈ hS.toFinset, (D : Ω) * x i ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_ne_zero_iff, hprod]`. Conclude with `hM'`. Rewrite using `[Real.log_prod (fun i hi => norm_ne_zero_iff.mpr (hne i hi)), ← Finset.sum_neg_distrib]`. Use `Finset.sum_le_sum fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i ∈ S` using `by simpa using hi`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hne i hi`. Establish `hD : (D : Ω) ≠ 0` using `left_ne_zero_of_mul h0`. Establish `hx : x i ≠ 0` using `right_ne_zero_of_mul h0`. Use `max_le ?_ ?_` and prove the remaining obligations. Use `Real.log_nonpos (norm_nonneg _) (b_ultra_int (hint i hi'))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_mul, Real.log_mul (norm_ne_zero_iff.mpr hD) (norm_ne_zero_iff.mpr hx)]`. Use `Real.log_nonpos (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one Ω D)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_ultra :
     ∀ {Ω ι : Type} [NormedField Ω] [IsUltrametricDist Ω] [CharZero Ω] (l : ℕ) [Fact l.Prime], ‖(l : Ω)‖ = (l : ℝ)⁻¹ → ∀ (S : Set ι) (x : ι → Ω) (D : ℕ) (M : ℤ), S.Finite → M ≠ 0 → (∀ i ∈ S, IsIntegral ℤ ((D : Ω) * x i)) → ∏ᶠ i ∈ S, (D : Ω) * x i = (M : Ω) → ∑ᶠ i ∈ S, max 0 (-Real.log ‖x i‖) ≤ (padicValInt l M : ℝ) * Real.log l := by

@@ -9,9 +9,9 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Simplify using `only [lin]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Apply `congrArg (fun F : MvPolynomial (Fin k) R →ₐ[R] MvPolynomial (Fin k) R => F P)` to reduce the goal to its premises. Use `congr 1`. Use function extensionality and compare the values at `c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lin_comp {R : Type} [CommRing R] {k : ℕ} (M N : Matrix (Fin k) (Fin k) R) (P : MvPolynomial (Fin k) R) :
     lin M (lin N P) = lin (N * M) P := by
@@ -26,13 +26,13 @@ theorem lin_comp {R : Type} [CommRing R] {k : ℕ} (M N : Matrix (Fin k) (Fin k)
   simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `[lin, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lin_one {R : Type} [CommRing R] {k : ℕ} (P : MvPolynomial (Fin k) R) : lin (1 : Matrix (Fin k) (Fin k) R) P = P := by
   simp [lin, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.monomial_eq, MvPolynomial.C_1, one_mul, Finsupp.prod_fintype]`. Introduce `i`. Conclude with `pow_zero _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mono_eq {R : Type} [CommRing R] {σ : Type} [Fintype σ] (μ : σ →₀ ℕ) :
     (monomial μ (1 : R)) = ∏ v, X v ^ μ v := by
@@ -41,9 +41,9 @@ theorem mono_eq {R : Type} [CommRing R] {σ : Type} [Fintype σ] (μ : σ →₀
   exact pow_zero _
 
 /- English proof (translation)
-Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff] at hP`. Use `conv_lhs => rw [MvPolynomial.as_sum P]`. Use `conv_rhs => rw [MvPolynomial.as_sum P]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∑ c, μ c = d` using `hP hμ`. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), MvPolynomial.algebraMap_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem scaleHd {R : Type} [CommRing R] {k d : ℕ} (q : MvPolynomial (Fin k) R) (P : MvPolynomial (Fin k) R)
     (hP : P ∈ Hd R k d) : aeval (fun c => q * X c) P = q ^ d * P := by
@@ -60,13 +60,11 @@ theorem scaleHd {R : Type} [CommRing R] {k d : ℕ} (q : MvPolynomial (Fin k) R)
   ring
 
 /- English proof (translation)
-Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff] at hP`. Simplify using `only [lin]`. Use `conv_lhs => rw [MvPolynomial.as_sum P]`. Use `conv_rhs => rw [MvPolynomial.as_sum P]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hd : ∑ c, μ c = d` using `hP hμ`. Establish `e : ∀ c, (∑ b, C ((a • M) c b) * X b : MvPolynomial (Fin k) R) = C a * ∑ b, C (M c b) * X b`. Introduce `c`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, MvPolynomial.C_mul, mul_assoc]`. Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [e, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.C_pow]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lin_smul {R : Type} [CommRing R] {k d : ℕ} (a : R) (M : Matrix (Fin k) (Fin k) R)
     (P : MvPolynomial (Fin k) R) (hP : P ∈ Hd R k d) : lin (a • M) P = a ^ d • lin M P := by
@@ -90,15 +88,13 @@ theorem lin_smul {R : Type} [CommRing R] {k d : ℕ} (a : R) (M : Matrix (Fin k)
   ring
 
 /- English proof (translation)
-Unfold `Hd at hP`. Rewrite `hP` using `[restrictSupport_eq_span]`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨μ, hμ, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hμ' : ∑ c, μ c = d` using `hμ`. Use `beta_reduce`. Rewrite using `[mono_eq, map_prod, ← hμ']`. Apply `Hd_prod` to reduce the goal to its premises. Introduce `c _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow]`. Establish `h1 : lin M (X c) ∈ Hd R k 1`. Simplify using `only [lin, aeval_X]`. Conclude with `Submodule.sum_mem _ fun b _ => Hd_X R k _ b`. Establish `h2` using `Hd_prod (Finset.range (μ c)) (fun _ => 1) (fun _ => lin M (X c)) (fun _ _ => h1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using h2`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lin_Hd {R : Type} [CommRing R] {k d : ℕ} (M : Matrix (Fin k) (Fin k) R)
     (P : MvPolynomial (Fin k) R) (hP : P ∈ Hd R k d) : lin M P ∈ Hd R k d := by
@@ -123,9 +119,9 @@ theorem lin_Hd {R : Type} [CommRing R] {k d : ℕ} (M : Matrix (Fin k) (Fin k) R
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Simplify using `only [Nv]`. Consider the cases of `vec`. Simplify using `only [Bool.false_eq_true, if_false]`. Establish `h1 : (MvPolynomial.map f).mapMatrix (genM R m) = genM R' m`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[genM]`. Rewrite using `[← h1, ← RingHom.map_adjugate]`. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem map_Nv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (m : ℕ) (vec : Bool) (c : Fin (m + 1)) :
     map f (Nv R m vec c) = Nv R' m vec c := by
@@ -140,7 +136,7 @@ theorem map_Nv {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (m : �
   · simp
 
 /- English proof (translation)
-Simplify using `only [theta, MvPolynomial.aeval_def, MvPolynomial.algebraMap_eq]`. Rewrite using `[MvPolynomial.map_eval₂]`. Use `congr 2`. Use function extensionality and compare the values at `c`. Conclude with `map_Nv f m vec c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_theta {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (m : ℕ) (vec : Bool)
     (P : MvPolynomial (Fin (m + 1)) R) : map f (theta R m vec P) = theta R' m vec (map f P) := by
@@ -151,7 +147,7 @@ theorem map_theta {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (m :
   exact map_Nv f m vec c
 
 /- English proof (translation)
-Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff] at hP ⊢`. Conclude with `(Finset.coe_subset.mpr (MvPolynomial.support_map_subset f P)).trans hP`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_Hd {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {k d : ℕ}
     (P : MvPolynomial (Fin k) R) (hP : P ∈ Hd R k d) : map f P ∈ Hd R' k d := by
@@ -170,7 +166,7 @@ def Th0 (R : Type) [CommRing R] (m : ℕ) (vec : S → Bool) :
   aeval fun v => blockEmb R v.1 (Nv R m (vec v.1) v.2)
 
 /- English proof (translation)
-Simplify using `only [Th0, embS, MvPolynomial.aeval_rename, theta]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Th0_emb (R : Type) [CommRing R] (m : ℕ) (vec : S → Bool) (s : S) (P : MvPolynomial (Fin (m + 1)) R) :
     Th0 R m vec (embS R s P) = blockEmb R s (theta R m (vec s) P) := by
@@ -183,9 +179,9 @@ def Lin {R : Type} [CommRing R] {k : ℕ} (N : S → Matrix (Fin k) (Fin k) R) :
   aeval fun v => ∑ b, C (N v.1 v.2 b) * X (v.1, b)
 
 /- English proof (translation)
-Simplify using `only [Lin, embS, lin, MvPolynomial.aeval_rename]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Apply `congrArg (fun F : MvPolynomial (Fin k) R →ₐ[R] MvPolynomial (S × Fin k) R => F P)` to reduce the goal to its premises. Use `congr 1`. Use function extensionality and compare the values at `c`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Function.comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lin_emb {R : Type} [CommRing R] {k : ℕ} (N : S → Matrix (Fin k) (Fin k) R) (s : S)
     (P : MvPolynomial (Fin k) R) : Lin N (embS R s P) = embS R s (lin (N s) P) := by
@@ -197,9 +193,9 @@ theorem Lin_emb {R : Type} [CommRing R] {k : ℕ} (N : S → Matrix (Fin k) (Fin
   simp [Function.comp]
 
 /- English proof (translation)
-Simplify using `only [Lin]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Apply `congrArg (fun F : MvPolynomial (S × Fin k) R →ₐ[R] MvPolynomial (S × Fin k) R => F P)` to reduce the goal to its premises. Use `congr 1`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, MvPolynomial.algebraMap_eq, Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Lin_comp {R : Type} [CommRing R] {k : ℕ} (M N : S → Matrix (Fin k) (Fin k) R)
     (P : MvPolynomial (S × Fin k) R) : Lin M (Lin N P) = Lin (fun s => N s * M s) P := by
@@ -214,23 +210,23 @@ theorem Lin_comp {R : Type} [CommRing R] {k : ℕ} (M N : S → Matrix (Fin k) (
   simp only [mul_assoc]
 
 /- English proof (translation)
-Simplify using `[Lin, Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Lin_one {R : Type} [CommRing R] {k : ℕ} (P : MvPolynomial (S × Fin k) R) :
     Lin (fun _ : S => (1 : Matrix (Fin k) (Fin k) R)) P = P := by
   simp [Lin, Matrix.one_apply]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Pol {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} {F : MvPolynomial (S × Fin k) R} :
     F ∈ Pol R k d ↔ ∀ μ ∈ F.support, ∀ i, multideg μ i = d i := by
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_Pol]`. Introduce `μ hμ i`. Rewrite `hμ` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at hμ with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[multideg]`. Conclude with `absurd rfl hμ`.
+A detailed English derivation is pending.
 -/
 theorem Pol_one (R : Type) [CommRing R] (k : ℕ) : (1 : MvPolynomial (S × Fin k) R) ∈ Pol R k (0 : S → ℕ) := by
   rw [mem_Pol]
@@ -243,9 +239,9 @@ theorem Pol_one (R : Type) [CommRing R] (k : ℕ) : (1 : MvPolynomial (S × Fin 
   · exact absurd rfl hμ
 
 /- English proof (translation)
-Rewrite `hP`, `hQ`, the goal using `[mem_Pol]`. Introduce `μ hμ i`. Take `⟨a', ha, b', hb, rfl⟩` from `Finset.mem_add.mp (MvPolynomial.support_mul P Q hμ)`. Establish `e1` using `hP a' ha i`. Establish `e2` using `hQ b' hb i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [multideg] at e1 e2 ⊢`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, e1, e2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Pol_mul {R : Type} [CommRing R] {k : ℕ} {a b : S → ℕ} {P Q : MvPolynomial (S × Fin k) R}
     (hP : P ∈ Pol R k a) (hQ : Q ∈ Pol R k b) : P * Q ∈ Pol R k (a + b) := by
@@ -259,9 +255,9 @@ theorem Pol_mul {R : Type} [CommRing R] {k : ℕ} {a b : S → ℕ} {P Q : MvPol
   simp only [Finsupp.add_apply, Finset.sum_add_distrib, Pi.add_apply, e1, e2]
 
 /- English proof (translation)
-Use `revert h`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `using (Pol_one (S := S) R k)`. Introduce `j s hj ih h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj]`. Conclude with `Pol_mul (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+A detailed English derivation is pending.
 -/
 theorem Pol_prod {R : Type} [CommRing R] {k : ℕ} {J : Type} (s : Finset J) (δ : J → S → ℕ)
     (q : J → MvPolynomial (S × Fin k) R) (h : ∀ i ∈ s, q i ∈ Pol R k (δ i)) :
@@ -276,13 +272,11 @@ theorem Pol_prod {R : Type} [CommRing R] {k : ℕ} {J : Type} (s : Finset J) (δ
     exact Pol_mul (h j (Finset.mem_insert_self j s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Rewrite using `[mem_Pol]`. Introduce `μ hμ i`. Establish `hinj : Function.Injective fun c : Fin k => (s, c)` using `fun a b h => (Prod.mk.inj h).2`. Simplify using `only [embS] at hμ`. Rewrite `hμ` using `[MvPolynomial.support_rename_of_injective hinj, Finset.mem_image]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ν, hν, rfl⟩` from `hμ`. Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff] at hP`. Establish `hd : ∑ c, ν c = a` using `hP hν`. Simplify using `only [multideg]`. Distinguish the cases in `hi : i = s`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `only [Pi.single_eq_same]`. Rewrite using `[← hd]`. Conclude with `Finset.sum_congr rfl fun c _ => Finsupp.mapDomain_apply hinj ν c`. Rewrite using `[Pi.single_eq_of_ne hi]`.
-
-Conclude with `Finset.sum_eq_zero fun c _ => Finsupp.mapDomain_notin_range _ _ (by rintro ⟨c', hc'⟩; exact hi (congrArg Prod.fst hc').symm)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_Pol {R : Type} [CommRing R] {k a : ℕ} (s : S) (P : MvPolynomial (Fin k) R) (hP : P ∈ Hd R k a) :
     embS R s P ∈ Pol R k (Pi.single s a : S → ℕ) := by
@@ -305,7 +299,7 @@ theorem emb_Pol {R : Type} [CommRing R] {k a : ℕ} (s : S) (P : MvPolynomial (F
       (by rintro ⟨c', hc'⟩; exact hi (congrArg Prod.fst hc').symm)
 
 /- English proof (translation)
-Use `Pol_prod Finset.univ (fun s => (Pi.single s (d s) : S → ℕ)) (fun s => embS R s (P s)) (fun s _ => emb_Pol s (P s) (hP s))` as an intermediate fact. Rewrite `this` using `[Finset.univ_sum_single]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem prod_emb_Pol {R : Type} [CommRing R] {k : ℕ} (d : S → ℕ) (P : S → MvPolynomial (Fin k) R)
     (hP : ∀ s, P s ∈ Hd R k (d s)) : ∏ s, embS R s (P s) ∈ Pol R k d := by
@@ -316,7 +310,7 @@ theorem prod_emb_Pol {R : Type} [CommRing R] {k : ℕ} (d : S → ℕ) (P : S �
 def partS {k : ℕ} (μ : S × Fin k →₀ ℕ) (s : S) : Fin k →₀ ℕ := Finsupp.equivFunOnFinite.symm fun c => μ (s, c)
 
 /- English proof (translation)
-Rewrite using `[mono_eq, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[mono_eq, map_prod]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `[embS, partS]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mono_factor (R : Type) [CommRing R] {k : ℕ} (μ : S × Fin k →₀ ℕ) :
     (monomial μ (1 : R)) = ∏ s, embS R s (monomial (partS μ s) 1) := by
@@ -327,9 +321,9 @@ theorem mono_factor (R : Type) [CommRing R] {k : ℕ} (μ : S × Fin k →₀ �
   simp [embS, partS]
 
 /- English proof (translation)
-Simplify using `only [Hd, MvPolynomial.mem_restrictSupport_iff]`. Introduce `ν hν`. Use `MvPolynomial.support_monomial_subset hν` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Substitute `this` using the available equality.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `show ∑ c, partS μ s c = d s`. Rewrite using `[← hμ s]`. Simplify using `[partS, multideg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem partS_Hd (R : Type) [CommRing R] {k : ℕ} (d : S → ℕ) (μ : S × Fin k →₀ ℕ) (hμ : ∀ i, multideg μ i = d i)
     (s : S) : (monomial (partS μ s) (1 : R)) ∈ Hd R k (d s) := by
@@ -344,11 +338,9 @@ theorem partS_Hd (R : Type) [CommRing R] {k : ℕ} (d : S → ℕ) (μ : S × Fi
   simp [partS, multideg]
 
 /- English proof (translation)
-Rewrite `hF` using `[mem_Pol]`. Use `conv_lhs => rw [MvPolynomial.as_sum F]`. Use `conv_rhs => rw [MvPolynomial.as_sum F]`. Rewrite using `[map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ s, ∑ c, μ (s, c) = d s` using `fun s => hF μ hμ s`. Rewrite using `[MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), MvPolynomial.algebraMap_eq]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[Fintype.prod_prod_type (fun v => Q v.1 ^ μ v)]`. Simplify using `only [Finset.prod_pow_eq_pow_sum, hd]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem scalePol {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} (Q : S → MvPolynomial (S × Fin k) R)
     (F : MvPolynomial (S × Fin k) R) (hF : F ∈ Pol R k d) :
@@ -368,11 +360,11 @@ theorem scalePol {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} (Q : S → Mv
   ring
 
 /- English proof (translation)
-Unfold `Pol at hF`. Rewrite `hF` using `[restrictSupport_eq_span]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨μ, hμ, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `beta_reduce`. Rewrite using `[mono_factor, map_prod]`. Simplify using `only [Lin_emb]`. Conclude with `prod_emb_Pol d _ fun s => lin_Hd _ _ (partS_Hd R d μ hμ s)`. Consider the case `zero => simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem Lin_Pol {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} (N : S → Matrix (Fin k) (Fin k) R)
     (F : MvPolynomial (S × Fin k) R) (hF : F ∈ Pol R k d) : Lin N F ∈ Pol R k d := by
@@ -390,13 +382,13 @@ theorem Lin_Pol {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} (N : S → Mat
   | smul a x _ hx => rw [map_smul]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Rewrite `hF` using `[mem_Pol]`. Simplify using `only [Lin]`. Use `conv_lhs => rw [MvPolynomial.as_sum F]`. Use `conv_rhs => rw [MvPolynomial.as_sum F]`. Rewrite using `[map_sum, map_sum, Finset.smul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun μ hμ => ?_` and prove the remaining obligations. Establish `hd : ∀ s, ∑ c, μ (s, c) = d s` using `fun s => hF μ hμ s`. Establish `e : ∀ v : S × Fin k, (∑ b, C ((a v.1 • M v.1) v.2 b) * X (v.1, b) : MvPolynomial (S × Fin k) R) = C (a v.1) * ∑ b, C (M v.1 v.2 b) * X (v.1, b)`. Introduce `v`. Rewrite using `[Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul, MvPolynomial.C_mul, mul_assoc]`. Rewrite using `[MvPolynomial.aeval_monomial, MvPolynomial.aeval_monomial, Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Finsupp.prod_fintype _ _ (fun _ => pow_zero _)]`. Simplify using `only [e, mul_pow, Finset.prod_mul_distrib]`. Rewrite using `[Fintype.prod_prod_type (fun v => C (a v.1) ^ μ v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.prod_pow_eq_pow_sum, hd]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_prod]`. Simplify using `only [MvPolynomial.C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Lin_smul {R : Type} [CommRing R] {k : ℕ} {d : S → ℕ} (a : S → R) (M : S → Matrix (Fin k) (Fin k) R)
     (F : MvPolynomial (S × Fin k) R) (hF : F ∈ Pol R k d) :
@@ -429,7 +421,7 @@ def Ps0 (R : Type) [CommRing R] (m : ℕ) (vec : S → Bool) :
   aeval fun v => embS R v.1 (psi R m (vec v.1) (X v.2))
 
 /- English proof (translation)
-Simplify using `only [Ps0, blockEmb, MvPolynomial.aeval_rename]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.aeval_unique ((embS R s).comp (psi R m (vec s)))]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Ps0_block (R : Type) [CommRing R] (m : ℕ) (vec : S → Bool) (s : S)
     (F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) :
@@ -439,9 +431,9 @@ theorem Ps0_block (R : Type) [CommRing R] (m : ℕ) (vec : S → Bool) (s : S)
   rfl
 
 /- English proof (translation)
-Establish `h1 : (Ps0 R m vec).comp (Th0 R m vec) = aeval fun v : S × Fin (m + 1) => embS R v.1 (qf R m (vec v.1)) * X v`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [AlgHom.comp_apply, Th0, aeval_X, Ps0_block, psi_Nv R m hm, map_mul]`. Simplify using `[embS]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← scalePol _ _ hF, ← h1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem polynomial_theta_product (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (F : MvPolynomial (S × Fin (m + 1)) R) (hF : F ∈ Pol R (m + 1) d) :
@@ -456,18 +448,18 @@ theorem polynomial_theta_product (R : Type) [CommRing R] [IsDomain R] (m : ℕ) 
   rfl
 
 /- English proof (translation)
-Simplify using `only [qf]`. Apply the tactic sequence `cases vec <;> simp [MvPolynomial.X_ne_zero]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qf_ne (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (vec : Bool) : qf R m vec ≠ 0 := by
   simp only [qf]
   cases vec <;> simp [MvPolynomial.X_ne_zero]
 
 /- English proof (translation)
-Establish `h1` using `polynomial_theta_product R m hm vec d F hF`. Establish `h2` using `polynomial_theta_product R m hm vec d G hG`. Rewrite `h1` using `[h, h2]`. Use `(mul_left_cancel₀ ?_ h1).symm` and prove the remaining obligations. Apply `Finset.prod_ne_zero_iff.2` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s _`. Apply `pow_ne_zero` to reduce the goal to its premises. Introduce `h0`. Apply `qf_ne R m (vec s)` to reduce the goal to its premises. Establish `hinj : Function.Injective (fun c : Fin (m + 1) => (s, c))` using `fun a b h => (Prod.mk.inj h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `rename_injective _ hinj (by rw [map_zero]; exact h0)`.
+A detailed English derivation is pending.
 -/
 theorem Th0_inj (R : Type) [CommRing R] [IsDomain R] (m : ℕ) (hm : 1 ≤ m) (vec : S → Bool) (d : S → ℕ)
     (F G : MvPolynomial (S × Fin (m + 1)) R) (hF : F ∈ Pol R (m + 1) d) (hG : G ∈ Pol R (m + 1) d)

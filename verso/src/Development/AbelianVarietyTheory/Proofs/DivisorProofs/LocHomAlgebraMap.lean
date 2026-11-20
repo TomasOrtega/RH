@@ -30,7 +30,7 @@ noncomputable def locHom (Q : Ideal (integralClosure D (TensorProduct S D L))) [
       IsLocalization.map_units (Localization.AtPrime Q) (⟨toNorm S L D s, s.2⟩ : Q.primeCompl))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem locHom_algebraMap (Q : Ideal (integralClosure D (TensorProduct S D L))) [Q.IsPrime]
     (o : integralClosure S L) :

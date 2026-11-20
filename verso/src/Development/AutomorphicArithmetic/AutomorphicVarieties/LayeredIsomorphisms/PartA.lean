@@ -12,9 +12,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `ENat.ne_top_iff_exists.mp hb`. Establish `h' : a ≤ ((1 + n : ℕ) : ℕ∞)` using `by push_cast; exact h`. Establish `ha : a ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) h'`. Take `⟨m, rfl⟩` from `ENat.ne_top_iff_exists.mp ha`. Use `⟨ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [ENat.toNat_coe]`. Conclude with `h'` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ne_top_and_toNat_le_of_le_one_add (a b : ℕ∞) (hb : b ≠ ⊤) (h : a ≤ 1 + b) :
     a ≠ ⊤ ∧ a.toNat ≤ 1 + b.toNat := by
@@ -27,23 +27,23 @@ private theorem ne_top_and_toNat_le_of_le_one_add (a b : ℕ∞) (hb : b ≠ ⊤
   exact_mod_cast h'
 
 /- English proof (translation)
-Introduce `CK hCK hK M R J Ct eps A1 hJ hCt heps`. Take `⟨n0, c0, hc0, hLD⟩` from `layerdisc 2 (jZero 2 R) (8 * M.deg) (4 * M.m) Nat.prime_two (by have := M.pos; omega)`. Take `⟨C, hC0, hC⟩` from `point2 CK hCK hK 2 R (16 * M.deg) n0 c0 J Ct eps (2 * |A1| + 2) hc0 hJ hCt heps (by positivity)`. Take `⟨x0, hx02, hx0⟩` from `final Ct eps C heps`. Use `⟨x0, fun e t hAdm X q d hPP hlogqd L₀ _ _ hTB hAB => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hmu, hfin, hcyc, hE⟩` from `hTB`. Establish `hSB : SecondBound 2 R L₀` using `hAB.2`. Take `⟨c, hζ, hZ⟩` from `exc 2 R L₀ hAB`. Establish `hc : c ≤ 16 * M.deg`. Establish `h1` using `rootdeg L₀ 2 c Nat.prime_two hζ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : c < 2 ^ c` using `Nat.lt_two_pow_self`. Use linear arithmetic over natural numbers and integers. Take `⟨L₂, i1, i2, i3, hL₂⟩` from `layerex 2 (jZero 2 R) Nat.prime_two L₀ hmu`. Take `⟨Exc, hExc⟩` from `hZ ⌊X ^ Ct⌋₊`. Use `⟨Exc, hExc.1, fun x hx hXx hxX hG E _ _ hEc => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : (1 : ℝ) ≤ x` using `by linarith`. Establish `hX1 : (1 : ℝ) ≤ X` using `by linarith`. Establish `hlog : 0 ≤ Real.log x` using `Real.log_nonneg hx1`. Take `⟨he2, h2e, -, htx⟩` from `hAdm x (by linarith)`. Establish `hw : (1 : ℝ) ≤ x ^ (eps / 4)` using `Real.one_le_rpow hx1 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP : 0 < q * d` using `Nat.mul_pos hPP.1.pos hPP.2.2.1.pos`. Establish `hlogP : Real.log ((q * d : ℕ) : ℝ) ≤ x ^ (eps / 4)`. Use `push_cast`. Conclude with `hlogqd.trans (logs.2.1 J eps X x hJ heps hX1 hXx)`. Establish `hcyc' : Nonempty (L₀ →ₐ[ℚ] CyclotomicField (4 * M.m * (q * d)) ℚ)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Conclude with `hcyc`. Take `⟨hn0, hdisc⟩` from `hLD (q * d) (x ^ (eps / 4)) hP hw hlogP L₀ L₂ hfin hcyc' hL₂`. Take `⟨m, L₁, j1, j2, j3, hL₁, hme, hsha⟩` from `hE (e x) he2 E hEc`. Establish `hm : (m : ℝ) ≤ (2 * |A1| + 2) * (1 + Real.log x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `logs.2.2 (e x) A1 x hx1 h2e`. Establish `h4 : (m : ℝ) ≤ (e x : ℝ) + 2` using `by exact_mod_cast hme`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpb : 0 ≤ ptBound C eps x` using `by show 0 ≤ C * (1 + Real.log x) + 2 * Real.exp (C * x ^ (3 * eps / 4))`. Conclude with `add_nonneg (mul_nonneg hC0 (by linarith)) (by positivity)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show VVat 2 E (t x) (Real.exp (x ^ (4 * eps / 5)))`. Use `vvat 2 (t x) E (x ^ Ct) (ptBound C eps x) _ hpb htx (hx0 x hx) ?_` and prove the remaining obligations. Introduce `k hk1 hkt`. Establish `hkx : (k : ℝ) ≤ x ^ Ct` using `le_trans (by exact_mod_cast hkt.le) htx`. Establish `hk` using `hC L₀ hmu hSB c X Exc hc hExc L₂ hL₂ hn0 x hx1 hXx hxX hG hdisc k hk1 hkx m L₁ hL₁ hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨hne, hle⟩` from `ne_top_and_toNat_le_of_le_one_add _ _ hk.1 (hsha k hk1)`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `h5 : ((shaInv E 2 k).toNat : ℝ) ≤ 1 + ((shaInv L₁ 2 k).toNat : ℝ)`. Conclude with `hle` after adjusting the coercions. Combine the linear relations using `[hk.2]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.partA :
     ∀ CK : ℝ, 0 < CK → LemmaK CK → ∀ (M : AbF) (R : ℕ) (J Ct eps A1 : ℝ), 0 < J → 0 ≤ Ct → 0 < eps →

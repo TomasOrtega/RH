@@ -26,54 +26,54 @@ open Matrix
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cT_mul_r (s : O →+* O) {a b c : Type} [Fintype b] (M : Matrix a b O) (N : Matrix b c O) :
     Formalism.UG.cT s (M * N) = Formalism.UG.cT s N * Formalism.UG.cT s M := by
   simp only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Formalism.UG.cT, Matrix.one_apply, h, eq_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_one_r (s : O →+* O) {a : Type} [DecidableEq a] : Formalism.UG.cT s (1 : Matrix a a O) = 1 := by
   ext i j; by_cases h : i = j <;> simp [Formalism.UG.cT, Matrix.one_apply, h, eq_comm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_zero_r (s : O →+* O) {a b : Type} : Formalism.UG.cT s (0 : Matrix a b O) = 0 := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_sub_r (s : O →+* O) {a b : Type} (M N : Matrix a b O) :
     Formalism.UG.cT s (M - N) = Formalism.UG.cT s M - Formalism.UG.cT s N := by
   ext i j; simp [Formalism.UG.cT]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `hs _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cT_cT_r {s : O →+* O} (hs : ∀ x, s (s x) = x) {a b : Type} (M : Matrix a b O) :
     Formalism.UG.cT s (Formalism.UG.cT s M) = M := by
   ext i j; exact hs _
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cT_fromCols_r (s : O →+* O) {a b c : Type} (X : Matrix a b O) (Y : Matrix a c O) :
     Formalism.UG.cT s (fromCols X Y) = fromRows (Formalism.UG.cT s X) (Formalism.UG.cT s Y) := by
   ext (i | i) j <;> rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem assoc3 {a b c d : Type} [Fintype b] [Fintype c] {X : Matrix a b O} {Y : Matrix b c O}
     {Z : Matrix c d O} {V : Matrix a d O} (h : X * Y * Z = V) : X * (Y * Z) = V := by
   rw [← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tail3 {a b c d : Type} [Fintype b] [Fintype c] [Fintype d] {X : Matrix a b O} {Y : Matrix b c O}
     {Z : Matrix c d O} {V : Matrix a d O} (h : X * Y * Z = V) {p : Type} (W : Matrix d p O) :
@@ -81,24 +81,22 @@ theorem tail3 {a b c d : Type} [Fintype b] [Fintype c] [Fintype d] {X : Matrix a
   rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tail2 {a b c : Type} [Fintype b] [Fintype c] {X : Matrix a b O} {Y : Matrix b c O}
     {V : Matrix a c O} (h : X * Y = V) {p : Type} (W : Matrix c p O) : X * (Y * W) = V * W := by
   rw [← Matrix.mul_assoc, h]
 
 /- English proof (translation)
-Establish `hfix : ∀ y ∈ LinearMap.range (Matrix.mulVecLin P), P *ᵥ y = y`. Introduce and unpack `y ⟨w, rfl⟩`. Use `show P *ᵥ (P *ᵥ w) = P *ᵥ w`. Rewrite using `[mulVec_mulVec, hP]`. Use `haveI : Module.Projective O (LinearMap.range (Matrix.mulVecLin P)) := by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Module.Projective.of_split (LinearMap.range (Matrix.mulVecLin P)).subtype (Matrix.mulVecLin P).rangeRestrict ?_` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hfix _ x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Free O (LinearMap.range (Matrix.mulVecLin P)) := Module.free_of_flat_of_isLocalRing`. Use `set b := Module.finBasis O (LinearMap.range (Matrix.mulVecLin P)) with hb`. Establish `hmul : ∀ c : Fin _ → O, (Matrix.of fun x i => (b i : ι → O) x) *ᵥ c = ((b.equivFun.symm c : LinearMap.range (Matrix.mulVecLin P)) : ι → O)`. Introduce `c`. Rewrite using `[Module.Basis.equivFun_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `hres : ∀ y : LinearMap.range (Matrix.mulVecLin P), (Matrix.mulVecLin P).rangeRestrict (y : ι → O) = y` using `fun y => Subtype.ext (hfix _ y.2)`. Use `⟨_, Matrix.of fun x i => (b i : ι → O) x, LinearMap.toMatrix' (b.equivFun.toLinearMap ∘ₗ (Matrix.mulVecLin P).rangeRestrict), ?_, ?_⟩` and prove the remaining obligations. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[Matrix.toLin'_mul, Matrix.toLin'_toMatrix', Matrix.toLin'_one, LinearMap.comp_apply, Matrix.toLin'_apply, hmul, LinearMap.comp_apply, hres]`. Simplify using `only [LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, LinearMap.id_apply]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises.
-
-Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[Matrix.toLin'_mul, LinearMap.comp_apply, Matrix.toLin'_toMatrix', Matrix.toLin'_apply, hmul, LinearMap.comp_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idem_factor [IsLocalRing O] {ι : Type} [Fintype ι] [DecidableEq ι] (P : Matrix ι ι O) (hP : P * P = P) :
     ∃ (m : ℕ) (B : Matrix ι (Fin m) O) (B' : Matrix (Fin m) ι O), B' * B = 1 ∧ B * B' = P := by
@@ -139,7 +137,7 @@ theorem idem_factor [IsLocalRing O] {ι : Type} [Fintype ι] [DecidableEq ι] (P
     simp
 
 /- English proof (translation)
-Set `e : (b → O) ≃ₗ[O] (a → O)` to `LinearEquiv.ofLinear (Matrix.toLin' T) (Matrix.toLin' S) (by rw [← Matrix.toLin'_mul, h2, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, h1, Matrix.toLin'_one])`. Use `e.finrank_eq` as an intermediate fact. Simplify using `only [Module.finrank_fintype_fun_eq_card] at this`. Conclude with `this.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_eq_of_inv [Nontrivial O] {a b : Type} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
     {S : Matrix b a O} {T : Matrix a b O} (h1 : S * T = 1) (h2 : T * S = 1) : Fintype.card a = Fintype.card b := by
@@ -150,31 +148,29 @@ theorem card_eq_of_inv [Nontrivial O] {a b : Type} [Fintype a] [Fintype b] [Deci
   exact this.symm
 
 /- English proof (translation)
-Take `⟨Z, h1, h2, h3⟩` from `GlobalTheory.InertIwasawa.exists_dual_isotropic hs hτ hQ hu hL hC`. Establish `key : ∀ {a b : Type} [Fintype a] [Fintype b] (X : Matrix (Fin n) a O) (X' : Matrix (Fin n) b O), Formalism.UG.cT s (Formalism.UG.cT s X * Q * X') = Formalism.UG.cT s X' * Q * X` using `fun X X' => by`. Rewrite using `[cT_mul_r, cT_mul_r, cT_cT_r hs, hQ, Matrix.mul_assoc]`. Take `⟨π, hπ⟩ : ∃ π : Matrix (Fin n) (Fin n) O, π = 1 - C * (Formalism.UG.cT s Z * Q) - Z * (Formalism.UG.cT s C * Q)` from `⟨_, rfl⟩`. Establish `hπC : π * C = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hπ]`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, assoc3 h2, assoc3 hC, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`. Establish `hπZ : π * Z = 0`. Rewrite using `[hπ]`. Simplify using `only [Matrix.sub_mul, Matrix.one_mul, Matrix.mul_assoc, assoc3 h3, assoc3 h1, Matrix.mul_one, Matrix.mul_zero, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hCπ : Formalism.UG.cT s C * Q * π = 0`. Rewrite using `[hπ]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc, tail3 hC, tail3 h1, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hZπ : Formalism.UG.cT s Z * Q * π = 0`. Rewrite using `[hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_sub, Matrix.mul_one, Matrix.mul_assoc, tail3 h2, tail3 h3, Matrix.zero_mul, Matrix.one_mul, sub_zero, sub_self]`. Establish `hππ : π * π = π` using `by nth_rewrite 2 [hπ]`. Simplify using `only [Matrix.mul_sub, Matrix.mul_one, tail2 hπC, tail2 hπZ, Matrix.zero_mul, sub_zero]`. Establish `hπQ : Formalism.UG.cT s π * Q = Q * π`. Rewrite using `[hπ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cT_sub_r, cT_one_r, cT_mul_r, cT_cT_r hs, hQ, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Take `⟨m, B0, B0', hB0, hB0π⟩` from `idem_factor π hππ`. Establish `hBπ0 : π * B0 = B0` using `by rw [← hB0π, Matrix.mul_assoc, hB0, Matrix.mul_one]`. Establish `hG : Formalism.UG.cT s B0 * Q * B0 * (B0' * (hu.unit⁻¹).1 * Formalism.UG.cT s B0') = 1`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hB0π]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT s B0 * Formalism.UG.cT s π * (Q * (hu.unit⁻¹).1) * Formalism.UG.cT s B0' := by`. Rewrite using `[← hπQ]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT s (π * B0) * Formalism.UG.cT s B0' := by`. Rewrite using `[hu.mul_val_inv, Matrix.mul_one, cT_mul_r]`. Use `_ = 1 := by rw [hBπ0, ← cT_mul_r, hB0, cT_one_r]`. Establish `hGu : IsUnit (Formalism.UG.cT s B0 * Q * B0)` using `⟨⟨_, _, hG, mul_eq_one_comm.mp hG⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `GlobalTheory.T.exists_orthonormal_basis_unimodular_hermitian_local_ring O s hs ⟨τ, hτ⟩ hnorm m (Formalism.UG.cT s B0 * Q * B0) (key B0 B0) hGu`. Choose the witnesses or unpack the hypotheses as in `⟨B, B', hB, hBB, hBg⟩ : ∃ (B : Matrix (Fin n) (Fin m) O) (B' : Matrix (Fin m) (Fin n) O), B' * B = 1 ∧ B * B' = π ∧ Formalism.UG.cT s B * Q * B = 1 := by`. Use `⟨B0 * a.1, (a⁻¹).1 * B0', ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc B0', hB0, Matrix.one_mul, Units.inv_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc a.1, Units.mul_inv, Matrix.one_mul, hB0π]`. Rewrite using `[← ha, cT_mul_r]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hπB : π * B = B` using `by rw [← hBB, Matrix.mul_assoc, hB, Matrix.mul_one]`. Establish `hB'π : B' * π = B'` using `by rw [← hBB, ← Matrix.mul_assoc, hB, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCB : Formalism.UG.cT s C * Q * B = 0` using `by rw [← hπB, ← Matrix.mul_assoc, hCπ, Matrix.zero_mul]`. Establish `hZB : Formalism.UG.cT s Z * Q * B = 0` using `by rw [← hπB, ← Matrix.mul_assoc, hZπ, Matrix.zero_mul]`. Establish `hB'C : B' * C = 0` using `by rw [← hB'π, Matrix.mul_assoc, hπC, Matrix.mul_zero]`. Establish `hB'Z : B' * Z = 0` using `by rw [← hB'π, Matrix.mul_assoc, hπZ, Matrix.mul_zero]`. Establish `hBC : Formalism.UG.cT s B * Q * C = 0` using `by rw [← key, hCB, cT_zero_r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hBZ : Formalism.UG.cT s B * Q * Z = 0` using `by rw [← key, hZB, cT_zero_r]`. Use `⟨m, fromCols (fromCols C Z) B, fromRows (fromRows (Formalism.UG.cT s Z * Q) (Formalism.UG.cT s C * Q)) B', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [fromRows_mul_fromCols, fromRows_mul, mul_fromCols, h1, h2, h3, hC, hCB, hZB, hB'C, hB'Z, hB]`. Apply the tactic sequence `ext (((i|i)|i)) (((j|j)|j)) <;> simp [Matrix.one_apply]`. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows, hBB, hπ]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[cT_fromCols_r, cT_fromCols_r]`. Simplify using `only [fromRows_mul, mul_fromCols, h1, h2, h3, hC, hCB, hZB, hBC, hBZ, hBg]`. Apply the tactic sequence `ext (((i|i)|i)) (((j|j)|j)) <;> simp`. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows]`.
-
-Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_completion [IsLocalRing O] {s : O →+* O} (hs : ∀ x, s (s x) = x) {τ : O} (hτ : τ + s τ = 1)
     (hnorm : ∀ u : O, IsUnit u → s u = u → ∃ x : O, s x * x = u)
@@ -258,17 +254,15 @@ theorem exists_completion [IsLocalRing O] {s : O →+* O} (hs : ∀ x, s (s x) =
     simp
 
 /- English proof (translation)
-Introduce `O _ _ s hs hτ hnorm n r Q hQ hu C C' hL hL' hC hC'`. Take `⟨τ, hτ⟩` from `hτ`. Take `⟨L, hL⟩` from `hL`. Take `⟨L', hL'⟩` from `hL'`. Take `⟨m, T, S, h1, h2, h3, h4⟩` from `exists_completion hs hτ hnorm hQ hu hL hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m', T', S', h1', h2', h3', h4'⟩` from `exists_completion hs hτ hnorm hQ hu hL' hC'`. Establish `hm : m = m'`. Establish `e1` using `card_eq_of_inv h1 h2`. Establish `e2` using `card_eq_of_inv h1' h2'`. Simplify using `only [Fintype.card_sum, Fintype.card_fin] at e1 e2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Substitute `hm` using the available equality. Establish `hk1 : Formalism.UG.cT s (T' * S) * Q * (T' * S) = Q`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[cT_mul_r]`.
+Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.UG.cT s (T * S) * Q * (T * S) := by`. Rewrite using `[h3', ← h3, cT_mul_r]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Q := by rw [h2, cT_one_r, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hk2 : T' * S * C = C'`. Rewrite using `[← h4, ← h4', ← Matrix.mul_assoc (T' * S), Matrix.mul_assoc T' S T, h1, Matrix.mul_one]`. Use `⟨⟨T' * S, T * S', ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc S, h1, Matrix.one_mul, h2']`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc S', h1', Matrix.one_mul, h2]`.
-
-Conclude with `hk1`. Conclude with `hk2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isometry_frame : ∀ (O : Type) [CommRing O] [IsLocalRing O] (s : O →+* O), (∀ x, s (s x) = x) → (∃ τ : O, τ + s τ = 1) → (∀ u : O, IsUnit u → s u = u → ∃ x : O, s x * x = u) → ∀ (n r : ℕ) (Q : Matrix (Fin n) (Fin n) O), Formalism.UG.cT s Q = Q → IsUnit Q → ∀ C C' : Matrix (Fin n) (Fin r) O, (∃ L : Matrix (Fin r) (Fin n) O, L * C = 1) → (∃ L : Matrix (Fin r) (Fin n) O, L * C' = 1) → Formalism.UG.cT s C * Q * C = 0 → Formalism.UG.cT s C' * Q * C' = 0 → ∃ k : GL (Fin n) O, Formalism.UG.cT s k.1 * Q * k.1 = Q ∧ k.1 * C = C' := by
   intro O _ _ s hs hτ hnorm n r Q hQ hu C C' hL hL' hC hC'

@@ -20,31 +20,31 @@ def GrassProdGeomDeg.Statement : Prop :=
       (grassProdDeg f j m : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨le_rfl, le_rfl, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : 1 ≤ (1 : ℕ) ∧ 1 ≤ (1 : ℕ) ∧ 1 ≤ (1 : ℕ) := ⟨le_rfl, le_rfl, le_rfl⟩
 
 /- English proof (translation)
-Simplify using `[grassProdDeg, grassDeg]`.
+Simplify using the standard rewrite rules.
 -/
 example : grassProdDeg 1 1 1 = 1 := by
   simp [grassProdDeg, grassDeg]
 
 /- English proof (translation)
-Simplify using `[grassDeg, Fin.prod_univ_two, Nat.factorial]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example : grassDeg 2 2 = 2 := by
   simp [grassDeg, Fin.prod_univ_two, Nat.factorial]
   norm_num
 
 /- English proof (translation)
-Simplify using `[grassProdDeg, grassDeg, Nat.factorial]`.
+Simplify using the standard rewrite rules.
 -/
 example : grassProdDeg 2 1 1 = 2 := by
   simp [grassProdDeg, grassDeg, Nat.factorial]
 
 /- English proof (translation)
-Simplify using `[grassDeg]`. Conclude with `mul_inv_cancel₀ (by exact_mod_cast (Nat.factorial_pos m).ne')`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (m : ℕ) : grassDeg 1 m = 1 := by
   simp [grassDeg]

@@ -54,11 +54,11 @@ def finHomeo (P Q : Matrix κ κ F) (hPQ : P * Q = 1) (hQP : Q * P = 1) :
   continuous_invFun := continuous_const.matrix_mulVec continuous_id
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Set `q : AdeleRing (𝓞 F) F →+* mixedEmbedding.mixedSpace F` to `(InfiniteAdeleRing.ringEquiv_mixedSpace F).toRingHom.comp (RingHom.fst (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F))`. Set `p : AdeleRing (𝓞 F) F →+* FiniteAdeleRing (𝓞 F) F` to `RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)`. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((P.map (algebraMap F (AdeleRing (𝓞 F) F)) *ᵥ x) i).1) = P.map (qI F) *ᵥ (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1)`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `q ((P.map (algebraMap F (AdeleRing (𝓞 F) F)) *ᵥ x) i) = _`. Rewrite using `[RingHom.map_mulVec, Matrix.map_map]`. Both sides reduce to the same expression. Establish `h2 : (fun i => ((P.map (algebraMap F (AdeleRing (𝓞 F) F)) *ᵥ x) i).2) = P.map (qF F) *ᵥ (fun i => (x i).2)`. Use function extensionality and compare the values at `i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `p ((P.map (algebraMap F (AdeleRing (𝓞 F) F)) *ᵥ x) i) = _`. Rewrite using `[RingHom.map_mulVec, Matrix.map_map]`. Both sides reduce to the same expression. Simplify using `only [compM_apply, pureA, Function.comp_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply]`. Rewrite using `[h1, h2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -88,7 +88,7 @@ theorem comp_pureA (P Q : Matrix κ κ F) (hPQ : P * Q = 1) (hQP : Q * P = 1)
   rfl
 
 /- English proof (translation)
-Establish `hle : schA F κ ≤ (schA F κ).comap (compM P)`. Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Use `Submodule.subset_span ⟨_, _, ⟨hg.1.comp_continuous (finHomeo P Q hPQ hQP).continuous, hg.2.comp_homeomorph (finHomeo P Q hPQ hQP)⟩, comp_pureA P Q hPQ hQP f g⟩` and prove the remaining obligations. Conclude with `fun φ hφ => hle hφ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_mem (P Q : Matrix κ κ F) (hPQ : P * Q = 1) (hQP : Q * P = 1) :
     ∀ φ ∈ schA F κ, compM P φ ∈ schA F κ := by
@@ -100,7 +100,7 @@ theorem comp_mem (P Q : Matrix κ κ F) (hPQ : P * Q = 1) (hQP : Q * P = 1) :
   exact fun φ hφ => hle hφ
 
 /- English proof (translation)
-Establish `h0 : (0 : Matrix ι ι K).map (algebraMap K R) = 0` using `Matrix.map_zero _ (map_zero _)`. Simplify using `only [AdelicSvN.act, Matrix.fromBlocks_map, h0, Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.zero_mulVec, add_zero, zero_add]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem act_levi {K R ι : Type} [Field K] [CommRing R] [Algebra K R] [Fintype ι] [DecidableEq ι] (A B : Matrix ι ι K)
     (w : (ι → R) × (ι → R)) :
@@ -110,20 +110,20 @@ theorem act_levi {K R ι : Type} [Field K] [CommRing R] [Algebra K R] [Fintype �
     Matrix.zero_mulVec, add_zero, zero_add]
 
 /- English proof (translation)
-Rewrite using `[Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_transpose {R ι : Type} [CommRing R] [Fintype ι] (M : Matrix ι ι R) (x v : ι → R) :
     x ⬝ᵥ (Mᵀ *ᵥ v) = (M *ᵥ x) ⬝ᵥ v := by
   rw [Matrix.dotProduct_mulVec, Matrix.vecMul_transpose]
 
 /- English proof (translation)
-Introduce `F _ _ ψ κ _ _ A hA`. Establish `h1 : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A hA`. Establish `h2 : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A hA`. Set `Am : Matrix κ κ (AdeleRing (𝓞 F) F)` to `A.map (algebraMap F (AdeleRing (𝓞 F) F))`. Set `Aim : Matrix κ κ (AdeleRing (𝓞 F) F)` to `A⁻¹.map (algebraMap F (AdeleRing (𝓞 F) F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `e1 : Am * Aim = 1`. Rewrite using `[← Matrix.map_mul, h1, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `e2 : Aim * Am = 1`. Rewrite using `[← Matrix.map_mul, h2, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `⟨compM A⁻¹, comp_mem A⁻¹ A h2 h1, fun φ hφ => ⟨compM A φ, comp_mem A A⁻¹ h1 h2 φ hφ, ?_⟩, fun l hl => ⟨l ∘ₗ compM A⁻¹, fun g hg => ?_, fun _ _ => rfl⟩, fun w φ _ => funext fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `φ (Am *ᵥ (Aim *ᵥ x)) = φ x`. Rewrite using `[Matrix.mulVec_mulVec, e1, Matrix.one_mulVec]`. Take `⟨T, hT⟩` from `hl _ ⟨hg.1.comp_continuous (finHomeo A⁻¹ A h2 h1).continuous, hg.2.comp_homeomorph (finHomeo A⁻¹ A h2 h1)⟩`. Use `⟨T.comp (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (archEquiv A⁻¹ A h2 h1)), fun f => ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.comp_apply, comp_pureA A⁻¹ A h2 h1, hT]`. Both sides reduce to the same expression. Rewrite using `[act_levi, Matrix.transpose_map]`. Express the relevant statement in the definitionally equal form `ψ ((Aim *ᵥ x) ⬝ᵥ w.2 + ⅟(2 : AdeleRing (𝓞 F) F) * (w.1 ⬝ᵥ w.2)) * φ (Aim *ᵥ x + w.1) = ψ (x ⬝ᵥ (Aimᵀ *ᵥ w.2) + ⅟(2 : AdeleRing (𝓞 F) F) * ((Am *ᵥ w.1) ⬝ᵥ (Aimᵀ *ᵥ w.2))) * φ (Aim *ᵥ (x + Am *ᵥ w.1))`. Rewrite using `[dot_transpose, dot_transpose, Matrix.mulVec_add, Matrix.mulVec_mulVec, e2, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem realised_levi : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ]
     [DecidableEq κ] (A : Matrix κ κ F), IsUnit A.det → Realised ψ (Matrix.fromBlocks A 0 0 (A⁻¹)ᵀ) := by

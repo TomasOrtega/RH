@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G.Out (nonzeroLocus)
 open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RatDegZeros.ratDeg_eq_sum` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRationalDegreeEqOrderSum.lean&line=119#L119)
 -/

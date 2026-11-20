@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.UCore.CuspOfFrame
 
 /- English proof (translation)
-Establish `hf` using `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `hli` using `GlobalTheory.CompanionTheory.UnipCocompact.linearIndependent_of_isWittFrame (GlobalTheory.SiegelSet.sigma_sigma hf.1) (hf.2 V) hW`. Use `⟨Nat.succ_pos _, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hli.comp (Fin.castLE k.2) (Fin.castLE_injective k.2)`. Establish `h` using `hW.xx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Use `congrFun (congrFun h (Fin.castLE k.2 a)) (Fin.castLE k.2 b)` as an intermediate fact. Simplify `this` using `[GlobalTheory.StdPar.initCols, Matrix.mul_apply, Formalism.UG.cT]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIsoFrame_initCols {D : D7} {V : HSp D} {m : ℕ} {X Y : Matrix (Fin V.rank) (Fin m) D.host.E}
     (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (k : Fin m) : IsIsoFrame V (GlobalTheory.StdPar.initCols X k) := by
@@ -28,15 +28,13 @@ theorem isIsoFrame_initCols {D : D7} {V : HSp D} {m : ℕ} {X Y : Matrix (Fin V.
     simpa [GlobalTheory.StdPar.initCols, Matrix.mul_apply, Formalism.UG.cT] using this
 
 /- English proof (translation)
-Introduce `D V m X Y hW hmax f hl hc`. Establish `hl' : GlobalTheory.AutomorphicL2Unitary.LeftInv (GQ V) f` using `hl`. Use `(GlobalTheory.Cusp.isCuspFun_iff hl').2 fun W hW' => ?_` and prove the remaining obligations. Take `⟨r, C, hC, rfl⟩` from `(GlobalTheory.AutFunCompare.isIsotropic_iff V W).1 hW'`. Establish `hrm` using `hmax r C hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r', rfl⟩ : ∃ r', r = r' + 1` from `⟨r - 1, by have := hC.1; omega⟩`. Set `k : Fin m` to `⟨r', by omega⟩`. Establish `hC0 : IsIsoFrame V (GlobalTheory.StdPar.initCols X k)` using `isIsoFrame_initCols hW k`. Establish `hcc : GlobalTheory.Cusp.Cocompact (GQ V) (GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC0))` using `GlobalTheory.Cusp.cocompact_single _`. Use `haveI : LocallyCompactSpace (GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC0)) := by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Cusp.NA_frameFlag hC0]`. Conclude with `(GlobalTheory.CuspDecay.Model.isClosed_NI V hC0).locallyCompactSpace`. Establish `e : GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC0) = GlobalTheory.SiegelSet.unipRad D.sp.cm.sig V.gram (GlobalTheory.StdPar.initCols X k)` using `GlobalTheory.Cusp.NA_frameFlag hC0`. Establish `h1 : GlobalTheory.UAut.IsConstTermOn D.sp.cm.sig V.gram (GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC0)) f 0`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.UAut.isConstTerm_iff.1 ((GlobalTheory.StdPar.isConstAlong_singleton hW k).1 (hc k))`. Establish `h2 : GlobalTheory.UAut.IsConstTermOn D.sp.cm.sig V.gram (GlobalTheory.Cusp.NA (GlobalTheory.Cusp.frameFlag hC0)) f (GlobalTheory.Cusp.constTerm (GlobalTheory.Cusp.frameFlag hC0) f)` using `fun μ 𝓕 b1 b2 b3 g => by`. Rewrite using `[GlobalTheory.Cusp.constTerm_eq b2 hl' g, MeasureTheory.Measure.real, b3]`. Simplify using the standard rewrite rules. Establish `h0 : GlobalTheory.Cusp.constTerm (GlobalTheory.Cusp.frameFlag hC0) f = 0` using `h2.unique hcc h1`.
-
-Conclude with `GlobalTheory.CompanionTheory.ConstTermConj.constTerm_eq_zero_of_frame D V (r' + 1) _ C hC0 hC f hl h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCuspFun_of_isConstAlong : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → (∀ (r : ℕ) (C : Matrix (Fin V.rank) (Fin r) D.host.E), IsIsoFrame V C → r ≤ m) → ∀ f : GA D V → ℂ, (∀ γ ∈ GQ V, ∀ g, f (γ * g) = f g) → (∀ k : Fin m, IsConstAlong D.sp.cm.sig V.gram X {k} f 0) → IsCuspFun V f := by
   intro D V m X Y hW hmax f hl hc

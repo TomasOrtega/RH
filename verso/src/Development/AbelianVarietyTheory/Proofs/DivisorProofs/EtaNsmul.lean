@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {F : Type} [Field F] [NumberField F] [IsCMField F] {S : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h` using `o.eta_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_zero {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p N s) : o.eta 0 = 1 := by
   have h := o.eta_add 0 0
@@ -20,7 +20,7 @@ theorem eta_zero {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p
   exact mul_left_cancel (a := o.eta 0) (by rw [_root_.mul_one]; exact h.symm)
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← o.eta_add, add_neg_cancel, eta_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_neg {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p N s) (x : D.La) :
     o.eta (-x) = (o.eta x)⁻¹ := by
@@ -28,7 +28,7 @@ theorem eta_neg {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p 
   rw [← o.eta_add, add_neg_cancel, eta_zero]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [eta_zero]`. Consider the case `succ m ih => rw [succ_nsmul, o.eta_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem eta_nsmul {D : Datum F} {p N : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p N s) (m : ℕ) (x : D.La) :
     o.eta (m • x) = o.eta x ^ m := by
@@ -48,7 +48,7 @@ def sub {D : Datum F} {p N' : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p N' s) (
     exact ⟨-x, by rw [map_neg, smul_neg, eta_neg]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_sub {D : Datum F} {p N' : ℕ} {s : S ⟶ Sp (D.OEp p)} (o : Obj D p N' s) (g : IntSim D p) (a : D.La) :
     o.eta ((N' / g.k) • g.g N' a) ∈ sub o g := ⟨a, rfl⟩

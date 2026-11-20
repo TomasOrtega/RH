@@ -11,9 +11,9 @@ open MeasureTheory Filter Topology in
 open scoped ContDiff Matrix in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.GoodTop.offHyp`. Establish `hset : {v : _root_.ReciprocityTheory.L2DbarEstimates.V n | v ∈ U ∧ ∀ a ∈ S, v.ofLp a ≠ 0} = U ∩ ⋂ a ∈ S, {v : _root_.ReciprocityTheory.L2DbarEstimates.V n | v.ofLp a ≠ 0}`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[hset]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hU.inter (isOpen_biInter_finset fun a _ => isOpen_ne_fun ?_ continuous_const)` and prove the remaining obligations. Unfold `_root_.ReciprocityTheory.L2DbarEstimates.V`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.GoodTop.isOpen_offHyp_of_isOpen {n : ℕ} (S : Finset (Fin n)) (U : Set (_root_.ReciprocityTheory.L2DbarEstimates.V n)) (hU : IsOpen U) :
     IsOpen (_root_.GlobalTheory.GoodTop.offHyp S U) := by

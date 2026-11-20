@@ -5,13 +5,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `F K Ω _ _ _ _ _ _ _ _ _ _ _ l _ A O _ _ _ Bw Bw' hK hj hL n r hr`. Take `⟨Kw', j', jE', jd', e', ec', esc', ecomm', LL0', hs', eO', h1', h2', h3'⟩` from `Bw'`. Simplify using `only at hK hj hL`. Substitute `hK hj hL` using the available equality. Take `⟨LL', r', ⟨hle, hmap⟩, hpst⟩` from `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨LL', r'.comp (e'.trans Bw.e.symm).toMonoidHom, ⟨hle, ?_⟩, ?_⟩` and prove the remaining obligations. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Establish `h1` using `DFunLike.congr_fun hmap (Bw.e.symm (e' g))`. Establish `h2 : ((Bw.e.symm (e' g) : ↥(Dec (F` using `F) A)) : Ω ≃ₐ[F] Ω) = AlgEquiv.restrictScalarsHom F (g : Ω ≃ₐ[K] Ω) := by`. Use `AlgEquiv.ext fun x => Bw.j.injective ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Bw.e_comm, MulEquiv.apply_symm_apply, ecomm']`. Both sides reduce to the same expression. Use `h1.trans ?_` and prove the remaining obligations. Conclude with `congrArg r h2`. Use `hpst using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Simplify using `[LocBridge.repE]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Cq.pstRes :
     ∀ (F K Ω : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Field Ω] [Algebra F K] [Algebra F Ω] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure F Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (Bw' : LocBridge l K Ω (Dec (F := K) A) O),

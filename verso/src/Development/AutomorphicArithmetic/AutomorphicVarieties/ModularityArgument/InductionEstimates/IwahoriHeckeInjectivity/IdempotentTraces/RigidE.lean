@@ -18,7 +18,7 @@ open scoped ComplexConjugate Classical
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E
 
 /- English proof (translation)
-Take `⟨rfl, e2⟩` from `Sigma.mk.inj_iff.1 e`. Take `rfl : π = π'` from `(Dp.isoEq E a π π').1 (Quotient.exact (eq_of_heq e2))`. Use `⟨rfl, fun S m B hA => ⟨fun τ => ?_, fun w hw => ?_⟩⟩` and prove the remaining obligations. Conclude with `(Dp.sInfIff E a μ π V h τ _).2 ((Dp.sInfIff E a μ' π V' h' τ _).1 (hA.1 τ))`. Conclude with `(Dp.sSatIff E a μ π V h w _).2 ((Dp.sSatIff E a μ' π V' h' w _).1 (hA.2 w hw))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem transfer {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a b : ℕ}
     {μ : Measure (normOneGL E a)} [μ.IsHaarMeasure] {μ' : Measure (normOneGL E b)} [μ'.IsHaarMeasure]
@@ -33,13 +33,13 @@ private theorem transfer {E : Type} [Field E] [NumberField E] [IsTotallyComplex 
   · exact (Dp.sSatIff E a μ π V h w _).2 ((Dp.sSatIff E a μ' π V' h' w _).1 (hA.2 w hw))
 
 /- English proof (translation)
-Use `choose π hπ using fun i => (Dp.exCusp E (d i) (μ i) (V i) (hV i)).exists`. Use `choose π' hπ' using fun j => (Dp.exCusp E (d' j) (μ' j) (V' j) (hV' j)).exists`. Establish `hn : ∀ i, GlobalTheory.DiscSpec.IsNormalised (π i)` using `fun i => (Dp.normIff E _ _).2 ((Dp.exSummand E _ _ _ _).1 (hπ i)).1`. Establish `hn' : ∀ j, GlobalTheory.DiscSpec.IsNormalised (π' j)` using `fun j => (Dp.normIff E _ _).2 ((Dp.exSummand E _ _ _ _).1 (hπ' j)).1`. Take `⟨s, hs⟩` from `PositivityTheory.AdelicQuotientData.jacquetShalikaRigidity E ι κ d d' (fun i => (CG.mk (π i)).twist (GlobalTheory.CuspRep.Model.absC E (lam i))) (fun j => (CG.mk (π' j)).twist (GlobalTheory.CuspRep.Model.absC E 0)) hd hd' (by filter_upwards [hS.compl_mem_cofinite] with w hw choos …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => (A i).map (· * (GlobalTheory.CuspRep.Model.absC E (lam i)).val w), A', fun i => PositivityTheory.Rg.Rs.StrStepB.hasSat_twist_absC (π i) (hA1 i) (lam i), fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PositivityTheory.Rg.Rs.StrStepB.absC_zero, CG.twist_one]`. Conclude with `hA1' j`. Apply `Multiset.map_injective (f := fun b : ℂˣ => (b : ℂ)) (fun a b e => Units.ext e)` to reduce the goal to its premises. Establish `h1` using `map_sum (Multiset.mapAddMonoidHom fun b : ℂˣ => (b : ℂ)) A' Finset.univ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `map_sum (Multiset.mapAddMonoidHom fun b : ℂˣ => (b : ℂ)) (fun i => (A i).map (· * (GlobalTheory.CuspRep.Model.absC E (lam i)).val w)) Finset.univ`. Use `h2.trans (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Establish `h3` using `e w hw`. Simplify using `only [hA, hA'] at h3`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Multiset.coe_mapAddMonoidHom, Multiset.map_map, Function.comp_def, Units.val_mul, PositivityTheory.Rg.Rs.StrStepB.absC_val])`. Conclude with `⟨s, fun i => transfer (hπ i) (hπ' (s i)) (PositivityTheory.Rg.Rs.StrStepB.match_twist (hd i) _ _ (hn i) (hn' _) (hs i)).2⟩`.
+A detailed English derivation is pending.
 -/
 private theorem core {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {ι κ : Type} [Fintype ι] [Fintype κ]
     (d : ι → ℕ) (d' : κ → ℕ) (hd : ∀ i, 0 < d i) (hd' : ∀ j, 0 < d' j)
@@ -82,15 +82,13 @@ private theorem core {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {
     (PositivityTheory.Rg.Rs.StrStepB.match_twist (hd i) _ _ (hn i) (hn' _) (hs i)).2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ τ₁ τ₂ hP S hS m₁ m₂ B₁ B₂ h₁ h₂`. Establish `hs : ∀ j : Fin 2, IsSummand (BW.mu1 E 2) (![τ₁, τ₂] j)`. Introduce `j`. Use `fin_cases j`. Conclude with `⟨hP.irr₁.le, hP.irr₁.closed, hP.irr₁.inv, hP.irr₁.ne, hP.irr₁.irr⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨hP.irr₂.le, hP.irr₂.closed, hP.irr₂.inv, hP.irr₂.ne, hP.irr₂.irr⟩`. Establish `hB : ∀ j : Fin 2, ∀ w ∉ S, SSat (BW.mu1 E 2) (![τ₁, τ₂] j) w (![B₁, B₂] j w)`. Introduce `j`. Use `fin_cases j`. Conclude with `h₁.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `h₂.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `b ⟨lam, m, B, hA, -, hw⟩`. Take `⟨s, h⟩` from `core b.d (fun _ : Fin 2 => 2) b.pos (fun _ => two_pos) b.μ (fun _ => BW.mu1 E 2) b.V ![τ₁, τ₂] b.summand hs S hS lam B ![B₁, B₂] (fun i => (hA i).2) hB fun w hS' => by`. Rewrite using `[Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw w hS'`. Use `⟨by simpa using Fintype.card_congr s, fun i => (h i).1, s.symm 0, s.symm 1, s.symm.injective.ne (by decide), (h _).2 _ _ _ ?_, (h _).2 _ _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[s.apply_symm_apply]`. Conclude with `h₁`. Rewrite using `[s.apply_symm_apply]`.
-
-Conclude with `h₂`. Introduce `μ _ V hV hA`. Take `⟨s, -⟩` from `core (fun _ : Unit => 2 + 2) (fun _ : Fin 2 => 2) (fun _ => by norm_num) (fun _ => two_pos) (fun _ => μ) (fun _ => BW.mu1 E 2) (fun _ => V) ![τ₁, τ₂] (fun _ => hV) hs S hS (fun _ => 0) (fun _ w => B₁ w + B₂ w) ![B₁, B₂] (fun _ => hA.2) hB fun w _ => by simp`. Simplify using `using Fintype.card_congr s`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E.rigidE :
     RigidE := by

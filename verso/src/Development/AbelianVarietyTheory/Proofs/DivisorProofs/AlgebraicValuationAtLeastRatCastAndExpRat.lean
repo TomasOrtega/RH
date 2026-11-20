@@ -13,18 +13,18 @@ noncomputable section
 namespace GlobalTheory.SizeRat
 
 /- English proof (translation)
-Establish `e : ((q : ℚ_[l]) : ℂ_[l]) = (q : ℂ_[l])` using `by simp only [PadicComplex.coe_eq, map_ratCast]`. Rewrite using `[← e, PadicComplex.norm_extends', Padic.eq_padicNorm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_ratCast (l : ℕ) [Fact l.Prime] (q : ℚ) : ‖(q : ℂ_[l])‖ = (padicNorm l q : ℝ) := by
   have e : ((q : ℚ_[l]) : ℂ_[l]) = (q : ℂ_[l]) := by simp only [PadicComplex.coe_eq, map_ratCast]
   rw [← e, PadicComplex.norm_extends', Padic.eq_padicNorm]
 
 /- English proof (translation)
-Establish `hmem : (q : ℂ) ∈ algebraicClosure ℚ ℂ` using `SubfieldClass.ratCast_mem _ q`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `e : (⟨(q : ℂ), hmem⟩ : algebraicClosure ℚ ℂ) = (q : algebraicClosure ℚ ℂ)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hl : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Rewrite using `[e, map_ratCast, norm_ratCast]`. Distinguish the cases in `hq : q = 0`. Substitute `hq; simp only [padicNorm.zero, Rat.cast_zero]; exact Real.rpow_nonneg (by linarith) r` using the available equality. Rewrite using `[padicNorm.eq_zpow_of_nonzero hq, Rat.cast_zpow, Rat.cast_natCast, ← Real.rpow_intCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow_of_exponent_le hl (by push_cast; exact hr)`.
+A detailed English derivation is pending.
 -/
 theorem sz_ratCast (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (q : ℚ) (r : ℝ)
     (hr : -(padicValRat l q : ℝ) ≤ r) : Sz l lam r (q : ℂ) := by
@@ -40,15 +40,13 @@ theorem sz_ratCast (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+
     exact Real.rpow_le_rpow_of_exponent_le hl (by push_cast; exact hr)
 
 /- English proof (translation)
-Use `set ζ := Complex.exp ((2 * Real.pi * Complex.I) * (q : ℂ)) with hζ`. Establish `hpow : ζ ^ q.den = 1`. Rewrite using `[hζ, ← Complex.exp_nat_mul]`. Establish `: (q.den : ℂ) * ((2 * Real.pi * Complex.I) * (q : ℂ)) = (q.num : ℂ) * (2 * Real.pi * Complex.I)`. Establish `hq : (q : ℂ) = (q.num : ℂ) / (q.den : ℂ)` using `by exact_mod_cast (Rat.num_div_den q).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : (q.den : ℂ) ≠ 0` using `by exact_mod_cast q.den_nz`. Rewrite using `[hq]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I q.num`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ζ ∈ algebraicClosure ℚ ℂ`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `(IsIntegral.of_pow q.den_pos (by rw [hpow]; exact isIntegral_one)).isAlgebraic`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨ζ, hmem⟩ : algebraicClosure ℚ ℂ) ^ q.den = 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hpow]`. Establish `h2 : ‖lam ⟨ζ, hmem⟩‖ ^ q.den = 1`. Rewrite using `[← norm_pow, ← map_pow, h1, map_one, norm_one]`. Establish `h3 : ‖lam ⟨ζ, hmem⟩‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) q.den_nz).mp h2`.
-
-Rewrite using `[h3, Real.rpow_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_exp (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) (q : ℚ) :
     Sz l lam 0 (Complex.exp ((2 * Real.pi * Complex.I) * (q : ℂ))) := by
@@ -73,7 +71,7 @@ theorem sz_exp (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* �
   rw [h3, Real.rpow_zero]
 
 /- English proof (translation)
-Introduce `l _ lam` and use `⟨sz_ratCast l lam, sz_exp l lam⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem sz_rat_exp : ∀ (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]),
     (∀ (q : ℚ) (r : ℝ), (-(padicValRat l q : ℝ) ≤ r) → Sz l lam r (q : ℂ)) ∧

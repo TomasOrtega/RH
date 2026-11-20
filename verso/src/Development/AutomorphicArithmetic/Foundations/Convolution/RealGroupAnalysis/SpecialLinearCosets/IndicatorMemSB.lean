@@ -7,19 +7,17 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant (U.indicator fun _ : X => (1 : ℂ))`. Rewrite using `[IsLocallyConstant.iff_isOpen_fiber]`. Introduce `c`. Apply the tactic sequence `by_cases h1 : (1 : ℂ) = c <;> by_cases h0 : (0 : ℂ) = c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd (h1.trans h0.symm) one_ne_zero`. Establish `: (U.indicator fun _ : X => (1 : ℂ)) ⁻¹' {c} = U`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, h1, Ne.symm h0, h0]`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hU.isOpen`. Establish `: (U.indicator fun _ : X => (1 : ℂ)) ⁻¹' {c} = Uᶜ`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, Ne.symm h1, h1, h0]`. Rewrite using `[this]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hU.compl.isOpen`. Establish `: (U.indicator fun _ : X => (1 : ℂ)) ⁻¹' {c} = ∅`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, Ne.symm h1, Ne.symm h0, h1, h0]`. Rewrite using `[this]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `isOpen_empty`. Establish `h2 : U.indicator f = (U.indicator fun _ : X => (1 : ℂ)) * f`. Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx]`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `h1.mul hf.1`. Conclude with `HasCompactSupport.mono hf.2 (fun x hx => by`. Assume the negation of the conclusion as `h0`. Apply `hx` to reduce the goal to its premises. Establish `h0' : f x = 0` using `by simpa using h0`.
-
-Apply the tactic sequence `by_cases hxU : x ∈ U <;> simp [hxU, h0'])`.
+A detailed English derivation is pending.
 -/
 private theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf : f ∈ SB X)
     {U : Set X} (hU : IsClopen U) : U.indicator f ∈ SB X := by
@@ -53,33 +51,29 @@ private theorem indicator_mem_SB {X : Type} [TopologicalSpace X] {f : X → ℂ}
       by_cases hxU : x ∈ U <;> simp [hxU, h0'])
 
 /- English proof (translation)
-Introduce `F _ _ v ℓ h a ha`. Take `⟨-, -, hadd, hlc, hnt, -⟩` from `psiLaws F v`. Establish `hψ0 : ∀ x, ψl v x ≠ 0` using `fun x => Circle.coe_ne_zero _`. Establish `key : ∀ m0 : M2 v, m0.det ≠ 1 → ∃ N : Set (M2 v), IsClopen N ∧ m0 ∈ N ∧ ∀ b : SB (M2 v), Function.support b.1 ⊆ N → ℓ b = 0`. Introduce `m0 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨t, ht⟩` from `hnt (m0.det - 1) (sub_ne_zero.mpr hm)`. Establish `hz : ψl v (-(-t * m0.det)) ≠ ψl v (- -t)`. Introduce `hzz`. Apply `ht` to reduce the goal to its premises. Establish `e : -(-t * m0.det) = t * (m0.det - 1) + - -t` using `by ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hzz` using `[e, hadd]`. Conclude with `mul_right_cancel₀ (hψ0 _) (hzz.trans (one_mul _).symm)`. Establish `hf : IsLocallyConstant (fun m : M2 v => ψl v (-(-t * m.det)))` using `hlc.comp_continuous (by`. Establish `: Continuous fun m : M2 v => m.det` using `continuous_id.matrix_det`. Conclude with `(continuous_const.mul this).neg)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(fun m : M2 v => ψl v (-(-t * m.det))) ⁻¹' {ψl v (-(-t * m0.det))}, hf.isClopen_fiber _, rfl, fun b hb => ?_⟩` and prove the remaining obligations. Establish `h1` using `h (-t) b (ψl v (-(-t * m0.det)) • b) (fun m => by`. Distinguish the cases in `hm' : b.1 m = 0`. Simplify using `[hm']`. Establish `: ψl v (-(-t * m.det)) = ψl v (-(-t * m0.det))` using `hb hm'`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Use the proof step `rfl)`. Rewrite `h1` using `[map_smul, smul_eq_mul]`. Assume the negation of the conclusion as `hne`. Conclude with `hz (mul_right_cancel₀ hne h1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsupp : tsupport a.1 = Function.support a.1`. Use `IsClosed.closure_eq ?_` and prove the remaining obligations. Establish `: Function.support a.1 = (a.1 ⁻¹' {0})ᶜ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `(a.2.1.isClopen_fiber 0).compl.isClosed`. Establish `main : ∃ C : Set (M2 v), IsClopen C ∧ tsupport a.1 ⊆ C ∧ ∀ b : SB (M2 v), Function.support b.1 ⊆ C → ℓ b = 0`. Use `IsCompact.induction_on (p := fun T : Set (M2 v) => ∃ C : Set (M2 v), IsClopen C ∧ T ⊆ C ∧ ∀ b : SB (M2 v), Function.support b.1 ⊆ C → ℓ b = 0) a.2.2 ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, isClopen_empty, subset_rfl, fun b hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Establish `: b = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hx`. Conclude with `hb hx`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, map_zero]`. Introduce and unpack `S T hST ⟨C, hC, hTC, hb⟩`. Conclude with `⟨C, hC, hST.trans hTC, hb⟩`. Introduce and unpack `S T ⟨C, hC, hSC, hb⟩ ⟨C', hC', hTC', hb'⟩`. Use `⟨C ∪ C', hC.union hC', Set.union_subset_union hSC hTC', fun b hbs => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : b = ⟨C.indicator b.1, indicator_mem_SB b.2 hC⟩ + ⟨Cᶜ.indicator b.1, indicator_mem_SB b.2 hC.compl⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Apply the tactic sequence `by_cases hx : x ∈ C <;> simp [hx]`. Rewrite using `[e, map_add, hb _ (fun x hx => by by_contra hc; exact hx (by simp [hc])), hb', add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Establish `hxC : x ∉ C`. Introduce `hc`. Conclude with `hx (by simp [hc])`. Establish `hxb : b.1 x ≠ 0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`. Conclude with `(hbs hxb).resolve_left hxC`. Introduce `x hx`.
-
-Rewrite `hx` using `[hsupp]`. Establish `hdet : x.det ≠ 1` using `fun h1 => hx (ha x h1)`. Take `⟨N, hN, hxN, hb⟩` from `key x hdet`. Conclude with `⟨N, mem_nhdsWithin_of_mem_nhds (hN.isOpen.mem_nhds hxN), N, hN, subset_rfl, hb⟩`. Take `⟨C, -, hC, hb⟩` from `main`.
-
-Conclude with `hb a (subset_tsupport _ |>.trans hC)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.loc :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F) (ℓ : SB (M2 v) →ₗ[ℂ] ℂ),

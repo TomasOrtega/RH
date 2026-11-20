@@ -4,31 +4,25 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU r H₀ hsym hdet`. Use `haveI : CharZero F := hU.charZero`. Use `haveI : LocallyCompactSpace F := hU.lcF`. Use `haveI : ProperSpace F := ProperSpace.of_locallyCompactSpace F`. Use `letI : NormedRing (Matrix (Fin r) (Fin r) F) := Matrix.linftyOpNormedRing`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `letI : NormedAlgebra F (Matrix (Fin r) (Fin r) F) := Matrix.linftyOpNormedAlgebra`. Use `haveI : @CompleteSpace (Matrix (Fin r) (Fin r) F) PseudoMetricSpace.toUniformSpace := FiniteDimensional.complete F _`. Establish `h2 : (2 : F) ≠ 0` using `two_ne_zero`. Set `L : Matrix (Fin r) (Fin r) F ≃L[F] Matrix (Fin r) (Fin r) F` to `ContinuousLinearEquiv.equivOfInverse ((2 : F) • ContinuousLinearMap.id F _) ((2 : F)⁻¹ • ContinuousLinearMap.id F _) (by intro x; simp [smul_smul, inv_mul_cancel₀ h2]) (by intro x; simp [smul_smul, mul_inv_cancel₀ h2])`. Establish `hf : HasStrictFDerivAt (fun Y : Matrix (Fin r) (Fin r) F => Y * Y) (L : Matrix (Fin r) (Fin r) F →L[F] Matrix (Fin r) (Fin r) F) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(hasStrictFDerivAt_id (𝕜 := F) (1 : Matrix (Fin r) (Fin r) F)).mul' (hasStrictFDerivAt_id 1)`. Establish `e : (L : Matrix (Fin r) (Fin r) F →L[F] Matrix (Fin r) (Fin r) F) = (id 1 : Matrix (Fin r) (Fin r) F) • ContinuousLinearMap.id F (Matrix (Fin r) (Fin r) F) + MulOpposite.op (id 1 : Matrix (Fin r) (Fin r) F) • ContinuousLinearMap.id F (Matrix (Fin r) (Fin r) F)` using `by ext1 D`. Simplify using `[L, two_smul]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P := hf.toOpenPartialHomeomorph _ with hPdef`. Establish `hPc : ∀ Y, P Y = Y * Y` using `fun Y => by`. Rewrite using `[hPdef, hf.toOpenPartialHomeomorph_coe]`. Establish `h1s : (1 : Matrix (Fin r) (Fin r) F) ∈ P.source` using `hf.mem_toOpenPartialHomeomorph_source`. Establish `h1t : (1 : Matrix (Fin r) (Fin r) F) ∈ P.target`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hf.image_mem_toOpenPartialHomeomorph_target` as an intermediate fact. Simplify using `using this`. Establish `hS1 : P.symm 1 = 1`. Use `P.left_inv h1s` as an intermediate fact. Rewrite `this` using `[hPc, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hu : IsUnit H₀.det` using `isUnit_iff_ne_zero.mpr hdet`. Use `set A := H₀⁻¹ with hA`. Establish `hAH : A * H₀ = 1` using `Matrix.nonsing_inv_mul H₀ hu`. Establish `hHA : H₀ * A = 1` using `Matrix.mul_nonsing_inv H₀ hu`. Establish `hAT : Aᵀ = A`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hA, Matrix.transpose_nonsing_inv, hsym.eq]`. Set `φ : Matrix (Fin r) (Fin r) F → Matrix (Fin r) (Fin r) F` to `fun Y => A * Yᵀ * H₀`. Establish `hφc : Continuous φ`. Conclude with `(continuous_const.matrix_mul (continuous_id.matrix_transpose)).matrix_mul continuous_const`. Set `ψ : Matrix (Fin r) (Fin r) F → Matrix (Fin r) (Fin r) F` to `fun H => A * H`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψc : Continuous ψ` using `continuous_const.matrix_mul continuous_id`. Establish `hT : IsOpen (P.target ∩ P.symm ⁻¹' (φ ⁻¹' P.source))` using `P.continuousOn_symm.isOpen_inter_preimage P.open_target (P.open_source.preimage hφc)`. Use `⟨ψ ⁻¹' (P.target ∩ P.symm ⁻¹' (φ ⁻¹' P.source)), fun H => P.symm (A * H), hT.preimage hψc, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show A * H₀ ∈ P.target ∩ P.symm ⁻¹' (φ ⁻¹' P.source)`. Rewrite using `[hAH]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h1t, ?_⟩` and prove the remaining obligations. Use `show φ (P.symm 1) ∈ P.source`. Simplify using `only [φ, hS1, Matrix.transpose_one, Matrix.mul_one, hAH]`. Conclude with `h1s`. Conclude with `P.continuousOn_symm.comp hψc.continuousOn (fun H hH => hH.1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show P.symm (A * H₀) = 1`. Rewrite using `[hAH, hS1]`. Introduce `H hH hHs`. Take `⟨hX, hφS⟩` from `hH`. Use `set S := P.symm (A * H) with hSdef`.
-
-Establish `hSs : S ∈ P.source` using `P.map_target hX`. Establish `hSS : S * S = A * H` using `by rw [← hPc]; exact P.right_inv hX`. Establish `hφφ : φ S * φ S = S * S` using `by show A * Sᵀ * H₀ * (A * Sᵀ * H₀) = S * S`. Establish `e1 : A * Sᵀ * H₀ * (A * Sᵀ * H₀) = A * (S * S)ᵀ * H₀`. Rewrite using `[Matrix.transpose_mul]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc H₀ A, hHA, Matrix.one_mul]`. Rewrite using `[e1, hSS, Matrix.transpose_mul, hAT, hHs.eq, Matrix.mul_assoc, Matrix.mul_assoc, hAH, Matrix.mul_one]`. Establish `heq : φ S = S` using `P.injOn hφS hSs (by rw [hPc, hPc]; exact hφφ)`. Establish `hcomm : Sᵀ * H₀ = H₀ * S`.
-
-Establish `: H₀ * (A * Sᵀ * H₀) = H₀ * S` using `by rw [show A * Sᵀ * H₀ = φ S from rfl, heq]`. Rewrite `this` using `[Matrix.mul_assoc, ← Matrix.mul_assoc H₀ A, hHA, Matrix.one_mul]`. Then use the resulting hypothesis. Rewrite using `[hcomm, Matrix.mul_assoc, hSS, ← Matrix.mul_assoc, hHA, Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_congr_local_continuous : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (H₀ : Matrix (Fin r) (Fin r) F), H₀.IsSymm → H₀.det ≠ 0 →

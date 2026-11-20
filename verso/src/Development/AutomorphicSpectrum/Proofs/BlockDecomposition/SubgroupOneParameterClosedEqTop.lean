@@ -10,7 +10,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : Type} [Fintype n] [Decid
 def packM (g : ι → Matrix n n ℂ) : Matrix n n (ι → ℂ) := Matrix.of fun i j w => g w i j
 
 /- English proof (translation)
-Use extensionality with `i j w`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[packM]`. Simplify using `[packM, h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem packM_one : packM (1 : ι → Matrix n n ℂ) = 1 := by
   ext i j w
@@ -19,7 +19,7 @@ theorem packM_one : packM (1 : ι → Matrix n n ℂ) = 1 := by
   · simp [packM, h]
 
 /- English proof (translation)
-Use extensionality with `i j w`. Simplify using `[packM, Matrix.mul_apply, Finset.sum_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem packM_mul (g h : ι → Matrix n n ℂ) : packM (g * h) = packM g * packM h := by
   ext i j w
@@ -49,7 +49,7 @@ Both sides reduce to the same expression.
 theorem packGL_inv_val (g : ι → GL n ℂ) : (packGL g)⁻¹.val = packM fun w => (g w)⁻¹.val := rfl
 
 /- English proof (translation)
-Introduce `y`. Use `⟨fun w => Matrix.GeneralLinearGroup.map (Pi.evalRingHom (fun _ : ι => ℂ) w) y, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j w`. Simplify using `[packGL_val, packM]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem packGL_surjective : Function.Surjective (packGL : (ι → GL n ℂ) → GL n (ι → ℂ)) := by
   intro y
@@ -65,7 +65,7 @@ namespace GlobalTheory.CompanionTheory.GenOneParam
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Simplify using `[packGL_val, packM]`. Simplify using `[packGL_val, packM, h, Pi.mulSingle_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem packGL_mulSingle_val (w w' : ι) (g : GL n ℂ) (i j : n) :
     (packGL (Pi.mulSingle w g)).val i j w' = if w' = w then g.val i j else (1 : Matrix n n ℂ) i j := by
@@ -74,9 +74,9 @@ theorem packGL_mulSingle_val (w w' : ι) (g : GL n ℂ) (i j : n) :
   · simp [packGL_val, packM, h, Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Distinguish the cases in `h : w' = w`. Substitute `h` using the available equality. Rewrite using `[packGL_inv_val]`. Simplify using `[packM]`. Rewrite using `[packGL_inv_val]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[packM, h, Pi.mulSingle_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem packGL_mulSingle_inv_val (w w' : ι) (g : GL n ℂ) (i j : n) :
     (packGL (Pi.mulSingle w g))⁻¹.val i j w' =
@@ -86,17 +86,15 @@ theorem packGL_mulSingle_inv_val (w w' : ι) (g : GL n ℂ) (i j : n) :
   · rw [packGL_inv_val]; simp [packM, h, Pi.mulSingle_eq_of_ne h]
 
 /- English proof (translation)
-Set `c₀ : ℝ → GL n ℂ` to `fun s => ⟨m s, m (-s), by rw [← hadd]; simp [h0], by rw [← hadd]; simp [h0]⟩`. Establish `hc₀ : ∀ s, (c₀ s).val = m s` using `fun s => rfl`. Establish `hc₀i : ∀ s, (c₀ s)⁻¹.val = m (-s)` using `fun s => rfl`. Establish `hg' : c₀ t = g` using `Units.ext (by rw [hc₀, hg])`. Establish `h00 : c₀ 0 = 1` using `Units.ext (by rw [hc₀, h0]; rfl)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadd₀ : ∀ s u, c₀ (s + u) = c₀ s * c₀ u` using `fun s u => Units.ext (by`. Rewrite using `[Units.val_mul, hc₀, hc₀, hc₀, hadd])`. Rewrite using `[← hg']`. Use `hS (fun s => packGL (Pi.mulSingle w (c₀ s))) (fun i j w' => if w' = w then X₀ i j else 0) ?_ ?_ ?_ ?_ t` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use `continuous_matrix fun i j => continuous_pi fun w' => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, packGL_mulSingle_val, hc₀]`. Use `split_ifs`. Conclude with `(continuous_id.matrix_elem i j).comp hm`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const`. Use `continuous_matrix fun i j => continuous_pi fun w' => ?_` and prove the remaining obligations. Simplify using `only [packGL_mulSingle_inv_val, hc₀i]`. Use `split_ifs`. Conclude with `(continuous_id.matrix_elem i j).comp (hm.comp continuous_neg)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const`. Simplify using `[h00]`. Introduce `s u`. Simplify using `only [hadd₀]`. Rewrite using `[Pi.mulSingle_mul, map_mul]`.
-
-Use `hasDerivAt_pi.2 fun i => hasDerivAt_pi.2 fun j => hasDerivAt_pi.2 fun w' => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_symm_apply, packGL_mulSingle_val, hc₀]`. Distinguish the cases in `h : w' = w`. Simplify `hd i j` using `[h]`. Simplify `hasDerivAt_const (0 : ℝ) ((1 : Matrix n n ℂ) i j)` using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_of_family {S : Subgroup (GL n (ι → ℂ))}
     (hS : ∀ (c : ℝ → GL n (ι → ℂ)) (X : n → n → ι → ℂ), Continuous c → c 0 = 1 →
@@ -140,29 +138,27 @@ theorem mem_of_family {S : Subgroup (GL n (ι → ℂ))}
     · simpa [h] using hasDerivAt_const (0 : ℝ) ((1 : Matrix n n ℂ) i j)
 
 /- English proof (translation)
-It suffices to establish `H : ∀ M : Matrix n n ℂ, M.det ≠ 0 → ∀ g : GL n ℂ, g.val = M → packGL (Pi.mulSingle w g) ∈ S from H g.val (Matrix.isUnits_det_units g).ne_zero g rfl`. Introduce `M hM`. Use `Matrix.diagonal_transvection_induction_of_det_ne_zero (fun M => ∀ g : GL n ℂ, g.val = M → packGL (Pi.mulSingle w g) ∈ S) M hM ?_ ?_ ?_` and prove the remaining obligations. Introduce `D hD g hg`. Establish `hD' : ∀ k, D k ≠ 0` using `fun k => by`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hD` using `[Matrix.det_diagonal]`. Conclude with `Finset.prod_ne_zero_iff.1 hD k (Finset.mem_univ k)`. Use `mem_of_family hS w (fun t => Matrix.diagonal fun k => Complex.exp ((t : ℂ) * Complex.log (D k))) ?_ ?_ ?_ (fun i j => if i = j then Complex.log (D i) else 0) ?_ 1 g ?_` and prove the remaining obligations. Use `Continuous.matrix_diagonal (continuous_pi fun k => ?_) fun_prop` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s u`. Rewrite using `[Matrix.diagonal_mul_diagonal']`. Use `congr 1`. Use extensionality with `k`. Rewrite using `[← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Put the polynomial expressions in normal form. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.diagonal_apply_eq, if_true]`. Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) * Complex.log (D i)) (Complex.log (D i)) 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const (Complex.log (D i))`. Simplify using `using h1.cexp`. Simplify `hasDerivAt_const (0 : ℝ) (0 : ℂ)` using `[h, Matrix.diagonal_apply_ne _ h]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Use `congr 1`. Use extensionality with `k`. Simplify using `[Complex.exp_log (hD' k)]`. Introduce `τ g hg`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_of_family hS w (fun t => Matrix.transvection τ.i τ.j ((t : ℂ) * τ.c)) ?_ ?_ ?_ (fun a b => (Matrix.single τ.i τ.j τ.c : Matrix n n ℂ) a b) ?_ 1 g ?_` and prove the remaining obligations. Unfold `Matrix.transvection`. Use `continuous_const.add ?_` and prove the remaining obligations. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.single_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `fun_prop`. Conclude with `continuous_const`. Simplify using the standard rewrite rules. Introduce `s u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.transvection_mul_transvection_same _ _ τ.hij]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Unfold `Matrix.transvection`. Simplify using `only [Matrix.add_apply, Matrix.single_apply]`. Use `split_ifs`. Establish `h1 : HasDerivAt (fun t : ℝ => (t : ℂ) * τ.c) τ.c 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).mul_const τ.c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.const_add _`. Conclude with `hasDerivAt_const (0 : ℝ) _ |>.add (hasDerivAt_const (0 : ℝ) (0 : ℂ)) |>.congr_deriv (by simp)`. Rewrite using `[hg]`. Simplify using `[Matrix.TransvectionStruct.toMatrix]`. Introduce `A B hA hB PA PB g hg`.
-
-Establish `: g = Matrix.GeneralLinearGroup.mkOfDetNeZero A hA * Matrix.GeneralLinearGroup.mkOfDetNeZero B hB` using `Units.ext (by rw [hg]; rfl)`. Rewrite using `[this, Pi.mulSingle_mul, map_mul]`. Conclude with `S.mul_mem (PA _ rfl) (PB _ rfl)`.
+A detailed English derivation is pending.
 -/
 theorem single_mem {S : Subgroup (GL n (ι → ℂ))}
     (hS : ∀ (c : ℝ → GL n (ι → ℂ)) (X : n → n → ι → ℂ), Continuous c → c 0 = 1 →
@@ -229,9 +225,9 @@ theorem single_mem {S : Subgroup (GL n (ι → ℂ))}
     exact S.mul_mem (PA _ rfl) (PB _ rfl)
 
 /- English proof (translation)
-Establish `hle : Subgroup.pi Set.univ (fun _ : ι => (⊤ : Subgroup (GL n ℂ))) ≤ S.comap packGL`. Rewrite using `[Subgroup.pi_le_iff]`. Introduce and unpack `w _ ⟨g, -, rfl⟩`. Conclude with `single_mem hS w g`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `packGL_surjective y`. Conclude with `hle (by simp [Subgroup.mem_pi])`.
+A detailed English derivation is pending.
 -/
 theorem eq_top_of_oneParam {S : Subgroup (GL n (ι → ℂ))}
     (hS : ∀ (c : ℝ → GL n (ι → ℂ)) (X : n → n → ι → ℂ), Continuous c → c 0 = 1 →
@@ -246,7 +242,7 @@ theorem eq_top_of_oneParam {S : Subgroup (GL n (ι → ℂ))}
   exact hle (by simp [Subgroup.mem_pi])
 
 /- English proof (translation)
-Introduce `E _ _ a S hS`. Conclude with `eq_top_of_oneParam (ι := InfinitePlace E) (n := Fin a) hS`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_top_of_oneParam_Cinf : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (S : Subgroup (GL (Fin a) (Cinf E))), (∀ (c : ℝ → GL (Fin a) (Cinf E)) (X : GlobalTheory.CuspRep.Lie E a), Continuous c → c 0 = 1 → (∀ s t, c (s + t) = c s * c t) → HasDerivAt (fun t => toL (c t).val) X 0 → ∀ t, c t ∈ S) → S = ⊤ := by
   intro E _ _ a S hS

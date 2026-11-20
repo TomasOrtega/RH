@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 open GlobalTheory.CompanionTheory.Ar.PB.PFl
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FPMatStepColsEntry.lean&line=24#L24)
 -/

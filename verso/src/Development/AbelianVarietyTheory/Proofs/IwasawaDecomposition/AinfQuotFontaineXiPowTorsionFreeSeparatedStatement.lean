@@ -5,7 +5,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc GlobalTheory.Me
 open scoped Formalism.Per
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MemLoc.ainf_quot_xi_pow_torsionFree_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FAinfQuotFontaineXiPowTorsionFreeSeparated.lean&line=42#L42)
 -/

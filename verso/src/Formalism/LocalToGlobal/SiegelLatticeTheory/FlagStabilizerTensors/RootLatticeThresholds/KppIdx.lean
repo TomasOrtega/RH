@@ -17,9 +17,9 @@ def zI (hr : r = kk + 2 * s + 1) : Fin r := ⟨s + kk, by omega⟩
 def yI (hr : r = kk + 2 * s + 1) (a : Fin s) : Fin r := ⟨s + kk + 1 + a.1, by omega⟩
 
 /- English proof (translation)
-Break down `lt_or_ge j.1 s with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨j.1, h⟩, Fin.ext rfl⟩`. Break down `lt_or_ge j.1 (s + kk) with h' | h'` into its components or cases. Conclude with `Or.inr (Or.inl ⟨⟨j.1 - s, by omega⟩, Fin.ext (by show j.1 = s + (j.1 - s); omega)⟩)`. Break down `eq_or_lt_of_le h' with h'' | h''` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inr (Or.inr (Or.inl (Fin.ext (by show j.1 = s + kk; omega))))`. Conclude with `Or.inr (Or.inr (Or.inr ⟨⟨j.1 - (s + kk + 1), by omega⟩, Fin.ext (by show j.1 = s + kk + 1 + (j.1 - (s + kk + 1)); omega)⟩))`.
+Prove the second alternative. Prove the second alternative.
 -/
 theorem kind_cases (hr : r = kk + 2 * s + 1) (j : Fin r) :
     (∃ a, j = xI hr a) ∨ (∃ i, j = wI hr i) ∨ j = zI hr ∨ ∃ a, j = yI hr a := by
@@ -52,7 +52,7 @@ Both sides reduce to the same expression.
 variable {g : ℕ}
 
 /- English proof (translation)
-Use `⟨fun a b => ⟨hlow a b, fun h => h ▸ hdiag a⟩, fun a ha1 ha2 => ?_⟩` and prove the remaining obligations. Unfold `entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Use `hwz ⟨a - s, by omega⟩` as an intermediate fact. Apply the tactic sequence `convert this using 2 <;> ext <;> simp <;> omega`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jPred_of (hr : r = kk + 2 * s + 1) {N : Matrix (Fin r) (Fin r) (ZMod g)}
     (hlow : ∀ a b : Fin r, b < a → N a b = 0) (hdiag : ∀ a, N a a = 1) (hwz : ∀ i, N (wI hr i) (zI hr) = 0) :
@@ -64,23 +64,23 @@ theorem jPred_of (hr : r = kk + 2 * s + 1) {N : Matrix (Fin r) (Fin r) (ZMod g)}
   convert this using 2 <;> ext <;> simp <;> omega
 
 /- English proof (translation)
-The claim follows from `(hJ.1 a b).1 h`.
+A detailed English derivation is pending.
 -/
 theorem low_of {N : Matrix (Fin r) (Fin r) (ZMod g)} (hJ : JPred kk s N) (a b : Fin r) (h : b < a) : N a b = 0 :=
   (hJ.1 a b).1 h
 
 /- English proof (translation)
-The claim follows from `(hJ.1 a a).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem diag_of {N : Matrix (Fin r) (Fin r) (ZMod g)} (hJ : JPred kk s N) (a : Fin r) : N a a = 1 :=
   (hJ.1 a a).2 rfl
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun h1 ⟨i, by omega⟩) ⟨i + 1, hi⟩`. Rewrite `e` using `[Matrix.mul_apply, Matrix.one_apply_ne (by intro h; have := congrArg Fin.val h; simp at this)]`. Establish `hne : (⟨i, by omega⟩ : Fin r) ≠ ⟨i + 1, hi⟩` using `by intro h; have := congrArg Fin.val h; simp at this`. Rewrite `e` using `[Finset.sum_eq_add (⟨i, by omega⟩ : Fin r) ⟨i + 1, hi⟩ hne (fun c _ hc => ?_) (by simp) (by simp)]`. Rewrite `e` using `[diag_of hJ, diag_of hJ', one_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `entN`. Rewrite using `[dif_pos ⟨by omega, hi⟩, dif_pos ⟨by omega, hi⟩]`. Take the linear combination `e`. Break down `lt_or_gt_of_ne (show c.1 ≠ i from fun h => hc.1 (Fin.ext h)) with h | h` into its components or cases. Rewrite using `[low_of hJ _ _ (show c < ⟨i, by omega⟩ from h), zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `: i + 1 < c.1`. Break down `lt_or_gt_of_ne (show c.1 ≠ i + 1 from fun h => hc.2 (Fin.ext h)) with h' | h'` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `h'`. Rewrite using `[low_of hJ' _ _ (show (⟨i + 1, hi⟩ : Fin r) < c from this), mul_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_super {N N' : Matrix (Fin r) (Fin r) (ZMod g)} (hJ : JPred kk s N) (hJ' : JPred kk s N')
     (h1 : N * N' = 1) (i : ℕ) (hi : i + 1 < r) : entN N' i (i + 1) = -entN N i (i + 1) := by
@@ -105,44 +105,44 @@ def dN (s kk : ℕ) (ob : Bool) (j : ℕ) : ZMod g :=
   else if ob = false ∧ s ≤ j ∧ j < s + kk then (-1) ^ (j - s) else 1
 
 /- English proof (translation)
-Unfold `dN`. Apply the tactic sequence `split_ifs <;> simp [← pow_add, ← two_mul, pow_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dN_sq (ob : Bool) (j : ℕ) : dN (g := g) s kk ob j * dN s kk ob j = 1 := by
   unfold dN
   split_ifs <;> simp [← pow_add, ← two_mul, pow_mul]
 
 /- English proof (translation)
-Unfold `dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.2.1 (by omega))]`.
+Replace the relevant objects with their definitions.
 -/
 theorem index_diag_isotropic (ob : Bool) {j : ℕ} (h : j < s) : dN (g := g) s kk ob j = 1 := by
   unfold dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.2.1 (by omega))]
 
 /- English proof (translation)
-Unfold `dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.1 (by simp))]`.
+Replace the relevant objects with their definitions.
 -/
 theorem dN_wt {j : ℕ} (h1 : s ≤ j) (h2 : j < s + kk) : dN (g := g) s kk true j = 1 := by
   unfold dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.1 (by simp))]
 
 /- English proof (translation)
-Unfold `dN; rw [if_neg (by omega), if_pos ⟨rfl, h1, h2⟩]`.
+Replace the relevant objects with their definitions.
 -/
 theorem dN_wf {j : ℕ} (h1 : s ≤ j) (h2 : j < s + kk) : dN (g := g) s kk false j = (-1) ^ (j - s) := by
   unfold dN; rw [if_neg (by omega), if_pos ⟨rfl, h1, h2⟩]
 
 /- English proof (translation)
-Unfold `dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.2.2 (by omega))]`.
+Replace the relevant objects with their definitions.
 -/
 theorem dN_add_eq_one (ob : Bool) : dN (g := g) s kk ob (s + kk) = 1 := by
   unfold dN; rw [if_neg (by omega), if_neg (fun h' => absurd h'.2.2 (by omega))]
 
 /- English proof (translation)
-Unfold `dN`. Rewrite using `[if_pos h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dN_y (ob : Bool) {j : ℕ} (h : s + kk + 1 ≤ j) : dN (g := g) s kk ob j = (-1) ^ (j - (s + kk + 1)) := by
   unfold dN; rw [if_pos h]
 
 /- English proof (translation)
-Rewrite using `[← pow_add, ← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem neg_one_sq (i : ℕ) : ((-1 : ZMod g) ^ i) * (-1) ^ i = 1 := by
   rw [← pow_add, ← two_mul, pow_mul]; simp
@@ -150,7 +150,7 @@ theorem neg_one_sq (i : ℕ) : ((-1 : ZMod g) ^ i) * (-1) ^ i = 1 := by
 def dM (s kk : ℕ) (ob : Bool) : Matrix (Fin r) (Fin r) (ZMod g) := Matrix.diagonal fun j => dN s kk ob j.1
 
 /- English proof (translation)
-Rewrite using `[dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Conclude with `dN_sq ob j.1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dM_sq (ob : Bool) : dM (r := r) (g := g) s kk ob * dM s kk ob = 1 := by
   rw [dM, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]
@@ -159,7 +159,7 @@ theorem dM_sq (ob : Bool) : dM (r := r) (g := g) s kk ob * dM s kk ob = 1 := by
   exact dN_sq ob j.1
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with h`. Simplify using `[dM, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem entN_conj (ob : Bool) (N : Matrix (Fin r) (Fin r) (ZMod g)) (a b : ℕ) :
     entN (dM s kk ob * N * dM s kk ob) a b = dN s kk ob a * entN N a b * dN s kk ob b := by
@@ -169,11 +169,11 @@ theorem entN_conj (ob : Bool) (N : Matrix (Fin r) (Fin r) (ZMod g)) (a b : ℕ) 
   · simp
 
 /- English proof (translation)
-Use `jPred_of hr (fun a b h => ?_) (fun a => ?_) (fun i => ?_)` and prove the remaining obligations. Simplify using `only [dM, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Rewrite using `[low_of hJ a b h]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [dM, Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[diag_of hJ a, mul_one]`. Conclude with `dN_sq ob a.1`. Use `(hJ.2 (s + i.1) (by omega) (by omega))` as an intermediate fact. Unfold `entN at this`. Rewrite `this` using `[dif_pos ⟨by omega, by omega⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dM, Matrix.diagonal_mul, Matrix.mul_diagonal]`. Establish `e : N (wI hr i) (zI hr) = 0` using `this`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem jPred_conj (hr : r = kk + 2 * s + 1) (ob : Bool) {N : Matrix (Fin r) (Fin r) (ZMod g)}
     (hJ : JPred kk s N) : JPred kk s (dM s kk ob * N * dM s kk ob) := by
@@ -191,7 +191,7 @@ theorem jPred_conj (hr : r = kk + 2 * s + 1) (ob : Bool) {N : Matrix (Fin r) (Fi
     rw [e]; ring
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ t`. Rewrite using `[Finset.sum_range_succ, if_neg (by omega), add_zero, Nat.add_sub_cancel]`. Conclude with `Finset.sum_congr rfl fun a ha => by rw [Finset.mem_range] at ha; rw [if_pos (by omega)]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_range_pred (f : ℕ → ZMod g) (n : ℕ) :
     ∑ a ∈ range n, (if a + 1 < n then f a else 0) = ∑ a ∈ range (n - 1), f a := by
@@ -202,7 +202,7 @@ theorem sum_range_pred (f : ℕ → ZMod g) (n : ℕ) :
     exact Finset.sum_congr rfl fun a ha => by rw [Finset.mem_range] at ha; rw [if_pos (by omega)]
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ t`. Rewrite using `[Finset.sum_range_succ, if_neg (by omega), if_pos (by omega)]`. Rewrite using `[Finset.sum_eq_zero fun a ha => by rw [Finset.mem_range] at ha; rw [if_pos (by omega)], zero_add]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 -/
 theorem sum_range_last (c : ZMod g) (n : ℕ) :
     ∑ a ∈ range n, (if a + 1 < n then 0 else c) = if 1 ≤ n then c else 0 := by
@@ -213,31 +213,31 @@ theorem sum_range_last (c : ZMod g) (n : ℕ) :
     rw [Finset.sum_eq_zero fun a ha => by rw [Finset.mem_range] at ha; rw [if_pos (by omega)], zero_add]
 
 /- English proof (translation)
-Establish `split1 : ∀ a ∈ range s, (if a + 1 < s then entN N a (a + 1) + entN N' (s + kk + 1 + (s - 2 - a)) (s + kk + 1 + (s - 1 - a)) else entN N a (s + kk) - entN N' (s + kk) (s + kk + 1)) = (if a + 1 < s then entN N a (a + 1) else 0) + (if a + 1 < s then entN N' (s + kk + 1 + (s - 2 - a) …`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_range]`. Use `split_ifs with h`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: a = s - 1` using `by omega`. Substitute `this` using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl split1, Finset.sum_add_distrib, Finset.sum_add_distrib, sum_range_pred, sum_range_pred, sum_range_last, sum_range_pred (fun i => if ob then entN N (s + i) (s + i + 1) else entN N' (s + (kk - 2 - i)) (s + (kk - 1 - i))) kk]`. Establish `ry : ∑ a ∈ range (s - 1), entN N' (s + kk + 1 + (s - 2 - a)) (s + kk + 1 + (s - 1 - a)) = -∑ i ∈ range (s - 1), entN N (s + kk + 1 + i) (s + kk + 2 + i)`.
+Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_range_reflect, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_range]`. Establish `e1 : s + kk + 1 + (s - 2 - (s - 1 - 1 - a)) = s + kk + 1 + a` using `by omega`. Establish `e2 : s + kk + 1 + (s - 1 - (s - 1 - 1 - a)) = s + kk + 1 + a + 1` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, hinv _ (by omega), show s + kk + 1 + a + 1 = s + kk + 2 + a by omega]`. Establish `rw' : ∑ i ∈ range (kk - 1), (if ob then entN N (s + i) (s + i + 1) else entN N' (s + (kk - 2 - i)) (s + (kk - 1 - i))) = (if ob then 1 else -1) * ∑ a ∈ range (kk - 1), entN N (s + a) (s + a + 1)`. Consider the cases of `ob`. Simplify using `only [Bool.false_eq_true, if_false, neg_one_mul]`. Rewrite using `[← Finset.sum_range_reflect, ← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite `ha` using `[Finset.mem_range]`. Establish `e1 : s + (kk - 2 - (kk - 1 - 1 - a)) = s + a` using `by omega`. Establish `e2 : s + (kk - 1 - (kk - 1 - 1 - a)) = s + a + 1` using `by omega`. Rewrite using `[e1, e2, hinv _ (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[ry, rw']`. Unfold `phiJ`. Simplify using `only [entN_conj]`. Establish `hx : ∀ i ∈ range (s - 1), dN (g` using `g) s kk ob i * entN N i (i + 1) * dN s kk ob (i + 1) = entN N i (i + 1) := by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[index_diag_isotropic ob (by omega), index_diag_isotropic ob (by omega)]; ring`. Establish `hy : ∀ i ∈ range (s - 1), dN (g` using `g) s kk ob (s + kk + 1 + i) * entN N (s + kk + 1 + i) (s + kk + 2 + i) * dN s kk ob (s + kk + 2 + i) = -entN N (s + kk + 1 + i) (s + kk + 2 + i) := by`. Introduce `i hi`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dN_y ob (by omega), dN_y ob (by omega)]`. Establish `e1 : s + kk + 1 + i - (s + kk + 1) = i` using `by omega`. Establish `e2 : s + kk + 2 + i - (s + kk + 1) = i + 1` using `by omega`. Rewrite using `[e1, e2, pow_succ]`. Take the linear combination `(-(entN N (s + kk + 1 + i) (s + kk + 2 + i))) * neg_one_sq (g := g) i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hw : ∀ a ∈ range (kk - 1), dN (g` using `g) s kk ob (s + a) * entN N (s + a) (s + a + 1) * dN s kk ob (s + a + 1) = (if ob then 1 else -1) * entN N (s + a) (s + a + 1) := by`. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_range]`. Consider the cases of `ob`. Rewrite using `[dN_wf (by omega) (by omega), dN_wf (by omega) (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : s + a - s = a` using `by omega`. Establish `e2 : s + a + 1 - s = a + 1` using `by omega`. Rewrite using `[e1, e2, pow_succ]`. Simplify using `only [Bool.false_eq_true, if_false]`. Take the linear combination `(-(entN N (s + a) (s + a + 1))) * neg_one_sq (g := g) a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dN_wt (by omega) (by omega), dN_wt (by omega) (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl hx, Finset.sum_congr rfl hy, Finset.sum_congr rfl hw, ← Finset.mul_sum]`. Distinguish the cases in `hs : 1 ≤ s`. Rewrite using `[if_pos hs, if_pos hs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : dN (g` using `g) s kk ob (s - 1) = 1 := index_diag_isotropic ob (by omega)`. Establish `h2 : dN (g` using `g) s kk ob (s + kk) = 1 := dN_add_eq_one ob`. Establish `h3 : dN (g` using `g) s kk ob (s + kk + 1) = 1 := by rw [dN_y ob le_rfl]; simp`. Rewrite using `[h1, h2, h3, hinv _ (by omega), Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hs, if_neg hs]`. Establish `: s - 1 = 0` using `by omega`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_key (hr : r = kk + 2 * s + 1) (ob : Bool) {N N' : Matrix (Fin r) (Fin r) (ZMod g)}
     (hinv : ∀ i, i + 1 < r → entN N' i (i + 1) = -entN N i (i + 1)) :

@@ -9,7 +9,7 @@ namespace GlobalTheory.JSW
 open MeasureTheory in
 open scoped FourierTransform ContDiff in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_levSet_iff_unitriangular_below_r {n r : ℕ} {g : GL (Fin n) ℂ} :
     g ∈ _root_.GlobalTheory.JSW.levSet n r ↔
@@ -20,9 +20,9 @@ private theorem mem_levSet_iff_unitriangular_below_r {n r : ℕ} {g : GL (Fin n)
 open MeasureTheory in
 open scoped FourierTransform ContDiff in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[hA.2, one_mul]`. Introduce `k _ hki`. Break down `lt_or_gt_of_ne hki with hk | hk` into its components or cases. Rewrite using `[hA.1 k hk, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hB k hk j (lt_of_le_of_lt hj hk), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem mul_apply_eq_apply_of_unitriangular_index_le {n : ℕ} {A B : Matrix (Fin n) (Fin n) ℂ}
     {i : Fin n} (hA : (∀ j < i, A i j = 0) ∧ A i i = 1)
@@ -41,21 +41,19 @@ open MeasureTheory in
 open scoped FourierTransform ContDiff in
 
 /- English proof (translation)
-Introduce `n r`. Use `⟨fun g hg h hh => ?_, fun g hg => ?_, fun u hu => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg`, `hh`, the goal using `[mem_levSet_iff_unitriangular_below_r]`. Introduce `i hi`. Establish `hrow` using `mul_apply_eq_apply_of_unitriangular_index_le (hg i hi) (B := (h : Matrix (Fin n) (Fin n) ℂ)) fun k hk => (hh k (hi.trans (Fin.lt_iff_val_lt_val.mp hk).le)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul]`. Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hrow j hj.le]`. Conclude with `(hh i hi).1 j hj`. Rewrite using `[hrow i le_rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hh i hi).2`. Rewrite `hg`, the goal using `[mem_levSet_iff_unitriangular_below_r]`. Establish `hgh : (g : Matrix (Fin n) (Fin n) ℂ) * ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) = 1` using `Units.mul_inv g`. Establish `key : ∀ m : ℕ, ∀ i : Fin n, r ≤ (i : ℕ) → n - (i : ℕ) ≤ m → (∀ j < i, ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i j = 0) ∧ ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ) i i = 1`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `i _ hm`. Use `i.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ m ih`. Introduce `i hi hm`. Establish `hrow` using `mul_apply_eq_apply_of_unitriangular_index_le (hg i hi) (B := ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)) fun k hk => by`. Establish `hik` using `Fin.lt_iff_val_lt_val.mp hk`. Conclude with `(ih k (hi.trans hik.le) (by omega)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hrow j hj.le, hgh, Matrix.one_apply_ne hj.ne']`. Rewrite using `[← hrow i le_rfl, hgh, Matrix.one_apply_eq]`. Conclude with `fun i hi => key n i hi (Nat.sub_le _ _)`. Rewrite `hu` using `[_root_.GlobalTheory.SmGL.mem_unipB]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun i _ => ⟨fun j hj => hu.1 i j hj, hu.2 i⟩`. Establish `hc : ∀ i j : Fin n, Continuous fun g : GL (Fin n) ℂ => (g : Matrix (Fin n) (Fin n) ℂ) i j` using `fun i j => Units.continuous_val.matrix_elem i j`. Establish `hset : _root_.GlobalTheory.JSW.levSet n r = ⋂ i : Fin n, ⋂ (_ : r ≤ (i : ℕ)), ((⋂ j : Fin n, ⋂ (_ : j < i), {g : GL (Fin n) ℂ | (g : Matrix (Fin n) (Fin n) ℂ) i j = 0}) ∩ {g : GL (Fin n) ℂ | (g : Matrix (Fin n) (Fin n) ℂ) i i = 1})`. Use extensionality with `g`. Simplify using `only [mem_levSet_iff_unitriangular_below_r, Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]`.
-
-Rewrite using `[hset]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun _ => (isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq (hc i j) continuous_const).inter (isClosed_eq (hc i i) continuous_const)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.JSW.levSet_closed_subgroup : ∀ (n r : ℕ),
     (∀ g ∈ _root_.GlobalTheory.JSW.levSet n r, ∀ h ∈ _root_.GlobalTheory.JSW.levSet n r,

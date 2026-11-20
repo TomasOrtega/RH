@@ -9,9 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.CuspRep PositivityTheory.R
 namespace GlobalTheory.CompanionTheory.SubEigIrr
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Use `h ⟨k, hk⟩` as an intermediate fact. Simplify using `using this`. Introduce `h k`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using h k.1 k.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ G V}
     {K : Subgroup G} {v : V} : v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -23,7 +23,7 @@ theorem mem_fixed_iff {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] {ρ
     simpa using h k.1 k.2
 
 /- English proof (translation)
-Unfold `hkS`. Use `finsum_eq_sum_of_support_subset _ fun q hq => ?_` and prove the remaining obligations. Simplify using `only [Set.Finite.coe_toFinset]`. Introduce `h0`. Conclude with `hq (by simp [h0])`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hkS_eq_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V)
     (K : Subgroup G) (f : G → ℂ) (hf : {q : G ⧸ K | f q.out ≠ 0}.Finite) (v : V) :
@@ -35,9 +35,9 @@ theorem hkS_eq_sum {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V] (ρ : 
   exact hq (by simp [h0])
 
 /- English proof (translation)
-Rewrite using `[hkS_eq_sum ρ K f hf, hkS_eq_sum σ K f hf]`. Use `show φ.toLinearMap _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `φ.isIntertwining _ _ q.out v`.
+A detailed English derivation is pending.
 -/
 theorem hkS_map {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : Representation.IntertwiningMap ρ σ)
@@ -52,17 +52,17 @@ theorem hkS_map {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCom
   exact φ.isIntertwining _ _ q.out v
 
 /- English proof (translation)
-Introduce `G _ _ _ V _ _ ρ hρ K X f e hfin u hu hu0 heig`. Set `S` to `cyc ρ u`. Set `u' : S.toSubmodule` to `⟨u, mem_cyc ρ u⟩`. Establish `hu' : u' ≠ 0` using `fun h => hu0 (congrArg Subtype.val h)`. Take `⟨T, huT, hmax⟩` from `exists_max_avoid S.toRepresentation hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hst : ∀ g, T.toSubmodule ≤ T.toSubmodule.comap (S.toRepresentation g)` using `fun g _ hv => T.apply_mem_toSubmodule g hv`. Set `τ` to `S.toRepresentation.quotient T.toSubmodule hst`. Establish `hirr : τ.IsIrreducible` using `quot_irred S.toRepresentation T huT hmax (cyc_gen ρ u) hst`. Establish `hsm : IsSmooth τ` using `smooth_quot (smooth_sub hρ S) _ hst`. Set `p` to `mkI S.toRepresentation T.toSubmodule hst`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `w : S.toSubmodule ⧸ T.toSubmodule` to `p u'`. Establish `hw0 : w ≠ 0` using `by show (Submodule.Quotient.mk u' : S.toSubmodule ⧸ T.toSubmodule) ≠ 0`. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]` and apply the resulting hypothesis. Establish `hsub : IsSubquotient τ ρ`. Use `⟨S, p, fun y => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨x, rfl⟩`. Use `⟨⟨_, τ, hsm, hirr⟩, hsub, w, ?_, hw0, fun x => ?_⟩` and prove the remaining obligations. Use `mem_fixed_iff.2 fun k hk => ?_` and prove the remaining obligations. Establish `hh' : S.toRepresentation k u' = u'` using `Subtype.ext (mem_fixed_iff.1 hu k hk)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `p.isIntertwining _ _ k u'` as an intermediate fact. Rewrite `this` using `[hh']`. Conclude with `this.symm`. Establish `h1 : hkS S.toRepresentation K (f x) u' = e x • u'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `hkS_map (inclI S) K (f x) (hfin x) u'` as an intermediate fact. Conclude with `this.trans (heig x)`. Use `hkS_map p K (f x) (hfin x) u'` as an intermediate fact. Rewrite `this` using `[h1, map_smul]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subEig : SubEig := by
   intro G _ _ _ V _ _ ρ hρ K X f e hfin u hu hu0 heig

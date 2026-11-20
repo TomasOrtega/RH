@@ -8,25 +8,23 @@ namespace GlobalTheory.RegularAscent
 
 open IsLocalRing TensorProduct in
 /- English proof (translation)
-Take `⟨T, hTc, hT⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hJ`. Take `⟨U, hUc, hU⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hm`. Set `L : Finset A` to `U.image Quotient.out`. Establish `hJm : J ≤ maximalIdeal A`. Use `le_maximalIdeal fun h => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: Subsingleton (A ⧸ J)` using `Ideal.Quotient.subsingleton_iff.mpr h`. Conclude with `not_subsingleton (A ⧸ J) this`. Establish `hL : ∀ l ∈ L, l ∈ maximalIdeal A`. Introduce `l hl`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.mp hl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu' : u ∈ maximalIdeal (A ⧸ J)` using `hU ▸ Ideal.subset_span hu`. Introduce `hunit`. Apply `hu'` to reduce the goal to its premises. Use `hunit.map (Ideal.Quotient.mk J)` as an intermediate fact. Rewrite `this` using `[Ideal.Quotient.mk_out]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hspan : maximalIdeal A = Ideal.span (↑(T ∪ L) : Set A)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx' : Ideal.Quotient.mk J x ∈ Ideal.span (Ideal.Quotient.mk J '' (L : Set A))`. Establish `e : Ideal.Quotient.mk J '' (L : Set A) = (U : Set (A ⧸ J))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `u`. Simplify using `[L, Ideal.Quotient.mk_out]`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `_ ∈ Submodule.span (A ⧸ J) _`. Rewrite using `[hU]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hunit`. Take `⟨y, hy⟩` from `hunit.exists_right_inv`. Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `h1 : x * y' - 1 ∈ J` using `Ideal.Quotient.eq.mp (by simpa using hy)`. Apply `(maximalIdeal.isMaximal A).ne_top` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Simplify using `using Ideal.sub_mem _ (Ideal.mul_mem_right y' _ hx) (hJm h1)`. Rewrite `hx'` using `[← Ideal.map_span]`. Take `⟨y, hy, hyx⟩` from `Ideal.mem_map_iff_of_surjective _ Ideal.Quotient.mk_surjective |>.mp hx'`. Establish `hxy : x - y ∈ J`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `hyx.symm`. Rewrite `hxy` using `[← hT]`. Rewrite using `[Finset.coe_union, Ideal.span_union]`. Use `Submodule.add_mem_sup hxy hy` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[Ideal.span_le]`. Introduce `x hx`. Break down `Finset.mem_union.mp hx with hx | hx` into its components or cases. Conclude with `hJm (hT ▸ Ideal.subset_span hx)`.
-
-Conclude with `hL x hx`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hTc, ← hUc]`. Use `gcongr`. Conclude with `Finset.card_image_le`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma spanFinrank_maximalIdeal_le_add (A : Type) [CommRing A] [IsLocalRing A]
     (J : Ideal A) [IsLocalRing (A ⧸ J)] (hJ : J.FG) (hm : (maximalIdeal (A ⧸ J)).FG) :
@@ -83,9 +81,9 @@ private lemma spanFinrank_maximalIdeal_le_add (A : Type) [CommRing A] [IsLocalRi
 
 open IsLocalRing TensorProduct in
 /- English proof (translation)
-Set `P : PrimeSpectrum A` to `⟨I, inferInstance⟩`. Establish `h1 : I.height = Order.height P` using `PrimeSpectrum.height_eq_orderHeight P`. Establish `h2 : ringKrullDim (A ⧸ I) = (Order.coheight P : WithBot ℕ∞)`. Rewrite using `[ringKrullDim_quotient, Order.coheight_eq_krullDim_Ici]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `: Nonempty (PrimeSpectrum A)` using `⟨P⟩`. Rewrite using `[h1, h2, ringKrullDim, Order.krullDim_eq_iSup_height_add_coheight_of_nonempty]`. Use `norm_cast`. Conclude with `le_iSup (fun a : PrimeSpectrum A => Order.height a + Order.coheight a) P`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 private lemma height_add_ringKrullDim_quotient_le' (A : Type) [CommRing A] (I : Ideal A)
     [I.IsPrime] : (I.height : WithBot ℕ∞) + ringKrullDim (A ⧸ I) ≤ ringKrullDim A := by
@@ -102,37 +100,29 @@ private lemma height_add_ringKrullDim_quotient_le' (A : Type) [CommRing A] (I : 
 open IsLocalRing TensorProduct in
 
 /- English proof (translation)
-Establish `hmfg : (maximalIdeal (Localization.AtPrime p)).FG` using `IsNoetherian.noetherian _`. Take `⟨U, hUc, hU⟩` from `Submodule.FG.exists_span_finset_card_eq_spanFinrank hmfg`. Use `choose f hf using fun u : Localization.AtPrime p => IsLocalization.surj p.primeCompl u`. Set `T : Finset B` to `U.image fun u => (f u).1`. Establish `hTp : ∀ t ∈ T, t ∈ p`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Take `⟨u, hu, rfl⟩` from `Finset.mem_image.mp ht`. Rewrite using `[← IsLocalization.AtPrime.to_map_mem_maximal_iff (Localization.AtPrime p) p, ← hf u]`. Conclude with `Ideal.mul_mem_right _ _ (hU ▸ Ideal.subset_span hu)`. Establish `hTspan : p.map (algebraMap B (Localization.AtPrime p)) = Ideal.span (algebraMap B (Localization.AtPrime p) '' T)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Localization.AtPrime.map_eq_maximalIdeal]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← hU]`. Express the relevant statement in the definitionally equal form `Ideal.span _ ≤ _`. Rewrite using `[Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hunit` using `IsLocalization.map_units (Localization.AtPrime p) (f u).2`. Establish `e : u = algebraMap B _ (f u).1 * ↑hunit.unit⁻¹`. Rewrite using `[Units.eq_mul_inv_iff_mul_eq, IsUnit.unit_spec]`. Conclude with `hf u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨(f u).1, Finset.mem_image_of_mem _ hu, rfl⟩)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Rewrite using `[← Localization.AtPrime.map_eq_maximalIdeal]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ (hTp t ht)`. Take `⟨V, hV⟩` from `(IsNoetherian.noetherian p : p.FG)`. Establish `hc : ∀ v ∈ V, ∃ c ∈ p.primeCompl, c * v ∈ Ideal.span (T : Set B)`. Introduce `v hv`. Rewrite using `[← IsLocalization.algebraMap_mem_map_algebraMap_iff p.primeCompl (Localization.AtPrime p), Ideal.map_span, ← hTspan]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mem_map_of_mem _ (hV ▸ Ideal.subset_span hv)`. Use `choose! c hcp hcT using hc`. Establish `hg : ∀ x ∈ p, (∏ v ∈ V, c v) * x ∈ Ideal.span (T : Set B)`. Establish `: Ideal.span {∏ v ∈ V, c v} * p ≤ Ideal.span (T : Set B)`. Rewrite using `[← hV, Ideal.span_mul_span', Ideal.span_le]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, v, hv, rfl⟩`. Rewrite using `[Set.mem_singleton_iff.mp ha, ← Finset.prod_erase_mul V c hv]`. Express the relevant statement in the definitionally equal form `(∏ x ∈ V.erase v, c x) * c v * v ∈ Ideal.span (T : Set B)`. Rewrite using `[mul_assoc]`. Conclude with `Ideal.mul_mem_left _ _ (hcT v hv)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.span_singleton_mul_le_iff.mp this`. Use `⟨∏ v ∈ V, c v, p.primeCompl.prod_mem fun v hv => hcp v hv, ?_⟩` and prove the remaining obligations. Introduce `q _ hpq hgq hreg`. Establish `hdisj : Disjoint (q.primeCompl : Set B) p` using `Set.disjoint_left.mpr fun x hxq hxp => hxq (hpq hxp)`. Establish `hI : p.map (algebraMap B (Localization.AtPrime q)) = Ideal.span (algebraMap B (Localization.AtPrime q) '' T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Establish `hu : IsUnit (algebraMap B (Localization.AtPrime q) (∏ v ∈ V, c v))` using `IsLocalization.map_units (Localization.AtPrime q) (⟨_, hgq⟩ : q.primeCompl)`. Establish `h2 : algebraMap B (Localization.AtPrime q) ((∏ v ∈ V, c v) * x) ∈ Ideal.span (algebraMap B (Localization.AtPrime q) '' T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.map_span]`. Conclude with `Ideal.mem_map_of_mem _ (hg x hx)`. Rewrite `h2` using `[map_mul]`. Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).mp h2`. Rewrite using `[← Ideal.map_span]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.map_mono (Ideal.span_le.mpr fun t ht => hTp t ht)`. Establish `hIprime : (p.map (algebraMap B (Localization.AtPrime q))).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint q.primeCompl _ p ‹_› hdisj`. Establish `hIcard : (p.map (algebraMap B (Localization.AtPrime q))).spanFinrank ≤ T.card`. Rewrite using `[hI, ← Finset.coe_image]`. Conclude with `(_root_.ReciprocityTheory.CA.AB.RegA.IsRegularLocalRing.spanFinrank_span_finset_le _).trans Finset.card_image_le`.
-
-Establish `hTcard : (T.card : WithBot ℕ∞) ≤ (p.map (algebraMap B (Localization.AtPrime q))).height`. Establish `h1 : (p.map (algebraMap B (Localization.AtPrime q))).height = p.height`. Rewrite using `[← IsLocalization.height_under q.primeCompl, IsLocalization.comap_map_of_isPrime_disjoint q.primeCompl _ ‹_› hdisj]`. Establish `h2 : (p.height : WithBot ℕ∞) = (maximalIdeal (Localization.AtPrime p)).spanFinrank`. Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height p (Localization.AtPrime p), hp.spanFinrank_maximalIdeal]`.
-
-Rewrite using `[h1, h2]`. Conclude with `(Finset.card_image_le.trans hUc.le)` after adjusting the coercions. Use `hreg.toIsLocalRing` as an intermediate fact. Establish `hA` using `spanFinrank_maximalIdeal_le_add (Localization.AtPrime q) (p.map (algebraMap B (Localization.AtPrime q))) (IsNoetherian.noetherian _) (IsNoetherian.noetherian _)`. Establish `hd` using `hreg.spanFinrank_maximalIdeal`.
-
-Establish `hdim` using `height_add_ringKrullDim_quotient_le' (Localization.AtPrime q) (p.map (algebraMap B (Localization.AtPrime q)))`. Apply `IsRegularLocalRing.of_spanFinrank_maximalIdeal_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `hA.trans (by omega)` after adjusting the coercions. Use `_ = (T.card : WithBot ℕ∞) + ringKrullDim (Localization.AtPrime q ⧸ p.map (algebraMap B (Localization.AtPrime q))) := by push_cast; rw [hd]`.
-
-Use `_ ≤ (p.map (algebraMap B (Localization.AtPrime q))).height + ringKrullDim (Localization.AtPrime q ⧸ p.map (algebraMap B (Localization.AtPrime q))) := by gcongr`. Use `_ ≤ ringKrullDim (Localization.AtPrime q) := hdim`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RegularAscent.exists_regular_near_of_regular_quotient (B : Type) [CommRing B]
     [IsNoetherianRing B] (p : Ideal B) [p.IsPrime]

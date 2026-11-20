@@ -9,9 +9,9 @@ open GlobalTheory.CuspRep PositivityTheory.Rg.BcB PositivityTheory.Rg.BcB.D1
 namespace GlobalTheory.CompanionTheory.DegMoveProof
 
 /- English proof (translation)
-Establish `hp : 0 < c ^ k * b` using `lt_of_lt_of_le ha h`. Establish `hck : c ^ k ≠ 0` using `fun h0 => by simp [h0] at hp`. Establish `h1 : Real.log a ≤ Real.log (c ^ k * b)` using `Real.log_le_log ha h`. Rewrite `h1` using `[Real.log_mul hck hb.ne', Real.log_pow]`. Establish `h2 : Real.log c ≤ Real.posLog c` using `le_max_right 0 (Real.log c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (0 : ℝ) ≤ Real.posLog c` using `Real.posLog_nonneg`. Establish `h4 : (k : ℝ) ≤ n` using `by exact_mod_cast hkn`. Establish `h5 : (k : ℝ) * Real.log c ≤ n * Real.posLog c` using `(mul_le_mul_of_nonneg_left h2 (Nat.cast_nonneg k)).trans (mul_le_mul_of_nonneg_right h4 h3)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_step {a b c : ℝ} {k n : ℕ} (hkn : k ≤ n) (ha : 0 < a) (hb : 0 < b) (h : a ≤ c ^ k * b) :
     Real.log a ≤ n * Real.posLog c + Real.log b := by
@@ -27,7 +27,7 @@ theorem log_step {a b c : ℝ} {k n : ℕ} (hkn : k ≤ n) (ha : 0 < a) (hb : 0 
   linarith
 
 /- English proof (translation)
-Set `T : Finset α` to `hf.toFinset ∪ hg.toFinset ∪ hs.toFinset`. Rewrite using `[finsum_eq_sum_of_support_subset f (s := T) (fun a ha => by simp [T, Set.mem_toFinset] at ha ⊢; tauto), finsum_eq_sum_of_support_subset g (s := T) (fun a ha => by simp [T, Set.mem_toFinset] at ha ⊢; tauto), finsum_eq_sum_of_support_subset s (s := T) (fun a ha => by simp [T, Set.m …`. Conclude with `Finset.sum_le_sum fun a _ => h a`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_bound {α : Type} {f g s : α → ℝ} {c : ℝ} (hf : (Function.support f).Finite)
     (hg : (Function.support g).Finite) (hs : (Function.support s).Finite) (h : ∀ a, f a ≤ c * s a + g a) :
@@ -41,7 +41,7 @@ theorem finsum_bound {α : Type} {f g s : α → ℝ} {c : ℝ} (hf : (Function.
   exact Finset.sum_le_sum fun a _ => h a
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n × Fin n) with he | hne` into its components or cases. Simplify using `[sz, Real.iSup_of_isEmpty]`. Take `⟨p, hp⟩` from `exists_eq_ciSup_of_finite (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖)`. Rewrite using `[sz, ← hp]`. Conclude with `le_ciSup (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖ ^ 2) (Set.finite_range _).bddAbove p`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sz_sq_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : sz g ^ 2 ≤ ⨆ p : Fin n × Fin n, ‖g p.1 p.2‖ ^ 2 := by
   rcases isEmpty_or_nonempty (Fin n × Fin n) with he | hne
@@ -51,7 +51,7 @@ theorem sz_sq_le {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : sz g ^ 2 ≤ ⨆ p
     exact le_ciSup (f := fun p : Fin n × Fin n => ‖g p.1 p.2‖ ^ 2) (Set.finite_range _).bddAbove p
 
 /- English proof (translation)
-Use `open ComplexOrder in`. Establish `h : 0 ≤ (Aᴴ * A).det` using `(Matrix.posSemidef_conjTranspose_mul_self A).det_nonneg`. Conclude with `(Complex.le_def.1 h).1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nI_nonneg {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] (A : Matrix ι κ ℂ) : 0 ≤ nI A := by
   open ComplexOrder in
@@ -59,13 +59,13 @@ theorem nI_nonneg {ι κ : Type} [Fintype ι] [Fintype κ] [DecidableEq κ] (A :
   exact (Complex.le_def.1 h).1
 
 /- English proof (translation)
-The claim follows from `Real.iSup_nonneg fun _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nF_nonneg {K ι κ : Type} [NormedField K] [Fintype κ] [DecidableEq κ] (A : Matrix ι κ K) : 0 ≤ nF A :=
   Real.iSup_nonneg fun _ => norm_nonneg _
 
 /- English proof (translation)
-Establish `hinj : Function.Injective M.mulVecLin` using `Matrix.mulVec_injective_iff.2 h`. Take `⟨f, hf⟩` from `LinearMap.exists_leftInverse_of_injective M.mulVecLin (LinearMap.ker_eq_bot.2 hinj)`. Use `⟨LinearMap.toMatrix' f, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearMap.toMatrix' (f ∘ₗ M.mulVecLin) = 1` using `by rw [hf]; exact LinearMap.toMatrix'_id`. Rewrite `h1` using `[LinearMap.toMatrix'_comp, ← Matrix.toLin'_apply', LinearMap.toMatrix'_toLin']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_left_inv {K : Type} [Field K] {n k : ℕ} (M : Matrix (Fin n) (Fin k) K)
     (h : LinearIndependent K Mᵀ) : ∃ N : Matrix (Fin k) (Fin n) K, N * M = 1 := by
@@ -78,16 +78,16 @@ theorem exists_left_inv {K : Type} [Field K] {n k : ℕ} (M : Matrix (Fin n) (Fi
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n k : ℕ}
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (@IsUltrametricDist (w.adicCompletion E) (Valued.toNormedField (w.adicCompletion E) (WithZero (Multiplicative ℤ))).toDist)`.
+A detailed English derivation is pending.
 -/
 theorem ultra (w : HeightOneSpectrum (𝓞 E)) : IsUltrametricDist (w.adicCompletion E) :=
   inferInstanceAs (@IsUltrametricDist (w.adicCompletion E)
     (Valued.toNormedField (w.adicCompletion E) (WithZero (Multiplicative ℤ))).toDist)
 
 /- English proof (translation)
-Establish `hm : (h * A).map (cV v) = h.map (cV v) * A.map (cV v)` using `Matrix.map_mul`. Establish `hle` using `(hI (Fin n) (Fin n) (Fin k) (A.map (cV v))).1 (h.map (cV v))`. Simplify using `only [Fintype.card_fin] at hle`. Rewrite `hle` using `[← hm]`. Establish `hs` using `log_step hkn (lt_of_le_of_ne (nI_nonneg _) h0.symm) (lt_of_le_of_ne (nI_nonneg _) h1.symm) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hs.trans ?_` and prove the remaining obligations. Establish `h2 : Real.posLog ((n : ℝ) * n * sz (h.map (cV v)) ^ 2) ≤ Real.posLog ((n : ℝ) * n) + Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (h p.1 p.2)‖ ^ 2)` using `Real.posLog_mul.trans (add_le_add le_rfl (Real.posLog_le_posLog (by positivity) (sz_sq_le _)))`. Use `mul_le_mul_of_nonneg_left h2 (Nat.cast_nonneg (α := ℝ) n)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inf_step (hI : MulI) (hkn : k ≤ n) (h : Matrix (Fin n) (Fin n) (Ad E)) (A : Matrix (Fin n) (Fin k) (Ad E))
     (v : InfinitePlace E) (h0 : nI ((h * A).map (cV v)) ≠ 0) (h1 : nI (A.map (cV v)) ≠ 0) :
@@ -107,9 +107,7 @@ theorem inf_step (hI : MulI) (hkn : k ≤ n) (h : Matrix (Fin n) (Fin n) (Ad E))
   linarith
 
 /- English proof (translation)
-Use `haveI := ultra w`. Establish `hm : (h * A).map (cW w) = h.map (cW w) * A.map (cW w)` using `Matrix.map_mul`. Establish `hle` using `(hF (w.adicCompletion E) (Fin n) (Fin n) (Fin k) (A.map (cW w))).1 (h.map (cW w))`. Simplify using `only [Fintype.card_fin] at hle`. Rewrite `hle` using `[← hm]`.
-
-Conclude with `log_step hkn (lt_of_le_of_ne (nF_nonneg _) h0.symm) (lt_of_le_of_ne (nF_nonneg _) h1.symm) hle`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_step (hF : MulF) (hkn : k ≤ n) (h : Matrix (Fin n) (Fin n) (Ad E)) (A : Matrix (Fin n) (Fin k) (Ad E))
     (w : HeightOneSpectrum (𝓞 E)) (h0 : nF ((h * A).map (cW w)) ≠ 0) (h1 : nF (A.map (cW w)) ≠ 0) :
@@ -123,13 +121,13 @@ theorem fin_step (hF : MulF) (hkn : k ≤ n) (h : Matrix (Fin n) (Fin n) (Ad E))
   exact log_step hkn (lt_of_le_of_ne (nF_nonneg _) h0.symm) (lt_of_le_of_ne (nF_nonneg _) h1.symm) hle
 
 /- English proof (translation)
-The claim follows from `add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)`.
+A detailed English derivation is pending.
 -/
 theorem logSizeM_nonneg (A : Matrix (Fin n) (Fin n) (Ad E)) : 0 ≤ logSizeM A :=
   add_nonneg (Finset.sum_nonneg fun _ _ => Real.posLog_nonneg) (finsum_nonneg fun _ => Real.posLog_nonneg)
 
 /- English proof (translation)
-Establish `h1 : (ratGL E n g).val = g.val.map (algebraMap E (Ad E))` using `rfl`. Rewrite using `[Matrix.map_mul, ← h1, Units.val_mul, Units.val_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc x.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_move (x : GA E n) (g : GL (Fin n) E) (M : Matrix (Fin n) (Fin k) E) :
     (x⁻¹ * ratGL E n g * x : GA E n).val * ((x⁻¹ : GA E n).val * M.map (algebraMap E (Ad E))) =
@@ -139,11 +137,11 @@ theorem frame_move (x : GA E n) (g : GL (Fin n) E) (M : Matrix (Fin n) (Fin k) E
     ← Matrix.mul_assoc x.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hY' : (Y * (h⁻¹ : GA E n).val) * (h.val * A) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (h⁻¹ : GA E n).val, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul, hY]`. Take `⟨a1, a2, a3⟩` from `hFS E (Fin n) (Fin k) A Y hY`. Take `⟨b1, b2, b3⟩` from `hFS E (Fin n) (Fin k) (h.val * A) _ hY'`. Establish `hinf` using `Finset.sum_le_sum (s := Finset.univ) fun v (_ : v ∈ Finset.univ) => inf_step (E := E) hI hkn h.val A v (b1 v) (a1 v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfin` using `finsum_bound (c := (n : ℝ)) (f := fun w => Real.log (nF ((h.val * A).map (cW w)))) (g := fun w => Real.log (nF (A.map (cW w)))) (s := fun w => Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (h.val p.1 p.2)‖)) (b3.subset fun w hw hne => hw ((congrArg Real.log hne).trans Real.log_one)) (a …`. Assume the negation of the conclusion as `hc`. Apply `hw` to reduce the goal to its premises. Conclude with `max_eq_left (Real.log_nonpos (Real.iSup_nonneg fun _ => norm_nonneg _) (not_lt.1 hc)))`. Use `fun w => fin_step hF hkn h.val A w (b2 w) (a2 w)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hinf` using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Establish `hS : logSizeM h.val = ∑ v, Real.posLog (⨆ p : Fin n × Fin n, ‖cV v (h.val p.1 p.2)‖ ^ 2) + ∑ᶠ w, Real.posLog (⨆ p : Fin n × Fin n, ‖cW w (h.val p.1 p.2)‖)` using `rfl`. Rewrite using `[hS]`. Use polynomial arithmetic with `[hinf, hfin]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem core (hF : MulF) (hI : MulI) (hSz : SzFin) (hFS : FinSupp) (hkn : k ≤ n) (h : GA E n)
     (A : Matrix (Fin n) (Fin k) (Ad E)) (Y : Matrix (Fin k) (Fin n) (Ad E)) (hY : Y * A = 1) :
@@ -176,9 +174,9 @@ theorem core (hF : MulF) (hI : MulI) (hSz : SzFin) (hFS : FinSupp) (hkn : k ≤ 
   nlinarith [hinf, hfin]
 
 /- English proof (translation)
-Establish `hM : (basisMat W)ᵀ = W.subtype ∘ (Module.finBasis E W)`. Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression. Rewrite using `[hM]`. Use `⟨(Module.finBasis E W).linearIndependent.map' W.subtype W.ker_subtype, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.range_comp, ← Submodule.map_span, Module.Basis.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lin_basisMat (W : Submodule E (Fin n → E)) : LinearIndependent E (basisMat W)ᵀ ∧
     Submodule.span E (Set.range (basisMat W)ᵀ) = W := by
@@ -190,7 +188,7 @@ theorem lin_basisMat (W : Submodule E (Fin n → E)) : LinearIndependent E (basi
   rw [Set.range_comp, ← Submodule.map_span, Module.Basis.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Establish `inj : Function.Injective (Matrix.toLin' g.val)` using `fun a b hab => by`. Establish `h1` using `congrArg (fun y => (g⁻¹ : GL (Fin n) E).val *ᵥ y) hab`. Simplify `h1` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul]`. Use `⟨hf.map' _ (LinearMap.ker_eq_bot.2 inj), ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_comp, ← Submodule.map_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -205,9 +203,9 @@ theorem linearIndependent_image_span (g : GL (Fin n) E) (f : Fin k → Fin n →
   rfl
 
 /- English proof (translation)
-Establish `hG : (Matrix.toLin' g.val ∘ (Mᵀ : Fin k → Fin n → E)) = ((g.val * M)ᵀ : Fin k → Fin n → E)`. Use function extensionality and compare the values at `j i`. Express the relevant statement in the definitionally equal form `(Matrix.toLin' g.val (fun i' => M i' j)) i = (g.val * M) i j`. Rewrite using `[Matrix.toLin'_apply]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `linearIndependent_image_span g Mᵀ hM`. Rewrite `h1` using `[hG]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_moved (g : GL (Fin n) E) (M : Matrix (Fin n) (Fin k) E) (hM : LinearIndependent E Mᵀ) :
     LinearIndependent E (g.val * M)ᵀ ∧
@@ -222,17 +220,17 @@ theorem lin_moved (g : GL (Fin n) E) (M : Matrix (Fin n) (Fin k) E) (hM : Linear
   exact h1
 
 /- English proof (translation)
-Introduce `hF hI hSz hFS hB E _ _ _ n`. Use `⟨n * (1 + (Fintype.card (InfinitePlace E) : ℝ) * Real.posLog ((n : ℝ) * n)), fun x g W => ?_⟩` and prove the remaining obligations. Take `⟨hLI, hspan⟩` from `lin_basisMat W`. Take `⟨hLI', hspan'⟩` from `lin_moved g (basisMat W) hLI`. Rewrite `hspan'` using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hkn : Module.finrank E W ≤ n` using `by simpa using Submodule.finrank_le W`. Take `⟨N, hN⟩` from `exists_left_inv (basisMat W) hLI`. Establish `e1 : deg x (img g W) = degG x (g.val * basisMat W)` using `by rw [hB E n _ x _ hLI', hspan']`. Establish `e2 : deg x W = degG x (basisMat W)` using `rfl`. Establish `hY : (N.map (algebraMap E (Ad E)) * x.val) * ((x⁻¹ : GA E n).val * (basisMat W).map (algebraMap E (Ad E))) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc x.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul, ← Matrix.map_mul, hN, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hc` using `core hF hI hSz hFS hkn (x⁻¹ * ratGL E n g * x) _ _ hY`. Rewrite `hc` using `[frame_move]`. Rewrite using `[e1, e2]`. Simplify using `only [degG]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hS` using `logSizeM_nonneg (x⁻¹ * ratGL E n g * x : GA E n).val`. Establish `hS'` using `logSizeM_nonneg ((x⁻¹ * ratGL E n g * x)⁻¹ : GA E n).val`. Establish `hL : (0 : ℝ) ≤ (Fintype.card (InfinitePlace E) : ℝ) * Real.posLog ((n : ℝ) * n)` using `mul_nonneg (Nat.cast_nonneg _) Real.posLog_nonneg`. Establish `hsz : logSize (x⁻¹ * ratGL E n g * x) = logSizeM (x⁻¹ * ratGL E n g * x : GA E n).val + logSizeM ((x⁻¹ * ratGL E n g * x)⁻¹ : GA E n).val` using `rfl`. Rewrite using `[hsz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `logSizeM (x⁻¹ * ratGL E n g * x : GA E n).val = S at *`. Generalize the expression as in `logSizeM ((x⁻¹ * ratGL E n g * x)⁻¹ : GA E n).val = S' at *`. Generalize the expression as in `(Fintype.card (InfinitePlace E) : ℝ) * Real.posLog ((n : ℝ) * n) = b at *`. Establish `hn : (0 : ℝ) ≤ n` using `Nat.cast_nonneg n`. Establish `hpos : 0 ≤ (n : ℝ) * (1 + S' + b * S + b * S')` using `by positivity`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[hc, hpos]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem degMove_of : MulF → MulI → SzFin → FinSupp → DegBasisG → DegMove := by
   intro hF hI hSz hFS hB E _ _ _ n

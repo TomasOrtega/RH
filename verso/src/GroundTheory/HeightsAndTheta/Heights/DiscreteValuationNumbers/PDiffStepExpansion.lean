@@ -11,7 +11,7 @@ namespace DiffStepExpansion
 variable {K : Type}
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons t l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma listSum_apply {α : Type} (l : List α) (F : α → (K → ℤ) → ℤ) (m : K → ℤ) :
     (l.map F).sum m = (l.map fun t => F t m).sum := by
@@ -23,7 +23,7 @@ def expand [DecidableEq K] (l : List ((K × (K → ℤ)) × ℤ)) (f : (K → �
   (l.map fun t => t.2 • shiftFn t.1.2 (diffStep (Pi.single t.1.1 1) f)).sum
 
 /- English proof (translation)
-Unfold `expand`. Rewrite using `[listSum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma expand_apply [DecidableEq K] (l : List ((K × (K → ℤ)) × ℤ)) (f : (K → ℤ) → ℤ)
     (m : K → ℤ) :
@@ -85,17 +85,17 @@ def expandable (K : Type) [DecidableEq K] : AddSubgroup (K → ℤ) where
     ring
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[((k, 0), 1)], fun f => by funext m; simp [expand, shiftFn]⟩`.
+Supply the required witnesses or components.
 -/
 lemma single_mem [DecidableEq K] (k : K) : (Pi.single k 1 : K → ℤ) ∈ expandable K :=
   ⟨[((k, 0), 1)], fun f => by funext m; simp [expand, shiftFn]⟩
 
 /- English proof (translation)
-Introduce `K _ _ b`. Establish `hb : b ∈ expandable K`. Rewrite using `[← Finset.univ_sum_single b]`. Use `AddSubgroup.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `: (Pi.single k (b k) : K → ℤ) = b k • (Pi.single k 1 : K → ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `j`. Apply the tactic sequence `by_cases h : j = k <;> simp [h]`. Rewrite using `[this]`. Conclude with `AddSubgroup.zsmul_mem _ (single_mem k) _`. Take `⟨l, hl⟩` from `hb`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨l, fun f => hl f⟩`.
+A detailed English derivation is pending.
 -/
 theorem proof : DiffStepExpansion.Statement := by
   intro K _ _ b

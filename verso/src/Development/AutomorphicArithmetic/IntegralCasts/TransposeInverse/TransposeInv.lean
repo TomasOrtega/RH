@@ -13,7 +13,7 @@ def transposeInvFun (g : GL n R) : GL n R where
   inv_val := by rw [← transpose_mul, Units.inv_mul, transpose_one]
 
 /- English proof (translation)
-Introduce `g`. Apply `Units.ext` to reduce the goal to its premises. Conclude with `transpose_transpose _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem transposeInvFun_involutive :
     Function.Involutive (transposeInvFun : GL n R → GL n R) := by
@@ -51,7 +51,7 @@ theorem transposeInv_apply (g : GL n R) (i j : n) :
     (transposeInv g : GL n R) i j = (g⁻¹ : GL n R) j i := rfl
 
 /- English proof (translation)
-The claim follows from `transposeInvFun_involutive g`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem transposeInv_transposeInv (g : GL n R) :
     transposeInv (transposeInv g) = g := transposeInvFun_involutive g
@@ -62,7 +62,7 @@ Both sides reduce to the same expression.
 @[simp] theorem transposeInv_symm : (transposeInv : GL n R ≃* GL n R).symm = transposeInv := rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [GeneralLinearGroup.val_det_apply, coe_transposeInv, det_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem det_transposeInv (g : GL n R) :
     GeneralLinearGroup.det (transposeInv g) = (GeneralLinearGroup.det g)⁻¹ := by
@@ -71,7 +71,7 @@ theorem det_transposeInv (g : GL n R) :
   simp only [GeneralLinearGroup.val_det_apply, coe_transposeInv, det_transpose]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem map_transposeInv {S : Type*} [CommRing S] (f : R →+* S) (g : GL n R) :
     GeneralLinearGroup.map f (transposeInv g) = transposeInv (GeneralLinearGroup.map f g) := by
@@ -79,7 +79,7 @@ theorem map_transposeInv {S : Type*} [CommRing S] (f : R →+* S) (g : GL n R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[Units.continuous_iff]`. Conclude with `⟨Units.continuous_coe_inv.matrix_transpose, Units.continuous_val.matrix_transpose⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_transposeInv [TopologicalSpace R] :
     Continuous (transposeInv : GL n R → GL n R) := by

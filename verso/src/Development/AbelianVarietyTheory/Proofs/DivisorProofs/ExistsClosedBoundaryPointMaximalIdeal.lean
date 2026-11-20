@@ -21,13 +21,11 @@ open GlobalTheory.ChartDer
 namespace GlobalTheory.BoundaryPoint
 
 /- English proof (translation)
-Establish `e` using `hU.fromSpec_primeIdealOf ⟨x, hx⟩`. Establish `hle : m ≤ (hU.primeIdealOf ⟨x, hx⟩).asIdeal` using `fun f hf => by`. Assume the negation of the conclusion as `hc`. Use `h f hf ?_` and prove the remaining obligations. Establish `h₁ : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹ᵁ X.basicOpen f`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hU.fromSpec_preimage_basicOpen]`. Conclude with `hc`. Establish `h₂ : hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩) ∈ X.basicOpen f` using `h₁`. Rewrite `h₂` using `[e]`. Then use the resulting hypothesis. Establish `hmax : (hU.primeIdealOf ⟨x, hx⟩).asIdeal.IsMaximal` using `hm.eq_of_le (hU.primeIdealOf ⟨x, hx⟩).isPrime.ne_top hle ▸ hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 hmax`. Establish `h₃ : hU.primeIdealOf ⟨x, hx⟩ ∈ hU.fromSpec ⁻¹' closedPoints X`. Rewrite using `[hU.fromSpec.isOpenEmbedding.preimage_closedPoints]`. Conclude with `hc`. Establish `h₄ : IsClosed ({hU.fromSpec (hU.primeIdealOf ⟨x, hx⟩)} : Set X)` using `h₃`.
-
-Rewrite `h₄` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isClosed_of_isMaximal {X : Scheme.{0}} [JacobsonSpace X] {U : X.Opens} (hU : IsAffineOpen U)
     {m : Ideal Γ(X, U)} (hm : m.IsMaximal) {x : X} (hx : x ∈ U) (h : ∀ f ∈ m, x ∉ X.basicOpen f) :
@@ -51,11 +49,9 @@ theorem isClosed_of_isMaximal {X : Scheme.{0}} [JacobsonSpace X] {U : X.Opens} (
   rwa [e] at h₄
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y hs U m hm x hx hU h`. Establish `hi : IsIso (genι Y)` using `GlobalTheory.LogKS.isIso_fst Y`. Establish `: Smooth (genStr Y)` using `SmoothOfRelativeDimension.smooth Dw.dim _`. Establish `: JacobsonSpace Y.X` using `LocallyOfFiniteType.jacobsonSpace (inv (genι Y) ≫ genStr Y)`. Establish `hc` using `isClosed_of_isMaximal U.2 hm hU h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x', rfl⟩` from `(genι Y).homeomorph.surjective x`. Use `⟨x', rfl, mem_genBd_iff.2 fun h' => hx ?_, ?_⟩` and prove the remaining obligations. Rewrite `h'` using `[← coe_interior]`. Conclude with `h'`. Rewrite using `[← (genι Y).homeomorph.isClosed_image, Set.image_singleton]`.
-
-Conclude with `hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_boundary_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)), SmoothOfRelativeDimension Dw.dim (genStr Y) → ∀ (U : Y.X.affineOpens) (m : Ideal Γ(Y.X, U.1)), m.IsMaximal → ∀ x : Y.X, x ∉ interior Y → x ∈ U.1 → (∀ f ∈ m, x ∉ Y.X.basicOpen f) → ∃ x' : gen Y, genι Y x' = x ∧ x' ∈ genBd Y ∧ IsClosed ({x'} : Set (gen Y)) := by
   intro E _ _ _ H Dw l Xo c Y hs U m hm x hx hU h

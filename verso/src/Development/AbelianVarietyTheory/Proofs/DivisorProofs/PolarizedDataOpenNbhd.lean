@@ -19,9 +19,9 @@ namespace GlobalTheory.TruncNear
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE F E) := GlobalTheory.Doubling.isTopologicalRing_tens`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `h : (fun A : Matrix (Fin n) (Fin n) (AE F E) => truncMat e A i j) = fun A => (1 : Matrix (Fin n) (Fin n) (AE F E)) i j + (e • (1 : AE F E)) * (A i j - (1 : Matrix (Fin n) (Fin n) (AE F E)) i j)`. Use function extensionality and compare the values at `A`. Simplify using `[truncMat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `continuous_const.add (continuous_const.mul ((continuous_apply_apply i j).sub continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_truncMat {n : ℕ} (e : AF F) :
     Continuous fun A : Matrix (Fin n) (Fin n) (AE F E) => truncMat e A := by
@@ -36,7 +36,7 @@ theorem continuous_truncMat {n : ℕ} (e : AF F) :
   exact continuous_const.add (continuous_const.mul ((continuous_apply_apply i j).sub continuous_const))
 
 /- English proof (translation)
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨(continuous_truncMat _).comp (Units.continuous_val.comp continuous_subtype_val), (continuous_truncMat _).comp (Units.continuous_coe_inv.comp continuous_subtype_val)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_truncU (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} :
     Continuous fun k : UA σ J => truncU T k := by
@@ -46,7 +46,7 @@ theorem continuous_truncU (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin
     (continuous_truncMat _).comp (Units.continuous_coe_inv.comp continuous_subtype_val)⟩
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show truncMat (idem T) 1 = 1`. Simplify using `[truncMat]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem truncU_one (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} : truncU T (1 : UA σ J) = 1 := by
   refine Subtype.ext (Units.ext ?_)
@@ -54,7 +54,7 @@ theorem truncU_one (T : Finset (Pl F)) {n : ℕ} {J : Matrix (Fin n) (Fin n) E} 
   simp [truncMat]
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Use `show truncMat (idem ∅) (mat k) = 1`. Simplify using `[truncMat, idem]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem truncU_empty {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) : truncU ∅ k = 1 := by
   refine Subtype.ext (Units.ext ?_)
@@ -62,17 +62,17 @@ theorem truncU_empty {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (k : UA σ J) : tr
   simp [truncMat, idem]
 
 /- English proof (translation)
-Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `zero => exact Eventually.of_forall fun h => map_zero _`. Consider the case `add x y _ _ hx hy => exact (hx.and hy).mono fun h hh => by rw [map_add, hh.1, hh.2]`. Consider the case `smul c x _ hx => exact hx.mono fun h hh => by rw [map_smul, hh]`. Consider the case `mem x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨f, -, φ, hSB, hcof, rfl⟩` from `hx`. Establish `hstd : ∀ᶠ w in cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hcof.and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Establish `hpure : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ ∈ schA F _` using `GlobalTheory.ConeMeasV.pure_mem_schA hP.good f φ hSB hcof`. Establish `hfin` using `fun x => GlobalTheory.PureFactor.mulSupport_finite φ hstd x`. Establish `hone : ∀ v : Pl F, ∀ᶠ h in 𝓝 (1 : UA σ W.J), om (1, truncU {v} h) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Take `⟨U, hU, hfix⟩` from `(hA F E σ B n d Y W M χX χW om r s r' s' hP v).2.2 (φ v) (hSB v)`. Establish `hc : Continuous fun h : UA σ W.J => ((1 : UA σ Y.J), truncU {v} h)` using `continuous_const.prodMk (continuous_truncU {v})`. Establish `ht : Tendsto (fun h : UA σ W.J => ((1 : UA σ Y.J), truncU {v} h)) (𝓝 1) (𝓝 1)`. Use `hc.tendsto 1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[truncU_one]`. Then use the resulting hypothesis. Use `(ht.eventually hU).mono fun h hh => ?_` and prove the remaining obligations. Establish `h1 : (1 : UA σ Y.J) ∈ UAt σ Y (evFin F v)`. Rewrite using `[← truncU_one {v}]`. Conclude with `truncU_mem_UAt v 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA'` using `hfix _ hh h1 (truncU_mem_UAt v h)`. Rewrite using `[GlobalTheory.ThK.LocalOps.acts_pure v (om (1, truncU {v} h)) f φ (φ v) hpure hfin hA', Function.update_eq_self]`. Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Use `Eventually.of_forall fun h => ?_` and prove the remaining obligations. Rewrite using `[truncU_empty, show ((1 : UA σ Y.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v T hv ih`. Use `(ih.and (hone v)).mono fun k hk => ?_` and prove the remaining obligations. Rewrite using `[truncU_insert hv, show ((1 : UA σ Y.J), truncU {v} k * truncU T k) = ((1 : UA σ Y.J), truncU {v} k) * ((1 : UA σ Y.J), truncU T k) by simp, map_mul, Module.End.mul_apply, hk.1, hk.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_pair (hA : ActsEx) {B : Base F E} {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} {M : Model σ Y W}
     {χX χW : Chr F E} {om : Rep σ Y W} {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s')
@@ -112,7 +112,7 @@ theorem near_pair (hA : ActsEx) {B : Base F E} {n d : ℕ} {Y : Spc F E n} {W : 
         ((1 : UA σ Y.J), truncU {v} k) * ((1 : UA σ Y.J), truncU T k) by simp, map_mul, Module.End.mul_apply, hk.1, hk.2]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ S`. Conclude with `⟨_, near_pair (GlobalTheory.T.theta_action_exists hKP.base) (GlobalTheory.ThK.Inhab.pairV' hT) Ψ hΨ S, fun h hh => hh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem near : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M', ∀ S : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∃ U ∈ nhds (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J), ∀ h ∈ U, om' (1, GlobalTheory.TruncFix.truncU S h) Ψ = Ψ := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' hT Ψ hΨ S

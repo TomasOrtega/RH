@@ -5,9 +5,9 @@ open CategoryTheory TensorProduct GlobalTheory.CatCoh MainStatements.Hodge Globa
 namespace GlobalTheory.CompanionTheory.HopfLe
 
 /- English proof (translation)
-Introduce `R V ι _ _ _ _ hR x hx`. Use `letI : Field R := hR.toField`. Take `⟨b, hb⟩ : ∃ b : Module.Basis ι R (Submodule.span R (Set.range x)), ∀ k, (b k : V) = x k` from `⟨Module.Basis.span hx, fun k => by rw [Module.Basis.span_apply hx k]⟩`. Establish `hext : ∀ i : ι, ∃ g : V →ₗ[R] R, g ∘ₗ (Submodule.span R (Set.range x)).subtype = b.coord i` using `fun i => LinearMap.exists_extend _`. Use `choose l hl using hext`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨l, fun i j => ?_⟩` and prove the remaining obligations. Establish `h : l i (b j : V) = b.coord i (b j)` using `LinearMap.congr_fun (hl i) (b j)`. Rewrite `h` using `[hb j]`. Rewrite using `[h, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Simplify using `only [eq_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual_functionals_of_linearIndependent :
     ∀ {R V ι : Type} [CommRing R] [AddCommGroup V] [Module R V] [DecidableEq ι], IsField R →

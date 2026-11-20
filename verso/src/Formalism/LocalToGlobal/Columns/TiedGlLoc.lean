@@ -23,7 +23,7 @@ variable (halg : ∀ a : v.adicCompletion F, spl ((1 : E) ⊗ₜ[F] a) = (a, a))
 
 include halg in
 /- English proof (translation)
-The claim follows from `((Formalism.L2.G.split_integral_completion F E v spl halg x).1 hx).1`.
+A detailed English derivation is pending.
 -/
 theorem gloPhi_int (x : E ⊗[F] v.adicCompletion F) (hx : x ∈ Formalism.BasicNotions.intV E v) :
     gloPhi v spl x ∈ v.adicCompletionIntegers F :=
@@ -46,11 +46,11 @@ variable (w : Pl E) (hw : ∀ a ∈ w.asIdeal, gloRho v spl halg (oToS F E a) = 
 def gloK : kP w →+* kv F v := Ideal.Quotient.lift w.asIdeal ((gloRho v spl halg).comp (oToS F E)) hw
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (resS F w s)`. Establish `h1 : resS F w (s - oToS F E a) = 0` using `by rw [map_sub, resS_oToS, ha, sub_self]`. Rewrite `h1` using `[resS_eq_zero_iff]`. Establish `h2 : idS F w.asIdeal ≤ RingHom.ker (gloRho v spl halg)`. Unfold `idS`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Conclude with `hw b hb`. Establish `h3 : gloRho v spl halg (s - oToS F E a) = 0` using `h2 h1`. Rewrite `h3` using `[map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, ← ha]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gloRho_eq (s : Formalism.L2.Herm.intAf F E) : gloRho v spl halg s = gloK v spl halg w hw (resS F w s) := by
   obtain ⟨a, ha⟩ := Ideal.Quotient.mk_surjective (resS F w s)
@@ -67,11 +67,11 @@ theorem gloRho_eq (s : Formalism.L2.Herm.intAf F E) : gloRho v spl halg s = gloK
   rfl
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : ((u : v.adicCompletionIntegers F) : v.adicCompletion F) * ((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) = 1`. Use `congrArg (Subtype.val) u.mul_inv` as an intermediate fact. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Valued.v h1`. Rewrite `h2` using `[map_mul, map_one]`. Establish `h3 : Valued.v (((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (Subtype.mem _)`. Establish `h4` using `mul_le_mul' h.le h3`. Rewrite `h4` using `[h2, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : Valued.v ((u : v.adicCompletionIntegers F) : v.adicCompletion F) * Valued.v (((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : v.adicCompletion F) ≤ Valued.v ((u : v.adicCompletionIntegers F) : v.adicCompletion F)` using `mul_le_of_le_one_right' h3`. Rewrite `h5` using `[h2]`. Conclude with `absurd h (not_lt.2 h5)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glo_res_zero (x : v.adicCompletionIntegers F) (h : Valued.v (x : v.adicCompletion F) < 1) :
     IsLocalRing.residue (v.adicCompletionIntegers F) x = 0 := by
@@ -94,20 +94,20 @@ theorem glo_res_zero (x : v.adicCompletionIntegers F) (h : Valued.v (x : v.adicC
   exact absurd h (not_lt.2 h5)
 
 /- English proof (translation)
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, csApprox_val_int]`. Conclude with `HeightOneSpectrum.intValuation_le_one v r`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glo_algMap_int (r : 𝓞 F) : algebraMap (𝓞 F) (v.adicCompletion F) r ∈ v.adicCompletionIntegers F := by
   rw [HeightOneSpectrum.mem_adicCompletionIntegers, csApprox_val_int]
   exact HeightOneSpectrum.intValuation_le_one v r
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective z`. Take `⟨D, hDv, hD⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Take `⟨r, y, hy, e⟩` from `integral_adele_approximation_holds F D hD (afsplitI v (x : v.adicCompletion F)) (afsplitI_mem_intAd v _ x.2)`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `ev : (x : v.adicCompletion F) = algebraMap (𝓞 F) (v.adicCompletion F) r + algebraMap (𝓞 F) (v.adicCompletion F) D * y v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg (fun z : Formalism.L2.Herm.Af F => z v) e` as an intermediate fact. Rewrite `this` using `[afsplitI_self]`. Conclude with `this`. Establish `hDval : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D) < 1`. Rewrite using `[csApprox_val_int]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(HeightOneSpectrum.intValuation_lt_one_iff_mem v D).2 hDv`. Establish `hyv : Valued.v (y v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hy v)`. Establish `hlt : Valued.v (algebraMap (𝓞 F) (v.adicCompletion F) D * y v) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hyv) hDval`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : algebraMap (𝓞 F) (v.adicCompletion F) D * y v ∈ v.adicCompletionIntegers F` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 hlt.le`. Establish `hx : x = ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ + ⟨_, hmem⟩` using `Subtype.ext ev`. Rewrite using `[hx, map_add, glo_res_zero v ⟨_, hmem⟩ hlt, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem glo_res_surj (z : kv F v) : ∃ r : 𝓞 F,
     IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ = z := by
@@ -132,9 +132,9 @@ theorem glo_res_surj (z : kv F v) : ∃ r : 𝓞 F,
   rw [hx, map_add, glo_res_zero v ⟨_, hmem⟩ hlt, add_zero]
 
 /- English proof (translation)
-Rewrite using `[gloRho_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show gloPhi v spl (prV (E := E) v (inclE (F := F) (Formalism.L2.Herm.Af F) (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)))) = _`. Rewrite using `[afsplit_prV_inclE]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : inclE (F` using `F) (v.adicCompletion F) (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)) = (1 : E) ⊗ₜ[F] (algebraMap (𝓞 F) (v.adicCompletion F) r) := by show (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) r)) ⊗ₜ[F] (1 : v.adicCompletion F) = _`. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, IsScalarTower.algebraMap_apply (𝓞 F) F E, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[h1]`. Use `show (spl _).1 = _`. Rewrite using `[halg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gloRho_algMap (r : 𝓞 F) : gloRho v spl halg (oToS F E (algebraMap (𝓞 F) (𝓞 E) r)) =
     IsLocalRing.residue (v.adicCompletionIntegers F) ⟨algebraMap (𝓞 F) (v.adicCompletion F) r, glo_algMap_int v r⟩ := by
@@ -153,9 +153,9 @@ theorem gloRho_algMap (r : 𝓞 F) : gloRho v spl halg (oToS F E (algebraMap (�
   rw [halg]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `haveI : w.asIdeal.IsMaximal := w.isMaximal`. Use `letI := Ideal.Quotient.field w.asIdeal`. Conclude with `RingHom.injective (gloK v spl halg w hw)`. Introduce `z`.
+Prove the components needed by the constructor for the conclusion. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, rfl⟩` from `glo_res_surj v z`. Use `⟨Ideal.Quotient.mk w.asIdeal (algebraMap (𝓞 F) (𝓞 E) r), ?_⟩` and prove the remaining obligations. Rewrite using `[← gloRho_algMap v spl halg r]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gloK_bijective : Function.Bijective (gloK v spl halg w hw) := by
   constructor
@@ -171,7 +171,7 @@ theorem gloK_bijective : Function.Bijective (gloK v spl halg w hw) := by
 def gloE : kP w ≃+* kv F v := RingEquiv.ofBijective (gloK v spl halg w hw) (gloK_bijective v spl halg w hw)
 
 /- English proof (translation)
-The claim follows from `(gloRho_eq v spl halg w hw s).symm`.
+A detailed English derivation is pending.
 -/
 theorem gloE_resS (s : Formalism.L2.Herm.intAf F E) : gloE v spl halg w hw (resS F w s) = gloRho v spl halg s :=
   (gloRho_eq v spl halg w hw s).symm

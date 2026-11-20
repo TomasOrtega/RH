@@ -28,9 +28,9 @@ def graphLift (g : (Σ k, ι₂ k) → MRing ι) :
   eval₂Hom (Int.castRingHom _) fun p => monomial (graphExp p) (graphForm g p)
 
 /- English proof (translation)
-Establish `: graphMap P g = (map (Ideal.Quotient.mk P)).comp (graphLift g)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[graphMap, graphLift]`. Introduce and unpack `⟨k | k, i⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[graphMap, graphLift, graphExp, graphForm]`. Simplify using `[graphMap, graphLift, graphExp, graphForm, C_mul_X_eq_monomial]`. Conclude with `congrArg (fun f => f F) this`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem graphMap_eq (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (F : MRing (Sum.elim ι ι₂)) :
     graphMap P g F = map (Ideal.Quotient.mk P) (graphLift g F) := by
@@ -44,9 +44,9 @@ theorem graphMap_eq (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (F
   exact congrArg (fun f => f F) this
 
 /- English proof (translation)
-Rewrite using `[graphIdeal, RingHom.mem_ker, graphMap_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h b`. Use `congrArg (coeff b) h` as an intermediate fact. Rewrite `this` using `[coeff_map, coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Use extensionality with `b`. Rewrite using `[coeff_map, coeff_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h b`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_graphIdeal_iff (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (F : MRing (Sum.elim ι ι₂)) :
     F ∈ graphIdeal P g ↔ ∀ b, coeff b (graphLift g F) ∈ P := by
@@ -66,7 +66,7 @@ def baseDeg (δ : K₂ → K → ℕ) (c : K ⊕ K₂ → ℕ) : K → ℕ :=
 def expDeg (c : K ⊕ K₂ → ℕ) : K₂ →₀ ℕ := Finsupp.equivFunOnFinite.symm fun k₂ => c (.inr k₂)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [baseDeg, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem baseDeg_add (δ : K₂ → K → ℕ) (c c' : K ⊕ K₂ → ℕ) :
     baseDeg δ (c + c') = baseDeg δ c + baseDeg δ c' := by
@@ -75,16 +75,16 @@ theorem baseDeg_add (δ : K₂ → K → ℕ) (c c' : K ⊕ K₂ → ℕ) :
   ring
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[expDeg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem expDeg_add (c c' : K ⊕ K₂ → ℕ) : expDeg (c + c') = expDeg c + expDeg c' := by
   ext k
   simp [expDeg]
 
 /- English proof (translation)
-Establish `hr : ∀ k₂, c (.inr k₂) = c' (.inr k₂)` using `fun k₂ => by`. Simplify `DFunLike.congr_fun h₁ k₂` using `[expDeg]`. Use function extensionality and compare the values at `x`. Break down `x with k | k₂` into its components or cases. Use `congrFun h₂ k` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Simplify using `only [baseDeg, hr] at this`. Use linear arithmetic over natural numbers and integers. Conclude with `hr k₂`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem deg_injective {δ : K₂ → K → ℕ} {c c' : K ⊕ K₂ → ℕ} (h₁ : expDeg c = expDeg c')
     (h₂ : baseDeg δ c = baseDeg δ c') : c = c' := by
@@ -98,13 +98,11 @@ theorem deg_injective {δ : K₂ → K → ℕ} {c c' : K ⊕ K₂ → ℕ} (h�
   · exact hr k₂
 
 /- English proof (translation)
-Take `⟨k₀, i₀⟩` from `p`. Distinguish the cases in `h : k₀ = k`. Substitute `h` using the available equality. Simplify using `only [i2bdeg, if_true]`. Rewrite using `[Finset.sum_eq_single i₀]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `e`. Conclude with `hb (by simpa using e.symm)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [i2bdeg, if_neg h]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `e`.
-
-Conclude with `h (congrArg Sigma.fst e)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem i2bdeg_single {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] [DecidableEq K]
     (p : Σ k, ι k) (k : K) : i2bdeg (Finsupp.single p 1) k = if p.1 = k then 1 else 0 := by
@@ -127,9 +125,9 @@ theorem i2bdeg_single {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (
     exact h (congrArg Sigma.fst e)
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff_coeff]`. Introduce `m hm`. Rewrite `hm` using `[X, coeff_monomial]`. Distinguish the cases in `e : Finsupp.single p 1 = m`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e] at hm`.
+Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_X_single {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
     (p : Σ k, ι k) : IsMultiHomog (X p : MRing ι) (i2bdeg (Finsupp.single p 1)) := by
@@ -142,9 +140,9 @@ theorem isMultiHomog_X_single {K : Type} [Fintype K] {ι : K → Type} [∀ k, F
   · simp [e] at hm
 
 /- English proof (translation)
-Rewrite using `[isMultiHomog_iff_coeff]`. Introduce `m hm`. Rewrite `hm` using `[coeff_one]`. Distinguish the cases in `e : 0 = m`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `k`. Simplify using `[i2bdeg]`. Simplify using `[e] at hm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] :
     IsMultiHomog (1 : MRing ι) 0 := by
@@ -159,29 +157,27 @@ theorem isMultiHomog_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintyp
   · simp [e] at hm
 
 /- English proof (translation)
-Establish `h0 : ∃ h : MRing ι, IsMultiHomog h (baseDeg δ (i2bdeg (0 : (Σ k, Sum.elim ι ι₂ k) →₀ ℕ))) ∧ graphLift g (monomial 0 1) = monomial (expDeg (i2bdeg (0 : (Σ k, Sum.elim ι ι₂ k) →₀ ℕ))) h`. Establish `e : i2bdeg (0 : (Σ k, Sum.elim ι ι₂ k) →₀ ℕ) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[i2bdeg]`. Use `⟨1, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Establish `: baseDeg δ (0 : K ⊕ K₂ → ℕ) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[baseDeg]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isMultiHomog_one`. Rewrite using `[e]`. Establish `: expDeg (0 : K ⊕ K₂ → ℕ) = 0`. Use extensionality with `k`. Simplify using `[expDeg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Establish `e1 : (monomial 0 1 : MRing (Sum.elim ι ι₂)) = 1` using `rfl`. Rewrite using `[e1, map_one]`. Both sides reduce to the same expression. Establish `hadd : ∀ m₁ m₂ : (Σ k, Sum.elim ι ι₂ k) →₀ ℕ, (∃ h : MRing ι, IsMultiHomog h (baseDeg δ (i2bdeg m₁)) ∧ graphLift g (monomial m₁ 1) = monomial (expDeg (i2bdeg m₁)) h) → (∃ h : MRing ι, IsMultiHomog h (baseDeg δ (i2bdeg m₂)) ∧ graphLift g (monomial m₂ 1) = monomial (expDeg (i2bdeg …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `m₁ m₂ ⟨h₁, hh₁, e₁⟩ ⟨h₂, hh₂, e₂⟩`. Use `⟨h₁ * h₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[i2bdeg_add, baseDeg_add]`. Conclude with `isMultiHomog_mul' hh₁ hh₂`. Establish `: (monomial (m₁ + m₂) 1 : MRing (Sum.elim ι ι₂)) = monomial m₁ 1 * monomial m₂ 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[monomial_mul, one_mul]`. Rewrite using `[this, map_mul, e₁, e₂, monomial_mul, i2bdeg_add, expDeg_add]`. Establish `hone : ∀ p : Σ k, Sum.elim ι ι₂ k, ∃ h : MRing ι, IsMultiHomog h (baseDeg δ (i2bdeg (Finsupp.single p 1))) ∧ graphLift g (monomial (Finsupp.single p 1) 1) = monomial (expDeg (i2bdeg (Finsupp.single p 1))) h`. Introduce `p`. Use `⟨graphForm g p, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `p with ⟨k₀ | k₀, i⟩` into its components or cases. Establish `: baseDeg δ (i2bdeg (Finsupp.single (⟨.inl k₀, i⟩ : Σ k, Sum.elim ι ι₂ k) 1)) = i2bdeg (Finsupp.single (⟨k₀, i⟩ : Σ k, ι k) 1)`. Use function extensionality and compare the values at `k`. Simplify using `[baseDeg, i2bdeg_single]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `isMultiHomog_X_single _`. Establish `: baseDeg δ (i2bdeg (Finsupp.single (⟨.inr k₀, i⟩ : Σ k, Sum.elim ι ι₂ k) 1)) = δ k₀`. Use function extensionality and compare the values at `k`. Simplify using `[baseDeg, i2bdeg_single]`. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hg ⟨k₀, i⟩`. Establish `e : expDeg (i2bdeg (Finsupp.single p 1)) = graphExp p`. Use extensionality with `k`. Break down `p with ⟨k₀ | k₀, i⟩` into its components or cases. Simplify using `[expDeg, i2bdeg_single, graphExp]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[expDeg, i2bdeg_single, graphExp, Finsupp.single_apply]`. Rewrite using `[e]`. Establish `e1 : (monomial (Finsupp.single p 1) 1 : MRing (Sum.elim ι ι₂)) = X p` using `rfl`. Rewrite using `[e1]`. Simplify using `[graphLift]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `m using Finsupp.induction_linear with`. Consider the case `zero => exact h0`. Consider the case `add m₁ m₂ i₁ i₂ => exact hadd _ _ i₁ i₂`. Consider the case `single p e`. Proceed by induction on `e with`.
-
-Consider the case `zero => simpa using h0`. Consider the case `succ e ih`. Rewrite using `[Finsupp.single_add]`. Conclude with `hadd _ _ ih (hone p)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_graphLift_monomial {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ → K → ℕ}
     (hg : ∀ q, IsMultiHomog (g q) (δ q.1)) (m : (Σ k, Sum.elim ι ι₂ k) →₀ ℕ) :
@@ -260,23 +256,21 @@ theorem exists_graphLift_monomial {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ 
       exact hadd _ _ ih (hone p)
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on' with`. Consider the case `add F F' hF hF'`. Rewrite using `[i2comp_add, map_add, coeff_add, hF, hF', map_add, coeff_add]`. Use `split_ifs`. Rewrite using `[i2comp_add]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `monomial m n`. Take `⟨h, hh, e⟩` from `exists_graphLift_monomial hg m`. Establish `hm : IsMultiHomog (monomial m n : MRing (Sum.elim ι ι₂)) (i2bdeg m)`. Rewrite using `[isMultiHomog_iff_coeff]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m' hm'`. Rewrite `hm'` using `[coeff_monomial]`. Distinguish the cases in `e' : m = m'`. Rewrite using `[e']`. Simplify using `[e'] at hm'`.
+Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `em : graphLift g (monomial m n) = monomial (expDeg (i2bdeg m)) (n • h)`. Establish `: (monomial m n : MRing (Sum.elim ι ι₂)) = n • monomial m 1`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[this, map_zsmul, e, smul_monomial]`. Establish `hnh : IsMultiHomog (n • h) (baseDeg δ (i2bdeg m))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hh`, the goal using `[isMultiHomog_iff_coeff]`. Introduce `m' hm'`. Rewrite `hm'` using `[coeff_smul]`. Conclude with `hh m' fun h0 => hm' (by rw [h0, smul_zero])`. Rewrite using `[i2comp_of_homog hm, em, coeff_monomial]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hd : i2bdeg m = c`. Substitute `hd` using the available equality. Rewrite using `[if_pos rfl, em, coeff_monomial]`. Distinguish the cases in `hb : b = expDeg (i2bdeg m)`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [↓reduceIte, i2comp_self hnh]`. Simplify using `[hb, Ne.symm hb]`. Rewrite using `[if_neg hd, map_zero, coeff_zero]`. Distinguish the cases in `hb : b = expDeg c`. Substitute `hb` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos rfl]`. Distinguish the cases in `he : expDeg (i2bdeg m) = expDeg c`. Rewrite using `[if_pos he, i2comp_of_homog hnh, if_neg]`. Conclude with `fun h' => hd (deg_injective he h')`. Rewrite using `[if_neg he, i2comp_zero]`.
-
-Rewrite using `[if_neg hb]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_graphLift_i2comp {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ → K → ℕ}
     (hg : ∀ q, IsMultiHomog (g q) (δ q.1)) (c : K ⊕ K₂ → ℕ) (F : MRing (Sum.elim ι ι₂))
@@ -327,9 +321,7 @@ theorem coeff_graphLift_i2comp {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ →
       · rw [if_neg hb]
 
 /- English proof (translation)
-Rewrite `hF`, the goal using `[mem_graphIdeal_iff]`. Introduce `b`. Rewrite using `[coeff_graphLift_i2comp hg]`. Use `split_ifs`. Conclude with `i2comp_mem hP _ (hF b)`.
-
-Conclude with `zero_mem _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem i2comp_mem_graphIdeal {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P)
     {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ → K → ℕ} (hg : ∀ q, IsMultiHomog (g q) (δ q.1))
@@ -344,7 +336,7 @@ theorem i2comp_mem_graphIdeal {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P)
   · exact zero_mem _
 
 /- English proof (translation)
-Use `⟨{f | f ∈ graphIdeal P g ∧ ∃ a, IsMultiHomog f a}, fun f hf => hf.2, le_antisymm (fun F hF => ?_) (Ideal.span_le.mpr fun f hf => hf.1)⟩` and prove the remaining obligations. Rewrite using `[eq_sum_multihomogeneous_components F]`. Conclude with `Ideal.sum_mem _ fun b _ => Ideal.subset_span ⟨i2comp_mem_graphIdeal hP hg b hF, b, isMultiHomog_i2comp b F⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMultiHomogIdeal_graphIdeal {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P)
     {g : (Σ k, ι₂ k) → MRing ι} {δ : K₂ → K → ℕ} (hg : ∀ q, IsMultiHomog (g q) (δ q.1)) :
@@ -357,9 +349,9 @@ theorem isMultiHomogIdeal_graphIdeal {P : Ideal (MRing ι)} (hP : IsMultiHomogId
     Ideal.subset_span ⟨i2comp_mem_graphIdeal hP hg b hF, b, isMultiHomog_i2comp b F⟩
 
 /- English proof (translation)
-Establish `: (graphMap P g).comp (rename inlV : MRing ι →ₐ[ℤ] MRing (Sum.elim ι ι₂)).toRingHom = C.comp (Ideal.Quotient.mk P)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[graphMap]`. Introduce and unpack `⟨k, i⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[graphMap, inlV]`. Conclude with `congrArg (fun φ => φ f) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (f : MRing ι) :
     graphMap P g (rename inlV f) = C (Ideal.Quotient.mk P f) := by
@@ -373,7 +365,7 @@ theorem graphMap_rename_inlV (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRi
   exact congrArg (fun φ => φ f) this
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[imageZ, Ideal.mem_comap, graphIdeal, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `graphMap P g (rename inlV f) = 0 ↔ _`. Rewrite using `[graphMap_rename_inlV, map_eq_zero_iff C (C_injective _ _), Ideal.Quotient.eq_zero_iff_mem]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem imageZ_graphIdeal (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) :
     imageZ inlV (graphIdeal P g) = P := by
@@ -383,14 +375,14 @@ theorem imageZ_graphIdeal (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing 
   rw [graphMap_rename_inlV, map_eq_zero_iff C (C_injective _ _), Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Simplify using `[graphMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem graphMap_X_inr (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (k : K₂) (j : ι₂ k) :
     graphMap P g (X ⟨.inr k, j⟩) = C (Ideal.Quotient.mk P (g ⟨k, j⟩)) * X k := by
   simp [graphMap]
 
 /- English proof (translation)
-Use `graphMap_rename_inlV P g (C n)` as an intermediate fact. Rewrite `this` using `[rename_C]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem graphMap_intCast (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing ι) (n : ℤ) :
     graphMap P g (C n) = C (Ideal.Quotient.mk P (C n)) := by
@@ -398,11 +390,11 @@ theorem graphMap_intCast (P : Ideal (MRing ι)) (g : (Σ k, ι₂ k) → MRing �
   rwa [rename_C] at this
 
 /- English proof (translation)
-Introduce and unpack `(k | k)`. Take `⟨i, hi⟩` from `hP k`. Use `⟨i, fun h => hi ?_⟩` and prove the remaining obligations. Establish `h' : (X ⟨k, i⟩ : MRing ι) ∈ imageZ inlV (graphIdeal P g)`. Rewrite using `[imageZ, Ideal.mem_comap]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `rename inlV (X ⟨k, i⟩) ∈ graphIdeal P g`. Rewrite using `[rename_X]`. Conclude with `h`. Rewrite `h'` using `[imageZ_graphIdeal]`. Then use the resulting hypothesis. Take `⟨j, hj⟩` from `hne k`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j, fun h => hj ?_⟩` and prove the remaining obligations. Rewrite `h` using `[graphIdeal, RingHom.mem_ker, graphMap_X_inr, mul_eq_zero, map_eq_zero_iff C (C_injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h.resolve_right (X_ne_zero k)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRelevant_graphIdeal {P : Ideal (MRing ι)} (hP : IsRelevant P) [P.IsPrime]
     {g : (Σ k, ι₂ k) → MRing ι} (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) :
@@ -423,7 +415,7 @@ theorem isRelevant_graphIdeal {P : Ideal (MRing ι)} (hP : IsRelevant P) [P.IsPr
     exact h.resolve_right (X_ne_zero k)
 
 /- English proof (translation)
-Rewrite using `[IsHorizontal, eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, graphIdeal, RingHom.mem_ker, graphMap_intCast, map_eq_zero_iff C (C_injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Establish `: n ∈ P.comap (C : ℤ →+* MRing ι)` using `hn`. Rewrite `this` using `[show P.comap (C : ℤ →+* MRing ι) = ⊥ from hP]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHorizontal_graphIdeal {P : Ideal (MRing ι)} (hP : IsHorizontal P)
     (g : (Σ k, ι₂ k) → MRing ι) : IsHorizontal (graphIdeal P g) := by
@@ -444,9 +436,9 @@ def graphPt : (Σ k, Sum.elim ι ι₂ k) → L :=
   fun p => algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (graphMap P g (X p))
 
 /- English proof (translation)
-Establish `: (aeval (graphPt P g L) : MRing (Sum.elim ι ι₂) →ₐ[ℤ] L).toRingHom = (algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L).comp (graphMap P g)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using the standard rewrite rules. Introduce `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[graphPt]`. Conclude with `congrArg (fun φ => φ F) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aeval_graphPt (F : MRing (Sum.elim ι ι₂)) :
     aeval (graphPt P g L) F = algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (graphMap P g F) := by
@@ -460,7 +452,7 @@ theorem aeval_graphPt (F : MRing (Sum.elim ι ι₂)) :
   exact congrArg (fun φ => φ F) this
 
 /- English proof (translation)
-Use extensionality with `F`. Rewrite using `[RingHom.mem_ker, aeval_graphPt, graphIdeal, RingHom.mem_ker, map_eq_zero_iff _ (IsFractionRing.injective (MvPolynomial K₂ (MRing ι ⧸ P)) L)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_aeval_graphPt :
     RingHom.ker (aeval (graphPt P g L) : MRing (Sum.elim ι ι₂) →ₐ[ℤ] L) = graphIdeal P g := by
@@ -469,15 +461,13 @@ theorem ker_aeval_graphPt :
     map_eq_zero_iff _ (IsFractionRing.injective (MvPolynomial K₂ (MRing ι ⧸ P)) L)]
 
 /- English proof (translation)
-Establish `hval : ∀ F : MRing (Sum.elim ι ι₂), algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (graphMap P g F) ∈ Subfield.closure (Set.range (graphPt P g L))` using `fun F => by`. Rewrite using `[← aeval_graphPt]`. Conclude with `GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDimB.aeval_mem_closure _ F`. Establish `hC : ∀ a : MRing ι ⧸ P, algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (C a) ∈ Subfield.closure (Set.range (graphPt P g L))` using `fun a => by`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← graphMap_rename_inlV P g f]`. Conclude with `hval _`. Establish `hT : ∀ k, algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (X k) ∈ Subfield.closure (Set.range (graphPt P g L))` using `fun k => by`. Take `⟨j, hj⟩` from `hne k`. Establish `h0 : algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (C (Ideal.Quotient.mk P (g ⟨k, j⟩))) ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (MvPolynomial K₂ (MRing ι ⧸ P)) L), map_eq_zero_iff C (C_injective _ _), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hj`. Establish `e : algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (X k) = algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (graphMap P g (X ⟨.inr k, j⟩)) / algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L (C (Ideal.Quotient.mk P (g ⟨k, j⟩)))`. Rewrite using `[graphMap_X_inr, map_mul, mul_div_cancel_left₀ _ h0]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Conclude with `div_mem (hval _) (hC _)`. Establish `hB : ∀ b : MvPolynomial K₂ (MRing ι ⧸ P), algebraMap (MvPolynomial K₂ (MRing ι ⧸ P)) L b ∈ Subfield.closure (Set.range (graphPt P g L))` using `fun b => by`. Proceed by induction on `b using MvPolynomial.induction_on with`. Consider the case `C a => exact hC a`. Consider the case `add p q hp hq => rw [map_add]`.
-
-Conclude with `add_mem hp hq`. Consider the case `mul_X p k hp => rw [map_mul]`. Conclude with `mul_mem hp (hT k)`. Take `⟨x, y, _, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial K₂ (MRing ι ⧸ P)) z`. Conclude with `div_mem (hB x) (hB y)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem graphPt_closure (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) (z : L) :
     z ∈ Subfield.closure (Set.range (graphPt P g L)) := by
@@ -516,9 +506,9 @@ theorem graphPt_closure (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) (z : L) :
   exact div_mem (hB x) (hB y)
 
 /- English proof (translation)
-Take `⟨u, hu, v, hv, rfl⟩` from `Subfield.mem_closure_iff.1 (graphPt_closure P g L hne z)`. Establish `hle : Subring.closure (Set.range (graphPt P g L)) ≤ (aeval (graphPt P g L) : MRing (Sum.elim ι ι₂) →ₐ[ℤ] L).toRingHom.range` using `Subring.closure_le.2 (by`. Introduce and unpack `_ ⟨p, rfl⟩`. Conclude with `⟨X p, by simp⟩)`. Take `⟨f, rfl⟩` from `hle hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨f', rfl⟩` from `hle hv`. Conclude with `⟨f, f', rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem graphPt_gen (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) (z : L) :
     ∃ f f' : MRing (Sum.elim ι ι₂), z = aeval (graphPt P g L) f / aeval (graphPt P g L) f' := by
@@ -535,7 +525,7 @@ theorem graphPt_gen (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) (z : L) :
 end Dim
 
 /- English proof (translation)
-Establish `hZ : Function.Injective (algebraMap ℤ L)` using `fun a b h => hB (IsFractionRing.injective (MvPolynomial K₂ (MRing ι ⧸ P)) L (by simpa only [eq_intCast, map_intCast] using h))`. Rewrite using `[← GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDimB.trdeg_eq_of_gen (graphPt P g L) (graphIdeal P g) (ker_aeval_graphPt P g L) hZ (graphPt_gen P g L hne)]`. Conclude with `GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDimB.trdeg_eq_of_isFractionRing _ L hB`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trdeg_graph_eq (P : Ideal (MRing ι)) [P.IsPrime] (g : (Σ k, ι₂ k) → MRing ι)
     (L : Type) [Field L] [Algebra (MvPolynomial K₂ (MRing ι ⧸ P)) L]
@@ -551,7 +541,7 @@ theorem trdeg_graph_eq (P : Ideal (MRing ι)) [P.IsPrime] (g : (Σ k, ι₂ k) �
   exact GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDimB.trdeg_eq_of_isFractionRing _ L hB
 
 /- English proof (translation)
-Establish `: FaithfulSMul ℤ A` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hA`. Establish `: FaithfulSMul A (MvPolynomial σ A)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (C_injective _ _)`. Rewrite using `[← trdeg_add_eq ℤ A (A := MvPolynomial σ A), MvPolynomial.trdeg_of_isDomain, Nat.cast_card]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trdeg_mvPolynomial_int (A : Type) [CommRing A] [IsDomain A] (σ : Type) [Finite σ]
     (hA : Function.Injective (algebraMap ℤ A)) :
@@ -563,13 +553,13 @@ theorem trdeg_mvPolynomial_int (A : Type) [CommRing A] [IsDomain A] (σ : Type) 
   simp
 
 /- English proof (translation)
-Take `⟨t, ht, htd⟩` from `GroundTheory.Heights₂.Heights.ForSecondHalf.FibreDimB.trdeg_of_isArithVar hP`. Take `⟨-, ⟨hprime, -, -⟩, hhor, -⟩` from `hP`. Use `hprime` as an intermediate fact. Establish `hA` using `GroundTheory.Heights₂.Heights.CoordinateConeArithVar.algebraMap_injective P hhor`. Establish `hBinj : Function.Injective (algebraMap ℤ (MvPolynomial K₂ (MRing ι ⧸ P)))` using `fun a b h => hA (C_injective K₂ _ (by simpa only [eq_intCast, map_intCast] using h))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `trdeg_graph_eq P g (FractionRing (MvPolynomial K₂ (MRing ι ⧸ P))) hne hBinj`. Establish `h3` using `trdeg_mvPolynomial_int (MRing ι ⧸ P) K₂ hA`. Establish `hhor'` using `isHorizontal_graphIdeal hhor g`. Use `haveI : (graphIdeal P g).IsPrime := RingHom.ker_isPrime _`. Establish `hdim` using `GroundTheory.Heights₂.Heights.IntDomainDim.proof (MRing (Sum.elim ι ι₂) ⧸ graphIdeal P g) (GroundTheory.Heights₂.Heights.CoordinateConeArithVar.algebraMap_injective _ hhor')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Algebra.trdeg ℤ (MRing (Sum.elim ι ι₂) ⧸ graphIdeal P g) = ((t + Fintype.card K₂ : ℕ) : Cardinal)`. Rewrite using `[h1]`. Use `(congrArg (fun a : Algebra ℤ (MvPolynomial K₂ (MRing ι ⧸ P)) => @Algebra.trdeg ℤ (MvPolynomial K₂ (MRing ι ⧸ P)) _ _ a) (Subsingleton.elim _ _)).trans (h3.trans ?_)` and prove the remaining obligations. Establish `ht' : @Algebra.trdeg ℤ (MRing ι ⧸ P) _ _ (Ring.toIntAlgebra _) = t` using `(congrArg (fun a : Algebra ℤ (MRing ι ⧸ P) => @Algebra.trdeg ℤ (MRing ι ⧸ P) _ _ a) (Subsingleton.elim _ _)).trans ht`. Rewrite using `[ht', Nat.card_eq_fintype_card]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hdim, h4, Cardinal.toENat_nat, Fintype.card_sum]`. Establish `: t + Fintype.card K₂ + 1 = d + (Fintype.card K + Fintype.card K₂)` using `by omega`. Conclude with `this` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_graphIdeal {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d)
     {g : (Σ k, ι₂ k) → MRing ι} (hne : ∀ k₂, ∃ j, g ⟨k₂, j⟩ ∉ P) :
@@ -604,7 +594,7 @@ theorem ringKrullDim_graphIdeal {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVa
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `K _ ι _ K₂ _ ι₂ _ P d g δ hP hg hne`. Take `⟨hK, ⟨hprime, hmh, hrel⟩, hhor, -⟩` from `id hP`. Use `hprime` as an intermediate fact. Use `⟨⟨?_, ⟨RingHom.ker_isPrime _, isMultiHomogIdeal_graphIdeal hmh hg, isRelevant_graphIdeal hrel hne⟩, isHorizontal_graphIdeal hhor g, ringKrullDim_graphIdeal hP hne⟩, imageZ_graphIdeal P g⟩` and prove the remaining obligations. Conclude with `hK.elim fun k => ⟨.inl k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem graphIdeal_isArithVar : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (K₂ : Type) [Fintype K₂]
     (ι₂ : K₂ → Type) [∀ k, Fintype (ι₂ k)] (P : Ideal (MRing ι)) (d : ℕ) (g : (Σ k, ι₂ k) → MRing ι)

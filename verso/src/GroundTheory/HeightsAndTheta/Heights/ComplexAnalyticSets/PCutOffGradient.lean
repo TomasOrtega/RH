@@ -15,7 +15,7 @@ noncomputable section
 variable {n d : ℕ}
 
 /- English proof (translation)
-Unfold `logLogCut cutStep`. Use `split_ifs`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Conclude with `⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem logLogCut_mem_Icc {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : ℕ) (y : Fin m → ℂ) :
     logLogCut Q k y ∈ Set.Icc (0 : ℝ) 1 := by
@@ -26,7 +26,7 @@ theorem logLogCut_mem_Icc {m : ℕ} (Q : MvPolynomial (Fin m) ℂ) (k : ℕ) (y 
   · exact ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, -, -, hsec, -⟩` from `hs`. Use `filter_upwards [hU.mem_nhds hxU] with w hw`. Rewrite using `[(hsec w hw).1]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_sheet_eventuallyEq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {x : Fin n → ℂ} {s : (Fin d → ℂ) → Fin n → ℂ} (hs : IsSheetAt J A x s) (g : (Fin d → ℂ) → ℝ) :
@@ -36,9 +36,9 @@ theorem comp_sheet_eventuallyEq {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matr
   rw [(hsec w hw).1]
 
 /- English proof (translation)
-Establish `e : ∀ u : (Fin (D + 1) → ℂ) → ℝ, (fun k => hessC ((Fin.cons u ψ : Fin (D + 1) → (Fin (D + 1) → ℂ) → ℝ) k) y) = Fin.cons (hessC u y) (fun k => hessC (ψ k) y)` using `fun u => by`. Use function extensionality and compare the values at `k`. Conclude with `Fin.cases rfl (fun i => rfl) k`. Establish `hm` using `mdisc_update_smul (Fin.cons (hessC g y) (fun k => hessC (ψ k) y) : Fin (D + 1) → Matrix (Fin (D + 1)) (Fin (D + 1)) ℂ) 0 (c : ℂ) (hessC g y)`. Rewrite `hm` using `[Fin.update_cons_zero, Fin.update_cons_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `maDens`. Rewrite using `[e, e, h, hm, Complex.re_ofReal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem maDens_cons_of_hessC_eq_smul {D : ℕ} (f g : (Fin (D + 1) → ℂ) → ℝ)
     (ψ : Fin D → (Fin (D + 1) → ℂ) → ℝ) (y : Fin (D + 1) → ℂ) (c : ℝ)
@@ -57,7 +57,7 @@ theorem maDens_cons_of_hessC_eq_smul {D : ℕ} (f g : (Fin (D + 1) → ℂ) → 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Conclude with `Fin.cases rfl (fun i => rfl) k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vecCons_comp {D : ℕ} (f : (Fin n → ℂ) → ℝ) (φ : Fin D → (Fin n → ℂ) → ℝ)
     (s : (Fin (D + 1) → ℂ) → Fin n → ℂ) :
@@ -65,9 +65,9 @@ theorem vecCons_comp {D : ℕ} (f : (Fin n → ℂ) → ℝ) (φ : Fin D → (Fi
   funext k; exact Fin.cases rfl (fun i => rfl) k
 
 /- English proof (translation)
-Unfold `sheetSum`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.mul_sum]`. Use `Finset.sum_le_sum fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[Set.Finite.mem_toFinset]`. Use `split_ifs with hs`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h x hx _ hs.choose_spec`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem sheetSum_le_mul {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin d) (Fin n) ℂ}
     {y : Fin d → ℂ} (hfin : (fibre J A y).Finite) (c : ℝ)
@@ -84,7 +84,7 @@ theorem sheetSum_le_mul {J : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin 
   · simp
 
 /- English proof (translation)
-The claim follows from `|w x * maDens (Fin.cons f ψ) y| ≤ c * |B.indicator t x * maDens (Fin.cons g ψ) y| := by rw [maDens_cons_of_hessC_eq_smul f g ψ y e h] by_cases hx : x ∈ B · rw [Set.indicator_of_mem hx, abs_mul, abs_mul, abs_mul, abs_of_nonneg ht] have hM := abs_nonneg (maDens (Fin.cons g ψ) y) ca …`.
+A detailed English derivation is pending.
 -/
 theorem term_le_of_hessC {D : ℕ} {X : Type*} (B : Set X) (w t : X → ℝ) (x : X)
     (hw : |w x| ≤ 1) (hwB : x ∉ B → w x = 0) (ht : 0 ≤ t x) (f g : (Fin (D + 1) → ℂ) → ℝ)
@@ -101,17 +101,15 @@ theorem term_le_of_hessC {D : ℕ} {X : Type*} (B : Set X) (w t : X → ℝ) (x 
   · rw [hwB hx, zero_mul, abs_zero, Set.indicator_of_notMem hx, zero_mul, abs_zero, mul_zero]
 
 /- English proof (translation)
-Take `⟨K, hK0, hK⟩` from `hH`. Use `⟨K, fun n d J A P R φ k y hJ hdim hA => ?_⟩` and prove the remaining obligations. Establish `hfin` using `(FibreBound.proof n (d + 1) J A hJ hdim hA y).2.1`. Take `⟨a, b, ha, hb, hHa, hHb⟩` from `hK (d + 1) P k y`. Establish `hc : 0 ≤ K / ((k : ℝ) + 1)` using `by positivity`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set B := Metric.closedBall (0 : Fin n → ℂ) R`. Establish `ht : ∀ x, 0 ≤ tubeWeight P (A *ᵥ x)` using `fun x => by`. Apply the tactic sequence `unfold tubeWeight; split_ifs <;> positivity`. Establish `key : ∀ (w : (Fin n → ℂ) → ℝ) (g : (Fin (d + 1) → ℂ) → ℝ) (e : ℝ), (∀ x, |w x| ≤ 1) → (∀ x, x ∉ B → w x = 0) → hessC g y = (e : ℂ) • hessC (fun z => logAbsSq P z ^ 2 / 2) y → |e| ≤ K / ((k : ℝ) + 1) * tubeWeight P y → chartAbsDens J A w (vecCons (fun x => g (A *ᵥ x)) φ) y ≤ K / ( …`. Introduce `w g e hw hwB hg he`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `chartAbsDens tubeDens`. Use `sheetSum_le_mul hfin _ _ _ fun x hx s hs => ?_` and prove the remaining obligations. Establish `hy : A *ᵥ x = y` using `hx.2`. Rewrite using `[vecCons_comp, vecCons_comp]`. Use `term_le_of_hessC B w (fun x => tubeWeight P (A *ᵥ x)) x (hw x) (hwB x) (ht x) _ _ _ y ?_ (by rw [hy]; exact he)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy, Function.comp_def, Function.comp_def, hessC_congr' (comp_sheet_eventuallyEq hs g), hessC_congr' (comp_sheet_eventuallyEq hs fun z => logAbsSq P z ^ 2 / 2), hy, hg]`. Establish `h1 : ∀ x, |B.indicator (fun _ => (1 : ℝ)) x| ≤ 1` using `fun x => by`. Apply the tactic sequence `unfold Set.indicator; split_ifs <;> simp`. Establish `h0 : ∀ x, x ∉ B → B.indicator (fun _ => (1 : ℝ)) x = 0` using `fun x hx => Set.indicator_of_notMem hx _`. Use `⟨key _ (logLogCut P k) a h1 h0 hHa ha, key _ (fun z => logLogCut P k z ^ 2 / 2) b h1 h0 hHb hb, key _ (logLogCut P k) a (fun x => ?_) (fun x hx => Set.indicator_of_notMem hx _) hHa ha⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `Set.indicator`. Use `split_ifs`. Establish `hm` using `logLogCut_mem_Icc P k (A *ᵥ x) show |logLogCut P k (A *ᵥ x)| ≤ 1`. Rewrite using `[abs_of_nonneg hm.1]`. Conclude with `hm.2`.
-
-Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem CutOffGradient.proof (hH : LogLogCutHess.Statement) : CutOffGradient.Statement := by
   obtain ⟨K, hK0, hK⟩ := hH

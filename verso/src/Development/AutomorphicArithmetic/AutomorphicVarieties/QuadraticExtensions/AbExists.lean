@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `A`. Take `⟨L, hF, hN, h, -⟩` from `UpperTheory.V.exists_numberField_isAbField_finrank_eq_deg A`. Conclude with `⟨L, hF, hN, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Two.abExists :
     ∀ A : AbF, ∃ (L : Type) (_ : Field L) (_ : NumberField L), IsAbField A L := by

@@ -3,7 +3,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FundamentalEquivalence.AdBrid
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RationalPointsComparison.BridgeApplyEqOfComp
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.AdBridge.adBridgeGF_main`.
+A detailed English derivation is pending.
 -/
 theorem adelic_rational_points : ∀ I : Formalism.MainNotions.S.AutInst, Formalism.L2.SG.AdBridge.AdBridgeGF I :=
   Formalism.L2.SG.AdBridge.adBridgeGF_main

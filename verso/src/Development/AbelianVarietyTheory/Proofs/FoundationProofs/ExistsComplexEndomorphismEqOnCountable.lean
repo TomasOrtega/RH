@@ -9,11 +9,11 @@ open scoped BigOperators
 namespace GlobalTheory.GalTheta
 
 /- English proof (translation)
-Set `A : Set M` to `{y | (y : ℂ) ∈ S}`. Establish `hA : A.Countable` using `hS.preimage Subtype.val_injective`. Set `k : Subfield M` to `Subfield.closure A`. Use `haveI : Countable k := by`. Rewrite using `[← Cardinal.mk_le_aleph0_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Subfield.cardinalMk_closure_le_max A).trans (max_le ?_ le_rfl)` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.2 hA.to_subtype`. Take `⟨τ, hτ⟩` from `GlobalTheory.GaloisDescent.exists_complex_ringEquiv_comp_eq (K := k) ((M.val : M →+* ℂ).comp k.subtype) ((ρ : M →+* ℂ).comp k.subtype)`. Use `⟨(τ.toRingHom.toRatAlgHom).comp (⊤ : IntermediateField ℚ ℂ).val, fun x hx hxM => ?_⟩` and prove the remaining obligations. Establish `h` using `hτ ⟨⟨x, hxM⟩, Subfield.subset_closure hx⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : liftM ⊤ x = ⟨x, IntermediateField.mem_top⟩` using `dif_pos IntermediateField.mem_top`. Establish `h2 : liftM M x = ⟨x, hxM⟩` using `dif_pos hxM`. Unfold `cj`. Rewrite using `[h1, h2]`. Conclude with `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_top_embedding_eq_on_countable (M : IntermediateField ℚ ℂ) (ρ : M →ₐ[ℚ] ℂ) (S : Set ℂ)
     (hS : S.Countable) :

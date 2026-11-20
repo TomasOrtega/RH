@@ -17,7 +17,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable (k) in
 
 /- English proof (translation)
-Establish `h : absPow k ((1 : ℝ) : ℂ) ≠ 1` using `fun e => one_ne_zero (absPow_ofReal_eq_one.1 e)`. Take `⟨z, hz⟩ : ∃ z : kˣ, absPow k ((1 : ℝ) : ℂ) z ≠ 1` from `by by_contra! h'`. Conclude with `h (MonoidHom.ext h')`. Use `⟨z, z.ne_zero, fun e => hz ?_⟩` and prove the remaining obligations. Rewrite using `[show z = 1 from Units.ext e, map_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_ne_one : ∃ x : k, x ≠ 0 ∧ x ≠ 1 := by
   have h : absPow k ((1 : ℝ) : ℂ) ≠ 1 := fun e => one_ne_zero (absPow_ofReal_eq_one.1 e)
@@ -30,9 +30,9 @@ theorem exists_ne_zero_ne_one : ∃ x : k, x ≠ 0 ∧ x ≠ 1 := by
 variable (k N) in
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective g`. Set `φ : GL (Fin N) k →* NNReal` to `Measure.modularCharacter.comp (QuotientGroup.mk' (Subgroup.center (GL (Fin N) k)))`. Use `GlobalTheory.T.gl_hom_nnreal_trivial_of_scalar_trivial k (exists_ne_zero_ne_one k) N φ (fun z => ?_) g` and prove the remaining obligations. Establish `hz : Matrix.GeneralLinearGroup.scalar (Fin N) z ∈ Subgroup.center (GL (Fin N) k)` using `Subgroup.mem_center_iff.2 fun h => (Matrix.GeneralLinearGroup.scalar_commute z h).symm`. Use `show Measure.modularCharacter (QuotientGroup.mk' _ _) = 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).2 hz, map_one]`.
+A detailed English derivation is pending.
 -/
 theorem modularCharacterFun_eq_one (g : AdGL k N) : Measure.modularCharacterFun g = 1 := by
   obtain ⟨g, rfl⟩ := QuotientGroup.mk_surjective g
@@ -45,7 +45,7 @@ theorem modularCharacterFun_eq_one (g : AdGL k N) : Measure.modularCharacterFun 
   rw [QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).2 hz, map_one]
 
 /- English proof (translation)
-Use `⟨fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.isMulLeftInvariant_eq_smul (Measure.map (· * g) μ) μ, ← Measure.modularCharacterFun_eq_haarScalarFactor μ g, modularCharacterFun_eq_one, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem isMulRightInvariant [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)] (μ : Measure (AdGL k N))
     [μ.IsHaarMeasure] : μ.IsMulRightInvariant := by
@@ -56,7 +56,7 @@ theorem isMulRightInvariant [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)]
 variable (k) in
 
 /- English proof (translation)
-Introduce `U hU`. Take `⟨J, h1, h2, h3, -⟩` from `exists_open_normalised_subgroup_subset k (Fin n) U hU`. Conclude with `⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem compactOpen_basis (n : ℕ) : ∀ U ∈ nhds (1 : GL (Fin n) k), ∃ K : Subgroup (GL (Fin n) k),
     IsOpen (K : Set (GL (Fin n) k)) ∧ IsCompact (K : Set (GL (Fin n) k)) ∧ (K : Set (GL (Fin n) k)) ⊆ U := by
@@ -65,61 +65,51 @@ theorem compactOpen_basis (n : ℕ) : ∀ U ∈ nhds (1 : GL (Fin n) k), ∃ K :
   exact ⟨J, h1, GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (J.isClosed_of_isOpen h1) h3, h2⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π hs hi hsq`. Use `Model.nontrivial_of_isIrreducible hi` as an intermediate fact. Take `⟨v₀, hv₀⟩` from `exists_ne (0 : V)`. Take `⟨l, hl⟩` from `GlobalTheory.ContraRefl.exists_smooth_form_ne hs (compactOpen_basis k N) hv₀`. Use `set L : Module.Dual ℂ V := (l : Module.Dual ℂ V) with hLdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hLo : IsOpen {g : GL (Fin N) k | L ∘ₗ π g = L}`. Establish `h1 : IsOpen {g : GL (Fin N) k | π.dual g L = L}` using `l.2`. Establish `: {g : GL (Fin N) k | L ∘ₗ π g = L} = (fun g => g⁻¹) ⁻¹' {g | π.dual g L = L}`. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_preimage, Representation.dual_apply, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `h1.preimage continuous_inv`. Use `borelize (AdGL k N)`. Set `μ : Measure (AdGL k N)` to `Measure.haar`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hF : ∀ v, ∃ F : AdGL k N → ℝ, (∀ g, F (QuotientGroup.mk g) = ‖L (π g v)‖) ∧ MemLp F 2 μ` using `fun v => by`. Take `⟨F, h1, h2⟩` from `hsq μ inferInstance v L hLo`. Conclude with `⟨F, h1, by simpa using h2⟩`. Use `choose F hF1 hF2 using hF`. Establish `hc : ∀ z ∈ Subgroup.center (GL (Fin N) k), ∃ c : ℂ, ‖c‖ = 1 ∧ ∀ v, π z v = c • v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z hz`. Take `⟨c, hc⟩` from `schur_GL hs hi ⟨π z, fun g => by`. Rewrite using `[← Module.End.mul_eq_comp, ← Module.End.mul_eq_comp, ← map_mul, ← map_mul]`. Conclude with `congrArg π (Subgroup.mem_center_iff.1 hz g).symm⟩`. Use `⟨c, ?_, hc⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hF1 v₀ z`. Establish `h2` using `hF1 v₀ 1`. Rewrite `h1` using `[(QuotientGroup.eq_one_iff z).2 hz]`. Rewrite `h2` using `[QuotientGroup.mk_one, h1, map_one, Module.End.one_apply]`. Establish `h3 : L v₀ ≠ 0` using `hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ‖c‖ * ‖L v₀‖ = 1 * ‖L v₀‖`. Rewrite using `[one_mul, ← norm_mul, ← smul_eq_mul, ← map_smul, ← hc]`. Conclude with `h2`. Conclude with `mul_right_cancel₀ (norm_ne_zero_iff.2 h3) this`. Set `f : V → V → GL (Fin N) k → ℂ` to `fun v w g => L (π g v) * conj (L (π g w))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hfz : ∀ v w g, ∀ z ∈ Subgroup.center (GL (Fin N) k), f v w (g * z) = f v w g`. Introduce `v w g z hz`. Take `⟨c, hc1, hc⟩` from `hc z hz`. Establish `h1 : c * conj c = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hc1]`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Simplify using `only [f, map_mul, Module.End.mul_apply, hc, map_smul, smul_eq_mul]`. Take the linear combination `(L (π g v) * conj (L (π g w))) * h1`. Set `Φ : V → V → AdGL k N → ℂ` to `fun v w x => f v w (Quotient.out x)`. Establish `hΦ : ∀ v w g, Φ v w (QuotientGroup.mk g) = f v w g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v w g`. Take `⟨z, hz⟩` from `QuotientGroup.mk_out_eq_mul (Subgroup.center (GL (Fin N) k)) g`. Use `show f v w (Quotient.out (QuotientGroup.mk g : AdGL k N)) = f v w g`. Rewrite using `[hz]`. Conclude with `hfz v w g z z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfc : ∀ v w, Continuous (f v w)`. Introduce `v w`. Establish `h1 : ∀ u, Continuous fun g : GL (Fin N) k => L (π g u)` using `fun u => ((GlobalTheory.ContraRefl.isLocallyConstant_orbit hs u).comp L).continuous`. Conclude with `(h1 v).mul (Complex.continuous_conj.comp (h1 w))`. Establish `hΦc : ∀ v w, Continuous (Φ v w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `v w`. Use `(QuotientGroup.isQuotientMap_mk (Subgroup.center (GL (Fin N) k))).continuous_iff.2 ?_` and prove the remaining obligations. Establish `: Φ v w ∘ QuotientGroup.mk = f v w` using `funext (hΦ v w)`. Rewrite using `[this]`. Conclude with `hfc v w`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hnorm : ∀ v w x, ‖Φ v w x‖ = F v x * F w x`. Introduce `v w x`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[hΦ, hF1, hF1]`. Simplify using `[f, norm_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hint : ∀ v w, Integrable (Φ v w) μ`. Introduce `v w`. Use `Integrable.mono' ((hF2 v).integrable_mul (hF2 w)) (hΦc v w).aestronglyMeasurable (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Rewrite using `[hnorm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hadd1 : ∀ v v' w, Φ (v + v') w = fun x => Φ v w x + Φ v' w x` using `fun v v' w => funext fun x => by`. Simplify using `only [Φ, f, map_add, add_mul]`. Establish `hsmul1 : ∀ (a : ℂ) v w, Φ (a • v) w = fun x => a * Φ v w x` using `fun a v w => funext fun x => by`. Simplify using `only [Φ, f, map_smul, smul_eq_mul, mul_assoc]`. Establish `hadd2 : ∀ v w w', Φ v (w + w') = fun x => Φ v w x + Φ v w' x` using `fun v w w' => funext fun x => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Φ, f, map_add, mul_add]`. Establish `hsmul2 : ∀ (a : ℂ) v w, Φ v (a • w) = fun x => conj a * Φ v w x` using `fun a v w => funext fun x => by`. Simplify using `only [Φ, f, map_smul, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Set `B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => ∫ x, Φ v w x ∂μ) (fun v v' w => by rw [hadd1, integral_add (hint _ _) (hint _ _)]) (fun a v w => by rw [hsmul1, integral_const_mul, RingHom.id_apply, smul_eq_mul]) (fun v w w' => by rw [hadd2, integral_add (hint _ _) (hi …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hB : ∀ v w, B v w = ∫ x, Φ v w x ∂μ` using `fun v w => rfl`. Establish `hre : ∀ v x, (Φ v v x).re = F v x ^ 2`. Introduce `v x`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[hΦ, hF1]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [f, Complex.mul_conj, Complex.ofReal_re, Complex.normSq_eq_norm_sq]`. Use `⟨B, fun v w => ?_, fun v hv => ?_, fun h v w => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB, ← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Φ, f, map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hcont : Continuous fun x => F v x ^ 2`. Establish `: (fun x => F v x ^ 2) = fun x => (Φ v v x).re` using `funext fun x => (hre v x).symm`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.continuous_re.comp (hΦc v v)`. Establish `hi2 : Integrable (fun x => F v x ^ 2) μ`. Establish `: (fun x => F v x ^ 2) = fun x => (Φ v v x).re` using `funext fun x => (hre v x).symm`. Rewrite using `[this]`. Conclude with `(hint v v).re`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `hreB : (B v v).re = ∫ x, F v x ^ 2 ∂μ`. Rewrite using `[hB]`. Use `show RCLike.re (∫ x, Φ v v x ∂μ) = _`. Rewrite using `[← integral_re (hint v v)]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun x => hre v x)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[hreB]`. Use `lt_of_le_of_ne (integral_nonneg fun x => sq_nonneg _) (fun h0 => hv ?_)` and prove the remaining obligations. Establish `h1 : (fun x => F v x ^ 2) =ᵐ[μ] 0` using `(integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg _) hi2).1 h0.symm`. Establish `h2 : (fun x => F v x ^ 2) = 0` using `(Continuous.ae_eq_iff_eq μ hcont continuous_const).1 h1`. Establish `h3 : ∀ g, L (π g v) = 0` using `fun g => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun h2 (QuotientGroup.mk g)` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, hF1]`. Simplify using `using this`. Set `W : Subrepresentation π` to `⟨{ carrier := {u | ∀ g, L (π g u) = 0} add_mem' := fun {a b} ha hb g => by simp [ha g, hb g] zero_mem' := fun g => by simp smul_mem' := fun c u hu g => by simp [hu g] }, fun g u hu h => by show L (π h (π g u)) = 0`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
-
-Conclude with `hu (h * g)⟩`. Use `haveI : IsSimpleOrder (Subrepresentation π) := hi`. Break down `eq_bot_or_eq_top W with hW | hW` into its components or cases. Establish `hvW : v ∈ W.toSubmodule` using `h3`. Rewrite `hvW` using `[hW]`.
-
-Conclude with `(Submodule.mem_bot ℂ).1 hvW`. It suffices to derive a contradiction. Establish `hvW : v₀ ∈ W.toSubmodule`. Rewrite using `[hW]`. Conclude with `Submodule.mem_top`.
-
-Use `hvW 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`. Conclude with `hl this`. Use `haveI := isMulRightInvariant μ`. Establish `hinv : ∀ x, Φ (π h v) (π h w) x = Φ v w (x * QuotientGroup.mk h)`.
-
-Introduce `x`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective x`. Rewrite using `[← QuotientGroup.mk_mul, hΦ, hΦ]`. Simplify using `only [f, map_mul, Module.End.mul_apply]`. Rewrite using `[hB, hB, funext hinv]`.
-
-Conclude with `integral_mul_right_eq_self (Φ v w) _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ)
     (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V),

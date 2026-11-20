@@ -10,7 +10,7 @@ open scoped ComplexOrder
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CoerciveOfPositiveDefinite.exists_coercive_of_posDef hP`.
+A detailed English derivation is pending.
 -/
 theorem exists_coercive_of_posDef {ι : Type*} [Fintype ι] {P : Matrix ι ι ℂ} (hP : P.PosDef) :
     ∃ c : ℝ, 0 < c ∧ ∀ (z : ι → ℂ) (j : ι), c * ‖z j‖ ^ 2 ≤ (star z ⬝ᵥ (P *ᵥ z)).re :=
@@ -25,17 +25,15 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Use `choose c hc hcoer using fun w => exists_coercive_of_posDef (M.posDef w)`. Use `set G : InfinitePlace E → Matrix ι ι ℂ := fun w => (((g : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) with hG`. Use `⟨∑ w, ∑ i, ∑ j, ‖G w i j‖ / Real.sqrt (c w), by positivity, fun y w i => ?_⟩` and prove the remaining obligations. Use `set z := invApply g y with hz`. Establish `hre : ∀ w', 0 ≤ (star (z w') ⬝ᵥ (M.P w' *ᵥ z w')).re` using `fun w' => (Complex.nonneg_iff.mp ((M.posDef w').posSemidef.dotProduct_mulVec_nonneg (z w'))).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : G w * (((g⁻¹ : archUnitary h v) : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) = 1`. Simplify using `[hG]`. Establish `hy : y w = G w *ᵥ z w`. Rewrite using `[hz, invApply, mulVec_mulVec, hinv, one_mulVec]`. Establish `hzj : ∀ j, ‖z w j‖ ≤ M.len z / Real.sqrt (c w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Establish `hsq : 0 < Real.sqrt (c w)` using `Real.sqrt_pos.2 (hc w)`. Rewrite using `[le_div_iff₀ hsq]`. Establish `h1 : c w * ‖z w j‖ ^ 2 ≤ ∑ w', (star (z w') ⬝ᵥ (M.P w' *ᵥ z w')).re` using `(hcoer w (z w) j).trans (Finset.single_le_sum (fun w' _ => hre w') (Finset.mem_univ w))`. Establish `h2` using `Real.sqrt_le_sqrt h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h2` using `[Real.sqrt_mul (hc w).le, Real.sqrt_sq (norm_nonneg _)]`. Unfold `Majorant.len`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlen : 0 ≤ M.len z` using `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, mul_div_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hzj j) (norm_nonneg _)`. Use `_ = (∑ j, ‖G w i j‖ / Real.sqrt (c w)) * M.len z := by rw [Finset.sum_mul]`. Use `_ ≤ (∑ w', ∑ i', ∑ j, ‖G w' i' j‖ / Real.sqrt (c w')) * M.len z := by`.
-
-Use `mul_le_mul_of_nonneg_right ?_ hlen` and prove the remaining obligations. Use `le_trans ?_ (Finset.single_le_sum (f := fun w' => ∑ i', ∑ j, ‖G w' i' j‖ / Real.sqrt (c w')) (fun _ _ => by positivity) (Finset.mem_univ w))` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun i' => ∑ j, ‖G w i' j‖ / Real.sqrt (c w)) (fun _ _ => by positivity) (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_coord_le_len {h : HermitianForm F E W} {v : Basis ι E W} (M : Majorant h v)
     (g : archUnitary h v) : ∃ K : ℝ, 0 ≤ K ∧ ∀ (y : InfinitePlace E → ι → ℂ) w i,
@@ -79,19 +77,17 @@ theorem exists_coord_le_len {h : HermitianForm F E W} {v : Basis ι E W} (M : Ma
 omit [NumberField F] [IsTotallyReal F] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Introduce `M La g t hLa`. Take `⟨S, hS⟩` from `hLa.fg`. Take `⟨d, hd0, hd⟩` from `exists_integral_multiples ℤ ℚ (S.biUnion fun s => Finset.univ.image fun i => v.repr s i)`. Set `T : AddSubgroup W` to `{ carrier := {y | ∀ i, IsIntegral ℤ (d • v.repr y i)} add_mem' := fun {a b} ha hb i => by`. Simplify `(ha i).add (hb i)` using `only [map_add, Finsupp.add_apply, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `zero_mem' := fun i => by`. Simplify `isIntegral_zero` using `only [map_zero, Finsupp.zero_apply, smul_zero]`. Use the proof step `neg_mem' := fun {a} ha i => by`. Simplify `(ha i).neg }` using `only [map_neg, Finsupp.neg_apply, smul_neg]`. Establish `hLaT : La ≤ T`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hS, AddSubgroup.closure_le]`. Introduce `s hs i`. Conclude with `hd _ (Finset.mem_biUnion.2 ⟨s, hs, Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩⟩)`. Establish `hdE : (d : E) ≠ 0` using `Int.cast_ne_zero.2 hd0`. Take `⟨K, hK0, hK⟩` from `exists_coord_le_len M g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set B : ℝ := |(d : ℝ)| * (K * t) with hB`. Use `set A : Set E := {a | IsIntegral ℤ a ∧ ∀ φ : E →+* ℂ, ‖φ a‖ ≤ B} with hA`. Establish `hAfin : A.Finite` using `NumberField.Embeddings.finite_of_norm_le E ℂ B`. Use `set φ : W → ι → E := fun x i => d • v.repr x i with hφ`. Establish `hinj : Function.Injective φ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `x y hxy`. Use `v.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations. Use `congrFun hxy i` as an intermediate fact. Simplify using `only [hφ, zsmul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hdE this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `((Set.Finite.pi (t := fun _ : ι => A) fun _ => hAfin).preimage hinj.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxt⟩ i -`. Use `⟨hLaT hx i, fun ψ => ?_⟩` and prove the remaining obligations. Establish `hw : ‖ψ (v.repr x i)‖ = ‖(InfinitePlace.mk ψ).embedding (v.repr x i)‖`. Rewrite using `[InfinitePlace.norm_embedding_eq, InfinitePlace.apply]`.
-
-Establish `hb` using `hK (vecAt v x) (InfinitePlace.mk ψ) i`. Express the relevant statement in the definitionally equal form `‖ψ (d • v.repr x i)‖ ≤ B`. Rewrite using `[zsmul_eq_mul, map_mul, map_intCast, norm_mul, Complex.norm_intCast, hw, hB]`. Use `mul_le_mul_of_nonneg_left ?_ (abs_nonneg _)` and prove the remaining obligations. Conclude with `hb.trans (mul_le_mul_of_nonneg_left hxt.le hK0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem LatticePointsBelowFinite.proof (h : HermitianForm F E W) (v : Basis ι E W) :
     LatticePointsBelowFinite.Statement h v := by

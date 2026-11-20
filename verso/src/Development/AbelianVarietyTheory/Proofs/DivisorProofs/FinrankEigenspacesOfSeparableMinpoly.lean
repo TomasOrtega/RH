@@ -9,17 +9,15 @@ attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 namespace GlobalTheory.EigSum
 
 /- English proof (translation)
-Establish `hf : f = minpoly Ω T`. Apply `Polynomial.eq_of_monic_of_associated hm (minpoly.monic (Algebra.IsIntegral.isIntegral T))` to reduce the goal to its premises. Conclude with `associated_of_dvd_dvd (hmin _ (minpoly.aeval Ω T)) (minpoly.dvd Ω T h0)`. Establish `hroot : ∀ z, T.HasEigenvalue z ↔ z ∈ f.roots`. Introduce `z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.End.hasEigenvalue_iff_isRoot, ← hf, Polynomial.mem_roots hm.ne_zero]`. Establish `hss : T.IsSemisimple` using `Module.End.isSemisimple_of_squarefree_aeval_eq_zero hs.squarefree h0`. Use `⟨?_, fun z hz => (hroot z).2 hz⟩` and prove the remaining obligations. Use `set s := f.roots.toFinset`. Set `N : s → Submodule Ω V` to `fun z => T.eigenspace z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hind : iSupIndep N` using `iSupIndep.comp (Module.End.eigenspaces_iSupIndep T) Subtype.val_injective`. Establish `htop : ⨆ z, N z = ⊤`. Establish `h1` using `Module.End.iSup_maxGenEigenspace_eq_top T`. Simplify using `only [hss.isFinitelySemisimple.maxGenEigenspace_eq_eigenspace] at h1`. Rewrite using `[eq_top_iff, ← h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `iSup_le fun μ => ?_` and prove the remaining obligations. Distinguish the cases in `hμ : μ ∈ s`. Conclude with `le_iSup N ⟨μ, hμ⟩`. Establish `: ¬ T.HasEigenvalue μ`. Rewrite using `[hroot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify `hμ` using `[s]`. Rewrite `this` using `[Module.End.hasEigenvalue_iff, not_not]`. Simplify using `[this]`. Establish `hint` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top hind htop`. Rewrite using `[← (LinearEquiv.ofBijective (DirectSum.coeLinearMap N) hint).finrank_eq, Module.finrank_directSum]`.
-
-Conclude with `(Finset.sum_coe_sort s (fun z => Module.finrank Ω (T.eigenspace z))).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eigenspaces_of_separable_minpoly
     (Ω V : Type) [Field Ω] [IsAlgClosed Ω] [DecidableEq Ω] [AddCommGroup V] [Module Ω V]

@@ -8,7 +8,7 @@ section
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory
 /- English proof (translation)
-Introduce `ar cm we hm cd cw hf cl ce fd sw` and use `have c := GlobalTheory.DiscreteSeriesConsequences.of_classification cl have u : GlobalTheory.Published.DiscreteSeriesUpqUnique := GlobalTheory.Published.discreteSeriesUpqUnique_of_classification cl have d := GlobalTheory.discreteSeries_three_of_hypotheses ce c.2.2.2.2 u ⟨ar.rayCl …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compatibleSystem_hypotheses_of_localInputs : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.CMCurveGoodOutsidePrimeSt → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCoverExists → GlobalTheory.Published.FormalDegreeCompactDual → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → _root_.GlobalTheory.Mem.Top.Bl.HypAAlt :=
 fun ar cm we hm cd cw hf cl ce fd sw =>
@@ -25,7 +25,7 @@ section
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs | exact _root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs | (intros; apply _root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.compatibleSystem_member_hypotheses : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.CMCurveGoodOutsidePrimeSt → GlobalTheory.Published.WeberRayFieldSt → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCoverExists → GlobalTheory.Published.FormalDegreeCompactDual → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → _root_.GlobalTheory.Mem.Top.Bl.HypAAlt := by
   first | exact @_root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs | exact _root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs | (intros; apply _root_.GlobalTheory.compatibleSystem_hypotheses_of_localInputs <;> assumption)

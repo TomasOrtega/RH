@@ -11,23 +11,21 @@ noncomputable section
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv ξ`. Establish `hF` using `GlobalTheory.T.besselForm_coeff_product_fubini_integrable k r σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv v hv`. Take `⟨hz, hT, hπ, hHaarS, _⟩` from `hSide`. Establish `: SigmaFinite μS` using `hHaarS.1`. Establish `: SigmaFinite μG` using `hStd.2.2.2.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, hPiB, hPiC, -⟩` from `GlobalTheory.T.besselSubgroupRepTwisted_isUnitaryRep k r z c π hz hT hπ`. Establish `hS : IsClosedSub k r (Sset k r z)` using `(closedSub_groups k r z hz hT).2.2.2.1`. Use `set T : Set (Mt k r) := {x | (Matrix.of x : Mat k r) ∈ Sset k r z} with hTdef`. Establish `hof : Continuous (fun x : Mt k r => (Matrix.of x : Mat k r))` using `continuous_id`. Establish `hTm : MeasurableSet T` using `(hS.2.1.preimage hof).measurableSet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haeT : ∀ᵐ x ∂μS, x ∈ T` using `ae_iff.2 hHaarS.2.2.1`. Establish `hinv : ContinuousOn (fun x : Mt k r => (Matrix.of x : Mat k r)⁻¹) T`. Introduce `x hx`. Establish `hg : (Matrix.of x : Mat k r)ᴴ * Hpk k r * (Matrix.of x : Mat k r) = Hpk k r` using `hS.1 hx`. Establish `hH` using `Formalism.FourierDecayAlt.P.B2x2.hpk_unit k r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : IsUnit (Matrix.of x : Mat k r).det`. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hg`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hH.ne_zero h1.symm`. Establish `hc : ContinuousAt Ring.inverse (Matrix.of x : Mat k r).det`. Simplify using `using NormedRing.inverse_continuousAt hdet.unit`. Conclude with `((continuousAt_matrix_inv _ hc).comp hof.continuousAt).continuousWithinAt`. Establish `hmaps : Set.MapsTo (fun x : Mt k r => (Matrix.of x : Mat k r)⁻¹) T (Sset k r z)` using `fun x hx => hS.2.2.2.2 _ hx`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : ContinuousOn (fun x : Mt k r => ⟪PiS (psiGen k r z c) π (Matrix.of x : Mat k r)⁻¹ ξ, ξ⟫_ℂ) T` using `((hPiC.comp hinv hmaps).clm_apply continuousOn_const).inner continuousOn_const`. Establish `hgm : AEStronglyMeasurable (fun x : Mt k r => ⟪PiS (psiGen k r z c) π (Matrix.of x : Mat k r)⁻¹ ξ, ξ⟫_ℂ) μS`. Establish `h1` using `hgc.aestronglyMeasurable (μ := μS) hTm`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem haeT]`. Then use the resulting hypothesis. Establish `hbd : ∀ x ∈ T, ‖⟪PiS (psiGen k r z c) π (Matrix.of x : Mat k r)⁻¹ ξ, ξ⟫_ℂ‖ ≤ ‖ξ‖ * ‖ξ‖`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `x hx`. Establish `h1` using `(hPiB _ (hmaps hx)).1`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `haeP : ∀ᵐ p ∂(μG.prod μS), p.2 ∈ T`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[ae_iff]`. Establish `h1 : {p : Mt k r × Mt k r | ¬ p.2 ∈ T} = Set.univ ×ˢ {x | ¬ x ∈ T}`. Use extensionality with `p`. Simplify using the standard rewrite rules. Rewrite using `[h1, Measure.prod_prod, ae_iff.1 haeT, mul_zero]`.
-
-Use `hF.mul_bdd (c := ‖ξ‖ * ‖ξ‖) (hgm.comp_quasiMeasurePreserving Measure.quasiMeasurePreserving_snd) ?_` and prove the remaining obligations. Use `filter_upwards [haeP] with p hp`. Conclude with `hbd p.2 hp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem prod_integrand_integrable : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] [CompleteSpace Wp] (σ : Mat k r → (H →L[ℂ] H)) (w : H) (a : ℝ) (μG : Measure (Mt k r)) (d : ℝ) (z : Fin (2 * r + k + 1) → ℂ) (c : Fin r → ℂ) (π : Mat k r → (Wp →L[ℂ] Wp)) (μS : Measure (Mt k r)), Std σ w a μG d → Side z π μS → ∀ u ∈ DD σ w, ∀ u₁ ∈ DD σ w, ∀ v ∈ DD σ w, ∀ ξ : Wp, Integrable (fun p : Mt k r × Mt k r => coef σ u v (Matrix.of p.1) * star (coef σ u₁ v (Matrix.of p.2 * Matrix.of p.1)) * ⟪PiS (psiGen k r z c) π (Matrix.of p.2)⁻¹ ξ, ξ⟫_ℂ) (μG.prod μS) := by
   intro k r H _ _ _ Wp _ _ _ _ σ w a μG d z c π μS hStd hSide u hu u₁ hu₁ v hv ξ

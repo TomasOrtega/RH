@@ -50,7 +50,7 @@ def liftCorrectionSum [NeZero n] (d : ℕ) : W.DD T :=
 variable {W T s₁ σ yv zv}
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x => (letE (i + 1) : LetA O n) • x) hcoc`. Simplify using `only [smul_sub] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[frobenius_letter_shift, h]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cocycle_relation_on_letter (hcoc : W.γ T yv - yv = W.φD T zv - zv) (i : ZMod n) :
     (letE (i + 1) : LetA O n) • W.γ T yv = (letE (i + 1) : LetA O n) • yv +
@@ -62,7 +62,7 @@ theorem cocycle_relation_on_letter (hcoc : W.γ T yv - yv = W.φD T zv - zv) (i 
   abel
 
 /- English proof (translation)
-Establish `hc` using `cocycle_relation_on_letter (W := W) (T := T) hcoc c`. Unfold `gammaDefectOfLiftCorrection liftCorrection gammaDefectOfLetterLift`. Simplify using `only [map_add, map_sub, map_smul, gamma_letter_smul, gamma_frobenius_comm, hc]`. Simplify using `only [smul_add, smul_sub, smul_smul, ← pow_add, add_comm σ s₁]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cocycleXi_eq (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c : ZMod n) :
     gammaDefectOfLiftCorrection W T s₁ σ yv zv ms t c = ((PD.p : ℕ) : O) ^ σ • W.φD T (gammaDefectOfLetterLift W T s₁ zv ms c) -
@@ -74,9 +74,9 @@ theorem cocycleXi_eq (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c : ZMod n) :
   abel
 
 /- English proof (translation)
-Establish `hc` using `cocycle_relation_on_letter (W := W) (T := T) hcoc (c - 1)`. Rewrite `hc` using `[sub_add_cancel]`. Establish `hl : W.φD T ((letE (c - 2 + 1) : LetA O n) • zv) = (letE c : LetA O n) • W.φD T zv`. Rewrite using `[frobenius_letter_shift, show c - 2 + 1 + 1 = c by ring]`. Establish `hl' : W.φD T ((letE (c - 1) : LetA O n) • zv) = (letE c : LetA O n) • W.φD T zv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frobenius_letter_shift, sub_add_cancel]`. Unfold `frobeniusShiftDefectOfLiftCorrection gammaDefectOfLiftCorrection gammaDefectOfLetterLift`. Simplify using `only [map_add, map_sub, map_smul, gamma_letter_smul, gamma_frobenius_comm, hc, hl, hl']`. Simplify using `only [smul_add, smul_sub, smul_smul, ← pow_add, add_comm σ s₁]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem gamma_sub_cocycleW (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c : ZMod n) :
     W.γ T (frobeniusShiftDefectOfLiftCorrection W T s₁ σ yv ms t c) - frobeniusShiftDefectOfLiftCorrection W T s₁ σ yv ms t c =
@@ -94,7 +94,7 @@ theorem gamma_sub_cocycleW (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c : ZMod n
   abel
 
 /- English proof (translation)
-Unfold `frobeniusSquareDefectOfLiftCorrection frobeniusShiftDefectOfLiftCorrection liftCorrection`. Simplify using `only [map_add, map_sub, map_smul, smul_add]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem cocycleY_eq_frobenius_add (c : ZMod n) :
     frobeniusSquareDefectOfLiftCorrection W T s₁ σ yv ms t c = W.φD T (frobeniusShiftDefectOfLiftCorrection W T s₁ σ yv ms t c) + t c := by
@@ -103,7 +103,7 @@ theorem cocycleY_eq_frobenius_add (c : ZMod n) :
   abel
 
 /- English proof (translation)
-Rewrite using `[cocycleY_eq_frobenius_add, cocycleXi_eq ms t hcoc c]`. Establish `h` using `congrArg (W.φD T) (gamma_sub_cocycleW (s₁ := s₁) (σ := σ) (ms := ms) (t := t) hcoc c)`. Simplify using `only [map_add, map_sub, map_smul, gamma_frobenius_comm] at h ⊢`. Rewrite using `[show ∀ a b e : W.DD T, a - (b - e) = (a - b) + e from fun a b e => by abel, ← h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem gamma_sub_cocycle_component (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c : ZMod n) :
     W.γ T (frobeniusSquareDefectOfLiftCorrection W T s₁ σ yv ms t c) - frobeniusSquareDefectOfLiftCorrection W T s₁ σ yv ms t c =
@@ -115,13 +115,13 @@ theorem gamma_sub_cocycle_component (hcoc : W.γ T yv - yv = W.φD T zv - zv) (c
   abel
 
 /- English proof (translation)
-Establish `hy : yv = ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, ((letE (c + 1) : LetA O n) • yv + (letE (c + 2) : LetA O n) • yv)` using `by conv_lhs => rw [← sum_letter_idempotents_smul W T yv]`. Conclude with `sum_eq_sum_evens_pairs hn d (fun i => (letE i : LetA O n) • yv)`. Establish `key : ((PD.p : ℕ) : O) ^ (s₁ + σ) • yv = ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, (((PD.p : ℕ) : O) ^ (s₁ + σ) • ((letE (c + 1) : LetA O n) • yv) + ((PD.p : ℕ) : O) ^ (s₁ + σ) • ((letE (c + 2) : LetA O n) • yv))` using `by conv_lhs => rw [hy]`. Rewrite using `[Finset.smul_sum]`. Simplify using `only [smul_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, W.φD T (W.φD T (liftCorrection W T s₁ σ yv ms t (c - 2))) = ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, W.φD T (W.φD T (liftCorrection W T s₁ σ yv ms t c))` using `sum_evens_shift_sub_two hn d (fun c => W.φD T (W.φD T (liftCorrection W T s₁ σ yv ms t c)))`. Establish `h3 : ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, ((PD.p : ℕ) : O) ^ (s₁ + σ) • W.φD T ((letE c : LetA O n) • yv) = ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, ((PD.p : ℕ) : O) ^ (s₁ + σ) • W.φD T ((letE (c + 2) : LetA O n) • yv)` using `(sum_evens_shift_add_two hn d (fun c => ((PD.p : ℕ) : O) ^ (s₁ + σ) • W.φD T ((letE c : LetA O n) • yv))).symm`. Establish `eY : ∀ c, frobeniusSquareDefectOfLiftCorrection W T s₁ σ yv ms t c = ((PD.p : ℕ) : O) ^ (s₁ + σ) • ((letE (c + 1) : LetA O n) • yv) + ((PD.p : ℕ) : O) ^ (s₁ + σ) • W.φD T ((letE c : LetA O n) • yv) + W.φD T (W.φD T (liftCorrection W T s₁ σ yv ms t (c - 2))) - liftCorrection W T s …`. Introduce `c`. Unfold `frobeniusSquareDefectOfLiftCorrection`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Rewrite using `[Finset.sum_congr rfl (fun c _ => eY c)]`. Simplify using `only [Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Rewrite using `[h2, h3, key]`. Unfold `liftCorrectionSum`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Simplify using `only [map_add, map_smul, Finset.sum_add_distrib]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem first_component_sum_eq [NeZero n] (hn : Even n) (d : ℕ) :
     ((PD.p : ℕ) : O) ^ (s₁ + σ) • yv +
@@ -160,11 +160,11 @@ theorem first_component_sum_eq [NeZero n] (hn : Even n) (d : ℕ) :
   abel
 
 /- English proof (translation)
-Establish `hz : zv = ∑ c ∈ Formalism.MainNotions.RamifiedCoefficientChains.S9.evens n d, ((letE (c + 1) : LetA O n) • zv + (letE (c + 2) : LetA O n) • zv)` using `by conv_lhs => rw [← sum_letter_idempotents_smul W T zv]`. Conclude with `sum_eq_sum_evens_pairs hn d (fun i => (letE i : LetA O n) • zv)`. Establish `hc : ∀ c : ZMod n, (letE (c + 2) : LetA O n) • W.γ T yv = (letE (c + 2) : LetA O n) • yv + W.φD T ((letE (c + 1) : LetA O n) • zv) - (letE (c + 2) : LetA O n) • zv`. Introduce `c`. Use `cocycle_relation_on_letter (W := W) (T := T) hcoc (c + 1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[show c + 1 + 1 = c + 2 by ring]`. Then use the resulting hypothesis. Unfold `gammaDefectOfLiftCorrection liftCorrectionSum`. Rewrite using `[map_sum, ← Finset.sum_sub_distrib]`. Use `conv_lhs => rw [hz]`. Rewrite using `[Finset.smul_sum, ← Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [map_add, map_sub, map_smul, gamma_letter_smul, gamma_frobenius_comm, hc, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem second_component_sum_eq [NeZero n] (hn : Even n) (d : ℕ) (hcoc : W.γ T yv - yv = W.φD T zv - zv) :
     ((PD.p : ℕ) : O) ^ (s₁ + σ) • zv +

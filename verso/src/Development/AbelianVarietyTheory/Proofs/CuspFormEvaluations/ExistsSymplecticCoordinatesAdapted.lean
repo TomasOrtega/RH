@@ -9,23 +9,23 @@ namespace GlobalTheory
 open Module Function in
 
 /- English proof (translation)
-Take `⟨r, v⟩` from `Submodule.basisOfPid (Module.Free.chooseBasis ℤ Λ) I`. Establish `htf : Module.IsTorsionFree ℤ (Λ ⧸ I)` using `(_root_.GlobalTheory.isTorsionFree_quotient_iff I).mpr hsat`. Establish `hle : I ≤ ω.orthogonal I` using `fun x hx => (LinearMap.BilinForm.mem_orthogonal_iff).mpr fun y hy => hiso y hy x hx`. Take `⟨g, b, hb, hbv⟩` from `_root_.GlobalTheory.exists_isSymplecticBasis_extend hω hp htf hle v`. Use `set e : Fin r ⊕ Fin g ≃ Fin (r + g) := finSumFinEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set b' := b.reindex (e.sumCongr e) with hb'`. Establish `hsymp : _root_.GlobalTheory.IsSymplecticBasis ω b'` using `hb.reindex e`. Establish `hb'v : ∀ i, b' (Sum.inl (e (Sum.inl i))) = (v i : Λ)`. Introduce `i`. Rewrite using `[hb', Module.Basis.reindex_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `[hbv]`. Take `⟨u, hu⟩ : IsUnit ε` from `Int.isUnit_iff.mpr hε`. Set `D : (Fin (r + g) ⊕ Fin (r + g) → ℤ) ≃ₗ[ℤ] (Fin (r + g) ⊕ Fin (r + g) → ℤ)` to `LinearEquiv.piCongrRight fun i => LinearEquiv.smulOfUnit (Sum.elim (fun _ => 1) (fun _ => u) i)`. Establish `hD : ∀ a i, D a i = Sum.elim (fun _ => (1 : ℤ)) (fun _ => ε) i * a i`. Introduce `a i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases i with i | i <;> change (_ : ℤˣ) • a _ = _ <;> simp [Units.smul_def, hu]`. Use `⟨r + g, D.trans b'.equivFun.symm, Finset.univ.image fun i => e (Sum.inl i), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a c`. Rewrite using `[hsymp.apply_eq_sum hω]`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.omegaStd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, hD, Sum.elim_inl, Sum.elim_inr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan : Submodule.span ℤ (Set.range fun i => (v i : Λ)) = I`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `congrArg (Submodule.map I.subtype) v.span_eq`. Rewrite `h` using `[Submodule.map_span, Submodule.map_subtype_top, ← Set.range_comp]`. Conclude with `h`. Establish `hsingle : ∀ k, D (Pi.single (Sum.inl k) 1) = Pi.single (Sum.inl k) 1`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hD]`. Apply the tactic sequence `rcases i with i | i <;> simp [Pi.single_apply]`. Rewrite using `[← hspan]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_image, Finset.coe_image, Finset.coe_univ, Set.image_univ, Set.mem_range, LinearEquiv.trans_apply, hsingle, _root_.Basis.equivFun_symm_single]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `⟨e (Sum.inl i), ⟨i, rfl⟩, hb'v i⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨k, ⟨i, rfl⟩, rfl⟩`. Conclude with `⟨i, (hb'v i).symm⟩`. Rewrite using `[Module.finrank_eq_card_basis b']`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_symplectic_coordinates_adapted {Λ : Type*} [AddCommGroup Λ] [Module.Free ℤ Λ]
     [Module.Finite ℤ Λ] {ω : LinearMap.BilinForm ℤ Λ} (hω : ω.IsAlt) (hp : Bijective ω)

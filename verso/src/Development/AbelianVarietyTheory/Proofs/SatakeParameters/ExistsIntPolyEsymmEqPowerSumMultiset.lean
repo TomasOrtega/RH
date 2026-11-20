@@ -6,17 +6,15 @@ namespace GlobalTheory.PowerSumPoly
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `a n _`. Take `⟨Q, hQ⟩` from `esymmAlgHom_surjective ℤ (σ := Fin a) (n := a) (by simp) ⟨psum (Fin a) ℤ n, psum_isSymmetric (Fin a) ℤ n⟩`. Establish `hQ' : aeval (fun i : Fin a => esymm (Fin a) ℤ (i + 1)) Q = psum (Fin a) ℤ n`. Rewrite using `[← esymmAlgHom_apply, hQ]`. Use `⟨rename Fin.succ Q, fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set f : Fin a → ℂ := fun i => s.toList[(i : ℕ)]'(by simp [hs]) with hf`. Establish `hsf : (Finset.univ.val.map f) = s`. Rewrite using `[Fin.univ_val_map]`. Use `conv_rhs => rw [← Multiset.coe_toList s]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `List.ext_getElem (by simp [hs])` to reduce the goal to its premises. Introduce `i h1 h2`. Simplify using `[f]`. Establish `key : aeval f (aeval (fun i : Fin a => esymm (Fin a) ℤ (i + 1)) Q) = aeval (fun i : Fin a => aeval f (esymm (Fin a) ℤ (i + 1))) Q`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hQ']`. Rewrite using `[aeval_rename]`. Establish `lhs : (fun j : Fin (a + 1) => s.esymm j) ∘ Fin.succ = fun i : Fin a => aeval f (esymm (Fin a) ℤ (i + 1))`. Use function extensionality and compare the values at `i`. Simplify using `[aeval_esymm_eq_multiset_esymm, hsf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lhs, ← key]`. Rewrite using `[psum, map_sum]`. Simplify using `only [map_pow, aeval_X]`. Use `conv_rhs => rw [← hsf]`. Simplify using `[Multiset.map_map, Finset.sum_eq_multiset_sum]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_intPoly_psum_eq : ∀ a n : ℕ, 1 ≤ n → ∃ P : MvPolynomial (Fin (a + 1)) ℤ, ∀ s : Multiset ℂ,
     Multiset.card s = a → MvPolynomial.aeval (fun j : Fin (a + 1) => s.esymm j) P = (s.map (· ^ n)).sum := by

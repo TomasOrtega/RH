@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.Degree
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j i`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 -/
 theorem basisMat_transpose_eq (W : Submodule E (Fin n → E)) :
     ((basisMat W)ᵀ : Fin (Module.finrank E W) → Fin n → E) =
@@ -20,7 +20,7 @@ theorem basisMat_transpose_eq (W : Submodule E (Fin n → E)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[basisMat_transpose_eq]`. Conclude with `(Module.finBasis E W).linearIndependent.map' W.subtype W.ker_subtype`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem basisMat_linearIndependent (W : Submodule E (Fin n → E)) :
     LinearIndependent E (basisMat W)ᵀ := by
@@ -28,7 +28,7 @@ theorem basisMat_linearIndependent (W : Submodule E (Fin n → E)) :
   exact (Module.finBasis E W).linearIndependent.map' W.subtype W.ker_subtype
 
 /- English proof (translation)
-Rewrite using `[basisMat_transpose_eq, Set.range_comp, ← Submodule.map_span, (Module.finBasis E W).span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem span_basisMat (W : Submodule E (Fin n → E)) :
     Submodule.span E (Set.range (basisMat W)ᵀ) = W := by
@@ -36,7 +36,7 @@ theorem span_basisMat (W : Submodule E (Fin n → E)) :
     Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mul_transpose_apply {κ : Type} [Fintype κ] (g : GL (Fin n) E) (M : Matrix (Fin n) κ E) (j : κ) :
     (g.val * M)ᵀ j = Matrix.toLin' g.val (Mᵀ j) := by
@@ -44,7 +44,7 @@ theorem mul_transpose_apply {κ : Type} [Fintype κ] (g : GL (Fin n) E) (M : Mat
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot.2 fun a b hab => ?_` and prove the remaining obligations. Establish `h` using `congrArg (Matrix.toLin' (g⁻¹ : GL (Fin n) E).val) hab`. Simplify `h` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_toLin'_eq_bot (g : GL (Fin n) E) : LinearMap.ker (Matrix.toLin' g.val) = ⊥ := by
   refine LinearMap.ker_eq_bot.2 fun a b hab => ?_
@@ -52,7 +52,7 @@ theorem ker_toLin'_eq_bot (g : GL (Fin n) E) : LinearMap.ker (Matrix.toLin' g.va
   simpa [Matrix.toLin'_apply, Matrix.mulVec_mulVec] using h
 
 /- English proof (translation)
-Establish `hr : (g.val * M).map (algebraMap E (Ad E)) = (ratGL E n g).val * M.map (algebraMap E (Ad E))`. Rewrite using `[Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[hr, _root_.mul_inv_rev, Units.val_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (ratGL E n g)⁻¹.val, Units.inv_mul, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_rat {κ : Type} [Fintype κ] (x : GA E n) (g : GL (Fin n) E) (M : Matrix (Fin n) κ E) :
     ((ratGL E n g * x)⁻¹ : GA E n).val * (g.val * M).map (algebraMap E (Ad E)) =
@@ -65,18 +65,18 @@ theorem frame_rat {κ : Type} [Fintype κ] (x : GA E n) (g : GL (Fin n) E) (M : 
     Units.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [degG, frame_rat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem degG_rat {κ : Type} [Fintype κ] [DecidableEq κ] (x : GA E n) (g : GL (Fin n) E)
     (M : Matrix (Fin n) κ E) : degG (ratGL E n g * x) (g.val * M) = degG x M := by
   simp only [degG, frame_rat]
 
 /- English proof (translation)
-Introduce `h E _ _ _ n x g W`. Establish `hli : LinearIndependent E (g.val * basisMat W)ᵀ`. Establish `e : (fun j => (g.val * basisMat W)ᵀ j) = Matrix.toLin' g.val ∘ fun j => (basisMat W)ᵀ j`. Use function extensionality and compare the values at `(mul_transpose_apply g (basisMat W))`. Establish `l : LinearIndependent E (fun j => (g.val * basisMat W)ᵀ j)` using `e ▸ (basisMat_linearIndependent W).map' _ (ker_toLin'_eq_bot g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `l`. Establish `hspan : Submodule.span E (Set.range (g.val * basisMat W)ᵀ) = img g W`. Establish `e : Set.range (g.val * basisMat W)ᵀ = Matrix.toLin' g.val '' Set.range (basisMat W)ᵀ` using `Set.ext fun y => ⟨fun ⟨j, hj⟩ => ⟨(basisMat W)ᵀ j, ⟨j, rfl⟩, (mul_transpose_apply g (basisMat W) j).symm.trans hj⟩, fun ⟨_, ⟨j, hj⟩, hy⟩ => ⟨j, (mul_transpose_apply g (basisMat W) j).trans (hj ▸ hy)⟩⟩`. Rewrite using `[e, ← Submodule.map_span, span_basisMat]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `key` using `h E n (Fin (Module.finrank E W)) (ratGL E n g * x) (g.val * basisMat W) hli`. Rewrite `key` using `[hspan]`. Rewrite using `[← key, degG_rat]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem degRat_of_degBasisG : DegBasisG → DegRat := by
   intro h E _ _ _ n x g W

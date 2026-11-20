@@ -35,7 +35,7 @@ variable {o : Type} [CommRing o] {g N' : ℕ} {J : Type} {b : TBase o (N' ^ 2)}
   {Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ} {κ : ℕ} {R : Type} [CommRing R] {β : o →+* R} {v : Ix g (N' ^ 2) → R}
 
 /- English proof (translation)
-Take `⟨q₁, hq₁, rfl⟩` from `h.loc hf`. Conclude with `GlobalTheory.ZM.NearBuild.nearC_of_loc h2 o g N' J b Mat κ R β v f q₁ (isPrime_of_mem hq₁.2) (H q₁ hq₁)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nearC_of_den_loc (h2 : Out.Laws2) {q₀ : Ideal R} (h : Den b Mat κ β v q₀) {f : R} (hf : f ∉ q₀)
     (H : ∀ q₁, Den b Mat κ ((loc f).comp β) (fun a => loc f (v a)) q₁ →
@@ -44,7 +44,7 @@ theorem nearC_of_den_loc (h2 : Out.Laws2) {q₀ : Ideal R} (h : Den b Mat κ β 
   exact GlobalTheory.ZM.NearBuild.nearC_of_loc h2 o g N' J b Mat κ R β v f q₁ (isPrime_of_mem hq₁.2) (H q₁ hq₁)
 
 /- English proof (translation)
-Use `congrArg (Ideal.map ρ) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem span_map {R' I : Type} [CommRing R'] (ρ : R →+* R') {w : I → R} (h : Ideal.span (Set.range w) = ⊤) :
     Ideal.span (Set.range fun a => ρ (w a)) = ⊤ := by
@@ -52,14 +52,14 @@ theorem span_map {R' I : Type} [CommRing R'] (ρ : R →+* R') {w : I → R} (h 
   rwa [Ideal.map_span, Ideal.map_top, ← Set.range_comp] at this
 
 /- English proof (translation)
-The claim follows from `Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, rfl⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem span_of_unit {R' I : Type} [CommRing R'] {w : I → R'} (a : I) (h : IsUnit (w a)) :
     Ideal.span (Set.range w) = ⊤ :=
   Ideal.eq_top_of_isUnit_mem _ (Ideal.subset_span ⟨a, rfl⟩) h
 
 /- English proof (translation)
-The claim follows from `isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit f)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_loc {f a : R} (h : a ∣ f) : IsUnit (loc f a) :=
   isUnit_of_dvd_unit (map_dvd _ h) (IsLocalization.Away.algebraMap_isUnit f)
@@ -71,7 +71,7 @@ variable (h1 : Out.Laws) (h2 : Out.Laws2) {g : ℕ} {J : Type} {Mat : J → Matr
 include h1 h2 hn hodd hj
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `GlobalTheory.ZM.NearBuild.exists_polFam_of_grpFam h1 h2 o g _ J b Mat κ R β v (n ^ 2) A M act Q (pow_ne_zero _ hn.ne_zero) hodd.pow (pow_dvd_pow n hj) h.1 hA`. Take `⟨f, hf, hK⟩` from `GlobalTheory.ZM.NearBuild.kTriv_near_good_prime o g _ J b Mat κ R β v A L act Q q₀ h.2 hL`. Take `⟨act', Q', hL'⟩` from `GlobalTheory.ZM.NearBuild.polFam_baseChange o g _ J b Mat κ R β v A L act Q _ (loc f) hL`. Conclude with `nearC_of_den_loc h2 h hf fun q₁ hq₁ => GlobalTheory.ZM.NearBuild.nearC_of_polFam_of_kTriv h1 h2 g n j J hn hodd hj o b Mat κ _ _ _ _ _ act' Q' q₁ hq₁ (span_map _ hv) hL' hK`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nearC_of_grpFam {R : Type} [CommRing R] [IsNoetherianRing R] [IsReduced R] {β : o →+* R}
     {v : Ix g ((n ^ j) ^ 2) → R} {A : Over (Sp R)} [GrpObj A] {M : LB A.left} {act : J → (A ⟶ A)}
@@ -85,21 +85,19 @@ theorem nearC_of_grpFam {R : Type} [CommRing R] [IsNoetherianRing R] [IsReduced 
     GlobalTheory.ZM.NearBuild.nearC_of_polFam_of_kTriv h1 h2 g n j J hn hodd hj o b Mat κ _ _ _ _ _ act' Q' q₁ hq₁ (span_map _ hv) hL' hK
 
 /- English proof (translation)
-Use `Fintype.ofFinite J` as an intermediate fact. Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. Establish `hs' : Smooth Z.hom` using `SmoothOfRelativeDimension.smooth g _`. Establish `hq` using `isPrime_of_mem h.2`. Take `⟨f₁, hf₁, hmu⟩` from `hadd R β v Z M th sc q₀ h hZ hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose f₂ hf₂ hF using fun i => hend R β v Z M th sc q₀ i h hZ hs'`. Choose the witnesses or unpack the hypotheses as in `⟨f₃, hf₃, hc⟩ : ∃ f, f ∉ q₀ ∧ GeometricallyConnected (pullback.snd Z.hom (spMap (loc f))) := by`. Take `⟨K, _, _, x, s, t, rfl, ht⟩` from `mem_objPrimes.1 h.2`. Take `⟨φ, hφ⟩` from `hZ.2.2 K x s t ht`. Take `⟨I, p, hI, -⟩` from `hZ.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `GlobalTheory.ConnSpread.exists_geometricallyConnected_away_of_fibre R _ Z.hom K x (GlobalTheory.ZM.projRep_projective_ample R _ I Z M th hI).1 hs' ?_` and prove the remaining obligations. Use `t.ab.geomConnected` as an intermediate fact. Use `MorphismProperty.of_isPullback (P := @GeometricallyConnected) (IsPullback.of_horiz_isIso (fst := hφ.1.isoPullback.inv) (g := 𝟙 _) ⟨?_⟩) this` and prove the remaining obligations. Rewrite using `[hφ.1.isoPullback_inv_snd, Category.comp_id]`. Set `f` to `f₁ * f₃ * ∏ i, f₂ i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hf : f ∉ q₀` using `fun hh => by`. Break down `hq.mem_or_mem hh with hh | hh` into its components or cases. Conclude with `(hq.mem_or_mem hh).elim hf₁ hf₃`. Take `⟨i, -, hi⟩` from `Ideal.IsPrime.prod_mem_iff.1 hh`. Conclude with `hf₂ i hi`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `Z' : Over (Sp (Localization.Away f))` to `Over.mk (pullback.snd Z.hom (spMap (loc f)))`. Establish `hpb : IsPullback (pullback.fst Z.hom (spMap (loc f))) Z'.hom Z.hom (spMap (loc f))` using `IsPullback.of_hasPullback _ _`. Take `⟨mu, hmu⟩` from `hmu _ (loc f) (isUnit_loc ((dvd_mul_right f₁ f₃).mul_right _)) Z' _ hpb`. Use `choose F hF using fun i => hF i _ (loc f) (isUnit_loc ((Finset.dvd_prod_of_mem f₂ (Finset.mem_univ i)).mul_left _)) Z' _ hpb`. Take `⟨th', sc', hZ', hfib⟩` from `GlobalTheory.ZM.NearBuild.fam_baseChange o g _ J b Mat κ R β v _ Z M th sc _ (loc f) Z' _ hpb hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs₁ : SmoothOfRelativeDimension g Z'.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hpb hs`. Establish `hc₁ : GeometricallyConnected Z'.hom`. Establish `hu : IsUnit (loc f f₃)` using `isUnit_loc ((dvd_mul_left f₃ f₁).mul_right _)`. Establish `e : spMap (loc f) = spMap (IsLocalization.Away.lift f₃ hu : Localization.Away f₃ →+* _) ≫ spMap (loc f₃)`. Rewrite using `[← spMap_comp, IsLocalization.Away.lift_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpb' : IsPullback (pullback.fst Z.hom (spMap (loc f))) Z'.hom Z.hom (spMap (IsLocalization.Away.lift f₃ hu : Localization.Away f₃ →+* _) ≫ spMap (loc f₃))`. Rewrite using `[← e]`. Conclude with `hpb`. Establish `hp₃` using `IsPullback.of_hasPullback Z.hom (spMap (loc f₃))`. Use `IsPullback.of_right (h₁₁ := hp₃.lift _ _ (hpb'.w.trans (Category.assoc _ _ _).symm)) (by rw [IsPullback.lift_fst]; exact hpb') (hp₃.lift_snd _ _ _) hp₃` as an intermediate fact.
-
-Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyConnected) this hc`. Use `nearC_of_den_loc h2 h hf fun q₁ hq₁ => ?_` and prove the remaining obligations. Take `⟨_, hG⟩` from `GlobalTheory.ZM.NearBuild.grpFam_of_dense_fibres h1 h2 o g _ J b Mat κ _ _ _ _ Z' _ th' sc' mu F (pow_ne_zero _ hn.ne_zero) hq₁.1 hZ' hs₁ hc₁ (fun K _ _ x s t φ ht hφ => hmu K x s t φ ((good_comp _ _ _).1 ht) (hfib K x s t φ hφ) hφ.1.w) (fun i K _ _ x s t φ ht hφ => hF i K x s t …`. Conclude with `nearC_of_grpFam h1 h2 hn hodd hj hq₁ (span_map _ hv) hG`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nearC_of_smooth [Finite J]
     (hadd : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R) (Z : Over (Sp R)) (M : LB Z.left) (th : Ix g ((n ^ j) ^ 2) → M.Sec) (sc : Ix g ((n ^ j) ^ 2) → (Out.baseOver (Sp R) ⟶ Z)) (q₀ : Ideal R), Den b Mat κ β v q₀ → Fam b Mat κ β v (n ^ 2) M th sc → Smooth Z.hom → ∃ f : R, f ∉ q₀ ∧ ∀ (R' : Type) [CommRing R'] (ρ : R →+* R'), IsUnit (ρ f) → ∀ (Z' : Over (Sp R')) (π : Z'.left ⟶ Z.left), IsPullback π Z'.hom Z.hom (spMap ρ) → ∃ mu : Z' ⊗ Z' ⟶ Z', AddOk b Mat κ β v (n ^ 2) M th sc ρ π mu)
@@ -160,9 +158,9 @@ theorem nearC_of_smooth [Finite J]
 omit h1 hodd hj in
 
 /- English proof (translation)
-Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hs⟩ : ∃ f, f ∉ q₀ ∧ SmoothOfRelativeDimension g (pullback.snd Z.hom (spMap (loc f))) := by`. Take `⟨K, _, _, x, s, t, rfl, ht⟩` from `mem_objPrimes.1 h.2`. Take `⟨φ, hφ⟩` from `hZ.2.2 K x s t ht`. Take `⟨I, p, hI, -⟩` from `hZ.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ProperFlatNearFibre.exists_away_smoothOfRelativeDimension R _ Z.hom g K x (GlobalTheory.ZM.projRep_projective_ample R _ I Z M th hI).2.1 hZ.2.1 ?_` and prove the remaining obligations. Use `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback (IsPullback.of_horiz_isIso (fst := hφ.1.isoPullback.inv) (g := 𝟙 _) ⟨?_⟩) t.dim` and prove the remaining obligations. Rewrite using `[hφ.1.isoPullback_inv_snd, Category.comp_id]`. Take `⟨th', sc', hZ', -⟩` from `GlobalTheory.ZM.NearBuild.fam_baseChange o g _ J b Mat κ R β v _ Z M th sc _ (loc f) (Over.mk (pullback.snd Z.hom (spMap (loc f)))) _ (IsPullback.of_hasPullback _ _) hZ`. Conclude with `nearC_of_den_loc h2 h hf fun q₁ hq₁ => H hq₁ (span_map _ hv) hZ' hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nearC_of_fam
     (H : ∀ {R : Type} [CommRing R] [IsNoetherianRing R] [IsReduced R] {β : o →+* R}
@@ -190,9 +188,9 @@ theorem nearC_of_fam
 omit h1 hodd hj in
 
 /- English proof (translation)
-Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. Take `⟨f, hf, Z, M, th, hrep, hfl, hfib⟩` from `GlobalTheory.ZM.NearCut.exists_away_flat_projRep R _ Hh (fun c => p (hh c)) Q d _ h.1 (fun q hq => by`. Take `⟨K, _, _, x, s, t, rfl, ht⟩` from `mem_objPrimes.1 hq`. Take `⟨σ, I, -, -, -, hc, -⟩` from `hD K x s t ht`. Conclude with `⟨K, inferInstance, x, I, rfl, hc⟩) q₀ h.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `nearC_of_den_loc h2 h hf fun q₁ hq₁ => ?_` and prove the remaining obligations. Take `⟨sc, hZ⟩` from `GlobalTheory.ZM.FamOf.exists_sections_fam o g _ J b Mat κ _ _ _ _ _ Hh hh Q d Z M th hq₁.1 (hD.comp (loc f)) (fun c => span_map _ (hp c)) hrep hfl hfib`. Conclude with `H hq₁ (span_map _ hv) hZ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nearC_of_unimodular
     (H : ∀ {R : Type} [CommRing R] [IsNoetherianRing R] [IsReduced R] {β : o →+* R}
@@ -216,19 +214,17 @@ theorem nearC_of_unimodular
 end
 
 /- English proof (translation)
-Introduce `h1 h2 g J _ Mat κ n hn hodd`. Take `⟨j₁, H₁⟩` from `GlobalTheory.T.exists_goodThetaObjectEmbeddingData h1 h2 g J Mat κ n hn hodd`. Take `⟨j₂, H₂⟩` from `GlobalTheory.T.exists_addition_morphism_thetaFamily_near_goodPrime h1 h2 g J Mat κ n hn hodd`. Take `⟨j₃, H₃⟩` from `GlobalTheory.T.exists_endomorphisms_extend_near_good_prime h1 h2 g J Mat κ n hn hodd`. Use `⟨j₁ + j₂ + j₃ + 2, fun j hj o _ b R _ _ _ β v hd q₀ hq₀ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : NeZero ((n ^ j) ^ 2) := ⟨pow_ne_zero _ (pow_ne_zero _ hn.ne_zero)⟩`. It suffices to establish `H : NearC b Mat κ β v q₀ by`. Take `⟨f, hf, t, ht, H⟩` from `H`. Conclude with `⟨f, t, hf, ht, fun K _ _ x t' k₁ k₂ => H K x _ t' ⟨rfl, k₁, k₂⟩⟩`. Take `⟨p, Hh, _, hh, Q, d, hD⟩` from `H₁ j (by omega) o b R β v`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq` using `isPrime_of_mem hq₀`. Choose the witnesses or unpack the hypotheses as in `⟨⟨a₀, ha₀⟩, hp⟩ : (∃ a, v a ∉ q₀) ∧ ∀ c, ∃ a, p c a ∉ q₀ := by`. Take `⟨K, _, _, x, s, t, rfl, ht⟩` from `mem_objPrimes.1 hq₀`. Prove the components needed by the constructor for the conclusion. Take `⟨c, hc⟩` from `GlobalTheory.coset_of_hasTh h1 h2 o g _ J b _ s t n K _ _ ⊥ hn.two_le (dvd_pow_self n (by omega)) ht.2.2 Ideal.isPrime_bot 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, hc⟩`. Introduce `c`. Take `⟨σ, I, -, hrep, -, -, hc⟩` from `hD K x s t ht`. Use `(hrep.2.1 K (RingHom.id K) _ _ (by` as an intermediate fact. Rewrite using `[← Over.comp_left, lift_fst]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(Spec.map_id _).symm) (hc c)).1`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Use `(Ideal.isPrime_bot (α := K)).ne_top (eq_top_iff.2 (this ▸ Ideal.span_le.2 ?_))` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `hne a`. Use `choose a ha using hp`. Establish `hf : v a₀ * ∏ c, p c (a c) ∉ q₀` using `fun hh => by`. Break down `hq.mem_or_mem hh with hh | hh` into its components or cases. Conclude with `ha₀ hh`.
-
-Take `⟨c, -, hc⟩` from `Ideal.IsPrime.prod_mem_iff.1 hh`. Conclude with `ha c hc`. Use `nearC_of_den_loc h2 ⟨hd, hq₀⟩ hf fun q₁ hq₁ => ?_` and prove the remaining obligations. Use `nearC_of_unimodular h2 hn (nearC_of_fam h2 hn (nearC_of_smooth h1 h2 hn hodd (by omega) (H₂ j (by omega) o b) (H₃ j (by omega) o b))) hq₁ (span_of_unit a₀ (isUnit_loc (dvd_mul_right _ _))) (fun c => span_of_unit (a c) (isUnit_loc ((Finset.dvd_prod_of_mem (fun c => p c (a c)) (Fin …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_tObj_near : Out.Laws → Out.Laws2 → ∀ (g : ℕ) (J : Type) [Finite J] (Mat : J → Matrix (Fin (2 * g)) (Fin (2 * g)) ℤ) (κ n : ℕ), n.Prime → Odd n → ∃ j₀ : ℕ, ∀ j ≥ j₀, ∀ (o : Type) [CommRing o] (b : TBase o ((n ^ j) ^ 2)) (R : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] (β : o →+* R) (v : Ix g ((n ^ j) ^ 2) → R), DenseP (objPrimes b Mat κ β v) → ∀ q₀ ∈ objPrimes b Mat κ β v, ∃ (f : R) (t : TObj g ((n ^ j) ^ 2) J b (spMap ((algebraMap R (Localization.Away f)).comp β))), f ∉ q₀ ∧ t.HasTh (𝟙 _) (fun a => (algebraMap R (Localization.Away f)) (v a)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (x : (Localization.Away f) →+* K) (t' : TObj g ((n ^ j) ^ 2) J b (spMap x ≫ spMap ((algebraMap R (Localization.Away f)).comp β))), t'.Shape Mat κ → t'.HasTh (𝟙 _) (fun a => x ((algebraMap R (Localization.Away f)) (v a))) → TMap t' t (spMap x) := by
   classical

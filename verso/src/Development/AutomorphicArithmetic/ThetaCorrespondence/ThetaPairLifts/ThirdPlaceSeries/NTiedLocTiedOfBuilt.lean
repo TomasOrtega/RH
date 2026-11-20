@@ -13,7 +13,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
   NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory.HeightCounting
 /- English proof (translation)
-Introduce `hL hcg D' b`. Conclude with `⟨⟨⟨⟩⟩, locTied_any D'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem nTied_locTied_of_built_alt : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists), _root_.GlobalTheory.HeightCounting.CgCmpAlt hL → ∀ (D' : D7) (b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL D'),
     Nonempty (_root_.GlobalTheory.HeightCounting.NTiedGPlaceholder D') ∧ Nonempty (Formalism.L2.LocTied D') := by

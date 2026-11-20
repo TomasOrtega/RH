@@ -24,7 +24,7 @@ def zmodTensorAct (U B : Type) [CommRing U] [CommRing B] [Algebra U B] (q : ℕ)
     | add z w hz hw => simp_all [map_add]
 
 /- English proof (translation)
-Simplify using `[zmodTensorAct]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem zmodTensorAct_tmul (U B : Type) [CommRing U] [CommRing B] [Algebra U B] (q : ℕ)
     (D : Type) [CommRing D] [Algebra U D] (act : Multiplicative (ZMod q) →* (D ≃ₐ[U] D))
@@ -32,17 +32,15 @@ Simplify using `[zmodTensorAct]`.
     zmodTensorAct U B q D act g (b ⊗ₜ x) = b ⊗ₜ act g x := by simp [zmodTensorAct]
 
 /- English proof (translation)
-Use `haveI : NeZero q := ⟨hq.ne'⟩`. Take `⟨h1, h2, h3, h4⟩` from `hD`. Use `⟨inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Use `set Φ := Algebra.TensorProduct.productMap (Pi.algHom U (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id U D)) (Pi.algHom U (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom)) with hΦ`. Use `set ΦB := Algebra.TensorProduct.productMap (Pi.algHom B (fun _ : Multiplicative (ZMod q) => B ⊗[U] D) (fun _ => AlgHom.id B (B ⊗[U] D))) (Pi.algHom B (fun _ : Multiplicative (ZMod q) => B ⊗[U] D) (fun g => (zmodTensorAct U B q D act g).toAlgHom)) with hΦB`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e1` to `TensorProduct.AlgebraTensorModule.distribBaseChange U B D D`. Set `L` to `(LinearEquiv.ofBijective Φ.toLinearMap h4).lTensor B`. Set `e2` to `TensorProduct.piRight U U B (fun _ : Multiplicative (ZMod q) => D)`. Establish `key : ∀ z, ΦB (e1 z) = e2 (L z)`. Introduce `z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `tmul x y`. Use function extensionality and compare the values at `g`. Simplify using `[e1, L, e2, hΦ, hΦB, Algebra.TensorProduct.productMap_apply_tmul]`. Consider the case `add w w' hw hw'`. Simplify using `only [TensorProduct.tmul_add, map_add, hw, hw']`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Establish `: (ΦB : _ → _) = e2 ∘ L ∘ e1.symm`. Use function extensionality and compare the values at `w`. Simplify using `using key (e1.symm w)`. Rewrite using `[this]`.
-
-Conclude with `e2.bijective.comp (L.bijective.comp e1.symm.bijective)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZModTorsor_tensorBase (U B : Type) [CommRing U] [CommRing B] [Algebra U B] (q : ℕ)
     (D : Type) [CommRing D] [Algebra U D] (act : Multiplicative (ZMod q) →* (D ≃ₐ[U] D))
@@ -81,7 +79,7 @@ theorem isZModTorsor_tensorBase (U B : Type) [CommRing U] [CommRing B] [Algebra 
   exact e2.bijective.comp (L.bijective.comp e1.symm.bijective)
 
 /- English proof (translation)
-Introduce `U B _ _ _ q D _ _ act hq hD` and use `⟨_, isZModTorsor_tensorBase U B q D act hq hD⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_isZModTorsor_tensorBase : ∀ (U B : Type) [CommRing U] [CommRing B] [Algebra U B] (q : ℕ) (D : Type) [CommRing D]
     [Algebra U D] (act : Multiplicative (ZMod q) →* (D ≃ₐ[U] D)), 0 < q →

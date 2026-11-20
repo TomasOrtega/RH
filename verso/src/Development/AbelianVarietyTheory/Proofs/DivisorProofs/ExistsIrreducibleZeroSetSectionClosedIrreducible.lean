@@ -14,25 +14,23 @@ noncomputable section
 namespace GlobalTheory.KrullZero
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_chart hN w`. Take `⟨V, hV, hwV, hle⟩` from `exists_isAffineOpen_mem_and_subset hk`. Establish `hle' : V ≤ N.U k` using `hle`. Use `set g : Γ(Y, V) := Y.presheaf.map (homOfLE hle').op (t.f k) with hg`. Establish `hbo : Y.basicOpen g = V ⊓ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, Scheme.basicOpen_res, ← GlobalTheory.nonzeroLocus_inf_chart, inf_comm _ (N.U k), ← inf_assoc, inf_eq_left.2 hle']`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP⟩ : ∃ P : PrimeSpectrum Γ(Y, V), hV.fromSpec P = w := by`. Establish `: w ∈ Set.range hV.fromSpec` using `by rw [hV.range_fromSpec]; exact hwV`. Conclude with `this`. Use `haveI : IsNoetherianRing Γ(Y, V) := IsLocallyNoetherian.component_noetherian ⟨V, hV⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmemb : ∀ Q : PrimeSpectrum Γ(Y, V), g ∈ Q.asIdeal ↔ hV.fromSpec Q ∉ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t`. Introduce `Q`. Establish `h1 : Q ∈ PrimeSpectrum.basicOpen g ↔ hV.fromSpec Q ∈ Y.basicOpen g`. Rewrite using `[← hV.fromSpec_preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : hV.fromSpec Q ∈ V`. Use `Set.mem_range_self (f := hV.fromSpec) Q` as an intermediate fact. Rewrite `this` using `[hV.range_fromSpec]`. Then use the resulting hypothesis. Rewrite `h1` using `[hbo]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hgQ hQ`. Conclude with `(PrimeSpectrum.mem_basicOpen _ _).1 (h1.2 ⟨h2, hQ⟩) hgQ`. Introduce `hQ`. Assume the negation of the conclusion as `hgQ`. Conclude with `hQ (h1.1 ((PrimeSpectrum.mem_basicOpen _ _).2 hgQ)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hgP : g ∈ P.asIdeal` using `(hmemb P).2 (hP ▸ hw)`. Establish `hmin : P.asIdeal ∈ (Ideal.span {g}).minimalPrimes`. Use `⟨⟨P.isPrime, (Ideal.span_singleton_le_iff_mem _).mpr hgP⟩, fun Q hQ hQP => ?_⟩` and prove the remaining obligations. Establish `hgQ : g ∈ Q` using `(Ideal.span_singleton_le_iff_mem _).mp hQ.2`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Q' : PrimeSpectrum Γ(Y, V)` to `⟨Q, hQ.1⟩`. Establish `hsp : Q' ⤳ P` using `(PrimeSpectrum.le_iff_specializes Q' P).1 hQP`. Establish `hsp' : hV.fromSpec Q' ⤳ w` using `hP ▸ hsp.map hV.fromSpec.continuous`. Establish `hneq : hV.fromSpec Q' ≠ w`. Rewrite using `[← hP]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `h`. Use `hV.fromSpec.isOpenEmbedding.injective h` as an intermediate fact. Conclude with `hne (by rw [← this])`. Establish `hlt : w < hV.fromSpec Q'` using `lt_of_le_not_ge (show w ≤ hV.fromSpec Q' from hsp') fun h => hneq (hsp'.antisymm h).eq`. Conclude with `(hmemb Q').1 hgQ (hgen _ hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hh : P.asIdeal.height ≤ 1` using `Ideal.height_le_one_of_isPrincipal_of_mem_minimalPrimes _ _ hmin`. Set `x : Spec Γ(Y, V)` to `P`. Establish `eS` using `(asIso (hV.fromSpec.stalkMap x) ≪≫ Spec.stalkIso Γ(Y, V) x).commRingCatIsoToRingEquiv`. Establish `hPh : (P.asIdeal.height : WithBot ℕ∞) = Order.coheight w`. Rewrite using `[← IsLocalization.AtPrime.ringKrullDim_eq_height P.asIdeal (Localization.AtPrime P.asIdeal), ← ringKrullDim_eq_of_ringEquiv eS, ← ringKrullDim_stalk_eq_coheight, hP]`.
-
-Establish `: ((Order.coheight w : ℕ∞) : WithBot ℕ∞) ≤ ((1 : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← hPh]`. Conclude with `hh` after adjusting the coercions. Conclude with `this` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem coheight_le_one {Y : Scheme.{0}} [IsLocallyNoetherian Y] {N : LB Y} (hN : N.IsLB) (t : N.Sec) (w : Y)
     (hw : w ∉ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus t)
@@ -94,33 +92,31 @@ namespace GlobalTheory.KrullZero
 open GlobalTheory.MixHt in
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX M s C hM hC hCc hmeet hnot`. Use `set Z := ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus s with hZ`. Establish `hamb : IsAmb p` using `isAmb_of_isArithVar hX`. Use `haveI : IsNoetherian X := hamb.isNoetherian`. Take `⟨η, hη⟩` from `QuasiSober.sober hC hCc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hηC : closure ({η} : Set X) = C` using `hη`. Set `i` to `cloι η`. Establish `hambY : IsAmb (i ≫ p)` using `hamb.sub i`. Use `haveI : IsNoetherian (clo η) := hambY.isNoetherian`. Establish `hgi : i (genericPoint (clo η)) = η` using `cloι_genericPoint η`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hWm : ∀ y : clo η, y ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (GlobalTheory.secPull s i) ↔ i y ∈ Z` using `fun y => by`. Rewrite using `[GlobalTheory.nonzeroLocus_secPull]`. Both sides reduce to the same expression. Establish `basic` using `hasDim_basic k X p hamb`. Establish `basicY` using `hasDim_basic k (clo η) (i ≫ p) hambY`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `basicY.1`. Take `⟨d, -, hd⟩` from `hm (genericPoint (clo η))`. Establish `hdY : topologicalKrullDim (clo η) = d` using `(basicY.2.2.2.2.2 (clo η) d).1 hd`. Establish `hdC : topologicalKrullDim C = d`. Establish `h` using `(basic.2.2.2.2.1 (clo η) i (genericPoint (clo η)) d).2 hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hgi]`. Rewrite using `[← hηC]`. Conclude with `h`. Establish `hrange : C ⊆ Set.range i`. Rewrite using `[← hηC]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `closure_minimal ?_ i.isClosedEmbedding.isClosed_range` and prove the remaining obligations. Introduce and unpack `_ rfl`. Conclude with `⟨_, hgi⟩`. Take `⟨x, hxC, hxZ⟩` from `Set.not_subset.1 hnot`. Take `⟨y₀, rfl⟩` from `hrange hxC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hηZ : η ∈ Z`. Take `⟨x', hx'C, hx'Z⟩` from `hmeet`. Rewrite `hx'C` using `[← hηC]`. Conclude with `(specializes_iff_mem_closure.2 hx'C).mem_open Z.isOpen hx'Z`. Take `⟨w, hw, hwmin⟩` from `(InvImage.wf (Order.coheight : clo η → ℕ∞) wellFounded_lt).has_min {y | y ∉ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (GlobalTheory.secPull s i)} ⟨y₀, fun h => hxZ ((hWm y₀).1 h)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨e, -, he⟩` from `hm w`. Establish `hce : Order.coheight w + (e : ℕ∞) = d` using `GlobalTheory.DimCoheight.coheight_add_eq k (clo η) (i ≫ p) hambY d hdY w e he`. Establish `hfin : Order.coheight w < ⊤`. Use `lt_of_le_of_lt (le_self_add) (hce ▸ ENat.natCast_lt_top d)` and prove the remaining obligations. Establish `hgen : ∀ y : clo η, w < y → y ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (GlobalTheory.secPull s i)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hlt`. Assume the negation of the conclusion as `hy`. Conclude with `hwmin y hy (Order.coheight_strictAnti hlt ((Order.coheight_anti hlt.le).trans_lt hfin))`. Establish `h1 : Order.coheight w ≤ 1` using `coheight_le_one (LB.isLB_pull hM i) (GlobalTheory.secPull s i) w hw hgen`. Establish `h0 : Order.coheight w ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Establish `hmax : IsMax w` using `Order.coheight_eq_zero.1 h0`. Establish `hsp : genericPoint (clo η) ⤳ w` using `genericPoint_specializes w`. Establish `hle : genericPoint (clo η) ≤ w` using `hmax (show w ≤ genericPoint (clo η) from hsp)`. Establish `heq : w = genericPoint (clo η)` using `(hsp.antisymm hle).eq.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgW` using `(hWm (genericPoint (clo η))).2 (by rw [hgi]; exact hηZ)`. Rewrite `hgW` using `[← heq]`. Conclude with `hw hgW`. Establish `hc1 : Order.coheight w = 1` using `le_antisymm h1 (Order.one_le_iff_ne_zero.2 h0)`. Rewrite `hce` using `[hc1]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hde : d = e + 1`. Establish `: ((e + 1 : ℕ) : ℕ∞) = d` using `by push_cast; rw [← hce, add_comm]`. Conclude with `this.symm` after adjusting the coercions. Use `⟨closure {i w}, isIrreducible_singleton.closure, isClosed_closure, ?_, ?_⟩` and prove the remaining obligations. Use `closure_minimal ?_ (hCc.sdiff Z.isOpen)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce and unpack `_ rfl`. Use `⟨?_, fun h => hw ((hWm w).2 h)⟩` and prove the remaining obligations. Establish `hs` using `(genericPoint_specializes w).map i.continuous`. Rewrite `hs` using `[hgi]`. Rewrite using `[← hηC]`.
-
-Conclude with `specializes_iff_mem_closure.1 hs`. Establish `hC' : topologicalKrullDim (closure ({i w} : Set X)) = e` using `(basic.2.2.2.2.1 (clo η) i w e).2 he`. Rewrite using `[hdC, hC', hde]`. Use `push_cast`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem exists_irreducible_zero : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (M : LB X) (s : M.Sec) (C : Set X), M.IsLB → IsIrreducible C → IsClosed C →

@@ -14,7 +14,7 @@ namespace ThmIExists
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Consider the cases of `A`. Consider the cases of `B`. Consider the cases of `ha`. Consider the cases of `hh`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A = B := by
   cases A
@@ -24,21 +24,21 @@ theorem hermLine_ext {A B : HermLine ι} (ha : A.a = B.a) (hh : A.h = B.h) : A =
   rfl
 
 /- English proof (translation)
-The claim follows from `hermLine_ext (add_right_comm _ _ _) (funext fun _ => mul_right_comm _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tensor_right_comm (A B C : HermLine ι) :
     (A.tensor B).tensor C = (A.tensor C).tensor B :=
   hermLine_ext (add_right_comm _ _ _) (funext fun _ => mul_right_comm _ _ _)
 
 /- English proof (translation)
-The claim follows from `hermLine_ext (add_add_add_comm _ _ _ _) (funext fun _ => mul_mul_mul_comm _ _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem tensor_tensor_comm (A B C D : HermLine ι) :
     (A.tensor B).tensor (C.tensor D) = (A.tensor C).tensor (B.tensor D) :=
   hermLine_ext (add_add_add_comm _ _ _ _) (funext fun _ => mul_mul_mul_comm _ _ _ _)
 
 /- English proof (translation)
-The claim follows from `hA.mul hB`.
+A detailed English derivation is pending.
 -/
 theorem smooth_tensor {A B : HermLine ι} (hA : IsSmoothHerm A) (hB : IsSmoothHerm B) :
     IsSmoothHerm (A.tensor B) :=
@@ -53,9 +53,9 @@ Both sides reduce to the same expression.
 theorem segreLine_a (m : ℕ) : (segreLine m : HermLine ι).a = fun _ => (m : ℤ) := rfl
 
 /- English proof (translation)
-Establish `hfun : (segreLine m : HermLine ι).h = fun z => ∏ k, Real.sqrt (∑ i : ι k, ‖z ⟨k, i⟩‖ ^ 2) ^ m`. Use function extensionality and compare the values at `z`. Simplify using `only [segreLine, HermLine.ofMetrics, fsMetric, zpow_natCast, EuclideanSpace.norm_eq]`. Unfold `IsSmoothHerm`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `contDiffOn_prod fun k _ => (ContDiffOn.sqrt ?_ fun z hz => ?_).pow m` and prove the remaining obligations. Conclude with `(ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ (⟨k, i⟩ : Σ k, ι k))).contDiffOn`. Take `⟨i, hi⟩` from `hz k`. Conclude with `(Finset.sum_pos' (fun j _ => sq_nonneg ‖z ⟨k, j⟩‖) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩).ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSmoothHerm_segreLine (m : ℕ) : IsSmoothHerm (segreLine m : HermLine ι) := by
   have hfun : (segreLine m : HermLine ι).h =
@@ -72,9 +72,9 @@ theorem isSmoothHerm_segreLine (m : ℕ) : IsSmoothHerm (segreLine m : HermLine 
       ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩).ne'
 
 /- English proof (translation)
-Establish `hrel` using `hP.2.1.2.2`. Establish `hpr : P.IsPrime` using `hP.2.1.1`. Use `⟨ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow (fun k => (hrel k).choose) b, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_xpow _ _, fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.xpow, Ideal.IsPrime.prod_mem_iff]`. Take `⟨k, _, hk⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hrel k).choose_spec (hpr.mem_of_pow_mem _ hk)`.
+A detailed English derivation is pending.
 -/
 theorem exists_form {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (b : K → ℕ) :
     ∃ s : MRing ι, IsMultiHomog s b ∧ s ∉ P := by
@@ -93,7 +93,7 @@ def secOf (P : Ideal (MRing ι)) (b : K → ℕ) : MRing ι :=
   if h : ∃ s : MRing ι, IsMultiHomog s b ∧ s ∉ P then h.choose else 0
 
 /- English proof (translation)
-Establish `h` using `exists_form hP b`. Rewrite using `[secOf, dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secOf_spec {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (b : K → ℕ) :
     IsMultiHomog (secOf P b) b ∧ secOf P b ∉ P := by
@@ -102,7 +102,7 @@ theorem secOf_spec {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (b : K
   exact h.choose_spec
 
 /- English proof (translation)
-Take `⟨a, ha, has, hsP⟩` from `hs`. Take `⟨b, hb, hbt, htP⟩` from `ht`. Use `⟨a + b, fun k => ?_, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_mul has hbt, fun h => ?_⟩` and prove the remaining obligations. Simplify using `[HermLine.tensor, ha, hb]`. Break down `hpr.mem_or_mem h with h | h exacts [hsP h, htP h]` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 -/
 theorem sec_mul {P : Ideal (MRing ι)} (hpr : P.IsPrime) {A B : HermLine ι} {s t : MRing ι}
     (hs : IsSectionOn P A s) (ht : IsSectionOn P B t) : IsSectionOn P (A.tensor B) (s * t) := by
@@ -114,7 +114,7 @@ theorem sec_mul {P : Ideal (MRing ι)} (hpr : P.IsPrime) {A B : HermLine ι} {s 
     exacts [hsP h, htP h]
 
 /- English proof (translation)
-The claim follows from `h ▸ hs`.
+A detailed English derivation is pending.
 -/
 theorem sec_congr {P : Ideal (MRing ι)} {A B : HermLine ι} {s : MRing ι} (h : A = B)
     (hs : IsSectionOn P A s) : IsSectionOn P B s := h ▸ hs
@@ -124,9 +124,9 @@ def shift (A : HermLine ι) : ℕ := ∑ k, (A.a k).natAbs
 def upDeg (A : HermLine ι) : K → ℕ := fun k => (A.a k + shift A).toNat
 
 /- English proof (translation)
-Rewrite using `[upDeg, Int.toNat_of_nonneg]`. Establish `h1 : (A.a k).natAbs ≤ shift A` using `Finset.single_le_sum (f := fun k => (A.a k).natAbs) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k)`. Establish `h2 : -((A.a k).natAbs : ℤ) ≤ A.a k`. Rewrite using `[Int.natCast_natAbs]`. Conclude with `neg_abs_le _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem upDeg_cast (A : HermLine ι) (k : K) : ((upDeg A k : ℕ) : ℤ) = A.a k + shift A := by
   rw [upDeg, Int.toNat_of_nonneg]
@@ -137,7 +137,7 @@ theorem upDeg_cast (A : HermLine ι) (k : K) : ((upDeg A k : ℕ) : ℤ) = A.a k
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨upDeg A, fun _ => by simp [HermLine.tensor, segreLine_a, upDeg_cast], (secOf_spec hP _).1, (secOf_spec hP _).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSectionOn_up {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (A : HermLine ι) :
     IsSectionOn P (A.tensor (segreLine (shift A))) (secOf P (upDeg A)) :=
@@ -145,7 +145,7 @@ theorem isSectionOn_up {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (A
     (secOf_spec hP _).2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => m, fun _ => rfl, (secOf_spec hP _).1, (secOf_spec hP _).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSectionOn_segre {P : Ideal (MRing ι)} {d : ℕ} (hP : IsArithVar P d) (m : ℕ) :
     IsSectionOn P (segreLine m) (secOf P fun _ => m) :=
@@ -156,7 +156,7 @@ def lift {n : ℕ} (J : Ideal (MRing ι) → (Fin n → HermLine ι) → ℝ) :
   fun W m L => if h : m = n then J W (L ∘ Fin.cast h.symm) else 0
 
 /- English proof (translation)
-Simplify using `only [lift]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lift_self {n : ℕ} (J : Ideal (MRing ι) → (Fin n → HermLine ι) → ℝ) (W : Ideal (MRing ι))
     (L : Fin n → HermLine ι) : lift J W n L = J W L := by
@@ -164,7 +164,7 @@ theorem lift_self {n : ℕ} (J : Ideal (MRing ι) → (Fin n → HermLine ι) �
   rfl
 
 /- English proof (translation)
-Unfold `recR`. Simplify using `only [h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem recR_congr {I J : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {n : ℕ}
     (h : ∀ W L, I W n L = J W n L) (P : Ideal (MRing ι)) (L : Fin n → HermLine ι) (A : HermLine ι)
@@ -184,7 +184,7 @@ def fam : (n : ℕ) → Ideal (MRing ι) → (Fin n → HermLine ι) → ℝ
 def famI : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ := fun P n L => fam n P L
 
 /- English proof (translation)
-Establish `hc : ∀ (B : HermLine ι) (s : MRing ι), recR (lift (fam n)) P L B s = recR famI P L B s` using `fun B s => recR_congr (fun W L' => lift_self (fam n) W L') P L B s`. Establish `hs : famI P (n + 1) (Fin.snoc L A) = step (fam n) P L A`. Simplify using `only [famI, fam, Fin.init_snoc, Fin.snoc_last]`. Rewrite using `[hs, step, hc, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem famI_snoc (P : Ideal (MRing ι)) {n : ℕ} (L : Fin n → HermLine ι) (A : HermLine ι) :
     famI P (n + 1) (Fin.snoc L A) =
@@ -212,11 +212,11 @@ variable (hMul : RMulStatement) {n : ℕ} (hwd : WDAt (famI (ι := ι)) n)
 include hMul hwd
 
 /- English proof (translation)
-Establish `hpr : P.IsPrime` using `hP.2.1.1`. Use `set H : HermLine ι := segreLine (shift A)`. Establish `hH : IsSmoothHerm H` using `isSmoothHerm_segreLine _`. Establish `hu` using `isSectionOn_segre hP (shift A)`. Establish `ht0` using `isSectionOn_up hP A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hMul K ι famI P n L (A.tensor H) C _ _ hP hL (smooth_tensor hA hH) hC ht0 hc`. Establish `e2` using `hMul K ι famI P n L (A.tensor C) H _ _ hP hL (smooth_tensor hA hC) hH ht hu`. Establish `e3 : recR famI P L ((A.tensor H).tensor C) (secOf P (upDeg A) * c) = recR famI P L ((A.tensor C).tensor H) (t * secOf P fun _ => shift A)`. Rewrite using `[tensor_right_comm A H C]`. Conclude with `hwd P L _ _ _ hP hL (smooth_tensor (smooth_tensor hA hC) hH) (sec_congr (tensor_right_comm A H C) (sec_mul hpr ht0 hc)) (sec_mul hpr ht hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[famI_snoc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem famI_eq_diff {P : Ideal (MRing ι)} (hP : IsArithVar P (n + 1)) {L : Fin n → HermLine ι}
     (hL : ∀ j, IsSmoothHerm (L j)) {A C : HermLine ι} (hA : IsSmoothHerm A) (hC : IsSmoothHerm C)
@@ -238,7 +238,7 @@ theorem famI_eq_diff {P : Ideal (MRing ι)} (hP : IsArithVar P (n + 1)) {L : Fin
   linarith
 
 /- English proof (translation)
-Introduce `P L A s hP hL hA hs`. Establish `hpr : P.IsPrime` using `hP.2.1.1`. Establish `hH : IsSmoothHerm (segreLine (shift A) : HermLine ι)` using `isSmoothHerm_segreLine _`. Establish `hu` using `isSectionOn_segre hP (shift A)`. Rewrite using `[famI_eq_diff hMul hwd hP hL hA hH (sec_mul hpr hs hu) hu, hMul K ι famI P n L A _ s _ hP hL hA hH hs hu]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -252,11 +252,11 @@ theorem hasRAt_famI : HasRAt (famI (ι := ι)) n := by
   ring
 
 /- English proof (translation)
-Introduce `P L A B hP hL hA hB`. Establish `hpr : P.IsPrime` using `hP.2.1.1`. Use `set Ha : HermLine ι := segreLine (shift A)`. Use `set Hb : HermLine ι := segreLine (shift B)`. Establish `hHa : IsSmoothHerm Ha` using `isSmoothHerm_segreLine _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHb : IsSmoothHerm Hb` using `isSmoothHerm_segreLine _`. Establish `hua` using `isSectionOn_segre hP (shift A)`. Establish `hub` using `isSectionOn_segre hP (shift B)`. Establish `hta` using `isSectionOn_up hP A`. Establish `htb` using `isSectionOn_up hP B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htab : IsSectionOn P ((A.tensor B).tensor (Ha.tensor Hb)) (secOf P (upDeg A) * secOf P (upDeg B))` using `sec_congr (tensor_tensor_comm A Ha B Hb) (sec_mul hpr hta htb)`. Rewrite using `[famI_eq_diff hMul hwd hP hL (smooth_tensor hA hB) (smooth_tensor hHa hHb) htab (sec_mul hpr hua hub), famI_eq_diff hMul hwd hP hL hA hHa hta hua, famI_eq_diff hMul hwd hP hL hB hHb htb hub, tensor_tensor_comm A B Ha Hb, hMul K ι famI P n L _ _ _ _ hP hL (smooth_tensor hA hHa) (s …`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lastAddAt_famI : LastAddAt (famI (ι := ι)) n := by
   intro P L A B hP hL hA hB
@@ -282,7 +282,7 @@ theorem lastAddAt_famI : LastAddAt (famI (ι := ι)) n := by
 end Steps
 
 /- English proof (translation)
-Introduce `P L B s t hP _ _ hs ht`. Establish `hL : L = Fin.elim0` using `funext fun j => j.elim0`. Substitute `hL` using the available equality. Conclude with `hD1 K ι famI P B s t hP hs ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem wdAt_zero (hD1 : RegularityIndependence.Statement) : WDAt (famI (ι := ι)) 0 := by
   intro P L B s t hP _ _ hs ht
@@ -291,9 +291,9 @@ theorem wdAt_zero (hD1 : RegularityIndependence.Statement) : WDAt (famI (ι := �
   exact hD1 K ι famI P B s t hP hs ht
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0` using `wdAt_zero (ι := ι) hD1`. Conclude with `⟨h0, hasRAt_famI hMul h0, lastAddAt_famI hMul h0⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Establish `h1` using `hstep n ih.2.1 ih.2.2`. Conclude with `⟨h1, hasRAt_famI hMul h1, lastAddAt_famI hMul h1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem all_dims (hD1 : RegularityIndependence.Statement) (hMul : RMulStatement)
     (hstep : ∀ n, HasRAt (famI (ι := ι)) n → LastAddAt (famI (ι := ι)) n → WDAt (famI (ι := ι)) (n + 1))
@@ -307,7 +307,7 @@ theorem all_dims (hD1 : RegularityIndependence.Statement) (hMul : RMulStatement)
     exact ⟨h1, hasRAt_famI hMul h1, lastAddAt_famI hMul h1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun P n L A B hP hL hA hB => (all_dims hD1 hMul hstep n).2.2 P L A B hP hL hA hB, fun P n L A s a hP hL hA ha hs hsP => (all_dims hD1 hMul hstep n).2.1 P L A s hP hL hA ⟨a, ha, hs, hsP⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isRFamily_famI (hD1 : RegularityIndependence.Statement) (hMul : RMulStatement)
     (hstep : ∀ n, HasRAt (famI (ι := ι)) n → LastAddAt (famI (ι := ι)) n → WDAt (famI (ι := ι)) (n + 1)) :

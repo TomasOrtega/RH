@@ -43,9 +43,9 @@ section Eig
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} (A : NAut N) (i : N.Loc)
 
 /- English proof (translation)
-Unfold `spehLoc`. Simplify using `only`. Proceed by induction on `List.range t with`. Consider the case `nil => exact ⟨A.lpZero_unr w, by simp [A.frobEig_zero]⟩`. Consider the case `cons k l ih`.
+Replace the relevant objects with their definitions. Simplify by unfolding definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h1` using `(A.unr_tw _ (((t : ℝ) - 1) / 2 - k)).2 hu`. Use `⟨(A.unr_sum _ _).2 ⟨h1, ih.1⟩, ?_⟩` and prove the remaining obligations. Use `(A.frobEig_sum _ _ h1 ih.1).trans ?_` and prove the remaining obligations. Rewrite using `[ih.2, A.frobEig_tw _ _ hu, hb]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frobEig_block (θ : A.CG 1) (t : ℕ) (w : PlE H) (b : ℂ) (hu : A.unr (A.locG θ w))
     (hb : A.frobEig (A.locG θ w) = {b}) :

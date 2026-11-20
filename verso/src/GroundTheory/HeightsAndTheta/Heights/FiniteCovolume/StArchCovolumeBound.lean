@@ -27,7 +27,7 @@ def archLattice (v : Basis ι E W) (La : AddSubgroup W) : Submodule ℤ (Infinit
 
 omit [IsTotallyComplex E] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `y ∈ La.map (vecAtHom v) ↔ _`. Rewrite using `[AddSubgroup.mem_map]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_archLattice {v : Basis ι E W} {La : AddSubgroup W} {y : InfinitePlace E → ι → ℂ} :
     y ∈ archLattice v La ↔ ∃ x ∈ La, vecAt v x = y := by

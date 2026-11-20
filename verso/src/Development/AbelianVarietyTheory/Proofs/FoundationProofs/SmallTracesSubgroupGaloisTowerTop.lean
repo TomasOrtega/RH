@@ -12,27 +12,23 @@ open scoped NNReal
 namespace GlobalTheory.K5
 
 /- English proof (translation)
-Introduce `p _ Ω _ _ hp2 hclo T H hH S j hj`. Take `⟨v, hvint, hvgal, -, hv1, hsep⟩` from `GlobalTheory.T.exists_valuation_almostEtale_towerFixer p Ω hp2 hclo T`. Take `⟨U, -, hUfin, hUS, hUsep⟩` from `hsep S`. Set `K : Subgroup (Gal p Ω)` to `⨅ n, Gn T n`. Set `H' : Subgroup ↥K` to `H.subgroupOf K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `U' : Subgroup ↥H'` to `U.subgroupOf H'`. Use `haveI : U'.FiniteIndex := inferInstance`. Use `haveI : Finite (↥H' ⧸ U') := Subgroup.finite_quotient_of_finiteIndex`. Use `letI : Fintype (↥H' ⧸ U') := Fintype.ofFinite _`. Establish `hU'sep : AlmostSep v U'` using `GlobalTheory.T.fixedFieldAlmostEtale_subgroupOf Ω v ↥K U H' hUsep`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsmul : ∀ (h : ↥H') (x : Ω), h • x = ((h : ↥K) : Gal p Ω) x` using `fun _ _ => rfl`. Establish `hinv : ∀ (h : ↥H') (x : Ω), v (h • x) = v x` using `fun h x => by rw [hsmul]; exact hvgal _ x`. Establish `hfixζ : ∀ h : ↥H', h • (T.ζ j - 1) = T.ζ j - 1`. Introduce `h`. Establish `hm : ((h : ↥K) : Gal p Ω) ∈ Gn T j` using `(Subgroup.mem_iInf.mp (h : ↥K).2) j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ((h : ↥K) : Gal p Ω) (T.ζ j) = T.ζ j` using `((Basic.mem_gn T j _).mp hm).1`. Rewrite using `[hsmul, map_sub, map_one, h1]`. Establish `hve : v (T.ζ j - 1) < 1` using `(GlobalTheory.T.valuation_tower_zeta_sub_one p Ω hp2 T v hv1 j hj).1`. Take `⟨y₀, hy₀, hy₀le, htr⟩` from `GlobalTheory.T.exists_integer_cosetRepresentativeTrace_eq_of_lt_one Ω v ↥H' hinv U' hU'sep (T.ζ j - 1) hfixζ hve`. Establish `hS : ∀ s ∈ S, s ∈ Fix Ω U'` using `fun s hs g => hUS s hs ⟨((g : ↥H') : ↥K), Subgroup.mem_subgroupOf.mp g.2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y, D, E', hy, huniq, hsum⟩` from `GlobalTheory.T.exists_reps_of_cosetRepresentativeTrace Ω ↥H' U' S hS y₀ hy₀`. Set `ι : ↥H' ↪ Gal p Ω` to `⟨fun h => ((h : ↥K) : Gal p Ω), fun a b hab => Subtype.ext (Subtype.ext hab)⟩`. Establish `hιH : ∀ h : ↥H', ι h ∈ H` using `fun h => Subgroup.mem_subgroupOf.mp h.2`. Establish `hιs : ∀ (h : ↥H') (x : Ω), ι h x = h • x` using `fun _ _ => rfl`. Establish `hy₀int : IsInt p y₀` using `(hvint y₀).mp hy₀le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨y, E'.map ι, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`. Conclude with `IsIntegral.sum _ fun d _ => by rw [← hιs]; exact Basic.isInt_gal _ hy₀int`. Introduce `g hg`. Take `⟨g', -, rfl⟩` from `Finset.mem_map.mp hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Conclude with `hιH g'`. Introduce `h hh`. Set `h' : ↥H'` to `⟨⟨h, hH hh⟩, Subgroup.mem_subgroupOf.mpr hh⟩`. Take `⟨g', ⟨hg'E, hg'y, hg'S⟩, hg'u⟩` from `huniq h'`. Use `⟨ι g', ⟨Finset.mem_map_of_mem ι hg'E, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hιs]`. Conclude with `hg'y`. Introduce `s hs`. Rewrite using `[hιs]`. Conclude with `hg'S s hs`.
+Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `g ⟨hgE, hgy, hgS⟩`. Take `⟨g'', hg''E, rfl⟩` from `Finset.mem_map.mp hgE`. Use `congr 1`. Use `hg'u g'' ⟨hg''E, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hιs]`.
-
-Conclude with `hgy`. Introduce `s hs`. Rewrite using `[← hιs]`. Conclude with `hgS s hs`. Rewrite using `[Finset.sum_map]`.
-
-Conclude with `(Finset.sum_congr rfl fun g _ => hιs g y).trans (hsum.trans htr)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_traces_subgroup : ∀ (p : ℕ) [Fact p.Prime] (Ω : Type) [Field Ω] [Algebra (O0 p) Ω],
     p ≠ 2 → IsClo p Ω → ∀ (T : Tower p Ω) (H : Subgroup (Gal p Ω)), H ≤ ⨅ n, Gn T n →

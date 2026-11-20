@@ -64,7 +64,7 @@ def levelZeroCompatibility (L0 : LevelZeroConditions a hS hH hP hK S hI O) :
     fv0 := (L0 u).fv0 }
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem piGConst (L0 : LevelZeroConditions a hS hH hP hK S hI O) :
     CH.PiGConst (d.colRec a) (hermCols a hS hP hK S hI) (hermAtT a hS hH O) (levelZeroCompatibility a hS hH hP hK S hI O L0) :=
@@ -82,9 +82,9 @@ theorem th_joint_piG (hCh : d.Ch.Ok) (L0 : LevelZeroConditions a hS hH hP hK S h
     (recGLoc a S hCh).piG = (levelZeroCompatibility a hS hH hP hK S hI O L0 u).piG := rfl
 
 /- English proof (translation)
-Rewrite using `[recGLev_fr]`. Establish `h0 : recUnit S u 0 i v h = 1`. Unfold `recUnit`. Rewrite using `[if_neg]`. Use `d.R.two_le_m` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `show glvD (d.R.N 0) v (recUnit S u 0 i v h) = _`. Rewrite using `[h0, glvD_one]`. Conclude with `(map_one (Formalism.L2.Forms.reGL (Formalism.L2.Forms.rank_eq_first_level d.R) (v.adicCompletion d.host.F))).symm`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointLevel_frame_zero (hCh : d.Ch.Ok) (hl : d.lev = colLevS d.Ch) (u : d.what₂.Word) (i : Fin 2) (v : HeightOneSpectrum (𝓞 d.host.F))
     (h : (d.host.g i : 𝓞 d.host.F) ∈ v.asIdeal) :

@@ -11,15 +11,15 @@ open Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.L2.SG.AdBridge
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-Rewrite using `[mem_stabT]`. Introduce `b`. Use function extensionality and compare the values at `i`. Rewrite using `[← sub_eq_zero]`. Apply `PI.MassDataKppVolLemmas.LocIdxLift_inj I` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `v`. Establish `hv` using `hc v`. Rewrite `hv` using `[mem_stabT]`. Establish `e1 : ratV (F` using `I.F) (Fv I.F v) (X0 b) = (PI.MassDataKppVolLemmas.tV I v) ∘ ratV (F := I.F) (Af I.F) (X0 b) := by`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ratV, PI.MassDataKppVolLemmas.tV, tensMap_inclR]`. Establish `h2` using `congrFun (hv b) i`. Rewrite using `[map_sub]`. Use `show PI.MassDataKppVolLemmas.tV I v ((((HA.mat (Af I.F) I.cm.sig I.J h : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)) *ᵥ ratV (F := I.F) (Af I.F) (X0 b)) i) - PI.MassDataKppVolLemmas.tV I v (ratV (F := I.F) (Af I.F) (X0 b) i) = 0`. Rewrite using `[RingHom.map_mulVec, ← e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ((HA.mat (Af I.F) I.cm.sig I.J h : GL (Fin I.n) (Af I.F ⊗[I.F] I.E)) : Matrix (Fin I.n) (Fin I.n) (Af I.F ⊗[I.F] I.E)).map (PI.MassDataKppVolLemmas.tV I v) = ((HA.mat (Fv I.F v) I.cm.sig I.J (PI.MassDataKppVolLemmas.piV I v h) : GL (Fin I.n) (Fv I.F v ⊗[I.F] I.E)) : Matrix ( …` using `rfl`. Rewrite using `[e2]`. Establish `e3 : PI.MassDataKppVolLemmas.tV I v (ratV (F` using `I.F) (Af I.F) (X0 b) i) = ratV (F := I.F) (Fv I.F v) (X0 b) i := by`. Rewrite using `[e1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3, sub_eq_zero]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem mem_stabT_of_comp (I : Formalism.MainNotions.S.AutInst) (h : HA (Af I.F) I.cm.sig I.J) {a : ℕ}
     (X0 : Fin a → Fin I.n → I.E)
@@ -56,21 +56,19 @@ theorem mem_stabT_of_comp (I : Formalism.MainNotions.S.AutInst) (h : HA (Af I.F)
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `D X hb _hK u _hT _hL f`. Establish `key : ∀ S : Finset (TypX X), ∃ z : Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u), z ∈ KHg X u ∧ ∀ p : TypX X, ((piH X u p.1 z : Hsub (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F p.1) X.B.I.cm.sig X.B.I.J) = if p ∈ S then (((f p : KvH X u p.1) : Hsu …`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_mem _, fun p => by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert q S hq ih`. Take `⟨z, hzK, hz⟩` from `ih`. Use `set k : HA (Fv X.B.I.F q.1) X.B.I.cm.sig X.B.I.J := (((f q : KvH X u q.1) : Hsub (Fv X.B.I.F q.1) X.B.I.cm.sig X.B.I.J (frameOf X u)) : HA (Fv X.B.I.F q.1) X.B.I.cm.sig X.B.I.J) with hk`. Establish `hkK : k ∈ Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) q.1` using `(f q).2`. Establish `hkH : k ∈ Hsub (Fv X.B.I.F q.1) X.B.I.cm.sig X.B.I.J (frameOf X u)` using `(f q : KvH X u q.1).1.2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hKf, hq1, hq2⟩` from `PI.MassDataKppVolLemmas.single_component_surjective X.B.I q.1 k hkK`. Establish `hH : h ∈ Hsub (Af X.B.I.F) X.B.I.cm.sig X.B.I.J (frameOf X u)`. Apply `mem_stabT_of_comp X.B.I h` to reduce the goal to its premises. Introduce `v`. Distinguish the cases in `hv : v = q.1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Rewrite using `[hq1]`. Conclude with `hkH`. Rewrite using `[hq2 v hv]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨⟨h, hH⟩ * z, ?_, fun p => ?_⟩` and prove the remaining obligations. Use `show (h : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) * (z : HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J) ∈ Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E))`. Conclude with `mul_mem hKf hzK`. Rewrite using `[map_mul, Subgroup.coe_mul, hz p] show PI.MassDataKppVolLemmas.piV X.B.I p.1 h * _ = _`. Distinguish the cases in `hpq : p = q`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hpq` using the available equality. Rewrite using `[if_neg hq, if_pos (Finset.mem_insert_self p S), mul_one, hq1]`. Establish `hp1 : p.1 ≠ q.1` using `fun e => hpq (Subtype.ext e)`. Rewrite using `[hq2 p.1 hp1, one_mul]`. Distinguish the cases in `hpS : p ∈ S`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hpS, if_pos (Finset.mem_insert_of_mem hpS)]`. Rewrite using `[if_neg hpS, if_neg]`. Introduce `hm`. Break down `Finset.mem_insert.1 hm with e | e` into its components or cases. Conclude with `hpq e`.
-
-Conclude with `hpS e`. Take `⟨z, hzK, hz⟩` from `key Finset.univ`. Use `⟨z, hzK, fun p => Subtype.ext (Subtype.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[hz p, if_pos (Finset.mem_univ p)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_components_surjective : SurjH := by
   classical

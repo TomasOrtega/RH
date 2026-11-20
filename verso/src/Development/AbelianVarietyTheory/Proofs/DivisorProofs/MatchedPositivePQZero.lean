@@ -16,17 +16,15 @@ namespace GlobalTheory.ThKEndACT
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' R Rf hM hq hp d₁ W₁ H' i₀ i₁ hH' c hprop Φ Φ' hSo hPM μ 𝓕 hμ hF h1 h`. Establish `hT` using `hM.triple`. Establish `hPol : Φ ∈ PolData B G.M ∧ Φ' ∈ PolData B G.M'`. Take `⟨T, -, m, m', f, φ, f', φ', hf, hf', e1, e2, -⟩` from `hPM`. Use `⟨e1 ▸ Submodule.sum_mem _ fun i _ => Submodule.subset_span ?_, e2 ▸ Submodule.sum_mem _ fun j _ => Submodule.subset_span ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨f i, (hf i).1, φ i, (hf i).2.1, Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hf i).2.2 v hT)), rfl⟩`. Conclude with `⟨f' j, (hf' j).1, φ' j, (hf' j).2.1, Filter.eventually_cofinite.2 (T.finite_toSet.subset fun v hv => by_contra fun hT => hv ((hf' j).2.2 v hT)), rfl⟩`. Take `⟨hS1, hS2⟩` from `GlobalTheory.T.split_existence hK F E σ B a a' G X om om' hT d₁ W₁ H' i₀ i₁ hH'`. Take `⟨⟨fa, fb⟩, hsp, -⟩` from `hS1 Φ hPol.1`. Take `⟨⟨fa', fb'⟩, hsp', -⟩` from `hS2 Φ' ⟨hPol.2, hSo⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ea, eb⟩` from `hprop Φ Φ' hSo hPM fa fb fa' fb' hsp hsp'`. Establish `e1` using `hsp.1 μ 𝓕 hμ hF h1 h`. Establish `e2` using `hsp'.1 μ 𝓕 hμ hF h1 h`. Take `⟨hc1, hi1⟩` from `GlobalTheory.T.continuous_left_invariant_theta hK F E σ B a a' G X om om' hT Φ hPol.1`. Take `⟨hc2, hi2⟩` from `GlobalTheory.T.continuous_left_invariant_dual hK F E σ B a a' G X om om' hT Φ' ⟨hPol.2, hSo⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Establish `hfin : μ 𝓕 ≠ ⊤` using `by rw [h1]; exact ENNReal.one_ne_top`. Establish `hint : ∀ g : UA σ G.W.J → ℂ, Continuous g → (∀ γ ∈ ratU σ G.W.J, ∀ h, g (γ * h) = g h) → IntegrableOn (fun u : unip σ G.W H' => g (u.1 * h)) 𝓕 μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g hg hgi`. Take `⟨C, hC⟩` from `GlobalTheory.T.automorphic_function_bounded_on_unipotent F E σ B (a + a') d₁ G.W W₁ H' i₀ i₁ _ _ hT.base hT.geo.hW hH' g hg hgi h`. Conclude with `Measure.integrableOn_of_bounded (M := C) hfin (hg.comp (continuous_subtype_val.mul continuous_const)).aestronglyMeasurable (ae_of_all _ fun u => hC u.1 u.2)`. Establish `i1` using `hint _ hc1 hi1`. Establish `i2` using `(hint _ hc2 hi2).const_mul c`.
-
-Use `show (0 : ℂ) = ∫ u in 𝓕, (G.M.I om Φ (u.1 * h) - c * G.M'.I om' Φ' (u.1 * h)) ∂μ`. Rewrite using `[integral_sub i1 i2, integral_const_mul, ← e1, ← e2, ea, eb]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (R : RealMaps F a a') (Rf : FinMaps F a a'), IsMatched B G X om om' R Rf → G.q = 0 → 1 ≤ G.p →

@@ -16,7 +16,7 @@ section Unif
 variable {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g)
 
 /- English proof (translation)
-Establish `h` using `u.ex_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `left_eq_mul.1 h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero : u.ex 0 = 1 := by
   have h := u.ex_add 0 0
@@ -24,7 +24,7 @@ theorem ex_zero : u.ex 0 = 1 := by
   exact left_eq_mul.1 h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [ex_zero]`. Consider the case `succ n ih => rw [Nat.cast_succ, add_smul, one_smul, u.ex_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ex_natSmul (n : ℕ) (z : Fin g → ℂ) : u.ex ((n : ℂ) • z) = u.ex z ^ n := by
   induction n with
@@ -32,14 +32,14 @@ theorem ex_natSmul (n : ℕ) (z : Fin g → ℂ) : u.ex ((n : ℂ) • z) = u.ex
   | succ n ih => rw [Nat.cast_succ, add_smul, one_smul, u.ex_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← ex_natSmul, smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`. Conclude with `(u.ker _).2 a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_div_pow {n : ℕ} (hn : 0 < n) (a : u.Λ) : u.ex ((n : ℂ)⁻¹ • (a : Fin g → ℂ)) ^ n = 1 := by
   rw [← ex_natSmul, smul_inv_smul₀ (Nat.cast_ne_zero.2 hn.ne')]
   exact (u.ker _).2 a.2
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `u.ex_onto x`. Use `⟨⟨(n : ℂ) • z, (u.ker _).1 (by rw [ex_natSmul, hx])⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eq_ex_div {n : ℕ} (hn : 0 < n) (x : 𝟙_ (Over (Sp ℂ)) ⟶ A) (hx : x ^ n = 1) :
     ∃ a : u.Λ, x = u.ex ((n : ℂ)⁻¹ • (a : Fin g → ℂ)) := by
@@ -48,7 +48,7 @@ theorem exists_eq_ex_div {n : ℕ} (hn : 0 < n) (x : 𝟙_ (Over (Sp ℂ)) ⟶ A
   rw [inv_smul_smul₀ (Nat.cast_ne_zero.2 hn.ne')]
 
 /- English proof (translation)
-Rewrite using `[← v.ker, hF, (u.ker _).2 a.2, ← ex_zero u, ← hF, map_zero, ex_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mem {B : Over (Sp ℂ)} [GrpObj B] {M : LB B.left} {g' : ℕ} (v : HolUnif B M g') {f : A ⟶ B}
     {F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)} (hF : ∀ z, v.ex (F z) = u.ex z ≫ f) (a : u.Λ) : F a ∈ v.Λ := by
@@ -60,11 +60,11 @@ def rootVal (m : ℤ) (n : ℕ) : ℂˣ :=
   Units.mk0 (Complex.exp (-(2 * Real.pi * Complex.I) * (m : ℂ) / n)) (Complex.exp_ne_zero _)
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, 0 < n → (n : ℤ) ∣ m' - m`. Introduce `n hn`. Establish `e` using `congrArg Units.val (h n hn)`. Simplify using `only [rootVal, Units.val_mk0] at e`. Take `⟨k, hk⟩` from `Complex.exp_eq_exp_iff_exists_int.1 e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hn' : (n : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: ((m' - m : ℤ) : ℂ) = ((n * k : ℤ) : ℂ)`. Use `push_cast`. Use `mul_left_cancel₀ Complex.two_pi_I_ne_zero ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Clear denominators, using `at hk` for the nonvanishing conditions. Take the linear combination `(2 * Real.pi * Complex.I) * hk`. Conclude with `this` after adjusting the coercions. Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (key ((m' - m).natAbs + 1) (Nat.succ_pos _)) (by rw [Int.natAbs_natCast]; omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_rootVal {m m' : ℤ} (h : ∀ n : ℕ, 0 < n → rootVal m n = rootVal m' n) : m = m' := by
   have key : ∀ n : ℕ, 0 < n → (n : ℤ) ∣ m' - m := by
@@ -85,17 +85,17 @@ theorem eq_of_rootVal {m m' : ℤ} (h : ∀ n : ℕ, 0 < n → rootVal m n = roo
   omega
 
 /- English proof (translation)
-Establish `him : ∀ z w, (hermForm HA (F₁ z) (F₂ w)).im = (hermForm HB (G₁ z) (G₂ w)).im`. Introduce `z w`. Establish `hz : z ∈ Submodule.span ℝ S` using `hS ▸ Submodule.mem_top`. Establish `hw : w ∈ Submodule.span ℝ T` using `hT ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem z hz`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw => exact h z hz w hw`. Consider the case `zero => simp [hermForm]`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [hermForm, map_add, star_add, Matrix.mulVec_add, dotProduct_add, Complex.add_im] at hx hy ⊢`. Rewrite using `[hx, hy]`. Consider the case `smul r x _ hx`. Rewrite using `[← Complex.coe_smul]`. Simplify using `only [hermForm, map_smul, star_smul, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, Complex.star_def, Complex.conj_ofReal, Complex.im_ofReal_mul] at hx ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Consider the case `zero => simp [hermForm]`. Consider the case `add x y _ _ hx hy`. Simplify using `only [hermForm, map_add, add_dotProduct, Complex.add_im] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul r x _ hx`. Rewrite using `[← Complex.coe_smul]`. Simplify using `only [hermForm, map_smul, smul_dotProduct, smul_eq_mul, Complex.im_ofReal_mul] at hx ⊢`. Rewrite using `[hx]`. Use `Complex.ext ?_ (him z w)` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `him (Complex.I • z) w`. Simplify `e` using `only [hermForm, map_smul, smul_dotProduct, smul_eq_mul, Complex.I_mul_im]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hermForm_eq_of_im {p q a b : ℕ} (HA : Matrix (Fin a) (Fin a) ℂ) (HB : Matrix (Fin b) (Fin b) ℂ)
     (F₁ : (Fin p → ℂ) →ₗ[ℂ] (Fin a → ℂ)) (F₂ : (Fin q → ℂ) →ₗ[ℂ] (Fin a → ℂ))
@@ -133,7 +133,7 @@ theorem hermForm_eq_of_im {p q a b : ℕ} (HA : Matrix (Fin a) (Fin a) ℂ) (HB 
   simpa only [hermForm, map_smul, smul_dotProduct, smul_eq_mul, Complex.I_mul_im] using e
 
 /- English proof (translation)
-Take `⟨Ef, hE, -, -, -, -, hW⟩` from `GlobalTheory.AHWeil.tangent_and_weil_of_isAH hU P P.g u Hm χ h`. Use `⟨Ef a b, hE a b, fun n c hn => ⟨fun hc => ?_, fun hc => hW n a b c hn (by rw [hc]; rfl)⟩⟩` and prove the remaining obligations. Conclude with `weilIs_unique_fieldPoint (Sp ℂ) P.A P.L P.isLB ℂ (𝟙 _) n _ _ c _ hc (hW n a b (rootVal (Ef a b) n) hn rfl)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weilIs_iff (hU : ThetaUnifAV) (P : Out.PolAV (Sp ℂ)) (u : HolUnif P.A P.L P.g)
     {Hm : Matrix (Fin P.g) (Fin P.g) ℂ} {χ : u.Λ → ℂ} (h : u.IsAH Hm χ) (a b : u.Λ) :
@@ -150,15 +150,13 @@ namespace GlobalTheory.CM
 open HermWeil
 
 /- English proof (translation)
-Introduce `hU _ X Y A B uX uY uA uB HA HB χA χB hA hB f₁ f₂ g₁ g₂ F₁ F₂ G₁ G₂ h₁ h₂ h₃ h₄`. Establish `key : ∀ (a : uX.Λ) (b : uY.Λ), ∃ m m' : ℤ, (m : ℝ) = (hermForm HA (F₁ a) (F₂ b)).im ∧ (m' : ℝ) = (hermForm HB (G₁ a) (G₂ b)).im ∧ ∀ (n : ℕ) (c : ℂˣ), 0 < n → (Out.WeilIs A.A A.L n (uX.ex ((n : ℂ)⁻¹ • (a : Fin X.g → ℂ)) ≫ f₁) (uY.ex ((n : ℂ)⁻¹ • (b : Fin Y.g → ℂ)) ≫ f₂) (unitOn c) …`. Introduce `a b`. Take `⟨m, hm, hw⟩` from `weilIs_iff hU A uA hA ⟨_, map_mem uX uA h₁ a⟩ ⟨_, map_mem uY uA h₂ b⟩`. Take `⟨m', hm', hw'⟩` from `weilIs_iff hU B uB hB ⟨_, map_mem uX uB h₃ a⟩ ⟨_, map_mem uY uB h₄ b⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, m', hm, hm', fun n c hn => ?_⟩` and prove the remaining obligations. Rewrite using `[← h₁, ← h₂, ← h₃, ← h₄, map_smul, map_smul, map_smul, map_smul]`. Conclude with `⟨hw n c hn, hw' n c hn⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hermForm_eq_of_im HA HB F₁ F₂ G₁ G₂ uX.full uY.full fun a ha b hb => ?_` and prove the remaining obligations. Take `⟨m, m', hm, hm', hw⟩` from `key ⟨a, ha⟩ ⟨b, hb⟩`. Rewrite using `[← hm, ← hm', eq_of_rootVal (m := m) (m' := m') fun n hn => ?_]`. Conclude with `(hw n _ hn).2.1 ((h n _ _ _ hn (ex_div_pow uX hn ⟨a, ha⟩) (ex_div_pow uY hn ⟨b, hb⟩)).1 ((hw n _ hn).1.2 rfl))`. Introduce `h n x y c hn hx hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `exists_eq_ex_div uX hn x hx`. Take `⟨b, rfl⟩` from `exists_eq_ex_div uY hn y hy`. Take `⟨m, m', hm, hm', hw⟩` from `key a b`. Choose the witnesses or unpack the hypotheses as in `rfl : m = m' := by`. Establish `: (m : ℝ) = m'` using `by rw [hm, hm', h]`.
-
-Conclude with `this` after adjusting the coercions. Conclude with `(hw n c hn).1.trans (hw n c hn).2.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weilEq_iff_hermForm_eq : ThetaUnifAV → Out.Laws → ∀ (X Y A B : Out.PolAV (Sp ℂ)) (uX : HolUnif X.A X.L X.g) (uY : HolUnif Y.A Y.L Y.g) (uA : HolUnif A.A A.L A.g) (uB : HolUnif B.A B.L B.g) (HA : Matrix (Fin A.g) (Fin A.g) ℂ) (HB : Matrix (Fin B.g) (Fin B.g) ℂ) (χA : uA.Λ → ℂ) (χB : uB.Λ → ℂ), uA.IsAH HA χA → uB.IsAH HB χB →
   ∀ (f₁ : X.A ⟶ A.A) (f₂ : Y.A ⟶ A.A) (g₁ : X.A ⟶ B.A) (g₂ : Y.A ⟶ B.A) (F₁ : (Fin X.g → ℂ) →ₗ[ℂ] (Fin A.g → ℂ)) (F₂ : (Fin Y.g → ℂ) →ₗ[ℂ] (Fin A.g → ℂ)) (G₁ : (Fin X.g → ℂ) →ₗ[ℂ] (Fin B.g → ℂ)) (G₂ : (Fin Y.g → ℂ) →ₗ[ℂ] (Fin B.g → ℂ)),

@@ -22,7 +22,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 namespace GlobalTheory.Fam.IoTop
 /- English proof (translation)
-Establish `key : ∀ n (e : D.R.m - 1 = n), IsWeilDatumO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D n) D.sp.X' (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t) (_root_.GlobalTheory.Fam.pk_z W).eta D.R.m).1 (Lift.chrStep ((_root_.GlobalTheory.Fam.pk_z W).toLevCh.mu t) (_root_.Global …` using `fun n _ => Om (Yc D n) D.sp.X') ((_root_.GlobalTheory.Fam.pk_z W).ωX t) e) := by`. Introduce and unpack `n rfl`. Conclude with `hc.chain.ωX t`. Conclude with `key (j + 1) (idx_top h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem omT_weil_chr {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex)
@@ -39,21 +39,21 @@ end GlobalTheory.Fam.IoTop
 set_option maxHeartbeats 1000000 in
 open GlobalTheory.Fam.IoTop in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f hR t j h F P v`. Establish `hc` using `hP.bot.hyp.2.2.2.1`. Take `⟨h', -, hL⟩` from `_root_.GlobalTheory.T.extra_column_range_membership_alt W u hP f.g t j h F`. Establish `key` using `hL ((f.row t).vT j h) ((hR.row t).vT j h) P v`. Take `⟨h'', hio⟩` from `(hR.row t).ioT j h F`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm` using `hR.meas.volT t`. Rewrite `hm` using `[show D.R.m - 1 = j + 1 by omega, show f.g.κ D.R.m = f.g.κ (j + 1 + 1) from congrArg f.g.κ (by omega)]`. Establish `hom` using `_root_.GlobalTheory.Fam.IoTop.omT_weil_chr W hc t j h`. Establish `hth : IsThetaFunO (_root_.GlobalTheory.Fam.pk_z W).ψ (Yc D (j + 1)) D.sp.X' (pureTensorO (_root_.GlobalTheory.Fam.pk_z W).ψ (_root_.GlobalTheory.Fam.pk_z W).θ (Yc D (j + 1)) D.sp.X' (cart ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (cart (_root_.GlobalTheory.Fam.pk_z W).MX) (o …`. Take `⟨cY, hcY⟩` from `hc.lev.βY (j + 1) (by omega)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨cX', hcX⟩` from `hc.lev.βX`. Establish `hf` using `(GlobalTheory.VecTheta.vecThetaSD D).1 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hcY) (GlobalTheory.Mem.EasyInputs.selfDualOK D _ _ _ _ hcX) hcY.1 hcX.1 ((hR.row t).vT j h)`. Establish `e0 : ∀ (V : HSp D) (ρ : D.what₂.Tau), compAt (_root_.GlobalTheory.Fam.pk_z W).θ ρ (Formalism.L2.Theta.mt V 1) = 1` using `fun V ρ => by`. Establish `: Formalism.L2.Theta.mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.map_one _ (by simp) (by simp)`. Conclude with `(GlobalTheory.OrientedHeis.om_pureTensorO D _ _ _ _ _ _ _ hom hc.models.inf (cart ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (cart ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (onb ((_root_.GlobalTheory.Fam.pk_z W).MY (j + 1))) (onb ((_root_.GlobalTheory.Fam.pk_z W).MY (j + …`. Establish `hκ` using `hR.meas.κ (j + 1 + 1)`. Apply the tactic sequence `have hvl : 0 ≤ volLev (_root_.GlobalTheory.Fam.pk_z W) f.g t (j + 1) := by unfold volLev; split_ifs <;> exact ENNReal.toReal_nonneg`. Establish `hc0 : ENNReal.ofReal (f.g.κ (j + 1 + 1) * volLev (_root_.GlobalTheory.Fam.pk_z W) f.g t (j + 1)) ≠ 0`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `(hR.meas.cIOf_ne_zero (_root_.GlobalTheory.Fam.complexLevelStructure W) t (j + 1) (by omega))` as an intermediate fact. Unfold `cIOf at this`. Introduce `h0`. Rewrite `h0` using `[ENNReal.ofReal_eq_zero]`. Use `this ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: f.g.κ (j + 1 + 1) * volLev (_root_.GlobalTheory.Fam.pk_z W) f.g t (j + 1) = 0` using `le_antisymm h0 (mul_nonneg hκ.le hvl)`. Rewrite using `[mul_assoc, ← Complex.ofReal_mul, this, Complex.ofReal_zero, mul_zero]`. Establish `hfd` using `(hc.models.νX t).2`. Use `show liftS (omT (_root_.GlobalTheory.Fam.pk_z W) t j h) f.g.volT.μ f.g.volT.𝓕 (F.1 v) _ = cIOf (_root_.GlobalTheory.Fam.pk_z W) (_root_.GlobalTheory.Fam.complexLevelStructure W) f.g t (j + 1) • _`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `liftS_smul_domain (omT (_root_.GlobalTheory.Fam.pk_z W) t j h) ((_root_.GlobalTheory.Fam.pk_z W).νX t) f.g.volT.μ _ hc0 hm f.g.volT.haar f.g.volT.fund hfd (F.1 v) (pureTensorO (_root_.GlobalTheory.Fam.pk_z W).ψ (_root_.GlobalTheory.Fam.pk_z W).θ (Yc D (j + 1)) D.sp.X' (cart ((_ro …`. Establish `a1 : (omT (_root_.GlobalTheory.Fam.pk_z W) t j h) (x, γ * y) = (omT (_root_.GlobalTheory.Fam.pk_z W) t j h) (1, γ) * (omT (_root_.GlobalTheory.Fam.pk_z W) t j h) (x, y)`. Rewrite using `[← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[a1, Module.End.mul_apply, hom.om_aut 1 (one_mem _) γ hγ _ (hom.om_pres _ _ hth), GlobalTheory.ChainLiftEquiv.multT_left _ _ _ _ F.1 F.2 v γ hγ y])`. Establish `hio' : (((f.t t).ioT j h) F).1 = ((ioXT (_root_.GlobalTheory.Fam.pk_z W) t j h) ⟨F.1, h'⟩).1` using `hio`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (((f.t t).ioT j h) F).1 (((f.c.ItT j h) P) v) x = ((ioXT (_root_.GlobalTheory.Fam.pk_z W) t j h) ⟨F.1, h'⟩).1 (((f.c.ItT j h) P) v) x` using `congrFun (LinearMap.congr_fun hio' _) x`. Establish `e3` using `congrFun key x`. Rewrite `e3` using `[Pi.smul_apply]`. Conclude with `e1.trans ((congrArg _ e3).trans ((smul_const _ _ _ _ (mul_nonneg hκ.le hvl)).trans (congrArg _ e2.symm)))`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Fam.liftS_ptT_eq_cI_smul_ioT : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : _root_.GlobalTheory.MiS.RealPackAlt ex) (u : D.what₂.Word), _root_.GlobalTheory.Fam.PackageHypotheses W → ∀ f : _root_.GlobalTheory.Fam.FamilyCharacter W u, f.RowOK → ∀ t j (h : j + 2 * 0 + 2 = D.R.m) (F : (f.t t).CT) P v, liftS ((f.t t).omT j h) f.c.volT.μ f.c.volT.𝓕 (F.1 v) ((f.t t).ptT j h P) = (f.t t).cI (j + 1) • ((f.t t).ioT j h F).1 (f.c.ItT j h P v) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f hR t j h F P v

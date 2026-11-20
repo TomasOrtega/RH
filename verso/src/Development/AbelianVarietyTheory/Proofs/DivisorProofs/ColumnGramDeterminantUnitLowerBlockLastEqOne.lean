@@ -6,11 +6,9 @@ open scoped ENNReal Matrix
 namespace GlobalTheory.IntBall
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `i _`. Simplify using `[blkW, lowMat]`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hij' : (i : ℕ) < j` using `hij`. Simplify using `only [blkW, lowMat]`. Use `split_ifs with h1 h2 h3 h4 h5 h6`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`.
-
-Consider the case `(exfalso; simp only [Fin.lt_def, Fin.ext_iff] at *; omega)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blkW_det_eq_one (r p0 : ℕ) (w : Low r → ℂ) : (blkW p0 w).det = 1 := by
   rw [Matrix.det_of_lowerTriangular]
@@ -26,9 +24,9 @@ theorem blkW_det_eq_one (r p0 : ℕ) (w : Low r → ℂ) : (blkW p0 w).det = 1 :
       | (exfalso; simp only [Fin.lt_def, Fin.ext_iff] at *; omega)
 
 /- English proof (translation)
-Unfold `colGram lminor`. Establish `: (Fin.castLE (Nat.le_of_lt_succ (Fin.last (r - 1)).isLt) : Fin (r - 1) → Fin (r - 1)) = id`. Use function extensionality and compare the values at `i`. Use `ext`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.submatrix_id_id, Matrix.det_mul, Matrix.det_conjTranspose, blkW_det_eq_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colGram_blkW_last (r p0 : ℕ) (w : Low r → ℂ) :
     colGram (blkW p0 w) (Fin.last (r - 1)) = 1 := by
@@ -39,7 +37,7 @@ theorem colGram_blkW_last (r p0 : ℕ) (w : Low r → ℂ) :
   simp
 
 /- English proof (translation)
-The claim follows from `colGram_blkW_last`.
+A detailed English derivation is pending.
 -/
 theorem colGramLast : ∀ (r p0 : ℕ) (w : Low r → ℂ), colGram (blkW p0 w) (Fin.last (r - 1)) = 1 :=
   colGram_blkW_last

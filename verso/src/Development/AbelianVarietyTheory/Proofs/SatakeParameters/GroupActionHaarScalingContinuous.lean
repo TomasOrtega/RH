@@ -12,11 +12,11 @@ open scoped TensorProduct
 namespace GlobalTheory.IndEtaleComp
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.IndEtaleCancel.isIndEtale_of_etale_of_isIndEtale X E Y h`. Establish `h2` using `GlobalTheory.isIndEtale_tensorProduct_left E Y G h1`. Use `letI : Algebra G F := ((e : Y ⊗[E] G →+* F).comp (Algebra.TensorProduct.includeRight : G →ₐ[E] Y ⊗[E] G).toRingHom).toAlgebra`. Set `e' : G ⊗[E] Y ≃ₐ[G] F` to `AlgEquiv.ofRingEquiv (f := (Algebra.TensorProduct.comm E G Y).toRingEquiv.trans e.toRingEquiv) (fun g => rfl)`. Establish `h3` using `GlobalTheory.StrictHensUnion.indEtale_of_algEquiv e' h2`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h4 : RingHom.Etale ((algebraMap E G).comp (algebraMap X E))` using `RingHom.Etale.stableUnderComposition _ _ (RingHom.etale_algebraMap.2 inferInstance) (RingHom.etale_algebraMap.2 inferInstance)`. Establish `h5` using `GlobalTheory.EtC.isIndEtale_comp_etale _ h4 _ h3`. Establish `h6 : (algebraMap Y F).comp (algebraMap X Y) = (algebraMap G F).comp ((algebraMap E G).comp (algebraMap X E))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ = e ((1 : Y) ⊗ₜ[E] algebraMap E G (algebraMap X E x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Algebra.TensorProduct.algebraMap_apply', IsScalarTower.algebraMap_apply E Y (Y ⊗[E] G), e.commutes, ← IsScalarTower.algebraMap_apply X E Y]`. Both sides reduce to the same expression. Rewrite using `[h6]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIndEtale_of_model (X E Y G F : Type) [CommRing X] [CommRing E] [CommRing Y] [CommRing G]
     [CommRing F] [Algebra X E] [Algebra X Y] [Algebra E Y] [IsScalarTower X E Y]
@@ -46,11 +46,9 @@ theorem isIndEtale_of_model (X E Y G F : Type) [CommRing X] [CommRing E] [CommRi
   exact h5
 
 /- English proof (translation)
-Establish `hf'` using `hf`. Take `⟨J, _, _, D, s, t, hs, hj⟩` from `hf'`. Use `letI : Algebra Y F := g.toAlgebra`. Use `haveI : Algebra.Etale Y F := hg`. Take `⟨i, G, _, _, hG, ⟨e⟩⟩` from `GlobalTheory.EtaleDescent.exists_etale_model_of_isColimit J D (Cocone.mk (CommRingCat.of Y) t) hs F`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : Algebra (D.obj i) Y := (t.app i).hom.toAlgebra`. Use `letI : Algebra X (D.obj i) := (s.app i).hom.toAlgebra`. Use `letI : Algebra X Y := f.toAlgebra`. Use `haveI : Algebra.Etale X (D.obj i) := (hj i).1`. Use `haveI : IsScalarTower X (D.obj i) Y := IsScalarTower.of_algebraMap_eq (fun x => (congrArg (fun φ : CommRingCat.of X ⟶ CommRingCat.of Y => φ.hom x) (hj i).2).symm)`.
-
-Conclude with `isIndEtale_of_model X (D.obj i) Y G F e hf`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isIndEtale_etale_comp {X Y F : Type} [CommRing X] [CommRing Y] [CommRing F]
     (f : X →+* Y) (g : Y →+* F) (hf : GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale f) (hg : g.Etale) :
@@ -70,11 +68,11 @@ theorem isIndEtale_etale_comp {X Y F : Type} [CommRing X] [CommRing Y] [CommRing
   exact isIndEtale_of_model X (D.obj i) Y G F e hf
 
 /- English proof (translation)
-Introduce `X Y Z _ _ _ f g hf hg`. Establish `hp : RingHom.toMorphismProperty @RingHom.Etale ≤ MorphismProperty.isFinitelyPresentable.{0} CommRingCat.{0}`. Introduce `X Y f hf`. Use `CommRingCat.isFinitelyPresentable_hom f ?_` and prove the remaining obligations. Use `letI := f.hom.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `haveI : Algebra.Etale X Y := hf`. Conclude with `RingHom.finitePresentation_algebraMap.2 inferInstance`. Take `⟨J, _, _, D, s, t, hs, hj⟩` from `hg`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale`. Rewrite using `[← MorphismProperty.ind_ind hp]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨J, inferInstance, inferInstance, D, (Functor.const J).map (CommRingCat.ofHom f) ≫ s, t, hs, fun j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `isIndEtale_etale_comp (F := D.obj j) f (s.app j).hom hf (hj j).1`. Establish `h2` using `(hj j).2 show CommRingCat.ofHom f ≫ s.app j ≫ t.app j = CommRingCat.ofHom (g.comp f)`. Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isIndEtale_comp : ∀ (X Y Z : Type) [CommRing X] [CommRing Y] [CommRing Z] (f : X →+* Y) (g : Y →+* Z), GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale f → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale g → GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.IsIndEtale (g.comp f) := by
   intro X Y Z _ _ _ f g hf hg

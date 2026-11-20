@@ -18,91 +18,91 @@ namespace Formalism.DoubleCosetMeasures.Final
 open Formalism.DoubleCosetMeasures
 
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.intRightInv`.
+A detailed English derivation is pending.
 -/
 theorem intRightInv : Formalism.DoubleCosetMeasures.IntRightInv := Formalism.DoubleCosetMeasures.P.intRightInv
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.intTwoSided`.
+A detailed English derivation is pending.
 -/
 theorem intTwoSided : Formalism.DoubleCosetMeasures.IntTwoSided := Formalism.DoubleCosetMeasures.P.intTwoSided
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.dosetVol`.
+A detailed English derivation is pending.
 -/
 theorem dosetVol : Formalism.DoubleCosetMeasures.DosetVol := Formalism.DoubleCosetMeasures.P.dosetVol
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.intBiInv`.
+A detailed English derivation is pending.
 -/
 theorem intBiInv : Formalism.DoubleCosetMeasures.IntBiInv := Formalism.DoubleCosetMeasures.P.intBiInv
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.uniGroup`.
+A detailed English derivation is pending.
 -/
 theorem uniGroup : Formalism.DoubleCosetMeasures.UniGroup := Formalism.DoubleCosetMeasures.P.uniGroup
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.simpleAdd`.
+A detailed English derivation is pending.
 -/
 theorem simpleAdd : Formalism.DoubleCosetMeasures.SimpleAdd := Formalism.DoubleCosetMeasures.P.simpleAdd
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.intInv`.
+A detailed English derivation is pending.
 -/
 theorem intInv : Formalism.DoubleCosetMeasures.IntInv := Formalism.DoubleCosetMeasures.P.intInv
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.latticeCoset`.
+A detailed English derivation is pending.
 -/
 theorem latticeCoset : Formalism.DoubleCosetMeasures.LatticeCoset := Formalism.DoubleCosetMeasures.P.latticeCoset
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.isoInv`.
+A detailed English derivation is pending.
 -/
 theorem isoInv : Formalism.DoubleCosetMeasures.IsoInv := Formalism.DoubleCosetMeasures.P.isoInv
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.isoFinite`.
+A detailed English derivation is pending.
 -/
 theorem isoFinite : Formalism.DoubleCosetMeasures.IsoFinite := Formalism.DoubleCosetMeasures.P.isoFinite
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.bbFinite_of intTwoSided intInv isoInv simpleAdd`.
+A detailed English derivation is pending.
 -/
 theorem bbFinite : Formalism.DoubleCosetMeasures.BBFinite := Formalism.DoubleCosetMeasures.P.bbFinite_of intTwoSided intInv isoInv simpleAdd
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.bbNorm_of bbFinite`.
+A detailed English derivation is pending.
 -/
 theorem bbNorm : Formalism.DoubleCosetMeasures.BBNorm := Formalism.DoubleCosetMeasures.P.bbNorm_of bbFinite
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.phaseWellDef`.
+A detailed English derivation is pending.
 -/
 theorem phaseWellDef : Formalism.DoubleCosetMeasures.PhaseWellDef := Formalism.DoubleCosetMeasures.P.phaseWellDef
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.sectionBij`.
+A detailed English derivation is pending.
 -/
 theorem sectionBij : Formalism.DoubleCosetMeasures.SectionBij := Formalism.DoubleCosetMeasures.P.sectionBij
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.suppCompact`.
+A detailed English derivation is pending.
 -/
 theorem suppCompact : Formalism.DoubleCosetMeasures.SuppCompact := Formalism.DoubleCosetMeasures.P.suppCompact
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.haarExists`.
+A detailed English derivation is pending.
 -/
 theorem haarExists : Formalism.DoubleCosetMeasures.HaarExists := Formalism.DoubleCosetMeasures.P.haarExists
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.suppJ`.
+A detailed English derivation is pending.
 -/
 theorem suppJ : Formalism.DoubleCosetMeasures.SuppJ := Formalism.DoubleCosetMeasures.P.suppJ
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.lemmaUSplit`.
+A detailed English derivation is pending.
 -/
 theorem lemmaUSplit : Formalism.DoubleCosetMeasures.LemmaUSplit := Formalism.DoubleCosetMeasures.P.lemmaUSplit
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.glRed`.
+A detailed English derivation is pending.
 -/
 theorem glRed : Formalism.DoubleCosetMeasures.GLRed := Formalism.DoubleCosetMeasures.P.glRed
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.volJ`.
+A detailed English derivation is pending.
 -/
 theorem volJ : Formalism.DoubleCosetMeasures.VolJ := Formalism.DoubleCosetMeasures.P.volJ
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.volII`.
+A detailed English derivation is pending.
 -/
 theorem volII : Formalism.DoubleCosetMeasures.VolII := Formalism.DoubleCosetMeasures.P.volII
 /- English proof (translation)
-The claim follows from `Formalism.DoubleCosetMeasures.P.volJadd`.
+A detailed English derivation is pending.
 -/
 theorem volJadd : Formalism.DoubleCosetMeasures.VolJadd := Formalism.DoubleCosetMeasures.P.volJadd
 

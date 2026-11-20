@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.LieZero
 
 /- English proof (translation)
-Use `IsHausdorff.haus (I := Ideal.span {p}) ‹_› x fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top]`. Conclude with `Ideal.mem_span_singleton.2 (h n)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_dvd {O : Type} [CommRing O] {p : O} [IsHausdorff (Ideal.span {p}) O] (x : O)
     (h : ∀ n : ℕ, p ^ n ∣ x) : x = 0 := by
@@ -23,7 +23,7 @@ theorem eq_zero_of_pow_dvd {O : Type} [CommRing O] {p : O} [IsHausdorff (Ideal.s
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nmul_succ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (n : ℕ) :
     nmul μ (n + 1) = op μ (nmul μ n) (fun k => X k) := by
@@ -31,9 +31,9 @@ theorem nmul_succ (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (n : ℕ) :
   rw [Function.iterate_succ_apply']
 
 /- English proof (translation)
-Proceed by induction on `n generalizing i with`. Consider the case `zero => simp [nmul]`. Consider the case `succ n ih`. Establish `hb : ∀ j, constantCoeff (Sum.elim (nmul μ n) (fun k => (X k : MvPowerSeries (Fin d) R)) j) = 0`. Introduce and unpack `(j | j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `ih j`. Simplify using the standard rewrite rules. Rewrite using `[nmul_succ]`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hb) hb (hμ i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_nmul (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (n : ℕ) (i : Fin d) : constantCoeff (nmul μ n i) = 0 := by
@@ -49,9 +49,9 @@ theorem constantCoeff_nmul (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     exact constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero hb) hb (hμ i)
 
 /- English proof (translation)
-Establish `hμs : HasSubst μ` using `hasSubst_of_constantCoeff_zero hμ`. Establish `hL : HasSubst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) E))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `hR : HasSubst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) E))` using `hasSubst_of_constantCoeff_zero fun _ => by simp`. Establish `h` using `congrArg (subst b) hf`. Unfold `cob1 inL inR at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `h` using `[subst_sub hb, subst_sub hb, subst_comp_subst_apply hμs hb, subst_comp_subst_apply hL hb, subst_comp_subst_apply hR hb, ← coe_substAlgHom hb, map_zero, coe_substAlgHom hb]`. Simplify using `only [subst_X hb] at h`. Rewrite using `[← sub_eq_zero, ← h, sub_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_eq_add_of_cob1_eq_zero {E : Type} [CommRing E] (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) E)
     (hμ : ∀ i, constantCoeff (μ i) = 0) (f : MvPowerSeries (Fin d) E) (hf : cob1 μ f = 0)
@@ -71,21 +71,21 @@ theorem subst_eq_add_of_cob1_eq_zero {E : Type} [CommRing E] (μ : Fin d → MvP
   rw [← sub_eq_zero, ← h, sub_sub]
 
 /- English proof (translation)
-Establish `hμ' : ∀ i, constantCoeff (up E μ i) = 0` using `fun i => by`. Simplify using `[up, constantCoeff_map, hμ i]`. Proceed by induction on `m with`. Consider the case `zero`. Establish `h0 : up E (nmul μ 0) = (0 : Fin d → MvPowerSeries (Fin d) E)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[up, nmul]`. Rewrite using `[h0, Nat.cast_zero, zero_smul]`. Establish `h` using `subst_eq_add_of_cob1_eq_zero (up E μ) hμ' f hf (0 : Fin d ⊕ Fin d → MvPowerSeries (Fin d) E) HasSubst.zero`. Establish `h1 : (fun i => subst (0 : Fin d ⊕ Fin d → MvPowerSeries (Fin d) E) (up E μ i)) = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `subst_zero_of_constantCoeff_zero (hμ' i)`. Rewrite `h` using `[h1]`. Establish `h2 : (fun i : Fin d => (0 : Fin d ⊕ Fin d → MvPowerSeries (Fin d) E) (Sum.inl i)) = 0` using `rfl`. Establish `h3 : (fun i : Fin d => (0 : Fin d ⊕ Fin d → MvPowerSeries (Fin d) E) (Sum.inr i)) = 0` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, h3]`. Take the linear combination `-h`. Consider the case `succ m ih`. Establish `hc : ∀ j, constantCoeff (Sum.elim (nmul μ m) (fun k => (X k : MvPowerSeries (Fin d) O)) j) = 0`. Introduce and unpack `(j | j)`.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Conclude with `constantCoeff_nmul μ hμ m j`. Simplify using the standard rewrite rules. Establish `hc' : ∀ j, constantCoeff (Sum.elim (up E (nmul μ m)) (fun k => (X k : MvPowerSeries (Fin d) E)) j) = 0`. Introduce and unpack `(j | j)`. Simplify using `[up, constantCoeff_map, constantCoeff_nmul μ hμ m j]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hs : up E (nmul μ (m + 1)) = fun i => subst (Sum.elim (up E (nmul μ m)) (fun k => (X k : MvPowerSeries (Fin d) E))) (up E μ i)`. Use function extensionality and compare the values at `i`. Simplify using `only [up, nmul_succ, op, at2]`. Rewrite using `[map_subst (hasSubst_of_constantCoeff_zero hc)]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `rcases j with j | j <;> simp [up]`. Rewrite using `[hs, subst_eq_add_of_cob1_eq_zero (up E μ) hμ' f hf _ (hasSubst_of_constantCoeff_zero hc')]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[ih, show (subst (fun k => (X k : MvPowerSeries (Fin d) E)) f) = f from congrFun (subst_self (R := E) (σ := Fin d)) f]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_nmul_of_cob1_eq_zero {O E : Type} [CommRing O] [CommRing E] [Algebra O E]
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O) (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -134,21 +134,19 @@ theorem subst_nmul_of_cob1_eq_zero {O E : Type} [CommRing O] [CommRing E] [Algeb
     rw [add_smul, one_smul]
 
 /- English proof (translation)
-Introduce `p _ O E _ _ _ hF G d c f l hl`. Use `haveI : IsAdicComplete (Ideal.span {(p : O)}) O := hF.complete`. Unfold `Chart.IsLie at hl`. Establish `key : (∀ n, ∃ s : MvPowerSeries (Fin d) O, MvPowerSeries.map (algebraMap O E) s = defect c.μ (p ^ n) f ∧ ∃ z, c.ev n s = (p : O) ^ n • z) → l = 0`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.zero_apply]`. Use `eq_zero_of_pow_dvd (p := (p : O)) _ fun n => ?_` and prove the remaining obligations. Take `⟨s, hs, z, hz⟩` from `H n`. Take `⟨φ, hφ⟩` from `(T.dvd_of_forall_invariantDifferential_dvd p O G n 1 0 (fun _ _ _ => one_dvd _)).2 w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hl.2 n w φ s hφ hs`. Establish `h2 : (p : O) ^ n ∣ φ (c.ev n s)`. Rewrite using `[hz]`. Simplify using the standard rewrite rules. Simplify using `using dvd_add h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun hIn hc0 => key fun n => ?_, fun hcob => key fun n => ?_⟩` and prove the remaining obligations. Use `choose g hg using hIn`. Set `s0 : MvPowerSeries (Fin d) O` to `fun α => g α`. Establish `hs0 : MvPowerSeries.map (algebraMap O E) s0 = f`. Use extensionality with `α`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[coeff_map, (hg α).2]`. Both sides reduce to the same expression. Establish `hc : constantCoeff s0 = 0`. Apply `hF.inj` to reduce the goal to its premises. Rewrite using `[map_zero, ← constantCoeff_map, hs0, hc0]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : HasSubst (nmul c.μ (p ^ n))` using `hasSubst_of_constantCoeff_zero (constantCoeff_nmul c.μ c.isLaw.const _)`. Use `⟨(p ^ n) • s0 - subst (nmul c.μ (p ^ n)) s0, ?_, c.ev n s0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_nsmul, map_subst hsub, hs0]`. Unfold `defect`. Rewrite using `[Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[map_sub, map_nsmul, (T.ev_subst_natMultiple_prime_pow_constant p O G d c n).1 s0, hc, map_zero, sub_zero, ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Use `⟨0, ?_, 0, ?_⟩` and prove the remaining obligations. Unfold `defect`. Rewrite using `[subst_nmul_of_cob1_eq_zero c.μ c.isLaw.const f hcob, sub_self, map_zero]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lie_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (O E : Type) [CommRing O] [CommRing E] [Algebra O E],
     IsFrame p E (RingHom.id O) → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d),

@@ -10,7 +10,7 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Simplify using `[galOf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem galOf_tmul' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B] [Algebra E B]
     (e : E ⊗[F] A ≃ₐ[E] B) (σ : E ≃ₐ[F] E) (l : E) (a : A) :
@@ -18,7 +18,7 @@ private theorem galOf_tmul' {A B : Type*} [CommRing A] [Algebra F A] [CommRing B
   simp [galOf]
 
 /- English proof (translation)
-Rewrite using `[adeleTensorEquiv_tmul, GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tensor_fst (l : E) (x : 𝔸[F]) :
     (adeleTensorEquiv F E (l ⊗ₜ x)).1 =
@@ -27,7 +27,7 @@ private theorem tensor_fst (l : E) (x : 𝔸[F]) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨w, hw⟩`. Take `rfl : below F w = v` from `(below_eq_iff w v).2 hw`. Conclude with `adeleTensorEquiv_tmul_snd l x w`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem tensor_atFin (v : HeightOneSpectrum (𝓞 F)) (l : E) (x : 𝔸[F]) :
     atFin v (adeleTensorEquiv F E (l ⊗ₜ x)) = tensorEquiv' E v (l ⊗ₜ x.2 v) := by
@@ -36,9 +36,9 @@ private theorem tensor_atFin (v : HeightOneSpectrum (𝓞 F)) (l : E) (x : 𝔸[
   exact adeleTensorEquiv_tmul_snd l x w
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(adeleTensorEquiv F E).surjective a`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l x`. Rewrite using `[galAd, galOf_tmul', tensor_fst, tensor_fst, galInf, galOf_tmul']`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add]`. Express the relevant statement in the definitionally equal form `((galAd σ) _).1 + ((galAd σ) _).1 = galInf σ (_ + _)`. Rewrite using `[map_add, hs, ht]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_fst (σ : E ≃ₐ[F] E) (a : 𝔸[E]) : (galAd σ a).1 = galInf σ a.1 := by
   obtain ⟨t, rfl⟩ := (adeleTensorEquiv F E).surjective a
@@ -52,9 +52,9 @@ private theorem gal_fst (σ : E ≃ₐ[F] E) (a : 𝔸[E]) : (galAd σ a).1 = ga
     rw [map_add, hs, ht]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩` from `(adeleTensorEquiv F E).surjective a`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul l x`. Rewrite using `[galAd, galOf_tmul', tensor_atFin, tensor_atFin, galFin, galOf_tmul']`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add s t hs ht`. Simplify using `only [map_add, hs, ht]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 private theorem gal_atFin (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[E]) :
     atFin v (galAd σ a) = galFin σ v (atFin v a) := by
@@ -67,7 +67,7 @@ private theorem gal_atFin (σ : E ≃ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) 
     simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨w, hw⟩`. Take `rfl : below F w = v` from `(below_eq_iff w v).2 hw`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem adele_atFin (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[F]) :
     atFin v (adeleMap F E a) = incFin E v (a.2 v) := by
@@ -76,7 +76,7 @@ private theorem adele_atFin (v : HeightOneSpectrum (𝓞 F)) (a : 𝔸[F]) :
   rfl
 
 /- English proof (translation)
-Establish `h : adeleMap F E a = adeleTensorEquiv F E ((1 : E) ⊗ₜ a)`. Rewrite using `[adeleTensorEquiv_tmul, map_one, one_mul]`. Rewrite using `[h, galAd, galOf_tmul', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_adele (σ : E ≃ₐ[F] E) (a : 𝔸[F]) : galAd σ (adeleMap F E a) = adeleMap F E a := by
   have h : adeleMap F E a = adeleTensorEquiv F E ((1 : E) ⊗ₜ a) := by
@@ -84,7 +84,7 @@ private theorem gal_adele (σ : E ≃ₐ[F] E) (a : 𝔸[F]) : galAd σ (adeleMa
   rw [h, galAd, galOf_tmul', map_one]
 
 /- English proof (translation)
-Establish `h : infMap F E x = GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv (K` using `F) (L := E) ((1 : E) ⊗ₜ x) := by`. Rewrite using `[GroundTheory.Global.InfinitePlace.tensorInfiniteAdeleRingEquiv_tmul', map_one, one_mul]`. Rewrite using `[h, galInf, galOf_tmul', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_inf (σ : E ≃ₐ[F] E) (x : InfiniteAdeleRing F) :
     galInf σ (infMap F E x) = infMap F E x := by
@@ -94,7 +94,7 @@ private theorem gal_inf (σ : E ≃ₐ[F] E) (x : InfiniteAdeleRing F) :
   rw [h, galInf, galOf_tmul', map_one]
 
 /- English proof (translation)
-Establish `h (m : E) : algebraMap E 𝔸[E] m = adeleTensorEquiv F E (m ⊗ₜ (1 : 𝔸[F]))`. Rewrite using `[adeleTensorEquiv_tmul, map_one, mul_one]`. Rewrite using `[h l, galAd, galOf_tmul', ← h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gal_algebraMap (σ : E ≃ₐ[F] E) (l : E) :
     galAd σ (algebraMap E 𝔸[E] l) = algebraMap E 𝔸[E] (σ l) := by
@@ -103,7 +103,7 @@ private theorem gal_algebraMap (σ : E ≃ₐ[F] E) (l : E) :
   rw [h l, galAd, galOf_tmul', ← h]
 
 /- English proof (translation)
-The claim follows from `Units.ext (by ext i j; simpa using H _)`.
+A detailed English derivation is pending.
 -/
 private theorem mapGL_square {A B C D : Type*} [CommRing A] [CommRing B] [CommRing C] [CommRing D]
     (n : ℕ) (f : A →+* B) (g : B →+* D) (h : A →+* C) (k : C →+* D) (H : ∀ a, g (f a) = k (h a))
@@ -113,15 +113,13 @@ private theorem mapGL_square {A B C D : Type*} [CommRing A] [CommRing B] [CommRi
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n`. Use `⟨fun g => ?_, fun v g => ?_, fun g => ?_, fun v g => ?_, fun g => ?_, fun g => ?_, fun δ => ?_, fun γ => ?_⟩` and prove the remaining obligations. Conclude with `mapGL_square n _ _ _ _ (gal_fst σ) g`. Conclude with `mapGL_square n _ _ _ _ (gal_atFin σ v) g`. Conclude with `mapGL_square n _ _ _ _ (fun _ => rfl) g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `atFin v (adeleMap F E ((g : Matrix (Fin n) (Fin n) 𝔸[F]) i j)) = incFin E v ((finAt v g : Matrix (Fin n) (Fin n) _) i j)`. Rewrite using `[finAt_apply]`. Conclude with `adele_atFin v _`. Use `Units.ext ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `using gal_adele σ _`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `using gal_inf σ _`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `gal_algebraMap σ ((δ : Matrix (Fin n) (Fin n) E) i j)`. Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`.
-
-Conclude with `adeleMap_algebraMap (K := F) (L := E) ((γ : Matrix (Fin n) (Fin n) F) i j)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.adele_galois_action_baseChange_compat :
     Compat := by

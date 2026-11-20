@@ -14,21 +14,19 @@ namespace GlobalTheory.BigTop.Fun.ThbTie
 end GlobalTheory.BigTop.Fun.ThbTie
 open GlobalTheory.BigTop.Fun.ThbTie in
 /- English proof (translation)
-Establish `hQ` using `_root_.GlobalTheory.T.forallLeaves_fitted_of_gBig _ hS hd hT`. Use `_root_.GlobalTheory.BigTop.Fun.LeafConditions.mono hQ ?_` and prove the remaining obligations. Introduce `D L hT' Gi Gl Kc Y cX ex Csz p CF d C CH _ htie`. Use `⟨htie, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `htie.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsq` using `ha.sq`. Establish `hin : ∀ (ij : Sq D) (s : ℤ), 1 ≤ s → s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 → Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) 1 (bTH D C p.Z.x p.Z.b) ∧ ∀ c, d.zTd ij c s ≠ 0 ∧ Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) (d.zTd ij c s) (bTH D C p.Z.x …`. Introduce `ij s h1 h2`. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le (by omega : (0 : ℤ) ≤ s)`. Establish `h1' : 1 ≤ n` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2' : n ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2` using `by omega`. Conclude with `hq ij.1 ij.2 n h1' h2' _ _ (hsq.inside ij n h1' h2').1`. Establish `hB0 : ∀ ij : Sq D, 0 ≤ bTH D C p.Z.x p.Z.b`. Introduce `ij`. Establish `hr : 1 ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `GlobalTheory.FunObj.SqNum.halfRank GlobalTheory.ChiGrid.rankV`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Use linear arithmetic over natural numbers and integers. Conclude with `htLe_nonneg (hin ij 1 le_rfl (by exact_mod_cast hr)).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : d.O.bTH C p.Z.x p.Z.b = bTH D C p.Z.x p.Z.b` using `rfl`. Establish `hzT : ∀ ij s, d.O.zT ij s = 1` using `hsq.base`. Use `⟨fun ij s h1 h2 => ?_, fun ij s => ?_, fun ij c s => ?_⟩` and prove the remaining obligations. Establish `h2' : s ≤ (GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2 : ℤ)` using `h2.trans_eq (congrArg (fun n : ℕ => (n : ℤ)) (sqRank_half (D := D) ij))`. Conclude with `⟨by rw [hzT]; exact one_ne_zero, fun c => ((hin ij s h1 h2').2 c).1⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hzT, hB]`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Conclude with `(hin ij s hs.1 hs.2).1`. Use `(hsq.outside ij s hs).2.1` as an intermediate fact. Express the relevant statement in the definitionally equal form `Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) 1 _`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[this]`. Conclude with `htLe_one_zero (hB0 ij)`. Rewrite using `[hB]`. Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ GlobalTheory.FunObj.SqNum.halfRank D ij.1 ij.2`. Conclude with `((hin ij s hs.1 hs.2).2 c).2`.
-
-Take `⟨e1, e2, -⟩` from `hsq.outside ij s hs`. Express the relevant statement in the definitionally equal form `Formalism.PairingDivisionLocalBalance.HtLe (d.gT ij s) (d.zTd ij c s) _`. Rewrite using `[e1 c, e2]`. Conclude with `htLe_one_zero (hB0 ij)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BigTop.Fun.thb_tie_alt (hS : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint)
     (hd : Closed FamHyp fun Fm _ => _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x _ i _ => |(Fm.L x i).logDerivativeAtOne| ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps)

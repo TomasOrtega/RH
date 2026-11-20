@@ -11,9 +11,9 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo GlobalTheory.Companio
 open GroundTheory.Heights₂.Heights.NumbersDVR (pointIdeal intNum mixedDiff diffStep)
 
 /- English proof (translation)
-Establish `: LeftCommutative (diffStep (K` using `K)) := ⟨fun x y g => by`. Use function extensionality and compare the values at `z`. Simplify using `only [diffStep, sub_right_comm z x y]`. Use the proof step `ring⟩`. Unfold `intNum mixedDiff`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.foldr_eq]`.
+A detailed English derivation is pending.
 -/
 theorem intNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {F : Type} [Field F] (I : Ideal (MvPolynomial (Σ k, ι k) F))
     {n m : ℕ} (a : Fin n → K → ℤ) (b : Fin m → K → ℤ) (h : (List.ofFn a).Perm (List.ofFn b)) : intNum F I a = intNum F I b := by
@@ -25,11 +25,11 @@ theorem intNum_perm {K : Type} [DecidableEq K] {ι : K → Type} {F : Type} [Fie
   rw [h.foldr_eq]
 
 /- English proof (translation)
-Establish `h1 : Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ) = (List.ofFn w : Multiset J)`. Rewrite using `[map_sum, ← Fin.univ_val_map, Finset.sum_eq_multiset_sum]`. Simplify using `only [Finsupp.toMultiset_single, one_smul]`. Use `conv_rhs => rw [← Multiset.sum_map_singleton (Multiset.map w Finset.univ.val), Multiset.map_map]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `h2 : (Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList.Perm (List.ofFn w)`. Rewrite using `[← Multiset.coe_eq_coe, Multiset.coe_toList, h1]`. Establish `h4 : (List.ofFn fun k => (monoLines l (∑ j, Finsupp.single (w j) 1) d k).a) = ((Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList).map fun x => (l x).a`. Use `List.ext_getElem (by simp) fun i h h' => ?_` and prove the remaining obligations. Establish `hi : i < (Finsupp.toMultiset (∑ j, Finsupp.single (w j) 1 : J →₀ ℕ)).toList.length` using `by simpa using h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.getElem_ofFn, List.getElem_map, monoLines, dif_pos hi, List.get_eq_getElem]`. Rewrite using `[h4]`. Establish `h5` using `h2.map fun x => (l x).a`. Rewrite `h5` using `[List.map_ofFn]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem monoLines_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (l : J → HermLine ι) {d : ℕ}
     (w : Fin d → J) :
@@ -51,7 +51,7 @@ theorem monoLines_perm {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype 
   rwa [List.map_ofFn] at h5
 
 /- English proof (translation)
-Unfold `monoLines`. Use `split_ifs`. Conclude with `hl _`. Conclude with `contDiffOn_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem monoLines_smooth {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {J : Type} (l : J → HermLine ι)
     (hl : ∀ j, IsSmoothHerm (l j)) (m : J →₀ ℕ) (d : ℕ) (k : Fin d) : IsSmoothHerm (monoLines l m d k) := by
@@ -64,13 +64,13 @@ variable {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N)
 
 open Classical in
 /- English proof (translation)
-Establish `h1 : toA (∏ j, X (w j) : RP Ψ N) = basisMonomials (Option (Ψ × Fin N)) ℝ (∑ j, Finsupp.single (some (w j)) 1)`. Simplify using `only [toA, map_prod, rename_X, coe_basisMonomials]`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Establish `h2 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ).degree = dimFl Ψ N`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `[map_sum]`. Establish `h3 : (∑ j, Finsupp.single (some (w j)) 1 : Option (Ψ × Fin N) →₀ ℕ) none = 0`. Simplify using `[Finsupp.finsetSum_apply]`. Establish `hs : ∀ j, IsSmoothHerm (M.line 1 j)` using `fun j => by`. Consider the cases of `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Conclude with `M.A_smooth`. Conclude with `M.x_smooth _ _`. Establish `h4` using `GlobalTheory.CompanionTheory.Ar.Giv.degreeGeneric_of_degree hI.degree M.K M.ι M.P (dimFl Ψ N) (monoLines (M.line 1) (∑ j, Finsupp.single (some (w j)) 1) (dimFl Ψ N)) M.arith (monoLines_smooth _ hs _ _)`. Establish `hδ : (M.δ : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 M.δ_pos.ne'`. Rewrite using `[h1, RootModel.geoFun, Module.Basis.constr_basis, RootModel.geoMono, if_pos h2, h3, pow_zero, mul_one, div_mul_cancel₀ _ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `h4.trans (congrArg _ ?_)` and prove the remaining obligations. Use `(intNum_perm _ _ _ (monoLines_perm (M.line 1) fun j => some (w j))).trans ?_` and prove the remaining obligations. Simplify using `only [RootModel.line, M.x_deg]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoFun_word (hI : PB.Inputs) (w : Fin (dimFl Ψ N) → Ψ × Fin N) :
     M.geoFun (toA (∏ j, X (w j))) * M.δ =
@@ -97,9 +97,9 @@ theorem geoFun_word (hI : PB.Inputs) (w : Fin (dimFl Ψ N) → Ψ × Fin N) :
 
 open Classical in
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_multilinear_gen (P := M.P) M.arith`. Rewrite using `[← hF, F.map_sum, Fintype.prod_sum]`. Establish `h1 : ∀ w : Fin (dimFl Ψ N) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j) : RP Ψ N) = ((∏ j, c j (w j) : ℤ) : ℝ) • toA (∏ j, X (w j))` using `fun w => by`. Rewrite using `[Finset.prod_smul, Int.cast_smul_eq_zsmul, toA, toA, map_zsmul]`. Establish `h2 : toA (∑ w : Fin (dimFl Ψ N) → Ψ × Fin N, ∏ j, c j (w j) • X (w j) : RP Ψ N) = ∑ w : Fin (dimFl Ψ N) → Ψ × Fin N, toA (∏ j, c j (w j) • X (w j))` using `map_sum (rename some) _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h2, map_sum, Finset.sum_mul, Int.cast_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[h1, map_smul, F.map_smul_univ, smul_eq_mul, smul_eq_mul, mul_assoc, geoFun_word M hI, hF, Int.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem geoFun_prod (hI : PB.Inputs) (c : Fin (dimFl Ψ N) → Ψ × Fin N → ℤ) :
     M.geoFun (toA (∏ j, ∑ x, c j x • X x)) * M.δ =
@@ -116,7 +116,7 @@ theorem geoFun_prod (hI : PB.Inputs) (c : Fin (dimFl Ψ N) → Ψ × Fin N → �
   rw [h1, map_smul, F.map_smul_univ, smul_eq_mul, smul_eq_mul, mul_assoc, geoFun_word M hI, hF, Int.cast_mul]
 
 /- English proof (translation)
-Establish `: CharZero Ω` using `algebraRat.charZero Ω`. Take `rfl : h = DivisionRing.toRatAlgebra` from `Subsingleton.elim _ _`. Conclude with `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalNef.genIdeal_eq y).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem test_pointIdeal_rat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω] [h : Algebra ℚ Ω]
     (y : (Σ k, ι k) → Ω) : pointIdeal ℚ y = (mCoordIdeal y).map (MvPolynomial.map (Int.castRingHom ℚ)) := by
@@ -125,11 +125,11 @@ theorem test_pointIdeal_rat {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fin
   exact (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalNef.genIdeal_eq y).symm
 
 /- English proof (translation)
-Introduce `hI Ψ _ _ p q M _ n r e hq hn`. Establish `hc : n + r = dimFl Ψ (p + q)`. Rewrite using `[hn, ← count_pairs, ← Fintype.card_congr e, Fintype.card_fin]`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (d : ℕ) (_ : d = dimFl Ψ (p + q)) (c : Fin d → Ψ × Fin (p + q) → ℤ), M.geoFun (toA (∏ j, ∑ x, c j x • X x)) * M.δ = inum ℚ M.y fun j => ∑ x, c j x • M.xdeg x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl c`. Rewrite using `[inum, test_pointIdeal_rat]`. Use `geoFun_prod M hI c` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Rewrite using `[test_factor e hq hn, key _ hc]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.append_left, sum_muCoef, muDeg]`. Simplify using `only [Fin.append_right, sum_fibCoef, fibDeg]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem geoTest : GeoTest := by
   intro hI Ψ _ _ p q M _ n r e hq hn

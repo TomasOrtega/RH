@@ -10,7 +10,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.TP.Sub
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ ι a r w hl S J`. Use `⟨fun h => h.1 hl, fun h => ⟨fun _ => h, ?_⟩⟩` and prove the remaining obligations. Introduce `P AI _ A hA O _ _ _ Bw hj`. Conclude with `absurd (hj.mem_placesOver hA) hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Sub.clAway_holds :
     ClAway := by

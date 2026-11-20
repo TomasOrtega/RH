@@ -10,9 +10,9 @@ variable {C : Type} [Field C] {R : Type} [CommRing R] [Algebra R C]
 variable {X : Type} [Fintype X] [DecidableEq X]
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, rfl⟩`. Use `⟨fun j => algebraMap R C (c j), fun j => ⟨c j, rfl⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, mul_comm]`. Introduce and unpack `⟨w, hw, rfl⟩ choose c hc using hw`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, hc, mul_comm]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_spanCols_iff (B : Matrix X X C) (f : X → C) :
     f ∈ Submodule.span R (Set.range fun j x => B x j) ↔ ∃ w ∈ intFun (C := C) R X, f = B *ᵥ w := by
@@ -29,9 +29,9 @@ theorem mem_spanCols_iff (B : Matrix X X C) (f : X → C) :
     simp [Matrix.mulVec, dotProduct, Finset.sum_apply, Algebra.smul_def, hc, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[mem_spanCols_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hB, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨_, h, by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hB, Matrix.one_mulVec]⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_spanCols_iff_inv (B : Matrix X X C) (hB : IsUnit B.det) (f : X → C) :
     f ∈ Submodule.span R (Set.range fun j x => B x j) ↔ B⁻¹ *ᵥ f ∈ intFun (C := C) R X := by
@@ -43,11 +43,11 @@ theorem mem_spanCols_iff_inv (B : Matrix X X C) (hB : IsUnit B.det) (f : X → C
     exact ⟨_, h, by rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hB, Matrix.one_mulVec]⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h j`. Take `⟨r, hr⟩` from `h _ (Submodule.subset_span ⟨j, rfl⟩)`. Conclude with `⟨r, by rw [hr]; simp [Matrix.vecMul, dotProduct]⟩`. Introduce `h f hf`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, rfl⟩` from `(mem_spanCols_iff B f).1 hf`. Use `choose r hr using h`. Use `choose s hs using hw`. Use `⟨∑ j, r j * s j, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, map_mul, hr, hs, Matrix.vecMul, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mem_dualLat_spanCols_iff (B : Matrix X X C) (u : X → C) :
     u ∈ dualLat (Submodule.span R (Set.range fun j x => B x j)) ↔ u ᵥ* B ∈ intFun (C := C) R X := by
@@ -67,7 +67,7 @@ theorem mem_dualLat_spanCols_iff (B : Matrix X X C) (u : X → C) :
     ring
 
 /- English proof (translation)
-Establish `hBT : IsUnit (B⁻¹)ᵀ.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det _ hB`. Use extensionality with `u`. Rewrite using `[mem_dualLat_spanCols_iff, mem_spanCols_iff_inv _ hBT, ← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hB, Matrix.mulVec_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_spanCols (B : Matrix X X C) (hB : IsUnit B.det) :
     dualLat (Submodule.span R (Set.range fun j x => B x j)) =
@@ -80,7 +80,7 @@ theorem dualLat_spanCols (B : Matrix X X C) (hB : IsUnit B.det) :
     Matrix.nonsing_inv_nonsing_inv _ hB, Matrix.mulVec_transpose]
 
 /- English proof (translation)
-Establish `hBT : IsUnit (B⁻¹)ᵀ.det`. Rewrite using `[Matrix.det_transpose]`. Conclude with `Matrix.isUnit_nonsing_inv_det _ hB`. Rewrite using `[dualLat_spanCols B hB, dualLat_spanCols _ hBT, ← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ hB, Matrix.transpose_transpose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_dualLat_spanCols (B : Matrix X X C) (hB : IsUnit B.det) :
     dualLat (dualLat (Submodule.span R (Set.range fun j x => B x j))) =
@@ -92,7 +92,7 @@ theorem dualLat_dualLat_spanCols (B : Matrix X X C) (hB : IsUnit B.det) :
     Matrix.nonsing_inv_nonsing_inv _ hB, Matrix.transpose_transpose]
 
 /- English proof (translation)
-Use `choose r hr using hP`. Establish `: P = (Matrix.of r).map (algebraMap R C)` using `by ext x j; simp [hr]`. Rewrite using `[this, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hv.map_le_one _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_det_le_one (v : Valuation C NNReal) (hv : v.Integers R) (P : Matrix X X C)
     (hP : ∀ x j, ∃ r : R, algebraMap R C r = P x j) : v P.det ≤ 1 := by
@@ -102,11 +102,9 @@ theorem valuation_det_le_one (v : Valuation C NNReal) (hv : v.Integers R) (P : M
   exact hv.map_le_one _
 
 /- English proof (translation)
-Establish `key : ∀ (B B' : Matrix X X C), Submodule.span R (Set.range fun j x => B x j) ≤ Submodule.span R (Set.range fun j x => B' x j) → v B.det ≤ v B'.det`. Introduce `B B' hle`. Establish `hcol : ∀ j, ∃ w ∈ intFun (C` using `C) R X, (fun x => B x j) = B' *ᵥ w := fun j => (mem_spanCols_iff B' _).1 (hle (Submodule.subset_span ⟨j, rfl⟩))`. Use `choose w hw hBw using hcol`. Establish `hBP : B = B' * Matrix.of fun x j => w j x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x j`. Use `congrFun (hBw j) x` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Establish `hle1 : v (Matrix.of fun x j => w j x).det ≤ 1` using `valuation_det_le_one v hv _ fun x j => hw j x`. Rewrite using `[hBP, Matrix.det_mul, map_mul]`.
-
-Conclude with `mul_le_of_le_one_right' hle1`. Conclude with `le_antisymm (key B B' h.le) (key B' B h.ge)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_det_eq_of_span_eq (v : Valuation C NNReal) (hv : v.Integers R)
     (B B' : Matrix X X C)

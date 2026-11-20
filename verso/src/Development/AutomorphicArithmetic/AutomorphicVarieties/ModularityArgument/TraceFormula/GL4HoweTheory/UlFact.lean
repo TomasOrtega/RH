@@ -4,45 +4,41 @@ import Formalism.PadicSubsetSums.StableGradedCounts.BaseChangeIwahoriFactorizati
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n ϖ hϖ a c ha x hx`. Establish `hlt : valuation E ((ϖ ^ a : Eˣ) : E) < 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]`. Conclude with `zpow_lt_one₀ (by rw [← hϖ]; exact (Valuation.pos_iff _).2 ϖ.ne_zero) uniformizer_lt_one (by omega)`. Set `t : Fin n → Eˣ` to `fun i => ϖ ^ (c * ((i : ℕ) : ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : Fin n → Fin n → E` to `fun i j => ((t i * (t j)⁻¹ : Eˣ) : E)`. Establish `hw0 : ∀ i j, w i j ≠ 0` using `fun i j => Units.ne_zero _`. Establish `hwi : ∀ i, w i i = 1` using `fun i => by simp [w]`. Establish `hww : ∀ i k j, w i k * w k j = w i j` using `fun i k j => by`. Simplify using `only [w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `hpow : ∀ i j : Fin n, ((ϖ ^ (a + c * (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ))) : Eˣ) : E) = ((ϖ ^ a : Eˣ) : E) * w i j` using `fun i j => by`. Simplify using `only [w, t]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Units.val_mul, ← zpow_neg, ← zpow_add, ← zpow_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : ∀ i j, (1 : Matrix (Fin n) (Fin n) E) i j * w i j = (1 : Matrix (Fin n) (Fin n) E) i j` using `fun i j => by`. Distinguish the cases in `h : i = j`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[hwi, mul_one]`. Rewrite using `[Matrix.one_apply_ne h, zero_mul]`. Establish `key : ∀ (i j : Fin n) (z : E), valuation E (z * w i j - (1 : Matrix (Fin n) (Fin n) E) i j) ≤ valuation E ((ϖ ^ (a + c * (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ))) : Eˣ) : E) ↔ valuation E (z - (1 : Matrix (Fin n) (Fin n) E) i j) ≤ valuation E ((ϖ ^ a : Eˣ) : E)` using `fun i j z => by`. Rewrite using `[hpow, ← hone i j, ← sub_mul, hone, map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_iff_left₀ ((Valuation.pos_iff (valuation E)).2 (hw0 i j))`. Establish `hg : ∀ i j, valuation E ((x : Matrix (Fin n) (Fin n) E) i j / w i j - (1 : Matrix (Fin n) (Fin n) E) i j) ≤ valuation E ((ϖ ^ a : Eˣ) : E)` using `fun i j => (key i j _).1 (by rw [div_mul_cancel₀ _ (hw0 i j)]; exact hx i j)`. Establish `h1 : ∀ i j, valuation E ((1 : Matrix (Fin n) (Fin n) E) i j) ≤ 1` using `fun i j => by`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ i j, (x : Matrix (Fin n) (Fin n) E) i j / w i j ∈ 𝒪[E]` using `fun i j => by`. Express the relevant statement in the definitionally equal form `valuation E _ ≤ 1`. Rewrite using `[← sub_add_cancel (_ / w i j) ((1 : Matrix (Fin n) (Fin n) E) i j)]`. Conclude with `Valuation.map_add_le _ ((hg i j).trans hlt.le) (h1 i j)`. Set `I : Ideal 𝒪[E]` to `{ carrier := {z | valuation E (z : E) ≤ valuation E ((ϖ ^ a : Eˣ) : E)} add_mem' := fun {y z} h h' => by`.
+Introduce a local definition for the expression. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h`, `h'`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[Subring.coe_add]`. Conclude with `Valuation.map_add_le _ h h'`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun r z h => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h`, the goal using `[Set.mem_setOf_eq]`. Rewrite using `[smul_eq_mul, Subring.coe_mul, map_mul]`. Simplify using `using mul_le_mul' (show valuation E (r : E) ≤ 1 from r.2) h }`. Establish `hI : ∀ z : 𝒪[E], z ∈ I ↔ valuation E (z : E) ≤ valuation E ((ϖ ^ a : Eˣ) : E)` using `fun _ => Iff.rfl`. Establish `hIm : I ≤ IsLocalRing.maximalIdeal 𝒪[E]` using `IsLocalRing.le_maximalIdeal fun h => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: (1 : 𝒪[E]) ∈ I` using `h ▸ Submodule.mem_top`. Rewrite `this` using `[hI]`. Conclude with `absurd (lt_of_le_of_lt this hlt) (by simp)`. Set `g : Matrix (Fin n) (Fin n) 𝒪[E]` to `fun i j => ⟨_, hint i j⟩`. Establish `hgd : ∀ i, g i i - 1 ∈ I` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hg i i` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply_eq]`. Then use the resulting hypothesis. Establish `hgo : ∀ i j, i ≠ j → g i j ∈ I` using `fun i j h => by`. Use `hg i j` as an intermediate fact. Rewrite `this` using `[Matrix.one_apply_ne h, sub_zero]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨X, Y, δ, e, x1, x0, -, -, hδ, y1, y0, yL⟩` from `Formalism.IrreducibleCountingLemmas.Z.iwahori_factorization_exists 𝒪[E] I I hIm n g (fun i => by`. Use `Formalism.IrreducibleCountingLemmas.Z.isUnit_sub_of_mem_maximalIdeal isUnit_one (hIm (I.neg_mem (hgd i)))` as an intermediate fact. Simplify using `using this)`. Use the proof step `(fun i j h => hgo i j h.ne) fun i j h => hgo i j h.ne'`. Set `U : Matrix (Fin n) (Fin n) E` to `fun i j => (X i j : E) * w i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `B : Matrix (Fin n) (Fin n) E` to `fun i j => ((δ i * Y i j : 𝒪[E]) : E) * w i j`. Establish `hU0 : ∀ i j, j < i → U i j = 0` using `fun i j h => by simp [U, x0 i j h]`. Establish `hU1 : ∀ i, U i i = 1` using `fun i => by simp [U, x1, hwi]`. Establish `hdet : U.det ≠ 0`. Rewrite using `[Matrix.det_of_upperTriangular (fun i j h => hU0 i j h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hU1]`. Set `u : GL (Fin n) E` to `Matrix.GeneralLinearGroup.mkOfDetNeZero U hdet`. Establish `hUB : U * B = (x : Matrix (Fin n) (Fin n) E)`. Use extensionality with `i j`. Establish `h2 : (x : Matrix (Fin n) (Fin n) E) i j / w i j = ∑ k, (X i k : E) * δ k * Y k j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congrArg (fun z : 𝒪[E] => (z : E)) (e i j)` as an intermediate fact. Simplify `this` using `[g]`. Rewrite using `[← div_mul_cancel₀ ((x : Matrix (Fin n) (Fin n) E) i j) (hw0 i j), h2, Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [U, B]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hww i k j]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ((u⁻¹ * x : GL (Fin n) E) : Matrix (Fin n) (Fin n) E) = B`. Rewrite using `[Units.val_mul, ← hUB]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Express the relevant statement in the definitionally equal form `(u⁻¹).val * (u.val * B) = B`. Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`. Use `⟨u, (mem_unipB E).2 ⟨hU0, hU1⟩, u⁻¹ * x, fun i j => ?_, (mul_inv_cancel_left _ _).symm, fun i j h => ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Use `(key i j _).2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy i j with h | h | h` into its components or cases. Rewrite using `[y0 i j h, Matrix.one_apply_ne h.ne]`. Simplify using the standard rewrite rules. Substitute `h` using the available equality. Rewrite using `[y1, mul_one, Matrix.one_apply_eq]`.
-
-Establish `: δ i - 1 ∈ I`. Simplify using `using I.add_mem (Ideal.mul_le_left (hδ i)) (hgd i)`. Conclude with `this`. Rewrite using `[Matrix.one_apply_ne h.ne', sub_zero]`. Conclude with `(hI _).1 (I.mul_mem_left _ (yL i j h))`.
-
-Rewrite using `[hb]`. Simplify using `[B, y0 i j h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.ulFact :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ a c : ℤ, 1 ≤ a → ∀ x ∈ howeSet n ϖ a c,

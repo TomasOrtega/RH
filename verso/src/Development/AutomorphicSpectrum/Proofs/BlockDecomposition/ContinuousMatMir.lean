@@ -25,7 +25,7 @@ theorem unipM_val (n : ℕ) (v : Multiplicative (Fin (n + 1) → k)) :
     ((unipM k n v : Mir k (n + 1)) : GL (Fin (n + 2)) k) = unip k (n + 1) v := rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU]`. Conclude with `⟨v, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem unipM_mem_MirUin (n : ℕ) (v : Multiplicative (Fin (n + 1) → k)) : unipM k n v ∈ MirUin k (n + 1) := by
   rw [GlobalTheory.BZMir.MirUin, Subgroup.mem_subgroupOf, GlobalTheory.BZMir.MirU]
@@ -38,7 +38,7 @@ namespace GlobalTheory.CompanionTheory.BZPhiPhi
 variable (k : Type) [Field k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = Fin.last n`. Substitute `h` using the available equality. Simplify using `[GlobalTheory.CompanionTheory.BZPhiPhi.rowQ]`. Simplify using `[GlobalTheory.CompanionTheory.BZPhiPhi.rowQ, Matrix.one_apply, Pi.single_apply, h, Ne.symm h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowQ_one (n : ℕ) : rowQ k n 1 = Pi.single (Fin.last n) 1 := by
   funext j
@@ -56,26 +56,24 @@ section Top
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matMir (n : ℕ) :
     Continuous fun g : Mir k (n + 1) => ((g : GL (Fin (n + 2)) k) : Matrix (Fin (n + 2)) (Fin (n + 2)) k) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun j => (continuous_apply _).comp ((continuous_apply _).comp (continuous_matMir n))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rowQ (n : ℕ) : Continuous (rowQ k n) :=
   continuous_pi fun j => (continuous_apply _).comp ((continuous_apply _).comp (continuous_matMir n))
 
 /- English proof (translation)
-Establish `hcol : Continuous fun v : Fin (n + 1) → k => GlobalTheory.BZMir.colMat k (n + 1) v`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Unfold `GlobalTheory.BZMir.colMat`. Distinguish the cases in `hj : j = Fin.last (n + 1)`. Simplify using `only [if_pos hj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Break down `Fin.eq_castSucc_or_eq_last i with ⟨i, rfl⟩ | rfl` into its components or cases. Simplify using `only [Fin.lastCases_castSucc]`. Conclude with `continuous_apply i`. Simplify using `only [Fin.lastCases_last]`. Conclude with `continuous_const`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_neg hj]`. Conclude with `continuous_const`. Establish `hval : Continuous fun v : Fin (n + 1) → k => (1 : Matrix (Fin (n + 2)) (Fin (n + 2)) k) + GlobalTheory.BZMir.colMat k (n + 1) v` using `continuous_const.add hcol`. Establish `hinv : Continuous fun v : Fin (n + 1) → k => (1 : Matrix (Fin (n + 2)) (Fin (n + 2)) k) - GlobalTheory.BZMir.colMat k (n + 1) v` using `continuous_const.sub hcol`. Establish `hGL : Continuous fun v : Fin (n + 1) → k => GlobalTheory.BZMir.unip k (n + 1) (Multiplicative.ofAdd v)` using `Units.continuous_iff.2 ⟨hval, hinv⟩`.
-
-Conclude with `hGL.subtype_mk _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_unipM (n : ℕ) :
     Continuous fun v : Fin (n + 1) → k => unipM k n (Multiplicative.ofAdd v) := by

@@ -9,18 +9,18 @@ section
 variable {R K : Type} [CommRing R] [CommRing K] {f : R →+* K} {t : Kˣ × Kˣ}
 
 /- English proof (translation)
-Use `revert i`. Evaluate the decidable proposition.
+Evaluate the decidable proposition. A detailed English derivation is pending.
 -/
 private theorem wt_self (i : Fin 4) : wt i i = 0 := by revert i; decide
 
 /- English proof (translation)
-The claim follows from `congrFun (congrFun h i) j`.
+A detailed English derivation is pending.
 -/
 private theorem tc_entry {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) (i j : Fin 4) :
     f (X' i j) = (wv t (wt i j) : K) * f (X i j) := congrFun (congrFun h i) j
 
 /- English proof (translation)
-Apply `hf` to reduce the goal to its premises. Apply the tactic sequence `rw [tc_entry h, wt_self]`. Simplify using `[wv]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tc_diag (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) (i : Fin 4) :
     X' i i = X i i := by
@@ -29,7 +29,7 @@ private theorem tc_diag (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f 
   simp [wv]
 
 /- English proof (translation)
-Apply `hf` to reduce the goal to its premises. Apply the tactic sequence `rw [tc_entry h, h0]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tc_zero (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) {i j : Fin 4}
     (h0 : X i j = 0) : X' i j = 0 := by
@@ -38,7 +38,7 @@ private theorem tc_zero (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f 
   simp
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, hmul, -⟩` from `grp K`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, h, h', hmul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tc_mul {X X' Y Y' : M4 R} (h : X'.map f = tconj t (X.map f)) (h' : Y'.map f = tconj t (Y.map f)) :
     (X' * Y').map f = tconj t ((X * Y).map f) := by
@@ -46,7 +46,7 @@ private theorem tc_mul {X X' Y Y' : M4 R} (h : X'.map f = tconj t (X.map f)) (h'
   rw [Matrix.map_mul, Matrix.map_mul, h, h', hmul]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hmap, -⟩` from `grp R`. Take `⟨-, -, -, -, -, -, -, -, -, -, hadj, -⟩` from `grp K`. Rewrite using `[← hmap, ← hmap, h, hadj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tc_adj {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) :
     (adj X').map f = tconj t ((adj X).map f) := by
@@ -55,9 +55,9 @@ private theorem tc_adj {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) :
   rw [← hmap, ← hmap, h, hadj]
 
 /- English proof (translation)
-Substitute `hX` using the available equality. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[tc_diag hf h]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tc_zero hf h (by simp [Matrix.one_apply_ne hij])]`. Simplify using `[Matrix.one_apply_ne hij]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem tc_scalar (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) {c : R}
     (hX : X = c • (1 : M4 R)) : X' = c • (1 : M4 R) := by
@@ -70,7 +70,7 @@ private theorem tc_scalar (hf : Function.Injective f) {X X' : M4 R} (h : X'.map 
     simp [Matrix.one_apply_ne hij]
 
 /- English proof (translation)
-The claim follows from `tc_scalar hf (tc_mul (tc_adj h) h) hX`.
+A detailed English derivation is pending.
 -/
 private theorem tc_gsp (hf : Function.Injective f) {X X' : M4 R} (h : X'.map f = tconj t (X.map f)) {c : R}
     (hX : IsGSp c X) : IsGSp c X' := tc_scalar hf (tc_mul (tc_adj h) h) hX
@@ -80,17 +80,15 @@ end
 end UpperTheory.V.Ws.Lat
 
 /- English proof (translation)
-Introduce `O Γ R K _ _ _ _ Φ a f hf t P P' hT hP`. Take `⟨hr, hn⟩` from `hT`. Establish `hY : ∀ v s, (adj (P'.n v) * P'.r s * P'.n v).map f = tconj t ((adj (P.n v) * P.r s * P.n v).map f)` using `fun v s => tc_mul (tc_mul (tc_adj (hn v)) (hr s)) (hn v)`. Establish `hpsi : ∀ v i s, P'.ψ v i s = P.ψ v i s` using `fun v i s => tc_diag hf (hY v s) i`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_⟩, fun g i => tc_diag hf (hr g) i, hpsi, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Conclude with `tc_gsp hf (hr g) (hP.mult g)`. Introduce `g hg`. Use `tc_scalar hf (hr g) (c := 1) (by rw [one_smul]; exact hP.kill g hg)` as an intermediate fact. Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Conclude with `tc_zero hf (hr Φ.g0) (hP.nrm hij)`. Introduce `v`. Take `⟨h1, h2, h3⟩` from `hP.low v`. Use `⟨tc_gsp hf (hn v) h1, fun i => ?_, fun i j hij => tc_zero hf (hn v) (h3 i j hij)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[tc_diag hf (hn v), h2]`. Introduce `v s hs i j hij`. Conclude with `tc_zero hf (hY v s) (hP.flag v s hs i j hij)`. Introduce `v s hs i`. Rewrite using `[hpsi]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hP.mu v s hs i`. Take `⟨u, hu⟩` from `(grp K).2.2.2.2.2.2.2.2.2.2.2.2 t`. Use `⟨u, fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(P'.r g).map f = _`. Rewrite using `[hr g, hu]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Lat.tcPair :
     ∀ {O Γ R K : Type} [CommRing O] [Group Γ] [CommRing R] [CommRing K] (Φ : Fr O Γ) (a : O →+* R) (f : R →+* K), Function.Injective f →

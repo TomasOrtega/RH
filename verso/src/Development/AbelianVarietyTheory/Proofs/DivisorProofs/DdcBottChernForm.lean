@@ -27,30 +27,28 @@ variable {M : Type} [TopologicalSpace M] {n r s : ℕ} {A : HolAtlas M n}
 def chartDom (T : HermSeq A r s) (a : T.κ) (i : A.ι) : Set (V n) := (A.e i).target ∩ (A.e i).symm ⁻¹' T.U a
 
 /- English proof (translation)
-The claim follows from `(A.e i).isOpen_inter_preimage_symm (T.isOpen a)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_chartDom (T : HermSeq A r s) (a : T.κ) (i : A.ι) : IsOpen (chartDom T a i) :=
   (A.e i).isOpen_inter_preimage_symm (T.isOpen a)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isOpen_chartDom T a i, fun p q => (T.smooth a).2.1 p q i, fun _ hv => (T.posDef a _ hv.2).2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPosFrame_mid (T : HermSeq A r s) (a : T.κ) (i : A.ι) :
     IsPosFrame (chartDom T a i) (fun v => T.mid a ((A.e i).symm v)) :=
   ⟨isOpen_chartDom T a i, fun p q => (T.smooth a).2.1 p q i, fun _ hv => (T.posDef a _ hv.2).2.1⟩
 
 /- English proof (translation)
-Establish `ho : IsOpen (chartDom T a i ∩ chartDom T b i)` using `(isOpen_chartDom T a i).inter (isOpen_chartDom T b i)`. Establish `hs : chartDom T a i ∩ chartDom T b i = (A.e i).target ∩ (A.e i).symm ⁻¹' (T.U a ∩ T.U b)`. Use extensionality with `w`. Simplify using `only [chartDom, mem_inter_iff, mem_preimage]`. The claim follows by propositional logic.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hd : ∀ p q, DifferentiableOn ℂ (fun w => T.g a b ((A.e i).symm w) p q) (chartDom T a i ∩ chartDom T b i)`. Introduce `p q`. Rewrite using `[hs]`. Conclude with `T.holo a b p q i`. Establish `hA : MContDiffAt 1 (fun w => T.g a b ((A.e i).symm w)) v` using `fun p q => (((ReciprocityTheory.L2DbarEstimates.contDiffOn_of_differentiableOn n _ _ ho (hd p q)).restrict_scalars ℝ).contDiffAt (ho.mem_nhds hv)).of_le (by norm_cast)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0 : ∀ η, mdbar (fun w => T.g a b ((A.e i).symm w)) v η = 0`. Introduce `η`. Use extensionality with `p q`. Rewrite using `[mdbar_apply, dbar_eq_zero ((hd p q).differentiableAt (ho.mem_nhds hv))]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `e : (fun w => T.mid b ((A.e i).symm w)) =ᶠ[𝓝 v] fun w => chg (T.g a b ((A.e i).symm w)) (T.mid a ((A.e i).symm w))` using `Filter.eventually_of_mem (ho.mem_nhds hv) fun w hw => (T.trans a b _ ⟨hw.1.2, hw.2.2⟩).2.1`. Establish `ht : ∀ᶠ w in 𝓝 v, (T.g a b ((A.e i).symm w)).toBlocks₂₁ = 0` using `Filter.eventually_of_mem (ho.mem_nhds hv) fun w hw => T.tri a b _ ⟨hw.1.2, hw.2.2⟩`. Establish `hK : MContDiffAt 1 (fun w => T.mid a ((A.e i).symm w)) v` using `(isPosFrame_mid T a i).isHermFrame.one hv.1`. Establish `hp : ∀ᶠ w in 𝓝 v, (T.mid a ((A.e i).symm w)).PosDef` using `Filter.eventually_of_mem ((isOpen_chartDom T a i).mem_nhds hv.1) fun w hw => (isPosFrame_mid T a i).posDef w hw`. Establish `hu : IsUnit (T.g a b ((A.e i).symm v)).det`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : (A.e i).symm v ∈ T.U a` using `hv.1.2`. Establish `hb : (A.e i).symm v ∈ T.U b` using `hv.2.2`. Establish `h1 : T.g a b ((A.e i).symm v) * T.g b a ((A.e i).symm v) = 1`. Rewrite using `[T.g_mul a b a _ ⟨⟨ha, hb⟩, ha⟩, T.g_self a _ ha]`. Conclude with `Matrix.isUnit_det_of_right_inverse h1`.
-
-Rewrite using `[extTrace_congr e, extTrace_chg hK hp hA hu hA0 ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extTrace_mid_indep (T : HermSeq A r s) (a b : T.κ) (i : A.ι) {v : V n}
     (hv : v ∈ chartDom T a i ∩ chartDom T b i) :
@@ -85,7 +83,7 @@ theorem extTrace_mid_indep (T : HermSeq A r s) (a b : T.κ) (i : A.ι) {v : V n}
   rw [extTrace_congr e, extTrace_chg hK hp hA hu hA0 ht]
 
 /- English proof (translation)
-Rewrite using `[HolAtlas.loc, dif_pos hv.1]`. Establish `hc : (A.e i) ((A.e i).symm v) = v` using `(A.e i).right_inv hv.1`. Express the relevant statement in the definitionally equal form `(ofValues (extTrace (fun w => T.mid (T.cover ((A.e i).symm v)).choose ((A.e i).symm w)) ((A.e i) ((A.e i).symm v))) : Alt n) = _`. Rewrite using `[hc, extTrace_mid_indep T _ a i ⟨⟨hv.1, (T.cover _).choose_spec⟩, hv⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_bcFld (T : HermSeq A r s) {a : T.κ} {i : A.ι} {v : V n} (hv : v ∈ chartDom T a i) :
     A.loc (bcFld T) i v = (ofValues (extTrace (fun w => T.mid a ((A.e i).symm w)) v) : Alt n) := by
@@ -96,22 +94,22 @@ theorem loc_bcFld (T : HermSeq A r s) {a : T.κ} {i : A.ι} {v : V n} (hv : v �
   rw [hc, extTrace_mid_indep T _ a i ⟨⟨hv.1, (T.cover _).choose_spec⟩, hv⟩]
 
 /- English proof (translation)
-Simplify using `only [chernAt, GlobalTheory.GoodMetric.chernPoly, GlobalTheory.GoodMetric.curvPoly, curv_congr h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chernAt_congr {q : Type} [Fintype q] [DecidableEq q] {G G' : V n → Matrix q q ℂ} {v : V n}
     (h : G =ᶠ[𝓝 v] G') (j : ℕ) : chernAt G v j = chernAt G' v j := by
   simp only [chernAt, GlobalTheory.GoodMetric.chernPoly, GlobalTheory.GoodMetric.curvPoly, curv_congr h]
 
 /- English proof (translation)
-Establish `e` using `Fintype.equivFin q`. Establish `h0 : ((-F).submatrix e.symm e.symm).charpolyRev = (-F).charpolyRev`. Rewrite using `[Matrix.charpolyRev, Matrix.charpolyRev, ← Matrix.det_submatrix_equiv_self e.symm]`. Use `congr 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.one_apply]`. Establish `hz : (-F).charpolyRev.coeff 0 = 1`. Rewrite using `[Polynomial.coeff_zero_eq_eval_zero, Matrix.eval_charpolyRev]`. Establish `h1` using `GlobalTheory.natCast_mul_coeff_charpolyRev ((-F).submatrix e.symm e.symm) 1`. Establish `h2` using `GlobalTheory.natCast_mul_coeff_charpolyRev ((-F).submatrix e.symm e.symm) 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : ((-F).submatrix e.symm e.symm).trace = -∑ a, F a a`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply, Matrix.neg_apply, Finset.sum_neg_distrib]`. Rewrite using `[e.symm.sum_comp (fun a => F a a)]`. Establish `t2 : (((-F).submatrix e.symm e.symm) ^ 2).trace = ∑ a, ∑ b, F a b * F b a`. Rewrite using `[pow_two, Matrix.submatrix_mul_equiv, neg_mul_neg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[e.symm.sum_comp (fun a => ∑ b, F a b * F b a)]`. Rewrite `h1`, `h2` using `[h0]`. Simplify using `only [Finset.sum_range_succ, Finset.sum_range_zero, zero_add, pow_one, Nat.cast_one, one_mul, Nat.cast_ofNat, Nat.reduceAdd, Nat.reduceSub, Nat.sub_zero, hz, mul_one, t1, t2] at h1 h2`. Rewrite using `[h2, h1]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_sub_distrib, ← Finset.sum_mul_sum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_coeff_two {R : Type} [CommRing R] {q : Type} [Fintype q] [DecidableEq q] (F : Matrix q q R) :
     2 * (Matrix.charpolyRev (-F)).coeff 2 = ∑ a, ∑ b, (F a a * F b b - F a b * F b a) := by
@@ -140,7 +138,7 @@ theorem two_mul_coeff_two {R : Type} [CommRing R] {q : Type} [Fintype q] [Decida
   ring
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SecForm.ChernTwo.four_eq, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem four_sum {ι : Type} (t : Finset ι) (f : ι → Fin n → Fin n → Fin n → Fin n → ℂ) :
     GlobalTheory.SecForm.ChernTwo.four (fun a b c d => ∑ i ∈ t, f i a b c d) = ∑ i ∈ t, GlobalTheory.SecForm.ChernTwo.four (f i) := by
@@ -150,9 +148,9 @@ theorem four_sum {ι : Type} (t : Finset ι) (f : ι → Fin n → Fin n → Fin
 open GlobalTheory.SecForm.ChernTwo in
 
 /- English proof (translation)
-Establish `e : GlobalTheory.SecForm.ofValuesTwo (chernTwo G v) = (1 / 4 : ℂ) • four fun a b c d => kappa ^ 2 * (1 / 2 * ∑ i, ∑ j, curvMinor G v i j (coordVec a) (coordVec b) (coordVec c) (coordVec d))` using `rfl`. Establish `h` using `congrArg (MvPolynomial.aeval (R := ℂ) (sym (n := n))) (two_mul_coeff_two (GlobalTheory.GoodMetric.curvPoly G v))`. Simplify using `only [map_mul, map_sum, map_sub, map_ofNat, aeval_curvPoly] at h`. Rewrite using `[e, four_mul, four_mul, four_sum]`. Simplify using `only [four_sum, curvMinor, four_sub, four_wedge, ← smul_sub, ← Finset.smul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, chernAt, GlobalTheory.GoodMetric.chernPoly, two_mul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chernAt_two {q : Type} [Fintype q] [DecidableEq q] (G : V n → Matrix q q ℂ) (v : V n) :
     chernAt G v 2 = GlobalTheory.SecForm.ofValuesTwo (chernTwo G v) := by
@@ -166,7 +164,7 @@ theorem chernAt_two {q : Type} [Fintype q] [DecidableEq q] (G : V n → Matrix q
   module
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.SecForm.ofValuesTwo, sub_smul, Finset.sum_sub_distrib, smul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ofValuesTwo_comb (P Q R S : V n → V n → V n → V n → ℂ) :
     GlobalTheory.SecForm.ofValuesTwo (fun a b c d => P a b c d - Q a b c d - R a b c d - S a b c d) =
@@ -181,9 +179,9 @@ namespace GlobalTheory.BcUnique.DdcTrace
 open GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms GlobalTheory.SecForm in
 
 /- English proof (translation)
-Establish `h2 : ∀ p q, ContDiffAt ℝ 2 (fun w => extTrace H w (coordVec p) (coordVec q)) z` using `fun p q => ((contDiffOn_extTrace hP _ _).contDiffAt (hP.isOpen.mem_nhds hz)).of_le (by norm_cast)`. Establish `hh` using `hP.isHermFrame`. Establish `hs : ∀ w ∈ U, IsUnit (subGram (H w)).det` using `fun w hw => (posDef_subGram (hP.posDef w hw)).det_pos.ne'.isUnit`. Establish `hd : ddcForm (extTrace H) z = fun ξ₁ η₁ ξ₂ η₂ => chernTwo H z ξ₁ η₁ ξ₂ η₂ - chernTwo (gramS H) z ξ₁ η₁ ξ₂ η₂ - chernTwo (gramQ H) z ξ₁ η₁ ξ₂ η₂ - wedge (chernOne (gramS H) z) (chernOne (gramQ H) z) ξ₁ η₁ ξ₂ η₂`. Use function extensionality and compare the values at `ξ₁ η₁ ξ₂ η₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GlobalTheory.SubQuotChTwo.ddcForm_extTrace_eq hh hs hz (fun w hw => GlobalTheory.SubQuotCurv.extBlocksAt hh hs hw), chTwo_eq, chTwo_eq, chTwo_eq]`. Simplify using `only [wedge, GlobalTheory.SubQuotCurv.chernOne_add hh hs hz]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ddc_ofValues _ _ h2, hd, ofValuesTwo_comb, chernAt_two, chernAt_two, chernAt_two, chernAt_one_eq_ofValues, chernAt_one_eq_ofValues, ofValues_mul_ofValues]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -223,9 +221,9 @@ open scoped ContDiff Real ComplexOrder
 open GlobalTheory.BcUnique.DdcTrace in
 
 /- English proof (translation)
-Introduce `M _ n r s A T hI a x hx`. Establish `hv : x.crd ∈ chartDom T a x.1.1` using `⟨x.ch.map_source x.2, by simp only [mem_preimage]; rw [x.ch.left_inv x.2]; exact hx⟩`. Establish `hP` using `isPosFrame_mid T a x.1.1`. Establish `hU` using `(isOpen_chartDom T a x.1.1).mem_nhds hv`. Establish `hev : A.loc (bcFld T) x.1.1 =ᶠ[nhds x.crd] fun v => (ofValues (GlobalTheory.HermFrame.extTrace (fun w => T.mid a ((A.e x.1.1).symm w)) v) : Alt n)` using `Filter.eventually_of_mem hU fun w hw => loc_bcFld T hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eS : (fun w => T.sub a (x.ch.symm w)) =ᶠ[nhds x.crd] GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.gramS (fun w => T.mid a ((A.e x.1.1).symm w))` using `Filter.eventually_of_mem hU fun w hw => (hI a _ hw.2).1`. Establish `eQ : (fun w => T.quot a (x.ch.symm w)) =ᶠ[nhds x.crd] GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms.gramQ (fun w => T.mid a ((A.e x.1.1).symm w))` using `Filter.eventually_of_mem hU fun w hw => (hI a _ hw.2).2`. Rewrite using `[GlobalTheory.SecForm.DdcGerm.ddc_eq_of_eventuallyEq A _ x _ hev, ddc_extTrace hP hv]`. Simplify using `only [HolAtlas.chern, chernAt_congr eS, chernAt_congr eQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.BcUnique.ddc_bcFld : ∀ {M : Type} [TopologicalSpace M] {n r s : ℕ} (A : HolAtlas M n) (T : HermSeq A r s),
     IsInduced T → ∀ (a : T.κ) (x : A.Pt), x.pt ∈ T.U a → A.ddc (bcFld T) x =

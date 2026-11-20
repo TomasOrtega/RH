@@ -9,13 +9,11 @@ namespace Formalism.FourierDecayAlt.P.PBO
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Take `⟨δ, hδ, hsmall⟩` from `rr_top_small P p F w h h' hh Cb hθ hF hw`. Establish `hcon` using `hTC Wp Wq P p F w h h' hh hh' Cb hθ hF hw`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `c0`. Distinguish the cases in `hc0 : P.T * P.T' < Complex.normSq c0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hU : IsOpen {c : ℂ | P.T * P.T' < Complex.normSq c}` using `isOpen_lt continuous_const Complex.continuous_normSq`. Establish `hR : ContinuousAt (fun c : ℂ => p.RR F (P.r + 1) w (h ++ [(1, c)]) (h' ++ [(1, c)])) c0` using `hcon.continuousAt (hU.mem_nhds hc0)`. Establish `hz : ContinuousAt (fun c : ℂ => ((Complex.normSq c - P.T * P.T') ^ (P.k - 1) : ℝ)) c0` using `((Complex.continuous_normSq.sub continuous_const).pow _).continuousAt`. Use `((Complex.continuous_ofReal.continuousAt.comp hz).mul hR).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hc0] with c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.mul_apply, Function.comp_apply, B2.zWeight, if_pos (le_of_lt hc)]`. Use `push Not at hc0`. Establish `hU : IsOpen {c : ℂ | Complex.normSq c - P.T * P.T' < δ}` using `isOpen_lt (Complex.continuous_normSq.sub continuous_const) continuous_const`. Use `(continuousAt_const (y := (0 : ℂ))).congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds (show Complex.normSq c0 - P.T * P.T' < δ by linarith)] with c hc`.
-
-Rewrite using `[hsmall c hc, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_top_cont (hTC : TopContOn) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp]
     [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
@@ -45,7 +43,7 @@ theorem phi_top_cont (hTC : TopContOn) {Wp Wq : Type} [NormedAddCommGroup Wp] [I
     rw [hsmall c hc, mul_zero]
 
 /- English proof (translation)
-Establish `hl : (0 : Fin (P.r + 1)) = Fin.last P.r` using `Fin.ext (by simp [hr])`. Rewrite `hx`, `hy`, the goal using `[hl]`. Take `⟨hi, hs, -⟩` from `hTop x y hx hy c hc`. Conclude with `⟨hi, hs⟩`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem topPart_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S]
@@ -66,7 +64,7 @@ theorem topPart_zero {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   exact ⟨hi, hs⟩
 
 /- English proof (translation)
-Unfold `B.hsInner B.hsVec`. Establish `: (WithLp.toLp 2 fun i : Fin (Module.finrank ℂ Wq) => (0 : Wq →L[ℂ] Wp) (stdOrthonormalBasis ℂ Wq i)) = 0` using `by simp; rfl`. Rewrite using `[this, inner_zero_left]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInner_zero_right' {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : B.hsInner A (0 : Wq →L[ℂ] Wp) = 0 := by
@@ -76,7 +74,7 @@ theorem hsInner_zero_right' {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProduct
   rw [this, inner_zero_left]
 
 /- English proof (translation)
-Unfold `fsv`. Conclude with `Complex.continuous_exp.comp ((continuous_const.mul continuous_id).sub (continuous_const.mul Complex.continuous_conj))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_fsv (s : ℂ) : Continuous (fun t : ℂ => fsv s t) := by
   unfold fsv
@@ -84,49 +82,41 @@ theorem continuous_fsv (s : ℂ) : Continuous (fun t : ℂ => fsv s t) := by
     (continuous_const.mul Complex.continuous_conj))
 
 /- English proof (translation)
-Take `⟨hl1, hlk, hk2⟩` from `p.hl`. Establish `hr0 : P.r - P.r = 0` using `Nat.sub_self _`. Set `jF : Fin (P.r + 1)` to `⟨P.r, Nat.lt_succ_self _⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`. Take `⟨μ, hμ⟩` from `hZN P.k (P.r - P.r) Wp Wq (p.T.bs P.r)`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X μ L st p.l0` using `⟨hPl, hμ.1, h1, h2, h3, h4, h5, h6⟩`. Take `⟨K, hThm, -, -, hJ⟩` from `hP Wp Wq (Fin w.length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`. Establish `hwOK` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 w hw.1 hw.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := KB.slv p.T F P.r le_rfl w h hh.2 with hxdef`. Use `set x' := KB.slv p.T F P.r le_rfl w h' hh'.2 with hx'def`. Establish `hcx : ∀ e, KB.CptCoef (p.T.bs P.r) (x e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F P.r le_rfl w h hh hF e`. Establish `hcx' : ∀ e, KB.CptCoef (p.T.bs P.r) (x' e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F P.r le_rfl w h' hh' hF e`. Take `⟨ε₁, hε₁, hx⟩` from `nice_common (p.T.bs P.r) hcx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε₂, hε₂, hx'⟩` from `nice_common (p.T.bs P.r) hcx'`. Use `set ε := min ε₁ ε₂ with hεdef`. Establish `hε : 0 < ε` using `lt_min hε₁ hε₂`. Establish `hxn : ∀ e, JC.NiceCoef (p.T.bs P.r) ε (x e)` using `fun e => ⟨(hx e).1, (hx e).2.1, fun g hg h0 => le_trans (min_le_left _ _) ((hx e).2.2 g hg h0)⟩`. Establish `hxn' : ∀ e, JC.NiceCoef (p.T.bs P.r) ε (x' e)` using `fun e => ⟨(hx' e).1, (hx' e).2.1, fun g hg h0 => le_trans (min_le_right _ _) ((hx' e).2.2 g hg h0)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose Φ hΦK hΦ using fun a => pic_cpt (p.T.bs P.r) (K 0) hJ (hcx a)`. Use `choose Φ' hΦ'K hΦ' using fun a => pic_cpt (p.T.bs P.r) (K 0) hJ (hcx' a)`. Establish `hHTa` using `hHT Wp Wq P p F w h h' hh hh' X μ L st Cb Φ Φ' hD hθ hF hw hΦ hΦ'`. Set `c0 : Fin (JC.parLev P jF).r → ℂ` to `fun _ => 1`. Establish `hc0 : c0 ∈ OmX (JC.parLev P jF).r` using `fun _ => one_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hint, hs⟩` from `topPart_zero (JC.parLev P jF) _ _ _ _ μ L st K (D.positionted w) (hThm (D.positionted w) hwOK).1 hr0 Φ Φ' hΦK hΦ'K c0 hc0`. Establish `hTz : Tz P.k (P.r - P.r) (p.T.bs P.r).z = P.T` using `hPl.2.2.2.1`. Establish `hTz' : Tz P.k (P.r - P.r) (p.T.bs P.r).z' = P.T'` using `hPl.2.2.2.2.1`. Use `set R : ℂ → ℂ := fun c => p.RR F (P.r + 1) w (h ++ [(1, c)]) (h' ++ [(1, c)]) with hRdef`. Use `set U : Set ℂ := {c | P.T * P.T' < Complex.normSq c} with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set ψ : ℂ → ℂ := U.piecewise R 0 with hψdef`. Establish `hRc : ContinuousOn R U` using `hTC Wp Wq P p F w h h' hh hh' Cb hθ hF hw`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const Complex.continuous_normSq`. Establish `hψm : Measurable ψ` using `hRc.measurable_piecewise continuousOn_const hUo.measurableSet`. Establish `hae : ∀ᵐ g ∂μ, topDens L st (D.positionted w) Φ Φ' c0 (Matrix.of g) = ψ (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) (Matrix.of g))` using `by filter_upwards [Formalism.FourierDecayAlt.P.B7.ae_mem hμ.1] with g hg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hG : 0 < GGl P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Matrix.of g)`. Establish `hdom : (c0, Matrix.of g) ∈ DomR P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z'` using `⟨hc0, hg, hG⟩`. Rewrite using `[hHTa (c0, Matrix.of g) hdom]`. Establish `hU' : Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) (Matrix.of g) ∈ U`. Unfold `GGl at hG`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hG` using `[hTz, hTz']`. Use `show P.T * P.T' < _`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hψdef, Set.piecewise_eq_of_mem _ _ _ hU']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hnd : (c0, Matrix.of g) ∉ DomR P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z'` using `fun hd => hG hd.2.2`. Establish `hU' : Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) (Matrix.of g) ∉ U`. Introduce `hm`. Apply `hG` to reduce the goal to its premises. Unfold `GGl`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hTz, hTz']`. Establish `: P.T * P.T' < _` using `hm`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hψdef, Set.piecewise_eq_of_notMem _ _ _ hU']`. Unfold `topDens`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[(act (Fr.ofWord L st (D.positionted w)).F Φ' e).2.1 (c0, Matrix.of g) hnd, hsInner_zero_right']`. Use `set φ : ℂ → ℂ := fun c => (KB.levW P (P.r + 1) c : ℂ) * R c with hφdef`. Establish `hlev : ∀ c, KB.levW P (P.r + 1) c = B2.zWeight P.k P.T P.T' c` using `fun c => by simp [KB.levW]`. Establish `hφψ : ∀ c, (B2.zWeight P.k P.T P.T' c : ℂ) * ψ c = φ c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Rewrite using `[hφdef]`. Simplify using `only [hlev]`. Distinguish the cases in `hc : c ∈ U`. Rewrite using `[hψdef, Set.piecewise_eq_of_mem _ _ _ hc]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hψdef, Set.piecewise_eq_of_notMem _ _ _ hc]`. Establish `hz : B2.zWeight P.k P.T P.T' c = 0`. Unfold `B2.zWeight`. Use `split_ifs with hle`. Establish `hcU : ¬ P.T * P.T' < Complex.normSq c` using `hc`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : Complex.normSq c - P.T * P.T' = 0` using `by linarith`. Rewrite using `[he, zero_pow (by omega)]`. Both sides reduce to the same expression. Rewrite using `[hz]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨φ, ?_, ?_, fun c _ => rfl, fun s => ?_⟩` and prove the remaining obligations. Conclude with `(phi_top_cont hTC P p F w h h' hh hh' Cb hθ hF hw).congr fun c => by rw [hφdef]; simp only [hlev]; rfl`. Establish `hi` using `zetaNorm_integrable hμ ψ hψm (hint.congr hae)`. Rewrite `hi` using `[hTz, hTz']`. Conclude with `hi.congr (Filter.Eventually.of_forall hφψ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨Wv, hW⟩` from `waveZExists Wp Wq P.k (P.r - P.r) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' s`. Take `⟨Wv', hW'⟩` from `waveZExists Wp Wq P.k (P.r - P.r) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' (-s)`. Establish `key` using `hs s Wv Wv' hW hW'`. Establish `hm : ∀ y ∈ DomR P.k (P.r - P.r) (p.T.bs jF).z (p.T.bs jF).z', (fun (_ : Fin (P.r - P.r) → ℂ) (g : Mx P.k (P.r - P.r)) => fsv s (P5.zeta P.k (P.r - P.r) (p.T.bs jF).z (p.T.bs jF).z' g)) y.1 y.2 = fsv s (Dmin P.k (P.r - P.r) (p.T.bs jF).z (p.T.bs jF).z' (wCell P.k (P.r - P.r) (Fin. …` using `fun y hy => by`. Simplify using `only []`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.PBFV.first_minor_top_eq_zeta hr0]`. Establish `hΨ` using `Formalism.FourierDecayAlt.P.PBFV.radPic_wave (p.T.bs jF) ε s w x hxn Φ hΦ _ (by omega) hm Wv Wv' hW`. Establish `hnx` using `Formalism.FourierDecayAlt.P.PBFV.waveG_nice (p.T.bs P.r) ε s w x hxn`. Establish `hform` using `hOne Wp Wq P p.T jF X μ L st p.l0 hD hμ w _ _ _ _ ε hε hnx hxn' hΨ hΦ'`. Establish `hmeas : Measurable fun ζ => fsv s ζ * ψ ζ` using `(continuous_fsv s).measurable.mul hψm`.
-
-Establish `hlaw` using `zetaNorm_integral hμ (fun ζ => fsv s ζ * ψ ζ) hmeas`. Rewrite `hlaw` using `[hTz, hTz']`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only []`.
-
-Rewrite using `[← hφψ c]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ∫ g, fsv s (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) (Matrix.of g)) * ψ (Q.zetaL P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Fin.last _) (Matrix.of g)) ∂μ := hlaw.symm`. Use `_ = ∫ g, fsv s (P5.zeta P.k (P.r - P.r) (p.T.bs P.r).z (p.T.bs P.r).z' (Matrix.of g)) * topDens L st (D.positionted w) Φ Φ' c0 (Matrix.of g) ∂μ := by`. Use `integral_congr_ae ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with g hg`. Rewrite using `[hg]`. Both sides reduce to the same expression. Use `_ = P5.form μ 0 (P5.act (RRi L st 0 (D.positionted w)) (act (Vw (mkP Wv Wv') s (D.positionted w)) Φ)) Φ' c0 := key`. Use `_ = P5.form μ 0 (P5.act (RRi L st 0 (D.positionted w)) (act (Vw (mkP Wv Wv') s (D.positionted w)) Φ)) Φ' 0 := Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ _ _ _ 0`.
-
-Use `_ = _ := hform.symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pStd_top (hP : P5.ThmPActualCpt) (hHT : KB.HeadTop) (hOne : FormOne) (hZN : ZetaNormExists)
     (hTC : TopContOn) {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -265,23 +255,19 @@ theorem pStd_top (hP : P5.ThmPActualCpt) (hHT : KB.HeadTop) (hOne : FormOne) (hZ
       _ = _ := hform.symm
 
 /- English proof (translation)
-Take `⟨hl1, hlk, -⟩` from `p.hl`. Establish `hr : 0 < P.r - j` using `by omega`. Set `jF : Fin (P.r + 1)` to `⟨j, by omega⟩`. Establish `hPl` using `Formalism.FourierDecayAlt.P.JCTx5.isPlace_lev P p.T jF p.hP`. Take `⟨X⟩` from `Formalism.FourierDecayAlt.P.actual_operators_exist _ _ _ _ _ _ _ hPl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨L, st, h1, h2, h3, h4, h5, h6⟩` from `Formalism.FourierDecayAlt.P.level_start_actual _ _ _ _ _ _ _ hPl X p.l0`. Take `⟨μ, hμ⟩` from `hZN P.k (P.r - j) Wp Wq (p.T.bs j)`. Establish `hD : IsData (JC.parLev P jF) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' X μ L st p.l0` using `⟨hPl, hμ.1, h1, h2, h3, h4, h5, h6⟩`. Take `⟨K, hThm, -, -, hJ⟩` from `hP Wp Wq (Fin w.length) (JC.parLev P jF) _ _ _ _ X μ L st p.l0 (p.T.bs jF) _ _ hD hl1 hlk rfl rfl rfl rfl le_rfl le_rfl`. Establish `hwOK` using `Formalism.FourierDecayAlt.P.JCTx5.wordOK_of (JC.parLev P jF) _ _ _ _ st p.l0 hPl.1 hl1 hlk h3 h4 w hw.1 hw.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := KB.slv p.T F j hj w h hh.2 with hxdef`. Use `set x' := KB.slv p.T F j hj w h' hh'.2 with hx'def`. Establish `hcx : ∀ e, KB.CptCoef (p.T.bs j) (x e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj w h hh hF e`. Establish `hcx' : ∀ e, KB.CptCoef (p.T.bs j) (x' e)` using `fun e => Formalism.FourierDecayAlt.P.slice_compact_support_coefficient Wp Wq P p F j hj w h' hh' hF e`. Take `⟨ε₁, hε₁, hx⟩` from `nice_common (p.T.bs j) hcx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε₂, hε₂, hx'⟩` from `nice_common (p.T.bs j) hcx'`. Use `set ε := min ε₁ ε₂ with hεdef`. Establish `hε : 0 < ε` using `lt_min hε₁ hε₂`. Establish `mono : ∀ {ε' : ℝ} {G : B.Mat P.k (P.r - j) → (Wq →L[ℂ] Wp)}, ε ≤ ε' → JC.NiceCoef (p.T.bs j) ε' G → JC.NiceCoef (p.T.bs j) ε G` using `fun hle hG => ⟨hG.1, hG.2.1, fun g hg h0 => le_trans hle (hG.2.2 g hg h0)⟩`. Establish `hxn : ∀ e, JC.NiceCoef (p.T.bs j) ε (x e)` using `fun e => mono (min_le_left _ _) (hx e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxn' : ∀ e, JC.NiceCoef (p.T.bs j) ε (x' e)` using `fun e => mono (min_le_right _ _) (hx' e)`. Use `choose Φ hΦK hΦ using fun a => pic_cpt (p.T.bs j) (K 0) hJ (hcx a)`. Use `choose Φ' hΦ'K hΦ' using fun a => pic_cpt (p.T.bs j) (K 0) hJ (hcx' a)`. Establish `hstep` using `(hThm (D.positionted w) hwOK).2.1 ⟨0, hr⟩`. Establish `hl : (⟨0, hr⟩ : Fin (JC.parLev P jF).r).castSucc = 0` using `Fin.ext rfl`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `StepP at hstep`. Take `⟨φ, hφc, hφ, ⟨Cφ, hCφ⟩, hφs⟩` from `hstep Φ Φ' (fun a => hΦK a) (fun a => hΦ'K a) (fun _ => 1) (fun _ => one_ne_zero)`. Use `⟨φ, hφc, integrable_of_decay4 hφc hCφ, fun c hc => ?_, fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hφ c hc]`. Conclude with `hRH Wp Wq P p F j (by omega) w h h' hh hh' X μ L st Φ Φ' hD hμ hF hw hΦ hΦ' c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Wv, hW⟩` from `waveCExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' ⟨0, hr⟩ s`. Take `⟨Wv', hW'⟩` from `waveCExists Wp Wq P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (p.T.bs jF).π (p.T.bs jF).π' ⟨0, hr⟩ (-s)`. Establish `hm : ∀ y ∈ DomR P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z', (fun (c : Fin (P.r - j) → ℂ) (_ : Mx P.k (P.r - j)) => fsv s (c ⟨0, hr⟩)) y.1 y.2 = fsv s (Dmin P.k (P.r - j) (p.T.bs jF).z (p.T.bs jF).z' (wCell P.k (P.r - j) (Fin.last _) y.1 * y.2) ⟨1, by omega⟩)` using `fun y hy => by`. Simplify using `only []`. Rewrite using `[Formalism.FourierDecayAlt.P.PBFV.first_minor_cell_eq_coord (p.T.bs jF).z_mem (p.T.bs jF).z'_mem hr y.1 hy.2.1]`.
-
-Establish `hΨ` using `Formalism.FourierDecayAlt.P.PBFV.radPic_wave (p.T.bs jF) ε s w x hxn Φ hΦ _ (by omega) hm Wv Wv' hW`. Establish `hnx` using `Formalism.FourierDecayAlt.P.PBFV.waveG_nice (p.T.bs j) ε s w x hxn`. Rewrite using `[hφs s Wv Wv' hW hW']`. Use `show _ = D.formLev p.T (M.sgn P p.l0) jF w (KB.waveG (p.T.bs j) s w x) x'`. Rewrite using `[hOne Wp Wq P p.T jF X μ L st p.l0 hD hμ w _ _ _ _ ε hε hnx hxn' hΨ hΦ']`.
-
-Unfold `RRform`. Conclude with `Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ _ _ _ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem pStd_belowC (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hOne : FormOne) (hZN : ZetaNormExists)
     {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -350,9 +336,7 @@ theorem pStd_belowC (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hOne : FormOne) 
     exact Formalism.FourierDecayAlt.P.JCx2.form_zero_indep μ _ _ _ 0
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p F j hj w h h' hh hh' Cb hθ hF hw`. Distinguish the cases in `hjr : j < P.r`. Conclude with `pStd_belowC hP hRH hOne hZN P p F j hj hjr w h h' hh hh' hF hw`. Establish `e : j = P.r` using `by omega`. Substitute `e` using the available equality.
-
-Conclude with `pStd_top hP hHT hOne hZN hTC P p F w h h' hh hh' Cb hθ hF hw`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pStd_of_cpt (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop) (hOne : FormOne)
     (hZN : ZetaNormExists) (hTC : TopContOn) :
@@ -373,7 +357,7 @@ theorem pStd_of_cpt (hP : P5.ThmPActualCpt) (hRH : KB.RadHead) (hHT : KB.HeadTop
     exact pStd_top hP hHT hOne hZN hTC P p F w h h' hh hh' Cb hθ hF hw
 
 /- English proof (translation)
-Introduce `hP`. Use `pStd_of_cpt ?_ hRH hHT hOne hZN hTC` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Take `⟨K, h1, h2, h3, h4⟩` from `hP Wp Wq S P z z' π π' X μ L st l0 D A mm hD hl1 hl2 hz hz' hπ hπ' hA hmm`. Conclude with `⟨K, h1, h2, h3, fun F ε hε hF _ hG => h4 F ε hε hF hG⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pStd_of (hRH : KB.RadHead) (hHT : KB.HeadTop) (hOne : FormOne) (hZN : ZetaNormExists)
     (hTC : TopContOn) : KB.PStd := by

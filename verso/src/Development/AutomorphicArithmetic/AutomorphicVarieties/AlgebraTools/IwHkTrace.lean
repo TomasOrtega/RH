@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.IwHkA
 open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Rewrite using `[(hkApply A G M ρ K K' x h).1 v, dc, finsum_set_coe_eq_finsum_mem (f := fun q : G ⧸ K' => ρ q.out), finsum_mem_eq_finite_toFinset_sum _ h, LinearMap.sum_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem double_coset_operator_sum {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M)
     (K K' : Subgroup G) (x : G) (h : (MulAction.orbit K (x : G ⧸ K')).Finite) (v : fixd ρ K') :
@@ -13,9 +13,9 @@ private theorem double_coset_operator_sum {A G M : Type} [CommRing A] [Group G] 
     LinearMap.sum_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Establish `ha' : (((a : G) * x : G) : G ⧸ K') = g` using `ha`. Conclude with `⟨a, a.2, _, QuotientGroup.eq.1 ha', by group⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨a, ha⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((a * x : G) : G ⧸ K') = _`. Conclude with `(QuotientGroup.mk_mul_of_mem _ hb).symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 private theorem mem_orb {G : Type} [Group G] (K K' : Subgroup G) (x g : G) :
     (g : G ⧸ K') ∈ MulAction.orbit K (x : G ⧸ K') ↔ ∃ a ∈ K, ∃ b ∈ K', g = a * x * b := by
@@ -29,23 +29,21 @@ private theorem mem_orb {G : Type} [Group G] (K K' : Subgroup G) (x g : G) :
     exact (QuotientGroup.mk_mul_of_mem _ hb).symm
 
 /- English proof (translation)
-Introduce `A G M _ _ _ _ ρ I K h ι _ w hI hw hu`. Use `replace hI : ∀ x : G, (MulAction.orbit I (x : G ⧸ I)).Finite := hI`. Establish `hK : ∀ g : G, (g : G ⧸ I) ∈ MulAction.orbit K ((1 : G) : G ⧸ I) ↔ g ∈ K` using `fun g => by`. Rewrite using `[mem_orb]`. Conclude with `⟨fun ⟨a, ha, b, hb, e⟩ => e ▸ mul_mem (mul_mem ha (one_mem _)) (h hb), fun hg => ⟨g, hg, 1, one_mem _, by simp⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hU : MulAction.orbit K ((1 : G) : G ⧸ I) = ⋃ i, MulAction.orbit I (w i : G ⧸ I)`. Use extensionality with `q`. Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Simplify using `only [Set.mem_iUnion, hK, mem_orb]`. Conclude with `⟨fun hg => (hu g hg).exists, fun ⟨i, a, ha, b, hb, e⟩ => e ▸ mul_mem (mul_mem (h ha) (hw i)) (h hb)⟩`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hF : (MulAction.orbit K ((1 : G) : G ⧸ I)).Finite`. Rewrite using `[hU]`. Conclude with `Set.finite_iUnion fun i => hI (w i)`. Use `⟨hF, ?_, fun v => ?_⟩` and prove the remaining obligations. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = (hk2 ρ K I 1 v : M)`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum, double_coset_operator_sum ρ K I 1 hF]`. Establish `e : Set.Finite.toFinset hF = Finset.univ.biUnion fun i => Set.Finite.toFinset (hI (w i))`. Use extensionality with `q`. Simplify using `[hU]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, Finset.sum_biUnion]`. Conclude with `Finset.sum_congr rfl fun i _ => double_coset_operator_sum ρ I I (w i) (hI _) v`. Introduce `i _ j _ hij`. Rewrite using `[Function.onFun, Finset.disjoint_left]`. Introduce `q hi hj`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective q`. Rewrite `hi`, `hj` using `[Set.Finite.mem_toFinset]`. Establish `hg : g ∈ K` using `(hK g).1 (hU ▸ Set.mem_iUnion.2 ⟨i, hi⟩)`. Conclude with `hij ((hu g hg).unique ((mem_orb _ _ _ _).1 hi) ((mem_orb _ _ _ _).1 hj))`. Use `ext`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `(hk2 ρ K I 1 (inc ρ h v) : M) = _`. Rewrite using `[double_coset_operator_sum ρ K I 1 hF, Finset.sum_congr rfl (g := fun _ => (v : M))]`. Establish `hs : MulAction.stabilizer K ((1 : G) : G ⧸ I) = I.subgroupOf K`. Use extensionality with `k`. Rewrite using `[MulAction.mem_stabilizer_iff, Subgroup.mem_subgroupOf]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(((k : G) * 1 : G) : G ⧸ I) = _ ↔ _`. Rewrite using `[eq_comm, QuotientGroup.eq]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_const, ← Set.ncard_eq_toFinset_card _ hF, ← MulAction.index_stabilizer, hs, Submodule.coe_smul, Nat.cast_smul_eq_nsmul]`. Both sides reduce to the same expression.
-
-Introduce `q hq`. Rewrite `hq` using `[Set.Finite.mem_toFinset, ← q.out_eq']`. Conclude with `v.2 _ ((hK _).1 hq)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.hkTrace :
     ∀ (A G M : Type) [CommRing A] [Group G] [AddCommGroup M] [Module A M] (ρ : Representation A G M) (I K : Subgroup G) (h : I ≤ K) (ι : Type) [Fintype ι] (w : ι → G), HeckePair I → (∀ i, w i ∈ K) → (∀ g ∈ K, ∃! i, ∃ a ∈ I, ∃ b ∈ I, g = a * w i * b) → FinOrb K I 1 ∧ ∑ i, hk ρ I (w i) = inc ρ h ∘ₗ trc ρ K I ∧ ∀ v : fixd ρ K, trc ρ K I (inc ρ h v) = (I.relIndex K : A) • v := by

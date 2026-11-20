@@ -15,19 +15,17 @@ open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 noncomputable section
 namespace GlobalTheory.SquareAgree.KFinAlg
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ Bs a a' Γ Xc om om' hT f hf`. Take `⟨A, Φ, c, hA, hAθ, hr, hact⟩` from `fockFirst hPr F E σ Bs a a' Γ Xc om om' hT`. Establish `hb` using `hT.base`. Establish `hwp : GlobalTheory.WeilM.IsUWeilPair (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (GlobalTheory.WeilM.adeleClass F) Bs.ψ (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.V.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM …` using `hT.weil`. Establish `hadm` using `fun g => (hwp.isUSplitting).adm g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf` using `[← hr]`. Take `⟨T, rfl⟩` from `hf`. Take `⟨D, hD⟩` from `exists_tensDeg T`. Use `haveI : FiniteDimensional ℂ (tensDeg F (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) D) := LinearMap.finiteDimensional_range _`. Use `⟨(tensDeg F _ _ _ _ D).map Φ, inferInstance, hr ▸ LinearMap.map_le_range, ⟨T, hD, rfl⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `k hk _ ⟨T', hT', rfl⟩`. Take `⟨γ, hγ, Yg, hgen, hKC, hγ1⟩` from `GlobalTheory.RealLift.kLine_of_lineEx GlobalTheory.T.unitaryLieElements_generate_oneParamLines F E σ (Fin a) _ _ Bs.emb (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Γ.V.J) 1 A Γ.V.θ hb.cm hA hAθ k hk.1 hk.2`. Set `L` to `GlobalTheory.RealLift.sumPl (fun w => Formalism.BasicNotions.TH.fockAct1 (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) (Yg w) + (c w * (Yg w).trace) • (1 : Module.End ℂ _))`. Establish `hloc : GlobalTheory.RealLift.LocFin L` using `GlobalTheory.RealLift.locFin_sumPl _ _ _ fun w v => by`. Take `⟨⟨W, hW, hv, hs⟩, -⟩` from `(GlobalTheory.FockPolGK.pol_locFin_weights _ _ _ _).1 v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨W, hW, hv, fun y hy => W.add_mem (hs (Yg w) (hKC w) y hy) (W.smul_mem _ hy)⟩`. Take `⟨U, hexp, hSA⟩` from `GlobalTheory.T.weakExponential_action_on_fockVectors F (Fin a × Fin (a + a')) _ Φ L ((om.comp (MonoidHom.inl _ _)).comp γ) hloc (fun t l hl => hadm _ l hl) (fun T => hact γ hγ Yg hgen T)`. Set `Lw : ∀ w : InfinitePlace F, Module.End ℂ (Formalism.BasicNotions.TH.Pol (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q))` to `fun w => Formalism.BasicNotions.TH.fockAct1 (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q) (Yg w) + (c w * (Yg w).trace) • (1 : Module.End ℂ _)`. Set `Nw : ∀ w : InfinitePlace F, Submodule ℂ (Formalism.BasicNotions.TH.Pol (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q))` to `fun _ => MvPolynomial.restrictTotalDegree _ ℂ D`. Establish `hN : ∀ i, ∀ z ∈ Nw i, Lw i z ∈ Nw i`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i z hz`. Simplify using `only [Lw, LinearMap.add_apply, LinearMap.smul_apply, Module.End.one_apply]`. Conclude with `Submodule.add_mem _ (GlobalTheory.FockPolGK.kStable1 _ _ _ _ D (Yg i) (hKC i) z hz) (Submodule.smul_mem _ _ hz)`. Establish `hLst : ∀ y ∈ tensDeg F _ _ _ _ D, L y ∈ tensDeg F _ _ _ _ D`. Introduce `y hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.RealLift.sumPl Lw y ∈ _`. Rewrite using `[GlobalTheory.RealLift.sumPl, LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun w _ => GlobalTheory.RealLift.atPl_mem_range_map Lw Nw hN w y hy`. Use `⟨Φ (U T'), ⟨U T', exp_stable hexp _ hLst T' hT', rfl⟩, ?_⟩` and prove the remaining obligations. Establish `h1` using `hSA T'`.
-
-Rewrite `h1` using `[MonoidHom.comp_apply, hγ1]`. Conclude with `(GlobalTheory.RealLift.actsLaws F _ (Φ T') (Φ (U T')) (Φ (U T'))).2.1 _ (map_zero _) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polynomial_vector_kFinite (fockFirst : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
@@ -89,19 +87,17 @@ theorem polynomial_vector_kFinite (fockFirst : _root_.GlobalTheory.FunPr.ThetaLo
   rw [MonoidHom.comp_apply, hγ1] at h1
   exact (GlobalTheory.RealLift.actsLaws F _ (Φ T') (Φ (U T')) (Φ (U T'))).2.1 _ (map_zero _) h1
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ Bs a a' Γ Xc om om' hT ΦD hΦ`. Establish `hPair` using `GlobalTheory.ThK.RealUniq.isPair_V hT`. Establish `hstdM` using `hPair.good.std`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨f, φ, hf, hSB, hcof, rfl⟩` from `hx`. Take `⟨P, hPfin, hPle, hfP, hPst⟩` from `_root_.GlobalTheory.SquareAgree.KFinAlg.polynomial_vector_kFinite _root_.GlobalTheory.T.real_lift_exists_fock_map hPr F E σ Bs a a' Γ Xc om om' hT f hf`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x : Fin a × Fin (a + a') → Fv F v | ∀ j, x j ∈ v.adicCompletionIntegers F} 1` using `by filter_upwards [hcof, hstdM] with v h1 h2`. Rewrite using `[h1, h2]`. Use `⟨P.map (pureL φ), inferInstance, ?_, ⟨f, hfP, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `Submodule.subset_span ⟨g, φ, hPle hg, hSB, hcof, rfl⟩`. Introduce and unpack `k hk _ ⟨g, hg, rfl⟩`. Take `⟨g₁, hg₁, hA⟩` from `hPst k hk g hg`. Establish `key : om (k, 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ` using `hA _ (GlobalTheory.ThK.EvUniqInf.rest_pure _ _ hSB hstd)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨g₁, hg₁, key.symm⟩`. Consider the case `zero`. Conclude with `⟨⊥, inferInstance, bot_le, Submodule.zero_mem _, fun k _ x hx => by`. Rewrite `hx` using `[Submodule.mem_bot]`. Substitute `hx` using the available equality.
+Treat this case separately. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨U₁, h1, l1, m1, s1⟩` from `hx`. Take `⟨U₂, h2, l2, m2, s2⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨U₁ ⊔ U₂, inferInstance, sup_le l1 l2, Submodule.add_mem_sup m1 m2, fun k hk z hz => ?_⟩` and prove the remaining obligations. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (s1 k hk y₁ hy₁) (s2 k hk y₂ hy₂)`. Consider the case `smul c x _ hx`.
-
-Take `⟨U, h, l, m, s⟩` from `hx`. Conclude with `⟨U, h, l, U.smul_mem c m, s⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem derivation_algebra_kFinite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')
@@ -157,7 +153,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.SquareComm GlobalTheory.SquareAgree
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareAgree.KFinAlg.derivation_algebra_kFinite | exact _root_.GlobalTheory.SquareAgree.KFinAlg.derivation_algebra_kFinite | (intros; apply _root_.GlobalTheory.SquareAgree.KFinAlg.derivation_algebra_kFinite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.kFinite_algebra_closed_under_derivation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (Bs : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a')

@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.FourthSide
 
 /- English proof (translation)
-Establish `hp : f y ∈ (L.pull F).U (fun _ => j) ⊓ (L.pull F).U (fun _ => j')` using `⟨mem_pull.2 hj, mem_pull.2 hj'⟩`. Use `show gm f y _ (∏ _k : PUnit, (res _ (pullU F _ (L.g j j'))) ^ (1 : ℤ)) = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `(gm_res f y _ hp _).trans (gm_pull f F y (L.U j ⊓ L.U j') ⟨hj, hj'⟩ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_pull_g {X X' Y : Scheme.{0}} (L : LB X) (F : X' ⟶ X) (f : Y ⟶ X') (y : Y) (j j' : L.ι)
     (hj : F (f y) ∈ L.U j) (hj' : F (f y) ∈ L.U j') :
@@ -31,15 +31,15 @@ def germ (pG' : Ge' ⟶ B') (fG' : Ge' ⟶ G') (h : Ge' ⟶ Ge) (w : LB.Iso M' (
   (gw w (r ≫ pG') z jM jM')⁻¹ * (gw we (r ≫ h) z jM (fun _ => jL) * gw wL (r ≫ fG') z jL jL')
 
 /- English proof (translation)
-Establish `p₁ : pG (h (r z)) = Φ (pG' (r z))` using `congrArg (fun g => g (r z)) e₁.symm`. Establish `p₂ : fG (h (r z)) = Ψ (fG' (r z))` using `congrArg (fun g => g (r z)) e₂`. Establish `c₃ : fG (h (r z)) ∈ L.U jL` using `p₂ ▸ a₃`. Establish `d₃ : fG (h (r z)) ∈ L.U kL` using `p₂ ▸ b₃`. Establish `c₁ : pG (h (r z)) ∈ M.U jM` using `p₁ ▸ a₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d₁ : pG (h (r z)) ∈ M.U kM` using `p₁ ▸ b₁`. Establish `a` using `hw Z (r ≫ pG') z jM kM jM' kM' a₁ b₁ a₂ b₂`. Establish `b` using `hwL Z (r ≫ fG') z jL kL jL' kL' a₃ b₃ a₄ b₄`. Establish `c` using `hwe Z (r ≫ h) z jM kM (fun _ => jL) (fun _ => kL) c₁ d₁ (mem_pull.2 c₃) (mem_pull.2 d₃)`. Rewrite `c` using `[gm_pull_g L fG (r ≫ h) z jL kL c₃ d₃, Category.assoc, Category.assoc, ← e₁, e₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a`, `b` using `[Category.assoc]`. Unfold `germ`. Rewrite using `[a, b, c]`. Generalize the expression as in `gm (r ≫ pG' ≫ Φ) z _ (M.g jM kM) = A`. Generalize the expression as in `gm (r ≫ fG' ≫ Ψ) z _ (L.g jL kL) = C`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `gm (r ≫ pG') z _ (M'.g jM' kM') = A'`. Generalize the expression as in `gm (r ≫ fG') z _ (L'.g jL' kL') = C'`. Generalize the expression as in `gw w (r ≫ pG') z kM kM' = P`. Generalize the expression as in `gw wL (r ≫ fG') z kL kL' = Q`. Generalize the expression as in `gw we (r ≫ h) z kM (fun _ => kL) = R`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem germ_change (e₁ : pG' ≫ Φ = h ≫ pG) (e₂ : h ≫ fG = fG' ≫ Ψ) {w : LB.Iso M' (M.pull Φ)}
     {wL : LB.Iso L' (L.pull Ψ)} {we : LB.Iso (L.pull fG) (M.pull pG)} (hw : PGen w) (hwL : PGen wL) (hwe : PGen we)
@@ -75,15 +75,13 @@ theorem germ_change (e₁ : pG' ≫ Φ = h ≫ pG) (e₂ : h ≫ fG = fG' ≫ Ψ
   abel
 
 /- English proof (translation)
-Establish `p₁ : ∀ x, pG (h x) = Φ (pG' x)` using `fun x => congrArg (fun g => g x) e₁.symm`. Establish `p₂ : ∀ x, fG (h x) = Ψ (fG' x)` using `fun x => congrArg (fun g => g x) e₂`. Take `⟨W, hW⟩ : ∃ W : M.ι × L.ι → Ge'.Opens, ∀ i x, x ∈ W i ↔ Φ (pG' x) ∈ M.U i.1 ∧ pG' x ∈ M'.U jM' ∧ Ψ (fG' x) ∈ L.U i.2 ∧ fG' x ∈ L'.U jL'` from `⟨fun i => pG' ⁻¹ᵁ (Φ ⁻¹ᵁ M.U i.1) ⊓ (pG' ⁻¹ᵁ M'.U jM' ⊓ (fG' ⁻¹ᵁ (Ψ ⁻¹ᵁ L.U i.2) ⊓ fG' ⁻¹ᵁ L'.U jL')), fun _ _ => Iff.rfl⟩`. Establish `l₀ : ∀ i, W i ≤ (M'.pull pG').U (fun _ => jM') ⊓ (L'.pull fG').U (fun _ => jL')` using `fun i x hx => ⟨mem_pull.2 ((hW i x).1 hx).2.1, mem_pull.2 ((hW i x).1 hx).2.2.2⟩`. Establish `l₁ : ∀ i, W i ≤ pG' ⁻¹ᵁ ((M.pull Φ).U (fun _ => i.1) ⊓ M'.U jM')` using `fun i x hx => ⟨mem_pull.2 ((hW i x).1 hx).1, ((hW i x).1 hx).2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l₂ : ∀ i, W i ≤ h ⁻¹ᵁ ((M.pull pG).U (fun _ => i.1) ⊓ (L.pull fG).U (fun _ => i.2))` using `fun i x hx => ⟨mem_pull.2 ((p₁ x).symm ▸ ((hW i x).1 hx).1), mem_pull.2 ((p₂ x).symm ▸ ((hW i x).1 hx).2.2.1)⟩`. Establish `l₃ : ∀ i, W i ≤ fG' ⁻¹ᵁ ((L.pull Ψ).U (fun _ => i.2) ⊓ L'.U jL')` using `fun i x hx => ⟨mem_pull.2 ((hW i x).1 hx).2.2.1, ((hW i x).1 hx).2.2.2⟩`. Take `⟨u, hu⟩ : ∃ u : ∀ i, Γ(Ge', W i)ˣ, ∀ (Z : Scheme.{0}) (r : Z ⟶ Ge') (z : Z) (i : M.ι × L.ι), r z ∈ W i → gm r z (W i) (u i) = germ pG' fG' h w wL we r z i.1 jM' i.2 jL'` from `⟨fun i => (res (l₁ i) (pullU pG' _ (w.s (fun _ => i.1, jM'))))⁻¹ * (res (l₂ i) (pullU h _ (we.s (fun _ => i.1, fun _ => i.2))) * res (l₃ i) (pullU fG' _ (wL.s (fun _ => i.2, jL')))), fun Z r z i hz => (map_mul _ _ _).trans (congrArg₂ (· * ·) ((map_inv _ _).trans (congrArg (·⁻¹) ( …`. Take `⟨s, hs⟩` from `glue_unit _ W l₀ (fun x hx => by`. Take `⟨i, hi⟩` from `exists_chart hM (Φ (pG' x))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `exists_chart hL (Ψ (fG' x))`. Conclude with `Opens.mem_iSup.2 ⟨(i, j), (hW (i, j) x).2 ⟨hi, mem_pull.1 hx.1, hj, mem_pull.1 hx.2⟩⟩) u`. Use the proof step `(fun i i' x hx => by`. Establish `h₁` using `(hW i x).1 hx.1`. Establish `h₂` using `(hW i' x).1 hx.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `k` using `germ_change e₁ e₂ hw hwL hwe (𝟙 Ge') x i.1 i'.1 jM' jM' i.2 i'.2 jL' jL' h₁.1 h₁.2.1 h₁.2.2.1 h₁.2.2.2 h₂.1 h₂.2.1 h₂.2.2.1 h₂.2.2.2`. Rewrite `k` using `[gm_self hM' (𝟙 Ge' ≫ pG') x h₁.2.1, gm_self hL' (𝟙 Ge' ≫ fG') x h₁.2.2.2, inv_one, one_mul, one_mul]`. Conclude with `(hu _ (𝟙 Ge') x i hx.1).trans (k.trans (hu _ (𝟙 Ge') x i' hx.2).symm))`. Use `⟨s, fun Z r z jM jL a₁ a₂ a₃ a₄ => ?_⟩` and prove the remaining obligations. Establish `hz` using `(hW (jM, jL) (r z)).2 ⟨a₁, a₂, a₃, a₄⟩`.
-
-Conclude with `(gm_res r z (l₀ (jM, jL)) hz s).symm.trans ((congrArg (gm r z (W (jM, jL))) (hs (jM, jL))).trans (hu Z r z (jM, jL) hz))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_unit (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB) (hL' : L'.IsLB)
     (e₁ : pG' ≫ Φ = h ≫ pG) (e₂ : h ≫ fG = fG' ≫ Ψ) {w : LB.Iso M' (M.pull Φ)}
@@ -133,11 +131,9 @@ theorem exists_unit (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB) (hL' : L'.IsLB)
     ((congrArg (gm r z (W (jM, jL))) (hs (jM, jL))).trans (hu Z r z (jM, jL) hz))
 
 /- English proof (translation)
-Rewrite `hw`, `hwL`, `hwe` using `[isGen_iff]`. Use `choose s hs using exists_unit hM hM' hL hL' e₁ e₂ hw hwL hwe`. Use `⟨⟨fun p => s (p.1 PUnit.unit) (p.2 PUnit.unit)⟩, (isGen_iff _).2 ?_, fun Z r z jM jM' jL jL' a₁ a₂ a₃ a₄ => ?_⟩` and prove the remaining obligations. Introduce `Z r z j j' k k' a₂ b₂ a₄ b₄`. Take `⟨i, hi⟩` from `exists_chart hM (Φ (pG' (r z)))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `exists_chart hL (Ψ (fG' (r z)))`. Establish `a₄'` using `mem_pull.1 a₄`. Establish `b₄'` using `mem_pull.1 b₄`. Establish `c` using `germ_change e₁ e₂ hw hwL hwe r z i i j j' l l _ _ hi a₂ hl a₄' hi b₂ hl b₄'`. Rewrite `c` using `[← hs j _ Z r z i l hi a₂ hl a₄', ← hs j' _ Z r z i l hi b₂ hl b₄', ← gm_pull_g L' fG' r z _ _ a₄' b₄']`.
-
-Conclude with `c`. Conclude with `(congrArg (gw w (r ≫ pG') z jM jM' * ·) (hs jM' jL' Z r z jM jL a₁ a₂ a₃ a₄)).trans (mul_inv_cancel_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fourth_side (B B' G G' Ge Ge' : Scheme.{0}) (M : LB B) (M' : LB B') (L : LB G) (L' : LB G')
     (hM : M.IsLB) (hM' : M'.IsLB) (hL : L.IsLB) (hL' : L'.IsLB) (Φ : B' ⟶ B) (Ψ : G' ⟶ G) (pG : Ge ⟶ B)

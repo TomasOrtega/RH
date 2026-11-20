@@ -11,7 +11,7 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Densx
 
 /- English proof (translation)
-The claim follows from `densEq_of_C hB (swMeasCAll_of hBase isomC scaleC (stepC_of hE1 (massCAll_of hE2 hO)) (notRepC_of hE1 (massCAll_of hE2 hO)))`.
+A detailed English derivation is pending.
 -/
 theorem densEq_of_pieces (hE1 : PositivityTheory.PfSWUS.HMass.OneVecBinary) (hE2 : PositivityTheory.PfSWUS.HMass.OneVecBinaryMass)
     (hB : PositivityTheory.PfSWUS.HMass.SchwartzDensInf) (hBase : BaseOne) (hO : MassOne) : PositivityTheory.SiegelWeilFormula.Gen.DensEq :=

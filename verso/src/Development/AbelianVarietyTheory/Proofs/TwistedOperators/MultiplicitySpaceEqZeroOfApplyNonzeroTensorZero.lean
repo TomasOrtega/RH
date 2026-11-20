@@ -17,7 +17,7 @@ noncomputable def tprodInnerFun {ι : Type} [Fintype ι] {E : ι → Type} [∀ 
     ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap (fun i => (innerSL ℂ (w i)).toLinearMap))
 
 /- English proof (translation)
-Simplify using `[tprodInnerFun]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tprodInnerFun_tprod {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, NormedAddCommGroup (E i)]
     [∀ i, InnerProductSpace ℂ (E i)] (w v : ∀ i, E i) :
@@ -25,19 +25,17 @@ theorem tprodInnerFun_tprod {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, N
   simp [tprodInnerFun]
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span ℂ (Set.range (PiTensorProduct.tprod ℂ (s` using `E))) := by`. Rewrite using `[PiTensorProduct.span_tprod_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨n, f, g, hg⟩` from `Submodule.mem_span_set'.1 hx`. Use `choose v hv using fun j => (g j).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `W : ∀ i, Submodule ℂ (E i)` to `fun i => Submodule.span ℂ (Set.range fun j => v j i)`. Use `haveI : ∀ i, FiniteDimensional ℂ (W i) := fun i => FiniteDimensional.span_of_finite ℂ (Set.finite_range _)`. Set `b` to `fun i => stdOrthonormalBasis ℂ (W i)`. Establish `hexp : ∀ j i, v j i = ∑ k, ⟪(b i k : E i), v j i⟫_ℂ • (b i k : E i)`. Introduce `j i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : v j i ∈ W i` using `Submodule.subset_span ⟨j, rfl⟩`. Use `congrArg (fun z : W i => (z : E i)) ((b i).sum_repr' ⟨v j i, hm⟩)` as an intermediate fact. Simplify using `using this.symm`. Establish `hj : ∀ j, PiTensorProduct.tprod ℂ (v j) = ∑ k : ∀ i, Fin (Module.finrank ℂ (W i)), (∏ i, ⟪(b i (k i) : E i), v j i⟫_ℂ) • PiTensorProduct.tprod ℂ (fun i => (b i (k i) : E i))`. Introduce `j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : v j = fun i => ∑ k, ⟪(b i k : E i), v j i⟫_ℂ • (b i k : E i)` using `funext (hexp j)`. Use `conv_lhs => rw [e]`. Rewrite using `[MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hx' : x = ∑ j, f j • PiTensorProduct.tprod ℂ (v j)`. Rewrite using `[← hg]`. Simplify using `[hv]`. Establish `key : x = ∑ k : ∀ i, Fin (Module.finrank ℂ (W i)), tprodInnerFun (fun i => (b i (k i) : E i)) x • PiTensorProduct.tprod ℂ (fun i => (b i (k i) : E i))` using `by conv_rhs => rw [hx']`. Simplify using `only [map_sum, map_smul, tprodInnerFun_tprod, Finset.sum_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm, hx']`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hj j, Finset.smul_sum]`. Simplify using `[smul_smul]`. Rewrite using `[key]`.
-
-Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_tprodInnerFun {ι : Type} [Fintype ι] {E : ι → Type} [∀ i, NormedAddCommGroup (E i)]
     [∀ i, InnerProductSpace ℂ (E i)] (x : ⨂[ℂ] i, E i) (h : ∀ w, tprodInnerFun w x = 0) : x = 0 := by
@@ -77,17 +75,17 @@ theorem eq_zero_of_tprodInnerFun {ι : Type} [Fintype ι] {E : ι → Type} [∀
   rw [key]; simp [h]
 
 /- English proof (translation)
-Establish `e : ∀ g, star (F g) * F g = ((‖F g‖ ^ 2 : ℝ) : ℂ)`. Introduce `g`. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Simplify using the standard rewrite rules. Simplify using `only [e] at hi h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[integral_complex_ofReal]`. Establish `h0' : ∫ g in 𝓕, ‖F g‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hi' : Integrable (fun g => ‖F g‖ ^ 2) (μ.restrict 𝓕)`. Use `Integrable.re hi` as an intermediate fact. Simplify `this` using `only [RCLike.re_to_complex, Complex.ofReal_re]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi').1 h0'`. Establish `hae' : ∀ᵐ g ∂μ.restrict 𝓕, F g = 0` using `hae.mono fun g hg => by simpa using hg`. Establish `ho : IsOpen {g | F g ≠ 0}` using `isOpen_ne_fun hc continuous_const`. Establish `hz : μ {g | F g ≠ 0} = 0`. Use `h𝓕.measure_zero_of_invariant _ (fun γ => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`. Simplify using `only [Set.mem_setOf_eq]`. Rewrite using `[Subgroup.smul_def, smul_eq_mul, hinv _ (γ⁻¹).2]`. Rewrite using `[← Measure.restrict_apply ho.measurableSet]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hae'`. Use `(ho.measure_eq_zero_iff μ).1 hz` as an intermediate fact. Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`. Establish `: g ∈ {g | F g ≠ 0}` using `hg`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify the hypotheses and the goal together.
 
-Simplify the hypotheses and the goal together.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_integral_fundDomain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] (Γ : Subgroup G) [Countable Γ] (μ : Measure G) [μ.IsHaarMeasure]
@@ -121,25 +119,23 @@ theorem eq_zero_of_integral_fundDomain {G : Type} [Group G] [TopologicalSpace G]
   simp_all
 
 /- English proof (translation)
-Introduce `D V S θ M J χ μ 𝓕 hθ hμ h𝓕 hS u hu x hx hux`. Take `⟨-, -, -, hB, hG, -, hC⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Rewrite `hu` using `[mem_multT]`. Use `set T : MMap M := PiTensorProduct.lift.symm u with hT`. Establish `hTv : ∀ v, T v = u (PiTensorProduct.tprod ℂ v)` using `fun v => by simp [hT]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hS hθ hμ h𝓕 T hu T hu`. Establish `hall : ∀ (w : M.Vec) (y : ⨂[ℂ] τ, M.sm τ), IntegrableOn (fun g => star (T w g) * u y g) 𝓕 μ ∧ ∫ g in 𝓕, star (T w g) * u y g ∂μ = c * tprodInnerFun w y`. Introduce `w y`. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hc w v`. Establish `e : (fun g => star (T w g) * u (r • PiTensorProduct.tprod ℂ v) g) = fun g => r * (star (T w g) * T v g)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_smul, ← hTv]`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `⟨h1.const_mul r, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_const_mul, h2, map_smul, tprodInnerFun_tprod]`. Simplify using `only [Submodule.coe_inner, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add y z hy hz`. Establish `e : (fun g => star (T w g) * u (y + z) g) = fun g => star (T w g) * u y g + star (T w g) * u z g`. Use function extensionality and compare the values at `g`. Rewrite using `[map_add]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `⟨hy.1.add hz.1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add hy.1 hz.1, hy.2, hz.2, map_add]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hc0 : c = 0`. Assume the negation of the conclusion as `hne`. Use `hx (eq_zero_of_tprodInnerFun x fun w => ?_)` and prove the remaining obligations. Use `(hall w x).2` as an intermediate fact.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hux]`. Simplify using `only [Pi.zero_apply, mul_zero, integral_zero] at this`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hne`. Establish `hT0 : ∀ v, T v = 0`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, -⟩` from `GlobalTheory.mult_value_left_cont_level θ M J χ T hu v`. Use `eq_zero_of_integral_fundDomain (GQ V) μ 𝓕 h𝓕 (T v) h2 h1 (hc v v).1 ?_` and prove the remaining obligations. Rewrite using `[(hc v v).2, hc0, zero_mul]`. Use `PiTensorProduct.ext ?_` and prove the remaining obligations. Use extensionality with `v g`.
-
-Simplify using `[← hTv, hT0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem multT_eq_zero_of_apply_eq_zero : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S), ∀ J χ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), IsInfFam θ → μ.IsHaarMeasure → IsFundamentalDomain (GQ V) 𝓕 μ → SchurMult θ M J χ μ 𝓕 → ∀ u ∈ MultT θ M J χ, ∀ x : ⨂[ℂ] τ, M.sm τ, x ≠ 0 → u x = 0 → u = 0 := by
   intro D V S θ M J χ μ 𝓕 hθ hμ h𝓕 hS u hu x hx hux

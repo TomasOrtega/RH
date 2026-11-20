@@ -13,11 +13,9 @@ section Average
 variable {G H : Type*} [Group G] [Group H]
 
 /- English proof (translation)
-Establish `h1 : ∀ b : B, ∑ a, F (b * ψ a) = ∑ a, F (ψ a)`. Introduce `b`. Take `⟨a₀, rfl⟩` from `hψ b`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∀ a : A, ∑ b, F (b * ψ a) = ∑ b, F b` using `fun a => Equiv.sum_comp (Equiv.mulRight (ψ a)) F`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Use `_ = ∑ b : B, ∑ a, F (b * ψ a) := Finset.sum_congr rfl fun b _ => (h1 b).symm`. Use `_ = ∑ a : A, ∑ b, F (b * ψ a) := Finset.sum_comm`. Use `_ = ∑ _a : A, ∑ b, F b := Finset.sum_congr rfl fun a _ => h2 a`.
-
-Use `_ = (Fintype.card A : ℂ) * ∑ b, F b := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_mul_sum_comp_of_surjective {A B : Type*} [Group A] [Group B] [Fintype A]
     [Fintype B] (ψ : A →* B) (hψ : Function.Surjective ψ) (F : B → ℂ) :
@@ -38,11 +36,11 @@ theorem card_mul_sum_comp_of_surjective {A B : Type*} [Group A] [Group B] [Finty
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `: Finite (I.map π)` using `Finite.of_surjective _ (π.subgroupMap_surjective I)`. Establish `: Fintype I` using `Fintype.ofFinite _`. Establish `: Fintype (I.map π)` using `Fintype.ofFinite _`. Establish `key` using `card_mul_sum_comp_of_surjective (π.subgroupMap I) (π.subgroupMap_surjective I) (fun j => f (π g * j))`. Establish `hI : (Fintype.card I : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : (Fintype.card (I.map π) : ℂ) ≠ 0` using `by exact_mod_cast Fintype.card_ne_zero`. Unfold `cosetAverage`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, inv_mul_eq_div, inv_mul_eq_div, div_eq_div_iff hI hJ]`. Simplify using `only [Function.comp_apply, map_mul]`. Establish `hsub : ∀ i : I, π (i : G) = ((π.subgroupMap I i : I.map π) : H)` using `fun _ => rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hsub]`. Take the linear combination `key`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cosetAverage_comp (I : Subgroup G) [Finite I] (π : G →* H) (f : H → ℂ) (g : G) :
     cosetAverage I (f ∘ π) g = cosetAverage (I.map π) f (π g) := by
@@ -71,7 +69,7 @@ variable {K F L : Type*} [Field K] [NumberField K] [Field F] [NumberField F] [Fi
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap F L ((σ.restrictNormal F) (x : F)) = σ (algebraMap F L (x : F))`. Conclude with `AlgEquiv.restrictNormal_commutes σ F x`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem algebraMap_restrictNormalHom_smul (σ : Gal(L/K)) (x : 𝓞 F) :
     algebraMap (𝓞 F) (𝓞 L) (AlgEquiv.restrictNormalHom F σ • x) =
@@ -83,7 +81,7 @@ theorem algebraMap_restrictNormalHom_smul (σ : Gal(L/K)) (x : 𝓞 F) :
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Ideal.mem_pointwise_smul_iff_inv_smul_mem, Ideal.under_def, Ideal.mem_comap, ← map_inv, algebraMap_restrictNormalHom_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem under_smul (σ : Gal(L/K)) (Q : Ideal (𝓞 L)) :
     (σ • Q).under (𝓞 F) = AlgEquiv.restrictNormalHom F σ • Q.under (𝓞 F) := by
@@ -94,7 +92,7 @@ theorem under_smul (σ : Gal(L/K)) (Q : Ideal (𝓞 L)) :
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Use `AlgEquiv.ext fun x => (algebraMap F L).injective ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap F L (((g.restrictScalars K).restrictNormal F) x) = algebraMap F L x`. Rewrite using `[AlgEquiv.restrictNormal_commutes]`. Conclude with `g.commutes x`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNormalHom_restrictScalars (g : Gal(L/F)) :
     AlgEquiv.restrictNormalHom F (g.restrictScalars K) = 1 := by
@@ -106,7 +104,7 @@ theorem restrictNormalHom_restrictScalars (g : Gal(L/F)) :
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K F] [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite using `[Ideal.pointwise_smul_def, Ideal.pointwise_smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictScalars_smul_ideal (g : Gal(L/F)) (I : Ideal (𝓞 L)) :
     g.restrictScalars K • I = g • I := by
@@ -116,7 +114,7 @@ theorem restrictScalars_smul_ideal (g : Gal(L/F)) (I : Ideal (𝓞 L)) :
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[MulAction.mem_stabilizer_iff]`. Rewrite using `[← under_smul, hσ]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictNormalHom_mem_stabilizer {Q : Ideal (𝓞 L)} {σ : Gal(L/K)}
     (hσ : σ ∈ MulAction.stabilizer Gal(L/K) Q) :
@@ -127,7 +125,7 @@ theorem restrictNormalHom_mem_stabilizer {Q : Ideal (𝓞 L)} {σ : Gal(L/K)}
 omit [NumberField K] [NumberField F] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Rewrite `hσ`, the goal using `[AddSubgroup.mem_inertia]`. Introduce `x`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 L) (AlgEquiv.restrictNormalHom F σ • x - x) ∈ Q`. Rewrite using `[map_sub, algebraMap_restrictNormalHom_smul]`. Conclude with `hσ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictNormalHom_mem_inertia {Q : Ideal (𝓞 L)} {σ : Gal(L/K)}
     (hσ : σ ∈ Q.inertia Gal(L/K)) :
@@ -141,9 +139,9 @@ theorem restrictNormalHom_mem_inertia {Q : Ideal (𝓞 L)} {σ : Gal(L/K)}
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `: IsGalois F L` using `IsGalois.tower_top_of_isGalois K F L`. Take `⟨σ₀, rfl⟩` from `AlgEquiv.restrictNormalHom_surjective (F := K) (K₁ := F) L τ`. Establish `: (σ₀ • Q).LiesOver (Q.under (𝓞 F))` using `⟨by rw [under_smul, MulAction.mem_stabilizer_iff.1 hτ]⟩`. Take `⟨g, hg⟩` from `Ideal.exists_smul_eq_of_isGaloisGroup (Q.under (𝓞 F)) (σ₀ • Q) Q Gal(L/F)`. Use `⟨g.restrictScalars K * σ₀, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, restrictScalars_smul_ideal, hg]`. Rewrite using `[map_mul, restrictNormalHom_restrictScalars, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_mem_stabilizer_restrictNormalHom_eq (Q : Ideal (𝓞 L)) [Q.IsPrime]
     {τ : Gal(F/K)} (hτ : τ ∈ MulAction.stabilizer Gal(F/K) (Q.under (𝓞 F))) :
@@ -158,15 +156,15 @@ theorem exists_mem_stabilizer_restrictNormalHom_eq (Q : Ideal (𝓞 L)) [Q.IsPri
   · rw [map_mul, restrictNormalHom_restrictScalars, one_mul]
 
 /- English proof (translation)
-Establish `: IsGalois F L` using `IsGalois.tower_top_of_isGalois K F L`. Take `⟨σ₁, hσ₁Q, hσ₁⟩` from `exists_mem_stabilizer_restrictNormalHom_eq Q (Ideal.inertia_le_stabilizer _ hτ)`. Set `e₀` to `Ideal.Quotient.stabilizerHom Q (Q.under (𝓞 K)) Gal(L/K) ⟨σ₁, hσ₁Q⟩`. Establish `he₀ : ∀ y : 𝓞 L, e₀ (Ideal.Quotient.mk Q y) = Ideal.Quotient.mk Q (σ₁ • y)` using `fun _ => rfl`. Set `e : (𝓞 L ⧸ Q) ≃ₐ[𝓞 F ⧸ Q.under (𝓞 F)] (𝓞 L ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := e₀.toRingEquiv) (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `x`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Ideal.Quotient.algebraMap_mk_of_liesOver]`. Express the relevant statement in the definitionally equal form `e₀ (Ideal.Quotient.mk Q (algebraMap (𝓞 F) (𝓞 L) x)) = _`. Rewrite using `[he₀, ← algebraMap_restrictNormalHom_smul, Ideal.Quotient.eq, ← map_sub, hσ₁]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.mem_inertia.1 hτ x)`. Establish `he : ∀ y : 𝓞 L, e (Ideal.Quotient.mk Q y) = Ideal.Quotient.mk Q (σ₁ • y)` using `fun _ => rfl`. Take `⟨ρ, hρ⟩` from `Ideal.Quotient.stabilizerHom_surjective Gal(L/F) (Q.under (𝓞 F)) Q e.symm`. Establish `hρ' : ∀ z : 𝓞 L, Ideal.Quotient.mk Q ((ρ : Gal(L/F)) • z) = e.symm (Ideal.Quotient.mk Q z)` using `fun z => by rw [← hρ]; rfl`. Use `⟨(ρ : Gal(L/F)).restrictScalars K * σ₁, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddSubgroup.mem_inertia]`. Introduce `y`. Express the relevant statement in the definitionally equal form `_ ∈ Q`. Rewrite using `[← Ideal.Quotient.eq]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, restrictNormalHom_restrictScalars, one_mul, hσ₁]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_inertia_restrictNormalHom_eq (Q : Ideal (𝓞 L)) [Q.IsPrime]
     {τ : Gal(F/K)} (hτ : τ ∈ (Q.under (𝓞 F)).inertia Gal(F/K)) :
@@ -207,9 +205,9 @@ theorem exists_mem_inertia_restrictNormalHom_eq (Q : Ideal (𝓞 L)) [Q.IsPrime]
 omit [NumberField K] in
 
 /- English proof (translation)
-Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Conclude with `restrictNormalHom_mem_stabilizer hσ`. Introduce `hτ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, h⟩` from `exists_mem_stabilizer_restrictNormalHom_eq Q hτ`. Conclude with `⟨σ, hσ, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_stabilizer_restrictNormalHom (Q : Ideal (𝓞 L)) [Q.IsPrime] :
     (MulAction.stabilizer Gal(L/K) Q).map (AlgEquiv.restrictNormalHom F) =
@@ -223,9 +221,9 @@ theorem map_stabilizer_restrictNormalHom (Q : Ideal (𝓞 L)) [Q.IsPrime] :
     exact ⟨σ, hσ, h⟩
 
 /- English proof (translation)
-Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨σ, hσ, rfl⟩`. Conclude with `restrictNormalHom_mem_inertia hσ`. Introduce `hτ`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, h⟩` from `exists_mem_inertia_restrictNormalHom_eq Q hτ`. Conclude with `⟨σ, hσ, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_inertia_restrictNormalHom (Q : Ideal (𝓞 L)) [Q.IsPrime] :
     (Q.inertia Gal(L/K)).map (AlgEquiv.restrictNormalHom F) =
@@ -239,7 +237,7 @@ theorem map_inertia_restrictNormalHom (Q : Ideal (𝓞 L)) [Q.IsPrime] :
     exact ⟨σ, hσ, h⟩
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[Ideal.under_under]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 L) (AlgEquiv.restrictNormalHom F φ • x - x ^ Nat.card (𝓞 K ⧸ Q.under (𝓞 K))) ∈ Q`. Rewrite using `[map_sub, map_pow, algebraMap_restrictNormalHom_smul]`. Conclude with `h _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsArithFrobAt.restrictNormalHom {φ : Gal(L/K)} {Q : Ideal (𝓞 L)}
     (h : IsArithFrobAt (𝓞 K) φ Q) :

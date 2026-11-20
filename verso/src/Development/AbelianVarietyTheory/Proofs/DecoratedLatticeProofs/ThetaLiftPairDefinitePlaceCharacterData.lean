@@ -23,33 +23,29 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory.DownPair
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t`. Establish `hc` using `hG.core`. Establish `hV` using `hc.lev.βV i`. Establish `hW` using `hc.lev.βW i`. Establish `hΛ : ∀ {V : Formalism.BasicNotions.HSpace D.host.E} {β Λ}, Formalism.IndefR.Links.IsSDFrame (D` using `D) V β Λ 1 → Λ = GlobalTheory.AdelicU.frameLat V := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `V β Λ h`. Take `⟨c, hf, -, -, h1, h2⟩` from `h`. Use extensionality with `x`. Rewrite using `[GlobalTheory.AdelicU.mem_frameLat]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Use `h2 x hx` as an intermediate fact. Simplify using `only [one_pow, Nat.cast_one, one_smul] at this`. Conclude with `this`. Introduce `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1 x hx`. Establish `hΛV` using `hΛ hV`. Establish `hΛW` using `hΛ hW`. Establish `hEta : ∃ η, GlobalTheory.WeilParts.IsEtaTilde D η`. Establish `hω` using `hc.thP.ωP i t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨R.eta, GlobalTheory.EtaTildeOddParity.isEtaTilde_of_odd D R.eta R.C.eta hc.lev.eta R.C.isEta _ (Vc D i).rank (Wc D i).rank hω.resS hω.resT ?_⟩` and prove the remaining obligations. Rewrite using `[D.sp.V_rank _ (by omega) (by omega), D.sp.W_rank _ (by omega) (by omega)]`. Unfold `Formalism.BasicNotions.Ranks.nV`. Use `D.R.t_odd` as an intermediate fact. Take `⟨k, hk⟩` from `this`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨D.R.r + k, by omega⟩`. Establish `hUnr : GlobalTheory.LFun.UnrOff (F` using `D.host.F) (E := D.host.E) (chiV R i t) (↑(under (D := D) (R.Pg ∪ R.Q t))) := by`. Introduce `w hw`. Establish `hgood : GlobalTheory.Hk3.Good R t w`. Introduce `PP hPP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `hw (Finset.mem_coe.2 (Finset.mem_image.2 ⟨PP, Finset.mem_union.2 hPP, rfl⟩))`. Introduce `hcj`. Conclude with `hw (Finset.mem_coe.2 (Finset.mem_image.2 ⟨PP, Finset.mem_union.2 hPP, GlobalTheory.RawLift.Small.under_eq_of_conj hcj⟩))`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg` using `((GlobalTheory.GoodPrimes.good_primes R F hc.lev).2.1 t w hgood).1`. Establish `hnotover : ∀ k, ¬ Formalism.L2.Host.OverP D.host (D.host.g k) w`. Introduce `k hk`. Apply `hg` to reduce the goal to its premises. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `fin_cases k`. Conclude with `Ideal.mul_mem_right _ _ hk`. Conclude with `Ideal.mul_mem_left _ _ hk`. Establish `hmu : (R.C.mu0 i).UnrAt w` using `(R.C.isMu0 i).unr w hnotover`. Establish `hxi : (R.xiH t).UnrAt w`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Break down `(hc.lev.Q_ram t w).1 h with h1 | ⟨PP', h1, h2⟩` into its components or cases. Conclude with `(hgood w (Or.inr h1)).1 rfl`. Conclude with `(hgood PP' (Or.inr h1)).2 h2`. Establish `heta : R.C.eta.UnrAt w` using `R.C.isEta.unr w`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `a1` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hc.lev.mu0 i) w).2 hmu`. Establish `a2` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hc.lev.xi t) w).2 hxi`. Establish `a3` using `(GlobalTheory.LFun.unrAt_iff_of_chrEq hc.lev.eta w).2 heta`. Conclude with `(a1.mul a2).mul a3.inv`. Establish `hr : 0 < D.R.r`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `D.R.m_add_three_le_k` as an intermediate fact. Unfold `Formalism.BasicNotions.Ranks.r`. Use linear arithmetic over natural numbers and integers. Use `⟨GlobalTheory.Core.Rk.Exh.Model.exists_defin hc.models.inf (D.sp.V_sig _) (hc.models.vpos i), ⟨?_, ?_, fun v h2 => GlobalTheory.Core.Rk.IP.Model.isSplit_two v h2⟩, rfl, hUnr, hEta, D.sp.W_sig _, D.sp.W_rank _ (by omega) (by omega), hr, ?_, D.R.rank_add_five_le, hΛV, hΛW⟩` and prove the remaining obligations. Take `⟨c, hf, -⟩` from `hV`.
-
-Rewrite using `[← hΛV]`. Conclude with `hf`. Take `⟨-, e, he, -⟩` from `hc.thP.vP i t`. Conclude with `⟨e, he⟩`. Rewrite using `[D.sp.V_rank _ (by omega) (by omega)]`.
-
-Unfold `Formalism.BasicNotions.Ranks.nV`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pair_data : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ (i : Fin D.R.m) (t : T), (∃ cA a, Defin R.θ (Vc D i) cA a) ∧ Places (Vc D i) (R.βV i) (R.Pg ∪ R.Q t) ∧ under (R.Pg ∪ R.Q t) = GlobalTheory.IndefiniteRowSideFullHecke.LabelSettingScalars.badPl R t ∧ GlobalTheory.LFun.UnrOff (F := D.host.F) (E := D.host.E) (chiV R i t) (↑(under (D := D) (R.Pg ∪ R.Q t))) ∧ (∃ η, GlobalTheory.WeilParts.IsEtaTilde D η) ∧ (Wc D i).SigOK ∧ (Wc D i).rank = D.R.r ∧ 0 < D.R.r ∧ (Vc D i).rank = D.R.r + D.R.t ∧ D.R.r + 5 ≤ D.R.t ∧ R.ΛV i = GlobalTheory.AdelicU.frameLat (Vc D i) ∧ R.ΛW i = GlobalTheory.AdelicU.frameLat (Wc D i) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t

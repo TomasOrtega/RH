@@ -18,27 +18,25 @@ open Classical
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hsub : Set.range gp ⊆ Set.range e₀`. Take `⟨a, ha⟩` from `hd.denseRange.exists_mem_open e₀.isOpenEmbedding.isOpen_range ⟨e₀ P, P, rfl⟩`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Subsingleton.elim x a]` and apply the resulting hypothesis. Use `set g' := IsOpenImmersion.lift e₀ gp hsub with hg'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hfac : g' ≫ e₀ = gp` using `IsOpenImmersion.lift_fac _ _ _`. Use `set g := Spec.preimage g' with hg`. Use `set ρ := Spec.preimage (e₀ ≫ π) with hρ`. Establish `hgg : Spec.map g = g'` using `Spec.map_preimage _`. Establish `hρρ : Spec.map ρ = e₀ ≫ π` using `Spec.map_preimage _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hcomp : ρ ≫ g = CommRingCat.ofHom (algebraMap R (FractionRing R))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hgg, hρρ, ← Category.assoc, hfac, hgp]`. Establish `hcomp' : ∀ r, g.hom (ρ.hom r) = algebraMap R (FractionRing R) r` using `fun r => by`. Use `congrArg (fun f => f.hom r) hcomp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using this`. Establish `hden : DenseRange g'`. Rewrite using `[denseRange_iff_closure_range, e₀.isOpenEmbedding.isInducing.closure_eq_preimage_closure_image, ← Set.range_comp]`. Establish `: (e₀ ∘ g') = gp` using `by funext x; rw [← hfac]; rfl`. Rewrite using `[this, hd.denseRange.closure_range, Set.preimage_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hred : _root_.IsReduced B`. Establish `: IsReduced (Spec B)` using `isReduced_of_isOpenImmersion e₀`. Conclude with `(affine_isReduced_iff B).1 this`. Establish `hinj : Function.Injective g.hom`. Establish `h1 : DenseRange (PrimeSpectrum.comap g.hom)` using `by rw [← hgg] at hden; exact hden`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical g.hom).1 h1`. Rewrite `h2` using `[nilradical_eq_zero]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).2 (le_bot_iff.1 h2)`. Establish `hPρ : Ideal.comap ρ.hom P.asIdeal = ⊥`. Establish `h2 : (Spec.map ρ) P = π (e₀ P)` using `by rw [hρρ]; rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[hP]`. Conclude with `congrArg PrimeSpectrum.asIdeal h2`. Establish `hPb : P.asIdeal = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, s, hs, hxs⟩` from `IsFractionRing.div_surjective (A := R) (g.hom x)`. Establish `hs0 : algebraMap R (FractionRing R) s ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hs`. Establish `h0 : ρ.hom s * x - ρ.hom a = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_sub, map_mul, hcomp', hcomp', ← hxs, map_zero, mul_div_cancel₀ _ hs0, sub_self]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ha : a ∈ Ideal.comap ρ.hom P.asIdeal`. Rewrite using `[Ideal.mem_comap, ← sub_eq_zero.1 h0]`. Conclude with `P.asIdeal.mul_mem_left _ hx`. Rewrite `ha` using `[hPρ, Ideal.mem_bot]`. Establish `hx0 : g.hom x = 0` using `by rw [← hxs, ha, map_zero, zero_div]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_bot]`. Conclude with `hinj (by rw [hx0, map_zero])`. Rewrite using `[← hfac]`. Use `show e₀ P = e₀ (g' k)`. Use `congr 1`.
-
-Rewrite using `[← hgg]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show P.asIdeal = Ideal.comap g.hom k.asIdeal`. Establish `hk : k.asIdeal = ⊥` using `@Ideal.eq_bot_of_prime _ _ _ k.isPrime`. Rewrite using `[hPb, hk, Ideal.comap_bot_of_injective _ hinj]`.
+A detailed English derivation is pending.
 -/
 theorem eq_gp_of_lies_over_bot {R : Type} [CommRing R] [IsDomain R] {S : Scheme.{0}} [IsReduced S] (π : S ⟶ Sp R)
     (gp : Sp (FractionRing R) ⟶ S) (hgp : gp ≫ π = jK R) (hd : IsDominant gp)
@@ -103,13 +101,11 @@ theorem eq_gp_of_lies_over_bot {R : Type} [CommRing R] [IsDomain R] {S : Scheme.
   rw [hPb, hk, Ideal.comap_bot_of_injective _ hinj]
 
 /- English proof (translation)
-Introduce `R _ _ M' W _ _ φ ξ hφ hξ`. Establish `: IsReduced M'.S` using `by have := M'.integral; infer_instance`. Set `w : Sp W` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum W)`. Set `k : Sp (FractionRing R)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (FractionRing R))`. Use `⟨w, k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `j` to `M'.S.affineCover.idx (ξ w)`. Establish `hoi : IsOpenImmersion (M'.S.affineCover.f j)` using `M'.S.affineCover.map_prop j`. Take `⟨P, hP⟩` from `M'.S.affineCover.covers (ξ w)`. Rewrite using `[← hP]`. Use `eq_gp_of_lies_over_bot (he₀ := hoi) M'.π M'.gp M'.gp_π M'.dominant (M'.S.affineCover.f j) P ?_ k` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg M'.π hP).trans ?_` and prove the remaining obligations. Establish `h1 : M'.π (ξ w) = (spMap φ) w` using `by rw [← hξ]; rfl`. Rewrite using `[h1]`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises. Use `show Ideal.comap φ ⊥ = ⊥`.
-
-Conclude with `Ideal.comap_bot_of_injective _ hφ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem modif_pt_over_gen : ∀ (R : Type) [CommRing R] [IsDomain R] (M' : Modif R) (W : Type) [CommRing W] [IsDomain W] (φ : R →+* W) (ξ : Sp W ⟶ M'.S), Function.Injective φ → ξ ≫ M'.π = spMap φ → ∃ (w : Sp W) (k : Sp (FractionRing R)), ξ w = M'.gp k := by
   intro R _ _ M' W _ _ φ ξ hφ hξ

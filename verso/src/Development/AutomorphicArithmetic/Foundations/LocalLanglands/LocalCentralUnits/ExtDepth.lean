@@ -9,13 +9,13 @@ open NumberField IsDedekindDomain ValuativeRel Polynomial Formalism.ConjugateSel
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha r rc hr hext x hgood hdz`. Rewrite using `[GlobalTheory.T.isTameWeilDeligne_iff_wild_charpoly]`. Introduce `σ hσ`. Take `⟨⟨hdim, s, hsup, hcusp, hchar⟩, -⟩` from `UpperTheory.Zero.LLC.extDim E Ω A w h a ha r rc hr hext x`. Take `⟨s0, hsup0, hgc⟩` from `hgood`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : s0 = s` using `(UpperTheory.Zero.LLC.goodSeg _).2.2 x s0 s hsup0 hsup`. Substitute `hs` using the available equality. Establish `hdzy : ∀ y ∈ s0, UpperTheory.Zero.LLC.DZ y`. Take `⟨m, f, hf, hcs⟩` from `hsup`. Introduce `y hy`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[← hf]`. Take `⟨i, -, rfl⟩` from `Multiset.mem_map.mp hy`. Establish `key` using `UpperTheory.Zero.LLC.Pr.dzs _ x.fst (GlobalTheory.SplitRead.Irr.ofIrrRep x.snd.rep) m (fun i => (f i).fst) (fun i => GlobalTheory.SplitRead.Irr.ofIrrRep (f i).snd.rep) hcs ((Submodule.ne_bot_iff _).mp hdz) i`. Conclude with `(Submodule.ne_bot_iff _).mpr key`. Establish `htame : ∀ y ∈ s0, (r y).charPol σ = (X - 1) ^ y.fst`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Establish `hy'` using `hr.depth y (hcusp y hy) (hgc y hy) (hdzy y hy)`. Rewrite `hy'` using `[GlobalTheory.T.isTameWeilDeligne_iff_wild_charpoly]`. Rewrite using `[hy' σ hσ, hr.dim y (hcusp y hy)]`. Rewrite using `[hchar σ, Multiset.map_congr rfl htame, GlobalTheory.LlcDepth.prod_map_pow (X - 1) Sigma.fst s0, HasSupport.sum_fst hsup, Fintype.card_fin, hdim]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.extDepth :
     UpperTheory.Zero.LLC.ExtDepth := by

@@ -18,15 +18,15 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G Reciproci
 namespace GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U hU h Z a n g hg`. Take `⟨hL, -, -, hA⟩` from `GlobalTheory.T.evaluation_laws_generic_frames_atlas_hold E H Dw l Xo c`. Take `⟨χ, hχ, hidem, h1, h0⟩` from `exists_idem_section E H Dw l Xo c hL h (hA h) Z`. Establish `hm : ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S) (f f' : Rul Xo c), evR Xo c (f * f') y = evR Xo c f y * evR Xo c f' y`. Introduce `S _ _ y f f'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `evR`. Conclude with `evalAt_mul _ _ f f' y`. Use `⟨χ * g, GlobalTheory.Reg.IdemCusp.idem_mul_mem_cusp E H Dw l Xo c r U hU χ hχ hidem a n g hg, ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `evC at h1 ⊢`. Rewrite using `[hm, h1, one_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z' hZ'`. Establish `h0'` using `h0 Z' hZ'`. Unfold `evC at h0' ⊢`. Rewrite using `[hm, h0', zero_mul]`. Introduce `T io y`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Use `letI := io.toAlgebra`. Unfold `evI`. Establish `hy : IsIdempotentElem (evR Xo c χ y.1)`. Unfold `IsIdempotentElem`. Rewrite using `[← hm, hidem]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `IsIdempotentElem.iff_eq_zero_or_one.mp hy with h' | h'` into its components or cases. Use `right`. Rewrite using `[hm, h', zero_mul]`. Use `left`. Rewrite using `[hm, h', one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cusp_restrict_comp_int : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r), (∀ σ, Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf (U σ)) → ∀ (h : GenFrEx Xo c) (Z : Comp Xo c) a n, ∀ g ∈ Formalism.L2.PjFree.cusp Xo c U a n, ∃ g' ∈ Formalism.L2.PjFree.cusp Xo c U a n, evC h Z g' = evC h Z g ∧ (∀ Z', Z' ≠ Z → evC h Z' g' = 0) ∧ ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io), evI y g' = evI y g ∨ evI y g' = 0 := by
   intro E _ _ _ H Dw l Xo c r U hU h Z a n g hg

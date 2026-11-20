@@ -21,19 +21,19 @@ variable (V κ) in
 def dgL : (κ → V) →L[ℝ] (κ ⊕ κ → V) := GlobalTheory.SchwartzBox.restr V (Sum.elim id id)
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; cases i <;> simp [dgL, GlobalTheory.SchwartzBox.restr_apply]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_add (x u : κ → V) : dgL V κ u + Sum.elim x 0 = Sum.elim (u + x) u := by
   funext i; cases i <;> simp [dgL, GlobalTheory.SchwartzBox.restr_apply]
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (Sum.elim x u) (.inr i)`.
+A detailed English derivation is pending.
 -/
 theorem le_elim_r (x u : κ → V) : ‖u‖ ≤ ‖Sum.elim x u‖ :=
   (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (Sum.elim x u) (.inr i)
 
 /- English proof (translation)
-The claim follows from `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (Sum.elim x u) (.inl i)`.
+A detailed English derivation is pending.
 -/
 theorem le_elim_l (x u : κ → V) : ‖x‖ ≤ ‖Sum.elim x u‖ :=
   (pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun i => norm_le_pi_norm (Sum.elim x u) (.inl i)
@@ -44,21 +44,21 @@ def slice (x : κ → V) : 𝓢(κ ⊕ κ → V, ℂ) →L[ℂ] 𝓢(κ → V, �
     ⟨1, 1, fun u => by rw [dg_add]; have := le_elim_r (u + x) u; linarith⟩
 
 /- English proof (translation)
-Rewrite using `[← dg_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem slice_apply (x : κ → V) (f : 𝓢(κ ⊕ κ → V, ℂ)) (u : κ → V) : slice x f u = f (Sum.elim (u + x) u) := by
   rw [← dg_add]; rfl
 
 /- English proof (translation)
-Establish `key : ∀ u, ‖x‖ ^ N * (‖u‖ ^ k * ‖iteratedFDeriv ℝ n (slice x f) u‖) ≤ 2 ^ N * SchwartzMap.seminorm ℂ (N + k) n f` using `fun u => by`. Establish `e : ⇑(slice x f) = fun y => (SchwartzMap.compSubConstCLM ℂ (-Sum.elim x 0) f) (y ∘ Sum.elim id id)`. Use function extensionality and compare the values at `y`. Rewrite using `[slice_apply, ← dg_add]`. Simplify using `[dgL, GlobalTheory.SchwartzBox.restr_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `GlobalTheory.SchwartzBox.norm_iteratedFDeriv_restr_le (Sum.elim id id) (SchwartzMap.compSubConstCLM ℂ (-Sum.elim x 0) f) n u`. Establish `e2 : ⇑(SchwartzMap.compSubConstCLM ℂ (-Sum.elim x 0) f) = fun z => f (z + Sum.elim x 0)`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules. Rewrite `h1` using `[← e, e2, iteratedFDeriv_comp_add_right, show u ∘ Sum.elim id id + Sum.elim x 0 = _ from dg_add x u]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set z := Sum.elim (u + x) u`. Establish `hu : ‖u‖ ≤ ‖z‖` using `le_elim_r _ _`. Establish `hx : ‖x‖ ≤ 2 * ‖z‖`. Use `norm_sub_le (u + x) u` as an intermediate fact. Establish `h : ‖u + x‖ ≤ ‖z‖` using `le_elim_l _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_sub_cancel_left]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Break down `(pow_nonneg (norm_nonneg x) N).eq_or_lt with h | h` into its components or cases. Rewrite using `[← h, zero_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Rewrite using `[mul_comm, ← le_div_iff₀ h]`. Conclude with `SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun u => by rw [le_div_iff₀ h, mul_comm]; exact key u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_seminorm (f : 𝓢(κ ⊕ κ → V, ℂ)) (N k n : ℕ) (x : κ → V) :
     ‖x‖ ^ N * SchwartzMap.seminorm ℂ k n (slice x f) ≤ 2 ^ N * SchwartzMap.seminorm ℂ (N + k) n f := by
@@ -86,9 +86,9 @@ theorem slice_seminorm (f : 𝓢(κ ⊕ κ → V, ℂ)) (N k n : ℕ) (x : κ �
     exact SchwartzMap.seminorm_le_bound ℂ k n _ (by positivity) fun u => by rw [le_div_iff₀ h, mul_comm]; exact key u
 
 /- English proof (translation)
-Take `⟨s, C, -, h⟩` from `Seminorm.bound_of_continuous (schwartz_withSeminorms ℂ (κ → V) ℂ) ((schwartzSeminormFamily ℂ (κ → V) ℂ (k, 0)).comp T.toLinearMap) (((schwartz_withSeminorms ℂ (κ → V) ℂ).continuous_seminorm (k, 0)).comp T.continuous)`. Use `⟨C * ∑ i ∈ s, 2 ^ N * SchwartzMap.seminorm ℂ (N + i.1) i.2 f, fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖y‖ ^ k * ‖T (slice x f) y‖ ≤ C * ∑ i ∈ s, SchwartzMap.seminorm ℂ i.1 i.2 (slice x f)`. Use `(SchwartzMap.norm_pow_mul_le_seminorm ℂ _ k y).trans ((h (slice x f)).trans ?_)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (Seminorm.finset_sup_apply_le (by positivity) fun i hi => ?_) C.2` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun i : ℕ × ℕ => SchwartzMap.seminorm ℂ i.1 i.2 (slice x f)) (fun _ _ => apply_nonneg _ _) hi`. Use `(mul_le_mul_of_nonneg_left h1 (by positivity)).trans ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => slice_seminorm f N _ _ x) C.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_bound (T : 𝓢(κ → V, ℂ) →L[ℂ] 𝓢(κ → V, ℂ)) (f : 𝓢(κ ⊕ κ → V, ℂ)) (N k : ℕ) :
     ∃ C : ℝ, ∀ x y, ‖x‖ ^ N * (‖y‖ ^ k * ‖T (slice x f) y‖) ≤ C := by
@@ -106,9 +106,9 @@ theorem slice_bound (T : 𝓢(κ → V, ℂ) →L[ℂ] 𝓢(κ → V, ℂ)) (f :
   exact mul_le_mul_of_nonneg_left (Finset.sum_le_sum fun i _ => slice_seminorm f N _ _ x) C.2
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `slice_bound T f N 0`. Take `⟨C', h'⟩` from `slice_bound T f 0 N`. Use `⟨max C C', fun z => ?_⟩` and prove the remaining obligations. Break down `le_max_iff.1 (GlobalTheory.SchwartzBox.norm_le_max_comp z) with e | e` into its components or cases. Use `le_max_of_le_left (le_trans ?_ (h (z ∘ Sum.inl) (z ∘ Sum.inr)))` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_zero, one_mul]`. Use `gcongr`. Use `le_max_of_le_right (le_trans ?_ (h' (z ∘ Sum.inl) (z ∘ Sum.inr)))` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_decay (T : 𝓢(κ → V, ℂ) →L[ℂ] 𝓢(κ → V, ℂ)) (f : 𝓢(κ ⊕ κ → V, ℂ)) (N : ℕ) :
     ∃ C : ℝ, ∀ z : κ ⊕ κ → V, ‖z‖ ^ N * ‖T (slice (z ∘ Sum.inl) f) (z ∘ Sum.inr)‖ ≤ C := by
@@ -126,19 +126,17 @@ end Real
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Simplify using `only [pureA_algebraMap]`. Take `⟨B, hB⟩` from `hg.1.continuous.bounded_above_of_compact_support hg.2`. Take `⟨N, hN, hK⟩` from `exists_nat_mul_integral_of_isCompact F hg.2.isCompact`. Use `haveI := discreteTopology_denomLattice F κ hN`. Establish `hs : Summable fun z : denomLattice F κ N => ‖f z‖`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hf (Module.finrank ℤ (denomLattice F κ N) + 1)`. Use `Summable.of_norm_bounded_eventually ((ZLattice.summable_norm_pow_inv _ _ (Nat.lt_succ_self _)).mul_left C) ?_` and prove the remaining obligations. Use `(Set.finite_singleton (0 : denomLattice F κ N)).subset fun z hz => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ‖‖f z‖‖ ≤ C * ‖z‖⁻¹ ^ _`. Rewrite using `[norm_norm, inv_pow, ← div_eq_mul_inv, le_div_iff₀ (pow_pos (norm_pos_iff.2 h0) _), mul_comm]`. Conclude with `hC z`. Set `S : Set (κ → F)` to `{ξ | (fun i => mixedEmbedding F (ξ i)) ∈ denomLattice F κ N}`. Use `((Subtype.val_injective (p := fun ξ => ξ ∈ S)).summable_iff ?_).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `ξ hξ`. Use `mul_eq_zero_of_right _ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hξ` to reduce the goal to its premises. Use `⟨⟨ξ, fun i => ?_⟩, rfl⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `(IntegralFinAdele.integral_finiteAdele_properties F).2.2.2.1 ((N : F) * ξ i) fun v => by`. Rewrite using `[map_mul, map_natCast]`. Conclude with `hK _ (subset_tsupport _ h0) i v`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg (mixedEmbedding F) hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[← nsmul_eq_mul, map_nsmul, ← Nat.cast_smul_eq_nsmul ℝ]`. Conclude with `h2.symm`. Set `j : S → denomLattice F κ N` to `fun ξ => ⟨_, ξ.2⟩`. Establish `hj : Function.Injective j` using `fun a b h => Subtype.ext (funext fun i => mixedEmbedding_injective F (congrFun (congrArg Subtype.val h) i))`. Use `Summable.of_norm_bounded ((hs.comp_injective hj).mul_right B) fun ξ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Function.comp_apply, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hB _) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_decay (f : (κ → mixedEmbedding.mixedSpace F) → ℂ) (hf : ∀ N : ℕ, ∃ C : ℝ, ∀ z, ‖z‖ ^ N * ‖f z‖ ≤ C)
     {g : (κ → Af F) → ℂ} (hg : g ∈ SB (κ → Af F)) :
@@ -188,7 +186,7 @@ theorem sch_eq : schA F κ = schwartzBruhatPi F κ := rfl
 def sl (a : κ → AF F) (Φ : (κ ⊕ κ → AF F) → ℂ) (u : κ → AF F) : ℂ := Φ (Sum.elim (u + a) u)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [sl, schwartzBruhatTensorPi, slice_apply]`. Apply the tactic sequence `congr 2 <;> funext i <;> cases i <;> try rfl`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sl_tensor (a : κ → AF F) (f : 𝓢(κ ⊕ κ → mixedEmbedding.mixedSpace F, ℂ)) (g : (κ ⊕ κ → Af F) → ℂ) :
     sl a (schwartzBruhatTensorPi f g) =
@@ -199,9 +197,9 @@ theorem sl_tensor (a : κ → AF F) (f : 𝓢(κ ⊕ κ → mixedEmbedding.mixed
   exact map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [finiteTensor, Fintype.prod_sum_type, Pi.smul_apply, smul_eq_mul, ← Finset.prod_mul_distrib, Sum.elim_inl, Sum.elim_inr, cosetIndicator_apply, Pi.add_apply]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : u i - b (.inr i) ∈ idealFiniteAdeles J`. Simplify using `only [show u i + a i - b (.inl i) = (u i - b (.inr i)) + (a i - (b (.inl i) - b (.inr i))) by ring, AddSubgroup.add_mem_cancel_left _ h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Reduce the equality to equality of the corresponding arguments. Simplify using `[h]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem coset_split (J) (b : κ ⊕ κ → Af F) (a : κ → Af F) :
     (fun u => finiteTensor (fun i => cosetIndicator J (b i)) (Sum.elim (u + a) u)) =
@@ -220,9 +218,9 @@ theorem coset_split (J) (b : κ ⊕ κ → Af F) (a : κ → Af F) :
 abbrev rt (ξ : κ → F) : κ → AF F := fun i => algebraMap F (AF F) (ξ i)
 
 /- English proof (translation)
-Establish `m : ∀ c : κ → Af F, finiteTensor (fun i => cosetIndicator J (c i)) ∈ finiteSchwartzBruhatPi F` using `fun c => finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J (c i)`. Use `⟨fun a => ?_, (summable_decay _ (slice_decay (mixedFourierPiSchwartz F) f) (GlobalTheory.SchwartzBox.sb_box (m fun i => b (.inl i) - b (.inr i)) (finiteFourierPi_mem (m fun i => b (.inr i))))).congr fun ξ => ?_⟩` and prove the remaining obligations. Rewrite using `[sl_tensor, coset_split]`. Conclude with `schwartzBruhatTensorPi_mem _ (Submodule.smul_mem _ _ (m _))`. Rewrite using `[sl_tensor, coset_split, adelicFourierPi_schwartzBruhatTensorPi, finiteFourierPi_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sl_coset (f : 𝓢(κ ⊕ κ → mixedEmbedding.mixedSpace F, ℂ)) (J) (b : κ ⊕ κ → Af F) :
     (∀ a, sl a (schwartzBruhatTensorPi f (finiteTensor fun i => cosetIndicator J (b i))) ∈ schwartzBruhatPi F κ) ∧
@@ -239,11 +237,11 @@ theorem sl_coset (f : 𝓢(κ ⊕ κ → mixedEmbedding.mixedSpace F, ℂ)) (J) 
     rfl
 
 /- English proof (translation)
-Rewrite `h` using `[sch_eq, schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, J, b, rfl⟩` from `hG`. Conclude with `sl_coset f J b`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Use `⟨fun a => zero_mem _, summable_zero.congr fun ξ => ?_⟩` and prove the remaining obligations. Conclude with `(congrFun adelicFourierPi_zero _).symm`. Consider the case `add G H _ _ hG hH`. Use `⟨fun a => add_mem (hG.1 a) (hH.1 a), (hG.2.add hH.2).congr fun ξ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrFun (adelicFourierPi_add (integrable_of_mem_schwartzBruhatPi (hG.1 _)) (integrable_of_mem_schwartzBruhatPi (hH.1 _))) _).symm`. Consider the case `smul c G _ hG`. Use `⟨fun a => Submodule.smul_mem _ c (hG.1 a), (hG.2.mul_left c).congr fun ξ => ?_⟩` and prove the remaining obligations. Conclude with `(congrFun (adelicFourierPi_smul c (sl (rt (ξ ∘ .inl)) G)) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sl_mem {Φ : (κ ⊕ κ → AF F) → ℂ} (h : Φ ∈ schA F (κ ⊕ κ)) : (∀ a, sl a Φ ∈ schwartzBruhatPi F κ) ∧
     Summable fun ξ : κ ⊕ κ → F => adelicFourierPi F (sl (rt (ξ ∘ .inl)) Φ) (rt (ξ ∘ .inr)) := by
@@ -264,9 +262,9 @@ theorem sl_mem {Φ : (κ ⊕ κ → AF F) → ℂ} (h : Φ ∈ schA F (κ ⊕ κ
     exact (congrFun (adelicFourierPi_smul c (sl (rt (ξ ∘ .inl)) G)) _).symm
 
 /- English proof (translation)
-Establish `s : Summable fun ξ : (κ → F) × (κ → F) => adelicFourierPi F (sl (rt ξ.1) Φ) (rt ξ.2)` using `(Equiv.sumArrowEquivProdArrow κ κ F).summable_iff.1 (sl_mem h).2`. Apply the tactic sequence `let e : (κ → F) × (κ → F) ≃ (κ ⊕ κ → F) := { toFun := fun p => Sum.elim (p.2 + p.1) p.2 invFun := fun z => (z ∘ Sum.inl - z ∘ Sum.inr, z ∘ Sum.inr) left_inv := fun p => by simp right_inv := fun z => by funext i; cases i <;> simp }`. Establish `t : HasSum (fun p : (κ → F) × (κ → F) => sl (rt p.1) Φ (rt p.2)) (thetaSum F Φ)`. Use `e.hasSum_iff.2 (hasSum_thetaSum F h) using 2 with p` and compare the differences between its conclusion and the goal. Use `congrArg Φ (funext fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `cases i <;> simp [e]`. Use `s.hasSum_iff.2 ?_` and prove the remaining obligations. Rewrite using `[s.tsum_prod, ← t.tsum_eq, t.summable.tsum_prod]`. Conclude with `tsum_congr fun a => (tsum_algebraMap_eq_tsum_adelicFourierPi ((sl_mem h).1 (rt a))).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_sl {Φ : (κ ⊕ κ → AF F) → ℂ} (h : Φ ∈ schA F (κ ⊕ κ)) :
     HasSum (fun ξ : (κ → F) × (κ → F) => adelicFourierPi F (sl (rt ξ.1) Φ) (rt ξ.2)) (thetaSum F Φ) := by

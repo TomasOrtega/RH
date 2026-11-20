@@ -18,7 +18,7 @@ def eigSub (μ : O →+* Module.End T V) (τ : O →+* T) : Submodule T V where
   smul_mem' r v hv c := by simp only [Set.mem_setOf_eq, map_smul, hv c, smul_comm r]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_eigSub {μ : O →+* Module.End T V} {τ : O →+* T} {v : V} :
     v ∈ eigSub μ τ ↔ ∀ c, μ c v = τ c • v := Iff.rfl

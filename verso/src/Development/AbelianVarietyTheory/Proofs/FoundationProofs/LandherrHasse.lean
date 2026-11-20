@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 attribute [local instance] IsCMField.starRing
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨e, he⟩ := GlobalTheory.DefiniteMass.exists_isometry hc W hs hp`. Use `⟨(Pi.basisFun E (Fin W.rank)).map e.symm, Module.Basis.linearIndependent _, fun a c => ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`. Simplify using `only [Module.Basis.map_apply, LinearEquiv.apply_symm_apply, Pi.basisFun_apply]`. Express the relevant statement in the definitionally equal form `∑ i, star ((Pi.single a (1 : E) : Fin W.rank → E) i) * (Pi.single c (1 : E) : Fin W.rank → E) i = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finset.sum_eq_single a]`. Simplify using `[Pi.single_apply]`. Introduce `i _ hi`. Simplify using `[Pi.single_apply, hi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_orthonormal (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) (W : Formalism.BasicNotions.HSpace E) (hs : W.SigOK)
     (hp : ∀ τ : E →+* ℂ, W.sig τ = (W.rank, 0)) :
@@ -35,7 +35,7 @@ theorem exists_orthonormal (hc : Formalism.HermitianLatticesTheory.IsCMUnram E) 
 end
 
 /- English proof (translation)
-Introduce `D` and use `haveI : IsCMField D.host.E := D.host.isCMField_hostE fun W hs hp => exists_orthonormal (E := D.host.E) D.sp.cm.cmUnram W hs hp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem landherrHasse : ∀ D : D7, LandherrHasse D := fun D =>
   haveI : IsCMField D.host.E := D.host.isCMField_hostE

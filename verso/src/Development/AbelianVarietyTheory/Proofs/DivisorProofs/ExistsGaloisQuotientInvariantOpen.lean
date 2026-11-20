@@ -11,15 +11,15 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Set `r : Γ → (H.toScheme ⟶ H.toScheme)` to `fun σ => (act σ).resLE H H (hH σ).ge`. Establish `hr : ∀ σ, r σ ≫ H.ι = H.ι ≫ act σ` using `fun σ => Scheme.Hom.resLE_comp_ι _ _`. Establish `r1 : r 1 = 𝟙 _`. Rewrite using `[← cancel_mono H.ι, hr, h1, Category.id_comp, Category.comp_id]`. Establish `rm : ∀ σ τ, r (σ * τ) = r σ ≫ r τ` using `fun σ τ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono H.ι, hr, hm, Category.assoc, hr, reassoc_of% hr]`. Set `ρ : Γ →* Aut H.toScheme` to `MonoidHom.mk' (fun σ => ⟨r σ⁻¹, r σ, by rw [← rm, inv_mul_cancel, r1], by rw [← rm, mul_inv_cancel, r1]⟩) (fun σ τ => Iso.ext (show r (σ * τ)⁻¹ = r τ⁻¹ ≫ r σ⁻¹ by rw [mul_inv_rev, rm]))`. Establish `hρ : ∀ σ, (ρ σ).hom = r σ⁻¹` using `fun _ => rfl`. Establish `hρ' : ∀ σ, r σ = (ρ σ⁻¹).hom` using `fun σ => by rw [hρ, inv_inv]`. Establish `hpt : ∀ σ (x : H.toScheme), H.ι (r σ x) = act σ (H.ι x)` using `fun σ x => congr($(hr σ) x)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: OrbitsInAffineOpens ρ` using `⟨fun x => by`. Take `⟨O, hO₁, hO₂, hO₃⟩` from `hO (H.ι x) x.2`. Use `⟨H.ι ⁻¹ᵁ O, hO₁.preimage_of_isOpenImmersion H.ι (by rwa [Scheme.Opens.opensRange_ι]), fun g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `H.ι (r g⁻¹ x) ∈ O`. Rewrite using `[hpt]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hO₃ _⟩`. Take `⟨X', π, hπ⟩` from `QuotientGluing.exists_isAffineQuotient ρ`. Establish `hinv : ∀ g, (ρ g).hom ≫ H.ι ≫ s = H.ι ≫ s` using `fun g => by`. Rewrite using `[hρ, reassoc_of% hr, hs]`. Use `⟨Over.mk (hπ.desc (H.ι ≫ s) hinv), π, hπ.comp_desc _ hinv, hπ.isAffineHom, hπ.surjective, fun σ => ?_, fun x y hxy => ?_, fun V => ⟨hπ.app_injective V, fun f hf => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `(congrArg (· ≫ π) (hρ' σ)).trans (hπ.comp_eq _)`. Take `⟨g, rfl⟩` from `(hπ.apply_eq_iff x y).mp hxy`. Conclude with `⟨g⁻¹, (hpt _ _).symm⟩`. Conclude with `hπ.mem_range_app V f fun g => ⟨hπ.preimage_le V g, hf g⁻¹ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_quotient_of_invariant_open {Γ : Type} [Group Γ] [Finite Γ] {Y S : Scheme.{0}} (act : Γ → (Y ⟶ Y))
     (h1 : act 1 = 𝟙 _) (hm : ∀ σ τ, act (σ * τ) = act σ ≫ act τ) (s : Y ⟶ S) (hs : ∀ σ, act σ ≫ s = s)
@@ -60,9 +60,9 @@ theorem exists_quotient_of_invariant_open {Γ : Type} [Group Γ] [Finite Γ] {Y 
   · exact hπ.mem_range_app V f fun g => ⟨hπ.preimage_le V g, hf g⁻¹ _⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ _ R' _ _ _ ρ _ hG D D' hD A' G' _ _ _ U' a H hH hO`. Use `hG.1` as an intermediate fact. Use `exists_quotient_of_invariant_open a.act a.act_one a.act_mul (G'.hom ≫ spMap ρ) (fun σ => ?_) H hH hO` and prove the remaining obligations. Establish `e : spMap (Gal.hom σ) ≫ spMap ρ = spMap ρ`. Rewrite using `[← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `x`. Conclude with `σ.2 x`. Rewrite using `[← Category.assoc, (a.cart σ).1.w, Category.assoc, e]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galois_quotient : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G') (a : GalAct ρ hD U'), ∀ (H : G'.left.Opens) (hH : ∀ σ, a.act σ ⁻¹ᵁ H = H), (∀ x ∈ H, ∃ O : G'.left.Opens, IsAffineOpen O ∧ O ≤ H ∧ ∀ σ, a.act σ x ∈ O) → ∃ (X : Over (Sp R)) (π : H.toScheme ⟶ X.left), π ≫ X.hom = H.ι ≫ G'.hom ≫ spMap ρ ∧ IsAffineHom π ∧ Surjective π ∧ (∀ σ, (a.act σ).resLE H H (hH σ).ge ≫ π = π) ∧ (∀ x y : H.toScheme, π x = π y → ∃ σ, a.act σ (H.ι x) = H.ι y) ∧ ∀ V : X.left.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(H.toScheme, π ⁻¹ᵁ V), (∀ σ (h : π ⁻¹ᵁ V ≤ ((a.act σ).resLE H H (hH σ).ge) ⁻¹ᵁ (π ⁻¹ᵁ V)), (((a.act σ).resLE H H (hH σ).ge).appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom := by
   intro R _ _ _ _ R' _ _ _ ρ _ hG D D' hD A' G' _ _ _ U' a H hH hO

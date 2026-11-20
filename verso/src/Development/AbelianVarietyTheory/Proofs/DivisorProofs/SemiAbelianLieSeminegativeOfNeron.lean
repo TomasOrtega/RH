@@ -30,7 +30,7 @@ noncomputable section
 namespace GlobalTheory.NeronCurve.LieDescent
 
 /- English proof (translation)
-Introduce `W r hW i _` and use `h W r hW (i ≫ e.inv) (mono_comp i e.inv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem semiNeg_of_iso {k : Type} [Field k] {C : Scheme.{0}} [Algebra k Γ(C, ⊤)] {F F' : C.Modules} (e : F ≅ F')
     (h : SemiNeg k F) : SemiNeg k F' := fun W r hW i _ =>

@@ -9,13 +9,11 @@ namespace Formalism.L2.Geo.ExtensionFiltration.ExtInvMu
 open Formalism.BasicNotions Formalism.HN Formalism.HermitianLatticesTheory Formalism.L2.GlobalTheoryTheory.HLatOps Formalism.L2.Geo.ExtensionFiltration.ExtInvSk
 
 /- English proof (translation)
-Use `set Q := P ⊔ Submodule.span R {x} with hQ`. Set `f : P.toAddSubgroup × R →+ Q.toAddSubgroup` to `AddMonoidHom.mk' (fun pa => ⟨(pa.1 : W) + pa.2 • x, Submodule.add_mem_sup pa.1.2 (Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x))⟩) (by`. Introduce and unpack `⟨p, a⟩ ⟨q, c⟩`. Use `ext`. Simplify using `only [Prod.mk_add_mk, AddSubgroup.coe_add, add_smul]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `abel)`. Establish `hf : Function.Surjective f`. Introduce and unpack `⟨y, hy⟩`. Take `⟨p, hp, z, hz, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hz`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨(⟨p, hp⟩, a), rfl⟩`. Establish `hc : (P.toAddSubgroup.addSubgroupOf Q.toAddSubgroup).comap f = (⊤ : AddSubgroup P.toAddSubgroup).prod (P.comap (LinearMap.toSpanSingleton R W x)).toAddSubgroup`. Use extensionality with `⟨⟨p, hp⟩, a⟩`. Simplify using `only [AddSubgroup.mem_comap, AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_prod, AddSubgroup.mem_top, true_and, Submodule.mem_toAddSubgroup, Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`. Use `show (p : W) + a • x ∈ P ↔ a • x ∈ P`.
-
-Conclude with `Submodule.add_mem_iff_right P hp`. Rewrite using `[AddSubgroup.relIndex, ← AddSubgroup.index_comap_of_surjective _ hf, hc, AddSubgroup.index_prod, AddSubgroup.index_top, one_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sup_span {R W : Type*} [CommRing R] [AddCommGroup W] [Module R W]
     (P : Submodule R W) (x : W) :
@@ -55,7 +53,7 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K]
 abbrev e1 (A : HLat K) (x : A.V) : (baseChange K' A).V := ((1 : K') ⊗ₜ[K] x : K' ⊗[K] A.V)
 
 /- English proof (translation)
-Use `show (1 : K') ⊗ₜ[K] (r • x) = (algebraMap (𝓞 K') K' (algebraMap (𝓞 K) (𝓞 K') r)) • ((1 : K') ⊗ₜ[K] x)`. Rewrite using `[← algebraMap_smul K r x, TensorProduct.tmul_smul, TensorProduct.smul_tmul', TensorProduct.smul_tmul', Algebra.smul_def, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem base_change_emb_smul (A : HLat K) (r : 𝓞 K) (x : A.V) :
     e1 K' A (r • x) = algebraMap (𝓞 K) (𝓞 K') r • e1 K' A x := by
@@ -66,13 +64,13 @@ theorem base_change_emb_smul (A : HLat K) (r : 𝓞 K) (x : A.V) :
   rfl
 
 /- English proof (translation)
-The claim follows from `TensorProduct.tmul_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem root_of_unity_character_add (A : HLat K) (x y : A.V) : e1 K' A (x + y) = e1 K' A x + e1 K' A y :=
   TensorProduct.tmul_add _ _ _
 
 /- English proof (translation)
-The claim follows from `TensorProduct.tmul_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem base_change_emb_zero (A : HLat K) : e1 K' A 0 = 0 := TensorProduct.tmul_zero _ _
 
@@ -83,11 +81,9 @@ theorem ext_eq (A : HLat K) (N : Submodule (𝓞 K) A.V) :
     ext K' A N = Submodule.span (𝓞 K') (e1 K' A '' (N : Set A.V)) := rfl
 
 /- English proof (translation)
-Rewrite using `[ext_eq]`. Apply `le_antisymm` to reduce the goal to its premises. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Proceed by induction on `hy using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `mem z hz => exact Submodule.subset_span ⟨z, hz, rfl⟩`. Consider the case `zero => rw [SetLike.mem_coe, base_change_emb_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [SetLike.mem_coe, root_of_unity_character_add]`. Conclude with `Submodule.add_mem _ hy hz`.
-
-Consider the case `smul r y _ hy => rw [SetLike.mem_coe, base_change_emb_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ext_span_set (A : HLat K) (S : Set A.V) :
     ext K' A (Submodule.span (𝓞 K) S) = Submodule.span (𝓞 K') (e1 K' A '' S) := by
@@ -103,13 +99,13 @@ theorem ext_span_set (A : HLat K) (S : Set A.V) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem ext_mono (A : HLat K) {M N : Submodule (𝓞 K) A.V} (h : M ≤ N) : ext K' A M ≤ ext K' A N :=
   Submodule.span_mono (Set.image_mono h)
 
 /- English proof (translation)
-Establish `h : P ⊔ Submodule.span (𝓞 K) {x} = Submodule.span (𝓞 K) ((P : Set A.V) ∪ {x})`. Rewrite using `[Submodule.span_union, Submodule.span_eq]`. Rewrite using `[h, ext_span_set, Set.image_union, Submodule.span_union, Set.image_singleton, ext_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_sup_span (A : HLat K) (P : Submodule (𝓞 K) A.V) (x : A.V) :
     ext K' A (P ⊔ Submodule.span (𝓞 K) {x}) =
@@ -119,13 +115,13 @@ theorem ext_sup_span (A : HLat K) (P : Submodule (𝓞 K) A.V) (x : A.V) :
   rw [h, ext_span_set, Set.image_union, Submodule.span_union, Set.image_singleton, ext_eq]
 
 /- English proof (translation)
-Rewrite `*` using `[ext_sup_span, relIndex_sup_span, relIndex_sup_span]`. Use `set I : Ideal (𝓞 K) := P.comap (LinearMap.toSpanSingleton (𝓞 K) A.V x) with hI`. Use `set I' : Ideal (𝓞 K') := (ext K' A P).comap (LinearMap.toSpanSingleton (𝓞 K') (baseChange K' A).V (e1 K' A x)) with hI'`. Establish `hle : I.map (algebraMap (𝓞 K) (𝓞 K')) ≤ I'`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a ha`. Simplify using `only [hI', Ideal.mem_comap, Submodule.mem_comap, LinearMap.toSpanSingleton_apply]`. Rewrite using `[← base_change_emb_smul]`. Conclude with `Submodule.subset_span ⟨a • x, ha, rfl⟩`. Establish `hn : (I.map (algebraMap (𝓞 K) (𝓞 K'))).toAddSubgroup.index = I.toAddSubgroup.index ^ finrank K K'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.absNorm_algebraMap (𝓞 K) (𝓞 K') I` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_apply, Ideal.absNorm_apply]`. Rewrite using `[IsFractionRing.finrank_eq (𝓞 K) K (𝓞 K') K']`. Conclude with `this`. Establish `hd` using `AddSubgroup.index_dvd_of_le (show (I.map (algebraMap (𝓞 K) (𝓞 K'))).toAddSubgroup ≤ I'.toAddSubgroup from hle)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[hn]`. Establish `hpos : 0 < I.toAddSubgroup.index ^ finrank K K'` using `pow_pos (Nat.pos_of_ne_zero h) _`. Use `⟨fun h0 => ?_, Nat.le_of_dvd hpos hd⟩` and prove the remaining obligations. Rewrite `hd` using `[h0, zero_dvd_iff]`. Conclude with `hpos.ne' hd`.
+A detailed English derivation is pending.
 -/
 theorem index_step (A : HLat K) (P : Submodule (𝓞 K) A.V) (x : A.V)
     (h : P.toAddSubgroup.relIndex (P ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup ≠ 0) :
@@ -157,13 +153,13 @@ theorem index_step (A : HLat K) (P : Submodule (𝓞 K) A.V) (x : A.V)
   exact hpos.ne' hd
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `_`. Simplify using `only [Finset.coe_empty, Submodule.span_empty, sup_bot_eq, AddSubgroup.relIndex_self, one_pow, le_refl, and_true]`. Conclude with `one_ne_zero`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `insert x T _ ih`. Introduce `h`. Use `set Q := M ⊔ Submodule.span (𝓞 K) (T : Set A.V) with hQ`. Establish `hs : M ⊔ Submodule.span (𝓞 K) ((insert x T : Finset A.V) : Set A.V) = Q ⊔ Submodule.span (𝓞 K) {x}`. Rewrite using `[Finset.coe_insert, Set.insert_eq, Submodule.span_union, hQ, sup_assoc, sup_comm (Submodule.span (𝓞 K) {x})]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h`, the goal using `[hs]`. Establish `h1 : M ≤ Q` using `le_sup_left`. Establish `h2 : Q ≤ Q ⊔ Submodule.span (𝓞 K) {x}` using `le_sup_left`. Rewrite `h`, the goal using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ (show M.toAddSubgroup ≤ Q.toAddSubgroup from h1) (show Q.toAddSubgroup ≤ (Q ⊔ Submodule.span (𝓞 K) {x}).toAddSubgroup from h2)]`. Take `⟨ha, hb⟩` from `mul_ne_zero_iff.1 h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha1, ha2⟩` from `ih ha`. Take `⟨hb1, hb2⟩` from `index_step K' A Q x hb`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex _ _ _ (show (ext K' A M).toAddSubgroup ≤ (ext K' A Q).toAddSubgroup from ext_mono K' A h1) (show (ext K' A Q).toAddSubgroup ≤ (ext K' A (Q ⊔ Submodule.span (𝓞 K) {x})).toAddSubgroup from ext_mono K' A h2), mul_pow]`. Conclude with `⟨mul_ne_zero ha1 hb1, Nat.mul_le_mul ha2 hb2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem index_finset (A : HLat K) (M : Submodule (𝓞 K) A.V) (T : Finset A.V) :
     M.toAddSubgroup.relIndex (M ⊔ Submodule.span (𝓞 K) (T : Set A.V)).toAddSubgroup ≠ 0 →
@@ -204,7 +200,7 @@ theorem index_finset (A : HLat K) (M : Submodule (𝓞 K) A.V) (T : Finset A.V) 
 end Ext
 
 /- English proof (translation)
-Introduce `K K' _ _ _ _ _ _ _ A M N hN hMN h`. Take `⟨T, rfl⟩` from `hN`. Establish `hs : Submodule.span (𝓞 K) (T : Set A.V) = M ⊔ Submodule.span (𝓞 K) (T : Set A.V)` using `(sup_eq_right.2 hMN).symm`. Rewrite `h`, the goal using `[hs]`. Conclude with `index_finset K' A M T h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonalSplitPolarizationVanishes : S2 := by
   intro K K' _ _ _ _ _ _ _ A M N hN hMN h

@@ -5,7 +5,7 @@ open scoped ComplexConjugate ComplexOrder MatrixOrder
 namespace GlobalTheory.MinorInt
 
 /- English proof (translation)
-Rewrite using `[dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 -/
 theorem star_dot_self_re {ι : Type*} [Fintype ι] (x : ι → ℂ) :
     (star x ⬝ᵥ x).re = ∑ i, ‖x i‖ ^ 2 := by
@@ -15,20 +15,20 @@ theorem star_dot_self_re {ι : Type*} [Fintype ι] (x : ι → ℂ) :
   norm_cast
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, star_dot_self_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_gram_re {ι κ : Type*} [Fintype ι] [Fintype κ] (B : Matrix κ ι ℂ) (x : ι → ℂ) :
     (star x ⬝ᵥ (Bᴴ * B) *ᵥ x).re = ∑ k, ‖(B *ᵥ x) k‖ ^ 2 := by
   rw [← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec, star_dot_self_re]
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.mp hH.nonneg`. Establish `hB' : H = Bᴴ * B` using `hB`. Establish `hdG : ‖H.det‖ = Complex.normSq B.det`. Rewrite using `[hB', det_mul, det_conjTranspose, norm_mul, norm_star, Complex.normSq_eq_norm_sq, sq]`. Establish `hpos : 0 < Complex.normSq B.det` using `hdG ▸ norm_pos_iff.mpr hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : LinearMap.det ((Matrix.toLin' B).restrictScalars ℝ) = Complex.normSq B.det`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]`. Use `Measure.addHaar_preimage_linearMap (volume : Measure (ι → ℂ)) (f := (Matrix.toLin' B).restrictScalars ℝ) (by rw [hdet]; exact hpos.ne') (Metric.closedBall (0 : ι → ℂ) (Real.sqrt R))` as an intermediate fact. Rewrite `this` using `[hdet, abs_of_pos (inv_pos.mpr hpos), ← hdG]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `measure_mono fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, hB', form_gram_re] at hx`. Simplify using `only [Set.mem_preimage, mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun k => ?_` and prove the remaining obligations. Use `Real.le_sqrt_of_sq_le (le_trans ?_ hx)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.single_le_sum (f := fun k => ‖(B *ᵥ x) k‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ k)`.
+A detailed English derivation is pending.
 -/
 theorem volume_ellipsoid_le {ι : Type*} [Fintype ι] [DecidableEq ι] (R : ℝ) {H : Matrix ι ι ℂ}
     (hH : H.PosSemidef) (hd : H.det ≠ 0) :
@@ -55,29 +55,27 @@ theorem volume_ellipsoid_le {ι : Type*} [Fintype ι] [DecidableEq ι] (R : ℝ)
     (Finset.mem_univ k)
 
 /- English proof (translation)
-Establish `h1 : ∀ᶠ E : ι → ι → ℂ in nhds 0, 1 / 2 < ‖(Matrix.of E + 1).det‖`. Establish `hc : Continuous fun E : ι → ι → ℂ => ‖(Matrix.of E + 1).det‖`. Use `Continuous.norm (Continuous.matrix_det ?_)` and prove the remaining obligations. Conclude with `Continuous.add continuous_id continuous_const`. Use `hc.continuousAt.eventually (lt_mem_nhds ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Matrix.of (0 : ι → ι → ℂ) = 0` using `rfl`. Simplify using `[this]`. Evaluate the numerical expressions. Establish `h2 : ∀ᶠ E : ι → ι → ℂ in nhds 0, 1 / 2 < ‖(1 - (2 : ℂ) • (Matrix.of E + 1)).det‖`. Establish `hc : Continuous fun E : ι → ι → ℂ => ‖(1 - (2 : ℂ) • (Matrix.of E + 1)).det‖`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Continuous.norm (Continuous.matrix_det ?_)` and prove the remaining obligations. Establish `hc0 : Continuous fun E : ι → ι → ℂ => Matrix.of E + 1` using `Continuous.add continuous_id continuous_const`. Conclude with `continuous_const.sub (hc0.const_smul (2 : ℂ))`. Use `hc.continuousAt.eventually (lt_mem_nhds ?_)` and prove the remaining obligations. Establish `: Matrix.of (0 : ι → ι → ℂ) = 0` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : (1 : Matrix ι ι ℂ) - (2 : ℂ) • (1 : Matrix ι ι ℂ) = -1`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Simplify using `only [this, zero_add, h3, det_neg]`. Simplify using the standard rewrite rules.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Evaluate the numerical expressions. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.1 (h1.and h2)`. Use `set N : ℝ := (Fintype.card ι : ℝ) with hN`. Establish `hN0 : 0 ≤ N` using `Nat.cast_nonneg _`. Use `⟨min (min (ε / 2) 1) (1 / (2 * (N + 1))), by positivity, (min_le_left _ _).trans (min_le_right _ _), fun G hG => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hE : dist (fun i j => (G - 1) i j) 0 < ε`. Rewrite using `[dist_zero_right]`. Use `lt_of_le_of_lt ?_ (half_lt_self hε)` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `(hG i j).le.trans ((min_le_left _ _).trans (min_le_left _ _))`. Establish `hGE : Matrix.of (fun i j => (G - 1) i j) + 1 = G`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h` using `hball hE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[hGE]`. Use `⟨h.1.le, h.2.le, fun t => ?_⟩` and prove the remaining obligations. Establish `hsplit : star t ⬝ᵥ G *ᵥ t = star t ⬝ᵥ t + star t ⬝ᵥ (G - 1) *ᵥ t`. Rewrite using `[sub_mulVec, one_mulVec, dotProduct_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ‖star t ⬝ᵥ (G - 1) *ᵥ t‖ ≤ 1 / (2 * (N + 1)) * (∑ i, ‖t i‖) ^ 2`. Rewrite using `[sq, Finset.sum_mul_sum, Finset.mul_sum, dotProduct]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mulVec, dotProduct, Finset.mul_sum, Finset.mul_sum]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[norm_mul, norm_mul, Pi.star_apply, norm_star]`. Use `(hG i j).le.trans (min_le_right _ _)` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hcs : (∑ i, ‖t i‖) ^ 2 ≤ N * ∑ i, ‖t i‖ ^ 2`. Simplify `sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ‖t i‖)` using `[hN]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hS : 0 ≤ ∑ i, ‖t i‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hb2 : 1 / (2 * (N + 1)) * (∑ i, ‖t i‖) ^ 2 ≤ (∑ i, ‖t i‖ ^ 2) / 2`. Rewrite using `[one_div, inv_mul_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hre` using `(Complex.abs_re_le_norm (star t ⬝ᵥ (G - 1) *ᵥ t))`.
-
-Rewrite using `[hsplit, Complex.add_re, star_dot_self_re]`. Use `neg_abs_le (star t ⬝ᵥ (G - 1) *ᵥ t).re` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem near_one (ι : Type*) [Fintype ι] [DecidableEq ι] :
     ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ ∀ G : Matrix ι ι ℂ, (∀ i j, ‖(G - 1) i j‖ < δ) →
@@ -141,7 +139,7 @@ theorem near_one (ι : Type*) [Fintype ι] [DecidableEq ι] :
   linarith
 
 /- English proof (translation)
-Rewrite using `[sub_mulVec, dotProduct_sub, Complex.sub_re, form_gram_re, form_gram_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem form_diff_re {ι κ : Type*} [Fintype ι] [Fintype κ] (A : Matrix ι ι ℂ) (C : Matrix κ ι ℂ)
     (t : ι → ℂ) : (star t ⬝ᵥ (Aᴴ * A - Cᴴ * C) *ᵥ t).re =
@@ -149,9 +147,9 @@ theorem form_diff_re {ι κ : Type*} [Fintype ι] [Fintype κ] (A : Matrix ι ι
   rw [sub_mulVec, dotProduct_sub, Complex.sub_re, form_gram_re, form_gram_re]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨t, ht, hAt⟩` from `exists_mulVec_eq_zero_iff.2 h0`. Establish `h1` using `h t`. Rewrite `h1` using `[form_diff_re, hAt]`. Establish `h2 : 0 ≤ ∑ k, ‖(C *ᵥ t) k‖ ^ 2` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∑ i, ‖t i‖ ^ 2 = 0` using `le_antisymm (by simp at h1; linarith) (Finset.sum_nonneg fun _ _ => sq_nonneg _)`. Apply `ht` to reduce the goal to its premises. Use extensionality with `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg fun _ _ => sq_nonneg _).1 h3 i (Finset.mem_univ _)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem det_ne_zero_of_form {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (A : Matrix ι ι ℂ) (C : Matrix κ ι ℂ)
@@ -170,9 +168,9 @@ theorem det_ne_zero_of_form {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Finty
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[dotProduct, Complex.re_sum, Finset.mul_sum, Finset.sum_div, ← Finset.sum_add_distrib]`. Use `Finset.sum_le_sum fun i _ => (Complex.re_le_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Pi.star_apply, norm_star]`. Establish `: ‖y i‖ ^ 2 / (4 * c) = c * (‖y i‖ / (2 * c)) ^ 2` using `by field_simp; ring`. Establish `h2 : ‖x i‖ * ‖y i‖ = c * (2 * ‖x i‖ * (‖y i‖ / (2 * c)))` using `by field_simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, h2, ← mul_add]`. Use `gcongr`. Use polynomial arithmetic with `[sq_nonneg (‖x i‖ - ‖y i‖ / (2 * c))]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem re_dot_le {ι : Type*} [Fintype ι] (c : ℝ) (hc : 0 < c) (x y : ι → ℂ) :
     (star x ⬝ᵥ y).re ≤ c * ∑ i, ‖x i‖ ^ 2 + (∑ i, ‖y i‖ ^ 2) / (4 * c) := by
@@ -186,11 +184,11 @@ theorem re_dot_le {ι : Type*} [Fintype ι] (c : ℝ) (hc : 0 < c) (x y : ι →
   nlinarith [sq_nonneg (‖x i‖ - ‖y i‖ / (2 * c))]
 
 /- English proof (translation)
-Take `⟨t, rfl⟩ : ∃ t, b = A *ᵥ t` from `⟨A⁻¹ *ᵥ b, by rw [mulVec_mulVec, mul_nonsing_inv _ (Ne.isUnit hA), one_mulVec]⟩`. Establish `h1` using `h t`. Rewrite `h1` using `[form_diff_re]`. Establish `key : star (A *ᵥ t) ⬝ᵥ (A *ᵥ t) = star (Aᴴ *ᵥ (A *ᵥ t) - Cᴴ *ᵥ d) ⬝ᵥ t + star d ⬝ᵥ (C *ᵥ t)`. Rewrite using `[star_sub, sub_dotProduct, star_mulVec Aᴴ, star_mulVec Cᴴ, conjTranspose_conjTranspose, conjTranspose_conjTranspose, ← dotProduct_mulVec, ← dotProduct_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `congrArg Complex.re key`. Rewrite `h2` using `[star_dot_self_re, Complex.add_re]`. Establish `h3` using `re_dot_le 1 one_pos (Aᴴ *ᵥ (A *ᵥ t) - Cᴴ *ᵥ d) t`. Establish `h4` using `re_dot_le (1 / 2) (by norm_num) d (C *ᵥ t)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[show (4 : ℝ) * (1 / 2) = 2 by norm_num]`. Rewrite `h3` using `[mul_one, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem neg_on_perp {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (A : Matrix ι ι ℂ) (C : Matrix κ ι ℂ) (hA : A.det ≠ 0)
@@ -215,31 +213,29 @@ theorem neg_on_perp {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
   linarith
 
 /- English proof (translation)
-Take `⟨δ, hδ, -, hnear⟩` from `near_one ι`. Use `set R : ℝ := 2 + 2 * (Fintype.card ι : ℝ) with hR`. Use `⟨δ, hδ, ENNReal.ofReal 2 * volume (Metric.closedBall (0 : ι ⊕ κ → ℂ) (Real.sqrt R)), ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top, fun A C hAC => ?_⟩` and prove the remaining obligations. Take `⟨-, hd2, hform⟩` from `hnear _ hAC`. Establish `hA` using `det_ne_zero_of_form A C hform`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set J : Matrix (ι ⊕ κ) (ι ⊕ κ) ℂ := fromBlocks 1 0 0 (-1) with hJ`. Use `set M : Matrix ι (ι ⊕ κ) ℂ := fromCols Aᴴ (-Cᴴ) with hM`. Use `set H : Matrix (ι ⊕ κ) (ι ⊕ κ) ℂ := (2 : ℂ) • (Mᴴ * M) - J with hH`. Establish `hMv : ∀ v : ι ⊕ κ → ℂ, M *ᵥ v = Aᴴ *ᵥ (v ∘ Sum.inl) - Cᴴ *ᵥ (v ∘ Sum.inr)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hM, fromCols_mulVec, neg_mulVec, sub_eq_add_neg]`. Establish `hJv : ∀ v : ι ⊕ κ → ℂ, (star v ⬝ᵥ J *ᵥ v).re = ∑ a, ‖v (Sum.inl a)‖ ^ 2 - ∑ c, ‖v (Sum.inr c)‖ ^ 2`. Introduce `v`. Establish `h1` using `star_dot_self_re (v ∘ Sum.inl)`. Establish `h2` using `star_dot_self_re (v ∘ Sum.inr)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply] at h1 h2`. Rewrite using `[← h1, ← h2, hJ, fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, neg_mulVec, sub_eq_add_neg]`. Establish `hHv : ∀ v : ι ⊕ κ → ℂ, (star v ⬝ᵥ H *ᵥ v).re = 2 * ∑ i, ‖(M *ᵥ v) i‖ ^ 2 - (∑ a, ‖v (Sum.inl a)‖ ^ 2 - ∑ c, ‖v (Sum.inr c)‖ ^ 2)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hH, sub_mulVec, dotProduct_sub, Complex.sub_re, hJv, smul_mulVec, dotProduct_smul, smul_eq_mul, ← form_gram_re]`. Simplify using the standard rewrite rules. Establish `hherm : H.IsHermitian`. Use `IsHermitian.sub ?_ ?_` and prove the remaining obligations. Unfold `IsHermitian`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_smul, (isHermitian_conjTranspose_mul_self M).eq]`. Simplify using the standard rewrite rules. Unfold `IsHermitian`. Rewrite using `[hJ, fromBlocks_conjTranspose]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hpsd : H.PosSemidef`. Use `PosSemidef.of_dotProduct_mulVec_nonneg hherm fun v => ?_` and prove the remaining obligations. Use `Complex.nonneg_iff.2 ⟨?_, (hherm.im_star_dotProduct_mulVec_self v).symm⟩` and prove the remaining obligations. Rewrite using `[hHv, hMv]`. Use `neg_on_perp A C hA hform (v ∘ Sum.inl) (v ∘ Sum.inr)` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hJJ : J * J = 1`. Rewrite using `[hJ, fromBlocks_multiply]`. Simplify using `[fromBlocks_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdJ : ‖J.det‖ = 1`. Rewrite using `[hJ, det_fromBlocks_zero₂₁, det_neg]`. Simplify using the standard rewrite rules. Establish `hdH : ‖H.det‖ = ‖(1 - (2 : ℂ) • (Aᴴ * A - Cᴴ * C)).det‖`. Establish `h1 : H = -J * (1 - (J * Mᴴ) * ((2 : ℂ) • M))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hH, Matrix.mul_sub, Matrix.mul_one, Matrix.neg_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hJJ, Matrix.one_mul, Matrix.mul_smul]`. Normalize the expressions using the abelian group laws. Establish `h2 : M * (J * Mᴴ) = Aᴴ * A - Cᴴ * C`. Rewrite using `[hM, hJ, conjTranspose_fromCols_eq_fromRows_conjTranspose, fromBlocks_mul_fromRows, fromCols_mul_fromRows]`. Simplify using `[sub_eq_add_neg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, det_mul, det_one_sub_mul_comm, Matrix.smul_mul, h2, norm_mul, det_neg, norm_mul, hdJ]`. Simplify using the standard rewrite rules. Establish `hdH' : 1 / 2 ≤ ‖H.det‖` using `hdH ▸ hd2`. Establish `hne : H.det ≠ 0` using `norm_pos_iff.1 (lt_of_lt_of_le (by norm_num) hdH')`. Use `le_trans (measure_mono fun v hv => ?_) ((volume_ellipsoid_le R hpsd hne).trans ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hv1, hv2⟩` from `hv show _ ≤ R`. Rewrite using `[hHv, hMv]`. Establish `: ∑ i, ‖(Aᴴ *ᵥ (v ∘ Sum.inl) - Cᴴ *ᵥ (v ∘ Sum.inr)) i‖ ^ 2 ≤ ∑ _i : ι, (1 : ℝ)` using `Finset.sum_le_sum fun i _ => by have := hv1 i; have := norm_nonneg ((Aᴴ *ᵥ (v ∘ Sum.inl) - Cᴴ *ᵥ (v ∘ Sum.inr)) i); nlinarith`. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `gcongr`. Rewrite using `[inv_le_comm₀ (norm_pos_iff.2 hne) (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem slice_volume (ι κ : Type*) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] :
     ∃ δ : ℝ, 0 < δ ∧ ∃ K : ENNReal, K < ⊤ ∧ ∀ (A : Matrix ι ι ℂ) (C : Matrix κ ι ℂ),
@@ -315,13 +311,13 @@ theorem slice_volume (ι κ : Type*) [Fintype ι] [DecidableEq ι] [Fintype κ] 
     linarith
 
 /- English proof (translation)
-Set `L : (κ → ι → ℂ) →ₗ[ℂ] (κ → ι → ℂ)` to `LinearMap.pi fun k => (Matrix.toLin' Aᵀ).comp (LinearMap.proj k)`. Establish `hL : LinearMap.det L = A.det ^ Fintype.card κ`. Rewrite using `[LinearMap.det_pi]`. Simplify using `[LinearMap.det_toLin']`. Establish `hdet : LinearMap.det (L.restrictScalars ℝ) = ‖A.det‖ ^ (2 * Fintype.card κ)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.det_restrictScalars, hL, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq, norm_pow, ← pow_mul, mul_comm]`. Establish `hpos : 0 < ‖A.det‖ ^ (2 * Fintype.card κ)` using `pow_pos (norm_pos_iff.2 hA) _`. Use `haveI : (volume : Measure (κ → ι → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (κ → ι → ℂ)) (f := L.restrictScalars ℝ) (by rw [hdet]; exact hpos.ne')`. Establish `hm : Measurable (L.restrictScalars ℝ)` using `(LinearMap.continuous_of_finiteDimensional _).measurable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `lintegral_map (μ := volume) hF hm`. Rewrite `h1` using `[hmap, lintegral_smul_measure, hdet, abs_of_pos (inv_pos.2 hpos)]`. Establish `h2 : ∀ z : κ → ι → ℂ, (L.restrictScalars ℝ) z = fun k => z k ᵥ* A`. Introduce `z`. Use extensionality with `k i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[L, Matrix.toLin'_apply, mulVec_transpose]`. Simplify using `only [h2] at h1`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← h1, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul hpos.le, mul_inv_cancel₀ hpos.ne', ENNReal.ofReal_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_right {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (A : Matrix ι ι ℂ) (hA : A.det ≠ 0) (F : (κ → ι → ℂ) → ENNReal) (hF : Measurable F) :
@@ -349,9 +345,9 @@ theorem lintegral_mul_right {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Finty
     ← ENNReal.ofReal_mul hpos.le, mul_inv_cancel₀ hpos.ne', ENNReal.ofReal_one, one_mul]
 
 /- English proof (translation)
-Establish `h1 : s⁻¹ ^ 2 ≤ 2 * u`. Rewrite using `[inv_pow, inv_le_iff_one_le_mul₀ (by positivity)]; linarith`. Establish `h2 : s⁻¹ ≤ 1 + 2 * M` using `by nlinarith [sq_nonneg (s⁻¹ - 1), inv_pos.2 hs]`. Establish `h3 : s ^ (2 * q) * (s ^ (2 * (p + q) + k))⁻¹ = (s⁻¹ ^ 2) ^ p * s⁻¹ ^ k`. Simplify using `only [inv_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`. Establish `: 0 ≤ 2 * u` using `le_trans (by positivity) h1`. Use `gcongr`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weight_le {s u M : ℝ} (hs : 0 < s) (h : 1 / 2 ≤ s ^ 2 * u) (hM : u ≤ M) (p q k : ℕ) :
     s ^ (2 * q) * (s ^ (2 * (p + q) + k))⁻¹ ≤ (2 * u) ^ p * (1 + 2 * M) ^ k := by
@@ -365,57 +361,49 @@ theorem weight_le {s u M : ℝ} (hs : 0 < s) (h : 1 / 2 ≤ s ^ 2 * u) (hM : u �
   gcongr
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hn`. Take `⟨δ, hδ, hδ1, hnear⟩` from `near_one ι`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Use `set S := {x : (ι → ι → ℂ) × (κ → ι → ℂ) | ∀ i j, ‖((Matrix.of x.1)ᵀᴴ * (Matrix.of x.1)ᵀ - (Matrix.of x.2)ᴴ * Matrix.of x.2 - 1 : Matrix ι ι ℂ) i j‖ < δ} with hS`. Establish `hSm : MeasurableSet S`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsOpen.measurableSet ?_` and prove the remaining obligations. Simplify using `only [hS, Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Use `isOpen_lt ?_ continuous_const` and prove the remaining obligations. Simplify using `only [Matrix.sub_apply, Matrix.mul_apply, conjTranspose_apply, transpose_apply, of_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hdetc : Continuous fun a : ι → ι → ℂ => ‖(Matrix.of a).det‖` using `(Continuous.matrix_det continuous_id).norm`. Use `set F : (ι → ι → ℂ) × (κ → ι → ℂ) → ENNReal := S.indicator (fun x => ENNReal.ofReal (‖(Matrix.of x.1).det‖ ^ (2 * (Fintype.card ι + Fintype.card κ) + k))⁻¹) with hF`. Establish `hFm : Measurable F`. Use `Measurable.indicator ?_ hSm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(((hdetc.measurable.comp measurable_fst).pow_const _).inv).ennreal_ofReal`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℝ, ∀ z ∈ Metric.closedBall (0 : κ → ι → ℂ) 1, ‖(1 - (Matrix.of z)ᴴ * Matrix.of z : Matrix ι ι ℂ).det‖ ≤ M := by`. Use `(isCompact_closedBall _ _).exists_bound_of_continuousOn (Continuous.continuousOn ?_)` and prove the remaining obligations. Use `Continuous.matrix_det (continuous_const.sub ?_)` and prove the remaining obligations. Establish `: Continuous fun z : κ → ι → ℂ => Matrix.of z` using `continuous_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `this.matrix_conjTranspose.matrix_mul this`. Use `set V := volume (Metric.closedBall (0 : ι → ℂ) (Real.sqrt 2)) with hV`. Use `set K : ENNReal := ENNReal.ofReal (2 ^ Fintype.card ι * (1 + 2 * M) ^ k) * V ^ Fintype.card ι with hK`. Establish `hKt : K < ⊤` using `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.pow_lt_top measure_closedBall_lt_top)`. Use `set T : (ι → ι → ℂ) → (κ → ι → ℂ) → ENNReal := fun a z => ENNReal.ofReal (‖(Matrix.of a)ᵀ.det‖ ^ (2 * Fintype.card κ)) * F (a, fun c => z c ᵥ* (Matrix.of a)ᵀ) with hT`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hTm : Measurable (Function.uncurry T)`. Use `Measurable.mul ?_ (hFm.comp (Continuous.measurable ?_))` and prove the remaining obligations. Simplify using `only [det_transpose]`. Conclude with `((hdetc.measurable.comp measurable_fst).pow_const _).ennreal_ofReal`. Use `continuous_fst.prodMk (continuous_pi fun c => continuous_pi fun i => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [vecMul, dotProduct, transpose_apply, of_apply]`. Use `fun_prop`. Establish `step1 : ∀ a, ∫⁻ c, F (a, c) ≤ ∫⁻ z, T a z`. Introduce `a`. Distinguish the cases in `ha : (Matrix.of a)ᵀ.det = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ∀ c, F (a, c) = 0` using `fun c => Set.indicator_of_notMem (fun h : (a, c) ∈ S => det_ne_zero_of_form _ _ (hnear _ h).2.2 ha) _`. Simplify using `[this]`. Conclude with `(lintegral_mul_right _ ha (fun c => F (a, c)) (hFm.comp measurable_prodMk_left)).le`. Establish `step2 : ∀ z, ∫⁻ a, T a z ≤ (Metric.closedBall (0 : κ → ι → ℂ) 1).indicator (fun _ => K) z`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `set P : Matrix ι ι ℂ := 1 - (Matrix.of z)ᴴ * Matrix.of z with hP`. Establish `hG : ∀ a : ι → ι → ℂ, (Matrix.of a)ᵀᴴ * (Matrix.of a)ᵀ - (Matrix.of fun c => z c ᵥ* (Matrix.of a)ᵀ)ᴴ * (Matrix.of fun c => z c ᵥ* (Matrix.of a)ᵀ) = (Matrix.of a)ᵀᴴ * P * (Matrix.of a)ᵀ`. Introduce `a`. Establish `: (Matrix.of fun c => z c ᵥ* (Matrix.of a)ᵀ) = Matrix.of z * (Matrix.of a)ᵀ` using `rfl`. Rewrite using `[this, hP, conjTranspose_mul, Matrix.mul_sub, Matrix.sub_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Establish `hdet : ∀ a : ι → ι → ℂ, (a, fun c => z c ᵥ* (Matrix.of a)ᵀ) ∈ S → 1 / 2 ≤ ‖(Matrix.of a).det‖ ^ 2 * ‖P.det‖`. Introduce `a ha`. Use `(hnear _ ha).1` as an intermediate fact. Simplify using `only [hG] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[det_mul, det_mul, det_conjTranspose, det_transpose, norm_mul, norm_mul, norm_star]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hex : ∃ a : ι → ι → ℂ, (a, fun c => z c ᵥ* (Matrix.of a)ᵀ) ∈ S`. Use `swap`. Establish `: ∀ a, T a z = 0` using `fun a => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hT, hF]`. Rewrite using `[Set.indicator_of_notMem (fun h => hex ⟨a, h⟩), mul_zero]`. Simplify using `[this]`. Take `⟨a₀, ha₀⟩` from `hex`. Establish `hform` using `(hnear _ ha₀).2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hA₀` using `det_ne_zero_of_form _ _ hform`. Simplify using `only [hG] at hform`. Establish `hherm : P.IsHermitian` using `isHermitian_one.sub (isHermitian_conjTranspose_mul_self _)`. Establish `hre : ∀ v, 0 ≤ (star v ⬝ᵥ P *ᵥ v).re`. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, rfl⟩ : ∃ t, v = (Matrix.of a₀)ᵀ *ᵥ t` from `⟨(Matrix.of a₀)ᵀ⁻¹ *ᵥ v, by`. Rewrite using `[mulVec_mulVec, mul_nonsing_inv _ (Ne.isUnit hA₀), one_mulVec]⟩`. Use `hform t` as an intermediate fact. Rewrite `this` using `[← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]`. Conclude with `le_trans (by positivity) this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hpsd : P.PosSemidef` using `PosSemidef.of_dotProduct_mulVec_nonneg hherm fun v => Complex.nonneg_iff.2 ⟨hre v, (hherm.im_star_dotProduct_mulVec_self v).symm⟩`. Establish `hPpos : 0 < ‖P.det‖`. Use `lt_of_le_of_ne (norm_nonneg _) fun h => ?_` and prove the remaining obligations. Use `hdet a₀ ha₀` as an intermediate fact. Rewrite `this` using `[← h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Evaluate the numerical expressions using `at this`. Establish `hz : z ∈ Metric.closedBall (0 : κ → ι → ℂ) 1`. Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun c => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `hre (Pi.single j 1)`. Rewrite `h1` using `[hP, sub_mulVec, dotProduct_sub, Complex.sub_re, form_gram_re, one_mulVec, star_dot_self_re]`. Establish `h2 : ∑ i, ‖(Pi.single j (1 : ℂ) : ι → ℂ) i‖ ^ 2 = 1`. Apply the tactic sequence `rw [Finset.sum_eq_single j] <;> simp +contextual`. Establish `h3` using `Finset.single_le_sum (f := fun c => ‖(Matrix.of z *ᵥ Pi.single j 1) c‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4 : (Matrix.of z *ᵥ Pi.single j 1) c = z c j` using `by simp`. Simplify using `only [h4] at h3`. Use `norm_nonneg (z c j)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[Set.indicator_of_mem hz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hMz : ‖P.det‖ ≤ M` using `hM z hz`. Use `set E : Set (ι → ℂ) := {x | (star x ⬝ᵥ P *ᵥ x).re ≤ 2} with hE`. Establish `hpt : ∀ a, T a z ≤ (Set.univ.pi fun _ : ι => E).indicator (fun _ => ENNReal.ofReal ((2 * ‖P.det‖) ^ Fintype.card ι * (1 + 2 * M) ^ k)) a`. Introduce `a`. Distinguish the cases in `ha : (a, fun c => z c ᵥ* (Matrix.of a)ᵀ) ∈ S`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `swap`. Simplify using `only [hT, hF]`. Rewrite using `[Set.indicator_of_notMem ha, mul_zero]`. Conclude with `zero_le`. Establish `hmem : a ∈ Set.univ.pi fun _ : ι => E`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j _`. Establish `h1` using `ha j j`. Simplify using `only [hG] at h1`. Establish `h2 : ((Matrix.of a)ᵀᴴ * P * (Matrix.of a)ᵀ) j j = star (a j) ⬝ᵥ P *ᵥ a j`. Rewrite using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Both sides reduce to the same expression. Rewrite `h1` using `[Matrix.sub_apply, h2, one_apply_eq]`. Establish `h3` using `Complex.re_le_norm (star (a j) ⬝ᵥ P *ᵥ a j - 1)`. Rewrite `h3` using `[Complex.sub_re, Complex.one_re]`. Use `show _ ≤ (2 : ℝ)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hT, hF]`. Rewrite using `[Set.indicator_of_mem hmem, Set.indicator_of_mem ha, ← ENNReal.ofReal_mul (by positivity), det_transpose]`. Use `ENNReal.ofReal_le_ofReal (weight_le ?_ (hdet a ha) hMz _ _ _)` and prove the remaining obligations. Use `det_ne_zero_of_form _ _ (hnear _ ha).2.2` as an intermediate fact.
-
-Rewrite `this` using `[det_transpose]`. Conclude with `norm_pos_iff.2 this`. Use `(lintegral_mono hpt).trans ((lintegral_indicator_const_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[volume_pi_pi, Finset.prod_const, Finset.card_univ]`. Establish `hvol` using `volume_ellipsoid_le 2 hpsd (norm_pos_iff.1 hPpos)`.
-
-Establish `hM0 : 0 ≤ M` using `hPpos.le.trans hMz`. Use `(mul_le_mul_right (pow_le_pow_left' hvol _) _).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hK, mul_pow (ENNReal.ofReal _), ← mul_assoc, ← ENNReal.ofReal_pow (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`. Rewrite using `[mul_pow, inv_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem columns_integral (ι κ : Type*) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (n : ℕ) (hn : 2 * (Fintype.card ι + Fintype.card κ) ≤ n) :
@@ -586,13 +574,9 @@ noncomputable def cutEquiv (ι κ : Type*) :
   right_inv x := by ext <;> simp
 
 /- English proof (translation)
-Set `e` to `(cutEquiv ι κ).toContinuousLinearEquiv`. Use `haveI : BorelSpace (ι → ι → ℂ) := Pi.borelSpace`. Use `haveI : BorelSpace (κ → ι → ℂ) := Pi.borelSpace`. Use `haveI : BorelSpace (κ → ι ⊕ κ → ℂ) := Pi.borelSpace`. Use `haveI : BorelSpace (ι ⊕ κ → ι ⊕ κ → ℂ) := Pi.borelSpace`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : BorelSpace ((ι → ι → ℂ) × (κ → ι → ℂ)) := Prod.borelSpace`. Use `haveI : BorelSpace (((ι → ι → ℂ) × (κ → ι → ℂ)) × (κ → ι ⊕ κ → ℂ)) := Prod.borelSpace`. Use `haveI : (volume : Measure (ι → ι → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (κ → ι → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (κ → ι ⊕ κ → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`.
-
-Use `haveI : (volume : Measure (ι ⊕ κ → ι ⊕ κ → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure ((ι → ι → ℂ) × (κ → ι → ℂ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : (volume : Measure (((ι → ι → ℂ) × (κ → ι → ℂ)) × (κ → ι ⊕ κ → ℂ))).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Establish `hmap` using `Measure.isAddLeftInvariant_eq_smul (Measure.map e volume) (volume : Measure (((ι → ι → ℂ) × (κ → ι → ℂ)) × (κ → ι ⊕ κ → ℂ)))`. Use `⟨Measure.addHaarScalarFactor (Measure.map e volume) volume, ENNReal.coe_lt_top, fun g => ?_⟩` and prove the remaining obligations.
-
-Establish `hchg : ∫⁻ y, g (e y) = ∫⁻ w, g w ∂(Measure.map e volume)` using `(lintegral_map_equiv g e.toHomeomorph.toMeasurableEquiv).symm`. Use `hchg.trans ?_` and prove the remaining obligations. Use `conv_lhs => rw [hmap]`. Rewrite using `[lintegral_smul_measure]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lintegral_cutEquiv (ι κ : Type*) [Fintype ι] [Fintype κ] :
     ∃ c : ENNReal, c < ⊤ ∧ ∀ g : ((ι → ι → ℂ) × (κ → ι → ℂ)) × (κ → ι ⊕ κ → ℂ) → ENNReal,
@@ -624,33 +608,29 @@ theorem lintegral_cutEquiv (ι κ : Type*) [Fintype ι] [Fintype κ] :
   rfl
 
 /- English proof (translation)
-Take `⟨δ₁, hδ₁, K, hK, hslice⟩` from `slice_volume ι κ`. Take `⟨δ₂, hδ₂, hint⟩` from `columns_integral ι κ n hn`. Use `⟨min (min δ₁ δ₂) 1, by positivity, ?_⟩` and prove the remaining obligations. Use `set U := {y : (ι ⊕ κ) → (ι ⊕ κ) → ℂ | ∀ a b, ‖((Matrix.of y)ᵀ * Matrix.fromBlocks (1 : Matrix ι ι ℂ) 0 0 (-1 : Matrix κ κ ℂ) * (Matrix.of y).map conj - Matrix.fromBlocks (1 : Matrix ι ι ℂ) 0 0 (-1 : Matrix κ κ ℂ)) a b‖ < min (min δ₁ δ₂) 1} with hU`. Establish `hent : ∀ (y : (ι ⊕ κ) → (ι ⊕ κ) → ℂ) r s, ((Matrix.of y)ᵀ * Matrix.fromBlocks (1 : Matrix ι ι ℂ) 0 0 (-1 : Matrix κ κ ℂ) * (Matrix.of y).map conj) r s = ∑ a, y (Sum.inl a) r * conj (y (Sum.inl a) s) - ∑ c, y (Sum.inr c) r * conj (y (Sum.inr c) s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y r s`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_apply, Fintype.sum_sum_type]`. Simplify using `[Matrix.mul_apply, Fintype.sum_sum_type, one_apply, sub_eq_add_neg, neg_ite]`. Establish `hUm : MeasurableSet U`. Use `IsOpen.measurableSet ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hU, Set.setOf_forall, Matrix.sub_apply, hent]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => ?_` and prove the remaining obligations. Use `isOpen_lt ?_ continuous_const` and prove the remaining obligations. Use `fun_prop`. Establish `hfm : Measurable fun y : (ι ⊕ κ) → (ι ⊕ κ) → ℂ => (‖(Matrix.of y).toBlocks₁₁.det‖ ^ n)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `((Continuous.measurable (Continuous.norm (Continuous.matrix_det ?_))).pow_const _).inv` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => (continuous_apply (Sum.inl j)).comp (continuous_apply (Sum.inl i))`. Use `⟨hfm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_ofReal (Filter.Eventually.of_forall fun y => by positivity), ← lintegral_indicator hUm]`. Use `set S := {x : (ι → ι → ℂ) × (κ → ι → ℂ) | ∀ i j, ‖((Matrix.of x.1)ᵀᴴ * (Matrix.of x.1)ᵀ - (Matrix.of x.2)ᴴ * Matrix.of x.2 - 1 : Matrix ι ι ℂ) i j‖ < min δ₁ δ₂} with hS`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `set B : (ι → ι → ℂ) × (κ → ι → ℂ) → Set (ι ⊕ κ → ℂ) := fun x => {v | (∀ i, ‖((Matrix.of x.1)ᵀᴴ *ᵥ (v ∘ Sum.inl) - (Matrix.of x.2)ᴴ *ᵥ (v ∘ Sum.inr)) i‖ ≤ 1) ∧ ∑ c, ‖v (Sum.inr c)‖ ^ 2 - ∑ a, ‖v (Sum.inl a)‖ ^ 2 ≤ 2} with hB`. Use `set g : ((ι → ι → ℂ) × (κ → ι → ℂ)) × (κ → ι ⊕ κ → ℂ) → ENNReal := fun w => (Set.univ.pi fun _ : κ => B w.1).indicator (fun _ => S.indicator (fun x => ENNReal.ofReal (‖(Matrix.of x.1).det‖ ^ n)⁻¹) w.1) w.2 with hg`. Set `e` to `cutEquiv ι κ`. Establish `hpt : ∀ y, U.indicator (fun y => ENNReal.ofReal (‖(Matrix.of y).toBlocks₁₁.det‖ ^ n)⁻¹) y ≤ g (e y)`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Distinguish the cases in `hy : y ∈ U`. Use `swap`. Rewrite using `[Set.indicator_of_notMem hy]`. Conclude with `zero_le`. Establish `hy' : ∀ r s, ‖∑ a, y (Sum.inl a) r * conj (y (Sum.inl a) s) - ∑ c, y (Sum.inr c) r * conj (y (Sum.inr c) s) - Matrix.fromBlocks (1 : Matrix ι ι ℂ) 0 0 (-1 : Matrix κ κ ℂ) r s‖ < min (min δ₁ δ₂) 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `r s`. Use `hy r s` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, hent]`. Then use the resulting hypothesis. Establish `h1 : (e y).1 ∈ S`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `lt_of_eq_of_lt ?_ ((hy' (Sum.inl i) (Sum.inl j)).trans_le (min_le_left _ _))` and prove the remaining obligations. Simplify using `[e, cutEquiv, Matrix.mul_apply]`. Establish `h2 : (e y).2 ∈ Set.univ.pi fun _ : κ => B (e y).1`. Introduce `c _`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `le_of_eq_of_le ?_ ((hy' (Sum.inl i) (Sum.inr c)).le.trans (min_le_right _ _))` and prove the remaining obligations. Simplify using `[e, cutEquiv, mulVec, dotProduct]`. Establish `h3` using `(hy' (Sum.inr c) (Sum.inr c)).le.trans (min_le_right _ _)`. Establish `h4` using `(Complex.abs_re_le_norm _).trans h3`. Simplify using `only [Complex.mul_conj', fromBlocks_apply₂₂, Matrix.neg_apply, one_apply_eq, ← Complex.ofReal_pow, ← Complex.ofReal_sum, Complex.sub_re, Complex.ofReal_re, Complex.neg_re, Complex.one_re] at h4`.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h5` using `(abs_le.1 h4).1`. Establish `: ∀ r, ‖(e y).2 c r‖ = ‖y r (Sum.inr c)‖` using `fun r => by simp [e, cutEquiv]`. Simplify using `only [this]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [hg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem h2, Set.indicator_of_mem h1]`. Establish `h6 : Matrix.of (e y).1.1 = (Matrix.of y).toBlocks₁₁ᴴ`. Use extensionality with `i j`. Simplify using `[e, cutEquiv, toBlocks₁₁]`. Rewrite using `[h6, det_conjTranspose, norm_star]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc, hchg⟩` from `lintegral_cutEquiv ι κ`. Use `(lintegral_mono hpt).trans_lt ?_` and prove the remaining obligations. Use `(hchg g).trans_lt (ENNReal.mul_lt_top hc ?_)` and prove the remaining obligations. Use `(lintegral_prod_le g).trans_lt ?_` and prove the remaining obligations. Establish `hKt : K ^ Fintype.card κ < ⊤` using `ENNReal.pow_lt_top hK`.
-
-Use `lt_of_le_of_lt ?_ (ENNReal.mul_lt_top hint hKt)` and prove the remaining obligations. Rewrite using `[← lintegral_mul_const' _ _ hKt.ne]`. Use `lintegral_mono fun x => (lintegral_indicator_const_le (Set.univ.pi fun _ : κ => B x) (S.indicator (fun x => ENNReal.ofReal (‖(Matrix.of x.1).det‖ ^ n)⁻¹) x)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ S`. Use `swap`.
-
-Simplify using `only [Set.indicator_of_notMem hx, zero_mul]`. Conclude with `zero_le`. Rewrite using `[volume_pi_pi, Finset.prod_const, Finset.card_univ]`. Use `mul_le_mul' ?_ (pow_le_pow_left' (hslice _ _ fun i j => (hx i j).trans_le (min_le_left _ _)) _)` and prove the remaining obligations. Conclude with `Set.indicator_le_indicator_of_subset (fun x hx i j => (hx i j).trans_le (min_le_right _ _)) (fun _ => zero_le) x`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrableOn_minor (ι κ : Type*) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     (n : ℕ) (hn : 2 * (Fintype.card ι + Fintype.card κ) ≤ n) :

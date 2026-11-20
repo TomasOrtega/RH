@@ -24,21 +24,21 @@ noncomputable def negHom (n : ℕ) : LaurentRing n →ₐ[ℂ] LaurentRing n :=
         rw [toAdd_mul, neg_add, monomial_add] }
 
 /- English proof (translation)
-Rewrite using `[negHom, AddMonoidAlgebra.lift_single, one_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem negHom_monomial (μ : Fin n → ℤ) : negHom n (monomial μ) = monomial (-μ) := by
   rw [negHom, AddMonoidAlgebra.lift_single, one_smul]
   rfl
 
 /- English proof (translation)
-Simplify using `only [monomialChar_apply, Pi.neg_apply, _root_.inv_zpow, _root_.zpow_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem monomialChar_inv (l : Fin n → ℤ) (z : Fin n → ℂˣ) :
     monomialChar l (fun i => (z i)⁻¹) = monomialChar (-l) z := by
   simp only [monomialChar_apply, Pi.neg_apply, _root_.inv_zpow, _root_.zpow_neg]
 
 /- English proof (translation)
-Establish `h : evalAt (fun i => (z i)⁻¹) = (evalAt z).comp (negHom n)`. Use `AddMonoidAlgebra.algHom_ext (fun l => ?_) (Subsingleton.elim _ _)` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, negHom_monomial, evalAt_single, evalAt_single, monomialChar_inv]`. Rewrite using `[h, AlgHom.comp_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_inv (z : Fin n → ℂˣ) (p : LaurentRing n) :
     evalAt (fun i => (z i)⁻¹) p = evalAt z (negHom n p) := by
@@ -48,7 +48,7 @@ theorem evalAt_inv (z : Fin n → ℂˣ) (p : LaurentRing n) :
   rw [h, AlgHom.comp_apply]
 
 /- English proof (translation)
-Simplify using `only [alternant, antisymm_apply, map_sum, Units.smul_def, map_zsmul, permAct_monomial, negHom_monomial]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem negHom_alternant (μ : Fin n → ℤ) : negHom n (alternant μ) = alternant (-μ) := by
   simp only [alternant, antisymm_apply, map_sum, Units.smul_def, map_zsmul, permAct_monomial,
@@ -56,7 +56,7 @@ theorem negHom_alternant (μ : Fin n → ℤ) : negHom n (alternant μ) = altern
   rfl
 
 /- English proof (translation)
-Establish `h` using `antisymm_permAct (Fin.revPerm : Equiv.Perm (Fin n)) (monomial μ)`. Rewrite `h` using `[permAct_monomial]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alternant_comp_rev (μ : Fin n → ℤ) :
     alternant (μ ∘ Fin.rev) = Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) • alternant μ := by
@@ -65,7 +65,7 @@ theorem alternant_comp_rev (μ : Fin n → ℤ) :
   exact h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Simplify using `only [Function.comp_apply, Pi.neg_apply, Pi.add_apply, staircase, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_staircase_comp_rev :
     (-(staircase n)) ∘ Fin.rev = staircase n + fun _ => (1 - (n : ℤ)) := by
@@ -75,7 +75,7 @@ theorem neg_staircase_comp_rev :
   omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hi` using `i.isLt`. Simplify using `only [Function.comp_apply, Pi.neg_apply, Pi.add_apply, staircase, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem neg_add_staircase_comp_rev (l : Fin n → ℤ) :
     (-(l + staircase n)) ∘ Fin.rev =
@@ -86,9 +86,9 @@ theorem neg_add_staircase_comp_rev (l : Fin n → ℤ) :
   omega
 
 /- English proof (translation)
-Establish `h1 : alternant (-(staircase n)) * negHom n (schur l) = alternant (-(l + staircase n))`. Rewrite using `[← negHom_alternant, ← negHom_alternant, ← map_mul, alternant_mul_schur]`. Establish `h2` using `congrArg (fun x => Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin n)) • x) h1`. Simplify using `only [← smul_mul_assoc, ← alternant_comp_rev, neg_staircase_comp_rev, neg_add_staircase_comp_rev, alternant_add_const] at h2`. Rewrite `h2` using `[← alternant_mul_schur, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hM : (monomial (fun _ => (1 - (n : ℤ))) : LaurentRing n) ≠ 0`. Introduce `h`. Establish `h3` using `congrArg (evalAt (fun _ : Fin n => (1 : ℂˣ))) h`. Simplify using `[evalAt_single, monomialChar_apply] at h3`. Conclude with `mul_left_cancel₀ alternant_staircase_ne_zero (mul_left_cancel₀ hM h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem negHom_schur (l : Fin n → ℤ) :
     negHom n (schur l) = schur (fun i => -l (Fin.rev i)) := by
@@ -105,7 +105,7 @@ theorem negHom_schur (l : Fin n → ℤ) :
   exact mul_left_cancel₀ alternant_staircase_ne_zero (mul_left_cancel₀ hM h2)
 
 /- English proof (translation)
-Rewrite using `[evalAt_inv, negHom_schur]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evalAt_inv_schur (n : ℕ) (z : Fin n → ℂˣ) (l : Fin n → ℤ) :
     evalAt (fun i => (z i)⁻¹) (schur l) = evalAt z (schur (fun i => -l (Fin.rev i))) := by

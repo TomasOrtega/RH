@@ -40,11 +40,11 @@ def ClauseSecond (U : Unif I D A G) (F : Type) [Field F] [Algebra (FractionRing 
     ∀ ζ : Fˣ, WeilQkIs D.toPre F k p p' (ζ : F) ↔ WeilIs A.A A.L (k : ℤ) x x' (constUnit R F ζ)
 
 /- English proof (translation)
-Establish `r : ∀ s, PhiRel D.toPre F k p w s (Φ s)` using `fun s => (hΦ _ _).2 rfl`. Establish `r' : ∀ s, PhiRel D.toPre F k p' w' s (Φ' s)` using `fun s => (hΦ' _ _).2 rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h s`. Conclude with `(isSmul_iff _ _ _).1 (h w w' hw hw' s _ _ _ _ (r' s) (r _) (r s) (r' _))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H v v' hv hv' s s₁ s₂ s₃ s₄ h₁ h₂ h₃ h₄`. Take `⟨c, -, hc⟩` from `TorsionImage.exists_smul_of_phiVal p w v hw hv`. Take `⟨c', -, hc'⟩` from `TorsionImage.exists_smul_of_phiVal p' w' v' hw' hv'`. Establish `q : ∀ s t, PhiRel D.toPre F k p v s t → t = c • Φ s` using `fun s t h => hc s _ t ((phiRel_iff hG p w hw _ _).1 (r s)) ((phiRel_iff hG p v hv _ _).1 h)`. Establish `q' : ∀ s t, PhiRel D.toPre F k p' v' s t → t = c' • Φ' s` using `fun s t h => hc' s _ t ((phiRel_iff hG p' w' hw' _ _).1 (r' s)) ((phiRel_iff hG p' v' hv' _ _).1 h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isSmul_iff, q _ _ h₂, q' _ _ h₁, q' _ _ h₄, q _ _ h₃, map_smul, map_smul, H s, smul_comm c' ζ, smul_comm c ζ, smul_comm c c']`.
+A detailed English derivation is pending.
 -/
 theorem weilQkIs_iff_operators (hG : GlobalFnsSt) {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ}
     {p p' : QkPt D.toPre F k} {w : Frm D.toPre F k p.g.b} {w' : Frm D.toPre F k p'.g.b}
@@ -67,9 +67,9 @@ theorem weilQkIs_iff_operators (hG : GlobalFnsSt) {F : Type} [Field F] [Algebra 
       smul_comm c' ζ, smul_comm c ζ, smul_comm c c']
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ⟩` from `(Algebra.linearMap K F).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 (algebraMap K F).injective)`. Establish `h1 : ℓ 1 = 1` using `by simpa using LinearMap.congr_fun hℓ 1`. Take `⟨Λ, hΛ⟩` from `h.coord ℓ`. Establish `h2 : ∀ v, Λ (a v) = v` using `fun v => by`. Use `hΛ 1 v` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[one_smul, h1, one_smul]`. Then use the resulting hypothesis. Conclude with `Function.LeftInverse.injective h2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem injective_of_isExtension {K F V W : Type} [Field K] [Field F] [Algebra K F] [AddCommGroup V] [Module K V]
     [AddCommGroup W] [Module F W] {a : V →ₛₗ[algebraMap K F] W} (h : IsExtension a) : Function.Injective a := by
@@ -86,15 +86,15 @@ variable {E F : Type} [Field F] [Algebra (FractionRing R) F] [Field E] [Algebra 
   [IsScalarTower (FractionRing R) E F]
 
 /- English proof (translation)
-Take `⟨w, hw⟩ : ∃ w : Frm D.toPre E k p.g.b, w.IsGen` from `exists_gen_of_local D.toPre.P.L D.toPre.P.isLB _ _`. Take `⟨w', hw'⟩ : ∃ w : Frm D.toPre E k p'.g.b, w.IsGen` from `exists_gen_of_local D.toPre.P.L D.toPre.P.isLB _ _`. Take `⟨v, hv, hwv⟩` from `exists_phiVal_pull hG h hw`. Take `⟨v', hv', hwv'⟩` from `exists_phiVal_pull hG h' hw'`. Take `⟨Φ, hΦ⟩` from `phiFun_of_globalFns hG R I D E k hk p w hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Φ', hΦ'⟩` from `phiFun_of_globalFns hG R I D E k hk p' w' hw'`. Take `⟨Ψ, hΨ⟩` from `phiFun_of_globalFns hG R I D F k hk q v hv`. Take `⟨Ψ', hΨ'⟩` from `phiFun_of_globalFns hG R I D F k hk q' v' hv'`. Establish `c : ∀ s, Ψ (famPull D.toPre E F hG k s) = famPull D.toPre E F hG k (Φ s)` using `fun s => phi_unique q v ((phiRel_iff hG q v hv _ _).1 ((hΨ _ _).2 rfl)) (hwv _ _ ((phiRel_iff hG p w hw s _).1 ((hΦ s _).2 rfl)))`. Establish `c' : ∀ s, Ψ' (famPull D.toPre E F hG k s) = famPull D.toPre E F hG k (Φ' s)` using `fun s => phi_unique q' v' ((phiRel_iff hG q' v' hv' _ _).1 ((hΨ' _ _).2 rfl)) (hwv' _ _ ((phiRel_iff hG p' w' hw' s _).1 ((hΦ' s _).2 rfl)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx` using `isExtension_famPull D.toPre E F hG hk`. Rewrite using `[weilQkIs_iff_operators hG hw hw' hΦ hΦ', weilQkIs_iff_operators hG hv hv' hΨ hΨ']`. Prove the components needed by the constructor for the conclusion. Introduce `H s`. Establish `e : Ψ ∘ₗ Ψ' = algebraMap E F ζ • (Ψ' ∘ₗ Ψ)` using `LinearMap.ext_on hx.span (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Rewrite using `[LinearMap.smul_apply, LinearMap.comp_apply, LinearMap.comp_apply, c', c, c, c', H, map_smulₛₗ])`. Conclude with `LinearMap.congr_fun e s`. Introduce `H s`. Use `injective_of_isExtension hx ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smulₛₗ, ← c, ← c', ← c', ← c, H]`.
+A detailed English derivation is pending.
 -/
 theorem weilQkIs_iff_of_algebra (hG : GlobalFnsSt) {k : ℕ} (hk : 1 ≤ k) {p p' : QkPt D.toPre E k}
     {q q' : QkPt D.toPre F k} (h : QkExt (algebraMap E F) p q) (h' : QkExt (algebraMap E F) p' q') (ζ : E) :

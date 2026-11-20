@@ -8,9 +8,9 @@ namespace GlobalTheory
 open IsLocalRing
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a ha`. Assume the negation of the conclusion as `hna`. Use `haveI : Algebra.IsIntegral R T := Algebra.IsIntegral.of_finite R T`. Use `haveI hmax : (Ideal.comap (algebraMap R T) (maximalIdeal T)).IsMaximal := Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal T)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `IsLocalRing.eq_maximalIdeal hmax`. Establish `hm : a ∈ Ideal.comap (algebraMap R T) (maximalIdeal T)`. Rewrite using `[heq]`. Conclude with `(mem_maximalIdeal a).2 hna`. Conclude with `(mem_maximalIdeal _).1 hm ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocalHom_algebraMap_of_moduleFinite (R T : Type) [CommRing R] [IsLocalRing R]
     [CommRing T] [IsLocalRing T] [Algebra R T] [Module.Finite R T] :
@@ -27,7 +27,7 @@ theorem isLocalHom_algebraMap_of_moduleFinite (R T : Type) [CommRing R] [IsLocal
   exact (mem_maximalIdeal _).1 hm ha
 
 /- English proof (translation)
-Use `haveI := isLocalHom_algebraMap_of_moduleFinite R T`. Use `haveI : Algebra.IsIntegral R T := Algebra.IsIntegral.of_finite R T`. Use `haveI : Algebra.IsIntegral (ResidueField R) (ResidueField T) := inferInstance`. Use `haveI : Algebra.IsAlgebraic (ResidueField R) (ResidueField T) := inferInstance`. Conclude with `Algebra.IsAlgebraic.isSepClosed (F := ResidueField R)`.
+A detailed English derivation is pending.
 -/
 theorem isSepClosed_residueField_of_moduleFinite (R T : Type) [CommRing R] [IsLocalRing R]
     [IsSepClosed (ResidueField R)] [CommRing T] [IsLocalRing T] [Algebra R T]
@@ -39,9 +39,7 @@ theorem isSepClosed_residueField_of_moduleFinite (R T : Type) [CommRing R] [IsLo
   exact Algebra.IsAlgebraic.isSepClosed (F := ResidueField R)
 
 /- English proof (translation)
-Introduce `R S _ _ _ _ _ _`. Take `⟨ι, hι, T, hT, hA, e, h⟩` from `((finite_algebras_over_henselian R).1 S).1`. Use `⟨ι, hι, T, hT, hA, e, fun i ↦ (h i).1, fun i ↦ ⟨?_, (h i).2⟩⟩` and prove the remaining obligations. Use `haveI := (h i).1`. Use `haveI := (h i).2`.
-
-Conclude with `isSepClosed_residueField_of_moduleFinite R (T i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_algebra_strictly_henselian_pi : ∀ (R S : Type) [CommRing R] [HenselianLocalRing R]
     [IsSepClosed (ResidueField R)] [CommRing S] [Algebra R S] [Module.Finite R S],

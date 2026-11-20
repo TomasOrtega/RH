@@ -28,15 +28,15 @@ def vacW (v : Pl F) : Submodule (v.adicCompletionIntegers F) ((κ → Fv F v) ×
   smul_mem' c _ h := ⟨fun i => mul_mem c.2 (h.1 i), fun i => mul_mem c.2 (h.2 i)⟩
 
 /- English proof (translation)
-The claim follows from `(eventually_all.2 fun i => (z.1 i).2.2).and (eventually_all.2 fun i => (z.2 i).2.2)`.
+A detailed English derivation is pending.
 -/
 theorem vac_locW (z : (κ → AF F) × (κ → AF F)) : ∀ᶠ v in cofinite, locW v z ∈ vacW v :=
   (eventually_all.2 fun i => (z.1 i).2.2).and (eventually_all.2 fun i => (z.2 i).2.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Establish `h : psiV ψ v (x ⬝ᵥ y.2 + ⅟(2 : Fv F v) * (y.1 ⬝ᵥ y.2)) = 1`. Use `(hψ _).2 (show x ⬝ᵥ y.2 + ⅟(2 : Fv F v) * (y.1 ⬝ᵥ y.2) ∈ v.adicCompletionIntegers F from add_mem (sum_mem fun i _ => mul_mem (hx i) (hy.2 i)) (mul_mem (by rwa [invOf_eq_inv]) (sum_mem fun i _ => mul_mem (hy.1 i) (hy.2 i)))) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[schr, h, one_mul, Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), Set.indicator_of_mem (show x + y.1 ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => add_mem (hx i) (hy.1 i))]`. Both sides reduce to the same expression. Rewrite using `[schr, Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), Set.indicator_of_notMem (show x + y.1 ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun h => hx fun i => by`. Simplify using `using sub_mem (h i) (hy.1 i)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vac_schr {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) (h2 : (2 : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F) {y} (hy : y ∈ vacW (κ := κ) v) :
     schr (psiV ψ v) y (Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) =
@@ -57,13 +57,13 @@ theorem vac_schr {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) (h2 : (2 : Fv F v
         simpa using sub_mem (h i) (hy.1 i)), mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Use `congrFun (h (x, 0) ⟨hx, fun _ => zero_mem _⟩) 0` as an intermediate fact. Rewrite using `[Pi.smul_apply, Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx)]`. Simplify `this` using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.smul_apply, Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), smul_zero]`. Take `⟨i, hi⟩` from `not_forall.1 hx`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hne⟩ : ∃ y ∈ v.adicCompletionIntegers F, psiLoc ψ v (x i * y) ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hi ((hψ _).1 hc)`. Use `congrFun (h (0, Pi.single i y) ⟨fun _ => zero_mem _, fun j => by` as an intermediate fact. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne e]⟩) x`. Simplify using `only [schr, dotProduct_single, Pi.zero_apply, zero_mul, mul_zero, add_zero] at this`. Conclude with `(mul_left_eq_self₀.1 this).resolve_left hne`.
+A detailed English derivation is pending.
 -/
 theorem vac_eq {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) {Φ : (κ → Fv F v) → ℂ} (h : ∀ y ∈ vacW v, schr (psiV ψ v) y Φ = Φ) :
     Φ = Φ 0 • Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 := by
@@ -89,7 +89,7 @@ theorem vac_eq {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) {Φ : (κ → Fv F 
 end
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v : Pl F in cofinite, evFin F v (algebraMap F (AF F) x) ∈ v.adicCompletionIntegers F` using `(algebraMap F (AF F) x).2.2`. Use `filter_upwards [h] with v hv`. Rewrite `hv` using `[AlgHom.commutes]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem vac_int_F (x : F) : ∀ᶠ v : Pl F in cofinite, algebraMap F (Fv F v) x ∈ v.adicCompletionIntegers F := by
   have h : ∀ᶠ v : Pl F in cofinite, evFin F v (algebraMap F (AF F) x) ∈ v.adicCompletionIntegers F := (algebraMap F (AF F) x).2.2
@@ -97,7 +97,7 @@ theorem vac_int_F (x : F) : ∀ᶠ v : Pl F in cofinite, algebraMap F (Fv F v) x
   rwa [AlgHom.commutes] at hv
 
 /- English proof (translation)
-Establish `h1 : IsIntegral ℤ (t x)` using `h.map t.toIntAlgHom`. Establish `h2 : IsIntegral O (t x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := O) (K := K)).1 h2`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_int_Z {E K : Type} [Field E] [Field K] (O : ValuationSubring K) (t : E →+* K) {x : E} (h : IsIntegral ℤ x) : t x ∈ O := by
   have h1 : IsIntegral ℤ (t x) := h.map t.toIntAlgHom
@@ -107,9 +107,9 @@ theorem vac_int_Z {E K : Type} [Field E] [Field K] (O : ValuationSubring K) (t :
   exact y.2
 
 /- English proof (translation)
-Establish `ha : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨N, hN, hi⟩` from `ha.exists_integral_multiple`. Use `filter_upwards [vac_int_F (F := F) (N : F)⁻¹] with v hv t`. Establish `h1 : t (N • x) ∈ v.adicCompletionIntegers F` using `vac_int_Z _ (t : E →+* Fv F v) hi`. Establish `e : t x = algebraMap F (Fv F v) (N : F)⁻¹ * t (N • x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← t.commutes, ← map_mul, zsmul_eq_mul, map_inv₀, map_intCast, inv_mul_cancel_left₀ (Int.cast_ne_zero.2 hN)]`. Rewrite using `[e]`. Conclude with `mul_mem hv h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_int_E (x : E) : ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv F v, t x ∈ v.adicCompletionIntegers F := by
   have ha : IsAlgebraic ℤ x := (IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)
@@ -122,7 +122,7 @@ theorem vac_int_E (x : E) : ∀ᶠ v : Pl F in cofinite, ∀ t : E →ₐ[F] Fv 
   exact mul_mem hv h1
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[(ValuativeRel.isEquiv (ValuativeRel.valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem vac_val {v : Pl F} (y : Fv F v) : ValuativeRel.valuation (Fv F v) y ≤ 1 ↔ y ∈ v.adicCompletionIntegers F := by
   haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _
@@ -131,7 +131,7 @@ theorem vac_val {v : Pl F} (y : Fv F v) : ValuativeRel.valuation (Fv F v) y ≤ 
   exact Iff.rfl
 
 /- English proof (translation)
-Distinguish the cases in `hY : ∀ a b, ValuativeRel.valuation (Fv F v) (Y a b) ≤ 1`. Conclude with `(Set.indicator_of_mem (show ofM Y ∈ {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun p => (vac_val _).1 (hY p.1 p.2)) _).trans (Set.indicator_of_mem (show Y ∈ {Y : Matrix (Fin n) (Fin d) (Fv F v) | ∀ a b, ValuativeRel.valuation (Fv F v) (Y a b) ≤ 1} f …`. Conclude with `(Set.indicator_of_notMem (show ofM Y ∉ {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun e => hY fun a b => (vac_val _).2 (e (a, b))) _).trans (Set.indicator_of_notMem (show Y ∉ {Y : Matrix (Fin n) (Fin d) (Fv F v) | ∀ a b, ValuativeRel.valuation (Fv F …`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem vac_one {n d : ℕ} {v : Pl F} (Y : Matrix (Fin n) (Fin d) (Fv F v)) :
     Set.indicator {x : Fin n × Fin d → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} (1 : (Fin n × Fin d → Fv F v) → ℂ) (ofM Y) =
@@ -147,7 +147,7 @@ theorem vac_one {n d : ℕ} {v : Pl F} (Y : Matrix (Fin n) (Fin d) (Fv F v)) :
         (1 : Matrix (Fin n) (Fin d) (Fv F v) → ℂ)).symm
 
 /- English proof (translation)
-Use `Finset.sum_induction _ (fun t => locW v t ∈ vacW v) (fun a b ha hb => locW_add a b ▸ add_mem ha hb) ?_ fun i _ => ?_` and prove the remaining obligations. Establish `h0 : evFin F v 0 ∈ v.adicCompletionIntegers F` using `by rw [map_zero]; exact zero_mem _`. Conclude with `⟨fun _ => h0, fun _ => h0⟩`. Rewrite using `[locW_smul, ev_sgl]`. Conclude with `⟨fun j => mul_mem (hc i) ((hz i).1 j), fun j => mul_mem (hc i) ((hz i).2 j)⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem vac_sum {κ ι : Type} [Fintype κ] [Fintype ι] {v : Pl F} (c : ι → Fv F v) (z : ι → (κ → AF F) × (κ → AF F))
     (hc : ∀ i, c i ∈ v.adicCompletionIntegers F) (hz : ∀ i, locW v (z i) ∈ vacW v) : locW v (∑ i, sgl v (c i) • z i) ∈ vacW v := by
@@ -158,33 +158,29 @@ theorem vac_sum {κ ι : Type} [Fintype κ] [Fintype ι] {v : Pl F} (c : ι → 
     exact ⟨fun j => mul_mem (hc i) ((hz i).1 j), fun j => mul_mem (hc i) ((hz i).2 j)⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `dX : IsUnit X.J.det` using `GlobalTheory.CompanionTheory.Ar.RT.isUnit_det_of_cartan (F := F) X.J (B.emb w).1 1 (X.θ w) (by rw [one_smul]; exact hX.cartan w)`. Establish `dW : IsUnit W.J.det` using `GlobalTheory.CompanionTheory.Ar.RT.isUnit_det_of_cartan (F := F) W.J (B.emb w).1 Complex.I (W.θ w) (hW.cartan w)`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : E, δ - σ δ ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `e`. Use `push Not at e`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `haveI := hB.cm.2.1`. Use `IsTotallyComplex.complexEmbedding_not_isReal τ (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_))` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `(hB.cm.2.2.2 τ x).symm.trans (congrArg τ (sub_eq_zero.1 (e x)).symm)`. Establish `hd : ∀ᶠ v : Pl F in cofinite, ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal` using `(Ideal.finite_factors differentIdeal_ne_bot).subset fun v hv => Ideal.dvd_iff_le.2 (not_not.1 hv)`. Set `U : E → Fin n × Fin d → Matrix (Fin n) (Fin d) (AE F E)` to `fun x p => single p.1 p.2 (inclR (F := F) (AF F) x)`. Use `filter_upwards [hd, vac_int_F (F := F) 2⁻¹, hM.std, vac_int_E (F := F) δ, vac_int_E (F := F) (δ - σ δ)⁻¹, eventually_all.2 fun i => eventually_all.2 fun j => vac_int_E (F := F) (X.J⁻¹ i j), eventually_all.2 fun i => eventually_all.2 fun j => vac_int_E (F := F) (W.J⁻¹ i j), eventu …`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨⟨sec, h⟩, -⟩` from `section_statement F E σ hB.cm v t`. Establish `uu : ∀ {m : ℕ} {J : Matrix (Fin m) (Fin m) E}, IsUnit J.det → IsUnit ((incM F J).map (piW t))` using `fun {m J} hJ => by`. Rewrite using `[incM_map h]`. Conclude with `((Matrix.isUnit_iff_isUnit_det J).2 hJ).map (t : E →+* Fv F v).mapMatrix`. Establish `hG : Grams σ t (incM F X.J) (incM F W.J)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨uu dX, uu dW, 1, one_mul _, Matrix.ext fun i j => ?_, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[incM_map' h, incM_map h, one_smul, hX.herm]`. Both sides reduce to the same expression. Rewrite using `[incM_map' h, incM_map h, neg_smul, one_smul, hW.skew, map_neg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `lm` using `lm_of_linBar adjoint_statement hB.std h hG hι`. Establish `hu : PsiUnr B.ψ v` using `psiUnr_of_not_le hB.std v e1`. Rewrite `e2` using `[map_inv₀, map_ofNat]`. Establish `key : ∀ P Q : Matrix (Fin n) (Fin d) (Fv F v), (∀ i j, P i j ∈ v.adicCompletionIntegers F) → (∀ i j, Q i j ∈ v.adicCompletionIntegers F) → ∃ u, u.map (piW t) = P ∧ u.map (piW (t.comp σ)) = Q ∧ locW v (M.co.e u) ∈ vacW v` using `fun P Q hP hQ => by`. Set `b : Fin n × Fin d → Fv F v` to `fun p => (P p.1 p.2 - Q p.1 p.2) * t (δ - σ δ)⁻¹`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : Fin n × Fin d → Fv F v` to `fun p => P p.1 p.2 - b p * t δ`. Establish `hb : ∀ p, b p ∈ v.adicCompletionIntegers F` using `fun p => mul_mem (sub_mem (hP _ _) (hQ _ _)) (e5 t)`. Establish `ha : ∀ p, a p ∈ v.adicCompletionIntegers F` using `fun p => sub_mem (hP _ _) (mul_mem (hb p) (e4 t))`. Establish `hu : ∀ i j, (∑ p, sgl v (a p) • U 1 p + ∑ p, sgl v (b p) • U δ p) i j = sgl v (a (i, j)) • inclR (F` using `F) (AF F) (1 : E) + sgl v (b (i, j)) • inclR (F := F) (AF F) δ := fun i j => by`. Establish `k : ∀ (c : Fin n × Fin d → AF F) (x : E), (∑ p, c p • U x p) i j = c (i, j) • inclR (F` using `F) (AF F) x := fun c x => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single (i, j)]`. Simplify using `[U]`. Introduce and unpack `⟨i', j'⟩ _ hne`. Establish `: U x (i', j') i j = 0` using `single_apply_of_ne _ _ _ _ _ fun e => hne (Prod.ext e.1 e.2)`. Rewrite using `[Matrix.smul_apply, this, smul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.add_apply, k, k]`. Establish `ht : t δ - t (σ δ) ≠ 0` using `by rw [← map_sub]; exact (map_ne_zero t).2 hδ`. Use `⟨∑ p, sgl v (a p) • U 1 p + ∑ p, sgl v (b p) • U δ p, Matrix.ext fun i j => ?_, Matrix.ext fun i j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_apply, hu, map_add, (h.smul _ _).1, (h.smul _ _).1, (h.inc _).1, (h.inc _).1, ev_sgl, ev_sgl, map_one]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [a]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_apply, hu, map_add, (h.smul _ _).2, (h.smul _ _).2, (h.inc _).2, (h.inc _).2, ev_sgl, ev_sgl, map_one, map_one]`. Simplify using `only [a, b, map_inv₀, map_sub]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_add, locW_add, map_sum, map_sum]`. Simplify using `only [map_smul]`. Conclude with `add_mem (vac_sum _ _ ha e8) (vac_sum _ _ hb e9)`. Establish `hfix` using `vac_eq hu (Φ := (LinearMap.funLeft ℂ ℂ (ofH (Fv F v) (Fin n) (Fin d)).symm ∘ₗ ι) (M.vac v)) fun y hy => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, h1, h2, h3⟩` from `key (-toM y.2) (-((X.J⁻¹).map t * toM y.1 * ((W.J⁻¹).map t)ᵀ)) (fun i j => neg_mem (hy.2 (i, j))) fun i j => neg_mem (sum_mem fun a _ => mul_mem (sum_mem fun b _ => mul_mem (e6 _ _ t) (hy.1 (b, a))) (e7 _ _ t))`. Establish `iX : X.J.map t * (X.J⁻¹).map t = 1`. Rewrite using `[← Matrix.map_mul (f := t), mul_nonsing_inv _ dX, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `iW : W.J.map t * (W.J⁻¹).map t = 1`. Rewrite using `[← Matrix.map_mul (f := t), mul_nonsing_inv _ dW, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Establish `hc : coord σ t (incM F X.J) (incM F W.J) u = y`. Rewrite using `[coord, h1, h2, incM_map h, incM_map h, Matrix.mul_neg, Matrix.neg_mul, neg_neg, neg_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, iX, Matrix.one_mul, Matrix.mul_assoc, ← transpose_mul, iW, transpose_one, Matrix.mul_one]`. Both sides reduce to the same expression. Rewrite using `[← hc, ← lm.Heisenberg₂ u _ (hM.vac v).1, e3, vac_schr hu e2 h3]`. Use `⟨(LinearMap.funLeft ℂ ℂ (ofH (Fv F v) (Fin n) (Fin d)).symm ∘ₗ ι) (M.vac v) 0, funext fun Y => ?_⟩` and prove the remaining obligations.
-
-Conclude with `(congrFun hfix (ofM Y)).trans (congrArg (fun z : ℂ => (LinearMap.funLeft ℂ ℂ (ofH (Fv F v) (Fin n) (Fin d)).symm ∘ₗ ι) (M.vac v) 0 • z) (vac_one Y))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vacBar : VacBar := by
   intro F E _ _ _ _ _ σ B n d X W M r s r' s' hB hX hW hM

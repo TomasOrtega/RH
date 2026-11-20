@@ -15,7 +15,7 @@ open UpperTheory.V.HV (Coef)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `H ω hs hd he rc hrc hab`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Ord.useAtL' {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {ι : Qbar l ≃+* ℂ} {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 L)} {h : IsPlaceOver A w}

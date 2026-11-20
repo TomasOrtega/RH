@@ -9,7 +9,7 @@ open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi DiscreteGroups.T1.G
 open MeasureTheory
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh1.twist_general μ Γ fd θ hc hi hΓ f hf hI`.
+A detailed English derivation is pending.
 -/
 private theorem twist_general {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -22,9 +22,9 @@ private theorem twist_general {G : Type*} [Group G] [TopologicalSpace G] [IsTopo
   _root_.UpperTheory.Reformulated.B.Qh1.twist_general μ Γ fd θ hc hi hΓ f hf hI
 
 /- English proof (translation)
-Introduce `_ E _ _ _ n D f hf hI`. Establish `hb` using `PositivityTheory.Rg.BcB.E1.thetaBasic_holds E`. Set `θ : PositivityTheory.Rg.BcB.E.H E n 0 →* PositivityTheory.Rg.BcB.E.H E n 0` to `(PositivityTheory.Rg.BcB.thetaA E n).prodMap (PositivityTheory.Rg.BcB.thetaA E 0)`. Establish `hc : Continuous θ` using `((hb n).1.comp continuous_fst).prodMk ((hb 0).1.comp continuous_snd)`. Establish `hi : ∀ x, θ (θ x) = x` using `fun x => Prod.ext ((hb n).2.1 x.1) ((hb 0).2.1 x.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΓ : ∀ γ ∈ PositivityTheory.Rg.BcB.E.ratH E n 0, θ γ ∈ PositivityTheory.Rg.BcB.E.ratH E n 0`. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨(PositivityTheory.Rg.BcB.thetaE E n g.1, PositivityTheory.Rg.BcB.thetaE E 0 g.2), Prod.ext ((hb n).2.2 g.1).symm ((hb 0).2.2 g.2).symm⟩`. Set `C` to `PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds D`. Conclude with `@twist_general C.G C.grp C.top C.tg C.lc C.sc C.ms C.bs C.μ C.haar C.Γ C.cn C.F C.fd θ hc hi hΓ f hf hI`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.thetaInt_pf :
     Basic → ThetaInt := by

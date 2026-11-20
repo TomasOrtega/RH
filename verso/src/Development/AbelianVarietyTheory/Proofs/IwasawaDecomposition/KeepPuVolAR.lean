@@ -15,7 +15,7 @@ variable {D : D7} (Z : New D) {X : HidaSetting D} (Y : Full X)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (Eq.refl (eRT Z Y u u' s.toTerm) :))`.
+A detailed English derivation is pending.
 -/
 theorem toTerm_eTT (u u' : D.what₂.Word) (s : TT Y u u') : (eTT Z Y u u' s).toTerm = eRT Z Y u u' s.toTerm := (by with_unfolding_all exact (Eq.refl (eRT Z Y u u' s.toTerm) :))
 
@@ -29,7 +29,7 @@ def eFib (u u' : D.what₂.Word) (t : RT Y u u') : fib Y t ≃ fib (reY Z Y) (eR
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ( Eq.refl (aT h u u' s x) :))`.
+A detailed English derivation is pending.
 -/
 theorem aT_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u u' : D.what₂.Word) (s : TT Y u u') (x : ColT (h.shInj u')) :
     eCure Z h h' u (aT h u u' s x) = aT h' (wd Z u) (wd Z u') (eTT Z Y u u' s) (eCure Z h h' u' x) := (by with_unfolding_all exact (
@@ -38,7 +38,7 @@ theorem aT_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u u' : D.what₂.Word) (s : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `letI := h.fibFT t`. Use `letI := h'.fibFT (eRT Z Y u u' t)`. Unfold `aR`. Rewrite using `[ContinuousLinearMap.sum_apply, ContinuousLinearMap.sum_apply, map_sum]`. Conclude with `Fintype.sum_equiv (eFib Z Y u u' t) _ _ fun s => aT_keep Z Y u u' s.1 x`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aR_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u u' : D.what₂.Word) (t : RT Y u u') (x : ColT (h.shInj u')) :
     eCure Z h h' u (aR h u u' t x) = aR h' (wd Z u) (wd Z u') (eRT Z Y u u' t) (eCure Z h h' u' x) := by
@@ -51,7 +51,7 @@ theorem aR_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u u' : D.what₂.Word) (t : 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (Eq.refl (puC h u x) :))`.
+A detailed English derivation is pending.
 -/
 theorem pu_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u : D.what₂.Word) (x : ColT (h.shInj u)) :
     eHHre Z X (puC h u x) = puC h' (wd Z u) (eCure Z h h' u x) := (by with_unfolding_all exact (Eq.refl (puC h u x) :))
@@ -59,7 +59,7 @@ theorem pu_keep {h : FinX Y} {h' : FinX (reY Z Y)} (u : D.what₂.Word) (x : Col
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Conclude with `(by with_unfolding_all exact (Eq.refl (Y.volN u) :))`. Conclude with `(by with_unfolding_all exact (Eq.refl (Y.volH u) :))`.
+Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem vol_keep (u : D.what₂.Word) : Y.volN u = (reY Z Y).volN u ∧ Y.volH u = (reY Z Y).volH u := by
   constructor
@@ -73,7 +73,7 @@ namespace GlobalTheory.Mem.SRe
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `_ Z _ Y _ _` and use `⟨fun u x => KeepD.pu_keep Z Y u x, fun u => KeepD.vol_keep Z Y u, fun u u' t x => KeepD.aR_keep Z Y u u' t x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem keep_pu_vol_aR : ∀ (D : D7) (Z : New D) (X : HidaSetting D) (Y : Full X) (h : FinX Y) (h' : FinX (reY Z Y)), (∀ u x, eHHre Z X (puC h u x) = puC h' (wd Z u) (eCure Z h h' u x)) ∧ (∀ u, Y.volN u = (reY Z Y).volN u ∧ Y.volH u = (reY Z Y).volH u) ∧ ∀ u u' (t : RT Y u u') x, eCure Z h h' u (aR h u u' t x) = aR h' (wd Z u) (wd Z u') (eRT Z Y u u' t) (eCure Z h h' u' x) :=
   fun _ Z _ Y _ _ => ⟨fun u x => KeepD.pu_keep Z Y u x, fun u => KeepD.vol_keep Z Y u,

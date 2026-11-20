@@ -26,7 +26,7 @@ def CRead (V : Mean4O.Cover Y) (v : HeightOneSpectrum (𝓞 F)) (L : LB V.X) (s 
       Real.log (e.w (TrueGeo.valAt (z ≫ V.j) (s i : V.X.functionField))) = l e y
 
 /- English proof (translation)
-Take `⟨h₁, W, hW, h₂⟩` from `h`. Use `⟨h₁, W, hW, fun e y z yt i a₁ a₂ a₃ a₄ _ => ?_⟩` and prove the remaining obligations. Take `rfl : z = y.1` from `(Category.comp_id _).symm.trans a₂`. Conclude with `(h₂ e y yt i a₁ a₃ a₄).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cRead_of_gReads (Q : TrueGeo.Model Y) [IsIntegral Q.X] (hQ : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme Q.X)
     {v : HeightOneSpectrum (𝓞 F)} {L : LB Q.X} {s : L.ι → Q.X.functionFieldˣ} {l : TrueGeo.Ext v → AlgPt Y → ℝ}
@@ -41,9 +41,9 @@ def pullSec {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g : X ⟶ Z) (hg :
   fun J => Units.map (SmallSec.fnMap g hg).toMonoidHom (s (J PUnit.unit))
 
 /- English proof (translation)
-Introduce `J K h`. Establish `le : (N.pull g).U J ⊓ (N.pull g).U K ≤ g ⁻¹ᵁ (N.U (J PUnit.unit) ⊓ N.U (K PUnit.unit))` using `fun y hy => ⟨mem_pull.1 hy.1, mem_pull.1 hy.2⟩`. Establish `hgg : (N.pull g).g J K = res le (pullU g _ (N.g (J PUnit.unit) (K PUnit.unit)))`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hZ : genericPoint Z ∈ N.U (J PUnit.unit) ⊓ N.U (K PUnit.unit)` using `gen_mem (x := g (genericPoint X)) (le h)`. Establish `e : fnOf _ h (res le (pullU g _ (N.g (J PUnit.unit) (K PUnit.unit)))).val = SmallSec.fnMap g hg (fnOf _ hZ (N.g (J PUnit.unit) (K PUnit.unit)).val)` using `(fnOf_resG le h _).trans (SmallSec.fnMap_fnOf g hg hZ (le h) _).symm`. Rewrite using `[hgg, e]`. Simplify using `only [pullSec, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe]`. Rewrite using `[hs _ _ hZ, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRatSec_pullSec {X Z : Scheme.{0}} [IsIntegral X] [IsIntegral Z] (g : X ⟶ Z)
     (hg : g (genericPoint X) ⤳ genericPoint Z) {N : LB Z} {s : N.ι → Z.functionFieldˣ} (hs : IsRatSec N s) :

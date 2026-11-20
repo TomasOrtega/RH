@@ -20,13 +20,13 @@ namespace GlobalTheory.GridHC
 open GlobalTheory.SignedHC Finset
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact GlobalTheory.ChiGrid.inCoset_weightX_zero (GlobalTheory.ChiGrid.odd_sLen D)`. Consider the case `succ j ih`. Rewrite using `[(GlobalTheory.Grid.grid D τ).weightX_succ]`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `mem_union.1 hx with h | h` into its components or cases. Conclude with `ih x h`. Take `⟨a, -, rfl⟩` from `GlobalTheory.SignedHC.mem_block.1 h`. Take `⟨u, hu⟩` from `D.R.t_odd`. Establish `e : ((GlobalTheory.Grid.grid D τ).t : ℚ) = 2 * u + 1`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((GlobalTheory.Grid.grid D τ).t : ℚ) = D.R.t` using `rfl`. Rewrite using `[this, hu]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(GlobalTheory.Grid.grid D τ).e (j + 1) + u - a, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inCoset_weightX (D : D7) (τ : D.what₂.Tau) (j : ℕ) : InCoset (1 / 2) ((GlobalTheory.Grid.grid D τ).weightX j) := by
   induction j with
@@ -47,18 +47,16 @@ theorem inCoset_weightX (D : D7) (τ : D.what₂.Tau) (j : ℕ) : InCoset (1 / 2
       ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ChiGrid.even_rankX D j`.
+A detailed English derivation is pending.
 -/
 theorem even_rkX (D : D7) (j : ℕ) : Even (GlobalTheory.Grid.rkX D j) := GlobalTheory.ChiGrid.even_rankX D j
 
 /- English proof (translation)
-Introduce `D _ j _ _ τ n lam ε hn hE`. Take `⟨hanti, q, hq, hS⟩` from `hE`. Use `⟨hanti, fun a => ?_⟩` and prove the remaining obligations. Establish `hmem : (q a, ε a) ∈ GlobalTheory.Grid.parXp D j τ`. Rewrite using `[hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_image.2 ⟨a, mem_univ _, rfl⟩`. Establish `hx : q a ∈ (GlobalTheory.Grid.grid D τ).weightX j`. Take `⟨x, hx, hxe⟩` from `mem_image.1 hmem`. Establish `: x = q a` using `congrArg Prod.fst hxe`. Conclude with `this ▸ hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `inCoset_weightX D τ j (q a) hx`. Take `⟨k, hk⟩` from `even_rkX D j`. Use `⟨z - k + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[hq a, hz, hn, hk]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isHCParam_parXp : ∀ (D : D7), HostHyp D → ∀ (j : ℕ), 1 ≤ j → j ≤ D.R.m → ∀ (τ : D.what₂.Tau) (n : ℕ) (lam : Fin n → ℝ)
     (ε : Fin n → Bool), n = GlobalTheory.Grid.rkX D j → IsEnum (GlobalTheory.Grid.parXp D j τ) lam ε → Formalism.QuantumDeterminants.IsHCParam lam := by

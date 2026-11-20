@@ -16,7 +16,7 @@ open scoped Matrix ComplexOrder
 attribute [local instance] GlobalTheory.Mem.Col2.starE
 
 /- English proof (translation)
-Take `⟨Q, hQ⟩` from `bVVfun_int K lam i`. Rewrite using `[bVV_coe, hQ, MvPolynomial.map_map, MvPolynomial.map_map]`. Rewrite using `[RingHom.ext_int (((starRingEnd ℂ).comp φ).comp (Int.castRingHom K)) (φ.comp (Int.castRingHom K))]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_conj_bVV {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (φ : K →+* ℂ)
     (i : VVIdx lam) :
@@ -26,16 +26,16 @@ theorem map_conj_bVV {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (la
   rw [RingHom.ext_int (((starRingEnd ℂ).comp φ).comp (Int.castRingHom K)) (φ.comp (Int.castRingHom K))]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_pol {K : Type} [Field K] {σ : Type} (φ : K →+* ℂ) (r : K) (p : MvPolynomial σ K) :
     MvPolynomial.map φ (r • p) = φ r • MvPolynomial.map φ p := by
   rw [MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C]
 
 /- English proof (translation)
-Establish `hy : y.1 = ∑ i, (bVV K lam).repr y i • (bVV K lam i : VV K lam).1` using `by conv_lhs => rw [← (bVV K lam).sum_repr y]`. Rewrite using `[Submodule.coe_sum]`. Both sides reduce to the same expression. Rewrite using `[MvPolynomial.map_map, hy]`. Simplify using `only [map_sum, map_smul_pol, map_conj_bVV, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, ← GlobalTheory.PeriodOnStep.map_pairB, dotProduct, Matrix.mulVec, Matrix.map_apply, GlobalTheory.TestLat.Compare.gramB, Matrix.of_apply, pairBK_apply, Pi.star_apply, RingH …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairB_conj_map {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (φ : K →+* ℂ)
     (y : VV K lam) :
@@ -55,9 +55,9 @@ theorem pairB_conj_map {K : Type} [Field K] {ι : Type} [Fintype ι] {n : ℕ} (
   ring
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h]`. Establish `hr` using `hM.posSemidef.dotProduct_mulVec_nonneg (fun i => φ (a i))`. Establish `hc : starRingEnd ℂ (star (fun i => φ (a i)) ⬝ᵥ M.map φ *ᵥ (fun i => φ (a i))) = star (fun i => φ (a i)) ⬝ᵥ M.map φ *ᵥ (fun i => φ (a i))` using `Complex.conj_eq_iff_im.2 (Complex.nonneg_iff.1 hr).2.symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, ComplexEmbedding.conjugate_coe_eq, map_sum, map_mul, starRingEnd_apply, star_star]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_mk {K : Type} [Field K] {ι : Type} [Fintype ι] (M : Matrix ι ι K) (φ : K →+* ℂ) (hM : (M.map φ).PosDef)
     (a : ι → K) :
@@ -76,9 +76,9 @@ theorem herm_mk {K : Type} [Field K] {ι : Type} [Fintype ι] (M : Matrix ι ι 
       map_mul, starRingEnd_apply, star_star]
 
 /- English proof (translation)
-Establish `h0` using `(GlobalTheory.PeriodOnStep.isFormsOf_MtildeH B.wts I.Ch I.sel (I.tup a) I.Ps hX).2 (InfinitePlace.mk B.embLL)`. Use `(h0 (x : (MtildeH B.wts I.Ch hX I.sel (I.tup a) I.Ps).V)).trans ?_` and prove the remaining obligations. Rewrite using `[cSum_apply]`. Unfold `GSD.ipAt`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `cTerm`. Rewrite using `[GSD.wt_eq]`. Use `congr 1`. Rewrite using `[GlobalTheory.PeriodClassSum.pairAt_eq, GlobalTheory.PeriodClassSum.row_gramV]`. Conclude with `(herm_mk _ _ (GlobalTheory.PeriodClassSum.gramB_posDef _ _) _).trans (pairB_conj_map _ _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normAt_sq_eq_cSum {B : Base} {X : PreX B.toPre} (I : TC B X) (hX : B.fields.Ok) (a : I.ι) (x : (MtHL I hX a).V) :
     ((Formalism.HermitianLatticesTheory.normAt (MtHL I hX a).b (MtHL I hX a).X (InfinitePlace.mk B.embLL) x ^ 2 : ℝ) : ℂ) =

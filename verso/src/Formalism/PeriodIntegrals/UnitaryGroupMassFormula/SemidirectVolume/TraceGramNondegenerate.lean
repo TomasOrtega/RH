@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h : Algebra.lmul R (R ⊗[F] E) ((1 : R) ⊗ₜ[F] z) = (Algebra.lmul F E z).baseChange R`. Apply `TensorProduct.AlgebraTensorModule.ext` to reduce the goal to its premises. Introduce `r e`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Rewrite using `[Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
     (R : Type) [CommRing R] [Algebra F R] (z : E) :
@@ -22,7 +22,7 @@ theorem trace_one_tmul {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDim
   rw [Algebra.trace_apply, h, LinearMap.trace_baseChange, Algebra.trace_apply]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ R _ _ σ M J x y`. Rewrite using `[W.hR_ratV R σ J x y]`. Conclude with `trace_one_tmul R _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_basis_holds : TraceBase := by
   intro F E _ _ _ _ R _ _ σ M J x y
@@ -30,7 +30,7 @@ theorem trace_basis_holds : TraceBase := by
   exact trace_one_tmul R _
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_left {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (x x' y : Fin M → E) :
@@ -38,7 +38,7 @@ theorem hE_add_left {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   simp only [hE, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_add_right {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (x y y' : Fin M → E) :
@@ -46,9 +46,9 @@ theorem hE_add_right {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   simp only [hE, Formalism.UG.hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (σ : E →+* E) (algebraMap F E c) = algebraMap F E c` using `σ.commutes c`. Rewrite using `[map_mul, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_smul_left {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (c : F) (x y : Fin M → E) :
@@ -63,7 +63,7 @@ theorem hE_smul_left {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Pi.smul_apply, Algebra.smul_def]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -86,7 +86,7 @@ def trForm {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {
     (fun c x y => by simp only [hE_smul_right, ← Algebra.smul_def, map_smul])
 
 /- English proof (translation)
-Simplify using `[hE, Formalism.UG.hform, Pi.single_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hE_single {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) (x : Fin M → E) (j : Fin M) (c : E) :
@@ -94,17 +94,15 @@ theorem hE_single {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[
   simp [hE, Formalism.UG.hform, Pi.single_apply, Finset.sum_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ k b`. Establish `hfin : FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ hCM.2.2.1`. Establish `hG : (Matrix.of fun i j => Algebra.trace F E (hE σ J (b i) (b j))) = LinearMap.BilinForm.toMatrix b (trForm σ J)`. Use extensionality with `i j`. Simplify using `[trForm, LinearMap.BilinForm.toMatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hG, ← LinearMap.BilinForm.nondegenerate_iff_det_ne_zero b]`. Use `LinearMap.BilinForm.Nondegenerate.ofSeparatingLeft ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hrow : ∀ j, ∑ i, σ (x i) * J i j = 0`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(traceForm_nondegenerate F E).1` to reduce the goal to its premises. Introduce `c`. Establish `h1` using `hx (Pi.single j c)`. Simplify using `only [trForm, LinearMap.mk₂_apply] at h1`. Rewrite using `[Algebra.traceForm_apply, ← hE_single]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `hv : Matrix.vecMul (fun i => σ (x i)) J = 0` using `funext fun j => by`. Simplify `hrow j` using `[Matrix.vecMul, dotProduct]`. Assume the negation of the conclusion as `hx0`. Establish `hne : (fun i => σ (x i)) ≠ 0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hx0` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun h i` as an intermediate fact. Simplify using `using this`.
-
-Conclude with `hJ.2 (Matrix.exists_vecMul_eq_zero_iff.mp ⟨_, hne, hv⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_gram_nondegenerate : TraceGramND := by
   intro F E _ _ _ _ _ σ hCM M J hJ k b

@@ -13,11 +13,11 @@ section Dictionary
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `haveI : Fact ℓ.Prime := ⟨hℓ⟩`. Establish `h0 : (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero E)`. Unfold `padicValInt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm, h⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hm0 : m ≠ 0` using `by rintro rfl; exact hm (dvd_zero _)`. Rewrite using `[h, padicValNat.mul (pow_ne_zero _ hℓ.ne_zero) hm0, padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hm, add_zero]`. Introduce and unpack `rfl`. Take `⟨m, hm⟩ : ℓ ^ padicValNat ℓ (discr E).natAbs ∣ (discr E).natAbs` from `pow_padicValNat_dvd`. Use `⟨m, fun ⟨k, hk⟩ => ?_, hm⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_succ_padicValNat_not_dvd (p := ℓ) h0 ⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_assoc, ← hk, ← hm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cofactor_iff {ℓ : ℕ} (hℓ : ℓ.Prime) (a : ℕ) :
     (∃ m : ℕ, ¬ ℓ ∣ m ∧ (discr E).natAbs = ℓ ^ a * m) ↔ padicValInt ℓ (discr E) = a := by

@@ -8,11 +8,11 @@ open MvPolynomial Finset
 namespace Formalism.InvariantFactorPaths.ColumnFamilies
 
 /- English proof (translation)
-Establish `h : (A * B) = fun a => ∑ k, A a k • B k`. Use function extensionality and compare the values at `a b`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `h2 : (A * B).det = Matrix.detRowAlternating (fun a => ∑ k, A a k • B k)`. Rewrite using `[← h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h2]`. Establish `h3` using `(Matrix.detRowAlternating (R := R) (n := Fin i)).toMultilinearMap.map_sum (fun a k => A a k • B k)`. Use `erw [h3]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f _`. Establish `h4` using `(Matrix.detRowAlternating (R := R) (n := Fin i)).toMultilinearMap.map_smul_univ (fun a => A a (f a)) (fun a => B (f a))`. Use `erw [h4]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma qc_det_mul_fun {R : Type} [CommRing R] {i N : ℕ} (A : Matrix (Fin i) (Fin N) R)
     (B : Matrix (Fin N) (Fin i) R) :
@@ -38,21 +38,21 @@ def qc_par {i N : ℕ} (p : (Σ _ : {S : Finset (Fin N) // S.card = i}, Equiv.Pe
   p.2.toEmbedding.trans (p.1.1.orderEmbOfFin p.1.2).toEmbedding
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨S, hS⟩, σ⟩ ⟨⟨T, hT⟩, τ⟩ h`. Establish `hST : S = T`. Establish `h1 : ∀ (S : Finset (Fin N)) (hS : S.card = i) (σ : Equiv.Perm (Fin i)), univ.map (qc_par ⟨⟨S, hS⟩, σ⟩) = S`. Introduce `S hS σ`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `x`. Simplify using `only [qc_par, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.trans_apply, Equiv.coe_toEmbedding, RelEmbedding.coe_toEmbedding]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Conclude with `Finset.orderEmbOfFin_mem S hS _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `: x ∈ Set.range (S.orderEmbOfFin hS)`. Rewrite using `[Finset.range_orderEmbOfFin]`. Conclude with `hx`. Take `⟨b, rfl⟩` from `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨σ.symm b, by simp⟩`. Rewrite using `[← h1 S hS σ, ← h1 T hT τ, h]`. Substitute `hST` using the available equality. Establish `: σ = τ`. Use extensionality with `a`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `DFunLike.congr_fun h a`. Simplify using `only [qc_par, Function.Embedding.trans_apply, Equiv.coe_toEmbedding, RelEmbedding.coe_toEmbedding] at h2`. Conclude with `congrArg Fin.val ((S.orderEmbOfFin hS).injective h2)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f`. Establish `hS : (univ.map f).card = i` using `by simp`. Establish `hmem : ∀ a, f a ∈ Set.range ((univ.map f).orderEmbOfFin hS)`. Introduce `a`. Rewrite using `[Finset.range_orderEmbOfFin]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Use `choose τ hτ using hmem`. Establish `hinj : Function.Injective τ`. Introduce `a b hab`. Apply `f.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hτ a, ← hτ b, hab]`. Use `⟨⟨⟨univ.map f, hS⟩, Equiv.ofBijective τ (Finite.injective_iff_bijective.mp hinj)⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `[qc_par, hτ]`.
+A detailed English derivation is pending.
 -/
 lemma qc_par_bij {i N : ℕ} : Function.Bijective (qc_par (i := i) (N := N)) := by
   constructor
@@ -97,23 +97,21 @@ lemma qc_par_bij {i N : ℕ} : Function.Bijective (qc_par (i := i) (N := N)) := 
     simp [qc_par, hτ]
 
 /- English proof (translation)
-Rewrite using `[qc_det_mul_fun]`. Use `set F : (Fin i → Fin N) → R := fun f => (∏ a, A a (f a)) * (B.submatrix f id).det with hF`. Establish `h1 : ∑ f : Fin i → Fin N, F f = ∑ f : Fin i ↪ Fin N, F f`. Establish `h0 : ∀ f : Fin i → Fin N, ¬ Function.Injective f → F f = 0`. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.Injective, not_forall] at hf`. Take `⟨a, b, hab, hne⟩` from `hf`. Establish `: (B.submatrix f id).det = 0` using `Matrix.det_zero_of_row_eq hne (by funext c; simp [Matrix.submatrix_apply, hab])`. Simplify using `[hF, this]`. Rewrite using `[← Finset.sum_filter_of_ne (p := Function.Injective) (s := univ) (f := F) (fun f _ hne => by by_contra hc; exact hne (h0 f hc))]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Use `symm`. Apply `Finset.sum_bij (fun (f : Fin i ↪ Fin N) _ => (f : Fin i → Fin N))` to reduce the goal to its premises. Introduce `f _`. Simplify using `[f.injective]`. Introduce `f _ g _ h`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `DFunLike.coe_injective h`. Introduce `f hf`. Conclude with `⟨⟨f, (Finset.mem_filter.mp hf).2⟩, Finset.mem_univ _, rfl⟩`. Introduce `f _`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h1, ← Function.Bijective.sum_comp qc_par_bij (fun f => F f), Fintype.sum_sigma]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce and unpack `⟨S, hS⟩ _`. Use `set e := S.orderEmbOfFin hS with he`. Establish `h2 : ∀ σ : Equiv.Perm (Fin i), F (qc_par ⟨⟨S, hS⟩, σ⟩) = (Equiv.Perm.sign σ : R) * (∏ a, A a (e (σ a))) * (B.submatrix e id).det`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `σ`. Establish `h3 : (B.submatrix (fun a => e (σ a)) id).det = (Equiv.Perm.sign σ : R) * (B.submatrix e id).det`. Use `Matrix.det_permute σ (B.submatrix e id)` as an intermediate fact. Rewrite using `[← this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `show (∏ a, A a (e (σ a))) * (B.submatrix (fun a => e (σ a)) id).det = _`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h2]`. Rewrite using `[← Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Rewrite using `[Matrix.det_apply', ← Equiv.sum_comp (Equiv.inv (Equiv.Perm (Fin i)))]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `σ _`. Simplify using `only [Equiv.inv_apply, Equiv.Perm.sign_inv, Matrix.submatrix_apply, id]`.
-
-Use `congr 1`. Rewrite using `[← Equiv.prod_comp σ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qc_cb {R : Type} [CommRing R] {i N : ℕ} (A : Matrix (Fin i) (Fin N) R)
     (B : Matrix (Fin N) (Fin i) R) :
@@ -163,7 +161,7 @@ lemma qc_cb {R : Type} [CommRing R] {i N : ℕ} (A : Matrix (Fin i) (Fin N) R)
   simp
 
 /- English proof (translation)
-Establish `h1 : (x * g).submatrix r c = x.submatrix r id * g.submatrix id c`. Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.submatrix_apply]`. Rewrite using `[h1, qc_cb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma qc_cb_minor {R : Type} [CommRing R] {n h : ℕ} (x g : Matrix (Fin n) (Fin n) R) (r c : Fin h → Fin n) :
     ((x * g).submatrix r c).det = ∑ S : {S : Finset (Fin n) // S.card = h},
@@ -174,7 +172,7 @@ lemma qc_cb_minor {R : Type} [CommRing R] {n h : ℕ} (x g : Matrix (Fin n) (Fin
   rfl
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma qc_evGL_alg {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) (P : MvPolynomial (Fin n × Fin n) ℤ) :
     evGL g (algebraMap _ (GLCoord ℤ n) P) =
@@ -182,7 +180,7 @@ lemma qc_evGL_alg {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) (P : MvPo
   IsLocalization.Away.lift_eq _ _ _
 
 /- English proof (translation)
-Rewrite using `[minorC, qc_evGL_alg, RingHom.map_det]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[genMat]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma qc_evGL_minorC {n h : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) (J I : Finset (Fin n))
     (hJ : J.card = h) (hI : I.card = h) :
@@ -198,7 +196,7 @@ Both sides reduce to the same expression.
 lemma qc_detU_coe (n : ℕ) : ((detU n : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) = algebraMap _ _ (genMat ℤ n).det := rfl
 
 /- English proof (translation)
-Rewrite using `[qc_detU_coe, qc_evGL_alg, RingHom.map_det, genMat_map_eval]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma qc_evGL_detU {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) :
     evGL g ((detU n : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) = g.val.det := by
@@ -207,20 +205,20 @@ lemma qc_evGL_detU {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) :
 def qc_dU {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : Rˣ := Units.map (evGL g).toMonoidHom (detU n)
 
 /- English proof (translation)
-The claim follows from `qc_evGL_detU g`.
+A detailed English derivation is pending.
 -/
 lemma qc_dU_coe {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) : ((qc_dU g : Rˣ) : R) = g.val.det :=
   qc_evGL_detU g
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, qc_dU_coe, qc_dU_coe, qc_dU_coe, Units.val_mul, Matrix.det_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma qc_dU_mul {n : ℕ} {R : Type} [CommRing R] (x g : GL (Fin n) R) : qc_dU (x * g) = qc_dU x * qc_dU g := by
   apply Units.ext
   rw [Units.val_mul, qc_dU_coe, qc_dU_coe, qc_dU_coe, Units.val_mul, Matrix.det_mul]
 
 /- English proof (translation)
-Rewrite using `[qc_dU, ← map_zpow]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma qc_evGL_detU_zpow {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) (m : ℤ) :
     evGL g ((detU n ^ m : (GLCoord ℤ n)ˣ) : GLCoord ℤ n) = ((qc_dU g ^ m : Rˣ) : R) := by
@@ -228,9 +226,9 @@ lemma qc_evGL_detU_zpow {n : ℕ} {R : Type} [CommRing R] (g : GL (Fin n) R) (m 
   rfl
 
 /- English proof (translation)
-Simplify using `only [TMat, map_mul, map_prod, qc_evGL_detU_zpow, qc_evGL_minorC, qc_dU_mul, mul_zpow, Units.val_mul]`. Simplify using `only [qc_cb_minor]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `K _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qc_TMat_mul {n : ℕ} [NeZero n] (mu : Fin n → ℤ) {R : Type} [CommRing R] (x g : GL (Fin n) R)
     (J I : TIdx mu) :

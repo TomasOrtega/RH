@@ -17,9 +17,9 @@ set_option autoImplicit false
 namespace GlobalTheory.ChernCalc
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep`. Consider the case `exact _root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep`. Consider the case `(apply _root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LeadingMinorPositivity.green_frame_indep ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem grWeight_frame_indep : ∀ (F : Type) [Field F] (σ : F →+* ℂ) (X : Var F) (ι : Type) (m : ι → ℕ) (E : Fr (ratOf X) m m)
     (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ), IsMetricFr E H → ∀ B ∈ E.S (genericPoint X.X), ∀ (y : CxPts X.str σ),

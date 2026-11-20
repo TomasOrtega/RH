@@ -23,7 +23,7 @@ open Matrix
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => change a ⊗ₜ[D.host.F] D.sp.cm.sig (D.sp.cm.sig e) = _`. Rewrite using `[sig_invol]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem cA_invol (x : AE D) : cA D (cA D x) = x := by
   induction x using TensorProduct.induction_on with
@@ -32,27 +32,27 @@ theorem cA_invol (x : AE D) : cA D (cA D x) = x := by
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Conclude with `Matrix.map_neg f (map_neg f) Y`.
+A detailed English derivation is pending.
 -/
 theorem map_neg' {T : Type} [CommRing T] (f : AE D →+* T) (Y : Mx D n n) : (-Y).map f = -(Y.map f) := by
   exact Matrix.map_neg f (map_neg f) Y
 
 /- English proof (translation)
-Conclude with `Matrix.map_add f (map_add f) Y Z`.
+A detailed English derivation is pending.
 -/
 theorem map_add' {T : Type} [CommRing T] (f : AE D →+* T) (Y Z : Mx D n n) : (Y + Z).map f = Y.map f + Z.map f := by
   exact Matrix.map_add f (map_add f) Y Z
 
 /- English proof (translation)
-Establish `hunit` using `mat_unit g`. Rewrite `hunit` using `[h]`. Express the relevant statement in the definitionally equal form `cj (cA D) (blk4 A 0 0 u) * blk4 0 1 (-1) 0 * blk4 A 0 0 u = blk4 0 1 (-1) 0 at hunit`. Establish `hcol` using `unit_col (cA D) A 0 0 u (unit_fromBlocks (cA D) A 0 0 u hunit)`. Establish `hAu : cj (cA D) A * u = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h21` using `hcol.2.1`. Rewrite `h21` using `[mul_zero, sub_zero]`. Then use the resulting hypothesis. Establish `hu1 : u * cj (cA D) A = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hAu`. Establish `hcjmul : ∀ M N : Matrix (Fin n) (Fin n) (AE D), cj (cA D) (M * N) = cj (cA D) N * cj (cA D) M`. Introduce `M N`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((M * N).map (cA D))ᵀ = (N.map (cA D))ᵀ * (M.map (cA D))ᵀ`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`. Establish `hcj1 : cj (cA D) (1 : Matrix (Fin n) (Fin n) (AE D)) = 1` using `by show ((1 : Matrix (Fin n) (Fin n) (AE D)).map (cA D))ᵀ = 1`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hA : A * cj (cA D) u = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (cj (cA D)) hu1`. Rewrite `h3` using `[hcjmul, cj_cj (cA D) cA_invol, hcj1]`. Then use the resulting hypothesis. Establish `hA' : cj (cA D) u * A = 1` using `(Matrix.mul_eq_one_comm_of_equiv (Equiv.refl _)).1 hA`. Use `⟨⟨A, cj (cA D) u, hA, hA'⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(cj_cj (cA D) cA_invol u).symm`.
+A detailed English derivation is pending.
 -/
 theorem isM_of (g : G D n) (A u : Mx D n n) (h : mat g = blk4 A 0 0 u) : IsM g := by
   have hunit := mat_unit g
@@ -81,7 +81,7 @@ theorem isM_of (g : G D n) (A u : Mx D n n) (h : mat g = blk4 A 0 0 u) : IsM g :
   exact (cj_cj (cA D) cA_invol u).symm
 
 /- English proof (translation)
-Establish `h2 : blk4 (bA ((mat k).map f)) (bB ((mat k).map f)) (bC ((mat k).map f)) (bD ((mat k).map f)) = blk4 1 0 0 1`. Rewrite using `[block_matrix_of_blocks, block_matrix_one, h]`. Conclude with `blockMatrixTwoByTwoFin_injective h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blocks_at {T : Type} [CommRing T] (f : AE D →+* T) {k : G D n} (h : (mat k).map f = 1) :
     (bA (mat k)).map f = 1 ∧ (bB (mat k)).map f = 0 ∧ (bC (mat k)).map f = 0 ∧ (bD (mat k)).map f = 1 := by

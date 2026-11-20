@@ -13,9 +13,9 @@ section fs
 variable {k r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using `only [Finset.mem_Iic, Finset.mem_map, Finset.mem_univ, true_and, Fin.le_def]`. Prove the components needed by the constructor for the conclusion. Introduce `hc; exact ⟨⟨c.val, by omega⟩, Fin.ext rfl⟩`. Introduce and unpack `⟨a, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Use `a.isLt` as an intermediate fact. Simplify using `only [Fin.castLEEmb_apply, Fin.val_castLE]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem iic_eq (l : Fin (r + 1)) :
     Finset.Iic l = Finset.univ.map (Fin.castLEEmb (show l.val + 1 ≤ r + 1 by omega)) := by
@@ -29,11 +29,11 @@ theorem iic_eq (l : Fin (r + 1)) :
     omega
 
 /- English proof (translation)
-Unfold `fsR`. Rewrite using `[ENNReal.ofReal_prod_of_nonneg (fun l _ => Real.rpow_nonneg (hpos l).le _)]`. Use `Finset.prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Establish `ht : Ga k r l (fun a => x *ᵥ phiV' k r a) = ((cl τ l : ℝ)) ^ 2`. Rewrite using `[← hGa l, iic_eq, Finset.prod_map, Finset.prod_pow, cl, NNReal.coe_prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hc : 0 < (cl τ l : ℝ)`. Establish `h0` using `hpos l`. Rewrite `h0` using `[ht]`. Conclude with `lt_of_le_of_ne (NNReal.coe_nonneg _) (fun he => by rw [← he] at h0; simp at h0)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, ← Real.rpow_natCast, ← Real.rpow_mul hc.le, ← ENNReal.ofReal_rpow_of_pos hc, ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ofReal_fsR (s : Fin (r + 1) → ℝ) (x : Mat k r) (τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
     (hGa : ∀ l, ∏ j ∈ Finset.Iic l, ‖τ j j‖ ^ 2 = Ga k r l (fun a => x *ᵥ phiV' k r a))
@@ -56,7 +56,7 @@ theorem ofReal_fsR (s : Fin (r + 1) → ℝ) (x : Mat k r) (τ : Matrix (Fin (r 
   ring
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.mulVecLin x)` using `fun u v huv => by`. Establish `h2` using `congrArg (fun w => x⁻¹ *ᵥ w) huv`. Simplify `h2` using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, uh_inv_mul hx]`. Conclude with `(phiV'_linInd k r hk).map' (Matrix.mulVecLin x) (LinearMap.ker_eq_bot.2 hinj)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem xphi_linInd (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
     LinearIndependent ℂ (fun a => x *ᵥ phiV' k r a) := by
@@ -66,7 +66,7 @@ theorem xphi_linInd (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
   exact (phiV'_linInd k r hk).map' (Matrix.mulVecLin x) (LinearMap.ker_eq_bot.2 hinj)
 
 /- English proof (translation)
-Take `⟨κ, hκ, τ, hτ, hY, hGa⟩` from `hIW k r (fun a => x *ᵥ phiV' k r a) hk (xphi_linInd hk hx) (fun a b => by rw [herm_UH' _ hx]; exact phiV'_iso k r hk a b)`. Conclude with `⟨κ, hκ, τ, hτ, hY, fun s => ofReal_fsR s x τ hGa (fun l => GS.ga_pos k r _ (xphi_linInd hk hx) l)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iw_at (hIW : IW) (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
     ∃ κ ∈ Kset k r, ∃ τ : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ, τ.BlockTriangular id ∧
@@ -77,7 +77,7 @@ theorem iw_at (hIW : IW) (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
   exact ⟨κ, hκ, τ, hτ, hY, fun s => ofReal_fsR s x τ hGa (fun l => GS.ga_pos k r _ (xphi_linInd hk hx) l)⟩
 
 /- English proof (translation)
-Take `⟨κ, hκ, τ, hτ, hY, hf⟩` from `iw_at hIW hk hx`. Use `⟨κ, hκ, fun s g => ?_⟩` and prove the remaining obligations. Rewrite using `[hf s]`. Conclude with `fsE_fac s _ _ _ (dl_left hx hκ.1 τ hτ hY g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsE_left (hIW : IW) (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
     ∃ κ ∈ Kset k r, ∀ (s : Fin (r + 1) → ℝ) (g : Mat k r),
@@ -88,7 +88,7 @@ theorem fsE_left (hIW : IW) (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) :
   exact fsE_fac s _ _ _ (dl_left hx hκ.1 τ hτ hY g)
 
 /- English proof (translation)
-Take `⟨κ, hκ, τ, hτ, hY, hf⟩` from `iw_at hIW hk hy`. Use `⟨κ, hκ, fun s g => ?_⟩` and prove the remaining obligations. Rewrite using `[hf s]`. Conclude with `fsE_fac s _ _ _ (dl_right τ hτ hY g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsE_right (hIW : IW) (hk : 1 ≤ k) {y : Mat k r} (hy : y ∈ GV k r) :
     ∃ κ ∈ Kset k r, ∀ (s : Fin (r + 1) → ℝ) (g : Mat k r),
@@ -99,7 +99,7 @@ theorem fsE_right (hIW : IW) (hk : 1 ≤ k) {y : Mat k r} (hy : y ∈ GV k r) :
   exact fsE_fac s _ _ _ (dl_right τ hτ hY g)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun l _ => Real.rpow_nonneg (GS.ga_pos k r _ (xphi_linInd hk hx) l).le _`.
+A detailed English derivation is pending.
 -/
 theorem fsR_nonneg {k r : ℕ} (hk : 1 ≤ k) {x : Mat k r} (hx : x ∈ GV k r) (s : Fin (r + 1) → ℝ) :
     0 ≤ fsR k r s x :=
@@ -111,13 +111,13 @@ section meas
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mul continuous_const continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem cont_lmul (a : Mat k r) : Continuous (lmulM (k := k) (r := r) a) :=
   Continuous.matrix_mul continuous_const continuous_id
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mul continuous_id continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem cont_rmul (a : Mat k r) : Continuous (rmulF a : Mt k r → Mt k r) :=
   Continuous.matrix_mul continuous_id continuous_const
@@ -147,7 +147,7 @@ def rmulE {a : Mat k r} (ha : a ∈ GV k r) : Mt k r ≃ᵐ Mt k r where
   measurable_invFun := (cont_rmul a⁻¹).measurable
 
 /- English proof (translation)
-Establish `h` using `lintegral_map_equiv f (lmulE ha) (μ := μ)`. Rewrite `h` using `[show ⇑(lmulE ha) = lmulM a from rfl, hμ.left a ha]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lmul_int {a : Mat k r} (ha : a ∈ GV k r) {μ : Measure (Mt k r)} (hμ : IsHaarOn (GV k r) μ)
     (f : Mt k r → ℝ≥0∞) : ∫⁻ g, f (lmulM a g) ∂μ = ∫⁻ g, f g ∂μ := by
@@ -156,7 +156,7 @@ theorem lmul_int {a : Mat k r} (ha : a ∈ GV k r) {μ : Measure (Mt k r)} (hμ 
   exact h.symm
 
 /- English proof (translation)
-Establish `h` using `lintegral_map_equiv f (rmulE ha) (μ := μ)`. Rewrite `h` using `[show ⇑(rmulE ha) = rmulF a from rfl, hμ.right a ha]`. Conclude with `h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_int {a : Mat k r} (ha : a ∈ GV k r) {μ : Measure (Mt k r)} (hμ : IsHaarOn (GV k r) μ)
     (f : Mt k r → ℝ≥0∞) : ∫⁻ g, f (rmulF a g) ∂μ = ∫⁻ g, f g ∂μ := by

@@ -10,7 +10,7 @@ namespace PositivityTheory.ThKR.LL
 variable {l : Type} [Fintype l]
 
 /- English proof (translation)
-Establish `h` using `fun x => one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k, 0)) (k := k) (n := 0) le_rfl le_rfl g x`. Simplify using `only [norm_iteratedFDeriv_zero] at h`. Conclude with `⟨_, le_trans (by positivity) (h 0), h⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem exists_decay {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (g : SchwartzMap (EuclideanSpace ℝ l) F) (k : ℕ) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ x, (1 + ‖x‖) ^ k * ‖g x‖ ≤ C := by
@@ -19,28 +19,28 @@ theorem exists_decay {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F] (g : 
   exact ⟨_, le_trans (by positivity) (h 0), h⟩
 
 /- English proof (translation)
-Rewrite using `[coe_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem csmul (r : ℝ) (x : L2 l) : (r : ℂ) • x = r • x := by
   rw [coe_smul]
   rfl
 
 /- English proof (translation)
-Use `set N := Module.finrank ℝ (EuclideanSpace ℝ l) + 1 with hN`. Take `⟨C', hC', hG⟩` from `exists_decay G N`. Set `u : ℝ → Sch l` to `fun t => (((t - t₀)⁻¹ : ℝ) : ℂ) • (F t - F t₀) - G`. Establish `hu : ∀ t x, u t x = (t - t₀)⁻¹ • (F t x - F t₀ x) - G x` using `fun t x => by`. Simplify using `[u]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : Tendsto (fun t => ∫ x, ‖u t x‖ ^ (2 : ℝ)) (𝓝[≠] t₀) (𝓝 (∫ _x : EuclideanSpace ℝ l, (0 : ℝ)))`. Establish `hi` using `(integrable_one_add_norm (E := EuclideanSpace ℝ l) (μ := volume) (r := N) (by rw [hN]; push_cast; linarith)).const_mul ((C + C') ^ 2)`. Use `tendsto_integral_filter_of_dominated_convergence _ (.of_forall fun t => ((u t).continuous.norm.rpow_const fun _ => Or.inr (by norm_num)).aestronglyMeasurable) ?_ hi (.of_forall fun x => ?_)` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds hb, self_mem_nhdsWithin] with t ht ht0`. Use `.of_forall fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : 0 < |t - t₀|` using `abs_pos.2 (sub_ne_zero.2 ht0)`. Establish `hw : 1 ≤ (1 + ‖x‖) ^ N` using `one_le_pow₀ (by simp)`. Establish `h2 : (1 + ‖x‖) ^ N * ‖u t x‖ ≤ C + C'`. Rewrite using `[hu]`. Use `(mul_le_mul_of_nonneg_left (norm_sub_le _ _) (by positivity)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_add, norm_smul, norm_inv, Real.norm_eq_abs]`. Use `add_le_add ?_ (hG x)` and prove the remaining obligations. Rewrite using `[mul_left_comm, inv_mul_le_iff₀ ht1, mul_comm |t - t₀|]`. Conclude with `ht x`. Rewrite using `[Real.rpow_neg (by positivity), Real.rpow_natCast, Real.rpow_two, Real.norm_of_nonneg (by positivity), ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((1 + ‖x‖) ^ N * ‖u t x‖) ^ 2 ≤ (C + C') ^ 2` using `pow_le_pow_left₀ (by positivity) h2 2`. Use `le_trans ?_ h3` and prove the remaining obligations. Rewrite using `[mul_pow, mul_comm]`. Use `gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2` using `(hasDerivAt_iff_tendsto_slope.1 (hp x))`. Establish `h3` using `tendsto_iff_norm_sub_tendsto_zero.1 h2`. Establish `h4` using `h3.rpow_const (p := 2) (Or.inr (by norm_num))`. Simplify `h4` using `[hu, slope_def_module]`. Rewrite `h1` using `[integral_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `h1.rpow_const (p := 2⁻¹) (Or.inr (by norm_num))`. Rewrite `h2` using `[Real.zero_rpow (by norm_num)]`. Rewrite using `[hasDerivAt_iff_tendsto_slope, tendsto_iff_norm_sub_tendsto_zero]`. Use `h2.congr fun t => ?_` and prove the remaining obligations. Establish `: slope (fun t => schwartzToL2 l (F t)) t₀ t - schwartzToL2 l G = (u t).toLp 2 volume`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← schwartzToL2_apply, slope_def_module]`. Simplify using `only [u, map_sub, map_smul]`. Simplify using `only [csmul]`. Rewrite using `[this, norm_toLp' (by simp) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_schwartz_to_L2 {F : ℝ → Sch l} {G : Sch l} {t₀ : ℝ} (hp : ∀ x, HasDerivAt (fun t => F t x) (G x) t₀) {C : ℝ}
     (hb : ∀ᶠ t in 𝓝 t₀, ∀ x, (1 + ‖x‖) ^ (Module.finrank ℝ (EuclideanSpace ℝ l) + 1) * ‖F t x - F t₀ x‖ ≤ C * |t - t₀|) :
@@ -94,20 +94,20 @@ def LD (U : ℝ → Sch l →L[ℂ] Sch l) (Q : Sch l → Sch l) (t₀ : ℝ) : 
   ∀ f, HasDerivAt (fun t => schwartzToL2 l (U t f)) (schwartzToL2 l (Q f)) t₀
 
 /- English proof (translation)
-Introduce `f` and use `by simpa using hasDerivAt_const t₀ (schwartzToL2 l (U f))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LD.const (U : Sch l →L[ℂ] Sch l) (t₀ : ℝ) : LD (fun _ => U) (fun _ => 0) t₀ := fun f => by
   simpa using hasDerivAt_const t₀ (schwartzToL2 l (U f))
 
 /- English proof (translation)
-Introduce `f` and use `by simpa using hc.fun_smul (h f)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LD.smul {U : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l → Sch l} {t₀ : ℝ} (h : LD U Q t₀) {c : ℝ → ℂ} {c' : ℂ}
     (hc : HasDerivAt c c' t₀) : LD (fun t => c t • U t) (fun f => c t₀ • Q f + c' • U t₀ f) t₀ := fun f => by
   simpa using hc.fun_smul (h f)
 
 /- English proof (translation)
-Introduce `f` and use `by have h1 : HasDerivAt (fun t => schwartzToL2 l (U t (W t f - W t₀ f - ((t - t₀ : ℝ) : ℂ) • Q f))) 0 t₀ := by have h := (hW f).isLittleO rw [hasDerivAt_iff_isLittleO] refine Asymptotics.IsBigO.trans_isLittleO (Asymptotics.IsBigO.of_bound 1 ?_) h filter_upwards [hn] with t ht sim …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LD.mul {U W : ℝ → Sch l →L[ℂ] Sch l} {P Q : Sch l → Sch l} {t₀ : ℝ} (hU : LD U P t₀) (hW : LD W Q t₀)
     (hn : ∀ᶠ t in 𝓝 t₀, ∀ f, ‖schwartzToL2 l (U t f)‖ = ‖schwartzToL2 l f‖) :
@@ -132,7 +132,7 @@ theorem LD.mul {U W : ℝ → Sch l →L[ℂ] Sch l} {P Q : Sch l → Sch l} {t�
 variable [DecidableEq l]
 
 /- English proof (translation)
-Rewrite using `[ContinuousLinearMap.mul_apply, h, dRho_eq_sum v]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul]`. Simplify using `only [csmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weyl_step {V : Sch l →L[ℂ] Sch l} {w v : l ⊕ l → ℝ} (h : ∀ f, dRho w (V f) = V (dRho v f))
     (A : Sch l →L[ℂ] Sch l) (f : Sch l) :
@@ -142,11 +142,11 @@ theorem weyl_step {V : Sch l →L[ℂ] Sch l} {w v : l ⊕ l → ℝ} (h : ∀ f
   simp only [csmul]
 
 /- English proof (translation)
-Establish `key : ∀ A ∈ weylAlg l, ∀ f, DifferentiableAt ℝ (fun t => schwartzToL2 l (A (V t f))) t₀` using `fun A hA => by`. Use `weylAlg_induction (P := fun A => ∀ f, DifferentiableAt ℝ (fun t => schwartzToL2 l (A (V t f))) t₀) (fun f => (hV f).differentiableAt) ?_ (fun f => by simp) ?_ ?_ hA` and prove the remaining obligations. Introduce `A w ih f`. Use `(DifferentiableAt.fun_sum (u := Finset.univ) fun a _ => (hv w a).fun_smul (ih (dRho (Pi.single a 1) f))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [h] with t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `weyl_step (ht w) A f`. Introduce `A B hA hB f`. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Conclude with `(hA f).add (hB f)`. Introduce `c A hA f`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`. Conclude with `(hA f).const_smul c`. Take `⟨ι, _, A, Λ, hA, h⟩` from `exists_factor lam`. Simplify using `only [h]`. Conclude with `(Λ.restrictScalars ℝ).differentiableAt.comp t₀ (differentiableAt_pi.2 fun i => key _ (hA i) f)`.
+A detailed English derivation is pending.
 -/
 theorem LD.differentiableAt {V : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l → Sch l} {t₀ : ℝ} (hV : LD V Q t₀)
     (v : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (hv : ∀ w a, DifferentiableAt ℝ (fun t => v t w a) t₀)
@@ -171,13 +171,11 @@ theorem LD.differentiableAt {V : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l → S
   exact (Λ.restrictScalars ℝ).differentiableAt.comp t₀ (differentiableAt_pi.2 fun i => key _ (hA i) f)
 
 /- English proof (translation)
-Establish `key : ∀ A ∈ weylAlg l, ∀ f, HasDerivAt (fun t => schwartzToL2 l (A (V t f))) (schwartzToL2 l (A (Q f))) 0` using `fun A hA => by`. Use `weylAlg_induction (P := fun A => ∀ f, HasDerivAt (fun t => schwartzToL2 l (A (V t f))) (schwartzToL2 l (A (Q f))) 0) hV ?_ (fun f => by simpa using hasDerivAt_const _ _) ?_ ?_ hA` and prove the remaining obligations. Introduce `A w ih f`. Use `((HasDerivAt.fun_sum (u := Finset.univ) fun a _ => (hv w a).fun_smul (ih (dRho (Pi.single a 1) f))).congr_deriv ?_).congr_of_eventuallyEq ?_` and prove the remaining obligations. Establish `e : dRho w * Q = Q * dRho w - dRho (v' w)` using `by rw [← hQ, sub_sub_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.mul_apply, ← ContinuousLinearMap.mul_apply (dRho w), e, dRho_eq_sum w, dRho_eq_sum (v' w)]`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, hv0, h0, ContinuousLinearMap.sub_apply, ContinuousLinearMap.mul_apply, map_sub, neg_smul, ← sub_eq_add_neg, Finset.sum_sub_distrib]`. Simplify using `only [csmul]`. Use `filter_upwards [h] with t ht`. Conclude with `weyl_step (ht w) A f`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `A B hA hB f`. Simplify using `only [ContinuousLinearMap.add_apply, map_add]`. Conclude with `(hA f).add (hB f)`. Introduce `c A hA f`. Simplify using `only [ContinuousLinearMap.smul_apply, map_smul]`.
-
-Conclude with `(hA f).const_smul c`. Take `⟨ι, _, A, Λ, hA, h⟩` from `exists_factor lam`. Simplify using `only [h]`. Conclude with `(Λ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_pi.2 fun i => key _ (hA i) f)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LD.hasDerivAt {V : ℝ → Sch l →L[ℂ] Sch l} {Q : Sch l →L[ℂ] Sch l} (hV : LD V Q 0) (h0 : ∀ f, V 0 f = f)
     (v : ℝ → (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (v' : (l ⊕ l → ℝ) → (l ⊕ l → ℝ)) (hv0 : ∀ w, v 0 w = w)

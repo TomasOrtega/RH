@@ -12,23 +12,23 @@ namespace GlobalTheory.PZ
 variable {l : ℕ} [hl : Fact l.Prime] (K : FinExt l)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.AinfK.main l K).1.symm`.
+A detailed English derivation is pending.
 -/
 theorem resCard_eq_card_residueField :
     resCard K = Nat.card (IsLocalRing.ResidueField ↥(OL K)) :=
   (GlobalTheory.AinfK.main l K).1.symm
 
 /- English proof (translation)
-Rewrite using `[resCard_eq_card_residueField]`. Conclude with `Finite.one_lt_card`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_lt_resCard [Finite (IsLocalRing.ResidueField ↥(OL K))] : 1 < resCard K := by
   rw [resCard_eq_card_residueField]
   exact Finite.one_lt_card
 
 /- English proof (translation)
-Establish `hq` using `one_lt_resCard K`. Use `⟨?_, ?_, fun n => ?_⟩` and prove the remaining obligations. Simplify using `[ltSeries, show resCard K ≠ 0 by omega]`. Simplify using `[ltSeries, PowerSeries.coeff_X_pow, show 1 ≠ resCard K by omega]`. Rewrite using `[← resCard_eq_card_residueField, ltSeries, add_sub_cancel_right, PowerSeries.coeff_C_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_mul_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLubinTateSeries_ltSeries [Finite (IsLocalRing.ResidueField ↥(OL K))] (π : ↥(OL K)) :
     IsLubinTateSeries π (ltSeries K π) := by
@@ -40,7 +40,7 @@ theorem isLubinTateSeries_ltSeries [Finite (IsLocalRing.ResidueField ↥(OL K))]
     exact dvd_mul_right _ _
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst φ` using `PowerSeries.HasSubst.of_constantCoeff_zero' h`. Rewrite using `[ltSeries, PowerSeries.subst_add hs, PowerSeries.subst_pow hs, PowerSeries.subst_mul hs, PowerSeries.subst_X hs, PowerSeries.subst_C]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem subst_ltSeries (π : ↥(OL K)) {φ : PowerSeries ↥(OL K)} (h : PowerSeries.constantCoeff φ = 0) :
     PowerSeries.subst φ (ltSeries K π) = PowerSeries.C π * φ + φ ^ resCard K := by
@@ -50,9 +50,9 @@ theorem subst_ltSeries (π : ↥(OL K)) {φ : PowerSeries ↥(OL K)} (h : PowerS
   rfl
 
 /- English proof (translation)
-Introduce `l _ K _ π hπ`. Use `⟨isLubinTateSeries_ltSeries K π, fun a φ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨h0, h1, h2⟩`. Conclude with `eq_lubinTateHom_toPowerSeries hπ _ _ a h0 h1 (by rw [subst_ltSeries K π h0, h2])`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0` using `(lubinTateHom hπ (isLubinTateSeries_ltSeries K π) (isLubinTateSeries_ltSeries K π) a).constantCoeff_eq_zero`. Use `⟨h0, coeff_one_lubinTateHom hπ _ _ a, ?_⟩` and prove the remaining obligations. Rewrite using `[← subst_ltSeries K π h0]`. Conclude with `subst_lubinTateHom hπ _ _ a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLTEndo_iff_eq_lubinTateHom : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l)
     [Finite (IsLocalRing.ResidueField ↥(OL K))] (π : ↥(OL K)) (hπ : Irreducible π),

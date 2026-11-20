@@ -25,7 +25,7 @@ section Cases
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 end Cases
 /- English proof (translation)
-Introduce `_` and use `finDatK_of GlobalTheory.T.flips_loss_bounded_at_exceptional_places GlobalTheory.T.movedTensor_unfolding_integral_valuation_loss_bound`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finDatK_alt : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinDatK := fun _ => finDatK_of GlobalTheory.T.flips_loss_bounded_at_exceptional_places GlobalTheory.T.movedTensor_unfolding_integral_valuation_loss_bound
 end GlobalTheory.FunDat
@@ -36,7 +36,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FunDat.finDatK_alt | exact _root_.GlobalTheory.FunDat.finDatK_alt | (intros; apply _root_.GlobalTheory.FunDat.finDatK_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.finDatK_of_theta_inputs : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinDatK := by
   first | exact @_root_.GlobalTheory.FunDat.finDatK_alt | exact _root_.GlobalTheory.FunDat.finDatK_alt | (intros; apply _root_.GlobalTheory.FunDat.finDatK_alt <;> assumption)

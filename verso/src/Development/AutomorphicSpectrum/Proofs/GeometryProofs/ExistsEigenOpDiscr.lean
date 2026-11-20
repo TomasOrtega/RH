@@ -10,33 +10,31 @@ namespace GlobalTheory.CompanionTheory.Ar.Sandwich.Sep
 open NumberField Matrix
 
 /- English proof (translation)
-Take `⟨T, hT⟩ : ∃ T, T = Algebra.traceMatrix ℤ ω` from `⟨_, rfl⟩`. Establish `hTsymm : ∀ j k, T j k = T k j` using `fun j k => by`. Simplify using `only [hT, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`. Rewrite using `[mul_comm]`. Establish `hAT : T.adjugate * T = Algebra.discr ℤ ω • (1 : Matrix ι ι ℤ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.adjugate_mul, Algebra.discr_def, hT]`. Establish `e1 : ∀ (c : ℤ) (y : 𝓞 E), Algebra.trace ℤ (𝓞 E) ((c : 𝓞 E) * y) = c * Algebra.trace ℤ (𝓞 E) y`. Introduce `c y`. Rewrite using `[← zsmul_eq_mul, map_zsmul, smul_eq_mul]`. Establish `htrω : ∀ z : 𝓞 E, ∀ k, Algebra.trace ℤ (𝓞 E) (z * ω k) = ∑ j, ω.repr z j * T j k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z k`. Use `conv_lhs => rw [← ω.sum_repr z]`. Rewrite using `[Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, map_zsmul, smul_eq_mul, hT, Algebra.traceMatrix_apply, Algebra.traceForm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩ : ∃ b : ι → 𝓞 E, b = fun i => ∑ k, (T.adjugate i k : 𝓞 E) * ω k` from `⟨_, rfl⟩`. Establish `hDB : ∀ z : 𝓞 E, ∀ i, Algebra.trace ℤ (𝓞 E) (z * b i) = Algebra.discr ℤ ω * ω.repr z i`. Introduce `z i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hb, Finset.mul_sum, map_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, e1]`. Use `_ = ∑ k, T.adjugate i k * ∑ j, ω.repr z j * T j k := by simp only [htrω]`. Use `_ = ∑ j, ω.repr z j * (T.adjugate * T) i j := by`. Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hTsymm j k]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = Algebra.discr ℤ ω * ω.repr z i := by`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hAT]`. Simplify using `[Matrix.smul_apply, Matrix.one_apply]`. Apply the tactic sequence `try ring`. Establish `hnd : ∀ s : 𝓞 E, (∀ l, Algebra.trace ℤ (𝓞 E) (s * ω l) = 0) → s = 0`. Introduce `s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb0 : ∀ i, Algebra.trace ℤ (𝓞 E) (s * b i) = 0`. Introduce `i`. Simplify using `only [hb, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, e1, hs, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hr : ∀ i, ω.repr s i = 0` using `fun i => by`. Establish `h` using `hDB s i`. Rewrite `h` using `[hb0 i]`. Conclude with `(mul_eq_zero.mp h.symm).resolve_left hd`. Rewrite using `[← ω.sum_repr s]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hr]`. Establish `htr : ∀ y : 𝓞 E, Algebra.trace ℤ (𝓞 E) y = ∑ i, ω.repr (y * ω i) i`. Introduce `y`. Rewrite using `[Algebra.trace_eq_matrix_trace ω, Matrix.trace]`. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hnd` to reduce the goal to its premises. Introduce `l`. Rewrite using `[sub_mul, map_sub, Finset.sum_mul, map_sum, e1, htr (ω l)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h : ∀ i, Algebra.trace ℤ (𝓞 E) (ω i * b i * ω l) = Algebra.discr ℤ ω * ω.repr (ω l * ω i) i` using `fun i => by`. Rewrite using `[mul_right_comm, hDB, mul_comm (ω i)]`. Simplify using `only [h, Finset.mul_sum, sub_self]`. Introduce `x i`. Apply `sub_eq_zero.mp` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hnd` to reduce the goal to its premises. Introduce `l`. Rewrite using `[sub_mul, map_sub, Finset.sum_mul, map_sum]`. Establish `h1 : Algebra.trace ℤ (𝓞 E) (x * b i * ω l) = Algebra.discr ℤ ω * ω.repr (x * ω l) i`. Rewrite using `[mul_right_comm, hDB]`.
-
-Establish `h2 : ∀ j, Algebra.trace ℤ (𝓞 E) (((ω.repr (x * ω j) i : ℤ) : 𝓞 E) * b j * ω l) = ω.repr (x * ω j) i * (Algebra.discr ℤ ω * ω.repr (ω l) j)` using `fun j => by`. Rewrite using `[mul_assoc, e1, mul_comm (b j), hDB]`. Simplify using `only [h1, h2, ω.repr_self, Finsupp.single_apply]`. Simplify using the standard rewrite rules. Apply the tactic sequence `try ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_discr_dual_basis_of_discr_ne_zero {ι : Type} [Fintype ι] [DecidableEq ι] (E : Type) [Field E]
     [NumberField E] (ω : Module.Basis ι ℤ (𝓞 E)) (hd : Algebra.discr ℤ ω ≠ 0) :
@@ -121,9 +119,9 @@ private theorem exists_discr_dual_basis_of_discr_ne_zero {ι : Type} [Fintype ι
     try ring
 
 /- English proof (translation)
-Set `ω` to `(RingOfIntegers.basis E).reindex (Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ (𝓞 E)))`. Establish `hdisc : Algebra.discr ℤ ω = discr E`. Simplify using `only [ω, Module.Basis.coe_reindex]`. Rewrite using `[Algebra.discr_reindex]`. Take `⟨b, hsum, hb⟩` from `exists_discr_dual_basis_of_discr_ne_zero E ω (by rw [hdisc]; exact discr_ne_zero E)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ω, b, by rw [← hdisc]; exact hsum, fun x => ⟨fun i j => ω.repr (x * ω i) j, fun i => ?_, fun i => hb x i⟩⟩` and prove the remaining obligations. Use `conv_lhs => rw [← ω.sum_repr (x * ω i)]`. Simplify using `[zsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sep_element (E : Type) [Field E] [NumberField E] :
     ∃ (n : ℕ) (a b : Fin n → 𝓞 E), ∑ i, a i * b i = ((discr E : ℤ) : 𝓞 E) ∧
@@ -141,17 +139,17 @@ theorem exists_sep_element (E : Type) [Field E] [NumberField E] :
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Take `⟨n, a, b, hsum, hm⟩` from `exists_sep_element E`. Use `⟨n, a, b, fun R _ V _ _ ρ σ => ⟨fun v => ?_, fun v hv => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eigSp, Submodule.mem_iInf]`. Introduce `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero, LinearMap.smul_apply, LinearMap.id_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hma, hmb⟩` from `hm x`. Establish `L : ∀ i, ρ x (ρ (a i) v) = ∑ j, (m i j : R) • ρ (a j) v` using `fun i => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, hma i, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_intCast, Module.End.mul_apply, Module.End.intCast_apply, Int.cast_smul_eq_zsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `Rr : ∀ j, σ x * σ (b j) = ∑ i, (m i j : R) * σ (b i)` using `fun j => by`. Rewrite using `[← map_mul, hmb j, map_sum]`. Simplify using `[map_mul, map_intCast]`. Rewrite using `[map_sum, Finset.smul_sum]`. Simplify using `only [map_smul, L, Finset.smul_sum, smul_smul, Rr, Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Establish `hv' : ∀ x, ρ x v = σ x • v`. Introduce `x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[eigSp, Submodule.mem_iInf]`. Establish `h` using `hv x`. Rewrite `h` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`. Simplify using `using h`. Simplify using `only [hv', smul_smul, ← Finset.sum_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← map_intCast σ, ← hsum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, mul_comm]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_eigen_op_discr (E : Type) [Field E] [NumberField E] :
     ∃ (n : ℕ) (a b : Fin n → 𝓞 E), ∀ (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V]

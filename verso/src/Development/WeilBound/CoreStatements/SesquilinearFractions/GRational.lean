@@ -16,7 +16,7 @@ namespace PositivityTheory.Xgf
 def pureTypeSign (b : Bool) : ℤˣ := if b then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [sgnRt, pureTypeSign]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgnRt_eq_sign_mul {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (b : Bool) :
     sgnRt H b = ((pureTypeSign b : ℤ) : ℂ) * H.rt0 := by
@@ -25,31 +25,29 @@ theorem sgnRt_eq_sign_mul {E : Type} [Field E] [NumberField E] [IsCMField E] (H 
 open GlobalTheory.CM GlobalTheory.PointAlg ReciprocityTheory.GeometryOfNumbersTheory IsDedekindDomain in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo cc g ty FU i Pe hP nn hnn hfi`. Establish `hC` using `GlobalTheory.cmCurve_closed`. Establish `hPt` using `GlobalTheory.cmPoint_closed`. Establish `hT` using `GlobalTheory.thetaUnifAV_all`. Establish `hL` using `GlobalTheory.allSixLaws.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `H.d_mod`. Take `⟨K, _, h2, hr⟩` from `exists_quadraticField_sq_eq_neg H.d_prime.pos`. Take `⟨M, _, w, P, v, hw, hg, hv, -, hcm, -⟩` from `hC H.d (by omega) H.d_prime.squarefree (by omega) K h2 hr`. Use `PureType.finiteDimensional_base l` as an intermediate fact. Set `k : IntermediateField ℚ ℂ` to `M ⊔ KA l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hk : KA l ≤ k` using `le_sup_right`. Establish `hfin : FiniteDimensional ℚ k` using `inferInstance`. Set `f : 𝓞 M →+* k` to `(IntermediateField.inclusion (le_sup_left : M ≤ k)).toRingHom.comp (algebraMap (𝓞 M) M)`. Take `⟨P₀, π, hg₀, hπ, hL₀⟩` from `PureType.exists_baseChange hL.polBaseChange (spMap f) P`. Take `⟨PC, ψ, hgC, hψ, hLC⟩` from `PureType.exists_baseChange hL.polBaseChange (spMap (algebraMap k ℂ)) P₀`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, hv₀, -⟩` from `PureType.exists_tangent_over f hπ (hv.1 0)`. Take `⟨u₀, hu⟩` from `PureType.exists_isThetaUnif hT PC`. Establish `hLL : LBIso PC.L (P.L.pull (ψ ≫ π))` using `LBIso.trans PC.isLB (pull_isLB P₀.isLB ψ) (pull_isLB P.isLB _) hLC (LBIso.chartPull (chartPullPull P₀.L ψ ψ rfl) (chartPullSame P.L _ _ _ ψ fun _ => rfl) hL₀)`. Take `⟨c, hc0, hc⟩` from `hcm PC (ψ ≫ π) ⟨hgC.trans hg₀, (hψ.comp hπ).congr (spMap_comp_spMap _ _) rfl, hLL.symm⟩ u₀`. Rewrite `hc` using `[hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨R, hR, -, y, t, m, vR, φ, hy, hj, -, -, hφ⟩` from `hPt E H D l Xo g ty FU i Pe hP k hk hfin P₀ v₀ (hg₀.trans hg) hv₀ PC ψ u₀ c (hgC.trans (hg₀.trans hg)) hψ hLC hu hc0 hc (fun _ => ∅) (fun _ => Set.finite_empty) ⊥ Subalgebra.fg_bot`. Take `⟨-, bo, a₀, ha₀⟩` from `periods_span_pure_decomposition E H (FU.Di i) g ty Pe hP nn hnn hfi`. Set `ε : Fin g → ℤˣ` to `fun j => pureTypeSign (bo j)`. Set `a : ∀ j, PureType.lat hP (((ε j : ℤ) : ℂ) * H.rt0)` to `fun j => ⟨(a₀ j).1, (congrArg (fun ρ => (a₀ j).1 ∈ PureType.lat hP ρ) (sgnRt_eq_sign_mul H (bo j))).mp (a₀ j).2⟩`. Establish `ha : ∀ z : Fin g → ℂ, ∃ s : Fin g → ℂ, z = ∑ j, s j • Pe (a j)` using `ha₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ : ∀ ρ : R →ₐ[k] ℂ, spMap ρ.toRingHom ≫ spMap (algebraMap k R) = spMap (algebraMap k ℂ)` using `fun ρ => (spMap_comp_spMap _ _).trans (congrArg _ ρ.comp_algebraMap)`. Establish `hB` using `isGrpPullback_pullback P₀.A (spMap (algebraMap k R))`. Establish `hA : IsAbelianScheme t.G`. Use `Xo.univ.proper` as an intermediate fact. Establish `: IsProper t.G.hom` using `MorphismProperty.of_isPullback m.cart.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `AbelianSchemeGerms.isAbelianScheme_of_proper _ t.semi`. Establish `onto` using `onto_of_onto R.val.toRingHom Subtype.val_injective hA (Out.TLinPf.isAb_pullback (spMap (algebraMap k R)) P₀.A P₀.isAb) (fun n => φ (ε n) (a n)) fun y' => by`. Take `⟨z, hz⟩` from `FU.ex_onto i Pe hP (Over.homMk (y'.left ≫ m.φ) (by`. Rewrite using `[Category.assoc, m.cart.1.w, ← Category.assoc, Over.w y']`. Conclude with `hj))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `ha z`. Use `choose x hx using fun n => exists_lift_pt (G := P₀.A) (G' := (Over.pullback (spMap (algebraMap k R))).obj P₀.A) hB.1 (t' := spMap R.val.toRingHom) ((u₀.ex fun _ => c * b n).left ≫ ψ) (by`. Rewrite using `[Category.assoc, hψ.1.w, ← Category.assoc, Over.w, hρ]`. Conclude with `Category.id_comp _)`. Use `⟨x, pt_ext m.cart.1 ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[prod_left m.cart hj _ (fun n => FU.ex i Pe (b n • Pe (a n))) fun n => (Category.assoc _ _ _).trans ((hφ (ε n)).2 (a n) (b n) (x n).left (hx n) (Over.w (x n))), ← map_sum_eq_prod _ (FU.ex_add i Pe hP), hz]`. Both sides reduce to the same expression. Establish `hs : Smooth Xo.s`. Use `Xo.smooth` as an intermediate fact. Conclude with `SmoothOfRelativeDimension.smooth D.dim Xo.s`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K₁, hk₁, y₁, h₁, h₂, h₃⟩` from `exists_numberField_point_of_countable k R hR (KA l) (IntermediateField.inclusion hk).toRingHom Xo.X Xo.s y hy (by`. Use `(countable_points_of_onto hT hL E H D l Xo g ty FU PC).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨ρ, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hy, spMap_comp_spMap]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg spMap (RingHom.ext fun x => ρ.commutes _)`. Choose the witnesses or unpack the hypotheses as in `⟨t', ⟨m'⟩⟩ : ∃ t' : SAB H (Sp ℂ), Nonempty (SABMap t' Xo.univ.t (spMap ρ.toRingHom ≫ y)) := by`. Take `⟨_, _, _, _, _, m', -⟩` from `sabPull Out.CubePf.cubePull (spMap ρ.toRingHom ≫ y) Xo.univ.t`. Conclude with `⟨_, ⟨m'⟩⟩`. Set `κ` to `m.cart.1.lift m'.φ (t'.G.hom ≫ spMap ρ.toRingHom) (by rw [m'.cart.1.w, Category.assoc])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hγ : IsGrpPullback t'.G t.G (spMap ρ.toRingHom) κ` using `m.cart.cancel (m'.cart.congr rfl (m.cart.1.lift_fst _ _ _).symm) (m.cart.1.lift_snd _ _ _)`. Set `β` to `hB.1.lift ψ (PC.A.hom ≫ spMap ρ.toRingHom) (by rw [hψ.1.w, Category.assoc, hρ])`. Establish `hβ : IsGrpPullback PC.A _ (spMap ρ.toRingHom) β` using `hB.cancel (hψ.congr (hρ ρ).symm (hB.1.lift_fst _ _ _).symm) (hB.1.lift_snd _ _ _)`. Use `choose w' hw₁ hw₂ using fun n => @exists_lift_hom _ _ _ _ _ _ _ _ _ _ _ _ _ hβ hγ (φ (ε n) (a n)) ((hφ (ε n)).1.1 (a n))`. Use `⟨t', m', _, w', hw₁, fun y' => ?_⟩` and prove the remaining obligations.
-
-Take `⟨x, hx⟩` from `onto_lift hβ.1 hγ _ w' hw₂ (Category.id_comp _) (onto _) y'`. Conclude with `⟨_, id, x, hx⟩)`. Conclude with `⟨K₁, hk.trans hk₁, y₁, h₁, h₂, h₃.trans hj⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem family_pure_periods_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)) (hP : IsPeriod (FU.Di i) ty P) (n : ℕ), 0 < n → (∀ y : (FU.Di i).La, ∃ a ∈ PureType.lat hP (sgnRt H true), ∃ b ∈ PureType.lat hP (sgnRt H false), n • y = a + b) → ∃ (K₁ : IntermediateField ℚ ℂ) (hk : KA l ≤ K₁) (y : Sp K₁ ⟶ Xo.X), FiniteDimensional ℚ K₁ ∧ y ≫ Xo.s = spMap (IntermediateField.inclusion hk).toRingHom ∧ spMap (algebraMap K₁ ℂ) ≫ y = FU.u i P := by
   intro E _ _ _ H D l Xo cc g ty FU i Pe hP nn hnn hfi

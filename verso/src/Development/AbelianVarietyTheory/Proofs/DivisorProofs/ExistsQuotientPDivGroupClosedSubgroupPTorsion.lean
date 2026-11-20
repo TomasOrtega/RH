@@ -25,9 +25,9 @@ def levelRes (m : ℕ) : G.A (m + 1) →ₐc[O] G.A 1 :=
     (fun m f => f.comp (G.res (m + 1))) m
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact Function.surjective_id`. Consider the case `succ m ih`. Introduce `c`. Take `⟨a, rfl⟩` from `ih c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `G.res_surjective (m + 1) a`. Conclude with `⟨b, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levelRes_surjective (m : ℕ) : Function.Surjective (levelRes G m) := by
   induction m with
@@ -39,7 +39,7 @@ theorem levelRes_surjective (m : ℕ) : Function.Surjective (levelRes G m) := by
     exact ⟨b, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Ideal.ext fun _ => Iff.rfl`.
+A detailed English derivation is pending.
 -/
 theorem ker_succ {C : Type} [CommRing C] [Bialgebra O C] (π : G.A 1 →ₐc[O] C) (m : ℕ) :
     RingHom.ker (π.comp (levelRes G (m + 1))) =
@@ -48,7 +48,7 @@ theorem ker_succ {C : Type} [CommRing C] [Bialgebra O C] (π : G.A 1 →ₐc[O] 
   Ideal.ext fun _ => Iff.rfl
 
 /- English proof (translation)
-Use `(kerIdeal_le_ker_iff _ ((π.comp (levelRes G m) : G.A (m + 1) →ₐc[O] C) : G.A (m + 1) →ₐ[O] C)).2 fun c => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `π (levelRes G m (mulBy O _ p c)) = _`. Establish `h` using `G.mulBy_pow_self 1 (levelRes G m c)`. Rewrite `h` using `[pow_one]`. Rewrite using `[map_mulBy, h, AlgHomClass.commutes, CoalgHomClass.counit_comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem torsion_le {C : Type} [CommRing C] [Bialgebra O C] (π : G.A 1 →ₐc[O] C) (m : ℕ) :
     torsionIdeal O (G.A (m + 1)) p ≤ RingHom.ker (π.comp (levelRes G m)) := by
@@ -64,21 +64,19 @@ end GlobalTheory.QuotField
 open GlobalTheory.QuotField GlobalTheory.HTPair.QuotIsog in
 
 /- English proof (translation)
-Introduce `p _ k _ _ G C _ _ _ _ π hπ`. Establish `hsurj : ∀ m, Function.Surjective (π.comp (levelRes G m))` using `fun m => hπ.comp (levelRes_surjective G m)`. Use `choose B iR iH iC iF j hinj hker huniv using fun m => GlobalTheory.T.exists_quotient_finiteCommGroupScheme_closedSubgroup k (G.A (m + 1)) C (π.comp (levelRes G m)) (hsurj m)`. Use `letI := iR`. Use `letI := iH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := iC`. Use `letI := iF`. Establish `hρ : ∀ m, ∃ ρ : G.A (m + 1) →ₗ[k] B m, ∀ b, ρ (j m b) = b` using `fun m => by`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective ((j m : B m →ₐ[k] G.A (m + 1)).toLinearMap) (LinearMap.ker_eq_bot.2 (hinj m))`. Conclude with `⟨g, fun b => LinearMap.congr_fun hg b⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `choose ρ hρ using hρ`. Establish `hfac : ∀ m (D : Type) [CommRing D] [Bialgebra k D] (f : D →ₐc[k] G.A (m + 1)), kerIdeal f ≤ RingHom.ker (π.comp (levelRes G m)) → ∃ g : D →ₐc[k] B m, ∀ d, j m (g d) = f d` using `fun m D _ _ f hf => GlobalTheory.T.bialgHom_factor_through_split_injection k (G.A (m + 1)) (B m) D (j m) (ρ m) f (hρ m) (huniv m D f hf)`. Use `choose r hr using fun m => hfac m (B (m + 1)) ((G.res (m + 1)).comp (j (m + 1))) (by`. Rewrite using `[kerIdeal_comp, hker (m + 1), ker_succ]`. Conclude with `Ideal.map_comap_le)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose s hs using fun m => hfac m (G.A m) (G.mulP m) (by`. Rewrite using `[← kerIdeal_comp_of_surjective _ (G.res_surjective m), G.mulP_comp_res]`. Conclude with `torsion_le G π m)`. Establish `hkr : ∀ m, kerIdeal (j m) = Ideal.map (G.res (m + 1) : G.A (m + 2) →ₐ[k] G.A (m + 1)) (kerIdeal (j (m + 1)))`. Introduce `m`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hker, hker, ker_succ]`. Conclude with `(Ideal.map_comap_of_surjective (G.res (m + 1) : G.A (m + 2) →ₐ[k] G.A (m + 1)) (G.res_surjective (m + 1)) _).symm`. Set `τ : QuotTower G` to `{ B := B commRing := iR hopf := iH cocomm := iC finite := iF projective := fun _ => inferInstance j := j ρ := ρ r := r s := s ρ_j := hρ r_surjective := fun m => GlobalTheory.T.quotientTransition_surjective_same_subgroup k (G.A (m + 1)) (G.A (m + 2)) (B m) (B (m + 1)) (G.res (m + …`. Take `⟨H, q, hqs, hqk, hqc⟩` from `GlobalTheory.HTPair.exists_quotPDivGroup p k G τ`. Use `⟨H, toQuot τ q hqs hqk hqc, fromQuot τ q hqc, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hom_ext fun n => ?_` and prove the remaining obligations. Rewrite using `[natCast_smul_id_app, comp_app]`. Use `BialgHom.ext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(toQuot τ q hqs hqk hqc).app n (q n (τ.s n a)) = _`. Rewrite using `[toQuot_app_q, τ.j_s, G.res_mulP]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hom_ext fun n => ?_` and prove the remaining obligations. Rewrite using `[natCast_smul_id_app, comp_app]`. Use `BialgHom.ext fun c => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `hqs n c`. Express the relevant statement in the definitionally equal form `q n (τ.s n ((toQuot τ q hqs hqk hqc).app n (q n b))) = _`.
-
-Rewrite using `[toQuot_app_q, s_res_j, map_mulBy]`. Establish `h1 : ((toQuot τ q hqs hqk hqc).app 1).comp (q 1) = (G.res 1).comp (τ.j 1)` using `BialgHom.ext fun b => toQuot_app_q τ q hqs hqk hqc 1 b`. Rewrite using `[← kerIdeal_comp_of_surjective _ (hqs 1), h1, kerIdeal_comp]`. Conclude with `(τ.map_res_kerIdeal 0).trans ((hker 0).trans (Ideal.ext fun _ => Iff.rfl))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HTPair.exists_quot_field : ∀ (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p]
     (G : PDivGroup p k) (C : Type) [CommRing C] [HopfAlgebra k C] [IsCocomm k C]

@@ -9,34 +9,32 @@ set_option synthInstance.maxHeartbeats 200000
 section
 open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual Polynomial GlobalTheory.CuspRep UpperTheory.V UpperTheory.V.Sd UpperTheory.V.Af UpperTheory.V.Af.Nf
 /- English proof (translation)
-The claim follows from `Function.Injective.tendsto_cofinite fun w w' e => HeightOneSpectrum.ext <| by rw [(places w).2.1, (places w').2.1] exact congrArg (fun n : ℕ => Ideal.span {(n : 𝓞 ℚ)}) e`.
+A detailed English derivation is pending.
 -/
 private theorem tend : Filter.Tendsto (fun w : Pl ℚ => normV w) Filter.cofinite Filter.cofinite :=
   Function.Injective.tendsto_cofinite fun w w' e => HeightOneSpectrum.ext <| by
     rw [(places w).2.1, (places w').2.1]
     exact congrArg (fun n : ℕ => Ideal.span {(n : 𝓞 ℚ)}) e
 /- English proof (translation)
-Introduce `hP hR k hk j π hπ`. Establish `hk1 : 1 ≤ k` using `by omega`. Use `set s : ℝ := 1 - (k : ℝ) / 2 + j with hs`. Set `χ` to `GlobalTheory.HeckeGal.Model.absPow ℚ (-s)`. Establish `hE` using `GlobalTheory.HeckeGal.Model.absPow_isAbsPow ℚ (-s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ∀ v, (π.twist χ).HasInfChar v {((k : ℂ) - 1) / 2, -(((k : ℂ) - 1) / 2)}` using `fun v => by`. Use `(hπ v).twist χ` as an intermediate fact. Rewrite `this` using `[absExpo ℚ (-s) v]`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg₂ (fun a b : ℂ => a ::ₘ {b}) (by push_cast; ring) (by push_cast; ring)`. Take `⟨N, _, ψ, g, hg⟩` from `hR k hk _ hi`. Take `⟨f, _, h, hf, ha⟩` from `UpperTheory.V.Br.minNew N k hk1 ψ g`. Establish `hc` using `_root_.UpperTheory.V.Br.charEq_sv_alt hP k N f.M (by omega) ψ f.χ g h ha`. Use `⟨f, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hg, tend.eventually ha, tend.eventually hc] with w ⟨α, β, hsat, hsum, hprod⟩ h1 h2`. Establish `hp` using `(places w).1`. Establish `hq` using `(places w).2.2.1`. Establish `hu : (χ⁻¹).UnrAt w` using `fun u hu => by`. Use `hE.1 w u hu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inv_eq_one.2 this`. Establish `h3` using `hsat.twist hu`. Rewrite `h3` using `[← TR.CuspSub.twist_mul, mul_inv_cancel, TR.CuspSub.twist_one]`. Use `⟨_, h3, ?_⟩` and prove the remaining obligations. Establish `hq0 : (0 : ℝ) < normV w` using `by exact_mod_cast hp.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hval0 : ((χ.val w : ℂˣ) : ℂ) = (((normV w : ℝ) ^ (-(-s)) : ℝ) : ℂ)`. Rewrite using `[hE.2.1 w, hq, Complex.ofReal_cpow hq0.le]`. Simplify using the standard rewrite rules. Establish `hval : (((χ⁻¹).val w : ℂˣ) : ℂ) = (((normV w : ℝ) ^ (-s) : ℝ) : ℂ)`. Establish `e : (χ⁻¹).val w = (χ.val w)⁻¹` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Units.val_inv_eq_inv_val, hval0, ← Complex.ofReal_inv, ← Real.rpow_neg hq0.le, neg_neg]`. Use `set r : ℂ := (((normV w : ℝ) ^ (((k : ℝ) - 1) / 2) : ℝ) : ℂ) with hr`. Establish `key : ∀ a : ℂˣ, (normV w : ℂ) ^ j * ((((normV w : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) : ℝ) : ℂ) * ((a * (χ⁻¹).val w : ℂˣ) : ℂ)) = r * a` using `fun a => by`. Establish `: ((normV w : ℝ) ^ (((k : ℝ) - 1) / 2) : ℝ) = (normV w : ℝ) ^ j * ((normV w : ℝ) ^ ((((2 : ℕ) : ℝ) - 1) / 2) * (normV w : ℝ) ^ (-s))`. Rewrite using `[← Real.rpow_intCast, ← Real.rpow_add hq0, ← Real.rpow_add hq0]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[hs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hr, this, Units.val_mul, hval]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrr : r * r = (normV w : ℂ) ^ (k - 1)`. Rewrite using `[hr, ← Complex.ofReal_mul, ← Real.rpow_add hq0, add_halves, ← Nat.cast_pred hk1, Real.rpow_natCast]`. Use `push_cast`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hfa : f.a (normV w) = r * ((α : ℂ) + β)`. Rewrite using `[← hsum, ← h1 hp, Newform.a, Eigenform.a, hf]`. Simplify using `only [algSat, Multiset.insert_eq_cons, Multiset.map_cons, Multiset.map_singleton, Multiset.prod_cons, Multiset.prod_singleton, Multiset.pure_def, Multiset.bind_def, Multiset.cons_bind, Multiset.singleton_bind, Multiset.singleton_add, key]`. Rewrite using `[Newform.heckePoly, hfa, ← h2 hp, ← hprod, ← hrr]`.
-
-Simplify using `only [Units.val_mul, C_mul, C_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.repNewAE_of_printsH_of_repEig :
     _root_.UpperTheory.V.Af.HypothesesH' → UpperTheory.V.Br.RepEig → UpperTheory.V.Br.RepNewAE := by

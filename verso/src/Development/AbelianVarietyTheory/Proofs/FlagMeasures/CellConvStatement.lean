@@ -6,7 +6,7 @@ open BranchingSupport GlobalTheory.CellAmp Formalism.BasicNotions Formalism.Main
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CellMaj.cellConv | exact GlobalTheory.CellMaj.cellConv | (intros; apply GlobalTheory.CellMaj.cellConv <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cellConv' : GlobalTheory.CellAmp.CellConv := by
   first | exact @GlobalTheory.CellMaj.cellConv | exact GlobalTheory.CellMaj.cellConv | (intros; apply GlobalTheory.CellMaj.cellConv <;> assumption)

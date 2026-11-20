@@ -12,11 +12,11 @@ namespace GlobalTheory.FockSubBoth
 open GlobalTheory.FockSubst GlobalTheory.FockCompare GlobalTheory.OrientedHeis Complex
 
 /- English proof (translation)
-Unfold `unitMap`. Rewrite using `[Matrix.mul_inv_rev]`. Establish `key : k' * single a c (1 : ℂ) * k⁻¹ = ∑ b : Fin m × Fin n, (k' b.1 a * k⁻¹ c b.2) • single b.1 b.2 (1 : ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, Matrix.sum_apply, Fintype.sum_prod_type, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq', ite_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by`. Rewrite using `[key, Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+A detailed English derivation is pending.
 -/
 theorem unitMap_mul_both {m n : ℕ} (B k : Matrix (Fin n) (Fin n) ℂ) (B' k' : Matrix (Fin m) (Fin m) ℂ) (a : Fin m)
     (c : Fin n) : unitMap (B * k) (B' * k') a c =
@@ -35,13 +35,13 @@ theorem unitMap_mul_both {m n : ℕ} (B k : Matrix (Fin n) (Fin n) ℂ) (B' k' :
         rw [Matrix.mul_smul, Matrix.smul_mul]
 
 /- English proof (translation)
-Take `⟨ε, hε, hG, hs⟩` from `h`. Establish `hdiag : (diagonal fun a => ((ε a : _) : ℂ)) = diagonal fun a : Fin k => if a.val < p then (1 : ℂ) else -1`. Use `congr 1`. Use function extensionality and compare the values at `a`. Break down `hε a with ⟨h1, h2⟩ | ⟨h1, h2⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[h1, h2]`. Simplify using `[h1, not_lt.mpr h2]`. Use `⟨?_, hs.trans (by rw [hdiag])⟩` and prove the remaining obligations. Rewrite using `[isUnit_iff_ne_zero]`. Introduce `h0`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd` using `congrArg Matrix.det hG`. Rewrite `hd` using `[Matrix.det_mul, h0, mul_zero, hdiag, Matrix.det_diagonal]`. Establish `: ∀ a ∈ (Finset.univ : Finset (Fin k)), (if a.val < p then (1 : ℂ) else -1) ≠ 0`. Introduce `a _`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(Finset.prod_ne_zero_iff.mpr this) hd.symm`.
+A detailed English derivation is pending.
 -/
 theorem onb_sign {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : IsONBasis G s B p) :
     IsUnit B.det ∧ s * B = B * Matrix.diagonal (fun a : Fin k => if a.val < p then (1 : ℂ) else -1) := by
@@ -63,15 +63,15 @@ theorem onb_sign {k : ℕ} {G s B : Matrix (Fin k) (Fin k) ℂ} {p : ℕ} (h : I
   exact (Finset.prod_ne_zero_iff.mpr this) hd.symm
 
 /- English proof (translation)
-Take `⟨hB, hs⟩` from `onb_sign h`. Take `⟨-, hs'⟩` from `onb_sign h'`. Establish `hinv : B⁻¹ * B = 1` using `Matrix.nonsing_inv_mul B hB`. Establish `hBB : B * B⁻¹ = 1` using `Matrix.mul_nonsing_inv B hB`. Establish `hBi : B⁻¹ * s = diagonal (fun a : Fin n => if a.val < p then (1 : ℂ) else -1) * B⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e1 : s' * (B' * single i j (1 : ℂ) * B⁻¹) * s = B' * (diagonal (fun a : Fin m => if a.val < p' then (1 : ℂ) else -1) * single i j (1 : ℂ) * diagonal (fun a : Fin n => if a.val < p then (1 : ℂ) else -1)) * B⁻¹`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hs', hBi]; simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : diagonal (fun a : Fin m => if a.val < p' then (1 : ℂ) else -1) * single i j (1 : ℂ) * diagonal (fun a : Fin n => if a.val < p then (1 : ℂ) else -1) = ((if i.val < p' then (1 : ℂ) else -1) * (if j.val < p then (1 : ℂ) else -1)) • single i j (1 : ℂ)`. Use extensionality with `x y`. Simplify using `only [Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.smul_apply, Matrix.single_apply, smul_eq_mul]`. Distinguish the cases in `hxy : i = x ∧ j = y`. Rewrite using `[if_pos hxy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `hxy`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg hxy]`. Expand and normalize the polynomial expressions, which then agree. Unfold `cplxO unitMap`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, Matrix.mul_smul, Matrix.smul_mul, smul_smul]`. Use `congr 1`. Apply the tactic sequence `by_cases hi : i.val < p' <;> by_cases hj : j.val < p <;> simp [hi, hj]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cplxO_unitMap_both {m n : ℕ} {G s B : Matrix (Fin n) (Fin n) ℂ} {p : ℕ} (h : IsONBasis G s B p)
     {G' s' B' : Matrix (Fin m) (Fin m) ℂ} {p' : ℕ} (h' : IsONBasis G' s' B' p') (i : Fin m) (j : Fin n) :
@@ -109,7 +109,7 @@ theorem cplxO_unitMap_both {m n : ℕ} {G s B : Matrix (Fin n) (Fin n) ℂ} {p :
   by_cases hi : i.val < p' <;> by_cases hj : j.val < p <;> simp [hi, hj]
 
 /- English proof (translation)
-Take `⟨hu, hz⟩` from `h`. Establish `hinv : κ⁻¹ = star κ` using `Matrix.inv_eq_right_inv (Matrix.mem_unitaryGroup_iff.mp hu)`. Rewrite using `[hinv, Matrix.star_apply, hz j i (fun h' => hij h'.symm), star_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isKMat_inv_zero {k p : ℕ} {κ : Matrix (Fin k) (Fin k) ℂ} (h : IsKMat p κ) {i j : Fin k}
     (hij : ¬ (i.val < p ↔ j.val < p)) : κ⁻¹ i j = 0 := by
@@ -118,25 +118,23 @@ theorem isKMat_inv_zero {k p : ℕ} {κ : Matrix (Fin k) (Fin k) ℂ} (h : IsKMa
   rw [hinv, Matrix.star_apply, hz j i (fun h' => hij h'.symm), star_zero]
 
 /- English proof (translation)
-Introduce `D ψ θ S T hψ hθ sS BS sT BT pS pT hpS hpT hcS hcT hoS hoT f hf τ κS κT hkS hkT BS' BT' hS hT hne P`. Take `⟨-, hkTz⟩` from `hkT`. Establish `hτ : ∀ (i : Fin T.rank) (j : Fin S.rank) (g : WO S T → ℂ), IsThetaFunO ψ S T g → aPlus (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) (unitMap (BS' τ) (BT' τ) i j) g = ∑ b : Fin T.rank × Fin S.rank, (if (i.val < pT τ ↔ j.val < pS τ) then κT b.1 i * κS⁻¹ j b.2 else starRingEnd ℂ (κT b.1 …`. Introduce `i j g hg`. Rewrite using `[hS, hT, unitMap_mul_both, GlobalTheory.FockSubst.aPlus_dir_sum hψ hθ τ (sS τ) (sT τ) hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockSubst.aPlus_dir_smul hψ hθ τ (sS τ) (sT τ) hg (decide (b.1.val < pT τ ↔ b.2.val < pS τ)) _ (cplxO_unitMap_both (hoS τ) (hoT τ) b.1 b.2)]`. Use `congr 1`. Distinguish the cases in `hw : κT b.1 i * κS⁻¹ j b.2 = 0`. Rewrite using `[hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : (b.1.val < pT τ ↔ i.val < pT τ)`. Assume the negation of the conclusion as `hc`. Conclude with `hw (by rw [hkTz b.1 i hc, zero_mul])`. Establish `h2 : (j.val < pS τ ↔ b.2.val < pS τ)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `hw (by rw [isKMat_inv_zero hkS hc, mul_zero])`. Distinguish the cases in `hc : (i.val < pT τ ↔ j.val < pS τ)`. Establish `hd : decide (b.1.val < pT τ ↔ b.2.val < pS τ) = true`. Rewrite using `[decide_eq_true_iff, h1, ← h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc`. Rewrite using `[if_pos hd, if_pos hc]`. Establish `hd : ¬ decide (b.1.val < pT τ ↔ b.2.val < pS τ) = true`. Rewrite using `[decide_eq_true_iff, h1, ← h2]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions.
 
-Rewrite using `[if_neg hd, if_neg hc]`. Establish `key` using `GlobalTheory.FockSubst.pure_subst (ι := FVar D T.rank S.rank) (X := WO S T) (κ := Fin T.rank × Fin S.rank) (A := fun k => aPlus (heisO ψ S T) θ k.1 (cplxO (sS k.1) (sT k.1)) (unitMap (BS k.1) (BT k.1) k.2.1 k.2.2)) (A' := fun k => aPlus (heisO ψ S T) θ k.1 (cplxO (sS k.1) (sT k.1 …`. Introduce and unpack `⟨ρ, i, j⟩ g hg`. Simplify using `only`. Distinguish the cases in `hρ : ρ = τ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Substitute `hρ` using the available equality. Simplify using `only [if_true]`. Conclude with `hτ i j g hg`. Take `⟨h1, h2⟩` from `hne ρ hρ`. Simplify using `[hρ, h1, h2, ite_smul])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `hf P`. Establish `hsub : (MvPolynomial.aeval fun v : FVar D T.rank S.rank => ∑ b : Fin T.rank × Fin S.rank, (if v.1 = τ then (if (v.2.1.val < pT τ ↔ v.2.2.val < pS τ) then κT b.1 v.2.1 * κS⁻¹ v.2.2 b.2 else starRingEnd ℂ (κT b.1 v.2.1 * κS⁻¹ v.2.2 b.2)) else (if b = (v.2.1, v.2.2) then 1 else 0)) …`. Unfold `fockSub`. Use `congr 2`. Use function extensionality and compare the values at `y`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Take `⟨ρ, i, j⟩` from `y`. Distinguish the cases in `hρ : ρ = τ`. Substitute `hρ` using the available equality. Simplify using `only [if_true, Fintype.sum_prod_type, MvPolynomial.smul_eq_C_mul]`. Simplify using `[hρ, ite_smul]`.
-
-Unfold `pureTensorO aPlusAll`. Use `beta_reduce`. Rewrite using `[key, hsub]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureTensorO_fockSub : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (sS BS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (sT BT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ) (pS pT : D.what₂.Tau → ℕ), (∀ ρ, pS ρ ≤ S.rank) → (∀ ρ, pT ρ ≤ T.rank) → (∀ ρ, IsCartanInv (gramAt D S ρ) (sS ρ)) → (∀ ρ, IsCartanInv (gramAt D T ρ) (sT ρ)) → (∀ ρ, IsONBasis (gramAt D S ρ) (sS ρ) (BS ρ) (pS ρ)) → (∀ ρ, IsONBasis (gramAt D T ρ) (sT ρ) (BT ρ) (pT ρ)) → ∀ f, IsThetaFunO ψ S T f → ∀ (τ : D.what₂.Tau) κS κT, IsKMat (pS τ) κS → IsKMat (pT τ) κT → ∀ (BS' : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ) (BT' : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ), BS' τ = BS τ * κS → BT' τ = BT τ * κT → (∀ ρ, ρ ≠ τ → BS' ρ = BS ρ ∧ BT' ρ = BT ρ) → ∀ P, pureTensorO ψ θ S T sS sT BS' BT' f P = pureTensorO ψ θ S T sS sT BS BT f (fockSub τ (pS τ) (pT τ) κS κT P) := by
   intro D ψ θ S T hψ hθ sS BS sT BT pS pT hpS hpT hcS hcT hoS hoT f hf τ κS κT hkS hkT BS' BT' hS hT hne P

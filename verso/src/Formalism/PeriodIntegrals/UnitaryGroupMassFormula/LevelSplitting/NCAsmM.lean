@@ -10,7 +10,7 @@ open PI.LevelKSplit PI.LevelKSplit.W.NC PI.LevelKSplit.W.SemiA PI.VolSemiDirect.
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨hlc, hsc, ht2, htg⟩` from `hN`. Introduce `μN hμN h hh f hf`. Take `⟨μ0, hμ0, hinv⟩` from `hex h hh`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul μN μ0, lintegral_smul_measure, lintegral_smul_measure, hinv f hf]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjInv_of_one {X : Type} [Group X] [TopologicalSpace X] [MeasurableSpace X]
     [BorelSpace X] (N H : Subgroup X) (hN : LCSC N)
@@ -28,35 +28,33 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   [FiniteDimensional F E] {σ : E →ₐ[F] E} {M : ℕ} {J : Matrix (Fin M) (Fin M) E}
 
 /- English proof (translation)
-Introduce `hJ hσσ r P T hP`. Establish `hsc : SecondCountableTopology (Af F)` using `PI.LevelKSplit.W.SC.finite_adeles_secondCountable F`. Establish `hL : LCSC (HA (Af F) σ J)` using `PI.LevelKSplit.W.ExS.lcsc_HAf hsc`. Establish `: BorelSpace (HA (Af F) σ J)` using `⟨rfl⟩`. Establish `: SecondCountableTopology (HA (Af F) σ J)` using `hL.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, cN, -⟩` from `PI.LevelKSplit.W.ExC.closed_SNH hJ hσσ P T hP`. Take `⟨lN, -⟩` from `subgroup_locally_compact_holds (HA (Af F) σ J) ⊥ _ hL cN inferInstance inferInstance`. Use `conjInv_of_one _ _ lN ?_` and prove the remaining obligations. Introduce `h hh`. Take `⟨A, Z, Ψ, cA, cZ, hleft, hconj⟩` from `hC hJ hσσ r P T hP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨lcA, scA, t2A, tgA⟩, -⟩` from `subgroup_locally_compact_holds (HA (Af F) σ J) ⊥ A hL cA inferInstance inferInstance`. Take `⟨⟨lcZ, scZ, t2Z, tgZ⟩, -⟩` from `subgroup_locally_compact_holds (HA (Af F) σ J) ⊥ Z hL cZ inferInstance inferInstance`. Take `⟨lcN, scN, t2N, tgN⟩` from `lN`. Establish `: BorelSpace A` using `Subtype.borelSpace _`. Establish `: BorelSpace Z` using `Subtype.borelSpace _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace (Nsub (Af F) σ J P)` using `Subtype.borelSpace _`. Establish `: SecondCountableTopology (Af F ⊗[F] E)` using `sc_tens`. Establish `: BorelSpace (Af F ⊗[F] E)` using `⟨rfl⟩`. Establish `: BorelSpace (Fin M → Af F ⊗[F] E)` using `Pi.borelSpace`. Establish `H` using `SemiA.datR_hyp (R := Af F) hσσ hJ hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cW : IsClosed ((Wp (Af F) σ J P : AddSubgroup (Fin M → Af F ⊗[F] E)) : Set (Fin M → Af F ⊗[F] E))`. Establish `e1 : ((Wp (Af F) σ J P : AddSubgroup (Fin M → Af F ⊗[F] E)) : Set (Fin M → Af F ⊗[F] E)) = {v | DatL.pL (SemiA.datR (Af F) σ J P T) v = v}`. Use extensionality with `v`. Conclude with `mem_Wp_iff H v`. Rewrite using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `isClosed_eq (LinearMap.continuous_on_pi _) continuous_id`. Establish `: LocallyCompactSpace (Wp (Af F) σ J P)` using `cW.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Establish `: SecondCountableTopology (Wp (Af F) σ J P)` using `TopologicalSpace.secondCountableTopology_induced _ _ Subtype.val`. Establish `: BorelSpace (Wp (Af F) σ J P)` using `Subtype.borelSpace _`. Establish `: BorelSpace (Fin r → Wp (Af F) σ J P)` using `Pi.borelSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: BorelSpace ((Fin r → Wp (Af F) σ J P) × Z)` using `Prod.borelSpace`. Establish `: BorelSpace (A × ((Fin r → Wp (Af F) σ J P) × Z))` using `Prod.borelSpace`. Set `μA : Measure A` to `Measure.haar`. Set `μZ : Measure Z` to `Measure.haar`. Set `μW : Measure (Wp (Af F) σ J P)` to `Measure.addHaar`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μQ : Measure (Fin r → Wp (Af F) σ J P)` to `Measure.pi fun _ => μW`. Set `ρ : Measure (A × ((Fin r → Wp (Af F) σ J P) × Z))` to `μA.prod (μQ.prod μZ)`. Establish `hΨm : Measurable Ψ` using `Ψ.continuous.measurable`. Use `⟨ρ.map Ψ, ?_, ?_⟩` and prove the remaining obligations. Establish `hli : (ρ.map Ψ).IsMulLeftInvariant`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun n0 => ?_⟩` and prove the remaining obligations. Take `⟨a0, t, c, ht, hc, hform⟩` from `hleft n0`. Establish `hcomm : (fun n => n0 * n) ∘ Ψ = Ψ ∘ (fun p : A × ((Fin r → Wp (Af F) σ J P) × Z) => (a0 * p.1, (p.2.1 + t p.1, c (p.1, p.2.1) * p.2.2)))`. Use function extensionality and compare the values at `⟨u, y, z⟩`. Conclude with `hform u y z`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinner : ∀ u : A, MeasurePreserving (fun q : (Fin r → Wp (Af F) σ J P) × Z => (q.1 + t u, c (u, q.1) * q.2)) (μQ.prod μZ) (μQ.prod μZ)`. Introduce `u`. Use `(measurePreserving_add_right μQ (t u)).skew_product (g := fun y z => c (u, y) * z) ?_ (Filter.Eventually.of_forall fun y => map_mul_left_eq_self μZ (c (u, y)))` and prove the remaining obligations. Conclude with `(show Continuous fun q : (Fin r → Wp (Af F) σ J P) × Z => c (u, q.1) * q.2 from (hc.comp (continuous_const.prodMk continuous_fst)).mul continuous_snd).measurable`. Establish `hgm : Continuous fun p : A × ((Fin r → Wp (Af F) σ J P) × Z) => (p.2.1 + t p.1, c (p.1, p.2.1) * p.2.2)` using `(continuous_snd.fst.add (ht.comp continuous_fst)).prodMk ((hc.comp (continuous_fst.prodMk continuous_snd.fst)).mul continuous_snd.snd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : MeasurePreserving (fun p : A × ((Fin r → Wp (Af F) σ J P) × Z) => (a0 * p.1, (p.2.1 + t p.1, c (p.1, p.2.1) * p.2.2))) ρ ρ` using `(measurePreserving_mul_left μA a0).skew_product (g := fun (u : A) (q : (Fin r → Wp (Af F) σ J P) × Z) => (q.1 + t u, c (u, q.1) * q.2)) hgm.measurable (Filter.Eventually.of_forall fun u => (hinner u).map_eq)`. Rewrite using `[Measure.map_map (measurable_const_mul n0) hΨm, hcomm, ← Measure.map_map hΨm hT.measurable, hT.map_eq]`. Establish `hfc : IsFiniteMeasureOnCompacts (ρ.map Ψ)` using `Measure.IsFiniteMeasureOnCompacts.map ρ Ψ`. Establish `hop : (ρ.map Ψ).IsOpenPosMeasure` using `Ψ.continuous.isOpenPosMeasure_map Ψ.surjective`. Use `hfc` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hli` as an intermediate fact. Use `hop` as an intermediate fact. Conclude with `Measure.IsHaarMeasure.mk`. Introduce `f hf`. Establish `hF : Measurable fun n : Nsub (Af F) σ J P => f (h * (n : HA (Af F) σ J) * h⁻¹)` using `hf.comp ((continuous_const.mul continuous_subtype_val).mul continuous_const).measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : Measurable fun n : Nsub (Af F) σ J P => f (n : HA (Af F) σ J)` using `hf.comp continuous_subtype_val.measurable`. Establish `hlinm : Measurable (linWp hh)` using `(((LinearMap.continuous_on_pi (lin (Af F) σ J h)).comp continuous_subtype_val).subtype_mk _).measurable`. Set `Lq : (Fin r → Wp (Af F) σ J P) → (Fin r → Wp (Af F) σ J P)` to `fun y a => linWp hh (y a)`. Establish `hLq : MeasurePreserving Lq μQ μQ` using `measurePreserving_pi (fun _ => μW) (fun _ => μW) (fun _ => ⟨hlinm, wp_map hσσ hJ hP hV hh μW inferInstance⟩)`. Establish `hT : MeasurePreserving (Prod.map id (Prod.map Lq id)) ρ ρ` using `(MeasurePreserving.id μA).prod (hLq.prod (MeasurePreserving.id μZ))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[lintegral_map hF hΨm, lintegral_map hF0 hΨm]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `⟨u, y, z⟩`. Take `⟨y', hy', he⟩` from `hconj h hh u y z`.
-
-Establish `e2 : y' = Lq y` using `funext fun a => Subtype.ext (hy' a)`. Use `show f (h * (Ψ (u, y, z) : HA (Af F) σ J) * h⁻¹) = f (Ψ (u, Lq y, z) : HA (Af F) σ J)`. Rewrite using `[he, e2]`. Use `_ = ∫⁻ p, f (Ψ p : HA (Af F) σ J) ∂ρ := hT.lintegral_comp (show Measurable fun p => f (Ψ p : HA (Af F) σ J) from hf.comp (continuous_subtype_val.comp Ψ.continuous).measurable)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjNH_of (hC : NCoord F E σ M J) (hV : PI.LevelKSplit.W.CD.ModV F E σ M J) :
     PI.LevelKSplit.W.ExS.ConjNH F E σ M J := by
@@ -164,14 +162,14 @@ theorem conjNH_of (hC : NCoord F E σ M J) (hV : PI.LevelKSplit.W.CD.ModV F E σ
             hf.comp (continuous_subtype_val.comp Ψ.continuous).measurable)
 
 /- English proof (translation)
-Introduce `hC hV` and use `conjNH_of hC hV`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem normal_conjugation_hypothesis : NCAsm F E σ M J := fun hC hV => conjNH_of hC hV
 
 end Af
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Conclude with `normal_conjugation_hypothesis`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normal_conjugation_all : NCAsmAll := by
   intro F E _ _ _ _ _ σ hσ M J hJ

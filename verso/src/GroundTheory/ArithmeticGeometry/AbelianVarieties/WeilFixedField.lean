@@ -11,7 +11,7 @@ variable {F : Type u} [Field F] [DecidableEq F] [IsAlgClosed F] (W : Weierstrass
   [W.IsElliptic]
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun ψ => Point.map ψ (genericPoint W)) h`. Simplify using `only [map_translate_genericPoint, add_right_inj] at e`. Conclude with `Point.map_injective (W' := W) (f := Algebra.ofId F W.toAffine.FunctionField) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem translate_inj {S S' : W.toAffine.Point} (h : translate W S = translate W S') : S = S' := by
   have e := congrArg (fun ψ => Point.map ψ (genericPoint W)) h
@@ -51,9 +51,9 @@ noncomputable def torsionTranslations {n : ℤ} (hn0 : n ≠ 0) :
     exact σ.apply_symm_apply f
 
 /- English proof (translation)
-Rewrite using `[← card_zsmul_eq_zero W hn]`. Use `symm`. Use `Nat.card_congr (Equiv.ofBijective (fun S => ⟨translateEquiv W hn0 S.1 S.2, S.1, S.2, fun _ => rfl⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨S, hS⟩ ⟨S', hS'⟩ h`. Establish `h' : translate W S = translate W S'` using `AlgHom.ext fun f => DFunLike.congr_fun (congrArg Subtype.val h) f`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (translate_inj W h')`. Introduce and unpack `⟨σ, S, hS, hσ⟩`. Conclude with `⟨⟨S, hS⟩, Subtype.ext (AlgEquiv.ext fun f => (hσ f).symm)⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_torsionTranslations {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0) :
     Nat.card (torsionTranslations W hn0) = n.natAbs ^ 2 := by
@@ -69,15 +69,13 @@ theorem card_torsionTranslations {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0) 
     exact ⟨⟨S, hS⟩, Subtype.ext (AlgEquiv.ext fun f => (hσ f).symm)⟩
 
 /- English proof (translation)
-Use `set M := mulPullbackField W hn0`. Use `set H := torsionTranslations W hn0`. Establish `hdeg : Module.finrank M W.toAffine.FunctionField = n.natAbs ^ 2` using `degree_mulIsogeny W hn0`. Establish `hpos : 0 < n.natAbs ^ 2` using `pow_pos (Int.natAbs_pos.mpr hn0) 2`. Establish `: FiniteDimensional M W.toAffine.FunctionField` using `Module.finite_of_finrank_pos (by rw [hdeg]; exact hpos)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : Module.finrank (IntermediateField.fixedField H) W.toAffine.FunctionField = n.natAbs ^ 2`. Rewrite using `[IntermediateField.finrank_fixedField_eq_card, card_torsionTranslations W hn hn0]`. Establish `hone : Module.finrank M (IntermediateField.fixedField H) = 1`. Establish `: Module.Free M (IntermediateField.fixedField H)` using `Module.Free.of_divisionRing _ _`. Establish `: Module.Free (IntermediateField.fixedField H) W.toAffine.FunctionField` using `Module.Free.of_divisionRing _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Module.finrank_mul_finrank M (IntermediateField.fixedField H) W.toAffine.FunctionField` as an intermediate fact. Rewrite `this` using `[hfix, hdeg]`. Conclude with `(Nat.mul_eq_right hpos.ne').mp this`. Establish `hbot : IntermediateField.fixedField H = ⊥` using `IntermediateField.finrank_eq_one_iff.mp hone`. Establish `hg : g ∈ IntermediateField.fixedField H`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨σ, S, hS, hσ⟩`. Conclude with `(hσ g).trans (h S hS)`. Rewrite `hg` using `[hbot, IntermediateField.mem_bot]`. Take `⟨⟨m, hm⟩, rfl⟩` from `hg`. Take `⟨f, rfl⟩` from `AlgHom.mem_fieldRange.mp hm`.
-
-Conclude with `⟨f, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mulPullback_eq_of_forall_translate_eq {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0)
     {g : W.toAffine.FunctionField} (h : ∀ S : W.toAffine.Point, n • S = 0 → translate W S g = g) :

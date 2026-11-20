@@ -22,7 +22,7 @@ theorem formOfFamily_apply (φ : J → J → (𝓞 E →ₗ[ℤ] ℤ)) (y z : J 
     formOfFamily H J φ y z = ∑ i, ∑ j, φ i j (H.bar (y i) * z j) := rfl
 
 /- English proof (translation)
-Introduce `a y z`. Simplify using `only [formOfFamily_apply, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Put the polynomial expressions in normal form.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Put the polynomial expressions in normal form.
 -/
 theorem formOfFamily_mem (φ : J → J → (𝓞 E →ₗ[ℤ] ℤ)) : formOfFamily H J φ ∈ balBil H.bar (J → 𝓞 E) := by
   intro a y z
@@ -63,7 +63,7 @@ def balBilEquiv : balBil H.bar (J → 𝓞 E) ≃ₗ[ℤ] (J → J → (𝓞 E �
     · simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H J _ _`. Rewrite using `[(balBilEquiv H J).finrank_eq, Module.finrank_pi_fintype]`. Simplify using `only [Module.finrank_pi_fintype, Module.finrank_linearMap, Module.finrank_self, mul_one, NumberField.RingOfIntegers.rank, Finset.sum_const, Finset.card_univ, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_balBil_pi : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (J : Type) [Fintype J]
     [DecidableEq J], Module.finrank ℤ (GlobalTheory.BalRank.balBil H.bar (J → 𝓞 E)) =

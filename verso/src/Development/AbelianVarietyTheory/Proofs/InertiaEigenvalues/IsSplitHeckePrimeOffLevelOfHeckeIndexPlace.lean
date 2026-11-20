@@ -11,9 +11,9 @@ set_option autoImplicit false
 namespace GlobalTheory.HeckeIndexPrime
 
 /- English proof (translation)
-Introduce `D T0 hL i k P hk`. Take `⟨_, _, hsp, hS⟩` from `hk`. Use `⟨⟨P.isMaximal, GlobalTheory.HeckeSup.split_of_ne ((GlobalTheory.HeckeTieCompare.isSplitPl_iff P).1 hsp), charAt_prime P, charAt_mem P, GlobalTheory.HeckeSup.not_dvd_level hL (charAt_mem P) (GlobalTheory.HeckeTieCompare.level_notMem ⟨i, hS⟩)⟩, ?_⟩` and prove the remaining obligations. Introduce `he`. Apply `hS` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hm : P ∈ Formalism.BasicNotions.placesOver D.host.E (D.ntw.l i)` using `by show ((D.ntw.l i : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal`. Rewrite using `[← he]`. Conclude with `charAt_mem P`. Conclude with `D.ntw.twistExcludedPlaces_contains_residueChar i hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHeckePrime_of_hkIdx : ∀ (D : D7) (T0 : CoreJ D), LawsJ T0 → ∀ (i : D.ntw.Tw) (k : ℕ) (P : PlE D.host),
     Formalism.MainNotions.IntegralHeckeForms.HkIdx (X := D.ntw) i k P →

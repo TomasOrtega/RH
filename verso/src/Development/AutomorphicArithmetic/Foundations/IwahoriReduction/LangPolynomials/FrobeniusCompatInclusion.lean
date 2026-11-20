@@ -123,7 +123,7 @@ def IntZero (φ : DirichletCharacter (Qbar l) l) (k : ℕ) (L : PowerSeries (Qba
   ∀ n : ℕ, ∃ r₁, ∀ r, r₁ ≤ r → ∀ ξ : Qbar l, IsPrimitiveRoot ξ (l ^ r) → Cg (n + r) (intg φ k L r ξ) 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => zero_mem _, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem iwI_zero (c : Coef l) (A : ValuationSubring Ω) : IwI c A (fun _ _ _ => 0) :=
   ⟨fun _ _ _ _ => zero_mem _, by simp, by simp⟩

@@ -7,11 +7,11 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Establish `h : ∀ w' ∈ (Finset.univ : Finset ι), HasDerivAt (fun t : ℝ => K w' * (b w' + (Pi.single w t : ι → ℝ) w') ^ 2 + r w') (if w' = w then 2 * K w * b w else 0) 0`. Introduce `w' _`. Distinguish the cases in `hw : w' = w`. Substitute `hw` using the available equality. Simplify using `only [Pi.single_eq_same, if_true]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `h0 : HasDerivAt (fun t : ℝ => b w' + t) 1 0` using `(hasDerivAt_id (0 : ℝ)).const_add (b w')`. Use `(((h0.fun_pow 2).const_mul (K w')).add_const (r w')).congr_deriv ?_` and prove the remaining obligations. Simplify using `only [add_zero, Nat.add_one_sub_one, pow_one, mul_one, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.single_eq_of_ne hw, if_neg hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Conclude with `hasDerivAt_const _ _`. Use `HasDerivAt.fun_sum h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem hasDerivAt_sumq {ι : Type} [Fintype ι] [DecidableEq ι] (K b r : ι → ℝ) (w : ι) :
     HasDerivAt (fun t : ℝ => ∑ w', (K w' * (b w' + (Pi.single w t : ι → ℝ) w') ^ 2 + r w')) (2 * K w * b w) 0 := by
@@ -31,19 +31,17 @@ private theorem hasDerivAt_sumq {ι : Type} [Fintype ι] [DecidableEq ι] (K b r
   simpa using this
 
 /- English proof (translation)
-Take `⟨-, -, hp, -, h0, -, -, -⟩` from `atLaws F w`. Use `set p := TR.pInf F with hpdef`. Set `Kf : InfinitePlace F → ℝ` to `fun w' => ![1, 1, 2, -2 * p (rt δ) w'] i`. Set `bf : InfinitePlace F → ℝ` to `fun w' => p (v i) w'`. Set `Q : V4 F → A F` to `fun u => u 0 ^ 2 + u 1 ^ 2 + 2 * (u 2 ^ 2 - rt δ * u 3 ^ 2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `rf : InfinitePlace F → ℝ` to `fun w' => p (Q v) w' - Kf w' * bf w' ^ 2`. Establish `hQ : ∀ (t : ℝ) w', p (Q (v + Pi.single i (at1 w t))) w' = Kf w' * (bf w' + (Pi.single w t : InfinitePlace F → ℝ) w') ^ 2 + rf w'`. Introduce `t w'`. Establish `h2 : p (2 : A F) w' = 2`. Rewrite using `[map_ofNat]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Apply the tactic sequence `fin_cases i <;> simp [Q, Kf, bf, rf, hp, h2, map_add, map_mul, map_pow, map_sub, Pi.single_apply] <;> ring`. Apply the tactic sequence `have hK : kap δ w i = ((Kf w : ℝ) : ℂ) := by fin_cases i <;> simp [kap, Kf, cw, hpdef]`. Establish `hfun : (fun t : ℝ => gauss δ (v + Pi.single i (at1 w t))) = fun t : ℝ => Complex.exp (-(Real.pi : ℂ) * ((∑ w', (Kf w' * (bf w' + (Pi.single w t : InfinitePlace F → ℝ) w') ^ 2 + rf w') : ℝ) : ℂ))`. Use function extensionality and compare the values at `t`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [← hQ]`. Both sides reduce to the same expression. Establish `hC : HasDerivAt (fun t : ℝ => ((∑ w', (Kf w' * (bf w' + (Pi.single w t : InfinitePlace F → ℝ) w') ^ 2 + rf w') : ℝ) : ℂ)) ((2 * Kf w * bf w : ℝ) : ℂ) 0` using `(hasDerivAt_sumq Kf bf rf w).ofReal_comp`. Establish `hX` using `(hC.const_mul (-(Real.pi : ℂ))).cexp`. Establish `e0 : v + Pi.single i (at1 w 0) = v`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `hval` using `(congrArg (gauss δ) e0).symm.trans (congrFun hfun 0)`. Rewrite using `[hfun]`. Use `hX.congr_deriv ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce at hval ⊢`. Rewrite using `[← hval, hK]`. Establish `hb : cw w (v i) = ((bf w : ℝ) : ℂ)` using `rfl`. Rewrite using `[hb]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem gauss_deriv {F : Type} [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (v : V4 F) (w : InfinitePlace F) (i : Fin 4) :
     HasDerivAt (fun t : ℝ => gauss δ (v + Pi.single i (at1 w t)))
@@ -85,15 +83,15 @@ private theorem gauss_deriv {F : Type} [Field F] [NumberField F] [IsTotallyReal 
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ δ O φ hφ w i`. Take `⟨-, -, -, -, -, -, -, hfin⟩` from `atLaws F w`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Establish `hg` using `gauss_deriv δ v w i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hne : gauss δ v ≠ 0` using `Complex.exp_ne_zero _`. Establish `hf : ∀ t : ℝ, finPartPi (v + Pi.single i (at1 w t)) = finPartPi v`. Introduce `t`. Use `hfin t i` as an intermediate fact. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hj` using `congrFun this j`. Simplify using `only [finPartPi] at hj ⊢`. Simplify using `[hj]`. Establish `h1 : (fun t : ℝ => φ.1 (v + Pi.single i (at1 w t))) = fun t : ℝ => (φ.1 v / gauss δ v) * gauss δ (v + Pi.single i (at1 w t))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hφ (v + Pi.single i (at1 w t)) v (hf t)` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Conclude with `this`. Establish `hd` using `O.d_spec w i φ v`. Rewrite `hd` using `[h1]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu` using `hd.unique (hg.const_mul (φ.1 v / gauss δ v))`. Express the relevant statement in the definitionally equal form `_ = (-2 * Real.pi * kap δ w i) * (O.x w i φ).1 v`. Rewrite using `[hu, O.x_apply]`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.vacAnn :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F) (O : Ops F), ∀ φ ∈ Vac δ, ∀ w i, O.d w i φ = (-2 * Real.pi * kap δ w i) • O.x w i φ := by

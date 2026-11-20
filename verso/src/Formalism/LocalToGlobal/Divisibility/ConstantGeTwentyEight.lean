@@ -121,19 +121,17 @@ def DivClausesR {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCoreR Df0 Df
       2 * ∑ᶠ w : HeightOneSpectrum (𝓞 K), lw w * (shiftZ sg w : ℝ)
 
 /- English proof (translation)
-Establish `hc` using `S.l1c`. Establish `hb` using `S.l1b`. Establish `hsc : ∀ v p, IsScalarOn (Df.XQ Bs.μ0) S.XE v (S.ι Bs.μ0) (Df.Qp Bs.μ0 p) (S.κ v * ∏ j, S.lam j Bs.μ0 p v)` using `fun v p => by`. Rewrite using `[← S.Qpart_base p]`. Conclude with `hc.2.2.2 Bs.μ0 v (Or.inl rfl) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Hv` using `fun v => complex_height_cast_at height_constant_bound ch.c ch.c0 (S.dQ_eq Bs.μ0) (Dc.Xc u) ch.X ch.X_unit ch.X_zero ch.Kj (Df.HV Bs.μ0) X0 hX0 (Df.Pq Bs.μ0) (wf.Pq_surj _) (Df.XQ Bs.μ0) (wf.XQ_quot _) S.XE S.frames (S.ι Bs.μ0) (hc.1 _) Bs.Ix Bs.J (Df.Qp Bs.μ0) wf.Qp_top S.κ (fun …`. Establish `h1` using `hb.1 u Bs.μ0 φ F`. Rewrite `h1` using `[hb.2.1 u, one_mul]`. Rewrite using `[← h1]`. Conclude with `ch.fact φ F)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `hne (fun _ => Real.exp (hP / 2)) (fun j v => Real.exp ((∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) / 2))`. Use the proof step `(fun v => le_exp_half (nP v)) (fun j v => le_exp_half (nK j v)) v`. Simplify using `only [log_exp_half_sq] at Hv`. Use `⟨Hv, ?_⟩` and prove the remaining obligations. Establish `hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Establish `h2 : ∑ j, N.l6 j ≤ (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))`. Establish `h3 : ∑ _v : InfinitePlace K, ∑ j, N.l6 j ≤ ∑ v, minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))` using `Finset.sum_le_sum fun v _ => S.log_eigenvalue_sum_le_min v`. Rewrite `h3` using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[one_div, le_inv_mul_iff₀ (by exact hn)]`. Conclude with `h3`. Establish `h4 : (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v) = hP + ∑ j, (∑ v, hK j v) / (Fintype.card (InfinitePlace K) : ℝ)`. Establish `e1 : ∀ v, ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v = ∑ j, hK j v` using `fun v => Finset.sum_fiberwise Finset.univ ch.lf (fun l => hK l v)`. Simplify using `only [e1]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Finset.sum_comm, ← Finset.sum_div]`. Clear the denominators using the available nonvanishing facts. Establish `e : (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => ch.lf l = j), hK l v - Real.log (S.κ v) - minOver (fun p => ∑ j, Real.log (S.lam j Bs.μ0 p v))) = (1 / (Fintype.card (InfinitePlace K) : ℝ)) * ∑ v, (hP + ∑ j, ∑ l ∈ Finset.univ.fil …`. Simplify using `only [meanLog, Finset.sum_sub_distrib]`. Use `show _ = _ - _ - (1 / (Fintype.card (InfinitePlace K) : ℝ)) * _`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, h4]`. Combine the linear relations using `[h2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem height_chain_atR {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [Nonempty Bs.Ix] (wf : Df.WF)
     (S : IndefColsR Df Dc Sp N) (u : Dc.Mem) (hne : S.col.B u ≠ 0)
@@ -197,25 +195,23 @@ theorem height_chain_atR {Df : DefSide Bs} {Dc : DefCols Df} {Sp : SPer Dc} [Non
   linarith [h2]
 
 /- English proof (translation)
-Establish `: Nonempty Bs.Ix` using `nonempty_Ix wf0 P.base.pos`. Establish `hsh` using `shiftEx K (Dc.a u) Nu I.Nu_lat (shiftZ sg) I.sg_fin`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `P.cols.intoDual divIntoDualShift latticeGlue wf1 u Nu (shiftLat Nu sg) sg (shiftZ sg) I.val2 (fun w => Int.floor_le_ceil _) hsh.1`. Establish `hX` using `fun v => OperatorNormFrames.opNormAt_nonneg (Pi.basisFun K (Fin (Dc.a u))) (Dc.Xc u) (Pi.basisFun K (Fin P.cols.D)).dualBasis (Formalism.HN.dualFrame P.cols.XE) v (P.cols.col.B u)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hne : P.cols.col.B u = 0`. Use `exists_cu _ (fun _ => R.hu - meanLog P.cols.κ) _ hX (fun v => Or.inl ?_) (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hne]`. Simplify using `[Formalism.HN.opNormAt]`. Establish `hn : (0 : ℝ) < (Fintype.card (InfinitePlace K) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < Fintype.card (InfinitePlace K)` using `Fintype.card_pos`. Conclude with `this` after adjusting the coercions. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `nK` using `nK_of_cb I.cb (fun j v => ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v) I.nKcb`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Hv, Hm⟩` from `height_chain_atR wf1 P.cols u hne I.X0 I.base_matrix_det_unit I.ch I.hn.hPn I.hn.sz I.nP nK`. Establish `h1` using `I.hn.le_hu (∑ j, N.l6 j) I.eig6`. Use `exists_cu _ (fun v => I.hn.hPn + ∑ j, ∑ l ∈ Finset.univ.filter (fun l => I.ch.lf l = j), I.hn.sz l v - Real.log (P.cols.κ v) - minOver (fun p => ∑ j, Real.log (P.cols.lam j Bs.μ0 p v))) _ hX (fun v => Or.inr (Hv v)) ?_` and prove the remaining obligations. Combine the linear relations using `[Hm, h1]`. Establish `hB` using `P.base.boundsMu Formalism.DivisorInequality.boundsMu specDet reduction_lemma_zero latticeGlue ramBasic wf0 P.extra.untw I.eb I.heb I.Sy I.Sy_tw I.G0 I.LG I.E3 I.E2 I.gy I.ηy I.bi I.bLG I.biv I.borderedMinorImage I.twisted_third_sum_le`.
+Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `de0 : 0 ≤ N.de` using `I.de0`. Establish `deQ : 3 * N.de * I.Q ≤ 1` using `I.deQ`. Establish `de3 : N.de ≤ 1 / 3` using `by nlinarith [I.Q1]`. Establish `hp` using `(P.extra.passage de0 de3 _ P.extra.fun0).2`. Establish `hκ : P.cols.κ = P.base.κ` using `P.extra.level.2.1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set mu0 : ℝ := P.base.muCC - meanLog P.base.κ with hmu0def`. Establish `hmu0 : mu0 ≤ boundBR P I.LG I.E3 I.E2`. Establish `: P.base.muCC ≤ meanLog P.base.κ + (∑ j, N.l3 j) + 2 * (∑ j, ∑ y ∈ P.base.Tw, lw y * ((ramw y : ℝ) * N.F0 y j)) + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3` using `hB`. Simplify using `only [boundBR, FoOfR, hmu0def]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpass : 3 * N.de * (mu0 + N.hh + 28 * N.la) + 28 * N.la ≤ 1 + R.C0 * (R.m * R.lam0)`. Establish `h1 : 3 * N.de * (mu0 + N.hh + 28 * N.la) ≤ 3 * N.de * I.Q` using `mul_le_mul_of_nonneg_left (by linarith [I.Qb]) (by linarith)`. Establish `h2 : 28 * R.lam0 ≤ R.C0 * (R.m * R.lam0)`. Establish `h3 : R.lam0 ≤ R.m * R.lam0` using `by nlinarith [R.p14, R.p35]`. Use polynomial arithmetic with `[I.constant_ge_twenty_eight, R.p35, R.c1]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[I.la_le]`. Establish `hC : P.cols.muCC - meanLog P.cols.κ ≤ mu0 + (3 * N.de * (mu0 + N.hh + 28 * N.la) + 28 * N.la)`. Rewrite using `[hκ, hmu0def]`. Establish `: P.cols.muCC ≤ P.base.muCC + 3 * N.de * (P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la) + 28 * N.la` using `hp`. Establish `e : P.base.muCC + (N.hh - meanLog P.base.κ) + 28 * N.la = P.base.muCC - meanLog P.base.κ + N.hh + 28 * N.la` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hM : mu0 ≤ (∑ j, ∑ ρ, R.pq j * R.w j ρ * R.logOm) + 2 * FoOfR P + (I.El3 + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3)`. Establish `h1` using `I.L3main`. Establish `h2 : boundBR P I.LG I.E3 I.E2 = (∑ j, N.l3 j) + 2 * FoOfR P + I.LG + (∑ j, (N.E1 j + I.E2 j)) + I.E3` using `rfl`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `R.divIneq _ mu0 (FoOfR P) _ _ hC hM hpass I.errB`. Conclude with `((shiftMu K (Dc.a u) (Dc.Xc u) I.Xc_unit Nu (shiftLat Nu sg) I.Nu_lat hsh.2.1 (shiftZ sg) hsh.1).2 I.a_pos).2`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem divClausesR_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableEq Pl] (wf0 : Df0.WF) (wf1 : Df1.WF)
     (P : IndefCoreR Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl) (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K))
@@ -283,7 +279,7 @@ theorem divClausesR_of [IsTotallyComplex K] {Pl : Type} [Fintype Pl] [DecidableE
     exact ((shiftMu K (Dc.a u) (Dc.Xc u) I.Xc_unit Nu (shiftLat Nu sg) I.Nu_lat hsh.2.1 (shiftZ sg) hsh.1).2 I.a_pos).2
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem divClausesR_toR {Pl : Type} [Fintype Pl] [DecidableEq Pl] (P : IndefCore Df0 Df1 Dc Sp N) (R : RecNums Bs.J Pl)
     (u : Dc.Mem) (Nu : Submodule (𝓞 K) (Fin (Dc.a u) → K)) (sg : HeightOneSpectrum (𝓞 K) → ℝ) :
@@ -302,7 +298,7 @@ section ConcreteR
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
 /- English proof (translation)
-The claim follows from `divClausesR_of (A.side_WF hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) (A.side_WF hOk P1 ψ1 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core R u Nu sg I`.
+A detailed English derivation is pending.
 -/
 theorem linkDIV_L2R_clauses [IsTotallyComplex K] (A : FamIn K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* Kˣ)
@@ -326,7 +322,7 @@ variable {X : Fields} {Pr : Primes X} {Rk : Ranks} {W : Wts X Pr.Word Rk} {Ch : 
   {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {m : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨divClausesR_of (A.side_WF hOk P0 ψ0 Pk.Zs Pk.stable Pk.inBlock hsep) (A.side_WF hOk P1 ψ1 Pk.Zs Pk.stable Pk.inBlock hsep) Pk.core R x Nu sg I, FirstCols.chain hE h0, fun φ F => (I.ch.fact φ F).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem linkDIV_L2R [IsTotallyComplex X.K] (A : FamIn X.K G Pl0 T m) {s : ℕ} (hOk : A.fam.Ok s) (hsep : A.fam.TypesSep)
     (P0 : Subgroup G) (ψ0 : P0 →* X.Kˣ) (P1 : Subgroup G) (ψ1 : P1 →* X.Kˣ) (hX : X.Ok)

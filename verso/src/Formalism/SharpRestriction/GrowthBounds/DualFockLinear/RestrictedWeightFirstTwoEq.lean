@@ -9,13 +9,13 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 open Formalism.L2.G.Model (Nv)
 
 /- English proof (translation)
-Establish `hN : ∀ (b : Bool) (c : Fin (m + 1)), map f (Formalism.L2.G.Model.Nv R m b c) = Formalism.L2.G.Model.Nv R' m b c`. Introduce `b c`. Consider the cases of `b`. Simplify using `only [Formalism.L2.G.Model.Nv, Bool.false_eq_true, if_false]`. Establish `hg : Formalism.L2.G.Model.genM R' m = (map f : MvPolynomial (Fin (m + 1) × Fin (m + 1)) R →+* _).mapMatrix (Formalism.L2.G.Model.genM R m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a u`. Simplify using `[Formalism.L2.G.Model.genM]`. Rewrite using `[hg, ← RingHom.map_adjugate]`. Both sides reduce to the same expression. Simplify using `[Formalism.L2.G.Model.Nv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Establish `key : (map f).comp (thAll R n' m vec).toRingHom = (thAll R' n' m vec).toRingHom.comp (map f)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[thAll]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[thAll, blockEmb, map_rename, hN]`. Conclude with `RingHom.congr_fun key P`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_thAll {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (n' m : ℕ) (vec : Fin n' → Bool)
     (P : MvPolynomial (Fin n' × Fin (m + 1)) R) :
@@ -41,9 +41,9 @@ theorem map_thAll {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') (n' 
   exact RingHom.congr_fun key P
 
 /- English proof (translation)
-Establish `hle : lam0 s 1 ≤ lam0 s 0` using `hdom s (Fin.zero_le _)`. Establish `h10 : (1 : Fin (m + 1)) ≠ 0`. Rewrite using `[Ne, Fin.one_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers. Establish `ht` using `Int.toNat_of_nonneg (sub_nonneg.mpr hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [restW, flW, dT, flatDeg, hs, if_true, Pi.sub_apply, Pi.single_eq_same, Pi.single_eq_of_ne h10]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem restricted_weight_first_two_eq {n' m : ℕ} (hm : 1 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0)
     (s : Fin n') (hs : s ∈ TT) : restW TT lam0 s 0 = restW TT lam0 s 1 := by
@@ -56,11 +56,11 @@ theorem restricted_weight_first_two_eq {n' m : ℕ} (hm : 1 ≤ m) (TT : Finset 
   omega
 
 /- English proof (translation)
-Establish `hodd : ¬ Even (s : ℕ)` using `by simpa [vecE] using hv`. Establish `htl` using `t.isLt`. Establish `hr : restW TT lam0 s t.rev = restW TT lam0 s 0`. Establish `hv' : t.rev.val ≤ 1`. Rewrite using `[Fin.val_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Break down `Nat.le_one_iff_eq_zero_or_eq_one.mp hv' with h | h` into its components or cases. Establish `e : t.rev = 0` using `Fin.ext (by rw [h, Fin.val_zero])`. Rewrite using `[e]`. Establish `e : t.rev = 1`.
+Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[h, Fin.val_one', Nat.mod_eq_of_lt (by omega)]`. Rewrite using `[e, restricted_weight_first_two_eq hm TT lam0 hdom s hs]`. Simplify using `only [nuOf, lamAt, hodd, if_false, Fin.rev_last, hr]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem nu_odd {n' m : ℕ} (hm : 1 ≤ m) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (m + 1) → ℤ) (hdom : IsDominant lam0)
     (s : Fin n') (hs : s ∈ TT) (hv : vecE n' s = false) (t : Fin (m + 1)) (ht : m ≤ t.val + 1) :

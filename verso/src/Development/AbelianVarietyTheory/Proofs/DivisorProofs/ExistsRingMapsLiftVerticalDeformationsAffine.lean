@@ -18,13 +18,11 @@ namespace GlobalTheory.CompHS
 open TrivSqZeroExt in
 
 /- English proof (translation)
-Use `⟨PrimeSpectrum.comap (inlHom S S) s, ?_⟩` and prove the remaining obligations. Use `show PrimeSpectrum.comap _ (PrimeSpectrum.comap _ s) = s`. Use extensionality with `x`. Establish `hr : inr x.snd ∈ s.asIdeal` using `s.2.mem_of_pow_mem 2 (by`. Apply the tactic sequence `rw [show (inr x.snd : DualNumber S) ^ 2 = 0 by ext <;> simp [pow_two]]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Conclude with `s.asIdeal.zero_mem)`. Simplify using `only [PrimeSpectrum.comap_asIdeal, Ideal.mem_comap]`. Express the relevant statement in the definitionally equal form `inl x.fst ∈ s.asIdeal ↔ x ∈ s.asIdeal`. Establish `e1 : inl x.fst + inr x.snd = x` using `inl_fst_add_inr_snd_eq x`. Establish `e2 : inl x.fst = x - inr x.snd` using `eq_sub_of_add_eq e1`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[← e1]`. Conclude with `s.asIdeal.add_mem h hr`. Introduce `h`.
-
-Rewrite using `[e2]`. Conclude with `s.asIdeal.sub_mem h hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spMap_fst_eq {S : Type} [CommRing S] (s : Sp (DualNumber S)) :
     ∃ t : Sp S, spMap (fstHom S S S).toRingHom t = s := by
@@ -47,7 +45,7 @@ theorem exists_spMap_fst_eq {S : Type} [CommRing S] (s : Sp (DualNumber S)) :
     exact s.asIdeal.sub_mem h hr
 
 /- English proof (translation)
-Introduce `s _`. Take `⟨t, rfl⟩` from `exists_spMap_fst_eq s`. Conclude with `h (Set.mem_univ t)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_preimage_of_fst {S : Type} [CommRing S] {T : Scheme.{0}} (x : Sp (DualNumber S) ⟶ T) (V : T.Opens)
     (h : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ x) ⁻¹ᵁ V) : ⊤ ≤ x ⁻¹ᵁ V := by
@@ -60,13 +58,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw))
 
 /- English proof (translation)
-Establish `e : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ X.ptY v = z ≫ toFlag M` using `(X.ptY_frMap hv).trans hz.symm`. Establish `hU : ⊤ ≤ (z ≫ M.σ) ⁻¹ᵁ U₀ X Z` using `fun s _ => by`. Use `ho (Set.mem_univ s)` as an intermediate fact. Rewrite `this` using `[M.off_eq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : ⊤ ≤ X.ptY v ⁻¹ᵁ (inc₀ X Z).opensRange` using `le_preimage_of_fst _ _ (by`. Rewrite using `[e]`. Introduce and unpack `s -`. Conclude with `⟨(z ≫ M.σ) s, rfl⟩)`. Establish `hr : Set.range (X.ptY v) ⊆ Set.range (inc₀ X Z)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `hb (Set.mem_univ s)`. Take `⟨w, hw⟩ : ∃ w, w ≫ inc₀ X Z = X.ptY v` from `⟨_, IsOpenImmersion.lift_fac _ _ hr⟩`. Establish `ered : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w = z ≫ M.σ`. Rewrite using `[← cancel_mono (inc₀ X Z), Category.assoc, hw, e, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hwU : ⊤ ≤ w ⁻¹ᵁ U₀ X Z` using `le_preimage_of_fst _ _ (by rw [ered]; exact hU)`. Take `⟨zv, hzv, -⟩` from `M.existsUnique_lift w hwU`. Establish `hred : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ zv = z` using `(M.existsUnique_lift (z ≫ M.σ) hU).unique (by rw [Category.assoc, hzv, ered]) rfl`. Use `⟨zv, ?_, hred⟩` and prove the remaining obligations. Rewrite using `[toFlag, ← Category.assoc, hzv, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dualLift {S : Type} [CommRing S] [Algebra c.F S] {Q : FrPt Xo c S} {v : FrPt Xo c (DualNumber S)}
     (hv : FrMap (TrivSqZeroExt.fstHom c.F S S) v Q) {z : Sp S ⟶ M.X} (hz : z ≫ toFlag M = X.ptY Q)
@@ -102,9 +100,9 @@ def vertMat {S : Type} [CommRing S] (b : VIx Dw) (σ : E →+* ℂ) :
     TrivSqZeroExt.inr ((Pi.single b.toF (1 : S) : GlobalTheory.FlagTan.FIx Dw → S) (some ⟨σ, i, j⟩))
 
 /- English proof (translation)
-Establish `e : (TrivSqZeroExt.fstHom S S S).toRingHom.mapMatrix (vertMat (S` using `S) b σ) = 1 := by`. Use extensionality with `i j`. Simplify using `[vertMat]`. Rewrite using `[TrivSqZeroExt.isUnit_iff_isUnit_fst]`. Use `show IsUnit ((TrivSqZeroExt.fstHom S S S).toRingHom _)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_det, e, Matrix.det_one]`. Conclude with `isUnit_one`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_vertMat {S : Type} [CommRing S] (b : VIx Dw) (σ : E →+* ℂ) :
     IsUnit (vertMat (S := S) b σ).det := by
@@ -116,29 +114,27 @@ theorem isUnit_det_vertMat {S : Type} [CommRing S] (b : VIx Dw) (σ : E →+* �
   exact isUnit_one
 
 /- English proof (translation)
-Establish `hτo : ⊤ ≤ tau hW ⁻¹ᵁ M.off` using `tau_le hW (hle.trans inf_le_left)`. Establish `hτk : ⊤ ≤ (tau hW ≫ toFlag M) ⁻¹ᵁ X.F.U k` using `fun x hx => tau_le hW (hle.trans inf_le_right) hx`. Establish `hF : ⊤ ≤ (tau hW ≫ toFlag M) ⁻¹ᵁ flagOpen X` using `fun x hx => by`. Use `hτo hx` as an intermediate fact. Rewrite `this` using `[M.off_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨_, hch⟩` from `exists_chartFr _ hF`. Take `⟨Q₀, hQ₀⟩` from `hch k hτk`. Establish `e₀ : tau hW ≫ toFlag M = X.ptY Q₀` using `GlobalTheory.FlagMod.FlagCover.eq_ptY hQ₀.lies`. Take `⟨Q₁, hQ₁⟩` from `GlobalTheory.FlagTan.exists_frMap (TrivSqZeroExt.inlAlgHom c.F Γ(M.X, W) Γ(M.X, W)) Q₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hred : FrMap (TrivSqZeroExt.fstHom c.F Γ(M.X, W) Γ(M.X, W)) Q₁ Q₀` using `GlobalTheory.FlagTan.frMap_of_comp hQ₁ (GlobalTheory.FlagTan.frMap_id Q₀) fun _ => rfl`. Establish `hV : ∀ b : VIx Dw, ∃ V : FrPt Xo c (DualNumber Γ(M.X, W)), GlobalTheory.Frames.FrChg (vertMat b) ((1 : (DualNumber Γ(M.X, W))ˣ) : DualNumber Γ(M.X, W)) Q₁ V` using `fun b => (GlobalTheory.Frames.existsUnique_frChg E H Dw l Xo c _ Q₁ (vertMat b) 1 (isUnit_det_vertMat b)).exists`. Use `choose V hV using hV`. Establish `hVr : ∀ b, FrMap (TrivSqZeroExt.fstHom c.F Γ(M.X, W) Γ(M.X, W)) (V b) Q₀` using `fun b => by`. Use `(GlobalTheory.FlagTan.frMap_iff_frChg (hV b) hred).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `(GlobalTheory.Frames.frChg_calculus E H Dw l Xo c Γ(M.X, W)).2.1 Q₀ using 2 with σ` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[vertMat]`. Simplify using the standard rewrite rules. Use `choose zv hzv hzr using fun b => exists_dualLift M (hVr b) e₀ hτo`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzW : ∀ b, ⊤ ≤ zv b ⁻¹ᵁ W` using `fun b => le_preimage_of_fst _ _ (by rw [hzr b]; exact tau_le hW le_rfl)`. Use `⟨fun b => GlobalTheory.FlagMod.ev (zv b) W (hzW b), fun b s => ?_, ?_⟩` and prove the remaining obligations. Establish `h' : ⊤ ≤ (spMap (TrivSqZeroExt.fstHom Γ(M.X, W) Γ(M.X, W) Γ(M.X, W)).toRingHom ≫ zv b) ⁻¹ᵁ W`. Rewrite using `[hzr b]`. Conclude with `tau_le hW le_rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `GlobalTheory.FlagMod.ev_spMap _ (zv b) W (hzW b) h'`. Rewrite `h1` using `[GlobalTheory.FlagMod.ev_congr (hzr b) W h' (tau_le hW le_rfl), GlobalTheory.FlagMod.ev_tau_self]`. Conclude with `(DFunLike.congr_fun h1 s).symm`. Introduce `K _ _ ψ hk Q hQ b`. Establish `hx : frX Q = spMap ψ ≫ frX Q₀`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `w₀ : Sp Γ(M.X, W) ⟶ X.Yo` to `pullback.lift (tau hW ≫ toFlag M) (frX Q₀) hQ₀.over.symm`. Set `w₁ : Sp K ⟶ X.Yo` to `pullback.lift ((spMap ψ ≫ tau hW) ≫ toFlag M) (frX Q) hQ.over.symm`. Establish `e : w₁ = spMap ψ ≫ w₀`. Rewrite using `[← cancel_mono X.inc]`. Simplify using `only [w₀, w₁, Category.assoc, pullback.lift_fst]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg (· ≫ pullback.snd X.π Y.j) e` as an intermediate fact. Simplify `this` using `only [w₀, w₁, Category.assoc, pullback.lift_snd]`. Establish `hs : spMap (algebraMap c.F K) = spMap (ψ.comp (algebraMap c.F Γ(M.X, W)))`. Rewrite using `[← frX_snd Q, hx, Category.assoc, frX_snd Q₀, spMap_comp']`. Establish `hψ : ψ.comp (algebraMap c.F Γ(M.X, W)) = algebraMap c.F K` using `(congrArg CommRingCat.Hom.hom (Spec.map_injective hs)).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `φ : Γ(M.X, W) →ₐ[c.F] K` to `{ ψ with commutes' := fun r => DFunLike.congr_fun hψ r }`. Set `φε : DualNumber Γ(M.X, W) →ₐ[c.F] DualNumber K` to `{ dualMap ψ with commutes' := fun r => by`. Apply the tactic sequence `ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl', ← DFunLike.congr_fun hψ r] }`. Take `⟨Q', hQ'⟩` from `GlobalTheory.FlagTan.exists_frMap φ Q₀`. Establish `eQ : Q = Q'` using `hQ.unique (hQ₀.frMap hQ' (by rw [Category.assoc]) hk)`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Substitute `eQ` using the available equality. Take `⟨y₀, hy₀⟩` from `GlobalTheory.FlagTan.exists_frMap φε Q₁`. Take `⟨w, hw⟩` from `GlobalTheory.FlagTan.exists_frMap φε (V b)`. Use `⟨w, ⟨y₀, GlobalTheory.FlagTan.frMap_of_comp hQ' (GlobalTheory.FlagTan.frMap_comp (χ := φε.comp (TrivSqZeroExt.inlAlgHom c.F Γ(M.X, W) Γ(M.X, W))) hQ₁ hy₀ fun _ => rfl) fun a => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [φ, φε, dualMap]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h2` using `(GlobalTheory.FlagTan.frMap_iff_frChg (hV b) hy₀).1 hw`. Unfold `GlobalTheory.FlagTan.IsShift`. Use `h2 using 2 with σ` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext i j <;> simp [GlobalTheory.FlagTan.unip, vertMat, φε, dualMap, Matrix.one_apply, Pi.single_apply] <;> split_ifs <;> simp`. Apply the tactic sequence `ext <;> simp [GlobalTheory.FlagTan.unip₀, φε, dualMap, GlobalTheory.FlagTan.VIx.toF]`.
-
-Establish `h3 : spMap (GlobalTheory.FlagMod.ev (zv b) W (hzW b)) ≫ tau hW = zv b` using `GlobalTheory.FlagMod.spMap_ev (zv b) hW (hzW b)`. Rewrite using `[← spMap_comp', Category.assoc, ← Category.assoc (spMap _) (tau hW), h3, hzv b]`. Establish `e4 : dualMap ψ = φε.toRingHom` using `RingHom.ext fun _ => rfl`. Rewrite using `[e4]`. Conclude with `X.ptY_frMap hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vertLift (k : X.F.J) (W : M.X.Opens) (hW : IsAffineOpen W)
     (hle : W ≤ M.off ⊓ (toFlag M) ⁻¹ᵁ X.F.U k) :

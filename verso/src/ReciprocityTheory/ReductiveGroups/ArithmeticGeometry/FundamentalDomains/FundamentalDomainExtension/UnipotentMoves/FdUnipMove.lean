@@ -2,7 +2,7 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.F
 import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.FundamentalDomains.FundamentalDomainExtension.UnipotentMoves.DotAddRight
 
 /- English proof (translation)
-The claim follows from `UnipMove.fd_unip_move_of UnipMove.sMajXZ`.
+A detailed English derivation is pending.
 -/
 theorem fd_unip_move {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] : ReciprocityTheory.ChartRestriction.G.FD.ShortVectorBound (E := E) → ReciprocityTheory.ChartRestriction.G.FD.UnitaryComplementMove (E := E) → ReciprocityTheory.ChartRestriction.G.FD.ReducedFrameDomainCovering (E := E) → ReciprocityTheory.ChartRestriction.G.FD.IsotropicCoefficientSplitting (E := E) → ReciprocityTheory.ChartRestriction.G.FD.NoShortVectorLowerBound (E := E) → ReciprocityTheory.ChartRestriction.G.FD.UnitaryUnipotentMove (E := E) :=
   UnipMove.fd_unip_move_of UnipMove.sMajXZ

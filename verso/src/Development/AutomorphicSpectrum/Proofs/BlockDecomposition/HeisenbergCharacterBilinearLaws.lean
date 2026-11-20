@@ -18,12 +18,12 @@ namespace GlobalTheory.CompanionTheory.FJE
 variable {D : D7} {ρ p : ℕ}
 
 /- English proof (translation)
-The claim follows from `map_add (Algebra.trace (AF D.host.F) (AE D)) a b`.
+A detailed English derivation is pending.
 -/
 theorem trA_add (a b : AE D) : trA (a + b) = trA a + trA b := map_add (Algebra.trace (AF D.host.F) (AE D)) a b
 
 /- English proof (translation)
-Establish `h : adj (x + x') = adj x + adj x'`. Use extensionality with `i j`. Simplify using `only [adj, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, map_add]`. Simplify using `only [pr, h]`. Conclude with `Matrix.add_mul _ _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pr_add_left (b₀ : HermE D ρ) (x x' y : Mx D ρ p) : pr b₀ (x + x') y = pr b₀ x y + pr b₀ x' y := by
   have h : adj (x + x') = adj x + adj x' := by
@@ -33,7 +33,7 @@ theorem pr_add_left (b₀ : HermE D ρ) (x x' y : Mx D ρ p) : pr b₀ (x + x') 
   exact Matrix.add_mul _ _ _
 
 /- English proof (translation)
-Simplify using `only [pr]`. Rewrite using `[show (HMul.hMul (b₀.1.map (incA D)) (y + y') : Mx D ρ p) = _ from Matrix.mul_add _ _ _]`. Conclude with `Matrix.mul_add _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pr_add_right (b₀ : HermE D ρ) (x y y' : Mx D ρ p) : pr b₀ x (y + y') = pr b₀ x y + pr b₀ x y' := by
   simp only [pr]
@@ -41,29 +41,29 @@ theorem pr_add_right (b₀ : HermE D ρ) (x y y' : Mx D ρ p) : pr b₀ x (y + y
   exact Matrix.mul_add _ _ _
 
 /- English proof (translation)
-Simplify using `only [chv, pr_add_left, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chv_add_left (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (x x' y : Mx D ρ p) :
     chv ψ b₀ (x + x') y = chv ψ b₀ x y * chv ψ b₀ x' y := by
   simp only [chv, pr_add_left, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [chv, pr_add_right, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chv_add_right (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (x y y' : Mx D ρ p) :
     chv ψ b₀ x (y + y') = chv ψ b₀ x y * chv ψ b₀ x y' := by
   simp only [chv, pr_add_right, Matrix.trace_add, trA_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-The claim follows from `hψ.2.1 _`.
+A detailed English derivation is pending.
 -/
 theorem chv_norm (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (x y : Mx D ρ p) :
     ‖chv ψ b₀ x y‖ = 1 := hψ.2.1 _
 
 /- English proof (translation)
-Establish `h : pr b₀ x 0 = 0`. Use `pr_add_right b₀ x 0 0` as an intermediate fact. Simplify using `using this`. Simplify using `only [chv, h, Matrix.trace_zero]`. Establish `h0 : trA (0 : AE D) = 0` using `map_zero (Algebra.trace (AF D.host.F) (AE D))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h0, AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem chv_zero_right (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (x : Mx D ρ p) : chv ψ b₀ x 0 = 1 := by
   have h : pr b₀ x 0 = 0 := by
@@ -74,9 +74,9 @@ theorem chv_zero_right (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (x :
   rw [h0, AddChar.map_zero_eq_one]
 
 /- English proof (translation)
-Establish `h1 : chv ψ b₀ x y * chv ψ b₀ x (-y) = 1`. Rewrite using `[← chv_add_right, add_neg_cancel, chv_zero_right]`. Establish `h2 : chv ψ b₀ x y * conj (chv ψ b₀ x y) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, chv_norm ψ hψ]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one h1) (h1.trans h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem chv_neg_right (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) (x y : Mx D ρ p) :
     chv ψ b₀ x (-y) = conj (chv ψ b₀ x y) := by
@@ -88,7 +88,7 @@ theorem chv_neg_right (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F 
   exact mul_left_cancel₀ (left_ne_zero_of_mul_eq_one h1) (h1.trans h2.symm)
 
 /- English proof (translation)
-Establish `h2 : Algebra.lmul (AF D.host.F) (AE D) (incA D t) = (Algebra.lmul D.host.F D.host.E t).baseChange (AF D.host.F)`. Use extensionality with `x`. Simplify using `[incA, inclR]`. Use `show Algebra.trace (AF D.host.F) (AE D) (incA D t) = _`. Rewrite using `[Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trA_incA (t : D.host.E) :
     trA (incA D t) = algebraMap D.host.F (AF D.host.F) (Algebra.trace D.host.F D.host.E t) := by
@@ -100,7 +100,7 @@ theorem trA_incA (t : D.host.E) :
   rw [Algebra.trace_apply, h2, LinearMap.trace_baseChange, ← Algebra.trace_apply]
 
 /- English proof (translation)
-Establish `h : adj (rt ξ) = ((ξ.map D.sp.cm.sig)ᵀ).map (incA D)`. Use extensionality with `i j`. Simplify using `only [adj, rt, Matrix.transpose_apply, Matrix.map_apply]`. Both sides reduce to the same expression. Simplify using `only [pr, h, Matrix.map_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem pr_rt (b₀ : HermE D ρ) (ξ ξ' : Matrix (Fin ρ) (Fin p) D.host.E) :
     pr b₀ (rt ξ) (rt ξ') = ((ξ.map D.sp.cm.sig)ᵀ * (b₀.1 * ξ')).map (incA D) := by
@@ -111,7 +111,7 @@ theorem pr_rt (b₀ : HermE D ρ) (ξ ξ' : Matrix (Fin ρ) (Fin p) D.host.E) :
   simp only [pr, h, Matrix.map_mul]
 
 /- English proof (translation)
-Establish `h : Matrix.trace (pr b₀ (rt ξ) (rt ξ')) = incA D (Matrix.trace ((ξ.map D.sp.cm.sig)ᵀ * (b₀.1 * ξ')))`. Rewrite using `[pr_rt]`. Simplify using `only [Matrix.trace, Matrix.diag_apply, Matrix.map_apply, map_sum]`. Rewrite using `[chv, h, trA_incA]`. Conclude with `hψ.2.2.1 _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chv_rt (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ)
     (ξ ξ' : Matrix (Fin ρ) (Fin p) D.host.E) : chv ψ b₀ (rt ξ) (rt ξ') = 1 := by
@@ -122,9 +122,9 @@ theorem chv_rt (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b�
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE D) := (Formalism.IndefR.Eqv.ae_facts D).1`. Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Establish `ht : Continuous (trA (D` using `D)) := IsModuleTopology.continuous_of_linearMap (Algebra.trace (AF D.host.F) (AE D))`. Establish `hc : Continuous (cA D)` using `GlobalTheory.FockCompare.ThetaCont.continuous_conj`. Establish `ha : Continuous fun v : Mx D ρ p × Mx D ρ p => adj v.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `adj`. Conclude with `((continuous_fst.matrix_map hc)).matrix_transpose`. Use `hψ.1.comp (ht.comp ?_)` and prove the remaining obligations. Conclude with `(ha.matrix_mul (continuous_const.matrix_mul continuous_snd)).matrix_trace`.
+A detailed English derivation is pending.
 -/
 theorem chv_continuous (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F ψ) (b₀ : HermE D ρ) :
     Continuous (fun v : Mx D ρ p × Mx D ρ p => chv ψ b₀ v.1 v.2) := by
@@ -140,7 +140,7 @@ theorem chv_continuous (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsCharAF D.host.F
   exact (ha.matrix_mul (continuous_const.matrix_mul continuous_snd)).matrix_trace
 
 /- English proof (translation)
-Introduce `D ρ p ψ hψ b₀`. Conclude with `⟨chv_add_left ψ b₀, chv_add_right ψ b₀, chv_norm ψ hψ b₀, chv_neg_right ψ hψ b₀, chv_rt ψ hψ b₀, chv_continuous ψ hψ b₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem chv_facts : ∀ {D : D7} {ρ p : ℕ} (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ b₀ : HermE D ρ, (∀ x x' y : Mx D ρ p, GlobalTheory.CompanionTheory.FJE.chv ψ b₀ (x + x') y = GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y * GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x' y) ∧ (∀ x y y' : Mx D ρ p, GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x (y + y') = GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y * GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y') ∧ (∀ x y : Mx D ρ p, ‖GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y‖ = 1) ∧ (∀ x y : Mx D ρ p, GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x (-y) = conj (GlobalTheory.CompanionTheory.FJE.chv ψ b₀ x y)) ∧ (∀ ξ ξ' : Matrix (Fin ρ) (Fin p) D.host.E, GlobalTheory.CompanionTheory.FJE.chv ψ b₀ (GlobalTheory.CompanionTheory.FJE.rt ξ) (GlobalTheory.CompanionTheory.FJE.rt ξ') = 1) ∧ Continuous (fun v : Mx D ρ p × Mx D ρ p => GlobalTheory.CompanionTheory.FJE.chv ψ b₀ v.1 v.2) := by
   intro D ρ p ψ hψ b₀

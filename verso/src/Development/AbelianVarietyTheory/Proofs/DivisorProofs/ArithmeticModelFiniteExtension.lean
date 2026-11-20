@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.ArLieBase
 
 /- English proof (translation)
-Establish `e : spMap (GlobalTheory.TrueGeo.SmallSec.fnMap j hη) = Spec.map (Z.presheaf.stalkSpecializes hη ≫ j.stalkMap (genericPoint Y))` using `rfl`. Rewrite using `[e, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_fnMap_genericPoint {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y] (j : Y ⟶ Z)
     (hη : j (genericPoint Y) ⤳ genericPoint Z) :
@@ -33,21 +33,15 @@ theorem spMap_fnMap_genericPoint {Z Y : Scheme.{0}} [IsIntegral Z] [IsIntegral Y
     Scheme.SpecMap_stalkMap_fromSpecStalk]
 
 /- English proof (translation)
-Introduce `F _ _ G T s S d ι X W _ q jB πB ρ hP K _ _ hK`. Take `⟨hX, hpb, hfin, hrange, hcomm⟩` from `hP`. Use `haveI := hX.isNoetherian`. Use `haveI := hX.isLocallyNoetherian`. Use `haveI : IsProper q := CommonModel.isProper_of_isProjOver hX.isProjOver`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional X.functionField K := hK`. Use `haveI : CharZero Γ(X, ⊤) := hX.charZero`. Use `haveI : CharZero X.functionField := charZero_of_injective_ringHom (f := (X.presheaf.germ ⊤ (genericPoint X) (TopologicalSpace.Opens.mem_top _)).hom) (germ_injective_of_isIntegral X _ (TopologicalSpace.Opens.mem_top _))`. Use `haveI : CharZero K := charZero_of_injective_ringHom (algebraMap X.functionField K).injective`. Set `g : Sp K ⟶ X` to `spMap (algebraMap X.functionField K) ≫ X.fromSpecStalk (genericPoint X)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Use `haveI hνfin : IsFinite g.fromNormalization := GlobalTheory.isFinite_fromNormalization_SpecMap_fromSpecStalk (o := CommRingCat.of (𝓞 F)) q (genericPoint X) (L := K) (CommRingCat.ofHom (algebraMap X.functionField K)) (RingHom.finite_algebraMap.mpr hK).finiteType.essFiniteType`. Use `haveI : GlobalTheory.IsNormalScheme g.normalization := GlobalTheory.IsNormalScheme.normalization_of_isIntegral g`. Use `haveI hint : IsIntegral g.normalization := inferInstance`. Take `⟨hη, ψ, hψ⟩` from `GlobalTheory.NormFnField.normalization_functionField X K g rfl`. Use `set ν := g.fromNormalization with hν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI hνd : IsDominant ν := ⟨dense_iff_closure_eq.2 (Set.eq_univ_of_univ_subset ((genericPoint_spec X).def.ge.trans (closure_minimal (Set.singleton_subset_iff.2 (closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self _)) (specializes_iff_mem_closure.1 hη))) isClosed_closure …`. Establish `hs : Surjective ν` using `surjective_of_isDominant_of_isClosed_range _ ν.isClosedMap.isClosed_range`. Establish `hgen : ν (genericPoint g.normalization) = genericPoint X` using `apply_genericPoint_of_isDominant ν`. Establish `hdim : topologicalKrullDim g.normalization = (d + 1 : ℕ)`. Rewrite using `[← hX.dim_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `le_antisymm (ProperCover.dim_le_of_residueDegree_pos ν hgen ?_) (PosBaseChange.dim_le_of_isClosedMap ν.isClosedMap hs.surj)` and prove the remaining obligations. Set `` to `(ν.residueFieldMap (genericPoint g.normalization)).hom.toAlgebra`. Establish `: Module.Finite (X.residueField (ν (genericPoint g.normalization))) (g.normalization.residueField (genericPoint g.normalization))` using `residueFieldMap_finite_of_locallyQuasiFinite ν _`. Conclude with `Module.finrank_pos`. Use `haveI : CharZero g.normalization.functionField := charZero_of_injective_ringHom ψ.injective`.
-
-Use `haveI : CharZero Γ(g.normalization, ⊤) := RingHom.charZero (S := g.normalization.functionField) (g.normalization.presheaf.germ ⊤ (genericPoint g.normalization) (TopologicalSpace.Opens.mem_top _)).hom`. Establish `hAr : IsArithVar (ν ≫ q) d` using `⟨hX.isDomain, hX.finite, hint, GlobalTheory.isProjOver_comp_of_finite _ _ _ ν q inferInstance hX.isProjOver, (flat_int_iff_charZero _).2 inferInstance, hdim⟩`. Establish `hsq : IsPullback (pullback.snd jB ν) (pullback.fst jB ν) ν jB` using `(IsPullback.of_hasPullback jB ν).flip`. Establish `hpb' : IsPullback (pullback.snd jB ν) ((pullback.fst jB ν ≫ πB) ≫ s) (ν ≫ q) (spMap (algebraMap (𝓞 F) F))`. Simplify `hsq.paste_vert hpb` using `only [Category.assoc]`.
-
-Establish `hprf : IsFinite (pullback.fst jB ν)` using `MorphismProperty.of_isPullback (P := @IsFinite) hsq inferInstance`. Establish `hprs : Surjective (pullback.fst jB ν)` using `MorphismProperty.of_isPullback (P := @Surjective) hsq hs`. Use `⟨g.normalization, pullback jB ν, hint, ν, pullback.snd jB ν, pullback.fst jB ν ≫ πB, ψ, ⟨hAr, hpb', inferInstance, ?_, ?_⟩, GlobalTheory.IsNormalScheme.pred _, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, hprs.surj.range_eq, Set.image_univ, hrange]`. Rewrite using `[← Category.assoc, hsq.w, Category.assoc, hcomm, Category.assoc]`.
-
-Rewrite using `[← spMap_fnMap_genericPoint ν hη, ← hψ]`. Simplify using `only [spMap]`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem normalization_isPre : ∀ (F : Type) [Field F] [NumberField F] (G T : Scheme.{0}) (s : G ⟶ Sp F) (S : Set G) (d : ℕ) (ι : G ⟶ T) (X W : Scheme.{0}) [IsIntegral X] (q : X ⟶ Sp (𝓞 F)) (jB : W ⟶ X) (πB : W ⟶ G) (ρ : X ⟶ T), IsPre s S d ι q jB πB ρ → ∀ (K : Type) [Field K] [Algebra X.functionField K], Module.Finite X.functionField K → ∃ (X' W' : Scheme.{0}) (_ : IsIntegral X') (ν : X' ⟶ X) (jB' : W' ⟶ X') (πB' : W' ⟶ G) (κ : K →+* X'.functionField), IsPre s S d ι (ν ≫ q) jB' πB' (ν ≫ ρ) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme X' ∧ X'.fromSpecStalk (genericPoint X') ≫ ν = spMap κ ≫ spMap (algebraMap X.functionField K) ≫ X.fromSpecStalk (genericPoint X) := by
   intro F _ _ G T s S d ι X W _ q jB πB ρ hP K _ _ hK

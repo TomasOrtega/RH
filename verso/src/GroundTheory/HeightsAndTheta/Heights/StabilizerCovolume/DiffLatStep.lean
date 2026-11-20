@@ -13,7 +13,7 @@ section Step
 variable {Em K : Type} [Field Em] [NumberField Em] [Field K] [NumberField K] {N : ℕ}
 
 /- English proof (translation)
-Set `_ : Algebra Em K` to `s.toAlgebra`. Establish `h1 : RingOfIntegers.mapRingHom s = algebraMap (𝓞 Em) (𝓞 K)` using `rfl`. Establish `h3 : Module.finrank (𝓞 Em) (𝓞 K) = Module.finrank Em K` using `(IsFractionRing.finrank_eq (𝓞 Em) Em (𝓞 K) K).symm`. Rewrite using `[h1, Ideal.absNorm_algebraMap, h3]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_map_mapRingHom (s : Em →+* K) (b : Ideal (𝓞 Em)) :
     letI : Algebra Em K := s.toAlgebra
@@ -27,7 +27,7 @@ theorem absNorm_map_mapRingHom (s : Em →+* K) (b : Ideal (𝓞 Em)) :
 omit [NumberField Em] in
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[Submodule.mem_span_singleton]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem span_singleton_toAddSubgroup (x : Fin N → Em) :
     (Submodule.span (𝓞 Em) {x}).toAddSubgroup =
@@ -37,7 +37,7 @@ theorem span_singleton_toAddSubgroup (x : Fin N → Em) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Use extensionality with `y`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_toAddSubgroup' (f : 𝓞 K →ₗ[𝓞 K] (Fin N → K)) (D : Ideal (𝓞 K)) :
     (Submodule.map f D).toAddSubgroup = D.toAddSubgroup.map f.toAddMonoidHom := by
@@ -45,7 +45,7 @@ theorem map_toAddSubgroup' (f : 𝓞 K →ₗ[𝓞 K] (Fin N → K)) (D : Ideal 
   simp
 
 /- English proof (translation)
-Establish `h` using `AddSubgroup.relIndex_mul_index (H := (D * B).toAddSubgroup) (K := D.toAddSubgroup) (Submodule.toAddSubgroup_mono Ideal.mul_le_left)`. Rewrite `h` using `[← Ideal.absNorm_eq_index, ← Ideal.absNorm_eq_index, map_mul]`. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hD) (by rw [h, mul_comm])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_mul_ideal {F : Type} [Field F] [NumberField F] (D B : Ideal (𝓞 F)) (hD : Ideal.absNorm D ≠ 0) :
     (D * B).toAddSubgroup.relIndex D.toAddSubgroup = Ideal.absNorm B := by
@@ -55,25 +55,23 @@ theorem relIndex_mul_ideal {F : Type} [Field F] [NumberField F] (D B : Ideal (�
   exact Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hD) (by rw [h, mul_comm])
 
 /- English proof (translation)
-Set `_ : Algebra Em K` to `s.toAlgebra`. Set `g : 𝓞 Em →ₗ[𝓞 Em] (Fin N → Em)` to `LinearMap.toSpanSingleton (𝓞 Em) _ x`. Set `f : 𝓞 K →ₗ[𝓞 K] (Fin N → K)` to `LinearMap.toSpanSingleton (𝓞 K) _ (fun i => s (x i))`. Set `b : Ideal (𝓞 Em)` to `P.comap g`. Establish `hPQ : P.toAddSubgroup.relIndex (P ⊔ Submodule.span (𝓞 Em) {x}).toAddSubgroup = Ideal.absNorm b`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Submodule.sup_toAddSubgroup, span_singleton_toAddSubgroup, AddSubgroup.relIndex_sup_left, ← AddSubgroup.relIndex_comap, AddSubgroup.relIndex_top_right, Ideal.absNorm_eq_index]`. Both sides reduce to the same expression. Establish `hXQ : diffLat s (P ⊔ Submodule.span (𝓞 Em) {x}) = diffLat s P ⊔ Submodule.map f (extDifferent s)`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[diffLat, Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨u, ⟨y, hy, z, hz, rfl⟩, rfl⟩`. Take `⟨p, hp, q, hq, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hq`. Establish `e : (fun i => s (((y : Em) • (p + c • x)) i)) = (fun i => s (((y : Em) • p) i)) + f (RingOfIntegers.mapRingHom s (y * c))`. Use function extensionality and compare the values at `i`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[f, Algebra.smul_def, mul_add, mul_assoc]`. Use `show (fun i => s (((y : Em) • (p + c • x)) i)) ∈ _`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup (Submodule.subset_span ⟨_, ⟨y, hy, p, hp, rfl⟩, rfl⟩) (Submodule.mem_map_of_mem (Ideal.mem_map_of_mem _ (Ideal.mul_mem_right c _ hy)))`. Use `sup_le (diffLat_mono s le_sup_left) ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_le_iff_le_comap, extDifferent, Ideal.map_le_iff_le_comap]`. Introduce `y hy`. Simplify using `only [Ideal.mem_comap, Submodule.mem_comap, f, LinearMap.toSpanSingleton_apply]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨(y : Em) • x, ⟨y, hy, x, Submodule.mem_sup_right (Submodule.mem_span_singleton_self x), rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`. Establish `h1 : (diffLat s P).toAddSubgroup.relIndex (diffLat s (P ⊔ Submodule.span (𝓞 Em) {x})).toAddSubgroup = ((diffLat s P).toAddSubgroup.comap f.toAddMonoidHom).relIndex (extDifferent s).toAddSubgroup`. Rewrite using `[hXQ, Submodule.sup_toAddSubgroup, map_toAddSubgroup', AddSubgroup.relIndex_sup_left, AddSubgroup.relIndex_comap]`. Establish `h2 : extDifferent s * b.map (RingOfIntegers.mapRingHom s) ≤ (diffLat s P).comap f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[extDifferent, ← Ideal.map_mul, Ideal.map_le_iff_le_comap]`. Use `Ideal.mul_le.2 fun y hy c hc => ?_` and prove the remaining obligations. Establish `hc' : c • x ∈ P` using `hc`. Simplify using `only [Ideal.mem_comap, Submodule.mem_comap, f, LinearMap.toSpanSingleton_apply]`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨(y : Em) • (c • x), ⟨y, hy, c • x, hc', rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def, mul_assoc]`. Establish `hD : Ideal.absNorm (extDifferent s) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `extDifferent_ne_bot s`. Establish `h3 : (extDifferent s * b.map (RingOfIntegers.mapRingHom s)).toAddSubgroup.relIndex (extDifferent s).toAddSubgroup = Ideal.absNorm (b.map (RingOfIntegers.mapRingHom s))`. Conclude with `relIndex_mul_ideal _ _ hD`. Establish `h4` using `absNorm_map_mapRingHom s b`. Rewrite using `[h1, hPQ, ← h4, ← h3]`.
-
-Use `AddSubgroup.relIndex_le_of_le_left (fun z hz => h2 hz) ?_` and prove the remaining obligations. Rewrite using `[h3, h4]`. Conclude with `pow_ne_zero _ (hPQ ▸ hP)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffLat_step (s : Em →+* K) (P : Submodule (𝓞 Em) (Fin N → Em)) (x : Fin N → Em)
     (hP : P.toAddSubgroup.relIndex (P ⊔ Submodule.span (𝓞 Em) {x}).toAddSubgroup ≠ 0) :
@@ -137,17 +135,15 @@ theorem diffLat_step (s : Em →+* K) (P : Submodule (𝓞 Em) (Fin N → Em)) (
   exact pow_ne_zero _ (hPQ ▸ hP)
 
 /- English proof (translation)
-Set `_ : Algebra Em K` to `s.toAlgebra`. Take `⟨T, hT⟩` from `hfg`. Establish `hTM : (↑T : Set (Fin N → Em)) ⊆ M` using `hT ▸ Submodule.subset_span`. Establish `key : ∀ T : Finset (Fin N → Em), (↑T : Set (Fin N → Em)) ⊆ M → (diffLat s M').toAddSubgroup.relIndex (diffLat s (M' ⊔ Submodule.span (𝓞 Em) ↑T)).toAddSubgroup ≤ M'.toAddSubgroup.relIndex (M' ⊔ Submodule.span (𝓞 Em) ↑T).toAddSubgroup ^ Module.finrank Em K`. Introduce `T`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => intro _`. Simplify using the standard rewrite rules. Consider the case `insert x T hx ih`. Introduce `hT'`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxM : x ∈ M` using `hT' (Finset.mem_insert_self _ _)`. Establish `hTM' : (↑T : Set (Fin N → Em)) ⊆ M` using `fun y hy => hT' (Finset.mem_insert_of_mem hy)`. Establish `hPeq : M' ⊔ Submodule.span (𝓞 Em) ↑(insert x T) = (M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x}`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, sup_comm (Submodule.span (𝓞 Em) {x}), ← sup_assoc]`. Rewrite using `[hPeq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hP_le : M' ⊔ Submodule.span (𝓞 Em) ↑T ≤ M` using `sup_le hle (Submodule.span_le.2 hTM')`. Establish `hPx_le : (M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x} ≤ M` using `sup_le hP_le (Submodule.span_le.2 (Set.singleton_subset_iff.2 hxM))`. Establish `hne : M'.toAddSubgroup.relIndex ((M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x}).toAddSubgroup ≠ 0` using `fun h => hM (AddSubgroup.relIndex_eq_zero_of_le_right hPx_le h)`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex M'.toAddSubgroup (M' ⊔ Submodule.span (𝓞 Em) ↑T).toAddSubgroup ((M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x}).toAddSubgroup (le_sup_left : M' ≤ _) (le_sup_left : M' ⊔ Submodule.span (𝓞 Em) ↑T ≤ _)`. Establish `hstep : (M' ⊔ Submodule.span (𝓞 Em) ↑T).toAddSubgroup.relIndex ((M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x}).toAddSubgroup ≠ 0` using `fun h => hne (by rw [← hmul, h, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX` using `AddSubgroup.relIndex_mul_relIndex (diffLat s M').toAddSubgroup (diffLat s (M' ⊔ Submodule.span (𝓞 Em) ↑T)).toAddSubgroup (diffLat s ((M' ⊔ Submodule.span (𝓞 Em) ↑T) ⊔ Submodule.span (𝓞 Em) {x})).toAddSubgroup (diffLat_mono s le_sup_left) (diffLat_mono s le_sup_left)`. Rewrite using `[← hX, ← hmul, mul_pow]`. Conclude with `Nat.mul_le_mul (ih hTM') (diffLat_step s _ x hstep)`. Establish `hM_eq : M = M' ⊔ Submodule.span (𝓞 Em) ↑T` using `by rw [hT, sup_eq_right.2 (hT ▸ hle)]`. Rewrite `hM`, the goal using `[hM_eq]`.
-
-Conclude with `key T hTM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffLat_relIndex_le (s : Em →+* K) {M' M : Submodule (𝓞 Em) (Fin N → Em)} (hle : M' ≤ M) (hfg : M.FG)
     (hM : M'.toAddSubgroup.relIndex M.toAddSubgroup ≠ 0) :

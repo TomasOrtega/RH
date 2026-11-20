@@ -14,9 +14,9 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Tpar
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨t0, ht0'⟩` from `d.ok.frame.2`. Establish `ht0 : d.b.1.toCols₁ = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) * t0.1` using `ht0'`. Establish `hBx : incM F d.b.1.toCols₁ = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)) * incM F t0.1`. Rewrite using `[ht0, incM_mul, incM_diagCols]`. Use `⟨t0, incM_fromCols _, hBx, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hBx]`. Conclude with `frame_xy_A d.ok.frame`. Rewrite using `[← incM_mul, Units.mul_inv, incM_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameData_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : ∃ t0 : GL (Fin d.n) E,
     incM F d.b.1 = Matrix.fromCols (incM F d.b.1.toCols₁) (incM F d.b.1.toCols₂) ∧
@@ -33,29 +33,25 @@ theorem frameData_k (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ) : �
   · rw [← hBx]; exact frame_xy_A d.ok.frame
   · rw [← incM_mul, Units.mul_inv, incM_one]
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Φ hΦ`. Establish `h` using `d.ok.dbl`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨t0, hB, hBx, hf, hT⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Tpar.frameData_k d`. Establish `mem : ∀ w, d.dd.rho d.B.ψ w Φ ∈ schA F d.κ` using `fun w => GlobalTheory.HeisSchA.schr_mem_schA _ hψ _ Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun x β hx X => ?_, fun x t u hx X => ?_, fun g X => ?_⟩` and prove the remaining obligations. Establish `h1` using `inFrame_mul hx`. Establish `h2` using `inv_mul_frame h1 (N' := Matrix.fromBlocks 1 (-β) 0 1) (by simp [Matrix.fromBlocks_multiply, Matrix.fromBlocks_one])`. Rewrite `h1`, `h2` using `[hB, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Use `replace h1 := Matrix.fromCols_inj h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `replace h2 := Matrix.fromCols_inj h2`. Rewrite `h1`, `h2` using `[hBx]`. Establish `hpar : IsPar x 1`. Establish `e` using `par_of hT (show mat2 x * ((diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)) * incM F t0.1) = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)) * incM F t0.1 * 1 by`. Rewrite using `[h1.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Use the proof step `simp)`. Rewrite `e` using `[Matrix.mul_one, hT]`. Unfold `IsPar`. Rewrite using `[Units.val_one]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `key : X * (incM F d.b.1.toCols₂)ᵀ * (mat2 x⁻¹)ᵀ = -(X * βᵀ * (incM F t0.1)ᵀ) * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E))ᵀ + X * (incM F d.b.1.toCols₂)ᵀ`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, h2.2]`. Simplify using `[Matrix.transpose_mul, Matrix.transpose_add, Matrix.mul_add, Matrix.mul_assoc, Matrix.transpose_neg]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T, _root_.PositivityTheory.SiegelWeilFormula.SD_k.tt, _root_.PositivityTheory.SiegelWeilFormula.SD_k.gram]`. Rewrite using `[l_rho_om h x _ hΦ, l_om_par h hpar (mem _), key, l_shift h hψ _ _ hΦ, symp_N _ _ _ _ _ _ hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1` using `inFrame_mul hx`. Establish `h2` using `inv_mul_frame h1 (N' := Matrix.fromBlocks (t⁻¹ : GL (Fin d.n) (AE F E)).1 0 0 (u⁻¹ : GL (Fin d.n) (AE F E)).1) (by simp [Matrix.fromBlocks_multiply, Matrix.fromBlocks_one])`. Rewrite `h1`, `h2` using `[hB, Matrix.mul_fromCols, Matrix.fromCols_mul_fromBlocks]`. Use `replace h1 := Matrix.fromCols_inj h1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `replace h2 := Matrix.fromCols_inj h2`. Rewrite `h1`, `h2` using `[hBx]`. Take `⟨G0, hG0⟩ : ∃ G0 : GL (Fin d.n) (AE F E), G0 = Matrix.GeneralLinearGroup.map (inclR (F` from `F) (E := E) (AF F)) t0 := ⟨_, rfl⟩`. Establish `g1 : (G0 : Matrix (Fin d.n) (Fin d.n) (AE F E)) = incM F t0.1`. Rewrite using `[hG0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `g2 : ((G0⁻¹ : GL (Fin d.n) (AE F E)) : Matrix (Fin d.n) (Fin d.n) (AE F E)) = incM F (t0⁻¹).1`. Rewrite using `[hG0, ← map_inv]`. Both sides reduce to the same expression. Establish `hpar : IsPar x (G0 * t * G0⁻¹)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `par_of hT (show mat2 x * ((diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)) * incM F t0.1) = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E)) * incM F t0.1 * t.1 by`. Rewrite using `[h1.1]`. Use the proof step `simp)`. Unfold `IsPar`. Rewrite using `[Units.val_mul, Units.val_mul, g1, g2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e`. Establish `hdet : Matrix.GeneralLinearGroup.det (G0 * t * G0⁻¹) = Matrix.GeneralLinearGroup.det t`. Rewrite using `[map_mul, map_mul, map_inv]`. Conclude with `mul_inv_cancel_comm _ _`. Establish `key : X * (incM F d.b.1.toCols₂)ᵀ * (mat2 x⁻¹)ᵀ = X * (u⁻¹).1ᵀ * (incM F d.b.1.toCols₂)ᵀ`.
-
-Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, h2.2]`. Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T]`. Rewrite using `[l_rho_om h x _ hΦ, l_om_par h hpar (mem _), hdet, key]`. Simplify using `only [_root_.PositivityTheory.SiegelWeilFormula.SD_k.T]`.
-
-Rewrite using `[l_rho_S h hψ g _ hΦ, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tPar_k : _root_.PositivityTheory.SiegelWeilFormula.TPar_k := by
   intro F E _ _ _ _ _ σ d Φ hΦ
@@ -119,23 +115,23 @@ theorem tPar_k : _root_.PositivityTheory.SiegelWeilFormula.TPar_k := by
 def TThetaSum_k : Prop := ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
   (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ), ∀ Φ ∈ d.sch, HasSum (fun X : Matrix (Fin d.m) (Fin d.n) E => d.T Φ (incM F X)) (thetaSum F Φ)
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Φ hΦ`. Establish `h` using `d.ok.dbl`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Take `⟨t0, ht0'⟩` from `d.ok.frame.2`. Establish `ht0 : d.b.1.toCols₁ = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) * t0.1` using `ht0'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Am, hAm⟩ : ∃ Am : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E, Am = Matrix.fromRows 1 (-1)` from `⟨_, rfl⟩`. Take `⟨M, hM⟩ : ∃ M, M = (d.b⁻¹).1 * Am` from `⟨_, rfl⟩`. Establish `hA : Am = d.b.1.toCols₁ * M.toRows₁ + d.b.1.toCols₂ * M.toRows₂`. Rewrite using `[← Matrix.fromCols_mul_fromRows, Matrix.fromCols_toCols, Matrix.fromRows_toRows, hM, ← Matrix.mul_assoc, Units.mul_inv, Matrix.one_mul]`. Establish `hinj : ∀ v, M.toRows₂ *ᵥ v = 0 → v = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `e1 : Am *ᵥ v = (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E) *ᵥ (t0.1 *ᵥ (M.toRows₁ *ᵥ v))`. Rewrite using `[hA, Matrix.add_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, add_zero, ht0, ← Matrix.mulVec_mulVec]`. Use function extensionality and compare the values at `i`. Establish `a1` using `congrFun e1 (Sum.inl i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `a2` using `congrFun e1 (Sum.inr i)`. Simplify using `[hAm, diagCols, Matrix.fromRows_mulVec, Matrix.neg_mulVec] at a1 a2`. Establish `: (2 : E) * v i = 0` using `by linear_combination a1 - a2`. Simplify using `using this`. Establish `hu : IsUnit M.toRows₂.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (Matrix.mulVec_injective_iff_isUnit.1 fun v w e => sub_eq_zero.1 (hinj _ (by rw [Matrix.mulVec_sub, e, sub_self])))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Set `e : Matrix (Fin d.m) (Fin d.n) E ≃ Matrix (Fin d.m) (Fin d.n) E` to `{ toFun := fun y => y * M.toRows₂ᵀ invFun := fun X => X * (M.toRows₂)⁻¹ᵀ left_inv := fun y => by`. Simplify using `only`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.nonsing_inv_mul _ hu, Matrix.transpose_one, Matrix.mul_one]`. Use `right_inv := fun X => by`. Simplify using `only`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hu, Matrix.transpose_one, Matrix.mul_one] }`. Establish `hterm : ∀ y : Matrix (Fin d.m) (Fin d.n) E, d.l (d.dd.rho d.B.ψ (incM F (Matrix.fromCols y (-y))) Φ) = d.T Φ (incM F (e y))`. Introduce `y`. Establish `hy : Matrix.fromCols y (-y) = y * M.toRows₁ᵀ * t0.1ᵀ * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E)ᵀ + y * M.toRows₂ᵀ * d.b.1.toCols₂ᵀ`. Establish `: Matrix.fromCols y (-y) = y * Amᵀ` using `by simp [hAm, Matrix.transpose_fromRows, Matrix.mul_fromCols]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, hA, ht0]`. Simplify using `[Matrix.transpose_add, Matrix.transpose_mul, Matrix.mul_add, Matrix.mul_assoc]`. Establish `ea : incM F (y * M.toRows₁ᵀ * t0.1ᵀ * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E)ᵀ) = incM F (y * M.toRows₁ᵀ * t0.1ᵀ) * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) (AE F E))ᵀ`. Simplify using `only [incM_mul, incM_transpose, incM_diagCols]`. Establish `ec : incM F (y * M.toRows₂ᵀ * d.b.1.toCols₂ᵀ) = incM F (y * M.toRows₂ᵀ) * (incM F d.b.1.toCols₂)ᵀ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [incM_mul, incM_transpose]`. Establish `hr` using `psi_rat h hψ (y * M.toRows₁ᵀ * t0.1ᵀ * (diagCols (Fin d.n) : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n) E)ᵀ) (y * M.toRows₂ᵀ * d.b.1.toCols₂ᵀ)`. Rewrite `hr` using `[ea, ec]`. Rewrite using `[hy, incM_add, ea, ec, l_shift h hψ _ _ hΦ, hr, one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hs` using `h.theta Φ hΦ`. Rewrite `hs` using `[show (fun y : Matrix (Fin d.m) (Fin d.n) E => d.l (d.dd.rho d.B.ψ (incM F (Matrix.fromCols y (-y))) Φ)) = (fun X => d.T Φ (incM F X)) ∘ e from funext hterm]`. Conclude with `(Equiv.hasSum_iff e).1 hs`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tThetaSum_k : _root_.PositivityTheory.SiegelWeilFormula.Tpar.TThetaSum_k := by
   intro F E _ _ _ _ _ σ d Φ hΦ
@@ -191,7 +187,7 @@ theorem tThetaSum_k : _root_.PositivityTheory.SiegelWeilFormula.Tpar.TThetaSum_k
       (fun X => d.T Φ (incM F X)) ∘ e from funext hterm] at hs
   exact (Equiv.hasSum_iff e).1 hs
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d Φ hΦ` and use `⟨_root_.PositivityTheory.SiegelWeilFormula.Tpar.tThetaSum_k F E σ d Φ hΦ, h2 F E σ d Φ hΦ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem tTheta_of_k
     (h2 : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ),

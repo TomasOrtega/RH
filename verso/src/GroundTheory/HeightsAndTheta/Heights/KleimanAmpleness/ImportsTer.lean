@@ -6,7 +6,7 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod n`. Substitute `hx` using the available equality. Conclude with `ModelDimEq.full F K ι Ω y k₀ N e hmod n`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ModelDim.proof : ModelDim.Statement := by
   intro F _ K _ _ ι _ Ω _ _ y k₀ N e x hx hmod n

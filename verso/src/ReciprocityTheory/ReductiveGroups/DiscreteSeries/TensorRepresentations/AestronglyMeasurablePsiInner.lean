@@ -20,11 +20,11 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
 
 /- English proof (translation)
-Establish `hC : ((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ) ≠ 0`. Establish `h` using `datumEmbedding_highest_ne_zero hgap hP hv₀`. Conclude with `pow_ne_zero 2 (norm_ne_zero_iff.2 h)` after adjusting the coercions. Establish `hmem : ∀ u, (⟨uniformisationL2 ε Ψ v₀ u, datumEmbedding_mem_smooth hP v₀ u⟩ : smD ε (rreg ε)) ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)` using `fun u => Submodule.mem_sInf.2 (fun S hS => hS.1 (Submodule.mem_comap.2 (Submodule.subset_span ⟨u, rfl⟩)))`. Establish `h` using `(hW _ (hmem v) _ (hmem w)).const_mul (((‖uniformisationL2 ε Ψ v₀ T.w‖ ^ 2 : ℝ) : ℂ)⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.congr_norm ?_ (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Conclude with `h.1.congr (Filter.Eventually.of_forall fun g => by`. Simplify using `only`. Rewrite using `[formulaF hgap hP hv₀ (g := Formalism.MainNotions.S.umat g) g.2 v w]`. Use the proof step `field_simp)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only`. Rewrite using `[formulaF hgap hP hv₀ (g := Formalism.MainNotions.S.umat g) g.2 v w]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem psi_weighted_memLp {v₀ : T.V} (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0)
     (hW : ∀ v ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀), ∀ w ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀),
@@ -53,9 +53,9 @@ theorem psi_weighted_memLp {v₀ : T.V} (hgap : StdGap ε lam) (hP : IsPsiFor ε
 end Psi
 
 /- English proof (translation)
-Establish `hg : inUJ ε (Formalism.MainNotions.S.umat g)` using `g.2`. Establish `h1 : (Jm ε * (Formalism.MainNotions.S.umat g)ᴴ * Jm ε) * Formalism.MainNotions.S.umat g = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.inv_eq_left_inv h1]`. Simplify using `only [Jm, Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_unitary_inv_entry {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (c d : Fin n) :
     ‖(Formalism.MainNotions.S.umat g)⁻¹ d c‖ = ‖Formalism.MainNotions.S.umat g c d‖ := by
@@ -69,7 +69,7 @@ theorem norm_unitary_inv_entry {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (Formalism.MainNotions.S.umat g c d))]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Unfold `S7.hs`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_unitary_entry_le_sqrt_hs {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (c d : Fin n) :
     ‖Formalism.MainNotions.S.umat g c d‖ ≤ Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) := by
@@ -83,7 +83,7 @@ theorem norm_unitary_entry_le_sqrt_hs {ε : Fin n → Bool} (g : Formalism.REAL.
           (fun i _ => Finset.sum_nonneg fun j _ => sq_nonneg _) (mem_univ c)
 
 /- English proof (translation)
-Consider the cases of `dual`. Conclude with `norm_unitary_entry_le_sqrt_hs g c d`. Simplify using `only [cond]`. Rewrite using `[norm_unitary_inv_entry]`. Conclude with `norm_unitary_entry_le_sqrt_hs g c d`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_dual_entry_le_sqrt_hs (dual : Bool) {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) (c d : Fin n) :
     ‖cond dual ((Formalism.MainNotions.S.umat g)⁻¹ d c) (Formalism.MainNotions.S.umat g c d)‖ ≤ Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) := by
@@ -92,9 +92,9 @@ theorem norm_dual_entry_le_sqrt_hs (dual : Bool) {ε : Fin n → Bool} (g : Form
   · simp only [cond]; rw [norm_unitary_inv_entry]; exact norm_unitary_entry_le_sqrt_hs g c d
 
 /- English proof (translation)
-Consider the cases of `dual`. Conclude with `(continuous_apply d).comp ((continuous_apply c).comp ((Units.continuous_val (M := Matrix (Fin n) (Fin n) ℂ)).comp continuous_subtype_val))`. Establish `e : (fun g : Formalism.REAL.UJ ε => cond true ((Formalism.MainNotions.S.umat g)⁻¹ d c) (Formalism.MainNotions.S.umat g c d)) = fun g : Formalism.REAL.UJ ε => ((((g : (Matrix (Fin n) (Fin n) ℂ)ˣ)⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) d c)`. Use function extensionality and compare the values at `g`. Simplify using `only [cond, Formalism.MainNotions.S.umat, Matrix.coe_units_inv]`.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(continuous_apply c).comp ((continuous_apply d).comp ((Units.continuous_coe_inv (M := Matrix (Fin n) (Fin n) ℂ)).comp continuous_subtype_val))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_dual_entry (dual : Bool) {ε : Fin n → Bool} (c d : Fin n) :
     Continuous (fun g : Formalism.REAL.UJ ε => cond dual ((Formalism.MainNotions.S.umat g)⁻¹ d c) (Formalism.MainNotions.S.umat g c d)) := by
@@ -114,7 +114,7 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
 
 /- English proof (translation)
-Establish `hΨm : AEStronglyMeasurable (fun g : Formalism.REAL.UJ ε => Ψ (Formalism.MainNotions.S.umat g)) (Formalism.REAL.muG ε)` using `(hP.2.2.2.2 (Formalism.REAL.muG ε) (Formalism.REAL.instIsHaarMuG n ε)).1`. Conclude with `(continuous_const.inner (continuous_id.clm_apply continuous_const)).comp_aestronglyMeasurable hΨm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aestronglyMeasurable_psi_inner (hP : IsPsiFor ε lam T Ψ) (x y : T.V) :
     AEStronglyMeasurable (fun g : Formalism.REAL.UJ ε => inner ℂ x (Ψ (Formalism.MainNotions.S.umat g) y)) (Formalism.REAL.muG ε) := by
@@ -123,7 +123,7 @@ theorem aestronglyMeasurable_psi_inner (hP : IsPsiFor ε lam T Ψ) (x y : T.V) :
   exact (continuous_const.inner (continuous_id.clm_apply continuous_const)).comp_aestronglyMeasurable hΨm
 
 /- English proof (translation)
-Establish `hΨ : MemLp (fun g : Formalism.REAL.UJ ε => Ψ (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)` using `hP.2.2.2.2 (Formalism.REAL.muG ε) (Formalism.REAL.instIsHaarMuG n ε)`. Use `hΨ.of_le_mul (c := ‖x‖ * ‖y‖) (aestronglyMeasurable_psi_inner hP x y) (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem psi_inner_memLp (hP : IsPsiFor ε lam T Ψ) (x y : T.V) :
     MemLp (fun g : Formalism.REAL.UJ ε => inner ℂ x (Ψ (Formalism.MainNotions.S.umat g) y)) 2 (Formalism.REAL.muG ε) := by
@@ -136,9 +136,9 @@ theorem psi_inner_memLp (hP : IsPsiFor ε lam T Ψ) (x y : T.V) :
     _ = ‖x‖ * ‖y‖ * ‖Ψ (Formalism.MainNotions.S.umat g)‖ := by ring
 
 /- English proof (translation)
-Establish `e : (fun g : Formalism.REAL.UJ ε => ob3PsiCoef dual Ψ ξ ζ (Formalism.MainNotions.S.umat g)) = fun g => ∑ c, ∑ d, cond dual ((Formalism.MainNotions.S.umat g)⁻¹ d c) (Formalism.MainNotions.S.umat g c d) * inner ℂ (ξ c) (Ψ (Formalism.MainNotions.S.umat g) (ζ d))`. Use function extensionality and compare the values at `g`. Simplify using `only [ob3PsiCoef, inner_sum, inner_smul_right]`. Rewrite using `[e]`. Use `memLp_finsetSum _ fun c _ => memLp_finsetSum _ fun d _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine (hWT (ζ d) (ξ c)).of_le (((continuous_dual_entry dual c d).aestronglyMeasurable).mul (aestronglyMeasurable_psi_inner hP _ _)) (Filter.Eventually.of_forall fun g => ?_)`. Rewrite using `[norm_mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.sqrt_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_right (norm_dual_entry_le_sqrt_hs dual g c d) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_coef_memLp_of_weighted (dual : Bool) (hP : IsPsiFor ε lam T Ψ)
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
@@ -157,7 +157,7 @@ theorem psi_coef_memLp_of_weighted (dual : Bool) (hP : IsPsiFor ε lam T Ψ)
   exact mul_le_mul_of_nonneg_right (norm_dual_entry_le_sqrt_hs dual g c d) (norm_nonneg _)
 
 /- English proof (translation)
-The claim follows from `(psi_coef_memLp_of_weighted dual hP hWT ξ ζ).star.integrable_mul (psi_inner_memLp hP' u' v')`.
+A detailed English derivation is pending.
 -/
 theorem psi_pairing_integrable (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ')
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *
@@ -175,7 +175,7 @@ theorem clm_mul_apply_eq_comp {E : Type*} [NormedAddCommGroup E] [InnerProductSp
     (A * B) x = A (B x) := rfl
 
 /- English proof (translation)
-Consider the cases of `dual`. Simplify using `only [cond, Matrix.mul_apply]`. Simplify using `only [cond, Matrix.mul_inv_rev, Matrix.mul_apply]`. Conclude with `Finset.sum_congr rfl fun e _ => mul_comm _ _`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_entry_mul_sum (dual : Bool) (K H : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) :
     cond dual ((K * H)⁻¹ d c) ((K * H) c d) =
@@ -191,7 +191,7 @@ variable {ε : Fin n → Bool} {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {Ψ' : Matrix (Fin n) (Fin n) ℂ → (T'.V →L[ℂ] T'.V)}
 
 /- English proof (translation)
-Establish `e` using `hK k 1 (Formalism.MainNotions.S.umat h) h.2`. Establish `h1 : S7.toMK (1 : S7.KG ε) = 1` using `rfl`. Establish `h2 : T.op 1 = 1` using `by simp [S7.KType.op]`. Rewrite `e` using `[h1, mul_one, h2, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem psi_k_left_equivariant {Λ : Fin n → ℝ} {T : S7.KType ε Λ} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
     (hK : ∀ (k₁ k₂ : S7.KG ε) (g : Matrix (Fin n) (Fin n) ℂ), inUJ ε g →
@@ -203,9 +203,9 @@ theorem psi_k_left_equivariant {Λ : Fin n → ℝ} {T : S7.KType ε Λ} {Ψ : M
   rwa [h1, mul_one, h2, mul_one] at e
 
 /- English proof (translation)
-Establish `hΨ` using `psi_k_left_equivariant hP.1 k h`. Establish `hL : ob3PsiCoef dual Ψ ξ ζ (S7.toMK k * Formalism.MainNotions.S.umat h) = ∑ c, ∑ d, ∑ e, cond dual ((S7.toMK k)⁻¹ e c) (S7.toMK k c e) * cond dual ((Formalism.MainNotions.S.umat h)⁻¹ d e) (Formalism.MainNotions.S.umat h e d) * inner ℂ (ξ c) (T.op k (Ψ (Formalism.MainNotions.S.uma …`. Simplify using `only [ob3PsiCoef, hΨ, dual_entry_mul_sum, clm_mul_apply_eq_comp, inner_sum, inner_smul_right, Finset.sum_mul]`. Establish `hR : ob3PsiCoef dual Ψ (fun e => ∑ c, starRingEnd ℂ (cond dual ((S7.toMK k)⁻¹ e c) (S7.toMK k c e)) • (ContinuousLinearMap.adjoint (T.op k)) (ξ c)) ζ (Formalism.MainNotions.S.umat h) = ∑ e, ∑ d, ∑ c, cond dual ((S7.toMK k)⁻¹ e c) (S7.toMK k c e) * cond dual ((Formalism.MainNotion …`. Simplify using `only [ob3PsiCoef, inner_sum, inner_smul_right, sum_inner, inner_smul_left, ContinuousLinearMap.adjoint_inner_left, RCLike.conj_conj, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun e _ => Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun c _ => by ring`. Rewrite using `[hL, hR]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem psi_coef_k_left_translate (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (k : S7.KG ε) (h : Formalism.REAL.UJ ε)
     (ξ ζ : Fin n → T.V) :
@@ -236,15 +236,13 @@ theorem psi_coef_k_left_translate (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (k :
     _ = _ := Finset.sum_congr rfl fun e _ => Finset.sum_comm
 
 /- English proof (translation)
-Set `W : Submodule ℂ T'.V` to `{ carrier := {u' | ∀ (ξ ζ : Fin n → T.V) (v' : T'.V), ∫ g : Formalism.REAL.UJ ε, starRingEnd ℂ (ob3PsiCoef dual Ψ ξ ζ (Formalism.MainNotions.S.umat g)) * inner ℂ u' (Ψ' (Formalism.MainNotions.S.umat g) v') ∂(Formalism.REAL.muG ε) = 0} add_mem' := fun {a b} ha hb ξ ζ v' => by`. Simplify using `only [inner_add_left, mul_add]`. Rewrite using `[integral_add (psi_pairing_integrable dual hP hP' hWT ξ ζ a v') (psi_pairing_integrable dual hP hP' hWT ξ ζ b v'), ha ξ ζ v', hb ξ ζ v', add_zero]`. Use the proof step `zero_mem' := fun ξ ζ v' => by simp only [inner_zero_left, mul_zero, integral_zero]`. Use the proof step `smul_mem' := fun c x hx ξ ζ v' => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun g : Formalism.REAL.UJ ε => starRingEnd ℂ (ob3PsiCoef dual Ψ ξ ζ (Formalism.MainNotions.S.umat g)) * inner ℂ (c • x) (Ψ' (Formalism.MainNotions.S.umat g) v')) = fun g => starRingEnd ℂ c * (starRingEnd ℂ (ob3PsiCoef dual Ψ ξ ζ (Formalism.MainNotions.S.umat g)) * inner ℂ x …`. Use function extensionality and compare the values at `g`. Rewrite using `[inner_smul_left]`. Expand and normalize the polynomial expressions, which then agree. Use `show ∫ g : Formalism.REAL.UJ ε, starRingEnd ℂ (ob3PsiCoef dual Ψ ξ ζ (Formalism.MainNotions.S.umat g)) * inner ℂ (c • x) (Ψ' (Formalism.MainNotions.S.umat g) v') ∂(Formalism.REAL.muG ε) = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, integral_const_mul, hx ξ ζ v', mul_zero] }`. Establish `hst : ∀ k : S7.KG ε, ∀ v ∈ W, T'.op k v ∈ W`. Introduce `k u hu ξ ζ v'`. Set `kk : Formalism.REAL.UJ ε` to `⟨((k : S7.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ), (k : S7.UJ ε).2⟩`. Rewrite using `[← integral_mul_left_eq_self (μ := Formalism.REAL.muG ε) _ kk]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : ∀ g : Formalism.REAL.UJ ε, Formalism.MainNotions.S.umat (kk * g) = S7.toMK k * Formalism.MainNotions.S.umat g` using `fun g => rfl`. Simplify using `only [e, psi_coef_k_left_translate dual hP k, psi_k_left_equivariant hP'.1 k, clm_mul_apply_eq_comp, ContinuousLinearMap.inner_map_map_of_mem_unitary (T'.τ k).2]`. Conclude with `hu _ ζ v'`. Establish `hv : v₀' ∈ W` using `h0`. Break down `T'.irred W hst with hW | hW` into its components or cases.
-
-Conclude with `absurd ((Submodule.mem_bot ℂ).1 (hW ▸ hv)) hv₀'`. Introduce `ξ ζ u' v'`. Establish `hu : u' ∈ W` using `hW ▸ Submodule.mem_top`. Conclude with `hu ξ ζ v'`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psi_pairing_vanishing_spread (dual : Bool) (hP : IsPsiFor ε lam T Ψ) (hP' : IsPsiFor ε lam' T' Ψ') {v₀' : T'.V} (hv₀' : v₀' ≠ 0)
     (hWT : ∀ v w : T.V, MemLp (fun g : Formalism.REAL.UJ ε => ((Real.sqrt (S7.hs (Formalism.MainNotions.S.umat g)) : ℝ) : ℂ) *

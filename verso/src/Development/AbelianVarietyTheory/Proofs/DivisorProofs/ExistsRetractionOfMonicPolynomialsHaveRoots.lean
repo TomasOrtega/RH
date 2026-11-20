@@ -10,17 +10,15 @@ namespace GlobalTheory
 open Polynomial
 
 /- English proof (translation)
-Introduce `n`. Use `haveI : Nontrivial T := f.domain_nontrivial`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `p hd hm hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hp : p = 1` using `Polynomial.eq_one_of_monic_natDegree_zero hm hd`. Substitute `hp` using the available equality. Simplify using `at hx`. Consider the case `succ n ih`. Introduce `p hd hm hx`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hA p hm (by omega)`. Establish `hroot : IsRoot p a` using `ha`. Establish `hfac` using `(Polynomial.mul_divByMonic_eq_iff_isRoot).mpr hroot`. Use `set q := p /ₘ (X - C a) with hq`. Establish `hXm : (X - C a : T[X]).Monic` using `Polynomial.monic_X_sub_C a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : q.Monic`. Conclude with `Polynomial.Monic.of_mul_monic_left hXm (by rw [hfac]; exact hm)`. Establish `hqd : q.natDegree = n`. Establish `h1 : ((X - C a) * q).natDegree = (X - C a).natDegree + q.natDegree` using `hXm.natDegree_mul hqm`. Rewrite `h1` using `[hfac, hd, Polynomial.natDegree_X_sub_C]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hx` using `[← hfac, Polynomial.eval₂_mul]`. Break down `mul_eq_zero.mp hx with h | h` into its components or cases. Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [Polynomial.eval₂_sub, Polynomial.eval₂_X, Polynomial.eval₂_C] at h`.
-
-Conclude with `(sub_eq_zero.mp h).symm`. Conclude with `ih q hqd hqm h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_range_of_AIC_of_eval₂_eq_zero {T L : Type} [CommRing T] [CommRing L] [IsDomain L]
     (hA : AIC T) (f : T →+* L) (x : L) :
@@ -55,23 +53,23 @@ theorem mem_range_of_AIC_of_eval₂_eq_zero {T L : Type} [CommRing T] [CommRing 
     · exact ih q hqd hqm h
 
 /- English proof (translation)
-Introduce `D T E _ _ _ _ _ _ _ _ _ hA ι Q hQ hQD`. Set `π : E →ₐ[D] E ⧸ Q` to `Ideal.Quotient.mkₐ D Q`. Set `f : T →ₐ[D] E ⧸ Q` to `π.comp ι`. Establish `hker : RingHom.ker (f : T →+* E ⧸ Q) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := D)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hQD]`. Use extensionality with `d`. Simplify using `only [Ideal.mem_comap, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `f (algebraMap D T d) = 0 ↔ _`. Rewrite using `[f.commutes]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap D (E ⧸ Q) d = 0 ↔ _`. Rewrite using `[IsScalarTower.algebraMap_apply D E (E ⧸ Q), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Establish `hinj : Function.Injective f`. Use `(RingHom.injective_iff_ker_eq_bot (f : T →+* E ⧸ Q)).mpr hker` as an intermediate fact. Conclude with `this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective f`. Introduce `y`. Take `⟨e, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨p, hpm, hpe⟩` from `(Algebra.IsIntegral.isIntegral (R := D) e)`. Establish `hmem` using `mem_range_of_AIC_of_eval₂_eq_zero hA (f : T →+* E ⧸ Q) (Ideal.Quotient.mk Q e) _ (p.map (algebraMap D T)) rfl (hpm.map _) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Polynomial.eval₂_map]`. Establish `hc : (f : T →+* E ⧸ Q).comp (algebraMap D T) = (Ideal.Quotient.mk Q).comp (algebraMap D E)`. Use extensionality with `d`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[f.commutes]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hc, ← Polynomial.hom_eval₂, hpe, map_zero])`. Take `⟨t, ht⟩` from `hmem`. Conclude with `⟨t, ht⟩`. Set `eqv : T ≃ₐ[D] E ⧸ Q` to `AlgEquiv.ofBijective f ⟨hinj, hsurj⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(eqv.symm : E ⧸ Q →ₐ[D] T).comp π, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `t`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, AlgHom.coe_coe]`. Apply `eqv.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `eqv (eqv.symm (π (ι t))) = eqv t`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use extensionality with `e`. Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `eqv.symm (π e) = 0 ↔ e ∈ Q`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgEquiv.symm_apply_eq, map_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem`.
+A detailed English derivation is pending.
 -/
 theorem exists_retraction_of_AIC : ∀ (D T E : Type) [CommRing D] [IsDomain D] [CommRing T] [IsDomain T]
     [Algebra D T] [Algebra.IsIntegral D T] [CommRing E] [Algebra D E] [Algebra.IsIntegral D E],

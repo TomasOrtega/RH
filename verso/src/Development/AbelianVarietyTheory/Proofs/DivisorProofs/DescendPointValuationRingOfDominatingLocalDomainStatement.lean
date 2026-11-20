@@ -13,7 +13,7 @@ open GlobalTheory GlobalTheory.AbLaw GlobalTheory.UU GlobalTheory.LN GlobalTheor
 open scoped CategoryTheory.Obj
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.descend_point_to_valuationRing_of_dominating_local_domain` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDescendPointValuationRingOfDominatingLocalDomain.lean&line=17#L17)
 -/

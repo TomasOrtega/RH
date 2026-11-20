@@ -9,11 +9,11 @@ namespace UpperTheory.PicD.Data
 variable (P : Data)
 
 /- English proof (translation)
-Take `⟨C, i1, i2, hff, het, w, g, t, ht⟩` from `h`. Use `⟨C, i1, i2, hff, het, w, g, t ∘ₗ e.symm.toLinearMap, ?_⟩` and prove the remaining obligations. Establish `hfun : ⇑(LinearMap.liftBaseChange C (t ∘ₗ e.symm.toLinearMap)) = ⇑(LinearMap.liftBaseChange C t) ∘ ⇑(LinearEquiv.baseChange A C M' M e.symm)`. Use function extensionality and compare the values at `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul c m => simp [LinearMap.liftBaseChange_tmul]`. Consider the case `add x y hx hy`. Simplify using `only [Function.comp_apply, map_add] at hx hy ⊢`. Rewrite using `[hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Triv.mk ht.dw ht.hg (fun m => ht.ht (e.symm m)) ?_` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `ht.bij.comp (LinearEquiv.bijective _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Rel.congr {A : Type} [CommRing A] {z : P.S1.obj (CommRingCat.of A)} {M M' : Type} [AddCommGroup M] [Module A M]
     [AddCommGroup M'] [Module A M'] (h : P.Rel z M) (e : M ≃ₗ[A] M') : P.Rel z M' := by
@@ -33,15 +33,13 @@ theorem Rel.congr {A : Type} [CommRing A] {z : P.S1.obj (CommRingCat.of A)} {M M
   exact ht.bij.comp (LinearEquiv.bijective _)
 
 /- English proof (translation)
-Establish `hex : ∀ z : Z, ∃ N : CommRing.Pic A, P.Rel z.1 N`. Introduce `z`. Take `⟨M, i1, i2, hinv, hrel⟩` from `UpperTheory.exists_invertibleModule_of_locallyTrivial_cocycle P A z.1 (hZ z.1 z.2)`. Conclude with `⟨CommRing.Pic.mk A M, Rel.congr P hrel (CommRing.Pic.mk.linearEquiv A M).symm⟩`. Use `choose f hf using hex`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hone : ∀ z : Z, f z = 1 ↔ P.Rel z.1 A`. Introduce `z`. Rewrite using `[← CommRing.Pic.mk_eq_self (M := f z), CommRing.Pic.mk_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Rel.congr P (hf z) e`. Introduce `hA`. Conclude with `UpperTheory.invertibleModule_equiv_of_same_cocycle P A z.1 _ _ (hf z) hA`. Establish `hmul : ∀ x y : Z, f (x + y) = f x * f y`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[CommRing.Pic.mul_eq_tensor]`. Conclude with `((CommRing.Pic.mk_eq_iff).mpr (UpperTheory.invertibleModule_equiv_of_same_cocycle P A (x + y).1 _ _ (UpperTheory.rel_add_tensorProduct_of_rel P A x.1 y.1 _ _ (hf x) (hf y)) (hf (x + y)))).symm`. Use `⟨{ toFun := fun z => Additive.ofMul (f z), map_zero' := ?_, map_add' := ?_ }, ?_⟩` and prove the remaining obligations. Use `show Additive.ofMul (f 0) = Additive.ofMul 1`. Use `congr 1`.
-
-Conclude with `(hone 0).mpr ((UpperTheory.torsorRel_self_iff_exists_coboundary P A _).mpr ⟨0, by simp⟩)`. Introduce `x y show Additive.ofMul (f (x + y)) = Additive.ofMul (f x * f y)`. Rewrite using `[hmul]`. Introduce `z show Additive.ofMul (f z) = 0 ↔ _`. Rewrite using `[ofMul_eq_zero, hone, UpperTheory.torsorRel_self_iff_exists_coboundary]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main (A : Type) [CommRing A] (Z : AddSubgroup (P.S1.obj (CommRingCat.of A))) (hZ : ∀ z ∈ Z, P.LocEx z) :
     ∃ φ : Z →+ Additive (CommRing.Pic A), ∀ z : Z, φ z = 0 ↔ ∃ y, P.dd A y = z.1 := by

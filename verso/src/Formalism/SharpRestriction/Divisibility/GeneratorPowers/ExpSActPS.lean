@@ -18,11 +18,11 @@ variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
 /- English proof (translation)
-Establish `hb : MvPowerSeries.HasSubst (actPS (Dw` using `Dw) (S := S) c k) := MvPowerSeries.hasSubst_of_constantCoeff_zero fun q => by simp [actPS]`. Establish `ha : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin d => φ p.2)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun p => hφ p.2`. Establish `h0 : MvPowerSeries.constantCoeff (-(compL φ g)) = 0`. Rewrite using `[map_neg, ExpGB.const_compL φ hφ g, hg, neg_zero]`. Establish `hcomp : MvPowerSeries.subst (actPS (Dw` using `Dw) (S := S) c k) (-(compL φ g)) = -(compL (φa c φ k) g) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_neg, MvPowerSeries.coe_substAlgHom hb]`. Unfold `compL φa`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Unfold `Germ.FB.expS PowerSeries.subst`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero h0).const hb]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hcomp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expS_actPS {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0) (g : MvPowerSeries (Fin 1 × Fin d) S)
@@ -45,15 +45,15 @@ theorem expS_actPS {d : ℕ} (φ : Fin d → MvPowerSeries (Fin 1 × Fin (dL Dw)
   simp only [hcomp]
 
 /- English proof (translation)
-Establish `hX : actP (Dw` using `Dw) (S := S) c 1 = fun p => MvPolynomial.X p := by`. Use function extensionality and compare the values at `p`. Simplify using `[actP]`. Establish `hid : jetSubstP m (actP (Dw` using `Dw) (S := S) c 1) = AlgHom.id S _ := by`. Rewrite using `[hX]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `simp [jetSubstP, jetMap, liftJet, Ideal.Quotient.lift_mk] <;> rfl`. Establish `hP : actPS (Dw` using `Dw) (S := S) c 1 = MvPowerSeries.X := by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `q`. Simplify using `[actPS]`. Establish `hφ1 : φa c φ 1 = φ`. Use function extensionality and compare the values at `j`. Simplify using `only [φa, hP]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `congrFun MvPowerSeries.subst_self (φ j)`. Establish `hu : Units.map (AlgHom.id S (Jet S (Fin 1 × Fin (dL Dw)) m)).toMonoidHom (u m) = u m` using `Units.ext rfl`. Establish `h1` using `val_eAt C φ hφ hact τ u hτc m 1 z J hJ`. Rewrite `h1` using `[hφ1, _root_.mul_one]`. Unfold `eAt at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[val_pull, hid, homAt_id, Over.id_left, Category.comp_id, hu]`. Conclude with `h1`. Conclude with `hJ`.
+A detailed English derivation is pending.
 -/
 theorem val_e (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : ∀ j, MvPowerSeries.constantCoeff (φ j) = 0)

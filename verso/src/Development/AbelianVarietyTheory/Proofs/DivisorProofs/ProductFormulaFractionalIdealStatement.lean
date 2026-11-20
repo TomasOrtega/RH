@@ -10,7 +10,7 @@ open GlobalTheory.LieSmooth
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LieSmooth.finsum_sum_log_iSup_eq_idealLog` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FProductFormulaFractionalIdeal.lean&line=188#L188)
 -/

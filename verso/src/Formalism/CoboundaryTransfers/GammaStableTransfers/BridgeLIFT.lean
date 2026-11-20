@@ -8,9 +8,9 @@ namespace Formalism.CoboundaryTransfers
 open Formalism
 
 /- English proof (translation)
-Establish `e : (fun x : D => Q ^ M • x) = (fun x : D => Q • x)^[M]`. Use function extensionality and compare the values at `x`. Proceed by induction on `M with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ← ih, pow_succ', mul_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `h.iterate M`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_bijective {A D : Type} [CommRing A] [AddCommGroup D] [Module A D] (Q : A)
     (h : Function.Bijective (fun x : D => Q • x)) (M : ℕ) :
@@ -24,17 +24,15 @@ theorem pow_smul_bijective {A D : Type} [CommRing A] [AddCommGroup D] [Module A 
   exact h.iterate M
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ B M D _ _ _ _ W y hy`. Take `⟨t, hv, hγQ⟩` from `B.γQ`. Take `⟨n, hn, hγn⟩` from `W.γ_N _ hy`. Take `⟨w, hw⟩` from `hv.exists_left_inv`. Establish `hX : B.X ∣ w - 1` using `⟨-(w * t), by linear_combination hw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨r, hr⟩ : B.X ∣ w ^ M - 1 := by`. Establish `h` using `sub_dvd_pow_sub_pow w 1 M`. Rewrite `h` using `[one_pow]`. Conclude with `dvd_trans hX h`. Establish `hw' : w ^ M = B.X * r + 1` using `by rw [← hr]; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : W.γ (B.Q ^ M • y) = B.Q ^ M • ((1 + B.X * t) ^ M • W.γ y)`. Rewrite using `[W.γ_smul, map_pow, hγQ, mul_pow, mul_smul]`. Establish `h2 : w ^ M • W.γ (B.Q ^ M • y) = B.Q ^ M • W.γ y`. Rewrite using `[h1, smul_comm (w ^ M) (B.Q ^ M), ← mul_smul (w ^ M), ← mul_pow, hw, one_pow, one_smul]`. Establish `h3 : W.γ (B.Q ^ M • y) = B.Q ^ M • y + B.X • n` using `by rw [← hγn]; abel`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : B.Q ^ M • (W.γ y - y) = B.X • (r • B.Q ^ M • y + w ^ M • n)`. Rewrite using `[smul_sub, ← h2, h3, hw']`. Use `module`. Establish `hb` using `pow_smul_bijective B.Q W.Q_bij M`. Take `⟨y', hy'⟩` from `hb.2 (r • B.Q ^ M • y + w ^ M • n)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only at hy'`. Use `⟨y', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy']`. Conclude with `W.N.add_mem (W.N.smul_mem _ hy) (W.N.smul_mem _ hn)`. Apply `hb.1` to reduce the goal to its premises.
-
-Simplify using `only`. Rewrite using `[key, smul_comm (B.Q ^ M) B.X y', hy']`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_gamma_invariant_lattice : LIFTGammaQN := by
   intro ℓ _ A _ _ B M D _ _ _ _ W y hy
@@ -81,9 +79,9 @@ def sesOfLIFT {ℓ : ℕ} [Fact ℓ.Prime] {A : Type} [CommRing A] [Algebra ℤ_
   sat := S.sat
 
 /- English proof (translation)
-Introduce `p _ u`. Take `⟨B, W, hu, hN, hX⟩` from `LIFT.wDNonempty_proof p u`. Substitute `hu` using the available equality. Use `⟨baseOfLIFT B, ofLIFT W (lift_gamma_invariant_lattice p _ B 0 _ W), rfl, hN, hX, B.γX, ?_⟩` and prove the remaining obligations. Take `⟨t, ht, h⟩` from `B.γQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨1 + B.X * t, ht, ⟨t, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show B.γA B.Q = (1 + B.X * t) * B.Q`. Rewrite using `[h, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wach_lattice_nonempty_unramified : NonemptyU := by
   intro p _ u

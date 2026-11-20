@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.BigTop.Fun
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p hp`. Establish `hR` using `Formalism.IndefR.Links.complex_data_conditions_base_level_of_primitive_links hp.ok hp.sep p.charW hp.prim`. Conclude with `⟨hR.wf false, Formalism.IndefR.Links.primRows3 hp.ok hp.sep p.R p.F p.charW hp.prim, Formalism.IndefR.Links.primRows3_data hp.ok hp.sep p.charW hp.prim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem bundle_of_rows_alt : _root_.GlobalTheory.BigTop.Fun.BundleCondition := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hp

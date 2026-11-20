@@ -15,7 +15,7 @@ variable {R : Type} [CommRing R] {X : Scheme.{0}} {s : X ⟶ Sp R}
 abbrev TT (s : X ⟶ Sp R) : Type 1 := (IsTriv s).FullSubcategory
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).2 fun b hb ↦ ?_, T.obj.surj⟩` and prove the remaining obligations. Establish `h` using `(T.obj.ker b).1 hb`. Rewrite `h` using `[T.property]`. Conclude with `Ideal.mem_bot.1 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem π_bij (T : TT s) : Function.Bijective T.obj.π := by
   refine ⟨(injective_iff_map_eq_zero _).2 fun b hb ↦ ?_, T.obj.surj⟩
@@ -28,7 +28,7 @@ def πe (T : TT s) : T.obj.B ≃+* T.obj.B₀ := RingEquiv.ofBijective T.obj.π 
 def pt (T : TT s) : Sp T.obj.B ⟶ X := spMap ((πe T).symm : T.obj.B₀ →+* T.obj.B) ≫ T.obj.x
 
 /- English proof (translation)
-Rewrite using `[pt, Category.assoc, T.obj.w, ← spMap_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `(πe T).symm_apply_apply (algebraMap R T.obj.B r)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem pt_w (T : TT s) : pt T ≫ s = algStr R T.obj.B := by
   rw [pt, Category.assoc, T.obj.w, ← spMap_comp]
@@ -53,7 +53,7 @@ def aM (T : TT s) (p : Pair (pt T)) : (affF s).obj (op p.1.2) ⟶ thk T p :=
   ⟨Thick.trivHom (T := (thk T p).obj) (secPullA T p) (secPull_affPt s _ p)⟩
 
 /- English proof (translation)
-Rewrite using `[spMap_comp, affPt_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bM_pt (T : TT s) (p : Pair (pt T)) :
     spMap ((toSec R T.obj.B p.1.1).toRingHom.comp ((πe T).symm : T.obj.B₀ →+* T.obj.B)) =

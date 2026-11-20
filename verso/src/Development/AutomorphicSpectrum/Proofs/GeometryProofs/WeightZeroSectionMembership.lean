@@ -21,33 +21,31 @@ namespace GlobalTheory.CompanionTheory.Ar.Plug
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U h e hL hp hq x Z u hu f hf hfZ hb`. Establish `hF : FnAlgClosed Xo c` using `GlobalTheory.CompanionTheory.Ar.Rec.CompOver.fnAlgClosed_of_card (U c.F.val.toRingHom) rfl (hL.unf _ rfl) h (hL.unTest _ rfl) hL.genT hL.comps`. Use `⟨GlobalTheory.AllWt.mem_cuspW.2 ⟨hf, fun σ hσ => holCusp_mem_holSub _ _ fun k => ?_⟩, hfZ⟩` and prove the remaining obligations. Establish `hU` using `hL.unf σ hσ`. Establish `hK : Nonempty (GlobalTheory.ShFam.KeySec Xo c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hr, -, -, -, -, g, ee, F, -⟩` from `hU`. Conclude with `GlobalTheory.KeyCover.nonempty_keySec_of_family _ _ _ _ _ _ σ hσ ee F (by omega) hF`. Establish `hdec : ∀ (τ : E →+* ℂ) (i j : ℕ), i ≤ j → j < Dw.mult τ → (GlobalTheory.AllWt.wtOf Dw u 0).1 (τ, j) ≤ (GlobalTheory.AllWt.wtOf Dw u 0).1 (τ, i)`. Introduce `τ i j hij hj`. Distinguish the cases in `hτ : τ (H.rt : E) = H.rt0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hjp : j < Dw.p` using `by simpa [Datum.mult, hτ] using hj`. Establish `e1` using `GlobalTheory.AllWt.wtOf_big u 0 ⟨τ, hτ⟩ j hjp`. Establish `e2` using `GlobalTheory.AllWt.wtOf_big u 0 ⟨τ, hτ⟩ i (by omega)`. Simplify using `only at e1 e2`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hu ⟨τ, hτ⟩).antitone (show (⟨i, by omega⟩ : Fin (Dw.p + Dw.q)) ≤ ⟨j, by omega⟩ from hij)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hjq : j < Dw.q` using `by simpa [Datum.mult, hτ] using hj`. Establish `hc` using `GlobalTheory.AllWt.conj_mem hτ`. Establish `e1` using `GlobalTheory.AllWt.wtOf_small u 0 ⟨conjEmb τ, hc⟩ j hjq`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `GlobalTheory.AllWt.wtOf_small u 0 ⟨conjEmb τ, hc⟩ i (by omega)`. Simplify using `only [GlobalTheory.AllWt.conjEmb_conjEmb] at e1 e2`. Rewrite using `[e1, e2]`. Use `(hu ⟨conjEmb τ, hc⟩).antitone (show (⟨Dw.p + (Dw.q - 1 - j), by omega⟩ : Fin (Dw.p + Dw.q)) ≤ ⟨Dw.p + (Dw.q - 1 - i), by omega⟩ from Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsec` using `GlobalTheory.FlatTw.Hol.isSec_modelWt_rdU _ _ _ _ _ _ σ _ (U σ) hK hσ hU (by omega) _ (GlobalTheory.AllWt.even_wtOf u 0) hdec f hf k`. Establish `hr` using `hU.1`. Take `⟨hp0, hΨ⟩` from `hU.2.1 k`. Choose the witnesses or unpack the hypotheses as in `⟨t⟩ : Nonempty (GlobalTheory.AllWt.Psi H) := by`. Take `⟨ρ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hρ : ρ (H.rt : E) = H.rt0`. Conclude with `⟨⟨ρ, hρ⟩⟩`. Conclude with `⟨⟨conjEmb ρ, GlobalTheory.AllWt.conj_mem hρ⟩⟩`. Establish `ht : relab c σ t.1 ∈ ((U σ).X k).Ψ`. Use `(hΨ _).2 ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hσ0 : σ ⟨H.rt0, c.le (baseKA l).ρ.2⟩ = H.rt0` using `hσ`. Conclude with `(congrArg σ (Subtype.ext t.2)).trans hσ0`. Establish `hbig : ∀ j : Fin r, ∀ hj : Dw.q ≤ (j : ℕ), GlobalTheory.AllWt.modelWt (U σ) (GlobalTheory.AllWt.wtOf Dw u 0) k ⟨_, ht⟩ j = u t ⟨(j : ℕ) - Dw.q, by omega⟩`. Introduce `j hj`. Establish `hjr` using `j.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `GlobalTheory.AllWt.modelWt_wtOf_big (U σ) u 0 k hp0 t ht ((j : ℕ) - Dw.q) (by omega) (by omega)` as an intermediate fact. Rewrite `this` using `[show (⟨Dw.q + ((j : ℕ) - Dw.q), by omega⟩ : Fin r) = j from Fin.ext (by simp only; omega)]`. Then use the resulting hypothesis. Establish `hsm : ∀ j : Fin r, ∀ hj : (j : ℕ) < Dw.q, GlobalTheory.AllWt.modelWt (U σ) (GlobalTheory.AllWt.wtOf Dw u 0) k ⟨_, ht⟩ j = u t ⟨Dw.p + (j : ℕ), by omega⟩` using `fun j hj => GlobalTheory.AllWt.modelWt_wtOf_small (U σ) u 0 k hp0 t ht j hj j.2`. Take `⟨C, hC⟩` from `hb σ hσ`. Establish `hpos` using `GlobalTheory.AllWt.lieFacZ_pos (Dw := Dw) x (GlobalTheory.AllWt.wtOf Dw u 0)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbdd : ((U σ).X k).IsBddSec (GlobalTheory.AllWt.modelWt (U σ) (GlobalTheory.AllWt.wtOf Dw u 0) k) (rdU (U σ) f k)`. Use `⟨hsec, max (C / GlobalTheory.AllWt.lieFacZ Dw x (GlobalTheory.AllWt.wtOf Dw u 0)) 0, fun y hy => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hz : (⟨k, y⟩ : Σ k, Frame ((U σ).X k).Ψ r) ∈ GlobalTheory.AllWt.framesOn (U σ) Z`. Use `le_max_of_le_left ((le_div_iff₀' hpos).2 ?_)` and prove the remaining obligations. Establish `h1` using `hC ⟨k, y⟩ hz`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `only [GlobalTheory.AllWt.homN, GlobalTheory.AllWt.ptN]`. Establish `h0 : rdU (U σ) f k y = 0` using `GlobalTheory.AllWt.rdU_eq_zero (U σ) hfZ hz`. Use `le_max_of_le_right (le_of_eq ?_)` and prove the remaining obligations. Simplify using `[Data.pnorm, h0]`. Use `ReciprocityTheory.ChartRestriction.G.AR.Up.cuspStatement_holds r _ _ ⟨_, ht⟩ (by omega) (by omega) (fun i j hij hjp => ?_) (fun i0 i1 h0 h1 => ?_) _ hbdd` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjr` using `j.2`. Establish `hir` using `i.2`. Distinguish the cases in `hjq : (j : ℕ) < Dw.q`. Rewrite using `[hsm j hjq, hsm i (by omega)]`. Conclude with `(hu t).antitone (Fin.mk_le_mk.2 (by omega))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiq : Dw.q ≤ (i : ℕ)` using `by omega`. Rewrite using `[hbig j (by omega), hbig i hiq]`. Conclude with `(hu t).antitone (Fin.mk_le_mk.2 (by omega))`. Establish `hi1` using `i1.2`. Rewrite using `[hsm i0 (by omega), hbig i1 (by omega)]`.
-
-Conclude with `(hu t) (Fin.mk_lt_mk.2 (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_mem_cuspOn : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → 1 ≤ Dw.p → 1 ≤ Dw.q → ∀ (x : ℝ) (Z : Comp Xo c) (u : GlobalTheory.AllWt.Weight Dw), (∀ τ, StrictAnti (u τ)) → ∀ f ∈ GlobalTheory.AllWt.secZ Xo c (GlobalTheory.AllWt.exOf Dw u 0), f ∈ GlobalTheory.AllWt.suppOn Z → (∀ σ, GoodEmb c σ → ∃ C : ℝ, ∀ z ∈ GlobalTheory.AllWt.framesOn (U σ) Z, GlobalTheory.AllWt.homN (U σ) x (GlobalTheory.AllWt.wtOf Dw u 0) f z ≤ C) → f ∈ GlobalTheory.AllWt.cuspOn U Z (GlobalTheory.AllWt.wtOf Dw u 0) := by
   intro E _ _ _ H Dw l Xo c r U h e hL hp hq x Z u hu f hf hfZ hb

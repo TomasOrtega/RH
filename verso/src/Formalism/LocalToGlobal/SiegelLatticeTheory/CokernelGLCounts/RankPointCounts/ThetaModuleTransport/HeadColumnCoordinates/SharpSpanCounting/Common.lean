@@ -58,7 +58,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V]
 
 /- English proof (translation)
-Unfold `HermSp.ZZplusOf`. Rewrite using `[hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zzplusOf_none (hs : M.split = none) {r : ℕ} (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (T T' : F) : HermSp.ZZplusOf M Zh T T' = Zh := by
@@ -66,7 +66,7 @@ theorem zzplusOf_none (hs : M.split = none) {r : ℕ} (Zh : Matrix (Fin (r + 1))
   rw [hs]
 
 /- English proof (translation)
-Unfold `HermSp.Dl`. Rewrite using `[dif_pos (Nat.le_succ r)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dl_eq_det (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) :
     H.Dl f f' r = ((H.Zhat f f').submatrix Fin.castSucc Fin.castSucc).det := by
@@ -75,7 +75,7 @@ theorem dl_eq_det (H : HermSp M V) {r : ℕ} (f f' : Fin (r + 1) → V) :
   rfl
 
 /- English proof (translation)
-The claim follows from `hyp.1.1.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem dl_succ_unit {H : HermSp M V} {r : ℕ} {t₁ : Term V M r} {f₂ f₂' : Fin (r + 1) → V}
     {φ : H.Wb t₁.f ≃ₗ[E] H.Wb f₂} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂'} (hyp : LocalCountHypotheses H t₁ f₂ f₂' φ φ') :
@@ -83,7 +83,7 @@ theorem dl_succ_unit {H : HermSp M V} {r : ℕ} {t₁ : Term V M r} {f₂ f₂' 
   hyp.1.1.2.2.2.1
 
 /- English proof (translation)
-Establish `h` using `hyp.2.2.2.1.2.2.2.2.2`. Simplify using `only [hD, zero_mul] at h`. Conclude with `(IsUnit.mul_left_eq_zero (dl_succ_unit hyp)).1 h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dl_zero_two {H : HermSp M V} {r : ℕ} {t₁ : Term V M r} {f₂ f₂' : Fin (r + 1) → V}
     {φ : H.Wb t₁.f ≃ₗ[E] H.Wb f₂} {φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb f₂'} (hyp : LocalCountHypotheses H t₁ f₂ f₂' φ φ')

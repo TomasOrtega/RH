@@ -14,26 +14,26 @@ section Entries
 variable {u : GU σ (N + 2)}
 
 /- English proof (translation)
-The claim follows from `hu i j h`.
+A detailed English derivation is pending.
 -/
 private theorem mat_apply_eq_one_apply_of_mem_radQ_of_blk_le (hu : u ∈ radQ σ N) (i j : Fin (N + 2)) (h : blk N j ≤ blk N i) :
     mat u i j = (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i j :=
   hu i j h
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu 0 0 le_rfl, Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_zero_zero (hu : u ∈ radQ σ N) : mat u 0 0 = 1 := by
   rw [mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu 0 0 le_rfl, Matrix.one_apply_eq]
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_zero]), Matrix.one_apply_ne (mid_ne_zero i)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_mid_zero (hu : u ∈ radQ σ N) (i : Fin N) : mat u (mid i) 0 = 0 := by
   rw [mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_zero]), Matrix.one_apply_ne (mid_ne_zero i)]
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_mid])]`. Simplify using `only [Matrix.one_apply, mid_injective.eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rad_mid_mid (hu : u ∈ radQ σ N) (i j : Fin N) :
     mat u (mid i) (mid j) = (1 : Matrix (Fin N) (Fin N) L) i j := by
@@ -41,19 +41,19 @@ theorem rad_mid_mid (hu : u ∈ radQ σ N) (i j : Fin N) :
   simp only [Matrix.one_apply, mid_injective.eq_iff]
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_zero]), Matrix.one_apply_ne last_ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_last_zero (hu : u ∈ radQ σ N) : mat u (Fin.last (N + 1)) 0 = 0 := by
   rw [mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_zero]), Matrix.one_apply_ne last_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_mid, blk_last]), Matrix.one_apply_ne (mid_ne_last j).symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_last_mid (hu : u ∈ radQ σ N) (j : Fin N) : mat u (Fin.last (N + 1)) (mid j) = 0 := by
   rw [mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ (by simp [blk_mid, blk_last]), Matrix.one_apply_ne (mid_ne_last j).symm]
 
 /- English proof (translation)
-Rewrite using `[mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ le_rfl, Matrix.one_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rad_last_last (hu : u ∈ radQ σ N) : mat u (Fin.last (N + 1)) (Fin.last (N + 1)) = 1 := by
   rw [mat_apply_eq_one_apply_of_mem_radQ_of_blk_le hu _ _ le_rfl, Matrix.one_apply_eq]
@@ -61,7 +61,7 @@ theorem rad_last_last (hu : u ∈ radQ σ N) : mat u (Fin.last (N + 1)) (Fin.las
 end Entries
 
 /- English proof (translation)
-Use `show (mat u * mat u') i j = _`. Rewrite using `[Matrix.mul_apply, sum_idx]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_mul_eq_ite_of_hasMult (u u' : GU σ (N + 2)) (i j : Fin (N + 2)) :
     mat (u * u') i j = mat u i 0 * mat u' 0 j + ∑ m, mat u i (mid m) * mat u' (mid m) j +
@@ -70,7 +70,7 @@ private theorem mat_mul_eq_ite_of_hasMult (u u' : GU σ (N + 2)) (i j : Fin (N +
   rw [Matrix.mul_apply, sum_idx]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show mat (u * u') 0 (mid j) = mat u 0 (mid j) + mat u' 0 (mid j)`. Rewrite using `[mat_mul_eq_ite_of_hasMult, rad_zero_zero hu, rad_last_mid hu' j]`. Simplify using `only [rad_mid_mid hu', Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, one_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rowOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N) :
     rowOf (u * u') = rowOf u + rowOf u' := by
@@ -82,7 +82,7 @@ theorem rowOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ ra
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show mat (u * u') (mid i) (Fin.last (N + 1)) = mat u (mid i) (Fin.last (N + 1)) + mat u' (mid i) (Fin.last (N + 1))`. Rewrite using `[mat_mul_eq_ite_of_hasMult, rad_mid_zero hu i, rad_last_last hu']`. Simplify using `only [rad_mid_mid hu, Matrix.one_apply, ite_mul, one_mul, zero_mul, zero_add, mul_one, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem colOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N) :
     colOf (u * u') = colOf u + colOf u' := by
@@ -95,7 +95,7 @@ theorem colOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ ra
   ring
 
 /- English proof (translation)
-Use `show mat (u * u') 0 (Fin.last (N + 1)) = mat u 0 (Fin.last (N + 1)) + mat u' 0 (Fin.last (N + 1)) + rowOf u ⬝ᵥ colOf u'`. Rewrite using `[mat_mul_eq_ite_of_hasMult, rad_zero_zero hu, rad_last_last hu', dotProduct]`. Simplify using `only [rowOf, colOf, one_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cornerOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈ radQ σ N) :
     cornerOf (u * u') = cornerOf u + cornerOf u' + rowOf u ⬝ᵥ colOf u' := by
@@ -106,7 +106,7 @@ theorem cornerOf_mul {u u' : GU σ (N + 2)} (hu : u ∈ radQ σ N) (hu' : u' ∈
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) 0 (mid j) = 0`. Conclude with `Matrix.one_apply_ne (mid_ne_zero j).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rowOf_one : rowOf (1 : GU σ (N + 2)) = 0 := by
   funext j
@@ -114,7 +114,7 @@ theorem rowOf_one : rowOf (1 : GU σ (N + 2)) = 0 := by
   exact Matrix.one_apply_ne (mid_ne_zero j).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) (mid i) (Fin.last (N + 1)) = 0`. Conclude with `Matrix.one_apply_ne (mid_ne_last i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem colOf_one : colOf (1 : GU σ (N + 2)) = 0 := by
   funext i
@@ -122,18 +122,18 @@ theorem colOf_one : colOf (1 : GU σ (N + 2)) = 0 := by
   exact Matrix.one_apply_ne (mid_ne_last i)
 
 /- English proof (translation)
-Use `show (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) 0 (Fin.last (N + 1)) = 0`. Conclude with `Matrix.one_apply_ne (fun h => last_ne_zero h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem cornerOf_one : cornerOf (1 : GU σ (N + 2)) = 0 := by
   show (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) 0 (Fin.last (N + 1)) = 0
   exact Matrix.one_apply_ne (fun h => last_ne_zero h.symm)
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Use `show (if (i : ℕ) + j + 1 = n then (1 : L) else 0) = _`. Distinguish the cases in `h : j = i.rev`. Rewrite using `[if_pos h, if_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h, if_neg]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h` to reduce the goal to its premises. Use `ext`. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem antiJ_apply_eq_ite_rev {n : ℕ} (i j : Fin n) :
     antiJ L n i j = if j = i.rev then 1 else 0 := by
@@ -153,7 +153,7 @@ private theorem antiJ_apply_eq_ite_rev {n : ℕ} (i j : Fin n) :
     omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [antiJ_apply_eq_ite_rev, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem antiJ_mul_apply_eq_apply_rev_left {n : ℕ} (X : Matrix (Fin n) (Fin n) L) (a c : Fin n) :
     (antiJ L n * X) a c = X a.rev c := by
@@ -161,7 +161,7 @@ private theorem antiJ_mul_apply_eq_apply_rev_left {n : ℕ} (X : Matrix (Fin n) 
   simp only [antiJ_apply_eq_ite_rev, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Establish `e : ∀ d : Fin n, (b = d.rev) = (d = b.rev)` using `fun d => propext ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`. Simplify using `only [antiJ_apply_eq_ite_rev, e, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem mul_antiJ_apply_eq_apply_rev_right {n : ℕ} (X : Matrix (Fin n) (Fin n) L) (c b : Fin n) :
     (X * antiJ L n) c b = X c b.rev := by
@@ -171,9 +171,9 @@ private theorem mul_antiJ_apply_eq_apply_rev_right {n : ℕ} (X : Matrix (Fin n)
   simp only [antiJ_apply_eq_ite_rev, e, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[antiJ_mul_apply_eq_apply_rev_left, antiJ_apply_eq_ite_rev, Fin.rev_rev]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, Matrix.one_apply_eq]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (Ne.symm h), Matrix.one_apply_ne h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem antiJ_mul_antiJ_eq_one {n : ℕ} : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -184,9 +184,9 @@ private theorem antiJ_mul_antiJ_eq_one {n : ℕ} : antiJ L n * antiJ L n = 1 := 
   · rw [if_neg (Ne.symm h), Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Establish `hU : cT σ (mat g) * antiJ L n * mat g = antiJ L n` using `g.2`. Establish `hinv : mat g * mat g⁻¹ = 1` using `by show mat (g * g⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`. Both sides reduce to the same expression. Establish `key : mat g⁻¹ = antiJ L n * cT σ (mat g) * antiJ L n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc (cT σ (mat g) * antiJ L n), hinv, Matrix.mul_one, ← Matrix.mul_assoc]`. Rewrite using `[key, mul_antiJ_apply_eq_apply_rev_right, antiJ_mul_apply_eq_apply_rev_left]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mat_inv_apply_eq_sigma_mat_rev {n : ℕ} (g : GU σ n) (a b : Fin n) :
     mat g⁻¹ a b = σ (mat g b.rev a.rev) := by
@@ -204,21 +204,21 @@ private theorem mat_inv_apply_eq_sigma_mat_rev {n : ℕ} (g : GU σ n) (a b : Fi
   rfl
 
 /- English proof (translation)
-Use `show mat u⁻¹ 0 (mid j) = σ (mat u (mid j.rev) (Fin.last (N + 1)))`. Rewrite using `[mat_inv_apply_eq_sigma_mat_rev, mid_rev, Fin.rev_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowOf_inv (u : GU σ (N + 2)) (j : Fin N) : rowOf u⁻¹ j = σ (colOf u j.rev) := by
   show mat u⁻¹ 0 (mid j) = σ (mat u (mid j.rev) (Fin.last (N + 1)))
   rw [mat_inv_apply_eq_sigma_mat_rev, mid_rev, Fin.rev_zero]
 
 /- English proof (translation)
-Use `show mat u⁻¹ 0 (Fin.last (N + 1)) = σ (mat u 0 (Fin.last (N + 1)))`. Rewrite using `[mat_inv_apply_eq_sigma_mat_rev, Fin.rev_last, Fin.rev_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cornerOf_inv (u : GU σ (N + 2)) : cornerOf u⁻¹ = σ (cornerOf u) := by
   show mat u⁻¹ 0 (Fin.last (N + 1)) = σ (mat u 0 (Fin.last (N + 1)))
   rw [mat_inv_apply_eq_sigma_mat_rev, Fin.rev_last, Fin.rev_zero]
 
 /- English proof (translation)
-Establish `h` using `congrFun (rowOf_mul hu (inv_mem hu)) j`. Rewrite `h` using `[mul_inv_cancel, rowOf_one, Pi.zero_apply, Pi.add_apply, rowOf_inv]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem row_eq {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) (j : Fin N) : rowOf u j = -σ (colOf u j.rev) := by
   have h := congrFun (rowOf_mul hu (inv_mem hu)) j
@@ -226,7 +226,7 @@ theorem row_eq {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) (j : Fin N) : rowOf u 
   linear_combination -h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `congrFun (colOf_mul hu (inv_mem hu)) i`. Rewrite `h` using `[mul_inv_cancel, colOf_one, Pi.zero_apply, Pi.add_apply]`. Rewrite using `[Pi.neg_apply]`. Take the linear combination `-h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem colOf_inv {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) : colOf u⁻¹ = -colOf u := by
   funext i
@@ -236,7 +236,7 @@ theorem colOf_inv {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) : colOf u⁻¹ = -c
   linear_combination -h
 
 /- English proof (translation)
-Establish `h` using `cornerOf_mul hu (inv_mem hu)`. Rewrite `h` using `[mul_inv_cancel, cornerOf_one, cornerOf_inv, colOf_inv hu, dotProduct_neg]`. Take the linear combination `-h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem corner_eq {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) :
     cornerOf u + σ (cornerOf u) = rowOf u ⬝ᵥ colOf u := by
@@ -245,13 +245,9 @@ theorem corner_eq {u : GU σ (N + 2)} (hu : u ∈ radQ σ N) :
   linear_combination -h
 
 /- English proof (translation)
-Apply the tactic sequence `rcases idx_cases i with rfl | ⟨p, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨q, rfl⟩ | rfl`. Rewrite using `[rad_zero_zero hw]`. Conclude with `one_mem _`. Conclude with `hr q`. Conclude with `hc`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rad_mid_zero hw]`. Conclude with `zero_mem _`. Rewrite using `[rad_mid_mid hw, Matrix.one_apply] split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
-
-Conclude with `hb p`. Rewrite using `[rad_last_zero hw]`. Conclude with `zero_mem _`. Rewrite using `[rad_last_mid hw]`. Conclude with `zero_mem _`.
-
-Rewrite using `[rad_last_last hw]`. Conclude with `one_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mat_apply_mem_intL_of_mem_radQ_of_blocks {w : GU σ (N + 2)} (hw : w ∈ radQ σ N)
     (hr : ∀ j, rowOf w j ∈ intL L) (hb : ∀ i, colOf w i ∈ intL L) (hc : cornerOf w ∈ intL L)
@@ -271,27 +267,23 @@ private theorem mat_apply_mem_intL_of_mem_radQ_of_blocks {w : GU σ (N + 2)} (hw
   · rw [rad_last_last hw]; exact one_mem _
 
 /- English proof (translation)
-Establish `hσint : ∀ x, σ x ∈ intL L ↔ x ∈ intL L` using `fun x => by show σ x ∈ Valued.v.integer ↔ x ∈ Valued.v.integer`. Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, hσ]`. Simplify using `only [KU, Subgroup.mem_subgroupOf, intPts, Subgroup.mem_inf, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h, hh⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `e : ∀ i j, mat u i j = (((h : GL (Fin (N + 2)) (intL L)) : Matrix (Fin (N + 2)) (Fin (N + 2)) (intL L)) i j : L)`. Introduce `i j`. Use `show ((u : GL (Fin (N + 2)) L) : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i j = _`. Rewrite using `[← hh]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Use `show mat u 0 (mid j) ∈ intL L`. Rewrite using `[e]`. Conclude with `Subtype.prop _`. Use `show mat u 0 (Fin.last (N + 1)) ∈ intL L`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `Subtype.prop _`. Introduce and unpack `⟨hr, hc⟩`. Establish `hb : ∀ i, colOf u i ∈ intL L`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `row_eq hu i.rev`. Rewrite `h1` using `[Fin.rev_rev]`. Establish `h2 : σ (colOf u i) = -rowOf u i.rev` using `by rw [h1, neg_neg]`. Establish `h3 : σ (colOf u i) ∈ intL L`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `neg_mem (hr i.rev)`. Conclude with `(hσint _).1 h3`. Establish `hu'` using `inv_mem hu`. Establish `E1` using `mat_apply_mem_intL_of_mem_radQ_of_blocks hu hr hb hc`. Establish `E2` using `mat_apply_mem_intL_of_mem_radQ_of_blocks hu' (fun j => by rw [rowOf_inv]; exact (hσint _).2 (hb _)) (fun i => by rw [colOf_inv hu]; exact neg_mem (hb i)) (by rw [cornerOf_inv]; exact (hσint _).2 hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `inj : Function.Injective ((intL L).subtype.mapMatrix : Matrix (Fin (N + 2)) (Fin (N + 2)) (intL L) → _)` using `fun X Y hXY => by`. Use extensionality with `i j`. Conclude with `congrFun (congrFun hXY i) j`. Establish `m1 : mat u * mat u⁻¹ = 1` using `by show mat (u * u⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Establish `m2 : mat u⁻¹ * mat u = 1` using `by show mat (u⁻¹ * u) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Set `A : Matrix (Fin (N + 2)) (Fin (N + 2)) (intL L)` to `Matrix.of fun i j => ⟨mat u i j, E1 i j⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `B : Matrix (Fin (N + 2)) (Fin (N + 2)) (intL L)` to `Matrix.of fun i j => ⟨mat u⁻¹ i j, E2 i j⟩`. Establish `hA : (intL L).subtype.mapMatrix A = mat u`. Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hB : (intL L).subtype.mapMatrix B = mat u⁻¹`.
-
-Use extensionality with `i j`. Both sides reduce to the same expression. Establish `hAB : A * B = 1` using `inj (by rw [map_mul, map_one, hA, hB, m1])`. Establish `hBA : B * A = 1` using `inj (by rw [map_mul, map_one, hA, hB, m2])`. Use `⟨u.2, ⟨⟨A, B, hAB, hBA⟩, ?_⟩⟩` and prove the remaining obligations.
-
-Apply `Units.ext` to reduce the goal to its premises. Conclude with `hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mem_KU_rad (hσσ : ∀ x, σ (σ x) = x) (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {u : GU σ (N + 2)}
     (hu : u ∈ radQ σ N) :
@@ -364,13 +356,13 @@ Both sides reduce to the same expression.
 @[simp] theorem ext_zero (v : Fin N → L) : ext v 0 = 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.InertHeis.ext, mid, Fin.cons_succ, Fin.snoc_castSucc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem ext_mid (v : Fin N → L) (j : Fin N) : ext v (mid j) = v j := by
   rw [GlobalTheory.CompanionTheory.InertHeis.ext, mid, Fin.cons_succ, Fin.snoc_castSucc]
 
 /- English proof (translation)
-Use `show Fin.cons (α := fun _ => L) (0 : L) (Fin.snoc (α := fun _ => L) v 0) (Fin.last N).succ = 0`. Rewrite using `[Fin.cons_succ, Fin.snoc_last]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 @[simp] theorem ext_last (v : Fin N → L) : ext v (Fin.last (N + 1)) = 0 := by
   show Fin.cons (α := fun _ => L) (0 : L) (Fin.snoc (α := fun _ => L) v 0) (Fin.last N).succ = 0
@@ -385,60 +377,60 @@ section Values
 variable (r b : Fin N → L) (c : L)
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` using `fun h => last_ne_zero h.symm`. Simplify using `[heisMat, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heis_00 : heisMat r b c 0 0 = 1 := by
   have h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1) := fun h => last_ne_zero h.symm
   simp [heisMat, h0]
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ mid j` using `(mid_ne_zero j).symm`. Simplify using `[heisMat, h0, mid_ne_last j]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heis_0m (j : Fin N) : heisMat r b c 0 (mid j) = r j := by
   have h0 : (0 : Fin (N + 2)) ≠ mid j := (mid_ne_zero j).symm
   simp [heisMat, h0, mid_ne_last j]
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` using `fun h => last_ne_zero h.symm`. Simplify using `[heisMat, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heis_0l : heisMat r b c 0 (Fin.last (N + 1)) = c := by
   have h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1) := fun h => last_ne_zero h.symm
   simp [heisMat, h0]
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` using `fun h => last_ne_zero h.symm`. Simplify using `[heisMat, h0, mid_ne_zero i]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heisenberg_middle_first_zero (i : Fin N) : heisMat r b c (mid i) 0 = 0 := by
   have h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1) := fun h => last_ne_zero h.symm
   simp [heisMat, h0, mid_ne_zero i]
 
 /- English proof (translation)
-Simplify using `[heisMat, Matrix.one_apply, mid_injective.eq_iff, mid_ne_zero i, mid_ne_last j]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heis_mm (i j : Fin N) : heisMat r b c (mid i) (mid j) = (1 : Matrix (Fin N) (Fin N) L) i j := by
   simp [heisMat, Matrix.one_apply, mid_injective.eq_iff, mid_ne_zero i, mid_ne_last j]
 
 /- English proof (translation)
-Simplify using `[heisMat, mid_ne_zero i, mid_ne_last i]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heis_ml (i : Fin N) : heisMat r b c (mid i) (Fin.last (N + 1)) = b i := by
   simp [heisMat, mid_ne_zero i, mid_ne_last i]
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` using `fun h => last_ne_zero h.symm`. Simplify using `[heisMat, h0, last_ne_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem heisenberg_last_first_zero : heisMat r b c (Fin.last (N + 1)) 0 = 0 := by
   have h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1) := fun h => last_ne_zero h.symm
   simp [heisMat, h0, last_ne_zero]
 
 /- English proof (translation)
-Simplify using `[heisMat, last_ne_zero, mid_ne_last j, (mid_ne_last j).symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heis_lm (j : Fin N) : heisMat r b c (Fin.last (N + 1)) (mid j) = 0 := by
   simp [heisMat, last_ne_zero, mid_ne_last j, (mid_ne_last j).symm]
 
 /- English proof (translation)
-Simplify using `[heisMat, last_ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem heis_ll : heisMat r b c (Fin.last (N + 1)) (Fin.last (N + 1)) = 1 := by
   simp [heisMat, last_ne_zero]
@@ -446,30 +438,30 @@ theorem heis_ll : heisMat r b c (Fin.last (N + 1)) (Fin.last (N + 1)) = 1 := by
 end Values
 
 /- English proof (translation)
-Simplify using `only [Matrix.one_apply, mid_injective.eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem one_mid_mid (i j : Fin N) :
     (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) (mid i) (mid j) = (1 : Matrix (Fin N) (Fin N) L) i j := by
   simp only [Matrix.one_apply, mid_injective.eq_iff]
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin (N + 2)) ≠ Fin.last (N + 1)` using `fun h => last_ne_zero h.symm`. Establish `hbσ : ∀ m : Fin N, σ (b m.rev) = -r m`. Introduce `m`. Rewrite using `[hb, Fin.rev_rev, map_neg, hσσ]`. Establish `hσδ : ∀ p m : Fin N, σ ((1 : Matrix (Fin N) (Fin N) L) m.rev p) = (1 : Matrix (Fin N) (Fin N) L) m p.rev`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p m`. Distinguish the cases in `h : m = p.rev`. Substitute `h` using the available equality. Rewrite using `[Fin.rev_rev, Matrix.one_apply_eq, Matrix.one_apply_eq, map_one]`. Rewrite using `[Matrix.one_apply_ne (fun h' => h (by rw [← h', Fin.rev_rev])), Matrix.one_apply_ne h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Establish `hrow : ∀ k, (cT σ (heisMat r b c) * antiJ L (N + 2)) i k = σ (heisMat r b c k.rev i)`. Introduce `k`. Rewrite using `[mul_antiJ_apply_eq_apply_rev_right]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.mul_apply]`. Simplify using `only [hrow]`. Rewrite using `[sum_idx, Fin.rev_zero, Fin.rev_last, antiJ_apply_eq_ite_rev]`. Simplify using `only [← mid_rev]`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨p, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨q, rfl⟩ | rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `all_goals try simp only [← mid_rev, Fin.rev_zero, Fin.rev_last]`. Simplify using `[heisenberg_last_first_zero, heisenberg_middle_first_zero, heis_00, h0]`. Simplify using `[heisenberg_last_first_zero, heisenberg_middle_first_zero, heis_00, heis_lm, mid_ne_last q]`. Simplify using `[heisenberg_last_first_zero, heisenberg_middle_first_zero, heis_00, heis_ll]`. Simplify using `only [heis_lm, heis_mm, heisenberg_middle_first_zero, heis_0m, heisenberg_last_first_zero, map_zero, zero_mul, mul_zero, zero_add, add_zero, Finset.sum_const_zero, Fin.rev_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg (mid_ne_zero _).symm]`. Simplify using `only [heis_lm, heis_mm, heis_0m, map_zero, zero_mul, mul_zero, zero_add, add_zero, hσδ p]`. Simplify using `only [mid_injective.eq_iff]`. Distinguish the cases in `h : q = p.rev`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply, h, Ne.symm h]`. Simplify using `only [heis_lm, heis_ml, heis_mm, heis_0m, heis_ll, heis_0l, hσδ p, map_zero, zero_mul, zero_add, mul_one]`. Rewrite using `[if_neg (mid_ne_last _).symm]`. Simplify using `[Matrix.one_apply, hb, Fin.rev_rev]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[heis_ll, heis_00, heis_ml, heisenberg_middle_first_zero, heis_0l, heisenberg_last_first_zero]`. Simplify using `only [heis_ll, heis_0m, heis_ml, heis_mm, heis_0l, heis_lm, map_one, one_mul, mul_zero, add_zero, hbσ, Fin.rev_last]`. Rewrite using `[if_neg (mid_ne_zero _)]`. Simplify using `[Matrix.one_apply]`. Simplify using `only [heis_ll, heis_0l, heis_ml, map_one, one_mul, mul_one, hbσ, Fin.rev_last]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg last_ne_zero]`. Simplify using `only [hb, neg_mul_neg]`. Take the linear combination `hc`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem heis_unitary (hσσ : ∀ x, σ (σ x) = x) (r b : Fin N → L) (c : L) (hb : ∀ i, b i = -σ (r i.rev))
     (hc : c + σ c = -∑ j, r j * σ (r j.rev)) :
@@ -521,17 +513,17 @@ theorem heis_unitary (hσσ : ∀ x, σ (σ x) = x) (r b : Fin N → L) (c : L) 
     linear_combination hc
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ q N hI`. Take `⟨hσσ, hσ, -⟩` from `hI`. Use `⟨fun u hu => ⟨row_eq hu, corner_eq hu, mem_KU_rad hσσ hσ hu⟩, fun u hu u' hu' => ⟨rowOf_mul hu hu', colOf_mul hu hu', cornerOf_mul hu hu'⟩, ?_⟩` and prove the remaining obligations. Introduce `r c hc`. Establish `hU` using `heis_unitary hσσ r (fun i => -σ (r i.rev)) c (fun i => rfl) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl : (antiJ L (N + 2) * cT σ (heisMat r (fun i => -σ (r i.rev)) c) * antiJ L (N + 2)) * heisMat r (fun i => -σ (r i.rev)) c = 1`. Establish `hU' : cT σ (heisMat r (fun i => -σ (r i.rev)) c) * (antiJ L (N + 2) * heisMat r (fun i => -σ (r i.rev)) c) = antiJ L (N + 2)`. Rewrite using `[← Matrix.mul_assoc, hU]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[hU', antiJ_mul_antiJ_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hr` using `mul_eq_one_comm.mp hl`. Use `⟨⟨⟨heisMat r (fun i => -σ (r i.rev)) c, _, hr, hl⟩, hU⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij show heisMat r (fun i => -σ (r i.rev)) c i j = (1 : Matrix (Fin (N + 2)) (Fin (N + 2)) L) i j`. Apply the tactic sequence `rcases idx_cases i with rfl | ⟨p, rfl⟩ | rfl <;> rcases idx_cases j with rfl | ⟨q, rfl⟩ | rfl`. Rewrite using `[heis_00, Matrix.one_apply_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hij` using `[blk_mid, blk_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite `hij` using `[blk_last, blk_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[heisenberg_middle_first_zero, Matrix.one_apply_ne (mid_ne_zero p)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heis_mm, one_mid_mid]`. Rewrite `hij` using `[blk_last, blk_mid]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[heisenberg_last_first_zero, Matrix.one_apply_ne last_ne_zero]`. Rewrite using `[heis_lm, Matrix.one_apply_ne (mid_ne_last q).symm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[heis_ll, Matrix.one_apply_eq]`. Use function extensionality and compare the values at `j`. Conclude with `heis_0m r _ c j`. Conclude with `heis_0l r _ c`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem Heisenberg₂ : Heis := by
   intro L _ _ ϖ σ q N hI

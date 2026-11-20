@@ -117,7 +117,7 @@ def GTRRFin : Prop :=
 def GTRRFinFrom : Prop := GTRRCentre → GTRRSec → GTRRWirt → GTRRFin
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P Bs X d hyp hsec e he hk hc Rt s hRK hRt ρ`. Take `⟨n, hn⟩` from `hM hC hS hO Wp Wq P Bs X d hyp hsec e he hk hc Rt s hRK hRt`. Conclude with `⟨n ρ + s, fun Φ => hF hC hS hW Wp Wq P Bs hyp.1 hyp.2.1 hsec e he hc n hn Rt s hRt ρ Φ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gTRRotK_of_mat_fin_centre_sec_ode_wirt (hM : GTRRMatFrom) (hF : GTRRFinFrom) (hC : GTRRCentre) (hS : GTRRSec) (hO : GTRRODE)
     (hW : GTRRWirt) : GTRRotK := by
@@ -126,9 +126,9 @@ theorem gTRRotK_of_mat_fin_centre_sec_ode_wirt (hM : GTRRMatFrom) (hF : GTRRFinF
   exact ⟨n ρ + s, fun Φ => hF hC hS hW Wp Wq P Bs hyp.1 hyp.2.1 hsec e he hc n hn Rt s hRt ρ Φ⟩
 
 /- English proof (translation)
-Establish `hfn : ∀ g ∈ d.L.fns, Commute (d.κ f) g` using `fun g hg => hR.2.1 f g (Or.inl hg)`. Establish `hz : Commute (d.κ f) d.L.ζ` using `hfn _ (by simp [R.LevelData.fns])`. Establish `hzb : Commute (d.κ f) d.L.ζb` using `hfn _ (by simp [R.LevelData.fns])`. Establish `hGi : Commute (d.κ f) d.L.GGi` using `hfn _ (by simp [R.LevelData.fns])`. Establish `hn : Commute (d.κ f) d.L.nab` using `hR.2.1 f _ (Or.inr (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hns : Commute (d.κ f) d.L.nabs` using `hR.2.1 f _ (Or.inr (by simp))`. Establish `hkk : ∀ g : M.Ty P → ℂ, Commute (d.κ f) (d.κ g)` using `fun g => by show d.κ f * d.κ g = d.κ g * d.κ f`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Unfold `ThetaNF`. Conclude with `(((hz.mul_right hn).add_right (hzb.mul_right hns)).add_right (hkk _)).add_right (((Algebra.commute_algebraMap_right _ _).mul_right hGi).mul_right (hkk _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem thetaNF_commute_kap (P : M.Par) {𝒜 : Type} [Ring 𝒜] [StarRing 𝒜] [Algebra ℂ 𝒜] (d : Q.NFData P 𝒜)
     (hR : d.Rel) (f : M.Ty P → ℂ) : Commute (d.κ f) (ThetaNF P d) := by
@@ -149,23 +149,21 @@ def GTCRefTraceOfCutK : Prop :=
   GTRMove → GTRConst → GTRTopNF → GTRTopAct → GTRRotK → GTRInt → GTRTrans → GTCReal → GTCRefTrace
 
 /- English proof (translation)
-Introduce `hMove hConst hNF hAct hRot hInt hTrans hReal Wp Wq _ _ _ _ _ _ P Bs X d hyp`. Take `⟨hpl, hk, hcs, hL, hS, hR, hQ⟩` from `hyp`. Establish `hcs0` using `Formalism.FourierDecayAlt.P.TheSecStab.theSection_csec (k := P.k) (r := P.r) (by omega) Bs.z_mem Bs.z'_mem Bs.T_pos Bs.T'_pos`. Use `set Bs0 := BsAt P Bs (TheSec.theSection P.k P.r Bs.z Bs.z') hcs0.1 with hBs0`. Establish `hyp0 : GTHyp P Bs0 X d` using `⟨hpl, hk, hcs0, hL, hS, hR, hQ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e0, he0, hk0, hc0⟩` from `hConst Wp Wq P Bs0 X d hyp0`. Take `⟨A, B, hAB, hC⟩` from `gauge_locality_holds Wp Wq P Bs0 X d hyp0 e0 he0 hk0`. Take `⟨cA, hcA, sA, hsA⟩` from `hAct Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk X`. Establish `hTT : d.L.TT = ((P.TT : ℝ) : ℂ)`. Rewrite using `[hL.2.2.2.2.2.2.2.2.2.2.2.2, hpl.2.2.2.1, hpl.2.2.2.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨cN, hcN, sN, hsN⟩` from `hNF P _ d hpl.1 hk hS hR hTT`. Establish `hcoef : ∀ Y : ℂ, ∑ j ∈ Finset.range (P.k + 2), Y ^ j • cA j = ∑ j ∈ Finset.range (P.k + 2), Y ^ j • (cN j).1`. Introduce `Y`. Rewrite using `[← hcA Y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : X.t Y 0 0 = (X.QQ Y 0 0).1` using `rfl`. Rewrite using `[h1, hQ Y, hcN Y, pr_fst_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => pr_fst_smul _ _`. Establish `hk'` using `poly_coeff_eq (P.k + 2) cA (fun j => (cN j).1) hcoef P.k (by omega)`. Establish `hTh : (ThetaNF P d).1 = cA P.k - ((sN : ℂ)) • (1 : Module.End ℂ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk']`. Use `show (ThetaNF P d).1 = (cN P.k).1 - _`. Rewrite using `[hsN, pr_fst_add, pr_fst_smul, pr_fst_one, add_sub_cancel_right]`. Establish `hpt : ∀ (Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π'), ∀ x ∈ Q.DomR P.k P.r Bs.z Bs.z', (((ThetaNF P d).1 Φ : Q.RadSp P.k P.r Bs.z Bs.z' Bs.π Bs.π') : Q.Fn P.k P.r (Wq →L[ℂ] Wp)) x.1 x.2 = (∑ a : Fin (Q.mdim P.k P.r (Fin.last P.r)), Q.EH P.k P.r (Q.posL P.k P.r (Fin.last P.r) a) (Q …`. Introduce `Φ x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTh, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, Submodule.coe_sub, Submodule.coe_smul, Pi.sub_apply, Pi.smul_apply, Pi.sub_apply, Pi.smul_apply, hsA Φ x hx]`. Use `push_cast`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Take `⟨e, he, htr⟩` from `hMove Wp Wq P Bs hpl hk _ hcs0.1 e0 he0`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htrF : trR P Bs e = trR P Bs0 e0` using `funext htr`. Use `⟨e, he, ?_, A, B, hAB, ?_, fun ρ => ?_⟩` and prove the remaining obligations. Introduce `f Φ`. Rewrite using `[htrF]`. Conclude with `hk0 f Φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `Φ ρ`. Rewrite using `[htrF]`. Conclude with `hC Φ ρ`. Take `⟨m, hm⟩` from `hRot Wp Wq P Bs0 X d hyp0 rfl e0 he0 hk0 hc0 (ThetaNF P d).1 (sA - sN) (fun f Φ => (congrArg (fun x : Q.Pr (Q.RadSp P.k P.r Bs0.z Bs0.z' Bs0.π Bs0.π') => x.1 Φ) (thetaNF_commute_kap P d hR f).eq).symm) hpt ρ`. Take `⟨N, hN⟩` from `hInt Wp Wq P Bs.z Bs.z' Bs.π Bs.π' hpl hk ρ`.
-
-Use `⟨N - m, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `hT` using `hTrans Wp Wq P Bs0 X d hyp0 e0 he0 hk0 A B hAB hC ρ (m : ℂ) hm ζ hζ`. Rewrite `hT` using `[hReal Wp Wq P Bs0 X d hyp0 e0 he0 hk0 A B hAB hC ρ ζ hζ]`. Conclude with `final_arith P ρ (A ρ ζ) ζ hζ m N hN hT`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gTCRefTrace_of_cutK : GTCRefTraceOfCutK := by
   intro hMove hConst hNF hAct hRot hInt hTrans hReal Wp Wq _ _ _ _ _ _ P Bs X d hyp

@@ -25,14 +25,14 @@ def Lift : Prop := ∀ (B : Type) [CommRing B] (I : Ideal B) (P : LateralTheory.
     a - stageMap I h a₀ ∈ I.map (βP I Q)
 
 /- English proof (translation)
-Simplify using `[eval_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eval_prod_lin {R : Type} [CommRing R] (n : ℕ) (r : Fin n → R) (x : R) :
     (∏ l, (X - C (r l))).eval x = ∏ l, (x - r l) := by
   simp [eval_prod]
 
 /- English proof (translation)
-Rewrite using `[derivative_prod_finset]`. Simplify using `[eval_finsetSum, eval_prod]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem deriv_prod_lin {R : Type} [CommRing R] (n : ℕ) (r : Fin n → R) (x : R) :
     (derivative (∏ l, (X - C (r l)))).eval x = ∑ l, ∏ m ∈ Finset.univ.erase l, (x - r m) := by
@@ -41,9 +41,9 @@ theorem deriv_prod_lin {R : Type} [CommRing R] (n : ℕ) (r : Fin n → R) (x : 
   simp [eval_finsetSum, eval_prod]
 
 /- English proof (translation)
-Introduce `B _ _ I hB P p a₀ hm hev hder`. Take `⟨n, r, hp⟩` from `hs B I hB P p hm`. Establish `h1 : ∏ l, (a₀ - r l) ∈ I.map (βP I P)`. Rewrite using `[← eval_prod_lin n r a₀, ← hp]`. Conclude with `hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : IsUnit (Ideal.Quotient.mk (I.map (βP I P)) (∑ l, ∏ m ∈ Finset.univ.erase l, (a₀ - r m)))`. Rewrite using `[← deriv_prod_lin n r a₀, ← hp]`. Conclude with `hder`. Take `⟨f, hfi, hfo, hfs, hfy⟩` from `hi B I P n (fun l => a₀ - r l) h1 h2`. Conclude with `hl B I P p a₀ n r f hp hfi hfo hfs hfy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PartC_of (hs : Split) (hi : Idem) (hl : Lift) : LateralTheory.E.PartDiagCut.PartC := by
   intro B _ _ I hB P p a₀ hm hev hder
@@ -56,13 +56,13 @@ theorem PartC_of (hs : Split) (hi : Idem) (hl : Lift) : LateralTheory.E.PartDiag
   exact hl B I P p a₀ n r f hp hfi hfo hfs hfy
 
 /- English proof (translation)
-Introduce `B _ I P n y hprod hsum`. Set `φ` to `RingEquiv.ofBijective (Ideal.quotientMap (I.map (βP I P)) (βP I P) Ideal.le_comap_map) (hA B I P)`. Take `⟨e, hei, heo, hes, hey⟩` from `hIP (PiLocalization₂ I P ⧸ I.map (βP I P)) n (fun l => Ideal.Quotient.mk (I.map (βP I P)) (y l)) (by rw [← map_prod]; exact Ideal.Quotient.eq_zero_iff_mem.mpr hprod) (by simpa [map_sum, map_prod] using hsum)`. Use `choose f hf using fun l => Ideal.Quotient.mk_surjective (φ.symm (e l))`. Use `⟨f, fun l => ?_, fun l m hlm => ?_, ?_, fun l => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `IsIdempotentElem`. Rewrite using `[hf, ← map_mul, (hei l).eq]`. Rewrite using `[hf, hf, ← map_mul, heo l m hlm, map_zero]`. Repeatedly rewrite using `[hf]`. Rewrite using `[← map_sum, hes, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_mul]`. Establish `h1 : φ (Ideal.Quotient.mk I (f l)) = e l` using `by rw [hf]; exact φ.apply_symm_apply _`. Establish `h2 : Ideal.Quotient.mk (I.map (βP I P)) (βP I P (f l)) = e l`. Rewrite using `[← h1]`. Simplify using `[φ, Ideal.quotientMap_mk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `hey l`.
+A detailed English derivation is pending.
 -/
 theorem idem_of (hIP : LateralTheory.E.HensCut.IdemPart) (hA : LateralTheory.E.PartDiagCut.PartA) : Idem := by
   intro B _ I P n y hprod hsum
@@ -83,7 +83,7 @@ theorem idem_of (hIP : LateralTheory.E.HensCut.IdemPart) (hA : LateralTheory.E.P
     rw [h2]; exact hey l
 
 /- English proof (translation)
-The claim follows from `PartC_of hs (idem_of hIP hA) hl`.
+A detailed English derivation is pending.
 -/
 theorem PartC_of' (hs : Split) (hIP : LateralTheory.E.HensCut.IdemPart) (hA : LateralTheory.E.PartDiagCut.PartA) (hl : Lift) :
     LateralTheory.E.PartDiagCut.PartC :=

@@ -7,17 +7,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `l _ c n x`. Establish `hlnorm : ‖((l : ℕ) : Qbar l)‖ = (l : ℝ)⁻¹`. Establish `: ((l : ℕ) : Qbar l) = algebraMap ℚ_[l] (PadicAlgCl l) (l : ℚ_[l])` using `by simp`. Rewrite using `[this, norm_algebraMap', Padic.norm_p]`. Take `⟨-, -, -, -, -, he0, -, he, -⟩` from `UpperTheory.V.Base.dvrFacts l c.O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Establish `hl0 : ((l : ℕ) : c.O) ≠ 0`. Introduce `h`. Establish `h' : (((l : ℕ) : c.O) : PadicAlgCl l) = 0` using `by rw [h]; rfl`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((l : ℕ) : PadicAlgCl l) = 0` using `by simpa using h'`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) this`. Establish `key` using `UpperTheory.V.Base.normO l c.O x hx`. Use `set e := (UpperTheory.V.Base.eO l c.O).toNat with he_def`. Establish `hEtop : UpperTheory.V.Base.eO l c.O ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[he]`. Conclude with `fun h => hl0 (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`. Establish `hEcast : UpperTheory.V.Base.eO l c.O = (e : ℕ∞)` using `(ENat.coe_toNat hEtop).symm`. Establish `hepos : e ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `he0` to reduce the goal to its premises. Rewrite using `[hEcast, h0]`. Both sides reduce to the same expression. Establish `hxtop : IsDiscreteValuationRing.addVal c.O x ≠ ⊤` using `fun h => hx (IsDiscreteValuationRing.addVal_eq_top_iff.1 h)`. Use `set v := (IsDiscreteValuationRing.addVal c.O x).toNat with hv_def`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvcast : IsDiscreteValuationRing.addVal c.O x = (v : ℕ∞)` using `(ENat.coe_toNat hxtop).symm`. Establish `hlpos : (0 : ℝ) < (l : ℝ)⁻¹` using `inv_pos.2 (Nat.cast_pos.2 (Fact.out : l.Prime).pos)`. Establish `hllt : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (Nat.one_lt_cast.2 (Fact.out : l.Prime).one_lt)`. Rewrite using `[norm_pow, hlnorm, ← IsDiscreteValuationRing.addVal_le_iff_dvd, IsDiscreteValuationRing.addVal_pow, ← he, hEcast, hvcast, ← pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) hepos, key, ← pow_mul, pow_le_pow_iff_right_of_lt_one₀ hlpos hllt]`. Rewrite using `[nsmul_eq_mul, ← Nat.cast_mul, Nat.cast_le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Coef.norm_le_norm_pow_iff_dvd :
     ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (x : c.O),

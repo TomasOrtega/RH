@@ -20,9 +20,7 @@ noncomputable section
 namespace GlobalTheory.FlagUnfold
 
 /- English proof (translation)
-Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum_of_subset fun t ht => ?_` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.2 fun i => Finset.mem_image_of_mem _ ht`.
-
-Use `_ = ∏ i, ∑ x ∈ s.image (fun t => t i), f i x := (Finset.prod_univ_sum _ _).symm`. Use `_ ≤ _ := Finset.prod_le_prod' fun i _ => ENNReal.sum_le_tsum _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tsum_pi_prod_le {ι : Type} [Fintype ι] {α : ι → Type} (f : ∀ i, α i → ENNReal) :
     ∑' t : ∀ i, α i, ∏ i, f i (t i) ≤ ∏ i, ∑' x, f i x := by
@@ -42,9 +40,9 @@ abbrev latRel (E : Type) [Field E] [NumberField E] (j : ℕ) :
   fun Λ Λ' => ∃ γ : GL (Fin j) E, ∀ y, (γ : Matrix (Fin j) (Fin j) E) *ᵥ y ∈ Λ'.1 ↔ y ∈ Λ.1
 
 /- English proof (translation)
-Use `⟨fun Λ => ⟨1, fun y => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Λ Λ' ⟨γ, h⟩`. Use `⟨γ⁻¹, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[← h, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Introduce and unpack `Λ Λ' Λ'' ⟨γ, h⟩ ⟨δ, h'⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨δ * γ, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec, h', h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem latRel_equiv (E : Type) [Field E] [NumberField E] (j : ℕ) : Equivalence (latRel E j) := by
   refine ⟨fun Λ => ⟨1, fun y => by simp⟩, ?_, ?_⟩
@@ -56,7 +54,7 @@ theorem latRel_equiv (E : Type) [Field E] [NumberField E] (j : ℕ) : Equivalenc
     rw [Units.val_mul, ← Matrix.mulVec_mulVec, h', h]
 
 /- English proof (translation)
-Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Establish `h : ∀ Λ : {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ}, ∃ s : Finset (Fin j → E), Submodule.span (𝓞 E) (s : Set (Fin j → E)) = Λ.1` using `fun Λ => Λ.2.fg`. Use `choose s hs using h`. Use `Function.Injective.countable (f := s) fun a b hab => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← hs a, ← hs b, hab]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem countable_lattices (E : Type) [Field E] [NumberField E] (j : ℕ) :
     Countable {Λ : Submodule (𝓞 E) (Fin j → E) // Submodule.IsLattice E Λ} := by
@@ -68,7 +66,7 @@ theorem countable_lattices (E : Type) [Field E] [NumberField E] (j : ℕ) :
   rw [← hs a, ← hs b, hab]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Formalism.UG.stabGL I.Lf).comap (Subgroup.subtype _), rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_kSub (I : AutInst) : ∃ K : Subgroup I.Gf, (K : Set I.Gf) = I.Kset :=
   ⟨(Formalism.UG.stabGL I.Lf).comap (Subgroup.subtype _), rfl⟩
@@ -77,9 +75,9 @@ def dcRel {G₁ G₂ : Type} [Group G₁] [Group G₂] (Γ : Subgroup (G₁ × G
   ∃ γ ∈ Γ, ∃ k ∈ K, γ.2 * x = y * k
 
 /- English proof (translation)
-Use `⟨fun x => ⟨1, Γ.one_mem, 1, K.one_mem, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨γ, hγ, k, hk, h⟩`. Use `⟨γ⁻¹, Γ.inv_mem hγ, k⁻¹, K.inv_mem hk, ?_⟩` and prove the remaining obligations. Establish `: y = γ.2 * x * k⁻¹` using `by rw [h]; group`. Rewrite using `[this, Prod.snd_inv]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Introduce and unpack `x y z ⟨γ, hγ, k, hk, h⟩ ⟨δ, hδ, l, hl, h'⟩`. Use `⟨δ * γ, Γ.mul_mem hδ hγ, l * k, K.mul_mem hl hk, ?_⟩` and prove the remaining obligations. Rewrite using `[Prod.snd_mul, mul_assoc, h, ← mul_assoc, h', mul_assoc]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dcRel_equiv {G₁ G₂ : Type} [Group G₁] [Group G₂] (Γ : Subgroup (G₁ × G₂)) (K : Subgroup G₂) :
     Equivalence (dcRel Γ K) := by
@@ -93,9 +91,9 @@ theorem dcRel_equiv {G₁ G₂ : Type} [Group G₁] [Group G₂] (Γ : Subgroup 
     rw [Prod.snd_mul, mul_assoc, h, ← mul_assoc, h', mul_assoc]
 
 /- English proof (translation)
-Establish `: DiscreteTopology (G₂ ⧸ K)` using `QuotientGroup.discreteTopology hK`. Establish `: Countable (G₂ ⧸ K)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `Function.Surjective.countable (f := fun c : G₂ ⧸ K => Quot.mk (dcRel Γ K) c.out) ?_` and prove the remaining obligations. Introduce and unpack `⟨x⟩`. Use `⟨(x : G₂ ⧸ K), Quot.sound ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul K x`. Conclude with `⟨1, Γ.one_mem, k, k.2, by rw [hk]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem countable_dc {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂]
     [SecondCountableTopology G₂] (Γ : Subgroup (G₁ × G₂)) (K : Subgroup G₂) (hK : IsOpen (K : Set G₂)) :
@@ -109,37 +107,33 @@ theorem countable_dc {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSp
   exact ⟨1, Γ.one_mem, k, k.2, by rw [hk]; simp⟩
 
 /- English proof (translation)
-The claim follows from `hr.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk r x)).symm)`.
+A detailed English derivation is pending.
 -/
 theorem rel_out {α : Type} {r : α → α → Prop} (hr : Equivalence r) (x : α) : r x (Quot.out (Quot.mk r x)) :=
   hr.eqvGen_iff.1 (Quot.eqvGen_exact (Quot.out_eq (Quot.mk r x)).symm)
 
 /- English proof (translation)
-Use `countable_dc Γ K hKo` as an intermediate fact. Establish `hF : ∀ x : G₂, ∃ F : Set G₁, MeasurableSet F ∧ (∀ y, ∃ g ∈ {g | ∃ γ ∈ Γ, γ.1 = g ∧ x⁻¹ * γ.2 * x ∈ K}, g * y ∈ F) ∧ ∀ g ∈ {g | ∃ γ ∈ Γ, γ.1 = g ∧ x⁻¹ * γ.2 * x ∈ K}, ∀ y ∈ F, g * y ∈ F → g = 1`. Introduce `x`. Set `Δ : Subgroup G₁` to `{ carrier := {g | ∃ γ ∈ Γ, γ.1 = g ∧ x⁻¹ * γ.2 * x ∈ K} one_mem' := ⟨1, Γ.one_mem, rfl, by simp⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨γ, h1, rfl, h2⟩ ⟨δ, h3, rfl, h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Use `⟨γ * δ, Γ.mul_mem h1 h3, rfl, ?_⟩` and prove the remaining obligations. Use `K.mul_mem h2 h4 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Prod.snd_mul]`. Use `group`. Use the proof step `inv_mem' := by`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨γ, h1, rfl, h2⟩`. Use `⟨γ⁻¹, Γ.inv_mem h1, rfl, ?_⟩` and prove the remaining obligations. Use `K.inv_mem h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[Prod.snd_inv]`. Use `group }`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: Countable Δ`. Use `Set.Countable.to_subtype (s := (Δ : Set G₁)) ((hc.image Prod.fst).mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, h1, rfl, -⟩`. Conclude with `⟨γ, h1, rfl⟩`. Use `GlobalTheory.FundExists.exists_strict_domain Δ fun C hC => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `((hfin _ (hC.prod (hKc.image (f := fun k => x * k * x⁻¹) (by fun_prop)))).image Prod.fst).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨hC', γ, h1, rfl, h2⟩`. Conclude with `⟨γ, ⟨h1, hC', _, h2, by group⟩, rfl⟩`. Use `choose F hFm hFc hFi using hF`. Set `X : Quot (dcRel Γ K) → Set (G₁ × G₂)` to `fun d => F (Quot.out d) ×ˢ ((fun z => (Quot.out d)⁻¹ * z) ⁻¹' (K : Set G₂))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hXm : ∀ d, MeasurableSet (X d)` using `fun d => (hFm _).prod (measurable_const_mul _ hKo.measurableSet)`. Establish `hkey : ∀ γ ∈ Γ, ∀ d d' y, y ∈ X d → γ * y ∈ X d' → d = d' ∧ γ = 1`. Introduce `γ hγ d d' y hy hy'`. Establish `h1 : (Quot.out d)⁻¹ * y.2 ∈ K` using `hy.2`. Establish `h2 : (Quot.out d')⁻¹ * (γ.2 * y.2) ∈ K` using `hy'.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `h3` using `K.mul_mem h2 (K.inv_mem h1)`. Establish `hd : d = d'`. Rewrite using `[← Quot.out_eq d, ← Quot.out_eq d']`. Conclude with `Quot.sound ⟨γ, hγ, _, h3, by group⟩`. Substitute `hd` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨rfl, hinj γ hγ (hFi _ γ.1 ⟨γ, hγ, rfl, ?_⟩ y.1 hy.1 hy'.1)⟩` and prove the remaining obligations. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use `group`. Rewrite using `[GlobalTheory.covol_eq_measure_inter_fund (G₁ × G₂) Γ (μ₁.prod μ₂) (⋃ d, X d) Set.univ hc (fun γ _ => map_mul_left_eq_self _ γ) (MeasurableSet.iUnion hXm) ?_ ?_ MeasurableSet.univ (by simp), Set.univ_inter, measure_iUnion ?_ hXm, ← ENNReal.tsum_mul_left]`. Use `ENNReal.tsum_le_tsum fun d => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Measure.prod_prod, measure_preimage_mul, mul_comm]`. Use `gcongr`. Conclude with `iInf_le_of_le (F _) (iInf_le_of_le (hFm _) (iInf_le_of_le (fun y _ => hFc _ y) le_rfl))`. Introduce `d d' hd`. Use `Set.disjoint_left.2 fun y hy hy' => hd (hkey 1 Γ.one_mem d d' y hy (by rwa [one_mul])).1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨γ, hγ, k, hk, h⟩` from `rel_out (dcRel_equiv Γ K) y.2`. Take `⟨_, ⟨δ, hδ, rfl, hδK⟩, h'⟩` from `hFc (Quot.out (Quot.mk (dcRel Γ K) y.2)) (γ.1 * y.1)`. Use `⟨δ * γ, Γ.mul_mem hδ hγ, Set.mem_iUnion.2 ⟨Quot.mk _ y.2, ?_, ?_⟩⟩` and prove the remaining obligations. Simplify `h'` using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show _ * (δ.2 * γ.2 * y.2) ∈ K`. Rewrite using `[mul_assoc δ.2, h]`. Use `K.mul_mem hδK hk using 1` and compare the differences between its conclusion and the goal. Use `group`. Introduce `γ hγ hne`.
-
-Establish `: (fun y => γ * y) '' (⋃ d, X d) ∩ (⋃ d, X d) = ∅`. Use `Set.eq_empty_of_forall_notMem ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y, hy, rfl⟩, hγy⟩`. Take `⟨d, hd⟩` from `Set.mem_iUnion.1 hy`. Take `⟨d', hd'⟩` from `Set.mem_iUnion.1 hγy`.
-
-Conclude with `hne (hkey γ hγ d d' y hd hd').2`. Rewrite using `[this, measure_empty]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_covol_le {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSpace G₁] [IsTopologicalGroup G₁]
     [T2Space G₁] [LocallyCompactSpace G₁] [SecondCountableTopology G₁] [MeasurableSpace G₁] [BorelSpace G₁]
@@ -222,13 +216,11 @@ theorem sum_covol_le {G₁ G₂ : Type} [Group G₁] [Group G₂] [TopologicalSp
     rw [this, measure_empty]
 
 /- English proof (translation)
-Take `⟨γ, -, h1, h2⟩` from `hx`. Take `⟨v⟩ : Nonempty (InfinitePlace I.F)` from `inferInstance`. Establish `hP` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `h3` using `h1 v`. Rewrite `h3` using `[h]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) = 1`. Establish `h5 : (I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v = 1` using `h3.symm`. Establish `h6` using `congrArg (fun M => I.P v * M * (I.P v)⁻¹) h5`. Simplify using `only [← Matrix.mul_assoc] at h6`. Rewrite `h6` using `[Matrix.mul_nonsing_inv _ hP, Matrix.one_mul, Matrix.mul_nonsing_inv_cancel_right _ _ hP, Matrix.mul_one, Matrix.mul_nonsing_inv _ hP]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h7 : (γ : Matrix (Fin I.n) (Fin I.n) I.E) = 1`. Use `Matrix.map_injective (I.φ v).injective ?_` and prove the remaining obligations. Use `show _ = (1 : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v)`. Rewrite using `[Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `h4`.
-
-Rewrite `h2` using `[h7, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `Prod.ext h (Subtype.ext (Units.ext h2))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_fst (I : AutInst) (x : I.GA) (hx : x ∈ I.GFset) (h : x.1 = 1) : x = 1 := by
   obtain ⟨γ, -, h1, h2⟩ := hx
@@ -251,13 +243,13 @@ theorem eq_one_of_fst (I : AutInst) (x : I.GA) (hx : x ∈ I.GFset) (h : x.1 = 1
   exact Prod.ext h (Subtype.ext (Units.ext h2))
 
 /- English proof (translation)
-Take `⟨hc, ho, -, -⟩` from `GlobalTheory.adelicStab_isCompact_isOpen I`. Use `GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I` as an intermediate fact. Use `countable_dc Γ K (hK ▸ ho)` as an intermediate fact. Establish `: (Measure.pi fun v => Formalism.REAL.muG (I.ε v)).IsHaarMeasure` using `Measure.pi.isHaarMeasure _`. Establish `h0 : μ I.Kset ≠ 0` using `(ho.measure_pos μ ⟨1, hK ▸ K.one_mem⟩).ne'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : μ I.Kset ≠ ⊤` using `hc.measure_lt_top.ne`. Establish `key` using `sum_covol_le (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) μ Γ K (hΓ ▸ (GlobalTheory.RatDiscrete.subgroup_countable_discrete I).2.1) (hΓ ▸ (GlobalTheory.RatDiscrete.subgroup_countable_discrete I).2.2) (fun γ hγ => eq_one_of_fst I γ (hΓ ▸ hγ)) (hK ▸ hc) (hK ▸ ho)`. Establish `e1 : ∀ x : I.Gf, {g | ∃ γ ∈ Γ, γ.1 = g ∧ x⁻¹ * γ.2 * x ∈ K} = latGroup I x` using `fun x => by`. Unfold `latGroup`. Rewrite using `[← hΓ, ← hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e1] at key`. Rewrite `key` using `[hΓ, hK]`. Rewrite using `[ENNReal.tsum_mul_left, gaugeVol, mul_div_assoc]`. Use `gcongr`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.le_div_iff_mul_le (Or.inl h0) (Or.inl ht), mul_comm]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem sum_latGroup_le (I : AutInst) (Γ : Subgroup I.GA) (hΓ : (Γ : Set I.GA) = I.GFset)
     (K : Subgroup I.Gf) (hK : (K : Set I.Gf) = I.Kset) (c : InfinitePlace I.F → ℝ)
@@ -285,27 +277,25 @@ theorem sum_latGroup_le (I : AutInst) (Γ : Subgroup I.GA) (hΓ : (Γ : Set I.GA
   exact key
 
 /- English proof (translation)
-Introduce `I I₀ p q a j _ hj hq hp hsame hsig hsig₀ c μf _ _ c₀ μ₀ _ _ hc hc₀ B hB hBs`. Take `⟨e, he⟩` from `hsame`. Take `⟨Γ, hΓ⟩` from `(GlobalTheory.RatDiscrete.subgroup_countable_discrete I).1`. Take `⟨Γ₀, hΓ₀⟩` from `(GlobalTheory.RatDiscrete.subgroup_countable_discrete I₀).1`. Take `⟨K, hK⟩` from `exists_kSub I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K₀, hK₀⟩` from `exists_kSub I₀`. Take `⟨hcK, hoK, -, -⟩` from `GlobalTheory.adelicStab_isCompact_isOpen I`. Use `GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I` as an intermediate fact. Use `GlobalTheory.CongTop.secondCountable_finiteAdelicPoints I₀` as an intermediate fact. Use `countable_dc Γ₀ K₀ (hK₀ ▸ (GlobalTheory.adelicStab_isCompact_isOpen I₀).2.1)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun i => countable_lattices I.E (j i)` as an intermediate fact. Establish `h0 : μf I.Kset ≠ 0` using `(hoK.measure_pos μf ⟨1, hK ▸ K.one_mem⟩).ne'`. Establish `ht : μf I.Kset ≠ ⊤` using `hcK.measure_lt_top.ne`. Set `P : (∀ i, Quot (latRel I.E (j i))) × Quot (dcRel Γ₀ K₀) → Prop` to `fun t => ∃ xf S T T' T₀, IsAdapted I I₀ e xf j S (fun i => (Quot.out (t.1 i)).1) (Quot.out t.2) T T' T₀`. Establish `hP : ∀ t : {t // P t}, ∃ xf S T T' T₀, IsAdapted I I₀ e xf j S (fun i => (Quot.out (t.1.1 i)).1) (Quot.out t.1.2) T T' T₀` using `fun t => t.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose x S T T' T₀ had using hP`. Establish `key` using `GlobalTheory.FlagMeas.covol_prod_le_tsum_slices I.Ginf I.Gf (Measure.pi fun v => Formalism.REAL.muG (I.ε v)) μf Γ K (typeSet I j B) {t // P t} x (fun t => flagGroup I (x t) (S t)) (fun t => {g | sizesAt I (x t) (S t) g ∈ B}) (hK ▸ hoK.measurableSet) (fun t g hg => by`. Take `⟨γ, h1, h2, h3⟩` from `hg.1`. Conclude with `⟨γ, by rwa [← SetLike.mem_coe, hΓ], h2, by rwa [← SetLike.mem_coe, hK]⟩)`. Use the proof step `(fun y hy => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hR, hRB⟩` from `GlobalTheory.FlagSat.exists_isSatFlag I a j B y hy`. Take `⟨Λ, x₀, U, U', U₀, hU⟩` from `GlobalTheory.T.exists_adaptedBasis_saturatedIsotropicFlag I I₀ e p q a j he hsig hp hq hsig₀ y.2 R hR`. Set `t : (∀ i, Quot (latRel I.E (j i))) × Quot (dcRel Γ₀ K₀)` to `(fun i => Quot.mk _ ⟨Λ i, hU.2.2.1 i⟩, Quot.mk _ x₀)`. Take `⟨V, V', V₀, hV⟩` from `GlobalTheory.T.exists_adapted_basis_change_models I I₀ e y.2 a j R Λ x₀ U U' U₀ hj hU (fun i => (Quot.out (t.1 i)).1) (Quot.out t.2) (fun i => rel_out (latRel_equiv I.E (j i)) ⟨Λ i, hU.2.2.1 i⟩) (by`. Take `⟨γ, h1, k, h2, h3⟩` from `rel_out (dcRel_equiv Γ₀ K₀) x₀`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨γ, hΓ₀ ▸ h1, k, hK₀ ▸ h2, h3⟩)`. Set `t' : {t // P t}` to `⟨t, y.2, R, V, V', V₀, hV⟩`. Take `⟨γ, h1, k, h2, h3, h4⟩` from `GlobalTheory.T.flags_conjugate_of_same_adapted_models I I₀ e y.2 a j R _ _ V V' V₀ hj hV (x t') (S t') (T t') (T' t') (T₀ t') (had t')`. Use `⟨t', γ, by rwa [← SetLike.mem_coe, hΓ], k, by rwa [← SetLike.mem_coe, hK], h3, ?_⟩` and prove the remaining obligations. Use `show sizesAt I (x t') (S t') (γ.1 * y.1) ∈ B`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h4])` and apply the resulting hypothesis. Use the proof step `(hK ▸ ht)`. Rewrite `key` using `[hΓ, hK]`. Establish `loc` using `fun t : {t // P t} => GlobalTheory.T.flagClass_measure_bound_lattice_stabiliser I I₀ e (x t) a j (S t) _ _ (T t) (T' t) (T₀ t) hj (had t) p q hsig c c₀ hc hc₀ B hB hBs`. Use `set C := ENNReal.ofReal (cIw p q j ^ I.f * (2 * Formalism.HermitianLatticesTheory.vInv I.E) ^ ((I.f : ℝ) * dimN I.n j / 2)) with hC`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Z := ∫⁻ τ in B, ENNReal.ofReal (dens I.n I.f j τ) with hZ`. Set `f : ∀ i, Quot (latRel I.E (j i)) → ENNReal` to `fun i d => ENNReal.ofReal (2 ^ (I.f * j i ^ 2)) * slabVol I.E (j i) (Quot.out d).1`. Set `g : Quot (dcRel Γ₀ K₀) → ENNReal` to `fun d => ENNReal.ofReal (∏ v, c₀ v) * covol (latGroup I₀ (Quot.out d)) (Measure.pi fun v => Formalism.REAL.muG (I₀.ε v)) Set.univ`. Establish `hg : ∑' d, g d ≤ gaugeVol I₀ c₀ μ₀` using `sum_latGroup_le I₀ Γ₀ hΓ₀ K₀ hK₀ c₀ μ₀`. Establish `hf : ∑' t : ∀ i, Quot (latRel I.E (j i)), ∏ i, f i (t i) ≤ ∏ i, ENNReal.ofReal (2 ^ (I.f * j i ^ 2)) * glVol I.E (j i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(tsum_pi_prod_le f).trans (le_of_eq (Finset.prod_congr rfl fun i _ => ?_))` and prove the remaining obligations. Rewrite using `[ENNReal.tsum_mul_left]`. Both sides reduce to the same expression. Establish `hsum : ∑' t : {t // P t}, C * (∏ i, f i (t.1.1 i)) * g t.1.2 * Z ≤ C * (∏ i, ENNReal.ofReal (2 ^ (I.f * j i ^ 2)) * glVol I.E (j i)) * gaugeVol I₀ c₀ μ₀ * Z`. Use `(ENNReal.tsum_comp_le_tsum_of_injective (f := Subtype.val) Subtype.val_injective (fun t : (∀ i, Quot (latRel I.E (j i))) × Quot (dcRel Γ₀ K₀) => C * (∏ i, f i (t.1 i)) * g t.2 * Z)).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.tsum_mul_right, ENNReal.tsum_prod']`. Simplify using `only [ENNReal.tsum_mul_left, ENNReal.tsum_mul_right]`. Use `gcongr`. Use `le_trans ?_ hsum` and prove the remaining obligations. Use `le_trans ?_ (ENNReal.tsum_le_tsum loc)` and prove the remaining obligations.
-
-Rewrite using `[ENNReal.tsum_mul_left, mul_div_assoc]`. Use `gcongr`. Rewrite using `[ENNReal.div_le_iff h0 ht, mul_comm]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem unfoldBound : UnfoldBound := by
   intro I I₀ p q a j _ hj hq hp hsame hsig hsig₀ c μf _ _ c₀ μ₀ _ _ hc hc₀ B hB hBs

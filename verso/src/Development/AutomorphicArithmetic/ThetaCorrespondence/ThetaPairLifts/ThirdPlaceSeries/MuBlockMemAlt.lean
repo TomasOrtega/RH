@@ -15,17 +15,15 @@ namespace GlobalTheory.MuBlock
 end GlobalTheory.MuBlock
 namespace GlobalTheory.MuBlock
 /- English proof (translation)
-Introduce `D hT h3 h5 h7 hRS hH i σ P Pa hσ hth hB`. Establish `hgood : ∀ᶠ w in Filter.cofinite, (∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w)`. Use `Filter.Eventually.and ?_ (D.naut.locG_unr_ae _)` and prove the remaining obligations. Conclude with `(Filter.eventually_all_finite (List.finite_toSet Pa)).2 fun p _ => D.naut.locG_unr_ae p.π`. Take `⟨w0, hw0, hs0⟩` from `exists_split_not_mem D.nd h5.2.2.1 _ (Filter.eventually_cofinite.1 hgood)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg0 : (∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w0)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w0)`. Simplify using `using hw0`. Take `⟨⟨p0, hp0, hpt⟩, -⟩` from `_root_.GlobalTheory.MuBlock.split_step_o_alt D hT h3 h7 hRS i σ P Pa hσ hth hB w0 hs0 hg0.1 hg0.2`. Establish `hall : ∀ w, ((∀ p ∈ Pa, D.naut.unr (D.naut.locG p.π w)) ∧ D.naut.unr (D.naut.locG (D.naut.muC i) w)) → IsSplitPl D.host w → p0.d = D.R.t ∧ D.naut.frobEig (D.naut.locG p0.π w) = D.naut.frobEig (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w)` using `fun w hw hs => (_root_.GlobalTheory.MuBlock.split_step_o_alt D hT h3 h7 hRS i σ P Pa hσ hth hB w hs hw.1 hw.2).2 p0 hp0 hpt`. Establish `htu : ∀ w, D.naut.unr (D.naut.locG (D.naut.muC i) w) → D.naut.unr (D.naut.locG (D.naut.tw (D.naut.muC i) D.naut.etaTinv) w)` using `fun w h => by`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.naut.locG_tw]`. Conclude with `D.naut.unr_char _ _ (D.naut.locG_dim _ _) h (D.naut.etaTinv_def w).1`. Take `⟨hd0, hf0⟩` from `hall w0 hg0 hs0`. Establish `ha0 : p0.a = 1`. Establish `h1` using `D.naut.frobEig_card _ (hg0.1 p0 hp0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hf0, D.naut.frobEig_card _ (htu w0 hg0.2), D.naut.locG_dim, D.naut.locG_dim]`. Conclude with `h1.symm`. Take `⟨a, π, d⟩` from `p0`. Simplify using `only at ha0 hd0 hall hp0`. Substitute `ha0 hd0` using the available equality.
+Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hν : π = D.naut.tw (D.naut.muC i) D.naut.etaTinv`. Use `hH π _ ?_` and prove the remaining obligations. Use `filter_upwards [hgood] with w hw hs`. Rewrite using `[D.naut.unr_eq_lpUnr _ (hw.1 _ hp0), (hall w hw hs).2, ← D.naut.unr_eq_lpUnr _ (htu w hw.2)]`. Substitute `hν` using the available equality.
-
-Conclude with `hp0`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mu_block_mem_alt : ∀ D : D7, SumRepresentations.tie0 D → SumRepresentations.adm3 D → SumRepresentations.adm5 D → _root_.Formalism.MainNotions.SumRepresentations.adm7_alt D →
     GlobalTheory.RowCopy.RowSize D → GlobalTheory.RowCopy.HeckeSplitOne D →

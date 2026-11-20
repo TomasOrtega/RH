@@ -12,25 +12,23 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial ComplexSets Filter Topology
 
 /- English proof (translation)
-Introduce `n J q hJ hdim P`. Establish `hq : q ∈ zeroSet J`. Assume the negation of the conclusion as `h`. Use `curveLocalRing_subsingleton J q h` as an intermediate fact. Rewrite `hdim` using `[ringKrullDim_eq_bot_of_subsingleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hdim (by decide)`. Establish `hle : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) ≤ (n : ℕ)`. Use `(ringKrullDim_quotient_le J).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e : ℕ, ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = e := by`. Establish `h0 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J)` using `ringKrullDim_nonneg_of_nontrivial`. Generalize the expression as in `ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = d at h0 hle ⊢`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at h0`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `coe x`. Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top`. It suffices to derive a contradiction. Simplify using `only [not_le.2 (show ((n : ℕ) : WithBot ℕ∞) < ((⊤ : ℕ∞) : WithBot ℕ∞) from WithBot.coe_lt_coe.2 (ENat.natCast_lt_top n))] at hle`.
+Proceed by induction. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `coe e => exact ⟨e, rfl⟩`. Establish `hloc : ringKrullDim (curveLocalRing J q) = (e : ℕ)` using `LocalDimDomain.proof n e J hJ he q hq`. Establish `hdim1 : ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ J) = (1 : ℕ)`. Rewrite using `[he]`. Rewrite `hdim` using `[hloc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hdim` after adjusting the coercions. Take `⟨M⟩` from `IndefiniteRowSideFullHecke.ComplexSets.NormalModelExists.proof n J hJ`. Take `⟨w, hw, hwq, hord⟩` from `hA n J q M hJ P`. Take `⟨r, hr, φ, hφd, hφi, hφm, hφ0⟩` from `hB n J M w hJ hdim1 hw`. Take `⟨U, hU, hUi⟩` from `hC n J M w hJ hdim1 hw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcont : ContinuousAt φ 0` using `hφd.continuousOn.continuousAt (Metric.ball_mem_nhds 0 hr)`. Take `⟨ε, hε, hεU⟩` from `Metric.mem_nhds_iff.1 (hcont.preimage_mem_nhds (hφ0 ▸ hU))`. Establish `hρ : 0 < min r ε` using `lt_min hr hε`. Establish `hsub : Metric.ball (0 : Fin 1 → ℂ) (min r ε) ⊆ Metric.ball 0 r` using `Metric.ball_subset_ball (min_le_left _ _)`. Establish `hsubU : ∀ t ∈ Metric.ball (0 : Fin 1 → ℂ) (min r ε), φ t ∈ U` using `fun t ht ↦ hεU (Metric.ball_subset_ball (min_le_right _ _) ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Set `ν : VarBranch J 1 q` to `{ radius := min r ε, radius_pos := hρ, toFun := fun t i ↦ φ t (Sum.inl i), differentiableOn := differentiableOn_pi.2 fun i ↦ differentiableOn_pi.1 (hφd.mono hsub) (Sum.inl i), injOn := fun a ha b hb hab ↦ hφi (hsub ha) (hsub hb) (hUi ⟨hφm (hsub ha), hsubU a ha⟩ ⟨hφm (hsub hb), hs …`. Use function extensionality and compare the values at `i`. Rewrite using `[hφ0]`. Conclude with `congrFun hwq i,`. Use `mapsTo := fun t ht g hg ↦ by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg' : rename Sum.inl g ∈ M.ideal` using `Ideal.mem_comap.1 (M.comap_eq.symm ▸ hg)`. Establish `h` using `hφm (hsub ht) _ hg'`. Rewrite `h` using `[eval_rename]`. Conclude with `h }`. Use `⟨ν, fun f ↦ ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hord f, hO n J M w (min r ε) φ hJ hdim1 hρ (hφd.mono hsub) (hφi.mono hsub) (fun t ht ↦ hφm (hsub ht)) hφ0]`. Unfold `branchOrder`. Simplify using `only [eval_rename]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem PrimePlaceBranchExists.proof (hA : NormalModelPointOfPlace.Statement) (hB : NormalModelDisc.Statement)
     (hC : NormalModelProjectionLocallyInjective.Statement) (hO : NormalCurveBranchOrder.Statement) :

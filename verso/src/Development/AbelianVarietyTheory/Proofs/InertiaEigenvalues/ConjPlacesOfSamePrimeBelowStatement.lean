@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual Recipro
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.conj_places_of_same_prime_below` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FConjPlacesOfSamePrimeBelow.lean&line=8#L8)
 -/

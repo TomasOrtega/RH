@@ -15,7 +15,7 @@ def rlift_Spl (Λ : Submodule (𝓞 E) S.V) (X : Submodule E S.V) (P P' : S.V �
   LAdj S P P' ∧ (∀ x ∈ X, P x = x) ∧ (∀ y, P y ∈ X) ∧ LInt Λ P ∧ LInt Λ P' ∧ ∀ w y, S.hT (P' w) (P' y) = 0
 
 /- English proof (translation)
-Use `S.herm.eq x y` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlift_swap {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by
   have := S.herm.eq x y
@@ -23,25 +23,25 @@ theorem rlift_swap {x y : S.V} (h : S.hT x y = 0) : S.hT y x = 0 := by
   exact this.symm
 
 /- English proof (translation)
-Take `⟨P0', hadj, hint'⟩` from `l_adj E S Λ huni P0 hint`. Take `⟨θ, hθ⟩` from `l_theta E hcm`. Establish `hbar : star (θ : E) = ((1 - θ : 𝓞 E) : E)`. Establish `: ((1 - θ : 𝓞 E) : E) = 1 - (θ : E)` using `by simp`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hθ`. Establish `hrev : ∀ x y, S.hT (P0' x) y = S.hT x (P0 y)`. Introduce `x y`. Rewrite using `[← S.herm.eq y (P0' x), ← hadj y x, S.herm.eq]`. Establish `hHX : ∀ y, P0 (P0' y) ∈ X` using `fun y => hX _`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hHH : ∀ x y, S.hT (P0 (P0' x)) y = S.hT x (P0 (P0' y))`. Introduce `x y`. Rewrite using `[hadj, hrev]`. Establish `hzero' : ∀ y, (∀ x ∈ X, S.hT x y = 0) → P0' y = 0`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `S.nondeg.2 _ (fun w => ?_)` and prove the remaining obligations. Rewrite using `[← hadj]`. Conclude with `hy _ (hX w)`. Establish `hzero : ∀ x ∈ X, P0' x = 0` using `fun x hx => hzero' x (fun w hw => hiso w hw x hx)`. Use `⟨P0 - (θ : E) • (P0 ∘ₗ P0'), P0' - star (θ : E) • (P0 ∘ₗ P0'), ⟨?_, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, map_smulₛₗ, smul_eq_mul, starRingEnd_apply, RingHom.id_apply]`. Rewrite using `[hadj, hHH]`. Introduce `x hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hzero x hx, map_zero, smul_zero, sub_zero, hid x hx]`. Introduce `y`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Conclude with `X.sub_mem (hX y) (X.smul_mem _ (hHX y))`. Introduce `l hl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Conclude with `Λ.sub_mem (hint l hl) (liso_smul_mem Λ θ (hint _ (hint' l hl)))`. Introduce `l hl`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[hbar]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Λ.sub_mem (hint' l hl) (liso_smul_mem Λ (1 - θ) (hint _ (hint' l hl)))`. Introduce `w y`. Establish `e1 : S.hT (P0' w) (P0' y) = S.hT w (P0 (P0' y))` using `hrev _ _`. Establish `e2 : S.hT (P0' w) (P0 (P0' y)) = S.hT w (P0 (P0' y))`. Rewrite using `[hrev, hid _ (hHX y)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : S.hT (P0 (P0' w)) (P0' y) = S.hT w (P0 (P0' y))`. Rewrite using `[← hadj, hid _ (hHX w), hHH]`. Establish `e4 : S.hT (P0 (P0' w)) (P0 (P0' y)) = 0` using `hiso _ (hHX w) _ (hHX y)`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply, map_sub, map_smulₛₗ, smul_eq_mul, starRingEnd_apply, star_star, RingHom.id_apply]`. Rewrite using `[e1, e2, e3, e4]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(S.hT w (P0 (P0' y)))) * hθ`. Introduce `y hy h0`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[h0, hzero' y hy, map_zero, smul_zero, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem rlift_spl_of_retr (hcm : Formalism.HermitianLatticesTheory.IsCMUnram E) (Λ : Submodule (𝓞 E) S.V) (X : Submodule E S.V)
     (huni : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
@@ -100,15 +100,13 @@ theorem rlift_spl_of_retr (hcm : Formalism.HermitianLatticesTheory.IsCMUnram E) 
     rw [h0, hzero' y hy, map_zero, smul_zero, sub_zero]
 
 /- English proof (translation)
-Take `⟨product_zeroth_terms, hid, hX, hint⟩` from `l_retr E S Λ X hlat`. Establish `hdual : ∀ l ∈ Λ, ∃ o : 𝓞 E, (o : E) = S.hT m l`. Introduce `l hl`. Establish `h1 : l ∈ Formalism.HermitianLatticesTheory.dual S.hT Λ` using `by rw [huni]; exact hl`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual at h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply] at h1`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (h1 m hm)`. Conclude with `⟨o, ho⟩`. Take `⟨P, P', hS, hk⟩` from `rlift_spl_of_retr hcm Λ X huni hiso (product_zeroth_terms - (S.hT m).smulRight (product_zeroth_terms z)) (fun x hx => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.smulRight_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[rlift_swap (hmX x hx), zero_smul, sub_zero, hid x hx])`. Use the proof step `(fun y => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.smulRight_apply]`. Conclude with `X.sub_mem (hX y) (X.smul_mem _ (hX z)))`. Use the proof step `(fun l hl => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.smulRight_apply]`. Take `⟨o, ho⟩` from `hdual l hl`. Rewrite using `[← ho]`. Conclude with `Λ.sub_mem (hint l hl) (liso_smul_mem Λ o (hint z hz)))`. Use `⟨P, P', hS, hk z hzX ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [LinearMap.sub_apply, LinearMap.smulRight_apply]`. Rewrite using `[hmz, one_smul, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlift_spl_exists (hcm : Formalism.HermitianLatticesTheory.IsCMUnram E) (Λ : Submodule (𝓞 E) S.V) (X : Submodule E S.V)
     (hlat : Submodule.IsLattice E Λ) (huni : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
@@ -144,7 +142,7 @@ section Spl
 variable {Λ : Submodule (𝓞 E) S.V} {X : Submodule E S.V} {P P' : S.V →ₗ[E] S.V}
 
 /- English proof (translation)
-Use `S.nondeg.2 _ (fun w => ?_)` and prove the remaining obligations. Rewrite using `[← h.1]`. Conclude with `hy _ (h.2.2.1 w)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlift_P'_perp (h : rlift_Spl Λ X P P') {y : S.V} (hy : ∀ x ∈ X, S.hT x y = 0) : P' y = 0 := by
   refine S.nondeg.2 _ (fun w => ?_)
@@ -152,7 +150,7 @@ theorem rlift_P'_perp (h : rlift_Spl Λ X P P') {y : S.V} (hy : ∀ x ∈ X, S.h
   exact hy _ (h.2.2.1 w)
 
 /- English proof (translation)
-Use `S.nondeg.1 _ (fun w => ?_)` and prove the remaining obligations. Rewrite using `[h.1]`. Conclude with `h.2.2.2.2.2 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlift_PP' (h : rlift_Spl Λ X P P') (y : S.V) : P (P' y) = 0 := by
   refine S.nondeg.1 _ (fun w => ?_)
@@ -167,7 +165,7 @@ Both sides reduce to the same expression.
 theorem rlift_R_apply (y : S.V) : rlift_R P P' y = y - P y - P' y := rfl
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[rlift_R_apply, map_sub, map_sub, hiso x hx _ (h.2.2.1 y), ← h.1, h.2.1 x hx]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rlift_R_perp (h : rlift_Spl Λ X P P') (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) (y : S.V) :
     ∀ x ∈ X, S.hT x (rlift_R P P' y) = 0 := by
@@ -176,33 +174,33 @@ theorem rlift_R_perp (h : rlift_Spl Λ X P P') (hiso : ∀ x ∈ X, ∀ y ∈ X,
   ring
 
 /- English proof (translation)
-Rewrite using `[rlift_R_apply, map_sub, map_sub, h.2.1 _ (h.2.2.1 y), rlift_PP' h, sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rlift_PR (h : rlift_Spl Λ X P P') (y : S.V) : P (rlift_R P P' y) = 0 := by
   rw [rlift_R_apply, map_sub, map_sub, h.2.1 _ (h.2.2.1 y), rlift_PP' h, sub_self, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[rlift_R_apply, h.2.1 x hx, rlift_P'_perp h (fun w hw => hiso w hw x hx), sub_self, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rlift_R_X (h : rlift_Spl Λ X P P') (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0) {x : S.V} (hx : x ∈ X) :
     rlift_R P P' x = 0 := by
   rw [rlift_R_apply, h.2.1 x hx, rlift_P'_perp h (fun w hw => hiso w hw x hx), sub_self, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[rlift_R_apply, rlift_P'_perp h hy, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rlift_R_of_perp (h : rlift_Spl Λ X P P') {y : S.V} (hy : ∀ x ∈ X, S.hT x y = 0) :
     rlift_R P P' y = y - P y := by
   rw [rlift_R_apply, rlift_P'_perp h hy, sub_zero]
 
 /- English proof (translation)
-The claim follows from `Λ.sub_mem (Λ.sub_mem hl (h.2.2.2.1 l hl)) (h.2.2.2.2.1 l hl)`.
+A detailed English derivation is pending.
 -/
 theorem rlift_R_int (h : rlift_Spl Λ X P P') {l : S.V} (hl : l ∈ Λ) : rlift_R P P' l ∈ Λ :=
   Λ.sub_mem (Λ.sub_mem hl (h.2.2.2.1 l hl)) (h.2.2.2.2.1 l hl)
 
 /- English proof (translation)
-Rewrite using `[rlift_R_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem rlift_decomp (y : S.V) : y = P y + rlift_R P P' y + P' y := by
   rw [rlift_R_apply]; abel
@@ -210,7 +208,7 @@ theorem rlift_decomp (y : S.V) : y = P y + rlift_R P P' y + P' y := by
 end Spl
 
 /- English proof (translation)
-Simplify using `only [map_add, LinearMap.add_apply]`. Rewrite using `[hiso x hx x' hx', hw' x hx, rlift_swap (hw x' hx'), hyy, hwy, hyw]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rlift_three {X : Submodule E S.V} (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
     {x w y x' w' y' : S.V} (hx : x ∈ X) (hx' : x' ∈ X) (hw : ∀ v ∈ X, S.hT v w = 0) (hw' : ∀ v ∈ X, S.hT v w' = 0)
@@ -221,41 +219,37 @@ theorem rlift_three {X : Submodule E S.V} (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT
   ring
 
 /- English proof (translation)
-Use `set nL : S.V →ₗ[E] S.V := P₁ + rlift_R P₂ P₂' ∘ₗ rlift_R P₁ P₁' + P₂' ∘ₗ P₁' with hnL`. Establish `hn : ∀ a, nL a = P₁ a + rlift_R P₂ P₂' (rlift_R P₁ P₁' a) + P₂' (P₁' a)` using `fun a => rfl`. Establish `hmem : ∀ (Λ : Submodule (𝓞 E) S.V), Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ → ∀ y, y ∈ Λ ↔ ∀ l ∈ Λ, S.hT l y ∈ (1 : Submodule (𝓞 E) E)`. Introduce `Λ hu y`. Use `conv_lhs => rw [← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply]`. Establish `hisom : ∀ a b, S.hT (nL a) (nL b) = S.hT a b`. Introduce `a b`. Establish `hwa` using `rlift_R_perp h₁ hiso a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwb` using `rlift_R_perp h₁ hiso b`. Establish `e1 : S.hT (nL a) (nL b) = S.hT (P₁ a) (P₂' (P₁' b)) + S.hT (rlift_R P₂ P₂' (rlift_R P₁ P₁' a)) (rlift_R P₂ P₂' (rlift_R P₁ P₁' b)) + S.hT (P₂' (P₁' a)) (P₁ b)`. Rewrite using `[hn, hn]`. Use `rlift_three hiso (h₁.2.2.1 a) (h₁.2.2.1 b) (rlift_R_perp h₂ hiso _) (rlift_R_perp h₂ hiso _) (h₂.2.2.2.2.2 _ _) ?_ ?_` and prove the remaining obligations. Rewrite using `[← h₂.1, rlift_PR h₂, map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rlift_swap ?_` and prove the remaining obligations. Rewrite using `[← h₂.1, rlift_PR h₂, map_zero, LinearMap.zero_apply]`. Establish `e2 : S.hT a b = S.hT (P₁ a) (P₁' b) + S.hT (rlift_R P₁ P₁' a) (rlift_R P₁ P₁' b) + S.hT (P₁' a) (P₁ b)` using `by conv_lhs => rw [rlift_decomp (P := P₁) (P' := P₁') a, rlift_decomp (P := P₁) (P' := P₁') b]`. Use `rlift_three hiso (h₁.2.2.1 a) (h₁.2.2.1 b) hwa hwb (h₁.2.2.2.2.2 _ _) ?_ ?_` and prove the remaining obligations. Rewrite using `[← h₁.1, rlift_PR h₁, map_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `rlift_swap ?_` and prove the remaining obligations. Rewrite using `[← h₁.1, rlift_PR h₁, map_zero, LinearMap.zero_apply]`. Establish `e3 : ∀ x ∈ X, ∀ y, S.hT x (P₂' y) = S.hT x y`. Introduce `x hx y`. Rewrite using `[← h₂.1, h₂.2.1 x hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e4 : ∀ x ∈ X, ∀ y, S.hT (P₂' y) x = S.hT y x`. Introduce `x hx y`. Rewrite using `[← S.herm.eq x (P₂' y), e3 x hx, S.herm.eq]`. Establish `e5 : S.hT (rlift_R P₂ P₂' (rlift_R P₁ P₁' a)) (rlift_R P₂ P₂' (rlift_R P₁ P₁' b)) = S.hT (rlift_R P₁ P₁' a) (rlift_R P₁ P₁' b)`. Rewrite using `[rlift_R_of_perp h₂ hwa, rlift_R_of_perp h₂ hwb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hwb _ (h₂.2.2.1 _), rlift_swap (hwa _ (h₂.2.2.1 (rlift_R P₁ P₁' b))), hiso _ (h₂.2.2.1 _) _ (h₂.2.2.1 _)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3 _ (h₁.2.2.1 a), e4 _ (h₁.2.2.1 b), e5]`. Establish `hinj : Function.Injective nL`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `a ha`. Use `S.nondeg.1 _ (fun b => ?_)` and prove the remaining obligations. Rewrite using `[← hisom, ha, map_zero, LinearMap.zero_apply]`. Use `set n : S.V ≃ₗ[E] S.V := LinearEquiv.ofInjectiveEndo nL hinj with hndef`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnn : ∀ a, n a = nL a` using `fun a => congrFun (LinearEquiv.coe_ofInjectiveEndo nL hinj) a`. Establish `hX : ∀ x ∈ X, nL x = x`. Introduce `x hx`. Rewrite using `[hn, h₁.2.1 x hx, rlift_R_X h₁ hiso hx, map_zero, rlift_P'_perp h₁ (fun w hw => hiso w hw x hx), map_zero, add_zero, add_zero]`. Establish `hperp : ∀ y, (∀ x ∈ X, S.hT x y = 0) → nL y = y - P₂ (rlift_R P₁ P₁' y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `y hy`. Rewrite using `[hn, rlift_P'_perp h₁ hy, map_zero, add_zero, rlift_R_of_perp h₂ (rlift_R_perp h₁ hiso y), rlift_R_of_perp h₁ hy]`. Normalize the expressions using the abelian group laws. Establish `hsub : ∀ l ∈ Λ₁, nL l ∈ Λ₂`. Introduce `l hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hn]`. Use `Λ₂.add_mem (Λ₂.add_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(hA _ (h₁.2.2.1 l)).1 (h₁.2.2.2.1 l hl)`. Take `⟨l₂, hl₂, hx⟩` from `hL _ (rlift_R_int h₁ hl) (rlift_R_perp h₁ hiso l)`. Establish `: rlift_R P₂ P₂' (rlift_R P₁ P₁' l) = rlift_R P₂ P₂' l₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `rlift_R_X h₂ hiso hx`. Rewrite using `[this]`. Conclude with `rlift_R_int h₂ hl₂`. Rewrite using `[hmem Λ₂ hu₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l' hl'`. Rewrite using `[← h₂.1]`. Conclude with `(hmem Λ₁ hu₁ _).1 (h₁.2.2.2.2.1 l hl) _ ((hA _ (h₂.2.2.1 l')).2 (h₂.2.2.2.1 l' hl'))`. Use `⟨n, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[hnn, hnn]`. Conclude with `hisom a b`. Introduce `x hx`. Rewrite using `[hnn]`. Conclude with `hX x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hnn, hperp z hzX, rlift_R_of_perp h₁ hzX, hz₁, sub_zero, hz₂, sub_zero]`. Introduce `y hy`. Rewrite using `[hnn, hperp y hy, sub_sub_cancel_left]`. Conclude with `X.neg_mem (h₂.2.2.1 _)`. Use extensionality with `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `Formalism.HermitianLatticesTheory.gmap`. Rewrite using `[Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨l, hl, rfl⟩`. Express the relevant statement in the definitionally equal form `n l ∈ Λ₂`.
-
-Rewrite using `[hnn]`. Conclude with `hsub l hl`. Introduce `hy`. Use `⟨n.symm y, ?_, by change n (n.symm y) = y; simp⟩` and prove the remaining obligations. Rewrite using `[hmem Λ₁ hu₁]`.
-
-Introduce `l hl`. Establish `: S.hT l (n.symm y) = S.hT (nL l) y`. Rewrite using `[← hisom, ← hnn (n.symm y), LinearEquiv.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `(hmem Λ₂ hu₂ y).1 hy _ (hsub l hl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlift_main {X : Submodule E S.V} (hiso : ∀ x ∈ X, ∀ y ∈ X, S.hT x y = 0)
     {Λ₁ Λ₂ : Submodule (𝓞 E) S.V} (hu₁ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ₁) (hu₂ : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ₂)

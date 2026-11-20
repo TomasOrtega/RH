@@ -4,25 +4,19 @@ open IsLocalRing Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set f : A[X] := X ^ m - C (u : A) with hf`. Use `set R1 := AdjoinRoot f`. Use `set g : R1[X] := X ^ k - C (AdjoinRoot.of f ϖ * AdjoinRoot.root f) with hg`. Use `set R := AdjoinRoot g`. Use `set I : Ideal R := Ideal.span {AdjoinRoot.root g}`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hm`. Establish `hfm : f.Monic` using `monic_X_pow_sub_C _ hm0`. Establish `hgm : g.Monic` using `monic_X_pow_sub_C _ hk.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Module.Finite A R1 := (AdjoinRoot.powerBasis' hfm).finite`. Use `haveI : Module.Finite R1 R := (AdjoinRoot.powerBasis' hgm).finite`. Use `haveI : Module.Finite A R := Module.Finite.trans R1 R`. Use `haveI : Module.Finite A (R ⧸ I) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ A I).toLinearMap Ideal.Quotient.mk_surjective`. Establish `hzero : algebraMap A (R ⧸ I) ϖ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `h1 : (AdjoinRoot.root g) ^ k = AdjoinRoot.of g (AdjoinRoot.of f ϖ * AdjoinRoot.root f)`. Use `AdjoinRoot.eval₂_root g` as an intermediate fact. Rewrite `this` using `[hg]`. Simplify `this` using `[eval₂_sub, sub_eq_zero]`. Establish `h2 : (AdjoinRoot.root f) ^ m = AdjoinRoot.of f (u : A)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `AdjoinRoot.eval₂_root f` as an intermediate fact. Rewrite `this` using `[hf]`. Simplify `this` using `[eval₂_sub, sub_eq_zero]`. Set `q : R →+* R ⧸ I` to `Ideal.Quotient.mk I`. Establish `ht : q (AdjoinRoot.root g) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.subset_span rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h3 : q (AdjoinRoot.of g (AdjoinRoot.of f ϖ)) * q (AdjoinRoot.of g (AdjoinRoot.root f)) = 0`. Rewrite using `[← map_mul, ← map_mul, ← h1, map_pow, ht, zero_pow hk.ne']`. Establish `hu : IsUnit (q (AdjoinRoot.of g (AdjoinRoot.root f)))`. Establish `: IsUnit (q (AdjoinRoot.of g (AdjoinRoot.root f)) ^ m)`. Rewrite using `[← map_pow, ← map_pow, h2]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `(u.isUnit.map (AdjoinRoot.of f)).map _ |>.map _`. Conclude with `(isUnit_pow_iff hm0).mp this`. Establish `h4 : q (AdjoinRoot.of g (AdjoinRoot.of f ϖ)) = 0`. Simplify `h3` using `[hu.mul_left_eq_zero]`. Conclude with `h4`.
-
-Establish `hmax : (Ideal.span {ϖ} : Ideal A).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible hϖ`. Set `K` to `A ⧸ (Ideal.span {ϖ} : Ideal A)`. Use `letI : Field K := Ideal.Quotient.field _`. Set `φ : K →+* R ⧸ I` to `Ideal.Quotient.lift _ (algebraMap A (R ⧸ I)) (by`. Introduce `a ha`.
-
-Take `⟨b, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`. Simplify using `[hzero])`. Use `letI : Algebra K (R ⧸ I) := φ.toAlgebra`. Use `haveI : IsScalarTower A K (R ⧸ I) := IsScalarTower.of_algebraMap_eq (fun a => rfl)`. Use `haveI : Module.Finite K (R ⧸ I) := Module.Finite.of_restrictScalars_finite A K (R ⧸ I)`.
-
-Conclude with `IsArtinianRing.of_finite K (R ⧸ I)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem artinian_quot_root_adjoin_kummer (A : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     (ϖ : A) (u : Aˣ) (m k : ℕ) (hϖ : Irreducible ϖ) (hm : IsUnit (m : A)) (hk : 0 < k) :

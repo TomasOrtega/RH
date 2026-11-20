@@ -29,9 +29,9 @@ def Extends (N : ℕ) (D : X.Opens) (t : Fam p L) (f : Γ(X, D)) (e : ℕ) : Pro
 variable {p L} {N : ℕ} {D : X.Opens} {t : Fam p L}
 
 /- English proof (translation)
-Take `⟨σ, hσ, h⟩` from `hf`. Take `⟨τ, hτ, h'⟩` from `hg`. Use `⟨σ * τ, ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_add]`. Conclude with `SetLike.GradedMul.mul_mem hσ hτ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Rewrite using `[h k, h' k, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Extends.mul {f g : Γ(X, D)} {e e' : ℕ} (hf : Extends p L N D t f e)
     (hg : Extends p L N D t g e') : Extends p L N D t (f * g) (e + e') := by
@@ -45,7 +45,7 @@ theorem Extends.mul {f g : Γ(X, D)} {e e' : ℕ} (hf : Extends p L N D t f e)
     ring
 
 /- English proof (translation)
-Take `⟨σ, hσ, h⟩` from `hf`. Take `⟨τ, hτ, h'⟩` from `hg`. Use `⟨σ + τ, add_mem hσ hτ, fun k => ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Rewrite using `[h k, h' k, add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Extends.add {f g : Γ(X, D)} {e : ℕ} (hf : Extends p L N D t f e)
     (hg : Extends p L N D t g e) : Extends p L N D t (f + g) e := by
@@ -56,7 +56,7 @@ theorem Extends.add {f g : Γ(X, D)} {e : ℕ} (hf : Extends p L N D t f e)
   rw [h k, h' k, add_mul]
 
 /- English proof (translation)
-Use `⟨t ^ e, ?_, fun k => ?_⟩` and prove the remaining obligations. Establish `hp` using `SetLike.pow_mem_graded e ht`. Rewrite `hp` using `[smul_eq_mul, mul_comm]`. Then use the resulting hypothesis. Rewrite using `[map_pow, map_pow, map_one]`. Conclude with `(_root_.one_mul _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_one (ht : t ∈ secs p L N) (e : ℕ) : Extends p L N D t 1 e := by
   refine ⟨t ^ e, ?_, fun k => ?_⟩
@@ -66,7 +66,7 @@ theorem extends_one (ht : t ∈ secs p L N) (e : ℕ) : Extends p L N D t 1 e :=
     exact (_root_.one_mul _).symm
 
 /- English proof (translation)
-Establish `hU : U ≤ p ⁻¹ᵁ ⊤` using `fun _ _ => trivial`. Establish `e : p.appLE ⊤ U hU ≫ X.presheaf.map (homOfLE h).op = p.appLE ⊤ V (h.trans hU)`. Rewrite using `[Scheme.Hom.appLE_map]`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem resG_constHom' {U V : X.Opens} (h : V ≤ U) (a : K) :
     resG X h (constHom p U a) = constHom p V a := by
@@ -76,9 +76,9 @@ private theorem resG_constHom' {U V : X.Opens} (h : V ≤ U) (a : K) :
   exact congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) e
 
 /- English proof (translation)
-Use `⟨fun j => constHom p (chart L j) a, ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero]`. Introduce `i j`. Rewrite using `[trans_zero, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `resG X _ (constHom p _ a) = resG X _ (constHom p _ a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[resG_constHom', resG_constHom']`. Rewrite using `[pow_zero, _root_.mul_one]`. Express the relevant statement in the definitionally equal form `resG X _ (constHom p _ a) = resG X _ (constHom p _ a)`. Rewrite using `[resG_constHom', resG_constHom']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem extends_const (a : K) : Extends p L N D t (constHom p D a) 0 := by
   refine ⟨fun j => constHom p (chart L j) a, ?_, fun k => ?_⟩
@@ -92,20 +92,18 @@ theorem extends_const (a : K) : Extends p L N D t (constHom p D a) 0 := by
     rw [resG_constHom', resG_constHom']
 
 /- English proof (translation)
-Simplify `hf.mul (extends_one ht e')` using `only [_root_.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem extends_add (ht : t ∈ secs p L N) {f : Γ(X, D)} {e : ℕ}
     (hf : Extends p L N D t f e) (e' : ℕ) : Extends p L N D t f (e + e') := by
   simpa only [_root_.mul_one] using hf.mul (extends_one ht e')
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on`. Use `next a =>`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_C]`. Conclude with `extends_const a`.
+Proceed by induction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `next P Q hP hQ =>`. Take `⟨a, ha⟩` from `hP`. Take `⟨b, hb⟩` from `hQ`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `(extends_add ht ha b).add ?_` and prove the remaining obligations. Rewrite using `[add_comm a b]`. Conclude with `extends_add ht hb a`. Use `next P j hP =>`. Take `⟨a, ha⟩` from `hP`.
-
-Use `⟨a + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Conclude with `ha.mul (hr j)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_eval₂ {J : Type} (ht : t ∈ secs p L N) (r : J → Γ(X, D))
     (hr : ∀ j, Extends p L N D t (r j) 1) (F : MvPolynomial J K) :
@@ -130,22 +128,22 @@ theorem extends_eval₂ {J : Type} (ht : t ∈ secs p L N) (r : J → Γ(X, D))
     exact ha.mul (hr j)
 
 /- English proof (translation)
-The claim follows from `Scheme.basicOpen_res X x (homOfLE h).op`.
+A detailed English derivation is pending.
 -/
 private theorem basicOpen_resG' {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)) :
     X.basicOpen (resG X h x) = V ⊓ X.basicOpen x :=
   Scheme.basicOpen_res X x (homOfLE h).op
 
 /- English proof (translation)
-Take `⟨σ, hσ, h⟩` from `hf`. Establish `hmem : σ * (secEquiv p L N s : Fam p L) ∈ secs p L (N * e + N)` using `SetLike.GradedMul.mul_mem hσ (secEquiv p L N s).2`. Establish `key : ∀ k, (Out.nonzeroLocus s ⊓ chart L k) ⊓ X.basicOpen (evalFam p L k (σ * (secEquiv p L N s : Fam p L))) = (Out.nonzeroLocus s ⊓ chart L k ⊓ X.basicOpen f) ⊓ (Out.nonzeroLocus s ⊓ chart L k ⊓ X.basicOpen (evalFam p L k (secEquiv p L N s : Fam p L)))`. Introduce `k`. Rewrite using `[← basicOpen_resG' (inf_le_right : Out.nonzeroLocus s ⊓ chart L k ≤ _), map_mul, map_mul, h k, _root_.mul_assoc, ← pow_succ, Scheme.basicOpen_mul, Scheme.basicOpen_pow _ _ e.succ_pos, basicOpen_resG', basicOpen_resG']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N * e + N, (secEquiv p L (N * e + N)).symm ⟨_, hmem⟩, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ∈ ⨆ k, X.basicOpen (evalFam p L k (σ * (secEquiv p L N s : Fam p L)))`. Establish `hyD : y ∈ Out.nonzeroLocus s` using `X.basicOpen_le f hy`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.mp (show y ∈ ⨆ k, X.basicOpen (s.f k) from hyD)`. Establish `hkc : y ∈ chart L k` using `X.basicOpen_le _ hk`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmemk : y ∈ (Out.nonzeroLocus s ⊓ chart L k) ⊓ X.basicOpen (evalFam p L k (σ * (secEquiv p L N s : Fam p L)))`. Rewrite using `[key k]`. Conclude with `⟨⟨⟨hyD, hkc⟩, hy⟩, ⟨⟨hyD, hkc⟩, hk⟩⟩`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨k, hmemk.2⟩`. Express the relevant statement in the definitionally equal form `(⨆ k, X.basicOpen (evalFam p L k (σ * (secEquiv p L N s : Fam p L)))) ≤ X.basicOpen f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun k z hz => ?_` and prove the remaining obligations. Establish `hz2` using `hz`. Rewrite `hz2` using `[map_mul, Scheme.basicOpen_mul]`. Establish `hz' : z ∈ X.basicOpen (s.f k)` using `hz2.2`. Establish `hzD : z ∈ Out.nonzeroLocus s` using `TopologicalSpace.Opens.mem_iSup.mpr ⟨k, hz'⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkc : z ∈ chart L k` using `X.basicOpen_le _ hz'`. Establish `hzk : z ∈ (Out.nonzeroLocus s ⊓ chart L k) ⊓ X.basicOpen (evalFam p L k (σ * (secEquiv p L N s : Fam p L)))` using `⟨⟨hzD, hkc⟩, hz⟩`. Rewrite `hzk` using `[key k]`. Conclude with `hzk.1.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_locus (s : (lbPow L N).Sec) (f : Γ(X, Out.nonzeroLocus s)) (e : ℕ)
     (hf : Extends p L N (Out.nonzeroLocus s) (secEquiv p L N s : Fam p L) f e)
@@ -191,15 +189,13 @@ namespace GlobalTheory
 open SectionRing AmpleBasis
 
 /- English proof (translation)
-Introduce `hL P₀ O y hy`. Take `⟨m, s, hcov, hs⟩` from `veryAmple_lbPow hL.ample ℂ P₀ 4 le_rfl`. Establish `hyt : y ∈ (⨆ i, Out.nonzeroLocus (s i))`. Rewrite using `[hcov]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.mp hyt`. Take `⟨haff, r, hr, hpoly⟩` from `hs i`. Take `⟨f, hfO, hyf⟩` from `haff.exists_basicOpen_le ⟨y, hy⟩ hi`. Take `⟨F, hF⟩` from `hpoly f`. Establish `hrj : ∀ j, Extends P₀.A.hom P₀.L 4 (Out.nonzeroLocus (s i)) (secEquiv P₀.A.hom P₀.L 4 (s i) : Fam P₀.A.hom P₀.L) (r j) 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Use `⟨secEquiv P₀.A.hom P₀.L 4 (s j), ?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.mul_one]`. Conclude with `(secEquiv P₀.A.hom P₀.L 4 (s j)).2`. Rewrite using `[pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hr j k`. Take `⟨e, he⟩` from `extends_eval₂ (secEquiv P₀.A.hom P₀.L 4 (s i)).2 r hrj F`. Establish `he' : Extends P₀.A.hom P₀.L 4 (Out.nonzeroLocus (s i)) (secEquiv P₀.A.hom P₀.L 4 (s i) : Fam P₀.A.hom P₀.L) f e`. Rewrite using `[hF]`. Conclude with `he`.
-
-Take `⟨n, σ, hyσ, hσf⟩` from `exists_locus (s i) f e he' y hyf`. Conclude with `⟨n, σ, hyσ, hσf.trans hfO⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_nonzeroLocus_le : Out.Laws → ∀ (P₀ : Out.PolAV (Sp ℂ)) (O : P₀.A.left.Opens) (y : P₀.A.left), y ∈ O → ∃ (n : ℕ) (σ : (lbPow P₀.L n).Sec), y ∈ Out.nonzeroLocus σ ∧ Out.nonzeroLocus σ ≤ O := by
   intro hL P₀ O y hy

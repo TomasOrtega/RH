@@ -11,9 +11,9 @@ def HasDeg (deg : Ix → ℕ) (k : ℤ) (X : Matrix Ix Ix R) : Prop :=
 
 omit [DecidableEq Ix] in
 /- English proof (translation)
-Introduce `p q hpq`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : (deg p : ℤ) = deg r + k`. Rewrite using `[hY r q (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX p r h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.mul {deg : Ix → ℕ} {k l : ℤ} {X Y : Matrix Ix Ix R}
     (hX : HasDeg deg k X) (hY : HasDeg deg l Y) : HasDeg deg (k + l) (X * Y) := by
@@ -26,7 +26,7 @@ theorem HasDeg.mul {deg : Ix → ℕ} {k l : ℤ} {X Y : Matrix Ix Ix R}
 
 omit [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Introduce `p q hpq`. Rewrite using `[Matrix.sub_apply, hX p q hpq, hY p q hpq, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem HasDeg.sub {deg : Ix → ℕ} {k : ℤ} {X Y : Matrix Ix Ix R}
     (hX : HasDeg deg k X) (hY : HasDeg deg k Y) : HasDeg deg k (X - Y) := by
@@ -35,7 +35,7 @@ theorem HasDeg.sub {deg : Ix → ℕ} {k : ℤ} {X Y : Matrix Ix Ix R}
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype Q, Finset.sum_eq_zero (s := (Finset.univ : Finset {r // ¬ Q r})) (fun r _ => by rw [hX i r r.2, zero_mul]), add_zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma submatrix_mul_eq_of_vanishing_off {ι κ : Type} (X Y : Matrix Ix Ix R) (Q : Ix → Prop)
     [DecidablePred Q] (f : ι → Ix) (g : κ → Ix) (hX : ∀ i r, ¬ Q r → X (f i) r = 0) :
@@ -50,7 +50,7 @@ private lemma submatrix_mul_eq_of_vanishing_off {ι κ : Type} (X Y : Matrix Ix 
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Rewrite `hp`, `hq` using `[Nat.even_iff]`. Conclude with `hX p q (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma apply_eq_zero_of_hasDeg_odd_of_even_even {deg : Ix → ℕ} {k : ℤ} {X : Matrix Ix Ix R}
     (hX : _root_.GlobalTheory.TorsionUnique.HasDeg deg k X) (hk : k = 1 ∨ k = -1) {p q : Ix}
@@ -60,9 +60,9 @@ private lemma apply_eq_zero_of_hasDeg_odd_of_even_even {deg : Ix → ℕ} {k : �
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Introduce `p q hpq`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations. Distinguish the cases in `hr : (deg p : ℤ) = deg r + a`. Rewrite using `[hY r q (by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX p r hr, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma hasDeg_mul {deg : Ix → ℕ} {a b c : ℤ} {X Y : Matrix Ix Ix R}
     (hX : _root_.GlobalTheory.TorsionUnique.HasDeg deg a X) (hY : _root_.GlobalTheory.TorsionUnique.HasDeg deg b Y)
@@ -76,7 +76,7 @@ private lemma hasDeg_mul {deg : Ix → ℕ} {a b c : ℤ} {X Y : Matrix Ix Ix R}
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Introduce `p q hpq`. Rewrite using `[Matrix.sub_apply, hX p q hpq, hY p q hpq, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private lemma hasDeg_sub {deg : Ix → ℕ} {a : ℤ} {X Y : Matrix Ix Ix R}
     (hX : _root_.GlobalTheory.TorsionUnique.HasDeg deg a X) (hY : _root_.GlobalTheory.TorsionUnique.HasDeg deg a Y) :
@@ -86,23 +86,21 @@ private lemma hasDeg_sub {deg : Ix → ℕ} {a : ℤ} {X Y : Matrix Ix Ix R}
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Use `set k := h₂ - h₁ with hk_def`. Establish `hkd : _root_.GlobalTheory.TorsionUnique.HasDeg deg 1 k` using `hasDeg_sub h₂d h₁d`. Establish `hψd : _root_.GlobalTheory.TorsionUnique.HasDeg deg 0 (k * D)` using `hasDeg_mul hkd hD (by norm_num)`. Establish `hkD : D * k + k * D = 0`. Establish `: D * k + k * D = (D * h₂ + h₂ * D) - (D * h₁ + h₁ * D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk_def, mul_sub, sub_mul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, h₁c, h₂c, sub_self]`. Establish `hDk : D * k = -(k * D)` using `eq_neg_of_add_eq_zero_left hkD`. Establish `hψψ : k * D * (k * D) = 0`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hblock : ∀ n : ℕ, ((1 : Matrix Ix Ix R) + k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix) = 1 + (k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix)`. Introduce `n`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Subtype.val_injective.ne hij)]`. Proceed by induction on `d with`. Consider the case `zero`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hblock]`. Establish `: (k * D).submatrix (Subtype.val : {p // deg p = 0} → Ix) (Subtype.val : {p // deg p = 0} → Ix) = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun r _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD r j (by have := j.2; omega), mul_zero]`. Rewrite using `[this, add_zero, Matrix.det_one]`. Consider the case `succ n ih`. Rewrite `ih`, the goal using `[hblock]`. Establish `hsplit : (k * D).submatrix (Subtype.val : {p // deg p = n + 1} → Ix) (Subtype.val : {p // deg p = n + 1} → Ix) = k.submatrix (Subtype.val : {p // deg p = n + 1} → Ix) (Subtype.val : {p // deg p = n} → Ix) * D.submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // de …` using `submatrix_mul_eq_of_vanishing_off k D (fun r => deg r = n) (Subtype.val : {p // deg p = n + 1} → Ix) (Subtype.val : {p // deg p = n + 1} → Ix) (fun i r hr => hkd _ r (by have := i.2; omega))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hswap : D.submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n + 1} → Ix) * k.submatrix (Subtype.val : {p // deg p = n + 1} → Ix) (Subtype.val : {p // deg p = n} → Ix) = -(k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p …`. Conclude with `(submatrix_mul_eq_of_vanishing_off D k (fun r => deg r = n + 1) (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix) (fun i r hr => hD _ r (by have := i.2; omega))).symm.trans (by rw [hDk, Matrix.submatrix_neg]; rfl)`. Establish `hsq : (k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix) * (k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix) = 0`. Conclude with `(submatrix_mul_eq_of_vanishing_off (k * D) (k * D) (fun r => deg r = n) (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix) (fun i r hr => hψd _ r (by have := i.2; omega))).symm.trans (by rw [hψψ, Matrix.submatrix_zero]; rfl)`. Use `set ψ := (k * D).submatrix (Subtype.val : {p // deg p = n} → Ix) (Subtype.val : {p // deg p = n} → Ix)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : (1 - ψ).det * (1 + ψ).det = 1`. Rewrite using `[← Matrix.det_mul, sub_mul, one_mul, mul_add, mul_one, hsq]`. Simplify using the standard rewrite rules. Rewrite using `[hsplit, Matrix.det_one_add_mul_comm, hswap, ← sub_eq_add_neg]`. Rewrite `hinv` using `[ih, mul_one]`.
-
-Conclude with `hinv`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_one_add_sub_mul_degree_submatrix_eq_one (deg : Ix → ℕ) (D h₁ h₂ : Matrix Ix Ix R)
     (hD : _root_.GlobalTheory.TorsionUnique.HasDeg deg (-1) D) (hDD : D * D = 0)
@@ -169,17 +167,15 @@ private lemma det_one_add_sub_mul_degree_submatrix_eq_one (deg : Ix → ℕ) (D 
 
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 /- English proof (translation)
-Establish `hG : (D + h₂) * (D + h₁) = 1 + (h₂ - h₁) * D + h₂ * h₁`. Establish `e₁ : D * h₁ = 1 - h₁ * D` using `eq_sub_of_add_eq h₁c`. Rewrite using `[add_mul, mul_add, mul_add, hDD, e₁, sub_mul]`. Normalize the expressions using the abelian group laws. Establish `hψd : _root_.GlobalTheory.TorsionUnique.HasDeg deg 0 ((h₂ - h₁) * D)` using `hasDeg_mul (hasDeg_sub h₂d h₁d) hD (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hhd : _root_.GlobalTheory.TorsionUnique.HasDeg deg 2 (h₂ * h₁)` using `hasDeg_mul h₂d h₁d (by norm_num)`. Establish `hlow : ∀ p q, deg p < deg q → ((D + h₂) * (D + h₁)) p q = 0`. Introduce `p q hpq`. Rewrite using `[hG, Matrix.add_apply, Matrix.add_apply, Matrix.one_apply_ne (by rintro rfl; omega), hψd p q (by omega), hhd p q (by omega)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdiag : ∀ p q, deg p = deg q → ((D + h₂) * (D + h₁)) p q = ((1 : Matrix Ix Ix R) + (h₂ - h₁) * D) p q`. Introduce `p q hpq`. Rewrite using `[hG, Matrix.add_apply (1 + _), hhd p q (by omega), add_zero]`. Use `set M := ((D + h₂) * (D + h₁)).submatrix (Subtype.val : {p // Even (deg p)} → Ix) Subtype.val`. Establish `htri : Matrix.BlockTriangular M.transpose (fun i => deg i.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Conclude with `hlow _ _ hij`. Rewrite using `[← Matrix.det_transpose, htri.det]`. Use `Finset.prod_eq_one fun d _ => ?_` and prove the remaining obligations. Distinguish the cases in `hd : Even d`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `E : {i : {p // Even (deg p)} // deg i.1 = d} ≃ {p : Ix // deg p = d}` to `{ toFun := fun i => ⟨i.1.1, i.2⟩ invFun := fun p => ⟨⟨p.1, by rw [p.2]; exact hd⟩, p.2⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `: M.transpose.toSquareBlock (fun i => deg i.1) d = (((1 : Matrix Ix Ix R) + (h₂ - h₁) * D).submatrix (Subtype.val : {p // deg p = d} → Ix) Subtype.val).transpose.submatrix E E`. Use extensionality with `i j`. Simplify using `only [Matrix.toSquareBlock, Matrix.submatrix_apply, Matrix.transpose_apply, M, E, Equiv.coe_fn_mk]`. Conclude with `hdiag _ _ (by rw [i.2, j.2])`.
-
-Rewrite using `[this, Matrix.det_submatrix_equiv_self, Matrix.det_transpose]`. Conclude with `det_one_add_sub_mul_degree_submatrix_eq_one deg D h₁ h₂ hD hDD h₁d h₂d h₁c h₂c d`. Use `haveI : IsEmpty {i : {p // Even (deg p)} // deg i.1 = d} := ⟨fun i => hd (by rw [← i.2]; exact i.1.2)⟩`. Conclude with `Matrix.det_isEmpty`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma det_even_submatrix_homotopy_product_eq_one (deg : Ix → ℕ) (D h₁ h₂ : Matrix Ix Ix R)
     (hD : _root_.GlobalTheory.TorsionUnique.HasDeg deg (-1) D) (hDD : D * D = 0)
@@ -231,23 +227,21 @@ private lemma det_even_submatrix_homotopy_product_eq_one (deg : Ix → ℕ) (D h
 variable {R Ix : Type} [CommRing R] [Fintype Ix] [DecidableEq Ix] in
 
 /- English proof (translation)
-Introduce `R Ix _ _ _ deg D t t' hDiff H H'`. Take `⟨h, hh, hc, e, rfl⟩` from `H`. Take `⟨h', hh', hc', e', rfl⟩` from `H'`. Establish `hDiff'` using `hDiff`. Unfold `_root_.GlobalTheory.KeyKa.IsCx at hDiff'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨hD0, hDD⟩` from `hDiff'`. Establish `hD : _root_.GlobalTheory.TorsionUnique.HasDeg deg (-1) D` using `fun p q hpq => hD0 p q (by omega)`. Establish `hd : _root_.GlobalTheory.TorsionUnique.HasDeg deg 1 h` using `fun p q hpq => hh p q (by omega)`. Establish `hd' : _root_.GlobalTheory.TorsionUnique.HasDeg deg 1 h'` using `fun p q hpq => hh' p q (by omega)`. Establish `hprod : ∀ g : Matrix Ix Ix R, _root_.GlobalTheory.TorsionUnique.HasDeg deg 1 g → ((D + g).submatrix (Subtype.val : {p // Even (deg p)} → Ix) (fun p => (e' p : Ix)) * (D + h).submatrix (fun p => (e' p : Ix)) Subtype.val) = ((D + g) * (D + h)).submatrix (Subtype.val : {p // Even (d …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Rewrite using `[submatrix_mul_eq_of_vanishing_off (D + g) (D + h) (fun r => ¬ Even (deg r)) _ _ (fun i r hr => by`. Rewrite `hr` using `[not_not]`. Rewrite using `[Matrix.add_apply, apply_eq_zero_of_hasDeg_odd_of_even_even hD (Or.inr rfl) i.2 hr, apply_eq_zero_of_hasDeg_odd_of_even_even hg (Or.inl rfl) i.2 hr, add_zero])]`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.submatrix_apply]`. Conclude with `Equiv.sum_comp e' (fun r => (D + g) i.1 r.1 * (D + h) r.1 j.1)`. Use `set c := ((D + h).submatrix (fun p => (e' p : Ix)) (Subtype.val : {p // Even (deg p)} → Ix)).det`. Use `set a := ((D + h).submatrix (Subtype.val : {p // Even (deg p)} → Ix) (fun p => (e' p : Ix))).det`. Use `set b := ((D + h').submatrix (Subtype.val : {p // Even (deg p)} → Ix) (fun p => (e' p : Ix))).det`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hac : a * c = 1`. Rewrite using `[← Matrix.det_mul, hprod h hd]`. Conclude with `det_even_submatrix_homotopy_product_eq_one deg D h h hD hDD hd hd hc hc`. Establish `hbc : b * c = 1`. Rewrite using `[← Matrix.det_mul, hprod h' hd']`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `det_even_submatrix_homotopy_product_eq_one deg D h h' hD hDD hd hd' hc hc'`. Establish `hba : b = a`. Combine the equalities or inequalities in the displayed calculation. Establish `hsq : ∀ (g : Matrix Ix Ix R) (f : {p // Even (deg p)} ≃ {p // ¬ Even (deg p)}), ((g.submatrix (fun p : {p // Even (deg p)} => (p : Ix)) fun p => (f p : Ix)).det) ^ 2 = ((g.submatrix (fun p : {p // Even (deg p)} => (p : Ix)) fun p => (e' p : Ix)).det) ^ 2`. Introduce `g f`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: g.submatrix (fun p : {p // Even (deg p)} => (p : Ix)) (fun p => (f p : Ix)) = (g.submatrix (fun p : {p // Even (deg p)} => (p : Ix)) fun p => (e' p : Ix)).submatrix id (f.trans e'.symm)`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.det_permute', mul_pow]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (f.trans e'.symm)) with hs | hs <;> simp [hs]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hsq (D + h) e, hsq (D + h') e']`. Express the relevant statement in the definitionally equal form `a ^ 2 = b ^ 2`. Rewrite using `[hba]`. Rewrite using `[hsq (D + h) e]`.
-
-Establish `ha : IsUnit a` using `⟨⟨a, c, hac, by rw [mul_comm]; exact hac⟩, rfl⟩`. Conclude with `ha.pow 2`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.TorsionUnique.torsSq_unique : ∀ (R Ix : Type) [CommRing R] [Fintype Ix] [DecidableEq Ix]
     (deg : Ix → ℕ) (D : Matrix Ix Ix R) (t t' : R),

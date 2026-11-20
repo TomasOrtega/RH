@@ -20,7 +20,7 @@ variable {F G : Type*} [Field F] [ValuativeRel F] [Field G] [ValuativeRel G] [Al
   [ValuativeExtension F G]
 
 /- English proof (translation)
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, ← (valuation G).vle_iff_le, ← (valuation G).vle_iff_le, ValuativeExtension.vle_iff_vle, ValuativeExtension.vle_iff_vle, (valuation F).vle_iff_le, (valuation F).vle_iff_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_algebraMap_eq_iff (x y : F) :
     valuation G (algebraMap F G x) = valuation G (algebraMap F G y) ↔
@@ -30,7 +30,7 @@ theorem valuation_algebraMap_eq_iff (x y : F) :
     (valuation F).vle_iff_le]
 
 /- English proof (translation)
-Rewrite using `[← (valuation G).vle_iff_le, ValuativeExtension.vle_iff_vle, (valuation F).vle_iff_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_algebraMap_le_iff (x y : F) :
     valuation G (algebraMap F G x) ≤ valuation G (algebraMap F G y) ↔
@@ -44,32 +44,32 @@ section Ord
 variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Simplify using `[ord]`. Use the proof step `@[simp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ord_zero_alt : ord (0 : K) = 0 := by
   simp [ord]
 
 @[simp]
 /- English proof (translation)
-Simplify using `[ord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_one : ord (1 : K) = 0 := by
   simp [ord]
 
 /- English proof (translation)
-Simplify using `[ord, WithZero.log_pow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ord_pow_alt (x : K) (n : ℕ) : ord (x ^ n) = n * ord x := by
   simp [ord, WithZero.log_pow]
 
 /- English proof (translation)
-Simplify using `[ord, map_zpow₀, WithZero.log_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ord_zpow_alt (x : K) (n : ℤ) : ord (x ^ n) = n * ord x := by
   simp [ord, map_zpow₀, WithZero.log_zpow]
 
 /- English proof (translation)
-Rewrite using `[← normalizedValuation_eq_iff, normalizedValuation_eq_exp_ord hx, normalizedValuation_eq_exp_ord hy, WithZero.exp_inj, neg_inj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_eq_ord_iff {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord x = ord y ↔ valuation K x = valuation K y := by
@@ -77,7 +77,7 @@ theorem ord_eq_ord_iff {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     normalizedValuation_eq_exp_ord hy, WithZero.exp_inj, neg_inj]
 
 /- English proof (translation)
-Rewrite using `[← normalizedValuation_le_iff, normalizedValuation_eq_exp_ord hx, normalizedValuation_eq_exp_ord hy, WithZero.exp_le_exp, neg_le_neg_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_le_ord_iff {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     ord x ≤ ord y ↔ valuation K y ≤ valuation K x := by
@@ -87,7 +87,7 @@ theorem ord_le_ord_iff {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
 variable (K) in
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Conclude with `⟨(ϖ : K) ^ n, zpow_ne_zero _ hϖ0, by rw [ord_zpow_alt, ord_uniformizer hϖ, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ord_eq (n : ℤ) : ∃ x : K, x ≠ 0 ∧ ord x = n := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -103,15 +103,15 @@ variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Take `⟨ϖL, hϖL⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[L]`. Establish `hϖ0 : (ϖ : K) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Establish `hspan : Ideal.span {algebraMap 𝒪[K] 𝒪[L] ϖ} = Ideal.span {ϖL ^ ramificationIndex K L}`. Rewrite using `[← Ideal.span_singleton_pow, ← hϖL.maximalIdeal_eq, ← map_maximalIdeal K L, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `Ideal.span_singleton_eq_span_singleton.mp hspan`. Establish `hu' : algebraMap K L ϖ * ((u : 𝒪[L]) : L) = (ϖL : L) ^ ramificationIndex K L`. Use `congrArg (fun z : 𝒪[L] ↦ (z : L)) hu` as an intermediate fact. Simplify using `using this`. Establish `hιϖ : algebraMap K L ϖ ≠ 0` using `(_root_.map_ne_zero _).mpr hϖ0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu0 : ((u : 𝒪[L]) : L) ≠ 0`. Establish `: (u : 𝒪[L]) ≠ 0` using `u.ne_zero`. Conclude with `this` after adjusting the coercions. Establish `hkey : ord (algebraMap K L ϖ) = ramificationIndex K L`. Establish `h` using `congrArg ord hu'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[ord_mul hιϖ hu0, ord_unit, add_zero, ord_pow_alt, ord_uniformizer hϖL, mul_one]`. Conclude with `h`. Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using `[ord_zero_alt]`. Establish `hk : (ϖ : K) ^ ord a ≠ 0` using `zpow_ne_zero _ hϖ0`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : valuation K a = valuation K ((ϖ : K) ^ ord a)`. Rewrite using `[← ord_eq_ord_iff ha hk, ord_zpow_alt, ord_uniformizer hϖ, mul_one]`. Establish `hvL : valuation L (algebraMap K L a) = valuation L (algebraMap K L ((ϖ : K) ^ ord a))` using `(valuation_algebraMap_eq_iff a _).mpr hv`. Rewrite `hvL` using `[← ord_eq_ord_iff ((_root_.map_ne_zero _).mpr ha) ((_root_.map_ne_zero _).mpr hk)]`. Rewrite using `[hvL, map_zpow₀, ord_zpow_alt, hkey, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ord_algebraMap_eq_ramificationIndex_mul (a : K) : ord (algebraMap K L a) = ramificationIndex K L * ord a := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible 𝒪[K]
@@ -146,7 +146,7 @@ private theorem ord_algebraMap_eq_ramificationIndex_mul (a : K) : ord (algebraMa
   rw [hvL, map_zpow₀, ord_zpow_alt, hkey, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← map_pow, ← ord_eq_ord_iff (pow_ne_zero _ hy) ((_root_.map_ne_zero _).mpr ha), ord_pow_alt, ord_algebraMap_eq_ramificationIndex_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_pow_ramificationIndex_eq {y : L} {a : K} (hy : y ≠ 0) (ha : a ≠ 0)
     (h : ord a = ord y) :
@@ -161,7 +161,7 @@ section Structure
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Establish `h1 : @IsNonarchimedeanLocalField L _ (finiteExtensionStructure K L).rel (finiteExtensionStructure K L).top` using `finiteExtensionStructure_isNonarchimedeanLocalField K L`. Rewrite `h1` using `[← valuativeRel_eq_finiteExtensionStructure K (L := L)]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNonarchimedeanLocalField_finiteExtensionStructure_top {L : Type*} [Field L] [Algebra K L]
     [FiniteDimensional K L] [v : ValuativeRel L] [ValuativeExtension K L] :
@@ -190,18 +190,18 @@ variable {K}
 omit [ValuativeExtension K Ω] in
 
 /- English proof (translation)
-Unfold `ordRat`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordRat_congr {x y : Ω} (h : valuation Ω x = valuation Ω y) : ordRat K x = ordRat K y := by
   unfold ordRat
   rw [h]
 
 /- English proof (translation)
-Establish `hex : ∃ p : ℕ × K, 0 < p.1 ∧ p.2 ≠ 0 ∧ valuation Ω x ^ p.1 = valuation Ω (algebraMap K Ω p.2)` using `⟨(m, a), hm, ha, h⟩`. Rewrite using `[ordRat, dif_pos hex]`. Take `⟨hp1, hp2, hp3⟩` from `hex.choose_spec`. Use `set p := hex.choose`. Establish `hv : valuation Ω (algebraMap K Ω (p.2 ^ m)) = valuation Ω (algebraMap K Ω (a ^ p.1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, map_pow, map_pow, map_pow, ← hp3, ← h, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite `hv` using `[valuation_algebraMap_eq_iff, ← ord_eq_ord_iff (pow_ne_zero _ hp2) (pow_ne_zero _ ha), ord_pow_alt, ord_pow_alt]`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hp1' : (p.1 : ℚ) ≠ 0` using `by exact_mod_cast hp1.ne'`. Rewrite using `[div_eq_div_iff hp1' hm']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : ((m : ℤ) : ℚ) * (ord p.2 : ℚ) = ((p.1 : ℤ) : ℚ) * (ord a : ℚ)` using `by exact_mod_cast hv`. Move the coercions through the operations in `at hv'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ordRat_eq_of_pow {x : Ω} {m : ℕ} {a : K} (hm : 0 < m) (ha : a ≠ 0)
     (h : valuation Ω x ^ m = valuation Ω (algebraMap K Ω a)) : ordRat K x = ord a / m := by
@@ -226,7 +226,7 @@ omit [ValuativeExtension K Ω] in
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[ordRat, dif_neg]`. Introduce and unpack `⟨p, hp1, hp2, hp3⟩`. Rewrite `hp3` using `[map_zero, zero_pow hp1.ne']`. Conclude with `((_root_.map_ne_zero _).mpr hp2) ((Valuation.zero_iff _).mp hp3.symm)`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordRat_zero : ordRat K (0 : Ω) = 0 := by
   rw [ordRat, dif_neg]
@@ -236,7 +236,7 @@ theorem ordRat_zero : ordRat K (0 : Ω) = 0 := by
 
 @[simp]
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using `[ord_zero_alt]`. Rewrite using `[ordRat_eq_of_pow one_pos ha (pow_one _), Nat.cast_one, div_one]`. Use the proof step `@[simp]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordRat_algebraMap (a : K) : ordRat K (algebraMap K Ω a) = ord a := by
   rcases eq_or_ne a 0 with rfl | ha
@@ -245,15 +245,15 @@ theorem ordRat_algebraMap (a : K) : ordRat K (algebraMap K Ω a) = ord a := by
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← map_one (algebraMap K Ω), ordRat_algebraMap, ord_one, Int.cast_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordRat_one : ordRat K (1 : Ω) = 0 := by
   rw [← map_one (algebraMap K Ω), ordRat_algebraMap, ord_one, Int.cast_zero]
 
 /- English proof (translation)
-Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using `[ord_zero_alt]`. Take `⟨a, ha, hay⟩` from `exists_ord_eq K (ord y)`. Establish `h` using `valuation_pow_ramificationIndex_eq K hy ha hay`. Rewrite `h` using `[← map_pow, ← valuation_algebraMap_eq_iff (G := Ω), map_pow, map_pow, ← IsScalarTower.algebraMap_apply]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ordRat_eq_of_pow (ramificationIndex_pos K L) ha h, hay]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordRat_algebraMap_of_finite {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L]
     [IsNonarchimedeanLocalField L] [Algebra K L] [ValuativeExtension K L] [FiniteDimensional K L]
@@ -270,11 +270,11 @@ theorem ordRat_algebraMap_of_finite {L : Type*} [Field L] [ValuativeRel L] [Topo
 variable [Algebra.IsAlgebraic K Ω]
 
 /- English proof (translation)
-Set `L` to `IntermediateField.adjoin K {x}`. Establish `: FiniteDimensional K L` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Set `: TopologicalSpace L` to `(finiteExtensionStructure K L).top`. Establish `: IsNonarchimedeanLocalField L` using `isNonarchimedeanLocalField_finiteExtensionStructure_top K`. Use `set y := IntermediateField.AdjoinSimple.gen K x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyx : algebraMap L Ω y = x` using `IntermediateField.AdjoinSimple.algebraMap_gen K x`. Establish `hy : y ≠ 0`. Introduce and unpack `h`. Rewrite `hyx` using `[h, map_zero]`. Conclude with `hx hyx.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hay⟩` from `exists_ord_eq K (ord y)`. Establish `h` using `valuation_pow_ramificationIndex_eq K hy ha hay`. Rewrite `h` using `[← map_pow, ← valuation_algebraMap_eq_iff (G := Ω), map_pow, map_pow, ← IsScalarTower.algebraMap_apply, hyx]`. Conclude with `⟨ramificationIndex K L, a, ramificationIndex_pos K L, ha, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_valuation_pow_eq {x : Ω} (hx : x ≠ 0) :
     ∃ (m : ℕ) (a : K), 0 < m ∧ a ≠ 0 ∧ valuation Ω x ^ m = valuation Ω (algebraMap K Ω a) := by
@@ -296,9 +296,9 @@ theorem exists_valuation_pow_eq {x : Ω} (hx : x ≠ 0) :
   exact ⟨ramificationIndex K L, a, ramificationIndex_pos K L, ha, h⟩
 
 /- English proof (translation)
-Take `⟨m, a, hm, ha, h⟩` from `exists_valuation_pow_eq (K := K) hx`. Take `⟨n, b, hn, hb, h'⟩` from `exists_valuation_pow_eq (K := K) hy`. Establish `hab : a ^ n * b ^ m ≠ 0` using `mul_ne_zero (pow_ne_zero _ ha) (pow_ne_zero _ hb)`. Establish `hxy : valuation Ω (x * y) ^ (m * n) = valuation Ω (algebraMap K Ω (a ^ n * b ^ m))`. Rewrite using `[map_mul, mul_pow, map_mul, map_mul, map_pow, map_pow, map_pow, map_pow, ← h, ← h', ← pow_mul, ← pow_mul, mul_comm n m]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ordRat_eq_of_pow (Nat.mul_pos hm hn) hab hxy, ordRat_eq_of_pow hm ha h, ordRat_eq_of_pow hn hb h', ord_mul (pow_ne_zero _ ha) (pow_ne_zero _ hb), ord_pow_alt, ord_pow_alt]`. Establish `hm' : (m : ℚ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem ordRat_mul {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
     ordRat K (x * y) = ordRat K x + ordRat K y := by
@@ -316,7 +316,7 @@ theorem ordRat_mul {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Establish `h` using `ordRat_mul (K := K) hx (inv_ne_zero hx)`. Rewrite `h` using `[mul_inv_cancel₀ hx, ordRat_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ordRat_inv {x : Ω} (hx : x ≠ 0) : ordRat K x⁻¹ = -ordRat K x := by
   have h := ordRat_mul (K := K) hx (inv_ne_zero hx)
@@ -324,15 +324,15 @@ theorem ordRat_inv {x : Ω} (hx : x ≠ 0) : ordRat K x⁻¹ = -ordRat K x := by
   linarith
 
 /- English proof (translation)
-Take `⟨m, a, hm, ha, h⟩` from `exists_valuation_pow_eq (K := K) hx`. Take `⟨n, b, hn, hb, h'⟩` from `exists_valuation_pow_eq (K := K) hy`. Establish `hmn : m * n ≠ 0` using `(Nat.mul_pos hm hn).ne'`. Establish `hp : valuation Ω y ^ (m * n) ≤ valuation Ω x ^ (m * n) ↔ valuation Ω y ≤ valuation Ω x` using `pow_le_pow_iff_left₀ zero_le zero_le hmn`. Rewrite using `[← hp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : valuation Ω x ^ (m * n) = valuation Ω (algebraMap K Ω (a ^ n))`. Rewrite using `[pow_mul, h, map_pow, map_pow]`. Establish `e2 : valuation Ω y ^ (m * n) = valuation Ω (algebraMap K Ω (b ^ m))`. Rewrite using `[mul_comm, pow_mul, h', map_pow, map_pow]`. Rewrite using `[e1, e2, valuation_algebraMap_le_iff, ← ord_le_ord_iff (pow_ne_zero _ ha) (pow_ne_zero _ hb), ordRat_eq_of_pow hm ha h, ordRat_eq_of_pow hn hb h', ord_pow_alt, ord_pow_alt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Establish `hn' : (0 : ℚ) < n` using `by exact_mod_cast hn`. Rewrite using `[div_le_div_iff₀ hm' hn']`. Prove the components needed by the constructor for the conclusion. Introduce `hle`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : (((n : ℤ) * ord a : ℤ) : ℚ) ≤ (((m : ℤ) * ord b : ℤ) : ℚ)`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `h2` after adjusting the coercions. Introduce `hle`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: ((n : ℤ) : ℚ) * ord a ≤ ((m : ℤ) : ℚ) * ord b` using `by exact_mod_cast hle`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ordRat_le_ordRat_iff {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
     ordRat K x ≤ ordRat K y ↔ valuation Ω y ≤ valuation Ω x := by
@@ -363,7 +363,7 @@ theorem ordRat_le_ordRat_iff {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
     linarith
 
 /- English proof (translation)
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, ordRat_le_ordRat_iff hx hy, ordRat_le_ordRat_iff hy hx, and_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ordRat_eq_ordRat_iff {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
     ordRat K x = ordRat K y ↔ valuation Ω x = valuation Ω y := by
@@ -371,7 +371,7 @@ theorem ordRat_eq_ordRat_iff {x y : Ω} (hx : x ≠ 0) (hy : y ≠ 0) :
     and_comm]
 
 /- English proof (translation)
-The claim follows from `ordRat_congr (valuation_algEquiv_apply_of_isAlgebraic σ x)`.
+A detailed English derivation is pending.
 -/
 theorem ordRat_algEquiv (σ : Ω ≃ₐ[K] Ω) (x : Ω) : ordRat K (σ x) = ordRat K x :=
   ordRat_congr (valuation_algEquiv_apply_of_isAlgebraic σ x)
@@ -407,7 +407,7 @@ def valueGroupRat (L : Type*) [Field L] [Algebra L Ω] : AddSubgroup ℚ where
     exact ordRat_inv ((_root_.map_ne_zero _).mpr y.ne_zero)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, y.ne_zero, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨Units.mk0 y hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_valueGroupRat {L : Type*} [Field L] [Algebra L Ω] {q : ℚ} :
     q ∈ valueGroupRat K Ω L ↔ ∃ y : L, y ≠ 0 ∧ ordRat K (algebraMap L Ω y) = q := by
@@ -420,9 +420,9 @@ theorem mem_valueGroupRat {L : Type*} [Field L] [Algebra L Ω] {q : ℚ} :
 variable (K Ω) in
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[mem_valueGroupRat, AddSubgroup.mem_zmultiples_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, -, rfl⟩`. Conclude with `⟨ord a, by simp⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, rfl⟩`. Take `⟨a, ha, han⟩` from `exists_ord_eq K n`. Conclude with `⟨a, ha, by simp [han]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valueGroupRat_base : valueGroupRat K Ω K = AddSubgroup.zmultiples (1 : ℚ) := by
   ext q
@@ -441,9 +441,9 @@ variable (L : Type*) [Field L] [ValuativeRel L] [TopologicalSpace L]
 variable (K Ω) in
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[mem_valueGroupRat, AddSubgroup.mem_zmultiples_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, -, rfl⟩`. Conclude with `⟨ord y, by rw [ordRat_algebraMap_of_finite, zsmul_eq_mul, div_eq_mul_inv]⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨n, rfl⟩`. Take `⟨y, hy, hyn⟩` from `exists_ord_eq L n`. Conclude with `⟨y, hy, by rw [ordRat_algebraMap_of_finite, hyn, zsmul_eq_mul, div_eq_mul_inv]⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valueGroupRat_eq :
     valueGroupRat K Ω L = AddSubgroup.zmultiples ((ramificationIndex K L : ℚ)⁻¹) := by
@@ -461,7 +461,7 @@ omit [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L] [Valua
 variable (K Ω) in
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨Units.map (algebraMap K L).toMonoidHom a, ?_⟩` and prove the remaining obligations. Simplify using `[← IsScalarTower.algebraMap_apply]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem valueGroupRat_base_le : valueGroupRat K Ω K ≤ valueGroupRat K Ω L := by
   rintro _ ⟨a, rfl⟩
@@ -471,13 +471,13 @@ theorem valueGroupRat_base_le : valueGroupRat K Ω K ≤ valueGroupRat K Ω L :=
 variable (K Ω) in
 
 /- English proof (translation)
-Establish `he : (ramificationIndex K L : ℚ) ≠ 0` using `by exact_mod_cast (ramificationIndex_pos K L).ne'`. Use `set f : ℤ →+ ℚ := zmultiplesHom ℚ (ramificationIndex K L : ℚ)⁻¹`. Establish `hrange : (⊤ : AddSubgroup ℤ).map f = valueGroupRat K Ω L`. Rewrite using `[← AddMonoidHom.range_eq_map, AddSubgroup.range_zmultiplesHom, valueGroupRat_eq]`. Establish `hcomap : (valueGroupRat K Ω K).comap f = AddSubgroup.zmultiples ((ramificationIndex K L : ℕ) : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `n`. Rewrite using `[AddSubgroup.mem_comap, valueGroupRat_base, AddSubgroup.mem_zmultiples_iff, AddSubgroup.mem_zmultiples_iff]`. Simplify using `only [f, zmultiplesHom_apply, zsmul_eq_mul, mul_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: (k : ℚ) * ramificationIndex K L = n`. Rewrite using `[hk]`. Clear the denominators using the available nonvanishing facts. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨k, rfl⟩`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hrange, ← AddSubgroup.relIndex_comap, AddSubgroup.relIndex_top_right, hcomap, Int.index_zmultiples, Int.natAbs_natCast]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_valueGroupRat :
     (valueGroupRat K Ω K).relIndex (valueGroupRat K Ω L) = ramificationIndex K L := by
@@ -513,20 +513,20 @@ variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   (L : IntermediateField K (SeparableClosure K)) [FiniteDimensional K L]
 
 /- English proof (translation)
-The claim follows from `relIndex_valueGroupRat K (SeparableClosure K) L`.
+A detailed English derivation is pending.
 -/
 example : (valueGroupRat K (SeparableClosure K) K).relIndex (valueGroupRat K (SeparableClosure K) L) =
     ramificationIndex K L :=
   relIndex_valueGroupRat K (SeparableClosure K) L
 
 /- English proof (translation)
-The claim follows from `valueGroupRat_base K (SeparableClosure K)`.
+A detailed English derivation is pending.
 -/
 example : valueGroupRat K (SeparableClosure K) K = AddSubgroup.zmultiples 1 :=
   valueGroupRat_base K (SeparableClosure K)
 
 /- English proof (translation)
-The claim follows from `ordRat_algEquiv σ x`.
+A detailed English derivation is pending.
 -/
 example (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : SeparableClosure K) :
     ordRat K (σ x) = ordRat K x :=

@@ -12,7 +12,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVa
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Simplify using the standard rewrite rules. Use `(finite_ext_ne_one F a ha).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨e, he⟩`. Conclude with `⟨e, fun h => he (by rw [h, Real.log_one])⟩`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_log_ext_ne_zero (F : Type) [Field F] [NumberField F] (a : AlgebraicClosure F) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ e : TrueGeo.Ext v, Real.log (e.w a) ≠ 0}.Finite := by
@@ -30,7 +30,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Take `⟨τ, k⟩ | k` from `st`. Establish `hk : ¬ k < Dw.mult τ` using `fun hk => by simp [letterOf, hk] at h`. Conclude with `dif_neg hk`. Establish `hk : ¬ k < (letters Dw).length` using `by simpa [letterOf] using h`. Conclude with `dif_neg hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lnStep_of_letterOf_none {X : Scheme.{0}} (t : SAB H X) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     (x : Sp C ⟶ X) (u : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Sp (DualNumber C) ⟶ t.G.left)) (p : ℕ) (b : Bool)
@@ -42,7 +42,7 @@ theorem lnStep_of_letterOf_none {X : Scheme.{0}} (t : SAB H X) {C : Type} [Nontr
     exact dif_neg hk
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, _, fun _ _ _ hp => dif_pos hp, fun _ _ _ _ h => lnStep_of_letterOf_none _ _ _ _ _ _ h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lgOf_eq (y : AlgPt Y.Y) :
     ∃ (G : (Sym E →₀ ℤ) → AlgebraicClosure F) (κ : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → ℝ)
@@ -53,11 +53,11 @@ theorem exists_lgOf_eq (y : AlgPt Y.Y) :
   ⟨_, _, _, fun _ _ _ hp => dif_pos hp, fun _ _ _ _ h => lnStep_of_letterOf_none _ _ _ _ _ _ h⟩
 
 /- English proof (translation)
-Take `⟨G, κ, S, h₁, h₂⟩` from `exists_lgOf_eq Y y`. Use `⟨fun n => G (Finsupp.single a n), fun v ε => if hp : (resP v).Prime then κ v ε * S v ε hp a else 0, fun h v ε => ?_, fun v ε => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs with hp`. Rewrite using `[h₂ v ε hp a h, mul_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hp : (resP v).Prime`. Use `Or.inr fun n => ?_` and prove the remaining obligations. Rewrite using `[h₁ _ v ε hp, Finsupp.sum_single_index (by simp)]`. Simplify using `only [dif_pos hp]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Or.inl fun n => dif_neg hp`.
+Prove the first alternative.
 -/
 theorem exists_lgOf_single (a : Sym E) (y : AlgPt Y.Y) :
     ∃ (G : ℤ → AlgebraicClosure F) (L : ∀ v : HeightOneSpectrum (𝓞 F), TrueGeo.Ext v → ℝ),
@@ -79,15 +79,13 @@ theorem exists_lgOf_single (a : Sym E) (y : AlgPt Y.Y) :
     · exact Or.inl fun n => dif_neg hp
 
 /- English proof (translation)
-Take `⟨G, L, h₀, hL⟩` from `exists_lgOf_single Y a y`. Consider the cases of `ha : letterOf Dw a.2.2 with`. Consider the case `none`. Use `(finite_log_ext_ne_zero F (G n)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨ε, hε⟩`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨ε, fun h' => hε ?_⟩` and prove the remaining obligations. Break down `hL v ε with h₁ | h₁` into its components or cases. Conclude with `h₁ n`. Rewrite using `[h₁ n, h', h₀ ha, mul_zero, add_zero]`. Consider the case `some x`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((h (by simp [ha])).union (finite_log_ext_ne_zero F (G n))).union (finite_log_ext_ne_zero F (G 1))).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨ε, hε⟩`. Assume the negation of the conclusion as `hv`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_exists, not_not] at hv`. Take `⟨⟨h₁, h₂⟩, h₃⟩` from `hv`.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hL v ε with h₄ | h₄` into its components or cases. Conclude with `hε (h₄ n)`. Establish `h₅` using `h₄ 1`. Rewrite `h₅` using `[h₁ ε, h₃ ε]`. Establish `h₆ : L v ε = 0` using `by simpa using h₅.symm`.
-
-Conclude with `hε (by rw [h₄ n, h₂ ε, h₆, mul_zero, add_zero])`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_lgOf_single (a : Sym E) (y : AlgPt Y.Y)
     (h : (letterOf Dw a.2.2).isSome →
@@ -119,9 +117,7 @@ theorem finite_lgOf_single (a : Sym E) (y : AlgPt Y.Y)
 end
 
 /- English proof (translation)
-Introduce `D O c P x y h`. Establish `key (st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ) (n : ℤ)` using `finite_lgOf_single (O.Φ.C c) (ArIn.ind P, none, st) y (h st) n`. Unfold `Setup.root0 rootSym`. Use `split_ifs`. Conclude with `key _ _`.
-
-Conclude with `key _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem Setup.finite_root0_lg : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (P : Finset ℕ) (x : DV.Rt D.what₂.Tau O.N) (y : AlgPt (O.var c)), (∀ st : ((D.host.E →+* ℂ) × ℕ) ⊕ ℕ, (letterOf O.S.Dw st).isSome → {v : HeightOneSpectrum (𝓞 D.what₂.LL) | ∃ e : TrueGeo.Ext v, (O.adl0 c (Finsupp.single (ArIn.ind P, none, st) 1)).lg v e y ≠ 0}.Finite) → {v : HeightOneSpectrum (𝓞 D.what₂.LL) | ∃ e : TrueGeo.Ext v, (O.root0 c P x).lg v e y ≠ 0}.Finite := by
   intro D O c P x y h

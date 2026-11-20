@@ -23,9 +23,7 @@ def orb2 (S : Set (Pl E)) (φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (c : T
   ∏ᶠ w ∈ S, twOrb (th2 a b w) (K2 a b w) (loc2 w c.1.rep c.2.rep) (φ w)
 
 /- English proof (translation)
-Use `filter_upwards [GoodInt.eventually_mem_KGL x, GoodInt.eventually_mem_KGL (x * thE E a x), GoodInt.eventually_mem_KGL y, GoodInt.eventually_mem_KGL (y * thE E b y)] with w h1 h2 h3 h4`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `show locEl a w x ∈ _`. Unfold `locEl`. Use `split_ifs`.
-
-Use `exacts [h2, h1]`. Use `show locEl b w y ∈ _`. Unfold `locEl`. Use `split_ifs`. Use `exacts [h4, h3]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem local_pair_mem_maximal_eventually (x : GL (Fin a) E) (y : GL (Fin b) E) : ∀ᶠ w : Pl E in cofinite, loc2 w x y ∈ K2 a b w := by
   filter_upwards [GoodInt.eventually_mem_KGL x, GoodInt.eventually_mem_KGL (x * thE E a x),
@@ -41,7 +39,7 @@ theorem local_pair_mem_maximal_eventually (x : GL (Fin a) E) (y : GL (Fin b) E) 
     exacts [h4, h3]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨charpoly_twConj a w g.1 y.1, charpoly_twConj b w g.2 y.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem charpoly_conj2 (w : Pl E) (g y : GLw a w × GLw b w) :
     (nrmL a w (g⁻¹ * y * th2 a b w g).1).val.charpoly = (nrmL a w y.1).val.charpoly ∧
@@ -49,17 +47,15 @@ theorem charpoly_conj2 (w : Pl E) (g y : GLw a w × GLw b w) :
   ⟨charpoly_twConj a w g.1 y.1, charpoly_twConj b w g.2 y.2⟩
 
 /- English proof (translation)
-Take `⟨K₁, K₂, hK₁, hK₂, hφ⟩` from `hφ`. Take `⟨δ₁, hδ₁⟩` from `KapMul.exists_norm E h₁`. Take `⟨δ₂, hδ₂⟩` from `KapMul.exists_norm E h₂`. Establish `hinv : ∀ w y, twOrb (th2 a b w) (K2 a b w) (cls (th2 a b w) y).rep (φ w) = twOrb (th2 a b w) (K2 a b w) y (φ w)`. Introduce `w y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `rep_cls (th2 a b w) y`. Rewrite using `[hg]`. Conclude with `hI E hU a b w _ _ (hK₁.1 w) (hK₂.1 w) _ (hφ.1 w) y g`. Establish `hpol : ∀ (w : Pl E) (y : GLw a w × GLw b w), (nrmL a w (cls (th2 a b w) y).rep.1).val.charpoly = (nrmL a w y.1).val.charpoly ∧ (nrmL b w (cls (th2 a b w) y).rep.2).val.charpoly = (nrmL b w y.2).val.charpoly`. Introduce `w y`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `rep_cls (th2 a b w) y`. Rewrite using `[hg]`. Conclude with `charpoly_conj2 w g y`. Establish `hl : ∀ (w : Pl E) (x : GL (Fin a) E) (y : GL (Fin b) E), (x * thE E a x).val.charpoly = P₁ → (y * thE E b y).val.charpoly = P₂ → (nrmL a w (loc2 w x y).1).val.charpoly = atPl w P₁ ∧ (nrmL b w (loc2 w x y).2).val.charpoly = atPl w P₂` using `fun w x y hx hy => ⟨by rw [← hx]; exact ThBasic.charpoly_nrmL hU a w x, by rw [← hy]; exact ThBasic.charpoly_nrmL hU b w y⟩`. Establish `key` using `hA (Pl E) (TwCl (thE E a) × TwCl (thE E b)) S (fun w => TwCl (th2 a b w)) (fun w => {l | (nrmL a w l.rep.1).val.charpoly = atPl w P₁ ∧ (nrmL b w l.rep.2).val.charpoly = atPl w P₂}) (fun w => cls _ (loc2 w δ₁ δ₂)) (fun w l => twOrb (th2 a b w) (K2 a b w) l.rep (φ w)) {c | pol c.1 …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h2, (h1 l.rep _ hl'.1 hl'.2 (hl w _ _ hδ₁ hδ₂).1 (hl w _ _ hδ₁ hδ₂).2 h3).1]`. Use `if_congr ?_ rfl rfl` and prove the remaining obligations. Rewrite using `[← cls_eq_iff, cls_rep, eq_comm])`. Use the proof step `(fun c hc => ⟨fun w => ⟨(hpol w _).1.trans (hl w _ _ hc.1 hc.2).1, (hpol w _).2.trans (hl w _ _ hc.1 hc.2).2⟩, by filter_upwards [hN E hU a b P₁ h₁ P₂ h₂, local_pair_mem_maximal_eventually c.1.rep c.2.rep, local_pair_mem_maximal_eventually δ₁ δ₂] with w h1 h2 h3`. Conclude with `((cls_eq_iff _ _ _).2 ((h1 _ _ (hl w _ _ hc.1 hc.2).1 (hl w _ _ hc.1 hc.2).2 (hl w _ _ hδ₁ hδ₂).1 (hl w _ _ hδ₁ hδ₂).2 h3).2 h2)).symm⟩)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use the proof step `(pow_ne_zero _ two_ne_zero)`. Use the proof step `(fun y hy hy' => hC E hU a b S hS P₁ h₁ P₂ h₂ y hy (by filter_upwards [hy', local_pair_mem_maximal_eventually δ₁ δ₂] with w h1 h2`. Conclude with `⟨_, h2, h1⟩))`. Simplify using `only [hinv, Set.mem_setOf_eq, Nat.cast_pow, Nat.cast_ofNat] at key`. Use `⟨key.1, key.2.trans ?_⟩` and prove the remaining obligations.
-
-Use `congr 1`. Use `finprod_mem_congr rfl fun w _ => ?_` and prove the remaining obligations. Unfold `stTw2 clSum`. Use `finsum_congr fun d => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, Pi.one_apply, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairSum (hA : AbsSum) (hF : FinCl2) (hI : Invar2) (hN : Unit2) (hC : Count2) (hU : Unr E) (S : Set (Pl E))
     (hS : IsSection S) (φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (hφ : IsTestP φ) (P₁ P₂ : E[X]) (h₁ : P₁ ∈ Ell E a)
@@ -113,11 +109,11 @@ theorem pairSum (hA : AbsSum) (hF : FinCl2) (hI : Invar2) (hN : Unit2) (hC : Cou
   simp only [Set.mem_setOf_eq, Pi.one_apply, one_mul]
 
 /- English proof (translation)
-Take `⟨K₁, K₂, hK₁, hK₂, hφ⟩` from `hφ`. Introduce `w hw`. Establish `hl : ∀ w : Pl E, (nrmL a w (loc2 w c.1.rep c.2.rep).1).val.charpoly = atPl w (pol c.1) ∧ (nrmL b w (loc2 w c.1.rep c.2.rep).2).val.charpoly = atPl w (pol c.2)` using `fun w => ⟨ThBasic.charpoly_nrmL hU a w _, ThBasic.charpoly_nrmL hU b w _⟩`. Establish `hfin : ∀ᶠ w in cofinite, twOrb (th2 a b w) (K2 a b w) (loc2 w c.1.rep c.2.rep) (φ w) = 1` using `by filter_upwards [hN E hU a b _ h₁ _ h₂, hφ.2, local_pair_mem_maximal_eventually c.1.rep c.2.rep] with w h1 h2 h3`. Rewrite using `[h2, (h1 _ _ (hl w).1 (hl w).2 (hl w).1 (hl w).2 h3).1, if_pos ⟨1, by rw [map_one, inv_one, one_mul, mul_one]⟩]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : twOrb (th2 a b w) (K2 a b w) (loc2 w c.1.rep c.2.rep) (φ w) ≠ 0`. Introduce `h0`. Apply `h` to reduce the goal to its premises. Unfold `orb2`. Establish `hf : (S ∩ Function.mulSupport fun w => twOrb (th2 a b w) (K2 a b w) (loc2 w c.1.rep c.2.rep) (φ w)).Finite` using `(Filter.eventually_cofinite.1 hfin).subset fun w hw => hw.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[finprod_mem_eq_prod _ hf]`. Conclude with `Finset.prod_eq_zero (i := w) (by simp [hw, h0]) h0`. Take `⟨g, hg⟩` from `hZ _ _ _ _ _ hne`. Conclude with `⟨_, hg, (charpoly_conj2 w g _).1.trans (hl w).1, (charpoly_conj2 w g _).2.trans (hl w).2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem orbit_pair_nonzero_local (hN : Unit2) (hZ : Supp) (hU : Unr E) (S : Set (Pl E)) (φ : ∀ w : Pl E, GLw a w × GLw b w → ℂ)
     (hφ : IsTestP φ) (c : TwCl (thE E a) × TwCl (thE E b)) (h₁ : pol c.1 ∈ Ell E a) (h₂ : pol c.2 ∈ Ell E b)
@@ -143,33 +139,29 @@ theorem orbit_pair_nonzero_local (hN : Unit2) (hZ : Supp) (hU : Unr E) (S : Set 
   exact ⟨_, hg, (charpoly_conj2 w g _).1.trans (hl w).1, (charpoly_conj2 w g _).2.trans (hl w).2⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b S hS l₁ l₂ φ hφ hreg`. Establish `hsum` using `pairSum hA hF hI hN hC hU S hS φ hφ`. Establish `hne` using `orbit_pair_nonzero_local hN hZ hU S φ hφ`. Establish `hQ` using `(let ⟨_, _, _, _, h⟩ := hφ; hP E hU a b S hS φ (fun w => (h.1 w).1) h.2)`. Use `set Q₀ := {p : E[X] × E[X] | p.1 ∈ Ell E a ∧ p.2 ∈ Ell E b ∧ ∀ w ∈ S, ∃ y : GLw a w × GLw b w, φ w y ≠ 0 ∧ (nrmL a w y.1).val.charpoly = atPl w p.1 ∧ (nrmL b w y.2).val.charpoly = atPl w p.2} with hQ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcop : ∀ p ∈ Q₀, IsCoprime p.1 p.2`. Introduce and unpack `p ⟨-, -, hp⟩`. Take `⟨w, hw, hr⟩` from `hreg`. Take `⟨y, hy, e1, e2⟩` from `hp w hw`. Use `hr y hy` as an intermediate fact.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e1, e2, ← Polynomial.map_mul, Polynomial.separable_map]`. Conclude with `this.isCoprime`. Use `set pc : TwCl (thE E a) × TwCl (thE E b) → E[X] × E[X] := fun c => (pol c.1, pol c.2) with hpc`. Establish `hB : {c | (pol c.1 ∈ Ell E a ∧ pol c.2 ∈ Ell E b) ∧ orb2 S φ c ≠ 0}.Finite`. Use `(hQ.biUnion fun p hp => (hsum p.1 p.2 hp.1 hp.2.1).1).subset ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `c ⟨h1, h2⟩`. Conclude with `Set.mem_biUnion (x := pc c) ⟨h1.1, h1.2, hne c h1.1 h1.2 h2⟩ ⟨⟨rfl, rfl⟩, h2⟩`. Establish `hmaps : ∀ c ∈ hB.toFinset, pc c ∈ hQ.toFinset`. Introduce `c hc`. Rewrite `hc`, the goal using `[Set.Finite.mem_toFinset]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hc.1.1, hc.1.2, hne c hc.1.1 hc.1.2 hc.2⟩`. Establish `e1 : geomRat2 S l₁ l₂ φ = ∑ c ∈ hB.toFinset, kap (pol c.1) * kap (pol c.2) * chW l₁ (pol c.1) * chW l₂ (pol c.2) * (orb2 S φ c * 2 ^ (nfac (pol c.1) + nfac (pol c.2)))`. Unfold `geomRat2`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hB.toFinset)]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hc` using `[Set.Finite.mem_toFinset]`. Rewrite using `[if_pos hc.1, MassP.mass_kap E hU a c.1.rep hc.1.1, MassP.mass_kap E hU b c.2.rep hc.1.2, pow_add]`. Unfold `orb2 pol`. Expand and normalize the polynomial expressions, which then agree. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `hc` using `[Function.mem_support]`. Rewrite using `[Set.Finite.coe_toFinset]`. Use `split_ifs at hc with h`. Conclude with `⟨h, right_ne_zero_of_mul hc⟩`. Conclude with `absurd rfl hc`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : ∀ p : E[X] × E[X], p.1 ∈ Ell E a → p.2 ∈ Ell E b → (∑ᶠ c, if pol c.1 = p.1 ∧ pol c.2 = p.2 then orb2 S φ c else 0) = ∑ c ∈ hB.toFinset with pc c = p, orb2 S φ c`. Introduce `p p1 p2`. Rewrite using `[finsum_eq_sum_of_support_subset (s := hB.toFinset), Finset.sum_filter]`. Conclude with `Finset.sum_congr rfl fun c _ => if_congr (Prod.ext_iff (x := pc c) (y := p)).symm rfl rfl`. Introduce `c hc`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite `hc` using `[Function.mem_support]`. Rewrite using `[Set.Finite.coe_toFinset]`. Use `split_ifs at hc with h`. Conclude with `⟨⟨h.1 ▸ p1, h.2 ▸ p2⟩, hc⟩`. Conclude with `absurd rfl hc`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : G8.geomSt2 S l₁ l₂ φ = ∑ p ∈ hQ.toFinset, kap p.1 * kap p.2 * chW l₁ p.1 * chW l₂ p.2 * ∏ᶠ w ∈ S, stTw2 a b w (atPl w p.1) (atPl w p.2) (φ w)`. Unfold `G8.geomSt2`. Apply `finsum_mem_eq_sum_of_inter_support_eq` to reduce the goal to its premises. Use extensionality with `p`. Simplify using `only [Set.mem_inter_iff, Function.mem_support, Set.Finite.coe_toFinset]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `and_congr_left fun h => ⟨fun hp => ?_, fun hp => ⟨hp.1, hp.2.1, hcop p hp⟩⟩` and prove the remaining obligations. Establish `h2` using `(hsum p.1 p.2 hp.1 hp.2.1).2`. Rewrite `h2` using `[e3 p hp.1 hp.2.1]`. Establish `h3 : ∑ c ∈ hB.toFinset with pc c = p, orb2 S φ c ≠ 0` using `fun h0 => by`. Rewrite `h2` using `[h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ two_ne_zero) (right_ne_zero_of_mul h) h2.symm`. Take `⟨c, hc, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h3`. Rewrite `hc` using `[Finset.mem_filter]`. Use `hmaps c hc.1` as an intermediate fact. Rewrite `this` using `[hc.2, Set.Finite.mem_toFinset]`. Then use the resulting hypothesis.
-
-Rewrite using `[e1, e2, Finset.mul_sum, ← Finset.sum_fiberwise_of_maps_to hmaps]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Set.Finite.mem_toFinset]`. Establish `h2` using `(hsum p.1 p.2 hp.1 hp.2.1).2`. Rewrite `h2` using `[e3 p hp.1 hp.2.1]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Rewrite using `[← (Finset.mem_filter.1 hc).2]`. Use `_ = _ := by rw [h2]; ring`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twisted_trace_formula_elliptic_expansion (hA : AbsSum) (hF : FinCl2) (hI : Invar2) (hN : Unit2) (hC : Count2) (hZ : Supp) (hP : FinPol2) :
     G8.G3 := by

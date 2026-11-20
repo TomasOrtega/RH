@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.HenselZero
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Conclude with `⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk w⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_factor_stalk {X : Scheme.{0}} {T : CommRingCat.{0}} [IsLocalRing T] (w : Spec T ⟶ X) {y : X}
     (hw : w (closedPoint T) = y) : ∃ χ : X.presheaf.stalk y ⟶ T, Spec.map χ ≫ X.fromSpecStalk y = w := by
@@ -18,9 +18,9 @@ theorem exists_factor_stalk {X : Scheme.{0}} {T : CommRingCat.{0}} [IsLocalRing 
   exact ⟨_, Scheme.Spec_stalkClosedPointTo_fromSpecStalk w⟩
 
 /- English proof (translation)
-Set `τ : O ⟶ (Spec O).presheaf.stalk (p y)` to `StructureSheaf.toStalk O (p y)`. Use `⟨τ ≫ p.stalkMap y, ?_, ?_⟩` and prove the remaining obligations. Establish `hs : (p.stalkMap y).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp (p.smoothLocus_eq_top.ge (Set.mem_univ y))`. Use `letI : Algebra O ((Spec O).presheaf.stalk (p y)) := StructureSheaf.stalkAlgebra O (p y)`. Use `(p y).isPrime` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `: IsLocalization.AtPrime ((Spec O).presheaf.stalk (p y)) (p y).asIdeal` using `StructureSheaf.IsLocalization.to_stalk O (p y)`. Establish `h₀ : Algebra.FormallySmooth O ((Spec O).presheaf.stalk (p y))` using `Algebra.FormallySmooth.of_isLocalization (p y).asIdeal.primeCompl`. Conclude with `RingHom.FormallySmooth.comp (RingHom.formallySmooth_algebraMap.2 h₀) hs`. Establish `e : (Spec O).fromSpecStalk (p y) = Spec.map τ` using `Spec.fromSpecStalk_eq' _ _`. Rewrite using `[Spec.map_comp, ← Scheme.SpecMap_stalkMap_fromSpecStalk, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_formallySmooth_stalk {O : CommRingCat.{0}} {X : Scheme.{0}} (p : X ⟶ Spec O) [Smooth p] (y : X) :
     ∃ α : O ⟶ X.presheaf.stalk y, α.hom.FormallySmooth ∧ Spec.map α = X.fromSpecStalk y ≫ p := by
@@ -39,7 +39,7 @@ theorem exists_formallySmooth_stalk {O : CommRingCat.{0}} {X : Scheme.{0}} (p : 
     rw [Spec.map_comp, ← Scheme.SpecMap_stalkMap_fromSpecStalk, e]
 
 /- English proof (translation)
-Establish `ht : ⊤ ≤ X.fromSpecStalk y ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (X.fromSpecStalk y) (by rwa [Scheme.fromSpecStalk_closedPoint])).ge`. Rewrite using `[← Scheme.Hom.mem_preimage, Scheme.preimage_basicOpen, Scheme.fromSpecStalk_app hy]`. Simplify using `only [CommRingCat.comp_apply]`. Rewrite using `[Scheme.basicOpen_res, basicOpen_eq_of_affine]`. Conclude with `⟨ht trivial, hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fromSpecStalk_mem_basicOpen {X : Scheme.{0}} {y : X} {U : X.Opens} (hy : y ∈ U) (f : Γ(X, U))
     (q : Spec (X.presheaf.stalk y)) (hq : (X.presheaf.germ U y hy).hom f ∉ q.asIdeal) :
@@ -58,24 +58,22 @@ variable {O : Type} [CommRing O] [IsLocalRing O] {X Y : Scheme.{0}} {p : X ⟶ S
 include hφ
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.of_isPullback (P := @IsClosedImmersion) hφ.flip (IsClosedImmersion.spec_of_surjective _ residue_surjective)`.
+A detailed English derivation is pending.
 -/
 theorem isClosedImmersion_fibre : IsClosedImmersion φ :=
   MorphismProperty.of_isPullback (P := @IsClosedImmersion) hφ.flip
     (IsClosedImmersion.spec_of_surjective _ residue_surjective)
 
 /- English proof (translation)
-Use `isClosedImmersion_fibre hφ` as an intermediate fact. Set `I` to `(maximalIdeal O).map α.hom`. Distinguish the cases in `hI : I = ⊤`. Conclude with `le_sup_of_le_right (le_top.trans hI.ge)`. Establish `: Nontrivial (X.presheaf.stalk (φ y) ⧸ I)` using `Ideal.Quotient.nontrivial_iff.2 hI`.
+Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocalRing (X.presheaf.stalk (φ y) ⧸ I)` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Establish `: IsLocalHom (Ideal.Quotient.mk I)` using `.of_surjective _ Ideal.Quotient.mk_surjective`. Set `π : X.presheaf.stalk (φ y) ⟶ .of (X.presheaf.stalk (φ y) ⧸ I)` to `CommRingCat.ofHom (Ideal.Quotient.mk I)`. Set `β : ResidueField O →+* X.presheaf.stalk (φ y) ⧸ I` to `Ideal.quotientMap I α.hom Ideal.le_comap_map`. Establish `hw : (Spec.map π ≫ X.fromSpecStalk (φ y)) ≫ p = spMap β ≫ spMap (residue O)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, ← hα, ← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨χ, hχ⟩` from `exists_factor_stalk (hφ.lift _ _ hw) (y := y) (φ.isClosedEmbedding.injective (by`. Use `(congrArg (fun g => g (closedPoint (X.presheaf.stalk (φ y) ⧸ I))) (hφ.lift_fst _ _ hw)).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (X.fromSpecStalk (φ y)) (comap_closedPoint (Ideal.Quotient.mk I))).trans Scheme.fromSpecStalk_closedPoint))`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : φ.stalkMap y ≫ χ = π`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[← cancel_mono (X.fromSpecStalk (φ y)), Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkMap_fromSpecStalk, reassoc_of% hχ, hφ.lift_fst]`. Establish `e' : ∀ a, χ.hom ((φ.stalkMap y).hom a) = Ideal.Quotient.mk I a` using `fun a => congrArg (fun g => g.hom a) e`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `hr` from `Ideal.mem_map_of_mem χ.hom (h (map_nonunit (φ.stalkMap y).hom a ha))`. Rewrite `hr` using `[e', Ideal.map_span, ← Set.range_comp]`. Establish `hr' : Ideal.Quotient.mk I a ∈ (Ideal.span (Set.range f)).map (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Conclude with `(congrArg (fun F => _ ∈ Ideal.span (Set.range F)) (funext fun i => e' (f i))).mp hr`.
-
-Conclude with `Ideal.mem_quotient_iff_mem_sup.1 hr'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_le_span_sup {ι : Type} (y : Y) (α : CommRingCat.of O ⟶ X.presheaf.stalk (φ y))
     (hα : Spec.map α = X.fromSpecStalk (φ y) ≫ p) (f : ι → X.presheaf.stalk (φ y))
@@ -113,27 +111,23 @@ theorem maximalIdeal_le_span_sup {ι : Type} (y : Y) (α : CommRingCat.of O ⟶ 
 end Fibre
 
 /- English proof (translation)
-Take `rfl : pt = closedPoint (ResidueField O)` from `Subsingleton.elim (α := PrimeSpectrum (ResidueField O)) _ _`. Use `set y₀ := φ (t (closedPoint (ResidueField O))) with hy₀`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian p`. Take `⟨α, hs, hα⟩` from `exists_formallySmooth_stalk p y₀`. Take `⟨u, hu⟩` from `exists_factor_stalk (t ≫ φ) (y := y₀) rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsLocalRing (DualNumber (ResidueField O))` using `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => by`. Simplify using `only [TrivSqZeroExt.isUnit_iff_isUnit_fst, TrivSqZeroExt.fst_sub, TrivSqZeroExt.fst_one]`. Conclude with `isUnit_or_isUnit_one_sub_self _`. Establish `hχ` using `fun k => exists_factor_stalk (w k ≫ φ) (y := y₀) (by`. Establish `h1 : IsLocalHom (TrivSqZeroExt.fstHom (ResidueField O) (ResidueField O) (ResidueField O)).toRingHom` using `⟨fun a ha => TrivSqZeroExt.isUnit_iff_isUnit_fst.2 ha⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[← comap_closedPoint (TrivSqZeroExt.fstHom (ResidueField O) (ResidueField O) (ResidueField O)).toRingHom, hy₀, ← hw₁ k]`. Use the proof step `rfl)`. Use `choose χ hχ using hχ`. Use `letI := α.hom.toAlgebra`. Establish `: Algebra.FormallySmooth O (X.presheaf.stalk y₀)` using `hs`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₁ : α ≫ u = CommRingCat.ofHom (residue O)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hα, reassoc_of% hu, hφ.w, reassoc_of% ht]`. Establish `e₂ : ∀ k, χ k ≫ CommRingCat.ofHom (TrivSqZeroExt.fstHom (ResidueField O) (ResidueField O) (ResidueField O)).toRingHom = u` using `fun k => by`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (X.fromSpecStalk y₀), Spec.map_comp, Category.assoc, hχ, hu, ← hw₁ k, Category.assoc]`. Establish `e₃ : ∀ k, α ≫ χ k = CommRingCat.ofHom (residue O) ≫ CommRingCat.ofHom (algebraMap _ _)` using `fun k => by`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hα, reassoc_of% hχ, hφ.w, reassoc_of% hw₂, Spec.map_comp]`. Take `⟨ψ, hψ, hk⟩` from `exists_algHom_ker_eq (O := O) (fun i => (X.presheaf.germ U y₀ hU).hom (f i)) u.hom (fun r => congrArg (fun g => g.hom r) e₁) (fun i => (JacGen.valT_specMap_fromSpecStalk hU u (f i)).symm.trans (hu ▸ hf i)) (fun k => (χ k).hom) (fun k a => congrArg (fun g => g.hom a) (e₂ k)) (fun …`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `fun h => hd (Eq.trans ?_ h)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i k`. Rewrite using `[Matrix.of_apply, Matrix.of_apply, ← hχ, JacGen.valT_specMap_fromSpecStalk hU])`. Use the proof step `(maximalIdeal_le_span_sup hφ _ α hα _ (hm.trans_eq (congrArg (fun F => Ideal.span (Set.range F)) (funext fun i => (gs_eq φ _ U hU _).trans (Scheme.Hom.germ_stalkMap_apply φ U _ hU _).symm))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `hs' : Function.Surjective ψ` using `fun r => ⟨_, ψ.commutes r⟩`. Use `⟨spMap ψ.toRingHom ≫ X.fromSpecStalk y₀, ?_, ?_, fun i => ?_, fun y hy hyf => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hα, ← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ψ.commutes r`. Rewrite using `[← hu, ← Spec.map_comp_assoc]`. Use `congr 2`. Use extensionality with `a`. Conclude with `hψ a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `(JacGen.valT_specMap_fromSpecStalk hU (CommRingCat.ofHom ψ.toRingHom) (f i)).trans (hk.ge (Ideal.subset_span ⟨i, rfl⟩))`. Choose the witnesses or unpack the hypotheses as in `⟨r, rfl⟩ : y ∈ Set.range (X.fromSpecStalk y₀) := by`. Rewrite using `[Scheme.range_fromSpecStalk]`. Conclude with `hy`. Choose the witnesses or unpack the hypotheses as in `⟨r', hr'⟩ : r ∈ Set.range (PrimeSpectrum.comap ψ.toRingHom) := by`.
-
-Rewrite using `[range_comap_of_surjective _ _ hs']`. Use `hk.le.trans (Ideal.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Assume the negation of the conclusion as `hn`. Conclude with `hyf i (fromSpecStalk_mem_basicOpen hU _ r hn)`.
-
-Conclude with `⟨r', congrArg (X.fromSpecStalk y₀) hr'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_section_of_transversal {O ι : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [IsAdicComplete (maximalIdeal O) O] [Fintype ι] [DecidableEq ι] {X Y : Scheme.{0}} {p : X ⟶ Sp O} [Smooth p]

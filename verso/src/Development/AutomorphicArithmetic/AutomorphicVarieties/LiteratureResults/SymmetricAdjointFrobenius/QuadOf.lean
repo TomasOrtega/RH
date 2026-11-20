@@ -19,7 +19,7 @@ section Places
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver (w.under (𝓞 F)).asIdeal` using `⟨rfl⟩`. Use `w.isMaximal` as an intermediate fact. Use `(w.under (𝓞 F)).isMaximal` as an intermediate fact. Conclude with `(Ideal.absNorm_pow_inertiaDeg (w.under (𝓞 F)).asIdeal w.asIdeal).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem norm_deg (w : HeightOneSpectrum (𝓞 E)) :
     normV w = normV (w.under (𝓞 F)) ^ w.asIdeal.inertiaDeg (𝓞 F) := by
@@ -29,9 +29,9 @@ private theorem norm_deg (w : HeightOneSpectrum (𝓞 E)) :
   exact (Ideal.absNorm_pow_inertiaDeg (w.under (𝓞 F)).asIdeal w.asIdeal).symm
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Establish `: Fintype (v.asIdeal.primesOver (𝓞 E))` using `(IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).fintype`. Rewrite using `[← h2, Algebra.IsAlgebraic.finrank_of_isFractionRing (𝓞 F) F (𝓞 E) E, ← Ideal.sum_ramification_inertia_eq_finrank v.asIdeal (𝓞 E)]`. Use `(Finset.sum_le_sum_of_subset T.subset_univ).trans (Finset.sum_le_sum fun q _ => ?_)` and prove the remaining obligations. Use `q.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Nat.le_mul_of_pos_left _ (Ideal.ramificationIdx_pos _ _)`.
+A detailed English derivation is pending.
 -/
 private theorem deg_sum (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (𝓞 F))
     (T : Finset (v.asIdeal.primesOver (𝓞 E))) : ∑ q ∈ T, q.1.inertiaDeg (𝓞 F) ≤ 2 := by
@@ -44,9 +44,9 @@ private theorem deg_sum (h2 : Module.finrank F E = 2) (v : HeightOneSpectrum (�
   exact Nat.le_mul_of_pos_left _ (Ideal.ramificationIdx_pos _ _)
 
 /- English proof (translation)
-Use `w.isPrime` as an intermediate fact. Use `w'.isPrime` as an intermediate fact. Establish `hu' : (w.under (𝓞 F)).asIdeal = w'.asIdeal.under (𝓞 F)` using `(congrArg HeightOneSpectrum.asIdeal hu).symm`. Establish `hs` using `deg_sum h2 (w.under (𝓞 F)) {⟨w'.asIdeal, w'.isPrime, ⟨hu'⟩⟩, ⟨w.asIdeal, w.isPrime, ⟨rfl⟩⟩}`. Rewrite `hs` using `[Finset.sum_pair fun h => hne (HeightOneSpectrum.ext (congrArg Subtype.val h))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `w.asIdeal.inertiaDeg_pos (𝓞 F)`. Establish `h4` using `w'.asIdeal.inertiaDeg_pos (𝓞 F)`. Rewrite using `[norm_deg (F := F) w, show w.asIdeal.inertiaDeg (𝓞 F) = 1 by dsimp only at hs; omega, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 -/
 private theorem norm_split (h2 : Module.finrank F E = 2) {w w' : HeightOneSpectrum (𝓞 E)} (hne : w' ≠ w)
     (hu : w'.under (𝓞 F) = w.under (𝓞 F)) : normV w = normV (w.under (𝓞 F)) := by
@@ -61,7 +61,7 @@ private theorem norm_split (h2 : Module.finrank F E = 2) {w w' : HeightOneSpectr
   rw [norm_deg (F := F) w, show w.asIdeal.inertiaDeg (𝓞 F) = 1 by dsimp only at hs; omega, pow_one]
 
 /- English proof (translation)
-Establish `: Algebra.IsQuadraticExtension F E` using `⟨h2⟩`. Establish `hcard : Nat.card (E ≃ₐ[F] E) = 2` using `by rw [IsGalois.card_aut_eq_finrank, h2]`. Take `⟨y, hy, hy'⟩` from `(Nat.card_eq_two_iff' (1 : E ≃ₐ[F] E)).1 hcard`. Conclude with `⟨y, hy, fun τ => (em (τ = 1)).imp_right (hy' τ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem gal_two (h2 : Module.finrank F E = 2) : ∃ σ : E ≃ₐ[F] E, σ ≠ 1 ∧ ∀ τ : E ≃ₐ[F] E, τ = 1 ∨ τ = σ := by
   have : Algebra.IsQuadraticExtension F E := ⟨h2⟩

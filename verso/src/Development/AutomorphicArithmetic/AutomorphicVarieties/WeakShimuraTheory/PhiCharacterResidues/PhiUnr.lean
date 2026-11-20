@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D T c' h K X n A v hA hv g hg`. Establish `hS : v ∉ K.s.S` using `by rw [← K.hV]; exact hv`. Establish `hl : ¬ A.valuation (l : Ω) < 1`. Introduce `hlt`. Apply `hS` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `left`. Apply `(hA (l : 𝓞 (W.Lp T.L))).1` to reduce the goal to its premises. Simplify using `using hlt`. Take `⟨hκ, hr⟩` from `K.unr A v hA hS g hg`. Establish `hβ : K.β g = 1` using `K.β_t (K.t_unr A hl hg)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : resLe T.F_le g ∈ (T.fr ∅).N`. Use `⟨A, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `p hp`. Establish `hp' : p = l` using `by simpa using hp`. Rewrite using `[hp']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hl`. Conclude with `hg`. Establish `he : resQ T.F (resLe T.F_le g) = resQ T.L g`. Use extensionality with `x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `hr`. Rewrite using `[MonoidHom.mem_ker, UpperTheory.V.Ws.Link.rho_apply]`. Establish `hsc : K.sc n g = 1` using `by simp [UpperTheory.V.Ws.Link.sc, hκ, hβ]`. Rewrite using `[hsc, map_one, one_smul]`.
-
-Conclude with `X.pair.kill _ hmem`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiUnr :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} {D : Raw Ω c} {T : Tower D} {c' : Coef l} {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (n : ℕ), ∀ (A : ValuationSubring Ω) (v : W.Plc (W.Lp T.L)), IsPlaceOver A v → v ∉ K.V.S' → Ine (F := T.L) A ≤ (K.rho X n).ker := by

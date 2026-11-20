@@ -5,25 +5,25 @@ open GlobalTheory.Cong
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `key : ∀ (s γ γ' : G), γ ∈ Γ → γ' ∈ Γ → ∀ c c' : C, γ * s * c = γ' * s * c' → lam c = lam c'`. Introduce `s γ γ' hγ hγ' c c' e`. Establish `e2 : (γ'⁻¹ * γ) * s = s * ((c' * c⁻¹ : C) : G)`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Use `h s _ (Γ.mul_mem (Γ.inv_mem hγ') hγ) _ e2` as an intermediate fact. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Conclude with `this.symm`. Set `S : Setoid G` to `{ r := fun a b => ∃ γ ∈ Γ, ∃ c : C, b = γ * a * c iseqv := by`. Use `⟨fun a => ⟨1, Γ.one_mem, 1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨γ, hγ, c, rfl⟩`. Conclude with `⟨γ⁻¹, Γ.inv_mem hγ, c⁻¹, by push_cast; group⟩`. Introduce and unpack `a b d ⟨γ, hγ, c, rfl⟩ ⟨γ', hγ', c', rfl⟩`. Conclude with `⟨γ' * γ, Γ.mul_mem hγ' hγ, c * c', by push_cast; group⟩ }`. Set `rep : G → G` to `fun g => (Quotient.mk S g).out`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hrep : ∀ g, ∃ c : C, ∃ γ ∈ Γ, g = γ * rep g * c`. Introduce `g`. Take `⟨γ, hγ, c, e⟩` from `Quotient.mk_out (s := S) g`. Conclude with `⟨c, γ, hγ, e⟩`. Establish `rep_eq : ∀ a b, S.r a b → rep a = rep b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [rep]`. Rewrite using `[Quotient.sound hab]`. Set `cf : G → C` to `fun g => Classical.choose (hrep g)`. Establish `hcf : ∀ g, ∃ γ ∈ Γ, g = γ * rep g * cf g` using `fun g => Classical.choose_spec (hrep g)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g => Multiplicative.toAdd (lam (cf g)), ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g`. Simplify using `only`. Use `congr 1`. Establish `hr : rep (γ * g) = rep g` using `(rep_eq _ _ ⟨γ, hγ, 1, by simp⟩).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ1, hγ1, e1⟩` from `hcf (γ * g)`. Take `⟨γ2, hγ2, e2⟩` from `hcf g`. Rewrite `e1` using `[hr]`. Apply `key (rep g) (γ⁻¹ * γ1) γ2 (Γ.mul_mem (Γ.inv_mem hγ) hγ1) hγ2` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g c`. Simplify using `only`. Rewrite using `[← toAdd_mul]`. Use `congr 1`. Establish `hr : rep (g * c) = rep g` using `(rep_eq _ _ ⟨1, Γ.one_mem, c, by simp⟩).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ1, hγ1, e1⟩` from `hcf (g * c)`. Take `⟨γ2, hγ2, e2⟩` from `hcf g`. Rewrite `e1` using `[hr]`. Use `key (rep g) γ1 γ2 hγ1 hγ2 (cf (g * c) * c⁻¹) (cf g) (by` as an intermediate fact. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[map_mul, map_inv]`. Rewrite using `[← this]`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_leftInv_rightEquivariant (G A : Type) [Group G] [AddCommGroup A] (Γ C : Subgroup G)
     (lam : C →* Multiplicative A)
@@ -90,7 +90,7 @@ theorem exists_leftInv_rightEquivariant (G A : Type) [Group G] [AddCommGroup A] 
     rw [← this]; group
 
 /- English proof (translation)
-The claim follows from `exists_leftInv_rightEquivariant`.
+A detailed English derivation is pending.
 -/
 example : ∀ (G A : Type) [Group G] [AddCommGroup A] (Γ C : Subgroup G) (lam : C →* Multiplicative A), (∀ g : G, ∀ γ ∈ Γ, ∀ c : C, γ * g = g * c → lam c = 1) → ∃ ℓ : G → A, (∀ γ ∈ Γ, ∀ g, ℓ (γ * g) = ℓ g) ∧ ∀ g (c : C), ℓ (g * c) = ℓ g + Multiplicative.toAdd (lam c) := exists_leftInv_rightEquivariant
 

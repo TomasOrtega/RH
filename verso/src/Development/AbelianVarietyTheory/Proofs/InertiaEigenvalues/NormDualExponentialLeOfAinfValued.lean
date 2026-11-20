@@ -28,9 +28,9 @@ namespace GlobalTheory.Cyc.ExpBound
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨γ, hγ, e⟩` from `GlobalTheory.T.cyclotomic_twist_cocycle_coboundary l act χ ha hχ K s hs j hj (fun σ => chiC χ j σ * act σ β - β) ⟨(((continuous_chiC hχ j).mul (GlobalTheory.Cyc.IsActC.continuous_orbit l act ha β)).sub continuous_const).continuousOn, h, fun g _ g' _ => by`. Establish `h2 : act g (chiC χ j g') = chiC χ j g'` using `act_algebraMap ha g _`. Simplify using `only [chiC_mul, map_mul, map_sub, h2, RingAut.mul_apply]`. Use the proof step `ring⟩`. Establish `h0` using `(GlobalTheory.T.tate_invariants_cyclotomic_twist l act χ ha hχ K s hs j ((l : PadicComplex l) ^ (1 + s + padicValInt l j) * β - γ) (fun g hg => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e g hg` as an intermediate fact. Simplify using `only [map_sub, map_mul, map_pow, map_natCast] at this ⊢`. Take the linear combination `this)).1 hj`. Rewrite using `[sub_eq_zero.1 h0]`. Conclude with `hγ`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_twist {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     (ha : IsActC act) (hχ : IsCyc χ) (K : FinExt l) {s : ℕ} (hs : Lev l s) {j : ℤ} (hj : j ≠ 0)
@@ -52,11 +52,11 @@ theorem norm_le_of_twist {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)}
   exact hγ
 
 /- English proof (translation)
-Take `⟨hn, hc, -⟩` from `GlobalTheory.Cyc.cyc_basic l χ hχ`. Take `⟨H1, H2⟩` from `GlobalTheory.T.cocycle_eq_log_cyclotomic_smul_add_coboundary l act χ ha hχ K s hs`. Take `⟨_, ⟨α', hα', rfl⟩, hn', b, e⟩` from `H1 (fun σ => algebraMap ℚ_[l] (PadicComplex l) (logZl l (χ σ : ℚ_[l])) * (α : PadicComplex l) + (act σ β - β)) ⟨(((continuous_algMap.comp ((GlobalTheory.PadicLogUnits.logZl_hom l).2.1.comp_continuous hc hn)).mul continuous_const).add ((GlobalTheory.Cyc.IsActC.continuous_orbit l a …`. Establish `h2` using `act_algebraMap ha g (logZl l (χ g' : ℚ_[l]))`. Establish `h3` using `act_inC ha hg (y := (α : PadicComplex l)) ⟨α, hα, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul χ, Units.val_mul, (GlobalTheory.PadicLogUnits.logZl_hom l).1 _ _ (hn g) (hn g'), map_add, map_mul, map_sub, h2, h3, RingAut.mul_apply]`. Use the proof step `ring⟩`. Establish `h0` using `H2 ((α - α' : Om l) : PadicComplex l) ⟨α - α', sub_mem hα hα', rfl⟩ (b - β) (fun σ hσ => by`. Use `e σ hσ` as an intermediate fact. Simplify using `only [map_sub, UniformSpace.Completion.coe_sub] at this ⊢`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this)`. Rewrite `h0` using `[UniformSpace.Completion.coe_sub, sub_eq_zero]`. Rewrite using `[← PadicComplex.norm_extends, h0]`. Conclude with `hn'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_log {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {χ : GQ l →* ℚ_[l]ˣ}
     (ha : IsActC act) (hχ : IsCyc χ) (K : FinExt l) {s : ℕ} (hs : Lev l s)
@@ -86,9 +86,9 @@ theorem norm_le_of_log {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} {
   exact hn'
 
 /- English proof (translation)
-Proceed by induction on `e with`. Consider the case `zero => simp`. Consider the case `succ e ih`. Rewrite using `[Finset.sum_range_succ', Nat.factorial_succ, padicValNat.mul (Nat.succ_ne_zero e) e.factorial_ne_zero, ← ih, add_comm (padicValNat l (e + 1))]`. Use `congrArg₂ (· + ·) (Finset.sum_congr rfl fun i _ => ?_) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [padicValInt]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem sum_val (e : ℕ) : ∑ i ∈ Finset.range e, (padicValInt l ((i : ℤ) - e)) =
     padicValNat l e.factorial := by
@@ -108,7 +108,7 @@ theorem sum_val (e : ℕ) : ∑ i ∈ Finset.range e, (padicValInt l ((i : ℤ) 
 variable {P : LocPrime l} {AI : LocAinf l P}
 
 /- English proof (translation)
-Take `⟨K, hK⟩ : ∃ K : FinExt l, x ∈ K.1` from `⟨⟨IntermediateField.adjoin ℚ_[l] {x}, IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral _)⟩, IntermediateField.mem_adjoin_simple_self _ _⟩`. Establish `h2` using `((P.PD K).Fil 0).smul_mem (⟨x, hK⟩ : ↥K.1) (P.PD K).one_mem`. Rewrite `h2` using `[Algebra.smul_def, mul_one]`. Rewrite using `[← SetLike.mem_coe, P.PD_Fil (botExt l) K 0]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem om_mem (x : Om l) : algebraMap (Om l) P.R.BdR x ∈ (P.PD (botExt l)).Fil 0 := by
   obtain ⟨K, hK⟩ : ∃ K : FinExt l, x ∈ K.1 := ⟨⟨IntermediateField.adjoin ℚ_[l] {x},
@@ -120,34 +120,34 @@ theorem om_mem (x : Om l) : algebraMap (Om l) P.R.BdR x ∈ (P.PD (botExt l)).Fi
   exact h2
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]`. Conclude with `om_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_mem (x : ℚ_[l]) : algebraMap ℚ_[l] P.R.BdR x ∈ (P.PD (botExt l)).Fil 0 := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR]
   exact om_mem _
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR, J.θ_Om, algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_q (J : ThetaL P AI) (x : ℚ_[l]) :
     J.θ (algebraMap ℚ_[l] P.R.BdR x) = algebraMap ℚ_[l] (PadicComplex l) x := by
   rw [IsScalarTower.algebraMap_apply ℚ_[l] (Om l) P.R.BdR, J.θ_Om, algebraMap_eq]
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← J.θ_add _ (sub_mem hx hy) _ hy, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_sub (J : ThetaL P AI) {x y : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil 0)
     (hy : y ∈ (P.PD (botExt l)).Fil 0) : J.θ (x - y) = J.θ x - J.θ y := by
   rw [eq_sub_iff_add_eq, ← J.θ_add _ (sub_mem hx hy) _ hy, sub_add_cancel]
 
 /- English proof (translation)
-Simplify using `using pow_mem_Fil hx n`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pow_mem_bottomFiltration_zero {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil 0) (n : ℕ) :
     x ^ n ∈ (P.PD (botExt l)).Fil 0 := by simpa using pow_mem_Fil hx n
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using J.θ_one`. Consider the case `succ k ih => rw [pow_succ, J.θ_mul _ (pow_mem_bottomFiltration_zero hx k) _ hx, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem theta_pow' (J : ThetaL P AI) {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil 0) (n : ℕ) :
     J.θ (x ^ n) = J.θ x ^ n := by
@@ -156,7 +156,7 @@ theorem theta_pow' (J : ThetaL P AI) {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l))
   | succ k ih => rw [pow_succ, J.θ_mul _ (pow_mem_bottomFiltration_zero hx k) _ hx, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[← P.PD_actdR (botExt l) ⟨σ, mem_GK_bot σ⟩]`. Conclude with `(P.PD (botExt l)).Fil_G _ _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_mem (σ : GQ l) {a : ℤ} {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)).Fil a) :
     P.actQdR σ x ∈ (P.PD (botExt l)).Fil a := by
@@ -164,7 +164,7 @@ theorem act_mem (σ : GQ l) {a : ℤ} {x : P.R.BdR} (hx : x ∈ (P.PD (botExt l)
   exact (P.PD (botExt l)).Fil_G _ _ _ hx
 
 /- English proof (translation)
-Establish `h3` using `(P.PD (botExt l)).ι_comm ⟨σ, mem_GK_bot σ⟩ b`. Rewrite `h3` using `[P.PD_ι, P.PD_ι, P.PD_actB, P.PD_actdR]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_ι (σ : GQ l) (b : P.R.B) : P.actQdR σ (P.ιB b) = P.ιB (P.actQ σ b) := by
   have h3 := (P.PD (botExt l)).ι_comm ⟨σ, mem_GK_bot σ⟩ b
@@ -172,7 +172,7 @@ theorem act_ι (σ : GQ l) (b : P.R.B) : P.actQdR σ (P.ιB b) = P.ιB (P.actQ �
   exact h3.symm
 
 /- English proof (translation)
-Establish `h` using `(P.PD (botExt l)).t_act ⟨σ, mem_GK_bot σ⟩`. Rewrite `h` using `[P.PD_actB, P.PD_χ, P.period_datum_t_eq]`. Rewrite using `[act_ι, h, map_smul, Algebra.smul_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem actQdR_periodT_eq_cyclotomic_bottom (σ : GQ l) :
     P.actQdR σ (P.ιB P.tB) = algebraMap ℚ_[l] P.R.BdR (P.χQ σ : ℚ_[l]) * P.ιB P.tB := by
@@ -181,7 +181,7 @@ theorem actQdR_periodT_eq_cyclotomic_bottom (σ : GQ l) :
   rw [act_ι, h, map_smul, Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, ← add_assoc]`. Conclude with `((P.PD (botExt l)).Fil_anti _).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fil_mono {a : ℤ} (n : ℕ) : (P.PD (botExt l)).Fil (a + n) ≤ (P.PD (botExt l)).Fil a := by
   induction n with
@@ -191,21 +191,21 @@ theorem fil_mono {a : ℤ} (n : ℕ) : (P.PD (botExt l)).Fil (a + n) ≤ (P.PD (
     exact ((P.PD (botExt l)).Fil_anti _).trans ih
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Int.le.dest h`. Conclude with `fil_mono n`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fil_mono' {a b : ℤ} (h : a ≤ b) : (P.PD (botExt l)).Fil b ≤ (P.PD (botExt l)).Fil a := by
   obtain ⟨n, rfl⟩ := Int.le.dest h
   exact fil_mono n
 
 /- English proof (translation)
-Establish `t1` using `(P.PD (botExt l)).mem_filtration_one`. Rewrite `t1` using `[P.PD_ι, P.period_datum_t_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem t_mem : P.ιB P.tB ∈ (P.PD (botExt l)).Fil 1 := by
   have t1 := (P.PD (botExt l)).mem_filtration_one
   rwa [P.PD_ι, P.period_datum_t_eq] at t1
 
 /- English proof (translation)
-Establish `: AI.ιA (Per.zA l z) = algebraMap ℚ_[l] P.R.B (z : ℚ_[l])`. Apply `T.eB.injective` to reduce the goal to its premises. Rewrite using `[T.ιA, T.zB]`. Conclude with `(GlobalTheory.RingIface.zB_eq_aB_zA l z).symm`. Rewrite using `[this, AlgHom.commutes]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inclusion_ainf_padicInteger_eq_algebraMap (T : LocTied l P AI) (z : ℤ_[l]) :
     P.ιB (AI.ιA (Per.zA l z)) = algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l]) := by
@@ -215,7 +215,7 @@ theorem inclusion_ainf_padicInteger_eq_algebraMap (T : LocTied l P AI) (z : ℤ_
   rw [this, AlgHom.commutes]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `ReciprocityTheory.PGsh.Ainf.theta_surj l (OC l) (PadicComplexInt.integers l) ⟨y, (GlobalTheory.RingBasics.mem_OC _).2 hy⟩`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GlobalTheory.ThetaTie.th T _ = _`. Rewrite using `[GlobalTheory.ThetaTie.th_eq T (GlobalTheory.ThetaTie.eD_ιA T a).symm, (GlobalTheory.T.thetaBdRPlus_surjective_ker_units_equivariant l).2.2.2.1]`. Conclude with `congrArg Subtype.val ha`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_onto (T : LocTied l P AI) (y : PadicComplex l) (hy : ‖y‖ ≤ 1) :
     ∃ a : Ainf l, (GlobalTheory.ThetaTie.thetaL T).θ (P.ιB (AI.ιA a)) = y := by
@@ -227,15 +227,15 @@ theorem theta_onto (T : LocTied l P AI) (y : PadicComplex l) (hy : ‖y‖ ≤ 1
   exact congrArg Subtype.val ha
 
 /- English proof (translation)
-Take `⟨w, hw, ht, hθ⟩` from `exists_t_eq T J`. Establish `h1 : P.ιB P.tB ^ i * u ∈ (P.PD (botExt l)).Fil i`. Rewrite using `[mul_comm]`. Conclude with `mul_mem_zero hu (by simpa using pow_mem_Fil (t_mem (P := P)) i)`. Establish `h2 : P.ιB (AI.ιA a) ∈ (P.PD (botExt l)).Fil i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using sub_mem h1 ((P.PD (botExt l)).Fil_anti _ h)`. Take `⟨a', rfl⟩` from `(mem_Fil_iff T J i a).1 h2`. Establish `h3` using `mul_mem_zero (pow_mem_bottomFiltration_zero hw i) h`. Rewrite `h3` using `[add_comm]`. Take `⟨y, hy, e⟩` from `exists_t_pow J 1 i _ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (P.ιB P.tB)`. Use `(P.PD (botExt l)).t_unit.map P.ιB` as an intermediate fact. Rewrite `this` using `[P.period_datum_t_eq]`. Then use the resulting hypothesis. Establish `e' : w ^ i * u - P.ιB (AI.ιA a') = y`. Use `(hunit.pow i).mul_left_cancel ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, map_mul, map_mul, map_pow, map_pow, ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm` using `mul_mem_zero (pow_mem_bottomFiltration_zero hw i) hu`. Establish `h4` using `(J.θ_ker _ (sub_mem hm (AI.ainf_image_mem_filtration_zero _ a'))).2 (e' ▸ hy)`. Rewrite `h4` using `[theta_sub J hm (AI.ainf_image_mem_filtration_zero _ a'), J.θ_mul _ (pow_mem_bottomFiltration_zero hw i) _ hu, theta_pow' J hw, hθ, sub_eq_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Conclude with `J.θ_int _`.
+A detailed English derivation is pending.
 -/
 theorem graded (T : LocTied l P AI) (J : ThetaL P AI) (i : ℕ) {u : P.R.BdR}
     (hu : u ∈ (P.PD (botExt l)).Fil 0) (a : Ainf l)
@@ -269,7 +269,7 @@ def cob (P : LocPrime l) (e : ℕ) (b : P.R.BdR) (σ : GQ l) : P.R.BdR :=
   algebraMap ℚ_[l] P.R.BdR ((P.χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * P.actQdR σ b - b
 
 /- English proof (translation)
-Rewrite using `[cob, map_mul, map_pow, actQdR_periodT_eq_cyclotomic_bottom, sub_eq_add_neg (i : ℤ), zpow_add, zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem twistedCoboundary_t_pow_mul (e i : ℕ) (y : P.R.BdR) (σ : GQ l) : cob P e (P.ιB P.tB ^ i * y) σ =
     P.ιB P.tB ^ i * (algebraMap ℚ_[l] P.R.BdR ((P.χQ σ ^ ((i : ℤ) - e) : ℚ_[l]ˣ) : ℚ_[l]) *
@@ -279,7 +279,7 @@ theorem twistedCoboundary_t_pow_mul (e i : ℕ) (y : P.R.BdR) (σ : GQ l) : cob 
   ring
 
 /- English proof (translation)
-Establish `hn : ‖((P.χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, norm_zpow, (GlobalTheory.Cyc.cyc_basic l P.χQ P.χQ_cyc).1, one_zpow]`. Take `⟨z, hz⟩ : ∃ z : ℤ_[l], (z : ℚ_[l]) = ((P.χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l])` from `⟨⟨_, hn⟩, rfl⟩`. Use `⟨Per.zA l z * AI.actW σ a - a, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, map_mul, map_mul, inclusion_ainf_padicInteger_eq_algebraMap T, hz, cob, act_ι, ← AI.ιA_act]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -294,7 +294,7 @@ theorem cob_ι (T : LocTied l P AI) (e : ℕ) (a : Ainf l) (σ : GQ l) :
   rfl
 
 /- English proof (translation)
-Apply `(show _ ≤ Ks K s from le_sup_right)` to reduce the goal to its premises. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Take `⟨t, rfl⟩` from `Nat.exists_eq_add_of_le hs`. Establish `: P.ζQ 1 ^ l = 1` using `by rw [← P.ζQ_zero]; exact P.ζQ_succ 0`. Simplify using `[pow_add, pow_mul, this]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem zeta_mem (K : FinExt l) {s : ℕ} (hs : 1 ≤ s) : P.ζQ 1 ∈ Ks K s := by
   apply (show _ ≤ Ks K s from le_sup_right)
@@ -304,7 +304,7 @@ theorem zeta_mem (K : FinExt l) {s : ℕ} (hs : 1 ≤ s) : P.ζQ 1 ∈ Ks K s :=
   simp [pow_add, pow_mul, this]
 
 /- English proof (translation)
-The claim follows from `act_inC ⟨AI.actC_ext, AI.actC_norm⟩ hσ ⟨_, zeta_mem K hs, (AI.ζ_eq 1).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem act_zeta (K : FinExt l) {s : ℕ} (hs : 1 ≤ s) {σ : GQ l} (hσ : σ ∈ Gj K s) :
     AI.actC σ ((AI.ζ 1 : OC l) : PadicComplex l) = ((AI.ζ 1 : OC l) : PadicComplex l) :=
@@ -315,21 +315,21 @@ def IntMod (AI : LocAinf l P) (G : Subgroup (GQ l)) (e i : ℕ) (R : GQ l → P.
     R σ + cob P e b σ - P.ιB (AI.ιA a) ∈ (P.PD (botExt l)).Fil ((e : ℤ) + 1)
 
 /- English proof (translation)
-Use `set J := GlobalTheory.ThetaTie.thetaL T`. Use `set n := 1 + s + padicValInt l ((i : ℤ) - e) with hn`. Take `⟨b, hb, H⟩` from `h`. Take `⟨y, hy, rfl⟩` from `exists_t_pow J 0 i b (by rwa [zero_add])`. Establish `hl : (l : P.R.BdR) ^ n = P.ιB (AI.ιA ((l : Ainf l) ^ n))` using `by simp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : (l : P.R.BdR) ^ n ∈ (P.PD (botExt l)).Fil 0` using `hl ▸ AI.ainf_image_mem_filtration_zero _ _`. Establish `hlθ : J.θ ((l : P.R.BdR) ^ n) = (l : PadicComplex l) ^ n`. Use `theta_q J ((l : ℚ_[l]) ^ n)` as an intermediate fact. Simplify using `using this`. Establish `key` using `norm_le_of_twist (act := AI.actC) ⟨AI.actC_ext, AI.actC_norm⟩ P.χQ_cyc K hs (j := (i : ℤ) - e) (by omega) ((((AI.ζ 1 : OC l) : PadicComplex l) - 1) ^ i * J.θ y) (fun σ hσ => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `H σ hσ`. Establish `h1` using `sub_mem (fil_mono' (show (i : ℤ) + 1 ≤ e + 1 by omega) ha) (fil_mono' (show (i : ℤ) + 1 ≤ e by omega) (hR σ))`. Establish `hm` using `mul_mem_zero (q_mem ((P.χQ σ ^ ((i : ℤ) - e) : ℚ_[l]ˣ) : ℚ_[l])) (act_mem σ hy)`. Establish `h2` using `graded T J i (sub_mem hm hy) a (by`. Rewrite using `[← twistedCoboundary_t_pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use the proof step `ring)`. Rewrite `h2` using `[theta_sub J hm hy, J.θ_mul _ (q_mem _) _ (act_mem σ hy), theta_q, J.θ_act _ _ hy]`. Rewrite using `[map_mul, map_pow, map_sub, map_one, act_zeta K hs.1 hσ, chiC]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring)`. Take `⟨a0, ha0⟩` from `theta_onto T _ key`. Take `⟨w, hw, ht, hθ⟩` from `exists_t_eq T J`. Use `⟨(l : P.R.BdR) ^ n * (P.ιB P.tB ^ i * y) - P.ιB (AI.ιA (AI.ξ ^ i * a0)), ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hm` using `mul_mem_zero hl0 (mul_mem_zero (pow_mem_bottomFiltration_zero hw i) hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `(J.θ_ker _ (sub_mem hm (AI.ainf_image_mem_filtration_zero _ a0))).1 (by`. Rewrite using `[theta_sub J hm (AI.ainf_image_mem_filtration_zero _ a0), J.θ_mul _ hl0 _ (mul_mem_zero (pow_mem_bottomFiltration_zero hw i) hy), J.θ_mul _ (pow_mem_bottomFiltration_zero hw i) _ hy, theta_pow' J hw, hθ, hlθ, ha0, sub_self])`. Establish `h2` using `(P.PD (botExt l)).Fil_mul _ _ _ _ ((mem_Fil_iff T J i _).2 dvd_rfl) h1`. Rewrite using `[Nat.cast_succ]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ht, map_mul, map_mul, map_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha⟩` from `H σ hσ`. Take `⟨a', ha'⟩` from `cob_ι T e (AI.ξ ^ i * a0) σ`. Use `⟨(l : Ainf l) ^ n * a - a', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `mul_mem_zero hl0 ha using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_sub, ← ha', map_mul _ ((l : Ainf l) ^ n), map_mul P.ιB (AI.ιA _), ← hl]`. Simplify using `only [cob, map_sub, map_mul (P.actQdR σ) ((l : P.R.BdR) ^ n), map_pow, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem step (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Lev l s) {e i : ℕ} (hi : i < e)
     (R : GQ l → P.R.BdR) (hR : ∀ σ, R σ ∈ (P.PD (botExt l)).Fil (e : ℤ))
@@ -379,9 +379,9 @@ theorem step (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Lev l s) {e i :
     ring
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simpa using h`. Consider the case `succ i ih`. Use `step T K hs (show i < e from hi) _ (fun σ => mul_mem_zero (pow_mem_bottomFiltration_zero (by` as an intermediate fact. Simplify using `using q_mem (P := P) (l : ℚ_[l])) _) (hR σ)) (ih (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[Finset.sum_range_succ, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem iterate (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Lev l s) {e : ℕ}
     (R : GQ l → P.R.BdR) (hR : ∀ σ, R σ ∈ (P.PD (botExt l)).Fil (e : ℤ))
@@ -398,7 +398,7 @@ theorem iterate (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Lev l s) {e 
     ring
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.PadicLogUnits.logZl_hom l).2.2.1 _ ((cyc_basic l _ (LT l).χQ_cyc).1 g)`. Conclude with `congrArg Subtype.val (dif_pos h : logChi LT g = ⟨_, h⟩)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem logChi_coe (LT : LocTheory) (g : GQ l) :
     ((logChi LT g : ℤ_[l]) : ℚ_[l]) = logZl l ((LT l).χQ g : ℚ_[l]) := by
@@ -406,7 +406,7 @@ theorem logChi_coe (LT : LocTheory) (g : GQ l) :
   exact congrArg Subtype.val (dif_pos h : logChi LT g = ⟨_, h⟩)
 
 /- English proof (translation)
-Establish `h2 : P.ζQ 1 ^ l = 1` using `by rw [← P.ζQ_zero]; exact P.ζQ_succ 0`. Establish `h3 : IsPrimitiveRoot (P.ζQ 1) l` using `isPrimitiveRoot_of_mem_nthRootsFinset Fact.out ((Polynomial.mem_nthRootsFinset (Fact.out : l.Prime).pos _).2 h2) P.ζQ_one`. Establish `h4 : IsPrimitiveRoot ((P.ζQ 1 : Om l) : PadicComplex l) l` using `h3.map_of_injective (f := algebraMap (Om l) (PadicComplex l)) (RingHom.injective _)`. Use `GlobalTheory.Cyc.norm_primitiveRoot_sub_one l 1 le_rfl _ (by rwa [pow_one])` as an intermediate fact. Rewrite using `[← PadicComplex.norm_extends, UniformSpace.Completion.coe_sub, UniformSpace.Completion.coe_one, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -422,19 +422,19 @@ theorem norm_zeta : ‖P.ζQ 1 - 1‖ = (l : ℝ) ^ (-(1 : ℝ) / ((l : ℝ) - 1
   simp
 
 /- English proof (translation)
-Use `set J := GlobalTheory.ThetaTie.thetaL T`. Establish `hG` using `iterate T K hs (e := e) (fun σ => algebraMap ℚ_[l] P.R.BdR (logZl l (P.χQ σ : ℚ_[l])) * (algebraMap (Om l) P.R.BdR α * P.ιB P.tB ^ e)) (fun σ => mul_mem_zero (q_mem _) (mul_mem_zero (om_mem _) (by simpa using pow_mem_Fil (t_mem (P := P)) e))) H e le_rfl`. Establish `hsum : ∑ k ∈ Finset.range e, (1 + s + padicValInt l ((k : ℤ) - e)) = e * (s + 1) + padicValNat l e.factorial`. Rewrite using `[Finset.sum_add_distrib, sum_val, Finset.sum_const, Finset.card_range, smul_eq_mul, add_comm 1 s]`. Rewrite `hG` using `[hsum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `e * (s + 1) + padicValNat l e.factorial = n at hG ⊢`. Take `⟨c, hc, H2⟩` from `hG`. Take `⟨y, hy, rfl⟩` from `exists_t_pow J 0 e c (by rwa [zero_add])`. Establish `key` using `norm_le_of_log (act := AI.actC) ⟨AI.actC_ext, AI.actC_norm⟩ P.χQ_cyc K hs ((P.ζQ 1 - 1) ^ e * ((l : Om l) ^ n * α)) (mul_mem (pow_mem (sub_mem (zeta_mem K hs.1) (one_mem _)) _) (mul_mem (pow_mem (natCast_mem _ l) _) hα)) ((((AI.ζ 1 : OC l) : PadicComplex l) - 1) ^ e * J.θ y) (fun …`. Take `⟨a, ha⟩` from `H2 σ hσ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `mul_mem_zero (q_mem (P := P) (logZl l (P.χQ σ : ℚ_[l]))) (om_mem ((l : Om l) ^ n * α))`. Establish `hm2` using `sub_mem (act_mem σ hy) hy`. Establish `h2` using `graded T J e (add_mem hm hm2) a (by`. Rewrite `ha` using `[twistedCoboundary_t_pow_mul]`. Use `ha using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_self, zpow_zero, Units.val_one, map_one, map_mul, map_pow, map_natCast]`. Use the proof step `ring)`. Rewrite `h2` using `[J.θ_add _ hm _ hm2, theta_sub J (act_mem σ hy) hy, J.θ_mul _ (q_mem _) _ (om_mem _), theta_q, J.θ_Om, J.θ_act _ _ hy]`. Rewrite using `[map_mul, map_pow, map_sub, map_one, act_zeta K hs.1 hσ]`. Use `h2 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[AI.ζ_eq]`. Establish `e1 : (((P.ζQ 1 - 1) ^ e * ((l : Om l) ^ n * α) : Om l) : PadicComplex l) = (((P.ζQ 1 : Om l) : PadicComplex l) - 1) ^ e * (((l : Om l) ^ n * α : Om l) : PadicComplex l)`. Establish `e0 : ∀ x : Om l, (x : PadicComplex l) = algebraMap (Om l) (PadicComplex l) x` using `fun _ => rfl`. Rewrite using `[e0, e0, e0, map_mul, map_pow, map_sub, map_one]`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `ring)`. Establish `hl : (0 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).pos`. Establish `hnl : ‖(l : Om l) ^ n‖ = (l : ℝ) ^ (-(n : ℝ))`. Rewrite using `[← map_natCast (algebraMap ℚ_[l] (Om l)), ← map_pow, PadicAlgCl.norm_extends, Padic.norm_p_pow, ← Real.rpow_intCast]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite `key` using `[norm_mul, norm_mul, norm_pow, norm_zeta, hnl, ← Real.rpow_natCast, ← Real.rpow_mul hl.le, ← mul_assoc, ← Real.rpow_add hl, ← le_div_iff₀' (Real.rpow_pos_of_pos hl _), ← Real.rpow_natCast, ← Real.rpow_sub hl]`. Use `key.trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_le_of_intMod (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Lev l s) (e : ℕ)
     (α : Om l) (hα : α ∈ Ks K s)
@@ -498,9 +498,9 @@ theorem norm_le_of_intMod (T : LocTied l P AI) (K : FinExt l) {s : ℕ} (hs : Le
   ring
 
 /- English proof (translation)
-Introduce and unpack `D l _ K s hs e z α hα ⟨-, b1, hb1, H1⟩ ⟨b, hb, H⟩`. Simplify using `only [logChi_coe] at H1`. Use `norm_le_of_intMod (D.locT l) K hs e α hα ⟨b1 - b, sub_mem hb1 hb, fun σ hσ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `H σ hσ`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_mem ha (H1 σ hσ) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [cob, map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_expStar_le : ∀ (D : Formalism.BasicNotions.D7) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ), Lev l s → ∀ e : ℕ, ∀ (z : GQ l → ℚ_[l]) (α : Om l), α ∈ Ks K s → ExpStar D.loc (Gj K s) e z α → (∃ b ∈ ((D.loc l).PD (botExt l)).Fil 0, ∀ σ ∈ Gj K s, ∃ a : Ainf l, algebraMap ℚ_[l] (D.loc l).R.BdR (z σ) - (algebraMap ℚ_[l] (D.loc l).R.BdR (((D.loc l).χQ σ ^ (-(e : ℤ)) : ℚ_[l]ˣ) : ℚ_[l]) * (D.loc l).actQdR σ b - b) - (D.loc l).ιB ((D.locA l).ιA a) ∈ ((D.loc l).PD (botExt l)).Fil ((e : ℤ) + 1)) → ‖α‖ ≤ (l : ℝ) ^ (((e * (s + 1) + padicValNat l e.factorial + 1 + s : ℕ) : ℝ) + (e : ℝ) / ((l : ℝ) - 1)) := by
   rintro D l _ K s hs e z α hα ⟨-, b1, hb1, H1⟩ ⟨b, hb, H⟩

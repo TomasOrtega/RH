@@ -9,7 +9,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Establish `hfun : (fun v : Fin k × Fin n → ℂ => Real.log ‖eval v (C c * g)‖) = fun v => Real.log ‖eval v g‖`. Use function extensionality and compare the values at `v`. Rewrite using `[eval_mul, eval_C, norm_mul, hc, one_mul]`. Unfold `mahler`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mahler_C_mul_of_norm_eq_one {n k : ℕ} (h : HermNorm n) (c : ℂ) (hc : ‖c‖ = 1)
     (g : MvPolynomial (Fin k × Fin n) ℂ) : mahler h k (C c * g) = mahler h k g := by
@@ -21,7 +21,7 @@ theorem mahler_C_mul_of_norm_eq_one {n k : ℕ} (h : HermNorm n) (c : ℂ) (hc :
   rw [hfun]
 
 /- English proof (translation)
-Unfold `specFirst`. Rewrite using `[map_mul, bind₁_C_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem specFirst_C_mul {n k : ℕ} (c : ℂ) (f : MvPolynomial (Fin (k + 1) × Fin n) ℂ) (u : Fin n → ℂ) :
     specFirst (C c * f) u = C c * specFirst f u := by
@@ -29,9 +29,9 @@ theorem specFirst_C_mul {n k : ℕ} (c : ℂ) (f : MvPolynomial (Fin (k + 1) × 
   rw [map_mul, bind₁_C_right]
 
 /- English proof (translation)
-Introduce `n e h Z f u u' hf`. Take `⟨c, hc2, hren⟩` from `h2 ℂ n (e + 1 + 1) Z f hf (Equiv.swap 0 1)`. Establish `hc : ‖c‖ = 1`. Establish `hsq : ‖c‖ ^ 2 = 1` using `by rw [← norm_pow, hc2, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg c) two_ne_zero).1 hsq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : specFirst (specFirst f u) u' = C c * specFirst (specFirst f u') u`. Rewrite using `[← h1 n e f u' u, hren, specFirst_C_mul, specFirst_C_mul]`. Rewrite using `[key, mahler_C_mul_of_norm_eq_one h c hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecFirstSwapMahler.proof (h1 : SpecFirstRename.Statement) (h2 : ChowCycleSwap.Statement) :
     SpecFirstSwapMahler.Statement := by

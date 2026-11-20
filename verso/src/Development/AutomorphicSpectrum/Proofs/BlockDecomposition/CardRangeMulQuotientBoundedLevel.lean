@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SiegLoc.Scaled
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Rd1.sum_comp_surj π hπ G`.
+A detailed English derivation is pending.
 -/
 theorem sum_comp_surj {A B : Type} [AddCommGroup A] [AddCommGroup B] [Fintype A] [Fintype B]
     (π : A →+ B) (hπ : Function.Surjective π) (G : B → ℂ) :
@@ -21,13 +21,11 @@ theorem sum_comp_surj {A B : Type} [AddCommGroup A] [AddCommGroup B] [Fintype A]
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => left`. Simplify using `[lev]`. Consider the case `succ k ih`. Break down `ih with h | ⟨a₀, e, c, hk, hc, hc1, hdc⟩` into its components or cases.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨c, rfl⟩` from `mem_lev_iff.1 h`. Establish `hc : σ c = c`. Apply `hR.reg.pow k` to reduce the goal to its premises. Simplify `hd` using `[map_mul, map_pow, hR.fix_ϖ]`. Distinguish the cases in `h1 : c ∈ lev ϖ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Use `left`. Take `⟨t, rfl⟩` from `mem_lev_iff.1 h1`. Conclude with `mem_lev_iff.2 ⟨t, by ring⟩`. Use `right`. Conclude with `⟨k, 1, c, by omega, hc, h1, rfl⟩`.
-
-Use `right`. Conclude with `⟨a₀, e + 1, c, by omega, hc, hc1, hdc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixed_decomp {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQuad R σ ϖ q ε)
     (k : ℕ) (d : R) (hd : σ d = d) :
@@ -50,7 +48,7 @@ theorem fixed_decomp {σ : R →+* R} {ϖ : R} {q : ℕ} {ε : ℤ} (hR : IsUnrQ
       exact ⟨a₀, e + 1, c, by omega, hc, hc1, hdc⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨t, rfl⟩` from `mem_lev_iff.1 h`. Conclude with `hϖ (by simpa using isUnit_of_mul_isUnit_left hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unit_notMem {ϖ x : R} (hϖ : ¬ IsUnit ϖ) (hx : IsUnit x) : x ∉ lev ϖ 1 := by
   intro h
@@ -58,11 +56,11 @@ theorem unit_notMem {ϖ x : R} (hϖ : ¬ IsUnit ϖ) (hx : IsUnit x) : x ∉ lev 
   exact hϖ (by simpa using isUnit_of_mul_isUnit_left hx)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨t, ht⟩` from `mem_lev_iff.1 h`. Establish `h1 : c * y = ϖ ^ e * t`. Apply `hreg.pow a₀` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [smul_eq_mul]`. Rewrite using `[← mul_assoc, ht, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨v, hv⟩` from `hc.exists_left_inv`. Use `mem_lev_iff.2 ⟨v * t, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `h`. Take `⟨t, rfl⟩` from `mem_lev_iff.1 h`. Conclude with `mem_lev_iff.2 ⟨c * t, by rw [pow_add]; ring⟩`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mul_mem_lev_iff {ϖ c : R} (hreg : IsSMulRegular R ϖ) (hc : IsUnit c) (e a₀ : ℕ) (y : R) :
     ϖ ^ a₀ * c * y ∈ lev ϖ (e + a₀) ↔ y ∈ lev ϖ e := by
@@ -83,17 +81,17 @@ theorem mul_mem_lev_iff {ϖ c : R} (hreg : IsSMulRegular R ϖ) (hc : IsUnit c) (
     exact mem_lev_iff.2 ⟨c * t, by rw [pow_add]; ring⟩
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (Ideal.Quotient.mk (lev ϖ e))` using `Ideal.Quotient.mk_surjective`. Use `set s := Function.surjInv hsurj with hsdef`. Establish `hs : ∀ x, Ideal.Quotient.mk (lev ϖ e) (s x) = x` using `Function.surjInv_eq hsurj`. Set `φ : R ⧸ lev ϖ e → R ⧸ lev ϖ (e + a₀)` to `fun x => Ideal.Quotient.mk (lev ϖ (e + a₀)) (ϖ ^ a₀ * c * s x)`. Establish `hinj : Function.Injective φ`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' hxx`. Establish `h1 : ϖ ^ a₀ * c * s x - ϖ ^ a₀ * c * s x' ∈ lev ϖ (e + a₀)` using `Ideal.Quotient.eq.1 hxx`. Rewrite `h1` using `[← mul_sub]`. Establish `h2` using `(mul_mem_lev_iff hreg hc e a₀ _).1 h1`. Rewrite using `[← hs x, ← hs x']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq.2 h2`. Establish `hrange : (Set.range fun w : R ⧸ lev ϖ (e + a₀) => w * Ideal.Quotient.mk (lev ϖ (e + a₀)) (ϖ ^ a₀ * c)) = Set.range φ`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective w`. Use `⟨Ideal.Quotient.mk (lev ϖ e) y, ?_⟩` and prove the remaining obligations. Establish `h1 : s (Ideal.Quotient.mk (lev ϖ e) y) - y ∈ lev ϖ e` using `Ideal.Quotient.eq.1 (hs _)`. Establish `h2` using `(mul_mem_lev_iff hreg hc e a₀ _).2 h1`. Rewrite `h2` using `[mul_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `Ideal.Quotient.eq.2 h2`. Simplify using `only [φ]`. Rewrite using `[h3, ← map_mul, mul_comm]`. Introduce and unpack `⟨x, rfl⟩`. Use `⟨Ideal.Quotient.mk _ (s x), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [φ]`. Rewrite using `[← map_mul, mul_comm]`. Rewrite using `[hrange]`. Conclude with `Nat.card_congr (Equiv.ofInjective φ hinj).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_range_mul {ϖ c : R} (hreg : IsSMulRegular R ϖ) (hc : IsUnit c) (e a₀ : ℕ) :
     Nat.card (Set.range fun w : R ⧸ lev ϖ (e + a₀) =>
@@ -133,29 +131,27 @@ theorem card_range_mul {ϖ c : R} (hreg : IsSMulRegular R ϖ) (hc : IsUnit c) (e
   exact Nat.card_congr (Equiv.ofInjective φ hinj).symm
 
 /- English proof (translation)
-Introduce `R _ σ ϖ q ε hR _ ψ hψ H k d hd`. Establish `hq : (q : ℂ) ≠ 0`. Establish `: q ≠ 0` using `by have := hR.one_lt; omega`. Conclude with `this` after adjusting the coercions. Establish `hcard : ∀ j, Fintype.card (R ⧸ lev ϖ j) = q ^ (2 * j)` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.card_eq_fintype_card]`. Conclude with `GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR j`. Break down `fixed_decomp hR k d hd with h0 | ⟨a₀, e, c, rfl, hc, hc1, rfl⟩` into its components or cases. Establish `hz : Ideal.Quotient.mk (lev ϖ k) d = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h0`. Use `⟨0, Nat.zero_le _, ?_, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (Set.range fun w : R ⧸ lev ϖ k => w * Ideal.Quotient.mk (lev ϖ k) d) = {0}`. Use extensionality with `z`. Simplify using `[hz, eq_comm]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a _ _`. Establish `hz' : Ideal.Quotient.mk (lev ϖ k) (a * d) = 0` using `by rw [map_mul, hz, mul_zero]`. Simplify using `only [hz', zero_mul, AddChar.map_zero_eq_one, Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul, mul_one, pow_zero]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcu : IsUnit c` using `hR.fixLocal c hc hc1`. Use `⟨e, by omega, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[card_range_mul hR.reg hcu e a₀, GlobalTheory.T.unramified_quotient_card R σ ϖ q ε hR e, pow_mul]`. Introduce `a ha ha1`. Establish `hau : IsUnit a` using `hR.fixLocal a ha ha1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac : a * c ∉ lev ϖ 1` using `unit_notMem hR.notUnit (hau.mul hcu)`. Establish `hacf : σ (a * c) = a * c` using `by rw [map_mul, ha, hc]`. Establish `hle : lev ϖ (e + a₀) ≤ lev ϖ e`. Introduce `x hx`. Take `⟨t, rfl⟩` from `mem_lev_iff.1 hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `mem_lev_iff.2 ⟨ϖ ^ a₀ * t, by rw [pow_add]; ring⟩`. Set `π : (R ⧸ lev ϖ (e + a₀)) →+ (R ⧸ lev ϖ e)` to `(Ideal.Quotient.factor hle).toAddMonoidHom`. Establish `hπ : Function.Surjective π`. Introduce `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨Ideal.Quotient.mk _ y, rfl⟩`. Set `G : R ⧸ lev ϖ e → ℂ` to `fun v => ψ e (Ideal.Quotient.mk (lev ϖ e) (a * c) * (barσ σ ϖ hR.fix_ϖ e v * v))`. Establish `hF : ∀ w : R ⧸ lev ϖ (e + a₀), ψ (e + a₀) (Ideal.Quotient.mk (lev ϖ (e + a₀)) (a * (ϖ ^ a₀ * c)) * (barσ σ ϖ hR.fix_ϖ (e + a₀) w * w)) = G (π w)`. Introduce `w`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `psi_pow hψ e a₀ (a * c * (σ y * y))`. Express the relevant statement in the definitionally equal form `ψ (e + a₀) (Ideal.Quotient.mk _ (a * (ϖ ^ a₀ * c)) * (Ideal.Quotient.mk _ (σ y) * Ideal.Quotient.mk _ y)) = ψ e (Ideal.Quotient.mk _ (a * c) * (Ideal.Quotient.mk _ (σ y) * Ideal.Quotient.mk _ y))`. Rewrite using `[← map_mul, ← map_mul, ← map_mul, ← map_mul, ← h1]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (fun w _ => hF w)]`. Establish `h2` using `sum_comp_surj π hπ G`. Establish `h3 : ∑ v, G v = ((ε : ℂ) * q) ^ e` using `H e (a * c) hacf hac`. Rewrite `h2` using `[h3, hcard, hcard]`. Move the coercions through the operations in `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqe : (q : ℂ) ^ (2 * e) ≠ 0` using `pow_ne_zero _ hq`. Establish `h4 : ∑ w, G (π w) = (q : ℂ) ^ (2 * (e + a₀)) * ((ε : ℂ) * q) ^ e / (q : ℂ) ^ (2 * e)`. Rewrite using `[← h2]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h4, mul_pow, div_pow]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_image_level : ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ) (hR : IsUnrQuad R σ ϖ q ε) [∀ k, Fintype (R ⧸ lev ϖ k)] (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ), IsLevelChars σ ϖ ψ → (∀ (j : ℕ) (a : R), σ a = a → a ∉ lev ϖ 1 → (∑ w : R ⧸ lev ϖ j, ψ j (Ideal.Quotient.mk (lev ϖ j) a * (barσ σ ϖ hR.fix_ϖ j w * w))) = ((ε : ℂ) * q) ^ j) → ∀ (k : ℕ) (d : R), σ d = d → ∃ e : ℕ, e ≤ k ∧ Nat.card (Set.range fun w : R ⧸ lev ϖ k => w * Ideal.Quotient.mk (lev ϖ k) d) = (q ^ 2) ^ e ∧ ∀ a : R, σ a = a → a ∉ lev ϖ 1 → (∑ w : R ⧸ lev ϖ k, ψ k (Ideal.Quotient.mk (lev ϖ k) (a * d) * (barσ σ ϖ hR.fix_ϖ k w * w))) = (q : ℂ) ^ (2 * k) * ((ε : ℂ) / q) ^ e := by
   intro R _ σ ϖ q ε hR _ ψ hψ H k d hd

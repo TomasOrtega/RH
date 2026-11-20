@@ -11,7 +11,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FundamentalDomainMe
 open NumberField MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspQuot GlobalTheory.AutGrowth
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CapKilledSmooth.smoothing_mem_space` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FCapelliKilledSlowlyIncreasingSmoothingMem.lean&line=18#L18)
 -/

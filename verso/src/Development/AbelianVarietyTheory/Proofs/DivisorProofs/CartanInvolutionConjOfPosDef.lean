@@ -8,19 +8,17 @@ namespace GlobalTheory
 open scoped MatrixOrder in
 
 /- English proof (translation)
-Use `set M := s * s' with hMdef`. Establish `hMpsd : M.PosSemidef` using `hM.posSemidef`. Establish `hM0 : 0 ≤ M` using `Matrix.nonneg_iff_posSemidef.mpr hMpsd`. Use `set R := CFC.sqrt M with hRdef`. Establish `hR0 : 0 ≤ R` using `CFC.sqrt_nonneg M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRpsd : R.PosSemidef` using `Matrix.nonneg_iff_posSemidef.mp hR0`. Establish `hRR : R * R = M` using `CFC.sqrt_mul_sqrt_self M hM0`. Establish `hRh : Rᴴ = R` using `hRpsd.isHermitian`. Establish `hsM : s * M = s'` using `by rw [hMdef, ← Matrix.mul_assoc, hss, Matrix.one_mul]`. Establish `hMinv : M⁻¹ = s * M * s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hsRs : CFC.sqrt M⁻¹ = s * R * s`. Use `CFC.sqrt_unique ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc s s, hss, Matrix.one_mul]`. Use `_ = M⁻¹ := by rw [hRR, hMinv]`. Establish `h` using `hRpsd.conjTranspose_mul_mul_same s`. Rewrite `h` using `[hs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Matrix.nonneg_iff_posSemidef.mpr h`. Establish `hRinv : R⁻¹ = s * R * s`. Rewrite using `[← hsRs]`. Conclude with `hMpsd.inv_sqrt`. Establish `hMu : IsUnit M.det` using `isUnit_iff_ne_zero.mpr hM.det_pos.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRu : IsUnit R.det`. Rewrite `hMu` using `[← hRR, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left hMu`. Establish `hsRinv : s * R⁻¹ = R * s`. Rewrite using `[hRinv, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hss, Matrix.one_mul]`.
-
-Use `⟨R⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_nonsing_inv, hRh, Matrix.mul_assoc, hsRinv, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hRu, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hRR, Matrix.mul_assoc s, Matrix.mul_assoc R, Matrix.mul_nonsing_inv _ hRu, Matrix.mul_one]`. Use `_ = s' * R⁻¹ := by rw [hsM]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartanInvolution_conj_of_posDef (ι : Type) [Fintype ι] [DecidableEq ι]
     (s s' : Matrix ι ι ℂ) (hs : sᴴ = s) (hss : s * s = 1) (hs's' : s' * s' = 1)

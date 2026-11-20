@@ -6,9 +6,7 @@ open GlobalTheory.Sandwich GlobalTheory.IndefiniteRowSideFullHecke.SandwichMaps 
 namespace GlobalTheory.MonoGen
 
 /- English proof (translation)
-Introduce `p _ Λ _ _ _ _ _ _`. Establish `hinj : Function.Injective (algebraMap ℤ_[p] Λ)` using `FaithfulSMul.algebraMap_injective _ _`. Use `haveI : Algebra.IsIntegral ℤ_[p] Λ := Algebra.IsIntegral.of_finite ℤ_[p] Λ`. Use `haveI : IsLocalHom (algebraMap ℤ_[p] Λ) := RingHom.IsIntegral.isLocalHom (Algebra.IsIntegral.isIntegral (R := ℤ_[p]) (A := Λ)) hinj`. Use `haveI : Finite (IsLocalRing.ResidueField ℤ_[p]) := Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv`.
-
-Conclude with `Formalism.L2.Pj.AvAlg.exists_adjoin_eq_top hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_adjoin_eq_top_padicInt : ∀ (p : ℕ) [Fact p.Prime] (Λ : Type) [CommRing Λ] [IsDomain Λ]
     [IsDiscreteValuationRing Λ] [Algebra ℤ_[p] Λ] [Module.Finite ℤ_[p] Λ] [FaithfulSMul ℤ_[p] Λ],

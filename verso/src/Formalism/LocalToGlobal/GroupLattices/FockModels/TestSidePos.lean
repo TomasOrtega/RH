@@ -9,13 +9,13 @@ namespace Formalism.L2.G.Model
 open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNotions.G.LatticeSystems
 
 /- English proof (translation)
-Establish `hσ : ∀ (t : ℕ) (x : W), ∃ y : W, (σ ^ t) (algebraMap W Qq x) = algebraMap W Qq y`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact fun x => ⟨x, by simp⟩`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Take `⟨y, hy⟩` from `ih x`. Take `⟨z, hz⟩` from `h.frob y`. Use `⟨y ^ p + (p : W) * z, ?_⟩` and prove the remaining obligations. Establish `hs : (σ ^ (t + 1)) (algebraMap W Qq x) = σ ((σ ^ t) (algebraMap W Qq x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Rewrite using `[hs, hy, hz]`. Take `⟨y, hy⟩` from `hσ s a`. Use `⟨j y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [twistVec, Pi.smul_apply, Algebra.smul_def, map_mul, hy, h.ι_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem exists_twistVec_smul_eq_smul_twistVec {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -41,61 +41,51 @@ private theorem exists_twistVec_smul_eq_smul_twistVec {p n' : ℕ} {W Qq O Kf : 
   simp only [twistVec, Pi.smul_apply, Algebra.smul_def, map_mul, hy, h.ι_comp]
 
 /- English proof (translation)
-Take `⟨_, hsrc, htgt⟩` from `hgb`. Use `haveI := h.frac_alt`. Establish `hpW : (p : W) ≠ 0` using `h.p_unif.ne_zero`. Establish `hpQ : (p : Qq) ≠ 0`. Use `(IsFractionRing.injective W Qq).ne hpW` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Establish `hpK : (p : Kf) ≠ 0`. Use `(map_ne_zero ι).mpr hpQ` as an intermediate fact. Simplify using `using this`. Establish `hpw : (p : Kf) = (algebraMap O Kf w) ^ 2` using `by rw [← map_pow, h.w_sq, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : algebraMap O Kf w ≠ 0`. Introduce `h0`. Apply `hpK` to reduce the goal to its premises. Rewrite using `[hpw, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `tadd : ∀ x y : Fin (m + 1) → Qq, twistVec ι σ s (x + y) = twistVec ι σ s x + twistVec ι σ s y`. Introduce `x y`. Use function extensionality and compare the values at `i`. Simplify using `[twistVec]`. Establish `tzero : twistVec ι σ s (0 : Fin (m + 1) → Qq) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[twistVec]`. Establish `tcol : ∀ c : Fin (m + 1), twistVec ι σ s (fun i => g i c) = fun i => la_tw ι σ s g i c`. Introduce `c`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[twistVec, la_tw, RingHom.mapMatrix_apply]`. Establish `Rcol : ∀ c : Fin (m + 1), (fun i => (la_tw ι σ s g * lb_D (m + 1) r (algebraMap O Kf w)) i c) = (if c.val < r then (algebraMap O Kf w)⁻¹ else 1) • fun i => la_tw ι σ s g i c`. Introduce `c`. Use function extensionality and compare the values at `i`. Unfold `lb_D`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal]`. Apply the tactic sequence `split_ifs <;> simp [mul_comm]`. Unfold `LeAt`. Rewrite using `[htgt]`. Use `set T : (Fin (m + 1) → Qq) → (Fin (m + 1) → Kf) := fun v => (algebraMap O Kf w)⁻¹ • twistVec ι σ s ((p : W) • v) with hT`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `Tadd : ∀ x y, T (x + y) = T x + T y`. Introduce `x y`. Simplify using `only [hT, smul_add, tadd]`. Establish `Tzero : T 0 = 0`. Simplify using `only [hT, smul_zero, tzero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `Tsmul : ∀ (a : W) (x : Fin (m + 1) → Qq), ∃ b : O, T (a • x) = b • T x`. Introduce `a x`. Take `⟨b, hb⟩` from `exists_twistVec_smul_eq_smul_twistVec h s a ((p : W) • x)`. Use `⟨b, ?_⟩` and prove the remaining obligations. Simplify using `only [hT]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[smul_comm (p : W) a x, hb]`. Conclude with `smul_comm _ _ _`. Establish `key : ∀ c : Fin (m + 1), T (fun i => (g * Matrix.diagonal fun c : Fin (m + 1) => if c.val < r then ((p : Qq))⁻¹ else 1) i c) = (if c.val < r then (algebraMap O Kf w)⁻¹ else algebraMap O Kf w) • fun i => la_tw ι σ s g i c` using `by clear Tadd Tzero Tsmul Rcol tcol tadd tzero hsrc htgt hpW hpQ`. Introduce `c`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e1 : (g * Matrix.diagonal fun c : Fin (m + 1) => if c.val < r then ((p : Qq))⁻¹ else 1) i c = g i c * (if c.val < r then ((p : Qq))⁻¹ else 1)` using `Matrix.mul_diagonal _ _ _ _`. Simplify using `only [hT, Pi.smul_apply, smul_eq_mul, twistVec, e1]`. Simplify using `only [Algebra.smul_def, map_natCast, map_mul]`. Use `split_ifs with hc`. Simplify using `[la_tw, RingHom.mapMatrix_apply, map_inv₀]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `try simp`. Simplify using `[la_tw, RingHom.mapMatrix_apply]`. Rewrite using `[hpw]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hext : extO O ι σ s e.src = colSpan O (la_tw ι σ s g)`. Rewrite using `[hsrc]`. Unfold `extO colSpan`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite `hv` using `[SetLike.mem_coe]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨c, (tcol c).symm⟩`. Consider the case `zero => rw [tzero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [tadd]`. Conclude with `Submodule.add_mem _ hx hy`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `smul a x _ hx`. Take `⟨b, hb⟩` from `exists_twistVec_smul_eq_smul_twistVec h s a x`. Rewrite using `[hb]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `Submodule.subset_span ⟨fun i => g i c, Submodule.subset_span ⟨c, rfl⟩, tcol c⟩`. Rewrite using `[hext]`. Unfold `colSpan`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `sup_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Distinguish the cases in `hc : c.val < r`. Establish `hA : (fun i => la_tw ι σ s g i c) = w • (fun i => (la_tw ι σ s g * lb_D (m + 1) r (algebraMap O Kf w)) i c)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Rcol c, if_pos hc, ← algebraMap_smul Kf w, smul_smul, mul_inv_cancel₀ hw0, one_smul]`. Rewrite using `[SetLike.mem_coe]`. Use `beta_reduce`. Rewrite using `[hA]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hA : (fun i => la_tw ι σ s g i c) = (fun i => (la_tw ι σ s g * lb_D (m + 1) r (algebraMap O Kf w)) i c)`. Rewrite using `[Rcol c, if_neg hc, one_smul]`. Rewrite using `[SetLike.mem_coe]`. Use `beta_reduce`. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Rewrite `hv`, the goal using `[SetLike.mem_coe]`. Proceed by induction on `hv using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`. Use `beta_reduce`. Rewrite using `[key c]`. Distinguish the cases in `hc : c.val < r`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos hc]`. Conclude with `Submodule.subset_span ⟨c, by beta_reduce; rw [Rcol c, if_pos hc]⟩`. Rewrite using `[if_neg hc, algebraMap_smul]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, ?_⟩)` and prove the remaining obligations. Use `beta_reduce`.
-
-Rewrite using `[Rcol c, if_neg hc, one_smul]`. Consider the case `zero => rw [Tzero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Tadd]`. Conclude with `Submodule.add_mem _ hx hy`.
-
-Consider the case `smul a x _ hx`. Take `⟨b, hb⟩` from `Tsmul a x`. Rewrite using `[hb]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`.
-
-Introduce and unpack `_ ⟨c, rfl⟩`. Rewrite using `[SetLike.mem_coe]`. Use `beta_reduce`. Distinguish the cases in `hc : c.val < r`. Establish `hk` using `key c`.
-
-Rewrite `hk` using `[if_pos hc]`. Rewrite using `[Rcol c, if_pos hc, ← hk]`. Apply `Submodule.mem_sup_right` to reduce the goal to its premises. Conclude with `Submodule.subset_span ⟨_, Submodule.subset_span ⟨c, rfl⟩, rfl⟩`. Rewrite using `[Rcol c, if_neg hc, one_smul]`.
-
-Conclude with `Submodule.mem_sup_left (Submodule.subset_span ⟨c, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W]
     [Field Qq] [Algebra W Qq] [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field Kf] [Algebra O Kf]
@@ -245,7 +235,7 @@ private theorem leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis {p n' : ℕ} {W Qq O
       exact Submodule.mem_sup_left (Submodule.subset_span ⟨c, rfl⟩)
 
 /- English proof (translation)
-Introduce `s`. Conclude with `leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis (G.P.setting v) G.P.m G.P.r e g hgb s`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leAt_of_basis_G {p : ℕ} (G : GAtP p) (v : Fin G.P.nV) (e : Edge (G.P.W v) (G.P.Qq v) (G.P.m + 1))
     (g : Matrix (Fin (G.P.m + 1)) (Fin (G.P.m + 1)) (G.P.Qq v)) (hgb : IsEdgeBasis p G.P.r e g) :
@@ -260,7 +250,7 @@ variable {p n' : ℕ} {W Qq O Kf : Type} [CommRing W] [IsDomain W] [IsDiscreteVa
   {ι : Qq →+* Kf} {σ : Qq ≃+* Qq} {j : W →+* O} {w : O}
 
 /- English proof (translation)
-Conclude with `leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis h m r e g hgb s`.
+A detailed English derivation is pending.
 -/
 theorem leAt_of_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e : Edge W Qq (m + 1))
     (g : Matrix (Fin (m + 1)) (Fin (m + 1)) Qq) (hgb : IsEdgeBasis p r e g) (s : ℕ) :
@@ -268,27 +258,25 @@ theorem leAt_of_basis (h : HidaSetting p n' W Qq O Kf ι σ j w) (m r : ℕ) (e 
   exact leAt_eq_colSpan_la_tw_mul_lb_D_of_edgeBasis h m r e g hgb s
 
 /- English proof (translation)
-Establish `hσ : ∀ (t : ℕ) (x : W), ∃ y : W, (σ ^ t) (algebraMap W Qq x) = algebraMap W Qq y`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => exact fun x => ⟨x, by simp⟩`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `x`. Take `⟨y, hy⟩` from `ih x`. Take `⟨z, hz⟩` from `h.frob y`. Use `⟨y ^ p + (p : W) * z, ?_⟩` and prove the remaining obligations. Establish `hs : (σ ^ (t + 1)) (algebraMap W Qq x) = σ ((σ ^ t) (algebraMap W Qq x))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_succ']`. Both sides reduce to the same expression. Rewrite using `[hs, hy, hz]`. Establish `tadd : ∀ x y : Fin k → Qq, twistVec ι σ s (x + y) = twistVec ι σ s x + twistVec ι σ s y`. Introduce `x y`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Simplify using `[twistVec]`. Establish `tzero : twistVec ι σ s (0 : Fin k → Qq) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[twistVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `tsmul : ∀ (a : W) (x : Fin k → Qq), ∃ b : O, twistVec ι σ s (a • x) = b • twistVec ι σ s x`. Introduce `a x`. Take `⟨y, hy⟩` from `hσ s a`. Use `⟨j y, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [twistVec, Pi.smul_apply, Algebra.smul_def, map_mul, hy, h.ι_comp]`. Establish `tcol : ∀ c : Fin k, twistVec ι σ s (fun i => g i c) = fun i => la_tw ι σ s g i c`. Introduce `c`. Use function extensionality and compare the values at `i`. Simplify using `[twistVec, la_tw, RingHom.mapMatrix_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `extO colSpan`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv' : v ∈ Submodule.span W (Set.range fun c : Fin k => fun i => g i c)` using `hv`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `clear hv`. Proceed by induction on `hv' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨c, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨c, (tcol c).symm⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [tzero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [tadd]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `tsmul a x`. Rewrite using `[hb]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`.
-
-Conclude with `Submodule.subset_span ⟨fun i => g i c, Submodule.subset_span ⟨c, rfl⟩, tcol c⟩`.
+A detailed English derivation is pending.
 -/
 theorem extO_colSpan (h : HidaSetting p n' W Qq O Kf ι σ j w) {k : ℕ} (g : Matrix (Fin k) (Fin k) Qq) (s : ℕ) :
     extO O ι σ s (colSpan W g) = colSpan O (la_tw ι σ s g) := by
@@ -348,16 +336,16 @@ section
 variable {Qq Kf : Type} [Field Qq] [Field Kf] (ι : Qq →+* Kf) (σ : Qq ≃+* Qq) (s : ℕ) {k : ℕ}
 
 /- English proof (translation)
-Unfold `la_tw`. Conclude with `map_mul _ A B`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tw_mul (A B : Matrix (Fin k) (Fin k) Qq) : la_tw ι σ s (A * B) = la_tw ι σ s A * la_tw ι σ s B := by
   unfold la_tw
   exact map_mul _ A B
 
 /- English proof (translation)
-Establish `key : la_tw ι σ s g⁻¹ = (la_tw ι σ s g)⁻¹`. Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[← tw_mul, Matrix.nonsing_inv_mul _ hg]`. Unfold `la_tw`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `map_one _`. Rewrite using `[← key]`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tw_invT (g : Matrix (Fin k) (Fin k) Qq) (hg : IsUnit g.det) :
     la_tw ι σ s (g⁻¹).transpose = ((la_tw ι σ s g)⁻¹).transpose := by
@@ -372,7 +360,7 @@ theorem tw_invT (g : Matrix (Fin k) (Fin k) Qq) (hg : IsUnit g.det) :
   rfl
 
 /- English proof (translation)
-Unfold `la_tw dE`. Rewrite using `[RingHom.mapMatrix_apply, Matrix.diagonal_map (map_zero _)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tw_dE (r p : ℕ) : la_tw ι σ s (dE k r (p : Qq)) = dE k r (p : Kf) := by
   unfold la_tw dE
@@ -382,7 +370,7 @@ theorem tw_dE (r p : ℕ) : la_tw ι σ s (dE k r (p : Qq)) = dE k r (p : Kf) :=
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dE lb_D`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> simp [pow_two, mul_assoc, hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dE_sq_D (r : ℕ) (c : Kf) (hc : c ≠ 0) : dE k r (c ^ 2) * lb_D k r c = dE k r c := by
   unfold dE lb_D
@@ -394,30 +382,28 @@ theorem dE_sq_D (r : ℕ) (c : Kf) (hc : c ≠ 0) : dE k r (c ^ 2) * lb_D k r c 
 end
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_transpose, Matrix.det_nonsing_inv, ← mul_zpow, Ring.mul_inverse_cancel _ hM, one_zpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_invT_zpow {Kf : Type} [Field Kf] {k : ℕ} (M : Matrix (Fin k) (Fin k) Kf) (hM : IsUnit M.det) (e : ℤ) :
     M.det ^ e * ((M⁻¹).transpose).det ^ e = 1 := by
   rw [Matrix.det_transpose, Matrix.det_nonsing_inv, ← mul_zpow, Ring.mul_inverse_cancel _ hM, one_zpow]
 
 /- English proof (translation)
-Use `set V := dualWeyl Kf (m + 1) (m + 1) (nuOf lam) with hV`. Take `⟨Z0, -⟩` from `latBasis (O := O) hinj m lam 1 (by simp)`. Establish `hfinI : Finite ↥(ssIdx (m + 1) (m + 1) (nuOf lam))` using `(sSIdxFinite (m + 1) (m + 1) (nuOf lam)).to_subtype`. Establish `hfd : FiniteDimensional Kf V` using `Module.Finite.of_basis Z0`. Set `β0 : V →ₗ[Kf] Module.Dual Kf V` to `LinearMap.mk₂ Kf (fun (Q P : V) => B (P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) Q) (by intro Q Q' P; simp) (by intro c Q P; simp) (by intro Q P P'; simp) (by intro c Q P; simp)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hβ0 : ∀ Q P : V, β0 Q P = B (P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) Q` using `fun _ _ => rfl`. Establish `hinjβ : Function.Injective β0`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `Q hQ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb _ Q.2` to reduce the goal to its premises. Introduce `P hP`. Use `congrArg (fun f => f ⟨P, hP⟩) hQ` as an intermediate fact. Conclude with `this`. Set `β : V ≃ₗ[Kf] Module.Dual Kf V` to `LinearMap.linearEquivOfInjective β0 hinjβ Subspace.dual_finrank_eq.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ : ∀ Q P : V, β Q P = B (P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf) Q` using `fun _ _ => rfl`. Use `set e : ℤ := lam (Fin.last m) with he`. Establish `key : ∀ (M : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf), IsUnit M.det → ∀ P Q : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf, B (M.det ^ e • rowAct Kf M P) (((M⁻¹).transpose).det ^ e • rowAct Kf (M⁻¹).transpose Q) = B P Q`. Introduce `M hM P Q`. Rewrite using `[map_smul, map_smul, LinearMap.smul_apply, smul_smul, smul_eq_mul, mul_comm (((M⁻¹).transpose).det ^ e), det_invT_zpow M hM e, one_mul, ← ha, ldlat_rowAct_inv_right rowActMul M hM]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mem_iff : ∀ (M : Matrix (Fin (m + 1)) (Fin (m + 1)) Kf), IsUnit M.det → ∀ F : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf, F ∈ nablaLTw O Kf m lam M ↔ M.det ^ e • rowAct Kf M F ∈ nabO O Kf m (nuOf lam)` using `fun M hM F => nablaLTwMem O Kf m lam M hM F`. Use `⟨β, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `M hM Q hQ`. Rewrite using `[mem_iff _ (det_invT M hM)]`. Apply `hc` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (dualWeylRowStable Kf _ _ _ _ _ Q.2)`. Introduce `P0 hP0 set P : MvPolynomial (Fin (m + 1) × Fin (m + 1)) Kf := M.det ^ (-e) • rowAct Kf M⁻¹ P0 with hP`. Establish `h1 : M.det ^ e • rowAct Kf M P = P0`. Rewrite using `[hP, map_smul, smul_smul, ← zpow_add₀ hM.ne_zero, add_neg_cancel, zpow_zero, one_smul, ldlat_rowAct_inv_left rowActMul M hM]`. Establish `h2 : P ∈ nablaLTw O Kf m lam M`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_iff M hM, h1]`. Conclude with `hP0`. Establish `h3` using `hQ ⟨P, la_nablaLTw_le m lam M hM P h2⟩ h2`. Rewrite `h3` using `[hβ, ← key M hM, h1]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `M hM Q P hQ hP`. Rewrite using `[hβ]`. Establish `h1` using `(mem_iff M hM _).1 hP`. Establish `h2` using `(mem_iff _ (det_invT M hM) _).1 hQ`. Establish `h3` using `hdd _ h2 _ h1`.
-
-Rewrite `h3` using `[map_smul, key M hM]`. Rewrite using `[Submodule.coe_smul, map_smul]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posCore_of_form {O Kf : Type} [CommRing O] [IsDomain O] [Field Kf] [Algebra O Kf]
     (hinj : Function.Injective (algebraMap O Kf)) (p m : ℕ) (lam : Fin (m + 1) → ℤ) (N : ℕ)

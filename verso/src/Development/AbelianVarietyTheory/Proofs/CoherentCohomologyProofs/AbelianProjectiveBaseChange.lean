@@ -14,7 +14,7 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbProj
 
 /- English proof (translation)
-Take `⟨N, -, m, s, hL, hs⟩` from `polAV_veryAmpleBy (polBaseChange_of_relAmple_local AmpleLocal.relAmple_of_locally) S P R t X π f h`. Conclude with `⟨_, hL, m, s, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isProjBy_of_isPullback {S : Scheme.{0}} (P : PolAV S) {R : Type} [CommRing R]
     {t : Spec (CommRingCat.of R) ⟶ S} {X : Scheme.{0}} {π : X ⟶ P.A.left}
@@ -24,9 +24,9 @@ theorem isProjBy_of_isPullback {S : Scheme.{0}} (P : PolAV S) {R : Type} [CommRi
   exact ⟨_, hL, m, s, hs⟩
 
 /- English proof (translation)
-Introduce `K _ _ P`. Use `P.isAb.smooth` as an intermediate fact. Use `P.isAb.proper` as an intermediate fact. Use `P.isAb.geomConnected` as an intermediate fact. Establish `hsur : Surjective P.A.hom` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨isProjBy_of_isPullback P (IsPullback.id_horiz _), inferInstance⟩, ?_⟩` and prove the remaining obligations. Introduce `R _ t Y π f h`. Establish `h₀ : IsPullback (snd P.A P.A).left (fst P.A P.A).left P.A.hom P.A.hom` using `(IsPullback.of_hasPullback P.A.hom P.A.hom).flip`. Establish `h₁ : IsPullback (π ≫ (snd P.A P.A).left) f P.A.hom (t ≫ P.A.hom)` using `h.paste_horiz h₀`. Conclude with `⟨isProjBy_of_isPullback P h₁, MorphismProperty.of_isPullback (P := @IsSeparated) h₁ inferInstance, MorphismProperty.of_isPullback (P := @Smooth) h₁ inferInstance, MorphismProperty.of_isPullback (P := @UniversallyClosed) h₁ inferInstance, MorphismProperty.of_isPullback (P := @Surj …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem abelian_projective_baseChange : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))), (IsProjBy P.A.hom ∧ IsSeparated P.A.hom) ∧ ∀ (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f (fst P.A P.A).left t → IsProjBy f ∧ IsSeparated f ∧ Smooth f ∧ UniversallyClosed f ∧ Surjective f ∧ IsPullback (π ≫ (snd P.A P.A).left) f P.A.hom (t ≫ P.A.hom) := by
   intro K _ _ P

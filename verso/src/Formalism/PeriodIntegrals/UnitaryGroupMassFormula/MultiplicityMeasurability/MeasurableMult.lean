@@ -11,11 +11,11 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Sp
 def cnt (Γ : Subgroup G) (Ω : Set G) (x y : G) : Set Γ := {γ : Γ | x⁻¹ * ((γ : G) * y) ∈ Ω}
 
 /- English proof (translation)
-Use `set K : Set G := (fun p : G × G => x * p.1 * (x * p.2)⁻¹) '' (Ω ×ˢ Ω) with hKdef`. Establish `hK : IsCompact K` using `(hΩ.prod hΩ).image (by fun_prop)`. Establish `hS : ((Subtype.val : Γ → G) ⁻¹' K).Finite` using `((Subgroup.isClosed_of_discrete (H := Γ)).isClosedEmbedding_subtypeVal.isCompact_preimage hK).finite_of_discrete`. Use `⟨((Subtype.val : Γ → G) ⁻¹' K).encard, hS.encard_lt_top, fun y => ?_⟩` and prove the remaining obligations. Break down `(cnt Γ Ω x y).eq_empty_or_nonempty with h | ⟨γ₀, hγ₀⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, Set.encard_empty]`. Conclude with `zero_le`. Use `le_trans (Set.encard_le_encard (t := (fun δ : Γ => δ * γ₀) '' ((Subtype.val : Γ → G) ⁻¹' K)) ?_) (Set.encard_image_le _ _)` and prove the remaining obligations. Introduce `γ hγ`. Use `⟨γ * γ₀⁻¹, ?_, by simp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨(x⁻¹ * ((γ : G) * y), x⁻¹ * ((γ₀ : G) * y)), ⟨hγ, hγ₀⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem cnt_encard_le (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω)
     (x : G) : ∃ N : ℕ∞, N < ⊤ ∧ ∀ y, (cnt Γ Ω x y).encard ≤ N := by
@@ -36,7 +36,7 @@ theorem cnt_encard_le (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ 
     group
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.FoldBound.mult`. Use `le_iSup_of_le x ?_` and prove the remaining obligations. Establish `h : (1 : ℕ∞) ≤ ({γ : Γ | x⁻¹ * ((γ : G) * x) ∈ Ω} : Set Γ).encard` using `Set.one_le_encard_iff_nonempty.2 ⟨1, by simpa using h1⟩`. Conclude with `h` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_mult (Γ : Subgroup G) (Ω : Set G) (h1 : (1 : G) ∈ Ω) (x : G) :
     1 ≤ Formalism.L2.SG.FoldBound.mult Γ Ω x := by
@@ -47,7 +47,7 @@ theorem one_le_mult (Γ : Subgroup G) (Ω : Set G) (h1 : (1 : G) ∈ Ω) (x : G)
   exact_mod_cast h
 
 /- English proof (translation)
-Take `⟨N, hN, hle⟩` from `cnt_encard_le Γ Ω hΩ x`. Conclude with `lt_of_le_of_lt (b := (N : ℝ≥0∞)) (iSup_le fun y => ENat.toENNReal_le.2 (hle y)) (ENat.toENNReal_lt_top.2 hN)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mult_lt_top (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω)
     (x : G) : Formalism.L2.SG.FoldBound.mult Γ Ω x < ⊤ := by
@@ -56,11 +56,11 @@ theorem mult_lt_top (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : 
     (ENat.toENNReal_lt_top.2 hN)
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.FoldBound.mult`. Use `iSup_congr fun y => ?_` and prove the remaining obligations. Establish `hs : ({δ : Γ | (γ * x)⁻¹ * ((δ : G) * y) ∈ Ω} : Set Γ) = (fun ε : Γ => (⟨γ, hγ⟩ : Γ) * ε) '' {ε : Γ | x⁻¹ * ((ε : G) * y) ∈ Ω}`. Use extensionality with `δ`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_image]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hδ`. Use `⟨(⟨γ, hγ⟩ : Γ)⁻¹ * δ, ?_, by simp⟩` and prove the remaining obligations. Simplify `hδ` using `[mul_assoc]`. Introduce and unpack `⟨ε, hε, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Simplify `hε` using `[mul_assoc]`. Rewrite using `[hs, Set.InjOn.encard_image (mul_right_injective _).injOn]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem mult_mul_left (Γ : Subgroup G) (Ω : Set G) (γ : G) (hγ : γ ∈ Γ) (x : G) :
     Formalism.L2.SG.FoldBound.mult Γ Ω (γ * x) = Formalism.L2.SG.FoldBound.mult Γ Ω x := by
@@ -82,15 +82,15 @@ def hitSet (Γ : Subgroup G) (Ω : Set G) (A : Finset Γ) : Set G :=
   {x | ∃ y : G, ∀ a ∈ A, x⁻¹ * ((a : G) * y) ∈ Ω}
 
 /- English proof (translation)
-Break down `A.eq_empty_or_nonempty with rfl | ⟨a₀, ha₀⟩` into its components or cases. Use `isClosed_univ` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[hitSet]`. Establish `hΩc : IsClosed Ω` using `hΩ.isClosed`.
+Separate the alternatives or extract the components of the hypothesis. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: CompactSpace Ω` using `isCompact_iff_compactSpace.1 hΩ`. Establish `hC : IsClosed {p : G × Ω | ∀ a ∈ A, p.1⁻¹ * ((a : G) * ((a₀ : G)⁻¹ * (p.1 * (p.2 : G)))) ∈ Ω}`. Establish `hI : {p : G × Ω | ∀ a ∈ A, p.1⁻¹ * ((a : G) * ((a₀ : G)⁻¹ * (p.1 * (p.2 : G)))) ∈ Ω} = ⋂ a ∈ A, (fun p : G × Ω => p.1⁻¹ * ((a : G) * ((a₀ : G)⁻¹ * (p.1 * (p.2 : G))))) ⁻¹' Ω`. Use extensionality with `p`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hI]`. Conclude with `isClosed_biInter fun a _ => hΩc.preimage (by fun_prop)`. Establish `hEq : hitSet Γ Ω A = Prod.fst '' {p : G × Ω | ∀ a ∈ A, p.1⁻¹ * ((a : G) * ((a₀ : G)⁻¹ * (p.1 * (p.2 : G)))) ∈ Ω}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Use `⟨(x, ⟨x⁻¹ * ((a₀ : G) * y), hy a₀ ha₀⟩), fun a ha => ?_, rfl⟩` and prove the remaining obligations. Simplify `hy a ha` using `[mul_assoc]`. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨(a₀ : G)⁻¹ * (p.1 * (p.2 : G)), hp⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEq]`. Conclude with `isClosedMap_fst_of_compactSpace _ hC`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_hitSet (Γ : Subgroup G) (Ω : Set G) (hΩ : IsCompact Ω) (A : Finset Γ) :
     IsClosed (hitSet Γ Ω A) := by
@@ -120,15 +120,13 @@ theorem isClosed_hitSet (Γ : Subgroup G) (Ω : Set G) (hΩ : IsCompact Ω) (A :
     exact isClosedMap_fst_of_compactSpace _ hC
 
 /- English proof (translation)
-Take `⟨N, hN, hle⟩` from `cnt_encard_le Γ Ω hΩ x`. Unfold `Formalism.L2.SG.FoldBound.mult`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun y => ?_` and prove the remaining obligations. Establish `hfin : (cnt Γ Ω x y).Finite` using `Set.encard_lt_top_iff.1 ((hle y).trans_lt hN)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_iSup_of_le hfin.toFinset ?_` and prove the remaining obligations. Establish `hx : x ∈ hitSet Γ Ω hfin.toFinset` using `⟨y, fun a ha => hfin.mem_toFinset.1 ha⟩`. Rewrite using `[Set.indicator_of_mem hx]`. Express the relevant statement in the definitionally equal form `((cnt Γ Ω x y).encard : ℝ≥0∞) ≤ (hfin.toFinset.card : ℝ≥0∞)`. Conclude with `le_of_eq (by rw [hfin.encard_eq_coe_toFinset_card, ENat.toENNReal_coe])`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun B => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ hitSet Γ Ω B`. Take `⟨y, hy⟩` from `hx`. Rewrite using `[Set.indicator_of_mem (show x ∈ hitSet Γ Ω B from ⟨y, hy⟩)]`. Use `le_iSup_of_le y ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsub : (B : Set Γ) ⊆ cnt Γ Ω x y` using `fun a ha => hy a ha`. Establish `hc` using `Set.encard_le_encard hsub`. Rewrite `hc` using `[Set.encard_coe_eq_coe_finsetCard]`. Use `show (B.card : ℝ≥0∞) ≤ _`. Rewrite using `[← ENat.toENNReal_coe]`.
-
-Conclude with `ENat.toENNReal_le.2 hc`. Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `zero_le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_eq_iSup (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω)
     (x : G) : Formalism.L2.SG.FoldBound.mult Γ Ω x =
@@ -158,7 +156,7 @@ theorem mult_eq_iSup (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ :
       exact zero_le
 
 /- English proof (translation)
-Establish `: Countable Γ` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hm : Formalism.L2.SG.FoldBound.mult Γ Ω = fun x => ⨆ A : Finset Γ, (hitSet Γ Ω A).indicator (fun _ => (A.card : ℝ≥0∞)) x`. Use function extensionality and compare the values at `(mult_eq_iSup Γ Ω hΩ)`. Rewrite using `[hm]`. Conclude with `Measurable.iSup fun A => measurable_const.indicator (isClosed_hitSet Γ Ω hΩ A).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_mult [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     (Γ : Subgroup G) [DiscreteTopology Γ] (Ω : Set G) (hΩ : IsCompact Ω) :

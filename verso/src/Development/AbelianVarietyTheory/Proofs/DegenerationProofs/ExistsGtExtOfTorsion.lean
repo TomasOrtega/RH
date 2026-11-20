@@ -17,7 +17,7 @@ section Val
 variable {F F' : Type} [Field F] [Field F'] (f : F →+* F') {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Establish `: Flat (spMap f)` using `inferInstance`. Establish `: Surjective (spMap f)` using `⟨fun y => ⟨default, Subsingleton.elim _ _⟩⟩`. Conclude with `Flat.epi_of_flat_of_surjective _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem epi_spMap : Epi (spMap f) := by
   have : Flat (spMap f) := inferInstance
@@ -25,9 +25,9 @@ theorem epi_spMap : Epi (spMap f) := by
   exact Flat.epi_of_flat_of_surjective _
 
 /- English proof (translation)
-Establish `h' : ⊤ ≤ (spMap f ≫ t) ⁻¹ᵁ U` using `fun q _ => ht (Set.mem_univ (spMap f q))`. Rewrite using `[valF, dif_pos h', valF, dif_pos ht]`. Establish `e : (spMap f ≫ t).appLE U ⊤ h' ≫ (Scheme.ΓSpecIso (CommRingCat.of F')).hom = t.appLE U ⊤ ht ≫ (Scheme.ΓSpecIso (CommRingCat.of F)).hom ≫ CommRingCat.ofHom f`. Rewrite using `[← Scheme.ΓSpecIso_naturality, ← Scheme.Hom.appLE_comp_appLE (spMap f) t U ⊤ ⊤ ht le_rfl, Category.assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `congrArg (fun g => g.hom a) e`.
+A detailed English derivation is pending.
 -/
 theorem valF_ext (t : Sp F ⟶ X) (U : X.Opens) (ht : ⊤ ≤ t ⁻¹ᵁ U) (a : Γ(X, U)) :
     valF (spMap f ≫ t) U a = f (valF t U a) := by
@@ -41,14 +41,14 @@ theorem valF_ext (t : Sp F ⟶ X) (U : X.Opens) (ht : ⊤ ≤ t ⁻¹ᵁ U) (a :
   exact congrArg (fun g => g.hom a) e
 
 /- English proof (translation)
-Introduce `z _` and use `Good.mem (L := L) (z := z) (J := J) (fun ψ => hJ ψ trivial) φ r`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem top_le_chart {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) (φ : K → (Y ⟶ X))
     (r : Sp F ⟶ Y) : ⊤ ≤ r ⁻¹ᵁ LB.wchart L φ (fun k => J (r ≫ φ k)) := fun z _ =>
   Good.mem (L := L) (z := z) (J := J) (fun ψ => hJ ψ trivial) φ r
 
 /- English proof (translation)
-Use `fun h => ?_` and prove the remaining obligations. Conclude with `(((Units.isUnit _).map _).map _).ne_zero ((dif_pos (top_le_chart hJ φ r)).symm.trans h)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vF_ne_zero {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : vF t r J ≠ 0 := by
@@ -56,14 +56,14 @@ theorem vF_ne_zero {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ �
   exact (((Units.isUnit _).map _).map _).ne_zero ((dif_pos (top_le_chart hJ φ r)).symm.trans h)
 
 /- English proof (translation)
-The claim follows from `(gs_unit r y _ (top_le_chart hJ φ r trivial) _).symm.trans (gs_eq_stalkConst r y (top_le_chart hJ φ r) _)`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_vF {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) (y : Sp F) : (val t r y J).val = stalkConst y (vF t r J) :=
   (gs_unit r y _ (top_le_chart hJ φ r trivial) _).symm.trans (gs_eq_stalkConst r y (top_le_chart hJ φ r) _)
 
 /- English proof (translation)
-Use `epi_spMap f` as an intermediate fact. Set `y : Sp F'` to `IsLocalRing.closedPoint F'`. Take `⟨J', h, e⟩` from `exists_good L hL y (fun ψ : Sp F ⟶ X => spMap f ≫ ψ) J (fun a b e => congrArg J ((cancel_epi _).1 e)) fun ψ => hJ ψ (Set.mem_univ (spMap f y))`. Conclude with `⟨J', fun ψ z _ => (Subsingleton.elim (α := PrimeSpectrum F') y z) ▸ h ψ, e⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gauge (hL : L.IsLB) {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J ψ)) :
     ∃ J' : (Sp F' ⟶ X) → L.ι, (∀ ψ : Sp F' ⟶ X, ⊤ ≤ ψ ⁻¹ᵁ L.U (J' ψ)) ∧ ∀ ψ, J' (spMap f ≫ ψ) = J ψ := by
@@ -78,7 +78,7 @@ variable {J : (Sp F ⟶ X) → L.ι} (hJ : ∀ ψ : Sp F ⟶ X, ⊤ ≤ ψ ⁻¹
 include hJ hJ'
 
 /- English proof (translation)
-Establish `e : (fun k => J' ((spMap f ≫ r) ≫ φ k)) = fun k => J (r ≫ φ k)` using `funext fun k => by`. Rewrite using `[Category.assoc, hJ']`. Establish `k : ∀ j j' : K → L.ι, j = j' → valF (spMap f ≫ r) (LB.wchart L φ j) (t.s j).val = valF (spMap f ≫ r) (LB.wchart L φ j') (t.s j').val` using `by rintro _ _ rfl; rfl`. Conclude with `(k _ _ e).trans (valF_ext f r _ (top_le_chart hJ φ r) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vF_ext (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : vF t (spMap f ≫ r) J' = f (vF t r J) := by
   have e : (fun k => J' ((spMap f ≫ r) ≫ φ k)) = fun k => J (r ≫ φ k) := funext fun k => by
@@ -88,7 +88,7 @@ theorem vF_ext (t : LB.Gen (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : vF t (spMap 
   exact (k _ _ e).trans (valF_ext f r _ (top_le_chart hJ φ r) _)
 
 /- English proof (translation)
-Establish `e : (fun k => J' ((spMap f ≫ r) ≫ φ k)) = fun k => J (r ≫ φ k)` using `funext fun k => by`. Rewrite using `[Category.assoc, hJ']`. Establish `k : ∀ j j' : K → L.ι, j = j' → valF (spMap f ≫ r) (LB.wchart L φ j) (s.f j) = valF (spMap f ≫ r) (LB.wchart L φ j') (s.f j')` using `by rintro _ _ rfl; rfl`. Conclude with `(k _ _ e).trans (valF_ext f r _ (top_le_chart hJ φ r) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sF_ext (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : sF s (spMap f ≫ r) J' = f (sF s r J) := by
   have e : (fun k => J' ((spMap f ≫ r) ≫ φ k)) = fun k => J (r ≫ φ k) := funext fun k => by
@@ -100,11 +100,11 @@ theorem sF_ext (s : LB.Sec (LB.LinComb L φ ε)) (r : Sp F ⟶ Y) : sF s (spMap 
 end Val
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hn Nat.cast_zero`. Take `⟨P', g, hg, hdim, hmul, -⟩` from `hL.polBaseChange S _ t P`. Rewrite using `[← hdim, ← (hL.mulN _ P' n (Nat.pos_of_ne_zero hn0)).2.2.2.2 k (𝟙 _) hn]`. Set `ρ : Over.mk t ⟶ Over.mk (𝟙 _ ≫ t)` to `Over.homMk (𝟙 _) ((Category.id_comp _).trans (Category.id_comp _))`. Set `Φ : (Over.mk (𝟙 (Spec (CommRingCat.of k))) ⟶ P'.A) →* (Over.mk t ⟶ P.A)` to `MonoidHom.mk' (fun x => ρ ≫ toBase hg.w x) fun x y => by rw [hmul, MonObj.comp_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hΦ : ∀ x, (Φ x).left = x.left ≫ g` using `fun x => Category.id_comp _`. Establish `hb : Function.Bijective Φ`. Use `⟨fun x y e => Over.OverMorphism.ext (hg.hom_ext ?_ ((Over.w x).trans (Over.w y).symm)), fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hΦ, ← hΦ, e]`. Conclude with `⟨Over.homMk (hg.lift a.left (𝟙 _) ((Over.w a).trans (Category.id_comp t).symm)) (hg.lift_snd _ _ _), Over.OverMorphism.ext ((hΦ _).trans (hg.lift_fst _ _ _))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Set `e` to `MulEquiv.ofBijective Φ hb`. Conclude with `(Nat.card_congr (e.toEquiv.subtypeEquiv fun x => by show _ ↔ e x ^ n = 1`. Rewrite using `[← map_pow, EmbeddingLike.map_eq_one_iff])).symm`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion (hL : Laws) {S : Scheme.{0}} (P : PolAV S) {k : Type} [Field k] [IsAlgClosed k] (t : Sp k ⟶ S)
     {n : ℕ} (hn : (n : k) ≠ 0) : Nat.card {x : Over.mk t ⟶ P.A // x ^ n = 1} = n ^ (2 * P.g) := by
@@ -132,7 +132,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F F' : Type} [Fiel
   (hf : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F')
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hn Nat.cast_zero`. Rewrite using `[← GtCount.card_torsion_over_zero D F n hn, ← card_torsion hL D.P (TF (R := R) F).hom hn]`. Conclude with `GtCount.card_torsion_eq_mul (gtProj D F) n fun b hb => exists_nsmul_eq_of_pow_eq hn0 0 (b := b.toMul) (Eq.trans hb zero_b.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_gt_torsion (hL : Laws) (D : DegPre R) (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F]
     {n : ℕ} (hn : (n : F) ≠ 0) : Nat.card {g : GtPtF D F // n • g = 0} = n ^ (2 * D.P.g) * n ^ D.rank := by
@@ -142,7 +142,7 @@ theorem card_gt_torsion (hL : Laws) (D : DegPre R) (F : Type) [Field F] [IsAlgCl
     exists_nsmul_eq_of_pow_eq hn0 0 (b := b.toMul) (Eq.trans hb zero_b.symm)
 
 /- English proof (translation)
-Set `y : Sp F'` to `IsLocalRing.closedPoint F'`. Rewrite using `[← vF_ext f hJ hJ', Category.comp_id]`. Use `(stalkConst y).injective ((val_eq_vF hg _ _ y).symm.trans (Eq.trans ?_ (val_eq_vF hg _ _ y)))` and prove the remaining obligations. Conclude with `congrArg Units.val (gtExt_val f hf g χ (y := y) (J := J') fun ψ => hg ψ trivial)`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vF_gtExt {J : (Sp F ⟶ D.P.A.left) → D.P.L.ι} (hJ : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U (J ψ))
     {J' : (Sp F' ⟶ D.P.A.left) → D.P.L.ι} (hg : ∀ ψ, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U (J' ψ)) (hJ' : ∀ ψ, J' (spMap f ≫ ψ) = J ψ)
@@ -153,7 +153,7 @@ theorem vF_gtExt {J : (Sp F ⟶ D.P.A.left) → D.P.L.ι} (hJ : ∀ ψ, ⊤ ≤ 
   exact congrArg Units.val (gtExt_val f hf g χ (y := y) (J := J') fun ψ => hg ψ trivial)
 
 /- English proof (translation)
-Introduce `g g' e` and use `by have := epi_spMap f obtain ⟨y, J, hJ⟩ := exists_good_chart D F have hJ₁ : ∀ ψ : Sp F ⟶ D.P.A.left, ⊤ ≤ ψ ⁻¹ᵁ D.P.L.U (J ψ) := fun ψ z _ => pt_eq (R := R) y z ▸ hJ ψ obtain ⟨J', hg, hJ'⟩ := exists_gauge f D.P.isLB hJ₁ have hb := congrArg (fun h : GtPtF D F' => h.b.left) e simp …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gtExt_injective : Function.Injective (gtExt D f hf) := fun g g' e => by
   have := epi_spMap f
@@ -168,9 +168,9 @@ theorem gtExt_injective : Function.Injective (gtExt D f hf) := fun g g' e => by
     ((congrArg (fun h : GtPtF D F' => vF (h.s χ) (𝟙 (Sp F')) J') e).trans (vF_gtExt f hf hJ₁ hg hJ' g' χ))
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by rintro rfl; exact hn Nat.cast_zero`. Establish `hn' : (n : F') ≠ 0` using `by rw [← map_natCast f]; exact (map_ne_zero f).2 hn`. Set `u : {g : GtPtF D F // n • g = 0} → {g : GtPtF D F' // n • g = 0}` to `fun g => ⟨gtExt D f hf g.1, by rw [← map_nsmul, g.2, map_zero]⟩`. Establish `hu : Function.Injective u` using `fun a b e => Subtype.ext (gtExt_injective f hf (congrArg Subtype.val e))`. Establish `c` using `card_gt_torsion hL D F hn`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c'` using `card_gt_torsion hL D F' hn'`. Establish `: Finite {g : GtPtF D F' // n • g = 0}` using `Nat.finite_of_card_ne_zero (by rw [c']; positivity)`. Take `⟨g, e⟩` from `(hu.bijective_of_nat_card_le (c'.trans c.symm).le).2 ⟨g', h⟩`. Conclude with `⟨g.1, congrArg Subtype.val e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_gtExt_of_torsion (hL : Laws) [IsAlgClosed F] [IsAlgClosed F'] {n : ℕ} (hn : (n : F) ≠ 0)
     (g' : GtPtF D F') (h : n • g' = 0) : ∃ g, gtExt D f hf g = g' := by
@@ -188,7 +188,7 @@ theorem exists_gtExt_of_torsion (hL : Laws) [IsAlgClosed F] [IsAlgClosed F'] {n 
 variable (hB : D.TauBimult) {k : ℕ}
 
 /- English proof (translation)
-Use `⟨fun h => ?_, qkExt_congr hB f hf⟩` and prove the remaining obligations. Take `⟨z, hy, hg⟩` from `(equiv_iff hB _ _).1 h`. Use `(equiv_iff hB _ _).2 ⟨z, hy, gtExt_injective f hf ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, gtExt_iota]`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_qkExt_iff (p q : QkPt D F k) :
     QkPt.Equiv D F' (qkExt hB f hf p) (qkExt hB f hf q) ↔ QkPt.Equiv D F p q := by
@@ -199,9 +199,9 @@ theorem equiv_qkExt_iff (p q : QkPt D F k) :
   exact hg
 
 /- English proof (translation)
-Establish `hk0 : k ≠ 0` using `by rintro rfl; exact hk Nat.cast_zero`. Take `⟨q, hq⟩` from `exists_qkPt (F := F) hL.mulN (Or.inr hL.polBaseChange) hB hk0 p'.y`. Take `⟨t, ht⟩` from `exists_gtExt_of_torsion f hf hL hk (p'.g - gtExt D f hf q.g) (by`. Rewrite using `[nsmul_sub, ← map_nsmul, qk_nsmul hB, qk_nsmul hB, gtExt_iota, hq, sub_self])`. Establish `ht0 : k • t = 0` using `gtExt_injective f hf (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_nsmul, ht, map_zero, nsmul_sub, ← map_nsmul, qk_nsmul hB, qk_nsmul hB, gtExt_iota, hq, sub_self])`. Use `⟨qkMk hB p'.y (q.g + t) (by rw [nsmul_add, ht0, add_zero, qk_nsmul hB, hq]), qk_ext rfl ?_⟩` and prove the remaining obligations. Use `show gtExt D f hf (q.g + t) = _`. Rewrite using `[map_add, ht, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_qkExt (hL : Laws) [IsAlgClosed F] [IsAlgClosed F'] (hk : (k : F) ≠ 0) (p' : QkPt D F' k) :
     ∃ p, qkExt hB f hf p = p' := by
@@ -223,7 +223,7 @@ def ptHom : N.A →* N'.A :=
   MonoidHom.mk' (fun x => ν'.eA.symm (extMap f hf ≫ ν.eA x)) fun x y => by rw [map_mul, MonObj.comp_mul, map_mul]
 
 /- English proof (translation)
-The claim follows from `ν'.eA.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem eA_ptHom (x : N.A) : ν'.eA (ptHom f hf ν ν' x) = extMap f hf ≫ ν.eA x := ν'.eA.apply_symm_apply _
 
@@ -232,7 +232,7 @@ def rigVal (ν : NumOf D F N) : F :=
 
 include hf hJ in
 /- English proof (translation)
-Rewrite using `[rigVal, rigVal, ← vF_ext f ν.good hJ]`. Conclude with `congrArg (fun r => vF (L := D.P.L) (φ := fun _ : PUnit => eSec D.P.A) (ε := fun _ => 1) D.rig r ν'.J) (Over.w (extMap (R := R) f hf)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rg_ext : rigVal ν' = f (rigVal ν) := by
   rw [rigVal, rigVal, ← vF_ext f ν.good hJ]
@@ -276,14 +276,14 @@ def numHom : NumD.Hom f N N' where
     exact congrArg (fun r => vF (D.psi (ν.eX χ)) r ν'.J) ((extMap_jFK f hf).trans (Category.id_comp _)).symm
 
 /- English proof (translation)
-The claim follows from `ν'.eX.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem eX_numHom (y : N.X) : ν'.eX ((numHom f hf ν ν' hJ hth).e y) = ν.eX y := ν'.eX.apply_symm_apply _
 
 /- English proof (translation)
-Use `⟨ν'.eA.injective (h'.1.trans ?_), fun χ => ?_⟩` and prove the remaining obligations. Rewrite using `[gtExt_b, ← h.1]`. Conclude with `(eA_ptHom f hf ν ν' _).symm`. Use `show _ * 1 = _ * 1 * 1`. Simplify using `only [_root_.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Units.ext ?_` and prove the remaining obligations. Use `show _ = f (c.s χ : F)`. Rewrite using `[h'.2, h.2, eX_numHom]`. Conclude with `vF_gtExt f hf ν.good ν'.good hJ g _`.
+A detailed English derivation is pending.
 -/
 theorem numHom_rel {g : GtPtF D F} {c : N.Gt} {c' : N'.Gt} (h : ν.Pt g c) (h' : ν'.Pt (gtExt D f hf g) c') :
     (numHom f hf ν ν' hJ hth).Rel c c' := by
@@ -298,7 +298,7 @@ theorem numHom_rel {g : GtPtF D F} {c : N.Gt} {c' : N'.Gt} (h : ν.Pt g c) (h' :
     exact vF_gtExt f hf ν.good ν'.good hJ g _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ν'.eX.injective (h'.1.trans (h.1.symm.trans (eX_numHom f hf ν ν' hJ hth _).symm)), numHom_rel f hf ν ν' hJ hth h.2 h'.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem numHom_qPt {p : QkPt D F k} {q : N.QT k} {q' : N'.QT k} (h : ν.QPt p q) (h' : ν'.QPt (qkExt hB f hf p) q') :
     q'.1.1.toAdd = (numHom f hf ν ν' hJ hth).e q.1.1.toAdd ∧ (numHom f hf ν ν' hJ hth).Rel q.1.2 q'.1.2 :=

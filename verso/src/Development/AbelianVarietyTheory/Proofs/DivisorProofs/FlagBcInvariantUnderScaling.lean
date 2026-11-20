@@ -18,9 +18,9 @@ open scoped ComplexOrder
 namespace GlobalTheory.BcScale
 
 /- English proof (translation)
-Establish `e (M : Matrix (m ⊕ l) (m ⊕ l) ℂ) : chg (((Real.exp (s / 2) : ℝ) : ℂ) • (1 : Matrix (m ⊕ l) (m ⊕ l) ℂ)) M = (Real.exp s : ℂ) • M`. Rewrite using `[chg, conjTranspose_smul, transpose_smul, transpose_smul, conjTranspose_one, transpose_one, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_one, smul_smul, Complex.star_def, Complex.conj_ofReal, ← Complex.ofReal_mul, ← Real.exp_add, add_halves]`. Simplify using `only [← e]`. Use `extTrace_chg (A := fun _ => ((Real.exp (s / 2) : ℝ) : ℂ) • 1) h hp (fun _ _ => contDiffAt_const) ?_ (fun η => mdbar_const _ _ _) (.of_forall fun _ => ?_)` and prove the remaining obligations. Rewrite using `[det_smul, det_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(pow_ne_zero _ (by exact_mod_cast (Real.exp_pos _).ne')).isUnit`. Use extensionality with `i j`. Simplify using `[toBlocks₂₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem extTrace_exp_smul {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
     {D : ℕ} {K : V D → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V D} (h : MContDiffAt 1 K z)
@@ -42,7 +42,7 @@ theorem extTrace_exp_smul {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-The claim follows from `Met.ext_form fun U t t' y hy => by rw [Met.form_restrict _ _ _ _ _ hy, Met.form_expMul, Met.form_expMul, Met.form_restrict _ _ _ _ _ hy]`.
+A detailed English derivation is pending.
 -/
 theorem restrict_expMul {E F : X.Modules} {r s : ℕ} (h : Met p σ E r) {i : F ⟶ E}
     (hi : IsSubbundle i) (hF : IsVB F s) (u : CxPts p σ → ℝ) :
@@ -52,11 +52,11 @@ theorem restrict_expMul {E F : X.Modules} {r s : ℕ} (h : Met p σ E r) {i : F 
       Met.form_restrict _ _ _ _ _ hy]
 
 /- English proof (translation)
-Establish `hd (c : AlgChart p σ 1) (y) (hy : y ∈ c.e.source) : (h.expMul fun _ => t).bcDens hS h₁ h₃ c y = h.bcDens hS h₁ h₃ c y`. Establish `ha` using `(Met.exists_adapted hS h₁ h₃ y).choose_spec`. Establish `hp` using `h.eventually_posDef hS _ c hy ha`. Rewrite using `[Met.bcDens, Met.bcDens, Met.bcForm, Met.bcForm, ← extTrace_exp_smul (((H.gram (Met.exists_adapted hS h₁ h₃ y).choose.frame ha).mContDiffAt c hy).of_le (by norm_cast)) hp t]`. Use `congr 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `v`. Use extensionality with `a b`. Conclude with `Met.form_expMul _ _ _ _ _`. Use `iSup_congr fun c => MeasureTheory.Measure.ext fun T hT => ?_` and prove the remaining obligations. Establish `hm` using `c.e.open_source.measurableSet.inter hT`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ChartGlue.chartMeas_apply _ _ hT, ChartGlue.chartMeas_apply _ _ hT]`. Use `MeasureTheory.setLIntegral_congr_fun (ChartGlue.measurableSet_image _ hm inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [c.e.left_inv hy.1, hd c y hy.1]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bcMeas_expMul {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X₂ (r + s)}
     (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) (H : h.IsCInf) (t : ℝ) :
@@ -81,7 +81,7 @@ theorem bcMeas_expMul {S : ShortComplex X.Modules} {r s : ℕ} {h : Met p σ S.X
   simp only [c.e.left_inv hy.1, hd c y hy.1]
 
 /- English proof (translation)
-Establish `e (i : Fin r) (σ : k →+* ℂ) : (((h.scale s).stepMet fl i).met σ).bcMeas (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i) = ((h.stepMet fl i).met σ).bcMeas (VMetric.stepSeq_shortExact fl i) (fl.isVB i.castSucc) (fl.isVB_gr i)`. Establish `e₁ : ((h.scale s).stepMet fl i).met σ = ((h.stepMet fl i).met σ).expMul fun _ => s` using `restrict_expMul (h.met σ) (fl.isSubbundle i.succ) (fl.isVB i.succ) _`. Rewrite using `[e₁]`. Conclude with `bcMeas_expMul _ _ _ ((H σ).restrict (fl.isSubbundle i.succ) (fl.isVB i.succ)) s`. Conclude with `⟨forall_congr' fun i => forall_congr' fun σ => (congrArg (· univ ≠ ⊤) (e i σ)).to_iff, Finset.sum_congr rfl fun i _ => finsum_congr fun σ => congrArg (fun μ : MeasureTheory.Measure _ => (μ univ).toReal) (e i σ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flagBc_scale {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInf)
     (fl : Vert.Flag E r) (s : ℝ) :

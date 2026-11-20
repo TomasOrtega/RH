@@ -11,20 +11,20 @@ variable {K T : Type} [Field K] [CommRing T] [Algebra K T] (O : ValuationSubring
   [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel_l {R : Type} [CommRing R] {X Y : Matrix n n R} (h : X * Y = 1) (M : Matrix n n R) :
     X * (Y * M) = M := by
   rw [← Matrix.mul_assoc, h, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_mul, h, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_one {R : Type} [CommRing R] {X Y : Matrix n n R} (h : X * Y = 1) : Yᵀ * Xᵀ = 1 := by
   rw [← Matrix.transpose_mul, h, Matrix.transpose_one]
 
 /- English proof (translation)
-Use `⟨fun hv => ?_, intV_mulVec O hM⟩` and prove the remaining obligations. Use `intV_mulVec O hMi hv` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, h, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem intV_iff {M Mi : Matrix n n K} (hM : IntM O M) (hMi : IntM O Mi) (h : Mi * M = 1) (v : n → K) :
     IntV O (M *ᵥ v) ↔ IntV O v := by
@@ -37,22 +37,22 @@ variable (θ : T ≃ₐ[K] K × K)
 def pm (a b : Matrix n n K) : Matrix n n T := Matrix.of fun i j => θ.symm (a i j, b i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pm, t1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairMatrix_firstSplit (a b : Matrix n n K) : (pm θ a b).map (t1 θ) = a := by
   ext i j
   simp [pm, t1]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pm, t2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairMatrix_secondSplit (a b : Matrix n n K) : (pm θ a b).map (t2 θ) = b := by
   ext i j
   simp [pm, t2]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `θ.injective` to reduce the goal to its premises. Establish `e1` using `congrFun (congrFun h1 i) j`. Establish `e2` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.map_apply] at e1 e2`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Prod.ext (by simpa [t1] using e1) (by simpa [t2] using e2)`.
+A detailed English derivation is pending.
 -/
 theorem matrix_ext_split (M N : Matrix n n T) (h1 : M.map (t1 θ) = N.map (t1 θ)) (h2 : M.map (t2 θ) = N.map (t2 θ)) :
     M = N := by
@@ -67,43 +67,37 @@ variable {θ} {s : T →+* T} (hs : ∀ t, θ (s t) = (θ t).swap) (J : Matrix n
 
 include hs in
 /- English proof (translation)
-Introduce `A`. Use `set Af := (A : Matrix n n O).map (algebraMap O K) with hAf`. Use `set Afi := ((A⁻¹ : GL n O) : Matrix n n O).map (algebraMap O K) with hAfi`. Establish `hAA : Af * Afi = 1`. Rewrite using `[hAf, hAfi, ← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAiA : Afi * Af = 1`. Rewrite using `[hAf, hAfi, ← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hAint : IntM O Af` using `fun i j => ((A : Matrix n n O) i j).2`. Establish `hAiint : IntM O Afi` using `fun i j => (((A⁻¹ : GL n O) : Matrix n n O) i j).2`. Use `set J1 := J.map (t1 θ) with hJ1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hJ1u : IsUnit J1.det`. Rewrite using `[hJ1]`. Establish `h` using `RingHom.map_det (t1 θ) J`. Rewrite `h` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hJu.map _`. Use `set J1i := J1⁻¹`. Establish `hJJ : J1 * J1i = 1` using `Matrix.mul_nonsing_inv J1 hJ1u`. Establish `hJiJ : J1i * J1 = 1` using `Matrix.nonsing_inv_mul J1 hJ1u`. Use `set Pm := (P : Matrix n n K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Pi := ((P⁻¹ : GL n K) : Matrix n n K)`. Establish `hPP : Pi * Pm = 1` using `pinv_p P`. Establish `hPP' : Pm * Pi = 1` using `p_pinv P`. Use `set g1 := Pm * Af * Pi`. Use `set gi1 := Pm * Afi * Pi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g2 := J1iᵀ * gi1ᵀ * J1ᵀ`. Use `set gi2 := J1iᵀ * g1ᵀ * J1ᵀ`. Establish `c1` using `cancel_l hPP`. Establish `c2` using `cancel_l hPP'`. Establish `c3` using `cancel_l hAA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c4` using `cancel_l hAiA`. Establish `c5` using `cancel_l hJJ`. Establish `c6` using `cancel_l hJiJ`. Establish `t1'` using `tr_one hPP`. Establish `t2'` using `tr_one hPP'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3'` using `tr_one hAA`. Establish `t4'` using `tr_one hAiA`. Establish `t5'` using `tr_one hJJ`. Establish `t6'` using `tr_one hJiJ`. Establish `c7` using `cancel_l t1'`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `c8` using `cancel_l t2'`. Establish `c9` using `cancel_l t3'`. Establish `c10` using `cancel_l t4'`. Establish `c11` using `cancel_l t5'`. Establish `c12` using `cancel_l t6'`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : pm θ g1 g2 * pm θ gi1 gi2 = 1`. Apply `matrix_ext_split θ` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, pairMatrix_firstSplit, pairMatrix_firstSplit, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [g1, gi1, Matrix.mul_assoc, c1, c3, hPP', Matrix.one_mul]`. Rewrite using `[Matrix.map_mul, pairMatrix_secondSplit, pairMatrix_secondSplit, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [g2, gi2, g1, gi1, Matrix.transpose_mul, Matrix.mul_assoc, c1, c3, c7, c9, c12, c2, c4, c8, c10, c11, t1', t2', t3', t4', t5', t6', hPP, hPP', hAA, hAiA, hJJ, hJiJ, Matrix.mul_one]`. Establish `hg' : pm θ gi1 gi2 * pm θ g1 g2 = 1`. Apply `matrix_ext_split θ` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, pairMatrix_firstSplit, pairMatrix_firstSplit, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [g1, gi1, Matrix.mul_assoc, c1, c4, hPP', Matrix.one_mul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_mul, pairMatrix_secondSplit, pairMatrix_secondSplit, Matrix.map_one _ (map_zero _) (map_one _)]`. Simplify using `only [g2, gi2, g1, gi1, Matrix.transpose_mul, Matrix.mul_assoc, c1, c3, c7, c9, c12, c2, c4, c8, c10, c11, t1', t2', t3', t4', t5', t6', hPP, hPP', hAA, hAiA, hJJ, hJiJ, Matrix.mul_one]`. Set `g : GL n T` to `⟨pm θ g1 g2, pm θ gi1 gi2, hg, hg'⟩`. Establish `hcT1 : (Formalism.UG.cT s (pm θ g1 g2)).map (t1 θ) = g2ᵀ`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.UG.cT, firstSplit_conj hs, pm, secondSplit_apply]`. Establish `hcT2 : (Formalism.UG.cT s (pm θ g1 g2)).map (t2 θ) = g1ᵀ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, secondSplit_conj hs, pm, firstSplit_apply]`. Establish `hJ2` using `group_law_jacobian_eq hs J hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, ?_, fun x => ?_, ?_⟩` and prove the remaining obligations. Use `show Formalism.UG.cT s (pm θ g1 g2) * J * pm θ g1 g2 = J`. Apply `matrix_ext_split θ` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT1, pairMatrix_firstSplit, ← hJ1]`. Simplify using `only [g2, g1, gi1, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, c1, c3, c7, c9, c12, c2, c4, c8, c10, c11, c5, c6, hPP, hPP', hAA, hAiA, hJJ, hJiJ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT2, pairMatrix_secondSplit, hJ2, ← hJ1]`. Simplify using `only [g2, g1, gi1, Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc, c1, c3, c7, c9, c12, c2, c4, c8, c10, c11, c5, c6, hPP, hPP', hAA, hAiA, hJJ, hJiJ, Matrix.mul_one]`. Establish `e1 : (fun i => t1 θ (((g : Matrix n n T) *ᵥ x) i)) = g1 *ᵥ fun j => t1 θ (x j)`. Rewrite using `[firstSplit_mulVec]`. Use `show (pm θ g1 g2).map (t1 θ) *ᵥ _ = _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[pairMatrix_firstSplit]`. Establish `e2 : (fun i => t2 θ (((g : Matrix n n T) *ᵥ x) i)) = g2 *ᵥ fun j => t2 θ (x j)`. Rewrite using `[secondSplit_mulVec]`. Use `show (pm θ g1 g2).map (t2 θ) *ᵥ _ = _`. Rewrite using `[pairMatrix_secondSplit]`.
-
-Establish `f1 : Pi * g1 = Af * Pi` using `by simp only [g1, Matrix.mul_assoc, c1]`. Establish `f2 : (Pmᵀ * J1ᵀ) * g2 = Afiᵀ * (Pmᵀ * J1ᵀ)`. Simplify using `only [g2, gi1, Matrix.transpose_mul, Matrix.mul_assoc, c11, c12, c7, c8]`. Use `show x ∈ Lat O θ J P ↔ (g : Matrix n n T) *ᵥ x ∈ Lat O θ J P`. Simplify using `only [Lat, Set.mem_ofPred_eq]`.
-
-Rewrite using `[e1, e2, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← hJ1]`. Express the relevant statement in the definitionally equal form `_ ↔ IntV O ((Pi * g1) *ᵥ _) ∧ IntV O ((Pmᵀ * J1ᵀ * g2) *ᵥ _)`. Establish `hti : IntM O Afiᵀ` using `fun i j => hAiint j i`. Establish `htt : IntM O Afᵀ` using `fun i j => hAint j i`. Rewrite using `[f1, f2, ← Matrix.mulVec_mulVec (M := Af) (N := Pi), ← Matrix.mulVec_mulVec (M := Afiᵀ) (N := Pmᵀ * J1ᵀ), intV_iff O hAint hAiint hAiA, intV_iff O hti htt t4']`.
-
-Use `show Pi * (pm θ g1 g2).map (t1 θ) * Pm = Af`. Rewrite using `[pairMatrix_firstSplit]`. Simplify using `only [g1, Matrix.mul_assoc, c1, hPP, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem surjCore (hJ : Formalism.UG.cT s J = J) (hJu : IsUnit J.det) : SurjCore O θ s J P := by
   intro A
@@ -190,7 +184,7 @@ theorem surjCore (hJ : Formalism.UG.cT s J = J) (hJu : IsUnit J.det) : SurjCore 
 
 include hs in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨kerBack (O := O) (θ := θ) (s := s) (J := J) (P := P) (hs := hs) hJu, surjCore (O := O) (hs := hs) (J := J) (P := P) hJ hJu⟩`.
+Supply the required witnesses or components.
 -/
 theorem coreAll_gen (hJ : Formalism.UG.cT s J = J) (hJu : IsUnit J.det) :
     KerBack O θ s J P ∧ SurjCore O θ s J P :=

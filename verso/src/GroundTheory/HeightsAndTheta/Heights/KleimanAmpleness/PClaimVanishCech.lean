@@ -16,9 +16,9 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type u} [CommRing R] {G : Cell U �
   [∀ I, AddCommGroup (G I)] [∀ I, Module R (G I)] {ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J}
 
 /- English proof (translation)
-Unfold `H`. Rewrite using `[Submodule.Quotient.subsingleton_iff, Submodule.comap_subtype_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Conclude with `h (LinearMap.mem_ker.mpr hz)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Conclude with `h z (LinearMap.mem_ker.mp hz)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H_one_iff :
     Subsingleton (H G ρ 1) ↔ ∀ z : Cochain G 1, d G ρ 1 z = 0 → ∃ w : Cochain G 0, d G ρ 0 w = z := by
@@ -31,13 +31,13 @@ theorem subsingleton_H_one_iff :
     exact h z (LinearMap.mem_ker.mp hz)
 
 /- English proof (translation)
-Use `wlog h : j < k generalizing j k`. Establish `h' : k < j` using `lt_of_le_of_ne (not_lt.mp h) hjk.symm`. Rewrite using `[this hk hj hjk.symm h', neg_neg]`. Establish `hmem : j ∈ J.filter (· < k)` using `Finset.mem_filter.mpr ⟨hj, h⟩`. Establish `e1 : (J.erase j).filter (· < k) = (J.filter (· < k)).erase j` using `by rw [Finset.filter_erase]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (J.erase k).filter (· < j) = J.filter (· < j)`. Rewrite using `[Finset.filter_erase]`. Apply `Finset.erase_eq_of_notMem` to reduce the goal to its premises. Simplify using `only [Finset.mem_filter, not_and, not_lt]`. Introduce `_`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h.le`. Establish `hb : 1 ≤ (J.filter (· < k)).card` using `Finset.card_pos.mpr ⟨j, hmem⟩`. Unfold `sgn`. Rewrite using `[e1, e2, Finset.card_erase_of_mem hmem]`. Take `⟨b', hb'⟩ : ∃ b', (J.filter (· < k)).card = b' + 1` from `⟨_, (Nat.sub_add_cancel hb).symm⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hb', Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sgn_mul_sgn_erase {J : Finset (Fin n)} {j k : Fin n} (hj : j ∈ J) (hk : k ∈ J) (hjk : j ≠ k) :
     sgn J j * sgn (J.erase j) k = -(sgn J k * sgn (J.erase k) j) := by
@@ -59,13 +59,13 @@ theorem sgn_mul_sgn_erase {J : Finset (Fin n)} {j k : Fin n} (hj : j ∈ J) (hk 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Establish `key : ∀ (K K' : Idx U 0) (h : K.1.1 ⊆ J.1.1) (h' : K'.1.1 ⊆ J.1.1), K = K' → ρ K.1 J.1 h (w K) = ρ K'.1 J.1 h' (w K')`. Introduce and unpack `K _ h h' rfl`. Both sides reduce to the same expression. Rewrite using `[d_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [d_apply, map_sum, map_zsmul, hρ, Finset.smul_sum, smul_smul]`. Rewrite using `[Pi.zero_apply, Finset.sum_sigma']`. Use `Finset.sum_involution (fun p _ => ⟨⟨p.2.1, Finset.mem_of_mem_erase p.2.2⟩, ⟨p.1.1, Finset.mem_erase.mpr ⟨(Finset.mem_erase.mp p.2.2).1.symm, p.1.2⟩⟩⟩) ?_ ?_ (fun _ _ => Finset.mem_univ _) (fun p _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨⟨j, hj⟩, ⟨k, hk⟩⟩ -`. Establish `hk'` using `Finset.mem_erase.mp hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hidx : face (face J ⟨j, hj⟩) ⟨k, hk⟩ = face (face J ⟨k, hk'.2⟩) ⟨j, Finset.mem_erase.mpr ⟨hk'.1.symm, hj⟩⟩` using `Subtype.ext (Subtype.ext (Finset.erase_right_comm))`. Simplify using `only`. Rewrite using `[key _ _ _ (((face_subset _ _).trans (face_subset _ _))) hidx, ← add_smul]`. Establish `hs : sgn J.1.1 j * sgn (face J ⟨j, hj⟩).1.1 k = -(sgn J.1.1 k * sgn (face J ⟨k, hk'.2⟩).1.1 j)` using `sgn_mul_sgn_erase hj hk'.2 hk'.1.symm`. Rewrite using `[hs, neg_add_cancel, zero_smul]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨j, hj⟩, ⟨k, hk⟩⟩ - - heq`. Conclude with `(Finset.mem_erase.mp hk).1 (congrArg (fun p => p.1.1) heq)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem d_one_d_zero
     (hρ : ∀ (I J K : Cell U) (h : I.1 ⊆ J.1) (h' : J.1 ⊆ K.1) (m : G I),
@@ -108,7 +108,7 @@ section General
 variable {E : Type v} [AddCommGroup E] [Module Ω E] [Module S E] [IsScalarTower S Ω E]
 
 /- English proof (translation)
-The claim follows from `Cech.d_one_d_zero (fun _ _ _ _ _ _ => rfl) w`.
+A detailed English derivation is pending.
 -/
 theorem d_one_d_zero (F : SubSystem S x E) (w : Cech.Cochain (fun I => F.sub I) 0) :
     Cech.d (fun I => F.sub I) F.res 1 (Cech.d (fun I => F.sub I) F.res 0 w) = 0 :=
@@ -117,17 +117,15 @@ theorem d_one_d_zero (F : SubSystem S x E) (w : Cech.Cochain (fun I => F.sub I) 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Unfold `SubSystem.H at hG ⊢`. Unfold `quotH at hQ`. Rewrite `hG`, `hQ`, the goal using `[Cech.subsingleton_H_one_iff]`. Introduce `z hz`. Set `q : ∀ I, F.sub I →ₗ[S] (F.sub I ⧸ quotSub F G I)` to `fun I => (quotSub F G I).mkQ`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hq : ∀ I J h m, q J (F.res I J h m) = quotRes F G I J h (q I m)` using `fun _ _ _ _ => rfl`. Establish `hqd` using `Cech.mapC_d (R := S) (G := fun I => ↥(F.sub I)) (G' := fun I => ↥(F.sub I) ⧸ quotSub F G I) q hq`. Take `⟨wb, hwb⟩` from `hQ (Cech.mapC (R := S) (G := fun I => ↥(F.sub I)) (G' := fun I => ↥(F.sub I) ⧸ quotSub F G I) q 1 z) (by rw [← hqd, hz, map_zero])`. Use `choose w hw using fun I : Cech.Idx (support x) 0 => Submodule.Quotient.mk_surjective _ (wb I)`. Establish `hmw : (Cech.mapC (R` using `S) (G := fun I => ↥(F.sub I)) (G' := fun I => ↥(F.sub I) ⧸ quotSub F G I) q 0 w) = wb := funext hw`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (Cech.mapC (R` using `S) (G := fun I => ↥(F.sub I)) (G' := fun I => ↥(F.sub I) ⧸ quotSub F G I) q 1 (z - Cech.d (fun I => F.sub I) F.res 0 w)) = 0 := by`. Rewrite using `[map_sub, hqd 0, hmw, hwb]`. Conclude with `@sub_eq_zero_of_eq (Cech.Cochain (fun I => ↥(F.sub I) ⧸ quotSub F G I) 1) _ _ _ rfl`. Establish `hrG : ∀ J, (((z - Cech.d (fun I => F.sub I) F.res 0 w) J : F.sub J.1) : E) ∈ G.sub J.1` using `fun J => (Submodule.Quotient.mk_eq_zero (quotSub F G J.1)).mp (congrFun hr J)`. Set `ι : ∀ I, G.sub I →ₗ[S] F.sub I` to `fun I => { toFun := fun y => ⟨y, hGF I y y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hι : ∀ I J h m, ι J (G.res I J h m) = F.res I J h (ι I m)` using `fun _ _ _ _ => rfl`. Establish `hιd` using `Cech.mapC_d (R := S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F.sub I)) ι hι`. Establish `hιinj : ∀ i, Function.Injective (Cech.mapC (R` using `S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F.sub I)) ι i) := fun i a b hab =>`. Use function extensionality and compare the values at `fun I => Subtype.ext (congrArg (fun c => ((c I : F.sub I.1) : E)) hab)`. Take `⟨g, hg⟩ : ∃ g : Cech.Cochain (fun I => ↥(G.sub I)) 1, (Cech.mapC (R` from `S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F.sub I)) ι 1 g) = z - Cech.d (fun I => F.sub I) F.res 0 w := ⟨fun J => ⟨_, hrG J⟩, rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdg : Cech.d (fun I => ↥(G.sub I)) G.res 1 g = 0`. Establish `h2 : (Cech.mapC (R` using `S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F.sub I)) ι (1 + 1) (Cech.d (fun I => ↥(G.sub I)) G.res 1 g)) = 0 := by`. Rewrite using `[hιd 1 g, hg, map_sub, hz, d_one_d_zero, sub_zero]`. Conclude with `hιinj (1 + 1) (h2.trans (LinearMap.map_zero _).symm)`. Take `⟨v, hv⟩` from `hG g hdg`.
-
-Use `⟨w + (Cech.mapC (R := S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F.sub I)) ι 0 v), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← hιd, hv, hg, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_H_one_of_quot (F G : SubSystem S x E)
     (hGF : ∀ I, ∀ y ∈ G.sub I, y ∈ F.sub I) (hG : Subsingleton (G.H 1))
@@ -171,15 +169,15 @@ theorem subsingleton_H_one_of_quot (F G : SubSystem S x E)
 end General
 
 /- English proof (translation)
-Unfold `SubSystem.H at hF ⊢`. Rewrite `hF`, the goal using `[Cech.subsingleton_H_one_iff]`. Establish `hdiv : ∀ I (z : G.sub I), σ⁻¹ * (z : Ω) ∈ F'.sub I` using `fun I z => by`. Take `⟨y, hy, hzy⟩` from `(hG I z).mp z.2`. Rewrite using `[hzy, ← mul_assoc, inv_mul_cancel₀ hσ, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy`. Set `φ : ∀ I, G.sub I →ₗ[S] F'.sub I` to `fun I => { toFun := fun z => ⟨σ⁻¹ * z, hdiv I z⟩ map_add' := fun a b => Subtype.ext (mul_add _ _ _) map_smul' := fun s a => Subtype.ext (by show σ⁻¹ * (s • (a : Ω)) = s • (σ⁻¹ * (a : Ω))`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Use the proof step `ring) }`. Set `ψ : ∀ I, F'.sub I →ₗ[S] G.sub I` to `fun I => { toFun := fun y => ⟨σ * y, (hG I _).mpr ⟨y, y.2, rfl⟩⟩ map_add' := fun a b => Subtype.ext (mul_add _ _ _) map_smul' := fun s a => Subtype.ext (by show σ * (s • (a : Ω)) = s • (σ * (a : Ω))`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Use the proof step `ring) }`. Establish `hφ : ∀ I J h m, φ J (G.res I J h m) = F'.res I J h (φ I m)` using `fun _ _ _ _ => rfl`. Establish `hψ : ∀ I J h m, ψ J (F'.res I J h m) = G.res I J h (ψ I m)` using `fun _ _ _ _ => rfl`. Establish `hφd` using `Cech.mapC_d (R := S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F'.sub I)) φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hψd` using `Cech.mapC_d (R := S) (G := fun I => ↥(F'.sub I)) (G' := fun I => ↥(G.sub I)) ψ hψ`. Introduce `z hz`. Take `⟨w, hw⟩` from `hF (Cech.mapC (R := S) (G := fun I => ↥(G.sub I)) (G' := fun I => ↥(F'.sub I)) φ 1 z) (by rw [← hφd, hz, map_zero])`. Use `⟨(Cech.mapC (R := S) (G := fun I => ↥(F'.sub I)) (G' := fun I => ↥(G.sub I)) ψ 0 w), ?_⟩` and prove the remaining obligations. Rewrite using `[← hψd, hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `J`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show σ * (σ⁻¹ * ((z J : G.sub J.1) : Ω)) = ((z J : G.sub J.1) : Ω)`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hσ, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H_one_of_smul (F' G : SubSystem S x Ω) (σ : Ω) (hσ : σ ≠ 0)
     (hG : ∀ I z, z ∈ G.sub I ↔ ∃ y ∈ F'.sub I, z = σ * y) (hF : Subsingleton (F'.H 1)) :

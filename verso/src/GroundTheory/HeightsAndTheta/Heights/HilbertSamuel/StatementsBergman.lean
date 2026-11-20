@@ -58,7 +58,7 @@ def BergmanL1Convergence.Statement : Prop :=
         ∂dV.μ) atTop (𝓝 0)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j x`. Simplify using `[Weight.lerp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma lerp_self_φ {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X}
     {L : HolLineBundle A} (W : Weight L) (t : ℝ) : (W.lerp W t).φ = W.φ := by

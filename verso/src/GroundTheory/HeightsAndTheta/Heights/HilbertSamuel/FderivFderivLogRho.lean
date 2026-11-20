@@ -22,7 +22,7 @@ def bil : (J → ℂ) →L[ℝ] ((J → ℂ) →L[ℝ] ℝ) :=
   ∑ p, ((reP p).smulRight (reP p) + (imaginary p).smulRight (imaginary p))
 
 /- English proof (translation)
-Simplify using `[bil, ContinuousLinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bil_apply (u v : J → ℂ) : bil u v = ∑ p, (reP p u * reP p v + imaginary p u * imaginary p v) := by
   simp [bil, ContinuousLinearMap.sum_apply]
@@ -38,11 +38,11 @@ Both sides reduce to the same expression.
 theorem imaginaryPart_apply (p : J) (z : J → ℂ) : imaginary p z = (z p).im := rfl
 
 /- English proof (translation)
-Establish `h : ∀ p : J, HasFDerivAt (fun z : J → ℂ ↦ reP p z ^ 2 + imaginary p z ^ 2) ((2 * reP p z) • reP p + (2 * imaginary p z) • imaginary p) z`. Introduce `p`. Establish `h1` using `(reP p).hasFDerivAt (x := z) |>.pow 2`. Establish `h2` using `(imaginary p).hasFDerivAt (x := z) |>.pow 2`. Use `(h1.add h2).congr_fderiv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Establish `hs` using `HasFDerivAt.fun_sum (u := Finset.univ) (fun p _ ↦ h p)`. Use `hs.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `v`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, bil_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasFDerivAt_nsq (z : J → ℂ) : HasFDerivAt nsq ((2 : ℝ) • bil z) z := by
   have h : ∀ p : J, HasFDerivAt (fun z : J → ℂ ↦ reP p z ^ 2 + imaginary p z ^ 2)
@@ -62,13 +62,13 @@ theorem hasFDerivAt_nsq (z : J → ℂ) : HasFDerivAt nsq ((2 : ℝ) • bil z) 
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_eq (w : ℂ) : ‖w‖ ^ 2 = w.re ^ 2 + w.im ^ 2 := by
   rw [Complex.sq_norm, Complex.normSq_apply]; ring
 
 /- English proof (translation)
-Establish `: (fsMetric J).ρ z = Real.sqrt (nsq z)`. Simplify using `[fsMetric, EuclideanSpace.norm_eq, nsq, reP_apply, imaginaryPart_apply, norm_sq_eq]`. Rewrite using `[this, Real.log_sqrt (x := nsq z) (Finset.sum_nonneg fun p _ ↦ by positivity)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_rho_eq (z : J → ℂ) : Real.log ((fsMetric J).ρ z) = (1 / 2) * Real.log (nsq z) := by
   have : (fsMetric J).ρ z = Real.sqrt (nsq z) := by
@@ -77,7 +77,7 @@ theorem log_rho_eq (z : J → ℂ) : Real.log ((fsMetric J).ρ z) = (1 / 2) * Re
   ring
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `Function.ne_iff.mp hz`. Use `Finset.sum_pos' (fun q _ ↦ by positivity) ⟨p, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Rewrite using `[reP_apply, imaginaryPart_apply, ← norm_sq_eq]`. Conclude with `pow_pos (norm_pos_iff.mpr hp) 2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsq_pos {z : J → ℂ} (hz : z ≠ 0) : 0 < nsq z := by
   obtain ⟨p, hp⟩ := Function.ne_iff.mp hz
@@ -86,9 +86,9 @@ theorem nsq_pos {z : J → ℂ} (hz : z ≠ 0) : 0 < nsq z := by
   exact pow_pos (norm_pos_iff.mpr hp) 2
 
 /- English proof (translation)
-Establish `h` using `((hasFDerivAt_nsq z).log (nsq_pos hz).ne').const_mul (1 / 2 : ℝ)`. Establish `e : (fun z ↦ Real.log ((fsMetric J).ρ z)) = fun z ↦ (1 / 2) * Real.log (nsq z)`. Use function extensionality and compare the values at `log_rho_eq`. Rewrite using `[e]`. Use `h.congr_fderiv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hasFDerivAt_logRho {z : J → ℂ} (hz : z ≠ 0) :
     HasFDerivAt (fun z ↦ Real.log ((fsMetric J).ρ z)) ((nsq z)⁻¹ • bil z) z := by
@@ -102,7 +102,7 @@ theorem hasFDerivAt_logRho {z : J → ℂ} (hz : z ≠ 0) :
   ring
 
 /- English proof (translation)
-Establish `hinv` using `(hasFDerivAt_inv (𝕜 := ℝ) (nsq_pos hz).ne').comp z (hasFDerivAt_nsq z)`. Conclude with `hinv.fun_smul bil.hasFDerivAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_deriv {z : J → ℂ} (hz : z ≠ 0) :
     HasFDerivAt (fun z ↦ (nsq z)⁻¹ • bil z)
@@ -112,7 +112,7 @@ theorem hasFDerivAt_deriv {z : J → ℂ} (hz : z ≠ 0) :
   exact hinv.fun_smul bil.hasFDerivAt
 
 /- English proof (translation)
-Establish `hev : (fderiv ℝ fun z ↦ Real.log ((fsMetric J).ρ z)) =ᶠ[nhds z] fun z ↦ (nsq z)⁻¹ • bil z` using `by filter_upwards [isOpen_ne.mem_nhds hz] with z' hz'`. Conclude with `(hasFDerivAt_logRho hz').fderiv`. Rewrite using `[hev.fderiv_eq]`. Conclude with `(hasFDerivAt_deriv hz).fderiv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_fderiv_logRho {z : J → ℂ} (hz : z ≠ 0) :
     fderiv ℝ (fderiv ℝ fun z ↦ Real.log ((fsMetric J).ρ z)) z =
@@ -126,13 +126,13 @@ theorem fderiv_fderiv_logRho {z : J → ℂ} (hz : z ≠ 0) :
   exact (hasFDerivAt_deriv hz).fderiv
 
 /- English proof (translation)
-Use `set a : J → ℂ := fun p ↦ starRingEnd ℂ (z p) * w p`. Establish `h1 : (∑ p, (reP p z * reP p w + imaginary p z * imaginary p w)) = (∑ p, a p).re`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Simplify using `[a, reP_apply, imaginaryPart_apply, Complex.mul_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (∑ p, (reP p z * reP p (Complex.I • w) + imaginary p z * imaginary p (Complex.I • w))) = -(∑ p, a p).im`. Rewrite using `[Complex.im_sum, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Simplify using `[a, reP_apply, imaginaryPart_apply, Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, neg_sq]`. Establish `h3 : (∑ p, a p).re ^ 2 + (∑ p, a p).im ^ 2 = ‖∑ p, a p‖ ^ 2` using `(norm_sq_eq _).symm`. Rewrite using `[h3]`. Establish `h4 : ‖∑ p, a p‖ ≤ ∑ p, ‖z p‖ * ‖w p‖`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[a]`. Establish `h5 : (∑ p, ‖z p‖ * ‖w p‖) ^ 2 ≤ nsq z * nsq w`. Use `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun p ↦ ‖z p‖) (fun p ↦ ‖w p‖)` as an intermediate fact. Simplify `this` using `[nsq, reP_apply, imaginaryPart_apply, norm_sq_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cs (z w : J → ℂ) :
     (∑ p, (reP p z * reP p w + imaginary p z * imaginary p w)) ^ 2 +
@@ -162,13 +162,13 @@ theorem cs (z w : J → ℂ) :
     _ ≤ nsq z * nsq w := h5
 
 /- English proof (translation)
-Unfold `leviForm`. Rewrite using `[fderiv_fderiv_logRho hz]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.toSpanSingleton_apply, smul_eq_mul]`. Establish `hN` using `nsq_pos hz`. Establish `hww : bil w w = nsq w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[bil_apply, nsq]; exact Finset.sum_congr rfl fun p _ ↦ by ring`. Establish `hiw : bil (Complex.I • w) (Complex.I • w) = nsq w`. Rewrite using `[bil_apply, nsq]`. Use `Finset.sum_congr rfl fun p _ ↦ ?_` and prove the remaining obligations. Simplify using `[reP_apply, imaginaryPart_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hww, hiw]`. Establish `hc` using `cs z w`. Rewrite `hc` using `[← bil_apply, ← bil_apply]`. Use `set X := bil z w`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set Y := bil z (Complex.I • w)`. Establish `key : (nsq z)⁻¹ * nsq w + (2 * X) * -(nsq z ^ 2)⁻¹ * X + ((nsq z)⁻¹ * nsq w + (2 * Y) * -(nsq z ^ 2)⁻¹ * Y) = 2 * (nsq z * nsq w - (X ^ 2 + Y ^ 2)) / nsq z ^ 2` using `by field_simp; ring`. Establish `hnn : 0 ≤ 2 * (nsq z * nsq w - (X ^ 2 + Y ^ 2)) / nsq z ^ 2` using `div_nonneg (by linarith) (by positivity)`. Establish `: 0 ≤ (nsq z)⁻¹ * nsq w + (2 * X) * -(nsq z ^ 2)⁻¹ * X + ((nsq z)⁻¹ * nsq w + (2 * Y) * -(nsq z ^ 2)⁻¹ * Y)` using `key ▸ hnn`. Use polynomial arithmetic with `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem leviForm_nonneg {z : J → ℂ} (hz : z ≠ 0) (w : J → ℂ) :
     0 ≤ leviForm (fun z ↦ Real.log ((fsMetric J).ρ z)) z w := by

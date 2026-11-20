@@ -18,9 +18,9 @@ open GlobalTheory.HkFam GlobalTheory.AbLaw GlobalTheory.Biadditive
 namespace GlobalTheory.IsogenyBitriv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `triv_of_formal hL h₁ fun U _ k => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_two]`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `triv_of_formal hL (triv_mul (hm (x ^ n) x) ih) fun U _ k => ?_` and prove the remaining obligations. Simplify using `[Fin.prod_univ_two, Fin.prod_univ_three, Fintype.prod_sum_type, pow_succ, zpow_add, mul_comm, mul_left_comm, _root_.mul_assoc]`. Conclude with `Additive.ofMul.injective (by simp only [ofMul_mul, ofMul_inv]; abel)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem triv_pow {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {G : Type} [Monoid G] (F : G → (Y ⟶ X))
     (h₁ : Triv (L.pull (F 1)))
@@ -37,29 +37,27 @@ theorem triv_pow {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {G : Type} [Monoid 
     exact Additive.ofMul.injective (by simp only [ofMul_mul, ofMul_inv]; abel)
 
 /- English proof (translation)
-Introduce `S _ A B _ _ _ _ ψ M N n hA hB hM hamp hN hψ hfin het hsurj _ hn hker h₁ h₂ h₃`. Establish `hG : Out.GlobalFnsSt` using `GlobalTheory.firstFiveLaws.1.globalFns`. Take `⟨mA, -, -, sA⟩` from `GlobalTheory.abelianScheme_id_pow_finite_etale_surjective S A n hA hn`. Use `hA.proper` as an intermediate fact. Use `hB.smooth` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ', hψ', e, -⟩` from `GlobalTheory.HkFactor.exists_unique_factor S A B A ψ ((𝟙 A) ^ n) hA hB inferInstance hψ hfin het hsurj mA (fun k _ _ t x hx => by rw [MonObj.comp_pow, Category.comp_id]; exact hker k t x hx)`. Establish `e' : ψ' ≫ ψ = (𝟙 B) ^ n`. Establish `: Epi ψ.left` using `Flat.epi_of_flat_of_surjective ψ.left`. Establish `: Epi ψ` using `Over.epi_of_epi_left ψ`. Rewrite using `[← cancel_epi ψ, ← Category.assoc, e, MonObj.pow_comp, MonObj.comp_pow, Category.comp_id, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a₁ : ∀ {T : Over S} (y : T ⟶ B), Triv (N.pull (lift 1 y).left)` using `fun y => by`. Use `triv_pull_comp h₁ y.left` as an intermediate fact. Rewrite `this` using `[← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id]`. Then use the resulting hypothesis. Establish `a₂ : ∀ {T : Over S} (y : T ⟶ B), Triv (N.pull (lift y 1).left)` using `fun y => by`. Use `triv_pull_comp h₂ y.left` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← Over.comp_left, comp_lift, MonObj.comp_one, Category.comp_id]`. Then use the resulting hypothesis. Establish `key : ∀ {T : Over S} (a : T ⟶ A) (y : T ⟶ B), Triv (N.pull (lift ((a ≫ ψ) ^ n) y).left)`. Introduce `T a y`. Establish `bi` using `biadditive_of_triv_axes hG S B M hB hM hamp N hN h₁ h₂ T`. Establish `p₁` using `triv_pow hN (fun x : T ⟶ B => (lift x y).left) (a₁ y) (fun x x' => (bi x x' y).1) (a ≫ ψ) n`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₂` using `triv_pow hN (fun x : T ⟶ B => (lift (a ≫ ψ) x).left) (a₂ _) (fun x x' => (bi x x' (a ≫ ψ)).2) y n`. Establish `p₃ : Triv (N.pull (lift (a ≫ ψ) (y ^ n)).left)`. Use `triv_pull_comp h₃ (lift a (y ≫ ψ')).left` as an intermediate fact. Rewrite `this` using `[← Over.comp_left, lift_map, Category.assoc, e', MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis. Use `triv_of_formal hN (triv_mul (triv_mul p₁ (triv_inv p₂)) p₃) fun U _ k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Fin.prod_univ_two, Fintype.prod_sum_type, _root_.mul_assoc]`. Establish `: IsReduced B.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced B.hom`. Establish `hp : IsPullback (snd B B).left (fst B B).left B.hom B.hom` using `(IsPullback.of_hasPullback B.hom B.hom).flip`. Use `GlobalTheory.seesaw_reduced_of_dense hG S B M hB hM hamp B.left (B ⊗ B).left B.hom (snd B B).left (fst B B).left N hp hN ?_ (lift (𝟙 B) (1 : B ⟶ B)).left ?_ h₂` and prove the remaining obligations. Introduce `p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `subset_closure ?_` and prove the remaining obligations. Establish `: Surjective ((𝟙 A ^ n) ≫ ψ).left` using `by rw [Over.comp_left]; infer_instance`. Take `⟨a, ha⟩` from `((𝟙 A ^ n) ≫ ψ).left.surjective p`. Establish `hr : Set.range (A.left.fromSpecResidueField a) = {a}` using `Scheme.range_fromSpecResidueField _`. Take `⟨z, hz⟩` from `hr.ge rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `j` to `A.left.fromSpecResidueField a`. Set `g` to `j ≫ ((𝟙 A ^ n) ≫ ψ).left`. Use `⟨A.left.residueField a, inferInstance, g, _, _, _, ⟨z, ?_⟩, IsPullback.of_hasPullback (fst B B).left g, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (fun w => ((𝟙 A ^ n) ≫ ψ).left w) hz).trans ha`. Set `ρ` to `pullback.fst (fst B B).left g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : Over S` to `Over.mk (ρ ≫ (B ⊗ B).hom)`. Set `r : T ⟶ B ⊗ B` to `Over.homMk ρ rfl`. Set `b : T ⟶ A` to `Over.homMk (pullback.snd (fst B B).left g ≫ j) (by`. Establish `c` using `congrArg (· ≫ B.hom) (pullback.condition (f := (fst B B).left) (g := g))`. Simplify using `only [g, Category.assoc, Over.w] at c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).trans c.symm)`. Establish `hr : r ≫ fst B B = (b ≫ ψ) ^ n`. Establish `: (b ≫ ψ) ^ n = b ≫ (𝟙 A ^ n) ≫ ψ`. Rewrite using `[← Category.assoc, MonObj.comp_pow, Category.comp_id, MonObj.pow_comp]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `pullback.condition.trans (Category.assoc _ _ _).symm`. Use `key b (r ≫ snd B B)` as an intermediate fact. Rewrite `this` using `[← hr, lift_comp_fst_snd]`. Conclude with `this`.
-
-Rewrite using `[← Over.comp_left, lift_fst, Over.id_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_triv_pull_isogeny :
     ∀ (S : Scheme.{0}) [IsReduced S] (A B : Over S) [GrpObj A] [GrpObj B] [IsCommMonObj A] [IsCommMonObj B] (ψ : A ⟶ B) (M : LB B.left) (N : LB (B ⊗ B).left) (n : ℕ), IsAbelianScheme A → IsAbelianScheme B → M.IsLB → Out.RelAmple B M → N.IsLB → IsMonHom ψ → IsFinite ψ.left → Etale ψ.left → Surjective ψ.left → 0 < n → IsUnit (n : Γ(S, ⊤)) → (∀ (k : Type) [Field k] [IsAlgClosed k] (t : Sp k ⟶ S) (x : Over.mk t ⟶ A), x ≫ ψ = 1 → x ^ n = 1) → (∃ t : (N.pull (lift (1 : B ⟶ B) (𝟙 B)).left).Gen, t.IsGen) → (∃ t : (N.pull (lift (𝟙 B) (1 : B ⟶ B)).left).Gen, t.IsGen) → (∃ t : (N.pull (ψ ⊗ₘ ψ).left).Gen, t.IsGen) → ∃ t : N.Gen, t.IsGen := by

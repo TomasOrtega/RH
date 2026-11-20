@@ -13,9 +13,7 @@ noncomputable section
 namespace GlobalTheory.GaugeConst
 
 /- English proof (translation)
-Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `: Tendsto (fun r : ℝ => s * r) (𝓝 0) (𝓝 (s * 0))` using `(continuous_const.mul continuous_id).tendsto 0`. Rewrite `this` using `[mul_zero]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with r hr`.
-
-Conclude with `mul_pos hs hr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_mul_nhdsGT {s : ℝ} (hs : 0 < s) :
     Tendsto (fun r : ℝ => s * r) (𝓝[>] 0) (𝓝[>] 0) := by
@@ -28,7 +26,7 @@ theorem tendsto_mul_nhdsGT {s : ℝ} (hs : 0 < s) :
     exact mul_pos hs hr
 
 /- English proof (translation)
-Use `((hh.comp (tendsto_mul_nhdsGT hs)).const_mul (s ^ d)).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : (0 : ℝ) < r` using `hr`. Simplify using `only [Function.comp, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem tendsto_scaled {h : ℝ → ℝ} {d : ℕ} {L s : ℝ} (hs : 0 < s)
     (hh : Tendsto (fun r => h r / r ^ d) (𝓝[>] 0) (𝓝 L)) :
@@ -40,13 +38,11 @@ theorem tendsto_scaled {h : ℝ → ℝ} {d : ℕ} {L s : ℝ} (hs : 0 < s)
   field_simp
 
 /- English proof (translation)
-Establish `t1 : Tendsto (fun κ : ℝ => κ⁻¹ ^ d * L) (𝓝[>] 1) (𝓝 L)`. Establish `: ContinuousAt (fun κ : ℝ => κ⁻¹ ^ d * L) 1`. Use `ContinuousAt.mul (ContinuousAt.pow (continuousAt_inv₀ one_ne_zero) d) continuousAt_const` and prove the remaining obligations. Simplify using `using this.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi 1))`. Establish `t2 : Tendsto (fun κ : ℝ => κ ^ d * L) (𝓝[>] 1) (𝓝 L)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: ContinuousAt (fun κ : ℝ => κ ^ d * L) 1` using `by fun_prop`. Simplify using `using this.tendsto.mono_left (nhdsWithin_le_nhds (s := Set.Ioi 1))`. Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨κ, h1, h2⟩` from `((t1.eventually (lt_mem_nhds ha)).and self_mem_nhdsWithin).exists`. Establish `h2' : (1 : ℝ) < κ` using `h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [(tendsto_scaled (inv_pos.2 (by linarith : 0 < κ)) hh).eventually (lt_mem_nhds h1), hs κ h2', self_mem_nhdsWithin] with r b1 b2 b3`. Establish `hr' : (0 : ℝ) < r` using `b3`. Conclude with `b1.trans_le (div_le_div_of_nonneg_right b2.1 (by positivity))`. Take `⟨κ, h1, h2⟩` from `((t2.eventually (gt_mem_nhds ha)).and self_mem_nhdsWithin).exists`. Establish `h2' : (1 : ℝ) < κ` using `h2`.
-
-Use `filter_upwards [(tendsto_scaled (by linarith : 0 < κ) hh).eventually (gt_mem_nhds h1), hs κ h2', self_mem_nhdsWithin] with r b1 b2 b3`. Establish `hr' : (0 : ℝ) < r` using `b3`. Conclude with `(div_le_div_of_nonneg_right b2.2 (by positivity)).trans_lt b1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_of_squeeze {f h : ℝ → ℝ} {d : ℕ} {L : ℝ}
     (hh : Tendsto (fun r => h r / r ^ d) (𝓝[>] 0) (𝓝 L))
@@ -74,29 +70,27 @@ theorem tendsto_of_squeeze {f h : ℝ → ℝ} {d : ℕ} {L : ℝ}
     exact (div_le_div_of_nonneg_right b2.2 (by positivity)).trans_lt b1
 
 /- English proof (translation)
-Use `borelize V`. Use `haveI : ProperSpace V := FiniteDimensional.proper_real V`. Use `set lam : Measure V := Measure.addHaar`. Take `⟨c, hc0, hct, hc⟩` from `GlobalTheory.CompactDualExists.exists_density_of_chart V M G lam μ e m ι L he h0 hd hL hL1 hm hn`. Establish `hb0 : 0 < (lam (ball 0 1)).toReal` using `ENNReal.toReal_pos (measure_ball_pos lam 0 one_pos).ne' measure_ball_lt_top.ne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : ∀ r : ℝ, μ (e '' ball 0 r) ≠ ⊤` using `fun r => (lt_of_le_of_lt (measure_mono (Set.image_mono ball_subset_closedBall)) ((isCompact_closedBall (0 : V) r).image he).measure_lt_top).ne`. Use `⟨c.toReal * (lam (ball 0 1)).toReal, mul_pos (ENNReal.toReal_pos hc0 hct) hb0, tendsto_of_squeeze (h := fun r => (μ (e '' ball 0 r)).toReal) ?_ ?_⟩` and prove the remaining obligations. Use `(((ENNReal.tendsto_toReal hct).comp hc).mul_const _).congr' ?_ filter_upwards [self_mem_nhdsWithin] with r hr` and prove the remaining obligations. Establish `hr' : (0 : ℝ) < r` using `hr`. Simplify using `only [Function.comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Measure.addHaar_ball_of_pos lam 0 hr', ENNReal.toReal_div, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Clear the denominators using the available nonvanishing facts. Introduce `κ hκ`. Establish `hκ0 : 0 < κ` using `by linarith`. Establish `hη : 0 < (1 - κ⁻¹) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `inv_lt_one_of_one_lt₀ hκ` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `hd.hasFDerivAt.isLittleO.def hη`. Take `⟨δ, hδ, h2⟩` from `Metric.eventually_nhds_iff.1 h1`. Establish `h3 : ∀ x : V, ‖x‖ < δ → |‖m (e x) - m 1‖ - ‖x‖| ≤ (1 - κ⁻¹) / 2 * ‖x‖`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Establish `h4` using `@h2 x (by simpa using hx)`. Simplify using `only [h0, sub_zero, LinearIsometry.coe_toContinuousLinearMap] at h4`. Establish `h5` using `abs_norm_sub_norm_le (m (e x) - m 1) (ι x)`. Rewrite `h5` using `[ι.norm_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h5.trans h4`. Establish `h6` using `hn δ hδ`. Rewrite `h6` using `[hi.nhds_eq_comap, mem_comap]`. Take `⟨t, ht, hts⟩` from `h6`. Take `⟨ρ, hρ, hρt⟩` from `nhds_basis_closedBall.mem_iff.1 ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hk1 : κ⁻¹ * κ = 1` using `inv_mul_cancel₀ hκ0.ne'`. Establish `hk2 : 0 < κ⁻¹` using `inv_pos.2 hκ0`. Establish `hk3 : κ⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hκ`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min hδ hρ)] with r hr`. Take `⟨hr0, hr⟩` from `hr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hr` using `[lt_min_iff]`. Establish `s2 : {g | ‖m g - m 1‖ ≤ r} ⊆ e '' ball 0 (κ * r)`. Introduce `g hg`. Establish `hg' : ‖m g - m 1‖ ≤ r` using `hg`. Take `⟨x, hx, rfl⟩` from `hts (hρt (mem_closedBall_iff_norm.2 (hg'.trans hr.2.le)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[mem_ball_zero_iff]`. Establish `h7` using `(abs_le.1 (h3 x hx)).1`. Establish `h8 : (1 + κ⁻¹) / 2 * ‖x‖ ≤ r` using `by linarith`. Assume the negation of the conclusion as `h9`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `push Not at h9`. Establish `h10 : (1 + κ⁻¹) / 2 * (κ * r) ≤ (1 + κ⁻¹) / 2 * ‖x‖` using `by gcongr`. Establish `h11 : (1 + κ⁻¹) / 2 * (κ * r) = (κ + 1) / 2 * r` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities. Establish `s1 : e '' ball 0 (κ⁻¹ * r) ⊆ {g | ‖m g - m 1‖ ≤ r}`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite `hx` using `[mem_ball_zero_iff]`. Establish `h7` using `(abs_le.1 (h3 x (by nlinarith [hr.1]))).2`. Establish `h8 : ‖m (e x) - m 1‖ ≤ (3 - κ⁻¹) / 2 * ‖x‖` using `by linarith`. Establish `h9 : (3 - κ⁻¹) / 2 * ‖x‖ ≤ (3 - κ⁻¹) / 2 * (κ⁻¹ * r)` using `mul_le_mul_of_nonneg_left hx.le (by linarith)`.
-
-Establish `h10 : (3 - κ⁻¹) / 2 * κ⁻¹ ≤ 1` using `by nlinarith`. Express the relevant statement in the definitionally equal form `‖m (e x) - m 1‖ ≤ r`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `⟨ENNReal.toReal_mono (ne_top_of_le_ne_top (hfin _) (measure_mono s2)) (measure_mono s1), ENNReal.toReal_mono (hfin _) (measure_mono s2)⟩`.
+Express the relevant assertion in an equivalent form by its definition. Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_limit_of_chart (V M G : Type) [NormedAddCommGroup V] [NormedSpace ℝ V]
     [FiniteDimensional ℝ V]
@@ -194,7 +188,7 @@ def lieJ (ε : Fin n → Bool) : Submodule ℝ (Matrix (Fin n) (Fin n) ℂ) wher
       smul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lieJ {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} :
     X ∈ lieJ ε ↔ Xᴴ * Jm ε + Jm ε * X = 0 := Iff.rfl
@@ -207,21 +201,19 @@ def cplx (ε : Fin n → Bool) : (lieJ ε × lieJ ε) →ₗ[ℝ] Matrix (Fin n)
       smul_comm c Complex.I]
 
 /- English proof (translation)
-Establish `hJ` using `Jm_mul_self ε`. Establish `hJ'` using `Jm_conjTranspose ε`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨a, b⟩ h`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : a.1 = -(Complex.I • b.1)` using `eq_neg_of_add_eq_zero_left h`. Establish `h2` using `mem_lieJ.1 a.2`. Establish `h3` using `eq_neg_of_add_eq_zero_left (mem_lieJ.1 b.2)`. Rewrite `h2` using `[h1, Matrix.conjTranspose_neg, Matrix.conjTranspose_smul, Matrix.neg_mul, Matrix.smul_mul, h3, Matrix.mul_neg, Matrix.mul_smul, Complex.star_def, Complex.conj_I]`. Establish `h4 : (-2 * Complex.I) • (Jm ε * b.1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h2]`. Use `module`. Establish `h5 : Jm ε * b.1 = 0`. Use `(smul_eq_zero.1 h4).resolve_left ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h6 : b.1 = 0`. Rewrite using `[← Matrix.one_mul b.1, ← hJ, Matrix.mul_assoc, h5, Matrix.mul_zero]`. Rewrite `h1` using `[h6, smul_zero, neg_zero]`. Conclude with `Prod.ext (Subtype.ext h1) (Subtype.ext h6)`. Introduce `Z`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Jm ε * Z * Jm ε * Jm ε = Jm ε * Z` using `by rw [Matrix.mul_assoc, hJ, Matrix.mul_one]`. Establish `e2 : Jm ε * (Jm ε * Zᴴ * Jm ε) = Zᴴ * Jm ε`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ, Matrix.one_mul]`. Establish `e3 : (Jm ε * Zᴴ * Jm ε)ᴴ = Jm ε * Z * Jm ε`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hJ', Matrix.conjTranspose_conjTranspose, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(⟨(1 / 2 : ℂ) • (Z - Jm ε * Zᴴ * Jm ε), ?_⟩, ⟨(-Complex.I / 2 : ℂ) • (Z + Jm ε * Zᴴ * Jm ε), ?_⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[mem_lieJ, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.conjTranspose_sub, e3, Matrix.sub_mul, Matrix.mul_sub, e1, e2]`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[this]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_lieJ, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, Matrix.conjTranspose_add, e3, Matrix.add_mul, Matrix.mul_add, e1, e2]`. Establish `: star (-Complex.I / 2 : ℂ) = Complex.I / 2` using `by simp`. Rewrite using `[this]`. Use `module`. Express the relevant statement in the definitionally equal form `(1 / 2 : ℂ) • (Z - Jm ε * Zᴴ * Jm ε) + Complex.I • ((-Complex.I / 2 : ℂ) • (Z + Jm ε * Zᴴ * Jm ε)) = Z`.
-
-Establish `: Complex.I * (-Complex.I / 2) = 1 / 2`. Rewrite using `[← mul_div_assoc, mul_neg, Complex.I_mul_I, neg_neg]`. Rewrite using `[smul_smul, this]`. Use `module`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplx_bijective (ε : Fin n → Bool) : Function.Bijective (cplx ε) := by
   have hJ := Jm_mul_self ε
@@ -267,7 +259,7 @@ theorem cplx_bijective (ε : Fin n → Bool) : Function.Bijective (cplx ε) := b
       rw [smul_smul, this]; module
 
 /- English proof (translation)
-Establish `h` using `(LinearEquiv.ofBijective _ (cplx_bijective ε)).finrank_eq`. Rewrite `h` using `[Module.finrank_prod, Module.finrank_matrix, Complex.finrank_real_complex, Fintype.card_fin]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem finrank_lieJ (ε : Fin n → Bool) : Module.finrank ℝ (lieJ ε) = n ^ 2 := by
   have h := (LinearEquiv.ofBijective _ (cplx_bijective ε)).finrank_eq
@@ -284,19 +276,19 @@ Both sides reduce to the same expression.
 theorem uMat_expJ (ε : Fin n → Bool) (X : lieJ ε) : uMat (expJ ε X) = NormedSpace.exp X.1 := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (Units.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem uMat_injective (ε : Fin n → Bool) : Function.Injective (uMat : UJ ε → _) :=
   fun _ _ h => Subtype.ext (Units.ext h)
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_uMat (ε : Fin n → Bool) : Continuous (uMat : UJ ε → _) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `UpqExpChart.continuous_matExp.comp continuous_subtype_val`. Conclude with `UpqExpChart.continuous_matExp.comp continuous_subtype_val.neg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_expJ (ε : Fin n → Bool) : Continuous (expJ ε) := by
   refine Continuous.subtype_mk (Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -304,15 +296,15 @@ theorem continuous_expJ (ε : Fin n → Bool) : Continuous (expJ ε) := by
   · exact UpqExpChart.continuous_matExp.comp continuous_subtype_val.neg
 
 /- English proof (translation)
-Take `⟨e, he, h0⟩` from `UpqExpChart.exists_chart (n := Fin n)`. Establish `hJ` using `Jm_mul_self ε`. Use `set J := Jm ε with hJdef`. Establish `hinj : Set.InjOn NormedSpace.exp e.source` using `he ▸ e.injOn`. Establish `hτ : Continuous fun Z : Matrix (Fin n) (Fin n) ℂ => J * (-Z)ᴴ * J` using `(continuous_const.matrix_mul continuous_neg.matrix_conjTranspose).matrix_mul continuous_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set W : Set (Matrix (Fin n) (Fin n) ℂ) := e.source ∩ (fun Z => J * (-Z)ᴴ * J) ⁻¹' e.source with hW`. Establish `hWo : IsOpen W` using `e.open_source.inter (e.open_source.preimage hτ)`. Establish `hW0 : (0 : Matrix (Fin n) (Fin n) ℂ) ∈ W` using `⟨h0, by simpa using h0⟩`. Take `⟨T, hT, hTU⟩` from `(mem_nhds_subtype _ _ _).1 hU`. Take `⟨V, hVT, hV, hV0⟩` from `mem_nhds_iff.1 hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hopen : IsOpen (NormedSpace.exp '' (V ∩ W))` using `he ▸ e.isOpen_image_of_subset_source (hV.inter hWo) fun _ h => h.2.1`. Use `mem_of_superset ((hopen.preimage (continuous_uMat ε)).mem_nhds ⟨0, ⟨hV0, hW0⟩, NormedSpace.exp_zero⟩) ?_` and prove the remaining obligations. Introduce and unpack `g ⟨Z, ⟨hZV, hZW⟩, hZ⟩`. Establish `hu : (uMat g)ᴴ * J * uMat g = J` using `g.2`. Rewrite `hu` using `[← hZ]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : J * (-Z)ᴴ * J = Z` using `hinj hZW.2 hZW.1 (UpqExpChart.exp_twist hJ hu)`. Establish `hmem : Z ∈ lieJ ε`. Express the relevant statement in the definitionally equal form `Zᴴ * J + J * Z = 0`. Establish `: J * Z = -(Zᴴ * J)` using `by conv_lhs => rw [← hfix]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hJ, Matrix.one_mul, Matrix.conjTranspose_neg, Matrix.neg_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[this, add_neg_cancel]`. Conclude with `⟨⟨Z, hmem⟩, hTU (hVT hZV), uMat_injective ε hZ⟩`.
+A detailed English derivation is pending.
 -/
 theorem expJ_image_mem_nhds (ε : Fin n → Bool) {U : Set (lieJ ε)} (hU : U ∈ 𝓝 (0 : lieJ ε)) :
     expJ ε '' U ∈ 𝓝 (1 : UJ ε) := by
@@ -347,7 +339,7 @@ theorem expJ_image_mem_nhds (ε : Fin n → Bool) {U : Set (lieJ ε)} (hU : U �
 
 open scoped Matrix.Norms.Frobenius in
 /- English proof (translation)
-Rewrite using `[Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]`. Simplify using `[Formalism.REAL.hs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sqrt_hs (A : Matrix (Fin n) (Fin n) ℂ) : Real.sqrt (Formalism.REAL.hs A) = ‖A‖ := by
   rw [Matrix.frobenius_norm_def, Real.sqrt_eq_rpow]
@@ -355,11 +347,9 @@ theorem sqrt_hs (A : Matrix (Fin n) (Fin n) ℂ) : Real.sqrt (Formalism.REAL.hs 
 
 open scoped Matrix.Norms.Frobenius in
 /- English proof (translation)
-Set `L₀ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] (Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ)` to `LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ LinearMap.mul ℝ _`. Establish `hL₀ : Continuous L₀` using `L₀.continuous_of_finiteDimensional`. Establish `h` using `exists_limit_of_chart (lieJ ε) (Matrix (Fin n) (Fin n) ℂ) (UJ ε) (muG ε) (expJ ε) uMat (lieJ ε).subtypeₗᵢ (fun g => L₀ (uMat g)) (continuous_expJ ε) (uMat_injective ε (by`. Rewrite using `[uMat_expJ]`. Conclude with `(NormedSpace.exp_zero (𝔸 := Matrix (Fin n) (Fin n) ℂ))))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(HasStrictFDerivAt.comp (0 : lieJ ε) (g := NormedSpace.exp) (f := Subtype.val) CompactDualExists.exp_strict (lieJ ε).subtypeL.hasStrictFDerivAt)`. Use the proof step `(hL₀.comp (continuous_uMat ε)).continuousAt`. Use the proof step `(by ext1 A; exact Matrix.one_mul A) (fun g h => rfl)`. Use the proof step `(fun r hr => expJ_image_mem_nhds ε (ball_mem_nhds 0 hr))`. Use the proof step `(uJEmb n ε).1.isInducing`.
-
-Rewrite `h` using `[finrank_lieJ]`. Simplify using `only [sqrt_hs]`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_limit (ε : Fin n → Bool) : ∃ A : ℝ, 0 < A ∧ Tendsto
     (fun r : ℝ => (muG ε {g | Real.sqrt (Formalism.REAL.hs (uMat g - 1)) ≤ r}).toReal / r ^ (n ^ 2))
@@ -382,11 +372,11 @@ theorem exists_limit (ε : Fin n → Bool) : ∃ A : ℝ, 0 < A ∧ Tendsto
   exact h
 
 /- English proof (translation)
-Introduce `n ε`. Take `⟨A, hA, h⟩` from `exists_limit ε`. Establish `hB : 0 < (volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (n ^ 2))) 1)).toReal` using `ENNReal.toReal_pos (measure_ball_pos _ 0 one_pos).ne' measure_ball_lt_top.ne`. Use `⟨_ / A, div_pos hB hA, ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Unfold `IsGauge`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `h.const_mul ((volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (n ^ 2))) 1)).toReal / A)` as an intermediate fact. Rewrite `this` using `[div_mul_cancel₀ _ hA.ne']`. Simplify `this` using `only [mul_div_assoc]`. Unfold `IsGauge at hc'`. Use `h.const_mul c'` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Simplify using `only [mul_div_assoc] at hc'`. Rewrite using `[eq_div_iff hA.ne']`. Conclude with `tendsto_nhds_unique this hc'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unique_isGauge : ∀ (n : ℕ) (ε : Fin n → Bool),
     ∃ c : ℝ, 0 < c ∧ IsGauge ε c ∧ ∀ c', IsGauge ε c' → c' = c := by

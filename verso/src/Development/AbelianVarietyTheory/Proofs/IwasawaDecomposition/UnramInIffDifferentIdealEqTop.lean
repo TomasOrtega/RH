@@ -13,7 +13,7 @@ namespace GlobalTheory.UnramDiscr
 variable (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L]
 
 /- English proof (translation)
-Set `_ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L))` to `FractionRing.liftAlgebra _ _`. Use `haveI : P.IsMaximal := Ideal.IsPrime.isMaximal inferInstance hP`. Rewrite using `[not_dvd_differentIdeal_iff, ← Ideal.ramificationIdx_eq_one_iff, ← Ideal.ramificationIdxIn_eq_ramificationIdx (P.under (𝓞 K)) P (L ≃ₐ[K] L), ← Ideal.card_inertia_eq_ramificationIdxIn (G := L ≃ₐ[K] L) (P.under (𝓞 K)) P, Subgroup.card_eq_one]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_dvd_iff_inertia (P : Ideal (𝓞 L)) [P.IsPrime] (hP : P ≠ ⊥) :
     ¬ P ∣ differentIdeal (𝓞 K) (𝓞 L) ↔ P.inertia (L ≃ₐ[K] L) = ⊥ := by
@@ -25,17 +25,15 @@ theorem not_dvd_iff_inertia (P : Ideal (𝓞 L)) [P.IsPrime] (hP : P ≠ ⊥) :
     Subgroup.card_eq_one]
 
 /- English proof (translation)
-Set `_ : Algebra (FractionRing (𝓞 K)) (FractionRing (𝓞 L))` to `FractionRing.liftAlgebra _ _`. Establish `hD0 : differentIdeal (𝓞 K) (𝓞 L) ≠ ⊥` using `differentIdeal_ne_bot`. Unfold `UnramIn InInertia`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hD`. Take `⟨M, hM, hDM⟩` from `Ideal.exists_le_maximal _ hD`. Use `haveI := hM`. Establish `hMb : M ≠ ⊥`. Introduce and unpack `rfl`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hD0 (le_bot_iff.mp hDM)`. Establish `hMu : M.under (𝓞 K) ≠ ⊥` using `mt Ideal.eq_bot_of_comap_eq_bot hMb`. Establish `hb : M.inertia (L ≃ₐ[K] L) = ⊥`. Rewrite using `[Subgroup.eq_bot_iff_forall]`. Introduce `σ hσ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `h ⟨M.under (𝓞 K), inferInstance, hMu⟩ σ ⟨M, inferInstance, ⟨rfl⟩, fun x => hσ x⟩`. Conclude with `(not_dvd_iff_inertia K L M hMb).mpr hb (Ideal.dvd_iff_le.mpr hDM)`. Introduce and unpack `hD 𝔭 σ ⟨P, hP, hPo, hσ⟩ haveI := hP haveI := hPo`. Establish `hPb : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot 𝔭.ne_bot P`. Establish `hnd : ¬ P ∣ differentIdeal (𝓞 K) (𝓞 L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hD]`. Conclude with `fun hd => hP.ne_top (top_le_iff.mp (Ideal.dvd_iff_le.mp hd))`. Establish `hb` using `(not_dvd_iff_inertia K L P hPb).mp hnd`. Establish `hmem : σ ∈ P.inertia (L ≃ₐ[K] L)` using `fun x => hσ x`. Rewrite `hmem` using `[hb]`.
-
-Conclude with `Subgroup.mem_bot.mp hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramIn_iff_differentIdeal_eq_top :
     (∀ 𝔭 : HeightOneSpectrum (𝓞 K), UnramIn L 𝔭) ↔ differentIdeal (𝓞 K) (𝓞 L) = ⊤ := by
@@ -71,9 +69,9 @@ theorem unramIn_iff_differentIdeal_eq_top :
 omit K L in
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _`. Rewrite using `[unramIn_iff_differentIdeal_eq_top K L, natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) L (𝓞 L)]`. Establish `h0 : 0 < (discr K).natAbs ^ Module.finrank K L` using `pow_pos (Int.natAbs_pos.mpr (discr_ne_zero K)) _`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, Ideal.absNorm_top, one_mul]`. Introduce `h`. Apply `Ideal.absNorm_eq_one_iff.mp` to reduce the goal to its premises. Apply `Nat.eq_of_mul_eq_mul_right h0` to reduce the goal to its premises. Rewrite using `[h, one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unramIn_iff_natAbs_discr :
     ∀ (K L : Type) [Field K] [NumberField K] [Field L] [NumberField L] [Algebra K L] [IsGalois K L],

@@ -11,7 +11,7 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 800000
 
 /- English proof (translation)
-Introduce `hmem`. Rewrite `hmem` using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Establish `hdvd : Formalism.EigenvalueLevelCeiling.plc v ∣ q` using `(ringChar.spec (𝓞 K ⧸ v.asIdeal) q).1 hmem`. Conclude with `hne ((Nat.prime_dvd_prime_iff_eq (Formalism.L2.DIV.plc_prime' v) hq).1 hdvd).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natPrime_notMem {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {q : ℕ} (hq : q.Prime)
     (hne : q ≠ Formalism.EigenvalueLevelCeiling.plc v) : (q : 𝓞 K) ∉ v.asIdeal := by
@@ -21,7 +21,7 @@ theorem natPrime_notMem {K : Type} [Field K] [NumberField K] (v : HeightOneSpect
   exact hne ((Nat.prime_dvd_prime_iff_eq (Formalism.L2.DIV.plc_prime' v) hq).1 hdvd).symm
 
 /- English proof (translation)
-Unfold `ownAt`. Use `split_ifs with h`. Conclude with `⟨D.host.pde'_prime, fun e => D.host.pde_ne (h.symm.trans e.symm)⟩`. Conclude with `⟨D.host.pde_prime, fun e => h e.symm⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ownAt_prime_ne (D : D7) (w : D.what₂.places.Pl) :
     (ownAt D (D.plEq w)).Prime ∧ ownAt D (D.plEq w) ≠ Formalism.EigenvalueLevelCeiling.plc (D.plEq w) := by
@@ -31,15 +31,13 @@ theorem ownAt_prime_ne (D : D7) (w : D.what₂.places.Pl) :
   · exact ⟨D.host.pde_prime, fun e => h e.symm⟩
 
 /- English proof (translation)
-Introduce `D c w`. Take `⟨hq, hne⟩` from `ownAt_prime_ne D w`. Use `set q := ownAt D (D.plEq w) with hqdef`. Establish `hnot` using `natPrime_notMem (D.plEq w) hq hne`. Establish `hv : (D.plEq w).valuation D.what₂.LL (q : D.what₂.LL) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((D.plEq w).valuation_eq_one_iff_notMem (K := D.what₂.LL)).2 hnot` as an intermediate fact. Simplify using `using this`. Establish `hq0 : (q : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 hq.ne_zero`. Establish `hnn : (0 : WithTop ℤ) ≤ D.what₂.places.val w (q : D.what₂.LL)⁻¹` using `(D.val_nonneg_iff w _).2 (by rw [map_inv₀, hv, inv_one])`. Take `⟨y, hy⟩` from `(c.embW_w w _).1 hnn`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[map_inv₀, map_natCast]`. Establish `hqF : ((q : ℕ) : FractionRing (c.Oe w)) ≠ 0`. Use `(map_ne_zero (c.embW w)).2 hq0` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `h1 : algebraMap (c.Oe w) (FractionRing (c.Oe w)) (y * (q : c.Oe w)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, hy, map_natCast]`. Conclude with `inv_mul_cancel₀ hqF`. Establish `h2 : y * (q : c.Oe w) = 1`. Apply `IsFractionRing.injective (c.Oe w) (FractionRing (c.Oe w))` to reduce the goal to its premises. Rewrite using `[h1, map_one]`.
-
-Conclude with `(Units.mkOfMulEqOne (q : c.Oe w) y (by rw [mul_comm]; exact h2)).isUnit`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ownUnit : OwnUnit := by
   intro D c w

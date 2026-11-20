@@ -12,17 +12,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Mem.Top.TupTieW
 
 /- English proof (translation)
-Introduce `X f T Wt xi h`. Establish `key : ∀ w, X.toD7.what₂.muAt w ≠ X.toD7.what₂.mu0 ↔ w ∈ Wt`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Conclude with `hw (h.off w hn)`. Introduce `hw he`. Establish `he' : X.W.muAt w = X.C.mu0` using `he`. Rewrite `he'` using `[h.on w hw]`.
+Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `h.tw w`. Rewrite `h1` using `[he', h.mu0]`. Conclude with `(TwFin.tw_fin X.B f T).2.1 w h1.symm`. Establish `hfin : Wt.Finite` using `Set.Finite.subset (TwFin.tw_fin X.B f T).2.2.2 fun w hw => h.sub w hw`. Establish `hconj : ∀ w ∈ Wt, X.B.places.conj w ∈ Wt`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Use `(key _).1 ?_` and prove the remaining obligations. Establish `hc : X.toD7.what₂.muAt (X.toD7.what₂.places.conj w) = X.toD7.what₂.muAt w` using `X.toD7.what₂.muAt_conj w`. Introduce `he`. Conclude with `(key w).2 hw (hc.symm.trans he)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨key, hfin, hconj, fun nch hQ => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ μ, TupTie.Good X.B.host.F (xi μ)` using `fun μ => TupTie.good_set f T (h.range ▸ Set.mem_range_self μ)`. Use `⟨⟨xi, h.inj, fun μ => (hg μ).1, fun μ => (hg μ).2.1, fun μ => (hg μ).2.2, T.psi, h.mu0, h.star, h.star', h.tw, fun w hw => ?_, fun w hw => ?_⟩, rfl, rfl⟩` and prove the remaining obligations. Rewrite using `[hQ w ((key w).1 hw)]`. Conclude with `T.psi_is w`.
-
-Conclude with `h.supp w fun hn => (key w).2 hn hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupTied_of_muIsW : ∀ (X : Stages) (f : Fr X.B.toPre) (T : TwDat X.B) (Wt : Set X.B.places.Pl) (xi : X.C.Tup → HChar X.B.host.E), V4.MuIsW X f T Wt xi → (∀ w, X.toD7.what₂.muAt w ≠ X.toD7.what₂.mu0 ↔ w ∈ Wt) ∧ Wt.Finite ∧ (∀ w ∈ Wt, X.B.places.conj w ∈ Wt) ∧ ∀ nch : NChoice X.toD7, (∀ w ∈ Wt, nch.Q w = T.Q w) → ∃ tp : TupTied X.toD7 (Fr.at X f) nch, tp.xi = xi ∧ tp.psi = T.psi := by
   intro X f T Wt xi h

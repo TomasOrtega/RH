@@ -161,9 +161,9 @@ section Thick
 variable {b : Base} (L : b.Fun)
 
 /- English proof (translation)
-Use `(show T.pdPow r ≤ (T'.pdPow r).comap φ.φ from Ideal.span_le.2 ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Use `Ideal.subset_span ⟨l.map fun q => (q.1, φ.φ q.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Take `⟨q', hq', rfl⟩` from `List.mem_map.1 hq`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `φ.hle (hl q' hq')`. Simplify `hr` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congr 1`. Conclude with `List.map_congr_left fun q hq => (φ.dp.2 q.2 (hl q hq)).symm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem pdPow_map {T T' : Thick L} (φ : T ⟶ T') (r : ℕ) {x : T.B} (hx : x ∈ T.pdPow r) : φ.φ x ∈ T'.pdPow r := by
   refine (show T.pdPow r ≤ (T'.pdPow r).comap φ.φ from Ideal.span_le.2 ?_) hx
@@ -178,13 +178,11 @@ theorem pdPow_map {T T' : Thick L} (φ : T ⟶ T') (r : ℕ) {x : T.B} (hx : x �
     exact List.map_congr_left fun q hq => (φ.dp.2 q.2 (hl q hq)).symm
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, hr, rfl⟩` from `hx`. Use `Ideal.subset_span ⟨(1, z) :: l, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `List.mem_cons.1 hq with rfl | hq` into its components or cases. Use `exacts [hz, hl q hq]`. Simplify using `only [List.map_cons, List.sum_cons]`. Use linear arithmetic over natural numbers and integers. Simplify using `[T.δ.dpow_one hz]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [smul_eq_mul, mul_left_comm]`.
-
-Conclude with `Ideal.mul_mem_left _ _ hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_pdPow (T : Thick L) (r : ℕ) {z x : T.B} (hz : z ∈ T.J) (hx : x ∈ T.pdPow r) : z * x ∈ T.pdPow (r + 1) := by
   induction hx using Submodule.span_induction with

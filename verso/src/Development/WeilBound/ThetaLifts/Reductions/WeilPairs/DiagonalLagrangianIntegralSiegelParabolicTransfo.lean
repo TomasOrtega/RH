@@ -19,43 +19,41 @@ namespace PositivityTheory.ThKW.LagrangianIntegralFactorisation
 open PositivityTheory.ThKW.ModulusFactorDefinition
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ g, Th g → L g = 0`. Use `⟨1, continuous_const, fun _ _ => rfl, fun h t _ f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[h0 _ (hpres h f hf), h0 f hf, mul_zero]`. Use `push Not at h0`. Take `⟨f₀, hf₀, hne⟩` from `h0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hKdef⟩ : ∃ K : G → ℂ, K = fun h => L (ω h f₀) / L f₀` from `⟨_, rfl⟩`. Establish `hKap : ∀ h, K h = L (ω h f₀) / L f₀` using `fun h => by rw [hKdef]`. Establish `hlaw : ∀ h t, rel h t → ∀ f, Th f → L (ω h f) = K h * L f`. Introduce `h t hr f hf`. Establish `hg` using `hadd (L f₀) (-L f) f f₀ hf hf₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLg : L (L f₀ • f + (-L f) • f₀) = 0` using `by rw [hL _ _ _ _ hf hf₀]; ring`. Establish `hωg : L (ω h (L f₀ • f + (-L f) • f₀)) = 0`. Use `hnorm h t hr _ hg` as an intermediate fact. Rewrite `this` using `[hLg, norm_zero, mul_zero]`. Conclude with `norm_eq_zero.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hωg` using `[map_add, map_smul, map_smul, hL _ _ _ _ (hpres h f hf) (hpres h f₀ hf₀)]`. Rewrite using `[hKap, div_mul_eq_mul_div, eq_div_iff hne]`. Take the linear combination `hωg`. Establish `hnK : ∀ h t, rel h t → ‖K h‖ = mf t`. Introduce `h t hr`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hKap, norm_div, hnorm h t hr f₀ hf₀, mul_div_assoc, div_self (norm_ne_zero_iff.2 hne), mul_one]`. Establish `hKmul : ∀ h₁ h₂ t₁, rel h₁ t₁ → K (h₁ * h₂) = K h₁ * K h₂`. Introduce `h₁ h₂ t₁ hr`. Rewrite using `[hKap (h₁ * h₂), map_mul, Module.End.mul_apply, hlaw h₁ t₁ hr _ (hpres h₂ f₀ hf₀), hKap h₂]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : K 1 = 1` using `by rw [hKap, map_one, Module.End.one_apply, div_self hne]`. Establish `hKpow : ∀ n, rel n 1 → ∀ j : ℕ, K (n ^ j) = K n ^ j`. Introduce `n hn j`. Proceed by induction on `j with`. Consider the case `zero => rw [pow_zero, pow_zero, hK1]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ j ih => rw [pow_succ', hKmul n _ 1 hn, ih, pow_succ']`. Establish `hKconj : ∀ M s, rel M s → ∀ n, rel n 1 → K (M * n * M⁻¹) = K n`. Introduce `M s hM n hn`. Rewrite using `[mul_assoc, hKmul M _ s hM, hKmul n _ 1 hn]`. Establish `hMM : K M * K M⁻¹ = 1` using `by rw [← hKmul M M⁻¹ s hM, mul_inv_cancel, hK1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `K n * hMM`. Establish `hunip : ∀ n, rel n 1 → K n = 1`. Introduce `n hn`. Take `⟨M₂, s₂, hM₂, hc₂⟩` from `hconj 2 (by norm_num)`. Take `⟨M₃, s₃, hM₃, hc₃⟩` from `hconj 3 (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : K n ^ 4 = K n`. Use `hKconj M₂ s₂ hM₂ n hn` as an intermediate fact. Rewrite `this` using `[hc₂ n hn, hKpow n hn]`. Then use the resulting hypothesis. Establish `e9 : K n ^ 9 = K n`. Use `hKconj M₃ s₃ hM₃ n hn` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hc₃ n hn, hKpow n hn]`. Then use the resulting hypothesis. Establish `hn0 : K n ≠ 0`. Introduce `h`. Use `hnK n 1 hn` as an intermediate fact. Rewrite `this` using `[h, norm_zero, hmf1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one this`. Establish `e3 : K n ^ 3 = 1`. Establish `h3 : K n * (K n ^ 3 - 1) = 0` using `by linear_combination e4`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h3).resolve_left hn0)`. Rewrite using `[← e9, show (9 : ℕ) = 3 * 3 from rfl, pow_mul, e3, one_pow]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hKm : ∀ t, ‖K (m t)‖ = mf t` using `fun t => hnK _ t (hm t)`. Establish `hmf0 : ∀ t, ((mf t : ℝ) : ℂ) ≠ 0` using `fun t => Complex.ofReal_ne_zero.2 (hmfpos t).ne'`. Establish `hαn : ∀ t, K (m t) / ((mf t : ℝ) : ℂ) ∈ Metric.sphere (0 : ℂ) 1`. Introduce `t`. Rewrite using `[mem_sphere_zero_iff_norm, norm_div, hKm, Complex.norm_real, Real.norm_of_nonneg (hmfpos t).le, div_self (hmfpos t).ne']`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `αf : T → Circle` to `fun t => ⟨K (m t) / ((mf t : ℝ) : ℂ), hαn t⟩`. Establish `hαf : ∀ t, ((αf t : Circle) : ℂ) = K (m t) / ((mf t : ℝ) : ℂ)` using `fun t => rfl`. Set `α : T →* Circle` to `{ toFun := αf map_one' := by`. Apply `Circle.coe_inj.1` to reduce the goal to its premises. Rewrite using `[hαf, Circle.coe_one, map_one, hK1, hmf1, Complex.ofReal_one, div_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_mul' := fun s t => by`. Apply `Circle.coe_inj.1` to reduce the goal to its premises. Rewrite using `[Circle.coe_mul, hαf, hαf, hαf, map_mul, hKmul _ _ s (hm s), hmfmul, Complex.ofReal_mul, div_mul_div_comm] }`. Establish `hαa : ∀ t, ((α t : Circle) : ℂ) = K (m t) / ((mf t : ℝ) : ℂ)` using `fun t => rfl`. Use `⟨α, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun t => ((α t : Circle) : ℂ)`. Establish `e : (fun t => ((α t : Circle) : ℂ)) = fun t => K (m t) / ((‖K (m t)‖ : ℝ) : ℂ)`. Use function extensionality and compare the values at `t`. Rewrite using `[hαa, hKm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Establish `hKc : Continuous fun t => K (m t)`. Establish `: (fun t => K (m t)) = fun t => L (ω (m t) f₀) / L f₀` using `funext fun t => hKap _`. Rewrite using `[this]`. Conclude with `((hcont f₀ hf₀).comp hmc).div_const _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hKc.div (Complex.continuous_ofReal.comp (continuous_norm.comp hKc)) fun t => by rw [hKm]; exact hmf0 t`. Introduce `t ht`. Establish `hK : K (m t) = 1`. Rewrite using `[hKap, hrat _ ht t (hm t) f₀ hf₀, div_self hne]`. Establish `hmt : mf t = 1` using `by rw [← hKm, hK, norm_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Apply `Circle.coe_inj.1` to reduce the goal to its premises. Rewrite using `[hαa, hK, hmt, Complex.ofReal_one, div_one, Circle.coe_one]`. Introduce `h t hr f hf`. Establish `hr1 : rel ((m t)⁻¹ * h) 1`. Use `hrel_mul _ _ _ _ (hrel_inv _ _ (hm t)) hr` as an intermediate fact.
-
-Rewrite `this` using `[inv_mul_cancel]`. Then use the resulting hypothesis. Establish `hKh : K h = K (m t)`. Use `hKmul (m t) ((m t)⁻¹ * h) t (hm t)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, hunip _ hr1, mul_one]`. Then use the resulting hypothesis. Rewrite using `[hlaw h t hr f hf, hKh, hαa, div_mul_cancel₀ _ (hmf0 t)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {V G T : Type} [AddCommGroup V] [Module ℂ V] [Group G] [TopologicalSpace G] [Group T]
     [TopologicalSpace T]
@@ -176,7 +174,7 @@ theorem core {V G T : Type} [AddCommGroup V] [Module ℂ V] [Group G] [Topologic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Introduce `h0`. Use `map_mul (adeleClass F).modu u u⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, map_one, h0, zero_mul]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modu_ne_zero (u : (AF F)ˣ) : (adeleClass F).modu u ≠ 0 := by
   intro h0
@@ -185,14 +183,14 @@ theorem modu_ne_zero (u : (AF F)ˣ) : (adeleClass F).modu u ≠ 0 := by
   exact one_ne_zero this
 
 /- English proof (translation)
-Unfold `mfac`. Conclude with `Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 (modu_ne_zero _))) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mfac_pos {nT : ℕ} (nS : ℕ) (t : GL (Fin nT) (AF F ⊗[F] E)) : 0 < mfac F E nS t := by
   unfold mfac
   exact Real.rpow_pos_of_pos (NNReal.coe_pos.2 (pos_iff_ne_zero.2 (modu_ne_zero _))) _
 
 /- English proof (translation)
-Unfold `mfac`. Rewrite using `[map_mul, map_mul, map_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mfac_mul {nT : ℕ} (nS : ℕ) (s t : GL (Fin nT) (AF F ⊗[F] E)) :
     mfac F E nS (s * t) = mfac F E nS s * mfac F E nS t := by
@@ -200,14 +198,14 @@ theorem mfac_mul {nT : ℕ} (nS : ℕ) (s t : GL (Fin nT) (AF F ⊗[F] E)) :
   rw [map_mul, map_mul, map_mul, NNReal.coe_mul, Real.mul_rpow (NNReal.coe_nonneg _) (NNReal.coe_nonneg _)]
 
 /- English proof (translation)
-Unfold `mfac`. Rewrite using `[map_one, map_one, map_one, NNReal.coe_one, Real.one_rpow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mfac_one {nT : ℕ} (nS : ℕ) : mfac F E nS (1 : GL (Fin nT) (AF F ⊗[F] E)) = 1 := by
   unfold mfac
   rw [map_one, map_one, map_one, NNReal.coe_one, Real.one_rpow]
 
 /- English proof (translation)
-Unfold `GlobalTheory.LagrTheta.lagrInt`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[integral_add (hf.const_mul a) (hg.const_mul b), integral_const_mul, integral_const_mul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagrInt_lin {nS nT : ℕ} (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     (f g : WOF F E nS (nT + nT) → ℂ) (a b : ℂ)
@@ -221,7 +219,7 @@ theorem lagrInt_lin {nS nT : ℕ} (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WO
   rw [integral_add (hf.const_mul a) (hg.const_mul b), integral_const_mul, integral_const_mul]
 
 /- English proof (translation)
-Unfold `mtF`. Rewrite using `[map_mul, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mtF_mul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a b : GAF σ J) :
     mtF σ J (a * b) = mtF σ J a * mtF σ J b := by
@@ -229,7 +227,7 @@ theorem mtF_mul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a
   rw [map_mul, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[← mtF_mul, inv_mul_cancel]`. Unfold `mtF`. Rewrite using `[map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mtF_inv_mul (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : GAF σ J) :
     mtF σ J a⁻¹ * mtF σ J a = 1 := by
@@ -243,15 +241,11 @@ end
 
 open PositivityTheory.ThKW.ModulusFactorDefinition PositivityTheory.ThKW.LagrangianIntegralFactorisation in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd`. Take `⟨m, hmc, hmC, hmr⟩` from `PositivityTheory.ThKW.PhaseFourierInjectivity.levi F E σ B hB nT JT hT`. Take `⟨α, hαc, hαq, hlaw⟩` from `core (V := WOF F E nS (nT + nT) → ℂ) (IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ) (fun a b f g hf hg => GlobalTheory.WeilPartsF.theta_add (GlobalTheory.WeilPartsF.theta_smul a hf) (GlobalTheory.WeilPartsF.theta_smul b hg)) (ωd.comp (MonoidHom.inr _ …`. Rewrite using `[mtF_mul, Matrix.mul_assoc, hb, ← Matrix.mul_assoc, ha, Matrix.mul_assoc, Units.val_mul])`. Use the proof step `(fun a s ha => by show mtF σ _ a⁻¹ * _ = _ * (s⁻¹).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : dC (AF F ⊗[F] E) nT = mtF σ _ a⁻¹ * (dC (AF F ⊗[F] E) nT * s.1)`. Rewrite using `[← ha, ← Matrix.mul_assoc, mtF_inv_mul, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Use `_ = mtF σ _ a⁻¹ * (dC (AF F ⊗[F] E) nT * s.1) * (s⁻¹).1 := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = dC (AF F ⊗[F] E) nT * (s⁻¹).1 := by rw [← e])`. Use the proof step `(mfac F E nS) (mfac_one nS) (mfac_pos nS) (mfac_mul nS)`. Use the proof step `(fun h t hr f hf => PositivityTheory.ThKW.PhaseFourierInjectivity.norm_law F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd h t hr f hf)`. Use `m hmc hmC`.
-
-Use the proof step `(fun f hf => PositivityTheory.ThKW.PhaseFourierInjectivity.cont F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd f hf)`. Use the proof step `(GQF σ (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) : Set _)`. Use the proof step `(fun γ hγ t hr f hf => PositivityTheory.ThKW.PhaseFourierInjectivity.rat F E σ B hB nS nT JS JT hS hT ξ₀ hξ₀ hσ ν 𝓕 hν h𝓕 χS ωd hωd γ hγ t hr f hf)`. Use the proof step `(fun k hk => by`. Take `⟨M, t, h1, h2⟩` from `PositivityTheory.ThKW.PhaseFourierInjectivity.conj_pow F E σ nT JT hT k hk`.
-
-Conclude with `⟨M, t, h1, fun n hn => h2 n (by rw [Units.val_one, Matrix.mul_one] at hn; exact hn)⟩)`. Conclude with `⟨α, hαc, fun a => hαq _ (hmr a), fun h t hr f hf => hlaw h t hr f hf⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.ThKW.lagrangian_integral_fundamental_domain : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

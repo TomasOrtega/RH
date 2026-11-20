@@ -7,15 +7,13 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep GlobalTheory.PRep 
 namespace GlobalTheory.CuspRep.CompUniq
 
 /- English proof (translation)
-Introduce `G H V W W' _ _ _ _ _ _ _ _ ρ s σ σ' hρ hσ hσ' hc f hf`. Establish `hP : GlobalTheory.CuspRep.LocUniq.isoPart σ (ρ.comp s) = ⊤`. Break down `((isIrreducible_iff ρ).1 hρ).2 (GlobalTheory.CuspRep.LocUniq.isoPart σ (ρ.comp s)) (fun g v hv => by` into its components or cases. Take `⟨u, hu⟩` from `hc g`. Establish `h1` using `GlobalTheory.CuspRep.LocUniq.isoPart_comm σ (ρ.comp s) (ρ ((s u)⁻¹ * g)) (fun y x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [MonoidHom.comp_apply]`. Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, (hu y).eq]) hv`. Establish `h2` using `GlobalTheory.CuspRep.LocUniq.isoPart_act σ (ρ.comp s) u h1`. Rewrite using `[MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left] at h2) with h | h` and apply the resulting hypothesis. Use `absurd ?_ hf` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Representation.IntertwiningMap.toLinearMap_injective` to reduce the goal to its premises. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Establish `h3 : f.toLinearMap v ∈ GlobalTheory.CuspRep.LocUniq.isoPart σ (ρ.comp s)` using `Submodule.mem_iSup_of_mem f ⟨v, rfl⟩`. Rewrite `h3` using `[h]`. Rewrite using `[(Submodule.mem_bot ℂ).1 h3]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `h`. Use `⟨hP, fun f' hf' => ?_⟩` and prove the remaining obligations. Use `haveI := hσ`. Use `haveI := hσ'`.
-
-Conclude with `GlobalTheory.CuspRep.LocUniq.equiv_of_isoPart σ σ' (ρ.comp s) hP f' hf'`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isotypic : ∀ (G H V W W' : Type) [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation ℂ G V) (s : H →* G) (σ : Representation ℂ H W) (σ' : Representation ℂ H W'), ρ.IsIrreducible → σ.IsIrreducible → σ'.IsIrreducible → (∀ g, ∃ u, ∀ y, Commute ((s u)⁻¹ * g) (s y)) → ∀ f : σ.IntertwiningMap (ρ.comp s), f ≠ 0 → (⨆ f : σ.IntertwiningMap (ρ.comp s), LinearMap.range f.toLinearMap) = ⊤ ∧ ∀ f' : σ'.IntertwiningMap (ρ.comp s), f' ≠ 0 → Nonempty (σ.Equiv σ') := by
   intro G H V W W' _ _ _ _ _ _ _ _ ρ s σ σ' hρ hσ hσ' hc f hf

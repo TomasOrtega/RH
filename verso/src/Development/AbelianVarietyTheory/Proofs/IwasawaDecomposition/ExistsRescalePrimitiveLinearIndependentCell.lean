@@ -8,11 +8,11 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan.SmoothEnd
 
 /- English proof (translation)
-Introduce `O _ _ bar φ X _ _ _ m δ hδ hli`. Use `choose n u hmem hn hu hprim using fun i => exists_prim (bar := bar) (hδ.mem i) (hli.ne_zero i)`. Establish `hcu : IsCell bar φ u` using `cell_rescale hδ n hn hu hmem`. Use `⟨u, hcu, linearIndependent_of_smul hli n hn hu, fun i => hprim i, ?_⟩` and prove the remaining obligations. Introduce and unpack `β ⟨c, hc, hβ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i => c i * n i, fun i => mul_nonneg (hc i) (Nat.cast_nonneg _), ?_⟩` and prove the remaining obligations. Rewrite using `[hβ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `e : toReal (δ i) = (n i : ℝ) • toReal (u i)`. Rewrite using `[hu i]; exact LinearMap.ext₂ fun x y => by simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, smul_smul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_rescale_prim : ∀ {O : Type} [CommRing O] [Module.Finite ℤ O] (bar : O → O) (φ : InvFun O) {X : Type} [AddCommGroup X] [Module O X]
     [Module.Finite O X] {m : ℕ} (δ : Fin m → LinearMap.BilinForm ℤ X), IsCell bar φ δ → LinearIndependent ℤ δ →

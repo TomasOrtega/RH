@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RowRealInt
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ x, r x = 0`. Use `⟨0, fun x => ?_⟩` and prove the remaining obligations. Establish `hx` using `h x x 1 0 (by simp [h0 x])`. Simplify using `using hx`. Use `push_neg at h0`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨x₀, hx₀⟩` from `h0`. Use `⟨L x₀ / r x₀, fun x => ?_⟩` and prove the remaining obligations. Establish `hx` using `h x x₀ (r x₀) (-r x) (by ring)`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff hx₀]`. Take the linear combination `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_mul_of_rel {I : Type*} (L r : I → ℂ)
     (h : ∀ x x' (α α' : ℂ), α * r x + α' * r x' = 0 → α * L x + α' * L x' = 0) : ∃ c : ℂ, ∀ x, L x = c * r x := by
@@ -34,9 +34,9 @@ theorem exists_mul_of_rel {I : Type*} (L r : I → ℂ)
     linear_combination hx
 
 /- English proof (translation)
-Apply `exists_mul_of_rel` to reduce the goal to its premises. Introduce `x x' α α' hrel`. Establish `key` using `hV ι H A B R K l hl hS ρ μ ρ' μ' hH (fun k => X (![x, x'] k)) (fun k => S (![x, x'] k)) (fun k => b (![x, x'] k)) (fun k => w (![x, x'] k)) (fun k => q (![x, x'] k)) (fun k => L (![x, x'] k)) ![α, α'] (fun k => h1 _) (fun k => h2 _) (fun k => h3 _) (fun k => h4 _) (fun k => h5 _) …`. Introduce `a ha ha1`. Take `⟨e, he⟩` from `h6 a ha ha1`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fin.sum_univ_two, he]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]`. Take the linear combination `e * hrel)`. Simplify `key` using `[Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_mul_of_cellVan (hV : CellVan) {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)]
     [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)]
@@ -69,13 +69,11 @@ theorem exists_mul_of_cellVan (hV : CellVan) {ι : Type} [DecidableEq ι] {H : �
   simpa [Fin.sum_univ_two] using key
 
 /- English proof (translation)
-Establish `e1 : ∀ i, ∃ m : Measure ((R i).subgroupOf (B i)), i ∈ l → m.IsHaarMeasure`. Introduce `i`. Distinguish the cases in `hi : i ∈ l`. Use `haveI : LocallyCompactSpace (B i) := (hS i hi).1.locallyCompactSpace`. Establish `hc : IsClosed (((R i).subgroupOf (B i) : Subgroup (B i)) : Set (B i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `(hS i hi).2.preimage continuous_subtype_val`. Use `haveI : LocallyCompactSpace ((R i).subgroupOf (B i)) := hc.locallyCompactSpace`. Conclude with `⟨Measure.haar, fun _ => inferInstance⟩`. Conclude with `⟨0, fun h => absurd h hi⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `e2 : ∀ i, ∃ m : Measure (B i), i ∈ l → m.IsHaarMeasure`. Introduce `i`. Distinguish the cases in `hi : i ∈ l`. Use `haveI : LocallyCompactSpace (B i) := (hS i hi).1.locallyCompactSpace`. Conclude with `⟨Measure.haar, fun _ => inferInstance⟩`.
-
-Conclude with `⟨0, fun h => absurd h hi⟩`. Use `choose ρ' hρ' using e1`. Use `choose μ' hμ' using e2`. Conclude with `⟨ρ', μ', fun i hi => ⟨hρ' i hi, hμ' i hi⟩⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_haar_family {ι : Type} {H : ι → Type} [∀ i, Group (H i)]
     [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, LocallyCompactSpace (H i)] [∀ i, MeasurableSpace (H i)]
@@ -105,7 +103,7 @@ theorem exists_haar_family {ι : Type} {H : ι → Type} [∀ i, Group (H i)]
   exact ⟨ρ', μ', fun i hi => ⟨hρ' i hi, hμ' i hi⟩⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun β hβ => h β (hs.mem_toFinset.mp hβ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_mul_mul {X : Type} {s : Set X} (hs : s.Finite) (f g : X → ℂ) (e u : ℂ) (h : ∀ β ∈ s, f β = e * (u * g β)) :
     ∑ β ∈ hs.toFinset, f β = e * (u * ∑ β ∈ hs.toFinset, g β) := by
@@ -113,9 +111,9 @@ theorem sum_eq_mul_mul {X : Type} {s : Set X} (hs : s.Finite) (f g : X → ℂ) 
   exact Finset.sum_congr rfl fun β hβ => h β (hs.mem_toFinset.mp hβ)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_mul_of_cellVan hV A B R K l hl hS ρ μ ρ' μ' hH (I := {x : (t : T) × (a : N) × (τ : Ta t) × (M : V) × (Mβ : X t → V) × (τβ : X t → Pd t) × Y t // F x.1 x.2.1 x.2.2.1 ∧ Is x.1 x.2.2.2.1 ∧ ∀ β ∈ S x.1 x.2.1, Ok x.1 x.2.1 β (x.2.2.2.2.1 β) ∧ Ok' x.1 x.2.1 β (x.2.2.2.2.2.1 β)}) …`. Take `⟨β, hβ, hin⟩` from `h4 _ _ _ n.2.1 _ n.2.2.1 _ h hh hq`. Conclude with `⟨β, (fin _ _).mem_toFinset.mpr hβ, hin⟩)`. Use the proof step `(fun n => h5 _ _ _ n.2.1 _ _ _)`. Use the proof step `(fun p hp hp1 => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `h6 p hp hp1`. Use `⟨e, fun n => ?_⟩` and prove the remaining obligations. Conclude with `sum_eq_mul_mul (fin _ _) (fun β => w n.1.1 β * q n.1.1 n.1.2.1 n.1.2.2.1 n.1.2.2.2.1 n.2.2.1 n.1.2.2.2.2.2.2 (p * b n.1.1 β)) (fun β => g n.1.1 n.1.2.1 β (n.1.2.2.2.2.1 β) (n.1.2.2.2.2.2.1 β) n.1.2.2.2.2.2.2) e (u n.1.1) fun β hβ => he _ _ _ n.2.1 _ n.2.2.1 β hβ _ _ (n.2.2.2 β hβ …`. Conclude with `⟨c, fun t a τ hF M hM Mβ τβ hok y => hc ⟨⟨t, a, τ, M, Mβ, τβ, y⟩, hF, hM, hok⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mul_of_cellVan' (hV : CellVan) {ι : Type} [DecidableEq ι] {H : ι → Type} [∀ i, Group (H i)]
     [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)]
@@ -168,9 +166,9 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 T : Type} {A : FamIn 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Distinguish the cases in `hj : j ∈ idx D`. Establish `hle : j ≤ D.R.m`. Use `List.mem_range'_1.mp (show j ∈ List.range' 1 (D.R.m - 2) from hj)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨δ, r, -, -, hfin⟩` from `h2 j hj hle`. Conclude with `hfin.1`. Rewrite using `[h1 j hj]`. Conclude with `one_mem _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_isRep {ch : Choice R} {t : T} {s : ℤˣ} {β : CosFam ch.G t} {b : Pts ch.G} (h : IsRep t ch.S.B s β b) (j : ℕ) :
     b j ∈ GfC _ := by
@@ -185,7 +183,7 @@ theorem mem_of_isRep {ch : Choice R} {t : T} {s : ℤˣ} {β : CosFam ch.G t} {b
     exact one_mem _
 
 /- English proof (translation)
-Unfold `GlobalTheory.RowVal.wt`. Use `congr 1`. Conclude with `List.map_congr_left fun j _ => dif_pos (hb j)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem wt_eq {ch : Choice R} (ρ : ∀ j, Measure ((rowGrp ch.G j).subgroupOf (GfC _)))
     (μ : ∀ j, Measure (GfC (ch.G.V (.grid D.R.m j)))) (b : Pts ch.G) (hb : ∀ j, b j ∈ GfC _) :
@@ -195,15 +193,13 @@ theorem wt_eq {ch : Choice R} (ρ : ∀ j, Measure ((rowGrp ch.G j).subgroupOf (
   exact List.map_congr_left fun j _ => dif_pos (hb j)
 
 /- English proof (translation)
-Take `⟨ρ, μ, hH0, hIt⟩` from `hI`. Take `⟨ρ', μ', hH'⟩` from `exists_haar_family (H := fun j => GA D (ch.G.V (.grid D.R.m j))) (fun j => GfC (ch.G.V (.grid D.R.m j))) (rowGrp ch.G) (idx D) fun j hj => ⟨(hG j hj).clB, (hG j hj).clR⟩`. Establish `hRep'` using `hRep`. Unfold `RepAt at hRep'`. Use `choose b hb using fun t => (hRep' t).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hl : (idx D).Nodup`. Unfold `idx`. Apply `List.nodup_range'` to reduce the goal to its premises. Apply the tactic sequence `all_goals simp`. Take `⟨c, hc⟩` from `exists_mul_of_cellVan' hV (fun j => GinfC (ch.G.V (.grid D.R.m j))) (fun j => GfC (ch.G.V (.grid D.R.m j))) (rowGrp ch.G) (latGrp ch.G) (idx D) hl hG ρ μ ρ' μ' (fun j hj => ⟨(hH0 j hj).1, (hH0 j hj).2, (hH' j hj).1, (hH' j hj).2⟩) (X := CosFam ch.G) (F := fun t a τ => IsFlipFin t …`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hb1, -⟩` from `hb t β`. Conclude with `⟨hb1, mem_of_isRep (hb t β), wt_eq ρ' μ' (b t β) (mem_of_isRep (hb t β))⟩)`. Use the proof step `(h2 := fun t β β' h => (hRep' t).2 β β' _ _ (hb t β) (hb t β') h)`. Use the proof step `(h3 := fun t a τ hF M hM y => hInv t a τ hF M hM P y)`. Use the proof step `(h4 := fun t a τ hF M hM y h hh hq => hSu t a τ hF M hM P y (b t) (hb t) h hh hq)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(h5 := fun t a τ hF M hM y => hIt t a τ hF M hM P y)`. Use the proof step `(h6 := fun p hp hp1 => by`. Establish `hp' : IsRealPt p`. Unfold `IsRealPt`. Conclude with `⟨hp, hp1⟩`.
-
-Take `⟨e, he⟩` from `hval ρ' μ' hH' p hp'`. Conclude with `⟨e, fun t a τ hF M hM β hβ M' τ' hM' hτ' y => he t a τ hF M hM β hβ (b t β) (hb t β) M' τ' hM' hτ' y⟩)`. Conclude with `⟨c, hc⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lhs_eq (hV : CellVan) (ch : Choice R) (hG : GrpAt ch) (hI : IterAt ch) (hInv : InvAt ch) (s : ℤˣ)
     (hSu : SuppOn ch s) (hRep : RepAt ch s) (hOK : ∀ t a, ch.S.SumOK t (ch.Phi a)) (z : T → ℂˣ)
@@ -258,23 +254,21 @@ theorem exists_lhs_eq (hV : CellVan) (ch : Choice R) (hG : GrpAt ch) (hI : IterA
   exact ⟨c, hc⟩
 
 /- English proof (translation)
-Take `⟨s, hSu, hRep, hVal⟩` from `hs`. Establish `hR'` using `hR`. Unfold `RealLine at hR'`. Take `⟨ell, -, hK, hsurj⟩` from `hR'`. Establish `hVal'` using `hVal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `ValAt at hVal'`. Take `⟨z, hz, hv⟩` from `hVal'`. Take `⟨σ₀, -, hσ₀⟩` from `hsurj 1`. Establish `hsA : ch.S.sAA ≠ 0` using `(sAA_facts ch.W ch.S.toGridChoice fun w _ => hasConductor_psiAt_AA ch.W w).1`. Establish `hdef : ∀ t a β, β ∈ ch.S.supp t (ch.Phi a) → ∀ M', IsTermVol t ch.S.toGridChoice (ch.Phi a) β M' → ∀ τ', ch.S.IsExpansion t (ch.Phi a) β τ' → ∀ y σ, defTot t ch.S.toGridChoice M' σ τ' (colFn ch a) (formTop ch t y) = (σ.sum fun P c => c * ell P) * defTot t ch.S.toGridChoice M' σ₀ …`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t a β hβ M' hM' τ' hτ' y σ`. Take `⟨K, hK'⟩` from `hK t a (hOK t a) β hβ M' hM' τ' hτ' y`. Rewrite using `[hK' σ, hK' σ₀, hσ₀, one_mul]`. Establish `hc : ∀ P : PolRow ch.G × PolDown ch.G, ∃ c : ℂ, ∀ t a τ, IsFlipFin t ch.S.B ch.rm (ch.Phi a) τ → ∀ M : Vol ch.G, M.Is t → ∀ (Mβ : CosFam ch.G t → Vol ch.G) (τβ : CosFam ch.G t → PureDat ch.G t →₀ ℂ), (∀ β ∈ ch.S.supp t (ch.Phi a), IsTermVol t ch.S.toGridChoice (ch.Phi a) β (Mβ β) …`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_lhs_eq hV ch hG hI hInv s hSu hRep hOK z P (fun t a β M' τ' y => (∏ w, ((ch.S.term t (ch.Phi a) β w).coef : ℂ)) * defTot t ch.S.toGridChoice M' σ₀ τ' (colFn ch a) (formTop ch t y)) ?_` and prove the remaining obligations. Introduce `ρ μ hH p hp`. Take `⟨σ, hσ⟩` from `hv ρ μ hH P p hp`. Use `⟨σ.sum fun P c => c * ell P, ?_⟩` and prove the remaining obligations. Introduce `t a τ hF M hM β hβ b hb M' τ' hM' hτ' y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hσ t a τ hF M hM β hβ b hb M' τ' hM' hτ' y, hdef t a β hβ M' hM' τ' hτ' y σ]`. Expand and normalize the polynomial expressions, which then agree. Use `choose cP hcP using hc`. Introduce `τi`. Take `⟨σ, -, hσ⟩` from `hsurj ((τi.sum fun P c => c * cP P) / ch.S.sAA)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨σ, z, fun t => ⟨hz t, ?_⟩⟩` and prove the remaining obligations. Introduce `a τ hF M hM Mβ τβ hMτ y`. Express the relevant statement in the definitionally equal form `lhs ch t M τi τ a y = _`. Establish `hcP'` using `fun P => hcP P t a τ hF M hM Mβ τβ hMτ y`. Establish `hrhs : (∑ᶠ β ∈ ch.S.supp t (ch.Phi a), (∏ w, ((ch.S.term t (ch.Phi a) β w).coef : ℂ)) * defTot t ch.S.toGridChoice (Mβ β) σ (τβ β) (colFn ch a) (formTop ch t y)) = (σ.sum fun P c => c * ell P) * ∑ β ∈ (hOK t a).fin.toFinset, (∏ w, ((ch.S.term t (ch.Phi a) β w).coef : ℂ)) * defTot …`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (hOK t a).fin, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun β hβ => ?_` and prove the remaining obligations. Establish `hβ'` using `(hOK t a).fin.mem_toFinset.mp hβ`. Rewrite using `[hdef t a β hβ' _ (hMτ β hβ').1 _ (hMτ β hβ').2 y σ]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e : ∀ C x S0 : ℂ, x * ch.S.sAA * (C / ch.S.sAA * S0) = C * (x * S0)`. Introduce `C x S0`. Take the linear combination `(x * S0) * div_mul_cancel₀ C hsA`. Rewrite using `[hL t a τ hF M hM τi y, hrhs, hσ, e, Finsupp.sum_mul]`. Simplify using `only [hcP']`.
-
-Conclude with `Finsupp.sum_congr fun P _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unfoldAt_of (hV : CellVan) (ch : Choice R) (hG : GrpAt ch) (hI : IterAt ch) (hL : LinAt ch) (hInv : InvAt ch)
     (hs : ∃ s, SuppOn ch s ∧ RepAt ch s ∧ ValAt ch s) (hR : RealLine ch) (hOK : ∀ t a, ch.S.SumOK t (ch.Phi a)) :
@@ -337,7 +331,7 @@ theorem unfoldAt_of (hV : CellVan) (ch : Choice R) (hG : GrpAt ch) (hI : IterAt 
   exact Finsupp.sum_congr fun P _ => by ring
 
 /- English proof (translation)
-Introduce `hV`. Unfold `Big`. Conclude with `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ => unfoldAt_of hV ch⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem unfold_of_steps : CellVan → Big fun ch => GrpAt ch → IterAt ch → LinAt ch → InvAt ch →
     (∃ s, SuppOn ch s ∧ RepAt ch s ∧ ValAt ch s) → RealLine ch → (∀ t a, ch.S.SumOK t (ch.Phi a)) → UnfoldAt ch := by

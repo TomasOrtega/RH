@@ -24,7 +24,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IdemSumUniq
 
 /- English proof (translation)
-Introduce `D P e e' h h'`. Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `h'`. Conclude with `Finset.sum_congr rfl fun PP hP => (GlobalTheory.PlaceIdemUniq.idemAt_unique_orth D _ _ PP PP (hes PP hP) (hes' PP hP)).1 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idemSum_unique : ∀ {D : D7} (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (e e' : AE D), IsIdemSum e P → IsIdemSum e' P → e = e' := by
   intro D P e e' h h'

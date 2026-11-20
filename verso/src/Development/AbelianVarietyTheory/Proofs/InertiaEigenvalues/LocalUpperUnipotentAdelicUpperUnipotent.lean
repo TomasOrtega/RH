@@ -12,7 +12,7 @@ theorem cornerGL_apply_loctri {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (
   rfl
 
 /- English proof (translation)
-Rewrite using `[cornerGL_apply_loctri]`. Simplify using `[Matrix.one_apply_ne h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cornerGL_apply_ne_loctri {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (s : R →ₙ+* S)
     (g : GL (Fin a) R) {i j : Fin a} (h : i ≠ j) :
@@ -21,7 +21,7 @@ theorem cornerGL_apply_ne_loctri {R S : Type} [CommRing R] [CommRing S] {a : ℕ
   simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Rewrite using `[cornerGL_apply_loctri, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cornerGL_apply_diag_loctri {R S : Type} [CommRing R] [CommRing S] {a : ℕ} (s : R →ₙ+* S)
     (g : GL (Fin a) R) {j : Fin a} (h : g.val j j = 1) :
@@ -30,13 +30,13 @@ theorem cornerGL_apply_diag_loctri {R S : Type} [CommRing R] [CommRing S] {a : �
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ a w u hlow hdiag`. Establish `hoff : ∀ i j : Fin a, i ≠ j → (finGL E a (locGL E a w u)).val i j = sFin E (sLoc E w (u.val i j))`. Introduce `i j h`. Rewrite using `[finGL, cornerGL_apply_ne_loctri _ _ h, locGL, cornerGL_apply_ne_loctri _ _ h]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j h`. Rewrite using `[hoff i j (ne_of_gt h), hlow i j h, map_zero, map_zero]`. Introduce `j`. Conclude with `cornerGL_apply_diag_loctri _ _ (cornerGL_apply_diag_loctri _ _ (hdiag j))`. Rewrite using `[map_sum, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Establish `hp' : (p.2 : ℕ) = p.1 + 1` using `(Finset.mem_filter.mp hp).2`. Establish `hne : p.1 ≠ p.2`. Introduce `h`. Rewrite `hp'` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hoff p.1 p.2 hne`.
+A detailed English derivation is pending.
 -/
 theorem locTri_adelic : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (w : HeightOneSpectrum (𝓞 E)) (u : GL (Fin a) (w.adicCompletion E)), (∀ i j : Fin a, j < i → u.val i j = 0) → (∀ j : Fin a, u.val j j = 1) → (∀ i j : Fin a, j < i → (finGL E a (locGL E a w u)).val i j = 0) ∧ (∀ j : Fin a, (finGL E a (locGL E a w u)).val j j = 1) ∧ ∑ p : Fin a × Fin a with (p.2 : ℕ) = p.1 + 1, (finGL E a (locGL E a w u)).val p.1 p.2 = sFin E (sLoc E w (∑ p : Fin a × Fin a with (p.2 : ℕ) = p.1 + 1, u.val p.1 p.2)) := by
   intro E _ _ _ a w u hlow hdiag

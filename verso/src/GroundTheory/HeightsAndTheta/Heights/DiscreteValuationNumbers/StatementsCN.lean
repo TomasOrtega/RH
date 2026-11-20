@@ -288,9 +288,9 @@ end Fibres
 section Examples
 
 /- English proof (translation)
-Unfold `mixedDiff`. Proceed by induction on `List.ofFn bs with`. Consider the case `nil => rfl`. Consider the case `cons b l ih`. Rewrite using `[List.foldr_cons, ih]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `m`. Simplify using `[diffStep]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixedDiff_zero {K : Type*} {n : ℕ} (bs : Fin n → K → ℤ) :
     mixedDiff bs (0 : (K → ℤ) → ℤ) = 0 := by
@@ -303,13 +303,13 @@ theorem mixedDiff_zero {K : Type*} {n : ℕ} (bs : Fin n → K → ℤ) :
     simp [diffStep]
 
 /- English proof (translation)
-Introduce `bs` and use `Filter.Eventually.of_forall fun m => by rw [mixedDiff_zero]; rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem degLT_zero {K : Type*} (n : ℕ) : DegLT (0 : (K → ℤ) → ℤ) n := fun bs =>
   Filter.Eventually.of_forall fun m => by rw [mixedDiff_zero]; rfl
 
 /- English proof (translation)
-Unfold `hilbFn`. Use `split_ifs`. Establish `: Subsingleton (MRing ι F ⧸ (⊤ : Ideal (MRing ι F)))` using `Ideal.Quotient.subsingleton_iff.mpr rfl`. Rewrite using `[Module.finrank_zero_of_subsingleton, Nat.cast_zero]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hilbFn_top {F : Type*} [Field F] {K : Type*} [DecidableEq K] {ι : K → Type*}
     (m : K → ℤ) : hilbFn (⊤ : Ideal (MRing ι F)) m = 0 := by

@@ -16,7 +16,7 @@ variable {S : Type} [CommRing S] {K : Type} [Fintype K] {ι : K → Type}
 abbrev blockDeg (e : (Σ k, ι k) →₀ ℕ) : K →₀ ℕ := e.mapDomain Sigma.fst
 
 /- English proof (translation)
-Establish `h` using `Finsupp.prod_mapDomain_index (f := Sigma.fst) (s := e) (h := fun k n => v k ^ n) (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)`. Conclude with `h.symm.trans (Finsupp.prod_fintype _ _ (fun _ => pow_zero _))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_block_pow {R : Type} [CommMonoid R] (e : (Σ k, ι k) →₀ ℕ) (v : K → R) :
     (e.prod fun p n => v p.1 ^ n) = ∏ k, v k ^ blockDeg e k := by
@@ -27,9 +27,9 @@ theorem prod_block_pow {R : Type} [CommMonoid R] (e : (Σ k, ι k) →₀ ℕ) (
 omit [Fintype K] in
 
 /- English proof (translation)
-Introduce `e he k`. Use `le_trans ?_ (le_totalDegree he)` and prove the remaining obligations. Rewrite using `[← Finsupp.sum_mapDomain_index (h := fun _ n => n) (fun _ => rfl) (fun _ _ _ => rfl)]`. Distinguish the cases in `hk : k ∈ (blockDeg e).support`. Conclude with `Finset.single_le_sum (f := fun k => blockDeg e k) (fun _ _ => Nat.zero_le _) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.notMem_support_iff.mp hk]`. Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem blockDeg_le_totalDegree (g : MvPolynomial (Σ k, ι k) S) :
     ∀ e ∈ g.support, ∀ k, blockDeg e k ≤ g.totalDegree := by
@@ -46,7 +46,7 @@ def homog (c : ∀ k, ι k) (D : ℕ) (g : MvPolynomial (Σ k, ι k) S) : MvPoly
 variable {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Simplify using `only [mConeMapOver, aeval_monomial, mul_pow, Finsupp.prod_mul]`. Rewrite using `[prod_block_pow e (fun k => (X k : MvPolynomial K Ω))]`. Simplify using `only [Finsupp.prod, map_mul, map_prod, map_pow, MvPolynomial.algebraMap_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mConeMapOver_monomial (y : (Σ k, ι k) → Ω) (e : (Σ k, ι k) →₀ ℕ) (a : S) :
     mConeMapOver S y (monomial e a) = C (aeval y (monomial e a)) * ∏ k, X k ^ blockDeg e k := by
@@ -56,9 +56,9 @@ theorem mConeMapOver_monomial (y : (Σ k, ι k) → Ω) (e : (Σ k, ι k) →₀
   ring
 
 /- English proof (translation)
-Simplify using `only [homog, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hX : ∏ k, (X k : MvPolynomial K Ω) ^ D = (∏ k, X k ^ blockDeg e k) * ∏ k, X k ^ (D - blockDeg e k)`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← pow_add, Nat.add_sub_cancel' (hD e he k)]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, mConeMapOver_monomial, hX]`. Simplify using `only [map_mul, map_prod, map_pow, mConeMapOver, aeval_X, mul_pow, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mConeMapOver_homog (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {D : ℕ} {g : MvPolynomial (Σ k, ι k) S}
     (hD : ∀ e ∈ g.support, ∀ k, blockDeg e k ≤ D) :
@@ -74,11 +74,11 @@ theorem mConeMapOver_homog (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) {D : ℕ}
   ring
 
 /- English proof (translation)
-Use `conv_rhs => rw [g.as_sum]`. Simplify using `only [homog, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `hP : ∏ k, w ⟨k, c k⟩ ^ D = (∏ k, w ⟨k, c k⟩ ^ (D - blockDeg e k)) * ∏ k, w ⟨k, c k⟩ ^ blockDeg e k`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun k _ => by rw [← pow_add, Nat.sub_add_cancel (hD e he k)]`. Establish `hne : ∏ k, w ⟨k, c k⟩ ^ blockDeg e k ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hw k)`. Establish `hq : (e.prod fun p n => (w p / w ⟨p.1, c p.1⟩) ^ n) = (e.prod fun p n => w p ^ n) / ∏ k, w ⟨k, c k⟩ ^ blockDeg e k`. Rewrite using `[← prod_block_pow e (fun k => w ⟨k, c k⟩)]`. Simplify using `only [Finsupp.prod, div_pow, Finset.prod_div_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, aeval_monomial, aeval_monomial, hq, hP]`. Simplify using `only [map_prod, map_pow, aeval_X]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem aeval_homog (w : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hw : ∀ k, w ⟨k, c k⟩ ≠ 0) {D : ℕ}
     {g : MvPolynomial (Σ k, ι k) S} (hD : ∀ e ∈ g.support, ∀ k, blockDeg e k ≤ D) :
@@ -102,15 +102,13 @@ theorem aeval_homog (w : (Σ k, ι k) → Ω) {c : ∀ k, ι k} (hw : ∀ k, w �
 end ChartKernel
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι Ω _ _ y Ω' _ _ y' hle c hc g hg`. Establish `hyc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k h0 => hc k (by`. Establish `hm : (X ⟨k, c k⟩ : MvPolynomial (Σ k, ι k) S) ∈ mIdealOver S y`. Express the relevant statement in the definitionally equal form `mConeMapOver S y (X _) = 0`. Simplify using `[mConeMapOver, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `h' : mConeMapOver S y' (X ⟨k, c k⟩) = 0` using `hle hm`. Simplify `h')` using `[mConeMapOver, X_ne_zero]`. Establish `hD` using `ChartKernel.blockDeg_le_totalDegree g`. Establish `h1 : aeval y (ChartKernel.homog c g.totalDegree g) = 0`. Rewrite using `[ChartKernel.aeval_homog y hyc hD, hg, mul_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ChartKernel.homog c g.totalDegree g ∈ mIdealOver S y`. Express the relevant statement in the definitionally equal form `mConeMapOver S y _ = 0`. Rewrite using `[ChartKernel.mConeMapOver_homog y c hD, h1, map_zero, zero_mul]`. Establish `h3 : mConeMapOver S y' (ChartKernel.homog c g.totalDegree g) = 0` using `hle h2`. Rewrite `h3` using `[ChartKernel.mConeMapOver_homog y' c hD]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : aeval y' (ChartKernel.homog c g.totalDegree g) = 0`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases. Conclude with `C_eq_zero.mp h`. Conclude with `absurd h (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (X_ne_zero k))`. Rewrite `h4` using `[ChartKernel.aeval_homog y' hc hD]`.
-
-Conclude with `(mul_eq_zero.mp h4).resolve_left (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartKernel.proof : ChartKernel.Statement := by
   intro S _ K _ _ ι Ω _ _ y Ω' _ _ y' hle c hc g hg

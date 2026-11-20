@@ -5,13 +5,11 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Introduce `N l d σ γ hσ hγ`. Establish `hc` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).1 hσ.1`. Establish `hσN : σ ∈ Gamma0 N`. Rewrite using `[Gamma0_mem]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (Int.natCast_dvd_natCast.2 (dvd_mul_right N l)) hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσl : σ ∈ Gamma0 l`. Rewrite using `[Gamma0_mem]`. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (Int.natCast_dvd_natCast.2 (dvd_mul_left l N)) hc)`. Take `⟨hγ1, hγ0⟩` from `Subgroup.mem_inf.1 hγ`. Use `Subgroup.mem_inf.2 ⟨?_, (Gamma0 l).mul_mem ((Gamma0 l).mul_mem hσl hγ0) ((Gamma0 l).inv_mem hσl)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγN : γ ∈ Gamma0 N` using `((Gamma1_mem N γ).1 hγ1).2.2`. Use `set S : Gamma0 N := ⟨σ, hσN⟩`. Use `set G : Gamma0 N := ⟨γ, hγN⟩`. Establish `hG : G ∈ Gamma1' N` using `(Gamma1_to_Gamma0_mem G).2 ((Gamma1_mem N γ).1 hγ1)`. Establish `hX : S * G * S⁻¹ ∈ Gamma1' N`.
-
-Rewrite `hG`, the goal using `[Gamma1_mem']`. Rewrite using `[map_mul, map_mul, hG, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Establish `h` using `(Gamma1_to_Gamma0_mem _).1 hX`. Conclude with `(Gamma1_mem N _).2 h`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isDia_conj_mem_lev : ∀ (N l : ℕ) (d : ℤ) (σ γ : SL(2, ℤ)), IsDia N l d σ → γ ∈ lev N l →
     σ * γ * σ⁻¹ ∈ lev N l := by

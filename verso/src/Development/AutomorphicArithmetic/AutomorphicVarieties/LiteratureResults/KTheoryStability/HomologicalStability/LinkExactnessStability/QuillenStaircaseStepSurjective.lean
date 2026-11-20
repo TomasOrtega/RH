@@ -6,13 +6,13 @@ open CategoryTheory CategoryTheory.Limits GlobalTheory.HomStab
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k G _ _ C₃ C₂ Z₁ C₁ Z₀ a b ι e h hX hab q hb hex`. Establish `hcomp : ∀ {A B C : Rep k G} (f : A ⟶ B) (g : B ⟶ C) (n : ℕ), hMap (f ≫ g) n = hMap f n ≫ hMap g n` using `fun f g n => (groupHomology.functor k G n).map_comp f g`. Establish `hzero : hMap (0 : C₃ ⟶ Z₁) q = 0` using `(groupHomology.functor k G q).map_zero _ _`. Establish `hinj : Function.Injective (hMap ι q).hom`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Take `⟨y, rfl⟩` from `hb z`. Establish `hy : (hMap (b ≫ ι) q).hom y = 0`. Rewrite using `[hcomp]`. Simplify using `using hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨x, rfl⟩` from `(hex y).1 hy`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, ← hcomp, hab, hzero]`. Both sides reduce to the same expression. Introduce `w`. Establish `h3` using `groupHomology.mapShortComplex₃_exact hX (i := q + 1) (j := q) rfl`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hδ : (groupHomology.δ hX (q + 1) q rfl).hom w = 0`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(groupHomology.mapShortComplex₁ hX (i := q + 1) (j := q) rfl).moduleCat_zero_apply w`. Conclude with `(ShortComplex.moduleCat_exact_iff _).1 h3 w hδ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homStab_step : ∀ (k G : Type) [CommRing k] [Group G] (C₃ C₂ Z₁ C₁ Z₀ : Rep k G) (a : C₃ ⟶ C₂)
     (b : C₂ ⟶ Z₁) (ι : Z₁ ⟶ C₁) (e : C₁ ⟶ Z₀) (h : ι ≫ e = 0), (ShortComplex.mk ι e h).ShortExact →

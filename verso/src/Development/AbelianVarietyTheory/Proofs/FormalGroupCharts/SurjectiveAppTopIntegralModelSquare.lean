@@ -15,9 +15,7 @@ open GlobalTheory.ChartCmp
 namespace GlobalTheory.ModelSquareFunctions
 
 /- English proof (translation)
-Establish `h1` using `I.m1.cart.1`. Establish `h2` using `I.m2.cart.1`. Establish `hp : IsProper I.t'.G.hom` using `MorphismProperty.of_isPullback h1 Xo.univ.proper`. Use `show IsProper (pullback.snd I.G.G.hom (spMap (algebraMap T.V (FractionRing T.V))))`. Rewrite using `[← h2.isoPullback_inv_snd]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_genericFibre {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {T : CDVR} {io : c.F →+* T.Fr}
@@ -31,9 +29,9 @@ theorem isProper_genericFibre {E : Type} [Field E] [NumberField E] [IsCMField E]
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I`. Establish `h` using `(globalFnsDvr_of_globalFns GlobalTheory.globalFns_holds E H T.V T.cpl I.G (isProper_genericFibre I) 2).2`. Set `e : powObj I.G.G 2 ≅ I.G.G ⊗ I.G.G` to `I.G.G ◁ᵢ (ρ_ I.G.G)`. Establish `hw : e.inv.left ≫ (powObj I.G.G 2).hom = (I.G.G ⊗ I.G.G).hom` using `Over.w e.inv`. Establish `: IsIso e.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.inv))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso e.inv.left.appTop` using `inferInstanceAs (IsIso (e.inv.left.app ⊤))`. Rewrite using `[← hw, Scheme.Hom.comp_appTop, CommRingCat.hom_comp, RingHom.coe_comp]`. Conclude with `(ConcreteCategory.bijective_of_isIso e.inv.left.appTop).2.comp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_appTop_square : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (T : CDVR) (io : c.F →+* T.Fr) (y : letI := io.toAlgebra; FrPt Xo c T.Fr) (I : IntData Xo c T io y), Function.Surjective (I.G.G ⊗ I.G.G).hom.appTop.hom := by
   intro E _ _ _ H Dw l Xo c T io y I

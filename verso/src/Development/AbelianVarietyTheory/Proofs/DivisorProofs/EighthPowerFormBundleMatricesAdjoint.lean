@@ -31,7 +31,7 @@ Both sides reduce to the same expression.
 theorem lamC_apply (c : Pic G.left) (x y : T ⟶ G) : lamC x y c = lam c x y := rfl
 
 /- English proof (translation)
-Simplify using `only [lam, ← pull_comp, ← Over.comp_left, hm, h1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lam_pull_of (g : G' ⟶ G) (c : Pic G.left) (u v : T ⟶ G')
     (hm : (u * v) ≫ g = (u ≫ g) * (v ≫ g)) (h1 : (1 : T ⟶ G') ≫ g = 1) :
@@ -53,7 +53,7 @@ variable {S : Scheme.{0}} {G G' T : Over S} [GrpObj G] [GrpObj G'] [IsCommMonObj
 include hΘ
 
 /- English proof (translation)
-Rewrite using `[lam_comm, lam_mul_left hL hΘ, lam_comm, lam_comm _ z]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_mul_right' (x y z : T ⟶ G) :
     lam (cls L hL) x (y * z) = lam (cls L hL) x y + lam (cls L hL) x z := by
@@ -65,7 +65,7 @@ def lamHom (z : T ⟶ G) : (T ⟶ G) →* Multiplicative (Pic T.left) where
   map_mul' x y := by rw [lam_mul_left hL hΘ]; rfl
 
 /- English proof (translation)
-Establish `h` using `map_zpow (lamHom hL hΘ z) x k`. Conclude with `congrArg Multiplicative.toAdd h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_zpow_left (x z : T ⟶ G) (k : ℤ) :
     lam (cls L hL) (x ^ k) z = k • lam (cls L hL) x z := by
@@ -73,7 +73,7 @@ theorem lam_zpow_left (x z : T ⟶ G) (k : ℤ) :
   exact congrArg Multiplicative.toAdd h
 
 /- English proof (translation)
-The claim follows from `| 0, x, e, z => by simp [lam_one_left] | n + 1, x, e, z => by rw [List.ofFn_succ, List.prod_cons, lam_mul_left hL hΘ, lam_zpow_left hL hΘ, lam_prod_left n (fun v => x v.succ) (fun v => e v.succ) z, Fin.sum_univ_succ]`.
+A detailed English derivation is pending.
 -/
 theorem lam_prod_left : ∀ (n : ℕ) (x : Fin n → (T ⟶ G)) (e : Fin n → ℤ) (z : T ⟶ G),
     lam (cls L hL) (List.ofFn fun v => x v ^ e v).prod z = ∑ v, e v • lam (cls L hL) (x v) z
@@ -83,7 +83,7 @@ theorem lam_prod_left : ∀ (n : ℕ) (x : Fin n → (T ⟶ G)) (e : Fin n → �
       lam_prod_left n (fun v => x v.succ) (fun v => e v.succ) z, Fin.sum_univ_succ]
 
 /- English proof (translation)
-Rewrite using `[lam_comm, lam_prod_left hL hΘ]`. Simplify using `only [lam_comm _ z]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lam_prod_right (n : ℕ) (x : Fin n → (T ⟶ G)) (e : Fin n → ℤ) (z : T ⟶ G) :
     lam (cls L hL) z (List.ofFn fun v => x v ^ e v).prod = ∑ v, e v • lam (cls L hL) z (x v) := by
@@ -91,7 +91,7 @@ theorem lam_prod_right (n : ℕ) (x : Fin n → (T ⟶ G)) (e : Fin n → ℤ) (
   simp only [lam_comm _ z]
 
 /- English proof (translation)
-Establish `e : lam (lam (cls L hL) p q) u v = lamC u v (lam (cls L hL) p q)` using `rfl`. Rewrite using `[e, show lam (cls L hL) p q = pull (p * q).left (cls L hL) - pull p.left (cls L hL) - pull q.left (cls L hL) + pull (1 : G' ⟶ G).left (cls L hL) from rfl, map_add, map_sub, map_sub]`. Simplify using `only [lamC_apply]`. Rewrite using `[lam_pull_of (p * q) _ u v (by rw [MonObj.comp_mul, MonObj.mul_comp, MonObj.mul_comp, MonObj.comp_mul, MonObj.comp_mul, _root_.mul_mul_mul_comm]) (by rw [MonObj.comp_mul, MonObj.one_comp, MonObj.one_comp, _root_.mul_one]), lam_pull_of p _ u v (MonObj.mul_comp _ _ _) (MonObj.one_c …`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, MonObj.comp_one, MonObj.comp_one, lam_one_left, lam_mul_left hL hΘ, lam_mul_right' hL hΘ, lam_mul_right' hL hΘ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -120,7 +120,7 @@ namespace GlobalTheory.E8AdjointPairing
 open GlobalTheory.CechPic
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Repeatedly rewrite using `[smul_comm (S _ _) (a _ _)]`. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun j _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem alg_left {M : Type*} [AddCommGroup M] (S a : Matrix (Fin 8) (Fin 8) ℤ) (B : Fin 8 → Fin 8 → M) :
     ∑ i, ∑ j, S i j • ∑ v, a i v • B v j = ∑ v, ∑ j, (a.transpose * S) v j • B v j := by
@@ -131,7 +131,7 @@ theorem alg_left {M : Type*} [AddCommGroup M] (S a : Matrix (Fin 8) (Fin 8) ℤ)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, mul_smul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_comm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem alg_right {M : Type*} [AddCommGroup M] (S a' : Matrix (Fin 8) (Fin 8) ℤ) (B : Fin 8 → Fin 8 → M) :
     ∑ i, ∑ j, S i j • ∑ v, a' j v • B i v = ∑ i, ∑ v, (S * a') i v • B i v := by
@@ -144,7 +144,7 @@ def precomp {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (h : T ⟶ T') : (T' �
   map_mul' := MonObj.comp_mul h
 
 /- English proof (translation)
-The claim follows from `| 0, x, e => by simp [MonObj.comp_one] | n + 1, x, e => by rw [List.ofFn_succ, List.prod_cons, MonObj.comp_mul, comp_prod h n, List.ofFn_succ, List.prod_cons] congr 1 exact map_zpow (precomp (G := G) h) (x 0) (e 0)`.
+A detailed English derivation is pending.
 -/
 theorem comp_prod {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (h : T ⟶ T') :
     ∀ (n : ℕ) (x : Fin n → (T' ⟶ G)) (e : Fin n → ℤ),
@@ -156,17 +156,17 @@ theorem comp_prod {S : Scheme.{0}} {G T T' : Over S} [GrpObj G] (h : T ⟶ T') :
     exact map_zpow (precomp (G := G) h) (x 0) (e 0)
 
 /- English proof (translation)
-Introduce `K _ A A' W pr hpr hiso a a' hS f f' hf hf'`. Use `haveI := A.isAb.comm`. Take `⟨r, hr⟩` from `A.rigid`. Take `⟨cs⟩` from `(GlobalTheory.firstFiveLaws.1.cube (Sp K) A ⟨A.L, r, A.isLB, hr⟩ rfl).1`. Establish `hΘ : ∃ t : LB.Gen (Theta A.A A.L), t.IsGen` using `⟨cs.t, cs.isGen⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `A.isLB`. Establish `hL'` using `A'.isLB`. Establish `hLam : (abelian₂ A.A A.L).IsLB` using `LB.isLB_linComb hL _ _`. Establish `hLC` using `LB.isLB_linComb hLam (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)`. Establish `hcA : cls A'.L hL' = ∑ ab : Fin 8 × Fin 8, W ab.1 ab.2 • lam (cls A.L hL) (pr ab.1) (pr ab.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(cls_eq_iff hL' hLC).2 hiso, cls_linComb hLam]`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[show cls (abelian₂ A.A A.L) hLam = lam (cls A.L hL) (fst A.A A.A) (snd A.A A.A) from cls_cube_two hL _ _ _, pull_lam, lift_fst, lift_snd]`. Establish `key : ∀ {T : Over (Sp K)} (u v : T ⟶ A'.A), lam (cls A'.L hL') u v = ∑ i, ∑ j, (W + W.transpose) i j • lam (cls A.L hL) (u ≫ pr i) (v ≫ pr j)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T u v`. Rewrite using `[← lamC_apply, hcA, map_sum]`. Simplify using `only [map_zsmul, lamC_apply, lam_lam hL hΘ, smul_add, Finset.sum_add_distrib, Matrix.add_apply, Matrix.transpose_apply, add_smul]`. Rewrite using `[Fintype.sum_prod_type, Fintype.sum_prod_type]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `Finset.sum_comm`. Establish `h₁ : (cubeLB A'.A ![fst A'.A A'.A ≫ f, snd A'.A A'.A] A'.L).IsLB` using `LB.isLB_linComb hL' _ _`. Establish `h₂ : (cubeLB A'.A ![fst A'.A A'.A, snd A'.A A'.A ≫ f'] A'.L).IsLB` using `LB.isLB_linComb hL' _ _`. Use `(cls_eq_iff h₁ h₂).1 ?_` and prove the remaining obligations. Rewrite using `[cls_cube_two hL', cls_cube_two hL', key, key]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Category.assoc, hf, hf', comp_prod, lam_prod_left hL hΘ, lam_prod_right hL hΘ]`. Use `(alg_left (W + W.transpose) a (fun v j => lam (cls A.L hL) (fst A'.A A'.A ≫ pr v) (snd A'.A A'.A ≫ pr j))).trans ?_` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `(alg_right (W + W.transpose) a' (fun i v => lam (cls A.L hL) (fst A'.A A'.A ≫ pr i) (snd A'.A A'.A ≫ pr v))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_cubeLB_adjoint : ∀ (K : Type) [Field K] (A A' : PolAV (Sp K)) (W : Matrix (Fin 8) (Fin 8) ℤ) (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ (a a' : Matrix (Fin 8) (Fin 8) ℤ), (W + W.transpose) * a' = a.transpose * (W + W.transpose) → ∀ (f f' : A'.A ⟶ A'.A), (∀ u, f ≫ pr u = (List.ofFn fun v => pr v ^ a u v).prod) → (∀ u, f' ≫ pr u = (List.ofFn fun v => pr v ^ a' u v).prod) → LBIso (cubeLB A'.A ![fst A'.A A'.A ≫ f, snd A'.A A'.A] A'.L) (cubeLB A'.A ![fst A'.A A'.A, snd A'.A A'.A ≫ f'] A'.L) := by
   intro K _ A A' W pr hpr hiso a a' hS f f' hf hf'

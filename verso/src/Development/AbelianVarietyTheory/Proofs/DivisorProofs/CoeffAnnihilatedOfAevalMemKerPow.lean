@@ -18,7 +18,7 @@ noncomputable def fac {d : ℕ} : List (Fin d) → (Fin d →₀ ℕ) → ℕ
   | i :: L, m => ((m + expOf L) i + 1) * fac L m
 
 /- English proof (translation)
-Rewrite using `[expOf, ← Multiset.cons_coe, ← Multiset.singleton_add, Multiset.toFinsupp_add, Multiset.toFinsupp_singleton, expOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expOf_cons {d : ℕ} (i : Fin d) (L : List (Fin d)) :
     expOf (i :: L) = Finsupp.single i 1 + expOf L := by
@@ -26,7 +26,7 @@ theorem expOf_cons {d : ℕ} (i : Fin d) (L : List (Fin d)) :
     Multiset.toFinsupp_singleton, expOf]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [expOf]`. Consider the case `cons i L ih => rw [expOf_cons, map_add, ih, Finsupp.degree_single]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem degree_expOf {d : ℕ} (L : List (Fin d)) : (expOf L).degree = L.length := by
   induction L with
@@ -34,22 +34,22 @@ theorem degree_expOf {d : ℕ} (L : List (Fin d)) : (expOf L).degree = L.length 
   | cons i L ih => rw [expOf_cons, map_add, ih, Finsupp.degree_single]; simp; omega
 
 /- English proof (translation)
-Rewrite using `[expOf, Multiset.toFinsupp_apply, Multiset.coe_count]`. Conclude with `List.count_le_length`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expOf_apply_le {d : ℕ} (L : List (Fin d)) (i : Fin d) : expOf L i ≤ L.length := by
   rw [expOf, Multiset.toFinsupp_apply, Multiset.coe_count]
   exact List.count_le_length
 
 /- English proof (translation)
-Rewrite using `[expOf, Multiset.coe_toList, Finsupp.toMultiset_toFinsupp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expOf_toList {d : ℕ} (α : Fin d →₀ ℕ) : expOf (Finsupp.toMultiset α).toList = α := by
   rw [expOf, Multiset.coe_toList, Finsupp.toMultiset_toFinsupp]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp [fac]`. Consider the case `cons i L ih`. Simplify using `only [fac, zero_add, List.length_cons]`. Rewrite using `[pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `mul_dvd_mul (Nat.dvd_factorial (by omega) (by have := expOf_apply_le L i; omega)) ?_` and prove the remaining obligations. Conclude with `ih.trans (pow_dvd_pow_of_dvd (Nat.factorial_dvd_factorial (by omega)) _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fac_dvd {d : ℕ} (L : List (Fin d)) : fac L 0 ∣ (L.length).factorial ^ L.length := by
   induction L with
@@ -61,7 +61,7 @@ theorem fac_dvd {d : ℕ} (L : List (Fin d)) : fac L 0 ∣ (L.length).factorial 
     exact ih.trans (pow_dvd_pow_of_dvd (Nat.factorial_dvd_factorial (by omega)) _)
 
 /- English proof (translation)
-The claim follows from `| 0, x, _ => by simp | k + 1, x, hx => by rw [pow_succ'] at hx refine Submodule.mul_induction_on (C := fun x => D x ∈ J ^ (k + 1)) hx ?_ ?_ · intro a ha b hb rw [D.leibniz, smul_eq_mul, smul_eq_mul] refine Ideal.add_mem _ ?_ (Ideal.mul_mem_right _ _ hb) rw [pow_succ'] exact Ideal …`.
+A detailed English derivation is pending.
 -/
 theorem der_mem_pow {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
     (D : Derivation R A A) (J : Ideal A) : ∀ (k : ℕ) (x : A), x ∈ J ^ (k + 1) → D x ∈ J ^ k
@@ -79,7 +79,7 @@ theorem der_mem_pow {R A : Type} [CommRing R] [CommRing A] [Algebra R A]
       exact Ideal.add_mem _ hx hy
 
 /- English proof (translation)
-The claim follows from `| [], m, x, hx => by simpa [iterDer] using hx | i :: L, m, x, hx => by show iterDer D L (D i x) ∈ J ^ m apply iterDer_mem D J L m apply der_mem_pow (D i) J have e : L.length + m + 1 = (i :: L).length + m := by simp; omega rw [e]; exact hx`.
+A detailed English derivation is pending.
 -/
 theorem iterDer_mem {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {d : ℕ}
     (D : Fin d → Derivation R A A) (J : Ideal A) :
@@ -93,11 +93,11 @@ theorem iterDer_mem {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {d : �
     rw [e]; exact hx
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [map_add, hp, hq, add_mul, Finset.sum_add_distrib]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, aeval_X, D.leibniz, hp, smul_eq_mul, smul_eq_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pderiv_mul, pderiv_X, map_add, map_mul, aeval_X, add_mul, Finset.sum_add_distrib, Finset.mul_sum]`. Rewrite using `[add_comm]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[Finset.sum_eq_single i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem der_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ}
     (D : Derivation R B B) (y : Fin d → B) (Q : MvPolynomial (Fin d) R) :
@@ -118,7 +118,7 @@ theorem der_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ}
       · simp
 
 /- English proof (translation)
-The claim follows from `| [], m, Q => by simp [iterDer, expOf, fac] | i :: L, m, Q => by show coeff m (iterDer (fun i => pderiv i) L (pderiv i Q)) = _ rw [coeff_iterPD L m, coeff_pderiv, fac, expOf_cons] have e : m + expOf L + Finsupp.single i 1 = m + (Finsupp.single i 1 + expOf L) := by abel rw [e]; pu …`.
+A detailed English derivation is pending.
 -/
 theorem coeff_iterPD {R : Type} [CommRing R] {d : ℕ} :
     ∀ (L : List (Fin d)) (m : Fin d →₀ ℕ) (Q : MvPolynomial (Fin d) R),
@@ -131,9 +131,9 @@ theorem coeff_iterPD {R : Type} [CommRing R] {d : ℕ} :
     rw [e]; push_cast; ring
 
 /- English proof (translation)
-Establish `h1 : Ideal.map (aeval y) (idealOfVars (Fin d) R) ≤ RingHom.ker ε`. Rewrite using `[idealOfVars, Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Simplify using `[RingHom.mem_ker, hy]`. Establish `h2` using `Ideal.mem_map_of_mem (aeval y) hQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h2` using `[Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono h1 n h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aeval_mem_pow {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ}
     (ε : B →ₐ[R] R) (y : Fin d → B) (hy : ∀ i, ε (y i) = 0) (n : ℕ) (Q : MvPolynomial (Fin d) R)
@@ -147,7 +147,7 @@ theorem aeval_mem_pow {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : 
   exact Ideal.pow_right_mono h1 n h2
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hy, coeff_mul_X']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ}
     (ε : B →ₐ[R] R) (y : Fin d → B) (hy : ∀ i, ε (y i) = 0) (Q : MvPolynomial (Fin d) R) :
@@ -158,7 +158,7 @@ theorem eval_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ
   | mul_X p i hp => simp [hy, coeff_mul_X']
 
 /- English proof (translation)
-The claim follows from `| [], Q, _ => by simpa [iterDer] using eval_aeval ε y hy Q | i :: L, Q, hQ => by show ε (iterDer D L (D i (aeval y Q))) = coeff 0 (iterDer (fun i => pderiv i) L (pderiv i Q)) have hP : ∀ j, pderiv j Q ∈ idealOfVars (Fin d) R ^ L.length := fun j => der_mem_pow (pderiv j) _ L.lengt …`.
+A detailed English derivation is pending.
 -/
 theorem eval_iterDer_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] {d : ℕ}
     (ε : B →ₐ[R] R) (y : Fin d → B) (D : Fin d → Derivation R B B)
@@ -191,21 +191,19 @@ theorem eval_iterDer_aeval {R B : Type} [CommRing R] [CommRing B] [Algebra R B] 
     simp only [key, hD, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use `⟨(N.factorial ^ N) ^ N, by positivity, ?_⟩` and prove the remaining obligations. Introduce `R B _ _ _ ε y D hy hD P hhi hP`. Use `set c : ℕ := N.factorial ^ N with hc`. Establish `claim : ∀ k, k ≤ N → ∀ α : Fin d →₀ ℕ, α.degree < k → ((c ^ k : ℕ) : R) * coeff α P = 0`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => intro _ α h`. Use linear arithmetic over natural numbers and integers. Consider the case `succ k ih`. Introduce `hk α hα`.
+Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge α.degree k with h | h` into its components or cases. Rewrite using `[pow_succ, Nat.cast_mul, mul_comm ((c ^ k : ℕ) : R), mul_assoc, ih (by omega) α h, mul_zero]`. Establish `hdeg : α.degree = k` using `by omega set L := (Finsupp.toMultiset α).toList`. Establish `hL : expOf L = α` using `expOf_toList α`. Establish `hlen : L.length = k` using `by rw [← degree_expOf, hL, hdeg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set P' := C ((c ^ k : ℕ) : R) * P`. Establish `hP'1 : P' ∈ idealOfVars (Fin d) R ^ L.length`. Rewrite using `[mem_pow_idealOfVars_iff', hlen]`. Introduce `β hβ`. Rewrite using `[coeff_C_mul, ih (by omega) β hβ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP'2 : aeval y P' ∈ RingHom.ker ε ^ (L.length + 1)`. Rewrite using `[map_mul]`. Use `Ideal.mul_mem_left _ _ (Ideal.pow_le_pow_right (by omega) hP)` and prove the remaining obligations. Establish `e1` using `eval_iterDer_aeval ε y D hy hD L P' hP'1`. Establish `e2` using `iterDer_mem D (RingHom.ker ε) L 1 _ hP'2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `e2` using `[pow_one, RingHom.mem_ker, e1, coeff_iterPD, zero_add, hL, coeff_C_mul]`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg⟩ : fac L 0 ∣ c := by`. Use `(fac_dvd L).trans ?_` and prove the remaining obligations. Rewrite using `[hc, hlen]`. Conclude with `(pow_dvd_pow_of_dvd (Nat.factorial_dvd_factorial (by omega)) k).trans (pow_dvd_pow _ (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 
-Establish `hg' : (c : R) = (fac L 0 : R) * (g : R)` using `by rw [hg, Nat.cast_mul]`. Move the coercions through the operations in `at e2`. Combine the equalities or inequalities in the displayed calculation. Introduce `α`. Break down `Nat.lt_or_ge α.degree N with h | h` into its components or cases.
-
-Conclude with `claim N le_rfl α h`. Rewrite using `[hhi α h, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_coeff_eq_zero (d N : ℕ) : ∃ K : ℕ, 0 < K ∧ ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B]
     (ε : B →ₐ[R] R) (y : Fin d → B) (D : Fin d → Derivation R B B), (∀ i, ε (y i) = 0) →

@@ -19,7 +19,7 @@ section Gen
 variable {S : Scheme.{0}} {M : Over S} [MonObj M]
 
 /- English proof (translation)
-The claim follows from `| 0, u => by simp only [List.ofFn_zero, List.prod_nil]; exact MonObj.comp_one f | k + 1, u => by simp only [List.ofFn_succ, List.prod_cons, MonObj.comp_mul] rw [comp_listProd f (fun i => u i.succ)]`.
+A detailed English derivation is pending.
 -/
 theorem comp_listProd {X Y : Over S} (f : X ⟶ Y) : ∀ {k : ℕ} (u : Fin k → (Y ⟶ M)),
     f ≫ (List.ofFn u).prod = (List.ofFn fun i => f ≫ u i).prod
@@ -29,7 +29,7 @@ theorem comp_listProd {X Y : Over S} (f : X ⟶ Y) : ∀ {k : ℕ} (u : Fin k �
     rw [comp_listProd f (fun i => u i.succ)]
 
 /- English proof (translation)
-The claim follows from `| 0, u => by simp only [List.ofFn_zero, List.prod_nil]; exact MonObj.one_comp g | k + 1, u => by simp only [List.ofFn_succ, List.prod_cons, MonObj.mul_comp] rw [listProd_comp g (fun i => u i.succ)]`.
+A detailed English derivation is pending.
 -/
 theorem listProd_comp {X : Over S} {N : Over S} [MonObj N] (g : M ⟶ N) [IsMonHom g] :
     ∀ {k : ℕ} (u : Fin k → (X ⟶ M)), (List.ofFn u).prod ≫ g = (List.ofFn fun i => u i ≫ g).prod
@@ -41,9 +41,9 @@ theorem listProd_comp {X : Over S} {N : Over S} [MonObj N] (g : M ⟶ N) [IsMonH
 end Gen
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Apply the tactic sequence `by_cases h : i = ℓ <;>`. Apply the tactic sequence `simp [jetTan, jetAug, liftJet, h, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.lift_mk] <;>`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `erw [Ideal.Quotient.lift_mk] <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fst_comp_jetTan {V : Type} [CommRing V] {κ : Type} [DecidableEq κ] (ℓ : κ) :
     (TrivSqZeroExt.fstHom V V V).comp (jetTan (R := V) (m := 0) ℓ) = (jetAug : Jet V κ (0 + 1) →ₐ[V] V) := by
@@ -70,11 +70,11 @@ def eT' : tEpsG (𝟙 (Sp V)) ⟶ ReciprocityTheory.ChartRestriction.G.Chart.sp 
   Over.homMk (𝟙 _) (by simp)
 
 /- English proof (translation)
-Take `⟨u, hu, hp⟩` from `hc`. Establish `h1 : toT t w hw = eT ≫ (List.ofFn u).prod`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [toT, Over.homMk_left, Over.comp_left, eT, Category.id_comp]`. Conclude with `hp.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, comp_listProd]`. Unfold `ReciprocityTheory.ChartRestriction.G.Chart.prodPts`. Use `congr 2`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left, eT, Over.homMk_left, Category.id_comp, hu i, toT]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem prodPts_of_combAt {m : ℕ} (v : Fin m → (Sp (DualNumber V) ⟶ t.G.left))
     (hv : ∀ i, v i ≫ t.G.hom = spMap (algebraMap V (DualNumber V))) (a : Fin m → V)
@@ -95,9 +95,9 @@ theorem prodPts_of_combAt {m : ℕ} (v : Fin m → (Sp (DualNumber V) ⟶ t.G.le
   rfl
 
 /- English proof (translation)
-Use `⟨fun i => eT' ≫ ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (a i)) ≫ toT t (v i) (hv i), fun i => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Over.comp_left, eT', Over.homMk_left, Category.id_comp, toT]`. Both sides reduce to the same expression. Rewrite using `[← comp_listProd eT' (fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (a i)) ≫ toT t (v i) (hv i))]`. Establish `he' : (List.ofFn fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (a i)) ≫ toT t (v i) (hv i)).prod = toT t w hw` using `he.symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he']`. Simplify using `[eT', toT]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem combAt_of_prodPts {m : ℕ} (v : Fin m → (Sp (DualNumber V) ⟶ t.G.left))
     (hv : ∀ i, v i ≫ t.G.hom = spMap (algebraMap V (DualNumber V))) (a : Fin m → V)
@@ -116,9 +116,7 @@ theorem combAt_of_prodPts {m : ℕ} (v : Fin m → (Sp (DualNumber V) ⟶ t.G.le
     simp [eT', toT]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom V V V).toRingHom) ≫ v = Spec.map (CommRingCat.ofHom (algebraMap V V)) ≫ η[t.G].left`. Use `h.2.trans ?_` and prove the remaining obligations. Use `show 𝟙 _ ≫ η[t.G].left = _`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
-
-Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem chartTan_of (v : Sp (DualNumber V) ⟶ t.G.left) (h : IsTanAtG t (𝟙 (Sp V)) v) :
     ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT t v ((h.1).trans (Category.comp_id _))) := by
@@ -131,9 +129,9 @@ theorem chartTan_of (v : Sp (DualNumber V) ⟶ t.G.left) (h : IsTanAtG t (𝟙 (
   rfl
 
 /- English proof (translation)
-Use `⟨hv.trans (Category.comp_id _).symm, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg CommaMorphism.left h`. Use `h'.trans ?_` and prove the remaining obligations. Use `show Spec.map (CommRingCat.ofHom (algebraMap V V)) ≫ η[t.G].left = 𝟙 _ ≫ η[t.G].left`. Rewrite using `[Algebra.algebraMap_self, CommRingCat.ofHom_id, Spec.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem tanAt_of (v : Sp (DualNumber V) ⟶ t.G.left) (hv : v ≫ t.G.hom = spMap (algebraMap V (DualNumber V)))
     (h : ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT t v hv)) : IsTanAtG t (𝟙 (Sp V)) v := by
@@ -145,18 +143,18 @@ theorem tanAt_of (v : Sp (DualNumber V) ⟶ t.G.left) (hv : v ≫ t.G.hom = spMa
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Over.OverMorphism.ext h, fun h => congrArg CommaMorphism.left h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTan_iff' (w : epsOver V V ⟶ t.G) :
     IsTan w ↔ ReciprocityTheory.ChartRestriction.G.Chart.IsTan (R := V) (G := t.G) w :=
   ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg CommaMorphism.left h⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: u = fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (a i)) ≫ v i`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hu i]`. Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD (a i)) ≫ v i, fun i => rfl, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isComb_iff' {m : ℕ} (v : Fin m → (epsOver V V ⟶ t.G)) (a : Fin m → V) (w : epsOver V V ⟶ t.G) :
     IsComb v a w ↔ w = ReciprocityTheory.ChartRestriction.G.Chart.prodPts (R := V) (G := t.G) a v := by
@@ -182,61 +180,57 @@ variable (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)]
 set_option maxHeartbeats 1000000 in
 open ReciprocityTheory.ChartRestriction.G.Chart (tcoord tan_ext prodPts prodPts_tan) in
 /- English proof (translation)
-Introduce `T io y C τ`. Establish `hsm : Smooth C.I.G.G.hom` using `C.I.G.semi.smooth`. Take `⟨n, x, hx⟩` from `ReciprocityTheory.ChartRestriction.G.Chart.univChartLoc (R := T.V) C.I.G.G`. Set `D : Fin (chD C.ch) → (Sp (DualNumber T.V) ⟶ C.I.G.G.left)` to `fun j => (homAt (𝟙 (Sp T.V)) (jetTan ((0 : Fin 1), j) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] DualNumber T.V) ≫ C.xT 1).left`. Establish `hDo : ∀ j, D j ≫ C.I.G.G.hom = spMap (algebraMap T.V (DualNumber T.V))` using `fun j => (Over.w (homAt (𝟙 (Sp T.V)) (jetTan ((0 : Fin 1), j) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] DualNumber T.V) ≫ C.xT 1)).trans (Category.comp_id _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hz : spMap ((jetAug : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] T.V) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →+* T.V) ≫ (C.xT 1).left = (1 : overAt (𝟙 (Sp T.V)) T.V ⟶ C.I.G.G).left` using `congrArg CommaMorphism.left (C.chartT.zero 1)`. Establish `hDt : ∀ j, ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT C.I.G (D j) (hDo j))`. Introduce `j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom) ≫ (spMap ((jetTan ((0 : Fin 1), j) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] DualNumber T.V) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →+* DualNumber T.V) ≫ (C.xT 1).left) = Spec.map (CommRin …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `e1 : ((TrivSqZeroExt.fstHom T.V T.V T.V).toRingHom).comp ((jetTan ((0 : Fin 1), j) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] DualNumber T.V) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →+* DualNumber T.V) = ((jetAug (m` using `0 + 1) : Jet T.V (Fin 1 × Fin (chD C.ch)) (0 + 1) →ₐ[T.V] T.V) : _ →+* T.V) := by`. Rewrite using `[← fst_comp_jetTan]`. Both sides reduce to the same expression. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hz.trans ?_` and prove the remaining obligations. Use `show (spMap (algebraMap T.V T.V) ≫ 𝟙 _) ≫ η[C.I.G.G].left = _`. Rewrite using `[Category.comp_id]`. Set `Mv : Fin (chD C.ch) → (Fin n → T.V)` to `fun j => tcoord hx _ (hDt j)`. Set `L : (Fin (chD C.ch) → T.V) →ₗ[T.V] (Fin n → T.V)` to `{ toFun := fun a => ∑ j, a j • Mv j map_add' := fun a b => by simp only [Pi.add_apply, add_smul, Finset.sum_add_distrib] map_smul' := fun r a => by simp only [Pi.smul_apply, smul_eq_mul, mul_smul, Finset.smul_sum, RingHom.id_apply] }`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ a, L a = ∑ j, a j • Mv j` using `fun _ => rfl`. Establish `hcomb : ∀ (a : Fin (chD C.ch) → T.V) (w : Sp (DualNumber T.V) ⟶ C.I.G.G.left) (hw : w ≫ C.I.G.G.hom = spMap (algebraMap T.V (DualNumber T.V))), IsCombAtG C.I.G (𝟙 (Sp T.V)) D a w → ∃ h : ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT C.I.G w hw), tcoord hx _ h = L a`. Introduce `a w hw hc`. Establish `e` using `prodPts_of_combAt C.I.G D hDo a w hw hc`. Take `⟨h, hh⟩` from `prodPts_tan hx a _ hDt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨e ▸ h, (ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx e _ h).trans hh⟩`. Establish `htgo : ∀ k, C.tgT k ≫ C.I.G.G.hom = spMap (algebraMap T.V (DualNumber T.V))` using `fun k => ((C.tgBasis.1 k).1).trans (Category.comp_id _)`. Establish `htgt : ∀ k, ReciprocityTheory.ChartRestriction.G.Chart.IsTan (toT C.I.G (C.tgT k) (htgo k))` using `fun k => chartTan_of C.I.G (C.tgT k) (C.tgBasis.1 k)`. Establish `htgc : ∀ k, tcoord hx _ (htgt k) = Mv k`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh⟩` from `hcomb (Pi.single k (1 : T.V)) (C.tgT k) (htgo k) (C.chartT.tan k)`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx rfl (htgt k) h, hh, hL]`. Simplify using `[Pi.single_apply]`. Establish `hLinj : Function.Injective L`. Introduce `a b hab`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `tg' : Fin (chD C.ch) → (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `T.V) (DualNumber T.V) ⟶ C.I.G.G) := fun k => toT C.I.G (C.tgT k) (htgo k)`. Take `⟨ha, ea⟩` from `prodPts_tan hx a tg' htgt`. Take `⟨hb, eb⟩` from `prodPts_tan hx b tg' htgt`. Establish `heq : prodPts a tg' = prodPts b tg'`. Apply `tan_ext hx ha hb` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ea, eb]`. Simplify using `only [tg', htgc]`. Simplify `hab` using `only [hL]`. Establish `hwo : (prodPts a tg').left ≫ C.I.G.G.hom = spMap (algebraMap T.V (DualNumber T.V))` using `Over.w _`. Establish `hwT : IsTanAtG C.I.G (𝟙 (Sp T.V)) (prodPts a tg').left` using `tanAt_of C.I.G _ hwo (by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: toT C.I.G (prodPts a tg').left hwo = prodPts a tg'` using `Over.OverMorphism.ext rfl`. Rewrite using `[this]`. Conclude with `ha)`. Take `⟨a0, _, huniq⟩` from `C.tgBasis.2 _ hwT`. Establish `hA : IsCombAtG C.I.G (𝟙 (Sp T.V)) C.tgT a (prodPts a tg').left` using `combAt_of_prodPts C.I.G C.tgT htgo a _ hwo (Over.OverMorphism.ext rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hB : IsCombAtG C.I.G (𝟙 (Sp T.V)) C.tgT b (prodPts a tg').left` using `combAt_of_prodPts C.I.G C.tgT htgo b _ hwo ((Over.OverMorphism.ext rfl : toT C.I.G _ hwo = prodPts a tg').trans heq)`. Conclude with `(huniq a hA).trans (huniq b hB).symm`. Set `u : Fin (Dw.mult τ) → (Fin (chD C.ch) → T.V)` to `fun i => C.uvecT ⟨τ, i⟩`. Set `ub : Fin (Dw.mult τ) → (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀` to `T.V) (DualNumber T.V) ⟶ C.I.G.G) := fun i => C.I.ub τ i`. Establish `hubt : ∀ i, ReciprocityTheory.ChartRestriction.G.Chart.IsTan (ub i)` using `fun i => (isTan_iff' C.I.G _).1 (C.I.tan τ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hubc : ∀ i, tcoord hx _ (hubt i) = L (u i)`. Introduce `i`. Take `⟨h, hh⟩` from `hcomb (C.uvecT ⟨τ, i⟩) (C.I.ub τ i).left (Over.w _) (C.dirT ⟨τ, i⟩)`. Conclude with `(ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx (Over.OverMorphism.ext rfl) (hubt i) h).trans hh`. Establish `hcombub : ∀ (g : Fin (Dw.mult τ) → T.V), ∃ h : ReciprocityTheory.ChartRestriction.G.Chart.IsTan (prodPts g ub), tcoord hx _ h = L (∑ i, g i • u i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Take `⟨h, hh⟩` from `prodPts_tan hx g ub hubt`. Use `⟨h, hh.trans ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hubc i, map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hli : LinearIndependent T.V u`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Take `⟨hp, ep⟩` from `hcombub g`. Establish `h1 : prodPts g ub = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `tan_ext hx hp ReciprocityTheory.ChartRestriction.G.Chart.isTan_one` to reduce the goal to its premises. Rewrite using `[ep, hg, map_zero, ReciprocityTheory.ChartRestriction.G.Chart.tcoord_one]`. Establish `h0 : prodPts (0 : Fin (Dw.mult τ) → T.V) ub = 1`. Unfold `prodPts`. Establish `: (fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD ((0 : Fin (Dw.mult τ) → T.V) i)) ≫ ub i) = fun _ => 1` using `funext fun i => ReciprocityTheory.ChartRestriction.G.Chart.spMap_scaleD_zero (hubt i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Establish `htan1 : IsTan (1 : epsOver T.V T.V ⟶ C.I.G.G)` using `(isTan_iff' C.I.G _).2 ReciprocityTheory.ChartRestriction.G.Chart.isTan_one`. Establish `heig1 : IsEigV c io C.I.G τ (1 : epsOver T.V T.V ⟶ C.I.G.G)`. Introduce `b z _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb` using `C.I.G.act.hom b`. Establish `e1 : (1 : epsOver T.V T.V ⟶ C.I.G.G) ≫ C.I.G.act.act b = 1` using `MonObj.one_comp _`. Establish `e2 : ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD z) ≫ (1 : epsOver T.V T.V ⟶ C.I.G.G) = 1` using `MonObj.comp_one _`. Rewrite using `[e1]`. Conclude with `(congrArg CommaMorphism.left e2).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a0, _, huniq⟩` from `C.I.basis τ 1 htan1 heig1`. Establish `hg1` using `huniq g ((isComb_iff' C.I.G _ _ _).2 h1.symm)`. Establish `hg0` using `huniq 0 ((isComb_iff' C.I.G _ _ _).2 h0.symm)`. Introduce `i`. Conclude with `congrFun (hg1.trans hg0.symm) i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsat : ∀ (v : Fin (chD C.ch) → T.V) (a : T.V), a ≠ 0 → a • v ∈ Submodule.span T.V (Set.range u) → v ∈ Submodule.span T.V (Set.range u)`. Introduce `v a ha hv`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun T.V).1 hv`. Set `w` to `ReciprocityTheory.ChartRestriction.G.Chart.tvec (x := x) (L v)`. Establish `hwt : ReciprocityTheory.ChartRestriction.G.Chart.IsTan w` using `ReciprocityTheory.ChartRestriction.G.Chart.isTan_tvec hx _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwc : tcoord hx w hwt = L v` using `ReciprocityTheory.ChartRestriction.G.Chart.tcoord_tvec hx _`. Take `⟨hp, ep⟩` from `hcombub g`. Establish `hsc : ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD a) ≫ w = prodPts g ub`. Apply `tan_ext hx (ReciprocityTheory.ChartRestriction.G.Chart.isTan_scale a hwt) hp` to reduce the goal to its premises. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.tcoord_scale hx a hwt, hwc, ep, hg, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `heig : ∀ (b : 𝓞 E) (z : T.V), algebraMap T.V T.Fr z = io (embK c τ b) → w ≫ C.I.G.act.act b = ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD z) ≫ w`. Introduce `b z hz`. Establish `hb` using `C.I.G.act.hom b`. Establish `hwb : ReciprocityTheory.ChartRestriction.G.Chart.IsTan (w ≫ C.I.G.act.act b)` using `ReciprocityTheory.ChartRestriction.G.Chart.isTan_comp hwt _`. Establish `hube : ∀ i, ub i ≫ C.I.G.act.act b = ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD z) ≫ ub i` using `fun i => Over.OverMorphism.ext (C.I.eig τ i b z hz)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hubet : ∀ i, ReciprocityTheory.ChartRestriction.G.Chart.IsTan (ub i ≫ C.I.G.act.act b)` using `fun i => ReciprocityTheory.ChartRestriction.G.Chart.isTan_comp (hubt i) _`. Establish `hubec : ∀ i, tcoord hx _ (hubet i) = z • L (u i)` using `fun i => by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx (hube i) (hubet i) (ReciprocityTheory.ChartRestriction.G.Chart.isTan_scale z (hubt i)), ReciprocityTheory.ChartRestriction.G.Chart.tcoord_scale hx z (hubt i), hubc i]`. Establish `hpb : prodPts g ub ≫ C.I.G.act.act b = prodPts g (fun i => ub i ≫ C.I.G.act.act b)`. Unfold `prodPts`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[listProd_comp]`. Simplify using `only [Category.assoc]`. Take `⟨hq, eq⟩` from `prodPts_tan hx g (fun i => ub i ≫ C.I.G.act.act b) hubet`. Establish `key : a • tcoord hx _ hwb = a • (z • L v)`. Establish `e1 : (ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD a) ≫ w) ≫ C.I.G.act.act b = prodPts g (fun i => ub i ≫ C.I.G.act.act b)` using `by rw [hsc, hpb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2 : ReciprocityTheory.ChartRestriction.G.Chart.spMap (ReciprocityTheory.ChartRestriction.G.Chart.scaleD a) ≫ (w ≫ C.I.G.act.act b) = prodPts g (fun i => ub i ≫ C.I.G.act.act b)` using `by rw [← Category.assoc, e1]`. Establish `e3` using `ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx e2 (ReciprocityTheory.ChartRestriction.G.Chart.isTan_scale a hwb) hq`. Rewrite `e3` using `[ReciprocityTheory.ChartRestriction.G.Chart.tcoord_scale hx a hwb, eq]`. Rewrite using `[e3]`. Simplify using `only [hubec, smul_comm (g _) z, ← Finset.smul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_comm a z, ← map_smul, ← hg, map_sum]`. Simplify using `only [map_smul]`. Establish `key' : tcoord hx _ hwb = z • L v` using `smul_right_injective _ ha key`. Apply `tan_ext hx hwb (ReciprocityTheory.ChartRestriction.G.Chart.isTan_scale z hwt)` to reduce the goal to its premises. Rewrite using `[key', ReciprocityTheory.ChartRestriction.G.Chart.tcoord_scale hx z hwt, hwc]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `htanw : IsTan (w : epsOver T.V T.V ⟶ C.I.G.G)` using `(isTan_iff' C.I.G _).2 hwt`. Establish `heigw : IsEigV c io C.I.G τ (w : epsOver T.V T.V ⟶ C.I.G.G)` using `fun b z hz => congrArg CommaMorphism.left (heig b z hz)`. Take `⟨g', hg', _⟩` from `C.I.basis τ w htanw heigw`. Establish `hw' : w = prodPts g' ub` using `(isComb_iff' C.I.G _ _ _).1 hg'`. Take `⟨hp', ep'⟩` from `hcombub g'`.
-
-Establish `: L v = L (∑ i, g' i • u i)`. Rewrite using `[← hwc, ← ep']`. Conclude with `ReciprocityTheory.ChartRestriction.G.Chart.tcoord_congr hx hw' hwt hp'`. Rewrite using `[hLinj this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
-
-Conclude with `⟨SatLin.exists_basis_of_saturated u hli hsat, hsat⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem saturation_charts_holds : ChartSaturated Xo c := by
   intro T io y C τ

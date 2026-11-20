@@ -10,13 +10,13 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Introduce `E _ _`. Set `B : LinearMap.BilinForm ℝ (Cinf E)` to `(LinearMap.mul ℝ (Cinf E)).compr₂ (TG.tr E)`. Establish `hl : ∀ x : Cinf E, (∀ y, B x y = 0) → x = 0` using `fun x h => by`. Establish `h1 : ∑ w, 2 * (x w * starRingEnd ℂ (x w)).re = 0` using `h fun w => starRingEnd ℂ (x w)`. Simplify using `only [Complex.mul_conj, Complex.ofReal_re] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `b'` using `(Finset.sum_eq_zero_iff_of_nonneg fun w _ => mul_nonneg zero_le_two (Complex.normSq_nonneg (x w))).1 h1`. Conclude with `funext fun w => Complex.normSq_eq_zero.1 ((mul_eq_zero.1 (b' w (Finset.mem_univ _))).resolve_left two_ne_zero)`. Establish `hB : B.Nondegenerate` using `⟨hl, fun x h => hl x fun y => by`. Use `h y` as an intermediate fact. Express the relevant statement in the definitionally equal form `TG.tr E (_ * _) = 0 at this ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[mul_comm]⟩` and apply the resulting hypothesis. Set `b` to `Module.finBasis ℝ (Cinf E)`. Use `⟨_, b, B.dualBasis hB b, fun x y => ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[Finset.mul_sum, map_sum]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.BilinForm.dualBasis_repr_apply, mul_smul_comm, map_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.trDual :
     UpperTheory.V.Af.StrongMultiplicityOne.TrDual := by

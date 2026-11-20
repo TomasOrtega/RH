@@ -24,7 +24,7 @@ variable {P : X.Opens → Prop} (hP : ∀ U : X.Opens, U ≤ ⨆ k : {W : X.Open
 include hP in
 
 /- English proof (translation)
-The claim follows from `sec_ext_of_cover (fun k : {Z : X.Opens // P Z ∧ Z ≤ U} => k.1) (fun k => k.2.2) (hP U) fun k => h k.1 k.2.1 k.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ext_basis {U : X.Opens} {t t' : Γ(G, U)}
     (h : ∀ (W : X.Opens) (_ : P W) (hWU : W ≤ U), resM G hWU t = resM G hWU t') : t = t' :=
@@ -34,7 +34,7 @@ theorem ext_basis {U : X.Opens} {t t' : Γ(G, U)}
 include hP hj in
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_sec_of_cover (fun k : {Z : X.Opens // P Z ∧ Z ≤ U} => k.1) (fun k => k.2.2) (hP U) (fun k => j k.1 k.2.1 (resM F k.2.2 s)) fun k l => ext_basis hP fun Z hZ hZU => by`. Rewrite using `[resM_resM, resM_resM, ← hj _ _ k.2.1 hZ, ← hj _ _ l.2.1 hZ, resM_resM, resM_resM]`. Conclude with `⟨t, fun W hW hWU => ht ⟨W, hW, hWU⟩⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_glue (U : X.Opens) (s : Γ(F, U)) :
     ∃ t : Γ(G, U), ∀ (W : X.Opens) (hW : P W) (hWU : W ≤ U), resM G hWU t = j W hW (resM F hWU s) := by
@@ -46,11 +46,9 @@ theorem exists_glue (U : X.Opens) (s : Γ(F, U)) :
 include hP hj in
 
 /- English proof (translation)
-Use `choose g hg using exists_glue hP j hj`. Set `l : ∀ U : X.Opens, Γ(F, U) →ₗ[Γ(X, U)] Γ(G, U)` to `fun U => { toFun := g U map_add' := fun s s' => ext_basis hP fun W hW hWU => by`. Rewrite using `[map_add, hg _ _ W hW, hg _ _ W hW, hg _ _ W hW, map_add, map_add]`. Use the proof step `map_smul' := fun a s => ext_basis hP fun W hW hWU => by`. Rewrite using `[RingHom.id_apply, resM_smul, hg _ _ W hW, hg _ _ W hW, resM_smul, map_smul] }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hl : ∀ {U V : X.Opens} (h : V ≤ U) (s : Γ(F, U)), l V (resM F h s) = resM G h (l U s)` using `fun {U V} h s => ext_basis hP fun W hW hWV => by`. Express the relevant statement in the definitionally equal form `resM G hWV (g V _) = resM G hWV (resM G h (g U s))`. Rewrite using `[hg V _ W hW hWV, resM_resM, resM_resM, hg U s W hW]`. Use `⟨GlobalTheory.LB.homOfLinear l fun h s => hl h s, fun V hV s => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.LB.homOfLinear_app]`.
-
-Express the relevant statement in the definitionally equal form `g V s = j V hV s`. Conclude with `ext_basis hP fun W hW hWV => by rw [hg V s W hW hWV, hj V W hV hW hWV]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_basis : ∃ u : F ⟶ G, ∀ (W : X.Opens) (hW : P W) (s : Γ(F, W)), u.app W s = j W hW s := by
   choose g hg using exists_glue hP j hj
@@ -76,7 +74,7 @@ section Lift
 variable [F.IsQuasicoherent] {U W W' : X.Opens}
 
 /- English proof (translation)
-Use `letI := GlobalTheory.QCoh.resAlgebra h`. Use `letI := GlobalTheory.QCoh.resModule F h`. Use `haveI := GlobalTheory.QCoh.res_isScalarTower F h`. Use `(GlobalTheory.QCoh.isBaseChange_resLinear F hU hW h).inductionOn s p ?_ h₁ h₂ h₃` and prove the remaining obligations. Simplify using `using h₁ 0`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem induction_res (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (p : Γ(F, W) → Prop)
     (h₁ : ∀ s, p (resM F h s)) (h₂ : ∀ (a : Γ(X, W)) s, p s → p (a • s)) (h₃ : ∀ s t, p s → p t → p (s + t))
@@ -88,9 +86,7 @@ theorem induction_res (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) 
   simpa using h₁ 0
 
 /- English proof (translation)
-Use `letI := GlobalTheory.QCoh.resAlgebra h`. Use `letI := GlobalTheory.QCoh.resModule F h`. Use `haveI := GlobalTheory.QCoh.res_isScalarTower F h`. Use `letI := GlobalTheory.QCoh.resModule G h`. Use `haveI := GlobalTheory.QCoh.res_isScalarTower G h`.
-
-Conclude with `⟨(GlobalTheory.QCoh.isBaseChange_resLinear F hU hW h).lift (GlobalTheory.QCoh.resLinear G h ∘ₗ φ), fun s => (GlobalTheory.QCoh.isBaseChange_resLinear F hU hW h).lift_eq _ s⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (φ : Γ(F, U) →ₗ[Γ(X, U)] Γ(G, U)) :
     ∃ l : Γ(F, W) →ₗ[Γ(X, W)] Γ(G, W), ∀ s, l (resM F h s) = resM G h (φ s) := by
@@ -103,7 +99,7 @@ theorem exists_lift (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (�
     fun s => (GlobalTheory.QCoh.isBaseChange_resLinear F hU hW h).lift_eq _ s⟩
 
 /- English proof (translation)
-Use `induction_res hU hW h (fun s => l' (resM F h' s) = resM G h' (l s)) (fun s => ?_) (fun a s e => ?_) (fun s t e e' => ?_) s` and prove the remaining obligations. Rewrite using `[resM_resM, hl, hl', resM_resM]`. Rewrite using `[resM_smul, map_smul, map_smul, resM_smul, e]`. Rewrite using `[map_add, map_add, map_add, map_add, e, e']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_res (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (h' : W' ≤ W)
     {φ : Γ(F, U) →ₗ[Γ(X, U)] Γ(G, U)} {l : Γ(F, W) →ₗ[Γ(X, W)] Γ(G, W)} {l' : Γ(F, W') →ₗ[Γ(X, W')] Γ(G, W')}
@@ -119,13 +115,13 @@ theorem lift_res (hU : IsAffineOpen U) (hW : IsAffineOpen W) (h : W ≤ U) (h' :
 end Lift
 
 /- English proof (translation)
-Set `P : X.Opens → Prop` to `fun W => IsAffineOpen W ∧ ∃ i, W ≤ V i`. Establish `hP : ∀ U : X.Opens, U ≤ ⨆ k : {W : X.Opens // P W ∧ W ≤ U}, k.1` using `fun U x hx => by`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (hc.ge (Set.mem_univ x))`. Take `⟨W, hW, hxW, hWU⟩` from `(Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) (show x ∈ U ⊓ V i from ⟨hx, hi⟩)`. Conclude with `Opens.mem_iSup.2 ⟨⟨W, ⟨hW, i, hWU.trans inf_le_right⟩, hWU.trans inf_le_left⟩, hxW⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ W : X.Opens, P W → ∃ l : Γ(F, W) →ₗ[Γ(X, W)] Γ(G, W), ∀ (k : ι) (h : W ≤ V k) (s : Γ(F, V k)), l (resM F h s) = resM G h (φ k s)`. Introduce and unpack `W ⟨hW, i, hi⟩`. Take `⟨l, hl⟩` from `exists_lift (hV i) hW hi (φ i)`. Use `⟨l, fun k h s => ?_⟩` and prove the remaining obligations. Take `⟨ψ, h₁, h₂⟩` from `hφ i k`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `lift_res (hV i) (hVV i k) inf_le_left (le_inf hi h) h₁ hl (resM F inf_le_right s)`. Rewrite `e` using `[h₂, resM_resM, resM_resM]`. Then use the resulting hypothesis. Use `choose j hj using key`. Take `⟨u, hu⟩` from `exists_hom_of_basis hP j fun W W' hW hW' h s => by`. Take `⟨i, hi⟩` from `hW.2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `lift_res (hV i) hW.1 hi h (hj W hW i hi) (hj W' hW' i _) s`. Use `⟨u, fun i s => ?_⟩` and prove the remaining obligations. Establish `e` using `hj (V i) ⟨hV i, i, le_rfl⟩ i le_rfl s`. Rewrite `e` using `[resM_self, resM_self]`. Rewrite using `[hu _ ⟨hV i, i, le_rfl⟩, e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_cover [F.IsQuasicoherent] {ι : Type} (V : ι → X.Opens) (hV : ∀ i, IsAffineOpen (V i))
     (hc : iSup V = ⊤) (hVV : ∀ i k, IsAffineOpen (V i ⊓ V k)) (φ : ∀ i, Γ(F, V i) →ₗ[Γ(X, V i)] Γ(G, V i))
@@ -156,9 +152,9 @@ theorem exists_hom_of_cover [F.IsQuasicoherent] {ι : Type} (V : ι → X.Opens)
   rw [hu _ ⟨hV i, i, le_rfl⟩, e]
 
 /- English proof (translation)
-Introduce `X F G _ _ ι V hV hc`. Establish `hcov : IsOpenCover V` using `hc`. Use `⟨fun hVV φ hφ => exists_hom_of_cover V hV hc hVV φ hφ, fun u v h => ?_, fun u h => (GlobalTheory.QCoh.epi_iff_affineCover V hcov hV u).2 h, fun u h => (GlobalTheory.QCoh.mono_iff_affineCover V hcov hV u).2 h, fun u h => (GlobalTheory.QCoh.isIso_iff_affineCover V hcov hV u).2 h, f …` and prove the remaining obligations. Use `sub_eq_zero.1 ((GlobalTheory.QCoh.hom_eq_zero_iff_affineCover V hcov hV (u - v)).2 fun i s => ?_)` and prove the remaining obligations. Establish `e : (u - v).app (V i) s + v.app (V i) s = u.app (V i) s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `GlobalTheory.QCoh.appLinear (u - v) (V i) s + GlobalTheory.QCoh.appLinear v (V i) s = GlobalTheory.QCoh.appLinear u (V i) s`. Rewrite using `[← LinearMap.add_apply, ← GlobalTheory.QCoh.appLinear_add, sub_add_cancel]`. Rewrite `e` using `[h i s]`. Conclude with `add_eq_right.1 e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_on_affineCover : ∀ (X : Scheme.{0}) (F G : X.Modules) [F.IsQuasicoherent] [G.IsQuasicoherent] (ι : Type) (V : ι → X.Opens), (∀ i, IsAffineOpen (V i)) → iSup V = ⊤ → ((∀ i j, IsAffineOpen (V i ⊓ V j)) → ∀ φ : ∀ i, Γ(F, V i) →ₗ[Γ(X, V i)] Γ(G, V i), (∀ i j, ∃ ψ : Γ(F, V i ⊓ V j) →ₗ[Γ(X, V i ⊓ V j)] Γ(G, V i ⊓ V j), (∀ s, ψ (resM F inf_le_left s) = resM G inf_le_left (φ i s)) ∧ ∀ s, ψ (resM F inf_le_right s) = resM G inf_le_right (φ j s)) → ∃ u : F ⟶ G, ∀ i s, u.app (V i) s = φ i s) ∧ (∀ u v : F ⟶ G, (∀ i s, u.app (V i) s = v.app (V i) s) → u = v) ∧ (∀ u : F ⟶ G, (∀ i, Function.Surjective (u.app (V i))) → Epi u) ∧ (∀ u : F ⟶ G, (∀ i, Function.Injective (u.app (V i))) → Mono u) ∧ (∀ u : F ⟶ G, (∀ i, Function.Bijective (u.app (V i))) → IsIso u) ∧ ∀ u : F ⟶ G, (cokernel u).IsQuasicoherent ∧ ∀ W : X.Opens, IsAffineOpen W → Function.Surjective ((cokernel.π u).app W) ∧ ∀ t, (cokernel.π u).app W t = 0 ↔ ∃ s, u.app W s = t := by
   intro X F G _ _ ι V hV hc

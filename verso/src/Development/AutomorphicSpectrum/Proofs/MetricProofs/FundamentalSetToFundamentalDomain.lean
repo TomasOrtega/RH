@@ -21,31 +21,27 @@ variable {G X : Type} [Group G] (p : G → X)
 def trivPart (Γ₀ : Subgroup G) : Set Γ₀ := {γ | ∀ a, p ((γ : G) * a) = p a}
 
 /- English proof (translation)
-Use `set H : Subgroup Γ₀ := Γ₁.subgroupOf Γ₀ with hH`. Establish `hHidx : H.index ≠ 0` using `hidx`. Use `haveI : H.FiniteIndex := ⟨hHidx⟩`. Use `haveI : Finite (Γ₀ ⧸ H) := Subgroup.finite_quotient_of_finiteIndex`. Use `haveI : Finite (trivPart p Γ₀) := hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set Z := {z : Γ₀ // z ∈ trivPart p Γ₀ ∧ (z : G) ∈ Γ₁} with hZ`. Use `haveI : Finite Z := Finite.of_injective (fun z : Z => (⟨z.1, z.2.1⟩ : trivPart p Γ₀)) (fun x y h => Subtype.ext (congrArg (fun w : trivPart p Γ₀ => w.1) h))`. Establish `memH : ∀ u : Γ₀, u ∈ H ↔ (u : G) ∈ Γ₁` using `fun u => Subgroup.mem_subgroupOf`. Establish `hex : ∀ q : Γ₀ ⧸ H, ∃ g : Γ₀, (g : G) * a ∈ S ∧ (QuotientGroup.mk g⁻¹ : Γ₀ ⧸ H) = q`. Introduce `q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨d, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨γ, hγ, hmem⟩` from `hcov (((d⁻¹ : Γ₀) : G) * a)`. Use `⟨⟨γ, hle hγ⟩ * d⁻¹, by simpa [mul_assoc] using hmem, ?_⟩` and prove the remaining obligations. Rewrite using `[QuotientGroup.eq, inv_inv, inv_mul_cancel_right, memH]`. Conclude with `hγ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose g hgS hgq using hex`. Establish `hmaps : ∀ x : (Γ₀ ⧸ H) × Z, (((x.2.1 * g x.1 : Γ₀) : G) * a) ∈ S`. Introduce and unpack `⟨q, z⟩`. Establish `h1` using `z.2.1 ((g q : G) * a)`. Use `hsat _ _ h1.symm (hgS q) |> fun h => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `[mul_assoc]`. Set `Φ : (Γ₀ ⧸ H) × Z → {γ : Γ₀ | (γ : G) * a ∈ S}` to `fun x => ⟨x.2.1 * g x.1, hmaps x⟩`. Establish `hbij : Function.Bijective Φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, z⟩ ⟨q', z'⟩ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h0 : z.1 * g q = z'.1 * g q'` using `congrArg Subtype.val h`. Establish `hq : q = q'`. Rewrite using `[← hgq q, ← hgq q', QuotientGroup.eq, inv_inv, memH]`. Establish `e : g q * (g q')⁻¹ = z.1⁻¹ * z'.1`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, h0, mul_inv_cancel_right]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Γ₁.mul_mem (Γ₁.inv_mem z.2.2) z'.2.2`. Substitute `hq` using the available equality. Establish `hz : z.1 = z'.1` using `mul_right_cancel h0`. Conclude with `Prod.ext rfl (Subtype.ext hz)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `⟨γ, hγ⟩ set q : Γ₀ ⧸ H := QuotientGroup.mk γ⁻¹ with hq`. Establish `h1 : g q * γ⁻¹ ∈ H`. Use `hgq q` as an intermediate fact. Rewrite `this` using `[hq, QuotientGroup.eq, inv_inv]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : γ * (g q)⁻¹ ∈ H`. Use `H.inv_mem h1` as an intermediate fact. Simplify using `using this`. Establish `hu' : ((γ * (g q)⁻¹ : Γ₀) : G) ∈ Γ₁` using `(memH _).1 hu`. Establish `h2` using `hsep _ (hgS q) _ hu' (by simpa [mul_assoc] using hγ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3 : p ((γ : G) * a) = p ((g q : G) * a)` using `by simpa [mul_assoc] using h2`. Establish `h4` using `hact ((g q : G)⁻¹) _ _ h3`. Establish `h5 : p ((((g q)⁻¹ * γ : Γ₀) : G) * a) = p a`. Simplify `h4` using `[mul_assoc]`. Establish `hw` using `hgood _ h5`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `htriv : (γ * (g q)⁻¹ : Γ₀) ∈ trivPart p Γ₀`. Introduce `x`. Establish `h6` using `hact (g q : G) _ _ (hw (((g q)⁻¹ : Γ₀) * x))`. Simplify `h6` using `[mul_assoc]`. Use `⟨(q, ⟨γ * (g q)⁻¹, htriv, hu'⟩), Subtype.ext ?_⟩` and prove the remaining obligations.
-
-Simplify using `[Φ]`. Use `haveI : Finite {γ : Γ₀ | (γ : G) * a ∈ S} := Finite.of_surjective Φ hbij.2`. Establish `hc` using `Nat.card_eq_of_bijective Φ hbij`. Rewrite `hc` using `[Nat.card_prod]`. Establish `hfinT : {γ : Γ₀ | (γ : G) * a ∈ S}.Finite` using `Set.toFinite _`.
-
-Rewrite using `[← hfinT.cast_ncard_eq, ← Nat.card_coe_set_eq, ← hc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem encard_translates (Γ₀ Γ₁ : Subgroup G) (hle : Γ₁ ≤ Γ₀) (hidx : Γ₁.relIndex Γ₀ ≠ 0)
     (hact : ∀ u a b, p a = p b → p (u * a) = p (u * b)) (S : Set G)
@@ -124,13 +120,13 @@ theorem encard_translates (Γ₀ Γ₁ : Subgroup G) (hle : Γ₁ ≤ Γ₀) (hi
   rfl
 
 /- English proof (translation)
-Establish `hm : ∀ γ : Γ₀, AEMeasurable (fun x => S.indicator f (γ • x)) (μ.restrict FD)` using `fun γ => ((hf.indicator hS).comp (measurable_const_smul γ)).aemeasurable`. Rewrite using `[← lintegral_indicator hS, hFD.lintegral_eq_tsum'', ← lintegral_tsum hm, ← lintegral_const_mul _ hf]`. Use `lintegral_congr_ae ((ae_restrict_of_ae hN).mono fun a ha => ?_)` and prove the remaining obligations. Establish `e : ∀ γ : Γ₀, S.indicator f (γ • a) = ({γ : Γ₀ | (γ : G) * a ∈ S}).indicator (1 : Γ₀ → ℝ≥0∞) γ * f a`. Introduce `γ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : γ • a = (γ : G) * a` using `rfl`. Distinguish the cases in `h : (γ : G) * a ∈ S`. Rewrite using `[hs, Set.indicator_of_mem h, Set.indicator_of_mem (by exact h), hinv γ γ.2 a]`. Simplify using the standard rewrite rules. Rewrite using `[hs, Set.indicator_of_notMem h, Set.indicator_of_notMem (by exact h)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [e]`. Establish `e2 : ∑' i : Γ₀, ({γ : Γ₀ | (γ : G) * a ∈ S}).indicator (1 : Γ₀ → ℝ≥0∞) i = (({γ : Γ₀ | (γ : G) * a ∈ S}.encard : ℕ∞) : ℝ≥0∞)`. Rewrite using `[← ENNReal.tsum_set_one]`. Conclude with `(tsum_subtype _ (fun _ => (1 : ℝ≥0∞))).symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ENNReal.tsum_mul_right, e2, ha]`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_eq_mul_of_count [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant]
     (Γ₀ : Subgroup G) [Countable Γ₀] (FD : Set G) (hFD : IsFundamentalDomain Γ₀ FD μ) (S : Set G)
@@ -164,19 +160,17 @@ section Ball
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `h0 : (0 : Fin n → ℂ) ∈ ballDom q`. Introduce `τ`. Establish `: ballMat q (0 : Fin n → ℂ) τ = 0` using `by ext a b; simp [ballMat]`. Simplify using `[this, Matrix.PosDef.one]`. Establish `hs : StarConvex ℝ (0 : Fin n → ℂ) (ballDom q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `t ht a b ha hb hab`. Rewrite using `[smul_zero, zero_add]`. Introduce `τ`. Establish `hZ : ballMat q (b • t) τ = (b : ℂ) • ballMat q t τ`. Use extensionality with `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ballMat]`. Establish `hb1 : b ≤ 1` using `by linarith`. Establish `hP` using `ht τ`. Use `set Z := ballMat q t τ`. Establish `e : 1 - (ballMat q (b • t) τ)ᴴ * ballMat q (b • t) τ = ((1 - b ^ 2 : ℝ) : ℂ) • (1 : Matrix (Fin j') (Fin j') ℂ) + ((b ^ 2 : ℝ) : ℂ) • (1 - Zᴴ * Z)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, Matrix.conjTranspose_smul, Matrix.smul_mul, Matrix.mul_smul, smul_sub, smul_smul]`. Simplify using `only [Complex.star_def, Complex.conj_ofReal]`. Use `push_cast`. Rewrite using `[sub_smul, one_smul, pow_two]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Break down `eq_or_lt_of_le hb1 with h1 | h1` into its components or cases. Substitute `h1` using the available equality. Simplify using `using hP`. Establish `hc : (0 : ℂ) < ((1 - b ^ 2 : ℝ) : ℂ)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < 1 - b ^ 2` using `by nlinarith`. Conclude with `this` after adjusting the coercions. Establish `hd : (0 : ℂ) ≤ ((b ^ 2 : ℝ) : ℂ)`. Establish `: (0 : ℝ) ≤ b ^ 2` using `by positivity`. Conclude with `this` after adjusting the coercions.
-
-Conclude with `(Matrix.PosDef.one.smul hc).add_posSemidef (hP.posSemidef.smul hd)`. Conclude with `(hs.isPathConnected h0).isConnected.isPreconnected`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPreconnected_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     IsPreconnected (ballDom q) := by
@@ -215,7 +209,7 @@ theorem isPreconnected_ballDom {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ �
   exact (hs.isPathConnected h0).isConnected.isPreconnected
 
 /- English proof (translation)
-Establish `hm : ∀ τ, Continuous fun t : Fin n → ℂ => ballMat q t τ` using `fun τ => continuous_matrix fun a b => continuous_apply _`. Establish `hd : ∀ τ, Measurable fun t : Fin n → ℂ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re` using `fun τ => Real.measurable_log.comp (Complex.continuous_re.comp (continuous_const.sub ((hm τ).matrix_conjTranspose.matrix_mul (hm τ))).matrix_det).measurable`. Unfold `ballDens ballPot`. Conclude with `Real.measurable_exp.comp (measurable_const.mul (Finset.measurable_sum _ fun τ _ => hd τ).neg)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem measurable_ballDens {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ Fin n) :
     Measurable (ballDens q) := by
@@ -232,11 +226,11 @@ end Ball
 section Index
 
 /- English proof (translation)
-Establish `e : (H.map φ).subgroupOf φ.range = H.map φ.rangeRestrict`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨y, hy, Subtype.ext rfl⟩`. Introduce and unpack `⟨y, hy, h⟩`. Conclude with `⟨y, hy, congrArg Subtype.val h⟩`. Rewrite using `[Subgroup.relIndex, e]`. Introduce `h0`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Subgroup.index_map_dvd H φ.rangeRestrict_surjective` as an intermediate fact. Rewrite `this` using `[h0, zero_dvd_iff]`. Conclude with `hH this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_map_range_ne_zero {L G : Type} [Group L] [Group G] (φ : L →* G) (H : Subgroup L) (hH : H.index ≠ 0) :
     (H.map φ).relIndex φ.range ≠ 0 := by
@@ -264,25 +258,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type
 local notation "𝐯" => Pi.basisFun E (Fin (j + j'))
 
 /- English proof (translation)
-Rewrite using `[← Δ.π_range]`. Conclude with `⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pi_mem_ball (Δ : GroupDict F) (a) : Δ.π a ∈ ballDom F.q := by
   rw [← Δ.π_range]
   exact ⟨a, rfl⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Δ.π_fibre]`. Simplify `h` using `[mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pi_mul_congr (Δ : GroupDict F) (u a b) (h : Δ.π a = Δ.π b) : Δ.π (u * a) = Δ.π (u * b) := by
   rw [Δ.π_fibre] at h ⊢
   simpa [mul_assoc] using h
 
 /- English proof (translation)
-Take `⟨h₁, hh₁⟩` from `h`. Take `⟨h₂, hh₂⟩` from `Δ.α_act γ a`. Take `⟨t₀, -, huniq⟩` from `F.univ (F.R t') (F.form_eq t') (F.sig t' ht')`. Establish `A : t' = t₀` using `huniq t' ⟨ht', LinearEquiv.refl ℂ _, fun x => rfl⟩`. Establish `B : Δ.π (archEmbed Δ.h 𝐯 γ * a) = t₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `huniq _ ⟨pi_mem_ball Δ _, h₂.symm.trans h₁, fun x => ?_⟩` and prove the remaining obligations. Take `⟨y, rfl⟩` from `(Δ.α γ).1.surjective x`. Establish `e1` using `hh₁ y`. Establish `e2` using `hh₂ y`. Simplify using `only [LinearEquiv.trans_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, LinearEquiv.symm_apply_apply, ← e1]`. Both sides reduce to the same expression. Rewrite using `[A, B]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem pi_eq_of_eqvBy (Δ : GroupDict F) (γ : latticeStab Δ.h Δ.e.range) (a) (t' : Fin n → ℂ)
     (ht' : t' ∈ ballDom F.q) (h : (F.R (Δ.π a)).EqvBy (F.R t') (Δ.α γ).1) :
@@ -302,13 +296,13 @@ theorem pi_eq_of_eqvBy (Δ : GroupDict F) (γ : latticeStab Δ.h Δ.e.range) (a)
   rw [A, B]
 
 /- English proof (translation)
-Take `⟨c, -, -, hc⟩` from `GlobalTheory.T.haar_pushforward_eq_ball_density E Ψ j j' n g Λ F Δ μ`. Take `⟨A, G, hA, -, hAπ, -⟩` from `Δ.act u`. Take `⟨a₀, ha₀⟩` from `hu`. Rewrite `ha₀` using `[hAπ]`. Take `⟨i, hi⟩` from `Function.ne_iff.1 ha₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfd : DifferentiableOn ℂ (fun t => A t i - t i) (ballDom F.q)` using `(differentiableOn_pi.1 hA i).sub (differentiable_apply i).differentiableOn`. Establish `hfa` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn (BallInverse.isOpen_ballDom F.q) hfd`. Establish `hz` using `ReciprocityTheory.AnForm.volume_zero_set_of_analyticOnNhd (BallInverse.isOpen_ballDom F.q) (isPreconnected_ballDom F.q) hfa ⟨Δ.π a₀, pi_mem_ball Δ a₀, sub_ne_zero.2 hi⟩`. Use `set Zr := {z | z ∈ ballDom F.q ∧ A z i - z i = 0} with hZr`. Establish `hν : (μ.map Δ.π) Zr = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Measure.smul_apply, smul_eq_mul]`. Establish `h1 : (volume.restrict (ballDom F.q)) Zr = 0` using `Measure.restrict_le_self.absolutelyContinuous hz`. Establish `h2` using `withDensity_absolutelyContinuous (volume.restrict (ballDom F.q)) (fun t => ENNReal.ofReal (ballDens F.q t)) h1`. Rewrite using `[h2, mul_zero]`. Use `measure_mono_null ?_ (le_antisymm ((Measure.le_map_apply Δ.π_cont.aemeasurable Zr).trans hν.le) bot_le)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Use `⟨pi_mem_ball Δ a, ?_⟩` and prove the remaining obligations. Establish `ha' : Δ.π (u * a) = Δ.π a` using `ha`. Rewrite `ha'` using `[hAπ]`. Simplify using `[ha']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem null_fixed (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h 𝐯)) [μ.IsHaarMeasure] (u : archUnitary Δ.h 𝐯)
     (hu : ∃ a, Δ.π (u * a) ≠ Δ.π a) : μ {a | Δ.π (u * a) = Δ.π a} = 0 := by
@@ -337,9 +331,9 @@ theorem null_fixed (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h 𝐯)) [μ
   simp [ha']
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (archLatticeGroup Δ.h 𝐯 Δ.e.range) := ArchLatticeDiscrete.proof Δ.h 𝐯 Δ.e.range Δ.integral.isLattice`. Establish `hK : IsCompact (Δ.M.stab : Set (archUnitary Δ.h 𝐯))` using `MajorantStabCompact.proof Δ.h 𝐯 Δ.M`. Establish `hcl : IsClosed ((archLatticeGroup Δ.h 𝐯 Δ.e.range : Subgroup _) : Set (archUnitary Δ.h 𝐯))` using `Subgroup.isClosed_of_discrete`. Establish `hf : (((archLatticeGroup Δ.h 𝐯 Δ.e.range : Subgroup _) : Set (archUnitary Δ.h 𝐯)) ∩ Δ.M.stab).Finite` using `(hK.inter_left hcl).finite ((isDiscrete_iff_discreteTopology.2 (inferInstanceAs (DiscreteTopology (archLatticeGroup Δ.h 𝐯 Δ.e.range)))).mono Set.inter_subset_left)`. Use `(hf.preimage Subtype.val_injective.injOn).subset fun γ hγ => ⟨γ.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : Δ.π ((γ : archUnitary Δ.h 𝐯) * 1) = Δ.π 1` using `hγ 1`. Establish `h2` using `(Δ.π_fibre 1 (γ : archUnitary Δ.h 𝐯)).1 (by simpa using h1.symm)`. Simplify using `using h2`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_trivPart (Δ : GroupDict F) :
     (trivPart Δ.π (archLatticeGroup Δ.h 𝐯 Δ.e.range)).Finite := by
@@ -367,39 +361,29 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type
 local notation "𝐯" => Pi.basisFun E (Fin (j + j'))
 
 /- English proof (translation)
-Take `⟨c, hc0, hcT, hc⟩` from `GlobalTheory.T.haar_pushforward_eq_ball_density E Ψ j j' n g Λ F Δ μ`. Use `set Γ₀ := archLatticeGroup Δ.h 𝐯 Δ.e.range with hΓ₀`. Set `φ : latticeStab Δ.h Δ.e.range →* archUnitary Δ.h 𝐯` to `(archEmbed Δ.h 𝐯).comp (latticeStab Δ.h Δ.e.range).subtype`. Set `ψ : latticeStab Δ.h Δ.e.range →* (Λ ≃ₗ[𝓞 E] Λ)` to `(autGrp F.form).subtype.comp Δ.α.toMonoidHom`. Establish `hrange : φ.range = Γ₀`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΓ₀, archLatticeGroup, MonoidHom.range_comp, Subgroup.range_subtype]`. Establish `hψ : ψ.range = autGrp F.form`. Rewrite using `[MonoidHom.range_comp, MonoidHom.range_eq_top.2 Δ.α.surjective, ← MonoidHom.range_eq_map, Subgroup.range_subtype]`. Use `set Γ₁ : Subgroup (archUnitary Δ.h 𝐯) := (Γ.comap ψ).map φ with hΓ₁`. Establish `hle : Γ₁ ≤ Γ₀`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hrange, hΓ₁]`. Conclude with `Subgroup.map_le_range _ _`. Establish `hidx : Γ₁.relIndex Γ₀ ≠ 0`. Rewrite using `[← hrange]`. Use `relIndex_map_range_ne_zero φ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.index_comap, hψ]`. Conclude with `hΓ.2`. Use `haveI : Countable Γ₀ := by`. Establish `: Countable Δ.h.unitaryGroup` using `countable_unitaryGroup Δ.h 𝐯`. Establish `h1 : ((Γ₀ : Subgroup _) : Set (archUnitary Δ.h 𝐯)).Countable`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hΓ₀, archLatticeGroup, Subgroup.coe_map]`. Conclude with `(Set.to_countable _).image _`. Conclude with `h1.to_subtype`. Use `set S : Set (archUnitary Δ.h 𝐯) := Δ.π ⁻¹' FF with hS`. Establish `hSm : MeasurableSet S` using `Δ.π_cont.measurable hFF.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hact` using `pi_mul_congr Δ`. Establish `hsat : ∀ a b, Δ.π a = Δ.π b → a ∈ S → b ∈ S` using `fun a b h ha => by`. Simplify `ha` using `[hS, ← h]`. Establish `hcov : ∀ a, ∃ γ ∈ Γ₁, γ * a ∈ S`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t', ht', γ, hγ, hE⟩` from `hFF.2.2.1 (Δ.π a) (pi_mem_ball Δ a)`. Use `set s := Δ.α.symm ⟨γ, hΓ.1 hγ⟩ with hs`. Establish `hαs : (Δ.α s).1 = γ` using `by simp [hs]`. Use `⟨φ s, ⟨s, ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ψ s ∈ Γ show (Δ.α s).1 ∈ Γ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hαs]`. Conclude with `hγ`. Use `pi_eq_of_eqvBy Δ s a t' (hFF.2.1 ht') (by rw [hαs]; exact hE) show Δ.π (φ s * a) ∈ FF` as an intermediate fact. Establish `e : φ s = archEmbed Δ.h 𝐯 s` using `rfl`. Rewrite using `[e, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `ht'`. Establish `hsep : ∀ a ∈ S, ∀ γ ∈ Γ₁, γ * a ∈ S → Δ.π (γ * a) = Δ.π a`. Introduce and unpack `a ha _ ⟨s, hs, rfl⟩ hγ`. Use `(hFF.2.2.2 _ ha _ hγ ⟨(Δ.α s).1, hs, Δ.α_act s a⟩).symm` and prove the remaining obligations. Establish `hfin` using `finite_trivPart Δ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set N : ℕ := Γ₁.relIndex Γ₀ * Nat.card {z : Γ₀ // z ∈ trivPart Δ.π Γ₀ ∧ (z : archUnitary Δ.h 𝐯) ∈ Γ₁} with hN`. Establish `hN0 : N ≠ 0`. Use `Nat.mul_ne_zero hidx ?_` and prove the remaining obligations. Use `haveI : Finite (trivPart Δ.π Γ₀) := hfin`. Use `haveI : Finite {z : Γ₀ // z ∈ trivPart Δ.π Γ₀ ∧ (z : archUnitary Δ.h 𝐯) ∈ Γ₁} := Finite.of_injective (fun z => (⟨z.1, z.2.1⟩ : trivPart Δ.π Γ₀)) (fun x y h => Subtype.ext (congrArg (fun w : trivPart Δ.π Γ₀ => w.1) h))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nonempty {z : Γ₀ // z ∈ trivPart Δ.π Γ₀ ∧ (z : archUnitary Δ.h 𝐯) ∈ Γ₁} := ⟨⟨1, fun a => by simp, Γ₁.one_mem⟩⟩`. Conclude with `Nat.card_pos.ne'`. Establish `hgood : ∀ᵐ a ∂μ, ∀ γ : Γ₀, Δ.π ((γ : archUnitary Δ.h 𝐯) * a) = Δ.π a → γ ∈ trivPart Δ.π Γ₀`. Rewrite using `[ae_all_iff]`. Introduce `γ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hγ : γ ∈ trivPart Δ.π Γ₀`. Conclude with `ae_of_all _ fun _ _ => hγ`. Establish `hne : ∃ a, Δ.π ((γ : archUnitary Δ.h 𝐯) * a) ≠ Δ.π a`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
-
-Conclude with `hγ hcon`. Establish `h0` using `null_fixed Δ μ (γ : archUnitary Δ.h 𝐯) hne`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 h0] with a ha h1`. Conclude with `absurd h1 ha`. Establish `hcount : ∀ᵐ a ∂μ, {γ : Γ₀ | (γ : archUnitary Δ.h 𝐯) * a ∈ S}.encard = ((N : ℕ) : ℕ∞)` using `hgood.mono fun a ha => encard_translates Δ.π Γ₀ Γ₁ hle hidx hact S hsat hcov hsep hfin a ha`.
-
-Use `⟨c⁻¹ * (N : ℝ≥0∞), ?_, ?_, fun Φ hΦ hinv => ?_⟩` and prove the remaining obligations. Conclude with `mul_ne_zero (ENNReal.inv_ne_zero.2 hcT) (by exact_mod_cast hN0)`. Conclude with `ENNReal.mul_ne_top (ENNReal.inv_ne_top.2 hc0) (ENNReal.natCast_ne_top N)`. Establish `hπm : Measurable Δ.π` using `Δ.π_cont.measurable`. Establish `hdens : Measurable fun t => ENNReal.ofReal (ballDens F.q t)` using `ENNReal.measurable_ofReal.comp (measurable_ballDens F.q)`.
-
-Establish `hfinv : ∀ γ ∈ Γ₀, ∀ a, Φ (Δ.π (γ * a)) = Φ (Δ.π a)`. Introduce and unpack `_ ⟨s, hs, rfl⟩ a`. Conclude with `(hinv _ (pi_mem_ball Δ a) _ (pi_mem_ball Δ _) ⟨(Δ.α ⟨s, hs⟩).1, (Δ.α ⟨s, hs⟩).2, Δ.α_act ⟨s, hs⟩ a⟩).symm`. Establish `h1` using `setLIntegral_eq_mul_of_count μ Γ₀ FD hFD S hSm (fun a => Φ (Δ.π a)) (hΦ.comp hπm) hfinv ((N : ℕ) : ℕ∞) hcount`. Establish `h2 : ∫⁻ a in S, Φ (Δ.π a) ∂μ = c * ∫⁻ t in FF, Φ t * ENNReal.ofReal (ballDens F.q t)`.
-
-Rewrite using `[hS, ← setLIntegral_map hFF.1 hΦ hπm, hc, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, restrict_withDensity hFF.1, lintegral_withDensity_eq_lintegral_mul _ hdens hΦ, Measure.restrict_restrict hFF.1, Set.inter_eq_left.2 hFF.2.1]`. Use `congr 1`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Simplify using `[mul_comm]`. Rewrite `h1` using `[h2]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel hc0 hcT, one_mul]`. Use `_ = c⁻¹ * (N : ℝ≥0∞) * ∫⁻ a in FD, Φ (Δ.π a) ∂μ := by`. Rewrite using `[h1, mul_assoc]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_const_lintegral (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h 𝐯)) [μ.IsHaarMeasure]
     (Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)) (FF : Set (Fin n → ℂ)) (FD : Set (archUnitary Δ.h 𝐯)) (hΓ : F.IsArith Γ)
@@ -510,7 +494,7 @@ theorem exists_const_lintegral (Δ : GroupDict F) (μ : Measure (archUnitary Δ.
 end Dict
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F Δ μ _ Γ FF FD hΓ hFF hFD`. Conclude with `exists_const_lintegral Δ μ Γ FF FD hΓ hFF hFD`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lintegral_fundSet_eq_const_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (Δ : GroupDict F) (μ : Measure (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))) [μ.IsHaarMeasure] (Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)) (FF : Set (Fin n → ℂ)) (FD : Set (archUnitary Δ.h (Pi.basisFun E (Fin (j + j'))))), F.IsArith Γ → F.IsFundSet Γ FF → IsFundamentalDomain (archLatticeGroup Δ.h (Pi.basisFun E (Fin (j + j'))) Δ.e.range) FD μ → ∃ C : ℝ≥0∞, C ≠ 0 ∧ C ≠ ⊤ ∧ ∀ Φ : (Fin n → ℂ) → ℝ≥0∞, Measurable Φ → (∀ t ∈ ballDom F.q, ∀ t' ∈ ballDom F.q, F.Eqv (autGrp F.form) t t' → Φ t = Φ t') → ∫⁻ t in FF, Φ t * ENNReal.ofReal (ballDens F.q t) = C * ∫⁻ a in FD, Φ (Δ.π a) ∂μ := by
   intro E _ _ _ Ψ _ j j' n g Λ _ _ F Δ μ _ Γ FF FD hΓ hFF hFD

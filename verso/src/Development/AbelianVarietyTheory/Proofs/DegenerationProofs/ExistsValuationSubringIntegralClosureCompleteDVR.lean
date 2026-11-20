@@ -7,13 +7,9 @@ namespace GlobalTheory.LN
 open IsLocalRing
 
 /- English proof (translation)
-Set `K` to `FractionRing O`. Set `L : IntermediateField K F` to `IntermediateField.adjoin K {x}`. Use `haveI : FiniteDimensional K L := IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral x)`. Use `haveI : CharZero K := inferInstance`. Use `haveI : Module.Finite O (integralClosure O L) := IsIntegralClosure.finite O K L _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis.
 
-Use `haveI : IsDiscreteValuationRing (integralClosure O L) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr O K L`. Use `haveI : IsFractionRing (integralClosure O L) L := integralClosure.isFractionRing_of_finite_extension K L`. Set `y : L` to `⟨x, IntermediateField.mem_adjoin_simple_self K x⟩`. Set `f : L →ₐ[O] F` to `(IntermediateField.val L).restrictScalars O`. Break down `ValuationRing.isInteger_or_isInteger (integralClosure O L) y with ⟨z, hz⟩ | ⟨z, hz⟩` into its components or cases.
-
-Use `left`. Establish `h : IsIntegral O y` using `hz ▸ z.2`. Conclude with `h.map f`. Use `right`. Establish `h : IsIntegral O y⁻¹` using `hz ▸ z.2`.
-
-Establish `h'` using `h.map f`. Rewrite `h'` using `[map_inv₀]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isIntegral_or_isIntegral_inv (O : Type) [CommRing O] [IsDomain O] [CharZero O]
     [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
@@ -42,9 +38,9 @@ theorem isIntegral_or_isIntegral_inv (O : Type) [CommRing O] [IsDomain O] [CharZ
     rwa [map_inv₀] at h'
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ h F _ _ _ _ _`. Break down `h with ⟨hF, -⟩ | ⟨hd, hirr, hc⟩` into its components or cases. Use `⟨⊤, fun x => ⟨fun _ => ?_, fun _ => trivial⟩⟩` and prove the remaining obligations. Establish `ha : IsAlgebraic O x` using `(IsFractionRing.isAlgebraic_iff O (FractionRing O) F).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Use `letI := hF.toField`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Conclude with `ha.isIntegral`. Use `haveI : IsAdicComplete (maximalIdeal O) O := hirr.maximalIdeal_eq ▸ hc`. Conclude with `⟨⟨(integralClosure O F).toSubring, fun x => isIntegral_or_isIntegral_inv O F x⟩, fun x => Iff.rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_isIntegral : ∀ (O : Type) [CommRing O] [IsDomain O] [CharZero O] (ϖ : O), GlobalTheory.LN.ArcBase O ϖ → ∀ (F : Type) [Field F] [Algebra (FractionRing O) F] [Algebra O F] [IsScalarTower O (FractionRing O) F] [Algebra.IsAlgebraic (FractionRing O) F], ∃ S : ValuationSubring F, ∀ x, x ∈ S ↔ IsIntegral O x := by
   intro O _ _ _ ϖ h F _ _ _ _ _

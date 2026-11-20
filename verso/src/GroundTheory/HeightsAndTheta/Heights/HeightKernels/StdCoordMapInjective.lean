@@ -68,7 +68,7 @@ theorem stdCoordMap_apply (K : Type*) [Field K] (n : ℕ) (v : Fin n → 𝓞 K)
     stdCoordMap K n v i = (v i : K) := rfl
 
 /- English proof (translation)
-Introduce `v w h`. Use function extensionality and compare the values at `i`. Conclude with `Subtype.ext (congrFun h i)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stdCoordMap_injective (K : Type*) [Field K] (n : ℕ) :
     Function.Injective (stdCoordMap K n) := by
@@ -77,9 +77,9 @@ theorem stdCoordMap_injective (K : Type*) [Field K] (n : ℕ) :
   exact Subtype.ext (congrFun h i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[stdCoordMap_apply]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem stdCoordMap_single (K : Type*) [Field K] (n : ℕ) (i : Fin n) :
     stdCoordMap K n (Pi.single i 1) = Pi.single i 1 := by
@@ -90,7 +90,7 @@ theorem stdCoordMap_single (K : Type*) [Field K] (n : ℕ) (i : Fin n) :
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← (Pi.basisFun K (Fin n)).span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Use `Submodule.subset_span ⟨Pi.single i 1, ?_⟩` and prove the remaining obligations. Rewrite using `[stdCoordMap_single, Pi.basisFun_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem stdCoordMap_span (K : Type*) [Field K] (n : ℕ) :
     Submodule.span K (LinearMap.range (stdCoordMap K n) : Set (Fin n → K)) = ⊤ := by
@@ -100,7 +100,7 @@ theorem stdCoordMap_span (K : Type*) [Field K] (n : ℕ) :
   rw [stdCoordMap_single, Pi.basisFun_apply]
 
 /- English proof (translation)
-Use `(HermitianMetric.standard_inner K (Fin n) σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] v) ((1 : ComplexAt σ) ⊗ₜ[𝓞 K] w)).trans ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[standardCoord_tmul, standardCoord_tmul]`. Simplify using `[embVec, stdCoordMap_apply, ComplexAt.ofComplex]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem stdCoordMap_inner (K : Type*) [Field K] [NumberField K] (n : ℕ) (σ : K →+* ℂ)
     (v w : Fin n → 𝓞 K) :
@@ -116,7 +116,7 @@ theorem stdCoordMap_inner (K : Type*) [Field K] [NumberField K] (n : ℕ) (σ : 
   simp [embVec, stdCoordMap_apply, ComplexAt.ofComplex]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨coordLines_isInternal ℚ, coordLines_rank ℚ, coordLines_orthogonal ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem S6.LineCoordinates.hypotheses_inhabited :
     DirectSum.IsInternal (coordLines ℚ) ∧
@@ -125,7 +125,7 @@ theorem S6.LineCoordinates.hypotheses_inhabited :
   ⟨coordLines_isInternal ℚ, coordLines_rank ℚ, coordLines_orthogonal ℚ⟩
 
 /- English proof (translation)
-Use `⟨stdCoordMap_injective ℚ 2, stdCoordMap_span ℚ 2, stdCoordMap_inner ℚ 2, (Pi.basisFun ℚ (Fin 2)).linearIndependent, ?_⟩` and prove the remaining obligations. Rewrite using `[(Pi.basisFun ℚ (Fin 2)).span_eq, Submodule.restrictScalars_top, inf_top_eq, Submodule.map_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem S6.CoordinateDegree.hypotheses_inhabited :
     Function.Injective (stdCoordMap ℚ 2) ∧
@@ -145,7 +145,7 @@ theorem S6.CoordinateDegree.hypotheses_inhabited :
     Submodule.map_top]
 
 /- English proof (translation)
-Take `⟨hFG, hspan⟩` from `LinesIdealLatticeFG.full ℚ 2 _ fun _ => one_ne_zero`. Use `⟨hFG, hspan, ?_, rfl⟩` and prove the remaining obligations. Establish `h` using `(stdSumBasis ℚ 1 1).linearIndependent`. Rewrite `h` using `[← stdSumBasis_elim]`. Simplify `h` using `only [stdSumBasis_inl, stdSumBasis_inr]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem S6.QuotientDegreeSplit.hypotheses_inhabited :
     (idealLattice (fun _ : Fin 2 => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ))).FG ∧
@@ -161,7 +161,7 @@ theorem S6.QuotientDegreeSplit.hypotheses_inhabited :
   simpa only [stdSumBasis_inl, stdSumBasis_inr] using h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨HermitianExtension.standardSplit ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem S6.ExtensionDegree.hypotheses_inhabited :
     Nonempty (HermitianExtension (HermitianBundle.integers ℚ) (HermitianBundle.standard ℚ 2)
@@ -169,7 +169,7 @@ theorem S6.ExtensionDegree.hypotheses_inhabited :
   ⟨HermitianExtension.standardSplit ℚ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨stdCoordMap_injective ℚ 2, fun t x ht hx => standardFlag_saturated (K := ℚ) 1 t x ht hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem S6.SaturatedSpan.hypotheses_inhabited :
     Function.Injective (stdCoordMap ℚ 2) ∧

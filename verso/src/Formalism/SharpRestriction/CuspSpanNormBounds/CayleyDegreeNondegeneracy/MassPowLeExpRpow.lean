@@ -3,9 +3,9 @@ import Mathlib
 namespace Formalism.MainNotions.BridgeLemma₂
 
 /- English proof (translation)
-Establish `h1 : (2 : ℝ) ≤ Real.exp 1`. Use `Real.add_one_le_exp (1 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : Real.exp 15 = Real.exp 1 ^ 15`. Rewrite using `[← Real.exp_nat_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem const_20736_le_exp_15 : (20736 : ℝ) ≤ Real.exp 15 := by
   have h1 : (2 : ℝ) ≤ Real.exp 1 := by
@@ -19,23 +19,23 @@ private theorem const_20736_le_exp_15 : (20736 : ℝ) ≤ Real.exp 15 := by
     _ ≤ Real.exp 1 ^ 15 := pow_le_pow_left₀ (by norm_num) h1 15
 
 /- English proof (translation)
-Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hm2 : (2 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `hfpos : (0 : ℝ) < f` using `by linarith`. Establish `hrdpos : (0 : ℝ) < rd` using `by linarith`. Establish `hfe : (f : ℝ) ≤ Real.exp m` using `(Real.log_le_iff_le_exp hfpos).1 hlf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre : rd ≤ Real.exp (κ * L)` using `(Real.log_le_iff_le_exp hrdpos).1 hlrd`. Establish `hfr : (1 : ℝ) ≤ f * rd` using `by nlinarith`. Establish `hfr2 : (1 : ℝ) ≤ f * rd ^ 2` using `by nlinarith`. Establish `hBr0 : 0 ≤ B₁ * rd` using `mul_nonneg hB0 hrdpos.le`. Establish `hBr : B₁ * rd ≤ 4 * f * rd * rd` using `mul_le_mul_of_nonneg_right hB hrdpos.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 1 + 2 * B₁ ≤ 9 * f * rd` using `by nlinarith`. Establish `hb : 1 + 2 * (B₁ * rd) ≤ 9 * f * rd ^ 2` using `by nlinarith`. Establish `hc : B₁ * (B₁ * rd) ≤ 16 * (f : ℝ) ^ 2 * rd ^ 3`. Establish `h` using `mul_le_mul hB hBr hBr0 (by linarith)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hQ0 : 0 ≤ (1 + 2 * B₁) * (1 + 2 * (B₁ * rd)) * (B₁ * (B₁ * rd)) ^ 2` using `mul_nonneg (mul_nonneg (by linarith) (by linarith)) (sq_nonneg _)`. Establish `hQ : (1 + 2 * B₁) * (1 + 2 * (B₁ * rd)) * (B₁ * (B₁ * rd)) ^ 2 ≤ Real.exp (15 + 6 * (m : ℝ) + 9 * (κ * L))`. Establish `hc2 : (B₁ * (B₁ * rd)) ^ 2 ≤ (16 * (f : ℝ) ^ 2 * rd ^ 3) ^ 2` using `pow_le_pow_left₀ (mul_nonneg hB0 hBr0) hc 2`. Establish `hab : (1 + 2 * B₁) * (1 + 2 * (B₁ * rd)) ≤ (9 * f * rd) * (9 * f * rd ^ 2)` using `mul_le_mul ha hb (by linarith) (by linarith)`. Establish `h1 : (1 + 2 * B₁) * (1 + 2 * (B₁ * rd)) * (B₁ * (B₁ * rd)) ^ 2 ≤ (9 * f * rd) * (9 * f * rd ^ 2) * (16 * (f : ℝ) ^ 2 * rd ^ 3) ^ 2` using `mul_le_mul hab hc2 (sq_nonneg _) (mul_nonneg (by linarith) (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (9 * f * rd) * (9 * f * rd ^ 2) * (16 * (f : ℝ) ^ 2 * rd ^ 3) ^ 2 = 20736 * (f : ℝ) ^ 6 * rd ^ 9` using `by ring`. Establish `hf6 : (f : ℝ) ^ 6 ≤ Real.exp m ^ 6` using `pow_le_pow_left₀ hfpos.le hfe 6`. Establish `hr9 : rd ^ 9 ≤ Real.exp (κ * L) ^ 9` using `pow_le_pow_left₀ hrdpos.le hre 9`. Establish `h3 : 20736 * (f : ℝ) ^ 6 * rd ^ 9 ≤ Real.exp 15 * Real.exp m ^ 6 * Real.exp (κ * L) ^ 9` using `mul_le_mul (mul_le_mul const_20736_le_exp_15 hf6 (by positivity) (by positivity)) hr9 (pow_nonneg hrdpos.le 9) (by positivity)`. Establish `h4 : Real.exp (15 + 6 * (m : ℝ) + 9 * (κ * L)) = Real.exp 15 * Real.exp m ^ 6 * Real.exp (κ * L) ^ 9`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_add, Real.exp_add, ← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Evaluate the numerical expressions. Rewrite using `[h4]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : 60 + 24 * (m : ℝ) + 36 * (κ * L) ≤ C ^ 2 * ((m : ℝ) ^ 2 * L)`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `y1 : 1 ≤ κ * L` using `by nlinarith`. Establish `hmm : 2 * (m : ℝ) ≤ (m : ℝ) ^ 2` using `by nlinarith`. Establish `hyl : (m : ℝ) ^ 2 ≤ κ * L * (m : ℝ) ^ 2` using `by nlinarith`. Establish `hy4 : 4 * (κ * L) ≤ κ * L * (m : ℝ) ^ 2` using `by nlinarith`. Establish `hCk : 55 * κ * ((m : ℝ) ^ 2 * L) ≤ C ^ 2 * ((m : ℝ) ^ 2 * L)` using `mul_le_mul_of_nonneg_right hC (mul_nonneg (sq_nonneg _) (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hexp : ((2 * (2 * f) : ℕ) : ℝ) * (15 + 6 * (m : ℝ) + 9 * (κ * L)) ≤ L * (C * (m : ℝ) ^ 2 * f) * C`. Establish `e1 : ((2 * (2 * f) : ℕ) : ℝ) * (15 + 6 * (m : ℝ) + 9 * (κ * L)) = (f : ℝ) * (60 + 24 * (m : ℝ) + 36 * (κ * L))` using `by push_cast; ring`. Establish `e2 : L * (C * (m : ℝ) ^ 2 * f) * C = (f : ℝ) * (C ^ 2 * ((m : ℝ) ^ 2 * L))` using `by ring`. Rewrite using `[e1, e2]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left key hfpos.le`. Establish `hpow : 4 * (2 * f) = 2 * (2 * (2 * f))` using `by ring`. Rewrite using `[hpow, pow_mul (B₁ * (B₁ * rd)) 2 (2 * (2 * f)), ← mul_pow, ← mul_pow, ← Real.exp_mul, ← Real.exp_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mass_pow_le_exp_rpow (f m : ℕ) (rd L B₁ C κ : ℝ) (hf : 1 ≤ f) (hm : 2 ≤ m) (hrd : 2 ≤ rd) (hL : 1 ≤ L) (hκ : 1 ≤ κ)
     (hlf : Real.log f ≤ m) (hlrd : Real.log rd ≤ κ * L) (hB0 : 0 ≤ B₁) (hB : B₁ ≤ 4 * f * rd) (hC : 55 * κ ≤ C ^ 2) :

@@ -3,9 +3,9 @@ open MeasureTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `hD' : IsFundamentalDomain Γ ((MulOpposite.op a) • D) μ` using `hD.smul_of_comm _`. Establish `himg : (MulOpposite.op a) • D = (fun g => g * a) '' D`. Use extensionality with `x`. Simplify using `only [Set.mem_smul_set, Set.mem_image, MulOpposite.smul_eq_mul_unop, MulOpposite.unop_op]`. Rewrite `hD'` using `[himg]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← (measurePreserving_mul_right μ a).setIntegral_image_emb (MeasurableEquiv.mulRight a).measurableEmbedding f D]`. Conclude with `hD'.setIntegral_eq hD (fun δ x => by rw [Subgroup.smul_def, smul_eq_mul]; exact hf δ δ.2 x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.setIntegral_mul_right_eq_of_fundamentalDomain {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ : Subgroup G) [Countable Γ] (D : Set G)
@@ -20,17 +20,15 @@ theorem GlobalTheory.setIntegral_mul_right_eq_of_fundamentalDomain {G : Type} [G
   exact hD'.setIntegral_eq hD (fun δ x => by rw [Subgroup.smul_def, smul_eq_mul]; exact hf δ δ.2 x)
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ _ Γ _ D hD f f' γ b hγ hf hfc hf'c hfi hbi hder hb`. Establish `hγ0 : γ 0 = 1`. Establish `h` using `hγ 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.mp h.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hderT : ∀ g t, HasDerivAt (fun s => f (g * γ s)) (f' (g * γ t)) t`. Introduce `g t`. Establish `h0 : HasDerivAt (fun s => f (g * γ t * γ s)) (f' (g * γ t)) (t - t)`. Rewrite using `[sub_self]`. Conclude with `hder _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `h0.comp_sub_const t t`. Use `h1.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Simplify using `only [Function.comp, mul_assoc, ← hγ]`. Use `congr 2`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hball : Metric.ball (0:ℝ) 1 = Set.Ioo (-1) 1`. Rewrite using `[Real.ball_eq_Ioo]`. Evaluate the numerical expressions. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ.restrict D) (F := fun (t : ℝ) g => f (g * γ t)) (F' := fun (t : ℝ) g => f' (g * γ t)) (x₀ := 0) (bound := b) (Metric.ball_mem_nhds (0:ℝ) one_pos) (Filter.Eventually.of_forall fun t => ((hfc.comp (continuous_id.mul continuou …`. Establish `hconst : (fun t : ℝ => ∫ g in D, f (g * γ t) ∂μ) = fun _ => ∫ g in D, f g ∂μ`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Conclude with `GlobalTheory.setIntegral_mul_right_eq_of_fundamentalDomain μ Γ D hD f hf (γ t)`. Establish `h2` using `key.2`. Rewrite `h2` using `[hconst]`. Establish `h3` using `h2.unique (hasDerivAt_const (0:ℝ) (∫ g in D, f g ∂μ))`.
-
-Simplify `h3` using `[hγ0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.setIntegral_fundamentalDomain_deriv_eq_zero : ∀ {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G]
     (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ : Subgroup G) [Countable Γ] (D : Set G),

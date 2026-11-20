@@ -7,11 +7,11 @@ noncomputable section
 namespace PI.SqfRootShift.W
 
 /- English proof (translation)
-Proceed by induction on `r, hr using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ r hr ih`. Rewrite using `[Finset.sum_Ioc_succ_top (by omega : 1 ≤ r), Nat.sub_self, pow_zero, mul_one]`. Establish `h : ∑ k ∈ Finset.Ioc 1 r, (G - 1) * G ^ (r + 1 - k) = G * ∑ k ∈ Finset.Ioc 1 r, (G - 1) * G ^ (r - k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_Ioc]`. Rewrite using `[show r + 1 - k = (r - k) + 1 by omega, pow_succ]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ih, show r + 1 - 1 = (r - 1) + 1 by omega, pow_succ]; ring`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem geom_part (G : ℝ) (r : ℕ) (hr : 1 ≤ r) :
     ∑ k ∈ Finset.Ioc 1 r, (G - 1) * G ^ (r - k) = G ^ (r - 1) - 1 := by
@@ -29,7 +29,7 @@ theorem geom_part (G : ℝ) (r : ℕ) (hr : 1 ≤ r) :
     rw [h, ih, show r + 1 - 1 = (r - 1) + 1 by omega, pow_succ]; ring
 
 /- English proof (translation)
-Establish `h` using `harmonic_le_one_add_log r`. Rewrite `h` using `[harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv, Rat.cast_natCast]`. Rewrite `h` using `[← Finset.add_sum_erase _ _ (Finset.left_mem_Icc.mpr hr), Finset.Icc_erase_left, Nat.cast_one, inv_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem harm_tail (r : ℕ) (hr : 1 ≤ r) : ∑ k ∈ Finset.Ioc 1 r, ((k : ℝ))⁻¹ ≤ Real.log r := by
   have h := harmonic_le_one_add_log r
@@ -39,35 +39,35 @@ theorem harm_tail (r : ℕ) (hr : 1 ≤ r) : ∑ k ∈ Finset.Ioc 1 r, ((k : ℝ
   linarith
 
 /- English proof (translation)
-Introduce `g r q d e hg hq hd hq8 hd16 he hq16 hd16' hgm hr hg12`. Establish `hL : 4 * 2 ^ e * q * d ∣ g - 1`. Use `Nat.dvd_sub_mod (n := 4 * 2 ^ e * q * d) g` as an intermediate fact. Rewrite `this` using `[hgm]`. Then use the resulting hypothesis. Establish `h16L : 16 ∣ 4 * 2 ^ e * q * d`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨e', rfl⟩ : ∃ e', e = e' + 2` from `⟨e - 2, by omega⟩`. Conclude with `⟨2 ^ e' * q * d, by ring⟩`. Establish `h16 : 16 ∣ g - 1` using `h16L.trans hL`. Establish `hqg : q ∣ g - 1` using `(Dvd.intro (4 * 2 ^ e * d) (by ring)).trans hL`. Establish `hdg : d ∣ g - 1` using `(Dvd.intro_left (4 * 2 ^ e * q) rfl).trans hL`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 4 ∣ g - 1` using `(by norm_num : 4 ∣ 16).trans h16`. Establish `hqd : q ≠ d` using `by omega`. Establish `hg4096 : 4096 ≤ g` using `by simpa using hg12`. Establish `hg2 : 2 ≤ g` using `by omega`. Establish `hA1` using `arith1 (n := g - 1) (by omega) hq hd hqd hq16 hd16' h16 hqg hdg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm16 : 16 ≤ min q d` using `le_min hq16 hd16'`. Generalize the expression as in `min q d = m at hA1 hm16 ⊢`. Use `set G : ℝ := (g : ℝ) with hGdef`. Establish `hG : (4096 : ℝ) ≤ G` using `by rw [hGdef]; exact_mod_cast hg4096`. Establish `hG0 : (0 : ℝ) < G` using `by linarith`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1 : (0 : ℝ) < G - 1` using `by linarith`. Establish `hm : (16 : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast hm16`. Establish `hA1r : 4 * (m : ℝ) * (ppSum (g - 1) : ℝ) ≤ G - 1`. Use `(Nat.cast_le (α := ℝ)).mpr hA1` as an intermediate fact. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ g)] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hP0 : (0 : ℝ) ≤ (ppSum (g - 1) : ℝ)` using `Nat.cast_nonneg _`. Establish `hP : (ppSum (g - 1) : ℝ) ≤ G - 1` using `by nlinarith`. Establish `hA2r : ∀ k : ℕ, 1 ≤ k → (ppSum (g ^ k - 1) : ℝ) ≤ k * (ppSum (g - 1) : ℝ) + (G ^ k - 1) / (G - 1)`. Introduce `k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `arith2 hg2 h4 (k := k) (by omega)`. Establish `hS : (((g ^ k - 1) / (g - 1) : ℕ) : ℝ) = (G ^ k - 1) / (G - 1)`. Rewrite using `[eq_div_iff hG1.ne']`. Establish `hdvd : g - 1 ∣ g ^ k - 1` using `by simpa using Nat.sub_dvd_pow_sub_pow g 1 k`. Establish `h1` using `Nat.div_mul_cancel hdvd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (fun x : ℕ => (x : ℝ)) h1`. Establish `hgk : 1 ≤ g ^ k` using `Nat.one_le_pow _ _ (by omega)`. Move the coercions through the operations in `[Nat.cast_sub (by omega : 1 ≤ g), Nat.cast_sub hgk] at hc`. Conclude with `hc`. Establish `hc` using `(Nat.cast_le (α := ℝ)).mpr h`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hc`. Rewrite `hc` using `[hS]`. Conclude with `hc`. Establish `hterm : ∀ k ∈ Finset.Ioc 1 r, (ppSum (g ^ k - 1) : ℝ) / k * G ^ (r - k) ≤ (G - 1) * G ^ (r - k) + G ^ r / (G - 1) * ((k : ℝ))⁻¹`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[Finset.mem_Ioc]`. Establish `hk0 : (0 : ℝ) < k` using `by exact_mod_cast (by omega : 0 < k)`. Establish `hB : (0 : ℝ) ≤ G ^ (r - k)` using `pow_nonneg hG0.le _`. Establish `h1 : (ppSum (g ^ k - 1) : ℝ) / k ≤ (ppSum (g - 1) : ℝ) + (G ^ k - 1) / (G - 1) / k`. Rewrite using `[div_le_iff₀ hk0, add_mul, div_mul_cancel₀ _ hk0.ne']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA2r k (by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAB : (G ^ k - 1) * G ^ (r - k) ≤ G ^ r`. Establish `: G ^ k * G ^ (r - k) = G ^ r` using `by rw [← pow_add]; congr 1; omega`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ (G - 1) * G ^ (r - k) + G ^ r / (G - 1) * ((k : ℝ))⁻¹ := add_le_add (mul_le_mul_of_nonneg_right hP hB) (mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hAB hG1.le) (by positivity))`. Establish `hsum` using `Finset.sum_le_sum hterm`. Rewrite `hsum` using `[Finset.sum_add_distrib, geom_part G r (by omega), ← Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hharm` using `harm_tail r (by omega)`. Establish `hGr0 : (0 : ℝ) ≤ G ^ r / (G - 1)` using `div_nonneg (pow_nonneg hG0.le _) hG1.le`. Establish `hh` using `mul_le_mul_of_nonneg_left hharm hGr0`. Establish `hGr : G ^ r = G * G ^ (r - 1)` using `by rw [← pow_succ']; congr 1; omega`. Establish `hgeo : G ^ (r - 1) - 1 ≤ G ^ r / (G - 1)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[le_div_iff₀ hG1, hGr]`. Use polynomial arithmetic with `[pow_nonneg hG0.le (r - 1)]`. Establish `t1 : (ppSum (g - 1) : ℝ) * G ^ (r - 1) ≤ G ^ r / (4 * (m : ℝ))`. Rewrite using `[le_div_iff₀ (by positivity), hGr]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hA1r (pow_nonneg hG0.le (r - 1)), pow_nonneg hG0.le (r - 1)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← Finset.add_sum_erase _ _ (Finset.left_mem_Icc.mpr (by omega : 1 ≤ r)), Finset.Icc_erase_left]`. Simplify using `only [pow_one, Nat.cast_one, div_one]`. Establish `hR : (1 / (4 * (m : ℝ)) + (1 + Real.log r) / (G - 1)) * G ^ r = G ^ r / (4 * (m : ℝ)) + G ^ r / (G - 1) + G ^ r / (G - 1) * Real.log r` using `by ring`. Rewrite using `[hR]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem arithP : ArithP := by
   intro g r q d e hg hq hd hq8 hd16 he hq16 hd16' hgm hr hg12

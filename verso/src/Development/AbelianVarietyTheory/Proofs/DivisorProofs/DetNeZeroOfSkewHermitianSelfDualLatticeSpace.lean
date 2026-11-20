@@ -10,13 +10,11 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.SkewDet
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n r s W hW`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨hrs, A, hA⟩` from `hW.sig w`. Substitute `hrs` using the available equality. Introduce `hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set φ : E →+* ℂ := (B.emb w).1`. Use `set M : Matrix (Fin (r + s)) (Fin (r + s)) ℂ := Complex.I • W.J.map φ with hM`. Establish `hMdet : M.det = 0`. Rewrite using `[hM, Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hdet, map_zero, mul_zero]`. Use `set P : Matrix (Fin (r + s)) (Fin (r + s)) ℂ := A.submatrix id finSumFinEquiv.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hP : Pᵀ * M * P.map star = (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℂ) 0 0 (-1)).submatrix finSumFinEquiv.symm finSumFinEquiv.symm`. Rewrite using `[← hA]`. Use extensionality with `i j`. Simplify using `[P, Matrix.mul_apply]`. Establish `h2` using `congrArg Matrix.det hP`.
-
-Rewrite `h2` using `[Matrix.det_submatrix_equiv_self, Matrix.det_mul, Matrix.det_mul, hMdet, mul_zero, zero_mul, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg]`. Rewrite `h2` using `[Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ (neg_ne_zero.2 one_ne_zero) h2.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_isSkew : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n r s : ℕ) (W : Spc F E n), W.IsSkew σ B r s → W.J.det ≠ 0 := by

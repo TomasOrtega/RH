@@ -85,14 +85,14 @@ abbrev strictTransform (i : ℕ) : Scheme.{u} := (T.strictTransformIdeal i).subs
 abbrev strictTransformι (i : ℕ) : T.strictTransform i ⟶ T.schemeAt i := (T.strictTransformIdeal i).subschemeι
 
 /- English proof (translation)
-The claim follows from `Blowup.comap_le_strictTransform _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comap_strictTransformIdeal_le (i : ℕ) :
     (T.strictTransformIdeal i).comap (T.blowdown i) ≤ T.strictTransformIdeal (i + 1) :=
   Blowup.comap_le_strictTransform _ _ _
 
 /- English proof (translation)
-Establish `hle : T.strictTransformIdeal i ≤ (T.strictTransformIdeal (i + 1)).map (T.blowdown i)` using `Scheme.IdealSheafData.le_map_iff_comap_le.mpr (T.comap_strictTransformIdeal_le i)`. Conclude with `⟨(T.strictTransformIdeal (i + 1)).subschemeMap (T.strictTransformIdeal i) (T.blowdown i) hle, Scheme.IdealSheafData.subschemeMap_subschemeι (T.strictTransformIdeal (i + 1)) (T.strictTransformIdeal i) (T.blowdown i) hle⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_strictTransformMap (i : ℕ) :
     ∃ f : T.strictTransform (i + 1) ⟶ T.strictTransform i,
@@ -106,7 +106,7 @@ theorem exists_strictTransformMap (i : ℕ) :
 def strictTransformMap (i : ℕ) : T.strictTransform (i + 1) ⟶ T.strictTransform i := (T.exists_strictTransformMap i).choose
 
 /- English proof (translation)
-The claim follows from `(T.exists_strictTransformMap i).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem strictTransformMap_comp_strictTransformι (i : ℕ) :
     T.strictTransformMap i ≫ T.strictTransformι i = T.strictTransformι (i + 1) ≫ T.blowdown i :=
@@ -117,7 +117,7 @@ def detachedComponents (i : ℕ) : Set (Set ↥(T.strictTransform i)) :=
     (T.strictTransformι i).base '' C ⊆ ((T.ambientCenter i).support : Set ↥(T.schemeAt i))}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_detachedComponents (i : ℕ) (C : Set ↥(T.strictTransform i)) :
     C ∈ T.detachedComponents i ↔
@@ -132,7 +132,7 @@ Both sides reduce to the same expression.
 theorem detachedLocus_eq_sUnion (i : ℕ) : T.detachedLocus i = ⋃₀ (T.detachedComponents i) := rfl
 
 /- English proof (translation)
-Establish `hfinComp : (irreducibleComponents ↥(T.strictTransform i)).Finite` using `TopologicalSpace.NoetherianSpace.finite_irreducibleComponents`. Establish `hsub : T.detachedComponents i ⊆ irreducibleComponents ↥(T.strictTransform i)` using `fun C hC => ((T.mem_detachedComponents i C).mp hC).1`. Establish `hfin : (T.detachedComponents i).Finite` using `hfinComp.subset hsub`. Rewrite using `[T.detachedLocus_eq_sUnion i, Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion fun C hC => isClosed_of_mem_irreducibleComponents _ (hsub hC)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_detachedLocus (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(T.strictTransform i)] :
@@ -149,7 +149,7 @@ def detachedClosure (i : ℕ) : TopologicalSpace.Closeds ↥(T.strictTransform i
   ⟨closure (T.detachedLocus i), isClosed_closure⟩
 
 /- English proof (translation)
-Use `show closure (T.detachedLocus i) = T.detachedLocus i`. Conclude with `(T.isClosed_detachedLocus i).closure_eq`.
+A detailed English derivation is pending.
 -/
 theorem detachedClosure_coe (i : ℕ)
     [TopologicalSpace.NoetherianSpace ↥(T.strictTransform i)] :
@@ -225,7 +225,7 @@ def totalTransition (i : ℕ) : T.totalSpace (i + 1) ⟶ T.totalSpace i :=
       T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpace i)
 
 /- English proof (translation)
-Conclude with `coprod.inl_desc (T.strictTransformMap i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) (coprod.desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i) (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) : T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.total …`.
+A detailed English derivation is pending.
 -/
 theorem inl_totalTransition_eq_strictTransformMap_inl (i : ℕ) :
     (coprod.inl : T.strictTransform (i + 1) ⟶ T.totalSpace (i + 1)) ≫ T.totalTransition i =
@@ -236,7 +236,7 @@ theorem inl_totalTransition_eq_strictTransformMap_inl (i : ℕ) :
       T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpace i)
 
 /- English proof (translation)
-Establish `h : (coprod.inr : T.detachedCoprod (i + 1) ⟶ T.totalSpace (i + 1)) ≫ T.totalTransition i = (coprod.desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i) (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) : T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpac …` using `coprod.inr_desc _ _`. Conclude with `Eq.trans (congrArg (fun f : T.detachedCoprod (i + 1) ⟶ T.totalSpace i => (coprod.inl : T.detachedCoprod i ⟶ T.detachedCoprod (i + 1)) ≫ f) h) (coprod.inl_desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i) (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inl_inr_totalTransition (i : ℕ) :
     (coprod.inl : T.detachedCoprod i ⟶ T.detachedCoprod (i + 1)) ≫
@@ -255,7 +255,7 @@ theorem inl_inr_totalTransition (i : ℕ) :
       (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)))
 
 /- English proof (translation)
-Establish `h1 : (coprod.inr : T.detachedCoprod (i + 1) ⟶ T.totalSpace (i + 1)) ≫ T.totalTransition i = (coprod.desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i) (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) : T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpa …` using `coprod.inr_desc _ _`. Establish `h2 : (coprod.inr : T.detachedScheme i ⟶ T.detachedCoprod i ⨿ T.detachedScheme i) ≫ (coprod.desc (coprod.inr : T.detachedCoprod i ⟶ T.totalSpace i) (T.detachedι i ≫ (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) : T.detachedCoprod i ⨿ T.detachedScheme i ⟶ T.totalSpace i) = T …` using `coprod.inr_desc _ _`. Conclude with `Eq.trans (congrArg (fun f : T.detachedCoprod (i + 1) ⟶ T.totalSpace i => (coprod.inr : T.detachedScheme i ⟶ T.detachedCoprod (i + 1)) ≫ f) h1) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inr_inr_totalTransition (i : ℕ) :
     (coprod.inr : T.detachedScheme i ⟶ T.detachedCoprod (i + 1)) ≫
@@ -292,7 +292,7 @@ theorem totalCenter_eq (i : ℕ) :
           (coprod.inl : T.strictTransform i ⟶ T.totalSpace i)) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(asIso g.toImage).symm, by rw [Iso.symm_hom, asIso_inv, IsIso.inv_comp_eq, Scheme.Hom.toImage_imageι]⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_kerSubschemeIso_of_isClosedImmersion {X Z : Scheme.{u}} (g : Z ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion g] :
@@ -301,7 +301,7 @@ private theorem exists_kerSubschemeIso_of_isClosedImmersion {X Z : Scheme.{u}} (
     rw [Iso.symm_hom, asIso_inv, IsIso.inv_comp_eq, Scheme.Hom.toImage_imageι]⟩
 
 /- English proof (translation)
-Use `⟨⟨coprod.desc u.hom (hB.to Z), u.inv ≫ coprod.inl, ?_, ?_⟩, coprod.inl_desc _ _⟩` and prove the remaining obligations. Use `coprod.hom_ext ?_ ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `hB.hom_ext _ _`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem exists_coprodIso_of_isInitial {A B Z : Scheme.{u}}
     (hB : IsInitial B) (u : A ≅ Z) :
@@ -326,9 +326,9 @@ private theorem exists_coprodIso_of_isInitial {A B Z : Scheme.{u}}
       _ = 𝟙 Z := u.inv_hom_id
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.IsClosedImmersion (T.emb ≫ T.ambientSeq.isoZero.inv)` using `inferInstance`. Take `⟨u, hu⟩` from `exists_kerSubschemeIso_of_isClosedImmersion (T.emb ≫ T.ambientSeq.isoZero.inv)`. Establish `hB : IsInitial (T.detachedCoprod 0)` using `initialIsInitial`. Take `⟨e, he⟩` from `exists_coprodIso_of_isInitial (A := T.strictTransform 0) (B := T.detachedCoprod 0) (Z := Y) hB u`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hu` and prove the remaining obligations. Use `Eq.trans (Category.assoc _ _ _).symm ?_` and prove the remaining obligations. Conclude with `congrArg (fun t => t ≫ (T.emb ≫ T.ambientSeq.isoZero.inv)) he`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_totalSpaceZeroIso :
     ∃ e : T.totalSpace 0 ≅ Y,
@@ -348,7 +348,7 @@ theorem exists_totalSpaceZeroIso :
 def totalSpaceZeroIso : T.totalSpace 0 ≅ Y := T.exists_totalSpaceZeroIso.choose
 
 /- English proof (translation)
-The claim follows from `T.exists_totalSpaceZeroIso.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem totalSpaceZeroIso_spec :
     (coprod.inl : T.strictTransform 0 ⟶ T.totalSpace 0) ≫ T.totalSpaceZeroIso.hom ≫
@@ -364,7 +364,7 @@ Both sides reduce to the same expression.
 theorem totalTower_obj (i : ℕ) : T.totalTower.obj (Opposite.op i) = T.totalSpace i := rfl
 
 /- English proof (translation)
-Use `show ((Functor.ofSequence (fun j => (T.totalTransition j).op)).map (homOfLE (Nat.le_succ i))).unop = T.totalTransition i`. Rewrite using `[Functor.ofSequence_map_homOfLE_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem totalTower_map_succ (i : ℕ) :
     T.totalTower.map (homOfLE (Nat.le_succ i)).op = T.totalTransition i := by
@@ -409,7 +409,7 @@ def inducedBlowupsWithoutIso (h : T.TransitionsAreBlowups) : SequenceOfBlowups Y
 end EmbeddedBlowupSequence
 
 /- English proof (translation)
-Unfold `affineSpaceIndexedByToSpec`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem locallyOfFiniteType_affineSpaceIndexedByToSpec_ulift (k : Type u) [Field k] (n : ℕ) :
     AlgebraicGeometry.LocallyOfFiniteType (affineSpaceIndexedByToSpec k (ULift.{u} (Fin n))) := by
@@ -417,7 +417,7 @@ private theorem locallyOfFiniteType_affineSpaceIndexedByToSpec_ulift (k : Type u
   infer_instance
 
 /- English proof (translation)
-Unfold `affineSpaceIndexedByToSpec`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem quasiCompact_affineSpaceIndexedByToSpec_ulift (k : Type u) [Field k] (n : ℕ) :
     AlgebraicGeometry.QuasiCompact (affineSpaceIndexedByToSpec k (ULift.{u} (Fin n))) := by
@@ -472,7 +472,7 @@ theorem toEmbeddedBlowupSequence_strictTransformIdeal (S : AffineSpacePrincipali
     S.toEmbeddedBlowupSequence.strictTransformIdeal i = S.strictTransformIdeal i := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem toEmbeddedBlowupSequence_transitionsAreBlowups_iff (S : AffineSpacePrincipalizationData k Y pY) :
     S.toEmbeddedBlowupSequence.TransitionsAreBlowups ↔ S.TransitionsAreBlowups := Iff.rfl
@@ -484,7 +484,7 @@ theorem embeddedInducedBlowups_eq (S : AffineSpacePrincipalizationData k Y pY) (
     S.toEmbeddedBlowupSequence.inducedBlowups ((toEmbeddedBlowupSequence_transitionsAreBlowups_iff S).mpr h) = S.blowupSequence h := rfl
 
 /- English proof (translation)
-Use `show (S.toEmbeddedBlowupSequence.inducedBlowups ((toEmbeddedBlowupSequence_transitionsAreBlowups_iff S).mpr h)).withoutIsoBlowups = (S.blowupSequence h).withoutIsoBlowups`. Conclude with `congrArg SequenceOfBlowups.withoutIsoBlowups (embeddedInducedBlowups_eq S h)`.
+A detailed English derivation is pending.
 -/
 theorem embeddedInducedBlowupsWithoutIso_eq (S : AffineSpacePrincipalizationData k Y pY) (h : S.TransitionsAreBlowups) :
     S.toEmbeddedBlowupSequence.inducedBlowupsWithoutIso ((toEmbeddedBlowupSequence_transitionsAreBlowups_iff S).mpr h) = S.blowupSequenceWithoutIsos h := by
@@ -603,7 +603,7 @@ theorem affineSpaceEmbeddingChoice_eq_affineSpaceEmbeddingDatum (hemb : AffineEm
     affineSpaceEmbeddingChoice hemb hsnc hsm k Y pY = affineSpaceEmbeddingDatum hemb hsnc hsm k Y pY := rfl
 
 /- English proof (translation)
-Establish `hT` using `affineSpaceEmbeddingDatum_toEmbeddedBlowupSequence A hemb hsnc hsm k Y pY`. Establish `key : ∀ (T₁ T₂ : EmbeddedBlowupSequence k Y pY), T₁ = T₂ → ∀ (h₁ : T₁.TransitionsAreBlowups) (h₂ : T₂.TransitionsAreBlowups), T₁.inducedBlowupsWithoutIso h₁ = T₂.inducedBlowupsWithoutIso h₂`. Introduce and unpack `T₁ T₂ rfl h₁ h₂`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem embeddedResolutionRuleOfPrincipalization_affineSpaceEmbeddingDatum (A : PrincipalizationAlgorithm.{u}) (h : TransitionsAreBlowupsForEmbeddings A)
     (hemb : AffineEmbedsIntoAffineSpace.{u}) (hsnc : NilIsStrictNormalCrossingsOnAffineSpace.{u})

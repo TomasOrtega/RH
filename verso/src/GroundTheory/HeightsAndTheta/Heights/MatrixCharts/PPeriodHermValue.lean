@@ -13,7 +13,7 @@ noncomputable section
 namespace PeriodHermValue
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[mulVec, dotProduct, Complex.re_sum, Complex.mul_re]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem re_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (α β : Fin g → ℝ) :
     (fun k => (((fun k => (α k : ℂ)) + τ *ᵥ fun k => (β k : ℂ)) k).re) =
@@ -22,7 +22,7 @@ theorem re_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (α β : Fin g → ℝ
   simp [mulVec, dotProduct, Complex.re_sum, Complex.mul_re]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[mulVec, dotProduct, Complex.im_sum, Complex.mul_im]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem im_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (α β : Fin g → ℝ) :
     (fun k => (((fun k => (α k : ℂ)) + τ *ᵥ fun k => (β k : ℂ)) k).im) =
@@ -31,7 +31,7 @@ theorem im_eq {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (α β : Fin g → ℝ
   simp [mulVec, dotProduct, Complex.im_sum, Complex.mul_im]
 
 /- English proof (translation)
-Unfold `MCSchur.qf`. Rewrite using `[mulVec_mulVec, nonsing_inv_mul Y hY, one_mulVec, dotProduct_comm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qf_inv_mulVec {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (hY : IsUnit Y.det)
     (β : Fin g → ℝ) : MCSchur.qf Y⁻¹ (Y *ᵥ β) = MCSchur.qf Y β := by
@@ -41,7 +41,7 @@ theorem qf_inv_mulVec {g : ℕ} (Y : Matrix (Fin g) (Fin g) ℝ) (hY : IsUnit Y.
 end PeriodHermValue
 
 /- English proof (translation)
-Introduce `g τ hY α β`. Rewrite using `[MCSchur.hermValue_eq_qf, PeriodHermValue.re_eq, PeriodHermValue.im_eq, PeriodHermValue.qf_inv_mulVec _ hY]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem PeriodHermValue.proof : PeriodHermValue.Statement := by
   intro g τ hY α β

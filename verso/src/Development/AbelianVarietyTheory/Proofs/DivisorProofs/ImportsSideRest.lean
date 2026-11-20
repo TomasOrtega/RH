@@ -10,9 +10,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.LocGL.LExist
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ hS hL 𝔪`. Take `⟨Δ, hΔ⟩` from `((precedes_and_orderedForms k).1.2.2) 𝔪`. Use `choose y hy using hL`. Set `x : Fin 𝔪.card → IrrGL k` to `fun i => y (Δ i)`. Establish `hx : LFactors 𝔪 x` using `⟨Δ, hΔ, fun i => hy (Δ i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨π, hπ⟩` from `hS k 𝔪 𝔪.card _ x rfl hx`. Use `⟨IrrGL.of π.ρ π.smooth π.irr, 𝔪.card, x, rfl, hx, ?_⟩` and prove the remaining obligations. Conclude with `hπ.of_equiv (IrrGL.equivOf π.ρ π.smooth π.irr) (.refl _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k],
     GlobalTheory.Published.StandardCosocleGL → (∀ Δ : Segment k, ∃ x : IrrGL k, IsLSeg Δ x.rep) →

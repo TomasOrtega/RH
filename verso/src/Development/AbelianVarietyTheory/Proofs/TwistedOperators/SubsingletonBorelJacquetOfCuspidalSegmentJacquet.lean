@@ -11,9 +11,9 @@ def intervals (l d : ℕ) : (Σ _ : Fin l, Fin d) ≃ Fin (l * d) :=
   (Equiv.sigmaEquivProd _ _).trans finProdFinEquiv
 
 /- English proof (translation)
-Establish `key : (i : ℕ) + d * a < j + d * b`. Simplify `h` using `[intervals, finProdFinEquiv, Fin.lt_def]`. Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Conclude with `Or.inl hab`. Conclude with `Or.inr ⟨rfl, Fin.lt_def.2 (by omega)⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-It suffices to derive a contradiction. Establish `h1 : (b : ℕ) + 1 ≤ a` using `hab`. Establish `h2 : d * ((b : ℕ) + 1) ≤ d * a` using `Nat.mul_le_mul_left d h1`. Establish `hj` using `j.isLt`. Rewrite `h2` using `[Nat.mul_succ]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -34,11 +34,11 @@ theorem intervals_lt {l d : ℕ} {a b : Fin l} {i j : Fin d}
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨hpar, hdiag⟩` from `mem_unipRad.1 hg`. Rewrite `hpar` using `[mem_parab]`. Rewrite using `[mem_unipB]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(intervals l d).surjective q`. Break down `intervals_lt hqp with hba | ⟨rfl, hji⟩` into its components or cases. Conclude with `hpar _ _ (by simpa using hba)`. Rewrite using `[hdiag]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Matrix.one_apply_ne hji.ne'`. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Rewrite using `[hdiag]`. Conclude with `Matrix.one_apply_eq i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipRad_intervals_le (l d : ℕ) : unipRad R (intervals l d) ≤ unipB R (Fin (l * d)) := by
   intro g hg
@@ -57,11 +57,9 @@ theorem unipRad_intervals_le (l d : ℕ) : unipRad R (intervals l d) ≤ unipB R
     exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Rewrite using `[mem_unipB]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Take `⟨⟨b, j⟩, rfl⟩` from `(intervals l d).surjective q`. Break down `intervals_lt hqp with hba | ⟨rfl, hji⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `leviEmb_apply_ne _ _ _ hba.ne' _ _`. Rewrite using `[leviEmb_apply_same]`. Conclude with `((mem_unipB (R := R)).1 (hg b)).1 i j hji`. Take `⟨⟨a, i⟩, rfl⟩` from `(intervals l d).surjective p`. Rewrite using `[leviEmb_apply_same]`.
-
-Conclude with `((mem_unipB (R := R)).1 (hg a)).2 i`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviEmb_intervals_mem {l d : ℕ} (g : Levi R fun _ : Fin l => Fin d)
     (hg : ∀ a, g a ∈ unipB R (Fin d)) : leviEmb R (intervals l d) g ∈ unipB R (Fin (l * d)) := by
@@ -78,11 +76,9 @@ theorem leviEmb_intervals_mem {l d : ℕ} (g : Levi R fun _ : Fin l => Fin d)
     exact ((mem_unipB (R := R)).1 (hg a)).2 i
 
 /- English proof (translation)
-Take `⟨-, hcusp⟩` from `hσ`. Set `e : (Σ _ : Fin d, Fin 1) ≃ Fin d` to `Equiv.sigmaUnique (Fin d) fun _ => Fin 1`. Establish `hblk : ∀ i, blk e i = i` using `fun i => rfl`. Establish `hne : unipRad k e ≠ ⊥`. Rewrite using `[CuspMax.unipRad_ne_bot_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨0, by omega⟩, ⟨1, hd⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hblk, hblk]`. Conclude with `Fin.mk_lt_mk.2 Nat.zero_lt_one`. Establish `hsub : Subsingleton (Jacquet σ (unipRad k e))` using `hcusp d (fun _ => 1) e hne`. Establish `hB : Subsingleton (Jacquet σ (unipRad k (points (Fin d))))` using `CuspMax.subsingleton_jacquet_of_perm σ (e := e) (e' := points (Fin d)) (Equiv.refl _) (fun i j h => h) hsub`.
-
-Conclude with `Submodule.Quotient.subsingleton_iff.1 hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twKer_unipB_eq_top {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {d : ℕ} (hd : 1 < d) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -105,7 +101,7 @@ theorem twKer_unipB_eq_top {k : Type} [Field k] [ValuativeRel k] [TopologicalSpa
   exact Submodule.Quotient.subsingleton_iff.1 hB
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Rewrite using `[det_eq_one_of_mem_unipRad (hu := (show g a ∈ unipRad k (points (Fin d)) from hg a)), map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem deltaHalf_eq_one_of_unipB {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {l d : ℕ} (g : Levi k fun _ : Fin l => Fin d)
@@ -115,33 +111,31 @@ private theorem deltaHalf_eq_one_of_unipB {k : Type} [Field k] [ValuativeRel k] 
   rw [det_eq_one_of_mem_unipRad (hu := (show g a ∈ unipRad k (points (Fin d)) from hg a)), map_one]
 
 /- English proof (translation)
-Take `⟨φ⟩` from `h (intervals l d)`. Take `⟨a₀⟩ : Nonempty (Fin l)` from `⟨⟨0, hl⟩⟩`. Use `set K := twKer π (unipB k (Fin (l * d))) 1 with hK`. Establish `hgen : ∀ u ∈ unipB k (Fin (l * d)), ∀ v : V, π u v - v ∈ K`. Introduce `u hu v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨⟨u, hu⟩, v, by simp⟩`. Establish `hUK : twKer π (unipRad k (intervals l d)) 1 ≤ K`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, v, rfl⟩`. Simplify using `using hgen n (unipRad_intervals_le l d n.2) v`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `P` to `Submodule.factor hUK`. Establish `hP : ∀ v : V, P (Submodule.Quotient.mk v) = Submodule.Quotient.mk v` using `fun v => Submodule.factor_mk hUK v`. Establish `hlevi : ∀ g : Levi k (fun _ : Fin l => Fin d), (∀ a, g a ∈ unipB k (Fin d)) → ∀ q, P (jac (intervals l d) π g q) = P q`. Introduce `g hg q`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[jac_mk, deltaHalf_eq_one_of_unipB g hg, inv_one, Units.val_one, one_smul, hP, hP]`. Conclude with `(Submodule.Quotient.eq _).2 (hgen _ (leviEmb_intervals_mem g hg) v)`. Establish `hfwd : ∀ g z, φ (jac (intervals l d) π g z) = piTensor (segTerm σ l) g (φ z)`. Introduce `g z`. Use `LinearMap.congr_fun (φ.isIntertwining' g) z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Establish `hint : ∀ g y, φ.symm (piTensor (segTerm σ l) g y) = jac (intervals l d) π g (φ.symm y)`. Introduce `g y`. Apply `EquivLike.injective φ` to reduce the goal to its premises. Rewrite using `[hfwd, Representation.Equiv.apply_symm_apply, Representation.Equiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `F : (⨂[ℂ] _ : Fin l, W) →ₗ[ℂ] V ⧸ K` to `P ∘ₗ φ.symm.toLinearMap`. Establish `hFapp : ∀ y, F y = P (φ.symm y)` using `fun y => rfl`. Establish `hF : ∀ g : Levi k (fun _ : Fin l => Fin d), (∀ a, g a ∈ unipB k (Fin d)) → ∀ y, F (piTensor (segTerm σ l) g y) = F y`. Introduce `g hg y`. Rewrite using `[hFapp, hFapp, hint]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hlevi g hg _`. Establish `htop : twKer (segTerm σ l a₀) (unipB k (Fin d)) 1 = ⊤` using `twKer_unipB_eq_top hd (LocGL.isCuspidal_twist hσ (LocGL.isSmoothChar_absPow _))`. Establish `htens : ∀ x : Fin l → W, F (PiTensorProduct.tprod ℂ x) = 0`. Introduce `x`. Set `Lx` to `(PiTensorProduct.tprod ℂ).toLinearMap x a₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hker : twKer (segTerm σ l a₀) (unipB k (Fin d)) 1 ≤ LinearMap.ker (F ∘ₗ Lx)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨u, v, rfl⟩`. Establish `hg : ∀ a, (Pi.mulSingle a₀ (u : GL (Fin d) k) : Levi k fun _ : Fin l => Fin d) a ∈ unipB k (Fin d)`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a = a₀`. Rewrite using `[ha, Pi.mulSingle_eq_same]`. Conclude with `u.2`. Rewrite using `[Pi.mulSingle_eq_of_ne ha]`. Conclude with `one_mem _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hact : Lx (segTerm σ l a₀ u v) = piTensor (segTerm σ l) (Pi.mulSingle a₀ (u : GL (Fin d) k)) (Lx v)`. Simplify using `only [Lx, MultilinearMap.toLinearMap_apply, piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Distinguish the cases in `ha : a = a₀`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha]`. Simplify using the standard rewrite rules. Simplify using `[ha]`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, LinearMap.comp_apply, MonoidHom.one_apply, Units.val_one, one_smul, map_sub, hact, hF _ hg, sub_self]`. Establish `hx : Lx (x a₀) = PiTensorProduct.tprod ℂ x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Lx]`. Rewrite using `[← hx]`. Conclude with `LinearMap.mem_ker.1 (hker (by rw [htop]; exact Submodule.mem_top))`. Establish `hF0 : F = 0` using `PiTensorProduct.ext (MultilinearMap.ext fun x => by simpa using htens x)`. Establish `hv : ∀ v : V, (Submodule.Quotient.mk v : V ⧸ K) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Rewrite using `[← hP v]`. Establish `hPF : P (Submodule.Quotient.mk v) = F (φ (Submodule.Quotient.mk v))`. Rewrite using `[hFapp, Representation.Equiv.symm_apply_apply]`. Rewrite using `[hPF, hF0, LinearMap.zero_apply]`.
-
-Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ a`. Take `⟨w, rfl⟩` from `Submodule.Quotient.mk_surjective _ b`. Conclude with `(hv v).trans (hv w).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_jacquet_unipB (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (l d : ℕ) (hl : 0 < l) (hd : 1 < d) (V : Type) [AddCommGroup V]

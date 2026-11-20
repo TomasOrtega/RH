@@ -10,9 +10,9 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D X hb FdN FdN' u u' ψ _hX hM _hS`. Take `⟨⟨_hT1, _νH, hOm, _⟩, _⟩` from `hM.1 u'`. Take `⟨_, h1⟩` from `hOm`. Use `⟨h1.1, fun μ hμ => ⟨(h1.2 μ hμ).1, fun ν hν => ?_⟩⟩` and prove the remaining obligations. Establish `h2` using `(h1.2 μ hμ).2 ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨μv, hμv⟩` from `h2.1`. Establish `h3` using `h2.2 μv hμv`. Take `⟨νv, hνv⟩` from `h3.1`. Conclude with `((h3.2 νv hνv).1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exInf_holds : ExInf := by
   intro D X hb FdN FdN' u u' ψ _hX hM _hS

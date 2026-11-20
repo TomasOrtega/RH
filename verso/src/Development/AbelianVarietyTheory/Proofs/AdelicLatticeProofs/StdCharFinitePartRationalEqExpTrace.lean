@@ -11,17 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdRat
 
 /- English proof (translation)
-Use `set y := algebraMap F E x with hy`. Establish `h1 : ((Algebra.trace ℚ E y : ℚ) : ℂ) = ∑ σ : E →+* ℂ, σ y`. Use `trace_eq_sum_embeddings (K := ℚ) (L := E) ℂ (x := y)` as an intermediate fact. Rewrite `this` using `[eq_ratCast]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Fintype.sum_equiv (RingHom.equivRatAlgHom E ℂ) _ _ fun _ => rfl).symm`. Establish `h3 : Algebra.trace ℚ E y = 2 * Algebra.trace ℚ F x`. Rewrite using `[← Algebra.trace_trace (S := F), hy, Algebra.trace_algebraMap, h2, map_nsmul, nsmul_eq_mul]`. Both sides reduce to the same expression. Establish `hb : Function.Bijective (Sum.elim τ fun t => ComplexEmbedding.conjugate (τ t))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hc : ∀ σ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate σ) = σ` using `fun σ => star_star σ`. Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (a | a) (b | b) h <;> simp only [Sum.elim_inl, Sum.elim_inr] at h`. Rewrite using `[hi h]`. Conclude with `absurd ⟨a, h⟩ ((hcm (τ b)).1 ⟨b, rfl⟩)`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd ⟨b, h.symm⟩ ((hcm (τ a)).1 ⟨a, rfl⟩)`. Use `congrArg ComplexEmbedding.conjugate h` as an intermediate fact. Rewrite `this` using `[hc, hc]`. Rewrite using `[hi this]`. Introduce `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : ∃ t, τ t = ComplexEmbedding.conjugate σ`. Take `⟨t, ht⟩` from `h`. Conclude with `⟨Sum.inr t, by simp only [Sum.elim_inr]; rw [ht, hc]⟩`. Take `⟨t, ht⟩` from `(hcm σ).2 h`. Conclude with `⟨Sum.inl t, ht⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `h4` using `hb.sum_comp fun σ : E →+* ℂ => σ y`. Rewrite `h4` using `[Fintype.sum_sum_type, ← h1, h3]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, hx] at h4`. Move the coercions through the operations in `at h4`. Take the linear combination `h4 / 2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_cmType_eq_trace {F E ι : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     [Fintype ι] (h2 : Module.finrank F E = 2) (τ : ι → (E →+* ℂ)) (hi : Function.Injective τ)
@@ -62,19 +62,17 @@ theorem sum_cmType_eq_trace {F E ι : Type} [Field F] [NumberField F] [Field E] 
   linear_combination h4 / 2
 
 /- English proof (translation)
-Introduce `_ _ h` and use `D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauE_injective (D : D7) : Function.Injective (tauE D) := fun _ _ h =>
   D.eTau.injective (Subtype.ext ((factEmb D.R D.host).1.1 h))
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `(factEmb D.R D.host).1.2 σ`. Establish `hc : ComplexEmbedding.conjugate (D.host.emb g) = D.host.emb (g * D.R.cc)`. Rewrite using `[Formalism.L2.Geo.emb_mul_cc_comp]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Establish `hcm` using `D.host.isCMField_hostE`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h : IsCMField.complexConj D.host.E x = D.host.conj x`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj]`. Conclude with `(D.host.toHostAx.conjE_apply _ x).symm`. Use `show starRingEnd ℂ (D.host.emb g x) = D.host.emb g (D.host.conj x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h, IsCMField.complexEmbedding_complexConj]`. Establish `h : ∀ g, (∃ τ, tauE D τ = D.host.emb g) ↔ g ∈ D.R.Psi` using `fun g => by`. Rewrite using `[← Formalism.L2.Geo.exists_tauEmb_iff D g]`. Conclude with `exists_congr fun τ => eq_comm`. Rewrite using `[hc, h, h]`.
-
-Conclude with `Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauE_cm (D : D7) (σ : D.host.E →+* ℂ) :
     (∃ τ, tauE D τ = σ) ↔ ¬ ∃ τ, tauE D τ = ComplexEmbedding.conjugate σ := by
@@ -96,9 +94,7 @@ theorem tauE_cm (D : D7) (σ : D.host.E →+* ℂ) :
   exact Formalism.L2.Geo.mem_Psi_iff_mul_cc_notMem g
 
 /- English proof (translation)
-Establish `hcm` using `D.host.isCMField_hostE`. Use `sum_cmType_eq_trace ?_ _ (tauE_injective D) (tauE_cm D) x fun σ => ?_` and prove the remaining obligations. Conclude with `Algebra.IsQuadraticExtension.finrank_eq_two _ _`. Use `show starRingEnd ℂ (σ _) = _`. Rewrite using `[← IsCMField.complexEmbedding_complexConj]`.
-
-Conclude with `congrArg σ ((IsCMField.complexConj D.host.E).commutes x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_tauE_eq_trace (D : D7) (x : D.host.F) :
     ∑ t, tauE D t (algebraMap D.host.F D.host.E x) = ((Algebra.trace ℚ D.host.F x : ℚ) : ℂ) := by
@@ -110,7 +106,7 @@ theorem sum_tauE_eq_trace (D : D7) (x : D.host.F) :
     exact congrArg σ ((IsCMField.complexConj D.host.E).commutes x)
 
 /- English proof (translation)
-Establish `e : pairA F 0 (algebraMap F (Af F) x) = algebraMap F (AF F) x + pairA F (algebraMap F (Ainf F) (-x)) 0`. Use `Prod.ext ?_ (add_zero _).symm` and prove the remaining obligations. Use `show (0 : Ainf F) = algebraMap F (Ainf F) x + algebraMap F (Ainf F) (-x)`. Rewrite using `[map_neg, add_neg_cancel]`. Rewrite using `[e, AddChar.map_add_eq_mul, h.2.2.1, one_mul, psiInf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_fin_rat {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (h : IsCharAF F ψ) (x : F) :
     ψ (pairA F 0 (algebraMap F (Af F) x)) = psiInf F ψ (algebraMap F (Ainf F) (-x)) := by
@@ -122,14 +118,14 @@ theorem char_fin_rat {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) �
   rw [e, AddChar.map_add_eq_mul, h.2.2.1, one_mul, psiInf]
 
 /- English proof (translation)
-Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_one_eq {F E A : Type} [Field F] [Field E] [CommRing A] [Algebra F E] [Algebra F A] (x : F) :
     (algebraMap F A x) ⊗ₜ[F] (1 : E) = (1 : A) ⊗ₜ[F] (algebraMap F E x) := by
   rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]
 
 /- English proof (translation)
-Introduce `D ψ hψ x`. Take `⟨θ, hθ⟩` from `hψ.2.1`. Rewrite using `[char_fin_rat ψ hψ.1, hψ.2.2 θ hθ, tmul_one_eq, Finset.sum_congr rfl fun ρ _ => (hθ ρ).1 _, sum_tauE_eq_trace, map_neg]`. Use `congr 1`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

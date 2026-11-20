@@ -29,7 +29,7 @@ instance isQuasicoherent_pushforward (F : X.Modules) [F.IsQuasicoherent] :
   isQuasicoherent_pushforward_of_isAffineHom i F
 
 /- English proof (translation)
-The claim follows from `isCoherent_pushforward_of_isClosedImmersion i hF`.
+A detailed English derivation is pending.
 -/
 theorem isCoherent_pushforward {F : X.Modules} (hF : IsCoherent F) :
     IsCoherent ((Scheme.Modules.pushforward i).obj F) :=
@@ -38,7 +38,7 @@ theorem isCoherent_pushforward {F : X.Modules} (hF : IsCoherent F) :
 omit [IsClosedImmersion i] in
 
 /- English proof (translation)
-Introduce `x`. Take `⟨j, hj⟩ : ∃ j, i.base x ∈ ProjSpace.stdOpen A n j` from `Opens.mem_iSup.1 (by rw [ProjSpace.iSup_stdOpen]; trivial)`. Conclude with `⟨i ⁻¹ᵁ ProjSpace.stdOpen A n j, hj, _, isBasisOn_pullbackUnitApp i (ProjTwist.isBasisOn_upow _ (ProjSpace.X_mem j) k)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isInvertibleSheaf_twistingSheaf (k : ℤ) : IsInvertibleSheaf (twistingSheaf i k) := by
   intro x
@@ -57,7 +57,7 @@ def pushforwardTwistIso (F : X.Modules) (k : ℤ) :
   pushforwardTwistIso' i F k
 
 /- English proof (translation)
-The claim follows from `exists_generatingSections_of_pushforward_of_isAffineHom i M h`.
+A detailed English derivation is pending.
 -/
 theorem exists_generatingSections_of_pushforward (M : X.Modules) [M.IsQuasicoherent]
     (h : ∃ σ : ((Scheme.Modules.pushforward i).obj M).GeneratingSections, σ.IsFiniteType) :

@@ -31,7 +31,7 @@ namespace GlobalTheory.ChainTw.TwPlaces
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨τ, hτ, -⟩` from `GlobalTheory.AdelicU.existsUnique_splitPrime_eq (GlobalTheory.AdelicU.isCMExt_host D) hne rfl h.symm`. Rewrite using `[← GlobalTheory.LFun.SplitChart.absNorm_splitPrime τ, hτ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_under_of_ne {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : w.under (𝓞 D.host.F) = w'.under (𝓞 D.host.F))
     (hne : w ≠ w') : Ideal.absNorm (w.under (𝓞 D.host.F)).asIdeal = Ideal.absNorm w.asIdeal := by
@@ -39,13 +39,13 @@ theorem absNorm_under_of_ne {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : w.un
   rw [← GlobalTheory.LFun.SplitChart.absNorm_splitPrime τ, hτ]
 
 /- English proof (translation)
-Establish `hinj` using `GlobalTheory.LevelPlaces.under_injOn h`. Take `⟨⟨es, hes, rfl⟩, h0⟩` from `h`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Introduce `hc`. Establish `hd : ∀ Q ∈ P, GlobalTheory.IdemSupport.IsDelta Φ Q (es Q)` using `fun Q hQ => GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (hes Q hQ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : Φ (∑ Q ∈ P, es Q) PP = 1`. Rewrite using `[GlobalTheory.LevelPlaces.ev_sum, Finset.sum_eq_single PP (fun Q hQ hQP => (hd Q hQ).2.2 PP (Ne.symm hQP)) (fun h => absurd hPP h), (hd PP hPP).2.1]`. Establish `e2 : Φ (cA D (∑ Q ∈ P, es Q)) PP = 1`. Rewrite using `[map_sum, GlobalTheory.LevelPlaces.ev_sum, Finset.sum_eq_single PP ?_ (fun h => absurd hPP h)]`. Use `(GlobalTheory.IdemSupport.delta_conj hΦ (hd PP hPP)).2.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hc]`. Then use the resulting hypothesis. Introduce `Q hQ hQP`. Use `(GlobalTheory.IdemSupport.delta_conj hΦ (hd Q hQ)).2.2 PP fun hQc => hQP ?_` and prove the remaining obligations. Establish `hv : Q.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)` using `by rw [← GlobalTheory.IdemSupport.under_cP Q, ← hQc]`. Conclude with `hinj (Finset.mem_coe.2 hQ) (Finset.mem_coe.2 hPP) hv`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `GlobalTheory.IdemSupport.ev_mul (Φ := Φ) (∑ Q ∈ P, es Q) (cA D (∑ Q ∈ P, es Q)) PP`. Rewrite `e3` using `[h0, GlobalTheory.IdemSupport.ev_zero, e1, e2, one_mul]`. Conclude with `zero_ne_one e3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjPrime_ne_of_mem {P : Finset (Pl D.host.E)} {e : AE D} (h : IsIdemSum e P) {PP : Pl D.host.E} (hPP : PP ∈ P) :
     GlobalTheory.IdemSupport.cP PP ≠ PP := by
@@ -72,7 +72,7 @@ theorem conjPrime_ne_of_mem {P : Finset (Pl D.host.E)} {e : AE D} (h : IsIdemSum
   exact zero_ne_one e3
 
 /- English proof (translation)
-Rewrite `hi` using `[Finset.mem_Icc]`. Conclude with `⟨⟨i - 1, by omega⟩, by simp; omega⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_fin_of_mem {m i : ℕ} (hi : i ∈ Finset.Icc 1 m) : ∃ k : Fin m, (k : ℕ) + 1 = i := by
   rw [Finset.mem_Icc] at hi
@@ -83,33 +83,29 @@ end GlobalTheory.ChainTw.TwPlaces
 open GlobalTheory.ChainTw.TwPlaces in
 
 /- English proof (translation)
-Introduce `D c w hw`. Take `⟨e, he⟩` from `hw.com.split`. Establish `hinj : Set.InjOn (fun PP : Pl D.host.E => PP.under (𝓞 D.host.F)) (c.Pg : Set (Pl D.host.E))` using `GlobalTheory.LevelPlaces.under_injOn he`. Establish `hQ : ∀ PP ∈ w.Q, PP ∈ c.Pg` using `fun PP h => hw.union ▸ Finset.mem_union_right _ h`. Establish `hPg : ∀ PP ∈ w.Pg, PP ∈ c.Pg` using `fun PP h => hw.union ▸ Finset.mem_union_left _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ v, v ∈ c.S ↔ v ∈ w.S₀ ∨ ∃ PP ∈ w.Q, PP.under (𝓞 D.host.F) = v`. Introduce `v`. Simplify using `only [Com.S, Twist.S₀, Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_image, hw.union, Finset.mem_union]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨PP, h | h, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨PP, h, rfl⟩`. Conclude with `Or.inr ⟨PP, h, rfl⟩`. Introduce and unpack `(⟨PP, h, rfl⟩ | ⟨PP, h, rfl⟩)`. Conclude with `⟨PP, Or.inl h, rfl⟩`. Conclude with `⟨PP, Or.inr h, rfl⟩`.
+Prove the first alternative. Prove the second alternative. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Establish `hnot : ∀ PP ∈ w.Q, PP.under (𝓞 D.host.F) ∉ w.S₀`. Introduce `PP hPP h`. Simplify using `only [Twist.S₀, Finset.coe_image, Set.mem_image, Finset.mem_coe] at h`. Take `⟨PP₀, h0, he0⟩` from `h`. Use `hinj (Finset.mem_coe.2 (hPg PP₀ h0)) (Finset.mem_coe.2 (hQ PP hPP)) he0` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Conclude with `Finset.disjoint_left.1 hw.disj h0 hPP`. Establish `hsplit : ∀ PP ∈ c.Pg, Formalism.DivisionValues.conjPl PP ≠ PP` using `fun PP h => by`. Rewrite using `[GlobalTheory.LevelPlaces.conjPl_eq_cP]`. Conclude with `conjPrime_ne_of_mem he h`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hres : ∀ PP ∈ w.Q, ∀ i ∈ Finset.Icc 1 D.R.m, ∀ j ∈ Finset.Icc 1 D.R.m, GlobalTheory.LFun.UnrAt (F` using `D.host.F) (c.μ i * (c.μ j)⁻¹) PP := by`. Introduce `PP hPP i hi j hj`. Take `⟨a, rfl⟩` from `exists_fin_of_mem hi`. Take `⟨b, rfl⟩` from `exists_fin_of_mem hj`. Take `⟨Ha, hca, hra⟩` from `hw.com.res a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Hb, hcb, hrb⟩` from `hw.com.res b`. Establish `ra` using `hra PP (hQ PP hPP)`. Establish `rb` using `hrb PP (hQ PP hPP)`. Rewrite `ra`, `rb` using `[hw.chiQ _ PP hPP, inv_inv]`. Conclude with `GlobalTheory.T.heckeCharUnramifiedAt_quotient_same_residual D _ _ Ha Hb PP _ hca hcb ra rb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hre : ∀ i ∈ Finset.Icc 1 D.R.m, ∀ j ∈ Finset.Icc 1 D.R.m, ResEta D (c.μ i * (c.μ j)⁻¹) 0`. Introduce `i hi j hj`. Take `⟨-, ⟨η, hη⟩, hi'⟩` from `hw.com.chars.2.2.2.2 i hi`. Take `⟨-, -, hj'⟩` from `hw.com.chars.2.2.2.2 j hj`. Use `⟨⟨η, hη⟩, fun η' hη' a => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mul_apply, MonoidHom.inv_apply, hi' η' hη' a, hj' η' hη' a]`. Simplify using the standard rewrite rules. Use `⟨hS, hnot, hinj.mono fun x hx => Finset.mem_coe.2 (hQ x (Finset.mem_coe.1 hx)), fun PP hPP => ?_, ?_⟩` and prove the remaining obligations. Establish `hne : Formalism.DivisionValues.conjPl PP ≠ PP` using `hsplit PP (hQ PP hPP)`. Establish `hu : (Formalism.DivisionValues.conjPl PP).under (𝓞 D.host.F) = PP.under (𝓞 D.host.F)` using `ParInv.under_conjPl PP`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `⟨GlobalTheory.LFun.ConjPlace.isSplit_of_ne hne.symm rfl hu, absNorm_under_of_ne hu.symm hne.symm, Formalism.DivisionValues.conjPl PP, hne, fun P => ⟨fun h => ?_, ?_⟩, ParInv.absNorm_conjPl' PP, fun i hi j hj => ?_⟩` and prove the remaining obligations. Break down `GlobalTheory.GridPlaces.eq_or_eq_conjP h with h1 | h1` into its components or cases. Conclude with `Or.inl h1`. Conclude with `Or.inr (h1.trans (ParInv.conjP_eq_conjPl' PP))`. Introduce and unpack `(rfl | rfl)`.
+Prove the second alternative. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Conclude with `hu`. Conclude with `(GlobalTheory.T.unramified_conjugate_place_inverse_uniformizer_value D _ (hre i hi j hj) PP _ hu.symm hne.symm (hres PP hPP i hi j hj)).2`. Introduce `i hi j hj W hW`. Distinguish the cases in `hWS : W.under (𝓞 D.host.F) ∈ c.S`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Break down `(hS _).1 hWS with h | ⟨PP, hPP, hPPW⟩` into its components or cases. Conclude with `absurd h hW`. Break down `GlobalTheory.GridPlaces.eq_or_eq_conjP hPPW.symm with h1 | h1` into its components or cases. Rewrite using `[h1]`. Conclude with `hres PP hPP i hi j hj`.
-
-Establish `hne` using `hsplit PP (hQ PP hPP)`. Rewrite using `[h1, ParInv.conjP_eq_conjPl']`. Conclude with `(GlobalTheory.T.unramified_conjugate_place_inverse_uniformizer_value D _ (hre i hi j hj) PP _ (ParInv.under_conjPl PP).symm hne.symm (hres PP hPP i hi j hj)).1`. Take `⟨a, rfl⟩` from `exists_fin_of_mem hi`. Take `⟨b, rfl⟩` from `exists_fin_of_mem hj`.
-
-Establish `hW' : W ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))` using `hWS`. Conclude with `(hw.com.unr a W hW').mul (hw.com.unr b W hW').inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ChainTw.twist_places : ∀ (D : D7) (c : Com D) (w : Twist D), w.Is c → (∀ v, v ∈ c.S ↔ v ∈ w.S₀ ∨ ∃ PP ∈ w.Q, PP.under (𝓞 D.host.F) = v) ∧ (∀ PP ∈ w.Q, PP.under (𝓞 D.host.F) ∉ w.S₀) ∧ Set.InjOn (fun PP : Pl D.host.E => PP.under (𝓞 D.host.F)) w.Q ∧ (∀ PP ∈ w.Q, Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) (PP.under (𝓞 D.host.F)) ∧ Ideal.absNorm (PP.under (𝓞 D.host.F)).asIdeal = Ideal.absNorm PP.asIdeal ∧ ∃ PP' : Pl D.host.E, PP' ≠ PP ∧ (∀ P : Pl D.host.E, P.under (𝓞 D.host.F) = PP.under (𝓞 D.host.F) ↔ P = PP ∨ P = PP') ∧ Ideal.absNorm PP'.asIdeal = Ideal.absNorm PP.asIdeal ∧ ∀ i ∈ Finset.Icc 1 D.R.m, ∀ j ∈ Finset.Icc 1 D.R.m, GlobalTheory.LFun.val (F := D.host.F) (c.μ i * (c.μ j)⁻¹) PP' = (GlobalTheory.LFun.val (F := D.host.F) (c.μ i * (c.μ j)⁻¹) PP)⁻¹) ∧ ∀ i ∈ Finset.Icc 1 D.R.m, ∀ j ∈ Finset.Icc 1 D.R.m, GlobalTheory.LFun.UnrOff (F := D.host.F) (c.μ i * (c.μ j)⁻¹) w.S₀ := by
   intro D c w hw

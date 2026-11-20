@@ -27,12 +27,12 @@ def InId (I : Ideal (𝓞 E)) (x : E ⊗[F] Formalism.L2.Herm.Af F) : Prop :=
   ∃ s ∈ Formalism.L2.DIV.idS F I, (s : E ⊗[F] Formalism.L2.Herm.Af F) = x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, zero_mem _, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem inId_zero (I : Ideal (𝓞 E)) : InId (F := F) I 0 := ⟨0, zero_mem _, rfl⟩
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `hx`. Take `⟨t, ht, rfl⟩` from `hy`. Conclude with `⟨s + t, add_mem hs ht, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inId_add {I : Ideal (𝓞 E)} {x y : E ⊗[F] Formalism.L2.Herm.Af F} (hx : InId I x) (hy : InId I y) :
     InId I (x + y) := by
@@ -41,7 +41,7 @@ theorem inId_add {I : Ideal (𝓞 E)} {x y : E ⊗[F] Formalism.L2.Herm.Af F} (h
   exact ⟨s + t, add_mem hs ht, rfl⟩
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `hx`. Conclude with `⟨⟨t, ht⟩ * s, Ideal.mul_mem_left _ _ hs, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inId_mul {I : Ideal (𝓞 E)} {t x : E ⊗[F] Formalism.L2.Herm.Af F} (ht : t ∈ Formalism.L2.Herm.intAf F E)
     (hx : InId I x) : InId I (t * x) := by
@@ -49,7 +49,7 @@ theorem inId_mul {I : Ideal (𝓞 E)} {t x : E ⊗[F] Formalism.L2.Herm.Af F} (h
   exact ⟨⟨t, ht⟩ * s, Ideal.mul_mem_left _ _ hs, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty => simpa using inId_zero (F := F) I`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha]`. Conclude with `inId_add (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inId_sum {I : Ideal (𝓞 E)} {n : ℕ} (f : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) (h : ∀ i, InId I (f i)) :
     InId I (∑ i, f i) := by
@@ -59,7 +59,7 @@ theorem inId_sum {I : Ideal (𝓞 E)} {n : ℕ} (f : Fin n → E ⊗[F] Formalis
   | insert a s ha ih => rw [Finset.sum_insert ha]; exact inId_add (h a) ih
 
 /- English proof (translation)
-Take `⟨s, -, rfl⟩` from `hx`. Conclude with `s.2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inId_int {I : Ideal (𝓞 E)} {x : E ⊗[F] Formalism.L2.Herm.Af F} (hx : InId I x) :
     x ∈ Formalism.L2.Herm.intAf F E := by
@@ -67,7 +67,7 @@ theorem inId_int {I : Ideal (𝓞 E)} {x : E ⊗[F] Formalism.L2.Herm.Af F} (hx 
   exact s.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Matrix.mulVec_single_one, smul_eq_mul, Matrix.transpose_apply]`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_eq_sum {A : Type} [CommRing A] {n : ℕ} (B : Matrix (Fin n) (Fin n) A) (u : Fin n → A) :
     B *ᵥ u = ∑ i, u i • (B *ᵥ Pi.single i 1) := by
@@ -78,11 +78,11 @@ theorem mulVec_eq_sum {A : Type} [CommRing A] {n : ℕ} (B : Matrix (Fin n) (Fin
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz ⊢`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `Submodule.subset_span ⟨a • l, Submodule.smul_mem_smul ha hl, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_hatL_ideal {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {𝔪 : Ideal (𝓞 E)}
     {a : 𝓞 E} (ha : a ∈ 𝔪) {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F} (hz : z ∈ Formalism.L2.Herm.hatL (F := F) Λ) :
@@ -100,11 +100,9 @@ theorem smul_mem_hatL_ideal {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {�
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.idS Ideal.map at hs`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha, rfl⟩` from `hx`. Conclude with `smul_mem_hatL_ideal Λ ha hz`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Subring.coe_add, add_smul]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul t x _ hx`. Rewrite using `[smul_eq_mul, Subring.coe_mul, mul_smul]`.
-
-Conclude with `Submodule.smul_mem _ t hx`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idS_smul_mem_hatL {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {I : Ideal (𝓞 E)}
     {s : Formalism.L2.Herm.intAf F E} (hs : s ∈ Formalism.L2.DIV.idS F I) {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
@@ -122,23 +120,21 @@ theorem idS_smul_mem_hatL {n : ℕ} (Λ : Submodule (𝓞 E) (Fin n → E)) {I :
     exact Submodule.smul_mem _ t hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem w hw`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx, rfl⟩` from `hw`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations. Introduce `r hr l hl i`. Establish `e : (fun i => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) ((r • l) i)) = Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (algebraMap (𝓞 E) E r) • (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (l i)) := by`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Algebra.smul_def]`. Use `beta_reduce`. Rewrite using `[e, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Establish `hl'` using `(hfr _).1 (Submodule.subset_span ⟨l, hl, rfl⟩) i`. Conclude with `⟨Formalism.L2.DIV.oToS F E r * ⟨_, hl'⟩, Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hr), rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy i`. Establish `e : (fun i => Formalism.UG.inclE (F` using `F) (Formalism.L2.Herm.Af F) ((x + y) i)) = (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (x i)) + (fun i => Formalism.UG.inclE (F := F) (Formalism.L2.Herm.Af F) (y i)) := by`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Use `beta_reduce at hx hy ⊢`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e, Matrix.mulVec_add, Pi.add_apply]`. Conclude with `inId_add (hx i) (hy i)`. Consider the case `zero => intro i`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `inId_zero I`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add x y _ _ hx hy => intro i`. Rewrite using `[Matrix.mulVec_add, Pi.add_apply]`. Conclude with `inId_add (hx i) (hy i)`. Consider the case `smul t x _ hx`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subring.smul_def, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `inId_mul t.2 (hx i)`. Introduce `hu`. Establish `e1 : v = β.1 *ᵥ ((β⁻¹).1 *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, mulVec_eq_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨s, hs, hsv⟩` from `hu i`. Rewrite using `[← hsv]`. Use `idS_smul_mem_hatL Λ hs ((hfr _).2 fun k => ?_)` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_hatL_smul_iff {n : ℕ} (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (Λ : Submodule (𝓞 E) (Fin n → E))
     (hfr : Formalism.L2.DIV.IsFrame β Λ) (I : Ideal (𝓞 E)) (v : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) :
@@ -193,9 +189,9 @@ end General
 variable {D : D7}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [Formalism.UG.sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `star_star a`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sigR_invol (x : Lev.EAf D) :
     Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) x) = x := by
@@ -220,14 +216,14 @@ def sO (D : D7) : Formalism.L2.Herm.intAf D.host.F D.host.E →+* Formalism.L2.H
   (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)).restrict _ _ (fun _ hs => GlobalTheory.LevSplit.sigR_int hs)
 
 /- English proof (translation)
-Use extensionality with `b`. Conclude with `GlobalTheory.GramFrame.sigR_inclE (D := D) (b : D.host.E)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem sO_comp_oToS : (sO D).comp (Formalism.L2.DIV.oToS D.host.F D.host.E) = (Formalism.L2.DIV.oToS D.host.F D.host.E).comp (cO D) := by
   ext b
   exact GlobalTheory.GramFrame.sigR_inclE (D := D) (b : D.host.E)
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `b hb`. Conclude with `Ideal.subset_span ⟨b, hb, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem map_cO_le_conjI (J : Ideal (𝓞 D.host.E)) : J.map (cO D) ≤ conjI J := by
   rw [Ideal.map_le_iff_le_comap]
@@ -235,9 +231,9 @@ theorem map_cO_le_conjI (J : Ideal (𝓞 D.host.E)) : J.map (cO D) ≤ conjI J :
   exact Ideal.subset_span ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-Unfold `conjI`. Rewrite using `[Ideal.map_span, Ideal.span_le]`. Introduce and unpack `_ ⟨a, ⟨b, hb, hab⟩, rfl⟩`. Establish `e : cO D a = b`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cO_coe, hab]`. Conclude with `star_star _`. Rewrite using `[e]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_cO_conjI_le (J : Ideal (𝓞 D.host.E)) : (conjI J).map (cO D) ≤ J := by
   unfold conjI
@@ -251,11 +247,11 @@ theorem map_cO_conjI_le (J : Ideal (𝓞 D.host.E)) : (conjI J).map (cO D) ≤ J
   exact hb
 
 /- English proof (translation)
-Take `⟨s, hs, rfl⟩` from `hx`. Use `⟨sO D s, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : sO D s ∈ (Formalism.L2.DIV.idS D.host.F I).map (sO D)` using `Ideal.mem_map_of_mem _ hs`. Establish `h2 : (Formalism.L2.DIV.idS D.host.F I).map (sO D) ≤ Formalism.L2.DIV.idS D.host.F K`. Unfold `Formalism.L2.DIV.idS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Ideal.map_map, sO_comp_oToS, ← Ideal.map_map]`. Conclude with `Ideal.map_mono hIK`. Conclude with `h2 h1`. Use `first`. Consider the case `exact RingHom.coe_restrict_apply _ _ _ _ s`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact congrArg Subtype.val (RingHom.restrict_apply _ _ s)`. Consider the case `(unfold sO; rw [RingHom.restrict_apply])`. Consider the case `(with_reducible_and_instances rfl)`.
+A detailed English derivation is pending.
 -/
 theorem inId_sigR {I K : Ideal (𝓞 D.host.E)} (hIK : I.map (cO D) ≤ K) {x : Lev.EAf D} (hx : InId (F := D.host.F) I x) :
     InId (F := D.host.F) K (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F) x) := by
@@ -286,7 +282,7 @@ def frameGram (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) : Matrix (Fin T.ran
   Formalism.UG.cT σA β.1 * T.gram.map ιA * β.1
 
 /- English proof (translation)
-Introduce `x hx y hy`. Take `⟨b, hb⟩` from `(hsd.2 y).1 hy x hx`. Conclude with `⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem selfDual_pair {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hsd : IsSelfDualC T Λ) :
     ∀ x ∈ Λ, ∀ y ∈ Λ, Formalism.UG.hform (D.sp.cm.sig : D.host.E →+* D.host.E) T.gram x y ∈
@@ -296,9 +292,9 @@ theorem selfDual_pair {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank �
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Unfold `Formalism.L2.Forms.dualL`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Use `(hsd.2 y).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `hy x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, hb⟩`.
+Supply the required witnesses or components.
 -/
 theorem selfDual_dualL_le {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hsd : IsSelfDualC T Λ) :
     Formalism.L2.Forms.dualL (D.sp.cm.sig : D.host.E →+* D.host.E) T.gram Λ ≤ Λ := by
@@ -310,7 +306,7 @@ theorem selfDual_dualL_le {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.ran
   exact ⟨b, hb⟩
 
 /- English proof (translation)
-Use `(hfr _).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `Subring.one_mem _`. Conclude with `Subring.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem_hatL {n : ℕ} {β : GL (Fin n) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hfr : Formalism.L2.DIV.IsFrame β Λ) (j : Fin n) : β.1 *ᵥ Pi.single j 1 ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by
@@ -321,7 +317,7 @@ theorem col_mem_hatL {n : ℕ} {β : GL (Fin n) (Lev.EAf D)} {Λ : Submodule (�
   · exact Subring.zero_mem _
 
 /- English proof (translation)
-Unfold `frameGram`. Rewrite using `[GlobalTheory.GramFrame.gram_entry]`. Conclude with `GlobalTheory.GramFrame.pair_hatL T.gram Λ (selfDual_pair hsd) _ _ (col_mem_hatL hfr i) (col_mem_hatL hfr j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameGram_int {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hsd : IsSelfDualC T Λ)
     {β : GL (Fin T.rank) (Lev.EAf D)} (hfr : Formalism.L2.DIV.IsFrame β Λ) (i j : Fin T.rank) :
@@ -331,9 +327,9 @@ theorem frameGram_int {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank �
   exact GlobalTheory.GramFrame.pair_hatL T.gram Λ (selfDual_pair hsd) _ _ (col_mem_hatL hfr i) (col_mem_hatL hfr j)
 
 /- English proof (translation)
-Establish `hb : IsUnit β.1.det` using `(Matrix.isUnit_iff_isUnit_det _).1 β.isUnit`. Unfold `frameGram`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, Formalism.UG.cT, Matrix.det_transpose]`. Use `IsUnit.mul (IsUnit.mul ?_ ?_) hb` and prove the remaining obligations. Establish `h3` using `hb.map σA`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h3` using `[RingHom.map_det]`. Conclude with `h3`. Establish `h3` using `(GlobalTheory.LatVac.gram_det_isUnit T).map ιA`. Rewrite `h3` using `[RingHom.map_det]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameGram_det (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) : IsUnit (frameGram T β).det := by
   have hb : IsUnit β.1.det := (Matrix.isUnit_iff_isUnit_det _).1 β.isUnit
@@ -348,7 +344,7 @@ theorem frameGram_det (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) : IsUnit (f
     exact h3
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GramFrame.inv_int D.sp.cm.sig (fun _ hs => GlobalTheory.LevSplit.sigR_int hs) T.gram (GlobalTheory.LatVac.gram_det_isUnit T) β Λ hsd.1 hfr (selfDual_dualL_le hsd) _ (Matrix.mul_nonsing_inv _ (frameGram_det T β)) i j`.
+A detailed English derivation is pending.
 -/
 theorem frameGram_inv_int {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hsd : IsSelfDualC T Λ)
     {β : GL (Fin T.rank) (Lev.EAf D)} (hfr : Formalism.L2.DIV.IsFrame β Λ) (i j : Fin T.rank) :
@@ -357,9 +353,9 @@ theorem frameGram_inv_int {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.ran
     β Λ hsd.1 hfr (selfDual_dualL_le hsd) _ (Matrix.mul_nonsing_inv _ (frameGram_det T β)) i j
 
 /- English proof (translation)
-Establish `e1 : v = β.1 *ᵥ ((β⁻¹).1 *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Use `conv_lhs => rw [e1]`. Rewrite using `[GlobalTheory.DualCompletion.hform_mulVec_left]`. Simplify using `only [Matrix.vecMul, dotProduct, frameGram]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hform_col (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) (v : Fin T.rank → Lev.EAf D) (j : Fin T.rank) :
     Formalism.UG.hform σA (T.gram.map ιA) v (fun c => β.1 c j) =
@@ -372,7 +368,7 @@ theorem hform_col (T : HSp D) (β : GL (Fin T.rank) (Lev.EAf D)) (v : Fin T.rank
   rfl
 
 /- English proof (translation)
-Simplify using `only [Matrix.vecMul, dotProduct]`. Use `inId_sum _ fun a => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `inId_mul (hM a j) (hx a)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inId_vecMul {I : Ideal (𝓞 D.host.E)} {n : ℕ} {x : Fin n → Lev.EAf D} {M : Matrix (Fin n) (Fin n) (Lev.EAf D)}
     (hM : ∀ i j, M i j ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) (hx : ∀ i, InId (F := D.host.F) I (x i)) (j : Fin n) :
@@ -383,11 +379,11 @@ theorem inId_vecMul {I : Ideal (𝓞 D.host.E)} {n : ℕ} {x : Fin n → Lev.EAf
   exact inId_mul (hM a j) (hx a)
 
 /- English proof (translation)
-Simplify using `only [hform_col]`. Prove the components needed by the constructor for the conclusion. Introduce `h j`. Conclude with `inId_vecMul (frameGram_int hsd hfr) (fun a => inId_sigR (map_cO_conjI_le J) (h a)) j`. Introduce `h a`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (fun a => σA (((β⁻¹).1 *ᵥ v) a)) = Matrix.vecMul (Matrix.vecMul (fun a => σA (((β⁻¹).1 *ᵥ v) a)) (frameGram T β)) (frameGram T β)⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ (frameGram_det T β), Matrix.vecMul_one]`. Establish `h2 : InId (F` using `D.host.F) J (σA (((β⁻¹).1 *ᵥ v) a)) := by`. Rewrite using `[congrFun e a]`. Conclude with `inId_vecMul (frameGram_inv_int hsd hfr) h a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `inId_sigR (map_cO_le_conjI J) h2`. Rewrite `h3` using `[sigR_invol]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem key_iff {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hsd : IsSelfDualC T Λ)
     {β : GL (Fin T.rank) (Lev.EAf D)} (hfr : Formalism.L2.DIV.IsFrame β Λ) (J : Ideal (𝓞 D.host.E))
@@ -411,7 +407,7 @@ theorem key_iff {T : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin T.rank → D.ho
 end GlobalTheory.FrameIdeal
 
 /- English proof (translation)
-Introduce `D T ΛT hsd βT hfr J _hJ v`. Establish `key` using `GlobalTheory.FrameIdeal.key_iff hsd hfr J v`. Rewrite `key` using `[← GlobalTheory.FrameIdeal.mem_hatL_smul_iff βT ΛT hfr]`. Unfold `GlobalTheory.FrameIdeal.InId at key`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameIdeal.mem_hatL_conjI_iff_hform : ∀ (D : D7) (T : HSp D) (ΛT : Lt D.host.E T.rank), IsSelfDualC T ΛT → ∀ βT : GL (Fin T.rank) (Lev.EAf D), Formalism.L2.DIV.IsFrame βT ΛT → ∀ J : Ideal (𝓞 D.host.E), J ≠ ⊥ → ∀ v : Fin T.rank → Lev.EAf D, (v ∈ Formalism.L2.Herm.hatL (F := D.host.F) (conjI J • ΛT) ↔ ∀ j : Fin T.rank, ∃ s ∈ Formalism.L2.DIV.idS D.host.F J, (s : Lev.EAf D) = Formalism.UG.hform (Formalism.UG.sigR D.sp.cm.sig (Formalism.L2.Herm.Af D.host.F)) (T.gram.map (Formalism.UG.inclE (F := D.host.F) (Formalism.L2.Herm.Af D.host.F))) v (fun c => βT.1 c j)) := by
   intro D T ΛT hsd βT hfr J _hJ v

@@ -13,19 +13,17 @@ variable {g : ℕ} [Fact g.Prime] {k : Type} [Field k] [ValuativeRel k] [Topolog
   [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Take `⟨y, hy⟩ : ∃ y, i.symm x = y` from `⟨_, rfl⟩`. Rewrite `hlt` using `[hy]`. Establish `hix : i y = x` using `by rw [← hy, RingEquiv.apply_symm_apply]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0` using `fun h => by rw [h, norm_zero] at hlt; exact absurd hlt (by norm_num)`. Establish `hx0 : x ≠ 0` using `by rw [← hix]; exact (map_ne_zero i).2 hy0`. Establish `hz : ‖y⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hlt`. Establish `hϖ1 : ValuativeRel.valuation k (GLnLocal.uniformizer k : k) < 1` using `GLnLocal.valuation_uniformizer_lt_one k`. Establish `hϖ0 : (GLnLocal.uniformizer k : k) ≠ 0` using `fun h => GLnLocal.valuation_uniformizer_ne_zero k (by rw [h, map_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Filter.Tendsto (fun m : ℕ => y⁻¹ ^ m * i.symm (GLnLocal.uniformizer k : k)⁻¹) Filter.atTop (nhds 0)`. Simplify using `using (tendsto_pow_atTop_nhds_zero_of_norm_lt_one hz).mul_const (i.symm (GLnLocal.uniformizer k : k)⁻¹)`. Establish `hT : Filter.Tendsto (fun m : ℕ => i (y⁻¹ ^ m * i.symm (GLnLocal.uniformizer k : k)⁻¹)) Filter.atTop (nhds 0)`. Use `(hi.tendsto 0).comp h1` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hO : ((ValuativeRel.valuation k).integer : Set k) ∈ nhds (0 : k)` using `Valuation.isOpen_integer.mem_nhds (zero_mem _)`. Take `⟨m, hm⟩` from `(hT.eventually hO).exists`. Establish `hm' : i (y⁻¹ ^ m * i.symm (GLnLocal.uniformizer k : k)⁻¹) ∈ (ValuativeRel.valuation k).integer` using `hm`. Establish `hval` using `(Valuation.mem_integer_iff _ _).1 hm'`. Establish `hxv` using `(Valuation.mem_integer_iff _ _).1 hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiy : i (y⁻¹ ^ m * i.symm (GLnLocal.uniformizer k : k)⁻¹) * x ^ m = (GLnLocal.uniformizer k : k)⁻¹`. Rewrite using `[map_mul, map_pow, map_inv₀, hix, RingEquiv.apply_symm_apply, inv_pow, mul_comm ((x ^ m)⁻¹) _, mul_assoc, inv_mul_cancel₀ (pow_ne_zero m hx0), mul_one]`. Establish `hle : ValuativeRel.valuation k (GLnLocal.uniformizer k : k)⁻¹ ≤ 1`. Rewrite using `[← hiy, map_mul, map_pow]`. Conclude with `mul_le_one' hval (pow_le_one' hxv m)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hge : (1 : ValuativeRel.ValueGroupWithZero k) ≤ ValuativeRel.valuation k (GLnLocal.uniformizer k : k)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ hϖ0, map_one]`. Use `_ = ValuativeRel.valuation k (GLnLocal.uniformizer k : k) * ValuativeRel.valuation k (GLnLocal.uniformizer k : k)⁻¹ := map_mul _ _ _`. Use `_ ≤ ValuativeRel.valuation k (GLnLocal.uniformizer k : k) * 1 := by gcongr`.
-
-Use `_ = _ := mul_one _`. Conclude with `absurd hϖ1 (not_lt.2 hge)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_symm_le_one (i : ℚ_[g] ≃+* k) (hi : Continuous i) {x : k}
     (hx : x ∈ (ValuativeRel.valuation k).integer) : ‖i.symm x‖ ≤ 1 := by
@@ -69,15 +67,13 @@ theorem norm_symm_le_one (i : ℚ_[g] ≃+* k) (hi : Continuous i) {x : k}
   exact absurd hϖ1 (not_lt.2 hge)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff k n).1 hk`. Set `M : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => ⟨i.symm ((k0 : Matrix (Fin n) (Fin n) k) a b), norm_symm_le_one i hi (h1 a b)⟩`. Set `M' : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun a b => ⟨i.symm (((k0⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) a b), norm_symm_le_one i hi (h2 a b)⟩`. Set `φ : ℤ_[g] →+* k` to `i.toRingHom.comp (algebraMap ℤ_[g] ℚ_[g])`. Establish `hφ : Function.Injective φ` using `fun a b h => Subtype.ext (i.injective h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hMφ : M.map φ = (k0 : Matrix (Fin n) (Fin n) k)`. Use extensionality with `a b`. Conclude with `i.apply_symm_apply _`. Establish `hM'φ : M'.map φ = ((k0⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use extensionality with `a b`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `i.apply_symm_apply _`. Establish `hMM : M * M' = 1`. Apply `Matrix.map_injective hφ` to reduce the goal to its premises. Use `show (M * M').map φ = (1 : Matrix (Fin n) (Fin n) ℤ_[g]).map φ`. Rewrite using `[Matrix.map_mul, hMφ, hM'φ, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.map_one _ (map_zero φ) (map_one φ)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hM'M : M' * M = 1`. Apply `Matrix.map_injective hφ` to reduce the goal to its premises. Use `show (M' * M).map φ = (1 : Matrix (Fin n) (Fin n) ℤ_[g]).map φ`. Rewrite using `[Matrix.map_mul, hMφ, hM'φ, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Use `⟨⟨M, M', hMM, hM'M⟩, Matrix.GeneralLinearGroup.ext fun a b => ?_⟩` and prove the remaining obligations.
-
-Conclude with `i.apply_symm_apply _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_inc_eq (i : ℚ_[g] ≃+* k) (hi : Continuous i) {n : ℕ} (k0 : GL (Fin n) k)
     (hk : k0 ∈ GLnLocal.integralGL k n) :
@@ -109,19 +105,17 @@ theorem exists_inc_eq (i : ℚ_[g] ≃+* k) (hi : Continuous i) {n : ℕ} (k0 : 
   exact i.apply_symm_apply _
 
 /- English proof (translation)
-Establish `hu'` using `GlobalTheory.FiniteGL.mem_unipRadical.1 hu`. Establish `hoff : ∀ x y, x ≠ y → GlobalTheory.FiniteGL.twoBlocks n a y ≤ GlobalTheory.FiniteGL.twoBlocks n a x → (u : Matrix (Fin n) (Fin n) (ZMod g)) x y = 0`. Introduce `x y hxy h`. Use `hu' x y h` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_ne hxy, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hdiag : ∀ x, (u : Matrix (Fin n) (Fin n) (ZMod g)) x x = 1`. Introduce `x`. Use `hu' x x le_rfl` as an intermediate fact. Rewrite `this` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis. Set `M : Matrix (Fin n) (Fin n) ℤ_[g]` to `fun x y => if x = y then 1 else (((u : Matrix (Fin n) (Fin n) (ZMod g)) x y).val : ℤ_[g])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Establish `hM : (PadicInt.toZMod (p` using `g)).mapMatrix M = (u : Matrix (Fin n) (Fin n) (ZMod g)) := by`. Use extensionality with `x y`. Use `show PadicInt.toZMod (M x y) = _`. Simplify using `only [M]`. Use `split_ifs with h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Rewrite using `[map_one, hdiag]`. Rewrite using `[map_natCast, ZMod.natCast_zmod_val]`. Establish `hd : IsUnit M.det`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : M.det ∈ RingHom.ker (PadicInt.toZMod (p` using `g)) := by`. Rewrite using `[PadicInt.ker_toZMod]`. Conclude with `h`. Rewrite `h1` using `[RingHom.mem_ker, RingHom.map_det, hM]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit u)).ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨((Matrix.isUnit_iff_isUnit_det _).2 hd).unit, Units.ext hM, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.FiniteGL.mem_unipRadical.2 fun x y hxy => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sub_apply]`. Use `show i.toRingHom (algebraMap ℤ_[g] ℚ_[g] (M x y)) - (1 : Matrix (Fin n) (Fin n) k) x y = 0`. Distinguish the cases in `h : x = y`.
-
-Substitute `h` using the available equality. Simplify using `[M]`. Establish `h0` using `hoff x y h hxy`. Simplify using `[M, h, h0]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift (i : ℚ_[g] ≃+* k) {n a : ℕ} (u : GL (Fin n) (ZMod g))
     (hu : u ∈ GlobalTheory.FiniteGL.unipRadical (ZMod g) (GlobalTheory.FiniteGL.twoBlocks n a)) :

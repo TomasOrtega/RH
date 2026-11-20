@@ -12,33 +12,29 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace GlobalTheory.CompanionTheory.Ar.Top.EffNm
 
 /- English proof (translation)
-Establish `hI : IsIntegral R u` using `hu`. Take `⟨S, hS⟩` from `hI.fg_adjoin_singleton`. Establish `key : ∀ x ∈ Algebra.adjoin R {u}, ∃ m : ℕ, h ^ m * x ∈ R`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `⟨1, by rw [pow_one, mul_comm, e]; exact hg⟩`. Consider the case `algebraMap r => exact ⟨0, by simpa using r.2⟩`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x z _ _ ihx ihz`. Take `⟨m₁, h₁⟩` from `ihx`. Take `⟨m₂, h₂⟩` from `ihz`. Use `⟨m₁ + m₂, ?_⟩` and prove the remaining obligations. Establish `e' : h ^ (m₁ + m₂) * (x + z) = h ^ m₂ * (h ^ m₁ * x) + h ^ m₁ * (h ^ m₂ * z)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `add_mem (mul_mem (pow_mem hh _) h₁) (mul_mem (pow_mem hh _) h₂)`. Consider the case `mul x z _ _ ihx ihz`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m₁, h₁⟩` from `ihx`. Take `⟨m₂, h₂⟩` from `ihz`. Use `⟨m₁ + m₂, ?_⟩` and prove the remaining obligations. Establish `e' : h ^ (m₁ + m₂) * (x * z) = (h ^ m₁ * x) * (h ^ m₂ * z)`. Rewrite using `[pow_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `mul_mem h₁ h₂`. Establish `hfin : ∀ T : Finset Ω, (∀ x ∈ T, x ∈ Algebra.adjoin R {u}) → ∃ M : ℕ, ∀ x ∈ T, h ^ M * x ∈ R`. Introduce `T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => exact fun _ => ⟨0, by simp⟩`. Consider the case `insert x T _ ih`. Introduce `hT`. Take `⟨M, hM⟩` from `ih fun z hz => hT z (Finset.mem_insert_of_mem hz)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `key x (hT x (Finset.mem_insert_self x T))`. Use `⟨M + m, fun z hz => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Establish `e' : h ^ (M + m) * z = h ^ M * (h ^ m * z)` using `by rw [pow_add]; ring`. Rewrite using `[e']`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (pow_mem hh _) hm`. Establish `e' : h ^ (M + m) * z = h ^ m * (h ^ M * z)` using `by rw [pow_add]; ring`. Rewrite using `[e']`. Conclude with `mul_mem (pow_mem hh _) (hM z hz)`. Establish `hSsub : ∀ x ∈ S, x ∈ Algebra.adjoin R {u}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `: x ∈ Subalgebra.toSubmodule (Algebra.adjoin R {u})` using `hS ▸ Submodule.subset_span hx`. Conclude with `this`. Take `⟨M, hM⟩` from `hfin S hSsub`. Use `⟨M, fun n => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hn : u ^ n ∈ Subalgebra.toSubmodule (Algebra.adjoin R {u})` using `pow_mem (Algebra.subset_adjoin (Set.mem_singleton u)) n`. Rewrite `hn` using `[← hS]`. Establish `hall : ∀ x ∈ Submodule.span R (S : Set Ω), h ^ M * x ∈ R`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `mem x hx => exact hM x hx`. Consider the case `zero => simp`. Consider the case `add x z _ _ ihx ihz => rw [mul_add]`. Conclude with `add_mem ihx ihz`. Consider the case `smul r x _ ih`.
-
-Establish `e' : h ^ M * r • x = (r : Ω) * (h ^ M * x)`. Rewrite using `[Algebra.smul_def]`. Use `show h ^ M * ((r : Ω) * x) = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`.
-
-Conclude with `mul_mem r.2 ih`. Conclude with `hall _ hn`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_pow_mem {Ω : Type} [Field Ω] (R : Subalgebra ℤ Ω) {u g h : Ω}
     (hu : u ∈ integralClosure R Ω) (hg : g ∈ R) (hh : h ∈ R) (e : u * h = g) :
@@ -114,15 +110,13 @@ theorem exists_pow_mul_pow_mem {Ω : Type} [Field Ω] (R : Subalgebra ℤ Ω) {u
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `hu` using `hs c hc`. Use `set u : Ω := s * ∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k)) with hudef`. Take `⟨d, g, h, hg, hh, hh0, heq⟩` from `hb u`. Establish `hG` using `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.mem_chartLat_one y).1 (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.chartLat_form (y := y) hg) c hc`. Establish `hH` using `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.mem_chartLat_one y).1 (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.chartLat_form (y := y) hh) c hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `exists_pow_mul_pow_mem (chartRingZ y c) hu hG hH (by rw [heq]; ring)`. Use `⟨M • d, h ^ M, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_pow hh M, ?_, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow]`. Conclude with `pow_ne_zero _ hh0`. Establish `e' : aeval y (h ^ M) * s ^ n * ∏ k, y ⟨k, c k⟩ ^ (-((((M • d) k : ℕ) : ℤ) + n * a k)) = (aeval y h * ∏ k, y ⟨k, c k⟩ ^ (-(d k : ℤ))) ^ M * u ^ n`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∏ k, y ⟨k, c k⟩ ^ (-((((M • d) k : ℕ) : ℤ) + n * a k)) = (∏ k, y ⟨k, c k⟩ ^ (-(d k : ℤ))) ^ M * (∏ k, y ⟨k, c k⟩ ^ (-(((1 : ℕ) : ℤ) * a k))) ^ n`. Rewrite using `[← Finset.prod_pow, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, ← zpow_add₀ (hc k)]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, map_pow, hudef, mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e']`. Conclude with `hM n`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_at (y : (Σ k, ι k) → Ω) (a : K → ℤ) (s : Ω) (hb : Birational y)
     (hs : s ∈ chartLatNm y a 1) (c : ∀ k, ι k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
@@ -160,17 +154,17 @@ end GlobalTheory.CompanionTheory.Ar.Top.EffNm
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y _ a s _ hb hs`. Establish `hex : ∀ c : ∀ k, ι k, ∃ (e : K → ℕ) (F : MRing ι), IsMultiHomog F e ∧ aeval y F ≠ 0 ∧ ((∀ k, y ⟨k, c k⟩ ≠ 0) → ∀ n : ℕ, aeval y F * s ^ n * ∏ k, y ⟨k, c k⟩ ^ (-((e k : ℤ) + n * a k)) ∈ chartRingZ y c)`. Introduce `c`. Distinguish the cases in `hc : ∀ k, y ⟨k, c k⟩ ≠ 0`. Take `⟨e, F, h1, h2, h3⟩` from `EffNm.exists_form_at y a s hb hs c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e, F, h1, h2, fun _ => h3⟩`. Conclude with `⟨0, 1, ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.isMultiHomog_one, by simp, fun h => absurd h hc⟩`. Use `choose e F hF hF0 hFc using hex`. Use `⟨∑ c, fun k => (e c k : ℤ), ∏ c, aeval y (F c), Finset.prod_ne_zero_iff.2 fun c _ => hF0 c, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.mem_chartLat_one]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c₀ hc₀`. Establish `hP` using `(GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.mem_chartLat_one y).1 (GroundTheory.Heights₂.Heights.HilbertSamuel.LiftBirationalAmple.chartLat_prod (y := y) (Finset.univ.erase c₀) (fun c => aeval y (F c)) (fun c k => (e c k : ℤ)) (fun c _ => GroundTheory.Heights …`. Establish `hQ` using `hFc c₀ hc₀ n`. Establish `e' : (∏ c, aeval y (F c)) * s ^ n * ∏ k, y ⟨k, c₀ k⟩ ^ (-(((∑ c, fun k => (e c k : ℤ)) + (n : ℤ) • a) k)) = (aeval y (F c₀) * s ^ n * ∏ k, y ⟨k, c₀ k⟩ ^ (-((e c₀ k : ℤ) + n * a k))) * ((∏ c ∈ Finset.univ.erase c₀, aeval y (F c)) * ∏ k, y ⟨k, c₀ k⟩ ^ (-((∑ c ∈ Finset.univ.erase c₀ …`. Establish `e1 : ∏ c, aeval y (F c) = aeval y (F c₀) * ∏ c ∈ Finset.univ.erase c₀, aeval y (F c)` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ c₀)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∏ k, y ⟨k, c₀ k⟩ ^ (-(((∑ c, fun k => (e c k : ℤ)) + (n : ℤ) • a) k)) = (∏ k, y ⟨k, c₀ k⟩ ^ (-((e c₀ k : ℤ) + n * a k))) * ∏ k, y ⟨k, c₀ k⟩ ^ (-((∑ c ∈ Finset.univ.erase c₀, fun k => (e c k : ℤ)) k))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc₀ k)]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e3 : (∑ c, fun k => (e c k : ℤ)) = (fun k => (e c₀ k : ℤ)) + ∑ c ∈ Finset.univ.erase c₀, fun k => (e c k : ℤ)` using `(Finset.add_sum_erase _ _ (Finset.mem_univ c₀)).symm`. Rewrite using `[e3]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e']`. Conclude with `mul_mem hQ hP`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_pow_mem_chartLat_of_mem_chartLatNm :
     ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (y : (Σ k, ι k) → Ω) (d : ℕ) (a : K → ℤ) (s : Ω), IsArithVar (mCoordIdeal y) d → Birational y → s ∈ chartLatNm y a 1 → ∃ (b : K → ℤ) (c : Ω), c ≠ 0 ∧ ∀ n : ℕ, c * s ^ n ∈ chartLat y (b + (n : ℤ) • a) 1 := by

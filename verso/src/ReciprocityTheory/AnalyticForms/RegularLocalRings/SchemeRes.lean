@@ -63,7 +63,7 @@ def WData.toAlgRes (w : WData P D hP) {e : ℕ} (he : ∀ x : w.M, ringKrullDim 
     exact ⟨m, fun i x hx => hm _ x hx⟩
 
 /- English proof (translation)
-Take `⟨w⟩` from `exists_wData_of_logRes hQ hP hD hrad hsing hcomp hL`. Conclude with `⟨w.toAlgRes (w.ringKrullDim_stalk e hD hcomp hdim) hD hcomp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem algRes_of_logResStC (hQ : FinalTheorems.FinTypeQE)
     (P D : Ideal (MvPolynomial (Σ k, ι k) ℂ)) (e : ℕ)

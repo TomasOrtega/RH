@@ -11,7 +11,7 @@ open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Fo
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} {N : NData R H what₂} {A : NAut N}
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.LocalInv.one_lt_normV w`. Establish `: (0 : ℝ) < ((normV w : ℕ) : ℝ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normV_pos (w : PlE H) : 0 < normV w := by
   have h := GlobalTheory.LocalInv.one_lt_normV w
@@ -19,13 +19,13 @@ theorem normV_pos (w : PlE H) : 0 < normV w := by
   exact_mod_cast this
 
 /- English proof (translation)
-The claim follows from `Multiset.card_eq_one.1 (by rw [A.frobEig_card a hu, hd])`.
+A detailed English derivation is pending.
 -/
 theorem frob_one {w : PlE H} {a : A.LP w} (hu : A.unr a) (hd : A.lpDim a = 1) : ∃ c, A.frobEig a = {c} :=
   Multiset.card_eq_one.1 (by rw [A.frobEig_card a hu, hd])
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `frob_one (A.etaT_unr w) (A.locG_dim A.etaT w)`. Use `⟨b, hb, (A.tempered_unr _ (A.etaT_unr w)).1 (hAut.2.2.1 w) b ?_⟩` and prove the remaining obligations. Rewrite using `[hb]`. Conclude with `Multiset.mem_singleton_self b`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_frob (hAut : At.TieAut N A) (w : PlE H) : ∃ b, A.frobEig (A.locG A.etaT w) = {b} ∧ ‖b‖ = 1 := by
   obtain ⟨b, hb⟩ := frob_one (A.etaT_unr w) (A.locG_dim A.etaT w)
@@ -34,11 +34,11 @@ theorem eta_frob (hAut : At.TieAut N A) (w : PlE H) : ∃ b, A.frobEig (A.locG A
   exact Multiset.mem_singleton_self b
 
 /- English proof (translation)
-Take `⟨hu, hf⟩` from `A.chi_mu i w hw`. Establish `e : A.frobEig (A.lpTw (A.locG (A.tw (A.muC i) A.etaTinv) w) (((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2)) = {A.iotaQC i (iotaOQ N A i (chi1 N i σ))}` using `hf B σ hB hσ`. Rewrite `e` using `[A.frobEig_tw _ _ hu, A.locG_tw]`. Take `⟨m, hm⟩` from `frob_one huμ (A.locG_dim (A.muC i) w)`. Establish `hm1 : ‖m‖ = 1` using `(A.tempered_unr _ huμ).1 (hAut.2.2.2 i w) m (by rw [hm]; exact Multiset.mem_singleton_self m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, hb, hb1⟩` from `eta_frob hAut w`. Take `⟨hui, hfi⟩` from `A.etaTinv_def w`. Establish `hfi' : A.frobEig (A.locG A.etaTinv w) = {b⁻¹}` using `by rw [hfi, hb, Multiset.map_singleton]`. Establish `hfe` using `A.frobEig_char (A.locG (A.muC i) w) (A.locG A.etaTinv w) b⁻¹ huμ hui (A.locG_dim _ w) hfi'`. Rewrite `e` using `[hfe, hm, Multiset.map_singleton, Multiset.map_singleton, Multiset.singleton_inj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← e, norm_mul, norm_mul, hm1, norm_inv, hb1, inv_one, one_mul, one_mul, Complex.norm_natCast_cpow_of_pos (normV_pos w), Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_first_character_frobenius (hAut : At.TieAut N A) (i : N.Loc) {w : PlE H} (hw : SplitOut N i w)
     (huμ : A.unr (A.locG (A.muC i) w)) {B : ValuationSubring N.Om} {σ : G H.E N.Om}
@@ -60,7 +60,7 @@ theorem norm_first_character_frobenius (hAut : At.TieAut N A) (i : N.Loc) {w : P
     Complex.norm_natCast_cpow_of_pos (normV_pos w), Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hc` using `cycZ_of_isFrob (F := H.E) (Ω := N.Om) (l := N.l i) (by simpa [placesOver] using hl) hB hσ`. Establish `e1 : ((Glob.epsO N i σ : (N.O i)ˣ) : N.O i) = algebraMap ℤ_[N.l i] (N.O i) ((cycZ H.E N.Om (N.l i) σ : ℤ_[N.l i]ˣ) : ℤ_[N.l i])` using `rfl`. Rewrite using `[e1, hc]`. Use `show A.iotaQC i (A.iotaQ i (algebraMap (N.O i) (FractionRing (N.O i)) (algebraMap ℤ_[N.l i] (N.O i) ((normV w : ℕ) : ℤ_[N.l i])))) = _`. Rewrite using `[A.iotaQ_alg i, PadicInt.coe_natCast, map_natCast, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_frob (i : N.Loc) {w : PlE H} (hl : w ∉ placesOver H.E (N.l i)) {B : ValuationSubring N.Om}
     {σ : G H.E N.Om} (hB : IsPlaceOver (F := H.E) B w) (hσ : IsFrob (F := H.E) B (normV w) σ) :
@@ -74,7 +74,7 @@ theorem eps_frob (i : N.Loc) {w : PlE H} (hl : w ∉ placesOver H.E (N.l i)) {B 
   rw [A.iotaQ_alg i, PadicInt.coe_natCast, map_natCast, map_natCast]
 
 /- English proof (translation)
-Establish `h2` using `congrArg Real.log h`. Rewrite `h2` using `[Real.log_rpow (by linarith), Real.log_rpow (by linarith)]`. Conclude with `mul_right_cancel₀ (ne_of_gt (Real.log_pos hq)) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rpow_exp_eq {q x y : ℝ} (hq : 1 < q) (h : q ^ x = q ^ y) : x = y := by
   have h2 := congrArg Real.log h
@@ -88,27 +88,25 @@ namespace GlobalTheory.FrobeniusCharacterNorms
 open Formalism.BasicNotions Formalism.ConjugateSelfDual Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.SumRepresentations Polynomial NumberField IsDedekindDomain ReciprocityTheory.Gal GlobalTheory.StringRepresentationDecomposition
 
 /- English proof (translation)
-Introduce `D hA i x P Pa hxP hBC k R hR j hj hv`. Establish `hAut : At.TieAut D.nd D.naut` using `hA.1.1.1.2.1`. Establish `hC` using `hA.1.1.2.2.2.2.2.2.2.2.1`. Establish `hp : Pa.get k ∈ Pa` using `List.get_mem Pa k`. Establish `hfin : (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) ∪ {w | ¬ D.naut.unr (D.naut.locG (Pa.get k).π w)} ∪ {w | ¬ D.naut.unr (D.naut.locG (D.naut.muC i) w)} : Set (PlE D.host)).Finite`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) : Set (PlE D.host)).Finite` using `((placesOver_finite D.host.E (D.nd.l i) (D.nd.lPrime i).out.ne_zero).union (D.nd.S i).finite_toSet).union (D.nd.Q i).finite_toSet`. Conclude with `(h1.union (Filter.eventually_cofinite.1 (D.naut.locG_unr_ae (Pa.get k).π))).union (Filter.eventually_cofinite.1 (D.naut.locG_unr_ae (D.naut.muC i)))`. Establish `hne` using `(hC _ hfin).symm ▸ Set.mem_univ (1 : G D.host.E D.nd.Om)`. Take `⟨σ, ⟨w, hw, hsp, B, hB, hσ⟩⟩ : Set.Nonempty {σ : G D.host.E D.nd.Om | ∃ w ∉ (placesOver D.host.E (D.nd.l i) ∪ ↑(D.nd.S i) ∪ ↑(D.nd.Q i) ∪ {w | ¬ D.naut.unr (D.naut.locG (Pa.get k).π w)} ∪ {w | ¬ D.naut.unr (D.naut.locG (D.naut.muC i) w)} : Set (PlE D.host)), IsSplitPl D.host w ∧ …` from `D.host.E) B w ∧ IsFrob (F := D.host.E) B (normV w) σ} := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`. Rewrite `hne` using `[h, closure_empty]`. Conclude with `hne`. Simplify using `only [Set.mem_union, not_or, Finset.mem_coe, Set.mem_setOf_eq, not_not] at hw`. Establish `hl` using `hw.1.1.1.1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwo : SplitOut D.nd i w` using `⟨hsp, hl, hw.1.1.1.2, hw.1.1.2⟩`. Establish `huπ` using `hw.1.2`. Establish `huμ` using `hw.2`. Establish `hwd` using `hR.2.2 w hl`. Establish `hU : D.naut.unr (D.naut.wdOf i R w)` using `by rw [hwd]; exact (D.naut.unr_tw _ _).2 huπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hF` using `D.naut.wdOf_frob i R w hl hR.1 hU B σ hB hσ`. Rewrite `hF` using `[hwd, D.naut.frobEig_tw _ _ huπ]`. Take `⟨v, hv0, hvg⟩` from `hv`. Establish `h1` using `hvg σ`. Use `set M : Matrix (Fin (Pa.get k).a) (Fin (Pa.get k).a) (Qbar (D.nd.l i)) := ((R σ : GL (Fin (Pa.get k).a) (Qbar (D.nd.l i))) : Matrix (Fin (Pa.get k).a) (Fin (Pa.get k).a) (Qbar (D.nd.l i))) with hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : Qbar (D.nd.l i) := iotaOQ D.nd D.naut i (chi1 D.nd i σ) with hc`. Establish `he0 : epsQ D i σ ≠ 0` using `((Units.isUnit (Formalism.MainNotions.N.Glob.epsO D.nd i σ)).map (iotaOQ D.nd D.naut i)).ne_zero`. Establish `hMv : M.mulVec v = (epsQ D i σ ^ j * c) • v`. Establish `h2` using `congrArg (fun u => (epsQ D i σ ^ j) • u) h1`. Simplify using `only [smul_smul, inv_pow] at h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_cancel₀ (pow_ne_zero _ he0), one_smul]`. Conclude with `h2`. Establish `hdet : (Matrix.scalar (Fin (Pa.get k).a) (epsQ D i σ ^ j * c) - M).det = 0`. Use `Matrix.exists_mulVec_eq_zero_iff.1 ⟨v, hv0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.sub_mulVec, hMv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `t`. Simplify using `[Matrix.scalar_apply]`. Establish `hroot : (M.charpoly.map (D.naut.iotaQC i).toRingHom).IsRoot ((D.naut.iotaQC i).toRingHom (epsQ D i σ ^ j * c))` using `Polynomial.IsRoot.map (by rw [Polynomial.IsRoot.def, Matrix.eval_charpoly]; exact hdet)`. Rewrite `hroot` using `[hF]`. Establish `hmem` using `(Polynomial.mem_roots (Polynomial.monic_multiset_prod_of_monic _ _ (fun a _ => Polynomial.monic_X_sub_C a)).ne_zero).2 hroot`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[Polynomial.roots_multiset_prod_X_sub_C]`. Take `⟨α, hα, hαe⟩` from `Multiset.mem_map.1 hmem`. Establish `hα1` using `GlobalTheory.PartUnitary.part_frobEig_norm D hA.1.1.1 hA.1.2 i P Pa hBC (Pa.get k) hp w huπ α hα`. Establish `hq0 : 0 < normV w` using `normV_pos w`. Establish `hq1 : (1 : ℝ) < normV w` using `GlobalTheory.LocalInv.one_lt_normV w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hε : D.naut.iotaQC i (epsQ D i σ) = (normV w : ℂ)` using `eps_frob i hl hB hσ`. Establish `hχ` using `norm_first_character_frobenius hAut i hwo huμ hB hσ`. Establish `hn` using `congrArg norm hαe`. Simplify using `only [RingEquiv.toRingHom_eq_coe, RingHom.coe_coe, map_mul, map_pow, hε, norm_mul, norm_pow, hα1, one_mul, Complex.norm_natCast_cpow_of_pos hq0, Complex.ofReal_re, Complex.norm_natCast] at hn`. Rewrite `hn` using `[hc, hχ, ← Real.rpow_natCast, ← Real.rpow_add (by linarith)]`.
-
-Establish `hx` using `rpow_exp_eq hq1 hn`. Establish `hz : (((Pa.get k).d : ℤ) - 1 - 2 * j : ℝ) = ((D.R.t : ℤ) - 1 : ℝ)` using `by push_cast; linarith`. Conclude with `hz` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sixth_weight_purity : PurityStringWeight := by
   intro D hA i x P Pa hxP hBC k R hR j hj hv

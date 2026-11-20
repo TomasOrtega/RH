@@ -6,19 +6,17 @@ open GlobalTheory.InertZeta
 namespace GlobalTheory.CompanionTheory.InertGenFun
 
 /- English proof (translation)
-Use `set y : ℂ := (q : ℂ) ^ (N + 1) * X with hy`. Use `set F : ℕ → ℂ := fun j => ((c * q ^ (2 * N * (j / 2) + j) : ℕ) : ℂ) * X ^ j with hF`. Establish `hy2 : ‖y ^ 2‖ < 1`. Rewrite using `[norm_pow]`. Use polynomial arithmetic with `[norm_nonneg y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `hasSum_geometric_of_norm_lt_one hy2`. Establish `hev : HasSum (fun m : ℕ => F (2 * m)) (c * (1 - y ^ 2)⁻¹)`. Establish `hfun : (fun m : ℕ => F (2 * m)) = fun m => (c : ℂ) * (y ^ 2) ^ m`. Use function extensionality and compare the values at `m`. Simplify using `only [hF]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.mul_div_cancel_left m (by norm_num : 0 < 2), hy]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `hg.mul_left _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hodd : HasSum (fun m : ℕ => F (2 * m + 1)) (c * q * X * (1 - y ^ 2)⁻¹)`. Establish `hfun : (fun m : ℕ => F (2 * m + 1)) = fun m => (c * q * X : ℂ) * (y ^ 2) ^ m`. Use function extensionality and compare the values at `m`. Simplify using `only [hF]`. Rewrite using `[show (2 * m + 1) / 2 = m by omega, hy]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `hg.mul_left _`. Establish `hne : (1 : ℂ) - y ^ 2 ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `: ‖y ^ 2‖ = 1`. Rewrite using `[show y ^ 2 = 1 by linear_combination -h0]`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hval : (c : ℂ) * (1 + q * X) / (1 - y ^ 2) = c * (1 - y ^ 2)⁻¹ + c * q * X * (1 - y ^ 2)⁻¹`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hval]`. Conclude with `HasSum.even_add_odd hev hodd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_counts (q N c : ℕ) (X : ℂ) (h : ‖(q : ℂ) ^ (N + 1) * X‖ < 1) :
     HasSum (fun j : ℕ => ((c * q ^ (2 * N * (j / 2) + j) : ℕ) : ℂ) * X ^ j)
@@ -59,29 +57,27 @@ theorem hasSum_counts (q N c : ℕ) (X : ℂ) (h : ‖(q : ℂ) ^ (N + 1) * X‖
   exact HasSum.even_add_odd hev hodd
 
 /- English proof (translation)
-Establish `hfinle : ∀ j, Finite {i // g i ≤ j}` using `fun j => Nat.finite_of_card_ne_zero (by rw [hc j]; exact hA j)`. Establish `hfin : ∀ j, Finite {i // g i = j}` using `fun j => Finite.of_injective (fun c : {i // g i = j} => (⟨c.1, c.2.le⟩ : {i // g i ≤ j})) (fun a b h => Subtype.ext (congrArg Subtype.val h :))`. Establish `hcard : ∀ j, Nat.card {i // g i = j} + (if j = 0 then 0 else A (j - 1)) = A j`. Introduce `j`. Break down `j with _ | k` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [if_true, add_zero, ← hc 0]`. Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun i => by omega))`. Establish `: ∀ i, g i ≤ k + 1 ↔ g i ≤ k ∨ g i = k + 1` using `fun i => by omega`. Establish `e` using `(Equiv.subtypeEquivRight this).trans (subtypeOrEquiv (fun i => g i ≤ k) (fun i => g i = k + 1) (Pi.disjoint_iff.2 fun i => Prop.disjoint_iff.2 (by omega)))`. Rewrite using `[← hc (k + 1), Nat.card_congr e, Nat.card_sum, if_neg (Nat.succ_ne_zero k), Nat.add_sub_cancel, ← hc k, add_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfib : ∀ (j : ℕ) {M : Type} [AddCommMonoid M] [TopologicalSpace M] (F : ℕ → M), HasSum (fun c : {i // g i = j} => F (g c)) (Nat.card {i // g i = j} • F j)`. Introduce `j M _ _ F`. Use `hfin j` as an intermediate fact. Establish `: Fintype {i // g i = j}` using `Fintype.ofFinite _`. Use `hasSum_fintype (fun c : {i // g i = j} => F (g c)) using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun c _ => by rw [c.2]), Finset.sum_const, Finset.card_univ, Nat.card_eq_fintype_card]`. Establish `hle : ∀ j, Nat.card {i // g i = j} ≤ A j` using `fun j => by`. Use `hcard j` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnorm : Summable (fun j : ℕ => (A j : ℝ) * ‖X‖ ^ j)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT.summable.norm` as an intermediate fact. Simplify `this` using `[norm_mul, norm_pow]`. Establish `hsum : Summable (fun i => X ^ g i)`. Apply `Summable.of_norm` to reduce the goal to its premises. Rewrite using `[← (Equiv.sigmaFiberEquiv g).summable_iff]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Summable fun p : (Σ j : ℕ, {i // g i = j}) => ‖X ^ g (p.2 : ι)‖`. Rewrite using `[summable_sigma_of_nonneg (fun _ => norm_nonneg _)]`. Use `⟨fun j => (hfib j (fun n => ‖X ^ n‖)).summable, ?_⟩` and prove the remaining obligations. Use `Summable.of_nonneg_of_le (fun j => tsum_nonneg fun _ => norm_nonneg _) (fun j => ?_) hnorm` and prove the remaining obligations. Establish `h1` using `(hfib j (fun n => ‖X ^ n‖)).tsum_eq`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, nsmul_eq_mul, norm_pow]`. Use `gcongr`. Conclude with `hle j` after adjusting the coercions. Take `⟨t, ht⟩` from `hsum`. Establish `hsig` using `((Equiv.sigmaFiberEquiv g).hasSum_iff.2 ht).sigma (fun j => hfib j (fun n => X ^ n))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hshift : HasSum (fun j : ℕ => ((if j = 0 then 0 else A (j - 1) : ℕ) : ℂ) * X ^ j) (s * X)`. Establish `h0 : HasSum (fun n : ℕ => ((if n + 1 = 0 then 0 else A (n + 1 - 1) : ℕ) : ℂ) * X ^ (n + 1)) (s * X)`. Establish `hfun : (fun n : ℕ => ((if n + 1 = 0 then 0 else A (n + 1 - 1) : ℕ) : ℂ) * X ^ (n + 1)) = fun n => (A n : ℂ) * X ^ n * X`. Use function extensionality and compare the values at `n`. Rewrite using `[if_neg (Nat.succ_ne_zero n), Nat.add_sub_cancel, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`. Conclude with `hT.mul_right X`. Establish `h1` using `(hasSum_nat_add_iff (f := fun j : ℕ => ((if j = 0 then 0 else A (j - 1) : ℕ) : ℂ) * X ^ j) 1).1 h0`. Simplify using `only [Finset.sum_range_one, ↓reduceIte, Nat.cast_zero, zero_mul, add_zero] at h1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Conclude with `h1`. Establish `hdiff` using `hT.sub hshift`. Establish `heq : (fun j : ℕ => (A j : ℂ) * X ^ j - ((if j = 0 then 0 else A (j - 1) : ℕ) : ℂ) * X ^ j) = fun j => Nat.card {i // g i = j} • X ^ j`. Use function extensionality and compare the values at `j`. Rewrite using `[nsmul_eq_mul, ← hcard j]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hdiff` using `[heq]`. Use `hsig.unique hdiff` as an intermediate fact. Rewrite `ht` using `[this]`.
-
-Rewrite using `[show (1 - X) * s = s - s * X by ring]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem hasSum_of_counts {ι : Type} (g : ι → ℕ) (A : ℕ → ℕ) (hA : ∀ j, A j ≠ 0)
     (hc : ∀ j, Nat.card {i // g i ≤ j} = A j) (X s : ℂ)
@@ -158,11 +154,11 @@ theorem hasSum_of_counts {ι : Type} (g : ι → ℕ) (A : ℕ → ℕ) (hA : �
   rwa [show (1 - X) * s = s - s * X by ring]
 
 /- English proof (translation)
-Introduce `ι f l c q N X hc hq hf hcount hX`. Establish `hA : ∀ j, c * q ^ (2 * N * (j / 2) + j) ≠ 0` using `fun j => Nat.mul_ne_zero (by omega) (pow_ne_zero _ (by omega))`. Establish `hcg : ∀ j, Nat.card {i // f i - l ≤ j} = c * q ^ (2 * N * (j / 2) + j)`. Introduce `j`. Rewrite using `[← hcount j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr (Equiv.subtypeEquivRight (fun i => by have := hf i; omega))`. Establish `h` using `hasSum_of_counts (fun i => f i - l) (fun j => c * q ^ (2 * N * (j / 2) + j)) hA hcg X _ (hasSum_counts q N c X hX)`. Establish `key : (fun i => X ^ f i) = fun i => X ^ l * X ^ (f i - l)`. Use function extensionality and compare the values at `i`. Rewrite using `[← pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `hf i` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[key, show (c : ℂ) * X ^ l * jFac q N X = X ^ l * ((1 - X) * (c * (1 + q * X) / (1 - ((q : ℂ) ^ (N + 1) * X) ^ 2))) by unfold jFac; ring]`. Conclude with `h.mul_left _`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genFun : GenFun := by
   intro ι f l c q N X hc hq hf hcount hX

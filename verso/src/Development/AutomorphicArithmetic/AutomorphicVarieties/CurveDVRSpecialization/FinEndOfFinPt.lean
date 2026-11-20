@@ -7,19 +7,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open NumberField IsLocalRing Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.GalOfCusp UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Aut UpperTheory.V.Pr UpperTheory.V
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ Φ k _ C₀ hok hl hσ hF`. Use `haveI : Module.IsTorsionFree L Ω := DivisionSemiring.to_moduleIsTorsionFree`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed ℚ, Algebra.IsAlgebraic.tower_top (K := ℚ) L⟩`. Establish `hidx : (Base.galOf ℚ L Ω).index = Module.finrank ℚ L` using `(Base.galEmbTop ℚ L Ω).2.2`. Use `⟨Base.galOf ℚ L Ω, ⟨by rw [hidx]; exact Module.finrank_pos.ne'⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Introduce `A _ _ _ h0 r hr g hg _`. Use `haveI : IsNoetherianRing A := PrincipalIdealRing.isNoetherianRing`. Set `f : ResidueField O →+* A` to `Ideal.Quotient.lift (maximalIdeal O) (algebraMap O A) h0`. Establish `hf : ∀ a : O, f (residue O a) = algebraMap O A a` using `fun a => rfl`. Use `letI : Algebra (ResidueField O) A := f.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : IsScalarTower O (ResidueField O) A := IsScalarTower.of_algebraMap_eq fun a => (hf a).symm`. Take `⟨ρ, h1, h2, h3⟩` from `exists_nrep3 k hok hl hσ r hr`. Establish `hpow : ∀ (s : G ℚ Ω) (n : ℤ), algebraMap O A ((Ψ s ^ n : Oˣ) : O) = f ((barChar O Ψ s ^ n : (ResidueField O)ˣ) : ResidueField O)`. Introduce `s n`. Rewrite using `[← hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Conclude with `congrArg Units.val (map_zpow (Units.map (residue O).toMonoidHom) (Ψ s) n)`. Establish `key` using `hF A ρ h1 (by`. Introduce `v i g hg h`. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3 v i g hg, UnitaryThreeInertia.psi, hpow]`. Rewrite `h` using `[k.j_loc, k.psi]`. Rewrite using `[h]`. Use the proof step `simp)`. Take `⟨s, rfl⟩ : ∃ s, Base.galEmb ℚ L Ω s = g` from `(Base.range_galEmb ℚ L Ω).ge hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2, key]`. Establish `: ((r0 η Ψ (Base.galEmb ℚ L Ω s)).mat).map (algebraMap O A) = Matrix.diagonal fun i => algebraMap O A ((Ψ (Base.galEmb ℚ L Ω s) ^ wt1 i : Oˣ) : O)`. Rewrite using `[GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_map (map_zero _)]`. Rewrite using `[this, Matrix.charpoly_diagonal]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hpow]`. Establish `h5 : Φ.Ψ (k.p0 s) = barChar O Ψ (Base.galEmb ℚ L Ω s)` using `k.psi _`. Apply the tactic sequence `have h6 : Fr.w 3 i = wt1 i := by fin_cases i <;> rfl`. Rewrite using `[h5, h6]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pr.finEnd_of_finPt :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ}

@@ -21,9 +21,9 @@ namespace GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `hP hL`. Use `StepW.of_all fun K B f T w _ _ _ P x l => ?_` and prove the remaining obligations. Use `⟨fun _ => ∅, fun L _ => ?_⟩` and prove the remaining obligations. Set `T' : GlobalTheory.RowTie.WDTie (withLoc L).nd (withLoc L).naut` to `{ l.a.A.wdT with }`. Establish `cg : _root_.GlobalTheory.HeightCounting.CGTrueT hL (withLoc L) T'` using `{ l.a.cg with }`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `galoisRepsCusp_of_galEx (cg.galEx hL hP.what₂.fin hP.what₂.gal)`.
+A detailed English derivation is pending.
 -/
 theorem galoisRep_attached_to_cuspidal_all_levels_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x,
     _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => GlobalTheory.BlockComplement.GaloisRepsCusp D' := by
@@ -39,7 +39,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all_levels_alt | exact _root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all_levels_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.eventually_galoisRepsCusp_of_level_c : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => GlobalTheory.BlockComplement.GaloisRepsCusp D' := by
   first | exact @_root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all_levels_alt | exact _root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all_levels_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.galoisRep_attached_to_cuspidal_all_levels_alt <;> assumption)

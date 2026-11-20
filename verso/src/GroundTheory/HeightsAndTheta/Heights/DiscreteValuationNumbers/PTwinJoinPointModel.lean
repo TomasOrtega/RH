@@ -56,9 +56,9 @@ variable {O : Type*} [CommRing O] {Ω : Type*} [Field Ω] [Algebra O Ω]
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `h : ((tgtEquiv K Ω : MvPolynomial (K ⊕ Unit) Ω →+* Polynomial (MvPolynomial K Ω)).comp (mcMap O (joinCoord y (ptCoord (Ω` using `Ω))) : _ →+* MvPolynomial (K ⊕ Unit) Ω)) = (Polynomial.mapRingHom (mcMap O y : MvPolynomial (Σ k, ι k) O →+* MvPolynomial K Ω)).comp (srcEquiv (K := K) (ι := ι) O).toRingEquiv.toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[tgtEquiv, srcEquiv, mcMap, optionEquivLeft_C]`. Introduce and unpack `⟨k | u, i⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[tgtEquiv, srcEquiv, varEquiv, mcMap, joinCoord, optionEquivLeft_X_some, optionEquivLeft_C]`. Simplify using `[tgtEquiv, srcEquiv, varEquiv, mcMap, joinCoord, ptCoord, optionEquivLeft_X_none]`. Conclude with `RingHom.congr_fun h p`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tgtEquiv_mcMap (y : (Σ k, ι k) → Ω) (p : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) O) :
     tgtEquiv K Ω (mcMap O (joinCoord y (ptCoord (Ω := Ω))) p) =
@@ -76,7 +76,7 @@ theorem tgtEquiv_mcMap (y : (Σ k, ι k) → Ω) (p : MvPolynomial (Σ k : K ⊕
   exact RingHom.congr_fun h p
 
 /- English proof (translation)
-Rewrite using `[← BundleExamples.mcIdeal_eq_pointIdeal, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal, RingHom.mem_ker, RingHom.mem_ker, Polynomial.coe_mapRingHom, ← tgtEquiv_mcMap, map_eq_zero_iff _ (tgtEquiv K Ω).injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_pointIdeal_join_iff (y : (Σ k, ι k) → Ω)
     (p : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) O) :
@@ -87,11 +87,11 @@ theorem mem_pointIdeal_join_iff (y : (Σ k, ι k) → Ω)
     Polynomial.coe_mapRingHom, ← tgtEquiv_mcMap, map_eq_zero_iff _ (tgtEquiv K Ω).injective]
 
 /- English proof (translation)
-Set `J` to `RingHom.ker (Polynomial.mapRingHom (mcMap O y : MvPolynomial (Σ k, ι k) O →+* MvPolynomial K Ω))`. Set `Φ : MvPolynomial (Σ k : K ⊕ Unit, Sum.elim ι ptIdx k) O →+* Polynomial (MvPolynomial (Σ k, ι k) O) ⧸ J` to `(Ideal.Quotient.mk J).comp (srcEquiv (K := K) (ι := ι) O).toRingEquiv.toRingHom`. Establish `hΦ : Function.Surjective Φ` using `Ideal.Quotient.mk_surjective.comp (srcEquiv O).surjective`. Establish `hker : pointIdeal O (joinCoord y (ptCoord (Ω` using `Ω))) = RingHom.ker Φ := by`. Use extensionality with `p`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[mem_pointIdeal_join_iff, RingHom.mem_ker (f := Φ)]`. Express the relevant statement in the definitionally equal form `_ ↔ Ideal.Quotient.mk J (srcEquiv O p) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`. Establish `hJ : J = (pointIdeal O y).map (Polynomial.C : MRing ι O →+* Polynomial (MRing ι O))`. Simplify using `only [J]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Polynomial.ker_mapRingHom]`. Both sides reduce to the same expression. Establish `hq : ringKrullDim (MRing (Sum.elim ι ptIdx) O ⧸ RingHom.ker Φ) = ringKrullDim (Polynomial (MvPolynomial (Σ k, ι k) O) ⧸ J)` using `ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hΦ)`. Establish `hp : ringKrullDim (Polynomial (MRing ι O ⧸ pointIdeal O y)) = ringKrullDim (Polynomial (MRing ι O) ⧸ (pointIdeal O y).map (Polynomial.C : MRing ι O →+* _))` using `ringKrullDim_eq_of_ringEquiv (Ideal.polynomialQuotientEquivQuotientPolynomial (pointIdeal O y))`. Rewrite using `[hker, hq, hJ, ← hp, Polynomial.ringKrullDim_of_isNoetherianRing]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringKrullDim_join [IsNoetherianRing O] (y : (Σ k, ι k) → Ω) :
     ringKrullDim (MRing (Sum.elim ι ptIdx) O ⧸ pointIdeal O (joinCoord y (ptCoord (Ω := Ω)))) =
@@ -124,13 +124,13 @@ end JoinPointModel
 open JoinPointModel in
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ y d hW`. Rewrite using `[BundleExamples.isModelOver_iff]`. Use `⟨inferInstance, ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Apply `GenericProjClosureDim.isMultiProjPrime_pointIdeal` to reduce the goal to its premises. Introduce and unpack `(k | u)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Take `⟨j, hj⟩` from `hW.multiProj.relevant k`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `y ⟨k, j⟩ = 0 at h0`. Rewrite using `[pointIdeal, RingHom.mem_ker]`. Simplify using `[pointConeMap, h0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨(0 : Fin 1), by simp [joinCoord, ptCoord]⟩`. Rewrite using `[eq_bot_iff]`. Introduce `a ha`. Rewrite using `[← hW.noTorsion]`. Simplify using `only [Ideal.mem_comap, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcIdeal, pointIdeal, RingHom.mem_ker, IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap, pointConeMap, aeval_C, MvPolynomial.algebraMap_apply, C_eq_zero] at ha ⊢`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ha`. Rewrite using `[BundleExamples.mcIdeal_eq_pointIdeal, ringKrullDim_join, hW.dim, Fintype.card_sum, Fintype.card_unit, show d + 1 + (Fintype.card K + 1) = (d + 1 + Fintype.card K) + 1 by omega]`. Use `norm_cast`.
+Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem JoinPointModel.proof : JoinPointModel.Statement := by
   intro O _ _ _ Ω _ _ K _ _ ι _ y d hW

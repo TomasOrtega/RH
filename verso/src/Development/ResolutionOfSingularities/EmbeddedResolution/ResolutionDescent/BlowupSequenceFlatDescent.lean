@@ -17,7 +17,7 @@ namespace FunctorialResolution.EmbeddedResolution
 variable {W Y : Scheme.{u}}
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Flat) sq.flip hh`.
+A detailed English derivation is pending.
 -/
 private theorem flat_of_isPullback_of_flat {X₁ X₂ X₃ X₄ : Scheme.{u}} {p : X₁ ⟶ X₂} {q : X₁ ⟶ X₃}
     {f : X₂ ⟶ X₄} {h : X₃ ⟶ X₄} (sq : IsPullback p q f h)
@@ -26,7 +26,7 @@ private theorem flat_of_isPullback_of_flat {X₁ X₂ X₃ X₄ : Scheme.{u}} {p
     (P := @AlgebraicGeometry.Flat) sq.flip hh
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.IsStableUnderBaseChange.of_isPullback (P := @AlgebraicGeometry.Surjective) sq.flip hh`.
+A detailed English derivation is pending.
 -/
 private theorem surjective_of_isPullback {X₁ X₂ X₃ X₄ : Scheme.{u}} {p : X₁ ⟶ X₂} {q : X₁ ⟶ X₃}
     {f : X₂ ⟶ X₄} {h : X₃ ⟶ X₄} (sq : IsPullback p q f h)
@@ -35,11 +35,11 @@ private theorem surjective_of_isPullback {X₁ X₂ X₃ X₄ : Scheme.{u}} {p :
     (P := @AlgebraicGeometry.Surjective) sq.flip hh
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `hi`. Establish `sq0 : IsPullback (γ 0 hi) t.isoZero.hom s.isoZero.hom g` using `(IsPullback.of_horiz_isIso (CommSq.mk hzero.symm)).flip`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨flat_of_isPullback_of_flat sq0 inferInstance, surjective_of_isPullback sq0 inferInstance⟩`. Consider the case `succ n ih`. Introduce `hi`. Establish `hn : n < L` using `hi`. Take `⟨hf, hs⟩` from `ih hn.le`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨flat_of_isPullback_of_flat (hsq n hn) hf, surjective_of_isPullback (hsq n hn) hs⟩`.
+Supply the required witnesses or components.
 -/
 theorem flat_and_surjective_of_isPullback_blowupMorphism (g : W ⟶ Y) [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] (t : SequenceOfBlowups W) (s : SequenceOfBlowups Y) (L : ℕ)
@@ -92,9 +92,9 @@ structure BlowupDescentData (g : W ⟶ Y) (t₁ t₂ : SequenceOfBlowups W) (s�
     (φ (i + 1) hi).hom ≫ t₂.transitionMapSucc i = t₁.transitionMapSucc i ≫ (φ i hi.le).hom
 
 /- English proof (translation)
-Introduce `hi`. Establish `h1 : γ₁ 0 hi ≫ s₁.isoZero.hom = t₁.isoZero.hom ≫ g` using `hd.zero_γ₁`. Establish `h2 : γ₂ 0 hi ≫ s₂.isoZero.hom = t₂.isoZero.hom ≫ g` using `hd.zero_γ₂`. Establish `h3 : (φ 0 hi).hom ≫ t₂.isoZero.hom = t₁.isoZero.hom` using `hd.zero_φ`. Establish `key : (γ₁ 0 hi ≫ (s₁.isoZero ≪≫ s₂.isoZero.symm).hom) ≫ s₂.isoZero.hom = ((φ 0 hi).hom ≫ γ₂ 0 hi) ≫ s₂.isoZero.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Iso.trans_hom, Iso.symm_hom, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Rewrite using `[h1, h2, ← Category.assoc, h3]`. Conclude with `(cancel_mono s₂.isoZero.hom).mp key`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_isoObjZero_trans_symm_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y} {L : ℕ}
     {γ₁ : ∀ i : ℕ, i ≤ L → (t₁.schemeAt i ⟶ s₁.schemeAt i)}
@@ -114,7 +114,7 @@ theorem comp_isoObjZero_trans_symm_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowu
   exact (cancel_mono s₂.isoZero.hom).mp key
 
 /- English proof (translation)
-Use `hd.flat_γ₁ i hi.le` as an intermediate fact. Use `hd.surjective_γ₁ i hi.le` as an intermediate fact. Use `FlatDescentIdealSheaf.eq_of_comap_eq (γ₁ i hi.le) _ _ ?_` and prove the remaining obligations. Rewrite using `[← Scheme.IdealSheafData.comap_comp, st.compat hi.le, Scheme.IdealSheafData.comap_comp, ← hd.center_t₂ i hi, hd.center_φ i hi]`. Conclude with `hd.center_t₁ i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompatibleBaseIsoAt.center_comap_eq {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -132,7 +132,7 @@ theorem CompatibleBaseIsoAt.center_comap_eq {g : W ⟶ Y} {t₁ t₂ : SequenceO
   exact hd.center_t₁ i hi
 
 /- English proof (translation)
-Establish `h2` using `(hd.isBlowup_s₂ i hi).comp_iso_hom st.iso.symm`. Simplify using `only [Iso.symm_hom, Iso.symm_inv] at h2`. Rewrite `h2` using `[CompatibleBaseIsoAt.center_comap_eq hd hi st]`. Conclude with `(hd.isBlowup_s₁ i hi).exists_iso h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompatibleBaseIsoAt.exists_iso_succ_blowupMorphism_comm {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -149,7 +149,7 @@ theorem CompatibleBaseIsoAt.exists_iso_succ_blowupMorphism_comm {g : W ⟶ Y} {t
   exact (hd.isBlowup_s₁ i hi).exists_iso h2
 
 /- English proof (translation)
-Rewrite using `[← he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem CompatibleBaseIsoAt.blowupMorphism_square_comm {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}
     {L : ℕ}
@@ -179,39 +179,35 @@ private def extendIsoFamilySucc {A B : ℕ → Scheme.{u}} (N : ℕ) (e : ∀ i 
     (Nat.le_antisymm hi (Nat.not_le.mp h))) x
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 private theorem extendIsoFamilySucc_of_le {A B : ℕ → Scheme.{u}} (N : ℕ)
     (e : ∀ i : ℕ, i ≤ N → (A i ≅ B i)) (x : A (N + 1) ≅ B (N + 1)) {i : ℕ} {hi : i ≤ N + 1}
     (h : i ≤ N) : extendIsoFamilySucc N e x i hi = e i h := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg (Nat.not_succ_le_self N)`.
+A detailed English derivation is pending.
 -/
 private theorem extendIsoFamilySucc_self {A B : ℕ → Scheme.{u}} (N : ℕ)
     (e : ∀ i : ℕ, i ≤ N → (A i ≅ B i)) (x : A (N + 1) ≅ B (N + 1)) {hi : N + 1 ≤ N + 1} :
     extendIsoFamilySucc N e x (N + 1) hi = x := dif_neg (Nat.not_succ_le_self N)
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Introduce `hN`. Use `⟨isoFamilyOfZero (A := fun i : ℕ => s₁.schemeAt i) (B := fun i : ℕ => s₂.schemeAt i) (s₁.isoZero ≪≫ s₂.isoZero.symm), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[isoFamilyOfZero_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `i hi`. Conclude with `absurd hi (Nat.not_lt_zero i)`. Introduce `i hi`. Take `rfl : i = 0` from `Nat.le_zero.mp hi`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isoFamilyOfZero_zero]`. Conclude with `comp_isoObjZero_trans_symm_eq hd (hi.trans hN)`. Consider the case `succ N ih`. Introduce `hN`. Establish `hNlt : N < L` using `hN`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨e, h0, hsqe, hc⟩` from `ih hNlt.le`. Establish `hstN : γ₁ N hNlt.le ≫ (e N (Nat.le_refl N)).hom = (φ N hNlt.le).hom ≫ γ₂ N hNlt.le` using `hc N (Nat.le_refl N)`. Set `st : CompatibleBaseIsoAt t₁ t₂ s₁ s₂ L γ₁ γ₂ φ N` to `{ iso := e N (Nat.le_refl N) compat := fun _ => hstN }`. Take `⟨x, hx⟩` from `CompatibleBaseIsoAt.exists_iso_succ_blowupMorphism_comm hd hNlt st`. Establish `hxsq : x.hom ≫ s₂.transitionMapSucc N = s₁.transitionMapSucc N ≫ (e N (Nat.le_refl N)).hom` using `CompatibleBaseIsoAt.blowupMorphism_square_comm st x hx`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨extendIsoFamilySucc (A := fun i : ℕ => s₁.schemeAt i) (B := fun i : ℕ => s₂.schemeAt i) N e x, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[extendIsoFamilySucc_of_le N e x (Nat.zero_le N)]`. Conclude with `h0`. Introduce `i hi`. Break down `Nat.lt_or_ge i N with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[extendIsoFamilySucc_of_le N e x (Nat.succ_le_of_lt h), extendIsoFamilySucc_of_le N e x h.le]`. Conclude with `hsqe i h`. Take `rfl : i = N` from `Nat.le_antisymm (Nat.lt_succ_iff.mp hi) h`. Rewrite using `[extendIsoFamilySucc_self, extendIsoFamilySucc_of_le _ _ _ (Nat.le_refl _)]`. Conclude with `hxsq`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `i hi`. Break down `Nat.lt_or_ge i (N + 1) with h | h` into its components or cases. Establish `hiN : i ≤ N` using `Nat.lt_succ_iff.mp h`. Rewrite using `[extendIsoFamilySucc_of_le N e x hiN]`. Conclude with `hc i hiN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `rfl : i = N + 1` from `Nat.le_antisymm hi h`. Rewrite using `[extendIsoFamilySucc_self]`. Establish `ha : (γ₁ (N + 1) hNlt ≫ x.hom) ≫ s₂.transitionMapSucc N = t₁.transitionMapSucc N ≫ (φ N hNlt.le).hom ≫ γ₂ N hNlt.le`. Rewrite using `[Category.assoc, hxsq, ← Category.assoc, (hd.pullback_γ₁ N hNlt).w, Category.assoc, hstN]`. Establish `hb : ((φ (N + 1) hNlt).hom ≫ γ₂ (N + 1) hNlt) ≫ s₂.transitionMapSucc N = t₁.transitionMapSucc N ≫ (φ N hNlt.le).hom ≫ γ₂ N hNlt.le`.
-
-Rewrite using `[Category.assoc, (hd.pullback_γ₂ N hNlt).w, ← Category.assoc, hd.step_φ N hNlt, Category.assoc]`. Establish `hide : (s₂.center N).comap (t₁.transitionMapSucc N ≫ (φ N hNlt.le).hom ≫ γ₂ N hNlt.le) = (t₁.center N).comap (t₁.transitionMapSucc N)`. Rewrite using `[Scheme.IdealSheafData.comap_comp, Scheme.IdealSheafData.comap_comp, ← hd.center_t₂ N hNlt, hd.center_φ N hNlt]`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor ((s₂.center N).comap (t₁.transitionMapSucc N ≫ (φ N hNlt.le).hom ≫ γ₂ N hNlt.le))`. Rewrite using `[hide]`.
-
-Conclude with `(hd.isBlowup_t₁ N hNlt).1`. Conclude with `(hd.isBlowup_s₂ N hNlt).hom_ext_of_comp_eq hcart ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_compatible_isos_of_le {g : W ⟶ Y} {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y} {L : ℕ}
     {γ₁ : ∀ i : ℕ, i ≤ L → (t₁.schemeAt i ⟶ s₁.schemeAt i)}
@@ -288,11 +284,11 @@ private theorem exists_compatible_isos_of_le {g : W ⟶ Y} {t₁ t₂ : Sequence
         exact (hd.isBlowup_s₂ N hNlt).hom_ext_of_comp_eq hcart ha hb
 
 /- English proof (translation)
-Take `⟨hlen₁, σ₁, hσ₁0, hσ₁sq, hσ₁c⟩` from `h₁`. Take `⟨hlen₂, σ₂, hσ₂0, hσ₂sq, hσ₂c⟩` from `h₂`. Take `⟨hlent, φ, hφ0, hφstep, hφc⟩` from `he`. Establish `hfs` using `flat_and_surjective_of_isPullback_blowupMorphism g t₁ s₁ t₁.length σ₁ hσ₁0 hσ₁sq`. Establish `hd : BlowupDescentData g t₁ t₂ s₁ s₂ t₁.length σ₁ (fun i hi => σ₂ i (le_of_le_of_eq hi hlent)) φ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i hi => s₁.isBlowupAlongIdealSheaf_blowupMorphism i (by omega), fun i hi => s₂.isBlowupAlongIdealSheaf_blowupMorphism i (by omega), hσ₁c, fun i hi => hσ₂c i (by omega), fun i hi => (hfs i hi).1, hσ₁sq, fun i hi => hσ₂sq i (by omega), hσ₁0, hσ₂0, fun i hi => (hfs i hi).2, fun …` and prove the remaining obligations. Take `⟨e, h0, hsqe, hc⟩` from `exists_compatible_isos_of_le hd t₁.length (Nat.le_refl _)`. Use `⟨by omega, fun i hi => e i (by omega), h0, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi`. Conclude with `hsqe i (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hiT : i < t₁.length` using `by omega`. Conclude with `CompatibleBaseIsoAt.center_comap_eq hd hiT { iso := e i hiT.le, compat := fun _ => hc i hiT.le }`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsStrictPullbackBlowupSeq.isomorphic_of_isomorphic {g : W ⟶ Y} [AlgebraicGeometry.Flat g]
     [AlgebraicGeometry.Surjective g] {t₁ t₂ : SequenceOfBlowups W} {s₁ s₂ : SequenceOfBlowups Y}

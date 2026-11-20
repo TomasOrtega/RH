@@ -5,9 +5,9 @@ open IsDiscreteValuationRing (addVal)
 open scoped Pointwise TensorProduct Topology
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.smul_induction_on hx (fun a ha y _ i => ?_) (fun a b ha hb i => ?_)` and prove the remaining obligations. Conclude with `J.mul_mem_right _ ha`. Conclude with `J.add_mem (ha i) (hb i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hx`. Rewrite using `[pi_eq_sum_univ x]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top`.
+A detailed English derivation is pending.
 -/
 private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} (x : Fin r → R) :
     x ∈ J • (⊤ : Submodule R (Fin r → R)) ↔ ∀ i, x i ∈ J := by
@@ -21,13 +21,13 @@ private theorem mem_smul_top_pi {R : Type} [CommRing R] (J : Ideal R) {r : ℕ} 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (hx i) Submodule.mem_top
 
 /- English proof (translation)
-Use `⟨fun {f} hf => ?_⟩` and prove the remaining obligations. Establish `hc : ∀ i : Fin r, ∃ L : R, ∀ n, f n i ≡ L [SMOD (I ^ n • ⊤ : Submodule R R)]`. Introduce `i`. Use `IsPrecomplete.prec' (f := fun n => f n i) ?_` and prove the remaining obligations. Introduce `m n hmn`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `hf hmn`. Rewrite `h`, the goal using `[SModEq.sub_mem]`. Rewrite `h` using `[mem_smul_top_pi]`. Use `h i` as an intermediate fact. Simplify `this` using `[Ideal.smul_top_eq_map, smul_eq_mul, Ideal.mul_top]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose L hL using hc`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mem_smul_top_pi]`. Introduce `i`. Use `hL i n` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[SModEq.sub_mem]`. Simplify `this` using `[smul_eq_mul, Ideal.mul_top]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecomplete I R] (r : ℕ) :
     IsPrecomplete I (Fin r → R) := by
@@ -50,17 +50,17 @@ private theorem isPrecomplete_pi {R : Type} [CommRing R] (I : Ideal R) [IsPrecom
   simpa [smul_eq_mul, Ideal.mul_top] using this
 
 /- English proof (translation)
-Introduce `R _ I _ M _ _ _`. Establish `part1 : ∀ (r : ℕ) (s : Fin r → M), Submodule.span R (Set.range s) ⊔ I • (⊤ : Submodule R M) = ⊤ → Submodule.span R (Set.range s) = ⊤`. Introduce `r s hs`. Establish `hsurj : Function.Surjective (Fintype.linearCombination R s)` using `by haveI := isPrecomplete_pi I r`. Apply `surjective_of_mkQ_comp_surjective (I := I)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q`. Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hm : m ∈ Submodule.span R (Set.range s) ⊔ I • (⊤ : Submodule R M)`. Rewrite using `[hs]`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp hm`. Rewrite `ha` using `[← Fintype.range_linearCombination, LinearMap.mem_range]`. Take `⟨c, rfl⟩` from `ha`. Use `⟨c, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.Quotient.eq]`. Simplify using `using Submodule.neg_mem _ hb`. Rewrite using `[← Fintype.range_linearCombination, LinearMap.range_eq_top]`. Conclude with `hsurj`. Use `⟨part1, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hfin`. Take `⟨r, s, hs⟩` from `Module.Finite.exists_fin (R := R) (M := M ⧸ I • (⊤ : Submodule R M))`. Use `choose t ht using fun i => Submodule.Quotient.mk_surjective (I • (⊤ : Submodule R M)) (s i)`. Establish `hsup : Submodule.span R (Set.range t) ⊔ I • (⊤ : Submodule R M) = ⊤`. Rewrite using `[sup_comm, ← Submodule.comap_map_mkQ, Submodule.map_span, ← Set.range_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp : (I • (⊤ : Submodule R M)).mkQ ∘ t = s` using `funext fun i => ht i`. Rewrite using `[hcomp, hs, Submodule.comap_top]`. Establish `htop` using `part1 r t hsup`. Conclude with `⟨Submodule.fg_def.2 ⟨Set.range t, Set.finite_range t, htop⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.abelian₂.nakayama :
     ∀ (R : Type) [CommRing R] (I : Ideal R) [IsPrecomplete I R] (M : Type) [AddCommGroup M] [Module R M] [IsHausdorff I M],

@@ -11,7 +11,7 @@ variable {K L : FiniteSubfield} [Fact (K ≤ L)] {S : Set (HeightOneSpectrum (�
 
 omit [Normal K.1 L.1] in
 /- English proof (translation)
-Establish `: Finite (placesOver S : Set (HeightOneSpectrum (𝓞 L.1)))` using `finite_placesOver (L := L.1) (S := S)`. Conclude with `Module.Finite.equiv (gsH0SUnitsEquiv hL).symm.toIntLinearEquiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem module_finite_S_units [Finite S] : Module.Finite ℤ (AA hL 0) := by
   have : Finite (placesOver S : Set (HeightOneSpectrum (𝓞 L.1))) := finite_placesOver (L := L.1) (S := S)
@@ -19,14 +19,12 @@ theorem module_finite_S_units [Finite S] : Module.Finite ℤ (AA hL 0) := by
 
 omit [Normal K.1 L.1] in
 /- English proof (translation)
-The claim follows from `finite_gsH1SUnits hL`.
+A detailed English derivation is pending.
 -/
 theorem finite_H1_S_units : Finite (AA hL 1) := finite_gsH1SUnits hL
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Use `interval_cases i`. Use `module_finite_S_units hL` as an intermediate fact. Conclude with `finite_modN_of_moduleFinite ℓ`.
-
-Use `finite_H1_S_units hL` as an intermediate fact. Conclude with `Finite.of_surjective _ (Submodule.Quotient.mk_surjective _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_modN_AA [Finite S] (i : ℕ) (hi : i ≤ 1) : Finite (ModN (AA hL i) ℓ) := by
   have hℓ : ℓ.Prime := Fact.out
@@ -38,9 +36,7 @@ theorem finite_modN_AA [Finite S] (i : ℕ) (hi : i ≤ 1) : Finite (ModN (AA hL
     exact Finite.of_surjective _ (Submodule.Quotient.mk_surjective _)
 
 /- English proof (translation)
-Establish `hℓ : ℓ.Prime` using `Fact.out`. Establish `: NeZero ℓ` using `⟨hℓ.ne_zero⟩`. Use `interval_cases i`. Use `module_finite_S_units hL` as an intermediate fact. Conclude with `finite_torsN_of_moduleFinite ℓ`.
-
-Use `finite_H1_S_units hL` as an intermediate fact. Conclude with `Subtype.finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_torsN_AA [Finite S] (i : ℕ) (hi : i ≤ 1) : Finite (TorsN (AA hL i) ℓ) := by
   have hℓ : ℓ.Prime := Fact.out
@@ -52,7 +48,7 @@ theorem finite_torsN_AA [Finite S] (i : ℕ) (hi : i ≤ 1) : Finite (TorsN (AA 
     exact Subtype.finite
 
 /- English proof (translation)
-Rewrite using `[Subgroup.index]`. Conclude with `(Nat.card_congr (gsQuotientGalEquiv hL).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_gal_eq_index : Nat.card (L.1 ≃ₐ[K.1] L.1) =
     (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index := by

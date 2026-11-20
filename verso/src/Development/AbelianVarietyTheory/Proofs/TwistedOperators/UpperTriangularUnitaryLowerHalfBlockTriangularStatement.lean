@@ -10,7 +10,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SphericalThetaInertPlace (str chi I
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SphTheta.lowBlocks_borel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FUpperTriangularUnitaryLowerHalfBlockTriangular.lean&line=62#L62)
 -/

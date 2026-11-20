@@ -45,13 +45,13 @@ def symp {A B : HSp D} (x x' : WA A B) : AF D.host.F := trA D (incA D D.host.xi0
 def riem {A B : HSp D} (x x' : WA A B) : AF D.host.F := -symp x x'
 
 /- English proof (translation)
-Simplify using `[herm, colMat, Matrix.transpose_add, Matrix.mul_add, Matrix.trace_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_left {A B : HSp D} (x y z : WA A B) : herm (x + y) z = herm x z + herm y z := by
   simp [herm, colMat, Matrix.transpose_add, Matrix.mul_add, Matrix.trace_add]
 
 /- English proof (translation)
-Establish `: Formalism.UG.cT (cj D) (colMat (x + y)) = Formalism.UG.cT (cj D) (colMat x) + Formalism.UG.cT (cj D) (colMat y)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, colMat]`. Simplify using `only [adj, this, Matrix.mul_add, Matrix.add_mul, Matrix.transpose_add]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem adj_add {A B : HSp D} (x y : WA A B) : adj (x + y) = adj x + adj y := by
   have : Formalism.UG.cT (cj D) (colMat (x + y)) = Formalism.UG.cT (cj D) (colMat x) + Formalism.UG.cT (cj D) (colMat y) := by
@@ -59,31 +59,31 @@ theorem adj_add {A B : HSp D} (x y : WA A B) : adj (x + y) = adj x + adj y := by
   simp only [adj, this, Matrix.mul_add, Matrix.add_mul, Matrix.transpose_add]
 
 /- English proof (translation)
-Simplify using `[herm, colMat, adj_add, Matrix.transpose_add, Matrix.add_mul, Matrix.trace_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_add_right {A B : HSp D} (x y z : WA A B) : herm x (y + z) = herm x y + herm x z := by
   simp [herm, colMat, adj_add, Matrix.transpose_add, Matrix.add_mul, Matrix.trace_add]
 
 /- English proof (translation)
-Simplify using `[herm, colMat, Matrix.transpose_smul, Matrix.mul_smul, Matrix.trace_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_left {A B : HSp D} (c : AE D) (x y : WA A B) : herm (c • x) y = c * herm x y := by
   simp [herm, colMat, Matrix.transpose_smul, Matrix.mul_smul, Matrix.trace_smul]
 
 /- English proof (translation)
-Simplify using `only [symp, herm_add_left, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_add_left {A B : HSp D} (x y z : WA A B) : symp (x + y) z = symp x z + symp y z := by
   simp only [symp, herm_add_left, mul_add, map_add]
 
 /- English proof (translation)
-Simplify using `only [symp, herm_add_right, mul_add, map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_add_right {A B : HSp D} (x y z : WA A B) : symp x (y + z) = symp x y + symp x z := by
   simp only [symp, herm_add_right, mul_add, map_add]
 
 /- English proof (translation)
-Use `symp_add_left (0 : WA A B) 0 x` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symp_zero_left {A B : HSp D} (x : WA A B) : symp 0 x = 0 := by
   have := symp_add_left (0 : WA A B) 0 x
@@ -91,7 +91,7 @@ theorem symp_zero_left {A B : HSp D} (x : WA A B) : symp 0 x = 0 := by
   exact left_eq_add.mp this
 
 /- English proof (translation)
-Use `symp_add_right x (0 : WA A B) 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_add.mp this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symp_zero_right {A B : HSp D} (x : WA A B) : symp x 0 = 0 := by
   have := symp_add_right x (0 : WA A B) 0
@@ -99,7 +99,7 @@ theorem symp_zero_right {A B : HSp D} (x : WA A B) : symp x 0 = 0 := by
   exact left_eq_add.mp this
 
 /- English proof (translation)
-Use `symp_add_left (-x) x y` as an intermediate fact. Rewrite `this` using `[neg_add_cancel, symp_zero_left]`. Conclude with `eq_neg_of_add_eq_zero_left this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symp_neg_left {A B : HSp D} (x y : WA A B) : symp (-x) y = -symp x y := by
   have := symp_add_left (-x) x y
@@ -109,12 +109,12 @@ theorem symp_neg_left {A B : HSp D} (x y : WA A B) : symp (-x) y = -symp x y := 
 def gMat {V : HSp D} (g : GA D V) : Matrix (Fin V.rank) (Fin V.rank) (AE D) := (matHom V g).1
 
 /- English proof (translation)
-Simplify using `[gMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gMat_one {V : HSp D} : gMat (1 : GA D V) = 1 := by simp [gMat]
 
 /- English proof (translation)
-Simplify using `[gMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gMat_mul {V : HSp D} (g g' : GA D V) : gMat (g * g') = gMat g * gMat g' := by simp [gMat]
 
@@ -122,13 +122,13 @@ def act {A B : HSp D} (p : GA D A × GA D B) (x : WA A B) : WA A B :=
   (HMul.hMul (HMul.hMul (gMat p.2) (colMat x)) (gMat p.1⁻¹))ᵀ
 
 /- English proof (translation)
-Simplify using `[act, colMat, gMat_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_one {A B : HSp D} (x : WA A B) : act 1 x = x := by
   simp [act, colMat, gMat_one]
 
 /- English proof (translation)
-Simplify using `only [act, colMat, Prod.fst_mul, Prod.snd_mul, _root_.mul_inv_rev, gMat_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_mul {A B : HSp D} (p q : GA D A × GA D B) (x : WA A B) : act (p * q) x = act p (act q x) := by
   simp only [act, colMat, Prod.fst_mul, Prod.snd_mul, _root_.mul_inv_rev, gMat_mul, Matrix.transpose_transpose,
@@ -185,7 +185,7 @@ theorem rho_apply {A B : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (u : WA A B) (f
     rho ψ u f w = (ψ (hsymp w u) : ℂ) * f (w + u) := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun f => funext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(ψ (hsymp w u) : ℂ) * ((ψ (hsymp (w + u) u') : ℂ) * f (w + u + u')) = (ψ (hsymp u u') : ℂ) * ((ψ (hsymp w (u + u')) : ℂ) * f (w + (u + u')))`. Rewrite using `[hsymp, hsymp, hsymp, hsymp, symp_add_left, symp_add_right, mul_add, mul_add, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_mul {A B : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (u u' : WA A B) :
     rho ψ u * rho ψ u' = (ψ (hsymp u u') : ℂ) • rho ψ (u + u') := by
@@ -383,13 +383,13 @@ def ClaimWeil (D : D7) : Prop := ∀ (A B : HSp D) (s : ℤˣ) (ψ : AddChar (AF
     ∃! om : GA D A × GA D B →* Module.End ℂ (Theta ψ A B), IsWeil ψ χA χB om
 
 /- English proof (translation)
-Simplify using `[riem, AddChar.inv_apply]`.
+Simplify using the standard rewrite rules.
 -/
 example {A B : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (x x' : WA A B) : ψ⁻¹ (riem x x') = ψ (symp x x') := by
   simp [riem, AddChar.inv_apply]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(ψ (hsymp 0 w) : ℂ) * f (0 + w) = f w`. Rewrite using `[hsymp, symp_zero_left, mul_zero, zero_add, AddChar.map_zero_eq_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 example {A B : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (f : WA A B → ℂ) (w : WA A B) :
     thetaFun A B (rho ψ w f) = f w := by
@@ -397,7 +397,7 @@ example {A B : HSp D} (ψ : AddChar (AF D.host.F) ℂ) (f : WA A B → ℂ) (w :
   rw [hsymp, symp_zero_left, mul_zero, zero_add, AddChar.map_zero_eq_one, one_mul]
 
 /- English proof (translation)
-Simplify using `[atIdem, Prod.ext_iff]`.
+Simplify using the standard rewrite rules.
 -/
 example : ((atIdem (R := ℚ × ℚ) (e := (1, 0)) (by simp [IsIdempotentElem])
     ⟨(2, 1 / 2), (1 / 2, 2), by simp [Prod.ext_iff], by simp [Prod.ext_iff]⟩ : (ℚ × ℚ)ˣ) : ℚ × ℚ) = (2, 1) := by

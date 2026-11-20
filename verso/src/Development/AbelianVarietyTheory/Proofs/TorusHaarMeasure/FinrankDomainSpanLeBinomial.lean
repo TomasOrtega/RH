@@ -11,9 +11,9 @@ open scoped ContDiff ENNReal Matrix
 namespace GlobalTheory.UpTie
 
 /- English proof (translation)
-Take `⟨n, u, v, rfl⟩` from `Submodule.mem_span_set'.1 hg`. Use `choose f hf hv using fun i => (v i).2`. Use `⟨_, GlobalTheory.UpperModel.isBddSec_sum X (fun i => (hf i).1) u, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [← hv, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hx : x ∈ X.dom <;> simp [hx]`.
+A detailed English derivation is pending.
 -/
 theorem exists_bddSec_of_mem_domSpan {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (la : Wt X.Ψ r) {g : Frame X.Ψ r → ℂ} (hg : g ∈ domSpan X (X.SS la)) :
@@ -26,11 +26,11 @@ theorem exists_bddSec_of_mem_domSpan {E : Type} [Field E] [NumberField E] [IsCMF
   by_cases hx : x ∈ X.dom <;> simp [hx]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X Xa Fl`. Establish `hr : Module.rank ℂ (domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))) ≤ ((Fl.δ * (Xa.T + 2 * nd X + 6).choose (nd X) : ℕ) : Cardinal)`. Use `rank_le fun s hs => ?_` and prove the remaining obligations. Establish `hs'` using `(hs.map' _ (Submodule.ker_subtype _)).comp s.equivFin.symm s.equivFin.symm.injective`. Use `choose f hf hfe using fun q : Fin s.card => exists_bddSec_of_mem_domSpan X _ (s.equivFin.symm q).1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.UpperModel.upper E r X Xa Fl s.card f hf fun u hu => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Use `Fintype.linearIndependent_iff.1 hs' u ?_ q` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp, Submodule.subtype_apply, hfe, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ X.dom`. Simplify `hu x hx` using `[hx]`. Simplify using `[hx]`. Conclude with `⟨Module.rank_lt_aleph0_iff.1 (hr.trans_lt (Cardinal.natCast_lt_aleph0)), Module.finrank_le_of_rank_le hr⟩`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finrank_domSpan_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (Xa : ArchInM X) (Fl : FlatM X Xa), FiniteDimensional ℂ (domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))) ∧ Module.finrank ℂ (domSpan X (X.SS (Xa.Fp + Xa.T • Xa.L))) ≤ Fl.δ * (Xa.T + 2 * nd X + 6).choose (nd X) := by
   intro E _ _ _ r X Xa Fl

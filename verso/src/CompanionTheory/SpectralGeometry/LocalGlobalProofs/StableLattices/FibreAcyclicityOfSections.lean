@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PointSurjTotal
 
 /- English proof (translation)
-Take `⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩` from `over_affineOpen_of_isPullback a b p q H hV B hB hc G hG`. Establish `h` using `fibAc_of_closed_fibres a b p q H ha G hG Γ(T, V) hV.fromSpec Y π f Hy (fun s σ h₁ h₂ h₃ => hfib (s ≫ hV.fromSpec) σ (by simpa using h₁) h₂ (by simpa using h₃)) κ E hE hEc`. Conclude with `fun m => (GlobalTheory.MumfordCohom.acyclic_cechLB_of_acyclic f _ _ E h m).of_iso i₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acyclic_over_affineOpen {k : Type} [Field k] [IsAlgClosed k] {X T Z : Scheme.{0}}
     (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X) (q : Z ⟶ T) (H : IsPullback p q a b)
@@ -43,17 +43,15 @@ theorem acyclic_over_affineOpen {k : Type} [Field k] [IsAlgClosed k] {X T Z : Sc
   exact fun m => (GlobalTheory.MumfordCohom.acyclic_cechLB_of_acyclic f _ _ E h m).of_iso i₁
 
 /- English proof (translation)
-Introduce `k _ _ X T Z a b p q H ha _ _ _ G hG hfib κ _ _ D hD hc n`. Establish `: X.IsSeparated` using `⟨by rw [← terminal.comp_from a]; infer_instance⟩`. Establish `: T.IsSeparated` using `⟨by rw [← terminal.comp_from b]; infer_instance⟩`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace a`. Establish `: CompactSpace T` using `QuasiCompact.compactSpace_of_compactSpace b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, B, hB, hBc⟩` from `GlobalTheory.PicZeroVan.exists_fin_affine_cover X`. Take `⟨r, E, hE, hEc⟩` from `GlobalTheory.PicZeroVan.exists_fin_affine_cover T`. Set `V : Fin (r + 1) → T.Opens` to `Fin.cons ⊥ E`. Establish `hV : ∀ j, IsAffineOpen (V j)` using `fun j => by`. Use `Fin.cases ?_ (fun j => ?_) j` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `isAffineOpen_bot T`. Conclude with `hE j`. Establish `hVc : ⨆ j, V j = ⊤`. Rewrite using `[← top_le_iff, ← hEc]`. Conclude with `iSup_le fun j => le_iSup V j.succ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsep : IsSeparated (p ≫ a)`. Establish `: IsSeparated p` using `MorphismProperty.of_isPullback (P := @IsSeparated) H.flip inferInstance`. Use `infer_instance`. Take `⟨e₁⟩` from `cechLB_homology_equiv_trunc₂ k Z (p ≫ a) G κ D (Fin m) (fun i => p ⁻¹ᵁ B i) (Fin (r + 1)) (fun j => q ⁻¹ᵁ V j) hG hsep hD hc (by rw [← Scheme.Hom.preimage_iSup, hBc, Scheme.Hom.preimage_top]) (by rw [← Scheme.Hom.preimage_iSup, hVc, Scheme.Hom.preimage_top]) (fun i _ h => GlobalT …`. Establish `e₂` using `trunc₂HomologyIsoFstSingleton (0 : Fin (r + 1)) (secCube (p ≫ a) G fun u : Fin m ⊕ₗ Fin (r + 1) => Sum.elim (fun i => p ⁻¹ᵁ B i) (fun j => q ⁻¹ᵁ V j) (ofLex u)) (fun t ht _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result.
 
-Establish `hVt : IsAffineOpen (⨅ j ∈ t, V j)` using `IsAffineOpen.biInf _ t.finite_toSet ht fun j _ => hV j`. Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G (fun i => p ⁻¹ᵁ B i) (fun j => q ⁻¹ᵁ V j) t _ (preimage_biInf V q t)`. Conclude with `fun l => (acyclic_over_affineOpen a b p q H ha G hG hfib B hB hBc hVt l).of_iso i₂) n`. Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G (fun i => p ⁻¹ᵁ B i) (fun j => q ⁻¹ᵁ V j) {0} (q ⁻¹ᵁ V 0) (by simp)`. Establish `h₀` using `(acyclic_over_affineOpen a b p q H ha G hG hfib B hB hBc (hV 0) n).of_iso i₂`.
-
-Establish `z` using `h₀.isZero_homology.of_iso e₂`. Establish `: Subsingleton _` using `ModuleCat.subsingleton_of_isZero z`. Use `e₁.toEquiv.subsingleton` as an intermediate fact. Conclude with `(HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (ModuleCat.isZero_of_subsingleton _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fibAc_comp_of_fibres : ∀ {k : Type} [Field k] [IsAlgClosed k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X)
     (q : Z ⟶ T) (H : IsPullback p q a b) (ha : IsProjBy a) [IsProper a] [Flat a] [IsProper b] (G : LB Z) (hG : G.IsLB)

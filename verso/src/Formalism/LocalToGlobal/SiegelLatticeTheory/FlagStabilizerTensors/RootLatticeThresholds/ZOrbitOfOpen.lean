@@ -8,7 +8,7 @@ import Formalism.SelfDualUnimodular.LocalLatticeDictionary.LocFin
 namespace Formalism.L2.SG.Pf.LatDictZ
 
 /- English proof (translation)
-The claim follows from `Z0.zOrbit_of (Z0.BR.semiGenusZ_of (Z3.semiGenusZLoc_of Z0.SGC.semi_genus_local hP)) hA Z0.LF.lattice_locally_finite`.
+A detailed English derivation is pending.
 -/
 theorem zOrbit_of_open (hP : Z0.PrimPlaneLoc) (hA : Z0.AdelGlue) : LatDictZ.ZOrbit :=
   Z0.zOrbit_of (Z0.BR.semiGenusZ_of (Z3.semiGenusZLoc_of Z0.SGC.semi_genus_local hP)) hA

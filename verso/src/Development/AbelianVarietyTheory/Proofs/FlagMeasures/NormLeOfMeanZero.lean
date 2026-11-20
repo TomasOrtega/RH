@@ -12,9 +12,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.MeanZero
 
 /- English proof (translation)
-Establish `hae : ∀ᵐ m ∂ν, m ∈ C`. Rewrite using `[ae_iff]`. Conclude with `hν`. Establish `hres : ν.restrict C = ν` using `Measure.restrict_eq_self_of_ae_mem hae`. Establish `hcont : Continuous (Function.uncurry fun (y m : G) => f (m * y))` using `hf.comp (continuous_snd.mul continuous_fst)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `continuous_parametric_integral_of_continuous (μ := ν) hcont hC`. Rewrite `h` using `[hres]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mean {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [SecondCountableTopology G] [LocallyCompactSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
@@ -32,15 +32,15 @@ theorem continuous_mean {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact h
 
 /- English proof (translation)
-Use `set S : ℝ := ∑ i, ‖c i‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun i _ => by positivity`. Establish `hr0 : 0 ≤ r`. Take `⟨m, hm⟩` from `hb.exists`. Conclude with `(Real.sqrt_nonneg _).trans hm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ i ∈ (Finset.univ : Finset (Fin D)), Integrable (fun m => star (c i) * (c i - f i m)) ν` using `fun i _ => ((integrable_const (c i)).sub (hi i)).const_mul (star (c i))`. Establish `hval : ∫ m, (∑ i, star (c i) * (c i - f i m)) ∂ν = (S : ℂ)`. Rewrite using `[integral_finset_sum _ hint, hS, Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_sub (integrable_const _) (hi i), h0 i, integral_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Complex.conj_mul']`. Establish `hbound : ∀ᵐ m ∂ν, ‖∑ i, star (c i) * (c i - f i m)‖ ≤ Real.sqrt S * r` using `by filter_upwards [hb] with m hm`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_star, norm_sub_rev]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ ≤ Real.sqrt (∑ i, ‖c i‖ ^ 2) * Real.sqrt (∑ i, ‖f i m - c i‖ ^ 2) := Real.sum_mul_le_sqrt_mul_sqrt _ _ _`. Use `_ ≤ Real.sqrt S * r := mul_le_mul_of_nonneg_left hm (Real.sqrt_nonneg _)`. Establish `key : S ≤ Real.sqrt S * r`. Establish `h` using `norm_integral_le_of_norm_le (integrable_const (Real.sqrt S * r)) hbound`. Rewrite `h` using `[hval, integral_const]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify `h` using `[Complex.norm_real, abs_of_nonneg hS0]`. Establish `hsq` using `Real.sq_sqrt hS0`. Establish `hs0` using `Real.sqrt_nonneg S`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem norm_le_of_mean_zero {X : Type} [MeasurableSpace X] (ν : Measure X) [IsProbabilityMeasure ν] {D : ℕ}
     (f : Fin D → X → ℂ) (c : Fin D → ℂ) (r : ℝ) (hi : ∀ i, Integrable (f i) ν)
@@ -79,27 +79,21 @@ theorem norm_le_of_mean_zero {X : Type} [MeasurableSpace X] (ν : Measure X) [Is
   nlinarith
 
 /- English proof (translation)
-Take `⟨ν, hνP, hνQ, Cp, hCp, -, hνCp⟩` from `GlobalTheory.T.exists_unipotentQuotient_invariant_probability I W hW`. Take `⟨⟨N, hN⟩, -, hsplit, hdense, -⟩` from `GlobalTheory.T.strong_approximation_unitaryUnipotentRadical I W hW`. Take `⟨-, -, -, -, hpos⟩` from `GlobalTheory.T.adelicUnitaryHaar_bi_invariant I μf`. Take `⟨hT2, hLC, hSC, -, -, -, hKg⟩` from `GlobalTheory.CongTop.adelic_topology I`. Take `⟨hKo, ⟨K, hK⟩, -⟩` from `hKg g hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT2`. Use `haveI := hLC`. Use `haveI := hSC`. Establish `hU : {u : I.Gf | x.2⁻¹ * u * x.2 ∈ I.Kg g} ∈ nhds (1 : I.Gf)`. Use `hKo.preimage ((continuous_const.mul continuous_id).mul continuous_const) |>.mem_nhds ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show x.2⁻¹ * 1 * x.2 ∈ I.Kg g`. Rewrite using `[mul_one, inv_mul_cancel, ← hK]`. Conclude with `K.one_mem`. Establish `horb : ∀ m ∈ I.NA W, Real.sqrt (∑ i, ‖Fn i (m * x) - c i‖ ^ 2) ≤ r`. Introduce `m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, ⟨hγF, hγN⟩, hγU⟩` from `hdense _ hU m hm`. Establish `hm' : γ⁻¹ * m ∈ I.NA W`. Rewrite `hγN`, `hm`, the goal using `[← hN]`. Conclude with `N.mul_mem (N.inv_mem hγN) hm`. Establish `hk : x.2⁻¹ * (γ⁻¹ * m).2 * x.2 ∈ I.Kg g` using `hγU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `heq : ∀ i, Fn i (m * x) = Fn i (((γ⁻¹ * m).1, 1) * x)`. Introduce `i`. Establish `h1` using `(hF i).2.1 γ hγF (γ⁻¹ * m * x)`. Rewrite `h1` using `[← mul_assoc, mul_inv_cancel_left]`. Establish `h2 : γ⁻¹ * m * x = (((γ⁻¹ * m).1, 1) * x) * (1, x.2⁻¹ * (γ⁻¹ * m).2 * x.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply the tactic sequence `ext <;> simp [mul_assoc]`. Rewrite using `[h1, h2, (hF i).2.2.1 _ hk]`. Repeatedly rewrite using `[heq]`. Conclude with `hr _ (hsplit _ hm').1`. Establish `hzero : ∀ i, ∫ m, Fn i (m * x) ∂ν = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Assume the negation of the conclusion as `hne`. Establish `hc` using `continuous_mean ν hCp hνCp (hF i).1`. Establish `hopen : IsOpen {y | ∫ m, Fn i (m * y) ∂ν ≠ 0}` using `isOpen_ne_fun hc continuous_const`. Establish `hae` using `(hF i).2.2.2 W hW ν hνQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hae` using `[ae_iff]`. Conclude with `(hpos _ hopen ⟨x, hne⟩).ne' hae`. Establish `hint : ∀ i, Integrable (fun m => Fn i (m * x)) ν`. Introduce `i`. Establish `hci : Continuous fun m => Fn i (m * x)` using `(hF i).1.comp (continuous_id.mul continuous_const)`.
-
-Take `⟨B, hB⟩` from `hCp.exists_bound_of_continuousOn hci.continuousOn`. Establish `hae : ∀ᵐ m ∂ν, m ∈ Cp`. Rewrite using `[ae_iff]`. Conclude with `hνCp`. Use `Integrable.of_bound hci.aestronglyMeasurable B ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hae] with m hm`. Conclude with `hB m hm`. Establish `hb : ∀ᵐ m ∂ν, Real.sqrt (∑ i, ‖Fn i (m * x) - c i‖ ^ 2) ≤ r`. Establish `hae : ∀ᵐ m ∂ν, m ∈ I.NA W`. Rewrite using `[ae_iff]`.
-
-Conclude with `hνQ.2.2.1`. Use `filter_upwards [hae] with m hm`. Conclude with `horb m hm`. Conclude with `norm_le_of_mean_zero ν (fun i m => Fn i (m * x)) c r hint hzero hb`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_cusp (I : AutInst) (μf : Measure I.Gf) [μf.IsHaarMeasure] [SigmaFinite μf] (g : ℕ)
     (W : Submodule I.E (Fin I.n → I.E)) (D : ℕ) (Fn : Fin D → I.GA → ℂ) (x : I.GA) (c : Fin D → ℂ) (r : ℝ)

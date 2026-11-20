@@ -18,14 +18,14 @@ variable {O C : Type} [CommRing O] [IsDomain O] [Field C] [Algebra O C] [IsFract
 omit [IsDomain O] in
 
 /- English proof (translation)
-The claim follows from `(isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) C _).2 (TensorProduct.isBaseChange O M C)`.
+A detailed English derivation is pending.
 -/
 theorem isLocalizedModule_mk (M : Type) [AddCommGroup M] [Module O M] :
     IsLocalizedModule (nonZeroDivisors O) (TensorProduct.mk O C M 1) :=
   (isLocalizedModule_iff_isBaseChange (nonZeroDivisors O) C _).2 (TensorProduct.isBaseChange O M C)
 
 /- English proof (translation)
-Use `haveI := isLocalizedModule_mk (O := O) (C := C) M`. Take `⟨⟨m, s⟩, hs⟩` from `IsLocalizedModule.surj (nonZeroDivisors O) (TensorProduct.mk O C M 1) z`. Conclude with `⟨s, m, nonZeroDivisors.ne_zero s.2, hs⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_smul_eq_tmul (z : C ⊗[O] M) :
     ∃ (s : O) (m : M), s ≠ 0 ∧ s • z = (1 : C) ⊗ₜ m := by
@@ -34,9 +34,9 @@ theorem exists_smul_eq_tmul (z : C ⊗[O] M) :
   exact ⟨s, m, nonZeroDivisors.ne_zero s.2, hs⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h haveI := isLocalizedModule_mk (O := O) (C := C) N`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := TensorProduct.mk O C N 1) (x₁ := n) (x₂ := 0) (by simpa using h)`. Establish `hc' : (c : O) • n = (c : O) • 0` using `hc`. Conclude with `⟨c, nonZeroDivisors.ne_zero c.2, by rw [hc', smul_zero]⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨c, hc, hn⟩`. Establish `h1 : algebraMap O C c • ((1 : C) ⊗ₜ[O] n) = 0`. Rewrite using `[algebraMap_smul, ← TensorProduct.tmul_smul, hn, TensorProduct.tmul_zero]`. Conclude with `(smul_eq_zero.1 h1).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O C)).2 hc)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_tmul_eq_zero_iff (n : N) : (1 : C) ⊗ₜ[O] n = 0 ↔ ∃ c : O, c ≠ 0 ∧ c • n = 0 := by
   constructor
@@ -53,9 +53,9 @@ theorem one_tmul_eq_zero_iff (n : N) : (1 : C) ⊗ₜ[O] n = 0 ↔ ∃ c : O, c 
       ((map_ne_zero_iff _ (IsFractionRing.injective O C)).2 hc)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.baseChange_tmul, one_tmul_eq_zero_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, h⟩`. Conclude with `hN c _ hc h`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_ne_zero, by rw [h, smul_zero]⟩`.
+A detailed English derivation is pending.
 -/
 theorem baseChange_one_tmul_eq_zero_iff (L : M →ₗ[O] N)
     (hN : ∀ (c : O) (n : N), c ≠ 0 → c • n = 0 → n = 0) (m : M) :
@@ -68,7 +68,7 @@ theorem baseChange_one_tmul_eq_zero_iff (L : M →ₗ[O] N)
     exact ⟨1, one_ne_zero, by rw [h, smul_zero]⟩
 
 /- English proof (translation)
-Establish `hs' : algebraMap O C s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O C)).2 hs`. Rewrite using `[← baseChange_one_tmul_eq_zero_iff (C := C) L hN, ← h, ← algebraMap_smul C s z, map_smul, smul_eq_zero, or_iff_right hs']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem baseChange_eq_zero_iff (L : M →ₗ[O] N)
     (hN : ∀ (c : O) (n : N), c ≠ 0 → c • n = 0 → n = 0) (z : C ⊗[O] M) {s : O} {m : M}
@@ -78,19 +78,19 @@ theorem baseChange_eq_zero_iff (L : M →ₗ[O] N)
     smul_eq_zero, or_iff_right hs']
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `key : ∀ z ∈ Submodule.span C (TensorProduct.mk O C M 1 '' W), ∃ (s : O) (w : M), s ≠ 0 ∧ w ∈ W ∧ s • z = (1 : C) ⊗ₜ w`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨w, hw, rfl⟩` from `hx`. Conclude with `⟨1, w, one_ne_zero, hw, by simp⟩`. Consider the case `zero => exact ⟨1, 0, one_ne_zero, W.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Take `⟨s, w, hs, hw, hsx⟩` from `hx`. Take `⟨t, u, ht, hu, hty⟩` from `hy`. Use `⟨s * t, t • w + s • u, mul_ne_zero hs ht, W.add_mem (W.smul_mem _ hw) (W.smul_mem _ hu), ?_⟩` and prove the remaining obligations. Establish `e1 : (s * t) • x = (1 : C) ⊗ₜ (t • w)`. Rewrite using `[mul_comm, mul_smul, hsx, TensorProduct.tmul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (s * t) • y = (1 : C) ⊗ₜ (s • u)`. Rewrite using `[mul_smul, hty, TensorProduct.tmul_smul]`. Rewrite using `[smul_add, e1, e2, TensorProduct.tmul_add]`. Consider the case `smul a x _ hx`. Take `⟨s, w, hs, hw, hsx⟩` from `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨b, d⟩, hbd⟩` from `IsLocalization.surj (nonZeroDivisors O) a`. Use `⟨(d : O) * s, b • w, mul_ne_zero (nonZeroDivisors.ne_zero d.2) hs, W.smul_mem _ hw, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, mul_smul, hsx, ← algebraMap_smul C (d : O), smul_smul, hbd, algebraMap_smul, TensorProduct.tmul_smul]`. Take `⟨s, w, hs, hw, h⟩` from `key _ hy`. Rewrite `h` using `[← TensorProduct.tmul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := isLocalizedModule_mk (O := O) (C := C) M`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors O) (f := TensorProduct.mk O C M 1) (x₁ := s • y) (x₂ := w) h`. Establish `hc' : (c : O) • s • y = (c : O) • w` using `hc`. Use `hW ((c : O) * s) y (mul_ne_zero (nonZeroDivisors.ne_zero c.2) hs) ?_` and prove the remaining obligations. Rewrite using `[mul_smul, hc']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W.smul_mem _ hw`. Introduce `hy`. Conclude with `Submodule.subset_span ⟨y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem one_tmul_mem_span_iff (W : Submodule O M)
     (hW : ∀ (c : O) (x : M), c ≠ 0 → c • x ∈ W → x ∈ W) (y : M) :
@@ -137,13 +137,11 @@ theorem one_tmul_mem_span_iff (W : Submodule O M)
 end General
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ hv _ _ _`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`. Use `haveI : IsFractionRing O C := hv.isFractionRing`. Establish `tf : ∀ G : GlobalTheory.PDivGroup p O, ∀ (c : O) (w : G.dual.omega), c ≠ 0 → c • w = 0 → w = 0` using `fun G => GlobalTheory.T.p_divisible_differentials_torsion_free hPD p C v O hv G.dual`. Take `⟨h1, h2⟩` from `hC p C v O hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun G H f hf => h1 G H f ?_, fun h W hW => ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx`, the goal using `[GlobalTheory.Published.hodgeTateSubspace, LinearMap.mem_ker]`. Take `⟨s, m, hs, hsm⟩` from `exists_smul_eq_tmul (C := C) x`. Establish `hm : G.hodgeTateLinear m = 0` using `(baseChange_eq_zero_iff _ (tf G) x hs hsm).1 hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(baseChange_eq_zero_iff (C := C) _ (tf H) _ hs ?_).2 (hf m hm)` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul_of_tower, hsm, LinearMap.baseChange_tmul]`. Take `⟨G, e, he⟩` from `h2 h (Submodule.span C (TensorProduct.mk O C _ 1 '' W))`. Use `⟨G, e, fun x => ?_⟩` and prove the remaining obligations. Establish `hx` using `he ((1 : C) ⊗ₜ x)`.
-
-Rewrite `hx` using `[GlobalTheory.Published.hodgeTateSubspace, LinearMap.mem_ker, baseChange_one_tmul_eq_zero_iff _ (tf G), LinearMap.baseChange_tmul, one_tmul_mem_span_iff W hW]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scholzeWeinsteinB_of_subspaces (hPD : GlobalTheory.Published.PrismaticDieudonneHodge)
     (hC : GlobalTheory.Published.PDivisibleGroupsOverOC) : GlobalTheory.Published.ScholzeWeinsteinB := by

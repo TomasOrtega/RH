@@ -7,7 +7,7 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `roots_comp_C_mul_X_add_C p (1 : K) w isUnit_one`. Rewrite using `[taylor_apply]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem roots_taylor_eq_map_sub {K : Type*} [Field K] (p : K[X]) (w : K) :
     (taylor w p).roots = p.roots.map (fun x => x - w) := by
@@ -16,9 +16,9 @@ theorem roots_taylor_eq_map_sub {K : Type*} [Field K] (p : K[X]) (w : K) :
   simpa using h
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Rewrite using `[finsetSum_coeff, Finset.sum_eq_single k]`. Simplify using `[coeff_monomial]`. Introduce `i _ hik`. Rewrite using `[coeff_monomial, if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hik (Nat.pow_right_injective hl h)`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (by omega)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_sum_monomial_pow (l : ℕ) [Fact l.Prime] (E : ℕ) (a : ℕ → ℂ_[l]) (k : ℕ)
     (hk : k ≤ E) :
@@ -34,13 +34,11 @@ theorem coeff_sum_monomial_pow (l : ℕ) [Fact l.Prime] (E : ℕ) (a : ℕ → �
     exact absurd (Finset.mem_range.mpr (by omega)) h
 
 /- English proof (translation)
-Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hlpos : 0 < ‖(l : ℂ_[l])‖`. Rewrite using `[norm_pos_iff]; exact_mod_cast (by omega : l ≠ 0)`. Distinguish the cases in `h : ∃ k, k ≤ E ∧ l ^ k = j`. Take `⟨k, hkE, rfl⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[coeff_sum_monomial_pow l E a k hkE]`. Establish `hMk : M < k` using `(Nat.pow_lt_pow_iff_right (by omega)).mp hj`. Conclude with `hgt k hMk hkE`. Establish `h0 : (∑ i ∈ Finset.range (E + 1), monomial (l ^ i) (a i) : ℂ_[l][X]).coeff j = 0`. Rewrite using `[finsetSum_coeff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[coeff_monomial, if_neg]`. Introduce `hij`. Conclude with `h ⟨i, by have := Finset.mem_range.mp hi; omega, hij⟩`. Rewrite using `[h0, norm_zero, zero_mul]`.
-
-Conclude with `hlpos`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_sum_monomial_small (l : ℕ) [Fact l.Prime] (E M : ℕ) (a : ℕ → ℂ_[l]) (ρ : ℝ)
     (hρ : 0 < ρ)
@@ -65,21 +63,19 @@ theorem coeff_sum_monomial_small (l : ℕ) [Fact l.Prime] (E M : ℕ) (a : ℕ �
     exact hlpos
 
 /- English proof (translation)
-Introduce `l _ E M a ρ W hME ha hρ0 hρ1 hM hgt hW`. Use `set G : ℂ_[l][X] := ∑ k ∈ Finset.range (E + 1), monomial (l ^ k) (a k) with hG`. Use `set H := taylor W G with hH`. Establish `hl : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hlpos : 0 < ‖(l : ℂ_[l])‖`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_pos_iff]; exact_mod_cast (by omega : l ≠ 0)`. Establish `hroots : Multiset.card (G.roots.filter fun z => ‖z - W‖ ≤ ρ) = Multiset.card (H.roots.filter fun z => ‖z‖ ≤ ρ)`. Rewrite using `[hH, roots_taylor_eq_map_sub, Multiset.filter_map, Multiset.card_map]`. Both sides reduce to the same expression. Rewrite using `[hroots]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd1 : 1 ≤ l ^ M` using `Nat.one_le_pow _ _ (by omega)`. Establish `hGd : G.coeff (l ^ M) = a M` using `coeff_sum_monomial_pow l E a M hME`. Establish `hdiff : ∀ j, 1 ≤ j → ‖H.coeff j - G.coeff j‖ ≤ ‖(l : ℂ_[l])‖` using `GlobalTheory.T.norm_taylor_coeff_sub_coeff_le_norm_l l E a W ha hW`. Establish `hρj : ∀ j, 1 ≤ j → ρ ^ j < 1` using `fun j hj => pow_lt_one₀ hρ0.le hρ1 (by omega)`. Establish `hdiffsmall : ∀ j, 1 ≤ j → ‖H.coeff j - G.coeff j‖ * ρ ^ j < ‖(l : ℂ_[l])‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `j hj`. Combine the equalities or inequalities in the displayed calculation. Establish `hHd : ‖H.coeff (l ^ M)‖ * ρ ^ l ^ M = ‖(l : ℂ_[l])‖`. Establish `hlt : ‖H.coeff (l ^ M) - G.coeff (l ^ M)‖ < ‖G.coeff (l ^ M)‖`. Establish `h1 : ‖H.coeff (l ^ M) - G.coeff (l ^ M)‖ * ρ ^ l ^ M < ‖G.coeff (l ^ M)‖ * ρ ^ l ^ M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hGd, hM]`. Establish `h0` using `hdiffsmall _ hd1`. Rewrite `h0` using `[hGd]`. Then use the resulting hypothesis. Conclude with `lt_of_mul_lt_mul_right h1 (by positivity)`. Establish `h2 : H.coeff (l ^ M) = G.coeff (l ^ M) + (H.coeff (l ^ M) - G.coeff (l ^ M))` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hlt.ne', max_eq_left hlt.le, hGd, hM]`. Establish `hHd0 : H.coeff (l ^ M) ≠ 0`. Introduce `h0`. Rewrite `hHd` using `[h0, norm_zero, zero_mul]`. Conclude with `hlpos.ne hHd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbig : ∀ j, l ^ M < j → ‖H.coeff j‖ * ρ ^ j < ‖H.coeff (l ^ M)‖ * ρ ^ l ^ M`. Introduce `j hj`. Rewrite using `[hHd]`. Establish `h2 : H.coeff j = G.coeff j + (H.coeff j - G.coeff j)` using `by ring`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (G.coeff j) (H.coeff j - G.coeff j)`.
-
-Rewrite `h3` using `[← h2]`. Establish `hρ : 0 ≤ ρ ^ j` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Conclude with `(GlobalTheory.T.card_roots_closedBall_bounds_ultrametric ℂ_[l] H ρ (l ^ M) hρ0 hHd0).2 hbig`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem few_roots_small_disc : ∀ (l : ℕ) [Fact l.Prime] (E M : ℕ) (a : ℕ → ℂ_[l]) (ρ : ℝ) (W : ℂ_[l]), M ≤ E → (∀ k, k ≤ E → ‖a k‖ ≤ 1) → 0 < ρ → ρ < 1 → ‖a M‖ * ρ ^ l ^ M = ‖(l : ℂ_[l])‖ → (∀ k, M < k → k ≤ E → ‖a k‖ * ρ ^ l ^ k < ‖(l : ℂ_[l])‖) → ‖W‖ ≤ 1 → Multiset.card ((∑ k ∈ Finset.range (E + 1), Polynomial.monomial (l ^ k) (a k) : Polynomial ℂ_[l]).roots.filter fun z => ‖z - W‖ ≤ ρ) ≤ l ^ M := by
   intro l _ E M a ρ W hME ha hρ0 hρ1 hM hgt hW

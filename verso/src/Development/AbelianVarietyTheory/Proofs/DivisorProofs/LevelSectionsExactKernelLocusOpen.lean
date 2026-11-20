@@ -17,7 +17,7 @@ namespace GlobalTheory.LevTrivOpen
 variable {S : Scheme.{0}}
 
 /- English proof (translation)
-Use `⟨fun h => h ⟨p, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `h _ ⟨q, rfl⟩`. Rewrite using `[Subsingleton.elim q p]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem range_subset_iff_mem {k : Type} [Field k] (x : Sp k ⟶ S) (U : Set S) (p : Sp k) :
     Set.range x.base ⊆ U ↔ x.base p ∈ U := by
@@ -26,9 +26,9 @@ theorem range_subset_iff_mem {k : Type} [Field k] (x : Sp k ⟶ S) (U : Set S) (
   rwa [Subsingleton.elim q p]
 
 /- English proof (translation)
-Establish `h0 : lev 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `(mul_eq_left.1 this.symm)`. Proceed by induction on `n with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [zero_smul, pow_zero, h0]`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_nsmul {G : Over S} [GrpObj G] {h : ℕ} (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ G))
     (hadd : ∀ a b, lev (a + b) = lev a * lev b) (n : ℕ) (c : Fin h ⊕ Fin h → ℤ) : lev (n • c) = lev c ^ n := by
@@ -44,27 +44,25 @@ end GlobalTheory.LevTrivOpen
 
 open GlobalTheory.LevCover GlobalTheory.LevTrivOpen in
 /- English proof (translation)
-Introduce `S _ M t G _ _ h lev hab hM hadd hpow k _ _ x₀ hx₀`. Establish `hu : IsUnit (M : Γ(S, ⊤))`. Use `(GlobalTheory.SiegelTor.isUnit_natCast (n := M) (by omega)).map (t.appTop.hom.comp (Scheme.ΓSpecIso (CommRingCat.of (GlobalTheory.SiegelTor.cycAway M))).inv.hom)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Take `⟨-, hfin, het⟩` from `GlobalTheory.GrpTangent.finiteEtale_mulN_torsion G (hG := hab) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hU : ∀ f : 𝟙_ (Over S) ⟶ G, ∃ U : S.Opens, IsClosed (U : Set S) ∧ (f ^ M = 1 → ∀ (k' : Type) [Field k'] [IsAlgClosed k'] (x : Sp k' ⟶ S), (toUnit (Over.mk x) ≫ f = 1 ↔ Set.range x.base ⊆ U))` using `fun f => by`. Distinguish the cases in `hf : f ^ M = 1`. Take `⟨U, hUc, HU⟩` from `GlobalTheory.TorsionSections.clopenCond_torsion_eq (n := M) (T := 𝟙_ (Over S)) hf (one_pow M)`. Use `⟨U, hUc, fun _ k' _ _ x => ?_⟩` and prove the remaining obligations. Use `HU (Over.mk x) (toUnit (Over.mk x))` as an intermediate fact.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [MonObj.comp_one] at this`. Simplify using `using this`. Conclude with `⟨⊤, isClosed_univ, fun h => absurd h hf⟩`. Use `choose Uf hUc HU using hU`. Take `⟨κ, _, q, hq⟩` from `exists_finite_mod (Fin h ⊕ Fin h → ℤ) (show 0 < M by omega)`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : (Fin h ⊕ Fin h → ℤ) → Prop` to `fun a => ∃ b, a = M • b`. Set `A : (Fin h ⊕ Fin h → ℤ) → Set S` to `fun a => {s | s ∈ (Uf (lev a) : Set S) ↔ P a}`. Establish `hAo : ∀ a, IsOpen (A a)` using `fun a => by`. Distinguish the cases in `hp : P a`. Use `(Uf (lev a)).isOpen using 1` and compare the differences between its conclusion and the goal.
+Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `s`. Simplify using `only [A, Set.mem_setOf_eq, hp, iff_true, SetLike.mem_coe]`. Use `(hUc (lev a)).isOpen_compl using 1` and compare the differences between its conclusion and the goal. Use extensionality with `s`. Simplify using `only [A, Set.mem_setOf_eq, hp, iff_false, Set.mem_compl_iff, SetLike.mem_coe]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hAq : ∀ a a', q a = q a' → A a = A a'` using `fun a a' e => by`. Take `⟨c, rfl⟩` from `hq a a' e`. Establish `hl : lev (a + M • c) = lev a` using `by rw [hadd, pow_nsmul lev hadd, hpow, _root_.mul_one]`. Establish `hP : P (a + M • c) ↔ P a` using `⟨fun ⟨b, hb⟩ => ⟨b - c, by rw [smul_sub, ← hb]; abel⟩, fun ⟨b, hb⟩ => ⟨b + c, by rw [hb, smul_add]⟩⟩`. Use extensionality with `s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [A, Set.mem_setOf_eq, hl, hP]`. Set `pick : κ → (Fin h ⊕ Fin h → ℤ)` to `fun c => if hc : ∃ a, q a = c then hc.choose else 0`. Establish `hpick : ∀ a, A a = A (pick (q a))` using `fun a => by`. Establish `hc : ∃ a', q a' = q a` using `⟨a, rfl⟩`. Use `hAq _ _ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [pick, dif_pos hc]`. Conclude with `hc.choose_spec.symm`. Use `⟨⟨⋂ c, A (pick c), isOpen_iInter_of_finite fun c => hAo _⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, rfl⟩`. Simplify using `only [TopologicalSpace.Opens.coe_mk, Set.mem_iInter]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Use `show x₀.base p ∈ (Uf (lev (pick c)) : Set S) ↔ P (pick c)`. Rewrite using `[← range_subset_iff_mem, ← HU _ (hpow _) k x₀]`. Conclude with `hx₀ _`. Introduce `k' _ _ x hx a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨p⟩` from `(inferInstance : Nonempty (Sp k'))`. Establish `h1` using `hx ⟨p, rfl⟩`. Simplify using `only [TopologicalSpace.Opens.coe_mk, Set.mem_iInter] at h1`. Establish `h2 : x.base p ∈ A a` using `by rw [hpick]; exact h1 _`. Rewrite using `[HU _ (hpow a) k' x, range_subset_iff_mem _ _ p]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.levTriv_locus_open : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (M : ℕ) (t : S ⟶ Sp (cycAway M)) (G : Over S) [GrpObj G] [IsCommMonObj G] (h : ℕ) (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over S) ⟶ G)), IsAbelianScheme G → 3 ≤ M → (∀ a b, lev (a + b) = lev a * lev b) → (∀ a, lev a ^ M = 1) → ∀ (k : Type) [Field k] [IsAlgClosed k] (x₀ : Sp k ⟶ S), (∀ a, (toUnit (Over.mk x₀) ≫ lev a = 1 ↔ ∃ b, a = M • b)) → ∃ W : S.Opens, Set.range x₀.base ⊆ W ∧ ∀ (k' : Type) [Field k'] [IsAlgClosed k'] (x : Sp k' ⟶ S), Set.range x.base ⊆ W → ∀ a, (toUnit (Over.mk x) ≫ lev a = 1 ↔ ∃ b, a = M • b) := by
   intro S _ M t G _ _ h lev hab hM hadd hpow k _ _ x₀ hx₀

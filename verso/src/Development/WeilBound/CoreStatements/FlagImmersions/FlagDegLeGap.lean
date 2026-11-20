@@ -12,7 +12,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo Filter Topology Globa
 namespace RootFieldNumerics
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase Finset.univ f (Finset.mem_univ x₀), hc]`. Use `mul_le_mul_of_nonneg_left ?_ (hc ▸ h0 x₀)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 private theorem prod_le_mul_two_pow_card {ι : Type} [Fintype ι] [DecidableEq ι] (f : ι → ℝ)
     (h0 : ∀ x, 0 ≤ f x) (h2 : ∀ x, f x ≤ 2) (x₀ : ι) (c : ℝ) (hc : f x₀ = c) :
@@ -25,23 +25,23 @@ private theorem prod_le_mul_two_pow_card {ι : Type} [Fintype ι] [DecidableEq �
     _ ≤ 2 ^ Fintype.card ι := pow_le_pow_right₀ (by norm_num) (Finset.card_le_univ _)
 
 /- English proof (translation)
-Introduce `Ψ _ _ N j hj hjN`. Use `⟨((GlobalTheory.CompanionTheory.Ar.Top.dimFl Ψ N).factorial : ℝ) * 2 ^ Fintype.card (Ψ × Fin N × Fin N), by positivity, ?_⟩` and prove the remaining obligations. Introduce `lam τ₀ hlam hdom`. Establish `hj1 : j - 1 < N` using `by omega`. Establish `hbound : ∀ τ i, |lam τ i| ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `τ i`. Establish `h1` using `norm_le_pi_norm (show Ψ → Fin N → ℝ from lam) τ`. Establish `h2` using `norm_le_pi_norm (lam τ) i`. Rewrite `h2` using `[Real.norm_eq_abs]`. Establish `h3 : ‖(show Ψ → Fin N → ℝ from lam)‖ ≤ 1` using `hlam`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfac : ∀ τ (i k : Fin N), 0 ≤ (if i < k then (lam τ i - lam τ k) / (((k : ℕ) : ℝ) - ((i : ℕ) : ℝ)) else 1) ∧ (if i < k then (lam τ i - lam τ k) / (((k : ℕ) : ℝ) - ((i : ℕ) : ℝ)) else 1) ≤ 2`. Introduce `τ i k`. Use `split_ifs with hik`. Establish `hik' : (i : ℕ) < (k : ℕ)` using `hik`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ((i : ℕ) : ℝ) + 1 ≤ ((k : ℕ) : ℝ)` using `by exact_mod_cast Nat.succ_le_of_lt hik'`. Establish `hmono` using `hdom τ i k hik.le`. Establish `hi` using `abs_le.mp (hbound τ i)`. Establish `hk` using `abs_le.mp (hbound τ k)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply div_nonneg <;> linarith`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Establish `hgap : GlobalTheory.CompanionTheory.Ar.Top.gap j lam τ₀ = lam τ₀ ⟨j - 1, hj1⟩ - lam τ₀ ⟨j, hjN⟩`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.CompanionTheory.Ar.Top.gap GlobalTheory.CompanionTheory.Ar.Top.ent`. Rewrite using `[dif_pos hj1, dif_pos hjN]`. Establish `hx0 : (if (⟨j - 1, hj1⟩ : Fin N) < ⟨j, hjN⟩ then (lam τ₀ ⟨j - 1, hj1⟩ - lam τ₀ ⟨j, hjN⟩) / ((((⟨j, hjN⟩ : Fin N) : ℕ) : ℝ) - (((⟨j - 1, hj1⟩ : Fin N) : ℕ) : ℝ)) else 1) = lam τ₀ ⟨j - 1, hj1⟩ - lam τ₀ ⟨j, hjN⟩`. Establish `hlt : (⟨j - 1, hj1⟩ : Fin N) < ⟨j, hjN⟩`. Rewrite using `[Fin.lt_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use `show j - 1 < j`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hlt]`. Establish `hden : (((⟨j, hjN⟩ : Fin N) : ℕ) : ℝ) - (((⟨j - 1, hj1⟩ : Fin N) : ℕ) : ℝ) = 1` using `by show ((j : ℕ) : ℝ) - ((j - 1 : ℕ) : ℝ) = 1`. Rewrite using `[Nat.cast_sub hj, Nat.cast_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hden, div_one]`. Establish `key` using `prod_le_mul_two_pow_card (fun x : Ψ × Fin N × Fin N => if x.2.1 < x.2.2 then (lam x.1 x.2.1 - lam x.1 x.2.2) / (((x.2.2 : ℕ) : ℝ) - ((x.2.1 : ℕ) : ℝ)) else 1) (fun x => (hfac x.1 x.2.1 x.2.2).1) (fun x => (hfac x.1 x.2.1 x.2.2).2) (τ₀, ⟨j - 1, hj1⟩, ⟨j, hjN⟩) _ hx0`. Simplify using `only [Fintype.prod_prod_type] at key`. Take `⟨hdeg, -, -⟩` from `GlobalTheory.T.flag_degree_weight_formula Ψ N lam`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hdeg, hgap]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem flagDeg_le_gap : ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) (j : ℕ), 1 ≤ j → j < N → ∃ C : ℝ, 0 ≤ C ∧ ∀ (lam : Wt Ψ N) (τ₀ : Ψ), ‖lam‖ ≤ 1 → Dominant lam → flagDeg lam ≤ C * gap j lam τ₀ := by
   intro Ψ _ _ N j hj hjN

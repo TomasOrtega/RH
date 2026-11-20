@@ -8,9 +8,9 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hm : ∀ x ∈ maximalIdeal R, ρ x ∈ maximalIdeal R'`. Introduce `x hx`. Rewrite using `[← res_eq_zero_iff O R', res_map, res_eq_zero_iff O R]`. Conclude with `hx`. Take `⟨f, -, huniq⟩` from `sinfExt O D q n R' (fun k => g (MvPowerSeries.C (MvPowerSeries.X k))) (fun p => g (MvPowerSeries.X p)) (fun k => by rw [ea]; exact hm _ (ha k)) (fun p => by rw [ey]; exact hm _ (hy p))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ρ.comp s = f` using `huniq _ ⟨fun k => (ea k).symm, fun p => (ey p).symm⟩`. Establish `h2 : g = f` using `huniq _ ⟨fun _ => rfl, fun _ => rfl⟩`. Conclude with `(DFunLike.congr_fun (h1.trans h2.symm) z : _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rm_ext {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     {D q n : ℕ} {R R' : Type} [CommRing R] [Algebra O R] [IsCO O R] [CommRing R'] [Algebra O R'] [IsCO O R']
@@ -36,29 +36,25 @@ private noncomputable def rm_cc (O : Type) [CommRing O] (D q n : ℕ) : Sinf O U
       exact MvPowerSeries.constantCoeff_C _ }
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W hT`. Use `haveI : IsAdicComplete (maximalIdeal O) O := IsCoef.complete (l := l)`. Establish `hw : ∀ k : Fin D, (algebraMap O W.R) (A.b.wt.c k) * ↑((W.t.ψ (A.b.wt.v k) (A.b.wt.i k)) (A.b.wt.γ k)) - 1 ∈ maximalIdeal W.R`. Introduce `k`. Rewrite using `[← res_eq_zero_iff O W.R, map_sub, map_mul, AlgHom.commutes, map_one, (W.t.psi _ _).red, ResidueField.algebraMap_eq, A.b.wt_res, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, ⟨hsa, hsy⟩, -⟩` from `sinfExt O D T.q n W.R (Sum.elim (fun _ => W.t.s) (fun k => (algebraMap O W.R) (A.b.wt.c k) * ↑((W.t.ψ (A.b.wt.v k) (A.b.wt.i k)) (A.b.wt.γ k)) - 1)) (fun p => W.t.y p.1 p.2) (by rintro (_ | k); exacts [W.t.s_mem, hw k]) (fun p => W.t.y_mem _ _)`. Establish `hsm : ∀ k, s (MvPowerSeries.C (MvPowerSeries.X k)) ∈ maximalIdeal W.R`. Introduce and unpack `(_ | k)`. Rewrite using `[hsa]`. Conclude with `W.t.s_mem`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsa]`. Conclude with `hw k`. Establish `hym : ∀ p, s (MvPowerSeries.X p) ∈ maximalIdeal W.R` using `fun p => by`. Rewrite using `[hsy]`. Conclude with `W.t.y_mem _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hρ : ∀ N, ∃ f : W.R →ₐ[O] (A.A N).R, W.t.Maps f.toRingHom ((A.A N).p.D.comap (πN0 Λ N)) (A.A N).p.ψ ((A.A N).s (MvPowerSeries.C (MvPowerSeries.X (Sum.inl ())))) (A.A N).U (fun j i => (A.A N).s (MvPowerSeries.X (j, i)))`. Introduce `N`. Take `⟨t, hD, hψ, hs, hU, hy⟩` from `tupN l L G0 T Λ n O r B u J D A hT N`. Take `⟨f, hf, -⟩` from `W.univ _ t`. Rewrite `hf` using `[hD, hψ, hs, hU, hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨f, hf⟩`. Use `choose ρ hρ using hρ`. Use `haveI : IsCO O (Spo A) := (spoCo l L G0 T Λ n O r B u J D A hT).1.1`. Take `⟨t, hD, hψ, hs, hU, hy⟩` from `tupPi l L G0 T Λ n O r B u J D A`. Take `⟨π, hπ, -⟩` from `W.univ _ t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hπ` using `[hD, hψ, hs, hU, hy]`. Use `⟨⟨s, hsa (Sum.inl ()), fun k => hsa (Sum.inr k), fun j i => hsy (j, i), ρ, hρ, ?_, π, hπ, ?_⟩⟩` and prove the remaining obligations. Introduce `N z`. Use `rm_ext s (ρ N) (A.A N).s hsm hym ?_ ?_ z` and prove the remaining obligations. Introduce and unpack `(_ | k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hsa]`. Conclude with `(hρ N).2.2.1.symm`. Rewrite using `[hsa, Sum.elim_inr, (A.A N).s_w k, map_sub, map_mul, AlgHom.commutes, map_one]`. Use `congrArg (fun χ => ((χ (A.b.wt.γ k) : (A.A N).Rˣ) : (A.A N).R)) ((hρ N).2.1 (A.b.wt.v k) (A.b.wt.i k))` as an intermediate fact. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Introduce `p`. Rewrite using `[hsy]`. Conclude with `((hρ N).2.2.2.2 p.1 p.2).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Use `rm_ext s π ((IsScalarTower.toAlgHom O B (Spo A)).comp (A.b.lam.comp (rm_cc O D T.q n))) hsm hym ?_ ?_ z` and prove the remaining obligations. Introduce and unpack `(_ | k)`. Rewrite using `[hsa]`. Use `Eq.trans ?_ hπ.2.2.1.symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rm_cc, MvPowerSeries.constantCoeff_C]`. Rewrite using `[hsa, Sum.elim_inr, map_sub, map_mul, AlgHom.commutes, map_one]`. Use `congrArg (fun χ => ((χ (A.b.wt.γ k) : (Spo A)ˣ) : Spo A)) (hπ.2.1 (A.b.wt.v k) (A.b.wt.i k))` as an intermediate fact. Simplify using `only [pushCh, MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at this`. Express the relevant statement in the definitionally equal form `algebraMap B (Spo A) (A.b.lam (MvPowerSeries.constantCoeff (MvPowerSeries.C (MvPowerSeries.X (Sum.inr k))))) = _`.
-
-Rewrite using `[MvPowerSeries.constantCoeff_C, A.b.segmentWeightExponent, map_sub, map_mul, map_one, ← IsScalarTower.algebraMap_apply]`. Use `erw [this]`. Introduce `p`. Rewrite using `[hsy]`. Use `Eq.trans ?_ (hπ.2.2.2.2 p.1 p.2).symm` and prove the remaining obligations.
-
-Simplify using `[rm_cc, MvPowerSeries.constantCoeff_X]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.rmapsEx :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A), Adapted T (r := r) → Nonempty (RMaps W) := by

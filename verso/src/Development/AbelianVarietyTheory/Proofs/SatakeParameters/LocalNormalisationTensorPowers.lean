@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.AlgebraicTheory.AlgebraicTheoryProofs.NormPow
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.AlgTh.local_norm_power`.
+A detailed English derivation is pending.
 -/
 theorem locNormPow_tensorPowers : Formalism.L2.AlgTh.LocNormPow := Formalism.L2.AlgTh.local_norm_power
 

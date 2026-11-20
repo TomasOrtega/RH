@@ -19,7 +19,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Simplify using `only [Set.ofPred_forall, Set.ofPred_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_blocks : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.ofPred_forall, Set.ofPred_exists]
@@ -29,7 +29,7 @@ theorem isOpen_blocks : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k,
 def logRatio (A A' : HermLine ι) (z : (Σ k, ι k) → ℂ) : ℝ := Real.log (A.h z) - Real.log (A'.h z)
 
 /- English proof (translation)
-Establish `hn` using `isOpen_blocks.mem_nhds hz`. Conclude with `((hA.continuousOn.continuousAt hn).log (A.pos z hz).ne').sub ((hA'.continuousOn.continuousAt hn).log (A'.pos z hz).ne')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuousAt_logRatio {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : IsSmoothHerm A')
     {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) : ContinuousAt (logRatio A A') z := by
@@ -40,9 +40,9 @@ theorem continuousAt_logRatio {A A' : HermLine ι} (hA : IsSmoothHerm A) (hA' : 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Establish `hpos : 0 < ∏ k, ‖c k‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hc k)) _`. Establish `e : torusSmul c z = fun x => c x.1 * z x` using `rfl`. Establish `h1` using `A.smul c z hc`. Establish `h2` using `A'.smul c z hc`. Rewrite `h2` using `[← ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `logRatio`. Rewrite using `[e, h1, h2, Real.log_mul hpos.ne' (A.pos z hz).ne', Real.log_mul hpos.ne' (A'.pos z hz).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem logRatio_torusSmul {A A' : HermLine ι} (ha : A.a = A'.a) (c : K → ℂ) (hc : ∀ k, c k ≠ 0)
     {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -63,7 +63,7 @@ def descend (M : CxModel P d) (v : ((Σ k, ι k) → ℂ) → ℝ) (x : M.Xc) : 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Take `⟨hz', hpz⟩` from `(M.surj (M.proj z)).choose_spec`. Take `⟨c, hc, hzc⟩` from `(M.fibre _ hz' z hz).1 hpz`. Establish `h` using `hv c hc _ hz'`. Rewrite `h` using `[← hzc]`. Conclude with `h.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descend_proj (M : CxModel P d) {v : ((Σ k, ι k) → ℂ) → ℝ}
     (hv : ∀ c : K → ℂ, (∀ k, c k ≠ 0) → ∀ z ∈ mcPts P, v (torusSmul c z) = v z)
@@ -75,9 +75,9 @@ theorem descend_proj (M : CxModel P d) {v : ((Σ k, ι k) → ℂ) → ℝ}
   exact h.symm
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `A.cover x`. Establish `h1 : ContinuousAt (f ∘ (A.chart j).symm) (A.chart j x)` using `(hf j _ ⟨(A.chart j).map_source hj, by simpa [(A.chart j).left_inv hj] using hx⟩).continuousAt`. Establish `h2 : ContinuousAt ((f ∘ (A.chart j).symm) ∘ A.chart j) x` using `h1.comp ((A.chart j).continuousAt hj)`. Use `h2.congr ?_` and prove the remaining obligations. Use `filter_upwards [(A.chart j).open_source.mem_nhds hj] with y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[(A.chart j).left_inv hy]`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_of_holoOn {X : Type} [TopologicalSpace X] {A : FinHolAtlas d X} {U : Set X}
     {f : X → ℂ} (hf : A.HoloOn U f) {x : X} (hx : x ∈ U) : ContinuousAt f x := by
@@ -90,9 +90,9 @@ theorem continuousAt_of_holoOn {X : Type} [TopologicalSpace X] {A : FinHolAtlas 
   simp [(A.chart j).left_inv hy]
 
 /- English proof (translation)
-Establish `hv : ∀ c : K → ℂ, (∀ k, c k ≠ 0) → ∀ z ∈ mcPts P, logRatio A A' (torusSmul c z) = logRatio A A' z` using `fun c hc z hz => logRatio_torusSmul ha c hc hz.1`. Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, hxU, s, hs, hholo⟩` from `M.sections x`. Establish `hsc : ContinuousAt s x` using `continuousAt_pi.2 fun p => continuousAt_of_holoOn (hholo p) hxU`. Establish `h : ContinuousAt (logRatio A A' ∘ s) x` using `(continuousAt_logRatio hA hA' (hs x hxU).1.1).comp hsc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.congr ?_` and prove the remaining obligations. Use `filter_upwards [hU.mem_nhds hxU] with y hy`. Establish `h'` using `descend_proj M hv (hs y hy).1`. Rewrite `h'` using `[(hs y hy).2]`. Conclude with `h'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_descend (M : CxModel P d) {A A' : HermLine ι} (hA : IsSmoothHerm A)
     (hA' : IsSmoothHerm A') (ha : A.a = A'.a) : Continuous (descend M (logRatio A A')) := by
@@ -109,13 +109,13 @@ theorem continuous_descend (M : CxModel P d) {A A' : HermLine ι} (hA : IsSmooth
   exact h'.symm
 
 /- English proof (translation)
-Introduce `x`. Take `⟨j, hj⟩` from `B.cover x`. Establish `hxs : x ∈ (B.chart j).source` using `B.mid_subset_source j (B.inner_subset_mid j hj)`. Establish `hy : B.chart j x ∈ (B.chart j).target` using `(B.chart j).map_source hxs`. Establish `hn` using `(B.chart j).open_target.mem_nhds hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : UpperSemicontinuousAt (fun y => B.q j y + B.ph ((B.chart j).symm y)) (B.chart j x)` using `fun c hc => by`. Establish `h` using `((B.u_psh j).1 _ hy) c hc`. Rewrite `h` using `[nhdsWithin_eq_nhds.2 hn]`. Then use the resulting hypothesis. Establish `h2 : UpperSemicontinuousAt (fun y => -B.q j y) (B.chart j x)` using `((B.q_smooth j).continuousOn.continuousAt hn).neg.upperSemicontinuousAt`. Establish `h3 : UpperSemicontinuousAt (fun y => B.ph ((B.chart j).symm y)) (B.chart j x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `h1.add h2`. Establish `e : (fun y => B.q j y + B.ph ((B.chart j).symm y) + -B.q j y) = fun y => B.ph ((B.chart j).symm y)`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `c hc`. Establish `hc' : B.ph ((B.chart j).symm (B.chart j x)) < c` using `by rwa [(B.chart j).left_inv hxs]`. Use `filter_upwards [((B.chart j).continuousAt hxs).eventually (h3 c hc'), (B.chart j).open_source.mem_nhds hxs] with y hy hys`. Rewrite `hy` using `[(B.chart j).left_inv hys]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem upperSemicontinuous_ph {X : Type} [TopologicalSpace X] {A : FinHolAtlas d X}
     (B : GroundTheory.Heights₂.Heights.Regular.BoundedPshData A) : UpperSemicontinuous B.ph := by
@@ -144,9 +144,9 @@ theorem upperSemicontinuous_ph {X : Type} [TopologicalSpace X] {A : FinHolAtlas 
   rwa [(B.chart j).left_inv hys] at hy
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨j, hj⟩` from `R.cover x`. Establish `hxs : x ∈ (R.chart j).source` using `R.mid_subset_source j (R.inner_subset_mid j hj)`. Establish `h1` using `(GroundTheory.Heights₂.Heights.Regular.contDiffAt_comp_symm_of_smoothOn (R.compat j) R.isOpen_Yo R.ph_smooth hx hxs).continuousAt`. Establish `h2 : ContinuousAt ((R.ph ∘ (R.chart j).symm) ∘ R.chart j) x` using `h1.comp ((R.chart j).continuousAt hxs)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(h2.congr ?_).continuousWithinAt` and prove the remaining obligations. Use `filter_upwards [(R.chart j).open_source.mem_nhds hxs] with y hy`. Simplify using `[(R.chart j).left_inv hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_ph {X : Type} [TopologicalSpace X] {A : FinHolAtlas d X}
     (R : GroundTheory.Heights₂.Heights.Regular.RegChartData A) : ContinuousOn R.ph R.Yo := by
@@ -170,7 +170,7 @@ def uFn (X : ComponentSetting D O Lt) (x : X.M.Xc) : ℝ :=
   X.S'.B.ph x + descend X.M (logRatio X.S'.ref X.S.ref) x - X.S.R.Yo.piecewise X.S.R.ph (fun _ => 0) x
 
 /- English proof (translation)
-The claim follows from `X.S'.ref_deg.trans X.S.ref_deg.symm`.
+A detailed English derivation is pending.
 -/
 theorem ref_deg_eq (X : ComponentSetting D O Lt) : X.S'.ref.a = X.S.ref.a :=
   X.S'.ref_deg.trans X.S.ref_deg.symm
@@ -178,7 +178,7 @@ theorem ref_deg_eq (X : ComponentSetting D O Lt) : X.S'.ref.a = X.S.ref.a :=
 open Classical in
 
 /- English proof (translation)
-Set `_ : MeasurableSpace X.M.Xc` to `borel X.M.Xc`. Establish `_ : BorelSpace X.M.Xc` using `⟨rfl⟩`. Use `((upperSemicontinuous_ph X.S'.B).measurable.add (continuous_descend X.M X.S'.ref_smooth X.S.ref_smooth (ref_deg_eq X)).measurable).sub ?_` and prove the remaining obligations. Conclude with `ContinuousOn.measurable_piecewise (continuousOn_ph X.S.R) continuousOn_const X.S.R.isOpen_Yo.measurableSet`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_uFn (X : ComponentSetting D O Lt) : @Measurable X.M.Xc ℝ (borel X.M.Xc) _ (uFn X) := by
   let _ : MeasurableSpace X.M.Xc := borel X.M.Xc
@@ -191,13 +191,13 @@ theorem measurable_uFn (X : ComponentSetting D O Lt) : @Measurable X.M.Xc ℝ (b
 open Classical in
 
 /- English proof (translation)
-Take `⟨CB, hCB⟩` from `X.S'.B.bdd`. Take `⟨CV, hCV⟩` from `isCompact_univ.exists_bound_of_continuousOn (continuous_descend X.M X.S'.ref_smooth X.S.ref_smooth (ref_deg_eq X)).continuousOn`. Use `⟨CB + CV + |X.S.R.Cph|, |X.S.R.Clog|, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hCB x`. Establish `h2 : |descend X.M (logRatio X.S'.ref X.S.ref) x| ≤ CV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `hCV x (Set.mem_univ x)` using `[Real.norm_eq_abs]`. Establish `hr : 0 ≤ Real.log (X.S.R.r x)` using `Real.log_nonneg (X.S.R.one_le_r x hx)`. Establish `h3` using `X.S.R.ph_le x hx`. Establish `h4 : -(X.S.R.Clog * Real.log (X.S.R.r x)) ≤ X.S.R.ph x`. Rewrite using `[← neg_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X.S.R.ph_ge x hx`. Establish `h5 : X.S.R.Clog * Real.log (X.S.R.r x) ≤ |X.S.R.Clog| * Real.log (X.S.R.r x)` using `mul_le_mul_of_nonneg_right (le_abs_self _) hr`. Establish `h6 : 0 ≤ |X.S.R.Clog| * Real.log (X.S.R.r x)` using `mul_nonneg (abs_nonneg _) hr`. Establish `h7` using `le_abs_self X.S.R.Cph`. Establish `h8` using `abs_nonneg X.S.R.Cph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : uFn X x = X.S'.B.ph x + descend X.M (logRatio X.S'.ref X.S.ref) x - X.S.R.ph x`. Simplify using `[uFn, Set.piecewise_eq_of_mem _ _ _ hx]`. Rewrite using `[hu]`. Rewrite `h1`, `h2`, the goal using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [h1.1, h1.2, h2.1, h2.2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem uFn_bound (X : ComponentSetting D O Lt) :
     ∃ C C' : ℝ, ∀ x ∈ X.S.R.Yo, |uFn X x| ≤ C + C' * Real.log (X.S.R.r x) := by
@@ -227,9 +227,9 @@ theorem uFn_bound (X : ComponentSetting D O Lt) :
 open Classical in
 
 /- English proof (translation)
-Establish `hXo : z ∈ D.Xo ∩ mcPts (mCoordIdeal D.y)` using `⟨⟨hz, hzb⟩, hz⟩`. Establish `h1` using `X.S'.ph_eq z hXo`. Establish `h2` using `X.S.ph_eq z hXo hY`. Establish `h3` using `descend_proj X.M (fun c hc z hz => logRatio_torusSmul (ref_deg_eq X) c hc hz.1) hz`. Establish `hu : uFn X (X.M.proj z) = X.S'.B.ph (X.M.proj z) + descend X.M (logRatio X.S'.ref X.S.ref) (X.M.proj z) - X.S.R.ph (X.M.proj z)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[uFn, Set.piecewise_eq_of_mem _ _ _ hY]`. Rewrite using `[hu, h1, h2, h3]`. Simplify using `only [cuspCorr, logRatio, phMu]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cuspWeight_eq (X : ComponentSetting D O Lt) {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal D.y))
     (hzb : z ∉ D.Bd) (hY : X.M.proj z ∈ X.S.R.Yo) : X.Cd.cuspWeight z / 2 = uFn X (X.M.proj z) := by
@@ -247,9 +247,9 @@ theorem cuspWeight_eq (X : ComponentSetting D O Lt) {z : (Σ k, ι k) → ℂ} (
 end CuspWeightIntegrable
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q t hsm`. Take `⟨C, C', hb⟩` from `CuspWeightIntegrable.uFn_bound X`. Establish `hω : X.omN B p q t = fun _ z => (q : ℝ)⁻¹ * Real.log ((X.NbarQ B p q t).h z)`. Use function extensionality and compare the values at `_ z`. Simplify using `[ComponentSetting.omN, div_eq_inv_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hω]`. Conclude with `hM K ι (mCoordIdeal D.y) D.n X.M X.S.R (X.NbarQ B p q t) (q : ℝ)⁻¹ D.Bd (CuspWeightIntegrable.uFn X) C C' _ D.arith hsm (hBd II Ψ K ι Ω E D) (CuspWeightIntegrable.measurable_uFn X) hb (fun z hz hzb hY => CuspWeightIntegrable.cuspWeight_eq X hz hzb hY)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TpCuspIntegrable.proof (hM : ModelLogIntegrable.Statement) (hBd : BoundaryNull.Statement) :
     TpCuspIntegrable.Statement := by

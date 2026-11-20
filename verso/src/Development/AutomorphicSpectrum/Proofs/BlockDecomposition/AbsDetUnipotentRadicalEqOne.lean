@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.QKAvg
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨c, b, hcb⟩` from `hn`. Establish `hX : mt B (n : GA D B) ⬝ d.jX = d.jX`. Rewrite using `[hcb, mt_mul, Matrix.mul_assoc, d.nB_jX, d.nC_jX]`. Establish `hon : GlobalTheory.RegSW.onX d n = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.RegSW.eq_of_mul_jX d (GlobalTheory.RegSW.mul_jX d n), hX, d.pX_jX, Units.val_one]`. Simplify using `only [GlobalTheory.RegSW.absDet, MonoidHom.comp_apply, hon, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absDet_radN (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t) :
     ∀ n ∈ radN d, GlobalTheory.RegSW.absDet d n = 1 := by

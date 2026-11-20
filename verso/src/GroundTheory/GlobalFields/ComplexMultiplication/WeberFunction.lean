@@ -24,7 +24,7 @@ end ShortWeierstrass
 open ShortWeierstrass
 
 /- English proof (translation)
-Simplify using `only [WeierstrassCurve.Δ, b₂, b₄, b₆, b₈, hW.a₁_eq, hW.a₂_eq, hW.a₃_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsShortForm.Δ_eq {W : WeierstrassCurve F} (hW : IsShortForm W) :
     W.Δ = -16 * (4 * W.a₄ ^ 3 + 27 * W.a₆ ^ 2) := by
@@ -32,7 +32,7 @@ theorem IsShortForm.Δ_eq {W : WeierstrassCurve F} (hW : IsShortForm W) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hW.Δ_eq, g₂, g₃]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsShortForm.Δ_eq_g {W : WeierstrassCurve F} (hW : IsShortForm W) :
     W.Δ = g₂ W ^ 3 - 27 * g₃ W ^ 2 := by
@@ -40,7 +40,7 @@ theorem IsShortForm.Δ_eq_g {W : WeierstrassCurve F} (hW : IsShortForm W) :
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Use `W.isUnit_Δ.ne_zero` as an intermediate fact. Rewrite `this` using `[hW.Δ_eq, h.1, h.2]`. Simplify using `at this`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsShortForm.a₄_ne_zero_or_a₆_ne_zero {W : WeierstrassCurve F} [W.IsElliptic]
     (hW : IsShortForm W) : W.a₄ ≠ 0 ∨ W.a₆ ≠ 0 := by
@@ -63,7 +63,7 @@ noncomputable def weberFunction (W : WeierstrassCurve F) : W.toAffine.Point → 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem weberFunction_zero (W : WeierstrassCurve F) : weberFunction W .zero = ∞ := rfl
 
@@ -75,21 +75,21 @@ theorem weberFunction_some (W : WeierstrassCurve F) {x y : F} (h : W.toAffine.No
     weberFunction W (.some x y h) = OnePoint.some (weberValue W x) := rfl
 
 /- English proof (translation)
-Simplify using `[weberValue, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weberValue_of_a₆_eq_zero {W : WeierstrassCurve F} (hb : W.a₆ = 0) (x : F) :
     weberValue W x = g₂ W ^ 2 / W.Δ * x ^ 2 := by
   simp [weberValue, hb]
 
 /- English proof (translation)
-Simplify using `[weberValue, ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weberValue_of_a₄_eq_zero {W : WeierstrassCurve F} (ha : W.a₄ = 0) (hb : W.a₆ ≠ 0)
     (x : F) : weberValue W x = g₃ W / W.Δ * x ^ 3 := by
   simp [weberValue, ha, hb]
 
 /- English proof (translation)
-Simplify using `[weberValue, ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem weberValue_of_ne_zero {W : WeierstrassCurve F} (ha : W.a₄ ≠ 0) (hb : W.a₆ ≠ 0)
     (x : F) : weberValue W x = g₂ W * g₃ W / W.Δ * x := by
@@ -100,9 +100,9 @@ section Isomorphism
 variable [CharZero F]
 
 /- English proof (translation)
-Establish `hv : (↑C.u⁻¹ : F) ≠ 0` using `Units.ne_zero _`. Establish `h1` using `hCW.a₁_eq`. Establish `h2` using `hCW.a₂_eq`. Establish `h3` using `hCW.a₃_eq`. Simplify using `only [variableChange_a₁, variableChange_a₂, variableChange_a₃, hW.a₁_eq, hW.a₂_eq, hW.a₃_eq] at h1 h2 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hs : C.s = 0` using `by simpa [hv] using h1`. Establish `ht : C.t = 0` using `by simpa [hv] using h3`. Establish `hr : C.r = 0` using `by simpa [hv, hs] using h2`. Conclude with `⟨hr, hs, ht⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem variableChange_rst_eq_zero {C : VariableChange F} {W : WeierstrassCurve F}
     (hW : IsShortForm W) (hCW : IsShortForm (C • W)) : C.r = 0 ∧ C.s = 0 ∧ C.t = 0 := by
@@ -118,7 +118,7 @@ theorem variableChange_rst_eq_zero {C : VariableChange F} {W : WeierstrassCurve 
   exact ⟨hr, hs, ht⟩
 
 /- English proof (translation)
-Take `⟨hr, hs, ht⟩` from `variableChange_rst_eq_zero hW hCW`. Simplify using `[variableChange_a₄, hr, hs, ht]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem variableChange_a₄_of_isShortForm {C : VariableChange F} {W : WeierstrassCurve F}
     (hW : IsShortForm W) (hCW : IsShortForm (C • W)) : (C • W).a₄ = ↑C.u⁻¹ ^ 4 * W.a₄ := by
@@ -126,7 +126,7 @@ theorem variableChange_a₄_of_isShortForm {C : VariableChange F} {W : Weierstra
   simp [variableChange_a₄, hr, hs, ht]
 
 /- English proof (translation)
-Take `⟨hr, hs, ht⟩` from `variableChange_rst_eq_zero hW hCW`. Simplify using `[variableChange_a₆, hr, ht]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem variableChange_a₆_of_isShortForm {C : VariableChange F} {W : WeierstrassCurve F}
     (hW : IsShortForm W) (hCW : IsShortForm (C • W)) : (C • W).a₆ = ↑C.u⁻¹ ^ 6 * W.a₆ := by
@@ -134,15 +134,15 @@ theorem variableChange_a₆_of_isShortForm {C : VariableChange F} {W : Weierstra
   simp [variableChange_a₆, hr, ht]
 
 /- English proof (translation)
-Substitute `hC` using the available equality. Take `⟨hr, hs, ht⟩` from `variableChange_rst_eq_zero hW hW'`. Consider the cases of `P with`. Consider the case `zero => rfl`. Consider the case `some x y h`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Rewrite using `[variableChangePoint_some, weberFunction_some, weberFunction_some]`. Use `congr 1`. Establish `hv : (↑C.u⁻¹ : F) ≠ 0` using `Units.ne_zero _`. Establish `hΔ : W.Δ ≠ 0` using `W.isUnit_Δ.ne_zero`. Establish `ha` using `variableChange_a₄_of_isShortForm hW hW'`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `variableChange_a₆_of_isShortForm hW hW'`. Establish `hb0 : (C • W).a₆ = 0 ↔ W.a₆ = 0` using `by rw [hb]; simp`. Establish `ha0 : (C • W).a₄ = 0 ↔ W.a₄ = 0` using `by rw [ha]; simp`. Distinguish the cases in `h6 : W.a₆ = 0`. Rewrite using `[weberValue_of_a₆_eq_zero (hb0.mpr h6), weberValue_of_a₆_eq_zero h6]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [g₂, ha, variableChange_Δ, hr, sub_zero, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Distinguish the cases in `h4 : W.a₄ = 0`. Rewrite using `[weberValue_of_a₄_eq_zero (ha0.mpr h4) (mt hb0.mp h6), weberValue_of_a₄_eq_zero h4 h6]`. Simplify using `only [g₃, hb, variableChange_Δ, hr, sub_zero, Units.val_inv_eq_inv_val]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[weberValue_of_ne_zero (mt ha0.mp h4) (mt hb0.mp h6), weberValue_of_ne_zero h4 h6]`. Simplify using `only [g₂, g₃, ha, hb, variableChange_Δ, hr, sub_zero, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem weberFunction_variableChangePoint (C : VariableChange F) {W W' : WeierstrassCurve F}
     [W.IsElliptic] (hC : C • W = W') (hW : IsShortForm W) (hW' : IsShortForm W')
@@ -185,13 +185,13 @@ def pointMapOfRingHom (φ : F →+* L) {W : WeierstrassCurve F} :
   | .some x y h => .some (φ x) (φ y) ((W.toAffine.map_nonsingular φ.injective x y).mpr h)
 
 /- English proof (translation)
-Consider the cases of `P with`. Consider the case `zero => rfl`. Consider the case `some x y h`. Establish `h4 : (W.map φ).a₄ = φ W.a₄` using `rfl`. Establish `h6 : (W.map φ).a₆ = φ W.a₆` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show OnePoint.some _ = OnePoint.some _`. Use `congr 1`. Distinguish the cases in `hb : W.a₆ = 0`. Rewrite using `[weberValue_of_a₆_eq_zero (by rw [h6, hb, map_zero]), weberValue_of_a₆_eq_zero hb]`. Simplify using `[g₂, map_Δ, map_ofNat]`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb' : (W.map φ).a₆ ≠ 0` using `by rw [h6]; exact (map_ne_zero φ).mpr hb`. Distinguish the cases in `ha : W.a₄ = 0`. Rewrite using `[weberValue_of_a₄_eq_zero (by rw [h4, ha, map_zero]) hb', weberValue_of_a₄_eq_zero ha hb]`. Simplify using `[g₃, map_Δ, map_ofNat]`. Establish `ha' : (W.map φ).a₄ ≠ 0` using `by rw [h4]; exact (map_ne_zero φ).mpr ha`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weberValue_of_ne_zero ha' hb', weberValue_of_ne_zero ha hb]`. Simplify using `[g₂, g₃, map_Δ, map_ofNat]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weberFunction_pointMapOfRingHom (φ : F →+* L) (W : WeierstrassCurve F)
     (P : W.toAffine.Point) :

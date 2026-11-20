@@ -72,7 +72,7 @@ def ProjRows : Prop :=
       IsURep π → IsOpInt μ π (phOf σ w d) T → IsRowProj π (coefM σ w) T
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ _ Hσ _ _ σ d w hU hF hw hL K _ _ π T hπ hT`. Conclude with `hC G μ (phOf σ w d) (coefM σ w) hL (hS G μ Hσ σ d w hU hF hw).1 K π T hπ hT`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem projRows_of (hS : SchurConv) (hC : ConvProj) : ProjRows := by
   intro G _ _ _ _ _ _ μ _ _ _ Hσ _ _ σ d w hU hF hw hL K _ _ π T hπ hT
@@ -141,7 +141,7 @@ def ProjRowsR : Prop :=
         IsRowProj (fun g => R (g, 1)) (mInf I σ w) T
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hU.1.1, fun a b => hU.1.2 _ (Formalism.MainNotions.BridgeCSchur.umat_mem a) _ (Formalism.MainNotions.BridgeCSchur.umat_mem b), fun g v => hU.2.1 _ (Formalism.MainNotions.BridgeCSchur.umat_mem g) v, fun v => (hU.2.2 v).comp_continuous Formalism.MainNotions.BridgeCSchur.continuous …`.
+Supply the required witnesses or components.
 -/
 theorem isURep_of_on {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hU : IsURepOn (UJset ε) σ) :
@@ -151,7 +151,7 @@ theorem isURep_of_on {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGr
     fun v => (hU.2.2 v).comp_continuous Formalism.MainNotions.BridgeCSchur.continuous_umat Formalism.MainNotions.BridgeCSchur.umat_mem⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [phInf, mInf, phLoc, Complex.ofReal_prod, Finset.prod_mul_distrib]`. Use `congr 1`. Conclude with `map_prod (starRingEnd ℂ) _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phInf_eq (I : AutInst) {H : InfinitePlace I.F → Type} [∀ v, NormedAddCommGroup (H v)]
     [∀ v, InnerProductSpace ℂ (H v)] (σ : ∀ v, Matrix (Fin I.n) (Fin I.n) ℂ → (H v →L[ℂ] H v))
@@ -163,9 +163,9 @@ theorem phInf_eq (I : AutInst) {H : InfinitePlace I.F → Type} [∀ v, NormedAd
   exact map_prod (starRingEnd ℂ) _ _
 
 /- English proof (translation)
-Introduce `I μf _ _ fund hfund R hRR H _ _ σ dv w hU hF hw hL T hT`. Establish `hloc : ∀ v, PhConv (Formalism.REAL.muG (I.ε v)) (phLoc (ε` using `I.ε v) (σ v) (w v) (dv v)) (coefM (fun g : Formalism.REAL.UJ (I.ε v) => σ v (umat g)) (w v)) := fun v => (hS (Formalism.REAL.UJ (I.ε v)) (Formalism.REAL.muG (I.ε v)) (H v) (fun g => σ v (umat g)) (dv v) (w v) (isURep_of_on (hU v)) (hF v) (hw v)).1`. Take `⟨hint, hconv⟩` from `hP (InfinitePlace I.F) (fun v => Formalism.REAL.UJ (I.ε v)) (fun v => Formalism.REAL.muG (I.ε v)) (fun v => phLoc (ε := I.ε v) (σ v) (w v) (dv v)) (fun v => coefM (fun g : Formalism.REAL.UJ (I.ε v) => σ v (umat g)) (w v)) hL hloc`. Rewrite `hint`, `hconv` using `[← phInf_eq]`. Rewrite `hT` using `[phInf_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hT' : IsOpInt (muInf I) (fun g => R (g, 1)) (phInf I σ w dv) T` using `by rw [phInf_eq]; exact hT`. Conclude with `hC I.Ginf (muInf I) (phInf I σ w dv) (mInf I σ w) hint hconv (I.L2 μf fund) (fun g => R (g, 1)) T (hR I μf fund hfund R hRR) hT'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projRowsR_of (hS : SchurConv) (hC : ConvProj) (hP : ProdConv) (hR : RegUnitary) : ProjRowsR := by
   classical

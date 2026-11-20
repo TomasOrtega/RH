@@ -17,17 +17,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.EtaAn
 
 /- English proof (translation)
-Introduce `D T h large₂ ⟨h2, hrL, hrd, hf, hg, h16⟩ j hj σ hσ`. Take `⟨ξ, AA, hsk, hne, hFG, hA, hdual⟩` from `PerfectTrace.exists_perfect_trace_ideal D`. Take `⟨-, -, hM, -, -, hfin, hJ⟩` from `GlobalTheory.PinNum.numerics_of_pins D T.Q h.pins`. Take `⟨-, hr, -⟩` from `hJ j hj`. Establish `hMg : T.Q.l.M = D.host.g 0 * D.host.g 1` using `h.pins.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfd : FD.fdeg D.host.E = D.R.f`. Unfold `FD.fdeg`. Rewrite using `[hfin]`. Use linear arithmetic over natural numbers and integers. Establish `hfR : (0 : ℝ) < D.R.f` using `by exact_mod_cast (by omega : 0 < D.R.f)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hdisc : 0 < |((NumberField.discr D.host.E : ℤ) : ℝ)|` using `abs_pos.2 (by exact_mod_cast NumberField.discr_ne_zero D.host.E)`. Establish `hdE : Real.log (FD.dE D.host.E) ≤ 4 * FD.fdeg D.host.E * large₂.sc.L`. Unfold `Formalism.BasicNotions.Host.rdE at hrd`. Rewrite `hrd` using `[Real.log_rpow hdisc, hfin, one_div_mul_eq_div, div_le_iff₀ (by push_cast; positivity)]`. Move the coercions through the operations in `at hrd`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hfd]`. Unfold `FD.dE`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hML : Real.log T.Q.l.M' ≤ 30 * large₂.sc.L`. Rewrite using `[hM, hMg]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `hg 0`. Establish `h1` using `hg 1`. Establish `a` using `(D.host.g_prime 0).pos`. Establish `b` using `(D.host.g_prime 1).pos`. Rewrite using `[Nat.cast_mul, Real.log_mul (by exact_mod_cast a.ne') (by exact_mod_cast b.ne')]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `GlobalTheory.log_card_comp_unf_le GlobalTheory.QNorm.hasseNormSt GlobalTheory.thetaUnifAV_all GlobalTheory.firstFiveLaws.1 D.host.E _ _ _ (T.Q.Xo j) T.Q.c σ D.R.r (Formalism.L2.PjFree.Unf.ofPj (T.U j σ)) hr hσ ((Formalism.L2.PjFree.isUnf_ofPj _).2 (h.unf j hj σ hσ)) ξ AA hsk hne …`. Rewrite `key` using `[hfd]`. Conclude with `key`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_card_comp_le_of_rows : ∀ (D : D7) (T : Top D) (_h : LawsP T) (large₂ : SizeData₂ D), (2 ≤ large₂.sc.L ∧ Real.log D.R.r ≤ large₂.sc.L ∧ Real.log D.host.rdE ≤ 2 * large₂.sc.L ∧ Real.log D.R.f ≤ 2 * large₂.sc.L ∧ (∀ i, Real.log (D.host.g i) ≤ 9 * large₂.sc.L + 1) ∧ 16 ≤ D.R.f) → ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → Real.log (Fintype.card (T.U j σ).Comp) ≤ 41 * zBase large₂ ^ 2 := by
   intro D T h large₂ ⟨h2, hrL, hrd, hf, hg, h16⟩ j hj σ hσ

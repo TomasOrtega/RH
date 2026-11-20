@@ -8,7 +8,7 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h0` and use `by obtain ⟨N, j, _, hj⟩ := hq have := isProper_str k N have : IsProper q := hj ▸ inferInstance have : IsFinite (spMap (Int.castRingHom k)) := (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 hfin) let t := q ≫ spMap (Int.castRingHom k) have : Flat t := (flat_int_iff_charZe …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dim_ne_zero_of_isProjOver {k : Type} [CommRing k] {Z : Scheme.{0}} (q : Z ⟶ Sp k)
     [IsIntegral Z] (hq : IsProjOver q) (hfin : Module.Finite ℤ k) (hc : CharZero Γ(Z, ⊤)) :
@@ -38,19 +38,19 @@ theorem dim_ne_zero_of_isProjOver {k : Type} [CommRing k] {Z : Scheme.{0}} (q : 
   exact two_ne_zero (Ideal.span_singleton_eq_bot.1 e)
 
 /- English proof (translation)
-Introduce `k _ Y Y₁ p q₁ ρ D hρ hX hI hP _ hd`. Establish `hcY : CharZero Γ(Y, ⊤)` using `hX.charZero`. Establish `hc : CharZero Γ(Y₁, ⊤)` using `(ρ.appTop).hom.charZero`. Establish `hdim : topologicalKrullDim Y₁ = (D : ℕ)`. Rewrite `hd` using `[hX.dim_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `topologicalKrullDim Y₁ = a at hd ⊢`. Proceed by induction on `a with`. Consider the case `bot => exact absurd hd (by simp)`. Consider the case `coe a`. Proceed by induction on `a with`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top`. It suffices to derive a contradiction. Establish `e1 : ((⊤ : ℕ∞) : WithBot ℕ∞) + 1 = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[← WithBot.coe_one, ← WithBot.coe_add, top_add]`. Rewrite `hd` using `[e1]`.
+Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `first`. Consider the case `exact ENat.coe_ne_top _ (WithBot.coe_inj.1 hd)`. Consider the case `exact ENat.coe_ne_top (D + 1) (WithBot.coe_inj.1 hd)`. Consider the case `(simp at hd; exact WithBot.natCast_ne_top D hd)`. Consider the case `(simp at hd; exact absurd hd (by simp [WithBot.none_eq_bot]))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `coe a`. Use `congr 2`. Use `hd` as an intermediate fact. Normalize the coercions in `at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hD : D ≠ 0`. Introduce and unpack `rfl`. Conclude with `dim_ne_zero_of_isProjOver q₁ hP hX.finite hc (by simpa using hdim)`. Use `⟨D - 1, by omega, hX.isDomain, hX.finite, hI, hP, (flat_int_iff_charZero _).2 hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hdim]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem isArithVar_of_surjective_dim_succ : ∀ (k : Type) [CommRing k] (Y Y₁ : Scheme.{0}) (p : Y ⟶ Sp k) (q₁ : Y₁ ⟶ Sp k) (ρ : Y ⟶ Y₁) (D : ℕ),
     ρ ≫ q₁ = p → IsArithVar p D → IsIntegral Y₁ → IsProjOver q₁ → Surjective ρ →

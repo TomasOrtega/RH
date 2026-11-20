@@ -8,11 +8,11 @@ import Development.DiscreteGroups.PiInvariants.CompactSupportTwists.TwtrContOfMe
 open UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB
 
 /- English proof (translation)
-Introduce `hA hT hC hI hY E _ _ _ n hn D π hπ μa μb ha hb Ma Mb κ ka kb va vb R ψ U h1 h2 h3 h4 h5 i j`. Take `⟨ht, K, W, k1, k2, w1, w2, hl⟩` from `hT E n μa μb ha hb Ma Mb κ ka kb va vb R ψ U h1 h2 h3 h4 h5 i j`. Take `⟨Y, y1, y2, y3⟩` from `hA E n hn π hπ K W k1 w1`. Use `⟨Y, y1, y2, fun u hu φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨s0, s1⟩` from `hI E n hn D π hπ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s2, s3, -⟩` from `s1 _ u ht hu`. Establish `ty` using `hC E n D K W _ u φ.1 k2 w1 ht hl hu s0.1`. Take `⟨φ', m, e⟩` from `hY E n hn D π hπ K W k1 k2 w1 w2 _ s2 s3 ty`. Use `⟨φ', y3 φ' m ?_, fun x => congrFun e x⟩` and prove the remaining obligations. Rewrite `ty` using `[← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ty`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.piFinOf_pf :
     PiAdm → TensType → CvType → CvIn → TypeIn → PiFin := by

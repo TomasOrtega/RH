@@ -22,7 +22,7 @@ def zpowGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ
   s := fun j => t.s j ^ n
 
 /- English proof (translation)
-Introduce `i j` and use `by refine ((map_zpow _ _ _).trans ((congrArg (· ^ n) (ht i j)).trans (mul_zpow _ _ _))).trans (congrArg₂ (· * ·) ?_ (map_zpow _ _ _).symm) exact (Finset.prod_zpow _ _ _).symm.trans (Finset.prod_congr rfl fun k _ => (zpow_mul _ _ _).symm.trans (congrArg _ (mul_comm _ _)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem zpowGen_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℤ) :
     (zpowGen L φ ε t n).IsGen := fun i j => by
@@ -32,16 +32,16 @@ theorem zpowGen_isGen (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.Li
     (zpow_mul _ _ _).symm.trans (congrArg _ (mul_comm _ _)))
 
 /- English proof (translation)
-The claim follows from `map_zpow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_zpowGen {Z : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ) (t : LB.Gen (LB.LinComb L φ ε)) (n : ℤ)
     (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) : val (zpowGen L φ ε t n) r z J = val t r z J ^ n :=
   map_zpow _ _ _
 
 /- English proof (translation)
-Introduce `(j : I × K → L.ι) (j' : I × K → L.ι)`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `v : ∀ j : I × K → L.ι, y ∈ LB.wchart L (fun p : I × K => φ p.1 p.2) j → gm (𝟙 Y) y (LB.wchart L (fun p : I × K => φ p.1 p.2) j) ((GeneratorPullback.finProdGen L φ ε t).s j) = ∏ i, gm (𝟙 Y) y (LB.wchart L (φ i) (fun k => j (i, k))) ((t i).s (fun k => j (i, k)))` using `fun j hj => (map_prod _ _ _).trans (Finset.prod_congr rfl fun _ _ => gm_res (𝟙 Y) y _ hj _)`. Use `((gm_res (𝟙 Y) y _ hy _).trans (v j hy.1)).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L _ _ (𝟙 Y) y j j' hy.1 hy.2) ((gm_res (𝟙 Y) y _ hy _).trans (v j' hy.2)))).symm)` and prove the remaining obligations. Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun i _ => gen_trans (ht i) (𝟙 Y) y (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))`.
+A detailed English derivation is pending.
 -/
 theorem finProdGen_isGen {I : Type} [Fintype I] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i))) (ht : ∀ i, (t i).IsGen) : (GeneratorPullback.finProdGen L φ ε t).IsGen := by
@@ -58,7 +58,7 @@ theorem finProdGen_isGen {I : Type} [Fintype I] (φ : I → K → (Y ⟶ X)) (ε
     (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 (i, k)) (Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 (i, k))
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => gm_res r z _ (hJ.mem (fun p : I × K => φ p.1 p.2) r) _)`.
+A detailed English derivation is pending.
 -/
 theorem val_finProdGen {I : Type} [Fintype I] (φ : I → K → (Y ⟶ X)) (ε : I → K → ℤ)
     (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i))) {Z : Scheme.{0}} (r : Z ⟶ Y) (z : Z) {J} (hJ : Good L z J) :
@@ -69,7 +69,7 @@ theorem val_finProdGen {I : Type} [Fintype I] (φ : I → K → (Y ⟶ X)) (ε :
 end Gens
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_zpow]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [← zpow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_zpow_mul {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : K → ℤ) (n : ℤ) :
     ∏ k, f k ^ (n * e k) = (∏ k, f k ^ e k) ^ n := by
@@ -77,7 +77,7 @@ theorem prod_zpow_mul {K U : Type} [Fintype K] [CommGroup U] (f : K → U) (e : 
   exact Finset.prod_congr rfl fun k _ => by rw [← zpow_mul, mul_comm]
 
 /- English proof (translation)
-Use `(Fintype.prod_equiv Equiv.ulift f (fun I => f ⟨I⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton]`. The two sides agree by associativity and commutativity.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. The two sides agree by associativity and commutativity.
 -/
 theorem prod_finset_fin_two_ulift_expand {U : Type} [CommMonoid U] (f : ULift.{0} (Finset (Fin 2)) → U) :
     ∏ I, f I = f ⟨{0, 1}⟩ * f ⟨{0}⟩ * f ⟨{1}⟩ * f ⟨∅⟩ := by
@@ -94,15 +94,15 @@ namespace GlobalTheory.Mum.CubeStep
 variable {S : Scheme.{0}} {B B' : Over S} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B']
 
 /- English proof (translation)
-The claim follows from `congrArg (fst B' B' * ·) (_root_.mul_one _)`.
+A detailed English derivation is pending.
 -/
 theorem groupSchemePartialSum_pair_both : psum B' (x2 B') {0, 1} = fst B' B' * snd B' B' := congrArg (fst B' B' * ·) (_root_.mul_one _)
 /- English proof (translation)
-The claim follows from `_root_.mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem psum0 : psum B' (x2 B') {0} = fst B' B' := _root_.mul_one _
 /- English proof (translation)
-The claim follows from `_root_.mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem psum1 : psum B' (x2 B') {1} = snd B' B' := _root_.mul_one _
 /- English proof (translation)
@@ -111,13 +111,13 @@ Both sides reduce to the same expression.
 theorem psumE : psum B' (x2 B') ∅ = 1 := rfl
 
 /- English proof (translation)
-Use `haveI := hpr i`. Use `haveI := hpr j`. Use `(prod_zpow_mul (U := U) _ (Sum.elim thε (Sum.elim thε thε)) (-w)).trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[prod_cub, prod_cub, prod_cub]`. Simplify using `only [prod_finset_fin_two_ulift_expand, Fin.prod_univ_four, GlobalTheory.PolDeg.lamPts, tensφ, Oε, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.cons_val_three, Matrix.head_cons, Matrix.tail_cons, groupSchemePartialSum_pair_both, psum0, psum1, psumE]`. Establish `q2 : (-1 : ℤ) ^ (2 - ({0, 1} : Finset (Fin 2)).card) = 1` using `by decide`. Establish `q0 : (-1 : ℤ) ^ (2 - ({0} : Finset (Fin 2)).card) = -1` using `by decide`. Establish `q1 : (-1 : ℤ) ^ (2 - ({1} : Finset (Fin 2)).card) = -1` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `qe : (-1 : ℤ) ^ (2 - (∅ : Finset (Fin 2)).card) = 1` using `by decide`. Simplify using `only [q2, q0, q1, qe, ← Over.comp_left, MonObj.comp_mul, MonObj.mul_comp, MonObj.one_comp, MonObj.comp_one, _root_.mul_one, _root_.one_mul]`. Generalize the expression as in `fst B' B' ≫ pr i = a`. Generalize the expression as in `snd B' B' ≫ pr i = b`. Generalize the expression as in `fst B' B' ≫ pr j = c`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Generalize the expression as in `snd B' B' ≫ pr j = d`. Rewrite using `[mul_comm (c * d) a, mul_comm c a, mul_comm d a, mul_comm (c * d) b, mul_comm d b]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow]`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pair_eq {r : ℕ} (pr : Fin r → (B' ⟶ B)) (hpr : ∀ i, IsMonHom (pr i)) (w : ℤ) (i j : Fin r) {U : Type}
     [CommGroup U] (h : ((G2 B').left ⟶ B.left) → U) :
@@ -174,7 +174,7 @@ def pairGen {L : RigLB B} (cb : CubicalStr B L) {r : ℕ} (W : Matrix (Fin r) (F
     (-W p.1 p.2)
 
 /- English proof (translation)
-The claim follows from `zpowGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ cb.isGen _) (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ cb.isGen _) (DVR.pullGen_isGen _ _ _ _ cb.isGen _))) _`.
+A detailed English derivation is pending.
 -/
 theorem pairGen_isGen {L : RigLB B} (cb : CubicalStr B L) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ)
     (pr : Fin r → (B' ⟶ B)) (p : Fin r × Fin r) : (pairGen cb W pr p).IsGen :=
@@ -188,19 +188,17 @@ namespace GlobalTheory.Mum
 open CubeStep in
 
 /- English proof (translation)
-Introduce `S B B' _ _ _ _ L cb r W pr hpr`. Establish `hfe : FormEq (fun q : (Fin r × Fin r) × (thK.{0} ⊕ (thK.{0} ⊕ thK.{0})) => Sum.elim (fun k => (lift (fst B' B' ≫ pr q.1.1) (lift (snd B' B' ≫ pr q.1.1) ((fst B' B' ≫ pr q.1.2) * (snd B' B' ≫ pr q.1.2)))).left ≫ thφ B (x3 B) k) (Sum.elim (fun k => (lift (fst B' B' ≫ pr q.1.2) (lif …`. Introduce `U _ h`. Establish `h1 : ∏ q : (Fin r × Fin r) × Fin 4, h (GlobalTheory.PolDeg.lamPts (fst B' B' ≫ pr q.1.1) (snd B' B' ≫ pr q.1.2) q.2) ^ ((W + W.transpose) q.1.1 q.1.2 * Oε q.2) = (∏ p : Fin r × Fin r, (∏ k : Fin 4, h (GlobalTheory.PolDeg.lamPts (fst B' B' ≫ pr p.1) (snd B' B' ≫ pr p.2) k) ^ Oε k) …`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[prod_zpow_mul, Matrix.add_apply, Matrix.transpose_apply, zpow_add]`. Both sides reduce to the same expression. Use `_ = _ := by`. Rewrite using `[Finset.prod_mul_distrib]`. Conclude with `congrArg _ (Fintype.prod_equiv (Equiv.prodComm _ _) _ _ fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∏ q : ULift.{0} (Finset (Fin 2)) × ((Fin r × Fin r) × Fin 4), h ((psum B' (x2 B') q.1.down).left ≫ tensφ pr q.2) ^ (-((-1) ^ (2 - q.1.down.card) * tensε W q.2)) = ∏ p : Fin r × Fin r, (∏ k : Fin 4, ∏ I : ULift.{0} (Finset (Fin 2)), h ((psum B' (x2 B') I.down).left ≫ tensφ pr …`. Rewrite using `[Fintype.prod_prod_type, Finset.prod_comm, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.prod_zpow]`. Use `Finset.prod_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_mul]`. Use `congr 1`. Simplify using `only [tensε]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Use `(Fintype.prod_prod_type _).trans (Eq.trans ?_ ((Fintype.prod_sum_type _).trans (congrArg₂ (· * ·) h1 h2)).symm)` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun p _ => pair_eq pr hpr (W p.1 p.2) p.1 p.2 h`. Take `⟨t, ht, hv⟩` from `exists_gen L.isLB hfe (GeneratorPullback.finProdGen L.L _ _ (pairGen cb W pr)) (finProdGen_isGen _ _ _ _ (pairGen_isGen cb W pr))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, ht, fun T ρ z J hJ => ?_⟩` and prove the remaining obligations. Use `(hv _ _ z J hJ).trans ((val_finProdGen _ _ _ (pairGen cb W pr) _ _ hJ).trans ((Fintype.prod_prod_type _).trans ?_))` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [pairGen]`. Use `(val_zpowGen _ _ _ _ _ _ _ _).trans (congrArg (· ^ (-W i j)) ?_)` and prove the remaining obligations.
-
-Use `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub cb ρ hJ _ _ _) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_cub cb ρ hJ _ _ _) (val_cub cb ρ hJ _ _ _))))).trans ?_` and prove the remaining obligations. Rewrite using `[MonObj.comp_mul, ← _root_.mul_assoc]`.
+Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cube_step : ∀ {S : Scheme.{0}} {B B' : Over S} [GrpObj B] [IsCommMonObj B] [GrpObj B'] [IsCommMonObj B'] (L : RigLB B) (cb : CubicalStr B L) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ) (pr : Fin r → (B' ⟶ B)), (∀ i, IsMonHom (pr i)) → ∃ c : LB.Gen (LB.LinComb L.L (Sum.elim (fun k : (Fin r × Fin r) × Fin 4 => GlobalTheory.PolDeg.lamPts (fst B' B' ≫ pr k.1.1) (snd B' B' ≫ pr k.1.2) k.2) (fun p : ULift.{0} (Finset (Fin 2)) × ((Fin r × Fin r) × Fin 4) => (psum B' (x2 B') p.1.down).left ≫ tensφ pr p.2)) (Sum.elim (fun k => (W + W.transpose) k.1.1 k.1.2 * Oε k.2) (fun p => -((-1) ^ (2 - p.1.down.card) * tensε W p.2)))), c.IsGen ∧ ∀ (T : Over S) (ρ : T ⟶ G2 B') (z : T.left) (J : (T.left ⟶ B.left) → L.L.ι), Good L.L z J → val c ρ.left z J = ∏ i, ∏ j, (cubV cb z J (ρ ≫ fst B' B' ≫ pr i) (ρ ≫ snd B' B' ≫ pr i) ((ρ ≫ fst B' B' ≫ pr j) * (ρ ≫ snd B' B' ≫ pr j)) * cubV cb z J (ρ ≫ fst B' B' ≫ pr j) (ρ ≫ snd B' B' ≫ pr j) (ρ ≫ fst B' B' ≫ pr i) * cubV cb z J (ρ ≫ fst B' B' ≫ pr j) (ρ ≫ snd B' B' ≫ pr j) (ρ ≫ snd B' B' ≫ pr i)) ^ (-W i j) := by
   intro S B B' _ _ _ _ L cb r W pr hpr

@@ -26,14 +26,14 @@ Both sides reduce to the same expression.
 @[simp] theorem actE_apply (β : E) (v : Vsp dim) (i : Idx dim) : actE β v i = i.1 β * v i := rfl
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_add_right (β : E) (v w : Vsp dim) : actE β (v + w) = actE β v + actE β w := by
   ext i
   simp [mul_add]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [actE_apply, PiLp.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem actE_smul_right (β : E) (c : ℂ) (v : Vsp dim) : actE β (c • v) = c • actE β v := by
   ext i
@@ -41,7 +41,7 @@ theorem actE_smul_right (β : E) (c : ℂ) (v : Vsp dim) : actE β (c • v) = c
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [actE_apply, PiLp.smul_apply, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem actE_rsmul_right (β : E) (r : ℝ) (v : Vsp dim) : actE β (r • v) = r • actE β v := by
   ext i
@@ -49,42 +49,42 @@ theorem actE_rsmul_right (β : E) (r : ℝ) (v : Vsp dim) : actE β (r • v) = 
   ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_zero_right (β : E) : actE β (0 : Vsp dim) = 0 := by
   ext i
   simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[add_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_add_left (β γ : E) (v : Vsp dim) : actE (β + γ) v = actE β v + actE γ v := by
   ext i
   simp [add_mul]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_zero_left (v : Vsp dim) : actE (0 : E) v = 0 := by
   ext i
   simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_one (v : Vsp dim) : actE (1 : E) v = v := by
   ext i
   simp
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem actE_mul (β γ : E) (v : Vsp dim) : actE (β * γ) v = actE β (actE γ v) := by
   ext i
   simp [mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [actE_apply, PiLp.smul_apply, Complex.real_smul, Rat.smul_def, map_mul, map_ratCast, Complex.ofReal_ratCast]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem actE_qsmul (q : ℚ) (β : E) (v : Vsp dim) : actE (q • β) v = (q : ℝ) • actE β v := by
   ext i
@@ -93,14 +93,14 @@ theorem actE_qsmul (q : ℚ) (β : E) (v : Vsp dim) : actE (q • β) v = (q : �
   ring
 
 /- English proof (translation)
-Rewrite using `[act_eq_actE]`. Simplify using `using actE_one v`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_one' (v : Vsp dim) : act (1 : 𝓞 E) v = v := by
   rw [act_eq_actE]
   simpa using actE_one v
 
 /- English proof (translation)
-Rewrite using `[act_eq_actE, act_eq_actE, act_eq_actE]`. Use `push_cast`. Conclude with `actE_mul _ _ v`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem act_mul' (α β : 𝓞 E) (v : Vsp dim) : act (α * β) v = act α (act β v) := by
   rw [act_eq_actE, act_eq_actE, act_eq_actE]
@@ -108,9 +108,9 @@ theorem act_mul' (α β : 𝓞 E) (v : Vsp dim) : act (α * β) v = act α (act 
   exact actE_mul _ _ v
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq, EuclideanSpace.norm_eq, ← Real.sqrt_sq hΩ, ← Real.sqrt_mul (sq_nonneg _)]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[actE_apply, norm_mul, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `h i.1`.
+A detailed English derivation is pending.
 -/
 theorem norm_actE_le (β : E) (Ω : ℝ) (hΩ : 0 ≤ Ω) (h : ∀ σ : E →+* ℂ, ‖σ β‖ ≤ Ω) (v : Vsp dim) :
     ‖actE β v‖ ≤ Ω * ‖v‖ := by
@@ -123,9 +123,9 @@ theorem norm_actE_le (β : E) (Ω : ℝ) (hΩ : 0 ≤ Ω) (h : ∀ σ : E →+* 
   exact h i.1
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => rw [actE_zero_right]`. Conclude with `T.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [actE_add_right]`. Conclude with `T.add_mem hx hy`. Consider the case `smul r x _ hx => rw [actE_rsmul_right]`. Conclude with `T.smul_mem r hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actE_mem_of_span (β : E) (S : Set (Vsp dim)) (T : Submodule ℝ (Vsp dim))
     (h : ∀ v ∈ S, actE β v ∈ T) : ∀ v ∈ Submodule.span ℝ S, actE β v ∈ T := by
@@ -137,9 +137,9 @@ theorem actE_mem_of_span (β : E) (S : Set (Vsp dim)) (T : Submodule ℝ (Vsp di
   | smul r x _ hx => rw [actE_rsmul_right]; exact T.smul_mem r hx
 
 /- English proof (translation)
-Proceed by induction on `hβ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [actE_zero_left]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [actE_add_left]`. Conclude with `add_mem hy hz`. Consider the case `smul q y _ hy => rw [actE_qsmul]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem actE_mem_span_omega {n : ℕ} (ω : Fin n → E) {β : E}
     (hβ : β ∈ Submodule.span ℚ (Set.range ω)) (x : Vsp dim) :
@@ -155,7 +155,7 @@ theorem actE_mem_span_omega {n : ℕ} (ω : Fin n → E) {β : E}
 variable [IsCMField E]
 
 /- English proof (translation)
-Unfold `Hf`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [actE_apply, map_mul, IsCMField.complexEmbedding_complexConj, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_actE (β : E) (v w : Vsp dim) :
     Hf (actE β v) w = Hf v (actE (IsCMField.complexConj E β) w) := by
@@ -165,7 +165,7 @@ theorem Hf_actE (β : E) (v w : Vsp dim) :
   ring
 
 /- English proof (translation)
-Unfold `Hf`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [actE_apply, map_mul, IsCMField.complexEmbedding_complexConj]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_actE' (β : E) (v w : Vsp dim) :
     Hf v (actE β w) = Hf (actE (IsCMField.complexConj E β) v) w := by

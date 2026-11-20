@@ -17,7 +17,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {Ch : Chars X Pr R.m}
   {cst : LocCst X (rowSG Pr sel mu)} {L : ChIdx X Pr R (QE sel (mu : Chr X.F X.E X.K))} {G : ChGlob X R.m} {m2 : ℕ}
 
 /- English proof (translation)
-The claim follows from `hX hPr := hPr hCh := hCh hm := hok.hm cst_ok := hok.cst_ok sharp := hs psi0 := hok.psi0 depthG := hok.depthG`.
+A detailed English derivation is pending.
 -/
 theorem clL_base (hok : L.Ok Ch sel mu cst G m2) (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (hs : cst.sharp = true) :
     OcbBase Ch sel mu cst m2 where
@@ -31,51 +31,47 @@ theorem clL_base (hok : L.Ok Ch sel mu cst G m2) (hX : X.Ok) (hPr : Pr.Ok) (hCh 
   depthG := hok.depthG
 
 /- English proof (translation)
-Establish `hB` using `clL_base hok hX hPr hCh hs`. Establish `hpat : ocbXPat R.k R.rS j R.t g.1`. Take `⟨g', hg', hred'⟩` from `(hok.grpG j b w g.1).1 g.2`. Rewrite `hg'` using `[hb]`. Conclude with `(ocbGrpGLoc_holds Ch sel mu cst m2 hB j hj w g.1).1 ⟨g', hg', hred'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hk, hr, hrN, -⟩` from `ranks_frame_inequalities R hB.hm hj`. Establish `hq` using `ciQ_mem w.1`. Establish `hu` using `ciQ_notMem_sq hB.hX hB.hPr w.2`. Establish `hq0` using `ciQ_ne_zero hu`. Establish `hmS : R.m = 2 * R.rS + 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.rS`. Take `⟨a, ha⟩` from `R.m_even`. Use `R.two_le_m` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hrr : R.r = R.k + 2 * R.rS + 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Establish `hcj : cOf R j + j = 2 * R.rS + 1`. Use `hB.hm` as an intermediate fact. Unfold `cOf`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hJat : Jat (Pr` using `Pr) cst.sharp j w.1 = LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j) := by`. Unfold `Jat`. Rewrite using `[if_pos w.2, hB.sharp, if_pos rfl]`. Use `set Gm := LinearMap.toMatrix' κ.toLinearMap with hGm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκi : κ.symm ∈ GLint X.E (R.N j) w.1` using `(GLint X.E (R.N j) w.1).inv_mem hκ`. Establish `hGi : ∀ i i', IntAt w.1 (Gm i i')`. Introduce `i i'`. Rewrite using `[hGm, LinearMap.toMatrix'_apply]`. Conclude with `(ciMem_stdAt w.1 _).1 ((hκ _).2 (ciSingle_mem i')) i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hGii : ∀ i i', IntAt w.1 (LinearMap.toMatrix' κ.symm.toLinearMap i i')`. Introduce `i i'`. Rewrite using `[LinearMap.toMatrix'_apply]`. Conclude with `(ciMem_stdAt w.1 _).1 ((hκi _).2 (ciSingle_mem i')) i`. Establish `hGred : ∀ i i', redP w.1 (Gm i i') = g.1.1 i i'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `i i'`. Apply the tactic sequence `rw [ciEntry hred i i', hGm, LinearMap.toMatrix'_apply]`. Both sides reduce to the same expression. Establish `hE1` using `clL_extM_mul (cOf R j) κ`. Establish `hE2` using `clL_extM_mul' (cOf R j) κ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hap : ∀ v, clL_ext (cOf R j) κ v = (ciExtM (cOf R j) Gm).mulVec v` using `fun v => clL_ext_apply _ κ v`. Establish `he : ∀ (A : Matrix (Fin (R.N j)) (Fin (R.N j)) X.E), (∀ i i', IntAt w.1 (A i i')) → ∀ l l' : Fin (R.N j), IntAt w.1 (A l l' * ((qOf w.1 : ℕ) : X.E) ^ (LocE.scE (R.N j) (fun i => i + 1) l'.1 - LocE.scE (R.N j) (fun i => i + 1) l.1))`. Introduce `A hA l l'`. Rewrite using `[ciScE_lt _ l.2, ciScE_lt _ l'.2, sub_self, zpow_zero, mul_one]`. Conclude with `hA _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : clL_ext (cOf R j) κ ∈ stabL X.E _ (LocE.lamY w.1 (qOf w.1) (R.N j) (cOf R j) fun i => i + 1)` using `ciEquiv_stab (fun v hv => ciExtM_maps hq0 Gm _ (he Gm hGi) v hv) (fun v hv => ciExtM_maps hq0 _ _ (he _ hGii) v hv)`. Establish `hM` using `reducedMatrix_blockExtension (P := w.1) (q := qOf w.1) Gm _ hap`. Establish `hJ : clL_ext (cOf R j) κ ∈ LocE.JGsym w.1 (qOf w.1) R.k R.rS R.r R.t (R.N j) (cOf R j)`. Use `mem_parahoric_of_blockTriangular hq hu hk hr (by omega) hS ?_ ?_ ?_` and prove the remaining obligations. Introduce `y y' hlt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hM]`. Use `split_ifs with h1 h2`. Rewrite using `[hGred]`. Assume the negation of the conclusion as `hnz`. Establish `hne : y.1 ≠ y'.1` using `fun he' => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hlt' : betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) y'.1) < betaExponentOfRanks R.k R.rS R.r R.t (LocE.fPos R.k (cOf R j) (R.N j) y.1)` using `hlt`. Rewrite `hlt'` using `[he']`. Conclude with `lt_irrefl _ hlt'`. Establish `hall` using `hpat.2 y.1 y'.1 h1.1 h1.2 hne (by unfold ocbM; rw [dif_pos h1]; exact hnz)`. Use `not_allowed_of_beta_lt (t := R.t) hcj h1.1 h1.2 (Or.inl ?_) hall` and prove the remaining obligations.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hrr]`. Conclude with `hlt`. Substitute `h2` using the available equality. Conclude with `absurd hlt (lt_irrefl _)`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `y hy`. Rewrite using `[hM]`. Use `split_ifs with h1 h2`. Rewrite using `[hGred]`. Establish `hyk : y.1 < R.k + j`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hy` using `[framePos_of_lt_dim h1.1, hrr]`. Apply the tactic sequence `split_ifs at hy <;> omega`. Establish `h3` using `hpat.1 y.1 hyk`. Unfold `ocbM at h3`. Rewrite `h3` using `[dif_pos ⟨h1.1, h1.1⟩]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `h3`. Both sides reduce to the same expression. Conclude with `absurd rfl h2`. Introduce `y y' hy hy'`. Rewrite using `[hM]`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `split_ifs with h1 h2`. Rewrite using `[hGred]`. Assume the negation of the conclusion as `hnz`. Establish `hne : y.1 ≠ y'.1`. Introduce `he'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy` using `[he']`. Use linear arithmetic over natural numbers and integers. Establish `hall` using `hpat.2 y.1 y'.1 h1.1 h1.2 hne (by unfold ocbM; rw [dif_pos h1]; exact hnz)`. Conclude with `not_allowed_of_beta_lt (t := R.t) hcj h1.1 h1.2 (Or.inr ⟨hy, hy'⟩) hall`. Substitute `h2` using the available equality.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. Use `⟨hJ, ?_⟩` and prove the remaining obligations. Establish `hr1 : clL_ext (cOf R j) κ ∈ Loc.Cbe (Jat (Pr` using `Pr) cst.sharp j w.1) (L.h j b ⟨w.1, Finset.mem_union_left _ w.2⟩) := by`. Rewrite using `[hb]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_inf.2 ⟨extended_matrix_in_reduction _ _ hE1 hE2, Subgroup.mem_comap.2 ?_⟩` and prove the remaining obligations. Simplify `hJ` using `[MulAut.conj_apply, hJat]`. Establish `hlam` using `hok.chrG j b w g κ (clL_ext (cOf R j) κ) hr1 (fun x => clL_ext_inX _ κ x) hred`. Rewrite using `[hlam]`. Unfold `chiInv`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Establish `hn1 : Loc.n1Arg (clL_ext (cOf R j) κ) = 0`. Unfold `Loc.n1Arg`. Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < cOf R j - 1` using `Finset.mem_range.1 hi`.
-
-Unfold `Loc.atN`. Rewrite using `[dif_pos (by omega)]`. Establish `e1 : (⟨R.N j + i, by omega⟩ : Fin (R.N j + cOf R j)) = Fin.natAdd (R.N j) ⟨i, by omega⟩` using `rfl`. Rewrite using `[e1, clL_ext_natAdd]`. Unfold `Loc.eN`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hn1, hok.cst_ok.psi_int _ 0 (ChainCounts.intAt_zero _), inv_one, one_mul]`. Unfold `lamRow`. Rewrite using `[if_pos w.2, hs, if_pos rfl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem clL_bridge (hok : L.Ok Ch sel mu cst G m2) (hX : X.Ok) (hPr : Pr.Ok) (hCh : Ch.Ok) (hs : cst.sharp = true)
     {j : ℕ} (hj : j ≤ m2 + 1) (b : L.β j) (hb : ∀ P, L.h j b P = 1) (w : {w // w ∈ Pr.vGs}) (g : ↥(L.levG j b w).H)

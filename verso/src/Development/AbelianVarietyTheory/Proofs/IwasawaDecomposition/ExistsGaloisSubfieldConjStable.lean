@@ -6,19 +6,17 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hI : IsIntegral ℚ Complex.I`. Use `⟨X ^ 2 + C 1, monic_X_pow_add_C 1 two_ne_zero, ?_⟩` and prove the remaining obligations. Simplify using `[Complex.I_sq]`. Establish `hint : ∀ z ∈ insert Complex.I S, IsIntegral ℚ z`. Introduce `z hz`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hz with rfl | hz` into its components or cases. Conclude with `hI`. Conclude with `(hS z hz).isIntegral`. Take `⟨p, hp⟩ : ∃ p : ℚ[X], p = ∏ z ∈ insert Complex.I S, minpoly ℚ z` from `⟨_, rfl⟩`. Establish `hp0 : p ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hp]`. Conclude with `Finset.prod_ne_zero_iff.2 fun z hz => minpoly.ne_zero (hint z hz)`. Establish `hroot : ∀ z ∈ insert Complex.I S, z ∈ p.rootSet ℂ`. Introduce `z hz`. Rewrite using `[mem_rootSet]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hp0, ?_⟩` and prove the remaining obligations. Take `⟨q, hq⟩` from `Finset.dvd_prod_of_mem (minpoly ℚ) hz`. Rewrite using `[hp, hq, map_mul, minpoly.aeval, zero_mul]`. Set `K : IntermediateField ℚ ℂ` to `IntermediateField.adjoin ℚ (p.rootSet ℂ)`. Establish `: p.IsSplittingField ℚ K` using `IntermediateField.adjoin_rootSet_isSplittingField (IsAlgClosed.splits (p.map (algebraMap ℚ ℂ)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : FiniteDimensional ℚ K` using `Polynomial.IsSplittingField.finiteDimensional K p`. Establish `: Normal ℚ K` using `Normal.of_isSplittingField p`. Use `⟨K, hfin, IsGalois.mk, fun z hz => IntermediateField.subset_adjoin ℚ _ (hroot z (Finset.mem_insert_of_mem hz)), IntermediateField.subset_adjoin ℚ _ (hroot _ (Finset.mem_insert_self _ _)), ?_⟩` and prove the remaining obligations. Set `φ : ℂ →ₐ[ℚ] ℂ` to `Complex.conjAe.toAlgHom.restrictScalars ℚ`. Establish `hsub : φ '' (p.rootSet ℂ) ⊆ p.rootSet ℂ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨w, hw, rfl⟩`. Rewrite `hw`, the goal using `[mem_rootSet]`. Conclude with `⟨hw.1, by rw [Polynomial.aeval_algHom_apply, hw.2, map_zero]⟩`. Establish `hle : K.map φ ≤ K`. Rewrite using `[IntermediateField.adjoin_map]`.
-
-Conclude with `IntermediateField.adjoin.mono ℚ _ _ hsub`. Introduce `z hz`. Conclude with `hle ⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_galois_subfield_conj_stable (S : Finset ℂ) (hS : ∀ z ∈ S, IsAlgebraic ℚ z) :
     ∃ K : IntermediateField ℚ ℂ, FiniteDimensional ℚ K ∧ IsGalois ℚ K ∧ (∀ z ∈ S, z ∈ K) ∧

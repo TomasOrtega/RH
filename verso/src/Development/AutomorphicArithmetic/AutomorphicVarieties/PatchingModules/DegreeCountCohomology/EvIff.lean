@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Ep
 open Matrix Filter NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use `show (∀ i j : Fin n, ((((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j ∈ (⊤ : Submodule A R)) ∧ (¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j ∈ (⊥ : Submodule A R))) ↔ _`. Simplify using `only [Submodule.mem_top, Submodule.mem_bot, implies_true, true_and]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ev_iff {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {n a : ℕ} {Z : Matrix (Fin n) (Fin n) R} :
     Z ∈ Ev A R n a ↔ ∀ i j : Fin n, ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j = 0 := by
@@ -12,7 +12,7 @@ private theorem ev_iff {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {n a
   simp only [Submodule.mem_top, Submodule.mem_bot, implies_true, true_and]
 
 /- English proof (translation)
-Use `show (∀ i j : Fin n, ((((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j ∈ (⊥ : Submodule A R)) ∧ (¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j ∈ (⊤ : Submodule A R))) ↔ _`. Simplify using `only [Submodule.mem_top, Submodule.mem_bot, implies_true, and_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem od_iff {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {n a : ℕ} {Z : Matrix (Fin n) (Fin n) R} :
     Z ∈ Od A R n a ↔ ∀ i j : Fin n, (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → Z i j = 0 := by
@@ -21,9 +21,9 @@ private theorem od_iff {A R : Type} [CommRing A] [CommRing R] [Algebra A R] {n a
   simp only [Submodule.mem_top, Submodule.mem_bot, implies_true, and_true]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Use `Finset.sum_eq_zero fun k _ => Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : (((i : ℕ) < a) ↔ ((m : ℕ) < a))`. Distinguish the cases in `h2 : (((k : ℕ) < a) ↔ ((j : ℕ) < a))`. Rewrite using `[hZ m k h1 h2]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hQ k j h2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hP i m h1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sandwich {R : Type} [CommRing R] {n a : ℕ} {P Q Z : Matrix (Fin n) (Fin n) R}
     (hP : ∀ i j : Fin n, ¬ (((i : ℕ) < a) ↔ ((j : ℕ) < a)) → P i j = 0)
@@ -42,21 +42,21 @@ private theorem sandwich {R : Type} [CommRing R] {n a : ℕ} {P Q Z : Matrix (Fi
     ring
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x X _ _ χ`. Establish `hblk : ∀ g : G0.frame.G₀, ∀ i j : Fin n, ¬ (((i : ℕ) < x.a) ↔ ((j : ℕ) < x.a)) → x.ρX X g i j = 0`. Introduce `g i j hij`. Establish `hz` using `ev_iff.mp (x.blk g) i j hij`. Simplify using `[NP.ρX, Matrix.map_apply, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hconj : ∀ g : G.frame.G₀, h.p₀ (G.frame.conj g) = G0.frame.conj (h.p₀ g)`. Introduce `g`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[GFrame.conj, Glob.Hom.p₀, map_mul, map_inv, h.c]`. Establish `key : ∀ (M : Matrix (Fin n) (Fin n) x.A) (E : (x.A)ˣ), M = (E : x.A) • (1 : Matrix (Fin n) (Fin n) x.A) → ∃ u : Xˣ, M.map (algebraMap x.A X) = (u : X) • (1 : Matrix (Fin n) (Fin n) X)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `M E rfl`. Use `⟨Units.map (algebraMap x.A X).toMonoidHom E, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`. Establish `hform : ∀ g : G.frame.G₀, ∃ u : Xˣ, (x.ρX X (h.p₀ g))ᵀ * x.ρX X (h.p₀ (G.frame.conj g)) = (u : X) • (1 : Matrix (Fin n) (Fin n) X)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `g`. Establish `hf` using `x.form (h.p₀ g)`. Simplify using `only [Units.val_one, Matrix.mul_one] at hf`. Take `⟨u, hu⟩` from `key _ _ hf`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hu, hconj]`. Simplify using `only [NP.ρX, Matrix.transpose_map, Matrix.map_mul]`. Use `⟨⟨?_, ?_, hform, ?_, ?_, ?_, ?_⟩, ⟨?_, ?_, hform, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals try (simp [NP.ρX, Matrix.map_mul]; done)`. Introduce `g Z hZ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hZ`, the goal using `[ev_iff]`. Introduce `i j hij`. Rewrite using `[Matrix.smul_apply, sandwich (hblk _) (hblk _) i j (fun i' j' h1 h2 => hZ i' j' (fun h3 => hij (h1.trans (h3.trans h2)))), smul_zero]`. Introduce `Z hZ`. Rewrite `hZ`, the goal using `[ev_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Rewrite using `[Matrix.smul_apply, Matrix.transpose_apply, hZ j i (fun h3 => hij h3.symm), smul_zero]`. Introduce `g Z hZ`. Rewrite `hZ`, the goal using `[od_iff]`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_apply, sandwich (hblk _) (hblk _) i j (fun i' j' h1 h2 => hZ i' j' (h1.symm.trans (hij.trans h2.symm))), smul_zero]`. Introduce `Z hZ`. Rewrite `hZ`, the goal using `[od_iff]`. Introduce `i j hij`. Rewrite using `[Matrix.smul_apply, Matrix.transpose_apply, hZ j i hij.symm, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.okX :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (X : Type) [CommRing X] [Algebra x.A X] (χ : G.Γ →* x.A), AdOk G.frame (fun g => x.ρX X (h.p₀ g)) (fun g => algebraMap x.A X (χ g)) (Ev x.A X n x.a) ∧ AdOk G.frame (fun g => x.ρX X (h.p₀ g)) (fun g => algebraMap x.A X (χ g)) (Od x.A X n x.a) := by

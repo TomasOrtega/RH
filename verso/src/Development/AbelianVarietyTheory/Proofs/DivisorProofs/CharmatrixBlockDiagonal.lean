@@ -5,7 +5,7 @@ open scoped TensorProduct nonZeroDivisors
 namespace GlobalTheory.FibreCharpoly
 
 /- English proof (translation)
-Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Simplify using `only [Matrix.charmatrix_apply, Matrix.blockDiagonal_apply, Matrix.diagonal_apply, Prod.mk.injEq]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem charmatrix_blockDiagonal {m o R : Type} [Fintype m] [DecidableEq m] [Fintype o]
     [DecidableEq o] [CommRing R] (B : o → Matrix m m R) :
@@ -17,7 +17,7 @@ theorem charmatrix_blockDiagonal {m o R : Type} [Fintype m] [DecidableEq m] [Fin
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, charmatrix_blockDiagonal, Matrix.det_blockDiagonal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charpoly_blockDiagonal {m o R : Type} [Fintype m] [DecidableEq m] [Fintype o]
     [DecidableEq o] [CommRing R] (B : o → Matrix m m R) :
@@ -26,9 +26,9 @@ theorem charpoly_blockDiagonal {m o R : Type} [Fintype m] [DecidableEq m] [Finty
   rfl
 
 /- English proof (translation)
-Set `c` to `Module.Free.chooseBasis Λ O`. Rewrite using `[← LinearMap.charpoly_toMatrix _ (c.smulTower b), ← LinearMap.charpoly_toMatrix (LinearMap.mulLeft Λ a) c]`. Establish `hM : LinearMap.toMatrix (c.smulTower b) (c.smulTower b) (Algebra.lsmul Λ Λ T a) = Matrix.blockDiagonal (fun _ => LinearMap.toMatrix c c (LinearMap.mulLeft Λ a))`. Use extensionality with `⟨i, k⟩ ⟨j, k'⟩`. Simplify using `only [LinearMap.toMatrix_apply, Module.Basis.smulTower_apply, Module.Basis.smulTower_repr, Matrix.blockDiagonal_apply, Algebra.lsmul_coe, smul_smul, Module.Basis.repr_smul, Module.Basis.repr_self, Finsupp.smul_single, Finsupp.single_apply, LinearMap.mulLeft_apply, smul_eq_mul, mu …`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs with h1 h2 h2 <;> simp_all`. Rewrite using `[hM, charpoly_blockDiagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_lsmul_eq_pow (Λ O T : Type) [CommRing Λ] [CommRing O] [Algebra Λ O]
     [Module.Free Λ O] [Module.Finite Λ O] [AddCommGroup T] [Module Λ T] [Module O T]

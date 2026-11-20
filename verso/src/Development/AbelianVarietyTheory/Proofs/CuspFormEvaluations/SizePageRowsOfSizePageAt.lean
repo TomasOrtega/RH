@@ -13,33 +13,33 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hp hPg hCK`. Establish `hm4` using `EtaleWeightGaps.lift_index_pow_four_le_degree hPg`. Take `⟨Q, PT, -, hC, hA⟩` from `hPg`. Establish `hPP : WeightFamilies.PPv D large₂ C2 A2 = PT.PP` using `by rw [← hC, ← hA]; exact WeightFamilies.PPv_rec PT`. Take `⟨hA', hS, -, h4, -⟩` from `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, -, hg, -, -, hp1, hp2, -⟩` from `hA'`. Take `⟨hn, -, -, -, -, -, -, hsz, -, -, -, -, -, -, -, -, -, hT, -⟩` from `hS`. Take `⟨-, -, -, hP3, -⟩` from `h4`. Rewrite `hCK`, `hP3` using `[hPP]`. Establish `hL` using `EtaleWeightGaps.Num.Pm.one_le_L large₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf2` using `EtaleWeightGaps.Num.Pm.two_le_f D`. Establish `hr6` using `EtaleWeightGaps.Num.Pm.six_le_r D`. Establish `hm2` using `EtaleWeightGaps.Num.Pm.two_le_m D`. Establish `hkr` using `EtaleWeightGaps.Num.Pm.k_le_r D`. Establish `hrt` using `EtaleWeightGaps.Num.Pm.r_le_alt_alt D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlf` using `EtaleWeightGaps.Num.Pm.log_f_le Q`. Establish `hlr` using `EtaleWeightGaps.Num.Pm.log_r_le Q`. Take `⟨hlc, hlt⟩` from `EtaleWeightGaps.Num.Pm.log_cond_le Q`. Establish `hb : Real.log large₂.sc.b = large₂.sc.L` using `EtaleWeightGaps.Num.Pm.log_b large₂`. Establish `hb0 : 0 < large₂.sc.b` using `Real.exp_pos _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf0 : (0 : ℝ) < D.R.f` using `by linarith`. Establish `hr0 : (0 : ℝ) < D.R.r` using `by linarith`. Establish `hP0 : 0 < PT.PP` using `PT.PP_pos (by unfold zBase; positivity)`. Use `⟨⟨hg, ?_, ?_, ?_, ?_, hp1, hp2, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[EtaleWeightGaps.Num.Pm.lrd_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[log_rdE_le_scL Q]`. Establish `hd` using `EtaleWeightGaps.Num.Pm.one_le_d D`. Establish `hq` using `EtaleWeightGaps.Num.Pm.one_le_q D`. Establish `h1 : (D.host.d : ℝ) ≤ (LevelStarExponents.condE D : ℝ)`. Rewrite using `[EtaleWeightGaps.Num.Pm.condE_cast]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : (1 : ℝ) ≤ (D.host.QS : ℝ)` using `by exact_mod_cast D.host.QS_pos`. Establish `: (1 : ℝ) ≤ (D.host.QS : ℝ) * D.host.q` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear relations using `[Real.log_le_log (by linarith) h1]`. Combine the linear relations using `[Q.ccK_log]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : 1 + (WeightAlgebra.DF ka : ℝ) ≤ ka.size`. Unfold `WeightFamilies.Wt.size WeightAlgebra.DF degP`. Establish `h2 : 0 ≤ (D.R.f : ℝ) * ((max (D.R.sigW j).2 1 : ℕ) : ℝ) * (D.R.r : ℝ) * (ka.n : ℝ)` using `by positivity`. Move the coercions through the operations in `at h2 ⊢`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk0 : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hT1 : (1 : ℝ) ≤ (Tn : ℝ) ^ 2` using `one_le_pow₀ (by exact_mod_cast hT)`. Establish `hP3' : PT.PP ^ 3 ≤ large₂.sc.b` using `(le_mul_of_one_le_right (by positivity) hT1).trans hP3`. Establish `hlP : 3 * Real.log PT.PP ≤ large₂.sc.L`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Real.log_le_log (by positivity) hP3'` as an intermediate fact. Rewrite `this` using `[Real.log_pow, hb]`. Conclude with `this` after adjusting the coercions. Establish `h1 : H.CK ≤ PT.PP ^ 2 * D.R.f`. Establish `: 0 ≤ PT.PP ^ 2 * D.R.f` using `by positivity`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : H.CK * D.R.k ≤ PT.PP ^ 2 * D.R.f * D.R.r` using `mul_le_mul h1 hkr hk0 (by positivity)`. Establish `h3 : H.CK * D.R.k * D.R.f * large₂.sc.b ≤ PT.PP ^ 2 * D.R.f * D.R.r * D.R.f * large₂.sc.b` using `by gcongr`. Establish `h4` using `Real.log_le_log (by positivity) (hs.trans (hsz.trans h3))`. Rewrite `h4` using `[Real.log_mul (by positivity) hb0.ne', Real.log_mul (by positivity) hf0.ne', Real.log_mul (by positivity) hr0.ne', Real.log_mul (by positivity) hf0.ne', Real.log_pow, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h4`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (ka.n : ℝ) ≤ (D.R.t : ℝ) ^ 2`. Rewrite using `[hn]`. Unfold `Ranks.nV`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : (0 : ℝ) < ka.n` using `by rw [hn]; unfold Ranks.nV; push_cast; linarith`. Establish `h3` using `Real.log_le_log h2 h1`. Rewrite `h3` using `[Real.log_pow]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: (2 : ℝ) ^ 4 ≤ (D.R.m : ℝ) ^ 4` using `pow_le_pow_left₀ (by norm_num) hm2 4`. Establish `h : (16 : ℝ) ≤ D.R.f` using `by linarith`. Conclude with `h` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pageRows_of_pageAt : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CR CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), FamilyHypotheses.HypPage large₂ X H C2 A2 CR CT ka wL wF Tn nP nW h0 → PageAt large₂ C2 A2 → 4 * H.CK ≤ WeightFamilies.PPv D large₂ C2 A2 ^ 2 * D.R.f → ReciprocityTheory.ChartRestriction.G.PullbackSections.SupBoundPageRows D large₂ ka ∧ 16 ≤ D.R.f := by
   intro D B P j X large₂ H C2 A2 CR CT ka wL wF Tn nP nW h0 hp hPg hCK

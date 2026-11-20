@@ -24,15 +24,13 @@ section Block
 variable {K : Type} {ι : K → Type} {Kk : Type} {ιk : Kk → Type}
 
 /- English proof (translation)
-Establish `h1 : ∀ m, ∃ m', v ⟨k₂, m⟩ = ⟨κ k₂, m'⟩` using `fun m => by`. Break down `e : v ⟨k₂, m⟩ with ⟨a, m'⟩` into its components or cases. Establish `ha : a = κ k₂`. Use `hv.2.2.1 ⟨k₂, m⟩` as an intermediate fact. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Substitute `ha` using the available equality. Conclude with `⟨m', rfl⟩`. Use `choose σ hσ using h1`. Establish `inj : Function.Injective σ` using `fun m₁ m₂ e => by`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : v ⟨k₂, m₁⟩ = v ⟨k₂, m₂⟩` using `by rw [hσ, hσ, e]`. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 (hv.2.1 e1)).2`. Establish `surj : Function.Surjective σ` using `fun m => by`. Take `⟨⟨k', m'⟩, e⟩` from `hv.2.2.2 ⟨κ k₂, m⟩ ⟨k₂, rfl⟩`. Establish `hk : k' = k₂` using `hv.1 (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Use `hv.2.2.1 ⟨k', m'⟩` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm)`. Substitute `hk` using the available equality. Use `⟨m', ?_⟩` and prove the remaining obligations.
-
-Rewrite `e` using `[hσ]`. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 e).2`. Conclude with `⟨Equiv.ofBijective σ ⟨inj, surj⟩, hσ⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem block_equiv {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hv : IsBlockMap κ v) (k₂ : Kk) :
     ∃ σ : ιk k₂ ≃ ι (κ k₂), ∀ m, v ⟨k₂, m⟩ = ⟨κ k₂, σ m⟩ := by
@@ -69,9 +67,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Φ : 
   {Kk : Type} [Fintype Kk] {ιk : Kk → Type} [∀ k, Fintype (ιk k)]
 
 /- English proof (translation)
-Rewrite using `[twMinor_eq, ← Equiv.sum_comp σ]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `e : upV v z ⟨κ k₂, σ m⟩ = z ⟨k₂, m⟩`. Rewrite using `[← hσ m]`. Conclude with `upV_apply hinj z _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem twMinor_up (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (zb : (Σ k, baseIdx ι M.blk k) → ℂ)
     (i : Fin N) {κ : Kk → K} {v : (Σ k, ιk k) → (Σ k, ι k)} (hinj : Function.Injective v) {k₂ : Kk}
@@ -87,7 +85,7 @@ theorem twMinor_up (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (
   rfl
 
 /- English proof (translation)
-Unfold `pRead`. Rewrite using `[hk]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pRead_some (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (keep : Ψ × Fin N → Prop)
     (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (z : (Σ k, ι k) → ℂ) {τ : Ψ} (a : Fin N)
@@ -101,7 +99,7 @@ theorem pRead_some (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (
   rfl
 
 /- English proof (translation)
-Unfold `pRead`. Rewrite using `[hk]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pRead_none (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (keep : Ψ × Fin N → Prop)
     (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (z : (Σ k, ι k) → ℂ) {τ : Ψ} (a : Fin N)
@@ -111,7 +109,7 @@ theorem pRead_none (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (
   rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `block_equiv hv k₂`. Simplify using `only [pRead_some M F keep zb h _ a hk, twMinor_up M F zb _ hv.2.1 σ hσ, div_mul_eq_div_div_swap]`. Rewrite `h0` using `[twMinor_up M F zb _ hv.2.1 σ hσ]`. Use `(ratio_deriv (ρ := ιk) hd hc hp k₂ (fun m => twC M F zb (pStep j keep τ b) (κ k₂) (h τ)⁻¹ (insert a ((stepCols N j (pStep j keep τ b)).erase b)) (σ m)) _ h0).div_const (pSgn (stepCols N j (pStep j keep τ b)) a b)` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pRead_deriv (M : FlagModel y Ψ N j) (F : FrameData ι Ψ N M.Ω M.blk) (keep : Ψ × Fin N → Prop)
     (zb : (Σ k, baseIdx ι M.blk k) → ℂ) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) {κ : Kk → K}
@@ -136,17 +134,15 @@ variable {M : FlagModel y Ψ N j} {n e : ℕ} {Rb : AnLogRes (mCoordIdeal M.x) �
   {ε : Fin n ⊕ PIdx j keep ≃ Fin e}
 
 /- English proof (translation)
-The claim follows from `differentiableAt_pi.2 fun _ => differentiableAt_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem pB_diff (w : Fin e → ℂ) : DifferentiableAt ℂ (pB ε) w :=
   differentiableAt_pi.2 fun _ => differentiableAt_apply _ _
 
 /- English proof (translation)
-Establish `hl : ∀ x, DifferentiableAt ℂ (fun w' => pMat keep (pL ε w') τ x b) w`. Introduce `x`. Unfold `pMat lowMat`. Distinguish the cases in `hh : b < x ∧ ((x : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Simplify using `only [dif_pos hh, cExt] split_ifs with hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `differentiableAt_apply _ _`. Conclude with `differentiableAt_const _`. Simplify using `only [dif_neg hh]`. Conclude with `differentiableAt_const _`. Simplify using `only [pH, Matrix.mul_apply]`.
-
-Conclude with `DifferentiableAt.fun_sum fun x _ => (differentiableAt_const _).fun_mul (hl x)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pH_diff (τ : Ψ) (a b : Fin N) (w : Fin e → ℂ) :
     DifferentiableAt ℂ (fun w' => pH keep h ε τ w' a b) w := by
@@ -164,7 +160,7 @@ theorem pH_diff (τ : Ψ) (a b : Fin N) (w : Fin e → ℂ) :
   exact DifferentiableAt.fun_sum fun x _ => (differentiableAt_const _).fun_mul (hl x)
 
 /- English proof (translation)
-Establish `hz : ∀ q, DifferentiableAt ℂ (fun w' => bl (pB ε w') q) w` using `fun q => DifferentiableAt.comp (g := fun u => bl u q) w (hb.2.2.1 q _ hw).differentiableAt (pB_diff w)`. Establish `hv' : ∀ q I, DifferentiableAt ℂ (fun w' => valAt M.x (F.u q I) (bl (pB ε w'))) w` using `fun q I => DifferentiableAt.comp (g := fun u => valAt M.x (F.u q I) (bl u)) w (hb.2.2.2.1 q I _ hw).differentiableAt (pB_diff w)`. Conclude with `flagZ_diff M F hz hv' (H := fun w' τ' => pH keep h ε τ' w') (fun τ' a b => pH_diff τ' a b w) (v q)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pPhi_diff (hb : IsBaseChart M Rb F kb V bl) {w : Fin e → ℂ} (hw : w ∈ pD ε V) (q : Σ k, ιk k) :
     DifferentiableAt ℂ (fun w' => pPhi M F keep v bl h ε w' q) w := by
@@ -176,15 +172,13 @@ theorem pPhi_diff (hb : IsBaseChart M Rb F kb V bl) {w : Fin e → ℂ} (hw : w 
   exact flagZ_diff M F hz hv' (H := fun w' τ' => pH keep h ε τ' w') (fun τ' a b => pH_diff τ' a b w) (v q)
 
 /- English proof (translation)
-Take `⟨hV, hVt, -, -, hbl⟩` from `hb`. Establish `hut` using `hVt hu`. Use `set x := (Rb.A.chart kb).symm u with hx`. Establish `hxs : x ∈ (Rb.A.chart kb).source` using `(Rb.A.chart kb).map_target hut`. Establish `hcx : Rb.A.chart kb x = u` using `(Rb.A.chart kb).right_inv hut`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `(hbl u hu).2.2.2`. Establish `hnot : Rb.lift x x ∉ mcPts (⊤ : Ideal (MRing (baseIdx ι M.blk)))` using `fun hm => by`. Use `hm.2 1 Submodule.mem_top` as an intermediate fact. Simplify using `at this`. Establish `hne : ∀ k, Rb.lift x x ⟨k, pb k⟩ ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcne, e⟩` from `ho`. Rewrite using `[e]`. Conclude with `mul_ne_zero (hcne k) (hp k)`. Establish `him` using `Rb.immersion x hnot pb hne kb hxs`. Rewrite `him` using `[hcx]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun u' => affCoord pb (Rb.lift x ((Rb.A.chart kb).symm u'))) =ᶠ[𝓝 u] fun u' => affCoord pb (bl u')`. Establish `h1 : ∀ᶠ u' in 𝓝 u, (Rb.A.chart kb).symm u' ∈ Rb.U x` using `((Rb.A.chart kb).continuousAt_symm hut).eventually_mem ((Rb.isOpen_U x).mem_nhds (Rb.mem_U x))`. Use `filter_upwards [h1, hV.mem_nhds hu] with u' h1 h2`. Conclude with `affCoord_orbit pb (orbit_trans (Rb.compat x _ _ ⟨h1, Rb.mem_U _⟩) (hbl u' h2).2.2.2)`. Rewrite using `[← hev.fderiv_eq]`.
-
-Conclude with `him`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_inj (hb : IsBaseChart M Rb F kb V bl) {u : Fin n → ℂ} (hu : u ∈ V)
     (pb : (k : NonPluckerBlocks M.blk) → baseIdx ι M.blk k) (hp : ∀ k, bl u ⟨k, pb k⟩ ≠ 0) :
@@ -213,7 +207,7 @@ theorem base_inj (hb : IsBaseChart M Rb F kb V bl) {u : Fin n → ℂ} (hu : u �
   exact him
 
 /- English proof (translation)
-Simplify using `only [pPhi, hq]`. Conclude with `flagZ_base M F _ _ k m`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pPhi_base (w' : Fin e → ℂ) {q' : Σ k, ιk k} (k : NonPluckerBlocks M.blk) (m : ι k.1) (hq : v q' = ⟨k.1, m⟩) :
     pPhi M F keep v bl h ε w' q' = bl (pB ε w') ⟨k, m⟩ := by
@@ -221,9 +215,9 @@ theorem pPhi_base (w' : Fin e → ℂ) {q' : Σ k, ιk k} (k : NonPluckerBlocks 
   exact flagZ_base M F _ _ k m
 
 /- English proof (translation)
-Take `⟨k', hk'⟩` from `(hc.2.1 k.1).2 (Or.inl k.2)`. Take `⟨k₀, hk₀⟩` from `k`. Simplify using `only at hk'`. Substitute `hk'` using the available equality. Take `⟨σ, hσ⟩` from `block_equiv hc.1 k'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k', σ (p k'), rfl, hσ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_base_pt (hc : IsPCtx M Rb keep κ v F kb V bl r h) (p : (k : Kk) → ιk k) (k : NonPluckerBlocks M.blk) :
     ∃ (k' : Kk) (m : ι k.1), κ k' = k.1 ∧ v ⟨k', p k'⟩ = ⟨k.1, m⟩ := by
@@ -235,15 +229,15 @@ theorem exists_base_pt (hc : IsPCtx M Rb keep κ v F kb V bl r h) (p : (k : Kk) 
   exact ⟨k', σ (p k'), rfl, hσ _⟩
 
 /- English proof (translation)
-Establish `hb : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`. Use `choose k' pb hk' hpb using exists_base_pt hc p`. Establish `hs : ∀ q : Σ k, baseIdx ι M.blk k, ∃ q', v q' = ⟨q.1.1, q.2⟩` using `fun q => hc.1.2.2.2 ⟨q.1.1, q.2⟩ ((hc.2.1 q.1.1).2 (Or.inl q.1.2))`. Use `choose s hs using hs`. Establish `hblock : ∀ q, (s q).1 = k' q.1` using `fun q => hc.1.1 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hc.1.2.2.1 (s q)` as an intermediate fact. Rewrite `this` using `[hs]`. Rewrite using `[← this, hk'])`. Establish `hpk : ∀ a b : Kk, a = b → (⟨a, p a⟩ : Σ k, ιk k) = ⟨b, p b⟩`. Introduce and unpack `a b rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hne : ∀ k : NonPluckerBlocks M.blk, bl (pB ε w) ⟨k, pb k⟩ ≠ 0` using `fun k => by`. Use `hp (k' k)` as an intermediate fact. Rewrite `this` using `[pPhi_base w k (pb k) (hpb k)]`. Then use the resulting hypothesis. Establish `hbd : ∀ q, DifferentiableAt ℂ (fun u => bl u q) (pB ε w)` using `fun q => (hb.2.2.1 q _ hw).differentiableAt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : DifferentiableAt ℂ (fun u' => affCoord pb (bl u')) (pB ε w)` using `differentiableAt_pi.2 fun q => diff_div (hbd q) (hbd _) (hne q.1)`. Establish `hinj` using `base_inj hb hw pb hne`. Establish `hcoord : ∀ (w' : Fin e → ℂ) (q : Σ k, baseIdx ι M.blk k), affCoord p (pPhi M F keep v bl h ε w') (s q) = affCoord pb (bl (pB ε w')) q` using `fun w' q => by`. Take `⟨k, m⟩` from `q`. Simplify using `only [affCoord]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hpk _ _ (hblock ⟨k, m⟩), pPhi_base w' k m (hs ⟨k, m⟩), pPhi_base w' k (pb k) (hpb k)]`. Establish `hz` using `comp_zero (W := ContinuousLinearMap.pi fun i => ContinuousLinearMap.proj (ε (Sum.inl i))) (e := s) (fun w' q => hcoord w' q) hD hB hu`. Establish `hm : pB ε u ∈ (fderiv ℂ (fun u' => affCoord pb (bl u')) (pB ε w)).ker` using `hz`. Rewrite `hm` using `[hinj]`. Conclude with `hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ} (hw : w ∈ pD ε V)
     (p : (k : Kk) → ιk k) (hp : ∀ k, pPhi M F keep v bl h ε w ⟨k, p k⟩ ≠ 0)
@@ -282,29 +276,25 @@ theorem base_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ}
   exact hm
 
 /- English proof (translation)
-Establish `hb : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`. Establish `hE` using `GlobalTheory.T.frameData_local_resolution_open K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hR` using `GlobalTheory.T.frameData_local_integrability K ι Φ y Ψ N j M n e Rb keep Kk ιk κ v F kb V bl r h ε hc`. Establish `hwB : ∀ s : ℂ, pB ε (w + s • u) = pB ε w` using `fun s => by`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: u (ε (Sum.inl i)) = 0` using `congrFun hb0 i`. Simplify using `[pB, this]`. Establish `hmem : ∀ s : ℂ, w + s • u ∈ pD ε V` using `fun s => by show pB ε (w + s • u) ∈ V`. Rewrite using `[hwB]`. Conclude with `hw`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcurve : HasDerivAt (fun s : ℂ => w + s • u) u 0`. Simplify using `using ((hasDerivAt_id (0 : ℂ)).smul_const u).const_add w`. Establish `h00 : w = (fun s : ℂ => w + s • u) 0` using `by simp`. Establish `hdZ : HasDerivAt (fun s : ℂ => affCoord p (pPhi M F keep v bl h ε (w + s • u))) 0 0`. Use `HasFDerivAt.comp_hasDerivAt_of_eq (0 : ℂ) hD hcurve h00` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hu]`. Conclude with `this`. Establish `hcZ : ∀ q, ContinuousAt (fun s : ℂ => pPhi M F keep v bl h ε (w + s • u) q) 0` using `fun q => ContinuousAt.comp_of_eq (g := fun w' => pPhi M F keep v bl h ε w' q) (pPhi_diff hb hw q).continuousAt hcurve.continuousAt h00.symm`. Establish `hZ0 : pPhi M F keep v bl h ε (w + (0 : ℂ) • u) = pPhi M F keep v bl h ε w` using `by simp`. Establish `hp0 : ∀ k, pPhi M F keep v bl h ε (w + (0 : ℂ) • u) ⟨k, p k⟩ ≠ 0` using `fun k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hZ0]`. Conclude with `hp k`. Establish `hbase : ∀ s : ℂ, pBase M v (pPhi M F keep v bl h ε (w + s • u)) = bl (pB ε w)` using `fun s => by`. Rewrite using `[(hE _ (hmem s)).2.1, hwB]`. Establish `hlin : ∀ i, HasDerivAt (fun s : ℂ => w i + s * u i) (u i) 0` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using ((hasDerivAt_id (0 : ℂ)).mul_const (u i)).const_add (w i)`. Establish `hcell : ∀ q : PIdx j keep, u (ε (Sum.inr q)) = 0` using `fun q => by`. Establish `hrel : ∀ s : ℂ, pRead M F keep (bl (pB ε w)) h (upV v (pPhi M F keep v bl h ε (w + s • u))) q.1.1.1 q.1.1.2.1 q.1.1.2.2 = w (ε (Sum.inr q)) + s * u (ε (Sum.inr q))` using `fun s => by`. Use `congrFun (hR _ (hmem s)).2 (ε (Sum.inr q))` as an intermediate fact. Simplify using `only [pRho, Equiv.symm_apply_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hbase s]`. Simplify using `using this`. Apply the tactic sequence `have hS := GlobalTheory.T.pMat_stepCols_entry Ψ N j keep q M.j_le`. Consider the cases of `hk : M.blk (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) with`. Consider the case `none`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e0` using `hrel 0`. Establish `e1` using `hrel 1`. Rewrite `e0`, `e1` using `[pRead_none M F keep _ h _ _ hk]`. Simplify using `only [zero_mul, add_zero, one_mul] at e0 e1`. Rewrite `e1` using `[← e0, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `e1.symm`. Consider the case `some k`. Take `⟨k₂, rfl⟩` from `(hc.2.1 k).2 (Or.inr ⟨_, hS.1, hk⟩)`. Establish `h0 : twMinor M F (bl (pB ε w)) (pStep j keep q.1.1.1 q.1.1.2.2) (κ k₂) (h q.1.1.1)⁻¹ (upV v (pPhi M F keep v bl h ε (w + (0 : ℂ) • u))) (stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2)) ≠ 0`. Use `(hR w hw).1.2.2.2 _ _ hS.1 hk` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[(hE w hw).2.1]`. Rewrite using `[hZ0]`. Conclude with `this`. Establish `h1` using `pRead_deriv M F keep (bl (pB ε w)) h hc.1 (Z := fun s : ℂ => pPhi M F keep v bl h ε (w + s • u)) hdZ hcZ hp0 q.1.1.2.1 hk h0`. Rewrite `h1` using `[funext hrel]`.
-
-Conclude with `(hlin _).unique h1`. Use function extensionality and compare the values at `i`. Take `⟨x, rfl⟩` from `ε.surjective i`. Break down `x with l | q` into its components or cases. Conclude with `congrFun hb0 l`.
-
-Conclude with `hcell q`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem line_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ} (hw : w ∈ pD ε V)
     (p : (k : Kk) → ιk k) (hp : ∀ k, pPhi M F keep v bl h ε w ⟨k, p k⟩ ≠ 0)
@@ -375,9 +365,9 @@ theorem line_zero (hc : IsPCtx M Rb keep κ v F kb V bl r h) {w : Fin e → ℂ}
   · exact hcell q
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw p hp`. Establish `hb : IsBaseChart M Rb F kb V bl` using `hc.2.2.2.1`. Establish `hT : DifferentiableAt ℂ (fun w' => affCoord p (pPhi M F keep v bl h ε w')) w` using `differentiableAt_pi.2 fun q => diff_div (pPhi_diff hb hw q) (pPhi_diff hb hw _) (hp q.1)`. Rewrite using `[eq_bot_iff]`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : fderiv ℂ (fun w' => affCoord p (pPhi M F keep v bl h ε w')) w u = 0` using `hu`. Conclude with `(Submodule.mem_bot ℂ).2 (line_zero hc hw p hp hT.hasFDerivAt hu' (base_zero hc hw p hp hT.hasFDerivAt hu'))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chart_immersion : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (n e : ℕ) (Rb : AnLogRes (mCoordIdeal M.x) ⊤ n) (keep : Ψ × Fin N → Prop) (Kk : Type) [Fintype Kk] (ιk : Kk → Type) [∀ k, Fintype (ιk k)] (κ : Kk → K) (v : (Σ k, ιk k) → (Σ k, ι k)) (F : FrameData ι Ψ N M.Ω M.blk) (kb : Fin Rb.A.n) (V : Set (Fin n → ℂ)) (bl : (Fin n → ℂ) → (Σ k, baseIdx ι M.blk k) → ℂ) (r : ((Σ k, baseIdx ι M.blk k) → ℂ) → Rb.X) (h : Ψ → Matrix (Fin N) (Fin N) ℂ) (ε : Fin n ⊕ PIdx j keep ≃ Fin e), IsPCtx M Rb keep κ v F kb V bl r h → ∀ w ∈ pD ε V, ∀ p : (k : Kk) → ιk k, (∀ k, pPhi M F keep v bl h ε w ⟨k, p k⟩ ≠ 0) → (fderiv ℂ (fun w' => affCoord p (pPhi M F keep v bl h ε w')) w).ker = ⊥ := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M n e Rb keep Kk _ ιk _ κ v F kb V bl r h ε hc w hw p hp

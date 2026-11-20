@@ -14,11 +14,11 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Inter (pullHerm)
 namespace GlobalTheory.CompanionTheory.Ar.Chg
 
 /- English proof (translation)
-Take `⟨hs, s, hs1, hs2⟩` from `h1`. Take `⟨hs', s', hs1', hs2'⟩` from `h2`. Establish `hs1'' : GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, hs⟩ s' = b` using `hs1'`. Establish `e0 : GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, hs⟩ (s - s') = 0` using `(map_sub _ s s').trans (by rw [hs1, hs1'', sub_self])`. Establish `hnu : ¬ IsUnit (s - s')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hu`. Establish `hu'` using `hu.map (GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, hs⟩)`. Conclude with `not_isUnit_zero ((congrArg IsUnit e0).mp hu')`. Establish `e1 : (Scheme.stalkClosedPointTo z).hom (s - s') = r - r'`. Rewrite using `[← hs2, ← hs2']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `map_sub _ _ _`. Assume the negation of the conclusion as `hne`. Apply `hnu` to reduce the goal to its premises. Apply `(Scheme.isLocalHom_stalkClosedPointTo z).map_nonunit` to reduce the goal to its premises. Conclude with `(congrArg IsUnit e1).mpr (sub_ne_zero.mpr hne).isUnit`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private lemma valAt_unique_lemma {X : Scheme.{0}} {Ω : Type} [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (z : Spec (CommRingCat.of ℂ) ⟶ X) {b : Ω} {r r' : ℂ}
@@ -41,7 +41,7 @@ private lemma valAt_unique_lemma {X : Scheme.{0}} {Ω : Type} [Field Ω]
   exact (congrArg IsUnit e1).mpr (sub_ne_zero.mpr hne).isUnit
 
 /- English proof (translation)
-Take `⟨hs, s, hs1, hs2⟩` from `h1`. Take `⟨hs', s', hs1', hs2'⟩` from `h2`. Establish `hs1'' : GlobalTheory.CompanionTheory.Ar.genMap ξ ⟨GlobalTheory.CompanionTheory.Ar.centre z, hs⟩ s' = b'` using `hs1'`. Conclude with `⟨⟨hs, s * s', (map_mul _ s s').trans (congrArg₂ (· * ·) hs1 hs1''), (map_mul _ s s').trans (congrArg₂ (· * ·) hs2 hs2')⟩, ⟨hs, 1, map_one _, map_one _⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private lemma valAt_mul_lemma_2 {X : Scheme.{0}} {Ω : Type} [Field Ω]
     (ξ : Spec (CommRingCat.of Ω) ⟶ X) (z : Spec (CommRingCat.of ℂ) ⟶ X) {b b' : Ω} {r r' : ℂ}
@@ -55,35 +55,33 @@ private lemma valAt_mul_lemma_2 {X : Scheme.{0}} {Ω : Type} [Field Ω]
     ⟨hs, 1, map_one _, map_one _⟩⟩
 
 /- English proof (translation)
-Introduce `X X₀ Ω Ω₀ _ _ ξ ξ₀ h i K₀ K _ _ J₀ J _ _ y₀ y bk bx hdom htie hgen hy hval z w hw`. Unfold `GlobalTheory.CompanionTheory.Ar.Dominates at hdom`. Establish `hpt : ∀ (a b : PrimeSpectrum Ω₀), a = b` using `fun a b => PrimeSpectrum.ext ((Ideal.eq_bot_of_prime a.asIdeal).trans (Ideal.eq_bot_of_prime b.asIdeal).symm)`. Establish `hsp : GlobalTheory.CompanionTheory.Ar.genPt ξ₀ ⤳ GlobalTheory.CompanionTheory.Ar.centre (z ≫ h)`. Establish `h2` using `(hgen (GlobalTheory.CompanionTheory.Ar.centre z)).map h.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : h (GlobalTheory.CompanionTheory.Ar.genPt ξ) = GlobalTheory.CompanionTheory.Ar.genPt ξ₀`. Establish `hh` using `congrArg (fun f => f (IsLocalRing.closedPoint Ω)) hdom`. Simplify using `only [Scheme.Hom.comp_apply] at hh`. Conclude with `hh.trans (congrArg ξ₀ (hpt _ _))`. Establish `e2 : h (GlobalTheory.CompanionTheory.Ar.centre z) = GlobalTheory.CompanionTheory.Ar.centre (z ≫ h)` using `(Scheme.Hom.comp_apply z h _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1, ← e2]`. Conclude with `h2`. Unfold `GlobalTheory.CompanionTheory.Ar.CoordsAt at hw ⊢`. Take `⟨hw1, hw2⟩` from `hw`. Use `⟨fun k => ?_, fun k c hc => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', hc'⟩` from `hw1 (bk k)`. Use `⟨(bx k).symm c', ?_⟩` and prove the remaining obligations. Simplify `hc'` using `[GlobalTheory.CompanionTheory.Ar.Chg.blkV]`. Simplify using `only [GlobalTheory.CompanionTheory.Ar.Chg.blkV] at hc ⊢`. Take `⟨hyne, hrat⟩` from `hw2 (bk k) (bx k c) hc`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy0c : y₀ ⟨k, c⟩ ≠ 0` using `fun h0 => hyne (by rw [hy, h0, map_zero])`. Use `⟨hy0c, fun j => ?_⟩` and prove the remaining obligations. Take `⟨c', hc'0, hc'reg⟩` from `htie.cover ⟨GlobalTheory.CompanionTheory.Ar.centre (z ≫ h), hsp⟩`. Simplify using `only at hc'0 hc'reg`. Establish `hprod : ∀ c'' : (k' : K₀) → J₀ k', (∏ k', y₀ ⟨k', c'' k'⟩) = y₀ ⟨k, c'' k⟩ * ∏ k' ∈ ({k}ᶜ : Finset K₀), y₀ ⟨k', c'' k'⟩` using `fun c'' => Fintype.prod_eq_mul_prod_compl k _`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hQ : ∏ k' ∈ ({k}ᶜ : Finset K₀), y₀ ⟨k', c' k'⟩ ≠ 0`. Introduce `h0`. Apply `hc'0` to reduce the goal to its premises. Rewrite using `[hprod c', h0, mul_zero]`. Establish `hd : y₀ ⟨k, c' k⟩ ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hc'0` to reduce the goal to its premises. Rewrite using `[hprod c', h0, zero_mul]`. Establish `hrat0 : ∀ j' : J₀ k, y₀ ⟨k, j'⟩ / y₀ ⟨k, c' k⟩ ∈ GlobalTheory.CompanionTheory.Ar.regAt ξ₀ ⟨GlobalTheory.CompanionTheory.Ar.centre (z ≫ h), hsp⟩`. Introduce `j'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `hc'reg (Function.update c' k j')`. Establish `hrest : ∏ k' ∈ ({k}ᶜ : Finset K₀), y₀ ⟨k', Function.update c' k j' k'⟩ = ∏ k' ∈ ({k}ᶜ : Finset K₀), y₀ ⟨k', c' k'⟩`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k' hk'`. Rewrite using `[Function.update_of_ne (by simpa using hk')]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hm` using `[hprod (Function.update c' k j'), hprod c', hrest, Function.update_self, mul_div_mul_right _ _ hQ]`. Conclude with `hm`. Take `⟨sj, hsj⟩` from `RingHom.mem_range.mp (hrat0 j)`. Take `⟨sc, hsc⟩` from `RingHom.mem_range.mp (hrat0 c)`. Establish `hvalc : GlobalTheory.CompanionTheory.Ar.ValAt ξ₀ (z ≫ h) (y₀ ⟨k, c⟩ / y₀ ⟨k, c' k⟩) ((Scheme.stalkClosedPointTo (z ≫ h)).hom sc)` using `⟨hsp, sc, hsc, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvalc'` using `hval z _ _ hvalc`. Take `⟨rd, hrd, -⟩` from `hrat (bx k (c' k))`. Rewrite `hrd` using `[hy, hy, ← map_div₀]`. Take `⟨hprodv, hone⟩` from `valAt_mul_lemma_2 ξ z hvalc' hrd`. Rewrite `hprodv` using `[← map_mul, div_mul_div_comm, mul_comm (y₀ ⟨k, c⟩), div_self (mul_ne_zero hd hy0c), map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `valAt_unique_lemma ξ z hprodv hone`. Establish `hv : (Scheme.stalkClosedPointTo (z ≫ h)).hom sc ≠ 0` using `left_ne_zero_of_mul_eq_one h1`. Establish `hunit : IsUnit sc` using `(Scheme.isLocalHom_stalkClosedPointTo (z ≫ h)).map_nonunit _ (Ne.isUnit hv)`. Set `sci : X₀.presheaf.stalk (↑(⟨GlobalTheory.CompanionTheory.Ar.centre (z ≫ h), hsp⟩ : GlobalTheory.CompanionTheory.Ar.Cpt ξ₀))` to `↑hunit.unit⁻¹`. Establish `hsci : sci * sc = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv` using `hunit.unit.inv_mul`. Rewrite `hinv` using `[IsUnit.unit_spec]`. Conclude with `hinv`. Establish `hgsci : GlobalTheory.CompanionTheory.Ar.genMap ξ₀ ⟨GlobalTheory.CompanionTheory.Ar.centre (z ≫ h), hsp⟩ sci * (y₀ ⟨k, c⟩ / y₀ ⟨k, c' k⟩) = 1`. Rewrite using `[← hsc, ← map_mul, hsci, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hs₀ : GlobalTheory.CompanionTheory.Ar.genMap ξ₀ ⟨GlobalTheory.CompanionTheory.Ar.centre (z ≫ h), hsp⟩ (sj * sci) = y₀ ⟨k, j⟩ / y₀ ⟨k, c⟩`. Rewrite using `[map_mul, hsj, eq_inv_of_mul_eq_one_left hgsci]`. Clear the denominators using the available nonvanishing facts. Establish `hex : GlobalTheory.CompanionTheory.Ar.ValAt ξ₀ (z ≫ h) (y₀ ⟨k, j⟩ / y₀ ⟨k, c⟩) ((Scheme.stalkClosedPointTo (z ≫ h)).hom (sj * sci))` using `⟨hsp, _, hs₀, rfl⟩`. Establish `hex'` using `hval z _ _ hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr, hwr⟩` from `hrat (bx k j)`. Rewrite `hr` using `[hy, hy, ← map_div₀]`. Establish `hrr` using `valAt_unique_lemma ξ z hr hex'`. Use `⟨r, ?_, hwr⟩` and prove the remaining obligations. Rewrite using `[hrr]`.
-
-Conclude with `hex`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsAt_blkV : ∀ (X X₀ : Scheme.{0}) (Ω Ω₀ : Type) [Field Ω] [Field Ω₀] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (ξ₀ : Spec (CommRingCat.of Ω₀) ⟶ X₀) (h : X ⟶ X₀) (i : Ω₀ →+* Ω) (K₀ K : Type) [Fintype K₀] [Fintype K] (J₀ : K₀ → Type) (J : K → Type) [∀ k, Fintype (J₀ k)] [∀ k, Fintype (J k)] (y₀ : (Σ k, J₀ k) → Ω₀) (y : (Σ k, J k) → Ω) (bk : K₀ → K) (bx : ∀ k, J₀ k ≃ J (bk k)), GlobalTheory.CompanionTheory.Ar.Dominates ξ ξ₀ h i → CoordTie ℤ ξ₀ (fun c' : (k : K₀) → J₀ k => ∏ k, y₀ ⟨k, c' k⟩) → (∀ q : X, genPt ξ ⤳ q) → (∀ k a, y ⟨bk k, bx k a⟩ = i (y₀ ⟨k, a⟩)) → (∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) (a : Ω₀) (r : ℂ), ValAt ξ₀ (z ≫ h) a r → ValAt ξ z (i a) r) → ∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ), CoordsAt ξ y z w → CoordsAt ξ₀ y₀ (z ≫ h) (fun p => w (blkV bk bx p)) := by
   classical

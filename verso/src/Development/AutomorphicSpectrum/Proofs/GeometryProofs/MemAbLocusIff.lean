@@ -13,11 +13,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Chg
 
 /- English proof (translation)
-Introduce `hf`. Apply `hf` to reduce the goal to its premises. Establish `hs : genMap ξ ⟨centre z, h⟩ (r : X.presheaf.stalk (centre z)) = (r : Ω)` using `map_natCast _ r`. Establish `hz : (Scheme.stalkClosedPointTo z).hom (r : X.presheaf.stalk (centre z)) = (r : ℂ)` using `map_natCast _ r`. Establish `hu : IsUnit (r : X.presheaf.stalk (centre z))` using `CxVal.isUnit _ (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Conclude with `hr.ne_zero)` after adjusting the coercions. Use `⟨Nat.cast_ne_zero.2 hr.ne_zero, ⟨_, hs⟩, ?_⟩` and prove the remaining obligations. Take `⟨u, hu'⟩` from `hu`. Use `⟨(u⁻¹ : (X.presheaf.stalk (centre z))ˣ).val, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_units_inv, hu', hs]`.
+A detailed English derivation is pending.
 -/
 theorem not_inFibre {X : Scheme.{0}} {Ω : Type} [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     (z : Spec (CommRingCat.of ℂ) ⟶ X) (h : genPt ξ ⤳ centre z) {r : ℕ} (hr : r.Prime) :
@@ -41,7 +41,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {J₀ : K₀ → Type} {J : K → Type} {y₀ : (Σ k, J₀ k) → Ω₀} {y : (Σ k, J k) → Ω}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sabMap_cast_φ {S₁ S₂ : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB H S₂} {f f' : S₁ ⟶ S₂} (e : f = f')
     (m : SABMap t₁ t₂ f) : (e ▸ m : SABMap t₁ t₂ f').φ = m.φ := by
@@ -49,7 +49,7 @@ theorem sabMap_cast_φ {S₁ S₂ : Scheme.{0}} {t₁ : SAB H S₁} {t₂ : SAB 
   rfl
 
 /- English proof (translation)
-Take `⟨m, e⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t 𝔐₀.t 𝔐.t 𝔐₀.f h 𝔐₀.m (hf ▸ 𝔐.m)`. Conclude with `⟨m, by rw [← e, sabMap_cast_φ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sabMap (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (h : 𝔐.X ⟶ 𝔐₀.X) (hf : 𝔐.f = h ≫ 𝔐₀.f) :
     ∃ m : SABMap 𝔐.t 𝔐₀.t h, 𝔐.m.φ = m.φ ≫ 𝔐₀.m.φ := by
@@ -57,7 +57,7 @@ theorem exists_sabMap (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (
   exact ⟨m, by rw [← e, sabMap_cast_φ]⟩
 
 /- English proof (translation)
-Take `⟨m, -⟩` from `exists_sabMap 𝔐₀ 𝔐 h hf`. Establish `hp : IsPullback m.φ 𝔐.t.G.hom 𝔐₀.t.G.hom h` using `m.cart.1`. Conclude with `(abLocus_pullback abLocusOne 𝔐₀.t.semi hp x).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_abLocus_iff (𝔐₀ : HodgeCpt Y S₀ y₀) (𝔐 : HodgeCpt Y S y) (h : 𝔐.X ⟶ 𝔐₀.X) (hf : 𝔐.f = h ≫ 𝔐₀.f)
     (x : 𝔐.X) : x ∈ abLocus 𝔐.t.G ↔ h x ∈ abLocus 𝔐₀.t.G := by
@@ -70,21 +70,21 @@ end Cover
 section Maps
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Apply the tactic sequence `ext x <;> simp [dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     dualMap (g.comp f) = (dualMap g).comp (dualMap f) := by
   ext x <;> simp [dualMap]
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `letI := g.toAlgebra`. Use `letI := (g.comp f).toAlgebra`. Use `haveI : IsScalarTower A B C := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `(Module.finrank_mul_finrank A B C).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finrank_comp' {A B C : Type} [Field A] [Field B] [Field C] (f : A →+* B) (g : B →+* C) :
     (letI := (g.comp f).toAlgebra; Module.finrank A C) =
@@ -96,9 +96,9 @@ theorem finrank_comp' {A B C : Type} [Field A] [Field B] [Field C] (f : A →+* 
   exact (Module.finrank_mul_finrank A B C).symm
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `ho`. Use `⟨fun k => ?_, fun k a ha => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `hw.1 k`. Conclude with `⟨a, IsUnit.mk0 _ (mul_ne_zero (hc k) ha.ne_zero)⟩`. Establish `ha' : IsUnit (w ⟨k, a⟩)` using `IsUnit.mk0 _ fun h0 => ha.ne_zero (by simp [h0])`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hw.2 k a ha'`. Use `⟨h1, fun b => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, e⟩` from `h2 b`. Conclude with `⟨r, hr, by simp only [e]; ring⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coordsAt_orbit {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X} {K : Type} [Fintype K]
     {J : K → Type} [∀ k, Fintype (J k)] {y : (Σ k, J k) → Ω} {z : Spec (CommRingCat.of ℂ) ⟶ X}
@@ -120,7 +120,7 @@ section Orbit
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hw`. Rewrite using `[log_h_smul A hc hz, log_h_smul B hc hz, hab]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_sub_orbit {A B : HermLine J} (hab : A.a = B.a) {w z : (Σ k, J k) → ℂ} (hw : SameOrbit w z)
     (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
@@ -130,9 +130,9 @@ theorem log_sub_orbit {A B : HermLine J} (hab : A.a = B.a) {w z : (Σ k, J k) �
   ring
 
 /- English proof (translation)
-Take `⟨c, hc, rfl⟩` from `hw`. Simplify using `only [log_h_smul _ hc hz, Finset.sum_add_distrib]`. Establish `: ∑ k, (A.a k : ℝ) * Real.log ‖c k‖ = -∑ x ∈ s, ∑ k, ((B x).a k : ℝ) * Real.log ‖c k‖`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hab, ← Finset.sum_mul, ← neg_mul]`. Simplify using `[Finset.sum_apply]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem log_sum_orbit {X : Type} (s : Finset X) {A : HermLine J} {B : X → HermLine J}
     (hab : A.a = -∑ x ∈ s, (B x).a) {w z : (Σ k, J k) → ℂ} (hw : SameOrbit w z)
@@ -149,7 +149,7 @@ theorem log_sum_orbit {X : Type} (s : Finset X) {A : HermLine J} {B : X → Herm
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : ∃ a, κ a = k`. Take `⟨a, rfl⟩` from `hk`. Simplify using `[pullDeg, hκ.extend_apply, Finset.sum_apply]`. Simplify using `[pullDeg, Function.extend_apply' _ _ _ hk, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pullDeg_neg_sum {K₀ : Type} {X : Type} {κ : K₀ → K} (hκ : Function.Injective κ) (s : Finset X) (f : X → K₀ → ℤ) :
     pullDeg κ (-∑ x ∈ s, f x) = -∑ x ∈ s, pullDeg κ (f x) := by
@@ -160,7 +160,7 @@ theorem pullDeg_neg_sum {K₀ : Type} {X : Type} {κ : K₀ → K} (hκ : Functi
   · simp [pullDeg, Function.extend_apply' _ _ _ hk, Finset.sum_apply]
 
 /- English proof (translation)
-The claim follows from `Real.log_mul ((pullHerm hv A).pos z hz).ne' (T.pos z hz).ne'`.
+A detailed English derivation is pending.
 -/
 theorem log_tensor_pull {K₀ : Type} [Fintype K₀] {J₀ : K₀ → Type} [∀ k, Fintype (J₀ k)] {κ : K₀ → K}
     {v : (Σ k, J₀ k) → Σ k, J k} (hv : IsBlockMap κ v) (A : HermLine J₀) (T : HermLine J) {z : (Σ k, J k) → ℂ}

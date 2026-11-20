@@ -8,25 +8,25 @@ open NumberField IsDedekindDomain ReciprocityTheory.Aut Formalism.AUTREP Formali
 attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `small : ∀ δ : ℝ, 0 < δ → ∃ a : K₁, a ≠ 0 ∧ ‖a‖ < δ`. Introduce `δ hδ`. Take `⟨π, hπ0, hπ1⟩` from `hπ`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hδ hπ1`. Conclude with `⟨π ^ n, pow_ne_zero _ (norm_pos_iff.mp hπ0), by rwa [norm_pow]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hball⟩ : ∃ δ > 0, ∀ x : K₁, ‖x‖ < δ → ‖i x‖ < 1 := by`. Take `⟨δ, hδ, h⟩` from `Metric.continuous_iff.mp hi 0 1 one_pos`. Use `⟨δ, hδ, fun x hx => ?_⟩` and prove the remaining obligations. Use `h x (by simpa [dist_eq_norm] using hx)` as an intermediate fact. Simplify `this` using `[dist_eq_norm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `key : ∀ y : K₁, ‖i y‖ < 1 → ‖y‖ < 1`. Introduce `y hy`. Assume the negation of the conclusion as `hge`. Use `push_neg at hge`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Evaluate the numerical expressions using `at hge`. Establish `hiy : 0 < ‖i y‖` using `norm_pos_iff.mpr ((map_ne_zero i).mpr hy0)`. Take `⟨a, ha0, ha⟩` from `small δ hδ`. Establish `hia : 0 < ‖i a‖` using `norm_pos_iff.mpr ((map_ne_zero i).mpr ha0)`.
+Evaluate the numerical expressions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgt : 1 < ‖i y‖⁻¹` using `(one_lt_inv₀ hiy).mpr hy`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (‖i a‖⁻¹) hgt`. Establish `hsmall : ‖a * y⁻¹ ^ n‖ < δ`. Rewrite using `[norm_mul, norm_pow, norm_inv]`. Establish `h1 : ‖y‖⁻¹ ^ n ≤ 1` using `pow_le_one₀ (inv_nonneg.mpr (norm_nonneg _)) (inv_le_one_of_one_le₀ hge)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `hball _ hsmall`. Rewrite `h2` using `[map_mul, map_pow, map_inv₀, norm_mul, norm_pow, norm_inv]`. Establish `h3 : ‖i a‖ * ‖i a‖⁻¹ < ‖i a‖ * ‖i y‖⁻¹ ^ n` using `mul_lt_mul_of_pos_left hn hia`. Rewrite `h3` using `[mul_inv_cancel₀ hia.ne']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `zero : ∀ ε > 0, ∃ η > 0, ∀ w : K₂, ‖w‖ < η → ‖i.symm w‖ < ε`. Introduce `ε hε`. Take `⟨a, ha0, ha⟩` from `small ε hε`. Establish `ha' : 0 < ‖a‖` using `norm_pos_iff.mpr ha0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hia : 0 < ‖i a‖` using `norm_pos_iff.mpr ((map_ne_zero i).mpr ha0)`. Use `⟨‖i a‖, hia, fun w hw => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖i (i.symm w * a⁻¹)‖ < 1`. Rewrite using `[map_mul, map_inv₀, RingEquiv.apply_symm_apply, norm_mul, norm_inv, mul_inv_lt_iff₀ hia]`. Simplify using `using hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `key _ h1`. Rewrite `h2` using `[norm_mul, norm_inv, mul_inv_lt_iff₀ ha']`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Metric.continuous_iff]`. Introduce `b ε hε`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨η, hη, h⟩` from `zero ε hε`. Use `⟨η, hη, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz`, the goal using `[dist_eq_norm]`. Rewrite using `[← map_sub]`. Conclude with `h _ hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringEquiv_symm_continuous_of_continuous {K₁ K₂ : Type*} [NormedField K₁] [NormedField K₂]
     (i : K₁ ≃+* K₂) (hi : Continuous i) (hπ : ∃ π : K₁, 0 < ‖π‖ ∧ ‖π‖ < 1) :
@@ -88,9 +88,9 @@ private theorem ringEquiv_symm_continuous_of_continuous {K₁ K₂ : Type*} [Nor
   exact h _ hz
 
 /- English proof (translation)
-Introduce `L _ _ _ s i hi _`. Take `⟨π, hπ⟩` from `s.v.valuation_exists_uniformizer (maximalRealSubfield L)`. Establish `hv : Valued.v (π : s.v.adicCompletion (maximalRealSubfield L)) = WithZero.exp (-1 : ℤ)`. Simplify using `using hπ`. Use `ringEquiv_symm_continuous_of_continuous i hi ⟨(π : s.v.adicCompletion (maximalRealSubfield L)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `norm_pos_iff.mpr fun h => ?_` and prove the remaining obligations. Rewrite `hv` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hv.symm`. Rewrite using `[Valued.toNormedField.norm_lt_one_iff, hv, ← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.mpr (by norm_num)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.splitCompletion_symm_continuous : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s : SplitPlace L) (i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L), Continuous i → (∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x) → Continuous i.symm := by
   intro L _ _ _ s i hi _

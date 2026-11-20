@@ -13,9 +13,9 @@ namespace GlobalTheory.CompanionTheory.EllipticCM
 open WeierstrassCurve GroundTheory.Global.Elliptic GroundTheory.Arith.Abelian
 
 /- English proof (translation)
-Distinguish the cases in `hz : z ∈ L.lattice`. Rewrite using `[GlobalTheory.latticePoint_of_mem L hz, toPoint_of_mem hz, map_zero, vcPoint_zero]`. Rewrite using `[GlobalTheory.latticePoint_of_notMem L hz, toPoint_of_notMem hz, GlobalTheory.variableChangePoint_some, vcPoint_some, Affine.Point.some.injEq]`. Establish `hu : (C.u : ℂ) ≠ 0` using `C.u.ne_zero`. Prove the components needed by the constructor for the conclusion.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [vcX, VariableChange.inv_def, inv_inv, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [vcY, VariableChange.inv_def, inv_inv, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -37,11 +37,11 @@ theorem variableChangePoint_latticePoint {X : WeierstrassCurve ℂ} {L : PeriodP
       ring
 
 /- English proof (translation)
-Take `⟨L, C, h⟩` from `GlobalTheory.exists_variableChange_eq_latticeCurve X`. Take `⟨α, hα, hΛ, hz⟩` from `hξ.exists_mul h`. Establish `e : GlobalTheory.latticeCurve L = weierstrassCurve L`. Simplify using `[GlobalTheory.latticeCurve, weierstrassCurve, neg_div]`. Establish `h' : C⁻¹ • weierstrassCurve L = X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← e, ← h, inv_smul_smul]`. Establish `hΛ' : ∀ z, z ∈ idealLattice (algebraMap K ℂ) 𝔞 ↔ α * z ∈ L.lattice` using `fun z => by`. Rewrite using `[← hΛ]`. Both sides reduce to the same expression. Establish `hf` using `((isAnalyticUniformization_toPointHom L).comp_mul hα hΛ').vcPoint C⁻¹ h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hf using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, vcPointEquiv_apply, AddMonoidHom.coe_mulLeft]`. Conclude with `(hz z).trans (variableChangePoint_latticePoint h h' _)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAnalyticUniformization_of_isAnalyticIso {K : Type} [Field K] [NumberField K]
     [IsTotallyComplex K] [Algebra K ℂ] (_h2 : Module.finrank ℚ K = 2) (X : WeierstrassCurve ℂ)

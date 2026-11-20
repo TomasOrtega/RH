@@ -8,9 +8,9 @@ namespace GroundTheory.Heights₂.Heights.FlatTheorem
 open NumberField
 
 /- English proof (translation)
-Establish `hnE : Module.finrank ℚ E = Module.finrank ℚ K * Module.finrank K E` using `(Module.finrank_mul_finrank ℚ K E).symm`. Establish `hmpos : 0 < Module.finrank K E` using `Module.finrank_pos`. Establish `h0 : (0 : ℝ) ≤ ((discr K).natAbs : ℝ)` using `Nat.cast_nonneg _`. Establish `habsK : ((|discr K| : ℤ) : ℝ) = ((discr K).natAbs : ℝ)` using `(Nat.cast_natAbs _).symm`. Rewrite using `[rootDiscr_def, habsK, hnE, ← Real.rpow_natCast, ← Real.rpow_mul h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem DifferentNorms.rootDiscr_eq_pow (K E : Type) [Field K] [NumberField K] [Field E]
     [NumberField E] [Algebra K E] :
@@ -27,11 +27,11 @@ theorem DifferentNorms.rootDiscr_eq_pow (K E : Type) [Field K] [NumberField K] [
   field_simp
 
 /- English proof (translation)
-Introduce `K E _ _ _ _ _`. Establish `key` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow K (𝓞 K) E (𝓞 E)`. Establish `hK0 : (discr K).natAbs ≠ 0` using `Int.natAbs_ne_zero.mpr (discr_ne_zero K)`. Establish `hpos : (0 : ℝ) < ((discr K).natAbs : ℝ) ^ Module.finrank K E` using `by positivity`. Establish `hrdK` using `DifferentNorms.rootDiscr_eq_pow K E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, FlatDegreeBound.one_le_rootDiscr K, FlatDegreeBound.rootDiscr_le_rootDiscr K E⟩` and prove the remaining obligations. Establish `hN : (Ideal.absNorm (differentIdeal (𝓞 K) (𝓞 E)) : ℝ) = ((discr E).natAbs : ℝ) / ((discr K).natAbs : ℝ) ^ Module.finrank K E`. Rewrite using `[eq_div_iff hpos.ne', key]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `habsE : ((|discr E| : ℤ) : ℝ) = ((discr E).natAbs : ℝ)` using `(Nat.cast_natAbs _).symm`. Rewrite using `[hN, Real.div_rpow (Nat.cast_nonneg _) hpos.le, ← hrdK, rootDiscr_def E, habsE]`. Rewrite using `[Ideal.absNorm_algebraMap, absNorm_differentIdeal K (𝓞 K), ← IsFractionRing.finrank_eq (𝓞 K) K (𝓞 E) E, hrdK]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem DifferentNorms.proof : DifferentNorms.Statement := by
   intro K E _ _ _ _ _

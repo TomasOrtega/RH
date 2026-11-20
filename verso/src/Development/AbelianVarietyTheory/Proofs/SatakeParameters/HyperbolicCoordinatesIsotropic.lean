@@ -11,11 +11,11 @@ open Formalism.InvariantFactorPaths.G7 (UnrOK IsLawOfLog cob)
 namespace GlobalTheory.KerStd.HypCoord
 
 /- English proof (translation)
-Introduce `h`. Rewrite `h` using `[posPl_add]`. Establish `hrr : r = r'` using `(hR (posPl D p r' s')).unique ⟨hr, s + 1, h⟩ ⟨hr', s', rfl⟩`. Substitute `hrr` using the available equality. Establish `hpos : 0 < nP D p` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `h2 : posPl D p r ((s + 1) % nP D p) = posPl D p r s'` using `by rw [posPl_mod, h]`. Establish `h3 : (s + 1) % nP D p = s'` using `posPl_inj D p r _ _ (Nat.mod_lt _ hpos) hs' h2`. Take `⟨m, hm⟩` from `hev`. Break down `Nat.lt_or_ge (s + 1) (nP D p) with hlt | hge` into its components or cases. Rewrite `h3` using `[Nat.mod_eq_of_lt hlt]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hsn : s + 1 = nP D p` using `by omega`. Rewrite `h3` using `[hsn, Nat.mod_self]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem posPl_succ_ne_of_parity (D : D7) (p : ℕ) (R : Finset (OrbitPlaces.Pl D)) (hev : Even (nP D p))
     (hR : OrbitPlaces.IsReps D p R) {r r' : OrbitPlaces.Pl D} (hr : r ∈ R) (hr' : r' ∈ R) {s s' : ℕ}
@@ -38,11 +38,11 @@ theorem posPl_succ_ne_of_parity (D : D7) (p : ℕ) (R : Finset (OrbitPlaces.Pl D
     omega
 
 /- English proof (translation)
-Establish `hterm : ∀ t t' : ZMod (nP D p), ∑ i, (σ (c t) * h (posPl D p (OrbitPlaces.orbMap D p r t) 1) a b i) * (c' t' * g (OrbitPlaces.orbMap D p r' t') a' b' i) = 0`. Introduce `t t'`. Distinguish the cases in `h1 : t.val % 2 = q`. Distinguish the cases in `h2 : t'.val % 2 = q`. Establish `hne : posPl D p (OrbitPlaces.orbMap D p r t) 1 ≠ OrbitPlaces.orbMap D p r' t'` using `posPl_succ_ne_of_parity D p R hev hR hr hr' (ZMod.val_lt t) (ZMod.val_lt t') (h1.trans h2.symm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `e : ∀ i, (σ (c t) * h (posPl D p (OrbitPlaces.orbMap D p r t) 1) a b i) * (c' t' * g (OrbitPlaces.orbMap D p r' t') a' b' i) = (σ (c t) * c' t') * (h (posPl D p (OrbitPlaces.orbMap D p r t) 1) a b i * g (OrbitPlaces.orbMap D p r' t') a' b' i)` using `fun i => by ring`. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, hp, if_neg (fun hh => hne hh.1), mul_zero]`. Simplify using `[hc' t' h2]`. Simplify using `[hc t h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, hg, Finset.sum_mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero fun t' _ => hterm t t'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_sigma_comb_mul_comb (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p)
     (R : Finset (OrbitPlaces.Pl D)) {N N' n : ℕ} (g h : OrbitPlaces.Pl D → Fin N → Fin N' → Fin n → MaximalUnramifiedExtension p)
@@ -76,9 +76,9 @@ theorem sum_sigma_comb_mul_comb (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalU
   exact Finset.sum_eq_zero fun t' _ => hterm t t'
 
 /- English proof (translation)
-Introduce `D p _ σ om oms R N N' r g h hO hR hg hp`. Prove the components needed by the constructor for the conclusion. Introduce `e e'`. Establish `key` using `sum_sigma_comb_mul_comb D p σ R g h hO.even hR hg hp e.1.1.2 e'.1.1.2 e.2.1 e'.2.1 e.2.2 e'.2.2 (fun t => if t.val % 2 = 0 then σ^[t.val] (om e.1.2) else 0) (fun t => if t.val % 2 = 0 then σ^[t.val] (om e'.1.2) else 0) 0 (fun t ht => if_neg ht) (fun t ht => if_neg ht)`. Simplify `key` using `only [fOf, ite_mul, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `e e'`. Establish `key` using `sum_sigma_comb_mul_comb D p σ R g h hO.even hR hg hp e.1.1.2 e'.1.1.2 e.2.1 e'.2.1 e.2.2 e'.2.2 (fun t => if t.val % 2 = 0 then 0 else σ^[t.val] (oms e.1.2)) (fun t => if t.val % 2 = 0 then 0 else σ^[t.val] (oms e'.1.2)) 1 (fun t ht => if_pos (by omega)) (fun t ht => if_pos (by o …`. Simplify `key` using `only [fOf', ite_mul, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fOf_isotropic : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (σ : MaximalUnramifiedExtension p →+* MaximalUnramifiedExtension p) (om oms : Fin (nP D p / 2) → MaximalUnramifiedExtension p) (R : Finset (OrbitPlaces.Pl D)) (N N' r : ℕ) (g h : OrbitPlaces.Pl D → Fin N → Fin N' → Fin r → MaximalUnramifiedExtension p), OrbitPlaces.OrbOK D p → OrbitPlaces.IsReps D p R → (∀ z a b i, σ (g z a b i) = h (posPl D p z 1) a b i) → (∀ w z a b a₁ b₁, ∑ i, h w a b i * g z a₁ b₁ i = if w = z ∧ a = a₁ ∧ b = b₁ then 1 else 0) → (∀ e e', ∑ i, σ (fOf D p σ om R g e i) * fOf D p σ om R g e' i = 0) ∧ (∀ e e', ∑ i, σ (fOf' D p σ oms R g e i) * fOf' D p σ oms R g e' i = 0) := by
   intro D p _ σ om oms R N N' r g h hO hR hg hp

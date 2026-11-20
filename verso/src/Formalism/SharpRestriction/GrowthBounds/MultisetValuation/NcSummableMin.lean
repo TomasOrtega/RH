@@ -7,13 +7,13 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 open Finset
 
 /- English proof (translation)
-Establish `hp' : (1 : ℝ) < p` using `by exact_mod_cast (show 1 < p by omega)`. Establish `hp0 : (p : ℝ) ≠ 0` using `by positivity`. Establish `hq : (0 : ℝ) < (p : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hr : ((p : ℝ) ^ 2)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by nlinarith)`. Establish `h0 : 0 ≤ ((p : ℝ) ^ 2)⁻¹` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hasSum_geometric_of_lt_one h0 hr).mul_left ((p : ℝ)⁻¹)` as an intermediate fact. Establish `e1 : (fun e : ℕ => ((p : ℝ) ^ (2 * e + 1))⁻¹) = fun i : ℕ => (p : ℝ)⁻¹ * ((p : ℝ) ^ 2)⁻¹ ^ i`. Use function extensionality and compare the values at `e`. Rewrite using `[pow_succ, pow_mul, mul_inv, inv_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : Formalism.MainNotions.FormalGroupSystem.gam p = (p : ℝ)⁻¹ * (1 - ((p : ℝ) ^ 2)⁻¹)⁻¹`. Rewrite using `[Formalism.MainNotions.FormalGroupSystem.gam]`. Use `first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem nc_geom (p : ℕ) (hp : 2 ≤ p) :
     HasSum (fun e : ℕ => (((p : ℝ)) ^ (2 * e + 1))⁻¹) (Formalism.MainNotions.FormalGroupSystem.gam p) := by
@@ -36,7 +36,7 @@ theorem nc_geom (p : ℕ) (hp : 2 ≤ p) :
   exact this
 
 /- English proof (translation)
-Use `(nc_geom p hp).mul_left c` as an intermediate fact. Simplify `this` using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nc_geomc (p : ℕ) (hp : 2 ≤ p) (c : ℝ) :
     HasSum (fun e : ℕ => c / ((p : ℝ)) ^ (2 * e + 1)) (c * Formalism.MainNotions.FormalGroupSystem.gam p) := by
@@ -44,7 +44,7 @@ theorem nc_geomc (p : ℕ) (hp : 2 ≤ p) (c : ℝ) :
   simpa [div_eq_mul_inv] using this
 
 /- English proof (translation)
-Break down `le_total a b with h | h` into its components or cases. Rewrite using `[min_eq_left h]`. Rewrite using `[min_eq_right h, abs_of_nonneg hb, abs_of_nonneg (hb.trans h)]`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nc_abs_min_le (a b : ℝ) (hb : 0 ≤ b) : |min a b| ≤ |a| := by
   rcases le_total a b with h | h
@@ -53,11 +53,11 @@ theorem nc_abs_min_le (a b : ℝ) (hb : 0 ≤ b) : |min a b| ≤ |a| := by
     exact h
 
 /- English proof (translation)
-Establish `hg : Summable (fun e : ℕ => |y| / ((p : ℝ)) ^ (2 * e + 1))` using `(nc_geomc p hp |y|).summable`. Establish `hb : ∀ e : ℕ, ‖min (y / ((p : ℝ)) ^ (2 * e + 1)) (z e)‖ ≤ |y| / ((p : ℝ)) ^ (2 * e + 1)`. Introduce `e`. Establish `hq : (0 : ℝ) < ((p : ℝ)) ^ (2 * e + 1)`. Establish `: (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (show 0 < p by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Check the signs of the components of the expression. Rewrite using `[Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation. Use `first`. Consider the case `exact Summable.of_norm_bounded hg hb`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Summable.of_norm_bounded _ hg hb`.
+A detailed English derivation is pending.
 -/
 theorem nc_summable_min (p : ℕ) (hp : 2 ≤ p) (y : ℝ) (z : ℕ → ℝ) (hz : ∀ e, 0 ≤ z e) :
     Summable fun e : ℕ => min (y / ((p : ℝ)) ^ (2 * e + 1)) (z e) := by
@@ -75,11 +75,11 @@ theorem nc_summable_min (p : ℕ) (hp : 2 ≤ p) (y : ℝ) (z : ℕ → ℝ) (hz
     | exact Summable.of_norm_bounded _ hg hb
 
 /- English proof (translation)
-Establish `hs1` using `nc_geomc p hp y`. Establish `hs2` using `nc_geomc p hp yu`. Establish `m1` using `nc_summable_min p hp y z (fun e => (hz0 e).trans (hz e))`. Establish `m2` using `nc_summable_min p hp yu zu hz0`. Rewrite using `[mul_comm (Formalism.MainNotions.FormalGroupSystem.gam p) y, mul_comm (Formalism.MainNotions.FormalGroupSystem.gam p) yu, ← hs1.tsum_eq, ← hs2.tsum_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs1.summable.tsum_sub m1, ← hs2.summable.tsum_sub m2]`. Use `(hs1.summable.sub m1).tsum_le_tsum (fun e => ?_) (hs2.summable.sub m2)` and prove the remaining obligations. Establish `hq : (0 : ℝ) < ((p : ℝ)) ^ (2 * e + 1)`. Establish `: (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (show 0 < p by omega)`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `ha : y / ((p : ℝ)) ^ (2 * e + 1) ≤ yu / ((p : ℝ)) ^ (2 * e + 1)` using `div_le_div_of_nonneg_right hy hq.le`. Establish `hze` using `hz e`. Simplify using `only [Pi.sub_apply, min_def]`. Apply the tactic sequence `split_ifs <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nc_min (p : ℕ) (hp : 2 ≤ p) (y yu : ℝ) (z zu : ℕ → ℝ) (hy : y ≤ yu) (hz : ∀ e, zu e ≤ z e)
     (hz0 : ∀ e, 0 ≤ zu e) :
@@ -101,21 +101,15 @@ theorem nc_min (p : ℕ) (hp : 2 ≤ p) (y yu : ℝ) (z zu : ℕ → ℝ) (hy : 
   split_ifs <;> linarith
 
 /- English proof (translation)
-Establish `hq : ∀ e : ℕ, (0 : ℝ) < ((p : ℝ)) ^ (2 * e + 1)`. Introduce `e`. Establish `: (0 : ℝ) < (p : ℝ)` using `by exact_mod_cast (show 0 < p by omega)`. Check the signs of the components of the expression. Establish `hS` using `(nc_geomc p hp yu).summable`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hR : Summable (fun e : ℕ => if exu e then 0 else max (yu / ((p : ℝ)) ^ (2 * e + 1) - zu e) 0)`. Use `Summable.of_nonneg_of_le (fun e => ?_) (fun e => ?_) hS` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `le_max_right _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ yu / ((p : ℝ)) ^ (2 * e + 1)` using `div_nonneg hyu (hq e).le`. Establish `h2` using `hz0 e`. Use `split_ifs`. Conclude with `h1`. Conclude with `max_le (by linarith) h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLs : Summable (fun e : ℕ => if ex e then 0 else max 0 (y / ((p : ℝ)) ^ (2 * e + 1) - z e))`. Use `Summable.of_nonneg_of_le (fun e => ?_) (fun e => ?_) hS` and prove the remaining obligations. Use `split_ifs`. Conclude with `le_rfl`. Conclude with `le_max_left _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 0 ≤ yu / ((p : ℝ)) ^ (2 * e + 1)` using `div_nonneg hyu (hq e).le`. Establish `h3 : y / ((p : ℝ)) ^ (2 * e + 1) ≤ yu / ((p : ℝ)) ^ (2 * e + 1)` using `div_le_div_of_nonneg_right hy (hq e).le`. Establish `h2` using `hz0 e`. Establish `h4` using `hz e`. Use `split_ifs`.
-
-Conclude with `h1`. Conclude with `max_le h1 (by linarith)`. Use `hLs.tsum_le_tsum (fun e => ?_) hR` and prove the remaining obligations. Establish `h3 : y / ((p : ℝ)) ^ (2 * e + 1) ≤ yu / ((p : ℝ)) ^ (2 * e + 1)` using `div_le_div_of_nonneg_right hy (hq e).le`. Establish `h4` using `hz e`.
-
-Distinguish the cases in `he : ex e`. Rewrite using `[if_pos he] split_ifs`. Conclude with `le_rfl`. Conclude with `le_max_right _ _`. Establish `heu : ¬ exu e` using `fun h => he (hex e h)`.
-
-Rewrite using `[if_neg he, if_neg heu]`. Conclude with `max_le (le_max_right _ _) (le_trans (by linarith) (le_max_left _ _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nc_pos (p : ℕ) (hp : 2 ≤ p) (y yu : ℝ) (z zu : ℕ → ℝ) (ex exu : ℕ → Prop) [DecidablePred ex]
     [DecidablePred exu] (hy : y ≤ yu) (hyu : 0 ≤ yu) (hz : ∀ e, zu e ≤ z e) (hz0 : ∀ e, 0 ≤ zu e)
@@ -164,11 +158,11 @@ theorem nc_pos (p : ℕ) (hp : 2 ≤ p) (y yu : ℝ) (z zu : ℕ → ℝ) (ex ex
 variable {n' k1 : ℕ}
 
 /- English proof (translation)
-Unfold `gB`. Establish `hg0 : 0 ≤ Formalism.MainNotions.FormalGroupSystem.gam p` using `(nc_geom p hp).nonneg fun e => by positivity`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_filter_add_sum_filter_not TT IsOddPos, ← Finset.sum_filter_add_sum_filter_not TT IsOddPos (fun s => Formalism.MainNotions.FormalGroupSystem.gam p * (al TT lam0 s : ℝ))]`. Establish `hA : ∑ s ∈ TT.filter IsOddPos, (Formalism.MainNotions.FormalGroupSystem.gam p * ya s - ∑' e : ℕ, min (ya s / ((p : ℝ)) ^ (2 * e + 1)) (zc (Formalism.MainNotions.G.posAdd s (2 * e + 1)))) ≤ ∑ s ∈ TT.filter IsOddPos, (Formalism.MainNotions.FormalGroupSystem.gam p * (al TT lam0 s : …`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `s hs`. Conclude with `nc_min p hp _ _ _ _ (h1 s (Finset.mem_filter.1 hs).1) (fun e => h2 _) (fun e => by exact_mod_cast h3 _)`. Establish `hB : ∑ s ∈ TT.filter (fun s => ¬ IsOddPos s), Formalism.MainNotions.FormalGroupSystem.gam p * ya s ≤ ∑ s ∈ TT.filter (fun s => ¬ IsOddPos s), Formalism.MainNotions.FormalGroupSystem.gam p * (al TT lam0 s : ℝ)`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (h1 s (Finset.mem_filter.1 hs).1) hg0`. Rewrite `hA` using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nc_gB_ge (p t : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ) (j : ℕ)
     (hp : 2 ≤ p) (ya zc : Fin n' → ℝ) (dlv : ℝ) (h1 : ∀ s ∈ TT, ya s ≤ al TT lam0 s)
@@ -198,9 +192,9 @@ theorem nc_gB_ge (p t : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 +
   linarith
 
 /- English proof (translation)
-Unfold `gA`. Establish `hA : ∑ s ∈ TT, ∑' e : ℕ, (if ex s e then 0 else max 0 (ya s / ((p : ℝ)) ^ (2 * e + 1) - zc (Formalism.MainNotions.G.posAdd s (2 * e + 1)))) ≤ ∑ s ∈ TT, ∑' e : ℕ, (if 2 * e + 1 ∈ dSet TT s then 0 else max ((al TT lam0 s : ℝ) / (p : ℝ) ^ (2 * e + 1) - (cap t TT lam0 w j (Formalism. …`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `s hs`. Conclude with `nc_pos p hp _ _ _ _ (ex s) (fun e => 2 * e + 1 ∈ dSet TT s) (h1 s hs) (by exact_mod_cast h0 s) (fun e => h2 _) (fun e => by exact_mod_cast h3 _) (hex s hs)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem nc_gA_ge (p t : ℕ) (TT : Finset (Fin n')) (lam0 : Fin n' → Fin (k1 + 1) → ℤ) (w : ℕ → Fin n' → ℤ) (j : ℕ)
     (hp : 2 ≤ p) (ya zc : Fin n' → ℝ) (dlv : ℝ) (ex : Fin n' → ℕ → Prop) [∀ s, DecidablePred (ex s)]

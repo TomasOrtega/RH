@@ -13,7 +13,7 @@ structure nm_Hyp {K : Type*} [Field K] (R : Subring K) (p : ℕ) : Prop where
 variable {K : Type*} [Field K] {R : Subring K} {p : ℕ}
 
 /- English proof (translation)
-Introduce `h0`. Apply `h.pinv` to reduce the goal to its premises. Rewrite using `[h0, inv_zero]`. Conclude with `R.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nm_p_ne (h : nm_Hyp R p) : (p : K) ≠ 0 := by
   intro h0
@@ -22,9 +22,9 @@ theorem nm_p_ne (h : nm_Hyp R p) : (p : K) ≠ 0 := by
   exact R.zero_mem
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hyR`. Establish `hy0 : y ≠ 0` using `fun h0 => hyR (h0 ▸ R.zero_mem)`. Establish `hinv : y⁻¹ ∈ R` using `(h.val y).resolve_left hyR`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Establish `e : y ^ (m + 1) * y⁻¹ ^ m = y`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[pow_succ', mul_assoc, ← mul_pow, mul_inv_cancel₀ hy0, one_pow, mul_one]`. Conclude with `hyR (e ▸ R.mul_mem hy (R.pow_mem hinv _))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nm_root (h : nm_Hyp R p) {y : K} {k : ℕ} (hk : 0 < k) (hy : y ^ k ∈ R) : y ∈ R := by
   by_contra hyR
@@ -36,11 +36,11 @@ theorem nm_root (h : nm_Hyp R p) {y : K} {k : ℕ} (hk : 0 < k) (hy : y ^ k ∈ 
   exact hyR (e ▸ R.mul_mem hy (R.pow_mem hinv _))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hk`. Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Apply `h.pinv` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩ : ∃ n : ℕ, k = -((n : ℤ) + 1)` from `⟨(-k - 1).toNat, by omega⟩`. Substitute `hn` using the available equality. Establish `e : (p : K) ^ (-((n : ℤ) + 1)) = ((p : K)⁻¹) ^ (n + 1)`. Rewrite using `[zpow_neg, show ((n : ℤ) + 1) = ((n + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast, inv_pow]`. Conclude with `nm_root h (Nat.succ_pos n) (e ▸ hk)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hk lift k to ℕ using hk`. Rewrite using `[zpow_natCast]`. Conclude with `R.pow_mem (natCast_mem R p) k`.
+A detailed English derivation is pending.
 -/
 theorem nm_zpow_mem_iff (h : nm_Hyp R p) (k : ℤ) : (p : K) ^ k ∈ R ↔ 0 ≤ k := by
   constructor
@@ -69,7 +69,7 @@ def nm_v (x : K) : ℝ := sSup (rationalLowerBounds R p x)
 variable {R p}
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `(h.rk x⁻¹ (inv_ne_zero hx)).1`. Use `⟨_, -(n : ℤ), 1, one_pos, rfl, ?_⟩` and prove the remaining obligations. Unfold `nm_P`. Rewrite using `[pow_one, neg_neg, zpow_natCast, mul_comm]`. Rewrite `hn` using `[div_inv_eq_mul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nm_T_nonempty (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : (rationalLowerBounds R p x).Nonempty := by
   obtain ⟨n, hn⟩ := (h.rk x⁻¹ (inv_ne_zero hx)).1
@@ -79,11 +79,11 @@ theorem nm_T_nonempty (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : (rationalLowerBo
   rwa [div_inv_eq_mul] at hn
 
 /- English proof (translation)
-Establish `hp0` using `nm_p_ne h`. Take `⟨n, hn⟩` from `(h.rk x hx).1`. Use `⟨n, ?_⟩` and prove the remaining obligations. Introduce and unpack `q ⟨a, b, hb, rfl, hP⟩`. Establish `hxb : x ^ b ≠ 0` using `pow_ne_zero _ hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : (p : K) ^ ((n : ℤ) * b - a) = ((p : K) ^ n / x) ^ b * (x ^ b * (p : K) ^ (-a))`. Rewrite using `[sub_eq_add_neg, zpow_add₀ hp0, ← Nat.cast_mul, zpow_natCast, div_pow, ← pow_mul, div_eq_mul_inv, mul_assoc, inv_mul_cancel_left₀ hxb]`. Establish `hmem : (p : K) ^ ((n : ℤ) * b - a) ∈ R` using `e ▸ R.mul_mem (R.pow_mem hn b) hP`. Establish `h0` using `(nm_zpow_mem_iff h _).1 hmem`. Establish `hbR : (0 : ℝ) < b` using `by exact_mod_cast hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_le_iff₀ hbR]`. Establish `: (a : ℤ) ≤ (n : ℤ) * b` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nm_T_bdd (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : BddAbove (rationalLowerBounds R p x) := by
   have hp0 := nm_p_ne h
@@ -102,7 +102,7 @@ theorem nm_T_bdd (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : BddAbove (rationalLow
   exact_mod_cast this
 
 /- English proof (translation)
-Unfold `nm_v`. Conclude with `le_csSup (nm_T_bdd h hx) ⟨a, b, hb, rfl, hP⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nm_le_v (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) {a : ℤ} {b : ℕ} (hb : 0 < b) (hP : nm_P R p x a b) :
     (a : ℝ) / b ≤ nm_v R p x := by
@@ -110,9 +110,9 @@ theorem nm_le_v (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) {a : ℤ} {b : ℕ} (hb 
   exact le_csSup (nm_T_bdd h hx) ⟨a, b, hb, rfl, hP⟩
 
 /- English proof (translation)
-Break down `h.val (x ^ b * (p : K) ^ (-a)) with h1 | h1` into its components or cases. Conclude with `Or.inl h1`. Use `right`. Unfold `nm_P`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, inv_pow, neg_neg, zpow_neg, inv_inv]`.
+A detailed English derivation is pending.
 -/
 theorem nm_dich (h : nm_Hyp R p) (x : K) (a : ℤ) (b : ℕ) : nm_P R p x a b ∨ nm_P R p x⁻¹ (-a) b := by
   rcases h.val (x ^ b * (p : K) ^ (-a)) with h1 | h1
@@ -123,11 +123,11 @@ theorem nm_dich (h : nm_Hyp R p) (x : K) (a : ℤ) (b : ℕ) : nm_P R p x a b �
     rw [mul_inv, inv_pow, neg_neg, zpow_neg, inv_inv]
 
 /- English proof (translation)
-Unfold `nm_P at *`. Establish `e : (x * y) ^ (b * b') * (p : K) ^ (-(a * b' + a' * b)) = (x ^ b * (p : K) ^ (-a)) ^ b' * (y ^ b' * (p : K) ^ (-a')) ^ b`. Rewrite using `[mul_pow, mul_pow, mul_pow, ← pow_mul, ← pow_mul, ← zpow_natCast ((p : K) ^ (-a)) b', ← zpow_natCast ((p : K) ^ (-a')) b, ← zpow_mul, ← zpow_mul, mul_comm b' b]`. Establish `: (p : K) ^ (-(a * b' + a' * b)) = (p : K) ^ (-a * b') * (p : K) ^ (-a' * b)`. Rewrite using `[← zpow_add₀ (nm_p_ne h)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `R.mul_mem (R.pow_mem hx _) (R.pow_mem hy _)`.
+A detailed English derivation is pending.
 -/
 theorem nm_P_mul (h : nm_Hyp R p) {x y : K} {a a' : ℤ} {b b' : ℕ} (hx : nm_P R p x a b) (hy : nm_P R p y a' b') :
     nm_P R p (x * y) (a * b' + a' * b) (b * b') := by
@@ -144,13 +144,13 @@ theorem nm_P_mul (h : nm_Hyp R p) {x y : K} {a a' : ℤ} {b b' : ℕ} (hx : nm_P
   exact R.mul_mem (R.pow_mem hx _) (R.pow_mem hy _)
 
 /- English proof (translation)
-Establish `hxy : x * y ≠ 0` using `mul_ne_zero hx hy`. Establish `h1 : ∀ q' ∈ rationalLowerBounds R p y, nm_v R p x ≤ nm_v R p (x * y) - q'`. Introduce and unpack `q' ⟨a', b', hb', rfl, hP'⟩`. Apply `csSup_le (nm_T_nonempty h hx)` to reduce the goal to its premises. Introduce and unpack `q ⟨a, b, hb, rfl, hP⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Establish `h2` using `nm_le_v h hxy (Nat.mul_pos hb hb') (nm_P_mul h hP hP')`. Establish `hbR : (b : ℝ) ≠ 0` using `by exact_mod_cast hb.ne'`. Establish `hbR' : (b' : ℝ) ≠ 0` using `by exact_mod_cast hb'.ne'`. Establish `e : (((a * b' + a' * b : ℤ) : ℝ)) / ((b * b' : ℕ) : ℝ) = (a : ℝ) / b + (a' : ℝ) / b'`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `h2` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : nm_v R p y ≤ nm_v R p (x * y) - nm_v R p x`. Apply `csSup_le (nm_T_nonempty h hy)` to reduce the goal to its premises.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q' hq'`. Use `h1 q' hq'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nm_v_mul_ge (h : nm_Hyp R p) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     nm_v R p x + nm_v R p y ≤ nm_v R p (x * y) := by
@@ -175,11 +175,11 @@ theorem nm_v_mul_ge (h : nm_Hyp R p) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
   linarith
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `csSup_le (nm_T_nonempty h one_ne_zero)` to reduce the goal to its premises. Introduce and unpack `q ⟨a, b, hb, rfl, hP⟩`. Unfold `nm_P at hP`. Rewrite `hP` using `[one_pow, one_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(nm_zpow_mem_iff h _).1 hP` as an intermediate fact. Establish `ha : (a : ℝ) ≤ 0`. Establish `: a ≤ 0` using `by linarith`. Conclude with `this` after adjusting the coercions. Conclude with `div_nonpos_of_nonpos_of_nonneg ha (Nat.cast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `nm_le_v h (one_ne_zero (α := K)) (a := 0) (b := 1) Nat.one_pos (by` as an intermediate fact. Unfold `nm_P`. Simplify using `only [pow_one, neg_zero, zpow_zero, mul_one]`. Conclude with `R.one_mem)`. Simplify using `using this`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nm_v_one (h : nm_Hyp R p) : nm_v R p (1 : K) = 0 := by
   apply le_antisymm
@@ -199,15 +199,15 @@ theorem nm_v_one (h : nm_Hyp R p) : nm_v R p (1 : K) = 0 := by
     simpa using this
 
 /- English proof (translation)
-Establish `hx'` using `inv_ne_zero hx`. Establish `h1 : nm_v R p x + nm_v R p x⁻¹ ≤ 0`. Use `nm_v_mul_ge h hx hx'` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hx, nm_v_one h]`. Then use the resulting hypothesis. Establish `h2 : 0 ≤ nm_v R p x + nm_v R p x⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hneg`. Establish `hlt : nm_v R p x < -nm_v R p x⁻¹` using `by linarith`. Take `⟨q, hq1, hq2⟩` from `exists_rat_btwn hlt`. Establish `hq : (q : ℝ) = (q.num : ℝ) / (q.den : ℝ)`. Conclude with `(Rat.num_div_den q).symm` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `nm_dich h x q.num q.den with h3 | h3` into its components or cases. Use `nm_le_v h hx q.den_pos h3` as an intermediate fact. Rewrite `this` using `[← hq]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `nm_le_v h hx' q.den_pos h3` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (((-q.num : ℤ)) : ℝ) / (q.den : ℝ) = -(q : ℝ)`. Rewrite using `[hq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nm_v_inv (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : nm_v R p x⁻¹ = -nm_v R p x := by
   have hx' := inv_ne_zero hx
@@ -232,7 +232,7 @@ theorem nm_v_inv (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : nm_v R p x⁻¹ = -nm
   linarith
 
 /- English proof (translation)
-Apply `le_antisymm _ (nm_v_mul_ge h hx hy)` to reduce the goal to its premises. Establish `h1` using `nm_v_mul_ge h (mul_ne_zero hx hy) (inv_ne_zero hy)`. Rewrite `h1` using `[mul_assoc, mul_inv_cancel₀ hy, mul_one, nm_v_inv h hy]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nm_v_mul (h : nm_Hyp R p) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
     nm_v R p (x * y) = nm_v R p x + nm_v R p y := by
@@ -242,7 +242,7 @@ theorem nm_v_mul (h : nm_Hyp R p) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) :
   linarith
 
 /- English proof (translation)
-Use `nm_le_v h hx (a := 0) (b := 1) Nat.one_pos (by` as an intermediate fact. Unfold `nm_P`. Simplify using `only [pow_one, neg_zero, zpow_zero, mul_one]`. Conclude with `hxR)`. Simplify using `using this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nm_v_nonneg (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) (hxR : x ∈ R) : 0 ≤ nm_v R p x := by
   have := nm_le_v h hx (a := 0) (b := 1) Nat.one_pos (by
@@ -252,13 +252,11 @@ theorem nm_v_nonneg (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) (hxR : x ∈ R) : 0 
   simpa using this
 
 /- English proof (translation)
-Establish `hx : x ≠ 0` using `fun h0 => hxR (h0 ▸ R.zero_mem)`. Take `⟨n, hn⟩` from `(h.rk x⁻¹ (inv_ne_zero hx)).2 (by rwa [inv_inv])`. Establish `hn0 : 0 < n`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Rewrite `hn` using `[h0, pow_zero, one_div]`. Conclude with `h.pinv hn`. Conclude with `h0`. Establish `h1` using `nm_le_v h (inv_ne_zero hx) (a := 1) (b := n) hn0 (by`. Unfold `nm_P`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[zpow_neg_one, ← div_eq_mul_inv]`. Conclude with `hn)`. Rewrite `h1` using `[nm_v_inv h hx]`. Establish `: (0 : ℝ) < ((1 : ℤ) : ℝ) / (n : ℝ)`. Establish `: (0 : ℝ) < n` using `by exact_mod_cast hn0`.
-
-Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nm_v_neg (h : nm_Hyp R p) {x : K} (hxR : x ∉ R) : nm_v R p x < 0 := by
   have hx : x ≠ 0 := fun h0 => hxR (h0 ▸ R.zero_mem)
@@ -280,7 +278,7 @@ theorem nm_v_neg (h : nm_Hyp R p) {x : K} (hxR : x ∉ R) : nm_v R p x < 0 := by
   linarith
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h0 => by by_contra hxR exact absurd (nm_v_neg h hxR) (not_lt.2 h0), nm_v_nonneg h hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem nm_v_nonneg_iff (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : 0 ≤ nm_v R p x ↔ x ∈ R :=
   ⟨fun h0 => by
@@ -288,11 +286,11 @@ theorem nm_v_nonneg_iff (h : nm_Hyp R p) {x : K} (hx : x ≠ 0) : 0 ≤ nm_v R p
     exact absurd (nm_v_neg h hxR) (not_lt.2 h0), nm_v_nonneg h hx⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `csSup_le (nm_T_nonempty h (nm_p_ne h))` to reduce the goal to its premises. Introduce and unpack `q ⟨a, b, hb, rfl, hP⟩`. Unfold `nm_P at hP`. Rewrite `hP` using `[← zpow_natCast, ← zpow_add₀ (nm_p_ne h)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(nm_zpow_mem_iff h _).1 hP` as an intermediate fact. Establish `hb' : (0 : ℝ) < b` using `by exact_mod_cast hb`. Rewrite using `[div_le_one hb']`. Establish `: a ≤ b` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `nm_le_v h (nm_p_ne h) (a := 1) (b := 1) Nat.one_pos (by` as an intermediate fact. Unfold `nm_P`. Rewrite using `[pow_one, zpow_neg_one, mul_inv_cancel₀ (nm_p_ne h)]`. Conclude with `R.one_mem)`. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem nm_v_p (h : nm_Hyp R p) : nm_v R p (p : K) = 1 := by
   apply le_antisymm
@@ -312,11 +310,11 @@ theorem nm_v_p (h : nm_Hyp R p) : nm_v R p (p : K) = 1 := by
     simpa using this
 
 /- English proof (translation)
-Establish `key : ∀ {x y : K}, x ≠ 0 → y ≠ 0 → x + y ≠ 0 → x / y ∈ R → nm_v R p y ≤ nm_v R p (x + y)`. Introduce `x y _ hy hxy hR`. Establish `e : x + y = y * (1 + x / y)` using `by field_simp; ring`. Establish `h1 : 1 + x / y ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hxy` to reduce the goal to its premises. Rewrite using `[e, h0, mul_zero]`. Rewrite using `[e, nm_v_mul h hy h1]`. Use `nm_v_nonneg h h1 (R.add_mem R.one_mem hR)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Break down `h.val (x / y) with h1 | h1` into its components or cases. Conclude with `le_trans (min_le_right _ _) (key hx hy hxy h1)`. Rewrite `h1` using `[inv_div]`. Rewrite `hxy`, the goal using `[add_comm]`. Conclude with `le_trans (min_le_left _ _) (key hy hx hxy h1)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nm_v_add (h : nm_Hyp R p) {x y : K} (hx : x ≠ 0) (hy : y ≠ 0) (hxy : x + y ≠ 0) :
     min (nm_v R p x) (nm_v R p y) ≤ nm_v R p (x + y) := by

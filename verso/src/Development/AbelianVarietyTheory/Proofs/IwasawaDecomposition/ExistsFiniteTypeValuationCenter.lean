@@ -7,9 +7,9 @@ open IsLocalRing GlobalTheory.Toroidal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one`. Consider the case `exact _root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one`. Consider the case `(apply _root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FractionalParts.exists_finiteType_subalgebra_valuation_le_one ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valuativeChart_exists_fg_subalgebra :
     ∀ (A B k : Type) [CommRing A] [CommRing B] [IsLocalRing B] [Algebra A B]

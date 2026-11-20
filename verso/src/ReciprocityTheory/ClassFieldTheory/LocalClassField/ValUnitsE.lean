@@ -10,7 +10,7 @@ noncomputable section
 variable (p : ℕ) [Fact p.Prime] {K L : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Establish `hK` using `finDim_of_le p hL h`. Take `⟨f, -, hf, -⟩` from `qK_le_pow_finrank p K hK hL h`. Rewrite `hf` using `[qK_eq_pow_fK p L hL, qK_eq_pow_fK p K hK, ← pow_mul]`. Conclude with `⟨f, Nat.pow_right_injective (Fact.out : p.Prime).two_le hf⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem fK_dvd (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) : fK p K ∣ fK p L := by
   have hK := finDim_of_le p hL h
@@ -19,21 +19,21 @@ theorem fK_dvd (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) : fK p K ∣ fK 
   exact ⟨f, Nat.pow_right_injective (Fact.out : p.Prime).two_le hf⟩
 
 /- English proof (translation)
-The claim follows from `(Nat.div_mul_cancel (fK_dvd p hL h)).symm`.
+A detailed English derivation is pending.
 -/
 theorem fK_eq_mul (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) : fK p L = fLK p K L * fK p K :=
   (Nat.div_mul_cancel (fK_dvd p hL h)).symm
 
 /- English proof (translation)
-Rewrite using `[qK_eq_pow_fK p L hL, qK_eq_pow_fK p K (finDim_of_le p hL h), ← pow_mul, fK_eq_mul p hL h, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qK_eq_pow_fLK (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) : qK p L = qK p K ^ fLK p K L := by
   rw [qK_eq_pow_fK p L hL, qK_eq_pow_fK p K (finDim_of_le p hL h), ← pow_mul, fK_eq_mul p hL h, mul_comm]
 
 /- English proof (translation)
-Establish `hK` using `finDim_of_le p hL h`. Establish `h1` using `finrank_eq_degLK_mul h hL`. Rewrite `h1` using `[← eK_mul_fK p L hL, ← eK_mul_fK p K hK, eK_eq_mul p hL h, fK_eq_mul p hL h]`. Establish `h2 : (eLK p K L * fLK p K L) * (eK p K * fK p K) = degLK p K L * (eK p K * fK p K)`. Rewrite using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.mul_pos (eK_pos p K hK) (fK_pos p K hK)) h2`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eLK_mul_fLK_eq_degLK (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
     eLK p K L * fLK p K L = degLK p K L := by
@@ -45,7 +45,7 @@ theorem eLK_mul_fLK_eq_degLK (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) :
   exact Nat.eq_of_mul_eq_mul_right (Nat.mul_pos (eK_pos p K hK) (fK_pos p K hK)) h2
 
 /- English proof (translation)
-The claim follows from `eK_eq_of_norm p le_Kur fun x hx => by obtain ⟨n, hn, hxn⟩ := (mem_Kur_iff hK x).1 hx exact norm_Kn p K hK hn hxn`.
+A detailed English derivation is pending.
 -/
 theorem eK_Kur (hK : FiniteDimensional ℚ_[p] K) : eK p (MaximalUnramifiedExtension p K) = eK p K :=
   eK_eq_of_norm p le_Kur fun x hx => by
@@ -61,7 +61,7 @@ Both sides reduce to the same expression.
 theorem toLayer_val [(subG p K L).Normal] (x : multOf p L) : (toLayer p x : (layer p K L).V).1 = x.1 := rfl
 
 /- English proof (translation)
-Establish `hex : ∃ f : (layer p K L).V →+ ℤ, ∀ x, (f x : ℝ) = eK p L * vbar p x.1` using `⟨(vOn p L).comp { toFun := fun x => ⟨x.1, layer_val_mem h x⟩ map_zero' := rfl map_add' := fun _ _ => rfl }, fun x => vOn_spec p L _⟩`. Unfold `vLayerMap`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vLayerMap_spec (h : K ≤ L) [(subG p K L).Normal] (x : (layer p K L).V) :
     (vLayerMap p K L x : ℝ) = eK p L * vbar p x.1 := by
@@ -75,7 +75,7 @@ theorem vLayerMap_spec (h : K ≤ L) [(subG p K L).Normal] (x : (layer p K L).V)
   exact hex.choose_spec x
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p h, vOn_spec, toLayer_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem vLayerMap_toLayer (h : K ≤ L) [(subG p K L).Normal] (x : multOf p L) :
     vLayerMap p K L (toLayer p x) = vOn p L x := by
@@ -83,7 +83,7 @@ theorem vLayerMap_toLayer (h : K ≤ L) [(subG p K L).Normal] (x : multOf p L) :
   rw [vLayerMap_spec p h, vOn_spec, toLayer_val]
 
 /- English proof (translation)
-Introduce `n` and use `by obtain ⟨x, hx⟩ := vOn_surjective_of_pos p L he n exact ⟨toLayer p x, by rw [vLayerMap_toLayer p h, hx]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem vLayerMap_surjective (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Normal] :
     Function.Surjective (vLayerMap p K L) := fun n => by
@@ -91,7 +91,7 @@ theorem vLayerMap_surjective (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Norma
   exact ⟨toLayer p x, by rw [vLayerMap_toLayer p h, hx]⟩
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `congrArg (fun z : (layer p K L).V => z.1) hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem layerUIncl_injective [(subG p K L).Normal] : Function.Injective (layerUIncl p K L).u := by
   intro x y hxy
@@ -100,9 +100,9 @@ theorem layerUIncl_injective [(subG p K L).Normal] : Function.Injective (layerUI
   exact congrArg (fun z : (layer p K L).V => z.1) hxy
 
 /- English proof (translation)
-Establish `he' : (eK p L : ℝ) ≠ 0` using `by positivity`. Rewrite using `[← Int.cast_inj (α := ℝ), vLayerMap_spec p h, Int.cast_zero, mul_eq_zero, or_iff_right he']`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨⟨⟨x.1, hx⟩, fun g => Subtype.ext (x.2 g)⟩, Subtype.ext rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.1.2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem vLayerMap_eq_zero_iff (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Normal]
     (x : (layer p K L).V) : vLayerMap p K L x = 0 ↔ x ∈ LinearMap.range (layerUIncl p K L).u := by
@@ -115,13 +115,13 @@ theorem vLayerMap_eq_zero_iff (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Norm
     exact y.1.2
 
 /- English proof (translation)
-The claim follows from `vLayerMap_surjective p he h`.
+A detailed English derivation is pending.
 -/
 theorem vLayer_surjective (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Normal] :
     Function.Surjective (vLayer p K L).u := vLayerMap_surjective p he h
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker]`. Conclude with `vLayerMap_eq_zero_iff p he h x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_vLayer (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Normal] :
     LinearMap.ker (vLayer p K L).u = LinearMap.range (layerUIncl p K L).u := by
@@ -130,7 +130,7 @@ theorem ker_vLayer (he : 0 < eK p L) (h : K ≤ L) [(subG p K L).Normal] :
   exact vLayerMap_eq_zero_iff p he h x
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[vLayerMap_spec p h, Int.cast_mul, vOn_spec, eK_eq_mul p hL h]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vLayerMap_of_mem (hL : FiniteDimensional ℚ_[p] L) (h : K ≤ L) [(subG p K L).Normal]
     (x : (layer p K L).V) (hx : x.1 ∈ multOf p K) :

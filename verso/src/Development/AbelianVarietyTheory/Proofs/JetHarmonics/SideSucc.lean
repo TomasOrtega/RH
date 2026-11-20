@@ -5,13 +5,13 @@ open Finset
 namespace GlobalTheory.CloudProd
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h1 : (1 + c) / max (δ 0) 1 ≤ 1 + c` using `div_le_self (by linarith) (le_max_right _ _)`. Simplify using `only [zero_add, Finset.prod_range_one, Nat.cast_zero, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ]`. Establish `ih'` using `ih (fun j hj => h j (by omega))`. Establish `hm : (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Establish `hd` using `h (m + 1) (by omega)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hd ⊢`. Establish `hmax : (1 + c) * ((m : ℝ) + 1) ≤ max (δ (m + 1)) 1`. Use `le_trans ?_ (le_trans hd (le_max_left _ _))` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `hpos : (0 : ℝ) < max (δ (m + 1)) 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hf : (1 + c) / max (δ (m + 1)) 1 ≤ 1 / ((m : ℝ) + 1)`. Rewrite using `[div_le_div_iff₀ hpos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf0 : 0 ≤ 1 + (1 + c) / max (δ (m + 1)) 1` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem side_succ (c : ℝ) (δ : ℕ → ℝ) (hc : 1 ≤ c) (n : ℕ)
     (h : ∀ j : ℕ, j < n + 1 → 2 * c * (j : ℝ) ≤ δ j) :
@@ -41,9 +41,9 @@ theorem side_succ (c : ℝ) (δ : ℕ → ℝ) (hc : 1 ≤ c) (n : ℕ)
       _ = (2 + c) * ((m : ℝ) + 1 + 1) := by field_simp
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simp`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ m`. Use `(side_succ c δ hc m h).trans ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem side (c : ℝ) (δ : ℕ → ℝ) (hc : 1 ≤ c) (n : ℕ)
     (h : ∀ j : ℕ, j < n → 2 * c * (j : ℝ) ≤ δ j) :
@@ -56,23 +56,21 @@ theorem side (c : ℝ) (δ : ℕ → ℝ) (hc : 1 ≤ c) (n : ℕ)
     nlinarith
 
 /- English proof (translation)
-Introduce `k c y lam hk hc hstep`. Establish `mono : ∀ s d : ℕ, 1 ≤ s → s + d ≤ k - 1 → lam (s + d) + 2 * c * (d : ℝ) ≤ lam s`. Introduce `s d hs`. Proceed by induction on `d with`. Consider the case `zero => intro _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ e ih`. Introduce `hle`. Establish `h1` using `ih (by omega)`. Establish `h2` using `hstep (s + e) (by omega) (by omega)`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← add_assoc]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hup, hlo⟩ : ∃ p : ℕ, p ≤ k - 1 ∧ (p ≠ 0 → y < lam p) ∧ (p + 1 ≤ k - 1 → lam (p + 1) ≤ y) := by`. Use `⟨Nat.findGreatest (fun s => y < lam s) (k - 1), Nat.findGreatest_le _, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Conclude with `Nat.findGreatest_of_ne_zero (P := fun s => y < lam s) rfl h0`. Introduce `h1`. Conclude with `not_lt.mp (Nat.findGreatest_is_greatest (P := fun s => y < lam s) (Nat.lt_succ_self _) h1)`. Establish `hI : Finset.Icc 1 (k - 1) = Finset.Ico 1 k`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `s`. Simplify using `only [Finset.mem_Icc, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, ← Finset.prod_Ico_consecutive _ (show 1 ≤ p + 1 by omega) (show p + 1 ≤ k by omega), Finset.prod_Ico_eq_prod_range, Finset.prod_Ico_eq_prod_range, Nat.add_sub_cancel, ← Finset.prod_range_reflect]`. Establish `hA` using `side c (fun j => |lam (1 + (p - 1 - j)) - y|) hc p (by`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j hj`. Establish `h1` using `mono (1 + (p - 1 - j)) j (by omega) (by omega)`. Rewrite `h1` using `[show 1 + (p - 1 - j) + j = p by omega]`. Establish `h2` using `hup (by omega)`. Use `le_trans ?_ (le_abs_self _)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `linarith)`. Establish `hB` using `side c (fun j => |lam (p + 1 + j) - y|) hc (k - (p + 1)) (by`. Introduce `j hj`. Establish `h1` using `mono (p + 1) j (by omega) (by omega)`. Establish `h2` using `hlo (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `le_trans ?_ (neg_le_abs _)` and prove the remaining obligations. Use the proof step `linarith)`. Establish `e1 : ((p : ℝ) + 1) ≤ k` using `by exact_mod_cast (show p + 1 ≤ k by omega)`. Establish `e2 : (((k - (p + 1) : ℕ) : ℝ) + 1) ≤ k`. Conclude with `(show k - (p + 1) + 1 ≤ k by omega)` after adjusting the coercions.
-
-Establish `hc2 : (0 : ℝ) ≤ 2 + c` using `by linarith`. Rewrite using `[sq]`. Use `mul_le_mul (hA.trans (mul_le_mul_of_nonneg_left e1 hc2)) (hB.trans (mul_le_mul_of_nonneg_left e2 hc2)) ?_ (by positivity)` and prove the remaining obligations. Conclude with `Finset.prod_nonneg (fun j _ => by positivity)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : ℕ) (c y : ℝ) (lam : ℕ → ℝ), 1 ≤ k → 1 ≤ c → (∀ s : ℕ, 1 ≤ s → s + 1 ≤ k - 1 → lam (s + 1) + 2 * c ≤ lam s) → ∏ s ∈ Finset.Icc 1 (k - 1), (1 + (1 + c) / max |lam s - y| 1) ≤ ((2 + c) * (k : ℝ)) ^ 2 := by
   intro k c y lam hk hc hstep

@@ -6,25 +6,23 @@ open NumberField
 namespace GlobalTheory.IdxTensor
 
 /- English proof (translation)
-Use `set T : Set F := {d | ∃ y : Fin p → Fin p → F, (∀ i, y i ∈ S) ∧ d = (Matrix.of y).det} with hT`. Apply `le_antisymm` to reduce the goal to its premises. Unfold `dets`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `d ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `key : ∀ s : Finset (Fin p), ∀ y : Fin p → Fin p → F, (∀ i, y i ∈ Submodule.span (𝓞 F) S) → (∀ i, i ∉ s → y i ∈ S) → (Matrix.of y).det ∈ Submodule.span (𝓞 F) T`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `y _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨y, fun i => h i (Finset.notMem_empty i), rfl⟩`. Consider the case `insert a s ha ih`. Introduce `y hy hs`. Establish `upd : ∀ v, Matrix.of (Function.update y a v) = Matrix.updateRow (Matrix.of y) a v` using `fun v => rfl`. Establish `hv : ∀ v ∈ Submodule.span (𝓞 F) S, (Matrix.updateRow (Matrix.of y) a v).det ∈ Submodule.span (𝓞 F) T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Rewrite using `[← upd]`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `using Submodule.subset_span hx`. Simplify `hy i` using `[Function.update_of_ne h]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `i hi`. Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using `using hx`. Simplify `hs i (by simp [h, hi])` using `[Function.update_of_ne h]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[Matrix.det_eq_zero_of_row_eq_zero a (by intro j; simp)]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x z _ _ hx hz`. Rewrite using `[Matrix.det_updateRow_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hx hz`. Consider the case `smul r x _ hx`. Rewrite using `[← algebraMap_smul F r x, Matrix.det_updateRow_smul, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ r hx`. Use `hv (y a) (hy a)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite `this` using `[← upd, Function.update_eq_self]`. Then use the resulting hypothesis. Conclude with `key Finset.univ y hy (by simp)`. Unfold `dets`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `d ⟨y, hy, rfl⟩`.
-
-Conclude with `⟨y, fun i => Submodule.subset_span (hy i), rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dets_span_eq {F : Type} [Field F] [NumberField F] (p : ℕ) (S : Set (Fin p → F)) :
     GlobalTheory.IdxTensor.dets F p (Submodule.span (𝓞 F) S) =

@@ -17,14 +17,14 @@ section Local
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Rewrite using `[levelaf_valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valued_int {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) (b : 𝓞 K) :
     Valued.v (algebraMap K (P.adicCompletion K) (algebraMap (𝓞 K) K b)) = P.intValuation b := by
   rw [levelaf_valued_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]
 
 /- English proof (translation)
-The claim follows from `le_antisymm (P.intValuation_le_one b) (not_lt.1 fun h' => h ((P.intValuation_lt_one_iff_mem b).1 h'))`.
+A detailed English derivation is pending.
 -/
 theorem intValuation_eq_one {K : Type} [Field K] [NumberField K] (P : HeightOneSpectrum (𝓞 K)) {b : 𝓞 K}
     (h : b ∉ P.asIdeal) : P.intValuation b = 1 :=
@@ -35,7 +35,7 @@ variable (F E) in
 abbrev toId : (RInt F E)ˣ →* (AfE F E)ˣ := Units.map (RInt F E).subtype.toMonoidHom
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨⟨x, hx.1⟩, ⟨(x⁻¹ : (AfE F E)ˣ), hx.2⟩, Subtype.ext x.mul_inv, Subtype.ext x.inv_mul⟩, Units.ext rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_toId_eq {x : (AfE F E)ˣ} (hx : x ∈ intU F E) : ∃ u, toId F E u = x :=
   ⟨⟨⟨x, hx.1⟩, ⟨(x⁻¹ : (AfE F E)ˣ), hx.2⟩, Subtype.ext x.mul_inv, Subtype.ext x.inv_mul⟩, Units.ext rfl⟩
@@ -46,9 +46,9 @@ variable {ι : AfE F E →+* FiniteAdeleRing (𝓞 E) E}
 include hι
 
 /- English proof (translation)
-Establish `h1 : y ∈ suppAt E v ↔ ∀ v', v' ≠ v → prV (E` using `E) v' (y : AfE F E) = 1 := by`. Simplify using `only [suppAt, Subgroup.mem_iInf, MonoidHom.mem_ker, Units.ext_iff]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Simplify using `only [prV_eq_one_iff hι]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h P hP => h _ hP P rfl, fun h v' hv P hP => h P (hP ▸ hv)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_suppAt (v : HeightOneSpectrum (𝓞 F)) (y : (AfE F E)ˣ) :
     y ∈ suppAt E v ↔ ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) ≠ v → ι (y : AfE F E) P = 1 := by
@@ -62,15 +62,15 @@ theorem mem_suppAt (v : HeightOneSpectrum (𝓞 F)) (y : (AfE F E)ˣ) :
 end
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `exists_toAd F E`. Introduce and unpack `x ⟨h1, h2⟩`. Take `⟨u, rfl⟩` from `exists_toId_eq h1`. Establish `hN0 : (N : E) ≠ 0`. Introduce and unpack `h`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `rfl : N = 0` from `by exact_mod_cast h`. Conclude with `hN (by simp)`. Use `⟨u, (mem_kerRed _ u).2 (Ideal.mem_span_singleton'.2 ⟨⟨((N : E)⁻¹ ⊗ₜ[F] 1 : AfE F E) * (((u : RInt F E) - 1 : RInt F E) : AfE F E), mem_int_of_map hι fun P => ?_⟩, Subtype.ext ?_⟩), rfl⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_tmul_one hι, afsplit_mul_apply, HeightOneSpectrum.mem_adicCompletionIntegers]`. Distinguish the cases in `hP : P.under (𝓞 F) = v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hNP : (N : 𝓞 E) ∉ P.asIdeal` using `fun h => hN (by`. Rewrite using `[← hP]`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 F) (𝓞 E) N ∈ P.asIdeal`. Rewrite using `[map_natCast])` and apply the resulting hypothesis. Establish `h3 : Valued.v ((algebraMap E (FiniteAdeleRing (𝓞 E) E) (N : E)⁻¹) P) = 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v (algebraMap E (P.adicCompletion E) (N : E)⁻¹) = 1`. Rewrite using `[map_inv₀, map_inv₀, ← map_natCast (algebraMap (𝓞 E) E), valued_int, intValuation_eq_one P hNP, inv_one]`. Rewrite using `[map_mul, h3, one_mul]`. Conclude with `map_mem_int hι ((u : RInt F E) - 1).2 P`. Establish `h3 : ι ((u : RInt F E) : AfE F E) P = 1` using `(mem_suppAt hι v _).1 h2 P hP`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[AddSubgroupClass.coe_sub, map_sub, afsplit_sub_apply, h3, OneMemClass.coe_one, map_one, afsplit_one_apply, sub_self, mul_zero, map_zero]`. Conclude with `zero_le_one`. Apply `map_injective hι` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, SubringClass.coe_natCast, map_mul, map_mul, map_natCast, map_tmul_one hι, mul_right_comm, ← map_natCast (algebraMap E (FiniteAdeleRing (𝓞 E) E)), ← map_mul, inv_mul_cancel₀ hN0, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inertAt_le_congN {v : HeightOneSpectrum (𝓞 F)} {N : ℕ} (hN : (N : 𝓞 F) ∉ v.asIdeal) :
     inertAt E v ≤ congN F E N := by
@@ -105,7 +105,7 @@ theorem inertAt_le_congN {v : HeightOneSpectrum (𝓞 F)} {N : ℕ} (hN : (N : �
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Take `⟨N, hN, hk⟩` from `h`. Establish `h0 : (Ideal.span {(N : 𝓞 F)}) ≠ ⊥` using `by simpa using hN.ne'`. Use `(Ideal.finite_factors h0).subset fun v hv => Ideal.dvd_span_singleton.2 (by_contra fun hn => hv ?_)` and prove the remaining obligations. Conclude with `(inertAt_le_congN hn).trans hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_Qprime {ξ : Chr F E L} (h : ξ ∈ openChr F E L) : (Qprime ξ).Finite := by
   obtain ⟨N, hN, hk⟩ := h
@@ -120,14 +120,14 @@ section Res
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {L : Type} [Field L]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h ▸ rfl, fun h => HeightOneSpectrum.ext h⟩`.
+Supply the required witnesses or components.
 -/
 theorem under_eq_iff {P : HeightOneSpectrum (𝓞 E)} {v : HeightOneSpectrum (𝓞 F)} :
     P.under (𝓞 F) = v ↔ P.asIdeal.under (𝓞 F) = v.asIdeal :=
   ⟨fun h => h ▸ rfl, fun h => HeightOneSpectrum.ext h⟩
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective (a : 𝓞 E ⧸ P.asIdeal)`. Use `P.isPrime` as an intermediate fact. Conclude with `⟨b, hb, fun h => a.ne_zero (hb ▸ Ideal.Quotient.eq_zero_iff_mem.2 h)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_rep {P : HeightOneSpectrum (𝓞 E)} (a : (𝓞 E ⧸ P.asIdeal)ˣ) :
     ∃ b : 𝓞 E, Ideal.Quotient.mk P.asIdeal b = a ∧ b ∉ P.asIdeal := by
@@ -144,13 +144,13 @@ open Formalism.L2.Col
 variable {X : Fields}
 
 /- English proof (translation)
-Set `c : X.E →ₐ[X.F] X.E` to `{ starRingEnd X.E with commutes' := hX.star_F }`. Set `M : IntermediateField X.F X.E` to `(AlgHom.equalizer c (AlgHom.id _ _)).toIntermediateField fun x hx => by`. Establish `hx' : star x = x` using `hx`. Express the relevant statement in the definitionally equal form `star x⁻¹ = x⁻¹`. Rewrite using `[star_inv₀, hx']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hM : M = ⊥`. Use `IntermediateField.isSimpleOrder_of_finrank_prime X.F X.E (by rw [hX.rankE]; exact Nat.prime_two)` as an intermediate fact. Use `(eq_bot_or_eq_top M).resolve_right fun e => ?_` and prove the remaining obligations. Take `⟨τ⟩` from `Fintype.card_pos_iff.1 hX.f_pos`. Use `hX.emb_ne τ τ (RingHom.ext fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : x ∈ M` using `e ▸ IntermediateField.mem_top`. Conclude with `congrArg (X.emb τ) (show star x = x from h1).symm`. Establish `h2 : (a : X.E) ∈ M` using `congrArg (fun z : 𝓞 X.E => (z : X.E)) ha`. Rewrite `h2` using `[hM, IntermediateField.mem_bot]`. Take `⟨x, hx⟩` from `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3 : IsIntegral ℤ x`. Rewrite using `[← isIntegral_algebraMap_iff (algebraMap X.F X.E).injective, hx]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Conclude with `⟨⟨x, h3⟩, RingOfIntegers.ext hx⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_conj_eq (hX : X.Ok) {a : 𝓞 X.E} (ha : X.conjO a = a) :
     ∃ r : 𝓞 X.F, algebraMap (𝓞 X.F) (𝓞 X.E) r = a := by
@@ -176,7 +176,7 @@ theorem exists_of_conj_eq (hX : X.Ok) {a : 𝓞 X.E} (ha : X.conjO a = a) :
   exact ⟨⟨x, h3⟩, RingOfIntegers.ext hx⟩
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (star_star (a : X.E))`.
+A detailed English derivation is pending.
 -/
 theorem conjO_conjO (a : 𝓞 X.E) : X.conjO (X.conjO a) = a := RingOfIntegers.ext (star_star (a : X.E))
 
@@ -186,9 +186,9 @@ def qdatOf (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E))
 variable {S : Set ℕ} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
 
 /- English proof (translation)
-Establish `hf` using `finite_Qprime (ξ := (ξ : Chr X.F X.E X.K)) ξ.2.1.1.1.1.2`. Rewrite using `[QE, dif_pos hf, Finset.mem_image]`. Simplify using `only [Set.Finite.mem_toFinset]`. Use `⟨?_, fun h => ⟨_, h.1, h.2⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨v, hv, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[under_eq_iff.2 (hsel v)]`. Conclude with `⟨hv, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_QE_iff (hsel : IsSel X sel) (ξ : Tup X.F X.E X.K S) {P : HeightOneSpectrum (𝓞 X.E)} :
     P ∈ QE sel (ξ : Chr X.F X.E X.K) ↔

@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.LocDualInt
 
 /- English proof (translation)
-The claim follows from `(LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O) φ).map_smul c v`.
+A detailed English derivation is pending.
 -/
 theorem linK_smul {O : Type} [CommRing O] [IsDomain O] {V : Type} [AddCommGroup V] [Module O V]
     [Module (FractionRing O) V] [IsScalarTower O (FractionRing O) V]
@@ -18,31 +18,27 @@ theorem linK_smul {O : Type} [CommRing O] [IsDomain O] {V : Type} [AddCommGroup 
   (LinearMap.extendScalarsOfIsLocalization (nonZeroDivisors O) (FractionRing O) φ).map_smul c v
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ D ϖ hϖ n f hf`. Use `set π : (FractionRing O) := algebraMap O (FractionRing O) ϖ with hπ`. Establish `hπ0 : π ≠ 0`. Rewrite using `[hπ]`. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective O (FractionRing O))).2 hϖ.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpn : ∀ y : VT', ϖ ^ n • y = π ^ n • y` using `fun y => by`. Rewrite using `[← algebraMap_smul (FractionRing O) (ϖ ^ n) y, map_pow]`. Establish `hpnT : ∀ y : VT, ϖ ^ n • y = π ^ n • y` using `fun y => by`. Rewrite using `[← algebraMap_smul (FractionRing O) (ϖ ^ n) y, map_pow]`. Use `set f' : VT' := (π ^ n)⁻¹ • (f : VT') with hf'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hff' : ϖ ^ n • f' = f`. Rewrite using `[hpn, hf', smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hπ0), one_smul]`. Use `clear_value f' π`. Establish `hnot : f' ∉ D.T'`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `hf` to reduce the goal to its premises. Use `mem_powSub.2 ⟨⟨f', h⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[hff']`. Establish `hnot' : ¬ ∀ x ∈ D.T, D.bT x f' ∈ (1 : Submodule O (FractionRing O))` using `hnot`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hnot'`. Take `⟨v, hvT, hu⟩` from `hnot'`. Use `set u := D.bT v f' with hu_def`. Establish `hu0 : u ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hu` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`. Establish `hnotint : ¬ IsLocalization.IsInteger O u`. Introduce and unpack `⟨o, ho⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu (Submodule.mem_one.2 ⟨o, ho⟩)`. Take `⟨w, hw⟩ : IsLocalization.IsInteger O u⁻¹` from `(ValuationRing.isInteger_or_isInteger O u).resolve_left hnotint`. Establish `hwnu : w ∉ nonunits O → False`. Introduce `h`. Rewrite `h` using `[mem_nonunits_iff, not_not]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Take `⟨w', hw'⟩` from `h`. Apply `hnotint` to reduce the goal to its premises. Use `⟨(w'⁻¹ : Oˣ), ?_⟩` and prove the remaining obligations. Establish `: algebraMap O (FractionRing O) (w' : O) * u = 1`. Rewrite using `[hw', hw, inv_mul_cancel₀ hu0]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : algebraMap O (FractionRing O) ((w'⁻¹ : Oˣ) : O) * algebraMap O (FractionRing O) (w' : O) = 1`. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hwm : w ∈ IsLocalRing.maximalIdeal O`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hwnu h`. Rewrite `hwm` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton']`. Take `⟨o, ho⟩` from `hwm`. Establish `hkey : D.bT (o • v) f' = π⁻¹`. Rewrite using `[D.bT.map_smul o v, LinearMap.smul_apply, Algebra.smul_def, ← hu_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1 : algebraMap O (FractionRing O) o * π = u⁻¹` using `by rw [hπ, ← map_mul, ho, hw]`. Establish `: algebraMap O (FractionRing O) o = u⁻¹ * π⁻¹`. Rewrite using `[← h1, mul_assoc, mul_inv_cancel₀ hπ0, mul_one]`. Rewrite using `[this, mul_comm u⁻¹, mul_assoc, inv_mul_cancel₀ hu0, mul_one]`. Use `⟨Submodule.Quotient.mk ((π ^ n)⁻¹ • (o • v)), ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Submodule.Quotient.mk_smul, hpnT, smul_smul, mul_inv_cancel₀ (pow_ne_zero _ hπ0), one_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `D.T.smul_mem o hvT`. Rewrite using `[pairKO_mk, ← hkey]`. Use `congr 1`. Establish `e1 : D.bT ((π ^ n)⁻¹ • (o • v)) f = (π ^ n)⁻¹ * D.bT (o • v) f` using `linK_smul (D.bT.flip (f : VT')) ((π ^ n)⁻¹) (o • v)`.
-
-Establish `e2 : D.bT (o • v) ((π ^ n)⁻¹ • (f : VT')) = (π ^ n)⁻¹ * D.bT (o • v) f` using `linK_smul (D.bT (o • v)) ((π ^ n)⁻¹) (f : VT')`. Rewrite using `[e1, hf', e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pairKO_eq_inv_unif : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O] [TopologicalSpace (FractionRing O)] [IsTopologicalAddGroup (FractionRing O)] [ContinuousSMul O (FractionRing O)] {VT VT' : Type} [AddCommGroup VT] [Module O VT] [TopologicalSpace VT] [IsTopologicalAddGroup VT] [ContinuousSMul O VT] [Module (FractionRing O) VT] [IsScalarTower O (FractionRing O) VT] [AddCommGroup VT'] [Module O VT'] [TopologicalSpace VT'] [IsTopologicalAddGroup VT'] [ContinuousSMul O VT'] [Module (FractionRing O) VT'] [IsScalarTower O (FractionRing O) VT'] {G : Type} [Group G] [TopologicalSpace G] (D : LatData O G VT VT'), ∀ ϖ : O, Irreducible ϖ → ∀ (n : ℕ) (f : ↥D.T'), f ∉ powSub (M := ↥D.T') ϖ n → ∃ x : VT ⧸ D.T, ϖ ^ n • x = 0 ∧ pairKO D.bT D.T x f = toKO O ((algebraMap O (FractionRing O) ϖ)⁻¹) := by
   intro O _ _ _ _ _ _ _ VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ G _ _ D ϖ hϖ n f hf

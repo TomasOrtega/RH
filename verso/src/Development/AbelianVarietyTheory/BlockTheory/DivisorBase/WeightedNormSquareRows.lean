@@ -46,7 +46,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) (Sg : Set ℕ)
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
@@ -56,25 +56,21 @@ theorem mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P 
   · simp at h
 
 /- English proof (translation)
-Establish `hM` using `mtildeOk W Ch sel (mu0 X.F X.E X.K Sg) hX P`. Establish `hC` using `colVal_eqv W hX u R.m (Pr.vT u) (rowSG Pr sel (mu0 X.F X.E X.K Sg))`. Establish `hT : ∀ Q : Pr.vT u, cO X.E (Pr.piT u) ∉ Q.1.asIdeal`. Introduce `Q hQ`. Establish `h1 : Pr.piT u ∈ Q.1.asIdeal` using `mem_of_mem_divs Q.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : X.conjO (Pr.piT u) ∈ Q.1.asIdeal` using `hQ`. Take `⟨a, b, hab⟩` from `hPr.piT_cop u`. Conclude with `Q.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h2)))`. Establish `hG : ∀ w : rowSG Pr sel (mu0 X.F X.E X.K Sg), Pr.piT u ∉ w.1.asIdeal` using `by classical`. Introduce `w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw1 : w.1 ∈ Pr.vGs`. Break down `Finset.mem_union.mp w.2 with h | h` into its components or cases. Conclude with `h`. Rewrite `h` using `[twistPrimes_trivialTuple_empty]`. Simplify using `at h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hg : ∃ i, ((Pr.g i : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal`. Break down `Finset.mem_union.mp hw1 with h | h` into its components or cases. Conclude with `⟨0, hPr.piG_norm 0 ▸ Ideal.mul_mem_left _ _ (mem_of_mem_divs h)⟩`. Conclude with `⟨1, hPr.piG_norm 1 ▸ Ideal.mul_mem_left _ _ (mem_of_mem_divs h)⟩`. Establish `hgg : ((Pr.cond * (Pr.g 0 * Pr.g 1) ^ 2 : ℕ) : 𝓞 X.E) ∈ w.1.asIdeal`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use `Ideal.mul_mem_left _ _ (Ideal.pow_mem_of_mem _ ?_ 2 two_pos)` and prove the remaining obligations. Take `⟨i, hi⟩` from `hg`. Use `fin_cases i`. Conclude with `Ideal.mul_mem_right _ _ hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.mul_mem_left _ _ hi`. Take `⟨c, hc⟩` from `hPr.piT_cong u`. Establish `h1 : Pr.piT u - 1 ∈ w.1.asIdeal` using `hc ▸ Ideal.mul_mem_right _ _ hgg`. Conclude with `w.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (by simpa using sub_mem hw h1))`. Establish `hroot : ∀ g : FormG (rowTy Ch sel (mu0 X.F X.E X.K Sg) P).inv, ∃ m : ℕ, 0 < m ∧ ((((rowTy Ch sel (mu0 X.F X.E X.K Sg) P).inv.chr g.2)⁻¹ : X.Kˣ) : X.K) ^ m = 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g`. Take `⟨m, hm, hc⟩` from `(rowTy Ch sel (mu0 X.F X.E X.K Sg) P).inv.chr_root g.2`. Conclude with `⟨m, hm, by rw [Units.val_inv_eq_inv_val, inv_pow, hc, inv_one]⟩`. Use `⟨hM.fin_orb, hM.fin_stab, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g d`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm, hc⟩` from `hroot g`. Establish `h1` using `DecoSet.tilH_smul (N_m_succ R) (ST := Pr.vT u) (FormG.incl _ g) d hT hG`. Conclude with `(congrArg _ h1).trans ((hC.nab_smul _ _).trans (map_root_smul _ _ hm hc).symm)`. Introduce `g d`. Take `⟨m, hm, hc⟩` from `hroot g`.
-
-Establish `h1` using `DecoSet.tilH_smul (N_m_succ R) (ST := Pr.vT u) (FormG.incl _ g) d hT hG`. Conclude with `(congrArg _ h1).trans ((hC.del_smul _ _).trans (map_root_smul _ _ hm hc).symm)`. Introduce `g x y`. Take `⟨m, hm, hc⟩` from `hroot g`. Use `show (colVal W u R.m (Pr.vT u) (rowSG Pr sel (mu0 X.F X.E X.K Sg))).pair (((((rowTy Ch sel (mu0 X.F X.E X.K Sg) P).inv.chr g.2)⁻¹ : X.Kˣ) : X.K) • _) (((((rowTy Ch sel (mu0 X.F X.E X.K Sg) P).inv.chr g.2)⁻¹ : X.Kˣ) : X.K) • _) = (colVal W u R.m (Pr.vT u) (rowSG Pr sel (mu0 X.F X. …`.
-
-Rewrite using `[LinearMap.map_smulₛₗ₂, map_smul, hC.inv, smul_smul]`. Use `show (star _ * _) • _ = _`. Rewrite using `[star_mul_root hX.conjK hm hc, one_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evOk (hX : X.Ok) (hPr : Pr.Ok) (P : LevFam X.E X.K R.r Pr.vGs) (u : Pr.Word) :
     (evGSD W Ch sel (mu0 X.F X.E X.K Sg) P u).Ok := by
@@ -152,7 +148,7 @@ def LastMapBound : Prop :=
   ∀ CT : ℝ, ∃ C₀ : ℝ, 1 ≤ C₀ ∧ ∀ C, C₀ ≤ C → LastMapBoundWith CT C
 
 /- English proof (translation)
-Unfold `Fields.f Ranks.f Ranks.n`. Rewrite using `[Fintype.card_congr pl, Fintype.card_prod, Fintype.card_bool, Formalism.HC.Frame.card_A]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_f (Nd : NumDatum) (X : Fields) (pl : X.Tau ≃ RPl Nd.R) : X.f = Nd.R.f := by
   unfold Fields.f Ranks.f Ranks.n

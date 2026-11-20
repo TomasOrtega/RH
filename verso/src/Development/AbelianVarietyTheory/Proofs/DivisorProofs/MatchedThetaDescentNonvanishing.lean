@@ -22,13 +22,13 @@ namespace GlobalTheory.ThKLevel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hA : ∀ u : AF F, u.2 = 0 → u • (mat l - 1) = 0` using `hl`. Establish `hB : ∀ u : AF F, evI F u = 0 → u • (mat k - 1) = 0` using `hk.1`. Set `u₁ : AF F` to `(1, 0)`. Set `u₂ : AF F` to `(0, 1)`. Establish `hsum : u₁ + u₂ = 1` using `Prod.ext (add_zero 1) (zero_add 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : u₁ • (mat l - 1) = 0` using `hA u₁ rfl`. Establish `h2 : u₂ • (mat k - 1) = 0` using `hB u₂ (by show (InfiniteAdeleRing.ringEquiv_mixedSpace F) 0 = 0; exact map_zero _)`. Establish `hA' : u₂ • (mat l - 1) = mat l - 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hAC : (mat l - 1) * (mat k - 1) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← hA', Matrix.smul_mul, ← Matrix.mul_smul, h2, Matrix.mul_zero]`. Establish `hCA : (mat k - 1) * (mat l - 1) = 0`. Rewrite using `[← hA', Matrix.mul_smul, ← Matrix.smul_mul, h2, Matrix.zero_mul]`. Establish `hm : mat l * mat k = mat k * mat l`. Establish `e1 : mat l * mat k = (mat l - 1) * (mat k - 1) + (mat l - 1) + (mat k - 1) + 1` using `by noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : mat k * mat l = (mat k - 1) * (mat l - 1) + (mat l - 1) + (mat k - 1) + 1` using `by noncomm_ring`. Rewrite using `[e1, e2, hAC, hCA]`. Conclude with `Subtype.ext (Units.ext hm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPt_comm_kInf {d : ℕ} {W : Spc F E d} (τ : ∀ w : InfinitePlace F, EmbOver E w)
     {l k : UA σ W.J} (hl : l ∈ GlobalTheory.ThKAdm.FinPt σ W) (hk : k ∈ KInf σ W τ) : l * k = k * l := by
@@ -59,13 +59,11 @@ namespace GlobalTheory.ThKLevel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Proceed by induction on `hg using Subgroup.closure_induction'' with`. Consider the case `mem x hx`. Take `⟨v, hv⟩` from `Set.mem_iUnion.1 hx`. Conclude with `hN v x hv`. Consider the case `inv_mem x hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `Set.mem_iUnion.1 hx`. Conclude with `hN v x⁻¹ (GlobalTheory.ThetaFacCompl.inv_mem_UAt _ hv)`. Consider the case `one`. Introduce `z hz`. Use `show (om' 1) z ∈ N`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_one]`. Conclude with `hz`. Consider the case `mul x y _ _ ihx ihy`. Introduce `z hz`. Establish `e : om' (1, x * y) z = om' (1, x) (om' (1, y) z)`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Rewrite using `[e]`. Conclude with `ihx _ (ihy _ hz)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closure_stable {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (om' : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : ∀ v : Pl F, ∀ h ∈ UAt σ W (evFin F v), ∀ x ∈ N, om' (1, h) x ∈ N) {g : UA σ W.J}
@@ -96,39 +94,37 @@ namespace GlobalTheory.ThKLevel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Set `π : UA σ W.J →* Module.End ℂ (Fn F n d)` to `om'.comp (MonoidHom.inr _ _)`. Establish `hπ : ∀ g x, π g x = om' (1, g) x` using `fun _ _ => rfl`. Establish `hGD : ∀ g ∈ Subgroup.closure (⋃ v : Pl F, UAt σ W (evFin F v)), ∀ x ∈ D, om' (1, g) x ∈ D` using `fun g hg => closure_stable om' D hstF hg`. Establish `hLD : ∀ l ∈ L, ∀ x ∈ D, π l x ∈ D`. Introduce `l hl x hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨s, hs, hsl⟩` from `hrep x hx`. Take `⟨g, hg, e⟩` from `hsl l hl`. Rewrite using `[hπ, e]`. Conclude with `hGD g (hs g hg) x hx`. Establish `hfin : ∀ x ∈ D, (Set.range fun l : L => π (l : UA σ W.J) x).Finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨s, -, hsl⟩` from `hrep x hx`. Use `(s.finite_toSet.image fun g => π g x).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Take `⟨g, hg, e⟩` from `hsl l l.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨g, hg, e.symm⟩`. Take `⟨P, hP1, hP2, hP3⟩` from `GlobalTheory.T.exists_averaging_projection (UA σ W.J) (Fn F n d) π L D hLD hfin`. Establish `hI0 : M.I om' 0 = 0`. Establish `e` using `hlin 0 D.zero_mem 0 D.zero_mem 1`. Simplify using `only [one_smul, add_zero] at e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(add_eq_left.1 e.symm)`. Establish `hIsmul : ∀ x ∈ D, ∀ c : ℂ, M.I om' (c • x) = c • M.I om' x`. Introduce `x hx c`. Establish `e` using `hlin 0 D.zero_mem x hx c`. Rewrite `e` using `[zero_add, hI0, zero_add]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hIadd : ∀ x ∈ D, ∀ y ∈ D, M.I om' (x + y) = M.I om' x + M.I om' y`. Introduce `x hx y hy`. Establish `e` using `hlin x hx y hy 1`. Rewrite `e` using `[one_smul, one_smul]`. Then use the resulting hypothesis. Establish `hIsum : ∀ (s : Finset (UA σ W.J)) (f : UA σ W.J → Fn F n d), (∀ g ∈ s, f g ∈ D) → M.I om' (∑ g ∈ s, f g) = ∑ g ∈ s, M.I om' (f g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s f hf`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hI0`. Consider the case `insert g s hgs ih`. Rewrite using `[Finset.sum_insert hgs, Finset.sum_insert hgs, hIadd _ (hf g (Finset.mem_insert_self g s)) _ (D.sum_mem fun i hi => hf i (Finset.mem_insert_of_mem hi)), ih fun i hi => hf i (Finset.mem_insert_of_mem hi)]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ x ∈ D, ∀ y ∈ D, Integrable (fun t => M.I om' x t * starRingEnd ℂ (M.I om' y t)) (μ.restrict 𝓕)`. Introduce `x hx y hy`. Establish `h1` using `hsq x hx 1`. Establish `h2` using `hsq y hy 1`. Simplify using `only [mul_one] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `h1.integrable_mul (p := 2) (q := 2) h2.star` as an intermediate fact. Simplify `this` using `[Pi.mul_def, Pi.star_def]`. Use `⟨P, hP1 Φ hLΦ, fun Ψ => hP1 (P Ψ) (hP2 Ψ), ?_, ?_, hP2, ?_⟩` and prove the remaining obligations. Introduce `x y`. Take `⟨s, f, -, hsL, hPx, hPy, hbij, hf⟩` from `hP3 x y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c : ℂ := (s.card : ℂ)⁻¹ with hc`. Establish `hcc : starRingEnd ℂ c = c` using `by simp [hc]`. Establish `hmem : ∀ g ∈ s, ∀ z : D, π g (z : Fn F n d) ∈ D` using `fun g hg z => hLD g (hsL g hg) _ z.2`. Establish `hterm : ∀ g ∈ s, ∫ t in 𝓕, M.I om' (π g (x : Fn F n d)) t * starRingEnd ℂ (M.I om' y t) ∂μ = ∫ t in 𝓕, M.I om' x t * starRingEnd ℂ (M.I om' (π (f g) (y : Fn F n d)) t) ∂μ`. Introduce `g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hy' : π g⁻¹ (y : Fn F n d) ∈ D` using `hLD _ (L.inv_mem (hsL g hg)) _ y.2`. Rewrite using `[← hf g hg, ← hrinv x x.2 _ hy' g]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[hπ, hπ, GlobalTheory.ThetaFacCompl.I_transl, GlobalTheory.ThetaFacCompl.I_transl, mul_inv_cancel_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hL : ∫ t in 𝓕, M.I om' ((P x : D) : Fn F n d) t * starRingEnd ℂ (M.I om' y t) ∂μ = c * ∑ g ∈ s, ∫ t in 𝓕, M.I om' (π g (x : Fn F n d)) t * starRingEnd ℂ (M.I om' y t) ∂μ`. Rewrite using `[hPx, hIsmul _ (D.sum_mem fun g hg => hmem g hg x), hIsum s _ fun g hg => hmem g hg x, ← integral_finsetSum s fun g hg => hint _ (hmem g hg x) _ y.2, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hR : ∫ t in 𝓕, M.I om' x t * starRingEnd ℂ (M.I om' ((P y : D) : Fn F n d) t) ∂μ = c * ∑ g ∈ s, ∫ t in 𝓕, M.I om' x t * starRingEnd ℂ (M.I om' (π g (y : Fn F n d)) t) ∂μ`. Rewrite using `[hPy, hIsmul _ (D.sum_mem fun g hg => hmem g hg y), hIsum s _ fun g hg => hmem g hg y, ← integral_finsetSum s fun g hg => hint _ x.2 _ (hmem g hg y), ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Simplify using `only [Pi.smul_apply, Finset.sum_apply, smul_eq_mul, map_mul, map_sum, hcc, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hL, hR, Finset.sum_congr rfl hterm]`. Use `congr 1`. Conclude with `Finset.sum_nbij f (fun a ha => hbij.mapsTo ha) hbij.injOn hbij.surjOn (fun _ _ => rfl)`.
+Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `N hN hND Ψ hΨ`. Take `⟨s, f, -, hsL, hPx, -⟩` from `hP3 Ψ Ψ`. Rewrite using `[hPx]`. Use `N.smul_mem _ (N.sum_mem fun g hg => ?_)` and prove the remaining obligations. Take `⟨s', hs', hsl⟩` from `hrep Ψ Ψ.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg', e⟩` from `hsl g (hsL g hg)`. Rewrite using `[hπ, e]`. Conclude with `closure_stable om' N hN.fin (hs' g' hg') _ hΨ`. Introduce `k hk Ψ Ψ' e`. Take `⟨s, f, -, hsL, hPx, hPy, -⟩` from `hP3 Ψ Ψ'`.
-
-Rewrite using `[hPy, hPx, e, map_smul, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[hπ, hπ, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, Prod.mk_mul_mk, one_mul, finPt_comm_kInf B.emb (hLfin (hsL g hg)) hk]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem average_core {n d : ℕ} {Y : Spc F E n} {W : Spc F E d} (B : Base F E) (M : Model σ Y W) (om' : Rep σ Y W)
     (D : Submodule ℂ (Fn F n d)) (μ : Measure (UA σ W.J)) (𝓕 : Set (UA σ W.J))
@@ -258,7 +254,7 @@ end GlobalTheory.ThKLevel
 namespace GlobalTheory.ThKLevel
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ`. Apply the tactic sequence `obtain ⟨L, hL, hLΦ, hrep⟩ := GlobalTheory.T.matched_triple_local_symmetry hKP F E σ B a a' G X om om' R Rf hM Φ Φ.2`. Take `⟨hstF, hstK⟩` from `GlobalTheory.T.matched_pair_theta_exists_data hKP F E σ B a a' G X om om' R Rf hM`. Conclude with `⟨L, hL, average_core B G.M' om' _ μ 𝓕 hstF hstK (GlobalTheory.T.matched_pair_theta_local_global hKP F E σ B a a' G X om om' R Rf hM) (GlobalTheory.T.matched_pair_theta_finite_places hKP F E σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕) (GlobalTheory.T.theta_lift_matched_vanishing hKP F …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem level_average : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ (μ : MeasureTheory.Measure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)) (𝓕 : Set (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J)), μ.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU σ G.W.J) 𝓕 μ → ∀ Φ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∃ L : Subgroup (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J), GlobalTheory.ThKAdm.IsLevel G.W L ∧ ∃ P : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) →ₗ[ℂ] ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), P Φ = Φ ∧ (∀ Ψ, P (P Ψ) = P Ψ) ∧ (∀ Ψ Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∫ x in 𝓕, G.M'.I om' ((P Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) x * starRingEnd ℂ (G.M'.I om' ((Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) x) ∂μ = ∫ x in 𝓕, G.M'.I om' ((Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) x * starRingEnd ℂ (G.M'.I om' ((P Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) x) ∂μ) ∧ (∀ N : Submodule ℂ (GlobalTheory.ThK.Fn F a' (a + a')), GlobalTheory.ThetaFac.WStable B om' (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) N → N ≤ (GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁) → ∀ Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ((Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) ∈ N → ((P Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) ∈ N) ∧ (∀ Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ∀ l ∈ L, om' (1, l) ((P Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) = ((P Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a'))) ∧ (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ G.W B.emb, ∀ Ψ Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁), ((Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) ((Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) → ((P Ψ' : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a')) = om' (1, k) ((P Ψ : ↥(GlobalTheory.ThK.PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁)) : GlobalTheory.ThK.Fn F a' (a + a'))) := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM μ 𝓕 hμ h𝓕 Φ

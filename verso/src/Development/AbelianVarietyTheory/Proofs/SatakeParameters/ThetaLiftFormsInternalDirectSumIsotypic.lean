@@ -21,27 +21,23 @@ namespace GlobalTheory.IsotSum
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i`. Establish `hR` using `complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `hpt : ∀ y : Fin (((R.toCx3 F).data F.cr false).dW i) → D.what₂.LL, (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i (Z.jW i y))`. Introduce `y`. Rewrite using `[Z.jW_read]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.Mem.LiftTheta.liftWeight_complexPoint_eq_twist R.toRealDat F.lv2 false i y).trans ?_` and prove the remaining obligations. Use `congr 1`. Establish `hnP : 0 < RealDat.nP F.lv2 false` using `RealDat.nP_pos (F := F.lv2) false`. Establish `hinj : Function.Injective (Y.mj.eW i)`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `d hd`. Establish `h1 : RealDat.nP F.lv2 false * ‖d‖ ^ 2 = 0` using `by rw [← Y.mj.eW_norm i d, hd]; simp`. Establish `h2 : ‖d‖ ^ 2 = 0`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hnP.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff (n := 2) (by norm_num) |>.1 h2)`. Establish `hw` using `(R.toCx3 F).principal_form_injective false hR.kForm hR.ewNorm (hR.h4pos.2.2 false) i`. Establish `hUT : ∀ p, Submodule.span ℂ ((fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _)) = (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i)`. Introduce `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `Submodule.eq_of_le_of_finrank_le` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨hy, LinearMap.mem_range_self _ _⟩`. Rewrite using `[← (R.toCx3 F).finrank_WpK F.cr false hR.h4pos hR.kForm hR.ewNorm hR.types0 hR.lifts0.1 hR.ratTh hR.liftHyp0.h3W hR.partsW i p]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(finrank_le_cpt A3.A.v0.embedding ((R.toCx3 F).w0C false i) hw (Submodule.span ℂ ((fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _))) ((R.toCx3 F).WpK false i p) (fun y hy => Submodule.subset_span ⟨y, hy, rfl⟩)).trans (Submodule.f …`. Set `outL : (R.toCx3 F).W i →ₛₗ[cj (twAt D.what₂.embLL A3.A.v0)] (R.HW i (sg0 D A3.A)).H` to `{ toFun := fun z => Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) z map_add' := fun a b => Tw.out_add (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) a b map_smul' := fun c a => Tw.out_smul (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i …`. Use `set S : Submodule ℂ (D.what₂.Mj ((i : ℕ) + 1)) := ⨆ p, Submodule.span ℂ ((Z.jW i) '' ((s0Of R F).Wp i p : Set (Fin ((s0Of R F).dW i) → D.what₂.LL))) with hS`. Establish `h5 : ∀ p, (Submodule.span ℂ ((fun y => (R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y)) '' ((R.toCx3 F).WpK false i p : Set _))).map outL ≤ S.map (Y.mj.eW i)`. Introduce `p`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨y, hy, rfl⟩, rfl⟩`. Use `Submodule.mem_map.2 ⟨Z.jW i y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(le_iSup (fun p => Submodule.span ℂ ((Z.jW i) '' ((s0Of R F).Wp i p : Set (Fin ((s0Of R F).dW i) → D.what₂.LL)))) p) (Submodule.subset_span ⟨y, hy, rfl⟩)`. Use `show Y.mj.eW i (Z.jW i y) = Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H) ((R.toCx3 F).w0C false i (cpt A3.A.v0.embedding y))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `(congrArg (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HW i (sg0 D A3.A)).H)) (hpt y)).symm`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hWS : Y.mj.eW i x ∈ R.toRealDat.WS F.lv2 false i (sg0 D A3.A)`. Rewrite using `[hH.aux.levelW false i (sg0 D A3.A), ← Y.mj.eW_range i]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.mem_range_self _ _`. Establish `hle : R.toRealDat.WS F.lv2 false i (sg0 D A3.A) ≤ Submodule.comap (Tw.mkL (twAt D.what₂.embLL A3.A.v0) (R.HW i (sg0 D A3.A)).H) (LinearMap.range ((R.toCx3 F).w0C false i))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `GlobalTheory.TwParts.mk_bC_mem_range R F i k`.
-
-Establish `h1 : Tw.mk (twAt D.what₂.embLL A3.A.v0) (Y.mj.eW i x) ∈ LinearMap.range ((R.toCx3 F).w0C false i)` using `hle hWS`. Rewrite `h1` using `[← (hR.partsW i).2]`. Establish `h4 : Y.mj.eW i x ∈ (⨆ p, (R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i)).map outL` using `Submodule.mem_map_of_mem (f := outL) h1`. Rewrite `h4` using `[Submodule.map_iSup]`. Establish `h6 : (⨆ p, ((R.toCx3 F).Wp i p ⊓ LinearMap.range ((R.toCx3 F).w0C false i)).map outL) ≤ S.map (Y.mj.eW i)` using `iSup_le fun p => (hUT p) ▸ h5 p`.
-
-Take `⟨x', hx', hxx⟩` from `h6 h4`. Rewrite using `[← hinj hxx]`. Conclude with `hx'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_all : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → ∀ (i : Fin D.R.m), (⨆ p, Submodule.span ℂ ((Z.jW i) '' ((s0Of R F).Wp i p : Set (Fin ((s0Of R F).dW i) → D.what₂.LL)))) = ⊤ := by
   intro _ _ _ _ D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH _ i
@@ -126,11 +122,9 @@ namespace GlobalTheory.IsotSum
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost hRk`. Take `⟨cOf, h1, -, -⟩` from `GlobalTheory.T.finiteTypes_via_full_heckeAlgebra_eigensystems hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hHost hRk`. Use `show Rows.IsotInternal D.what₂`. Introduce `j hj1 hjm`. Take `⟨i, rfl⟩ : ∃ i : Fin D.R.m, j = (i : ℕ) + 1` from `⟨⟨j - 1, by omega⟩, by simp; omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top` to reduce the goal to its premises. Conclude with `GlobalTheory.Mem.R3.IsotIndep.isot_iSupIndep hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hHost i`. Rewrite using `[eq_top_iff, ← span_all hW hDS hHC hCR D G Pl0 I0 T A3 Ks R F cG X0 Y Z hP hH hHost i]`. Use `iSup_le fun c => ?_` and prove the remaining obligations. Rewrite using `[← (h1 i c).2]`.
-
-Conclude with `iSup_le fun σ => le_iSup (fun σ => D.what₂.isot ((i : ℕ) + 1) σ) σ.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotInternal_of_read : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F → HostHyp D → Formalism.BasicNotions.Rows.IsotRank D.what₂ → Formalism.MainNotions.SumRepresentations.adm8 D := by
   intro hW hDS hHC hCR D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH hHost hRk

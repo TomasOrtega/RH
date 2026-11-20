@@ -7,20 +7,20 @@ namespace ReciprocityTheory.MultiplicativeHeights.ApproximationGraph
 open ComplexConjugate
 
 /- English proof (translation)
-Simplify using `[ReciprocityTheory.MultiplicativeHeights.jForm]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jForm_zero_left (p : ℕ) {r : ℕ} (y : Fin r → ℂ) : jForm p 0 y = 0 := by
   simp [ReciprocityTheory.MultiplicativeHeights.jForm]
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.MultiplicativeHeights.jForm, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 lemma jForm_add_left (p : ℕ) {r : ℕ} (x x' y : Fin r → ℂ) :
     jForm p (x + x') y = jForm p x y + jForm p x' y := by
   simp only [ReciprocityTheory.MultiplicativeHeights.jForm, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.MultiplicativeHeights.jForm, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma jForm_smul_left (p : ℕ) {r : ℕ} (c : ℂ) (x y : Fin r → ℂ) :
     jForm p (c • x) y = conj c * jForm p x y := by
@@ -28,7 +28,7 @@ lemma jForm_smul_left (p : ℕ) {r : ℕ} (c : ℂ) (x y : Fin r → ℂ) :
   exact Finset.sum_congr rfl fun k _ => by ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [jForm_zero_left]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, jForm_add_left, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma jForm_sum_left (p : ℕ) {r : ℕ} {ι : Type*} (s : Finset ι) (f : ι → Fin r → ℂ)
     (y : Fin r → ℂ) : jForm p (∑ j ∈ s, f j) y = ∑ j ∈ s, jForm p (f j) y := by
@@ -38,9 +38,9 @@ lemma jForm_sum_left (p : ℕ) {r : ℕ} {ι : Type*} (s : Finset ι) (f : ι �
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, jForm_add_left, ih]
 
 /- English proof (translation)
-Rewrite using `[jForm_sum_left]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[jForm_smul_left]`. Distinguish the cases in `hj : (j : ℕ) < p`. Rewrite using `[hy j hj, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw j (not_lt.mp hj), map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma jForm_span_zero (p : ℕ) {r : ℕ} (X : Fin r → Fin r → ℂ) (y : Fin r → ℂ)
     (hy : ∀ j : Fin r, (j : ℕ) < p → jForm p (X j) y = 0) (w : Fin r → ℂ)
@@ -53,11 +53,11 @@ lemma jForm_span_zero (p : ℕ) {r : ℕ} (X : Fin r → Fin r → ℂ) (y : Fin
   · rw [hw j (not_lt.mp hj), map_zero, zero_mul]
 
 /- English proof (translation)
-Take `⟨w, hw, hwb⟩` from `exists_graph_pos X hμ hρ hρ1 hX y`. Establish `h0 : ReciprocityTheory.MultiplicativeHeights.jForm p (∑ j, w j • X j) y = 0` using `jForm_span_zero p X y hy w hw`. Establish `hb` using `(graph_bound X hμ hρ hρ1 hX w hw).1`. Rewrite `hb` using `[hwb]`. Rewrite `h0` using `[jForm_eq, hwb, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg (fun z : ℂ => (RCLike.re z : ℝ)) h0`. Rewrite `h1` using `[inner_self_eq_norm_sq]`. Establish `h2 : ‖euc (posPart p y)‖ ^ 2 ≤ ‖euc (negPart p (∑ j, w j • X j))‖ * ‖euc (negPart p y)‖` using `h1 ▸ (RCLike.re_le_norm _).trans (norm_inner_le_norm _ _)`. Establish `hA` using `norm_nonneg (euc (posPart p y))`. Establish `hB` using `norm_nonneg (euc (negPart p y))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ‖euc (posPart p y)‖ ^ 2 ≤ ρ / 3 * ‖euc (posPart p y)‖ * ‖euc (negPart p y)‖` using `h2.trans (mul_le_mul_of_nonneg_right hb hB)`. Break down `hA.eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `mul_nonneg (div_nonneg hρ.le (by norm_num)) hB`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma pos_small_of_orth {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)
@@ -86,11 +86,11 @@ lemma pos_small_of_orth {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) 
   · nlinarith
 
 /- English proof (translation)
-Establish `hs` using `pos_small_of_orth X hμ hρ hρ1 hX y hy`. Rewrite using `[jForm_self, Complex.ofReal_re, posSq_eq, negSq_eq]`. Establish `hA` using `norm_nonneg (euc (posPart p y))`. Establish `hB` using `norm_nonneg (euc (negPart p y))`. Establish `hB0 : 0 < ‖euc (negPart p y)‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_le_of_ne hB fun h => hy0 ?_` and prove the remaining obligations. Establish `hA0 : ‖euc (posPart p y)‖ = 0` using `le_antisymm (by rw [← h, mul_zero] at hs; exact hs) hA`. Rewrite using `[← posPart_add_negPart p y, euc_eq_zero (norm_eq_zero.mp hA0), euc_eq_zero (norm_eq_zero.mp h.symm), add_zero]`. Establish `hk : ρ / 3 ≤ 1 / 3` using `by linarith`. Establish `hs' : ‖euc (posPart p y)‖ ≤ ‖euc (negPart p y)‖ / 3` using `hs.trans (by nlinarith)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[mul_le_mul hs' hs' hA (by linarith : (0 : ℝ) ≤ ‖euc (negPart p y)‖ / 3)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma approxGraph_two {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)
@@ -114,13 +114,13 @@ lemma approxGraph_two {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (h
   nlinarith [mul_le_mul hs' hs' hA (by linarith : (0 : ℝ) ≤ ‖euc (negPart p y)‖ / 3)]
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `hx`. Use `⟨(Pi.single j 1 : Fin r → ℂ), fun k hk => ?_, ?_⟩` and prove the remaining obligations. Establish `hkj : k ≠ j` using `fun h => by subst h; exact (not_lt.mpr hk) hj`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[hkj]`. Rewrite using `[Finset.sum_eq_single j (fun k _ hk => by simp [hk]) (by simp)]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, fun _ _ => rfl, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha, rfl⟩` from `hx`. Take `⟨b, hb, rfl⟩` from `hy`. Use `⟨a + b, fun j hj => by simp [ha j hj, hb j hj], ?_⟩` and prove the remaining obligations. Simplify using `[add_smul, Finset.sum_add_distrib]`. Consider the case `smul c x _ hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨a, ha, rfl⟩` from `hx`. Use `⟨c • a, fun j hj => by simp [ha j hj], ?_⟩` and prove the remaining obligations. Simplify using `[Finset.smul_sum, smul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_coeffs_of_mem_span_lemma {r p : ℕ} (X : Fin r → Fin r → ℂ) {u : Fin r → ℂ}
     (hu : u ∈ Submodule.span ℂ (X '' {j | (j : ℕ) < p})) :
@@ -145,15 +145,15 @@ private theorem exists_coeffs_of_mem_span_lemma {r p : ℕ} (X : Fin r → Fin r
     simp [Finset.smul_sum, smul_smul]
 
 /- English proof (translation)
-Take `⟨w, hw, hu⟩` from `exists_coeffs_of_mem_span_lemma X hvy`. Establish `hv : v = y + ∑ j, w j • X j` using `by rw [← hu]; abel`. Establish `h0 : ReciprocityTheory.MultiplicativeHeights.jForm p (∑ j, w j • X j) y = 0` using `jForm_span_zero p X y hy w hw`. Establish `hb` using `(graph_bound X hμ hρ hρ1 hX w hw).1`. Establish `hs` using `pos_small_of_orth X hμ hρ hρ1 hX y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[jForm_eq, sub_eq_zero]`. Establish `hre : RCLike.re (inner ℂ (euc (posPart p y)) (euc (posPart p (∑ j, w j • X j)))) = RCLike.re (inner ℂ (euc (negPart p y)) (euc (negPart p (∑ j, w j • X j))))`. Rewrite using `[inner_re_symm, h0, inner_re_symm]`. Establish `hI` using `(RCLike.abs_re_le_norm (inner ℂ (euc (negPart p y)) (euc (negPart p (∑ j, w j • X j))))).trans (norm_inner_le_norm _ _)`. Rewrite using `[jForm_self, Complex.norm_real, Real.norm_eq_abs, normSq_split p v, posSq_eq, posSq_eq, negSq_eq, negSq_eq, hv, posPart_add, negPart_add, euc_add, euc_add, norm_add_sq (𝕜 := ℂ), norm_add_sq (𝕜 := ℂ), hre]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPy` using `norm_nonneg (euc (posPart p y))`. Establish `hNy` using `norm_nonneg (euc (negPart p y))`. Establish `hPu` using `norm_nonneg (euc (posPart p (∑ j, w j • X j)))`. Establish `hNu` using `norm_nonneg (euc (negPart p (∑ j, w j • X j)))`. Establish `hk : ρ / 3 ≤ 1 / 3` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ‖euc (posPart p y)‖ ≤ ‖euc (negPart p y)‖ / 3` using `hs.trans (by nlinarith)`. Establish `hb' : ‖euc (negPart p (∑ j, w j • X j))‖ ≤ ‖euc (posPart p (∑ j, w j • X j))‖ / 3` using `hb.trans (by nlinarith)`. Establish `hI'` using `(abs_le.mp hI).1`. Establish `ha : ‖euc (posPart p y)‖ ^ 2 ≤ ‖euc (negPart p y)‖ ^ 2` using `by nlinarith`. Establish `hc : ‖euc (negPart p y)‖ * ‖euc (negPart p (∑ j, w j • X j))‖ ≤ ‖euc (negPart p y)‖ * (‖euc (posPart p (∑ j, w j • X j))‖ / 3)` using `mul_le_mul_of_nonneg_left hb' hNy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;>`. Use polynomial arithmetic with `[sq_nonneg (‖euc (posPart p (∑ j, w j • X j))‖ - 2 / 3 * ‖euc (negPart p y)‖), sq_nonneg ‖euc (posPart p y)‖, sq_nonneg ‖euc (negPart p (∑ j, w j • X j))‖, sq_nonneg ‖euc (negPart p y)‖]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma approxGraph_three {r p : ℕ} {μ ρ : ℝ} (X : Fin r → Fin r → ℂ) (hμ : 0 < μ) (hρ : 0 < ρ)
     (hρ1 : ρ ≤ 1)

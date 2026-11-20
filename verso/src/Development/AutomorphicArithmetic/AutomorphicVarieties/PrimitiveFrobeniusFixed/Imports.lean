@@ -4,17 +4,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Introduce `O V St _ _ _ S j J hJ hstep`. Establish `key : ∀ (n : ℕ) (s : St), J - j s ≤ n → Module.length O (S s) + j s ≤ J`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `s hs`. Distinguish the cases in `h : S s = ⊥`. Establish `h0 : Module.length O (S s) = 0`. Rewrite using `[h]`. Conclude with `Module.length_eq_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, zero_add]`. Conclude with `hJ s` after adjusting the coercions. Take `⟨s', h1, -⟩` from `hstep s h`. Use `hJ s'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ n ih`. Introduce `s hs`. Distinguish the cases in `h : S s = ⊥`. Establish `h0 : Module.length O (S s) = 0`. Rewrite using `[h]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.length_eq_zero`. Rewrite using `[h0, zero_add]`. Conclude with `hJ s` after adjusting the coercions. Take `⟨s', h1, h2⟩` from `hstep s h`. Use `hJ s'` as an intermediate fact.
-
-Conclude with `h2.trans (ih s' (by omega))`. Introduce `s`. Conclude with `key _ s le_rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.chain :
     ∀ (O V St : Type) [CommRing O] [AddCommGroup V] [Module O V] (S : St → Submodule O V) (j : St → ℕ) (J : ℕ), (∀ s, j s ≤ J) →

@@ -35,13 +35,13 @@ abbrev WithChN (𝒞 : FamClass) : FamClass :=
   fun Fm => 𝒞 Fm ∧ DGamDvdF Fm ∧ TameDistinctF Fm ∧ BoxesF Fm ∧ QDRowsF Fm ∧ Fm.CYL ≤ 9
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, J.dGamSmooth_of_dvd Fm h.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem withSm_of_withChN {𝒞 : FamClass} {eps : ℝ} (Fm : FamP eps) (h : WithChN 𝒞 Fm) : WithSm (WithChN 𝒞) Fm :=
   ⟨h, J.dGamSmooth_of_dvd Fm h.2.1⟩
 
 /- English proof (translation)
-Take `⟨ε0, h0, h⟩` from `h`. Use `⟨ε0, h0, fun eps he hle K => ?_⟩` and prove the remaining obligations. Take `⟨Fm, CH, C5, Cb, hc, hCH, hL, h5, hb, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13⟩` from `h eps he hle K`. Conclude with `⟨Fm, CH, C5, Cb, ⟨withSm_of_withChN Fm ⟨hc.1, a8, a10, a6, a7, a13⟩, hc.2⟩, hCH, hL, h5, hb, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem designChoices_upN {𝒞 : FamClass} {C0 : ℝ} {cT : ℝ → ℝ → ℝ} (h : DesignChoices (WithTw 𝒞) C0 cT) :
     DesignChoices (WithTw (WithSm (WithChN 𝒞))) C0 cT := by
@@ -54,19 +54,19 @@ theorem designChoices_upN {𝒞 : FamClass} {C0 : ℝ} {cT : ℝ → ℝ → ℝ
 abbrev D3 (C0 : ℝ) (𝒜 : FamClass) : FamClass := Des (WithChN 𝒜) C0
 
 /- English proof (translation)
-The claim follows from `h.1.1.1.1`.
+A detailed English derivation is pending.
 -/
 theorem d3_a {C0 : ℝ} {𝒜 : FamClass} {eps : ℝ} {Fm : FamP eps} (h : D3 C0 𝒜 Fm) : 𝒜 Fm := h.1.1.1.1
 
 /- English proof (translation)
-Apply the tactic sequence `have K : TransportedAlt := by constructor <;> exact 0`. Conclude with `⟨1, one_pos, fun _ _ hle => ⟨K, fun _ _ _ _ => hle⟩⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components.
 -/
 theorem closed_eps_le_one (𝒞 : FamClass) : Closed 𝒞 fun {eps} _ _ => eps ≤ 1 := by
   have K : TransportedAlt := by constructor <;> exact 0
   exact ⟨1, one_pos, fun _ _ hle => ⟨K, fun _ _ _ _ => hle⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha, h⟩` from `h`. Conclude with `⟨a, ha, fun e he hle => let ⟨K, hK⟩ := h e he hle; ⟨K, fun Fm CH hc hL => hK Fm CH hc hL hc⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem closed_of_mem {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ → Prop} (h : Closed 𝒞 fun Fm CH => 𝒞 Fm → P Fm CH) :
     Closed 𝒞 P := by
@@ -74,7 +74,7 @@ theorem closed_of_mem {𝒞 : FamClass} {P : ∀ {eps : ℝ}, FamP eps → ℝ �
   exact ⟨a, ha, fun e he hle => let ⟨K, hK⟩ := h e he hle; ⟨K, fun Fm CH hc hL => hK Fm CH hc hL hc⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨s.1, fun x hx h i => ⟨(s.2 x hx h i).T.toTiedDataS⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem tied_families_of_choice {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) : Formalism.L2.LinkedFamiliesLevelClass Fm :=
   ⟨s.1, fun x hx h i => ⟨(s.2 x hx h i).T.toTiedDataS⟩⟩
@@ -96,21 +96,21 @@ def Duty {eps : ℝ} (Fm : FamP eps) : Prop :=
   PageFix Fm ∧ PageWin Fm ∧ Formalism.MainNotions.DIV.Align.SmallFirstModulusBelowScale Fm ∧ TameDistinctF Fm ∧ ChosenWall Fm ∧ TupUsedF Fm ∧ TwAllF Fm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨tied_families_of_choice s, h.1⟩, h.2.2.1, h.2.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem class_duties_of_choice {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (h : Duty Fm) : Formalism.L2.LinkedFamiliesAligned Fm :=
   ⟨⟨tied_families_of_choice s, h.1⟩, h.2.2.1, h.2.2.2.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨s.tiedRec, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem class_of_record_of_choice {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm) (h : Formalism.L2.LinkedFamiliesAligned Fm) : Formalism.L2.LayerTwoFamilyClass Fm :=
   ⟨s.tiedRec, h⟩
 
 /- English proof (translation)
-Take `⟨x0, hχ⟩` from `hχ`. Use `⟨max (max x0 s.1) (Fm.x1 + 1), fun x hx i => ?_⟩` and prove the remaining obligations. Establish `h1 : Fm.x1 < x` using `by have := le_trans (le_max_right _ _) hx; linarith`. Establish `hs : s.1 ≤ x` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hx`. Establish `h0 : x0 ≤ x` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(s.2 x h1 hs i).T.theta.real, (s.2 x h1 hs i).T.cols, fun u => hχ x h1 hs h0 i u⟩`.
+Supply the required witnesses or components.
 -/
 theorem real_place_second_layer_conditions_of_choice {eps : ℝ} {Fm : FamP eps} (s : Formalism.L2.TSelF Fm)
     (hχ : ∃ x0 : ℝ, ∀ x (hx : Fm.x1 < x) (h : s.1 ≤ x), x0 ≤ x → ∀ (i : Fm.Ix x) u, ChiFin0 ((s.2 x hx h i).T.cols.forms u)) :
@@ -138,7 +138,7 @@ structure BridgeRest {eps : ℝ} (Fm : FamP eps) (Rw : Σ' x0 : ℝ, ∀ x, Fm.x
 open Formalism.L2.DIV in
 
 /- English proof (translation)
-The claim follows from `r.pkg adm2 := by obtain ⟨x0, a⟩ := a refine ⟨max x0 (Fm.x1 + 1), fun x hx i => a x (le_trans (le_max_left _ _) hx) ?_ i⟩ have := le_trans (le_max_right _ _) hx linarith cut := r.cut c3 := r.c3 hh := r.hh c2 := c2 c5 := r.c5 bu := r.bu rr := r.rr la := r.la`.
+A detailed English derivation is pending.
 -/
 theorem BridgeRest.toRows {eps : ℝ} {Fm : FamP eps} {Rw : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsFace (Fm.L x i)}
     {Cabs CH : ℝ} (r : BridgeRest Fm Rw Cabs CH)
@@ -178,7 +178,7 @@ def RwOf {𝒜 : FamClass} {C0 : ℝ} (sel : Formalism.L2.TSel 𝒜) (selP : Sel
         (Fm.L x i).Nc)⟩
 
 /- English proof (translation)
-Take `⟨C, x0, h⟩` from `Formalism.MainNotions.WeightDegreeSizes.secondComplement_family_of_inputs Fm h`. Use `⟨C, max x0 (Fm.x1 + 1), fun x hx i => h x (le_trans (le_max_left _ _) hx) ?_ i⟩` and prove the remaining obligations. Use `le_trans (le_max_right _ _) hx` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem complement_two_of_items {eps : ℝ} {Fm : FamP eps} (h : Formalism.MainNotions.WeightDegreeSizes.FamilySecondComplementInputs Fm) : Formalism.MainNotions.LocalQuadraticParts.ComplementTwoFamily Fm := by
   obtain ⟨C, x0, h⟩ := Formalism.MainNotions.WeightDegreeSizes.secondComplement_family_of_inputs Fm h
@@ -229,7 +229,7 @@ structure BridgeRestT {eps : ℝ} (Fm : FamP eps) (Rt : Σ' x0 : ℝ, ∀ x, Fm.
 
 open Formalism.L2.DIV in
 /- English proof (translation)
-The claim follows from `r.pkg adm2 := by obtain ⟨x0, a⟩ := a refine ⟨max x0 (Fm.x1 + 1), fun x hx i => a x (le_trans (le_max_left _ _) hx) ?_ i⟩ have := le_trans (le_max_right _ _) hx linarith cut := r.cut c3 := r.c3 hh := r.hh c2 := c2 c5 := r.c5 bu := r.bu rr := r.rr la := r.la`.
+A detailed English derivation is pending.
 -/
 theorem BridgeRestT.toRows {eps : ℝ} {Fm : FamP eps} {Rt : Σ' x0 : ℝ, ∀ x, Fm.x1 < x → x0 ≤ x → ∀ i : Fm.Ix x, DivisionRowsColumns (Fm.L x i)}
     {Cabs CH : ℝ} (r : BridgeRestT Fm Rt Cabs CH)

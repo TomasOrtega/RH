@@ -14,18 +14,18 @@ namespace Formalism.MainNotions.G.ColumnFamilies
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees Formalism.MainNotions.G.GLWeightTheory Formalism.MainNotions.G.Joints
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => le_rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem dominanceOrder_refl {n : ℕ} (a : Fin n → ℤ) : DomLE a a := ⟨fun _ => le_rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x => (h1.1 x).trans (h2.1 x), h1.2.trans h2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem dominanceOrder_trans {n : ℕ} {a b c : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b c) : DomLE a c :=
   ⟨fun x => (h1.1 x).trans (h2.1 x), h1.2.trans h2.2⟩
 
 /- English proof (translation)
-Establish `h1'` using `(dominanceOrder_iff a b).1 h1`. Establish `h2'` using `(dominanceOrder_iff b a).1 h2`. Conclude with `(Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq h1' (Finset.sum_le_sum fun j _ => h2'.2 j)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dominanceOrder_antisymm {n : ℕ} {a b : Fin n → ℤ} (h1 : DomLE a b) (h2 : DomLE b a) : a = b := by
   have h1' := (dominanceOrder_iff a b).1 h1
@@ -33,9 +33,9 @@ theorem dominanceOrder_antisymm {n : ℕ} {a b : Fin n → ℤ} (h1 : DomLE a b)
   exact (Formalism.InvariantFactorPaths.GelfandTsetlinBases.A3ev.domLe_eq h1' (Finset.sum_le_sum fun j _ => h2'.2 j)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a`. Simplify using `only [Pi.add_apply, rootW, Pi.sub_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, Finset.sum_ite_eq', Finset.mem_filter, Finset.mem_univ, true_and]`. Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `absurd (h.le.trans h1) h2`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Simplify using `only [Pi.add_apply, rootW, Pi.sub_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dominanceOrder_add_negative_root {n : ℕ} (ν : Fin n → ℤ) {c d : Fin n} (h : d < c) : DomLE (ν + rootW c d) ν := by
   classical
@@ -53,9 +53,9 @@ theorem dominanceOrder_add_negative_root {n : ℕ} (ν : Fin n → ℤ) {c d : F
     omega
 
 /- English proof (translation)
-Unfold `loweringMonoid at hu`. Proceed by induction on `hu using Submonoid.closure_induction_left with`. Consider the case `one => exact ⟨mu, dominanceOrder_refl mu, by simpa using hw⟩`. Consider the case `mul_left g hg y _ ih`. Take `⟨c, d, hcd, rfl⟩` from `hg`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, h1, h2⟩` from `ih`. Conclude with `⟨ν + rootW c d, dominanceOrder_trans (dominanceOrder_add_negative_root ν hcd) h1, by`. Rewrite using `[Module.End.mul_apply]`. Conclude with `v2rep_shift E hR c d ν _ h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowering_weight_dominated {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V] (E : GLOps n K V) (hR : SatisfiesGLRelations E)
     (mu : Fin n → ℤ) (w : V) (hw : w ∈ weightSp E mu) {u : Module.End K V} (hu : u ∈ loweringMonoid E) :
@@ -74,11 +74,11 @@ section concrete
 variable {R : Type} [Field R] [CharZero R] {N : ℕ} (LL : Letters (Fin N)) {n : ℕ} (S : Set (Fin N))
 
 /- English proof (translation)
-Establish `hE` using `isGLRep_glOps R (Fin N) LL n S`. Use `(isotypic_le_lowering_span hE mu).trans ?_` and prove the remaining obligations. Unfold `hwvLoweringSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, w, hw, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨ν, hd, hmem⟩` from `lowering_weight_dominated (glOps R n LL S) hE.1 mu w hw.2.1 hu`. Rewrite using `[SetLike.mem_coe, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Use `(monomials_are_weight_vectors R (Fin N) LL n S).2 ν _ hmem m (by simpa using hm)` as an intermediate fact. Express the relevant statement in the definitionally equal form `DomLE (wtS LL S m) mu`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[this]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isotypic_le_restrictSupport_dominated (mu : Fin n → ℤ) :
     isoSub (glOps R n LL S) mu ≤ MvPolynomial.restrictSupport R {m | DomLE (wtS LL S m) mu} := by
@@ -96,9 +96,7 @@ theorem isotypic_le_restrictSupport_dominated (mu : Fin n → ℤ) :
   exact hd
 
 /- English proof (translation)
-Distinguish the cases in `h0 : n = 0`. Substitute `h0` using the available equality. Introduce `a`. Conclude with `a.elim0`. Establish `: NeZero n` using `⟨h0⟩`.
-
-Conclude with `Formalism.MainNotions.G.PolBridge.hwv_dominant D (weight_condition_from_integral_form D) LL S mu v hv`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dominant_of_isHighestWeightVector (D : Formalism.BasicNotions.D7) (mu : Fin n → ℤ) (v : MvPolynomial (Fin N × Fin n) R)
     (hv : IsHWV (glOps R n LL S) mu v) : Dominant mu := by
@@ -110,7 +108,7 @@ theorem dominant_of_isHighestWeightVector (D : Formalism.BasicNotions.D7) (mu : 
     exact Formalism.MainNotions.G.PolBridge.hwv_dominant D (weight_condition_from_integral_form D) LL S mu v hv
 
 /- English proof (translation)
-Rewrite using `[isoSub, Submodule.span_eq_bot]`. Introduce and unpack `x ⟨u, _, v, hv, rfl⟩`. Conclude with `absurd (dominant_of_isHighestWeightVector LL S D mu v hv) hmu`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isoSub_glOps_eq_bot_of_not_dominant (D : Formalism.BasicNotions.D7) (mu : Fin n → ℤ) (hmu : ¬ Dominant mu) : isoSub (glOps R n LL S) mu = ⊥ := by
   rw [isoSub, Submodule.span_eq_bot]
@@ -118,20 +116,18 @@ theorem isoSub_glOps_eq_bot_of_not_dominant (D : Formalism.BasicNotions.D7) (mu 
   exact absurd (dominant_of_isHighestWeightVector LL S D mu v hv) hmu
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨sys.id_on mu, fun nu hne x hx => sys.zero_on mu nu hne x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem isIsotypicProj_of_decomposition {e : (Fin n → ℤ) → Module.End R (MvPolynomial (Fin N × Fin n) R)}
     (sys : DecSys (isoSub (glOps R n LL S)) e) (mu : Fin n → ℤ) : IsIsoProj (glOps R n LL S) mu (e mu) :=
   ⟨sys.id_on mu, fun nu hne x hx => sys.zero_on mu nu hne x hx⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hG mu hne`. Assume the negation of the conclusion as `hmu`. Apply `hne` to reduce the goal to its premises. Establish `hle : (⨆ lam ∈ pi, isoSub (glOps R n LL S) lam) ≤ LinearMap.ker (e mu)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `iSup₂_le fun lam hlam => ?_` and prove the remaining obligations. Introduce `x hx`. Establish `: lam ≠ mu` using `fun h => hmu (h ▸ hlam)`. Conclude with `sys.zero_on mu lam this x hx`. Conclude with `hle hG`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Take `⟨T, hT⟩` from `sys.cover G`. Rewrite using `[hT]`. Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : e mu G = 0`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Conclude with `(le_iSup₂ (f := fun lam (_ : lam ∈ pi) => isoSub (glOps R n LL S) lam) mu (h mu h0)) (sys.mem mu G)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iSup_isotypic_iff_projections {e : (Fin n → ℤ) → Module.End R (MvPolynomial (Fin N × Fin n) R)}
     (sys : DecSys (isoSub (glOps R n LL S)) e) (pi : Set (Fin n → ℤ)) (G : MvPolynomial (Fin N × Fin n) R) :
@@ -156,17 +152,17 @@ theorem mem_iSup_isotypic_iff_projections {e : (Fin n → ℤ) → Module.End R 
     · exact (le_iSup₂ (f := fun lam (_ : lam ∈ pi) => isoSub (glOps R n LL S) lam) mu (h mu h0)) (sys.mem mu G)
 
 /- English proof (translation)
-Establish `he` using `isIsotypicProj_of_decomposition LL S sys`. Rewrite using `[polynomial_generated_eq_enveloping LL S dividedPower_formula_char_zero binomial_formula_char_zero]`. Introduce and unpack `ν ⟨x, hx, hx0, hxν⟩`. Establish `htop` using `isoSub_top (glOps R n LL S) D (weight_condition_from_integral_form D) (isGLRep_glOps R (Fin N) LL n S)`. Establish `hker : ∀ mu, e mu G = 0 → e mu x = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `mu h0`. Establish `hle : generatedSubmodule (glOps R n LL S) G ≤ LinearMap.ker (e mu)`. Rewrite using `[generatedSubmodule, Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Express the relevant statement in the definitionally equal form `e mu (u G) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[isotypic_projection_commutes_monoid _ htop e he mu hu, h0, map_zero]`. Conclude with `hle hx`. Establish `hxZ : x ∈ MvPolynomial.restrictSupport R {m | ∃ lam ∈ pi, DomLE (wtS LL S m) lam}`. Take `⟨T, hT⟩` from `sys.cover x`. Rewrite using `[hT]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : e mu x = 0`. Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Establish `hG : e mu G ≠ 0` using `fun hz => h0 (hker mu hz)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `isotypic_le_restrictSupport_dominated LL S mu (sys.mem mu x)`. Rewrite `h1`, the goal using `[MvPolynomial.mem_restrictSupport_iff]`. Introduce `m hm`. Conclude with `⟨mu, h mu hG, h1 hm⟩`. Take `⟨m, hm⟩` from `MvPolynomial.support_nonempty.2 hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `(MvPolynomial.mem_restrictSupport_iff R).1 hxZ (by simpa using hm : m ∈ (x.support : Set _))`. Take `⟨lam, hlam, hle⟩` from `h2`. Conclude with `⟨lam, hlam, by rw [← hxν m hm]; exact hle⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem weights_generated_dominated (D : Formalism.BasicNotions.D7) {e : (Fin n → ℤ) → Module.End R (MvPolynomial (Fin N × Fin n) R)}
     (sys : DecSys (isoSub (glOps R n LL S)) e) (G : MvPolynomial (Fin N × Fin n) R) (pi : Set (Fin n → ℤ))
@@ -204,11 +200,11 @@ theorem weights_generated_dominated (D : Formalism.BasicNotions.D7) {e : (Fin n 
 end concrete
 
 /- English proof (translation)
-Introduce `F _ _ N LL n S pi hpi G`. Establish `h2` using `weight_condition_from_integral_form D`. Take `⟨e, sys⟩` from `isoDecomp (glOps F n LL S) D h2 (isGLRep_glOps F (Fin N) LL n S)`. Rewrite using `[mem_iSup_isotypic_iff_projections LL S sys pi G]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h ν hν hdom`. Take `⟨lam, hlam, hle⟩` from `weights_generated_dominated LL S D sys G pi h ν hν`. Conclude with `hpi.2 lam hlam ν hdom hle`. Introduce `h mu hne`. Establish `hw` using `isotypic_component_weight_mem LL S (stable_subspace_complete_reducibility D h2) polynomial_operators_gl_relations monomials_are_weight_vectors polynomial_locally_finite dividedPower_formula_char_zero binomial_formula_char_zero e (isIsotypicProj_of_decomposition LL S sys) G mu hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h mu hw ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hnd`. Establish `h3` using `sys.mem mu G`. Rewrite `h3` using `[isoSub_glOps_eq_bot_of_not_dominant LL S D mu hnd]`. Conclude with `hne ((Submodule.mem_bot F).1 h3)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restTypes (D : Formalism.BasicNotions.D7) : RestTypes := by
   classical
@@ -230,11 +226,11 @@ theorem restTypes (D : Formalism.BasicNotions.D7) : RestTypes := by
     exact hne ((Submodule.mem_bot F).1 h3)
 
 /- English proof (translation)
-Establish `hidx : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (pEnd P.mu) I` using `((restStd n N P.mu I).1 hI).1`. Establish `hidx' : Formalism.InvariantFactorPaths.GelfandTsetlinBases.IsIndex (ext P.mu N) I` using `by rw [ext_last]; exact hidx`. Establish `h1` using `restPsi R n N LL B P I hidx`. Establish `h2 : Formalism.InvariantFactorPaths.GelfandTsetlinBases.psiPath R (isV LL) (ext P.mu) N I ∈ Formalism.InvariantFactorPaths.GelfandTsetlinBases.polB R n N (Bn B)`. Rewrite using `[Formalism.InvariantFactorPaths.GelfandTsetlinBases.polB, Submodule.mem_iInf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Conclude with `(Formalism.InvariantFactorPaths.GelfandTsetlinBases.pathProductDegrees R n N (isV LL) (Bn B) (ext P.mu) I (restPathTo n N LL B P) hidx').2 j`. Rewrite `h2` using `[← h1, ← restPol R n N B]`. Take `⟨y, hy, hyx⟩` from `h2`. Establish `: y = Psi R P.mu I` using `rename_injective _ (iv_inj N n) hyx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem standardWord_mem_multihomogeneous (R : Type) [CommRing R] {n N : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} (P : PPath n N LL B)
     (I : ℤ → Finset (Fin n)) (hI : IsSt P.mu I) : Psi R P.mu I ∈ Pol R n B := by
@@ -252,11 +248,11 @@ theorem standardWord_mem_multihomogeneous (R : Type) [CommRing R] {n N : ℕ} {L
   exact hy
 
 /- English proof (translation)
-Introduce `F _ _ N n LL B i pi hpi`. Use extensionality with `G`. Rewrite using `[Submodule.mem_inf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hG, hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `(admissible_word_basis D F N n LL B i pi hpi G hG).2 ((restTypes D F N LL n _ pi hpi G).1 hT)`. Introduce `hG`. Establish `hP : G ∈ Pol F n B`. Use `(Submodule.span_le.2 ?_) hG` and prove the remaining obligations. Introduce and unpack `_ ⟨P, I, hI, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `standardWord_mem_multihomogeneous F P I hI`. Conclude with `⟨hP, (restTypes D F N LL n _ pi hpi G).2 ((admissible_word_basis D F N n LL B i pi hpi G hP).1 hG)⟩`.
+A detailed English derivation is pending.
 -/
 theorem lower_set_types_span (D : Formalism.BasicNotions.D7) : LowerSetTypesSpan := by
   intro F _ _ N n LL B i pi hpi
@@ -277,9 +273,9 @@ section comm
 variable {F : Type} [Field F] {N : ℕ} (LL : Letters (Fin N)) {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [glAct, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : l ∈ S`. Establish `h2 : l ∈ S'` using `h h1`. Simplify using `[h1, h2, Set.mem_diff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h2 : l ∈ S'`. Simplify using `[h1, h2, Set.mem_diff]`. Simplify using `[h1, h2, Set.mem_diff]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem glAct_eq_add_glAct_diff (S S' : Set (Fin N)) (h : S ⊆ S') (a b : Fin n) :
     glAct F LL S' a b = glAct F LL S a b + glAct F LL (S' \ S) a b := by
@@ -294,9 +290,9 @@ theorem glAct_eq_add_glAct_diff (S S' : Set (Fin N)) (h : S ⊆ S') (a b : Fin n
     · simp [h1, h2, Set.mem_diff]
 
 /- English proof (translation)
-Apply `MvPolynomial.derivation_ext` to reduce the goal to its premises. Introduce and unpack `⟨l, x⟩`. Rewrite using `[Derivation.commutator_apply]`. Distinguish the cases in `hS : l ∈ S`. Establish `hT` using `hd l hS`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [isoPolDer_X, hS, hT, if_true, if_false, map_zero]`. Apply the tactic sequence `split_ifs <;> simp [isoPolDer_X, hT]`. Apply the tactic sequence `simp only [isoPolDer_X, hS, if_false, map_zero] split_ifs <;> simp [isoPolDer_X, hS]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lie_polarizationDer_eq_zero_of_disjoint (S T : Set (Fin N)) (hd : ∀ l, l ∈ S → l ∉ T) (a b c d : Fin n) :
     ⁅isoPolDer F LL S a b, isoPolDer F LL T c d⁆ = 0 := by
@@ -311,11 +307,11 @@ theorem lie_polarizationDer_eq_zero_of_disjoint (S T : Set (Fin N)) (hd : ∀ l,
     split_ifs <;> simp [isoPolDer_X, hS]
 
 /- English proof (translation)
-Establish `hsumD : ∀ (s : Finset (Fin N)) (f : Fin N → Derivation F (MvPolynomial (Fin N × Fin n) F) (MvPolynomial (Fin N × Fin n) F)) (H : MvPolynomial (Fin N × Fin n) F), (∑ l ∈ s, f l) H = ∑ l ∈ s, f l H`. Introduce `s f H`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hS : ∀ (U : Set (Fin N)) (p q : Fin n) (H : MvPolynomial (Fin N × Fin n) F), glAct F LL U p q H = isoPolDer F LL U p q H`. Introduce `U p q H`. Simplify using `only [glAct, isoPolDer, LinearMap.sum_apply, hsumD]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h` using `congrArg (fun D => D G) (lie_polarizationDer_eq_zero_of_disjoint LL S T hd a b c d)`. Simplify using `only [Derivation.commutator_apply] at h`. Rewrite using `[hS, hS, hS, hS]`. Conclude with `sub_eq_zero.1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glAct_commute_of_disjoint (S T : Set (Fin N)) (hd : ∀ l, l ∈ S → l ∉ T) (a b c d : Fin n)
     (G : MvPolynomial (Fin N × Fin n) F) :
@@ -342,13 +338,13 @@ theorem glAct_commute_of_disjoint (S T : Set (Fin N)) (hd : ∀ l, l ∈ S → l
 variable [CharZero F]
 
 /- English proof (translation)
-Establish `h2` using `weight_condition_from_integral_form D`. Establish `hT` using `isoSub_top (glOps F n LL S) D h2 (isGLRep_glOps F (Fin N) LL n S)`. Establish `hT'` using `isoSub_top (glOps F n LL S') D h2 (isGLRep_glOps F (Fin N) LL n S')`. Establish `h1 : ∀ a b, e * (glOps F n LL S' a b) = (glOps F n LL S' a b) * e`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isotypic_projector_commutes _ hT lam e he _ ?_` and prove the remaining obligations. Introduce `mu x hx`. Establish `hs : glOps F n LL S' a b x = glOps F n LL S a b x + glAct F LL (S' \ S) a b x` using `by show glAct F LL S' a b x = _`. Rewrite using `[glAct_eq_add_glAct_diff LL S S' h a b]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hs]`. Use `Submodule.add_mem _ (isotypic_stable_operator _ mu a b hx) ?_` and prove the remaining obligations. Conclude with `isoSub_map_of_comm _ (glAct F LL (S' \ S) a b) (fun c d y => glAct_commute_of_disjoint LL (S' \ S) S (fun l hl => hl.2) a b c d y) mu x hx`. Establish `h3 : ∀ mu, ∀ x ∈ isoSub (glOps F n LL S') mu, e x ∈ isoSub (glOps F n LL S') mu` using `fun mu => isoSub_map_of_comm _ e (fun a b x => by`. Use `congrArg (fun f : Module.End F (MvPolynomial (Fin N × Fin n) F) => f x) (h1 a b)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this) mu`. Conclude with `(isotypic_projector_commutes _ hT' lam' e' he' e h3).symm`.
+A detailed English derivation is pending.
 -/
 theorem isotypicProj_commute_of_subset (D : Formalism.BasicNotions.D7) (S S' : Set (Fin N)) (h : S ⊆ S') (lam lam' : Fin n → ℤ)
     (e e' : Module.End F (MvPolynomial (Fin N × Fin n) F)) (he : IsIsoProj (glOps F n LL S) lam e)
@@ -375,7 +371,7 @@ theorem isotypicProj_commute_of_subset (D : Formalism.BasicNotions.D7) (S S' : S
   exact (isotypic_projector_commutes _ hT' lam' e' he' e h3).symm
 
 /- English proof (translation)
-Break down `le_total i j with hij | hij` into its components or cases. Conclude with `isotypicProj_commute_of_subset LL D _ _ (fun l (hl : l.val < i.val) => lt_of_lt_of_le hl hij) lam lam' e e' he he'`. Conclude with `(isotypicProj_commute_of_subset LL D _ _ (fun l (hl : l.val < j.val) => lt_of_lt_of_le hl hij) lam' lam e' e he' he).symm`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isotypicProj_commute_prefix (D : Formalism.BasicNotions.D7) (i j : Fin (N + 1)) (lam lam' : Fin n → ℤ)
     (e e' : Module.End F (MvPolynomial (Fin N × Fin n) F))
@@ -388,7 +384,7 @@ theorem isotypicProj_commute_prefix (D : Formalism.BasicNotions.D7) (i j : Fin (
 end comm
 
 /- English proof (translation)
-Introduce `F _ _ N n LL i j lam lam' e e' he he'`. Conclude with `isotypicProj_commute_prefix LL D i j lam lam' e e' he he'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isotypic_projections_commute_holds (D : Formalism.BasicNotions.D7) : Formalism.MainNotions.CovariantDegrees.TypeDecompositionsCommute D := by
   intro F _ _ N n LL i j lam lam' e e' he he'

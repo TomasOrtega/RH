@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.ChartDown
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O O' _ _ β β' Y Y' v hv ⟨n⟩ M y hy`. Take `⟨U', hU', hd, hyU, hle⟩` from `GlobalTheory.T.exists_affine_domain_preimage v hv M.U M.hU M.dom y hy`. Take `⟨θ, hθ, hne⟩` from `GlobalTheory.T.exists_sections_on_open_pull Y Y' v n M U' hle`. Take `⟨k, v₀, ρ, hl⟩` from `GlobalTheory.T.exists_dual_number_points_frame Y Y' v n M U' hU' hle`. Conclude with `⟨⟨U', hU', hd, θ, hθ, hne, k, v₀, ρ, hl⟩, hyU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem chart_down : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H} {Xo : Moduli D l} {c : Coeff l} {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F} (Y : Model Xo c β) (Y' : Model Xo c β') (v : Y'.X ⟶ Y.X), IsOpenImmersion v → Nonempty (SABMap Y'.t Y.t v) → ∀ (M : MChart Y) (y : Y'.X), v y ∈ M.U → ∃ M' : MChart Y', y ∈ M'.U := by
   intro E _ _ _ H D l Xo c O O' _ _ β β' Y Y' v hv ⟨n⟩ M y hy

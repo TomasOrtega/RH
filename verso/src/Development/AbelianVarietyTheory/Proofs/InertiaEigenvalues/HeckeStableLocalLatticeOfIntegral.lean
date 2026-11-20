@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.LatStab
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis D.what₂.LL (D.what₂.MtL μ j)`. Establish `hli` using `(D.what₂.jMt_basis μ j b).1`. Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Establish `hx' : x = ∑ i ∈ (b.repr x).support, b.repr x i • b i` using `by conv_lhs => rw [← b.linearCombination_repr x]`. Rewrite using `[Finsupp.linearCombination_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hx` using `[hx', map_sum]`. Simplify using `only [map_smulₛₗ] at hx`. Establish `h0` using `linearIndependent_iff'.1 hli _ _ hx`. Apply `b.repr.injective` to reduce the goal to its premises.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `i`. Distinguish the cases in `hi : i ∈ (b.repr x).support`. Simplify using `using h0 i hi`. Simplify using `using Finsupp.notMem_support_iff.1 hi`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem jMt_injective (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Function.Injective (D.what₂.jMt μ j) := by
   classical
@@ -36,19 +36,17 @@ theorem jMt_injective (D : D7) (μ : D.what₂.Tup) (j : ℕ) : Function.Injecti
   · simpa using Finsupp.notMem_support_iff.1 hi
 
 /- English proof (translation)
-Introduce `D M B j h1 h2 w hI v k hvk x hx`. Take `⟨s, ϖ, hcj, hu⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D v hvk.1`. Establish `hinj` using `jMt_injective D (D.what₂.muTw w) j`. Set `f : D.what₂.Mt (D.what₂.muTw w) j → D.what₂.MtL (D.what₂.muTw w) j` to `fun g => if h : g ∈ Set.range (D.what₂.jMt (D.what₂.muTw w) j) then h.choose else 0`. Establish `hf : ∀ g ∈ (D.what₂.MtLat (D.what₂.muTw w) j).gen, D.what₂.jMt (D.what₂.muTw w) j (f g) = g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `h` using `hI.1 g hg`. Simplify using `only [f, dif_pos h]`. Conclude with `h.choose_spec`. Establish `key : ∀ y ∈ genSet D (D.what₂.muTw w) j, B.hK j w v k (B.iV j w y) ∈ latLoc B j w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨c, hc0, hcE⟩` from `hI.2 v k s ϖ hvk hcj hu _ hy`. Establish `e1` using `B.hL_def j w h1 h2 v k s ϖ hvk hcj hu y`. Rewrite `e1` using `[hcE]`. Establish `e2` using `(M (D.what₂.muTw w) j h1 h2).real_inj e1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : B.hL j w v k y = ∑ g ∈ (D.what₂.MtLat (D.what₂.muTw w) j).gen, c g • f g`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[e2, map_sum]`. Use `Finset.sum_congr rfl fun g hg => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, hf g hg]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[B.hK_def, e3, map_sum]`. Use `Submodule.sum_mem _ fun g hg => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Take `⟨o, ho⟩` from `(B.ec_w j w (c g)).1 (hc0 g)`. Rewrite using `[← ho, algebraMap_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨f g, ?_, rfl⟩)` and prove the remaining obligations. Use `show D.what₂.jMt (D.what₂.muTw w) j (f g) ∈ (D.what₂.MtLat (D.what₂.muTw w) j).gen`. Rewrite using `[hf g hg]`. Conclude with `hg`. Establish `hle : latLoc B j w ≤ (latLoc B j w).comap ((B.hK j w v k).restrictScalars (B.Oc j w))`.
-
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `key y hy`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latStable_of_latInt : ∀ (D : D7) (M : MtFam D) (B : NLocBase D M) (j : ℕ) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m)
     (w : D.what₂.places.Pl), LatInt D M (B.Qc j w) j h1 h2 w → LatStable B j w := by

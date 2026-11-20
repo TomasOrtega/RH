@@ -4,7 +4,7 @@ open MeasureTheory NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheor
 open GroundTheory.Automorphic GroundTheory.Automorphic.Reduction GroundTheory.Automorphic.RightCosetSpace UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Establish `e : RightCosetSpace.mk (rationalGLOne E r) (Quotient.out y) = y` using `Quotient.out_eq y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private theorem out_eq_cuspQuot {E : Type} [Field E] [NumberField E] {r : ℕ}
     (F : AdelicGLn.AdelicGL E r → ℂ) (h : AutomorphicForm.IsLeftInvariant F)
@@ -16,23 +16,21 @@ private theorem out_eq_cuspQuot {E : Type} [Field E] [NumberField E] {r : ℕ}
     _ = CuspidalSpectrum.cuspQuot h y := by rw [e]
 
 /- English proof (translation)
-Introduce `E _ _ _ S r b`. Establish `hfin` using `Reduction.isFiniteMeasure_quotientMeasure (K := E) (n := r) (mu1 E r)`. Establish `hcont : Continuous b.f.1` using `b.cusp.1.continuous`. Establish `hL : AutomorphicForm.IsLeftInvariant b.f.1` using `b.cusp.1.isLeftInvariant`. Take `⟨C, hC⟩` from `CuspidalSpectrum.exists_norm_le_of_mem_cuspForms b.cusp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsec : ∀ s : {x : ℝ // 0 < x}, centralSection E r s = zt E r (Real.log s.1)` using `fun s => by`. Unfold `zt`. Conclude with `congrArg _ (Subtype.ext (Real.exp_log s.2).symm)`. Establish `hb : ∀ g, ‖b.f.1 g‖ ≤ C` using `fun g => by`. Take `⟨s, y, hy, rfl⟩` from `CuspidalSpectrum.exists_centralSection_mul_mem_normOneGL g`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsec s, b.cen]`. Conclude with `hC y hy`. Establish `hbq : ∀ (F : AdelicGLn.AdelicGL E r → ℂ) (h : AutomorphicForm.IsLeftInvariant F), (∀ g, ‖F g‖ ≤ C) → ∀ q, ‖CuspidalSpectrum.cuspQuot h q‖ ≤ C` using `fun F h hF q => by`. Rewrite using `[← out_eq_cuspQuot F h q]`. Conclude with `hF _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hq` using `CuspidalSpectrum.continuous_cuspQuot hL hcont`. Use `⟨fun g => ?_, fun h0 => ?_⟩` and prove the remaining obligations. Establish `hLg : AutomorphicForm.IsLeftInvariant (fun x => b.f.1 (x * g))` using `fun γ x => by show b.f.1 (_ * x * g) = b.f.1 (x * g)`. Rewrite using `[mul_assoc]`. Conclude with `hL γ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hcg : Continuous (fun x : AdelicGLn.AdelicGL E r => b.f.1 (x * g))` using `hcont.comp (continuous_id.mul continuous_const)`. Establish `hqg` using `CuspidalSpectrum.continuous_cuspQuot hLg hcg`. Establish `e : (fun y : RightCosetSpace (rationalGLOne E r) => b.f.1 (((Quotient.out y : normOneGL E r) : GA E r) * g) * starRingEnd ℂ (b.f.1 ((Quotient.out y : normOneGL E r) : GA E r))) = fun y => CuspidalSpectrum.cuspQuot hLg y * starRingEnd ℂ (CuspidalSpectrum.cuspQuot hL y)`. Use function extensionality and compare the values at `y`. Rewrite using `[← out_eq_cuspQuot _ hLg y, ← out_eq_cuspQuot _ hL y]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `Integrable.of_bound (hqg.mul (Complex.continuous_conj.comp hq)).aestronglyMeasurable (C * C) (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_conj]`. Conclude with `mul_le_mul (hbq _ hLg (fun x => hb _) q) (hbq _ hL hb q) (norm_nonneg _) ((norm_nonneg _).trans (hbq _ hL hb q))`. Establish `e : ∀ y : RightCosetSpace (rationalGLOne E r), b.f.1 ((Quotient.out y : normOneGL E r) : GA E r) * starRingEnd ℂ (b.f.1 ((Quotient.out y : normOneGL E r) : GA E r)) = ((‖CuspidalSpectrum.cuspQuot hL y‖ ^ 2 : ℝ) : ℂ)` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[out_eq_cuspQuot _ hL y, Complex.mul_conj', Complex.ofReal_pow]`. Establish `h1 : ∫ q, ‖CuspidalSpectrum.cuspQuot hL q‖ ^ 2 ∂(quotientMeasure (rationalGLOne E r) (mu1 E r)) = 0`. Rewrite using `[← Complex.ofReal_eq_zero, ← integral_complex_ofReal, ← h0]`. Conclude with `integral_congr_ae (Filter.Eventually.of_forall fun q => (e q).symm)`. Establish `hi : Integrable (fun q => ‖CuspidalSpectrum.cuspQuot hL q‖ ^ 2) (quotientMeasure (rationalGLOne E r) (mu1 E r))` using `Integrable.of_bound (hq.norm.pow 2).aestronglyMeasurable (C ^ 2) (Filter.Eventually.of_forall fun q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_pow, norm_norm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hbq _ hL hb q) 2)`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun q => sq_nonneg _) hi).1 h1`. Establish `h3` using `(RightCosetSpace.quasiMeasurePreserving_mk (rationalGLOne E r) (mu1 E r)).ae_eq h2`. Establish `h4` using `(Continuous.ae_eq_iff_eq (mu1 E r) (f := fun y : normOneGL E r => ‖b.f.1 (y : AdelicGLn.AdelicGL E r)‖ ^ 2) ((hcont.comp continuous_subtype_val).norm.pow 2) continuous_const).1 h3`.
-
-Apply `b.ne` to reduce the goal to its premises. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Take `⟨s, y, hy, rfl⟩` from `CuspidalSpectrum.exists_centralSection_mul_mem_normOneGL g`. Rewrite using `[hsec s, b.cen]`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 (congrFun h4 ⟨y, hy⟩))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.integrable_translate_mul_conj_and_inner_self_ne_zero :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (S : Set (Pl E)) (r : ℕ) (b : Blo S r),

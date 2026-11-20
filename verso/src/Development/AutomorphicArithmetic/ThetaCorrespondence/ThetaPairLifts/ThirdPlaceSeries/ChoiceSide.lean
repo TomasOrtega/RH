@@ -19,7 +19,7 @@ variable {D : D7} (m : Mv D) {hL : _root_.UpperTheory.Zero.LLC.RecTExists}
 section
 variable {cf : CharFrame D} {jE : D.host.E →+* Qb} {A : _root_.GlobalTheory.HeightCounting.CharFrameHostEmbedding D cf jE} {M : Formalism.L2.MtFam D} {C : NChoice D} {tp : TupTied D cf C}
 /- English proof (translation)
-The claim follows from `@_root_.GlobalTheory.HeightCounting.ChoiceSide.mk (_) (_) (_) (_) (_) (_) (nct := @_root_.Formalism.BasicNotions.NChTie.mk (_) (_) (twOf_eq := (by with_unfolding_all exact (x.nct.twOf_eq :))) (twSide_eq := (by with_unfolding_all exact (x.nct.twSide_eq :))) (Q_eq := (by with_unfol …`.
+A detailed English derivation is pending.
 -/
 theorem Mv.choiceSide_alt {low Pq S hk eig θ} {Bs : SideB D cf A.row low Pq S hk eig θ} (x : ChoiceSide D cf M Bs.exp C tp) : ChoiceSide m.D (m.cf cf) (m.mt M) (m.sideB_alt Bs).exp (m.ch C) (m.tp tp) := @_root_.GlobalTheory.HeightCounting.ChoiceSide.mk (_) (_) (_) (_) (_) (_)
     (nct := @_root_.Formalism.BasicNotions.NChTie.mk (_) (_)

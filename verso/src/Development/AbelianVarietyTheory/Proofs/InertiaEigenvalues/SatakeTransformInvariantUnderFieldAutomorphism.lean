@@ -29,7 +29,7 @@ def diagExp (n m : ℕ) (a : Fin m → ℤ) (i : Fin n) : ℤ :=
   else if h' : n - m ≤ i.val ∧ n - 1 - i.val < m then -(a ⟨n - 1 - i.val, h'.2⟩) else 0
 
 /- English proof (translation)
-Unfold `tMat diagExp`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tMat_eq_diag (x : K) (n m : ℕ) (a : Fin m → ℤ) :
     tMat x n m a = Matrix.diagonal fun i => x ^ diagExp n m a i := by
@@ -39,11 +39,11 @@ theorem tMat_eq_diag (x : K) (n m : ℕ) (a : Fin m → ℤ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hr : (i.rev : ℕ) = n - 1 - i` using `by rw [Fin.val_rev]; omega`. Unfold `diagExp`. Distinguish the cases in `h1 : (i : ℕ) < m`. Establish `h2 : ¬ (i.rev : ℕ) < m` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h3 : n - m ≤ (i.rev : ℕ) ∧ n - 1 - (i.rev : ℕ) < m` using `by omega`. Rewrite using `[dif_neg h2, dif_pos h3, dif_pos h1]`. Rewrite using `[show (⟨n - 1 - (i.rev : ℕ), h3.2⟩ : Fin m) = ⟨i, h1⟩ from Fin.ext (show n - 1 - (i.rev : ℕ) = (i : ℕ) by omega)]`. Distinguish the cases in `h4 : n - m ≤ (i : ℕ) ∧ n - 1 - (i : ℕ) < m`. Establish `h2 : (i.rev : ℕ) < m` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[dif_pos h2, dif_neg h1, dif_pos h4, neg_neg]`. Rewrite using `[show (⟨(i.rev : ℕ), h2⟩ : Fin m) = ⟨n - 1 - i, h4.2⟩ from Fin.ext hr]`. Establish `h2 : ¬ (i.rev : ℕ) < m` using `by omega`. Establish `h3 : ¬ (n - m ≤ (i.rev : ℕ) ∧ n - 1 - (i.rev : ℕ) < m)` using `by omega`. Rewrite using `[dif_neg h2, dif_neg h3, dif_neg h1, dif_neg h4, neg_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem diagExp_rev {n m : ℕ} (hm : 2 * m ≤ n) (a : Fin m → ℤ) (i : Fin n) :
     diagExp n m a i.rev = -diagExp n m a i := by
@@ -65,9 +65,9 @@ theorem diagExp_rev {n m : ℕ} (hm : 2 * m ≤ n) (a : Fin m → ℤ) (i : Fin 
       rw [dif_neg h2, dif_neg h3, dif_neg h1, dif_neg h4, neg_zero]
 
 /- English proof (translation)
-Unfold `intL at *`. Rewrite `*` using `[Valuation.mem_integer_iff]`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Apply `hx'` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Establish `hlt : Valued.v x < 1` using `lt_of_le_of_ne hx (fun h => hx' (by rw [map_inv₀, h, inv_one]))`. Establish `hv0 : Valued.v x ≠ 0` using `(Valuation.ne_zero_iff _).2 hx0`. Rewrite `hlt` using `[← WithZero.exp_log hv0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[map_div₀, hϖ, ← WithZero.exp_log hv0, ← WithZero.exp_sub, ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -86,7 +86,7 @@ theorem div_mem_intL {ϖ x : K} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ))
   omega
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_mul_mat (g : K ≃+* K) {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) :
     (A * B).map g = A.map g * B.map g := by
@@ -100,35 +100,33 @@ section Cell
 variable {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Take `⟨u, hu, k, hk, hyuk⟩` from `hy`. Take `⟨-, hσv, hσϖ, hϖ, -, -, -⟩` from `hU`. Establish `hϖ' : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `h0 : ϖ ≠ 0`. Introduce `h`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hϖ'` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ'.symm`. Establish `hϖint : ϖ ∈ intL K`. Unfold `intL`. Rewrite using `[Valuation.mem_integer_iff, hϖ', ← WithZero.exp_zero, WithZero.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hϖinv : ϖ⁻¹ ∉ intL K`. Unfold `intL`. Rewrite using `[Valuation.mem_integer_iff, map_inv₀, hϖ', ← WithZero.exp_neg, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Use `set c : K := g ϖ / ϖ with hc`. Establish `hgϖ : g ϖ = ϖ * c` using `by rw [hc]; field_simp`. Establish `hc0 : c ≠ 0` using `div_ne_zero ((map_ne_zero g).2 h0) h0`. Establish `hcint : c ∈ intL K` using `div_mem_intL hϖ' ((hint ϖ).1 hϖint) (by rw [← map_inv₀]; exact fun h => hϖinv ((hint _).2 h))`. Establish `hcinv : c⁻¹ ∈ intL K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : g.symm ϖ / ϖ ∈ intL K` using `div_mem_intL hϖ' (by rw [hint]; simpa using hϖint) (by rw [← map_inv₀, hint]; simpa using hϖinv)`. Establish `h2` using `(hint _).1 h1`. Rewrite `h2` using `[map_div₀, RingEquiv.apply_symm_apply]`. Rewrite using `[hc, inv_div]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcv : Valued.v c = 1`. Unfold `intL at hcint hcinv`. Rewrite `hcint`, `hcinv` using `[Valuation.mem_integer_iff]`. Use `le_antisymm hcint ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hσc : σ c = c` using `by rw [hc, map_div₀, hσϖ, ← hg, hσϖ]`. Use `set e : Fin n → K := fun i => c ^ diagExp n m a i with he`. Establish `he0 : ∀ i, e i ≠ 0` using `fun i => zpow_ne_zero _ hc0`. Take `⟨d, hd, hd'⟩` from `Formalism.UG.P.fSatake_diag_exists (σ := σ) e (fun i => by`. Simplify using `only [he]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zpow₀, hσc, diagExp_rev hm, ← zpow_add₀ hc0, add_neg_cancel, zpow_zero])`. Establish `hdK : d ∈ KU σ n`. Establish `hI : Formalism.UG.P.fIwasawaInt (((d : GU σ n) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K)`. Introduce `i j`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, he]`. Simplify using `only`. Rewrite using `[map_zpow₀, hcv, one_zpow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hij, map_zero]`. Conclude with `zero_le'`. Use `Formalism.UG.P.fIwasawa_mk_mem_K σ hσv _ (Formalism.UG.P.fIwasawa_mem_un σ d) hI` as an intermediate fact. Establish `e' : Formalism.UG.P.fIwasawaMk σ _ (Formalism.UG.P.fIwasawa_mem_un σ d) = d` using `Subtype.ext (Units.ext rfl)`. Rewrite `this` using `[e']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hk1 : guMap g hg n k ∈ KU σ n` using `(mem_KU_iff_guMap g hg hint k).1 hk`. Use `⟨d * guMap g hg n u * d⁻¹, ?_, d * guMap g hg n k, (KU σ n).mul_mem hdK hk1, ?_⟩` and prove the remaining obligations. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, Units.val_mul, hd, hd', guMap_val, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Rewrite using `[hu.1 i j hij, map_zero, mul_zero, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Subgroup.coe_mul, Units.val_mul, hd, hd', guMap_val, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Rewrite using `[hu.2 i, map_one, mul_one, mul_inv_cancel₀ (he0 i)]`. Rewrite using `[guMap_val, hyuk, map_mul_mat, map_mul_mat]`. Simplify using `only [Subgroup.coe_mul, Units.val_mul, hd, hd', guMap_val]`. Rewrite using `[tMat_eq_diag, Matrix.diagonal_map (map_zero _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : (Matrix.diagonal fun i => g (ϖ ^ diagExp n m a i)) = Matrix.diagonal (fun i => ϖ ^ diagExp n m a i) * Matrix.diagonal e`. Rewrite using `[Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[map_zpow₀, hgϖ, mul_zpow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : Matrix.diagonal (fun i => (e i)⁻¹) * Matrix.diagonal e = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (he0 i)`.
-
-Rewrite using `[hD]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Matrix.diagonal fun i => (e i)⁻¹) (Matrix.diagonal e), hinv, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cell_guMap (g : K ≃+* K) {σ : K →+* K} (hg : ∀ x, g (σ x) = σ (g x))
     (hint : ∀ x, x ∈ intL K ↔ g x ∈ intL K) {ϖ : K} {q n m : ℕ} (hU : IsUnramInv ϖ σ q)
@@ -218,11 +216,11 @@ end Cell
 open Classical in
 
 /- English proof (translation)
-Introduce `K _ _ g σ hg hint ϖ q n m hU hm1 _ h hbi α`. Establish `hg' : ∀ x, g.symm (σ x) = σ (g.symm x)`. Introduce `x`. Apply `g.injective` to reduce the goal to its premises. Rewrite using `[hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hint' : ∀ x, x ∈ intL K ↔ g.symm x ∈ intL K`. Introduce `x`. Rewrite using `[hint (g.symm x)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `satU_guMap g hg hint ϖ ϖ q n m h hbi (fun a y => ⟨cell_guMap g hg hint hU hm1 a y, fun hy => ?_⟩) α` and prove the remaining obligations. Use `cell_guMap g.symm hg' hint' hU hm1 a (guMap g hg n y) hy` as an intermediate fact. Rewrite `this` using `[guMap_symm_comp g hg hg' y]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem satU_guMap_self : ∀ {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))] (g : K ≃+* K) {σ : K →+* K} (hg : ∀ x, g (σ x) = σ (g x)), (∀ x, x ∈ Formalism.UG.intL K ↔ g x ∈ Formalism.UG.intL K) → ∀ (ϖ : K) (q n m : ℕ), Formalism.UG.IsUnramInv ϖ σ q → 2 * m ≤ n → n ≤ 2 * m + 1 → ∀ h : Formalism.UG.GU σ n → ℂ, Formalism.UG.IsBiInv (Formalism.UG.KU σ n) h → ∀ α : Fin m → ℂ, Formalism.UG.SatU ϖ q (fun y => h (GlobalTheory.SatInd.guMap g hg n y)) α = Formalism.UG.SatU ϖ q h α := by
   intro K _ _ g σ hg hint ϖ q n m hU hm1 _ h hbi α

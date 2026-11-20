@@ -5,35 +5,31 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx, x', hx', hxx⟩ : ∃ x ∈ L, ∃ x' ∈ L, B x x' ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hJ` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `h1` using `hspan t ht`. Establish `h2 : Submodule.span (𝓞 F) {t | ∃ z ∈ L, ∃ w ∈ L, t = B z w} = ⊥`. Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨z, hz, w, hw, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hcon z hz w hw`. Rewrite `h1` using `[h2]`. Conclude with `(Submodule.mem_bot _).1 h1`. Establish `hli : LinearIndependent F ![x, x']`. Rewrite using `[LinearIndependent.pair_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s t hst`. Establish `e1 : B (s • x + t • x') x' = 0` using `by rw [hst]; simp`. Establish `e2 : B x (s • x + t • x') = 0` using `by rw [hst]; simp`. Simplify using `[hB, hxx] at e1 e2`. Conclude with `⟨e1, e2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop` using `hli.span_eq_top_of_card_eq_finrank (by simp [hV])`. Establish `hvm : v ∈ Submodule.span F ({x, x'} : Set V)`. Establish `: Set.range ![x, x'] = {x, x'}` using `by simp [Set.pair_comm]`. Rewrite using `[← this, htop]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨c, c', hc⟩` from `Submodule.mem_span_pair.1 hvm`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht0, ht⟩ : ∃ t : F, t ≠ 0 ∧ ∀ a : F, a • v ∈ L → a * t ∈ J := by`. Distinguish the cases in `hc0 : c = 0`. Establish `hc' : c' ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `hv` to reduce the goal to its premises. Rewrite using `[← hc, hc0]`. Simplify using the standard rewrite rules. Use `⟨B x v, ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hB, hxx, hc']`. Simplify using `using hBJ x hx _ ha`. Use `⟨B v x', ?_, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`. Simplify using `[hB, hxx, hc0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hBJ _ ha x' hx'`. Set `M : Submodule (𝓞 F) F` to `{ carrier := {a | a • v ∈ L} add_mem' := fun {a b} ha hb => by show (a + b) • v ∈ L`. Rewrite using `[add_smul]`. Conclude with `hadd _ ha _ hb`. Use the proof step `zero_mem' := by show (0 : F) • v ∈ L`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[zero_smul]`. Conclude with `h0`. Use the proof step `smul_mem' := fun r a ha => by show ((r : F) * a) • v ∈ L`. Rewrite using `[mul_smul]`. Conclude with `hsmul r _ ha }`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hM : IsFractional (𝓞 F)⁰ M`. Apply `FractionalIdeal.isFractional_of_le (J := FractionalIdeal.spanSingleton (𝓞 F)⁰ t⁻¹ * J)` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[FractionalIdeal.mem_coe, FractionalIdeal.mem_singleton_mul]`. Conclude with `⟨a * t, ht a ha, by field_simp⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨M, hM⟩, ?_, fun a => Iff.rfl⟩` and prove the remaining obligations. Take `⟨d, n, hn⟩` from `IsLocalization.exists_integer_multiple (𝓞 F)⁰ c`. Take `⟨d', n', hn'⟩` from `IsLocalization.exists_integer_multiple (𝓞 F)⁰ c'`. Establish `hn1 : (n : F) = ((d : 𝓞 F) : F) * c`. Simplify `hn` using `[Algebra.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn2 : (n' : F) = ((d' : 𝓞 F) : F) * c'`. Simplify `hn'` using `[Algebra.smul_def]`. Introduce `hz`. Use `replace hz := FractionalIdeal.eq_zero_iff.1 hz`. Establish `hmem : (((d : 𝓞 F) : F) * ((d' : 𝓞 F) : F)) • v ∈ L`.
-
-Establish `e : (((d : 𝓞 F) : F) * ((d' : 𝓞 F) : F)) • v = ((d' : 𝓞 F) : F) • (n : F) • x + ((d : 𝓞 F) : F) • (n' : F) • x'`. Rewrite using `[← hc, hn1, hn2]`. Use `module`. Rewrite using `[e]`. Conclude with `hadd _ (hsmul _ _ (hsmul _ _ hx)) _ (hsmul _ _ (hsmul _ _ hx'))`.
-
-Establish `h` using `hz _ hmem`. Establish `hd : ((d : 𝓞 F) : F) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero d`. Establish `hd' : ((d' : 𝓞 F) : F) ≠ 0` using `by exact_mod_cast nonZeroDivisors.coe_ne_zero d'`. Conclude with `mul_ne_zero hd hd' h`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_fractionalIdeal_smul_mem_lattice_of_alternating
     {F V : Type} [Field F] [NumberField F] [AddCommGroup V] [Module F V]

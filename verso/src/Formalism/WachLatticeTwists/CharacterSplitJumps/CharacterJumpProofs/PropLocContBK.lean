@@ -14,7 +14,7 @@ namespace Formalism.RepresentationBoundsCohomology.JT
 open Formalism.RepresentationBoundsCohomology.LOC
 
 /- English proof (translation)
-Introduce `I g` and use `by rcases IsPrincipalIdealRing.principal I with ⟨m, rfl⟩ obtain rfl | h0 := eq_or_ne m 0 · refine ⟨0, fun n hn => ?_⟩ rw [Submodule.span_zero_singleton] at hn subst hn exact (map_zero g).symm have hm : algebraMap O (FractionRing O) m ≠ 0 := by simpa using h0 let gm := g ⟨m, Submo …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem baerFrac (O : Type u) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] :
     Module.Baer O (FractionRing O) := fun I g => by
@@ -36,31 +36,29 @@ theorem baerFrac (O : Type u) [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
     mul_div_cancel₀ _ hm]
 
 /- English proof (translation)
-Introduce `O _ _ _ A HV HT' HV' _ _ _ _ _ _ _ _ _ q j' pr pair HfV HfV' hA hS hP hC hN`. Use `set L : Submodule O HT' := HfV'.comap j' with hL`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Rewrite using `[mem_annih]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Rewrite using `[hC, (hA a).1 ha _ ht]`. Simplify using the standard rewrite rules. Introduce `x hx`. Rewrite `hx` using `[mem_annih]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `jb : (HT' ⧸ L) →ₗ[O] (HV' ⧸ HfV')` to `L.liftQ (HfV'.mkQ ∘ₗ j') (by`. Introduce `t ht`. Establish `ht' : j' t ∈ HfV'` using `ht`. Simplify `ht')` using `[LinearMap.mem_ker, Submodule.Quotient.mk_eq_zero]`. Establish `hjb : Function.Injective jb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot]`. Apply `Submodule.ker_liftQ_eq_bot` to reduce the goal to its premises. Introduce `t ht`. Establish `ht' : j' t ∈ HfV'`. Simplify `ht` using `[LinearMap.mem_ker, Submodule.Quotient.mk_eq_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `ht'`. Establish `htf : Module.IsTorsionFree O (HT' ⧸ L)`. Use `⟨fun r hr => ?_⟩` and prove the remaining obligations. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Establish `key : ∀ y : HT' ⧸ L, r • y = 0 → y = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H t`. Introduce `h`. Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : r • j' t ∈ HfV'`. Rewrite using `[← map_smul]`. Conclude with `h`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hS r _ hr0 h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `y z hyz`. Establish `hyz' : r • y = r • z` using `hyz`. Establish `: r • (y - z) = 0` using `by rw [smul_sub, hyz', sub_self]`. Conclude with `sub_eq_zero.1 (key _ this)`. Set `lam0 : (HT' ⧸ L) →ₗ[O] KO O` to `L.liftQ (pr x) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `t ht`. Conclude with `hx t ht)`. Take `⟨lam1, hlam1⟩` from `Module.projective_lifting_property (Submodule.mkQ (1 : Submodule O (FractionRing O))) lam0 (Submodule.mkQ_surjective _)`. Take `⟨μ, hμ⟩` from `(baerFrac O).extension_property jb hjb lam1`. Take `⟨a, ha⟩` from `hP (μ ∘ₗ HfV'.mkQ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `haf : a ∈ HfV`. Rewrite using `[hA]`. Introduce `v hv`. Rewrite using `[ha]`. Simplify using `[(Submodule.Quotient.mk_eq_zero HfV').2 hv]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, haf, ?_⟩` and prove the remaining obligations. Use `symm`. Rewrite using `[← sub_eq_zero]`. Apply `hN` to reduce the goal to its premises. Introduce `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_sub, LinearMap.sub_apply, hC, ha, sub_eq_zero]`. Establish `h3 : lam0 (Submodule.Quotient.mk t) = pr x t` using `rfl`. Establish `h4 : μ (jb (Submodule.Quotient.mk t)) = lam1 (Submodule.Quotient.mk t)` using `LinearMap.congr_fun hμ _`. Establish `h5 : Submodule.mkQ (1 : Submodule O (FractionRing O)) (lam1 (Submodule.Quotient.mk t)) = lam0 (Submodule.Quotient.mk t)` using `LinearMap.congr_fun hlam1 _`. Rewrite using `[← h3, ← h5, ← h4]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem bkbConvO : StatBKbConvO.{u} := by
   intro O _ _ _ A HV HT' HV' _ _ _ _ _ _ _ _ _ q j' pr pair HfV HfV' hA hS hP hC hN
@@ -130,7 +128,7 @@ theorem bkbConvO : StatBKbConvO.{u} := by
     rfl
 
 /- English proof (translation)
-Introduce `O G VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D HfV HfV' pair ℓ e' ι₁ ι₂ P Q hT hperf hfin hc hA hS hP hC hN h1 h2`. Conclude with `propLocCont O G VT VT' D HfV HfV' ℓ e' ι₁ ι₂ P Q hT hperf hfin hc (bkbConvO O _ _ _ _ D.q D.j' D.pr pair HfV HfV' hA hS hP hC hN) h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem propLocContBK : StatPropLocContBK.{u} := by
   intro O G VT VT' _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ D HfV HfV' pair ℓ e' ι₁ ι₂ P Q

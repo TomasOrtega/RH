@@ -21,19 +21,19 @@ section Form
 variable {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 lemma form_add_left (u v w : Fin n → E) : form σ J (u + v) w = form σ J u w + form σ J v w := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 lemma form_smul_left (c : E) (u w : Fin n → E) : form σ J (c • u) w = c * form σ J u w := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => σ (v i) + σ (w i)) = (fun i => σ (v i)) + (fun i => σ (w i)) from rfl, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma form_add_right (u v w : Fin n → E) : form σ J u (v + w) = form σ J u v + form σ J u w := by
   simp only [form, Pi.add_apply, map_add]
@@ -41,7 +41,7 @@ lemma form_add_right (u v w : Fin n → E) : form σ J u (v + w) = form σ J u v
     dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => σ c * σ (v i)) = σ c • (fun i => σ (v i)) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma form_smul_right (c : E) (u v : Fin n → E) : form σ J u (c • v) = σ c * form σ J u v := by
   simp only [form, Pi.smul_apply, smul_eq_mul, map_mul]
@@ -49,7 +49,7 @@ lemma form_smul_right (c : E) (u v : Fin n → E) : form σ J u (c • v) = σ c
     smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hJ j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma form_swap (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (a b : Fin n → E) :
     σ (form σ J a b) = form σ J b a := by
@@ -59,14 +59,14 @@ lemma form_swap (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) 
   rw [hJ j i]; ring
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, Matrix.vecMulVec, dotProduct, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma vecMulVec_mulVec' (x w v : Fin n → E) : Matrix.vecMulVec x w *ᵥ v = (w ⬝ᵥ v) • x := by
   ext i
   simp [Matrix.mulVec, Matrix.vecMulVec, dotProduct, Finset.sum_mul, Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, Matrix.vecMulVec_apply, smul_eq_mul, Pi.smul_apply]`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smul_vecMulVec_mulVec (c : E) (x w v : Fin n → E) : (c • Matrix.vecMulVec x w) *ᵥ v = (c * (v ⬝ᵥ w)) • x := by
   ext i
@@ -75,14 +75,14 @@ lemma smul_vecMulVec_mulVec (c : E) (x w v : Fin n → E) : (c • Matrix.vecMul
   exact Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Simplify using `only [levi, Matrix.add_mulVec, Matrix.one_mulVec, smul_vecMulVec_mulVec, form]`.
+Simplify using the standard rewrite rules.
 -/
 lemma levi_mulVec (x y : Fin n → E) (s : E) (v : Fin n → E) :
     levi σ J x y s *ᵥ v = v + ((s - 1) * form σ J v y) • x + ((s⁻¹ - 1) * form σ J v x) • y := by
   simp only [levi, Matrix.add_mulVec, Matrix.one_mulVec, smul_vecMulVec_mulVec, form]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_single_one, Matrix.mulVec_single_one]`. Simplify using `only [form, dotProduct, Matrix.mulVec, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.col_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -107,7 +107,7 @@ structure Hyp : Prop where
 variable {x y}
 
 /- English proof (translation)
-Rewrite using `[levi_mulVec, h.xy, h.xx]`. Simplify using `only [mul_one, mul_zero, zero_smul, add_zero]`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma levi_mulVec_of_hyp (h : Hyp (σ := σ) (J := J) x y) (s : E) : levi σ J x y s *ᵥ x = s • x := by
   rw [levi_mulVec, h.xy, h.xx]
@@ -115,7 +115,7 @@ lemma levi_mulVec_of_hyp (h : Hyp (σ := σ) (J := J) x y) (s : E) : levi σ J x
   rw [sub_smul, one_smul]; abel
 
 /- English proof (translation)
-Rewrite using `[levi_mulVec, h.yy, h.yx]`. Simplify using `only [mul_one, mul_zero, zero_smul, add_zero]`. Rewrite using `[sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma levi_mulVec_y (h : Hyp (σ := σ) (J := J) x y) (s : E) : levi σ J x y s *ᵥ y = s⁻¹ • y := by
   rw [levi_mulVec, h.yy, h.yx]
@@ -123,7 +123,7 @@ lemma levi_mulVec_y (h : Hyp (σ := σ) (J := J) x y) (s : E) : levi σ J x y s 
   rw [sub_smul, one_smul]; abel
 
 /- English proof (translation)
-Use `Matrix.toLin'.injective (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_mul, LinearMap.comp_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, Matrix.toLin'_one, LinearMap.id_apply, levi_mulVec, levi_mulVec]`. Simplify using `only [form_add_left, form_smul_left, h.xx, h.yy, h.xy, h.yx, inv_inv]`. Establish `h1 : s * s⁻¹ = 1` using `mul_inv_cancel₀ hs`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma levi_mul_levi (h : Hyp (σ := σ) (J := J) x y) {s : E} (hs : s ≠ 0) :
     levi σ J x y s * levi σ J x y s⁻¹ = 1 := by
@@ -135,11 +135,11 @@ lemma levi_mul_levi (h : Hyp (σ := σ) (J := J) x y) {s : E} (hs : s ≠ 0) :
   match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[entry_eq_form]`. Establish `hJ1 : J i j = form σ J (Pi.single i 1) (Pi.single j 1)`. Use `entry_eq_form (σ := σ) (J := J) 1 i j` as an intermediate fact. Rewrite `this` using `[Matrix.one_mulVec, Matrix.one_mulVec, Matrix.transpose_one, Matrix.one_mul, Matrix.map_one σ (map_zero σ) (map_one σ), Matrix.mul_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[hJ1]`. Generalize the expression as in `(Pi.single i 1 : Fin n → E) = u`. Generalize the expression as in `(Pi.single j 1 : Fin n → E) = v`. Rewrite using `[levi_mulVec, levi_mulVec]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [form_add_left, form_smul_left, form_add_right, form_smul_right, h.xx, h.yy, h.xy, h.yx, map_mul, map_sub, map_one, map_inv₀, hσs, form_swap hσ hJ]`. Establish `h1 : s * s⁻¹ = 1` using `mul_inv_cancel₀ hs`. Take the linear combination `(form σ J u x * form σ J y v + form σ J u y * form σ J x v) * h1`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma levi_unitary (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (h : Hyp (σ := σ) (J := J) x y)
     {s : E} (hs : s ≠ 0) (hσs : σ s = s) : (levi σ J x y s)ᵀ * J * (levi σ J x y s).map σ = J := by
@@ -160,7 +160,7 @@ lemma levi_unitary (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i 
   linear_combination (form σ J u x * form σ J y v + form σ J u y * form σ J x v) * h1
 
 /- English proof (translation)
-Use extensionality with `i j`. Use `congrFun (levi_mulVec (σ := σ) (J := J) x y s (ι *ᵥ Pi.single j 1)) i` as an intermediate fact. Rewrite `this` using `[(ho _).1, (ho _).2, Matrix.mulVec_mulVec]`. Simplify `this` using `[Matrix.mulVec_single_one]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma levi_mul_of_orth {n₁ : ℕ} (ι : Matrix (Fin n) (Fin n₁) E) (ho : ∀ u, form σ J (ι *ᵥ u) x = 0 ∧ form σ J (ι *ᵥ u) y = 0)
     (s : E) : levi σ J x y s * ι = ι := by
@@ -176,7 +176,7 @@ section Adelic
 variable [NumberField F]
 
 /- English proof (translation)
-Simplify using `[cA, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 lemma cA_inclR (σ : E →ₐ[F] E) (e : E) : cA σ (inclR (F := F) (AF F) e) = inclR (F := F) (AF F) (σ e) := by
   simp [cA, inclR]
@@ -200,7 +200,7 @@ end Adelic
 variable [NumberField F] [NumberField E]
 
 /- English proof (translation)
-Introduce `e`. Set `τ : E →+* ℂ` to `(IsAlgClosed.lift : E →ₐ[ℚ] ℂ).toRingHom`. Establish `h` using `hB.cm.2.2.2`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 lemma invol_of_good {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) : ∀ e, σ (σ e) = e := by
   intro e
@@ -210,15 +210,15 @@ lemma invol_of_good {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) : ∀
   rw [h, h, star_star]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n n₁ X X₁ H j₀ j₁ r s r₁ s₁ hH hX _ hσ t ht`. Establish `hyp : Hyp (σ` using `σ) (J := X.J) H.x H.y := ⟨hH.xx, hH.yy, hH.xy, by rw [← form_swap hσ hX.herm, hH.xy, map_one]⟩`. Establish `hs : (t : E) ≠ 0` using `Nat.cast_ne_zero.2 ht`. Establish `hσs : σ (t : E) = t` using `map_natCast σ t`. Establish `hinv : levi σ X.J H.x H.y (t : E)⁻¹ * levi σ X.J H.x H.y (t : E) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `levi_mul_levi hyp (inv_ne_zero hs)` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis. Set `g : GL (Fin n) E` to `⟨levi σ X.J H.x H.y t, levi σ X.J H.x H.y (t : E)⁻¹, levi_mul_levi hyp hs, hinv⟩`. Use `⟨toUA σ g (levi_unitary hσ hX.herm hyp hs hσs), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mat_toUA]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `((levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) *ᵥ ((inclR (F := F) (AF F)) ∘ H.x)) i = _`. Rewrite using `[← RingHom.map_mulVec, levi_mulVec_of_hyp hyp]`. Simplify using `[incV, map_natCast]`. Rewrite using `[mat_toUA]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i`. Express the relevant statement in the definitionally equal form `(t : AE F E) * ((levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) *ᵥ ((inclR (F := F) (AF F)) ∘ H.y)) i = _`. Rewrite using `[← RingHom.map_mulVec, levi_mulVec_y hyp, ← map_natCast (inclR (F := F) (AF F)) t, ← map_mul]`. Simplify using `only [incV, Pi.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hs, one_mul]`. Introduce `z`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mat_toUA, Matrix.mulVec_mulVec]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(levi σ X.J H.x H.y t).map (inclR (F := F) (AF F)) * H.ι.map (inclR (F := F) (AF F)) = H.ι.map (inclR (F := F) (AF F))`. Rewrite using `[← Matrix.map_mul, levi_mul_of_orth _ hH.orth]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_levi_scale : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n n₁ : ℕ) (X : Spc F E n)
     (X₁ : Spc F E n₁) (H : Plane E n n₁) (j₀ j₁ r s r₁ s₁ : ℕ), H.IsAdapted σ B X X₁ j₀ j₁ → X.IsHerm σ B r s → X₁.IsHerm σ B r₁ s₁ →

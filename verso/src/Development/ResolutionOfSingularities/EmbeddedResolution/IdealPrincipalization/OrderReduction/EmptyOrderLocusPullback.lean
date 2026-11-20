@@ -20,13 +20,13 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace MaxContactFunctoriality
 
 /- English proof (translation)
-Establish `: CharZero T.base` using `h.valid.charZero`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `h.valid.smooth`. Use `isPullback_of_length_zero_of_comap_center_eq_top φ n (maxContactPrincipalization hinv A T).toSequenceOfBlowups hn ?_` and prove the remaining obligations. Introduce `i hi ψ hψ`. Use `Blowup.comap_eq_top_of_notMem_support ψ ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.center i) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y hy`. Establish `hmem : ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.projectionToBase i).base (ψ.base y) ∈ orderAtLeastLocus T.ideal T.mult` using `OrderReductionCorrectness.projectionToBase_mem_orderAtLeastLocus_of_mem_center T h.valid (maxContactPrincipalization hinv A T) i hi (ψ.base y) hy`. Establish `hfy : φ.base y ∈ orderAtLeastLocus T.ideal T.mult`. Establish `h1 : φ.base y = ((maxContactPrincipalization hinv A T).toSequenceOfBlowups.projectionToBase i).base (ψ.base y)`. Rewrite using `[← hψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `hmem`. Establish `hcs` using `orderAtLeastLocus_comap T.base T.structMap φ T.ideal T.mult`. Rewrite `hcs` using `[hempty]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy2 : y ∈ (∅ : Set ↥Y)`. Rewrite using `[hcs]`. Conclude with `hfy`. Conclude with `hy2.elim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_of_orderAtLeastLocus_comap_eq_empty
     (hinv : ComapIsoInvariance.{u}) (P : ℕ → Prop) (A : ℕ → PrincipalizationAssignment.{u})

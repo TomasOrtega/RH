@@ -7,25 +7,23 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.UnifMap
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ v w i hi ϖ hϖ`. Establish `hle` using `GlobalTheory.T.valued_le_one_iff_of_continuous_ringEquiv F E v w i hi`. Establish `key : ∀ x : WithZero (Multiplicative ℤ), x ≠ 0 → x < 1 → x ≤ WithZero.exp (-1 : ℤ)`. Introduce `x hx h1`. Rewrite `h1`, the goal using `[← WithZero.exp_log hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hlt : ∀ y, Valued.v (i y) < 1 ↔ Valued.v y < 1`. Introduce `y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hy : y = 0`. Simplify using `[hy]`. Establish `hiy : i y ≠ 0` using `by simpa using hy`. Establish `e1` using `(Valued.v (R := w.adicCompletion E)).one_lt_val_iff (inv_ne_zero hiy)`. Establish `e2` using `(Valued.v (R := v.adicCompletion F)).one_lt_val_iff (inv_ne_zero hy)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1`, `e2` using `[inv_inv]`. Rewrite using `[← e1, ← e2, ← not_le, ← not_le, ← map_inv₀ i, hle]`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hϖ.symm`. Establish `hiϖ0 : i ϖ ≠ 0` using `by simpa using hϖ0`. Establish `hϖ1 : Valued.v ϖ < 1`. Rewrite using `[hϖ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hup : Valued.v (i ϖ) < 1` using `(hlt ϖ).2 hϖ1`. Take `⟨π, hπ⟩` from `HeightOneSpectrum.valuation_exists_uniformizer E w`. Use `set z : w.adicCompletion E := (π : w.adicCompletion E)`. Establish `hz : Valued.v z = WithZero.exp (-1 : ℤ)`. Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hπ`. Use `set y := i.symm z`. Establish `hy1 : Valued.v y < 1`. Rewrite using `[← hlt, RingEquiv.apply_symm_apply, hz, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hy0 : y ≠ 0`. Introduce `h`. Rewrite `hy1` using `[h, map_zero]`. Establish `: z = 0` using `by simpa [y] using h`. Rewrite `hz` using `[this, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hz.symm`. Establish `hdiv : Valued.v (y / ϖ) ≤ 1`. Rewrite using `[map_div₀, hϖ, div_le_one₀ (by simp)]`. Conclude with `key _ (by simpa using hy0) hy1`. Establish `h2` using `(hle _).2 hdiv`.
-
-Rewrite `h2` using `[map_div₀, map_div₀, RingEquiv.apply_symm_apply, hz]`. Establish `hlow : WithZero.exp (-1 : ℤ) ≤ Valued.v (i ϖ)`. Rewrite `h2` using `[div_le_one₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hiϖ0))]`. Then use the resulting hypothesis. Conclude with `le_antisymm (key _ (by simpa using hiϖ0) hup) hlow`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unif_to_unif : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] (v : HeightOneSpectrum (𝓞 F))
     (w : HeightOneSpectrum (𝓞 E)) (i : v.adicCompletion F ≃+* w.adicCompletion E), Continuous i →

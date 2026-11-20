@@ -9,16 +9,16 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
   {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-The claim follows from `localization_le_of_smul_mem (one_notMem P) fun y hy => by rw [one_smul]; exact h hy`.
+A detailed English derivation is pending.
 -/
 theorem localization_le_localization_of_le {M N : Submodule (𝓞 E) (Sp E n)} (P : HeightOneSpectrum (𝓞 E))
     (h : M ≤ N) : Formalism.HermitianLatticesTheory.localization₂ P.asIdeal M ≤ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal N :=
   localization_le_of_smul_mem (one_notMem P) fun y hy => by rw [one_smul]; exact h hy
 
 /- English proof (translation)
-Establish `hex : ∀ Q : ST, ∃ b ∈ Q.1.asIdeal, b ∉ (conjPrime₂ P.1).asIdeal` using `fun Q => exists_mem_notMem (hP.st Q)`. Use `choose b hb hb' using hex`. Use `⟨cO E (∏ Q : ST, b Q), ?_, fun Q => ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h' : ∏ Q : ST, b Q ∈ (conjPrime₂ P.1).asIdeal` using `(mem_conjP _ _).2 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Q, -, hQ⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := (conjPrime₂ P.1).isPrime)).1 h'`. Conclude with `hb' Q hQ`. Rewrite using `[cO_cO]`. Conclude with `Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem b (Finset.mem_univ Q)) (hb Q)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_notMem_conj_mem (P : ST) (hP : MoveHyp ST SG P) :
     ∃ a : 𝓞 E, a ∉ P.1.asIdeal ∧ ∀ Q : ST, cO E a ∈ Q.1.asIdeal := by
@@ -35,7 +35,7 @@ theorem exists_notMem_conj_mem (P : ST) (hP : MoveHyp ST SG P) :
     exact Ideal.mem_of_dvd _ (Finset.dvd_prod_of_mem b (Finset.mem_univ Q)) (hb Q)
 
 /- English proof (translation)
-Take `⟨a, ha, haQ⟩` from `exists_notMem_conj_mem P hP`. Conclude with `le_antisymm (localization_le_of_smul_mem ha fun y hy => hd.smul_Lsh_mem_N haQ hy) (localization_le_localization_of_le P.1 hd.N_le_Lsh)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem localization_dual_L_eq_localization_N {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) :
     Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.dual (hStd E n) d.L) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal d.N := by
@@ -44,11 +44,11 @@ theorem localization_dual_L_eq_localization_N {d : Deco E n ST SG} (hd : d.Ok) (
     (localization_le_localization_of_le P.1 hd.N_le_Lsh)
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[hd.mem_locP_L]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 h1`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `(mem_locP _ _ _).2 ⟨s, hs, (hd.mem_kerAt P _).2 ⟨hsy, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hd.f_smul P s y h1, h2, mul_zero]`. Introduce `h`. Take `⟨s, hs, hsy⟩` from `(mem_locP _ _ _).1 h`. Take `⟨h1, h2⟩` from `(hd.mem_kerAt P _).1 hsy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy : y ∈ d.at P.1` using `(mem_locP _ _ _).2 ⟨s, hs, h1⟩`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[hd.f_smul P s y hy]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (mk_ne_zero hs)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_L_eq_localization_kerAt {d : Deco E n ST SG} (hd : d.Ok) (P : ST) :
     Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal d.L = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.kerAt P) := by
@@ -68,7 +68,7 @@ theorem localization_L_eq_localization_kerAt {d : Deco E n ST SG} (hd : d.Ok) (P
     exact (mul_eq_zero.1 h2).resolve_left (mk_ne_zero hs)
 
 /- English proof (translation)
-Establish `hd'` using `hd.up P hP hq hq2 hx hfx`. Rewrite using `[localization_L_eq_localization_kerAt hd' P, ← (hd'.dnN_spec P hP.ne).2.2.2, hd.dnN_up P hP hq hq2 hx hfx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem localization_up_L_eq_localization_N {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.N)
@@ -78,19 +78,19 @@ theorem localization_up_L_eq_localization_N {d : Deco E n ST SG} (hd : d.Ok) (P 
   rw [localization_L_eq_localization_kerAt hd' P, ← (hd'.dnN_spec P hP.ne).2.2.2, hd.dnN_up P hP hq hq2 hx hfx]
 
 /- English proof (translation)
-Establish `hd'` using `hd.up P hP hq hq2 hx hfx`. Take `⟨-, -, -, h4, h5⟩` from `upN_spec hd.lat hd.uni P.1 hP.ne hx`. Rewrite using `[localization_dual_L_eq_localization_N hd' P hP]`. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x) = _`. Establish `hq0' : q ≠ 0` using `fun h => hq2 (h ▸ Submodule.zero_mem _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hq0 : algebraMap (𝓞 E) E q ≠ 0` using `by rwa [Ne, FaithfulSMul.algebraMap_eq_zero_iff]`. Take `⟨a, ha, haQ⟩` from `exists_notMem_conj_mem P hP`. Take `⟨b, hb, hbP⟩` from `exists_mem_notMem hP.ne`. Take `⟨c, hc, r, hr, hcr⟩` from `exists_inv_unif P.1 hq hq2`. Establish `hAS : upA P.1.asIdeal d.N x ≤ d.N ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 E) E q)⁻¹ • x}`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `sup_le le_sup_left ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `z ⟨e, he, rfl⟩`. Take `⟨β, hβ⟩` from `Formalism.HermitianLatticesTheory.neighbourConstruct_mem_inv.1 he q hq`. Establish `e1 : e • x = β • ((algebraMap (𝓞 E) E q)⁻¹ • x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul E β, smul_smul, hβ, mul_comm (algebraMap (𝓞 E) E q) e, mul_assoc, mul_inv_cancel₀ hq0, mul_one]`. Rewrite using `[SetLike.mem_coe, e1]`. Conclude with `(le_sup_right : _ ≤ d.N ⊔ _) (Submodule.smul_mem _ β (Submodule.subset_span rfl))`. Establish `hSA : ∀ z ∈ d.N ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 E) E q)⁻¹ • x}, r • z ∈ upA P.1.asIdeal d.N x`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hz`. Take `⟨t, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Establish `e2 : r • (t • ((algebraMap (𝓞 E) E q)⁻¹ • x)) = t • (c • x)`. Rewrite using `[smul_comm r t, ← algebraMap_smul E r, smul_smul, ← hcr, mul_comm (algebraMap (𝓞 E) E q) c, mul_assoc, mul_inv_cancel₀ hq0, mul_one]`. Rewrite using `[smul_add, e2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem_sup (d.N.smul_mem r hu) (Submodule.smul_mem _ t (Submodule.subset_span ⟨c, hc, rfl⟩))`. Establish `hupN : Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (upA P.1.asIdeal d.N x)` using `le_antisymm (localization_le_localization_of_le P.1 h4) (localization_le_of_smul_mem hbP fun y hy => h5 (Submodule.smul_mem_smul hb hy))`. Establish `hA : Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (upA P.1.asIdeal d.N x) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.N ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 E) E q)⁻¹ • x})` using `le_antisymm (localization_le_localization_of_le P.1 hAS) (localization_le_of_smul_mem hr hSA)`. Establish `hL : Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.dual (hStd E n) d.L ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 E) E q)⁻¹ • x}) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.N ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 …`. Use `le_antisymm (localization_le_of_smul_mem ha fun z hz => ?_) (localization_le_localization_of_le P.1 (sup_le_sup_right hd.N_le_Lsh _))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu, v, hv, rfl⟩` from `Submodule.mem_sup.1 hz`. Rewrite using `[smul_add]`. Conclude with `Submodule.add_mem_sup (hd.smul_Lsh_mem_N haQ hu) (Submodule.smul_mem _ a hv)`. Rewrite using `[hupN, hA, hL]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_dual_up_L {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : MoveHyp ST SG P) {q : 𝓞 E}
     (hq : q ∈ P.1.asIdeal) (hq2 : q ∉ P.1.asIdeal ^ 2) {x : Sp E n} (hx : x ∈ d.N)
@@ -148,7 +148,7 @@ theorem localization_dual_up_L {d : Deco E n ST SG} (hd : d.Ok) (P : ST) (hP : M
   rw [hupN, hA, hL]
 
 /- English proof (translation)
-Introduce `E _ _ _ n ST SG d hd P hP q hq hq2 x hx hfx`. Conclude with `⟨hd.N_le_Lsh, localization_dual_L_eq_localization_N hd P hP, localization_up_L_eq_localization_N hd P hP hq hq2 hx hfx, localization_dual_up_L hd P hP hq hq2 hx hfx, fun y hy => by`. Rewrite using `[Deco.up_f, if_pos (show y ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (upN P.1.asIdeal d.N x) from hy)]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lattices_at_up : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))} (d : Deco E n ST SG), d.Ok → ∀ (P : ST), MoveHyp ST SG P → ∀ (q : 𝓞 E), q ∈ P.1.asIdeal → q ∉ P.1.asIdeal ^ 2 → ∀ (x : Sp E n), x ∈ d.N → d.f P x = 1 → d.N ≤ Formalism.HermitianLatticesTheory.dual (hStd E n) d.L ∧ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.dual (hStd E n) d.L) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal d.N ∧ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.up P q x).L = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal d.N ∧ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.dual (hStd E n) (d.up P q x).L) = Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (Formalism.HermitianLatticesTheory.dual (hStd E n) d.L ⊔ Submodule.span (𝓞 E) {(algebraMap (𝓞 E) E q)⁻¹ • x}) ∧ ∀ y ∈ Formalism.HermitianLatticesTheory.localization₂ P.1.asIdeal (d.up P q x).N, (d.up P q x).f P y = d.f P (q • y) := by
   intro E _ _ _ n ST SG d hd P hP q hq hq2 x hx hfx

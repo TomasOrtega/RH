@@ -6,17 +6,17 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `hσ`. Rewrite `h1` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at h1`. Establish `hN : ((σ 1 0 : ℤ) : ZMod N) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_right _ _) h1)`. Establish `hl : ((σ 1 0 : ℤ) : ZMod l) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_trans (dvd_mul_left _ _) h1)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hg1, hg0⟩` from `Subgroup.mem_inf.1 hγ`. Rewrite `hg1` using `[Gamma1_mem]`. Take `⟨hx, hw, hz⟩` from `hg1`. Rewrite `hg0` using `[Gamma0_mem]`. Establish `hdet` using `σ.det_coe`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hdet` using `[Matrix.det_fin_two]`. Establish `hdN` using `congrArg (Int.cast : ℤ → ZMod N) hdet`. Move the coercions through the operations in `at hdN`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Gamma1_mem]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Mat …`. Use `push_cast`. Rewrite `*` using `[hN, hx, hw, hz]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take the linear combination `hdN`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hdN`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Gamma0_mem]`. Simplify using `only [Matrix.SpecialLinearGroup.coe_mul, Matrix.SpecialLinearGroup.coe_inv, Matrix.adjugate_fin_two, Matrix.mul_apply, Fin.sum_univ_two, Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Mat …`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hl, hg0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem conj_mem_lev {N l : ℕ} {d : ℤ} {σ : SL(2, ℤ)} (hσ : IsDia N l d σ) {γ : SL(2, ℤ)}
     (hγ : γ ∈ lev N l) : σ * γ * σ⁻¹ ∈ lev N l := by
@@ -63,13 +63,13 @@ namespace GlobalTheory.Hk
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `N l k d σ _ hσ f`. Establish `hle : ConjAct.toConjAct (Matrix.SpecialLinearGroup.mapGL ℝ σ) • (lev N l : Subgroup (GL (Fin 2) ℝ)) ≤ (lev N l : Subgroup (GL (Fin 2) ℝ))`. Introduce `y hy`. Rewrite `hy` using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem, ← ConjAct.toConjAct_inv, ConjAct.toConjAct_smul, inv_inv]`. Take `⟨γ, hγ, hγe⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨σ * γ * σ⁻¹, conj_mem_lev hσ hγ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.SpecialLinearGroup.mapGL ℝ (σ * γ * σ⁻¹) = y`. Rewrite using `[map_mul, map_mul, map_inv, hγe]`. Use `group`. Use `⟨{ toFun := dia k σ f slash_action_eq' := fun A hA => ?_ holo' := ?_ zero_at_cusps' := fun {x} hx => ?_ }, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, rfl⟩` from `hA`. Establish `h : (f : ℍ → ℂ) ∣[k] (σ * γ * σ⁻¹) = f` using `f.slash_action_eq' _ ⟨σ * γ * σ⁻¹, conj_mem_lev hσ hγ, rfl⟩`. Use `show ((f : ℍ → ℂ) ∣[k] σ) ∣[k] γ = (f : ℍ → ℂ) ∣[k] σ`. Rewrite using `[← SlashAction.slash_mul]`. Establish `e : σ * γ = (σ * γ * σ⁻¹) * σ` using `by group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, SlashAction.slash_mul, h]`. Conclude with `MDifferentiable.slash f.holo' _ _`. Establish `h3 : IsCusp (Matrix.SpecialLinearGroup.mapGL ℝ σ • x) (lev N l : Subgroup (GL (Fin 2) ℝ))` using `(hx.smul _).mono hle show x.IsZeroAt ((f : ℍ → ℂ) ∣[k] Matrix.SpecialLinearGroup.mapGL ℝ σ) k`. Conclude with `OnePoint.IsZeroAt.smul_iff.1 (f.zero_at_cusps' h3)`.
+A detailed English derivation is pending.
 -/
 theorem dia_cuspForm : ∀ (N l : ℕ) (k d : ℤ) (σ : SL(2, ℤ)), 0 < N → GlobalTheory.Hk.IsDia N l d σ →
     ∀ f : CuspForm (GlobalTheory.Hk.lev N l) k, ∃ g : CuspForm (GlobalTheory.Hk.lev N l) k, ⇑g = GlobalTheory.Hk.dia k σ ⇑f := by

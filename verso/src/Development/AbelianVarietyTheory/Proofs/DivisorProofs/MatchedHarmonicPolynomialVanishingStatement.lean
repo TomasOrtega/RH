@@ -19,7 +19,7 @@ open Formalism.BasicNotions.TH GlobalTheory.RealLift GlobalTheory.FockIncl
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HarmKStab.kInf_mem_tensHarm` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FMatchedHarmonicPolynomialVanishing.lean&line=76#L76)
 -/

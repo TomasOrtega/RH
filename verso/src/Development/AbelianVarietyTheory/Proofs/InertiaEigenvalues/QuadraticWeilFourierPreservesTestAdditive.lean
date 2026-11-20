@@ -11,7 +11,7 @@ namespace GlobalTheory.JR.WeilQuad.FourierTest
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [Unram.finrank_eq (F := F) (E := E)]; norm_num)`. Use `haveI : Module.Finite A.K A.L := Module.Finite.equiv A.push.symm.out.equiv`. Conclude with `Module.Finite.trans A.K A.L`.
+A detailed English derivation is pending.
 -/
 theorem finite_F_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   haveI : Module.Finite F E :=
@@ -20,7 +20,7 @@ theorem finite_F_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   exact Module.Finite.trans A.K A.L
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul, mul_comm, IsScalarTower.algebraMap_apply F A.K A.L, A.star_K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_smul_F (A : Et F E) (c : F) (y : A.L) : star (c • y) = c • star y := by
   rw [Algebra.smul_def, Algebra.smul_def, star_mul, mul_comm, IsScalarTower.algebraMap_apply F A.K A.L, A.star_K]
@@ -41,9 +41,9 @@ theorem beta_apply (A : Et F E) (x : A.K) (y' y : A.L) :
     beta A x y' y = Algebra.trace F A.K (x * Algebra.trace A.K A.L (star y' * y)) := rfl
 
 /- English proof (translation)
-Use `haveI : Nontrivial A.L := ⟨hL.exists_pair_ne⟩`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `k hk`. Assume the negation of the conclusion as `hne`. Take `⟨k', hk'⟩` from `hK.mul_inv_cancel hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : algebraMap A.K A.L (k * k') = 0` using `by rw [map_mul, hk, zero_mul]`. Rewrite `h` using `[hk', map_one]`. Conclude with `one_ne_zero h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algMap_inj (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) :
     Function.Injective (algebraMap A.K A.L) := by
@@ -57,7 +57,7 @@ theorem algMap_inj (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) :
   exact one_ne_zero h
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[beta_apply, beta_apply]`. Use `congr 2`. Apply `algMap_inj A hK hL` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.1, (GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.1, star_mul, star_mul, star_star, star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -71,7 +71,7 @@ theorem beta_symm [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L)
   ring
 
 /- English proof (translation)
-Apply `algMap_inj A hK hL` to reduce the goal to its premises. Rewrite using `[(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.1, A.star_K, map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_algMap [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (c : A.K) :
     Algebra.trace A.K A.L (algebraMap A.K A.L c) = 2 * c := by
@@ -80,15 +80,15 @@ theorem trace_algMap [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A
   ring
 
 /- English proof (translation)
-Use `haveI : Nontrivial A.K := ⟨hK.exists_pair_ne⟩`. Use `haveI : CharZero F := Unram.charZero (F := F) (E := E)`. Introduce `a ha`. Assume the negation of the conclusion as `hne`. Establish `hsa : star a ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Simplify using `using congrArg star h`. Take `⟨u, hu⟩` from `hL.mul_inv_cancel hsa`. Establish `h2 : (2 : A.K) ≠ 0`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (2 : A.K) = algebraMap F A.K 2` using `by rw [map_ofNat]`. Rewrite using `[this]`. Introduce `h`. Conclude with `two_ne_zero ((injective_iff_map_eq_zero (algebraMap F A.K)).1 (algebraMap F A.K).injective _ h)`. Take `⟨t, ht⟩` from `hK.mul_inv_cancel h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `htr : ∀ k : A.K, Algebra.trace F A.K k = 0`. Introduce `k`. Use `ha (u * algebraMap A.K A.L (((x⁻¹ : A.Kˣ) : A.K) * t * k))` as an intermediate fact. Rewrite `this` using `[beta_apply, ← mul_assoc, hu, one_mul, trace_algMap A hK hL]`. Establish `e : (x : A.K) * (2 * (((x⁻¹ : A.Kˣ) : A.K) * t * k)) = k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `h1 : (1 : A.K) = 0` using `(GlobalTheory.T.etaleHermitianPair_structure_facts F E A).2.2.1.1 1 (fun n => by rw [Algebra.traceForm_apply, one_mul]; exact htr n)`. Conclude with `one_ne_zero h1`.
+A detailed English derivation is pending.
 -/
 theorem beta_sepLeft [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.Kˣ) :
     (beta A x).SeparatingLeft := by
@@ -119,20 +119,20 @@ theorem beta_sepLeft [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A
   exact one_ne_zero h1
 
 /- English proof (translation)
-The claim follows from `LinearMap.BilinForm.isSymm_def.2 (beta_symm A hK hL x)`.
+A detailed English derivation is pending.
 -/
 theorem beta_isSymm [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.K) :
     (beta A x).IsSymm := LinearMap.BilinForm.isSymm_def.2 (beta_symm A hK hL x)
 
 /- English proof (translation)
-The claim follows from `((beta_isSymm A hK hL x).isRefl.nondegenerate_iff_separatingLeft).2 (beta_sepLeft A hK hL x)`.
+A detailed English derivation is pending.
 -/
 theorem beta_nondeg [Unram F E] (A : Et F E) (hK : IsField A.K) (hL : IsField A.L) (x : A.Kˣ) :
     (beta A x).Nondegenerate :=
   ((beta_isSymm A hK hL x).isRefl.nondegenerate_iff_separatingLeft).2 (beta_sepLeft A hK hL x)
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun a => ?_` and prove the remaining obligations. Establish `h : (fun b => ψ b) =ᶠ[𝓝 a] fun _ => ψ a` using `by filter_upwards [Metric.ball_mem_nhds a one_pos] with b hb`. Establish `h1 : ψ (b - a) = 1` using `hψ.1 _ (by rw [← dist_eq_norm]; exact le_of_lt hb)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `continuousAt_const.congr h.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cont_psi {ψ : AddChar F ℂ} (hψ : IsStdChar ψ) : Continuous ψ := by
   refine continuous_iff_continuousAt.2 fun a => ?_
@@ -149,13 +149,11 @@ end GlobalTheory.JR.WeilQuad.FourierTest
 open GlobalTheory.JR.WeilQuad.FourierTest in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω h φ hφ`. Take `⟨hK, hL, hψ, hsd, -⟩` from `h`. Use `haveI := hsd.1`. Use `haveI := finite_F_L A`. Establish `hker : A.kerL ψ (x : A.K) = fun a b => ψ (beta A x a b)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hint : ∀ f : A.L → ℂ, IsTest f → ∀ y, Integrable (fun y' => f y' * A.kerL ψ (x : A.K) y' y) μ`. Introduce `f hf y`. Rewrite using `[hker]`. Use `Continuous.integrable_of_hasCompactSupport ?_ (hf.2.mul_right)` and prove the remaining obligations. Conclude with `hf.1.continuous.mul ((cont_psi hψ).comp (IsModuleTopology.continuous_of_linearMap ((beta A x).flip y)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨?_, fun φ' hφ' => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.JR.SelfDualUniq.selfDual_exists_unique_isTest F E ψ hψ A.L (beta A x) (beta_isSymm A hK hL x) (beta_nondeg A hK hL x)).2 μ hsd.1 φ hφ` as an intermediate fact. Unfold `fOp`. Rewrite using `[hker]`. Conclude with `this`.
-
-Use function extensionality and compare the values at `y`. Simplify using `only [fOp, fourB, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint φ hφ y) (hint φ' hφ' y)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.JR.WeilQuad.fOp_isTest_add : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L)

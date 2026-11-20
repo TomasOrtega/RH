@@ -17,15 +17,15 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.EigRank
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ydc3.main hd h`.
+A detailed English derivation is pending.
 -/
 theorem rt0_conj_neg_ne_zero {d : ℕ} (hd : 0 < d) {z : ℂ} (h : z ^ 2 = -(d : ℂ)) : starRingEnd ℂ z = -z :=
   _root_.UpperTheory.Reformulated.B.Ydc3.main hd h
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c τ`. Prove the components needed by the constructor for the conclusion. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `τ.2`. Apply `Subtype.ext show τ.1 (((H.bar H.rt : 𝓞 E)) : E) = - H.rt0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj, τ.2]`. Conclude with `rt0_conj_neg_ne_zero H.d_prime.pos H.sqrt_neg_disc_sq`.
+A detailed English derivation is pending.
 -/
 theorem labelEmb_rt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Geo.Tor.Level H) (c : Coeff l) (τ : CMType H), labelEmb c (Sum.inl τ) H.rt = IntermediateField.inclusion c.le (baseKA l).ρ ∧ labelEmb c (Sum.inr τ) H.rt = -IntermediateField.inclusion c.le (baseKA l).ρ := by
   intro E _ _ _ H l c τ
@@ -38,13 +38,13 @@ theorem labelEmb_rt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H 
     exact rt0_conj_neg_ne_zero H.d_prime.pos H.sqrt_neg_disc_sq
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y Ω _ y₀ cst hy`. Establish `: FiniteDimensional ℚ c.F` using `c.fin`. Establish `: NumberField c.F` using `⟨⟩`. Establish `h1 : Y.j ≫ Y.s = pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `by show (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, Y.jQ_over]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩ : ∃ g : c.F →+* Ω, y₀ ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) = spMap g` from `⟨(Spec.preimage (y₀ ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom))).hom, by`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]⟩`. Rewrite `hy` using `[h1, ← Category.assoc, hg]`. Establish `h2 : g.comp (algebraMap (𝓞 c.F) c.F) = cst.comp (algebraMap (𝓞 c.F) c.F)`. Establish `h3 : spMap (g.comp (algebraMap (𝓞 c.F) c.F)) = spMap (cst.comp (algebraMap (𝓞 c.F) c.F))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `h4` using `Spec.map_injective h3`. Conclude with `congrArg CommRingCat.Hom.hom h4`. Establish `h5 : g = cst` using `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 c.F)) h2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.condition, ← Category.assoc, hg, h5]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem structure_of_model_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (Ω : Type) [Field Ω] (y₀ : Sp Ω ⟶ Xo.XF c) (cst : c.F →+* Ω), y₀ ≫ Y.j ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) → y₀ ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap (cst.comp (IntermediateField.inclusion c.le).toRingHom) := by
   intro E _ _ _ H D l Xo c Y Ω _ y₀ cst hy
@@ -70,11 +70,11 @@ theorem structure_of_model_point : ∀ (E : Type) [Field E] [NumberField E] [IsC
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Introduce `S S₁ S₂ G G₁ G₂ _ _ _ f₁ f₂ φ₁ φ₂ h₁ h₂ R _ x₁ x₂ hx V _ _ M₁ O _ a₁ a₂ b ρ ha₁ ha₂ hact`. Take `⟨N, hN⟩` from `(LiePull.lieModel_pullback S S₁ G G₁ f₁ φ₁ h₁ R x₁ V).2 M₁`. Establish `key : ∀ (g : Sp R ⟶ S), x₂ ≫ f₂ = g → ∀ N : LieModel G g V, (∀ a e, (N.pt (ρ a e)).left = (N.pt e).left ≫ (b a).left) → ∃ M₂ : LieModel G₂ x₂ V, M₂.IsActOf a₂ ρ`. Introduce `g hg N hNa`. Substitute `hg` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Take `⟨M₂, hM₂⟩` from `(LiePull.lieModel_pullback S S₂ G G₂ f₂ φ₂ h₂ R x₂ V).1 N`. Use `⟨M₂, fun a e => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `h₂.1.hom_ext` to reduce the goal to its premises. Rewrite using `[hM₂, hNa, Over.comp_left, Category.assoc, ha₂, ← Category.assoc, hM₂]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Over.w, Over.comp_left, Category.assoc, Over.w, Over.w]`. Use `key _ hx.symm N fun a e => ?_` and prove the remaining obligations. Rewrite using `[← hN, ← hN, hact a e, Over.comp_left, Category.assoc, ha₁, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieModel_transport : ∀ (S S₁ S₂ : Scheme.{0}) (G : Over S) (G₁ : Over S₁) (G₂ : Over S₂) [GrpObj G] [GrpObj G₁] [GrpObj G₂] (f₁ : S₁ ⟶ S) (f₂ : S₂ ⟶ S) (φ₁ : G₁.left ⟶ G.left) (φ₂ : G₂.left ⟶ G.left), IsGrpPullback G₁ G f₁ φ₁ → IsGrpPullback G₂ G f₂ φ₂ → ∀ (R : Type) [CommRing R] (x₁ : Sp R ⟶ S₁) (x₂ : Sp R ⟶ S₂), x₁ ≫ f₁ = x₂ ≫ f₂ → ∀ (V : Type) [AddCommGroup V] [Module R V] (M₁ : LieModel G₁ x₁ V) (O : Type) [CommRing O] (a₁ : O → (G₁ ⟶ G₁)) (a₂ : O → (G₂ ⟶ G₂)) (b : O → (G ⟶ G)) (ρ : O →+* Module.End R V), (∀ a, (a₁ a).left ≫ φ₁ = φ₁ ≫ (b a).left) → (∀ a, (a₂ a).left ≫ φ₂ = φ₂ ≫ (b a).left) → M₁.IsActOf a₁ ρ → ∃ M₂ : LieModel G₂ x₂ V, M₂.IsActOf a₂ ρ := by
   intro S S₁ S₂ G G₁ G₂ _ _ _ f₁ f₂ φ₁ φ₂ h₁ h₂ R _ x₁ x₂ hx V _ _ M₁ O _ a₁ a₂ b ρ ha₁ ha₂ hact
@@ -94,7 +94,7 @@ theorem lieModel_transport : ∀ (S S₁ S₂ : Scheme.{0}) (G : Over S) (G₁ :
   rw [← hN, ← hN, hact a e, Over.comp_left, Category.assoc, ha₁, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, u => by simp [M.pt_zero] | n + 1, u => by rw [Fin.sum_univ_succ, M.add, pt_sum M (fun i => u i.succ), List.ofFn_succ, List.prod_cons]`.
+A detailed English derivation is pending.
 -/
 theorem pt_sum {S : Scheme.{0}} {G : Over S} [GrpObj G] {k : Type} [Field k] {t : Sp k ⟶ S} {V : Type}
     [AddCommGroup V] [Module k V] (M : LieModel G t V) : ∀ {n : ℕ} (u : Fin n → V),
@@ -104,27 +104,25 @@ theorem pt_sum {S : Scheme.{0}} {G : Over S} [GrpObj G] {k : Type} [Field k] {t 
     rw [Fin.sum_univ_succ, M.add, pt_sum M (fun i => u i.succ), List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Introduce `S G _ k _ t O _ act τ n V _ _ M ρ hact hL`. Take `⟨v, hv, huq⟩` from `hL`. Establish `mem : ∀ e, e ∈ eigSp ρ τ ↔ ∀ a, ρ a e = τ a • e`. Introduce `e`. Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `eig : ∀ e, IsLieEigen act t τ (M.pt e) ↔ e ∈ eigSp ρ τ`. Introduce `e`. Rewrite using `[mem]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `M.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hact a e]`. Conclude with `(h.2 a).trans (M.smul (τ a) e).symm`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M.tan e, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hact a e, h a]`. Conclude with `M.smul (τ a) e`. Use `choose e he using fun i => M.onto (v i) (hv i).1`. Establish `heW : ∀ i, e i ∈ eigSp ρ τ` using `fun i => (eig _).1 (by rw [he]; exact hv i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsat : ∀ c : Fin n → k, ∃ u : Fin n → (epsPt t ⟶ G), (∀ i, (u i).left = spMap (epsScale (c i)) ≫ (v i).left) ∧ M.pt (∑ i, c i • e i) = (List.ofFn u).prod`. Introduce `c`. Use `⟨fun i => M.pt (c i • e i), fun i => ?_, pt_sum M _⟩` and prove the remaining obligations. Rewrite using `[← he i]`. Conclude with `M.smul (c i) (e i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ c : Fin n → k, (∑ i, c i • e i) ∈ eigSp ρ τ` using `fun c => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (heW i)`. Establish `hli : LinearIndependent k e`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `h1` using `hsat g`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hg]`. Establish `h2` using `hsat 0`. Establish `z : ∑ i, (0 : Fin n → k) i • e i = 0` using `by simp`. Rewrite `h2` using `[z]`. Establish `h0` using `(huq _ ((eig 0).2 (Submodule.zero_mem _))).unique h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `fun i => congrFun h0 i`. Establish `hspan : eigSp ρ τ = Submodule.span k (Set.range e)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨c, ⟨u, hu, hw⟩, -⟩` from `huq _ ((eig y).2 hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hu' : u = fun i => M.pt (c i • e i)`. Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i, ← he i]`. Conclude with `(M.smul (c i) (e i)).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: y = ∑ i, c i • e i`. Apply `M.inj` to reduce the goal to its premises. Rewrite using `[hw, hu']`. Conclude with `(pt_sum M _).symm`. Rewrite using `[this]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `heW i`. Rewrite using `[hspan, finrank_span_eq_card hli, Fintype.card_fin]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eigSp_of_lieMult : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (k : Type) [Field k] (t : Sp k ⟶ S) (O : Type) [CommRing O] (act : OAct O G) (τ : O →+* k) (n : ℕ) (V : Type) [AddCommGroup V] [Module k V] (M : LieModel G t V) (ρ : O →+* Module.End k V), M.IsActOf act.act ρ → LieMult act t τ n → Module.finrank k (eigSp ρ τ) = n := by
   intro S G _ k _ t O _ act τ n V _ _ M ρ hact hL
@@ -187,11 +185,11 @@ theorem finrank_eigSp_of_lieMult : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] 
   rw [hspan, finrank_span_eq_card hli, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `heq : (⨅ a, LinearMap.ker ((ev.toLinearMap ∘ₗ r a ∘ₗ ev.symm.toLinearMap) - χ a • LinearMap.id) : Submodule K (Fin n → K)) = (⨅ a, LinearMap.ker (r a - χ a • LinearMap.id) : Submodule K V).map (ev : V →ₗ[K] (Fin n → K))`. Use extensionality with `c`. Rewrite using `[Submodule.mem_map_equiv]`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.comp_apply, LinearEquiv.coe_coe, sub_eq_zero]`. Use `forall_congr' fun a => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `ev.injective` to reduce the goal to its premises. Rewrite using `[h, map_smul, LinearEquiv.apply_symm_apply]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h, map_smul, LinearEquiv.apply_symm_apply]`. Rewrite using `[heq, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_conj {K V O : Type} [Field K] [AddCommGroup V] [Module K V] {n : ℕ} (ev : V ≃ₗ[K] (Fin n → K))
     (r : O → (V →ₗ[K] V)) (χ : O → K) :
@@ -215,13 +213,13 @@ theorem finrank_conj {K V O : Type} [Field K] [AddCommGroup V] [Module K V] {n :
   rw [heq, LinearEquiv.finrank_map_eq]
 
 /- English proof (translation)
-Introduce `k k' _ _ _ O _ V V' _ _ _ _ n b j hjs hli hsp ρ ρ' hc σ`. Set `bL : Module.Basis (Fin n) k' V'` to `Module.Basis.mk hli hsp.ge`. Establish `hbL : ∀ i, bL i = j (b i)` using `fun i => by simp [bL]`. Establish `hsymm : ∀ c : Fin n → k, bL.equivFun.symm (algebraMap k k' ∘ c) = j (b.equivFun.symm c)`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.Basis.equivFun_symm_apply, Module.Basis.equivFun_symm_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hjs, hbL]; rfl`. Establish `hfwd : ∀ e, bL.equivFun (j e) = algebraMap k k' ∘ b.equivFun e`. Introduce `e`. Establish `h` using `hsymm (b.equivFun e)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[LinearEquiv.symm_apply_apply]`. Rewrite using `[← h, LinearEquiv.apply_symm_apply]`. Establish `hL : ∀ a (c : Fin n → k), (bL.equivFun.toLinearMap ∘ₗ ρ' a ∘ₗ bL.equivFun.symm.toLinearMap) (algebraMap k k' ∘ c) = algebraMap k k' ∘ (b.equivFun.toLinearMap ∘ₗ ρ a ∘ₗ b.equivFun.symm.toLinearMap) c`. Introduce `a c`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsymm, hc, hfwd]`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.Chart.finrank_eig_bc _ _ hL (fun a => σ a)`. Rewrite `h` using `[finrank_conj b.equivFun (fun a => ρ a) (fun a => σ a)]`. Establish `h'` using `finrank_conj bL.equivFun (fun a => ρ' a) (fun a => algebraMap k k' (σ a))`. Conclude with `h.trans h'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_eigSp_baseChange : ∀ (k k' : Type) [Field k] [Field k'] [Algebra k k'] (O : Type) [CommRing O] (V V' : Type) [AddCommGroup V] [Module k V] [AddCommGroup V'] [Module k' V'] (n : ℕ) (b : Module.Basis (Fin n) k V) (j : V →+ V'), (∀ (a : k) e, j (a • e) = algebraMap k k' a • j e) → LinearIndependent k' (fun i => j (b i)) → Submodule.span k' (Set.range fun i => j (b i)) = ⊤ → ∀ (ρ : O →+* Module.End k V) (ρ' : O →+* Module.End k' V'), (∀ a e, ρ' a (j e) = j (ρ a e)) → ∀ σ : O →+* k, Module.finrank k (eigSp ρ σ) = Module.finrank k' (eigSp ρ' ((algebraMap k k').comp σ)) := by
   intro k k' _ _ _ O _ V V' _ _ _ _ n b j hjs hli hsp ρ ρ' hc σ
@@ -252,27 +250,25 @@ end GlobalTheory.CompanionTheory.Ar.EigRank
 namespace GlobalTheory.CompanionTheory.Ar.EigRank
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y X Ω _ _ ξ f y₀ t m Li _ _ M ρ cst hξ hs hact`. Establish `: Smooth t.G.hom` using `t.semi.smooth`. Establish `hfin : Module.Finite Ω Li` using `(GlobalTheory.T.lie_model_finite_projective X t.G Ω ξ Li M).1`. Use `⟨hfin, fun s => ?_⟩` and prove the remaining obligations. Establish `: Smooth Y.oF.t.G.hom` using `Y.oF.t.semi.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨M₂, hM₂⟩` from `lieModel_transport Y.X X (Xo.XF c) Y.t.G t.G Y.oF.t.G f Y.j m.cm.F Y.m.cm.F m.cart Y.m.cart Ω ξ y₀ hξ Li M (𝓞 E) t.act.act Y.oF.t.act.act Y.t.act.act ρ m.act Y.m.act hact`. Set `ic : Ω →+* AlgebraicClosure Ω` to `algebraMap Ω (AlgebraicClosure Ω)`. Set `x : Sp (AlgebraicClosure Ω) ⟶ Xo.XF c` to `Spec.map (CommRingCat.ofHom ic) ≫ y₀`. Take `⟨E', _, _, ⟨M₃⟩⟩` from `lieModel_exists (Xo.XF c) Y.oF.t.G (AlgebraicClosure Ω) x`. Take `⟨ρ', hρ', -⟩` from `lieModel_exists_unique_act _ Y.oF.t.G (AlgebraicClosure Ω) x E' M₃ (𝓞 E) Y.oF.t.act.act Y.oF.t.act.hom Y.oF.t.act.one Y.oF.t.act.mul Y.oF.t.act.add`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj, hjs, hjb⟩` from `GlobalTheory.T.lie_model_base_change_map _ Y.oF.t.G Ω (AlgebraicClosure Ω) y₀ Li E' M₂ M₃`. Take `⟨hli, hsp⟩` from `hjb inferInstance _ (Module.finBasis Ω Li)`. Establish `hc : ∀ a e, ρ' a (j e) = j (ρ a e)`. Introduce `a e`. Apply `M₃.inj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hρ' a (j e), Over.comp_left, hj, hj, hM₂ a e, Over.comp_left, Category.assoc]`. Establish `hbc` using `finrank_eigSp_baseChange Ω (AlgebraicClosure Ω) (𝓞 E) Li E' _ (Module.finBasis Ω Li) j hjs hli hsp ρ ρ' hc (cst.comp (labelEmb c s))`. Set `β : KA l →+* AlgebraicClosure Ω` to `ic.comp (cst.comp (IntermediateField.inclusion c.le).toRingHom)`. Establish `hy : y₀ ≫ Y.j ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← hs, ← Category.assoc y₀, ← hξ, Category.assoc]`. Establish `hs' : x ≫ pullback.fst Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) ≫ Xo.s = spMap β` using `by show (Spec.map (CommRingCat.ofHom ic) ≫ y₀) ≫ _ = _`. Rewrite using `[Category.assoc, structure_of_model_point E H D l Xo c Y Ω y₀ cst hy]`. Simplify using `only [spMap, β, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Establish `hdet` using `(Y.oF.geom (AlgebraicClosure Ω) x β hs').1 (ic.comp (cst.comp (labelEmb c s)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hne : β (baseKA l).ρ ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg β (baseKA l).ρ_sq`. Rewrite `h1` using `[map_pow, h0, map_neg, map_natCast]`. Establish `h2 : ((H.d : ℕ) : AlgebraicClosure Ω) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h1.symm` as an intermediate fact. Simplify using `using this`. Conclude with `H.d_prime.ne_zero (Nat.cast_eq_zero.mp h2)`. Rewrite using `[hbc]`. Consider the cases of `s with`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `inl τ`. Establish `e : (ic.comp (cst.comp (labelEmb c (Sum.inl τ)))) H.rt = β (baseKA l).ρ`. Simplify using `only [RingHom.comp_apply, (labelEmb_rt E H l c τ).1]`. Both sides reduce to the same expression. Conclude with `finrank_eigSp_of_lieMult _ Y.oF.t.G _ x _ Y.oF.t.act _ D.p E' M₃ ρ' hρ' (hdet.1 e)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `inr τ`. Establish `e : (ic.comp (cst.comp (labelEmb c (Sum.inr τ)))) H.rt = -β (baseKA l).ρ`. Simplify using `only [RingHom.comp_apply, (labelEmb_rt E H l c τ).2, map_neg]`. Both sides reduce to the same expression. Establish `e' : (ic.comp (cst.comp (labelEmb c (Sum.inr τ)))) H.rt ≠ β (baseKA l).ρ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Establish `h2 : (2 : AlgebraicClosure Ω) * β (baseKA l).ρ = 0`. Take the linear combination `-h`.
-
-Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`. Conclude with `finrank_eigSp_of_lieMult _ Y.oF.t.G _ x _ Y.oF.t.act _ D.q E' M₃ ρ' hρ' (hdet.2 e')`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eig_finrank_label : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Sp Ω ⟶ X) (f : X ⟶ Y.X) (y₀ : Sp Ω ⟶ Xo.XF c) (t : SAB H X) (m : SABMap t Y.t f) (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel t.G ξ Li) (ρ : 𝓞 E →+* Module.End Ω Li) (cst : c.F →+* Ω), ξ ≫ f = y₀ ≫ Y.j → ξ ≫ f ≫ Y.s = spMap (cst.comp (algebraMap (𝓞 c.F) c.F)) → M.IsActOf t.act.act ρ → FiniteDimensional Ω Li ∧ ∀ s, Module.finrank Ω (eigSp ρ (cst.comp (labelEmb c s))) = labelRk D s := by
   intro E _ _ _ H D l Xo c Y X Ω _ _ ξ f y₀ t m Li _ _ M ρ cst hξ hs hact

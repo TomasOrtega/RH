@@ -20,7 +20,7 @@ theorem unitary_matrix_mul (ε : Fin n → Bool) (x y : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.umat (x * y) = Formalism.MainNotions.S.umat x * Formalism.MainNotions.S.umat y := rfl
 
 /- English proof (translation)
-Use `show ((y⁻¹ : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = _`. Rewrite using `[Matrix.coe_units_inv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_matrix_inv_alt (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.umat y⁻¹ = (Formalism.MainNotions.S.umat y)⁻¹ := by
@@ -33,20 +33,20 @@ Both sides reduce to the same expression.
 theorem unitary_matrix_one (ε : Fin n → Bool) : Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[rightRegular_unitary_eq, rightRegular_unitary_eq, rightRegular_unitary_eq, rregRep_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem right_regular_mul (ε : Fin n → Bool) (x y : Formalism.REAL.UJ ε) (v : L2 ε) :
     rreg ε (Formalism.MainNotions.S.umat (x * y)) v = rreg ε (Formalism.MainNotions.S.umat x) (rreg ε (Formalism.MainNotions.S.umat y) v) := by
   rw [rightRegular_unitary_eq, rightRegular_unitary_eq, rightRegular_unitary_eq, rregRep_mul]; rfl
 
 /- English proof (translation)
-Rewrite using `[unitary_matrix_one, rregRep_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem right_regular_one (ε : Fin n → Bool) (v : L2 ε) : rreg ε (Formalism.MainNotions.S.umat (1 : Formalism.REAL.UJ ε)) v = v := by
   rw [unitary_matrix_one, rregRep_one]; rfl
 
 /- English proof (translation)
-Establish `hn : ∀ w : L2 ε, ‖rreg ε (Formalism.MainNotions.S.umat y) w‖ = ‖w‖` using `(rreg_isURepOn ε).2.1 _ (unitary_matrix_mem_set ε y)`. Set `T : L2 ε →ₗᵢ[ℂ] L2 ε` to `⟨(rreg ε (Formalism.MainNotions.S.umat y)).toLinearMap, hn⟩`. Conclude with `T.inner_map_map u v`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem right_regular_inner_preserving (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) (u v : L2 ε) :
     ⟪rreg ε (Formalism.MainNotions.S.umat y) u, rreg ε (Formalism.MainNotions.S.umat y) v⟫_ℂ = ⟪u, v⟫_ℂ := by
@@ -56,7 +56,7 @@ theorem right_regular_inner_preserving (ε : Fin n → Bool) (y : Formalism.REAL
   exact T.inner_map_map u v
 
 /- English proof (translation)
-Rewrite using `[right_regular_mul, ← right_regular_inner_preserving ε y, ← right_regular_mul, mul_inv_cancel, right_regular_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_coefficient_translate (ε : Fin n → Bool) (x y : Formalism.REAL.UJ ε) (f : L2 ε) :
     ⟪f, rreg ε (Formalism.MainNotions.S.umat (y⁻¹ * x)) f⟫_ℂ =
@@ -64,7 +64,7 @@ theorem matrix_coefficient_translate (ε : Fin n → Bool) (x y : Formalism.REAL
   rw [right_regular_mul, ← right_regular_inner_preserving ε y, ← right_regular_mul, mul_inv_cancel, right_regular_one]
 
 /- English proof (translation)
-Repeatedly rewrite using `[rightRegular_unitary_eq]`. Conclude with `rregRep_cont ε v`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_regular_continuous (ε : Fin n → Bool) (v : L2 ε) :
     Continuous (fun y : Formalism.REAL.UJ ε => rreg ε (Formalism.MainNotions.S.umat y) v) := by
@@ -72,9 +72,9 @@ theorem right_regular_continuous (ε : Fin n → Bool) (v : L2 ε) :
   exact rregRep_cont ε v
 
 /- English proof (translation)
-Establish `hm` using `measurePreserving_mul_right ε y`. Establish `e : rreg ε (Formalism.MainNotions.S.umat y) (toL2 ε F) = toL2 ε (fun x => F (x * Formalism.MainNotions.S.umat y))` using `rightRegular_toL2 ε F (unitary_matrix_mem_set ε y)`. Establish `h1` using `hF2.comp_measurePreserving hm`. Establish `hfun : ((fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) ∘ fun x => x * y) = fun g : Formalism.REAL.UJ ε => (fun x => F (x * Formalism.MainNotions.S.umat y)) (Formalism.MainNotions.S.umat g)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply, unitary_matrix_mul]`. Rewrite `h1` using `[hfun]`. Rewrite using `[e, toL2_eq_memLp_toLp ε (F := fun x => F (x * Formalism.MainNotions.S.umat y)) h1]`. Conclude with `MemLp.coeFn_toLp (f := fun z : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat z * Formalism.MainNotions.S.umat y)) h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_regular_toL2_ae_eq (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)) (y : Formalism.REAL.UJ ε) :
@@ -92,7 +92,7 @@ theorem right_regular_toL2_ae_eq (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin 
   exact MemLp.coeFn_toLp (f := fun z : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat z * Formalism.MainNotions.S.umat y)) h1
 
 /- English proof (translation)
-Rewrite using `[toL2_eq_memLp_toLp ε hF2]`. Conclude with `hF2.coeFn_toLp`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toL2_ae_eq_function (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε)) :
@@ -100,7 +100,7 @@ theorem toL2_ae_eq_function (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) �
   rw [toL2_eq_memLp_toLp ε hF2]; exact hF2.coeFn_toLp
 
 /- English proof (translation)
-Rewrite using `[L2.inner_indicatorConstLp_one]`. Conclude with `setIntegral_congr_ae hN ((right_regular_toL2_ae_eq ε hF2 y).mono fun z hz _ => hz)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_indicator_right_regular (ε : Fin n → Bool) {F : Matrix (Fin n) (Fin n) ℂ → ℂ}
     (hF2 : MemLp (fun g : Formalism.REAL.UJ ε => F (Formalism.MainNotions.S.umat g)) 2 (Formalism.REAL.muG ε))
@@ -111,9 +111,9 @@ theorem inner_indicator_right_regular (ε : Fin n → Bool) {F : Matrix (Fin n) 
   exact setIntegral_congr_ae hN ((right_regular_toL2_ae_eq ε hF2 y).mono fun z hz _ => hz)
 
 /- English proof (translation)
-Establish `hc : Continuous (fun y : Formalism.REAL.UJ ε => ⟪a, rreg ε (Formalism.MainNotions.S.umat y) b⟫_ℂ)` using `continuous_const.inner (right_regular_continuous ε b)`. Rewrite using `[memLp_two_iff_integrable_sq_norm hc.aestronglyMeasurable]`. Establish `hi` using `((hS a ha b hb a ha b hb).1).re`. Use `hi.congr (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Simplify using `only [RCLike.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 theorem matrix_coefficient_memLp (ε : Fin n → Bool) {K : Submodule ℂ (L2 ε)} {d : ℝ}
     (hS : ∀ a ∈ K, ∀ b ∈ K, ∀ a' ∈ K, ∀ b' ∈ K,
@@ -137,13 +137,13 @@ def fPhi (ε : Fin n → Bool) (F : Matrix (Fin n) (Fin n) ℂ → ℂ) (f : L2 
   ∫ y, F (Formalism.MainNotions.S.umat y) * fGam ε f (y⁻¹ * w) ∂(Formalism.REAL.muG ε)
 
 /- English proof (translation)
-The claim follows from `continuous_const.inner (right_regular_continuous ε f)`.
+A detailed English derivation is pending.
 -/
 theorem matrix_coefficient_continuous (ε : Fin n → Bool) (f : L2 ε) : Continuous (fGam ε f) :=
   continuous_const.inner (right_regular_continuous ε f)
 
 /- English proof (translation)
-Establish `: CompleteSpace K` using `hKc.completeSpace_coe`. Use `⟨(K.orthogonalProjectionOnto β : L2 ε), (K.orthogonalProjectionOnto β).2, fun u hu => ?_⟩` and prove the remaining obligations. Use `Submodule.inner_orthogonalProjectionOnto_eq_of_mem_right (K := K) ⟨u, hu⟩ β` as an intermediate fact. Rewrite `this` using `[Submodule.coe_inner]`. Conclude with `this.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_projection_inner (ε : Fin n → Bool) {K : Submodule ℂ (L2 ε)} (hKc : IsClosed (K : Set (L2 ε))) (β : L2 ε) :
     ∃ β' ∈ K, ∀ u ∈ K, ⟪β, u⟫_ℂ = ⟪β', u⟫_ℂ := by
@@ -156,9 +156,9 @@ theorem exists_orthogonal_projection_inner (ε : Fin n → Bool) {K : Submodule 
 variable {ε : Fin n → Bool} {K : Submodule ℂ (L2 ε)} {d : ℝ}
 
 /- English proof (translation)
-Take `⟨β', hβ', hβ⟩` from `exists_orthogonal_projection_inner ε hKc β`. Establish `hmem : ∀ y : Formalism.REAL.UJ ε, rreg ε (Formalism.MainNotions.S.umat y) f ∈ K` using `fun y => hKs _ (unitary_matrix_mem_set ε y) f hf`. Establish `e : (fun y : Formalism.REAL.UJ ε => ⟪β, rreg ε (Formalism.MainNotions.S.umat y) f⟫_ℂ * fGam ε f (y⁻¹ * x)) = fun y => ⟪β', rreg ε (Formalism.MainNotions.S.umat y) f⟫_ℂ * star ⟪rreg ε (Formalism.MainNotions.S.umat x) f, rreg ε (Formalism.MainNotions.S.umat y) f⟫_ℂ`. Use function extensionality and compare the values at `y`. Rewrite using `[hβ _ (hmem y), fGam, matrix_coefficient_translate, RCLike.star_def, inner_conj_symm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, (hS β' hβ' f hf _ (hmem x) f hf).2, hβ _ (hmem x)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schur_orthogonality_integral (hKc : IsClosed (K : Set (L2 ε)))
     (hKs : ∀ g ∈ UJset ε, ∀ u ∈ K, rreg ε g u ∈ K)
@@ -180,9 +180,9 @@ theorem schur_orthogonality_integral (hKc : IsClosed (K : Set (L2 ε)))
   rw [e, (hS β' hβ' f hf _ (hmem x) f hf).2, hβ _ (hmem x)]
 
 /- English proof (translation)
-Unfold `fPhi`. Rewrite using `[← integral_mul_left_eq_self (fun y => F (Formalism.MainNotions.S.umat y) * fGam ε f (y⁻¹ * w)) w]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem convolution_eq_integral {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (f : L2 ε) (w : Formalism.REAL.UJ ε) :
     fPhi ε F f w = ∫ z, F (Formalism.MainNotions.S.umat (w * z)) * fGam ε f z⁻¹ ∂(Formalism.REAL.muG ε) := by
@@ -194,15 +194,13 @@ theorem convolution_eq_integral {F : Matrix (Fin n) (Fin n) ℂ → ℂ} (f : L2
   group
 
 /- English proof (translation)
-Use `set f := toL2 ε F with hfdef`. Establish `hγ : MemLp (fGam ε f) 2 (Formalism.REAL.muG ε)` using `matrix_coefficient_memLp ε hS hfK hfK`. Establish `hγi : MemLp (fun z : Formalism.REAL.UJ ε => star (fGam ε f z⁻¹)) 2 (Formalism.REAL.muG ε)` using `(hγ.comp_measurePreserving (Measure.measurePreserving_inv (Formalism.REAL.muG ε))).star`. Set `Fm : C(Formalism.REAL.UJ ε × Formalism.REAL.UJ ε, Formalism.REAL.UJ ε)` to `⟨fun p => p.1 * p.2, by fun_prop⟩`. Establish `hL` using `Continuous.compMeasurePreservingLp (μ := Formalism.REAL.muG ε) (ν := Formalism.REAL.muG ε) (f := fun _ : Formalism.REAL.UJ ε => f) (g := fun w => Fm.curry w) continuous_const Fm.curry.continuous (fun w => measurePreserving_mul_left (Formalism.REAL.muG ε) w) (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ w, fPhi ε F f w = ⟪hγi.toLp _, Lp.compMeasurePreserving (Fm.curry w) (measurePreserving_mul_left (Formalism.REAL.muG ε) w) f⟫_ℂ`. Introduce `w`. Rewrite using `[convolution_eq_integral, MeasureTheory.L2.inner_def]`. Establish `h1` using `hγi.coeFn_toLp`. Establish `h2` using `Lp.coeFn_compMeasurePreserving f (measurePreserving_mul_left (Formalism.REAL.muG ε) w)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `(measurePreserving_mul_left (Formalism.REAL.muG ε) w).quasiMeasurePreserving.ae_eq_comp (toL2_ae_eq_function ε hF2)`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [h1, h2, h3] with z hz1 hz2 hz3`. Rewrite using `[RCLike.inner_apply', hz1]`. Establish `hz2' : (Lp.compMeasurePreserving (Fm.curry w) (measurePreserving_mul_left (Formalism.REAL.muG ε) w) f : Formalism.REAL.UJ ε → ℂ) z = (f : Formalism.REAL.UJ ε → ℂ) (w * z)` using `hz2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp_apply] at hz3`. Rewrite using `[hz2', hz3]`. Simplify using `only [RCLike.star_def, RingHomCompTriple.comp_apply, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `: fPhi ε F f = fun w => ⟪hγi.toLp _, Lp.compMeasurePreserving (Fm.curry w) (measurePreserving_mul_left (Formalism.REAL.muG ε) w) f⟫_ℂ` using `funext key`.
-
-Rewrite using `[this]`. Conclude with `continuous_const.inner hL`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convolution_coefficient_continuous (hS : ∀ a ∈ K, ∀ b ∈ K, ∀ a' ∈ K, ∀ b' ∈ K,
       Integrable (fun y : Formalism.REAL.UJ ε => ⟪a, rreg ε (Formalism.MainNotions.S.umat y) b⟫_ℂ *

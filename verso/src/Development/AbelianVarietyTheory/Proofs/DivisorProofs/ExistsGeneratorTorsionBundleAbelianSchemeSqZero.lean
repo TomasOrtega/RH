@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.CechPic
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `((k : A) + 1) * v ^ k * hM`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pow_add_sqZero {A : Type*} [CommRing A] (v M : A) (hM : M * M = 0) (k : ℕ) :
     (v + M) ^ (k + 1) = v ^ (k + 1) + (k + 1) * M * v ^ k := by
@@ -26,11 +26,11 @@ theorem pow_add_sqZero {A : Type*} [CommRing A] (v M : A) (hM : M * M = 0) (k : 
     linear_combination ((k : A) + 1) * v ^ k * hM
 
 /- English proof (translation)
-Move the coercions through the operations in `at hH`. Establish `r1 : ∀ N : A, N * N = 0 → (1 + N * H) ^ (k + 1) = 1 + N` using `fun N hN => by`. Rewrite using `[pow_add_sqZero 1 (N * H) (by linear_combination H ^ 2 * hN) k, one_pow, one_pow]`. Take the linear combination `N * hH`. Establish `e1 : (1 + Na * H) ^ (k + 1) = Sa` using `by rw [r1 Na hNa2]; linear_combination hNa`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `e2 : (G * (1 + Nb * H)) ^ (k + 1) = G ^ (k + 1) * Sb`. Rewrite using `[mul_pow, r1 Nb hNb2]`. Take the linear combination `G ^ (k + 1) * hNb`. Establish `e3` using `pow_add_sqZero (G * (1 + Nb * H)) M hM2 k`. Establish `hu : G * (1 + Nb * H) + M = 1 + Na * H` using `by linear_combination hM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e3` using `[hu]`. Take the linear combination `H * (e1 - e2 + hS - e3) - M * (G * (1 + Nb * H)) ^ k * hH`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sqZero_root_correction_mul_pow_eq_zero {A : Type*} [CommRing A] {G Sa Sb Na Nb H M : A} (k : ℕ)
     (hS : Sa = G ^ (k + 1) * Sb) (hNa : Na = Sa - 1) (hNb : Nb = Sb - 1) (hNa2 : Na * Na = 0)
@@ -56,47 +56,41 @@ open scoped CategoryTheory.Obj
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `k R R₀ _ _ π hπ hk h2 X X₀ s s₀ i hP hsurj m hm hm2`. Use `haveI : IsClosedImmersion (spMap π) := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom π) hπ`. Use `haveI : IsClosedImmersion i := MorphismProperty.of_isPullback (P := @IsClosedImmersion) hP.flip inferInstance`. Use `haveI : Surjective i := GlobalTheory.LiftSys.surjective_of_isPullback_sqZero (I := RingHom.ker π) (by rw [hk]; rfl) hπ rfl hP`. Establish `hsq : ∀ (W : X.Opens) (x y : Γ(X, W)), (i.app W).hom x = 0 → (i.app W).hom y = 0 → x * y = 0` using `GlobalTheory.SquareZero.mul_eq_zero_of_app_eq_zero R R₀ π hπ hk X X₀ s s₀ i hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, hD, rfl, hD1⟩` from `exists_cocycle_one_on_thickening X X₀ i m hm`. Establish `h2X : IsUnit ((k + 1 : ℕ) : Γ(X, ⊤))`. Use `h2.map ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appTop).hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Rewrite `hm2` using `[← cls_lbPow hD (k + 1) (LB.isLB_linComb hD _ _), cls_eq_zero_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨σ₂, hσ₂⟩` from `hm2`. Establish `hle : ∀ a, D.U a ≤ (lbPow D (k + 1)).U (fun _ => a)` using `fun a y hy => Set.mem_iInter.2 fun _ => hy`. Set `σ : ∀ a, Γ(X, D.U a)ˣ` to `fun a => res (hle a) (σ₂.s (fun _ => a))`. Establish `hσ : ∀ a b, res (inf_le_left : D.U a ⊓ D.U b ≤ D.U a) (σ a) = D.g a b ^ (k + 1) * res inf_le_right (σ b)`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `e` using `(isGen_iff_germ σ₂).1 hσ₂ y (fun _ => a) (fun _ => b) (hle a hy.1) (hle b hy.2)`. Establish `hg` using `gm_linComb D (fun _ : PUnit => 𝟙 X) (fun _ => ((k + 1 : ℕ) : ℤ)) (𝟙 X) y (fun _ => a) (fun _ => b) (hle a hy.1) (hle b hy.2)`. Rewrite `hg` using `[Fintype.prod_unique, Category.id_comp, zpow_natCast]`. Use `erw [hg] at e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_mul, map_pow, gm_res (𝟙 X) y _ hy, gm_res (𝟙 X) y _ hy]`. Simplify using `only [σ]`. Use `erw [gm_res (𝟙 X) y (hle a) hy.1, gm_res (𝟙 X) y (hle b) hy.2]`. Conclude with `e`. Establish `hg1 : ∀ a b (y : X₀) (hy : i y ∈ D.U a ⊓ D.U b), gm i y _ (D.g a b) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a b y hy`. Establish `e` using `gm_pull (𝟙 X₀) i y (D.U a ⊓ D.U b) hy (D.g a b)`. Rewrite `e` using `[Category.id_comp, hD1 a b, map_one]`. Conclude with `e.symm`. Establish `hσi : ∀ a b (y : X₀) (ha : i y ∈ D.U a) (hb : i y ∈ D.U b), gm i y _ (σ a) = gm i y _ (σ b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a b y ha hb`. Establish `hab : i y ∈ D.U a ⊓ D.U b` using `⟨ha, hb⟩`. Rewrite using `[← gm_res i y (inf_le_left : D.U a ⊓ D.U b ≤ D.U a) hab, hσ a b, map_mul, map_pow, hg1 a b y hab, gm_res i y inf_le_right hab, one_pow, _root_.one_mul]`. Establish `hpi : ∀ a (y : X₀) (ha : i y ∈ D.U a), gm (𝟙 X₀) y (i ⁻¹ᵁ D.U a) (pullU i _ (σ a)) = gm i y _ (σ a)`. Introduce `a y ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_pull (𝟙 X₀) i y _ ha, Category.id_comp]`. Take `⟨U₀, hU₀⟩` from `glue_unit (X := X₀) (i ⁻¹ᵁ ⊤) (fun a => i ⁻¹ᵁ D.U a) (fun a _ _ => trivial) (fun y _ => TopologicalSpace.Opens.mem_iSup.2 (exists_chart hD (i y))) (fun a => pullU i _ (σ a)) (fun a b y hy => by rw [hpi a y hy.1, hpi b y hy.2]; exact hσi a b y hy.1 hy.2)`. Take `⟨v, hv⟩` from `hsurj (show Γ(X₀, ⊤) from U₀.val)`. Establish `hvu : IsUnit v` using `X.toRingedSpace.isUnit_of_isUnit_germ ⊤ v fun x hx => by`. Take `⟨y, rfl⟩` from `Surjective.surj (f := i) x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : IsUnit ((i.stalkMap y).hom ((X.presheaf.germ ⊤ (i y) hx).hom v))`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply]`. Use `erw [hv]`. Conclude with `U₀.isUnit.map _`. Conclude with `isUnit_of_map_unit _ _ h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Vu : Γ(X, ⊤)ˣ` to `hvu.unit`. Establish `hVu : ∀ (y : X₀), gm i y ⊤ Vu = gm (𝟙 X₀) y (i ⁻¹ᵁ ⊤) U₀`. Introduce `y`. Establish `e` using `gm_pull (𝟙 X₀) i y ⊤ trivial Vu`. Rewrite `e` using `[Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Use `congr 1`. Conclude with `Units.ext hv`. Set `σ' : ∀ a, Γ(X, D.U a)ˣ` to `fun a => σ a * res (le_top : D.U a ≤ ⊤) Vu⁻¹`. Establish `hσ'1 : ∀ a, (i.app (D.U a)).hom (σ' a).val = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Introduce `a`. Establish `e : pullU i (D.U a) (σ' a) = 1` using `unit_ext fun y hy => by`. Rewrite using `[map_one, gm_pull (𝟙 X₀) i y _ hy, Category.id_comp]`. Simplify using `only [σ']`. Rewrite using `[map_mul, gm_res i y le_top hy, map_inv, hVu y, ← hpi a y hy, ← hU₀ a]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `erw [gm_res (𝟙 X₀) y (fun _ _ => trivial : i ⁻¹ᵁ D.U a ≤ i ⁻¹ᵁ ⊤) hy]`. Conclude with `mul_inv_cancel _`. Conclude with `congrArg Units.val e`. Establish `hσ' : ∀ a b, res (inf_le_left : D.U a ⊓ D.U b ≤ D.U a) (σ' a) = D.g a b ^ (k + 1) * res inf_le_right (σ' b)`. Introduce `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [σ']`. Rewrite using `[map_mul, map_mul, hσ a b]`. Simplify using `only [res_res, _root_.mul_assoc]`. Set `n : ∀ a, Γ(X, D.U a)` to `fun a => (σ' a).val - 1`. Establish `hn0 : ∀ a, (i.app (D.U a)).hom (n a) = 0` using `fun a => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [n, map_sub, map_one, hσ'1 a, sub_self]`. Establish `hn2 : ∀ a, n a * n a = 0` using `fun a => hsq _ _ _ (hn0 a) (hn0 a)`. Set `Hh : ∀ a, Γ(X, D.U a)` to `fun a => (res (le_top : D.U a ≤ ⊤) h2X.unit⁻¹).val`. Set `t : ∀ a, Γ(X, D.U a)` to `fun a => 1 + n a * Hh a`. Establish `ht : ∀ a, IsUnit (t a)` using `fun a => IsUnit.of_mul_eq_one (1 - n a * Hh a) (by linear_combination (-(Hh a * Hh a)) * hn2 a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hti : ∀ a, (i.app (D.U a)).hom (t a) = 1` using `fun a => by`. Simplify using `only [t, map_add, map_one, map_mul, hn0 a, zero_mul, add_zero]`. Use `(cls_eq_zero_iff hD).2 ⟨⟨fun a => (ht a).unit⟩, fun a b => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Set `ρa` to `(X.presheaf.map (homOfLE (inf_le_left : D.U a ⊓ D.U b ≤ D.U a)).op).hom`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ρb` to `(X.presheaf.map (homOfLE (inf_le_right : D.U a ⊓ D.U b ≤ D.U b)).op).hom`. Set `ρt` to `(X.presheaf.map (homOfLE (le_top : D.U a ⊓ D.U b ≤ ⊤)).op).hom`. Use `show ρa (t a) = (D.g a b).val * ρb (t b)`. Set `Hc : Γ(X, D.U a ⊓ D.U b)` to `(res (le_top : D.U a ⊓ D.U b ≤ ⊤) h2X.unit⁻¹).val`. Establish `hHa : ρa (Hh a) = Hc` using `congrArg Units.val (res_res inf_le_left le_top h2X.unit⁻¹)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hHb : ρb (Hh b) = Hc` using `congrArg Units.val (res_res inf_le_right le_top h2X.unit⁻¹)`. Establish `hH : ((k + 1 : ℕ) : Γ(X, D.U a ⊓ D.U b)) * Hc = 1` using `by show ((k + 1 : ℕ) : Γ(X, D.U a ⊓ D.U b)) * ρt h2X.unit⁻¹.val = 1`. Rewrite using `[show ((k + 1 : ℕ) : Γ(X, D.U a ⊓ D.U b)) = ρt ((k + 1 : ℕ) : Γ(X, ⊤)) from (map_natCast ρt _).symm, ← map_mul, h2X.mul_val_inv, map_one]`. Establish `hS : ρa (σ' a).val = (D.g a b).val ^ (k + 1) * ρb (σ' b).val`. Use `congrArg Units.val (hσ' a b)` as an intermediate fact.
-
-Rewrite `this` using `[Units.val_mul, Units.val_pow_eq_pow_val]`. Conclude with `this`. Establish `hNa : ρa (n a) = ρa (σ' a).val - 1` using `by simp only [n, map_sub, map_one]`. Establish `hNb : ρb (n b) = ρb (σ' b).val - 1` using `by simp only [n, map_sub, map_one]`. Establish `hNa2 : ρa (n a) * ρa (n a) = 0` using `by rw [← map_mul, hn2 a, map_zero]`.
-
-Establish `hNb2 : ρb (n b) * ρb (n b) = 0` using `by rw [← map_mul, hn2 b, map_zero]`. Establish `hTa : ρa (t a) = 1 + ρa (n a) * Hc` using `by simp only [t, map_add, map_one, map_mul, hHa]`. Establish `hTb : ρb (t b) = 1 + ρb (n b) * Hc` using `by simp only [t, map_add, map_one, map_mul, hHb]`. Establish `hG1 : (i.app (D.U a ⊓ D.U b)).hom (D.g a b).val = 1` using `congrArg Units.val (hD1 a b)`. Establish `hM0 : (i.app (D.U a ⊓ D.U b)).hom (ρa (t a) - (D.g a b).val * ρb (t b)) = 0`.
-
-Rewrite using `[map_sub, map_mul, app_restrict, app_restrict, hti a, hti b, hG1, map_one, map_one, _root_.one_mul, sub_self]`. Establish `key` using `sqZero_root_correction_mul_pow_eq_zero k hS hNa hNb hNa2 hNb2 hH (by rw [hTa, hTb]) (hsq _ _ _ hM0 hM0)`. Establish `hu : IsUnit (((D.g a b).val * (1 + ρb (n b) * Hc)) ^ k)` using `((D.g a b).isUnit.mul (hTb ▸ (ht b).map ρb)).pow k`. Conclude with `sub_eq_zero.1 (hu.mul_left_eq_zero.1 key)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_sqZero_baseChange_nsmul : ∀ (k : ℕ) (R R₀ : Type) [CommRing R] [CommRing R₀] (π : R →+* R₀),
     Function.Surjective π → RingHom.ker π ^ 2 = ⊥ → IsUnit ((k + 1 : ℕ) : R) →
@@ -229,17 +223,15 @@ end GlobalTheory.CechPic
 namespace GlobalTheory.CechPic
 
 /- English proof (translation)
-Introduce `T _ _ e hme hem A _ hA M hM k hk hpow X' π f' hP hπ`. Choose the witnesses or unpack the hypotheses as in `⟨k, rfl⟩ : ∃ k', k = k' + 1 := by`. Consider the cases of `k with`. Consider the case `zero => exact absurd hk (by rw [Nat.cast_zero]; exact not_isUnit_zero)`. Consider the case `succ k => exact ⟨k, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `set q := Ideal.Quotient.mk (Ideal.span {e})`. Establish `hee : e * e = 0` using `hme e hem`. Establish `hker : RingHom.ker q ^ 2 = ⊥`. Rewrite using `[Ideal.mk_ker, Ideal.span_singleton_pow, Ideal.span_singleton_eq_bot, pow_two, hee]`. Use `haveI : IsClosedImmersion (spMap q) := IsClosedImmersion.spec_of_surjective (CommRingCat.ofHom q) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq : Function.Surjective (spMap q).appTop.hom` using `(IsClosedImmersion.isAffine_surjective_of_isAffine (spMap q)).2`. Establish `hf' : Function.Bijective f'.appTop.hom` using `GlobalTheory.AbLaw.CubeOpen.bijective_appTop GlobalTheory.globalFns_holds A hA hP`. Establish `hsurj : Function.Surjective π.appTop.hom`. Introduce `w`. Take `⟨c, rfl⟩` from `hf'.2 w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, rfl⟩` from `hq c`. Use `⟨A.hom.appTop d, ?_⟩` and prove the remaining obligations. Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, hP.w]`. Establish `hpull : pull π (cls M hM) = 0`. Rewrite using `[← cls_pull hM π (pull_isLB hM π), cls_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hπ`. Establish `hnsmul : (k + 1) • cls M hM = 0`. Establish `h` using `cls_linComb hM (fun _ : Fin (k + 1) => 𝟙 A.left) (fun _ => 1) (LB.isLB_linComb hM _ _)`. Establish `h0 : cls (LB.LinComb M (fun _ : Fin (k + 1) => 𝟙 A.left) (fun _ => 1)) (LB.isLB_linComb hM _ _) = 0` using `(cls_eq_zero_iff _).2 hpow`. Rewrite `h` using `[h0]`.
-
-Simplify `h.symm` using `[pull_id]`. Conclude with `(cls_eq_zero_iff hM).1 (eq_zero_of_sqZero_baseChange_nsmul k T (T ⧸ Ideal.span {e}) q Ideal.Quotient.mk_surjective hker hk A.left X' A.hom f' π hP hsurj _ hpull hnsmul)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_isGen_of_lbPow_of_sqZero_abelianScheme : ∀ (T : Type) [CommRing T] [IsLocalRing T] (e : T),
     (∀ a ∈ IsLocalRing.maximalIdeal T, a * e = 0) → e ∈ IsLocalRing.maximalIdeal T →

@@ -6,7 +6,7 @@ import Development.WeilBound.RepresentationTheoryGL.SiegelWeilProof.HolomorphicC
 namespace PositivityTheory.Rg.Sw.AbsSt
 
 /- English proof (translation)
-The claim follows from `secDer_of nDer mDer`.
+A detailed English derivation is pending.
 -/
 theorem secDer : SecDer := secDer_of nDer mDer
 

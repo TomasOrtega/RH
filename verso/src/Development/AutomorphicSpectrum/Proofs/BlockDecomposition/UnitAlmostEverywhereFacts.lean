@@ -19,23 +19,21 @@ namespace GlobalTheory.CompanionTheory.UnitAEPair
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.T.eventually_bezout_separable_derivative_adicIntegers E _ hP, GlobalTheory.BCT.GoodInt.eventually_mem_KGL δ, GlobalTheory.BCT.GoodInt.eventually_mem_KGL (δ * thE E n δ)] with w hgood hd hN`. Take `⟨-, hinv, hKθ, -, -, -, -, -, hchar, -⟩` from `GlobalTheory.BCT.ThBasic.twist_basic E hU n w`. Establish `hy : locEl n w δ ∈ GlobalTheory.LFun.KGL w n`. Unfold `locEl`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN`. Conclude with `hd`. Establish `hgood' : ∃ u v : (w.adicCompletion E)[X], (∀ i, u.coeff i ∈ w.adicCompletionIntegers E) ∧ (∀ i, v.coeff i ∈ w.adicCompletionIntegers E) ∧ u * (nrmL n w (locEl n w δ)).val.charpoly + v * derivative (nrmL n w (locEl n w δ)).val.charpoly = 1`. Rewrite using `[hchar δ]`. Conclude with `hgood`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hNK : nrmL n w (locEl n w δ) ∈ GlobalTheory.LFun.KGL w n`. Unfold `nrmL`. Use `split_ifs with hs`. Conclude with `hy`. Establish `h2 : thetaGL n (cj w) (locEl n w δ) = thL n w (locEl n w δ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `thL`. Rewrite using `[if_neg hs]`. Rewrite using `[h2]`. Conclude with `mul_mem hy (hKθ _ hy)`. Use `⟨hy, fun g hg => ?_, fun t ht hc => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : IsSplitAt w`. Establish `hθ1 : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`. Establish `hn1 : nrmL n w (locEl n w δ) = locEl n w δ` using `by unfold nrmL; rw [if_pos hs]`. Rewrite `hgood'` using `[hn1]`. Rewrite `hg`, the goal using `[hθ1]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨t, ht, k, hk, rfl⟩` from `GlobalTheory.T.integral_conj_etale_mem_centralizer_mul_integralGL E n w _ g hy hgood' hg`. Conclude with `⟨t, ht, by simpa using hk⟩`. Take `⟨t, ht, k, hk, rfl⟩` from `GlobalTheory.T.inert_integral_twistedConjugates_twistedCentralizer_mul_maxCompact E hU n w hs _ g hy hgood' hg`. Conclude with `⟨t, ht, by simpa using hk⟩`. Use `GlobalTheory.T.mem_maxCompactGL_of_commute_etale_charpoly_bounded E n w (nrmL n w (locEl n w δ)) t hNK hgood' ?_ hc` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `ht' : t * locEl n w δ = locEl n w δ * thL n w t` using `ht`. Distinguish the cases in `hs : IsSplitAt w`. Establish `hθ1 : thL n w = MonoidHom.id _` using `by unfold thL; rw [if_pos hs]`. Establish `hn1 : nrmL n w (locEl n w δ) = locEl n w δ` using `by unfold nrmL; rw [if_pos hs]`. Rewrite using `[hn1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ht'` using `[hθ1]`. Simplify using `using ht'`. Establish `hn1 : nrmL n w (locEl n w δ) = locEl n w δ * thL n w (locEl n w δ)`. Unfold `nrmL`. Rewrite using `[if_neg hs]`.
-
-Unfold `thL`. Rewrite using `[if_neg hs]`. Rewrite using `[hn1]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem eventually_one (hU : Unr E) (n : ℕ) (δ : GL (Fin n) E)
     (hP : (δ * thE E n δ).val.charpoly.Separable) :
@@ -89,7 +87,7 @@ theorem eventually_one (hU : Unr E) (n : ℕ) (δ : GL (Fin n) E)
         _ = locEl n w δ * thL n w (locEl n w δ) * t := by simp only [map_mul, hinv, mul_assoc]
 
 /- English proof (translation)
-Use `(h.image continuous_fst).closure_of_subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isCompact_fst {A B : Type} [Group A] [TopologicalSpace A] [T2Space A] [Group B] [TopologicalSpace B]
     [IsTopologicalGroup A] [IsTopologicalGroup B] (t : A × B)
@@ -100,7 +98,7 @@ theorem isCompact_fst {A B : Type} [Group A] [TopologicalSpace A] [T2Space A] [G
   exact ⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Use `(h.image continuous_snd).closure_of_subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isCompact_snd {A B : Type} [Group A] [TopologicalSpace A] [Group B] [TopologicalSpace B] [T2Space B]
     [IsTopologicalGroup A] [IsTopologicalGroup B] (t : A × B)
@@ -111,13 +109,11 @@ theorem isCompact_snd {A B : Type} [Group A] [TopologicalSpace A] [Group B] [Top
   exact ⟨t ^ k, subset_closure ⟨k, rfl⟩, by simp⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ hU a b S _ δ₁ δ₂ h₁ h₂`. Establish `e₁` using `eventually_one hU a δ₁ h₁.2.2.1`. Establish `e₂` using `eventually_one hU b δ₂ h₂.2.2.1`. Establish `hT : Tendsto (Subtype.val : {w : Pl E // w ∈ S} → Pl E) cofinite cofinite` using `Subtype.val_injective.tendsto_cofinite`. Use `filter_upwards [hT.eventually e₁, hT.eventually e₂] with w hw₁ hw₂ y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hy` using the available equality. Take `⟨i₁, u₁, c₁⟩` from `hw₁`. Take `⟨i₂, u₂, c₂⟩` from `hw₂`. Use `⟨⟨i₁, i₂⟩, fun g hg => ?_, (Subgroup.closure_le _).2 ?_⟩` and prove the remaining obligations. Take `⟨t₁, ht₁, k₁⟩` from `u₁ g.1 hg.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t₂, ht₂, k₂⟩` from `u₂ g.2 hg.2`. Use `⟨(t₁, t₂), ?_, ⟨k₁, k₂⟩⟩` and prove the remaining obligations. Conclude with `Prod.ext ht₁ ht₂`. Introduce and unpack `t ⟨ht, hc⟩`. Establish `ht' : t * _ = _ * _` using `ht`.
-
-Conclude with `⟨c₁ t.1 (congrArg Prod.fst ht') (isCompact_fst t hc), c₂ t.2 (congrArg Prod.snd ht') (isCompact_snd t hc)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : PositivityTheory.Rg.BcB.G8.Fin.UnitAE := by
   intro E _ _ _ hU a b S _ δ₁ δ₂ h₁ h₂

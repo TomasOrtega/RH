@@ -6,15 +6,13 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.ParabolicCompare
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[GlobalTheory.SmGL.mem_unipRad, GroundTheory.Automorphic.Parabolic.mem_unipotentRadical, GroundTheory.Automorphic.Iwasawa.mem_blockUpper, GlobalTheory.SmGL.mem_parab]`. Use `and_congr Iff.rfl ⟨fun H i j hij => ?_, fun H a i j => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, i⟩, rfl⟩` from `(stdBlocks d hd).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(stdBlocks d hd).surjective j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = b` from `by simpa [Zl.JC.blockIdx] using hij`. Use `H a i j` as an intermediate fact. Rewrite using `[this]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne]`. Introduce `h'`. Conclude with `e (by simpa using (stdBlocks d hd).injective h')`. Rewrite using `[H _ _ (by simp [Zl.JC.blockIdx])]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : i = j`. Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne e, Matrix.one_apply_ne]`. Introduce `h'`.
-
-Conclude with `e (by simpa using (stdBlocks d hd).injective h')`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem unipRad_stdBlocks_eq_unipotentRadical (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N) :

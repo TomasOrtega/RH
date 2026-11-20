@@ -11,9 +11,7 @@ structure RootData (S L : Finset ℕ) (ν o : ℕ → ℕ) : Prop where
   small : ∀ l ∈ S, o l ∣ l - 1
 
 /- English proof (translation)
-Simplify using `[Nat.prime_two] nu_two := by simp one_lt := fun l hl h => by`. Establish `h2 : l ≠ 2` using `by rintro rfl; simp at h`. Use `hl.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `unramified := fun l _ h _ _ => by simp [h]`.
-
-Use `large := by simp`. Use `small := by simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 example : RootData {2} ∅ (fun l => if l = 2 then 1 else 0) (fun l => l - 1) where
   prime_small := by simp [Nat.prime_two]

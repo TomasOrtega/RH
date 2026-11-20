@@ -53,7 +53,7 @@ def Duty7 {eps : ℝ} (Fm : FamP eps) : Prop :=
 def cls7 (QO : ∀ D : D7, Obj D → Prop) : FamClass := DC.cls (ptO (withQD QO))
 
 /- English proof (translation)
-Take `⟨a, b, c, d, e⟩` from `DC.duty_of_cls _ Fm h`. Establish `hq` using `DC.classOf_of_cls _ Fm h`. Conclude with `⟨⟨a, b, c, d, e, ⟨Fm.x1, fun x hx _ i => (hq x hx i).2.1⟩, ⟨Fm.x1, fun x _ hx i => (hq x hx i).2.2.1⟩⟩, ⟨Fm.x1 + 1, fun x hx i => (hq x (by linarith) i).2.2.2⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem familyClass_sevenDuties_and_stableLattices (QO : ∀ D : D7, Obj D → Prop) {eps : ℝ} (Fm : FamP eps) (h : cls7 QO Fm) : Duty7 Fm ∧ MtStableF Fm := by
   obtain ⟨a, b, c, d, e⟩ := DC.duty_of_cls _ Fm h
@@ -62,13 +62,13 @@ theorem familyClass_sevenDuties_and_stableLattices (QO : ∀ D : D7, Obj D → P
     ⟨Fm.x1 + 1, fun x hx i => (hq x (by linarith) i).2.2.2⟩⟩
 
 /- English proof (translation)
-Introduce `x hx i` and use `(DC.classOf_of_cls _ Fm h x hx i).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem familyClass_points_satisfy_objectProperty (QO : ∀ D : D7, Obj D → Prop) {eps : ℝ} (Fm : FamP eps) (h : cls7 QO Fm) : classOf (ptO QO) Fm :=
   fun x hx i => (DC.classOf_of_cls _ Fm h x hx i).1
 
 /- English proof (translation)
-Take `⟨hc, N0, S, hS⟩` from `h`. Use `⟨hc, N0, S, fun w hw => ⟨(hS w hw).1, ?_⟩⟩` and prove the remaining obligations. Use `(hS w hw).2 1 (by simp)` as an intermediate fact. Rewrite `this` using `[zpow_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem TwAllAt.twAt {D : D7} {C : NChoice D} {T : ThData D} (h : TwAllAt D C T) : LocalQuadraticParts.TWAt D C T := by
   obtain ⟨hc, N0, S, hS⟩ := h
@@ -77,7 +77,7 @@ theorem TwAllAt.twAt {D : D7} {C : NChoice D} {T : ThData D} (h : TwAllAt D C T)
   rwa [zpow_one] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w hw => absurd (h w) hw, fun _ => 0, fun _ _ _ => ∅, fun w hw => absurd (h w) hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem twAllAt_of_untwisted {D : D7} (C : NChoice D) (T : ThData D) (h : ∀ w, D.what₂.muAt w = D.what₂.mu0) : TwAllAt D C T :=
   ⟨fun w hw => absurd (h w) hw, fun _ => 0, fun _ _ _ => ∅, fun w hw => absurd (h w) hw⟩

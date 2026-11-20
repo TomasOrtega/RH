@@ -22,15 +22,15 @@ noncomputable section
 namespace GlobalTheory.MSpanDecay
 
 /- English proof (translation)
-Introduce `E _ _ _ a F X _ ν _ k γ hk hF g`. Take `⟨C, N, hC⟩` from `hF g`. Use `set I := ∫ x, ‖k x‖ * height (γ x) ^ N ∂ν with hI`. Use `⟨|C| * ((a : ℝ) + 1) ^ N * I, N, fun y => ?_⟩` and prove the remaining obligations. Establish `hint` using `(hk.2.2 N).const_mul (|C| * ((a : ℝ) + 1) ^ N * height y ^ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ x, ‖k x * F (g * infGL E a y * infGL E a (γ x))‖ ≤ |C| * ((a : ℝ) + 1) ^ N * height y ^ N * (‖k x‖ * height (γ x) ^ N)`. Introduce `x`. Rewrite using `[mul_assoc g, ← map_mul, norm_mul]`. Establish `h1` using `hC (y * γ x)`. Establish `hm` using `GlobalTheory.HCF.ModGrowth.height_mul_le y (γ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `one_le_height y`. Establish `hg` using `one_le_height (γ x)`. Establish `hz` using `one_le_height (y * γ x)`. Establish `e1 : height (y * γ x) ^ N ≤ (((a : ℝ) + 1) * (height y * height (γ x))) ^ N` using `pow_le_pow_left₀ (by linarith) hm N`. Establish `e2 : ‖F (g * infGL E a (y * γ x))‖ ≤ |C| * ((((a : ℝ) + 1) * (height y * height (γ x))) ^ N)` using `h1.trans ((mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (by linarith) N)).trans (mul_le_mul_of_nonneg_left e1 (abs_nonneg C)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `(norm_integral_le_of_norm_le hint (Filter.Eventually.of_forall hb)).trans_eq ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, hI]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem growth_kernel : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ) (X : Type) [MeasurableSpace X] (ν : Measure X) [SFinite ν] (k : X → ℂ) (γ : X → GL (Fin a) (Cinf E)), GlobalTheory.JSW.IsRapidInf ν k γ → GlobalTheory.MSpanDecay.Growth F → GlobalTheory.MSpanDecay.Growth (fun g : GA E a => ∫ x, k x * F (g * infGL E a (γ x)) ∂ν) := by
   intro E _ _ _ a F X _ ν _ k γ hk hF g

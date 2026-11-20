@@ -28,33 +28,33 @@ def hermMat (p : R) (a : Fin n → ℕ) (c : HermIdx p a) : Matrix (Fin n) (Fin 
 variable {p : R} {a a' : Fin n → ℕ}
 
 /- English proof (translation)
-Simplify using `[hermMat, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermMat_lt (c : HermIdx p a) {i j : Fin n} (h : i < j) : hermMat p a c i j = (c i ⟨j, h⟩).out := by
   simp [hermMat, h]
 
 /- English proof (translation)
-Simplify using `[hermMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermMat_diag (c : HermIdx p a) (i : Fin n) : hermMat p a c i i = p ^ a i := by simp [hermMat]
 
 /- English proof (translation)
-Simplify using `[hermMat, h.not_gt, h.ne']`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermMat_gt (c : HermIdx p a) {i j : Fin n} (h : j < i) : hermMat p a c i j = 0 := by
   simp [hermMat, h.not_gt, h.ne']
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular (M := hermMat p a c) (fun _ _ h => hermMat_gt c h), ← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_congr rfl fun i _ => hermMat_diag c i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_hermMat (c : HermIdx p a) : (hermMat p a c).det = p ^ ∑ i, a i := by
   rw [Matrix.det_of_isUpperTriangular (M := hermMat p a c) (fun _ _ h => hermMat_gt c h), ← Finset.prod_pow_eq_pow_sum]
   exact Finset.prod_congr rfl fun i _ => hermMat_diag c i
 
 /- English proof (translation)
-Proceed by induction on `l using WellFoundedGT.induction with`. Consider the case `ind l ih`. Introduce `hl`. Use `h l hl (Finset.sum_eq_single (f := fun s => b l s * x s) l (fun s _ hs => ?_) (by simp)).symm` and prove the remaining obligations. Break down `lt_or_gt_of_ne hs with h1 | h1` into its components or cases.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hb _ _ h1, zero_mul]`. Rewrite using `[ih s h1 (hP _ _ h1 hl), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_zero_of_upper {b : Matrix (Fin n) (Fin n) R} (hb : ∀ i j, j < i → b i j = 0) (x : Fin n → R)
     (P : Fin n → Prop) (hP : ∀ l l', l < l' → P l → P l')
@@ -70,9 +70,9 @@ theorem eq_zero_of_upper {b : Matrix (Fin n) (Fin n) R} (hb : ∀ i j, j < i →
 variable [IsDomain R]
 
 /- English proof (translation)
-Establish `hW : ∀ l, i < l → W l i = 0` using `eq_zero_of_upper (fun _ _ => hermMat_gt c') (fun l => W l i) _ (fun _ _ h1 h2 => h2.trans h1) fun l hl e => by`. Rewrite `e` using `[← Matrix.mul_apply, ← h, hermMat_gt c hl, hermMat_diag]`. Conclude with `(mul_eq_zero.1 e).resolve_left (pow_ne_zero _ hp)`. Use `⟨W i i, ?_⟩` and prove the remaining obligations. Rewrite using `[← hermMat_diag c, h, Matrix.mul_apply, Finset.sum_eq_single i (fun s _ hs => ?_) (by simp), hermMat_diag]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hs with h1 | h1` into its components or cases. Rewrite using `[hermMat_gt c' h1, zero_mul]`. Rewrite using `[hW s h1, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_hermMat_eq (hp : p ≠ 0) {c : HermIdx p a} {c' : HermIdx p a'} {W : Matrix (Fin n) (Fin n) R}
     (h : hermMat p a c = hermMat p a' c' * W) (i : Fin n) : p ^ a' i ∣ p ^ a i := by
@@ -87,13 +87,13 @@ theorem pow_dvd_of_hermMat_eq (hp : p ≠ 0) {c : HermIdx p a} {c' : HermIdx p a
   · rw [hW s h1, mul_zero]
 
 /- English proof (translation)
-Establish `key : ∀ l j (hl : l < j), p ^ a l ∣ hermMat p a c l j - hermMat p a c' l j → c l ⟨j, hl⟩ = c' l ⟨j, hl⟩` using `fun l j hl e => by`. Rewrite `e` using `[hermMat_lt c hl, hermMat_lt c' hl, ← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Simplify using `using e`. Establish `hW : W - 1 = 0`. Use extensionality with `l j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `eq_zero_of_upper (fun _ _ => hermMat_gt c') (fun l => (W - 1) l j) (fun _ => True) (fun _ _ _ _ => trivial) (fun l _ e => ?_) l trivial` and prove the remaining obligations. Rewrite `e` using `[← Matrix.mul_apply, mul_sub, mul_one, ← h, hermMat_diag, Matrix.sub_apply (hermMat p a c)]`. Establish `: hermMat p a c l j = hermMat p a c' l j`. Break down `lt_trichotomy l j with h1 | rfl | h1` into its components or cases. Rewrite using `[hermMat_lt c h1, hermMat_lt c' h1, key l j h1 ⟨_, e.symm⟩]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hermMat_diag, hermMat_diag]`. Rewrite using `[hermMat_gt c h1, hermMat_gt c' h1]`. Rewrite `e` using `[this, sub_self]`. Conclude with `(mul_eq_zero.1 e).resolve_left (pow_ne_zero _ hp)`. Rewrite `h` using `[sub_eq_zero.1 hW, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l ⟨j, hl⟩`. Conclude with `key l j hl (by simp [h])`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_hermMat_eq (hp : p ≠ 0) {c c' : HermIdx p a} {W : Matrix (Fin n) (Fin n) R}
     (h : hermMat p a c = hermMat p a c' * W) : c = c' := by
@@ -118,17 +118,15 @@ theorem eq_of_hermMat_eq (hp : p ≠ 0) {c c' : HermIdx p a} {W : Matrix (Fin n)
   exact key l j hl (by simp [h])
 
 /- English proof (translation)
-Use `choose a u hu using fun i => IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (h0 i) hp`. Set `b'` to `b * Matrix.diagonal fun i => (((u i)⁻¹ : Rˣ) : R)`. Establish `h1 : ∀ i j, j < i → b' i j = 0` using `fun i j h => by simp [b', hb i j h]`. Establish `h2 : ∀ i, b' i i = p ^ a i` using `fun i => by`. Simplify using `only [b', Matrix.mul_diagonal]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu i, mul_comm, Units.inv_mul_cancel_left]`. Take `⟨U, hU, hU1, hr⟩` from `GlobalTheory.hermite_reduction_unipotent R n b' (fun i y => (Ideal.Quotient.mk (Ideal.span {p ^ a i}) y).out) h1 fun i y => by`. Rewrite using `[h2, ← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Simplify using the standard rewrite rules. Establish `hunit : IsUnit ((Matrix.diagonal fun i => (((u i)⁻¹ : Rˣ) : R)) * U)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_mul, Matrix.det_of_isUpperTriangular (M := U) fun _ _ h => hU _ _ h, Matrix.det_diagonal]`. Simplify using `[hU1, IsUnit.prod_iff]`. Use `⟨a, fun i j => Ideal.Quotient.mk _ ((b' * U) i j), hunit.unit, ?_⟩` and prove the remaining obligations. Rewrite using `[hunit.unit_spec, ← mul_assoc]`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Take `⟨y, hy⟩` from `hr i j h`. Rewrite using `[hermMat_lt _ h]`. Use `show (Ideal.Quotient.mk _ ((b' * U) i j)).out = (b' * U) i j`. Rewrite using `[hy]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hermMat_diag, Matrix.mul_apply, Finset.sum_eq_single i (fun s _ hs => ?_) (by simp), hU1, mul_one, ← h2]`. Break down `lt_or_gt_of_ne hs with h | h` into its components or cases. Conclude with `mul_eq_zero_of_left (h1 _ _ h) _`. Rewrite using `[hU _ _ h, mul_zero]`.
-
-Rewrite using `[hermMat_gt _ h]`. Conclude with `(Matrix.BlockTriangular.mul (b := id) (fun _ _ h => h1 _ _ h) (fun _ _ h => hU _ _ h) h).symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hermMat [IsDiscreteValuationRing R] (hp : Irreducible p) (b : Matrix (Fin n) (Fin n) R)
     (hb : ∀ i j, j < i → b i j = 0) (h0 : ∀ i, b i i ≠ 0) :
@@ -183,13 +181,13 @@ theorem val_hermGL (hp : Irreducible p) (a : Fin n → ℕ) (c : HermIdx p a) :
 
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `A B h` and use `by ext i j; exact congrFun (congrFun h i) j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mapMatrix_inj : Function.Injective ((algebraMap 𝒪[k] k).mapMatrix (m := Fin n)) :=
   fun A B h => by ext i j; exact congrFun (congrFun h i) j
 
 /- English proof (translation)
-Take `⟨W, hW⟩` from `QuotientGroup.eq.1 h`. Use `⟨W, mapMatrix_inj ?_⟩` and prove the remaining obligations. Rewrite `hW` using `[eq_inv_mul_iff_mul_eq]`. Rewrite using `[map_mul]`. Conclude with `(congrArg Units.val hW).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermMat_eq_of_coe_eq (hp : Irreducible p) {a a' : Fin n → ℕ} {c : HermIdx p a} {c' : HermIdx p a'}
     (h : (hermGL hp a' c' : GL (Fin n) k ⧸ KO k (Fin n)) = hermGL hp a c) :
@@ -201,7 +199,7 @@ theorem hermMat_eq_of_coe_eq (hp : Irreducible p) {a a' : Fin n → ℕ} {c : He
   exact (congrArg Units.val hW).symm
 
 /- English proof (translation)
-Introduce and unpack `⟨a, c⟩ ⟨a', c'⟩ h`. Take `⟨W, hW⟩` from `hermMat_eq_of_coe_eq hp h`. Take `⟨W', hW'⟩` from `hermMat_eq_of_coe_eq hp h.symm`. Take `rfl : a = a'` from `funext fun i => le_antisymm ((pow_dvd_pow_iff hp.ne_zero hp.not_isUnit).1 (pow_dvd_of_hermMat_eq hp.ne_zero hW i)) ((pow_dvd_pow_iff hp.ne_zero hp.not_isUnit).1 (pow_dvd_of_hermMat_eq hp.ne_zero hW' i))`. Conclude with `congrArg (Sigma.mk a) (eq_of_hermMat_eq hp.ne_zero hW')`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hermGL_injective (hp : Irreducible p) : Function.Injective
     fun x : Σ a : Fin n → ℕ, HermIdx p a => (hermGL hp x.1 x.2 : GL (Fin n) k ⧸ KO k (Fin n)) := by
@@ -214,15 +212,15 @@ theorem hermGL_injective (hp : Irreducible p) : Function.Injective
   exact congrArg (Sigma.mk a) (eq_of_hermMat_eq hp.ne_zero hW')
 
 /- English proof (translation)
-Take `⟨b, hb, w, hw, e⟩` from `iwasawa_blockTriangular k (Fin n) Fin.val (x * hermGL hp a c)`. Take `⟨X, rfl⟩` from `hx`. Take `⟨W, rfl⟩` from `hw`. Set `B : Matrix (Fin n) (Fin n) 𝒪[k]` to `X.val * hermMat p a c * (W⁻¹).val`. Establish `hB : b.val = (algebraMap 𝒪[k] k).mapMatrix B`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[eq_mul_inv_of_mul_eq e.symm, ← map_inv, map_mul, map_mul]`. Both sides reduce to the same expression. Establish `h1 : ∀ i j, j < i → B i j = 0` using `fun i j h => Subtype.ext ((congrFun (congrFun hB i) j).symm.trans (hb h))`. Establish `hd : B.det ≠ 0`. Simplify using `only [B, Matrix.det_mul, det_hermMat]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `mul_ne_zero (mul_ne_zero (Matrix.isUnits_det_units _).ne_zero (pow_ne_zero _ hp.ne_zero)) (Matrix.isUnits_det_units _).ne_zero`. Rewrite `hd` using `[Matrix.det_of_isUpperTriangular (M := B) fun _ _ h => h1 _ _ h, Finset.prod_ne_zero_iff]`. Take `⟨a', c', U, hU⟩` from `exists_hermMat hp B h1 fun i => hd i (Finset.mem_univ i)`. Use `⟨a', c', ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det hU`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [B, Matrix.det_mul, det_hermMat] at h`. Use `IsDiscreteValuationRing.unit_mul_pow_congr_pow hp hp 1 (Matrix.GeneralLinearGroup.det (X * W⁻¹ * U)) _ _ ?_` and prove the remaining obligations. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, Units.val_mul, Matrix.det_mul, Units.val_one, h]`. Expand and normalize the polynomial expressions, which then agree. Establish `: hermGL hp a' c' = b * Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) U`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_hermGL, hU, map_mul, ← hB]`. Both sides reduce to the same expression. Rewrite using `[this, MulAction.Quotient.smul_mk, smul_eq_mul, e, QuotientGroup.mk_mul_of_mem (s := KO k (Fin n)) _ (MonoidHom.mem_range.2 ⟨U, rfl⟩), QuotientGroup.mk_mul_of_mem (s := KO k (Fin n)) _ (MonoidHom.mem_range.2 ⟨W, rfl⟩)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_hermGL (hp : Irreducible p) {x : GL (Fin n) k} (hx : x ∈ KO k (Fin n)) (a : Fin n → ℕ)
     (c : HermIdx p a) : ∃ (a' : Fin n → ℕ) (c' : HermIdx p a'), ∑ i, a' i = ∑ i, a i ∧
@@ -255,11 +253,11 @@ theorem exists_smul_hermGL (hp : Irreducible p) {x : GL (Fin n) k} (hx : x ∈ K
       QuotientGroup.mk_mul_of_mem (s := KO k (Fin n)) _ (MonoidHom.mem_range.2 ⟨W, rfl⟩)]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `QuotientGroup.mk_out_eq_mul (KO k (Fin n)) (hermGL hp a c)`. Establish `h0 : (p : k) ≠ 0` using `by simpa using hp.ne_zero`. Establish `hq : (1 : ℝ) < resCard k` using `by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k`. Establish `ho : ∀ m : ℕ, ord k (Units.mk0 _ h0 ^ m) = m` using `fun m => by`. Establish `h1` using `GlobalTheory.LGrp.nabs_eq_zpow (Units.mk0 _ h0 ^ m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : nabs k (Units.mk0 _ h0 ^ m) = nabs k (Units.mk0 _ h0) ^ m` using `by simp [nabs]`. Rewrite `h1` using `[h2, nabs_uniformiser hp (x := Units.mk0 _ h0) rfl, inv_pow, ← zpow_natCast, ← _root_.zpow_neg]`. Conclude with `neg_injective (zpow_right_injective₀ (by positivity) hq.ne' h1).symm`. Rewrite using `[hy, h.1 _ _ y.2, h.2 _ ((mem_borel k).2 fun i j hij => ?_) (fun i => Units.mk0 _ h0 ^ a i) fun i => ?_]`. Simplify using `only [ho, zpow_natCast]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[val_hermGL, hermMat_gt c hij]`. Simplify using `[val_hermGL, hermMat_diag]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem apply_hermGL (hp : Irreducible p) {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (h : IsBorelSph k γ φ)
     (a : Fin n → ℕ) (c : HermIdx p a) :
@@ -279,14 +277,14 @@ theorem apply_hermGL (hp : Irreducible p) {γ : Fin n → ℂ} {φ : GL (Fin n) 
     rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HL.LatDet.card_quot_pow hp, ← hp.maximalIdeal_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem card_quot (hp : Irreducible p) (m : ℕ) : Nat.card (𝒪[k] ⧸ Ideal.span {p ^ m}) = resCard k ^ m := by
   rw [GlobalTheory.HL.LatDet.card_quot_pow hp, ← hp.maximalIdeal_eq]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_pi]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Nat.card_fun, card_quot hp, ← pow_mul, ← pow_mul, mul_comm, ← Fin.card_Ioi, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 3`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -300,13 +298,13 @@ theorem card_hermIdx (hp : Irreducible p) (a : Fin n → ℕ) :
   ext; simp
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n m`. Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `hq` using `GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k`. Establish `hfin : ∀ a : Fin n → ℕ, Finite (HermIdx p a)` using `fun a => Nat.finite_of_card_ne_zero (by`. Rewrite using `[card_hermIdx hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `positivity)`. Set `_ : ∀ a : Fin n → ℕ, Fintype (HermIdx p a)` to `fun a => Fintype.ofFinite _`. Use `⟨((Finset.piAntidiag Finset.univ m).sigma fun a => (Finset.univ : Finset (HermIdx p a))).map ⟨_, hermGL_injective hp⟩, fun x hx c hc => ?_, fun γ φ h => ?_⟩` and prove the remaining obligations. Take `⟨⟨a, c⟩, h, rfl⟩` from `Finset.mem_map.1 hc`. Take `⟨a', c', h1, h2⟩` from `exists_smul_hermGL hp hx a c`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_map.2 ⟨⟨a', c'⟩, ?_, h2⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_sigma, Finset.mem_piAntidiag, Finset.mem_univ, implies_true, and_true] at h ⊢`. Conclude with `h1.trans h`. Rewrite using `[Finset.sum_map, Finset.sum_sigma]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [Function.Embedding.coeFn_mk, apply_hermGL hp h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← Nat.card_eq_fintype_card, card_hermIdx hp, mul_pow, Finset.prod_mul_distrib]`. Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_cosets_sum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (m : ℕ), ∃ S : Finset (GL (Fin n) k ⧸ KO k (Fin n)), (∀ x ∈ KO k (Fin n), ∀ c ∈ S, x • c ∈ S) ∧ ∀ (γ : Fin n → ℂ) (φ : GL (Fin n) k → ℂ), IsBorelSph k γ φ → ∑ c ∈ S, φ c.out = ∑ a ∈ Finset.piAntidiag Finset.univ m, ∏ i : Fin n, ((resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i) ^ a i := by
   intro k _ _ _ _ n m
@@ -333,11 +331,9 @@ theorem exists_cosets_sum : ∀ (k : Type) [Field k] [ValuativeRel k] [Topologic
 end Count
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < resCard k` using `by exact_mod_cast GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k`. Establish `key` using `GlobalTheory.CompleteHomogeneousBound.norm_le_of_completeHomogeneous_le n (fun i => (resCard k : ℂ) ^ (n - 1 - (i : ℕ)) * γ i) (fun i => (resCard k : ℝ) ^ (n - 1 - (i : ℕ))) ((resCard k : ℝ) ^ (n - 1)) (fun _ => by positivity) (fun i => pow_le_pow_right₀ hq.le (Nat.sub_le _ _)) ( …`. Take `⟨S, hS, hs⟩` from `exists_cosets_sum k n m`. Establish `h1` using `hs _ _ (isBorelSph_one k)`. Rewrite using `[← hs γ φ h]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hb S hS).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [Finset.sum_const, nsmul_eq_mul, mul_one] at h1`. Conclude with `h1) i` after adjusting the coercions. Establish `hi : n - 1 = (n - 1 - (i : ℕ)) + i` using `by have := i.2; omega`. Rewrite `key` using `[norm_mul, norm_pow, Complex.norm_natCast]`.
-
-Use `conv_rhs at key => rw [hi, pow_add]`. Conclude with `le_of_mul_le_mul_left key (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} {γ : Fin n → ℂ} {φ : GL (Fin n) k → ℂ} (h : IsBorelSph k γ φ) (hb : HasBoundedSums k φ)
@@ -358,13 +354,11 @@ theorem norm_le_pow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [
   exact le_of_mul_le_mul_left key (by positivity)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π α _ _ hu _ hs i`. Establish `hq : (0 : ℝ) < resCard k` using `by exact_mod_cast (GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.one_lt_resCard k).le`. Take `⟨φ, h, hb⟩` from `GlobalTheory.SatakeBound.Rep.exists_sph k n V π α hu hs`. Take `⟨ψ, h', hb'⟩` from `GlobalTheory.SatakeFlip.exists_isBorelSph_rev_inv k n _ φ h hb`. Establish `h1` using `norm_le_pow h hb i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `norm_le_pow h' hb' i.rev`. Establish `hr : ((i.rev : ℕ) : ℝ) = (n : ℝ) - 1 - (i : ℕ)`. Use `i.2` as an intermediate fact. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega)]; push_cast; ring`. Establish `ha : 0 < ‖(α i : ℂ)‖` using `norm_pos_iff.2 (α i).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.rev_rev, norm_inv, norm_mul, Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg hq.le _), ← Real.rpow_natCast, hr] at h1 h2`. Rewrite `h1` using `[← le_div_iff₀ (Real.rpow_pos_of_pos hq _), ← Real.rpow_sub hq]`. Rewrite `h2` using `[inv_le_comm₀ (by positivity) (by positivity), ← div_le_iff₀ (Real.rpow_pos_of_pos hq _), ← Real.rpow_neg hq.le, ← Real.rpow_sub hq]`. Prove the components needed by the constructor for the conclusion. Conclude with `le_of_eq_of_le (congrArg _ (by ring)) h2`.
-
-Conclude with `h1.trans_eq (congrArg _ (by ring))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. A detailed English derivation is pending.
 -/
 theorem satakeTrivialBound : GlobalTheory.IndefiniteRowSideFullHecke.SatakeTrivialRangeBound.SatakeTrivialBound := by
   intro k _ _ _ _ n V _ _ π α _ _ hu _ hs i

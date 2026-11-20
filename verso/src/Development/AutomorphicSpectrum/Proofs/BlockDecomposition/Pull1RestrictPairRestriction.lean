@@ -16,9 +16,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {X X' : Scheme.
   {s : X ⟶ Sp R} {s' : X' ⟶ Sp R'} {φ : X' ⟶ X} {P : Type} [SemilatticeInf P]
 
 /- English proof (translation)
-Use `letI : Algebra (Sec s U) (Sec s' (φ ⁻¹ᵁ U)) := (φ.appLE U (φ ⁻¹ᵁ U) le_rfl).hom.toAlgebra`. Use `letI : Algebra R (Sec s' (φ ⁻¹ᵁ U)) := ((algebraMap R' (Sec s' (φ ⁻¹ᵁ U))).comp (algebraMap R R')).toAlgebra`. Use `haveI : IsScalarTower R R' (Sec s' (φ ⁻¹ᵁ U)) := .of_algebraMap_eq fun _ ↦ rfl`. Use `haveI : IsScalarTower R (Sec s U) (Sec s' (φ ⁻¹ᵁ U)) := .of_algebraMap_eq fun r ↦ (GlobalTheory.AbLaw.appLE_cst h.w le_rfl r).symm`. Use `haveI hp : Algebra.IsPushout R R' (Sec s U) (Sec s' (φ ⁻¹ᵁ U)) := CommRingCat.isPushout_iff_isPushout.mp (GlobalTheory.AbLaw.isPushout_cst h hU rfl)`.
-
-Use `⟨hp.out.equiv, fun b ↦ ?_⟩` and prove the remaining obligations. Conclude with `(hp.out.equiv_tmul 1 b).trans (one_smul _ _)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_sec_equiv (h : IsPullback φ s' s (spMap (algebraMap R R'))) {U : X.Opens}
     (hU : IsAffineOpen U) :
@@ -48,7 +46,7 @@ def pt (h : IsPullback φ s' s (spMap (algebraMap R R'))) (S : Sys X P) (a : P) 
   ⟨((pullSys h S).u a, S.u a), le_rfl⟩
 
 /- English proof (translation)
-The claim follows from `fun _ _ hab ↦ Subtype.coe_le_coe.1 (Prod.le_def.2 ⟨(pullSys h S).mono hab, S.mono hab⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pt_mono (h : IsPullback φ s' s (spMap (algebraMap R R'))) (S : Sys X P) :
     Monotone (pt h S) := fun _ _ hab ↦
@@ -72,7 +70,7 @@ def pullBC (h : IsPullback φ s' s (spMap (algebraMap R R'))) (S : Sys X P) :
   bij T := exists_sec_equiv h (S.u T.unop).2
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem pull1_restrict_pair_pullback (h : IsPullback φ s' s (spMap (algebraMap R R'))) (S : Sys X P)
     (c : HO1 s) : (ptRes h S).pull1 ((pairPull h.w).pull1 c) =
@@ -81,7 +79,7 @@ theorem pull1_restrict_pair_pullback (h : IsPullback φ s' s (spMap (algebraMap 
   rfl
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `H1.mk_surjective _ c`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem pull1_restrict_pair_restriction (h : IsPullback φ s' s (spMap (algebraMap R R'))) (S : Sys X P)
     (c : HO1 s') : (ptRes h S).pull1 ((pairRes φ s').pull1 c) =
@@ -94,9 +92,9 @@ end GlobalTheory.CompanionTheory.SysBC
 open GlobalTheory.CompanionTheory.SysBC in
 
 /- English proof (translation)
-Introduce `hD hL R R' _ _ _ X X' s s' φ h hs P _ S`. Establish `hs' : IsSeparated s'` using `MorphismProperty.of_isPullback (P := @IsSeparated) h hs`. Use `⟨pullSys h S, pullBC h S, fun c c' e ↦ ?_⟩` and prove the remaining obligations. Establish `inj` using `(hL R' _ _ _ _ (resSys s' (pullSys h S)) (hD R' X' s' hs' P (pullSys h S))).1.1`. Take `⟨x, hx⟩` from `(pairRes_bijective φ s').1.2 ((pairPull h.w).pull1 c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e' : x = c'` using `inj (by`. Rewrite using `[← pull1_restrict_pair_restriction h S x, hx, pull1_restrict_pair_pullback, e])`. Conclude with `hx.symm.trans (congrArg _ e')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.SysBC.sysBCSt : DescentSt → LowSt → SysBCSt := by
   intro hD hL R R' _ _ _ X X' s s' φ h hs P _ S

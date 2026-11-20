@@ -15,11 +15,11 @@ private def coverSieve {Y A B T : Scheme.{0}} (a : A ⟶ Y) (b : B ⟶ Y) (x : T
     · exact Or.inr ⟨h ≫ v, by simp [hv]⟩
 
 /- English proof (translation)
-Set `Xs : Bool → Scheme.{0}` to `fun i => Bool.casesOn i B A`. Set `fs : ∀ i, Xs i ⟶ Y` to `fun i => Bool.casesOn (motive := fun i => Xs i ⟶ Y) i b a`. Establish `hmem : Presieve.ofArrows Xs fs ∈ Scheme.precoverage @Etale Y`. Use `(Scheme.ofArrows_mem_precoverage_iff @Etale).2 ⟨fun y => ?_, fun i => ?_⟩` and prove the remaining obligations. Break down `hc y with h | h` into its components or cases.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨true, h⟩`. Conclude with `⟨false, h⟩`. Apply the tactic sequence `cases i <;> dsimp [fs] <;> infer_instance`. Establish `hS` using `Precoverage.generate_mem_toGrothendieck hmem`. Use `Scheme.etaleTopology.superset_covering ?_ (Scheme.etaleTopology.pullback_stable x hS)` and prove the remaining obligations.
+Supply the required witnesses or components. Supply the required witnesses or components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `V g ⟨W, h, k, hk, e⟩`. Break down `hk with ⟨i⟩` into its components or cases. Consider the cases of `i`. Conclude with `Or.inr ⟨h, e⟩`. Conclude with `Or.inl ⟨h, e⟩`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data. Prove the second alternative. Prove the first alternative.
 -/
 private theorem coverSieve_mem {Y A B T : Scheme.{0}} (a : A ⟶ Y) (b : B ⟶ Y) [IsOpenImmersion a]
     [IsOpenImmersion b] (hc : ∀ y : Y, y ∈ Set.range a ∨ y ∈ Set.range b) (x : T ⟶ Y) :
@@ -41,11 +41,11 @@ private theorem coverSieve_mem {Y A B T : Scheme.{0}} (a : A ⟶ Y) (b : B ⟶ Y
   · exact Or.inl ⟨h, e⟩
 
 /- English proof (translation)
-Apply `free_ext` to reduce the goal to its premises. Introduce `U x`. Use `G.isSeparated _ (coverSieve a b x) (coverSieve_mem a b hc x) _ _ ?_` and prove the remaining obligations. Introduce `V g hg`. Express the relevant statement in the definitionally equal form `Sec.res g (Sec.map φ _) = Sec.res g (Sec.map ψ _)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_res, map_res, freeGen_res]`. Break down `hg with ⟨u, hu⟩ | ⟨v, hv⟩` into its components or cases. Establish `e : (ConcreteCategory.hom ((yoneda.obj Y).map g.op)) x = (ConcreteCategory.hom ((yoneda.map a).app (op V))) u` using `hu.symm`. Rewrite using `[e, ← freeGen_map]`. Express the relevant statement in the definitionally equal form `Sec.map ((free R).map (yoneda.map a) ≫ φ) _ = Sec.map ((free R).map (yoneda.map a) ≫ ψ) _`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[ha]`. Establish `e : (ConcreteCategory.hom ((yoneda.obj Y).map g.op)) x = (ConcreteCategory.hom ((yoneda.map b).app (op V))) v` using `hv.symm`. Rewrite using `[e, ← freeGen_map]`. Express the relevant statement in the definitionally equal form `Sec.map ((free R).map (yoneda.map b) ≫ φ) _ = Sec.map ((free R).map (yoneda.map b) ≫ ψ) _`. Rewrite using `[hb]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem free_hom_ext (R : Type) [CommRing R] {Y A B : Scheme.{0}} (a : A ⟶ Y) (b : B ⟶ Y)
     [IsOpenImmersion a] [IsOpenImmersion b] (hc : ∀ y : Y, y ∈ Set.range a ∨ y ∈ Set.range b)
@@ -74,11 +74,11 @@ end UpperTheory.CoverSieveFree
 
 open UpperTheory.CoverSieveFree in
 /- English proof (translation)
-Introduce `R _ Y A B a b ha hb hc`. Establish `hy : ∀ {Z : Scheme.{0}} (f : Z ⟶ Y) [Mono f], Mono (sch.map f)`. Introduce `Z f _`. Establish `h1 : ∀ X, Mono ((yoneda.map f).app X)` using `fun X => (mono_iff_injective _).2 (fun g h e => (cancel_mono f).1 (by simpa using e))`. Establish `h2 : Mono (yoneda.map f)` using `NatTrans.mono_of_mono_app _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∀ n, Mono ((sch.map f).app n)` using `fun n => h2`. Conclude with `NatTrans.mono_of_mono_app _`. Use `⟨hy a, hy b, fun n => ⟨fun {G} φ ψ h => ?_⟩⟩` and prove the remaining obligations. Apply `free_hom_ext R a b hc φ ψ` to reduce the goal to its premises. Establish `e` using `congrArg (fun k => biprod.inl ≫ k) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [biprod.inl_desc_assoc] at e`. Conclude with `e`. Establish `e` using `congrArg (fun k => biprod.inr ≫ k) h`. Simplify using `only [biprod.inr_desc_assoc] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.isCovering_pair_of_isOpenImmersion_of_jointly_surjective :
     ∀ (R : Type) [CommRing R] {Y A B : Scheme.{0}} (a : A ⟶ Y) (b : B ⟶ Y), IsOpenImmersion a → IsOpenImmersion b →

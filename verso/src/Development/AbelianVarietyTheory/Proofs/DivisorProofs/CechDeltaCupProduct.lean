@@ -11,17 +11,15 @@ section CupDelta
 variable {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E]
 
 /- English proof (translation)
-Proceed by induction on `u using Finset.induction_on_max with`. Consider the case `empty => simp`. Consider the case `insert m u hm ih`. Establish `hmu : m ∉ u` using `fun h => lt_irrefl m (hm m h)`. Rewrite using `[Finset.sum_insert hmu]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (g := fun j => (-1 : ℤ) ^ (u.filter (· < j)).card • (F (u.filter (· < j)) + F (u.filter (· ≤ j)))) (fun j hj => by`. Rewrite using `[Finset.filter_insert, if_neg (not_lt.2 (hm j hj).le), Finset.filter_insert, if_neg (not_le.2 (hm j hj))]), ih]`. Establish `e1 : (insert m u).filter (· < m) = u`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨rfl | hx, hxm⟩`. Conclude with `absurd hxm (lt_irrefl _)`. Conclude with `hx`. Introduce `hx`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨Or.inr hx, hm x hx⟩`. Establish `e2 : (insert m u).filter (· ≤ m) = insert m u`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_insert]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Conclude with `fun h => h.1`. Introduce and unpack `(rfl | hx)`. Conclude with `⟨Or.inl rfl, le_rfl⟩`. Conclude with `⟨Or.inr hx, (hm x hx).le⟩`. Rewrite using `[e1, e2, Finset.card_insert_of_notMem hmu, pow_succ, smul_add, mul_neg_one, neg_smul]`.
-
-Normalize the expressions using the abelian group laws.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sum_alt_filter_lt_le (F : Finset ι → E) (u : Finset ι) :
     ∑ j ∈ u, (-1 : ℤ) ^ (u.filter (· < j)).card • (F (u.filter (· < j)) + F (u.filter (· ≤ j))) =
@@ -53,45 +51,39 @@ theorem sum_alt_filter_lt_le (F : Finset ι → E) (u : Finset ι) :
     abel
 
 /- English proof (translation)
-Introduce `ι _ E _ Φ c hΦ hc u`. Establish `sL : ∀ {i j : ι}, i < j → cubeSign u i = cubeSign (u.filter (· ≤ j)) i`. Introduce `i j hij`. Establish `: (u.filter (· ≤ j)).filter (· < i) = u.filter (· < i)`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter]`. Use `grind`. Unfold `cubeSign`. Rewrite using `[this]`. Establish `sR : ∀ {i j : ι}, j < i → cubeSign u i = (-1 : ℤ) ^ (u.filter (· < j)).card * cubeSign (u.filter (j ≤ ·)) i`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hji`. Establish `hd : Disjoint (u.filter (· < j)) ((u.filter (j ≤ ·)).filter (· < i))`. Rewrite using `[Finset.disjoint_left]`. Introduce `x h1 h2`. Simplify using `only [Finset.mem_filter] at h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `absurd h1.2 (not_lt.2 h2.1.2)`. Establish `: u.filter (· < i) = u.filter (· < j) ∪ (u.filter (j ≤ ·)).filter (· < i)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_union]`. Use `grind`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `cubeSign`. Rewrite using `[← pow_add, ← Finset.card_union_of_disjoint hd, this]`. Establish `hL : delta (cup Φ c) u = ∑ j ∈ u, ∑ i ∈ u.erase j, cubeSign u i • Φ (c ((u.erase i).filter (· ≤ j))) ((u.erase i).filter (j ≤ ·))`. Simplify using `only [delta, cup, Finset.smul_sum]`. Conclude with `Finset.sum_comm' (fun i j => by simp only [Finset.mem_erase]; tauto)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : ∀ j ∈ u, Φ (delta c (u.filter (· ≤ j))) (u.filter (j ≤ ·)) + (-1 : ℤ) ^ (u.filter (· < j)).card • delta (Φ (c (u.filter (· ≤ j)))) (u.filter (j ≤ ·)) = ∑ i ∈ u.erase j, cubeSign u i • Φ (c ((u.erase i).filter (· ≤ j))) ((u.erase i).filter (j ≤ ·)) + (-1 : ℤ) ^ (u.filter (· …`. Introduce `j hj`. Establish `eL : (u.erase j).filter (· < j) = u.filter (· < j)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `grind`. Establish `eG : (u.erase j).filter (fun x => ¬ x < j) = u.filter (j < ·)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Use `grind`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `eLeL : (u.filter (· ≤ j)).filter (· < j) = u.filter (· < j)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter]`. Use `grind`. Establish `eLeJ : (u.filter (· ≤ j)).filter (fun x => ¬ x < j) = {j}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`. Use `grind`. Establish `eGeG : (u.filter (j ≤ ·)).filter (j < ·) = u.filter (j < ·)`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_filter]`. Use `grind`. Establish `eGeJ : (u.filter (j ≤ ·)).filter (fun x => ¬ j < x) = {j}`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_singleton]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `grind`. Establish `eLeE : (u.filter (· ≤ j)).erase j = u.filter (· < j)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Use `grind`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `eGeE : (u.filter (j ≤ ·)).erase j = u.filter (j < ·)`. Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_erase]`. Use `grind`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (u.erase j) (· < j), eL, eG]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Φ (delta c (u.filter (· ≤ j))) (u.filter (j ≤ ·)) = ∑ i ∈ u.filter (· < j), cubeSign (u.filter (· ≤ j)) i • Φ (c ((u.filter (· ≤ j)).erase i)) (u.filter (j ≤ ·)) + (-1 : ℤ) ^ (u.filter (· < j)).card • Φ (c (u.filter (· < j))) (u.filter (j ≤ ·))`. Simplify using `only [delta, map_sum, map_zsmul, Finset.sum_apply, Pi.smul_apply]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (u.filter (· ≤ j)) (· < j), eLeL, eLeJ, Finset.sum_singleton, eLeE]`. Use `congr 2`. Unfold `cubeSign`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[eLeL]`. Establish `h2 : delta (Φ (c (u.filter (· ≤ j)))) (u.filter (j ≤ ·)) = ∑ i ∈ u.filter (j < ·), cubeSign (u.filter (j ≤ ·)) i • Φ (c (u.filter (· ≤ j))) ((u.filter (j ≤ ·)).erase i) + Φ (c (u.filter (· ≤ j))) (u.filter (j < ·))`. Simplify using `only [delta]`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not (u.filter (j ≤ ·)) (j < ·), eGeG, eGeJ, Finset.sum_singleton, eGeE, cubeSign_eq_one_of_forall_le (by simp), one_smul]`. Rewrite using `[h1, h2, smul_add, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hA : ∑ i ∈ u.filter (· < j), cubeSign u i • Φ (c ((u.erase i).filter (· ≤ j))) ((u.erase i).filter (j ≤ ·)) = ∑ i ∈ u.filter (· < j), cubeSign (u.filter (· ≤ j)) i • Φ (c ((u.filter (· ≤ j)).erase i)) (u.filter (j ≤ ·))`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hij : i < j` using `(Finset.mem_filter.1 hi).2`. Rewrite using `[sL hij, Finset.filter_erase, Finset.filter_erase, Finset.erase_eq_of_notMem (s := u.filter (j ≤ ·)) (by simp [hij])]`. Establish `hB : ∑ i ∈ u.filter (j < ·), cubeSign u i • Φ (c ((u.erase i).filter (· ≤ j))) ((u.erase i).filter (j ≤ ·)) = ∑ i ∈ u.filter (j < ·), (-1 : ℤ) ^ (u.filter (· < j)).card • cubeSign (u.filter (j ≤ ·)) i • Φ (c (u.filter (· ≤ j))) ((u.filter (j ≤ ·)).erase i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hji : j < i` using `(Finset.mem_filter.1 hi).2`. Rewrite using `[sR hji, Finset.filter_erase, Finset.filter_erase, Finset.erase_eq_of_notMem (s := u.filter (· ≤ j)) (by simp [hji]), mul_smul]`. Rewrite using `[hA, hB]`. Simplify using `only [smul_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Normalize the expressions using the abelian group laws. Establish `tele` using `sum_alt_filter_lt_le (fun s => Φ (c s) (u \ s)) u`. Simplify using `only [Finset.sdiff_self, hΦ, Finset.sdiff_empty, hc, map_zero, Pi.zero_apply, smul_zero, sub_zero] at tele`. Establish `hT : ∑ j ∈ u, (-1 : ℤ) ^ (u.filter (· < j)).card • (Φ (c (u.filter (· < j))) (u.filter (j ≤ ·)) + Φ (c (u.filter (· ≤ j))) (u.filter (j < ·))) = 0`. Rewrite using `[← tele]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `a1 : u \ u.filter (· < j) = u.filter (j ≤ ·)`. Use extensionality with `x`. Simplify using `only [Finset.mem_sdiff, Finset.mem_filter]`. Use `grind`.
-
-Establish `a2 : u \ u.filter (· ≤ j) = u.filter (j < ·)`. Use extensionality with `x`. Simplify using `only [Finset.mem_sdiff, Finset.mem_filter]`. Use `grind`. Rewrite using `[a1, a2]`.
-
-Rewrite using `[hL]`. Use `show _ = ∑ j ∈ u, Φ (delta c (u.filter (· ≤ j))) (u.filter (j ≤ ·)) + _`. Rewrite using `[← Finset.sum_add_distrib, Finset.sum_congr rfl key, Finset.sum_add_distrib, hT, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_cup_eq : ∀ {ι : Type} [LinearOrder ι] {E : Type} [AddCommGroup E]
     (Φ : E →+ (Finset ι → E)) (c : Finset ι → E), (∀ x, Φ x ∅ = 0) → c ∅ = 0 → ∀ u,

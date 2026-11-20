@@ -10,7 +10,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar.Top
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Moduli.moduli_scheme_exists`.
+A detailed English derivation is pending.
 -/
 theorem moduli_schemes_exist : N1ab := GlobalTheory.Moduli.moduli_scheme_exists
 

@@ -13,14 +13,14 @@ namespace GlobalTheory.VacRead.SelfDual
 open GlobalTheory.InertSign (IntE hE)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem intE_iff {D : Formalism.BasicNotions.D7} {e : D.host.E} : IntE D e ↔ e ∈ (algebraMap (𝓞 D.host.E) D.host.E).range := Iff.rfl
 
 /- English proof (translation)
-Take `⟨o₁, h₁⟩` from `(GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D cc).1 α₁ hα₁ α₂ hα₂`. Take `⟨o₂, h₂⟩` from `(GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D D.host.ccK).1 γ₂ hγ₂ γ₁ hγ₁`. Unfold `GlobalTheory.NormExact.IsScale at hs`. Use `⟨o₁ * o₂, ?_⟩` and prove the remaining obligations. Simplify using `only [map_div₀, map_mul, map_natCast, GlobalTheory.InertSign.conj_conj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(o₁ : D.host.E) * (o₂ : D.host.E) = _`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(exp := 1) (-(r * D.host.conj r) * (D.host.conj γ₂ * γ₁)) * h₁ + (-(r * D.host.conj r) * (Ideal.absNorm cc : D.host.E) * (o₁ : D.host.E)) * h₂ + (-((Ideal.absNorm cc : D.host.E) * (o₁ : D.host.E) * (o₂ : D.host.E))) * hs`.
+Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem intE_gen (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (hn : (Ideal.absNorm cc : D.host.E) ≠ 0)
     (hs : GlobalTheory.NormExact.IsScale D cc r) {α₁ α₂ γ₁ γ₂ : D.host.E} (hα₁ : α₁ ∈ cE D cc) (hα₂ : α₂ ∈ cE D cc)
@@ -42,27 +42,25 @@ def pairSpan (D : Formalism.BasicNotions.D7) (J : Submodule (𝓞 D.host.E) D.ho
   Submodule.span (𝓞 D.host.E) {t | ∃ u ∈ J, ∃ x ∈ J, t = u * D.host.conj x}
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_smul (D : Formalism.BasicNotions.D7) (c : 𝓞 D.host.E) (x : D.host.E) :
     D.host.conj (c • x) = D.host.conj (c : D.host.E) * D.host.conj x := by
   rw [Algebra.smul_def, map_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨c, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem intE_coe (D : Formalism.BasicNotions.D7) (c : 𝓞 D.host.E) : IntE D (c : D.host.E) := ⟨c, rfl⟩
 
 /- English proof (translation)
-Unfold `bInv at hu hx`. Proceed by induction on `hu using Submodule.span_induction generalizing x with`. Consider the case `mem g hg`. Take `⟨α₁, hα₁, γ₁, hγ₁, rfl⟩` from `hg`. Proceed by induction on `hx using Submodule.span_induction with`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem g' hg'`. Take `⟨α₂, hα₂, γ₂, hγ₂, rfl⟩` from `hg'`. Conclude with `intE_gen D cc r hn hs hα₁ hα₂ hγ₁ hγ₂`. Consider the case `zero => rw [map_zero, mul_zero]`. Conclude with `zero_mem _`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => rw [map_add, mul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[conj_smul, mul_left_comm]`. Conclude with `mul_mem (GlobalTheory.InertSign.IntE.conj (intE_coe D c)) hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz => rw [add_mul]`. Conclude with `add_mem (hy hx) (hz hx)`. Consider the case `smul c y _ hy`.
-
-Rewrite using `[Algebra.smul_def, mul_assoc]`. Conclude with `mul_mem (intE_coe D c) (hy hx)`.
+A detailed English derivation is pending.
 -/
 theorem intE_mul_conj (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (hn : (Ideal.absNorm cc : D.host.E) ≠ 0)
     (hs : GlobalTheory.NormExact.IsScale D cc r) {u x : D.host.E} (hu : u ∈ bInv D cc r) (hx : x ∈ bInv D cc r) :
@@ -87,15 +85,15 @@ theorem intE_mul_conj (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K
     exact mul_mem (intE_coe D c) (hy hx)
 
 /- English proof (translation)
-Establish `h₁` using `(GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D cc).2`. Establish `h₂` using `(GlobalTheory.T.idealExtend_conj_mul_eq_absNorm D D.host.ccK).2`. Establish `hm` using `Submodule.mul_mem_mul h₁ h₂`. Rewrite `hm` using `[Submodule.span_mul_span]`. Use `set c : D.host.E := r * D.host.conj r / (Ideal.absNorm cc : D.host.E) ^ 2 with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : Submodule.span (𝓞 D.host.E) ({t | ∃ α ∈ cE D cc, ∃ β ∈ cE D cc, t = D.host.conj α * β} * {t | ∃ α ∈ cE D D.host.ccK, ∃ β ∈ cE D D.host.ccK, t = D.host.conj α * β}) ≤ (pairSpan D (bInv D cc r)).comap (LinearMap.mulLeft (𝓞 D.host.E) c)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨α, hα, β, hβ, rfl⟩, _, ⟨γ, hγ, ε, hε, rfl⟩, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Use `Submodule.subset_span ⟨r * D.host.conj α * ε / (Ideal.absNorm cc : D.host.E), ?_, r * D.host.conj β * γ / (Ideal.absNorm cc : D.host.E), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `bInv`. Conclude with `Submodule.subset_span ⟨α, hα, ε, hε, rfl⟩`. Unfold `bInv`. Conclude with `Submodule.subset_span ⟨β, hβ, γ, hγ, rfl⟩`. Simplify using `only [map_div₀, map_mul, map_natCast, GlobalTheory.InertSign.conj_conj, hc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Establish `h` using `hle hm`. Simplify using `only [Submodule.mem_comap, LinearMap.mulLeft_apply] at h`. Use `h using 1` and compare the differences between its conclusion and the goal. Unfold `GlobalTheory.NormExact.IsScale at hs`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hc]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hs`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_pairSpan (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E)
     (hn : (Ideal.absNorm cc : D.host.E) ≠ 0) (hs : GlobalTheory.NormExact.IsScale D cc r) :
@@ -126,11 +124,11 @@ theorem one_mem_pairSpan (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.hos
   linear_combination -hs
 
 /- English proof (translation)
-Establish `hle : pairSpan D (bInv D cc r) ≤ (bInv D cc r).comap (LinearMap.mulLeft (𝓞 D.host.E) y)`. Unfold `pairSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨u, hu, x, hx, rfl⟩`. Take `⟨o, ho⟩` from `hy x hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearMap.mulLeft_apply]`. Establish `: y * (u * D.host.conj x) = o • u` using `by rw [Algebra.smul_def, ho]; ring`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ o hu`. Establish `h` using `hle (one_mem_pairSpan D cc r hn hs)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [Submodule.mem_comap, LinearMap.mulLeft_apply, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_dual (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E)
     (hn : (Ideal.absNorm cc : D.host.E) ≠ 0) (hs : GlobalTheory.NormExact.IsScale D cc r) {y : D.host.E}
@@ -148,9 +146,9 @@ theorem mem_of_dual (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K))
   simpa only [Submodule.mem_comap, LinearMap.mulLeft_apply, mul_one] using h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hle : pairSpan D (bInv D cc r) ≤ ⊥`. Unfold `pairSpan`. Rewrite using `[Submodule.span_le]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨u, hu, x, hx, rfl⟩`. Simplify using `[hne u hu]`. Establish `h` using `hle (one_mem_pairSpan D cc r hn hs)`. Rewrite `h` using `[Submodule.mem_bot]`. Conclude with `one_ne_zero h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E)
     (hn : (Ideal.absNorm cc : D.host.E) ≠ 0) (hs : GlobalTheory.NormExact.IsScale D cc r) :
@@ -167,35 +165,31 @@ theorem exists_ne_zero (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.
   exact one_ne_zero h
 
 /- English proof (translation)
-Establish `hn : (Ideal.absNorm cc : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.mpr hcc)` after adjusting the coercions. Establish `hsingle : ∀ (i : Fin a) (u : D.host.E), u ∈ bInv D cc r → (Pi.single i u : Fin a → D.host.E) ∈ lsB D cc r a`. Introduce `i u hu`. Rewrite using `[mem_lsB]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `using hu`. Simplify using `only [Pi.single_apply, hj, if_false]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[GlobalTheory.InertSign.sd_iff]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx₀, hne⟩` from `exists_ne_zero D cc r hn hs`. Establish `hcne : D.host.conj x₀ ≠ 0` using `(map_ne_zero_iff _ D.host.conj.injective).mpr hne`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M` to `Submodule.span (𝓞 D.host.E) (Set.range fun i : Fin a => (Pi.single i (D.host.conj x₀)⁻¹ : Fin a → D.host.E))`. Establish `hM : M.FG` using `Submodule.fg_span (Set.finite_range _)`. Use `haveI := isNoetherian_of_fg_of_noetherian M hM`. Use `Submodule.FG.of_le_of_isNoetherian (T := M) ?_` and prove the remaining obligations. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hy` using `[mem_lsB]`. Rewrite using `[pi_eq_sum_univ' y]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨o, ho⟩` from `intE_mul_conj D cc r hn hs (hy i) hx₀`. Establish `he : y i • (Pi.single i (1 : D.host.E) : Fin a → D.host.E) = o • Pi.single i (D.host.conj x₀)⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `only [Pi.smul_apply, Pi.single_eq_same, smul_eq_mul, mul_one, Algebra.smul_def, ho]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply, hj]`. Rewrite using `[he]`. Conclude with `Submodule.smul_mem _ o (Submodule.subset_span ⟨i, rfl⟩)`. Rewrite using `[eq_top_iff]`. Introduce `v _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : ∀ i : Fin a, (Pi.single i (1 : D.host.E) : Fin a → D.host.E) ∈ Submodule.span D.host.E (lsB D cc r a : Set (Fin a → D.host.E))`. Introduce `i`. Establish `key : ∀ t ∈ pairSpan D (bInv D cc r), t • (Pi.single i (1 : D.host.E) : Fin a → D.host.E) ∈ Submodule.span D.host.E (lsB D cc r a : Set (Fin a → D.host.E))`. Introduce `t ht`. Unfold `pairSpan at ht`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨u, hu, x, hx, rfl⟩` from `hg`. Establish `hg' : (u * D.host.conj x) • (Pi.single i (1 : D.host.E) : Fin a → D.host.E) = D.host.conj x • Pi.single i u`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[mul_comm]`. Simplify using `[Pi.single_apply, hj]`. Rewrite using `[hg']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hsingle i u hu))`. Consider the case `zero => rw [zero_smul]`. Conclude with `zero_mem _`. Consider the case `add s t _ _ hs' ht' => rw [add_smul]`. Conclude with `add_mem hs' ht'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c t _ ht' => rw [smul_assoc]`. Conclude with `Submodule.smul_of_tower_mem _ c ht'`. Simplify using `using key 1 (one_mem_pairSpan D cc r hn hs)`. Rewrite using `[pi_eq_sum_univ' v]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (he i)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Rewrite using `[mem_lsB]`. Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx` using `[mem_lsB]`.
-
-Rewrite using `[intE_iff]`. Unfold `hE`. Conclude with `Subring.sum_mem _ fun i _ => intE_mul_conj D cc r hn hs (hy i) (hx i)`. Introduce `h i`. Use `mem_of_dual D cc r hn hs fun x hx => ?_` and prove the remaining obligations.
-
-Establish `h'` using `h (Pi.single i x) (hsingle i x hx)`. Unfold `hE at h'`. Rewrite `h'` using `[Finset.sum_eq_single i (fun j _ hj => by simp [Pi.single_apply, hj]) (by simp), Pi.single_eq_same]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lsB_sd (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (a : ℕ) (hcc : cc ≠ ⊥)
     (hs : GlobalTheory.NormExact.IsScale D cc r) : Formalism.MainNotions.StandardLatticesGL3.SD D (lsB D cc r a) := by
@@ -275,7 +269,7 @@ theorem lsB_sd (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r :
 end GlobalTheory.VacRead.SelfDual
 
 /- English proof (translation)
-Introduce `D cc r a hcc hs` and use `GlobalTheory.VacRead.SelfDual.lsB_sd D cc r a hcc hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.VacRead.lsB_selfDual : ∀ (D : Formalism.BasicNotions.D7) (cc : Ideal (𝓞 D.host.K)) (r : D.host.E) (a : ℕ), cc ≠ ⊥ →
     GlobalTheory.NormExact.IsScale D cc r → Formalism.MainNotions.StandardLatticesGL3.SD D (GlobalTheory.VacRead.lsB D cc r a) :=

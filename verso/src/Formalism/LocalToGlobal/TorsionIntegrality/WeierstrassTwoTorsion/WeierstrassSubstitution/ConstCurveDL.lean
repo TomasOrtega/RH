@@ -20,19 +20,19 @@ def sig {e : K⟦X⟧} (he : HasSubst e) : K⟦X⟧ →+* LaurentSeries K :=
   toL.comp (substAlgHom he : K⟦X⟧ →ₐ[K] K⟦X⟧).toRingHom
 
 /- English proof (translation)
-Simplify using `[sig, PowerSeries.coe_substAlgHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sig_apply {e : K⟦X⟧} (he : HasSubst e) (f : K⟦X⟧) : sig he f = toL (f.subst e) := by
   simp [sig, PowerSeries.coe_substAlgHom]
 
 /- English proof (translation)
-Rewrite using `[sig_apply, PowerSeries.subst_X he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_X {e : K⟦X⟧} (he : HasSubst e) : sig he X = toL e := by
   rw [sig_apply, PowerSeries.subst_X he]
 
 /- English proof (translation)
-Establish `h : (C r : K⟦X⟧).subst e = C r`. Rewrite using `[← PowerSeries.coe_substAlgHom he]`. Conclude with `(PowerSeries.substAlgHom he).commutes r`. Rewrite using `[sig_apply, h, HahnSeries.ofPowerSeries_C]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_C {e : K⟦X⟧} (he : HasSubst e) (r : K) : sig he (C r) = HahnSeries.C r := by
   have h : (C r : K⟦X⟧).subst e = C r := by
@@ -41,12 +41,12 @@ theorem sig_C {e : K⟦X⟧} (he : HasSubst e) (r : K) : sig he (C r) = HahnSeri
   rw [sig_apply, h, HahnSeries.ofPowerSeries_C]
 
 /- English proof (translation)
-The claim follows from `isDer_dL`.
+A detailed English derivation is pending.
 -/
 theorem isDer_dL' : IsDer (dL : LaurentSeries K → LaurentSeries K) := isDer_dL
 
 /- English proof (translation)
-Establish `h : ∀ c : K, dL (HahnSeries.C c : LaurentSeries K) = 0`. Introduce `c`. Use extensionality with `n`. Simplify using `[dL, HahnSeries.C_apply, HahnSeries.coeff_single]`. Conclude with `⟨h _, h _, h _, h _, h _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem constCurve_dL (W : WeierstrassCurve K) : ConstCurve dL (curveL W) := by
   have h : ∀ c : K, dL (HahnSeries.C c : LaurentSeries K) = 0 := by
@@ -58,7 +58,7 @@ theorem constCurve_dL (W : WeierstrassCurve K) : ConstCurve dL (curveL W) := by
 variable (W : WeierstrassCurve K) {e : K⟦X⟧} (he : HasSubst e)
 
 /- English proof (translation)
-Simplify using `only [fwAt, fw, map_sub, map_mul, map_pow, map_one, map_ofNat, sig_C, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fwAt_sig : fwAt (curveL W) (sig he X) (sig he (wSer W)) = sig he (fw W) := by
   simp only [fwAt, fw, map_sub, map_mul, map_pow, map_one, map_ofNat, sig_C,
@@ -66,14 +66,14 @@ theorem fwAt_sig : fwAt (curveL W) (sig he X) (sig he (wSer W)) = sig he (fw W) 
     WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]
 
 /- English proof (translation)
-Simplify using `only [fuAt, fu, map_add, map_mul, map_pow, map_ofNat, sig_C, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fuAt_sig : fuAt (curveL W) (sig he X) (sig he (wSer W)) = sig he (fu W) := by
   simp only [fuAt, fu, map_add, map_mul, map_pow, map_ofNat, sig_C,
     WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₄]
 
 /- English proof (translation)
-Establish `hw : wSer W = X ^ 3 + C W.a₁ * X * wSer W + C W.a₂ * X ^ 2 * wSer W + C W.a₃ * wSer W ^ 2 + C W.a₄ * X * wSer W ^ 2 + C W.a₆ * wSer W ^ 3` using `(Formalism.ELL.wSeriesUnique K W).choose_spec.1.2`. Establish `h` using `congrArg (sig he) hw`. Simplify using `only [map_add, map_mul, map_pow, sig_C] at h`. Simplify using `only [WEq, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₂, WeierstrassCurve.map_a₃, WeierstrassCurve.map_a₄, WeierstrassCurve.map_a₆]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wEq_sig : WEq (curveL W) (sig he X) (sig he (wSer W)) := by
   have hw : wSer W = X ^ 3 + C W.a₁ * X * wSer W + C W.a₂ * X ^ 2 * wSer W + C W.a₃ * wSer W ^ 2
@@ -86,13 +86,13 @@ theorem wEq_sig : WEq (curveL W) (sig he X) (sig he (wSer W)) := by
   exact h
 
 /- English proof (translation)
-Establish `hw : wSer W = X ^ 3 + C W.a₁ * X * wSer W + C W.a₂ * X ^ 2 * wSer W + C W.a₃ * wSer W ^ 2 + C W.a₄ * X * wSer W ^ 2 + C W.a₆ * wSer W ^ 3` using `(Formalism.ELL.wSeriesUnique K W).choose_spec.1.2`. Establish `hd` using `congrArg (derivative K) hw`. Simplify using `only [map_add, Derivation.leibniz, Derivation.leibniz_pow, PowerSeries.derivative_C, PowerSeries.derivative_X, smul_eq_mul, nsmul_eq_mul] at hd`. Establish `hDw : D W (wSer W) = fu W`. Rewrite using `[D, Derivation.smul_apply, smul_eq_mul, fw, fu]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hd`. Establish `hDX : D W X = fw W`. Rewrite using `[D, Derivation.smul_apply, smul_eq_mul, PowerSeries.derivative_X, mul_one]`. Use `⟨wEq_sig W he, ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : dL (sig he X) = sig he (fw W)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hc X`. Rewrite `h1` using `[PowerSeries.subst_X he, hDX]`. Rewrite using `[sig_X, sig_apply, dL_toL, h1]`. Rewrite using `[h2, fwAt_sig]`. Establish `h2 : dL (sig he (wSer W)) = sig he (fu W)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sig_apply, sig_apply, dL_toL, hc (wSer W), hDw]`. Rewrite using `[h2, fuAt_sig]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isFlowUW_sig (hc : ∀ f : K⟦X⟧, derivative K (f.subst e) = (D W f).subst e) :
     IsFlowUW (curveL W) dL (sig he X) (sig he (wSer W)) := by
@@ -118,7 +118,7 @@ theorem isFlowUW_sig (hc : ∀ f : K⟦X⟧, derivative K (f.subst e) = (D W f).
     rw [h2, fuAt_sig]
 
 /- English proof (translation)
-Establish `h1 : sig he (wU W) * sig he (xS W) = 1` using `by rw [← map_mul, CurveSer.wU_mul_xS, map_one]`. Establish `h2 : (toL e)⁻¹ * toL e = 1` using `inv_mul_cancel₀ hne`. Rewrite using `[CurveSer.wSer_eq, map_mul, map_pow, sig_X]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_mul_sig (hne : toL e ≠ 0) :
     (toL e)⁻¹ ^ 3 * sig he (xS W) * sig he (wSer W) = 1 := by
@@ -131,9 +131,9 @@ theorem inv_mul_sig (hne : toL e ≠ 0) :
 
 include he in
 /- English proof (translation)
-Establish `h` using `chartFlowToFlow _ (curveL W) dL (sig he X) (sig he (wSer W)) ((toL e)⁻¹ ^ 3 * sig he (xS W)) isDer_dL' (isFlowUW_sig W he hc) (inv_mul_sig W he hne)`. Establish `h2 : (toL e)⁻¹ * toL e = 1` using `inv_mul_cancel₀ hne`. Establish `hx : sig he X * ((toL e)⁻¹ ^ 3 * sig he (xS W)) = (toL e)⁻¹ ^ 2 * toL ((xS W).subst e)`. Rewrite using `[sig_X, sig_apply]`. Take the linear combination `(toL e)⁻¹ ^ 2 * toL ((xS W).subst e) * h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hy : -((toL e)⁻¹ ^ 3 * sig he (xS W)) = (toL e)⁻¹ ^ 3 * toL ((yS W).subst e)`. Rewrite using `[← sig_apply he (yS W), yS, map_neg, mul_neg]`. Rewrite `h` using `[hx, hy]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isFlow_sig (hc : ∀ f : K⟦X⟧, derivative K (f.subst e) = (D W f).subst e)
     (hne : toL e ≠ 0) :
@@ -151,7 +151,7 @@ theorem isFlow_sig (hc : ∀ f : K⟦X⟧, derivative K (f.subst e) = (D W f).su
 
 include he in
 /- English proof (translation)
-Establish `hy : (yS W).subst e = -((xS W).subst e)`. Rewrite using `[yS, ← PowerSeries.coe_substAlgHom he, map_neg]`. Rewrite using `[hy, map_neg]`. Establish `ht : toL e * (toL e)⁻¹ = 1` using `mul_inv_cancel₀ hne`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_yZ_sig (hne : toL e ≠ 0) :
     toL e * ((toL e)⁻¹ ^ 3 * toL ((yS W).subst e)) = -((toL e)⁻¹ ^ 2 * toL ((xS W).subst e)) := by
@@ -168,9 +168,9 @@ end Wp
 open Wp
 
 /- English proof (translation)
-Introduce `K _ _ W`. Take `⟨h0, h1, -, -, -⟩` from `hE K W`. Establish `he : HasSubst (expSer W)` using `HasSubst.of_constantCoeff_zero' h0`. Establish `inj : Function.Injective (toL : K⟦X⟧ →+* LaurentSeries K)` using `HahnSeries.ofPowerSeries_injective`. Establish `hne : toL (expSer W) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : expSer W = 0` using `inj (by rw [h, map_zero])`. Rewrite `h1` using `[h', map_zero]`. Conclude with `zero_ne_one h1`. Conclude with `⟨Wp.isFlow_sig W he (hC K W) hne, Wp.mul_yZ_sig W he hne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flowZ_of (hE : ExpSpec.{u}) (hC : ChainZ.{u}) : FlowZ.{u} := by
   intro K _ _ W
@@ -185,19 +185,19 @@ theorem flowZ_of (hE : ExpSpec.{u}) (hC : ChainZ.{u}) : FlowZ.{u} := by
   exact ⟨Wp.isFlow_sig W he (hC K W) hne, Wp.mul_yZ_sig W he hne⟩
 
 /- English proof (translation)
-Introduce `K _ _ W`. Establish `hF` using `(flowZ_of hE hC K W).1`. Establish `h6 : IsUnit (6 : LaurentSeries K)`. Establish `h` using `(IsUnit.mk0 (6 : K) (by norm_num)).map (HahnSeries.C : K →+* LaurentSeries K)`. Rewrite `h` using `[map_ofNat]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hb : 12 * (HahnSeries.C (W.b₂ / 12) : LaurentSeries K) = (curveL W).b₂`. Rewrite using `[WeierstrassCurve.map_b₂, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 12, ← map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hg2 : 12 * (HahnSeries.C (g₂ W) : LaurentSeries K) = (curveL W).c₄`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[WeierstrassCurve.map_c₄, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 12, ← map_mul]`. Use `congr 1`. Rewrite using `[g₂]`. Clear the denominators using the available nonvanishing facts. Establish `hg3 : 216 * (HahnSeries.C (g₃ W) : LaurentSeries K) = (curveL W).c₆`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Rewrite using `[WeierstrassCurve.map_c₆, ← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 216, ← map_mul]`. Use `congr 1`. Rewrite using `[g₃]`. Clear the denominators using the available nonvanishing facts. Take `⟨h1, h2, h3⟩` from `flowWeierstrassForm _ (curveL W) dL (xZ W) (yZ W) (HahnSeries.C (W.b₂ / 12)) (HahnSeries.C (g₂ W)) (HahnSeries.C (g₃ W)) isDer_dL' (constCurve_dL W) hF h6 hb hg2 hg3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, h2, ?_⟩` and prove the remaining obligations. Simplify `h1` using `only [wpL, WeierstrassCurve.map_a₁, WeierstrassCurve.map_a₃]`. Establish `hh : (HahnSeries.C (1 / 2 : K) : LaurentSeries K) * 2 = 1`. Rewrite using `[← map_ofNat (HahnSeries.C : K →+* LaurentSeries K) 2, ← map_mul, ← map_one HahnSeries.C]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Evaluate the numerical expressions. Establish `hg : (HahnSeries.C (g₂ W / 2) : LaurentSeries K) = HahnSeries.C (1 / 2 : K) * HahnSeries.C (g₂ W)`. Rewrite using `[← map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hg]`. Express the relevant statement in the definitionally equal form `2 * dL (dL (wpL W)) = 12 * wpL W ^ 2 - HahnSeries.C (g₂ W) at h3`. Take the linear combination `HahnSeries.C (1 / 2 : K) * h3 - (dL (dL (wpL W)) - 6 * wpL W ^ 2) * hh`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem wpODE_of (hE : ExpSpec.{u}) (hC : ChainZ.{u}) : WpODE.{u} := by
   intro K _ _ W

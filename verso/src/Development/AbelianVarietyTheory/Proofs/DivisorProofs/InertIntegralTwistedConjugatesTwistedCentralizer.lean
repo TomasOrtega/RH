@@ -22,21 +22,19 @@ abbrev starOfInv (σ : L →+* L) (h : ∀ x, σ (σ x) = x) : StarRing L where
   star_add := map_add σ
 
 /- English proof (translation)
-Take `⟨x₀, hx₀⟩` from `hne`. Establish `hd : x₀ - σ x₀ ≠ 0` using `sub_ne_zero.2 (Ne.symm hx₀)`. Establish `hli : LinearIndependent (fixF σ) ![(1 : L), x₀]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : σ (s : L) = s` using `s.2`. Establish `ht : σ (t : L) = t` using `t.2`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Express the relevant statement in the definitionally equal form `(s : L) + (t : L) * x₀ = 0 at hst`. Establish `h2 : (s : L) + (t : L) * σ x₀ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `congrArg σ hst` as an intermediate fact. Rewrite `this` using `[map_add, map_mul, hs, ht, map_zero]`. Then use the resulting hypothesis. Establish `ht0 : (t : L) = 0`. Establish `: (t : L) * (x₀ - σ x₀) = 0` using `by linear_combination hst - h2`. Conclude with `(mul_eq_zero.1 this).resolve_right hd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Subtype.ext ?_, Subtype.ext ht0⟩` and prove the remaining obligations. Simplify `hst` using `[ht0]`. Establish `hsp : ⊤ ≤ Submodule.span (fixF σ) (Set.range ![(1 : L), x₀])`. Introduce `y _`. Use `set b := (y - σ y) / (x₀ - σ x₀) with hbdef`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : σ b = b`. Rewrite using `[hbdef, map_div₀, map_sub, map_sub, h, h, ← neg_sub y (σ y), ← neg_sub x₀ (σ x₀), neg_div_neg_eq]`. Use `set a := y - b * x₀ with hadef`. Establish `hbm : b * (x₀ - σ x₀) = y - σ y` using `div_mul_cancel₀ _ hd`. Establish `ha : σ a = a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hadef, map_sub, map_mul, hb]`. Take the linear combination `hbm`. Establish `hy : y = (⟨a, ha⟩ : fixF σ) • (1 : L) + (⟨b, hb⟩ : fixF σ) • x₀`. Rewrite using `[Algebra.smul_def, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `y = a * 1 + b * x₀`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy]`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Rewrite using `[Module.finrank_eq_card_basis (Module.Basis.mk hli hsp)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finrank_fixF (σ : L →+* L) (h : ∀ x, σ (σ x) = x) (hne : ∃ x, σ x ≠ x) :
     Module.finrank (fixF σ) L = 2 := by
@@ -80,35 +78,31 @@ theorem finrank_fixF (σ : L →+* L) (h : ∀ x, σ (σ x) = x) (hne : ∃ x, �
 end Fixed
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n w hs y g hy hbez hyg`. Take `⟨hc, hinv, hval, hns, -⟩` from `GlobalTheory.ConjAtPlace.main E hU w`. Take `⟨-, ⟨ϖ, q, hϖ, -⟩, -⟩` from `hns hs`. Take `⟨-, -, hϖf, hϖv, ⟨x₀, -, hx₀⟩, -⟩` from `hϖ`. Use `letI : NontriviallyNormedField (w.adicCompletion E) := Valued.toNontriviallyNormedField _ (WithZero (Multiplicative ℤ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI : StarRing (w.adicCompletion E) := starOfInv (cj w) hinv`. Establish `hle1 : ∀ x : w.adicCompletion E, ‖x‖ ≤ 1 ↔ Valued.v x ≤ 1` using `fun x => Valued.toNormedField.norm_le_one_iff`. Establish `hneq : ∀ x y : w.adicCompletion E, Valued.v x = Valued.v y → ‖x‖ = ‖y‖` using `fun x y h => le_antisymm (Valued.toNormedField.norm_le_iff.2 h.le) (Valued.toNormedField.norm_le_iff.2 h.ge)`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h0`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hϖv` using `[h0, map_zero]`. Conclude with `WithZero.zero_ne_coe hϖv`. Establish `hϖi : cj w ϖ⁻¹ = ϖ⁻¹` using `by rw [map_inv₀, hϖf]`. Establish `hϖn : 1 < ‖ϖ⁻¹‖`. Rewrite using `[Valued.toNormedField.one_lt_norm_iff, map_inv₀, hϖv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `one_lt_inv₀ (by simp) |>.2 (by rw [← WithZero.coe_one, WithZero.coe_lt_coe]; decide)`. Use `letI nF : NontriviallyNormedField (fixF (cj w)) := { (inferInstance : NormedField (fixF (cj w))) with non_trivial := ⟨⟨ϖ⁻¹, hϖi⟩, hϖn⟩ }`. Use `letI : NormedAlgebra (fixF (cj w)) (w.adicCompletion E) := { (inferInstance : Algebra (fixF (cj w)) (w.adicCompletion E)) with norm_smul_le := fun r x => by rw [Algebra.smul_def, norm_mul]; exact le_of_eq rfl }`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Use `haveI hUn : GlobalTheory.JR.Unram (fixF (cj w)) (w.adicCompletion E) := { charZero := ⟨fun a b h => Nat.cast_injective (R := w.adicCompletion E) (by simpa using congrArg (algebraMap (fixF (cj w)) (w.adicCompletion E)) h)⟩ ultraF := inferInstance ultraE := inferInstance lcF := (is …`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `x`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, by rw [hx]; rfl⟩`. Establish `hv0 : Valued.v x ≠ 0` using `by simpa using hx`. Use `⟨⟨ϖ ^ (-WithZero.log (Valued.v x)), by` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `cj w (ϖ ^ (-WithZero.log (Valued.v x))) = ϖ ^ (-WithZero.log (Valued.v x))`. Rewrite using `[map_zpow₀, hϖf]⟩, ?_⟩`. Express the relevant statement in the definitionally equal form `‖x‖ = ‖ϖ ^ (-WithZero.log (Valued.v x))‖`. Apply `hneq` to reduce the goal to its premises. Rewrite using `[map_zpow₀, hϖv, show ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = WithZero.exp (-1) from rfl, ← WithZero.exp_zsmul, smul_eq_mul, neg_mul_neg, mul_one, WithZero.exp_log hv0] }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hcs : cj w = starRingEnd (w.adicCompletion E)` using `RingHom.ext fun _ => rfl`. Establish `hth : ∀ h : GLw n w, (thL n w h).val = GlobalTheory.Tw.theta h.val`. Introduce `h`. Rewrite using `[thL, if_neg hs, hcs, thetaGL_val]`. Establish `hnr : (nrmL n w y).val = GlobalTheory.Tw.nrm y.val`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[nrmL, if_neg hs, Units.val_mul, hcs, thetaGL_val]`. Both sides reduce to the same expression. Establish `hint : ∀ h : GLw n w, h ∈ GlobalTheory.LFun.KGL w n → (∀ i j, ‖h.val i j‖ ≤ 1) ∧ ‖h.val.det‖ = 1`. Introduce `h hh`. Take `⟨h1, h2⟩` from `(GlobalTheory.GKFactor.UnitaryInt.mem_GLint_iff_entries (Ov E w) h).1 hh`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : ∀ M : Matrix (Fin n) (Fin n) (w.adicCompletion E), (∀ i j, M i j ∈ Ov E w) → M.det ∈ Ov E w`. Introduce `M hM`. Set `M₀ : Matrix (Fin n) (Fin n) (Ov E w)` to `fun i j => ⟨M i j, hM i j⟩`. Establish `hM₀ : M = (Ov E w).subtype.mapMatrix M₀` using `by ext i j; rfl`. Rewrite using `[hM₀, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(M₀.det).2`. Establish `d1 : ‖h.val.det‖ ≤ 1` using `(hle1 _).2 (hdet _ h1)`. Establish `d2 : ‖(h⁻¹).val.det‖ ≤ 1` using `(hle1 _).2 (hdet _ h2)`. Establish `hprod : ‖h.val.det‖ * ‖(h⁻¹).val.det‖ = 1`. Rewrite using `[← norm_mul, ← Matrix.det_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.det_one, norm_one]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun i j => (hle1 _).2 (h1 i j), ?_⟩` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg h.val.det, norm_nonneg (h⁻¹).val.det]`. Establish `hintR : ∀ h : GLw n w, (∀ i j, ‖h.val i j‖ ≤ 1) → ‖h.val.det‖ = 1 → h ∈ GlobalTheory.LFun.KGL w n`. Introduce `h h1 h2`. Use `(GlobalTheory.GKFactor.UnitaryInt.mem_GLint_iff_entries (Ov E w) h).2 ⟨fun i j => (hle1 _).1 (h1 i j), fun i j => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.coe_units_inv]`. Conclude with `(hle1 _).1 (GlobalTheory.TwIntegral.intg_inv h1 h2 i j)`. Take `⟨hy1, hy2⟩` from `hint y hy`. Take `⟨hg1, hg2⟩` from `hint _ hyg`. Establish `htw : GlobalTheory.Tw.twConj g.val y.val = (g⁻¹ * y * thL n w g).val`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, Units.val_mul, hth, Matrix.coe_units_inv]`. Both sides reduce to the same expression. Take `⟨u, v, hu, hv, huv⟩` from `hbez`. Rewrite `huv` using `[hnr]`. Take `⟨t, ⟨htu, htc⟩, k, hk1, hk2, hx⟩` from `GlobalTheory.TwIntegral.integral_twConj_mem_cent_mul (fixF (cj w)) (w.adicCompletion E) n y.val g.val hy1 hy2 ⟨u, v, fun i => (hle1 _).2 (hu i), fun i => (hle1 _).2 (hv i), huv⟩ g.isUnit (by rw [htw]; exact hg1) (by rw [htw]; exact hg2)`.
-
-Establish `hku : IsUnit k` using `GlobalTheory.TwIntegral.isUnit_of_norm_det hk2`. Use `⟨htu.unit, ?_, hku.unit, hintR _ (by simpa using hk1) (by simpa using hk2), Units.ext ?_⟩` and prove the remaining obligations. Use `show htu.unit * y = y * thL n w htu.unit`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hth, IsUnit.unit_spec]`.
-
-Conclude with `htc`. Rewrite using `[Units.val_mul, IsUnit.unit_spec, IsUnit.unit_spec]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_twCent_mul_KGL : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (w : Pl E), ¬ IsSplitAt w →
     ∀ y g : GLw n w, y ∈ GlobalTheory.LFun.KGL w n →

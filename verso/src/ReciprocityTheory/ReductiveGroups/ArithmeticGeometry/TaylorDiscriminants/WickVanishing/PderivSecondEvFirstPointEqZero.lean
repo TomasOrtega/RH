@@ -13,13 +13,13 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.LogPf
 variable {k : Type} [CommRing k] {d : ℕ} (G : FGLaw k d)
 
 /- English proof (translation)
-Use `set M : Fin d → PS k 1 d := fun e => pderiv k ((0 : Fin 1), e) (Om G i a) - pderiv k ((0 : Fin 1), a) (Om G i e) with hMdef`. Establish `hM : ∀ b, ∑ e, M e * Jac G e b = 0`. Introduce `b`. Simplify using `only [hMdef, sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[← om_key G i a b]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_comm, sub_self]`. Establish `h1 : M c = ∑ e, M e * (JM G * Om G) e c`. Rewrite using `[mul_om]`. Simplify using `[Matrix.one_apply]`. Establish `h2 : ∑ e, M e * (JM G * Om G) e c = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `hM b` as an intermediate fact. Simplify using `only [JM, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show ∑ x, M x * (Jac G x b * Om G b c) = (∑ x, M x * Jac G x b) * Om G b c by`. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun x _ => by ring, this, zero_mul]`. Establish `h3 : M c = 0` using `h1.trans h2`. Conclude with `sub_eq_zero.1 h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem om_closed (i a c : Fin d) :
     pderiv k ((0 : Fin 1), c) (Om G i a) = pderiv k ((0 : Fin 1), a) (Om G i c) := by
@@ -45,17 +45,15 @@ theorem om_closed (i a c : Fin d) :
   exact sub_eq_zero.1 h3
 
 /- English proof (translation)
-Establish `hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0`. Introduce `v w`. Use `first`. Consider the case `(simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)`. Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)`. Consider the case `(by_cases hvw : v = w`. Substitute `hvw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hvw])`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcz : CZ (![pt k d 1] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp`. Rewrite using `[pderiv_ev hcz, Fintype.sum_eq_single ((0 : Fin 1), b)]`. Use `show ev _ (pderiv k ((0 : Fin 1), b) h) * pderiv k ((1 : Fin 2), b) (X ((1 : Fin 2), b)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hXd, if_pos rfl, mul_one]`. Introduce and unpack `⟨j, i⟩ hne`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show ev _ _ * pderiv k ((1 : Fin 2), b) (X ((1 : Fin 2), i)) = 0`.
-
-Rewrite using `[hXd, if_neg, mul_zero]`. Introduce `heq`. Apply `hne` to reduce the goal to its premises. Rewrite using `[(Prod.mk.inj heq).2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_evY (h : PS k 1 d) (b : Fin d) :
     pderiv k ((1 : Fin 2), b) (ev (n := 2) ![pt k d 1] h) = ev (n := 2) ![pt k d 1] (pderiv k ((0 : Fin 1), b) h) := by
@@ -90,17 +88,15 @@ theorem d_evY (h : PS k 1 d) (b : Fin d) :
     rw [(Prod.mk.inj heq).2]
 
 /- English proof (translation)
-Establish `hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0`. Introduce `v w`. Use `first`. Consider the case `(simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)`. Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)`. Consider the case `(by_cases hvw : v = w`. Substitute `hvw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hvw])`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcz : CZ (![pt k d 0] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show constantCoeff (X ((0 : Fin 2), i) : PS k 2 d) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp`. Rewrite using `[pderiv_ev hcz, Fintype.sum_eq_single ((0 : Fin 1), a)]`. Use `show ev _ (pderiv k ((0 : Fin 1), a) h) * pderiv k ((0 : Fin 2), a) (X ((0 : Fin 2), a)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[hXd, if_pos rfl, mul_one]`. Introduce and unpack `⟨j, i⟩ hne`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show ev _ _ * pderiv k ((0 : Fin 2), a) (X ((0 : Fin 2), i)) = 0`.
-
-Rewrite using `[hXd, if_neg, mul_zero]`. Introduce `heq`. Apply `hne` to reduce the goal to its premises. Rewrite using `[(Prod.mk.inj heq).2]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_evX (h : PS k 1 d) (a : Fin d) :
     pderiv k ((0 : Fin 2), a) (ev (n := 2) ![pt k d 0] h) = ev (n := 2) ![pt k d 0] (pderiv k ((0 : Fin 1), a) h) := by
@@ -135,17 +131,15 @@ theorem d_evX (h : PS k 1 d) (a : Fin d) :
     rw [(Prod.mk.inj heq).2]
 
 /- English proof (translation)
-Establish `hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0`. Introduce `v w`. Use `first`. Consider the case `(simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)`. Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)`. Consider the case `(by_cases hvw : v = w`. Substitute `hvw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hvw])`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcz : CZ (![pt k d 1] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp`. Rewrite using `[pderiv_ev hcz]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨j, i⟩` from `p`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show ev _ _ * pderiv k ((0 : Fin 2), a) (X ((1 : Fin 2), i)) = 0`. Rewrite using `[hXd, if_neg, mul_zero]`.
-
-Introduce `heq`. Conclude with `absurd (Prod.mk.inj heq).1 (by decide)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_first_ev_second_point_eq_zero (h : PS k 1 d) (a : Fin d) : pderiv k ((0 : Fin 2), a) (ev (n := 2) ![pt k d 1] h) = 0 := by
   have hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0 := by
@@ -177,17 +171,15 @@ theorem pderiv_first_ev_second_point_eq_zero (h : PS k 1 d) (a : Fin d) : pderiv
   exact absurd (Prod.mk.inj heq).1 (by decide)
 
 /- English proof (translation)
-Establish `hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0`. Introduce `v w`. Use `first`. Consider the case `(simp [MvPowerSeries.pderiv_X, Pi.single_apply]; done)`. Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X_self, MvPowerSeries.pderiv_X_of_ne]; done)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(by_cases hvw : v = w <;> simp [hvw, MvPowerSeries.pderiv_X]; done)`. Consider the case `(by_cases hvw : v = w`. Substitute `hvw` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hvw])`.
+Treat this case separately. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcz : CZ (![pt k d 0] : Fin 1 → Pt k 2 d)`. Introduce `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show constantCoeff (X ((0 : Fin 2), i) : PS k 2 d) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`. Consider the case `simp`. Rewrite using `[pderiv_ev hcz]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨j, i⟩` from `p`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show ev _ _ * pderiv k ((1 : Fin 2), b) (X ((0 : Fin 2), i)) = 0`. Rewrite using `[hXd, if_neg, mul_zero]`.
-
-Introduce `heq`. Conclude with `absurd (Prod.mk.inj heq).1 (by decide)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_second_ev_first_point_eq_zero (h : PS k 1 d) (b : Fin d) : pderiv k ((1 : Fin 2), b) (ev (n := 2) ![pt k d 0] h) = 0 := by
   have hXd : ∀ v w : Fin 2 × Fin d, pderiv k v (X w : PS k 2 d) = if v = w then 1 else 0 := by
@@ -223,9 +215,9 @@ variable [Algebra ℚ k]
 def logOf (i : Fin d) : PS k 1 d := prim (fun v : Fin 1 × Fin d => Om G i v.2)
 
 /- English proof (translation)
-Unfold `logOf`. Use `pderiv_prim _ ?_ _` and prove the remaining obligations. Introduce and unpack `⟨a0, a'⟩ ⟨c0, c'⟩`. Establish `h0 : a0 = 0` using `Subsingleton.elim _ _`. Establish `h1 : c0 = 0` using `Subsingleton.elim _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h0 h1` using the available equality. Conclude with `om_closed G i a' c'`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pderiv_logOf (i a : Fin d) : pderiv k ((0 : Fin 1), a) (logOf G i) = Om G i a := by
   unfold logOf
@@ -237,13 +229,13 @@ theorem pderiv_logOf (i a : Fin d) : pderiv k ((0 : Fin 1), a) (logOf G i) = Om 
   exact om_closed G i a' c'
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `set g := ev (n := 2) ![G.F] (logOf G i) - (ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i))`. Establish `hd : ∀ v, pderiv k v g = 0`. Introduce and unpack `⟨j, c⟩`. Use `fin_cases j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.zero_eta]`. Simplify using `only [g, map_sub, map_add, d_evF, pderiv_logOf, pderiv_first_ev_second_point_eq_zero, d_evX]`. Rewrite using `[om_P G i c]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.mk_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [g, map_sub, map_add, d_evF, pderiv_logOf, pderiv_second_ev_first_point_eq_zero, d_evY]`. Use `om_Q G i c` as an intermediate fact. Simplify using `only [Ar] at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : constantCoeff g = 0`. Simplify using `only [g, map_sub, map_add, cc_ev (czFF G), cc_ev czX, cc_ev czY, logOf, constantCoeff_prim]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[eq_C_of_pderiv_zero hd, hc, map_zero]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logOf_add (i : Fin d) :
     ev (n := 2) ![G.F] (logOf G i) = ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i) := by
@@ -266,13 +258,11 @@ theorem logOf_add (i : Fin d) :
   rw [eq_C_of_pderiv_zero hd, hc, map_zero]
 
 /- English proof (translation)
-Establish `hid : ∀ f : PS k 2 d, ev (n` using `2) ![pt k d 0, pt k d 1] f = f := by`. Introduce `f`. Establish `hfam : (fun p : Fin 2 × Fin d => (![pt k (n` using `2) d 0, pt k d 1] : Fin 2 → Pt k 2 d) p.1 p.2) = fun p => (X p : PS k 2 d) := by`. Use function extensionality and compare the values at `p`. Take `⟨j, i⟩` from `p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `fin_cases j <;> rfl`. Unfold `ev`. Rewrite using `[hfam]`. Use `first`. Consider the case `exact congrFun MvPowerSeries.subst_self f`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [MvPowerSeries.subst_self]; rfl)`. Consider the case `simp [MvPowerSeries.subst_self]`. Use function extensionality and compare the values at `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality.
-
-Conclude with `hid (G.F i)`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem addPt : (![G.add (pt k (n := 2) d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) = ![G.F] := by
   have hid : ∀ f : PS k 2 d, ev (n := 2) ![pt k d 0, pt k d 1] f = f := by
@@ -294,11 +284,11 @@ theorem addPt : (![G.add (pt k (n := 2) d 0) (pt k d 1)] : Fin 1 → Pt k 2 d) =
   exact hid (G.F i)
 
 /- English proof (translation)
-Introduce `k _ _ d G`. Use `⟨fun i => logOf G i, fun i => constantCoeff_prim _, ?_, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_ show coeff (Finsupp.single ((0 : Fin 1), j) 1) (logOf G i) = (1 : Matrix (Fin d) (Fin d) k) i j` and prove the remaining obligations. Establish `h` using `congrArg constantCoeff (pderiv_logOf G i j)`. Rewrite `h` using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrFun (congrFun (cc_om G) i) j`. Simplify using `only [Matrix.map_apply] at h2`. Simplify `h` using `[h2]`. Use function extensionality and compare the values at `i show ev (n := 2) ![G.add (pt k d 0) (pt k d 1)] (logOf G i) = ev (n := 2) ![pt k d 0] (logOf G i) + ev (n := 2) ![pt k d 1] (logOf G i)`. Rewrite using `[addPt]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `logOf_add G i`.
+A detailed English derivation is pending.
 -/
 theorem logSt : LogSt := by
   intro k _ _ d G
@@ -318,21 +308,19 @@ theorem logSt : LogSt := by
 
 omit [Algebra ℚ k] in
 /- English proof (translation)
-Establish `ha : CZ (![pt k d 0, 0] : Fin 2 → Pt k 1 d)`. Introduce `j i`. Use `fin_cases j`. Use `show constantCoeff (X ((0 : Fin 1), i) : PS k 1 d) = 0 first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `simp`. Use `show constantCoeff (0 : PS k 1 d) = 0`. Conclude with `map_zero _`. Establish `hb : CZ (![pt k d 1] : Fin 1 → Pt k 2 d)`. Introduce `j i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Treat this case separately. Treat this case separately.
 
-Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality. Use `show constantCoeff (X ((1 : Fin 2), i) : PS k 2 d) = 0`. Use `first`. Consider the case `exact MvPowerSeries.constantCoeff_X _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `simp`. Establish `hc : CZ (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d))` using `fun j => Fin.elim0 j`. Establish `hz : CZ (fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 0 d))` using `fun _ _ => map_zero _`. Establish `hev0 : ev (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d)) (0 : PS k 0 d) = 0`. Establish `h0` using `ev_sub hc (0 : PS k 0 d) 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_self] at h0`. Conclude with `h0`. Establish `hfam : (fun (j : Fin 1) (i : Fin d) => ev (![pt k d 0, 0] : Fin 2 → Pt k 1 d) ((![pt k d 1] : Fin 1 → Pt k 2 d) j i)) = fun (j : Fin 1) (i : Fin d) => ev (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d)) ((fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 0 d)) j i)`. Use function extensionality and compare the values at `j i`. Establish `hj : j = 0` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Treat this case separately.
 
-Substitute `hj` using the available equality. Use `show ev (![pt k d 0, 0] : Fin 2 → Pt k 1 d) (X ((1 : Fin 2), i)) = ev (fun (j : Fin 0) (_ : Fin d) => (0 : PS k 1 d)) (0 : PS k 0 d)`. Rewrite using `[hev0, ev_X ha]`. Apply the tactic sequence `all_goals rfl`. Establish `hconst : ∀ g : PS k 0 d, g = C (constantCoeff g)`.
+Treat this case separately. Substitute using the available equality. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Introduce `g`. Use extensionality with `e`. Establish `he : e = 0` using `by first`. Consider the case `exact Subsingleton.elim _ _`. Consider the case `exact Finsupp.ext fun p => Fin.elim0 p.1`.
-
-Substitute `he` using the available equality. Use `first`. Consider the case `(simp; done)`. Consider the case `rw [MvPowerSeries.coeff_zero_C, MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[ev_ev ha hb, hfam, ← ev_ev hc hz, hconst (ev (fun (_ : Fin 1) (_ : Fin d) => (0 : PS k 0 d)) h), cc_ev hz, ev_C hc]`.
+A detailed English derivation is pending.
 -/
 theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1] h) = C (constantCoeff h) := by
   have ha : CZ (![pt k d 0, 0] : Fin 2 → Pt k 1 d) := by
@@ -384,23 +372,21 @@ theorem ez_y (h : PS k 1 d) : ev (n := 1) ![pt k d 0, 0] (ev (n := 2) ![pt k d 1
     cc_ev hz, ev_C hc]
 
 /- English proof (translation)
-Introduce `k _ _ d G ℓ h0 h1 hadd u g`. Establish `hℓ : CZ (![ℓ] : Fin 1 → Pt k 1 d)` using `CZ.cons h0 CZ.nil`. Establish `hadd' : ∀ c, ev (n` using `2) ![G.F] (ℓ c) = ev (n := 2) ![pt k d 0] (ℓ c) + ev (n := 2) ![pt k d 1] (ℓ c) := by`. Introduce `c`. Use `congrFun hadd c` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ev (n := 2) ![G.add (pt k d 0) (pt k d 1)] (ℓ c) = _ at this`. Rewrite `this` using `[addPt]`. Then use the resulting hypothesis. Establish `DJ : ∀ c b, ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j b = C (if c = b then 1 else 0)`. Introduce `c b`. Establish `h` using `congrArg (fun x => ev (n := 1) ![pt k d 0, 0] (pderiv k ((1 : Fin 2), b) x)) (hadd' c)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `beta_reduce at h`. Simplify using `only [d_evF, map_add, pderiv_second_ev_first_point_eq_zero, d_evY, zero_add, ev_sum cz1, ev_mul cz1, ez_F, ez_dy, ez_y] at h`. Rewrite using `[h]`. Use `congr 1`. Establish `hc` using `congrFun (congrFun h1 c) b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_pderiv, zero_add]`. Simplify using `only [dLin] at hc`. Simplify using `[hc, Matrix.one_apply]`. Establish `hch : ∀ j, pderiv k ((0 : Fin 1), j) (ev (n` using `1) ![ℓ] g) = ∑ c, ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c) := by`. Introduce `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_ev hℓ, Fintype.sum_prod_type, Fin.sum_univ_one]`. Both sides reduce to the same expression. Establish `step : ∀ c, ∑ i, C (u i) * ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j i = (C (u c) : PS k 1 d)`. Introduce `c`. Simplify using `only [DJ, ← map_mul, mul_ite, mul_one, mul_zero]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sum]`. Simplify using `[Finset.sum_ite_eq]`. Use `show ∑ j : Fin d, (∑ i : Fin d, C (u i) * Jac G j i) * pderiv k ((0 : Fin 1), j) (ev (n := 1) ![ℓ] g) = _`. Simplify using `only [hch]`. Rewrite using `[ev_sum hℓ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul_sum, Finset.sum_comm]`. Use `_ = ∑ c, ∑ j, ∑ i, C (u i) * Jac G j i * (ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c)) := Finset.sum_comm`. Use `_ = ∑ c, ∑ i, ∑ j, C (u i) * Jac G j i * (ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * pderiv k ((0 : Fin 1), j) (ℓ c)) := Finset.sum_congr rfl fun c _ => Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = ∑ c, ev (n := 1) ![ℓ] (pderiv k ((0 : Fin 1), c) g) * ∑ i, C (u i) * ∑ j, pderiv k ((0 : Fin 1), j) (ℓ c) * Jac G j i := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = _ := by`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[step, ev_mul hℓ, ev_C hℓ, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivSt : LogDerivSt := by
   intro k _ _ d G ℓ h0 h1 hadd u g

@@ -15,13 +15,13 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, a, ha, H⟩ σ hσ`. Unfold `WD.lpOfChar at ha`. Take `⟨e, he, -⟩` from `WD.mk_eq_mk.mp ha`. Establish `h1 : ∀ u : Fin 1 → ℂ, (WDRep.ofChars h (ι` using `Fin 1) (fun _ => ξ) fun _ => hξ).ρ σ u = u := by`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u`. Take `⟨v, rfl⟩` from `e.surjective u`. Rewrite using `[← he, H σ hσ]`. Both sides reduce to the same expression. Establish `h2` using `congrFun (h1 fun _ => 1) 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h2` using `[WDRep.ofChars_ρ, diagEnd_apply, mul_one]`. Conclude with `Units.ext h2`. Introduce `H`. Use `⟨1, WDRep.ofChars h (ι := Fin 1) (fun _ => ξ) (fun _ => hξ), rfl, fun σ hσ => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun v => funext fun i => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WDRep.ofChars_ρ, diagEnd_apply, H σ hσ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tame_lpOfChar_iff (ξ : Weil h →* ℂˣ) (hξ : IsSmooth ξ) :
     IsTameWD (WD.lpOfChar h ξ hξ) ↔ ∀ σ : Weil h, Formalism.MainNotions.BlochKatoReduction.IsWild A (σ : G E Ω) → ξ σ = 1 := by

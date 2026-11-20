@@ -9,7 +9,7 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Conclude with `ExteriorAlgebra.basis_mul_of_not_disjoint _ (Set.powersetCard.ofCard (rfl : s.card = s.card)) (Set.powersetCard.ofCard (rfl : t.card = t.card)) h`.
+A detailed English derivation is pending.
 -/
 theorem lfa_mul_of_not_disjoint (s t : Finset (Fin (n * n))) (h : ¬ Disjoint s t) :
     fockBasis n s * fockBasis n t = 0 := by
@@ -17,7 +17,7 @@ theorem lfa_mul_of_not_disjoint (s t : Finset (Fin (n * n))) (h : ¬ Disjoint s 
     (Set.powersetCard.ofCard (rfl : t.card = t.card)) h
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or u with rfl | rfl` into its components or cases. Conclude with `⟨1, Or.inl rfl, by simpa using h⟩`. Conclude with `⟨-1, Or.inr rfl, by simpa using h⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem eq_sign_smul_of_intUnit {A : Type*} [AddCommGroup A] [Module ℂ A] (u : ℤˣ) (x y : A) (h : x = u • y) :
     ∃ σ : ℂ, (σ = 1 ∨ σ = -1) ∧ x = σ • y := by
@@ -26,7 +26,7 @@ theorem eq_sign_smul_of_intUnit {A : Type*} [AddCommGroup A] [Module ℂ A] (u :
   · exact ⟨-1, Or.inr rfl, by simpa using h⟩
 
 /- English proof (translation)
-Establish `hm` using `ExteriorAlgebra.basis_mul_of_disjoint ((Pi.basisFun ℂ (Fin n × Fin n)).reindex finProdFinEquiv) (Set.powersetCard.ofCard (rfl : s.card = s.card)) (Set.powersetCard.ofCard (rfl : t.card = t.card)) h`. Take `⟨σ, hσ, h'⟩` from `eq_sign_smul_of_intUnit _ _ _ hm`. Use `⟨σ, hσ, h'.trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun U => σ • fockBasis n U) (Finset.disjUnion_eq_union s t h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lfa_mul_of_disjoint (s t : Finset (Fin (n * n))) (h : Disjoint s t) :
     ∃ σ : ℂ, (σ = 1 ∨ σ = -1) ∧ fockBasis n s * fockBasis n t = σ • fockBasis n (s ∪ t) := by
@@ -37,7 +37,7 @@ theorem lfa_mul_of_disjoint (s t : Finset (Fin (n * n))) (h : Disjoint s t) :
   exact congrArg (fun U => σ • fockBasis n U) (Finset.disjUnion_eq_union s t h)
 
 /- English proof (translation)
-Rewrite using `[fockBasis, ExteriorAlgebra.basis_apply_ofCard _ (rfl : S.card = S.card), ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[Set.powersetCard.ofFinEmbEquiv_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem lfa_basis_list (S : Finset (Fin (n * n))) :
     fockBasis n S = ((List.ofFn fun i => finProdFinEquiv.symm (S.orderEmbOfFin rfl i)).map
@@ -49,7 +49,7 @@ theorem lfa_basis_list (S : Finset (Fin (n * n))) :
   simp [Set.powersetCard.ofFinEmbEquiv_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[fockBasis, ExteriorAlgebra.basis_apply_ofCard _ (Finset.card_singleton _), ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply]`. Simplify using `[Set.powersetCard.ofFinEmbEquiv_symm_apply, Set.powersetCard.val_ofCard]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lf_basis_singleton (x : Fin n × Fin n) :
     fockBasis n {finProdFinEquiv x} = ExteriorAlgebra.ι ℂ (Pi.single x (1 : ℂ)) := by
@@ -58,7 +58,7 @@ theorem lf_basis_singleton (x : Fin n × Fin n) :
   simp [Set.powersetCard.ofFinEmbEquiv_symm_apply, Set.powersetCard.val_ofCard]
 
 /- English proof (translation)
-Rewrite using `[lf_basis_singleton]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lfa_cp_apply (x : Fin n × Fin n) (v : Fock n) :
     cpFock x.1 x.2 v = fockBasis n {finProdFinEquiv x} * v := by
@@ -66,9 +66,9 @@ theorem lfa_cp_apply (x : Fin n × Fin n) (v : Fock n) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [cmFock]`. Consider the case `cons y l ih`. Rewrite `hx` using `[List.mem_cons, not_or]`. Establish `ih'` using `ih hx.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cmFock] at ih' ⊢`. Rewrite using `[List.map_cons, List.prod_cons, CliffordAlgebra.contractLeft_ι_mul, ih']`. Simplify using `[hx.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lfa_cm_list (x : Fin n × Fin n) (l : List (Fin n × Fin n)) (hx : x ∉ l) :
     cmFock x.1 x.2 (l.map fun y => ExteriorAlgebra.ι ℂ (Pi.single y (1 : ℂ))).prod = 0 := by
@@ -82,7 +82,7 @@ theorem lfa_cm_list (x : Fin n × Fin n) (l : List (Fin n × Fin n)) (hx : x ∉
     simp [hx.1]
 
 /- English proof (translation)
-Rewrite using `[lfa_cp_apply]`. Conclude with `lfa_mul_of_not_disjoint _ _ (Finset.not_disjoint_iff.mpr ⟨_, Finset.mem_singleton_self _, hx⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lf_cp_basis_of_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx : finProdFinEquiv x ∈ S) :
     cpFock x.1 x.2 (fockBasis n S) = 0 := by
@@ -90,9 +90,9 @@ theorem lf_cp_basis_of_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx :
   exact lfa_mul_of_not_disjoint _ _ (Finset.not_disjoint_iff.mpr ⟨_, Finset.mem_singleton_self _, hx⟩)
 
 /- English proof (translation)
-Rewrite using `[lfa_basis_list]`. Apply `lfa_cm_list` to reduce the goal to its premises. Introduce `hmem`. Take `⟨i, hi⟩` from `List.mem_ofFn.mp hmem`. Apply `hx` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hi, Equiv.apply_symm_apply]`. Conclude with `Finset.orderEmbOfFin_mem S rfl i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lf_cm_basis_of_not_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx : finProdFinEquiv x ∉ S) :
     cmFock x.1 x.2 (fockBasis n S) = 0 := by
@@ -105,11 +105,11 @@ theorem lf_cm_basis_of_not_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (
   exact Finset.orderEmbOfFin_mem S rfl i
 
 /- English proof (translation)
-Take `⟨σ, hσ, h⟩` from `lfa_mul_of_disjoint {finProdFinEquiv x} S (Finset.disjoint_singleton_left.mpr hx)`. Rewrite `h` using `[← Finset.insert_eq]`. Establish `hcp : cpFock x.1 x.2 (fockBasis n S) = σ • fockBasis n (insert (finProdFinEquiv x) S)`. Rewrite using `[lfa_cp_apply, h]`. Establish `hcmcp : cmFock x.1 x.2 (cpFock x.1 x.2 (fockBasis n S)) = fockBasis n S`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `lf_cm_basis_of_not_mem hx`. Simplify using `only [cpFock, cmFock, LinearMap.mulLeft_apply] at h0 ⊢`. Rewrite using `[CliffordAlgebra.contractLeft_ι_mul, h0]`. Simplify using the standard rewrite rules. Apply the tactic sequence `have hσσ : σ * σ = 1 := by rcases hσ with rfl | rfl <;> norm_num`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `⟨σ, hσ, hcp, ?_⟩` and prove the remaining obligations. Rewrite `hcmcp` using `[hcp, map_smul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lf_cp_cm_basis {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx : finProdFinEquiv x ∉ S) :
     ∃ σ : ℂ, (σ = 1 ∨ σ = -1) ∧
@@ -132,7 +132,7 @@ theorem lf_cp_cm_basis {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx : fin
     _ = σ • fockBasis n S := by rw [← smul_smul, hcmcp]
 
 /- English proof (translation)
-Take `⟨σ, hσ, h1, h2⟩` from `lf_cp_cm_basis (Finset.notMem_erase (finProdFinEquiv x) S)`. Rewrite `h1`, `h2` using `[Finset.insert_erase hx]`. Conclude with `⟨σ, hσ, h2, h1⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lf_cm_basis_of_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx : finProdFinEquiv x ∈ S) :
     ∃ σ : ℂ, (σ = 1 ∨ σ = -1) ∧
@@ -143,7 +143,7 @@ theorem lf_cm_basis_of_mem {x : Fin n × Fin n} {S : Finset (Fin (n * n))} (hx :
   exact ⟨σ, hσ, h2, h1⟩
 
 /- English proof (translation)
-Use `split_ifs with hx`. Take `⟨σ, hσ, h1, h2⟩` from `lf_cm_basis_of_mem hx`. Rewrite using `[h1, map_smul, h2, smul_smul]`. Apply the tactic sequence `rcases hσ with rfl | rfl <;> norm_num`. Rewrite using `[lf_cm_basis_of_not_mem hx, map_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lf_num_basis (x : Fin n × Fin n) (S : Finset (Fin (n * n))) :
     cpFock x.1 x.2 (cmFock x.1 x.2 (fockBasis n S)) =
@@ -155,15 +155,15 @@ theorem lf_num_basis (x : Fin n × Fin n) (S : Finset (Fin (n * n))) :
   · rw [lf_cm_basis_of_not_mem hx, map_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hT : finProdFinEquiv x ∈ T`. Rewrite using `[lf_cp_basis_of_mem hT, map_zero, Finsupp.zero_apply]`. Distinguish the cases in `hS : finProdFinEquiv x ∈ S`. Take `⟨σ, -, h1, -⟩` from `lf_cm_basis_of_mem hS`. Rewrite using `[h1, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_neg, smul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Rewrite `hT` using `[← h]`. Conclude with `Finset.notMem_erase _ _ hT`. Rewrite using `[lf_cm_basis_of_not_mem hS, map_zero, Finsupp.zero_apply]`. Take `⟨τ, -, h1, h2⟩` from `lf_cp_cm_basis hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Distinguish the cases in `hST : insert (finProdFinEquiv x) T = S`. Substitute `hST` using the available equality. Rewrite using `[if_pos rfl, h2, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_pos rfl]`. Rewrite using `[if_neg hST, smul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hS : finProdFinEquiv x ∈ S`. Take `⟨σ, -, h3, -⟩` from `lf_cm_basis_of_mem hS`. Rewrite using `[h3, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_neg, smul_zero]`. Introduce `h`. Apply `hST` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, Finset.insert_erase hS]`. Rewrite using `[lf_cm_basis_of_not_mem hS, map_zero, Finsupp.zero_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lf_repr_cm_eq (x : Fin n × Fin n) (S T : Finset (Fin (n * n))) :
     (fockBasis n).repr (cmFock x.1 x.2 (fockBasis n S)) T =
@@ -192,9 +192,9 @@ theorem lf_repr_cm_eq (x : Fin n × Fin n) (S T : Finset (Fin (n * n))) :
       · rw [lf_cm_basis_of_not_mem hS, map_zero, Finsupp.zero_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hS : finProdFinEquiv x ∈ S`. Rewrite using `[lf_cp_basis_of_mem hS]`. Simplify using the standard rewrite rules. Take `⟨τ, hτ, h1, -⟩` from `lf_cp_cm_basis hS`. Rewrite using `[h1, map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> rcases hτ with rfl | rfl <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lf_repr_cp_star (x : Fin n × Fin n) (S T : Finset (Fin (n * n))) :
     star ((fockBasis n).repr (cpFock x.1 x.2 (fockBasis n S)) T) =

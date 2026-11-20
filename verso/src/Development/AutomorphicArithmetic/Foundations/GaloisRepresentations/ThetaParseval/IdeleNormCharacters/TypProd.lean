@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HeckeGal GlobalTheory.CuspRep UpperTheory.Gal.TP.Chr
 
 /- English proof (translation)
-Unfold `pl`. Rewrite using `[InfinitePlace.comap_mk, τ.2, InfinitePlace.mk_embedding]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pl_emb {E : Type} [Field E] [NumberField E] [IsCMField E]
     {w : InfinitePlace (maximalRealSubfield E)} (τ : EmbOver E w) : pl τ.1 = w := by
@@ -12,7 +12,7 @@ private theorem pl_emb {E : Type} [Field E] [NumberField E] [IsCMField E]
   rw [InfinitePlace.comap_mk, τ.2, InfinitePlace.mk_embedding]
 
 /- English proof (translation)
-Unfold `pl`. Rewrite using `[InfinitePlace.mk_conjugate_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pl_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (φ : E →+* ℂ) :
     pl (ComplexEmbedding.conjugate φ) = pl φ := by
@@ -20,9 +20,9 @@ private theorem pl_conj {E : Type} [Field E] [NumberField E] [IsCMField E] (φ :
   rw [InfinitePlace.mk_conjugate_eq]
 
 /- English proof (translation)
-Establish `hmk : InfinitePlace.mk φ = InfinitePlace.mk ψ` using `(IsCMField.equivInfinitePlace E).injective (by`. Simplify `h)` using `only [IsCMField.equivInfinitePlace_apply, pl]`. Break down `InfinitePlace.mk_eq_iff.1 hmk with h' | h'` into its components or cases. Conclude with `Or.inl h'`. Use `right`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h']`. Conclude with `(star_star φ).symm`.
+A detailed English derivation is pending.
 -/
 private theorem eq_or_conj_of_pl_eq {E : Type} [Field E] [NumberField E] [IsCMField E]
     {φ ψ : E →+* ℂ} (h : pl φ = pl ψ) : φ = ψ ∨ φ = ComplexEmbedding.conjugate ψ := by
@@ -36,11 +36,11 @@ private theorem eq_or_conj_of_pl_eq {E : Type} [Field E] [NumberField E] [IsCMFi
     exact (star_star φ).symm
 
 /- English proof (translation)
-Introduce `hv E _ _ _ emb a b x`. Rewrite using `[← Finset.prod_fiberwise Finset.univ (pl (E := E))]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hne : (emb w).1 ≠ ComplexEmbedding.conjugate (emb w).1` using `fun h => IsTotallyComplex.complexEmbedding_not_isReal _ (ComplexEmbedding.isReal_iff.2 h.symm)`. Establish `hfib : Finset.univ.filter (fun φ : E →+* ℂ => pl φ = w) = {(emb w).1, ComplexEmbedding.conjugate (emb w).1}`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `φ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `eq_or_conj_of_pl_eq (h.trans (pl_emb (emb w)).symm)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `(rfl | rfl)`. Conclude with `pl_emb _`. Rewrite using `[pl_conj, pl_emb]`. Rewrite using `[hfib, Finset.prod_pair hne, (hv E emb a b w).1, (hv E emb a b w).2, ComplexEmbedding.conjugate_coe_eq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Chr.typProd :
     UpperTheory.Gal.TP.Chr.TypVal → UpperTheory.Gal.TP.Chr.TypProd := by

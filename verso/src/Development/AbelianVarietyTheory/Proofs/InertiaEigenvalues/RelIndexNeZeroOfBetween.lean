@@ -8,20 +8,20 @@ namespace GlobalTheory.UnitLemma.StabIndex
 variable {O : Type} [CommRing O] {A : Type} [CommRing A] [Algebra O A]
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `[mulLat, Submodule.mem_smul_pointwise_iff_exists, Units.smul_def]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_eq_mulLat (t : Aˣ) (L : Submodule O A) : t • L = mulLat O (t : A) L := by
   ext y
   simp [mulLat, Submodule.mem_smul_pointwise_iff_exists, Units.smul_def]
 
 /- English proof (translation)
-Establish `key : ∀ y, y ∈ t • L ↔ ((t⁻¹ : Aˣ) : A) * y ∈ L`. Introduce `y`. Rewrite using `[smul_eq_mulLat]`. Simplify using `only [mulLat, Submodule.mem_map, LinearMap.mulLeft_apply]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨b, hb, rfl⟩`. Rewrite using `[← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `hb`. Introduce `h`. Conclude with `⟨_, h, by rw [← mul_assoc, Units.mul_inv, one_mul]⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ht`. Use extensionality with `y`. Rewrite using `[key, ht (((t⁻¹ : Aˣ) : A) * y), ← mul_assoc, Units.mul_inv, one_mul]`. Introduce `ht y`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `key ((t : A) * y)` as an intermediate fact. Rewrite `this` using `[ht, ← mul_assoc, Units.inv_mul, one_mul]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stabLat_iff (t : Aˣ) (L : Submodule O A) : t ∈ stabLat O L ↔ t • L = L := by
   have key : ∀ y, y ∈ t • L ↔ ((t⁻¹ : Aˣ) : A) * y ∈ L := by
@@ -47,7 +47,7 @@ end GlobalTheory.UnitLemma.StabIndex
 namespace GlobalTheory.UnitLemma.StabIndex
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A]`. Use `(isUnit_iff_ne_zero.mpr ?_).map (algebraMap K.E B.A)` and prove the remaining obligations. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).mpr hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap (K : UQ) (B : InvAlg K) (c : K.O) (hc : c ≠ 0) :
     IsUnit (algebraMap K.O B.A c) := by
@@ -56,17 +56,15 @@ theorem isUnit_algebraMap (K : UQ) (B : InvAlg K) (c : K.O) (hc : c ≠ 0) :
   exact (map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).mpr hc
 
 /- English proof (translation)
-Use `set G := intUnits K.O B.A ⊓ B.T`. Use `set γ : B.Aˣ := (isUnit_algebraMap K B c hc).unit`. Establish `hγ : (γ : B.A) = algebraMap K.O B.A c` using `rfl`. Establish `hsub : (stabLat K.O L ⊓ B.T).subgroupOf G = MulAction.stabilizer G L`. Use extensionality with `u`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Subgroup.mem_subgroupOf, MulAction.mem_stabilizer_iff, Subgroup.mem_inf, Subgroup.smul_def, ← mem_stabLat_iff]`. Conclude with `⟨fun hu => hu.1, fun hu => ⟨hu, (Subgroup.mem_inf.mp u.2).2⟩⟩`. Establish `horb : (MulAction.orbit G L).Finite`. Use `(hfin.preimage (MulAction.injective γ).injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `(Subgroup.mem_inf.mp u.2).1`. Establish `hM : γ • ((u : B.Aˣ) • L) = mulLat K.O (algebraMap K.O B.A c * ((u : B.Aˣ) : B.A)) L`. Rewrite using `[smul_smul, smul_eq_mulLat, Units.val_mul, hγ]`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq, Subgroup.smul_def, hM]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `⟨algebraMap K.O B.A c * (((u : B.Aˣ)⁻¹ : B.Aˣ) : B.A) * y, h _ hu.2 y hy, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.mulLeft_apply, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.mulLeft_apply]`. Conclude with `h _ hu.1 y hy`. Rewrite using `[Subgroup.relIndex, hsub]`. Use `haveI : Finite (MulAction.orbit G L) := horb.to_subtype`. Use `haveI : Finite (G ⧸ MulAction.stabilizer G L) := Finite.of_equiv _ (MulAction.orbitEquivQuotientStabilizer G L)`.
-
-Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_between (K : UQ) (B : InvAlg K) (L : Submodule K.O B.A) (c : K.O) (hc : c ≠ 0)
     (hfin : {M : Submodule K.O B.A | mulLat K.O (algebraMap K.O B.A (c * c)) L ≤ M ∧ M ≤ L}.Finite)

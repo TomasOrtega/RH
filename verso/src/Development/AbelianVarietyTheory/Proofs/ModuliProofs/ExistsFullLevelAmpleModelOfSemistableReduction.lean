@@ -22,7 +22,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S` and use `GlobalTheory.T.exists_fullLevel_model_ample_frames GlobalTheory.T.homExtension_semiAbelian_discreteValuationRing GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 S GlobalTheory.T.uniformisationExistence_and_torsion_statements.1 …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topAmpExists_of_semistableReduction :
     GlobalTheory.Published.SemistableReductionSt → GlobalTheory.Models.TopAmpExists :=

@@ -11,32 +11,32 @@ noncomputable section
 namespace GlobalTheory.SiegDist
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_add]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_add (a b : ℂ) : ee (a + b) = ee a * ee b := by
   unfold ee; rw [← Complex.exp_add]; ring_nf
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_int_mul]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_int_mul (n : ℤ) (z : ℂ) : ee (n * z) = ee z ^ n := by
   unfold ee; rw [← Complex.exp_int_mul]; ring_nf
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_nat_mul]`. Put the polynomial expressions in normal form.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 lemma ee_nat_mul (n : ℕ) (z : ℂ) : ee (n * z) = ee z ^ n := by
   unfold ee; rw [← Complex.exp_nat_mul]; ring_nf
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 lemma ee_ne_zero (z : ℂ) : ee z ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[Complex.norm_exp]`. Establish `h : (2 * Real.pi * Complex.I * (τ : ℂ)).re = -(2 * Real.pi * τ.im)`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Rewrite using `[h, ← Real.exp_zero, Real.exp_lt_exp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `mul_pos Real.pi_pos τ.im_pos` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma norm_ee_lt_one (τ : ℍ) : ‖ee (τ : ℂ)‖ < 1 := by
   unfold ee
@@ -48,13 +48,13 @@ lemma norm_ee_lt_one (τ : ℍ) : ‖ee (τ : ℂ)‖ < 1 := by
   linarith
 
 /- English proof (translation)
-Unfold `ee at h`. Rewrite `h` using `[Complex.exp_eq_one_iff]`. Take `⟨k, hk⟩` from `h`. Establish `hne : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h2 : (u : ℂ) * τ + v = k`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hne` to reduce the goal to its premises. Rewrite using `[hk]`. Expand and normalize the polynomial expressions, which then agree. Establish `him` using `congrArg Complex.im h2`. Establish `hre` using `congrArg Complex.re h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `at him hre`. Establish `hu : u = 0`. Break down `him with h | h` into its components or cases. Conclude with `h` after adjusting the coercions. Conclude with `absurd h τ.im_pos.ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Simplify using `at hre`. Conclude with `⟨rfl, k, by exact_mod_cast hre⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma ee_eq_one (u v : ℚ) (τ : ℍ) (h : ee ((u : ℂ) * τ + v) = 1) : u = 0 ∧ ∃ k : ℤ, v = k := by
   unfold ee at h
@@ -76,23 +76,23 @@ lemma ee_eq_one (u v : ℚ) (τ : ℍ) (h : ee ((u : ℂ) * τ + v) = 1) : u = 0
   exact ⟨rfl, k, by exact_mod_cast hre⟩
 
 /- English proof (translation)
-Introduce `c m x τ hA hm hcm`. Take `⟨hc1, hc6, hnot⟩` from `hA`. Establish `hmC : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hq0 : ee (τ : ℂ) ≠ 0` using `ee_ne_zero _`. Establish `hsplit : ∀ a b : ℕ, sg c ![(x 0 + a) / m, (x 1 + b) / m] τ = cth c (ee (τ : ℂ)) (ee ((((x 0 : ℂ) + a) * τ + x 1) / m) * ee ((b : ℂ) / m))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Unfold `sg`. Rewrite using `[← ee_add]`. Use `congr 2`. Simplify using `[pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpow : ∀ a : ℕ, ee ((((x 0 : ℂ) + a) * τ + x 1) / m) ^ m = ee (pt x τ) * ee (τ : ℂ) ^ a`. Introduce `a`. Rewrite using `[← ee_nat_mul, ← ee_nat_mul, ← ee_add]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [pt]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hND : ∀ n : ℤ, ee (τ : ℂ) ^ n * ee (pt x τ) ^ c ≠ 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `n h`. Establish `h' : ee ((((n : ℚ) + c * x 0 : ℚ) : ℂ) * τ + ((c * x 1 : ℚ) : ℂ)) = 1`. Rewrite using `[← h, ← ee_int_mul, ← ee_nat_mul, ← ee_add]`. Use `congr 1`. Simplify using `only [pt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h0, k, hk⟩` from `ee_eq_one _ _ τ h'`. Apply `hnot` to reduce the goal to its premises. Use `⟨⟨-n, ?_⟩, ⟨k, hk.symm⟩⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hD1 : ∀ a : ℕ, ∀ n : ℤ, ee (τ : ℂ) ^ n * ee ((((x 0 : ℂ) + a) * τ + x 1) / m) ^ (c * m) ≠ 1`. Introduce `a n h`. Rewrite `h` using `[mul_comm c m, pow_mul, hpow a, mul_pow, ← pow_mul]`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hND (n + ((a * c : ℕ) : ℤ))` to reduce the goal to its premises. Rewrite using `[zpow_add₀ hq0, zpow_natCast, ← h]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.prod_congr rfl` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a _`. Repeatedly rewrite using `[hsplit a]`. Rewrite using `[GlobalTheory.T.smoothedThetaQProduct_distribution_relation c m _ _ hc1 hc6 hm hcm (norm_ee_lt_one τ) hq0 (ee_ne_zero _) (hD1 a), hpow a]`. Use `_ = cth c (ee (τ : ℂ)) (ee (pt x τ)) := GlobalTheory.T.prod_smoothedThetaQProduct_distribution c m _ _ hc1 hc6 hm hcm (norm_ee_lt_one τ) hq0 (ee_ne_zero _) hND`. Use `_ = sg c x τ := rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_distribution : ∀ (c m : ℕ) (x : Fin 2 → ℚ) (τ : ℍ), admitted c x → 0 < m → Nat.Coprime c m →
     ∏ a ∈ Finset.range m, ∏ b ∈ Finset.range m, sg c ![(x 0 + a) / m, (x 1 + b) / m] τ = sg c x τ := by

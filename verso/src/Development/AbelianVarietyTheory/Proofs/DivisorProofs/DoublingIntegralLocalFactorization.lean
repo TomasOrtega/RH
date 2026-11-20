@@ -30,11 +30,11 @@ noncomputable section
 namespace GlobalTheory.ThK.Bot.SplitVal
 
 /- English proof (translation)
-Take `⟨rfl⟩` from `hB`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Establish `hL : MemLp Φ 2 m` using `GlobalTheory.WeilM.schA_memLp_two F κ m hm Φ hΦ`. Establish `hc` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hΦ`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Integrable (fun x => ‖Φ x‖ ^ 2) m` using `(memLp_two_iff_integrable_sq_norm hL.1).1 hL`. Establish `e : ∫ x, Φ x * starRingEnd ℂ (Φ x) ∂m = ((∫ x, ‖Φ x‖ ^ 2 ∂m : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[e, Complex.ofReal_ne_zero]`. Take `⟨x, hx⟩` from `Function.ne_iff.1 h0`. Conclude with `(integral_pos_of_integrable_nonneg_nonzero (x := x) (hc.norm.pow 2) hi (fun y => sq_nonneg ‖Φ y‖) (by simpa using hx)).ne'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integral_mul_conj_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     [MeasurableSpace (κ → AF F)] [hB : BorelSpace (κ → AF F)] (m : Measure (κ → AF F)) (hm : m.IsAddHaarMeasure)
@@ -56,7 +56,7 @@ theorem integral_mul_conj_ne_zero {F : Type} [Field F] [NumberField F] {κ : Typ
     (by simpa using hx)).ne'
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ q` using `Nat.cast_nonneg q`. Establish `h1 : (q : ℂ) ≠ 0` using `by exact_mod_cast hq.ne'`. Rewrite using `[← Real.rpow_intCast, ← Complex.cpow_mul_ofReal_nonneg h0, Complex.ofReal_cpow h0, Complex.ofReal_natCast, ← Complex.cpow_add _ _ h1]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -72,33 +72,29 @@ theorem pow_combine {q : ℕ} (hq : 0 < q) (a : ℤ) (d : ℕ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d X W M χX χW om r s' r₁ s₁ hP _ _ _ _ _ X₂ i K₂ hD _ _ m hm K hK f _ φ hSB hev hne v hv hU hφ μ hμ hμK s hs`. Establish `hcm` using `hP.base.cm`. Use `haveI := hP.base.unram`. Establish `hun : Formalism.MainNotions.SchurIrreducible.IsUnram (E` using `E) v := GlobalTheory.LFun.isUnram_iff.2 fun w _ => Ideal.ramificationIdx_eq_one w.asIdeal (𝓞 F)`. Take `⟨w, w', hww, h1, h2⟩` from `GlobalTheory.LFun.isSplit_iff.1 ((GlobalTheory.LFun.InertChart.isSplit_or_isInertAt hun).resolve_right hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, -⟩` from `(GlobalTheory.AdelicU.existsUnique_splitPrime_eq hcm hww h1 h2).exists`. Use `haveI := hP.herm.lat`. Take `⟨b, hb⟩` from `exists_isSplitBasis t X.L hcm`. Establish `hUt : UnrAt χW (splitPrime t)` using `hU _ (GlobalTheory.LFun.mem_aboveF.2 (splitPrime_under t))`. Take `⟨e, he, heK⟩` from `GlobalTheory.T.local_unitary_group_iso_GL F E σ B n X hcm ⟨hP.herm.herm, GlobalTheory.HermSelfDualLoc.det_ne_zero_of_isHerm σ B hP.herm⟩ hP.herm.lat v (GlobalTheory.HermSelfDualLoc.isSelfDualAt_transpose F E σ B n X r s' hP.base hP.herm v) K hK t b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hstd : ∀ᶠ w in cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hev.and hP.good.std).mono fun w hw => hw.1.trans hw.2`. Take `⟨ρ, hρ, hρt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Establish `hR : ∀ φ' ∈ SB (Fin n × Fin d → Fv F v), Rest (evFin F v) φ' ρ` using `fun φ' hφ' => ⟨hρ, by`. Rewrite using `[hρt]`. Use `GlobalTheory.TensUniq.pure_mem_schA f _ (fun w => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hφ'`. Rewrite using `[Function.update_of_ne hw]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hSB w`. Use `filter_upwards [hstd, Filter.eventually_cofinite_ne v] with w hw hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw⟩`. Establish `hpure : pure f φ = tens (evFin F v) (M.vac v) ρ` using `by rw [← hφ, hρt, Function.update_eq_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hsch : pure f φ ∈ schA F (Fin n × Fin d)` using `GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd`. Establish `hc1 : coef m om (pure f φ) 1 ≠ 0`. Use `integral_mul_conj_ne_zero m hm hsch hne` as an intermediate fact. Unfold `coef`. Rewrite using `[show ((1 : UA σ X.J), (1 : UA σ W.J)) = 1 from rfl, map_one]` and apply the resulting hypothesis.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ϖ₀, hϖ₀⟩` from `GlobalTheory.LFun.exists_isUnifV v`. Set `ϖ : (Fv F v)ˣ` to `Units.mk0 ϖ₀ (GlobalTheory.LFun.SatCompare.ne_zero_of_isUnifV hϖ₀)`. Take `⟨hsm, -, hunr⟩` from `GlobalTheory.ChrWLocal.chrW_local F E χW hP.hW v t`. Establish `hq : 0 < qV F v` using `Nat.pos_of_ne_zero (GlobalTheory.LFun.qV_ne_zero v)`. Use `set I : UAtSub σ X (evFin F v) → ℂ := fun g => coef m om (pure f φ) g.1 / coef m om (pure f φ) 1 * (((hgtOf finSumFinEquiv (UG (cA σ) (incM F X₂.J)).subtype (absE F E) K₂ (i (g.1, 1)) : ℝ≥0) : ℝ) : ℂ) ^ (s - ((d : ℂ) - (n : ℂ)) / 2) with hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hinv, hsum⟩` from `GlobalTheory.T.spherical_unramified_integral_value F v n s hs (chrW χW t ϖ) (fun x => I (e.symm x)) (hsm.2 _) (by`. Introduce `ϖ' hϖ' a T hT k₁ hk₁ k₂ hk₂`. Establish `hg : GlobalTheory.KSplit.locMat t b (e.symm (k₁ * T * k₂)).1 = k₁ * T * k₂` using `by rw [← he, e.apply_symm_apply]`. Establish `hz : chrW χW t ϖ' = chrW χW t ϖ`. Use `hunr.2 hUt (ϖ' * ϖ⁻¹) ((GlobalTheory.ChrWLocal.valuation_eq_one_iff _).2 (by` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : Valued.v ϖ'.1 = Valued.v ϖ.1` using `Eq.trans hϖ' (Eq.symm hϖ₀)`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, a1, mul_inv_cancel₀ (by simp)]))`. Rewrite `this` using `[map_mul, map_inv, mul_inv_eq_one]`. Then use the resulting hypothesis. Simplify using `only [hI]`. Rewrite using `[GlobalTheory.T.doubling_unramified_hecke_eigen F E σ B n X r s' hP.base hP.herm X₂ i K₂ hD v t b hb ϖ' hϖ' a T hT k₁ hk₁ k₂ hk₂ _ (e.symm _).2 hg]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `hc1`, the goal using `[hpure]`. Rewrite using `[GlobalTheory.T.local_doubling_zeta_value hKP.base F E σ B n d X W M χX χW om r s' r₁ s₁ hP m hm v ρ hR t b hb hUt ϖ' hϖ' a T hT k₁ hk₁ k₂ hk₂ _ (e.symm _).2 hg, mul_div_assoc, div_self hc1, mul_one, mul_assoc, pow_combine hq, hz]`. Use `congr 2`. Use the proof step `ring)`. Establish `hinv' : ∀ g, ∀ k ∈ K.subgroupOf (UAtSub σ X (evFin F v)), I (g * k) = I g` using `fun g k hk => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hinv (e g) (e k) ((heK k).1 hk)` as an intermediate fact. Simplify `this` using `only [← map_mul, e.symm_apply_apply]`. Establish `hsum'` using `GlobalTheory.T.hasSum_quotient_of_hasSum_mulEquiv_quotient _ _ e.toMulEquiv (K.subgroupOf (UAtSub σ X (evFin F v))) (KGL v n) heK I hinv' _ hsum`. Establish `hopen : IsOpen (K.subgroupOf (UAtSub σ X (evFin F v)) : Set (UAtSub σ X (evFin F v)))`. Establish `: (K.subgroupOf (UAtSub σ X (evFin F v)) : Set (UAtSub σ X (evFin F v))) = e ⁻¹' (KGL v n : Set _)` using `Set.ext heK`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL (w := v) (n := n)).1.preimage e.continuous`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`.
-
-Use `haveI : IsTopologicalGroup (UA σ X.J) := inferInstanceAs (IsTopologicalGroup (UG (cA σ) (incM F X.J)))`. Use `haveI := hμ`. Take `⟨-, hE⟩` from `GlobalTheory.T.integral_right_invariant_eq_sum_open_subgroup_cosets _ μ _ hopen hμK I _ hinv' hsum'`. Use `Eq.trans hE ?_` and prove the remaining obligations. Use `congr 1`.
-
-Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.local_l_factor_unramified_character F E σ hcm χW d hP.resW v t hU ϖ hϖ₀]`. Simplify using `only [denInv, etaAt, if_neg hv, one_pow, one_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem zetaOn_split : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s' r₁ s₁ : ℕ),
     IsPair B M χX χW om r s' r₁ s₁ → min r s' = 0 → min r₁ s₁ = 0 → 1 ≤ n → n < d → Even d →

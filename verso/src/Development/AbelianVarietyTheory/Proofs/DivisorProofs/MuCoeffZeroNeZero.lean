@@ -7,15 +7,13 @@ namespace GlobalTheory.DetInv
 open Matrix TensorProduct in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ ε hζ`. Establish `hε : ε ≠ 1`. Introduce and unpack `rfl`. Establish `h1 : _root_.GlobalTheory.Sandwich.root (1 : PreTilt O p) = 1`. Unfold `_root_.GlobalTheory.Sandwich.root`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `map_one _`. Establish `h2 : PreTilt.untilt (1 : PreTilt O p) = 1` using `by simp`. Rewrite `hζ` using `[h1, h2]`. Establish `hp : p ∣ 1` using `(hζ.pow_eq_one_iff_dvd 1).mp (pow_one 1)`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.mp hp)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hc : (_root_.GlobalTheory.Sandwich.mu ε).coeff 0 ≠ 0`. Unfold `_root_.GlobalTheory.Sandwich.mu`. Rewrite using `[← WittVector.constantCoeff_apply, map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Conclude with `sub_ne_zero.mpr hε`. Establish `hmu : _root_.GlobalTheory.Sandwich.mu ε ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h]`. Conclude with `WittVector.zero_coeff _ _ _`. Use `⟨hc, hmu, fun h => hmu ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← _root_.GlobalTheory.Sandwich.xi_mul_nu, h, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.DetInv.mu_coeff_zero_ne_zero : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C]
     [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]

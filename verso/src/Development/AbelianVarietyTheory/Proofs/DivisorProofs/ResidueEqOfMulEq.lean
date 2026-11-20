@@ -23,7 +23,7 @@ def pr₁ : Fib t →+* B := (RingHom.fst B B).comp (Fib t).subtype
 def pr₂ : Fib t →+* B := (RingHom.snd B B).comp (Fib t).subtype
 
 /- English proof (translation)
-Establish `h : Ideal.Quotient.mk (Ideal.span {t}) (p : B × B).1 = Ideal.Quotient.mk (Ideal.span {t}) (p : B × B).2` using `p.2`. Rewrite `h` using `[Ideal.Quotient.eq]`. Use `(Ideal.neg_mem_iff _).2 h` as an intermediate fact. Simplify `this` using `[pr₁, pr₂, neg_sub]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_mem (p : Fib t) : pr₂ t p - pr₁ t p ∈ Ideal.span {t} := by
   have h : Ideal.Quotient.mk (Ideal.span {t}) (p : B × B).1 = Ideal.Quotient.mk (Ideal.span {t}) (p : B × B).2 := p.2
@@ -34,7 +34,7 @@ theorem sub_mem (p : Fib t) : pr₂ t p - pr₁ t p ∈ Ideal.span {t} := by
 def coef (p : Fib t) : B := (Ideal.mem_span_singleton'.1 (sub_mem t p)).choose
 
 /- English proof (translation)
-The claim follows from `(Ideal.mem_span_singleton'.1 (sub_mem t p)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem coef_mul (p : Fib t) : coef t p * t = pr₂ t p - pr₁ t p :=
   (Ideal.mem_span_singleton'.1 (sub_mem t p)).choose_spec
@@ -42,9 +42,9 @@ theorem coef_mul (p : Fib t) : coef t p * t = pr₂ t p - pr₁ t p :=
 variable [IsLocalRing B]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff]`. Assume the negation of the conclusion as `hu`. Establish `hu' : IsUnit (x - x')` using `by simpa using (IsLocalRing.mem_maximalIdeal _).not.1 hu |> not_not.1`. Apply `ht` to reduce the goal to its premises. Establish `: (x - x') * t = 0` using `by rw [sub_mul, h, sub_self]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(hu'.mul_right_eq_zero).1 this`.
+A detailed English derivation is pending.
 -/
 theorem residue_eq_of_mul_eq {t : B} (ht : t ≠ 0) {x x' : B} (h : x * t = x' * t) :
     IsLocalRing.residue B x = IsLocalRing.residue B x' := by
@@ -62,7 +62,7 @@ namespace GlobalTheory.SmallGlue
 variable {B : Type} [CommRing B] [IsLocalRing B] {t : B}
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, IsLocalRing.residue_eq_zero_iff, ← coef_mul]`. Conclude with `Ideal.mul_mem_left _ _ htm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_pr₂ (htm : t ∈ IsLocalRing.maximalIdeal B) (p : Fib t) :
     IsLocalRing.residue B (pr₂ t p) = IsLocalRing.residue B (pr₁ t p) := by
@@ -105,7 +105,7 @@ variable {R B : Type} [CommRing R] [CommRing B]
 def alg (s : Sp B ⟶ Sp R) : R →+* B := (Spec.preimage s).hom
 
 /- English proof (translation)
-Simplify using `[alg, spMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_alg (s : Sp B ⟶ Sp R) : spMap (alg s) = s := by
   simp [alg, spMap]
@@ -118,14 +118,14 @@ def diag : R →+* Fib t :=
 def base : Sp (Fib t) ⟶ Sp R := spMap (diag t s)
 
 /- English proof (translation)
-Rewrite using `[base, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `spMap_alg s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_pr₁_base : spMap (pr₁ t) ≫ base t s = s := by
   rw [base, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
   exact spMap_alg s
 
 /- English proof (translation)
-Rewrite using `[base, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `spMap_alg s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spMap_pr₂_base : spMap (pr₂ t) ≫ base t s = s := by
   rw [base, spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]

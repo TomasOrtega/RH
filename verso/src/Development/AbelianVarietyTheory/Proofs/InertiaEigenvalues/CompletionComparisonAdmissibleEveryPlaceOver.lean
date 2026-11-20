@@ -8,7 +8,7 @@ open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotion
 namespace GlobalTheory.BridgeTie
 
 /- English proof (translation)
-Introduce `D i` and use `coefficient_compatibility_of D i (fun w hw => GlobalTheory.bridge_degW D.nbr i w hw)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem localCoefficientCompatibility : ∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.LocalCoefficientCompatibility i :=
   fun D i => coefficient_compatibility_of D i (fun w hw => GlobalTheory.bridge_degW D.nbr i w hw)

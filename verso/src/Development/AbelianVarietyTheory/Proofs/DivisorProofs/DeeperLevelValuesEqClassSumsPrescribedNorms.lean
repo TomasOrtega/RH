@@ -22,7 +22,7 @@ noncomputable section
 namespace GlobalTheory.Poinc.GSumCls
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw⟩ i`. Conclude with `⟨w i, by rw [hw]; rfl⟩`. Introduce `h choose w hw using h`. Conclude with `⟨w, funext fun i => by rw [hw i]; rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem congMod_iff {X J : Type} [AddCommGroup X] (m : ℕ) (u v : J → X) :
     CongMod m u v ↔ ∀ i, CongMod m (u i) (v i) := by
@@ -34,11 +34,11 @@ theorem congMod_iff {X J : Type} [AddCommGroup X] (m : ℕ) (u v : J → X) :
     exact ⟨w, funext fun i => by rw [hw i]; rfl⟩
 
 /- English proof (translation)
-Use `haveI := RatModel.isIntegrallyClosed_O hM z`. Establish `hint : IsIntegral (M.O z) u` using `⟨_, Polynomial.monic_X_pow_sub_C (1 : M.O z) hk.ne', by simp [hu]⟩`. Take `⟨v, hv⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Establish `hmem : u ∈ M.O z` using `hv ▸ v.2`. Establish `hs` using `RatModel.gPt_specializes hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (⟨u, hmem⟩ : M.O z) ^ k = 1` using `Subtype.ext hu`. Establish `h2 : M.val (gPt p ≫ y) u ^ k = 1`. Use `congrArg (RatModel.valHomOf (gPt p ≫ y) z hs) h1` as an intermediate fact. Rewrite `this` using `[map_pow, map_one]`. Then use the resulting hypothesis. Establish `h3 : ‖M.val (gPt p ≫ y) u‖ = 1` using `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 (by rw [← norm_pow, h2, norm_one])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RatModel.val_mul hs hmem hx, norm_mul, h3, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem norm_val_root_mul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} (hM : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z)
     {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ M.Z} {z : M.Z} (hy : y (cPt p) = z) {u x : Ω} {k : ℕ} (hk : 0 < k)
@@ -59,7 +59,7 @@ theorem norm_val_root_mul {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {
 variable {g n : ℕ} {F : SFam g n (zetaAway n)} {W : Matrix (Fin 8) (Fin 8) ℤ} {Z : Scheme.{0}} {i : F.X ⟶ Z}
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, -, y₀, -, u, l, j, -, hyy, -⟩` from `h`. Take `⟨a, ha⟩` from `l.yy_onto (QuotientAddGroup.mk (j.symm ν))`. Conclude with `⟨a, by simpa using hyy a _ ha⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem onto_of_isLab {X : Setup F W i} {ε} {p : ℕ} [Fact p.Prime] {z : X.M.Z} {c : CTrait X p z} {yy}
     (h : IsLab X ε c yy) (ν : Fin 8 → c.T.D.toPre.X) : ∃ a, yy a = QuotientAddGroup.mk ν := by
@@ -68,7 +68,7 @@ theorem onto_of_isLab {X : Setup F W i} {ε} {p : ℕ} [Fact p.Prime] {z : X.M.Z
   exact ⟨a, by simpa using hyy a _ ha⟩
 
 /- English proof (translation)
-Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, -, y₀, -, u, l, j, hq, -⟩` from `h`. Use `(l.pos.comp j.symm.injective.tendsto_cofinite).congr fun ν => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, hq, AddEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem tendsto_of_isLab {X : Setup F W i} {ε} {p : ℕ} [Fact p.Prime] {z : X.M.Z} {c : CTrait X p z} {yy}
     (h : IsLab X ε c yy) :
@@ -78,19 +78,17 @@ theorem tendsto_of_isLab {X : Setup F W i} {ε} {p : ℕ} [Fact p.Prime] {z : X.
   rw [Function.comp_apply, hq, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p _ z₁ z₂ hz`. Take `⟨U, hU, hgeq⟩` from `GlobalTheory.T.thetaWeightPart_value_depends_trait_labels_class g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D z₁ z₂ hz`. Use `⟨U, hU, fun c yy₁ hlab => ?_⟩` and prove the remaining obligations. Establish `hs : ∀ χ : Fin 8 → c.T.D.toPre.X, ‖c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ)‖ ^ (qW W c.T.β χ).toNat = Real.exp (-(c.sc * (qW W c.T.β χ : ℤ)))` using `fun χ => by`. Establish `h0` using `qW_nonneg_of_posW W X₁.posW c.T.β c.T.symm (Basic₂.trait_nonneg c.T) χ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← c.exp_neg_sc_mul, ← Int.cast_natCast (R := ℝ), Int.toNat_of_nonneg h0]`. Distinguish the cases in `hex : ∃ y : Sp (OO p) ⟶ D.X.M.Z, y ≫ D.q = c.y ∧ y (cPt p) = z₂`. Use `swap`. Use `⟨fun μ _ => c.ι (algebraMap c.T.V (FractionRing c.T.V) c.T.ϖ) ^ (qW W c.T.β μ).toNat, fun μ _ => by rw [norm_pow, hs], fun μ => ⟨0, by rw [norm_pow, hs]⟩, fun y h hy => (hex ⟨y, h, hy⟩).elim⟩` and prove the remaining obligations. Take `⟨y₀, h₀, hy₀⟩` from `hex`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨yy₀, hlab₀, hcomp₀⟩` from `GLift.labels_lift g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p z₁ c yy₁ hlab y₀ h₀`. Use `choose a ha using onto_of_isLab hlab₀`. Establish `hpart : ∀ b κ, GSum.part D z₁ z₂ b κ ∈ D.X.M.O z₂` using `fun b κ => by`. Rewrite using `[GSum.part, Finset.sum_div]`. Use `sum_mem fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_div_assoc]`. Conclude with `mul_mem ((D.X.M.O z₂).algebraMap_mem _) (GlobalTheory.T.weightParts_over_dividing_thetaConstant_integral g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D z₁ _ j z₂ hz)`. Establish `hnorm : ∀ b κ, ‖D.X.M.val (gPt p ≫ y₀) (U κ * GSum.part D z₁ z₂ b κ)‖ = ‖D.X.M.val (gPt p ≫ y₀) (GSum.part D z₁ z₂ b κ)‖` using `fun b κ => by`. Take `⟨k, hk, hu⟩` from `hU κ`. Conclude with `norm_val_root_mul (haveI := D.X.normal; GlobalTheory.IsNormalScheme.pred _) hy₀ hk hu (hpart b κ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsc` using `c.scale_pos`. Take `⟨t, ht1, ht2, ht3⟩` from `GlobalTheory.T.lattice_class_sums_of_terms_prescribed_norms p (Fin 8 → c.T.D.toPre.X) (X₁.S.HH X₁.M z₁) D.m (fun ν => c.sc * (qW W c.T.β ν : ℤ)) _ _ (tendsto_of_isLab hlab) hs (fun ν κ => D.X.M.val (gPt p ≫ y₀) (U κ * GSum.part D z₁ z₂ (a ν) κ)) (fun ν ν' κ h => hgeq p c yy₁ hlab …`. Rewrite using `[hnorm]`. Use `GlobalTheory.T.weightPart_least_vector_norm_le_exp g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D z₁ z₂ hz p c yy₁ hlab y₀ h₀ hy₀ yy₀ hlab₀ hcomp₀ _ ν κ (ha ν) fun χ hχ => ?_` and prove the remaining obligations. Conclude with `le_of_mul_le_mul_left (h χ hχ) hsc)` after adjusting the coercions.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun ν h => by`. Simplify using `only [hnorm]`. Use `GlobalTheory.T.weightPart_unique_least_vector_attains_exp g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D z₁ z₂ hz p c yy₁ hlab y₀ h₀ hy₀ yy₀ hlab₀ hcomp₀ _ ν (ha ν) fun χ hχ hne => ?_` and prove the remaining obligations. Conclude with `lt_of_mul_lt_mul_left (h χ hχ hne) hsc.le)` after adjusting the coercions. Use `⟨t, ht1, ht2, fun y h hy yy hl hc b ν κ hb δ hδ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨S₀, hS₀⟩` from `ht3 ν κ δ hδ`. Use `⟨S₀, fun S h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[hgeq p c yy₁ hlab y h hy yy hl hc y₀ h₀ hy₀ yy₀ hlab₀ hcomp₀ b (a ν) ν ν κ hb (ha ν) ⟨0, by simp⟩]`. Conclude with `hS₀ S (fun χ hχ => (congMod_iff _ _ _).2 (h1 χ hχ)) fun χ hχ hcg => h2 χ hχ ((congMod_iff _ _ _).1 hcg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁), ∀ (p : ℕ) [Fact p.Prime] (z₁ : X₁.M.Z) (z₂ : D.X.M.Z), D.q z₂ = z₁ → ∃ U : X₁.S.HH X₁.M z₁ → D.X.Ω₁, (∀ κ, ∃ k : ℕ, 0 < k ∧ U κ ^ k = 1) ∧ ∀ (c : CTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X₁ ε₁ c yy₁ → ∃ t : (Fin 8 → c.T.D.toPre.X) → X₁.S.HH X₁.M z₁ → PadicAlgCl p, (∀ μ κ, ‖t μ κ‖ ≤ Real.exp (-(c.sc * (qW W c.T.β μ : ℤ)))) ∧ (∀ μ, ∃ κ, ‖t μ κ‖ = Real.exp (-(c.sc * (qW W c.T.β μ : ℤ)))) ∧ ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y), y (cPt p) = z₂ → ∀ yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X), IsLab D.X D.ε (D.lift c y h) yy → D.Compat yy₁ yy → ∀ a ν κ, yy a = QuotientAddGroup.mk ν → ∀ δ : ℝ, 0 < δ → ∃ S₀ : Finset (Fin 8 → c.T.D.toPre.X), ∀ S : Finset (Fin 8 → c.T.D.toPre.X), (∀ μ ∈ S, ∀ u, CongMod D.m (μ u) (ν u)) → (∀ μ ∈ S₀, (∀ u, CongMod D.m (μ u) (ν u)) → μ ∈ S) → ‖D.X.M.val (gPt p ≫ y) (U κ * GSum.part D z₁ z₂ a κ) - ∑ μ ∈ S, t μ κ‖ ≤ δ := by
   intro g n F W Z i X₁ hg hn hodd himm he8 hth hproj ε₁ hdiag D p _ z₁ z₂ hz

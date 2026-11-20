@@ -24,29 +24,23 @@ def preimageField (τ : ℂ ≃+* ℂ) (K : IntermediateField ℚ ℂ) : Interme
   K.comap ((τ : ℂ →+* ℂ).toRatAlgHom)
 
 /- English proof (translation)
-Introduce `E _ _ _ H l l₂ c n p hp hpn hco hM hA hgood hcurve`. Take `⟨L, hL⟩` from `GlobalTheory.FinalJoin.CurveField.exists_periodPair H`. Establish `h3` using `l₂.three_le`. Establish `hN : 0 < l₂.M` using `by omega`. Establish `hN0 : (l₂.M : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hfin, halg, hperm⟩` from `weberSet_finite_algebraic_permuted L l₂.M hN (g₂_ne_zero H L hL) (g₃_ne_zero H L hL)`. Establish `hζ : IsPrimitiveRoot (zeta l₂.M) l₂.M` using `Complex.isPrimitiveRoot_exp _ hN.ne'`. Set `S : Set ℂ` to `insert (zeta l₂.M) (weberSet L l₂.M)`. Use `(hfin.insert (zeta l₂.M)).to_subtype` as an intermediate fact. Establish `hS : FiniteDimensional ℚ (IntermediateField.adjoin ℚ S)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IntermediateField.finiteDimensional_adjoin ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`. Conclude with `(hζ.isIntegral hN).tower_top`. Conclude with `(halg (GlobalTheory.WeberField.invariant_isAlgebraic H L hL) x hx).isIntegral`. Use `c.fin` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F` to `c.F ⊔ IntermediateField.adjoin ℚ S`. Establish `hl : c.F ≤ F` using `le_sup_left`. Establish `hr : ∀ x ∈ S, x ∈ F` using `fun x hx => le_sup_right (a := c.F) (IntermediateField.subset_adjoin ℚ S hx)`. Establish `hrt : H.rt0 ∈ c.F` using `c.le (IntermediateField.subset_adjoin _ _ (by simp))`. Establish `hle : ∀ K : IntermediateField ℚ ℂ, c.F ≤ K → S ⊆ K → F ≤ K` using `fun K h₁ h₂ => sup_le h₁ (IntermediateField.adjoin_le_iff.2 h₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨F, inferInstance, fun τ a => hl (c.conj τ a), ?_, ?_⟩, hl, fun τ hτ => ?_, fun τ hτ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Level.M', hA, Nat.lcm_one_right]`. Conclude with `hr _ (.inl rfl)`. Use `IntermediateField.adjoin_le_iff.2 ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | rfl)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hl hrt`. Rewrite using `[hA, show zeta 1 = 1 by simp [zeta]]`. Conclude with `one_mem F`. Conclude with `fixesCurve_of_weber E H L _ hN hL τ (hτ _ (hl hrt)) (hτ _ (hr _ (.inr (.inl rfl)))) fun s hs => hτ _ (hr _ (.inr (.inr ⟨_, (hL _).2 ⟨s, rfl⟩, hs, rfl⟩)))`. Establish `hj` using `weber_fixed H L hL (hcurve τ hτ) _ (.inl rfl)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hle (preimageField τ F) (fun x hx => ?_) ?_` and prove the remaining obligations. Use `show τ x ∈ F`. Rewrite using `[hτ x hx]`. Conclude with `hl hx`. Introduce and unpack `x (rfl | rfl | ⟨z, hz, hz', rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show τ (zeta l₂.M) ∈ F`. Establish `: NeZero l₂.M` using `⟨hN.ne'⟩`. Take `⟨k, -, hk⟩` from `hζ.eq_pow_of_pow_eq_one (ξ := τ (zeta l₂.M)) (by rw [← map_pow, hζ.pow_eq_one, map_one])`. Rewrite using `[← hk]`. Conclude with `pow_mem (hr _ (.inl rfl)) _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `show τ _ ∈ F`. Rewrite using `[hj]`. Conclude with `hr _ (.inr (.inl rfl))`. Use `show τ _ ∈ F`. Take `⟨t, h₁, h₂, h₃⟩` from `hperm τ hj (z / l₂.M) (by rwa [mul_div_cancel₀ _ hN0]) hz'`.
-
-Rewrite using `[h₃]`. Establish `e : l₂.M * t / l₂.M = t` using `mul_div_cancel_left₀ _ hN0`. Conclude with `hr _ (.inr (.inr ⟨_, h₁, by rwa [e], by rw [e]⟩))`. Introduce `A hpA hin`. Establish `hfix : FixesCurve H τ l₂.M` using `hM ▸ GlobalTheory.T.fixesCurve_mul_coprime E H l.M n p A τ hp hpA hpn hco hgood (hcurve τ hτ) hin`.
-
-Set `K : IntermediateField ℚ ℂ` to `((τ : ℂ →+* ℂ).eqLocusField (RingHom.id ℂ)).toIntermediateField fun q => by show τ (algebraMap ℚ ℂ q) = algebraMap ℚ ℂ q`. Simplify using the standard rewrite rules. Use `hle K hτ ?_` and prove the remaining obligations. Introduce and unpack `x (rfl | hx)`. Conclude with `zeta_fixed H (by omega) hfix`.
-
-Conclude with `weber_fixed H L hL hfix x hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff_unramified : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l l₂ : Level H) (c : Coeff l) (n p : ℕ), p.Prime → ¬ p ∣ n → Nat.Coprime l.M n → l₂.M = l.M * n → l₂.A = 1 → l.GoodAt p → CurveOver H c.F l.M → ∃ c' : Coeff l₂, c.F ≤ c'.F ∧ CurveOver H c'.F l₂.M ∧ ∀ τ : ℂ ≃+* ℂ, (∀ x ∈ c.F, τ x = x) → (∀ x ∈ c'.F, τ x ∈ c'.F) ∧ ∀ A : ValuationSubring ℂ, (p : ℂ) ∈ A.nonunits → (∀ x : ℂ, IsAlgebraic ℚ x → x ∈ A → τ x - x ∈ A.nonunits) → ∀ x ∈ c'.F, τ x = x := by
   intro E _ _ _ H l l₂ c n p hp hpn hco hM hA hgood hcurve

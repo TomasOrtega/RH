@@ -9,21 +9,19 @@ open Polynomial
 namespace GlobalTheory.EssFiniteDescent
 
 /- English proof (translation)
-Introduce `K _ c R hcR E hcE hRE hft hloc`. Set `f : R →+* E` to `{ toFun := fun r => ⟨(r : K), hRE r.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Set `M : Submonoid R` to `{ carrier := {s | (s : K) ≠ 0 ∧ (s : K)⁻¹ ∈ E} mul_mem' := by`. Introduce and unpack `a b ⟨ha0, ha⟩ ⟨hb0, hb⟩`. Use `⟨by simpa using mul_ne_zero ha0 hb0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((a * b : R) : K)⁻¹ = (b : K)⁻¹ * (a : K)⁻¹` using `by push_cast; exact mul_inv_rev _ _`. Rewrite using `[this]`. Conclude with `E.mul_mem _ _ hb ha`. Use the proof step `one_mem' := ⟨by simp, by simpa using E.one_mem⟩ }`. Use `letI : Algebra ℂ R := (c.codRestrict R hcR).toAlgebra`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra R E := f.toAlgebra`. Use `letI : Algebra ℂ E := (c.codRestrict E hcE).toAlgebra`. Use `haveI : IsScalarTower ℂ R E := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : Algebra.FiniteType ℂ R := hft`. Use `haveI : IsLocalization M E := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[isLocalization_iff]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, hs0, hs⟩`. Use `isUnit_iff_exists_inv.mpr ⟨⟨_, hs⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(s : K) * (s : K)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ hs0`. Introduce and unpack `⟨e, he⟩`. Take `⟨a, ha, s, hs, hsE, rfl⟩` from `hloc e he`. Distinguish the cases in `hs0 : s = 0`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨(0, 1), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a / s * ((1 : M) : R) = (((0 : R)) : K)`. Simplify using `[hs0]`. Use `⟨(⟨a, ha⟩, ⟨⟨s, hs⟩, by simpa using hs0, hsE⟩), ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a / s * s = a`. Conclude with `div_mul_cancel₀ a hs0`. Introduce `x y hxy`. Use `⟨1, ?_⟩` and prove the remaining obligations.
-
-Establish `: (x : K) = y` using `congrArg (fun z : E => (z : K)) hxy`. Simplify using `[Subtype.ext this]`. Use `haveI : Algebra.EssFiniteType R E := Algebra.EssFiniteType.of_isLocalization E M`. Establish `h : Algebra.EssFiniteType ℂ E` using `Algebra.EssFiniteType.comp ℂ R E`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem essFiniteType_of_eq_div : ∀ (K : Type) [Field K] (c : ℂ →+* K) (R : Subring K) (hcR : ∀ a, c a ∈ R) (E : ValuationSubring K) (hcE : ∀ a, c a ∈ E), R ≤ E.toSubring → (c.codRestrict R hcR).FiniteType → (∀ e ∈ E, ∃ a ∈ R, ∃ s ∈ R, s⁻¹ ∈ E ∧ e = a / s) → (c.codRestrict E hcE).EssFiniteType := by
   intro K _ c R hcR E hcE hRE hft hloc

@@ -22,9 +22,9 @@ variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable (𝒜 : ℕ → σ) [GradedRing 𝒜]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop]`. Establish `h1 : (Proj.basicOpen 𝒜 1).ι ≫ (Proj 𝒜).topIso.inv ≫ ((Proj 𝒜).isoOfEq (Proj.basicOpen_one 𝒜)).inv = 𝟙 _`. Rewrite using `[← cancel_mono (Proj.basicOpen 𝒜 1).ι]`. Simplify using the standard rewrite rules. Establish `h : (Proj.basicOpen 𝒜 1).ι ≫ Proj.toSpecZero 𝒜 = Proj.basicOpenToSpec 𝒜 1 ≫ Spec.map (CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom 𝒜 _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Proj.toSpecZero, reassoc_of% h1]`. Rewrite using `[h, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, ← CommRingCat.comp_apply (Scheme.ΓSpecIso _).inv, ← Scheme.ΓSpecIso_inv_naturality, CommRingCat.comp_apply, Scheme.Hom.appTop, Proj.basicOpenToSpec_app_top]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma ι_appTop_toSpecZero (z : 𝒜 0) :
     (Proj.basicOpen 𝒜 1).ι.appTop ((Proj.toSpecZero 𝒜).appTop ((Scheme.ΓSpecIso _).inv z)) =
@@ -49,11 +49,11 @@ def projValue {U : (Proj 𝒜).Opens} (s : Γ(Proj 𝒜, U)) (x : Proj 𝒜) (hx
   ((show (ProjectiveSpectrum.Proj.structureSheaf 𝒜).1.obj (op U) from s).1 ⟨x, hx⟩).val
 
 /- English proof (translation)
-Establish `hx : x ∈ Proj.basicOpen 𝒜 1` using `by rw [Proj.basicOpen_one]; trivial`. Establish `hx' : x ∈ (Proj.basicOpen 𝒜 1).ι ''ᵁ ⊤` using `by rw [Scheme.Opens.ι_image_top]; exact hx`. Establish `e` using `congrArg (fun s => projValue 𝒜 (U := (Proj.basicOpen 𝒜 1).ι ''ᵁ ⊤) s x hx') (ι_appTop_toSpecZero 𝒜 z)`. Simplify using `only [Scheme.Opens.ι_appTop, Scheme.Opens.topIso_inv] at e`. Establish `e' : projValue 𝒜 ((Proj.toSpecZero 𝒜).appTop ((Scheme.ΓSpecIso _).inv z)) x trivial = projValue 𝒜 (Proj.awayToSection 𝒜 1 (HomogeneousLocalization.fromZeroRingHom 𝒜 _ z)) x hx` using `e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `e'.trans ?_` and prove the remaining obligations. Unfold `projValue`. Use `erw [ProjectiveSpectrum.Proj.awayToSection_apply]`. Express the relevant statement in the definitionally equal form `(IsLocalization.map _ (RingHom.id A) _) (HomogeneousLocalization.mk _).val = _`. Rewrite using `[HomogeneousLocalization.val_mk, Localization.mk_eq_mk', IsLocalization.map_mk', IsLocalization.mk'_eq_iff_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma projValue_toSpecZero (z : 𝒜 0) (x : Proj 𝒜) :
     projValue 𝒜 ((Proj.toSpecZero 𝒜).appTop ((Scheme.ΓSpecIso _).inv z)) x trivial =
@@ -82,7 +82,7 @@ variable {A : Type u} [CommRing A] {n : ℕ}
 attribute [local instance] algebraOfOver
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(toSpecBase A n).appTop ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a) = _`. Rewrite using `[toSpecBase, Scheme.Hom.comp_appTop, ← CommRingCat.comp_apply, ← Category.assoc, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma algebraMap_eq_toSpecZero (a : A) : algebraMap A Γ(projectiveSpace A n, ⊤) a =
     (Proj.toSpecZero (grading A n)).appTop
@@ -93,7 +93,7 @@ lemma algebraMap_eq_toSpecZero (a : A) : algebraMap A Γ(projectiveSpace A n, �
   rfl
 
 /- English proof (translation)
-Rewrite using `[algebraMap_eq_toSpecZero, projValue_toSpecZero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma projValue_algebraMap (a : A) (x : projectiveSpace A n) :
     projValue (grading A n) (algebraMap A Γ(projectiveSpace A n, ⊤) a) x trivial =
@@ -111,13 +111,13 @@ Both sides reduce to the same expression.
     (smulLDeg a ℓ).1 = a • ℓ.1 := rfl
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.C_apply, toLaurent_monomial, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma toLaurent_C (a : A) : toLaurent A n (C a) = AddMonoidAlgebra.single 0 a := by
   rw [MvPolynomial.C_apply, toLaurent_monomial, map_zero]
 
 /- English proof (translation)
-Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises. Use extensionality with `m`. Rewrite using `[AddMonoidAlgebra.coeff_single_zero_mul, AddMonoidAlgebra.coeff_smul_apply, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 lemma single_zero_mul_eq_smul (a : A) (ℓ : Laurent A n) :
     AddMonoidAlgebra.single 0 a * ℓ = a • ℓ := by
@@ -126,7 +126,7 @@ lemma single_zero_mul_eq_smul (a : A) (ℓ : Laurent A n) :
   rw [AddMonoidAlgebra.coeff_single_zero_mul, AddMonoidAlgebra.coeff_smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `h` using `ProjTwist.mk_mem_awayDeg (xprod_mem i) (Nat.succ_pos p) (k := 0) (n := 0) (j := 0) (a := C a) (MvPolynomial.isHomogeneous_C _ a) (by simp)`. Establish `e : ProjTwist.fpow (xprod (A` using `A) i) 0 = 1 := Subtype.ext (pow_zero _)`. Rewrite `h` using `[e, Localization.mk_one_eq_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma algebraMap_C_mem_awayDeg {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (a : A) :
     algebraMap (MvPolynomial (Fin (n + 1)) A) (Localization.Away (xprod (A := A) i)) (C a) ∈
@@ -137,13 +137,13 @@ lemma algebraMap_C_mem_awayDeg {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (a : 
   rwa [e, Localization.mk_one_eq_algebraMap] at h
 
 /- English proof (translation)
-Use `set z := (awayDegEquiv (A := A) i k).symm ℓ with hz`. Establish `hmem : algebraMap (MvPolynomial (Fin (n + 1)) A) (Localization.Away (xprod (A` using `A) i)) (C a) * z.1 ∈ ProjTwist.awayDeg (grading A n) (xprod_mem i) (Nat.succ_pos p) k := by`. Use `ProjTwist.mul_mem_awayDeg (xprod_mem i) (Nat.succ_pos p) (algebraMap_C_mem_awayDeg i a) z.2` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis. Establish `h2 : (awayDegEquiv (A` using `A) i k).symm (smulLDeg a ℓ) = ⟨_, hmem⟩ := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[awayDegEquiv_apply, map_mul, awayToLaurent_algebraMap, smulLDeg_val, toLaurent_C, single_zero_mul_eq_smul]`. Use `congr 1`. Rewrite using `[← awayDegEquiv_apply, hz, AddEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ProjTwist.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[ProjTwist.val_smul, val_theta, val_theta, h2]`. Express the relevant statement in the definitionally equal form `ProjTwist.locMap x.1 _ (_ * _) = _`. Rewrite using `[map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `(ProjTwist.locMap_algebraMap (𝒜 := grading A n) x.1 _ (C a)).trans (projValue_algebraMap a x.1).symm`.
+A detailed English derivation is pending.
 -/
 lemma theta_smulLDeg {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) (a : A)
     (ℓ : LDeg A (Set.range i) k) :
@@ -173,7 +173,7 @@ lemma theta_smulLDeg {p : ℕ} (i : Fin (p + 1) → Fin (n + 1)) (k : ℤ) (a : 
     (projValue_algebraMap a x.1).symm
 
 /- English proof (translation)
-Establish `h : push (cover A n) (smulAbRingHom (twistingSheaf (grading A n) k) (algebraMap A Γ(projectiveSpace A n, ⊤) a)).hom p σ i = theta i k (smulLDeg a ⟨lval σ i, lval_mem σ i⟩)`. Rewrite using `[theta_smulLDeg, theta_lval]`. Both sides reduce to the same expression. Rewrite using `[lval, h, AddEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma lval_push_smul {k : ℤ} {p : ℕ} (a : A) (σ : Cochain (twistAb A n k) (cover A n) p)
     (i : Fin (p + 1) → Fin (n + 1)) :
@@ -205,7 +205,7 @@ def cechHLinearEquivTwist (k : ℤ) (p : ℕ) :
 end Leray
 
 /- English proof (translation)
-The claim follows from `cechHMap_cls (cover A n) _ σ hσ`.
+A detailed English derivation is pending.
 -/
 lemma smul_cls {k : ℤ} {p : ℕ} (a : A) (σ : Cochain (twistAb A n k) (cover A n) p)
     (hσ : d _ _ p σ = 0) :
@@ -227,9 +227,9 @@ instance finite_negMon (m : ℕ) (k : ℤ) : Finite (NegMon m k) := by
   · exact congrArg Subtype.val (congrFun h j)
 
 /- English proof (translation)
-Use `Module.Finite.equiv ((AddEquiv.ofBijective _ (topMap_bijective (A := A) (k := k) (m := m))).toLinearEquiv fun a c => ?_).symm` and prove the remaining obligations. Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Express the relevant statement in the definitionally equal form `topMap (a • cls σ hσ) = a • topMap (cls σ hσ)`. Rewrite using `[smul_cls, topMap_cls, topMap_cls]`. Use extensionality with `e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[topCoeff_apply, Finsupp.smul_apply, topCoeff_apply, lval_push_smul, AddMonoidAlgebra.coeff_smul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_cechH_top (k : ℤ) (m : ℕ) :
     Module.Finite A (cechH (twistAb A (m + 1) k) (cover A (m + 1)) (m + 1)) := by
@@ -257,7 +257,7 @@ lemma zeroL_cls {k : ℤ} (σ : Cochain (twistAb A n k) (cover A n) 0) (hσ : d 
     zeroL k (cls σ hσ) = lval σ fun _ => 0 := rfl
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite using `[smul_cls, zeroL_cls, zeroL_cls, lval_push_smul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 lemma zeroL_smul {k : ℤ} (a : A) (c : cechH (twistAb A n k) (cover A n) 0) :
     zeroL k (a • c) = a • zeroL k c := by
@@ -265,9 +265,9 @@ lemma zeroL_smul {k : ℤ} (a : A) (c : cechH (twistAb A n k) (cover A n) 0) :
   rw [smul_cls, zeroL_cls, zeroL_cls, lval_push_smul]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite `hc` using `[zeroL_cls]`. Establish `: σ = 0` using `cochain_ext fun j => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lval_eq_of_cocycle σ hσ j (fun _ => 0), hc, lval_zero]`. Substitute `this` using the available equality. Conclude with `cls_zero`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma zeroL_injective {k : ℤ} : Function.Injective (zeroL (A := A) (n := n) k) := by
   rw [injective_iff_map_eq_zero]
@@ -280,7 +280,7 @@ lemma zeroL_injective {k : ℤ} : Function.Injective (zeroL (A := A) (n := n) k)
   exact cls_zero
 
 /- English proof (translation)
-Take `⟨σ, hσ, rfl⟩` from `exists_cls c`. Rewrite using `[zeroL_cls, lval_eq_of_cocycle σ hσ (fun _ => 0) (fun _ => j)]`. Use `lval_mem σ (fun _ => j)` as an intermediate fact. Rewrite `this` using `[range_const_fin_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma zeroL_mem {k : ℤ} (c : cechH (twistAb A n k) (cover A n) 0) (j : Fin (n + 1)) :
     zeroL k c ∈ LDeg A {j} k := by
@@ -290,9 +290,9 @@ lemma zeroL_mem {k : ℤ} (c : cechH (twistAb A n k) (cover A n) 0) (j : Fin (n 
   rwa [range_const_fin_one] at this
 
 /- English proof (translation)
-Set `σ : Cochain (twistAb A n k) (cover A n) 0` to `ofL fun i => ⟨ℓ, by rw [range_const_fin_one]; exact hℓ (i 0)⟩`. Establish `hσ : d _ _ 0 σ = 0`. Use `cochain_ext fun i => ?_` and prove the remaining obligations. Rewrite using `[lval_d, lval_zero, Fin.sum_univ_succ, Fin.sum_univ_succ, Fin.sum_univ_zero]`. Simplify using `[σ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨cls σ hσ, by rw [zeroL_cls]; simp [σ]⟩`.
+Supply the required witnesses or components.
 -/
 lemma exists_zeroL_eq {k : ℤ} (ℓ : Laurent A n) (hℓ : ∀ j, ℓ ∈ LDeg A {j} k) :
     ∃ c, zeroL k c = ℓ := by
@@ -305,11 +305,11 @@ lemma exists_zeroL_eq {k : ℤ} (ℓ : Laurent A n) (hℓ : ∀ j, ℓ ∈ LDeg 
   exact ⟨cls σ hσ, by rw [zeroL_cls]; simp [σ]⟩
 
 /- English proof (translation)
-Distinguish the cases in `hn : ∃ j', j' ≠ j`. Take `⟨j', hj'⟩` from `hn`. Establish `hnn : ∀ i, 0 ≤ m i` using `fun i => by`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `(h j').2 i (by simpa [eq_comm] using hj'.symm)`. Conclude with `(h j).2 i (by simpa using hi)`. Establish `hle : m j ≤ ∑ i, m i` using `Finset.single_le_sum (fun i _ => hnn i) (Finset.mem_univ j)`. Rewrite `hle` using `[(h j).1]`. Use `hnn j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> [skip; skip] <;> cases abs_cases k <;> omega`. Use `push Not at hn`. Establish `hs : ∑ i, m i = m j` using `Finset.sum_eq_single j (fun i _ hi => absurd (hn i) hi) (by simp)`. Rewrite `hs` using `[(h j).1]`. Apply the tactic sequence `constructor <;> cases abs_cases k <;> omega`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma allowed_bound {k : ℤ} {m : Fin (n + 1) → ℤ} (h : ∀ j, Allowed {j} k m) (j : Fin (n + 1)) :
     m j ∈ Set.Icc (-|k|) |k| := by
@@ -330,7 +330,7 @@ lemma allowed_bound {k : ℤ} {m : Fin (n + 1) → ℤ} (h : ∀ j, Allowed {j} 
     constructor <;> cases abs_cases k <;> omega
 
 /- English proof (translation)
-The claim follows from `(Set.Finite.pi (t := fun _ : Fin (n + 1) => Set.Icc (-|k|) |k|) fun _ => Set.finite_Icc _ _).subset fun m hm => by simp only [Set.mem_pi, Set.mem_univ, true_implies] exact fun j => allowed_bound hm j`.
+A detailed English derivation is pending.
 -/
 lemma finite_allowed (k : ℤ) : {m : Fin (n + 1) → ℤ | ∀ j, Allowed {j} k m}.Finite :=
   (Set.Finite.pi (t := fun _ : Fin (n + 1) => Set.Icc (-|k|) |k|)
@@ -339,17 +339,15 @@ lemma finite_allowed (k : ℤ) : {m : Fin (n + 1) → ℤ | ∀ j, Allowed {j} k
       exact fun j => allowed_bound hm j
 
 /- English proof (translation)
-Set `ζ : cechH (twistAb A n k) (cover A n) 0 →ₗ[A] Laurent A n` to `{ zeroL k with map_smul' := zeroL_smul }`. Establish `hζ : Function.Injective ζ` using `zeroL_injective`. Set `T : Set (Laurent A n)` to `(fun m => AddMonoidAlgebra.single m (1 : A)) '' {m | ∀ j, Allowed {j} k m}`. Establish `hrange : LinearMap.range ζ = Submodule.span A T`. Apply `le_antisymm` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨c, rfl⟩`. Establish `hmem` using `zeroL_mem (A := A) c`. Use `set ℓ := zeroL k c`. Establish `hℓ : ℓ = ∑ m ∈ ℓ.coeff.support, ℓ.coeff m • AddMonoidAlgebra.single m (1 : A)`. Apply `AddMonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Rewrite using `[coeff_sum']`. Simplify using `only [AddMonoidAlgebra.coeff_smul_apply, AddMonoidAlgebra.coeff_single, Finsupp.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Both sides reduce to the same expression. Conclude with `Finsupp.notMem_support_iff.mp hm`. Express the relevant statement in the definitionally equal form `ℓ ∈ _`. Rewrite using `[hℓ]`. Use `Submodule.sum_mem _ fun m hm => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨m, fun j => hmem j m (Finsupp.mem_support_iff.mp hm), rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Take `⟨c, hc⟩` from `exists_zeroL_eq (A := A) (k := k) _ fun j => single_mem_LDeg (hm j) 1`. Conclude with `⟨c, hc⟩`.
-
-Establish `: Module.Finite A (LinearMap.range ζ)`. Rewrite using `[Module.Finite.iff_fg, hrange]`. Conclude with `Submodule.fg_span ((finite_allowed k).image _)`. Conclude with `Module.Finite.equiv (LinearEquiv.ofInjective ζ hζ).symm`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_cechH_zero (k : ℤ) : Module.Finite A (cechH (twistAb A n k) (cover A n) 0) := by
   let ζ : cechH (twistAb A n k) (cover A n) 0 →ₗ[A] Laurent A n :=
@@ -386,9 +384,9 @@ theorem finite_cechH_zero (k : ℤ) : Module.Finite A (cechH (twistAb A n k) (co
   exact Module.Finite.equiv (LinearEquiv.ofInjective ζ hζ).symm
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos p with rfl | hp` into its components or cases. Conclude with `finite_cechH_zero k`. Break down `lt_trichotomy p n with h | rfl | h` into its components or cases. Use `subsingleton_cechH_of_lt (A := A) (k := k) hp h infer_instance` as an intermediate fact. Take `⟨m, rfl⟩ : ∃ m, p = m + 1` from `⟨p - 1, by omega⟩`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `finite_cechH_top k m`. Use `subsingleton_cechH_of_gt (A := A) (k := k) h infer_instance` as an intermediate fact.
+A detailed English derivation is pending.
 -/
 theorem finite_cechH (k : ℤ) (p : ℕ) : Module.Finite A (cechH (twistAb A n k) (cover A n) p) := by
   rcases Nat.eq_zero_or_pos p with rfl | hp
@@ -411,7 +409,7 @@ variable {A : Type u} [CommRing A] {n : ℕ}
 attribute [local instance] algebraOfOver
 
 /- English proof (translation)
-The claim follows from `have := finite_cechH (A := A) (n := n) k p Module.Finite.equiv (cechHLinearEquivTwist k p)`.
+A detailed English derivation is pending.
 -/
 theorem finite_H_twistingSheaf (k : ℤ) (p : ℕ) :
     Module.Finite A (Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) p) :=
@@ -419,9 +417,9 @@ theorem finite_H_twistingSheaf (k : ℤ) (p : ℕ) :
   Module.Finite.equiv (cechHLinearEquivTwist k p)
 
 /- English proof (translation)
-Break down `eq_or_ne p n with rfl | hpn` into its components or cases. Take `⟨e⟩` from `nonempty_HTop_equiv.{w'} (A := A) k hp`. Establish `: IsEmpty (NegMon p k)` using `⟨fun m => by`. Establish `hlt : ∑ j, m.1 j < 0` using `Finset.sum_neg (fun j _ => m.2.1 j) Finset.univ_nonempty`. Rewrite `hlt` using `[m.2.2]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `omega⟩`. Conclude with `e.toEquiv.subsingleton`. Conclude with `subsingleton_H.{w'} k hp hpn`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H_twistingSheaf {k : ℤ} (hk : 0 ≤ k) {p : ℕ} (hp : 0 < p) :
     Subsingleton (Sheaf.H.{w'} (modulesAb (twistingSheaf (grading A n) k)) p) := by
@@ -436,7 +434,7 @@ theorem subsingleton_H_twistingSheaf {k : ℤ} (hk : 0 ≤ k) {p : ℕ} (hp : 0 
   · exact subsingleton_H.{w'} k hp hpn
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (cechH (modulesAb G).obj (stdOpen A n) p ≃+ Sheaf.H.{w'} (modulesAb G) p)` from `SchemeCoh.nonempty_cechH_equiv_H G (stdOpen A n) iSup_stdOpen (fun _ i => by rw [← inter_eq_iInf]; exact isAffineOpen_inter i) p`. Establish `: Subsingleton (cechH (modulesAb G).obj (stdOpen A n) p)` using `cechH_subsingleton _ _ (by rw [Nat.card_eq_fintype_card, Fintype.card_fin]; omega)`. Conclude with `e.symm.toEquiv.subsingleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem subsingleton_H_of_lt (G : (projectiveSpace A n).Modules) [G.IsQuasicoherent] {p : ℕ}
     (hp : n < p) : Subsingleton (Sheaf.H.{w'} (modulesAb G) p) := by

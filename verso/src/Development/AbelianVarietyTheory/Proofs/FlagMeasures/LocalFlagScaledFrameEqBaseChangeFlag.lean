@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FlagBaseChange
 
 /- English proof (translation)
-Break down `A with ⟨f, es, T0, h1, h2, h3, h4, h5⟩` into its components or cases. Simplify using `only at hA`. Substitute `hA` using the available equality. Establish `hb` using `h4 b b`. Simplify using `only at hb`.
+Separate the alternatives or extract the components of the hypothesis. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Rewrite `hb` using `[if_pos rfl, (locH Z p).h_smul_left]`. Conclude with `⟨⟨_, _, hb, (mul_comm _ _).trans hb⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isUnit_frFac {D : D7} {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Z : LocDat D) (p : PlF D)
     (A : LocNG.FrameD (locH Z p) D.R.rS) (hA : A.f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a))
@@ -29,21 +29,19 @@ theorem isUnit_frFac {D : D7} {T : D.host.E} (G : LFlag (VS D) D.R.rS T) (Z : Lo
   exact ⟨⟨_, _, hb, (mul_comm _ _).trans hb⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `D T G Z A hA p j`. Unfold `LocNG.FrameD.Fj LocNG.FrameD.e FlagG.Xa`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite `hx` using `[SetLike.mem_coe]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨i, hi, rfl⟩` from `hy`. Take `⟨u, hu⟩` from `GlobalTheory.FlagBaseChange.isUnit_frFac G Z p (A p) (hA p) i`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (A p).f i.castSucc ∈ Submodule.span (D.s.atP p).Ep ((fun a : Fin D.R.rS => (A p).f a.castSucc) '' {a : Fin D.R.rS | (a : ℕ) < j})` using `Submodule.subset_span ⟨i, hi, rfl⟩`. Establish `hf : (A p).f i.castSucc = frFac Z.δ p i.castSucc • baseChange₂ D p (G.fl.e i)`. Rewrite using `[hA p]`. Simplify using `only`. Rewrite using `[Formalism.L2.SG.Pf.frame_castSucc_sat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hmem` using `[hf, ← hu]`. Establish `hv` using `Submodule.smul_mem _ (↑u⁻¹ : (D.s.atP p).Ep) hmem`. Rewrite `hv` using `[smul_smul, Units.inv_mul, one_smul]`. Conclude with `hv`. Consider the case `zero`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul a x _ hx`. Rewrite using `[baseChange_smul₂]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only`. Rewrite using `[hA p]`. Simplify using `only`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Apply `Submodule.subset_span` to reduce the goal to its premises.
-
-Use `⟨G.fl.e i, Submodule.subset_span ⟨i, hi, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.frame_castSucc_sat]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_bcP_Xa_eq_Fj : ∀ (D : D7) (T : D.host.E) (G : LFlag (VS D) D.R.rS T) (Z : LocDat D) (A : ∀ p : PlF D, LocNG.FrameD (locH Z p) D.R.rS), (∀ p, (A p).f = fun a => frFac Z.δ p a • baseChange₂ D p (frame G a)) → ∀ (p : PlF D) (j : ℕ), Submodule.span (D.s.atP p).Ep (baseChange₂ D p '' (G.fl.Xa j : Set (VS D).V)) = (A p).Fj j := by
   intro D T G Z A hA p j

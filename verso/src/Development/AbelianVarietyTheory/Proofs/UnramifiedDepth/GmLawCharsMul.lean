@@ -18,7 +18,7 @@ namespace GlobalTheory.ChF
 open MvPowerSeries
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (fun p => h p.1 p.2)`.
+A detailed English derivation is pending.
 -/
 private lemma gm_hs {R : Type} [CommRing R] {m n d : ℕ} (a : Fin m → Pt R n d)
     (h : ∀ j i, constantCoeff (a j i) = 0) :
@@ -26,9 +26,9 @@ private lemma gm_hs {R : Type} [CommRing R] {m n d : ℕ} (a : Fin m → Pt R n 
   hasSubst_of_constantCoeff_zero (fun p => h p.1 p.2)
 
 /- English proof (translation)
-Establish `h` using `gm_hs (m := 2) ![a, b] (by`. Introduce `j i`. Use `fin_cases j`. Conclude with `ha i`. Conclude with `hb i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `ev gmF`. Rewrite using `[subst_add h, subst_add h, subst_mul h, subst_X h, subst_X h]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private lemma ev_gm {R : Type} [CommRing R] {n r : ℕ} (a b : Pt R n r)
     (ha : ∀ i, constantCoeff (a i) = 0) (hb : ∀ i, constantCoeff (b i) = 0) (i : Fin r) :
@@ -43,9 +43,9 @@ private lemma ev_gm {R : Type} [CommRing R] {n r : ℕ} (a b : Pt R n r)
   rfl
 
 /- English proof (translation)
-Establish `h` using `gm_hs (m := 1) ![a] (by`. Introduce `j i`. Use `fin_cases j`. Conclude with `ha i)`. Establish `h1` using `ev_one ![a]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ev at h1 ⊢`. Rewrite using `[subst_add h, h1, subst_X h]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private lemma ev_ch {R : Type} [CommRing R] {n r : ℕ} (a : Pt R n r)
     (ha : ∀ i, constantCoeff (a i) = 0) (i : Fin r) :
@@ -60,14 +60,14 @@ private lemma ev_ch {R : Type} [CommRing R] {n r : ℕ} (a : Pt R n r)
   rfl
 
 /- English proof (translation)
-Simplify using `[gmF]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma gm_const {R : Type} [CommRing R] {r : ℕ} (i : Fin r) :
     constantCoeff (gmF R r i) = 0 := by
   simp [gmF]
 
 /- English proof (translation)
-Simplify using `[pt]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pt_const {R : Type} [CommRing R] {n r : ℕ} (j : Fin n) (i : Fin r) :
     constantCoeff (pt R r j i) = 0 := by
@@ -93,9 +93,9 @@ private def gmLaw (R : Type) [CommRing R] (r : ℕ) : FGLaw R r where
     ring
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => intro i`. Simplify using `[mulF]`. Consider the case `succ N ih`. Introduce `i`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [mulF, addOf]`. Rewrite using `[ev_gm _ _ (by intro l; rw [ih]; simp) (pt_const _), ih]`. Simplify using `only [pt]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mulF_gm (R : Type) [CommRing R] (r : ℕ) (N : ℕ) :
     ∀ i : Fin r, mulF (gmF R r) N i = (1 + X ((0 : Fin 1), i)) ^ N - 1 := by
@@ -109,11 +109,11 @@ private lemma mulF_gm (R : Type) [CommRing R] (r : ℕ) (N : ℕ) :
     ring
 
 /- English proof (translation)
-Introduce `R _ r`. Use `⟨⟨gmLaw R r, rfl⟩, fun i => ⟨⟨by simp, ?_⟩, ?_⟩, mulF_gm R r⟩` and prove the remaining obligations. Establish `hA : addOf (gmF R r) (pt R (n` using `2) r 0) (pt R (n := 2) r 1) = gmF R r := by`. Use function extensionality and compare the values at `l`. Unfold `addOf`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Rewrite using `[ev_gm _ _ (pt_const _) (pt_const _)]`. Both sides reduce to the same expression. Rewrite using `[hA, ev_ch _ gm_const, ev_ch _ (pt_const _), ev_ch _ (pt_const _)]`. Simplify using `only [pt, gmF]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [dl, map_add, coeff_one, coeff_X, Finsupp.single_eq_zero, one_ne_zero, if_false, zero_add, Finsupp.single_left_inj (one_ne_zero : (1 : ℕ) ≠ 0), Prod.mk.injEq, true_and, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem gmLaw_chars_mul : ∀ (R : Type) [CommRing R] (r : ℕ), (∃ Gl : FGLaw R r, Gl.F = gmF R r) ∧ (∀ i : Fin r, IsCh (gmF R r) (1 + MvPowerSeries.X ((0 : Fin 1), i)) ∧ dl (1 + MvPowerSeries.X ((0 : Fin 1), i) : PS R 1 r) = Pi.single i 1) ∧ ∀ (N : ℕ) (i : Fin r), mulF (gmF R r) N i = (1 + MvPowerSeries.X ((0 : Fin 1), i)) ^ N - 1 := by
   intro R _ r

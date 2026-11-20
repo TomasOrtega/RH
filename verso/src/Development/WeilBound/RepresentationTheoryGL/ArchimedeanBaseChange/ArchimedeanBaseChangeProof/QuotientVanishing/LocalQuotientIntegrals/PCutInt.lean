@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.BcB.CV.AdelicTopology
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [twConj, map_mul]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twConj_mul_eq {G : Type} [Group G] (θ : Monoid.End G) (a b δ : G) :
     twConj θ (a * b) δ = twConj θ b (twConj θ a δ) := by
@@ -18,16 +18,16 @@ theorem twConj_mul_eq {G : Type} [Group G] (θ : Monoid.End G) (a b δ : G) :
   group
 
 /- English proof (translation)
-Simplify using `only [twConj, GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, map_mul, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twConj_ratGL (g d : GL (Fin n) E) :
     twConj (thetaA E n) (ratGL E n g) (ratGL E n d) = ratGL E n (twConj (thetaE E n) g d) := by
   simp only [twConj, GlobalTheory.CompanionTheory.RatDisc.thetaA_ratGL, map_mul, map_inv]
 
 /- English proof (translation)
-Establish `h` using `((hM E n τ).2.1 c x)`. Distinguish the cases in `hx : x ∈ cutSet E n τ`. Unfold `chiT`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (h.2 hx)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `chiT`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt h.1 hx)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chiT_ratGL_mul (hM : Mahler) (τ : ℝ) (c : GL (Fin n) E) (x : GA E n) :
     chiT τ (ratGL E n c * x) = chiT τ x := by
@@ -40,7 +40,7 @@ theorem chiT_ratGL_mul (hM : Mahler) (τ : ℝ) (c : GL (Fin n) E) (x : GA E n) 
     rw [Set.indicator_of_notMem hx, Set.indicator_of_notMem (mt h.1 hx)]
 
 /- English proof (translation)
-Unfold `chiT`. Distinguish the cases in `hx : x ∈ cutSet E n τ`. Rewrite using `[Set.indicator_of_mem hx]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hx]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -54,29 +54,27 @@ end PositivityTheory.Rg.BcB.CV.AdelicTopology
 
 open PositivityTheory.Rg.BcB.CV.AdelicTopology in
 /- English proof (translation)
-Introduce `hK hM hQ hA E _ _ _ n _ _ μ _ τ φ d hφ`. Take `⟨hLC, hT2, hSC, hθ, -, hrat⟩` from `hA E n`. Take `⟨hcl, hinv, C, hC, hsub⟩` from `hM E n τ`. Take `⟨hRc, hRd, -⟩` from `hrat d`. Establish `hcont : Continuous fun x : GA E n => twConj (thetaA E n) x (ratGL E n d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `twConj`. Conclude with `(continuous_inv.mul continuous_const).mul hθ`. Establish `hmeas : Measurable fun x => chiT τ x * φ (twConj (thetaA E n) x (ratGL E n d))`. Use `Measurable.mul ?_ (hφ.cont.comp hcont).measurable` and prove the remaining obligations. Conclude with `(measurable_one.indicator hcl.measurableSet : Measurable ((cutSet E n τ).indicator (1 : GA E n → ℂ)))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hinvF : ∀ g ∈ ratCent d, ∀ x, chiT τ (g * x) * φ (twConj (thetaA E n) (g * x) (ratGL E n d)) = chiT τ x * φ (twConj (thetaA E n) x (ratGL E n d))`. Introduce and unpack `_ ⟨c, hc, rfl⟩ x`. Rewrite using `[chiT_ratGL_mul hM τ c x, twConj_mul_left _ _ (GlobalTheory.CompanionTheory.RatDisc.ratCent_le d ⟨c, hc, rfl⟩) x]`. Use `⟨hmeas, hinvF, ?_⟩` and prove the remaining obligations. Use `set S := {d' : GL (Fin n) E | ∃ x ∈ C, φ (twConj (thetaA E n) x (ratGL E n d')) ≠ 0} with hSdef`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : S.Finite` using `hK E n φ hφ C hC`. Set `pick : GL (Fin n) E → GL (Fin n) E` to `fun d' => if h : ∃ g, twConj (thetaE E n) g d = d' then h.choose else 1`. Use `set C' : Set (GA E n) := ⋃ d' ∈ S, (fun c => ratGL E n (pick d') * c) '' C with hC'def`. Establish `hC' : IsCompact C'` using `hS.isCompact_biUnion fun d' _ => hC.image (continuous_const.mul continuous_id)`. Establish `hsupp : ∀ x, chiT τ x * φ (twConj (thetaA E n) x (ratGL E n d)) ≠ 0 → x ∈ (ratCent d : Set (GA E n)) * C'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Establish `hxc : x ∈ cutSet E n τ`. Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises. Simplify using `only [chiT, Set.indicator_of_notMem h, zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hφx : φ (twConj (thetaA E n) x (ratGL E n d)) ≠ 0` using `fun h => hx (by rw [h, mul_zero])`. Take `⟨γ, ⟨g, rfl⟩, c, hcC, hγc⟩` from `hsub hxc`. Substitute `hγc` using the available equality. Establish `hd' : twConj (thetaE E n) g d ∈ S`. Use `⟨c, hcC, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hφx` using `[twConj_mul_eq, twConj_ratGL]`. Then use the resulting hypothesis. Establish `hex : ∃ g', twConj (thetaE E n) g' d = twConj (thetaE E n) g d` using `⟨g, rfl⟩`. Establish `hpick : pick (twConj (thetaE E n) g d) = hex.choose` using `dif_pos hex`. Use `set g₀ := hex.choose with hg₀`. Establish `hg₀d : twConj (thetaE E n) g₀ d = twConj (thetaE E n) g d` using `hex.choose_spec`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcent : g * g₀⁻¹ ∈ twCent (thetaE E n) d`. Express the relevant statement in the definitionally equal form `twConj (thetaE E n) (g * g₀⁻¹) d = d`. Rewrite using `[twConj_mul_eq, ← hg₀d, ← twConj_mul_eq, mul_inv_cancel]`. Simplify using `[twConj]`. Use `⟨ratGL E n (g * g₀⁻¹), ⟨g * g₀⁻¹, hcent, rfl⟩, ratGL E n g₀ * c, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Set.mem_biUnion hd' ⟨c, hcC, ?_⟩` and prove the remaining obligations. Simplify using `only [hpick]`. Rewrite using `[map_mul, map_inv] group`. Take `⟨B, hB⟩` from `hφ.cont.bounded_above_of_compact_support hφ.supp`. Establish `hbound : ∀ x ∈ C', ‖chiT τ x * φ (twConj (thetaA E n) x (ratGL E n d))‖ ≤ max B 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `hLC` as an intermediate fact. Use `hT2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hSC` as an intermediate fact. Use `hRd` as an intermediate fact. Establish `: IsFiniteMeasureOnCompacts (Measure.count : Measure (ratCent d))` using `⟨fun K hK => Measure.count_apply_lt_top.2 hK.finite_of_discrete⟩`. Establish `: (Measure.count : Measure (ratCent d)).IsOpenPosMeasure` using `⟨fun U _ hne h => hne.ne_empty (Measure.count_eq_zero_iff.1 h)⟩`. Establish `: (Measure.count : Measure (ratCent d)).IsHaarMeasure` using `{}`.
-
-Take `⟨A, -, hQA⟩` from `hQ (GA E n) μ (ratCent d) Measure.count C' hRc hC'`. Conclude with `(hQA _ (max B 0) (le_max_right _ _) hmeas hinvF hsupp hbound).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Rg.BcB.CV.pf_CutInt : PositivityTheory.Rg.BcB.D4.KerFin → PositivityTheory.Rg.BcB.Mahler → PositivityTheory.Rg.BcB.CV.QInt → PositivityTheory.Rg.BcB.CV.AdTop → PositivityTheory.Rg.BcB.CV.CutInt := by
   classical

@@ -27,7 +27,7 @@ namespace GlobalTheory.CoefModel
 variable {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨B, hB, e⟩` from `ps_factor hG`. Establish `hB' : IsUnit (Bᴴ).det` using `by rw [Matrix.det_conjTranspose]; exact hB.star`. Use `⟨(Matrix.nonsingInvUnit _ hB')⁻¹, ?_⟩` and prove the remaining obligations. Use `show ((Bᴴ)⁻¹)ᴴ * G * (Bᴴ)⁻¹ = 1`. Rewrite using `[Matrix.conjTranspose_nonsing_inv, Matrix.conjTranspose_conjTranspose, e, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hB, Matrix.one_mul, Matrix.mul_nonsing_inv _ hB']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_onb {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef) :
     ∃ B : GL (Fin n) ℂ, (B : Matrix (Fin n) (Fin n) ℂ)ᴴ * G * B = 1 := by
@@ -39,13 +39,13 @@ theorem exists_onb {G : Matrix (Fin n) (Fin n) ℂ} (hG : G.PosDef) :
     Matrix.nonsing_inv_mul _ hB, Matrix.one_mul, Matrix.mul_nonsing_inv _ hB']
 
 /- English proof (translation)
-Establish `hinv : ∀ x, ρ B (ρ B⁻¹ x) = x` using `fun x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`. Establish `h` using `hS (U.comap (ρ B)) fun g hg x hx => by`. Establish `h1` using `hU _ (hT g hg) _ hx`. Rewrite `h1` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right, map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`. Break down `h with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: ρ B⁻¹ x ∈ U.comap (ρ B)` using `by rw [Submodule.mem_comap, hinv]; exact hx`. Rewrite `this` using `[h, Submodule.mem_bot]`. Rewrite using `[← hinv x, this, map_zero]`. Conclude with `zero_mem _`. Use `right`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `: ρ B⁻¹ x ∈ U.comap (ρ B)` using `by rw [h]; trivial`. Rewrite `this` using `[Submodule.mem_comap, hinv]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem eq_bot_or_top_of_conj {Γ W : Type} [Group Γ] [AddCommGroup W] [Module ℂ W] (ρ : Γ →* Module.End ℂ W)
     (S T : Γ → Prop) (B : Γ) (hS : ∀ U : Submodule ℂ W, (∀ g, S g → ∀ x ∈ U, ρ g x ∈ U) → U = ⊥ ∨ U = ⊤)
@@ -72,9 +72,9 @@ theorem eq_bot_or_top_of_conj {Γ W : Type} [Group Γ] [AddCommGroup W] [Module 
     rwa [Submodule.mem_comap, hinv] at this
 
 /- English proof (translation)
-Establish `e : G = ((B⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᴴ * (B⁻¹ : GL (Fin n) ℂ)`. Use `congrArg (fun M => ((B⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᴴ * M * (B⁻¹ : GL (Fin n) ℂ)) hB` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one] at this`. Rewrite `this` using `[← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, Units.mul_inv, Matrix.conjTranspose_one, Matrix.one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : (u : Matrix (Fin n) (Fin n) ℂ)ᴴ * u = 1` using `hu.1`. Simplify using `only [Units.val_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = G := by rw [hB, Matrix.mul_one, hu', Matrix.mul_one, ← e]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_unitary {G : Matrix (Fin n) (Fin n) ℂ} {B u : GL (Fin n) ℂ}
     (hB : (B : Matrix (Fin n) (Fin n) ℂ)ᴴ * G * B = 1)
@@ -94,7 +94,7 @@ theorem conj_unitary {G : Matrix (Fin n) (Fin n) ℂ} {B u : GL (Fin n) ℂ}
     _ = G := by rw [hB, Matrix.mul_one, hu', Matrix.mul_one, ← e]
 
 /- English proof (translation)
-Use `choose B hB using fun τ => exists_onb (hG τ)`. Conclude with `eq_bot_or_top_of_conj (rhoK lam) _ _ B (GlobalTheory.CoefIrred.vv_irreducible_unitary ι n lam) (fun g hg τ => conj_unitary (hB τ) (hg τ)) U hU`.
+A detailed English derivation is pending.
 -/
 theorem eq_bot_or_top (lam : ι → DomWeight n) {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, (G τ).PosDef)
     (U : Submodule ℂ (VV ℂ lam))
@@ -119,14 +119,14 @@ Both sides reduce to the same expression.
 theorem mapVV_coe (x : VV K lam) : (mapVV φ lam x : Pol ℂ ι n) = map φ x.1 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (GlobalTheory.ValCmp.use₂ φ lam g x.1)`.
+A detailed English derivation is pending.
 -/
 theorem mapVV_rhoK (g : ι → GL (Fin n) K) (x : VV K lam) :
     mapVV φ lam (rhoK lam g x) = rhoK lam (fun τ => Formalism.UG.bc φ (g τ)) (mapVV φ lam x) :=
   Subtype.ext (GlobalTheory.ValCmp.use₂ φ lam g x.1)
 
 /- English proof (translation)
-Use `LinearIndependent.of_comp (VV ℂ lam).subtype ?_` and prove the remaining obligations. Use `Formalism.L2.Col.linearIndependent_map φ (bVVfun K lam) (bVVfun_spec K lam).1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[mapVV_coe, bVV_coe]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem linearIndependent_mapVV : LinearIndependent ℂ fun i => mapVV φ lam (bVV K lam i) := by
   refine LinearIndependent.of_comp (VV ℂ lam).subtype ?_
@@ -135,7 +135,7 @@ theorem linearIndependent_mapVV : LinearIndependent ℂ fun i => mapVV φ lam (b
   simp [mapVV_coe, bVV_coe]
 
 /- English proof (translation)
-The claim follows from `haveI : FiniteDimensional ℂ (VV ℂ lam) := Module.Finite.of_basis (bVV ℂ lam) (linearIndependent_mapVV φ lam).span_eq_top_of_card_eq_finrank' (Module.finrank_eq_card_basis (bVV ℂ lam)).symm`.
+A detailed English derivation is pending.
 -/
 theorem span_mapVV : Submodule.span ℂ (Set.range fun i => mapVV φ lam (bVV K lam i)) = ⊤ :=
   haveI : FiniteDimensional ℂ (VV ℂ lam) := Module.Finite.of_basis (bVV ℂ lam)
@@ -145,7 +145,7 @@ variable [StarRing K] (hφ : ∀ x, φ (star x) = starRingEnd ℂ (φ x))
 include hφ
 
 /- English proof (translation)
-Rewrite using `[fockS_eq_sum _ _ f.support (support_map_subset _ _), fockS, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `[coeff_map, hφ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fockS_map {σ : Type} (f g : MvPolynomial σ K) : fockS (map φ f) (map φ g) = φ (fockS f g) := by
   rw [fockS_eq_sum _ _ f.support (support_map_subset _ _), fockS, map_sum]
@@ -153,13 +153,13 @@ theorem fockS_map {σ : Type} (f g : MvPolynomial σ K) : fockS (map φ f) (map 
   simp [coeff_map, hφ]
 
 /- English proof (translation)
-Establish `h1 : (map φ).comp (Formalism.GradedWeylDivisibility.blockAct K (n` using `n) fun τ => (G τ)ᵀ).toRingHom = (Formalism.GradedWeylDivisibility.blockAct ℂ (n := n) fun τ => ((G τ).map φ)ᵀ).toRingHom.comp (map φ) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[blockAct_X]`. Establish `h2 : map φ (Formalism.GradedWeylDivisibility.blockAct K (fun τ => (G τ)ᵀ) y.1) = Formalism.GradedWeylDivisibility.blockAct ℂ (fun τ => ((G τ).map φ)ᵀ) (map φ y.1)` using `congrArg (fun ψ : Pol K ι n →+* Pol ℂ ι n => ψ y.1) h1`. Establish `h3 : φ (gramTw lam G) = gramTw lam fun τ => (G τ).map φ`. Unfold `gramTw`. Rewrite using `[map_prod]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression. Establish `h4 : φ (extNorm K lam) = extNorm ℂ lam`. Unfold `extNorm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← fockS_map φ hφ, map_extremal]`. Rewrite using `[pairK_apply, pairK_apply, pairP_apply, pairP_apply, mapVV_coe, mapVV_coe, ← h2, fockL_apply, fockL_apply, fockS_map φ hφ, map_mul, map_div₀, h3, h4]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pairK_mapVV (G : ι → Matrix (Fin n) (Fin n) K) (x y : VV K lam) :
     pairK lam (fun τ => (G τ).map φ) (mapVV φ lam x) (mapVV φ lam y) = φ (pairK lam G x y) := by
@@ -190,11 +190,11 @@ theorem pairK_mapVV (G : ι → Matrix (Fin n) (Fin n) K) (x y : VV K lam) :
 end BaseChange
 
 /- English proof (translation)
-Establish `h` using `pairingPositive_holds ℂ ι n lam G (RingHom.id ℂ) (fun τ => hG τ)`. Establish `h1` using `h.dotProduct_mulVec_pos (x := fun i => (bVV ℂ lam).repr x i) (fun h0 => hx ((bVV ℂ lam).repr.map_eq_zero_iff.1 (Finsupp.ext fun i => congrFun h0 i)))`. Establish `h2 : ∀ (P : VV ℂ lam →ₗ⋆[ℂ] VV ℂ lam →ₗ[ℂ] ℂ) (c : VVIdx lam → ℂ) (b : VVIdx lam → VV ℂ lam), P (∑ i, c i • b i) (∑ i, c i • b i) = star c ⬝ᵥ (Matrix.of fun i j => P (b i) (b j)) *ᵥ c`. Introduce `P c b`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Pi.star_apply, starRingEnd_apply, RingHom.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `h2 (pairK lam G) (fun i => (bVV ℂ lam).repr x i) (bVV ℂ lam)`. Rewrite `h3` using `[(bVV ℂ lam).sum_repr x]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairK_pos (lam : ι → DomWeight n) {G : ι → Matrix (Fin n) (Fin n) ℂ} (hG : ∀ τ, (G τ).PosDef)
     (x : VV ℂ lam) (hx : x ≠ 0) : 0 < pairK lam G x x := by
@@ -252,7 +252,7 @@ Both sides reduce to the same expression.
 theorem inner_toHilb (x y : VV ℂ lam) : inner ℂ (toHilb lam hG x) (toHilb lam hG y) = pairK lam G x y := rfl
 
 /- English proof (translation)
-Use `⟨⟨toHilb lam hG ⟨ten fun τ => extremal ℂ n (lam τ), GlobalTheory.Proof.TensorMapDescent.ten_mem lam _ fun τ => Formalism.GradedWeylDivisibility.hwMem ℂ n n le_rfl _ (natW_antitone (lam τ))⟩, 0, fun h => ?_⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.Proof.TensorMapDescent.ten_ne_zero _ (fun τ => Formalism.GradedWeylDivisibility.hwNe ℂ n n le_rfl _) (congrArg Subtype.val ((toHilb lam hG).map_eq_zero_iff.1 h))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nontrivial_Hilb : Nontrivial (Hilb lam hG) := by
   refine ⟨⟨toHilb lam hG ⟨ten fun τ => extremal ℂ n (lam τ), GlobalTheory.Proof.TensorMapDescent.ten_mem lam _ fun τ =>
@@ -264,7 +264,7 @@ def rhoH : (ι → GL (Fin n) ℂ) →* Module.End ℂ (Hilb lam hG) :=
   ((toHilb lam hG).conjRingEquiv : Module.End ℂ (VV ℂ lam) →* Module.End ℂ (Hilb lam hG)).comp (rhoK lam)
 
 /- English proof (translation)
-Simplify using `[rhoH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rhoH_toHilb (g : ι → GL (Fin n) ℂ) (x : VV ℂ lam) :
     rhoH lam hG g (toHilb lam hG x) = toHilb lam hG (rhoK lam g x) := by
@@ -272,11 +272,11 @@ theorem rhoH_toHilb (g : ι → GL (Fin n) ℂ) (x : VV ℂ lam) :
 
 omit [Fintype ι] in
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on with`. Consider the case `C a => intro m`. Simplify using `only [algHom_C]`. Conclude with `continuous_const`. Consider the case `add p q hp hq => intro m`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, coeff_add]`. Conclude with `(hp m).add (hq m)`. Consider the case `mul_X p v hp`. Introduce `m`. Simplify using `only [map_mul, coeff_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_finsetSum _ fun a _ => (hp _).mul ?_` and prove the remaining obligations. Simplify using `only [Formalism.GradedWeylDivisibility.blockAct, aeval_X, coeff_sum, coeff_C_mul]`. Conclude with `continuous_finsetSum _ fun b _ => ((hM _).matrix_elem _ _).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coeff_blockAct {X : Type} [TopologicalSpace X] (M : X → ι → Matrix (Fin n) (Fin n) ℂ)
     (hM : ∀ τ, Continuous fun x => M x τ) (F : MvPolynomial (ι × Fin n × Fin n) ℂ) :
@@ -293,11 +293,11 @@ theorem continuous_coeff_blockAct {X : Type} [TopologicalSpace X] (M : X → ι 
     exact continuous_finsetSum _ fun b _ => ((hM _).matrix_elem _ _).mul continuous_const
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `(toHilb lam hG).surjective v`. Set `L : Hilb lam hG →ₗ[ℂ] ((ι × Fin n × Fin n →₀ ℕ) → ℂ)` to `LinearMap.pi fun m => lcoeff ℂ m ∘ₗ (VV ℂ lam).subtype ∘ₗ (toHilb lam hG).symm.toLinearMap`. Establish `hL : ∀ y m, L (toHilb lam hG y) m = coeff m (y : Pol ℂ ι n)` using `fun _ _ => rfl`. Establish `hk : LinearMap.ker L = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨y, rfl⟩` from `(toHilb lam hG).surjective y`. Establish `: y = 0` using `Subtype.ext (MvPolynomial.ext _ _ fun m => (hL y m).symm.trans (congrFun hy m))`. Rewrite using `[this, map_zero]`. Rewrite using `[(LinearMap.isClosedEmbedding_of_injective hk).isInducing.continuous_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_pi fun m => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, rhoH_toHilb, hL, rhoK_coe, actP, LinearMap.smul_apply, coeff_smul, smul_eq_mul, detTw_eq, AlgHom.toLinearMap_apply, trAct]`. Use `Continuous.mul (continuous_finsetProd _ fun τ _ => (hA τ).matrix_det.zpow₀ _ fun x => Or.inl ?_) (continuous_coeff_blockAct _ (fun τ => (hA τ).matrix_transpose) _ m)` and prove the remaining obligations. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 (A x τ).isUnit).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_rhoH {X : Type} [TopologicalSpace X] (A : X → ι → GL (Fin n) ℂ)
     (hA : ∀ τ, Continuous fun x => (A x τ : Matrix (Fin n) (Fin n) ℂ)) (v : Hilb lam hG) :
@@ -323,7 +323,7 @@ theorem continuous_rhoH {X : Type} [TopologicalSpace X] (A : X → ι → GL (Fi
 end Hilb
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M : Matrix (Fin n) (Fin n) ℂ => (M⁻¹)ᵀ) hg`. Simplify using `only [Matrix.mul_inv_rev, Matrix.transpose_mul] at h`. Use `show (((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ)ᴴ * (G⁻¹)ᵀ * ((g⁻¹ : GL (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ)ᵀ = (G⁻¹)ᵀ`. Rewrite using `[conjTranspose_transpose', Matrix.coe_units_inv, Matrix.conjTranspose_nonsing_inv]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invTr_unitary {G : Matrix (Fin n) (Fin n) ℂ} {g : GL (Fin n) ℂ}
     (hg : (g : Matrix (Fin n) (Fin n) ℂ)ᴴ * G * g = G) :
@@ -336,7 +336,7 @@ theorem invTr_unitary {G : Matrix (Fin n) (Fin n) ℂ} {g : GL (Fin n) ℂ}
   exact h
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.transpose_transpose _)`.
+A detailed English derivation is pending.
 -/
 theorem invTr_invTr (g : GL (Fin n) ℂ) : inside₂ ℂ n (inside₂ ℂ n g) = g := Units.ext (Matrix.transpose_transpose _)
 
@@ -360,11 +360,11 @@ theorem realGL_coe (θ : InfFam D) (V : HSp D) (h : GA D V) (τ : D.what₂.Tau)
     (realGL θ V h τ : Matrix (Fin V.rank) (Fin V.rank) ℂ) = archM V (θ τ) h := rfl
 
 /- English proof (translation)
-Set `Ψ : Finset (D.host.E →+* ℂ)` to `Finset.univ.filter fun σ => ∃ ρ, tauE D ρ = σ`. Establish `hmem : ∀ σ, σ ∈ Ψ ↔ ∃ ρ, tauE D ρ = σ` using `fun σ => by simp [Ψ]`. Use `choose r hr using fun σ : Ψ => (hmem σ.1).1 σ.2`. Establish `hsurj : ∀ ρ, r ⟨tauE D ρ, (hmem _).2 ⟨ρ, rfl⟩⟩ = ρ` using `fun ρ => GlobalTheory.PointAtPlace.tauE_injective (hr _)`. Take `⟨-, -, h1, h2⟩` from `(GlobalTheory.UnitaryGlue.adelic_glue D V).2 Ψ (fun σ => θ (r σ)) (fun σ => by rw [hmem, hmem]; exact GlobalTheory.PointAtPlace.tauE_cm σ) (fun σ => by rw [← hr σ]; exact hθ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun τ => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `h1 ⟨tauE D τ, (hmem _).2 ⟨τ, rfl⟩⟩` as an intermediate fact. Rewrite `this` using `[hsurj]`. Then use the resulting hypothesis. Take `⟨h, -, hu⟩` from `h2 (fun σ => g (r σ)) (fun σ => by rw [← hr σ]; exact hg _)`. Use `⟨h, funext fun τ => Units.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hu ⟨tauE D τ, (hmem _).2 ⟨τ, rfl⟩⟩` as an intermediate fact. Rewrite `this` using `[hsurj]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem realGL_laws {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) :
     (∀ τ, Continuous (archM V (θ τ))) ∧ ∀ g : D.what₂.Tau → GL (Fin V.rank) ℂ,
@@ -386,9 +386,9 @@ theorem realGL_laws {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) :
     rwa [hsurj] at this
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Establish `e1 : (matHom V γ).1 = (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (AF D.host.F))` using `congrArg Units.val h`. Establish `e2 : ((γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (inclR (Ainf D.host.F))).map (θ τ) = (γE : Matrix (Fin V.rank) (Fin V.rank) D.host.E).map (tauE D τ)`. Use extensionality with `i j`. Conclude with `(hθ τ).1 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[bc_coe, ← e2, ← GlobalTheory.UnitaryGlue.map_map_inclR (fstA D.host.F), ← e1]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem realGL_rat {θ : InfFam D} (hθ : IsInfFam θ) (V : HSp D) (γ : GQ V) (γE : GL (Fin V.rank) D.host.E)
     (h : Bridge.IsRatMat V γ γE) (τ : D.what₂.Tau) : realGL θ V γ τ = Formalism.UG.bc (tauE D τ) γE := by
@@ -408,11 +408,9 @@ def coefOf {V : HSp D} (lam : D.what₂.Tau → DomWeight V.rank) {G : D.what₂
   ρ := (rhoH lam hG).comp A
 
 /- English proof (translation)
-Use `⟨fun h hh => ?_, fun h x y => ?_, continuous_rhoH lam hG A h3, nontrivial_Hilb lam hG, fun U hU => ?_⟩` and prove the remaining obligations. Use `show rhoH lam hG (A h) = 1`. Rewrite using `[h1 h hh, map_one]`. Take `⟨x, rfl⟩` from `(toHilb lam hG).surjective x`. Take `⟨y, rfl⟩` from `(toHilb lam hG).surjective y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show inner ℂ (rhoH lam hG (A h) _) (rhoH lam hG (A h) _) = _`. Rewrite using `[rhoH_toHilb, rhoH_toHilb, inner_toHilb]`. Conclude with `pairInv ℂ _ _ lam G (A h) (h2 h) x y`. Establish `h` using `eq_bot_or_top lam hG (Submodule.comap (toHilb lam hG).toLinearMap U) fun g hg x hx => by`. Take `⟨h, rfl⟩` from `h4 g hg`.
-
-Use `hU h ⟨_, hx, rfl⟩` as an intermediate fact. Conclude with `(congrArg (· ∈ U) (rhoH_toHilb lam hG (A h) x)).mp this`. Use `h.imp (fun e => ?_) fun e => ?_` and prove the remaining obligations. Conclude with `Submodule.comap_injective_of_surjective (toHilb lam hG).surjective (e.trans (LinearEquiv.ker (toHilb lam hG)).symm)`. Conclude with `Submodule.comap_injective_of_surjective (toHilb lam hG).surjective e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coefOf_is {V : HSp D} (lam : D.what₂.Tau → DomWeight V.rank)
     {G : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ} (hG : ∀ τ, (G τ).PosDef)
@@ -440,23 +438,19 @@ theorem coefOf_is {V : HSp D} (lam : D.what₂.Tau → DomWeight V.rank)
     · exact Submodule.comap_injective_of_surjective (toHilb lam hG).surjective e
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `GlobalTheory.Member.exists_isInfFam_family D`. Take `⟨hc, hs⟩` from `realGL_laws hθ V`. Use `haveI := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram`. Establish `hG : ∀ τ, (((V.gram.map (tauE D τ))⁻¹)ᵀ).PosDef` using `fun τ => (hV τ).inv.transpose`. Establish `hlab : ∀ τ x, D.what₂.embLL (labLL D τ x) = tauE D τ x` using `fun τ x => DFunLike.congr_fun (GlobalTheory.ThetaFiresProbe.labE_fixed τ) x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨coefOf lam hG (invTrK.comp (realGL θ V)), (toHilb lam hG).toLinearMap.comp (mapVV D.what₂.embLL lam), coefOf_is lam hG _ (fun h hh => ?_) (fun h τ => ?_) (fun τ => ?_) (fun g hg => ?_), ⟨fun γ γE hγ v => ?_, ?_, ?_⟩, fun x y => ?_⟩` and prove the remaining obligations. Establish `: realGL θ V h = 1` using `funext fun τ => by show Formalism.UG.bc (θ τ) (infHom V h) = 1`. Rewrite using `[show infHom V h = 1 from hh, map_one]`. Rewrite using `[MonoidHom.comp_apply, this, map_one]`. Conclude with `invTr_unitary (g := realGL θ V h τ) (GlobalTheory.RecDictModel.archM_unitary V (hθ τ) h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((hc τ).comp continuous_inv).matrix_transpose.congr fun h => ?_ show (realGL θ V h⁻¹ τ : Matrix (Fin V.rank) (Fin V.rank) ℂ)ᵀ = _` and prove the remaining obligations. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Take `⟨h, e⟩` from `hs (invTrK g) fun τ => by`. Use `invTr_unitary (hg τ)` as an intermediate fact.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← Matrix.transpose_nonsing_inv, Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (hV τ).isUnit), Matrix.transpose_transpose]`. Then use the resulting hypothesis. Use `⟨h, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, e]`. Conclude with `funext fun τ => invTr_invTr _`. Use `show toHilb lam hG (mapVV _ lam (rhoK lam (invTrK (embGL (labLL D) γE)) v)) = rhoH lam hG (invTrK (realGL θ V γ)) (toHilb lam hG (mapVV _ lam v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun τ => Formalism.UG.bc D.what₂.embLL (invTrK (embGL (labLL D) γE) τ)) = invTrK (realGL θ V γ)`. Use function extensionality and compare the values at `τ`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bc_coe, invTrK_coe, invTrK_coe, realGL_rat hθ V γ γE hγ, embGL_inv, ← map_inv, embGL_coe, bc_coe]`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hlab _ _`. Rewrite using `[rhoH_toHilb, mapVV_rhoK, e]`. Conclude with `(linearIndependent_mapVV D.what₂.embLL lam).map' (toHilb lam hG).toLinearMap (LinearEquiv.ker _)`. Conclude with `span_mapVV D.what₂.embLL lam`. Use `show inner ℂ (toHilb lam hG (mapVV D.what₂.embLL lam x)) (toHilb lam hG (mapVV D.what₂.embLL lam y)) = D.what₂.embLL (pairK lam (gramKd (labLL D) V.gram) x y)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_toHilb, ← pairK_mapVV _ _ D.starLL_cx]`. Establish `e : (fun τ => ((V.gram.map (tauE D τ))⁻¹)ᵀ) = fun τ => (gramKd (labLL D) V.gram τ).map D.what₂.embLL`. Use function extensionality and compare the values at `τ`. Establish `e1 : V.gram.map (tauE D τ) = (V.gram.map (labLL D τ)).map D.what₂.embLL`. Use extensionality with `a b`.
-
-Conclude with `(hlab _ _).symm`. Establish `hu : IsUnit (V.gram.map (labLL D τ)).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `((_root_.map_ne_zero _).2 (GlobalTheory.UnitaryGlue.gram_det_ne_zero V)).isUnit`. Rewrite using `[gramKd, Matrix.transpose_map, e1]`.
-
-Use `congr 1`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hu, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `congrArg (fun G => pairK lam G (mapVV D.what₂.embLL lam x) (mapVV D.what₂.embLL lam y)) e`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coef_round (V : HSp D) (hV : ∀ τ, (V.gram.map (tauE D τ)).PosDef)
     (lam : D.what₂.Tau → DomWeight V.rank) :
@@ -517,9 +511,9 @@ theorem exists_coef_round (V : HSp D) (hV : ∀ τ, (V.gram.map (tauE D τ)).Pos
     exact congrArg (fun G => pairK lam G (mapVV D.what₂.embLL lam x) (mapVV D.what₂.embLL lam y)) e
 
 /- English proof (translation)
-Introduce `D i h`. Rewrite using `[GlobalTheory.StdFrame.neg_eq_false_of_posDef D i h, if_neg Bool.false_ne_true]`. Use `exists_coef_round (Vc D i) (fun τ => ?_) _` and prove the remaining obligations. Use `D.sp.V_sig ((i : ℕ) + 1) (tauE D τ)` as an intermediate fact. Rewrite `this` using `[h (tauE D τ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `GlobalTheory.DefiniteQuotient.posDef_of_signature this`.
+A detailed English derivation is pending.
 -/
 theorem exists_coef_lift : ∀ (D : D7) (i : Fin D.R.m), (Vc D i).IsPosDef → ∃ (c : CoefA (Vc D i)) (c0 : VV D.what₂.LL (lamV D i) →ₛₗ[D.what₂.embLL] c.W), c.Is ∧ Bridge.CoefMapTie (Vc D i) c.coef c0 (rhoVr (labLL D) _) ∧ ∀ x y, inner ℂ (c0 x) (c0 y) = D.what₂.embLL (pairVr (labLL D) _ (if D.sp.Vneg ((i : ℕ) + 1) then -(Vc D i).gram else (Vc D i).gram) x y) := by
   intro D i h

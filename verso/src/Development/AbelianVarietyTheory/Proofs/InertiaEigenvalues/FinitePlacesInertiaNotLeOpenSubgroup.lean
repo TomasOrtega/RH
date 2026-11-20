@@ -11,9 +11,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.DelGlob
 
 /- English proof (translation)
-Introduce `Ω _ k _ _ _ _ N hN`. Take `⟨L, hL, hLN⟩` from `(krullTopology_mem_nhds_one_iff k Ω (N : Set (G k Ω))).1 (hN.mem_nhds N.one_mem)`. Use `haveI : FiniteDimensional k L := hL`. Use `(GlobalTheory.InertiaAlmostAll.finite_ramified k Ω L).subset ?_` and prove the remaining obligations. Introduce and unpack `w ⟨B, hB, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨B, hB, fun h' => h fun x hx => hLN (h' hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_not_ine_le_of_isOpen : ∀ (Ω : Type) [Field Ω] (k : Type) [Field k] [NumberField k] [Algebra k Ω]
     [IsAlgClosure k Ω] (N : Subgroup (G k Ω)), IsOpen (N : Set (G k Ω)) →

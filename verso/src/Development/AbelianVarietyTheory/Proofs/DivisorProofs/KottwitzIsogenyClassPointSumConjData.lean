@@ -6,9 +6,9 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.PointSumConj
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `: a⁻¹ * (a * k * a⁻¹) * a = k` using `by group`. Rewrite using `[this]`. Conclude with `hk`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨a⁻¹ * m * a, h, by group⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_iff {G : Type} [Group G] (K : Subgroup G) (a m : G) :
     (∃ k ∈ K, a * k * a⁻¹ = m) ↔ a⁻¹ * m * a ∈ K := by
@@ -20,7 +20,7 @@ theorem exists_conj_iff {G : Type} [Group G] (K : Subgroup G) (a m : G) :
     exact ⟨a⁻¹ * m * a, h, by group⟩
 
 /- English proof (translation)
-Simplify using `only [stab, Subgroup.mem_inf, Subgroup.mem_comap, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply, exists_conj_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_stab {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂)
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (x : G₁ × G₂) (z : Γ) :
@@ -29,15 +29,13 @@ theorem mem_stab {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι�
     MulAut.conj_apply, exists_conj_iff]
 
 /- English proof (translation)
-Establish `key : ∀ x, F' (Quotient.out (DoubleCoset.mk H' K (a * x))) = F x`. Introduce `x`. Take `⟨h', hh', k, hk, he⟩` from `(DoubleCoset.eq H' K _ _).1 (DoubleCoset.out_eq' H' K (DoubleCoset.mk H' K (a * x))).symm`. Rewrite using `[he]`. Establish `: h' * (a * x) * k = a * ((a⁻¹ * h' * a) * x * k)` using `by group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, hF', hF _ (hH' _ hh') _ hk]`. Use `(finsum_eq_of_bijective (fun q : DoubleCoset.Quotient (H : Set G) (K : Set G) => DoubleCoset.mk H' K (a * Quotient.out q)) ⟨?_, ?_⟩ (fun q => (key _).symm)).symm` and prove the remaining obligations. Introduce `q₁ q₂ h`. Take `⟨h', hh', k, hk, he⟩` from `(DoubleCoset.eq H' K _ _).1 h`. Rewrite using `[← DoubleCoset.out_eq' H K q₁, ← DoubleCoset.out_eq' H K q₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(DoubleCoset.eq H K _ _).2 ⟨a⁻¹ * h' * a, hH' _ hh', k, hk, ?_⟩` and prove the remaining obligations. Establish `: Quotient.out q₂ = a⁻¹ * (a * Quotient.out q₂)` using `by group`. Rewrite using `[this, he]`. Use `group`. Introduce `q'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨DoubleCoset.mk H K (a⁻¹ * Quotient.out q'), ?_⟩` and prove the remaining obligations. Take `⟨h, hh, k, hk, he⟩` from `(DoubleCoset.eq H K _ _).1 (DoubleCoset.out_eq' H K (DoubleCoset.mk H K (a⁻¹ * Quotient.out q'))).symm`. Simplify using `only`. Rewrite using `[he]`. Use `conv_rhs => rw [← DoubleCoset.out_eq' H' K q']`.
-
-Conclude with `(DoubleCoset.eq H' K _ _).2 ⟨(a * h * a⁻¹)⁻¹, H'.inv_mem (hH _ hh), k⁻¹, K.inv_mem hk, by group⟩`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_dc_translate {G : Type} [Group G] (H H' K : Subgroup G) (a : G)
     (hH : ∀ h ∈ H, a * h * a⁻¹ ∈ H') (hH' : ∀ h ∈ H', a⁻¹ * h * a ∈ H) (F F' : G → ℂ)
@@ -73,16 +71,16 @@ end GlobalTheory.PointSumConj
 namespace GlobalTheory.PointSumConj
 
 /- English proof (translation)
-Rewrite using `[Subgroup.mul_mem_cancel_right K hk, Subgroup.mul_mem_cancel_left K (K.inv_mem hk)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_iff {G : Type} [Group G] (K : Subgroup G) {k : G} (hk : k ∈ K) (m : G) :
     k⁻¹ * m * k ∈ K ↔ m ∈ K := by
   rw [Subgroup.mul_mem_cancel_right K hk, Subgroup.mul_mem_cancel_left K (K.inv_mem hk)]
 
 /- English proof (translation)
-Rewrite `hk` using `[Subgroup.mem_prod]`. Use `(Nat.card_congr (Equiv.subtypeEquiv (MulAut.conj y).toEquiv fun z => ?_)).symm` and prove the remaining obligations. Simplify using `only [SetLike.mem_coe, mem_stab, MulEquiv.toEquiv_eq_coe, MulEquiv.coe_toEquiv, MulAut.conj_apply, Prod.fst_mul, Prod.snd_mul, map_mul, map_inv]`. Establish `e1 : (ι₁ y * x.1 * k.1)⁻¹ * (ι₁ y * ι₁ z * (ι₁ y)⁻¹) * (ι₁ y * x.1 * k.1) = k.1⁻¹ * (x.1⁻¹ * ι₁ z * x.1) * k.1` using `by group`. Establish `e2 : (ι₂ y * x.2 * k.2)⁻¹ * (ι₂ y * ι₂ z * (ι₂ y)⁻¹) * (ι₂ y * x.2 * k.2) = k.2⁻¹ * (x.2⁻¹ * ι₂ z * x.2) * k.2` using `by group`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, conj_mem_iff K₁ hk.1, conj_mem_iff K₂ hk.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stab_translate {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂)
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (y : Γ) (x k : G₁ × G₂) (hk : k ∈ K₁.prod K₂) :
@@ -98,7 +96,7 @@ theorem card_stab_translate {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group
   rw [e1, e2, conj_mem_iff K₁ hk.1, conj_mem_iff K₂ hk.2]
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mem_stab, Prod.fst_mul, Prod.snd_mul, MonoidHom.coe_comp, Function.comp_apply, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Establish `e1 : (g₁⁻¹ * x.1)⁻¹ * (g₁⁻¹ * ι₁ z * g₁⁻¹⁻¹) * (g₁⁻¹ * x.1) = x.1⁻¹ * ι₁ z * x.1` using `by group`. Establish `e2 : (g₂⁻¹ * x.2)⁻¹ * (g₂⁻¹ * ι₂ z * g₂⁻¹⁻¹) * (g₂⁻¹ * x.2) = x.2⁻¹ * ι₂ z * x.2` using `by group`. Rewrite using `[e1, e2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_conj {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂)
     (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (g₁ : G₁) (g₂ : G₂) (x : G₁ × G₂) :
@@ -112,19 +110,17 @@ theorem stab_conj {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι
   rw [e1, e2]
 
 /- English proof (translation)
-Introduce `Γ G₁ G₂ _ _ _ ι₁ ι₂ θ K₁ K₂ γ g₁ δ g₂ f φ hf hφ hγ hδ`. Unfold `pointSum`. Use `finsum_dc_translate (ι₁.prod ι₂).range (((MulAut.conj g₁⁻¹).toMonoidHom.comp ι₁).prod ((MulAut.conj g₂⁻¹).toMonoidHom.comp ι₂)).range (K₁.prod K₂) (g₁⁻¹, g₂⁻¹) ?_ ?_ (fun x => ((Nat.card (stab ι₁ ι₂ K₁ K₂ x) : ℕ) : ℂ)⁻¹ * (f (x.1⁻¹ * γ * x.1) * φ (x.2⁻¹ * δ * θ x.2))) (fun x => ( …` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [MulAut.conj_apply]`. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨y, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [MulAut.conj_apply] <;> group`. Introduce and unpack `_ ⟨y, rfl⟩ k hk x`.
+Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Establish `hk'` using `(Subgroup.mem_prod).1 hk`. Simplify using `only [MonoidHom.prod_apply] at *`. Rewrite using `[card_stab_translate ι₁ ι₂ K₁ K₂ y x k hk]`. Use `congr 2`. Establish `e : ((ι₁ y, ι₂ y) * x * k).1⁻¹ * γ * ((ι₁ y, ι₂ y) * x * k).1 = k.1⁻¹ * (x.1⁻¹ * ((ι₁ y)⁻¹ * γ * ι₁ y) * x.1) * k.1` using `by simp only [Prod.fst_mul]; group`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `e' : (ι₁ y)⁻¹ * γ * ι₁ y = γ` using `by rw [mul_assoc, ← hγ y]; group`. Rewrite using `[e, e', hf _ hk'.1]`. Establish `e : ((ι₁ y, ι₂ y) * x * k).2⁻¹ * δ * θ ((ι₁ y, ι₂ y) * x * k).2 = k.2⁻¹ * (x.2⁻¹ * ((ι₂ y)⁻¹ * δ * θ (ι₂ y)) * θ x.2) * θ k.2`. Simplify using `only [Prod.snd_mul, map_mul]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e' : (ι₂ y)⁻¹ * δ * θ (ι₂ y) = δ` using `by rw [mul_assoc, ← hδ y]; group`. Rewrite using `[e, e', hφ _ hk'.2]`. Introduce `x`. Rewrite using `[stab_conj]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Prod.fst_mul]`. Use `group`. Use `congr 1`. Simplify using `only [Prod.snd_mul, map_mul, map_inv]`.
-
-Use `group`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pointSum_conj_data : ∀ {Γ G₁ G₂ : Type} [Group Γ] [Group G₁] [Group G₂] (ι₁ : Γ →* G₁) (ι₂ : Γ →* G₂) (θ : G₂ →* G₂) (K₁ : Subgroup G₁) (K₂ : Subgroup G₂) (γ g₁ : G₁) (δ g₂ : G₂) (f : G₁ → ℂ) (φ : G₂ → ℂ), (∀ k ∈ K₁, ∀ x, f (k⁻¹ * x * k) = f x) → (∀ k ∈ K₂, ∀ x, φ (k⁻¹ * x * θ k) = φ x) → (∀ y, ι₁ y * γ = γ * ι₁ y) → (∀ y, ι₂ y * δ = δ * θ (ι₂ y)) → pointSum ((MulAut.conj g₁⁻¹).toMonoidHom.comp ι₁) ((MulAut.conj g₂⁻¹).toMonoidHom.comp ι₂) θ K₁ K₂ (g₁⁻¹ * γ * g₁) (g₂⁻¹ * δ * θ g₂) f φ = pointSum ι₁ ι₂ θ K₁ K₂ γ δ f φ := by
   intro Γ G₁ G₂ _ _ _ ι₁ ι₂ θ K₁ K₂ γ g₁ δ g₂ f φ hf hφ hγ hδ

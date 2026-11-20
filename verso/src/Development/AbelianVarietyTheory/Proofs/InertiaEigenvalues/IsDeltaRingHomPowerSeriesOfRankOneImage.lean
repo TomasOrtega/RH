@@ -9,9 +9,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.TruncationDivisibility
 
 /- English proof (translation)
-Establish `h` using `(deltaS l a).φ_eq X`. Establish `h2 : (deltaS l a).φ X = X ^ l`. Express the relevant statement in the definitionally equal form `(Delta.ofLift l (frobS l a) _ _).φ X = _`. Rewrite using `[Delta.ofLift_φ, frobS_X]`. Rewrite `h` using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (l : (Wq l a)⟦X⟧) * (deltaS l a).δ X = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 h3).resolve_left (l_ne_zero l a)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem deltaS_X (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] : (deltaS l a).δ (X : (Wq l a)⟦X⟧) = 0 := by
   have h := (deltaS l a).φ_eq X
@@ -23,7 +23,7 @@ theorem deltaS_X (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] : (deltaS l a).δ
   exact (mul_eq_zero.1 h3).resolve_left (l_ne_zero l a)
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.X_pow_dvd_iff]`. Introduce `m hm`. Rewrite using `[map_sub, Polynomial.coeff_coe, coeff_trunc, if_pos hm, sub_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem X_pow_dvd_sub_trunc' {R : Type} [CommRing R] (x : R⟦X⟧) (n : ℕ) :
     (X : R⟦X⟧) ^ n ∣ x - (trunc n x : R⟦X⟧) := by
@@ -35,15 +35,13 @@ end GlobalTheory.TruncationDivisibility
 
 open GlobalTheory.TruncationDivisibility in
 /- English proof (translation)
-Introduce `l _ a _ C _ DC J hl hH σ e he hX`. Use `set S := δLocus (deltaS l a) DC σ with hS`. Establish `hXS : (X : (Wq l a)⟦X⟧) ∈ S`. Rewrite using `[mem_δLocus, deltaS_X, map_zero, hX]`. Establish `hCS : ∀ w : Wq l a, PowerSeries.C w ∈ S` using `GlobalTheory.T.C_mem_deltaCommuteLocusSubring_of_isHausdorff l a C DC J hl hH σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpoly : ∀ p : Polynomial (Wq l a), ((p : (Wq l a)⟦X⟧)) ∈ S`. Introduce `p`. Proceed by induction on `p using Polynomial.induction_on with`. Consider the case `C w => rw [Polynomial.coe_C]`. Conclude with `hCS w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add p q hp hq => rw [Polynomial.coe_add]`. Conclude with `S.add_mem hp hq`. Consider the case `monomial n w _`. Rewrite using `[Polynomial.coe_mul, Polynomial.coe_C, Polynomial.coe_pow, Polynomial.coe_X]`. Conclude with `S.mul_mem (hCS w) (S.pow_mem hXS _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.isDeltaRingHom_of_dense_deltaCommuteLocus l ((Wq l a)⟦X⟧) C (deltaS l a) DC (J.comap σ) J σ ?_ Ideal.map_comap_le hH ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, map_natCast]`. Conclude with `hl`. Introduce `x n`. Use `⟨_, hpoly (trunc (e * n) x), ?_⟩` and prove the remaining obligations.
-
-Take `⟨c, hc⟩` from `X_pow_dvd_sub_trunc' x (e * n)`. Rewrite using `[hc, pow_mul]`. Use `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow ?_ n)` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, map_pow]`. Conclude with `he`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.sdelta_of_rank_one : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (C : Type) [CommRing C] (DC : Delta l C) (J : Ideal C), (l : C) ∈ J → IsHausdorff J C → ∀ (σ : (Wq l a)⟦X⟧ →+* C) (e : ℕ), σ X ^ e ∈ J → DC.δ (σ X) = 0 → IsδMap (deltaS l a) DC σ := by
   intro l _ a _ C _ DC J hl hH σ e he hX

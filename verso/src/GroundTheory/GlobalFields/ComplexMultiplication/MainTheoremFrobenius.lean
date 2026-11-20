@@ -21,7 +21,7 @@ section Congr
 variable {F : Type*} [Field F] [DecidableEq F]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vcPoint_pointCongr {V₁ V₂ : WeierstrassCurve F} (e : V₁ = V₂) (C : VariableChange F)
     (h₁ : C • V₁ = V₁) (h₂ : C • V₂ = V₂) (X : V₁.toAffine.Point) :
@@ -30,7 +30,7 @@ theorem vcPoint_pointCongr {V₁ V₂ : WeierstrassCurve F} (e : V₁ = V₂) (C
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pointCongr_symm_pointCongr {V₁ V₂ : WeierstrassCurve F} (e : V₁ = V₂)
     (X : V₁.toAffine.Point) : pointCongr e.symm (pointCongr e X) = X := by
@@ -38,7 +38,7 @@ theorem pointCongr_symm_pointCongr {V₁ V₂ : WeierstrassCurve F} (e : V₁ = 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← vcPointEquiv_apply, ← vcPointEquiv_apply, map_nsmul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vcPoint_nsmul {V₁ V₂ : WeierstrassCurve F} (C : VariableChange F) (h : C • V₁ = V₂)
     (n : ℕ) (X : V₁.toAffine.Point) : n • vcPoint C h X = vcPoint C h (n • X) := by
@@ -46,7 +46,7 @@ theorem vcPoint_nsmul {V₁ V₂ : WeierstrassCurve F} (C : VariableChange F) (h
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Substitute `hX` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vcPoint_eq_zero_of_eq_zero {V₁ V₂ : WeierstrassCurve F} (C : VariableChange F)
     (h : C • V₁ = V₂) {X : V₁.toAffine.Point} (hX : X = 0) : vcPoint C h X = 0 := by
@@ -55,7 +55,7 @@ theorem vcPoint_eq_zero_of_eq_zero {V₁ V₂ : WeierstrassCurve F} (C : Variabl
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem vcPoint_congr_change {V₁ V₂ : WeierstrassCurve F} {C C' : VariableChange F} (e : C = C')
     (h : C • V₁ = V₂) (h' : C' • V₁ = V₂) (X : V₁.toAffine.Point) :
@@ -76,9 +76,9 @@ def scaleChange {R : Type*} [CommRing R] (u : Rˣ) : VariableChange R := ⟨u⁻
 
 omit [DecidableEq k] [PerfectField k] in
 /- English proof (translation)
-Use `ext`. Simplify using `[scaleChange, variableChange_a₁, hT.a₁_eq]`. Simplify using `[scaleChange, variableChange_a₂, hT.a₂_eq, hT.a₁_eq]`. Simplify using `[scaleChange, variableChange_a₃, hT.a₃_eq]`. Simplify using `only [scaleChange, variableChange_a₄, hT.a₁_eq, hT.a₂_eq, hT.a₃_eq, inv_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h4`. Simplify using `only [scaleChange, variableChange_a₆, hT.a₁_eq, hT.a₂_eq, hT.a₃_eq, inv_inv]`. Take the linear combination `-h6`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem scaleChange_smul {T : WeierstrassCurve k} (hT : IsShortForm T) (u : kˣ)
     (h4 : T.a₄ = (u : k) ^ 4 * T.a₄) (h6 : T.a₆ = (u : k) ^ 6 * T.a₆) :
@@ -93,11 +93,11 @@ theorem scaleChange_smul {T : WeierstrassCurve k} (hT : IsShortForm T) (u : kˣ)
     linear_combination -h6
 
 /- English proof (translation)
-Take `⟨u, h4, h6, hP⟩` from `pointMap_isogBaseChange_some_of_degree_eq_one (Ω := Ω) h2 h3 hT hT ψ hψ`. Establish `h12` using `(pow_eq_one_of_scale hT h4 h6).2`. Use `⟨u, scaleChange_smul hT u h4 h6, h12, h4, h6, fun P ↦ ?_⟩` and prove the remaining obligations. Apply `constMap_injective T Ω` to reduce the goal to its premises. Rewrite using `[constMap_pointHomOver]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Break down `P with _ | ⟨x, y, h⟩` into its components or cases. Rewrite using `[show (Point.zero : T.toAffine.Point) = 0 from rfl, map_zero, ← Isogeny.pointHom_apply, map_zero, vcPoint_zero, map_zero]`. Take `⟨h', e⟩` from `hP (algebraMap k Ω x) (algebraMap k Ω y) ((T.toAffine.baseChange_nonsingular (f := Algebra.ofId k Ω) (algebraMap k Ω).injective x y).2 h)`. Use `e.trans ?_` and prove the remaining obligations. Use `show _ = Point.some _ _ _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [vcX, vcY, scaleChange, Point.some.injEq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pointHomOver_eq_vcPoint {T : WeierstrassCurve k} [T.IsElliptic] (hT : IsShortForm T)
     (h2 : (2 : k) ≠ 0) (h3 : (3 : k) ≠ 0) (ψ : Isogeny T T) (hψ : ψ.degree = 1) :
@@ -129,7 +129,7 @@ variable {K : Type} [Field K] [NumberField K] [Algebra K ℂ] (hK : finrank ℚ 
 omit [NumberField K] [IsTotallyComplex K] in
 
 /- English proof (translation)
-The claim follows from `hζ.toInteger_isPrimitiveRoot.map_of_injective (fun a b h ↦ by have := congrArg (algebraMap (localizationAt L 𝔓) L) h rw [← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply] at this exact RingOfIntegers.ext this)`.
+A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_localizationAt (𝔓 : HeightOneSpectrum (𝓞 L)) {ζ : L}
     (hζ : IsPrimitiveRoot ζ 12) :
@@ -143,47 +143,43 @@ set_option maxHeartbeats 1000000 in
 include hK in
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Take `⟨p, hpdef⟩ : ∃ p, p = Ideal.absNorm 𝔭.asIdeal` from `⟨_, rfl⟩`. Establish `hv₀` using `hv`. Rewrite `hv`, `h5` using `[← hpdef]`. Establish `: Fact p.Prime` using `⟨hv⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: CharP (ResidueField (localizationAt L 𝔓)) p`. Use `charP_residueField_localizationAt 𝔓 hv ?_` and prove the remaining obligations. Use `algebraMap_mem_of_liesOver (𝔓 := 𝔓) (Ideal.absNorm_mem 𝔭.asIdeal)` as an intermediate fact. Rewrite `this` using `[map_natCast, ← hpdef]`. Then use the resulting hypothesis. Establish `h23 : (2 : ResidueField (localizationAt L 𝔓)) ≠ 0 ∧ (3 : ResidueField (localizationAt L 𝔓)) ≠ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `two_ne_zero_and_three_ne_zero_of_five_le_ringChar ?_` and prove the remaining obligations. Rewrite using `[ringChar.eq (ResidueField (localizationAt L 𝔓)) p]`. Conclude with `h5`. Establish `hW' : (W.map (localizationAtRingHom 𝔓 hτ)).map (algebraMap (localizationAt L 𝔓) L) = (W.map (algebraMap (localizationAt L 𝔓) L)).map (τ : L →+* L)`. Rewrite using `[WeierstrassCurve.map_map, WeierstrassCurve.map_map, comp_algebraMap_localizationAtRingHom]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hres : ∀ x, IsLocalRing.residue _ ((localizationAtRingHom 𝔓 hτ) x) = IsLocalRing.residue (localizationAt L 𝔓) x ^ p` using `fun x ↦ by rw [hpdef]; exact residue_localizationAtRingHom_of_absNorm 𝔓 hτ 𝔭 x`. Establish `htw : (W.map (IsLocalRing.residue (localizationAt L 𝔓))).map (frobenius (ResidueField (localizationAt L 𝔓)) p) = (W.map (localizationAtRingHom 𝔓 hτ)).map (IsLocalRing.residue _)` using `map_residue_eq_frobeniusTwist W p hres`. Take `⟨-, -, ⟨ψ, hred, hψdeg, -, -⟩, -⟩` from `reduceIsogeny_congr_eq_comp_frobeniusIsogeny hK 𝔭 hv₀ 𝔓 hEA hEA' φ hφ rfl hW' p`. Establish `htw' : (W.map (localizationAtRingHom 𝔓 hτ)).map (IsLocalRing.residue (localizationAt L 𝔓)) = frobeniusTwist (W.map (IsLocalRing.residue (localizationAt L 𝔓))) p` using `htw.symm`. Establish `hT : IsShortForm (frobeniusTwist (W.map (IsLocalRing.residue (localizationAt L 𝔓))) p)` using `⟨by simp [frobeniusTwist], by simp [frobeniusTwist], by simp [frobeniusTwist]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ'deg : (ψ.congr rfl htw').degree = 1` using `by rw [Isogeny.degree_congr]; exact hψdeg`. Take `⟨u, hu, hu12, hu4, hu6, hψ'P⟩` from `exists_pointHomOver_eq_vcPoint (AlgebraicClosure (ResidueField (localizationAt L 𝔓))) hT h23.1 h23.2 (ψ.congr rfl htw') hψ'deg`. Establish `hζ𝒪` using `isPrimitiveRoot_localizationAt 𝔓 hζ`. Establish `h12 : ((12 : ℕ) : ResidueField (localizationAt L 𝔓)) ≠ 0`. Rewrite using `[show ((12 : ℕ) : ResidueField (localizationAt L 𝔓)) = 2 * 2 * 3 by norm_num]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_ne_zero (mul_ne_zero h23.1 h23.1) h23.2`. Take `⟨η, ⟨hη12, hηu⟩, -⟩` from `existsUnique_pow_eq_one_of_isPrimitiveRoot (IsLocalRing.residue _) hζ𝒪 h12 hu12`. Establish `hηunit : IsUnit η` using `IsUnit.of_pow_eq_one hη12 (by norm_num)`. Establish `injRoot : ∀ {a b : localizationAt L 𝔓}, a ^ 12 = 1 → b ^ 12 = 1 → IsLocalRing.residue _ a = IsLocalRing.residue _ b → a = b` using `fun ha hb h ↦ eq_of_map_eq_of_pow_eq_one (IsLocalRing.residue _) hζ𝒪 h12 ha hb h`. Establish `hres_ne : ∀ {a : localizationAt L 𝔓}, IsUnit a → IsLocalRing.residue _ a ≠ 0` using `fun ha ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `ha`. Establish `hW'1 : (W.map (localizationAtRingHom 𝔓 hτ)).a₁ = 0` using `by simp`. Establish `hW'2 : (W.map (localizationAtRingHom 𝔓 hτ)).a₂ = 0` using `by simp`. Establish `hW'3 : (W.map (localizationAtRingHom 𝔓 hτ)).a₃ = 0` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpow : ∀ {n : ℕ}, n ∣ 12 → (u : ResidueField (localizationAt L 𝔓)) ^ n = 1 → η ^ n = 1`. Introduce `n _ hun`. Use `injRoot (by rw [← pow_mul, mul_comm, pow_mul, hη12, one_pow]) (one_pow _) ?_` and prove the remaining obligations. Rewrite using `[map_pow, hηu, hun, map_one]`. Establish `key4 : η ^ 4 * (W.map (localizationAtRingHom 𝔓 hτ)).a₄ = (W.map (localizationAtRingHom 𝔓 hτ)).a₄`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `ha₄ with h0 | hunit` into its components or cases. Simplify using `[h0]`. Establish `hne : (frobeniusTwist (W.map (IsLocalRing.residue (localizationAt L 𝔓))) p).a₄ ≠ 0`. Simplify using `only [frobeniusTwist, WeierstrassCurve.map_a₄, frobenius_def]`. Conclude with `pow_ne_zero _ (hres_ne hunit)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hu4' : (u : ResidueField (localizationAt L 𝔓)) ^ 4 = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact hu4.symm)`. Rewrite using `[hpow (by norm_num) hu4', one_mul]`. Establish `key6 : η ^ 6 * (W.map (localizationAtRingHom 𝔓 hτ)).a₆ = (W.map (localizationAtRingHom 𝔓 hτ)).a₆`. Break down `ha₆ with h0 | hunit` into its components or cases. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : (frobeniusTwist (W.map (IsLocalRing.residue (localizationAt L 𝔓))) p).a₆ ≠ 0`. Simplify using `only [frobeniusTwist, WeierstrassCurve.map_a₆, frobenius_def]`. Conclude with `pow_ne_zero _ (hres_ne hunit)`. Establish `hu6' : (u : ResidueField (localizationAt L 𝔓)) ^ 6 = 1` using `mul_right_cancel₀ hne (by rw [one_mul]; exact hu6.symm)`. Rewrite using `[hpow (by norm_num) hu6', one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hηc : ((hηunit.unit : (localizationAt L 𝔓)ˣ) : localizationAt L 𝔓) = η` using `hηunit.unit_spec`. Establish `hC : scaleChange hηunit.unit • (W.map (localizationAtRingHom 𝔓 hτ)) = (W.map (localizationAtRingHom 𝔓 hτ))`. Use `WeierstrassCurve.ext ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Simplify using `[scaleChange, variableChange_a₁]`. Simplify using `[scaleChange, variableChange_a₂]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[scaleChange, variableChange_a₃]`. Simplify using `only [scaleChange, variableChange_a₄, hW'1, hW'2, hW'3, inv_inv, hηc]`. Take the linear combination `key4`. Simplify using `only [scaleChange, variableChange_a₆, hW'1, hW'2, hW'3, inv_inv, hηc]`. Take the linear combination `key6`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hD' : ((scaleChange hηunit.unit).map (algebraMap (localizationAt L 𝔓) L)) • (W.map (localizationAtRingHom 𝔓 hτ)).map (algebraMap (localizationAt L 𝔓) L) = (W.map (localizationAtRingHom 𝔓 hτ)).map (algebraMap (localizationAt L 𝔓) L)`. Rewrite using `[map_variableChange, hC]`. Establish `hD : ((scaleChange hηunit.unit).map (algebraMap (localizationAt L 𝔓) L)) • (W.map (algebraMap (localizationAt L 𝔓) L)).map (τ : L →+* L) = (W.map (algebraMap (localizationAt L 𝔓) L)).map (τ : L →+* L)`. Rewrite using `[← hW']`. Conclude with `hD'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((scaleChange hηunit.unit).map (algebraMap (localizationAt L 𝔓) L)), hD, fun t ht ↦ ?_⟩` and prove the remaining obligations. Establish `hm' : (m : ResidueField (localizationAt L 𝔓)) ≠ 0`. Rewrite using `[← map_natCast (IsLocalRing.residue (localizationAt L 𝔓)), Ne, IsLocalRing.residue_eq_zero_iff, ← map_natCast (algebraMap (𝓞 L) (localizationAt L 𝔓)), algebraMap_mem_maximalIdeal_localizationAt_iff]`. Introduce `h`. Apply `hm` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.LiesOver.over (P := 𝔓.asIdeal) (p := 𝔭.asIdeal), Ideal.mem_comap, map_natCast]`. Conclude with `h`. Establish `e0 : pointHomOver ℂ (φ.congr rfl hW'.symm) t = pointCongr hW'.symm (pointHomOver ℂ φ t)` using `pointHomOver_congr ℂ φ rfl hW'.symm t`. Establish `hX : m • (pointCongr (map_curveK_eq L L (comp_algebraMap_localizationAtRingHom 𝔓 hτ) W) (pointMapRing (τ : L →+* L) (W.map (algebraMap (localizationAt L 𝔓) L)) t)) = 0` using `by rw [← map_nsmul, ← map_nsmul, ht, map_zero, map_zero]`. Establish `hφ0 : m • pointHomOver ℂ (φ.congr rfl hW'.symm) t = 0` using `by rw [← map_nsmul, ht, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hvX : m • vcPoint ((scaleChange hηunit.unit).map (algebraMap (localizationAt L 𝔓) L)) hD' (pointCongr (map_curveK_eq L L (comp_algebraMap_localizationAtRingHom 𝔓 hτ) W) (pointMapRing (τ : L →+* L) (W.map (algebraMap (localizationAt L 𝔓) L)) t)) = 0`. Rewrite using `[vcPoint_nsmul]`. Conclude with `vcPoint_eq_zero_of_eq_zero _ _ hX`. Establish `r1 : reducePoint L (W.map (localizationAtRingHom 𝔓 hτ)) (pointHomOver ℂ (φ.congr rfl hW'.symm) t) = pointCongr htw (vcPoint (scaleChange u) hu (pointMapRing (frobenius (ResidueField (localizationAt L 𝔓)) p) (W.map (IsLocalRing.residue (localizationAt L 𝔓))) (reducePoint L W t)))`. Establish `hred' : reduceIsogeny L W (W.map (localizationAtRingHom 𝔓 hτ)) (φ.congr rfl hW'.symm) = ψ.comp (frobeniusIsogeny (W.map (IsLocalRing.residue (localizationAt L 𝔓))) p)` using `hred`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(reducePoint_pointHomOver L ℂ (AlgebraicClosure (ResidueField (localizationAt L 𝔓))) (φ.congr rfl hW'.symm) t).trans ?_` and prove the remaining obligations. Rewrite using `[hred', pointHomOver_comp, pointHomOver_frobeniusIsogeny]`. Establish `h1` using `pointHomOver_congr (AlgebraicClosure (ResidueField (localizationAt L 𝔓))) ψ rfl htw' (pointMapRing (frobenius (ResidueField (localizationAt L 𝔓)) p) (W.map (IsLocalRing.residue (localizationAt L 𝔓))) (reducePoint L W t))`. Rewrite `h1` using `[hψ'P]`. Rewrite using `[← pointCongr_symm_pointCongr htw' (pointHomOver (AlgebraicClosure (ResidueField (localizationAt L 𝔓))) ψ (pointMapRing (frobenius (ResidueField (localizationAt L 𝔓)) p) (W.map (IsLocalRing.residue (localizationAt L 𝔓))) (reducePoint L W t))), ← h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hCres : (scaleChange hηunit.unit).map (IsLocalRing.residue (localizationAt L 𝔓)) = scaleChange u`. Establish `hu' : Units.map (IsLocalRing.residue (localizationAt L 𝔓) : _ →* _) hηunit.unit = u` using `Units.ext (by rw [Units.coe_map, hηc]; exact hηu)`. Simplify using `only [scaleChange, VariableChange.map, map_zero, map_inv, hu']`. Establish `r2 : reducePoint L (W.map (localizationAtRingHom 𝔓 hτ)) (vcPoint ((scaleChange hηunit.unit).map (algebraMap (localizationAt L 𝔓) L)) hD' (pointCongr (map_curveK_eq L L (comp_algebraMap_localizationAtRingHom 𝔓 hτ) W) (pointMapRing (τ : L →+* L) (W.map (algebraMap (localizationAt L …`.
-
-Rewrite using `[reducePoint_vcPoint L (W.map (localizationAtRingHom 𝔓 hτ)) (scaleChange hηunit.unit) hC (pointCongr (map_curveK_eq L L (comp_algebraMap_localizationAtRingHom 𝔓 hτ) W) (pointMapRing (τ : L →+* L) (W.map (algebraMap (localizationAt L 𝔓) L)) t)), reducePoint_pointMapRing_localizati …`. Conclude with `(vcPoint_congr_change hCres _ _ _).trans (vcPoint_pointCongr htw (scaleChange u) hu (by rw [← htw]; exact hu) _)`. Establish `heq` using `eq_of_reductionHom_eq_of_nsmul L (W.map (localizationAtRingHom 𝔓 hτ)) hm' hφ0 hvX (by rw [reductionHom_apply, reductionHom_apply, r1, r2])`. Establish `e1 : pointHomOver ℂ φ t = pointCongr hW' (pointHomOver ℂ (φ.congr rfl hW'.symm) t)`. Rewrite using `[e0, pointCongr_symm_pointCongr]`.
-
-Rewrite using `[e1, heq]`. Use `(vcPoint_pointCongr hW' _ hD' hD _).symm.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_vcPoint_pointHomOver_eq (𝔭 : HeightOneSpectrum (𝓞 K))
     (hv : (Ideal.absNorm 𝔭.asIdeal).Prime) (h5 : 5 ≤ Ideal.absNorm 𝔭.asIdeal)

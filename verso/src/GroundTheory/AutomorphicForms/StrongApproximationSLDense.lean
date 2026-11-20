@@ -16,13 +16,11 @@ namespace AdelicGLn
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Introduce `a`. Use `mem_closure_iff_nhds.2 fun U hU => ?_` and prove the remaining obligations. Establish `hW : (fun y => a + y) ⁻¹' U ∈ 𝓝 (0 : FiniteAdeleRing (𝓞 K) K)` using `(continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hU)`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_forall_mul_mem_of_mem_nhds hW`. Use `set c : K := algebraMap (𝓞 K) K d`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : c ≠ 0`. Simplify `hd0` using `[c]`. Use `set x := algebraMap K (FiniteAdeleRing (𝓞 K) K)`. Take `⟨k, hk⟩` from `GroundTheory.Global.exists_sub_mem_integralFiniteAdeles (R := 𝓞 K) (K := K) (x c⁻¹ * a)`. Establish `hmem` using `hd _ (neg_mem hk)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcc : x c * x c⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hc, map_one]`. Use `⟨x (c * k), ?_, c * k, rfl⟩` and prove the remaining obligations. Establish `heq : a + x c * -(x c⁻¹ * a - x k) = x (c * k)`. Rewrite using `[map_mul]`. Take the linear combination `(-a) * hcc`.
-
-Rewrite using `[← heq]`. Conclude with `hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_algebraMap_finiteAdeleRing :
     DenseRange (algebraMap K (FiniteAdeleRing (𝓞 K) K)) := by
@@ -60,7 +58,7 @@ theorem finiteDiagonal_apply (γ : GL (Fin n) K) (a b : Fin n) :
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply, FiniteAdeleRing.unitEmbedding_apply]`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_finiteDiagonal (γ : GL (Fin n) K) :
     Matrix.GeneralLinearGroup.det (finiteDiagonal K n γ) =
@@ -74,7 +72,7 @@ def finiteSL : Subgroup (FiniteAdelicGL K n) :=
   (Matrix.GeneralLinearGroup.det : FiniteAdelicGL K n →* (FiniteAdeleRing (𝓞 K) K)ˣ).ker
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_finiteSL {g : FiniteAdelicGL K n} :
     g ∈ finiteSL K n ↔ Matrix.GeneralLinearGroup.det g = 1 :=
@@ -84,16 +82,16 @@ def rationalFiniteSL : Subgroup (FiniteAdelicGL K n) :=
   (Matrix.GeneralLinearGroup.det : GL (Fin n) K →* Kˣ).ker.map (finiteDiagonal K n)
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Rewrite using `[mem_finiteSL, det_finiteDiagonal, MonoidHom.mem_ker.1 hγ, map_one]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem rationalFiniteSL_le_finiteSL : rationalFiniteSL K n ≤ finiteSL K n := by
   rintro _ ⟨γ, hγ, rfl⟩
   rw [mem_finiteSL, det_finiteDiagonal, MonoidHom.mem_ker.1 hγ, map_one]
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `show Continuous fun c : R => transvection i j c`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Continuous fun c : R => transvection i j (-c)`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Simplify using `only [transvection, Matrix.add_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem continuous_transvectionGL {R : Type*} [CommRing R] [TopologicalSpace R]
     [IsTopologicalRing R] (i j : Fin n) (h : i ≠ j) :
@@ -109,9 +107,9 @@ theorem continuous_transvectionGL {R : Type*} [CommRing R] [TopologicalSpace R]
     split_ifs <;> fun_prop
 
 /- English proof (translation)
-Take `⟨i, j, h, c⟩` from `t`. Rewrite using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe]`. Use `map_mem_closure (f := fun c : FiniteAdeleRing (𝓞 K) K => transvectionGL (Fin n) _ ⟨i, j, h, c⟩) (continuous_transvectionGL n i j h) (denseRange_algebraMap_finiteAdeleRing K c) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨transvectionGL (Fin n) K ⟨i, j, h, k⟩, elementarySubgroup_le_ker_det (transvectionGL_mem_elementarySubgroup _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Simplify using `only [finiteDiagonal_apply, coe_transvectionGL, TransvectionStruct.toMatrix_mk, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transvectionGL_mem_topologicalClosure (t : TransvectionStruct (Fin n) (FiniteAdeleRing (𝓞 K) K)) :
     transvectionGL (Fin n) _ t ∈ (rationalFiniteSL K n).topologicalClosure := by
@@ -130,7 +128,7 @@ theorem transvectionGL_mem_topologicalClosure (t : TransvectionStruct (Fin n) (F
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[elementarySubgroup, Subgroup.closure_le]`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `transvectionGL_mem_topologicalClosure K n t`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem elementarySubgroup_le_topologicalClosure :
     elementarySubgroup (Fin n) (FiniteAdeleRing (𝓞 K) K) ≤
@@ -190,7 +188,7 @@ def localEmbedding (v : HeightOneSpectrum (𝓞 K)) : GL (Fin n) (v.adicCompleti
   map_mul' x y := by rw [RestrictedProduct.mulSingle_mul, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← finiteRestrictedEquiv_apply, ContinuousMulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteRestrictedEquiv_symm_apply (y : FiniteRestrictedGL K n) (w : HeightOneSpectrum (𝓞 K))
     (a b : Fin n) :
@@ -201,13 +199,13 @@ theorem finiteRestrictedEquiv_symm_apply (y : FiniteRestrictedGL K n) (w : Heigh
 open Classical in
 
 /- English proof (translation)
-Use `Units.ext <| Matrix.ext fun a b => FiniteAdeleRing.ext K fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((finiteRestrictedEquiv K n).symm _ : FiniteAdelicGL K n) a b w = _`. Rewrite using `[finiteRestrictedEquiv_symm_apply]`. Simplify using `only [coe_transvectionGL, TransvectionStruct.toMatrix, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `hw : w = v`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hw` using the available equality. Simplify using `only [Pi.mulSingle_eq_same, coe_transvectionGL, TransvectionStruct.toMatrix, transvection, Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`. Establish `h1 : finiteAdeleSingleAdd w t.c w = t.c`. Rewrite using `[finiteAdeleSingleAdd_apply, Pi.single_eq_same]`. Apply the tactic sequence `split_ifs <;>`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [finiteAdele_add_apply, finiteAdele_one_apply, finiteAdele_zero_apply, h1, add_zero, zero_add]`. Establish `h0 : finiteAdeleSingleAdd v t.c w = 0`. Rewrite using `[finiteAdeleSingleAdd_apply, Pi.single_eq_of_ne hw]`. Rewrite using `[Pi.mulSingle_eq_of_ne hw, Units.val_one, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;>`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [finiteAdele_add_apply, finiteAdele_one_apply, finiteAdele_zero_apply, h0, add_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem localEmbedding_transvectionGL (v : HeightOneSpectrum (𝓞 K))
     (t : TransvectionStruct (Fin n) (v.adicCompletion K)) :
@@ -234,9 +232,7 @@ theorem localEmbedding_transvectionGL (v : HeightOneSpectrum (𝓞 K))
       simp only [finiteAdele_add_apply, finiteAdele_one_apply, finiteAdele_zero_apply, h0, add_zero]
 
 /- English proof (translation)
-Establish `hle : (elementarySubgroup (Fin n) (v.adicCompletion K)).map (localEmbedding v) ≤ elementarySubgroup (Fin n) (FiniteAdeleRing (𝓞 K) K)`. Rewrite using `[elementarySubgroup, MonoidHom.map_closure, Subgroup.closure_le]`. Introduce and unpack `_ ⟨_, ⟨t, rfl⟩, rfl⟩`. Rewrite using `[localEmbedding_transvectionGL]`. Conclude with `transvectionGL_mem_elementarySubgroup _`.
-
-Conclude with `hle ⟨x, mem_elementarySubgroup_of_det_eq_one hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localEmbedding_mem_elementarySubgroup (v : HeightOneSpectrum (𝓞 K))
     {x : GL (Fin n) (v.adicCompletion K)} (hx : Matrix.GeneralLinearGroup.det x = 1) :
@@ -257,7 +253,7 @@ def evalFinite (v : HeightOneSpectrum (𝓞 K)) : FiniteAdeleRing (𝓞 K) K →
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.GeneralLinearGroup.val_det_apply]`. Express the relevant statement in the definitionally equal form `_ = evalFinite v _`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_finiteRestrictedEquiv_apply (g : FiniteAdelicGL K n) (v : HeightOneSpectrum (𝓞 K)) :
     (Matrix.GeneralLinearGroup.det (finiteRestrictedEquiv K n g v : GL (Fin n) (v.adicCompletion K)) :
@@ -287,9 +283,9 @@ theorem truncate_apply (S : Finset (HeightOneSpectrum (𝓞 K))) (y : FiniteRest
 
 open Classical in
 /- English proof (translation)
-Use `RestrictedProduct.ext _ _ fun w => ?_` and prove the remaining obligations. Rewrite using `[RestrictedProduct.mul_apply, truncate_apply, truncate_apply, RestrictedProduct.coe_mulSingle_apply]`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hw]`.
+Simplify using the standard rewrite rules.
 -/
 theorem truncate_insert {S : Finset (HeightOneSpectrum (𝓞 K))} {v : HeightOneSpectrum (𝓞 K)}
     (hv : v ∉ S) (y : FiniteRestrictedGL K n) :
@@ -304,11 +300,11 @@ theorem truncate_insert {S : Finset (HeightOneSpectrum (𝓞 K))} {v : HeightOne
   · simp [hw]
 
 /- English proof (translation)
-Establish `hdet : ∀ v, Matrix.GeneralLinearGroup.det (finiteRestrictedEquiv K n g v : GL (Fin n) (v.adicCompletion K)) = 1` using `fun v => by`. Use `ext`. Rewrite using `[det_finiteRestrictedEquiv_apply, hg]`. Both sides reduce to the same expression. Proceed by induction on `S using Finset.induction_on with`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction.
 
-Consider the case `empty`. Establish `: truncate ∅ (finiteRestrictedEquiv K n g) = 1` using `RestrictedProduct.ext _ _ fun w => by simp [truncate_apply]`. Rewrite using `[this, map_one]`. Conclude with `one_mem _`. Consider the case `insert v S hv ih`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[truncate_insert hv, map_mul]`. Conclude with `mul_mem ih (localEmbedding_mem_elementarySubgroup v (hdet v))`.
+A detailed English derivation is pending.
 -/
 theorem finiteRestrictedEquiv_symm_truncate_mem {g : FiniteAdelicGL K n}
     (hg : Matrix.GeneralLinearGroup.det g = 1) (S : Finset (HeightOneSpectrum (𝓞 K))) :
@@ -331,21 +327,17 @@ theorem finiteRestrictedEquiv_symm_truncate_mem {g : FiniteAdelicGL K n}
     exact mul_mem ih (localEmbedding_mem_elementarySubgroup v (hdet v))
 
 /- English proof (translation)
-Use `set Φ := finiteRestrictedEquiv K n`. Use `set y := Φ g`. Establish `hopen : ∀ v : HeightOneSpectrum (𝓞 K), IsOpen (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))` using `fun v => GLnLocal.isOpen_integralGL (v.adicCompletion K) n`. Rewrite using `[mem_closure_iff_nhds]`. Introduce `U hU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : Φ.symm ⁻¹' U ∈ 𝓝 y` using `Φ.symm.continuous.continuousAt.preimage_mem_nhds (by convert hU using 2; exact Φ.symm_apply_apply g)`. Establish `: Fact (∀ v : HeightOneSpectrum (𝓞 K), IsOpen (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K))))` using `⟨hopen⟩`. Establish `hW : (fun w => y * w) ⁻¹' (Φ.symm ⁻¹' U) ∈ 𝓝 (1 : FiniteRestrictedGL K n)` using `(continuous_const.mul continuous_id).continuousAt.preimage_mem_nhds (by simpa using hV)`. Establish `h1 : (1 : FiniteRestrictedGL K n) = RestrictedProduct.structureMap _ (fun v : HeightOneSpectrum (𝓞 K) => (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))) cofinite 1` using `rfl`. Rewrite `hW` using `[h1, RestrictedProduct.nhds_eq_map_structureMap hopen, Filter.mem_map, nhds_pi, Filter.mem_pi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I, hI, t, ht, hsub⟩` from `hW`. Establish `hbad : {v | y v ∉ GLnLocal.integralGL (v.adicCompletion K) n}.Finite` using `Filter.eventually_cofinite.1 y.2`. Use `set S : Finset (HeightOneSpectrum (𝓞 K)) := hI.toFinset ∪ hbad.toFinset`. Establish `hmem : ∀ v, (y⁻¹ * truncate S y) v ∈ GLnLocal.integralGL (v.adicCompletion K) n`. Introduce `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, truncate_apply]`. Use `split_ifs with hv`. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _`. Establish `: y v ∈ GLnLocal.integralGL (v.adicCompletion K) n`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (Finset.mem_union_right _ (hbad.mem_toFinset.2 h))`. Rewrite using `[mul_one]`. Conclude with `inv_mem this`. Set `w' : Π v : HeightOneSpectrum (𝓞 K), (GLnLocal.integralGL (v.adicCompletion K) n : Set (GL (Fin n) (v.adicCompletion K)))` to `fun v => ⟨(y⁻¹ * truncate S y) v, hmem v⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : RestrictedProduct.structureMap _ _ cofinite w' = y⁻¹ * truncate S y` using `RestrictedProduct.ext _ _ fun v => rfl`. Establish `hw'I : w' ∈ I.pi t`. Introduce `v hv`. Establish `hvS : v ∈ S` using `Finset.mem_union_left _ (hI.mem_toFinset.2 hv)`. Establish `: w' v = 1` using `Subtype.ext <| by`.
-
-Express the relevant statement in the definitionally equal form `(y⁻¹ * truncate S y) v = 1`. Rewrite using `[RestrictedProduct.mul_apply, RestrictedProduct.inv_apply, truncate_apply, if_pos hvS, inv_mul_cancel]`. Rewrite using `[this]`. Conclude with `mem_of_mem_nhds (ht v)`. Establish `hU'` using `hsub hw'I`.
-
-Simplify using `only [Set.mem_preimage, hw', mul_inv_cancel_left] at hU'`. Conclude with `⟨_, hU', finiteRestrictedEquiv_symm_truncate_mem hg S⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_closure_elementarySubgroup {g : FiniteAdelicGL K n}
     (hg : Matrix.GeneralLinearGroup.det g = 1) :
@@ -407,7 +399,7 @@ theorem mem_closure_elementarySubgroup {g : FiniteAdelicGL K n}
 variable (K n)
 
 /- English proof (translation)
-Introduce `_ hg` and use `closure_minimal (elementarySubgroup_le_topologicalClosure K n) (Subgroup.isClosed_topologicalClosure _) (mem_closure_elementarySubgroup ((mem_finiteSL K n).1 hg))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finiteSL_le_topologicalClosure :
     finiteSL K n ≤ (rationalFiniteSL K n).topologicalClosure := fun _ hg =>
@@ -415,9 +407,9 @@ theorem finiteSL_le_topologicalClosure :
     (Subgroup.isClosed_topologicalClosure _) (mem_closure_elementarySubgroup ((mem_finiteSL K n).1 hg))
 
 /- English proof (translation)
-Rewrite using `[Topology.IsInducing.subtypeVal.dense_iff]`. Introduce `x`. Establish `hx` using `finiteSL_le_topologicalClosure K n x.2`. Rewrite `hx` using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe]`. Use `closure_mono (fun g hg => ?_) hx` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨⟨g, rationalFiniteSL_le_finiteSL K n hg⟩, Subgroup.mem_subgroupOf.2 hg, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem dense_rationalFiniteSL :
     Dense (((rationalFiniteSL K n).subgroupOf (finiteSL K n) : Subgroup (finiteSL K n)) :
@@ -430,7 +422,7 @@ theorem dense_rationalFiniteSL :
   exact ⟨⟨g, rationalFiniteSL_le_finiteSL K n hg⟩, Subgroup.mem_subgroupOf.2 hg, rfl⟩
 
 /- English proof (translation)
-Establish `h` using `finiteSL_le_topologicalClosure K n ((mem_finiteSL K n).2 hg)`. Rewrite `h` using `[← SetLike.mem_coe, Subgroup.topologicalClosure_coe, mem_closure_iff_nhds]`. Take `⟨_, hxU, γ, hγ, rfl⟩` from `h U hU`. Conclude with `⟨γ, MonoidHom.mem_ker.1 hγ, hxU⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_finiteDiagonal_mem_nhds {g : FiniteAdelicGL K n}
     (hg : Matrix.GeneralLinearGroup.det g = 1) {U : Set (FiniteAdelicGL K n)} (hU : U ∈ 𝓝 g) :

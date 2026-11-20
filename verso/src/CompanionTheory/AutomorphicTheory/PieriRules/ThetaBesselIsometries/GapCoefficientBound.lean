@@ -19,7 +19,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.BesselNormSq
 
 /- English proof (translation)
-Establish `h1 : AEStronglyMeasurable F (μ.map f)` using `by rw [hf.map_eq]; exact hF.1`. Rewrite using `[← integral_map hf.measurable.aemeasurable h1, hf.map_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_comp_mp {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X → X}
     (hf : MeasurePreserving f μ μ) {F : X → ℂ} (hF : Integrable F μ) :
@@ -28,9 +28,9 @@ theorem integral_comp_mp {X : Type} [MeasurableSpace X] {μ : Measure X} {f : X 
   rw [← integral_map hf.measurable.aemeasurable h1, hf.map_eq]
 
 /- English proof (translation)
-Establish `h1 : Integrable (fun x => F x ξ) μ` using `hF.apply_continuousLinearMap ξ`. Establish `h2 : ⟪η, (∫ x, F x ∂μ) ξ⟫_ℂ = ∫ x, ⟪η, F x ξ⟫_ℂ ∂μ`. Rewrite using `[ContinuousLinearMap.integral_apply hF, integral_inner h1]`. Use `⟨h2, ?_, h1.inner_const η⟩` and prove the remaining obligations. Rewrite using `[← inner_conj_symm, h2, ← integral_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inner_conj_symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_integral_apply {X Wp : Type} [MeasurableSpace X] {μ : Measure X}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp]
@@ -50,23 +50,21 @@ open GlobalTheory.BesselNormSq in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hgap hok hS v hv w hw ξ`. Establish `hint` using `(GlobalTheory.T.besselIntegral_integrable_and_cwContinuous_of_gap hH k r ε mu h R Wp z π u μW μN μG νq hDS hgap hok hS v hv).1 w hw`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -, hW, hN, -, -⟩` from `hS`. Take `⟨hψ1, hψm, -, hψc, hUW, -⟩` from `GlobalTheory.T.besselCharacter_unipotentRadical_properties k r z Formalism.QuantumDeterminants.cStd hz`. Take `⟨hmp, -, -, -, -, hae⟩` from `GlobalTheory.T.besselSubgroup_parameter_measurePreserving k r z μW μN hok.1 hz hT hW hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hmul, hunit, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_facts hT hπ`. Establish `e0 : ((‖be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v ξ‖ ^ 2 : ℝ) : ℂ) = ⟪be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v ξ, be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v ξ⟫_ℂ`. Rewrite using `[inner_self_eq_norm_sq_to_K]`. Simplify using the standard rewrite rules. Rewrite using `[e0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `((inner_integral_apply hint ξ _).1).trans (integral_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hae] with p hp`. Take `⟨-, h2, h3⟩` from `inner_integral_apply hint ξ (beInt z Formalism.QuantumDeterminants.cStd π R.σ w v p ξ)`. Use `h2.trans ((integral_comp_mp (hmp _ hp.1 _ hp.2).1 h3).trans (integral_congr_ae ?_))` and prove the remaining obligations. Use `filter_upwards [hae] with q hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨p1, p2⟩, hp1, hp2⟩ : ∃ p' : Mx k r × Mx k r, p'.1 = Matrix.of p.1 ∧ p'.2 = Matrix.of p.2` from `⟨(_, _), rfl, rfl⟩`. Take `⟨⟨q1, q2⟩, hq1, hq2⟩ : ∃ p' : Mx k r × Mx k r, p'.1 = Matrix.of q.1 ∧ p'.2 = Matrix.of q.2` from `⟨(_, _), rfl, rfl⟩`. Simplify using `only at hp1 hp2 hq1 hq2`. Establish `key : ∀ A : Mx k r, Matrix.of (fun i j => A i j) = A` using `fun A => rfl`. Unfold `beInt`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [key]`. Rewrite `hp` using `[← hp1, ← hp2]`. Rewrite `hq` using `[← hq1, ← hq2]`. Rewrite using `[← hp1, ← hp2, ← hq1, ← hq2]`. Take `⟨hpi, hpp, hpp'⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hp.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hqi, -, -⟩` from `Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.uw_inv hq.1`. Establish `e1 : q1 * p1 * (p1⁻¹ * q2 * p1 * p2) = q1 * q2 * (p1 * p2)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hpp, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd (p1⁻¹ * q2 * p1 * p2) = Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd q2 * Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd p2`. Take `⟨-, a2, -, a4⟩` from `hψc p1 hp.1 q2 hq.2`. Rewrite using `[(hψm _ a2 _ hp.2).2, a4]`. Establish `e3 : π (q1 * p1)⁻¹ = (π p1⁻¹).comp (π q1⁻¹)`. Rewrite using `[Matrix.mul_inv_rev, hmul _ hpi _ hqi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hiso : ∀ a b, ⟪π p1⁻¹ a, π p1⁻¹ b⟫_ℂ = ⟪a, b⟫_ℂ` using `(LinearMap.norm_map_iff_inner_map_map ((π p1⁻¹ : Wp →L[ℂ] Wp) : Wp →ₗ[ℂ] Wp)).1 (hunit _ hpi)`. Establish `e4 : Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd p2 * star (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd p2) = 1`. Rewrite using `[Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hψ1]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, e3]`.
-
-Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, inner_smul_left, inner_smul_right, hiso, map_mul, starRingEnd_apply, star_mul', star_star]`. Take the linear combination `(⟪v, R.σ (p1 * p2) w⟫_ℂ * star ⟪v, R.σ (q1 * q2 * (p1 * p2)) w⟫_ℂ * (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd q2 * ⟪π q1⁻¹ ξ, ξ⟫_ℂ)) * e4`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.bessel_norm_sq_double_integral : HypsG → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)), R.IsDG ε mu → Formalism.QuantumDeterminants.GapAtLeast ε mu h → GapOK k r h → SideG k r z π u μW μN μG νq → ∀ v ∈ R.TK, ∀ w ∈ R.sm, ∀ ξ : Wp, ((‖be z Formalism.QuantumDeterminants.cStd π R.σ μW μN w v ξ‖ ^ 2 : ℝ) : ℂ) = ∫ p : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, (∫ q : Formalism.QuantumDeterminants.Mt k r × Formalism.QuantumDeterminants.Mt k r, ⟪v, R.σ (Matrix.of p.1 * Matrix.of p.2) w⟫_ℂ * star ⟪v, R.σ (Matrix.of q.1 * Matrix.of q.2 * (Matrix.of p.1 * Matrix.of p.2)) w⟫_ℂ * (Formalism.QuantumDeterminants.psi k r z Formalism.QuantumDeterminants.cStd (Matrix.of q.2) * ⟪π (Matrix.of q.1)⁻¹ ξ, ξ⟫_ℂ) ∂(μW.prod μN)) ∂(μW.prod μN) := by
   intro hH k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq hDS hgap hok hS v hv w hw ξ

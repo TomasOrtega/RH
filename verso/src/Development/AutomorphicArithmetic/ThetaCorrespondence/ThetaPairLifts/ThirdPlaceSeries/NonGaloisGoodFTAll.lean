@@ -21,13 +21,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.GoodMem
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hP hL`. Establish `hA` using `_root_.GlobalTheory.T.coefficient_duty_pin_at_each_member hL`. Establish `hO` using `_root_.GlobalTheory.T.nonGalois_typeVec_fixed_by_e0 hP`. Use `EvG.imp (EvG.inter hA hO) fun K _ _ _ _ h => ?_` and prove the remaining obligations. Use `large₂.imp (large₂.inter h.1 h.2) fun B f T _ g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hK w Z Wt p0 t nch n xd c _ _ hpin`. Establish `hop` using `g.1 hK w Z Wt p0 t nch n xd c ‹_› ‹_› hpin`. Establish `hrow` using `g.2 hK w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt`. Use `_root_.UpperTheory.Lit.Dz.nonGaloisTwistType hP.green hP.zel hL (w.D Z) _ nch n.tp c.a hop ?_` and prove the remaining obligations. Establish `key : ∀ (D' : D7) (_ : D' = withLoc c.a.nt.L) (r' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r), HEq c.a.nt.rep r' → (∀ (I : GlobalTheory.TypeRec.Ident D') cp, GlobalTheory.TypeRec.IsComp I r' cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g D …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl r' hr h`. Establish `e : c.a.nt.rep = r'` using `eq_of_heq hr`. Rewrite using `[e]`. Introduce `I cp hc σ`. Conclude with `h ⟨I.i, I.cont⟩ cp hc σ`.
-
-Conclude with `key _ c.a.nt.eq _ c.row.rep_eq hrow`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goodFTAll_at_members_of_depthZero : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists,
     _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => GoodFTAll (w.D Z) := by
@@ -62,7 +60,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero | exact _root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero | (intros; apply _root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.goodFTAll_at_mem_of_inputs : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t nch n c => GoodFTAll (w.D Z) := by
   first | exact @_root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero | exact _root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero | (intros; apply _root_.GlobalTheory.GoodMem.goodFTAll_at_members_of_depthZero <;> assumption)

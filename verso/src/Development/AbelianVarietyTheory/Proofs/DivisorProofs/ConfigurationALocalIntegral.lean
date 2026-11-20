@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.ThK.VacImg
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B b a' G G₁ H H' X om om' hC hT hG₁ e he ei ev hev hpure g hg`. Conclude with `GlobalTheory.ThK.VacImg.gaussD_of_inter B G.M G₁.M H.ι H'.ι (fun w => (hC.hH.cartan w).1) (fun w => (hC.hH'.cartan w).1) ei (fun z f => GlobalTheory.T.standard_evaluation_model_integral F E σ B (b + 2) (b + 2 + a') b (b + a') G.V G.W G₁.V G₁.W G.M G₁.M H.ι H'.ι (isoA H H') e hT.b …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem vac_img : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a'))

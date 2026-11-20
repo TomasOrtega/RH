@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.CovolFin
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h₁ : valAt y (1 : Z.functionField) = 1` using `by simpa using Base.valAt_stalk y 1`. Simplify using `[h₁, unitAt_one]`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately.
 
-Take `⟨U, e⟩` from `ih fun i hi => hu i (Finset.mem_insert_of_mem hi)`. Establish `Ua` using `hu a (Finset.mem_insert_self a s)`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Units.val_mul]`. Use `⟨Ua.mul U, ?_⟩` and prove the remaining obligations. Rewrite using `[SmallSec.valAt_mul Ua.regAt U.regAt, map_mul, Real.log_mul (w.pos (SmallSec.valAt_ne_zero Ua)).ne' (w.pos (SmallSec.valAt_ne_zero U)).ne', e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_valAt_prod {K : Type} [Field K] {Z : Scheme.{0}} [IsIntegral Z] (y : Sp K ⟶ Z) (w : AbsoluteValue K ℝ)
     {ι : Type} (s : Finset ι) (u : ι → Z.functionFieldˣ) (hu : ∀ i ∈ s, UnitAt (below y) (u i : Z.functionField)) :
@@ -41,7 +41,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.prod_insert hj, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_finsum {G : Type} [CommGroup G] (a : G) {ι : Type} (s : Finset ι) (f : ι → ℤ) :
     a ^ (∑ i ∈ s, f i) = ∏ i ∈ s, a ^ f i := by
@@ -53,7 +53,7 @@ theorem zpow_finsum {G : Type} [CommGroup G] (a : G) {ι : Type} (s : Finset ι)
 variable (Dw) in
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [LineTest.expo_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, LineTest.expo_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem expo_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) :
     expo Dw (∑ i ∈ s, ρ i) = ∑ i ∈ s, expo Dw (ρ i) := by
@@ -63,7 +63,7 @@ theorem expo_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, LineTest.expo_add, ih]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.sum_neg_index (fun _ => by simp)]`. Simplify using `only [Int.cast_neg, neg_mul]`. Rewrite using `[Finsupp.sum_finset_sum_index (fun _ => by simp) (fun _ _ _ => by push_cast; ring)]`. Simplify using `[Finsupp.sum, Finset.sum_neg_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_neg_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) (K : Sym E → ℝ) :
     ((-∑ i ∈ s, ρ i).sum fun a n => (n : ℝ) * K a) = -∑ i ∈ s, (ρ i).sum fun a n => (n : ℝ) * K a := by
@@ -76,13 +76,13 @@ theorem sum_neg_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) (
 open Classical in
 
 /- English proof (translation)
-Establish `hp` using `LineTest.residueCharacteristic_prime v`. Establish `UW` using `GlobalTheory.CombInd.Tens.unitAt_prod Y (-∑ i ∈ s, ρ i) (below y.1)`. Establish `Ui` using `fun i => GlobalTheory.CombInd.Tens.unitAt_prod Y (ρ i) (below y.1)`. Simplify using `only [lgOf, dif_pos hp]`. Rewrite using `[sum_neg_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set b := below y.1 with hb`. Use `set t := (Y.gr_spec b).choose_spec.choose_spec.choose with ht`. Establish `hP : (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (-∑ i ∈ s, ρ i) x) = (∏ i ∈ s, ∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x)⁻¹`. Rewrite using `[GlobalTheory.CombInd.DualComb.expo_neg, expo_sum, Finset.prod_comm, ← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.neg_apply, Finset.sum_apply, zpow_neg, zpow_finsum]`. Establish `hprod : ((eqn (divOf Y (expo Dw (-∑ i ∈ s, ρ i))) b)⁻¹ * ∏ i ∈ s, (eqn (divOf Y (expo Dw (ρ i))) b)⁻¹ : Y.Y.Fnˣ) = ((∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (-∑ i ∈ s, ρ i) x) * (eqn (divOf Y (expo Dw (-∑ i ∈ s, ρ i))) b)⁻¹) * ∏ i ∈ s, ((∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x) …`. Rewrite using `[hP, Finset.prod_mul_distrib, mul_mul_mul_comm, inv_mul_cancel, one_mul]`. Take `⟨Us, hs⟩` from `GlobalTheory.CovolFin.log_valAt_prod y.1 ε.w s (fun i => (∏ x : Letter Dw, t x.1 x.2 ^ expo Dw (ρ i) x) * (eqn (divOf Y (expo Dw (ρ i))) b)⁻¹) fun i _ => Ui i`. Rewrite using `[hprod, Units.val_mul _ (∏ i ∈ s, _), SmallSec.valAt_mul UW.regAt Us.regAt, map_mul, Real.log_mul (ε.w.pos (SmallSec.valAt_ne_zero UW)).ne' (ε.w.pos (SmallSec.valAt_ne_zero Us)).ne', hs, Finset.sum_add_distrib, ← Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem lgOf_neg_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) (v : HeightOneSpectrum (𝓞 F)) (ε : Ext v)
     (y : AlgPt Y.Y) :
@@ -117,7 +117,7 @@ theorem lgOf_neg_sum {ι : Type} (s : Finset ι) (ρ : ι → Sym E →₀ ℤ) 
 end Free
 
 /- English proof (translation)
-Establish `hind : ArIn.ind ∅ = fun _ => false` using `funext fun q => by simp [ArIn.ind]`. Rewrite using `[hind, ← Finset.sum_neg_distrib]`. Unfold `detOmSym`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun k => ?_` and prove the remaining obligations. Simplify using `[wholeSym, Finsupp.single_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem detOmSym_eq (E : Type) [Field E] (g : ℕ) :
     detOmSym E g = -∑ k : Fin g, Finsupp.single (ArIn.ind ∅, (none : Option ℝ), (Sum.inr (k : ℕ) : ((E →+* ℂ) × ℕ) ⊕ ℕ)) 1 := by
@@ -128,7 +128,7 @@ theorem detOmSym_eq (E : Type) [Field E] (g : ℕ) :
   simp [wholeSym, Finsupp.single_neg]
 
 /- English proof (translation)
-Introduce `D O c v e y`. Rewrite using `[detOmSym_eq]`. Use `(lgOf_neg_sum (O.Φ.C c) Finset.univ _ v e y).trans ?_` and prove the remaining obligations. Use `congr 3`. Simplify using `only [Setup.adl0, adlOf, genAt, Units.val_mul, Units.coe_prod, zpow_neg, zpow_one, div_eq_mul_inv, Finset.prod_inv_distrib, inv_inv, Units.val_inv_eq_inv_val]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem lg_detOmSym : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (v : IsDedekindDomain.HeightOneSpectrum (𝓞 D.what₂.LL)) (e : GlobalTheory.TrueGeo.Ext v) (y : AlgPt (O.var c)), (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).lg v e y = Real.log (e.w (valAt y.1 (genAt (O.adl0 c (detOmSym D.host.E (D.R.f * O.N))).D (below y.1) / ∏ k : Fin (D.R.f * O.N), genAt (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).D (below y.1) ^ (-1 : ℤ)))) - ∑ k : Fin (D.R.f * O.N), (O.adl0 c (Finsupp.single (ArIn.ind ∅, none, Sum.inr (k : ℕ)) 1)).lg v e y := by
   intro D O c v e y

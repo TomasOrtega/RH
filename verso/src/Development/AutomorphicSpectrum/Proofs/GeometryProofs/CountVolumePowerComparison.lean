@@ -15,9 +15,9 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Plug
 
 /- English proof (translation)
-Proceed by induction on `x using ENat.recTopCoe with`. Consider the case `top`. Rewrite using `[GlobalTheory.CompHt.logCard_top, ENNReal.mul_top (Nat.cast_ne_zero.2 hd.ne')]`. Conclude with `le_top`. Consider the case `coe a`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `h : ((a : ℕ∞) ^ d) = ((a ^ d : ℕ) : ℕ∞)` using `by push_cast; rfl`. Rewrite using `[h, GlobalTheory.CompHt.logCard_coe, GlobalTheory.CompHt.logCard_coe, Nat.cast_pow, Real.log_pow, ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logCard_pow_le (x : ℕ∞) {d : ℕ} (hd : 0 < d) :
     GlobalTheory.CompHt.logCard (x ^ d) ≤ (d : ℝ≥0∞) * GlobalTheory.CompHt.logCard x := by
@@ -31,13 +31,13 @@ theorem logCard_pow_le (x : ℕ∞) {d : ℕ} (hd : 0 < d) :
       ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast]
 
 /- English proof (translation)
-The claim follows from `EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 h))`.
+A detailed English derivation is pending.
 -/
 theorem logCard_mono {x y : ℕ∞} (h : x ≤ y) : GlobalTheory.CompHt.logCard x ≤ GlobalTheory.CompHt.logCard y :=
   EReal.toENNReal_le_toENNReal (ENNReal.log_monotone (ENat.toENNReal_le.2 h))
 
 /- English proof (translation)
-Establish `hk' : (k : ℝ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hj : (0 : ℝ) ≤ 1 + (j : ℝ) / k` using `by positivity`. Rewrite using `[← ENNReal.ofReal_natCast, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_pow (Nat.cast_nonneg _), ← ENNReal.ofReal_pow (Nat.cast_nonneg _), ← ENNReal.ofReal_mul (by positivity), ← mul_pow]`. Use `congr 2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -53,7 +53,7 @@ theorem natCast_shift_pow (D j k : ℕ) (hk : 0 < k) :
   field_simp
 
 /- English proof (translation)
-Establish `h : Tendsto (fun k : ℕ => (j : ℝ) / k) atTop (𝓝 0)` using `tendsto_const_div_atTop_nhds_zero_nat _`. Establish `h2 : Tendsto (fun k : ℕ => (1 + (j : ℝ) / k) ^ (D + 1)) atTop (𝓝 ((1 + 0) ^ (D + 1)))` using `(tendsto_const_nhds.add h).pow _`. Establish `h3` using `ENNReal.tendsto_ofReal h2`. Simplify using `using h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_shift_ratio (D j : ℕ) :
     Tendsto (fun k : ℕ => ENNReal.ofReal ((1 + (j : ℝ) / k) ^ (D + 1))) atTop (𝓝 1) := by
@@ -64,15 +64,13 @@ theorem tendsto_shift_ratio (D j : ℕ) :
   simpa using h3
 
 /- English proof (translation)
-Use `set A : ℝ≥0∞ := ((8 * k : ℕ) : ℝ≥0∞) ^ (D + 1) with hA`. Use `set A' : ℝ≥0∞ := ((8 * (k + j) : ℕ) : ℝ≥0∞) ^ (D + 1) with hA'`. Use `set c : ℝ≥0∞ := ENNReal.ofReal ((1 + (j : ℝ) / k) ^ (D + 1)) with hc`. Establish `hcA : A' = c * A` using `natCast_shift_pow D j k hk`. Establish `hA0 : A ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAt : A ≠ ⊤` using `ENNReal.pow_ne_top (ENNReal.natCast_ne_top _)`. Establish `hA'0 : A' ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (by omega))`. Establish `hA't : A' ≠ ⊤` using `ENNReal.pow_ne_top (ENNReal.natCast_ne_top _)`. Establish `hn0 : (n : ℝ≥0∞) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne'`. Establish `hnt : (n : ℝ≥0∞) ≠ ⊤` using `ENNReal.natCast_ne_top _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : (d : ℝ≥0∞) ≠ 0` using `Nat.cast_ne_zero.2 hd.ne'`. Establish `hdt : (d : ℝ≥0∞) ≠ ⊤` using `ENNReal.natCast_ne_top _`. Establish `hL : GlobalTheory.CompHt.logCard x ≤ (d : ℝ≥0∞) * GlobalTheory.CompHt.logCard y` using `(logCard_mono h).trans (logCard_pow_le y hd)`. Use `ENNReal.div_le_of_le_mul ?_` and prove the remaining obligations. Establish `key : (D.factorial : ℝ≥0∞) * GlobalTheory.CompHt.logCard y / ((n : ℝ≥0∞) * A') * c * (((n * d : ℕ) : ℝ≥0∞) * A) = (D.factorial : ℝ≥0∞) * ((d : ℝ≥0∞) * GlobalTheory.CompHt.logCard y)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[div_eq_mul_inv, ENNReal.mul_inv (Or.inl hn0) (Or.inl hnt), Nat.cast_mul]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by`. Rewrite using `[← hcA, ENNReal.inv_mul_cancel hn0 hnt, ENNReal.inv_mul_cancel hA'0 hA't, mul_one, mul_one]`.
-
-Rewrite using `[key]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem term_le_shift (D n d j k : ℕ) (hn : 0 < n) (hd : 0 < d) (hk : 0 < k) {x y : ℕ∞} (h : x ≤ y ^ d) :
     (D.factorial : ℝ≥0∞) * GlobalTheory.CompHt.logCard x / (((n * d : ℕ) : ℝ≥0∞) * ((8 * k : ℕ) : ℝ≥0∞) ^ (D + 1)) ≤
@@ -104,11 +102,11 @@ theorem term_le_shift (D n d j k : ℕ) (hn : 0 < n) (hd : 0 < d) (hk : 0 < k) {
   gcongr
 
 /- English proof (translation)
-Introduce and unpack `D n d _ m m' hn hd ⟨j, rfl⟩ h`. Take `⟨N, hN⟩` from `eventually_atTop.1 h`. Use `set b : ℕ → ℝ≥0∞ := fun k => (D.factorial : ℝ≥0∞) * GlobalTheory.CompHt.logCard (m' (8 * k)) / ((n : ℝ≥0∞) * ((8 * k : ℕ) : ℝ≥0∞) ^ (D + 1)) with hb`. Use `set c : ℕ → ℝ≥0∞ := fun k => ENNReal.ofReal ((1 + (j : ℝ) / k) ^ (D + 1)) with hc`. Establish `hlim : limsup c atTop = 1` using `(tendsto_shift_ratio D j).limsup_eq`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : GlobalTheory.CompHt.countVol D (n * d) 8 m ≤ limsup ((fun k => b (k + j)) * c) atTop`. Use `limsup_le_limsup ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (N + 1)] with k hk`. Establish `hx : m (8 * k) ≤ m' (8 * (k + j)) ^ d`. Use `hN (8 * k) (by omega)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[show 8 * k + 8 * j = 8 * (k + j) by ring]`. Then use the resulting hypothesis. Conclude with `term_le_shift D n d j k hn hd (by omega) hx`. Use `hle.trans ((ENNReal.limsup_mul_le' (Or.inr (by simp [hlim])) (Or.inr (by simp [hlim]))).trans ?_)` and prove the remaining obligations. Rewrite using `[hlim, mul_one, Filter.limsup_nat_add b j]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem countVol_le_of_le_shift_pow : ∀ (D n d k₀ : ℕ) (m m' : ℕ → ℕ∞), 0 < n → 0 < d → 8 ∣ k₀ →
     (∀ᶠ τ : ℕ in atTop, m τ ≤ m' (τ + k₀) ^ d) →

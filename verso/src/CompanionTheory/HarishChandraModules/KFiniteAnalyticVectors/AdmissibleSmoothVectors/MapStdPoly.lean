@@ -29,7 +29,7 @@ def stdPoly (E : R) {M : ℕ} (a : Fin M → R) : R :=
   ∑ π : Equiv.Perm (Fin M), ((Equiv.Perm.sign π : ℤ) : R) * word E (List.ofFn fun i => a (π i))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih => simp [ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_word {R' : Type*} [Ring R'] (f : R →+* R') (E : R) (l : List R) :
     f (word E l) = word (f E) (l.map f) := by
@@ -38,7 +38,7 @@ theorem map_word {R' : Type*} [Ring R'] (f : R →+* R') (E : R) (l : List R) :
   | cons a l ih => simp [ih]
 
 /- English proof (translation)
-Simplify using `[stdPoly, map_word, List.map_ofFn, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_stdPoly {R' : Type*} [Ring R'] (f : R →+* R') (E : R) {M : ℕ} (a : Fin M → R) :
     f (stdPoly E a) = stdPoly (f E) fun i => f (a i) := by

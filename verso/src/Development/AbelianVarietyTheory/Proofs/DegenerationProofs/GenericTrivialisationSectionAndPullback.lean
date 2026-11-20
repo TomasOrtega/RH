@@ -12,15 +12,13 @@ open GlobalTheory.Points
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M : RatModel o Ω} {H : LB M.Z} {d : H.ι → Ω}
 
 /- English proof (translation)
-Establish `hf : ∀ k, ∃ f : Γ(M.Z, H.U k), (H.U k : Set M.Z).Nonempty → valF M.pt (H.U k) f = x / d k` using `fun k => by`. Distinguish the cases in `hk : (H.U k : Set M.Z).Nonempty`. Take `⟨f, hf⟩` from `(mem_ringOn_iff_exists hk).1 (mem_ringOn.2 (hx k))`. Conclude with `⟨f, fun _ => hf⟩`. Conclude with `⟨0, fun h => (hk h).elim⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose f hf using hf`. Use `⟨⟨f, fun i j => ?_⟩, hf⟩` and prove the remaining obligations. Distinguish the cases in `hij : ((H.U i ⊓ H.U j : M.Z.Opens) : Set M.Z).Nonempty`. Use `M.res_injective _ hij ?_` and prove the remaining obligations. Establish `h1` using `(M.res_apply _ hij _).trans ((M.valF_resG inf_le_left hij (f i)).trans (hf i (hij.mono (fun _ hz => hz.1))))`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(M.res_apply _ hij _).trans ((M.valF_resG inf_le_right hij (f j)).trans (hf j (hij.mono (fun _ hz => hz.2))))`. Establish `h3` using `(M.res_apply _ hij _).trans (h.g_eq i j hij)`. Rewrite using `[map_mul, h3]`. Use `h1.trans (Eq.trans ?_ (congrArg (d j / d i * ·) h2.symm))` and prove the remaining obligations. Use `h.ne i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h.ne j` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish `e : (H.U i ⊓ H.U j : M.Z.Opens) = ⊥` using `SetLike.coe_injective (Set.not_nonempty_iff_eq_empty.1 hij)`. Establish `: Subsingleton Γ(M.Z, H.U i ⊓ H.U j)`. Rewrite using `[e]`.
-
-Use `infer_instance`. Conclude with `Subsingleton.elim _ _`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenTriv.exists_sec_hasVal (h : M.GenTriv H d) (x : Ω) (hx : ∀ k, ∀ z ∈ H.U k, x / d k ∈ M.O z) :
     ∃ σ : H.Sec, M.HasVal d σ x := by
@@ -50,9 +48,9 @@ theorem GenTriv.exists_sec_hasVal (h : M.GenTriv H d) (x : Ω) (hx : ∀ k, ∀ 
     exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Use `⟨fun k => (map_ne_zero φ).2 (h.ne _), fun k k' hk => ?_⟩` and prove the remaining obligations. Establish `hle : (H.pull a).U k ⊓ (H.pull a).U k' ≤ a ⁻¹ᵁ (H.U (k PUnit.unit) ⊓ H.U (k' PUnit.unit))` using `le_inf (inf_le_left.trans (LB.wchart_le H (fun _ => a) k PUnit.unit)) (inf_le_right.trans (LB.wchart_le H (fun _ => a) k' PUnit.unit))`. Establish `hne : ((H.U (k PUnit.unit) ⊓ H.U (k' PUnit.unit) : M.Z.Opens) : Set M.Z).Nonempty`. Take `⟨z, hz⟩` from `hk`. Conclude with `⟨a z, hle hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `e : ((H.pull a).g k k' : Γ(N.Z, (H.pull a).U k ⊓ (H.pull a).U k')) = resG N.Z hle (a.app _ (H.g (k PUnit.unit) (k' PUnit.unit) : Γ(M.Z, _)))`. Establish `e0 : (H.pull a).g k k' = Semi.res hle (pullU a _ (H.g (k PUnit.unit) (k' PUnit.unit)))` using `(Fintype.prod_unique (ι := PUnit) fun _ => Semi.res hle (pullU a _ (H.g (k PUnit.unit) (k' PUnit.unit))) ^ (1 : ℤ)).trans (zpow_one _)`. Conclude with `congrArg Units.val e0`. Rewrite using `[e, N.valF_resG hle hk, ha.valF_app hne, h.g_eq _ _ hne, map_div₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GenTriv.pull (h : M.GenTriv H d) {Ω' : Type} [Field Ω'] [Algebra o Ω'] {φ : Ω →ₐ[o] Ω'}
     {N : RatModel o Ω'} {a : N.Z ⟶ M.Z} (ha : M.IsHom N φ a) :
@@ -73,7 +71,7 @@ theorem GenTriv.pull (h : M.GenTriv H d) {Ω' : Type} [Field Ω'] [Algebra o Ω'
   rw [e, N.valF_resG hle hk, ha.valF_app hne, h.g_eq _ _ hne, map_div₀]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ h` and use `⟨h.exists_sec_hasVal, fun _ _ _ _ _ _ ha => h.pull ha⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem genTriv_sec_and_pull : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) (H : LB M.Z)
     (d : H.ι → Ω), M.GenTriv H d →

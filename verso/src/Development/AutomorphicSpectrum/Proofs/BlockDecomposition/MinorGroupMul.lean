@@ -15,9 +15,9 @@ def minorGroup {A B : Type} [CommRing A] [CommRing B] (ρ : A →+* B) {d m : �
     y = ρ b * (Matrix.of fun k l => D (κ k) (ρ (bs l))).det}
 
 /- English proof (translation)
-Unfold `minorGroup at hy ⊢`. Use `AddSubgroup.closure_induction (fun z hz => ?_) ?_ (fun z₁ z₂ _ _ h₁ h₂ => ?_) (fun z _ hz => ?_) hy` and prove the remaining obligations. Take `⟨b, bs, rfl⟩` from `hz`. Conclude with `AddSubgroup.subset_closure ⟨a * b, bs, by rw [map_mul, mul_assoc]⟩`. Rewrite using `[mul_zero]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Rewrite using `[mul_add]`. Conclude with `add_mem h₁ h₂`. Rewrite using `[mul_neg]`. Conclude with `neg_mem hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minorGroup_mul {A B : Type} [CommRing A] [CommRing B] (ρ : A →+* B) {d m : ℕ}
     (D : Fin d → B → B) (κ : Fin m → Fin d) (a : A) {y : B}
@@ -35,11 +35,11 @@ theorem minorGroup_mul {A B : Type} [CommRing A] [CommRing B] (ρ : A →+* B) {
     exact neg_mem hz
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Establish `h1` using `hmul 1 1`. Simplify using `only [mul_one, one_mul] at h1`. Simplify using `only [pow_zero, Nat.cast_zero, zero_mul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h1`. Consider the case `succ n ih`. Rewrite using `[pow_succ, hmul, ih]`. Break down `n with _ | n` into its components or cases. Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem leibniz_pow {R : Type} [CommRing R] (q : R → R)
     (hmul : ∀ x y, q (x * y) = x * q y + y * q x) (φ : R) (N : ℕ) :
@@ -59,9 +59,9 @@ theorem leibniz_pow {R : Type} [CommRing R] (q : R → R)
       ring
 
 /- English proof (translation)
-Establish `e1 : ∀ x, μ (ι x) = lam (ρ x)` using `fun x => by`. Simplify using `using RingHom.congr_fun hc x`. Establish `hF : lam (ρ f) ^ N * μ a = lam (ρ b)`. Establish `h1` using `congrArg μ hb`. Rewrite `h1` using `[map_mul, map_pow, e1, e1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hp1` using `hmul k (lam (ρ f) ^ N) (μ a)`. Rewrite `hp1` using `[hF, hD, leibniz_pow (p k) (hmul k) (lam (ρ f)) N, hD]`. Simplify using `only [map_add, map_mul, map_neg, map_pow, map_natCast]`. Rewrite using `[hp1, ← hF]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem column_clear {A B Af Bw : Type} [CommRing A] [CommRing B] [CommRing Af] [CommRing Bw]
     (ρ : A →+* B) (lam : B →+* Bw) (ι : A →+* Af) (μ : Af →+* Bw) (f : A)
@@ -83,11 +83,11 @@ theorem column_clear {A B Af Bw : Type} [CommRing A] [CommRing B] [CommRing Af] 
   ring
 
 /- English proof (translation)
-Unfold `minorGroup`. Use `set X : Fin m → Fin m → B := fun l k => ρ (c₁ l) * D (κ k) (ρ (b l)) with hX`. Use `set Y : Fin m → Fin m → B := fun l k => ρ (c₂ l) * D (κ k) (ρ f) with hY`. Establish `h1 : (Matrix.of fun k l => ρ (c₁ l) * D (κ k) (ρ (b l)) + ρ (c₂ l) * D (κ k) (ρ f)).det = Matrix.det (Matrix.of fun l k => (X + Y) l k)`. Rewrite using `[← Matrix.det_transpose]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2 : Matrix.det (Matrix.of fun l k => (X + Y) l k) = ∑ s : Finset (Fin m), Matrix.det (Matrix.of fun l k => s.piecewise X Y l k)` using `(Matrix.detRowAlternating (n := Fin m) (R := B)).toMultilinearMap.map_add_univ X Y`. Rewrite using `[h1, h2]`. Use `AddSubgroup.sum_mem _ fun s _ => AddSubgroup.subset_closure ?_` and prove the remaining obligations. Use `⟨∏ l, (if l ∈ s then c₁ l else c₂ l), fun l => if l ∈ s then b l else f, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_prod, ← Matrix.det_transpose (Matrix.of fun k l => D (κ k) (ρ ((fun l => if l ∈ s then b l else f) l))), ← Matrix.det_mul_column]`. Use `congr 1`. Use extensionality with `l k`. Apply the tactic sequence `by_cases hl : l ∈ s <;> simp [hl, hX, hY, Finset.piecewise, Matrix.transpose_apply]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem det_mem {A B : Type} [CommRing A] [CommRing B] (ρ : A →+* B) (f : A) {d m : ℕ}
     (D : Fin d → B → B) (κ : Fin m → Fin d) (c₁ c₂ b : Fin m → A) :
@@ -115,13 +115,13 @@ theorem det_mem {A B : Type} [CommRing A] [CommRing B] (ρ : A →+* B) (f : A) 
   by_cases hl : l ∈ s <;> simp [hl, hX, hY, Finset.piecewise, Matrix.transpose_apply]
 
 /- English proof (translation)
-Use `choose bb NN hbN using hloc`. Take `⟨N, hN⟩ : ∃ N, ∀ l, NN (u l) ≤ N` from `⟨Finset.univ.sup fun l => NN (u l), fun l => Finset.le_sup (f := fun l => NN (u l)) (Finset.mem_univ l)⟩`. Set `b : Fin m → A` to `fun l => f ^ (N - NN (u l)) * bb (u l)`. Establish `hb : ∀ l, ι f ^ N * u l = ι (b l)`. Introduce `l`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [b, map_mul, map_pow]`. Rewrite using `[← hbN (u l), ← mul_assoc, ← pow_add, Nat.sub_add_cancel (hN l)]`. Establish `hcol : ∀ k l, lam (ρ (f ^ N) * D (κ k) (ρ (b l)) + ρ (-(N : A) * f ^ (N - 1) * b l) * D (κ k) (ρ f)) = lam (ρ f) ^ (2 * N) * p (κ k) (μ (u l))` using `fun k l => column_clear ρ lam ι μ f hc D p hmul hD (u l) (b l) N (hb l) (κ k)`. Use `⟨2 * N * m, (Matrix.of fun k l => ρ (f ^ N) * D (κ k) (ρ (b l)) + ρ (-(N : A) * f ^ (N - 1) * b l) * D (κ k) (ρ f)).det, det_mem ρ f D κ (fun _ => f ^ N) (fun l => -(N : A) * f ^ (N - 1) * b l) b, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmat : lam.mapMatrix (Matrix.of fun k l => ρ (f ^ N) * D (κ k) (ρ (b l)) + ρ (-(N : A) * f ^ (N - 1) * b l) * D (κ k) (ρ f)) = Matrix.of fun k l => (fun _ => lam (ρ f) ^ (2 * N)) k * p (κ k) (μ (u l))`. Use extensionality with `k l`. Use `first`. Consider the case `exact hcol k l`. Consider the case `simpa using hcol k l`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hmat, Matrix.det_mul_column, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem det_clear {A B Af Bw : Type} [CommRing A] [CommRing B] [CommRing Af] [CommRing Bw]
     (ρ : A →+* B) (lam : B →+* Bw) (ι : A →+* Af) (μ : Af →+* Bw) (f : A)
@@ -162,17 +162,15 @@ theorem det_clear {A B Af Bw : Type} [CommRing A] [CommRing B] [CommRing Af] [Co
   rfl
 
 /- English proof (translation)
-Introduce `A B Af Bw _ _ _ _ ρ lam ι μ f hc hloc hker d m Λ _ D p _ hmul hD κ z u x hx`. Establish `e1 : ∀ a : A, μ (ι a) = lam (ρ a)` using `fun a => by`. Simplify using `using RingHom.congr_fun hc a`. Use `choose MM nn hnn hMM using fun L => det_clear ρ lam ι μ f hc hloc D p hmul hD κ (u L)`. Use `choose bz Nz hz using fun L => hloc (z L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨K, hK⟩ : ∃ K, ∀ L, MM L + Nz L ≤ K` from `⟨Finset.univ.sup fun L => MM L + Nz L, fun L => Finset.le_sup (f := fun L => MM L + Nz L) (Finset.mem_univ L)⟩`. Set `e : Λ → A` to `fun L => f ^ (K - (MM L + Nz L)) * bz L`. Establish `hterm : ∀ L, lam (ρ f) ^ K * (μ (z L) * (Matrix.of fun k l => p (κ k) (μ (u L l))).det) = lam (ρ (e L) * nn L)`. Introduce `L`. Establish `hzL : lam (ρ f) ^ Nz L * μ (z L) = lam (ρ (bz L))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `congrArg μ (hz L)`. Rewrite `h1` using `[map_mul, map_pow, e1, e1]`. Then use the resulting hypothesis. Establish `hK' : K = (K - (MM L + Nz L)) + Nz L + MM L`. Establish `h` using `Nat.sub_add_cancel (hK L)`. Rewrite using `[add_assoc, add_comm (Nz L) (MM L), h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [e, map_mul, map_pow, ← hzL, ← hMM L]`. Use `conv_lhs => rw [hK', pow_add, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hymem : (∑ L, ρ (e L) * nn L) ∈ minorGroup ρ D κ` using `AddSubgroup.sum_mem _ fun L _ => minorGroup_mul ρ D κ (e L) (hnn L)`. Establish `h0 : lam (ρ f ^ K * x - ∑ L, ρ (e L) * nn L) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub, map_mul, map_pow, hx, Finset.mul_sum, map_sum]`. Simplify using `only [hterm]`. Conclude with `sub_self _`. Take `⟨N', hN'⟩` from `hker _ h0`. Use `⟨N' + K, ?_⟩` and prove the remaining obligations.
-
-Establish `h2 : ρ f ^ (N' + K) * x = ρ (f ^ N') * ∑ L, ρ (e L) * nn L`. Rewrite using `[pow_add, mul_assoc, ← sub_eq_zero, map_pow, ← mul_sub]`. Conclude with `hN'`. Rewrite using `[h2]`. Conclude with `minorGroup_mul ρ D κ (f ^ N') hymem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clear_sum : ∀ {A B Af Bw : Type} [CommRing A] [CommRing B] [CommRing Af] [CommRing Bw] (ρ : A →+* B) (lam : B →+* Bw) (ι : A →+* Af) (μ : Af →+* Bw) (f : A),
     μ.comp ι = lam.comp ρ → (∀ a : Af, ∃ (b : A) (N : ℕ), ι f ^ N * a = ι b) → (∀ x : B, lam x = 0 → ∃ N : ℕ, ρ f ^ N * x = 0) →

@@ -6,19 +6,19 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 open UpperTheory.V.Cj UpperTheory.V.Cj.H
 
 /- English proof (translation)
-Introduce `V F _ _ _ _ Y hY p hp q w hw K hKY hK`. Take `⟨C, hC⟩` from `(hK.image (continuous_id.sub continuous_const : Continuous fun x : V => x - p)).isBounded.exists_norm_le`. Use `set K' : Set V := (fun z : ℝ × V => p + z.1 • (z.2 - p)) '' (Set.Icc (0 : ℝ) 1 ×ˢ K)`. Establish `hK'c : IsCompact K'` using `(isCompact_Icc.prod hK).image (by fun_prop)`. Establish `hK'Y : K' ⊆ Y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨t, x⟩, ⟨ht, hx⟩, rfl⟩`. Conclude with `hY.add_smul_sub_mem hp (hKY hx) ht`. Establish `hwK` using `hw K' hK'Y hK'c`. Rewrite `hwK`, the goal using `[Metric.tendstoUniformlyOn_iff]`. Introduce `ε hε`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hR : 0 < |C| + 1` using `by positivity`. Use `filter_upwards [hwK (ε / 2 / (|C| + 1)) (by positivity)] with k hk x hx`. Simplify using `only [Pi.zero_apply, dist_zero_left] at hk ⊢`. Establish `hxp : ‖x - p‖ ≤ |C| + 1`. Establish `h0` using `hC (x - p) ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear relations using `[le_abs_self C]`. Establish `hbound : ∀ t ∈ Set.uIoc (0 : ℝ) 1, ‖t ^ q • (w k (p + t • (x - p))).curryLeft (x - p)‖ ≤ ε / 2 / (|C| + 1) * (|C| + 1)`. Introduce `t ht`. Rewrite `ht` using `[Set.uIoc_of_le zero_le_one]`. Establish `hy : p + t • (x - p) ∈ K'` using `⟨(t, x), ⟨⟨ht.1.le, ht.2⟩, hx⟩, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hk _ hy`. Rewrite using `[norm_smul, norm_pow, Real.norm_eq_abs, abs_of_pos ht.1]`. Establish `h2 : t ^ q ≤ 1` using `pow_le_one₀ ht.1.le ht.2`. Establish `h3 : ‖(w k (p + t • (x - p))).curryLeft (x - p)‖ ≤ ‖w k (p + t • (x - p))‖ * ‖x - p‖`. Use `(ContinuousLinearMap.le_opNorm _ _).trans_eq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[ContinuousAlternatingMap.norm_curryLeft]`. Establish `h4 : ‖w k (p + t • (x - p))‖ * ‖x - p‖ ≤ ε / 2 / (|C| + 1) * (|C| + 1)` using `mul_le_mul h1.le hxp (norm_nonneg _) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]`. Conclude with `h3.trans h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hint` using `intervalIntegral.norm_integral_le_of_norm_le_const hbound`. Establish `e : ε / 2 / (|C| + 1) * (|C| + 1) = ε / 2` using `by field_simp`. Rewrite `hint` using `[e]`. Simplify using `only [sub_zero, abs_one, mul_one] at hint`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.coneLim :
     UpperTheory.V.Cj.H.ConeLim := by

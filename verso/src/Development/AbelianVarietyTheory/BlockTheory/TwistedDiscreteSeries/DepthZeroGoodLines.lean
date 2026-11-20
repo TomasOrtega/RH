@@ -46,15 +46,13 @@ def superSum (u : Matrix (Fin n) (Fin n) F) : F :=
   ∑ i : Fin n, ∑ j : Fin n, if (j : ℕ) = i + 1 then u i j else 0
 
 /- English proof (translation)
-Take `⟨hu, hu1⟩` from `(mem_unipB F).1 u.2`. Take `⟨hv, hv1⟩` from `(mem_unipB F).1 v.2`. Unfold `superSum`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Use `show ((u : GL (Fin n) F).val * (v : GL (Fin n) F).val) i j = _`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_add i j (by intro e; rw [e] at h; omega), hu1, hv1]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `l ⟨h1, h2⟩`. Break down `lt_or_gt_of_ne h1 with h3 | h3` into its components or cases. Rewrite using `[hu i l h3, zero_mul]`. Establish `h4 : j < l`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : (i : ℕ) < l` using `h3`. Establish `a2 : (l : ℕ) ≠ j` using `fun e => h2 (Fin.ext e)`. Use `show (j : ℕ) < l`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv l j h4, mul_zero]`.
-
-Simplify using the standard rewrite rules.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superSum_mul (u v : unipB F (Fin n)) :
     superSum ((u * v : unipB F (Fin n)) : GL (Fin n) F).val =
@@ -264,7 +262,7 @@ section Examples
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨isIrreducible_ofChar _, (isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar, (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩, hW, hV, ht, hr⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDatum_detRep (r : ℕ) {χ χW χV : kˣ →* ℂˣ} (h : IsUnram χ) (hu : IsUnitaryChar χ)
     (hW : IsUnitaryChar χW) (hV : IsUnitaryChar χV) (ht : IsTame χW) (hr : IsUnram (χW * χV⁻¹)) :
@@ -273,16 +271,16 @@ theorem isDatum_detRep (r : ℕ) {χ χW χV : kˣ →* ℂˣ} (h : IsUnram χ) 
     (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩, hW, hV, ht, hr⟩
 
 /- English proof (translation)
-The claim follows from `isDatum_detRep r (fun _ _ => rfl) (fun _ => by simp) (fun _ => by simp) (fun _ => by simp) (fun _ _ => rfl) (fun _ _ => by simp)`.
+A detailed English derivation is pending.
 -/
 example (r : ℕ) : IsDatum (detRep (Fin r) (1 : kˣ →* ℂˣ)) 1 1 :=
   isDatum_detRep r (fun _ _ => rfl) (fun _ => by simp) (fun _ => by simp) (fun _ => by simp)
     (fun _ _ => rfl) (fun _ _ => by simp)
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.one_apply]`. Simplify using `[Matrix.one_apply]`. Rewrite using `[Units.val_one, Matrix.one_apply_ne]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 example (r t : ℕ) : HasBlocks (k := k) (r := r) (t := t) 1 1 1 := by
   refine ⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩

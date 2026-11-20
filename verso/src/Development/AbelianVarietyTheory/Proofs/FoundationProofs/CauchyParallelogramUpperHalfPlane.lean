@@ -4,31 +4,29 @@ open MeasureTheory Filter Topology Set
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g τ S hg hτ hS`. Use `set φ : ℝ × ℝ → ℂ := fun x => Complex.I + (x.1 : ℂ) * (τ - Complex.I) + (x.2 : ℂ) * Complex.I with hφdef`. Use `set L : ℝ × ℝ →L[ℝ] ℂ := (ContinuousLinearMap.fst ℝ ℝ ℝ).smulRight (τ - Complex.I) + (ContinuousLinearMap.snd ℝ ℝ ℝ).smulRight Complex.I with hLdef`. Establish `hφL : φ = fun x => Complex.I + L x`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[φ, L, Complex.real_smul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hopen : IsOpen {z : ℂ | 0 < z.im}` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hpos : ∀ x : ℝ × ℝ, 0 ≤ x.1 → x.1 ≤ 1 → 0 ≤ x.2 → 0 < (φ x).im`. Introduce and unpack `⟨t, s⟩ h0 h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [φ, Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, Complex.sub_re, Complex.sub_im, Complex.I_re, Complex.I_im]`. Break down `h1.lt_or_eq with h | h` into its components or cases. Use polynomial arithmetic with `[mul_nonneg h0 hτ.le]`. Substitute `h` using the available equality. Simplify using `at *`.
+Use the polynomial consequences of the given equalities and inequalities. Substitute using the available equality. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hφc : Continuous φ`. Rewrite using `[hφL]`. Conclude with `continuous_const.add L.continuous`. Establish `hcont : ContinuousOn (fun x => g (φ x)) (uIcc (0:ℝ) 1 ×ˢ uIcc (0:ℝ) S)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hg.continuousOn.comp hφc.continuousOn ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[uIcc_of_le zero_le_one, uIcc_of_le hS]`. Conclude with `hpos x hx.1.1 hx.1.2 hx.2.1`. Use `set F' : ℝ × ℝ → ℝ × ℝ →L[ℝ] ℂ := fun x => ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (deriv g (φ x))).restrictScalars ℝ).comp L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hder : ∀ x ∈ Ioo (min (0:ℝ) 1) (max (0:ℝ) 1) ×ˢ Ioo (min (0:ℝ) S) (max (0:ℝ) S), HasFDerivAt (fun x => g (φ x)) (F' x) x`. Introduce `x hx`. Rewrite `hx` using `[min_eq_left zero_le_one, max_eq_right zero_le_one, min_eq_left hS, max_eq_right hS]`. Establish `hz : 0 < (φ x).im` using `hpos x hx.1.1.le hx.1.2.le hx.2.1.le`. Establish `hgd : HasDerivAt g (deriv g (φ x)) (φ x)` using `(hg.differentiableAt (hopen.mem_nhds hz)).hasDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hφd : HasFDerivAt φ L x`. Rewrite using `[hφL]`. Conclude with `L.hasFDerivAt.const_add _`. Conclude with `(hgd.hasFDerivAt.restrictScalars ℝ).comp x hφd`. Establish `key` using `integral2_divergence_prod_of_hasFDerivAt (fun x => Complex.I * g (φ x)) (fun x => -(τ - Complex.I) * g (φ x)) (fun x => Complex.I • F' x) (fun x => (-(τ - Complex.I)) • F' x) 0 0 1 S (continuousOn_const.mul hcont) (continuousOn_const.mul hcont) (fun x hx => (hder x hx).const_mul …`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (fun x : ℝ × ℝ => (Complex.I • F' x) (1, 0) + ((-(τ - Complex.I)) • F' x) (0, 1)) = fun _ => 0`. Use function extensionality and compare the values at `x`. Simplify using `[F', L]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `integrableOn_zero)`. Establish `hzero : ∀ x : ℝ × ℝ, (Complex.I • F' x) (1, 0) + ((-(τ - Complex.I)) • F' x) (0, 1) = 0`. Introduce `x`. Simplify using `[F', L]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hzero, intervalIntegral.integral_zero, intervalIntegral.integral_const_mul] at key`. Establish `e1 : ∀ s : ℝ, φ (1, s) = τ + s * Complex.I`. Introduce `s`. Simplify using `only [φ]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e0 : ∀ s : ℝ, φ (0, s) = Complex.I + s * Complex.I`. Introduce `s`. Simplify using `only [φ]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `eS : ∀ t : ℝ, φ (t, S) = Complex.I + t * (τ - Complex.I) + S * Complex.I` using `fun _ => rfl`. Establish `eT : ∀ t : ℝ, φ (t, 0) = Complex.I + t * (τ - Complex.I)`. Introduce `t`. Simplify using `only [φ]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e1, e0, eS, eT] at key`. Take the linear combination `-key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cauchy_parallelogram_upper_half_plane :
     ∀ (g : ℂ → ℂ) (τ : ℂ) (S : ℝ), DifferentiableOn ℂ g {z : ℂ | 0 < z.im} → 0 < τ.im → 0 ≤ S →

@@ -28,7 +28,7 @@ noncomputable section
 namespace GlobalTheory.TowerAlg
 
 /- English proof (translation)
-Establish `h` using `range_comap_of_surjective _ _ (Ideal.Quotient.mk_surjective (I := I ^ (e + 1)))`. Use `h.ge ?_` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker]`. Conclude with `(Ideal.pow_le_self (Nat.succ_ne_zero e)).trans (IsLocalRing.le_maximalIdeal hI)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closedPoint_mem_range {R : Type} [CommRing R] [IsLocalRing R] {I : Ideal R} (hI : I ≠ ⊤) (e : ℕ) :
     IsLocalRing.closedPoint R ∈ Set.range (thick R I e) := by
@@ -38,17 +38,15 @@ theorem closedPoint_mem_range {R : Type} [CommRing R] [IsLocalRing R] {I : Ideal
   exact (Ideal.pow_le_self (Nat.succ_ne_zero e)).trans (IsLocalRing.le_maximalIdeal hI)
 
 /- English proof (translation)
-Set `o : Spec (CommRingCat.of V) ⟶ B.left` to `(η[B]).left`. Establish `ho : o ≫ B.hom = 𝟙 _` using `Over.w η[B]`. Take `⟨c, hc⟩` from `DVR.exists_gen_of_local N hN (K := PUnit) (fun _ => o) (fun _ => 1)`. Establish `pb : ∀ e, IsPullback (fstG I e B).left (thickObj V I e B).hom B.hom (thick V I e)` using `fun e => IsPullback.of_hasPullback B.hom (thick V I e)`. Use `choose t tg tv using fun e => AbTriv.exists_normalised hN ho c hc (pb e) (ht e)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tm : ∀ e, thickMap V I e B ≫ (fstG I (e + 1) B).left = (fstG I e B).left` using `fun e => (pullback.lift_fst _ _ _).trans (Category.comp_id _)`. Establish `compat : ∀ e z J, Good N z J → val (t (e + 1)) (thickMap V I e B) z J = val (t e) (𝟙 _) z J`. Introduce `e z J hJ`. Set `a` to `(pb e).lift (thick V I e ≫ o) (𝟙 _) (by rw [Category.assoc, ho, Category.comp_id, Category.id_comp])`. Establish `a₁ : a ≫ (fstG I e B).left = thick V I e ≫ o` using `(pb e).lift_fst _ _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `gen_unique' hN (fun U _ k => by simp only [tm e]) (thickObj V I e B).hom a ((pb e).lift_snd _ _ _) (hG _ _ (TLinPf.isAb_pullback (thick V I e) B hB)).2 (tg e) (DVR.pullGen_isGen _ _ _ _ (tg (e + 1)) (thickMap V I e B)) (fun y J hJ => (tv e _ a _ y J hJ a₁).trans ((val_pull hJ _ _ …`. Rewrite `key` using `[val_pull hJ, Category.id_comp]`. Conclude with `key.symm`. Take `⟨s, hs, -⟩` from `hS V I hV B hB.smooth hp N hN (fun e => genSec (t e) (tg e)) (fun e z J hJ => (sval_genSec _ _ _ z hJ).trans ((congrArg Units.val (compat e z J hJ)).trans (sval_genSec _ _ _ z hJ).symm))`. Use `hB.proper` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `top : nonzeroLocus s = ⊤` using `AbTriv.eq_top_of_closed_fibre B.hom _ fun x hx => by`. Establish `hm : x ∈ Set.range (pullback.fst B.hom (thick V I 0))`. Rewrite using `[Scheme.Pullback.range_fst, Set.mem_preimage, hx]`. Conclude with `closedPoint_mem_range hI 0`. Take `⟨z, rfl⟩` from `hm`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose J hJ using fun ψ : ((Over.map (thick V I 0)).obj (thickObj V I 0 B)).left ⟶ B.left => exists_chart hN (ψ z)`. Use `(TwistZero.mem_nonzeroLocus_iff s (fstG I 0 B).left z hJ).2 ?_` and prove the remaining obligations. Rewrite using `[hs 0 z J hJ, sval_genSec _ _ _ z hJ]`. Conclude with `Units.isUnit _`. Use `AbTriv.triv_of_pull_id (TwistZero.triv_of_sec hN s fun y J hJ => ?_)` and prove the remaining obligations.
-
-Conclude with `(TwistZero.mem_nonzeroLocus_iff s (𝟙 _) y hJ).1 (by rw [top]; trivial)`.
+A detailed English derivation is pending.
 -/
 theorem triv_of_forall_thick (hG : GlobalFnsSt) (hS : SecAlgSt) {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V]
     {I : Ideal V} (hI : I ≠ ⊤) (hV : IsAdicComplete I V) (B : Over (Spec (CommRingCat.of V))) [GrpObj B]
@@ -91,7 +89,7 @@ theorem triv_of_forall_thick (hG : GlobalFnsSt) (hS : SecAlgSt) {V : Type} [Comm
   exact (TwistZero.mem_nonzeroLocus_iff s (𝟙 _) y hJ).1 (by rw [top]; trivial)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `hw`. Take `⟨t, ht, -⟩` from `exists_up ((isGen_iff w).1 hw) hL hL' _ (DVR.pullGen_isGen _ _ _ _ ha r)`. Use `(KerPow.pull_iff φ ε π).2 ?_` and prove the remaining obligations. Rewrite using `[← (funext hc : (fun k => (r ≫ φ' k) ≫ F) = fun k => π ≫ φ k)]`. Conclude with `⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem triv_pull_of_gen {X X' Y Y' Z : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (hL : L.IsLB) (hL' : L'.IsLB)
     (hw : LBIso L' (L.pull F)) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X')} {ε : K → ℤ}
@@ -110,16 +108,16 @@ variable {S S' Z : Scheme.{0}} {B : Over S} {B' : Over S'} [GrpObj B] [IsCommMon
 omit [IsCommMonObj B] [IsCommMonObj B'] in
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.2 T x y _ _ rfl rfl).symm`.
+A detailed English derivation is pending.
 -/
 theorem toBase_mul (h : IsGrpPullback B' B f F) (T : Over S') (x y : T ⟶ B') :
     toBase h.1.w (x * y) = toBase h.1.w x * toBase h.1.w y :=
   Over.OverMorphism.ext (h.2 T x y _ _ rfl rfl).symm
 
 /- English proof (translation)
-Set `ρ : Over.mk ((Over.mk z).hom ≫ f) ⟶ G3 B` to `Over.homMk π hz`. Set `x : Fin 3 → (Over.mk z ⟶ B')` to `fun i => Over.homMk (h.1.lift (ρ ≫ x3 B i).left z (Over.w (ρ ≫ x3 B i))) (h.1.lift_snd _ _ _)`. Set `β` to `toBaseHom (toBase_mul h) (Over.mk z)`. Establish `hx : ∀ i, β (x i) = ρ ≫ x3 B i` using `fun i => Over.OverMorphism.ext (h.1.lift_fst _ _ _)`. Set `r : Over.mk z ⟶ G3 B'` to `lift (x 0) (lift (x 1) (x 2))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply the tactic sequence `have hr : ∀ i, r ≫ x3 B' i = x i := fun i => by fin_cases i <;> simp [r, x3]`. Use `triv_pull_of_gen hL M'.L.isLB hw (φ := thφ B (x3 B)) (φ' := thφ B' (x3 B')) (ε := thε) M'.c.t M'.c.isGen r.left π fun I => ?_` and prove the remaining obligations. Establish `e : β (r ≫ psum B' (x3 B') I.down) = ρ ≫ psum B (x3 B) I.down` using `(psum_hom (β.comp (preHom r)) (x3 B') I.down).trans ((congrArg (fun q => psum B q I.down) (funext fun i => (congrArg β (hr i)).trans (hx i))).trans (psum_hom (preHom ρ) (x3 B) I.down).symm)`. Conclude with `congrArg (fun q => q.left) e`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem triv_theta (h : IsGrpPullback B' B f F) (M' : CP B') {L : LB B.left} (hL : L.IsLB)
     (hw : LBIso M'.L.L (L.pull F)) (π : Z ⟶ (G3 B).left) (z : Z ⟶ S') (hz : π ≫ (G3 B).hom = z ≫ f) :
@@ -139,9 +137,7 @@ theorem triv_theta (h : IsGrpPullback B' B f F) (M' : CP B') {L : LB B.left} (hL
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Set `x : Over.mk z ⟶ B'` to `Over.homMk (h.1.lift π z hz) (h.1.lift_snd _ _ _)`. Establish `hx : x.left ≫ F = π` using `h.1.lift_fst _ _ _`. Use `triv_pull_of_gen hL M'.L.isLB hw M'.sym M'.sym_gen x.left π fun k => ?_` and prove the remaining obligations. Use `fin_cases k`. Conclude with `(inv_left_comp (toBase_mul h) x).trans (congrArg (· ≫ _) hx)`.
-
-Conclude with `((congrArg (· ≫ F) (Category.comp_id _)).trans hx).trans (Category.comp_id _).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem triv_sym (h : IsGrpPullback B' B f F) (M' : CP B') {L : LB B.left} (hL : L.IsLB)
     (hw : LBIso M'.L.L (L.pull F)) (π : Z ⟶ B.left) (z : Z ⟶ S') (hz : π ≫ B.hom = z ≫ f) :
@@ -165,7 +161,7 @@ variable (hG : GlobalFnsSt) (hS : SecAlgSt) {R : Type} [CommRing R] [IsDomain R]
 include hG hS hI hc hB hp hg hM hiso
 
 /- English proof (translation)
-The claim follows from `triv_of_forall_thick hG hS hI hc (G3 B) (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hB (AbelianSchemeGerms.isAbelianScheme_tensor _ _ hB hB)) (isProjBy_tensor R _ _ hp (isProjBy_tensor R _ _ hp hp)) (Theta B M) (LB.isLB_linComb hM _ _) fun e => triv_theta (hg e) (N e) hM (hiso …`.
+A detailed English derivation is pending.
 -/
 theorem triv_theta_alg : Triv (Theta B M) :=
   triv_of_forall_thick hG hS hI hc (G3 B)
@@ -175,7 +171,7 @@ theorem triv_theta_alg : Triv (Theta B M) :=
         (pullback.condition (f := (G3 B).hom) (g := thick R I e))
 
 /- English proof (translation)
-The claim follows from `triv_of_forall_thick hG hS hI hc B hB hp _ (LB.isLB_linComb hM _ _) fun e => triv_sym (hg e) (N e) hM (hiso e) (fstG I e B).left (pullback.snd B.hom (thick R I e)) (pullback.condition (f := B.hom) (g := thick R I e))`.
+A detailed English derivation is pending.
 -/
 theorem triv_sym_alg : Triv (LB.LinComb M (K := Fin 2) ![(ι[B]).left, 𝟙 B.left] ![1, -1]) :=
   triv_of_forall_thick hG hS hI hc B hB hp _ (LB.isLB_linComb hM _ _) fun e =>
@@ -183,9 +179,9 @@ theorem triv_sym_alg : Triv (LB.LinComb M (K := Fin 2) ![(ι[B]).left, 𝟙 B.le
       (pullback.condition (f := B.hom) (g := thick R I e))
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `DVR.exists_gen_of_local M hM (K := PUnit) (fun _ => eSec B) (fun _ => 1)`. Take `⟨Q, hQ⟩` from `AbPackage.exists_cp hG hB ⟨M, r, hM, hr⟩ (triv_theta_alg hG hS hI hc N hB hp hg hM hiso) (triv_sym_alg hG hS hI hc N hB hp hg hM hiso)`. Establish `e₀ : Q.L.L = M` using `congrArg (fun q => q.L) hQ`. Use `⟨Q, e₀, fun e => ⟨hg e, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩ : LBIso (N e).L.L (Q.L.L.pull (b e))` from `by rw [e₀]; exact hiso e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `AbPackage.exists_isCPMap_of_iso hG (hY e) Q (N e) (toBase_mul (hg e)) w hw`.
+A detailed English derivation is pending.
 -/
 theorem exists_cp_alg (hY : ∀ e, IsAbelianScheme (Y e)) :
     ∃ Q : CP B, Q.L.L = M ∧ ∀ e, IsCPPullback (N e) Q (thick R I e) (b e) := by

@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Kunne
 open CategoryTheory Limits AlgebraicGeometry GlobalTheory.EtC CrystallineSemistableComparison CrystallineSemistableComparison.Onto UpperTheory.Gal.KunnethLefschetz.G.PX
 
 /- English proof (translation)
-Introduce `K _ W Z Y q i π D d B T j r hw`. Prove the components needed by the constructor for the conclusion. Use `Sigma.hom_ext _ _ fun p => ?_` and prove the remaining obligations. Establish `h1 : wI B p.1 ≫ cP B = (oW B p.1).ι`. Simplify using `only [wI, cP, Sigma.ι_desc]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : rhoC B j r hw p ≫ (oW B p.1).ι = (oT B j p).ι ≫ r`. Simplify using `only [rhoC, IsOpenImmersion.lift_fac]`. Simplify using `only [rhoP, eP, Sigma.ι_desc_assoc, Category.assoc, h1, h2]`. Use `Sigma.hom_ext _ _ fun p => ?_` and prove the remaining obligations. Simplify using `only [tauP, eP, Sigma.ι_desc_assoc, secOf_f]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.Gal.KunnethLefschetz.G.PX.coverComm :
     ∀ {K : Type} [CommRing K] {W Z Y : Scheme.{0}} {q : Z ⟶ Spec (CommRingCat.of K)} {i : W ⟶ Z} {π : Y ⟶ Z} {D : E.LineData Y} {d : ℕ} (B : Blow q i π D d) {T : Scheme.{0}} (j : T ⟶ Y) (r : T ⟶ W) (hw : j ≫ π = r ≫ i), rhoP B j r hw ≫ cP B = eP B j ≫ r ∧ tauP B j ≫ D.f = eP B j ≫ j := by

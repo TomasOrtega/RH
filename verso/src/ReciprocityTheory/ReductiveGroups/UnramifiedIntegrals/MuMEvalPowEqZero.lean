@@ -21,11 +21,11 @@ def muM : Submonoid ℂ_[l] where
     · rw [mul_pow, pow_mul, ha, one_pow, mul_comm n m, pow_mul, hb, one_pow, one_mul]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_pos, fun h => (Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h), by simp⟩`. Consider the case `insert a S _ ih`. Take `⟨n, hn, hln, hS⟩` from `ih`. Take `⟨m, hm, hlm, ha⟩` from `a.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n * m, Nat.mul_pos hn hm, fun h => ?_, ?_⟩` and prove the remaining obligations. Break down `((Fact.out : l.Prime).dvd_mul).1 h with h | h` into its components or cases. Conclude with `hln h`. Conclude with `hlm h`. Introduce `b hb`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Finset.mem_insert.1 hb with rfl | hb` into its components or cases. Rewrite using `[mul_comm, pow_mul, ha, one_pow]`. Rewrite using `[pow_mul, hS b hb, one_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muM_common (S : Finset (muM l)) :
     ∃ n : ℕ, 0 < n ∧ ¬ l ∣ n ∧ ∀ a ∈ S, (a : ℂ_[l]) ^ n = 1 := by
@@ -45,9 +45,9 @@ theorem muM_common (S : Finset (muM l)) :
       · rw [pow_mul, hS b hb, one_pow]
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn.ne'⟩`. Take `⟨g, hg⟩` from `IsCyclic.exists_monoid_generator (α := rootsOfUnity n ℂ_[l])`. Use `⟨((g : ℂ_[l]ˣ) : ℂ_[l]), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Use `g.2` as an intermediate fact. Rewrite `this` using `[mem_rootsOfUnity']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨k, hk⟩` from `hg (rootsOfUnity.mkOfPowEq a ha)`. Use `⟨k, ?_⟩` and prove the remaining obligations. Use `congrArg (fun x : rootsOfUnity n ℂ_[l] => ((x : ℂ_[l]ˣ) : ℂ_[l])) hk` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem muM_exists_gen (n : ℕ) (hn : 0 < n) :
     ∃ g : ℂ_[l], g ^ n = 1 ∧ ∀ a : ℂ_[l], a ^ n = 1 → ∃ k : ℕ, g ^ k = a := by
@@ -63,9 +63,9 @@ theorem muM_exists_gen (n : ℕ) (hn : 0 < n) :
     simpa using this
 
 /- English proof (translation)
-Rewrite `hp`, the goal using `[← algebraMap_int_eq, ← aeval_def]`. Establish `hd : orderOf g ∣ n` using `orderOf_dvd_of_pow_eq_one hg`. Establish `hd0 : 0 < orderOf g` using `Nat.pos_of_dvd_of_pos hd hn`. Establish `hprim : IsPrimitiveRoot g (orderOf g)` using `IsPrimitiveRoot.orderOf g`. Establish `hcop : Nat.Coprime l (orderOf g)` using `((Fact.out : l.Prime).coprime_iff_not_dvd).2 fun h => hln (h.trans hd)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvd : minpoly ℤ g ∣ p` using `minpoly.isIntegrallyClosed_dvd (hprim.isIntegral hd0) hp`. Rewrite `hdvd` using `[hprim.minpoly_eq_pow_coprime hcop]`. Conclude with `aeval_eq_zero_of_dvd_aeval_eq_zero hdvd (minpoly.aeval ℤ (g ^ l))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem muM_eval_pow_eq_zero {K : Type*} [Field K] [CharZero K] (n : ℕ) (hn : 0 < n) (hln : ¬ l ∣ n)
     (g : K) (hg : g ^ n = 1) (p : ℤ[X]) (hp : p.eval₂ (Int.castRingHom K) g = 0) :
@@ -86,13 +86,13 @@ def psiM : MonoidAlgebra ℤ (muM l) →ₐ[ℤ] ℂ_[l] :=
   MonoidAlgebra.lift ℤ ℂ_[l] (muM l) ((muM l).subtype.comp (powMonoidHom l))
 
 /- English proof (translation)
-Take `⟨n, hn, hln, hS⟩` from `muM_common l f.coeff.support`. Take `⟨g, hg, hgen⟩` from `muM_exists_gen l n hn`. Establish `hk : ∀ a : muM l, ∃ k : ℕ, a ∈ f.coeff.support → g ^ k = (a : ℂ_[l])`. Introduce `a`. Distinguish the cases in `ha : a ∈ f.coeff.support`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨k, hk⟩` from `hgen a (hS a ha)`. Conclude with `⟨k, fun _ => hk⟩`. Conclude with `⟨0, fun h => absurd h ha⟩`. Use `choose k hk using hk`. Set `p : ℤ[X]` to `∑ a ∈ f.coeff.support, C (f.coeff a) * X ^ (k a)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : p.eval₂ (Int.castRingHom ℂ_[l]) g = 0`. Rewrite using `[← hf, phiM, MonoidAlgebra.lift_apply, Finsupp.sum, eval₂_finsetSum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_C, eval₂_pow, eval₂_X, hk a ha]`. Simplify using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `muM_eval_pow_eq_zero l n hn hln g hg p h1`. Rewrite using `[← h2, psiM, MonoidAlgebra.lift_apply, Finsupp.sum, eval₂_finsetSum]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_C, eval₂_pow, eval₂_X, ← pow_mul, mul_comm l, pow_mul, hk a ha]`. Simplify using `[zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiM_ker_le (f : MonoidAlgebra ℤ (muM l)) (hf : phiM l f = 0) : psiM l f = 0 := by
   classical
@@ -118,21 +118,21 @@ theorem phiM_ker_le (f : MonoidAlgebra ℤ (muM l)) (hf : phiM l f = 0) : psiM l
   simp [zsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[phiM, MonoidAlgebra.lift_apply]`. Conclude with `Subring.sum_mem _ fun a _ => Subring.zsmul_mem _ (Subring.subset_closure a.2) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiM_mem (f : MonoidAlgebra ℤ (muM l)) : phiM l f ∈ Rmu l := by
   rw [phiM, MonoidAlgebra.lift_apply]
   exact Subring.sum_mem _ fun a _ => Subring.zsmul_mem _ (Subring.subset_closure a.2) _
 
 /- English proof (translation)
-Rewrite using `[psiM, MonoidAlgebra.lift_apply]`. Conclude with `Subring.sum_mem _ fun a _ => Subring.zsmul_mem _ (Subring.subset_closure (a ^ l).2) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiM_mem (f : MonoidAlgebra ℤ (muM l)) : psiM l f ∈ Rmu l := by
   rw [psiM, MonoidAlgebra.lift_apply]
   exact Subring.sum_mem _ fun a _ => Subring.zsmul_mem _ (Subring.subset_closure (a ^ l).2) _
 
 /- English proof (translation)
-Establish `: Rmu l ≤ (phiM l : MonoidAlgebra ℤ (muM l) →+* ℂ_[l]).range`. Use `Subring.closure_le.2 fun ζ hζ => ⟨MonoidAlgebra.single ⟨ζ, hζ⟩ 1, ?_⟩` and prove the remaining obligations. Simplify using `[phiM]`. Conclude with `this hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phiM_surj (x : ℂ_[l]) (hx : x ∈ Rmu l) : ∃ f, phiM l f = x := by
   have : Rmu l ≤ (phiM l : MonoidAlgebra ℤ (muM l) →+* ℂ_[l]).range := by
@@ -141,11 +141,11 @@ theorem phiM_surj (x : ℂ_[l]) (hx : x ∈ Rmu l) : ∃ f, phiM l f = x := by
   exact this hx
 
 /- English proof (translation)
-Set `φ : MonoidAlgebra ℤ (muM l) →+* Rmu l` to `(phiM l : MonoidAlgebra ℤ (muM l) →+* ℂ_[l]).codRestrict (Rmu l) (phiM_mem l)`. Set `ψ : MonoidAlgebra ℤ (muM l) →+* Rmu l` to `(psiM l : MonoidAlgebra ℤ (muM l) →+* ℂ_[l]).codRestrict (Rmu l) (psiM_mem l)`. Establish `hφ : Function.Surjective φ`. Introduce and unpack `⟨x, hx⟩`. Take `⟨f, hf⟩` from `phiM_surj l x hx`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨f, Subtype.ext hf⟩`. Establish `hker : RingHom.ker φ ≤ RingHom.ker ψ`. Introduce `f hf`. Rewrite `hf`, the goal using `[RingHom.mem_ker]`. Conclude with `Subtype.ext (phiM_ker_le l f (congrArg Subtype.val hf))`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨RingHom.liftOfSurjective φ hφ ⟨ψ, hker⟩, fun ζ hζ => ?_⟩` and prove the remaining obligations. Establish `h1 : (⟨ζ, Subring.subset_closure hζ⟩ : Rmu l) = φ (MonoidAlgebra.single ⟨ζ, hζ⟩ 1)` using `Subtype.ext (by simp [φ, phiM])`. Rewrite using `[h1, RingHom.liftOfRightInverse_comp_apply]`. Simplify using `[ψ, psiM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rmu_sigma : ∃ s : Rmu l →+* Rmu l,
     ∀ (ζ : ℂ_[l]) (hζ : ζ ∈ muP l), ((s ⟨ζ, Subring.subset_closure hζ⟩ : Rmu l) : ℂ_[l]) = ζ ^ l := by
@@ -168,25 +168,25 @@ theorem rmu_sigma : ∃ s : Rmu l →+* Rmu l,
   simp [ψ, psiM]
 
 /- English proof (translation)
-Establish `hl : l.Prime` using `Fact.out`. Establish `key : ∀ (y : ℂ_[l]) (hy : y ∈ Rmu l), ∃ r : Rmu l, s ⟨y, hy⟩ - ⟨y, hy⟩ ^ l = (l : Rmu l) * r`. Introduce `y hy`. Proceed by induction on `hy using Subring.closure_induction with`. Consider the case `mem ζ hζ => exact ⟨0, Subtype.ext (by simp [hs ζ hζ])⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (⟨0, zero_mem _⟩ : Rmu l) = 0` using `rfl`. Rewrite using `[this, map_zero, zero_pow hl.ne_zero]`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `one`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (⟨1, one_mem _⟩ : Rmu l) = 1` using `rfl`. Rewrite using `[this, map_one, one_pow]`. Simplify using the standard rewrite rules.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add a b ha hb iha ihb`. Take `⟨r, hr⟩` from `iha`. Take `⟨t, ht⟩` from `ihb`. Take `⟨u, hu⟩` from `exists_add_pow_prime_eq hl (⟨a, ha⟩ : Rmu l) ⟨b, hb⟩`. Use `⟨r + t - ⟨a, ha⟩ * ⟨b, hb⟩ * u, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (⟨a + b, add_mem ha hb⟩ : Rmu l) = ⟨a, ha⟩ + ⟨b, hb⟩` using `rfl`. Rewrite using `[this, map_add, hu]`. Take the linear combination `hr + ht`. Consider the case `neg a ha iha`. Take `⟨r, hr⟩` from `iha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `: (⟨-a, neg_mem ha⟩ : Rmu l) = -⟨a, ha⟩` using `rfl`. Rewrite using `[this, map_neg]`. Break down `hl.eq_two_or_odd' with h2 | hodd` into its components or cases. Use `⟨-r - ⟨a, ha⟩ ^ 2, ?_⟩` and prove the remaining obligations. Substitute `h2` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Move the coercions through the operations in `at hr ⊢`. Take the linear combination `-hr`. Use `⟨-r, ?_⟩` and prove the remaining obligations. Rewrite using `[hodd.neg_pow]`. Take the linear combination `-hr`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Consider the case `mul a b ha hb iha ihb`. Take `⟨r, hr⟩` from `iha`. Take `⟨t, ht⟩` from `ihb`. Use `⟨r * s ⟨b, hb⟩ + ⟨a, ha⟩ ^ l * t, ?_⟩` and prove the remaining obligations. Establish `: (⟨a * b, mul_mem ha hb⟩ : Rmu l) = ⟨a, ha⟩ * ⟨b, hb⟩` using `rfl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, map_mul, mul_pow]`. Take the linear combination `s ⟨b, hb⟩ * hr + ⟨a, ha⟩ ^ l * ht`. Take `⟨r, hr⟩` from `key x.1 x.2`. Use `⟨r, r.2, ?_⟩` and prove the remaining obligations. Use `congrArg (Subtype.val) hr` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem rmu_sigma_congr (s : Rmu l →+* Rmu l)
     (hs : ∀ (ζ : ℂ_[l]) (hζ : ζ ∈ muP l),

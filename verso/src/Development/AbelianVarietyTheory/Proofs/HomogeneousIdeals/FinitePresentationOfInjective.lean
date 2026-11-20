@@ -11,7 +11,7 @@ variable (R : Type*) [CommRing R] {X Y : Type*} [AddCommGroup X] [AddCommGroup Y
 abbrev mapAlgebra : Algebra R[Y] R[X] := (mapDomainRingHom R u).toAlgebra
 
 /- English proof (translation)
-The claim follows from `letI := mapAlgebra R u IsScalarTower.of_algebraMap_eq fun a => ((mapDomainAlgHom R R u).commutes a).symm`.
+A detailed English derivation is pending.
 -/
 theorem mapAlgebra_tower : letI := mapAlgebra R u; IsScalarTower R R[Y] R[X] :=
   letI := mapAlgebra R u
@@ -22,7 +22,7 @@ def cosetComb : letI := mapAlgebra R u; ((X ⧸ u.range) →₀ R[Y]) →ₗ[R[Y
   Finsupp.linearCombination R[Y] (fun c : X ⧸ u.range => (single c.out 1 : R[X]))
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Rewrite using `[cosetComb, Finsupp.linearCombination_single, Algebra.smul_def]`. Express the relevant statement in the definitionally equal form `mapDomain u (single y r) * _ = _`. Rewrite using `[mapDomain_single, single_mul_single, mul_one]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cosetComb_single (c : X ⧸ u.range) (y : Y) (r : R) :
     cosetComb R u (Finsupp.single c (single y r)) = single (u y + c.out) r := by
@@ -32,7 +32,7 @@ theorem cosetComb_single (c : X ⧸ u.range) (y : Y) (r : R) :
   rw [mapDomain_single, single_mul_single, mul_one]
 
 /- English proof (translation)
-Take `⟨⟨_, y, rfl⟩, h⟩` from `QuotientAddGroup.mk_out_eq_mul u.range x`. Conclude with `⟨-y, by rw [h]; simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_add_out (x : X) :
     ∃ y, u y + (QuotientAddGroup.mk x : X ⧸ u.range).out = x := by
@@ -40,9 +40,9 @@ theorem exists_add_out (x : X) :
   exact ⟨-y, by rw [h]; simp⟩
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add s t hs ht`. Take `⟨a, rfl⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `ht`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `single x r`. Take `⟨y, hy⟩` from `exists_add_out u x`. Conclude with `⟨_, (cosetComb_single R u _ y r).trans (by rw [hy])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cosetComb_surjective : Function.Surjective (cosetComb R u) := by
   intro p
@@ -57,9 +57,11 @@ theorem cosetComb_surjective : Function.Surjective (cosetComb R u) := by
     exact ⟨_, (cosetComb_single R u _ y r).trans (by rw [hy])⟩
 
 /- English proof (translation)
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, y⟩ ⟨d, z⟩ h dsimp only at h`. Establish `h1 : ∀ (c : X ⧸ u.range) y, (QuotientAddGroup.mk (u y + c.out) : X ⧸ u.range) = c`. Introduce `c y`. Rewrite using `[QuotientAddGroup.mk_add, (QuotientAddGroup.eq_zero_iff (N := u.range) (u y)).2 ⟨y, rfl⟩, zero_add, QuotientAddGroup.out_eq']`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `rfl : c = d` from `by rw [← h1 c y, h, h1]`. Take `rfl : y = z` from `hu (add_right_cancel h)`. Both sides reduce to the same expression. Take `⟨y, hy⟩` from `exists_add_out u x`. Conclude with `⟨⟨_, y⟩, hy⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
+
+Supply the required witnesses or components.
 -/
 theorem coset_bijective (hu : Function.Injective u) :
     Function.Bijective (fun p : (Σ _ : X ⧸ u.range, Y) => u p.2 + p.1.out) := by
@@ -77,11 +79,11 @@ theorem coset_bijective (hu : Function.Injective u) :
     exact ⟨⟨_, y⟩, hy⟩
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Use `haveI := mapAlgebra_tower R u`. Set `b : Module.Basis (Σ _ : X ⧸ u.range, Y) R ((X ⧸ u.range) →₀ R[Y])` to `Finsupp.basis fun _ => AddMonoidAlgebra.basis Y R`. Set `e` to `b.equiv (AddMonoidAlgebra.basis X R) (Equiv.ofBijective _ (coset_bijective u hu))`. Establish `: (cosetComb R u).restrictScalars R = e.toLinearMap`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `b.ext fun p => ?_` and prove the remaining obligations. Take `⟨c, y⟩` from `p`. Rewrite using `[LinearEquiv.coe_coe, Module.Basis.equiv_apply]`. Simplify using `[b, cosetComb_single]`. Establish `h2 : ⇑(cosetComb R u) = e` using `congrArg DFunLike.coe this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `e.injective`.
+A detailed English derivation is pending.
 -/
 theorem cosetComb_injective (hu : Function.Injective u) : Function.Injective (cosetComb R u) := by
   letI := mapAlgebra R u
@@ -105,7 +107,7 @@ def cosetBasis (hu : Function.Injective u) :
     ⟨cosetComb_injective R u hu, cosetComb_surjective R u⟩).symm
 
 /- English proof (translation)
-The claim follows from `letI := mapAlgebra R u .of_basis (cosetBasis R u hu)`.
+A detailed English derivation is pending.
 -/
 theorem free_of_injective (hu : Function.Injective u) :
     letI := mapAlgebra R u; Module.Free R[Y] R[X] :=
@@ -113,9 +115,9 @@ theorem free_of_injective (hu : Function.Injective u) :
   .of_basis (cosetBasis R u hu)
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Use `free_of_injective R u hu` as an intermediate fact. Express the relevant statement in the definitionally equal form `Module.FaithfullyFlat R[Y] R[X]`. Break down `subsingleton_or_nontrivial R with h | h` into its components or cases. Establish `: Subsingleton R[Y]` using `Module.subsingleton R _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨fun m hm => (hm.ne_top (Subsingleton.elim _ _)).elim⟩`. Use `infer_instance`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem faithfullyFlat_of_injective (hu : Function.Injective u) :
     (mapDomainRingHom R u).FaithfullyFlat := by
@@ -128,14 +130,14 @@ theorem faithfullyFlat_of_injective (hu : Function.Injective u) :
   · infer_instance
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Conclude with `Module.Finite.of_surjective (cosetComb R u) (cosetComb_surjective R u)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem finite_of_finiteIndex [u.range.FiniteIndex] : (mapDomainRingHom R u).Finite := by
   letI := mapAlgebra R u
   exact Module.Finite.of_surjective (cosetComb R u) (cosetComb_surjective R u)
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Use `free_of_injective R u hu` as an intermediate fact. Establish `: Module.Finite R[Y] R[X]` using `finite_of_finiteIndex R u`. Establish `: Module.FinitePresentation R[Y] R[X]` using `Module.finitePresentation_of_projective _ _`. Conclude with `(inferInstance : Algebra.FinitePresentation R[Y] R[X])`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finitePresentation_of_injective (hu : Function.Injective u) [u.range.FiniteIndex] :
     (mapDomainRingHom R u).FinitePresentation := by
@@ -146,9 +148,9 @@ theorem finitePresentation_of_injective (hu : Function.Injective u) [u.range.Fin
   exact (inferInstance : Algebra.FinitePresentation R[Y] R[X])
 
 /- English proof (translation)
-Use `letI := mapAlgebra R u`. Use `free_of_injective R u hu` as an intermediate fact. Establish `: Module.Finite R[Y] R[X]` using `finite_of_finiteIndex R u`. Establish `: Nontrivial R[Y]` using `p.nontrivial`. Express the relevant statement in the definitionally equal form `Module.rankAtStalk (R := R[Y]) R[X] p = _`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, Module.finrank_eq_nat_card_basis (cosetBasis R u hu)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finrank_of_injective (hu : Function.Injective u) [u.range.FiniteIndex]
     (p : PrimeSpectrum R[Y]) : (mapDomainRingHom R u).finrank p = u.range.index := by
@@ -161,9 +163,9 @@ theorem finrank_of_injective (hu : Function.Injective u) [u.range.FiniteIndex]
   rfl
 
 /- English proof (translation)
-Introduce `p`. Proceed by induction on `p using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add s t hs ht`. Take `⟨a, rfl⟩` from `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `ht`. Conclude with `⟨a + b, map_add _ _ _⟩`. Consider the case `single x r`. Take `⟨y, rfl⟩` from `hu x`. Conclude with `⟨single y r, mapDomain_single⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_of_surjective (hu : Function.Surjective u) :
     Function.Surjective (mapDomainRingHom R u) := by
@@ -179,17 +181,15 @@ theorem surjective_of_surjective (hu : Function.Surjective u) :
     exact ⟨single y r, mapDomain_single⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.FormallyUnramified.iff_comp_injective]`. Introduce `B _ _ I hI f g h`. Use extensionality with `x`. Establish `hB : IsUnit (n : B)` using `by simpa using hn.map (algebraMap R B)`. Establish `hfg : f (single x 1) - g (single x 1) ∈ I`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.Quotient.eq]`. Conclude with `DFunLike.congr_fun h (single x 1)`. Establish `hp : ∀ k : R[X] →ₐ[R] B, k (single x 1) ^ n = 1` using `fun k => by`. Rewrite using `[← map_pow, single_pow, hX, one_pow, ← one_def, map_one]`. Use `set a := f (single x 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set b := g (single x 1)`. Establish `hi : (a - b) * (a - b) = 0`. Use `Ideal.mul_mem_mul hfg hfg` as an intermediate fact. Rewrite `this` using `[← pow_two, hI, Ideal.mem_bot]`. Then use the resulting hypothesis. Establish `key : ∀ m : ℕ, b * a ^ m = b ^ (m + 1) + m * b ^ m * (a - b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ a, ← mul_assoc, ih]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `push_cast`. Take the linear combination `(m * b ^ m) * hi`. Establish `h3` using `key n`. Rewrite `h3` using `[pow_succ b, hp f, hp g]`. Establish `h4 : (n : B) * (a - b) = 0` using `by linear_combination -h3`.
-
-Establish `h5 : a - b = 0` using `(hB.mul_right_eq_zero).1 h4`. Conclude with `sub_eq_zero.1 h5`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_isUnit (n : ℕ) (hn : IsUnit (n : R)) (hX : ∀ x : X, n • x = 0) :
     Algebra.FormallyUnramified R R[X] := by
@@ -222,7 +222,7 @@ theorem formallyUnramified_of_isUnit (n : ℕ) (hn : IsUnit (n : R)) (hX : ∀ x
   exact sub_eq_zero.1 h5
 
 /- English proof (translation)
-Use `formallyUnramified_of_isUnit R (X := X) _ hn fun x => card_nsmul_eq_zero'` as an intermediate fact. Establish `: Module.FinitePresentation R R[X]` using `Module.finitePresentation_of_projective _ _`. Conclude with `Algebra.Etale.of_formallyUnramified_of_flat`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_of_isUnit_card [Finite X] (hn : IsUnit (Nat.card X : R)) : Algebra.Etale R R[X] := by
   have := formallyUnramified_of_isUnit R (X := X) _ hn fun x => card_nsmul_eq_zero'

@@ -20,11 +20,11 @@ section Pairs
 variable {ι : Type*} [Fintype ι]
 
 /- English proof (translation)
-Establish `hf0 : ∀ p, f p ≠ 0` using `fun p h => by simpa [h] using hf p`. Establish `hswap : ∀ p, f p.swap = (f p)⁻¹` using `fun p => eq_inv_of_mul_eq_one_left (hf p)`. Establish `key : ∀ C : ι × ι → ℕ, (∏ p, f p ^ C p) ^ 2 = ∏ p : ι × ι, f p ^ ((C p : ℤ) - C p.swap)`. Introduce `C`. Establish `h1 : ∏ p : ι × ι, f p.swap ^ C p.swap = ∏ p, f p ^ C p` using `Fintype.prod_equiv (Equiv.prodComm ι ι) _ _ fun p => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[sq]`. Use `conv_lhs => arg 2`. Rewrite using `[← h1]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hswap, inv_pow, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_neg, ← zpow_add₀ (hf0 p), sub_eq_add_neg]`. Establish `h2 : (∏ p, f p ^ A p) ^ 2 = (∏ p, f p ^ B p) ^ 2`. Rewrite using `[key, key]`. Conclude with `Finset.prod_congr rfl fun p _ => by rw [hAB p]`. Rewrite using `[← NNReal.sqrt_sq (∏ p, f p ^ A p), h2, NNReal.sqrt_sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pow_eq_of_sub_swap (f : ι × ι → ℝ≥0) (hf : ∀ p, f p.swap * f p = 1)
     (A B : ι × ι → ℕ) (hAB : ∀ p, (A p : ℤ) - A p.swap = (B p : ℤ) - B p.swap) :
@@ -48,7 +48,7 @@ theorem prod_pow_eq_of_sub_swap (f : ι × ι → ℝ≥0) (hf : ∀ p, f p.swap
   rw [← NNReal.sqrt_sq (∏ p, f p ^ A p), h2, NNReal.sqrt_sq]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_subtype (Finset.univ.filter P) (by simp) f, Finset.prod_filter]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem prod_subtype_eq_prod_pow (P : ι × ι → Prop) [DecidablePred P] (f : ι × ι → ℝ≥0) :
     ∏ s : {p : ι × ι // P p}, f s.1 = ∏ p, f p ^ (if P p then 1 else 0) := by
@@ -72,7 +72,7 @@ def rightExponent (γ δ : Fin n → ℕ) (p : Fin n × Fin n) : ℕ :=
   (if γ p.1 = γ p.2 ∧ δ p.1 < δ p.2 then 1 else 0) + (if γ p.1 < γ p.2 then 1 else 0)
 
 /- English proof (translation)
-Simplify using `only [leftExponent, rightExponent, Prod.fst_swap, Prod.snd_swap]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exponent_antisymm (γ δ : Fin n → ℕ) (p : Fin n × Fin n) :
     (leftExponent γ δ p : ℤ) - leftExponent γ δ p.swap =
@@ -81,11 +81,11 @@ theorem exponent_antisymm (γ δ : Fin n → ℕ) (p : Fin n × Fin n) :
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `set f : Fin n × Fin n → ℝ≥0 := fun p => m p.1 / m p.2`. Establish `hf : ∀ p, f p.swap * f p = 1` using `fun p => by`. Simplify using `only [f, Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[div_mul_div_comm, mul_comm (m p.2), div_self (mul_ne_zero (hm _) (hm _))]`. Establish `e : ∀ (P : Fin n × Fin n → Prop) [DecidablePred P], ∏ s : {p : Fin n × Fin n // P p}, m s.1.1 / m s.1.2 = ∏ p, f p ^ (if P p then 1 else 0)` using `fun P _ => prod_subtype_eq_prod_pow P f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : (∏ s : {p : Fin n × Fin n // γ p.1 < γ p.2 ∧ δ p.2 < δ p.1}, m s.1.1 / m s.1.2) ^ 2 * (∏ s : {p : Fin n × Fin n // δ p.1 < δ p.2}, m s.1.1 / m s.1.2) * (∏ s : {p : Fin n × Fin n // δ p.1 = δ p.2 ∧ γ p.1 < γ p.2}, m s.1.1 / m s.1.2) = ∏ p, f p ^ leftExponent γ δ p`. Rewrite using `[e, e, e, ← Finset.prod_pow, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[leftExponent, ← pow_mul, ← pow_add, ← pow_add]`. Establish `hR : (∏ s : {p : Fin n × Fin n // γ p.1 = γ p.2 ∧ δ p.1 < δ p.2}, m s.1.1 / m s.1.2) * (∏ s : {p : Fin n × Fin n // γ p.1 < γ p.2}, m s.1.1 / m s.1.2) = ∏ p, f p ^ rightExponent γ δ p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[rightExponent, ← pow_add]`. Rewrite using `[hL, hR]`. Conclude with `prod_pow_eq_of_sub_swap f hf _ _ (exponent_antisymm γ δ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_character_identity (γ δ : Fin n → ℕ) (m : Fin n → ℝ≥0) (hm : ∀ i, m i ≠ 0) :
     (∏ s : {p : Fin n × Fin n // γ p.1 < γ p.2 ∧ δ p.2 < δ p.1}, m s.1.1 / m s.1.2) ^ 2 *
@@ -168,7 +168,7 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_apply_self (μ : Fin n → ℤ) (i : Fin n) :
     ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i =
@@ -176,14 +176,14 @@ theorem diagPow_apply_self (μ : Fin n → ℤ) (i : Fin n) :
   rw [Cartan.coe_diagPow, Matrix.diagonal_apply_eq]
 
 /- English proof (translation)
-Rewrite using `[Cartan.coe_diagPow, Matrix.diagonal_apply_ne _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem diagPow_apply_ne (μ : Fin n → ℤ) {i j : Fin n} (h : i ≠ j) :
     ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = 0 := by
   rw [Cartan.coe_diagPow, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Rewrite using `[permGL_conj_apply]`. Use `split_ifs with h`. Rewrite using `[h, diagPow_apply_self]`. Conclude with `diagPow_apply_ne μ fun e => h (w⁻¹.injective e)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permGL_conj_diagPow_apply (μ : Fin n → ℤ) (r c : Fin n) :
     ((permGL F w * Cartan.diagPow F n μ * (permGL F w)⁻¹ : GL (Fin n) F) :
@@ -195,14 +195,14 @@ theorem permGL_conj_diagPow_apply (μ : Fin n → ℤ) (r c : Fin n) :
   · exact diagPow_apply_ne μ fun e => h (w⁻¹.injective e)
 
 /- English proof (translation)
-Introduce `i j hij` and use `diagPow_apply_ne μ fun e => by rw [e] at hij; exact lt_irrefl _ hij`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem diagPow_mem_blockUpper' {α : Type*} [LinearOrder α] (δ : Fin n → α) (μ : Fin n → ℤ) :
     Cartan.diagPow F n μ ∈ blockUpper F n δ := fun i j hij =>
   diagPow_apply_ne μ fun e => by rw [e] at hij; exact lt_irrefl _ hij
 
 /- English proof (translation)
-Rewrite using `[Measures.modularCharacter_blockUpper_of_mem_borel' _ (fun i j hij => diagPow_apply_ne μ (ne_of_gt hij))]`. Simplify using `only [leviIncl_coe, diagPow_apply_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem modularCharacter_leviIncl_diagPow (μ : Fin n → ℤ) :
     modularCharacter (leviIncl (⟨Cartan.diagPow F n μ, diagPow_mem_levi μ⟩ : levi F n γ)) =
@@ -214,9 +214,9 @@ theorem modularCharacter_leviIncl_diagPow (μ : Fin n → ℤ) :
   simp only [leviIncl_coe, diagPow_apply_self]
 
 /- English proof (translation)
-Rewrite using `[Measures.modularCharacter_blockUpper_of_mem_borel' _ (fun i j hij => by`. Rewrite using `[coe_permConj, permGL_conj_diagPow_apply, if_neg (fun h => by simp [h] at hij)])]`. Use `symm`. Use `Fintype.prod_equiv (Equiv.subtypeEquiv (p := fun q : Fin n × Fin n => (β ∘ w) q.1 < (β ∘ w) q.2) (q := fun q => β q.1 < β q.2) (Equiv.prodCongr w w) fun p => Iff.rfl) (fun s => modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.1) / modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.2)) _ …` and prove the remaining obligations. Use `show modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.1) / modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.2) = modulus (((permGL F w * Cartan.diagPow F n μ * (permGL F w)⁻¹ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) (w s.1.1) (w s.1.1)) / modulus (((permGL F w * Cartan.diagPow F n μ …`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[permGL_conj_diagPow_apply, permGL_conj_diagPow_apply, if_pos rfl, if_pos rfl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modularCharacter_permConj_diagPow (μ : Fin n → ℤ) :
     modularCharacter (permConj F β w ⟨Cartan.diagPow F n μ, diagPow_mem_blockUpper' (β ∘ w) μ⟩) =
@@ -241,13 +241,11 @@ theorem modularCharacter_permConj_diagPow (μ : Fin n → ℤ) :
   simp
 
 /- English proof (translation)
-Apply the tactic sequence `have hentry : ∀ r c, (((cellInnerHom β γ w ⟨Cartan.diagPow F n μ, diagPow_mem_levi μ, diagPow_mem_blockUpper' (β ∘ w) μ⟩ : leviPar F n β (γ ∘ ⇑w⁻¹)) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) r c = if r = c then (GLnLocal.uniformizer F : F) ^ μ (w⁻¹ r) else 0 := by`. Introduce `r c`. Use `show ((leviProj F n β _ : levi F n β) : GL (Fin n) F) r c = _`. Rewrite using `[leviProj_apply]`. Simplify using `only [coe_permConj, Subgroup.coe_inclusion]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[permGL_conj_diagPow_apply]`. Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `absurd (h2 ▸ rfl) h1`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Both sides reduce to the same expression. Rewrite using `[modularCharacter_leviPar_of_diagonal _ fun i j hij => by rw [hentry, if_neg hij]]`. Use `symm`. Use `Fintype.prod_equiv (Equiv.subtypeEquiv (p := fun q : Fin n × Fin n => (β ∘ w) q.1 = (β ∘ w) q.2 ∧ γ q.1 < γ q.2) (q := fun q => β q.1 = β q.2 ∧ (γ ∘ ⇑w⁻¹) q.1 < (γ ∘ ⇑w⁻¹) q.2) (Equiv.prodCongr w w) fun p => by simp) (fun s => modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.1) / mo …` and prove the remaining obligations. Use `show _ = modulus ((((cellInnerHom β γ w ⟨Cartan.diagPow F n μ, diagPow_mem_levi μ, diagPow_mem_blockUpper' (β ∘ w) μ⟩ : leviPar F n β (γ ∘ ⇑w⁻¹)) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) (w s.1.1) (w s.1.1)) / modulus ((((cellInnerHom β γ w ⟨Cartan.diagPow F n μ, diagPow_mem_l …`.
-
-Rewrite using `[hentry, hentry, if_pos rfl, if_pos rfl]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem modularCharacter_cellInnerHom_diagPow (μ : Fin n → ℤ) :
     modularCharacter (cellInnerHom β γ w ⟨Cartan.diagPow F n μ,
@@ -296,11 +294,11 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   {n : ℕ} {β γ : Fin n → ℕ} {w : Equiv.Perm (Fin n)}
 
 /- English proof (translation)
-Establish `key : x * NNReal.sqrt b * NNReal.sqrt d = NNReal.sqrt c * NNReal.sqrt a`. Use `congrArg NNReal.sqrt h` as an intermediate fact. Rewrite `this` using `[NNReal.sqrt_mul, NNReal.sqrt_mul, NNReal.sqrt_mul, NNReal.sqrt_sq]`. Then use the resulting hypothesis. Establish `hsa : (NNReal.sqrt a : ℝ) ≠ 0` using `by simpa using ha`. Establish `hsd : (NNReal.sqrt d : ℝ) ≠ 0` using `by simpa using hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key' : (x : ℝ) * (NNReal.sqrt b : ℝ) * (NNReal.sqrt d : ℝ) = (NNReal.sqrt c : ℝ) * (NNReal.sqrt a : ℝ)` using `by exact_mod_cast key`. Establish `hsa' : ((NNReal.sqrt a : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hsa`. Establish `hsd' : ((NNReal.sqrt d : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hsd`. Establish `key'' : ((x : ℝ) : ℂ) * ((NNReal.sqrt b : ℝ) : ℂ) * ((NNReal.sqrt d : ℝ) : ℂ) = ((NNReal.sqrt c : ℝ) : ℂ) * ((NNReal.sqrt a : ℝ) : ℂ)` using `by exact_mod_cast key'`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `key''`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sqrt_identity {a b c d x : ℝ≥0} (ha : a ≠ 0) (hd : d ≠ 0) (h : x ^ 2 * b * d = c * a) :
     (((NNReal.sqrt a : ℝ) : ℂ))⁻¹ * ((x : ℝ) : ℂ) * ((NNReal.sqrt b : ℝ) : ℂ) =
@@ -320,14 +318,14 @@ theorem sqrt_identity {a b c d x : ℝ≥0} (ha : a ≠ 0) (hd : d ≠ 0) (h : x
   linear_combination key''
 
 /- English proof (translation)
-The claim follows from `Measures.modulus_ne_zero (zpow_ne_zero _ uniformizer_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem modulus_uniformizer_zpow_ne_zero (k : ℤ) :
     Measures.modulus ((GLnLocal.uniformizer F : F) ^ k) ≠ 0 :=
   Measures.modulus_ne_zero (zpow_ne_zero _ uniformizer_ne_zero)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun _ _ => div_ne_zero (modulus_uniformizer_zpow_ne_zero _) (modulus_uniformizer_zpow_ne_zero _)`.
+A detailed English derivation is pending.
 -/
 theorem prod_modulus_ne_zero (μ : Fin n → ℤ) (P : Fin n × Fin n → Prop) [DecidablePred P] :
     ∏ s : {p : Fin n × Fin n // P p}, Measures.modulus ((GLnLocal.uniformizer F : F) ^ μ s.1.1) /
@@ -352,7 +350,7 @@ def normScalarHom : leviPar F n γ (β ∘ w) →* ℂ :=
       (MonoidHom.id (leviPar F n γ (β ∘ w)) : leviPar F n γ (β ∘ w) →* cellLeviParabolic F β γ w))
 
 /- English proof (translation)
-Use `show ((NNReal.sqrt (modularCharacter l) : ℝ) : ℂ) = 1`. Rewrite using `[modularCharacter_leviPar_eq_one_of_mem_integralGL l hl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normLeviParSqrtModular_eq_one {γ δ : Fin n → ℕ} {l : leviPar F n γ δ}
     (hl : (l : GL (Fin n) F) ∈ integralGL F n) : normLeviParSqrtModular F γ δ l = 1 := by
@@ -361,19 +359,17 @@ theorem normLeviParSqrtModular_eq_one {γ δ : Fin n → ℕ} {l : leviPar F n �
   simp
 
 /- English proof (translation)
-Use extensionality with `b`. Take `⟨μ, hμ⟩` from `exists_diagPow_eq (γ := γ) (δ := β ∘ w) b`. Establish `hint : ∀ k : leviPar F n γ (β ∘ w), (k : GL (Fin n) F) ∈ integralGL F n → permGL F w * (k : GL (Fin n) F) * (permGL F w)⁻¹ ∈ integralGL F n` using `fun k hk => (integralGL F n).mul_mem ((integralGL F n).mul_mem (permGL_mem_integralGL w) hk) ((integralGL F n).inv_mem (permGL_mem_integralGL w))`. Rewrite using `[hμ (cellScalarHom F β γ w) fun k hk => ?_, hμ (normScalarHom F β γ w) fun k hk => ?_]`. Use `set t := Cartan.diagPow F n μ`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA` using `modularCharacter_leviIncl_diagPow (F := F) (γ := γ) μ`. Establish `hB` using `modularCharacter_permConj_diagPow (F := F) (β := β) (w := w) μ`. Establish `hC` using `modularCharacter_leviPar_diagPow (F := F) (γ := γ) (δ := β ∘ w) μ`. Establish `hD` using `modularCharacter_cellInnerHom_diagPow (F := F) (β := β) (γ := γ) (w := w) μ`. Establish `hX` using `cellChar_diagPow (F := F) (β := β) (γ := γ) (w := w) μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : Fin n → ℝ≥0 := fun i => Measures.modulus ((GLnLocal.uniformizer F : F) ^ μ i)`. Establish `hm : ∀ i, m i ≠ 0` using `fun i => modulus_uniformizer_zpow_ne_zero _`. Use `set X : ℝ≥0 := ∏ s : {p : Fin n × Fin n // γ p.1 < γ p.2 ∧ (β ∘ w) p.2 < (β ∘ w) p.1}, m s.1.1 / m s.1.2`. Establish `hXr : cellChar F β γ w t = (X : ℝ)`. Rewrite using `[hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [X, NNReal.coe_prod]`. Rewrite using `[← Finset.prod_subtype (Finset.univ.filter fun p : Fin n × Fin n => γ p.1 < γ p.2 ∧ β (w p.2) < β (w p.1)) (fun p => by simp [Function.comp]) (fun p => ((m p.1 / m p.2 : ℝ≥0) : ℝ))]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Simplify using `only [m, diagPow_apply_self]`. Establish `hid` using `prod_character_identity γ (β ∘ w) m hm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `show (invSqrtModular F n γ (leviIncl ⟨t, diagPow_mem_levi μ⟩)) * ((cellChar F β γ w t : ℝ) : ℂ) * sqrtModular F n β (permConj F β w ⟨t, diagPow_mem_blockUpper' (β ∘ w) μ⟩) = ((NNReal.sqrt (modularCharacter (⟨t, diagPow_mem_leviPar μ⟩ : leviPar F n γ (β ∘ w))) : ℝ) : ℂ) * (((NNRea …`. Rewrite using `[hXr]`. Use `show (((NNReal.sqrt (modularCharacter (leviIncl (⟨t, diagPow_mem_levi μ⟩ : levi F n γ))) : ℝ) : ℂ))⁻¹ * ((X : ℝ) : ℂ) * ((NNReal.sqrt (modularCharacter (permConj F β w ⟨t, diagPow_mem_blockUpper' (β ∘ w) μ⟩)) : ℝ) : ℂ) = _`. Rewrite using `[hA, hB, hC, hD]`. Conclude with `sqrt_identity (prod_modulus_ne_zero μ _) (prod_modulus_ne_zero μ _) hid`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `normLeviParSqrtModular F γ (β ∘ w) k * (normLeviParSqrtModular F β (γ ∘ ⇑w⁻¹) (cellInnerHom β γ w k))⁻¹ = 1`. Rewrite using `[normLeviParSqrtModular_eq_one hk, normLeviParSqrtModular_eq_one (leviProj_mem_integralGL (p := permConj F β w (Subgroup.inclusion cellLeviParabolic_le_blockUpper k)) (hint k hk))]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `invSqrtModular F n γ (leviIncl _) * ((cellChar F β γ w (k : GL (Fin n) F) : ℝ) : ℂ) * sqrtModular F n β (permConj F β w _) = 1`. Rewrite using `[invSqrtModular_leviIncl_of_mem _ hk, sqrtModular_of_mem_integralGL' (hint k hk), cellChar_eq_one_of_mem_integralGL (β := β) (γ := γ) (w := w) k.2 hk]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem cellScalarHom_eq_normScalarHom : cellScalarHom F β γ w = normScalarHom F β γ w := by
   ext b

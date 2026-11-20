@@ -15,7 +15,7 @@ namespace Elem
 def primeWeight (B : ℝ) (i : ℕ) : ℝ := if i.Prime ∧ B < i then Real.log i else 0
 
 /- English proof (translation)
-Unfold `primeWeight`. Use `split_ifs`. Conclude with `Real.log_natCast_nonneg i`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem primeWeight_nonneg (B : ℝ) (i : ℕ) : 0 ≤ primeWeight B i := by
   unfold primeWeight
@@ -24,11 +24,9 @@ theorem primeWeight_nonneg (B : ℝ) (i : ℕ) : 0 ≤ primeWeight B i := by
   · exact le_rfl
 
 /- English proof (translation)
-Establish `hθ` using `ChebyshevThetaBound.intersectionNumber_baseChange (K : ℝ) (Nat.cast_nonneg K)`. Rewrite `hθ` using `[Nat.floor_natCast]`. Use `le_trans ?_ hθ` and prove the remaining obligations. Rewrite using `[Finset.sum_filter]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i _`. Unfold `primeWeight`. Use `split_ifs with h1 h2 h2`. Conclude with `le_rfl`. Conclude with `absurd h1.1 h2`.
-
-Conclude with `Real.log_natCast_nonneg i`. Conclude with `le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem sum_primeWeight_le (B : ℝ) (K : ℕ) :
     ∑ i ∈ range (K + 1), primeWeight B i ≤ K * Real.log 4 := by
@@ -46,9 +44,9 @@ theorem sum_primeWeight_le (B : ℝ) (K : ℕ) :
   · exact le_rfl
 
 /- English proof (translation)
-Unfold `primeWeight`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, h⟩`. Establish `: (i : ℝ) ≤ B`. Use `Nat.le_floor_iff hB |>.mp (Nat.lt_succ_iff.mp hi)` as an intermediate fact.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem primeWeight_eq_zero_of_lt (B : ℝ) (hB : 0 ≤ B) {i : ℕ} (hi : i < ⌊B⌋₊ + 1) :
     primeWeight B i = 0 := by
@@ -61,25 +59,21 @@ theorem primeWeight_eq_zero_of_lt (B : ℝ) (hB : 0 ≤ B) {i : ℕ} (hi : i < �
   linarith
 
 /- English proof (translation)
-Use `set M := ⌊B⌋₊ + 1 with hM`. Proceed by induction on `j with`. Consider the case `zero`. Establish `h0 : ∀ i ∈ range (M + 0), primeWeight B i = 0` using `fun i hi => primeWeight_eq_zero_of_lt B hB.le (by have := Finset.mem_range.mp hi; omega)`. Rewrite using `[Finset.sum_eq_zero (fun i hi => by rw [h0 i hi, zero_div]), Finset.sum_eq_zero h0]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih => set K := M + j with hK`. Establish `hK1 : (1 : ℝ) ≤ K`. Establish `: 1 ≤ K` using `by omega`. Conclude with `this` after adjusting the coercions.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hKpos : (0 : ℝ) < K` using `by linarith`. Rewrite `*` using `[show M + (j + 1) = K + 1 by omega]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_range_succ]`. Use `set S := ∑ i ∈ range K, primeWeight B i / (i : ℝ) ^ 2`. Use `set G := ∑ i ∈ range K, primeWeight B i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set g := primeWeight B K`. Establish `hG1 : G + g ≤ K * Real.log 4`. Use `sum_primeWeight_le B K` as an intermediate fact. Rewrite `this` using `[Finset.sum_range_succ]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Establish `hG1nn : 0 ≤ G + g`. Establish `: 0 ≤ ∑ i ∈ range (K + 1), primeWeight B i` using `Finset.sum_nonneg (fun i _ => primeWeight_nonneg B i)`. Rewrite `this` using `[Finset.sum_range_succ]`. Conclude with `this`. Establish `hlog4 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Move the coercions through the operations in `at ih ⊢`. Establish `hdiff : (S + g / (K : ℝ) ^ 2 - (G + g) / ((K : ℝ) + 1) ^ 2) - (S - G / (K : ℝ) ^ 2) = (G + g) * (1 / (K : ℝ) ^ 2 - 1 / ((K : ℝ) + 1) ^ 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : 0 ≤ 1 / (K : ℝ) ^ 2 - 1 / ((K : ℝ) + 1) ^ 2`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[sub_nonneg]`. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Establish `hstep : (G + g) * (1 / (K : ℝ) ^ 2 - 1 / ((K : ℝ) + 1) ^ 2) ≤ 2 * Real.log 4 * (1 / (K : ℝ) - 1 / ((K : ℝ) + 1))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ Real.log 4 * (2 * (1 / (K : ℝ) - 1 / ((K : ℝ) + 1))) := by`. Apply `mul_le_mul_of_nonneg_left _ hlog4` to reduce the goal to its premises. Rewrite using `[show (2 : ℝ) * (1 / (K : ℝ) - 1 / ((K : ℝ) + 1)) = 2 / (K * ((K : ℝ) + 1)) by field_simp; ring]`.
-
-Rewrite using `[div_le_div_iff₀ (by positivity) (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Use `_ = 2 * Real.log 4 * (1 / (K : ℝ) - 1 / ((K : ℝ) + 1)) := by ring`. Establish `ih' : S - G / (K : ℝ) ^ 2 ≤ 2 * Real.log 4 * (1 / ((M : ℕ) : ℝ) - 1 / (K : ℝ))`. Simplify using `using ih`.
-
-Establish `: S + g / (K : ℝ) ^ 2 - (G + g) / ((K : ℝ) + 1) ^ 2 ≤ 2 * Real.log 4 * (1 / ((M : ℕ) : ℝ) - 1 / ((K : ℝ) + 1))`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem abel_step (B : ℝ) (hB : 0 < B) (j : ℕ) :
     (∑ i ∈ range (⌊B⌋₊ + 1 + j), primeWeight B i / (i : ℝ) ^ 2) -
@@ -147,17 +141,15 @@ theorem abel_step (B : ℝ) (hB : 0 < B) (j : ℕ) :
     simpa using this
 
 /- English proof (translation)
-Use `set M := ⌊B⌋₊ + 1 with hM`. Establish `hlog4 : 0 ≤ Real.log 4` using `Real.log_nonneg (by norm_num)`. Establish `hMB : B < (M : ℝ)`. Rewrite using `[hM]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `Nat.lt_floor_add_one B`. Establish `hMpos : (0 : ℝ) < M` using `lt_trans hB hMB`. Establish `hfinal : 2 * Real.log 4 / (M : ℝ) ≤ 2 * Real.log 4 / B` using `div_le_div_of_nonneg_left (by positivity) hB hMB.le`. Break down `lt_or_ge K M with hK | hK` into its components or cases. Rewrite using `[Finset.sum_eq_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Check the signs of the components of the expression. Introduce `i hi`. Rewrite using `[primeWeight_eq_zero_of_lt B hB.le (lt_trans (Finset.mem_range.mp hi) hK), zero_div]`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hK`. Establish `hW` using `abel_step B hB j`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hW` using `[← hM]`. Use `set K := M + j`. Establish `hKpos : (0 : ℝ) < (K : ℝ)`. Establish `: (M : ℝ) ≤ K` using `by exact_mod_cast (Nat.le_add_right M j)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hG : ∑ i ∈ range K, primeWeight B i ≤ K * Real.log 4`. Combine the equalities or inequalities in the displayed calculation. Establish `hGK : (∑ i ∈ range K, primeWeight B i) / (K : ℝ) ^ 2 ≤ Real.log 4 / K`. Rewrite using `[div_le_div_iff₀ (by positivity) hKpos]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Establish `h1 : 0 ≤ Real.log 4 / K` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem prime_partial_le (B : ℝ) (hB : 0 < B) (K : ℕ) :
     ∑ i ∈ range K, primeWeight B i / (i : ℝ) ^ 2 ≤ 2 * Real.log 4 / B := by
@@ -200,13 +192,11 @@ end Elem
 open Elem in
 
 /- English proof (translation)
-Introduce `B hB`. Use `set s : Set ℕ := {p | p.Prime ∧ B < p}`. Establish `hind : s.indicator (fun p : ℕ => Real.log p / (p : ℝ) ^ 2) = fun i => primeWeight B i / (i : ℝ) ^ 2`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i.Prime ∧ B < i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[s, Set.indicator_of_mem, h, primeWeight]`. Simplify using `[s, Set.indicator_of_notMem, h, primeWeight]`. Establish `hnn : ∀ i, 0 ≤ primeWeight B i / (i : ℝ) ^ 2` using `fun i => div_nonneg (primeWeight_nonneg B i) (by positivity)`. Establish `hsum : Summable (fun i => primeWeight B i / (i : ℝ) ^ 2)` using `summable_of_sum_range_le hnn (prime_partial_le B hB)`. Establish `hsub : Summable (fun p : s => Real.log p / (p : ℝ) ^ 2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(summable_subtype_iff_indicator (f := fun p : ℕ => Real.log p / (p : ℝ) ^ 2) (s := s)).mpr (by rw [hind]; exact hsum)` as an intermediate fact. Conclude with `this`. Use `⟨hsub, ?_⟩` and prove the remaining obligations. Establish `: ∑' p : s, Real.log p / (p : ℝ) ^ 2 ≤ 2 * Real.log 4 / B`. Rewrite using `[tsum_subtype s (fun p : ℕ => Real.log p / (p : ℝ) ^ 2), hind]`.
-
-Conclude with `Real.tsum_le_of_sum_range_le hnn (prime_partial_le B hB)`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrimeLogSquareTail.intersectionNumber_baseChange : PrimeLogSquareTail.Statement := by
   intro B hB
@@ -236,7 +226,7 @@ namespace Elem
 def phiT (t : ℝ) : ℝ := (1 + Real.log t) / t
 
 /- English proof (translation)
-Unfold `phiT`. Use `Real.log_nonneg ht` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem phiT_nonneg {t : ℝ} (ht : 1 ≤ t) : 0 ≤ phiT t := by
   unfold phiT
@@ -244,15 +234,15 @@ theorem phiT_nonneg {t : ℝ} (ht : 1 ≤ t) : 0 ≤ phiT t := by
   positivity
 
 /- English proof (translation)
-Establish `hx0 : 0 < x` using `by linarith`. Use `set L := Real.log (x + 1)`. Use `set l := Real.log x`. Establish `hlL : L - 1 / x ≤ l`. Establish `h` using `Real.log_le_sub_one_of_pos (show 0 < (x + 1) / x by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Real.log_div (by linarith) hx0.ne']`. Establish `: (x + 1) / x - 1 = 1 / x` using `by field_simp; ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL : 1 + 1 / x ≤ L`. Establish `h2` using `Real.log_two_gt_d9`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Real.log 4 ≤ L` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `: Real.log 4 = 2 * Real.log 2`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]; push_cast; ring`. Establish `h13 : 1 / x ≤ 1 / 3` using `one_div_le_one_div_of_le (by norm_num) hx`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hmain : (1 + (L - 1 / x)) / x - (1 + L) / (x + 1) - L / (x + 1) ^ 2 = (L * x - x - 1) / (x ^ 2 * (x + 1) ^ 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hnum : 0 ≤ L * x - x - 1`. Establish `: (1 + 1 / x) * x = x + 1` using `by field_simp`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h1 : (1 + (L - 1 / x)) / x ≤ (1 + l) / x` using `div_le_div_of_nonneg_right (by linarith) hx0.le`. Establish `h2 : 0 ≤ (L * x - x - 1) / (x ^ 2 * (x + 1) ^ 2)` using `by positivity`. Unfold `phiT`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem log_div_sq_le_phiT_sub (x : ℝ) (hx : 3 ≤ x) :
     Real.log (x + 1) / (x + 1) ^ 2 ≤ phiT x - phiT (x + 1) := by
@@ -287,7 +277,7 @@ theorem log_div_sq_le_phiT_sub (x : ℝ) (hx : 3 ≤ x) :
 def intWeight (B₀ : ℝ) (m : ℕ) : ℝ := if B₀ < m then Real.log m / (m : ℝ) ^ 2 else 0
 
 /- English proof (translation)
-Unfold `intWeight`. Use `split_ifs`. Conclude with `div_nonneg (Real.log_natCast_nonneg m) (by positivity)`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem intWeight_nonneg (B₀ : ℝ) (m : ℕ) : 0 ≤ intWeight B₀ m := by
   unfold intWeight
@@ -296,19 +286,19 @@ theorem intWeight_nonneg (B₀ : ℝ) (m : ℕ) : 0 ≤ intWeight B₀ m := by
   · exact le_rfl
 
 /- English proof (translation)
-Use `set n := ⌊B₀⌋₊ with hn`. Establish `hn16 : 16 ≤ n`. Rewrite using `[hn]; exact Nat.le_floor (by exact_mod_cast hB)`. Proceed by induction on `j with`. Consider the case `zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules. Introduce `m hm`. Establish `hm' : m ≤ n` using `by have := Finset.mem_range.mp hm; omega`. Unfold `intWeight`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Establish `: (m : ℝ) ≤ B₀`. Use `(Nat.le_floor_iff (by linarith)).mp hm'` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `succ j ih`. Rewrite using `[show n + 1 + (j + 1) = (n + 1 + j) + 1 by omega, Finset.sum_range_succ]`. Establish `hw : intWeight B₀ (n + 1 + j) = Real.log ((n + j : ℕ) + 1 : ℝ) / (((n + j : ℕ) : ℝ) + 1) ^ 2`. Unfold `intWeight`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[if_pos]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `: B₀ < ((n + 1 : ℕ) : ℝ)`. Rewrite using `[hn]`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `push_cast`. Conclude with `Nat.lt_floor_add_one B₀`. Establish `h2 : ((n + 1 : ℕ) : ℝ) ≤ ((n + 1 + j : ℕ) : ℝ)` using `by exact_mod_cast (by omega)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk` using `log_div_sq_le_phiT_sub ((n + j : ℕ) : ℝ) (by have : 3 ≤ n + j := by omega`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this)` after adjusting the coercions. Rewrite using `[hw]`. Establish `: ((n + (j + 1) : ℕ) : ℝ) = ((n + j : ℕ) : ℝ) + 1` using `by push_cast; ring`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem int_step (B₀ : ℝ) (hB : 16 ≤ B₀) (j : ℕ) :
     ∑ m ∈ range (⌊B₀⌋₊ + 1 + j), intWeight B₀ m ≤
@@ -349,15 +339,15 @@ theorem int_step (B₀ : ℝ) (hB : 16 ≤ B₀) (j : ℕ) :
     linarith
 
 /- English proof (translation)
-Use `set n := ⌊B₀⌋₊ with hn`. Establish `hB0 : 0 < B₀` using `by linarith`. Establish `hn16 : 16 ≤ n`. Rewrite using `[hn]; exact Nat.le_floor (by exact_mod_cast hB)`. Establish `hnle : (n : ℝ) ≤ B₀` using `Nat.floor_le hB0.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnlt : B₀ < (n : ℝ) + 1` using `Nat.lt_floor_add_one B₀`. Establish `hn1 : (16 : ℝ) ≤ n` using `by exact_mod_cast hn16`. Establish `hphi : phiT n ≤ 2 * (1 + Real.log B₀) / B₀`. Unfold `phiT`. Establish `hlog : Real.log n ≤ Real.log B₀` using `Real.log_le_log (by linarith) hnle`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogn : 0 ≤ Real.log n` using `Real.log_nonneg (by linarith)`. Rewrite using `[div_le_div_iff₀ (by linarith) hB0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hS : ∀ K, ∑ m ∈ range K, intWeight B₀ m ≤ phiT n`. Introduce `K`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_or_gt K (n + 1) with hK | hK` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `phiT_nonneg (t := ((n + 0 : ℕ) : ℝ)) (by push_cast; linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hK.le`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `phiT_nonneg (t := ((n + j : ℕ) : ℝ)) (by push_cast; linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hS K).trans hphi`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem int_partial_le (B₀ : ℝ) (hB : 16 ≤ B₀) (K : ℕ) :
     ∑ m ∈ range K, intWeight B₀ m ≤ 2 * (1 + Real.log B₀) / B₀ := by
@@ -397,13 +387,13 @@ end Elem
 open Elem in
 
 /- English proof (translation)
-Introduce `f N B₀ hf hN hB`. Establish `hB16 : 16 ≤ B₀`. Establish `hf' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hN' : (2 : ℝ) ≤ N` using `by exact_mod_cast hN`. Use the polynomial consequences of the given equalities and inequalities.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set s : Set ℕ := {m | B₀ < m}`. Establish `hind : s.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ 2) = intWeight B₀`. Use function extensionality and compare the values at `m`. Distinguish the cases in `h : B₀ < m`. Simplify using `[s, Set.indicator_of_mem, h, intWeight]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[s, Set.indicator_of_notMem, h, intWeight]`. Establish `hsum : Summable (intWeight B₀)` using `summable_of_sum_range_le (intWeight_nonneg B₀) (int_partial_le B₀ hB16)`. Establish `hsub : Summable (fun m : s => Real.log m / (m : ℝ) ^ 2)`. Use `(summable_subtype_iff_indicator (f := fun m : ℕ => Real.log m / (m : ℝ) ^ 2) (s := s)).mpr (by rw [hind]; exact hsum)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hsub, ?_⟩` and prove the remaining obligations. Establish `: ∑' m : s, Real.log m / (m : ℝ) ^ 2 ≤ 2 * (1 + Real.log B₀) / B₀`. Rewrite using `[tsum_subtype s (fun m : ℕ => Real.log m / (m : ℝ) ^ 2), hind]`. Conclude with `Real.tsum_le_of_sum_range_le (intWeight_nonneg B₀) (int_partial_le B₀ hB16)`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntegerLogSquareTail.intersectionNumber_baseChange : IntegerLogSquareTail.Statement := by
   intro f N B₀ hf hN hB

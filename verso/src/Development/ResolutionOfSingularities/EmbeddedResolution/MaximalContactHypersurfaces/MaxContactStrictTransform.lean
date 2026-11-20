@@ -53,14 +53,14 @@ end
 section
 
 /- English proof (translation)
-The claim follows from `Scheme.IdealSheafData.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 private theorem idealSheafData_eq_of_forall_ideal_eq {Y : Scheme.{u}} {A B : Y.IdealSheafData}
     (h : ∀ V : Y.affineOpens, A.ideal V = B.ideal V) : A = B :=
   Scheme.IdealSheafData.ext (funext h)
 
 /- English proof (translation)
-Rewrite using `[le_iff_forall_stalkIdeal_le]`. Introduce `x`. Rewrite using `[stalkIdeal_mul]`. Conclude with `Ideal.mul_le.2 fun r _ s hs => Ideal.mul_mem_left _ _ hs`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_le_right_idealSheafData {X : Scheme.{u}} (I J : X.IdealSheafData) :
     I * J ≤ J := by
@@ -70,7 +70,7 @@ private theorem mul_le_right_idealSheafData {X : Scheme.{u}} (I J : X.IdealSheaf
   exact Ideal.mul_le.2 fun r _ s hs => Ideal.mul_mem_left _ _ hs
 
 /- English proof (translation)
-Rewrite using `[le_iff_forall_stalkIdeal_le]`. Introduce `x`. Rewrite using `[stalkIdeal_mul]`. Conclude with `Ideal.mul_le.2 fun r hr s _ => Ideal.mul_mem_right _ _ hr`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_le_left_idealSheafData {X : Scheme.{u}} (I J : X.IdealSheafData) :
     I * J ≤ I := by
@@ -80,7 +80,7 @@ private theorem mul_le_left_idealSheafData {X : Scheme.{u}} (I J : X.IdealSheafD
   exact Ideal.mul_le.2 fun r hr s _ => Ideal.mul_mem_right _ _ hr
 
 /- English proof (translation)
-Establish `hI : ∀ K : X.IdealSheafData, restrictIdeal K V = (restrictIdeal K U).comap (X.homOfLE hVU)`. Introduce `K`. Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]`. Rewrite using `[hI I, hI J]`. Conclude with `Scheme.IdealSheafData.comap_mono _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_le_of_le_opens {X : Scheme.{u}} {I J : X.IdealSheafData}
     {U V : X.Opens} (hVU : V ≤ U) (h : restrictIdeal I U ≤ restrictIdeal J U) :
@@ -94,7 +94,7 @@ private theorem restrictIdeal_le_of_le_opens {X : Scheme.{u}} {I J : X.IdealShea
   exact Scheme.IdealSheafData.comap_mono _ h
 
 /- English proof (translation)
-Use `hqc` as an intermediate fact. Use `idealSheafData_eq_of_forall_ideal_eq (fun V => ?_)` and prove the remaining obligations. Use `saturation_ideal_eq_of_isUnit F T V 1 ?_ isUnit_one` and prove the remaining obligations. Rewrite using `[hF]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem saturation_of_eq_top {Y : Scheme.{u}} (F T : Y.IdealSheafData)
     (hqc : QuasiCompact (saturationι F T)) (hF : F = ⊤) :
@@ -106,9 +106,9 @@ private theorem saturation_of_eq_top {Y : Scheme.{u}} (F T : Y.IdealSheafData)
   simp
 
 /- English proof (translation)
-Establish `hqc : QuasiCompact (saturationι (Z.comap ((π ⁻¹ᵁ V).ι ≫ π)) (H.comap ((π ⁻¹ᵁ V).ι ≫ π)))`. Rewrite using `[← strictTransformι_eq_saturationι]`. Conclude with `quasiCompact_strictTransformι_comp_ι π Z H (π ⁻¹ᵁ V)`. Establish `hsat : Blowup.strictTransform ((π ⁻¹ᵁ V).ι ≫ π) Z H = H.comap ((π ⁻¹ᵁ V).ι ≫ π)`. Rewrite using `[strictTransform_eq_saturation]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `saturation_of_eq_top _ _ hqc hZtop`. Rewrite using `[restrictIdeal_strictTransform π Z H (π ⁻¹ᵁ V), hsat, restrictIdeal_eq_comap_ι, Scheme.IdealSheafData.comap_comp]`.
+A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_strictTransform_eq_of_comap_eq_top {P P₁ : Scheme.{u}} (π : P₁ ⟶ P)
     (Z H : P.IdealSheafData) [QuasiCompact (strictTransformι π Z H)] (V : P.Opens)
@@ -135,7 +135,7 @@ private noncomputable def etaleChartPullbackOfIsIso {P P₁ : Scheme.{u}} {k : T
     infer_instance
 
 /- English proof (translation)
-Rewrite using `[EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Use `show (coordSubspaceIdeal k n T).comap ((π ∣_ V) ≫ c.map) = _`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pullbackChartIso_coordIdeal {P P₁ : Scheme.{u}} {k : Type u} [Field k]
     {p : P ⟶ Spec (CommRingCat.of k)} (π : P₁ ⟶ P) {V : P.Opens} {n : ℕ}
@@ -146,7 +146,7 @@ private theorem pullbackChartIso_coordIdeal {P P₁ : Scheme.{u}} {k : Type u} [
   rw [Scheme.IdealSheafData.comap_comp]
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hcase⟩` from `hH x`. Break down `hcase with ⟨-, htop⟩ | ⟨n, c, j, hHU, -⟩` into its components or cases. Take `⟨V, nV, hxV, hVU, hVaff, ⟨cV⟩⟩` from `exists_etaleChart_le p x U hxU`. Conclude with `⟨V, hxV, nV, cV, Or.inl (restrictIdeal_eq_top_of_le H hVU htop)⟩`. Conclude with `⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem exists_etaleChart_of_isMaxContactHypersurface {k : Type u} [Field k]
     {X : Scheme.{u}} (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p]
@@ -161,19 +161,19 @@ private theorem exists_etaleChart_of_isMaxContactHypersurface {k : Type u} [Fiel
   · exact ⟨U, hxU, n, c, Or.inr ⟨j, hHU⟩⟩
 
 /- English proof (translation)
-Rewrite using `[inStrictNormalCrossingPosition_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `D hD`. Simplify using `only [List.mem_singleton] at hD`. Substitute `hD` using the available equality.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `isSmoothDivisor_of_locally_coordIdeal D (fun x => exists_etaleChart_of_isMaxContactHypersurface p A μ D hH x)`. Introduce `x`. Use `inStrictNormalCrossingPositionAt_of_exists_etaleChart ?_` and prove the remaining obligations. Take `⟨U, hxU, n, c, hcase⟩` from `exists_etaleChart_of_isMaxContactHypersurface p A μ H hH x`. Break down `hcase with htop | ⟨j, hj⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, hxU, n, c, (fun _ => none), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i _ i' _ t h1 _`. Simplify using `at h1`. Introduce `i hi _`. Establish `hi0 : i = 0` using `Nat.lt_one_iff.mp hi`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hi0` using the available equality. Simplify using `using htop`. Introduce `i _ t h`. Simplify using `at h`. Use `⟨U, hxU, n, c, (fun i => match i with | 0 => some j | _ => none), ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi i' hi' t _ _`. Establish `e1 : i = 0` using `Nat.lt_one_iff.mp hi`. Establish `e2 : i' = 0` using `Nat.lt_one_iff.mp hi'`. Use linear arithmetic over natural numbers and integers. Introduce `i hi h`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi0 : i = 0` using `Nat.lt_one_iff.mp hi`. Substitute `hi0` using the available equality. Conclude with `absurd (show (some j : Option (Fin n)) = none from h) (by simp)`. Introduce `i hi t h`. Establish `hi0 : i = 0` using `Nat.lt_one_iff.mp hi`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `hi0` using the available equality. Establish `hjt : j = t` using `Option.some.inj (show (some j : Option (Fin n)) = some t from h)`. Substitute `hjt` using the available equality. Simplify using `using hj`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem inStrictNormalCrossingPosition_singleton_of_isMaxContactHypersurface {k : Type u} [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [LocallyOfFiniteType p] [AlgebraicGeometry.Smooth p]
@@ -217,9 +217,9 @@ private theorem inStrictNormalCrossingPosition_singleton_of_isMaxContactHypersur
         simpa using hj
 
 /- English proof (translation)
-Establish `hA1 : controlledTransform π Z A μ hπ hA = A₁` using `(eq_controlledTransform_of_mul_eq_comap π Z A μ hπ hA A₁ htr).symm`. Establish `h : (derivIdealSheafIterate k p (μ - 1) A).comap π ≤ Blowup.exceptionalIdeal π Z ^ (μ - (μ - 1)) * derivIdealSheafIterate k (π ≫ p) (μ - 1) (controlledTransform π Z A μ hπ hA)` using `comap_derivIdealSheafIterate_le_exceptionalIdeal_pow_mul k p π Z E hZ hπ A μ hA (μ - 1) (Nat.sub_le μ 1)`. Rewrite `h` using `[hA1]`. Establish `hμ1 : μ - (μ - 1) = 1` using `by omega`. Rewrite `h` using `[hμ1, pow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[maxContactIdeal_eq_derivIdealSheafIterate, maxContactIdeal_eq_derivIdealSheafIterate]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comap_maxContactIdeal_le_exceptionalIdeal_mul (k : Type u) [Field k] [CharZero k] {P P₁ : Scheme.{u}}
     (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p] [LocallyOfFiniteType p]
@@ -244,15 +244,13 @@ theorem comap_maxContactIdeal_le_exceptionalIdeal_mul (k : Type u) [Field k] [Ch
   exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `hsucc : μ - 1 + 1 = μ` using `by omega`. Establish `hz : orderAt A (π.base y) ≤ ((μ - 1 : ℕ) : ℕ∞)`. Rewrite using `[orderAt_le_iff_notMem_orderAtLeastLocus, hsucc]`. Conclude with `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA' : A ≤ Z ^ (μ - 1)`. Use `le_trans hA ?_` and prove the remaining obligations. Establish `hpow : Z ^ μ = Z ^ (μ - 1) * Z`. Rewrite using `[← pow_succ]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hpow]`. Conclude with `mul_le_left_idealSheafData _ _`. Establish `hEA : Blowup.exceptionalIdeal π Z * A₁ = controlledTransform π Z A (μ - 1) hπ hA'`. Use `eq_controlledTransform_of_mul_eq_comap π Z A (μ - 1) hπ hA' _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1` using `orderAt_controlledTransform_le k p π Z E hZ hπ A (μ - 1) hA' (π.base y) hz y rfl`. Rewrite `h1` using `[← hEA]`. Establish `hle : Blowup.exceptionalIdeal π Z * A₁ ≤ A₁` using `mul_le_right_idealSheafData _ _`. Establish `h2 : orderAt A₁ y ≤ ((μ - 1 : ℕ) : ℕ∞)` using `le_trans (orderAt_le_of_le hle y) h1`.
-
-Rewrite `h2` using `[orderAt_le_iff_notMem_orderAtLeastLocus, hsucc]`. Conclude with `h2 hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_orderAtLeastLocus_base_of_mem_orderAtLeastLocus_transform (k : Type u) [Field k] [CharZero k]
     {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -288,9 +286,9 @@ theorem mem_orderAtLeastLocus_base_of_mem_orderAtLeastLocus_transform (k : Type 
   exact h2 hy
 
 /- English proof (translation)
-Establish `h1 : (Z.support : Set ↥P) ⊆ (H.support : Set ↥P)` using `hsupp.trans (hH.orderAtLeastLocus_subset_support hμ)`. Establish `h2 : (Z.support : Set ↥P) ⊆ orderAtLeastLocus H 1`. Introduce `x hx`. Rewrite using `[mem_orderAtLeastLocus_one_iff]`. Conclude with `h1 hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `le_pow_of_hasStrictNormalCrossingsWith p Z H E hZ 1 h2`. Rewrite `h3` using `[pow_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem le_center_of_isMaxContactHypersurface (k : Type u) [Field k] [CharZero k]
     {P : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -309,25 +307,21 @@ theorem le_center_of_isMaxContactHypersurface (k : Type u) [Field k] [CharZero k
   rwa [pow_one] at h3
 
 /- English proof (translation)
-Take `⟨s, hs, hx₁D⟩` from `exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZU x₁ hx₁`. Use `set B := blowupChartOfIsBlowup π c S hπ hZU s hs with hBdef`. Take `⟨V, _, hxV, hVD, hVaff, -⟩` from `exists_etaleChart_le (π ≫ p) x₁ B.domain hx₁D`. Establish `hE : restrictIdeal (Blowup.exceptionalIdeal π Z) B.domain = B.chart.coordIdeal {s}` using `B.restrictIdeal_exceptionalIdeal Z hs hZU`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (B.chart.coordIdeal {s})`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `isLocallyGeneratedByNonZeroDivisor_of_locally_coordIdeal (p := B.domain.ι ≫ (π ≫ p)) _ (fun x => ?_)` and prove the remaining obligations. Conclude with `⟨⊤, trivial, m, B.chart.restrictOpens ⊤, Or.inr ⟨s, B.chart.restrictIdeal_coordIdeal ⊤ {s}⟩⟩`. Establish `key : restrictIdeal (H.comap π) B.domain ≤ B.chart.coordIdeal {s} * restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) B.domain`. Establish `h1 : restrictIdeal (H.comap π) B.domain ≤ restrictIdeal ((maxContactIdeal k p A μ).comap π) B.domain`. Rewrite using `[B.restrictIdeal_comap H, B.restrictIdeal_comap (maxContactIdeal k p A μ)]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Scheme.IdealSheafData.comap_mono _ ?_` and prove the remaining obligations. Rewrite using `[hHU]`. Conclude with `(coordIdeal_singleton_le_restrictIdeal_iff k p hU' c j₀ (maxContactIdeal k p A μ)).2 hcoord`. Establish `h2 : restrictIdeal ((maxContactIdeal k p A μ).comap π) B.domain ≤ restrictIdeal (Blowup.exceptionalIdeal π Z * maxContactIdeal k (π ≫ p) A₁ μ) B.domain` using `Scheme.IdealSheafData.comap_mono _ (comap_maxContactIdeal_le_exceptionalIdeal_mul k p π Z E hZ hπ A A₁ μ hμ hA htr)`. Establish `hmul : restrictIdeal (Blowup.exceptionalIdeal π Z * maxContactIdeal k (π ≫ p) A₁ μ) B.domain = restrictIdeal (Blowup.exceptionalIdeal π Z) B.domain * restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) B.domain` using `Scheme.IdealSheafData.comap_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite `h2` using `[hmul, hE]`. Conclude with `h1.trans h2`. Distinguish the cases in `hj : j₀ = s`. Establish `hHU' : restrictIdeal H U' = c.coordIdeal {s}` using `by rw [hHU, hj]`. Establish `hcomap : restrictIdeal (H.comap π) B.domain = B.chart.coordIdeal {s}` using `B.restrictIdeal_comap_coordIdeal_self H hHU'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hST : restrictIdeal (Blowup.strictTransform π Z H) B.domain = ⊤` using `B.restrictIdeal_strictTransform_coordIdeal_self Z H hs hZU hHU'`. Establish `htop : restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) B.domain = ⊤`. Use `top_le_iff.1 (hcart.le_of_mul_le_mul ?_)` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.mul_top]`. Conclude with `le_trans (le_of_eq hcomap.symm) key`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint (orderAtLeastLocus A₁ μ) ((V : Set ↥P₁))`. Rewrite using `[Set.disjoint_left]`. Introduce `x hxc hxV`. Establish `hx1 : x ∈ (maxContactIdeal k (π ≫ p) A₁ μ).support` using `mem_support_maxContactIdeal_of_mem_orderAtLeastLocus k (π ≫ p) A₁ hμ hxc`. Conclude with `notMem_support_of_mem_opens_of_restrictIdeal_eq_top _ B.domain htop x (hVD hxV) hx1`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨V, hVaff, hxV, Or.inl ⟨hdisj, restrictIdeal_eq_top_of_le _ hVD hST⟩⟩`. Establish `hcomap : restrictIdeal (H.comap π) B.domain = B.chart.coordIdeal {j₀} * B.chart.coordIdeal {s}` using `B.restrictIdeal_comap_coordIdeal_of_mem H j₀ hj₀ hj hHU`. Establish `hST : restrictIdeal (Blowup.strictTransform π Z H) B.domain = B.chart.coordIdeal {j₀}` using `B.restrictIdeal_strictTransform_of_mem_of_ne Z H hs hZU j₀ hj₀ hj hHU`. Establish `hmc : B.chart.coordIdeal {j₀} ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) B.domain`. Use `hcart.le_of_mul_le_mul ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm (B.chart.coordIdeal {s}) (B.chart.coordIdeal {j₀})]`. Conclude with `le_trans (le_of_eq hcomap.symm) key`. Establish `hSTV : restrictIdeal (Blowup.strictTransform π Z H) V = (B.chart.restrict hVD).coordIdeal {j₀}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hVD B.chart (Blowup.strictTransform π Z H) {j₀} hST`. Use `⟨V, hVaff, hxV, Or.inr ⟨m, B.chart.restrict hVD, j₀, hSTV, ?_⟩⟩` and prove the remaining obligations. Use `show (B.chart.restrict hVD).coordIdeal {j₀} ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) V`.
-
-Establish `h4 : restrictIdeal (Blowup.strictTransform π Z H) B.domain ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) B.domain`. Rewrite using `[hST]`. Conclude with `hmc`. Establish `h5` using `restrictIdeal_le_of_le_opens hVD h4`. Rewrite using `[← hSTV]`.
-
-Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurfaceAt_strictTransform_of_etaleChart (k : Type u) [Field k] [CharZero k]
     {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -414,27 +408,25 @@ theorem isMaxContactHypersurfaceAt_strictTransform_of_etaleChart (k : Type u) [F
     exact h5
 
 /- English proof (translation)
-Establish `hzA : π.base x₁ ∈ orderAtLeastLocus A μ` using `hsupp hx₁`. Establish `hsm : AlgebraicGeometry.Smooth (Z.subschemeι ≫ p)` using `smooth_subschemeι_comp_of_hasStrictNormalCrossingsWith Z E hZ`. Establish `hZnil : HasStrictNormalCrossingsWith p Z ([] : List P.IdealSheafData)` using `hasStrictNormalCrossingsWith_nil_of_smooth p Z`. Establish `hHZ : H ≤ Z` using `le_center_of_isMaxContactHypersurface k p Z E hZ A μ hμ hsupp H hH`. Establish `hsnc : InStrictNormalCrossingPosition p (H :: ([] : List P.IdealSheafData))` using `inStrictNormalCrossingPosition_singleton_of_isMaxContactHypersurface p A μ H hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, hzU, m, c, lab, S, m', c', j0, lab', hZU, hHU, hlab, _, hlab', hj0⟩` from `exists_etaleCharts_of_inStrictNormalCrossingPosition_cons p Z H [] hsnc hZnil hHZ (π.base x₁) hx₁`. Establish `hSprime : ∀ i ∈ S, c.coord i ∈ (hU.primeIdealOf ⟨π.base x₁, hzU⟩).asIdeal`. Introduce `i hi`. Establish `h1 : Z.ideal ⟨U, hU⟩ = Ideal.span (c.coord '' (S : Set (Fin m)))` using `c.ideal_eq_span_coord hU Z S hZU`. Establish `h2 : c.coord i ∈ Z.ideal ⟨U, hU⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `Ideal.subset_span ⟨i, hi, rfl⟩`. Conclude with `ideal_le_primeIdealOf Z hU hzU hx₁ h2`. Take `⟨a, hcoeff, j, hjS, haj, -⟩` from `exists_coord_eq_sum_coeff_not_mem_of_le p hU hzU c lab S c' j0 lab' Z H [] hx₁ hlab hZU hHU hlab' hj0 hHZ`. Take `⟨V, hV, hVU, hzV, cV, hcne, hcj, huj⟩` from `exists_etaleChart_update_coord p hU c hzU S a j hjS hSprime haj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZV : restrictIdeal Z V = cV.coordIdeal S`. Use `restrictIdeal_eq_coordIdeal_of_ideal_eq_span hV cV Z S ?_` and prove the remaining obligations. Establish `h1 : Z.ideal ⟨U, hU⟩ = Ideal.span (c.coord '' (S : Set (Fin m)))` using `c.ideal_eq_span_coord hU Z S hZU`. Establish `h2` using `ideal_eq_span_image_map_of_le Z hU hV hVU (c.coord '' (S : Set (Fin m))) h1`. Rewrite using `[h2, Set.image_image]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← span_image_update_sum_eq (fun i => (P.presheaf.map (homOfLE hVU).op).hom (c.coord i)) S (fun i => (P.presheaf.map (homOfLE hVU).op).hom (a i)) j hjS huj]`. Use `congr 1`. Use `Set.image_congr ?_` and prove the remaining obligations. Introduce `i hi`. Distinguish the cases in `hij : i = j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Rewrite using `[Function.update_self, hcj, map_sum]`. Conclude with `Finset.sum_congr rfl (fun t _ => (map_mul _ _ _).symm)`. Rewrite using `[Function.update_of_ne hij, hcne i hij]`. Establish `hHV : restrictIdeal H V = cV.coordIdeal {j}`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `restrictIdeal_eq_coordIdeal_of_ideal_eq_span hV cV H {j} ?_` and prove the remaining obligations. Establish `h1 : H.ideal ⟨U, hU⟩ = Ideal.span (c'.coord '' ((({j0} : Finset (Fin m')) : Set (Fin m'))))` using `c'.ideal_eq_span_coord hU H {j0} hHU`. Establish `h2` using `ideal_eq_span_image_map_of_le H hU hV hVU _ h1`. Establish `hone : (P.presheaf.map (homOfLE hVU).op).hom (c'.coord j0) = cV.coord j`. Rewrite using `[hcoeff, hcj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h2]`. Simplify using `only [Finset.coe_singleton, Set.image_singleton, hone]`. Take `⟨W, hW, hzW, hcase⟩` from `hH (π.base x₁)`. Establish `hHmc : restrictIdeal H W ≤ restrictIdeal (maxContactIdeal k p A μ) W`. Break down `hcase with ⟨hdisj, -⟩ | ⟨nW, cW, jW, hHW, hmcW⟩` into its components or cases.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd hzW (Set.disjoint_left.mp hdisj hzA)`. Rewrite using `[hHW]`. Conclude with `hmcW`. Take `⟨V', _, hzV', hV'le, hV'aff, -⟩` from `exists_etaleChart_le p (π.base x₁) (V ⊓ W) ⟨hzV, hzW⟩`. Establish `hV'V : V' ≤ V` using `fun y hy => (hV'le hy).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hV'W : V' ≤ W` using `fun y hy => (hV'le hy).2`. Establish `hZV' : restrictIdeal Z V' = (cV.restrict hV'V).coordIdeal S` using `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V cV Z S hZV`. Establish `hHV' : restrictIdeal H V' = (cV.restrict hV'V).coordIdeal {j}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hV'V cV H {j} hHV`. Establish `hcoordmem : (cV.restrict hV'V).coord j ∈ (maxContactIdeal k p A μ).ideal ⟨V', hV'aff⟩`. Use `(coordIdeal_singleton_le_restrictIdeal_iff k p hV'aff (cV.restrict hV'V) j (maxContactIdeal k p A μ)).1 ?_` and prove the remaining obligations.
-
-Rewrite using `[← hHV']`. Conclude with `restrictIdeal_le_of_le_opens hV'W hHmc`. Conclude with `isMaxContactHypersurfaceAt_strictTransform_of_etaleChart k p π Z E hZ hπ A A₁ μ hμ hA htr H hV'aff (cV.restrict hV'V) S j hjS hZV' hHV' hcoordmem x₁ hzV'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurfaceAt_strictTransform_of_mem_support (k : Type u) [Field k] [CharZero k]
     {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -520,29 +512,25 @@ theorem isMaxContactHypersurfaceAt_strictTransform_of_mem_support (k : Type u) [
     hV'aff (cV.restrict hV'V) S j hjS hZV' hHV' hcoordmem x₁ hzV'
 
 /- English proof (translation)
-Take `⟨U, hU, hxU, hcase⟩` from `hH (π.base x₁)`. Establish `hxc : π.base x₁ ∈ Z.support.compl` using `hx₁`. Take `⟨V, _, hxV, hVle, hVaff, -⟩` from `exists_etaleChart_le p (π.base x₁) (U ⊓ Z.support.compl) ⟨hxU, hxc⟩`. Establish `hVU : V ≤ U` using `fun y hy => (hVle hy).1`. Establish `hx₁V : x₁ ∈ π ⁻¹ᵁ V` using `hxV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrestrict : ∀ K : P.IdealSheafData, restrictIdeal (K.comap π) (π ⁻¹ᵁ V) = (restrictIdeal K V).comap (π ∣_ V)`. Introduce `K`. Rewrite using `[restrictIdeal_eq_comap_ι, restrictIdeal_eq_comap_ι, ← Scheme.IdealSheafData.comap_comp, ← Scheme.IdealSheafData.comap_comp, morphismRestrict_ι]`. Establish `hZtop : Z.comap ((π ⁻¹ᵁ V).ι ≫ π) = ⊤`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Blowup.comap_eq_top_of_notMem_support _ (Z.comap π) (fun y => ?_)` and prove the remaining obligations. Use `show (y.1 : ↥P₁) ∉ (Z.comap π).support`. Establish `hy : π.base y.1 ∈ V` using `y.2`. Rewrite using `[Scheme.IdealSheafData.support_comap]`. Conclude with `(hVle hy).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hST : restrictIdeal (Blowup.strictTransform π Z H) (π ⁻¹ᵁ V) = restrictIdeal (H.comap π) (π ⁻¹ᵁ V)` using `restrictIdeal_strictTransform_eq_of_comap_eq_top π Z H V hZtop`. Break down `hcase with ⟨hdisj, hHtop⟩ | ⟨n, c, j₀, hHU, hmc⟩` into its components or cases. Take `⟨V₁, _, hx₁V₁, hV₁le, hV₁aff, -⟩` from `exists_etaleChart_le (π ≫ p) x₁ (π ⁻¹ᵁ V) hx₁V`. Use `⟨V₁, hV₁aff, hx₁V₁, Or.inl ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Set.disjoint_left]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy hyV`. Establish `h1 : π.base y ∈ orderAtLeastLocus A μ` using `mem_orderAtLeastLocus_base_of_mem_orderAtLeastLocus_transform k p π Z E hZ hπ A A₁ μ hμ hA htr y hy`. Establish `h2 : π.base y ∈ V` using `hV₁le hyV`. Conclude with `(Set.disjoint_left.mp hdisj h1) (hVU h2)`. Establish `h3 : restrictIdeal (H.comap π) (π ⁻¹ᵁ V) = ⊤` using `restrictIdeal_comap_preimage_eq_top π V H (restrictIdeal_eq_top_of_le H hVU hHtop)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : restrictIdeal (Blowup.strictTransform π Z H) (π ⁻¹ᵁ V) = ⊤` using `by rw [hST, h3]`. Conclude with `restrictIdeal_eq_top_of_le _ hV₁le h4`. Establish `hHV : restrictIdeal H V = (c.restrict hVU).coordIdeal {j₀}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hVU c H {j₀} hHU`. Establish `hZV : Z.comap V.ι = ⊤`. Use `Blowup.comap_eq_top_of_notMem_support V.ι Z (fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show (y.1 : ↥P) ∉ Z.support`. Conclude with `(hVle y.2).2`. Establish `hbiso : IsIso (π ∣_ V)`. Establish `hb` using `hπ.restrict V`. Rewrite `hb` using `[hZV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb.isIso_of_top`. Establish `hSTV : restrictIdeal (Blowup.strictTransform π Z H) (π ⁻¹ᵁ V) = (etaleChartPullbackOfIsIso π (c.restrict hVU)).coordIdeal {j₀}`. Rewrite using `[hST, hrestrict H, hHV, pullbackChartIso_coordIdeal]`. Establish `hmcV : (etaleChartPullbackOfIsIso π (c.restrict hVU)).coordIdeal {j₀} ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) (π ⁻¹ᵁ V)`. Establish `h1 : restrictIdeal H V ≤ restrictIdeal (maxContactIdeal k p A μ) V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `restrictIdeal_le_of_le_opens hVU ?_` and prove the remaining obligations. Rewrite using `[hHU]`. Conclude with `hmc`. Establish `h2 : (etaleChartPullbackOfIsIso π (c.restrict hVU)).coordIdeal {j₀} ≤ restrictIdeal ((maxContactIdeal k p A μ).comap π) (π ⁻¹ᵁ V)`. Rewrite using `[pullbackChartIso_coordIdeal, hrestrict (maxContactIdeal k p A μ), ← hHV]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Scheme.IdealSheafData.comap_mono _ h1`. Use `h2.trans ?_` and prove the remaining obligations. Use `Scheme.IdealSheafData.comap_mono _ ?_` and prove the remaining obligations. Use `le_trans (comap_maxContactIdeal_le_exceptionalIdeal_mul k p π Z E hZ hπ A A₁ μ hμ hA htr) ?_` and prove the remaining obligations. Conclude with `mul_le_right_idealSheafData _ _`.
-
-Take `⟨V₁, _, hx₁V₁, hV₁le, hV₁aff, -⟩` from `exists_etaleChart_le (π ≫ p) x₁ (π ⁻¹ᵁ V) hx₁V`. Establish `hSTV₁ : restrictIdeal (Blowup.strictTransform π Z H) V₁ = ((etaleChartPullbackOfIsIso π (c.restrict hVU)).restrict hV₁le).coordIdeal {j₀}` using `restrictIdeal_eq_restrict_coordIdeal_of_le hV₁le (etaleChartPullbackOfIsIso π (c.restrict hVU)) (Blowup.strictTransform π Z H) {j₀} hSTV`. Use `⟨V₁, hV₁aff, hx₁V₁, Or.inr ⟨n, (etaleChartPullbackOfIsIso π (c.restrict hVU)).restrict hV₁le, j₀, hSTV₁, ?_⟩⟩` and prove the remaining obligations. Use `show ((etaleChartPullbackOfIsIso π (c.restrict hVU)).restrict hV₁le).coordIdeal {j₀} ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) V₁`. Establish `h4 : restrictIdeal (Blowup.strictTransform π Z H) (π ⁻¹ᵁ V) ≤ restrictIdeal (maxContactIdeal k (π ≫ p) A₁ μ) (π ⁻¹ᵁ V)`.
-
-Rewrite using `[hSTV]`. Conclude with `hmcV`. Establish `h5` using `restrictIdeal_le_of_le_opens hV₁le h4`. Rewrite using `[← hSTV₁]`. Conclude with `h5`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurfaceAt_strictTransform_of_notMem_support (k : Type u) [Field k] [CharZero k]
     {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]
@@ -636,9 +624,7 @@ theorem isMaxContactHypersurfaceAt_strictTransform_of_notMem_support (k : Type u
     exact h5
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.Smooth (π ≫ p)` using `smooth_comp_of_isBlowupAlongIdealSheaf hZ hπ`. Establish `hA : A ≤ Z ^ μ` using `le_pow_of_hasStrictNormalCrossingsWith p Z A E hZ μ hsupp`. Introduce `x₁`. Distinguish the cases in `hx : π.base x₁ ∈ Z.support`. Conclude with `isMaxContactHypersurfaceAt_strictTransform_of_mem_support k p π Z E hZ hπ A A₁ μ hμ hsupp hA htr H hH x₁ hx`.
-
-Conclude with `isMaxContactHypersurfaceAt_strictTransform_of_notMem_support k p π Z E hZ hπ A A₁ μ hμ hA htr H hH x₁ hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurface_strictTransform_of_quasiCompact (k : Type u) [Field k]
     [CharZero k] {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k))
@@ -661,7 +647,7 @@ theorem isMaxContactHypersurface_strictTransform_of_quasiCompact (k : Type u) [F
       htr H hH x₁ hx
 
 /- English proof (translation)
-Introduce `hH`. Conclude with `isMaxContactHypersurface_strictTransform_of_quasiCompact k p π Z E hZ hπ A A₁ μ hμ hsupp htr H hH`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurface_strictTransform_of_orderAt_le (k : Type u) [Field k] [CharZero k]
     {P P₁ : Scheme.{u}} (p : P ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

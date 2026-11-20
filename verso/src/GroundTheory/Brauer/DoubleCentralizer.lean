@@ -22,9 +22,9 @@ variable (K R M) in
 include K in
 
 /- English proof (translation)
-Establish `: IsArtinianRing R` using `IsArtinianRing.of_finite K R`. Establish `: Module.Finite R (R × M)` using `Module.Finite.of_restrictScalars_finite K R _`. Take `⟨k, _, S, hS, -⟩` from `(IsSimpleRing.isIsotypic R (R × M)).linearEquiv_fun`. Establish `hT : IsIsotypicOfType R (R × M) S` using `IsSimpleRing.isIsotypic R (R × M) S`. Establish `: Module.Finite R M` using `Module.Finite.of_restrictScalars_finite K R _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, ⟨eR⟩⟩` from `(hT.of_injective (LinearMap.inl R R M) LinearMap.inl_injective).linearEquiv_fun`. Take `⟨m, ⟨eM⟩⟩` from `(hT.of_injective (LinearMap.inr R R M) LinearMap.inr_injective).linearEquiv_fun`. Use `⟨S, r, m, hS, Nat.pos_of_ne_zero ?_, ⟨eR⟩, ⟨eM⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `not_subsingleton R eR.subsingleton`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_linearEquiv_pi_simple :
     ∃ (S : Submodule R (R × M)) (r m : ℕ), IsSimpleModule R S ∧ 0 < r ∧
@@ -49,7 +49,7 @@ section EndOfModule2
 variable {K R : Type*} [Field K] [Ring R] [Algebra K R]
 
 /- English proof (translation)
-Rewrite using `[(endVecAlgEquivMatrixEnd (Fin n) K R S).toLinearEquiv.finrank_eq, Module.finrank_matrix]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem finrank_end_pi {S : Type*} [AddCommGroup S] [Module K S] [Module R S]
     [IsScalarTower K R S] [FiniteDimensional K S] (n : ℕ) :
@@ -64,13 +64,13 @@ variable [IsSimpleRing R] [FiniteDimensional K R]
 variable (K R M) in
 
 /- English proof (translation)
-Take `⟨S, r, m, hS, hr, ⟨eR⟩, ⟨eM⟩⟩` from `exists_linearEquiv_pi_simple K R M`. Establish `: FiniteDimensional K S` using `FiniteDimensional.of_injective ((Submodule.subtype S).restrictScalars K) Subtype.val_injective`. Establish `hR1 : finrank K R = r * finrank K S`. Rewrite using `[(eR.restrictScalars K).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hM1 : finrank K M = m * finrank K S`. Rewrite using `[(eM.restrictScalars K).finrank_eq, Module.finrank_pi_fintype]`. Simplify using the standard rewrite rules. Establish `hR2 : finrank K R = r * r * finrank K (Module.End R S)`. Rewrite using `[← (LinearMap.ringLmapEquivSelf R K R).finrank_eq, ← finrank_end_pi, (eR.conjAlgEquiv K).toLinearEquiv.finrank_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hM2 : finrank K (Module.End R M) = m * m * finrank K (Module.End R S)`. Rewrite using `[← finrank_end_pi, (eM.conjAlgEquiv K).toLinearEquiv.finrank_eq]`. Establish `hs : finrank K S = r * finrank K (Module.End R S)`. Apply `Nat.eq_of_mul_eq_mul_left hr` to reduce the goal to its premises. Rewrite using `[← hR1, hR2, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR2, hM2, hM1, hs]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_mul_finrank_end :
     finrank K R * finrank K (Module.End R M) = finrank K M ^ 2 := by
@@ -96,7 +96,7 @@ variable (K R M) in
 include K in
 
 /- English proof (translation)
-Take `⟨S, r, m, hS, hr, -, ⟨eM⟩⟩` from `exists_linearEquiv_pi_simple K R M`. Establish `: NeZero m` using `⟨by rintro rfl; exact not_subsingleton M eM.subsingleton⟩`. Establish `: IsSimpleRing (Module.End R S)` using `DivisionRing.isSimpleRing (Module.End R S)`. Set `e : Matrix (Fin m) (Fin m) (Module.End R S) ≃+* Module.End R M` to `((eM.conjAlgEquiv K).trans (endVecAlgEquivMatrixEnd (Fin m) K R S)).symm.toRingEquiv`. Conclude with `IsSimpleRing.of_ringEquiv (R := Matrix (Fin m) (Fin m) (Module.End R S)) e inferInstance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isSimpleRing_end [Nontrivial M] : IsSimpleRing (Module.End R M) := by
   classical
@@ -173,7 +173,7 @@ open CentralizerModule
 variable [Algebra.IsCentral K A] [IsSimpleRing A] [FiniteDimensional K A] [IsSimpleRing B]
 
 /- English proof (translation)
-Establish `: Nontrivial (Twist B.val)` using `inferInstanceAs (Nontrivial A)`. Establish `h` using `isSimpleRing_end K (A ⊗[K] Bᵐᵒᵖ) (Twist B.val)`. Establish `hop : IsSimpleRing (Subalgebra.centralizer K (B : Set A))ᵐᵒᵖ` using `IsSimpleRing.of_ringEquiv (endAlgEquiv B).toRingEquiv h`. Conclude with `IsSimpleRing.of_ringEquiv (RingEquiv.opOp _).symm inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSimpleRing_centralizer : IsSimpleRing (Subalgebra.centralizer K (B : Set A)) := by
   have : Nontrivial (Twist B.val) := inferInstanceAs (Nontrivial A)
@@ -183,9 +183,9 @@ theorem isSimpleRing_centralizer : IsSimpleRing (Subalgebra.centralizer K (B : S
   exact IsSimpleRing.of_ringEquiv (RingEquiv.opOp _).symm inferInstance
 
 /- English proof (translation)
-Establish `h` using `finrank_mul_finrank_end K (A ⊗[K] Bᵐᵒᵖ) (Twist B.val)`. Rewrite `h` using `[(endAlgEquiv B).toLinearEquiv.finrank_eq, MulOpposite.finrank, Module.finrank_tensorProduct, MulOpposite.finrank]`. Express the relevant statement in the definitionally equal form `finrank K A * finrank K B * _ = finrank K A ^ 2 at h`. Establish `hA : 0 < finrank K A` using `Module.finrank_pos`. Apply `Nat.eq_of_mul_eq_mul_left hA` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_assoc, h, sq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_mul_finrank_centralizer :
     finrank K B * finrank K (Subalgebra.centralizer K (B : Set A)) = finrank K A := by
@@ -198,9 +198,9 @@ theorem finrank_mul_finrank_centralizer :
   rw [← mul_assoc, h, sq]
 
 /- English proof (translation)
-Use `set C := Subalgebra.centralizer K (B : Set A)`. Establish `: IsSimpleRing C` using `isSimpleRing_centralizer B`. Establish `h1` using `finrank_mul_finrank_centralizer B`. Establish `h2` using `finrank_mul_finrank_centralizer C`. Establish `hC : 0 < finrank K C` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : B ≤ Subalgebra.centralizer K (C : Set A)` using `Subalgebra.le_centralizer_centralizer K`. Establish `hdim : finrank K B = finrank K (Subalgebra.centralizer K (C : Set A))`. Apply `Nat.eq_of_mul_eq_mul_left hC` to reduce the goal to its premises. Rewrite using `[h2, mul_comm, h1]`. Conclude with `(Subalgebra.toSubmodule_injective (Submodule.eq_of_le_of_finrank_eq (Subalgebra.toSubmodule.monotone hle) hdim)).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centralizer_centralizer :
     Subalgebra.centralizer K (Subalgebra.centralizer K (B : Set A) : Set A) = B := by
@@ -235,7 +235,7 @@ noncomputable def tensorCentralizerAlgEquiv :
 
 @[simp]
 /- English proof (translation)
-Simplify using `only [tensorCentralizerAlgEquiv, tensorCentralizerHom, AlgEquiv.ofBijective_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem tensorCentralizerAlgEquiv_tmul (b : B) (c : Subalgebra.centralizer K (B : Set A)) :
     tensorCentralizerAlgEquiv B (b ⊗ₜ[K] c) = (b : A) * c := by
@@ -243,7 +243,7 @@ theorem tensorCentralizerAlgEquiv_tmul (b : B) (c : Subalgebra.centralizer K (B 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(tensorCentralizerAlgEquiv B).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem nonempty_algEquiv_tensor_centralizer :
     Nonempty (A ≃ₐ[K] B ⊗[K] Subalgebra.centralizer K (B : Set A)) :=

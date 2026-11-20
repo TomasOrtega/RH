@@ -10,7 +10,7 @@ def sqMul (Λ : Submodule (𝓞 E) (Fin r → E)) (n : ℕ) : Submodule (𝓞 E)
   Λ.map ((((n : E) ^ 2) • LinearMap.id : (Fin r → E) →ₗ[E] (Fin r → E)).restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Simplify using `[sqMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sqMul {Λ : Submodule (𝓞 E) (Fin r → E)} {n : ℕ} {x : Fin r → E} :
     x ∈ sqMul Λ n ↔ ∃ y ∈ Λ, ((n : E) ^ 2) • y = x := by
@@ -32,7 +32,7 @@ Both sides reduce to the same expression.
     ((act Λ γ h x : Λ) : Fin r → E) = (γ : Matrix (Fin r) (Fin r) E).mulVec x := rfl
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [sqSub, Submodule.mem_comap, Submodule.subtype_apply, act_apply] at hx ⊢`. Take `⟨y, hy, hxy⟩` from `mem_sqMul.1 hx`. Conclude with `mem_sqMul.2 ⟨_, (h y).1 hy, by rw [← hxy, Matrix.mulVec_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem act_sqSub (Λ : Submodule (𝓞 E) (Fin r → E)) (n : ℕ) (γ : GL (Fin r) E)
     (h : ∀ x, x ∈ Λ ↔ (γ : Matrix (Fin r) (Fin r) E).mulVec x ∈ Λ) :
@@ -70,11 +70,11 @@ namespace GlobalTheory.LatticeCongr
 variable {E : Type} [Field E] [NumberField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hu : (Submodule.Quotient.mk (act Λ g (hG g g.2) ⟨(n : E) • x, h1 x hx⟩) : Λ ⧸ sqSub Λ n) = Submodule.Quotient.mk ⟨(n : E) • x, h1 x hx⟩` using `LinearMap.congr_fun hg (Submodule.Quotient.mk ⟨(n : E) • x, h1 x hx⟩)`. Rewrite `hu` using `[Submodule.Quotient.eq]`. Take `⟨y, hy, hyx⟩` from `mem_sqMul.1 hu`. Express the relevant statement in the definitionally equal form `((n : E) ^ 2) • y = ((g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec ((n : E) • x) - (n : E) • x at hyx`. Rewrite `hyx` using `[Matrix.mulVec_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn' : (n : E) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hy' : (n : E) • y = ((g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec x - x`. Apply `smul_right_injective _ hn'` to reduce the goal to its premises. Simplify using `only [smul_smul, smul_sub, ← pow_two]`. Conclude with `hyx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: ((g : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).mulVec x = x + (n : E) • y`. Rewrite using `[hy']`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `Λ'.add_mem hx (h2 y hy)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_of_rep_eq_one {Λ Λ' : Submodule (𝓞 E) (Fin r → E)} {n : ℕ} (hn : 0 < n)
     (h1 : ∀ v ∈ Λ', (n : E) • v ∈ Λ) (h2 : ∀ v ∈ Λ, (n : E) • v ∈ Λ')
@@ -101,17 +101,15 @@ theorem mulVec_mem_of_rep_eq_one {Λ Λ' : Submodule (𝓞 E) (Fin r → E)} {n 
   exact Λ'.add_mem hx (h2 y hy)
 
 /- English proof (translation)
-Introduce `E _ _ r Λ Λ' n hn hfg h1 h2 G hG`. Use `haveI : Module.Finite (𝓞 E) Λ := Module.Finite.iff_fg.2 hfg`. Use `haveI : Module.Finite ℤ (Λ ⧸ sqSub Λ n) := Module.Finite.trans (𝓞 E) _`. Use `haveI : Finite (Λ ⧸ sqSub Λ n) := Module.finite_of_fg_torsion _ fun z => by`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨((n : ℤ) ^ 2), mem_nonZeroDivisors_of_ne_zero (by positivity)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((n : ℤ) ^ 2) • (Submodule.mkQ (sqSub Λ n) y) = 0`. Rewrite using `[← map_zsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `show (((((n : ℤ) ^ 2) • y : Λ)) : Fin r → E) ∈ sqMul Λ n`. Use `mem_sqMul.2 ⟨y, y.2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroupClass.coe_zsmul, ← Int.cast_smul_eq_zsmul E]`. Use `push_cast`. Both sides reduce to the same expression. Use `haveI : Finite (Module.End (𝓞 E) (Λ ⧸ sqSub Λ n)) := Finite.of_injective _ DFunLike.coe_injective`. Use `set φ := (rep Λ n G hG).toHomUnits with hφ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ γ ∈ φ.ker.map G.subtype, ∀ x ∈ Λ', (γ : Matrix (Fin r) (Fin r) E).mulVec x ∈ Λ'`. Introduce and unpack `γ ⟨g, hg, rfl⟩ x hx`. Use `mulVec_mem_of_rep_eq_one hn h1 h2 hG g ?_ x hx` and prove the remaining obligations. Use `congrArg Units.val (MonoidHom.mem_ker.1 hg)` as an intermediate fact. Simplify `this` using `[hφ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨φ.ker.map G.subtype, ?_, ?_⟩` and prove the remaining obligations. Use `show (Subgroup.comap G.subtype (φ.ker.map G.subtype)).index ≠ 0`. Rewrite using `[Subgroup.comap_map_eq_self_of_injective G.subtype_injective]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero`. Introduce `γ hγ x`.
-
-Use `⟨key γ hγ x, fun h => ?_⟩` and prove the remaining obligations. Use `key γ⁻¹ (inv_mem hγ) _ h` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem exists_relIndex_ne_zero_stab : ∀ {E : Type} [Field E] [NumberField E] {r : ℕ} (Λ Λ' : Submodule (𝓞 E) (Fin r → E)) (n : ℕ), 0 < n → Λ.FG → (∀ v ∈ Λ', (n : E) • v ∈ Λ) → (∀ v ∈ Λ, (n : E) • v ∈ Λ') → ∀ G : Subgroup (GL (Fin r) E), (∀ γ ∈ G, ∀ x, x ∈ Λ ↔ (γ : Matrix (Fin r) (Fin r) E).mulVec x ∈ Λ) → ∃ K : Subgroup (GL (Fin r) E), K.relIndex G ≠ 0 ∧ ∀ γ ∈ K, ∀ x, x ∈ Λ' ↔ (γ : Matrix (Fin r) (Fin r) E).mulVec x ∈ Λ' := by
   intro E _ _ r Λ Λ' n hn hfg h1 h2 G hG

@@ -54,28 +54,28 @@ instance preservesFiniteColimits_restr {j : Y ⟶ X} (hj : Topology.IsOpenEmbedd
     (hj.sheafPullbackIso AddCommGrpCat.{u})
 
 /- English proof (translation)
-The claim follows from `hS.map_of_exact _`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_restr {j : Y ⟶ X} (hj : Topology.IsOpenEmbedding j)
     {S : ShortComplex (AbSheaf X)} (hS : S.ShortExact) : (S.map (restr hj)).ShortExact :=
   hS.map_of_exact _
 
 /- English proof (translation)
-The claim follows from `hF.epi (hj.functor.op.map i)`.
+A detailed English derivation is pending.
 -/
 theorem isFlasque_restr {j : Y ⟶ X} (hj : Topology.IsOpenEmbedding j) (F : AbSheaf X)
     (hF : TopCat.Sheaf.IsFlasque F) : TopCat.Sheaf.IsFlasque ((restr hj).obj F) where
   epi i := hF.epi (hj.functor.op.map i)
 
 /- English proof (translation)
-The claim follows from `hG.epi ((Opens.map f).op.map i)`.
+A detailed English derivation is pending.
 -/
 theorem isFlasque_push (f : Y ⟶ X) (G : AbSheaf Y) (hG : TopCat.Sheaf.IsFlasque G) :
     TopCat.Sheaf.IsFlasque ((push f).obj G) where
   epi i := hG.epi ((Opens.map f).op.map i)
 
 /- English proof (translation)
-The claim follows from `isFlasque_of_injective I (hI := hI)`.
+A detailed English derivation is pending.
 -/
 lemma isFlasque_of_injective' (I : AbSheaf X) [hI : Injective I] : TopCat.Sheaf.IsFlasque I :=
   isFlasque_of_injective I (hI := hI)
@@ -90,7 +90,7 @@ def restrUnit {j : Y ⟶ X} (hj : Topology.IsOpenEmbedding j) : 𝟭 _ ⟶ restr
     exact (s.hom.naturality _).symm
 
 /- English proof (translation)
-Rewrite using `[← Sheaf.isLocallySurjective_iff_epi']`. Use `⟨fun {V} t x hx ↦ ?_⟩` and prove the remaining obligations. Take `⟨W, i, hW, s, hs⟩` from `h V t x hx`. Conclude with `⟨W, i, ⟨s, hs⟩, hW⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma epi_push_map (f : Y ⟶ X) {G G' : AbSheaf Y} (g : G ⟶ G')
     (h : ∀ (V : Opens X) (t : G'.obj.obj (op ((Opens.map f).obj V))), ∀ x ∈ V,
@@ -102,7 +102,7 @@ lemma epi_push_map (f : Y ⟶ X) {G G' : AbSheaf Y} (g : G ⟶ G')
   exact ⟨W, i, ⟨s, hs⟩, hW⟩
 
 /- English proof (translation)
-The claim follows from `have := hS.mono_f ShortComplex.ShortExact.mk' (hS.exact.map_of_mono_of_preservesKernel _ inferInstance inferInstance) (inferInstanceAs (Mono ((push f).map S.f))) h`.
+A detailed English derivation is pending.
 -/
 lemma shortExact_map_push (f : Y ⟶ X) {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
     (h : Epi ((push f).map S.g)) : (S.map (push f)).ShortExact :=
@@ -111,13 +111,13 @@ lemma shortExact_map_push (f : Y ⟶ X) {S : ShortComplex (AbSheaf Y)} (hS : S.S
     (inferInstanceAs (Mono ((push f).map S.f))) h
 
 /- English proof (translation)
-Use `epi_push_map f g fun V t x hx ↦ ?_` and prove the remaining obligations. Distinguish the cases in `hxf : x ∈ Set.range f`. Take `⟨y, rfl⟩` from `hxf`. Rewrite `hg` using `[← Sheaf.isLocallySurjective_iff_epi']`. Take `⟨W', k, ⟨s, hs⟩, hy⟩` from `hg.imageSieve_mem t y hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨W₀, hW₀, hW'⟩` from `hf.isInducing.isOpen_iff.1 W'.isOpen`. Establish `hle : (Opens.map f).obj (V ⊓ ⟨W₀, hW₀⟩) ≤ W'` using `fun z hz ↦ by`. Establish `: z ∈ f ⁻¹' W₀` using `hz.2`. Rewrite `this` using `[hW']`. Then use the resulting hypothesis. Establish `hy' : y ∈ f ⁻¹' W₀` using `by rwa [hW']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨V ⊓ ⟨W₀, hW₀⟩, homOfLE inf_le_left, ⟨hx, hy'⟩, G.obj.map (homOfLE hle).op s, ?_⟩` and prove the remaining obligations. Use `(ConcreteCategory.congr_hom (g.hom.naturality (homOfLE hle).op) s).trans ?_` and prove the remaining obligations. Rewrite using `[ConcreteCategory.comp_apply, hs, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Set `W : Opens X` to `V ⊓ ⟨(Set.range f)ᶜ, hf.isClosed_range.isOpen_compl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hW : (Opens.map f).obj W = ⊥` using `le_bot_iff.1 fun z hz ↦ (hz.2 ⟨z, rfl⟩).elim`. Establish `: Subsingleton (G'.obj.obj (op ((Opens.map f).obj W)))` using `AddCommGrpCat.subsingleton_of_isZero (TopCat.Sheaf.isTerminalOfEqEmpty G' hW).isZero`. Conclude with `⟨W, homOfLE inf_le_left, ⟨hx, hxf⟩, 0, Subsingleton.elim _ _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem preservesEpimorphisms_push {f : Y ⟶ X} (hf : Topology.IsClosedEmbedding f) :
     (push f).PreservesEpimorphisms where
@@ -145,7 +145,7 @@ theorem preservesEpimorphisms_push {f : Y ⟶ X} (hf : Topology.IsClosedEmbeddin
       exact ⟨W, homOfLE inf_le_left, ⟨hx, hxf⟩, 0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-The claim follows from `have := preservesEpimorphisms_push hf have := hS.epi_g shortExact_map_push f hS inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem shortExact_map_push_of_isClosedEmbedding {f : Y ⟶ X} (hf : Topology.IsClosedEmbedding f)
     {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact) : (S.map (push f)).ShortExact :=
@@ -165,9 +165,9 @@ section Open
 variable {j : Y ⟶ X} (hj : Topology.IsOpenEmbedding j)
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F with`. Consider the case `zero`. Use `sitePull_bijective_zero _ _ _ ?_` and prove the remaining obligations. Establish `hk : hj.functor.obj W ≤ V` using `leOfHom ((hj.isOpenMap.adjunction.homEquiv _ _).symm i)`. Establish `: IsIso (homOfLE hk)` using `⟨homOfLE h, rfl, rfl⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg Function.Bijective (funext fun s ↦ (ConcreteCategory.congr_hom (F.obj.map_comp _ _) s).symm)).mpr (ConcreteCategory.bijective_of_isIso (F.obj.map (homOfLE hk).op))`. Consider the case `succ n ih`. Establish `hS` using `injectiveShortComplex_shortExact F`. Establish `hI` using `isFlasque_of_injective' (Injective.under F)`. Conclude with `sitePull_bijective_succ _ hS (shortExact_map_restr hj hS) ((injectiveShortComplex F).mapNatTrans (restrUnit hj)) n i (ih _).surjective (ih _) (subsingleton_H'_of_injective _ n V) (subsingleton_H'_of_isFlasque _ (hF := isFlasque_restr hj _ hI) n W)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_restrUnit_bijective (F : AbSheaf X) (n : ℕ) {V : Opens X} {W : Opens Y}
     (i : W ⟶ (Opens.map j).obj V) (h : V ≤ hj.functor.obj W) :
@@ -195,7 +195,7 @@ def restrEquiv (F : AbSheaf X) (n : ℕ) (V : Opens Y) :
     (pull_restrUnit_bijective hj F n _ le_rfl)
 
 /- English proof (translation)
-The claim follows from `sitePull_δ _ hS (shortExact_map_restr hj hS) (S.mapNatTrans (restrUnit hj)) n _ x`.
+A detailed English derivation is pending.
 -/
 theorem restrEquiv_δ {S : ShortComplex (AbSheaf X)} (hS : S.ShortExact) (n : ℕ) (V : Opens Y)
     (x : Sheaf.H'.{w} S.X₃ n (hj.functor.obj V)) :
@@ -214,7 +214,7 @@ abbrev pushComparison (G : AbSheaf Y) (n : ℕ) (V : Opens X) :
   pull.{w, w'} f (𝟙 _) n (𝟙 _)
 
 /- English proof (translation)
-The claim follows from `(sitePull_map _ _ _ n _ x).trans ((congrArg (pull f · n _ x) ((Category.comp_id _).trans (Category.id_comp _).symm)).trans (map_sitePull _ _ _ n _ x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem pushComparison_map {G G' : AbSheaf Y} (t : G ⟶ G') (n : ℕ) (V : Opens X)
     (x : Sheaf.H'.{w} ((push f).obj G) n V) :
@@ -224,7 +224,7 @@ theorem pushComparison_map {G G' : AbSheaf Y} (t : G ⟶ G') (n : ℕ) (V : Open
     ((Category.comp_id _).trans (Category.id_comp _).symm)).trans (map_sitePull _ _ _ n _ x).symm)
 
 /- English proof (translation)
-The claim follows from `sitePull_δ _ hS' hS (𝟙 _) n _ x`.
+A detailed English derivation is pending.
 -/
 theorem pushComparison_δ {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
     (hS' : (S.map (push f)).ShortExact) (n : ℕ) (V : Opens X)
@@ -234,7 +234,7 @@ theorem pushComparison_δ {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
   sitePull_δ _ hS' hS (𝟙 _) n _ x
 
 /- English proof (translation)
-Rewrite using `[sitePull_map, res_sitePull, Category.comp_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_eq {F : AbSheaf X} {G : AbSheaf Y} (φ : F ⟶ (push f).obj G) (n : ℕ)
     {V : Opens X} {W : Opens Y} (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{w} F n V) :
@@ -242,7 +242,7 @@ theorem pull_eq {F : AbSheaf X} {G : AbSheaf Y} (φ : F ⟶ (push f).obj G) (n :
   rw [sitePull_map, res_sitePull, Category.comp_id, Category.comp_id]
 
 /- English proof (translation)
-Use `sitePull_bijective_zero _ _ _ ?_` and prove the remaining obligations. Conclude with `(congrArg Function.Bijective (funext fun s ↦ ConcreteCategory.congr_hom (G.obj.map_id _) _)).mpr Function.bijective_id`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pushComparison_bijective_zero (G : AbSheaf Y) (V : Opens X) :
     Function.Bijective (pushComparison.{w, w'} f G 0 V) := by
@@ -251,11 +251,11 @@ theorem pushComparison_bijective_zero (G : AbSheaf Y) (V : Opens X) :
     ConcreteCategory.congr_hom (G.obj.map_id _) _)).mpr Function.bijective_id
 
 /- English proof (translation)
-Proceed by induction on `n generalizing G with`. Consider the case `zero => exact pushComparison_bijective_zero f G V`. Consider the case `succ n ih`. Establish `hS` using `injectiveShortComplex_shortExact G`. Establish `hI` using `isFlasque_of_injective' (Injective.under G)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h₁, h₂⟩` from `hP _ hS (Injective.injective_under G) hG`. Use `sitePull_bijective_succ _ (shortExact_map_push f hS h₁) hS (𝟙 _) n _ ?_ (ih _ h₂) (subsingleton_H'_of_isFlasque _ (hF := isFlasque_push f _ hI) n V) (subsingleton_H'_of_injective _ n _)` and prove the remaining obligations. Consider the cases of `n with`. Consider the case `zero => exact (pushComparison_bijective_zero f _ V).surjective`. Consider the case `succ n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Use `subsingleton_H'_of_injective.{w'} (Injective.under G) n ((Opens.map f).obj V)` as an intermediate fact. Conclude with `fun y ↦ ⟨0, @Subsingleton.elim _ this _ _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pushComparison_bijective_of_class (P : AbSheaf Y → Prop)
     (hP : ∀ S : ShortComplex (AbSheaf Y), S.ShortExact → Injective S.X₂ → P S.X₁ →
@@ -286,7 +286,7 @@ def HigherDirectImagesVanish (G : AbSheaf Y) : Prop :=
 omit [HasExt.{w} (AbSheaf X)] in
 
 /- English proof (translation)
-The claim follows from `fun n hn V _ x hx ↦ by obtain ⟨W, hWV, hx, hW⟩ := h V x hx exact ⟨W, homOfLE hWV, hx, @Subsingleton.elim _ (hW n hn) _ _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem higherDirectImagesVanish_of_basis (G : AbSheaf Y)
     (h : ∀ (V : Opens X), ∀ x ∈ V, ∃ W ≤ V, x ∈ W ∧
@@ -300,9 +300,9 @@ variable {f}
 omit [HasExt.{w} (AbSheaf X)] in
 
 /- English proof (translation)
-Use `epi_push_map f S.g fun V t x hx ↦ ?_` and prove the remaining obligations. Take `⟨W, i, hW, h0⟩` from `h 1 one_pos V (δ hS 0 _ ((equivZero _ _).symm t)) x hx`. Use `⟨W, i, hW, (δ_equivZero_symm_eq_zero_iff.{w'} hS _ _).1 ?_⟩` and prove the remaining obligations. Rewrite using `[← h0, δ_res]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[AddEquiv.symm_apply_eq, equivZero_res, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HigherDirectImagesVanish.epi {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
     (h : HigherDirectImagesVanish.{w'} f S.X₁) : Epi ((push f).map S.g) := by
@@ -315,7 +315,7 @@ theorem HigherDirectImagesVanish.epi {S : ShortComplex (AbSheaf Y)} (hS : S.Shor
 
 omit [HasExt.{w} (AbSheaf X)] in
 /- English proof (translation)
-The claim follows from `shortExact_map_push f hS (h.epi hS)`.
+A detailed English derivation is pending.
 -/
 theorem HigherDirectImagesVanish.shortExact {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
     (h : HigherDirectImagesVanish.{w'} f S.X₁) : (S.map (push f)).ShortExact :=
@@ -324,7 +324,7 @@ theorem HigherDirectImagesVanish.shortExact {S : ShortComplex (AbSheaf Y)} (hS :
 omit [HasExt.{w} (AbSheaf X)] in
 
 /- English proof (translation)
-Introduce `n hn V α x hx`. Take `⟨W, i, hW, h0⟩` from `h (n + 1) n.succ_pos V (δ hS n _ α) x hx`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hn.ne'`. Use `⟨W, i, hW, δ_injective_of_subsingleton hS _ _ (subsingleton_H'_of_injective _ n _) ?_⟩` and prove the remaining obligations. Rewrite using `[← δ_res, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem HigherDirectImagesVanish.quotient {S : ShortComplex (AbSheaf Y)} (hS : S.ShortExact)
     [Injective S.X₂] (h : HigherDirectImagesVanish.{w'} f S.X₁) :
@@ -336,7 +336,7 @@ theorem HigherDirectImagesVanish.quotient {S : ShortComplex (AbSheaf Y)} (hS : S
   rw [← δ_res, h0, map_zero]
 
 /- English proof (translation)
-The claim follows from `pushComparison_bijective_of_class f (HigherDirectImagesVanish.{w'} f) (fun _ hS _ h ↦ ⟨h.epi hS, h.quotient hS⟩) G h n V`.
+A detailed English derivation is pending.
 -/
 theorem pushComparison_bijective {G : AbSheaf Y} (h : HigherDirectImagesVanish.{w'} f G) (n : ℕ)
     (V : Opens X) : Function.Bijective (pushComparison.{w, w'} f G n V) :=
@@ -344,7 +344,7 @@ theorem pushComparison_bijective {G : AbSheaf Y} (h : HigherDirectImagesVanish.{
     (fun _ hS _ h ↦ ⟨h.epi hS, h.quotient hS⟩) G h n V
 
 /- English proof (translation)
-The claim follows from `pushComparison_bijective_of_class f (fun _ ↦ True) (fun _ hS _ _ ↦ ⟨(shortExact_map_push_of_isClosedEmbedding hf hS).epi_g, trivial⟩) G trivial n V`.
+A detailed English derivation is pending.
 -/
 theorem pushComparison_bijective_of_isClosedEmbedding (hf : Topology.IsClosedEmbedding f)
     (G : AbSheaf Y) (n : ℕ) (V : Opens X) :
@@ -387,7 +387,7 @@ open SheafLES Flasque
 variable {X Y Z : TopCat.{u}}
 
 /- English proof (translation)
-The claim follows from `have := (preservesFiniteLimits_sheafPullback f).preservesFiniteLimits WalkingCospan have := preservesMonomorphisms_of_preservesLimitsOfShape ((Opens.map f).sheafPullback AddCommGrpCat.{u} (Opens.grothendieckTopology X) (Opens.grothendieckTopology Y)) Injective.injective_of_adjoin …`.
+A detailed English derivation is pending.
 -/
 theorem injective_push (f : Y ⟶ X) (I : AbSheaf Y) [Injective I] : Injective ((push f).obj I) :=
   have := (preservesFiniteLimits_sheafPullback f).preservesFiniteLimits WalkingCospan
@@ -398,7 +398,7 @@ theorem injective_push (f : Y ⟶ X) (I : AbSheaf Y) [Injective I] : Injective (
     ((Opens.map f).sheafAdjunctionContinuous AddCommGrpCat.{u} _ _) I
 
 /- English proof (translation)
-The claim follows from `have : Injective ((injectiveShortComplex G).map (push f)).X₂ := injective_push f (Injective.under G) exists_hom_τ₁_eq (T := (injectiveShortComplex G).map (push f)) (injectiveShortComplex_shortExact F) φ`.
+A detailed English derivation is pending.
 -/
 lemma exists_hom_injectiveShortComplex (f : Y ⟶ X) {F : AbSheaf X} {G : AbSheaf Y}
     (φ : F ⟶ (push f).obj G) :
@@ -411,13 +411,13 @@ lemma exists_hom_injectiveShortComplex (f : Y ⟶ X) {F : AbSheaf X} {G : AbShea
 variable [HasExt.{w} (AbSheaf X)] [HasExt.{w'} (AbSheaf Y)] [HasExt.{w''} (AbSheaf Z)]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F G L with`. Consider the case `zero`. Apply `(equivZero L T).injective` to reduce the goal to its premises. Use `(equivZero_sitePull _ _ _ _).trans (Eq.trans ?_ (equivZero_sitePull _ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[equivZero_sitePull]`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (ConcreteCategory.congr_hom (L.obj.map_comp ((Opens.map g).map i).op k.op) _).symm` and prove the remaining obligations. Conclude with `congrArg (L.obj.map k.op) (ConcreteCategory.congr_hom (ψ.hom.naturality i.op) _)`. Consider the case `succ n ih`. Establish `hF` using `injectiveShortComplex_shortExact F`. Establish `hG` using `injectiveShortComplex_shortExact G`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `injectiveShortComplex_shortExact L`. Take `⟨a, rfl⟩` from `exists_hom_injectiveShortComplex f φ`. Take `⟨b, rfl⟩` from `exists_hom_injectiveShortComplex g ψ`. Take `⟨y, rfl⟩` from `δ_surjective_of_subsingleton hF n V (subsingleton_H'_of_injective _ n V) x`. Set `c : injectiveShortComplex F ⟶ (injectiveShortComplex L).map (push (g ≫ f))` to `a ≫ (push f).mapShortComplex.map b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg _ (sitePull_δ _ hF hG a n i y)).trans ((sitePull_δ _ hG hL b n k _).trans ?_)` and prove the remaining obligations. Conclude with `(congrArg _ (ih a.τ₃ b.τ₃ y)).trans (sitePull_δ _ hF hL c n _ y).symm`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull (f : Y ⟶ X) (g : Z ⟶ Y) {F : AbSheaf X} {G : AbSheaf Y} {L : AbSheaf Z}
     (φ : F ⟶ (push f).obj G) (ψ : G ⟶ (push g).obj L) (n : ℕ) {V : Opens X} {W : Opens Y}
@@ -446,11 +446,11 @@ theorem pull_pull (f : Y ⟶ X) (g : Z ⟶ Y) {F : AbSheaf X} {G : AbSheaf Y} {L
     exact (congrArg _ (ih a.τ₃ b.τ₃ y)).trans (sitePull_δ _ hF hL c n _ y).symm
 
 /- English proof (translation)
-Proceed by induction on `n generalizing F G with`. Consider the case `zero`. Apply `(equivZero G W).injective` to reduce the goal to its premises. Rewrite using `[equivZero_res, equivZero_map]`. Conclude with `equivZero_sitePull _ _ _ _`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `hF` using `injectiveShortComplex_shortExact F`. Establish `hG` using `injectiveShortComplex_shortExact G`. Take `⟨a, rfl⟩` from `exists_hom_τ₁_eq (T := injectiveShortComplex G) hF φ`. Take `⟨y, rfl⟩` from `δ_surjective_of_subsingleton hF n V (subsingleton_H'_of_injective _ n V) x`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(sitePull_δ (Opens.map (𝟙 X)) hF hG a n i y).trans ?_` and prove the remaining obligations. Conclude with `(congrArg _ (ih a.τ₃ y)).trans ((δ_res hG n i _).symm.trans (congrArg _ (δ_naturality hF hG a n V y).symm))`.
+A detailed English derivation is pending.
 -/
 theorem pull_id {F G : AbSheaf X} (φ : F ⟶ G) (n : ℕ) {V W : Opens X} (i : W ⟶ V)
     (x : Sheaf.H'.{w} F n V) :

@@ -9,11 +9,11 @@ open CategoryTheory
 namespace UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `Γ M Ω Z _ _ _ _ _ _ _ ρM ρΩ ρZ ι π hι hπ hinj hsurj hex hΩ n`. Set `f : Rep.of ρM ⟶ Rep.of ρΩ` to `Rep.ofHom ⟨ι, fun γ => by ext m; exact hι γ m⟩`. Set `g : Rep.of ρΩ ⟶ Rep.of ρZ` to `Rep.ofHom ⟨π, fun γ => by ext x; exact hπ γ x⟩`. Establish `hfg : f ≫ g = 0`. Use extensionality with `m`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hex.apply_apply_eq_zero m`. Set `X : ShortComplex (Rep ℂ Γ)` to `ShortComplex.mk f g hfg`. Establish `hX : X.ShortExact` using `{ exact := (forget₂ (Rep ℂ Γ) (ModuleCat ℂ)).reflects_exact_of_faithful _ <| (ShortComplex.moduleCat_exact_iff _).2 fun x hx => (hex x).1 hx mono_f := (Rep.mono_iff_injective _).2 hinj epi_g := (Rep.epi_iff_surjective _).2 hsurj }`. Establish `hz : Limits.IsZero (groupCohomology X.X₂ (n + 1))` using `by haveI := hΩ n`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono` using `groupCohomology.mono_δ_of_isZero hX (n + 1) hz`. Establish `hinjδ` using `(ModuleCat.mono_iff_injective _).1 hmono`. Conclude with `LinearMap.rank_le_of_injective _ hinjδ`.
+A detailed English derivation is pending.
 -/
 theorem shiftUp : ShiftUp := by
   intro Γ M Ω Z _ _ _ _ _ _ _ ρM ρΩ ρZ ι π hι hπ hinj hsurj hex hΩ n

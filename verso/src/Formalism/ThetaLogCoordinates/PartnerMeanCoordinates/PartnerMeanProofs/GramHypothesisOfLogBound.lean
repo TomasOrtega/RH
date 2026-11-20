@@ -9,7 +9,7 @@ namespace Formalism.InvariantFactorPaths.MC
 open Formalism.GM Formalism.GM.M Formalism.GM.TM Formalism.CountingSumsFrames Formalism.InvariantFactorPaths.PW Formalism.InvariantFactorPaths.L4 MvPolynomial Finset
 
 /- English proof (translation)
-The claim follows from `meanGamX_of (by first | exact Formalism.GM.gamma_degree_bound | exact Formalism.GM.Top.gamDeg) (by first | exact Formalism.GM.gamma_leading_term | exact Formalism.GM.Top.gamLead) (by first | exact Formalism.InvariantFactorPaths.MC.gamma_integral_holds | exact Formalism.InvariantF …`.
+A detailed English derivation is pending.
 -/
 theorem meanGamX : MeanGamX :=
   meanGamX_of (by first | exact Formalism.GM.gamma_degree_bound | exact Formalism.GM.Top.gamDeg)
@@ -18,7 +18,7 @@ theorem meanGamX : MeanGamX :=
     (by first | exact Formalism.GM.Top.windowFullAP | exact Top.windowFullAP)
 
 /- English proof (translation)
-The claim follows from `theoremMXB_of_point meanGamX (by first | exact DimensionMonotonicity.highest_weight_dim_monotone | exact Formalism.GM.DimensionMonotonicity.highest_weight_dim_monotone | exact Formalism.GM.M.DimensionMonotonicity.highest_weight_dim_monotone | exact Formalism.GM.TM.DimensionMonoto …`.
+A detailed English derivation is pending.
 -/
 theorem theoremMXB : TheoremMXB :=
   theoremMXB_of_point meanGamX
@@ -31,13 +31,13 @@ theorem theoremMXB : TheoremMXB :=
       (partnerMX_of_parts tieOpsX_main (by first | exact partner_condition_holds | exact Formalism.InvariantFactorPaths.MC.Top.yPartnerC | exact Formalism.InvariantFactorPaths.MC.Top.yPartner)))
 
 /- English proof (translation)
-Unfold `lgSeg`. Establish `hp : 1 < (p : ℝ)` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hy : (1 : ℝ) ≤ 8 * a + r` using `by linarith`. Establish `hl : 0 ≤ Real.logb p (8 * a + r)` using `Real.logb_nonneg hp hy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.eq_zero_or_pos x with hx0 | hx0` into its components or cases. Substitute `hx0` using the available equality. Simplify using `only [Nat.log_zero_right, Nat.cast_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : ((p ^ Nat.log p x : ℕ) : ℝ) ≤ (x : ℝ)`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `Nat.pow_log_le_self p hx0.ne'` after adjusting the coercions. Move the coercions through the operations in `at h1`. Establish `hpy : (0 : ℝ) < p * (8 * a + r)` using `mul_pos (by linarith) (by linarith)`. Establish `h2 : (Nat.log p x : ℝ) ≤ Real.logb p (p * (8 * a + r))`. Rewrite using `[Real.le_logb_iff_rpow_le hp hpy, Real.rpow_natCast]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[Real.logb_mul (by positivity) (by linarith), Real.logb_self_eq_one hp]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem natLog_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r x : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r)
     (hx : (x : ℝ) ≤ p * (8 * a + r)) : (Nat.log p x : ℝ) ≤ lgSeg p a r := by
@@ -61,7 +61,7 @@ theorem natLog_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r x : ℕ) (ha : 0 �
     linarith
 
 /- English proof (translation)
-Unfold `lgSeg`. Establish `hp : 1 < (p : ℝ)` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hl : 0 ≤ Real.logb p (8 * a + r)` using `Real.logb_nonneg hp (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r) : 1 ≤ lgSeg p a r := by
   unfold lgSeg
@@ -71,11 +71,11 @@ theorem one_le_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a)
   linarith
 
 /- English proof (translation)
-Unfold `lgSeg`. Establish `hp : 1 < (p : ℝ)` using `by exact_mod_cast (Fact.out : p.Prime).one_lt`. Establish `hr' : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hy : (1 : ℝ) ≤ 8 * a + r` using `by linarith`. Establish `hfl : 1 ≤ ⌊8 * a + (r : ℝ)⌋₊` using `Nat.le_floor (by rw [Nat.cast_one]; exact hy)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((p ^ Nat.log p ⌊8 * a + (r : ℝ)⌋₊ : ℕ) : ℝ) ≤ (⌊8 * a + (r : ℝ)⌋₊ : ℝ)`. Conclude with `Nat.pow_log_le_self p (by omega)` after adjusting the coercions. Establish `h4` using `Nat.floor_le (by linarith : (0 : ℝ) ≤ 8 * a + r)`. Move the coercions through the operations in `at h3`. Establish `h2 : (Nat.log p ⌊8 * a + (r : ℝ)⌋₊ : ℝ) ≤ Real.logb p (8 * a + r)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.le_logb_iff_rpow_le hp (by linarith), Real.rpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem natLog_floor_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 ≤ a) (hr : 1 ≤ r) :
     (Nat.log p ⌊8 * a + r⌋₊ : ℝ) + 1 ≤ lgSeg p a r := by
@@ -94,9 +94,9 @@ theorem natLog_floor_lgSeg (p : ℕ) [Fact p.Prime] (a : ℝ) (r : ℕ) (ha : 0 
   linarith
 
 /- English proof (translation)
-Establish `h : 2 * r.choose 2 ≤ r ^ 2`. Rewrite using `[Nat.choose_two_right]`. Establish `h1` using `Nat.div_mul_le_self (r * (r - 1)) 2`. Establish `h2 : r * (r - 1) ≤ r ^ 2`. Rewrite using `[sq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left r (Nat.sub_le r 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `h' : (2 : ℝ) * (r.choose 2 : ℝ) ≤ (r : ℝ) ^ 2` using `by exact_mod_cast h`. Combine the linear equalities and inequalities to obtain the conclusion.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem choose_two_le (r : ℕ) : ((r.choose 2 : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 / 2 := by
   have h : 2 * r.choose 2 ≤ r ^ 2 := by
@@ -111,17 +111,15 @@ theorem choose_two_le (r : ℕ) : ((r.choose 2 : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 /
   linarith
 
 /- English proof (translation)
-Establish `hc` using `choose_two_le r`. Establish `hl1 : (0 : ℝ) ≤ (Nat.log p (LLw.total + r - 1) : ℝ)` using `Nat.cast_nonneg _`. Establish `hl2 : (0 : ℝ) ≤ (Nat.log p (4 * LLw.total + r - 1) : ℝ)` using `Nat.cast_nonneg _`. Establish `hlg : 0 ≤ lgv` using `hl1.trans h1`. Establish `hQ : 0 ≤ (r : ℝ) ^ 2 / 2 * lgv` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g1 : ((kapC p r LLw.total : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 / 2 * lgv`. Unfold `kapC`. Rewrite using `[Nat.cast_mul]`. Conclude with `mul_le_mul hc h1 hl1 (by positivity)`. Establish `g2 : ((r.choose 2 * Nat.log p (4 * LLw.total + r - 1) : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 / 2 * lgv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_mul]`. Conclude with `mul_le_mul hc h2 hl2 (by positivity)`. Establish `hK0 : (0 : ℝ) ≤ K` using `Nat.cast_nonneg _`. Break down `Nat.eq_zero_or_pos K with rfl | hK` into its components or cases. Use `graded_bound_saturation_holds p 0 r LLw J M ρ (kapC p r LLw.total) 0 κ4 hr hρ hv (hypPE_setLast LLw ρ) (fun e _ => restricted_saturation_zero p r _ J _ ρ hr hρ hv) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Nat.mul_zero, Nat.add_zero, Nat.cast_mul]`. Move the coercions through the operations in `at hκ ⊢`. Use the polynomial consequences of the given equalities and inequalities. Use `graded_bound_pos_of_proj highest_vector_projection_holds p K r LLw J M ρ (kapC p r LLw.total) (2 * (r.choose 2 * Nat.log p (4 * LLw.total + r - 1))) κ4 hK hr hρ hv (hypPE_setLast LLw ρ) ?_ (le_trans ?_ hκ)` and prove the remaining obligations. Introduce `e _`.
+Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht'` using `setLast_total_le LLw (LLw.deg (Fin.last K) - e) (Nat.sub_le _ _)`. Conclude with `resSatL_mono _ J _ ρ (Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ (Nat.log_mono_right (by omega)))) (restricted_saturation_holds p K r (setLast LLw (LLw.deg (Fin.last K) - e)) J (shiftLastLetterThresholds K J M e) ρ hr hρ hv)`. Establish `h3 : ((K : ℝ) + 3) * ((kapC p r LLw.total : ℕ) : ℝ) ≤ ((K : ℝ) + 3) * ((r : ℝ) ^ 2 / 2 * lgv)` using `mul_le_mul_of_nonneg_left g1 (by positivity)`. Rewrite using `[Nat.cast_add, Nat.cast_mul, Nat.cast_mul (2 : ℕ), Nat.cast_mul (2 : ℕ)]`. Move the coercions through the operations in `at g2 h3 ⊢`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gram_hypothesis_of_log_bound (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZero r] (LLw : Letters (K + 1)) {q : ℕ} (J : Fin q → ℕ)
     (M : Fin q → WithTop ℤ) (ρ : Fin r) (lgv κ4 : ℝ) (hr : 2 ≤ r) (hρ : (ρ : ℕ) = r - 1)
@@ -161,32 +159,32 @@ theorem gram_hypothesis_of_log_bound (p : ℕ) [Fact p.Prime] (K r : ℕ) [NeZer
       nlinarith
 
 /- English proof (translation)
-Unfold `Letters.total`. Conclude with `Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ x)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem deg_le_total' {N : ℕ} (LL : Letters N) (x : Fin N) : LL.deg x ≤ LL.total := by
   unfold Letters.total
   exact Finset.single_le_sum (fun i _ => Nat.zero_le _) (Finset.mem_univ x)
 
 /- English proof (translation)
-Unfold `TheoremMV7Of`. Introduce `p _ s r _ LL T a E Yl n₀ dd ρ hp2 hr hρ hadm hch hcond ha hE hY hS hsize hH`. Use `haveI : NeZero (2 * s + 1) := ⟨by omega⟩`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hrR : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlg1 : 1 ≤ lgSeg p a r` using `one_le_lgSeg p a r (by linarith) hr1`. Establish `hfl` using `natLog_floor_lgSeg p a r (by linarith) hr1`. Establish `hpos : 0 ≤ (r : ℝ) ^ 2 * lgSeg p a r` using `mul_nonneg (sq_nonneg _) (by linarith)`. Establish `hsR : (0 : ℝ) ≤ s` using `Nat.cast_nonneg s`. Establish `hspos : 0 ≤ (s : ℝ) * ((r : ℝ) ^ 2 * lgSeg p a r)` using `mul_nonneg hsR hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hflo : ∀ m : ℕ, (m : ℝ) ≤ 8 * a + r → m ≤ ⌊8 * a + (r : ℝ)⌋₊` using `fun m hm => Nat.le_floor hm`. Take `⟨htot, hsz⟩` from `hsize`. Unfold `epsSeg`. Use `theoremMXB p (2 * s + 1) r LL T ⌊8 * a + (r : ℝ)⌋₊ E (kapSeg p a r s) (((s : ℝ) + 4) * ((r : ℝ) ^ 2 * lgSeg p a r)) (lgSeg p a r) ⌊(r : ℝ) ^ 2 * lgSeg p a r⌋₊ Yl n₀ dd ρ hp2 hr hρ hadm hE hY hS ?_ ?_ ?_ hfl ?_ ?_ ?_ hH` and prove the remaining obligations. Introduce `x`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hflo` to reduce the goal to its premises. Establish `h1` using `deg_le_total' (LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)) x`. Establish `h2 : ((LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)).deg x : ℝ) ≤ ((LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)).total : ℝ)` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `hsz i`. Use `⟨?_, hflo _ h2, ?_⟩` and prove the remaining obligations. Apply `hflo` to reduce the goal to its premises. Move the coercions through the operations in `at h3 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hflo` to reduce the goal to its premises. Establish `hdA : degreeAtPosition (LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)) (T.pos i) = (LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)).deg ⟨T.pos i, h⟩`. Unfold `degreeAtPosition`. Rewrite using `[dif_pos h]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hdA]`. Move the coercions through the operations in `at h1 ⊢`. Establish `h4` using `(Nat.cast_nonneg (degreeAtPosition (LL.setTies T fun i => n₀ i + dd i * (Yl i - 1)) (T.pos i + 1)) : (0 : ℝ) ≤ _)`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `hflo r (by linarith)`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
-Unfold `kapSeg`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `kapSeg`. Use `push_cast`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((⌊(r : ℝ) ^ 2 * lgSeg p a r⌋₊ : ℕ) : ℝ) ≤ (r : ℝ) ^ 2 * lgSeg p a r` using `Nat.floor_le hpos`. Establish `h2` using `mul_le_mul_of_nonneg_right h1 (by linarith : (0 : ℝ) ≤ 2 * (s : ℝ) + 1 + 2)`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `kapSeg`. Establish `hr4 : (4 : ℝ) ≤ (r : ℝ) ^ 2` using `by nlinarith`.
+Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h1` using `mul_le_mul_of_nonneg_right hr4 (by linarith : (0 : ℝ) ≤ lgSeg p a r)`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem theoremMV7Of : TheoremMV7Of := by
   unfold TheoremMV7Of
@@ -242,9 +240,9 @@ theorem theoremMV7Of : TheoremMV7Of := by
     nlinarith
 
 /- English proof (translation)
-Unfold `Letters.total`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Unfold `Letters.setTies`. Simplify using `only`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Use `split_ifs with hh`. Conclude with `h _`. Conclude with `le_rfl`.
+A detailed English derivation is pending.
 -/
 theorem setTies_total_le {N : ℕ} (LL : Letters N) (T : TieData) (n n' : Fin T.t → ℕ) (h : ∀ i, n i ≤ n' i) :
     (LL.setTies T n).total ≤ (LL.setTies T n').total := by
@@ -258,27 +256,25 @@ theorem setTies_total_le {N : ℕ} (LL : Letters N) (T : TieData) (n n' : Fin T.
   · exact le_rfl
 
 /- English proof (translation)
-Introduce `p _ s r _ LL T a E Yl n₀ dd ρ hp hr hρ hadm hch hco ha hE hY hS hsz`. Use `theoremMV7Of p s r LL T a E Yl n₀ dd ρ hp hr hρ hadm hch hco ha hE hY hS hsz ?_` and prove the remaining obligations. Take `⟨htot, hsz⟩` from `hsz`. Establish `ha0 : 0 ≤ a` using `by linarith`. Establish `hlg1` using `one_le_lgSeg p a r ha0 (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr' : (2 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hp3 : (3 : ℝ) ≤ p`. Establish `h2` using `(Fact.out : p.Prime).two_le`. Establish `: 3 ≤ p` using `by omega`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : (0 : ℝ) ≤ 8 * a + r` using `by linarith`. Establish `hQ : 0 ≤ (r : ℝ) ^ 2 / 2 * lgSeg p a r` using `by positivity`. Introduce `n hn`. Establish `hle` using `grid_le T Yl n₀ dd n hn`. Establish `hk : kapC p r (LL.setTies T n).total ≤ ⌊(r : ℝ) ^ 2 * lgSeg p a r⌋₊`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.le_floor` to reduce the goal to its premises. Establish `ht : ((LL.setTies T n).total : ℝ) ≤ 8 * a + r` using `le_trans (by exact_mod_cast setTies_total_le LL T n _ hle) htot`. Establish `hx : (((LL.setTies T n).total + r - 1 : ℕ) : ℝ) ≤ p * (8 * a + r)`. Establish `h1 : (((LL.setTies T n).total + r - 1 : ℕ) : ℝ) ≤ ((LL.setTies T n).total : ℝ) + r`. Establish `: (LL.setTies T n).total + r - 1 ≤ (LL.setTies T n).total + r` using `Nat.sub_le _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `this` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Establish `hl` using `natLog_le_lgSeg p a r _ ha0 (by omega) hx`. Unfold `kapC`. Rewrite using `[Nat.cast_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨Formalism.InvariantFactorPaths.PW.Top.dischargeP p _ r _ ρ _ hk, Formalism.InvariantFactorPaths.PW.Top.dischargeW p _ r _ _ hk, fun i => ?_⟩` and prove the remaining obligations. Take `⟨hlt, _, _⟩` from `hadm.2.1 i`. Take `⟨-, -, h2S⟩` from `hsz i`. Establish `hSle : ((LL.setTies T n).takeD (T.pos i + 1)).total ≤ T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[takeD_total_eq (LL.setTies T n) T i hlt]`. Conclude with `S_mono LL T n _ hle i`. Establish `hSr : 2 * (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) + 1 ≤ 8 * a + r`. Establish `: (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) ≤ (T.S (LL.setTies T (fun i => n₀ i + dd i * (Yl i - 1))) i : ℝ)` using `by exact_mod_cast hSle`. Move the coercions through the operations in `at h2S`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS0 : (0 : ℝ) ≤ (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ)` using `Nat.cast_nonneg _`. Use `gram_hypothesis_of_log_bound p (T.pos i) r _ T.J (T.thrUpTo i) ρ (lgSeg p a r) _ hr hρ (takeD_vec_last LL T hadm n i) ?_ ?_ ?_` and prove the remaining obligations. Apply `natLog_le_lgSeg p a r _ ha0 (by omega)` to reduce the goal to its premises. Establish `h1 : ((((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 : ℕ) : ℝ) ≤ (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) + r`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 ≤ ((LL.setTies T n).takeD (T.pos i + 1)).total + r` using `Nat.sub_le _ _`. Conclude with `this` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Apply `natLog_le_lgSeg p a r _ ha0 (by omega)` to reduce the goal to its premises. Establish `h1 : ((4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 : ℕ) : ℝ) ≤ 4 * (((LL.setTies T n).takeD (T.pos i + 1)).total : ℝ) + r`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r - 1 ≤ 4 * ((LL.setTies T n).takeD (T.pos i + 1)).total + r` using `Nat.sub_le _ _`. Conclude with `this` after adjusting the coercions. Use the polynomial consequences of the given equalities and inequalities. Establish `hK : ((T.pos i : ℕ) : ℝ) + 7 ≤ 2 * ((s : ℝ) + 4)`. Establish `: T.pos i + 7 ≤ 2 * (s + 4)` using `by omega`.
-
-Conclude with `this` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem theoremMV7 : TheoremMV7 := by
   intro p _ s r _ LL T a E Yl n₀ dd ρ hp hr hρ hadm hch hco ha hE hY hS hsz

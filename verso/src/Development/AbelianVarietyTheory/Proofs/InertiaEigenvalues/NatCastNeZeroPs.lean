@@ -66,7 +66,7 @@ def diag : (ZMod a → K⟦X⟧⟦X⟧) →+* (ZMod a → K⟦X⟧) :=
 end Defs
 
 /- English proof (translation)
-The claim follows from `funext fun τ => by have h1 := congrFun h τ simp only [Pi.mul_apply, Pi.natCast_apply, Pi.zero_apply] at h1 exact (mul_eq_zero.1 h1).resolve_left hn`.
+A detailed English derivation is pending.
 -/
 theorem tf_pi {R : Type} [CommRing R] [IsDomain R] {n a : ℕ} (hn : (n : R) ≠ 0) (x : ZMod a → R)
     (h : (n : ZMod a → R) * x = 0) : x = 0 := funext fun τ => by
@@ -75,26 +75,26 @@ theorem tf_pi {R : Type} [CommRing R] [IsDomain R] {n a : ℕ} (hn : (n : R) ≠
   exact (mul_eq_zero.1 h1).resolve_left hn
 
 /- English proof (translation)
-Introduce `h'` and use `h (by simpa using congrArg (constantCoeff : R⟦X⟧ →+* R) h')`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero_ps {R : Type} [CommRing R] {n : ℕ} (h : (n : R) ≠ 0) : (n : R⟦X⟧) ≠ 0 := fun h' =>
   h (by simpa using congrArg (constantCoeff : R⟦X⟧ →+* R) h')
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (htf _ (by simpa using congrArg Subtype.val h))`.
+A detailed English derivation is pending.
 -/
 theorem tf_sub {R : Type} [CommRing R] {n : ℕ} (s : Subring R) (htf : ∀ x : R, (n : R) * x = 0 → x = 0)
     (x : ↥s) (h : (n : ↥s) * x = 0) : x = 0 := Subtype.ext (htf _ (by simpa using congrArg Subtype.val h))
 
 /- English proof (translation)
-The claim follows from `mem_nonZeroDivisors_iff.2 ⟨htf, fun x hx => htf x (by rw [mul_comm]; exact hx)⟩`.
+A detailed English derivation is pending.
 -/
 theorem nzd_of_tf {R : Type} [CommRing R] {n : ℕ} (htf : ∀ x : R, (n : R) * x = 0 → x = 0) :
     (n : R) ∈ nonZeroDivisors R :=
   mem_nonZeroDivisors_iff.2 ⟨htf, fun x hx => htf x (by rw [mul_comm]; exact hx)⟩
 
 /- English proof (translation)
-Use `⟨1, fun x _ => ?_⟩` and prove the remaining obligations. Establish `h : (n : R ⧸ Ideal.span {(n : R)}) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {(n : R)})), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mem_span_singleton_self _`. Rewrite using `[h, pow_one, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_self {R : Type} [CommRing R] (n : ℕ) : ∃ m : ℕ, ∀ x : R ⧸ Ideal.span {(n : R)},
     (∃ k : ℕ, (n : R ⧸ Ideal.span {(n : R)}) ^ k * x = 0) → (n : R ⧸ Ideal.span {(n : R)}) ^ m * x = 0 := by
@@ -107,11 +107,11 @@ theorem bdd_self {R : Type} [CommRing R] (n : ℕ) : ∃ m : ℕ, ∀ x : R ⧸ 
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1 : D.δ l = 1 - (l : A) ^ (l - 1)`. Rewrite using `[← sub_eq_zero]`. Apply `htf` to reduce the goal to its premises. Establish `h` using `D.φ_eq (l : A)`. Rewrite `h` using `[map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (l : A) ^ l = (l : A) * (l : A) ^ (l - 1)`. Rewrite using `[← pow_succ']`. Use `congr 1`. Use `hl.out.one_lt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take the linear combination `-h - h2`. Rewrite using `[h1]`. Establish `hm : -(l : A) ^ (l - 1) ∈ Ideal.span {(l : A)}` using `(Ideal.neg_mem_iff _).2 (Ideal.pow_mem_of_mem _ (Ideal.mem_span_singleton_self _) _ (by have := hl.out.one_lt; omega))`. Use `Ideal.mem_jacobson_bot.1 (IsAdicComplete.le_jacobson_bot _ hm) 1` as an intermediate fact. Rewrite `this` using `[mul_one, neg_add_eq_sub]`. Then use the resulting hypothesis.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isUnit_delta_l {A : Type} [CommRing A] (D : Delta l A) (htf : ∀ x : A, (l : A) * x = 0 → x = 0)
     [IsAdicComplete (Ideal.span {(l : A)}) A] : IsUnit (D.δ l) := by
@@ -136,17 +136,17 @@ variable {K : Type} [NormedField K] [CharZero K] (sh : K⟦X⟧ →+* K⟦X⟧�
 include hsh
 
 /- English proof (translation)
-Simplify using `using hsh f 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constantCoeff_sh (f : K⟦X⟧) : constantCoeff (sh f) = f := by
   simpa using hsh f 0
 
 /- English proof (translation)
-Use extensionality with `i : 1`. Establish `h` using `hsh X i`. Break down `i with _ | _ | i` into its components or cases. Simplify using `using h`. Simplify using `[coeff_C, coeff_X]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify `h` using `[derivative_X]`. Establish `h3 : ((i + 2).factorial : K⟦X⟧) ≠ 0` using `natCast_ne_zero_ps (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _))`. Establish `h4 : (PowerSeries.derivative K)^[i + 2] X = 0`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply, derivative_X]`. Establish `: PowerSeries.derivative K (1 : K⟦X⟧) = 0` using `(PowerSeries.derivative K).map_one_eq_zero`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Function.iterate_fixed (map_zero _) i`. Rewrite `h` using `[h4]`. Rewrite using `[(mul_eq_zero.1 h).resolve_left h3]`. Simplify using `[coeff_C, coeff_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sh_X : sh X = C X + X := by
   ext i : 1
@@ -165,7 +165,7 @@ theorem sh_X : sh X = C X + X := by
     simp [coeff_C, coeff_X]
 
 /- English proof (translation)
-Establish `hX : φ₂ X = sh (X ^ l) - C (X ^ l)`. Establish `h : (X : K⟦X⟧⟦X⟧) = sh X - C X` using `by rw [sh_X sh hsh]; ring`. Rewrite using `[h, map_sub, hφsh, hφC, frob_X]`. Use `conv_lhs => rw [eq_shift_mul_X_add_const G]`. Rewrite using `[map_add, map_mul, hX, hφC, map_add, map_mul, map_sub, constantCoeff_sh sh hsh, constantCoeff_C, constantCoeff_C, sub_self, mul_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_φ₂ (l : ℕ) [Fact l.Prime] (φ₂ : K⟦X⟧⟦X⟧ →+* K⟦X⟧⟦X⟧)
     (hφC : ∀ f : K⟦X⟧, φ₂ (PowerSeries.C f) = PowerSeries.C (frob K l f))
@@ -186,9 +186,9 @@ variable {a : ℕ} [NeZero a] {O K : Type} [CommRing O] [Algebra ℤ_[l] O]
   [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] (t : Wq l a →ₐ[ℤ_[l]] O) (e : ℕ)
 
 /- English proof (translation)
-Use extensionality with `n`. Establish `: coeff n (frobS l a x) = if l ∣ n then sigma l a (coeff (n / l) x) else 0`. Simplify using `only [frobS, RingHom.comp_apply, coeff_map, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, coeff_expand]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[coeff_frob, coeff_toAc, coeff_toAc, this]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Rewrite using `[emb_sigma]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frob_toAc (x : (Wq l a)⟦X⟧) (τ : ZMod a) :
     frob K l (toAc t K x (τ - 1) : K⟦X⟧) = (toAc t K (frobS l a x) τ : K⟦X⟧) := by
@@ -202,11 +202,11 @@ theorem frob_toAc (x : (Wq l a)⟦X⟧) (τ : ZMod a) :
   · simp
 
 /- English proof (translation)
-Take `⟨w, hw, hF⟩` from `hF`. Use `⟨fun p => if p.1 = 0 then w p.2 else 0, fun r => ?_, fun τ i n => ?_⟩` and prove the remaining obligations. Establish `h` using `hw r`. Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Use `(h.image fun n => ((0 : ℕ), n)).subset ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨i, n⟩ hin`. Distinguish the cases in `hi : i = 0`. Substitute `hi; exact ⟨n, by simpa using hin, rfl⟩` using the available equality. Simplify using `[hi] at hin`. Express the relevant statement in the definitionally equal form `((i.factorial * (n / e).factorial : ℕ) : K) * coeff n (coeff i (C (F τ))) = _`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[coeff_C]`. Distinguish the cases in `hi : i = 0`. Substitute `hi` using the available equality. Simplify using `using hF τ n`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem constP_mem {F : ZMod a → K⟦X⟧} (hF : F ∈ SdSet t K e) : constP a K F ∈ PPSet t K e := by
   obtain ⟨w, hw, hF⟩ := hF
@@ -225,9 +225,9 @@ theorem constP_mem {F : ZMod a → K⟦X⟧} (hF : F ∈ SdSet t K e) : constP a
     · simp [hi]
 
 /- English proof (translation)
-Take `⟨w, hw, hF⟩` from `hF`. Use `⟨fun n => w (0, n), fun r => ?_, fun τ n => ?_⟩` and prove the remaining obligations. Establish `h` using `hw r`. Rewrite `h`, the goal using `[Filter.eventually_cofinite]`. Conclude with `h.preimage (fun _ _ _ _ h => by simpa using h)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hF τ 0 n`. Simplify using `only [Nat.factorial_zero, one_mul, coeff_zero_eq_constantCoeff] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diag_mem {F : ZMod a → K⟦X⟧⟦X⟧} (hF : F ∈ PPSet t K e) : diag a K F ∈ SdSet t K e := by
   obtain ⟨w, hw, hF⟩ := hF

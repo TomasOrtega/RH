@@ -32,7 +32,7 @@ def labLL0 (D : D7) (τ : D.what₂.Tau) : D.host.E →+* ↥D.LL0 :=
   (Links.labLL D τ).codRestrict D.LL0 fun _ => D.hostField_le_fixedField _
 
 /- English proof (translation)
-The claim follows from `FWT.embV_spec (RingHom.id _) D.what₂.embLL (RingHom.comp_id _) τ`.
+A detailed English derivation is pending.
 -/
 theorem embLL0_labLL0 (τ : D.what₂.Tau) : (embLL0 D).comp (labLL0 D τ) = tauE D τ :=
   FWT.embV_spec (RingHom.id _) D.what₂.embLL (RingHom.comp_id _) τ
@@ -133,23 +133,23 @@ structure Good : Prop where
     IsClassSystem (Vc D j) ((ρ.B i j b).levJ t) (ρ.rep i j b t)
 
 /- English proof (translation)
-The claim follows from `h.weil i j b (Twist.triv Circle ∅) (Twist.triv_good splitSet_empty)`.
+A detailed English derivation is pending.
 -/
 theorem Good.weil_base {ρ : Setup X} (h : ρ.Good) (i : X.Tw) (j : Fin D.R.m) (b : Bool) :
     (ρ.B i j b).IsWeil 1 (ρ.om i j b 1) := h.weil i j b (Twist.triv Circle ∅) (Twist.triv_good splitSet_empty)
 
 /- English proof (translation)
-The claim follows from `(ρ.e i b).injective.comp (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem eO_injective : Function.Injective (ρ.eO i b) := (ρ.e i b).injective.comp (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-The claim follows from `(ρ.ek i b k).injective.comp (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem eOk_injective (k : ℕ) : Function.Injective (ρ.eOk i b k) := (ρ.ek i b k).injective.comp (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Use `⟨embLL0_labLL0, fun a => ?_⟩` and prove the remaining obligations. Establish `h1 : IsIntegral (X.O i) (sideEmb X i b a)` using `a.isIntegral_coe.map_of_comp_eq (Int.castRingHom _) (sideEmb X i b) (RingHom.ext_int _ _)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h1`. Conclude with `⟨y, by rw [← h.e_LL0 i b, ← hy]; rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Good.isCoefRing {ρ : Setup X} (h : ρ.Good) (i : X.Tw) (b : Bool) :
     IsCoefRing (embLL0 D) (labLL0 D) (ρ.eO i b).range := by
@@ -160,23 +160,23 @@ theorem Good.isCoefRing {ρ : Setup X} (h : ρ.Good) (i : X.Tw) (b : Bool) :
   exact ⟨y, by rw [← h.e_LL0 i b, ← hy]; rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `⟨_, h.ek_e i b k x⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem Good.range_le {ρ : Setup X} (h : ρ.Good) (i : X.Tw) (b : Bool) (k : ℕ) : (ρ.eO i b).range ≤ (ρ.eOk i b k).range := by
   rintro _ ⟨x, rfl⟩
   exact ⟨_, h.ek_e i b k x⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨embLL0_labLL0, fun a => h.range_le i b k ((h.isCoefRing i b).int a)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Good.isCoefRing_k {ρ : Setup X} (h : ρ.Good) (i : X.Tw) (b : Bool) (k : ℕ) :
     IsCoefRing (embLL0 D) (labLL0 D) (ρ.eOk i b k).range :=
   ⟨embLL0_labLL0, fun a => h.range_le i b k ((h.isCoefRing i b).int a)⟩
 
 /- English proof (translation)
-Establish `key : ∀ t : Twist D Circle, t.Q = ∅ → t.chi = 1 → ∀ ω, (ρ.B i j b).genSet ω t h P = {(ρ.B i j b).theta ω h P}`. Introduce and unpack `⟨_, _, r⟩ rfl rfl ω`. Establish `e : (ρ.B i j b).vecFlat ⟨∅, 1, r⟩ = (ρ.B i j b).vecFlat (Twist.triv Circle ∅)` using `((ρ.B i j b).vecAt_empty _).trans (ρ.B i j b).vecFlat_triv.symm`. Rewrite using `[← Base.genSet_triv]`. Unfold `Base.genSet Base.gen`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`. Both sides reduce to the same expression. Conclude with `key _ (half_empty _) (charOf_one _ _) _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gens_one (k : ℕ) (h : GA D (Vc D j)) (P : PolF D (Wc D j).rank (Vc D j).rank) :
     ρ.gens i j b k ∅ 1 h P = {ρ.theta i j b h P} := by
@@ -191,7 +191,7 @@ theorem gens_one (k : ℕ) (h : GA D (Vc D j)) (P : PolF D (Wc D j).rank (Vc D j
   exact key _ (half_empty _) (charOf_one _ _) _
 
 /- English proof (translation)
-Establish `key : ∀ (Q' : Finset (Pl D.host.E)) (u : UnivTwist D (ZMod (X.l i ^ M))) Φ (a : ↥Q' → ZMod (X.l i ^ M)), Q' = ∅ → (ρ.B i j b).xiCoef (ρ.om i j b 1) u Q' Φ h P a = ρ.theta i j b h P`. Introduce and unpack `_ u Φ a rfl`. Conclude with `Base.xiCoef_empty _ _ _ _ _ _ _`. Conclude with `key _ _ _ _ hQ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem xi_of_empty (Y : NExp D.R D.host D.what₂ D.LL0 N X) {Q : Finset (Pl D.host.E)} {M : ℕ}
     (hQ : half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M) = ∅) (h : GA D (Vc D j)) (P : PolF D (Wc D j).rank (Vc D j).rank) (a) :
@@ -205,7 +205,7 @@ theorem xi_of_empty (Y : NExp D.R D.host D.what₂ D.LL0 N X) {Q : Finset (Pl D.
 end Setup
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, by simp, by simp, fun _ _ _ => inv_one.symm, fun _ => one_mem _, fun _ _ _ => by simp, fun _ _ _ _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem twOK_one (i : X.Tw) (k : ℕ) : TwOK i k ∅ (1 : G D.host.E N.Om →* (X.Ok i k)ˣ) :=
   ⟨by simp, by simp, by simp, fun _ _ _ => inv_one.symm, fun _ => one_mem _, fun _ _ _ => by simp, fun _ _ _ _ _ _ => rfl⟩
@@ -219,7 +219,7 @@ abbrev Rd : Type := Y.Fm i ((j : ℕ) + 1) b →ₛₗ[ρ.e i b] (GA D (Wc D j) 
 variable {ρ Y i j b} (rd : Rd ρ Y i j b)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul (FractionRing (X.O i)) a f, map_smulₛₗ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rd_smul (a : X.O i) (f : Y.Fm i ((j : ℕ) + 1) b) : rd (a • f) = ρ.eO i b a • rd f := by
   rw [← algebraMap_smul (FractionRing (X.O i)) a f, map_smulₛₗ]
@@ -255,7 +255,7 @@ def Faithful : Prop :=
 variable {rd}
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero rd).2 fun f hf => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Conclude with `(h 1 (fun _ => f) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hf`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem Faithful.injective (h : Faithful rd) : Function.Injective rd := by
   refine (injective_iff_map_eq_zero rd).2 fun f hf => ?_
@@ -263,21 +263,19 @@ theorem Faithful.injective (h : Faithful rd) : Function.Injective rd := by
   exact (h 1 (fun _ => f) (linearIndependent_unique_iff.2 h0)).ne_zero 0 hf
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun x hx => ?_` and prove the remaining obligations. Set `v` to `Module.finBasis (FractionRing (X.O i)) (Y.Fm i ((j : ℕ) + 1) b)`. Establish `key : ∀ x : X.Ok i k ⊗[X.O i] Y.Fm i ((j : ℕ) + 1) b, ∃ d : X.O i, d ≠ 0 ∧ ∃ c : _ → X.Ok i k, d • x = ∑ a, c a ⊗ₜ v a` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, 0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `add x y hx hy`. Take `⟨d, hd, c, e⟩` from `hx`. Take `⟨d', hd', c', e'⟩` from `hy`. Use `⟨d * d', mul_ne_zero hd hd', d' • c + d • c', ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, mul_smul d d' y, mul_comm, mul_smul, e, e']`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.smul_sum, TensorProduct.add_tmul, Finset.sum_add_distrib, TensorProduct.smul_tmul']`. Consider the case `tmul a f`. Take `⟨d, hd⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors (X.O i)) fun c => v.repr f c`. Use `choose y hy using hd`. Use `⟨d, nonZeroDivisors.coe_ne_zero d, fun c => y c • a, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← TensorProduct.tmul_smul]`. Use `conv_lhs => rw [← v.sum_repr f]`. Rewrite using `[Finset.smul_sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← algebraMap_smul (FractionRing (X.O i)) (y c), hy, smul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, hd, c, e⟩` from `key x`. Establish `h1 : ∑ a, ρ.eOk i b k (c a) • rd (v a) = 0`. Use `congrArg (rdK rd hρ k) e` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul (X.Ok i k) d x, map_smulₛₗ, hx, smul_zero, map_sum]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ a, c a = 0` using `fun a => ρ.eOk_injective i b k ((Fintype.linearIndependent_iff.1 (h _ v v.linearIndependent) _ h1 a).trans (map_zero _).symm)`. Establish `h3 : d • x = 0` using `by simp [e, h2]`. Establish `h4 : ∀ x : X.Ok i k ⊗[X.O i] Y.Fm i ((j : ℕ) + 1) b, LinearMap.lTensor (X.Ok i k) (((algebraMap (X.O i) (FractionRing (X.O i)) d)⁻¹ • LinearMap.id : Module.End (FractionRing (X.O i)) (Y.Fm i ((j : ℕ) + 1) b)).restrictScalars (X.O i)) (d • x) = x` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy]`. Consider the case `tmul a f`. Rewrite using `[← TensorProduct.tmul_smul, LinearMap.lTensor_tmul]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `(algebraMap (X.O i) (FractionRing (X.O i)) d)⁻¹ • d • f = f`.
-
-Rewrite using `[← algebraMap_smul (FractionRing (X.O i)) d f, inv_smul_smul₀ (by simpa using hd)]`. Rewrite using `[← h4 x, h3, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Faithful.injective_rdK (h : Faithful rd) (hρ : ρ.Good) (k : ℕ) : Function.Injective (rdK rd hρ k) := by
   refine (injective_iff_map_eq_zero _).2 fun x hx => ?_
@@ -405,7 +403,7 @@ variable {hρ rd} (T : CellTie hρ Y rd)
 include T
 
 /- English proof (translation)
-Use `haveI : IsEmpty ↥(half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M)) := ⟨fun P => Finset.eq_empty_iff_forall_notMem.1 h0 P.1 P.2⟩`. Rewrite using `[T.thU_eq Q M d hQ (fun _ => Y.th i _ b d) fun a => by rw [T.th_eq, ρ.xi_of_empty i j b Y h0], grpSum, Finset.sum_eq_single 0 (fun a _ h => absurd (funext fun P => isEmptyElim P) h) (fun h => absurd (@Finset.mem_univ _ (_) _) h), map_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thU_of_empty {Q : Finset (Pl D.host.E)} {M : ℕ} (hQ : InRange X i Q) (h0 : half (ρ.ch i) (admissibleConjugatePairPlaces X i Q M) = ∅)
     (d : Y.Dat i ((j : ℕ) + 1) b) : Y.thU i _ b Q M d = Y.th i _ b d ⊗ₜ[X.O i] 1 := by
@@ -415,13 +413,13 @@ theorem thU_of_empty {Q : Finset (Pl D.host.E)} {M : ℕ} (hQ : InRange X i Q) (
   rfl
 
 /- English proof (translation)
-The claim follows from `T.thU_of_empty ⟨by simp, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩ (by simp) d`.
+A detailed English derivation is pending.
 -/
 theorem thU_empty (M : ℕ) (d : Y.Dat i ((j : ℕ) + 1) b) : Y.thU i _ b ∅ M d = Y.th i _ b d ⊗ₜ[X.O i] 1 :=
   T.thU_of_empty ⟨by simp, fun _ h => absurd h (Finset.notMem_empty _), by simp⟩ (by simp) d
 
 /- English proof (translation)
-Use `choose x hx using hR Q M hQ _ _ _ (T.dat d) fun v hv h => Finset.disjoint_left.1 hd hv ((T.lev_iff d v).2 h)`. Conclude with `⟨x, hx, T.thU_eq Q M d hQ x hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thU_of_rat (hR : RatUniv rd) {Q : Finset (Pl D.host.E)} (M : ℕ) (hQ : InRange X i Q) {d : Y.Dat i ((j : ℕ) + 1) b}
     (hd : Disjoint Q (Y.lev i _ b d)) : ∃ x, (∀ a, rd (x a) = ρ.xi i j b Y Q M (T.cls d) (T.coef d) a) ∧
@@ -430,7 +428,7 @@ theorem thU_of_rat (hR : RatUniv rd) {Q : Finset (Pl D.host.E)} (M : ℕ) (hQ : 
   exact ⟨x, hx, T.thU_eq Q M d hQ x hx⟩
 
 /- English proof (translation)
-Rewrite using `[T.mtLat_iff k Q ψ h]`. Conclude with `⟨fun hf => ⟨f, hf, rfl⟩, fun ⟨_, hf, e⟩ => T.rdV_inj k Q ψ h e ▸ hf⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rdV_mem {k Q ψ} (h : TwOK i k Q ψ) {f : Y.MtV i ((j : ℕ) + 1) b k Q ψ} :
     f ∈ Y.MtLat i _ b k Q ψ ↔ T.rdV k Q ψ f ∈ ρ.mt i j b k Q ψ := by
@@ -438,7 +436,7 @@ theorem rdV_mem {k Q ψ} (h : TwOK i k Q ψ) {f : Y.MtV i ((j : ℕ) + 1) b k Q 
   exact ⟨fun hf => ⟨f, hf, rfl⟩, fun ⟨_, hf, e⟩ => T.rdV_inj k Q ψ h e ▸ hf⟩
 
 /- English proof (translation)
-Take `⟨d, -⟩` from `T.dat_onto ∅ 1 0 ⟨splitSet_empty, by simp, one_mem _, fun a c => by`. Rewrite using `[show Formalism.L2.Theta.mt (Vc D j) 1 - 1 = 0 from sub_self _, Matrix.zero_apply, mul_zero], zero_mem _⟩`. Use the proof step `⟨0, rd.map_zero.trans (LinearMap.map_zero _).symm⟩`. Conclude with `⟨d⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_dat : Nonempty (Y.Dat i ((j : ℕ) + 1) b) := by
   obtain ⟨d, -⟩ := T.dat_onto ∅ 1 0 ⟨splitSet_empty, by simp, one_mem _, fun a c => by

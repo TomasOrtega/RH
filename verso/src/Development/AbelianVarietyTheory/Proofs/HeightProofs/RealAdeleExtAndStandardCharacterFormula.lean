@@ -8,13 +8,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FockCompare
 
 /- English proof (translation)
-The claim follows from `Prod.ext rfl h.symm`.
+A detailed English derivation is pending.
 -/
 theorem pair_fst_of_snd {F : Type} [Field F] [NumberField F] (a : AF F) (h : sndA F a = 0) :
     pairA F (fstA F a) 0 = a := Prod.ext rfl h.symm
 
 /- English proof (translation)
-Establish `h2 : algebraMap F (AF F) (1 / 2) * a + algebraMap F (AF F) (1 / 2) * a = a`. Rewrite using `[← add_mul, ← RingHom.map_add, add_halves, RingHom.map_one, one_mul]`. Use `conv_rhs => rw [← h2, map_add, TensorProduct.add_tmul, RingHom.map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem half_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (θ : Ainf F ⊗[F] E →+* ℂ)
     (a : AF F) :
@@ -25,7 +25,7 @@ theorem half_tmul {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   ring
 
 /- English proof (translation)
-Establish `h` using `conj_tmul_one hθ τ (fstA D.host.F a)`. Conclude with `Complex.conj_eq_iff_re.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valTau_coe {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (a : AF D.host.F) :
     ((valTau θ τ a : ℝ) : ℂ) = θ τ (fstA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)) := by
@@ -33,15 +33,15 @@ theorem valTau_coe {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.
   exact Complex.conj_eq_iff_re.1 h
 
 /- English proof (translation)
-Introduce `D θ σ h a ha`. Use `⟨fun h0 => ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `h1 : (a ⊗ₜ[D.host.F] (1 : D.host.E) : AE D) = 0`. Use `h.ext _ ?_ fun τ => ?_` and prove the remaining obligations. Establish `e : finPart D (a ⊗ₜ[D.host.F] (1 : D.host.E)) = sndA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e, ha, TensorProduct.zero_tmul]`. Establish `e : infPart D (a ⊗ₜ[D.host.F] (1 : D.host.E)) = fstA D.host.F a ⊗ₜ[D.host.F] (1 : D.host.E)` using `rfl`. Rewrite using `[e, ← valTau_coe h.inf, h0, Complex.ofReal_zero]`. Establish `hinj` using `Algebra.TensorProduct.includeLeft_injective (R := D.host.F) (S := D.host.F) (A := AF D.host.F) (B := D.host.E) (algebraMap D.host.F D.host.E).injective`. Apply `hinj` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_zero]`. Conclude with `h1`. Establish `hc` using `hψ.2.2 θ h.inf (fstA D.host.F (algebraMap D.host.F (AF D.host.F) (1 / 2) * a))`. Rewrite `hc` using `[psiInf, pair_fst_of_snd _ (by rw [map_mul, ha, mul_zero])]`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `e : ∀ ρ, θ ρ (fstA D.host.F (algebraMap D.host.F (AF D.host.F) (1 / 2) * a) ⊗ₜ[D.host.F] (1 : D.host.E)) = ((valTau θ ρ a : ℝ) : ℂ) / 2` using `fun ρ => by`. Rewrite using `[valTau_coe h.inf]`. Conclude with `half_tmul (θ ρ) a`. Rewrite using `[Finset.sum_congr rfl fun ρ _ => e ρ, ← Finset.sum_div, Complex.ofReal_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem real_adele_ext_and_char : ∀ (D : D7) (θ : InfFam D) (σ : (D.what₂.Tau → ℂ) →+ AE D), Chart θ σ → ∀ a : AF D.host.F, sndA D.host.F a = 0 → ((∀ τ, valTau θ τ a = 0) → a = 0) ∧ ∀ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) → ψ (algebraMap D.host.F (AF D.host.F) (1 / 2) * a) = Complex.exp (-(Real.pi * Complex.I) * ((∑ τ, valTau θ τ a : ℝ) : ℂ)) := by
   intro D θ σ h a ha

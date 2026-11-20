@@ -4,19 +4,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LayeredIsomorphism
 open NumberField Formalism.GaloisCohomology UpperTheory.Top UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Win
 
 /- English proof (translation)
-Introduce `l _ K _ _ _ s Z a b ha1 haZ hb1 hbZ hsa hsb`. Assume the negation of the conclusion as `hab`. Establish `hlp : l.Prime` using `Fact.out`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hlp.one_lt`. Use `set k := Nat.log l Z with hk`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set d : ℤ := (a : ℤ) - b with hd`. Establish `hd0 : d ≠ 0` using `by omega`. Establish `hK : ‖(d : ℚ_[l])‖ < (l : ℝ) ^ (-(k : ℤ))`. Establish `h1 : algebraMap ℚ_[l] K (d : ℚ_[l]) = (s - b) + -(s - a)`. Rewrite using `[map_intCast, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← norm_algebraMap' K, h1]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_neg]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `max_lt hsb hsa`. Establish `hdq : (d : ℚ_[l]) ≠ 0` using `by exact_mod_cast hd0`. Rewrite `hK` using `[Padic.norm_eq_zpow_neg_valuation hdq]`. Establish `hlt` using `(zpow_lt_zpow_iff_right₀ hl1).mp hK`. Establish `hle : ‖(d : ℚ_[l])‖ ≤ (l : ℝ) ^ (-((k + 1 : ℕ) : ℤ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Padic.norm_eq_zpow_neg_valuation hdq]`. Apply `zpow_le_zpow_right₀ hl1.le` to reduce the goal to its premises. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `hdvd` using `(Padic.norm_int_le_pow_iff_dvd d (k + 1)).mp hle`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ` using `Nat.lt_pow_succ_log_self hlp.one_lt Z`. Establish `habs : d.natAbs ≤ Z`. Rewrite using `[hd]`. Use linear arithmetic over natural numbers and integers. Establish `h0` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs hdvd (by`.
-
-Simplify using `only [Int.natAbs_pow, Int.natAbs_natCast]`. Conclude with `lt_of_le_of_lt habs hZ)`. Conclude with `hd0 h0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Win.near1 :
     ∀ (l : ℕ) [Fact l.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[l] K] [IsUltrametricDist K] (s : K) (Z a b : ℕ),

@@ -18,7 +18,7 @@ instance cu_sfin (X : CData) : SigmaFinite (cu_mu X) := by
   infer_instance
 
 /- English proof (translation)
-Unfold `cu_mu AutInst.muA`. Establish `h1 : (Measure.pi fun v => Formalism.REAL.muG (X.I.ε v)).IsMulLeftInvariant` using `inferInstance`. Establish `h2 : X.μf.IsMulLeftInvariant` using `inferInstance`. Establish `h3 : MeasurableMul X.I.Gf` using `inferInstance`. Conclude with `Measure.prod.instIsMulLeftInvariant`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cu_leftInv (X : CData) (hf : X.μf.IsHaarMeasure) : (cu_mu X).IsMulLeftInvariant := by
   unfold cu_mu AutInst.muA
@@ -56,9 +56,9 @@ def PhPZero (x : X.I.GA) : Prop :=
   ∃ v, ∀ᵐ y ∂O.lam, ∫ n, phLoc (X.I.ε v) (X.σ v) (X.w v) ((x.1 v)⁻¹ * (n * y.1 v)) ∂(O.μN v) = 0
 
 /- English proof (translation)
-Unfold `μNA`. Rewrite using `[← integral_fintype_prod_eq_prod (𝕜 := ℂ) (μ := O.μN) (fun v n => phLoc (X.I.ε v) (X.σ v) (X.w v) ((x.1 v)⁻¹ * (n * y.1 v)))]`. Rewrite using `[← integral_prod_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun n => ?_)` and prove the remaining obligations. Use `show X.φ (x⁻¹ * (n * y)) = _`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `CData.φ phe`. Rewrite using `[X.phOf_eq_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem inner_eq (x y : X.I.GA) :
     ∫ n, X.φ (x⁻¹ * (n * y)) ∂O.μNA =
@@ -75,7 +75,7 @@ theorem inner_eq (x y : X.I.GA) :
   rfl
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `h`. Use `filter_upwards [hv] with y hy`. Rewrite using `[O.inner_eq, Finset.prod_eq_zero (Finset.mem_univ v) hy, zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_zero {x : X.I.GA} (h : O.PhPZero x) : ∀ᵐ y ∂O.lam, ∫ n, X.φ (x⁻¹ * (n * y)) ∂O.μNA = 0 := by
   obtain ⟨v, hv⟩ := h
@@ -90,9 +90,9 @@ def cu_Repro (X : CData) (ν : Measure X.I.GA) (f : X.I.GA → ℂ) : Prop :=
       ∀ᵐ m ∂ν, f (m * x) = ∫ g, f (m * x * g) * X.φ g ∂(cu_mu X)
 
 /- English proof (translation)
-Establish `e1 : ∀ g, cu_cst X ν f (x * g) * X.φ g = ∫ m, f (m * x * g) * X.φ g ∂ν`. Introduce `g`. Unfold `cu_cst`. Rewrite using `[integral_mul_const]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Use `hint.integral_prod_right` as an intermediate fact. Conclude with `this.congr (Filter.Eventually.of_forall fun g => (e1 g).symm)`. Combine the equalities or inequalities in the displayed calculation.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cu_cst_repro (X : CData) (ν : Measure X.I.GA) [IsFiniteMeasure ν] (f : X.I.GA → ℂ) (x : X.I.GA)
     (hint : Integrable (fun p : X.I.GA × X.I.GA => f (p.1 * x * p.2) * X.φ p.2) (ν.prod (cu_mu X)))
@@ -114,11 +114,11 @@ theorem cu_cst_repro (X : CData) (ν : Measure X.I.GA) [IsFiniteMeasure ν] (f :
           integral_congr_ae (Filter.Eventually.of_forall fun g => (e1 g).symm)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `cu_cst_repro X ν f x hint hrep`. Use `set F : X.I.GA → ℂ := fun y => cu_cst X ν f y * X.φ (x⁻¹ * y) with hF`. Establish `e2 : ∀ g, F (x * g) = cu_cst X ν f (x * g) * X.φ g` using `fun g => by`. Simplify using `only [hF, inv_mul_cancel_left]`. Establish `hFint : Integrable F (cu_mu X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.comp_mul_left x⁻¹` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [hF, mul_inv_cancel_left]`. Rewrite using `[h2, ← integral_congr_ae (Filter.Eventually.of_forall e2), integral_mul_left_eq_self F x, hW F hFint]`. Establish `hz : ∀ᵐ y ∂O.lam, ∫ n, F (n * y) ∂O.μNA = 0` using `by filter_upwards [hI, O.inner_zero hZ] with y hy hy0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hy`. Establish `: ∫ n, F (n * y) ∂O.μNA = ∫ n, c * X.φ (x⁻¹ * (n * y)) ∂O.μNA` using `integral_congr_ae (hc.mono fun n hn => by simp only [hF, hn])`. Rewrite using `[this, integral_const_mul, hy0, mul_zero]`. Rewrite using `[integral_congr_ae hz, integral_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cu_cst_zero (X : CData) (hL : (cu_mu X).IsMulLeftInvariant) (ν : Measure X.I.GA) [IsFiniteMeasure ν]
     (f : X.I.GA → ℂ) (x : X.I.GA)
@@ -160,7 +160,7 @@ def UnipStep : Prop :=
 end cu
 
 /- English proof (translation)
-Introduce `T hT hP Fv hFv W hW ν hν`. Use `hν.1` as an intermediate fact. Take `⟨O, -, hWeil, hZ, hI⟩` from `hU W hW`. Use `filter_upwards [hR T hT hP Fv hFv W hW ν hν] with x hx`. Conclude with `cu_cst_zero X (cu_leftInv X hf) ν (X.I.ext Fv) x hx.1 hx.2 O hWeil (hI T hT hP Fv hFv ν hν) (hZ x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cuspidal_range_of_repro_unipotent (X : CData) (hf : X.μf.IsHaarMeasure) (hR : cu.ReproStep X) (hU : cu.UnipStep X) :
     X.CuspStep := by
@@ -202,11 +202,11 @@ def PointRepro : Prop :=
 end cu
 
 /- English proof (translation)
-Introduce `T hT hPr Fv hFv W hW ν hν`. Use `hν.1` as an intermediate fact. Establish `hmaj` using `hH (2 * (X.I.n : ℝ) ^ 2) (by positivity) hrate`. Use `filter_upwards [hG T hT hPr Fv hFv W hW ν hν, hM T hT hPr Fv hFv W hW ν hν, hP T hT hPr Fv hFv W hW ν hν] with x hx1 hx2 hx3`. Use `⟨?_, hx3⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hx1`. Establish `hφm : AEStronglyMeasurable (fun p : X.I.GA × X.I.GA => X.φ p.2) (ν.prod (cu_mu X))` using `hT.1.aestronglyMeasurable.comp_snd`. Establish `hmaj2 : Integrable (fun p : X.I.GA × X.I.GA => B * (‖X.φ p.2‖ * cu_wt X (2 * (X.I.n : ℝ) ^ 2) p.2)) (ν.prod (cu_mu X))` using `(hmaj.comp_snd ν).const_mul B`. Use `hmaj2.mono' (hx2.mul hφm) (hB.mono fun p hp => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : X.φ p.2 = 0`. Simplify using `[h0]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cu_reproStep_of (X : CData)
     (hrate : ∀ v, 1 ≤ q0At X.I v →
@@ -233,7 +233,7 @@ theorem cu_reproStep_of (X : CData)
       _ = B * (‖X.φ p.2‖ * cu_wt X (2 * (X.I.n : ℝ) ^ 2) p.2) := by ring
 
 /- English proof (translation)
-Unfold `AutInst.pAt AutInst.qAt`. Establish `h` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin I.n))) (fun a => I.ε v a = true)`. Simplify using `using h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cu_p_add_q (I : AutInst) (v : InfinitePlace I.F) : I.pAt v + I.qAt v = I.n := by
   unfold AutInst.pAt AutInst.qAt
@@ -241,7 +241,7 @@ theorem cu_p_add_q (I : AutInst) (v : InfinitePlace I.F) : I.pAt v + I.qAt v = I
   simpa using h
 
 /- English proof (translation)
-Use `cu_p_add_q I v` as an intermediate fact. Unfold `q0At`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem two_q0_le_n (I : AutInst) (v : InfinitePlace I.F) : 2 * q0At I v ≤ I.n := by
   have := cu_p_add_q I v
@@ -249,9 +249,9 @@ theorem two_q0_le_n (I : AutInst) (v : InfinitePlace I.F) : 2 * q0At I v ≤ I.n
   omega
 
 /- English proof (translation)
-Establish `hpos : 0 ≤ (X.I.n : ℝ) ^ 2 * Real.sqrt (q0At X.I v : ℝ)` using `by positivity`. Establish `h46 : 46 * (X.I.n : ℝ) ^ 2 * Real.sqrt (q0At X.I v : ℝ) ≤ X.h`. Use `le_trans ?_ (h2 v)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `h40 : 40 * (X.I.n : ℝ) ^ 2 * Real.sqrt (q0At X.I v : ℝ) ≤ X.h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `le_trans ?_ h46` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Establish `h2q` using `two_q0_le_n X.I v`. Use `⟨Formalism.HermitianLatticeCounting.Final.CuspThresholdCounts.cusp_threshold_bound X.I.n (q0At X.I v) X.h hq h2q h40, Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.threshCount X.I.n (q0At X.I v) X.h h46, ((Formalism.HermitianLatticeCounting.Final.CuspThresholdCount …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cu_thresholds (X : CData) {C : ℝ} (hC : 46 ≤ C) (h2 : X.GapAboveSquareRootThreshold C) (v : InfinitePlace X.I.F)
     (hq : 1 ≤ q0At X.I v) :
@@ -276,9 +276,9 @@ def cu_absS (X : CData) (x : X.I.GA) : ℝ≥0∞ := ∑' γ : X.I.GFset, ‖X.�
 def cu_Kc (X : CData) (B : ℝ) : ℝ := (Real.exp B / (1 - Real.exp (-B))) ^ Fintype.card (InfinitePlace X.I.F)
 
 /- English proof (translation)
-Unfold `cu_Kc`. Apply `one_le_pow₀` to reduce the goal to its premises. Establish `h1 : 0 < Real.exp (-B)` using `Real.exp_pos _`. Establish `h2 : Real.exp (-B) < 1` using `by rw [Real.exp_lt_one_iff]; linarith`. Establish `h3 : 1 ≤ Real.exp B` using `Real.one_le_exp hB.le`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[le_div_iff₀ (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem cu_one_le_Kc (X : CData) {B : ℝ} (hB : 0 < B) : 1 ≤ cu_Kc X B := by
   unfold cu_Kc
@@ -292,19 +292,17 @@ theorem cu_one_le_Kc (X : CData) {B : ℝ} (hB : 0 < B) : 1 ≤ cu_Kc X B := by
 open Classical in
 
 /- English proof (translation)
-Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Use `set bd : X.I.GFset → ℝ := fun γ => ∏ v, Real.exp (-(Formalism.HermitianLatticeCounting.S7.decExp X.h q₀ (X.dist x γ v))) with hbd`. Establish `hbdn : ∀ γ, 0 ≤ bd γ` using `fun γ => Finset.prod_nonneg fun v _ => (Real.exp_pos _).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `cu_absS`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations. Use `set S : Finset X.I.GFset := s.filter (fun γ : X.I.GFset => X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0) with hS`. Establish `hterm : ∀ γ ∈ s, ‖X.φ (x⁻¹ * (γ : X.I.GA) * x)‖ₑ ≤ (if X.φ (x⁻¹ * (γ : X.I.GA) * x) ≠ 0 then ENNReal.ofReal (k0 * bd γ) else 0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `γ _`. Distinguish the cases in `h0 : X.φ (x⁻¹ * (γ : X.I.GA) * x) = 0`. Simplify using `[h0]`. Rewrite using `[if_pos h0, ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal (X.norm_φ_le D hdec hX h1 hE hq _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_trans (Finset.sum_le_sum hterm) ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter, ← ENNReal.ofReal_sum_of_nonneg (fun γ _ => mul_nonneg hk0n (hbdn γ)), ← Finset.mul_sum]`. Use `ENNReal.ofReal_le_ofReal (mul_le_mul_of_nonneg_left ?_ hk0n)` and prove the remaining obligations. Establish `hc : ∀ r : InfinitePlace X.I.F → ℝ, (∀ v, 0 ≤ r v) → ((S.filter fun γ => ∀ v, X.dist x γ v ≤ r v).card : ℝ) ≤ Ac * Real.exp (B * ∑ v, r v)`. Introduce `r hr0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hcnt x rfl r hr0 _ fun γ hγ => ?_` and prove the remaining obligations. Establish `h3` using `Finset.mem_filter.1 hγ`. Conclude with `⟨(Finset.mem_filter.1 h3.1).2, h3.2⟩`. Break down `Nat.eq_zero_or_pos q₀ with h0 | hq1` into its components or cases. Establish `hd : ∀ γ v, X.dist x γ v = 0` using `fun γ v => cartan_distance_eq_zero_of_definite (by have := hq v; rw [h0] at this; exact this) _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb1 : ∀ γ, bd γ = 1` using `fun γ => by`. Simplify using `only [hbd, hd, Formalism.HermitianLatticeCounting.S7.decExp]`. Simplify using the standard rewrite rules. Establish `h4` using `hc (fun _ => 0) (fun _ => le_rfl)`. Simplify using `only [hd, le_refl, implies_true, Finset.filter_true, Finset.sum_const_zero, mul_zero, Real.exp_zero, mul_one] at h4`.
-
-Simplify using `only [hb1, Finset.sum_const, nsmul_eq_mul, mul_one]`. Conclude with `le_trans h4 (le_mul_of_one_le_right hAc (cu_one_le_Kc X hB))`. Conclude with `Formalism.HermitianLatticeCounting.Final.NearFarVolumeBounds.allSumRate (InfinitePlace X.I.F) X.I.GFset S (X.dist x) Ac B X.h q₀ hq1 hAc hB (hr hq1) (fun γ _ v => cartan_distance_nonneg _ _) hc`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cu_absS_le (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower)
     (hE : X.LowProj) {q₀ : ℕ} (hq : ∀ v, q0At X.I v = q₀) {Ac B : ℝ} (hAc : 0 ≤ Ac) (hB : 0 < B)
@@ -350,19 +348,15 @@ theorem cu_absS_le (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteS
       (fun γ _ v => cartan_distance_nonneg _ _) hc
 
 /- English proof (translation)
-Use `set F := stdOrthonormalBasis ℂ (X.rg T) with hF`. Use `set Fn : Fin (Module.finrank ℂ (X.rg T)) → X.I.GA → ℂ := fun w => (((F w : X.rg T) : X.L2) : X.I.GA → ℂ) with hFn`. Use `set c : Fin (Module.finrank ℂ (X.rg T)) → ℂ := fun w => F.repr ⟨Fv, hFv⟩ w with hc`. Establish `horth : ∀ w w', (∫ x, star (Fn w x) * Fn w' x ∂X.μ) = if w = w' then 1 else 0`. Introduce `w w'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `orthonormal_iff_ite.1 F.orthonormal w w'`. Rewrite `h1` using `[Submodule.coe_inner, MeasureTheory.L2.inner_def]`. Rewrite using `[← h1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [hFn, RCLike.inner_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Both sides reduce to the same expression. Establish `hmem : ∀ w, MemLp (Fn w) 2 X.μ` using `fun w => Lp.memLp _`. Establish `hsum : Fv = ∑ w, c w • ((F w : X.rg T) : X.L2)`. Establish `h` using `F.sum_repr ⟨Fv, hFv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun z : X.rg T => (z : X.L2)) h`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Conclude with `h2.symm`. Establish `hae : (Fv : X.I.GA → ℂ) =ᵐ[X.μ] fun y => ∑ w, c w * Fn w y`. Establish `h1 : (Fv : X.I.GA → ℂ) =ᵐ[X.μ] ((∑ w, c w • ((F w : X.rg T) : X.L2) : X.L2) : X.I.GA → ℂ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hsum]`. Use `h1.trans ((Lp.coeFn_finsetSum _ _).trans ?_)` and prove the remaining obligations. Establish `h3 : ∀ w, ((c w • ((F w : X.rg T) : X.L2) : X.L2) : X.I.GA → ℂ) =ᵐ[X.μ] fun y => c w * Fn w y` using `fun w => Lp.coeFn_smul _ _`. Establish `h4 : ∀ᵐ y ∂X.μ, ∀ w, ((c w • ((F w : X.rg T) : X.L2) : X.L2) : X.I.GA → ℂ) y = c w * Fn w y` using `ae_all_iff.2 h3`. Use `filter_upwards [h4] with y hy`.
-
-Rewrite using `[Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun w _ => hy w`. Establish `hint : ∫ z, ‖(Fv : X.I.GA → ℂ) z‖ ^ 2 ∂X.μ = ∫ z, ‖∑ w, c w * Fn w z‖ ^ 2 ∂X.μ` using `integral_congr_ae (hae.mono fun z hz => by beta_reduce; rw [hz])`. Use `filter_upwards [hae, hK T hT hP _ F] with y hy hy2`. Use `⟨hy2.1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hy, hint, hy2.2, Complex.ofReal_re]`. Conclude with `Formalism.HermitianLatticeCounting.Final.S7.kernelBound X.I.GA _ X.μ Fn c hmem horth y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cu_range_le_kernel (X : CData) (hK : X.KernelDiag) (T : X.L2 →L[ℂ] X.L2) (hT : X.IsOp T)
     (hP : IsStarProjection T) [FiniteDimensional ℂ (X.rg T)] (Fv : X.L2) (hFv : Fv ∈ X.rg T) :
@@ -427,7 +421,7 @@ def FinStep : Prop :=
 end cu
 
 /- English proof (translation)
-Unfold `AutInst.rep`. Use `split_ifs with h`. Conclude with `hinv _ h.choose_spec.1 z`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cu_inv_rep (X : CData) (τ : X.I.GA → ℝ) (hinv : ∀ γ ∈ X.I.GFset, ∀ y, τ (γ * y) = τ y) (z : X.I.GA) :
     τ (X.I.rep X.fund z) = τ z := by
@@ -437,13 +431,13 @@ theorem cu_inv_rep (X : CData) (τ : X.I.GA → ℝ) (hinv : ∀ γ ∈ X.I.GFse
   · rfl
 
 /- English proof (translation)
-Establish `hf : (0 : ℝ) < (X.I.f : ℝ)` using `by exact_mod_cast one_le_autInst_f X.I`. Use `set u : ℝ := Real.exp (-(1 / (X.I.f : ℝ)) * S) with hu`. Establish `hu0 : 0 < u` using `Real.exp_pos _`. Establish `hcu : 0 < c * u` using `mul_pos hc hu0`. Establish `h1 : 3 * Real.sqrt (X.I.n : ℝ) / t ^ 2 ≤ 3 * Real.sqrt (X.I.n : ℝ) / c ^ 2 * (1 / u ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 3 * Real.sqrt (X.I.n : ℝ) / c ^ 2 * (1 / u ^ 2) = 3 * Real.sqrt (X.I.n : ℝ) / (c * u) ^ 2`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Apply `div_le_div_of_nonneg_left (by positivity) (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_left₀ hcu.le ht 2`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `cu.Act`. Use `le_trans (pow_le_pow_left₀ (by have := lt_of_lt_of_le hcu ht; positivity) h1 _) ?_` and prove the remaining obligations. Rewrite using `[mul_pow]`. Use `le_of_eq ?_` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hu, one_div, ← Real.exp_nat_mul, ← Real.exp_neg, ← Real.exp_nat_mul, ← Real.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem cu_Act_le (X : CData) {t c S : ℝ} (hc : 0 < c) (ht : c * Real.exp (-(1 / (X.I.f : ℝ)) * S) ≤ t) :
     cu.Act X t ≤ cu.Act X c * Real.exp (2 * (X.I.n : ℝ) ^ 2 * S) ^ 2 := by
@@ -468,25 +462,21 @@ theorem cu_Act_le (X : CData) {t c S : ℝ} (hc : 0 < c) (ht : c * Real.exp (-(1
   field_simp
 
 /- English proof (translation)
-Introduce `T hT hP Fv hFv W hW ν hν`. Take `⟨τ, hτ0, hτinv, hcnt, hlip, hlow⟩` from `hS`. Use `hF T hT hP` as an intermediate fact. Establish `hfin` using `hν.1`. Take `⟨hq, -⟩` from `X.qq_spec hX`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hp : X.I.IsPosType X.e` using `hX.1.2.2.2.2.2.2.1.2.2.2.1`. Use `set k0 : ℝ := fdegAll X.I X.σ X.w * (X.e 1).re with hk0`. Establish `hk0n : 0 ≤ k0` using `mul_nonneg X.fdegAll_nonneg (X.e_one_nonneg hp)`. Use `set Bc : ℝ := 2 * (X.I.n : ℝ) ^ 2 with hBc`. Establish `hBc0 : 0 < Bc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `: (1 : ℝ) ≤ (X.I.n : ℝ)` using `by exact_mod_cast hn`. Check the signs of the components of the expression. Use `set M : ℝ := ∫ z, ‖(Fv : X.I.GA → ℂ) z‖ ^ 2 ∂X.μ with hM`. Establish `hM0 : 0 ≤ M` using `integral_nonneg fun z => by positivity`. Establish `hKc0 : 0 ≤ cu_Kc X Bc` using `le_trans zero_le_one (cu_one_le_Kc X hBc0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAct0 : ∀ t : ℝ, 0 < t → 0 ≤ cu.Act X t` using `fun t ht => by unfold cu.Act; positivity`. Establish `hb : ∀ᵐ y ∂X.μ, ‖(Fv : X.I.GA → ℂ) y‖ ^ 2 ≤ M * (k0 * (cu.Act X (τ y) * cu_Kc X Bc))` using `by filter_upwards [cu_range_le_kernel X hK T hT hP Fv hFv] with y hy`. Use `le_trans hy.2 (mul_le_mul_of_nonneg_left ?_ hM0)` and prove the remaining obligations. Establish `h2 : ‖X.kerD y‖ₑ ≤ ENNReal.ofReal (k0 * (cu.Act X (τ y) * cu_Kc X Bc))` using `le_trans enorm_tsum_le_tsum_enorm (cu_absS_le X D hdec hX h1 hE hq (hAct0 _ (hτ0 y)) hBc0 (fun hq1 => by`. Take `⟨v⟩` from `(inferInstance : Nonempty (InfinitePlace X.I.F))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hr v (by rw [hq v]; exact hq1)` as an intermediate fact. Rewrite using `[hq v] at this) (hcnt y))` and apply the resulting hypothesis. Rewrite `h2` using `[← ofReal_norm, ENNReal.ofReal_le_ofReal_iff (mul_nonneg hk0n (mul_nonneg (hAct0 _ (hτ0 y)) hKc0))]`. Conclude with `le_trans (Complex.re_le_norm _) h2`. Establish `hZ : X.μ {y | ¬ ‖(Fv : X.I.GA → ℂ) y‖ ^ 2 ≤ M * (k0 * (cu.Act X (τ y) * cu_Kc X Bc))} = 0` using `ae_iff.1 hb`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hN _ hZ ν hfin] with x hx`. Take `⟨c, hc0, hc⟩` from `hlow W hW x`. Use `⟨Real.sqrt (M * (k0 * (cu.Act X c * cu_Kc X Bc))), ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ᵐ p ∂(ν.prod (cu_mu X)), p.1 ∈ X.I.NA W`. Establish `h3 : ∀ᵐ m ∂ν, m ∈ X.I.NA W`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ae_iff]`. Conclude with `hν.2.2.1`. Conclude with `Measure.quasiMeasurePreserving_fst.ae h3`. Use `filter_upwards [hx, hmem] with p hp1 hp2 hφ`. Use `set S : ℝ := ∑ v, cartanDistance (X.I.ε v) (p.2.1 v) with hSdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ‖(Fv : X.I.GA → ℂ) (X.I.rep X.fund (p.1 * x * p.2))‖ ^ 2 ≤ M * (k0 * (cu.Act X (τ (X.I.rep X.fund (p.1 * x * p.2))) * cu_Kc X Bc))`. Assume the negation of the conclusion as `hcon`. Conclude with `hp1 hcon`. Rewrite `hz` using `[cu_inv_rep X τ hτinv]`. Establish `ht : c * Real.exp (-(1 / (X.I.f : ℝ)) * S) ≤ τ (p.1 * x * p.2)` using `le_trans (mul_le_mul_of_nonneg_right (hc _ hp2) (Real.exp_pos _).le) (hlip _ _ hφ)`.
-
-Establish `hA` using `cu_Act_le X hc0 ht`. Establish `hw : cu_wt X Bc p.2 = Real.exp (Bc * S)` using `rfl`. Establish `hfin2 : ‖X.I.ext Fv (p.1 * x * p.2)‖ ^ 2 ≤ (Real.sqrt (M * (k0 * (cu.Act X c * cu_Kc X Bc))) * cu_wt X Bc p.2) ^ 2`. Rewrite using `[mul_pow, Real.sq_sqrt (mul_nonneg hM0 (mul_nonneg hk0n (mul_nonneg (hAct0 _ hc0) hKc0))), hw]`. Use `le_trans hz ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(abs_le_of_sq_le_sq' hfin2 (mul_nonneg (Real.sqrt_nonneg _) (Real.exp_pos _).le)).2`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cu_growthStep_of (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A : ℝ} (hX : X.HypB n₀ A)
     (h1 : X.GapAboveThreeHalvesPower) (hE : X.LowProj)
@@ -573,9 +563,9 @@ section Gen
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G) [SFinite μ] [μ.IsMulLeftInvariant]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : G × G => p.1 * x * p.2)` using `h.comp ((h.comp (measurable_fst.prodMk measurable_const)).prodMk measurable_snd)`. Use `⟨hm, Measure.AbsolutelyContinuous.mk fun s hs h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm hs, Measure.measure_prod_null (hm hs)]`. Use `Filter.Eventually.of_forall fun m => ?_` and prove the remaining obligations. Use `show μ ((fun g => m * x * g) ⁻¹' s) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[measure_preimage_mul, h0]`.
+A detailed English derivation is pending.
 -/
 theorem cu_gen_qmp (h : Measurable fun p : G × G => p.1 * p.2) (ν : Measure G) [SFinite ν] (x : G) :
     Measure.QuasiMeasurePreserving (fun p : G × G => p.1 * x * p.2) (ν.prod μ) μ := by
@@ -588,9 +578,9 @@ theorem cu_gen_qmp (h : Measurable fun p : G × G => p.1 * p.2) (ν : Measure G)
   rw [measure_preimage_mul, h0]
 
 /- English proof (translation)
-Establish `hm : Measurable (fun p : G × G => p.2 * p.1)` using `h.comp (measurable_snd.prodMk measurable_fst)`. Use `⟨hm, Measure.AbsolutelyContinuous.mk fun s hs h0 => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply hm hs, Measure.prod_apply_symm (hm hs)]`. Establish `: ∀ m : G, μ ((fun y => (y, m)) ⁻¹' ((fun p : G × G => p.2 * p.1) ⁻¹' s)) = 0`. Introduce `m`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show μ ((fun g => m * g) ⁻¹' s) = 0`. Rewrite using `[measure_preimage_mul, h0]`. Simplify using `only [this, lintegral_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cu_gen_qmp' (h : Measurable fun p : G × G => p.1 * p.2) (ν : Measure G) [SFinite ν] :
     Measure.QuasiMeasurePreserving (fun p : G × G => p.2 * p.1) (μ.prod ν) μ := by
@@ -606,7 +596,7 @@ theorem cu_gen_qmp' (h : Measurable fun p : G × G => p.1 * p.2) (ν : Measure G
 end Gen
 
 /- English proof (translation)
-The claim follows from `cu_gen_qmp (cu_mu X) hmul ν x`.
+A detailed English derivation is pending.
 -/
 theorem cu_qmp (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (ν : Measure X.I.GA) [SFinite ν]
     (x : X.I.GA) :
@@ -614,18 +604,18 @@ theorem cu_qmp (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvari
   cu_gen_qmp (cu_mu X) hmul ν x
 
 /- English proof (translation)
-The claim follows from `cu_gen_qmp' (cu_mu X) hmul ν`.
+A detailed English derivation is pending.
 -/
 theorem cu_qmp' (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (ν : Measure X.I.GA) [SFinite ν] :
     Measure.QuasiMeasurePreserving (fun p : X.I.GA × X.I.GA => p.2 * p.1) ((cu_mu X).prod ν) (cu_mu X) :=
   cu_gen_qmp' (cu_mu X) hmul ν
 
 /- English proof (translation)
-Establish `hZ' : cu_mu X (Z ∩ X.fund) = 0`. Establish `: X.μ Z = cu_mu X (Z ∩ X.fund)` using `Measure.restrict_apply' hfd.1`. Rewrite using `[← this, hZ]`. Establish `hU : cu_mu X (⋃ γ ∈ X.I.GFset, (fun z => γ * z) ⁻¹' (Z ∩ X.fund)) = 0`. Rewrite using `[measure_biUnion_null_iff hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `γ _`. Rewrite using `[measure_preimage_mul, hZ']`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun z hz => ?_) hU` and prove the remaining obligations. Simplify using `only [Set.mem_ofPred_eq, not_not] at hz`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hex` using `hfd.2.1 z`. Unfold `AutInst.rep at hz`. Rewrite `hz` using `[dif_pos hex]`. Conclude with `Set.mem_biUnion hex.choose_spec.1 ⟨hz, hex.choose_spec.2⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cu_rep_avoid (X : CData) (hL : (cu_mu X).IsMulLeftInvariant) (hc : cu.CountGF X)
     (hfd : X.I.IsFundDom (cu_mu X) X.fund) (Z : Set X.I.GA) (hZ : X.μ Z = 0) :
@@ -646,7 +636,7 @@ theorem cu_rep_avoid (X : CData) (hL : (cu_mu X).IsMulLeftInvariant) (hc : cu.Co
   exact Set.mem_biUnion hex.choose_spec.1 ⟨hz, hex.choose_spec.2⟩
 
 /- English proof (translation)
-Introduce `Z hZ ν hν`. Conclude with `Filter.Eventually.of_forall fun x => (cu_qmp X hmul hL ν x).ae (cu_rep_avoid X hL hc hfd Z hZ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cu_nullStep_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (hc : cu.CountGF X)
     (hfd : X.I.IsFundDom (cu_mu X) X.fund) : cu.NullStep X := by
@@ -654,7 +644,7 @@ theorem cu_nullStep_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLe
   exact Filter.Eventually.of_forall fun x => (cu_qmp X hmul hL ν x).ae (cu_rep_avoid X hL hc hfd Z hZ)
 
 /- English proof (translation)
-Introduce `T hT hP Fv hFv W _ ν hν`. Use `hν.1` as an intermediate fact. Conclude with `Filter.Eventually.of_forall fun x => (hE T hT hP Fv hFv).comp_quasiMeasurePreserving (cu_qmp X hmul hL ν x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cu_measStep_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (hE : cu.ExtMeas X) :
     cu.MeasStep X := by
@@ -663,7 +653,7 @@ theorem cu_measStep_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLe
   exact Filter.Eventually.of_forall fun x => (hE T hT hP Fv hFv).comp_quasiMeasurePreserving (cu_qmp X hmul hL ν x)
 
 /- English proof (translation)
-Introduce `T hT hP Fv hFv W _ ν hν`. Use `hν.1` as an intermediate fact. Conclude with `Measure.ae_ae_of_ae_prod ((cu_qmp' X hmul hL ν).ae (hR T hT hP Fv hFv))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cu_pointRepro_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (hR : cu.ReproAE X) :
     cu.PointRepro X := by
@@ -686,13 +676,11 @@ def LocZero (v : InfinitePlace X.I.F) : Prop :=
     ∫ n, phLoc (X.I.ε v) (X.σ v) (X.w v) (a⁻¹ * (n * b)) ∂(O.μN v) = 0
 
 /- English proof (translation)
-Use `⟨v, ?_⟩` and prove the remaining obligations. Use `set I : Formalism.REAL.UJ (X.I.ε v) → ℂ := fun b => ∫ n, phLoc (X.I.ε v) (X.σ v) (X.w v) ((x.1 v)⁻¹ * (n * b)) ∂(O.μN v) with hI`. Establish `q1 : Measure.QuasiMeasurePreserving (fun z : X.I.GA => z.1 v) (cu_mu X) (Formalism.REAL.muG (X.I.ε v))` using `(Measure.quasiMeasurePreserving_eval (μ := fun v => Formalism.REAL.muG (X.I.ε v)) v).comp Measure.quasiMeasurePreserving_fst`. Establish `q2 : Measure.QuasiMeasurePreserving (fun z : X.I.GA => z.1 v) O.μNA (O.μN v)` using `(Measure.quasiMeasurePreserving_eval (μ := O.μN) v).comp Measure.quasiMeasurePreserving_fst`. Establish `hB : cu_mu X {z : X.I.GA | ¬ I (z.1 v) = 0} = 0` using `ae_iff.1 (q1.ae (hZ (x.1 v)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR' : ∀ᵐ n ∂O.μNA, ∀ F : Formalism.REAL.UJ (X.I.ε v) → ℂ, ∫ n', F (n' * n.1 v) ∂(O.μN v) = ∫ n', F n' ∂(O.μN v)` using `q2.ae hR`. Establish `: (ae O.μNA).NeBot` using `ae_neBot.2 h0`. Use `filter_upwards [hN _ hB] with y hy`. Take `⟨n, hn1, hn2⟩` from `(hy.and hR').exists`. Establish `e1 : I (n.1 v * y.1 v) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hcon`. Conclude with `hn1 hcon`. Establish `e2` using `hn2 fun n' => phLoc (X.I.ε v) (X.σ v) (X.w v) ((x.1 v)⁻¹ * (n' * y.1 v))`. Use `show I (y.1 v) = 0`. Rewrite using `[← e1]`.
-
-Simplify using `only [hI]`. Rewrite using `[← e2]`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phPZero_of {v : InfinitePlace X.I.F} (hN : O.IsWeilNull) (h0 : O.μNA ≠ 0) (hR : O.RInv v) (hZ : O.LocZero v)
     (x : X.I.GA) : O.PhPZero x := by
@@ -737,13 +725,13 @@ def UnipFine : Prop :=
 end cu
 
 /- English proof (translation)
-Use `hν.1` as an intermediate fact. Establish `h1 : ∀ᵐ y ∂(cu_mu X), cu_cst X ν f y = cu_cst X ν f' y`. Establish `h2 : ∀ᵐ y ∂(cu_mu X), ∀ᵐ m ∂ν, f (m * y) = f' (m * y)` using `Measure.ae_ae_of_ae_prod ((cu_qmp' X hmul hL ν).ae hff)`. Conclude with `h2.mono fun y hy => integral_congr_ae hy`. Establish `h3 : ∀ n ∈ X.I.NA W, ∀ y, cu_cst X ν f' (n * y) = cu_cst X ν f' y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n hn y`. Use `hν.2.2.2 (fun m => f' (m * y)) (fun γ hγ m => by rw [mul_assoc]; exact hinv γ hγ.1 _) n hn` as an intermediate fact. Unfold `cu_cst`. Rewrite using `[← this]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : ∀ᵐ n ∂O.μNA, n ∈ X.I.NA W`. Rewrite using `[ae_iff]`. Conclude with `hOn`. Use `filter_upwards [hN _ (ae_iff.1 h1)] with y hy`. Use `⟨cu_cst X ν f' y, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hy, h4] with n hn1 hn2`. Establish `: cu_cst X ν f (n * y) = cu_cst X ν f' (n * y)`. Assume the negation of the conclusion as `hcon`. Conclude with `hn1 hcon`. Rewrite using `[this, h3 n hn2 y]`.
+A detailed English derivation is pending.
 -/
 theorem cu_cstInv_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant)
     {W : Submodule X.I.E (Fin X.I.n → X.I.E)} {ν : Measure X.I.GA} (hν : X.I.IsNQuotMeas W ν) (O : cu_NObj X)
@@ -774,7 +762,7 @@ theorem cu_cstInv_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeft
   rw [this, h3 n hn2 y]
 
 /- English proof (translation)
-Introduce `W hW`. Take `⟨O, hOn, hWeil, hNull, h0, v, hR, hZ⟩` from `hU W hW`. Use `⟨O, hOn, hWeil, fun x => O.phPZero_of hNull h0 hR hZ x, fun T hT hP Fv hFv ν hν => ?_⟩` and prove the remaining obligations. Take `⟨f', hinv, hff⟩` from `hI T hT hP Fv hFv`. Conclude with `cu_cstInv_of X hmul hL hν O hOn hNull hinv hff`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cu_unipStep_of (X : CData) (hmul : cu.MeasMul X) (hL : (cu_mu X).IsMulLeftInvariant) (hU : cu.UnipFine X)
     (hI : cu.ExtInv X) : cu.UnipStep X := by
@@ -792,9 +780,9 @@ def Fine (X : CData) : Prop :=
 end cu
 
 /- English proof (translation)
-Take `⟨sU, sH, sS, sK, sR, sI, sE, sM, sC⟩` from `hS`. Establish `hf : X.μf.IsHaarMeasure` using `hX.2.1.2.2.2.1`. Establish `hfd : X.I.IsFundDom (cu_mu X) X.fund` using `hX.2.1.2.2.2.2.1`. Establish `hL` using `cu_leftInv X hf`. Establish `hn : 1 ≤ X.I.n` using `le_trans hn₀ hX.1.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `cuspidal_range_of_repro_unipotent X hf (cu_reproStep_of X (fun v hq => (cu_thresholds X hC h2 v hq).1) sH (cu_growthStep_of X D hdec hX h1 hE (fun v hq => (cu_thresholds X hC h2 v hq).2.1) hn sS (cu_nullStep_of X sM hL sC hfd) sK hF) (cu_measStep_of X sM hL sE) (cu_pointRepro_of …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem cuspidal_range_of_fine_facts (X : CData) (D : Formalism.BasicNotions.D7) (hdec : DiscreteSeriesDecayBound D) {n₀ : ℕ} {A C : ℝ} (hn₀ : 1 ≤ n₀)
     (hC : 46 ≤ C) (hX : X.HypB n₀ A) (h1 : X.GapAboveThreeHalvesPower) (h2 : X.GapAboveSquareRootThreshold C) (hE : X.LowProj) (hF : cu.FinStep X)
@@ -814,9 +802,9 @@ def cu_StepsCusp (n₀ : ℕ) (A C : ℝ) : Prop :=
   ∀ X : CData, X.HypB n₀ A → X.GapAboveThreeHalvesPower → X.GapAboveSquareRootThreshold C → cu.Fine X
 
 /- English proof (translation)
-Introduce `X hX h1 h2`. Take `⟨s1, s2⟩` from `hPC X hX h1 h2`. Use `⟨s1, s2, cuspidal_range_of_fine_facts X D hdec hn₀ hC hX h1 h2 (lowest_K_type_projector_exists D ha2 X hX) ?_ (hcu X hX h1 h2)⟩` and prove the remaining obligations. Introduce `T hT hP`. Take `⟨κ, -⟩` from `s2 T hT hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hfd : FiniteDimensional ℂ (X.I.eHom X.σs X.μf X.fund X.R X.Re)` using `ha8 X.I n₀ A X.b X.lam X.g X.g₀ X.e X.H X.σ X.w X.Hs X.σs X.tens X.μf X.fund X.R X.Re hX.1 hX.2.1`. Conclude with `Module.Finite.equiv κ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem projection_facts_of_fine (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A C : ℝ) (hn₀ : 1 ≤ n₀) (hC : 46 ≤ C) (ha2 : adm2 D)
     (ha8 : adm8 D) (hdec : DiscreteSeriesDecayBound D)
@@ -832,7 +820,7 @@ theorem projection_facts_of_fine (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A
   exact Module.Finite.equiv κ
 
 /- English proof (translation)
-The claim follows from `hodgeTateFromSandwich_of_admissibility_implication D n₀ A Cb fun hadm hdec _ => projection_facts_of_fine D n₀ A Cb hn₀ hC ha2 hadm.2.2 hdec hPC hcu`.
+A detailed English derivation is pending.
 -/
 theorem projection_statement_of_fine (D : Formalism.BasicNotions.D7) (n₀ : ℕ) (A Cb : ℝ) (hn₀ : 1 ≤ n₀) (hC : 46 ≤ Cb) (ha2 : adm2 D)
     (hPC : ∀ X : CData, X.HypB n₀ A → X.GapAboveThreeHalvesPower → X.GapAboveSquareRootThreshold Cb → X.ProjStep ∧ X.CountedStep)

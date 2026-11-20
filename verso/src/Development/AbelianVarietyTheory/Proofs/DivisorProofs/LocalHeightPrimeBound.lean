@@ -44,13 +44,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 open ReciprocityTheory.ChartRestriction.G.PullbackSections in
 
 /- English proof (translation)
-Set `_ : Algebra c.F k` to `f.toAlgebra`. Set `U : (y : GlobalTheory.ShFam.Pad.Letter Dw) → TanM x t.G` to `fun y => GlobalTheory.LieMet.tanOf (hu.1 y.1 y.2).1`. Set `e` to `Equiv.ofBijective _ (GlobalTheory.Proof.frame_combination_coeff_unique.get_bijective Dw)`. Establish `: CharZero c.F` using `RingHom.charZero c.F.val.toRingHom`. Take `⟨α, hinj, ⟨P, hP, hPs⟩, hN⟩` from `exists_sepElt (E := E) (F := c.F) c.F.val.toRingHom (embK c) (fun τ a => embK_coe c τ a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `ρ` to `actR (x0 := x) (S := k) t.act`. Set `m : TanM x t.G` to `GlobalTheory.LieMet.tanOf hw`. Establish `h1 : ∀ τ, ∃ a : Fin (Dw.mult τ) → k, proj ρ (embK c) α τ m = ∑ i, a i • U ⟨τ, i⟩` using `fun τ => by`. Establish `he` using `eig_of_alpha ρ (embK c) α hN τ (proj_eig_alpha ρ (embK c) α hinj P hP hPs τ m)`. Take `⟨a, ha, -⟩` from `hu.2 τ _ (GlobalTheory.LieMet.isTan_tv (proj ρ (embK c) α τ m)) fun a => congrArg (fun z => (tv z).left) (he a)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, GlobalTheory.LieMet.tan_ext ((GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (fun i => U ⟨τ, i⟩) a _).1 ha)⟩`. Use `choose a ha using h1`. Establish `h2 : m = ∑ i, a (e i).1 (e i).2 • U (e i)`. Rewrite using `[Equiv.sum_comp e (fun y => a y.1 y.2 • U y), Fintype.sum_sigma]`. Simplify using `only [← ha]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.sum_apply, sum_proj ρ (embK c) α hinj]`. Both sides reduce to the same expression. Conclude with `⟨fun i => a (e i).1 (e i).2, (GlobalTheory.Proof.frame_combination_coeff_unique.comb_iff (fun i => U (e i)) _ w).2 (congrArg (fun z => (tv z).left) h2)⟩`.
+Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem concat_span {Dw : Datum H} {l : Level H} {c : Coeff l} {k : Type} [Field k] {f : c.F →+* k} {x : Sp k ⟶ X}
     {u : GlobalTheory.LocM.Vecs Dw t k} (hu : GlobalTheory.LocM.IsFrame t f x u) (w : Sp (DualNumber k) ⟶ t.G.left) (hw : IsTanAtG t x w) :
@@ -78,9 +78,9 @@ theorem concat_span {Dw : Datum H} {l : Level H} {c : Coeff l} {k : Type} [Field
     (congrArg (fun z => (tv z).left) h2)⟩
 
 /- English proof (translation)
-Introduce `c'`. Take `⟨c'', hc⟩` from `GlobalTheory.TorsCharExt.exists_extension E H X t ℂ_[p] x q q' hq h c'`. Take `⟨k, hk⟩` from `hχ c''`. Use `⟨k, fun B _ _ _ w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc B w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, rfl⟩` from `h`. Conclude with `hk B w (by rw [pow_mul, hw, one_pow])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gens_res [IsLocallyNoetherian X] {p : ℕ} [Fact p.Prime] {x : Sp ↥(intO ℂ_[p]) ⟶ X} {q q' N : ℕ} (hq : q' ≠ 0)
     (h : q ∣ q') {χ : Fin N → TorsChar t x q'} (hχ : Gens χ) : Gens fun m => GlobalTheory.HTLevel.res h (χ m) := by
@@ -93,13 +93,13 @@ theorem gens_res [IsLocallyNoetherian X] {p : ℕ} [Fact p.Prime] {x : Sp ↥(in
   exact hk B w (by rw [pow_mul, hw, one_pow])
 
 /- English proof (translation)
-Establish `heC` using `fun i => GlobalTheory.FactorDepth.isTanAtG_map t (intO ℂ_[p]).subtype (he.1 i)`. Use `choose a ha using fun l => (he.2 _ (intO ℂ_[p]).subtype _ (hu l)).exists`. Use `choose cf hcf using fun i => hs _ (heC i)`. Use `choose h hh _ using fun i m => hD (e i) (cf i) (he.1 i) (hcf i) m`. Set `A : Matrix (Fin g) (Fin k) ℂ_[p]` to `Matrix.of fun l i => cf i l`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ m (b : Fin k → ℂ_[p]), ∑ i, (h i m : ℂ_[p]) * b i = ∑ l, Mc m l * A.mulVec b l` using `fun m b => by`. Simplify using `only [hh, Finset.sum_mul, Matrix.mulVec, dotProduct, Finset.mul_sum, A, Matrix.of_apply, _root_.mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `⟨fun m i => h i m, a, fun m b v hv w hw => ?_, ha, ?_⟩` and prove the remaining obligations. Take `⟨r, hr, hr'⟩` from `hD v _ (Guard.comb_tan he.1 hv) (tanLinG u hu _ A _ _ hcf (GlobalTheory.LatDRFree.comb_map t (intO ℂ_[p]).subtype hv)) m`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hr' w hw]`. Use `congr 1`. Apply `(intO ℂ_[p]).subtype_injective` to reduce the goal to its premises. Rewrite using `[map_sum (intO ℂ_[p]).subtype]`. Conclude with `(hr.trans (key m fun i => (b i : ℂ_[p])).symm)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `r l`. Establish `h1 : A.mulVec (a l) = Pi.single l 1` using `hi _ _ _ (tanLinG u hu _ A _ _ hcf (ha l)) (isCombAtG_single t _ hu l)`. Rewrite using `[Matrix.of_apply, key, h1]`. Simplify using `[Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_covectors {p : ℕ} [Fact p.Prime] {x : Sp ↥(intO ℂ_[p]) ⟶ X} {n N g : ℕ}
     {χ : Fin N → TorsChar t x (p ^ n)} {u : Fin g → (Sp (DualNumber ℂ_[p]) ⟶ t.G.left)}
@@ -132,9 +132,7 @@ theorem exists_covectors {p : ℕ} [Fact p.Prime] {x : Sp ↥(intO ℂ_[p]) ⟶ 
     simp [Pi.single_apply]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.LatDRFree.intO_isLocalRing ℂ_[p]`. Take `⟨k, e, he⟩` from `GlobalTheory.LieLocBasis.exists_lie_basis_stable E H X t _ x`. Use `replace he : IsTanBasis t x e := he`. Take `⟨h, a, hd, ha, rfl⟩` from `exists_covectors hu hi hs hD he`. Establish `hd2 : ∀ m, DlogIs t p 2 (GlobalTheory.HTLevel.res (pow_dvd_pow p hn) (χ m)) e (h m)` using `fun m => GlobalTheory.HTLevel.dlog_down hn (χ m) _ (fun _ _ _ _ _ _ => rfl) he.1 (hd m)`.
-
-Conclude with `PointClauses.ptSt_of_fullSt fullSt E H X t hX p x k k e e he he g _ 0 h h (gens_res (pow_ne_zero _ hp.out.ne_zero) _ hχ) (fun _ _ _ _ _ _ _ _ _ _ _ => by simp) hd2 hd2 u a a (GlobalTheory.LineNorm.Chart.linInd (GlobalTheory.LineNorm.WedgeMax.isTanBasis_map t _ he).1 ha hi) ha ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wedge_clauses [IsLocallyNoetherian X] (hX : X.IsSeparated) {p : ℕ} [hp : Fact p.Prime]
     {x : Sp ↥(intO ℂ_[p]) ⟶ X} {n g : ℕ} (hn : 2 ≤ n)
@@ -158,9 +156,9 @@ theorem wedge_clauses [IsLocallyNoetherian X] (hX : X.IsSeparated) {p : ℕ} [hp
 end Gen
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `rfl : S = Finset.univ.filter fun l : Fin g => (l : ℕ) < k := by`. Use extensionality with `l`. Simplify using `[hS]`. Rewrite using `[colMinor_filter_lt_eq_iSup_minorAt w M k hk]`. Take `⟨σ, hσ⟩` from `h.2.1 k hk`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Nonempty (Fin k → Fin (g + g)) := ⟨σ⟩`. Conclude with `le_antisymm (ciSup_le (h.1 k hk)) (hσ.symm.le.trans (le_ciSup (f := fun τ => w (minorAt M k hk τ)) (Set.finite_range _).bddAbove σ))`.
+A detailed English derivation is pending.
 -/
 theorem colMinor_eq {K : Type} [Field K] (w : AbsoluteValue K ℝ) {g : ℕ} {J : Matrix (Fin (g + g)) (Fin (g + g)) ℤ}
     {ν : ℕ → ℝ} {M M' : Matrix (Fin (g + g)) (Fin g) K} (h : Clauses (fun b => w b) J ν M M') (k : ℕ) (hk : k ≤ g)
@@ -183,7 +181,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 
 omit [NumberField F] in
 /- English proof (translation)
-Establish `h : letterOf Dw (.inr k) = some ((letters Dw).get k)` using `List.getElem?_eq_getElem k.2`. Establish `h1 : ∀ x, expo Dw (Finsupp.single (a, R, .inr k) 1) x = if letterOf Dw (.inr k) = some x then 1 else 0` using `fun x => Finsupp.sum_single_index (by simp)`. Rewrite using `[Finset.prod_eq_single ((letters Dw).get k) (fun x _ hx => by`. Rewrite using `[h1, if_neg (by rw [h]; exact fun e => hx (Option.some.inj e).symm), zpow_zero]) (by simp),`. Use the proof step `h1, if_pos h, zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_expo (a : ℕ → Bool) (R : Option ℝ) (k : Fin (letters Dw).length) (y : C.Y.X) :
     ∏ x : Letter Dw, dg C y x.1 x.2 ^ expo Dw (Finsupp.single (a, R, .inr k) 1) x =
@@ -196,9 +194,9 @@ theorem prod_expo (a : ℕ → Bool) (R : Option ℝ) (k : Fin (letters Dw).leng
     h1, if_pos h, zpow_one]
 
 /- English proof (translation)
-Set `w : Sym E →₀ ℤ` to `Finsupp.single (a, R, .inr i) 1`. Establish `hu : genAt (divOf C (expo Dw w)) (below y.1) * (dg C (below y.1) ((letters Dw).get i).1 ((letters Dw).get i).2 : C.Y.Fn) = ((∏ x : Letter Dw, dg C (below y.1) x.1 x.2 ^ expo Dw w x) * (eqn (divOf C (expo Dw w)) (below y.1))⁻¹ : C.Y.Fnˣ)`. Rewrite using `[prod_expo, Units.val_mul, mul_comm, genAt]`. Rewrite using `[hu, lgOf_eq_lgCopy, lgCopy_eq, mixLog_eq (b := a) (by simp [ha])]`. Use `congr 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(Finsupp.sum_single_index (h := fun (a : Sym E) (n : ℤ) => (n : ℝ) * symLog C a.1 a.2.2 v e y) (by simp)).trans ?_` and prove the remaining obligations. Simplify using `only [symLog, mixLog, lnStep, dif_pos i.2, Int.cast_one, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lgOf_step (a : ℕ → Bool) (R : Option ℝ) {v : HeightOneSpectrum (𝓞 F)} (ha : a (resP v) = true) (e : Ext v)
     (y : AlgPt C.Y) (i : Fin (letters Dw).length) :
@@ -217,13 +215,13 @@ theorem lgOf_step (a : ℕ → Bool) (R : Option ℝ) {v : HeightOneSpectrum (�
   simp only [symLog, mixLog, lnStep, dif_pos i.2, Int.cast_one, _root_.one_mul]
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Establish `hF` using `isFrame_fr C (below y.1) ψ`. Take `⟨hpos, hc⟩` from `wedge_clauses hX hn (fun i => hx ▸ (hF.1 _ _).1) (hx ▸ (isFlagFrame_concat C).indep _ _ ψ) (hx ▸ concat_span hF) hχ hD`. Rewrite `hpos`, `hc` using `[hx]`. Establish `Q` using `convSt F v e _ _ _ M M hpos hc`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨lt_of_lt_of_eq (Real.exp_pos _) (colMinor_eq e.w Q _ le_rfl _ fun l => iff_of_true (Finset.mem_univ _) l.2).symm, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[colMinor_eq e.w Q (i + 1) i.2 _ (fun l => Finset.mem_Iic.trans Nat.lt_succ_iff.symm), colMinor_eq e.w Q i i.2.le _ (fun l => Finset.mem_Iio), Real.log_exp, Real.log_exp, add_sub_assoc, ← mul_sub]`. Use `(lgOf_step C a R ha e y i).trans (congrArg₂ (fun a b : ℝ => a + b) rfl ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.LineNorm.Chart.stepLog_eq _ _ (resP v) i v e y hp.out ψ hψ, decide_eq_true rfl]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h₁` using `hpos i`. Establish `h₂` using `hpos (i + 1)`. Establish `e₁ : (Finset.univ.filter fun l : Fin (letters Dw).length => (l : ℕ) < i + 1) = insert i (Finset.univ.filter fun l : Fin (letters Dw).length => (l : ℕ) < i)`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Unfold `wedgeNorm at h₁ h₂ ⊢`. Rewrite `h₂`, the goal using `[e₁, Finset.prod_insert (by simp)]`. Rewrite using `[Real.log_mul (left_ne_zero_of_mul h₂.ne') h₁.ne', add_sub_cancel_right]`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lg_whole [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) {g : ℕ} (hg : (letters Dw).length = g)
     {Cx : CxSt F} (hm : Mets C Cx) (a : ℕ → Bool) (R : Option ℝ) {v : HeightOneSpectrum (𝓞 F)} [hp : Fact (resP v).Prime]
@@ -267,7 +265,7 @@ theorem lg_whole [IsLocallyNoetherian Z.X] (hX : Z.X.IsSeparated) {g : ℕ} (hg 
 end Flags
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ D O _ T R _ p _ hT c b n hn v hp e y Ch inC M hv hP a ha`. Use `haveI := Fact.mk hp`. Take `⟨xO, χ, hx, hχ, -, -, hD⟩` from `hP`. Take `⟨hX, hN⟩` from `GlobalTheory.ModelOver.isSeparated_and_noetherian O.s.T.Z.proj`. Conclude with `lg_whole (O.Φ.C c) hX (length_letters O) (O.met.hm c) (ArIn.ind T) (some R) (by simp [ArIn.ind, hv, hT]) e y (by omega) xO χ (psiAt O c e y) rfl hx hχ (M a) (hD a ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norm_whole : Hypotheses2 → HypothesesH → GlobalTheory.Published.RegularAlteration → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.PrismaticDieudonnePerfd →
     ∀ (D : D7) (O : Setup D), O.Core → ∀ (T : Finset ℕ) (R : ℝ), 2 ≤ R → ∀ p : ℕ, p.Prime → p ∈ T → ∀ (c : O.s.Comp)

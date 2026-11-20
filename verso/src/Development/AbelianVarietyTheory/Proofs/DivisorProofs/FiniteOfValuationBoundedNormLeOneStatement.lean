@@ -4,7 +4,7 @@ import Mathlib
 open NumberField IsDedekindDomain Filter
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BCT.SuppFin.finite_of_valuation_bounded_of_norm_le_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FFiniteOfValuationBoundedNormLeOne.lean&line=17#L17)
 -/

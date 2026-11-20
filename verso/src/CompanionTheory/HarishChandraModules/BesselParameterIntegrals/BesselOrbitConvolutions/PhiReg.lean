@@ -12,25 +12,21 @@ open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData
 namespace G
 
 /- English proof (translation)
-Introduce `hIn k r ε lam h H _ _ _ σ w0 Wp _ _ _ _ z c u π μW μN μG νq hS l hbe x hx`. Establish `hS'` using `hS`. Take `⟨hl, hds, -, hG, hw0, -, hT, -, hπ, hW, hN, hGm, hq⟩` from `hS'`. Establish `hxs : x ∈ PI.UpqRep.smoothVecs (k` using `k) (r := r) σ := DDSmoothness.DD_smooth hIn.2.2.1 hl hds hw0 x hx`. Establish `hfacts` using `DDSmoothness.muSof_facts hW hN`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae` using `DDSmoothness.ae_UH_of_quot hGm.2.2.1 hfacts.1 hfacts.2 hq`. Distinguish the cases in `hA : ∃ v ∈ DDsp σ w0, l v ≠ 0`. Take `⟨v, hv, hlv⟩` from `hA set cc : ℂ := ((‖l v‖ ^ 2 : ℝ) : ℂ)⁻¹ with hcc`. Establish `hlx : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), l (σ g x) = cc • (be z c π σ μW μN (σ g x) v) (l v)` using `fun g hg => l_of_be (hbe _ (dd_stable hds hg x hx) v hv) hlv`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc` using `(hBC hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS).2.2.1 x hxs v (Or.inl hv)`. Establish `hc2 : ContinuousOn (fun g => cc • (ContinuousLinearMap.apply ℂ Wp (l v)) (be z c π σ μW μN (σ g x) v)) (Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r))` using `((ContinuousLinearMap.apply ℂ Wp (l v)).continuous.comp_continuousOn hc).const_smul cc`. Conclude with `hc2.congr (fun g hg => hlx g hg)`. Take `⟨C, hC⟩` from `hDD hIn k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hx v hv`. Establish `hI` using `hGG k r μG (aOf r h) hGm (ag_lt_a hG)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `l1_quotient_integral_bound hds hW hN hGm hq hC hI`. Establish `hb : ∀ᵐ g ∂νq, ((‖l (σ (Matrix.of g) x)‖₊ : ℝ≥0) : ℝ≥0∞) ≤ (‖cc‖ₑ * ‖l v‖ₑ) * ∫⁻ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * Matrix.of g) x⟫_ℂ‖ₑ ∂(μW.prod μN)` using `by filter_upwards [hae] with g hg`. Rewrite using `[← enorm_eq_nnnorm, hlx _ hg]`. Establish `hbe'` using `be_enorm_le (c := c) hds hT hπ hW hN (x := x) (v := v) hg`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ContinuousLinearMap.le_opENorm _ _`. Use `_ ≤ ‖cc‖ₑ * ((∫⁻ p, ‖⟪v, σ (Matrix.of p.1 * Matrix.of p.2 * Matrix.of g) x⟫_ℂ‖ₑ ∂(μW.prod μN)) * ‖l v‖ₑ) := by gcongr`. Use `_ = _ := by ring`. Combine the equalities or inequalities in the displayed calculation. Establish `hN2` using `(hNI hIn hSch k r ε lam h H σ w0 Wp z c u π μW μN μG νq hS x hxs v (Or.inl hv) (l v)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 
-Establish `hfin : PI.BesselPeriodGGP.l2SG νq (fun g => be z c π σ μW μN (σ g x) v (l v)) < ⊤`. Rewrite using `[hN2]`. Conclude with `ENNReal.ofReal_lt_top`. Unfold `PI.BesselPeriodGGP.l2SG at hfin ⊢`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hae] with g hg`. Rewrite using `[hlx _ hg, nnnorm_smul, ENNReal.coe_mul, mul_pow]`. Use `_ = ((‖cc‖₊ : ℝ≥0) : ℝ≥0∞) ^ 2 * ∫⁻ g, ((‖be z c π σ μW μN (σ (Matrix.of g) x) v (l v)‖₊ : ℝ≥0) : ℝ≥0∞) ^ 2 ∂νq := lintegral_const_mul' _ _ (by simp)`. Use `_ < ⊤ := ENNReal.mul_lt_top (by simp) hfin`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `push Not at hA`. Establish `hz : ∀ g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), l (σ g x) = 0` using `fun g hg => hA _ (dd_stable hds hg x hx)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuousOn_const (c := (0 : Wp))).congr (fun g hg => hz g hg)`. Establish `: ∫⁻ g, ((‖l (σ (Matrix.of g) x)‖₊ : ℝ≥0) : ℝ≥0∞) ∂νq = 0`.
-
-Rewrite using `[lintegral_congr_ae (g := fun _ => 0) (by filter_upwards [hae] with g hg; simp [hz _ hg])]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `ENNReal.zero_lt_top`. Unfold `PI.BesselPeriodGGP.l2SG`.
-
-Establish `: ∫⁻ g, ((‖l (σ (Matrix.of g) x)‖₊ : ℝ≥0) : ℝ≥0∞) ^ 2 ∂νq = 0`. Rewrite using `[lintegral_congr_ae (g := fun _ => 0) (by filter_upwards [hae] with g hg; simp [hz _ hg])]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `ENNReal.zero_lt_top`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiReg_of (hSch : SchurH) (hNI : CompanionTheory.D.Upq.BesselFunctionalConstruction.NormIdSm) (hGG : GrowthG) (hDD : CompanionTheory.D.Upq.BesselFunctionalConstruction.DecDD) (hBC : CompanionTheory.D.Upq.BesselFunctionalConstruction.BeConv) :
     CompanionTheory.D.Upq.BesselFunctionalConstruction.PhiReg := by

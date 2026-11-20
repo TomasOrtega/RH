@@ -19,9 +19,9 @@ open Classical
 namespace GlobalTheory.Poinc.Eq8.MatTors
 
 /- English proof (translation)
-Use `haveI := hadm.1`. Use `haveI := hadm.2.2.1`. Use `U.gen_hom` as an intermediate fact. Establish `hinv : IsMonHom U.gen.inv` using `inferInstance`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `GlobalTheory.Published.SemiAbelianHomExtension.fractionField GlobalTheory.semiAbelianHomExtension_holds R (FractionRing R) G G hG hG (U.gen.hom ≫ aA ≫ U.gen.inv)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨E, -, hE⟩` from `GlobalTheory.UT.exists_degenerationEndomorphism_of_admissibleBase R (maximalIdeal R) hadm D P G hG U F aA hF haA (by rw [hF']; simp)`. Conclude with `⟨E, hE⟩`.
+A detailed English derivation is pending.
 -/
 theorem endU_exists (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hadm : AdmBase R (maximalIdeal R))
     (D : DegData R (maximalIdeal R)) (P : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G]
@@ -38,9 +38,9 @@ theorem endU_exists (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (hadm :
   exact ⟨E, hE⟩
 
 /- English proof (translation)
-Use `haveI : ∀ v, IsMonHom (pr v) := hpr`. Use `ReciprocityTheory.ChartRestriction.G.Geo.Tor.isMonHom_of_mul f fun T x y => ?_` and prove the remaining obligations. Establish `hz : ∀ (z : T ⟶ X) (u : Fin 8), z ≫ f ≫ pr u = ∏ v, (z ≫ pr v) ^ a u v`. Introduce `z u`. Set `φz : (X ⟶ Y) →* (T ⟶ Y)` to `⟨⟨(z ≫ ·), MonObj.comp_one z⟩, MonObj.comp_mul z⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf u, List.prod_ofFn]`. Conclude with `(map_prod φz _ _).trans (Finset.prod_congr rfl fun v _ => map_zpow φz _ _)`. Use `(hu T fun u => ((x * y) ≫ f) ≫ pr u).unique (fun u => rfl) (fun u => ?_)` and prove the remaining obligations. Rewrite using `[MonObj.mul_comp, Category.assoc, Category.assoc, Category.assoc, hz, hz, hz]`. Simplify using `only [MonObj.mul_comp, mul_zpow, Finset.prod_mul_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMonHom_matrix (S : Scheme.{0}) (X Y : Over S) [GrpObj X] [GrpObj Y] [IsCommMonObj Y] (pr : Fin 8 → (X ⟶ Y))
     (hpr : ∀ a, IsMonHom (pr a))
@@ -58,17 +58,17 @@ theorem isMonHom_matrix (S : Scheme.{0}) (X Y : Over S) [GrpObj X] [GrpObj Y] [I
   simp only [MonObj.mul_comp, mul_zpow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S⁻¹ * (a.transpose * S), Matrix.mul_nonsing_inv_cancel_left S _ (hS ▸ isUnit_one)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_adjoint (S a : Matrix (Fin 8) (Fin 8) ℤ) (hS : S.det = 1) : ∃ a', S * a' = a.transpose * S :=
   ⟨S⁻¹ * (a.transpose * S), Matrix.mul_nonsing_inv_cancel_left S _ (hS ▸ isUnit_one)⟩
 
 /- English proof (translation)
-Introduce `R _ _ _ hB hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr hpu hL pG hpG hext c hc e he a f hf K _ _ _ m pk pk' x hm hx hx'`. Take `⟨a', ha⟩` from `exists_adjoint (W + W.transpose) a hW.2`. Take `⟨f', hf', -⟩` from `hpu A'.A (fun u => (List.ofFn fun v => pr v ^ a' u v).prod)`. Take `⟨E, hE⟩` from `endU_exists R hB.1 D' A' G' hG' U' f (isMonHom_matrix _ A'.A A.A pr hpr hpu f a hf)`. Take `⟨E', hE'⟩` from `endU_exists R hB.1 D' A' G' hG' U' f' (isMonHom_matrix _ A'.A A.A pr hpr hpu f' a' hf')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Substitute `hE hE'` using the available equality. Establish `h₁` using `GlobalTheory.T.eighthPower_formBundle_matrices_adjoint _ A A' W pr hpr hL a a' ha E.aA E'.aA hf hf'`. Establish `h₂` using `GlobalTheory.T.mumfordBundle_adjoint_of_generic_adjoint R hB G' hG' D' A' U' E E' h₁`. Take `⟨w, hw⟩` from `GlobalTheory.T.endomorphism_moves_torsionLattice_by_adjoint R hB G' hG' D' A' U' E E' h₂ K m pk pk' x hm hx hx'`. Establish `h₃` using `GlobalTheory.T.eighth_power_endomorphism_lattice_adjoint R hB hdvr G hG D A U G' hG' D' A' U' W hW pr hpr hpu hL pG hpG hext c hc e he a a' ha E' hf' pk.y`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨e w, by rw [hw, map_add, map_nsmul, h₃]⟩`.
+Supply the required witnesses or components.
 -/
 theorem matrix_acts_on_torsion_labels : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → IsDiscreteValuationRing R → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (D : DegData R (maximalIdeal R)) (A : PolAV (Sp (FractionRing R))) (U : Unif (maximalIdeal R) D A G) (G' : Over (Sp R)) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (D' : DegData R (maximalIdeal R)) (A' : PolAV (Sp (FractionRing R))) (U' : Unif (maximalIdeal R) D' A' G') (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (pr : Fin 8 → (A'.A ⟶ A.A)), (∀ a, IsMonHom (pr a)) → (∀ (T' : Over (Sp (FractionRing R))) (y : Fin 8 → (T' ⟶ A.A)), ∃! z : T' ⟶ A'.A, ∀ a, z ≫ pr a = y a) → LBIso A'.L (LB.LinComb (abelian₂ A.A A.L) (K := Fin 8 × Fin 8) (fun ab => (lift (pr ab.1) (pr ab.2)).left) (fun ab => W ab.1 ab.2)) → ∀ (pG : Fin 8 → (G' ⟶ G)), (∀ v, IsMonHom (pG v)) → (∀ v, (Over.pullback (jK R)).map (pG v) ≫ U.gen.hom = U'.gen.hom ≫ pr v) → ∀ (c : Fin 8 → (D.toPre.X →+ D'.toPre.X)), (∀ v, TorMatch U U' (RingHom.id R) (pG v).left (c v)) → ∀ e : D'.toPre.X ≃+ (Fin 8 → D.toPre.X), (∀ y, ∑ v, c v (∑ u, (W + W.transpose) v u • e y u) = y) → ∀ (a : Matrix (Fin 8) (Fin 8) ℤ) (f : A'.A ⟶ A'.A), (∀ u, f ≫ pr u = (List.ofFn fun v => pr v ^ a u v).prod) → ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra (FractionRing R) K] (m : ℕ) (pk pk' : QkPt D'.toPre K m) (x : TFK (R := R) K ⟶ A'.A), 1 ≤ m → QkToAkU U'.toUnifPre K m pk x → QkToAkU U'.toUnifPre K m pk' (x ≫ f) → CongMod m (e pk'.y) (fun u => ∑ v, a u v • e pk.y v) := by
   intro R _ _ _ hB hdvr G _ _ hG D A U G' _ _ hG' D' A' U' W hW pr hpr hpu hL pG hpG hext c hc e he a f hf K _ _ _ m pk pk' x

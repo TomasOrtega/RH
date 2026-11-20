@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.Core.Mi.LatMatch
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `e : ρ + (1 + ρ) = 2 * ρ + 1` using `by omega`. Rewrite using `[← Fin.sum_congr' f e, Fin.sum_univ_add, Fin.sum_univ_add, Fin.sum_univ_one, add_assoc]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun i _ => ha i _ (by simp)`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `hm _ (by simp)`. Rewrite using `[← Equiv.sum_comp Fin.revPerm b]`. Use `Finset.sum_congr rfl fun i _ => hb _ _ ?_` and prove the remaining obligations. Simplify using `[Fin.val_rev]`.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sum_fin_two_mul_add_one {M : Type*} [AddCommMonoid M] {ρ n : ℕ} (hn : n = 2 * ρ + 1) (f : Fin n → M)
     (a b : Fin ρ → M) (m : M) (ha : ∀ (i : Fin ρ) (j : Fin n), j.1 = i.1 → f j = a i) (hm : ∀ j : Fin n, j.1 = ρ → f j = m)
@@ -37,7 +35,7 @@ theorem sum_fin_two_mul_add_one {M : Type*} [AddCommMonoid M] {ρ n : ℕ} (hn :
       omega
 
 /- English proof (translation)
-Rewrite using `[Valuation.mem_integer_iff, Valuation.mem_integer_iff, map_mul, map_mul, map_div₀, hc, div_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_div_mem_integer_iff {k : Type} [Field k] [ValuativeRel k] {c : k} (hc : valuation k c = 1) (w z : k) :
     w * (z / c) ∈ 𝒪[k] ↔ w * z ∈ 𝒪[k] := by
@@ -54,37 +52,35 @@ theorem mul_mul_div_cancel_left' {k : Type} [Field k] {c : k} (hc : c ≠ 0) (P 
   field_simp
 
 /- English proof (translation)
-Introduce `D u d τ PP G ρ h0 L hL`. Take `⟨hc, hA, he, hz, he'⟩` from `G.bes 0 ρ h0 (G.s + 1) (zero_add _)`. Introduce `x x' t y`. Establish `hsc : valuation G.k (G.sc 0) = 1` using `G.sc_unit 0`. Establish `hxi : valuation G.k (GlobalTheory.LocMod.ofSplit G.q).xi = 1` using `GlobalTheory.SeeSaw.CoreGlue.valuation_xi_zero_eq_one G.q G.unit`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhz : valuation G.k ((GlobalTheory.LocMod.ofSplit G.q).hz (d.B 0 ρ h0)) = 1` using `G.hz_unit 0 ρ h0`. Use `set cE : Fin ρ → G.k := fun i => G.sc 0 * (GlobalTheory.LocMod.ofSplit G.q).xi ^ (ρ - i.1) with hcE`. Use `set cE' : Fin ρ → G.k := fun i => G.sc 0 * (-(GlobalTheory.LocMod.ofSplit G.q).hz (d.B 0 ρ h0) / (GlobalTheory.LocMod.ofSplit G.q).xi) * (-1 / (GlobalTheory.LocMod.ofSplit G.q).xi) ^ (ρ - 1 - i.1) with hcE'`. Establish `vE : ∀ i, valuation G.k (cE i) = 1` using `fun i => by simp [cE, map_pow, hsc, hxi]`. Establish `vE' : ∀ i, valuation G.k (cE' i) = 1` using `fun i => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[cE', map_pow, map_div₀, Valuation.map_neg, hsc, hxi, hhz]`. Establish `nz : ∀ {c : G.k}, valuation G.k c = 1 → c ≠ 0` using `fun h h0 => by simp [h0] at h`. Establish `he2 : ∀ (i : Fin ρ) (j : Fin (G.s + 1)), j.1 = i.1 → ∀ r, (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inr j) = cE i * G.q.pr (incA D ((d.bes 0 ρ h0).d.e r i))` using `he`. Establish `hz2 : ∀ (j : Fin (G.s + 1)), j.1 = ρ → ∀ r, (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inr j) = G.sc 0 * G.q.pr (incA D (((d.bes 0 ρ h0).d.i₀ *ᵥ vecB (d.bes 0 ρ h0).o (d.bes 0 ρ h0).ζ) r))` using `hz`. Establish `he'2 : ∀ (i : Fin ρ) (j : Fin (G.s + 1)), j.1 + i.1 = 2 * ρ → ∀ r, (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inr j) = cE' i * G.q.pr (incA D ((d.bes 0 ρ h0).d.e' r i))` using `he'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hA2 : ∀ r a, (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inl a) = (atW G.q ((d.bes 0 ρ h0).d.i₀ * (d.bes 0 ρ h0).o.iA) * (G.FX 0 (by omega)).β) r a` using `hA`. Set `Yr : Fin (G.s + 1) → G.k` to `fun j => if h : j.1 < ρ then x ⟨j.1, h⟩ / cE ⟨j.1, h⟩ else if j.1 = ρ then t / G.sc 0 else if h' : 2 * ρ - j.1 < ρ then x' ⟨2 * ρ - j.1, h'⟩ / cE' ⟨2 * ρ - j.1, h'⟩ else 0`. Set `Y : StepData.XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1) → G.k` to `Sum.elim ((G.FX 0 (by omega)).γ *ᵥ y) Yr`. Establish `YrE : ∀ (i : Fin ρ) (j : Fin (G.s + 1)), j.1 = i.1 → Yr j = x i / cE i`. Introduce `i j hj`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : j.1 < ρ` using `hj ▸ i.2`. Establish `: (⟨j.1, h⟩ : Fin ρ) = i` using `Fin.ext hj`. Simplify using `only [Yr, dif_pos h, this]`. Establish `YrZ : ∀ (j : Fin (G.s + 1)), j.1 = ρ → Yr j = t / G.sc 0`. Introduce `j hj`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Yr, dif_neg (show ¬ j.1 < ρ by omega), if_pos hj]`. Establish `YrE' : ∀ (i : Fin ρ) (j : Fin (G.s + 1)), j.1 + i.1 = 2 * ρ → Yr j = x' i / cE' i`. Introduce `i j hj`. Establish `h : 2 * ρ - j.1 < ρ` using `by omega`. Establish `: (⟨2 * ρ - j.1, h⟩ : Fin ρ) = i` using `Fin.ext (by simp; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Yr, dif_neg (show ¬ j.1 < ρ by omega), if_neg (show ¬ j.1 = ρ by omega), dif_pos h, this]`. Establish `hlat : (∀ a, Y (Sum.inl a) ∈ 𝒪[G.k]) ↔ (fun r => G.q.sec (y r)) ∈ latV (D.sp.X 0) (d.x 0).L (· = G.q.v)`. Establish `h` using `G.latX 0 (by omega) ((G.FX 0 (by omega)).γ *ᵥ y)`. Rewrite `h` using `[Matrix.mulVec_mulVec, (G.FX 0 (by omega)).βγ, Matrix.one_mulVec]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Iff.trans (Eq.to_iff ?_) ((hL Y).trans ?_)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `r`. Use `congr 1`. Use `symm`.
+Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type]`. Simplify using `only [Y, Sum.elim_inl, Sum.elim_inr]`. Establish `h1 : ∑ a, (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inl a) * ((G.FX 0 (by omega)).γ *ᵥ y) a = (atW G.q ((d.bes 0 ρ h0).d.i₀ * (d.bes 0 ρ h0).o.iA) *ᵥ y) r`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `sum_fin_two_mul_add_one hc (fun j => (G.FY 0 (G.s + 1) (zero_add _)).β r (Sum.inr j) * Yr j) (fun i => G.q.pr (incA D ((d.bes 0 ρ h0).d.e r i)) * x i) (fun i => G.q.pr (incA D ((d.bes 0 ρ h0).d.e' r i)) * x' i) (G.q.pr (incA D (((d.bes 0 ρ h0).d.i₀ *ᵥ vecB (d.bes 0 ρ h0).o (d.bes …`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2]`. Establish `hm : ∀ V : HSp D, Formalism.L2.Theta.mt V 1 = 1` using `fun V => rfl`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, hm, Matrix.map_one _ (map_zero G.q.pr) (map_one G.q.pr), Matrix.one_mulVec]`. Simplify using `only [Matrix.mulVec, dotProduct, atW, Matrix.map_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinr : (∀ j : Fin (G.s + 1), (((G.S.ϖ : G.kˣ) : G.k) ^ (j.1 + 1))⁻¹ * Yr j ∈ 𝒪[G.k]) ↔ (∀ a : Fin ρ, (((G.S.ϖ : G.kˣ) : G.k) ^ (a.1 + 1))⁻¹ * x a ∈ 𝒪[G.k]) ∧ (∀ a : Fin ρ, (((G.S.ϖ : G.kˣ) : G.k) ^ (2 * ρ - a.1 + 1))⁻¹ * x' a ∈ 𝒪[G.k]) ∧ (((G.S.ϖ : G.kˣ) : G.k) ^ (ρ + 1))⁻¹ * t ∈ …`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun a => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Use `h ⟨a.1, by omega⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[YrE a _ rfl, mul_div_mem_integer_iff (vE a)]`. Then use the resulting hypothesis. Use `h ⟨2 * ρ - a.1, by omega⟩` as an intermediate fact. Rewrite `this` using `[YrE' a _ (by simp only; omega), mul_div_mem_integer_iff (vE' a)]`. Then use the resulting hypothesis. Use `h ⟨ρ, by omega⟩` as an intermediate fact. Rewrite `this` using `[YrZ _ rfl, mul_div_mem_integer_iff hsc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h1, h2, h3⟩ j`. Break down `lt_trichotomy j.1 ρ with hj | hj | hj` into its components or cases. Rewrite using `[YrE ⟨j.1, hj⟩ j rfl, mul_div_mem_integer_iff (vE _)]`. Conclude with `h1 ⟨j.1, hj⟩`. Rewrite using `[YrZ j hj, mul_div_mem_integer_iff hsc, hj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hi : 2 * ρ - j.1 < ρ` using `by omega`. Rewrite using `[YrE' ⟨2 * ρ - j.1, hi⟩ j (by simp only; omega), mul_div_mem_integer_iff (vE' _)]`. Establish `h4` using `h2 ⟨2 * ρ - j.1, hi⟩`. Establish `h5 : 2 * ρ - (2 * ρ - j.1) = j.1` using `by omega`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [h5] at h4`. Conclude with `h4`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, hr⟩`. Take `⟨a, b, c⟩` from `hinr.1 hr`.
-
-Conclude with `⟨a, b, c, hlat.1 hl⟩`. Introduce and unpack `⟨a, b, c, l⟩`. Conclude with `⟨hlat.2 l, hinr.2 ⟨a, b, c⟩⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem wShape_of_besFrame : ∀ (D : D7) (u : D.what₂.Word) (d : GlobalTheory.SeeSaw.Dat D u) (τ : ∀ j h, Matrix (Fin (d.bes j 0 h).L.rank) (Fin d.Lz.rank) D.host.E) (PP : Formalism.L2.DIV.Pl D.host.E) (G : GlobalTheory.LocMod.GAt d τ PP) (ρ : ℕ) (h0 : 0 + 2 * ρ + 2 = D.R.m) (L : Lat (d.st 0).V), (∀ y : GlobalTheory.StepData.XIx (Fin D.R.k) (Fin D.R.t) 0 ⊕ Fin (G.s + 1) → G.k, (fun r => G.q.sec (((G.FY 0 (G.s + 1) (zero_add _)).β *ᵥ y) r)) ∈ latV (d.st 0).V L (· = G.q.v) ↔ (∀ a, y (Sum.inl a) ∈ 𝒪[G.k]) ∧ ∀ i : Fin (G.s + 1), ((((G.S.ϖ : G.kˣ) : G.k) ^ (i.1 + 1))⁻¹ * y (Sum.inr i)) ∈ 𝒪[G.k]) → WShape G.q (d.bes 0 ρ h0).d (d.bes 0 ρ h0).o (d.bes 0 ρ h0).ζ L (fun i => (((G.S.ϖ : G.kˣ) : G.k) ^ (i.1 + 1))⁻¹) (fun i => (((G.S.ϖ : G.kˣ) : G.k) ^ (2 * ρ - i.1 + 1))⁻¹) ((((G.S.ϖ : G.kˣ) : G.k) ^ (ρ + 1))⁻¹) 1 (d.x 0).L := by
   intro D u d τ PP G ρ h0 L hL

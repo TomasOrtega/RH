@@ -17,7 +17,7 @@ open scoped Classical
 namespace GlobalTheory.IsoTrace
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a t ha ih => simp [Finset.sum_insert ha, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem intertwining_sum_apply {G N X : Type} [Group G] [AddCommGroup N] [Module ℂ N] [AddCommGroup X] [Module ℂ X]
     {π : Representation ℂ G N} {ρ : Representation ℂ G X} {ι : Type} (t : Finset ι)
@@ -27,37 +27,35 @@ theorem intertwining_sum_apply {G N X : Type} [Group G] [AddCommGroup N] [Module
   | insert a t ha ih => simp [Finset.sum_insert ha, ih]
 
 /- English proof (translation)
-Introduce `G _ N X _ _ _ _ π ρ hirr hschur hiso H hH ⟨s, hs⟩`. Set `S` to `Submodule.span ℂ (s : Set (π.IntertwiningMap ρ))`. Use `haveI : FiniteDimensional ℂ S := FiniteDimensional.span_finset ℂ s`. Set `bS` to `Module.finBasis ℂ S`. Set `φ : Fin (Module.finrank ℂ S) → π.IntertwiningMap ρ` to `fun j => (bS j : π.IntertwiningMap ρ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℂ φ` using `bS.linearIndependent.map' S.subtype (Submodule.ker_subtype S)`. Establish `hinj` using `GlobalTheory.T.injective_sum_of_linIndep_intertwiners G N X π ρ hirr hschur _ φ hli`. Establish `hY : LinearMap.range H ≤ ⨆ j, LinearMap.range (φ j).toLinearMap`. Use `hs.trans (iSup₂_le fun ψ hψ => ?_)` and prove the remaining obligations. Establish `hψS : ψ ∈ S` using `Submodule.subset_span hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ψ = ∑ j, bS.repr ⟨ψ, hψS⟩ j • φ j`. Use `congrArg Subtype.val (bS.sum_repr ⟨ψ, hψS⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Introduce and unpack `_ ⟨n, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ψ n = ∑ j, bS.repr ⟨ψ, hψS⟩ j • φ j n`. Rewrite using `[← intertwining_sum_apply, ← e]`. Express the relevant statement in the definitionally equal form `ψ n ∈ _`. Rewrite using `[hn]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.mem_iSup_of_mem j ⟨n, rfl⟩)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hcoef : ∀ ψ : π.IntertwiningMap ρ, ∃ c : Fin (Module.finrank ℂ S) → ℂ, ∀ n, H (ψ n) = ∑ j, c j • φ j n`. Introduce `ψ`. Set `Hψ : π.IntertwiningMap ρ` to `(H ∘ₗ ψ.toLinearMap).intertwiningMap_of_isIntertwiningMap π ρ (fun g v => by simp [ψ.isIntertwining, hH])`. Establish `hr : LinearMap.range Hψ.toLinearMap ≤ ⨆ j, LinearMap.range (φ j).toLinearMap`. Introduce and unpack `_ ⟨n, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hY ⟨ψ n, rfl⟩`. Conclude with `GlobalTheory.T.exists_eq_sum_smul_of_range_le_iSup_range G N X π ρ hschur _ φ hinj Hψ hr`. Use `choose hc hhc using fun j => hcoef (φ j)`. Use `⟨∑ j, hc j j, fun A B hB b hb => ?_⟩` and prove the remaining obligations. Take `⟨hfin, htr⟩` from `hb`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `R` to `LinearMap.range A`. Set `Φ' : (Fin (Module.finrank ℂ S) → R) →ₗ[ℂ] X` to `∑ j, (φ j).toLinearMap ∘ₗ R.subtype ∘ₗ LinearMap.proj j`. Establish `hΦ' : ∀ w, Φ' w = ∑ j, φ j (w j : N)`. Introduce `w`. Simplify using `[Φ', LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression.
 
-Establish `hinj' : Function.Injective Φ'`. Introduce `w w' e`. Rewrite `e` using `[hΦ', hΦ']`. Use `hinj e` as an intermediate fact. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (congrFun this j)`. Set `Z` to `LinearMap.range Φ'`. Establish `hBφ : ∀ (ψ : π.IntertwiningMap ρ) n, B (ψ n) = ψ (A n)` using `fun ψ n => DFunLike.congr_fun (hB ψ) n`. Establish `hrange : LinearMap.range (H ∘ₗ B) ≤ Z`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x ∈ ⨆ f : π.IntertwiningMap ρ, LinearMap.range f.toLinearMap`. Establish `: x ∈ isoPartAlg π ρ` using `hiso ▸ Submodule.mem_top`. Conclude with `this`. Use `Submodule.iSup_induction _ (motive := fun x => (H ∘ₗ B) x ∈ Z) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `ψ _ ⟨n, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨c, hc'⟩` from `hcoef ψ`. Use `⟨fun j => c j • ⟨A n, LinearMap.mem_range_self A n⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ']`. Simplify using `only [LinearMap.comp_apply, Pi.smul_apply, SetLike.val_smul, map_smul]`. Rewrite using `[show ψ.toLinearMap n = ψ n from rfl, hBφ, hc']`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Introduce `x y hx hy`. Simplify using `using Z.add_mem hx hy`. Use `haveI : FiniteDimensional ℂ Z := LinearMap.finiteDimensional_range Φ'`. Establish `hT1` using `GlobalTheory.T.hasFiniteRankTraceOf_of_range_le_finiteDimensional X (H ∘ₗ B) Z hrange`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `e : (Fin (Module.finrank ℂ S) → R) ≃ₗ[ℂ] Z` to `LinearEquiv.ofInjective Φ' hinj'`. Set `A' : R →ₗ[ℂ] R` to `A.restrict (p := R) (q := R) fun v _ => LinearMap.mem_range_self A v`. Set `h : Matrix (Fin (Module.finrank ℂ S)) (Fin (Module.finrank ℂ S)) ℂ` to `Matrix.of fun k j => hc j k`. Set `M : (Fin (Module.finrank ℂ S) → R) →ₗ[ℂ] (Fin (Module.finrank ℂ S) → R)` to `∑ k, ∑ j, h k j • (LinearMap.single ℂ (fun _ => R) k ∘ₗ A' ∘ₗ LinearMap.proj j)`. Establish `hM : ∀ w k, (M w k : N) = ∑ j, hc j k • A (w j)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Introduce `w k`. Simplify using `[M, h, LinearMap.sum_apply, Finset.sum_apply, Pi.single_apply, A']`. Establish `hconj : (H ∘ₗ B).restrict (p` using `Z) (q := Z) (fun x _ => hrange (LinearMap.mem_range_self _ x)) = e.conj M := by`. Use `LinearMap.ext fun z => Subtype.ext ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `e.surjective z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearEquiv.conj_apply_apply, LinearEquiv.symm_apply_apply]`. Express the relevant statement in the definitionally equal form `H (B (Φ' w)) = Φ' (M w)`. Rewrite using `[hΦ', hΦ', map_sum, map_sum]`. Repeatedly rewrite using `[hBφ, hhc, hM, map_sum, map_smul]`. Rewrite using `[Finset.sum_comm]`.
-
-Establish `key : LinearMap.trace ℂ Z ((H ∘ₗ B).restrict (p` using `Z) (q := Z) fun x _ => hrange (LinearMap.mem_range_self _ x)) = (∑ j, hc j j) * b := by`. Rewrite using `[hconj, LinearMap.trace_conj', GlobalTheory.T.trace_sum_single_comp_proj_eq R _ h A', ← htr]`. Simplify using `[h, Matrix.trace, A', R]`. Rewrite using `[← key]`. Conclude with `hT1`.
+A detailed English derivation is pending.
 -/
 theorem trace_mul_isotypic : ∀ (G : Type) [Group G] (N X : Type) [AddCommGroup N] [Module ℂ N] [AddCommGroup X] [Module ℂ X] (π : Representation ℂ G N) (ρ : Representation ℂ G X), π.IsIrreducible → (∀ φ : π.IntertwiningMap π, ∃ c : ℂ, φ.toLinearMap = c • LinearMap.id) → IsIsotypicAlg π ρ → ∀ H : X →ₗ[ℂ] X, (∀ g x, H (ρ g x) = ρ g (H x)) → (∃ s : Finset (π.IntertwiningMap ρ), LinearMap.range H ≤ ⨆ φ ∈ s, LinearMap.range φ.toLinearMap) → ∃ c : ℂ, ∀ (A : N →ₗ[ℂ] N) (B : X →ₗ[ℂ] X), (∀ φ : π.IntertwiningMap ρ, B ∘ₗ φ.toLinearMap = φ.toLinearMap ∘ₗ A) → ∀ b, GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasFinTrace A b → GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets.HasFinTrace (H ∘ₗ B) (c * b) := by
   intro G _ N X _ _ _ _ π ρ hirr hschur hiso H hH ⟨s, hs⟩

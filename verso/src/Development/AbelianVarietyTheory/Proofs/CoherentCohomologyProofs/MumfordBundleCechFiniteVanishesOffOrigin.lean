@@ -19,7 +19,7 @@ namespace GlobalTheory.MumfordSupport
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullLinComb L a (fun _ : PUnit => b) (fun _ => b ≫ a) (fun _ => 1) (𝟙 _) fun _ => (Category.id_comp _).symm) (chartPullId _) (PolBaseChange.lbIso_refl (LB.isLB_pull hL _))`.
+A detailed English derivation is pending.
 -/
 theorem exists_iso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : Y ⟶ X) (b : Z ⟶ Y) :
     ∃ w : LB.Iso ((L.pull a).pull b) (L.pull (b ≫ a)), w.IsGen :=
@@ -28,7 +28,7 @@ theorem exists_iso_pull_pull {X Y Z : Scheme.{0}} {L : LB X} (hL : L.IsLB) (a : 
       (chartPullId _) (PolBaseChange.lbIso_refl (LB.isLB_pull hL _))
 
 /- English proof (translation)
-Use `haveI : Y.IsSeparated := by`. Rewrite using `[Scheme.isSeparated_iff, ← terminal.comp_from f]`. Use `infer_instance`. Conclude with `IsAffineOpen.biInf _ (Finset.finite_toSet _) (by exact_mod_cast hs) fun i _ => hD i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAffineOpen_biInf_of_isSeparated {R : Type} [CommRing R] {Y : Scheme.{0}}
     (f : Y ⟶ Spec (CommRingCat.of R)) [IsSeparated f] {κ : Type} {D : κ → Y.Opens}
@@ -40,13 +40,13 @@ theorem isAffineOpen_biInf_of_isSeparated {R : Type} [CommRing R] {Y : Scheme.{0
   exact IsAffineOpen.biInf _ (Finset.finite_toSet _) (by exact_mod_cast hs) fun i _ => hD i
 
 /- English proof (translation)
-Introduce `K _ _ P R _ t Y π f h ht κ _ _ D hD hc`. Take `⟨-, H⟩` from `AbProj.abelian_projective_baseChange K P`. Take `⟨hproj, hsep, hsm, -, -, -⟩` from `H R t Y π f h`. Use `P.isAb.smooth` as an intermediate fact. Establish `hN : IsNoetherianRing R` using `by haveI : IsLocallyNoetherian (Spec (CommRingCat.of R)) := LocallyOfFiniteType.isLocallyNoetherian (t ≫ P.A.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(isLocallyNoetherian_Spec (R := CommRingCat.of R)).1 inferInstance`. Establish `hF : (translDiff P.A P.L (𝟙 P.A)).IsLB` using `LB.isLB_linComb P.isLB _ _`. Establish `hM` using `LB.isLB_pull hF π`. Establish `hI` using `isAffineOpen_biInf_of_isSeparated f hD`. Establish `hflat : ∀ p, Module.Flat R ((cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).X p)` using `flat_cechLB_X f hM hI`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `GlobalTheory.T.finite_cechLB_homology_of_affine_cover R Y f _ κ D hM hsep hproj hD hc`. Use `⟨hN, hflat, hfin, fun χ h₁ h₂ => ?_⟩` and prove the remaining obligations. Use `exists_smul_homology_eq_zero_of_acyclic_fibre R K χ _ (Fintype.card κ) (fun p hp => isZero_cechLB_X _ _ _ hp.le) hflat hfin ?_` and prove the remaining obligations. Establish `h'` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom χ))`. Take `⟨w, hw⟩` from `exists_iso_pull_pull hF π (pullback.fst f (Spec.map (CommRingCat.ofHom χ)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hac` using `GlobalTheory.T.mumfordBundle_fibre_cech_acyclic_off_origin K P _ _ _ _ (h'.paste_horiz h) h₁ h₂ κ (fun i => pullback.fst f (Spec.map (CommRingCat.ofHom χ)) ⁻¹ᵁ D i) (fun i => isAffineOpen_preimage_of_isPullback h' (hD i)) (by rw [← Scheme.Hom.preimage_iSup, hc]; rfl)`. Establish `e` using `cechLBBaseChangeIso hM h' hI ≪≫ cechLBCongr _ _ (LB.isLB_pull hM _) (LB.isLB_pull hF _) w hw`. Conclude with `fun p => (hac p).of_iso e.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem cohomology_finite_and_vanishes_off_origin : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (R : Type) [CommRing R] (t : Spec (CommRingCat.of R) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of R)), IsPullback π f (fst P.A P.A).left t → IsOpenImmersion t → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → IsNoetherianRing R ∧ (∀ p, Module.Flat R ((cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).X p)) ∧ (∀ p, Module.Finite R ((cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).homology p)) ∧ ∀ χ : R →+* K, (Spec.map (CommRingCat.ofHom χ) ≫ t) ≫ P.A.hom = 𝟙 _ → Spec.map (CommRingCat.ofHom χ) ≫ t ≠ η[P.A].left → ∀ p, ∃ r : R, χ r ≠ 0 ∧ ∀ z : (cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).homology p, r • z = 0 := by
   intro K _ _ P R _ t Y π f h ht κ _ _ D hD hc

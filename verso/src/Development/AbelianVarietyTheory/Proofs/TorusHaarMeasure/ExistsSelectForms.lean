@@ -10,15 +10,15 @@ open scoped ContDiff Matrix
 namespace GlobalTheory.LeviRank
 
 /- English proof (translation)
-Establish `hspan : Submodule.span K (Set.range φ) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Apply `mem_span_of_iInf_ker_le_ker` to reduce the goal to its premises. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: x = 0` using `hφ x (fun k => by simpa using (Submodule.mem_iInf _).1 hx k)`. Simplify using `[this]`. Take `⟨κ, a, ha, hsp, hli⟩` from `exists_linearIndependent' K φ`. Establish `: Finite κ` using `Finite.of_injective a ha`. Set `: Fintype κ` to `Fintype.ofFinite κ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcard : Fintype.card κ = n`. Establish `h` using `finrank_span_eq_card hli`. Rewrite `h` using `[hsp, hspan, finrank_top, Subspace.dual_finrank_eq, hn]`. Conclude with `h.symm`. Set `e : κ ≃ Fin n` to `Fintype.equivFinOfCardEq hcard`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k => a (e.symm k), fun x hx => hφ x fun k => ?_⟩` and prove the remaining obligations. Establish `hk : φ k ∈ Submodule.span K (Set.range (φ ∘ a))` using `by rw [hsp, hspan]; trivial`. Use `Submodule.span_induction (p := fun f _ => f x = 0) ?_ ?_ ?_ ?_ hk` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `using hx (e i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `f g _ _ hf hg`. Simplify using `[hf, hg]`. Introduce `c f _ hf`. Simplify using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_select_forms {K M : Type} [Field K] [AddCommGroup M] [Module K M]
     [FiniteDimensional K M] {n N : ℕ} (hn : Module.finrank K M = n)
@@ -50,9 +50,7 @@ theorem exists_select_forms {K M : Type} [Field K] [AddCommGroup M] [Module K M]
   · intro c f _ hf; simp [hf]
 
 /- English proof (translation)
-Establish `hξ : ξ = ∑ j, ξ.ofLp j • bas n j`. Use extensionality with `i`. Simplify using `[bas, Pi.single_apply]`. Use `conv_rhs => rw [hξ]`. Simplify using `only [wJac, Matrix.mulVec, dotProduct, wd_of_differentiableAt (hw k), map_sum, map_smul, smul_eq_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wJac_mulVec {n N : ℕ} (w : Fin N → V n → ℂ) (x : V n)
     (hw : ∀ k, DifferentiableAt ℂ (w k) x) (ξ : V n) (k : Fin N) :
@@ -66,23 +64,23 @@ theorem wJac_mulVec {n N : ℕ} (w : Fin N → V n → ℂ) (x : V n)
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Introduce `n N w U hU h0 hw ⟨j0, hj0⟩ hL`. Establish `hC : ∀ k, ContDiffAt ℂ 2 (w k) 0` using `fun k => ((contDiffOn_of_differentiableOn n (w k) U hU (hw k)).contDiffAt (hU.mem_nhds h0)).of_le (WithTop.coe_le_coe.2 le_top)`. Establish `hD : ∀ k, DifferentiableAt ℂ (w k) 0` using `fun k => (hw k).differentiableAt (hU.mem_nhds h0)`. Establish `hne : (fun i => w i 0) ≠ 0` using `fun h => hj0 (congrFun h j0)`. Establish `hQ : ∀ k, DifferentiableAt ℂ (fun z => w k z / w j0 z) 0` using `fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [div_eq_mul_inv]`. Conclude with `(hD k).mul ((differentiableAt_inv hj0).comp (0 : V n) (hD j0))`. Establish `hker : ∀ x : V n, (∀ k, fderiv ℂ (fun z => w k z / w j0 z) 0 x = 0) → x = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hx0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hξ : x.ofLp ≠ 0` using `fun h => hx0 (by ext i; simpa using congrFun h i)`. Establish `h1` using `hL _ hξ`. Establish `e1 : (fun z => ((Real.log (∑ k, ‖w k z‖ ^ 2) : ℝ) : ℂ)) = fun y => ((Real.log (sqNorm (fun i => w i y)) : ℝ) : ℂ)`. Use function extensionality and compare the values at `y`. Simplify using `[sqNorm, Complex.normSq_eq_norm_sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e1, leviLogNormSq n N w 0 x.ofLp hC hne]`. Establish `hJ : wJac n N w 0 *ᵥ x.ofLp = (fderiv ℂ (w j0) 0 x / w j0 0) • fun i => w i 0`. Use function extensionality and compare the values at `k`. Rewrite using `[wJac_mulVec w 0 hD]`. Establish `hev : w k =ᶠ[𝓝 0] fun z => (w k z / w j0 z) * w j0 z` using `by filter_upwards [(hD j0).continuousAt.eventually_ne hj0] with z hz`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_cancel₀ _ hz]`. Rewrite using `[hev.fderiv_eq, fderiv_fun_mul (hQ k) (hD j0)]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, hx k, smul_eq_mul, Pi.smul_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hs : ((sqNorm (fun i => w i 0) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (sqNorm_pos hne).ne'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : projPerp (fun i => w i 0) *ᵥ (fun i => w i 0) = 0`. Rewrite using `[projPerp_mulVec, star_dotProduct_self, inv_mul_cancel₀ hs, one_smul, sub_self]`. Rewrite `h1` using `[hJ, Matrix.mulVec_smul, hP, smul_zero]`. Simplify using `[sqNorm] at h1`. Take `⟨jj, hjj⟩` from `exists_select_forms (K := ℂ) (M := V n) (n := n) (by simp) (fun k => (fderiv ℂ (fun z => w k z / w j0 z) 0 : V n →L[ℂ] ℂ).toLinearMap) hker`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j0, jj, hj0, ?_⟩` and prove the remaining obligations. Establish `hF : DifferentiableAt ℂ (fun z : V n => (WithLp.toLp 2 fun k => w (jj k) z / w j0 z : V n)) 0` using `differentiableAt_euclidean.2 fun k => hQ (jj k)`. Rewrite using `[ContinuousLinearMap.det, Ne, LinearMap.det_eq_zero_iff_ker_ne_bot, not_not, LinearMap.ker_eq_bot']`. Introduce `x hx`. Use `hjj x fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `((EuclideanSpace.proj (𝕜 := ℂ) k : V n →L[ℂ] ℂ).hasFDerivAt.comp (0 : V n) hF.hasFDerivAt).fderiv`. Establish `h3 : (fun z => w (jj k) z / w j0 z) = (EuclideanSpace.proj (𝕜` using `ℂ) k : V n →L[ℂ] ℂ) ∘ (fun z : V n => (WithLp.toLp 2 fun k => w (jj k) z / w j0 z : V n)) := rfl`. Express the relevant statement in the definitionally equal form `fderiv ℂ (fun z => w (jj k) z / w j0 z) 0 x = 0`. Rewrite using `[h3, h2, ContinuousLinearMap.comp_apply]`. Express the relevant statement in the definitionally equal form `(EuclideanSpace.proj (𝕜 := ℂ) k : V n →L[ℂ] ℂ) (((fderiv ℂ (fun z : V n => (WithLp.toLp 2 fun k => w (jj k) z / w j0 z : V n)) 0 : V n →L[ℂ] V n) : V n →ₗ[ℂ] V n) x) = 0`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (n N : ℕ) (w : Fin N → V n → ℂ) (U : Set (V n)), IsOpen U → (0 : V n) ∈ U →
     (∀ k, DifferentiableOn ℂ (w k) U) → (∃ k, w k 0 ≠ 0) →

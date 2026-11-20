@@ -18,17 +18,15 @@ open scoped ComplexOrder ENNReal NNReal ContDiff
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D θ hθ m ρ vU x hx`. Establish `hH : vU.ν.IsHaarMeasure` using `vU.unit.1`. Take `⟨hf, hfin, hinv⟩` from `GlobalTheory.T.haar_adelicUpperUnitriangular_entry_translate_invariant D ρ vU.ν hH`. Establish `hae : ∀ᵐ y ∂(Measure.map (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) vU.ν), ∀ i j, ¬ (fun i j : Fin ρ => i < j) i j → y i j = (1 : Mx D ρ ρ) i j` using `by haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩ haveI : T2Space (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.1`. Establish `hS : MeasurableSet {y : Mx D ρ ρ | ∀ i j, ¬ (fun i j : Fin ρ => i < j) i j → y i j = (1 : Mx D ρ ρ) i j}`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsClosed {y : Mx D ρ ρ | ∀ i j, ¬ (fun i j : Fin ρ => i < j) i j → y i j = (1 : Mx D ρ ρ) i j}`. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_eq ((continuous_apply j).comp (continuous_apply i)) continuous_const`. Conclude with `hc.measurableSet`. Rewrite using `[ae_map_iff hf.aemeasurable hS]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ae_of_all _ fun u i j hij => ?_` and prove the remaining obligations. Establish `hU` using `(GlobalTheory.UniIndexPrime.mem_uniSub u.1).1 u.2`. Break down `lt_or_eq_of_le (not_lt.1 hij) with h | h` into its components or cases. Rewrite using `[Matrix.one_apply_ne h.ne']`. Conclude with `hU.1 i j h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Conclude with `hU.2 _`. Take `⟨N, hN⟩` from `GlobalTheory.T.integrable_majorant_coordinate_coset_measure D θ hθ ρ ρ (fun i j => i < j) 1 _ hfin hae hinv`. Take `⟨hmaj, hmove⟩` from `GlobalTheory.T.adelicMatrixSchwartzMajorant_measurable_rationalShift D θ hθ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨N, fun K hK => ?_⟩` and prove the remaining obligations. Take `⟨K', hK', hb⟩` from `hmove m ρ ρ x hx K hK`. Take `⟨C, hC⟩` from `hb N`. Establish `h1 : Integrable (maj θ K' N) (Measure.map (fun u : UX D ρ => (u.1.1 : Mx D ρ ρ)) vU.ν)` using `hN K' hK'`. Establish `h2 : Integrable (fun u : UX D ρ => maj θ K' N (u.1.1 : Mx D ρ ρ)) vU.ν` using `(integrable_map_measure ((hmaj ρ ρ K' hK').2.2.1 N).aestronglyMeasurable hf.aemeasurable).1 h1`.
-
-Establish `hmul : Measurable (fun y : Mx D ρ ρ => (rat x : Mx D m ρ) ⬝ y)` using `by haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩ haveI : BorelSpace (Mx D m ρ) := ⟨rfl⟩`. Conclude with `(continuous_const.matrix_mul continuous_id).measurable`. Use `(h2.const_mul C).mono' (((hmaj m ρ K hK).2.2.1 N).comp (hmul.comp hf)).aestronglyMeasurable (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (maj_nonneg θ K N _)]`. Conclude with `hC _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_integrable : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m ρ : ℕ) (vU : VolU D ρ) (x : Matrix (Fin m) (Fin ρ) D.host.E), LinearIndependent D.host.E x.transpose → ∃ N : ℕ, ∀ K : Set (Mx D m ρ), IsCompact K → Integrable (fun u : UX D ρ => maj θ K N ((rat x : Mx D m ρ) ⬝ u.1.1)) vU.ν := by
   intro D θ hθ m ρ vU x hx

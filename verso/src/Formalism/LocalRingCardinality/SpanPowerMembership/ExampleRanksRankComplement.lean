@@ -52,14 +52,14 @@ Both sides reduce to the same expression.
 -/
 theorem exampleRanks_frame : R0.toFrame = Formalism.HC.cyclicFrame 2 := rfl
 /- English proof (translation)
-Use `show (Formalism.HC.frameCyc 2 1).n0 = 4`. Rewrite using `[Formalism.HC.frameCyclic_order]`. Conclude with `ZMod.addOrderOf_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exampleRanks_baseRank : R0.n0 = 4 := by
   show (Formalism.HC.frameCyc 2 1).n0 = 4
   rw [Formalism.HC.frameCyclic_order]
   exact ZMod.addOrderOf_one _
 /- English proof (translation)
-Use `show R0.toFrame.ord / R0.toFrame.n0 = 1`. Establish `h1 : R0.toFrame.n0 = 4` using `exampleRanks_baseRank`. Establish `h2 : R0.toFrame.ord = 4` using `exampleRanks_order`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exampleRanks_o : R0.o = 1 := by
   show R0.toFrame.ord / R0.toFrame.n0 = 1
@@ -67,7 +67,7 @@ theorem exampleRanks_o : R0.o = 1 := by
   have h2 : R0.toFrame.ord = 4 := exampleRanks_order
   rw [h1, h2]
 /- English proof (translation)
-The claim follows from `Formalism.HC.frameCyc_h_injective 2 1`.
+A detailed English derivation is pending.
 -/
 theorem exampleRanks_h_injective : Function.Injective R0.h :=
   Formalism.HC.frameCyc_h_injective 2 1

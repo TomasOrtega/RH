@@ -8,19 +8,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Use `letI : ∀ m, Algebra K (A m) := fun m => (f m).toAlgebra`. Use `haveI hfin : ∀ m, Module.Finite K (A m) := hf`. Use `choose s hs using fun m => (hfin m).fg_top`. Set `p : Polynomial K` to `∏ m, ∏ a ∈ s m, minpoly K a`. Establish `hp : p ≠ 0` using `Finset.prod_ne_zero_iff.2 fun m _ => Finset.prod_ne_zero_iff.2 fun a _ => minpoly.ne_zero (Algebra.IsIntegral.isIntegral a)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨p.SplittingField, inferInstance, inferInstance, inferInstance, fun m Ω _ β φ h => ?_⟩` and prove the remaining obligations. Establish `hgen : ∀ a ∈ s m, φ a ∈ β.range`. Introduce `a ha`. Establish `hdvd : minpoly K a ∣ p` using `(Finset.dvd_prod_of_mem _ ha).trans (Finset.dvd_prod_of_mem (fun m => ∏ a ∈ s m, minpoly K a) (Finset.mem_univ m))`. Establish `hsp : ((minpoly K a).map (algebraMap K p.SplittingField)).Splits` using `(Polynomial.SplittingField.splits p).of_dvd (Polynomial.map_ne_zero hp) (Polynomial.map_dvd _ hdvd)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : minpoly K a ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral a)`. Use `hsp.mem_range_of_isRoot (by simpa using hne) ?_` and prove the remaining obligations. Rewrite using `[Polynomial.IsRoot, Polynomial.map_map, ← h, Polynomial.eval_map, ← Polynomial.hom_eval₂]`. Use `minpoly.aeval K a` as an intermediate fact. Rewrite `this` using `[Polynomial.aeval_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(congrArg φ this).trans (map_zero φ)`. Establish `hall : ∀ a, φ a ∈ β.range`. Introduce `a`. Establish `ha : a ∈ Submodule.span K (s m : Set (A m))` using `(hs m).symm ▸ Submodule.mem_top`. Proceed by induction on `ha using Submodule.span_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem a ha => exact hgen a ha`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `add_mem ha hb`. Consider the case `smul c a _ ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, map_mul]`. Conclude with `mul_mem ⟨algebraMap K _ c, (RingHom.congr_fun h c).symm⟩ ha`. Set `e` to `RingEquiv.ofBijective β.rangeRestrict ⟨fun a b hab => β.injective (congrArg Subtype.val hab), β.rangeRestrict_surjective⟩`. Establish `he : β.comp (e.symm.toRingHom.comp (φ.codRestrict β.range hall)) = φ` using `RingHom.ext fun a => congrArg Subtype.val (e.apply_symm_apply (φ.codRestrict β.range hall a))`. Use `⟨_, RingHom.ext fun c => β.injective ?_, he⟩` and prove the remaining obligations.
-
-Conclude with `(RingHom.congr_fun he (f m c)).trans (RingHom.congr_fun h c)`.
+A detailed English derivation is pending.
 -/
 private theorem alg_rat (K : Type) [Field K] (n : ℕ) (A : Fin n → Type) [∀ m, CommRing (A m)]
     (f : ∀ m, K →+* A m) (hf : ∀ m, (f m).Finite) :
@@ -66,9 +64,9 @@ private theorem alg_rat (K : Type) [Field K] (n : ℕ) (A : Fin n → Type) [∀
   exact (RingHom.congr_fun he (f m c)).trans (RingHom.congr_fun h c)
 
 /- English proof (translation)
-Take `⟨_, _, _, _⟩` from `hZ`. Establish `: IsFinite (pullback.snd Z.hom x)` using `IsFinite.of_locallyQuasiFinite _`. Establish `: IsAffine (pullback Z.hom x)` using `isAffine_of_isAffineHom (pullback.snd Z.hom x)`. Take `⟨f, hf⟩` from `Spec.map_surjective ((pullback Z.hom x).isoSpec.inv ≫ pullback.snd Z.hom x)`. Use `⟨_, f, (pullback Z.hom x).isoSpec.inv ≫ pullback.fst Z.hom x, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← IsFinite.SpecMap_iff, hf]`. Use `infer_instance`. Rewrite using `[hf]`. Conclude with `(IsPullback.of_hasPullback Z.hom x).of_iso (pullback Z.hom x).isoSpec (Iso.refl _) (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp) (by simp)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fibre_spec {S : Scheme.{0}} (Z : Over S) (hZ : QFin Z) {K : Type} [Field K] (x : Sp K ⟶ S) :
     ∃ (A : CommRingCat.{0}) (f : CommRingCat.of K ⟶ A) (g : Spec A ⟶ Z.left),
@@ -84,13 +82,13 @@ private theorem fibre_spec {S : Scheme.{0}} (Z : Over S) (hZ : QFin Z) {K : Type
       (Iso.refl _) (by simp) (by simp) (by simp) (by simp)
 
 /- English proof (translation)
-Introduce `S n Z hZ K _ x`. Use `choose A f g hf hP using fun m => fibre_spec (Z m) (hZ m) x`. Take `⟨K₁, _, _, hfd, H⟩` from `alg_rat K n (fun m => A m) (fun m => (f m).hom) hf`. Use `⟨K₁, _, _, hfd, fun m Ω _ β y hy => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `Spec.map_surjective ((hP m).lift y (spMap β ≫ spMap (algebraMap K K₁)) (hy.trans (Category.assoc _ _ _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₁ : Spec.map φ ≫ g m = y` using `by rw [hφ]; exact (hP m).lift_fst _ _ _`. Establish `h₂ : Spec.map φ ≫ Spec.map (f m) = spMap β ≫ spMap (algebraMap K K₁)`. Rewrite using `[hφ]`. Conclude with `(hP m).lift_snd _ _ _`. Establish `h₃ : f m ≫ φ = CommRingCat.ofHom (algebraMap K K₁) ≫ CommRingCat.ofHom β` using `Spec.map_injective (by rw [Spec.map_comp, Spec.map_comp]; exact h₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ψ, hψ₁, hψ₂⟩` from `H m Ω β φ.hom (congrArg CommRingCat.Hom.hom h₃)`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ g m, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, (hP m).w, ← Category.assoc, ← Spec.map_comp]`. Establish `: f m ≫ CommRingCat.ofHom ψ = CommRingCat.ofHom (algebraMap K K₁)` using `CommRingCat.hom_ext hψ₁`. Conclude with `congrArg (fun t => Spec.map t ≫ x) this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h₁, ← Category.assoc]`. Establish `: CommRingCat.ofHom ψ ≫ CommRingCat.ofHom β = φ` using `CommRingCat.hom_ext hψ₂`. Rewrite using `[← this, Spec.map_comp]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.quasi_finite_rational_after_extension :
     ∀ (S : Scheme.{0}) (n : ℕ) (Z : Fin n → Over S), (∀ m, QFin (Z m)) → ∀ (K : Type) [Field K] (x : Sp K ⟶ S),

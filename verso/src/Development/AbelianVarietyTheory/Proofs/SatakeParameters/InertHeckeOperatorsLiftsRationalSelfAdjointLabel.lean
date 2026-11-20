@@ -19,14 +19,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.InertHeckeLift
 
 /- English proof (translation)
-Rewrite using `[Finsupp.mapRange_single, star_one, dualC, Finsupp.mapDomain_single, hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualC_single {d : List ℤ} (hd : dualLab d = d) :
     dualC (Finsupp.mapRange star (star_zero ℂ) (Finsupp.single d (1 : ℂ))) = Finsupp.single d 1 := by
   rw [Finsupp.mapRange_single, star_one, dualC, Finsupp.mapDomain_single, hd]
 
 /- English proof (translation)
-Establish `h2` using `(GlobalTheory.classPres_basic ι S σ ρ J χ P).1 f 1 g k`. Rewrite `h2` using `[map_one, map_one, one_mul, Module.End.one_apply, hk, Units.val_one, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ext_mul {Gr Γ W K : Type} [Group Gr] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K]
     [StarRing K] {ι : Γ →* Gr} {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup Gr} {χ : J →* ℂˣ}
@@ -35,9 +35,9 @@ theorem ext_mul {Gr Γ W K : Type} [Group Gr] [Group Γ] [NormedAddCommGroup W] 
   rwa [map_one, map_one, one_mul, Module.End.one_apply, hk, Units.val_one, one_smul] at h2
 
 /- English proof (translation)
-Establish `hin : ∀ f g : S.Forms, inner ℂ (jm f) (jm g) = σ (S.csum f.1 g.1)`. Introduce `f g`. Rewrite using `[hM.2.2, hj, hj]`. Conclude with `(GlobalTheory.classPres_basic ι S σ ρ J χ P).2.1 f g`. Apply `σ.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hin, ← hin, hU, hU, ← LinearMap.adjoint_inner_right, hu]`.
+A detailed English derivation is pending.
 -/
 theorem csum_adj {Gr Γ W K : Type} [Group Gr] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [Field K] [NumberField K]
     [StarRing K] {ι : Γ →* Gr} {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W} {J : Subgroup Gr} {χ : J →* ℂˣ}
@@ -53,9 +53,9 @@ theorem csum_adj {Gr Γ W K : Type} [Group Gr] [Group Γ] [NormedAddCommGroup W]
   rw [← hin, ← hin, hU, hU, ← LinearMap.adjoint_inner_right, hu]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hβ`. Rewrite `hc` using `[one_pow]`. Establish `h1 : ((1 : ℕ) : 𝓞 D.host.E) ∉ (pl i).asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `(Ideal.ne_top_iff_one _).1 (pl i).isPrime.ne_top`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.T.doubleCosetOperator_eq_labelOperator_localReps V β Λ 1 L hc (pl i) h1 hoff (ty i) (Comparison₂.hx i) (Comparison₂.hA i) hpw (Comparison₂.hx_ok i hi) (Comparison₂.hA_loc i hi) (Comparison₂.hDC i hi)`. Conclude with `⟨hd.1, fun f => (Comparison₂.op_eq i hi f).trans (hd.2 W _ fun g k hk => ext_mul Pr f g k (Comparison₂.chi_loc i hi k hk))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem tie_label {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E))
     (L : LevDat D.host.E ℂ V.rank) (hβ : IsSDFrame V β Λ 1) {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
@@ -75,9 +75,9 @@ theorem tie_label {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : 
   exact ⟨hd.1, fun f => (Comparison₂.op_eq i hi f).trans (hd.2 W _ fun g k hk => ext_mul Pr f g k (Comparison₂.chi_loc i hi k hk))⟩
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL hF hM j t I pl ty op inR hin Comparison₂ i hi`. Establish `hgood` using `(hin i hi).1`. Establish `hd` using `tie_label (Vc D j) (R.βV j) (R.ΛV j) (R.datVt j t) (hL.βV j) (R.B.L j t).pres Comparison₂ i hi hgood (hin i hi).2.2`. Establish `hj : ∀ f : (A.MtCSD j t).Forms, (R.HV j t).e (R.jV j t f) = (R.B.L j t).pres.ext f.1` using `fun f => hM.jV j t f`. Establish `hint : ∀ h, IsOpsV R j t h → ∀ f, R.jV j t (op i f) = h (pl i) (Finsupp.single (ty i) 1) (R.jV j t f)` using `fun h hh f => (hM.HV j t).1 (((hj _).trans (hd.2 f)).trans ((congrArg (hkF (Vc D j) (pl i) (Finsupp.single (ty i) 1)) (hj f).symm).trans (hh (pl i) hgood _ _).symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨GlobalTheory.HeckeRational.lifts_dcOp_mem_cmMax R hF.tie j t (Comparison₂.hA i) (op i) (Comparison₂.op_eq i hi), ?_, hd.1, hint⟩` and prove the remaining obligations. Use `((GlobalTheory.T.realization_family_normal_operators R F hL hF hM).2 j t).elim fun h hh => ?_` and prove the remaining obligations. Establish `hdual : dualLab (ty i) = ty i` using `((GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing (Vc D j) (pl i) (ty i)).1 hd.1).2.2 (hin i hi).2.1`. Establish `hadj` using `(hh.2.2 (pl i) hgood (Finsupp.single (ty i) 1)).trans (congrArg (h (pl i)) (dualC_single hdual))`. Conclude with `csum_adj (R.B.L j t).pres (R.HV j t) (hM.HV j t) (fun f => R.jV j t f) hj (op i) _ hadj (hint h hh.1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inert_lifts : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), R.toLevCh.Is A.μ0 → R.IsFam → R.IsModels → ∀ j t, ∀ (I : Type) (pl : I → Pl D.host.E) (ty : I → List ℤ) (op : I → Module.End D.what₂.LL (A.MtCSD j t).Forms) (inR : I → Prop), (∀ i, inR i → Good R t (pl i) ∧ conjPl (pl i) = pl i ∧ (ty i).Pairwise (fun a b => b ≤ a)) → Bridge.HeckeTie (Bridge.ratF (Vc D j)) (R.B.L j t).pres op inR (fun i => IsLabElt (Vc D j) (pl i) (ty i)) (fun i => IsLocElt (Vc D j) (pl i)) → ∀ i, inR i → (∀ a b, LinearMap.toMatrix (A.MtCSD j t).basis (A.MtCSD j t).basis (op i) a b ∈ cmMax D.what₂.LL) ∧ (∀ f g : (A.MtCSD j t).Forms, (A.MtCSD j t).csum ((op i f : (A.MtCSD j t).Forms) : (A.MtCSD j t).Cl → (A.MtCSD j t).V) (g : (A.MtCSD j t).Cl → (A.MtCSD j t).V) = (A.MtCSD j t).csum (f : (A.MtCSD j t).Cl → (A.MtCSD j t).V) ((op i g : (A.MtCSD j t).Forms) : (A.MtCSD j t).Cl → (A.MtCSD j t).V)) ∧ IsLab (Vc D j) (pl i) (ty i) ∧ ∀ h, IsOpsV R j t h → ∀ f, R.jV j t (op i f) = h (pl i) (Finsupp.single (ty i) 1) (R.jV j t f) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL hF hM j t I pl ty op inR hin Comparison₂ i hi

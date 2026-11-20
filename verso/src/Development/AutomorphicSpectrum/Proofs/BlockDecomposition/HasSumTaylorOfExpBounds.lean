@@ -5,33 +5,31 @@ open Filter Topology Set
 namespace GlobalTheory.CompanionTheory.TaylorGlobal
 
 /- English proof (translation)
-Establish `hc' : ContDiff ℝ (⊤ : ℕ∞) c` using `hc.of_le (by exact_mod_cast le_top)`. Use `set L : ℝ →L[ℝ] (Fin n → ℝ) := ContinuousLinearMap.smulRight (1 : ℝ →L[ℝ] ℝ) h with hL`. Establish `hLt : ∀ t : ℝ, L t = t • h` using `fun t => by simp [hL]`. Use `set cH : (Fin n → ℝ) → ℂ := fun z => c (H + z) with hcH`. Establish `hcH' : ContDiff ℝ (⊤ : ℕ∞) cH` using `hc'.comp (contDiff_const.add contDiff_id)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℝ → ℂ := cH ∘ L with hg`. Establish `hgs : ContDiff ℝ (⊤ : ℕ∞) g` using `hcH'.comp L.contDiff`. Establish `key : ∀ (j : ℕ) (t : ℝ), iteratedDeriv j g t = iteratedFDeriv ℝ j c (H + t • h) (fun _ => h)`. Introduce `j t`. Rewrite using `[iteratedDeriv_eq_iteratedFDeriv, hg, L.iteratedFDeriv_comp_right hcH' t (by exact_mod_cast le_top), ContinuousMultilinearMap.compContinuousLinearMap_apply, hcH, iteratedFDeriv_comp_add_left, hLt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hLt]`. Use `set A : ℝ := |C| * ‖h‖ with hA`. Establish `hA0 : 0 ≤ A` using `by positivity`. Use `set E : ℝ := Real.exp (|R| * (‖H‖ + ‖h‖)) with hE`. Establish `hE0 : 0 ≤ E` using `(Real.exp_pos _).le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `bnd : ∀ (k : ℕ) (t : ℝ), t ∈ Icc (0 : ℝ) 1 → ‖iteratedDeriv k g t‖ ≤ |M| * A ^ k * E`. Introduce `k t ht`. Rewrite using `[key]`. Use `(hb k _ _).trans ?_` and prove the remaining obligations. Establish `hn : ‖H + t • h‖ ≤ ‖H‖ + ‖h‖`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Establish `: ‖t • h‖ ≤ ‖h‖`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_nonneg ht.1]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ht.2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hexp : Real.exp (R * ‖H + t • h‖) ≤ E`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hpow : M * (C * ‖h‖) ^ k ≤ |M| * A ^ k`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[abs_mul, abs_pow, abs_mul, abs_norm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : ∀ k : ℕ, iteratedFDeriv ℝ k c H (fun _ => h) = iteratedDeriv k g 0`. Introduce `k`. Rewrite using `[key]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsum : Summable (fun k : ℕ => ((Nat.factorial k : ℂ))⁻¹ * iteratedFDeriv ℝ k c H (fun _ => h))`. Establish `hs0 : Summable (fun k : ℕ => |M| * E * (A ^ k / (Nat.factorial k : ℝ)))` using `(Real.summable_pow_div_factorial A).mul_left _`. Use `Summable.of_norm_bounded hs0 ?_` and prove the remaining obligations. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, hD, norm_inv, Complex.norm_natCast]`. Use `bnd k 0 (by simp)` as an intermediate fact. Establish `hf : (0 : ℝ) ≤ ((Nat.factorial k : ℝ))⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `htay : ∀ m : ℕ, taylorWithinEval g m (Icc 0 1) 0 1 = ∑ k ∈ Finset.range (m + 1), ((Nat.factorial k : ℂ))⁻¹ * iteratedFDeriv ℝ k c H (fun _ => h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `m`. Rewrite using `[taylor_within_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hD, iteratedDerivWithin_eq_iteratedDeriv (uniqueDiffOn_Icc zero_lt_one) ((hgs.of_le (by exact_mod_cast le_top)).contDiffAt) (by simp)]`. Simplify using `[Complex.real_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hrem : ∀ m : ℕ, ‖g 1 - taylorWithinEval g m (Icc 0 1) 0 1‖ ≤ |M| * E * A * (A ^ m / (Nat.factorial m : ℝ))`. Introduce `m`. Establish `h1` using `taylor_mean_remainder_bound (f := g) (a := 0) (b := 1) (x := 1) (n := m) (C := |M| * A ^ (m + 1) * E) zero_le_one ((hgs.of_le (by exact_mod_cast le_top)).contDiffOn) (by simp) (by`. Introduce `y hy`. Rewrite using `[iteratedDerivWithin_eq_iteratedDeriv (uniqueDiffOn_Icc zero_lt_one) ((hgs.of_le (by exact_mod_cast le_top)).contDiffAt) hy]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `bnd _ y hy)`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [sub_zero, one_pow, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim : Tendsto (fun m : ℕ => taylorWithinEval g m (Icc 0 1) 0 1) atTop (𝓝 (g 1))`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Establish `h0 : Tendsto (fun m : ℕ => |M| * E * A * (A ^ m / (Nat.factorial m : ℝ))) atTop (𝓝 0)`. Simplify using `using (FloorSemiring.tendsto_pow_div_factorial_atTop A).const_mul (|M| * E * A)`. Use `squeeze_zero (fun _ => norm_nonneg _) (fun m => ?_) h0` and prove the remaining obligations. Rewrite using `[norm_sub_rev]`.
-
-Conclude with `hrem m`. Establish `hg1 : g 1 = c (H + h)` using `by simp [hg, hcH, hLt]`. Rewrite using `[← hg1, hsum.hasSum_iff_tendsto_nat, ← tendsto_add_atTop_iff_nat 1]`. Simplify `hlim` using `only [htay]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasSum_taylor_of_exp_bounds (n : ℕ) (c : (Fin n → ℝ) → ℂ) (C R M : ℝ)
     (hc : ContDiff ℝ ⊤ c)

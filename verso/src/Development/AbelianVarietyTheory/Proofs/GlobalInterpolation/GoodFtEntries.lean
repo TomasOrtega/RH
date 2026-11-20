@@ -29,9 +29,9 @@ def GenPin {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFra
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `e : ∀ (D' : D7), D' = withLoc a.nt.L → (GlobalTheory.SerSys.LabTie D' fun k => @GlobalTheory.Mem.TypePl.labDat (D'.host.g k) ⟨D'.host.g_prime k⟩) → ∀ rep' : D'.what₂.FT → Formalism.L2.NG.FinTyp D'.host.E D'.R.r, HEq a.nt.rep rep' → GlobalTheory.LabPin.TypeLab D' rep'`. Introduce and unpack `_ rfl hl' rep' hr`. Take `rfl` from `eq_of_heq hr`. Use `GlobalTheory.T.rowTruth_of_labelTie hG hZ hDZ hL a.nt.D a.nt.A.wdT a.nt.A.row a.nt.rep (fun k => @GlobalTheory.Mem.TypePl.labDat (a.nt.D.host.g k) ⟨a.nt.D.host.g_prime k⟩) a.nt.A.lab a.nt.row a.depth hl' ?_` and prove the remaining obligations. Introduce `k v`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a.nt.A.grp.kv k v, ?_⟩` and prove the remaining obligations. Rewrite using `[← hp k]`. Conclude with `a.nt.A.grp.tg_tame k v`. Conclude with `e D a.nt.eq hl rep hrep`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeLab_of_gen (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {D : D7} {cf : CharFrame D} {nch : NChoice D} {tp : TupTied D cf nch}
@@ -58,7 +58,7 @@ open Formalism.L2.DIV Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.L
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hR` using `GlobalTheory.Mem.R3.RowFrameParts.main D G Pl0 I0 T A3 Ks R.toRealDat F.lv2 X0 Y`. Establish `hT` using `typeLab_of_gen hG hZ hDZ a hl hp _ r.rep_eq`. Conclude with `⟨s.P.X, s.P.G, s.S.hI.eHH, GlobalTheory.T.constructedSpectralObjects_irreducibilityConditions D G Pl0 T A3.A Ks R.toRealDat F.lv2 Y.eE F0 s Y.PY Y.hF (fun σ : D.what₂.FT => principalLevelFrame.rowRepR R.θ (Y.eFT σ)) hR.1 hR.2 hT hg⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ties_at_rows (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type}
@@ -77,7 +77,7 @@ theorem ties_at_rows (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.
 end Rows
 
 /- English proof (translation)
-Introduce `k` and use `⟨(t.grp.teich k).symm, t.grp.ser k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lab_of_rows {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {Z : w.Lt} {Wt : Set B.places.Pl}
     {p0 : BaseLevelRowSide (w.D Z)} (t : RowsT K w Z Wt p0) :
@@ -87,7 +87,7 @@ theorem lab_of_rows {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : Col
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `ties_at_rows hG hZ hDZ (D := (q.w.st q.Z).toD7) q.core.row q.sat (lab_of_rows q.x.what₂) hp hg`.
+A detailed English derivation is pending.
 -/
 theorem ties_at_wit (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} {K : Ctx} (q : WPt p.s K) (hp : GenPin q.core.a)
@@ -95,9 +95,7 @@ theorem ties_at_wit (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.Z
   ties_at_rows hG hZ hDZ (D := (q.w.st q.Z).toD7) q.core.row q.sat (lab_of_rows q.x.what₂) hp hg
 
 /- English proof (translation)
-Use `Built.ind (R := fun D _ _ _ => GoodFTAll D → Ties D) ?_ hb` and prove the remaining obligations. Introduce and unpack `K β c b - - ⟨q, b', -, e⟩`. Establish `e1 : β.D = q.w.D q.Z` using `congrArg Sigma.fst e`. Use `show GoodFTAll β.D → Ties β.D`. Rewrite using `[e1]`.
-
-Conclude with `ties_at_wit hG hZ hDZ q (hp K q)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ties_of_built (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} (hp : ∀ (K : Ctx) (q : WPt p.s K), GenPin q.core.a) {Q : V4.Slot} {κ : Par}
@@ -110,7 +108,7 @@ theorem ties_of_built (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published
   exact ties_at_wit hG hZ hDZ q (hp K q)
 
 /- English proof (translation)
-Introduce `hG hZ hDZ hL N S Γ hN ⟨R, hR, hrow⟩`. Use `⟨R, hR, hrow.imp fun 𝒜 σ s hA eps Fm hc x hx i => ?_⟩` and prove the remaining obligations. Take `⟨κ, -, -, t⟩` from `s Fm hc`. Conclude with `ties_of_built hG hZ hDZ (p := prmR N S Γ) (fun K q => hN _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.nx.2) (t x hx i).1 (hA Fm hc x hx i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem row_lab_of_good : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → ∀ k, c.a.nt.A.grp.ζ k = @GlobalTheory.GLq.LabelDatum.gen _ ⟨c.a.nt.D.host.g_prime k⟩ (@GlobalTheory.Mem.TypePl.labDat (c.a.nt.D.host.g k) ⟨c.a.nt.D.host.g_prime k⟩)) → RL.At (prmR N S Γ) (fun Q Lk => Row Q Lk (AtAll fun D _ _ _ => GoodFTAll D)) → RL.At (prmR N S Γ) RL.LabelCondition := by
   intro hG hZ hDZ hL N S Γ hN ⟨R, hR, hrow⟩
@@ -119,7 +117,7 @@ theorem row_lab_of_good : GlobalTheory.GLq.Green → GlobalTheory.Published.Zele
   exact ties_of_built hG hZ hDZ (p := prmR N S Γ) (fun K q => hN _ _ _ _ _ _ _ _ _ _ _ _ _ q.x.nx.2) (t x hx i).1 (hA Fm hc x hx i)
 
 /- English proof (translation)
-Introduce `⟨R, hR, hrow⟩`. Use `⟨R, hR, hrow.imp fun 𝒜 σ s hA => Closed.imp hA fun Fm _ _ h hc => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h hc`. Take `⟨κ, -, -, t⟩` from `s Fm (w3_a hc)`. Conclude with `⟨x0, fun x hx h0 i => ties_of_built hG hZ hDZ hp (t x hx i).1 (h x hx h0 i)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem row_lab_ev_of_good (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL} (hp : ∀ (K : Ctx) (q : WPt p.s K), GenPin q.core.a) :
@@ -131,7 +129,7 @@ theorem row_lab_ev_of_good (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Publ
   exact ⟨x0, fun x hx h0 i => ties_of_built hG hZ hDZ hp (t x hx i).1 (h x hx h0 i)⟩
 
 /- English proof (translation)
-The claim follows from `row_lab_of_good hG hZ hDZ hL (NE hL) S Γ fun _ _ _ _ _ _ _ _ _ _ _ _ _ m => m.zeta`.
+A detailed English derivation is pending.
 -/
 theorem row_lab_labelCondition_of_localLanglands (hG : GlobalTheory.GLq.Green) (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hDZ : GlobalTheory.Published.DepthZeroInertia)
     (hL : GlobalTheory.Published.LocalLanglandsGL) (S : SExt) (Γ : GeoP) :
@@ -139,7 +137,7 @@ theorem row_lab_labelCondition_of_localLanglands (hG : GlobalTheory.GLq.Green) (
   row_lab_of_good hG hZ hDZ hL (NE hL) S Γ fun _ _ _ _ _ _ _ _ _ _ _ _ _ m => m.zeta
 
 /- English proof (translation)
-Introduce `hG hZ hDZ hL N S Γ hN` and use `row_lab_of_good hG hZ hDZ hL N S Γ fun K B f T w Z Wt p0 t nch n xd c m => (hN K B f T w Z Wt p0 t nch n xd c m).elim fun e => e.1.zeta`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem row_lab_of_layer : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (GlobalTheory.HeightCounting.Up.NEb hL K B f T w Z Wt p0 t nch n xd c)) → RL.At (prmR N S Γ) (fun Q L => Row Q L (AtAll fun D _ _ (_ : Bundle _ _ _) => Formalism.BasicNotions.GoodFTAll D)) → RL.At (prmR N S Γ) RL.LabelCondition :=
   fun hG hZ hDZ hL N S Γ hN =>

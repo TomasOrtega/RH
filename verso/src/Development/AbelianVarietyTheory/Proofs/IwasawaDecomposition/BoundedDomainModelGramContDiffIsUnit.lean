@@ -11,7 +11,7 @@ open GlobalTheory.HermFrame Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `a b` and use `by have : (fun u : ReciprocityTheory.L2DbarEstimates.V n => coordOf ix u σ a b) = ((EuclideanSpace.proj (𝕜 := ℂ) (ix.symm (σ, a, b))).restrictScalars ℝ) := by funext u; rfl rw [this] exact ContinuousLinearMap.contDiff _ |>.contDiffAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_coordOf {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {n : ℕ}
     (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (σ : GlobalTheory.AllWt.Psi H) (w : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -23,7 +23,7 @@ theorem mContDiffAt_coordOf {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact ContinuousLinearMap.contDiff _ |>.contDiffAt
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, eq_comm, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem one_sub_map_conj_mul_transpose {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) :
     (1 - z.map (starRingEnd ℂ) * zᵀ) = (1 - z * zᴴ)ᵀ := by
@@ -31,7 +31,7 @@ theorem one_sub_map_conj_mul_transpose {p q : ℕ} (z : Matrix (Fin p) (Fin q) �
   simp [Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, eq_comm, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[one_sub_map_conj_mul_transpose, det_transpose, det_one_sub_mul_comm]`. Conclude with `(h.det_pos.ne').isUnit`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_one_sub_map_conj {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) (h : (1 - zᴴ * z).PosDef) :
     IsUnit (1 - z.map (starRingEnd ℂ) * zᵀ).det := by
@@ -39,14 +39,14 @@ theorem isUnit_det_one_sub_map_conj {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ)
   exact (h.det_pos.ne').isUnit
 
 /- English proof (translation)
-The claim follows from `(h.det_pos.ne').isUnit`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_one_sub_conjTranspose {p q : ℕ} (z : Matrix (Fin p) (Fin q) ℂ) (h : (1 - zᴴ * z).PosDef) :
     IsUnit (1 - zᴴ * z).det :=
   (h.det_pos.ne').isUnit
 
 /- English proof (translation)
-Introduce `a b` and use `Complex.conjCLE.contDiff.contDiffAt.comp z (h a b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem MContDiffAt.map_conj {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] {m n : Type*} {k : WithTop ℕ∞}
     {A : V → Matrix m n ℂ} {z : V} (h : MContDiffAt k A z) :
@@ -60,15 +60,13 @@ open GlobalTheory.HermFrame Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw n ix w hw τ`. Distinguish the cases in `h : τ (H.rt : E) = H.rt0`. Establish `hZ` using `mContDiffAt_coordOf ix ⟨τ, h⟩ w`. Establish `hA : MContDiffAt 2 (fun u => 1 - (coordOf ix u ⟨τ, h⟩).map (starRingEnd ℂ) * (coordOf ix u ⟨τ, h⟩)ᵀ) w` using `(mContDiffAt_const 1).sub ((GlobalTheory.PointChern.MContDiffAt.map_conj hZ).mul hZ.transpose)`. Establish `hu` using `isUnit_det_one_sub_map_conj _ (hw ⟨τ, h⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [modelGram, dif_pos h]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [reindex_apply]`. Conclude with `(hA.inv hu).submatrix _ _`. Rewrite using `[det_reindex_self]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `isUnit_nonsing_inv_det_iff.mpr hu`. Distinguish the cases in `h' : conjEmb τ (H.rt : E) = H.rt0`. Establish `hZ` using `mContDiffAt_coordOf ix ⟨conjEmb τ, h'⟩ w`. Establish `hA : MContDiffAt 2 (fun u => 1 - (coordOf ix u ⟨conjEmb τ, h'⟩)ᴴ * coordOf ix u ⟨conjEmb τ, h'⟩) w` using `(mContDiffAt_const 1).sub (hZ.conjTranspose.mul hZ)`. Establish `hu` using `isUnit_det_one_sub_conjTranspose _ (hw ⟨conjEmb τ, h'⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [modelGram, dif_neg h, dif_pos h']`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [reindex_apply]`. Conclude with `(hA.inv hu).submatrix _ _`. Rewrite using `[det_reindex_self]`.
-
-Conclude with `isUnit_nonsing_inv_det_iff.mpr hu`. Simplify using `only [modelGram, dif_neg h, dif_neg h']`. Conclude with `⟨mContDiffAt_const 1, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem modelGram_smooth_isUnit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) {n : ℕ} (ix : Fin n ≃ GlobalTheory.AllWt.Psi H × Fin Dw.p × Fin Dw.q) (w : ReciprocityTheory.L2DbarEstimates.V n), InDom (coordOf ix w) → ∀ τ, MContDiffAt 2 (fun u => modelGram H Dw (coordOf ix u) τ) w ∧ IsUnit (modelGram H Dw (coordOf ix w) τ).det := by
   intro E _ _ _ H Dw n ix w hw τ

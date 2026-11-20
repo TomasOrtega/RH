@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν Φ hS hR`. Establish `hn : 0 < n`. Take `⟨h1, h2, -⟩` from `hR`. Use linear arithmetic over natural numbers and integers. Take `⟨𝓕, h𝓕⟩` from `hS.hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hsec : IsSection χ (s0 V n) (fun g : G D n => (ω g Φ).1 0)` using `GlobalTheory.StdUnn.SiegelSection.fock_mem_degenerate D n V ψ hS.hψ χ hS.hχ hS.hη θ hS.hθ μ 𝓕 h𝓕 ω hS.hω l hS.hl s hS.hs Φ hS.hΦ`. Take `⟨U, d, E, σ, -, -, -, -, -, -, -, hconv⟩` from `hE D n hn χ V.rank hS.hχ hS.hη H hS.hH (s0 V n) _ hsec (s0 V n)`. Use `⟨σ, fun z hz g => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hb⟩` from `(hconv z hz).1 {g} isCompact_singleton`. Conclude with `Summable.of_nonneg_of_le (fun q => norm_nonneg _) (fun q => hb g rfl q) hu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem convRight_of (hE : EisStrong) : ConvRight := by
   intro D n V ψ χ θ μ ω H l s ν Φ hS hR

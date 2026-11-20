@@ -18,11 +18,11 @@ open GlobalTheory.ChartTrans
 variable {k : Type} [CommRing k] {d : ℕ}
 
 /- English proof (translation)
-Establish `h0 : GP (comp1 φ (pt k (n` using `2) d 0)) := gp_comp1 φ _ hφ (gp_pt 0)`. Establish `h1 : GP (comp1 φ (pt k (n` using `2) d 1)) := gp_comp1 φ _ hφ (gp_pt 1)`. Establish `hΦ` using `pair_points_zero_constant h0 h1`. Establish `key : ev (n` using `2) ![F] (ev (n := 1) ![φ] g) = ev ![comp1 φ (pt k (n := 2) d 0), comp1 φ (pt k (n := 2) d 1)] (ev (n := 2) ![F] g) := by`. Rewrite using `[gt_ev_ev' _ _ (single_point_zero_constant hF) (single_point_zero_constant hφ), vec1, gt_ev_ev' _ _ hΦ (single_point_zero_constant hF), vec1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: evP ![F] φ = evP ![comp1 φ (pt k (n` using `2) d 0), comp1 φ (pt k (n := 2) d 1)] F := hom`. Rewrite using `[this]`. Rewrite using `[dof_eq _ hF hu, dof_eq F hF hu, key, ChartTrans.ev_sum _ (single_point_zero_constant hφ)]`. Simplify using `only [axis_pderiv_comp φ hφ, ChartTrans.ev_C_mul _ (single_point_zero_constant hφ)]`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dof_endo (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0)
     (hu : ∀ i, ev (n := 1) ![pt k (n := 1) d 0, 0] (F i) = (X ((0 : Fin 1), i) : PS k 1 d))
@@ -47,7 +47,7 @@ theorem dof_endo (F : Fin d → PS k 2 d) (hF : ∀ i, constantCoeff (F i) = 0)
   ring
 
 /- English proof (translation)
-Unfold `Dof`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dof_smul_dir (F : Fin d → PS k 2 d) (c : k) (u : Fin d → k) (g : PS k 1 d) :
     Dof F (c • u) g = C c * Dof F u g := by
@@ -55,7 +55,7 @@ theorem dof_smul_dir (F : Fin d → PS k 2 d) (c : k) (u : Fin d → k) (g : PS 
   simp only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, Finset.sum_mul, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, GE.dof_C_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_dof_C_mul (F : Fin d → PS k 2 d) (u : Fin d → k) (n : ℕ) (c : k) (g : PS k 1 d) :
     (Dof F u)^[n] (C c * g) = C c * (Dof F u)^[n] g := by
@@ -64,11 +64,11 @@ theorem iterate_dof_C_mul (F : Fin d → PS k 2 d) (u : Fin d → k) (n : ℕ) (
   | succ n ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, GE.dof_C_mul]
 
 /- English proof (translation)
-Establish `hit : ∀ (l : ι) (n : ℕ) (g : PS k 1 d), (Dof F (u l))^[n] (ev (n` using `1) ![φ] g) = C (α l ^ n) * ev (n := 1) ![φ] ((Dof F (u l))^[n] g) := by`. Introduce `l n g`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, GE.dof_C_mul, h, pow_succ, map_mul, mul_assoc]`. Rewrite using `[← Finset.prod_map_toList]`. Unfold `DmonOf`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Consider the case `cons a L ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih, iterate_dof_C_mul, hit, List.map_cons, List.prod_cons, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dmonOf_endo (F : Fin d → PS k 2 d) (φ : Pt k 1 d) (hφ : GP φ) {ι : Type} [Fintype ι]
     (u : ι → Fin d → k) (α : ι → k)
@@ -99,13 +99,11 @@ namespace GlobalTheory
 open DerivEndo QuadDeriv
 
 /- English proof (translation)
-Introduce `R _ d O _ _ k _ _ _ B a`. Establish `hF : GP (B.FK k)` using `constantCoeff_mapP_eq_zero _ _ B.G.const`. Establish `hw : GP (B.actK k a)` using `constantCoeff_mapP_eq_zero _ _ (B.A.const a)`. Establish `hU : evP (n` using `1) ![pt k d 0, 0] (B.FK k) = pt k d 0 := by`. Use `congrArg (mapP (algebraMap R k)) (unit_right B.G)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[baseChange_addOf _ _ _ _ (gp_pt 0) gp_zero₂, baseChange_pt, show mapP (algebraMap R k) (0 : Pt R 1 d) = 0 from funext fun i => map_zero _]`. Conclude with `this`. Establish `hom : comp1 (B.actK k a) (B.FK k) = addOf (B.FK k) (comp1 (B.actK k a) (pt k (n` using `2) d 0)) (comp1 (B.actK k a) (pt k (n := 2) d 1)) := by`. Use `congrArg (mapP (algebraMap R k)) (B.A.hom a)` as an intermediate fact. Rewrite `this` using `[FGLaw.add, FGLaw.add, addOf_pt, baseChange_comp1 _ _ _ B.G.const, baseChange_addOf _ _ _ _ (gp_comp1 _ _ (B.A.const a) (gp_pt 0)) (gp_comp1 _ _ (B.A.const a) (gp_pt 1)), baseChange_comp1 _ _ _ (gp_pt 0), baseChange_comp1 _ _ _ (gp_pt 1), baseChange_pt, baseChange_pt]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1 : ∀ (u : Fin d → k) (g : PS k 1 d), Dof (B.FK k) u (ev (n` using `1) ![B.actK k a] g) = ev (n := 1) ![B.actK k a] (Dof (B.FK k) ((dAct k B a).mulVec u) g) := dof_endo (B.FK k) hF (congrFun hU) (B.actK k a) hw hom`. Use `⟨h1, fun ι _ u α hα m g => ?_⟩` and prove the remaining obligations. Rewrite using `[dmonOf_endo (B.FK k) (B.actK k a) hw u α (fun l g => by`. Rewrite using `[h1, hα, dof_smul_dir, ChartTrans.ev_C_mul _ (single_point_zero_constant hw)]), map_mul, constantCoeff_C,`.
-
-Use `constSt k d (B.actK k a) hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariantDeriv_along_endo : ∀ (R : Type) [CommRing R] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d O) (a : O), (∀ (u : Fin d → k) (g : PS k 1 d), Dof (B.FK k) u (ev (n := 1) ![B.actK k a] g) = ev (n := 1) ![B.actK k a] (Dof (B.FK k) ((dAct k B a).mulVec u) g)) ∧ ∀ (ι : Type) [Fintype ι] (u : ι → Fin d → k) (α : ι → k), (∀ l, (dAct k B a).mulVec (u l) = α l • u l) → ∀ (m : ι →₀ ℕ) (g : PS k 1 d), constantCoeff (DmonOf (B.FK k) u m (ev (n := 1) ![B.actK k a] g)) = (∏ l, α l ^ m l) * constantCoeff (DmonOf (B.FK k) u m g) := by
   intro R _ d O _ _ k _ _ _ B a

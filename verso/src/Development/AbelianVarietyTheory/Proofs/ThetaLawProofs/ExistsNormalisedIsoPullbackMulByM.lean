@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Use `⟨⟨fun j => (show Γ(Y, LB.wchart L φ j)ˣ from t.s j) ^ n⟩, isGen_of_gm _ fun y j j' hj hj' => ?_, fun Z r z J => map_zpow _ _ _⟩` and prove the remaining obligations. Use `(map_zpow _ _ _).trans (Eq.trans ?_ (congrArg _ (map_zpow _ _ _).symm))` and prove the remaining obligations. Rewrite using `[gen_trans ht (𝟙 Y) y hj hj', mul_zpow]`. Use `congr 1`. Simplify using `only [trF, zpow_mul, Finset.prod_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem exists_zpowGen {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) (n : ℤ) :
@@ -32,15 +32,13 @@ theorem exists_zpowGen {X Y : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] {φ 
   simp only [trF, zpow_mul, Finset.prod_zpow]
 
 /- English proof (translation)
-Introduce `laws R _ _ x m`. Establish `hL` using `x.P.isLB`. Take `⟨α, hα⟩` from `laws.mulPull _ x.P m`. Take `⟨ρ, hρ, hρv⟩` from `exists_zpowGen (φ := fun _ : PUnit => eSec x.P.A) (ε := fun _ => 1) x.rig x.rig_gen (1 - (m : ℤ) ^ 2)`. Establish `e₁ : eSec x.P.A ≫ (Out.mulA x.P.A m).left = eSec x.P.A`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: η[x.P.A] ≫ Out.mulA x.P.A m = η[x.P.A]`. Establish `h1 : η[x.P.A] = (1 : 𝟙_ (Over (Sp R)) ⟶ x.P.A)`. Rewrite using `[Hom.one_def, toUnit_unit, Category.id_comp]`. Rewrite using `[MonObj.comp_pow, Category.comp_id, h1, one_pow]`. Conclude with `congrArg (·.left) this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : eSec x.P.A ≫ (toUnit x.P.A).left = 𝟙 _`. Establish `: η[x.P.A] ≫ toUnit x.P.A = 𝟙 _` using `toUnit_unique _ _`. Conclude with `congrArg (·.left) this`. Take `⟨mu, hmu, hv⟩` from `exists_gen hL (K' := Fin 2) (φ' := ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left]) (ε' := ![1, -(m : ℤ) ^ 2]) (fun U _ f => by`. Use `(Fintype.prod_sum_type _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Fintype.prod_sum_type, Fin.prod_univ_two, Fintype.prod_unique, Matrix.cons_val_zero, Matrix.cons_val_one, Category.comp_id, e₁]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_zpow]`. Use the proof step `module)`. Use the proof step `(LB.mulGen x.P.L _ _ _ _ (LB.invGen x.P.L _ _ α) (LB.pullGen x.P.L _ _ (LB.mulGen x.P.L _ _ _ _ (LB.pullGen x.P.L _ _ α (eSec x.P.A)) ρ) (toUnit x.P.A).left))`.
-
-Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.invGen_isGen _ _ _ _ hα) (DVR.pullGen_isGen _ _ _ _ (DVR.mulGen_isGen _ _ _ _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hα _) hρ) _))`. Use `⟨mu, hmu, fun p J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ p J hJ, val_mul hJ, val_inv, val_pull hJ, val_mul hJ, val_pull hJ, hρv, e₂, Category.id_comp, inv_mul_cancel_left]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normalised_mulPull : Out.Laws → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (x : KeyIn R) (m : ℕ), ∃ mu : LB.Gen (LB.LinComb x.P.L (K := Fin 2) ![((𝟙 x.P.A) ^ m).left, 𝟙 x.P.A.left] ![1, -(m : ℤ) ^ 2]), mu.IsGen ∧ ∀ (p : (𝟙_ (Over (Sp R))).left) J, Good x.P.L p J → val mu (eSec x.P.A) p J = val x.rig (𝟙 _) p J ^ (1 - (m : ℤ) ^ 2) := by
   intro laws R _ _ x m

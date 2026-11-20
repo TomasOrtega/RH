@@ -20,7 +20,7 @@ def ballSubgroup (k : Type) [Field k] [ValuativeRel k] (n : ℕ) (γ : ValueGrou
   neg_mem' := fun {a} ha i => by simpa using ha i
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [Set.mem_univ_pi, Set.mem_setOf_eq]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem coe_ballSubgroup (n : ℕ) (γ : ValueGroupWithZero k) :
     (ballSubgroup k n γ : Set (Fin n → k)) =
@@ -30,7 +30,7 @@ theorem coe_ballSubgroup (n : ℕ) (γ : ValueGroupWithZero k) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[coe_ballSubgroup]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k γ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ballSubgroup (n : ℕ) (γ : ValueGroupWithZero k) :
     IsCompact (ballSubgroup k n γ : Set (Fin n → k)) := by
@@ -38,7 +38,7 @@ theorem isCompact_ballSubgroup (n : ℕ) (γ : ValueGroupWithZero k) :
   exact isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall k γ
 
 /- English proof (translation)
-Use `AddSubgroup.isOpen_of_mem_nhds (g := 0) _ ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.LocalLattice.coe_ballSubgroup]`. Use `set_pi_mem_nhds Set.finite_univ fun i _ => ?_` and prove the remaining obligations. Conclude with `(IsValuativeTopology.mem_nhds_zero_iff _).2 ⟨Units.mk0 γ hγ, fun x (hx : valuation k x < γ) => hx.le⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_ballSubgroup (n : ℕ) {γ : ValueGroupWithZero k} (hγ : γ ≠ 0) :
     IsOpen (ballSubgroup k n γ : Set (Fin n → k)) := by
@@ -49,9 +49,9 @@ theorem isOpen_ballSubgroup (n : ℕ) {γ : ValueGroupWithZero k} (hγ : γ ≠ 
     ⟨Units.mk0 γ hγ, fun x (hx : valuation k x < γ) => hx.le⟩
 
 /- English proof (translation)
-Establish `hne : ∀ γ : ValueGroupWithZero k, max γ 1 ≠ 0` using `fun γ => ne_of_gt (lt_of_lt_of_le zero_lt_one (le_max_right γ 1))`. Establish `hmono : Monotone fun γ : ValueGroupWithZero k => (GlobalTheory.CompanionTheory.LocalLattice.ballSubgroup k n (max γ 1) : Set (Fin n → k))` using `fun γ δ hγδ x hx i => (hx i).trans (max_le_max hγδ le_rfl)`. Establish `hcover : K ⊆ ⋃ γ : ValueGroupWithZero k, (GlobalTheory.CompanionTheory.LocalLattice.ballSubgroup k n (max γ 1) : Set (Fin n → k))`. Introduce `x _`. Take `⟨γ, hγ⟩` from `Finite.exists_le fun i => valuation k (x i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_iUnion.2 ⟨γ, fun i => (hγ i).trans (le_max_left γ 1)⟩`. Take `⟨γ, hγ⟩` from `hK.elim_directed_cover _ (fun γ => GlobalTheory.CompanionTheory.LocalLattice.isOpen_ballSubgroup n (hne γ)) hcover hmono.directed_le`. Conclude with `⟨_, GlobalTheory.CompanionTheory.LocalLattice.isCompact_ballSubgroup n _, GlobalTheory.CompanionTheory.LocalLattice.isOpen_ballSubgroup n (hne γ), hγ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_open_addSubgroup (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (K : Set (Fin n → k)) (hK : IsCompact K) :

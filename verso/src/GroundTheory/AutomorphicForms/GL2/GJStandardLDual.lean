@@ -28,11 +28,11 @@ theorem matrixCoeff_inv_eq_contragredient (π : Representation ℂ (GL (Fin n) F
 variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
 
 /- English proof (translation)
-Establish `hsm : ℓ₀ ∈ smoothVectors (Representation.dual π)` using `mem_smoothVectors_of_mem_fixedVectors (isOpen_integralGL F n) hℓ₀K`. Use `Whittaker.isIrreducible_contragredient hπ` as an intermediate fact. Establish `hadm` using `isAdmissible_contragredient hπ`. Establish `hfix : (⟨ℓ₀, hsm⟩ : smoothVectors (Representation.dual π)) ∈ fixedVectors (contragredient π) (integralGL F n)` using `mem_fixedVectors_contragredient.2 (mem_fixedVectors_dual.1 hℓ₀K)`. Establish `hK : fixedVectors (contragredient π) (integralGL F n) ≠ ⊥`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hfix` using `[h, Submodule.mem_bot]`. Establish `h0 : ℓ₀ = 0` using `congrArg Subtype.val hfix`. Rewrite `hℓ₀` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one hℓ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz'⟩` from `Spherical.exists_satakeParameter (μ := μ) (isSmooth_contragredient π) hK`. Conclude with `⟨z', hz', fun s ↦ LFunction_eq_prod_of_isSatakeParameter hadm hK μ hz' s⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_satakeParameter_contragredient [NeZero n] (π : Representation ℂ (GL (Fin n) F) V)
     [π.IsIrreducible] (hπ : IsAdmissible π) (μ : Measure (GL (Fin n) F)) [μ.IsHaarMeasure] {v₀ : V}
@@ -57,9 +57,9 @@ theorem exists_satakeParameter_contragredient [NeZero n] (π : Representation �
   exact ⟨z', hz', fun s ↦ LFunction_eq_prod_of_isSatakeParameter hadm hK μ hz' s⟩
 
 /- English proof (translation)
-Establish `hsm : ℓ₀ ∈ smoothVectors (Representation.dual π)` using `mem_smoothVectors_of_mem_fixedVectors (isOpen_integralGL F n) hℓ₀K`. Take `⟨z', hz', hL⟩` from `exists_satakeParameter_contragredient π hπ μ hℓ₀K hℓ₀`. Establish `hfix : (⟨ℓ₀, hsm⟩ : smoothVectors (Representation.dual π)) ∈ fixedVectors (contragredient π) (integralGL F n)` using `mem_fixedVectors_contragredient.2 (mem_fixedVectors_dual.1 hℓ₀K)`. Establish `hev : evalSmooth π v₀ ⟨ℓ₀, hsm⟩ = 1` using `hℓ₀`. Establish `hfun : (fun g : GL (Fin n) F ↦ Parabolic.matrixCoeff π v₀ ℓ₀ g⁻¹) = Parabolic.matrixCoeff (contragredient π) ⟨ℓ₀, hsm⟩ (evalSmooth π v₀)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `(matrixCoeff_inv_eq_contragredient π v₀ hsm)`. Establish `hI' : Integrable (fun g : GL (Fin n) F ↦ integralIndicator F n (g : Matrix (Fin n) (Fin n) F) * Parabolic.matrixCoeff (contragredient π) ⟨ℓ₀, hsm⟩ (evalSmooth π v₀) g * detPow g (s + ((n : ℂ) - 1) / 2)) μ` using `hI`. Take `⟨hw, heq⟩` from `zetaIntegral_sphericalCoeff_of_integrable μ hz' hfix hev hI'`. Use `⟨z', hz', hw, hL, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun, heq, hL s]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem zetaIntegral_inv_sphericalCoeff_of_integrable' [NeZero n]
     (π : Representation ℂ (GL (Fin n) F) V) [π.IsIrreducible] (hπ : IsAdmissible π)
@@ -90,7 +90,7 @@ theorem zetaIntegral_inv_sphericalCoeff_of_integrable' [NeZero n]
   rw [hfun, heq, hL s]
 
 /- English proof (translation)
-The claim follows from `(zetaIntegral_inv_sphericalCoeff_of_integrable' π hπ μ hℓ₀K hℓ₀ hI).choose_spec.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem zetaIntegral_inv_sphericalCoeff_of_integrable [NeZero n]
     (π : Representation ℂ (GL (Fin n) F) V) [π.IsIrreducible] (hπ : IsAdmissible π)

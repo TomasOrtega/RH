@@ -8,16 +8,16 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GrForm
 
 /- English proof (translation)
-Introduce `i T h` and use `lft_spec T h (t i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isLift_lft {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} (W : X.Opens) {d : ℕ}
     (t : Fin d → Γ(X, W)) : IsLift (q := q) W t (fun i T => lft W T (t i)) :=
   fun i T h => lft_spec T h (t i)
 
 /- English proof (translation)
-Take `⟨f, hf, rfl, hz⟩` from `h`. Establish `e : f = 0`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[show (show sqM a b _ from f s).1 = _ from hz s]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem rep_zero {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C ⥤ CommAlgCat.{0} R} (a b : IdF A) {j : ℕ}
     (c : CH.H (sq a b) j) (h : Rep a b (fun s => 0) c) : c = 0 := by
@@ -31,15 +31,13 @@ theorem rep_zero {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] {A : C �
   rfl
 
 /- English proof (translation)
-Introduce `hFr hL hP O _ l s hb X q W d c r j hrs hjr`. Take `⟨E, σ, θ, hGr, hbot, -, -, -⟩` from `hFr l s hb q c _ (isLift_lft W c.t)`. Take `⟨Q, hQ⟩` from `hP (dividedPowersBot O) q (Ideal.Quotient.mk ⊥) l s {W}`. Establish `hCr : ∀ r' ≤ (r : ℤ) + 1, Q.Crit (sFil (SS q l s W)) r'` using `fun r' h => (hQ r' (by omega)).1`. Establish `key` using `hL Q (GlobalTheory.CompanionTheory.DPFil.isFil_sFil (SS q l s W)) E σ hGr (r : ℤ) hCr j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `lt_or_gt_of_ne hjr with hlt | hlt` into its components or cases. Take `⟨h1, -⟩` from `key.2 (r - j) (by omega)`. Establish `all : ∀ cl : CH.H (gr (sFil (SS q l s W)) (r : ℤ)) j, cl = 0`. Introduce `cl`. Take `⟨x, hx, hR⟩` from `h1 cl`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `x0 : ∀ I, x I = 0` using `fun I => by`. Establish `h` using `hx I`. Rewrite `h` using `[hbot (r - j) (by omega)]`. Conclude with `h`. Establish `e : (fun s => ∑ I : Idx j d, E.form σ I.1 (x I) s) = fun s => 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Use `Finset.sum_eq_zero fun I _ => ?_` and prove the remaining obligations. Simplify using `[x0, Frame.form]`. Rewrite `hR` using `[e]`. Conclude with `rep_zero _ _ cl hR`.
-
-Conclude with `⟨fun a b => (all a).trans (all b).symm⟩`. Conclude with `key.1 (by exact_mod_cast hlt)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem van : StFrame → CrystallineSemistableComparison.Pb.KH.LocGr → CrystallineSemistableComparison.Pb.KH.PolyTf → StVan := by
   intro hFr hL hP O _ l s hb X q W d c r j hrs hjr

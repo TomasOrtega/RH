@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.FormsLocus
 
 /- English proof (translation)
-Rewrite using `[expand, ← MvPolynomial.coe_eval₂Hom (MvPolynomial.C.comp MvPolynomial.C), ← RingHom.comp_apply, MvPolynomial.comp_eval₂Hom]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval₂_expand {Rg S : Type} [CommRing Rg] [CommRing S] (mA mB : ℕ)
     (ψ : MvPolynomial (Fin (mA * mB)) Rg →+* S) (β : Fin mA → S) (F : MvPolynomial (Fin mB) Rg) :
@@ -26,7 +26,7 @@ theorem eval₂_expand {Rg S : Type} [CommRing Rg] [CommRing S] (mA mB : ℕ)
   ext r <;> simp
 
 /- English proof (translation)
-Establish `h` using `hF.eval₂ (τ := Fin mA) (MvPolynomial.C.comp MvPolynomial.C : Rg →+* MvPolynomial (Fin mA) (MvPolynomial (Fin (mA * mB)) Rg)) (fun j => ∑ i : Fin mA, MvPolynomial.C (MvPolynomial.X (finProdFinEquiv (i, j))) * MvPolynomial.X i) (fun r => MvPolynomial.isHomogeneous_C _ _) (fun j => …`. Simplify `h` using `[expand]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem expand_isHomogeneous {Rg : Type} [CommRing Rg] (mA mB : ℕ) {F : MvPolynomial (Fin mB) Rg} {d : ℕ}
     (hF : F.IsHomogeneous d) : (expand mA mB F).IsHomogeneous d := by
@@ -38,17 +38,17 @@ theorem expand_isHomogeneous {Rg : Type} [CommRing Rg] (mA mB : ℕ) {F : MvPoly
   simpa [expand] using h
 
 /- English proof (translation)
-Introduce `Rg _ A₀ T X f N mA mB a g φ p _ d F hF z q hq`. Establish `hT : p z ∈ (⊤ : T.Opens)` using `trivial`. Set `ψ : MvPolynomial (Fin (mA * mB)) Rg →+* X.presheaf.stalk z` to `(MapIff.gsH p z ⊤ hT).comp (ringOf g)`. Establish `hC : ψ.comp MvPolynomial.C = gc (p ≫ g ≫ affπ Rg (mA * mB)) z`. Use extensionality with `r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `n2 : (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial (Fin (mA * mB)) Rg))).inv (MvPolynomial.C r) = (affπ Rg (mA * mB)).appTop ((Scheme.ΓSpecIso (CommRingCat.of Rg)).inv r)`. Rewrite using `[← CommRingCat.comp_apply, ← Scheme.ΓSpecIso_inv_naturality]`. Both sides reduce to the same expression. Simplify using `only [ψ, RingHom.comp_apply, ringOf, gc, MapIff.gsH, RingHom.coe_comp, Function.comp_apply]`. Rewrite using `[n2, Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hcomb : comb a φ p (matOf g) z q = fun j => ∑ i, ψ (MvPolynomial.X (finProdFinEquiv (i, j))) * gs φ z (N.U q) ((a i).f q)`. Use function extensionality and compare the values at `j`. Simplify using `only [comb, ψ, RingHom.comp_apply, ringOf_X, matOf]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MapIff.gsH_apply]`. Rewrite using `[← hC, hcomb, eval₂_expand, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq']`. Use `Finset.sum_congr rfl fun ν hν => ?_` and prove the remaining obligations. Establish `hd : ∑ i, ν i = d`. Use `expand_isHomogeneous mA mB hF (MvPolynomial.mem_support_iff.1 hν)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this, Finsupp.weight_apply]`. Simplify using `[Finsupp.sum_fintype]`. Establish `hp : gs φ z (N.U q) (∏ i, (a i).f q ^ ν i) = ∏ i, gs φ z (N.U q) ((a i).f q) ^ ν i`. Rewrite using `[← MapIff.gsH_apply φ z _ hq, map_prod]`. Simplify using `only [map_pow, MapIff.gsH_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, RingHom.comp_apply, monSec, if_pos hd]`. Rewrite using `[MapIff.gsH_apply]`. Conclude with `congrArg (fun x => gs p z ⊤ (ringOf g (MvPolynomial.coeff ν (expand mA mB F))) * x) hp.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem germ_eval_comb : ∀ (Rg : Type) [CommRing Rg] (A₀ T X : Scheme.{0}) (f : A₀ ⟶ Sp Rg) (N : LB A₀) (mA mB : ℕ) (a : Fin mA → LB.Sec N) (g : T ⟶ Sp (MvPolynomial (Fin (mA * mB)) Rg)) (φ : X ⟶ A₀) (p : X ⟶ T), φ ≫ f = p ≫ g ≫ affπ Rg (mA * mB) → ∀ (d : ℕ) (F : MvPolynomial (Fin mB) Rg), F.IsHomogeneous d → ∀ (z : X) (q : N.ι), φ z ∈ N.U q → MvPolynomial.eval₂Hom (gc (p ≫ g ≫ affπ Rg (mA * mB)) z) (comb a φ p (matOf g) z q) F = ∑ ν ∈ (GlobalTheory.FormsLocus.expand mA mB F).support, gs p z ⊤ (GlobalTheory.FormsLocus.ringOf g ((GlobalTheory.FormsLocus.expand mA mB F).coeff ν)) * gs φ z (N.U q) ((GlobalTheory.FormsLocus.monSec a d ν).f q) := by
   intro Rg _ A₀ T X f N mA mB a g φ p _ d F hF z q hq

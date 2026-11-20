@@ -12,7 +12,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.En
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P5.qminorOp_smulC (Formalism.FourierDecayAlt.P5.eH_smulC (k := k) (r := r)) _ _ _ α f`.
+A detailed English derivation is pending.
 -/
 theorem cV_smul {k r : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] (Y α : ℂ) (f : B.Mat k r → E) :
     Q.CV k r Y (α • f) = α • Q.CV k r Y f :=
@@ -25,7 +25,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   {π' : Q.Mx k r → (Wq →L[ℂ] Wq)} {Dm : Set (Q.Mx k r)}
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, hU, hgU, hc, he⟩` from `hJ.1 g₀ ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hg₀.2, hg₀.1⟩`. Conclude with `⟨U, F, hU, hgU, hc.of_le (by exact_mod_cast le_top), fun g hg hgG => he g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgG)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ckOn_of_ffl {J : Q.Mx k r → (Wq →L[ℂ] Wp)} (hJ : J ∈ Q.FFl k r z z' π π' 0 Dm) :
     B.CkOn ((2 * r + k + 1 : ℕ) : ℕ∞) (Dm ∩ B.GV k r) J := by
@@ -34,7 +34,7 @@ theorem ckOn_of_ffl {J : Q.Mx k r → (Wq →L[ℂ] Wp)} (hJ : J ∈ Q.FFl k r z
   exact ⟨U, F, hU, hgU, hc.of_le (by exact_mod_cast le_top), fun g hg hgG => he g hg (Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hgG)⟩
 
 /- English proof (translation)
-Introduce `g hg`. Use `hCL k r _ Dm J₁ J₂ (Y : ℂ) hDm (ckOn_of_ffl h₁) (ckOn_of_ffl h₂) (fun x hx => he x ⟨Formalism.FourierDecayAlt.P.OrbitalIntegralIdentities.glev0 hx.2, hx.1⟩) g ⟨hg.2, hg.1.1⟩` as an intermediate fact. Simplify using `only [Pi.smul_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem letter_congr (hCL : CVLocal) (hDm : IsOpen Dm) {J₁ J₂ : Q.Mx k r → (Wq →L[ℂ] Wp)}
     (h₁ : J₁ ∈ Q.FFl k r z z' π π' 0 Dm) (h₂ : J₂ ∈ Q.FFl k r z z' π π' 0 Dm)
@@ -46,7 +46,7 @@ theorem letter_congr (hCL : CVLocal) (hDm : IsOpen Dm) {J₁ J₂ : Q.Mx k r →
   simp only [Pi.smul_apply, this]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [cV_smul, Pi.smul_apply]`. Unfold `Q.CV`. Rewrite using `[Formalism.FourierDecayAlt.P.capelli_commutation _ k r 0 Dm J hDm hJ.1 g hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem letter_swap (hDm : IsOpen Dm) {J : Q.Mx k r → (Wq →L[ℂ] Wp)} (hJ : J ∈ Q.FFl k r z z' π π' 0 Dm)
     (x y : ℝ) (s : ℂ) : ∀ g ∈ Q.Glev k r 0 ∩ Dm,
@@ -57,7 +57,7 @@ theorem letter_swap (hDm : IsOpen Dm) {J : Q.Mx k r → (Wq →L[ℂ] Wp)} (hJ :
   rw [Formalism.FourierDecayAlt.P.capelli_commutation _ k r 0 Dm J hDm hJ.1 g hg]
 
 /- English proof (translation)
-Unfold `foldCV`. Rewrite using `[List.foldr_append]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldCV_append (s : ℂ) (l₁ l₂ : List C.Letter) (J : Q.Mx k r → (Wq →L[ℂ] Wp)) :
     foldCV k r s (l₁ ++ l₂) J = foldCV k r s l₁ (foldCV k r s l₂ J) := by
@@ -66,13 +66,13 @@ theorem foldCV_append (s : ℂ) (l₁ l₂ : List C.Letter) (J : Q.Mx k r → (W
 end fold
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ z z' π π' Dm hDm hcl J hJ s a`. Establish `hcomm : ∀ (b : List C.Letter) (J : Q.Mx k r → (Wq →L[ℂ] Wp)), J ∈ Q.FFl k r z z' π π' 0 Dm → ∀ x : C.Letter, ∀ g ∈ Q.Glev k r 0 ∩ Dm, foldCV k r s b (s • Q.CV k r (x.2 : ℂ) J) g = (s • Q.CV k r (x.2 : ℂ) (foldCV k r s b J)) g`. Introduce `b`. Proceed by induction on `b with`. Consider the case `nil => intro J _ x g _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `cons y b ih`. Introduce `J hJ x g hg`. Establish `h1` using `letter_congr hCL hDm (foldCV_mem hcl (hcl J hJ x.2 s) s b) (hcl _ (foldCV_mem hcl hJ s b) x.2 s) (ih J hJ x) y.2 s g hg`. Establish `h2` using `letter_swap hDm (foldCV_mem hcl hJ s b) y.2 x.2 s g hg`.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[foldCV_cons, h1, h2]`. Both sides reduce to the same expression. Proceed by induction on `a generalizing J with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Proceed by induction. Treat this case separately. Both sides reduce to the same expression.
 
-Consider the case `cons x a ih`. Introduce `g hg`. Rewrite using `[List.reverse_cons, foldCV_append]`. Rewrite using `[ih (foldCV k r s [x] J) (hcl J hJ x.2 s) g hg]`. Conclude with `hcomm a J hJ x g hg`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem foldRev_of (hCL : CVLocal) : FoldRev := by
   intro k r Wp Wq _ _ _ _ z z' π π' Dm hDm hcl J hJ s a
@@ -98,7 +98,7 @@ theorem foldRev_of (hCL : CVLocal) : FoldRev := by
     exact hcomm a J hJ x g hg
 
 /- English proof (translation)
-The claim follows from `foldRev_of coefficient_vector_locality`.
+A detailed English derivation is pending.
 -/
 theorem folding_reversal_holds : FoldRev := foldRev_of coefficient_vector_locality
 

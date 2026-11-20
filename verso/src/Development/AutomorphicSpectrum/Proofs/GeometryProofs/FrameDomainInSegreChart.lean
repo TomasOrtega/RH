@@ -9,17 +9,15 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.HodgeMetric
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y hT z w cc f h hw hd`. Establish `hu : ∀ k, IsUnit (w ⟨k, cc k⟩)` using `fun k => IsUnit.mk0 _ (hd.1 k)`. Establish `hy : ∀ k, y ⟨k, cc k⟩ ≠ 0` using `fun k => (hw.2 k (cc k) (hu k)).1`. Establish `reg : ∀ {a : Ω} {r : ℂ}, ValAt ξ z a r → a ∈ regAt ξ ⟨centre z, h⟩`. Introduce and unpack `a r ⟨_, s, hs, -⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s, hs⟩`. Use `⟨⟨Finset.prod_ne_zero_iff.2 fun k _ => hy k, fun c' => ?_⟩, ?_⟩` and prove the remaining obligations. Use `choose r hr _ using fun k => (hw.2 k (cc k) (hu k)).2 (c' k)`. Establish `hp : ∀ s : Finset K, ValAt ξ z (∏ k ∈ s, y ⟨k, c' k⟩ / y ⟨k, cc k⟩) (∏ k ∈ s, r k)` using `by classical`. Introduce `s`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CxVal.one h`. Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Conclude with `CxVal.mul (hr k) ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : segreCoord y c' / segreCoord y cc = ∏ k, y ⟨k, c' k⟩ / y ⟨k, cc k⟩`. Simplify using `only [segreCoord, Finset.prod_div_distrib]`. Rewrite using `[e]`. Conclude with `reg (hp Finset.univ)`. Take `⟨v, hv, hv0⟩` from `hd.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hf : ValAt ξ z f v` using `(GlobalTheory.T.valAt_iff_value_at X Ω ξ K J y hT z w h hw f v).2 hv`. Use `⟨?_, reg hf, reg (CxVal.inv hf hv0)⟩` and prove the remaining obligations. Take `⟨_, s, hs, hsv⟩` from `hf`. Establish `hs0 : (Scheme.stalkClosedPointTo z).hom s ≠ 0` using `by rw [hsv]; exact hv0`. Use `(CxVal.isUnit s hs0).map (genMap ξ ⟨centre z, h⟩)` as an intermediate fact.
-
-Rewrite `this` using `[hs]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inChart_unitAt_of_inFrameDomain : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω), CoordTie ℤ ξ (segreCoord y) → ∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : (Σ k, J k) → ℂ) (cc : (k : K) → J k) (f : Ω) (h : genPt ξ ⤳ centre z), CoordsAt ξ y z w → InFrameDomain y cc f w → InChart ξ (segreCoord y) cc ⟨centre z, h⟩ ∧ unitAt ξ ⟨centre z, h⟩ f := by
   intro X Ω _ ξ K _ J _ y hT z w cc f h hw hd

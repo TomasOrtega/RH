@@ -18,7 +18,7 @@ private def muHom : R ⊗[ℚ] Matrix (Fin n) (Fin n) E →ₐ[ℚ] Matrix (Fin 
     (fun r x => Algebra.commutes _ _)
 
 /- English proof (translation)
-Establish `h : muHom R E n (r ⊗ₜ x) = algebraMap (R ⊗[ℚ] E) (Matrix (Fin n) (Fin n) (R ⊗[ℚ] E)) (r ⊗ₜ 1) * x.map (Algebra.TensorProduct.includeRight : E →ₐ[ℚ] R ⊗[ℚ] E)` using `Algebra.TensorProduct.lift_tmul _ _ _ r x`. Rewrite using `[h, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_apply, Matrix.map_apply]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem muHom_tmul (r : R) (x : Matrix (Fin n) (Fin n) E) (i k : Fin n) :
     muHom R E n (r ⊗ₜ x) i k = r ⊗ₜ x i k := by
@@ -33,16 +33,16 @@ private def muInv (M : Matrix (Fin n) (Fin n) (R ⊗[ℚ] E)) : R ⊗[ℚ] Matri
   ∑ i, ∑ k, LinearMap.lTensor R (Matrix.singleLinearMap ℚ i k) (M i k)
 
 /- English proof (translation)
-Simplify using `[muInv, Matrix.add_apply, map_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem muInv_add (M N : Matrix (Fin n) (Fin n) (R ⊗[ℚ] E)) :
     muInv R E n (M + N) = muInv R E n M + muInv R E n N := by
   simp [muInv, Matrix.add_apply, map_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp [muInv]`. Consider the case `add a b ha hb`. Rewrite using `[map_add, muInv_add, ha, hb]`. Consider the case `tmul r x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using `only [muInv, muHom_tmul, LinearMap.lTensor_tmul, Matrix.singleLinearMap_apply]`. Simplify using `only [← TensorProduct.tmul_sum]`. Rewrite using `[← Matrix.matrix_eq_sum_single x]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem muInv_muHom (y : R ⊗[ℚ] Matrix (Fin n) (Fin n) E) :
     muInv R E n (muHom R E n y) = y := by
@@ -56,9 +56,9 @@ private theorem muInv_muHom (y : R ⊗[ℚ] Matrix (Fin n) (Fin n) E) :
     rw [← Matrix.matrix_eq_sum_single x]
 
 /- English proof (translation)
-Proceed by induction on `b using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb, Matrix.single_add]`. Consider the case `tmul r x`. Use extensionality with `a c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components.
 
-Rewrite using `[LinearMap.lTensor_tmul, muHom_tmul, Matrix.singleLinearMap_apply]`. Distinguish the cases in `h : i = a ∧ k = c`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules. Rewrite using `[Matrix.single_apply_of_ne _ _ _ _ _ (by tauto), Matrix.single_apply_of_ne _ _ _ _ _ (by tauto)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -77,7 +77,7 @@ private theorem muHom_single (i k : Fin n) (b : R ⊗[ℚ] E) :
       simp
 
 /- English proof (translation)
-Simplify using `only [muInv, map_sum, muHom_single]`. Conclude with `(Matrix.matrix_eq_sum_single M).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem muHom_muInv (M : Matrix (Fin n) (Fin n) (R ⊗[ℚ] E)) :
     muHom R E n (muInv R E n M) = M := by
@@ -97,7 +97,7 @@ end UpperTheory.Gal.W2.Seed
 end
 
 /- English proof (translation)
-Introduce `R E _ _ _ _ n`. Conclude with `⟨muEquiv R E n, fun r x i k => muHom_tmul R E n r x i k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Gal.W2.Seed.pMuEx :
     MuEx := by

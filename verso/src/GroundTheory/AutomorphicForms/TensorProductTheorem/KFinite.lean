@@ -20,9 +20,9 @@ structure IsKFinite (σ : Representation ℂ K X) : Prop where
 variable {σ : Representation ℂ K X}
 
 /- English proof (translation)
-Introduce `φ w`. Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend φ`. Establish `: ∀ k, φ (P.toRepresentation k w) = ψ (σ k w)` using `fun k => by`. Rewrite using `[← hψ]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [this]`. Conclude with `hσ ψ w`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasContinuousCoeff_subrep (hσ : Representation.HasContinuousCoeff σ)
     (P : Subrepresentation σ) : Representation.HasContinuousCoeff P.toRepresentation := by
@@ -35,19 +35,17 @@ theorem hasContinuousCoeff_subrep (hσ : Representation.HasContinuousCoeff σ)
   exact hσ ψ w
 
 /- English proof (translation)
-Use `set F := RestrictedTensor.orbitSpan σ v`. Establish `hFd : FiniteDimensional ℂ F.toSubmodule` using `h.locallyFinite v`. Establish `hFc` using `hasContinuousCoeff_subrep h.continuous F`. Use `set U : Submodule ℂ F.toSubmodule := Y.toSubmodule.comap F.toSubmodule.subtype`. Take `⟨C', hC', hC's⟩` from `exists_isCompl_stable hFc U fun k u hu => Y.apply_mem_toSubmodule k hu`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨C'.map F.toSubmodule.subtype, ?_⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `k _ ⟨c, hc, rfl⟩`. Conclude with `⟨_, hC's k c hc, rfl⟩`. Introduce and unpack `_ ⟨c, -, rfl⟩`. Conclude with `c.2`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[Subrepresentation.toSubmodule_inf]`. Express the relevant statement in the definitionally equal form `_ = (⊥ : Submodule ℂ X)`. Rewrite using `[eq_bot_iff]`. Introduce and unpack `_ ⟨hxY, ⟨c, hc, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcU : c ∈ U` using `hxY`. Establish `: c ∈ U ⊓ C'` using `⟨hcU, hc⟩`. Rewrite `this` using `[disjoint_iff.1 hC'.1, Submodule.mem_bot]`. Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[Subrepresentation.toSubmodule_sup]`. Use `le_antisymm (sup_le hY ?_) fun x hx => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, -, rfl⟩`. Conclude with `c.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hxtop : (⟨x, hx⟩ : F.toSubmodule) ∈ U ⊔ C'`. Rewrite using `[codisjoint_iff.1 hC'.2]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨u, hu, c, hc, huc⟩` from `Submodule.mem_sup.1 hxtop`. Rewrite using `[Submodule.mem_sup]`.
-
-Use `⟨u, hu, c, ⟨c, hc, rfl⟩, ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val huc` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_subrep_compl (h : IsKFinite σ) (v : X) {Y : Subrepresentation σ}
     (hY : Y ≤ RestrictedTensor.orbitSpan σ v) :
@@ -92,13 +90,13 @@ variable (σ) in
 abbrev Alg := MonoidAlgebra ℂ K
 
 /- English proof (translation)
-Use `set e := Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := σ)`. Rewrite using `[isSemisimpleModule_iff]`. Use `complementedLattice_of_complementedLattice_Iic (s := univ) (f := fun v : X => e (RestrictedTensor.orbitSpan σ v)) (fun v _ => ?_) ?_` and prove the remaining obligations. Use `⟨fun ⟨N, hN⟩ => ?_⟩` and prove the remaining obligations. Establish `hY : e.symm N ≤ RestrictedTensor.orbitSpan σ v`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `e.symm.monotone hN` as an intermediate fact. Simplify using `using this`. Take `⟨C, hCle, hinf, hsup⟩` from `exists_subrep_compl h v hY`. Use `⟨⟨e C, e.monotone hCle⟩, ⟨disjoint_iff.2 ?_, codisjoint_iff.2 ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext show N ⊓ e C = ⊥` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg e hinf` as an intermediate fact. Rewrite `this` using `[e.map_inf, e.apply_symm_apply, e.map_bot]`. Then use the resulting hypothesis. Apply `Subtype.ext show N ⊔ e C = e (RestrictedTensor.orbitSpan σ v)` to reduce the goal to its premises. Use `congrArg e hsup` as an intermediate fact. Rewrite `this` using `[e.map_sup, e.apply_symm_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem x (Submodule.mem_iSup_of_mem (mem_univ x) ?_)` and prove the remaining obligations. Conclude with `RestrictedTensor.mem_orbitSpan_self σ x`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSemisimpleModule_asModule (h : IsKFinite σ) :
     IsSemisimpleModule (MonoidAlgebra ℂ K) σ.asModule := by
@@ -129,16 +127,14 @@ section Isotypic
 variable {R M : Type*} [Ring R] [AddCommGroup M] [Module R M] [IsSemisimpleModule R M]
 
 /- English proof (translation)
-Introduce `f` and use `sSup_le fun m hm => (h m hm f).trans (Submodule.comap_mono (le_sSup hm))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isFullyInvariant_sSup {s : Set (Submodule R M)} (h : ∀ m ∈ s, m.IsFullyInvariant) :
     (sSup s).IsFullyInvariant := fun f =>
   sSup_le fun m hm => (h m hm f).trans (Submodule.comap_mono (le_sSup hm))
 
 /- English proof (translation)
-Use `⟨sSupIndep_isotypicComponents R M hc, codisjoint_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← sSup_isotypicComponents (R := R) (M := M)]`. Use `sSup_le fun m hm => ?_` and prove the remaining obligations. Distinguish the cases in `hmc : m = c`. Conclude with `hmc ▸ le_sup_left`.
-
-Conclude with `le_sup_of_le_right (le_sSup ⟨hm, hmc⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem isCompl_isotypicComponent {c : Submodule R M} (hc : c ∈ isotypicComponents R M) :
     IsCompl c (sSup (isotypicComponents R M \ {c})) := by
@@ -153,30 +149,30 @@ def isoProj {c : Submodule R M} (hc : c ∈ isotypicComponents R M) : Module.End
   c.subtype ∘ₗ Submodule.projectionOnto c _ (isCompl_isotypicComponent hc)
 
 /- English proof (translation)
-Simplify using `[isoProj, Submodule.projectionOnto_apply_of_mem_left _ hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoProj_apply_of_mem {c : Submodule R M} (hc : c ∈ isotypicComponents R M) {x : M}
     (hx : x ∈ c) : isoProj hc x = x := by
   simp [isoProj, Submodule.projectionOnto_apply_of_mem_left _ hx]
 
 /- English proof (translation)
-The claim follows from `Subtype.prop _`.
+A detailed English derivation is pending.
 -/
 theorem isoProj_mem_isotypicComponent {c : Submodule R M} (hc : c ∈ isotypicComponents R M)
     (x : M) : isoProj hc x ∈ c :=
   Subtype.prop _
 
 /- English proof (translation)
-Simplify using `[isoProj, (Submodule.projectionOnto_apply_eq_zero_iff _).2 hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isoProj_apply_of_mem_compl {c : Submodule R M} (hc : c ∈ isotypicComponents R M) {x : M}
     (hx : x ∈ sSup (isotypicComponents R M \ {c})) : isoProj hc x = 0 := by
   simp [isoProj, (Submodule.projectionOnto_apply_eq_zero_iff _).2 hx]
 
 /- English proof (translation)
-Establish `hcompl` using `isCompl_isotypicComponent hc`. Establish `hfc : c.IsFullyInvariant` using `Submodule.IsFullyInvariant.of_mem_isotypicComponents hc`. Establish `hfr : (sSup (isotypicComponents R M \ {c})).IsFullyInvariant` using `isFullyInvariant_sSup fun m hm => Submodule.IsFullyInvariant.of_mem_isotypicComponents hm.1`. Establish `hx : x ∈ c ⊔ sSup (isotypicComponents R M \ {c})`. Rewrite using `[codisjoint_iff.1 hcompl.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add f, map_add (isoProj hc), map_add (isoProj hc), isoProj_apply_of_mem hc (hfc f ha), isoProj_apply_of_mem_compl hc (hfr f hb), isoProj_apply_of_mem hc ha, isoProj_apply_of_mem_compl hc hb, add_zero, add_zero]`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoProj_comm {c : Submodule R M} (hc : c ∈ isotypicComponents R M) (f : Module.End R M)
     (x : M) : isoProj hc (f x) = f (isoProj hc x) := by
@@ -192,7 +188,7 @@ theorem isoProj_comm {c : Submodule R M} (hc : c ∈ isotypicComponents R M) (f 
     isoProj_apply_of_mem_compl hc hb, add_zero, add_zero]
 
 /- English proof (translation)
-Take `⟨Y', hY'⟩` from `exists_isCompl Y`. Use `set f : Module.End R M := Y.subtype ∘ₗ Submodule.projectionOnto Y Y' hY'`. Establish `hfy : f y = y` using `by simp [f, Submodule.projectionOnto_apply_of_mem_left _ hy]`. Rewrite using `[← hfy, isoProj_comm hc f]`. Conclude with `Subtype.prop _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoProj_mem {c : Submodule R M} (hc : c ∈ isotypicComponents R M) (Y : Submodule R M)
     {y : M} (hy : y ∈ Y) : isoProj hc y ∈ Y := by

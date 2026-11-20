@@ -4,7 +4,7 @@ open scoped MatrixGroups Matrix
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.V.Z.Kato.Sym.PT
 
 /- English proof (translation)
-Establish `e : x (s * h * s⁻¹) = x h`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (x s) (x h), mul_inv_cancel_right]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma conj_toAdd {Γ : Type} [Group Γ] {m : ℕ} (x : Γ →* Multiplicative (ZMod m)) (s h : Γ) :
     (x (s * h * s⁻¹)).toAdd = (x h).toAdd := by
@@ -13,20 +13,20 @@ private lemma conj_toAdd {Γ : Type} [Group Γ] {m : ℕ} (x : Γ →* Multiplic
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[map_mul, toAdd_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma mul_toAdd {Γ : Type} [Group Γ] {m : ℕ} (x : Γ →* Multiplicative (ZMod m)) (g h : Γ) :
     (x (g * h)).toAdd = (x g).toAdd + (x h).toAdd := by
   rw [map_mul, toAdd_mul]
 
 /- English proof (translation)
-Introduce `Γ _ m Δ x y η hc`. Use `⟨fun g hg h hh => ?_, fun σ hσ g hg h hh => ?_⟩` and prove the remaining obligations. Establish `ha : g * h * g⁻¹ ∈ Δ` using `Δ.mul_mem (Δ.mul_mem hg hh) (Δ.inv_mem hg)`. Establish `e : g * h * g⁻¹ * g = g * h` using `by group`. Establish `h1` using `hc _ ha g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hc g hg h hh`. Rewrite `h1` using `[e, conj_toAdd x]`. Simplify using `only [GlobalTheory.KEdge.edge]`. Take the linear combination `h2 - h1`. Establish `hg'` using `hσ g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hh'` using `hσ h hh`. Establish `e : σ * (g * h) * σ⁻¹ = (σ * g * σ⁻¹) * (σ * h * σ⁻¹)` using `by group`. Establish `h1` using `hc _ hg' _ hh'`. Establish `h2` using `hc g hg h hh`. Rewrite `h1` using `[conj_toAdd x, conj_toAdd y]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [GlobalTheory.KEdge.edge, e, mul_toAdd x, mul_toAdd y]`. Take the linear combination `h1 - h2`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem UpperTheory.V.Z.Kato.Sym.PT.edgeGeo :
     UpperTheory.V.Z.Kato.Sym.PT.EdgeGeo := by

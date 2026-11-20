@@ -15,13 +15,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto.QuotL
 
 /- English proof (translation)
-Establish `ht : (0 : ℚ) ≤ R.t` using `by positivity`. Establish `step : ∀ (a : ℕ) (h : a + 1 < R.m), P.e ⟨a, by omega⟩ < P.e ⟨a + 1, h⟩` using `fun a h => by`. Establish `g1` using `P.gap_eb ⟨a, by omega⟩ h`. Establish `g2` using `P.gap_be ⟨a + 1, h⟩`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Simplify using `only [Fin.mk_lt_mk] at hab`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_lt hab`. Proceed by induction on `d with`. Consider the case `zero => exact step a hb`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `succ d ih`. Establish `h1` using `ih (by omega) (by omega)`. Establish `h2` using `step (a + d + 1) (by omega)`. Establish `e1 : (⟨a + (d + 1) + 1, hb⟩ : Fin R.m) = ⟨a + d + 1 + 1, by omega⟩` using `Fin.ext (by simp; omega)`. Rewrite using `[e1]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem e_strictMono {R : Ranks} (P : HCParam R) : StrictMono P.e := by
   have ht : (0 : ℚ) ≤ R.t := by positivity
@@ -44,7 +44,7 @@ theorem e_strictMono {R : Ranks} (P : HCParam R) : StrictMono P.e := by
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a` and use `by obtain ⟨⟨η, hη⟩, h⟩ := (hc.chars.2.2.2.2 k (Finset.mem_Icc.2 ⟨h1, h2⟩)).2 exact (h η hη a).trans (pow_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialOnF {c : Com D} (hc : c.Is) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter.TrivialOnF (c.μ k) := fun a => by
@@ -52,21 +52,19 @@ theorem trivialOnF {c : Com D} (hc : c.Is) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ 
   exact (h η hη a).trans (pow_zero _)
 
 /- English proof (translation)
-The claim follows from `(hc.chars.2.2.2.2 k (Finset.mem_Icc.2 ⟨h1, h2⟩)).1`.
+A detailed English derivation is pending.
 -/
 theorem isHecke {c : Com D} (hc : c.Is) {k : ℕ} (h1 : 1 ≤ k) (h2 : k ≤ D.R.m) : IsHeckeChar D (c.μ k) :=
   (hc.chars.2.2.2.2 k (Finset.mem_Icc.2 ⟨h1, h2⟩)).1
 
 /- English proof (translation)
-Introduce `D c hc i j hi hij hj`. Take `⟨i', rfl⟩ : ∃ i' : ℕ, i = i' + 1` from `⟨i - 1, by omega⟩`. Take `⟨j', rfl⟩ : ∃ j' : ℕ, j = j' + 1` from `⟨j - 1, by omega⟩`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `hexp : ∃ (τ : D.what₂.Tau) (e e' : ℚ), HasInfExp D (c.μ (i' + 1)) τ (-e) ∧ HasInfExp D (c.μ (j' + 1)) τ (-e') ∧ e ≠ e'` using `⟨τ, (D.hc τ).e ⟨i', by omega⟩, (D.hc τ).e ⟨j', by omega⟩, hc.exp ⟨i', by omega⟩ τ, hc.exp ⟨j', by omega⟩ τ, (e_strictMono (D.hc τ) (show (⟨i', by omega⟩ : Fin D.R.m) < ⟨j', by omega⟩ from Fin.mk_lt_mk.2 (by omega))).ne⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Λ, ⟨hd, hp⟩, hpos⟩` from `(GlobalTheory.HeckeRatio.heckeRatioPos D (c.μ (i' + 1)) (c.μ (j' + 1)) (isHecke hc (by omega) (by omega)) (isHecke hc (by omega) hj) (trivialOnF hc (by omega) (by omega)) (trivialOnF hc (by omega) hj) hexp D.R.t).2 c.S`. Use `⟨Λ, hd, fun z hz => ?_, fun n h1 h2 h0 => ?_⟩` and prove the remaining obligations. Establish `hunr : ∀ w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))), GlobalTheory.LFun.UnrAt (c.μ (i' + 1) * (c.μ (j' + 1))⁻¹) w` using `fun w hw => (hc.unr ⟨i', by omega⟩ w hw).mul (hc.unr ⟨j', by omega⟩ w hw).inv`. Establish `hoff : ∀ P, OffS D c.S P ↔ P ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))` using `fun P => (GlobalTheory.HeckeRatio.offS_iff c.S P).trans Iff.rfl`. Set `e` to `Equiv.subtypeEquivRight hoff`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `k` using `hp z hz`. Rewrite `k` using `[GlobalTheory.HeckeRatio.lfac_eq]`. Establish `k2 : HasProd (fun w : {w // w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))} => GlobalTheory.LFun.locL (fun w => {GlobalTheory.LFun.val (F` using `D.host.F) (c.μ (i' + 1) * (c.μ (j' + 1))⁻¹) w}) w.1 z) (Λ z) := by`. Use `(e.hasProd_iff).1 (k.congr_fun fun P => ?_)` and prove the remaining obligations. Establish `hu` using `hunr P.1 ((hoff P.1).1 P.2)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LFun.lfac_eq_locL (Formalism.IndefR.ThmB.InputsHecke.isCMExt D)]`. Simplify using `only [Function.comp_apply, e, Equiv.subtypeEquivRight_apply_coe, GlobalTheory.LFun.locL, GlobalTheory.LFun.charFam_of_unrAt hu]`. Conclude with `k2.tprod_eq.symm`. Use `(hpos n h1 h2).2` as an intermediate fact. Rewrite `this` using `[h0, Complex.zero_re]`.
-
-Conclude with `lt_irrefl _ this`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotL_entire_ne_zero : ∀ (D : D7) (c : Com D), c.Is → ∀ i j : ℕ, 1 ≤ i → i < j → j ≤ D.R.m →
     ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧

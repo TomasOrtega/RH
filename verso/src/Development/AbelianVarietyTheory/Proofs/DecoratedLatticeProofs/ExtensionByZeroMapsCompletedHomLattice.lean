@@ -12,7 +12,7 @@ namespace GlobalTheory.FinPl.ExtZeroLat
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mxAt_mul_left {P : Pl D → Prop} {a b c : ℕ} (y : Mx D a b) {x : Mx D b c} (hx : MxAt P x) : MxAt P (y ⬝ x) := by
   intro i j
@@ -20,7 +20,7 @@ theorem mxAt_mul_left {P : Pl D → Prop} {a b c : ℕ} (y : Mx D a b) {x : Mx D
   exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (hx l j)
 
 /- English proof (translation)
-Rewrite using `[o.symplO_resT, AddEquiv.apply_symm_apply]`. Establish `h0 : symplO T L 0 ((o.resT T) t).2 = 0` using `by simp [symplO, hO]`. Rewrite using `[h0, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem symplO_resT_symm_left {S A L T : HSp D} (o : OrthDec S A L) (a : WO T A) (t : WO T S) :
     symplO T S ((o.resT T).symm (a, 0)) t = symplO T A a (o.pA ⬝ t) := by
@@ -33,33 +33,29 @@ end GlobalTheory.FinPl.ExtZeroLat
 open GlobalTheory.FinPl.ExtZeroLat in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ ψ S A L T o ζ β LA LS LT ΛT hA hS hfac u hu`. Use `set ΛA := latO T A (LT : Set _) (LA : Set _) (· = p.v) with hΛA`. Use `set ΛS := latO T S (LT : Set _) (LS : Set _) (· = p.v) with hΛS`. Establish `he` using `p.split`. Establish `hce` using `GlobalTheory.SplitScalar.isSplitIdem_conj he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨ε, hε, hsum⟩` from `p.above`. Establish `hact` using `(GlobalTheory.FinPl.placeIdem_acts D p.v ε hε).1`. Establish `hsplit : ∀ {m n : ℕ} (x : Mx D m n), MxAt (· = p.v) x → p.e • x + cA D p.e • x = x`. Introduce `m n x hx`. Rewrite using `[← add_smul, hsum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `(hact _).1 (hx i j)`. Establish `hrow0 : GlobalTheory.FinPl.ExtZero.rowFun β ζ (dualInd ΛT) 0 = 1`. Establish `hz : GlobalTheory.FinPl.ExtZero.zrow β ζ (0 : WO T L) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.FinPl.ExtZero.zrow, Matrix.vecMul_zero, Pi.zero_apply, map_zero]`. Establish `: ((fun _ => 0 : Fin T.rank → k) ᵥ* β.b) = 0` using `Matrix.zero_vecMul _`. Rewrite using `[this, smul_zero]`. Establish `h0 : IsHalf p.e (0 : WO T L)` using `fun i j => by simp`. Establish `hd : InDual ΛT (0 : n → k)` using `fun y _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[zero_dotProduct]`. Conclude with `zero_mem _`. Simplify using `[GlobalTheory.FinPl.ExtZero.rowFun, hz, dualInd, h0, hd]`. Establish `hext : ∀ a ∈ ΛA, IsHalf p.e a → (o.resT T).symm (a, 0) ∈ ΛS`. Introduce `a ha hah`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrFun hfac ((o.resT T).symm (a, 0))`. Rewrite `h1` using `[OrthDec.boxT, AddEquiv.apply_symm_apply, hrow0, mul_one]`. Establish `h2 : halfInd p.e ΛA a = 1` using `by simp [halfInd, ha, hah]`. Rewrite `h1` using `[h2]`. Unfold `halfInd at h1`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hn`. Rewrite `h1` using `[if_neg fun h => hn h.1]`. Conclude with `zero_ne_one h1`. Establish `hres : ∀ t ∈ ΛS, IsHalf p.e t → o.pA ⬝ t ∈ ΛA`. Introduce `t ht hth`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h1` using `congrFun hfac t`. Establish `h2 : halfInd p.e ΛS t = 1` using `by simp [halfInd, ht, hth]`. Rewrite `h1` using `[h2, OrthDec.boxT]`. Assume the negation of the conclusion as `hn`. Establish `: halfInd p.e ΛA ((o.resT T) t).1 = 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `halfInd`. Rewrite using `[if_neg fun h => hn h.1]`. Rewrite `h1` using `[this, zero_mul]`. Conclude with `one_ne_zero h1`. Establish `huM : MxAt (· = p.v) u` using `GlobalTheory.FinPl.LatMem.latO_mxAt hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `heu : p.e • u ∈ ΛA` using `GlobalTheory.LatticeStable.smul_mem_latO D T A _ _ _ _ (finPart_idem_mem he.1) u hu`. Establish `hι : (o.resT T).symm (p.e • u, 0) ∈ ΛS` using `hext _ heu (smul_isHalf he.1 u)`. Establish `hιM : MxAt (· = p.v) ((o.resT T).symm (u, 0))`. Rewrite using `[OrthDec.resT_symm_apply, Matrix.mul_zero, add_zero]`. Conclude with `mxAt_mul_left _ huM`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hS _ hιM).2 fun u' hu' => ?_` and prove the remaining obligations. Establish `hu'M : MxAt (· = p.v) u'` using `GlobalTheory.FinPl.LatMem.latO_mxAt hu'`. Establish `heu' : p.e • u' ∈ ΛS` using `GlobalTheory.LatticeStable.smul_mem_latO D T S _ _ _ _ (finPart_idem_mem he.1) u' hu'`. Establish `hceu' : cA D p.e • u' ∈ ΛS` using `GlobalTheory.LatticeStable.smul_mem_latO D T S _ _ _ _ (finPart_idem_mem hce.1) u' hu'`. Rewrite using `[symplO_resT_symm_left, ← hsplit u' hu'M, Matrix.mul_add, symplO_add_right, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `part1 : ψ (symplO T A u (o.pA ⬝ (p.e • u'))) = 1` using `(hA u huM).1 hu _ (hres _ heu' (smul_isHalf he.1 u'))`. Establish `part2 : ψ (symplO T A u (o.pA ⬝ (cA D p.e • u'))) = 1`. Rewrite using `[← hsplit u huM, symplO_add_left, AddChar.map_add_eq_mul]`. Establish `hz : symplO T A (cA D p.e • u) (o.pA ⬝ (cA D p.e • u')) = 0`. Use `symplO_conjHalf he (smul_isHalf hce.1 u) ?_` and prove the remaining obligations.
-
-Introduce `i j`. Rewrite using `[Matrix.mul_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, (smul_isHalf hce.1 u') l j]`. Rewrite using `[hz, AddChar.map_zero_eq_one, mul_one, ← symplO_resT_symm_left]`.
-
-Conclude with `(hS _ (GlobalTheory.FinPl.LatMem.latO_mxAt hι)).1 hι _ hceu'`. Rewrite using `[part1, part2, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FinPl.ExtZero.extZero_mem_latO_target : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p : SplitPt D k) (n : Type) [Fintype n] [DecidableEq n] (ψ : AddChar (AF D.host.F) ℂ) (S A L T : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (β : Frame p T n) (LA : Lat A) (LS : Lat S) (LT : Lat T) (ΛT : Submodule 𝒪[k] (n → k)), (∀ u : WO T A, MxAt (· = p.v) u → (u ∈ latO T A (LT : Set _) (LA : Set _) (· = p.v) ↔ ∀ u' ∈ latO T A (LT : Set _) (LA : Set _) (· = p.v), ψ (symplO T A u u') = 1)) → (∀ u : WO T S, MxAt (· = p.v) u → (u ∈ latO T S (LT : Set _) (LS : Set _) (· = p.v) ↔ ∀ u' ∈ latO T S (LT : Set _) (LS : Set _) (· = p.v), ψ (symplO T S u u') = 1)) → halfInd p.e (latO T S (LT : Set _) (LS : Set _) (· = p.v)) = o.boxT T (halfInd p.e (latO T A (LT : Set _) (LA : Set _) (· = p.v))) (GlobalTheory.FinPl.ExtZero.rowFun β ζ (dualInd ΛT)) → ∀ u ∈ latO T A (LT : Set _) (LA : Set _) (· = p.v), (o.resT T).symm (u, 0) ∈ latO T S (LT : Set _) (LS : Set _) (· = p.v) := by
   intro D k _ _ _ _ p n _ _ ψ S A L T o ζ β LA LS LT ΛT hA hS hfac u hu

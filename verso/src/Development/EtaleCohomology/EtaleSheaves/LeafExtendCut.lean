@@ -26,9 +26,9 @@ def LeafGlueExtend : Prop := ∀ {C X S : Scheme.{0}} [IsIntegral C] (sC : C ⟶
       ∃ e : C ⟶ X, C.fromSpecStalk x ≫ e = ψ ∧ e ≫ p = sC
 
 /- English proof (translation)
-Introduce `k Ω _ _ _ X C0 p _ c0 x hc hx ψ hψ`. Establish `: IsIntegral C0` using `hc.1`. Use `h3 (c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω))) p x hx ψ ?_` and prove the remaining obligations. Introduce `y`. Distinguish the cases in `hyx : y = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hyx` using the available equality. Take `⟨U, hxU, f, hf1, hf2⟩` from `spread_out_of_isGermInjective' (c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω))) p ψ hψ`. Conclude with `⟨U, hxU, hxU, f, hf1.symm, hf2⟩`. Take `⟨hv, hfr⟩` from `h1 Ω c0 x y hx hc hyx`. Conclude with `h2 (c0 ≫ Spec.map (CommRingCat.ofHom (algebraMap k Ω))) p x y hx _ hv hfr ψ hψ`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : LeafStalkValuation) (h2 : LeafLocalExtend) (h3 : LeafGlueExtend) :
     LateralTheory.E.LeafCurveVCut.LeafExtend := by

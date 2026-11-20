@@ -14,22 +14,22 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 
 /- English proof (translation)
-The claim follows from `smoothed_explicit_formula`.
+A detailed English derivation is pending.
 -/
 theorem explicitS_proof' : ExplicitS := smoothed_explicit_formula
 
 /- English proof (translation)
-The claim follows from `Dens.log_density_bound`.
+A detailed English derivation is pending.
 -/
 theorem logDensityM_proof' : LogDensityM := Dens.log_density_bound
 
 /- English proof (translation)
-The claim follows from `deuring_heilbronn_lossy`.
+A detailed English derivation is pending.
 -/
 theorem deuringHeilbronnMB_proof' : DeuringHeilbronnMB := deuring_heilbronn_lossy
 
 /- English proof (translation)
-The claim follows from `prime_count_of_psi (glue_ranges psi_relative_near_range (psi_relative_far_range explicitS_proof' differenced_explicit_formula (zero_sum_bound_lossy logDensityM_proof' deuringHeilbronnMB_proof')))`.
+A detailed English derivation is pending.
 -/
 theorem pnt_progressions_relative_weak_holds : Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds.PNTAPRelW :=
   prime_count_of_psi (glue_ranges psi_relative_near_range

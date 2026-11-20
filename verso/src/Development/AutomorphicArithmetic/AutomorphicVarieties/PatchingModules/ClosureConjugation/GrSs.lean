@@ -5,55 +5,47 @@ open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraT
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `B E F _ _ _ _ _ _ n a T r ep g κ _ _ s hs hann`. Set `M : Fin n → Fin n → Matrix (Fin n) (Fin n) g.AA` to `fun i k => Matrix.single i k (if ((i : ℕ) < a ↔ (k : ℕ) < a) then 1 else 0)`. Establish `hM : ∀ i k, ∃ x : E, g.φ x = M i k`. Introduce `i k`. Rewrite using `[← Set.mem_range, g.range]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `p q`. Use `⟨fun _ => ?_, fun hpq => ?_⟩` and prove the remaining obligations. Simplify using `only [M, Matrix.single_apply] split_ifs`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_mem _`. Simplify using `only [M, Matrix.single_apply] split_ifs with h1 h2`. Take `⟨rfl, rfl⟩` from `h1`. Conclude with `absurd h2 hpq`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem _`. Use `choose e he using hM`. Establish `hmul : ∀ i k l : Fin n, ((i : ℕ) < a ↔ (k : ℕ) < a) → ((k : ℕ) < a ↔ (l : ℕ) < a) → e i k * e k l = e i l`. Introduce `i k l hik hkl`. Apply `g.φ_inj` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, he, he, he]`. Simplify using `only [M, if_pos hik, if_pos hkl, if_pos (hik.trans hkl), Matrix.single_mul_single_same, mul_one]`. Establish `hzero : ∀ i k l m : Fin n, k ≠ l → e i k * e l m = 0`. Introduce `i k l m hkl`. Apply `g.φ_inj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_mul, he, he, map_zero]`. Conclude with `Matrix.single_mul_single_of_ne _ _ _ _ hkl _`. Establish `hcross : ∀ i k : Fin n, ¬((i : ℕ) < a ↔ (k : ℕ) < a) → e i k = 0`. Introduce `i k hik`. Apply `g.φ_inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, map_zero]`. Simplify using `only [M, if_neg hik, Matrix.single_zero]`. Establish `hsum : ∑ i, e i i = 1`. Apply `g.φ_inj` to reduce the goal to its premises. Rewrite using `[map_sum, map_one]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [he, M, iff_self, if_true]`. Use extensionality with `p q`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.single_apply]`. Distinguish the cases in `hpq : p = q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hpq` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Matrix.one_apply_ne hpq]`. Conclude with `Finset.sum_eq_zero (fun x _ => if_neg (fun h => hpq (h.1.symm.trans h.2)))`. Establish `hdec : ∀ y : E, ∃ b : Fin n → Fin n → B, s • y = ∑ i, ∑ k, b i k • e i k`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y`. Establish `hent : ∀ i k, ∃ c : B, s • g.φ y i k = c • (if ((i : ℕ) < a ↔ (k : ℕ) < a) then 1 else 0)`. Introduce `i k`. Take `⟨h1, h2⟩` from `(g.range (g.φ y)).mp ⟨y, rfl⟩ i k`. Distinguish the cases in `hik : ((i : ℕ) < a ↔ (k : ℕ) < a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Submodule.mem_one.mp (h1 hik)`. Use `⟨s * c, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hik, ← hc, Algebra.algebraMap_eq_smul_one, smul_smul]`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hik, smul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(Module.mem_annihilator.mp hann) ⟨_, h2 hik⟩` as an intermediate fact. Simplify using `using congrArg Subtype.val this`. Use `choose c hc using hent`. Use `⟨c, g.φ_inj ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, map_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use extensionality with `p q`. Simplify using `only [map_sum, map_smul, he, M, Matrix.smul_apply, Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[hc, Finset.sum_eq_single p (fun i _ hi => Finset.sum_eq_zero (fun k _ => by`. Rewrite using `[if_neg (fun h => hi h.1), smul_zero])) (by simp),`. Use the proof step `Finset.sum_eq_single q (fun k _ hk => by rw [if_neg (fun h => hk h.2), smul_zero]) (by simp)]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Set `bf : Fin n → Bool` to `fun i => decide ((i : ℕ) < a)`. Set `cl : Fin n → Set.range bf` to `Set.rangeFactorization bf`. Establish `hcl : ∀ i k : Fin n, cl i = cl k ↔ ((i : ℕ) < a ↔ (k : ℕ) < a)`. Introduce `i k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [cl, bf, Set.rangeFactorization, Subtype.mk.injEq, decide_eq_decide]`. Set `d : Set.range bf → Type` to `fun t => {i : Fin n // cl i = t}`. Use `haveI : ∀ t, Nonempty (d t) := fun t => by`. Take `⟨i, hi⟩` from `Set.rangeFactorization_surjective t`. Conclude with `⟨⟨i, hi⟩⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ee : (t : Set.range bf) → d t → d t → κ ⊗[B] E` to `fun t i k => (1 : κ) ⊗ₜ[B] e i.1 k.1`. Take `⟨j, hj⟩` from `alghom_of_units (K := κ) (E := κ ⊗[B] E) d ee (fun t i k l => by`. Simplify using `only [ee, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hmul _ _ _ ((hcl _ _).mp (i.2.trans k.2.symm)) ((hcl _ _).mp (k.2.trans l.2.symm))])`. Use the proof step `(fun t i k l m hkl => by`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ee, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hzero _ _ _ _ (fun h => hkl (Subtype.ext h)), TensorProduct.tmul_zero])`. Use the proof step `(fun t u i k l m htu => by`. Simplify using `only [ee, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[hzero _ _ _ _ (fun h => htu (by rw [← k.2, ← l.2, h])), TensorProduct.tmul_zero])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(by`. Simplify using `only [ee]`. Rewrite using `[Fintype.sum_fiberwise cl (fun i => (1 : κ) ⊗ₜ[B] e i i), ← TensorProduct.tmul_sum, hsum, Algebra.TensorProduct.one_def])`. Establish `hgen : ∀ i k : Fin n, (1 : κ) ⊗ₜ[B] e i k ∈ j.range`. Introduce `i k`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hik : ((i : ℕ) < a ↔ (k : ℕ) < a)`. Establish `hk : cl k = cl i` using `(hcl k i).mpr hik.symm`. Conclude with `(AlgHom.mem_range j).mpr ⟨Pi.single (cl i) (Matrix.single ⟨i, rfl⟩ ⟨k, hk⟩ 1), hj (cl i) ⟨i, rfl⟩ ⟨k, hk⟩⟩`. Rewrite using `[hcross i k hik, TensorProduct.tmul_zero]`. Conclude with `Subalgebra.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hone : ∀ y : E, (1 : κ) ⊗ₜ[B] y ∈ j.range`. Introduce `y`. Take `⟨b, hb⟩` from `hdec y`. Establish `h1 : (1 : κ) ⊗ₜ[B] y = (algebraMap B κ s)⁻¹ • ((1 : κ) ⊗ₜ[B] (s • y))`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul', ← Algebra.algebraMap_eq_smul_one, smul_eq_mul, inv_mul_cancel₀ hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1, hb, TensorProduct.tmul_sum]`. Use `Subalgebra.smul_mem _ (Subalgebra.sum_mem _ (fun i _ => ?_)) _` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_sum]`. Use `Subalgebra.sum_mem _ (fun k _ => ?_)` and prove the remaining obligations. Establish `h2 : (1 : κ) ⊗ₜ[B] (b i k • e i k) = (algebraMap B κ (b i k)) • ((1 : κ) ⊗ₜ[B] e i k)`.
-
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[h2]`. Conclude with `Subalgebra.smul_mem _ (hgen i k) _`. Use `RingHom.isSemisimpleRing_of_surjective j.toRingHom ?_` and prove the remaining obligations. Introduce `x`.
-
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `tmul u y`. Take `⟨z, hz⟩` from `(AlgHom.mem_range j).mp (hone y)`. Use `⟨u • z, ?_⟩` and prove the remaining obligations.
-
-Use `show j (u • z) = _`. Rewrite using `[map_smul, hz, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add x y hx hy`. Take `⟨z, hz⟩` from `hx`. Take `⟨w, hw⟩` from `hy`.
-
-Conclude with `⟨z + w, by rw [map_add, hz, hw]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.gr_ss :
     ∀ {B E F : Type} [CommRing B] [IsLocalRing B] [Ring E] [Algebra B E] [Field F] [Algebra B F] {n : ℕ} {a : ℕ} {T : TrInv B E} {r : E →ₐ[B] Matrix (Fin n) (Fin n) F} {ep : Fin n → E} (g : GrAlg T n a r ep) (κ : Type) [Field κ] [Algebra B κ] (s : B), algebraMap B κ s ≠ 0 → s ∈ Module.annihilator B g.N → IsSemisimpleRing (κ ⊗[B] E) := by

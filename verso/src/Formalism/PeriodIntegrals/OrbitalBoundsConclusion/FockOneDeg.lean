@@ -9,7 +9,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockDegreeOne.HighestWe
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FockDegreeOne.KroneckerOneRightSwap
 
 /- English proof (translation)
-The claim follows from `PI.FockOneDegW.oneDeg_of (PI.FockOneDegW.Core.hwHarmDeg_of PI.FockOneDegW.fock_operators_kernel PI.FockOneDegW.harmIff) (PI.FockOneDegW.reduction_of PI.FockOneDegW.fock_inner_facts PI.FockOneDegW.kernel_highest_weight PI.FockOneDegW.kernel_harmonic PI.FockOneDegW.highest_weight_h …`.
+A detailed English derivation is pending.
 -/
 theorem fock_degree_one : PI.FockDegreeTwoParts.OneDeg :=
   PI.FockOneDegW.oneDeg_of

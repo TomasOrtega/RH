@@ -9,13 +9,13 @@ open scoped Formalism.Per
 namespace GlobalTheory.PMon.Gauss
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp [hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨hne, hv⟩` from `ih`. Rewrite using `[Function.iterate_succ_apply']`. Use `⟨((GlobalTheory.T.acrisValuation_radius_laws l 1 one_pos le_rfl).2.1 _ hne).1, ?_⟩` and prove the remaining obligations. Introduce `r hr0 hr1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[((GlobalTheory.T.acrisValuation_radius_laws l r hr0 hr1).2.1 _ hne).2]`. Establish `h1 : 0 < r / l` using `div_pos hr0 hl0`. Establish `h2 : r / l ≤ 1` using `by rw [div_le_one hl0]; linarith`. Rewrite using `[hv (r / l) h1 h2, pow_succ]`. Establish `e : r / (l : ℝ) / (l : ℝ) ^ k = r / ((l : ℝ) ^ k * l)` using `by rw [div_div, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem vr_iterate_phi (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l) (hx : x ≠ 0) :
     ∀ k : ℕ, (φc l)^[k] x ≠ 0 ∧ ∀ r : ℝ, 0 < r → r ≤ 1 →
@@ -39,15 +39,15 @@ theorem vr_iterate_phi (l : ℕ) [Fact l.Prime] (x : Formalism.Per.Acris l) (hx 
     ring
 
 /- English proof (translation)
-Introduce `l _ h s hsh w w' hfix hw hw' hrat`. Establish `hl2 : 2 ≤ l` using `(Fact.out : l.Prime).two_le`. Establish `hl0 : (0 : ℝ) < l` using `by exact_mod_cast (by omega : 0 < l)`. Take `⟨cA, kA, sA⟩` from `GlobalTheory.T.acrisValuationAtRadius_concave_cont_slope l w hw`. Take `⟨cB, kB, sB⟩` from `GlobalTheory.T.acrisValuationAtRadius_concave_cont_slope l w' hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key` using `GlobalTheory.T.exists_int_sub_mul_eq_int_mul_of_homogeneous l h s 1 hl2 hsh le_rfl (fun r => vr l r w) (fun r => vr l r w') cA cB kA kB sA sB ?_ ?_`. Take `⟨n, hn⟩` from `key`. Conclude with `⟨n, fun r hr => by simpa using hn r hr⟩`. Introduce and unpack `r ⟨hr0, hr1⟩`. Establish `e1` using `(vr_iterate_phi l w' hw' h).2 r hr0 hr1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `e1` using `[hfix, (GlobalTheory.T.acrisValuation_radius_laws l r hr0 hr1).2.2.1 w' s hw']`. Use `show (l : ℝ) ^ h * vr l (r / (l : ℝ) ^ h) w' = vr l r w' + s * r`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `r ⟨hr0, hr1⟩`. Establish `hlr0 : 0 < (l : ℝ) * r` using `mul_pos hl0 hr0`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlr1 : (l : ℝ) * r ≤ 1` using `by rw [le_div_iff₀ hl0] at hr1; linarith`. Take `⟨hmul, hphi, -, -⟩` from `GlobalTheory.T.acrisValuation_radius_laws l (l * r) hlr0 hlr1`. Establish `e` using `congrArg (vr l (l * r)) hrat`. Rewrite `e` using `[hmul _ _ (hphi w hw).1 hw', hmul _ _ hw (hphi w' hw').1, (hphi w hw).2, (hphi w' hw').2]`. Establish `hc : (l : ℝ) * r / l = r` using `by field_simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hc]`. Use `show vr l (l * r) w - ((1 : ℕ) : ℝ) * vr l (l * r) w' = l * (vr l r w - ((1 : ℕ) : ℝ) * vr l r w')`. Simplify using `only [Nat.cast_one, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vr_sub_eq_int_mul : ∀ (l : ℕ) [Fact l.Prime] (h s : ℕ), s < h → ∀ w w' : Formalism.Per.Acris l,
     (φc l)^[h] w' = (l : Formalism.Per.Acris l) ^ s * w' → w ≠ 0 → w' ≠ 0 →

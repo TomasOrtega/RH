@@ -9,9 +9,7 @@ open scoped BigOperators
 namespace Formalism.MainNotions.AuxBlock8.Pf.G5
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_filter]`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Conclude with `(Finset.mem_filter.1 hp).2`. Introduce `p hp _`.
-
-Conclude with `hf p hp`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ite_mem_le {S R : Finset ℕ} (f : ℕ → ℝ) (hf : ∀ p ∈ R, 0 ≤ f p) :
     ∑ p ∈ S, (if p ∈ R then f p else 0) ≤ ∑ p ∈ R, f p := by
@@ -23,13 +21,13 @@ theorem sum_ite_mem_le {S R : Finset ℕ} (f : ℕ → ℝ) (hf : ∀ p ∈ R, 0
 def prB (y : ℝ) : Finset ℕ := (Finset.range ⌈y⌉₊).filter Nat.Prime
 
 /- English proof (translation)
-Simplify using `[prB, Nat.lt_ceil, and_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_prB {y : ℝ} {p : ℕ} : p ∈ prB y ↔ p.Prime ∧ (p : ℝ) < y := by
   simp [prB, Nat.lt_ceil, and_comm]
 
 /- English proof (translation)
-Establish `h1 : (prB y).card ≤ ⌈y⌉₊`. Use `Finset.card_filter_le (Finset.range ⌈y⌉₊) Nat.Prime` as an intermediate fact. Simplify `this` using `[prB]`. Establish `h2 : ((prB y).card : ℝ) ≤ (⌈y⌉₊ : ℝ)` using `by exact_mod_cast h1`. Establish `h3` using `Nat.ceil_lt_add_one hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -42,9 +40,9 @@ theorem card_prB_le (y : ℝ) (hy : 0 ≤ y) : ((prB y).card : ℝ) ≤ y + 1 :=
   linarith
 
 /- English proof (translation)
-Use `le_trans ?_ (Chebyshev.theta_le_log4_mul_x hy)` and prove the remaining obligations. Unfold `Chebyshev.theta`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Take `⟨h1, h2⟩` from `mem_prB.1 hp`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_Ioc.2 ⟨h1.pos, Nat.le_floor h2.le⟩, h1⟩`. Introduce `p hp _`. Conclude with `Real.log_nonneg (by exact_mod_cast (Finset.mem_filter.1 hp).2.one_lt.le)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_log_prB (y : ℝ) (hy : 0 ≤ y) : ∑ p ∈ prB y, Real.log p ≤ Real.log 4 * y := by
   refine le_trans ?_ (Chebyshev.theta_le_log4_mul_x hy)
@@ -57,17 +55,15 @@ theorem sum_log_prB (y : ℝ) (hy : 0 ≤ y) : ∑ p ∈ prB y, Real.log p ≤ R
     exact Real.log_nonneg (by exact_mod_cast (Finset.mem_filter.1 hp).2.one_lt.le)
 
 /- English proof (translation)
-Establish `hly : 0 ≤ Real.log y` using `Real.log_nonneg hy`. Establish `h1 : ∑ p ∈ prB y, Real.log p / p ≤ ∑ p ∈ prB y, Real.log y * ((p : ℝ))⁻¹`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `p hp`. Take `⟨hp1, hp2⟩` from `mem_prB.1 hp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hp1.pos`. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_le_mul_of_nonneg_right (Real.log_le_log hp0 hp2.le) (inv_nonneg.2 hp0.le)`. Use `le_trans h1 ?_` and prove the remaining obligations. Rewrite using `[← Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_le_mul_of_nonneg_left _ hly` to reduce the goal to its premises. Establish `h2 : ∑ p ∈ prB y, ((p : ℝ))⁻¹ ≤ ∑ p ∈ Finset.Icc 1 ⌊y⌋₊, ((p : ℝ))⁻¹`. Apply `Finset.sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Take `⟨hp1, hp2⟩` from `mem_prB.1 hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_Icc.2 ⟨hp1.pos, Nat.le_floor hp2.le⟩`. Introduce `p _ _`. Check the signs of the components of the expression. Use `le_trans h2 ?_` and prove the remaining obligations. Establish `h3` using `harmonic_le_one_add_log ⌊y⌋₊`.
+Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `h3` using `[harmonic_eq_sum_Icc]`. Move the coercions through the operations in `at h3`. Use `le_trans h3 ?_` and prove the remaining obligations. Establish `h4 : (1 : ℝ) ≤ (⌊y⌋₊ : ℝ)` using `by exact_mod_cast Nat.le_floor (by simpa using hy)`. Establish `h5 : Real.log (⌊y⌋₊ : ℝ) ≤ Real.log y` using `Real.log_le_log (by linarith) (Nat.floor_le (by linarith))`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_logdiv_prB (y : ℝ) (hy : 1 ≤ y) :
     ∑ p ∈ prB y, Real.log p / p ≤ Real.log y * (1 + Real.log y) := by

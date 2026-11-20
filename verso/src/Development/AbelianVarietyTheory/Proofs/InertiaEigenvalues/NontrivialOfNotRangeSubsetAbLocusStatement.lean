@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open ReciprocityTheory.ChartRestriction.G.DVR.QForm (QVal IsQ bOf)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BadReductionLattice.nontrivial_of_not_range_subset_abLocus` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FNontrivialOfNotRangeSubsetAbLocus.lean&line=16#L16)
 -/

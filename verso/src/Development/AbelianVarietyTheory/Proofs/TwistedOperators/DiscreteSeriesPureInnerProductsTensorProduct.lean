@@ -12,11 +12,11 @@ namespace GlobalTheory.Chain.RealIt
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
 
 /- English proof (translation)
-Proceed by induction on `x using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r f`. Use `⟨fun i => ℂ ∙ f i, fun i => inferInstance, fun G hG => ?_⟩` and prove the remaining obligations. Use `LinearMap.mem_range.mpr ⟨r • PiTensorProduct.tprod ℂ (fun i => (⟨f i, hG i (Submodule.mem_span_singleton_self (f i))⟩ : G i)), ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, PiTensorProduct.map_tprod]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add x y hx hy`. Take `⟨F₁, h₁, k₁⟩` from `hx`. Take `⟨F₂, h₂, k₂⟩` from `hy`. Use `⟨fun i => F₁ i ⊔ F₂ i, fun i => ?_, fun G hG => ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := h₁ i haveI := h₂ i infer_instance`. Conclude with `add_mem (k₁ G fun i => le_trans le_sup_left (hG i)) (k₂ G fun i => le_trans le_sup_right (hG i))`.
+A detailed English derivation is pending.
 -/
 theorem exists_finite_support {ι : Type} {E : ι → Type} [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)]
     (x : ⨂[ℂ] i, E i) : ∃ F : ∀ i, Submodule ℂ (E i), (∀ i, FiniteDimensional ℂ (F i)) ∧
@@ -39,7 +39,7 @@ theorem exists_finite_support {ι : Type} {E : ι → Type} [∀ i, AddCommGroup
     · exact add_mem (k₁ G fun i => le_trans le_sup_left (hG i)) (k₂ G fun i => le_trans le_sup_right (hG i))
 
 /- English proof (translation)
-Unfold `ellT`. Rewrite using `[PiTensorProduct.lift.tprod]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ellT_pure (M : DSModel V S) (w v : ∀ τ, M.H τ) :
     ellT M w (PiTensorProduct.tprod ℂ v) = ∏ τ, ⟪w τ, v τ⟫_ℂ := by
@@ -48,11 +48,11 @@ theorem ellT_pure (M : DSModel V S) (w v : ∀ τ, M.H τ) :
   simp
 
 /- English proof (translation)
-Set `b` to `fun τ => stdOrthonormalBasis ℂ (K τ)`. Set `B` to `Basis.piTensorProduct (fun τ => (b τ).toBasis)`. Establish `key : ∀ p, B.coord p = ellT M (fun τ => j τ (b τ (p τ))) ∘ₗ PiTensorProduct.map j`. Introduce `p`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, Module.Basis.coord_apply, B, Basis.piTensorProduct_repr_tprod_apply, PiTensorProduct.map_tprod, ellT_pure, hj, OrthonormalBasis.coe_toBasis_repr_apply, OrthonormalBasis.repr_apply_apply]`. Use `B.forall_coord_eq_zero_iff.mp fun p => ?_` and prove the remaining obligations. Rewrite using `[key, LinearMap.comp_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz _`.
+A detailed English derivation is pending.
 -/
 private lemma eq_zero_of_ellT_map_eq_zero (M : DSModel V S) {K : D.what₂.Tau → Type} [∀ τ, NormedAddCommGroup (K τ)]
     [∀ τ, InnerProductSpace ℂ (K τ)] [hK : ∀ τ, FiniteDimensional ℂ (K τ)] (j : ∀ τ, K τ →ₗ[ℂ] M.H τ)
@@ -74,7 +74,7 @@ private lemma eq_zero_of_ellT_map_eq_zero (M : DSModel V S) {K : D.what₂.Tau �
   exact hz _
 
 /- English proof (translation)
-Take `⟨F, hF, hx'⟩` from `exists_finite_support x`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.mp (hx' F fun _ => le_rfl)`. Establish `hy : y = 0` using `eq_zero_of_ellT_map_eq_zero M (K := fun τ => F τ) (hK := hF) (fun τ => (F τ).subtype) (fun τ a b => rfl) y hx`. Rewrite using `[hy, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ellT_separates (M : DSModel V S) (x : ⨂[ℂ] τ, M.H τ) (hx : ∀ w, ellT M w x = 0) : x = 0 := by
   obtain ⟨F, hF, hx'⟩ := exists_finite_support x
@@ -84,9 +84,9 @@ theorem ellT_separates (M : DSModel V S) (x : ⨂[ℂ] τ, M.H τ) (hx : ∀ w, 
   rw [hy, map_zero]
 
 /- English proof (translation)
-Unfold `inclT`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨F, hF, hy'⟩` from `exists_finite_support y`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.mp (hy' F fun _ => le_rfl)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz : z = 0` using `eq_zero_of_ellT_map_eq_zero M (K := fun τ => F τ) (hK := hF) (fun τ => (M.sm τ).subtype ∘ₗ (F τ).subtype) (fun τ a b => rfl) z (by`. Introduce `w`. Rewrite using `[PiTensorProduct.map_comp, LinearMap.comp_apply, hy, map_zero])`. Rewrite using `[hz, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inclT_injective (M : DSModel V S) : Function.Injective (inclT M) := by
   unfold inclT
@@ -101,11 +101,9 @@ theorem inclT_injective (M : DSModel V S) : Function.Injective (inclT M) := by
   rw [hz, map_zero]
 
 /- English proof (translation)
-Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Establish `hPQ : M.fr τ * (M.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hd`. Establish `hg' : gᴴ * gramAt D V τ * g = gramAt D V τ` using `hg`. Rewrite `hg'` using `[← M.fr_gram τ]`. Use `show Formalism.REAL.inUJ (M.ε τ) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.REAL.inUJ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = ((M.fr τ)⁻¹)ᴴ * ((M.fr τ)ᴴ * Formalism.REAL.Jm (M.ε τ) * M.fr τ) * (M.fr τ)⁻¹ := by rw [hg']`. Use `_ = (M.fr τ * (M.fr τ)⁻¹)ᴴ * Formalism.REAL.Jm (M.ε τ) * (M.fr τ * (M.fr τ)⁻¹) := by`.
-
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (M.ε τ) := by rw [hPQ]; simp`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fr_conj_mem (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) : M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.MainNotions.S.UJset (M.ε τ) := by
@@ -125,9 +123,9 @@ theorem fr_conj_mem (M : DSModel V S) (τ : D.what₂.Tau) {g : Matrix (Fin V.ra
 
 open Classical in
 /- English proof (translation)
-Unfold `actT`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `ρ`. Distinguish the cases in `h : ρ = τ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem actT_pure (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) (v : ∀ ρ, M.H ρ) :
     actT M τ g (PiTensorProduct.tprod ℂ v) = PiTensorProduct.tprod ℂ (Function.update v τ (M.rep τ g (v τ))) := by
@@ -141,23 +139,23 @@ theorem actT_pure (M : DSModel V S) (τ : D.what₂.Tau) (g : Matrix (Fin V.rank
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Introduce `D V S M`. Use `⟨fun x hx => ellT_separates M x hx, inclT_injective M, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ`. Take `⟨-, -, ⟨⟨h1, -⟩, -⟩, -⟩` from `M.ds τ`. Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : M.rep τ 1 = 1` using `by show M.σ τ (M.fr τ * 1 * (M.fr τ)⁻¹) = 1`. Rewrite using `[Matrix.mul_one, Matrix.mul_nonsing_inv _ hd, h1]`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.id_apply]`. Rewrite using `[actT_pure]`. Simplify using `[hr]`. Introduce `τ g hg g' hg'`. Take `⟨-, -, ⟨⟨-, hmul⟩, -⟩, -⟩` from `M.ds τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hd : IsUnit (M.fr τ).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (M.fr_unit τ)`. Establish `hQP : (M.fr τ)⁻¹ * M.fr τ = 1` using `Matrix.nonsing_inv_mul _ hd`. Establish `hsplit : M.fr τ * (g * g') * (M.fr τ)⁻¹ = (M.fr τ * g * (M.fr τ)⁻¹) * (M.fr τ * g' * (M.fr τ)⁻¹)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hQP, Matrix.mul_one, Matrix.mul_assoc (M.fr τ) g g']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by simp only [Matrix.mul_assoc]`. Establish `hr : M.rep τ (g * g') = (M.rep τ g).comp (M.rep τ g')` using `by show M.σ τ (M.fr τ * (g * g') * (M.fr τ)⁻¹) = (M.σ τ (M.fr τ * g * (M.fr τ)⁻¹)).comp (M.σ τ (M.fr τ * g' * (M.fr τ)⁻¹))`. Rewrite using `[hsplit]`. Conclude with `hmul _ (fr_conj_mem M τ hg) _ (fr_conj_mem M τ hg')`. Apply `PiTensorProduct.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply]`. Rewrite using `[actT_pure, actT_pure, actT_pure, hr]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Function.update_idem]`. Introduce `τ g _ w`. Take `⟨hc, -⟩` from `M.ds τ`. Use `haveI : CompleteSpace (M.H τ) := hc`. Use `⟨Function.update w τ (ContinuousLinearMap.adjoint (M.rep τ g) (w τ)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply]`. Rewrite using `[actT_pure, ellT_pure, ellT_pure]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Finset.prod_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `[ContinuousLinearMap.adjoint_inner_left]`. Simplify using `[Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensorLaw : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), TensorLaw M := by
   intro D V S M

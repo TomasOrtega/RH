@@ -15,7 +15,7 @@ namespace Formalism.FourierDecayAlt.P.PBO
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Wd Formalism.YangianSpanCharacter.T Formalism.FourierDecayAlt.P5
 
 /- English proof (translation)
-Unfold `B.hsInner B.hsVec`. Establish `: (WithLp.toLp 2 fun i : Fin (Module.finrank ℂ Wq) => (0 : Wq →L[ℂ] Wp) (stdOrthonormalBasis ℂ Wq i)) = 0` using `by simp; rfl`. Rewrite using `[this, inner_zero_right]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInner_zero_left' {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : B.hsInner (0 : Wq →L[ℂ] Wp) A = 0 := by
@@ -30,13 +30,13 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Unfold `D.vecV`. Distinguish the cases in `hq' : D.IsLocPt q (r + 1) ∧ 0 < D.ptG (Tz k r Bs.z * Tz k r Bs.z') r q`. Simplify using `only [dif_pos hq']`. Distinguish the cases in `h' : ∃ γ ∈ B.GV k r, Zhat k r Bs.z Bs.z' γ = D.ptMatN q (r + 1) ∧ D.IsDFrame Bs ν' m₀ γ`. Simplify using `only [dif_pos h']`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hγ` using `h'.choose_spec.1`. Establish `hGq` using `Formalism.FourierDecayAlt.P.ptG_spec k r Bs.z Bs.z' q h'.choose hq'.1 h'.choose_spec.2.1`. Establish `e` using `Formalism.FourierDecayAlt.P.JCx1.needs.orbJ_smul_of_ae Bs h'.choose (D.muR Bs h'.choose (hq'.1.2 ▸ D.ptPerm q)) G (fun _ => 0) 0 (by filter_upwards [Formalism.FourierDecayAlt.P.B5.ae_inSS Bs] with p hp`. Establish `hz : G (B.sgs p h'.choose) = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `hG _ (Formalism.FourierDecayAlt.P.B7.sgs_mem Bs hp hγ) hne`. Rewrite `h1` using `[Formalism.FourierDecayAlt.P.JCx1.needs.gf_sgs Bs hp, ← hGq]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[D.orbIntegrand, B.rho, hz])`. Rewrite using `[e, zero_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dif_neg h']`. Simplify using `only [dif_neg hq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vecV_zero_small (Bs : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r)
     {G : B.Mat k r → (Wq →L[ℂ] Wp)} {ε : ℝ} (hG : ∀ g ∈ B.GV k r, G g ≠ 0 → ε ≤ Gf k r Bs.z Bs.z' g)
@@ -64,25 +64,21 @@ theorem vecV_zero_small (Bs : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k +
 end vec
 
 /- English proof (translation)
-Establish `hθc` using `fun e => Formalism.FourierDecayAlt.P.theta_compact_support Wp Wq P p F w e Cb hθ hF hw`. Use `choose F' hF'c hF'd hF'v using hθc`. Take `⟨εF, hεF, hGF⟩` from `hF.2.2`. Use `choose εe hεe hGe using fun e => (hF'c e).2.2`. Set `Sε : Finset ℝ` to `insert εF (Finset.univ.image εe)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Sε.Nonempty` using `⟨εF, Finset.mem_insert_self _ _⟩`. Use `set ε := Sε.min' hne with hεdef`. Establish `hε : 0 < ε`. Rewrite using `[hεdef, Finset.lt_min'_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `Finset.mem_insert.1 hy with rfl | hy` into its components or cases. Conclude with `hεF`. Take `⟨a, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hεe a`. Establish `hεF' : ε ≤ εF` using `Finset.min'_le _ _ (Finset.mem_insert_self _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hεe' : ∀ e, ε ≤ εe e` using `fun e => Finset.min'_le _ _ (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (Finset.mem_univ e)))`. Use `set Dh := Complex.normSq (D.ptMatN h P.r).det with hDh`. Establish `hD0 : 0 ≤ Dh` using `Complex.normSq_nonneg _`. Establish `hD1 : 0 < Dh + 1` using `by linarith`. Use `⟨ε / (Dh + 1), div_pos hε hD1, fun c hc => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hTT : Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z' = P.T * P.T'`. Rewrite using `[p.hP.2.2.2.1, p.hP.2.2.2.2.1]`. Establish `hpt : D.ptG (Tz P.k P.r p.T.base.z * Tz P.k P.r p.T.base.z') P.r (h ++ [(1, c)]) < ε`. Rewrite using `[hTT, Formalism.FourierDecayAlt.P.PBD.ptG_app _ c h P.r hh.2]`. Distinguish the cases in `hs : Complex.normSq c - P.T * P.T' ≤ 0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Dh * (Complex.normSq c - P.T * P.T') ≤ 0` using `mul_nonpos_of_nonneg_of_nonpos hD0 hs`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push Not at hs`. Establish `h1 : Dh * (Complex.normSq c - P.T * P.T') ≤ (Dh + 1) * (Complex.normSq c - P.T * P.T')` using `by nlinarith`. Establish `h2 : (Dh + 1) * (Complex.normSq c - P.T * P.T') < (Dh + 1) * (ε / (Dh + 1))` using `mul_lt_mul_of_pos_left hc hD1`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite `h2` using `[mul_div_cancel₀ _ hD1.ne']`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `KB.Pl.RR D.RRplace`. Use `split_ifs with hloc hi hi2 hw0`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : D.vecV p.T.base p.ν' p.m₀ F (h ++ [(1, c)]) = 0` using `vecV_zero_small p.T.base p.ν' p.m₀ (fun g hg h0 => le_trans hεF' (hGF g hg h0)) _ hpt`. Rewrite using `[hv, hsInner_zero_left']`. Unfold `Top.topOf`. Use `Finset.sum_eq_zero fun e _ => Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Establish `hv : D.vecV p.T.base p.ν' p.m₀ (p.Θ.Θ w e F) (h ++ [(1, c)]) = 0`.
-
-Use `hF'v e (h ++ [(1, c)])` as an intermediate fact. Unfold `KB.Pl.V at this`. Rewrite using `[this]`. Conclude with `vecV_zero_small p.T.base p.ν' p.m₀ (fun g hg h0 => le_trans (hεe' e) (hGe e g hg h0)) _ hpt`. Rewrite using `[hv, ContinuousLinearMap.comp_zero, hsInner_zero_left', mul_zero]`.
-
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rr_top_small {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : M.Par) (p : KB.Pl P Wp Wq)
@@ -149,7 +145,7 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Establish `hf : Measurable fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)` using `(Formalism.FourierDecayAlt.P.PBH.continuous_zetaL r Bs.z Bs.z').measurable`. Use `Measure.ext_of_lintegral _ fun ψ hψ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hψ hf, hμ.2 ψ hψ, lintegral_withDensity_eq_lintegral_mul _ (Formalism.FourierDecayAlt.P.JCx2.measurable_radial_weight k _ _) hψ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem zetaNorm_map {Bs : B.RealPlaceData k r Wp Wq} {μ : Measure (Mt k r)} (hμ : KB.ZetaNorm Bs μ) :
     μ.map (fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)) =
@@ -161,7 +157,7 @@ theorem zetaNorm_map {Bs : B.RealPlaceData k r Wp Wq} {μ : Measure (Mt k r)} (h
   rfl
 
 /- English proof (translation)
-Establish `hf : Measurable fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)` using `(Formalism.FourierDecayAlt.P.PBH.continuous_zetaL r Bs.z Bs.z').measurable`. Rewrite using `[← integral_map hf.aemeasurable hψ.aestronglyMeasurable, zetaNorm_map hμ, integral_withDensity_eq_integral_toReal_smul (Formalism.FourierDecayAlt.P.JCx2.measurable_radial_weight k _ _) (Filter.Eventually.of_forall fun ζ => ENNReal.ofReal_lt_top)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.P.JCx2.rbW]`. Rewrite using `[ENNReal.toReal_ofReal (Formalism.FourierDecayAlt.P.JCx2.rb_zWeight_nonneg k _ _ ζ), Complex.real_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zetaNorm_integral {Bs : B.RealPlaceData k r Wp Wq} {μ : Measure (Mt k r)} (hμ : KB.ZetaNorm Bs μ)
     (ψ : ℂ → ℂ) (hψ : Measurable ψ) :
@@ -177,9 +173,9 @@ theorem zetaNorm_integral {Bs : B.RealPlaceData k r Wp Wq} {μ : Measure (Mt k r
   rw [ENNReal.toReal_ofReal (Formalism.FourierDecayAlt.P.JCx2.rb_zWeight_nonneg k _ _ ζ), Complex.real_smul]
 
 /- English proof (translation)
-Establish `hf : Measurable fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g)` using `(Formalism.FourierDecayAlt.P.PBH.continuous_zetaL r Bs.z Bs.z').measurable`. Establish `h1 : Integrable ψ (μ.map fun g : Mt k r => Q.zetaL k r Bs.z Bs.z' (Fin.last r) (Matrix.of g))` using `(integrable_map_measure hψ.aestronglyMeasurable hf.aemeasurable).2 hi`. Rewrite `h1` using `[zetaNorm_map hμ, integrable_withDensity_iff_integrable_smul' (Formalism.FourierDecayAlt.P.JCx2.measurable_radial_weight k _ _) (Filter.Eventually.of_forall fun ζ => ENNReal.ofReal_lt_top)]`. Use `h1.congr (Filter.Eventually.of_forall fun ζ => ?_)` and prove the remaining obligations. Simplify using `only [Formalism.FourierDecayAlt.P.JCx2.rbW]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.toReal_ofReal (Formalism.FourierDecayAlt.P.JCx2.rb_zWeight_nonneg k _ _ ζ), Complex.real_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zetaNorm_integrable {Bs : B.RealPlaceData k r Wp Wq} {μ : Measure (Mt k r)} (hμ : KB.ZetaNorm Bs μ)
     (ψ : ℂ → ℂ) (hψ : Measurable ψ)
@@ -203,15 +199,15 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hs, ⟨R, hR⟩, ⟨ε, hε, hG⟩⟩` from `hF`. Use `set F₂ : B.Mat k r → (Wq →L[ℂ] Wp) := fun g => if g ∈ B.GV k r then F g else 0 with hF₂`. Establish `he : ∀ g ∈ B.GV k r, F₂ g = F g` using `fun g hg => by simp [hF₂, hg]`. Establish `hs₂ : B.CkOn ⊤ (B.GV k r) F₂`. Introduce `g₀ hg₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, f', hU, hgU, hf', hfe⟩` from `hs g₀ hg₀`. Conclude with `⟨U, f', hU, hgU, hf', fun g hg hgG => by rw [he g hgG, hfe g hg hgG]⟩`. Establish `hz : ∀ g, g ∉ {g : B.Mat k r | B.gN g ≤ R} → F₂ g = 0`. Introduce `g hg`. Distinguish the cases in `hgG : g ∈ B.GV k r`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he g hgG]`. Assume the negation of the conclusion as `h0`. Conclude with `hg (hR g hgG h0)`. Simplify using `[hF₂, hgG]`. Establish `hC` using `Formalism.FourierDecayAlt.P.PBE.isCompact_gN_le k r R`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Φ, hΦK, hΦ⟩` from `hJ F₂ ε hε (fun A m => Formalism.FourierDecayAlt.P.JFxG.cptInCC_G hs₂ hC (fun g _ hgC => hz g hgC) A m) (HasCompactSupport.intro hC hz) (fun g hg h0 => hG g hg (by rwa [he g hg] at h0))`. Use `⟨Φ, hΦK, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ x hx]`. Establish `hGV : Q.wCell k r (Fin.last r) x.1 * x.2 ∈ B.GV k r`. Rewrite using `[Rad.wCell_last_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gv_mul (big_cell_mem_holds _ _ _ 1 hx.1 (by simp)) hx.2.1.1`. Simplify using `only [resG]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx8.JF_congr Bs (a := 1) (fun g hg => by rw [he g hg, one_smul]) hGV, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem pic_cpt {k r : ℕ} (Bs : B.RealPlaceData k r Wp Wq) (K0 : Submodule ℂ (RadSp k r Bs.z Bs.z' Bs.π Bs.π'))
     (hJ : ∀ (F : Mx k r → (Wq →L[ℂ] Wp)) (ε : ℝ), 0 < ε → (∀ (A' : ℝ) (m' : ℕ), B.InCC A' m' F) →

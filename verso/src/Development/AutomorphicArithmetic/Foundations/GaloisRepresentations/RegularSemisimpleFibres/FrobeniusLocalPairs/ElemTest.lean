@@ -17,9 +17,9 @@ section
 variable {E : Type} [Field E] [ValuativeRel E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hx1 : valuation E x ≤ 1`. Establish `e : x = (x - 1) + 1` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_add_le _ (hx.trans h1.le) (by simp))`. Establish `e : x * y - 1 = x * (y - 1) + (x - 1)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `Valuation.map_add_le _ ?_ hx` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_mul' hx1 hy).trans (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near_mul {r : ValueGroupWithZero E} (h1 : r < 1) {x y : E} (hx : valuation E (x - 1) ≤ r)
     (hy : valuation E (y - 1) ≤ r) : valuation E (x * y - 1) ≤ r := by
@@ -34,7 +34,7 @@ private theorem near_mul {r : ValueGroupWithZero E} (h1 : r < 1) {x y : E} (hx :
   exact (mul_le_mul' hx1 hy).trans (by simp)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using h0.le`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`. Conclude with `near_mul h1 (hf a (Finset.mem_insert_self _ _)) (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem near_prod {r : ValueGroupWithZero E} (h0 : 0 < r) (h1 : r < 1) {ι : Type} (s : Finset ι) (f : ι → E)
     (hf : ∀ i ∈ s, valuation E (f i - 1) ≤ r) : valuation E (∏ i ∈ s, f i - 1) ≤ r := by
@@ -46,7 +46,7 @@ private theorem near_prod {r : ValueGroupWithZero E} (h0 : 0 < r) (h1 : r < 1) {
       (ih fun i hi => hf i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase s f ha, map_mul, map_prod]`. Conclude with `(mul_le_of_le_one_right' (Finset.prod_le_one' fun i hi => hs i (Finset.mem_of_mem_erase hi))).trans hr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem small_prod {r : ValueGroupWithZero E} {ι : Type} (s : Finset ι) (f : ι → E) (hs : ∀ i ∈ s, valuation E (f i) ≤ 1)
     (a : ι) (ha : a ∈ s) (hr : valuation E (f a) ≤ r) : valuation E (∏ i ∈ s, f i) ≤ r := by
@@ -54,13 +54,13 @@ private theorem small_prod {r : ValueGroupWithZero E} {ι : Type} (s : Finset ι
   exact (mul_le_of_le_one_right' (Finset.prod_le_one' fun i hi => hs i (Finset.mem_of_mem_erase hi))).trans hr
 
 /- English proof (translation)
-Establish `hb : ∀ i j, valuation E (M i j) ≤ 1` using `fun i j => by`. Establish `e : M i j = (M i j - (1 : Matrix (Fin n) (Fin n) E) i j) + (1 : Matrix (Fin n) (Fin n) E) i j` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_le _ ((hM i j).trans h1.le) ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Matrix.det_apply, ← Finset.add_sum_erase _ _ (Finset.mem_univ (1 : Equiv.Perm (Fin n))), add_sub_right_comm]`. Use `Valuation.map_add_le _ ?_ (Valuation.map_sum_le _ fun p hp => ?_)` and prove the remaining obligations. Establish `hd : valuation E (∏ i, M i i - 1) ≤ r` using `near_prod h0 h1 _ _ fun i _ => by simpa using hM i i`. Simplify using `using hd`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp1 : p ≠ 1` using `Finset.ne_of_mem_erase hp`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, p a ≠ a := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hp1 (Equiv.ext hc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : valuation E (∏ i, M (p i) i) ≤ r`. Use `small_prod _ _ (fun i _ => hb _ _) a (Finset.mem_univ _) ?_` and prove the remaining obligations. Simplify `hM (p a) a` using `[Matrix.one_apply, ha]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign p) with e | e <;> simpa [e, Units.smul_def] using hs`.
+Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem det_near {r : ValueGroupWithZero E} (h0 : 0 < r) (h1 : r < 1) {M : Matrix (Fin n) (Fin n) E}
     (hM : ∀ i j, valuation E (M i j - (1 : Matrix (Fin n) (Fin n) E) i j) ≤ r) : valuation E (M.det - 1) ≤ r := by
@@ -87,28 +87,26 @@ private theorem det_near {r : ValueGroupWithZero E} (h0 : 0 < r) (h1 : r < 1) {M
 end
 
 /- English proof (translation)
-The claim follows from `(continuous_leviEmb E (points (Fin n))).comp (continuous_leviTorus E (Fin n))`.
+A detailed English derivation is pending.
 -/
 private theorem diag_cont (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) :
     Continuous (diagT E (Fin n)) :=
   (continuous_leviEmb E (points (Fin n))).comp (continuous_leviTorus E (Fin n))
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n r h0 h1 A hA`. Take `⟨K, hK, hKo, hKc⟩` from `UpperTheory.ConvolutionTheory.Loc.ballSub E n r h0 h1`. Use `haveI := (UpperTheory.V.Z.Tf.Orb.gLTop E n).2.2.1`. Establish `mK : ∀ g : GL (Fin n) E, g ∈ ball n r ↔ g ∈ K` using `fun g => by rw [← hK]; rfl`. Establish `e : elemSet r A = (fun z : GL (Fin n) E × (Fin n → Eˣ) × GL (Fin n) E => z.1 * diagT E (Fin n) z.2.1 * z.2.2) '' ((K : Set (GL (Fin n) E)) ×ˢ (A ×ˢ (K : Set (GL (Fin n) E))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, s, hs, rfl⟩`. Conclude with `⟨(a, s, b), ⟨(mK a).1 ha, hs, (mK b).1 hb⟩, rfl⟩`. Introduce and unpack `⟨⟨a, s, b⟩, ⟨ha, hs, hb⟩, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨a, (mK a).2 ha, b, (mK b).2 hb, s, hs, rfl⟩`. Establish `hS : IsCompact (elemSet r A)`. Rewrite using `[e]`. Use `(hKc.prod (hA.prod hKc)).image ?_` and prove the remaining obligations. Conclude with `(continuous_fst.mul ((diag_cont E n).comp (continuous_fst.comp continuous_snd))).mul (continuous_snd.comp continuous_snd)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : IsOpen (elemSet r A)`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce and unpack `_ ⟨a, ha, b, hb, s, hs, rfl⟩`. Use `Filter.mem_of_superset ((hKo.preimage (f := fun g => (a * diagT E (Fin n) s)⁻¹ * g) (by fun_prop)).mem_nhds (by simpa [mul_assoc] using (mK b).1 hb)) fun g hg => ?_` and prove the remaining obligations. Conclude with `⟨a, ha, _, (mK _).2 hg, s, hs, by group⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : UpperTheory.ConvolutionTheory.C.Test ((elemSet r A).indicator (1 : GL (Fin n) E → ℂ))`. Use `⟨(IsLocallyConstant.iff_eventually_eq _).2 fun g => ?_, HasCompactSupport.intro hS fun g hg => Set.indicator_of_notMem hg _⟩` and prove the remaining obligations. Distinguish the cases in `h : g ∈ elemSet r A`. Use `filter_upwards [hO.mem_nhds h] with y hy`. Conclude with `(Set.indicator_of_mem hy _).trans (Set.indicator_of_mem h (1 : GL (Fin n) E → ℂ)).symm`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `filter_upwards [hS.isClosed.isOpen_compl.mem_nhds h] with y hy`. Conclude with `(Set.indicator_of_notMem hy _).trans (Set.indicator_of_notMem h _).symm`. Use `⟨hO, hS, hT, hT, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, s, hs, rfl⟩`. Establish `hd : ∀ g ∈ ball (E` using `E) n r, valuation E (((GeneralLinearGroup.det g : Eˣ) : E) - 1) ≤ r := fun g hg => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `det_near h0 h1 hg` using `[GeneralLinearGroup.val_det_apply]`. Use `⟨s, hs, GeneralLinearGroup.det a * GeneralLinearGroup.det b, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `near_mul h1 (hd a ha) (hd b hb)`. Establish `hdiag : GeneralLinearGroup.det (diagT E (Fin n) s) = ∏ i, s i`.
-
-Use `ext`. Simplify using `[GeneralLinearGroup.val_det_apply, val_diagT, Matrix.det_diagonal]`. Rewrite using `[map_mul, map_mul, hdiag]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem elemTest : ElemTest := by
   intro E _ _ _ _ n r h0 h1 A hA

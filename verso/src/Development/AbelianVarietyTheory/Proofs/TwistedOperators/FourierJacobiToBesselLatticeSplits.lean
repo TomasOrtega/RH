@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.AscFin.SplitsFB
 
 /- English proof (translation)
-Distinguish the cases in `h : IsUnit A.det`. Conclude with `Matrix.inv_eq_left_inv (by rw [neg_mul_neg, Matrix.nonsing_inv_mul A h])`. Establish `h' : ¬ IsUnit (-A).det`. Rewrite using `[Matrix.det_neg]`. Introduce `hu`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (isUnit_of_mul_isUnit_right hu)`. Rewrite using `[Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]`.
+A detailed English derivation is pending.
 -/
 theorem inv_neg_mat {D : D7} {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E) : (-A)⁻¹ = -A⁻¹ := by
   by_cases h : IsUnit A.det
@@ -32,9 +32,9 @@ theorem inv_neg_mat {D : D7} {n : ℕ} (A : Matrix (Fin n) (Fin n) D.host.E) : (
     rw [Matrix.nonsing_inv_apply_not_isUnit _ h, Matrix.nonsing_inv_apply_not_isUnit _ h', neg_zero]
 
 /- English proof (translation)
-Establish `e : hO (negSp S) T x y = -hO S T x y`. Unfold `hO`. Rewrite using `[negSp_gram, inv_neg_mat]`. Simplify using `only [Matrix.neg_apply, map_neg, neg_mul, Finset.sum_neg_distrib]`. Unfold `symplO`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, mul_neg, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_negSp {D : D7} (S T : HSp D) (x y : WO S T) : symplO (negSp S) T x y = -symplO S T x y := by
   have e : hO (negSp S) T x y = -hO S T x y := by
@@ -45,7 +45,7 @@ theorem symplO_negSp {D : D7} (S T : HSp D) (x y : WO S T) : symplO (negSp S) T 
   rw [e, mul_neg, map_neg]
 
 /- English proof (translation)
-Unfold `symplO hO`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem symplO_zero_left' {D : D7} (S T : HSp D) (y : WO S T) : symplO S T 0 y = 0 := by
   unfold symplO hO
@@ -55,20 +55,20 @@ section
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
 /- English proof (translation)
-The claim follows from `(G.isV (X := .grid i 0) (by show _ ∧ _; constructor <;> omega) (by intro j hj; injection hj with h2; omega)).sd`.
+A detailed English derivation is pending.
 -/
 theorem sd_grid (i : ℕ) (h1 : 1 ≤ i) (h : i ≤ D.R.m) : IsSelfDualC (G.V (.grid i 0)) (G.Λ (.grid i 0)) :=
   (G.isV (X := .grid i 0) (by show _ ∧ _; constructor <;> omega) (by intro j hj; injection hj with h2; omega)).sd
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D _ _ _ _ (isSelfDualC_neg (sd_grid G (i + 1) (by omega) h)) (sd_grid G i h1 (by omega)) (fun _ => True) u).1 hu.1).1`.
+A detailed English derivation is pending.
 -/
 theorem latRow_mxAt (i : ℕ) (h1 : 1 ≤ i) (h : i + 1 ≤ D.R.m) {u} (hu : u ∈ latRow G i) : MxAt (fun _ => True) u :=
   ((GlobalTheory.T.mem_homLatticeCompletion_iff_supported_maps D _ _ _ _ (isSelfDualC_neg (sd_grid G (i + 1) (by omega) h)) (sd_grid G i h1 (by omega)) (fun _ => True) u).1
     hu.1).1
 
 /- English proof (translation)
-Use `(GlobalTheory.T.homLatticeCompletion_self_annihilator_atPlaces D W.ψ W.ψ_std _ _ _ _ (isSelfDualC_neg (sd_grid G (i + 1) (by omega) h)) (sd_grid G i h1 (by omega)) (fun _ => True) u (latRow_mxAt G i h1 h hu)).1 hu.1 u' hu'.1` as an intermediate fact. Rewrite `this` using `[symplO_negSp, AddChar.map_neg_eq_inv, inv_eq_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem latRow_pair (W : G.Weil) (i : ℕ) (h1 : 1 ≤ i) (h : i + 1 ≤ D.R.m) {u u'} (hu : u ∈ latRow G i) (hu' : u' ∈ latRow G i) :
     W.ψ (symplO (G.V (.grid (i + 1) 0)) (G.V (.grid i 0)) u u') = 1 := by
@@ -77,7 +77,7 @@ theorem latRow_pair (W : G.Weil) (i : ℕ) (h1 : 1 ≤ i) (h : i + 1 ≤ D.R.m) 
   rwa [symplO_negSp, AddChar.map_neg_eq_inv, inv_eq_one] at this
 
 /- English proof (translation)
-Introduce `i j` and use `by show (x * y) i j ∈ _ rw [Matrix.mul_apply] exact Ideal.sum_mem _ fun l _ => Ideal.mul_mem_right _ _ (hx i l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mxAt_mul {P : GlobalTheory.FinPl.Pl D → Prop} {m n k : ℕ} {x : Mx D m n} (hx : MxAt P x) (y : Mx D n k) : MxAt P (x ⬝ y) :=
   fun i j => by
@@ -90,31 +90,25 @@ end
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D hq T L μ0 hL sc G W M hM F hF σ h h'`. Establish `hS` using `GlobalTheory.T.depthLatticeGridRow_stable_witt_projections D hq T L μ0 hL sc G W M hM F hF σ h h'`. Establish `hT` using `GlobalTheory.T.depthLatticeGridRow_stable_wittTargetProjections D hq T L μ0 hL sc G W M hM F hF σ h h'`. Establish `hC` using `GlobalTheory.T.fourierJacobi_basePoint_character_trivial_depthLattice D hq T L μ0 hL sc G W M hM F hF σ h h'`. Establish `hB` using `GlobalTheory.T.depthLatticeGridRow_le_selfDualHomLatticeShift D hq T L μ0 hL sc G W M hM (2 * σ + 2) (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun u hu => ?_⟩` and prove the remaining obligations. Use `set dV := F.dJ (σ + 1) h with hdV`. Use `set dW := F.dB σ h' with hdW`. Take `⟨hX, hY⟩` from `hS u hu`. Establish `e1` using `dV.sum_eq_one`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `dW.sum_eq_one`. Establish `h0 : u ⬝ (dV.j0 ⬝ dV.p0) ∈ latRow G (2 * σ + 2)`. Establish `s : u ⬝ (dV.jX ⬝ dV.pX) + u ⬝ (dV.j0 ⬝ dV.p0) + u ⬝ (dV.jY ⬝ dV.pY) = u`. Rewrite using `[← Matrix.mul_add, ← Matrix.mul_add, e1, Matrix.mul_one]`. Establish `e : u ⬝ (dV.j0 ⬝ dV.p0) = u - u ⬝ (dV.jX ⬝ dV.pX) - u ⬝ (dV.jY ⬝ dV.pY)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[eq_sub_iff_add_eq, eq_sub_iff_add_eq]`. Use `conv_rhs => rw [← s]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem hu hX) hY`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set w := u ⬝ (dV.j0 ⬝ dV.p0) with hw`. Take `⟨gX, gY⟩` from `hT w h0`. Establish `g0 : (dW.j0 ⬝ dW.p0) ⬝ w ∈ latRow G (2 * σ + 2)`. Establish `s : (dW.jX ⬝ dW.pX) ⬝ w + (dW.j0 ⬝ dW.p0) ⬝ w + (dW.jY ⬝ dW.pY) ⬝ w = w`. Rewrite using `[← Matrix.add_mul, ← Matrix.add_mul, e2, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (dW.j0 ⬝ dW.p0) ⬝ w = w - (dW.jX ⬝ dW.pX) ⬝ w - (dW.jY ⬝ dW.pY) ⬝ w`. Rewrite using `[eq_sub_iff_add_eq, eq_sub_iff_add_eq]`. Use `conv_rhs => rw [← s]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem (sub_mem h0 gX) gY`. Establish `hA1 : dV.extX (G.V (.grid (2 * σ + 2) 0)) (u ⬝ dV.jX) ∈ latRow G (2 * σ + 2)`. Rewrite using `[HypDec.extX_apply, Matrix.mul_assoc]`. Conclude with `hX`. Establish `hA2 : dV.extY (G.V (.grid (2 * σ + 2) 0)) (u ⬝ dV.jY) ∈ latRow G (2 * σ + 2)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[HypDec.extY_apply, Matrix.mul_assoc]`. Conclude with `hY`. Establish `hB1 : dV.ext0 (G.V (.grid (2 * σ + 2) 0)) (dW.incX _ (dW.pX ⬝ (u ⬝ dV.j0))) = (dW.jX ⬝ dW.pX) ⬝ w`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.incX_apply, hw]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB2 : dV.ext0 (G.V (.grid (2 * σ + 2) 0)) (dW.incY _ (dW.pY ⬝ (u ⬝ dV.j0))) = (dW.jY ⬝ dW.pY) ⬝ w`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.incY_apply, hw]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hG0 : dV.ext0 (G.V (.grid (2 * σ + 2) 0)) (dW.inc0 _ (dW.p0 ⬝ (u ⬝ dV.j0))) = (dW.j0 ⬝ dW.p0) ⬝ w`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, hw]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `heq : u = dV.extX (G.V (.grid (2 * σ + 2) 0)) (u ⬝ dV.jX) + dV.extY (G.V (.grid (2 * σ + 2) 0)) (u ⬝ dV.jY) + dV.ext0 (G.V (.grid (2 * σ + 2) 0)) (dW.incX _ (dW.pX ⬝ (u ⬝ dV.j0)) + dW.incY _ (dW.pY ⬝ (u ⬝ dV.j0)) + dW.inc0 _ (dW.p0 ⬝ (u ⬝ dV.j0)))`. Rewrite using `[map_add, map_add, hB1, hB2, hG0, HypDec.extX_apply, HypDec.extY_apply, ← Matrix.add_mul, ← Matrix.add_mul, show dW.jX ⬝ dW.pX + dW.jY ⬝ dW.pY + dW.j0 ⬝ dW.p0 = 1 from (add_right_comm _ _ _).trans e2, Matrix.one_mul, hw, Matrix.mul_assoc, Matrix.mul_assoc]`. Establish `s : u ⬝ (dV.jX ⬝ dV.pX) + u ⬝ (dV.j0 ⬝ dV.p0) + u ⬝ (dV.jY ⬝ dV.pY) = u`. Rewrite using `[← Matrix.mul_add, ← Matrix.mul_add, e1, Matrix.mul_one]`.
-
-Use `conv_lhs => rw [← s]`. Normalize the expressions using the abelian group laws. Use `⟨u ⬝ dV.jX, hA1, u ⬝ dV.jY, AddSubgroup.subset_closure ⟨mxAt_mul (latRow_mxAt G (2 * σ + 2) (by omega) (by omega) hu) _, fun a ha => latRow_pair G W (2 * σ + 2) (by omega) (by omega) ha hA2⟩, dW.pX ⬝ (u ⬝ dV.j0), ?_, dW.pY ⬝ (u ⬝ dV.j0), ?_, dW.p0 ⬝ (u ⬝ dV.j0), ?_, heq, hC _ hA2 …` and prove the remaining obligations. Use `show dV.ext0 _ (dW.incX _ (dW.pX ⬝ (u ⬝ dV.j0))) ∈ latBig G (2 * σ + 2)`. Rewrite using `[hB1]`.
-
-Conclude with `hB gX`. Use `show dV.ext0 _ (dW.incY _ (dW.pY ⬝ (u ⬝ dV.j0))) ∈ latBig G (2 * σ + 2)`. Rewrite using `[hB2]`. Conclude with `hB gY`. Use `show dV.ext0 _ (dW.inc0 _ (dW.p0 ⬝ (u ⬝ dV.j0))) ∈ latRow G (2 * σ + 2)`.
-
-Rewrite using `[hG0]`. Conclude with `g0`. Rewrite using `[map_zero, symplO_zero_left', AddChar.map_zero_eq_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splits_FB : OnStd fun {D} _ _ {sc} {G} W F => ∀ σ (h : 2 * (σ + 1) + 2 ≤ D.R.m) (h' : 2 * σ + 2 ≤ D.R.m),
     Splits (F.dJ (σ + 1) h) (F.dB σ h') (pcFB W F σ h h') (xFB F σ h') 0 W.ψ (latRow G (2 * σ + 2)) := by

@@ -107,7 +107,7 @@ def TautBase.ofPolAV {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (b :
     τ₀_add := h.choose_spec.2.2 }
 
 /- English proof (translation)
-Take `⟨D, α, rfl, h⟩` from `GlobalTheory.TwistCompare.exists_degPre P p`. Use `D.P.isAb.comm` as an intermediate fact. Use `⟨TautBase.ofPolAV b D.P D.rig D.rig_gen D.cub (r := 1) (fun a => D.c (a 0 • α)) (fun a a' => by rw [Pi.add_apply, add_smul, D.c_add]; rfl), fun _ => 1, rfl, rfl, rfl, heq_of_eq ?_⟩` and prove the remaining obligations. Conclude with `(congrArg D.c (one_smul ℤ α)).trans h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem TautBase.exists_of_point {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] [IsNoetherianRing W]
     (b : o →+* W) (P : PolAV (Sp W)) (p : 𝟙_ (Over (Sp W)) ⟶ P.A) :
@@ -119,7 +119,7 @@ theorem TautBase.exists_of_point {o W : Type} [CommRing o] [CommRing W] [IsDomai
   exact (congrArg D.c (one_smul ℤ α)).trans h
 
 /- English proof (translation)
-The claim follows from `TautBase.exists_of_point b _ p`.
+A detailed English derivation is pending.
 -/
 theorem TautBase.exists_ell {o W : Type} [CommRing o] [CommRing W] [IsDomain W] [IsLocalRing W] [IsNoetherianRing W]
     (b : o →+* W) (E : _root_.WeierstrassCurve W) [E.IsElliptic]
@@ -129,7 +129,7 @@ theorem TautBase.exists_ell {o W : Type} [CommRing o] [CommRing W] [IsDomain W] 
   TautBase.exists_of_point b _ p
 
 /- English proof (translation)
-Establish `h` using `T.c₀_add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(mul_eq_left.mp h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TautBase.c₀_zero {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) : T.c₀ 0 = 1 := by
   have h := T.c₀_add 0 0
@@ -137,7 +137,7 @@ theorem TautBase.c₀_zero {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W
   exact (mul_eq_left.mp h.symm)
 
 /- English proof (translation)
-Establish `h` using `T.c₀_add (-a) a`. Rewrite `h` using `[neg_add_cancel, T.c₀_zero]`. Conclude with `eq_inv_of_mul_eq_one_left h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TautBase.c₀_neg {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (T : TautBase o W) (a : Fin T.r → ℤ) :
     T.c₀ (-a) = (T.c₀ a)⁻¹ := by
@@ -152,9 +152,9 @@ example {o W : Type} [CommRing o] [CommRing W] [IsLocalRing W] (b : o →+* W) (
     (TautBase.torus b r 1 0 (fun _ _ => rfl)).r = r := rfl
 
 /- English proof (translation)
-Set `E : _root_.WeierstrassCurve ℚ` to `⟨0, 0, 0, 0, 1⟩`. Establish `: E.IsElliptic` using `⟨by`. Rewrite using `[isUnit_iff_ne_zero]`. Evaluate the numerical expressions using `[E, _root_.WeierstrassCurve.Δ, _root_.WeierstrassCurve.b₂, _root_.WeierstrassCurve.b₄, _root_.WeierstrassCurve.b₆, _root_.WeierstrassCurve.b₈]⟩`. Take `⟨T, -, -, h₁, h₂, -⟩` from `TautBase.exists_ell (Int.castRingHom ℚ) E 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨T, h₁, h₂⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ T : TautBase ℤ ℚ, T.g = 1 ∧ T.r = 1 := by
   let E : _root_.WeierstrassCurve ℚ := ⟨0, 0, 0, 0, 1⟩

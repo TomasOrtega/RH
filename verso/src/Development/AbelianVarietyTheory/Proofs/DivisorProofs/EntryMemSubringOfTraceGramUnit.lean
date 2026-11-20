@@ -4,11 +4,9 @@ open Matrix
 namespace GlobalTheory.TraceGram
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `i j`. Rewrite using `[pow_zero, Matrix.one_apply]`. Use `split_ifs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `O.one_mem`. Conclude with `O.zero_mem`. Consider the case `succ k ih`. Introduce `i j`. Rewrite using `[pow_succ, Matrix.mul_apply]`.
-
-Conclude with `O.sum_mem fun l _ => O.mul_mem (ih i l) (hg l j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_entry_mem {K : Type} [Field K] (O : Subring K) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) K) (hg : ∀ i j, g i j ∈ O) (k : ℕ) : ∀ i j, (g ^ k) i j ∈ O := by
@@ -25,9 +23,9 @@ theorem pow_entry_mem {K : Type} [Field K] (O : Subring K) {n : ℕ}
     exact O.sum_mem fun l _ => O.mul_mem (ih i l) (hg l j)
 
 /- English proof (translation)
-Introduce `i j`. Set `G' : Matrix (Fin n) (Fin n) O` to `Matrix.of fun i j => ⟨G i j, hG i j⟩`. Establish `h : O.subtype.mapMatrix G' = G`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[← h, ← RingHom.map_adjugate]`. Conclude with `(G'.adjugate i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_entry_mem {K : Type} [Field K] (O : Subring K) {n : ℕ}
     (G : Matrix (Fin n) (Fin n) K) (hG : ∀ i j, G i j ∈ O) : ∀ i j, G.adjugate i j ∈ O := by
@@ -39,17 +37,15 @@ theorem adjugate_entry_mem {K : Type} [Field K] (O : Subring K) {n : ℕ}
   exact (G'.adjugate i j).2
 
 /- English proof (translation)
-Introduce `K _ O n g x c hx hg htr hdet hinv`. Use `set G : Matrix (Fin n) (Fin n) K := Matrix.of fun i j : Fin n => (g ^ ((i : ℕ) + j)).trace with hGdef`. Establish `hG : ∀ i j, G i j ∈ O`. Introduce `i j`. Simplify using `only [hGdef, Matrix.of_apply, Matrix.trace, Matrix.diag_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `O.sum_mem fun l _ => pow_entry_mem O g hg _ l l`. Establish `hb : ∀ j, (c ᵥ* G) j ∈ O`. Introduce `j`. Establish `: (c ᵥ* G) j = (x * g ^ (j : ℕ)).trace`. Rewrite using `[hx, Finset.sum_mul, Matrix.trace_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.vecMul, dotProduct, hGdef, Matrix.of_apply, smul_mul_assoc, Matrix.trace_smul, smul_eq_mul, pow_add]`. Rewrite using `[this]`. Conclude with `htr j`. Establish `hc : ∀ i, c i ∈ O`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (c ᵥ* G) ᵥ* G.adjugate = G.det • c`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_adjugate, Matrix.vecMul_smul, Matrix.vecMul_one]`. Establish `h2 : c i = (G.det)⁻¹ * ((c ᵥ* G) ᵥ* G.adjugate) i`. Rewrite using `[h1, Pi.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ hdet, one_mul]`. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `O.mul_mem hinv ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ l, (c ᵥ* G) l * G.adjugate l i ∈ O`. Conclude with `O.sum_mem fun l _ => O.mul_mem (hb l) (adjugate_entry_mem O G hG l i)`. Introduce `i j`. Rewrite using `[hx, Matrix.sum_apply]`.
-
-Use `O.sum_mem fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `O.mul_mem (hc l) (pow_entry_mem O g hg _ i j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entry_mem_of_trace_gram : ∀ {K : Type} [Field K] (O : Subring K) {n : ℕ} (g x : Matrix (Fin n) (Fin n) K) (c : Fin n → K),
     x = ∑ i, c i • g ^ (i : ℕ) → (∀ i j, g i j ∈ O) → (∀ j : Fin n, (x * g ^ (j : ℕ)).trace ∈ O) →

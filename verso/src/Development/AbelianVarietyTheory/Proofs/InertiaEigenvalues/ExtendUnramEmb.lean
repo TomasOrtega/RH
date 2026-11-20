@@ -3,15 +3,13 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.LiftQMk
 open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations GlobalTheory.Pass GlobalTheory.Cut GlobalTheory.UseLoc Module Classical
 
 /- English proof (translation)
-Introduce `l _ K LL hK e`. Establish `hsurj : Function.Surjective (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1)`. Introduce `y`. Use `⟨⟨y.1, ⟨y.2, hK y.2⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Set `φ : ↥(K0 K) ≃ₐ[ℚ_[l]] ↥K.1` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) ⟨(IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1).toRingHom.injective, hsurj⟩`. Use `⟨e.comp φ.symm.toAlgHom, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `: φ.symm (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1 x) = x` using `φ.symm_apply_apply x`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply]`. Conclude with `congrArg (fun z => ((e z : ↥LL.1) : Om l)) this`. Introduce `τ' hτ'`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `hsurj y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun f : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1 => f x) hτ'`. Simplify using `only [AlgHom.comp_apply] at h1`. Rewrite using `[h1]`. Simplify using `only [AlgHom.comp_apply]`. Establish `: φ.symm (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1 x) = x` using `φ.symm_apply_apply x`.
-
-Conclude with `(congrArg (fun z => ((e z : ↥LL.1) : Om l)) this).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UseLoc.extendUnramEmb : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), K.1 ≤ MaximalUnramifiedExtension l → ∀ e : ↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1, ∃ τ : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, τ.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = e ∧ ∀ τ' : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1, τ'.comp (IsScalarTower.toAlgHom ℚ_[l] ↥(K0 K) ↥K.1) = e → τ' = τ := by
   intro l _ K LL hK e

@@ -13,11 +13,11 @@ namespace GlobalTheory.Per.LangUnit
 open GlobalTheory.Cyc.FontW
 
 /- English proof (translation)
-Introduce `y`. Establish `hstep : ∀ (r : ℕ) (x : M), f x - y ∈ Dv l r M → ∃ x', f x' - y ∈ Dv l (r + 1) M ∧ x' - x ∈ Dv l r M`. Introduce `r x hx`. Take `⟨u, hu⟩` from `mem_Dv.1 hx`. Take `⟨a, z, haz⟩` from `h (-u)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x + l ^ r • a, mem_Dv.2 ⟨z, ?_⟩, mem_Dv.2 ⟨a, by abel⟩⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_smul, ← haz, map_add, map_nsmul, add_sub_right_comm, ← hu, sub_neg_eq_add, smul_add, add_comm]`. Use `choose nx hnx using hstep`. Set `g : (r : ℕ) → {x // f x - y ∈ Dv l r M}` to `fun r => Nat.rec ⟨0, mem_Dv.2 ⟨_, by rw [pow_zero, one_smul]⟩⟩ (fun r b => ⟨nx r b.1 b.2, (hnx r b.1 b.2).1⟩) r`. Take `⟨L, hL⟩` from `hM.2 (fun r => (g r).1) fun r => (hnx r (g r).1 (g r).2).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, sub_eq_zero.1 (hM.1 _ fun r => ?_)⟩` and prove the remaining obligations. Establish `e : f L - y = f (L - (g r).1) + (f (g r).1 - y)` using `by rw [map_sub]; abel`. Rewrite using `[e]`. Conclude with `add_mem (Dv_map f (hL r)) (g r).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_of_cpl' {l : ℕ} {M : Type} [AddCommGroup M] (hM : Cpl l M) (f : M →+ M)
     (h : ∀ y, ∃ x z, f x - y = l • z) : Function.Surjective f := by
@@ -43,7 +43,7 @@ theorem onto_of_cpl' {l : ℕ} {M : Type} [AddCommGroup M] (hM : Cpl l M) (f : M
 variable {p : ℕ} [hp : Fact p.Prime] {k : Type} [CommRing k] [CharP k p] [PerfectRing k p]
 
 /- English proof (translation)
-Establish `h0 : A ∈ Ideal.span {(p : WittVector p k)}`. Rewrite using `[← WittVector.ker_constantCoeff, RingHom.mem_ker, WittVector.constantCoeff_apply]`. Conclude with `hA`. Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 h0`. Conclude with `⟨u, by rw [← hu, nsmul_eq_mul, mul_comm]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_smul_of_coeff_zero {A : WittVector p k} (hA : A.coeff 0 = 0) : ∃ Z, A = p • Z := by
   have h0 : A ∈ Ideal.span {(p : WittVector p k)} := by
@@ -53,7 +53,7 @@ theorem eq_smul_of_coeff_zero {A : WittVector p k} (hA : A.coeff 0 = 0) : ∃ Z,
   exact ⟨u, by rw [← hu, nsmul_eq_mul, mul_comm]⟩
 
 /- English proof (translation)
-Simplify using `only [← WittVector.constantCoeff_apply, map_sub, map_mul]`. Rewrite using `[WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP]`. Simplify using `only [WittVector.constantCoeff_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_zero_frob_sub (ω X : WittVector p k) :
     (WittVector.frobenius X - ω * X).coeff 0 = X.coeff 0 ^ p - ω.coeff 0 * X.coeff 0 := by
@@ -62,25 +62,21 @@ theorem coeff_zero_frob_sub (ω X : WittVector p k) :
   simp only [WittVector.constantCoeff_apply]
 
 /- English proof (translation)
-Establish `hp1 : 1 < p` using `hp.out.one_lt`. Use `haveI : Nontrivial k := CharP.nontrivial_of_char_ne_one hp.out.ne_one`. Use `set ω₀ := ω.coeff 0 with hω₀`. Establish `hu0 : IsUnit ω₀`. Rewrite using `[hω₀, ← WittVector.constantCoeff_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hω.map _`. Set `f : WittVector p k →+ WittVector p k` to `(WittVector.frobenius : WittVector p k →+* WittVector p k).toAddMonoidHom - AddMonoidHom.mulLeft ω`. Establish `hf : ∀ X, f X = WittVector.frobenius X - ω * X` using `fun X => rfl`. Establish `hmod : ∀ Y, ∃ X Z, f X - Y = p • Z`. Introduce `Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hroot (X ^ p - (C ω₀ * X + C (Y.coeff 0))) (monic_X_pow_sub (by`. Use `(degree_add_le _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `(degree_C_mul_X_le _).trans_lt (by exact_mod_cast hp1)`. Conclude with `(degree_C_le).trans_lt (by exact_mod_cast (by omega : 0 < p))))`. Use the proof step `(by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlow : (C ω₀ * X + C (Y.coeff 0)).natDegree < p`. Use `(natDegree_add_le _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Conclude with `((natDegree_C_mul_le _ _).trans natDegree_X_le).trans_lt hp1`. Rewrite using `[natDegree_C]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[natDegree_sub_eq_left_of_natDegree_lt (by rwa [natDegree_X_pow]), natDegree_X_pow]`. Use the proof step `omega)`. Use `⟨WittVector.teichmuller p x, eq_smul_of_coeff_zero ?_⟩` and prove the remaining obligations. Establish `hx' : x ^ p - (ω₀ * x + Y.coeff 0) = 0` using `by simpa using hx`. Rewrite using `[← WittVector.constantCoeff_apply, map_sub, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, hf, coeff_zero_frob_sub, WittVector.teichmuller_coeff_zero, ← hω₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hx']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨t₀, ht₀⟩` from `hroot (X ^ (p - 1) - C ω₀) (monic_X_pow_sub_C _ (by omega)) (by rw [natDegree_X_pow_sub_C]; omega)`. Establish `ht₀' : t₀ ^ (p - 1) = ω₀` using `by simpa [sub_eq_zero] using ht₀`. Establish `hut : IsUnit t₀` using `(isUnit_pow_iff (by omega : p - 1 ≠ 0)).1 (ht₀' ▸ hu0)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htp : t₀ ^ p = ω₀ * t₀`. Rewrite using `[← ht₀', ← pow_succ, Nat.sub_add_cancel hp.out.one_le]`. Use `set t := WittVector.teichmuller p t₀ with ht`. Take `⟨Y, hY⟩` from `eq_smul_of_coeff_zero (A := f t) (by`. Rewrite using `[hf, coeff_zero_frob_sub, ht, WittVector.teichmuller_coeff_zero, ← hω₀, htp, sub_self])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Take `⟨Z, rfl⟩` from `onto_of_cpl' (cpl_witt p k) f hmod Y`. Use `⟨t - p • Z, ?_, ?_⟩` and prove the remaining obligations. Establish `hj : -(p • Z) ∈ (⊥ : Ideal (WittVector p k)).jacobson` using `IsAdicComplete.le_jacobson_bot (Ideal.span {(p : WittVector p k)}) (neg_mem (Ideal.mem_span_singleton'.2 ⟨Z, by rw [nsmul_eq_mul, mul_comm]⟩))`. Take `⟨u, hu⟩ : IsUnit t` from `hut.map (WittVector.teichmuller p)`. Establish `h1` using `Ideal.mem_jacobson_bot.1 hj (↑u⁻¹)`.
-
-Establish `e : t - p • Z = (-(p • Z) * ↑u⁻¹ + 1) * u`. Rewrite using `[add_mul, mul_assoc, Units.inv_mul, mul_one, one_mul, hu]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `h1.mul u.isUnit`.
-
-Rewrite using `[← sub_eq_zero, ← hf, map_sub, map_nsmul, hY, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lang_unit
     (hroot : ∀ f : k[X], f.Monic → 0 < f.natDegree → ∃ x, f.IsRoot x)
@@ -148,11 +144,9 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed (Cb l) := (GlobalTheory.TiltAlgClosed.isAlgClosed_tilt_and_valuationRing l).1`. Use `haveI : ValuationRing (OCb l) := (GlobalTheory.TiltAlgClosed.isAlgClosed_tilt_and_valuationRing l).2`. Use `haveI : IsIntegrallyClosed (OCb l) := inferInstance`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_root (f.map (algebraMap (OCb l) (Cb l))) (by`. Rewrite using `[degree_map_eq_of_injective (IsFractionRing.injective (OCb l) (Cb l)), degree_eq_natDegree hf.ne_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hd.ne')` after adjusting the coercions. Establish `hint : IsIntegral (OCb l) z` using `⟨f, hf, by rwa [IsRoot, eval_map_algebraMap] at hz⟩`. Take `⟨x, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hint`. Use `⟨x, IsFractionRing.injective (OCb l) (Cb l) ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[IsRoot, eval_map_algebraMap, Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval]`.
-
-Rewrite using `[hz, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem OCb_exists_root (l : ℕ) [Fact l.Prime] (f : (OCb l)[X]) (hf : f.Monic)
     (hd : 0 < f.natDegree) : ∃ x, f.IsRoot x := by
@@ -170,7 +164,7 @@ theorem OCb_exists_root (l : ℕ) [Fact l.Prime] (f : (OCb l)[X]) (hf : f.Monic)
   rw [hz, map_zero]
 
 /- English proof (translation)
-Introduce `l _ ω`. Take `⟨η, ⟨u, rfl⟩, h⟩` from `GlobalTheory.Per.LangUnit.lang_unit (p := l) (k := OCb l) (OCb_exists_root l) (ω : Ainf l) ω.isUnit`. Conclude with `⟨u, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frobenius_eq_mul_solvable :
     ∀ (l : ℕ) [Fact l.Prime] (ω : (Ainf l)ˣ), ∃ η : (Ainf l)ˣ, WittVector.frobenius (η : Ainf l) = ω * η := by

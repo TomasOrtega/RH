@@ -13,7 +13,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.CrystallineSmoothLi
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.abelianDeRham_of_crystallineSmoothLift GlobalTheory.SmoothLift.crystallineSmoothLift_of_relations`.
+A detailed English derivation is pending.
 -/
 theorem abelianDeRham_of_hodge_cube_dual_poincare :
     GlobalTheory.Published.AbelianHodgeDeRham → GlobalTheory.Published.CubeTheorem → GlobalTheory.Published.DualAbelianScheme →

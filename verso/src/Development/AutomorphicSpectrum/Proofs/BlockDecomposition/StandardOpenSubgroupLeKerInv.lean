@@ -9,9 +9,9 @@ open scoped nonZeroDivisors
 namespace GlobalTheory.CompanionTheory.PartialZeta
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : χ.toIdele x = 1` using `h hx`. Use `show (χ⁻¹).toIdele x = 1`. Rewrite `hx'`, the goal using `[HeckeCharacter.toIdele_apply]`. Express the relevant statement in the definitionally equal form `(χ _)⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem standardOpenSubgroup_le_ker_inv (F : Type) [Field F] [NumberField F] (χ : HeckeCharacter F)
     (h : standardOpenSubgroup F ≤ χ.toIdele.ker) :

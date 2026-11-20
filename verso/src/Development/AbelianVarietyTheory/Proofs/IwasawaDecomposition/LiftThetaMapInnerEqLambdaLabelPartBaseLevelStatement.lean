@@ -14,7 +14,7 @@ open Classical
 open GlobalTheory.Mem.R3.HasLabelling
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.R3.LamMetric.inner_theta_eq_lam` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLiftThetaMapInnerEqLambdaLabelPartBaseLevel.lean&line=21#L21)
 -/

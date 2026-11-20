@@ -8,15 +8,13 @@ namespace GlobalTheory
 open Pointwise in
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ L`. Establish `hF` using `ZLattice.isAddFundamentalDomain b (volume : Measure (ι → ℝ))`. Use `set F := ZSpan.fundamentalDomain (b.ofZLatticeBasis ℝ L) with hFdef`. Use `haveI : Countable L := b.repr.toEquiv.countable_iff.2 inferInstance`. Rewrite using `[ZLattice.covolume_eq_measure_fundamentalDomain L volume hF]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans ENNReal.ofReal_toReal_le ?_` and prove the remaining obligations. Use `le_trans ?_ (measure_biUnion_finset_le T A)` and prove the remaining obligations. Use `set U := ⋃ k ∈ T, A k with hU`. Use `haveI : MeasurableConstVAdd L (ι → ℝ) := ⟨fun c => by`. Express the relevant statement in the definitionally equal form `Measurable fun x : ι → ℝ => (c : ι → ℝ) + x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `measurable_const_add _⟩`. Use `haveI : VAddInvariantMeasure L (ι → ℝ) volume := ⟨fun c s _ => measure_preimage_add volume (c : ι → ℝ) s⟩`. Rewrite using `[hF.measure_eq_tsum U]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations. Introduce `t ht`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk, l, hl, htl⟩` from `hcov t`. Use `Set.mem_iUnion.2 ⟨-(⟨l, hl⟩ : L), ?_, ht⟩` and prove the remaining obligations. Rewrite using `[Set.mem_neg_vadd_set_iff]`. Establish `: (⟨l, hl⟩ : L) +ᵥ t = t + l`. Express the relevant statement in the definitionally equal form `l + t = t + l`.
-
-Conclude with `add_comm _ _`. Rewrite using `[this]`. Conclude with `Set.mem_biUnion hk htl`.
+A detailed English derivation is pending.
 -/
 theorem covolume_le_sum_volume_of_cover (ι : Type) [Fintype ι] (L : Submodule ℤ (ι → ℝ))
     [DiscreteTopology L] [IsZLattice ℝ L] (κ : Type) (T : Finset κ) (A : κ → Set (ι → ℝ))

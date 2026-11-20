@@ -6,11 +6,11 @@ open PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.KernelClose
 
 /- English proof (translation)
-Introduce `X Ω x y hΩ`. Establish `hC : IsCompact ((fun o : X.G => x * o * y⁻¹) '' Ω)` using `hΩ.image (by fun_prop)`. Establish `hfin` using `X.proper _ hC`. Establish `hsupp : ∀ φ : X.G → ℂ, Function.support φ ⊆ Ω → (Function.support fun γ : X.Γ => φ (x⁻¹ * (γ : X.G) * y)) ⊆ (hfin.toFinset : Set X.Γ)`. Introduce `φ hφ γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : x⁻¹ * (γ : X.G) * y ∈ Ω` using `hφ hγ`. Simplify using `only [Set.Finite.coe_toFinset, Set.mem_setOf_eq]`. Conclude with `⟨_, hmem, by group⟩`. Establish `hker : ∀ φ : X.G → ℂ, Function.support φ ⊆ Ω → ker X.Γ φ x y = ∑ γ ∈ hfin.toFinset, φ (x⁻¹ * (γ : X.G) * y)` using `fun φ hφ => finsum_eq_sum_of_support_subset _ (hsupp φ hφ)`. Use `⟨(hfin.toFinset.card : ℝ), Nat.cast_nonneg _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ φ' ε hφ hφ' hε`. Rewrite using `[hker φ hφ, hker φ' hφ', ← Finset.sum_sub_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem kerClose : KerClose := by
   intro X Ω x y hΩ

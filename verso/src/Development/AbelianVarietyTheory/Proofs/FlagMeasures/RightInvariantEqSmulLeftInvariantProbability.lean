@@ -6,13 +6,13 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.IwConst
 
 /- English proof (translation)
-Introduce `G _ _ _ K μ ν _ _ hμK hνK hμ1 hμinv hνinv`. Use extensionality with `A hA`. Establish `hS : MeasurableSet {p : G × G | p.1 * p.2 ∈ A}` using `measurable_mul hA`. Establish `hμae : ∀ᵐ g ∂μ, g ∈ K`. Rewrite using `[ae_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hμK`. Establish `hνae : ∀ᵐ g ∂ν, g ∈ K`. Rewrite using `[ae_iff]`. Conclude with `hνK`. Establish `h1 : (ν.prod μ) {p : G × G | p.1 * p.2 ∈ A} = ν Set.univ * μ A`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.prod_apply hS]`. Establish `hc : ∀ᵐ h ∂ν, μ (Prod.mk h ⁻¹' {p : G × G | p.1 * p.2 ∈ A}) = μ A` using `by filter_upwards [hνae] with h hh show μ ((fun g => h * g) ⁻¹' A) = μ A`. Rewrite using `[← Measure.map_apply (measurable_const_mul h) hA, hμinv h hh]`. Rewrite using `[lintegral_congr_ae hc, lintegral_const, mul_comm]`. Establish `h2 : (ν.prod μ) {p : G × G | p.1 * p.2 ∈ A} = ν A`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.prod_apply_symm hS]`. Establish `hc : ∀ᵐ g ∂μ, ν ((fun h => (h, g)) ⁻¹' {p : G × G | p.1 * p.2 ∈ A}) = ν A` using `by filter_upwards [hμae] with g hg show ν ((fun h => h * g) ⁻¹' A) = ν A`. Rewrite using `[← Measure.map_apply (measurable_mul_const g) hA, hνinv g hg]`. Rewrite using `[lintegral_congr_ae hc, lintegral_const, hμ1, mul_one]`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ← h1, h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem right_inv_eq_smul_left_inv :
     ∀ (G : Type) [Group G] [MeasurableSpace G] [MeasurableMul₂ G] (K : Set G) (μ ν : Measure G) [SFinite μ] [SFinite ν], μ Kᶜ = 0 → ν Kᶜ = 0 → μ Set.univ = 1 → (∀ k ∈ K, μ.map (fun g => k * g) = μ) → (∀ k ∈ K, ν.map (fun g => g * k) = ν) → ν = ν Set.univ • μ := by

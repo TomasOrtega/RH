@@ -16,17 +16,15 @@ namespace GlobalTheory.OpenKer
 open GlobalTheory.AdelicU Filter Topology
 
 /- English proof (translation)
-Introduce `D T K hK F hF h1 hmul`. Use `haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GFin D.sp.cm.sig T.gram`. Establish `hc` using `continuous_ofFin D.sp.cm.sig T.gram`. Establish `hN : {y | ‖F (ofFin D.sp.cm.sig T.gram y) - 1‖ < 1 / 2} ∈ 𝓝 (1 : GFin D.sp.cm.sig T.gram)` using `(isOpen_lt (continuous_norm.comp ((hF.comp hc).sub continuous_const)) continuous_const).mem_nhds (by simp [h1])`. Establish `hK' : {y | ofFin D.sp.cm.sig T.gram y ∈ K} ∈ 𝓝 (1 : GFin D.sp.cm.sig T.gram)` using `(hK.preimage hc).mem_nhds (by simp [one_mem])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨W, hW⟩` from `NonarchimedeanGroup.is_nonarchimedean _ (inter_mem hN hK')`. Use `⟨W.toSubgroup.comap (projFin D.sp.cm.sig T.gram), W.isOpen.preimage (continuous_projFin D.sp.cm.sig T.gram), ?_⟩` and prove the remaining obligations. Introduce `k hk hkf`. Establish `hkk : ∀ n : ℕ, ofFin D.sp.cm.sig T.gram (projFin D.sp.cm.sig T.gram (k ^ n)) = k ^ n` using `fun n => by`. Establish `h` using `ofInf_projInf_mul_ofFin_projFin D.sp.cm.sig T.gram (k ^ n)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[mem_finPts.1 (pow_mem hkf n), map_one, one_mul]`. Then use the resulting hypothesis. Establish `hW' : ∀ n : ℕ, ‖F (k ^ n) - 1‖ < 1 / 2 ∧ k ^ n ∈ K` using `fun n => by`. Establish `: projFin D.sp.cm.sig T.gram (k ^ n) ∈ W`. Rewrite using `[map_pow]`. Conclude with `pow_mem (show projFin D.sp.cm.sig T.gram k ∈ W from hk) n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hW this`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, hkk n] at h`. Conclude with `h`. Establish `hpow : ∀ n : ℕ, F (k ^ n) = F k ^ n` using `fun n => by`. Proceed by induction on `n with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp [h1]`. Consider the case `succ n ih`. Rewrite using `[pow_succ, hmul _ (hW' n).2 (pow_mem hkf n) _ (by simpa using (hW' 1).2) hkf, ih, pow_succ]`. Conclude with `GlobalTheory.Doubling.eq_one_of_forall_norm_pow_sub_one_le fun m => by`. Rewrite using `[← hpow]`.
-
-Conclude with `(hW' m).1.le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_on_finite_of_mul : ∀ {D : D7} (T : HSp D) (K : Subgroup (GA D T)), IsOpen (K : Set (GA D T)) → ∀ F : GA D T → ℂ, Continuous F → F 1 = 1 → (∀ a ∈ K, a ∈ GfC T → ∀ b ∈ K, b ∈ GfC T → F (a * b) = F a * F b) → ∃ U : Subgroup (GA D T), IsOpen (U : Set (GA D T)) ∧ ∀ k ∈ U, k ∈ GfC T → F k = 1 := by
   intro D T K hK F hF h1 hmul

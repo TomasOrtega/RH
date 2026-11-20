@@ -4,17 +4,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors Pointwise
 
 /- English proof (translation)
-Establish `hζ` using `IsCyclotomicExtension.zeta_spec M ℚ K`. Use `set ζ := IsCyclotomicExtension.zeta M ℚ K`. Establish `hz : (φ ζ) ^ M = 1` using `by rw [← map_pow, hζ.pow_eq_one, map_one]`. Establish `key : φ (sg M K (-1) ζ) = starRingEnd ℂ (φ ζ)`. Rewrite using `[sg_apply M K (-1) hζ.pow_eq_one, map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM : M ∣ ((-1 : (ZMod M)ˣ) : ZMod M).val + 1`. Rewrite using `[← ZMod.natCast_eq_zero_iff]`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hnorm : ‖φ ζ‖ = 1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `congrArg norm hz`. Rewrite `h1` using `[norm_pow, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (NeZero.ne M)).mp h1`. Establish `hinv : starRingEnd ℂ (φ ζ) = (φ ζ)⁻¹`. Rewrite using `[Complex.inv_def, Complex.normSq_eq_norm_sq, hnorm]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[hinv]`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ]`. Take `⟨k, hk⟩` from `hM`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hk, pow_mul, hz, one_pow]`. Establish `hext` using `AlgHom.ext_of_adjoin_eq_top (R := ℚ) (IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ) (φ₁ := (φ.comp (sg M K (-1)).toAlgHom.toRingHom).toRatAlgHom) (φ₂ := ((starRingEnd ℂ).comp φ).toRatAlgHom) (by`. Introduce `y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `key)`. Establish `h2` using `DFunLike.congr_fun hext x`. Simplify using `using h2`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.ML.xUniq_conj (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K]
     [IsCyclotomicExtension {M} ℚ K] (φ : K →+* ℂ) (x : K) : φ (sg M K (-1) x) = starRingEnd ℂ (φ x) := by
@@ -52,21 +52,19 @@ private theorem UpperTheory.V.ML.xUniq_conj (M : ℕ) [NeZero M] (K : Type) [Fie
   simpa using h2
 
 /- English proof (translation)
-Introduce `M _ K _ _ _ b 𝔞 X X' _ hX hX'`. Take `⟨z, hz⟩` from `(FractionalIdeal.spanSingleton_eq_spanSingleton).mp (hX.2.trans hX'.2.symm)`. Use `set w : K := ((z : 𝓞 K) : K) with hw`. Establish `hX'eq : X' = w * X`. Rewrite using `[← hz, Units.smul_def, Algebra.smul_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hww : w * sg M K (-1) w = 1`. Establish `h1` using `hX'.1`. Rewrite `h1` using `[hX'eq, map_mul]`. Establish `h2` using `hX.1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hnorm : ∀ φ : K →+* ℂ, ‖φ w‖ = 1`. Introduce `φ`. Establish `h3 : φ w * starRingEnd ℂ (φ w) = 1`. Rewrite using `[← UpperTheory.V.ML.xUniq_conj M K φ w, ← map_mul, hww, map_one]`. Rewrite `h3` using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ‖φ w‖ ^ 2 = 1` using `by exact_mod_cast h3`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).mp h4`. Take `⟨n, hn, hwn⟩` from `NumberField.Embeddings.pow_eq_one_of_norm_eq_one K ℂ (RingOfIntegers.isIntegral_coe (z : 𝓞 K)) hnorm`. Establish `hzt : z ∈ NumberField.Units.torsion K`. Rewrite using `[NumberField.Units.torsion, CommGroup.mem_torsion, isOfFinOrder_iff_pow_eq_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨n, hn, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Simplify using `using hwn`. Establish `hpow : w ^ NumberField.Units.torsionOrder K = 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `pow_card_eq_one' (x := (⟨z, hzt⟩ : NumberField.Units.torsion K))`. Establish `h6 : z ^ Nat.card (NumberField.Units.torsion K) = 1`. Establish `h7` using `congrArg Subtype.val h5`. Rewrite `h7` using `[SubgroupClass.coe_pow, OneMemClass.coe_one]`. Then use the resulting hypothesis. Establish `h8` using `congrArg (fun t : (𝓞 K)ˣ => ((t : 𝓞 K) : K)) h6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Units.val_pow_eq_pow_val, Units.val_one, map_pow, map_one] at h8`. Conclude with `h8`. Use `⟨w, ?_, hX'eq⟩` and prove the remaining obligations. Establish `hdvd : NumberField.Units.torsionOrder K ∣ 2 * M`. Rewrite using `[IsCyclotomicExtension.Rat.torsionOrder_eq (n := M)]`.
-
-Use `split_ifs with he`. Conclude with `dvd_mul_left M 2`. Conclude with `dvd_rfl`. Take `⟨k, hk⟩` from `hdvd`. Rewrite using `[hk, pow_mul, hpow, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ML.xUniq :
     ∀ (M : ℕ) [NeZero M] (K : Type) [Field K] [NumberField K] [IsCyclotomicExtension {M} ℚ K] (b : ℕ) (𝔞 : Ideal (𝓞 K)) (X X' : K), 𝔞 ≠ ⊥ → IsX M K b 𝔞 X → IsX M K b 𝔞 X' → ∃ ζ : K, ζ ^ (2 * M) = 1 ∧ X' = ζ * X := by

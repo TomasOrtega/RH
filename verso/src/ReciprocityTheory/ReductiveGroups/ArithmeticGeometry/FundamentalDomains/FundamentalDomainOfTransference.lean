@@ -19,18 +19,18 @@ namespace ReciprocityTheory.ChartRestriction.G.FD
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-The claim follows from `fd_fj_near_sup holomorphic_periodicity_extension m3bNorm_holds moderateCoefficientPositivity_holds`.
+A detailed English derivation is pending.
 -/
 theorem nearSupremumTransference_holds : NearSupremumTransference (E := E) := fd_fj_near_sup holomorphic_periodicity_extension m3bNorm_holds moderateCoefficientPositivity_holds
 
 /- English proof (translation)
-The claim follows from `fd_unip_move shortVectorBound unitaryComplementMove unipotent_majorant_bound isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds`.
+A detailed English derivation is pending.
 -/
 theorem unitaryUnipotentMove : UnitaryUnipotentMove (E := E) :=
   fd_unip_move shortVectorBound unitaryComplementMove unipotent_majorant_bound isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds
 
 /- English proof (translation)
-The claim follows from `fd_point_assembly shortVectorBound orthonormalFlagTranslate_holds orthonormalChartNormControl_holds nearSupremumTransference_holds schwarzLemmaBall_holds (orthonormalShortVectorBound_of shortVectorBound hD5) isotropicCoefficientSplitting_holds noShortVectorLowerBound_holds unitar …`.
+A detailed English derivation is pending.
 -/
 theorem fundamentalDomain_of_transference (hD5 : CoveringRadiusStatement) : FundamentalDomainPointBound (E := E) :=
   fd_point_assembly shortVectorBound orthonormalFlagTranslate_holds orthonormalChartNormControl_holds nearSupremumTransference_holds schwarzLemmaBall_holds (orthonormalShortVectorBound_of shortVectorBound hD5)

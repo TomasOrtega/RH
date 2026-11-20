@@ -39,13 +39,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n d : ℕ} {Y : Spc F E n} {W : Spc F E d}
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_mul (om : Rep σ Y W) (g h : UA σ W.J) (Φ : Fn F n d) : om (1, g * h) Φ = om (1, g) (om (1, h) Φ) := by
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Rewrite using `[← Prod.one_eq_mk, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem om_one (om : Rep σ Y W) (Φ : Fn F n d) : om (1, 1) Φ = Φ := by
   rw [← Prod.one_eq_mk, map_one, Module.End.one_apply]
@@ -58,11 +58,11 @@ def stabOf (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d)) : Subgroup (UA σ W.
   inv_mem' := fun {g} hg Φ hΦ => ⟨(hg Φ hΦ).2, by rw [inv_inv]; exact (hg Φ hΦ).1⟩
 
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, -, φ, hSB, hev, rfl⟩` from `hx`. Take `⟨U, hU, h⟩` from `GlobalTheory.T.exists_open_subgroup_fixing_pure_tensor F E σ B n d Y W M χX χW om _ _ _ _ hK hP f φ hSB hev`. Conclude with `⟨U, hU, fun k hk hf => h k hk (mem_finU.1 hf)⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨⊤, isOpen_univ, fun k _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨U, hU, h⟩` from `hx`. Take `⟨V, hV, h'⟩` from `hy`. Conclude with `⟨U ⊓ V, hU.inter hV, fun k hk hf => by rw [map_add, h k hk.1 hf, h' k hk.2 hf]⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul t x _ hx`. Take `⟨U, hU, h⟩` from `hx`. Conclude with `⟨U, hU, fun k hk hf => by rw [map_smul, h k hk hf]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_level (hK : KP) {B : Base F E} {M : Model σ Y W} {χX χW : Chr F E} {om : Rep σ Y W} {r s r' s' : ℕ}
     (hP : IsPair B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ PolData B M) :
@@ -82,13 +82,13 @@ theorem exists_level (hK : KP) {B : Base F E} {M : Model σ Y W} {χX χW : Chr 
     exact ⟨U, hU, fun k hk hf => by rw [map_smul, h k hk hf]⟩
 
 /- English proof (translation)
-Establish `h1 : Subgroup.closure (⋃ v : Pl F, UAt σ W (evFin F v)) ≤ stabOf om N`. Rewrite using `[Subgroup.closure_le]`. Introduce `h hh`. Take `⟨v, hv⟩` from `Set.mem_iUnion.1 hh`. Conclude with `fun Φ hΦ => ⟨hfin v h hv Φ hΦ, hfin v _ (inv_mem_UAt _ hv) Φ hΦ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Establish `h2 : ∀ h ∈ finU σ W.J, ∀ Φ ∈ N, om (1, h) Φ ∈ N`. Introduce `h hh Φ hΦ`. Take `⟨U, hU, hfix⟩` from `exists_level hK hP (hND hΦ)`. Take `⟨h', hh', hU', hf'⟩` from `GlobalTheory.T.finite_unitary_dense_closure_local F E σ d W hP.base.cm h hh U hU`. Establish `e : h = h' * (h'⁻¹ * h)` using `by group`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e, om_mul, hfix _ hU' hf']`. Conclude with `(h1 hh' Φ hΦ).1`. Rewrite using `[Subgroup.closure_le]`. Introduce and unpack `k (hk | hk)`. Conclude with `fun Φ hΦ => ⟨hcpt k hk Φ hΦ, hcpt _ (inv_mem_KInf _ hk) Φ hΦ⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 
-Conclude with `fun Φ hΦ => ⟨h2 k (hKf hk) Φ hΦ, h2 _ (inv_mem (hKf hk)) Φ hΦ⟩`.
+A detailed English derivation is pending.
 -/
 theorem closure_le_stabOf (hK : KP) {B : Base F E} {M : Model σ Y W} {χX χW : Chr F E} {om : Rep σ Y W}
     {r s r' s' : ℕ} (hP : IsPair B M χX χW om r s r' s') (N : Submodule ℂ (Fn F n d)) (hND : N ≤ PolData B M)
@@ -115,97 +115,81 @@ theorem closure_le_stabOf (hK : KP) {B : Base F E} {M : Model σ Y W} {χX χW :
 end Stab
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hKN hND hN`. Take `⟨i1, i2, i3, i4⟩` from `GlobalTheory.UnitaryAdelicTop.lcsc_UA F E σ (a + a') G.W.J`. Use `haveI := i1`. Use `haveI := i2`. Use `haveI := i3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := i4`. Use `haveI := GlobalTheory.RatUDiscrete.discreteTopology_ratU F E σ (a + a') G.W.J`. Use `haveI : BorelSpace (UA σ G.W.J) := ⟨rfl⟩`. Use `haveI : Countable (ratU σ G.W.J) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (ratU σ G.W.J) (Measure.haar)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `set μ : Measure (UA σ G.W.J) := Measure.haar with hμdef`. Establish `hμ : μ.IsHaarMeasure` using `inferInstance`. Establish `hT` using `hM.triple`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Use `haveI : μ.IsMulRightInvariant := isMulRightInvariant_skew hT.base.cm B G.W hT.geo.hW μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set D := PolData B G.M with hD`. Establish `lin0` using `GlobalTheory.T.matched_triple_inner_unitary_compatible hKP F E σ B a a' G X om om' R Rf hM`. Establish `lin : ∀ Φ ∈ D, ∀ Ψ ∈ D, ∀ c : ℂ, G.M.I om (Φ + c • Ψ) = G.M.I om Φ + c • G.M.I om Ψ`. Introduce `Φ hΦ Ψ hΨ c`. Rewrite using `[(lin0 Φ hΦ _ (D.smul_mem c hΨ) 1).1, (lin0 Ψ hΨ Ψ hΨ c).2]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `sq` using `(GlobalTheory.T.square_integrability hKP F E σ B a a' G X om om' hT μ 𝓕 hμ h𝓕).1`. Establish `cont` using `GlobalTheory.T.continuous_left_invariant_theta hKP F E σ B a a' G X om om' hT`. Establish `stab` using `GlobalTheory.T.matched_triple_character_twist hKP F E σ B a a' G X om om' R Rf hM`. Establish `I0 : G.M.I om 0 = 0` using `by simpa using lin 0 D.zero_mem 0 D.zero_mem 1`. Set `q : (UA σ G.W.J → ℂ) → (UA σ G.W.J → ℂ) → ℂ` to `fun f g => ∫ x in 𝓕, f x * conj (g x) ∂μ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `Z : Submodule ℂ (UA σ G.W.J → ℂ)` to `Submodule.span ℂ (G.M.I om '' (D : Set (Fn F a (a + a'))))`. Establish `hZ : ∀ f ∈ Z, ∃ Φ ∈ D, G.M.I om Φ = f` using `fun f hf => exists_of_mem_span_image D D _ lin le_rfl hf`. Establish `hIZ : ∀ Φ ∈ D, G.M.I om Φ ∈ Z` using `fun Φ hΦ => Submodule.subset_span ⟨Φ, hΦ, rfl⟩`. Establish `hint : ∀ Φ ∈ D, ∀ Ψ ∈ D, Integrable (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) (μ.restrict 𝓕)`. Introduce `Φ hΦ Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) = fun x => (((‖G.M.I om (Φ + (1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) - ((‖G.M.I om (Φ + (-1 : ℂ) • Ψ) x‖ ^ 2 : ℝ) : ℂ) + Complex.I * ((‖G.M.I om (Φ + Complex.I • Ψ) x‖ ^ 2 : ℝ) : ℂ) - Complex.I * ((‖G.M.I om (Φ + (-Complex.I) • Ψ) x‖ ^ 2 : …`. Use function extensionality and compare the values at `x`. Rewrite using `[lin Φ hΦ Ψ hΨ 1, lin Φ hΦ Ψ hΨ (-1), lin Φ hΦ Ψ hΨ Complex.I, lin Φ hΦ Ψ hΨ (-Complex.I)]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, one_mul]`. Conclude with `mul_conj_polar _ _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Establish `hi : ∀ c : ℂ, Integrable (fun x => ((‖G.M.I om (Φ + c • Ψ) x‖ ^ 2 : ℝ) : ℂ)) (μ.restrict 𝓕)` using `fun c => Integrable.ofReal (sq _ (D.add_mem hΦ (D.smul_mem c hΨ)))`. Conclude with `((((hi 1).sub (hi (-1))).add ((hi Complex.I).const_mul Complex.I)).sub ((hi (-Complex.I)).const_mul Complex.I)).div_const 4`. Establish `hadd : ∀ f ∈ Z, ∀ g ∈ Z, ∀ k ∈ Z, q (f + g) k = q f k + q g k`. Introduce `f hf g hg k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨Φ, hΦ, rfl⟩` from `hZ f hf`. Take `⟨Ψ, hΨ, rfl⟩` from `hZ g hg`. Take `⟨Θ, hΘ, rfl⟩` from `hZ k hk`. Simplify using `only [q, Pi.add_apply, add_mul]`. Conclude with `integral_add (hint Φ hΦ Θ hΘ) (hint Ψ hΨ Θ hΘ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsmul : ∀ f ∈ Z, ∀ k ∈ Z, ∀ t : ℂ, q (t • f) k = t * q f k`. Introduce `f _ k _ t`. Simplify using `only [q, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul t _`. Establish `hherm : ∀ f ∈ Z, ∀ g ∈ Z, q g f = conj (q f g)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `f _ g _`. Simplify using `only [q]`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[map_mul, mul_comm]`. Establish `hpos : ∀ f ∈ Z, q f f = 0 → f = 0`. Introduce `f hf h0`. Take `⟨Φ, hΦ, rfl⟩` from `hZ f hf`. Apply `eq_zero_of_ae_restrict_fd σ G.W.J μ 𝓕 hμ h𝓕 _ (cont Φ hΦ).1 (cont Φ hΦ).2` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : q (G.M.I om Φ) (G.M.I om Φ) = ((∫ x in 𝓕, ‖G.M.I om Φ x‖ ^ 2 ∂μ : ℝ) : ℂ)`. Simplify using `only [q]`. Rewrite using `[← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite `h0` using `[e]`. Establish `h0' : ∫ x in 𝓕, ‖G.M.I om Φ x‖ ^ 2 ∂μ = 0` using `by exact_mod_cast h0`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun x => sq_nonneg _) (sq Φ hΦ)).1 h0'`. Use `filter_upwards [hae] with x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using hx`. Establish `hleft : ∀ Φ ∈ D, ∀ Ψ ∈ D, ∀ γ ∈ ratU σ G.W.J, ∀ x, G.M.I om Φ (γ * x) * conj (G.M.I om Ψ (γ * x)) = G.M.I om Φ x * conj (G.M.I om Ψ x)`. Introduce `Φ hΦ Ψ hΨ γ hγ x`. Rewrite using `[(cont Φ hΦ).2 γ hγ, (cont Ψ hΨ).2 γ hγ]`. Establish `Itr : ∀ (h : UA σ G.W.J) (Φ : Fn F a (a + a')), G.M.I om (om (1, h) Φ) = fun x => G.M.I om Φ (x * h)` using `fun h Φ => funext fun x => I_transl _ _ _ _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `transl : ∀ (h : UA σ G.W.J) (Φ Ψ : Fn F a (a + a')), Φ ∈ D → Ψ ∈ D → q (G.M.I om (om (1, h) Φ)) (G.M.I om (om (1, h) Ψ)) = q (G.M.I om Φ) (G.M.I om Ψ)`. Introduce `h Φ Ψ hΦ hΨ`. Simplify using `only [q]`. Rewrite using `[Itr, Itr]`. Conclude with `setIntegral_mul_right h𝓕 (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) (hleft Φ hΦ Ψ hΨ) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `back : ∀ (h : UA σ G.W.J) (Φ : Fn F a (a + a')), om (1, h) (om (1, h⁻¹) Φ) = Φ`. Introduce `h Φ`. Rewrite using `[← om_mul, mul_inv_cancel, om_one]`. Set `C : Submodule ℂ (Fn F a (a + a'))` to `{ carrier := {Ψ | Ψ ∈ D ∧ ∀ Φ ∈ N, q (G.M.I om Φ) (G.M.I om Ψ) = 0} add_mem' := by`. Introduce and unpack `Ψ Ψ' ⟨h1, h2⟩ ⟨h1', h2'⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨D.add_mem h1 h1', fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `e` using `lin Ψ h1 Ψ' h1' 1`. Rewrite `e` using `[one_smul, one_smul]`. Rewrite using `[e, q_add_right Z q hadd hherm (hIZ Ψ h1) (hIZ Ψ' h1') (hIZ Φ (hND hΦ)), h2 Φ hΦ, h2' Φ hΦ, add_zero]`. Use the proof step `zero_mem' := ⟨D.zero_mem, fun Φ _ => by simp [q, I0]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c Ψ ⟨h1, h2⟩`. Use `⟨D.smul_mem c h1, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `e` using `lin 0 D.zero_mem Ψ h1 c`. Rewrite `e` using `[zero_add, I0, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, q_smul_right Z q hsmul hherm (hIZ Ψ h1) (hIZ Φ (hND hΦ)), h2 Φ hΦ, mul_zero] }`. Establish `hCD : C ≤ D` using `fun Ψ h => h.1`. Establish `hCW : GlobalTheory.ThetaFac.WStable B om D C`. Prove the components needed by the constructor for the conclusion. Introduce `v h hh Ψ hΨ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨hΨD, hΨ⟩` from `hΨ`. Use `⟨(stab Ψ hΨD).2.2.1 v h hh, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hΦ' : om (1, h⁻¹) Φ ∈ N` using `hN.fin v h⁻¹ (inv_mem_UAt _ hh) Φ hΦ`. Use `transl h _ Ψ (hND hΦ') hΨD` as an intermediate fact. Rewrite `this` using `[back]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hΨ _ hΦ'`. Introduce `γ hγ Ψ hΨ Ψ₁ hΨ₁D hder`. Take `⟨hΨD, hΨ⟩` from `hΨ`. Use `⟨hΨ₁D, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hΦD` using `hND hΦ`. Take `⟨Φ₁, hΦ₁D, hdΦ⟩` from `GlobalTheory.T.matched_triple_local_norm_identity hKP F E σ B a a' G X om om' R Rf hM γ hγ Φ hΦD`. Establish `dW` using `GlobalTheory.T.matched_triple_global_lift_identity hKP F E σ B a a' G X om om' R Rf hM γ hγ`. Establish `h0` using `hΨ Φ₁ (hN.lie γ hγ Φ hΦ Φ₁ hΦ₁D hdΦ)`. Establish `hsum` using `setIntegral_deriv_eq_zero μ (ratU σ G.W.J) 𝓕 h𝓕 (fun x => G.M.I om Φ x * conj (G.M.I om Ψ x)) (fun x => G.M.I om Φ₁ x * conj (G.M.I om Ψ x) + G.M.I om Φ x * conj (G.M.I om Ψ₁ x)) (hleft Φ hΦD Ψ hΨD) (fun c hc x => by rw [hleft Φ₁ hΦ₁D Ψ hΨD c hc, hleft Φ hΦD Ψ₁ hΨ₁D c hc]) (((con …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h` using `(dW Φ hΦD Φ₁ hΦ₁D hdΦ x).mul (dW Ψ hΨD Ψ₁ hΨ₁D hder x).star`. Use `h.congr_deriv ?_` and prove the remaining obligations. Use the proof step `simp)`. Rewrite `hsum` using `[integral_add (hint Φ₁ hΦ₁D Ψ hΨD) (hint Φ hΦD Ψ₁ hΨ₁D)]`. Simplify using `only [q] at h0 ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `hsum` using `[h0, zero_add]`. Conclude with `hsum`. Introduce `k hk Ψ hΨ`. Take `⟨hΨD, hΨ⟩` from `hΨ`. Use `⟨(stab Ψ hΨD).2.2.2 k hk, fun Φ hΦ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hΦ' : om (1, k⁻¹) Φ ∈ N` using `hN.cpt k⁻¹ (inv_mem_KInf _ hk) Φ hΦ`. Use `transl k _ Ψ (hND hΦ') hΨD` as an intermediate fact. Rewrite `this` using `[back]`. Rewrite using `[this]`. Conclude with `hΨ _ hΦ'`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨C, fun Ψ hΨ h0 => ⟨hΨ, fun Φ _ => by simp [q, h0]⟩, hCD, hCW, fun Ψ hΨN hΨC => hpos _ (hIZ Ψ hΨC.1) (hΨC.2 Ψ hΨN), fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Take `⟨U₀, hU₀, hKfc⟩` from `GlobalTheory.T.exists_open_subgroup_compact_inter_finite F E σ (a + a') G.W.J hT.base.cm`. Use `set Kf : Subgroup (UA σ G.W.J) := U₀ ⊓ finU σ G.W.J with hKf`. Use `set 𝒦 : Subgroup (UA σ G.W.J) := Subgroup.closure (KInf σ G.W B.emb ∪ (Kf : Set (UA σ G.W.J))) with h𝒦`. Establish `stD : 𝒦 ≤ stabOf om D` using `closure_le_stabOf hKP hP D le_rfl (fun v h hh Φ hΦ => (stab Φ hΦ).2.2.1 v h hh) (fun k hk Φ hΦ => (stab Φ hΦ).2.2.2 k hk) Kf inf_le_right`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `stN : 𝒦 ≤ stabOf om N` using `closure_le_stabOf hKP hP N hND hN.fin hN.cpt Kf inf_le_right`. Establish `rtI : ∀ (k : 𝒦) (Φ : Fn F a (a + a')), rt 𝒦 k (G.M.I om Φ) = G.M.I om (om (1, (k : UA σ G.W.J)) Φ)` using `fun k Φ => by rw [Itr]; rfl`. Set `NI : Submodule ℂ (UA σ G.W.J → ℂ)` to `Submodule.span ℂ (G.M.I om '' (N : Set (Fn F a (a + a'))))`. Establish `hNI : ∀ f ∈ NI, ∃ Φ ∈ N, G.M.I om Φ = f` using `fun f hf => exists_of_mem_span_image D N _ lin hND hf`. Establish `hZst : ∀ k, ∀ f ∈ Z, rt 𝒦 k f ∈ Z`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k f hf`. Take `⟨Φ, hΦ, rfl⟩` from `hZ f hf`. Rewrite using `[rtI]`. Conclude with `hIZ _ (stD k.2 Φ hΦ).1`. Set `Lin : D →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Φ => G.M.I om Φ map_add' := fun Φ Φ' => (lin0 Φ Φ.2 Φ' Φ'.2 1).1 map_smul' := fun c Φ => (lin0 Φ Φ.2 Φ Φ.2 c).2 }`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hfinZ : ∀ f ∈ Z, FiniteDimensional ℂ (Submodule.span ℂ (Set.range fun k => rt 𝒦 k f))`. Introduce `f hf`. Take `⟨Φ, hΦ, rfl⟩` from `hZ f hf`. Establish `hS` using `GlobalTheory.T.polynomial_data_compact_orbit_finite_dim hKP F E σ B _ _ G.V G.W G.M _ _ om _ _ _ _ hP Kf hKfc inf_le_right Φ hΦ`. Use `set S := Submodule.span ℂ (Set.range fun k : 𝒦 => om (1, (k : UA σ G.W.J)) Φ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `S' : Submodule ℂ D` to `S.comap D.subtype`. Use `haveI : FiniteDimensional ℂ S' := FiniteDimensional.of_injective (K := ℂ) (V₂ := S) ((D.subtype.domRestrict S').codRestrict S fun x => x.2) fun x y e => Subtype.ext (Subtype.ext (congrArg (fun z : S => (z : Fn F a (a + a'))) e))`. Use `Submodule.finiteDimensional_of_le (S₂ := S'.map Lin) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨⟨om (1, (k : UA σ G.W.J)) Φ, (stD k.2 Φ hΦ).1⟩, Submodule.subset_span ⟨k, rfl⟩, (rtI k Φ).symm⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlev : ∀ T : Submodule ℂ (UA σ G.W.J → ℂ), T.FG → T ≤ Z → ∃ U : Subgroup (UA σ G.W.J), IsOpen (U : Set (UA σ G.W.J)) ∧ ∀ t ∈ T, ∀ k ∈ U, k ∈ finU σ G.W.J → ∀ x, t (x * k) = t x`. Introduce `T hTfg`. Use `Submodule.fg_induction (R := ℂ) (M := UA σ G.W.J → ℂ) (motive := fun T _ => T ≤ Z → ∃ U : Subgroup (UA σ G.W.J), IsOpen (U : Set (UA σ G.W.J)) ∧ ∀ t ∈ T, ∀ k ∈ U, k ∈ finU σ G.W.J → ∀ x, t (x * k) = t x) ?_ ?_ T hTfg` and prove the remaining obligations. Introduce `f hf`. Take `⟨Φ, hΦ, rfl⟩` from `hZ f (hf (Submodule.mem_span_singleton_self f))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U, hU, hfix⟩` from `exists_level hKP hP hΦ`. Use `⟨U, hU, fun t ht k hk hkf x => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 ht`. Simplify using `only [Pi.smul_apply]`. Rewrite using `[← I_transl, hfix k hk hkf]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `T₁ T₂ _ _ h₁ h₂ hle`. Take `⟨U₁, hU₁, e₁⟩` from `h₁ (le_sup_left.trans hle)`. Take `⟨U₂, hU₂, e₂⟩` from `h₂ (le_sup_right.trans hle)`. Use `⟨U₁ ⊓ U₂, hU₁.inter hU₂, fun t ht k hk hkf x => ?_⟩` and prove the remaining obligations. Take `⟨t₁, ht₁, t₂, ht₂, rfl⟩` from `Submodule.mem_sup.1 ht`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[e₁ t₁ ht₁ k hk.1 hkf, e₂ t₂ ht₂ k hk.2 hkf]`. Establish `hadm : FiniteDimensional ℂ (Submodule.span ℂ (typeSet (rt 𝒦) Z (Submodule.span ℂ (Set.range fun k => rt 𝒦 k (G.M.I om Ψ)))))` using `by set T := Submodule.span ℂ (Set.range fun k => rt 𝒦 k (G.M.I om Ψ)) with hTdef`. Establish `hTf : FiniteDimensional ℂ T` using `hfinZ _ (hIZ Ψ hΨ)`. Establish `hTZ : T ≤ Z` using `Submodule.span_le.2 (by rintro _ ⟨k, rfl⟩; exact hZst k _ (hIZ Ψ hΨ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hTst : ∀ k, ∀ t ∈ T, rt 𝒦 k t ∈ T`. Introduce `k u hu`. Establish `: T.map (rt 𝒦 k) ≤ T`. Rewrite using `[hTdef, Submodule.map_span_le]`. Introduce and unpack `_ ⟨k', rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨k * k', by simp⟩`. Conclude with `this ⟨u, hu, rfl⟩`. Take `⟨U, hU, hUT⟩` from `hlev T ((Submodule.fg_iff_finiteDimensional T).2 hTf) hTZ`. Establish `hσ` using `GlobalTheory.SkewToHerm.sigma_invol σ hT.base.cm`. Take `⟨y, hy⟩` from `GlobalTheory.SkewToHerm.exists_sigma_ne σ hT.base.cm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hc : y - σ y ≠ 0` using `sub_ne_zero.2 (Ne.symm hy)`. Establish `hcc : σ (y - σ y) = -(y - σ y)` using `by rw [map_sub, hσ]; ring`. Establish `hK𝒦 : Subgroup.closure (KInf σ G.W B.emb) ≤ 𝒦` using `Subgroup.closure_mono Set.subset_union_left`. Establish `hAZ : ∀ φ ∈ typeSet (rt 𝒦) Z T, ∃ Φ ∈ D, G.M.I om Φ = φ`. Introduce and unpack `_ ⟨L, hL, -, t, rfl⟩`.
-
-Conclude with `hZ _ (hL t)`. Use `GlobalTheory.T.finite_dim_K_stable_continuous_invariant hKP F E σ hσ B _ _ _ G.W hT.base hT.geo.hW hT.geo.even _ hc hcc T hTf (fun t ht => ?_) (fun k t ht => hTst ⟨k, hK𝒦 k.2⟩ t ht) (U ⊓ U₀) (hU.inter hU₀) _ ?_ (fun φ hφ => ?_) ?_ (fun z hz => ?_)` and prove the remaining obligations. Take `⟨Φ, hΦ, rfl⟩` from `hZ t (hTZ ht)`. Conclude with `(cont Φ hΦ).1`. Introduce and unpack `_ ⟨L, -, hLe, t, rfl⟩`.
-
-Conclude with `⟨L, fun _ => trivial, fun k s s' h => hLe ⟨k, hK𝒦 k.2⟩ s s' h, t, rfl⟩`. Take `⟨Φ, hΦ, rfl⟩` from `hAZ φ hφ`. Take `⟨K, -, hK⟩` from `GlobalTheory.T.exists_maximal_compact_invariant F E σ hσ B a a' G X om om' hKP hT _ hc hcc Φ hΦ`. Conclude with `hK.mod`. Introduce and unpack `_ ⟨L, -, hLe, t, rfl⟩ k hk hkf x`.
-
-Establish `hk𝒦 : k ∈ 𝒦` using `Subgroup.subset_closure (Or.inr ⟨hk.2, hkf⟩)`. Use `hLe ⟨k, hk𝒦⟩ t t (funext fun x => (hUT t t.2 k hk.1 hkf x).symm)` as an intermediate fact. Conclude with `(congrFun this x).symm`. Take `⟨m, b, hb⟩` from `GlobalTheory.T.central_element_acts_by_scalar hKP F E σ hσ B a a' G X om om' hT _ hc hcc z hz`. Use `⟨m, b, fun φ hφ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨Φ, hΦ, rfl⟩` from `hAZ φ hφ`. Conclude with `hb Φ hΦ`. Establish `hNIZ : NI ≤ Z` using `Submodule.span_mono (Set.image_mono hND)`. Take `⟨n, hn, horth⟩` from `exists_orth_of_types Z q hadd hsmul hherm hpos (rt 𝒦) hZst (fun k f hf g hg => by`. Take `⟨Φ, hΦ, rfl⟩` from `hZ f hf`.
-
-Take `⟨Φ', hΦ', rfl⟩` from `hZ g hg`. Rewrite using `[rtI, rtI]`. Conclude with `transl _ _ _ hΦ hΦ')`. Use `NI hNIZ`. Use the proof step `(fun k f hf => by`.
-
-Take `⟨Φ, hΦ, rfl⟩` from `hNI f hf`. Rewrite using `[rtI]`. Conclude with `Submodule.subset_span ⟨_, (stN k.2 Φ hΦ).1, rfl⟩)`. Use the proof step `(fun f hf => hfinZ f (hNIZ hf)) _ (hIZ Ψ hΨ) hadm`. Take `⟨w, hw, rfl⟩` from `hNI n hn`.
-
-Establish `hIsub : G.M.I om (Ψ - w) = G.M.I om Ψ - G.M.I om w`. Use `lin Ψ hΨ _ (hND hw) (-1)` as an intermediate fact. Rewrite `this` using `[neg_one_smul, neg_one_smul, ← sub_eq_add_neg, ← sub_eq_add_neg]`. Then use the resulting hypothesis. Establish `hχC : Ψ - w ∈ C` using `⟨D.sub_mem hΨ (hND hw), fun Φ hΦ => by`. Rewrite using `[hIsub]`.
-
-Conclude with `horth _ (Submodule.subset_span ⟨Φ, hΦ, rfl⟩)⟩`. Establish `e : Ψ = w + (Ψ - w)` using `by abel`. Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup hw hχC`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stable_compl : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W) (R : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.RealMaps F a a') (Rf : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.FinMaps F a a'), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched B G X om om' R Rf → ∀ N : Submodule ℂ (GlobalTheory.ThK.Fn F a (a + a')), (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N) → N ≤ GlobalTheory.ThK.PolData B G.M → GlobalTheory.ThetaFac.WStable B om (GlobalTheory.ThK.PolData B G.M) N → ∃ N' : Submodule ℂ (GlobalTheory.ThK.Fn F a (a + a')), (∀ Ψ ∈ GlobalTheory.ThK.PolData B G.M, G.M.I om Ψ = 0 → Ψ ∈ N') ∧ N' ≤ GlobalTheory.ThK.PolData B G.M ∧ GlobalTheory.ThetaFac.WStable B om (GlobalTheory.ThK.PolData B G.M) N' ∧ (∀ Ψ ∈ N, Ψ ∈ N' → G.M.I om Ψ = 0) ∧ GlobalTheory.ThK.PolData B G.M ≤ N ⊔ N' := by
   intro hKP F E _ _ _ _ _ σ B a a' G X om om' R Rf hM N hKN hND hN

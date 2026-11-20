@@ -15,25 +15,21 @@ section General
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `X _ _ _ hn`. Distinguish the cases in `h0 : ∀ x : X, x = 0`. Use `⟨⊤, top_ne_bot, ?_, fun r _ x => by rw [h0 x, smul_zero]⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.absNorm_top, ← hn]`. Conclude with `Nat.card_pos`. Use `push Not at h0`. Take `⟨x0, hx0⟩` from `h0`. Use `haveI : Nontrivial X := ⟨⟨x0, 0, hx0⟩⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Use `haveI : Module.Finite (𝓞 K) X := Module.Finite.of_finite`. Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : Submodule (𝓞 K) X, IsCoatom N := by`. Break down `(IsCoatomic.eq_top_or_exists_le_coatom (⊥ : Submodule (𝓞 K) X)) with h | ⟨N, hN, -⟩` into its components or cases. Conclude with `absurd h bot_ne_top`. Conclude with `⟨N, hN⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsSimpleModule (𝓞 K) (X ⧸ N) := isSimpleModule_iff_isCoatom.2 hN`. Take `⟨m, hm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 this`. Establish `hc : Nat.card X = Nat.card N * Nat.card (X ⧸ N)`. Rewrite using `[Submodule.card_eq_card_quotient_mul_card N]`. Establish `hq : Nat.card (X ⧸ N) = Ideal.absNorm m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Nat.card_congr e.toEquiv, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `haveI : Nontrivial (X ⧸ N) := IsSimpleModule.nontrivial (𝓞 K) _`. Use `haveI : Finite (X ⧸ N) := Finite.of_surjective _ N.mkQ_surjective`. Establish `h1 : 1 < Nat.card (X ⧸ N)` using `Finite.one_lt_card`. Establish `hp : 0 < Nat.card N` using `Nat.card_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨I, hI, hIn, hIk⟩` from `ih (Nat.card N) (by rw [← hn, hc]; nlinarith) N rfl`. Establish `hm0 : m ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hq` using `[Ideal.absNorm_bot]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨I * m, mul_ne_zero hI hm0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hn, hc, hq]`. Conclude with `Nat.mul_le_mul_right _ hIn`. Introduce `r hr x`. Use `Submodule.mul_induction_on hr ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Introduce `a ha b hb`. Establish `hb' : b • x ∈ N`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul]`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`.
-
-Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (e (Submodule.Quotient.mk x))`. Rewrite using `[← hy]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk m (b * y) = 0`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (m.mul_mem_right _ hb)`. Use `congrArg Subtype.val (hIk a ha ⟨_, hb'⟩)` as an intermediate fact.
-
-Rewrite using `[mul_smul]`. Simplify using `using this`. Introduce `a b ha hb`. Rewrite using `[add_smul, ha, hb, add_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ann (n : ℕ) : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 K) X] [Finite X], Nat.card X = n →
     ∃ I : Ideal (𝓞 K), I ≠ ⊥ ∧ Ideal.absNorm I ≤ n ∧ ∀ r ∈ I, ∀ x : X, r • x = 0 := by
@@ -89,9 +85,7 @@ theorem exists_ann (n : ℕ) : ∀ (X : Type) [AddCommGroup X] [Module (𝓞 K) 
       rw [add_smul, ha, hb, add_zero]
 
 /- English proof (translation)
-Use `haveI : Finite (A ⧸ B.comap A.subtype) := Nat.finite_of_card_ne_zero (by omega)`. Take `⟨I, h1, h2, h3⟩` from `exists_ann (K := K) _ (A ⧸ B.comap A.subtype) rfl`. Use `⟨I, h1, h2, Submodule.smul_le.2 fun r hr x hx => ?_⟩` and prove the remaining obligations. Use `h3 r hr (Submodule.Quotient.mk ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
-
-Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ideal_smul_le {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A B : Submodule (𝓞 K) V)
     (h : 1 ≤ Nat.card (A ⧸ B.comap A.subtype)) :
@@ -104,7 +98,7 @@ theorem exists_ideal_smul_le {V : Type} [AddCommGroup V] [Module (𝓞 K) V] (A 
   exact this
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Ideal.absNorm_apply, Submodule.cardQuot_apply, Submodule.cardQuot_apply]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv J (J.map e) e rfl).toEquiv).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_map_equiv (e : 𝓞 K ≃+* 𝓞 K) (J : Ideal (𝓞 K)) :
     Ideal.absNorm (J.map e) = Ideal.absNorm J := by
@@ -116,7 +110,7 @@ variable [StarRing K] {V : Type} [AddCommGroup V] [Module K V]
 
 omit [FiniteDimensional K V] in
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (x : V) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -124,16 +118,16 @@ theorem mem_dual (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (
 
 omit [NumberField K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨RingOfIntegers.mapRingHom (starRingEnd K) r, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem star_range (r : 𝓞 K) : star (algebraMap (𝓞 K) K r) ∈ Set.range (algebraMap (𝓞 K) K) :=
   ⟨RingOfIntegers.mapRingHom (starRingEnd K) r, rfl⟩
 
 omit [NumberField K] [FiniteDimensional K V] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `H p hp`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem p hp => exact H p hp`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => simp [ha, hb]`. Consider the case `smul c a _ ha => simp [ha]`. Introduce `H p hp`. Conclude with `H p (Submodule.subset_span hp)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (P : Submodule (𝓞 K) V) (x : V) :
     x ∈ (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V) ↔
@@ -151,17 +145,15 @@ theorem mem_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (P : Submodule (𝓞 K) V) (
 
 omit [NumberField K] [IsScalarTower (𝓞 K) K V] in
 /- English proof (translation)
-Use `set A := Submodule.span K (P : Set V) with hA`. Use `set T := (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V) with hT`. Establish `hd : Disjoint A T`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `ha x ((mem_perp h P x).1 hx' x hx)`. Set `b` to `Module.finBasis K A`. Set `f : V →ₗ[K] (Fin (finrank K A) → K)` to `LinearMap.pi fun i => h (b i : V)`. Establish `hk : LinearMap.ker f ≤ T`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hT, mem_perp]`. Introduce `p hp`. Establish `hx' : ∀ i, h (b i : V) x = 0` using `fun i => congrFun (LinearMap.mem_ker.1 hx) i`. Establish `e : p = ∑ i, b.repr ⟨p, hp⟩ i • (b i : V)`. Use `congrArg A.subtype (b.sum_repr ⟨p, hp⟩)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[map_sum]`. Conclude with `this.symm`. Rewrite using `[e]`. Simplify using `[map_sum, hx']`. Establish `h1` using `f.finrank_range_add_finrank_ker`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : finrank K (LinearMap.range f) ≤ finrank K A`. Use `(LinearMap.range f).finrank_le` as an intermediate fact. Simplify using `using this`. Establish `h3` using `Submodule.finrank_mono hk`. Establish `h4` using `Submodule.finrank_sup_add_finrank_inf_eq A T`.
-
-Rewrite `h4` using `[hd.eq_bot, finrank_bot]`. Establish `h5` using `(A ⊔ T).finrank_le`. Use `⟨hd, codisjoint_iff.2 (Submodule.eq_top_of_finrank_eq (by omega))⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompl_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (ha : ∀ x, h x x = 0 → x = 0) (P : Submodule (𝓞 K) V) :
     IsCompl (Submodule.span K (P : Set V)) (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V) := by
@@ -196,9 +188,9 @@ theorem isCompl_perp (h : V →ₗ⋆[K] V →ₗ[K] K) (ha : ∀ x, h x x = 0 �
 
 omit [StarRing K] [FiniteDimensional K V] in
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.SpanInfEq.main`. Consider the case `exact _root_.GlobalTheory.SpanInfEq.main`. Consider the case `(apply _root_.GlobalTheory.SpanInfEq.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.SpanInfEq.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.SpanInfEq.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SpanInfEq.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem span_inf (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (T : Submodule K V) :
     Submodule.span K ((L ⊓ T.restrictScalars (𝓞 K) : Submodule (𝓞 K) V) : Set V) = T := by
@@ -211,25 +203,23 @@ theorem span_inf (L : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (T : 
   | (intros; exact _root_.GlobalTheory.SpanInfEq.main ..)
 
 /- English proof (translation)
-Establish `hc` using `isCompl_perp h ha P`. Establish `hT` using `mem_perp h P`. Establish `hsA` using `span_inf L hL (Submodule.span K (P : Set V))`. Establish `hsT` using `span_inf L hL (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V)`. Use `set A := Submodule.span K (P : Set V) with hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set T := (⨅ p ∈ P, LinearMap.ker (h p) : Submodule K V) with hTdef`. Take `⟨-, hdd, -⟩` from `Formalism.HermitianLatticesTheory.dualLattice (𝓞 K) K V h hs hn star_range L hL`. Use `Submodule.smul_le.2 fun r hr x hx => ?_` and prove the remaining obligations. Take `⟨hx1, hx2⟩` from `hx`. Establish `hxT : x ∈ T` using `by rw [← hsT]; exact hx2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨?_, (T.restrictScalars (𝓞 K)).smul_mem r hxT⟩` and prove the remaining obligations. Establish `main : ∀ w ∈ I₂ • L, h w x ∈ (1 : Submodule (𝓞 K) K)`. Introduce `w hw`. Use `Submodule.smul_induction_on hw ?_ ?_` and prove the remaining obligations. Introduce `b hb z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z ∈ A ⊔ T` using `by rw [hc.sup_eq_top]; trivial`. Take `⟨m, hm, t, ht, rfl⟩` from `Submodule.mem_sup.1 hz'`. Establish `hmd : m ∈ dualInH h (L ⊓ A.restrictScalars (𝓞 K))`. Use `⟨(mem_dual h _ m).2 fun y hy => ?_, ?_⟩` and prove the remaining obligations. Use `hi y hy.1 _ hz` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[map_add, (hT t).1 ht y hy.2, add_zero]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `m ∈ Submodule.span K _`. Rewrite using `[hsA]`. Conclude with `hm`. Establish `hbm` using `h2 (Submodule.smul_mem_smul hb hmd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hbt : b • t ∈ L ⊓ T.restrictScalars (𝓞 K)`. Use `⟨?_, (T.restrictScalars (𝓞 K)).smul_mem b ht⟩` and prove the remaining obligations. Use `L.sub_mem (L.smul_mem b hz) hbm.1` as an intermediate fact. Rewrite `this` using `[smul_add, add_sub_cancel_left]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_add, map_add, LinearMap.add_apply, (hT x).1 hxT _ hbm.2, zero_add]`. Conclude with `(mem_dual h _ x).1 hx1 _ hbt`. Introduce `a b ha hb`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ ha hb`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, haI, rfl⟩` from `(Ideal.mem_map_of_equiv _ r).1 hr`. Express the relevant statement in the definitionally equal form `_ ∈ L`. Rewrite using `[← hdd, mem_dual]`. Introduce `y hy`. Establish `hy' : y ∈ dualInH h L` using `⟨hy, by change y ∈ Submodule.span K _; rw [hL.span_eq_top]; trivial⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hay : a • y ∈ I₂ • L`. Use `Submodule.smul_mem_smul haI hy'` as an intermediate fact. Rewrite `this` using `[Submodule.mul_smul]`. Conclude with `Submodule.smul_mono le_rfl h1 this`. Use `main _ hay` as an intermediate fact.
-
-Rewrite `this` using `[← algebraMap_smul K a, LinearMap.map_smulₛₗ₂]`. Rewrite using `[← algebraMap_smul K _ x, map_smul]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem key (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.Nondegenerate) (ha : ∀ x, h x x = 0 → x = 0)
     (L P : Submodule (𝓞 K) V) (hL : Submodule.IsLattice K L) (hi : Formalism.HermitianLatticesTheory.IsIntegralLat h L)
@@ -292,25 +282,23 @@ end General
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D u u' F0 Λ hS hB hR P s Q hs hP`. Take `⟨-, -, hpd, hL, hi, hdet, -⟩` from `GlobalTheory.T.standardBaseFlag_complement_integralLattice D u u' F0 Λ hS hB hR`. Generalize the expression as in `L0X D Λ (lf D F0) = L at *`. Take `⟨hPL, hrk, -, -, hQ⟩` from `hP`. Establish `ha : ∀ x, (D.sp.X 0).hT x x = 0 → x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `h0`. Use `hpd (IsAlgClosed.lift : D.host.E →ₐ[ℚ] ℂ).toRingHom x h0` as an intermediate fact. Rewrite `this` using `[hx]`. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk : finrank D.host.E (D.sp.X 0).V = D.R.k`. Rewrite using `[(D.sp.X 0).rank_eq, D.sp.X_rank 0 (Nat.zero_le _)]`. Simplify using `[Ranks.N]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl (isCompl_perp (D.sp.X 0).hT ha P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Unfold `rkW at hrk ⊢`. Unfold `perpW`. Rewrite using `[span_inf L hL]`. Unfold `perpE`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨a1, a2, -⟩` from `GlobalTheory.LoopC.DetCard.main D L hL.fg hpd hi`. Establish `hMfg : (sat D L P).FG` using `Submodule.FG.of_le hL.fg inf_le_left`. Establish `hMi : Formalism.HermitianLatticesTheory.IsIntegralLat (D.sp.X 0).hT (sat D L P)` using `fun x hx y hy => hi x hx.1 y hy.1`. Take `⟨b1, b2, b3⟩` from `GlobalTheory.LoopC.DetCard.main D (sat D L P) hMfg hpd hMi`. Take `⟨c1, c2⟩` from `b3 P (fun x hx => ⟨hPL hx, Submodule.subset_span hx⟩) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `rkW sat`. Rewrite using `[span_inf L hL])`. Take `⟨I₁, p1, p2, p3⟩` from `exists_ideal_smul_le _ _ a1`. Take `⟨I₂, q1, q2, q3⟩` from `exists_ideal_smul_le _ _ b1`. Use `⟨_, ?_, ?_, key (D.sp.X 0).hT (D.sp.X 0).herm (D.sp.X 0).nondeg ha L P hL hi hPL I₁ I₂ p3 q3⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h0`. Use `congrArg Ideal.absNorm h0` as an intermediate fact. Rewrite `this` using `[absNorm_map_equiv, Ideal.absNorm_bot, Ideal.absNorm_eq_zero_iff]`. Conclude with `mul_ne_zero q1 p1 this`. Rewrite using `[absNorm_map_equiv, map_mul, Nat.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `d0 : 0 ≤ detW D (sat D L P)` using `Real.sqrt_nonneg _`. Establish `c1' : (1 : ℝ) ≤ GlobalTheory.LoopC.idxW D (sat D L P) P` using `by exact_mod_cast c1`. Establish `d1 : detW D (sat D L P) ≤ Q` using `by nlinarith`. Establish `e1 : (Ideal.absNorm I₁ : ℝ) ≤ NT D u ^ 2`. Rewrite using `[← hdet, ← a2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `p2` after adjusting the coercions. Establish `e2 : (Ideal.absNorm I₂ : ℝ) ≤ Q ^ 2`. Use `le_trans ?_ (pow_le_pow_left₀ d0 d1 2)` and prove the remaining obligations. Rewrite using `[← b2]`. Conclude with `q2` after adjusting the coercions.
-
-Conclude with `mul_le_mul e2 e1 (Nat.cast_nonneg _) (sq_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (u u' : D.what₂.Word) (F0 : Fb D u) (Λ : LatV D), Stand D u u' → IsBase D u F0 → IsRowLat D F0 Λ → ∀ (P : LatW D) (s : ℕ) (Q : ℝ), s ≤ D.R.k → SubOK D (L0X D Λ (lf D F0)) P s Q → rkW D (perpW D (L0X D Λ (lf D F0)) P) = s ∧ ∃ I : Ideal (𝓞 D.host.E), I ≠ ⊥ ∧ (Ideal.absNorm I : ℝ) ≤ Q ^ 2 * NT D u ^ 2 ∧ I • dualInH (D.sp.X 0).hT (perpW D (L0X D Λ (lf D F0)) P) ≤ perpW D (L0X D Λ (lf D F0)) P := by
   intro D u u' F0 Λ hS hB hR P s Q hs hP

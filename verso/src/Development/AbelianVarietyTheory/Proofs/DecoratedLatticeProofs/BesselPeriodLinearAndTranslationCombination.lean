@@ -16,26 +16,26 @@ namespace GlobalTheory.SeeSaw.TrcProof
 variable {D : D7}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem contAut_add {V : HSp D} {f g : GA D V → ℂ} (hf : IsContAut V f) (hg : IsContAut V g) :
     IsContAut V (f + g) :=
   ⟨fun γ hγ x => by simp only [Pi.add_apply, hf.1 γ hγ x, hg.1 γ hγ x], hf.2.add hg.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩`.
+Supply the required witnesses or components.
 -/
 theorem contAut_smul {V : HSp D} {f : GA D V → ℂ} (hf : IsContAut V f) (c : ℂ) : IsContAut V (c • f) :=
   ⟨fun γ hγ x => by simp only [Pi.smul_apply, hf.1 γ hγ x], hf.2.const_smul c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun γ hγ x => by simp only [rTrans, mul_assoc, hf.1 γ hγ], hf.2.comp (continuous_mul_const h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem contAut_rTrans {V : HSp D} {f : GA D V → ℂ} (h : GA D V) (hf : IsContAut V f) : IsContAut V (rTrans h f) :=
   ⟨fun γ hγ x => by simp only [rTrans, mul_assoc, hf.1 γ hγ], hf.2.comp (continuous_mul_const h)⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨fun _ _ _ => by simp, continuous_const⟩`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`. Conclude with `contAut_add (contAut_smul (hf i (Finset.mem_insert_self i s)) (a i)) (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contAut_sum {V : HSp D} {I : Type} (s : Finset I) (a : I → ℂ) (f : I → GA D V → ℂ)
     (hf : ∀ i ∈ s, IsContAut V (f i)) : IsContAut V (∑ i ∈ s, a i • f i) := by
@@ -48,11 +48,11 @@ theorem contAut_sum {V : HSp D} {I : Type} (s : Finset I) (a : I → ℂ) (f : I
       (ih fun j hj => hf j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Establish `hconv` using `fun i (hi : i ∈ s) => PerSumProof.conv hψ B (hf i hi) hφ`. Simplify using `only [BesLev.per, besPer]`. Establish `e1 : ∀ h n, besFun ψ 1 B.d B.o B.ζ φ (∑ i ∈ s, a i • f i) h n = ∑ i ∈ s, a i * besFun ψ 1 B.d B.o B.ζ φ (f i) h n`. Introduce `h n`. Simplify using `only [besFun, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Repeatedly rewrite using `[e1]`. Establish `e2 : (fun h => ∫ n in B.vN.𝓝, ∑ i ∈ s, a i * besFun ψ 1 B.d B.o B.ζ φ (f i) h n ∂B.vN.ν) = fun h => ∑ i ∈ s, a i * ∫ n in B.vN.𝓝, besFun ψ 1 B.d B.o B.ζ φ (f i) h n ∂B.vN.ν`. Use function extensionality and compare the values at `h`. Rewrite using `[integral_finset_sum s fun i hi => ((hconv i hi).1 h).const_mul (a i)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`. Rewrite using `[e2, integral_finset_sum s fun i hi => (hconv i hi).2.const_mul (a i)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_const_mul _ _`.
+A detailed English derivation is pending.
 -/
 theorem per_sum_right {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsStdChar D ψ (-1)) {ρ : ℕ} (B : BesLev D ρ)
     {φ : GA D B.A → ℂ} (hφ : IsContAut B.A φ) {I : Type} (s : Finset I) (a : I → ℂ) (f : I → GA D B.V → ℂ)
@@ -79,7 +79,7 @@ end GlobalTheory.SeeSaw.TrcProof
 namespace GlobalTheory.SeeSaw
 
 /- English proof (translation)
-Introduce `D ψ hψ ρ B φ hφ`. Use `⟨fun I s a f hf => TrcProof.per_sum_right hψ B hφ s a f hf, fun e f hf => ?_⟩` and prove the remaining obligations. Establish `hT : ∀ g ∈ e.support, IsContAut B.V (rTrans g f)` using `fun g _ => TrcProof.contAut_rTrans g hf`. Conclude with `⟨TrcProof.contAut_sum e.support e (fun g => rTrans g f) hT, TrcProof.per_sum_right hψ B hφ e.support e (fun g => rTrans g f) hT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem per_linear_trc : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (ρ : ℕ) (B : BesLev D ρ) (φ : GA D B.A → ℂ), IsContAut B.A φ → (∀ (I : Type) (s : Finset I) (a : I → ℂ) (f : I → GA D B.V → ℂ), (∀ i ∈ s, IsContAut B.V (f i)) → B.per ψ φ (∑ i ∈ s, a i • f i) = ∑ i ∈ s, a i * B.per ψ φ (f i)) ∧ ∀ (e : GA D B.V →₀ ℂ) (f : GA D B.V → ℂ), IsContAut B.V f → IsContAut B.V (trc e f) ∧ B.per ψ φ (trc e f) = ∑ g ∈ e.support, e g * B.per ψ φ (rTrans g f) := by
   intro D ψ hψ ρ B φ hφ

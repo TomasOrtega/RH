@@ -22,21 +22,21 @@ variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `γ w h`. Establish `hZ : PCount.AtMat w (zT γ)` using `PCount.atMat_zT hN hrows h (hRel γ w h)`. Establish `hpt : ptT γ = w`. Establish `h0` using `h`. Take `⟨⟨hgen, -⟩, hat⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `hN γ w hat (hRel γ w h0) hgen`. Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨(w, y), hy⟩`. Establish `hn : nrep γ = some hex.choose` using `dif_pos hex`. Take `⟨hRep, -, hL, hU, e⟩` from `hex.choose_spec`. Take `⟨F₁, hR₁, -, hc₁⟩` from `hat`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw : w = hex.choose.1` using `pt_eq_of_cells cell_point_uniqueness (Formalism.L2.SG.Closed.TermFun_holds D u u') hrows γ hR₁ hRep hc₁ ⟨_, _, hL, hU, e⟩`. Unfold `ptT`. Rewrite using `[hn]`. Conclude with `hw.symm`. Establish `hfin` using `PCount.tupZ_restr hA u u' hZ ((LocModel.good_cofinite δ M hA ∅).mono fun p hp => ⟨hp.1, hp.2.1, hp.2.2.1⟩) (fun x => LocModel.LM.iotaIntegral_almost_all D x)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall` using `LocModel.good_cofinite δ M hA (w.1.map Prod.fst).toFinset`. Rewrite `hall` using `[Filter.eventually_cofinite]`. Use `(hfin.union hall).subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hq`. Simplify using `only [Set.mem_union, Set.mem_ofPred_eq, not_or, not_not] at hq`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨htup, hg⟩` from `hq`. Establish `hg' : Good δ M w p` using `hg`. Apply `hp` to reduce the goal to its premises. Use `show thL M δ (D.mem u).A.T (D.mem u').A.T p (ptT γ) (CntLocal.ZZP (M := M) δ u u' p (zT γ)) = _`. Rewrite using `[hpt]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : CntLocal.ZZP (M` using `M) δ u u' p (zT γ) * LsDatumB.sgnP p ∈ x0L M δ (D.mem u).A.T (D.mem u').A.T p w := by`. Rewrite using `[← htup]`. Conclude with `⟨1, 1, one_intLow p, one_intUp p, by rw [Matrix.one_mul, Matrix.mul_one]⟩`. Take `⟨l, ρ, hl, hρ, he⟩` from `hmem`. Establish `hZZ : CntLocal.ZZP (M` using `M) δ u u' p (zT γ) = l * modMat δ (D.mem u).A.T (D.mem u').A.T p w * ρ * LsDatumB.sgnP p := by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← he, Matrix.mul_assoc, permSign_mul_self₂, Matrix.mul_one]`. Establish `e2 : CntLocal.ZZP (M` using `M) δ u u' p (zT γ) + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p w) = l * (modMat δ (D.mem u).A.T (D.mem u').A.T p w + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p w)) * ρ * LsDatumB.sgnP p := by`. Rewrite using `[hZZ, Matrix.mul_add, Matrix.add_mul, Matrix.add_mul, loU_corner p _ ⟨hl.1, hl.2.1⟩ ⟨hρ.1, hρ.2.1⟩, corner_sgn]`. Unfold `thL`. Apply `clsOf_triv` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : (CntLocal.ZZP (M` using `M) δ u u' p (zT γ) + Matrix.of fun a b => if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then cornerSh δ (D.mem u).A.T (D.mem u').A.T p w else 0) = l * (modMat δ (D.mem u).A.T (D.mem u').A.T p w + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p w)) * ρ * LsDatumB.sgnP p := e2`. Rewrite using `[e3]`. Use `isGL_mul _ (isGL_mul _ (isGL_mul _ (isGL_of_det_one _ hl.2.2 (det_loU ⟨hl.1, hl.2.1⟩)) (shift_isGL _ _ w p (hA p) hg')) (isGL_of_det_one _ hρ.2.2 (det_upU ⟨hρ.1, hρ.2.1⟩))) (isGL_sgn p)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thRestricted_of (hA : ∀ p, Agree δ M p) (hrows : IsRowReps D F0 what₂)
     (hN : PairVal.NormRepExists D u u' F0 what₂) (hRel : PCount.EligRel u u' F0 what₂) :
@@ -102,7 +102,7 @@ namespace Formalism.L2.SG.Pf
 open NumberField Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.MainNotions.S.LocalSplitGroups Formalism.L2.SG.TermDef Formalism.L2.SG.DataCut
 
 /- English proof (translation)
-The claim follows from `LocUnramB.thRestricted_of hA hrows hN hRel`.
+A detailed English derivation is pending.
 -/
 theorem thRestricted_holds_of {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}

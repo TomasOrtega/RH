@@ -11,7 +11,7 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Unfold `B.hsVec`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem hsVec_ofReal_smul {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (c : ℝ) (X : Wq →L[ℂ] Wp) :
@@ -20,13 +20,13 @@ theorem hsVec_ofReal_smul {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSp
   rfl
 
 /- English proof (translation)
-Use `set n := 2 * R + K + 1 with hn`. Establish `hn1 : 1 ≤ n` using `by rw [hn]; linarith`. Establish `h4 : R + 1 ≤ (R + 1) ^ 4` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `hn3 : n ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ hn1 (by norm_num)`. Establish `a1 : (R + 1) * n ^ 2 ≤ (R + 1) ^ 4 * n ^ 3` using `mul_le_mul h4 hn3 (by positivity) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : (R + 1) ^ 4 * n ^ 3 ≤ (R + 1) ^ 4 * (Nn * n ^ 2 + n ^ 3)` using `mul_le_mul_of_nonneg_left (by nlinarith [sq_nonneg n]) (by positivity)`. Establish `key : 10 * ((R + 1) * n ^ 2) ≤ A`. Establish `e : 10 * (R + 1) ^ 4 * (Nn * n ^ 2 + n ^ 3) = 10 * ((R + 1) ^ 4 * (Nn * n ^ 2 + n ^ 3))` using `by ring`. Rewrite `h` using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hpos : 0 < (R + 1) * n ^ 2` using `by positivity`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hnn : n ≤ n ^ 2` using `by nlinarith`. Establish `b1 : 2 * (K + R) * (R + 1) + 1 ≤ 2 * n * (R + 1)` using `by rw [hn]; nlinarith`. Establish `b2 : 2 * n * (R + 1) ≤ 2 * ((R + 1) * n ^ 2)` using `by nlinarith`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[lt_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nfBetaLim_thr (R K Nn A : ℝ) (hR : 0 ≤ R) (hK : 0 ≤ K) (hN : 0 ≤ Nn)
     (h : 10 * (R + 1) ^ 4 * (Nn * (2 * R + K + 1) ^ 2 + (2 * R + K + 1) ^ 3) ≤ A) :
@@ -57,9 +57,9 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Unfold `pair0 B.beta betaBig`. Use `integral_congr_ae (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `show (bcWeight P.k P.r (Tz P.k P.r p.T.base.z) (Tz P.k P.r p.T.base.z') q : ℂ) * inner ℂ (B.hsVec (B.JF p.T.base (D.cutF p.T.base χ F ε) (bigCell P.k P.r q.1 (p.T.base.μsec q.2)))) (B.hsVec (B.JF p.T.base (w.foldr (fun a H => M.sgn P p.l0 • Q.CV P.k P.r (a.2 : ℂ) H) F) (bigCell P …`. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx2.JF_cutF, hsVec_ofReal_smul, inner_smul_left, Complex.conj_ofReal]`. Unfold `levelZeroRadialIntegral`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem truncated_pairing_eq_integral (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (χ : ℝ → ℝ) (ε : ℝ)
     (w : List C.Letter) :
@@ -77,7 +77,7 @@ theorem truncated_pairing_eq_integral (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r →
   ring
 
 /- English proof (translation)
-Unfold `pair0 B.beta betaBig`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem self_pairing_eq_integral (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) :
     pair0 p F F w = ∫ q, levelZeroRadialIntegral p w F q := by
@@ -87,31 +87,27 @@ theorem self_pairing_eq_integral (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq 
 end place
 
 /- English proof (translation)
-Introduce `Cb`. Use `⟨10, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f A₀ p₀ χ Y N hH w hw hN`. Take `⟨hχ, -, -, hfA, hth, -⟩` from `hH`. Take `⟨δ, hδ, hχ0⟩` from `hχ.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set F' := TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ with hF'`. Use `set A := A₀ - (((2 * P.r + 2) * p₀ : ℕ) : ℝ) with hAdef`. Establish `hCC : ∀ m : ℕ, B.InCC A m F'` using `inCC_fpm_id p p₀ hfA`. Take `⟨hAB', hT'⟩` from `nfBetaLim_thr (P.r : ℝ) (P.k : ℝ) (N : ℝ) A (by positivity) (by positivity) (by positivity) hth`. Establish `hAB : B.AB P.k P.r ≤ A` using `by unfold B.AB; exact hAB'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hT : JF.TransportedAlt P.k P.r A 0`. Unfold `JF.TransportedAlt`. Use `push_cast`. Simplify using `using hT'`. Use `set Ds := p.T.base with hDs`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI : Integrable (levelZeroRadialIntegral p w F')` using `rr0Int_integrable p w hAB hT fun j _ => hCC j`. Take `⟨Cχ, hCχ⟩` from `(isCompact_Icc (a := (0 : ℝ)) (b := 1)).exists_bound_of_continuousOn hχ.1.continuous.continuousOn`. Use `set Mχ := max Cχ 1 with hMdef`. Establish `hM : ∀ x, ‖χ x‖ ≤ Mχ`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_or_ge x 0 with h | h` into its components or cases. Rewrite using `[hχ0 x (by linarith), norm_zero]; exact le_max_of_le_right zero_le_one`. Break down `le_or_gt x 1 with h' | h'` into its components or cases. Conclude with `(hCχ x ⟨h, h'⟩).trans (le_max_left _ _)`. Rewrite using `[hχ.2.2 x h'.le, norm_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_max_right _ _`. Use `set K := Formalism.FourierDecayAlt.P.CutMP.En.foldCV P.k P.r (M.sgn P p.l0) w F' with hK`. Establish `hK0 : B.InCC A 0 K` using `Formalism.FourierDecayAlt.P.CutMP.En.inCC_fold Formalism.FourierDecayAlt.P.CutMP.En.coefficient_vector_in_L2_class A (M.sgn P p.l0) F' w 0 (hCC _)`. Establish `cH'` using `jgq_continuousOn Ds hT (hCC 0)`. Establish `cK'` using `jgq_continuousOn Ds hT hK0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcv` using `Formalism.FourierDecayAlt.P.CutMP.En.hsVec_contDiff (V := Wp) (W := Wq)`. Establish `ca : ContinuousOn (fun q => B.hsVec (B.JF Ds F' (B.gq Ds q))) (JF.QDom P.k P.r Ds.z Ds.z')` using `hcv.continuous.comp_continuousOn cH'`. Establish `cb : ContinuousOn (fun q => B.hsVec (B.JF Ds K (B.gq Ds q))) (JF.QDom P.k P.r Ds.z Ds.z')` using `hcv.continuous.comp_continuousOn cK'`. Establish `hgq : ContinuousOn (fun q => B.gq Ds q) (JF.QDom P.k P.r Ds.z Ds.z')` using `(Formalism.FourierDecayAlt.P.BigCellOpenDomain.gq_contDiffOn Ds 0).continuousOn`. Establish `hmeas : ∀ ε : ℝ, AEStronglyMeasurable (fun q => ((χ (Gf P.k P.r Ds.z Ds.z' (bigCell P.k P.r q.1 (Ds.μsec q.2)) / ε) : ℝ) : ℂ) * levelZeroRadialIntegral p w F' q) volume`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `ε`. Establish `cχ : ContinuousOn (fun q => ((χ (Gf P.k P.r Ds.z Ds.z' (B.gq Ds q) / ε) : ℝ) : ℂ)) (JF.QDom P.k P.r Ds.z Ds.z')` using `Complex.continuous_ofReal.comp_continuousOn (hχ.1.continuous.comp_continuousOn (((Formalism.FourierDecayAlt.P.JCx1.contDiff_Gf Ds.z Ds.z').continuous.comp_continuousOn hgq).div_const ε))`. Use `aesm_weight_smul Ds (cχ.mul (ca.inner cb))` as an intermediate fact. Use `this.congr (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Use `show (bcWeight P.k P.r (Tz P.k P.r Ds.z) (Tz P.k P.r Ds.z') q : ℝ) • (((χ (Gf P.k P.r Ds.z Ds.z' (B.gq Ds q) / ε) : ℝ) : ℂ) * inner ℂ (B.hsVec (B.JF Ds F' (B.gq Ds q))) (B.hsVec (B.JF Ds K (B.gq Ds q)))) = _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Complex.real_smul]`. Use `show _ = ((χ (Gf P.k P.r Ds.z Ds.z' (B.gq Ds q) / ε) : ℝ) : ℂ) * ((bcWeight P.k P.r (Tz P.k P.r Ds.z) (Tz P.k P.r Ds.z') q : ℂ) * inner ℂ (B.hsVec (B.JF Ds F' (B.gq Ds q))) (B.hsVec (B.JF Ds K (B.gq Ds q))))`. Expand and normalize the polynomial expressions, which then agree. Establish `hlim : ∀ᵐ q : (Fin P.r → ℂ) × ℂ, Tendsto (fun ε : ℝ => ((χ (Gf P.k P.r Ds.z Ds.z' (bigCell P.k P.r q.1 (Ds.μsec q.2)) / ε) : ℝ) : ℂ) * levelZeroRadialIntegral p w F' q) (𝓝[>] 0) (𝓝 (levelZeroRadialIntegral p w F' q))`. Use `Eventually.of_forall fun q => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hq : bcWeight P.k P.r (Tz P.k P.r Ds.z) (Tz P.k P.r Ds.z') q = 0`. Establish `h0 : levelZeroRadialIntegral p w F' q = 0` using `by unfold levelZeroRadialIntegral; rw [hq]; simp`. Simplify using `only [h0, mul_zero]`. Conclude with `tendsto_const_nhds`. Take `⟨-, hG⟩` from `bigCell_pos p q hq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [Ioo_mem_nhdsGT hG] with ε hε`. Establish `h1 : 1 ≤ Gf P.k P.r Ds.z Ds.z' (bigCell P.k P.r q.1 (Ds.μsec q.2)) / ε`. Rewrite using `[le_div_iff₀ hε.1]`. Combine the linear relations using `[hε.2]`.
-
-Rewrite using `[hχ.2.2 _ h1]`. Simplify using the standard rewrite rules. Establish `hT2 : Tendsto (fun ε : ℝ => ∫ q, ((χ (Gf P.k P.r Ds.z Ds.z' (bigCell P.k P.r q.1 (Ds.μsec q.2)) / ε) : ℝ) : ℂ) * levelZeroRadialIntegral p w F' q) (𝓝[>] 0) (𝓝 (∫ q, levelZeroRadialIntegral p w F' q))`. Use `tendsto_integral_filter_of_dominated_convergence (fun q => Mχ * ‖levelZeroRadialIntegral p w F' q‖) (Eventually.of_forall hmeas) (Eventually.of_forall fun ε => Eventually.of_forall fun q => ?_) (hI.norm.const_mul Mχ) hlim` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_real]`.
-
-Conclude with `mul_le_mul_of_nonneg_right (hM _) (norm_nonneg _)`. Establish `e1 : (fun ε : ℝ => (pair0 p F' (D.cutF p.T.base χ F' ε) w).re) = fun ε => (∫ q, ((χ (Gf P.k P.r Ds.z Ds.z' (bigCell P.k P.r q.1 (Ds.μsec q.2)) / ε) : ℝ) : ℂ) * levelZeroRadialIntegral p w F' q).re` using `funext fun ε => by rw [truncated_pairing_eq_integral]`. Rewrite using `[e1, self_pairing_eq_integral]`. Conclude with `(Complex.continuous_re.tendsto _).comp hT2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem beta_limit_all_levels_holds : NFBetaLimAll := by
   intro Cb

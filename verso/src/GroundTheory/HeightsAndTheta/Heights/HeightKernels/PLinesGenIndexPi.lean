@@ -11,7 +11,7 @@ open AddSubgroup
 variable {η : Type} {G : Type} [AddCommGroup G]
 
 /- English proof (translation)
-Repeatedly rewrite using `[AddSubgroup.index, ← Nat.card_pi]`. Use `Nat.card_congr ((Quotient.congrRight (fun x y ↦ ?_)).trans (Setoid.piQuotientEquiv _).symm)` and prove the remaining obligations. Rewrite using `[QuotientAddGroup.leftRel_pi]`.
+Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem index_pi_dep [Fintype η] {β : η → Type} [∀ i, AddCommGroup (β i)]
     (H : ∀ i, AddSubgroup (β i)) :
@@ -27,7 +27,7 @@ def piIncl (K : η → AddSubgroup G) : (∀ i, K i) →+ AddSubgroup.pi Set.uni
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `y`. Use `⟨fun i => ⟨(y : η → G) i, (AddSubgroup.mem_pi _).1 y.2 i (Set.mem_univ i)⟩, ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem piIncl_surjective (K : η → AddSubgroup G) : Function.Surjective (piIncl K) := by
   intro y
@@ -35,7 +35,7 @@ theorem piIncl_surjective (K : η → AddSubgroup G) : Function.Surjective (piIn
   rfl
 
 /- English proof (translation)
-Establish `hc : ((AddSubgroup.pi Set.univ H).addSubgroupOf (AddSubgroup.pi Set.univ K)).comap (piIncl K) = AddSubgroup.pi Set.univ fun i => (H i).addSubgroupOf (K i)`. Use extensionality with `x`. Simplify using `[AddSubgroup.mem_addSubgroupOf, AddSubgroup.mem_pi, piIncl]`. Unfold `AddSubgroup.relIndex`. Rewrite using `[← AddSubgroup.index_comap_of_surjective _ (piIncl_surjective K), hc, index_pi_dep]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem relIndex_pi [Fintype η] (H K : η → AddSubgroup G) :
     (AddSubgroup.pi Set.univ H).relIndex (AddSubgroup.pi Set.univ K) =
@@ -50,7 +50,7 @@ theorem relIndex_pi [Fintype η] (H K : η → AddSubgroup G) :
 end KLinesGenIndexPi
 
 /- English proof (translation)
-Introduce `η _ G _ A B`. Unfold `genIndex`. Rewrite using `[KLinesGenIndexPi.relIndex_pi, KLinesGenIndexPi.relIndex_pi, Nat.cast_prod, Nat.cast_prod, ← Finset.prod_div_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem LinesGenIndexPi.proof : LinesGenIndexPi.Statement := by
   intro η _ G _ A B

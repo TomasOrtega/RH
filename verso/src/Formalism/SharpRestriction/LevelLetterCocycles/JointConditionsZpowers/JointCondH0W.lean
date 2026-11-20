@@ -15,13 +15,13 @@ section Phi
 variable (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨u, rfl⟩`. Establish `: (LinearMap.compLeft (Algebra.linearMap O K) (Fin k)) u = ∑ j, u j • (Pi.single j 1 : Fin k → K)`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single a]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Algebra.smul_def]`. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hb)]`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `⟨Pi.single j 1, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdG_span (O K : Type) [CommRing O] [Field K] [Algebra O K] (k : ℕ) :
     stdG O K k = Submodule.span O (Set.range fun j : Fin k => (Pi.single j 1 : Fin k → K)) := by
@@ -47,13 +47,11 @@ theorem stdG_span (O K : Type) [CommRing O] [Field K] [Algebra O K] (k : ℕ) :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot (τ₁₂ := (D.nbr i w hw).eO.toRingHom), eq_bot_iff]`. Introduce `x hx`. Take `⟨u, rfl⟩` from `Submodule.mkQ_surjective _ x`. Rewrite `hx` using `[LinearMap.mem_ker]`. Rewrite using `[Submodule.mem_bot, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Br.vecS (D.nbr i w hw) k u ∈ stdG (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) k`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Take `⟨c, hc⟩` from `h1`. Use `⟨fun j => (D.nbr i w hw).eO.symm (c j), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Apply `(Br.toLLK (D.nbr i w hw)).injective` to reduce the goal to its premises. Use `congrFun hc j` as an intermediate fact. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Algebra.linearMap_apply] at this`. Use `show Br.toLLK (D.nbr i w hw) (algebraMap _ _ ((D.nbr i w hw).eO.symm (c j))) = Br.toLLK (D.nbr i w hw) (u j)`.
-
-Rewrite using `[Br.toLLK_alg, RingEquiv.apply_symm_apply]`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_injective (k : ℕ) : Function.Injective (Br.phi (D.nbr i w hw) k) := by
   rw [← LinearMap.ker_eq_bot (τ₁₂ := (D.nbr i w hw).eO.toRingHom), eq_bot_iff]
@@ -77,11 +75,9 @@ theorem phi_injective (k : ℕ) : Function.Injective (Br.phi (D.nbr i w hw) k) :
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `Submodule.mkQ_surjective _ x`. Establish `key : Br.vecS (D.nbr i w hw) k ((matRep (mapM (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) M) (Br.ι (D.nbr i w hw) g)) u) = (matRep (Br.locM (D.nbr i w hw) M) g) (Br.vecS (D.nbr i w hw) k u)`. Use function extensionality and compare the values at `p`. Use `show Br.toLLK (D.nbr i w hw) (((mapM (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) M (Br.ι (D.nbr i w hw) g)).mulVec u) p) = ((Br.locM (D.nbr i w hw) M g).mulVec (fun j => Br.toLLK (D.nbr i w hw) (u j))) p`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Use `congr 1`. Use `show Br.toLLK (D.nbr i w hw) (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)) (M (Br.ι (D.nbr i w hw) g) p q)) = _`. Rewrite using `[Br.toLLK_alg]`. Both sides reduce to the same expression.
-
-Conclude with `congrArg (fun z : Fin k → Br.LLw (D.nbr i w hw) => (Submodule.Quotient.mk z : (Fin k → Br.LLw (D.nbr i w hw)) ⧸ stdG (Br.Ow (D.nbr i w hw)) (Br.LLw (D.nbr i w hw)) k)) key`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem phi_act {k : ℕ} (M : Gw D.nd w →* Matrix (Fin k) (Fin k) (D.nd.O i)) (g : ↥(GK (D.nbr i w hw).Kw))
     (x : KOG (D.nd.O i) k) :
@@ -106,13 +102,13 @@ theorem phi_act {k : ℕ} (M : Gw D.nd w →* Matrix (Fin k) (Fin k) (D.nd.O i))
 end Phi
 
 /- English proof (translation)
-Unfold `lenUnit`. Use `set A := Module.length O M`. Use `set B := Module.length O (O ⧸ Ideal.span {(l : O)})`. Establish `hnc : (0 : ℝ) ≤ (n : ℝ) * (c : ℝ)` using `by positivity`. Distinguish the cases in `hB : B.toNat = 0`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hB, Nat.cast_zero, div_zero]`. Simplify using `using hnc`. Establish `hBt : B ≠ ⊤` using `fun h => hB (by rw [h]; rfl)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.1 hBt`. Rewrite `h`, `hB`, the goal using `[← hm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : A ≤ ((n * c * m : ℕ) : ℕ∞)` using `by simpa using h`. Establish `h1 : A.toNat ≤ n * c * m`. Use `ENat.toNat_le_toNat h' (ENat.coe_ne_top _)` as an intermediate fact. Simplify using `using this`. Simplify using `only [ENat.toNat_coe] at hB ⊢`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBpos : (0 : ℚ) < (m : ℚ)` using `by exact_mod_cast Nat.pos_of_ne_zero hB`. Establish `h2 : ((A.toNat : ℚ) / (m : ℚ)) ≤ (n : ℚ) * (c : ℚ)`. Rewrite using `[div_le_iff₀ hBpos]`. Conclude with `h1` after adjusting the coercions. Conclude with `h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenUnit_le {O : Type} [CommRing O] (l : ℕ) (M : Type) [AddCommGroup M] [Module O M] (n c : ℕ)
     (h : Module.length O M ≤ (n : ℕ∞) * (c : ℕ∞) * Module.length O (O ⧸ Ideal.span {(l : O)})) :

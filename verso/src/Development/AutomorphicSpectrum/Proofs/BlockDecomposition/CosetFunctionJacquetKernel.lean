@@ -13,7 +13,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {Z : Type} [AddCommGroup Z] [Module ℂ Z]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show (cosetSet t c a).indicator (fun _ => (0 : Z)) v = 0`. Conclude with `congrFun (Set.indicator_zero Z (cosetSet t c a)) v`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cosetFn_zero_val (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) :
     cosetFn t hc a (0 : Z) = 0 := by
@@ -23,9 +23,9 @@ theorem cosetFn_zero_val (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) :
   exact congrFun (Set.indicator_zero Z (cosetSet t c a)) v
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show (cosetSet t c a).indicator (fun _ => z + w) v = (cosetSet t c a).indicator (fun _ => z) v + (cosetSet t c a).indicator (fun _ => w) v`. Distinguish the cases in `hv : v ∈ cosetSet t c a`. Simplify using `only [Set.indicator_of_mem hv]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator_of_notMem hv, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cosetFn_add_val (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) (z w : Z) :
     cosetFn t hc a (z + w) = cosetFn t hc a z + cosetFn t hc a w := by
@@ -39,9 +39,9 @@ theorem cosetFn_add_val (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) (z w 
   · simp only [Set.indicator_of_notMem hv, add_zero]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `show (cosetSet t c a).indicator (fun _ => r • z) v = r • (cosetSet t c a).indicator (fun _ => z) v`. Distinguish the cases in `hv : v ∈ cosetSet t c a`. Simplify using `only [Set.indicator_of_mem hv]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator_of_notMem hv, smul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem cosetFn_smul_val (t : ℕ) {c : k} (hc : c ≠ 0) (a : Fin t → k) (r : ℂ) (z : Z) :
     cosetFn t hc a (r • z) = r • cosetFn t hc a z := by
@@ -58,25 +58,25 @@ def topCol (i t : ℕ) (x : Fin i → k) : Multiplicative (Fin (i + t) → k) :=
   Multiplicative.ofAdd (topV k i t x)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `Fin.append_left _ _ j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem topPart_topCol (i t : ℕ) (x : Fin i → k) : topP i t (topCol i t x).toAdd = x := by
   funext j
   exact Fin.append_left _ _ j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Conclude with `Fin.append_right _ _ j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem middlePart_topColumn (i t : ℕ) (x : Fin i → k) : middlePart i t (topCol i t x).toAdd = 0 := by
   funext j
   exact Fin.append_right _ _ j
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Establish `h1 : (fibAct t ρ₀ (topCol i t x.toAdd) (cosetFn t hc 0 w)).1 v = ρ₀ (Multiplicative.ofAdd (topP i t (topCol i t x.toAdd).toAdd)) ((cosetFn t hc 0 w).1 (v + middlePart i t (topCol i t x.toAdd).toAdd))` using `fibAct_apply t ρ₀ _ _ v`. Establish `h2 : Multiplicative.ofAdd (topP i t (topCol (k` using `k) i t x.toAdd).toAdd) = x := by`. Rewrite using `[topPart_topCol]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2, middlePart_topColumn, add_zero]`. Use `show ρ₀ x ((cosetSet t c 0).indicator (fun _ => w) v) = (cosetSet t c 0).indicator (fun _ => ρ₀ x w) v`. Distinguish the cases in `hv : v ∈ cosetSet t c 0`. Simplify using `only [Set.indicator_of_mem hv]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.indicator_of_notMem hv, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem fibAct_topCol {i : ℕ} (t : ℕ) (ρ₀ : Representation ℂ (Multiplicative (Fin i → k)) Z)
     {c : k} (hc : c ≠ 0) (x : Multiplicative (Fin i → k)) (w : Z) :
@@ -99,13 +99,11 @@ theorem fibAct_topCol {i : ℕ} (t : ℕ) (ρ₀ : Representation ℂ (Multiplic
   · simp only [Set.indicator_of_notMem hv, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨n, v, rfl⟩` from `hw`. Use `Submodule.subset_span ⟨⟨topCol i t (n : Multiplicative (Fin i → k)).toAdd, trivial⟩, cosetFn t hc 0 v, ?_⟩` and prove the remaining obligations. Establish `hsub : ρ₀ (n : Multiplicative (Fin i → k)) v - ((1 : (⊤ : Subgroup (Multiplicative (Fin i → k))) →* ℂˣ) n : ℂ) • v = ρ₀ (n : Multiplicative (Fin i → k)) v + (-1 : ℂ) • v`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[sub_eq_add_neg]`. Establish `hrhs : fibAct t ρ₀ (topCol i t (n : Multiplicative (Fin i → k)).toAdd) (cosetFn t hc 0 v) - ((1 : (⊤ : Subgroup (Multiplicative (Fin (i + t) → k))) →* ℂˣ) ⟨topCol i t (n : Multiplicative (Fin i → k)).toAdd, trivial⟩ : ℂ) • cosetFn t hc 0 v = cosetFn t hc 0 (ρ₀ (n : Multiplicative …`. Rewrite using `[fibAct_topCol]`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[hsub, cosetFn_add_val, cosetFn_smul_val]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hrhs.symm`. Consider the case `zero => rw [cosetFn_zero_val]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [cosetFn_add_val]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul r a _ ha => rw [cosetFn_smul_val]`. Conclude with `Submodule.smul_mem _ r ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cosetFn_mem_twKer (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (i t : ℕ) {Z : Type} [AddCommGroup Z] [Module ℂ Z]

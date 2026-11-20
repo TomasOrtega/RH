@@ -16,14 +16,14 @@ namespace GlobalTheory.ShFam.MuExp
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-The claim follows from `h.posSemidef.re_dotProduct_nonneg v`.
+A detailed English derivation is pending.
 -/
 theorem quad_nonneg {m : ℕ} {M : Matrix (Fin m) (Fin m) ℂ} (h : M.PosDef) (v : Fin m → ℂ) :
     0 ≤ (star v ⬝ᵥ M *ᵥ v).re :=
   h.posSemidef.re_dotProduct_nonneg v
 
 /- English proof (translation)
-Establish `h : star (fun i => starRingEnd ℂ (v i)) ⬝ᵥ M.map (starRingEnd ℂ) *ᵥ (fun i => starRingEnd ℂ (v i)) = starRingEnd ℂ (star v ⬝ᵥ M *ᵥ v)`. Simplify using `[dotProduct, mulVec, map_sum, Finset.mul_sum]`. Rewrite using `[h, Complex.conj_re]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_map_conj {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) (v : Fin m → ℂ) :
     (star (fun i => starRingEnd ℂ (v i)) ⬝ᵥ M.map (starRingEnd ℂ) *ᵥ (fun i => starRingEnd ℂ (v i))).re =
@@ -42,7 +42,7 @@ def Bd (σ : κ.c.F →+* ℂ) (C : ℝ) (k : ℕ) : Prop :=
       (star v ⬝ᵥ (x.hodge σ).gram y g τ *ᵥ v).re ≤ C * x.r σ y ^ k * (star v ⬝ᵥ x.gram y g τ *ᵥ v).re
 
 /- English proof (translation)
-Establish `h1` using `x.exp_le_r σ y`. Establish `h2` using `Real.add_one_le_exp (1 : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_r (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ) : 1 ≤ x.r σ y := by
   have h1 := x.exp_le_r σ y
@@ -50,9 +50,7 @@ theorem one_le_r (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ) : 1 ≤ x
   linarith
 
 /- English proof (translation)
-Establish `hp : r ^ k ≤ r ^ k'` using `pow_le_pow_right₀ hr hk`. Establish `hp0 : 0 ≤ r ^ k` using `by positivity`. Distinguish the cases in `hc : 0 ≤ C`. Conclude with `mul_le_mul hC hp hp0 (hc.trans hC)`. Use `push_neg at hc`.
-
-Conclude with `(mul_nonpos_of_nonpos_of_nonneg hc.le hp0).trans (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem mul_pow_le {C C' r : ℝ} {k k' : ℕ} (hC : C ≤ C') (hC' : 0 ≤ C') (hk : k ≤ k') (hr : 1 ≤ r) :
     C * r ^ k ≤ C' * r ^ k' := by
@@ -64,7 +62,7 @@ theorem mul_pow_le {C C' r : ℝ} {k k' : ℕ} (hC : C ≤ C') (hC' : 0 ≤ C') 
     exact (mul_nonpos_of_nonpos_of_nonneg hc.le hp0).trans (by positivity)
 
 /- English proof (translation)
-Introduce `y hy g τ v` and use `by have hC0 := mul_pow_le hC hC' hk (one_le_r x σ y) have q0 := quad_nonneg (x.gram_posDef g τ) v have q1 := quad_nonneg ((x.hodge σ).pos y g τ) v obtain ⟨a, b⟩ := h y hy g τ v exact ⟨a.trans (mul_le_mul_of_nonneg_right hC0 q1), b.trans (mul_le_mul_of_nonneg_right hC0 q0)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bd.mono {σ : κ.c.F →+* ℂ} {C C' : ℝ} {k k' : ℕ} (h : Bd x σ C k) (hC : C ≤ C') (hC' : 0 ≤ C')
     (hk : k ≤ k') : Bd x σ C' k' := fun y hy g τ v => by
@@ -75,11 +73,11 @@ theorem Bd.mono {σ : κ.c.F →+* ℂ} {C C' : ℝ} {k k' : ℕ} (h : Bd x σ C
   exact ⟨a.trans (mul_le_mul_of_nonneg_right hC0 q1), b.trans (mul_le_mul_of_nonneg_right hC0 q0)⟩
 
 /- English proof (translation)
-Establish `: CompactSpace (CxPts (genStr s.T.Z) σ)` using `CxPts.compactSpace σ (ProjSpace.isProjOver_pullback_snd _ s.T.Z.proj)`. Establish `hl` using `GlobalTheory.T.gram_bounded_by_hodge D A N j S κ s x σ hσ`. Use `choose U hU C k hb using hl`. Take `⟨t, -, ht⟩` from `isCompact_univ.elim_nhds_subcover U fun y _ => hU y`. Use `⟨∑ y ∈ t, |C y|, ∑ y ∈ t, k y, fun y hy g τ v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y₀, hy₀, hyU⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Establish `hC0` using `mul_pow_le (C := C y₀) (C' := ∑ y ∈ t, |C y|) (k := k y₀) (k' := ∑ y ∈ t, k y) ((le_abs_self _).trans (Finset.single_le_sum (f := fun y => |C y|) (fun _ _ => abs_nonneg _) hy₀)) (Finset.sum_nonneg fun _ _ => abs_nonneg _) (Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) …`. Establish `q0` using `quad_nonneg (x.gram_posDef g τ) v`. Establish `q1` using `quad_nonneg ((x.hodge σ).pos y g τ) v`. Take `⟨a, b⟩` from `hb y₀ y hyU hy g τ v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a.trans (mul_le_mul_of_nonneg_right hC0 q1), b.trans (mul_le_mul_of_nonneg_right hC0 q0)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bd_good (σ : κ.c.F →+* ℂ) (hσ : Formalism.L2.PjFree.GoodEmb κ.c σ) : ∃ (C : ℝ) (k : ℕ), Bd x σ C k := by
   have : CompactSpace (CxPts (genStr s.T.Z) σ) :=
@@ -99,11 +97,11 @@ theorem exists_bd_good (σ : κ.c.F →+* ℂ) (hσ : Formalism.L2.PjFree.GoodEm
   exact ⟨a.trans (mul_le_mul_of_nonneg_right hC0 q1), b.trans (mul_le_mul_of_nonneg_right hC0 q0)⟩
 
 /- English proof (translation)
-Distinguish the cases in `hσ : Formalism.L2.PjFree.GoodEmb κ.c σ`. Conclude with `exists_bd_good x σ hσ`. Establish `h1 : Formalism.L2.PjFree.GoodEmb κ.c ((starRingEnd ℂ).comp σ)`. Simplify `Formalism.L2.PjFree.goodEmb_goodOf κ.c σ` using `only [Formalism.L2.PjFree.goodOf, if_neg hσ]`. Take `⟨C, k, hb⟩` from `exists_bd_good x _ h1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨C, k, fun y hy g τ v => ?_⟩` and prove the remaining obligations. Take `⟨y', hy', hr, hg⟩` from `GlobalTheory.T.conjugate_point_gram D A N j S κ s x σ hσ y`. Take `⟨g', hg'⟩` from `hg g`. Take `⟨a, b⟩` from `hb y' (fun h => hy (hy'.1 h)) g' τ (fun i => starRingEnd ℂ (v i))`. Rewrite `a`, `b` using `[(hg' τ).1, (hg' τ).2, quad_map_conj, quad_map_conj, hr]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨a, b⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_bd (σ : κ.c.F →+* ℂ) : ∃ (C : ℝ) (k : ℕ), Bd x σ C k := by
   by_cases hσ : Formalism.L2.PjFree.GoodEmb κ.c σ
@@ -119,7 +117,7 @@ theorem exists_bd (σ : κ.c.F →+* ℂ) : ∃ (C : ℝ) (k : ℕ), Bd x σ C k
   exact ⟨a, b⟩
 
 /- English proof (translation)
-Use `choose C k hb using exists_bd x`. Use `⟨1 + ∑ σ, |C σ|, ∑ σ, k σ, le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _), fun σ => (hb σ).mono x ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `(le_abs_self _).trans ((Finset.single_le_sum (f := fun σ => |C σ|) (fun _ _ => abs_nonneg _) (Finset.mem_univ σ)).trans (le_add_of_nonneg_left zero_le_one))`. Conclude with `add_nonneg zero_le_one (Finset.sum_nonneg fun _ _ => abs_nonneg _)`. Conclude with `Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ σ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bd_all : ∃ (C : ℝ) (k : ℕ), 1 ≤ C ∧ ∀ σ, Bd x σ C k := by
   choose C k hb using exists_bd x
@@ -131,9 +129,9 @@ theorem exists_bd_all : ∃ (C : ℝ) (k : ℕ), 1 ≤ C ∧ ∀ σ, Bd x σ C k
   · exact Finset.single_le_sum (f := k) (fun _ _ => Nat.zero_le _) (Finset.mem_univ σ)
 
 /- English proof (translation)
-Establish `hr0 : 0 < r` using `(Real.exp_pos 1).trans_le hr`. Establish `hlr : 1 ≤ Real.log r`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) hr`. Establish `hlC : 0 ≤ Real.log C` using `Real.log_nonneg hC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.rpow_add hr0, Real.rpow_natCast, mul_comm C]`. Use `mul_le_mul_of_nonneg_left ?_ (by positivity)` and prove the remaining obligations. Rewrite using `[Real.rpow_def_of_pos hr0]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_pow_le_rpow {C r : ℝ} (k : ℕ) (hC : 1 ≤ C) (hr : Real.exp 1 ≤ r) :
     C * r ^ k ≤ r ^ ((k : ℝ) + Real.log C) := by
@@ -156,11 +154,11 @@ open GlobalTheory.ShFam.MuExp
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ}
 
 /- English proof (translation)
-Take `⟨C, k, hC, hb⟩` from `exists_bd_all x`. Use `⟨(k : ℝ) + Real.log C, add_nonneg (Nat.cast_nonneg k) (Real.log_nonneg hC), fun σ y hy g τ v => ?_⟩` and prove the remaining obligations. Take `⟨a, b⟩` from `hb σ y hy g τ v`. Establish `hr` using `x.exp_le_r σ y`. Establish `hr0 : 0 < x.r σ y` using `(Real.exp_pos 1).trans_le hr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `mul_pow_le_rpow k hC hr`. Establish `q0` using `quad_nonneg (x.gram_posDef g τ) v`. Establish `q1` using `quad_nonneg ((x.hodge σ).pos y g τ) v`. Establish `hp : 0 < x.r σ y ^ ((k : ℝ) + Real.log C)` using `Real.rpow_pos_of_pos hr0 _`. Establish `e : x.r σ y ^ (-((k : ℝ) + Real.log C)) * x.r σ y ^ ((k : ℝ) + Real.log C) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hr0, neg_add_cancel, Real.rpow_zero]`. Establish `hn : 0 < x.r σ y ^ (-((k : ℝ) + Real.log C))` using `Real.rpow_pos_of_pos hr0 _`. Use `⟨?_, b.trans (mul_le_mul_of_nonneg_right hm q0)⟩` and prove the remaining obligations. Establish `a'` using `a.trans (mul_le_mul_of_nonneg_right hm q1)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_isMuExp (x : ToroidalCompactificationData s) : ∃ C, x.IsMuExp C := by
   obtain ⟨C, k, hC, hb⟩ := exists_bd_all x
@@ -183,7 +181,7 @@ theorem exists_isMuExp (x : ToroidalCompactificationData s) : ∃ C, x.IsMuExp C
     _ = (star v ⬝ᵥ (x.hodge σ).gram y g τ *ᵥ v).re := by rw [← mul_assoc, e, one_mul]
 
 /- English proof (translation)
-The claim follows from `x.isMuExp_muExp x.exists_isMuExp`.
+A detailed English derivation is pending.
 -/
 theorem isMuExp_muExp' (x : ToroidalCompactificationData s) : x.IsMuExp x.muExp := x.isMuExp_muExp x.exists_isMuExp
 

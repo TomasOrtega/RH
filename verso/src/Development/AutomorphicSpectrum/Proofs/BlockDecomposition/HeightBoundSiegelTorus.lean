@@ -14,13 +14,13 @@ open scoped TensorProduct NNReal ENNReal Topology
 namespace GlobalTheory.CompanionTheory.RapidDecay
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `m h e`. Establish `h1` using `ratio_le_rbar t ⟨m, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ¬ m + 1 < r` using `by omega`. Simplify `h1` using `[ratio, h2]`. Consider the case `succ k ih`. Introduce `m h e`. Establish `hm : m + 1 < r` using `by omega`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `ih (m + 1) hm (by omega)`. Establish `h2` using `ratio_le_rbar t ⟨m, h⟩`. Establish `h3 : t ⟨m, h⟩ / t ⟨m + 1, hm⟩ ≤ rbar t` using `by simpa [ratio, hm] using h2`. Establish `h4 : t ⟨m, h⟩ ≤ rbar t * t ⟨m + 1, hm⟩` using `(div_le_iff₀ (ht _)).1 h3`. Establish `h5 : 0 ≤ rbar t` using `zero_le_one.trans (one_le_rbar t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem param_le_rbar_pow {r : ℕ} {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) :
     ∀ (k m : ℕ) (h : m < r), m + k + 1 = r → t ⟨m, h⟩ ≤ rbar t ^ (k + 1) := by
@@ -44,14 +44,14 @@ theorem param_le_rbar_pow {r : ℕ} {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) :
       _ = rbar t ^ (k + 1 + 1) := by ring
 
 /- English proof (translation)
-Establish `h1` using `param_le_rbar_pow ht (r - i.val - 1) i.val i.2 (by omega)`. Conclude with `h1.trans (pow_le_pow_right₀ (one_le_rbar t) (by omega))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem param_le_rbar_pow_rank {r : ℕ} {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) (i : Fin r) : t i ≤ rbar t ^ r := by
   have h1 := param_le_rbar_pow ht (r - i.val - 1) i.val i.2 (by omega)
   exact h1.trans (pow_le_pow_right₀ (one_le_rbar t) (by omega))
 
 /- English proof (translation)
-Establish `h1 : ∏ i, t i ≤ rbar t ^ (r * r)`. Use `Finset.prod_le_prod (s := (Finset.univ : Finset (Fin r))) (fun i _ => (ht i).le) fun i _ => param_le_rbar_pow_rank ht i` as an intermediate fact. Simplify `this` using `[pow_mul]`. Establish `h2 : 1 ≤ rbar t ^ (r * r)` using `one_le_pow₀ (one_le_rbar t)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_add_prod_le_rbar_pow {r : ℕ} {t : Fin r → ℝ} (ht : ∀ i, 0 < t i) :
     1 + ∏ i, t i ≤ 2 * rbar t ^ (r * r) := by
@@ -63,15 +63,15 @@ theorem one_add_prod_le_rbar_pow {r : ℕ} {t : Fin r → ℝ} (ht : ∀ i, 0 < 
   linarith
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ r X Y hW c hc`. Establish `hc' : 0 < min 1 c ^ r` using `pow_pos (lt_min one_pos hc) _`. Take `⟨Ch, Ah, hCh⟩` from `@GlobalTheory.TorusHeight.height_torus_le F E _ _ _ _ _ σ hσ n J r X Y _ hc'`. Use `⟨r * r * Ah, fun Ω Cm hΩ hCm => ?_⟩` and prove the remaining obligations. Establish `hcont : Continuous fun g : GAd σ J => (height σ J g : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨R₁, hR₁⟩` from `(hΩ.image hcont).bddAbove`. Take `⟨R₂, hR₂⟩` from `(hCm.image hcont).bddAbove`. Use `set R₁' := max R₁ 0 with hR₁'`. Use `set R₂' := max R₂ 0 with hR₂'`. Use `set Ch' := max Ch 0 with hCh'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR₁0 : 0 ≤ R₁'` using `le_max_right _ _`. Establish `hR₂0 : 0 ≤ R₂'` using `le_max_right _ _`. Establish `hCh0 : 0 ≤ Ch'` using `le_max_right _ _`. Use `⟨R₁' * (Ch' * 2 ^ Ah) * R₂', by positivity, fun p hp t ht a ha k hk => ?_⟩` and prove the remaining obligations. Establish `h1 : (height σ J a : ℝ) ≤ Ch * (1 + ∏ i, t i) ^ Ah` using `hCh t (GlobalTheory.SiegelHt.cone_low hc ht) a ha.1 (@GlobalTheory.SiegelTorusMat.archMat_torus F E _ _ _ _ _ σ hσ n J hJ r X Y hW t (fun i => hc'.trans_le (GlobalTheory.SiegelHt.cone_low hc ht i)) a ha)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod0 : 0 ≤ 1 + ∏ i, t i` using `add_nonneg zero_le_one (Finset.prod_nonneg fun i _ => (ht.1 i).le)`. Establish `h2` using `one_add_prod_le_rbar_pow (r := r) ht.1`. Establish `h3 : (height σ J a : ℝ) ≤ Ch' * (2 * rbar t ^ (r * r)) ^ Ah` using `h1.trans (mul_le_mul (le_max_left _ _) (pow_le_pow_left₀ hprod0 h2 _) (pow_nonneg hprod0 _) hCh0)`. Establish `hpb : (height σ J p : ℝ) ≤ R₁'` using `(hR₁ ⟨p, hp, rfl⟩).trans (le_max_left _ _)`. Establish `hkb : (height σ J k : ℝ) ≤ R₂'` using `(hR₂ ⟨k, hk, rfl⟩).trans (le_max_left _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : (height σ J (p * a * k) : ℝ) ≤ (height σ J p : ℝ) * height σ J a * height σ J k`. Conclude with `(height_mul_le σ J _ _).trans (mul_le_mul' (height_mul_le σ J _ _) le_rfl)` after adjusting the coercions. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem height_le_rbar_pow : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∀ c : ℝ, 0 < c → ∃ b : ℕ, ∀ Ω Cm : Set (GAd σ J), IsCompact Ω → IsCompact Cm → ∃ H : ℝ, 0 ≤ H ∧ ∀ p ∈ Ω, ∀ t ∈ cone r c, ∀ a, IsTorusElt σ J X Y t a → ∀ k ∈ Cm, (height σ J (p * a * k) : ℝ) ≤ H * rbar t ^ b := by
   intro F E _ _ _ _ _ σ hσ n J hJ r X Y hW c hc

@@ -36,7 +36,7 @@ theorem elem_apply {i j : Fin r} (h : i ≠ j) (u : κ) (a b : Fin r) :
     (elem h u).val a b = (1 : Matrix (Fin r) (Fin r) κ) a b + if i = a ∧ j = b then u else 0 := rfl
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero fun a _ => Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Conclude with `one_apply_ne fun e => hE a (by rwa [← e] at h)`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem edgeSum_one (Ed : Fin r → Fin r → Prop) [DecidableRel Ed] (hE : ∀ a, ¬ Ed a a) :
     edgeSum Ed (1 : GL (Fin r) κ) = 0 := by
@@ -46,9 +46,9 @@ theorem edgeSum_one (Ed : Fin r → Fin r → Prop) [DecidableRel Ed] (hE : ∀ 
   · rfl
 
 /- English proof (translation)
-Establish `h1 : ∀ a b, (if Ed a b then (elem h u).val a b else 0) = if i = a then (if j = b then u else 0) else 0` using `fun a b => by`. Rewrite using `[elem_apply]`. Distinguish the cases in `h2 : Ed a b`. Rewrite using `[if_pos h2, one_apply_ne fun e => hE a (by rwa [← e] at h2), zero_add, ite_and]`. Rewrite using `[if_neg h2, ← ite_and, if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h2 hij`. Unfold `edgeSum`. Simplify using `only [h1]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem edgeSum_elem (Ed : Fin r → Fin r → Prop) [DecidableRel Ed] (hE : ∀ a, ¬ Ed a a) {i j : Fin r} (h : i ≠ j) (hij : Ed i j)
     (u : κ) : edgeSum Ed (elem h u) = u := by
@@ -64,11 +64,11 @@ theorem edgeSum_elem (Ed : Fin r → Fin r → Prop) [DecidableRel Ed] (hE : ∀
   simp
 
 /- English proof (translation)
-Use `⟨⟨fun x y hxy => ?_, fun x => ?_⟩, fun x y h1 h2 h3 => ?_⟩` and prove the remaining obligations. Establish `hxy' : y.val < x.val` using `hxy`. Rewrite using `[elem_apply, one_apply_ne (fun e => by rw [e] at hxy'; omega), if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[elem_apply, one_apply_eq, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `h rfl`. Rewrite using `[elem_apply, one_apply_ne (fun e => by rw [e] at h2; omega), if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem elem_mem_unipCol {i j : Fin r} (h : i ≠ j) (hij : i.val < j.val) (u : κ) (a c : ℕ) (hc : j.val ≠ c) :
     elem h u ∈ unipCol κ r a c := by
@@ -94,7 +94,7 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
 omit [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 include hψ in
 /- English proof (translation)
-Establish `tp : 0 < valuation k (t : k)` using `zero_lt_iff.2 ((map_ne_zero _).2 t.ne_zero)`. Establish `triv : ψ (((t⁻¹ : kˣ) : k) * (y - y')) = 1` using `(hψ 1).2 (by simp) _ (by`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, map_one, inv_mul_le_one₀ tp]`. Conclude with `(ht _).1 hy)`. Rewrite using `[show ((t⁻¹ : kˣ) : k) * y = ((t⁻¹ : kˣ) : k) * (y - y') + ((t⁻¹ : kˣ) : k) * y' by ring, AddChar.map_add_eq_mul, triv, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chr_near {t : kˣ} (ht : IsUnif t) {y y' : k} (hy : valuation k (y - y') < 1) :
     ψ (((t⁻¹ : kˣ) : k) * y) = ψ (((t⁻¹ : kˣ) : k) * y') := by
@@ -107,7 +107,7 @@ theorem chr_near {t : kˣ} (ht : IsUnif t) {y y' : k} (hy : valuation k (y - y')
 include h hψ in
 
 /- English proof (translation)
-Establish `wd : ∀ z z' : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = Ideal.Quotient.mk PP.asIdeal z' → ψ (((t⁻¹ : kˣ) : k) * prO q z) = ψ (((t⁻¹ : kˣ) : k) * prO q z')` using `fun z z' e => chr_near hψ ht (by rw [← map_sub, ← prO_lt q h]; exact Ideal.Quotient.eq.1 e)`. Use `choose l hl using Ideal.Quotient.mk_surjective (I := PP.asIdeal)`. Use `⟨{ toFun := fun u => ψ (((t⁻¹ : kˣ) : k) * prO q (l u)) map_zero_eq_one' := by rw [wd _ 0 (by rw [hl, map_zero])]; simp map_add_eq_mul' := fun a b => by` and prove the remaining obligations. Rewrite using `[wd _ (l a + l b) (by rw [map_add, hl, hl, hl]), map_add, mul_add, AddChar.map_add_eq_mul, Circle.coe_mul] },`. Use `fun z => congrArg (fun c : Circle => (c : ℂ)) (wd _ z (hl _)).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_res {t : kˣ} (ht : IsUnif t) : ∃ α : AddChar (kP PP) ℂ,
     ∀ z, (ψ (((t⁻¹ : kˣ) : k) * prO q z) : ℂ) = α (Ideal.Quotient.mk _ z) := by
@@ -124,13 +124,13 @@ theorem exists_res {t : kˣ} (ht : IsUnif t) : ∃ α : AddChar (kP PP) ℂ,
 include h in
 
 /- English proof (translation)
-Take `⟨-, hi, hd⟩` from `place_facts q h`. Establish `h2 : {x : k | valuation k (x - y) < 1} ∈ nhds y`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Conclude with `⟨1, by simp⟩`. Take `⟨a, ha⟩` from `hd.mem_nhds h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `ha' : valuation k ((ofSplit q).pr a - y) < 1` using `ha`. Establish `ha1 : valuation k ((ofSplit q).pr a) ≤ 1`. Simplify using `using Valuation.map_add_le (valuation k) ha'.le hy`. Take `⟨r, s, hs, e⟩` from `(hi a).1 ((Valuation.mem_integer_iff _ _).2 ha1)`. Establish `e' : prO q s * (ofSplit q).pr a = prO q r` using `((q.pr.comp (incA D)).map_mul _ _).symm.trans (congrArg (q.pr.comp (incA D)) e)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, p, hp, htp⟩` from `PP.isMaximal.exists_inv hs`. Use `⟨t * r, ?_⟩` and prove the remaining obligations. Establish `e2 : prO q t * prO q s + prO q p = 1` using `by rw [← map_mul, ← map_add, htp, map_one]`. Establish `e3 : y - prO q (t * r) = (ofSplit q).pr a * prO q p - ((ofSplit q).pr a - y)`. Rewrite using `[map_mul, ← e']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-(ofSplit q).pr a) * e2`. Rewrite using `[e3]`. Use `Valuation.map_sub_lt _ ?_ ha'` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' ha1) ((prO_lt q h p).1 hp)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_near {y : k} (hy : valuation k y ≤ 1) : ∃ z, valuation k (y - prO q z) < 1 := by
   obtain ⟨-, hi, hd⟩ := place_facts q h
@@ -158,15 +158,13 @@ theorem exists_near {y : k} (hy : valuation k y ≤ 1) : ∃ z, valuation k (y -
 include h hψ in
 
 /- English proof (translation)
-Establish `h1 : ∀ y, valuation k y ≤ 1 → ψ (((t⁻¹ : kˣ) : k) * y) = ψ (((t'⁻¹ : kˣ) : k) * y)` using `fun y hy => by`. Take `⟨z, hz⟩` from `exists_near q h hy`. Rewrite using `[chr_near hψ ht hz, chr_near hψ ht' hz, he]`. Use `set c : k := ((t⁻¹ : kˣ) : k) - ((t'⁻¹ : kˣ) : k) with hc`. Establish `h2 : valuation k c ≤ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `c0 : c = 0`. Rewrite using `[c0, map_zero]`. Conclude with `zero_le`. Establish `cp : 0 < valuation k c` using `zero_lt_iff.2 ((map_ne_zero _).2 c0)`. Use `(hψ c).1 fun y hy => by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `h1 (c⁻¹ * y) (by rw [map_mul, map_inv₀, inv_mul_le_one₀ cp]; exact hy)`. Rewrite `h3` using `[← mul_inv_eq_one, ← AddChar.map_neg_eq_inv, ← AddChar.map_add_eq_mul, ← sub_eq_add_neg, ← sub_mul, ← hc, mul_inv_cancel_left₀ c0]`. Conclude with `h3`. Simplify using `using this`. Establish `e : (t : k) - t' = (t : k) * (-c * t')`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hc, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `tp : 0 < valuation k (t : k)` using `zero_lt_iff.2 ((map_ne_zero _).2 t.ne_zero)`. Rewrite using `[e, map_mul]`.
-
-Use `mul_lt_of_lt_one_right tp ?_` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_neg]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' h2) ((ht' _).2 le_rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem near_of_res {t t' : kˣ} (ht : IsUnif t) (ht' : IsUnif t')
     (he : ∀ z, ψ (((t⁻¹ : kˣ) : k) * prO q z) = ψ (((t'⁻¹ : kˣ) : k) * prO q z)) :
@@ -196,7 +194,7 @@ theorem near_of_res {t t' : kˣ} (ht : IsUnif t) (ht' : IsUnif t')
   exact lt_of_le_of_lt (mul_le_of_le_one_left' h2) ((ht' _).2 le_rfl)
 
 /- English proof (translation)
-Rewrite using `[hc]`. Express the relevant statement in the definitionally equal form `_ = Ψ (Algebra.trace _ _ (incA D D.host.xi0 * q.sec (q.pr (incA D y))))`. Rewrite using `[q.sec_pr, Formalism.IndefR.Mi.psiAt, map_mul (incA D), mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiAt_eq {Ψ : AddChar (AF D.host.F) ℂ} (hc : (ofSplit q).IsChar Ψ ψ) (y : D.host.E) :
     Formalism.IndefR.Mi.psiAt Ψ q.e y = ψ ((ofSplit q).pr y) := by
@@ -207,11 +205,11 @@ theorem psiAt_eq {Ψ : AddChar (AF D.host.F) ℂ} (hc : (ofSplit q).IsChar Ψ ψ
 end Local
 
 /- English proof (translation)
-Establish `hspl : ∀ k, Formalism.MainNotions.S.SplitsCompl D.host.E (D.host.g k)`. Introduce `k`. Establish `hp` using `D.host.g_prime k`. Use `Formalism.MainNotions.BridgeLemma.span_isMaximal hp` as an intermediate fact. Apply `Formalism.MainNotions.S.splitsCompl_of_ncard _ _ hp` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← IsDedekindDomain.coe_primesOverFinset (Formalism.MainNotions.BridgeLemma.span_ne_bot hp) (𝓞 D.host.E), ← Formalism.MainNotions.BridgeLemma.image_plOver _ hp, (Formalism.MainNotions.BridgeLemma.injOn_asIdeal _ _).ncard_image]`. Conclude with `D.nd.g_split k`. Rewrite `h` using `[Nat.cast_mul]`. Take `⟨k, hk⟩ : ∃ k, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal` from `(PP.isPrime.mem_or_mem h).elim (fun h => ⟨0, h⟩) fun h => ⟨1, h⟩`. Take `⟨h1, h2⟩` from `hspl k _ PP.isMaximal hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.L2.Col.qOf`. Rewrite using `[h1]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_notMem_sq {D : D7} {PP : Pl D.host.E} (h : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal) :
     ((Formalism.L2.Col.qOf PP : ℕ) : 𝓞 D.host.E) ∉ PP.asIdeal ^ 2 := by
@@ -236,7 +234,7 @@ section Levels
 variable {E : Type} [Field E] [NumberField E] {Pg : Finset (Pl E)} {r : ℕ}
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `⟨h, rfl⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem chi_of_eq {P P' : LevelP Pg r ℂ} (e : P = P') (x : G0 Pg r) (h : x ∈ P'.H) :
     ∃ h' : x ∈ P.H, P.chi ⟨x, h'⟩ = P'.chi ⟨x, h⟩ := by
@@ -244,7 +242,7 @@ theorem chi_of_eq {P P' : LevelP Pg r ℂ} (e : P = P') (x : G0 Pg r) (h : x ∈
   exact ⟨h, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_eq_single n, Pi.mulSingle_eq_same, edgeSum_elem Ed hE h hij]`. Introduce `m _ hm`. Rewrite using `[Pi.mulSingle_eq_of_ne (pl.injective.ne hm), edgeSum_one Ed hE, AddChar.map_zero_eq_one]`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ n) hn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prod_single {ι : Type} [Fintype ι] (pl : ι ≃ Pg) (α : ∀ i, AddChar (kP (pl i).1) ℂ) (Ed : Fin r → Fin r → Prop)
     [DecidableRel Ed] (hE : ∀ a, ¬ Ed a a) {i j : Fin r} (h : i ≠ j) (hij : Ed i j) (n : ι) (u : kP (pl n).1) :
@@ -256,7 +254,7 @@ theorem prod_single {ι : Type} [Fintype ι] (pl : ι ≃ Pg) (α : ∀ i, AddCh
     exact absurd (Finset.mem_univ n) hn
 
 /- English proof (translation)
-Introduce `PP _` and use `by by_cases e : PP = n · subst e rwa [Pi.mulSingle_eq_same] · rw [Pi.mulSingle_eq_of_ne e] exact (H PP).one_mem`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem single_mem (H : ∀ PP : Pg, Subgroup (GL (Fin r) (kP PP.1))) (n : Pg) {x : GL (Fin r) (kP n.1)} (hx : x ∈ H n) :
     (Pi.mulSingle n x : G0 Pg r) ∈ Subgroup.pi Set.univ H := fun PP _ => by
@@ -269,11 +267,11 @@ theorem single_mem (H : ∀ PP : Pg, Subgroup (GL (Fin r) (kP PP.1))) (n : Pg) {
 end Levels
 
 /- English proof (translation)
-Unfold `edgeSum Formalism.IndefR.Mi.supSum`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨i.1 + 1, h⟩]`. Conclude with `if_pos (show supEdge i ⟨i.1 + 1, h⟩ from rfl)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _ hj`. Conclude with `if_neg (fun hj' => hj (Fin.ext hj'))`. Introduce `hn`. Conclude with `absurd (Finset.mem_univ _) hn`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use `if_neg (fun hj => ?_)` and prove the remaining obligations. Use `j.2` as an intermediate fact. Unfold `supEdge at hj`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem edgeSum_eq_supSum {κ : Type} [CommRing κ] {r : ℕ} (g : GL (Fin r) κ) :
     edgeSum supEdge g = Formalism.IndefR.Mi.supSum (g : Matrix (Fin r) (Fin r) κ) := by
@@ -297,35 +295,33 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex} {u : D.what₂.Word}
 
 /- English proof (translation)
-Establish `hid : ∀ i, IsIdemAt (G i).q.e (pl i).1` using `fun i => (hR.idem i).1`. Establish `hq : ∀ i, ∃ t : (G i).kˣ, IsUnif t ∧ (t : (G i).k) = ((Formalism.L2.Col.qOf (pl i).1 : ℕ) : (G i).k)` using `fun i => by`. Take `⟨-, hi, hd⟩` from `place_facts (G i).q (hid i)`. Take `⟨t, h1, h2⟩` from `GlobalTheory.WeilCondUnif.isUnif_of (pl i).1 ((G i).q.pr.comp (incA D)) hi hd (norm_notMem_sq (hP.1 _ (pl i).2))`. Conclude with `⟨t, h1, h2.trans (map_natCast _ _)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose t ht htq using hq`. Use `choose α hα using fun i => exists_res (G i).q (hid i) (G i).S.cond (G i).S.unif`. Use `choose β hβ using fun i => exists_res (G i).q (hid i) (G i).S.cond (ht i)`. Take `⟨ψ₀, -, h0, π, hπ, hH, hχ⟩` from `W.Q.charW.base.grp.levels`. Establish `hk` using `D.R.m_add_three_le_k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `D.R.two_le_m`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hrS : D.R.rS = D.R.m / 2 - 1` using `rfl`. Establish `hA : ∀ c, ψ₀ (pl n).1 c = β n c` using `fun c => by`. Set `i : Fin D.R.r` to `⟨0, by omega⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j : Fin D.R.r` to `⟨1, by omega⟩`. Establish `hij : i ≠ j` using `fun e => zero_ne_one (congrArg Fin.val e)`. Establish `hE : ∀ a : Fin D.R.r, ¬ supEdge a a` using `fun a h => by unfold supEdge at h; omega`. Set `x : G0 (pk W).Pg D.R.r` to `Pi.mulSingle (pl n) (elem hij c)`. Establish `hx : x ∈ (P0 (pk W).Pg D.R.r ψ₀).H` using `single_mem _ _ (unipCol_le _ 0 0 (elem_mem_unipCol hij zero_lt_one c 0 0 one_ne_zero))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨hx', e1⟩` from `chi_of_eq h0 x hx`. Establish `e2 : (((P0 (pk W).Pg D.R.r ψ₀).chi ⟨x, hx⟩ : ℂˣ) : ℂ) = ∏ PP : (pk W).Pg, ψ₀ PP.1 (edgeSum supEdge (x PP))`. Unfold `P0 LevelP.ofLocal`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `e3` using `W.Q.signs (fun PP => (G (pl.symm PP)).q.e) (fun PP => by`. Use `hid (pl.symm PP)` as an intermediate fact. Rewrite using `[pl.apply_symm_apply] at this) ⟨(pk W).eG.symm x, hx'⟩` and apply the resulting hypothesis. Establish `e4 : (((P0 (pk W).Pg D.R.r ψ₀).chi ⟨x, hx⟩ : ℂˣ) : ℂ) = _` using `(congrArg Units.val e1).symm.trans e3`. Rewrite `e4` using `[e2, ← pl.prod_comp, ← pl.prod_comp, prod_single pl (fun m => ψ₀ (pl m).1) supEdge hE hij rfl]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e4, ← prod_single pl β supEdge hE hij rfl n c]`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[pl.symm_apply_apply, psiAt_eq (G m).q (G m).char]`. Express the relevant statement in the definitionally equal form `_ = β m (edgeSum supEdge (x (pl m)))`. Rewrite using `[edgeSum_eq_supSum, ← Function.surjInv_eq Ideal.Quotient.mk_surjective (Formalism.IndefR.Mi.supSum (x (pl m)).val), ← hβ, Units.val_inv_eq_inv_val, htq, MulEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun y => ((G m).S.ψ y : ℂ)) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((G m).q.pr.comp (incA D)) _ = _`. Rewrite using `[map_mul, map_inv₀, map_natCast]`. Both sides reduce to the same expression. Establish `hC : ∀ c, ψ₀ (pl n).1 c = α n c` using `fun c => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `i : Fin D.R.r` to `⟨D.R.rS, by omega⟩`. Set `j : Fin D.R.r` to `⟨D.R.rS + 1, by omega⟩`. Establish `hij : i ≠ j` using `fun e => by have := congrArg Fin.val e; simp [i, j] at this`. Establish `hE : ∀ a : Fin D.R.r, ¬ symEdge D.R.rS D.R.k a a` using `fun a h => by unfold symEdge at h; omega`. Establish `hEij : symEdge D.R.rS D.R.k i j` using `Or.inl ⟨rfl, by show D.R.rS + 1 ≠ _; omega, by show D.R.rS + 1 ≠ _; omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `y : G0 (pk W).Pg D.R.r` to `Pi.mulSingle (pl n) (elem hij c)`. Establish `hy : y ∈ (PsharpSym (pk W).Pg D.R.r D.R.rS D.R.k ψ₀).H` using `single_mem _ _ (elem_mem_unipCol hij (Nat.lt_succ_self _) c _ _ (by show D.R.rS + 1 ≠ _; omega))`. Set `g : G0 (pk W).Pg D.R.r` to `reord π.symm y`. Establish `hgy : ∀ PP a b, (y PP).val a b = (g PP).val (π a) (π b)` using `fun PP a b => by`. Express the relevant statement in the definitionally equal form `_ = (y PP).val (π.symm (π a)) (π.symm (π b))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[π.symm_apply_apply, π.symm_apply_apply]`. Establish `hre : reord π g = y` using `funext fun PP => Units.ext (Matrix.ext fun a b => (hgy PP a b).symm)`. Establish `hg : g ∈ (lvP W).H` using `(hH g).2 (hre ▸ hy)`. Use `choose x hx using (hR.lev g).1.1 hg`. Establish `e1` using `(hR.lev g).2 hg x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (lvP W).chi ⟨g, hg⟩ = (PsharpSym (pk W).Pg D.R.r D.R.rS D.R.k ψ₀).chi ⟨y, hy⟩` using `(hχ g hg (hre ▸ hy)).trans (congrArg _ (Subtype.ext hre))`. Establish `e3 : (((PsharpSym (pk W).Pg D.R.r D.R.rS D.R.k ψ₀).chi ⟨y, hy⟩ : ℂˣ) : ℂ) = ∏ PP : (pk W).Pg, ψ₀ PP.1 (edgeSum (symEdge D.R.rS D.R.k) (y PP))`. Unfold `PsharpSym LevelP.ofLocal`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e3` using `[← e2, e1, ← pl.prod_comp, prod_single pl (fun m => ψ₀ (pl m).1) _ hE hij hEij, Units.coe_prod]`. Rewrite using `[← e3, ← prod_single pl α _ hE hij hEij n c]`. Use `Finset.prod_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `h1` using `(G m).hs`. Establish `h2` using `(G m).S.odd`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hρ : D.R.rS = (G m).S.ρ` using `by omega`. Set `e : Fin D.R.k ⊕ Fin ((G m).s + 1) ≃ Fin D.R.r` to `finSumFinEquiv.trans (finCongr (by omega))`. Apply the tactic sequence `have he : ∀ a, (e a).val = framePos _ _ a := by rintro (a | a) <;> simp [e, framePos]`. Use `sym_chr (G m).S (prO (G m).q) e he (hρ ▸ hπ) (g (pl m)) (y (pl m)) (hgy _) (α m) (hα m) (x m) fun a b => hx m a b _ _ (he a) (he b)` as an intermediate fact. Rewrite `this` using `[← hρ]`.
-
-Conclude with `this`. Rewrite using `[← htq]`. Conclude with `near_of_res (G n).q (hid n) (G n).S.cond (G n).S.unif (ht n) fun z => Circle.coe_injective ((hα n z).trans (((hC _).symm.trans (hA _)).trans (hβ n z).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_of_read (f : FamCh W u) {v : VCom f.c} {N : ℕ} (G : Fin N → GLoc v) (pl : Fin N ≃ (pk W).Pg) (hR : GRead f G pl)
     (hP : GlobalTheory.Core.Mi.IsTypePlaces (pk W).Pg) (n : Fin N) :
@@ -417,7 +413,7 @@ theorem unif_of_read (f : FamCh W u) {v : VCom f.c} {N : ℕ} (G : Fin N → GLo
 end Gen
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ n`. Establish `hR` using `(ha.tie (fun t => (GlobalTheory.Fam.TopLocFac.nonempty_rowCh (D := I.rec7 l Z) _ _ u a.g W.Q.stdChar t).some) fun t => (GlobalTheory.Fam.TopLocFac.nonempty_colCh (D := I.rec7 l Z) u _).some).2`. Establish `h2` using `unif_of_read (D := I.rec7 l Z) _ _ _ hR hW.lev.1 n`. Conclude with `⟨(place_facts (a.G n).q (hR.idem n).1).2.1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem int_and_unif : ∀ {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → (commOf (pk W) u a.g).Is → ∀ n : Fin a.n, (∀ x : (I.rec7 l Z).host.E, (ofSplit (a.G n).q).pr x ∈ 𝒪[(a.G n).k] ↔ Formalism.L2.Col.IntAt (a.pl n).1 x) ∧ valuation (a.G n).k ((((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) - ((Formalism.L2.Col.qOf (a.pl n).1 : ℕ) : (a.G n).k)) < valuation (a.G n).k (((a.G n).S.ϖ : (a.G n).kˣ) : (a.G n).k) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hW u a ha _ _ n

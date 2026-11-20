@@ -23,13 +23,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.OrArch
 
 /- English proof (translation)
-Establish `hL : 0 < Real.log (1 / t₀)` using `Real.log_pos (by rw [lt_div_iff₀ h0]; linarith)`. Establish `hs2 : 0 < s ^ 2` using `by positivity`. Establish `e1 : Real.log (1 / Top.scale s) = (s ^ 2)⁻¹`. Rewrite using `[Top.scale, one_div, Real.log_inv, Real.log_exp, neg_neg]`. Use `⟨Real.exp_pos _, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : s ^ 2 ≤ 1 / Real.log (1 / t₀)`. Use `Real.sq_sqrt (show 0 ≤ 1 / Real.log (1 / t₀) by positivity)` as an intermediate fact. Use polynomial arithmetic with `[Real.sqrt_nonneg (1 / Real.log (1 / t₀))]`. Establish `hinv : Real.log (1 / t₀) ≤ (s ^ 2)⁻¹`. Rewrite using `[le_inv_comm₀ hL hs2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hsq`. Establish `: Real.log t₀ = -Real.log (1 / t₀)` using `by rw [one_div, Real.log_inv, neg_neg]`. Rewrite using `[Top.scale, ← Real.exp_log h0, this]`. Conclude with `Real.exp_le_exp.2 (by linarith)`. Rewrite using `[e1, Real.log_inv, Real.log_pow, one_div, Real.log_inv]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem scale_facts {t₀ : ℝ} (h0 : 0 < t₀) (h1 : t₀ < 1) {s : ℝ} (hs : 0 < s)
     (hs' : s ≤ Real.sqrt (1 / Real.log (1 / t₀))) :
@@ -53,49 +53,43 @@ theorem scale_facts {t₀ : ℝ} (h0 : 0 < t₀) (h1 : t₀ < 1) {s : ℝ} (hs :
     ring
 
 /- English proof (translation)
-Establish `hb : ∀ r : RootIx D, ∃ Cr : ℝ, ∀ z : (Σ k, R.ι k) → ℂ, (∀ k, ∃ a, z ⟨k, a⟩ ≠ 0) → |Real.log ((o₀.Re.ref (some r)).h z) + ∑ k ∈ Finset.Iic r.2, Real.log ((R.x 1 (r.1, k)).h z)| ≤ Cr`. Introduce and unpack `⟨τ, p⟩`. Use `GlobalTheory.T.log_hermitian_sum_bounded R.K R.ι (Fin (D.p + D.q)) (o₀.Re.ref (some (τ, p))) (fun k => R.x 1 (τ, k)) (Finset.Iic p) (o₀.Re.ref_smooth _) (fun k => R.x_smooth _ _) ?_` and prove the remaining obligations. Rewrite using `[o₀.fund_deg]`. Simplify using `only [R.x_deg]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose Cb hCb using hb`. Take `⟨B₁, hB₁⟩` from `Finite.exists_le Cb`. Establish `hc : ∀ r : RootIx D, ∃ Cr : ℝ, (r.2 : ℕ) + 1 = D.p + D.q → ∀ t, 0 < t → t ≤ Sys.t₀ → ∀ x, |Sys.phT (some r) t x| ≤ Cr`. Introduce and unpack `⟨τ, p⟩`. Distinguish the cases in `hp : (p : ℕ) + 1 = D.p + D.q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `GlobalTheory.T.potential_bounded_psh_both _ _ Sys (some (τ, p)) (hflat τ p hp)`. Conclude with `⟨C, fun _ => hC⟩`. Conclude with `⟨0, fun h => absurd h hp⟩`. Use `choose Cc hCc using hc`. Take `⟨C₁, hC₁⟩` from `Finite.exists_le Cc`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht₀` using `(Sys.reg none).1`. Establish `ht₁` using `(Sys.reg none).2.1`. Use `set Creg := |Sys.C| with hCreg`. Use `set B₀ := max B₁ 0 with hB₀`. Use `set C₀ := max C₁ 0 with hC₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set F : ℝ := (Fintype.card (CMType H) : ℝ) with hF`. Establish `hF0 : 0 ≤ F` using `Nat.cast_nonneg _`. Establish `hCreg0 : 0 ≤ Creg` using `abs_nonneg _`. Establish `hB0 : 0 ≤ B₀` using `le_max_right _ _`. Establish `hC00 : 0 ≤ C₀` using `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨F * (8 * Creg + 6 * B₀ + 2 * C₀), min 1 (Real.sqrt (1 / Real.log (1 / Sys.t₀))), by positivity, lt_min one_pos (Real.sqrt_pos.2 (one_div_pos.2 (Real.log_pos (by rw [lt_div_iff₀ ht₀]; linarith)))), min_le_left _ _, ?_⟩` and prove the remaining obligations. Introduce `S M o i hJ hi mu s hmu hmu2 hs hs'`. Take `⟨hs1, hst⟩` from `le_min_iff.1 hs'`. Take `⟨hsc0, hsct, hsll⟩` from `scale_facts ht₀ ht₁ hs hst`. Establish `hlog : 0 ≤ Real.log (1 / s)` using `Real.log_nonneg (by rw [le_div_iff₀ hs]; linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hfp⟩` from `GlobalTheory.T.root_origin_compare_second E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi hJ hJ₀`. Establish `hG` using `(GlobalTheory.T.root_origin_compare_third E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi)`. Establish `hunit : ∀ j, Ht.GenUnit (Ht.joinOf M R i) (Ht.joinDeg M R j) ((fun j => j.elim 1 fun r => i (o₀.e r) / o.e r : Option (RootIx D) → M.Ω) j)`. Introduce and unpack `(_ | r)`. Conclude with `hG.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.T.root_model_flag_compare E H D l Xo c Y S S₀ M R o.𝔐 o₀.𝔐 o.Fl o₀.Fl i o.e o₀.e ?_ ?_ o.lines o₀.lines r` and prove the remaining obligations. Rewrite using `[o.g_over, o₀.g_over, ← hi, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Introduce `s' k`. Establish `hd : dualMap o.g = (dualMap i).comp (dualMap o₀.g)`. Rewrite using `[← hi]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply the tactic sequence `ext a <;> simp [dualMap]`. Rewrite using `[o.g_flag, o₀.g_flag, hd, ← Category.assoc, ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp]`. Use `GlobalTheory.T.join_coords_unit_values _ _ M R i _ _ mu s _ _ f hf hunit ?_` and prove the remaining obligations. Introduce `w hw hwf val hval`. Take `⟨x, x', z₁, z₂, ho₁, ho₂, hπ, hop, hc₁, hc₂, hi₁, hi₂⟩` from `hfp w hw hwf`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hw₁, hw₂⟩` from `(GlobalTheory.T.join_model_points_project _ _ M R i).2.2.1 ℂ w hw`. Establish `hw₁' : (fun p => w (Cmp.joinInl M.ι R.ι p)) ∈ mcPts M.P`. Rewrite using `[← Small.LineModel.ptsOver_complex]`. Conclude with `hw₁`. Establish `hw₂' : (fun p => w (Cmp.joinInr M.ι R.ι p)) ∈ mcPts R.P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Small.LineModel.ptsOver_complex]`. Conclude with `hw₂`. Use `set w₁ := fun p => w (Cmp.joinInl M.ι R.ι p) with hw₁d`. Use `set w₂ := fun p => w (Cmp.joinInr M.ι R.ι p) with hw₂d`. Establish `hsing : ∀ r, ‖val (some r)‖ * (o₀.sing r).h w₂ = (o.sing r).h w₁` using `fun r => GlobalTheory.T.root_origin_compare_first E H D l Xo c Y S S₀ M R Sys Fx o o₀ i hi z₁ z₂ w hw hc₁ hc₂ hi₁ hi₂ r _ (hval (some r))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : ∀ r, 0 < ‖val (some r)‖` using `fun r => by`. Establish `h1` using `(o.sing r).pos w₁ hw₁'.1`. Establish `h2` using `(o₀.sing r).pos w₂ hw₂'.1`. Rewrite `h1` using `[← hsing r]`. Conclude with `(mul_pos_iff_of_pos_right h2).1 h1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hid` using `GlobalTheory.T.root_origin_point_compare E H D l Xo c Y S S₀ M R Sys Fx o o₀ x x' w₁ w₂ (fun r => ‖val (some r)‖) (Top.scale s) hsc0 hsct hw₁' hw₂' ho₁ ho₂ hπ hop fun r => ⟨hpos r, hsing r⟩`. Establish `hA : Real.log (M.A.h w₁) - Real.log (R.A.h w₂) - Real.log ‖val none‖ = 0`. Establish `h1` using `hG.2 w hw _ (hval none)`. Establish `hp1` using `M.A.pos w₁ hw₁'.1`. Establish `hp2` using `R.A.pos w₂ hw₂'.1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hv : 0 < ‖val none‖`. Rewrite `hp1` using `[h1]`. Conclude with `(mul_pos_iff_of_pos_right hp2).1 hp1`. Rewrite using `[h1, Real.log_mul hv.ne' hp2.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set Dd : RootIx D → ℝ := fun r => Real.log ((M.x (Top.scale s) r).h w₁) - Real.log ((R.x 1 r).h w₂) - Real.log ‖val (some r)‖ with hDd`. Establish `hsum : ∑ j, M.coef mu s j * (Real.log ((M.line (Top.scale s) j).h w₁) - Real.log ((R.line 1 j).h w₂) - Real.log ‖val j‖) = ∑ τ, ∑ p, -mu τ p * Dd (τ, p)`. Rewrite using `[Fintype.sum_option, Fintype.sum_prod_type]`. Establish `: M.coef mu s none * (Real.log ((M.line (Top.scale s) none).h w₁) - Real.log ((R.line 1 none).h w₂) - Real.log ‖val none‖) = 0` using `by show _ * (Real.log (M.A.h w₁) - Real.log (R.A.h w₂) - Real.log ‖val none‖) = 0`. Rewrite using `[hA, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, zero_add]`. Both sides reduce to the same expression. Establish `hτ : ∀ τ : CMType H, -(4 * (2 * Creg * Real.log (1 / s) + B₀) + 2 * (C₀ + B₀)) ≤ ∑ p, -mu τ p * Dd (τ, p) ∧ ∑ p, -mu τ p * Dd (τ, p) ≤ 4 * (Creg + B₀) + 2 * (C₀ + B₀)`. Introduce `τ`. Establish `hbr : ∀ p : Fin (D.p + D.q), |Real.log ((o₀.Re.ref (some (τ, p))).h w₂) + ∑ k ∈ Finset.Iic p, Real.log ((R.x 1 (τ, k)).h w₂)| ≤ B₀` using `fun p => ((hCb (τ, p) w₂ hw₂'.1).trans (hB₁ _)).trans (le_max_left _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hY : ∀ p : Fin (D.p + D.q), -∑ k ∈ Finset.Iic p, Dd (τ, k) = Sys.phT (some (τ, p)) (Top.scale s) (o.Re.π x) + (Real.log ((o₀.Re.ref (some (τ, p))).h w₂) + ∑ k ∈ Finset.Iic p, Real.log ((R.x 1 (τ, k)).h w₂))` using `fun p => hid τ p`. Use `GlobalTheory.T.abel_summation_bound _ (mu τ) (fun p => Dd (τ, p)) (Creg + B₀) (2 * Creg * Real.log (1 / s) + B₀) (C₀ + B₀) (by positivity) (by positivity) (by positivity) (hmu τ) (fun p => ?_) (fun p _ => ?_) (fun p hp => ?_)` and prove the remaining obligations. Use `((norm_le_pi_norm (mu τ) p).trans (norm_le_pi_norm mu τ)).trans hmu2` as an intermediate fact. Simplify `this` using `[Real.norm_eq_abs]`. Take `⟨-, hup, -, hlow, -⟩` from `(Sys.reg (some (τ, p))).2.2 _ hsc0 hsct`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `hup (o.Re.π x)`. Establish `h2` using `hlow (o.Re.π x)`. Rewrite `h2` using `[hsll]`. Establish `h3` using `abs_le.1 (hbr p)`. Establish `h4` using `le_abs_self Sys.C`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hY p]`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h4) hlog]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `(hCc (τ, p) hp _ hsc0 hsct (o.Re.π x)).trans ((hC₁ _).trans (le_max_left C₁ 0))`.
-
-Rewrite using `[← abs_neg, hY p]`. Conclude with `(abs_add_le _ _).trans (add_le_add h1 (hbr p))`. Rewrite using `[hsum]`. Prove the components needed by the constructor for the conclusion. Use `Finset.sum_le_sum fun τ (_ : τ ∈ Finset.univ) => (hτ τ).1` as an intermediate fact.
-
-Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`. Rewrite `this` using `[← hF]`. Use polynomial arithmetic with `[this, mul_nonneg hF0 (mul_nonneg hB0 hlog), mul_nonneg hF0 (mul_nonneg hC00 hlog), mul_nonneg hF0 hCreg0]`. Use `Finset.sum_le_sum fun τ (_ : τ ∈ Finset.univ) => (hτ τ).2` as an intermediate fact. Simplify using `only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] at this`.
-
-Rewrite `this` using `[← hF]`. Use polynomial arithmetic with `[this, mul_nonneg hF0 hCreg0]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem comp_bound (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (S₀ : Finset ℕ)
@@ -238,11 +232,11 @@ theorem comp_bound (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host 
     nlinarith [this, mul_nonneg hF0 hCreg0]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y _ T g`. Establish `hcomp` using `fun a : T.Comp => comp_bound E H D l Xo c Y ∅ (g.R a) (g.Sys a) (g.Fx a) (g.refOr a) (g.ref_top a) (fun τ p hp t => g.flat a τ p hp t)`. Use `choose C s₀ hC0 hs₀ hs₁ hmain using hcomp`. Take `⟨a₀, -, ha₀⟩` from `Finset.exists_min_image Finset.univ s₀ ⟨Classical.arbitrary _, Finset.mem_univ _⟩`. Use `⟨∑ a, C a, s₀ a₀, hs₀ a₀, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `B a i hi mu s hmu hmu2 hs hs' z hz val hval`. Establish `hCa : C a ≤ ∑ a, C a` using `Finset.single_le_sum (fun a _ => hC0 a) (Finset.mem_univ a)`. Establish `hsa : s ≤ s₀ a` using `hs'.trans (ha₀ a (Finset.mem_univ a))`. Establish `hlog : 0 ≤ Real.log (1 / s)` using `Real.log_nonneg (by rw [le_div_iff₀ hs]; linarith [hs₁ a])`. Use `hmain a _ _ (g.Or B a) i (g.smooth B a).1 hi mu s hmu hmu2 hs hsa z hz val hval` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `this`. Conclude with `⟨by nlinarith [mul_le_mul_of_nonneg_right hCa hlog], by linarith⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem arch_between : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (D.p + D.q)) (g : Top.GoodOrigin Y T), ∃ C s₀ : ℝ, 0 < s₀ ∧ ∀ (B : ℕ) (a : T.Comp) (i : (g.R a).Ω →+* (T.M B a).Ω), i.comp (g.refOr a).g = (g.Or B a).g → ∀ (mu : Top.Wt (CMType H) (D.p + D.q)) (s : ℝ), Top.Dominant mu → ‖mu‖ ≤ 2 → 0 < s → s ≤ s₀ → Ht.ArchBetween (T.M B a) (g.R a) i (fun j => j.elim 1 fun r => i ((g.refOr a).e r) / (g.Or B a).e r) (Top.scale s) mu s (-(C * Real.log (1 / s)) - C) C := by
   intro E _ _ _ H D l Xo c Y _ T g

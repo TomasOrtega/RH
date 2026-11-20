@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.D
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.HV GlobalTheory.GalOfCusp UpperTheory.V.Th
 
 /- English proof (translation)
-Establish `h1` using `hc γ (γ⁻¹ * g * γ)`. Rewrite `h1` using `[← mul_assoc, mul_inv_cancel_left, hc]`. Rewrite using `[eq_sub_iff_add_eq, h1, add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem adL_conj {C G V : Type} [CommRing C] [Group G] [AddCommGroup V] [Module C V] (ρ : Representation C G V)
     (c : G → V) (hc : ∀ g h, c (g * h) = c g + ρ g (c h)) (γ g : G) :
@@ -18,14 +18,14 @@ private theorem adL_conj {C G V : Type} [CommRing C] [Group G] [AddCommGroup V] 
   rw [eq_sub_iff_add_eq, h1, add_comm]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← mul_assoc, mul_inv_cancel_left, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem adL_rho {C G V : Type} [CommRing C] [Group G] [AddCommGroup V] [Module C V] (ρ : Representation C G V)
     (γ g : G) (x : V) : ρ γ (ρ (γ⁻¹ * g * γ) x) = ρ g (ρ γ x) := by
   rw [← Module.End.mul_apply, ← map_mul, ← mul_assoc, mul_inv_cancel_left, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `letI : Algebra F K := (j.comp (algebraMap F Ω)).toAlgebra`. Use `letI : Algebra Ω K := j.toAlgebra`. Use `haveI : IsScalarTower F Ω K := IsScalarTower.of_algebraMap_eq' rfl`. Set `f : Ω →ₐ[F] K` to `{ j₀ with commutes' := fun x => RingHom.congr_fun h x }`. Conclude with `⟨f.restrictNormal' Ω, fun y => f.restrictNormal_commutes Ω y⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem adL_emb {F Ω K : Type} [Field F] [Field Ω] [Field K] [CharZero F] [Algebra F Ω] [IsAlgClosure F Ω]
     (j j₀ : Ω →+* K) (h : j₀.comp (algebraMap F Ω) = j.comp (algebraMap F Ω)) :
@@ -37,15 +37,15 @@ private theorem adL_emb {F Ω K : Type} [Field F] [Field Ω] [Field K] [CharZero
   exact ⟨f.restrictNormal' Ω, fun y => f.restrictNormal_commutes Ω y⟩
 
 /- English proof (translation)
-Take `⟨j₀, hj₀, h0⟩` from `hb.above (j.comp (algebraMap F Ω))`. Take `⟨γ, hγ⟩` from `adL_emb j j₀ hj₀`. Set `ψ' : H →* G F Ω` to `(MulAut.conj (γ⁻¹ : G F Ω)).toMonoidHom.comp ψ`. Establish `hψ' : ∀ h, ψ' h = γ⁻¹ * ψ h * γ` using `fun h => by simp [ψ']`. Take `⟨-, x, hx⟩` from `(Loc.bkAbove (F := F) j₀ φ ψ' hφ (fun h y => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hγ, hj, ← hγ, hψ']`. Use the proof step `simp) ρ c hc).2 h0`. Use `⟨⟨hc.1.comp hψ, fun g h => (congrArg c (map_mul ψ g h)).trans (hc.2 _ _)⟩, TensorProduct.AlgebraTensorModule.map (ρ γ) LinearMap.id x - c γ ⊗ₜ[ℚ_[l]] 1, fun h => ?_⟩` and prove the remaining obligations. Establish `e : ∀ w, TensorProduct.AlgebraTensorModule.map (ρ γ) LinearMap.id (Loc.actC φ (ρ.comp ψ') h w) = Loc.actC φ (ρ.comp ψ) h (TensorProduct.AlgebraTensorModule.map (ρ γ) LinearMap.id w)` using `fun w => by`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul v b`. Simplify using `only [Loc.actC, TensorProduct.AlgebraTensorModule.map_tmul, MonoidHom.comp_apply, hψ', adL_rho, LinearMap.id_apply]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Establish `h2` using `congrArg (TensorProduct.AlgebraTensorModule.map (ρ γ) LinearMap.id) (hx h)`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_sub, e, TensorProduct.AlgebraTensorModule.map_tmul]`. Establish `h3 : Loc.actC φ (ρ.comp ψ) h (c γ ⊗ₜ[ℚ_[l]] 1) = ρ (ψ h) (c γ) ⊗ₜ[ℚ_[l]] 1` using `by simp [Loc.actC]`. Express the relevant statement in the definitionally equal form `c (ψ h) ⊗ₜ[ℚ_[l]] _ = _`. Rewrite using `[adL_conj ρ c hc.2 γ (ψ h), TensorProduct.sub_tmul, TensorProduct.add_tmul, map_sub, h3]`. Simplify using `only [LinearMap.id_apply, hψ'] at h2`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem adL_above {F Ω : Type} [Field F] [NumberField F] [Field Ω] [CharZero Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime] (j : Ω →+* Formalism.BasicNotions.Loc.Om l) {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
@@ -81,9 +81,9 @@ private theorem adL_above {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Ch
 
 open scoped Pointwise in
 /- English proof (translation)
-Establish `m : ∀ y : Ω, γ y ∈ γ • A ↔ y ∈ A` using `fun y => ValuationSubring.smul_mem_pointwise_smul_iff (g := γ)`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1 : g • γ • A = γ • A` using `hg.1`. Express the relevant statement in the definitionally equal form `(γ⁻¹ * g * γ) • A = A`. Rewrite using `[mul_smul, mul_smul, h1, inv_smul_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `hg.2 (γ x) (by rwa [ValuationSubring.valuation_le_one_iff, m, ← ValuationSubring.valuation_le_one_iff])`. Establish `e : g (γ x) - γ x = γ ((γ⁻¹ * g * γ) x - x)` using `by simp`. Rewrite `h2` using `[e, valuation_lt_one_iff', m, ← map_inv₀, m, map_eq_zero_iff _ γ.injective, ← valuation_lt_one_iff']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem adL_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {A : ValuationSubring Ω} (γ : G F Ω)
     {g : G F Ω} (hg : g ∈ Ine (F := F) (γ • A)) : γ⁻¹ * g * γ ∈ Ine (F := F) A := by
@@ -97,7 +97,7 @@ private theorem adL_ine {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alge
     rwa [e, valuation_lt_one_iff', m, ← map_inv₀, m, map_eq_zero_iff _ γ.injective, ← valuation_lt_one_iff'] at h2
 
 /- English proof (translation)
-Take `⟨A₀, hA₀, x, hx⟩` from `hb.away w hw`. Take `⟨γ, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := F) hA₀ hA`. Use `⟨ρ γ x - c γ, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[adL_conj ρ c hc.2 γ g, hx _ (adL_ine γ hg), map_sub, adL_rho, map_sub]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem adL_away {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {l : ℕ} [Fact l.Prime]
@@ -112,7 +112,7 @@ private theorem adL_away {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Alg
   abel
 
 /- English proof (translation)
-Introduce `g` and use `by obtain ⟨τ, hτ⟩ : ∃ τ, toGS Ω V.S' τ = g.1 := QuotientGroup.mk_surjective g.1 obtain ⟨σ, rfl⟩ := (V.hη τ).1 (by rw [hτ]; exact g.2) exact ⟨σ, Subtype.ext hτ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem adL_pr {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} (V : s.Lev) : Function.Surjective V.pr := fun g => by
@@ -121,9 +121,9 @@ private theorem adL_pr {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberF
   exact ⟨σ, Subtype.ext hτ⟩
 
 /- English proof (translation)
-Use `CA.d_gext _ _ fun g i _ _ => ?_` and prove the remaining obligations. Take `⟨h, rfl⟩` from `hφ g`. Establish `e : (D.comap φ).chi (MonoidAlgebra.single h 1) = D.chi (MonoidAlgebra.single (φ h) 1)`. Express the relevant statement in the definitionally equal form `D.D A[X] (MonoidAlgebra.mapDomainRingHom A[X] φ _) = D.D A[X] _`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[map_sub]`. Simplify using the standard rewrite rules. Unfold `W.GDet.lam`. Rewrite using `[← e, hD, (AlgebraTools.Det.repApi _).2.1, (AlgebraTools.Det.repApi _).2.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem adL_desc {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (D : W.GDet n A G) (φ : H →* G)
     (hφ : Function.Surjective φ) (ρ : G →* GL (Fin n) A) (hD : D.comap φ = W.GDet.ofRep (W.mat (ρ.comp φ))) :
@@ -140,7 +140,7 @@ private theorem adL_desc {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group 
   rfl
 
 /- English proof (translation)
-The claim follows from `(Ws.Eb.relKill B x ρ ((AlgebraTools.Det.irrIffSpan (W.mat ρ)).1 fun N hN => H.irr N fun g _ v hv => hN g v hv) (adL_desc x.D V.pr (adL_pr V) ρ H.rep)).2`.
+A detailed English derivation is pending.
 -/
 private theorem adL_triv {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] {s : W.HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} {B : W.UniversalOrdinaryDeterminantRing r}
@@ -150,21 +150,19 @@ private theorem adL_triv {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Numbe
     (adL_desc x.D V.pr (adL_pr V) ρ H.rep)).2
 
 /- English proof (translation)
-Introduce `hP hC l _ L Ω _ _ _ _ _ _ s V hS hζ c hL n hn hn' r hr B ι x ρ H hpar P R hform hR z hz hb`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Establish `hz' : (fun g => z (toGS Ω V.S' g)) ∈ Z1 (R.comp (toGS Ω V.S') : Representation (Qbar l) (G (W.Lp L) Ω) (Matrix (Fin n) (Fin n) (Qbar l)))` using `⟨hz.1.comp (continuous_toGS Ω _), fun g h => (congrArg z (map_mul _ g h)).trans (hz.2 _ _)⟩`. Establish `he : V.frame.eps c.O (Qbar l) = V.frame.eps ℤ_[l] (Qbar l)`. Unfold `W.GFrame.eps`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_eq, ← IsScalarTower.algebraMap_eq]`. Use `hC l L Ω s V hS hζ c hL n hn hn' r hr B ι x ρ H P R (fun g => he ▸ hform g) hR z hz ⟨fun u g hg => ?_, fun v => ?_⟩` and prove the remaining obligations. Take `⟨X, hX⟩` from `adL_away _ _ hz' hb u.1 (s.St_l u.1 u.2) (s.A u.1) (s.hA u.1)`. Establish `h1` using `adL_triv H u g hg`. Take `⟨g', hg', rfl⟩` from `hg.1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hX (W.resP L Ω g') hg'`. Establish `h3 : ∀ g : V.frame.G₀, ρ g = 1 → Loc.adGL ρ g X = X` using `fun g h => by simp [Loc.adGL, h]`. Conclude with `h2.trans (sub_eq_zero.2 ((hR.ad (V.pr g') X).trans (h3 _ h1)))`. Take `⟨j, hj⟩` from `(Loc.decEmb (F := W.Lp L) (Ω := Ω) (v := l)).1 (s.A v.1) v.1 (s.hA v.1) v.2`. Establish `key : ∃ φ : ↥(Dec (F` using `L) (s.A v.1)) →* Formalism.BasicNotions.Loc.GQ l, Topology.IsOpenEmbedding φ ∧ (∀ g y, φ g (j y) = j ((g : G L Ω) y)) ∧ (∀ g, φ g ∈ Loc.Iq l ↔ (g : G L Ω) ∈ Ine (F := L) (s.A v.1)) ∧ (∀ g, Loc.cyc l l (φ g) = cycZ L Ω l (g : G L Ω)) := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hj]`. Take `⟨φ, a, b, -, c, d, -⟩` from `((Loc.decEmb (F := L) (Ω := Ω) (v := l)).2 j).2`. Conclude with `⟨φ, a, b, c, d l⟩`. Take `⟨φ, a, b, hi, d⟩` from `key`. Establish `d' : ∀ g, Loc.cycA l l (Qbar l) (φ g) = cycBar L Ω l (g : G L Ω)` using `fun g => congrArg (Units.map _) (d g)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `adL_above (F := W.Lp L) j φ ((W.resP L Ω).comp (Dec (F := L) (s.A v.1)).subtype) a (W.continuous_resP.comp continuous_subtype_val) b _ _ hz' hb`. Establish `e : ((R.comp (toGS Ω V.S')).comp ((W.resP L Ω).comp (Dec (F` using `L) (s.A v.1)).subtype) : Representation (Qbar l) (Dec (F := L) (s.A v.1)) (Matrix (Fin n) (Fin n) (Qbar l))) = Loc.adGL (ρ.comp (V.frame.φ v)) := MonoidHom.ext fun g => LinearMap.ext fun X => hR.ad (V.frame.φ v g) X`. Rewrite `h3` using `[e]`. Take `⟨m, k, hm, hk, hψ⟩` from `hpar v`. Take `⟨g₀, hg₀, hf⟩` from `H.free v`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hI : V.frame.Iv v = (Loc.Iq l).comap φ` using `Subgroup.ext fun g => (hi g).symm`. Rewrite using `[hI]`. Use `haveI : CompactSpace (Dec (F := L) (s.A v.1)) := V.frame.cv v`. Use `bkOrd hP l (Dec (F := L) (s.A v.1)) φ a n _ _ m k (H.cont.comp (V.frame.φ_cont v)) (H.flag v) hm hk (fun i i' g hg => ?_) ⟨g₀, ?_, hf⟩ _ h3` and prove the remaining obligations. Rewrite using `[d']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hψ i i' g ((hi g).1 hg)`. Establish `h4 : cycZ (W.Lp L) Ω l (W.resP L Ω g₀.1) = 1`. Rewrite using `[← V.hε]`. Conclude with `hg₀`. Establish `h5 : Loc.cyc l l (φ g₀) = 1` using `(d g₀).trans h4`.
-
-Conclude with `(congrArg (Units.map _) h5).trans (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.adL_of :
     Loc.LocalPublishedTheorems → Core → AdL := by

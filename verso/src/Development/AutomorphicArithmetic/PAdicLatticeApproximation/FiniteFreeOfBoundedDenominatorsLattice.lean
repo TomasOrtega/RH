@@ -4,9 +4,9 @@ open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hf : Function.Injective (Algebra.linearMap ℤ ℚ)` using `fun a b h => by simpa using h`. Establish `h` using `Module.Flat.rTensor_preserves_injective_linearMap (M := L) (Algebra.linearMap ℤ ℚ) hf`. Introduce `x y hxy`. Apply `(TensorProduct.lid ℤ L).symm.injective` to reduce the goal to its premises. Apply `h` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hxy` using `[LinearMap.rTensor_tmul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem UpperTheory.tensor_rat_injective_of_free {L : Type} [AddCommGroup L] [Module.Free ℤ L] :
     Function.Injective (TensorProduct.mk ℤ ℚ L (1 : ℚ)) := by
@@ -19,17 +19,15 @@ private theorem UpperTheory.tensor_rat_injective_of_free {L : Type} [AddCommGrou
   simpa [LinearMap.rTensor_tmul] using hxy
 
 /- English proof (translation)
-Introduce `p _ D X ⟨d, hd, h⟩`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `ι : D.La →ₗ[ℤ] VQ D` to `TensorProduct.mk ℤ ℚ D.La (1 : ℚ)`. Establish `hι : Function.Injective ι` using `UpperTheory.tensor_rat_injective_of_free`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : X.lat →ₗ[ℤ] VQ D` to `(d : ℤ) • (X.lat.toIntSubmodule.subtype)`. Establish `hg : Function.Injective g`. Introduce `u v huv`. Establish `h1 : (d : ℤ) • (u : VQ D) = (d : ℤ) • (v : VQ D)` using `huv`. Establish `hq : ((d : ℚ)) • (u : VQ D) = (d : ℚ) • (v : VQ D)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1` using `[Nat.cast_smul_eq_nsmul]`. Establish `hd0 : (d : ℚ) ≠ 0` using `by exact_mod_cast hd.ne'`. Conclude with `Subtype.ext (smul_right_injective _ hd0 hq)`. Establish `hr : ∀ w, g w ∈ LinearMap.range ι`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨a, ha⟩` from `h w w.2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : ℚ) ⊗ₜ[ℤ] a = (d : ℤ) • (w : VQ D)`. Rewrite using `[← ha]`. Conclude with `(natCast_zsmul (w : VQ D) d).symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `f : X.lat →ₗ[ℤ] D.La` to `(LinearEquiv.ofInjective ι hι).symm.toLinearMap ∘ₗ g.codRestrict (LinearMap.range ι) hr`. Establish `hf : Function.Injective f`. Introduce `u v huv`. Apply `hg` to reduce the goal to its premises. Use `(LinearEquiv.ofInjective ι hι).symm.injective huv` as an intermediate fact.
-
-Conclude with `congrArg Subtype.val this`. Use `⟨Module.Finite.of_injective f hf, ?_⟩` and prove the remaining obligations. Conclude with `Module.Free.of_equiv (LinearEquiv.ofInjective f hf).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finite_free_of_bounded_denominators_lattice :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D), (∃ d : ℕ, 0 < d ∧ ∀ w ∈ X.lat, ∃ a : D.La, d • w = (1 : ℚ) ⊗ₜ[ℤ] a) → Module.Finite ℤ X.lat ∧ Module.Free ℤ X.lat := by

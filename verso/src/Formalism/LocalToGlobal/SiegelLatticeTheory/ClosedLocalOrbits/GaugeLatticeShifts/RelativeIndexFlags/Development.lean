@@ -42,7 +42,7 @@ def StabAutConjP : Prop :=
         stabAut D u u' F0 what₂ t F₂ L₂ = cj g (stabAut D u u' F0 what₂ t F₁ L₁)
 
 /- English proof (translation)
-Unfold `stabInt loGen`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations. Introduce `a ha`. Conclude with `ha.1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stabInt_le_loGen (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, (D.s.atP p).Fp)
     (M : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.PlF D, Formalism.MainNotions.S.Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
@@ -54,9 +54,9 @@ theorem stabInt_le_loGen (δ : ∀ p : Formalism.MainNotions.S.LocalSplitGroups.
   exact ha.1
 
 /- English proof (translation)
-Introduce `δ M hAg t w F₁ F₂ L₁ U₁ L₂ U₂ hrel hgen h1 hG1 h2 hG2`. Take `⟨g, hg, he⟩` from `hC t w F₁ F₂ L₁ U₁ L₂ U₂ h1 h2`. Take `⟨a1, a2⟩` from `hFin δ M hAg t w F₁ L₁ U₁ hrel hgen h1 hG1`. Take `⟨b1, b2⟩` from `hFin δ M hAg t w F₂ L₂ U₂ hrel hgen h2 hG2`. Rewrite `b1`, `b2` using `[he]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ratio (stabAut D u u' F0 what₂ t F₁ L₁) (stabInt D u u' δ M w) = ratio (stabAut D u u' F0 what₂ t F₂ L₂) (stabInt D u u' δ M w)`. Rewrite using `[he]`. Use `symm`. Conclude with `ratio_cj_of _ _ g a1 a2 b1 b2 (hU _ g hg (stabInt_le_loGen D u u' δ M w))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. A detailed English derivation is pending.
 -/
 theorem volume_index_representation_of_finite (hC : StabAutConjP D u u' F0 what₂) (hFin : VolIdxFinP D u u' F0 what₂)
     (hU : UniConjIdx (D.R.rS + 1) D.host.E) : Formalism.L2.SG.Pf.RelativeIndexFlags.VolumeIndexRepresentationNonzero D u u' F0 what₂ := by

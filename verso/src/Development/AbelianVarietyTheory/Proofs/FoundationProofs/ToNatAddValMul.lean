@@ -12,7 +12,7 @@ variable {R S : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
   [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
 
 /- English proof (translation)
-Rewrite using `[addVal_mul]`. Conclude with `ENat.toNat_add (fun h => ha ((addVal_eq_top_iff).mp h)) (fun h => hb ((addVal_eq_top_iff).mp h))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toNat_addVal_mul {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) :
     (addVal R (a * b)).toNat = (addVal R a).toNat + (addVal R b).toNat := by
@@ -20,7 +20,7 @@ theorem toNat_addVal_mul {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) :
   exact ENat.toNat_add (fun h => ha ((addVal_eq_top_iff).mp h)) (fun h => hb ((addVal_eq_top_iff).mp h))
 
 /- English proof (translation)
-Unfold `Gen.nval`. Rewrite using `[toNat_addVal_mul ha hb, Nat.cast_add, add_div]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem nval_mul (l : ℕ) {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) :
     Gen.nval R l (a * b) = Gen.nval R l a + Gen.nval R l b := by
@@ -28,15 +28,13 @@ theorem nval_mul (l : ℕ) {a b : R} (ha : a ≠ 0) (hb : b ≠ 0) :
   rw [toNat_addVal_mul ha hb, Nat.cast_add, add_div]
 
 /- English proof (translation)
-Unfold `Gen.vK`. Use `generalize_proofs hE`. Establish `hinj` using `IsFractionRing.injective R (FractionRing R)`. Establish `key : ∀ q : R × nonZeroDivisors R, x * algebraMap R (FractionRing R) q.2 = algebraMap R (FractionRing R) q.1 → Gen.nval R l q.1 - Gen.nval R l q.2 = Gen.nval R l a - Gen.nval R l b`. Introduce `q hq`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq2 : (q.2 : R) ≠ 0` using `nonZeroDivisors.ne_zero q.2.2`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`. Rewrite `h` using `[map_zero]`. Conclude with `mul_ne_zero hx ((map_ne_zero_iff _ hinj).mpr hb) h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq1 : q.1 ≠ 0`. Introduce `h0`. Rewrite `hq` using `[h0, map_zero]`. Conclude with `mul_ne_zero hx ((map_ne_zero_iff _ hinj).mpr hq2) hq`. Establish `hcross : a * q.2 = q.1 * b`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, ← h, ← hq]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc` using `congrArg (Gen.nval R l) hcross`. Rewrite `hc` using `[nval_mul l ha hq2, nval_mul l hq1 hb]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `key hE.choose hE.choose_spec`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vK_eq (l : ℕ) {x : FractionRing R} (hx : x ≠ 0) {a b : R} (hb : b ≠ 0)
     (h : x * algebraMap R (FractionRing R) b = algebraMap R (FractionRing R) a) :

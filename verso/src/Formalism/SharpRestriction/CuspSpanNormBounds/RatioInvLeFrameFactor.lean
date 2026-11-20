@@ -13,7 +13,7 @@ section Pts
 variable {k r : ℕ} {κ τ : ℝ}
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [scaleBlocks, List.map_cons, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem scaleBlocks_map_snd (κ τ : ℝ) (r acc : ℕ) (bs : List (ℂ × ℕ)) :
     (scaleBlocks κ τ r acc bs).map Prod.snd = bs.map Prod.snd := by
@@ -24,11 +24,11 @@ theorem scaleBlocks_map_snd (κ τ : ℝ) (r acc : ℕ) (bs : List (ℂ × ℕ))
     simp only [scaleBlocks, List.map_cons, ih]
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc with`. Consider the case `nil => intro b hb`. Simplify using `[scaleBlocks] at hb`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Simplify using `only [scaleBlocks, List.mem_cons] at hx`. Break down `hx with rfl | hx` into its components or cases. Establish `h0` using `h (t, s) (by simp)`. Use `⟨mul_ne_zero (Complex.ofReal_ne_zero.mpr (by positivity)) h0.1, h0.2⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ih (acc + s) (fun b hb => h b (by simp [hb])) x hx`.
+A detailed English derivation is pending.
 -/
 theorem scaleBlocks_blocks (hκ : 0 < κ) (hτ : 0 < τ) (acc : ℕ) (bs : List (ℂ × ℕ))
     (h : ∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) : ∀ b ∈ scaleBlocks κ τ r acc bs, b.1 ≠ 0 ∧ 1 ≤ b.2 := by
@@ -53,13 +53,13 @@ theorem ptTr_val (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) :
     (ptTr κ τ hκ hτ γ).1 = scaleBlocks κ τ r 0 γ.1 := rfl
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc i j with`. Consider the case `nil => simp [scaleBlocks, ptEntry]`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [List.map_cons, List.sum_cons] at h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleBlocks, ptEntry]`. Distinguish the cases in `h1 : i < s ∧ j < s`. Rewrite using `[if_pos h1, if_pos h1]`. Distinguish the cases in `h2 : i + j + 1 = s`. Rewrite using `[if_pos h2, if_pos h2]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 2 * (r + 1 - (acc + s)) + (s - 1) = (r - (acc + i)) + (r - (acc + j))` using `by omega`. Rewrite using `[e, tF, tF, pow_add]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg h2, if_neg h2, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h1, if_neg h1]`. Distinguish the cases in `h3 : s ≤ i ∧ s ≤ j`. Rewrite using `[if_pos h3, if_pos h3, ih (acc + s) (i - s) (j - s) (by omega), show acc + s + (i - s) = acc + i by omega, show acc + s + (j - s) = acc + j by omega]`. Rewrite using `[if_neg h3, if_neg h3, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptEntry_scaleBlocks (acc : ℕ) (bs : List (ℂ × ℕ)) (i j : ℕ)
     (h : acc + (bs.map Prod.snd).sum ≤ r + 1) :
@@ -85,7 +85,7 @@ theorem ptEntry_scaleBlocks (acc : ℕ) (bs : List (ℂ × ℕ)) (i j : ℕ)
       · rw [if_neg h3, if_neg h3, mul_zero]
 
 /- English proof (translation)
-Use `ptEntry_scaleBlocks (κ := κ) (τ := τ) (r := r) 0 γ.1 a.val b.val (by rw [γ.2.2]; omega)` as an intermediate fact. Rewrite `this` using `[zero_add, zero_add]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptMat_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) (a b : Fin (r + 1)) :
     ptMat (ptTr κ τ hκ hτ γ) a b = ((tF r κ τ a * tF r κ τ b : ℝ) : ℂ) * ptMat γ a b := by
@@ -94,7 +94,7 @@ theorem ptMat_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) (a b :
   exact this
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_filter, Fin.prod_univ_eq_prod_range (fun a => if a < l then f a else 1), ← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `a`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_filter_lt (f : ℕ → ℝ) (l : ℕ) (hl : l ≤ r + 1) :
     ∏ a : Fin (r + 1) with a.val < l, f a = ∏ a ∈ range l, f a := by
@@ -103,7 +103,7 @@ theorem prod_filter_lt (f : ℕ → ℝ) (l : ℕ) (hl : l ≤ r + 1) :
   ext a; simp only [Finset.mem_filter, Finset.mem_range]; omega
 
 /- English proof (translation)
-Repeatedly rewrite using `[tF, mul_pow, ← pow_mul]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, Finset.prod_pow_eq_pow_sum, ← pow_mul]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_range_tF_sq (l : ℕ) :
     ∏ a ∈ range l, tF r κ τ a ^ 2 = τ ^ (2 * l) * κ ^ (∑ a ∈ range l, (r - a) * 2) := by
@@ -111,9 +111,9 @@ theorem prod_range_tF_sq (l : ℕ) :
   rw [Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range, Finset.prod_pow_eq_pow_sum, ← pow_mul]
 
 /- English proof (translation)
-Establish `h1 : ∑ a ∈ range (r + 1), (r - a) = ∑ a ∈ range (r + 1), a`. Rewrite using `[← Finset.sum_range_reflect (fun a => a) (r + 1)]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Nat.add_sub_cancel]`. Establish `h2` using `Finset.sum_range_id_mul_two (r + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul, h1, h2, Nat.add_sub_cancel, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_sub_mul_two (r : ℕ) : ∑ a ∈ range (r + 1), (r - a) * 2 = r * (r + 1) := by
   have h1 : ∑ a ∈ range (r + 1), (r - a) = ∑ a ∈ range (r + 1), a := by
@@ -124,7 +124,7 @@ theorem sum_range_sub_mul_two (r : ℕ) : ∑ a ∈ range (r + 1), (r - a) * 2 =
   rw [← Finset.sum_mul, h1, h2, Nat.add_sub_cancel, mul_comm]
 
 /- English proof (translation)
-Use `sum_range_sub_mul_two r` as an intermediate fact. Rewrite `this` using `[Finset.sum_range_succ, Nat.sub_self, zero_mul, add_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_range_sub_mul_two' (r : ℕ) : ∑ a ∈ range r, (r - a) * 2 = r * (r + 1) := by
   have := sum_range_sub_mul_two r
@@ -132,7 +132,7 @@ theorem sum_range_sub_mul_two' (r : ℕ) : ∑ a ∈ range r, (r - a) * 2 = r * 
   exact this
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_eq_prod_range (fun a => tF r κ τ a ^ 4)]`. Establish `: ∏ a ∈ range (r + 1), tF r κ τ a ^ 4 = (∏ a ∈ range (r + 1), tF r κ τ a ^ 2) ^ 2`. Rewrite using `[← Finset.prod_pow]; refine Finset.prod_congr rfl fun a _ => by ring`. Rewrite using `[this, prod_range_tF_sq, sum_range_sub_mul_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_tF_four : ∏ a : Fin (r + 1), tF r κ τ a ^ 4 = τ ^ (4 * (r + 1)) * κ ^ (2 * r * (r + 1)) := by
   rw [Fin.prod_univ_eq_prod_range (fun a => tF r κ τ a ^ 4)]
@@ -141,11 +141,11 @@ theorem prod_tF_four : ∏ a : Fin (r + 1), tF r κ τ a ^ 4 = τ ^ (4 * (r + 1)
   rw [this, prod_range_tF_sq, sum_range_sub_mul_two]; ring
 
 /- English proof (translation)
-Unfold `leadMinor`. Use `set d : Fin l → ℂ := fun i => ((tF r κ τ i.val : ℝ) : ℂ) with hd`. Establish `hM : (ptMat (ptTr κ τ hκ hτ γ)).submatrix (Fin.castLE hl) (Fin.castLE hl) = Matrix.diagonal d * (ptMat γ).submatrix (Fin.castLE hl) (Fin.castLE hl) * Matrix.diagonal d`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.submatrix_apply, Matrix.submatrix_apply, ptMat_ptTr]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hd, Fin.val_castLE]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, prod_filter_lt (fun a => tF r κ τ a ^ 2) l hl, ← Fin.prod_univ_eq_prod_range (fun a => tF r κ τ a ^ 2) l]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem leadMinor_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) (l : ℕ) (hl : l ≤ r + 1) :
     leadMinor (ptMat (ptTr κ τ hκ hτ γ)) l hl =
@@ -163,7 +163,7 @@ theorem leadMinor_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) (l
   rw [Finset.prod_pow]; ring
 
 /- English proof (translation)
-Unfold `Gpt`. Rewrite using `[leadMinor_ptTr, leadMinor_ptTr, Complex.normSq_mul, Complex.normSq_mul, Complex.normSq_ofReal, Complex.normSq_ofReal, prod_filter_lt (fun a => tF r κ τ a ^ 2) _ le_rfl, prod_filter_lt (fun a => tF r κ τ a ^ 2) _ (Nat.le_succ r), prod_range_tF_sq, prod_range_tF_sq, sum_range_sub_ …`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GPoint_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (γ : Point ℂ (r + 1)) :
     Gpt (τ ^ 2 * T) (τ ^ 2 * T') (ptTr κ τ hκ hτ γ) = κ ^ (2 * r * (r + 1)) * τ ^ (4 * (r + 1)) * Gpt T T' γ := by
@@ -175,7 +175,7 @@ theorem GPoint_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (T T' : ℝ) (γ : Point ℂ (
   ring
 
 /- English proof (translation)
-Proceed by induction on `bs generalizing acc p with`. Consider the case `nil => rfl`. Consider the case `cons b bs ih`. Take `⟨t, s⟩` from `b`. Simplify using `only [scaleBlocks, blockIdx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem blockIdx_scaleBlocks (acc : ℕ) (bs : List (ℂ × ℕ)) (p : ℕ) :
     blockIdx (scaleBlocks κ τ r acc bs) p = blockIdx bs p := by
@@ -186,7 +186,7 @@ theorem blockIdx_scaleBlocks (acc : ℕ) (bs : List (ℂ × ℕ)) (p : ℕ) :
     simp only [scaleBlocks, blockIdx, ih]
 
 /- English proof (translation)
-Simplify using `only [rootPat, ptTr_val, blockIdx_scaleBlocks]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rootPat_ptTr (hκ : 0 < κ) (hτ : 0 < τ) (γ : Point ℂ (r + 1)) :
     rootPat (ptTr κ τ hκ hτ γ) = rootPat γ := by
@@ -197,7 +197,7 @@ def frStart : List (ℂ × ℕ) → ℕ → ℕ
   | (_, s) :: bs, p => if p < s then 0 else s + frStart bs (p - s)
 
 /- English proof (translation)
-The claim follows from `| [], p => Nat.zero_le p | (t, s) :: bs, p => by simp only [frStart] split_ifs with h · exact Nat.zero_le p · have := frStart_le bs (p - s); omega`.
+A detailed English derivation is pending.
 -/
 theorem frStart_le : ∀ (bs : List (ℂ × ℕ)) (p : ℕ), frStart bs p ≤ p
   | [], p => Nat.zero_le p
@@ -208,7 +208,7 @@ theorem frStart_le : ∀ (bs : List (ℂ × ℕ)) (p : ℕ), frStart bs p ≤ p
     · have := frStart_le bs (p - s); omega
 
 /- English proof (translation)
-The claim follows from `| [], a, b, _ => by simp [blockIdx, frStart] | (t, s) :: bs, a, b, hab => by simp only [blockIdx, frStart] by_cases hb : b < s · have ha : a < s := by omega rw [if_pos ha, if_pos hb, if_pos hb]; simp · by_cases ha : a < s · rw [if_pos ha, if_neg hb, if_neg hb]; constructor <;> in …`.
+A detailed English derivation is pending.
 -/
 theorem blockIdx_eq_iff : ∀ (bs : List (ℂ × ℕ)) (a b : ℕ), a < b →
     (blockIdx bs a = blockIdx bs b ↔ frStart bs b ≤ a)
@@ -227,13 +227,13 @@ theorem blockIdx_eq_iff : ∀ (bs : List (ℂ × ℕ)) (a b : ℕ), a < b →
         · intro h; have := this.mpr (by omega); omega
 
 /- English proof (translation)
-Establish `key : ∀ b : Fin (r + 1), (∑ a : Fin (r + 1), if a < b ∧ blockIdx γ.1 a.val = blockIdx γ.1 b.val then g a.val b.val else 0) = ∑ a ∈ Ico (frStart γ.1 b) b, g a b`. Introduce `b`. Establish `hsub : Ico (frStart γ.1 b) b.val ⊆ range (r + 1)` using `fun x hx => by`. Simplify using `only [Finset.mem_Ico, Finset.mem_range] at hx ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Finset.inter_eq_right.mpr hsub, ← Finset.sum_ite_mem, Finset.sum_range (fun a => if a ∈ Ico (frStart γ.1 b) b.val then g a b else 0)]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `hiff : (a < b ∧ blockIdx γ.1 a.val = blockIdx γ.1 b.val) ↔ a.val ∈ Ico (frStart γ.1 b) b.val`. Rewrite using `[Finset.mem_Ico, Fin.lt_def]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨(blockIdx_eq_iff γ.1 a b h1).mp h2, h1⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h2, (blockIdx_eq_iff γ.1 a b h2).mpr h1⟩`. Distinguish the cases in `h : a < b ∧ blockIdx γ.1 a.val = blockIdx γ.1 b.val`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (hiff.mp h)]`. Rewrite using `[if_neg h, if_neg (fun h' => h (hiff.mpr h'))]`. Rewrite using `[rootPat, Finset.sum_filter, ← Finset.univ_product_univ, Finset.sum_product_right, Finset.sum_range (fun b => ∑ a ∈ Ico (frStart γ.1 b) b, g a b)]`. Conclude with `Finset.sum_congr rfl fun b _ => key b`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_rootPat (g : ℕ → ℕ → ℕ) (γ : Point ℂ (r + 1)) :
     ∑ p ∈ rootPat γ, g p.1.val p.2.val = ∑ b ∈ range (r + 1), ∑ a ∈ Ico (frStart γ.1 b) b, g a b := by
@@ -259,9 +259,9 @@ theorem sum_rootPat (g : ℕ → ℕ → ℕ) (γ : Point ℂ (r + 1)) :
   exact Finset.sum_congr rfl fun b _ => key b
 
 /- English proof (translation)
-Establish `h1 : (rootPat γ).card = ∑ b ∈ range (r + 1), ∑ a ∈ Ico (frStart γ.1 b) b, 1`. Rewrite using `[Finset.card_eq_sum_ones]`. Conclude with `sum_rootPat (fun _ _ => 1) γ`. Establish `h2 : ∑ b ∈ range (r + 1), ∑ a ∈ Ico (frStart γ.1 b) b, (1 : ℕ) ≤ ∑ b ∈ range (r + 1), b` using `Finset.sum_le_sum fun b _ => by`. Rewrite using `[Finset.sum_const, Nat.card_Ico, smul_eq_mul, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.sub_le _ _`. Establish `h3` using `Finset.sum_range_id_mul_two (r + 1)`. Rewrite `h3` using `[Nat.add_sub_cancel]`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_rootPat_le (γ : Point ℂ (r + 1)) : 2 * (rootPat γ).card ≤ r * (r + 1) := by
   have h1 : (rootPat γ).card = ∑ b ∈ range (r + 1), ∑ a ∈ Ico (frStart γ.1 b) b, 1 := by
@@ -276,7 +276,7 @@ theorem card_rootPat_le (γ : Point ℂ (r + 1)) : 2 * (rootPat γ).card ≤ r *
     _ = r * (r + 1) := by rw [mul_comm, h3, mul_comm]
 
 /- English proof (translation)
-Break down `le_total x 1 with h | h` into its components or cases. Conclude with `le_max_of_le_right ((one_le_inv₀ hx).mpr h)`. Conclude with `le_max_of_le_left h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem one_le_max_inv {x : ℝ} (hx : 0 < x) : 1 ≤ max x x⁻¹ := by
   rcases le_total x 1 with h | h
@@ -284,7 +284,7 @@ theorem one_le_max_inv {x : ℝ} (hx : 0 < x) : 1 ≤ max x x⁻¹ := by
   · exact le_max_of_le_left h
 
 /- English proof (translation)
-Establish `h1 : max x x⁻¹ ^ n ≤ max x x⁻¹ ^ y`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le (one_le_max_inv hx) hny`. Conclude with `⟨(pow_le_pow_left₀ hx.le (le_max_left _ _) n).trans h1, (pow_le_pow_left₀ (inv_pos.mpr hx).le (le_max_right _ _) n).trans h1⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pow_le_maxRpow {x : ℝ} (hx : 0 < x) {n : ℕ} {y : ℝ} (hny : (n : ℝ) ≤ y) :
     x ^ n ≤ max x x⁻¹ ^ y ∧ x⁻¹ ^ n ≤ max x x⁻¹ ^ y := by
@@ -294,9 +294,9 @@ theorem pow_le_maxRpow {x : ℝ} (hx : 0 < x) {n : ℕ} {y : ℝ} (hny : (n : �
     (pow_le_pow_left₀ (inv_pos.mpr hx).le (le_max_right _ _) n).trans h1⟩
 
 /- English proof (translation)
-Establish `hc' : ((2 * c : ℕ) : ℝ) ≤ ((r * (r + 1) : ℕ) : ℝ)` using `by exact_mod_cast hc`. Move the coercions through the operations in `at hc' ⊢`. Establish `hr : (0 : ℝ) ≤ r` using `Nat.cast_nonneg r`. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h8 : (0 : ℝ) ≤ (2 * r + 2) ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem frame_exps {Cf : ℝ} (hCf : 2 ≤ Cf) {c : ℕ} (hc : 2 * c ≤ r * (r + 1)) :
     ((4 * (r + 1) : ℕ) : ℝ) ≤ Cf * ((2 * r + 2 : ℕ) : ℝ) ∧
@@ -310,7 +310,7 @@ theorem frame_exps {Cf : ℝ} (hCf : 2 ≤ Cf) {c : ℕ} (hc : 2 * c ≤ r * (r 
     nlinarith
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `frame_exps hCf hc`. Rewrite using `[mul_comm (τ ^ _)]`. Conclude with `mul_le_mul (pow_le_maxRpow hκ e2).1 (pow_le_maxRpow hτ e1).1 (by positivity) (Real.rpow_nonneg (zero_le_one.trans (one_le_max_inv hκ)) _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_inv_le_frameFactor (hκ : 0 < κ) (hτ : 0 < τ) {Cf : ℝ} (hCf : 2 ≤ Cf) {c : ℕ}
     (hc : 2 * c ≤ r * (r + 1)) :
@@ -322,7 +322,7 @@ theorem ratio_inv_le_frameFactor (hκ : 0 < κ) (hτ : 0 < τ) {Cf : ℝ} (hCf :
     (Real.rpow_nonneg (zero_le_one.trans (one_le_max_inv hκ)) _)
 
 /- English proof (translation)
-Take `⟨e1, e2⟩` from `frame_exps hCf hc`. Rewrite using `[mul_inv, ← inv_pow, ← inv_pow, mul_comm ((τ⁻¹) ^ _)]`. Conclude with `mul_le_mul (pow_le_maxRpow hκ e2).2 (pow_le_maxRpow hτ e1).2 (by positivity) (Real.rpow_nonneg (zero_le_one.trans (one_le_max_inv hκ)) _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_le_frameFactor (hκ : 0 < κ) (hτ : 0 < τ) {Cf : ℝ} (hCf : 2 ≤ Cf) {c : ℕ}
     (hc : 2 * c ≤ r * (r + 1)) :

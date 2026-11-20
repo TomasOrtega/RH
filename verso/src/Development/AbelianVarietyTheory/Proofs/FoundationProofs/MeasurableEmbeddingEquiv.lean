@@ -15,7 +15,7 @@ variable {H H' V W : Type} [Group H] [Group H'] [MeasurableSpace H] [MeasurableS
   [NormedAddCommGroup V] [InnerProductSpace ℂ V] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Distinguish the cases in `hT : ∃ T, IsRepOp π μ f T`. Take `⟨T, hT⟩` from `hT`. Rewrite using `[hT.repOp_eq, ((h T).1 hT).repOp_eq]`. Rewrite using `[repOp, repOp, dif_neg hT, dif_neg fun ⟨T, h'⟩ => hT ⟨T, (h T).2 h'⟩]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem repOp_congr {π : H →* (V →L[ℂ] V)} {π' : H' →* (V →L[ℂ] V)} {μ : Measure H} {μ' : Measure H'} {f : H → ℂ}
     {f' : H' → ℂ} (h : ∀ T, IsRepOp π μ f T ↔ IsRepOp π' μ' f' T) : repOp π μ f = repOp π' μ' f' := by
@@ -25,9 +25,9 @@ theorem repOp_congr {π : H →* (V →L[ℂ] V)} {π' : H' →* (V →L[ℂ] V)
   · rw [repOp, repOp, dif_neg hT, dif_neg fun ⟨T, h'⟩ => hT ⟨T, (h T).2 h'⟩]
 
 /- English proof (translation)
-Use `repOp_congr fun T => forall_congr' fun v => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_assoc]`. Use `and_congr ?_ ?_` and prove the remaining obligations. Rewrite using `[show c • μ = (c : ℝ≥0∞) • μ from rfl, integrable_smul_measure (by simpa using hc) ENNReal.coe_ne_top]`. Conclude with `(integrable_fun_smul_iff (by simpa using hc) _).symm`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_smul_nnreal_measure, integral_smul, NNReal.smul_def, Complex.coe_smul]`.
+A detailed English derivation is pending.
 -/
 theorem repOp_smul_measure (π : H →* (V →L[ℂ] V)) (μ : Measure H) (f : H → ℂ) {c : ℝ≥0} (hc : c ≠ 0) :
     repOp π (c • μ) f = repOp π μ ((c : ℂ) • f) := by
@@ -39,7 +39,7 @@ theorem repOp_smul_measure (π : H →* (V →L[ℂ] V)) (μ : Measure H) (f : H
   · rw [integral_smul_nnreal_measure, integral_smul, NNReal.smul_def, Complex.coe_smul]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `h`. Conclude with `⟨A.symm, fun g v => A.injective (by simp [hA])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsUnitEquiv.symm {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ] W)} (h : IsUnitEquiv π π') :
     IsUnitEquiv π' π := by
@@ -47,7 +47,7 @@ theorem IsUnitEquiv.symm {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ
   exact ⟨A.symm, fun g v => A.injective (by simp [hA])⟩
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `h`. Take `⟨B, hB⟩` from `h'`. Conclude with `⟨A.trans B, fun g v => by simp [hA, hB]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsUnitEquiv.trans {U : Type} [NormedAddCommGroup U] [InnerProductSpace ℂ U] {π : H →* (V →L[ℂ] V)}
     {π' : H →* (W →L[ℂ] W)} {π'' : H →* (U →L[ℂ] U)} (h : IsUnitEquiv π π') (h' : IsUnitEquiv π' π'') :
@@ -59,7 +59,7 @@ theorem IsUnitEquiv.trans {U : Type} [NormedAddCommGroup U] [InnerProductSpace �
 variable [CompleteSpace V] [CompleteSpace W]
 
 /- English proof (translation)
-Introduce `w` and use `by obtain ⟨h1, h2⟩ := h (A.symm w) have e : ∀ g, f g • π' g w = (A.toContinuousLinearEquiv : V →L[ℂ] W) (f g • π g (A.symm w)) := fun g => by simp [hA] simp only [e] refine ⟨ContinuousLinearMap.integrable_comp _ h1, ?_⟩ rw [ContinuousLinearMap.integral_comp_comm _ h1, ← h2] rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRepOp_conj {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ] W)} (A : V ≃ₗᵢ[ℂ] W)
     (hA : ∀ g v, A (π g v) = π' g (A v)) {μ : Measure H} {f : H → ℂ} {T : V →L[ℂ] V} (h : IsRepOp π μ f T) :
@@ -74,9 +74,9 @@ theorem isRepOp_conj {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ] W)
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hT : ∃ T, IsRepOp π μ f T`. Take `⟨T, hT⟩` from `hT`. Take `⟨A, hA⟩` from `h`. Rewrite `ht` using `[hT.repOp_eq]`. Rewrite using `[(isRepOp_conj A hA hT).repOp_eq]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ht.1.comp_comp _ _, (ht.1.trace_conj _).trans ht.2⟩`. Take `⟨A, hA⟩` from `h.symm`. Rewrite `ht` using `[repOp, dif_neg hT]`. Rewrite using `[repOp, dif_neg fun ⟨T, h'⟩ => hT ⟨_, isRepOp_conj A hA h'⟩]`. Conclude with `⟨isTraceClass_zero, trace_zero.trans (trace_zero.symm.trans ht.2)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem IsUnitEquiv.hasTrace {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ] W)} (h : IsUnitEquiv π π') {μ : Measure H}
     {f : H → ℂ} {c : ℂ} (ht : HasTrace (repOp π μ f) c) : HasTrace (repOp π' μ f) c := by
@@ -100,7 +100,7 @@ variable {H H' n V W : Type} [Group H] [Group H'] [TopologicalSpace H] [Topologi
   (e : H ≃ₜ* H') {ι : H →* Matrix n n ℂ} {ι' : H' →* Matrix n n ℂ} {a : Matrix n n ℂ}
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℂ _ := h`. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.map (LinearMap.funLeft ℂ ℂ e) (Submodule.span ℂ {φ : H' → ℂ | ∃ k ∈ K', ∃ k' ∈ K', φ = fun g => f' (k * g * k')})) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, k', hk', rfl⟩`. Conclude with `⟨_, Submodule.subset_span ⟨e k, hk, e k', hk', rfl⟩, funext fun g => by simp [LinearMap.funLeft]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsBiFinite.comp {K' : Subgroup H'} {f' : H' → ℂ} (h : IsBiFinite K' f') :
     IsBiFinite (K'.comap (e : H →* H')) (f' ∘ e) := by
@@ -113,7 +113,7 @@ theorem IsBiFinite.comp {K' : Subgroup H'} {f' : H' → ℂ} (h : IsBiFinite K' 
 variable {e}
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 ha`. Take `⟨g, rfl⟩` from `e.surjective g`. Rewrite using `[hι, e.symm_apply_apply, Matrix.nonsing_inv_nonsing_inv _ hd]`. Simplify using `only [mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.nonsing_inv_mul_cancel_left _ _ hd, mul_one]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_symm (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) (g : H') :
     ι (e.symm g) = a⁻¹ * ι' g * a⁻¹⁻¹ := by
@@ -123,7 +123,7 @@ theorem conj_symm (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) (
   simp only [mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.nonsing_inv_mul_cancel_left _ _ hd, mul_one]
 
 /- English proof (translation)
-Take `⟨hc, Φ, hΦ, hf⟩` from `h`. Use `⟨hc.comp_homeomorph e.toHomeomorph, Φ ∘ fun y i j => ∑ l, (∑ k, a i k * y k l) * a⁻¹ l j, hΦ.comp (by fun_prop), fun g => (hf _).trans (congrArg Φ ?_)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Simplify using `only [matCoord, hι, Matrix.mul_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem comp_mem_ccMat (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {f' : H' → ℂ} (h : f' ∈ CcMat ι') :
     f' ∘ e ∈ CcMat ι := by
@@ -134,7 +134,7 @@ theorem comp_mem_ccMat (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {f' : H' →
   simp only [matCoord, hι, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[IsRegSS, IsRegSS, hι, Matrix.charpoly_mul_comm, Matrix.nonsing_inv_mul_cancel_left _ _ ((Matrix.isUnit_iff_isUnit_det _).1 ha)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isRegSS_conj_iff (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) (s : H) :
     IsRegSS (ι' (e s)) ↔ IsRegSS (ι s) := by
@@ -144,7 +144,7 @@ theorem isRegSS_conj_iff (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a�
 variable (e) in
 
 /- English proof (translation)
-Rewrite using `[isCompact_iff_compactSpace, isCompact_iff_compactSpace]`. Conclude with `⟨fun _ => (centEquiv e s rfl).toHomeomorph.symm.compactSpace, fun _ => (centEquiv e s rfl).toHomeomorph.compactSpace⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isCompact_cent_iff (s : H) : IsCompact (cent (e s) : Set H') ↔ IsCompact (cent s : Set H) := by
   rw [isCompact_iff_compactSpace, isCompact_iff_compactSpace]
@@ -154,12 +154,12 @@ theorem isCompact_cent_iff (s : H) : IsCompact (cent (e s) : Set H') ↔ IsCompa
 variable [MeasurableSpace H] [BorelSpace H] [MeasurableSpace H'] [BorelSpace H'] (e)
 
 /- English proof (translation)
-The claim follows from `e.toHomeomorph.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_equiv : MeasurableEmbedding e := e.toHomeomorph.measurableEmbedding
 
 /- English proof (translation)
-Rewrite using `[Measure.map_map (map_continuous e).measurable (map_continuous e.symm).measurable]`. Use `Measure.map_id using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_symm_map (μ' : Measure H') : (μ'.map e.symm).map e = μ' := by
   rw [Measure.map_map (map_continuous e).measurable (map_continuous e.symm).measurable]
@@ -167,7 +167,7 @@ theorem map_symm_map (μ' : Measure H') : (μ'.map e.symm).map e = μ' := by
   ext x; simp
 
 /- English proof (translation)
-The claim follows from `repOp_congr fun T => forall_congr' fun v => and_congr (measurableEmbedding_equiv e).integrable_map_iff (by rw [(measurableEmbedding_equiv e).integral_map]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem repOp_map (π' : H' →* (V →L[ℂ] V)) (μ : Measure H) (f' : H' → ℂ) :
     repOp π' (μ.map e) f' = repOp (π'.comp (e : H →* H')) μ (f' ∘ e) :=
@@ -175,7 +175,7 @@ theorem repOp_map (π' : H' →* (V →L[ℂ] V)) (μ : Measure H) (f' : H' → 
     (by rw [(measurableEmbedding_equiv e).integral_map]; rfl)
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr_right fun _ => forall₂_congr fun _ _ => (measurableEmbedding_equiv e).integrable_map_iff`.
+A detailed English derivation is pending.
 -/
 theorem isTempered_map_iff (π' : H' →* (V →L[ℂ] V)) (μ : Measure H) :
     IsTempered (μ.map e) π' ↔ IsTempered μ (π'.comp (e : H →* H')) :=
@@ -185,7 +185,7 @@ theorem isTempered_map_iff (π' : H' →* (V →L[ℂ] V)) (μ : Measure H) :
 variable {e} [CompleteSpace V]
 
 /- English proof (translation)
-Use `⟨(locallyIntegrable_map_homeomorph e.toHomeomorph).1 h.1, fun s hs => ContinuousAt.comp (h.2.1 _ ((isRegSS_conj_iff ha hι s).2 hs)) (map_continuous e).continuousAt, fun f hf => ?_⟩` and prove the remaining obligations. Use `h.2.2 _ (comp_mem_ccMat (conj_symm ha hι) hf)` as an intermediate fact. Rewrite `this` using `[repOp_map, (measurableEmbedding_equiv e).integral_map]`. Apply the tactic sequence `convert this using 2 <;> ext x <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem IsCharFn.of_map (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {μ : Measure H}
     {π' : H' →* (V →L[ℂ] V)} {Θ : H' → ℂ} (h : IsCharFn ι' (μ.map e) π' Θ) :
@@ -200,11 +200,9 @@ variable [IsTopologicalGroup H] [SecondCountableTopology H] [LocallyCompactSpace
   [IsTopologicalGroup H'] [SecondCountableTopology H'] [LocallyCompactSpace H'] [T2Space H']
 
 /- English proof (translation)
-Take `⟨Θ, hΘ, hO⟩` from `h.orb_compact`. Use `⟨comp_mem_ccMat hι h.mem, repOp_map e D' μ f' ▸ h.trace_self, fun U _ _ _ π h1 h2 h3 h4 => ?_, fun s hs hT dt _ _ => ?_, Θ ∘ e, hΘ.of_map ha hι, fun s hs hT dt _ _ => ?_⟩` and prove the remaining obligations. Take `⟨π', rfl⟩ : ∃ π' : H' →* (U →L[ℂ] U), π = π'.comp (e : H →* H')` from `⟨π.comp (e.symm : H' →* H), MonoidHom.ext fun x => by simp⟩`. Rewrite using `[← repOp_map]`. Use `h.trace_other U π' ⟨fun g v => ?_, fun v => ?_⟩ ⟨h2.1, fun S hS => h2.2 S ⟨hS.1, fun g => hS.2 _⟩⟩ ((isTempered_map_iff e π' μ).2 h3) fun ⟨A, hA⟩ => h4 ⟨A, fun g => hA _⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using h1.1 (e.symm g) v`. Simplify `(h1.2 v).comp (map_continuous e.symm)` using `[Function.comp_def]`. Conclude with `(hasOrbInt_map e rfl f' _).1.1 (h.orb_noncompact _ ((isRegSS_conj_iff ha hι s).2 hs) (mt (isCompact_cent_iff e s).1 hT) _)`. Use `hO _ ((isRegSS_conj_iff ha hι s).2 hs) ((isCompact_cent_iff e s).2 hT) (dt.map (centEquiv e s rfl))` as an intermediate fact. Rewrite `this` using `[map_measureReal_apply (map_continuous _).measurable MeasurableSet.univ, preimage_univ]`.
-
-Conclude with `(hasOrbInt_map e rfl f' _).1.1 this`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsPseudoCoeff.of_map (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {μ : Measure H} [μ.IsHaarMeasure]
     {D' : H' →* (V →L[ℂ] V)} {f' : H' → ℂ} (h : IsPseudoCoeff ι' (μ.map e) D' f') :
@@ -226,7 +224,7 @@ theorem IsPseudoCoeff.of_map (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g 
     exact (hasOrbInt_map e rfl f' _).1.1 this
 
 /- English proof (translation)
-The claim follows from `IsPseudoCoeff.of_map ha hι (by rwa [map_symm_map])`.
+A detailed English derivation is pending.
 -/
 theorem IsPseudoCoeff.comp (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {μ' : Measure H'} [μ'.IsHaarMeasure]
     {D' : H' →* (V →L[ℂ] V)} {f' : H' → ℂ} (h : IsPseudoCoeff ι' μ' D' f') :
@@ -234,9 +232,9 @@ theorem IsPseudoCoeff.comp (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * 
   IsPseudoCoeff.of_map ha hι (by rwa [map_symm_map])
 
 /- English proof (translation)
-Use `⟨IsPseudoCoeff.of_map ha hι, fun h => ?_⟩` and prove the remaining obligations. Use `h.comp (e := e.symm) (Matrix.isUnit_nonsing_inv_iff.2 ha) (conj_symm ha hι) using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression. Conclude with `MonoidHom.ext fun x => by simp`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isPseudoCoeff_map_iff (ha : IsUnit a) (hι : ∀ g, ι' (e g) = a * ι g * a⁻¹) {μ : Measure H} [μ.IsHaarMeasure]
     {D' : H' →* (V →L[ℂ] V)} {f' : H' → ℂ} :
@@ -258,7 +256,7 @@ variable {H n V W : Type} [Group H] [TopologicalSpace H] [Fintype n] [DecidableE
 omit [TopologicalSpace H] in
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr_right fun _ => forall₂_congr fun _ _ => integrable_smul_measure (c := c) (by simpa using hc) ENNReal.coe_ne_top`.
+A detailed English derivation is pending.
 -/
 theorem isTempered_smul_iff (hc : c ≠ 0) {π : H →* (V →L[ℂ] V)} : IsTempered (c • μ) π ↔ IsTempered μ π :=
   exists_congr fun _ => and_congr_right fun _ => forall₂_congr fun _ _ =>
@@ -267,9 +265,9 @@ theorem isTempered_smul_iff (hc : c ≠ 0) {π : H →* (V →L[ℂ] V)} : IsTem
 variable [CompleteSpace V] [CompleteSpace W]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, h.2.1, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hi⟩` from `h.1 x`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[IntegrableOn, Measure.restrict_smul]`. Conclude with `hi.smul_measure_nnreal`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h.2.2 _ ((CcMat ι).smul_mem (c : ℂ) hf)` as an intermediate fact. Rewrite using `[repOp_smul_measure _ _ _ hc, integral_smul_nnreal_measure]`. Simplify `this` using `[mul_assoc, integral_const_mul, NNReal.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsCharFn.smul_measure (hc : c ≠ 0) {π : H →* (V →L[ℂ] V)} {Θ : H → ℂ} (h : IsCharFn ι μ π Θ) :
     IsCharFn ι (c • μ) π Θ := by
@@ -283,13 +281,13 @@ theorem IsCharFn.smul_measure (hc : c ≠ 0) {π : H →* (V →L[ℂ] V)} {Θ :
     simpa [mul_assoc, integral_const_mul, NNReal.smul_def] using this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun f hf => hπ.hasTrace (h.2.2 f hf)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCharFn.of_isUnitEquiv {π : H →* (V →L[ℂ] V)} {π' : H →* (W →L[ℂ] W)} (hπ : IsUnitEquiv π π') {Θ : H → ℂ}
     (h : IsCharFn ι μ π Θ) : IsCharFn ι μ π' Θ := ⟨h.1, h.2.1, fun f hf => hπ.hasTrace (h.2.2 f hf)⟩
 
 /- English proof (translation)
-Take `⟨Θ, hΘ, hO⟩` from `h.orb_compact`. Conclude with `⟨h.mem, hD.hasTrace h.trace_self, fun U _ _ _ π h1 h2 h3 h4 => h.trace_other U π h1 h2 h3 fun h5 => h4 (h5.trans hD), h.orb_noncompact, Θ, hΘ.of_isUnitEquiv hD, hO⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsPseudoCoeff.of_isUnitEquiv {D : H →* (V →L[ℂ] V)} {D' : H →* (W →L[ℂ] W)} (hD : IsUnitEquiv D D')
     {f : H → ℂ} (h : IsPseudoCoeff ι μ D f) : IsPseudoCoeff ι μ D' f := by
@@ -302,7 +300,7 @@ variable [BorelSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [Loca
   [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `⟨?_, (orbInt_smul_left c).trans (congrArg _ h.2)⟩` and prove the remaining obligations. Rewrite using `[show c • μ = (c : ℝ≥0∞) • μ from rfl, quotMeas_smul_left (isClosed_cent γ)]`. Conclude with `h.1.smul_measure ENNReal.coe_ne_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasOrbInt.smul_measure {γ : H} {dt : Measure (cent γ)} [dt.IsHaarMeasure] [dt.IsMulRightInvariant]
     {f : H → ℂ} {x : ℂ} (h : HasOrbInt μ γ dt f x) (c : ℝ≥0) : HasOrbInt (c • μ) γ dt f (c * x) := by
@@ -311,9 +309,9 @@ theorem HasOrbInt.smul_measure {γ : H} {dt : Measure (cent γ)} [dt.IsHaarMeasu
   exact h.1.smul_measure ENNReal.coe_ne_top
 
 /- English proof (translation)
-Establish `hc' : (c : ℂ) ≠ 0` using `by simpa using hc`. Take `⟨Θ, hΘ, hO⟩` from `h.orb_compact`. Use `⟨(CcMat ι).smul_mem _ h.mem, ?_, fun U _ _ _ π h1 h2 h3 h4 => ?_, fun s hs hT dt _ _ => ?_, Θ, hΘ.smul_measure hc, fun s hs hT dt _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[repOp_smul_measure _ _ _ hc, smul_inv_smul₀ hc']`. Conclude with `h.trace_self`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repOp_smul_measure _ _ _ hc, smul_inv_smul₀ hc']`. Conclude with `h.trace_other U π h1 h2 ((isTempered_smul_iff hc).1 h3) h4`. Simplify using `using ((h.orb_noncompact s hs hT dt).smul (c : ℂ)⁻¹).smul_measure c`. Simplify `((hO s hs hT dt).smul (c : ℂ)⁻¹).smul_measure c` using `only [mul_inv_cancel_left₀ hc']`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsPseudoCoeff.smul_measure (hc : c ≠ 0) {D : H →* (V →L[ℂ] V)} {f : H → ℂ} (h : IsPseudoCoeff ι μ D f) :
     IsPseudoCoeff ι (c • μ) D ((c : ℂ)⁻¹ • f) := by
@@ -329,7 +327,7 @@ theorem IsPseudoCoeff.smul_measure (hc : c ≠ 0) {D : H →* (V →L[ℂ] V)} {
   · simpa only [mul_inv_cancel_left₀ hc'] using ((hO s hs hT dt).smul (c : ℂ)⁻¹).smul_measure c
 
 /- English proof (translation)
-Establish `hc` using `(Measure.haarScalarFactor_pos_of_isHaarMeasure ν μ).ne'`. Use `⟨_, hc, ?_⟩` and prove the remaining obligations. Use `h.smul_measure hc` as an intermediate fact. Rewrite `this` using `[← Measure.isMulLeftInvariant_eq_smul ν μ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsPseudoCoeff.exists_smul {D : H →* (V →L[ℂ] V)} {f : H → ℂ} (h : IsPseudoCoeff ι μ D f) (ν : Measure H)
     [ν.IsHaarMeasure] : ∃ c : ℝ≥0, c ≠ 0 ∧ IsPseudoCoeff ι ν D ((c : ℂ)⁻¹ • f) := by
@@ -349,7 +347,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S)
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Establish `e : M.fr ρ * ((M.fr ρ)⁻¹ * x * M.fr ρ) * (M.fr ρ)⁻¹ = x`. Rewrite using `[← mul_assoc, ← mul_assoc, Matrix.mul_nonsing_inv _ hd, one_mul, mul_assoc, Matrix.mul_nonsing_inv _ hd, mul_one]`. Take `⟨g, hg⟩` from `exists_archEquiv_eq V (embOverOf D ρ) rfl ((conj_mem_UJset_iff M ρ _).1 (e.symm ▸ hx))`. Conclude with `⟨g, (congrArg (M.fr ρ * · * (M.fr ρ)⁻¹) hg).trans e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frameMat_eq (ρ : D.what₂.Tau) {x : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hx : x ∈ UJset (M.ε ρ)) :
     ∃ g, frameMat M ρ g = x := by
@@ -360,9 +358,7 @@ theorem exists_frameMat_eq (ρ : D.what₂.Tau) {x : Matrix (Fin V.rank) (Fin V.
   exact ⟨g, (congrArg (M.fr ρ * · * (M.fr ρ)⁻¹) hg).trans e⟩
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)`. Establish `h : Topology.IsEmbedding fun x : Matrix (Fin V.rank) (Fin V.rank) ℂ => M.fr ρ * x * (M.fr ρ)⁻¹` using `Function.LeftInverse.isEmbedding (f := fun x => (M.fr ρ)⁻¹ * x * M.fr ρ) (fun x => by`. Simplify using `only [mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.nonsing_inv_mul_cancel_left _ _ hd, mul_one])`. Use the proof step `((continuous_const.mul continuous_id).mul continuous_const)`. Use the proof step `((continuous_const.mul continuous_id).mul continuous_const)`.
-
-Conclude with `h.comp (isEmbedding_archMat V.gram (isCMExt_host D) (embOverOf D ρ))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isEmbedding_frameMat (ρ : D.what₂.Tau) : Topology.IsEmbedding (frameMat M ρ) := by
   have hd := (Matrix.isUnit_iff_isUnit_det _).1 (M.fr_unit ρ)
@@ -377,7 +373,7 @@ def frameHom (ρ : D.what₂.Tau) : GArch D.sp.cm.sig V.gram (placeOf D ρ) →*
   (frameMat M ρ).toHomUnits.codRestrict _ (frameMat_mem M ρ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ h => (isEmbedding_frameMat M ρ).injective (congrArg (ujMat (M.ε ρ)) h), fun x => by obtain ⟨g, hg⟩ := exists_frameMat_eq M ρ (x := ujMat (M.ε ρ) x) x.2 exact ⟨g, Subtype.ext (Units.ext hg)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem frameHom_bijective (ρ : D.what₂.Tau) : Function.Bijective (frameHom M ρ) :=
   ⟨fun _ _ h => (isEmbedding_frameMat M ρ).injective (congrArg (ujMat (M.ε ρ)) h), fun x => by
@@ -385,7 +381,7 @@ theorem frameHom_bijective (ρ : D.what₂.Tau) : Function.Bijective (frameHom M
     exact ⟨g, Subtype.ext (Units.ext hg)⟩⟩
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix m ε).1.isEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem isEmbedding_ujMat {m : ℕ} (ε : Fin m → Bool) : Topology.IsEmbedding (ujMat ε) :=
   (Formalism.REAL.isClosedEmbeddingMatrix m ε).1.isEmbedding
@@ -410,7 +406,7 @@ theorem dsRep_eq_comp (ρ : D.what₂.Tau) :
     dsRep M ρ = (ujRep (M.ds ρ).2.2.1).comp (frameEquiv M ρ : _ →* Formalism.REAL.UJ (M.ε ρ)) := rfl
 
 /- English proof (translation)
-The claim follows from `(M.ds ρ).1 IsPseudoCoeff (ujMat (M.ε ρ)) (μ.map (frameEquiv M ρ)) (ujRep (M.ds ρ).2.2.1) f ↔ IsPseudoCoeff (matAt V ρ) μ (dsRep M ρ) (f ∘ frameEquiv M ρ) := haveI := (M.ds ρ).1 isPseudoCoeff_map_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ)`.
+A detailed English derivation is pending.
 -/
 theorem isPseudoCoeff_dsRep_iff (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.cm.sig V.gram (placeOf D ρ)))
     [μ.IsHaarMeasure] (f : Formalism.REAL.UJ (M.ε ρ) → ℂ) : haveI := (M.ds ρ).1
@@ -420,9 +416,9 @@ theorem isPseudoCoeff_dsRep_iff (ρ : D.what₂.Tau) (μ : Measure (GArch D.sp.c
   isPseudoCoeff_map_iff (M.fr_unit ρ) (ujMat_frameEquiv_eq_conj M ρ)
 
 /- English proof (translation)
-Establish `h1 : ∀ ρ, haveI` using `(M.ds ρ).1 ∃ f, IsPseudoCoeff (matAt V ρ) (μa (placeOf D ρ)) (dsRep M ρ) f := fun ρ => by haveI := (M.ds ρ).1`. Take `⟨μ, _, f, hf⟩` from `h ρ`. Take `⟨c, -, hc⟩` from `hf.exists_smul ((μa (placeOf D ρ)).map (frameEquiv M ρ))`. Conclude with `⟨_, (isPseudoCoeff_dsRep_iff M ρ _ _).1 hc⟩`. Use `choose f hf using h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `p` to `Equiv.ofBijective _ (placeOf_bijective D)`. Use `⟨Equiv.piCongrLeft (fun w => GArch D.sp.cm.sig V.gram w → ℂ) p f, fun ρ => ?_⟩` and prove the remaining obligations. Conclude with `(Equiv.piCongrLeft_apply_apply (fun w => GArch D.sp.cm.sig V.gram w → ℂ) p f ρ).symm ▸ hf ρ`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isTestArchG
     (h : ∀ ρ, haveI := (M.ds ρ).1

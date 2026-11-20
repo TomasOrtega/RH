@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.NormFib
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hc a ha`. Establish `hO : IsOpen ((normUnits F E).range : Set Fˣ)` using `GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.isOpen_range_normUnits (K := F) (E := E)`. Take `⟨c, -, hmap⟩` from `exists_map_eq_smul_restrict (normUnits F E) (isProperMap_normUnits F E) hO (multHaar E) (multHaar F)`. Use `set H : Set Fˣ := ((normUnits F E).range : Set Fˣ) with hH`. Establish `hHm : MeasurableSet H` using `hO.measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeasN : Measurable (normUnits F E)` using `(continuous_normUnits F E).measurable`. Establish `hmul : Measurable (fun y : Fˣ => a * y)` using `measurable_const_mul a`. Establish `hcompl : (fun y : Fˣ => a * y) ⁻¹' Hᶜ = H`. Use extensionality with `y`. Establish `h` using `Subgroup.mul_mem_iff_of_index_two (index_range_normUnits_eq_two F E) (a := a) (b := y)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, Set.mem_compl_iff, hH, SetLike.mem_coe]`. The claim follows by propositional logic. Establish `hsecond : (multHaar E).map (fun x => a * normUnits F E x) = c • (multHaar F).restrict Hᶜ`. Establish `e1 : (multHaar E).map (fun x => a * normUnits F E x) = ((multHaar E).map (normUnits F E)).map (fun y : Fˣ => a * y)` using `(Measure.map_map hmul hmeasN).symm`. Establish `e2 : (multHaar F).restrict Hᶜ = ((multHaar F).restrict H).map (fun y : Fˣ => a * y)` using `by conv_lhs => rw [← map_mul_left_eq_self (multHaar F) a]`.
+The claim follows by propositional logic. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(measurableEmbedding_mulLeft a).restrict_map, hcompl]`. Rewrite using `[e1, hmap, e2, Measure.map_smul]`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[hsecond, hmap, ← smul_add, Measure.restrict_add_restrict_compl hHm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_norm_add_translate_eq_smul : ∀ (F E : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F] [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E]

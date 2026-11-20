@@ -16,14 +16,14 @@ namespace Data
 variable {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Simplify using `only [Data.pnorm, norm_one, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pointNorm_eq_norm_mul (la : Wt X.Ψ r) (G : Frame X.Ψ r → ℂ) (z : Frame X.Ψ r) :
     X.pnorm la G z = ‖G z‖ * X.pnorm la (fun _ => (1 : ℂ)) z := by
   simp only [Data.pnorm, norm_one, one_mul]
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Use `mul_nonneg (norm_nonneg _) (Finset.prod_nonneg fun τ _ => Finset.prod_nonneg fun i _ => ?_)` and prove the remaining obligations. Conclude with `Real.rpow_nonneg (norm_nonneg _) _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pointNorm_nonneg (la : Wt X.Ψ r) (G : Frame X.Ψ r → ℂ) (z : Frame X.Ψ r) :
     0 ≤ X.pnorm la G z := by
@@ -32,7 +32,7 @@ theorem pointNorm_nonneg (la : Wt X.Ψ r) (G : Frame X.Ψ r → ℂ) (z : Frame 
   exact Real.rpow_nonneg (norm_nonneg _) _
 
 /- English proof (translation)
-Unfold `Data.hatN`. Use `Real.sSup_nonneg fun t ht => ?_` and prove the remaining obligations. Take `⟨x', -, -, rfl⟩` from `ht`. Conclude with `X.pointNorm_nonneg la G x'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hatNorm_nonneg (la : Wt X.Ψ r) (G : Frame X.Ψ r → ℂ) (z : Frame X.Ψ r) :
     0 ≤ X.hatN la G z := by
@@ -42,7 +42,7 @@ theorem hatNorm_nonneg (la : Wt X.Ψ r) (G : Frame X.Ψ r → ℂ) (z : Frame X.
   exact X.pointNorm_nonneg la G x'
 
 /- English proof (translation)
-Simplify using `only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_Gm_smul_left (c : E) (x y : Fin r → E) : herm X.Gm (c • x) y = c * herm X.Gm x y := by
   simp only [herm, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -52,17 +52,17 @@ theorem herm_Gm_smul_left (c : E) (x y : Fin r → E) : herm X.Gm (c • x) y = 
 end Data
 
 /- English proof (translation)
-Establish `hf1 : 1 ≤ (fdeg E : ℝ)` using `one_le_field_half_degree`. Establish `hd0 : 0 < dE E` using `field_discr_constant_pos`. Establish `hg0 : (0 : ℝ) < X.g` using `by exact_mod_cast X.g_pos`. Establish `hNC0 : (0 : ℝ) < X.NC` using `by exact_mod_cast X.NC_pos`. Generalize the expression as in `hK : (1 + X.g * dE E ^ 2 * ((X.NC : ℝ) ^ 2 * (2 + 4 * (fdeg E : ℝ) ^ 4 * rdE E ^ 2 * (X.NA : ℝ) ^ 2)) * (2 * c1 + 1)) = K2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hK1 : 1 ≤ K2`. Rewrite using `[← hK]`. Establish `: 0 ≤ (X.g : ℝ) * dE E ^ 2 * ((X.NC : ℝ) ^ 2 * (2 + 4 * (fdeg E : ℝ) ^ 4 * rdE E ^ 2 * (X.NA : ℝ) ^ 2)) * (2 * c1 + 1)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN : ((4 * fdeg E : ℕ) : ℝ) = 4 * (fdeg E : ℝ)` using `by push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Generalize the expression as in `hR : w + ((4 * fdeg E : ℕ) : ℝ) * Real.log (2 * K2 * ((4 * fdeg E : ℕ) : ℝ)) + ((4 * fdeg E : ℕ) : ℝ) + 2 = R2`. Establish `hR0 : 0 < R2`. Rewrite using `[← hR, hN]`. Establish `: 0 ≤ 4 * (fdeg E : ℝ) * Real.log (2 * K2 * (4 * (fdeg E : ℝ)))` using `mul_nonneg (by linarith) (Real.log_nonneg (by nlinarith))`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Generalize the expression as in `hB : (X.g * dE E ^ 2) ^ 2 * (X.NC : ℝ) ^ 2 * c1 = B`. Establish `hB0 : 0 < B` using `by rw [← hB]; positivity`. Establish `heq : flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w = min 1 ((fdeg E : ℝ) ^ 2 / (B * R2))`. Rewrite using `[← hB, ← hR, ← hK, hN]`. Simplify using `only [flowEpsilonBound]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← rootDiscriminant_eq_rpow]`. Rewrite using `[heq]`. Use `⟨lt_min one_pos (div_pos (by positivity) (mul_pos hB0 hR0)), min_le_left _ _, fun ε hε hεlt => ?_⟩` and prove the remaining obligations. Establish `hle : min 1 ((fdeg E : ℝ) ^ 2 / (B * R2)) ≤ (fdeg E : ℝ) ^ 2 / (B * R2)` using `min_le_right _ _`. Establish `h1` using `(le_div_iff₀ (mul_pos hB0 hR0)).1 (le_of_lt (lt_of_lt_of_le hεlt hle))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lt_div_iff₀ (mul_pos hB0 hε)]`. Establish `hε' : ε * (B * R2) < (fdeg E : ℝ) ^ 2`. Establish `h2` using `(lt_div_iff₀ (mul_pos hB0 hR0)).1 (lt_of_lt_of_le hεlt hle)`. Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem epsilonZero_spec {r : ℕ} (X : DataX E r) (c1 w : ℝ) (hc1 : 0 < c1) (hw1 : 1 ≤ w) :
     0 < flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w ∧ flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w ≤ 1 ∧
@@ -109,7 +109,7 @@ theorem epsilonZero_spec {r : ℕ} (X : DataX E r) (c1 w : ℝ) (hc1 : 0 < c1) (
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hNCc : (X.NC : ℂ) ≠ 0` using `by exact_mod_cast X.NC_pos.ne'`. Rewrite using `[X.toData.orthogonal_component_apply]`. Use function extensionality and compare the values at `j`. Simplify using `only [Data.uvec, ha, Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Data.emb, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, map_mul, map_natCast]`. Generalize the expression as in `X.Hf z0 τ (fun a => τ.1 (x a)) (fun a => τ.1 (ξ a)) / X.Hf z0 τ (fun a => τ.1 (ξ a)) (fun a => τ.1 (ξ a)) = q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -129,9 +129,9 @@ theorem unipotent_vector_eq_smul_component {r : ℕ} (X : DataX E r) (z0 : Frame
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hξ0 : ξ ≠ 0` using `hH.2.2.1.2.2`. Establish `hune : ∀ τ, X.ucomp z0 ξ (X.embV x) τ ≠ 0` using `X.toData.orthogonal_component_ne_zero z0 hξ0 hxE`. Take `⟨K, hK⟩ : ∃ K : X.Ψ → ℂ, ∀ τ, K τ = ((Real.sqrt (X.c τ * X.maj z0 τ (X.ucomp z0 ξ (X.embV x) τ)))⁻¹ : ℂ)` from `⟨_, fun _ => rfl⟩`. Use `⟨fun τ => ![-(K τ * (X.Hf z0 τ (Data.emb τ.1 x) (Data.emb τ.1 ξ) / X.Hf z0 τ (Data.emb τ.1 ξ) (Data.emb τ.1 ξ))), K τ / (X.NC : ℂ)], hH, hxL, hxξ, hxx, hxE, hune, fun τ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hK τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `unipotent_vector_eq_smul_component X z0 ξ x τ (K τ) _ rfl`.
+A detailed English derivation is pending.
 -/
 theorem short_vector_setting_exists {r : ℕ} (X : DataX E r) {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} {ξ : Fin r → E}
     {ν : X.Ψ → ℝ} {c1 w : ℝ} {z0 : Frame X.Ψ r} (hH : ShortVectorHypotheses X la P ξ ν c1 w z0) {x : Fin r → E}
@@ -148,15 +148,15 @@ theorem short_vector_setting_exists {r : ℕ} (X : DataX E r) {la : Wt X.Ψ r} {
   exact unipotent_vector_eq_smul_component X z0 ξ x τ (K τ) _ rfl
 
 /- English proof (translation)
-Establish `hξ0 : ξ ≠ 0` using `hiso.2.2`. Establish `hξx : herm X.Gm ξ x = 0`. Rewrite using `[← HermitianTraceFormVanishing.herm_conj X.Gm X.Gm_herm x ξ, hxξ, HermitianTraceFormVanishing.cc_zero]`. Use `⟨⟨fun i k => ?_, ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases k <;>`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hiso.2.1, HermitianTraceFormVanishing.herm_smul_left, HermitianTraceFormVanishing.herm_smul_right, hxξ, hξx, hxx]`. Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [zero_smul, add_zero] at hst`. Conclude with `⟨(smul_eq_zero.1 hst).resolve_right hξ0, rfl⟩`. It suffices to derive a contradiction. Establish `hNCE : (X.NC : E) ≠ 0` using `by exact_mod_cast X.NC_pos.ne'`. Establish `htN : t * (X.NC : E) ≠ 0` using `mul_ne_zero ht hNCE`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (t * (X.NC : E)) • x = -(s • ξ)`. Rewrite using `[mul_smul]`. Conclude with `eq_neg_of_add_eq_zero_right hst`. Apply `hxE (-(s / (t * (X.NC : E))))` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ htN, one_smul]`. Use `_ = -(s / (t * (X.NC : E))) • ξ := by rw [h1, smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`. Use `fin_cases i`. Conclude with `hiso.1`. Conclude with `X.NC_sub x hxL`.
+A detailed English derivation is pending.
 -/
 theorem isotropic_pair_in_lattice {r : ℕ} (X : DataX E r) {ξ x : Fin r → E} (hiso : X.IsIso ξ) (hxL : x ∈ X.L')
     (hxξ : herm X.Gm x ξ = 0) (hxx : herm X.Gm x x = 0) (hxE : ∀ e : E, x ≠ e • ξ) :

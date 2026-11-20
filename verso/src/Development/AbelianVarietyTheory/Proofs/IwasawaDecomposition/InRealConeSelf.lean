@@ -19,9 +19,9 @@ def TraitMono (Dg : DegPre R) (ℓ : LinearMap.BilinForm ℤ Dg.X →ₗ[ℤ] �
     ∀ k : ℕ, (k : ℤ) = ℓ be → Associated (f h) (ϖ ^ k)
 
 /- English proof (translation)
-Introduce `W _ _ _ hW ϖ hϖ f be hs hf k hk`. Take `⟨h1, h2⟩` from `hn W hW ϖ hϖ f be hs hf`. Take `⟨a, ha⟩` from `Int.eq_ofNat_of_zero_le h1`. Take `⟨b, hb⟩` from `Int.eq_ofNat_of_zero_le h2`. Establish `hk' : k = a + b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (k : ℤ) = a + b` using `by rw [hk, LinearMap.add_apply, ha, hb]`. Conclude with `this` after adjusting the coercions. Rewrite using `[map_mul, hk', pow_add]`. Conclude with `(H W hW ϖ hϖ f be hs hf a ha.symm).mul_mul (H' W hW ϖ hϖ f be hs hf b hb.symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TraitMono.mul {Dg : DegPre R} {ℓ ℓ' : LinearMap.BilinForm ℤ Dg.X →ₗ[ℤ] ℤ} {h h' : R}
     (H : TraitMono Dg ℓ h) (H' : TraitMono Dg ℓ' h') (hn : ∀ (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W],

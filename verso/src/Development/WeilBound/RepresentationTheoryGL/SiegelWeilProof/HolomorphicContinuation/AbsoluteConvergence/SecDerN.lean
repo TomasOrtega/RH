@@ -14,24 +14,22 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt PositivityTheory.Rg.Sw.
 variable {m n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[gs, Complex.norm_exp, Complex.neg_re, Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_norm (c : ℝ) (x : Fin m → Fin n → ℂ) : ‖gs c x‖ = Real.exp (-(c * ∑ a, ∑ i, ‖x a i‖ ^ 2)) := by
   rw [gs, Complex.norm_exp, Complex.neg_re, Complex.ofReal_re]
 
 /- English proof (translation)
-Unfold `gs`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_gs (c : ℝ) : Continuous (gs (m := m) (n := n) c) := by
   unfold gs
   fun_prop
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `set r : ℝ := (Module.finrank ℝ (Fin m → Fin n → ℂ) : ℝ) + 1 with hr`. Take `⟨Cp, k, hCp, hP⟩` from `poly_bound P`. Take `⟨Cd, hCd, hdec⟩` from `decay k c hc r`. Use `Integrable.mono' ((integrable_one_add_norm (E := Fin m → Fin n → ℂ) (μ := volume) (r := r) (by rw [hr]; linarith)).const_mul (Cp * Cd)) (((continuous_evX P).norm.mul (continuous_gs c).norm).aestronglyMeasurable) (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 ≤ ‖x‖` using `norm_nonneg _`. Establish `hg : ‖gs c x‖ ≤ Real.exp (-(c * ‖x‖ ^ 2))`. Rewrite using `[gs_norm]`. Conclude with `Real.exp_le_exp.mpr (neg_le_neg (mul_le_mul_of_nonneg_left (sq_norm_le_sum x) hc.le))`. Rewrite using `[Real.norm_of_nonneg (by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrable_poly_gs (P : PX m n) {c : ℝ} (hc : 0 < c) :
     Integrable (fun x : Fin m → Fin n → ℂ => ‖evX P x‖ * ‖gs c x‖) := by
@@ -57,7 +55,7 @@ theorem integrable_poly_gs (P : PX m n) {c : ℝ} (hc : 0 < c) :
 def trH (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) : PX m n := ∑ i, ∑ j, C (H i j) * Qp ε j i
 
 /- English proof (translation)
-Simplify using `only [trH, Matrix.trace, Matrix.diag, Matrix.mul_apply, gramX, evX, map_sum, map_mul, MvPolynomial.eval_C]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evX_trH (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin m → Fin n → ℂ) :
     evX (trH ε H) x = (H * gramX ε x).trace := by
@@ -65,7 +63,7 @@ theorem evX_trH (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) (x : Fin 
     MvPolynomial.eval_C]
 
 /- English proof (translation)
-Establish `h : evX (DN ε t H R) x = (Complex.I * t) * evX (trH ε H) x * evX R x`. Simplify using `only [DN, trH, evX, map_mul, MvPolynomial.eval_C]`. Rewrite using `[h, evX_trH]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evX_DN (ε : Fin m → Bool) (t : ℝ) (H : Matrix (Fin n) (Fin n) ℂ) (R : PX m n) (x : Fin m → Fin n → ℂ) :
     evX (DN ε t H R) x = Complex.I * t * (H * gramX ε x).trace * evX R x := by
@@ -74,14 +72,14 @@ theorem evX_DN (ε : Fin m → Bool) (t : ℝ) (H : Matrix (Fin n) (Fin n) ℂ) 
   rw [h, evX_trH]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `continuous_evX _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_gramX (ε : Fin m → Bool) : Continuous (gramX (n := n) ε) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
   exact continuous_evX _
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_mul, norm_phase t _ (trace_im ε x hB), mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_evX_gs_exp_trace_eq_of_isHermitian (ε : Fin m → Bool) (c t : ℝ) (P : PX m n)
     {B : Matrix (Fin n) (Fin n) ℂ} (hB : B.IsHermitian) (x : Fin m → Fin n → ℂ) :
@@ -89,7 +87,7 @@ private theorem norm_evX_gs_exp_trace_eq_of_isHermitian (ε : Fin m → Bool) (c
       ‖evX P x‖ * ‖gs c x‖ := by
   rw [norm_mul, norm_mul, norm_phase t _ (trace_im ε x hB), mul_one]
 /- English proof (translation)
-The claim follows from `((continuous_evX P).mul (continuous_gs c)).mul (Complex.continuous_exp.comp (continuous_const.mul (continuous_const.matrix_mul (continuous_gramX ε)).matrix_trace))`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_evX_gs_exp_trace (ε : Fin m → Bool) (c t : ℝ) (P : PX m n)
     (B : Matrix (Fin n) (Fin n) ℂ) :
@@ -98,7 +96,7 @@ private theorem continuous_evX_gs_exp_trace (ε : Fin m → Bool) (c t : ℝ) (P
   ((continuous_evX P).mul (continuous_gs c)).mul (Complex.continuous_exp.comp
     (continuous_const.mul (continuous_const.matrix_mul (continuous_gramX ε)).matrix_trace))
 /- English proof (translation)
-Unfold `IsHermitian`. Rewrite using `[conjTranspose_add, conjTranspose_smul, hb.eq, hH.eq, Complex.star_def, Complex.conj_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isHermitian_add_real_smul {b H : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian)
     (hH : H.IsHermitian) (σ : ℝ) : (b + (σ : ℂ) • H).IsHermitian := by
@@ -106,11 +104,11 @@ private theorem isHermitian_add_real_smul {b H : Matrix (Fin n) (Fin n) ℂ} (hb
   rw [conjTranspose_add, conjTranspose_smul, hb.eq, hH.eq, Complex.star_def, Complex.conj_ofReal]
 
 /- English proof (translation)
-Establish `hB : ∀ σ : ℝ, (b + (σ : ℂ) • H).IsHermitian` using `fun σ => isHermitian_add_real_smul hb hH σ`. Establish `hd : ∀ (x : Fin m → Fin n → ℂ) (σ : ℝ), HasDerivAt (fun τ : ℝ => evX R x * gs c x * Complex.exp (Complex.I * t * ((b + (τ : ℂ) • H) * gramX ε x).trace)) (evX (DN ε t H R) x * gs c x * Complex.exp (Complex.I * t * ((b + (σ : ℂ) • H) * gramX ε x).trace)) σ`. Introduce `x σ`. Establish `htr : ∀ τ : ℝ, ((b + (τ : ℂ) • H) * gramX ε x).trace = (b * gramX ε x).trace + (τ : ℂ) * (H * gramX ε x).trace`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.add_mul, Matrix.trace_add, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul]`. Simplify using `only [htr]`. Establish `h1 : HasDerivAt (fun τ : ℝ => Complex.I * t * ((b * gramX ε x).trace + (τ : ℂ) * (H * gramX ε x).trace)) (Complex.I * t * (H * gramX ε x).trace) σ`. Use `(((((hasDerivAt_id σ).ofReal_comp).mul_const ((H * gramX ε x).trace)).const_add ((b * gramX ε x).trace)).const_mul (Complex.I * t)).congr_deriv ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(h1.cexp.const_mul (evX R x * gs c x)).congr_deriv ?_` and prove the remaining obligations. Rewrite using `[evX_DN]`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := volume) (𝕜 := ℝ) (F := fun σ : ℝ => fun x => evX R x * gs c x * Complex.exp (Complex.I * t * ((b + (σ : ℂ) • H) * gramX ε x).trace)) (F' := fun σ : ℝ => fun x => evX (DN ε t H R) x * gs c x * Complex.exp (Complex.I * t * ((b …`. Conclude with `key.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_secN (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (t : ℝ) (R : PX m n)
     {b H : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (hH : H.IsHermitian) (s : ℝ) :
@@ -152,9 +150,9 @@ theorem hasDerivAt_secN (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (t : ℝ) (
   exact key.2
 
 /- English proof (translation)
-Establish `hfw : mR (w * f σ) = JJ n * nU (b + (σ : ℂ) • H)`. Rewrite using `[mR_mul, hw, hf, Matrix.mul_assoc, nU_mul_nU]`. Establish `hbσ : (b + (σ : ℂ) • H).IsHermitian`. Unfold `IsHermitian`. Rewrite using `[conjTranspose_add, conjTranspose_smul, hb.eq, hH.eq, Complex.star_def, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hL.law P y₁ (w * f σ) hy₁, hcell P (w * f σ) _ hbσ hfw]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem sec_along {ε : Fin m → Bool} {c t : ℝ} {p q : ℕ} {e : ℤ} {sL : PX m n →ₗ[ℂ] (GR n → ℂ)}
     {ρ : GR n → PX m n →ₗ[ℂ] PX m n} (hL : LocData ε c t p q e sL ρ) {C : ℂ}
@@ -177,9 +175,9 @@ namespace PositivityTheory.Rg.Sw.AbsSt
 open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.AbsSt.DF PositivityTheory.Rg.Sw.AbsSt.SDN
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL R H hH f hf g hg s`. Take `⟨y₁, w, b, hy₁, hb, hw, rfl⟩` from `cell_dec g hg`. Take `⟨C, -, hcell⟩` from `hL.cell`. Establish `hfun : (fun σ : ℝ => sL R (y₁ * w * f σ)) = fun σ : ℝ => F0 p q e y₁ * (C * secN ε c t R (b + (σ : ℂ) • H))`. Use function extensionality and compare the values at `fun σ => sec_along hL hcell hH hf hy₁ hb hw R σ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hfun, sec_along hL hcell hH hf hy₁ hb hw (DN ε t H R) s]`. Conclude with `((hasDerivAt_secN ε hL.cpos t R hb hH s).const_mul C).const_mul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nDer : NDer := by
   intro m n ε c t p q e sL ρ hL R H hH f hf g hg s

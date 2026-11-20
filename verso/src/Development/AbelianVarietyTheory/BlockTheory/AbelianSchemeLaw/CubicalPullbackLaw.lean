@@ -54,7 +54,7 @@ def GtPresentationBaseChangeLaw : Prop :=
       D'.i.left ≫ pullback.fst G.hom p = τ ≫ D.i.left
 
 /- English proof (translation)
-Introduce `S G' G _ _ _ _ f _ L c`. Take `⟨hL, hr, c', hc, _⟩` from `h (CubeMap.ofHom f) L c`. Conclude with `⟨hL, hr, c', hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem CubicalPullLaw.ofHom (h : CubicalPullLaw) : CubicalPullOfHomSt.{0} := by
   intro S G' G _ _ _ _ f _ L c

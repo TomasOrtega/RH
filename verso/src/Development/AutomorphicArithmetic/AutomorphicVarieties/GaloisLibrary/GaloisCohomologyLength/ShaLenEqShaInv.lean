@@ -20,7 +20,7 @@ section
 variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← D.hS]`. Conclude with `shaInfl F Ω D.S D.A D.hA _ _ _ (contTw F Ω l D e).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_Sha (D : LData F Ω l) (e : ℤ) :
     (Sha D e).map (resH1 (qzTw D e) (toGS Ω _) (continuous_toGS Ω _)) =
@@ -29,14 +29,14 @@ theorem map_Sha (D : LData F Ω l) (e : ℤ) :
   exact shaInfl F Ω D.S D.A D.hA _ _ _ (contTw F Ω l D e).1
 
 /- English proof (translation)
-The claim follows from `(infUnram F Ω _ _ _ _ (contTw F Ω l D e).1).1`.
+A detailed English derivation is pending.
 -/
 theorem injective_infl (D : LData F Ω l) (e : ℤ) :
     Function.Injective (resH1 (qzTw D e) (toGS Ω _) (continuous_toGS Ω _)) :=
   (infUnram F Ω _ _ _ _ (contTw F Ω l D e).1).1
 
 /- English proof (translation)
-Rewrite using `[← qzTw_comp_toGS D e, ← map_Sha]`. Conclude with `(Submodule.equivMapOfInjective _ (injective_infl D e) _).length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shaLen_eq_abs (D : LData F Ω l) (e : ℤ) :
     shaLen D e = Module.length ℤ_[l] (ShaAbs (qzG F Ω l e) (Above F l)) := by
@@ -46,9 +46,9 @@ theorem shaLen_eq_abs (D : LData F Ω l) (e : ℤ) :
 variable {F' Ω' : Type} [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω']
 
 /- English proof (translation)
-Set `σ : Ω ≃+* Ω'` to `IsAlgClosure.equivOfEquiv Ω Ω' f`. Establish `hσ : ∀ x, σ (algebraMap F Ω x) = algebraMap F' Ω' (f.toRingHom x)` using `fun x => IsAlgClosure.equivOfEquiv_algebraMap Ω Ω' f x`. Take `⟨φ, h1, h2, h3, -, h5⟩` from `galTransport F Ω F' Ω' f.toRingHom σ hσ`. Establish `e1 : (qzG F Ω l e).comp φ = qzG F' Ω' l e`. Use `MonoidHom.ext fun g => LinearMap.ext fun x => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.comp_apply, qzG_apply, qzG_apply, h3]`. Rewrite using `[← e1]`. Use `(shaAbsRes F Ω F' Ω' _ _ φ h1 (fun v' A' hA' => ?_) _ _ _).2 (h5 f.surjective)` and prove the remaining obligations. Take `⟨v, A, a, b, -, c, d⟩` from `placeTransport F Ω F' Ω' f.toRingHom σ hσ φ h2 v' A' hA'`. Conclude with `⟨v, A, a, b l, fun g hg => (c g).2 hg, fun g hg => (d g).2 hg⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem length_ShaAbs_le (f : F ≃+* F') (e : ℤ) :
     Module.length ℤ_[l] (ShaAbs (qzG F Ω l e) (Above F l)) ≤
@@ -66,21 +66,21 @@ theorem length_ShaAbs_le (f : F ≃+* F') (e : ℤ) :
   exact ⟨v, A, a, b l, fun g hg => (c g).2 hg, fun g hg => (d g).2 hg⟩
 
 /- English proof (translation)
-Rewrite using `[shaLen_eq_abs, shaLen_eq_abs]`. Conclude with `le_antisymm (length_ShaAbs_le f e) (length_ShaAbs_le f.symm e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shaLen_congr (f : F ≃+* F') (D : LData F Ω l) (D' : LData F' Ω' l) (e : ℤ) : shaLen D e = shaLen D' e := by
   rw [shaLen_eq_abs, shaLen_eq_abs]
   exact le_antisymm (length_ShaAbs_le f e) (length_ShaAbs_le f.symm e)
 
 /- English proof (translation)
-Rewrite using `[shaLen_eq_abs]`. Conclude with `le_antisymm (length_ShaAbs_le (RingEquiv.refl F) e) (length_ShaAbs_le (RingEquiv.refl F) e)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shaLen_eq_shaInv (D : LData F Ω l) (e : ℤ) : shaLen D e = shaInv F l e := by
   rw [shaLen_eq_abs]
   exact le_antisymm (length_ShaAbs_le (RingEquiv.refl F) e) (length_ShaAbs_le (RingEquiv.refl F) e)
 
 /- English proof (translation)
-The claim follows from `le_antisymm (length_ShaAbs_le f e) (length_ShaAbs_le f.symm e)`.
+A detailed English derivation is pending.
 -/
 theorem shaInv_congr (f : F ≃+* F') (e : ℤ) : shaInv F l e = shaInv F' l e :=
   le_antisymm (length_ShaAbs_le f e) (length_ShaAbs_le f.symm e)
@@ -88,7 +88,7 @@ theorem shaInv_congr (f : F ≃+* F') (e : ℤ) : shaInv F l e = shaInv F' l e :
 end
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ D D' e` and use `by refine ⟨shaLen_congr (RingEquiv.refl F) D D' e, (vLenIndep F Ω l D D' e).2, ?_⟩ have hS := (vLenIndep F Ω l D D' e).1 rw [local_H0_length_eq_sum, local_H0_length_eq_sum] refine Fintype.sum_equiv (Equiv.subtypeEquivRight fun v => by rw [hS]) _ _ fun v => ?_ rw [(imageConj F Ω l …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem indep : Indep := fun F Ω _ _ _ _ _ l _ D D' e => by
   refine ⟨shaLen_congr (RingEquiv.refl F) D D' e, (vLenIndep F Ω l D D' e).2, ?_⟩
@@ -99,9 +99,9 @@ theorem indep : Indep := fun F Ω _ _ _ _ _ l _ D D' e => by
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `h (AlgebraicClosure E) fun p _ => (ldata_nonempty p).some` as an intermediate fact. Simplify `this` using `only [shaLen_eq_shaInv]`. Introduce `h Ω _ _ _ ld`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `h` using `only [shaLen_eq_shaInv]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem vvle_iff_shaInv (E : Type) [Field E] [NumberField E] (t : ℕ) (B : ℝ) :
     UpperTheory.Top.VVle E t B ↔
@@ -116,7 +116,7 @@ theorem vvle_iff_shaInv (E : Type) [Field E] [NumberField E] (t : ℕ) (B : ℝ)
     simpa only [shaLen_eq_shaInv] using h
 
 /- English proof (translation)
-Simplify using `only [vvle_iff_shaInv, shaInv_congr f]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vvle_congr {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] (f : E ≃+* E') (t : ℕ) (B : ℝ) :
     UpperTheory.Top.VVle E t B ↔ UpperTheory.Top.VVle E' t B := by

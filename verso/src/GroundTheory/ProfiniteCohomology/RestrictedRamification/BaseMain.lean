@@ -21,7 +21,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) [Fintype 
 include hℓ hnk hS in
 
 /- English proof (translation)
-The claim follows from `(exists_gsOpenSubgroup_eq K S U).elim fun _ h1 => h1.elim fun _ h2 => h2.elim fun hL hUeq => hUeq ▸ gsBaseBijective_of_le S ιs n ℓ k hℓ hnk hS hodd h3 hP hcores W₀ hW₀ hL (hUeq ▸ hU)`.
+A detailed English derivation is pending.
 -/
 theorem gsBaseBijective_of_fixing (hP : GsPairingInput n ℓ)
     (hcores : ∀ U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),
@@ -38,9 +38,9 @@ set_option maxHeartbeats 1600000 in
 include hℓ hnk hS in
 
 /- English proof (translation)
-Establish `hnS` using `natCast_not_mem_of_not_mem S n ℓ k hnk hS`. Establish `hSn : ∀ v : HeightOneSpectrum (𝓞 K.1), ((n : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S` using `mem_of_natCast_pow_mem S n ℓ k hnk hS`. Establish `hD` using `nonempty_addEquiv_gsRoots_of_places S n hnS`. Establish `: Finite (gsRoots S n)` using `hD.elim fun e => Finite.of_equiv _ e.toEquiv.symm`. Establish `hcores : ∀ U : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S), Function.Surjective (compactCores (gsFinFamily S ιs) U (gsRoots S n) 3).hom` using `fun U => surjective_gs_compactCores_three K S ιs (NeZero.ne n) hSn hodd U (gsRoots S n) (nsmul_gsRoots S n)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(exists_openSubgroup_fixing_rootsOfUnity K S n (NeZero.ne n)).elim fun W₀ hW₀ => ⟨W₀, { nonempty_addEquiv := hD subsingleton_four := fun M _ _ hM => subsingleton_compactCohomology_four K S (NeZero.ne n) hSn hodd ιs M hM bijective_base := fun U hU {r s} h => gsBaseBijective_of_fix …`.
+A detailed English derivation is pending.
 -/
 theorem exists_compactDualityHypotheses_gs_of_pairing (hP : GsPairingInput n ℓ) :
     ∃ U₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),
@@ -62,7 +62,7 @@ theorem exists_compactDualityHypotheses_gs_of_pairing (hP : GsPairingInput n ℓ
 include hℓ hnk in
 
 /- English proof (translation)
-Introduce `_ S' _ ιs' hS' _ hodd' h3'` and use `⟨gsCompactInv_ker_left S' ιs' n ℓ k hℓ hnk hS' hodd' h3', gsCompactInv_ker_right S' ιs' n ℓ k hℓ hnk hS' hodd' h3'⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem gsPairingInput : GsPairingInput n ℓ := fun _ S' _ ιs' hS' _ hodd' h3' =>
   ⟨gsCompactInv_ker_left S' ιs' n ℓ k hℓ hnk hS' hodd' h3', gsCompactInv_ker_right S' ιs' n ℓ k hℓ hnk hS' hodd' h3'⟩
@@ -70,7 +70,7 @@ theorem gsPairingInput : GsPairingInput n ℓ := fun _ S' _ ιs' hS' _ hodd' h3'
 include hℓ hnk hS in
 
 /- English proof (translation)
-The claim follows from `exists_compactDualityHypotheses_gs_of_pairing S ιs n ℓ k hℓ hnk hS hodd h3 (gsPairingInput n ℓ k hℓ hnk)`.
+A detailed English derivation is pending.
 -/
 theorem exists_compactDualityHypotheses_gs :
     ∃ U₀ : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S),

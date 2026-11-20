@@ -13,7 +13,7 @@ open UpperTheory.Gal.G3 (sp)
 namespace UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Use `Limits.Sigma.hom_ext _ _ fun c => ?_` and prove the remaining obligations. Simplify using `only [Limits.Sigma.ι_desc_assoc, Limits.Sigma.ι_desc, Category.assoc, h]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem desc_sq {I B : Type} {W Z Y Y' : Scheme.{0}} (cls : I → B) (f : I → (W ⟶ Z)) (kc : I → (W ⟶ Y')) (π : Z ⟶ Y) (t : B → (Y' ⟶ Y))
     (h : ∀ c, f c ≫ π = kc c ≫ t (cls c)) :
@@ -23,37 +23,33 @@ theorem desc_sq {I B : Type} {W Z Y Y' : Scheme.{0}} (cls : I → B) (f : I → 
 
 set_option maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `p _ D G L E _ _ gb k T N J A _ g θ O _ _ C j K₀ K₁ Y' π' s d hK hN hq0 hq1 hc hs hcos ht`. Establish `trc : ∀ {i i' : T.X.ι} (x y : G.GAf) (e : x = y) (a : x ∈ T.X.Δ) (b : ∀ u ∈ T.X.K i, x * u * x⁻¹ ∈ T.X.K i') (a' : y ∈ T.X.Δ) (b' : ∀ u ∈ T.X.K i, y * u * y⁻¹ ∈ T.X.K i'), T.X.tr i i' x a b = T.X.tr i i' y a' b'`. Introduce `i i' x y e a b a' b'`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hNpos : 0 < (N : ℕ)`. Use `N.2.1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hMpos : 0 < ((g j).M : ℕ)`. Use `(g j).M.2.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hNK : (L.KN (N : ℕ)).relIndex (g j).K ≠ 0`. Establish `h1` using `hI p D G L (N : ℕ) hNpos`. Rewrite `h1` using `[← Subgroup.relIndex_mul_relIndex _ _ _ (g j).le (g j).le_one]`. Conclude with `left_ne_zero_of_mul h1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hK0 : K₀.relIndex (g j).K ≠ 0` using `fun h0 => hNK (Subgroup.relIndex_eq_zero_of_le_left hN h0)`. Use `haveI : Finite (g j).I := by haveI : ((L.KN (N : ℕ)).subgroupOf (g j).K).FiniteIndex := ⟨hNK⟩ show Finite (↥(g j).K ⧸ (L.KN (N : ℕ)).subgroupOf (g j).K) infer_instance`. Use `haveI : Finite (↥(g j).K ⧸ K₀.subgroupOf (g j).K) := by haveI : (K₀.subgroupOf (g j).K).FiniteIndex := ⟨hK0⟩ infer_instance`. Establish `hm0 : (T.X.K (T.lev (g j).M)).relIndex ((g j).K ⊓ K₁) ≠ 0`. Establish `hle1 : T.X.K (T.lev (g j).M) ≤ (g j).K ⊓ K₁`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_inf ?_ hq1.le` and prove the remaining obligations. Rewrite using `[T.K_eq]`. Conclude with `(KN_anti (g j).dvd).trans (g j).le`. Establish `hle2 : (g j).K ⊓ K₁ ≤ L.KN 1` using `inf_le_left.trans (g j).le_one`. Establish `h1` using `hI p D G L ((g j).M : ℕ) hMpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[← T.K_eq, ← Subgroup.relIndex_mul_relIndex _ _ _ hle1 hle2]`. Conclude with `left_ne_zero_of_mul h1`. Establish `a1 : (1 : G.GAf) ∈ T.X.Δ` using `T.X.Δ.one_mem`. Establish `b1 : ∀ u ∈ T.X.K (T.lev (g j).M), 1 * u * 1⁻¹ ∈ T.X.K (T.lev N)`. Introduce `u hu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu`, the goal using `[T.K_eq]`. Simplify using `using KN_anti (g j).dvd hu`. Establish `aH : ∀ x ∈ (g j).K, (g j).h * x ∈ T.X.Δ` using `fun x hx => (T.Δ_eq _).2 ((g j).int.mul (integ_of_mem ((g j).le_one hx)))`. Establish `bH : ∀ x ∈ (g j).K, ∀ u ∈ T.X.K (T.lev (g j).M), (g j).h * x * u * ((g j).h * x)⁻¹ ∈ T.X.K (T.lev N)`. Introduce `x hx u hu`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu`, the goal using `[T.K_eq]`. Conclude with `(g j).adm x hx u hu`. Set `cls : (g j).I → ↥(g j).K ⧸ K₀.subgroupOf (g j).K` to `fun c => QuotientGroup.mk (Quotient.out c)`. Set `u : (g j).I → G.GAf` to `fun c => (↑(Quotient.out (cls c)) : G.GAf)⁻¹ * ↑(Quotient.out c)`. Establish `hmem : ∀ c, u c ∈ K₀`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c`. Establish `h` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (cls c))`. Simplify `h` using `[Subgroup.mem_subgroupOf]`. Set `kc : (g j).I → (T.X.Z (T.lev (g j).M) ⟶ Y')` to `fun c => T.X.tr _ _ (u c) (hq0.adm _ (hmem c)).1 (hq0.adm _ (hmem c)).2 ≫ π'`. Use `choose tb0 htb1 htb2 using ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `tb : (↥(g j).K ⧸ K₀.subgroupOf (g j).K) → (Y' ⟶ C.Y)` to `fun b => tb0 _ (Quotient.out b).2`. Establish `hsq' : ∀ c, T.X.tr (T.lev (g j).M) (T.lev N) 1 a1 b1 ≫ C.π = kc c ≫ s`. Introduce `c`. Rewrite using `[hc]`. Simplify using `only [kc, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hq0.inv _ (hmem c) _ _).symm`. Establish `hsq : (T.tower N g).s j ≫ C.π = (Limits.Sigma.desc fun c => kc c ≫ Limits.Sigma.ι (fun _ : ↥(g j).K ⧸ K₀.subgroupOf (g j).K => Y') (cls c)) ≫ Limits.Sigma.desc fun _ : ↥(g j).K ⧸ K₀.subgroupOf (g j).K => s` using `desc_sq cls (fun _ => T.X.tr (T.lev (g j).M) (T.lev N) 1 a1 b1) kc C.π (fun _ => s) hsq'`. Use `⟨∐ fun _ : ↥(g j).K ⧸ K₀.subgroupOf (g j).K => Y', Limits.Sigma.desc fun _ : ↥(g j).K ⧸ K₀.subgroupOf (g j).K => s, Limits.Sigma.desc tb, Nat.card (↥(g j).K ⧸ K₀.subgroupOf (g j).K) * d, (T.X.K (T.lev (g j).M)).relIndex ((g j).K ⊓ K₁), hS C.Y Y' s d _ hs, ?_, Nat.pos_of_ne_zero h …` and prove the remaining obligations. Use `Limits.Sigma.hom_ext _ _ fun b => ?_` and prove the remaining obligations. Simplify using `only [Limits.Sigma.ι_desc_assoc, tb, htb1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Limits.Sigma.hom_ext _ _ fun c => ?_ show Limits.Sigma.ι _ c ≫ (Limits.Sigma.desc fun c => kc c ≫ Limits.Sigma.ι (fun _ : ↥(g j).K ⧸ K₀.subgroupOf (g j).K => Y') (cls c)) ≫ Limits.Sigma.desc tb = Limits.Sigma.ι _ c ≫ (Limits.Sigma.desc fun c : (g j).I => T.X.tr (T.lev (g j).M) (T …` and prove the remaining obligations. Rewrite using `[Limits.Sigma.ι_desc_assoc, Category.assoc, Limits.Sigma.ι_desc]`. Use `erw [Limits.Sigma.ι_desc_assoc]`. Establish `e : (g j).h * ↑(Quotient.out (cls c)) * u c = (g j).h * ↑(Quotient.out c)` using `by show (g j).h * ↑(Quotient.out (cls c)) * ((↑(Quotient.out (cls c)) : G.GAf)⁻¹ * ↑(Quotient.out c)) = _`. Rewrite using `[_root_.mul_assoc, _root_.mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `key` using `T.X.tr_mul (T.lev (g j).M) (T.lev (g j).M) (T.lev N) (u c) ((g j).h * ↑(Quotient.out (cls c))) (hq0.adm _ (hmem c)).1 (hq0.adm _ (hmem c)).2 (aH _ (Quotient.out (cls c)).2) (bH _ (Quotient.out (cls c)).2) (by rw [e]; exact aH _ (Quotient.out c).2) (by rw [e]; exact bH _ (Quotient …`. Use `show T.X.tr _ _ (u c) _ _ ≫ π' ≫ tb (cls c) = T.X.tr _ _ ((g j).h * ↑(Quotient.out c)) _ _ ≫ C.π`. Rewrite using `[show tb (cls c) = tb0 _ (Quotient.out (cls c)).2 from rfl, htb2 _ _ (aH _ (Quotient.out (cls c)).2) (bH _ (Quotient.out (cls c)).2)]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ C.π) key).trans (congrArg (· ≫ C.π) (trc _ _ e _ _ _ _)))`. Use `hC (g j).I _ _ _ C.Y Y' cls (T.X.tr (T.lev (g j).M) (T.lev N) 1 a1 b1) kc C.π s _ (T.X.fin _ _ a1 b1) (T.X.etale _ _ a1 b1) hs.1 hs.2.1 ?_ hsq` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `Ω _ _ z b y' hy`. Establish `hcount` using `hP E G.GAf T.X O (g j).K K₀ K₁ (L.KN (N : ℕ)) (T.lev (g j).M) (T.lev N) C.Y Y' C.p C.π π' s a1 b1 (T.K_eq N) (g j).le hN hK C.ov hq0 hq1 (hc a1 b1) hcos (↑(Quotient.out b)) (Quotient.out b).2 Ω z y' hy`. Rewrite using `[← hcount]`. Use `Nat.card_congr (Equiv.subtypeEquivRight fun cx => ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨h1, rfl, h3⟩`. Conclude with `⟨h1, hmem cx.1, fun a' b' => h3⟩`. Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hcl : cls cx.1 = b`. Rewrite using `[← QuotientGroup.out_eq' b]`.
-
-Use `(QuotientGroup.eq.2 ?_).symm` and prove the remaining obligations. Simplify `h2` using `[Subgroup.mem_subgroupOf]`. Substitute `hcl` using the available equality. Conclude with `⟨h1, rfl, h3 _ _⟩`.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liesAbs_of (hP : LPts) (hC : LCount) (hI : LIdx) (hS : SigmaFEt) : LiesAbs := by
   intro p _ D G L E _ _ gb k T N J A _ g θ O _ _ C j K₀ K₁ Y' π' s d hK hN hq0 hq1 hc hs hcos ht

@@ -15,9 +15,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] {Z : Model Xo c β} {e : F ≃+* c.F}
 
 /- English proof (translation)
-Use `Z.jQ_open` as an intermediate fact. Rewrite using `[← cancel_mono Z.jQ, ← cancel_mono (genι Z)]`. Establish `h1` using `(C.f0.tan τ i).1`. Rewrite `h1` using `[← hw, Category.assoc, Z.m.cart.1.w]`. Establish `h2` using `congrArg (· ≫ genι Z) C.y0_x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc] at h1 h2 ⊢`. Rewrite using `[h2]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem join_over [Mono (genι Z)] (C : FlagCpt Z e) (τ : E →+* ℂ) (i : Fin (Dw.mult τ))
     (w : Sp (DualNumber C.Y.Fn) ⟶ Z.oF.t.G.left) (hw : w ≫ Z.m.φ = C.f0.v τ i) :
@@ -33,7 +33,7 @@ theorem join_over [Mono (genι Z)] (C : FlagCpt Z e) (τ : E →+* ℂ) (i : Fin
   exact h1
 
 /- English proof (translation)
-Establish `: Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F))` using `IsLocalization.epi (nonZeroDivisors (𝓞 c.F)) c.F`. Establish `: Mono (spMap (algebraMap (𝓞 c.F) c.F))` using `Scheme.Spec.map_mono (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)).op`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mono_genι (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono (genι Y) := by
   have : Epi (CommRingCat.ofHom (algebraMap (𝓞 c.F) c.F)) :=
@@ -43,9 +43,9 @@ theorem mono_genι (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) : Mono (genι Y)
   infer_instance
 
 /- English proof (translation)
-Establish `h : GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ) = GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ) + ((n / 2 : ℕ) : ℤ)) 0`. Use function extensionality and compare the values at `τ j`. Simplify using `only [GlobalTheory.AllWt.weightOf]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[FlagCpt.Lw, h, GlobalTheory.AllWt.exOf_weightOf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [FlagCpt.LEx, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[exKey, keyEx, ex, exZ]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem Lw_weightOf (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) :
     C.Lw (GlobalTheory.AllWt.weightOf Dw (fun x => (a x : ℤ)) ((n / 2 : ℕ) : ℤ)) = C.LEx (exKey Dw a n) := by
@@ -62,7 +62,7 @@ theorem Lw_weightOf (C : FlagCpt Z e) (a : (E →+* ℂ) × ℕ → ℕ) (n : �
   simp [exKey, keyEx, ex, exZ]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hn`. Simplify using `only [exKey, keyEx, ex]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exKey_none (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : Even n) : exKey Dw a n none = 0 := by
   obtain ⟨m, rfl⟩ := hn
@@ -70,9 +70,9 @@ theorem exKey_none (a : (E →+* ℂ) × ℕ → ℕ) {n : ℕ} (hn : Even n) : 
   omega
 
 /- English proof (translation)
-Establish `h : (p + q).choose 2 = p * q + p.choose 2 + q.choose 2`. Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[← Nat.add_assoc, Nat.choose_succ_succ' (p + q), Nat.choose_succ_succ' q, ih]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.choose_one_right]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [← Nat.choose_two_right, h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dim_count (f p q : ℕ) :
     f * ((p + q) * (p + q - 1) / 2) = f * p * q + f * (p * (p - 1) / 2) + f * (q * (q - 1) / 2) := by
@@ -85,16 +85,16 @@ theorem dim_count (f p q : ℕ) :
   simp only [← Nat.choose_two_right, h]; ring
 
 /- English proof (translation)
-The claim follows from `(Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec Y.X).specializes trivial)).symm`.
+A detailed English derivation is pending.
 -/
 theorem genericPt_eq (Y : GlobalTheory.ProjVar.Var F) (y : Y.X) :
     genericPt Y = spMap (algebraMap (Y.X.presheaf.stalk y) Y.X.functionField) ≫ stalkPt Y y :=
   (Scheme.SpecMap_stalkSpecializes_fromSpecStalk ((genericPoint_spec Y.X).specializes trivial)).symm
 
 /- English proof (translation)
-Set `k` to `AlgebraicClosure ((gen Z).residueField z)`. Set `x : Sp k ⟶ gen Z` to `spMap (algebraMap ((gen Z).residueField z) k) ≫ (gen Z).fromSpecResidueField z`. Set `φ : c.F →+* k` to `(Spec.preimage (x ≫ genStr Z)).hom`. Establish `hφ : x ≫ genStr Z = spMap φ` using `(Spec.map_preimage _).symm`. Take `⟨g⟩` from `GlobalTheory.ShFam.EigLoc.exists_eigFrame E H Dw l Xo c O β Z k φ x hφ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, ⟨hp, -⟩, -⟩` from `Φ.lifts k φ x hφ g`. Set `s : Sp k` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum k)`. Use `⟨p.1, p.2 s, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hp]`. Conclude with `Scheme.fromSpecResidueField_apply z _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cover {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
     (Φ : FlagTor Z e U) (z : gen Z) : ∃ i, z ∈ Set.range (Φ.C i).π := by
@@ -110,7 +110,7 @@ theorem cover {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c �
   exact Scheme.fromSpecResidueField_apply z _
 
 /- English proof (translation)
-The claim follows from `congrArg Sigma.fst ((Φ.lifts k φ x hx g).unique (y₁ := ⟨i, p⟩) (y₂ := ⟨j, q⟩) ⟨hp, cp⟩ ⟨hq, cq⟩)`.
+A detailed English derivation is pending.
 -/
 theorem comp_eq {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N} (Φ : FlagTor Z e U) {k : Type} [Field k]
     [IsAlgClosed k] {φ : c.F →+* k} {x : Sp k ⟶ gen Z} (hx : x ≫ genStr Z = spMap φ) (g : EigFrame Z φ (x ≫ genι Z))
@@ -119,7 +119,7 @@ theorem comp_eq {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c
   congrArg Sigma.fst ((Φ.lifts k φ x hx g).unique (y₁ := ⟨i, p⟩) (y₂ := ⟨j, q⟩) ⟨hp, cp⟩ ⟨hq, cq⟩)
 
 /- English proof (translation)
-Use `CartierDiv.ext_of_isEqn fun y => ?_` and prove the remaining obligations. Establish `h1 : y ∉ C.bd.supp` using `fun hy => h y ((C.bd_supp y).1 hy)`. Take `⟨g', hg', hu⟩` from `CartierDiv.notMem_supp_iff.1 h1`. Use `⟨1, hg'.iff_unitAt.2 ?_, CartierDiv.isEqn_zero y⟩` and prove the remaining obligations. Simplify using `using hu.inv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bd_eq_zero (C : FlagCpt Z e) (h : ∀ y, C.π y ∉ genBd Z) : C.bd = 0 := by
   refine CartierDiv.ext_of_isEqn fun y => ?_
@@ -129,7 +129,7 @@ theorem bd_eq_zero (C : FlagCpt Z e) (h : ∀ y, C.π y ∉ genBd Z) : C.bd = 0 
   simpa using hu.inv
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨g, hg⟩ := Δ.exists_isEqn y have hr : RegAt y (g : Y.Fn) := by simpa using hg.regularAt_iff.1 (hΔ y) have h2 := h y (g ^ 2) (hg.nsmul 2) g 2 hr (by simpa using (unitAt_one y).regAt) have h3 : RegAt y (g : Y.Fn)⁻¹ := by convert h2 using 1 rw [Units.val_pow_eq_pow_val]; f …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_red_double (Y : GlobalTheory.ProjVar.Var F) (Δ : Y.Dv) (hΔ : Y.Eff Δ) (y : Y.X) (hy : y ∈ Y.supp Δ) :
     ¬ ∀ (y : Y.X) (g : Y.Fnˣ), (2 • Δ).IsEqn y g → ∀ (f : Y.Fn) (n : ℕ), RegAt y f → RegAt y (f ^ n / g) →

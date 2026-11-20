@@ -15,7 +15,7 @@ def qint (q n : ℕ) : ℕ := ∑ i ∈ Finset.range n, q ^ i
 def qfact (q n : ℕ) : ℕ := ∏ i ∈ Finset.range n, qint q (i + 1)
 
 /- English proof (translation)
-Unfold `qint`. Rewrite using `[Finset.sum_range_succ', pow_zero]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem qint_succ_pos (q n : ℕ) : 0 < qint q (n + 1) := by
   unfold qint
@@ -23,23 +23,23 @@ theorem qint_succ_pos (q n : ℕ) : 0 < qint q (n + 1) := by
   omega
 
 /- English proof (translation)
-Unfold `qfact`. Conclude with `Finset.prod_pos fun i _ => qint_succ_pos q i`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem qfact_pos (q n : ℕ) : 0 < qfact q n := by
   unfold qfact
   exact Finset.prod_pos fun i _ => qint_succ_pos q i
 
 /- English proof (translation)
-Unfold `qfact`. Rewrite using `[Finset.prod_range_succ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem qfact_succ (q n : ℕ) : qfact q (n + 1) = qfact q n * qint q (n + 1) := by
   unfold qfact
   rw [Finset.prod_range_succ]
 
 /- English proof (translation)
-Unfold `qint`. Rewrite using `[Finset.sum_range_add, Finset.mul_sum]`. Use `congr 1`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qint_add (q a b : ℕ) : qint q (a + b) = qint q a + q ^ a * qint q b := by
   unfold qint
@@ -50,7 +50,7 @@ theorem qint_add (q a b : ℕ) : qint q (a + b) = qint q a + q ^ a * qint q b :=
   rw [pow_add]
 
 /- English proof (translation)
-The claim follows from `| 0, 0, _ => by simp [gaussBinom, qfact] | n + 1, 0, _ => by simp [QVandermondeP.gb_zero_right, qfact] | 0, k + 1, h => absurd h (by omega) | n + 1, k + 1, h => by rw [QVandermondeP.gb_succ_succ] have e1 : n + 1 - (k + 1) = n - k := by omega rw [e1, qfact_succ q k, qfact_succ q n …`.
+A detailed English derivation is pending.
 -/
 theorem gb_fact (q : ℕ) : ∀ n k : ℕ, k ≤ n →
     gaussBinom q n k * qfact q k * qfact q (n - k) = qfact q n
@@ -88,9 +88,9 @@ theorem gb_fact (q : ℕ) : ∀ n k : ℕ, k ≤ n →
       rw [this, h1]
 
 /- English proof (translation)
-Establish `h1` using `gb_fact q n k h`. Establish `h2` using `gb_fact q n (n - k) (Nat.sub_le n k)`. Rewrite `h2` using `[Nat.sub_sub_self h]`. Establish `hpos : 0 < qfact q k * qfact q (n - k)` using `Nat.mul_pos (qfact_pos q k) (qfact_pos q (n - k))`. Apply `Nat.eq_of_mul_eq_mul_right hpos` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← mul_assoc, h1, ← h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gb_symm (q n k : ℕ) (h : k ≤ n) : gaussBinom q n k = gaussBinom q n (n - k) := by
   have h1 := gb_fact q n k h
@@ -102,21 +102,19 @@ theorem gb_symm (q n k : ℕ) (h : k ≤ n) : gaussBinom q n k = gaussBinom q n 
   ring
 
 /- English proof (translation)
-Establish `hV` using `(qVandermondeIdentity q (N - ρ) g (j - ρ)).1`. Establish `hz : ∀ n k : ℕ, n < k → gaussBinom q n k = 0`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `k hk`. Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Simplify using `[gaussBinom]`. Consider the case `succ n ih`. Introduce `k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, rfl⟩ : ∃ k', k = k' + 1` from `⟨k - 1, by omega⟩`. Establish `hg : gaussBinom q (n + 1) (k + 1) = gaussBinom q n k + q ^ (k + 1) * gaussBinom q n (k + 1)` using `by simp [gaussBinom]`. Rewrite using `[hg, ih k (by omega), ih (k + 1) (by omega)]`. Simplify using the standard rewrite rules. Establish `key : ∀ l, ρ ≤ j → l ≤ j - ρ → q ^ (l * (N - ρ + l - (j - ρ))) * gaussBinom q (N - ρ) (j - ρ - l) * gaussBinom q g l = (q ^ (l * (N + l - j)) * gaussBinom q g l * if j - l ≤ N then gaussBinom q (N - ρ) (N - (j - l)) else 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `l hρj hl`. Rewrite using `[show N - ρ + l - (j - ρ) = N + l - j by omega]`. Use `split_ifs with hjl`. Rewrite using `[gb_symm q (N - ρ) (j - ρ - l) (by omega), show N - ρ - (j - ρ - l) = N - (j - l) by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz (N - ρ) (j - ρ - l) (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero : ∀ l, l ≤ j → j - l < ρ → (q ^ (l * (N + l - j)) * gaussBinom q g l * if j - l ≤ N then gaussBinom q (N - ρ) (N - (j - l)) else 0) = 0`. Introduce `l hl1 hl2`. Use `split_ifs with hjl`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hz (N - ρ) (N - (j - l)) (by omega)]`. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Use `split_ifs with hρj`. Rewrite using `[show N + g - ρ = N - ρ + g by omega, hV]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Use `symm`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`.
-
-Conclude with `hzero l (by omega) (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arith (q N g j ρ : ℕ) (hρ : ρ ≤ N) :
     (if ρ ≤ j then gaussBinom q (N + g - ρ) (j - ρ) else 0) =
@@ -176,16 +174,16 @@ section LA
 variable {F W : Type} [Field F] [AddCommGroup W] [Module F W] [Finite W]
 
 /- English proof (translation)
-The claim follows from `Finite.of_surjective A.mkQ (Submodule.mkQ_surjective A)`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (A : Submodule F W) : Finite (W ⧸ A) := Finite.of_surjective A.mkQ (Submodule.mkQ_surjective A)
 
 attribute [local instance] finite_quot
 
 /- English proof (translation)
-Unfold `countBelow`. Establish `hfr : ∀ U' : Submodule F A, Module.finrank F (U'.map A.subtype) = Module.finrank F U'` using `fun U' => (LinearEquiv.finrank_eq (Submodule.equivMapOfInjective A.subtype A.injective_subtype U')).symm`. Establish `hmc : ∀ U : Submodule F W, U ≤ A → (U.comap A.subtype).map A.subtype = U`. Introduce `U hU`. Rewrite using `[Submodule.map_comap_subtype]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inf_eq_right.mpr hU`. Establish `hcm : ∀ U' : Submodule F A, (U'.map A.subtype).comap A.subtype = U'` using `fun U' => Submodule.comap_map_eq_of_injective A.injective_subtype U'`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun U => ⟨U.1.comap A.subtype, le_top, by rw [← hfr, hmc U.1 U.2.1]; exact U.2.2⟩ invFun := fun U' => ⟨U'.1.map A.subtype, Submodule.map_subtype_le A U'.1, by rw [hfr]; exact U'.2.2⟩ left_inv := fun U => Subtype.ext (hmc U.1 U.2.1) right_inv := fun U' => Subtype.ext (h …`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem countBelow_eq (A : Submodule F W) (d : ℕ) :
     countBelow A d = countBelow (⊤ : Submodule F A) d := by
@@ -204,15 +202,13 @@ theorem countBelow_eq (A : Submodule F W) (d : ℕ) :
       right_inv := fun U' => Subtype.ext (hcm U'.1) }
 
 /- English proof (translation)
-Use `haveI : Module.Finite F (V.comap A.mkQ) := Module.Finite.of_finite`. Set `f : (V.comap A.mkQ) →ₗ[F] V` to `A.mkQ.restrict (fun x hx => hx)`. Establish `hsurj : Function.Surjective f`. Introduce and unpack `⟨v, hv⟩`. Take `⟨w, rfl⟩` from `Submodule.mkQ_surjective A v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨w, hv⟩, rfl⟩`. Establish `hker : (LinearMap.ker f).map (V.comap A.mkQ).subtype = A`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h0 : A.mkQ (y : W) = 0` using `congrArg Subtype.val (LinearMap.mem_ker.mp hy)`. Conclude with `(Submodule.Quotient.mk_eq_zero A).mp h0`. Introduce `hx`. Establish `hmk : A.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero A).mpr hx`. Establish `hxU : x ∈ V.comap A.mkQ` using `by show A.mkQ x ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmk]`. Conclude with `V.zero_mem`. Use `⟨⟨x, hxU⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show f ⟨x, hxU⟩ = 0`. Conclude with `Subtype.ext hmk`.
-
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`. Rewrite `h1` using `[LinearMap.range_eq_top.mpr hsurj, finrank_top]`. Establish `h2 : Module.finrank F (LinearMap.ker f) = Module.finrank F A` using `(LinearEquiv.finrank_eq (Submodule.equivMapOfInjective (V.comap A.mkQ).subtype (Submodule.injective_subtype _) (LinearMap.ker f))).trans (LinearEquiv.finrank_eq (LinearEquiv.ofEq _ _ hker))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_comap_mkQ (A : Submodule F W) (V : Submodule F (W ⧸ A)) :
     Module.finrank F (V.comap A.mkQ) = Module.finrank F V + Module.finrank F A := by
@@ -245,13 +241,11 @@ theorem finrank_comap_mkQ (A : Submodule F W) (V : Submodule F (W ⧸ A)) :
   omega
 
 /- English proof (translation)
-Use `haveI : Module.Finite F W := Module.Finite.of_finite`. Unfold `countAbove countBelow`. Use `split_ifs with hj`. Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun U => ⟨U.1.map A.mkQ, le_top, by`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `finrank_comap_mkQ A (U.1.map A.mkQ)`. Rewrite `h3` using `[Submodule.comap_map_mkQ, sup_eq_right.mpr U.2.1, U.2.2]`. Use the proof step `omega⟩`. Use `invFun := fun V => ⟨V.1.comap A.mkQ, (Submodule.ker_mkQ A).ge.trans (LinearMap.ker_le_comap _), by rw [finrank_comap_mkQ, V.2.2]; omega⟩`. Use `left_inv := fun U => Subtype.ext (by show (U.1.map A.mkQ).comap A.mkQ = U.1`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Submodule.comap_map_mkQ]`. Conclude with `sup_eq_right.mpr U.2.1)`. Use `right_inv := fun V => Subtype.ext (Submodule.map_comap_eq_of_surjective (Submodule.mkQ_surjective A) V.1) }`. Rewrite using `[Nat.card_eq_zero] left`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨U, hAU, hU⟩`. Establish `h3 : Module.finrank F A ≤ Module.finrank F U` using `Submodule.finrank_mono hAU`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem countAbove_eq (A : Submodule F W) (j : ℕ) :
     countAbove A j = if Module.finrank F A ≤ j then
@@ -285,17 +279,15 @@ end LA
 end TypeIIUpP
 
 /- English proof (translation)
-Introduce `F P Q _ _ _ _ _ _ _ _ f N g j hP hQ`. Use `haveI : Module.Finite F P := Module.Finite.of_finite`. Use `haveI : Module.Finite F Q := Module.Finite.of_finite`. Use `haveI := TypeIIUpP.finite_quot (LinearMap.range f)`. Take `⟨ρ, hρ⟩ : ∃ ρ, Module.finrank F (LinearMap.range f) = ρ` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrn` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `hquot` using `Submodule.finrank_quotient_add_finrank (LinearMap.range f)`. Rewrite `hrn` using `[hρ, hP]`. Rewrite `hquot` using `[hρ, hQ]`. Establish `hK : ∀ l, Nat.card {U : Submodule F P // U ≤ LinearMap.ker f ∧ Module.finrank F U + (j - l) = N} = if j - l ≤ N then gaussBinom (Fintype.card F) (N - ρ) (N - (j - l)) else 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Use `split_ifs with hl`. Rewrite using `[Nat.card_congr (Equiv.subtypeEquivRight (q := fun U : Submodule F P => U ≤ LinearMap.ker f ∧ Module.finrank F U = N - (j - l)) (fun U => and_congr_right (fun _ => ⟨fun h => by omega, fun h => by omega⟩)))] show countBelow (LinearMap.ker f) (N - (j - l)) = _`. Rewrite using `[TypeIIUpP.countBelow_eq, hS]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Nat.card_eq_zero] left`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨U, _, hU⟩`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : countAbove (LinearMap.range f) j = if ρ ≤ j then gaussBinom (Fintype.card F) (N + g - ρ) (j - ρ) else 0`. Rewrite using `[TypeIIUpP.countAbove_eq, hS]`. Establish `hq : Module.finrank F (Q ⧸ LinearMap.range f) = N + g - ρ` using `by omega`. Rewrite using `[hq, hρ]`. Rewrite using `[hA]`.
-
-Simplify using `only [hK]`. Establish `key` using `TypeIIUpP.arith (Fintype.card F) N g j ρ (by omega)`. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem typeIIUp_of (hS : SubspaceCount) : TypeIIUp := by
   intro F P Q _ _ _ _ _ _ _ _ f N g j hP hQ
@@ -334,7 +326,7 @@ theorem typeIIUp_of (hS : SubspaceCount) : TypeIIUp := by
   exact_mod_cast key
 
 /- English proof (translation)
-The claim follows from `typeIIUp_of countSubspacesEq`.
+A detailed English derivation is pending.
 -/
 theorem type_two_upper : TypeIIUp := typeIIUp_of countSubspacesEq
 

@@ -31,9 +31,9 @@ section Abstract
 variable {A : Type} [CommRing A] {n r : ℕ} {X : Matrix (Fin n) (Fin r) A} {K : Matrix (Fin r) (Fin n) A}
 
 /- English proof (translation)
-Establish `: Submodule.span A ((fun i => Xᵀ i) '' I) ≤ LinearMap.eqLocus (X * K).mulVecLin LinearMap.id`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, -, rfl⟩`. Express the relevant statement in the definitionally equal form `(X * K * X).col i = _`. Rewrite using `[Matrix.mul_assoc, hKX, Matrix.mul_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[mulVec_mulVec]`. Conclude with `this hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_left_inv (hKX : K * X = 1) {I : Set (Fin r)} {y : Fin n → A}
     (hy : y ∈ Submodule.span A ((fun i => Xᵀ i) '' I)) : X *ᵥ (K *ᵥ y) = y := by
@@ -47,9 +47,9 @@ theorem mulVec_left_inv (hKX : K * X = 1) {I : Set (Fin r)} {y : Fin n → A}
   exact this hy
 
 /- English proof (translation)
-Rewrite using `[mulVec_eq_sum]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[op_smul_eq_smul]`. Distinguish the cases in `hi : i ∈ I`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, hi, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ha i hi, zero_smul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mulVec_mem_span {I : Set (Fin r)} {a : Fin r → A} (ha : ∀ i, i ∉ I → a i = 0) :
     X *ᵥ a ∈ Submodule.span A ((fun i => Xᵀ i) '' I) := by
@@ -62,7 +62,7 @@ theorem mulVec_mem_span {I : Set (Fin r)} {a : Fin r → A} (ha : ∀ i, i ∉ I
     exact zero_mem _
 
 /- English proof (translation)
-Establish `e : M * N - 1 = (M - 1) + (N - 1) + (M - 1) * (N - 1)` using `by noncomm_ring`. Rewrite using `[e, Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, Matrix.mul_assoc K, Matrix.mul_assoc (M - 1) X, ← hN, Matrix.mul_assoc (M - 1)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_mul (hKX : K * X = 1) (M N : Matrix (Fin n) (Fin n) A) (hN : (N - 1) * X = X * (K * ((N - 1) * X))) :
     K * ((M * N - 1) * X) = K * ((M - 1) * X) + K * ((N - 1) * X) + K * ((M - 1) * X) * (K * ((N - 1) * X)) := by
@@ -79,7 +79,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Use `(Subgroup.mem_iInf.1 hg.1 j).2 _ (Submodule.subset_span ⟨j, rfl, rfl⟩)` as an intermediate fact. Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem col_mem {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) (j : Fin r) :
     (((matHom _ σ J g).1 - 1) * adMat F X).col j ∈ colSpan F X {i | ∃ k ∈ T, i ≤ k ∧ k < j} := by
@@ -90,7 +90,7 @@ theorem col_mem {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) (
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Norm.row_span (Z := K) (a := i) (fun m hm => by rw [hKX, Matrix.one_apply_ne] rintro rfl exact hi hm) (col_mem hg j)`.
+A detailed English derivation is pending.
 -/
 theorem coef_eq_zero (hKX : K * adMat F X = 1) {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) {i j : Fin r}
     (hi : ¬ ∃ k ∈ T, i ≤ k ∧ k < j) : (K * (((matHom _ σ J g).1 - 1) * adMat F X) : Matrix (Fin r) (Fin r) _) i j = 0 :=
@@ -102,62 +102,56 @@ theorem coef_eq_zero (hKX : K * adMat F X = 1) {T : Finset (Fin r)} {g : GAd σ 
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Matrix.ext_col fun j => (mulVec_left_inv hKX (col_mem hg j)).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_mul_coef (hKX : K * adMat F X = 1) {T : Finset (Fin r)} {g : GAd σ J} (hg : g ∈ unip σ J X T) :
     ((matHom _ σ J g).1 - 1) * adMat F X = adMat F X * (K * (((matHom _ σ J g).1 - 1) * adMat F X)) :=
   Matrix.ext_col fun j => (mulVec_left_inv hKX (col_mem hg j)).symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ hσ n J hJ r X Y hW S l d h ι ⟨Φ, jj, hΦc, _, hj, hΦ, hι⟩ hS ⟨k₀, hk₀, hk₀'⟩ hl r' hr0 hrd k hk`. Take `⟨_, _⟩` from `ring_facts (F := F) (E := E)`. Set `e : Fin d → Fin r` to `fun a => ⟨l + a.val, by omega⟩`. Establish `hm : ∀ {a b c : ℕ} (U : Matrix (Fin a) (Fin b) E) (V : Matrix (Fin b) (Fin c) E), adMat F U * adMat F V = adMat F (U * V)` using `fun U V => (Matrix.map_mul).symm`. Establish `hKX : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm, yx hσ hJ hW]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hKY : adMat F (cT (σ : E →+* E) Y * J) * adMat F Y = 0`. Rewrite using `[hm, hW.yy]`. Conclude with `Matrix.map_zero _ (map_zero _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hΦE : ∀ x : E, Φ (inclR (F` using `F) (AF F) x) = algebraMap E (AdeleRing (𝓞 E) E) x := fun x => by`. Rewrite using `[hΦ]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show jj (GlobalTheory.LFun.infTens F E ((1 : AF F) ⊗ₜ[F] x)) = algebraMap E (InfiniteAdeleRing E) x`. Rewrite using `[← hj x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `show GlobalTheory.LFun.finAdEquiv F E (GlobalTheory.LFun.finTens F E ((1 : AF F) ⊗ₜ[F] x)) = algebraMap E (FiniteAdeleRing (𝓞 E) E) x`. Establish `e : GlobalTheory.LFun.finTens F E ((1 : AF F) ⊗ₜ[F] x) = (1 : Af F) ⊗ₜ[F] x` using `by simp [GlobalTheory.LFun.finTens]`. Rewrite using `[e, show GlobalTheory.LFun.finAdEquiv F E ((1 : Af F) ⊗ₜ[F] x) = _ from GlobalTheory.LFun.toFinAd_tmul 1 x, map_one, one_mul]`. Set `c : GAd σ J → Matrix (Fin r) (Fin r) (AF F ⊗[F] E)` to `fun g => adMat F (cT (σ : E →+* E) Y * J) * (((matHom _ σ J g).1 - 1) * adMat F X)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hc : Continuous c` using `continuous_const.matrix_mul ((continuous_mat.sub continuous_const).matrix_mul continuous_const)`. Use `⟨fun a p => Φ (c a (e p.1.1) (e p.1.2)), ?_, fun a b => ?_, fun a x hx => ?_, fun a => ⟨fun h0 => ?_, fun ha => ?_⟩, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `continuous_pi fun p => hΦc.comp ((hc.comp continuous_subtype_val).matrix_elem _ _)`. Use function extensionality and compare the values at `p`. Establish `h1 : c (a * b : unip σ J X (insert k S)) = c a + c b + c a * c b`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [c]`. Rewrite using `[Subgroup.coe_mul, map_mul, Units.val_mul]`. Conclude with `coef_mul hKX _ _ (eq_mul_coef hKX b.2)`. Establish `h2 : (c a * c b) (e p.1.1) (e p.1.2) = 0`. Rewrite using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `Finset.sum_eq_zero fun m _ => ?_` and prove the remaining obligations. Establish `hp2` using `p.1.2.2`. Distinguish the cases in `hmk : m ≤ k`. Rewrite using `[show c a (e p.1.1) m = 0 from coef_eq_zero hKX a.2 ?_, zero_mul]`. Introduce and unpack `⟨k', hk', h3, h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h3' : l + p.1.1.val ≤ k'.val` using `h3`. Establish `h4' : k'.val < m.val` using `h4`. Establish `h5 : m.val ≤ k.val` using `hmk`. Break down `Finset.mem_insert.1 hk' with rfl | hk'` into its components or cases. Use linear arithmetic over natural numbers and integers.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hS k' (by omega) (by omega) hk'`. Rewrite using `[show c b m (e p.1.2) = 0 from coef_eq_zero hKX b.2 ?_, mul_zero]`. Introduce and unpack `⟨k', hk', h3, h4⟩`. Establish `h3' : m.val ≤ k'.val` using `h3`. Establish `h4' : k'.val < l + p.1.2.val` using `h4`.
+Use linear arithmetic over natural numbers and integers. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h5 : ¬ m.val ≤ k.val` using `hmk`. Break down `Finset.mem_insert.1 hk' with rfl | hk'` into its components or cases. Use linear arithmetic over natural numbers and integers. Conclude with `hS k' (by omega) (by omega) hk'`. Express the relevant statement in the definitionally equal form `Φ (c (a * b : unip σ J X (insert k S)) _ _) = Φ _ + Φ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.add_apply, h2, add_zero, Matrix.add_apply, map_add]`. Use function extensionality and compare the values at `p`. Establish `b1 : adMat F (cT (σ : E →+* E) (blkCols h Y) * J) * adMat F (blkCols h X) = 1` using `Matrix.ext fun i j => (congrFun (congrFun hKX (e i)) (e j)).trans (by simp [Matrix.one_apply, e, Fin.ext_iff])`. Establish `b2 : adMat F (cT (σ : E →+* E) (blkCols h Y) * J) * adMat F (blkCols h Y) = 0` using `Matrix.ext fun i j => congrFun (congrFun hKY (e i)) (e j)`. Establish `h1 : c a (e p.1.1) (e p.1.2) = (adMat F (cT (σ : E →+* E) (blkCols h Y) * J) * (((matHom _ σ J (a : GAd σ J)).1 - 1) * adMat F (blkCols h X)) : Matrix (Fin d) (Fin d) _) p.1.1 p.1.2` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hne : p.1.1 ≠ p.1.2` using `fun h' => by have := p.2; rw [h'] at this; omega`. Express the relevant statement in the definitionally equal form `Φ (c a _ _) = _`. Rewrite using `[h1, hx, hι, add_assoc, add_sub_cancel_left, Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, Matrix.mul_assoc, b1, Matrix.mul_one, ← Matrix.mul_assoc, b1, Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc _ (adMat F _), b2, Matrix.zero_mul, add_zero, Matrix …`. Express the relevant statement in the definitionally equal form `(1 + GlobalTheory.CuspRep.nilM x : Matrix (Fin d) (Fin d) _) p.1.1 p.1.2 = _`. Rewrite using `[Matrix.add_apply, Matrix.one_apply_ne hne, zero_add, GlobalTheory.CuspRep.nilM, Matrix.of_apply, dif_pos p.2]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `ha` using `a.2`. Establish `hset : {i | ∃ k' ∈ insert k S, i ≤ k'} = {i | ∃ k' ∈ S, i ≤ k'}` using `Set.ext fun i => ⟨fun ⟨k', hk', h1⟩ => by`. Break down `Finset.mem_insert.1 hk' with rfl | hk'` into its components or cases. Conclude with `⟨k₀, hk₀, h1.trans (show k'.val ≤ k₀.val by omega)⟩`. Conclude with `⟨k', hk', h1⟩,`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun ⟨k', hk', h1⟩ => ⟨k', Finset.mem_insert_of_mem hk', h1⟩⟩`. Use `⟨Subgroup.mem_iInf.2 fun j => ⟨unip_iff_colSpan ha ?_, fun y hy => ?_⟩, hset ▸ ha.2⟩` and prove the remaining obligations. Introduce and unpack `i ⟨k', hk', hik, hkj⟩ m hm`. Conclude with `⟨k', hk', hm.le.trans hik, hkj⟩`. Unfold `colSpan at hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Rewrite `hy` using `[Set.image_singleton, Submodule.mem_span_singleton]`. Take `⟨t, rfl⟩` from `hy`. Rewrite using `[mulVec_smul, ← smul_sub]`. Use `Submodule.smul_mem _ t ?_` and prove the remaining obligations. Establish `h1 : (matHom _ σ J (a : GAd σ J)).1 *ᵥ (adMat F X)ᵀ j - (adMat F X)ᵀ j = adMat F X *ᵥ (c a).col j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun Z => Matrix.col Z j) (eq_mul_coef hKX ha)` as an intermediate fact. Rewrite `this` using `[Matrix.sub_mul, Matrix.one_mul]`. Use `Eq.trans ?_ (this.trans ?_)` and prove the remaining obligations. Both sides reduce to the same expression. Simplify using `only [c]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_mul, Matrix.one_mul]`. Both sides reduce to the same expression. Rewrite using `[h1]`. Use `mulVec_mem_span fun i hi => ?_` and prove the remaining obligations. Distinguish the cases in `hi' : ∃ k' ∈ insert k S, i ≤ k' ∧ k' < j`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨k', hk', h2, h3⟩` from `hi'`. Break down `Finset.mem_insert.1 hk' with rfl | hk'` into its components or cases. Establish `h2' : i.val ≤ k'.val` using `h2`. Establish `h3' : k'.val < j.val` using `h3`. Establish `h4 : j.val < l + d`.
+Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Assume the negation of the conclusion as `h4`. Conclude with `hi ⟨k₀, hk₀, show i.val ≤ k₀.val by omega, show k₀.val < j.val by omega⟩`. Establish `h5 : l ≤ i.val`. Assume the negation of the conclusion as `h5`. Break down `hl with hl | ⟨p, hp, hp'⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `hi ⟨p, hp, show i.val ≤ p.val by omega, show p.val < j.val by omega⟩`. Apply the tactic sequence `have h6 := congrFun h0 ⟨(⟨i.val - l, by omega⟩, ⟨j.val - l, by omega⟩), by constructor <;> dsimp only <;> omega⟩`. Establish `h7 : e ⟨i.val - l, by omega⟩ = i` using `Fin.ext (show l + (i.val - l) = i.val by omega)`. Establish `h8 : e ⟨j.val - l, by omega⟩ = j` using `Fin.ext (show l + (j.val - l) = j.val by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Φ (c a (e ⟨i.val - l, _⟩) (e ⟨j.val - l, _⟩)) = 0 at h6`. Rewrite `h6` using `[h7, h8]`. Conclude with `(map_eq_zero_iff Φ Φ.injective).1 h6`. Conclude with `absurd ⟨k', hk', h2, h3⟩ hi`. Conclude with `coef_eq_zero hKX ha hi'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `Φ (c a _ _) = 0`. Rewrite using `[show c a (e p.1.1) (e p.1.2) = 0 from coef_eq_zero hKX ha ?_, map_zero]`. Introduce and unpack `⟨k', hk', h3, h4⟩`. Establish `h3' : l + p.1.1.val ≤ k'.val` using `h3`.
-
-Establish `h4' : k'.val < l + p.1.2.val` using `h4`. Establish `hp2` using `p.1.2.2`. Conclude with `hS k' (by omega) (by omega) hk'`. Take `⟨γ, -, hγ⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 ha)`. Establish `h1 : (matHom _ σ J (a : GAd σ J)).1 = adMat F γ.1` using `(congrArg Units.val hγ).symm`.
-
-Use `⟨fun p => (cT (σ : E →+* E) Y * J * ((γ.1 - 1) * X) : Matrix (Fin r) (Fin r) E) (e p.1.1) (e p.1.2), funext fun p => ?_⟩` and prove the remaining obligations. Establish `h2 : c a = adMat F (cT (σ : E →+* E) Y * J * ((γ.1 - 1) * X))`. Simplify using `only [c]`. Rewrite using `[h1, ← hm (cT (σ : E →+* E) Y * J), ← hm (γ.1 - 1)]`. Use `congr 2`.
-
-Rewrite using `[adMat, adMat, Matrix.map_sub _ (map_sub _), Matrix.map_one _ (map_zero _) (map_one _)]`. Express the relevant statement in the definitionally equal form `_ = Φ (c a _ _)`. Rewrite using `[h2]`. Conclude with `(hΦE _).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_blockProj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [IsTotallyComplex E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.LeibPhi.IotaMem
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Simplify using `only [embedding₂, MonoidHom.coe_comp, Function.comp_apply]`. Unfold `levi`. Simplify using `[glEmb, glEmbHom, glEmbMat]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem iotaM_castSucc_castSucc (n : ℕ) (y : Mir k n) (r c : Fin (n + 1)) :
     (((embedding₂ k n y : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) : Matrix _ _ k) (Fin.castSucc r) (Fin.castSucc c) =
@@ -20,7 +20,7 @@ theorem iotaM_castSucc_castSucc (n : ℕ) (y : Mir k n) (r c : Fin (n + 1)) :
   simp [glEmb, glEmbHom, glEmbMat]
 
 /- English proof (translation)
-Simplify using `only [embedding₂, MonoidHom.coe_comp, Function.comp_apply]`. Unfold `levi`. Simplify using `[glEmb, glEmbHom, glEmbMat]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem iotaM_last_castSucc (n : ℕ) (y : Mir k n) (c : Fin (n + 1)) :
     (((embedding₂ k n y : Mir k (n + 1)) : GL (Fin (n + 1 + 1)) k) : Matrix _ _ k) (Fin.last (n + 1)) (Fin.castSucc c) = 0 := by
@@ -35,17 +35,15 @@ namespace GlobalTheory.CompanionTheory.LeibPhi
 open GlobalTheory.CompanionTheory.LeibPhi.IotaMem in
 
 /- English proof (translation)
-Rewrite using `[mem_mirabolicParabolic_iff, mem_mirabolicParabolic_iff]`. Establish `eF : ∀ a : Fin m, eGP m (j + 1) ⟨false, a⟩ = Fin.castSucc (eGP m j ⟨false, a⟩)`. Introduce `a`. Use `ext`. Simplify using `[blockIndex_false_val]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `eT : ∀ b : Fin (j + 1), eGP m (j + 1) ⟨true, Fin.castSucc b⟩ = Fin.castSucc (eGP m j ⟨true, b⟩)`. Introduce `b`. Use `ext`. Simplify using `[blockIndex_true_val]`. Establish `eL : eGP m (j + 1) ⟨true, Fin.last (j + 1)⟩ = Fin.last (m + j + 1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ext`. Simplify using `[blockIndex_true_val]`. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Introduce `h b a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[eL, eF]`. Conclude with `iotaM_last_castSucc k (m + j) y _`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eT, eF]`. Rewrite using `[iotaM_castSucc_castSucc k (m + j) y]`. Conclude with `h b a`. Introduce `h b a`. Establish `hb` using `h (Fin.castSucc b) a`.
-
-Rewrite `hb` using `[eT, eF, iotaM_castSucc_castSucc k (m + j) y]`. Conclude with `hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mirabolicParabolic_iff_iotaM_mem (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (m j : ℕ) (y : Mir k (m + j)) :

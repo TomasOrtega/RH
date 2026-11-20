@@ -6,13 +6,13 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Establish `hsp` using `hQ.isHermitian.spectral_theorem`. Rewrite `hsp` using `[Unitary.conjStarAlgAut_apply]`. Take `⟨U, hU⟩ : ∃ U : Matrix m m ℂ, U = (hQ.isHermitian.eigenvectorUnitary : Matrix m m ℂ)` from `⟨_, rfl⟩`. Establish `hUU : U * star U = 1`. Rewrite using `[hU]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Matrix.mem_unitaryGroup_iff.mp hQ.isHermitian.eigenvectorUnitary.2`. Take `⟨d, hd⟩ : ∃ d : m → ℝ, d = hQ.isHermitian.eigenvalues` from `⟨_, rfl⟩`. Establish `hdpos : ∀ i, 0 < d i` using `fun i => by rw [hd]; exact hQ.eigenvalues_pos i`. Rewrite `hsp` using `[← hU, ← hd]`. Establish `h1 : 1 + Q = U * (1 + diagonal (RCLike.ofReal ∘ d)) * star U`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hUU, ← hsp]`. Establish `hdet : (1 + Q).det = ((∏ i, (1 + d i) : ℝ) : ℂ)`. Rewrite using `[h1, det_mul, det_mul, mul_comm U.det, mul_assoc, ← det_mul, hUU, det_one, mul_one, ← diagonal_one, diagonal_add, det_diagonal]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, Complex.ofReal_re, Complex.ofReal_im]`. Use `⟨?_, rfl⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem one_lt_re_det_one_add_and_im_eq_zero_of_posDef {m : Type*} [Fintype m] [DecidableEq m] [Nonempty m]
     {Q : Matrix m m ℂ} (hQ : Q.PosDef) : 1 < ((1 + Q).det).re ∧ ((1 + Q).det).im = 0 := by
@@ -41,34 +41,34 @@ private theorem one_lt_re_det_one_add_and_im_eq_zero_of_posDef {m : Type*} [Fint
         (fun i _ => by linarith [hdpos i]) Finset.univ_nonempty
 
 /- English proof (translation)
-Conclude with `(one_lt_re_det_one_add_and_im_eq_zero_of_posDef hQ).1`.
+A detailed English derivation is pending.
 -/
 theorem sc_one_add_det {m : Type*} [Fintype m] [DecidableEq m] [Nonempty m]
     {Q : Matrix m m ℂ} (hQ : Q.PosDef) : 1 < ((1 + Q).det).re := by
   exact (one_lt_re_det_one_add_and_im_eq_zero_of_posDef hQ).1
 
 /- English proof (translation)
-Establish `hEdet` using `hE.det_pos`. Rewrite `hEdet` using `[Complex.lt_def]`. Simplify using `only [Complex.zero_re, Complex.zero_im] at hEdet`. Establish `hsp` using `hE.isHermitian.spectral_theorem`. Rewrite `hsp` using `[Unitary.conjStarAlgAut_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨U, hU⟩ : ∃ U : Matrix m m ℂ, U = (hE.isHermitian.eigenvectorUnitary : Matrix m m ℂ)` from `⟨_, rfl⟩`. Take `⟨d, hd⟩ : ∃ d : m → ℝ, d = hE.isHermitian.eigenvalues` from `⟨_, rfl⟩`. Establish `hdpos : ∀ i, 0 < d i` using `fun i => by rw [hd]; exact hE.eigenvalues_pos i`. Rewrite `hsp` using `[← hU, ← hd]`. Take `⟨Dh, hDh⟩ : ∃ Dh : Matrix m m ℂ, Dh = diagonal (fun i => ((Real.sqrt (d i) : ℝ) : ℂ))` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hDD : Dh * Dh = diagonal (RCLike.ofReal ∘ d)`. Rewrite using `[hDh, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hdpos i).le]`. Both sides reduce to the same expression. Establish `hDhH : Dhᴴ = Dh`. Rewrite using `[hDh, diagonal_conjTranspose]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Take `⟨B, hB⟩ : ∃ B : Matrix m m ℂ, B = Dh * star U` from `⟨_, rfl⟩`. Establish `hBB : Bᴴ * B = E`. Rewrite using `[hB, conjTranspose_mul, hDhH, hsp, ← hDD]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, star_eq_conjTranspose, conjTranspose_conjTranspose]`. Establish `hBdet : B.det ≠ 0`. Introduce `h0`. Establish `h1 : E.det = 0` using `by rw [← hBB, det_mul, h0, mul_zero]`. Rewrite `hEdet` using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hEdet`. Establish `hBu : IsUnit B.det` using `isUnit_iff_ne_zero.mpr hBdet`. Establish `hinj : Function.Injective (B⁻¹).mulVec`. Introduce `v w hvw`. Establish `h` using `congrArg (fun z => B *ᵥ z) hvw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[mulVec_mulVec, mul_nonsing_inv B hBu]`. Establish `hQ : ((B⁻¹)ᴴ * (S - E) * B⁻¹).PosDef` using `hSE.conjTranspose_mul_mul_same hinj`. Establish `hS : Bᴴ * (1 + (B⁻¹)ᴴ * (S - E) * B⁻¹) * B = S`. Establish `hinv : B⁻¹ * B = 1` using `nonsing_inv_mul B hBu`. Establish `e1 : Bᴴ * ((B⁻¹)ᴴ * (S - E) * B⁻¹) * B = (B⁻¹ * B)ᴴ * (S - E) * (B⁻¹ * B)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, hBB, e1, hinv, conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Normalize the expressions using the abelian group laws. Generalize the expression as in `(B⁻¹)ᴴ * (S - E) * B⁻¹ = Q at hQ hS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Replace the chosen expression with an arbitrary variable.
 
-Establish `hdet : S.det = (1 + Q).det * E.det`. Rewrite using `[← hS, det_mul, det_mul, ← hBB, det_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hq1, hq2⟩` from `one_lt_re_det_one_add_and_im_eq_zero_of_posDef hQ`. Use `⟨hEdet.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hdet, Complex.mul_re, hq2, ← hEdet.2]`. Use polynomial arithmetic with `[hEdet.1, hq1]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sc_det_lt {m : Type*} [Fintype m] [DecidableEq m] [Nonempty m]
     {E S : Matrix m m ℂ} (hE : E.PosDef) (hSE : (S - E).PosDef) :
@@ -131,13 +131,13 @@ theorem sc_det_lt {m : Type*} [Fintype m] [DecidableEq m] [Nonempty m]
   nlinarith [hEdet.1, hq1]
 
 /- English proof (translation)
-Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA.det_pos.ne'`. Take `⟨N, hN⟩ : ∃ N : Matrix (k ⊕ m) m ℂ, N = fromRows (-(A⁻¹ * B)) 1` from `⟨_, rfl⟩`. Establish `hinj : Function.Injective N.mulVec`. Introduce `v w hvw`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1` using `congrFun hvw (Sum.inr i)`. Simplify `h1` using `[hN, fromRows_mulVec]`. Establish `hAA : A * A⁻¹ = 1` using `mul_nonsing_inv A hAu`. Establish `h1 : A * (-(A⁻¹ * B)) + B * (1 : Matrix m m ℂ) = 0`. Rewrite using `[Matrix.mul_neg, ← Matrix.mul_assoc, hAA, Matrix.one_mul, Matrix.mul_one, neg_add_cancel]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Bᴴ * (-(A⁻¹ * B)) + D * (1 : Matrix m m ℂ) = D - Bᴴ * A⁻¹ * B`. Rewrite using `[Matrix.mul_neg, Matrix.mul_one, ← Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Establish `key : Nᴴ * fromBlocks A B Bᴴ D * N = D - Bᴴ * A⁻¹ * B`. Rewrite using `[hN, conjTranspose_fromRows_eq_fromCols_conjTranspose, ← fromRows_fromCols_eq_fromBlocks, fromCols_mul_fromRows, Matrix.add_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[fromCols_mul_fromRows, fromCols_mul_fromRows, h1, h2, Matrix.mul_zero, zero_add, conjTranspose_one, Matrix.one_mul, Matrix.mul_assoc]`. Establish `hpd` using `h.conjTranspose_mul_mul_same hinj`. Rewrite `hpd` using `[key]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sc_schur_posDef {k m : Type*} [Fintype k] [Fintype m] [DecidableEq k]
     {A : Matrix k k ℂ} (B : Matrix k m ℂ) (D : Matrix m m ℂ) (hA : A.PosDef)
@@ -166,7 +166,7 @@ theorem sc_schur_posDef {k m : Type*} [Fintype k] [Fintype m] [DecidableEq k]
   rwa [key] at hpd
 
 /- English proof (translation)
-Rewrite using `[star_mulVec, ← dotProduct_mulVec]`. Simplify using `only [mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sc_quad_mul {r : Type*} [Fintype r] (H M : Matrix r r ℂ) (u : r → ℂ) :
     star u ⬝ᵥ ((Mᴴ * H * M) *ᵥ u) = star (M *ᵥ u) ⬝ᵥ (H *ᵥ (M *ᵥ u)) := by
@@ -174,9 +174,9 @@ theorem sc_quad_mul {r : Type*} [Fintype r] (H M : Matrix r r ℂ) (u : r → �
   simp only [mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Use `Matrix.PosDef.of_dotProduct_mulVec_pos (hH.isHermitian.sub (isHermitian_conjTranspose_mul_mul M hH.isHermitian)) ?_` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[sub_mulVec, dotProduct_sub, sc_quad_mul]`. Establish `h1 : (star x ⬝ᵥ (H *ᵥ x)).im = 0` using `hH.isHermitian.im_star_dotProduct_mulVec_self x`. Establish `h2 : (star (M *ᵥ x) ⬝ᵥ (H *ᵥ (M *ᵥ x))).im = 0` using `hH.isHermitian.im_star_dotProduct_mulVec_self (M *ᵥ x)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hM x hx`. Rewrite using `[Complex.lt_def, Complex.sub_re, Complex.sub_im, h1, h2, Complex.zero_re, Complex.zero_im]`. Conclude with `⟨by linarith, by ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sc_contr_posDef {r : Type*} [Fintype r] {H M : Matrix r r ℂ} (hH : H.PosDef)
     (hM : ∀ u : r → ℂ, u ≠ 0 → (star (M *ᵥ u) ⬝ᵥ (H *ᵥ (M *ᵥ u))).re < (star u ⬝ᵥ (H *ᵥ u)).re) :
@@ -193,23 +193,23 @@ theorem sc_contr_posDef {r : Type*} [Fintype r] {H M : Matrix r r ℂ} (hH : H.P
   exact ⟨by linarith, by ring⟩
 
 /- English proof (translation)
-Establish `hBinj : Function.Injective Bm.mulVec`. Introduce `v w hvw`. Establish `h : (fromCols Bm Cm) *ᵥ (Sum.elim v 0) = (fromCols Bm Cm) *ᵥ (Sum.elim w 0)`. Rewrite using `[fromCols_mulVec, fromCols_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inl, Sum.elim_comp_inr, Sum.elim_comp_inr, hvw]`. Establish `h'` using `hW h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrFun h' (Sum.inl i)`. Take `⟨A, hAdef⟩ : ∃ A : Matrix k k ℂ, A = Bmᴴ * H * Bm` from `⟨_, rfl⟩`. Establish `hA : A.PosDef` using `by rw [hAdef]; exact hH.conjTranspose_mul_mul_same hBinj`. Establish `hAu : IsUnit A.det` using `isUnit_iff_ne_zero.mpr hA.det_pos.ne'`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩ : ∃ G : Matrix k m ℂ, G = A⁻¹ * (Bmᴴ * H * Cm)` from `⟨_, rfl⟩`. Take `⟨N, hN⟩ : ∃ N : Matrix r m ℂ, N = Cm - Bm * G` from `⟨_, rfl⟩`. Establish `hNW : ∀ v, N *ᵥ v = (fromCols Bm Cm) *ᵥ (Sum.elim (-(G *ᵥ v)) v)`. Introduce `v`. Rewrite using `[hN, fromCols_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, sub_mulVec, mulVec_neg, mulVec_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hNinj : Function.Injective N.mulVec`. Introduce `v w hvw`. Rewrite `hvw` using `[hNW, hNW]`. Establish `h` using `hW hvw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Conclude with `congrFun h (Sum.inr i)`. Establish `hGA : A * G = Bmᴴ * H * Cm`. Rewrite using `[hG, ← Matrix.mul_assoc, mul_nonsing_inv A hAu, Matrix.one_mul]`. Establish `hx : Gᴴ * (Bmᴴ * (H * (Bm * G))) = Gᴴ * (Bmᴴ * (H * Cm))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg (fun X => Gᴴ * X) hGA`. Simplify `h` using `[hAdef, Matrix.mul_assoc]`. Establish `key : Nᴴ * H * N = Cmᴴ * H * Cm - Cmᴴ * H * Bm * G`. Rewrite using `[hN, conjTranspose_sub, conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.sub_mul, Matrix.mul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hx]`. Normalize the expressions using the abelian group laws. Establish `hT : Cmᴴ * H * Cm - (Cmᴴ * H * Bm) * (Bmᴴ * H * Bm)⁻¹ * (Bmᴴ * H * Cm) = Cmᴴ * H * Cm - Cmᴴ * H * Bm * G`. Rewrite using `[hG, ← hAdef]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hMN : M * N = M * Cm`. Rewrite using `[hN, Matrix.mul_sub, ← Matrix.mul_assoc, hMB, Matrix.zero_mul, sub_zero]`. Establish `hdiff : (Cmᴴ * H * Cm - (Cmᴴ * H * Bm) * (Bmᴴ * H * Bm)⁻¹ * (Bmᴴ * H * Cm)) - (M * Cm)ᴴ * H * (M * Cm) = Nᴴ * (H - Mᴴ * H * M) * N`. Rewrite using `[hT, ← key, ← hMN, conjTranspose_mul]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpd` using `(sc_contr_posDef hH hM).conjTranspose_mul_mul_same hNinj`. Use `sc_det_lt (hH.conjTranspose_mul_mul_same hMC) ?_` and prove the remaining obligations. Rewrite using `[hdiff]`. Conclude with `hpd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_sigma {r k m : Type*} [Fintype r] [Fintype k] [Fintype m] [DecidableEq k]
     [DecidableEq m] [Nonempty m] {H M : Matrix r r ℂ} (hH : H.PosDef)

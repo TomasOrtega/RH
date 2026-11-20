@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.TC.ChTw.Match
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show y.1 *ᵥ ((y⁻¹).1 *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_image_units {κ : Type} [CommRing κ] {n : ℕ} (C : Set (Fin n → κ)) (y : GL (Fin n) κ) (w : Fin n → κ) :
     w ∈ (fun v => y.1 *ᵥ v) '' C ↔ (y⁻¹).1 *ᵥ w ∈ C := by
@@ -27,11 +27,11 @@ theorem mem_image_units {κ : Type} [CommRing κ] {n : ℕ} (C : Set (Fin n → 
     rw [Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `e1 : ∀ w : Fin n → κ, (y⁻¹).1 *ᵥ ((y * h * y⁻¹).1 *ᵥ w) = h.1 *ᵥ ((y⁻¹).1 *ᵥ w)` using `fun w => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, show y⁻¹ * (y * h * y⁻¹) = h * y⁻¹ by group, Units.val_mul, ← Matrix.mulVec_mulVec]`. Establish `e2 : ∀ v : Fin n → κ, (y⁻¹).1 *ᵥ (y.1 *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Use `show (∀ w, (y * h * y⁻¹).1 *ᵥ w ∈ (fun v => y.1 *ᵥ v) '' C ↔ w ∈ (fun v => y.1 *ᵥ v) '' C) ↔ ∀ v, h.1 *ᵥ v ∈ C ↔ v ∈ C`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_image_units, e1]`. Prove the components needed by the constructor for the conclusion. Introduce `H v`. Use `H (y.1 *ᵥ v)` as an intermediate fact. Rewrite `this` using `[e2]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H w`. Conclude with `H _`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_setStab_image {κ : Type} [CommRing κ] {n : ℕ} (C : Set (Fin n → κ)) (y h : GL (Fin n) κ) :
     y * h * y⁻¹ ∈ MemChart.setStab ((fun v => y.1 *ᵥ v) '' C) ↔ h ∈ MemChart.setStab C := by
@@ -51,35 +51,31 @@ theorem conj_mem_setStab_image {κ : Type} [CommRing κ] {n : ℕ} (C : Set (Fin
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B X I hI l u a i h1 hm c b0`. Use `haveI : NeZero (B.R.N i) := ⟨(B.R.N_pos i).ne'⟩`. Distinguish the cases in `hl : i + 1 = B.R.m`. Establish `hq : ∀ w ∈ (B.primes X).vGs, ((qOf w : ℕ) : 𝓞 B.fields.E) ∉ w.asIdeal ^ 2` using `fun _ hw => GlobalTheory.TopStep.qOf_notMem_sq (GlobalTheory.Mem.FieldsLaws.fields_ok B) l.pr hw set r : PtAt B.R I.sel (I.tup a) (I.cst a) u i := (I.stp u a i).rep c with hr`. Take `⟨y, hy, hy0, hY⟩` from `ChEx.ptAt_cosetG r hl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hGs : ∀ P : rowSG (B.primes X) I.sel (I.tup I.mu0), P.1 ∈ (B.primes X).vGs` using `fun P => by`. Break down `Finset.mem_union.1 P.2 with h | h` into its components or cases. Conclude with `h`. Establish `h' : P.1 ∈ I.Q I.mu0` using `h`. Rewrite `h'` using `[I.twistPrimes_reference_tuple_eq_empty]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `absurd h' (Finset.notMem_empty _)`. Set `Y0 : Set (Sp B.fields.E (B.R.N i))` to `{z | z - y ∈ locLat (rowSG (B.primes X) I.sel (I.tup I.mu0)) r.1.1.deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then 0 else ((I.cst I.mu0).M : ℤ))}`. Establish `hY0 : Y0 ∈ (ysAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) i).ys (extTo (QE I.sel (I.tup I.mu0 : Chr B.fields.F B.fields.E B.fields.K)) r.1.1).deco.1.N`. Rewrite using `[ysAt_ys_of_eq _ _ _ hl]`. Use `⟨y, (mem_locLat _ _ _ _).2 fun P => ?_, rfl⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[if_pos (hGs P), _root_.zpow_neg_one, inv_inv]`. Conclude with `hy P.1 (hGs P)`. Set `q0 : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u i` to `⟨(extTo _ r.1.1, Y0), hY0⟩`. Establish `hbar : MemChart.bar q0 = MemChart.bar r`. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : ∀ w ∈ (B.primes X).vGs, ((qOf w : ℕ) : B.fields.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q0.1.1.deco.1.N` using `hy`. Establish `hy0' : y ∈ q0.1.2`. Express the relevant statement in the definitionally equal form `y - y ∈ locLat (rowSG (B.primes X) I.sel (I.tup I.mu0)) r.1.1.deco.1.N (fun P => if P.1 ∈ (B.primes X).vGs then 0 else ((I.cst I.mu0).M : ℤ))`. Rewrite using `[sub_self]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hY' : ∀ z ∈ q0.1.2, ∀ w ∈ (B.primes X).vGs, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q0.1.1.deco.1.N`. Introduce `z hz w hw`. Establish `h2` using `(mem_locLat _ _ _ _).1 hz ⟨w, Finset.mem_union_left _ hw⟩`. Conclude with `(by simpa [hw] using h2 : z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal r.1.1.deco.1.N)`. Rewrite using `[ChEx.bar_eqG q0 hy' hy0' hY' w, ChEx.bar_eqG r hy hy0 hY w]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `⟨(I.stp u I.mu0 i).cl b0 q0, rfl, ?_⟩` and prove the remaining obligations. Take `⟨g0, hg0⟩` from `(I.stp u I.mu0 i).exists_mv b0 q0`. Use `⟨(g0.2.1.1)⁻¹, inv_mem g0.2.1.2, ?_⟩` and prove the remaining obligations. Introduce `κ κ0 _ _ hθ hκ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hκ'` using `hκ hl`. Use `set r0 : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u i := (I.stp u I.mu0 i).rep ((I.stp u I.mu0 i).cl b0 q0) with hr0`. Establish `hb0 : ∀ w, MemChart.bar q0 w = (fun v => (g0.2.1.1 w).1 *ᵥ v) '' MemChart.bar r0 w`. Introduce `w`. Establish `e : MemChart.ya (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) g0 r0 = q0` using `hg0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `MemChart.bar_ya (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) g0 r0 w`. Rewrite `h3` using `[e]`. Conclude with `h3`. Establish `hb0' : ∀ w, MemChart.bar r0 w = (fun v => (((g0.2.1.1)⁻¹ : GLG B.fields.E (B.R.N i) (B.primes X).vGs) w).1 *ᵥ v) '' MemChart.bar r w`. Introduce `w`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : ∀ v, ((g0.2.1.1 w)⁻¹).1 *ᵥ ((g0.2.1.1 w).1 *ᵥ v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Rewrite using `[← hbar, hb0 w, Set.image_image]`. Use `show MemChart.bar r0 w = (fun v => ((g0.2.1.1 w)⁻¹).1 *ᵥ ((g0.2.1.1 w).1 *ᵥ v)) '' MemChart.bar r0 w`. Simplify using `only [e, Set.image_id']`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hL : cosetIn ((I.stp u a i).act c.1 κ ((I.stp u a i).rep c)) = cosetIn ((I.stp u a i).rep c) ↔ ∀ w, κ.2.1.1 w ∈ MemChart.setStab (MemChart.bar r w)` using `by show cosetIn (MemChart.ya (levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) i c.1) (levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) i c.1) κ r) = cosetIn r ↔ _`. Rewrite using `[ChEx.cosetIn_eq_iff_bar_cq (ChEx.q_disj I hI a) hq, MemChart.bar_ya_eq_iff]`. Establish `hcq : ChEx.cqOf (MemChart.ya (levGAt I.sel (I.tup a) (I.idx a) (I.Tp a) i c.1) (levQAt I.sel (I.tup a) (I.idx a) (I.Tp a) i c.1) κ r) = ChEx.cqOf r`. Use function extensionality and compare the values at `P`. Rewrite using `[ChEx.invActs_cqOf (ChEx.q_disj I hI a) _ _ κ r P, hθ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[hcq]`. Simplify using the standard rewrite rules. Establish `hR : cosetIn ((I.stp u I.mu0 i).act ((I.stp u I.mu0 i).cl b0 q0).1 κ0 r0) = cosetIn r0 ↔ ∀ w, κ0.2.1.1 w ∈ MemChart.setStab (MemChart.bar r0 w)` using `by show cosetIn (MemChart.ya (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) κ0 r0) = cosetIn r0 ↔ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ChEx.cosetIn_eq_iff_bar_cq (ChEx.q_disj I hI I.mu0) hq, MemChart.bar_ya_eq_iff]`. Establish `hcq : ChEx.cqOf (MemChart.ya (levGAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) (levQAt I.sel (I.tup I.mu0) (I.idx I.mu0) (I.Tp I.mu0) i b0) κ0 r0) = ChEx.cqOf r0`. Use function extensionality and compare the values at `P`. Establish `h' : P.1 ∈ I.Q I.mu0` using `P.2`. Rewrite `h'` using `[I.twistPrimes_reference_tuple_eq_empty]`.
-
-Conclude with `absurd h' (Finset.notMem_empty _)`. Rewrite using `[hcq]`. Simplify using the standard rewrite rules. Rewrite using `[hL, hR]`. Use `forall_congr' fun w => ?_` and prove the remaining obligations.
-
-Rewrite using `[hκ' w, hb0' w]`. Conclude with `(conj_mem_setStab_image _ _ _).symm`. Set `q0 : PtAt B.R I.sel (I.tup I.mu0) (I.cst I.mu0) u i` to `⟨(DecoF.base _ _ _ _ _, ∅), by rw [ysAt_ys_of_ne I.sel (I.tup I.mu0) (I.cst I.mu0) hl]; rfl⟩`. Use `⟨(I.stp u I.mu0 i).cl b0 q0, rfl, 1, one_mem _, fun κ κ0 _ _ _ _ => ?_⟩` and prove the remaining obligations. Conclude with `iff_of_true (ChEx.cos_of_neT I hl _ _) (ChEx.cos_of_neT I hl _ _)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coset_match : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ), 1 ≤ i → i < B.R.m →
     ∀ (c : (I.stp u a i).Cl) (b0 : Idx I.sel (I.tup I.mu0) (I.idx I.mu0) i), ∃ c0 : (I.stp u I.mu0 i).Cl, c0.1 = b0 ∧

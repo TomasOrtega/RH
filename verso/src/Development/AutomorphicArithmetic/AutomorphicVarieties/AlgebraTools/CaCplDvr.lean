@@ -7,35 +7,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.CaCpl
 open IsLocalRing UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `R _ _ _ π hπ B _ _ _ h`. Use `haveI : IsNoetherianRing B := h.noeth`. Use `set f := algebraMap R B with hf`. Establish `hm : maximalIdeal B = Ideal.span {f π}`. Establish `h1` using `UpperTheory.V.AlgebraTools.IsCplAt.map_pow_eq R _ B h 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `h1.symm` using `[Ideal.map_span]`. Establish `hpow : ∀ n : ℕ, maximalIdeal B ^ n = Ideal.span {f π ^ n}`. Introduce `n`. Rewrite using `[hm, Ideal.span_singleton_pow]`. Establish `hnil : ∀ n : ℕ, f π ^ n ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n hn`. Establish `hmem : f (π ^ n) ∈ maximalIdeal B ^ (n + 1)`. Rewrite using `[map_pow, hn]`. Conclude with `zero_mem _`. Take `⟨s, hs, hs'⟩` from `h.strict (n + 1) (π ^ n) hmem`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `hs'` using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton]`. Take `⟨t, ht⟩` from `hs'`. Apply `hs` to reduce the goal to its premises. Rewrite using `[Ideal.mem_span_singleton]`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hπn : π ^ n ≠ 0` using `pow_ne_zero _ hπ.ne_zero`. Apply `mul_right_cancel₀ hπn` to reduce the goal to its premises. Rewrite using `[ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hK` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (maximalIdeal B) (Ideal.IsMaximal.ne_top inferInstance)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfac : ∀ x : B, x ≠ 0 → ∃ (k : ℕ) (u : B), IsUnit u ∧ x = f π ^ k * u`. Introduce `x hx`. Establish `hex : ∃ n : ℕ, x ∉ maximalIdeal B ^ n`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hx` to reduce the goal to its premises. Establish `hin : x ∈ ⨅ i : ℕ, maximalIdeal B ^ i` using `Submodule.mem_iInf _ |>.mpr hc`. Rewrite `hin` using `[hK]`. Conclude with `(Submodule.mem_bot _).mp hin`. Establish `hn : x ∉ maximalIdeal B ^ Nat.find hex` using `Nat.find_spec hex`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `n0 : Nat.find hex ≠ 0`. Introduce `h0`. Apply `hn` to reduce the goal to its premises. Rewrite using `[h0, pow_zero, Ideal.one_eq_top]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩ : ∃ k : ℕ, Nat.find hex = k + 1` from `⟨Nat.find hex - 1, by omega⟩`. Establish `hxk : x ∈ maximalIdeal B ^ k`. Assume the negation of the conclusion as `hc`. Use `Nat.find_min' hex hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite `hxk` using `[hpow, Ideal.mem_span_singleton']`. Take `⟨u, rfl⟩` from `hxk`. Use `⟨k, u, ?_, by ring⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Apply `hn` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hum : u ∈ maximalIdeal B` using `(IsLocalRing.mem_maximalIdeal u).mpr hu`. Rewrite `hum` using `[hm, Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `hum`. Rewrite using `[hk, hpow, Ideal.mem_span_singleton']`. Conclude with `⟨c, by ring⟩`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `haveI : IsDomain B := by`. Establish `hnzd : NoZeroDivisors B` using `⟨fun {a b} hab => by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨i, u, hu, rfl⟩` from `hfac a hc.1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨j, v, hv, rfl⟩` from `hfac b hc.2`. Apply `hnil (i + j)` to reduce the goal to its premises. Establish `hz : f π ^ (i + j) * (u * v) = 0`. Rewrite using `[← hab]`. Expand and normalize the polynomial expressions, which then agree.
-
-Conclude with `(hu.mul hv).mul_left_eq_zero.mp hz⟩`. Conclude with `NoZeroDivisors.to_isDomain B`. Establish `hirr : Irreducible (f π)` using `IsDiscreteValuationRing.irreducible_of_span_eq_maximalIdeal (f π) (by simpa using hnil 1) hm`. Use `⟨inferInstance, ?_, hirr⟩` and prove the remaining obligations. Apply `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization` to reduce the goal to its premises.
-
-Use `⟨f π, hirr, fun {x} hx => ?_⟩` and prove the remaining obligations. Take `⟨n, u, hu, rfl⟩` from `hfac x hx`. Conclude with `⟨n, hu.unit, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.IsCplAt.dvr :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] (π : R), Prime π →

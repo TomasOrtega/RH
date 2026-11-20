@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.KummerTheory.SemiUniqPf
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpost_mk, cpost_mk, ← sub_eq_zero, ← CohomologyClass.mk_sub, CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Use `⟨a.1.comp (Cochain.ofHomotopy ho) (by omega), ?_⟩` and prove the remaining obligations. Rewrite using `[δ_comp _ _ _ (n + 1) 0 n (by omega) (by omega) (by omega), δ_ofHomotopy, Cocycle.δ_eq_zero]`. Use extensionality with `p q hpq`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[zcomp, Cochain.comp_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cpush_homotopy {R : Type} [CommRing R] (K : Cx R) {I J : Cx R} {f g : I ⟶ J} (ho : Homotopy f g) (n : ℤ)
     (x : CohomologyClass K I n) : cpush K f n x = cpush K g n x := by
@@ -27,15 +27,15 @@ theorem secMap_comp {R : Type} [CommRing R] {F G M : Shv R} (f : F ⟶ G) (g : G
     Sec.map (f ≫ g) a = Sec.map g (Sec.map f a) := rfl
 
 /- English proof (translation)
-Set `e : ∀ (U : Scheme.{0}) (s : ℤ), Sec (I.X s) U ≃+ Sec (T.X s) U` to `fun U s => AddEquiv.ofBijective (σ.app U s) (hσ U s)`. Establish `he : ∀ U s a, e U s a = σ.app U s a` using `fun _ _ _ => rfl`. Establish `hu : ∀ s, ∃ φ : T.X s ⟶ J.X s, ∀ (U : Scheme.{0}) (b : Sec (T.X s) U), Sec.map φ b = κ.app U s ((e U s).symm b)`. Introduce `s`. Use `hZ _ _ (fun U => (κ.app U s).comp (e U s).symm.toAddMonoidHom) ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V U g b`. Take `⟨a, rfl⟩` from `(e U s).surjective b`. Simplify using `only [AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.symm_apply_apply]`. Rewrite using `[κ.nat]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply `(e V s).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, he, he, σ.nat]`. Use `choose φ hφ using hu`. Use `⟨{ f := φ, comm' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `s t _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hME ℤ (φ s ≫ J.d s t)).2.2.2 (T.d s t ≫ φ t) ?_` and prove the remaining obligations. Introduce `U b`. Take `⟨a, rfl⟩` from `(e U s).surjective b`. Rewrite using `[secMap_comp, secMap_comp, hφ, AddEquiv.symm_apply_apply, κ.comm, he, σ.comm, hφ, ← he, AddEquiv.symm_apply_apply]`. Introduce `U s a show κ.app U s a = Sec.map (φ s) (σ.app U s a)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, ← he, AddEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem factor (hZ : LateralTheory.KummerTheory.BockCut.ZHom) (hME : LateralTheory.EtaleFoundations.EtaleSheafMonoEpiSectionCriteria) {S : Type} [CommRing S]
     {I : Cx S} {T J : Cx ℤ} (σ : SemiMap I T) (hσ : ∀ (U : Scheme.{0}) (s : ℤ), Function.Bijective (σ.app U s))
@@ -68,15 +68,13 @@ theorem factor (hZ : LateralTheory.KummerTheory.BockCut.ZHom) (hME : LateralTheo
     rw [hφ, ← he, AddEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Introduce `S _ F G ρ ρ' hρ E n x`. Take `⟨T, σ, ε, hε, hσ, hσε⟩` from `hRR ℤ S (Int.castRingHom S) F`. Take `⟨u, hu⟩` from `factor hZ hME σ hσ ρ`. Take `⟨u', hu'⟩` from `factor hZ hME σ hσ ρ'`. Take `⟨hK, -, hGE, -⟩` from `hRB ℤ G`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `heq : ε ≫ u = ε ≫ u'`. Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Use `(hME ℤ _).2.2.2 _ ?_` and prove the remaining obligations. Introduce `U b`. Set `ι` to `HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((restr (Int.castRingHom S)).obj F)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hb : b = Sec.map (sglι _) (Sec.map ι.hom b)`. Rewrite using `[← secMap_comp]`. Conclude with `(congrArg (fun f => Sec.map f b) ι.hom_inv_id).symm`. Establish `h1` using `hσε U (Sec.map ι.hom b)`. Simplify using `only at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hb]`. Express the relevant statement in the definitionally equal form `Sec.map (u.f 0) (Sec.map (ε.f 0) (Sec.map (sglι _) (Sec.map ι.hom b))) = Sec.map (u'.f 0) (Sec.map (ε.f 0) (Sec.map (sglι _) (Sec.map ι.hom b)))`. Rewrite using `[h1, ← hu, ← hu']`. Conclude with `hρ U _`. Take `⟨ho⟩` from `(hEH ℤ _ T (res ℤ G) ε).2 u u' heq`.
-
-Rewrite using `[(hOC S ℤ σ ρ u hu).1 E n x, (hOC S ℤ σ ρ' u' hu').1 E n x]`. Conclude with `cpush_homotopy _ ho n _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SemiUniq_of (hRR : LateralTheory.KummerTheory.BockCut.RestrRes) (hZ : LateralTheory.KummerTheory.BockCut.ZHom)
     (hOC : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapCompCompatible) (hEH : LateralTheory.EtaleFoundations.EtaleKInjectiveHomExtendsAlongQuasiIso)

@@ -26,7 +26,7 @@ open ExtUnique
 variable {S U : Scheme.{0}} [AlgebraicGeometry.IsNoetherian S]
 
 /- English proof (translation)
-The claim follows from `have := GlobalTheory.IsNormalScheme.of_pred hS dense_openImmersion j`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact_and_dominant (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) (j : U ⟶ S) [IsOpenImmersion j]
     [IsDominant j] : QuasiCompact j ∧ IsSchemeTheoreticallyDominant j :=
@@ -34,13 +34,13 @@ theorem quasiCompact_and_dominant (hS : ReciprocityTheory.ChartRestriction.G.Geo
   dense_openImmersion j
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, -⟩` from `flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨-, _⟩` from `flat_and_isSeparated_of_isSemiAbelian H hH`. Set `V : S.Opens` to `j.opensRange`. Establish `hV : Dense (V : Set S)` using `j.denseRange`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e : V.toScheme ⟶ U` to `j.isoOpensRange.inv`. Establish `he : e ≫ j = V.ι` using `j.isoOpensRange_inv_comp`. Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G V.ι) (((isGrpPullback_pullback G' e).comp hφ).congr he rfl)`. Take `⟨b, hb, hb'⟩` from `grpPullback_iso (((isGrpPullback_pullback H' e).comp hψ).congr he rfl) (isGrpPullback_pullback H V.ι)`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `h S hS V hV G H hG hH (a.hom ≫ (Over.pullback e).map f ≫ b.hom) inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : f.left ≫ ψ = φ ≫ F.left`. Establish `h₁` using `pullback_map_left_fst V.ι F`. Rewrite `h₁` using `[hF', Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', ← ha', Category.assoc, ← Category.assoc ((Over.pullback e).map f).left, pullback_map_left_fst, Category.assoc, Category.assoc]`. Establish `: IsIso a.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map a.hom))`. Conclude with `(cancel_epi (pullback.fst G'.hom e)).1 ((cancel_epi a.hom.left).1 h₁)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨F, ⟨hF, key⟩, fun F' hF' => over_hom_ext_of_isPullback hφ.1 (hF'.2.symm.trans key)⟩`.
+A detailed English derivation is pending.
 -/
 theorem of_isGrpPullback (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     {j : U ⟶ S} [IsOpenImmersion j] [IsDominant j] {G H : Over S} [GrpObj G] [GrpObj H]
@@ -69,9 +69,9 @@ theorem of_isGrpPullback (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.C
   exact ⟨F, ⟨hF, key⟩, fun F' hF' => over_hom_ext_of_isPullback hφ.1 (hF'.2.symm.trans key)⟩
 
 /- English proof (translation)
-Take `⟨F, ⟨hF, hF'⟩, hu⟩` from `h.of_isGrpPullback hS hG hH (isGrpPullback_pullback G j) (isGrpPullback_pullback H j) f`. Use `⟨F, ⟨hF, ?_⟩, fun F' hF' => hu F' ⟨hF'.1, ?_⟩⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(pullback_map_left_fst j F).trans hF'.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Over.w _).trans (Over.w _).symm`. Rewrite using `[← hF'.2]`. Conclude with `pullback_map_left_fst j F'`.
+A detailed English derivation is pending.
 -/
 theorem of_isOpenImmersion (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (j : U ⟶ S) [IsOpenImmersion j] [IsDominant j] {G H : Over S} [GrpObj G] [GrpObj H]
@@ -88,9 +88,9 @@ theorem of_isOpenImmersion (h : SemiAbelianHomExtension) (hS : ReciprocityTheory
     exact pullback_map_left_fst j F'
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, -⟩` from `flat_and_isSeparated_of_isSemiAbelian G.X hG`. Take `⟨-, _⟩` from `flat_and_isSeparated_of_isSemiAbelian H.X hH`. Use `⟨mapGrp_map_injective j G H, fun f => ?_⟩` and prove the remaining obligations. Establish `: IsMonHom (M` using `(Over.pullback j).obj G.X) (N := (Over.pullback j).obj H.X) f.hom.hom := f.hom.isMonHom_hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨F, ⟨hF, hF'⟩, -⟩` from `h.of_isOpenImmersion hS j hG hH f.hom.hom`. Use `⟨Grp.homMk F, ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `hF'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mapGrp_map_bijective (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (j : U ⟶ S) [IsOpenImmersion j] [IsDominant j] (G H : Grp (Over S))
@@ -108,9 +108,9 @@ theorem mapGrp_map_bijective (h : SemiAbelianHomExtension) (hS : ReciprocityTheo
   exact hF'
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian G hG`. Use `ExtUnique.existsUnique_oAct_of_isGrpPullback hφ i fun x => ?_` and prove the remaining obligations. Use `i.hom x` as an intermediate fact. Take `⟨F, ⟨-, hF⟩, -⟩` from `h.of_isGrpPullback hS hG hG hφ hφ (i.act x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_oAct_of_isGrpPullback (h : SemiAbelianHomExtension)
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) {j : U ⟶ S} [IsOpenImmersion j] [IsDominant j]
@@ -125,9 +125,9 @@ theorem existsUnique_oAct_of_isGrpPullback (h : SemiAbelianHomExtension)
   exact ⟨F, hF⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian G hG`. Use `existsUnique_oAct_pullback j i fun x => ?_` and prove the remaining obligations. Use `i.hom x` as an intermediate fact. Take `⟨F, ⟨-, hF⟩, -⟩` from `h.of_isOpenImmersion hS j hG hG (i.act x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨F, hF⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_oAct (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (j : U ⟶ S) [IsOpenImmersion j] [IsDominant j] {G : Over S} [GrpObj G] [IsCommMonObj G]
@@ -141,9 +141,9 @@ theorem existsUnique_oAct (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.
   exact ⟨F, hF⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian H hH`. Take `⟨F, ⟨hF, hF'⟩, hu⟩` from `h.of_isGrpPullback hS hG hH hφ hψ e.hom`. Take `⟨F₁, ⟨-, hF₁⟩, -⟩` from `h.of_isGrpPullback hS hH hG hψ hφ e.inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `comp_eq_id_of_isPullback hφ.1 hψ.1 e F F₁ hF' hF₁`. Conclude with `⟨⟨F, F₁, h₁, h₂⟩, ⟨hF, hF'⟩, fun E hE => Iso.ext (hu E.hom hE)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_iso_of_isGrpPullback (h : SemiAbelianHomExtension)
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) {j : U ⟶ S} [IsOpenImmersion j] [IsDominant j]
@@ -160,9 +160,9 @@ theorem existsUnique_iso_of_isGrpPullback (h : SemiAbelianHomExtension)
   exact ⟨⟨F, F₁, h₁, h₂⟩, ⟨hF, hF'⟩, fun E hE => Iso.ext (hu E.hom hE)⟩
 
 /- English proof (translation)
-Take `⟨_, _⟩` from `quasiCompact_and_dominant hS j`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian G hG`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian H hH`. Take `⟨F, ⟨hF, hF'⟩, hu⟩` from `h.of_isOpenImmersion hS j hG hH e.hom`. Take `⟨F₁, ⟨-, hF₁⟩, -⟩` from `h.of_isOpenImmersion hS j hH hG e.inv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, h₂⟩` from `comp_eq_id_of_pullback j e F F₁ hF' hF₁`. Conclude with `⟨⟨F, F₁, h₁, h₂⟩, ⟨hF, hF'⟩, fun E hE => Iso.ext (hu E.hom hE)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_iso (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S)
     (j : U ⟶ S) [IsOpenImmersion j] [IsDominant j] {G H : Over S} [GrpObj G] [GrpObj H]
@@ -177,7 +177,7 @@ theorem existsUnique_iso (h : SemiAbelianHomExtension) (hS : ReciprocityTheory.C
   exact ⟨⟨F, F₁, h₁, h₂⟩, ⟨hF, hF'⟩, fun E hE => Iso.ext (hu E.hom hE)⟩
 
 /- English proof (translation)
-Establish `: IsMonHom (Iso.refl A).hom` using `inferInstanceAs (IsMonHom (𝟙 A))`. Simplify `h.existsUnique_iso_of_isGrpPullback hS hG hH hφ hψ (Iso.refl A)` using `[eq_comm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem existsUnique_iso_of_extensions (h : SemiAbelianHomExtension)
     (hS : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S) {j : U ⟶ S} [IsOpenImmersion j] [IsDominant j]
@@ -190,7 +190,7 @@ theorem existsUnique_iso_of_extensions (h : SemiAbelianHomExtension)
 omit [AlgebraicGeometry.IsNoetherian S] in
 
 /- English proof (translation)
-Use `over_hom_ext_of_isPullback hφ ?_` and prove the remaining obligations. Rewrite using `[Over.comp_left, Over.comp_left, ← Category.assoc, ← ha, Category.assoc, ← hF, ← Category.assoc, ← Over.comp_left, hf, Over.comp_left, Category.assoc, hb, ← Category.assoc, hF, Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comp_of_isPullback {j : U ⟶ S} [QuasiCompact j] [IsSchemeTheoreticallyDominant j]
     {G H : Over S} [GrpObj G] [GrpObj H] [Flat G.hom] [IsSeparated H.hom] {G' H' : Over U} [GrpObj G'] [GrpObj H']
@@ -209,11 +209,11 @@ variable (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Fie
   [IsFractionRing T K]
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T`. Establish `: IsLocalization.Away ϖ K`. Use `(isLocalization_iff _ _).2 ⟨?_, fun z => ?_, fun {x y} hxy => ⟨1, by` and prove the remaining obligations. Rewrite using `[IsFractionRing.injective T K hxy]⟩⟩`. Introduce and unpack `⟨_, n, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `IsUnit.mk0 _ (by simp [hϖ.ne_zero])`. Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors T) z`. Take `⟨n, u, hu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible (nonZeroDivisors.ne_zero b.2) hϖ`. Use `⟨⟨a * (u⁻¹ : Tˣ), ⟨ϖ ^ n, n, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Establish `hab' : z * algebraMap T K (u * ϖ ^ n) = algebraMap T K a` using `hu ▸ hab`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `z * algebraMap T K (ϖ ^ n) = algebraMap T K (a * (u⁻¹ : Tˣ))`. Rewrite using `[map_mul, ← hab', _root_.mul_assoc, ← map_mul, mul_right_comm, Units.mul_inv, _root_.one_mul]`. Conclude with `IsOpenImmersion.of_isLocalization ϖ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_generic_dvr : IsOpenImmersion (spMap (algebraMap T K)) := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible T
@@ -231,7 +231,7 @@ theorem isOpenImmersion_generic_dvr : IsOpenImmersion (spMap (algebraMap T K)) :
   exact IsOpenImmersion.of_isLocalization ϖ
 
 /- English proof (translation)
-The claim follows from `have := (spec_fractionRing T K).1 have := (spec_fractionRing T K).2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem isDominant_generic_dvr : IsDominant (spMap (algebraMap T K)) :=
   have := (spec_fractionRing T K).1
@@ -239,7 +239,7 @@ theorem isDominant_generic_dvr : IsDominant (spMap (algebraMap T K)) :=
   inferInstance
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IsNormalScheme.pred _`.
+A detailed English derivation is pending.
 -/
 theorem isNormalScheme_dvr : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp T) :=
   GlobalTheory.IsNormalScheme.pred _
@@ -247,7 +247,7 @@ theorem isNormalScheme_dvr : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNorm
 variable {T K}
 
 /- English proof (translation)
-The claim follows from `have := isOpenImmersion_generic_dvr T K have := isDominant_generic_dvr T K h.of_isOpenImmersion (isNormalScheme_dvr T) _ hG hH f`.
+A detailed English derivation is pending.
 -/
 theorem dvr (h : SemiAbelianHomExtension) {G H : Over (Sp T)} [GrpObj G] [GrpObj H]
     (hG : IsSemiAbelian G) (hH : IsSemiAbelian H)
@@ -258,7 +258,7 @@ theorem dvr (h : SemiAbelianHomExtension) {G H : Over (Sp T)} [GrpObj G] [GrpObj
   h.of_isOpenImmersion (isNormalScheme_dvr T) _ hG hH f
 
 /- English proof (translation)
-The claim follows from `have := isOpenImmersion_generic_dvr T K have := isDominant_generic_dvr T K h.of_isGrpPullback (isNormalScheme_dvr T) hG hH hφ hψ f`.
+A detailed English derivation is pending.
 -/
 theorem dvr_of_isGrpPullback (h : SemiAbelianHomExtension) {G H : Over (Sp T)} [GrpObj G] [GrpObj H]
     (hG : IsSemiAbelian G) (hH : IsSemiAbelian H) {G' H' : Over (Sp K)} [GrpObj G'] [GrpObj H']
@@ -276,7 +276,7 @@ section Model
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h₁ : Algebra.Smooth (Polynomial R) (LaurentPolynomial R)` using `Algebra.Smooth.of_isLocalization_Away (Polynomial.X : Polynomial R)`. Establish `h₀ : Algebra.Smooth R (Polynomial R)` using `⟨inferInstance, inferInstance⟩`. Establish `: IsScalarTower R (Polynomial R) (LaurentPolynomial R)` using `IsScalarTower.of_algebraMap_eq fun r => (Polynomial.toLaurent_C r).symm`. Establish `h₂ : Algebra.Smooth R (LaurentPolynomial R)` using `Algebra.Smooth.comp R (Polynomial R) _`. Conclude with `Algebra.Smooth.of_equiv (AddMonoidAlgebra.domCongr R R (AddEquiv.ulift (α := ℤ)).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_laurent (R : Type) [CommRing R] : Algebra.Smooth R (AddMonoidAlgebra R (ULift.{0} ℤ)) := by
   have h₁ : Algebra.Smooth (Polynomial R) (LaurentPolynomial R) :=
@@ -288,7 +288,7 @@ theorem smooth_laurent (R : Type) [CommRing R] : Algebra.Smooth R (AddMonoidAlge
   exact Algebra.Smooth.of_equiv (AddMonoidAlgebra.domCongr R R (AddEquiv.ulift (α := ℤ)).symm)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Smooth (Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ)))))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Smooth)]`. Conclude with `RingHom.smooth_algebraMap.2 (smooth_laurent _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_splitTorusAff : Smooth (splitTorusAff ZU.{0} (ULift.{0} ℤ)).hom := by
   change Smooth (Spec.map (CommRingCat.ofHom (algebraMap ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ)))))
@@ -296,7 +296,7 @@ theorem smooth_splitTorusAff : Smooth (splitTorusAff ZU.{0} (ULift.{0} ℤ)).hom
   exact RingHom.smooth_algebraMap.2 (smooth_laurent _)
 
 /- English proof (translation)
-Use `⟨geometrically_iff_of_commRing_of_isClosedUnderIsomorphisms.2 fun K _ _ ↦ ?_⟩` and prove the remaining obligations. Establish `: IsDomain (AddMonoidAlgebra K (ULift.{0} ℤ))` using `(AddMonoidAlgebra.domCongr K K (AddEquiv.ulift (α := ℤ))).toMulEquiv.isDomain _`. Establish `: IsDomain (AddMonoidAlgebra R (ULift.{0} ℤ) ⊗[R] K)` using `((Algebra.TensorProduct.comm _ _ _).toRingEquiv.trans (AddMonoidAlgebra.scalarTensorEquiv (M := ULift.{0} ℤ) R K).toRingEquiv).toMulEquiv.isDomain _`. Set `e` to `(pullbackSpecIso R (AddMonoidAlgebra R (ULift.{0} ℤ)) K).inv`. Conclude with `e.homeomorph.surjective.connectedSpace e.homeomorph.continuous`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_laurent (R : Type) [CommRing R] : GeometricallyConnected
     (Spec.map (CommRingCat.ofHom (algebraMap R (AddMonoidAlgebra R (ULift.{0} ℤ))))) := by
@@ -310,14 +310,14 @@ theorem geometricallyConnected_laurent (R : Type) [CommRing R] : GeometricallyCo
   exact e.homeomorph.surjective.connectedSpace e.homeomorph.continuous
 
 /- English proof (translation)
-The claim follows from `geometricallyConnected_laurent (ULift.{0} ℤ)`.
+A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_splitTorusAff :
     GeometricallyConnected (splitTorusAff ZU.{0} (ULift.{0} ℤ)).hom :=
   geometricallyConnected_laurent (ULift.{0} ℤ)
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstanceAs (Smooth (𝟙 S)), inferInstanceAs (IsProper (𝟙 S)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `GeometricallyConnected (𝟙 S)`. Use `⟨fun K _ y Z fst snd H => ?_⟩` and prove the remaining obligations. Establish `: IsIso snd` using `H.isIso_snd_of_isIso`. Conclude with `snd.homeomorph.symm.surjective.connectedSpace snd.homeomorph.symm.continuous`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_unit (S : Scheme.{0}) : IsAbelianScheme (𝟙_ (Over S)) := by
   refine ⟨inferInstance, inferInstanceAs (Smooth (𝟙 S)), inferInstanceAs (IsProper (𝟙 S)), ?_⟩
@@ -327,15 +327,13 @@ theorem isAbelianScheme_unit (S : Scheme.{0}) : IsAbelianScheme (𝟙_ (Over S))
   exact snd.homeomorph.symm.surjective.connectedSpace snd.homeomorph.symm.continuous
 
 /- English proof (translation)
-Establish `h₁` using `smooth_splitTorusAff`. Establish `h₂` using `geometricallyConnected_splitTorusAff`. Establish `h₃` using `(splitTorusAff_flat_and_isSeparated ZU.{0} (ULift.{0} ℤ)).2`. Establish `h₄ : QuasiCompact (splitTorusAff ZU.{0} (ULift.{0} ℤ)).hom`. Express the relevant statement in the definitionally equal form `QuasiCompact (Spec.map _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Establish `h₅ : IsCommMonObj (splitTorusAff ZU.{0} (ULift.{0} ℤ))`. Establish `: Coalgebra.IsCocomm ZU.{0} (torusRing ZU.{0} (ULift.{0} ℤ))` using `inferInstanceAs (Coalgebra.IsCocomm ZU.{0} (AddMonoidAlgebra ZU.{0} (ULift.{0} ℤ)))`. Use `infer_instance`. Establish `sm : ∀ S : Scheme.{0}, Smooth (Gm S).hom` using `fun S => inferInstanceAs (Smooth (pullback.snd _ (toZ S)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gc : ∀ S : Scheme.{0}, GeometricallyConnected (Gm S).hom` using `fun S => inferInstanceAs (GeometricallyConnected (pullback.snd _ (toZ S)))`. Establish `qc : ∀ S : Scheme.{0}, QuasiCompact (Gm S).hom` using `fun S => inferInstanceAs (QuasiCompact (pullback.snd _ (toZ S)))`. Use `⟨inferInstanceAs (IsCommMonObj ((Over.pullback (toZ S)).obj _)), sm S, inferInstanceAs (IsSeparated (pullback.snd _ (toZ S))), qc S, gc S, fun Ω _ _ p => ?_⟩` and prove the remaining obligations. Take `⟨e, he, -⟩` from `splitTorus_baseChange S _ p (ULift.{0} ℤ)`. Use `⟨torusExtOfIso e { X := ULift.{0} ℤ B := 𝟙_ _ isAbelian := isAbelianScheme_unit _ q := toUnit _ q_hom := inferInstance q_flat := ?_ q_surjective := ?_ q_quasiCompact := ?_ i := 𝟙 _ i_hom := inferInstance isKernel := ?_ }⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `sm (Spec (.of Ω))` as an intermediate fact. Conclude with `inferInstanceAs (Flat (Gm (Spec (.of Ω))).hom)`. Use `gc (Spec (.of Ω))` as an intermediate fact. Conclude with `inferInstanceAs (Surjective (Gm (Spec (.of Ω))).hom)`. Conclude with `qc _`.
-
-Establish `: IsIso (η : 𝟙_ (Over (Spec (.of Ω))) ⟶ 𝟙_ _)`. Rewrite using `[toUnit_unique η (𝟙 _)]`. Use `infer_instance`. Conclude with `IsPullback.of_horiz_isIso ⟨toUnit_unique _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_Gm (S : Scheme.{0}) : IsSemiAbelian (Gm S) := by
   have h₁ := smooth_splitTorusAff
@@ -378,9 +376,9 @@ theorem isSemiAbelian_Gm (S : Scheme.{0}) : IsSemiAbelian (Gm S) := by
     exact IsPullback.of_horiz_isIso ⟨toUnit_unique _ _⟩
 
 /- English proof (translation)
-Use `(splitTorusPointsEquiv (Sp ℤ) (ULift.{0} ℤ) (𝟙_ _)).toEquiv.nontrivial_congr.2 ?_` and prove the remaining obligations. Use `⟨(zpowersHom _ (-1)).comp (AddEquiv.toMultiplicative (AddEquiv.ulift (α := ℤ))).toMonoidHom, 1, fun h => ?_⟩` and prove the remaining obligations. Establish `h₀` using `DFunLike.congr_fun h (Multiplicative.ofAdd (ULift.up 1))`. Express the relevant statement in the definitionally equal form `(-1 : Γ(Sp ℤ, ⊤)ˣ) ^ (1 : ℤ) = 1 at h₀`. Rewrite `h₀` using `[zpow_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₁ : (-1 : Γ(Sp ℤ, ⊤)) = 1` using `congrArg Units.val h₀`. Establish `h₂` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom.hom h₁`. Rewrite `h₂` using `[map_neg, map_one]`. Conclude with `absurd h₂ (by decide : (-1 : ℤ) ≠ 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_Gm_int : Nontrivial (𝟙_ (Over (Sp ℤ)) ⟶ Gm (Sp ℤ)) := by
   refine (splitTorusPointsEquiv (Sp ℤ) (ULift.{0} ℤ) (𝟙_ _)).toEquiv.nontrivial_congr.2 ?_
@@ -395,11 +393,11 @@ theorem nontrivial_Gm_int : Nontrivial (𝟙_ (Over (Sp ℤ)) ⟶ Gm (Sp ℤ)) :
   exact absurd h₂ (by decide : (-1 : ℤ) ≠ 1)
 
 /- English proof (translation)
-Set `U : (Sp ℤ).Opens` to `PrimeSpectrum.basicOpen (2 : ℤ)`. Establish `hU : Dense (U : Set (Sp ℤ))` using `U.isOpen.dense ⟨(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum ℤ), by`. Express the relevant statement in the definitionally equal form `(2 : ℤ) ∉ (⊥ : Ideal ℤ)`. Use the proof step `simp⟩`. Use `⟨inferInstance, GlobalTheory.IsNormalScheme.pred _, U, hU, fun h => ?_, isSemiAbelian_Gm _, nontrivial_Gm_int, fun F₀ hF₀ => ⟨inferInstance, F₀, ⟨hF₀, rfl⟩, fun F hF => ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₂ : (⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).2 Int.prime_two⟩ : PrimeSpectrum ℤ) ∈ PrimeSpectrum.basicOpen (2 : ℤ)`. Express the relevant statement in the definitionally equal form `_ ∈ U`. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `h₂ (Ideal.mem_span_singleton_self _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, _⟩` from `dense_open U hU`. Take `⟨_, _⟩` from `flat_and_isSeparated_of_isSemiAbelian _ (isSemiAbelian_Gm (Sp ℤ))`. Conclude with `pullback_map_injective U.ι _ _ hF.2`.
+A detailed English derivation is pending.
 -/
 theorem model_int : AlgebraicGeometry.IsNoetherian (Sp ℤ) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Sp ℤ) ∧
     ∃ U : (Sp ℤ).Opens, Dense (U : Set (Sp ℤ)) ∧ U ≠ ⊤ ∧ IsSemiAbelian (Gm (Sp ℤ)) ∧

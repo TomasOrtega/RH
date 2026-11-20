@@ -10,15 +10,13 @@ noncomputable section
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Set `L : MvPowerSeries (Fin d ⊕ Fin d) k →ₗ[k] (∀ n, G.A n ⊗[k] G.A n)` to `LinearMap.pi fun n => (c.ev₂ n).toLinearMap`. Set `S : Submodule k (MvPowerSeries (Fin d ⊕ Fin d) k)` to `G.cocycles.comap L`. Set `T₀ : S →ₗ[k] G.cocycles` to `L.restrict (fun x hx => hx)`. Take `⟨T, hT⟩` from `LinearMap.exists_extend T₀`. Establish `hU` using `(GlobalTheory.T.invariantDifferentials_connectedPDivGroup_coordinates p k d G c).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `U : (Fin d → k) →ₗ[k] G.omega` to `{ toFun := fun w => ⟨fun n => ∑ i, w i • dUnit k (c.x n i), hU w⟩ map_add' := fun a b => Subtype.ext (funext fun n => by`. Simplify using `[add_smul, Finset.sum_add_distrib])`. Use the proof step `map_smul' := fun r a => Subtype.ext (funext fun n => by`. Simplify using `[Finset.smul_sum, smul_smul]) }`. Use `⟨G.rigMk ∘ₗ T.prodMap U, fun s w z u hz hu => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : s ∈ S`. Express the relevant statement in the definitionally equal form `L s ∈ G.cocycles`. Establish `: L s = z.1` using `funext fun n => (hz n).symm`. Rewrite using `[this]`. Conclude with `z.2`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : T s = z`. Use `LinearMap.congr_fun hT ⟨s, hs⟩` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at this`. Rewrite using `[this]`. Conclude with `Subtype.ext (funext fun n => (hz n).symm)`.
-
-Establish `h2 : U w = u` using `Subtype.ext (funext fun n => (hu n).symm)`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rigMap (p : ℕ) (k : Type) [Field k] (d : ℕ) (G : PDivGroup p k) (c : Chart G d) :
     ∃ ρ : MvPowerSeries (Fin d ⊕ Fin d) k × (Fin d → k) →ₗ[k] G.RigExt,

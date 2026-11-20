@@ -11,13 +11,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hHS k _ X _ p D hX P a b a' b' M α hM hamp hsemi hself`. Take `⟨N, hN⟩` from `GlobalTheory.T.exists_hermitianRepresentative_integerCombination k X p P a' b'`. Take `⟨Q, hQL, hQA, hQB⟩` from `GlobalTheory.T.exists_hermPairSections_change_of_isometric_combinations k X p P a b a' b' M N hM hN`. Establish `hamp' : IsAmpleLB Q.L.B` using `by rw [hQL]; exact hamp`. Establish `hsemi' : Q.L.SemiPos D` using `by rw [hQL]; exact hsemi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hself' : Q.L.IsSelfInter α` using `by rw [hQL]; exact hself`. Take `⟨t₀, ht⟩` from `hHS k X p D hX Q α hamp' hsemi' hself'`. Use `⟨t₀, fun t htt => ?_⟩` and prove the remaining obligations. Establish `hlc : ∀ m : ℕ, Q.lc m 1 (Real.exp (t * m)) = P.lc (m * a + a') (m * b + b') (Real.exp (t * m))`. Introduce `m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pair.lc]`. Rewrite using `[hQB, one_mul, one_mul]`. Establish `e : (α + ((D : ℝ) + 1) * t * gdeg Q.L D) / ((D + 1).factorial : ℝ) = α / (D + 1).factorial + (((D : ℝ) + 1) * gdeg M D / (D + 1).factorial) * t`. Rewrite using `[hQL]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h` using `ht t htt`. Rewrite `h` using `[e]`. Simplify `h` using `only [hlc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ampleHS_pair : AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ),
     IsArithVar p D → ∀ (P : Pair p) (a b a' b' : ℤ) (M : HermLB p) (α : ℝ), P.Rep a b M → IsAmpleLB M.B →

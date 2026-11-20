@@ -27,7 +27,7 @@ def locSp : Formalism.L2.SG.CntLocal.LocSp D Z.M where
   bc_form p := baseChangeAt_form Z.M p (Z.hcj p)
 
 /- English proof (translation)
-Apply `eq_of_locP` to reduce the goal to its premises. Introduce `P`. Conclude with `(locEqC_holds D Z (P.under (𝓞 D.host.F)) A B hA hB).1 (h _) P rfl`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem eq_of_latP {A B : LV D} (hA : A.FG) (hB : B.FG) (h : ∀ p, lattice₂ D Z.M p A = lattice₂ D Z.M p B) : A = B := by
   apply eq_of_locP
@@ -35,9 +35,9 @@ theorem eq_of_latP {A B : LV D} (hA : A.FG) (hB : B.FG) (h : ∀ p, lattice₂ D
   exact (locEqC_holds D Z (P.under (𝓞 D.host.F)) A B hA hB).1 (h _) P rfl
 
 /- English proof (translation)
-Establish `e : Λ ⊔ Submodule.span (𝓞 D.host.E) {x} = Λ`. Use `eq_of_latP Z (hΛ.sup (Submodule.fg_span_singleton x)) hΛ fun p => ?_` and prove the remaining obligations. Rewrite using `[BBTie.latP_sup, BBTie.latP_span, sup_eq_left, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl, rfl⟩`. Conclude with `h p`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Conclude with `Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_bcP {Λ : LV D} (hΛ : Λ.FG) {x : (VS D).V} (h : ∀ p, baseChange₂ D p x ∈ lattice₂ D Z.M p Λ) : x ∈ Λ := by
   have e : Λ ⊔ Submodule.span (𝓞 D.host.E) {x} = Λ := by
@@ -49,24 +49,22 @@ theorem mem_of_bcP {Λ : LV D} (hΛ : Λ.FG) {x : (VS D).V} (h : ∀ p, baseChan
   exact Submodule.mem_sup_right (Submodule.mem_span_singleton_self x)
 
 /- English proof (translation)
-Simplify using `[Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dual_iff (Λ : LV D) (x : (VS D).V) :
     x ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT Λ ↔ ∀ y ∈ Λ, (VS D).hT y x ∈ (1 : Submodule (𝓞 D.host.E) D.host.E) := by
   simp [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `hf : ∀ p x y, (locH Z p).h (baseChange₂ D p x) (baseChange₂ D p y) = (D.s.atP p).ιE ((VS D).hT y x)` using `fun p x y => baseChangeAt_form Z.M p (Z.hcj p) x y`. Use extensionality with `x`. Rewrite using `[mem_dual_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_of_bcP Z hΛ fun p => ((hloc p).2.2 _).2 fun w hw => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `LocFacts₂ Z.M p (baseChange₂ D p x) w ∈ _`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨y, hy, rfl⟩` from `hw`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(locH Z p).h _ _ ∈ _`. Rewrite using `[hf]`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (h y hy)`. Rewrite using `[← ho]`. Conclude with `BBTie.bt_iota_int Z p o`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [LocFacts.localForm_zero_right]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => rw [LocFacts.localForm_add_right]`. Conclude with `add_mem ha hb`. Consider the case `smul o w _ hw`.
+Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `LocFacts₂ Z.M p (baseChange₂ D p x) ((o : (D.s.atP p).Ep) • w) ∈ _`. Rewrite using `[LocFacts.localForm_smul_right]`. Conclude with `mul_mem (LocFacts.lf_cjM_mem Z p _ o.2) hw`. Introduce `hx y hy`. Use `DualityBasisChange.locGlobIntE D _ fun p => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hf, ← (Z.agree p).2.2.2.1]`. Conclude with `((hloc p).2.2 (baseChange₂ D p x)).1 (Submodule.subset_span ⟨x, hx, rfl⟩) (baseChange₂ D p y) (Submodule.subset_span ⟨y, hy, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unimod_of_loc {Λ : LV D} (hΛ : Λ.FG) (hloc : ∀ p, (locH Z p).IsSelfDual (lattice₂ D Z.M p Λ)) :
     Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ := by
@@ -102,11 +100,11 @@ variable (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) {T T' : D.host.E}
   (G : LFlag (VS D) D.R.rS T) (G' : LFlag (VS D) D.R.rS T')
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Unfold `Loc.HermSp.MMfam`. Consider the cases of `hs : (Z.M p).split with`. Consider the case `none`. Rewrite using `[DualityBasisChange.locFam_none (locSp Z) p G.fl G' hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `rcases b with a | a <;> rfl`. Consider the case `some g`. Break down `b with a | a` into its components or cases. Rewrite using `[DualityBasisChange.locFam_some_inl (locSp Z) p G.fl G' hs]`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[DualityBasisChange.locFam_some_inr (locSp Z) p G.fl G' hs]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mmfam_eq (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
     (locH Z p).MMfam (tm FP G G' p Λ) = DualityBasisChange.locFam (locSp Z) Z.δ p G.fl G' := by
@@ -122,7 +120,7 @@ theorem mmfam_eq (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
     · rw [DualityBasisChange.locFam_some_inr (locSp Z) p G.fl G' hs]; rfl
 
 /- English proof (translation)
-Rewrite using `[mmfam_eq]`. Conclude with `DualityBasisChange.span_locFam Z.agree (locSp Z) p G.fl G'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_mmfam (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
     Submodule.span (Z.M p).L.O (Set.range ((locH Z p).MMfam (tm FP G G' p Λ))) =
@@ -131,13 +129,13 @@ theorem span_mmfam (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
   exact DualityBasisChange.span_locFam Z.agree (locSp Z) p G.fl G'
 
 /- English proof (translation)
-Rewrite using `[R3.MMof_eq]`. Conclude with `R3.BB_latIn D G.fl G'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mmof_latIn : IsLatIn (UPair D G.fl G') (MMof D G.fl G') := by
   rw [R3.MMof_eq]; exact R3.BB_latIn D G.fl G'
 
 /- English proof (translation)
-Rewrite using `[← BBTie.bt_spanEp_spanO Z p, span_mmfam, lattice₂, BBTie.bt_spanEp_spanO Z p, ← (mmof_latIn G G').2, BBTie.bt_spanEp_spanE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spanE_mmfam (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
     Submodule.span (D.s.atP p).Ep (Set.range ((locH Z p).MMfam (tm FP G G' p Λ))) =
@@ -146,13 +144,13 @@ theorem spanE_mmfam (p : PlF D) (Λ : Submodule (Z.M p).L.O (Vp D p)) :
     BBTie.bt_spanEp_spanE]
 
 /- English proof (translation)
-Introduce `D Z FP u u' G G' _ Λ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hU, hM⟩`. Use `⟨hL, fun p => ?_⟩` and prove the remaining obligations. Establish `hle : lattice₂ D Z.M p (MMof D G.fl G') ≤ lattice₂ D Z.M p Λ` using `BBTie.latP_mono Z p (hM ▸ inf_le_left)`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨BBTie.bt_selfDual Z (locUnimodC_holds D Z) p Λ hL hU, fun i => hle ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← span_mmfam Z FP G G' p (lattice₂ D Z.M p Λ)]`. Conclude with `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[BBTie.bt_bbne_iff Z p (locSatC_holds D Z) (tm FP G G' p (lattice₂ D Z.M p Λ)) Λ (MMof D G.fl G') (UPair D G.fl G') hL.fg rfl (span_mmfam Z FP G G' p _) (spanE_mmfam Z FP G G' p _) hle, not_not]`. Conclude with `congrArg _ hM`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨hL, h⟩`. Use `⟨hL, unimod_of_loc Z hL.fg fun p => (h p).1, ?_⟩` and prove the remaining obligations. Use `eq_of_latP Z (Submodule.FG.of_le hL.fg inf_le_left) (mmof_latIn G G').1 fun p => ?_` and prove the remaining obligations. Establish `hle : lattice₂ D Z.M p (MMof D G.fl G') ≤ lattice₂ D Z.M p Λ`. Rewrite using `[← span_mmfam Z FP G G' p (lattice₂ D Z.M p Λ), Submodule.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(h p).2.1 i`. Establish `h3` using `(h p).2.2`. Rewrite `h3` using `[BBTie.bt_bbne_iff Z p (locSatC_holds D Z) (tm FP G G' p (lattice₂ D Z.M p Λ)) Λ (MMof D G.fl G') (UPair D G.fl G') hL.fg rfl (span_mmfam Z FP G G' p _) (spanE_mmfam Z FP G G' p _) hle, not_not]`. Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_iff_local : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)), LinearIndependent D.host.E (Sum.elim (frame G) (frame G')) → ∀ Λ : LV D, Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') (Formalism.L2.SG.Pf.Cnt.MMof D G.fl G') ↔ Submodule.IsLattice D.host.E Λ ∧ ∀ p, (locH Z p).IsSelfDual (lattice₂ D Z.M p Λ) ∧ (∀ i, (locH Z p).MMfam (tm FP G G' p (lattice₂ D Z.M p Λ)) i ∈ lattice₂ D Z.M p Λ) ∧ ¬ LocNG.BBne (H := locH Z p) (tm FP G G' p (lattice₂ D Z.M p Λ)) := by
   intro D Z FP u u' G G' _ Λ

@@ -12,11 +12,11 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.RootSumWeights
 
 /- English proof (translation)
-Establish `key : ∀ P : Polynomial F, ∃ g : Fin n → ℂ, P.Monic → P.natDegree = n → (P.map τ).roots = Finset.univ.val.map g`. Introduce `P`. Distinguish the cases in `h : P.Monic ∧ P.natDegree = n`. Establish `hc : (P.map τ).roots.toList.length = n`. Rewrite using `[Multiset.length_toList, ← (IsAlgClosed.splits (P.map τ)).natDegree_eq_card_roots, h.1.natDegree_map, h.2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨l, hl, hl'⟩ : ∃ l : List ℂ, l.length = n ∧ (P.map τ).roots = (l : Multiset ℂ)` from `⟨_, hc, (Multiset.coe_toList _).symm⟩`. Substitute `hl` using the available equality. Conclude with `⟨l.get, fun _ _ => by rw [Fin.univ_val_map, List.ofFn_get, hl']⟩`. Conclude with `⟨0, fun h1 h2 => absurd ⟨h1, h2⟩ h⟩`. Use `choose g hg using key`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun i P => g P i, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_root_enum {F : Type} [Field F] (τ : F →+* ℂ) (n : ℕ) :
     ∃ sel : Fin n → Polynomial F → ℂ, ∀ P : Polynomial F, P.Monic → P.natDegree = n →
@@ -37,33 +37,29 @@ theorem exists_root_enum {F : Type} [Field F] (τ : F →+* ℂ) (n : ℕ) :
   exact ⟨fun i P => g P i, hg⟩
 
 /- English proof (translation)
-Introduce `hmove hcount hfin p _ G ha hn v hv c L f hf hreg K' f' hf' h0`. Rewrite using `[hcount p G ha v hv c L f hf hreg K' f' hf']`. Take `⟨sel, hsel⟩` from `exists_root_enum v.embedding G.n`. Establish `hmon : ∀ x : G.C, (minpoly G.F x).Monic` using `fun x => minpoly.monic (Algebra.IsIntegral.isIntegral x)`. Establish `hmem : ∀ P : Polynomial G.F, P.Monic → P.natDegree = G.n → ∀ μ : ℂ, P.eval₂ v.embedding μ = 0 ↔ ∃ i, sel i P = μ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P hm hd μ`. Rewrite using `[← Polynomial.eval_map, ← Polynomial.IsRoot.def, ← Polynomial.mem_roots (hm.map _).ne_zero, hsel P hm hd]`. Simplify using the standard rewrite rules. Establish `hIs : ∀ i, IsSel G (sel i)`. Introduce `i w hw P hm hd`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : Fintype.card {w : InfinitePlace G.F // sigPosH (G.gram_herm w) = 1} = 1` using `ha`. Take `⟨u, hu⟩` from `Fintype.card_eq_one_iff.1 hc`. Establish `hwv : w = v` using `congrArg Subtype.val ((hu ⟨w, hw⟩).trans (hu ⟨v, hv⟩).symm)`. Substitute `hwv` using the available equality. Conclude with `(hmem P hm hd _).2 ⟨i, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hF` using `hfin p G ha L f K' f' hf hf'`. Establish `hL : markSumC G c L.K.toSubgroup f K' f' = ∑ i, markedSumIrr G (fun P => c P (sel i P)) (sel i) L.K.toSubgroup f 1 K' f'`. Unfold `markSumC markedSumIrr`. Rewrite using `[← finsum_sum_comm]`. Use `finsum_congr fun q => ?_ set P : Pair G := Quot.out q` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : ∃ μ, P.Mark μ`. Rewrite using `[dif_pos hm]`. Distinguish the cases in `hi : Irreducible P.pol`. Establish `hμ` using `hm.choose_spec`. Take `⟨j, hj⟩` from `(hmem P.pol (hmon _) P.reg.1 _).1 (mark_isRoot_pol p G P _ ha hμ v hv)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnd : (Finset.univ.val.map fun i => sel i P.pol).Nodup`. Rewrite using `[← hsel P.pol (hmon _) P.reg.1]`. Conclude with `Polynomial.nodup_roots (P.reg.2.map)`. Establish `hinj` using `Multiset.inj_on_of_nodup_map hnd`. Rewrite using `[Finset.sum_eq_single j]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ⟨hi, hj ▸ hμ⟩] beta_reduce`. Rewrite using `[hj]`. Introduce `i _ hij`. Rewrite using `[if_neg]`. Introduce and unpack `⟨-, hi'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hij (hinj i (Finset.mem_univ_val i) j (Finset.mem_univ_val j) ((Pair.mark_unique p G P _ _ ha hi' hμ).trans hj.symm))`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[h0 P hm hi, mul_zero]`. Conclude with `(Finset.sum_eq_zero fun i _ => if_neg fun h => hi h.1).symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[dif_neg hm]`. Conclude with `(Finset.sum_eq_zero fun i _ => if_neg fun h => hm ⟨_, h.2⟩).symm`. Introduce `i _`. Use `hF.subset fun q hq => ?_` and prove the remaining obligations. Rewrite `hq` using `[Function.mem_support]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs at hq with h`. Conclude with `⟨⟨_, h.2⟩, right_ne_zero_of_mul hq⟩`. Conclude with `absurd rfl hq`. Establish `hD : {q : DCls G | Irreducible (Quot.out q).pol ∧ (Quot.out q).term L.K.toSubgroup f 1 K' f' ≠ 0}.Finite`. Take `⟨e, he⟩` from `cls_equiv_dcls_irr p G ha hn _ (hIs ⟨0, G.n_pos⟩)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `h1` using `(hF.preimage (f := fun q : {q : Cls G // Irreducible (Quot.out q).pol ∧ (Quot.out q).Mark (sel ⟨0, G.n_pos⟩ (Quot.out q).pol)} => q.1) Subtype.val_injective.injOn).image fun q => (e q).1`. Use `h1.subset fun d hd => ⟨e.symm ⟨d, hd.1⟩, ⟨⟨_, (e.symm ⟨d, hd.1⟩).2.2⟩, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[← (he _).2 L.K.toSubgroup f 1 K' f' one_pos hf.2.2.1 hf'.2.2.1, Equiv.apply_symm_apply]`. Conclude with `hd.2`. Rewrite using `[hL, Finset.sum_congr rfl fun i _ => hmove p G ha hn _ _ (hIs i) L.K.toSubgroup f 1 K' f' one_pos hf.2.2.1 hf'.2.2.1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `dSumIrr`. Rewrite using `[← finsum_sum_comm]`. Use `finsum_congr fun q => ?_ set Q : DPair G := Quot.out q` and prove the remaining obligations. Distinguish the cases in `hi : Irreducible Q.pol`. Simplify using `only [if_pos hi]`.
-
-Rewrite using `[← Finset.sum_mul, rootSum, hsel Q.pol (hmon _) Q.reg.1, Multiset.map_map]`. Both sides reduce to the same expression. Simplify using `only [if_neg hi, Finset.sum_const_zero]`. Introduce `i _`. Use `hD.subset fun q hq => ?_` and prove the remaining obligations.
-
-Rewrite `hq` using `[Function.mem_support]`. Use `split_ifs at hq with h`. Conclude with `⟨h, right_ne_zero_of_mul hq⟩`. Conclude with `absurd rfl hq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem markWeightedFixedPoint_definitePair_odd_of_counts : GlobalTheory.LKDef.MoveDefInv → GlobalTheory.RootSumWeights.CxCountRegMark → GlobalTheory.RootSumWeights.FinitelyManyMarkedClassesTermDegreeOne → GlobalTheory.RootSumWeights.MarkWeightedFixedPointEqDefinitePairOdd := by
   intro hmove hcount hfin p _ G ha hn v hv c L f hf hreg K' f' hf' h0

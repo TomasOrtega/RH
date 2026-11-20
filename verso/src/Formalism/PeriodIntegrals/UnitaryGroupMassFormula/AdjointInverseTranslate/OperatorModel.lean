@@ -21,7 +21,7 @@ def mExt (φ : {x : Matrix (Fin n) (Fin n) ℂ // inUH H x} → E) : Matrix (Fin
   fun x => if h : inUH H x then φ ⟨x, h⟩ else 0
 
 /- English proof (translation)
-Unfold `mExt`. Rewrite using `[dif_pos hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma mExt_pos {φ : {x : Matrix (Fin n) (Fin n) ℂ // inUH H x} → E} {x : Matrix (Fin n) (Fin n) ℂ}
     (hx : inUH H x) : mExt φ x = φ ⟨x, hx⟩ := by
@@ -29,7 +29,7 @@ lemma mExt_pos {φ : {x : Matrix (Fin n) (Fin n) ℂ // inUH H x} → E} {x : Ma
   rw [dif_pos hx]
 
 /- English proof (translation)
-Unfold `SmoothOnH`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma m_smooth_zero : SmoothOnH H (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) := by
   unfold SmoothOnH
@@ -37,7 +37,7 @@ lemma m_smooth_zero : SmoothOnH H (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)
   exact ⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Simplify using `[EabH, RdV]`.
+Simplify using the standard rewrite rules.
 -/
 lemma m_eabH_zero (a b : Fin n) (x : Matrix (Fin n) (Fin n) ℂ) :
     EabH H a b (fun _ : Matrix (Fin n) (Fin n) ℂ => (0 : E)) x = 0 := by
@@ -86,9 +86,9 @@ lemma mE_apply (hH : HInvol H) (a b : Fin n) (φ : mSub H E) (x : {x : Matrix (F
       EabH H a b (mExt φ.1) x.1 := rfl
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `key : ∀ (a b c d : Fin n) (φ : mSub H E) (x : {x : Matrix (Fin n) (Fin n) ℂ // inUH H x}), (mE hH a b (mE hH c d φ)).1 x = EabH H a b (EabH H c d (mExt φ.1)) x.1`. Introduce `a b c d φ x`. Rewrite using `[mE_apply]`. Conclude with `eab_h_local n H E _ _ a b x.1 hH (fun y hy => by rw [mExt_pos hy, mE_apply]) x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ext (fun φ => Subtype.ext (funext (fun x => ?_)))` and prove the remaining obligations. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, Pi.sub_apply]`. Rewrite using `[key, key, AAInvW.conjugated_generator_gl_relation n H E (mExt φ.1) a b c d x.1 hH φ.2 x.2]`. Apply the tactic sequence `split_ifs <;> simp [mE_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma mE_gl (hH : HInvol H) : GlRel (mE (E := E) hH) := by
   intro a b c d
@@ -106,9 +106,9 @@ def mRel (G : Matrix (Fin n) (Fin n) ℂ → E) (ψ : mSub H E) : Prop :=
   SmoothOnH H G ∧ ∀ (y : Matrix (Fin n) (Fin n) ℂ) (hy : inUH H y), G y = ψ.1 ⟨y, hy⟩
 
 /- English proof (translation)
-Take `⟨hs, hv⟩` from `h`. Establish `hE : SmoothOnH H (EabH H a b G)` using `eab_h_smooth n H E G a b hH hs`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hab : a = b`. Conclude with `smooth_local n H E _ _ (fun x _ => by simp only [Formalism.QuantumDeterminants.Top, if_pos hab]; exact add_comm _ _) (smooth_linear' n H E _ _ v hE hs)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `smooth_local n H E _ _ (fun x _ => by simp only [Formalism.QuantumDeterminants.Top, if_neg hab, zero_add]) hE`. Introduce `y hy`. Establish `h1 : EabH H a b G y = EabH H a b (mExt ψ.1) y` using `eab_h_local n H E _ _ a b y hH (fun x hx => by rw [hv x hx, mExt_pos hx]) hy`. Simplify using `only [Formalism.QuantumDeterminants.Top, Tm, LinearMap.add_apply, Submodule.coe_add, Pi.add_apply, mE_apply, h1, hv y hy]`. Apply the tactic sequence `split_ifs <;> simp [Module.algebraMap_end_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 lemma mRel_top (hH : HInvol H) {G : Matrix (Fin n) (Fin n) ℂ → E} {ψ : mSub H E} (h : mRel G ψ)
     (v : ℂ) (a b : Fin n) : mRel (Formalism.QuantumDeterminants.Top (EabH H) v a b G) (Tm (mE hH) v a b ψ) := by
@@ -128,7 +128,7 @@ lemma mRel_top (hH : HInvol H) {G : Matrix (Fin n) (Fin n) ℂ → E} {ψ : mSub
     split_ifs <;> simp [Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h`. Consider the case `cons p l ih`. Simplify using `only [List.map_cons, List.foldr_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `mRel_top hH ih _ _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mRel_fold (hH : HInvol H) (l : List (Fin n × Fin n × ℂ)) {f : Matrix (Fin n) (Fin n) ℂ → E}
     {ψ : mSub H E} (h : mRel f ψ) :
@@ -141,11 +141,11 @@ lemma mRel_fold (hH : HInvol H) (l : List (Fin n × Fin n × ℂ)) {f : Matrix (
     exact mRel_top hH ih _ _ _
 
 /- English proof (translation)
-Establish `hc : mRel f (mCls (H` using `H) f) := by`. Use `⟨hf, fun y hy => ?_⟩` and prove the remaining obligations. Unfold `mCls`. Rewrite using `[dif_pos hf]`. Unfold `qminorOp qminor`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.sum_apply, LinearMap.sum_apply, Submodule.coe_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Module.End.mul_apply]`. Establish `hfold` using `(mRel_fold hH (List.ofFn fun k : Fin t => (a (σ k), b k, u - ((k : ℕ) : ℂ))) hc).2 g hg`. Simplify using `only [List.map_ofFn, Function.comp_def] at hfold`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfold]`. Simplify using `[Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma mQminor (hH : HInvol H) (t : ℕ) (a b : Fin t → Fin n) (u : ℂ) (f : Matrix (Fin n) (Fin n) ℂ → E)
     (g : Matrix (Fin n) (Fin n) ℂ) (hg : inUH H g) (hf : SmoothOnH H f) :
@@ -173,9 +173,9 @@ def mRho (hH : HInvol H) (s : Matrix (Fin n) (Fin n) ℂ) (hs : inUH H s) : Modu
   map_smul' c φ := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext (fun φ => Subtype.ext (funext (fun x => ?_)))` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, mE_apply]`. Establish `h1 : EabH H a b (mExt (mRho hH s hs φ).1) x.1 = EabH H a b (fun y => mExt φ.1 (y * s)) x.1` using `eab_h_local n H E _ _ a b x.1 hH (fun y hy => by show mExt _ y = mExt _ (y * s)`. Rewrite using `[mExt_pos hy, mExt_pos (ana_mul hy hs)]`. Use the proof step `rfl) x.2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, AAInvW.eab_h_right n H E (mExt φ.1) a b s x.1 hH φ.2 hs x.2]`. Use `show _ = ((∑ c, ∑ d, (s⁻¹ c a * s b d) • mE hH c d) φ).1 ⟨x.1 * s, ana_mul x.2 hs⟩`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, mE_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma mE_rho (hH : HInvol H) (s : Matrix (Fin n) (Fin n) ℂ) (hs : inUH H s) (a b : Fin n) :
     mE (E := E) hH a b * mRho hH s hs = mRho hH s hs * ∑ c, ∑ d, (s⁻¹ c a * s b d) • mE hH c d := by
@@ -194,13 +194,13 @@ lemma mE_rho (hH : HInvol H) (s : Matrix (Fin n) (Fin n) ℂ) (hs : inUH H s) (a
 end Model
 
 /- English proof (translation)
-Unfold `OpModel`. Introduce `E _ _ n H hH`. Use `⟨mSub H E, mCls (H := H), mE hH, mE_gl hH, ?_, ?_⟩` and prove the remaining obligations. Introduce `t a b u f g hg hf`. Conclude with `mQminor hH t a b u f g hg hf`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `⟨mRho hH s hs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Establish `hf' : SmoothOnH H (fun x => f (x * s))` using `smooth_right' n H E f s hH hs hf`. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Unfold `mCls`. Rewrite using `[dif_pos hf', dif_pos hf]`. Both sides reduce to the same expression. Introduce `ψ y hy y' hy' hyy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hyy` using the available equality. Both sides reduce to the same expression. Introduce `a b`. Conclude with `mE_rho hH s hs a b`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem operator_model : OpModel := by
   unfold OpModel

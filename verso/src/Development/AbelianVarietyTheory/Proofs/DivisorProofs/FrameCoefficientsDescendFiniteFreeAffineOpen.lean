@@ -15,13 +15,13 @@ namespace GlobalTheory.FrameCoeff
 variable {R R₁ : Type} [CommRing R] [CommRing R₁]
 
 /- English proof (translation)
-Use `letI := ρ₁.toAlgebra`. Establish `hs : ∀ (c : R) (x : R₁), c • x = ρ₁ c * x` using `fun c x => by`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Establish `hli : LinearIndependent R b`. Use `Fintype.linearIndependent_iff.2 fun g hg i => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (0 : R₁) = ∑ l, ρ₁ (g l) * b l`. Rewrite using `[← hg]`. Simplify using `only [hs]`. Establish `h2 : (0 : R₁) = ∑ l, ρ₁ ((0 : Fin d → R) l) * b l` using `by simp`. Conclude with `congrFun ((hb 0).unique h1 h2) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Module.Basis.mk hli ?_, Module.Basis.coe_mk _ _⟩` and prove the remaining obligations. Introduce `r _`. Take `⟨c, hc, -⟩` from `hb r`. Rewrite using `[hc]`. Use `Submodule.sum_mem _ fun l _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_basis (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
     (hb : ∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l) :
@@ -44,7 +44,7 @@ theorem exists_basis (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, rfl⟩)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold gs; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gs_zero0 {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y U 0 = 0 := by
   unfold gs; split_ifs <;> simp
@@ -52,15 +52,15 @@ theorem gs_zero0 {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens) : gs f y
 variable {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Use `letI := ρ₁.toAlgebra`. Take `⟨B, hB⟩` from `exists_basis ρ₁ b hb`. Establish `hg : ρ₁.Flat`. Establish `: Module.Free R R₁` using `Module.Free.of_basis B`. Conclude with `(inferInstance : Module.Flat R R₁)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra R Γ(X, V) := (GlobalTheory.AbLaw.cst f V).toAlgebra`. Take `⟨e, he⟩` from `GlobalTheory.FlatSec.exists_equiv_of_isPushout (R := R) (q.app V) (GlobalTheory.AbLaw.cst p (q ⁻¹ᵁ V)) (GlobalTheory.FlatSec.isPushout_app hg H hV.isCompact hV.isQuasiSeparated)`. Establish `hsum : ∀ a : Fin d → Γ(X, V), e (∑ l, B l ⊗ₜ[R] a l) = ∑ l, GlobalTheory.AbLaw.cst p (q ⁻¹ᵁ V) (b l) * (q.app V).hom (a l)`. Introduce `a`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [he, hB]`. Prove the components needed by the constructor for the conclusion. Introduce `t`. Use `⟨fun l => TensorProduct.equivFinsuppOfBasisLeft B (e.symm t) l, ?_⟩` and prove the remaining obligations. Rewrite using `[← hsum]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `TensorProduct.equivFinsuppOfBasisLeft_symm_apply B (TensorProduct.equivFinsuppOfBasisLeft B (e.symm t))`. Rewrite `h` using `[LinearEquiv.symm_apply_apply, Finsupp.sum_fintype _ _ (by simp)]`. Rewrite using `[← h, AddEquiv.apply_symm_apply]`. Introduce `a ha`. Rewrite `ha` using `[← hsum]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : ∑ l, B l ⊗ₜ[R] a l = 0` using `e.injective (ha.trans (map_zero e).symm)`. Use function extensionality and compare the values at `k`. Use `congrArg (fun w => TensorProduct.equivFinsuppOfBasisLeft B w k) h0` as an intermediate fact. Simplify `this` using `[map_sum, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul_apply, Module.Basis.repr_self, Finsupp.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem aff_coeff (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
     (hb : ∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l)
@@ -103,7 +103,7 @@ namespace GlobalTheory.FrameCoeff
 variable {R R₁ : Type} [CommRing R] [CommRing R₁] {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Establish `h1` using `gs_res (𝟙 Z) z (le_top : (⊤ : Z.Opens) ≤ p ⁻¹ᵁ ⊤) trivial ((p.app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom c))`. Establish `h2` using `gs_pull (𝟙 Z) p z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom c)`. Rewrite `h2` using `[Category.id_comp]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_cst_top (p : Z ⟶ Sp R₁) (z : Z) (c : R₁) :
     gs (𝟙 Z) z ⊤ (GlobalTheory.AbLaw.cst p ⊤ c) = gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom c) := by
@@ -113,7 +113,7 @@ theorem gs_cst_top (p : Z ⟶ Sp R₁) (z : Z) (c : R₁) :
   exact h1.trans h2
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FlatSec.gs_comb p q V z hz b a]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[gs_cst_top]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_comb_pt {d : ℕ} (b : Fin d → R₁) (p : Z ⟶ Sp R₁) (q : Z ⟶ X) (V : X.Opens) (z : Z) (hz : q z ∈ V)
     (a : Fin d → Γ(X, V)) :
@@ -124,7 +124,7 @@ theorem gs_comb_pt {d : ℕ} (b : Fin d → R₁) (p : Z ⟶ Sp R₁) (q : Z ⟶
   rw [gs_cst_top]
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hVU⟩` from `(TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hx`. Conclude with `⟨V, hV, hxV, hVU⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_aff (U : X.Opens) (x : X) (hx : x ∈ U) : ∃ V : X.Opens, IsAffineOpen V ∧ x ∈ V ∧ V ≤ U := by
   obtain ⟨V, hV, hxV, hVU⟩ := (TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens) hx
@@ -137,11 +137,11 @@ namespace GlobalTheory.FrameCoeff
 variable {R R₁ : Type} [CommRing R] [CommRing R₁] {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `l`. Apply `fn_ext` to reduce the goal to its premises. Introduce `x hx`. Take `⟨V, hV, hxV, hVU⟩` from `exists_aff U x hx`. Establish `h0` using `(aff_coeff ρ₁ b hb H hV).2 (fun l => GlobalTheory.AbLaw.rs X hVU (a l)) (fn_ext fun z hz => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[gs_comb_pt b p q V z hz, gs_zero0]`. Use `Eq.trans (Finset.sum_congr rfl fun l _ => ?_) (h z (hVU hz))` and prove the remaining obligations. Rewrite using `[gs_res q z hVU hz])`. Establish `e` using `congrFun h0 l`. Establish `e2` using `gs_res (𝟙 X) x hVU hxV (a l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.zero_apply] at e`. Rewrite using `[← e2]`. Use `erw [e]`. Rewrite using `[gs_zero0, gs_zero0]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_gen (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
     (hb : ∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l)
@@ -166,15 +166,13 @@ theorem inj_gen (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
   rw [gs_zero0, gs_zero0]
 
 /- English proof (translation)
-Use `choose V hV hxV hVU using fun x : U => exists_aff U x.1 x.2`. Establish `hle : ∀ x, q ⁻¹ᵁ V x ≤ q ⁻¹ᵁ U` using `fun x z hz => hVU x hz`. Use `choose c hc using fun x : U => (aff_coeff ρ₁ b hb H (hV x)).1 (GlobalTheory.AbLaw.rs Z (hle x) t)`. Establish `hcg : ∀ x z, q z ∈ V x → gs (𝟙 Z) z (q ⁻¹ᵁ U) t = ∑ l, gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (b l)) * gs q z (V x) (c x l)`. Introduce `x z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← gs_res (𝟙 Z) z (hle x) hz t, ← gs_comb_pt b p q (V x) z hz]`. Conclude with `congrArg _ (hc x)`. Establish `hcomp : ∀ l x y, GlobalTheory.AbLaw.rs X (inf_le_left : V x ⊓ V y ≤ V x) (c x l) = GlobalTheory.AbLaw.rs X (inf_le_right : V x ⊓ V y ≤ V y) (c y l)`. Introduce `l x y`. Use `sub_eq_zero.1 (inj_gen ρ₁ b hb H (V x ⊓ V y) (fun l => GlobalTheory.AbLaw.rs X inf_le_left (c x l) - GlobalTheory.AbLaw.rs X inf_le_right (c y l)) (fun z hz => ?_) l)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : ∀ l, gs q z (V x ⊓ V y) (GlobalTheory.AbLaw.rs X inf_le_left (c x l) - GlobalTheory.AbLaw.rs X inf_le_right (c y l)) = gs q z (V x) (c x l) - gs q z (V y) (c y l)` using `fun l => by`. Rewrite using `[gs_eq q z _ hz, map_sub, map_sub, ← gs_eq q z _ hz, ← gs_eq q z _ hz, gs_res q z _ hz, gs_res q z _ hz]`. Simplify using `only [e, mul_sub, Finset.sum_sub_distrib]`. Rewrite using `[← hcg x z hz.1, ← hcg y z hz.2, sub_self]`. Establish `hcov : U ≤ iSup V` using `fun x hx => TopologicalSpace.Opens.mem_iSup.2 ⟨⟨x, hx⟩, hxV ⟨x, hx⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose s hs using fun l => X.sheaf.existsUnique_gluing' V U (fun x => homOfLE (hVU x)) hcov (fun x => c x l) (fun x y => hcomp l x y)`. Use `⟨s, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hcg ⟨q z, hz⟩ z (hxV ⟨q z, hz⟩)]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← (hs l).1 ⟨q z, hz⟩]`.
-
-Conclude with `congrArg _ (gs_res q z (hVU ⟨q z, hz⟩) (hxV ⟨q z, hz⟩) (s l))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_gen (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
     (hb : ∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l)
@@ -218,13 +216,13 @@ namespace GlobalTheory.FrameCoeff
 variable {R R₁ : Type} [CommRing R] [CommRing R₁] {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hle : ∀ k, q ⁻¹ᵁ (O ⊓ L.U k) ≤ q ⁻¹ᵁ W ⊓ q ⁻¹ᵁ L.U k` using `fun k z hz => ⟨hOW hz.1, hz.2⟩`. Use `choose a ha using fun k => surj_gen ρ₁ b hb H (O ⊓ L.U k) (GlobalTheory.AbLaw.rs Z (hle k) (τ k).val)`. Establish `hτg : ∀ k z, q z ∈ O ⊓ L.U k → gs (𝟙 Z) z (q ⁻¹ᵁ W ⊓ q ⁻¹ᵁ L.U k) (τ k).val = ∑ l, gs p z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (b l)) * gs q z (O ⊓ L.U k) (a k l)`. Introduce `k z hz`. Rewrite using `[← gs_res (𝟙 Z) z (hle k) hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ha k z hz`. Use `⟨fun l k => a k l, fun l => ?_, fun z k hO hk => hτg k z ⟨hO, hk⟩⟩` and prove the remaining obligations. Introduce `x k k' hx hk hk'`. Establish `hV : O ⊓ L.U k ≤ L.U k` using `inf_le_right`. Establish `hW : O ⊓ L.U k' ≤ L.U k'` using `inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `inj_gen ρ₁ b hb H ((O ⊓ L.U k) ⊓ (O ⊓ L.U k')) (fun l => GlobalTheory.AbLaw.rs X inf_le_left (a k l) - GlobalTheory.AbLaw.rs X (inf_le_inf hV hW) (L.g k k').val * GlobalTheory.AbLaw.rs X inf_le_right (a k' l)) (fun z hz => ?_) l`. Establish `e` using `congrArg (gs (𝟙 X) x _) h0`. Rewrite `e` using `[GlobalTheory.FlatSec.gs_diff hV hW (a k l) (a k' l) (𝟙 X) x ⟨⟨hx, hk⟩, ⟨hx, hk'⟩⟩, gs_zero0]`. Conclude with `sub_eq_zero.1 e`. Establish `e1 : ∀ l, gs q z _ (GlobalTheory.AbLaw.rs X inf_le_left (a k l) - GlobalTheory.AbLaw.rs X (inf_le_inf hV hW) (L.g k k').val * GlobalTheory.AbLaw.rs X inf_le_right (a k' l)) = gs q z _ (a k l) - (gm q z (L.U k ⊓ L.U k') (L.g k k')).val * gs q z _ (a k' l)` using `fun l => GlobalTheory.FlatSec.gs_diff hV hW _ _ q z hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [e1, mul_sub, Finset.sum_sub_distrib]`. Establish `hfr` using `congrArg Units.val (hτ z k k' (hOW hz.1.1) hz.1.2 hz.2.2)`. Rewrite `hfr` using `[Units.val_mul, ← gs_unit (𝟙 Z) z (q ⁻¹ᵁ W ⊓ q ⁻¹ᵁ L.U k) ⟨hOW hz.1.1, hz.1.2⟩ (τ k), ← gs_unit (𝟙 Z) z (q ⁻¹ᵁ W ⊓ q ⁻¹ᵁ L.U k') ⟨hOW hz.1.1, hz.2.2⟩ (τ k'), hτg k z hz.1, hτg k' z hz.2]`. Rewrite using `[hfr, Finset.mul_sum, sub_eq_zero]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_gen (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
     (hb : ∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l)
@@ -267,7 +265,7 @@ theorem main_gen (ρ₁ : R →+* R₁) {d : ℕ} (b : Fin d → R₁)
 end GlobalTheory.FrameCoeff
 
 /- English proof (translation)
-Introduce `R R₁ _ _ ρ₁ d b hb X f L hL W O hOW hO τ hτ`. Conclude with `GlobalTheory.FrameCoeff.main_gen ρ₁ b hb (IsPullback.of_hasPullback f (spMap ρ₁)) L W O hOW τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FrameCoeff.frame_coeff : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] (ρ₁ : R →+* R₁) (d : ℕ) (b : Fin d → R₁), (∀ r : R₁, ∃! c : Fin d → R, r = ∑ l, ρ₁ (c l) * b l) → ∀ (X : Scheme.{0}) (f : X ⟶ Sp R) (L : LB X), L.IsLB → ∀ (W O : X.Opens), O ≤ W → IsAffineOpen O → ∀ (τ : ∀ k : L.ι, Γ((pullback f (spMap ρ₁)), (pullback.fst f (spMap ρ₁)) ⁻¹ᵁ W ⊓ (pullback.fst f (spMap ρ₁)) ⁻¹ᵁ L.U k)ˣ), FrameAlong L (pullback.fst f (spMap ρ₁)) ((pullback.fst f (spMap ρ₁)) ⁻¹ᵁ W) τ → ∃ s : Fin d → ∀ k : L.ι, Γ(X, O ⊓ L.U k), (∀ l, IsSecOver L O (s l)) ∧ ∀ (z : (pullback f (spMap ρ₁) : Scheme.{0})) (k : L.ι), (pullback.fst f (spMap ρ₁)) z ∈ O → (pullback.fst f (spMap ρ₁)) z ∈ L.U k → gs (𝟙 (pullback f (spMap ρ₁))) z ((pullback.fst f (spMap ρ₁)) ⁻¹ᵁ W ⊓ (pullback.fst f (spMap ρ₁)) ⁻¹ᵁ L.U k) (τ k).val = ∑ l, gs (pullback.snd f (spMap ρ₁)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of R₁)).inv.hom (b l)) * gs (pullback.fst f (spMap ρ₁)) z (O ⊓ L.U k) (s l k) := by
   intro R R₁ _ _ ρ₁ d b hb X f L hL W O hOW hO τ hτ

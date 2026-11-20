@@ -17,23 +17,21 @@ noncomputable section
 namespace GlobalTheory.ChartLevels
 
 /- English proof (translation)
-Establish `key : ∀ {k : Type} [Field k] (y : Matrix (Fin m) (Fin n) k), LinearIndependent k y.row ↔ ∀ c : Fin m → k, c ᵥ* y = 0 → c = 0`. Introduce `k _ y`. Rewrite using `[Fintype.linearIndependent_iff]`. Establish `h : ∀ c : Fin m → k, ∑ i, c i • y.row i = c ᵥ* y` using `fun c => by`. Use extensionality with `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Simplify using `only [h]`. Conclude with `⟨fun H c hc => funext (H c hc), fun H c hc i => congrFun (H c hc) i⟩`. Establish `inv : ∀ {k : Type} [Field k] (y : Matrix (Fin m) (Fin n) k), LinearIndependent k y.row → ∃ B : Matrix (Fin n) (Fin m) k, y * B = 1`. Introduce `k _ y hy`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[key]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.vecMulLinear y) (LinearMap.ker_eq_bot.2 fun a b hab => sub_eq_zero.1 (hy _ (by`. Rewrite using `[Matrix.sub_vecMul]`. Conclude with `sub_eq_zero.2 hab)))`. Use `⟨(LinearMap.toMatrix' g)ᵀ, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc : ∀ c : Fin m → k, c ᵥ* (y * (LinearMap.toMatrix' g)ᵀ) = c` using `fun c => by`. Rewrite using `[← Matrix.vecMul_vecMul, Matrix.vecMul_transpose, LinearMap.toMatrix'_mulVec]`. Conclude with `congrArg (fun f => f c) hg`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (hc (Pi.single i 1)) j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.single_one_vecMul]`. Rewrite `this` using `[Matrix.row_apply]`. Rewrite using `[this, Matrix.one_apply, Pi.single_apply]`. Simplify using `only [eq_comm]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hy`. Take `⟨B, hB⟩` from `inv y hy`. Rewrite using `[key]`. Introduce `c hc`. Establish `: c ᵥ* ((y.map ι) * B.map ι) = c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, hB, Matrix.map_one _ ι.map_zero ι.map_one, Matrix.vecMul_one]`. Rewrite `this` using `[← Matrix.vecMul_vecMul, hc, Matrix.zero_vecMul]`. Conclude with `this.symm`. Introduce `hy`. Rewrite `hy`, the goal using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c hc`. Establish `h1` using `hy (ι ∘ c) (funext fun j => by`. Rewrite using `[← RingHom.map_vecMul, hc]`. Use the proof step `simp)`. Use function extensionality and compare the values at `i`.
-
-Conclude with `ι.injective ((congrFun h1 i).trans ι.map_zero.symm)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem linIndep_rows_iff_map {k₁ k₂ : Type} [Field k₁] [Field k₂] (ι : k₁ →+* k₂) {m n : ℕ}
     (y : Matrix (Fin m) (Fin n) k₁) :
@@ -86,13 +84,13 @@ theorem linIndep_rows_iff_map {k₁ k₂ : Type} [Field k₁] [Field k₂] (ι :
 variable {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hx : Valued.v (x : Fv D.host.F v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 x.2`. Prove the components needed by the constructor for the conclusion. Introduce `hnu`. Use `lt_of_le_of_ne hx fun h1 => hnu ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : (x : Fv D.host.F v) ≠ 0` using `fun h => by`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hmem : (x : Fv D.host.F v)⁻¹ ∈ v.adicCompletionIntegers D.host.F` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (by rw [map_inv₀, h1, inv_one])`. Use `IsUnit.of_mul_eq_one (a := x) ⟨_, hmem⟩ (Subtype.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (x : Fv D.host.F v) * (x : Fv D.host.F v)⁻¹ = 1`. Conclude with `mul_inv_cancel₀ h0`. Introduce `hlt hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`. Establish `h2` using `congrArg (fun t : GlobalTheory.SplitHecke.Ov D v => Valued.v (t : Fv D.host.F v)) hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw1 : Valued.v (w : Fv D.host.F v) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 w.2`. Simplify using `only [MulMemClass.coe_mul, map_mul, OneMemClass.coe_one, map_one] at h2`. Establish `: Valued.v (x : Fv D.host.F v) * Valued.v (w : Fv D.host.F v) < 1` using `(mul_le_of_le_one_right' hw1).trans_lt hlt`. Rewrite `this` using `[h2]`. Conclude with `lt_irrefl _ this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_eq_zero_iff (x : GlobalTheory.SplitHecke.Ov D v) :
     IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v) x = 0 ↔ Valued.v (x : Fv D.host.F v) < 1 := by
@@ -120,7 +118,7 @@ theorem residue_eq_zero_iff (x : GlobalTheory.SplitHecke.Ov D v) :
     exact lt_irrefl _ this
 
 /- English proof (translation)
-Rewrite using `[resS, RingHom.coe_comp]`. Conclude with `(RingEquiv.surjective _).comp Ideal.Quotient.mk_surjective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resS_surjective (PP : Pl D.host.E) : Function.Surjective (resS D.host.F PP) := by
   rw [resS, RingHom.coe_comp]
@@ -131,7 +129,7 @@ end GlobalTheory.ChartLevels
 namespace GlobalTheory.ChartLevels
 
 /- English proof (translation)
-Unfold `prim`. Distinguish the cases in `h : LinearIndependent k₁ y.row`. Rewrite using `[if_pos h, if_pos ((linIndep_rows_iff_map ι y).1 h)]`. Rewrite using `[if_neg h, if_neg (mt (linIndep_rows_iff_map ι y).2 h)]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prim_map_eq {k₁ k₂ : Type} [Field k₁] [Field k₂] (ι : k₁ →+* k₂) {m n : ℕ}
     (y : Matrix (Fin m) (Fin n) k₁) : prim (y.map ι) = prim y := by
@@ -141,7 +139,7 @@ theorem prim_map_eq {k₁ k₂ : Type} [Field k₁] [Field k₂] (ι : k₁ →+
   · rw [if_neg h, if_neg (mt (linIndep_rows_iff_map ι y).2 h)]
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gl_map_inv_val {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {n : ℕ} (β : GL (Fin n) R) :
     ((Matrix.GeneralLinearGroup.map f β)⁻¹).1 = (β⁻¹).1.map f := by
@@ -153,9 +151,9 @@ end GlobalTheory.ChartLevels
 namespace GlobalTheory.ChartLevels
 
 /- English proof (translation)
-Introduce `y`. Establish `hL` using `(GlobalTheory.FinAdIdent.lamHat_good hβ (f := 1) ⟨mul_one 1, 1, by simp⟩).2`. Establish `hL' : ∀ x, x ∈ Formalism.L2.NTheta.LamHat V ↔ (fun a => Lev.swapAE D (x a)) ∈ Formalism.L2.Herm.hatL Λ` using `fun x => by simpa only [one_smul, one_mul] using hL x`. Use `(hL' _).trans ((hβ.1 _).trans (forall_congr' fun i => ?_))` and prove the remaining obligations. Establish `e2 : (fun a => Lev.swapAE D (finPart D (e * y a))) = toEAf D e • (fun a => toEAf D (y a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `a`. Rewrite using `[Pi.smul_apply, smul_eq_mul, ← RingHom.map_mul]`. Both sides reduce to the same expression. Establish `e4 : (φ ∘ fun a => toEAf D (y a)) = fun k => π (y k)` using `funext fun k => hφ (y k)`. Rewrite using `[e2, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, hint, RingHom.map_mulVec, e4, gl_map_inv_val]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_of_baseFrame {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
     (φ : Datum.EAf D →+* Fv D.host.F v) (hφ : ∀ a, φ (toEAf D a) = π a)
@@ -180,17 +178,17 @@ end GlobalTheory.ChartLevels
 namespace GlobalTheory.ChartLevels
 
 /- English proof (translation)
-Introduce `D e P v π he hπ`. Take `⟨φ, hφ, hres⟩` from `GlobalTheory.ThetaSupport.exists_chart_levels he hπ`. Take `⟨hi, -⟩` from `GlobalTheory.IdemRes.resS_idem_eq_one D e P he`. Establish `hπe : π e = 1` using `hπ.map_e he.1.1`. Establish `hint : ∀ N : Datum.EAf D, toEAf D e * N ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ GlobalTheory.SplitHecke.IsInt (GlobalTheory.SplitHecke.Ov D v) (φ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `N`. Take `⟨a, rfl⟩` from `GlobalTheory.AdjDatumNe.toEAf_surjective (D := D) N`. Rewrite using `[hφ, ← (hπ.2.2.2 a), ← RingHom.map_mul]`. Conclude with `⟨GlobalTheory.PlaceDatum.finPart_mem_of_toEAf, GlobalTheory.IdemRes.toEAf_mem_of_finPart⟩`. Use `⟨φ, hφ, hint, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hR : ∀ s : Formalism.L2.Herm.intAf D.host.F D.host.E, φ s ∈ v.adicCompletionIntegers D.host.F` using `fun s => GlobalTheory.SplitHecke.isInt_Ov.1 ((hint s).1 (mul_mem hi s.2))`. Set `φR : Formalism.L2.Herm.intAf D.host.F D.host.E →+* GlobalTheory.SplitHecke.Ov D v` to `(φ.comp (Formalism.L2.Herm.intAf D.host.F D.host.E).subtype).codRestrict (v.adicCompletionIntegers D.host.F) hR`. Set `ρ : Formalism.L2.Herm.intAf D.host.F D.host.E →+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)` to `(IsLocalRing.residue _).comp φR`. Establish `hker : RingHom.ker (resS D.host.F P) ≤ RingHom.ker ρ`. Introduce `s hs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hs`, the goal using `[RingHom.mem_ker]`. Conclude with `(residue_eq_zero_iff (φR s)).2 (hres s hs)`. Set `ι : kP P →+* IsLocalRing.ResidueField (GlobalTheory.SplitHecke.Ov D v)` to `(resS D.host.F P).liftOfRightInverse _ (Function.rightInverse_surjInv (resS_surjective P)) ⟨ρ, hker⟩`. Establish `hι : ∀ s, ι (resS D.host.F P s) = ρ s` using `fun s => RingHom.liftOfRightInverse_comp_apply _ _ _ _ s`. Introduce `m n N hN z hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : z.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v)) = (redM P N).map ι`. Use extensionality with `i j`. Establish `hzij : z i j = φR ⟨N i j, hN i j⟩` using `Subtype.ext (congrFun (congrFun hz i) j)`. Simplify using `only [Matrix.map_apply, redM, dif_pos (hN i j), hι, hzij]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(prim_map_eq ι _).symm`. Conclude with `frame_of_baseFrame φ hφ hint`.
+A detailed English derivation is pending.
 -/
 theorem chart_levels : ∀ (D : D7) (e : AE D) (P : Pl D.host.E) (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), IsIdemAt e P → GlobalTheory.SplitHecke.Chart e v π → ∃ φ : Datum.EAf D →+* Fv D.host.F v, (∀ a, φ (toEAf D a) = π a) ∧ (∀ N : Datum.EAf D, toEAf D e * N ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ↔ GlobalTheory.SplitHecke.IsInt (GlobalTheory.SplitHecke.Ov D v) (φ N)) ∧ (∀ (m n : ℕ) (N : Matrix (Fin m) (Fin n) (Datum.EAf D)), IsIntM N → ∀ z : Matrix (Fin m) (Fin n) (GlobalTheory.SplitHecke.Ov D v), z.map (algebraMap (GlobalTheory.SplitHecke.Ov D v) (Fv D.host.F v)) = N.map φ → prim (redM P N) = prim (z.map (IsLocalRing.residue (GlobalTheory.SplitHecke.Ov D v)))) ∧ ∀ (V : HSp D) (β : GL (Fin V.rank) (Datum.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), Lev.IsBaseFrame V β Λ 1 → GlobalTheory.SplitHecke.Frame V e π (Matrix.GeneralLinearGroup.map φ β) := by
   intro D e P v π he hπ

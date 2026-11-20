@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.StdProjChart
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `mem_range_map_fromSpec p (spMap σ) hU y (mem_ptsIn.1 hy)`. Take `⟨y1, hy1⟩` from `y`. Establish `hz1 : y1 = Spec.map (Spec.preimage z.1) ≫ hU.fromSpec`. Rewrite using `[Spec.map_preimage]`. Conclude with `(congrArg Subtype.val hz).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hz1` using the available equality. Establish `hvq : ∀ f : Γ(Y, U), ev p σ U f ⟨_, hy1⟩ = (Spec.preimage z.1).hom f`. Introduce `f`. Rewrite using `[ev_eq hy]`. Unfold `evHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h2` using `valMap_specMap_fromSpec hU (Spec.preimage z.1) hy`. Conclude with `congrArg (fun φ => CommRingCat.Hom.hom φ f) h2`. Use `⟨(Spec.preimage z.1).hom, fun a => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hvq]`. Conclude with `ev_algX hy a`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem exists_ringHom_eq_ofHom_of_mem_ptsIn {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k}
     {σ : k →+* ℂ} {U : Y.Opens} (hU : IsAffineOpen U) (y : CxPts p σ) (hy : y ∈ ptsIn p σ U) :
@@ -48,9 +46,9 @@ private theorem exists_ringHom_eq_ofHom_of_mem_ptsIn {k : Type} [CommRing k] {Y 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add P Q hP hQ`. Establish `hPQ` using `hP.add hQ`. Simplify using `only [MvPolynomial.eval₂_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hPQ`. Consider the case `mul_X P a hP`. Simplify using `only [MvPolynomial.eval₂_mul, MvPolynomial.eval₂_X]`. Conclude with `hP.mul ((EuclideanSpace.proj (𝕜 := ℂ) a).differentiable)`.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem differentiable_eval₂ {k : Type} [CommRing k] (σ : k →+* ℂ) {D : ℕ}
     (P : MvPolynomial (Fin D) k) :
@@ -66,25 +64,25 @@ private theorem differentiable_eval₂ {k : Type} [CommRing k] (σ : k →+* ℂ
     exact hP.mul ((EuclideanSpace.proj (𝕜 := ℂ) a).differentiable)
 
 /- English proof (translation)
-Set `Φ : MvPolynomial (Fin D) k ≃+* Γ(Y, U)` to `RingEquiv.ofBijective (MvPolynomial.eval₂Hom (algX p U) x) hx`. Establish `hΦC : ∀ c, Φ.symm (algX p U c) = MvPolynomial.C c`. Introduce `c`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `[Φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `hΦX : ∀ a, Φ.symm (x a) = MvPolynomial.X a`. Introduce `a`. Apply `Φ.injective` to reduce the goal to its premises. Simplify using `[Φ]`. Set `φv : V D → (Γ(Y, U) →+* ℂ)` to `fun v => (MvPolynomial.eval₂Hom σ (fun a => v.ofLp a)).comp Φ.symm.toRingHom`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hφC : ∀ v c, φv v (algX p U c) = σ c`. Introduce `v c`. Simplify using `[φv, hΦC]`. Establish `hφX : ∀ v a, φv v (x a) = v.ofLp a`. Introduce `v a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[φv, hΦX]`. Set `g : V D → CxPts p σ` to `fun v => ofHom hU (φv v) (hφC v)`. Set `f : CxPts p σ → V D` to `fun y => WithLp.toLp 2 (fun a => ev p σ U (x a) y)`. Establish `hg : ∀ v a, ev p σ U (x a) (g v) = v.ofLp a`. Introduce `v a`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [g, ev_ofHom, hφX]`. Establish `hfg : ∀ v, f (g v) = v`. Introduce `v`. Use extensionality with `a`. Simplify using `[f, hg]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hgf : ∀ y ∈ ptsIn p σ U, g (f y) = y`. Introduce `y hy`. Take `⟨ψ, hψ, rfl⟩` from `exists_ringHom_eq_ofHom_of_mem_ptsIn hU y hy`. Establish `he : φv (f (ofHom hU ψ hψ)) = ψ`. Apply `RingHom.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `t`. Take `⟨P, rfl⟩` from `Φ.surjective t`. Use `show (φv (f (ofHom hU ψ hψ))).comp (Φ : MvPolynomial (Fin D) k →+* Γ(Y, U)) P = ψ.comp (Φ : MvPolynomial (Fin D) k →+* Γ(Y, U)) P`. Use `congr 1`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Simplify using `[Φ, hφC, hψ]`. Introduce `a`. Simplify using `[Φ, hφX, f, ev_ofHom]`. Simplify using `only [g]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `hd` using `holo_of_affine hU isOpen_univ (s := g) (fun v _ => ofHom_mem hU _ _) (fun t => by`. Establish `: ev p σ U t ∘ g = fun v => MvPolynomial.eval₂ σ (fun a => v.ofLp a) (Φ.symm t)`. Use function extensionality and compare the values at `v`. Simplify using `[g, ev_ofHom, φv]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(differentiable_eval₂ σ _).differentiableOn)`. Set `e : OpenPartialHomeomorph (CxPts p σ) (V D)` to `{ toFun := f invFun := g source := ptsIn p σ U target := Set.univ map_source' := fun _ _ => Set.mem_univ _ map_target' := fun v _ => ofHom_mem hU _ _ left_inv' := hgf right_inv' := fun v _ => hfg v open_source := isOpen_ptsIn U open_target := isOpen_univ continuousOn_toFun := (Pi …`. Set `c : AlgChart p σ D` to `{ e := e U := U affine := hU x := x etale := RingHom.Etale.of_bijective hx source_subset := subset_rfl apply_eq := fun y _ a => rfl holo := hd.2 }`. Conclude with `⟨c, rfl, rfl, fun v a => hg v a⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_bijective {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ Sp k} (σ : k →+* ℂ) {D : ℕ}
     {U : Y.Opens} (hU : IsAffineOpen U) (x : Fin D → Γ(Y, U))
@@ -169,11 +167,9 @@ theorem exists_of_bijective {k : Type} [CommRing k] {Y : Scheme.{0}} {p : Y ⟶ 
   exact ⟨c, rfl, rfl, fun v a => hg v a⟩
 
 /- English proof (translation)
-Use `letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)`. Establish `h` using `ReciprocityTheory.AnForm.R.toSpecZero_appLE_basicOpen (ProjSpace.grading k N) (ProjSpace.X_mem k N i) one_pos`. Unfold `algX PSpace.str`. Rewrite using `[← CommRingCat.hom_comp]`. Rewrite using `[show ((HomogeneousLocalization.fromZeroRingHom (ProjSpace.grading k N) (Submonoid.powers (MvPolynomial.X i))).comp (algebraMap k (ProjSpace.grading k N 0))) = (CommRingCat.ofHom (algebraMap k (ProjSpace.grading k N 0)) ≫ CommRingCat.ofHom (HomogeneousLocalization.fromZeroRingHom …`.
+Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← CommRingCat.hom_comp]`. Use `congr 1`. Use `erw [Scheme.Hom.comp_appLE]`. Rewrite using `[← Category.assoc]`. Use `erw [← Scheme.ΓSpecIso_inv_naturality]`.
-
-Simplify using `only [Category.assoc]`. Conclude with `congrArg (fun t => CommRingCat.ofHom (algebraMap k (ProjSpace.grading k N 0)) ≫ t) h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem algX_chart (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 1)) :
     letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)
@@ -199,7 +195,7 @@ private theorem algX_chart (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 1)) :
   exact congrArg (fun t => CommRingCat.ofHom (algebraMap k (ProjSpace.grading k N 0)) ≫ t) h
 
 /- English proof (translation)
-Use `letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)`. Rewrite using `[GlobalTheory.ProjFrac.awayToSection_mk]`. Unfold `ProjSpace.ratio ProjSpace.ratioOn`. Apply `GlobalTheory.ProjFrac.frac_eq` to reduce the goal to its premises. Expand and normalize the polynomial expressions, which then agree.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem chart_ratio_eq (k : Type) [CommRing k] (N : ℕ) (i j : Fin (N + 1)) :
     letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)
@@ -213,33 +209,31 @@ private theorem chart_ratio_eq (k : Type) [CommRing k] (N : ℕ) (i j : Fin (N +
   ring
 
 /- English proof (translation)
-Use `letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)`. Use `set κ := (HomogeneousLocalization.fromZeroRingHom (ProjSpace.grading k N) (Submonoid.powers (MvPolynomial.X i))).comp (algebraMap k (ProjSpace.grading k N 0)) with hκ`. Use `set y := (fun a : Fin N => HomogeneousLocalization.Away.mk (ProjSpace.grading k N) (ProjSpace.X_mem k N i) 1 (MvPolynomial.X (i.succAbove a)) (by simpa using ProjSpace.X_mem k N (i.succAbove a))) with hy`. Set `ρ : MvPolynomial (Fin (N + 1)) k →+* MvPolynomial (Fin N) k` to `MvPolynomial.eval₂Hom MvPolynomial.C (Fin.insertNth i 1 MvPolynomial.X)`. Establish `hρi : ρ (MvPolynomial.X i) = 1` using `by simp [ρ]`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρs : ∀ a, ρ (MvPolynomial.X (i.succAbove a)) = MvPolynomial.X a` using `by simp [ρ]`. Establish `hu : ∀ z : Submonoid.powers (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k), IsUnit (ρ z)`. Introduce and unpack `⟨_, n, rfl⟩`. Simplify using `[hρi]`. Set `L : Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) →+* MvPolynomial (Fin N) k` to `IsLocalization.lift hu`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLa : ∀ a, L (algebraMap _ (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)) a) = ρ a` using `fun a => IsLocalization.lift_eq hu a`. Establish `hLmk : ∀ (a : MvPolynomial (Fin (N + 1)) k) (n : ℕ) (h), L (Localization.mk a ⟨MvPolynomial.X i ^ n, h⟩) = ρ a`. Introduce `a n h`. Establish `h1` using `IsLocalization.mk'_spec (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)) a ⟨MvPolynomial.X i ^ n, h⟩`. Rewrite `h1` using `[← Localization.mk_eq_mk']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg L h1`. Rewrite `h2` using `[map_mul, hLa, hLa]`. Simplify `h2` using `[hρi]`. Establish `hκv : ∀ c, (κ c).val = algebraMap _ (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)) (MvPolynomial.C c : MvPolynomial (Fin (N + 1)) k)`. Introduce `c`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show Localization.mk ((algebraMap k (ProjSpace.grading k N 0) c : ProjSpace.grading k N 0) : MvPolynomial (Fin (N + 1)) k) 1 = _`. Rewrite using `[Localization.mk_one_eq_algebraMap]`. Use `congr 1`. Establish `hvD : ∀ P, (MvPolynomial.eval₂Hom κ y P).val = MvPolynomial.eval₂ ((algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k))).comp MvPolynomial.C) (fun a => Localization.mk (MvPolynomial.X (i.succAbove a)) ⟨MvPolynomial.X i ^ …`. Introduce `P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [hκv]`. Consider the case `add p q hp hq => rw [map_add, HomogeneousLocalization.val_add, hp, hq, MvPolynomial.eval₂_add]`. Consider the case `mul_X p a hp`. Rewrite using `[map_mul, HomogeneousLocalization.val_mul, hp, MvPolynomial.eval₂_mul, MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂_X, hy, HomogeneousLocalization.Away.val_mk]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hleft : ∀ P, L ((MvPolynomial.eval₂Hom κ y P).val) = P`. Introduce `P`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.eval₂Hom_C, hκv, hLa]`. Simplify using `[ρ]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => rw [map_add, HomogeneousLocalization.val_add, map_add, hp, hq]`. Consider the case `mul_X p a hp`. Rewrite using `[map_mul, HomogeneousLocalization.val_mul, map_mul, hp, MvPolynomial.eval₂Hom_X', hy, HomogeneousLocalization.Away.val_mk, hLmk, hρs]`. Use `⟨fun P Q h => by rw [← hleft P, ← hleft Q, h], fun x => ?_⟩` and prove the remaining obligations. Take `⟨n, a, ha, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective (ProjSpace.grading k N) (ProjSpace.X_mem k N i) x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨ρ a, HomogeneousLocalization.val_injective _ ?_⟩` and prove the remaining obligations. Rewrite using `[hvD, HomogeneousLocalization.Away.val_mk]`. Establish `hh : a.IsHomogeneous n` using `by simpa using ha`. Use `set t : Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) := Localization.mk 1 ⟨MvPolynomial.X i ^ 1, 1, rfl⟩`. Establish `hz : ∀ j, MvPolynomial.eval₂ ((algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k))).comp MvPolynomial.C) (fun a => Localization.mk (MvPolynomial.X (i.succAbove a)) ⟨MvPolynomial.X i ^ 1, 1, rfl⟩) (Fin.insertNth (α` using `fun _ => MvPolynomial (Fin N) k) i 1 MvPolynomial.X j) = algebraMap _ _ (MvPolynomial.X j : MvPolynomial (Fin (N + 1)) k) * t := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Use `Fin.succAboveCases i ?_ (fun a => ?_) j` and prove the remaining obligations. Simplify using `only [Fin.insertNth_apply_same, MvPolynomial.eval₂_one, t, ← Localization.mk_one_eq_algebraMap, Localization.mk_mul, one_mul, mul_one]`. Rewrite using `[← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Simplify using `only [Fin.insertNth_apply_succAbove, MvPolynomial.eval₂_X, t, ← Localization.mk_one_eq_algebraMap, Localization.mk_mul, one_mul, mul_one]`. Establish `h3 : ∀ b : MvPolynomial (Fin (N + 1)) k, MvPolynomial.eval₂ ((algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k))).comp MvPolynomial.C) (fun a => Localization.mk (MvPolynomial.X (i.succAbove a)) ⟨MvPolynomial.X i ^ 1, 1, …`. Introduce `b`. Proceed by induction on `b using MvPolynomial.induction_on with`. Consider the case `C c => simp [ρ]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Consider the case `add p q hp hq => rw [map_add, MvPolynomial.eval₂_add, MvPolynomial.eval₂_add, hp, hq]`. Consider the case `mul_X p j hp`. Rewrite using `[map_mul, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_mul, hp, MvPolynomial.eval₂_X, ← hz j]`. Use `congr 1`. Simplify using `[ρ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, ReciprocityTheory.AnForm.R.eval₂_mul_const_of_isHomogeneous _ _ _ hh]`. Establish `h4 : MvPolynomial.eval₂ ((algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k))).comp MvPolynomial.C) (fun j => algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k) …`. Rewrite using `[show (fun j => algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)) (MvPolynomial.X j)) = algebraMap (MvPolynomial (Fin (N + 1)) k) (Localization.Away (MvPolynomial.X i : MvPolynomial (Fin (N + 1)) k)) ∘ MvPolynomial.X f …`. Rewrite using `[h4]`. Simplify using `only [t, ← Localization.mk_one_eq_algebraMap, Localization.mk_pow, Localization.mk_mul, one_mul, mul_one, one_pow]`.
-
-Rewrite using `[Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem bijective_dehom (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 1)) :
     letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)
@@ -338,11 +332,11 @@ private theorem bijective_dehom (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 
   exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Use `letI := MvPolynomial.gradedAlgebra (σ := Fin (N + 1)) (R := k)`. Establish `hE : MvPolynomial.eval₂Hom (algX (PSpace.str k N) (ProjSpace.chart k N i)) (fun a => ProjSpace.ratio k N i (i.succAbove a)) = (Proj.awayToSection (ProjSpace.grading k N) (MvPolynomial.X i)).hom.comp (MvPolynomial.eval₂Hom ((HomogeneousLocalization.fromZeroRingHom (ProjSpace.gradi …`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[MvPolynomial.eval₂Hom_C, algX_chart]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a`. Rewrite using `[MvPolynomial.eval₂Hom_X', chart_ratio_eq]`. Simplify using the standard rewrite rules. Rewrite using `[hE]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Proj.basicOpenIsoAway (ProjSpace.grading k N) (MvPolynomial.X i) (ProjSpace.X_mem k N i) one_pos).commRingCatIsoToRingEquiv.bijective.comp (bijective_dehom k N i)`.
+A detailed English derivation is pending.
 -/
 theorem bijective_ratio (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 1)) :
     Function.Bijective (MvPolynomial.eval₂Hom (algX (PSpace.str k N) (ProjSpace.chart k N i))
@@ -368,17 +362,17 @@ theorem bijective_ratio (k : Type) [CommRing k] (N : ℕ) (i : Fin (N + 1)) :
     one_pos).commRingCatIsoToRingEquiv.bijective.comp (bijective_dehom k N i)
 
 /- English proof (translation)
-Introduce `N`. Take `⟨c, hs, ht, hev⟩` from `exists_of_bijective (RingHom.id ℂ) (ProjSpace.isAffineOpen_chart ℂ N 0) (fun a => ProjSpace.ratio ℂ N 0 ((0 : Fin (N + 1)).succAbove a)) (bijective_ratio ℂ N 0)`. Use `⟨c, (0 : Fin (N + 1)), hs, ht, hs.le, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[ProjSpace.hermitianTwistingSheaf_weight]`. Establish `hy : c.e.symm v ∈ ptsIn (PSpace.str ℂ N) (RingHom.id ℂ) (ProjSpace.chart ℂ N 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `c.e.map_target (by rw [ht]; exact Set.mem_univ v)`. Take `⟨w, hw⟩` from `projPt_surjective (N := N) (RingHom.id ℂ) (c.e.symm v)`. Establish `hw0 : IsUnit (w.1 0)`. Rewrite using `[← le_pt_preimage_chart_iff (RingHom.id ℂ) w.1 w.2 0]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `hy`. Rewrite `h'` using `[← hw]`. Conclude with `h'`. Establish `hrat : ∀ a : Fin N, v.ofLp a = w.1 a.succ / w.1 0`. Introduce `a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hev v a`. Rewrite `h1` using `[← hw]`. Rewrite using `[← h1]`. Establish `h2` using `valR_pt_ratio (N := N) (RingHom.id ℂ) w.1 w.2 hw0 ((0 : Fin (N + 1)).succAbove a)`. Use `show valR (ProjSpace.pt (RingHom.id ℂ) w.1 w.2) _ _ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2, Fin.succAbove_zero, Ring.inverse_eq_inv', div_eq_mul_inv]`. Establish `key` using `ProjAn.fubiniStudyWeight_projPoint ℂ (RingHom.id ℂ) N w 0 hw0.ne_zero`. Rewrite `key` using `[hw]`. Use `key.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.sum_univ_succ, div_self hw0.ne_zero, norm_one, one_pow, EuclideanSpace.norm_sq_eq]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hrat a]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_stdChart : ∀ N : ℕ, ∃ (c : AlgChart (PSpace.str ℂ N) (RingHom.id ℂ) N) (i : (ProjSpace.hermitianTwistingSheaf ℂ N).B.ι), c.e.source = ptsIn (PSpace.str ℂ N) (RingHom.id ℂ) (ProjSpace.chart ℂ N 0) ∧ c.e.target = Set.univ ∧ c.e.source ⊆ ptsIn (PSpace.str ℂ N) (RingHom.id ℂ) ((ProjSpace.hermitianTwistingSheaf ℂ N).B.U i) ∧ ∀ v, ((ProjSpace.hermitianTwistingSheaf ℂ N).φ (RingHom.id ℂ)).φ i (c.e.symm v) = Real.log (1 + ‖v‖ ^ 2) := by
   intro N

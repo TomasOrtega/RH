@@ -11,7 +11,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Amp.YMeas
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `Q.exists_isCompl`. Use `⟨LinearMap.toMatrix' (P.subtype ∘ₗ P.projectionOnto Q hP.symm), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toMatrix'_mulVec]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_matrix_ker {n : ℕ} (Q : Submodule ℂ (Fin n → ℂ)) :
     ∃ M : Matrix (Fin n) (Fin n) ℂ, ∀ v, M *ᵥ v = 0 ↔ v ∈ Q := by
@@ -21,17 +21,15 @@ theorem exists_matrix_ker {n : ℕ} (Q : Submodule ℂ (Fin n → ℂ)) :
   simp
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_matrix_ker Q`. Set `Φ : Matrix (Fin n ⊕ Fin n) (Fin n) ℂ →ₗ[ℂ] (EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n ⊕ Fin n))` to `(LinearMap.toContinuousLinearMap.toLinearMap).comp Matrix.toEuclideanLin.toLinearMap`. Establish `hΦ : Continuous Φ` using `Φ.continuous_of_finiteDimensional`. Establish `hMg : Continuous fun x => M * g x` using `continuous_const.matrix_mul hg`. Establish `hL : Continuous fun x => Matrix.fromRows A (M * g x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Break down `i with i | i` into its components or cases. Simplify using `using continuous_const`. Simplify using `using hMg.matrix_elem i j`. Establish `h` using `GlobalTheory.measurable_starProjection_ker_clm (fun x => Φ (Matrix.fromRows A (M * g x))) v (hΦ.comp hL) hv`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e : ∀ x, ((LinearMap.ker (Matrix.toLin' A) ⊓ Q.comap (Matrix.toLin' (g x))).comap (WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).toLinearMap) = LinearMap.ker (Φ (Matrix.fromRows A (M * g x)) : EuclideanSpace ℂ (Fin n) →ₗ[ℂ] EuclideanSpace ℂ (Fin n ⊕ Fin n))`. Introduce `x`. Use extensionality with `p`. Establish `h1 : Φ (Matrix.fromRows A (M * g x)) p = WithLp.toLp 2 (Matrix.fromRows A (M * g x) *ᵥ p.ofLp)` using `rfl`. Rewrite using `[LinearMap.mem_ker, ContinuousLinearMap.coe_coe, h1, WithLp.toLp_eq_zero, Matrix.fromRows_mulVec, ← Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Submodule.mem_comap, Submodule.mem_inf, LinearMap.mem_ker, Matrix.toLin'_apply, ← hM]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h2, h3⟩`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `congrFun h2 i`. Conclude with `congrFun h3 i`. Introduce `h2`. Conclude with `⟨funext fun i => congrFun h2 (Sum.inl i), funext fun i => congrFun h2 (Sum.inr i)⟩`. Simplify using `only [e]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_proj {X : Type} [TopologicalSpace X] [MeasurableSpace X] [OpensMeasurableSpace X] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) ℂ) (Q : Submodule ℂ (Fin n → ℂ)) (g : X → Matrix (Fin n) (Fin n) ℂ)
@@ -73,7 +71,7 @@ theorem measurable_proj {X : Type} [TopologicalSpace X] [MeasurableSpace X] [Ope
   exact h
 
 /- English proof (translation)
-Use `IsClosed.measurableSet ?_` and prove the remaining obligations. Establish `hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Conclude with `isClosed_eq ((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_GG (k r : ℕ) : MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r} := by
   refine IsClosed.measurableSet ?_
@@ -81,13 +79,13 @@ theorem measurableSet_GG (k r : ℕ) : MeasurableSet {x : Mt k r | Matrix.of x �
   exact isClosed_eq ((hc.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul hc) continuous_const
 
 /- English proof (translation)
-Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hc : Continuous fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => (Matrix.of x.1 : Mat k r)` using `continuous_subtype_val`. Establish `hinv : Continuous fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => (Matrix.of x.1 : Mat k r)⁻¹`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : IsUnit (Matrix.of x.1 : Mat k r).det` using `((uHGroup _ _ hH).2.2 _ x.2).1`. Establish `h1 : ContinuousAt (Inv.inv : Mat k r → _) (Matrix.of x.1)`. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Take `⟨u, hu⟩` from `hx`. Rewrite using `[← hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NormedRing.inverse_continuousAt u`. Conclude with `ContinuousAt.comp (f := fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => (Matrix.of x.1 : Mat k r)) h1 hc.continuousAt`. Establish `hp : ∀ a : Fin j, Measurable fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => (Ppos k r z z' γ (Matrix.of x.1)).starProjection (WithLp.toLp 2 ((Matrix.of x.1 : Mat k r)⁻¹ *ᵥ w a))` using `fun a => measurable_proj (Hpk k r - 1) (Hcom k r z z' γ ⊔ Xsp k r) _ _ hc ((PiLp.continuous_toLp 2 _).comp (hinv.matrix_mulVec continuous_const))`. Establish `hG : Continuous fun u : Fin j → EuclideanSpace ℂ (Fin (2 * r + k + 1)) => Real.sqrt ‖(Matrix.gram ℂ u).det‖`. Use `Real.continuous_sqrt.comp (continuous_norm.comp (Continuous.matrix_det ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Simplify using `only [Matrix.gram_apply]`. Conclude with `(continuous_apply a).inner (continuous_apply b)`. Conclude with `hG.measurable.comp (measurable_pi_lambda _ hp)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_gramProj (k r j : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (γ : Mat k r)
     (w : Fin j → Fin (2 * r + k + 1) → ℂ) :
@@ -121,15 +119,15 @@ theorem measurable_gramProj (k r j : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (
   exact hG.measurable.comp (measurable_pi_lambda _ hp)
 
 /- English proof (translation)
-Introduce `k r j hj z z' γ hz hz' hT hT' hγ`. Establish `hH : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hS` using `measurableSet_GG k r`. Establish `hY : Measurable fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => Yj k r hj z z' γ (Matrix.of x.1)` using `(measurable_gramProj k r j z z' γ _).div_const _`. Establish `hc : Continuous fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => (Matrix.of x.1 : Mat k r)` using `continuous_subtype_val`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => Sg2 k r z' (Matrix.of x.1)` using `(TwoSided.Sg2_invariant_continuousOn_one_le_bounds k r z' hz' hT').2.2.1.comp_continuous hc fun x => x.2`. Establish `h2 : Continuous fun x : {x : Mt k r | Matrix.of x ∈ GG k r} => Sg2 k r z (γ * Matrix.of x.1)` using `(TwoSided.Sg2_invariant_continuousOn_one_le_bounds k r z hz hT).2.2.1.comp_continuous (continuous_const.matrix_mul hc) fun x => (uHGroup _ _ hH).2.1 _ hγ _ x.2`. Use `⟨?_, fun R₀ y => ?_⟩` and prove the remaining obligations. Use `measurable_of_restrict_of_restrict_compl hS ?_ ?_` and prove the remaining obligations. Use `hY using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Conclude with `Set.indicator_of_mem x.2 _`. Use `(measurable_const (a := (0 : ℝ))) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Conclude with `Set.indicator_of_notMem x.2 _`.
+Apply function extensionality and compare values at an arbitrary argument. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : Eset0 k r hj z z' γ R₀ y = Subtype.val '' {x : {x : Mt k r | Matrix.of x ∈ GG k r} | Sg2 k r z' (Matrix.of x.1) ≤ R₀ ∧ Sg2 k r z (γ * Matrix.of x.1) ≤ R₀ ∧ y < Yj k r hj z z' γ (Matrix.of x.1) ∧ Yj k r hj z z' γ (Matrix.of x.1) ≤ 2 * y}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, h⟩`. Conclude with `⟨⟨x, hx⟩, h, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨x, hx⟩, h, rfl⟩`. Conclude with `⟨hx, h⟩`. Rewrite using `[e]`. Use `hS.subtype_image ?_` and prove the remaining obligations. Conclude with `(measurableSet_le h1.measurable measurable_const).inter ((measurableSet_le h2.measurable measurable_const).inter ((measurableSet_lt measurable_const hY).inter (measurableSet_le hY measurable_const)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem yj_measurable : ∀ (k r j : ℕ) (hj : j ≤ r) (z z' : (Fin (2 * r + k + 1) → ℂ)), ∀ γ : Mat k r, inWb k r z → inWb k r z' → 0 < Tz k r z → 0 < Tz k r z' → γ ∈ GG k r → Measurable (Set.indicator {x : Mt k r | Matrix.of x ∈ GG k r} fun x => Yj k r hj z z' γ (Matrix.of x)) ∧ ∀ R₀ y : ℝ, MeasurableSet (Eset0 k r hj z z' γ R₀ y) := by
   intro k r j hj z z' γ hz hz' hT hT' hγ

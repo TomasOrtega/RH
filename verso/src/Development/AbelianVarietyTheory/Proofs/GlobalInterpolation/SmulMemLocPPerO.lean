@@ -13,13 +13,11 @@ open GlobalTheory.ThetaMove.PeriodComp
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {a b : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ z ∈ perO AA N N', k • z ∈ localization₂ Q.asIdeal (perO AA N M')`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨r, hr, x, hx, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsx⟩` from `exists_common Q.asIdeal.primeCompl hN M' (k • x) fun y hy => h _ (mem_localization_of_mem Q (hx _ hy))`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm k r, smul_comm s r]`. Conclude with `smul_mem_perO hr hsx`. Consider the case `zero => rw [smul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [smul_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul c y _ hy => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ _ hy`.
-
-Take `⟨s, hs, hx⟩` from `hx`. Rewrite using `[← localization_localization₂]`. Conclude with `⟨s, hs, by rw [smul_comm]; exact key _ hx⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smul_mem_locP_perO (AA : Submodule (𝓞 E) E) (Q : HeightOneSpectrum (𝓞 E)) {N : Submodule (𝓞 E) (Sp E a)} (hN : N.FG)
     {N' M' : Submodule (𝓞 E) (Sp E b)} (k : E) (h : ∀ y ∈ localization₂ Q.asIdeal N', k • y ∈ localization₂ Q.asIdeal M')
@@ -42,11 +40,11 @@ theorem smul_mem_locP_perO (AA : Submodule (𝓞 E) E) (Q : HeightOneSpectrum (�
   exact ⟨s, hs, by rw [smul_comm]; exact key _ hx⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ a b AA N N' c e hN hc he`. Establish `hk : ∀ Q, ((c : E) ^ e Q) ≠ 0` using `fun Q => zpow_ne_zero _ (by exact_mod_cast hc.ne')`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Use `mem_of_locP fun Q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `(mem_localization_twist _ hc he Q x).1 (mem_localization_of_mem Q hx)`. Establish `h2` using `smul_mem_locP_perO AA Q hN (M' := twist₂ N' c e) ((c : E) ^ e Q) (fun y hy => by`. Rewrite using `[mem_localization_twist _ hc he, inv_smul_smul₀ (hk Q)]`. Conclude with `hy) h1`. Rewrite `h2` using `[smul_inv_smul₀ (hk Q)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `mem_of_locP fun Q => ?_` and prove the remaining obligations. Rewrite using `[mem_localization_twist _ hc he]`. Conclude with `smul_mem_locP_perO AA Q hN _ (fun y hy => (mem_localization_twist _ hc he Q y).1 hy) (mem_localization_of_mem Q hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twO_perO : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (a b : ℕ) (AA : Submodule (𝓞 E) E) (N : Submodule (𝓞 E) (Sp E a)) (N' : Submodule (𝓞 E) (Sp E b)) (c : ℕ) (e : HeightOneSpectrum (𝓞 E) → ℤ), N.FG → 0 < c → (∀ Q, -1 ≤ e Q ∧ e Q ≤ 1) → twist₂ (perO AA N N') c e = perO AA N (twist₂ N' c e) := by
   intro E _ _ _ a b AA N N' c e hN hc he

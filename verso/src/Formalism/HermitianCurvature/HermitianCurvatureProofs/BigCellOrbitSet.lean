@@ -10,19 +10,17 @@ namespace Formalism.FourierDecayAlt.P.JFxA3
 open Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.JF
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ D`. Establish `hnull : (volume : Measure ((Fin r → ℂ) × ℂ)) (Set.univ ×ˢ {w : ℂ | Complex.normSq w = Formalism.QuantumDeterminants.Tz k r D.z * Formalism.QuantumDeterminants.Tz k r D.z'}) = 0`. Rewrite using `[Measure.volume_eq_prod, Measure.prod_prod]`. Establish `h0 : (volume : Measure ℂ) {w : ℂ | Complex.normSq w = Formalism.QuantumDeterminants.Tz k r D.z * Formalism.QuantumDeterminants.Tz k r D.z'} = 0`. Apply `measure_mono_null (t := Metric.sphere (0 : ℂ) (Real.sqrt (Formalism.QuantumDeterminants.Tz k r D.z * Formalism.QuantumDeterminants.Tz k r D.z')))` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `w hw`. Simplify using `only [Set.mem_setOf_eq] at hw`. Simplify using `only [Metric.mem_sphere, dist_zero_right]`. Rewrite using `[← hw, Complex.normSq_eq_norm_sq, Real.sqrt_sq (norm_nonneg _)]`. Conclude with `Measure.addHaar_sphere _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, mul_zero]`. Rewrite using `[ae_restrict_iff' (Formalism.FourierDecayAlt.P.B7.measurableSet_Qset D)]`. Use `filter_upwards [compl_mem_ae_iff.mpr hnull] with q hq hqQ`. Apply `Formalism.FourierDecayAlt.P.BigCellHermitian.gqDom D` to reduce the goal to its premises. Simplify using `only [B.Qset, Set.mem_setOf_eq] at hqQ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.QuantumDeterminants.bcWeight at hqQ`. Use `split_ifs at hqQ with hle`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `a ha`. Establish `hp : (∏ b : Fin r, ‖q.1 b‖ ^ (2 * (Formalism.QuantumDeterminants.Mdim k r b - 2))) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.prod_eq_zero (Finset.mem_univ a)` to reduce the goal to its premises. Rewrite using `[ha, norm_zero]`. Apply `zero_pow` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Unfold `Formalism.QuantumDeterminants.Mdim`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hqQ` using `[hp, zero_mul]`. Conclude with `lt_irrefl _ hqQ`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `heq`.
-
-Conclude with `hq ⟨Set.mem_univ _, heq.symm⟩`. Conclude with `absurd hqQ (lt_irrefl _)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.Formalism.FourierDecayAlt.P.big_cell_orbit_set : GqOm := by
   intro k r Wp Wq _ _ _ _ D

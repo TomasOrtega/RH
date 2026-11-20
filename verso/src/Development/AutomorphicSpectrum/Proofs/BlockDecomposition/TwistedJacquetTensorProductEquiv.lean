@@ -17,15 +17,15 @@ def pureSpan (K : ∀ a, Submodule ℂ (X a)) : Submodule ℂ (⨂[ℂ] a, X a) 
   Submodule.span ℂ {t | ∃ (x : ∀ a, X a) (a : α), x a ∈ K a ∧ t = PiTensorProduct.tprod ℂ x}
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset α, PiTensorProduct.tprod ℂ x - PiTensorProduct.tprod ℂ (fun a => if a ∈ s then y a else x a) ∈ pureSpan K`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `b s hb ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : Function.update (fun a => if a ∈ s then y a else x a) b (x b) = (fun a => if a ∈ s then y a else x a)`. Rewrite using `[Function.update_eq_self_iff]`. Simplify using `[hb]`. Establish `hupd : (fun a => if a ∈ insert b s then y a else x a) = Function.update (fun a => if a ∈ s then y a else x a) b (y b)`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hab, Finset.mem_insert, hab]`. Establish `e : PiTensorProduct.tprod ℂ (Function.update (fun a => if a ∈ s then y a else x a) b (x b - y b)) = PiTensorProduct.tprod ℂ (fun a => if a ∈ s then y a else x a) - PiTensorProduct.tprod ℂ (fun a => if a ∈ insert b s then y a else x a)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[MultilinearMap.map_update_sub, hx, hupd]`. Establish `hmem : PiTensorProduct.tprod ℂ (fun a => if a ∈ s then y a else x a) - PiTensorProduct.tprod ℂ (fun a => if a ∈ insert b s then y a else x a) ∈ pureSpan K`. Rewrite using `[← e]`. Conclude with `Submodule.subset_span ⟨_, b, by simpa using h b, rfl⟩`. Use `Submodule.add_mem _ ih hmem` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Simplify using `using key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tprod_sub_mem [Fintype α] (K : ∀ a, Submodule ℂ (X a)) {x y : ∀ a, X a}
     (h : ∀ a, x a - y a ∈ K a) :
@@ -65,7 +65,7 @@ def rep (K : ∀ a, Submodule ℂ (X a)) (q : ∀ a, X a ⧸ K a) (a : α) : X a
   Function.surjInv (Submodule.mkQ_surjective (K a)) (q a)
 
 /- English proof (translation)
-Unfold `rep`. Conclude with `Function.surjInv_eq (Submodule.mkQ_surjective (K a)) (q a)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mkQ_rep (K : ∀ a, Submodule ℂ (X a)) (q : ∀ a, X a ⧸ K a) (a : α) :
     (K a).mkQ (rep K q a) = q a := by
@@ -76,7 +76,7 @@ def descendFun (K : ∀ a, Submodule ℂ (X a)) (q : ∀ a, X a ⧸ K a) : (⨂[
   (pureSpan K).mkQ (PiTensorProduct.tprod ℂ (rep K q))
 
 /- English proof (translation)
-Unfold `descendFun`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Conclude with `tprod_sub_mem K fun a => (Submodule.Quotient.eq _).1 ((mkQ_rep K q a).trans (hy a).symm)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descendFun_eq [Fintype α] (K : ∀ a, Submodule ℂ (X a)) (q : ∀ a, X a ⧸ K a) (y : ∀ a, X a)
     (hy : ∀ a, (K a).mkQ (y a) = q a) :
@@ -86,7 +86,7 @@ theorem descendFun_eq [Fintype α] (K : ∀ a, Submodule ℂ (X a)) (q : ∀ a, 
   exact tprod_sub_mem K fun a => (Submodule.Quotient.eq _).1 ((mkQ_rep K q a).trans (hy a).symm)
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[hw]`. Simplify using `[Function.update_of_ne hb, hy]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mkQ_update [DecidableEq α] (K : ∀ a, Submodule ℂ (X a)) {q : ∀ a, X a ⧸ K a} {y : ∀ a, X a}
     (hy : ∀ a, (K a).mkQ (y a) = q a) (a : α) {w : X a} {r : X a ⧸ K a} (hw : (K a).mkQ w = r) (b : α) :
@@ -148,15 +148,15 @@ variable {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [�
   [∀ a, Module ℂ (X a)]
 
 /- English proof (translation)
-Unfold `twKer`. Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨n, v, rfl⟩`. Proceed by induction on `v using PiTensorProduct.induction_on with`. Consider the case `smul_tprod r x`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Establish `e1 : (piTensor π) (n : ∀ a, Γ a) (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (fun a => π a ((n : ∀ a, Γ a) a) (x a))` using `by show PiTensorProduct.map (fun a => π a ((n : ∀ a, Γ a) a)) (PiTensorProduct.tprod ℂ x) = _`. Rewrite using `[PiTensorProduct.map_tprod]`. Establish `e2 : ((piChar χ n : ℂˣ) : ℂ) = ∏ a, ((χ a ⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩ : ℂˣ) : ℂ)`. Rewrite using `[← Units.coe_prod]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e3` using `(MultilinearMap.map_smul_univ (PiTensorProduct.tprod ℂ) (fun a => ((χ a ⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩ : ℂˣ) : ℂ)) x).symm`. Rewrite using `[map_smul, smul_comm, ← smul_sub]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Rewrite using `[e1, e2, e3]`. Apply `tprod_sub_mem` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩, x a, rfl⟩`. Consider the case `add v₁ v₂ h₁ h₂`. Rewrite using `[map_add, smul_add, add_sub_add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem twKer_piTensor_le (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀ a, Subgroup (Γ a))
     (χ : ∀ a, H a →* ℂˣ) :
@@ -188,25 +188,23 @@ theorem twKer_piTensor_le (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀
     exact Submodule.add_mem _ h₁ h₂
 
 /- English proof (translation)
-Apply `Submodule.span_le.2` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, a, hx, rfl⟩`. Establish `key : ∀ u ∈ twKer (π a) (H a) (χ a), PiTensorProduct.tprod ℂ (Function.update x a u) ∈ twKer (piTensor π) (piSub H) (piChar χ)`. Introduce `u hu`. Unfold `twKer at hu`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨g, v, rfl⟩` from `hu`. Establish `hn : Pi.mulSingle a (g : Γ a) ∈ piSub H`. Use `(Subgroup.mem_pi _).2 fun b _ => ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.mulSingle_eq_of_ne hb]`. Conclude with `one_mem _`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `n : piSub H` to `⟨Pi.mulSingle a (g : Γ a), hn⟩`. Establish `e1 : (piTensor π) (n : ∀ a, Γ a) (PiTensorProduct.tprod ℂ (Function.update x a v)) = PiTensorProduct.tprod ℂ (Function.update x a (π a (g : Γ a) v))` using `by show PiTensorProduct.map (fun b => π b ((n : ∀ a, Γ a) b)) (PiTensorProduct.tprod ℂ (Function.update x a v)) = _`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Simplify using `[n]`. Simplify using `[n, Function.update_of_ne hb, Pi.mulSingle_eq_of_ne hb]`. Establish `e2 : ((piChar χ n : ℂˣ) : ℂ) = ((χ a g : ℂˣ) : ℂ)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : (piChar χ n : ℂˣ) = ∏ b, χ b ⟨(n : ∀ a, Γ a) b, n.2 b (Set.mem_univ b)⟩` using `rfl`. Rewrite using `[hu, Finset.prod_eq_single a]`. Establish `: (⟨(n : ∀ a, Γ a) a, n.2 a (Set.mem_univ a)⟩ : H a) = g` using `Subtype.ext (by simp [n])`. Rewrite using `[this]`. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (⟨(n : ∀ a, Γ a) b, n.2 b (Set.mem_univ b)⟩ : H b) = 1` using `Subtype.ext (by simp [n, Pi.mulSingle_eq_of_ne hb])`. Rewrite using `[this, map_one]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Establish `hw : PiTensorProduct.tprod ℂ (Function.update x a ((π a) (g : Γ a) v - ((χ a g : ℂˣ) : ℂ) • v)) = (piTensor π) (n : ∀ a, Γ a) (PiTensorProduct.tprod ℂ (Function.update x a v)) - ((piChar χ n : ℂˣ) : ℂ) • PiTensorProduct.tprod ℂ (Function.update x a v)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MultilinearMap.map_update_sub, MultilinearMap.map_update_smul, e1, e2]`. Rewrite using `[hw]`. Conclude with `Submodule.subset_span ⟨n, _, rfl⟩`. Consider the case `zero`. Rewrite using `[MultilinearMap.map_update_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add u₁ u₂ _ _ h₁ h₂`. Rewrite using `[MultilinearMap.map_update_add]`. Conclude with `Submodule.add_mem _ h₁ h₂`. Consider the case `smul c u _ h`.
-
-Rewrite using `[MultilinearMap.map_update_smul]`. Conclude with `Submodule.smul_mem _ c h`. Use `key (x a) hx` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pureSpan_le_twKer (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀ a, Subgroup (Γ a))
     (χ : ∀ a, H a →* ℂˣ) :
@@ -270,7 +268,7 @@ theorem pureSpan_le_twKer (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀
   rwa [Function.update_eq_self] at this
 
 /- English proof (translation)
-Conclude with `le_antisymm (twKer_piTensor_le π H χ) (pureSpan_le_twKer π H χ)`.
+A detailed English derivation is pending.
 -/
 theorem twKer_piTensor_eq (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀ a, Subgroup (Γ a))
     (χ : ∀ a, H a →* ℂˣ) :
@@ -280,7 +278,7 @@ theorem twKer_piTensor_eq (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀
 end Reps
 
 /- English proof (translation)
-Introduce `α _ Γ X _ _ _ π H χ`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ (twKer_piTensor_eq π H χ)).trans (quotEquiv fun a => twKer (π a) (H a) (χ a))⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem twJacquet_piTensor_equiv : ∀ {α : Type} [Fintype α] {Γ X : α → Type} [∀ a, Group (Γ a)] [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (π : ∀ a, Representation ℂ (Γ a) (X a)) (H : ∀ a, Subgroup (Γ a)) (χ : ∀ a, H a →* ℂˣ), Nonempty (TwJacquet (piTensor π) (piSub H) (piChar χ) ≃ₗ[ℂ] ⨂[ℂ] a, TwJacquet (π a) (H a) (χ a)) := by
   intro α _ Γ X _ _ _ π H χ

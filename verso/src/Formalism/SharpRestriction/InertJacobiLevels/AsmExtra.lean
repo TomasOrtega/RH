@@ -26,7 +26,7 @@ structure RecExtra (D : D7) (ep : ℕ → ℕ) where
   gauge : GaugeExists D.host D.sp
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ j hj` and use `(H.latHyp K Cr Λ).wZ_eq _ j hj`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TieHyp.fillsAll {D : D7} {gatT : GatTies D} {L0 : SizeData₂ D} {kapI : KapI} {ep : ℕ → ℕ}
     (H : TieHyp gatT L0 kapI ep) (K : G.Consts) (Cr : ℝ) (Λ : LatIn D) : FillsAll gatT (H.Gy K Cr Λ) :=

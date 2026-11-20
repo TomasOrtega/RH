@@ -15,15 +15,15 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R R' _ _ _ M _ _ _ _ M' _ _ f hf n b x hx`. Set `B : Module.Basis (Fin n) R (Module.Dual R M)` to `Module.Basis.ofEquivFun b`. Establish `hB : ∀ k, B k = b.symm (Pi.single k 1)` using `fun k => by simp [B]`. Set `C : Module.Basis (Fin n) R M` to `B.dualBasis.map (Module.evalEquiv R M).symm`. Establish `hC : ∀ k l, B k (C l) = if k = l then 1 else 0` using `fun k l => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : B k (C l) = Module.evalEquiv R M (C l) (B k)` using `rfl`. Rewrite using `[e]`. Simplify using `only [C, Module.Basis.map_apply, LinearEquiv.apply_symm_apply, Module.Basis.dualBasis_apply_self]`. Set `D : Module.Basis (Fin n) R' M'` to `(Algebra.TensorProduct.basis R' C).map (LinearEquiv.ofBijective (liftSemi f) hf)`. Establish `hD : ∀ k, D k = f (C k)` using `fun k => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[D, Algebra.TensorProduct.basis_apply]`. Establish `hxD : ∀ k, x k = D.dualBasis k` using `fun k => by`. Use `D.ext fun l => ?_` and prove the remaining obligations. Rewrite using `[hD, hx, ← hB, hC, ← hD, D.dualBasis_apply_self]`. Distinguish the cases in `h : k = l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Establish `: x = ⇑D.dualBasis` using `funext hxD`. Rewrite using `[this]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨D.dualBasis.linearIndependent, D.dualBasis.span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem dualBasis_baseChange : ∀ {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {M : Type*} [AddCommGroup M] [Module R M]
     [Module.Finite R M] [Module.Projective R M] {M' : Type*} [AddCommGroup M'] [Module R' M']

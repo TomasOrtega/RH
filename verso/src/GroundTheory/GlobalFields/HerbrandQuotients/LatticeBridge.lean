@@ -19,14 +19,14 @@ theorem cyclicHerbrand_eq_cycHerbrand {M : Type*} [AddCommGroup M] (ρ : Represe
   rfl
 
 /- English proof (translation)
-The claim follows from `cyclicHerbrand_trivial_int σ`.
+A detailed English derivation is pending.
 -/
 theorem cycHerbrand_trivial_int (σ : G) :
     cycHerbrand (Representation.trivial ℤ G ℤ) σ = Fintype.card G :=
   cyclicHerbrand_trivial_int σ
 
 /- English proof (translation)
-The claim follows from `cyclicHerbrand_eq_of_real_equiv ρ ρ' σ e he`.
+A detailed English derivation is pending.
 -/
 theorem cycHerbrand_eq_of_real_equiv {M M' : Type*} [AddCommGroup M] [Module.Finite ℤ M]
     [Module.Free ℤ M] [AddCommGroup M'] [Module.Finite ℤ M'] [Module.Free ℤ M']

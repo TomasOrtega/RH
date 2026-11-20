@@ -24,25 +24,23 @@ namespace GlobalTheory.LogPole
 attribute [local instance] Over.cartesianMonoidalCategory Over.braidedCategory
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Establish `hxψ : spMap (ev (z' ≫ X.π) U.1 hU) ≫ LogKS.chart U = z' ≫ X.π` using `GlobalTheory.FlagMod.spMap_ev _ U.2 hU`. Take `⟨b1, b2⟩` from `GlobalTheory.LocM.FrameBase.tanBasis_baseChange Y.t (ev (z' ≫ X.π) U.1 hU) (LogKS.chart U) n v h1 h2`. Rewrite `b1`, `b2` using `[hxψ]`. Use `set ψ := ev (z' ≫ X.π) U.1 hU with hψ`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : c.F →+* S` to `(ev ((z' ≫ X.π) ≫ Y.s) ⊤ le_top).comp (toΓ c.F)`. Establish `hφ : z' ≫ X.π ≫ Y.s = spMap φ`. Rewrite using `[GlobalTheory.FlagMod.spMap_ev_top, Category.assoc]`. Establish `hφψ : ∀ r : c.F, ψ (algX Y.s U.1 r) = φ r` using `fun r => GlobalTheory.FlagMod.ev_appLE (z' ≫ X.π) Y.s (by simp) hU le_top (toΓ c.F r)`. Set `V : Fin n → ReciprocityTheory.ChartRestriction.G.PullbackSections.TanM (z' ≫ X.π) Y.t.G` to `fun m => GlobalTheory.LieMet.tanOf (b1 m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hb : ∀ W, ∃! a : Fin n → S, ∑ i, a i • V i = W` using `fun W => by`. Take `⟨a, ha, hu⟩` from `b2 _ (GlobalTheory.LieMet.isTan_tv W)`. Conclude with `⟨a, ((GlobalTheory.LieMet.isComb_iff V a W).1 ha).symm, fun a' ha' => hu a' ((GlobalTheory.LieMet.isComb_iff V a' W).2 ha'.symm)⟩`. Establish `hV : ∀ (τ : E →+* ℂ) (j : Fin (Dw.mult τ)) (a : 𝓞 E), ReciprocityTheory.ChartRestriction.G.PullbackSections.actR Y.t.act a (V (e ⟨τ, j⟩)) = φ (embK c τ a) • V (e ⟨τ, j⟩)`. Introduce `τ j a`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `(GlobalTheory.TanBaseChange.tan_comb_baseChange E H Y.X Y.t _ S ψ (LogKS.chart U) _ hxψ).2 n v _ _ (h3 a τ j)`. Establish `e1 : (fun i => ψ ((Pi.single (e ⟨τ, j⟩) (algX Y.s U.1 (embK c τ a)) : Fin n → Γ(Y.X, U.1)) i)) = fun i => (Pi.single (e ⟨τ, j⟩) (φ (embK c τ a)) : Fin n → S) i`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = e ⟨τ, j⟩`. Substitute `hi` using the available equality.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hφψ]`. Simplify using `[Pi.single_apply, hi]`. Rewrite `h` using `[e1]`. Establish `e2 : spMap (dualMap ψ) ≫ v (e ⟨τ, j⟩) ≫ (Y.t.act.act a).left = (tv (ReciprocityTheory.ChartRestriction.G.PullbackSections.actR Y.t.act a (V (e ⟨τ, j⟩)))).left`. Rewrite using `[← Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e2]`. Rewrite using `[(GlobalTheory.LieMet.isComb_iff V _ _).1 h]`. Simplify using `[Pi.single_apply]`. Use `letI : Algebra c.F S := φ.toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.FlagEmb.EigSpread.splits (E := E) c`. Establish `hu : ∀ z : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)), ReciprocityTheory.ChartRestriction.G.PullbackSections.IsEigV (ReciprocityTheory.ChartRestriction.G.PullbackSections.actR Y.t.act) (embK c z.1) (V (e z))` using `fun z a => hV z.1 z.2 a`. Establish `hb' : ∀ w, ∃! a : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) → S, ∑ z, a z • V (e z) = w` using `fun w => by`. Take `⟨a, ha, hu⟩` from `hb w`. Use `⟨fun z => a (e z), ?_, fun a' ha' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ha]`. Conclude with `Equiv.sum_comp e (fun i => a i • V i)`. Establish `h' : ∑ i, a' (e.symm i) • V i = w`. Rewrite using `[← ha', ← Equiv.sum_comp e.symm (fun z => a' z • V (e z))]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hu _ h'` as an intermediate fact. Use function extensionality and compare the values at `z`. Use `congrFun this (e z)` as an intermediate fact. Simplify using `using this`. Establish `key : ∀ σ i, ∃ cf : Fin (Dw.mult σ) → S, ∑ j, cf j • V (e ⟨σ, j⟩) = X.F.vecAt k z' hk rfl σ i` using `fun σ i => (GlobalTheory.FlagEmb.EigSpread.block_basis hs (fun z => V (e z)) hu hb' σ _ (fun a => GlobalTheory.VarFlag.actR_vecAt X φ z' k hk hφ σ i a)).exists`.
-
-Use `choose C hC using key`. Use `⟨fun σ => Matrix.of fun i j => C σ i j, fun σ i => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.LieMet.isComb_iff (fun j => V (e ⟨σ, j⟩)) (C σ i) _).2 (hC σ i).symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frameVector_isCombination_tangentBasis_flagCover_point {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)}
@@ -115,7 +113,7 @@ theorem frameVector_isCombination_tangentBasis_flagCover_point {E : Type} [Field
   exact (GlobalTheory.LieMet.isComb_iff (fun j => V (e ⟨σ, j⟩)) (C σ i) _).2 (hC σ i).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c TF Z U n e v hv k S _ z hU hk hx`. Conclude with `frameVector_isCombination_tangentBasis_flagCover_point TF.X U e v hv.1 hv.2.1 hv.2.2 k S (z ≫ inc₀ TF.X Z) (z ≫ toBase TF Z) hU hk hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isCombAtG_block : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (U : TF.Y.X.affineOpens) (n : ℕ) (e : (Σ τ : E →+* ℂ, Fin (Dw.mult τ)) ≃ Fin n) (v : Fin n → (Sp (DualNumber Γ(TF.Y.X, U.1)) ⟶ TF.Y.t.G.left)), IsEigBasis TF U e v → ∀ (k : TF.X.F.J) (S : Type) [CommRing S] (z : Sp S ⟶ Y₀ TF.X Z) (hU : ⊤ ≤ (z ≫ toBase TF Z) ⁻¹ᵁ U.1) (hk : ⊤ ≤ (z ≫ inc₀ TF.X Z) ⁻¹ᵁ TF.X.F.U k) (hx : (z ≫ inc₀ TF.X Z) ≫ TF.X.π = z ≫ toBase TF Z), ∃ C : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S, ∀ (σ : E →+* ℂ) (i : Fin (Dw.mult σ)), IsCombAtG TF.Y.t (z ≫ toBase TF Z) (fun j => spMap (dualMap (ev (z ≫ toBase TF Z) U.1 hU)) ≫ v (e ⟨σ, j⟩)) (C σ i) (tv (TF.X.F.vecAt k (z ≫ inc₀ TF.X Z) hk hx σ i)).left := by
   intro E _ _ _ H Dw l Xo c TF Z U n e v hv k S _ z hU hk hx

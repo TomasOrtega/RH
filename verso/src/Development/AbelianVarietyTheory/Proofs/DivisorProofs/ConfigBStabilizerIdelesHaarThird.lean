@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.ConeJBPass
 
 /- English proof (translation)
-Rewrite using `[← integral_const_mul, ← integral_const_mul, ← integral_const_mul, ← integral_sub (show Integrable (fun q => L x₁ q) ρ from hL x₁) (show Integrable (fun q => A' * L x₂ q) ρ from (hL x₂).const_mul A'), ← integral_sub (show Integrable (fun q => L x₁ q - A' * L x₂ q) ρ from (hL x₁). …`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem integral_lin4 {α V : Type} [MeasurableSpace α] {ρ : Measure α} (L : V → α → ℂ) (hL : ∀ v, Integrable (L v) ρ)
     (x₁ x₂ x₃ x₄ : V) (A A' : ℂ) :
@@ -38,25 +38,19 @@ set_option synthInstance.maxHeartbeats 100000 in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂`. Take `⟨s₁, hs₁⟩` from `GlobalTheory.T.configuration_b_haar_measure_unfolding hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂`. Use `⟨s₁, fun s hs g hc => ?_⟩` and prove the remaining obligations. Take `⟨_, _, _⟩` from `GlobalTheory.UnfoldQ.ideles_lcsc F E`. Use `haveI : SigmaCompactSpace (AE F E)ˣ := sigmaCompactSpace_of_locallyCompact_secondCountable`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SFinite μ := @instSFiniteOfSigmaFinite _ _ _ (MeasureTheory.SigmaFinite.of_isFiniteMeasureOnCompacts μ)`. Establish `hKc : IsCompact (K : Set (UA σ G.V'.J))` using `GlobalTheory.StabCpt.isCompact_of_isStab hKP F E σ B (b + 2) G.V' G.q (b + 2 - G.q) K hT.base hT.geo.hV' hK`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Use `haveI : IsFiniteMeasure μK := inferInstance`. Use `haveI : SFinite μK := inferInstance`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : SFinite (μK.prod μ) := inferInstance`. Use `set z : ℂ := s + ((a : ℂ) + 1) / 2 with hz`. Establish `hint : ∀ (μ' : Measure (unip σ G₁.W H₂)) (𝓕 : Set (unip σ G₁.W H₂)), μ'.IsHaarMeasure → IsFundamentalDomain ((ratU σ G₁.W.J).subgroupOf (unip σ G₁.W H₂)) 𝓕 μ' → μ' 𝓕 = 1 → ∀ v : UA σ G₁.W.J, Integrable (fun p : unip σ G₁.W H₂ × (K × (AE F E)ˣ) => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ …` using `fun μ' 𝓕 h1 h2 h3 v => ⟨GlobalTheory.T.configuration_b_haar_measure_integral hKP F E σ B a b G G₁ H H' hC e' he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Φ' hΦ' V V' W₁' hT₂ e W₂ H₂ i₀ i₁ hH₂ s g v μ' 𝓕 h1, hs₁ s hs g v μ' 𝓕 h1 h2 h3⟩`. Use `choose c hcCT hcJ1 hcJ2 using hc`. Distinguish the cases in `hex : ∃ (μ₀ : Measure (unip σ G₁.W H₂)) (𝓕₀ : Set (unip σ G₁.W H₂)), μ₀.IsHaarMeasure ∧ IsFundamentalDomain ((ratU σ G₁.W.J).subgroupOf (unip σ G₁.W H₂)) 𝓕₀ μ₀ ∧ μ₀ 𝓕₀ = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `swap`. Apply the tactic sequence `refine ⟨0, fun μ' 𝓕 h1 h2 h3 => absurd ⟨μ', 𝓕, h1, h2, h3⟩ hex, ?_, ?_⟩ <;> exact fun _ _ _ _ _ _ _ => by simp`. Take `⟨μ₀, 𝓕₀, hμ₀, h𝓕₀, h1₀⟩` from `hex`. Establish `hfin : ∀ (μ' : Measure (unip σ G₁.W H₂)) (𝓕 : Set (unip σ G₁.W H₂)), μ' 𝓕 = 1 → IsFiniteMeasure (μ'.restrict 𝓕)` using `fun μ' 𝓕 h3 => ⟨by rw [Measure.restrict_apply_univ, h3]; exact ENNReal.one_lt_top⟩`. Establish `hslice : ∀ (μ' : Measure (unip σ G₁.W H₂)) (𝓕 : Set (unip σ G₁.W H₂)), μ'.IsHaarMeasure → IsFundamentalDomain ((ratU σ G₁.W.J).subgroupOf (unip σ G₁.W H₂)) 𝓕 μ' → μ' 𝓕 = 1 → ∀ (v : UA σ G₁.W.J) (q : K × (AE F E)ˣ), c q.1 q.2 v * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z = ∫ u …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `μ' 𝓕 h1 h2 h3 v q`. Rewrite using `[hcCT q.1 q.2 μ' 𝓕 h1 h2 h3 v, integral_mul_const, integral_mul_const]`. Establish `hcint : ∀ v : UA σ G₁.W.J, Integrable (fun q : K × (AE F E)ˣ => c q.1 q.2 v * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) (μK.prod μ)`. Introduce `v`. Use `haveI := hfin μ₀ 𝓕₀ h1₀`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hint μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀ v).integral_prod_right.congr (Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Conclude with `(hslice μ₀ 𝓕₀ hμ₀ h𝓕₀ h1₀ v q).symm`. Establish `hCq : ∀ v : UA σ G₁.W.J, (∫ k, ∫ l, c k l v * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ ∂μK) = ∫ q, c q.1 q.2 v * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z ∂(μK.prod μ)` using `fun v => (integral_prod (fun q : K × (AE F E)ˣ => c q.1 q.2 v * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) (hcint v)).symm`. Use `⟨fun v => ∫ k, ∫ l, c k l v * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ ∂μK, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `μ' 𝓕 h1 h2 h3 v haveI := hfin μ' 𝓕 h3`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hI` using `hint μ' 𝓕 h1 h2 h3 v`. Establish `e1 : (fun u : unip σ G₁.W H₂ => ∫ k, ∫ l, G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' l) (om' (k.1, g) Φ'))) (u.1 * v) * (X.ν l : ℂ) * ((absE F E l : ℝ) : ℂ) ^ z ∂μ ∂μK) =ᵐ[μ'.restrict 𝓕] fun u => ∫ q, G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' q.2) (om' (q.1.1, g) Φ') …` using `by filter_upwards [hI.prod_right_ae] with u hu`. Conclude with `(integral_prod (fun q : K × (AE F E)ˣ => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' q.2) (om' (q.1.1, g) Φ'))) (u.1 * v) * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) hu).symm`. Use `beta_reduce`. Rewrite using `[hCq v, integral_congr_ae e1, integral_integral_swap (f := fun (u : unip σ G₁.W H₂) (q : K × (AE F E)ˣ) => G₁.M'.I om₁' (e' (G.M'.co.rho B.ψ (shiftB σ H H' q.2) (om' (q.1.1, g) Φ'))) (u.1 * v) * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) hI]`.
-
-Conclude with `integral_congr_ae (Eventually.of_forall fun q => hslice μ' 𝓕 h1 h2 h3 v q)`. Use `all_goals`. Introduce `t t' m m' hm hm' v`. Use `beta_reduce`. Rewrite using `[hCq, hCq, hCq, hCq]`.
-
-Use `(integral_lin4 (fun v (q : K × (AE F E)ˣ) => c q.1 q.2 v * (X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) hcint _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Use `(integral_congr_ae (Eventually.of_forall fun q => ?_)).trans (integral_zero _ _)` and prove the remaining obligations. Use `first`. Consider the case `have hj := hcJ1 q.1 q.2 t t' m m' hm hm' v`. Take the linear combination `((X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) * hj`.
-
-Consider the case `have hj := hcJ2 q.1 q.2 t t' m m' hm hm' v`. Take the linear combination `((X.ν q.2 : ℂ) * ((absE F E q.2 : ℝ) : ℂ) ^ z) * hj`.
+A detailed English derivation is pending.
 -/
 theorem pass : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →
     ∀ e', IsEv B G.M' G₁.M' H.ι H'.ι (isoB H H') e' → ∀ (K : Subgroup (UA σ G.V'.J)) (μK : Measure K) (μ : Measure (AE F E)ˣ),

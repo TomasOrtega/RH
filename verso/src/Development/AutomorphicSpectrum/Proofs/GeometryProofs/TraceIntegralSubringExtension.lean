@@ -12,11 +12,11 @@ section AlgClosed
 variable {C : Type*} [Field C] [IsAlgClosed C]
 
 /- English proof (translation)
-Establish `hk : ∀ k : ℕ, LinearMap.trace C V (g ^ k) = (finrank C V : C) * μ ^ k`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `LinearMap.trace_comp_eq_mul_of_commute_of_isNilpotent μ ((Commute.refl g).pow_left k) h` as an intermediate fact. Rewrite using `[pow_succ, Module.End.mul_eq_comp, this, ih]`. Expand and normalize the polynomial expressions, which then agree. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [map_add, hp, hq, eval_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Proceed by induction. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `monomial k a`. Rewrite using `[aeval_monomial, ← Algebra.smul_def, map_smul, hk, eval_monomial, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_aeval_of_isNilpotent {V : Type*} [AddCommGroup V] [Module C V] [Module.Finite C V]
     (g : Module.End C V) (μ : C) (h : IsNilpotent (g - algebraMap C _ μ)) (p : C[X]) :
@@ -35,9 +35,9 @@ theorem trace_aeval_of_isNilpotent {V : Type*} [AddCommGroup V] [Module C V] [Mo
     rw [aeval_monomial, ← Algebra.smul_def, map_smul, hk, eval_monomial, smul_eq_mul]; ring
 
 /- English proof (translation)
-Establish `hk : ∀ (k : ℕ) (x : N), ((((f.restrict hf) ^ k) x : N) : V) = (f ^ k) x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => intro x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[pow_succ, ih]`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial k a => simp [aeval_monomial, hk]`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coe_aeval_restrict {V : Type*} [AddCommGroup V] [Module C V] (f : Module.End C V)
     (N : Submodule C V) (hf : ∀ x ∈ N, f x ∈ N) (p : C[X]) (x : N) :
@@ -52,17 +52,17 @@ theorem coe_aeval_restrict {V : Type*} [AddCommGroup V] [Module C V] (f : Module
   | monomial k a => simp [aeval_monomial, hk]
 
 /- English proof (translation)
-Establish `hds` using `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top f.independent_maxGenEigenspace (Module.End.iSup_maxGenEigenspace_eq_top f)`. Establish `h_fin : {μ | f.maxGenEigenspace μ ≠ ⊥}.Finite` using `WellFoundedGT.finite_ne_bot_of_iSupIndep f.independent_maxGenEigenspace`. Establish `hf : ∀ μ, ∀ x ∈ f.maxGenEigenspace μ, f x ∈ f.maxGenEigenspace μ` using `fun μ => f.mapsTo_maxGenEigenspace_of_comm (Commute.refl _) μ`. Establish `hp : ∀ μ, Set.MapsTo (aeval f p) (f.maxGenEigenspace μ) (f.maxGenEigenspace μ)`. Introduce `μ x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show aeval f p x = _ from (coe_aeval_restrict f _ (hf μ) p ⟨x, hx⟩).symm]`. Conclude with `Subtype.mem _`. Rewrite using `[LinearMap.trace_eq_sum_trace_restrict' hds h_fin hp]`. Establish `h1 : ∀ μ, LinearMap.trace C _ ((aeval f p).restrict (hp μ)) = (f.charpoly.rootMultiplicity μ : C) * p.eval μ`. Introduce `μ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : (aeval f p).restrict (hp μ) = aeval (f.restrict (hf μ)) p`. Use extensionality with `x`. Rewrite using `[coe_aeval_restrict]`. Both sides reduce to the same expression. Establish `hn` using `f.isNilpotent_restrict_maxGenEigenspace_sub_algebraMap μ`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : f.restrict (hf μ) - algebraMap C _ μ = (f - algebraMap C _ μ).restrict (f.mapsTo_maxGenEigenspace_of_comm (Algebra.mul_sub_algebraMap_commutes f μ) μ)`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[e, trace_aeval_of_isNilpotent _ μ (e2 ▸ hn), LinearMap.finrank_maxGenEigenspace_eq]`. Repeatedly rewrite using `[h1]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_multiset_map_count]`. Establish `hs : h_fin.toFinset = f.charpoly.roots.toFinset`. Use extensionality with `μ`. Rewrite using `[Set.Finite.mem_toFinset, Multiset.mem_toFinset, Set.mem_setOf_eq, ← Multiset.count_ne_zero, count_roots, ← LinearMap.finrank_maxGenEigenspace_eq, Ne, Ne, Submodule.finrank_eq_zero]`. Rewrite using `[hs]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Rewrite using `[count_roots, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_aeval_end {V : Type*} [AddCommGroup V] [Module C V] [Module.Finite C V]
     (f : Module.End C V) (p : C[X]) :
@@ -103,7 +103,7 @@ theorem trace_aeval_end {V : Type*} [AddCommGroup V] [Module C V] [Module.Finite
   rw [count_roots, nsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.charpoly_toLin', ← trace_aeval_end, ← Matrix.trace_toLin'_eq]`. Use `congr 1`. Conclude with `(aeval_algHom_apply (Matrix.toLinAlgEquiv' (R := C) (n := Fin n)) A p).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem trace_aeval_matrix {n : ℕ} (A : Matrix (Fin n) (Fin n) C) (p : C[X]) :
     (aeval A p).trace = (A.charpoly.roots.map fun z => p.eval z).sum := by
@@ -114,11 +114,11 @@ theorem trace_aeval_matrix {n : ℕ} (A : Matrix (Fin n) (Fin n) C) (p : C[X]) :
 end AlgClosed
 
 /- English proof (translation)
-Establish `hrep : ∀ k : Fin pb.dim, pb.basis.repr (pb.gen ^ (k : ℕ)) = Finsupp.single k 1`. Introduce `k`. Rewrite using `[← pb.basis_eq_pow k]`. Conclude with `pb.basis.repr_self k`. Rewrite using `[aeval_eq_sum_range' hr, map_sum, Finsupp.finset_sum_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single (i : ℕ)]`. Rewrite using `[map_smul, Finsupp.smul_apply, hrep i]`. Simplify using the standard rewrite rules. Introduce `b hb hbi`. Rewrite using `[map_smul, Finsupp.smul_apply, hrep ⟨b, Finset.mem_range.1 hb⟩]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : (⟨b, Finset.mem_range.1 hb⟩ : Fin pb.dim) ≠ i` using `fun h => hbi (congrArg Fin.val h)`. Simplify using `[Finsupp.single_apply, hne]`. Introduce `h`. Conclude with `(h (Finset.mem_range.2 i.2)).elim`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem repr_aeval {F S : Type*} [Field F] [CommRing S] [Algebra F S] (pb : PowerBasis F S)
     (r : F[X]) (hr : r.natDegree < pb.dim) (i : Fin pb.dim) :
@@ -139,11 +139,11 @@ theorem repr_aeval {F S : Type*} [Field F] [CommRing S] [Algebra F S] (pb : Powe
     exact (h (Finset.mem_range.2 i.2)).elim
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hm : (minpoly F pb.gen).Monic` using `minpoly.monic pb.isIntegral_gen`. Establish `hne : minpoly F pb.gen ≠ 1`. Introduce `h`. Use `pb.natDegree_minpoly` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, natDegree_one]`. Use `i.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, pb.basis_eq_pow j, ← pow_succ']`. Establish `h1 : pb.gen ^ ((j : ℕ) + 1) = aeval pb.gen ((X ^ ((j : ℕ) + 1)) %ₘ minpoly F pb.gen)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aeval_modByMonic_eq_self_of_root (minpoly.aeval F pb.gen)]`. Simplify using the standard rewrite rules. Rewrite using `[h1, repr_aeval pb _ (lt_of_lt_of_eq (natDegree_modByMonic_lt _ hm hne) pb.natDegree_minpoly)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leftMulMatrix_gen {F S : Type*} [Field F] [CommRing S] [Algebra F S]
     (pb : PowerBasis F S) :
@@ -164,7 +164,7 @@ theorem leftMulMatrix_gen {F S : Type*} [Field F] [CommRing S] [Algebra F S]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_eq_matrix_trace pb.basis, ← leftMulMatrix_gen, aeval_algHom_apply (Algebra.leftMulMatrix pb.basis) pb.gen p]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_aeval_gen {F S : Type*} [Field F] [CommRing S] [Algebra F S]
     (pb : PowerBasis F S) (p : F[X]) :
@@ -174,11 +174,11 @@ theorem trace_aeval_gen {F S : Type*} [Field F] [CommRing S] [Algebra F S]
     aeval_algHom_apply (Algebra.leftMulMatrix pb.basis) pb.gen p]
 
 /- English proof (translation)
-Rewrite using `[← powMat_map f n hg]`. Establish `h : aeval ((powMat n g).map f) (p.map f) = (aeval (powMat n g) p).map f`. Establish `h1` using `hom_eval₂ p (algebraMap R (Matrix (Fin n) (Fin n) R)) (f.mapMatrix (m := Fin n)) (powMat n g)`. Establish `h2 : (f.mapMatrix (m` using `Fin n)).comp (algebraMap R (Matrix (Fin n) (Fin n) R)) = (algebraMap S (Matrix (Fin n) (Fin n) S)).comp f := by`. Use extensionality with `a i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.algebraMap_matrix_apply, apply_ite f]`. Rewrite `h1` using `[h2]`. Rewrite using `[aeval_def, eval₂_map]`. Conclude with `h1.symm`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.trace]`.
+A detailed English derivation is pending.
 -/
 theorem trace_aeval_powMat_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (n : ℕ)
     {g : R[X]} (hg : g.Monic) (p : R[X]) :
@@ -198,11 +198,11 @@ theorem trace_aeval_powMat_map {R S : Type*} [CommRing R] [CommRing S] (f : R �
   simp [Matrix.trace]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `h1` using `charpoly_leftMulMatrix (AdjoinRoot.powerBasis' h)`. Establish `h2 : minpoly C (AdjoinRoot.powerBasis' h).gen = ψ`. Rewrite using `[AdjoinRoot.powerBasis'_gen, AdjoinRoot.minpoly_root h.ne_zero, h.leadingCoeff]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[h2]`. Use `Eq.trans ?_ h1` and prove the remaining obligations. Use `congr 1`. Use extensionality with `i j`. Use `Eq.trans ?_ (Algebra.leftMulMatrix_eq_repr_mul _ _ i j).symm` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(AdjoinRoot.powerBasis' h).basis_eq_pow j`. Use `Eq.trans ?_ (congrArg (fun t => (AdjoinRoot.powerBasis' h).basis.repr ((AdjoinRoot.powerBasis' h).gen * t) i) h3).symm` and prove the remaining obligations. Simplify using `only [← pow_succ']`. Express the relevant statement in the definitionally equal form `_ = (AdjoinRoot.powerBasisAux' h).repr ((AdjoinRoot.root ψ) ^ ((j : ℕ) + 1)) i`. Rewrite using `[AdjoinRoot.powerBasisAux'_repr_apply_to_fun, ← AdjoinRoot.mk_X, ← map_pow, AdjoinRoot.modByMonicHom_mk]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -228,9 +228,9 @@ theorem charpoly_powMat {C : Type*} [Field C] {ψ : C[X]} (h : ψ.Monic) (n : �
   rfl
 
 /- English proof (translation)
-Establish `hl : ψ ∈ lifts (algebraMap (Subalgebra.algebraicClosure ℤ C) C)` using `(lifts_iff_coeff_lifts _).2 fun i => ⟨⟨ψ.coeff i, hc i⟩, rfl⟩`. Take `⟨q, rfl⟩` from `mem_lifts _ |>.1 hl`. Establish `h : IsAlgebraic (Subalgebra.algebraicClosure ℤ C) ρ`. Use `⟨q, fun h0 => hψ (by rw [h0, Polynomial.map_zero]), ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def, ← eval_map]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ`. Conclude with `h.restrictScalars ℤ`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_root {C : Type*} [Field C] (ψ : C[X]) (hψ : ψ ≠ 0)
     (hc : ∀ i, IsAlgebraic ℤ (ψ.coeff i)) {ρ : C} (hρ : ψ.eval ρ = 0) : IsAlgebraic ℤ ρ := by
@@ -244,33 +244,31 @@ theorem isAlgebraic_of_root {C : Type*} [Field C] (ψ : C[X]) (hψ : ψ ≠ 0)
   exact h.restrictScalars ℤ
 
 /- English proof (translation)
-Take `⟨pb⟩ : Nonempty (PowerBasis K L)` from `⟨Field.powerBasisOfFiniteOfSeparable K L⟩`. Establish `hint : IsIntegral K pb.gen` using `pb.isIntegral_gen`. Use `choose P hP using fun b : L => pb.exists_eq_aeval' b`. Use `⟨(minpoly K pb.gen).coeffs ∪ (insert x B₀).biUnion fun b => (P b).coeffs, fun A' hB' => ?_⟩` and prove the remaining obligations. Establish `hmc : (↑(minpoly K pb.gen).coeffs : Set K) ⊆ A'` using `fun c hc => hB' (Finset.mem_coe.2 (Finset.mem_union_left _ (Finset.mem_coe.1 hc)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : ∀ b ∈ insert x B₀, (↑(P b).coeffs : Set K) ⊆ A'` using `fun b hb c hc => hB' (Finset.mem_coe.2 (Finset.mem_union_right _ (Finset.mem_biUnion.2 ⟨b, hb, Finset.mem_coe.1 hc⟩)))`. Set `m' : A'[X]` to `(minpoly K pb.gen).toSubring A' hmc`. Establish `hm'map : m'.map A'.subtype = minpoly K pb.gen` using `map_toSubring _ _ _`. Establish `hm' : m'.Monic` using `(monic_toSubring _ _ _).2 (minpoly.monic hint)`. Set `Q : ∀ b ∈ insert x B₀, A'[X]` to `fun b hb => (P b).toSubring A' (hPc b hb)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hQ : ∀ b hb, (Q b hb).map A'.subtype = P b` using `fun b hb => map_toSubring _ _ _`. Set `f : A'[X] →+* L` to `eval₂RingHom ((algebraMap K L).comp A'.subtype) pb.gen`. Establish `hf : ∀ p : A'[X], f p = aeval pb.gen (p.map A'.subtype)` using `fun p => by`. Rewrite using `[aeval_def, eval₂_map]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hfQ : ∀ b hb, f (Q b hb) = b` using `fun b hb => by rw [hf, hQ b hb, ← hP b]`. Establish `hdvd : ∀ p : A'[X], f p = 0 → m' ∣ p`. Introduce `p hp`. Rewrite `hp` using `[hf]`. Establish `h2 : minpoly K pb.gen ∣ p.map A'.subtype` using `minpoly.dvd K pb.gen hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (p %ₘ m').map A'.subtype = 0`. Rewrite using `[map_modByMonic _ hm', hm'map]`. Conclude with `(modByMonic_eq_zero_iff_dvd (minpoly.monic hint)).2 h2`. Establish `h4 : p %ₘ m' = 0` using `map_injective _ Subtype.val_injective (by rw [h3, Polynomial.map_zero])`. Conclude with `(modByMonic_eq_zero_iff_dvd hm').1 h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxm` using `Finset.mem_insert_self x B₀`. Establish `hT : Algebra.trace K L x = ((aeval (powMat pb.dim m') (Q x hxm)).trace : A')`. Establish `h` using `trace_aeval_powMat_map A'.subtype pb.dim hm' (Q x hxm)`. Rewrite `h` using `[hm'map, hQ x hxm, ← trace_aeval_gen pb, ← hP x]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTm : Algebra.trace K L x ∈ A'` using `hT ▸ Subtype.mem _`. Establish `hAm : ∀ a : A', algebraMap K L a ∈ f.range` using `fun a => ⟨Polynomial.C a, by simp [f]⟩`. Establish `hxA : x ∈ f.range` using `⟨Q x hxm, hfQ x hxm⟩`. Use `⟨f.range, hAm, fun b hb => ⟨Q b (Finset.mem_insert_of_mem hb), hfQ b (Finset.mem_insert_of_mem hb)⟩, hxA, hTm, ?_⟩` and prove the remaining obligations. Introduce `C _ _ ev hev`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `ψ` to `m'.map ev`. Establish `hψ : ψ.Monic` using `hm'.map ev`. Establish `hnat : ψ.natDegree = pb.dim`. Rewrite using `[hm'.natDegree_map ev, ← hm'.natDegree_map A'.subtype, hm'map, pb.natDegree_minpoly]`. Establish `hker : ∀ ρ, ψ.eval ρ = 0 → ∃ e : f.range →+* C, ∀ p, e (f.rangeRestrict p) = eval₂ ev ρ p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ρ hρ`. Establish `hk : RingHom.ker f.rangeRestrict ≤ RingHom.ker (eval₂RingHom ev ρ)`. Introduce `p hp`. Establish `hp0 : f p = 0` using `congrArg Subtype.val ((RingHom.mem_ker).1 hp)`. Take `⟨q, rfl⟩` from `hdvd p hp0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, coe_eval₂RingHom, eval₂_mul, ← eval_map, show m'.map ev = ψ from rfl, hρ, zero_mul]`. Conclude with `⟨f.rangeRestrict.liftOfSurjective f.rangeRestrict_surjective ⟨_, hk⟩, fun p => RingHom.liftOfRightInverse_comp_apply _ _ _ _ p⟩`. Set `l` to `ψ.roots.toList`. Establish `hl : ∀ j : Fin l.length, ψ.eval (l.get j) = 0` using `fun j => by`. Establish `h : l.get j ∈ ψ.roots` using `Multiset.mem_toList.1 (List.get_mem _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(mem_roots hψ.ne_zero).1 h`. Use `choose e he using fun j => hker (l.get j) (hl j)`. Establish `hρ : ∀ j, IsAlgebraic ℤ (l.get j)` using `fun j => isAlgebraic_of_root ψ hψ.ne_zero (fun i => by rw [coeff_map]; exact hev _) (hl j)`. Use `⟨l.length, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j a`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (⟨algebraMap K L a, hAm a⟩ : f.range) = f.rangeRestrict (Polynomial.C a)` using `Subtype.ext (by simp [f])`. Rewrite using `[h, he, eval₂_C]`. Introduce and unpack `j ⟨_, p, rfl⟩`. Establish `h : (⟨f p, ⟨p, rfl⟩⟩ : f.range) = f.rangeRestrict p` using `rfl`. Rewrite using `[h, he, eval₂_eq_sum_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Subalgebra.algebraicClosure ℤ C).sum_mem fun i _ => mul_mem (hev _) (pow_mem (hρ j) _)`. Establish `h1 : (⟨Algebra.trace K L x, hTm⟩ : A') = (aeval (powMat pb.dim m') (Q x hxm)).trace` using `Subtype.ext hT`. Establish `h2 : (⟨x, hxA⟩ : f.range) = f.rangeRestrict (Q x hxm)` using `Subtype.ext (hfQ x hxm).symm`. Rewrite using `[h1, ← trace_aeval_powMat_map ev pb.dim hm', trace_aeval_matrix, charpoly_powMat hψ _ hnat, h2]`. Simplify using `only [he, ← eval_map]`.
-
-Express the relevant statement in the definitionally equal form `(ψ.roots.map fun z => eval z ((Q x hxm).map ev)).sum = _`. Rewrite using `[← Multiset.coe_toList ψ.roots, Multiset.map_coe, Multiset.sum_coe]`. Conclude with `(Fin.sum_univ_fun_getElem l fun z => eval z ((Q x hxm).map ev)).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_spec {K L : Type} [Field K] [Field L] [CharZero K] [Algebra K L]
     [FiniteDimensional K L] (B₀ : Finset L) (x : L) :
@@ -365,7 +363,7 @@ theorem exists_spec {K L : Type} [Field K] [Field L] [CharZero K] [Algebra K L]
     exact (Fin.sum_univ_fun_getElem l fun z => eval z ((Q x hxm).map ev)).symm
 
 /- English proof (translation)
-Introduce `K L _ _ _ φ B₀ x hfd`. Use `letI := φ.toAlgebra`. Use `haveI : FiniteDimensional K L := hfd`. Conclude with `exists_spec B₀ x`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem trace_specialisation : ∀ (K L : Type) [Field K] [Field L] [CharZero K] (φ : K →+* L) (B₀ : Finset L) (x : L), (letI := φ.toAlgebra; FiniteDimensional K L) → ∃ B' : Finset K, ∀ A' : Subring K, (↑B' : Set K) ⊆ A' → ∃ (A : Subring L) (hA : ∀ a : A', φ a ∈ A) (_ : (↑B₀ : Set L) ⊆ A) (hx : x ∈ A) (ht : (letI := φ.toAlgebra; Algebra.trace K L x) ∈ A'), ∀ (C : Type) [Field C] [IsAlgClosed C] (ev : A' →+* C), (∀ a, IsAlgebraic ℤ (ev a)) → ∃ (n : ℕ) (ev' : Fin n → (A →+* C)), (∀ j (a : A'), ev' j ⟨φ a, hA a⟩ = ev a) ∧ (∀ j a, IsAlgebraic ℤ (ev' j a)) ∧ ev ⟨_, ht⟩ = ∑ j, ev' j ⟨x, hx⟩ := by
   intro K L _ _ _ φ B₀ x hfd

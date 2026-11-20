@@ -19,13 +19,13 @@ open GlobalTheory.TorusExt
 attribute [local instance] GlobalTheory.TorusExt.gtGroup
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L R _ _ _ hR t P iw I _ s ε e hε hs hD q`. Establish `hB` using `P.D.tau_bimult`. Establish `ha : (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))).comp (algebraMap (FractionRing R) (FractionRing R)) = algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))`. Rewrite using `[Algebra.algebraMap_self, RingHom.comp_id]`. Take `⟨p₀, hy⟩` from `GlobalTheory.T.exists_levelTorsionPoint_of_comesFromBase L R hR t P iw s ε e hε hs hD q.y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `set p₁ := qkExt hB (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) ha p₀ with hp₁`. Establish `h0 : l.M' • (q.g - p₁.g) = iota hB (AlgebraicClosure (FractionRing R)) 0`. Rewrite using `[smul_sub, qk_nsmul hB, qk_nsmul hB, map_zero]`. Use `show iota hB _ q.y - iota hB _ p₀.y = 0`. Rewrite using `[hy, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r₀, hr⟩` from `GlobalTheory.T.exists_qkPoint_extension_of_divided_data L R hR t P iw s ε e hε hs hD (qkMk hB 0 (q.g - p₁.g) h0) rfl`. Rewrite `hr` using `[qkExt_iff hB _ ha]`. Use `⟨qkAdd hB p₀ r₀, ?_⟩` and prove the remaining obligations. Rewrite using `[qkExt_iff hB _ ha, qkExt_qkAdd, ← hr, ← hp₁]`. Apply `qk_ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show q.y = p₀.y + 0`. Rewrite using `[hy, add_zero]`. Use `show q.g = p₁.g + (q.g - p₁.g)`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem qkPt_rational : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (iw : L.W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), (∀ k, ε k ∈ balForms H.bar L.D.X) → (∀ k, s k ≠ 0) → DivFrom L P.D.toPre P.oD iw s ε e → ∀ q : QkPt P.D.toPre (AlgebraicClosure (FractionRing R)) l.M', ∃ q₀ : QkPt P.D.toPre (FractionRing R) l.M', QkExt (algebraMap (FractionRing R) (AlgebraicClosure (FractionRing R))) q₀ q := by
   intro E _ _ _ H D' l c L R _ _ _ hR t P iw I _ s ε e hε hs hD q
@@ -50,7 +50,7 @@ theorem qkPt_rational : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {
     abel
 
 /- English proof (translation)
-Introduce `E _ _ _ H D' l c L R _ _ _ hR t P iw I _ s ε e hε hs hD σ p p' hpp'`. Use `GlobalTheory.Mum.GalFixQ.qkExt_equiv_of_rational R P.D l.M' (fun q => ?_) σ.toAlgHom p p' hpp'` and prove the remaining obligations. Take `⟨q₀, hq⟩` from `qkPt_rational L R hR t P iw s ε e hε hs hD q`. Conclude with `⟨q₀, q, hq, qk_equiv_refl P.D.tau_bimult q⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qkExt_equiv_of_divFrom : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D' : Datum H} {l : Geo.Tor.Level H} {c : Coeff l} (L : LowBase D' c) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], GlobalTheory.Mum.Base R → ∀ (t : SAB H (Sp R)) (P : PELUnif (maximalIdeal R) t) (iw : L.W →+* R) {I : Type} [Fintype I] (s : I → R) (ε : I → LinearMap.BilinForm ℤ L.D.X) (e : P.D.toPre.X ≃ₗ[𝓞 E] L.D.X), (∀ k, ε k ∈ balForms H.bar L.D.X) → (∀ k, s k ≠ 0) → DivFrom L P.D.toPre P.oD iw s ε e → ∀ (σ : AlgebraicClosure (FractionRing R) ≃ₐ[FractionRing R] AlgebraicClosure (FractionRing R)) (p p' : QkPt P.D.toPre (AlgebraicClosure (FractionRing R)) l.M'), QkExt σ.toAlgHom.toRingHom p p' → QkPt.Equiv P.D.toPre (AlgebraicClosure (FractionRing R)) p p' := by
   intro E _ _ _ H D' l c L R _ _ _ hR t P iw I _ s ε e hε hs hD σ p p' hpp'

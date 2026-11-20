@@ -9,9 +9,7 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `nil => exact h`. Consider the case `cons i u ih`. Establish `h2` using `ih.eventuallyEq_nhds`. Use `filter_upwards [h2] with w hw`.
-
-Conclude with `Filter.EventuallyEq.lineDeriv_eq hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iterD_eventuallyEq (I : Type) [Fintype I] [DecidableEq I] (u : List I)
     (f g : (I → ℂ) → ℂ) (z : I → ℂ) (h : f =ᶠ[nhds z] g) :
@@ -24,7 +22,7 @@ theorem iterD_eventuallyEq (I : Type) [Fintype I] [DecidableEq I] (u : List I)
     exact Filter.EventuallyEq.lineDeriv_eq hw
 
 /- English proof (translation)
-Introduce `I _ _ u f g z h` and use `(iterD_eventuallyEq I u f g z h).eq_of_nhds`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem iterD_eq_of_eventuallyEq : ∀ (I : Type) [Fintype I] [DecidableEq I] (u : List I)
     (f g : (I → ℂ) → ℂ) (z : I → ℂ), f =ᶠ[nhds z] g → iterD u f z = iterD u g z :=

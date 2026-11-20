@@ -19,7 +19,7 @@ open GlobalTheory.DownLift GlobalTheory.Core.Rk.Exh
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t`. Conclude with `((GlobalTheory.T.unramified_howe_lift_rows h1 h2 h3 h4 h5 h6 D G Pl0 T A Ks R F hG hF).2 i t).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem DownLift.nonVan_of_given_fullP : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.RegularisedSiegelWeilFirstTerm → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.HeckeLPartialContinuation → GlobalTheory.Hk3.HoweUnram → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.LiftRows.Given R F → R.FullP → ∀ i t, NonVan R i t := by
   intro h1 h2 h3 h4 h5 h6 D G _ _ Pl0 T A Ks _ _ _ R F hG hF i t

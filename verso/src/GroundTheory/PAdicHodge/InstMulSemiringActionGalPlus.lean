@@ -19,7 +19,7 @@ variable (p : ℕ) [hp : Fact p.Prime] [IsPerfectoidField K p]
 abbrev BCrisPlus : Type _ := Localization.Away (p : ACris K p)
 
 /- English proof (translation)
-The claim follows from `map_natCast (phi K p) p`.
+A detailed English derivation is pending.
 -/
 theorem phi_natCast_p : phi K p (p : ACris K p) = (p : ACris K p) :=
   map_natCast (phi K p) p
@@ -33,7 +33,7 @@ def phiPlus : BCrisPlus K p →+* BCrisPlus K p :=
 variable {K p}
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem phiPlus_algebraMap (x : ACris K p) :
     phiPlus K p (algebraMap (ACris K p) (BCrisPlus K p) x) =
@@ -46,7 +46,7 @@ abbrev BCris (hε : PreTilt.untilt ε = 1) : Type _ :=
   Localization.Away (algebraMap (ACris K p) (BCrisPlus K p) (periodT hε))
 
 /- English proof (translation)
-Rewrite using `[map_natCast, map_natCast]`. Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := BCrisPlus K p) (p : ACris K p)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_algebraMap_p_plus :
     IsUnit (algebraMap (ACris K p) (BCrisPlus K p)
@@ -55,7 +55,7 @@ theorem isUnit_algebraMap_p_plus :
   simpa using IsLocalization.Away.algebraMap_isUnit (S := BCrisPlus K p) (p : ACris K p)
 
 /- English proof (translation)
-Rewrite using `[RingHom.comp_apply, phiPlus_algebraMap, phi_periodT, map_mul, map_mul]`. Conclude with `(isUnit_algebraMap_p_plus.map _).mul (IsLocalization.Away.algebraMap_isUnit (S := BCris hε) _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_phiPlus_periodT (hε : PreTilt.untilt ε = 1) :
     IsUnit ((algebraMap (BCrisPlus K p) (BCris hε)).comp (phiPlus K p)
@@ -69,7 +69,7 @@ def phiB (hε : PreTilt.untilt ε = 1) : BCris hε →+* BCris hε :=
     (algebraMap (ACris K p) (BCrisPlus K p) (periodT hε)) (isUnit_phiPlus_periodT hε)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem phiB_algebraMap (hε : PreTilt.untilt ε = 1) (x : BCrisPlus K p) :
     phiB hε (algebraMap (BCrisPlus K p) (BCris hε) x) =
@@ -83,7 +83,7 @@ section Galois
 variable {p : ℕ} [hp : Fact p.Prime] {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-The claim follows from `map_natCast (galCris σ) p`.
+A detailed English derivation is pending.
 -/
 theorem galCris_natCast_p (σ : Gal(PadicAlgCl p/K)) : galCris σ (p : ACris ℂ_[p] p) = p :=
   map_natCast (galCris σ) p
@@ -96,7 +96,7 @@ def galPlus (σ : Gal(PadicAlgCl p/K)) : BCrisPlus ℂ_[p] p →+* BCrisPlus ℂ
       exact IsLocalization.Away.algebraMap_isUnit (p : ACris ℂ_[p] p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem galPlus_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
     galPlus σ (algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) x) =
@@ -104,7 +104,7 @@ theorem galPlus_algebraMap (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
   IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p))` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, galPlus_algebraMap, galCris_one, RingHom.id_apply, RingHom.comp_apply, RingHom.id_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem galPlus_one : galPlus (1 : Gal(PadicAlgCl p/K)) = RingHom.id (BCrisPlus ℂ_[p] p) := by
   apply IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p))
@@ -113,7 +113,7 @@ theorem galPlus_one : galPlus (1 : Gal(PadicAlgCl p/K)) = RingHom.id (BCrisPlus 
     RingHom.id_apply]
 
 /- English proof (translation)
-Apply `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p))` to reduce the goal to its premises. Use extensionality with `x`. Rewrite using `[RingHom.comp_apply, galPlus_algebraMap, galCris_mul, RingHom.comp_apply, RingHom.comp_apply, RingHom.comp_apply, galPlus_algebraMap, galPlus_algebraMap]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem galPlus_mul (σ τ : Gal(PadicAlgCl p/K)) :
     galPlus (σ * τ) = (galPlus σ).comp (galPlus τ) := by
@@ -144,7 +144,7 @@ theorem gal_smul_plus_def (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[gal_smul_plus_def, galPlus_algebraMap, gal_smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gal_smul_algebraMap_plus (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p) :
     σ • algebraMap (ACris ℂ_[p] p) (BCrisPlus ℂ_[p] p) x =
@@ -152,9 +152,9 @@ theorem gal_smul_algebraMap_plus (σ : Gal(PadicAlgCl p/K)) (x : ACris ℂ_[p] p
   rw [gal_smul_plus_def, galPlus_algebraMap, gal_smul_def]
 
 /- English proof (translation)
-Establish `h : (phiPlus ℂ_[p] p).comp (galPlus σ) = (galPlus σ).comp (phiPlus ℂ_[p] p)`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (p : ACris ℂ_[p] p))` to reduce the goal to its premises. Use extensionality with `y`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[galPlus_algebraMap, phiPlus_algebraMap, phiPlus_algebraMap, galPlus_algebraMap, ← gal_smul_def, ← gal_smul_def, phi_gal_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f => f x) h`.
+A detailed English derivation is pending.
 -/
 theorem phiPlus_gal_smul (σ : Gal(PadicAlgCl p/K)) (x : BCrisPlus ℂ_[p] p) :
     phiPlus ℂ_[p] p (σ • x) = σ • phiPlus ℂ_[p] p x := by

@@ -29,7 +29,7 @@ def gen {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (k : Fin a) : Coker D :=
   Submodule.Quotient.mk (Pi.single k 1)
 
 /- English proof (translation)
-Use `conv_lhs => rw [pi_eq_sum_univ' x]`. Rewrite using `[← Submodule.mkQ_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [map_smul]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mk_eq_sum {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (x : Fin a → A) :
     (Submodule.Quotient.mk x : Coker D) = ∑ k, x k • gen D k := by
@@ -38,7 +38,7 @@ theorem mk_eq_sum {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (x : Fin a → A) :
   exact Finset.sum_congr rfl fun k _ => by rw [map_smul]; rfl
 
 /- English proof (translation)
-Rewrite using `[← mk_eq_sum D (D j), Submodule.Quotient.mk_eq_zero]`. Conclude with `⟨Pi.single j 1, by ext k; simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem sum_gen {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (j : Fin b) :
     ∑ k, D j k • gen D k = 0 := by
@@ -46,7 +46,7 @@ theorem sum_gen {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (j : Fin b) :
   exact ⟨Pi.single j 1, by ext k; simp⟩
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Simplify using `only [mk_eq_sum, map_sum, map_smul, h]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem hom_ext {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) {N : Type} [AddCommGroup N] [Module A N]
     {α β : Coker D →ₗ[A] N} (h : ∀ k, α (gen D k) = β (gen D k)) : α = β := by
@@ -55,9 +55,9 @@ theorem hom_ext {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) {N : Type} [AddCommGr
   simp only [mk_eq_sum, map_sum, map_smul, h]
 
 /- English proof (translation)
-Use `⟨Submodule.liftQ _ (Fintype.linearCombination A n) ?_, fun k => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, pi_eq_sum_univ' y, map_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: Fintype.linearCombination A n (D.transpose.mulVecLin (Pi.single j 1)) = 0`. Rewrite using `[← hn j, Fintype.linearCombination_apply]`. Simplify using the standard rewrite rules. Rewrite using `[this, smul_zero]`. Simplify using `[gen, Fintype.linearCombination_apply_single]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_hom {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) {N : Type} [AddCommGroup N] [Module A N]
     (n : Fin a → N) (hn : ∀ j, ∑ k, D j k • n k = 0) :
@@ -79,9 +79,9 @@ section
 variable {N : Type} [AddCommGroup N] [Module A N] [Module Aᵐᵒᵖ N] [IsCentralScalar A N]
 
 /- English proof (translation)
-Establish `key (j : Fin b) : (D.map (algebraMap A (TrivSqZeroExt A N))).mulVec (fun k => inr (n k)) j = inr (∑ k, D j k • n k)`. Rewrite using `[inr_sum]`. Express the relevant statement in the definitionally equal form `∑ k, (inl (D j k) * inr (n k) : TrivSqZeroExt A N) = _`. Simplify using `only [inl_mul_inr]`. Use `funext_iff.trans (forall_congr' fun j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[key, Pi.zero_apply, ← inr_zero (R := A) (M := N)]`. Conclude with `inr_injective.eq_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_inr_iff {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (n : Fin a → N) :
     (D.map (algebraMap A (TrivSqZeroExt A N))).mulVec (fun k => inr (n k)) = 0 ↔
@@ -98,11 +98,11 @@ theorem mulVec_inr_iff {a b : ℕ} (D : Matrix (Fin b) (Fin a) A) (n : Fin a →
 end
 
 /- English proof (translation)
-Take `⟨w, hw, hr⟩` from `ex (TrivSqZeroExt A (Coker D)) (algebraMap _ _) (fun k => inr (gen D k)) ((mulVec_inr_iff D _).2 (sum_gen D))`. Set `p : TrivSqZeroExt A (Coker D) →+* A` to `(fstHom A A (Coker D)).toRingHom`. Establish `hp : p.comp (algebraMap _ _) = RingHom.id A` using `RingHom.ext fun _ => rfl`. Establish `h₁` using `nat _ _ _ p _ _ hr`. Rewrite `h₁` using `[hp]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂ : p ∘ w = 0`. Use `un A (RingHom.id A) 0 _ _ ?_ (Matrix.mulVec_zero _) h₁ zero` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Use `RingHom.map_mulVec p (D'.map (algebraMap _ _)) w j` as an intermediate fact. Rewrite `this` using `[hw, Matrix.map_map, ← RingHom.coe_comp, hp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm.trans (map_zero p)`. Establish `h₃ : w = fun l => inr (w l).snd` using `funext fun l => TrivSqZeroExt.ext (congrFun h₂ l) rfl`. Rewrite `hw`, `hr` using `[h₃]`. Take `⟨α, hα⟩` from `exists_hom D' _ ((mulVec_inr_iff D' _).1 hw)`. Conclude with `⟨α, by simpa only [hα] using hr⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_rel {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' : Matrix (Fin b') (Fin a') A)
     (Rel : ∀ (R : Type) [CommRing R] (_ : A →+* R), (Fin a → R) → (Fin a' → R) → Prop)
@@ -134,9 +134,9 @@ theorem exists_hom_of_rel {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' :
   exact ⟨α, by simpa only [hα] using hr⟩
 
 /- English proof (translation)
-Set `p : TrivSqZeroExt A (Coker D') →+* TrivSqZeroExt A (Coker D)` to `(TrivSqZeroExt.map α).toRingHom`. Establish `hp : p.comp (algebraMap _ _) = algebraMap _ _` using `(TrivSqZeroExt.map α).comp_algebraMap`. Establish `hi (x : Coker D') : p (inr x) = inr (α x)` using `map_inr α x`. Establish `h₁` using `nat _ _ _ p _ _ hβ`. Rewrite `h₁` using `[hp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Function.comp_def, hi] at h₁`. Establish `h₂` using `un _ _ _ _ _ ((mulVec_inr_iff D fun k => α (β (gen D k))).2 fun j => by`. Simplify using `only [← map_smul, ← map_sum, sum_gen, map_zero]) ((mulVec_inr_iff D _).2 (sum_gen D)) h₁ hα`. Conclude with `hom_ext D fun k => inr_injective (congrFun h₂ k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comp_eq_id {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' : Matrix (Fin b') (Fin a') A)
     (Rel : ∀ (R : Type) [CommRing R] (_ : A →+* R), (Fin a → R) → (Fin a' → R) → Prop)
@@ -160,7 +160,7 @@ theorem comp_eq_id {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' : Matrix
   exact hom_ext D fun k => inr_injective (congrFun h₂ k)
 
 /- English proof (translation)
-Take `⟨α, hα⟩` from `exists_hom_of_rel D D' Rel zero nat ex un`. Take `⟨β, hβ⟩` from `exists_hom_of_rel D' D (fun R _ g w v => Rel R g v w) zero (fun R S _ _ g h w v => nat R S g h v w) ex' (fun R _ g w v v' => un' R g v v' w)`. Conclude with `⟨LinearEquiv.ofLinear α β (comp_eq_id D D' Rel nat un' α β hα hβ) (comp_eq_id D' D (fun R _ g w v => Rel R g v w) (fun R S _ _ g h w v => nat R S g h v w) (fun R _ g w w' v => un R g v w w') β α hβ hα)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_equiv {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' : Matrix (Fin b') (Fin a') A)
     (Rel : ∀ (R : Type) [CommRing R] (_ : A →+* R), (Fin a → R) → (Fin a' → R) → Prop)
@@ -186,9 +186,9 @@ theorem nonempty_equiv {a b a' b' : ℕ} (D : Matrix (Fin b) (Fin a) A) (D' : Ma
 open TensorProduct in
 
 /- English proof (translation)
-Establish `e : (fun v : Fin a → R => ∑ k, v k ⊗ₜ[A] b₀ k) = (Algebra.TensorProduct.basis R b₀).equivFun.symm`. Use function extensionality and compare the values at `v`. Simplify using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul']`. Rewrite using `[e]`. Use `(Algebra.TensorProduct.basis R b₀).equivFun.symm.toEquiv.bijOn fun v => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `LinearMap.toMatrix_mulVec_repr (Algebra.TensorProduct.basis R b₀) (Algebra.TensorProduct.basis R b₁) (d.baseChange R) ((Algebra.TensorProduct.basis R b₀).equivFun.symm v)`. Rewrite `h` using `[LinearMap.toMatrix_baseChange, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply, ← Module.Basis.equivFun_apply]`. Express the relevant statement in the definitionally equal form `d.baseChange R ((Algebra.TensorProduct.basis R b₀).equivFun.symm v) = 0 ↔ _`. Rewrite using `[Set.mem_setOf_eq, h, map_eq_zero_iff _ (LinearEquiv.injective _)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bijOn_basis {P₀ P₁ : Type} [AddCommGroup P₀] [Module A P₀] [AddCommGroup P₁] [Module A P₁]
     {a b : ℕ} (b₀ : Module.Basis (Fin a) A P₀) (b₁ : Module.Basis (Fin b) A P₁) (d : P₀ →ₗ[A] P₁)
@@ -210,11 +210,11 @@ theorem bijOn_basis {P₀ P₁ : Type} [AddCommGroup P₀] [Module A P₀] [AddC
   rw [Set.mem_setOf_eq, h, map_eq_zero_iff _ (LinearEquiv.injective _)]
 
 /- English proof (translation)
-Establish `key (ψ : Module.Dual A P₁) : b₀.dualBasis.equivFun (d.dualMap ψ) = (LinearMap.toMatrix b₀ b₁ d).transpose.mulVecLin (b₁.dualBasis.equivFun ψ)`. Rewrite using `[← LinearMap.toMatrix_transpose]`. Conclude with `(LinearMap.toMatrix_mulVec_repr b₁.dualBasis b₀.dualBasis d.dualMap ψ).symm`. Use `⟨Submodule.Quotient.equiv _ _ b₀.dualBasis.equivFun ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨ψ, rfl⟩, rfl⟩`. Conclude with `⟨_, (key ψ).symm⟩`. Introduce and unpack `⟨y, rfl⟩`. Take `⟨ψ, rfl⟩` from `b₁.dualBasis.equivFun.surjective y`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨_, ⟨ψ, rfl⟩, key ψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_dual_equiv {P₀ P₁ : Type} [AddCommGroup P₀] [Module A P₀] [AddCommGroup P₁] [Module A P₁]
     {a b : ℕ} (b₀ : Module.Basis (Fin a) A P₀) (b₁ : Module.Basis (Fin b) A P₁) (d : P₀ →ₗ[A] P₁) :
@@ -256,7 +256,7 @@ def Computes (f : X ⟶ Spec (CommRingCat.of A)) (M : LB X) {a b : ℕ} (D : Mat
       ∀ v i, rs X' (le_pull M π (le i)) ((E v).f (fun _ => ch i)) = loc π f' (W i) (fun k => u k i) v.1
 
 /- English proof (translation)
-Rewrite using `[loc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => (map_mul _ _ _).trans (congrArg₂ (· * ·) (rs_cst f' _ _) ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Conclude with `(GlobalTheory.LB.resG_appLE π _ _ _).trans (GlobalTheory.LB.appLE_resG π _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rs_loc {R : Type} [CommRing R] {X' : Scheme.{0}} (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R))
     {a : ℕ} {V W : X.Opens} (h : V ≤ W) (u : Fin a → Γ(X, W)) (v : Fin a → R) :
@@ -267,7 +267,7 @@ theorem rs_loc {R : Type} [CommRing R] {X' : Scheme.{0}} (π : X' ⟶ X) (f' : X
   exact (GlobalTheory.LB.resG_appLE π _ _ _).trans (GlobalTheory.LB.appLE_resG π _ _ _).symm
 
 /- English proof (translation)
-Substitute `e₁` using the available equality. Rewrite using `[loc, map_sum]`. Use `Finset.sum_congr rfl fun k _ => (map_mul _ _ _).trans (congrArg₂ (· * ·) (appLE_cst e₂ e _) ?_)` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE, Scheme.Hom.app_eq_appLE]`. Conclude with `congrArg (fun q => q.hom (u k)) (Scheme.Hom.appLE_comp_appLE ψ π V _ _ le_rfl e)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_loc {R S : Type} [CommRing R] [CommRing S] {X' X'' : Scheme.{0}} (π : X' ⟶ X)
     (f' : X' ⟶ Spec (CommRingCat.of R)) (π' : X'' ⟶ X) (f'' : X'' ⟶ Spec (CommRingCat.of S))
@@ -284,12 +284,12 @@ theorem appLE_loc {R S : Type} [CommRing R] [CommRing S] {X' X'' : Scheme.{0}} (
 variable {f : X ⟶ Spec (CommRingCat.of A)} {M : LB X}
 
 /- English proof (translation)
-The claim follows from `P.sec`.
+A detailed English derivation is pending.
 -/
 theorem computes_perf (P : Perf f M) : Computes f M P.D₀ P.W P.ch P.le P.u := P.sec
 
 /- English proof (translation)
-Introduce `R _ g X' π f' H`. Take `⟨E, hE⟩` from `h R g X' π f' H`. Use `⟨E, fun v j => ?_⟩` and prove the remaining obligations. Rewrite using `[← rs_loc π f' (hV j), ← hE, rs_rs]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Computes.refine {a b : ℕ} {D : Matrix (Fin b) (Fin a) A}
     {I : Type} {W : I → X.Opens} {ch : I → M.ι} {le : ∀ i, W i ≤ M.U (ch i)}
@@ -303,19 +303,19 @@ theorem Computes.refine {a b : ℕ} {D : Matrix (Fin b) (Fin a) A}
   rw [← rs_loc π f' (hV j), ← hE, rs_rs]
 
 /- English proof (translation)
-Set `Rel : ∀ (R : Type) [CommRing R] (_ : A →+* R), (Fin a → R) → (Fin a' → R) → Prop` to `fun R _ g v w => ∀ i, loc (pullback.fst f (Spec.map (CommRingCat.ofHom g))) (pullback.snd _ _) (W i) (fun k => u k i) v = loc (pullback.fst f (Spec.map (CommRingCat.ofHom g))) (pullback.snd _ _) (W i) (fun k => u' k i) w`. Establish `key (R : Type) [CommRing R] (g : A →+* R) : ∃ e : {v : Fin a → R // (D.map g).mulVec v = 0} ≃ {v : Fin a' → R // (D'.map g).mulVec v = 0}, ∀ v w, Rel R g v.1 w.1 ↔ e v = w`. Take `⟨E, hE⟩` from `h R g _ _ _ (IsPullback.of_hasPullback _ _)`. Take `⟨E', hE'⟩` from `h' R g _ _ _ (IsPullback.of_hasPullback _ _)`. Use `⟨E.trans E'.symm, fun v w => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Equiv.trans_apply, Equiv.symm_apply_eq]`. Use `⟨fun hr => Seesaw.sec_ext _ _ _ _ (fun i => le_pull M _ (le i)) (fun y => hc _) fun i => ?_, fun hr i => ?_⟩` and prove the remaining obligations. Rewrite using `[hE, hE', hr i]`. Rewrite using `[← hE, ← hE', hr]`. Use `KernelYoneda.nonempty_equiv D D' Rel (fun i => by simp [loc]) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `R S _ _ g p v w hr i`. Establish `hs : Spec.map (CommRingCat.ofHom (p.comp g)) = Spec.map (CommRingCat.ofHom p) ≫ Spec.map (CommRingCat.ofHom g)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `ψ : pullback f (Spec.map (CommRingCat.ofHom (p.comp g))) ⟶ pullback f (Spec.map (CommRingCat.ofHom g))` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom p)) (by rw [pullback.condition, Category.assoc, hs])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `e₁ : ψ ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `e₂ : ψ ≫ pullback.snd _ _ = pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom p)` using `pullback.lift_snd _ _ _`. Establish `e : pullback.fst f (Spec.map (CommRingCat.ofHom (p.comp g))) ⁻¹ᵁ W i ≤ ψ ⁻¹ᵁ pullback.fst f (Spec.map (CommRingCat.ofHom g)) ⁻¹ᵁ W i`. Rewrite using `[← Scheme.Hom.comp_preimage, e₁]`. Rewrite using `[← appLE_loc _ _ _ _ ψ p e₁ e₂ _ e, ← appLE_loc _ _ _ _ ψ p e₁ e₂ _ e, hr i]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `R _ g v hv`. Take `⟨e, he⟩` from `key R g`. Conclude with `⟨_, (e ⟨v, hv⟩).2, (he ⟨v, hv⟩ _).2 rfl⟩`. Introduce `R _ g v w w' hw hw' h₁ h₂`. Take `⟨e, he⟩` from `key R g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h₃` using `(he (e.symm ⟨w, hw⟩) ⟨w, hw⟩).2 (e.apply_symm_apply _)`. Conclude with `congrArg Subtype.val ((e.apply_symm_apply _).symm.trans ((he (e.symm ⟨w, hw⟩) ⟨w', hw'⟩).1 fun i => (h₃ i).trans ((h₁ i).symm.trans (h₂ i))))`. Introduce `R _ g w hw`. Take `⟨e, he⟩` from `key R g`. Conclude with `⟨_, (e.symm ⟨w, hw⟩).2, (he _ ⟨w, hw⟩).2 (e.apply_symm_apply _)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R _ g v v' w hv hv' h₁ h₂`. Take `⟨e, he⟩` from `key R g`. Establish `h₃` using `(he ⟨v, hv⟩ _).2 rfl`. Conclude with `congrArg Subtype.val (e.injective ((he ⟨v', hv'⟩ _).1 fun i => (h₂ i).trans ((h₁ i).symm.trans (h₃ i))).symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Computes.nonempty_equiv {a b a' b' : ℕ} {D : Matrix (Fin b) (Fin a) A}
     {D' : Matrix (Fin b') (Fin a') A}
@@ -373,11 +373,11 @@ theorem Computes.nonempty_equiv {a b a' b' : ℕ} {D : Matrix (Fin b) (Fin a) A}
 open PerfOfModel in
 
 /- English proof (translation)
-Introduce `R _ g Y' π f' H`. Use `letI := g.toAlgebra`. Establish `B` using `((termMap_bijOn hM H hD).comp (bijOn_ker_and_exact_of_quasiIso_baseChange A R K _ φ (hq R)).1).comp (bijOn_basis b₀ b₁ (K.d 0 1).hom R)`. Set `S` to `CechOne.secKerEquiv (M.pull π) f' (iSup_preimage π hc)`. Use `⟨(B.equiv _).trans S.symm.toEquiv, fun v p => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : (S (S.symm (B.equiv _ v))).1 = termMap M D H.w 0 (∑ k, v.1 k ⊗ₜ[A] (φ.f 0).hom (b₀ k))`. Rewrite using `[S.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `termMap M D H.w 0 ((φ.f 0).hom.baseChange R (∑ k, v.1 k ⊗ₜ[A] b₀ k)) = _`. Rewrite using `[map_sum ((φ.f 0).hom.baseChange R)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hle : π ⁻¹ᵁ ((⨅ i ∈ ({p.1} : Finset κ), D i) ⊓ M.U p.2) ≤ (⨅ i ∈ ({p.1} : Finset κ), π ⁻¹ᵁ D i) ⊓ (M.pull π).U fun _ => p.2` using `le_inf ((π.preimage_mono inf_le_left).trans (preimage_biInf D π _).le) (le_pull M π inf_le_right)`. Use `Eq.trans ?_ (coord_termMap_sum H.w v.1 (fun k => (φ.f 0).hom (b₀ k)) ⟨{p.1}, Finset.card_singleton _⟩ p.2 hle)` and prove the remaining obligations. Rewrite using `[← hv, CechOne.secKerEquiv_val]`. Conclude with `(rs_rs inf_le_right hle _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem computes_of_model {κ : Type} [LinearOrder κ] [Fintype κ] {D : κ → X.Opens}
     {K : CochainComplex (ModuleCat.{0} A) ℕ} (φ : K ⟶ cechLB f M D) (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
@@ -412,11 +412,11 @@ theorem computes_of_model {κ : Type} [LinearOrder κ] [Fintype κ] {D : κ → 
   exact (rs_rs inf_le_right hle _).symm
 
 /- English proof (translation)
-Use `haveI := fun p => (hK p).1`. Use `haveI := fun p => (hK p).2`. Set `b₀` to `(Module.Free.chooseBasis A (K.X 0)).reindex (Fintype.equivFin _)`. Set `b₁` to `(Module.Free.chooseBasis A (K.X 1)).reindex (Fintype.equivFin _)`. Set `V : P.I × κ → X.Opens` to `fun q => P.W q.1 ⊓ ((⨅ i ∈ ({q.2} : Finset κ), D i) ⊓ M.U (P.ch q.1))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `(computes_perf P).refine V Prod.fst fun _ => inf_le_left`. Establish `h₂` using `(computes_of_model φ hM hc hD hq b₀ b₁).refine V (fun q => (q.2, P.ch q.1)) fun _ => inf_le_right`. Take `⟨e₁⟩` from `nonempty_dual_equiv b₀ b₁ (K.d 0 1).hom`. Use `(Computes.nonempty_equiv (fun x => ?_) h₁ h₂).map e₁.trans` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc.ge (Set.mem_univ x))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (P.cover.ge (Set.mem_univ x))`. Use `⟨(j, i), hj, ?_, P.le j hj⟩` and prove the remaining obligations. Rewrite using `[Finset.iInf_singleton]`. Conclude with `hi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_model {κ : Type} [LinearOrder κ] [Fintype κ] {D : κ → X.Opens}
     {K : CochainComplex (ModuleCat.{0} A) ℕ} (φ : K ⟶ cechLB f M D) (hM : M.IsLB) (hc : ⨆ i, D i = ⊤)
@@ -447,19 +447,19 @@ end GlobalTheory.AbLaw.SecKernel
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Introduce `A _ _ _ B _ _ hB hP g hg F hF hu P`. Take `⟨u, hu⟩` from `hu`. Use `hB.smooth` as an intermediate fact. Use `hB.proper` as an intermediate fact. Take `⟨H, hH, m, s, hs⟩` from `id hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hD` using `(VeryAmpleCharts.compact_quasiSeparated_isAffineOpen A _ B.hom H m s hH hs).2.2`. Establish `hD₁` using `fun i => (hs.2 i).1`. Take `⟨C, ψ, h0, hfin, -, hproj, -, -, hq⟩` from `exists_finite_projective_complex_quasiIso.{0, 0} (cechLB B.hom F fun i => nonzeroLocus (s i)) (Fintype.card (Fin (m + 1))) (fun p hp => isZero_cechLB_X _ _ _ hp.le) (flat_cechLB_X B.hom hF hD) (cechLB_homology_finite_of_affine_cover A _ B.hom F _ _ hF inferInstance hP hD₁ hs.1)`. Establish `hC : ∀ i, Module.Free A (C.X i) ∧ Module.Finite A (C.X i)` using `fun i => by`. Use `hfin i` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hproj i` as an intermediate fact. Conclude with `⟨Module.free_of_flat_of_isLocalRing, hfin i⟩`. Use `⟨C, hC, ⟨_, h0⟩, SecKernel.nonempty_equiv_of_model ψ hF hs.1 hD hq hC P, ?_⟩` and prove the remaining obligations. Introduce `K _ _ φ X' π f' hX i hi`. Set `t` to `Spec.map (CommRingCat.ofHom φ)`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `B'` to `(Over.pullback t).obj B`. Establish `: IsCommMonObj B'` using `Functor.isCommMonObj_obj`. Establish `hB' : IsAbelianScheme B'` using `Out.TLinPf.isAb_pullback t B hB`. Establish `sq : IsPullback (pullback.fst B.hom t) B'.hom B.hom t` using `IsPullback.of_hasPullback _ _`. Establish `hP' : IsProjBy B'.hom` using `isProjBy_baseChange _ _ φ _ _ _ _ _ sq hP`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF'` using `LB.isLB_pull hF (pullback.fst B.hom t)`. Establish `ha` using `fun j => isAffineOpen_preimage_of_isPullback sq (hD₁ j)`. Establish `hc` using `PerfOfModel.iSup_preimage (pullback.fst B.hom t) hs.1`. Establish `hq' : QuasiIso (((ModuleCat.extendScalars φ).mapHomologicalComplex _).map ψ)`. Use `letI := φ.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `hq K`. Use `(exactAt_iff_of_quasiIsoAt (((ModuleCat.extendScalars φ).mapHomologicalComplex _).map ψ ≫ (cechLBBaseChangeIso hF sq hD).hom) i).2 ?_` and prove the remaining obligations. Break down `hi with hi | hi` into its components or cases. Use `isIntegral_left_of_isAbelianScheme_field B' hB'` as an intermediate fact. Use `hB'.proper` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `smoothOfRelativeDimension_isStableUnderBaseChange.{0} (n := g)` as an intermediate fact. Conclude with `cechLB_exactAt_of_dim_lt K B'.left B'.hom g _ (MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension g) sq hg) hP' inferInstance hF' _ _ ha hc i hi`. Take `⟨U, ⟨c⟩⟩` from `GtBaseChange.exists_lamChart t B F`. Conclude with `GlobalTheory.T.cechComplex_acyclic_primitive_nontrivial_algClosed K B' hB' hP' _ hF' ⟨_, GtBaseChange.genPull_isGen c hu⟩ (fun h => hi (CubeOpen.triv_comp (hX.isoIsPullback _ _ sq).hom (hX.isoIsPullback_hom_fst _ _ sq) h)) _ _ ha hc i`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_free_complex_of_primitive : ∀ (A : Type) [CommRing A] [IsNoetherianRing A] [IsLocalRing A] (B : Over (Spec (CommRingCat.of A))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → IsProjBy B.hom → ∀ g : ℕ, SmoothOfRelativeDimension g B.hom → ∀ F : LB B.left, F.IsLB → (∃ u : LB.Gen (abelian₂ B F), u.IsGen) → ∀ P : Perf B.hom F, ∃ C : CochainComplex (ModuleCat.{0} A) ℕ, (∀ i, Module.Free A (C.X i) ∧ Module.Finite A (C.X i))  ∧ (∃ n, ∀ i, n < i → IsZero (C.X i)) ∧ Nonempty ((Module.Dual A (C.X 0) ⧸ LinearMap.range (C.d 0 1).hom.dualMap) ≃ₗ[A] ((Fin P.a → A) ⧸ LinearMap.range P.D₀.transpose.mulVecLin)) ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (φ : A →+* K) (X' : Scheme.{0}) (π : X' ⟶ B.left) (f' : X' ⟶ Spec (CommRingCat.of K)), IsPullback π f' B.hom (Spec.map (CommRingCat.ofHom φ)) → ∀ i, (g < i ∨ ¬ Triv (F.pull π)) → (((ModuleCat.extendScalars φ).mapHomologicalComplex _).obj C).ExactAt i := by
   intro A _ _ _ B _ _ hB hP g hg F hF hu P

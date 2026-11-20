@@ -16,11 +16,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U k q σ τ f g hσ hf hE e`. Take `⟨s, hs⟩` from `hE e`. Use `⟨s, fun Z x rG rB h1 h2 h3 z JG J hG hB => ?_⟩` and prove the remaining obligations. Take `⟨H1, H2⟩` from `hs Z x rG rB h1 h2 h3 z JG J hG hB`. Establish `hc : cst (rB ≫ (𝟙_ _ ⊗ D.P.A).hom) z q = cst (rG ≫ (𝟙_ _ ⊗ G).hom) z q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Over.w (fst (𝟙_ (Over (Spec (CommRingCat.of R)))) D.P.A), ← Over.w (fst (𝟙_ (Over (Spec (CommRingCat.of R)))) G), ← Category.assoc, ← Category.assoc, h3]`. Establish `hF : ∀ α, sval (f α) rB z J = cst (rG ≫ (𝟙_ _ ⊗ G).hom) z q * sval (g α) rB z J` using `fun α => by`. Rewrite using `[← hc]`. Conclude with `GlobalTheory.secIsMul_gs (hf α) rB z _ (hB.mem _ _)`. Establish `hS : sval σ rG z JG = cst (rG ≫ (𝟙_ _ ⊗ G).hom) z q * sval τ rG z JG` using `GlobalTheory.secIsMul_gs hσ rG z _ (hG.mem _ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun α hα => by rw [hF, H1 α hα, mul_zero], ?_⟩` and prove the remaining obligations. Rewrite using `[hS, mul_left_comm, H2, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun α _ => by rw [hF, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.UU.expT_scale : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegPre R) (A : PolAV (Sp (FractionRing R))) (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (U : GlobalTheory.UU.PreU I D A G) (k : ℕ) (q : R) (σ τ : U.SecGT (𝟙_ _) k) (f g : ∀ α, GlobalTheory.UU.SecBT D (𝟙_ _) k α), ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ G).hom q σ τ → (∀ α, ReciprocityTheory.ChartRestriction.G.DVR.SecIsMul (𝟙_ _ ⊗ D.P.A).hom q (f α) (g α)) → U.ExpT (𝟙_ _) k τ g → U.ExpT (𝟙_ _) k σ f := by
   intro R _ _ I D A G _ _ U k q σ τ f g hσ hf hE e

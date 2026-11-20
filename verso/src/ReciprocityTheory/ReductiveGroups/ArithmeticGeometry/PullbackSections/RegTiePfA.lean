@@ -20,7 +20,7 @@ section Calc
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sval_zCast {S : Scheme.{0}} (A : Over S) {L : LB A.left} {T : Over S} {k₁ k₂ : ℤ} (h : k₁ = k₂)
     (F : LB.Sec (LPow A L k₁ T)) (r : Z ⟶ (T ⊗ A).left) (z : Z) (J : (Z ⟶ A.left) → L.ι) :
@@ -32,9 +32,7 @@ def pull1 (L : LB X) (h : Y ⟶ X) (s : LB.Sec L) : LB.Sec (LB.LinComb L (K := F
   thfPull1 L (F := 𝟙 X) h (Category.comp_id h) (thfPull L (𝟙 X) s)
 
 /- English proof (translation)
-Simplify using `only [pull1, thfPull1, thfPull]`. Use `Eq.trans (gs_appLE h _ _ _ r z ?_ _) ?_` and prove the remaining obligations. Conclude with `hz`. Use `Eq.trans (gs_appLE (𝟙 X) _ _ _ (r ≫ h) z ?_ _) ?_` and prove the remaining obligations. Conclude with `chart_le_pullback_open L h (Category.comp_id h) j hz`.
-
-Rewrite using `[Category.comp_id]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_pull1 (L : LB X) (h : Y ⟶ X) (s : LB.Sec L) (r : Z ⟶ Y) (z : Z) (j : Fin 1 → L.ι)
     (hz : r z ∈ LB.wchart L (fun _ : Fin 1 => h) j) :
@@ -50,7 +48,7 @@ def secOne (L : LB X) (s : LB.Sec L) : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ 
   pull1 L (𝟙 X) s
 
 /- English proof (translation)
-Introduce `y hy`. Conclude with `Set.mem_iInter.mpr fun _ => hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem plain_le (L : LB X) (i : L.ι) : L.U i ≤ (𝟙 X) ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => 𝟙 X) (fun _ => i) := by
   intro y hy
@@ -69,7 +67,7 @@ def plainOf (L : LB X) (σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X)
         ((gs_res _ y _ hy _).trans (gs_appLE (𝟙 X) _ _ _ (𝟙 _) y hy.2 _)))))))
 
 /- English proof (translation)
-Simplify using `only [plainOf]`. Use `Eq.trans (gs_appLE (𝟙 X) _ _ _ (𝟙 X) y ?_ _) ?_` and prove the remaining obligations. Conclude with `hy`. Rewrite using `[Category.comp_id]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_plainOf (L : LB X) (σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1))) (y : X) (i : L.ι)
     (hy : y ∈ L.U i) :
@@ -81,22 +79,22 @@ theorem gs_plainOf (L : LB X) (σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 
   rw [Category.comp_id]
 
 /- English proof (translation)
-Conclude with `gs_res r z le_top hz a`.
+A detailed English derivation is pending.
 -/
 theorem gs_resTop (r : Z ⟶ X) (z : Z) {U : X.Opens} (hz : r z ∈ U) (a : Γ(X, ⊤)) :
     gs r z U (resG X (le_top : U ≤ ⊤) a) = gs r z ⊤ a := by
   exact gs_res r z le_top hz a
 
 /- English proof (translation)
-Use `show ∀ σ : LB.Sec (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 1)), ∃! a : S, ∀ i, σ.f i = resG G.left le_top ((G.hom).appTop.hom (toΓ S a)) * (secOne L θ).f i`. Establish `e3 : ∀ (i : L.ι) (y : G.left) (hy : y ∈ (LB.LinComb L (K` using `Fin 1) (fun _ => 𝟙 G.left) (fun _ => 1)).U (fun _ => i)), gs (𝟙 G.left) y _ ((secOne L θ).f (fun _ => i)) = gs (𝟙 G.left) y (L.U i) (θ.f i) := by`. Introduce `i y hy`. Use `(gs_pull1 L (𝟙 _) θ (𝟙 _) y (fun _ => i) hy).trans ?_` and prove the remaining obligations. Rewrite using `[Category.comp_id]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ`. Take `⟨a, ha, huniq⟩` from `hθ (plainOf L σ)`. Use `⟨a, ?_, fun b hb => huniq b ?_⟩` and prove the remaining obligations. Introduce and unpack `(j : Fin 1 → L.ι)`. Take `⟨i, rfl⟩ : ∃ i : L.ι, j = fun _ => i` from `⟨j 0, funext fun k => by rw [Subsingleton.elim k 0]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Establish `hyi : y ∈ L.U i` using `LB.wchart_le L _ (fun _ : Fin 1 => i) 0 hy`. Rewrite using `[gs_mul _ y _ hy, gs_resTop _ y hy, e3 i y hy]`. Use `(gs_plainOf L σ y i hyi).symm.trans ?_` and prove the remaining obligations. Rewrite using `[ha i, gs_mul _ y _ hyi, gs_resTop _ y hyi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `fn_ext fun y hyi => ?_` and prove the remaining obligations. Establish `hy : y ∈ (LB.LinComb L (K` using `Fin 1) (fun _ => 𝟙 G.left) (fun _ => 1)).U (fun _ => i) := plain_le L i hyi`. Rewrite using `[gs_mul _ y _ hyi, gs_resTop _ y hyi]`. Use `(gs_plainOf L σ y i hyi).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show gs (𝟙 G.left) y ((LB.LinComb L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => 1)).U (fun _ => i)) (σ.f (fun _ => i)) = _`. Rewrite using `[hb (fun _ => i), gs_mul _ y _ hy, gs_resTop _ y hy, e3 i y hy]`.
+A detailed English derivation is pending.
 -/
 theorem secOne_gen {S : Type} [CommRing S] (G : Over (Sp S)) (L : LB G.left) (θ : LB.Sec L)
     (hθ : ∀ σ : LB.Sec L, ∃! a : S, ∀ i, σ.f i = resG G.left le_top ((G.hom).appTop.hom (toΓ S a)) * θ.f i) :
@@ -130,9 +128,9 @@ theorem secOne_gen {S : Type} [CommRing S] (G : Over (Sp S)) (L : LB G.left) (θ
     rw [hb (fun _ => i), gs_mul _ y _ hy, gs_resTop _ y hy, e3 i y hy]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.IsoMaps at h`. Establish `hV : r z ∈ M.U i ⊓ L.U k` using `⟨hi, hk⟩`. Establish `h'` using `congrArg (gs r z (M.U i ⊓ L.U k)) (h i k)`. Rewrite `h'` using `[gs_res r z _ hV, gs_mul _ z _ hV, gs_res r z _ hV]`. Rewrite using `[h']`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `gs_unit _ z _ hV _`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gs_isoMaps {L M : LB X} {w : LB.Iso L M} {s : LB.Sec L} {s' : LB.Sec M} (h : IsoMaps w s s') (r : Z ⟶ X)
     (z : Z) (i : M.ι) (k : L.ι) (hi : r z ∈ M.U i) (hk : r z ∈ L.U k) :
@@ -148,23 +146,19 @@ theorem gs_isoMaps {L M : LB X} {w : LB.Iso L M} {s : LB.Sec L} {s' : LB.Sec M} 
 end Calc
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Tc io y I`. Set `_` to `io.toAlgebra`. Set `A` to `Xo.univ.t.G`. Set `θK : LB.Sec (LPow I.t'.G I.t'.PP.L ((1 : ℕ) : ℤ) (𝟙_ (Over (Sp Tc.Fr))))` to `pull1 I.t'.PP.L (snd (𝟙_ (Over (Sp Tc.Fr))) I.t'.G).left I.σ`. Establish `gθK : ∀ (Z : Scheme.{0}) (zp : Z ⟶ (𝟙_ (Over (Sp Tc.Fr)) ⊗ I.t'.G).left) (z : Z) (J' : (Z ⟶ I.t'.G.left) → I.t'.PP.L.ι), Good I.t'.PP.L z J' → sval θK zp z J' = gs (zp ≫ (snd (𝟙_ (Over (Sp Tc.Fr))) I.t'.G).left) z (I.t'.PP.L.U (J' (zp ≫ (snd (𝟙_ (Over (Sp Tc.Fr))) I.t'.G).left))) …` using `fun Z zp z J' hJ' => gs_pull1 I.t'.PP.L _ I.σ zp z _ (hJ'.mem _ zp)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨secOne I.G.PP.L I.θ, secOne_gen I.G.G I.G.PP.L I.θ I.θgen, θK, ?_, ?_⟩` and prove the remaining obligations. Introduce `Z r zp zp' h1 h2 h3 z J J' hJ hJ'`. Set `a0 : Over.mk (I.t'.G.hom ≫ y.x) ⟶ Over.mk y.x` to `Over.homMk I.t'.G.hom rfl`. Set `b0 : Over.mk (I.t'.G.hom ≫ y.x) ⟶ A` to `Over.homMk I.m1.φ I.m1.cart.1.w`. Set `g0 : I.t'.G.left ⟶ Gx y.x` to `(lift a0 b0).left`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `g0f : g0 ≫ (fst (Over.mk y.x) A).left = I.t'.G.hom` using `congrArg (fun q => q.left) (lift_fst a0 b0)`. Establish `g0s : g0 ≫ (snd (Over.mk y.x) A).left = I.m1.φ` using `congrArg (fun q => q.left) (lift_snd a0 b0)`. Establish `hzp : zp = r ≫ g0`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show zp ≫ (fst (Over.mk y.x) A).left = (r ≫ g0) ≫ (fst (Over.mk y.x) A).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, g0f, h2]`. Use `show zp ≫ (snd (Over.mk y.x) A).left = (r ≫ g0) ≫ (snd (Over.mk y.x) A).left`. Rewrite using `[Category.assoc, g0s, h1]`. Substitute `hzp` using the available equality. Establish `hj : ∀ j : PUnit → Xo.univ.t.PP.L.ι, (Xo.univ.t.PP.L.pull I.m1.φ).U j ≤ g0 ⁻¹ᵁ (PPx y.x).U (fun _ => j PUnit.unit)` using `fun j y' hy' => Set.mem_iInter.2 fun _ => (congrArg (fun q => q y' ∈ Xo.univ.t.PP.L.U (j PUnit.unit)) g0s).mpr (mem_pull.1 hy')`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mJ : r z ∈ (Xo.univ.t.PP.L.pull I.m1.φ).U (fun _ => J (r ≫ I.m1.φ))` using `mem_pull.2 (hJ (r ≫ I.m1.φ))`. Establish `mK : r z ∈ I.t'.PP.L.U (J' (r ≫ 𝟙 _))` using `by simpa using hJ' (r ≫ 𝟙 _)`. Establish `e1 : sval (zCast A Nat.cast_one.symm y.s) (r ≫ g0) z J = gs (r ≫ g0) z _ (y.s.f (fun _ => J (r ≫ I.m1.φ)))`. Rewrite using `[sval_zCast]`. Conclude with `sval_of (L := Xo.univ.t.PP.L) (φ := fun _ : Fin 1 => (snd (Over.mk y.x) A).left) (ε := fun _ => 1) y.s (r ≫ g0) z J (fun _ => J (r ≫ I.m1.φ)) (fun _ => by rw [Category.assoc, g0s])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : gs (r ≫ g0) z _ (y.s.f (fun _ => J (r ≫ I.m1.φ))) = gs r z _ (I.s1.f (fun _ => J (r ≫ I.m1.φ)))`. Rewrite using `[I.gen1 g0 g0s g0f _ (hj _)]`. Use `erw [gs_appLE g0 _ _ (hj _) r z mJ]`. Use `erw [e1, e2, gs_isoMaps I.maps1 r z _ _ mJ mK, gθK Z zp' z J' hJ', h3, pow_one, Category.comp_id]`. Introduce `Z r zp h3 z J J' hJ hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `mJ : r z ∈ (I.G.PP.L.pull I.m2.φ).U (fun _ => J (r ≫ I.m2.φ))` using `mem_pull.2 (hJ (r ≫ I.m2.φ))`. Establish `mK : r z ∈ I.t'.PP.L.U (J' (r ≫ 𝟙 _))` using `by simpa using hJ' (r ≫ 𝟙 _)`. Establish `hpl : (I.G.PP.L.pull I.m2.φ).U (fun _ => J (r ≫ I.m2.φ)) ≤ I.m2.φ ⁻¹ᵁ I.G.PP.L.U (J (r ≫ I.m2.φ))` using `fun _ hy' => mem_pull.1 hy'`. Establish `e1 : sval (secOne I.G.PP.L I.θ) (r ≫ I.m2.φ) z J = gs (r ≫ I.m2.φ) z (I.G.PP.L.U (J (r ≫ I.m2.φ))) (I.θ.f (J (r ≫ I.m2.φ)))` using `by erw [sval_of _ _ z J (fun _ => J (r ≫ I.m2.φ)) (fun _ => by rw [Category.comp_id])]`. Rewrite using `[secOne]`.
-
-Use `erw [gs_pull1 _ _ _ _ z _ (plain_le _ _ (hJ (r ≫ I.m2.φ)))]`. Rewrite using `[Category.comp_id]`. Establish `e2 : gs (r ≫ I.m2.φ) z (I.G.PP.L.U (J (r ≫ I.m2.φ))) (I.θ.f (J (r ≫ I.m2.φ))) = gs r z _ (I.θ2.f (fun _ => J (r ≫ I.m2.φ)))`. Rewrite using `[I.pull _ hpl]`. Use `erw [gs_appLE I.m2.φ _ _ hpl r z mJ]`.
-
-Use `erw [e1, e2, gs_isoMaps I.maps2 r z _ _ mJ mK, gθK Z zp z J' hJ', h3, pow_one, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaTie : ThetaTieSt := by
   intro E _ _ _ H Dw l Xo c Tc io y I

@@ -6,9 +6,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `h2` using `h.2 T 1 1 x₀ x₀ hx hx`. Establish `hsq : x₀ * x₀ = x₀`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h2, _root_.mul_one, hx]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_eq_left.mp hsq`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.Ord.eq_one_of_left {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') {y' : T.left ⟶ S}
@@ -21,9 +21,9 @@ private theorem UpperTheory.Gal.Ord.eq_one_of_left {S S' : Scheme.{0}} {G' : Ove
   exact mul_eq_left.mp hsq
 
 /- English proof (translation)
-Establish `hw : ((1 : T ⟶ G').left ≫ φ) ≫ G.hom = (Over.mk y').hom`. Rewrite using `[Category.assoc, h.1.w, ← Category.assoc, Over.w]`. Conclude with `hy`. Establish `e` using `eq_one_of_left h T hy (Over.homMk ((1 : T ⟶ G').left ≫ φ) hw) rfl`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.Ord.one_left {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G]
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') {y' : T.left ⟶ S}
@@ -36,11 +36,11 @@ private theorem UpperTheory.Gal.Ord.one_left {S S' : Scheme.{0}} {G' : Over S'} 
   rfl
 
 /- English proof (translation)
-Establish `key : ∀ c : D.O, (x₀ ≫ o.act.act c).left = (x ≫ o'.act.act c).left ≫ m.φ`. Introduce `c`. Rewrite using `[Over.comp_left, Over.comp_left, hx, Category.assoc, Category.assoc, m.act c]`. Unfold `KilledBy`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H a ha`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[← key, H a ha]`. Conclude with `one_left m.cart T hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.w]`. Introduce `H a ha`. Apply `eq_one_of_left m.cart T hy` to reduce the goal to its premises. Rewrite using `[key, H a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.Ord.killedBy_iff {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Base D R} {N : ℕ}
     {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s} {f : S' ⟶ S}
@@ -63,13 +63,11 @@ private theorem UpperTheory.Gal.Ord.killedBy_iff {p : ℕ} [Fact p.Prime] {D : D
     rw [key, H a ha]
 
 /- English proof (translation)
-Introduce `p _ D R _ b N S s o w k _ _ y s₀ o₀ m h`. Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨h1, h2, h3, ?_⟩` and prove the remaining obligations. Rewrite using `[← h4]`. Establish `hy : (Over.mk (𝟙 (Sp k))).hom ≫ y = y` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `{ toFun := fun g => ⟨Over.homMk (m.cart.1.lift g.1.left (𝟙 _) (by simp)) (by rw [IsPullback.lift_snd]; rfl), (killedBy_iff m w _ hy _ g.1 (m.cart.1.lift_fst _ _ _).symm).mp g.2⟩ invFun := fun g => ⟨Over.homMk (g.1.left ≫ m.φ) (by rw [Category.assoc, m.cart.1.w, ← Category.assoc, …`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `right_inv := fun g => by`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m.cart.1.hom_ext` to reduce the goal to its premises. Simplify using the standard rewrite rules.
-
-Simplify using `}`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.ordPull :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (w : Ideal (𝓞 D.F))

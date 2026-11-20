@@ -13,7 +13,7 @@ namespace GlobalTheory.CompanionTheory.TorusCh.SgRing
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexConj_apply_apply E x`.
+A detailed English derivation is pending.
 -/
 theorem conj_conj (x : E) : conjE E (conjE E x) = x :=
   IsCMField.complexConj_apply_apply E x
@@ -21,25 +21,25 @@ theorem conj_conj (x : E) : conjE E (conjE E x) = x :=
 def bar (X : Matrix (Fin n) (Fin n) E) : Matrix (Fin n) (Fin n) E := (X.map (conjE E))ᵀ
 
 /- English proof (translation)
-Rewrite using `[bar, bar, bar, Matrix.map_mul, Matrix.transpose_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bar_mul (X Y : Matrix (Fin n) (Fin n) E) : bar (X * Y) = bar Y * bar X := by
   rw [bar, bar, bar, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bar]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bar_add (X Y : Matrix (Fin n) (Fin n) E) : bar (X + Y) = bar X + bar Y := by
   ext i j; simp [bar]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[bar, conj_conj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bar_bar (X : Matrix (Fin n) (Fin n) E) : bar (bar X) = X := by
   ext i j; simp [bar, conj_conj]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[bar, Matrix.algebraMap_matrix_apply]`. Simplify using `[bar, Matrix.algebraMap_matrix_apply, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bar_algebraMap (r : E) :
     bar (algebraMap E (Matrix (Fin n) (Fin n) E) r) = algebraMap E (Matrix (Fin n) (Fin n) E) (conjE E r) := by
@@ -65,15 +65,15 @@ theorem nrm_inv_val (d : GL (Fin n) E) :
     ((nrm d)⁻¹ : GL (Fin n) E).val = bar d.val * (d⁻¹ : GL (Fin n) E).val := rfl
 
 /- English proof (translation)
-Rewrite using `[sg_eq, sg_eq, sg_eq, bar_add, Matrix.mul_add, Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_add (d : GL (Fin n) E) (X Y : Matrix (Fin n) (Fin n) E) : sg d (X + Y) = sg d X + sg d Y := by
   rw [sg_eq, sg_eq, sg_eq, bar_add, Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-Establish `h : (d⁻¹ : GL (Fin n) E).val * d.val = 1` using `Units.inv_mul d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sg_eq, bar_mul]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = sg d Y * sg d X := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, sg_eq, sg_eq]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sg_mul (d : GL (Fin n) E) (X Y : Matrix (Fin n) (Fin n) E) : sg d (X * Y) = sg d Y * sg d X := by
   have h : (d⁻¹ : GL (Fin n) E).val * d.val = 1 := Units.inv_mul d
@@ -83,7 +83,7 @@ theorem sg_mul (d : GL (Fin n) E) (X Y : Matrix (Fin n) (Fin n) E) : sg d (X * Y
         rw [← h, sg_eq, sg_eq]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `h : d.val * (d⁻¹ : GL (Fin n) E).val = 1` using `Units.mul_inv d`. Rewrite using `[sg_eq, bar_algebraMap, ← Algebra.commutes, Matrix.mul_assoc, h, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_algebraMap (d : GL (Fin n) E) (r : E) :
     sg d (algebraMap E (Matrix (Fin n) (Fin n) E) r) = algebraMap E (Matrix (Fin n) (Fin n) E) (conjE E r) := by
@@ -91,28 +91,28 @@ theorem sg_algebraMap (d : GL (Fin n) E) (r : E) :
   rw [sg_eq, bar_algebraMap, ← Algebra.commutes, Matrix.mul_assoc, h, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h` using `sg_algebraMap d 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sg_one (d : GL (Fin n) E) : sg d 1 = 1 := by
   have h := sg_algebraMap d 1
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `sg_algebraMap d 0`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sg_zero (d : GL (Fin n) E) : sg d 0 = 0 := by
   have h := sg_algebraMap d 0
   simpa using h
 
 /- English proof (translation)
-Establish `h : d.val * (d⁻¹ : GL (Fin n) E).val = 1` using `Units.mul_inv d`. Rewrite using `[nrm_inv_val, sg_eq, nrm_val, bar_mul, bar_bar, ← Matrix.mul_assoc, h, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_nrm (d : GL (Fin n) E) : sg d (nrm d).val = ((nrm d)⁻¹ : GL (Fin n) E).val := by
   have h : d.val * (d⁻¹ : GL (Fin n) E).val = 1 := Units.mul_inv d
   rw [nrm_inv_val, sg_eq, nrm_val, bar_mul, bar_bar, ← Matrix.mul_assoc, h, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[nrm_inv_val, nrm_val, sg_eq, sg_eq, bar_mul, bar_mul, bar_bar]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sg_sg (d : GL (Fin n) E) (X : Matrix (Fin n) (Fin n) E) :
     sg d (sg d X) = (nrm d).val * X * ((nrm d)⁻¹ : GL (Fin n) E).val := by
@@ -122,13 +122,13 @@ theorem sg_sg (d : GL (Fin n) E) (X : Matrix (Fin n) (Fin n) E) :
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `hdet : g.val.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`. Establish `hc : g.val.charpoly.coeff 0 ≠ 0`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, h0, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hp : aeval g.val g.val.charpoly = 0` using `Matrix.aeval_self_charpoly _`. Use `set q : Matrix (Fin n) (Fin n) E := aeval g.val (divX g.val.charpoly) with hq`. Establish `hd : q * g.val + algebraMap E _ (g.val.charpoly.coeff 0) = 0`. Establish `h` using `congrArg (aeval g.val) (divX_mul_X_add g.val.charpoly)`. Rewrite `h` using `[hp, map_add, map_mul, aeval_X, aeval_C]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmem : q ∈ Algebra.adjoin E {g.val}` using `aeval_mem_adjoin_singleton E g.val`. Establish `h1 : (-(g.val.charpoly.coeff 0)⁻¹ • q) * g.val = 1`. Rewrite using `[Matrix.smul_mul, eq_neg_of_add_eq_zero_left hd, Algebra.algebraMap_eq_smul_one, smul_neg, neg_smul, neg_neg, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Establish `h2 : (g⁻¹ : GL (Fin n) E).val = -(g.val.charpoly.coeff 0)⁻¹ • q`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.one_mul]`. Use `_ = -(g.val.charpoly.coeff 0)⁻¹ • q := by`. Rewrite using `[Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`. Rewrite using `[h2]`. Conclude with `Subalgebra.smul_mem _ hmem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_mem (g : GL (Fin n) E) : (g⁻¹ : GL (Fin n) E).val ∈ Algebra.adjoin E {g.val} := by
   have hdet : g.val.det ≠ 0 := ((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero
@@ -154,11 +154,11 @@ theorem inv_mem (g : GL (Fin n) E) : (g⁻¹ : GL (Fin n) E).val ∈ Algebra.adj
   exact Subalgebra.smul_mem _ hmem _
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `rfl` from `Set.mem_singleton_iff.1 hx`. Rewrite using `[sg_nrm]`. Conclude with `inv_mem (nrm d)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Rewrite using `[sg_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy`. Rewrite using `[sg_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy`. Rewrite using `[sg_mul]`. Conclude with `mul_mem hy hx`.
+A detailed English derivation is pending.
 -/
 theorem sg_mem (d : GL (Fin n) E) {x : Matrix (Fin n) (Fin n) E} (hx : x ∈ Algebra.adjoin E {(nrm d).val}) :
     sg d x ∈ Algebra.adjoin E {(nrm d).val} := by
@@ -179,16 +179,16 @@ theorem sg_mem (d : GL (Fin n) E) {x : Matrix (Fin n) (Fin n) E} (hx : x ∈ Alg
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `pol_comm γ x y ((isPol_iff γ x).2 hx) ((isPol_iff γ y).2 hy)`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_comm (γ : Matrix (Fin n) (Fin n) E) {x y : Matrix (Fin n) (Fin n) E}
     (hx : x ∈ Algebra.adjoin E {γ}) (hy : y ∈ Algebra.adjoin E {γ}) : x * y = y * x :=
   pol_comm γ x y ((isPol_iff γ x).2 hx) ((isPol_iff γ y).2 hy)
 
 /- English proof (translation)
-Use `⟨{ toFun := fun x => ⟨sg d x, sg_mem d x.2⟩ map_one' := Subtype.ext (sg_one d) map_zero' := Subtype.ext (sg_zero d) map_add' := fun x y => Subtype.ext (sg_add d x y) map_mul' := fun x y => Subtype.ext ?_ }, fun x => rfl, fun x => Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `sg d (x.val * y.val) = sg d x.val * sg d y.val`. Rewrite using `[sg_mul]`. Conclude with `adjoin_comm _ (sg_mem d y.2) (sg_mem d x.2)`. Express the relevant statement in the definitionally equal form `sg d (sg d x.val) = x.val`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `hγ : (nrm d).val ∈ Algebra.adjoin E {(nrm d).val}` using `Algebra.self_mem_adjoin_singleton E _`. Rewrite using `[sg_sg, adjoin_comm _ hγ x.2, Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sgRing (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (d : GL (Fin n) E) :
     ∃ σ : Algebra.adjoin E {(nrm d).val} →+* Algebra.adjoin E {(nrm d).val},

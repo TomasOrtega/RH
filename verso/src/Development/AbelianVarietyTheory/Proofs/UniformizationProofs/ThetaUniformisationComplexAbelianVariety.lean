@@ -16,7 +16,7 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Take `⟨h, -⟩` from `_root_.GlobalTheory.abelianSchemeLaws_all`. Conclude with `_root_.GlobalTheory.thetaUnifAV_of_laws h.cube h.mulN h.weil h.weilNondeg h.globalSectionsRank`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.thetaUnifAV_all : _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.ThetaUnifAV := by
   obtain ⟨h, -⟩ := _root_.GlobalTheory.abelianSchemeLaws_all

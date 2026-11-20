@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.DualAct
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `p (((g⁻¹ : GL (Fin a) R).val) j i) = ((GeneralLinearGroup.map p g)⁻¹ : GL (Fin a) S).val j i`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_invT {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (g : GL (Fin a) R) :
     GeneralLinearGroup.map p (invT a R g) = invT a S (GeneralLinearGroup.map p g) := by
@@ -21,7 +21,7 @@ theorem map_invT {R S : Type} [CommRing R] [CommRing S] (p : R →+* S) (g : GL 
   rfl
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [map_invT, pInf_infGL, pInf_infGL]) (by rw [map_invT, pFin_infGL, pFin_infGL, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem invT_infGL (y : GL (Fin a) (Cinf E)) :
     invT a (Ad E) (infGL E a y) = infGL E a (invT a (Cinf E) y) :=
@@ -29,7 +29,7 @@ theorem invT_infGL (y : GL (Fin a) (Cinf E)) :
     (by rw [map_invT, pFin_infGL, pFin_infGL, map_one])
 
 /- English proof (translation)
-The claim follows from `ga_ext (by rw [map_invT, pInf_finGL, pInf_finGL, map_one]) (by rw [map_invT, pFin_finGL, pFin_finGL])`.
+A detailed English derivation is pending.
 -/
 theorem invT_finGL (k : GL (Fin a) (Af E)) :
     invT a (Ad E) (finGL E a k) = finGL E a (invT a (Af E) k) :=
@@ -37,7 +37,7 @@ theorem invT_finGL (k : GL (Fin a) (Af E)) :
     (by rw [map_invT, pFin_finGL, pFin_finGL])
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem invT_toUnits (k : Kinf E a) :
     invT a (Cinf E) (Unitary.toUnits k) = Unitary.toUnits (barK k) := by
@@ -62,7 +62,7 @@ theorem trL_apply (X : Lie E a) : trL E a X = toL (Matrix.of X)ᵀ := rfl
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Rewrite using `[trL_apply, GlobalTheory.ThetaPull.invL]`. Express the relevant statement in the definitionally equal form `toL ((y⁻¹ : GL (Fin a) (Cinf E)).val)ᵀ = toL (Matrix.of (Matrix.of.symm (Matrix.of.symm y.val |> Matrix.of)⁻¹))ᵀ`. Simplify using `[Matrix.coe_units_inv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem toL_invT (y : GL (Fin a) (Cinf E)) :
     toL (invT a (Cinf E) y).val = trL E a (GlobalTheory.ThetaPull.invL (toL y.val)) := by
@@ -71,7 +71,7 @@ theorem toL_invT (y : GL (Fin a) (Cinf E)) :
   simp [Matrix.coe_units_inv]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `id hx`. Take `rfl : x = toL u.val` from `hu.symm`. Rewrite using `[← toL_invT, chart_val, chart_val, map_mul, invT_infGL]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_star_invT (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : x ∈ invSet E a) :
     chart (fun g => star (φ (invT a (Ad E) g))) g x =
@@ -81,9 +81,9 @@ theorem chart_star_invT (φ : GA E a → ℂ) (g : GA E a) {x : Lie E a} (hx : x
   rw [← toL_invT, chart_val, chart_val, map_mul, invT_infGL]
 
 /- English proof (translation)
-Establish `e : chart (fun g => star (φ (invT a (Ad E) g))) g =ᶠ[𝓝 (oneL E a)] (Complex.conjCLE : ℂ →L[ℝ] ℂ) ∘ chart φ (invT a (Ad E) g) ∘ trL E a ∘ GlobalTheory.ThetaPull.invL` using `Filter.eventually_of_mem (isOpen_invSet.mem_nhds isUnit_one) fun x hx => chart_star_invT φ g hx`. Establish `h1 : (trL E a ∘ GlobalTheory.ThetaPull.invL) (oneL E a) = oneL E a` using `(toL_invT 1).symm.trans (by rw [map_one]; rfl)`. Establish `h2` using `HasFDerivAt.comp (oneL E a) (f := trL E a ∘ GlobalTheory.ThetaPull.invL) (by rw [h1]; exact (differentiableAt_chart hφ (invT a (Ad E) g)).hasFDerivAt) ((trL E a).hasFDerivAt.comp (oneL E a) GlobalTheory.ThetaPull.invL_smooth.2)`. Establish `h3` using `(Complex.conjCLE : ℂ →L[ℝ] ℂ).hasFDerivAt.comp (oneL E a) h2`. Unfold `lieD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e.fderiv_eq, h3.fderiv]`. Establish `e2 : toL (-(Matrix.of X)ᵀ) = -(toL (Matrix.of X)ᵀ : Lie E a)` using `rfl`. Simplify using `[trL_apply]`. Rewrite using `[e2, map_neg, map_neg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lieD_star_invT (X : Lie E a) {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a) (g : GA E a) :
     lieD X (fun g => star (φ (invT a (Ad E) g))) g =
@@ -104,11 +104,11 @@ theorem lieD_star_invT (X : Lie E a) {φ : GA E a → ℂ} (hφ : φ ∈ Sm E a)
   rw [e2, map_neg, map_neg]
 
 /- English proof (translation)
-Use `Subtype.ext <| funext fun g => ?_` and prove the remaining obligations. Rewrite using `[hχ]`. Consider the cases of `o with`. Consider the case `fin k`. Express the relevant statement in the definitionally equal form `ψ.1 (g * finGL E a k) = star (φ.1 (invT a (Ad E) g * finGL E a (invT a (Af E) k)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hψ, map_mul, invT_finGL]`. Consider the case `cpt k`. Express the relevant statement in the definitionally equal form `ψ.1 (g * infGL E a (Unitary.toUnits k)) = star (φ.1 (invT a (Ad E) g * infGL E a (Unitary.toUnits (barK k))))`. Rewrite using `[hψ, map_mul, invT_infGL, invT_toUnits]`. Consider the case `lie X`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `e : ψ.1 = fun g => star (φ.1 (invT a (Ad E) g))` using `funext hψ`. Express the relevant statement in the definitionally equal form `lieD X ψ.1 g = star (lieD (toL (-(Matrix.of X)ᵀ)) φ.1 (invT a (Ad E) g))`. Rewrite using `[e, lieD_star_invT X φ.2 g]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_star_invT (o : Op E a) (φ ψ χ : Sm E a)
     (hψ : ∀ g, ψ.1 g = star (φ.1 (invT a (Ad E) g)))

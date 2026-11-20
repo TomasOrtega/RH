@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `h`. Establish `h1 : χ ^ k ≠ 1` using `pow_ne_one_of_lt_orderOf (by omega) (by omega)`. Choose the witnesses or unpack the hypotheses as in `⟨σ, hσ⟩ : ∃ σ, χ σ ^ k ≠ 1 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `h1 (MonoidHom.ext hn)`. Establish `h2 : (χ σ ^ k) ^ 2 = 1`. Rewrite using `[← pow_mul, mul_two, ← hk, ← MonoidHom.pow_apply, pow_orderOf_eq_one, MonoidHom.one_apply]`. Establish `h3 : ((χ σ ^ k : Oˣ) : O) ^ 2 = 1` using `by rw [← Units.val_pow_eq_pow_val, h2, Units.val_one]`. Use `⟨σ ^ k, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[map_pow]`. Break down `sq_eq_one_iff.1 h3 with h4 | h4` into its components or cases. Conclude with `absurd (Units.ext h4) hσ`. Conclude with `Units.ext h4`.
+A detailed English derivation is pending.
 -/
 private theorem neg_val {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (χ : Γ →* Oˣ) (h0 : 0 < orderOf χ)
     (h : Even (orderOf χ)) : ∃ σ, χ σ = -1 := by
@@ -29,19 +29,19 @@ private theorem neg_val {Γ O : Type} [Group Γ] [CommRing O] [IsDomain O] (χ :
   · exact Units.ext h4
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c D ⟨hG, h, t, e, ψ, _, _, _, _, ⟨_, hev, _⟩, hO⟩ κ j hκ`. Establish `lp : l.Prime` using `hl.out`. Establish `hT : IsOmT c D.om` using `⟨hG.om_pow, fun σ => by`. Use `hG.om_bar σ` as an intermediate fact. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.2 this⟩`. Establish `hk` using `((omT Ω l c).2 D.om hT).2.1`. Take `⟨b, -, -, hb⟩` from `(psiBar Ω l c D.om hT h.N ψ).1`. Establish `ho` using `(psiBar Ω l c D.om hT h.N (chiP l ψ)).2.2.1`. Take `⟨σ, hσ⟩` from `neg_val (Chr.dirG ℚ Ω (chiP l ψ)) (ho ▸ (chiP l ψ).orderOf_pos) (ho ▸ hev)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hmul, -, hinv, -, h6, -⟩` from `compAlg c.O h.N l lp`. Establish `h1 : comp l (chiP l ψ) = 1` using `by rw [chiP, hmul, hinv, (h6 _).1, mul_inv_cancel]`. Establish `hA` using `hG.pl_over l lp`. Establish `hI` using `((compIne Ω h.N l lp _ hA).2 c.O (chiP l ψ)).2.2 h1`. Take `⟨τ, hτ, hc⟩ : Chr.cls ℚ Ω l σ ∈ (Ine (F` from `ℚ) (D.pl l)).map (Chr.cls ℚ Ω l) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(compIne Ω l l lp _ hA).1, (projFacts l l lp).2.2.2.2.2.1, MonoidHom.mem_ker]`. Establish `: Subsingleton (ZMod (ordCompl[l] l))`. Rewrite using `[lp.factorization_self, pow_one, Nat.div_self lp.pos]`. Use `infer_instance`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : D.om (σ * τ⁻¹) = 1`. Rewrite using `[← MonoidHom.mem_ker, hk, MonoidHom.mem_ker, map_mul, map_inv, hc, mul_inv_cancel]`. Establish `e2 : Chr.dirG ℚ Ω (chiP l ψ) (σ * τ⁻¹) = -1`. Rewrite using `[map_mul, map_inv, hσ, MonoidHom.mem_ker.1 (hI hτ), inv_one, mul_one]`. Establish `e3 : D.om ((σ * τ⁻¹) ^ l ^ j) = 1` using `by rw [map_pow, e1, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e4 : Chr.dirG ℚ Ω (chiP l ψ) ((σ * τ⁻¹) ^ l ^ j) = -1`. Rewrite using `[map_pow, e2, ((lp.odd_of_ne_two hG.l_odd).pow).neg_one_pow]`. Use `⟨(σ * τ⁻¹) ^ l ^ j, e3, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_pow, ← MonoidHom.pow_apply, hκ, MonoidHom.one_apply]`. Establish `e5` using `hb D.e ((σ * τ⁻¹) ^ l ^ j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite `e5` using `[MonoidHom.mul_apply, MonoidHom.pow_apply, e3, e4, one_pow, one_mul, ← hO.psi, ← IsLocalRing.residue_eq_zero_iff, map_sub, sub_eq_zero]`. Use `e5.trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.ev2 :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), Ctx2 D → ∀ (κ : G ℚ Ω →* c.Oˣ) (j : ℕ), κ ^ l ^ j = 1 → ∃ t, D.om t = 1 ∧ κ t = 1 ∧ Raw.bar D.Psi t = -1 := by

@@ -11,9 +11,9 @@ namespace GlobalTheory.KapOrb.CongNorm
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `v.map_sum_le fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, v.map_mul]`. Establish `h1 : v (∑ m, A i m * X m l) ≤ c` using `v.map_sum_le fun m _ => by`. Rewrite using `[v.map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem val_mul_mul_le {R Γ : Type} [CommRing R] [LinearOrderedCommMonoidWithZero Γ] (v : Valuation R Γ) {n : ℕ}
     (A X B : Matrix (Fin n) (Fin n) R) (c : Γ) (hA : ∀ i j, v (A i j) ≤ 1) (hB : ∀ i j, v (B i j) ≤ 1)
@@ -29,7 +29,7 @@ theorem val_mul_mul_le {R Γ : Type} [CommRing R] [LinearOrderedCommMonoidWithZe
     _ = c := mul_one c
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hg`. Establish `: ((Formalism.UG.bc (n` using `Fin n) (Ov E w).subtype y).val i j) = ((y.val i j : Ov E w) : w.adicCompletion E) := rfl`. Rewrite using `[this]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers (K := E) (v := w)).1 (y.val i j).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_mem_KGL (w : Pl E) {n : ℕ} {g : GLw n w} (hg : g ∈ GlobalTheory.LFun.KGL w n) (i j : Fin n) :
     Valued.v (g.val i j) ≤ 1 := by
@@ -39,7 +39,7 @@ theorem val_le_one_of_mem_KGL (w : Pl E) {n : ℕ} {g : GLw n w} (hg : g ∈ Glo
   exact (HeightOneSpectrum.mem_adicCompletionIntegers (K := E) (v := w)).1 (y.val i j).2
 
 /- English proof (translation)
-Establish `e : (a⁻¹ * x * a).val - 1 = (a⁻¹).val * (x.val - 1) * a.val`. Establish `h1 : (a⁻¹).val * a.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1, Units.val_mul, Units.val_mul]`. Rewrite using `[e]`. Conclude with `val_mul_mul_le Valued.v _ _ _ c (val_le_one_of_mem_KGL w (inv_mem ha)) (val_le_one_of_mem_KGL w ha) hx i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_bound (w : Pl E) {n : ℕ} (c : WithZero (Multiplicative ℤ)) {a x : GLw n w} (ha : a ∈ GlobalTheory.LFun.KGL w n)
     (hx : ∀ i j, Valued.v ((x.val - 1) i j) ≤ c) (i j : Fin n) :
@@ -56,9 +56,9 @@ end GlobalTheory.KapOrb.CongNorm
 namespace GlobalTheory.KapOrb
 
 /- English proof (translation)
-Introduce `E _ _ _ w n m h k hk`. Establish `hmem : k⁻¹ * h * k ∈ GlobalTheory.LFun.KGL w n ↔ h ∈ GlobalTheory.LFun.KGL w n`. Rewrite using `[Subgroup.mul_mem_cancel_right _ hk, Subgroup.mul_mem_cancel_left _ (inv_mem hk)]`. Establish `hb : ∀ g : GLw n w, (∀ i j, Valued.v (g.val i j - (1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) i j) ≤ WithZero.exp (-(m : ℤ))) ↔ ∀ i j, Valued.v ((g.val - 1) i j) ≤ WithZero.exp (-(m : ℤ))` using `fun g => by`. Simplify using `only [Matrix.sub_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [congSet, Set.mem_ofPred_eq, hb, hmem]`. Use `and_congr_right fun _ => ⟨fun H => ?_, fun H => CongNorm.conj_bound w _ hk H⟩` and prove the remaining obligations. Establish `e : h = k⁻¹⁻¹ * (k⁻¹ * h * k) * k⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `CongNorm.conj_bound w _ (inv_mem hk) H`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_congSet_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (w : Pl E) (n m : ℕ)
     (h k : GLw n w), k ∈ GlobalTheory.LFun.KGL w n → (k⁻¹ * h * k ∈ congSet w n m ↔ h ∈ congSet w n m) := by

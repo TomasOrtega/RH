@@ -27,7 +27,7 @@ private theorem dg_val (e : Fin n → k) (he : ∀ i, e i ≠ 0) :
     ((dg e he : GeneralLinearGroup (Fin n) k) : Matrix (Fin n) (Fin n) k) = diagonal e := rfl
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, dg_inv_val, dg_val, mul_diagonal, diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_apply (e : Fin n → k) (he : ∀ i, e i ≠ 0) (u : GeneralLinearGroup (Fin n) k) (i j : Fin n) :
     ((dg e he * u * (dg e he)⁻¹ : GeneralLinearGroup (Fin n) k) : Matrix (Fin n) (Fin n) k) i j =
@@ -35,7 +35,7 @@ private theorem conj_apply (e : Fin n → k) (he : ∀ i, e i ≠ 0) (u : Genera
   rw [Units.val_mul, Units.val_mul, dg_inv_val, dg_val, mul_diagonal, diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, dg_inv_val, diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_mul_apply (e : Fin n → k) (he : ∀ i, e i ≠ 0) (p : GeneralLinearGroup (Fin n) k) (i j : Fin n) :
     (((dg e he)⁻¹ * p : GeneralLinearGroup (Fin n) k) : Matrix (Fin n) (Fin n) k) i j =
@@ -46,13 +46,13 @@ private def ee (c : Fin n → k) (i : Fin n) : k :=
   ∏ j : Fin n with i ≤ j ∧ (j : ℕ) + 1 < n, c j
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun j _ => hc j`.
+A detailed English derivation is pending.
 -/
 private theorem ee_ne (c : Fin n → k) (hc : ∀ i, c i ≠ 0) (i : Fin n) : ee c i ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun j _ => hc j
 
 /- English proof (translation)
-Unfold `ee`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `j hj`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def] at hj`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem ee_last (c : Fin n → k) (i : Fin n) (hi : (i : ℕ) + 1 = n) : ee c i = 1 := by
   unfold ee
@@ -62,11 +62,11 @@ private theorem ee_last (c : Fin n → k) (i : Fin n) (hi : (i : ℕ) + 1 = n) :
   omega
 
 /- English proof (translation)
-Unfold `ee`. Establish `hi : i ∈ (Finset.univ.filter fun x : Fin n => i ≤ x ∧ (x : ℕ) + 1 < n)`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, le_refl]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Finset.mul_prod_erase _ _ hi]`. Use `congr 1`. Apply `Finset.prod_congr` to reduce the goal to its premises. Use extensionality with `x`. Simplify using `only [Finset.mem_erase, Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def, ne_eq, Fin.ext_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `_ _`. Both sides reduce to the same expression.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 private theorem ee_step (c : Fin n → k) (i j : Fin n) (hij : (j : ℕ) = i + 1) : ee c i = c i * ee c j := by
   unfold ee
@@ -87,23 +87,23 @@ end UpperTheory.V.Z.Desc.V0.KirillovTranslation
 
 open UpperTheory.V.Z.Desc.V0.KirillovTranslation in
 /- English proof (translation)
-Introduce `k _ _ _ _ n W _ _ τ hK ψ t hψ hψ1 ht`. Take `⟨ψ0, l0, hc0, hn0, hu0, hm0⟩` from `hK`. Take `⟨a, ha⟩` from `GlobalTheory.LocGL.exists_unit_eq_mulShift hc0 hn0 hψ hψ1`. Set `c : Fin n → k` to `fun i => (a : k) * t i`. Establish `hcE : ∀ i, c i = (a : k) * t i` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : ∀ i, c i ≠ 0` using `fun i => mul_ne_zero a.ne_zero (ht i)`. Set `g : GeneralLinearGroup (Fin n) k` to `dg (ee c) (ee_ne c hc)`. Establish `hτ : ∀ (x y : GeneralLinearGroup (Fin n) k) (w : W), τ (x * y) w = τ x (τ y w)`. Introduce `x y w`. Rewrite using `[map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l0 ∘ₗ τ g, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu v`. Establish `hconj : g * u * g⁻¹ ∈ unipB k (Fin n)`. Rewrite `hu`, the goal using `[mem_unipB]`. Use `⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[conj_apply, hu.1 i j hji, mul_zero, zero_mul]`. Rewrite using `[conj_apply, hu.2 i, mul_one, mul_inv_cancel₀ (ee_ne c hc i)]`. Establish `hmove : τ g (τ u v) = τ (g * u * g⁻¹) (τ g v)`. Rewrite using `[hτ, hτ, ← hτ g⁻¹, inv_mul_cancel, map_one, Module.End.one_apply]`. Simplify using `only [LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmove, hu0 _ hconj]`. Use `congr 1`. Unfold `chr`. Rewrite using `[ha, AddChar.mulShift_apply, Finset.mul_sum]`. Establish `hs : (∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => (p.2 : ℕ) = p.1 + 1), (fun _ => (1 : k)) p.1 * ((g * u * g⁻¹ : GeneralLinearGroup (Fin n) k) : Matrix (Fin n) (Fin n) k) p.1 p.2) = ∑ p ∈ Finset.univ.filter (fun p : Fin n × Fin n => (p.2 : ℕ) = p.1 + 1), (a : k) * (t p.1 * …`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`. Rewrite using `[conj_apply, ee_step c p.1 p.2 hp, hcE]`. Establish `hE` using `ee_ne c hc p.2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[hs]`. Introduce `v hv`. Apply `hm0 v` to reduce the goal to its premises. Introduce `q hq`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hp : IsMirL (g⁻¹ * q)`. Introduce `i j hi`. Rewrite using `[inv_mul_apply, ee_last c i hi, inv_one, one_mul]`. Conclude with `hq i j hi`. Use `hv _ hp` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply] at this`. Rewrite `this` using `[← hτ, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Desc.V0.kirMove :
     KirMove := by

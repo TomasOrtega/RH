@@ -11,7 +11,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.CompanionTheory.LocGL
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `H`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSocle_prodIrr_congr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] {h N : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
@@ -22,11 +22,11 @@ theorem isSocle_prodIrr_congr {k : Type} [Field k] [ValuativeRel k] [Topological
   exact H
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ n ξ hξ hanti hd`. Set `x : Fin n → IrrGL k` to `fun i => IrrGL.ofChar (ξ (Fin.rev i)) (isSmoothChar_of_isUnram (hξ (Fin.rev i)))`. Establish `hLF : LFactors (PositivityTheory.SphericalProduct.msOne ξ hξ) x` using `⟨_, GlobalTheory.CompanionTheory.OneTermOrder.isOrderedForm_single_rev k n ξ hξ hanti, fun i => isLSeg_single k _ _⟩`. Establish `hd1 : ∑ a, (x a).1 = n` using `by simp [x, IrrGL.ofChar]`. Establish `hd2 : ∑ a, (x (Fin.rev a)).1 = n` using `by simp [x, IrrGL.ofChar]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨π, hπ⟩` from `PositivityTheory.Exh.standardCosocleGL_holds k _ n n x hd1 hLF`. Establish `hL : IsL (PositivityTheory.SphericalProduct.msOne ξ hξ) π.ρ` using `⟨n, x, hd1, hLF, hπ⟩`. Conclude with `⟨IrrGL.of π.ρ π.smooth π.irr, rfl, hL.of_equiv (IrrGL.equivOf _ _ _)⟩`. Introduce `V _ _ π hL`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS` using `PositivityTheory.Exh.lSocleGL_of GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k _ n n x hd2 hLF π hL`. Use `isSocle_prodIrr_congr ?_ _ hd hS` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Simplify using `only [x, Function.comp, Fin.rev_rev]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem socleOne : PositivityTheory.SphericalProduct.SocleOne := by
   intro k _ _ _ _ _ n ξ hξ hanti hd

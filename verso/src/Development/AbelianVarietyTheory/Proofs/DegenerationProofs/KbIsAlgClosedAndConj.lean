@@ -15,9 +15,9 @@ open IsLocalRing Polynomial
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Use `Splits.of_splits_map_of_injective (i := (OO p).subtype) Subtype.val_injective (IsAlgClosed.splits _) fun a ha => ?_` and prove the remaining obligations. Establish `h : IsIntegral (OO p) a` using `⟨q, hq, by`. Use `isRoot_of_mem_roots ha` as an intermediate fact. Rewrite using `[IsRoot, Polynomial.eval_map] at this⟩` and apply the resulting hypothesis. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components.
 -/
 theorem splits_of_monic_OO {q : (OO p)[X]} (hq : q.Monic) : q.Splits := by
   refine Splits.of_splits_map_of_injective (i := (OO p).subtype) Subtype.val_injective
@@ -29,9 +29,9 @@ theorem splits_of_monic_OO {q : (OO p)[X]} (hq : q.Monic) : q.Splits := by
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Establish `h0 : q.map (residue (OO p)) ≠ 0` using `(hq.map _).ne_zero`. Establish `h : b ∈ (q.map (residue (OO p))).roots`. Rewrite using `[mem_roots h0, IsRoot, Polynomial.eval_map, hb]`. Rewrite `h` using `[(splits_of_monic_OO hq).roots_map_of_ne_zero h0, Multiset.mem_map]`. Take `⟨a, ha, rfl⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, isRoot_of_mem_roots ha, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_root_residue_OO {q : (OO p)[X]} (hq : q.Monic) {b : kb p}
     (hb : q.eval₂ (residue (OO p)) b = 0) : ∃ a : OO p, q.eval a = 0 ∧ residue (OO p) a = b := by
@@ -43,7 +43,7 @@ theorem exists_root_residue_OO {q : (OO p)[X]} (hq : q.Monic) {b : kb p}
   exact ⟨a, isRoot_of_mem_roots ha, rfl⟩
 
 /- English proof (translation)
-Use `IsAlgClosed.of_exists_root _ fun f hf hirr => ?_` and prove the remaining obligations. Take `⟨q, hq, -, hmon⟩` from `lifts_and_degree_eq_and_monic (mem_lifts_of_surjective (residue_surjective (R := OO p)) f) hf`. Establish `hs : f.Splits` using `hq ▸ (splits_of_monic_OO hmon).map _`. Conclude with `hs.exists_eval_eq_zero (degree_pos_of_irreducible hirr).ne'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_kb : IsAlgClosed (kb p) := by
   refine IsAlgClosed.of_exists_root _ fun f hf hirr => ?_
@@ -53,17 +53,17 @@ theorem isAlgClosed_kb : IsAlgClosed (kb p) := by
   exact hs.exists_eval_eq_zero (degree_pos_of_irreducible hirr).ne'
 
 /- English proof (translation)
-The claim follows from `(CharP.charP_iff_prime_eq_zero Fact.out).2 GlobalTheory.ZH.natCast_residueField_OO`.
+A detailed English derivation is pending.
 -/
 theorem charP_kb : CharP (kb p) p :=
   (CharP.charP_iff_prime_eq_zero Fact.out).2 GlobalTheory.ZH.natCast_residueField_OO
 
 /- English proof (translation)
-Use `haveI := charP_kb (p := p)`. Use `letI := ZMod.algebra (kb p) p`. Establish `h : (algebraMap (ZMod p) (kb p)).IsIntegral`. Use `RingHom.IsIntegral.tower_top (Int.castRingHom (ZMod p)) _ ?_` and prove the remaining obligations. Rewrite using `[RingHom.ext_int (RingHom.comp _ _) (Int.castRingHom _)]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.ZH.isIntegral_int_residueField_OO`. Establish `h' : IsIntegral (ZMod p) x` using `h x`. Set `K` to `IntermediateField.adjoin (ZMod p) {x}`. Use `haveI : FiniteDimensional (ZMod p) K := IntermediateField.adjoin.finiteDimensional h'`. Use `haveI : Finite K := Module.finite_of_finite (ZMod p)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `y : K` to `⟨x, IntermediateField.mem_adjoin_simple_self _ x⟩`. Establish `hy : y ≠ 0` using `fun h0 => hx (congrArg Subtype.val h0)`. Take `⟨n, hn, e⟩` from `(isOfFinOrder_of_finite (Units.mk0 y hy)).exists_pow_eq_one`. Conclude with `⟨n, hn, by simpa [y] using congrArg (fun u : Kˣ => ((u : K) : kb p)) e⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one_kb (x : kb p) (hx : x ≠ 0) : ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1 := by
   haveI := charP_kb (p := p)
@@ -82,7 +82,7 @@ theorem exists_pow_eq_one_kb (x : kb p) (hx : x ≠ 0) : ∃ n : ℕ, 1 ≤ n �
   exact ⟨n, hn, by simpa [y] using congrArg (fun u : Kˣ => ((u : K) : kb p)) e⟩
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[GlobalTheory.ZH.mem_OO_iff, ← GlobalTheory.isIntegral_padicInt_iff_norm_le_one]`. Conclude with `hx.map (σ.toAlgHom.restrictScalars ℤ_[p])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algEquiv_mem_OO (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) {x : PadicAlgCl p} (hx : x ∈ OO p) :
     σ x ∈ OO p := by
@@ -98,9 +98,9 @@ noncomputable def restrictOO (σ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) : 
   map_add' x y := Subtype.ext (map_add σ (x : PadicAlgCl p) y)
 
 /- English proof (translation)
-Rewrite using `[← mem_lifts, lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[coeff_map]`. Establish `h1` using `PadicInt.sub_zmodRepr_mem (q.coeff n)`. Rewrite `h1` using `[PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `h1`. Establish `h2` using `congrArg ((residue (OO p)).comp (GlobalTheory.ZH.padicIntToOO p)) hc`. Rewrite `h2` using `[map_sub, map_mul, map_natCast, map_natCast, GlobalTheory.ZH.natCast_residueField_OO, zero_mul, sub_eq_zero]`. Conclude with `⟨((q.coeff n).zmodRepr : ℤ), by rw [h2]; simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_int_map_eq_kb (q : ℤ_[p][X]) : ∃ g : ℤ[X], g.map (Int.castRingHom (kb p)) =
     q.map ((residue (OO p)).comp (GlobalTheory.ZH.padicIntToOO p)) := by
@@ -115,13 +115,13 @@ theorem exists_int_map_eq_kb (q : ℤ_[p][X]) : ∃ g : ℤ[X], g.map (Int.castR
   exact ⟨((q.coeff n).zmodRepr : ℤ), by rw [h2]; simp⟩
 
 /- English proof (translation)
-Establish `ha : IsIntegral ℤ_[p] (a : PadicAlgCl p)` using `(GlobalTheory.isIntegral_padicInt_iff_norm_le_one _).2 ((GlobalTheory.ZH.mem_OO_iff _).1 a.2)`. Use `set f := minpoly ℤ_[p] (a : PadicAlgCl p) with hf`. Establish `key : ∀ c : OO p, (((f.map (GlobalTheory.ZH.padicIntToOO p)).eval c : OO p) : PadicAlgCl p) = aeval (c : PadicAlgCl p) f` using `fun c => by`. Rewrite using `[Polynomial.eval_map]`. Conclude with `hom_eval₂ f (GlobalTheory.ZH.padicIntToOO p) (OO p).subtype c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `exists_int_map_eq_kb f`. Establish `e : ∀ b : kb p, aeval b g = (f.map (GlobalTheory.ZH.padicIntToOO p)).eval₂ (residue (OO p)) b` using `fun b => by`. Rewrite using `[eval₂_map, ← Polynomial.eval_map, ← hg, Polynomial.eval_map]`. Both sides reduce to the same expression. Establish `h1 : aeval (residue (OO p) a) g = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (f.map (GlobalTheory.ZH.padicIntToOO p)).eval a = 0` using `Subtype.ext ((key a).trans (minpoly.aeval _ _))`. Rewrite using `[e, eval₂_hom, this, map_zero]`. Take `⟨a', ha', rfl⟩` from `exists_root_residue_OO ((minpoly.monic ha).map (GlobalTheory.ZH.padicIntToOO p)) ((e b').symm.trans (h g h1))`. Establish `h2 : aeval (a' : PadicAlgCl p) (minpoly ℚ_[p] (a : PadicAlgCl p)) = 0`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[p] ha, aeval_map_algebraMap, ← hf, ← key, ha']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨σ, hσ⟩` from `minpoly.exists_algEquiv_of_root' (Algebra.IsAlgebraic.isAlgebraic _) h2`. Conclude with `⟨σ, congrArg _ (Subtype.ext hσ)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_residue_restrictOO_eq (a : OO p) (b' : kb p)
     (h : ∀ g : ℤ[X], aeval (residue (OO p) a) g = 0 → aeval b' g = 0) :
@@ -149,13 +149,13 @@ theorem exists_residue_restrictOO_eq (a : OO p) (b' : kb p)
   exact ⟨σ, congrArg _ (Subtype.ext hσ)⟩
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `IsCyclic.exists_monoid_generator (α := Fˣ)`. Take `⟨a₀, ha₀⟩` from `residue_surjective (r u)`. Take `⟨σ, hσ⟩` from `exists_residue_restrictOO_eq a₀ (r' u) fun g hg => by`. Rewrite `hg` using `[ha₀]`. Establish `h1` using `aeval_algHom_apply r.toIntAlgHom (u : F) g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `aeval_algHom_apply r'.toIntAlgHom (u : F) g`. Establish `h3 : aeval (u : F) g = 0` using `r.injective ((h1.symm.trans hg).trans (map_zero r).symm)`. Conclude with `h2.trans (by rw [h3, map_zero])`. Use `⟨restrictOO σ, fun x a ha => ?_⟩` and prove the remaining obligations. Set `τ` to `ResidueField.mapEquiv (restrictOO σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : ∀ c : OO p, τ (residue (OO p) c) = residue (OO p) (restrictOO σ c)` using `fun c => rfl`. Rewrite using `[← hτ, ha]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Take `⟨n, hn⟩` from `hu (Units.mk0 x hx)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x = (u : F) ^ n` using `by simpa using (congrArg Units.val hn).symm`. Rewrite using `[hx', map_pow, map_pow, map_pow, ← ha₀, hτ, hσ]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_residue_eq (F : Type) [Field F] [Finite F] (r r' : F →+* kb p) :
     ∃ σ : OO p ≃+* OO p, ∀ (x : F) (a : OO p), residue (OO p) a = r x → residue (OO p) (σ a) = r' x := by
@@ -178,7 +178,7 @@ theorem exists_ringEquiv_residue_eq (F : Type) [Field F] [Finite F] (r r' : F �
   rw [hx', map_pow, map_pow, map_pow, ← ha₀, hτ, hσ]
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨isAlgClosed_kb, exists_pow_eq_one_kb, exists_ringEquiv_residue_eq⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem kb_isAlgClosed_and_conj : ∀ (p : ℕ) [Fact p.Prime], IsAlgClosed (kb p) ∧ (∀ x : kb p, x ≠ 0 → ∃ n : ℕ, 1 ≤ n ∧ x ^ n = 1) ∧ ∀ (F : Type) [Field F] [Finite F] (r r' : F →+* kb p), ∃ σ : OO p ≃+* OO p, ∀ (x : F) (a : OO p), IsLocalRing.residue (OO p) a = r x → IsLocalRing.residue (OO p) (σ a) = r' x :=
   fun _ _ => ⟨isAlgClosed_kb, exists_pow_eq_one_kb, exists_ringEquiv_residue_eq⟩

@@ -16,19 +16,17 @@ open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.TopForm
 namespace GlobalTheory.Discrepancy
 
 /- English proof (translation)
-Introduce `hPr X _ _ p n hp hn η m G Z hη hm hZ`. Use `letI := algebraΓOfHom p`. Take `⟨-, H, hH⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB p).1 hp`. Establish `hpS : IsProjOver (strHom ℂ X)` using `by rwa [strHom_eq (f := p) fun _ => rfl]`. Establish `hbig : IsBig ℂ H` using `IsAmpleLB.isBig ℂ X hpS H hH`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y, _, s, _, K, B, hlog, hZB, a, Fd, A, hA, hFd⟩` from `GlobalTheory.T.exists_log_resolution_big_bundle hPr ℂ X p n hp hn η m G hη Z hZ H hH.isLB hbig`. Use `haveI : SmoothOfRelativeDimension n (s ≫ p) := hlog.smooth`. Use `haveI : AlgebraicGeometry.IsNoetherian Y := isNoetherian_of_isProjOver hlog.proj`. Take `⟨F, hF, -⟩` from `GlobalTheory.T.exists_rounded_down_divisor ℂ Y (s ≫ p) n hlog.proj (pullCart s G - m • K) m`. Take `⟨J, hJ⟩` from `eventually_atTop.1 (hH.eventually_isAmpleLB_tens_lbPow_succ (isLB_toLB (-G)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : J ≤ m * (J + 1) - 1`. Establish `: J + 1 ≤ m * (J + 1)` using `Nat.le_mul_of_pos_left _ hm`. Use linear arithmetic over natural numbers and integers. Establish `hTa` using `hJ _ hj`. Establish `hsucc : m * (J + 1) - 1 + 1 = m * (J + 1)`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: 1 ≤ m * (J + 1)` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hm.ne' (Nat.succ_ne_zero J))`. Use linear arithmetic over natural numbers and integers. Rewrite `hTa` using `[hsucc]`. Take `⟨N, hNc⟩` from `toPic_surjective ((J + 2) • cls H hH.isLB)`. Establish `hTn : IsNef ℂ (tens (toLB (-G)) (lbPow H (m * (J + 1))))` using `hTa.isNef`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcls : cls _ hTn.isLB = (m * 1) • cls (toLB N) (isLB_toLB N) - 1 • toPic G - m • cls H hH.isLB`. Rewrite using `[cls_tens (isLB_toLB (-G)) (isLB_lbPow hH.isLB _), cls_lbPow hH.isLB, ← toPic_apply, ← toPic_apply, hNc, map_neg]`. Simplify using `only [mul_one, one_smul, smul_smul]`. Rewrite using `[show m * (J + 2) = m * (J + 1) + m by ring, add_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨-, hloc⟩` from `GlobalTheory.T.multiplier_vanishing_nef_twist_ample ℂ X p n hp η m G Y s K B F hη hm hlog hF (toLB N) H _ (isLB_toLB N) hH.isLB 1 hTn one_pos hcls hH.isNef a Fd A hA hFd`. Use `⟨Y, inferInstance, inferInstance, s, inferInstance, K, B, F, N, hlog, hZB, hF, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hP` using `pull_isLB (isLB_toLB N) s`. Take `⟨e⟩` from `nonempty_twist_twist_iso_of_cls_eq (GlobalTheory.structureModule Y) (isLB_toLB (-F)) hP (isLB_toLB (pullCart s N - F)) (by`. Rewrite using `[← toPic_apply, ← toPic_apply, cls_pull (isLB_toLB N) s hP, ← toPic_apply, ← toPic_pullCart, map_sub, map_neg]`.
-
-Use the proof step `abel)`. Conclude with `(cohOn.mapIso Γ(Y, ⊤) (s ⁻¹ᵁ U) 1 e).toEquiv.subsingleton_congr.1 (hloc U hU 1 one_pos)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_logRes_subsingleton_cohOn_one : GlobalTheory.Published.Principalisation → ∀ (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] (p : X ⟶ Sp ℂ) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ (η : RatForms p n) (m : ℕ) (G : CartierDiv X) (Z : Closeds X), η ≠ 0 → 0 < m → Z ≠ ⊤ → ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (_ : IsLocallyNoetherian Y) (s : Y ⟶ X) (_ : IsDominant s) (K : CartierDiv Y) (B : Closeds Y) (F : CartierDiv Y) (N : CartierDiv X), IsLogRes p n η m G s K B ∧ (∀ y, s y ∈ Z → y ∈ B) ∧ (∀ z, F.mult z = (pullCart s G - m • K).mult z / (m : ℤ)) ∧ (∀ U : X.Opens, IsAffineOpen U → Subsingleton (cohOn (twist (GlobalTheory.structureModule Y) (toLB (pullCart s N - F))) (s ⁻¹ᵁ U) 1)) := by
   intro hPr X _ _ p n hp hn η m G Z hη hm hZ

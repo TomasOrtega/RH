@@ -10,11 +10,9 @@ noncomputable section
 variable {W : Scheme.{0}} {sW : W ⟶ Spec (.of ℂ)}
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `val_ringHom s U x hx hc`. Rewrite using `[← hφ, eval₂_comp_left]`. Establish `h1 : φ.comp (constSec s U) = RingHom.id ℂ`. Use extensionality with `c`. Simplify using `only [RingHom.comp_apply, hφ, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `val_const s U x hx hc c`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `eval₂ (RingHom.id ℂ) (φ ∘ u) F = eval₂ (RingHom.id ℂ) _ F`. Use `congr 1`. Use function extensionality and compare the values at `t`.
-
-Conclude with `hφ (u t)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem val_eval₂ {S : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) [LocallyOfFiniteType s] {U : S.Opens}
     {σ : Type} (u : σ → Γ(S, U)) (F : MvPolynomial σ ℂ) (x : S) (hx : x ∈ U)
@@ -37,9 +35,9 @@ namespace AffPres
 set_option backward.isDefEq.respectTransparency false in
 
 /- English proof (translation)
-Establish `key : (Scheme.ΓSpecIso (.of ℂ)).inv ≫ (Spec.map (CommRingCat.ofHom (algebraMap ℂ (MvPolynomial (Fin P.n) ℂ ⧸ P.K)))).appTop ≫ P.iso.hom.appTop ≫ P.V.topIso.hom = (Scheme.ΓSpecIso (.of ℂ)).inv ≫ sW.appLE ⊤ P.V le_top`. Rewrite using `[← Scheme.Hom.comp_appTop_assoc, P.hover, Scheme.Hom.comp_appTop, Category.assoc]`. Simplify using `only [Scheme.Hom.appTop, Scheme.Hom.appLE, Scheme.Opens.ι_appTop, Scheme.Opens.topIso_hom, ← W.presheaf.map_comp]`. Both sides reduce to the same expression. Establish `e3 : P.secHom (C c) = ((CommRingCat.ofHom (algebraMap ℂ (MvPolynomial (Fin P.n) ℂ ⧸ P.K))) ≫ (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv ≫ P.iso.hom.appTop ≫ P.V.topIso.hom) c` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e3, Scheme.ΓSpecIso_inv_naturality_assoc, key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secHom_C (P : AffPres sW) (c : ℂ) : P.secHom (C c) = constSec sW P.V c := by
   have key : (Scheme.ΓSpecIso (.of ℂ)).inv ≫
@@ -57,9 +55,9 @@ theorem secHom_C (P : AffPres sW) (c : ℂ) : P.secHom (C c) = constSec sW P.V c
   rfl
 
 /- English proof (translation)
-Introduce `a`. Establish `h1 : Function.Surjective P.V.topIso.hom.hom` using `(ConcreteCategory.bijective_of_isIso P.V.topIso.hom).2`. Establish `h2 : Function.Surjective (P.iso.hom.app ⊤).hom` using `(ConcreteCategory.bijective_of_isIso (P.iso.hom.app ⊤)).2`. Establish `h3 : Function.Surjective (Scheme.ΓSpecIso (.of (MvPolynomial (Fin P.n) ℂ ⧸ P.K))).inv.hom` using `(ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso _).inv).2`. Take `⟨a1, rfl⟩` from `h1 a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a2, rfl⟩` from `h2 a1`. Take `⟨a3, rfl⟩` from `h3 a2`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective a3`. Conclude with `⟨f, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem secHom_surjective (P : AffPres sW) : Function.Surjective P.secHom := by
   intro a
@@ -76,17 +74,17 @@ theorem secHom_surjective (P : AffPres sW) : Function.Surjective P.secHom := by
   exact ⟨f, rfl⟩
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `val_ringHom sW P.V y hy hc`. Establish `hker : ∀ g ∈ ptIdeal (P.coord y hy), val sW (P.secHom g) y hy = 0`. Introduce `g hg`. Rewrite using `[val_eq_zero_iff sW _ y hy hc, ← Scheme.germ_residue, CommRingCat.comp_apply]`. Apply `(IsLocalRing.residue_eq_zero_iff _).mpr` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : P.stalkEquiv y hy hc (W.presheaf.germ P.V y hy (P.secHom g)) ∈ (IsLocalRing.maximalIdeal (W.presheaf.stalk y)).map (P.stalkEquiv y hy hc)`. Rewrite using `[P.map_maximalIdeal_stalk y hy hc, P.stalkEquiv_germ]`. Conclude with `Ideal.mem_map_of_mem _ hg`. Take `⟨w, hw, hwe⟩` from `(Ideal.mem_map_of_equiv _ _).mp h2`. Rewrite `hw` using `[(P.stalkEquiv y hy hc).injective hwe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hw`. Set `ψ : MvPolynomial (Fin P.n) ℂ →+* ℂ` to `φ.comp P.secHom`. Establish `hψ : ∀ g, ψ g = val sW (P.secHom g) y hy` using `fun g => hφ _`. Establish `hC : ∀ c, ψ (C c) = c` using `fun c => by`. Rewrite using `[hψ, secHom_C, val_const sW P.V y hy hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ j, ψ (MvPolynomial.X j) = P.coord y hy j` using `fun j => by`. Establish `hm : X j - C (P.coord y hy j) ∈ ptIdeal (P.coord y hy)`. Simplify using `[ptIdeal, RingHom.mem_ker]`. Use `hker _ hm` as an intermediate fact. Rewrite `this` using `[← hψ, map_sub, hC, sub_eq_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Establish `hext : ψ = MvPolynomial.eval (P.coord y hy)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Rewrite using `[hC, eval_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[hX, eval_X]`. Rewrite using `[← hψ, hext]`.
+A detailed English derivation is pending.
 -/
 theorem val_secHom [LocallyOfFiniteType sW] (P : AffPres sW) (y : W) (hy : y ∈ P.V)
     (hc : IsClosed ({y} : Set W)) (f : MvPolynomial (Fin P.n) ℂ) :
@@ -122,35 +120,29 @@ theorem val_secHom [LocallyOfFiniteType sW] (P : AffPres sW) (y : W) (hy : y ∈
 end AffPres
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype ι`. Set `z : V` to `⟨g.base x, hxV⟩`. Set `: Algebra Γ(T, V) (T.presheaf.stalk (g.base x))` to `TopCat.Presheaf.algebra_section_stalk T.presheaf z`. Establish `: IsLocalization.AtPrime (T.presheaf.stalk (g.base x)) (hV.primeIdealOf z).asIdeal` using `hV.isLocalization_stalk z`. Establish `hw : ∀ i, ∃ w : T.presheaf.stalk (g.base x), g.stalkMap x w = S.presheaf.germ Ω x hxΩ (e i)` using `fun i => hsurj _`.
+Split into cases according to the possible forms of the given data. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw using hw`. Take `⟨⟨b, hb⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finite (hV.primeIdealOf z).asIdeal.primeCompl w`. Establish `hint' : ∀ i, ∃ a : Γ(T, V), algebraMap Γ(T, V) (T.presheaf.stalk (g.base x)) a = b • w i` using `fun i => hint i`. Use `choose a ha using hint'`. Establish `halg : ∀ c : Γ(T, V), algebraMap Γ(T, V) (T.presheaf.stalk (g.base x)) c = T.presheaf.germ V (g.base x) hxV c` using `fun c => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : IsUnit (T.presheaf.germ V (g.base x) hxV b)`. Rewrite using `[← halg]`. Conclude with `IsLocalization.map_units (T.presheaf.stalk (g.base x)) (⟨b, hb⟩ : (hV.primeIdealOf z).asIdeal.primeCompl)`. Set `Ω' : S.Opens` to `Ω ⊓ g ⁻¹ᵁ V`. Establish `hΩ'V : Ω' ≤ g ⁻¹ᵁ V` using `inf_le_right`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΩ'Ω : Ω' ≤ Ω` using `inf_le_left`. Establish `hxΩ' : x ∈ Ω'` using `⟨hxΩ, hxV⟩`. Establish `hgerm : ∀ c : Γ(T, V), S.presheaf.germ Ω' x hxΩ' (g.appLE V Ω' hΩ'V c) = g.stalkMap x (T.presheaf.germ V (g.base x) hxV c)`. Introduce `c`. Rewrite using `[Scheme.Hom.germ_stalkMap_apply, Scheme.Hom.appLE, CommRingCat.comp_apply, TopCat.Presheaf.germ_res_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hEq : ∀ i, S.presheaf.germ Ω' x hxΩ' (g.appLE V Ω' hΩ'V b * S.presheaf.map (homOfLE hΩ'Ω).op (e i)) = S.presheaf.germ Ω' x hxΩ' (g.appLE V Ω' hΩ'V (a i))`. Introduce `i`. Rewrite using `[map_mul, hgerm, hgerm, TopCat.Presheaf.germ_res_apply, ← hw i, ← map_mul]`. Use `congr 1`. Rewrite using `[← halg, ← halg, ha i, Algebra.smul_def]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hO` using `fun i => TopCat.Presheaf.germ_eq S.presheaf x hxΩ' hxΩ' _ _ (hEq i)`. Use `choose Oi hxOi iU iV hOi using hO`. Take `⟨q, hq⟩` from `hu b`. Use `choose F hF using fun i => hu (a i)`. Set `O : S.Opens` to `(g ⁻¹ᵁ T.basicOpen b) ⊓ Ω' ⊓ Finset.univ.inf Oi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmemO : ∀ y, y ∈ O → y ∈ g ⁻¹ᵁ T.basicOpen b ∧ y ∈ Ω' ∧ ∀ i, y ∈ Oi i`. Introduce `y hy`. Use `⟨hy.1.1, hy.1.2, fun i => ?_⟩` and prove the remaining obligations. Establish `h2` using `hy.2`. Rewrite `h2` using `[TopologicalSpace.Opens.coe_finset_inf, Finset.inf_eq_iInf]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.iInf_eq_iInter, Set.mem_iInter] at h2`. Conclude with `h2 i (Finset.mem_univ i)`. Establish `hne : ∀ (y : S) (hyV : g.base y ∈ V), IsClosed ({y} : Set S) → g.base y ∈ T.basicOpen b → eval (fun a => val t (u a) (g.base y) hyV) q ≠ 0`. Introduce `y hyV hcy hyb`. Establish `hcy'` using `isClosed_image_of_closed s t g hg y hcy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← val_eval₂ t u q _ hyV hcy', ← hq]`. Introduce `h0`. Rewrite `h0` using `[val_eq_zero_iff t b _ hyV hcy', ← Scheme.germ_residue, CommRingCat.comp_apply]`. Establish `hu'` using `(T.mem_basicOpen b (g.base y) hyV).mp hyb`. Conclude with `(hu'.map (T.residue (g.base y)).hom).ne_zero h0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨O, ?_, fun y hy => (hmemO y hy).2.1, q, F, ?_, ?_⟩` and prove the remaining obligations. Use `⟨⟨?_, hxΩ'⟩, ?_⟩` and prove the remaining obligations. Conclude with `(T.mem_basicOpen b (g.base x) hxV).mpr hunit`. Use `show x ∈ ((Finset.univ.inf Oi : S.Opens) : Set S)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf, Finset.inf_eq_iInf]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.iInf_eq_iInter, Set.mem_iInter]`. Conclude with `fun i _ => hxOi i`. Conclude with `hne x hxV hc ((T.mem_basicOpen b (g.base x) hxV).mpr hunit)`. Introduce `y hyΩ hyV hyO hcy`. Take `⟨hyb, hyΩ', hyOi⟩` from `hmemO y hyO`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcy'` using `isClosed_image_of_closed s t g hg y hcy`. Use `⟨hne y hyV hcy hyb, fun i => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `val_ringHom s Ω' y hyΩ' hcy`. Establish `h1` using `congrArg (fun f => val s f y (hyOi i)) (hOi i)`. Simplify using `only at h1`.
-
-Rewrite `h1` using `[show iU i = homOfLE (leOfHom (iU i)) from rfl, show iV i = homOfLE (leOfHom (iV i)) from rfl, val_restrict, val_restrict, ← hφ, map_mul, hφ, hφ, val_restrict]`. Rewrite `h1` using `[(val_comp s t g hg hΩ'V b y hyΩ' hcy).2, (val_comp s t g hg hΩ'V (a i) y hyΩ' hcy).2]`. Establish `e1 : val t b (g.base y) (hΩ'V hyΩ') = eval (fun a => val t (u a) (g.base y) hyV) q`. Rewrite using `[hq]`. Conclude with `val_eval₂ t u q _ hyV hcy'`.
-
-Establish `e2 : val t (a i) (g.base y) (hΩ'V hyΩ') = eval (fun a => val t (u a) (g.base y) hyV) (F i)`. Rewrite using `[hF i]`. Conclude with `val_eval₂ t u (F i) _ hyV hcy'`. Rewrite `h1` using `[e1, e2]`. Rewrite using `[mul_comm]`.
-
-Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratio_core {S T : Scheme.{0}} (s : S ⟶ Spec (.of ℂ)) (t : T ⟶ Spec (.of ℂ))
     (g : S ⟶ T) (hg : g ≫ t = s) [LocallyOfFiniteType s] [LocallyOfFiniteType t]

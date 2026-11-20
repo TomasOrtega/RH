@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf.T
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas
 
 /- English proof (translation)
-Use `Set.Finite.of_injOn (f := fun I (c : colRange mu) => I c.1) (t := Set.univ) (fun _ _ => Set.mem_univ _) ?_ Set.finite_univ` and prove the remaining obligations. Introduce `I hI I' hI' h`. Use function extensionality and compare the values at `c`. Distinguish the cases in `hc : c ∈ colRange mu`. Conclude with `congrFun h ⟨c, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hI.1 c hc, hI'.1 c hc]`.
+A detailed English derivation is pending.
 -/
 theorem finite_St {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) : ({I | IsSt mu I} : Set (ℤ → Finset (Fin n))).Finite := by
   classical
@@ -22,9 +22,9 @@ theorem finite_St {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) : ({I | IsSt 
   · rw [hI.1 c hc, hI'.1 c hc]
 
 /- English proof (translation)
-Establish `h1` using `h3 n N mu hd`. Establish `h2` using `h3 n 0 (fun _ => pEnd mu) hd`. Establish `h4 : ((Nat.card {I : ℤ → Finset (Fin n) // IsSt mu I} : ℕ) : ℚ) = ((stCount n (pEnd mu) : ℕ) : ℚ)`. Rewrite using `[h1]`. Unfold `stCount`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[h2]`. Both sides reduce to the same expression. Rewrite using `[← Nat.card_coe_set_eq]`. Conclude with `h4` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_eq (D : Formalism.BasicNotions.D7) (h3 : admB3 D) {N n : ℕ} (mu : Fin (N + 1) → Fin n → ℤ) (hd : Dominant (pEnd mu)) :
     ({I | IsSt mu I} : Set (ℤ → Finset (Fin n))).ncard = stCount n (pEnd mu) := by
@@ -36,11 +36,11 @@ theorem wt_eq (D : Formalism.BasicNotions.D7) (h3 : admB3 D) {N n : ℕ} (mu : F
   exact_mod_cast h4
 
 /- English proof (translation)
-Establish `h2` using `h3 n 0 (fun _ => (0 : Fin n → ℤ)) (fun _ _ _ => le_rfl)`. Establish `h4 : ((stCount n (0 : Fin n → ℤ) : ℕ) : ℚ) = 1`. Unfold `stCount`. Rewrite using `[h2]`. Use `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hij`. Establish `: ((j : ℕ) : ℚ) - ((i : ℕ) : ℚ) ≠ 0`. Establish `h5 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ)` using `by exact_mod_cast hij`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [pEnd, Pi.zero_apply, Int.cast_zero, sub_zero, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `div_self this`. Both sides reduce to the same expression. Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem stCount_zero (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (n : ℕ) : stCount n (0 : Fin n → ℤ) = 1 := by
   have h2 := h3 n 0 (fun _ => (0 : Fin n → ℤ)) (fun _ _ _ => le_rfl)
@@ -58,7 +58,7 @@ theorem stCount_zero (D : Formalism.BasicNotions.D7) (h3 : admB3 D) (n : ℕ) : 
   exact_mod_cast h4
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem stCount_cast {n n' : ℕ} (h : n = n') (la : Fin n' → ℤ) :
     stCount n (fun l => la (Fin.cast h l)) = stCount n' la := by
@@ -66,7 +66,7 @@ theorem stCount_cast {n n' : ℕ} (h : n = n') (la : Fin n' → ℤ) :
 
 open Classical in
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `(h5 m ν b hd).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pieri_vec (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriterion D) (n : ℕ) (hn : 0 < n) (ν : Fin n → ℤ) (b : ℕ) (hd : Dominant ν) :
     stCount n ν * Nat.choose (b + n - 1) (n - 1) =
@@ -77,7 +77,7 @@ theorem pieri_vec (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriteri
 
 open Classical in
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by omega⟩`. Conclude with `(h5 m ν b hd).2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pieri_cov (D : Formalism.BasicNotions.D7) (h5 : GenericProjectionCriterion D) (n : ℕ) (hn : 0 < n) (ν : Fin n → ℤ) (b : ℕ) (hd : Dominant ν) :
     stCount n ν * Nat.choose (b + n - 1) (n - 1) =
@@ -100,13 +100,13 @@ section
 variable {n0 : ℕ} {LL : Letters (Fin N)} {B : Fin N → ℕ} {od : Fin N → Fin N} {bb : Fin N → ℝ} {a La : ℝ} {p : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨dd, hP⟩`. Take `⟨P, rfl⟩` from `hP.path`. Use `⟨P.zero, fun t _ => P.dom t, fun i _ => ⟨fun hi => ?_, fun hi => ⟨⟨dd i, ?_⟩, fun m hm => hP.head i m hi hm⟩⟩⟩` and prove the remaining obligations. Use `P.step i` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hP.degs i hi]`. Then use the resulting hypothesis. Conclude with `step_vec P i (H.vec_true_of_late i (by omega))`. Introduce and unpack `⟨h0, hd, hs⟩`. Establish `hex : ∀ i : Fin N, ∃ d : ℕ, (i.val < n0 → d = B i) ∧ if LL.vec i then HStrip (μ i.castSucc) (μ i.succ) d else HStrip (μ i.succ) (μ i.castSucc) d`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i.val < n0`. Conclude with `⟨B i, fun _ => rfl, (hs i i.2).1 hi⟩`. Take `⟨d, hd'⟩` from `((hs i i.2).2 (by omega)).1`. Use `⟨d, fun h => absurd h hi, ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos (H.vec_true_of_late i (by omega))]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hd'`. Use `choose dd hdd using hex`. Conclude with `⟨dd, ⟨⟨μ, h0, fun t => hd t (by have := t.2; omega), fun i => (hdd i).2⟩, rfl⟩, fun i hi => (hdd i).1 hi, fun i m hi hm => ((hs i i.2).2 hi).2 m hm⟩`.
+A detailed English derivation is pending.
 -/
 theorem sp_iff (H : HypT N n0 r K LL B od bb a La p) (μ : Fin (N + 1) → Fin (r + K) → ℤ) :
     μ ∈ SP (r := r) (K := K) LL n0 B ↔ VP LL n0 B N μ := by
@@ -133,15 +133,15 @@ theorem sp_iff (H : HypT N n0 r K LL B od bb a La p) (μ : Fin (N + 1) → Fin (
       fun i m hi hm => ((hs i i.2).2 hi).2 m hm⟩
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ht _ _ m`. Establish `h0 : (⟨0, ht⟩ : Fin (N + 1)) = 0` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, h.1]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Introduce `ht hts htn m`. Establish `htN : t < N` using `by omega`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `ih'` using `ih (by omega) (by omega) (by omega) m`. Establish `hst` using `(h.2.2 ⟨t, htN⟩ (by simp only; omega)).1 (by simp only; omega)`. Establish `hd : dplus LL B (t + 1) = dplus LL B t + if LL.vec ⟨t, htN⟩ = true then B ⟨t, htN⟩ else 0` using `dsum_succ (fun l => LL.vec l = true) B t htN`. Rewrite using `[hd]`. Consider the cases of `hv : LL.vec ⟨t, htN⟩ with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `true`. Rewrite `hst` using `[if_pos hv]`. Establish `h' : μ ⟨t + 1, ht⟩ m ≤ μ ⟨t, by omega⟩ m + (B ⟨t, htN⟩ : ℤ)` using `strip_le_add hst m`. Simplify using `only [if_true]`. Use `push_cast`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the case `false`. Rewrite `hst` using `[if_neg (by simp [hv])]`. Establish `h' : μ ⟨t + 1, ht⟩ m ≤ μ ⟨t, by omega⟩ m` using `hst.1 m`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -175,9 +175,9 @@ theorem vp_le_dplus {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP
       linarith
 
 /- English proof (translation)
-Unfold `dplus beA`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : l.val < t ∧ LL.vec l = true`. Rewrite using `[if_pos hl, if_pos (by omega)]`. Rewrite using `[if_neg hl]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem dplus_le_beA' (t : ℕ) (ht : t ≤ n0) : dplus LL B t ≤ beA n0 B := by
   unfold dplus beA
@@ -187,15 +187,13 @@ theorem dplus_le_beA' (t : ℕ) (ht : t ≤ n0) : dplus LL B t ≤ beA n0 B := b
   · rw [if_neg hl]; exact Nat.zero_le _
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `ht _ m`. Establish `h0 : (⟨0, ht⟩ : Fin (N + 1)) = 0` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0, h.1]`. Simplify using the standard rewrite rules. Consider the case `succ t ih`. Introduce `ht hts m`. Distinguish the cases in `htn : t + 1 ≤ n0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `le_trans (vp_le_dplus h (t + 1) ht hts htn m) ?_` and prove the remaining obligations. Conclude with `dplus_le_beA' (t + 1) htn` after adjusting the coercions. Establish `htN : t < N` using `by omega`. Take `⟨⟨d, hst⟩, hhead⟩` from `(h.2.2 ⟨t, htN⟩ (by simp only; omega)).2 (by simp only; omega)`. Distinguish the cases in `hm : m.val = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `le_of_eq (hhead m (by omega))`. Establish `hm1 : (m.val - 1) + 1 < r + K` using `by have := m.2; omega`. Establish `h2` using `hst.2.1 ⟨m.val - 1, by have := m.2; omega⟩ hm1`. Establish `hme : (⟨(m.val - 1) + 1, hm1⟩ : Fin (r + K)) = m` using `Fin.ext (by simp only; omega)`. Rewrite `h2` using `[hme]`.
-
-Conclude with `le_trans h2 (ih (by omega) (by omega) _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_le {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
     ∀ (t : ℕ) (ht : t < N + 1), t ≤ s → ∀ m, μ ⟨t, ht⟩ m ≤ (beA n0 B : ℤ) := by
@@ -221,14 +219,14 @@ theorem vp_le {s : ℕ} {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0
         exact le_trans h2 (ih (by omega) (by omega) _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun t ht => h.2.1 t (by omega), fun i hi => h.2.2 i (by omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem vp_mono {s s' : ℕ} (hss : s' ≤ s) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ) :
     VP LL n0 B s' μ :=
   ⟨h.1, fun t ht => h.2.1 t (by omega), fun i hi => h.2.2 i (by omega)⟩
 
 /- English proof (translation)
-Use `⟨by rw [he 0 (by simp)]; exact h.1, fun t ht => by rw [he t ht]; exact h.2.1 t ht, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[he i.castSucc (by simp; omega), he i.succ (by simp; omega)]`. Conclude with `h.2.2 i hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_congr {s : ℕ} {μ μ' : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)
     (he : ∀ t : Fin (N + 1), t.val ≤ s → μ' t = μ t) : VP LL n0 B s μ' := by
@@ -239,15 +237,13 @@ theorem vp_congr {s : ℕ} {μ μ' : Fin (N + 1) → Fin (r + K) → ℤ} (h : V
 open Classical in
 
 /- English proof (translation)
-Establish `hne : ∀ t : Fin (N + 1), t.val ≤ s → t ≠ (⟨s, hs⟩ : Fin N).succ`. Introduce `t ht he`. Rewrite `ht` using `[he]`. Simplify using `at ht`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_of_ne (hne 0 (by simp))]; exact h.1`. Introduce `t ht`. Distinguish the cases in `he : t = (⟨s, hs⟩ : Fin N).succ`. Rewrite using `[he, Function.update_self]`. Conclude with `hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne he]`. Use `h.2.1 t ?_` and prove the remaining obligations. Establish `: t.val ≠ s + 1` using `fun hv => he (Fin.ext (by simpa using hv))`. Use linear arithmetic over natural numbers and integers. Introduce `i hi`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `he : i.val = s`. Establish `hi' : i = ⟨s, hs⟩` using `Fin.ext he`. Substitute `hi'` using the available equality. Rewrite using `[Function.update_self, Function.update_of_ne (hne _ (by simp))]`. Conclude with `hst`.
-
-Rewrite using `[Function.update_of_ne (hne _ (by simp; omega)), Function.update_of_ne (hne _ (by simp; omega))]`. Conclude with `h.2.2 i (by omega)`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vp_update {s : ℕ} (hs : s < N) {μ : Fin (N + 1) → Fin (r + K) → ℤ} (h : VP LL n0 B s μ)
     (la' : Fin (r + K) → ℤ) (hd : Dominant la')

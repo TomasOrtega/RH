@@ -29,9 +29,9 @@ namespace GlobalTheory.ConjHalfInt
 variable {D : D7}
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a = 0`. Simplify using `[h0]`. Establish `h1` using `FractionalIdeal.count_mono D.host.E P (FractionalIdeal.spanSingleton_ne_zero_iff.mpr h0) (FractionalIdeal.spanSingleton_le_iff_mem.mpr ha)`. Rewrite `h1` using `[hP, ReciprocityTheory.Neutral.Bridge.HCFR.count_spanSingleton D.host.E P h0]`. Establish `hv : P.valuation D.host.E a ≠ 0` using `by simpa using h0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : WithZero.log (P.valuation D.host.E a) ≤ WithZero.log (1 : WithZero (Multiplicative ℤ))`. Rewrite using `[WithZero.log_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(WithZero.log_le_log hv one_ne_zero).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem valuation_le_one_of_mem {P : HeightOneSpectrum (𝓞 D.host.E)}
     (hP : FractionalIdeal.count D.host.E P D.host.AA = 0) {a : D.host.E} (ha : a ∈ D.host.AA) :
@@ -47,11 +47,11 @@ theorem valuation_le_one_of_mem {P : HeightOneSpectrum (𝓞 D.host.E)}
   exact (WithZero.log_le_log hv one_ne_zero).1 h2
 
 /- English proof (translation)
-Take `⟨t, ht, H⟩` from `GlobalTheory.DetSelfDual.exists_denom Q {a} (by simpa using valuation_le_one_of_mem hQ ha)`. Take `⟨o, ho⟩` from `Submodule.mem_one.1 (H a (Finset.mem_singleton_self a))`. Establish `ht0 : t ≠ 0` using `fun h => ht (h ▸ Q.asIdeal.zero_mem)`. Establish `ht0' : (t : D.host.E) ≠ 0` using `by simpa using ht0`. Establish `h1 : finPart D (f * incA D ((t : D.host.E)⁻¹)) ∈ intAE D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `ht ((hf t ht0).2 h)`. Establish `h2` using `mul_mem (GlobalTheory.IdemIntegral.toEAf_mem_of_finPart h1) (GlobalTheory.IdemIntegral.eToEAf_int D o)`. Establish `e : a = (t : D.host.E)⁻¹ * (o : D.host.E)`. Establish `: (o : D.host.E) = (t : D.host.E) * a`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ((o : 𝓞 D.host.E) : D.host.E) = algebraMap (𝓞 D.host.E) D.host.E o from rfl, ho, Algebra.smul_def]`. Rewrite using `[this, inv_mul_cancel_left₀ ht0']`. Rewrite using `[e, map_mul (incA D), ← mul_assoc, map_mul (toEAf D)]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toEAf_mul_mem {Q : HeightOneSpectrum (𝓞 D.host.E)} {f : AE D} (hf : GlobalTheory.IdemSupport.Comparison₂ Q f)
     (hQ : FractionalIdeal.count D.host.E Q D.host.AA = 0) {a : D.host.E} (ha : a ∈ D.host.AA) :
@@ -71,9 +71,9 @@ theorem toEAf_mul_mem {Q : HeightOneSpectrum (𝓞 D.host.E)} {f : AE D} (hf : G
   exact h2
 
 /- English proof (translation)
-Take `⟨P, h1, -, hsp⟩` from `hP.split`. Establish `hS : GlobalTheory.ExportSeries.SplitSet Pg` using `hsp.mono h1`. Rewrite using `[GlobalTheory.ExportSeries.idem, map_sum, Finset.sum_mul, map_sum]`. Use `sum_mem fun PP hPP => ?_` and prove the remaining obligations. Establish `ht : GlobalTheory.IdemSupport.Comparison₂ PP (GlobalTheory.ExportSeries.idemAt PP)` using `(hS.isIdemAt hPP).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `toEAf_mul_mem ht.conj ?_ ha` and prove the remaining obligations. Conclude with `hP.prime PP (Or.inl hPP) _ (Or.inr ((GlobalTheory.IdemSupport.isConjPl_iff PP _).2 rfl))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toEAf_cA_idem_mul_mem {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)} (hP : GlobalTheory.ExportSeries.PlacesOK Pg Q)
     {a : D.host.E} (ha : a ∈ D.host.AA) :
@@ -92,21 +92,21 @@ namespace GlobalTheory.ConjHalfInt
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.mul_apply]; exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_mul {m n k : ℕ} {A : Matrix (Fin m) (Fin n) (EAf D)} {B : Matrix (Fin n) (Fin k) (EAf D)}
     (hA : IsIntM A) (hB : IsIntM B) : IsIntM (A * B) := fun i j => by
   rw [Matrix.mul_apply]; exact sum_mem fun l _ => mul_mem (hA i l) (hB l j)
 
 /- English proof (translation)
-Introduce `i j` and use `by rw [Matrix.smul_apply, smul_eq_mul]; exact mul_mem hc (hA i j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_smul {m n : ℕ} {c : EAf D} (hc : c ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     {A : Matrix (Fin m) (Fin n) (EAf D)} (hA : IsIntM A) : IsIntM (c • A) := fun i j => by
   rw [Matrix.smul_apply, smul_eq_mul]; exact mul_mem hc (hA i j)
 
 /- English proof (translation)
-Introduce `i _` and use `(hβ _).1 (GlobalTheory.AdelicLatMove.pure_mem_hatL Λ 1 (one_mem _) v hv) i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frame_col_int {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (hβ : Formalism.L2.DIV.IsFrame β Λ) {v : Fin n → D.host.E} (hv : v ∈ Λ) :
@@ -114,7 +114,7 @@ theorem frame_col_int {n : ℕ} {β : GL (Fin n) (EAf D)} {Λ : Submodule (𝓞 
   (hβ _).1 (GlobalTheory.AdelicLatMove.pure_mem_hatL Λ 1 (one_mem _) v hv) i
 
 /- English proof (translation)
-Introduce `_ j` and use `by have hcol : (fun k => β.val k j) ∈ Formalism.L2.Herm.hatL (F := D.host.F) Λ := by refine (hβ _).2 fun i => ?_ have e : ((β⁻¹).val *ᵥ fun k => β.val k j) i = ((β⁻¹).val * β.val) i j := rfl rw [e, Units.inv_mul, Matrix.one_apply] split_ifs exacts [one_mem _, zero_mem _] refine G …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pair_row_int {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (hΛ : IsSelfDualC V Λ)
     {β : GL (Fin V.rank) (EAf D)} (hβ : Formalism.L2.DIV.IsFrame β Λ) {s : Fin V.rank → D.host.E} (hs : s ∈ Λ) :
@@ -138,9 +138,9 @@ namespace GlobalTheory.ConjHalfInt
 variable {D : D7}
 
 /- English proof (translation)
-Establish `: ∀ b, star (∑ k, star (s k) * S.gram k b) = (S.gram *ᵥ s) b`. Introduce `b`. Simplify using `[star_sum, GlobalTheory.LatVac.gram_star, Matrix.mulVec, dotProduct, mul_comm]`. Repeatedly rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(S.gram⁻¹ *ᵥ (S.gram *ᵥ s)) e = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_inv_star (S : HSp D) (s : Fin S.rank → D.host.E) (e : Fin S.rank) :
     ∑ b, S.gram⁻¹ e b * star (∑ k, star (s k) * S.gram k b) = s e := by
@@ -152,7 +152,7 @@ theorem gram_inv_star (S : HSp D) (s : Fin S.rank → D.host.E) (e : Fin S.rank)
   rw [Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply, Fin.sum_univ_one, Matrix.of_apply, GlobalTheory.LatVac.finTens, GlobalTheory.LatVac.genMap, map_mul]`. Express the relevant statement in the definitionally equal form `toEAf D c * ((a * t i * ∑ k, star (s k) * S.gram k j) ⊗ₜ[D.host.F] α) = toEAf D c * (a ⊗ₜ[D.host.F] (1 : Af D.host.F)) * ((1 : D.host.E) ⊗ₜ[D.host.F] α) * ((t i ⊗ₜ[D.host.F] (1 : Af D.host.F)) * ((∑ k, star (s k) * S.gram k j) ⊗ₜ[D.host.F] (1 : Af D.host.F)))`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem map_gen (α : Af D.host.F) (c : AE D) (a : D.host.E) (S T : HSp D) (s : Fin S.rank → D.host.E)
     (t : Fin T.rank → D.host.E) :
@@ -174,7 +174,7 @@ namespace GlobalTheory.ConjHalfInt
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply]`. Rewrite using `[map_mul, map_sum]`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun z _ => by rw [map_mul, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem adj_shape {m n : ℕ} (c : EAf D) (C : Matrix (Fin m) (Fin 1) (EAf D)) (R : Matrix (Fin 1) (Fin n) (EAf D)) :
     ((c • (C * R)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ =
@@ -191,11 +191,11 @@ Both sides reduce to the same expression.
 theorem cF_eToEAf (x : D.host.E) : GlobalTheory.AdelicLatMove.cF D (eToEAf D x) = eToEAf D (star x) := rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.PlaceVec.frMapAdj_eq, map_gen, adj_shape, Matrix.mul_smul, Matrix.smul_mul]`. Use `isIntM_smul (GlobalTheory.PlaceVec.cF_mem_int (mul_mem (toEAf_cA_idem_mul_mem hP ha) hα)) ?_` and prove the remaining obligations. Establish `hA : (S.gram⁻¹).map (eToEAf D) * ((Matrix.of fun (_ : Fin 1) j => eToEAf D (∑ k, star (s k) * S.gram k j)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ = Matrix.of fun m (_ : Fin 1) => eToEAf D (s m)`. Use extensionality with `m z`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, cF_eToEAf, ← map_mul, ← map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[gram_inv_star]`. Establish `hB : ((Matrix.of fun i (_ : Fin 1) => eToEAf D (t i)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ * T.gram.map (eToEAf D) = Matrix.of fun (_ : Fin 1) m => eToEAf D (∑ l, star (t l) * T.gram l m)`. Use extensionality with `z m`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply, Matrix.transpose_apply, Matrix.of_apply, cF_eToEAf, ← map_mul, ← map_sum]`. Establish `e : (F.βS⁻¹).val * (S.gram⁻¹).map (eToEAf D) * (((Matrix.of fun (_ : Fin 1) j => eToEAf D (∑ k, star (s k) * S.gram k j)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ * ((Matrix.of fun i (_ : Fin 1) => eToEAf D (t i)).map (GlobalTheory.AdelicLatMove.cF D))ᵀ) * (T.gram.map (eToEAf D) * …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[e, hA, hB]`. Conclude with `isIntM_mul (frame_col_int hF.frS hs) (pair_row_int hF.sdT hF.frT ht)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMapAdj_gen {S T : HSp D} {F : GlobalTheory.ExportSeries.Frame S T} (hF : F.Good) {Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)}
     (hP : GlobalTheory.ExportSeries.PlacesOK Pg Q) {α : Af D.host.F}
@@ -235,21 +235,21 @@ namespace GlobalTheory.ConjHalfInt
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' _ (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT)).map_neg x`.
+A detailed English derivation is pending.
 -/
 theorem frMapAdj_neg {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x : WO S T) :
     frMapAdj S T βS βT (-x) = -frMapAdj S T βS βT x :=
   (AddMonoidHom.mk' _ (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT)).map_neg x
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' _ (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT)).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem frMapAdj_zero {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) :
     frMapAdj S T βS βT 0 = 0 :=
   (AddMonoidHom.mk' _ (GlobalTheory.PlaceVec.frMapAdj_add S T βS βT)).map_zero
 
 /- English proof (translation)
-Unfold `frMapO`. Rewrite using `[Matrix.map_add _ (map_add (toEAf D)), Matrix.mul_add, Matrix.add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem frMapO_add {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x y : WO S T) :
     frMapO S T βS βT (x + y) = frMapO S T βS βT x + frMapO S T βS βT y := by
@@ -257,14 +257,14 @@ theorem frMapO_add {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin 
   rw [Matrix.map_add _ (map_add (toEAf D)), Matrix.mul_add, Matrix.add_mul]
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' _ (frMapO_add βS βT)).map_neg x`.
+A detailed English derivation is pending.
 -/
 theorem frMapO_neg {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) (x : WO S T) :
     frMapO S T βS βT (-x) = -frMapO S T βS βT x :=
   (AddMonoidHom.mk' _ (frMapO_add βS βT)).map_neg x
 
 /- English proof (translation)
-The claim follows from `(AddMonoidHom.mk' _ (frMapO_add βS βT)).map_zero`.
+A detailed English derivation is pending.
 -/
 theorem frMapO_zero {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D)) :
     frMapO S T βS βT 0 = 0 :=

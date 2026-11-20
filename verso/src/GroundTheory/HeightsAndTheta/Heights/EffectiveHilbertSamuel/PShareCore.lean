@@ -11,11 +11,11 @@ noncomputable section
 variable {n : ℕ} {MS : Type} [TopologicalSpace MS]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hq : e.symm x ∈ e.source` using `e.map_target hx`. Take `⟨e', hq', hz', han⟩` from `hu (e.symm x)`. Establish `hex : e' (e.symm x) = x` using `by rw [← hz' _ hq', hz _ hq, e.right_inv hx]`. Establish `hx' : x ∈ e'.target` using `hex ▸ e'.map_source hq'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(han x hx').congr ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ x' in 𝓝 x, x' ∈ e.target` using `e.open_target.mem_nhds hx`. Establish `h2 : ∀ᶠ x' in 𝓝 x, e.symm x' ∈ e'.source` using `(e.continuousAt_symm hx).preimage_mem_nhds (e'.open_source.mem_nhds hq')`. Use `filter_upwards [h1, h2] with x' h1 h2`. Establish `h3 : e' (e.symm x') = x'` using `by rw [← hz' _ h2, hz _ (e.map_target h1), e.right_inv h1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : e'.symm x' = e.symm x'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Function.comp_apply, h4]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HolomorphicAlong.analyticOnNhd {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) (e : OpenPartialHomeomorph MS (Fin n → ℂ))
@@ -37,9 +37,9 @@ theorem HolomorphicAlong.analyticOnNhd {z : MS → (Fin n → ℂ)} {u : MS → 
   simp only [Function.comp_apply, h4]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun p => ?_` and prove the remaining obligations. Take `⟨e, hp, -, han⟩` from `hu p`. Establish `hc : ContinuousAt ((u ∘ e.symm) ∘ e) p` using `(han (e p) (e.map_source hp)).continuousAt.comp (e.continuousAt hp)`. Use `hc.congr ?_` and prove the remaining obligations. Use `filter_upwards [e.open_source.mem_nhds hp] with q hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[e.left_inv hq]`.
+A detailed English derivation is pending.
 -/
 theorem HolomorphicAlong.continuous {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) : Continuous u := by
@@ -52,7 +52,7 @@ theorem HolomorphicAlong.continuous {z : MS → (Fin n → ℂ)} {u : MS → ℂ
   simp [e.left_inv hq]
 
 /- English proof (translation)
-Introduce `p`. Take `⟨e, hp, hz, -⟩` from `hu p`. Conclude with `⟨e, hp, hz, (hu.analyticOnNhd e hz).mul (hv.analyticOnNhd e hz)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HolomorphicAlong.mul {z : MS → (Fin n → ℂ)} {u v : MS → ℂ}
     (hu : HolomorphicAlong z u) (hv : HolomorphicAlong z v) :
@@ -62,7 +62,7 @@ theorem HolomorphicAlong.mul {z : MS → (Fin n → ℂ)} {u v : MS → ℂ}
   exact ⟨e, hp, hz, (hu.analyticOnNhd e hz).mul (hv.analyticOnNhd e hz)⟩
 
 /- English proof (translation)
-Introduce `p`. Take `⟨e, hp, hz, -⟩` from `hu p`. Conclude with `⟨e, hp, hz, (hu.analyticOnNhd e hz).pow k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HolomorphicAlong.pow {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
     (hu : HolomorphicAlong z u) (k : ℕ) : HolomorphicAlong z (fun p => u p ^ k) := by
@@ -71,15 +71,13 @@ theorem HolomorphicAlong.pow {z : MS → (Fin n → ℂ)} {u : MS → ℂ}
   exact ⟨e, hp, hz, (hu.analyticOnNhd e hz).pow k⟩
 
 /- English proof (translation)
-Use `set A : Set MS := {p | u =ᶠ[𝓝 p] 0} with hA`. Establish `hAo : IsOpen A` using `isOpen_setOfPred_eventually_nhds`. Establish `hAc : IsClosed A`. Use `isClosed_of_closure_subset fun p hp => ?_` and prove the remaining obligations. Take `⟨e, hpe, hz, -⟩` from `hu p`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 e.open_target (e p) (e.map_source hpe)`. Establish `hV : e.source ∩ e ⁻¹' Metric.ball (e p) ε ∈ 𝓝 p` using `inter_mem (e.open_source.mem_nhds hpe) ((e.continuousAt hpe).preimage_mem_nhds (Metric.ball_mem_nhds _ hε))`. Take `⟨q, ⟨hqs, hqb⟩, hqA⟩` from `mem_closure_iff_nhds.1 hp _ hV`. Establish `han : AnalyticOnNhd ℂ (u ∘ e.symm) (Metric.ball (e p) ε)` using `(hu.analyticOnNhd e hz).mono hball`. Establish `hev : (u ∘ e.symm) =ᶠ[𝓝 (e q)] 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : Tendsto e.symm (𝓝 (e q)) (𝓝 q)`. Use `(e.continuousAt_symm (e.map_source hqs)).tendsto` as an intermediate fact. Rewrite `this` using `[e.left_inv hqs]`. Then use the resulting hypothesis. Conclude with `ht.eventually hqA`. Establish `hzero` using `han.eqOn_zero_of_preconnected_of_eventuallyEq_zero (convex_ball (e p) ε).isPreconnected hqb hev`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show u =ᶠ[𝓝 p] 0`. Use `filter_upwards [hV] with q' ⟨hq's, hq'b⟩`. Use `hzero hq'b` as an intermediate fact. Simplify `this` using `[e.left_inv hq's]`. Establish `huniv : A = Set.univ` using `IsClopen.eq_univ ⟨hAc, hAo⟩ ⟨p₀, h₀⟩`.
-
-Use function extensionality and compare the values at `p`. Establish `hp : p ∈ A` using `huniv ▸ Set.mem_univ p`. Conclude with `hp.self_of_nhds`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem HolomorphicAlong.eq_zero_of_eventually [ConnectedSpace MS] {z : MS → (Fin n → ℂ)}
     {u : MS → ℂ} (hu : HolomorphicAlong z u) {p₀ : MS} (h₀ : u =ᶠ[𝓝 p₀] 0) : u = 0 := by
@@ -112,9 +110,7 @@ theorem HolomorphicAlong.eq_zero_of_eventually [ConnectedSpace MS] {z : MS → (
   exact hp.self_of_nhds
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : ∃ p, g p ≠ 0 := by`. Assume the negation of the conclusion as `H`. Conclude with `hg0 (funext fun p => by_contra fun hp => H ⟨p, hp⟩)`. Establish `hne : ∀ᶠ q in 𝓝 p, g q ≠ 0` using `hg.continuous.continuousAt.eventually_ne hp`. Use `hh.eq_zero_of_eventually (p₀ := p) ?_` and prove the remaining obligations.
-
-Use `filter_upwards [hne] with q hq`. Conclude with `(mul_eq_zero.1 (hgh q)).resolve_left hq`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem HolomorphicAlong.eq_zero_of_mul_eq_zero [ConnectedSpace MS] {z : MS → (Fin n → ℂ)}
     {g h : MS → ℂ} (hg : HolomorphicAlong z g) (hh : HolomorphicAlong z h)
@@ -128,7 +124,7 @@ theorem HolomorphicAlong.eq_zero_of_mul_eq_zero [ConnectedSpace MS] {z : MS → 
   exact (mul_eq_zero.1 (hgh q)).resolve_left hq
 
 /- English proof (translation)
-Establish `: ∀ᶠ q in 𝓝 p, ‖u q‖ < ‖u p‖ + 1` using `hu.norm.continuousAt.preimage_mem_nhds (Iio_mem_nhds (lt_add_one _))`. Use `filter_upwards [this] with q hq using hq.le`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_norm_le_of_continuous {u : MS → ℂ} (hu : Continuous u) (p : MS) :
     ∀ᶠ q in 𝓝 p, ‖u q‖ ≤ ‖u p‖ + 1 := by
@@ -137,15 +133,13 @@ theorem eventually_norm_le_of_continuous {u : MS → ℂ} (hu : Continuous u) (p
   filter_upwards [this] with q hq using hq.le
 
 /- English proof (translation)
-Introduce `n MS _ _ _ _ De z δ f θ τ C e a hDe hcov hf hθ hτ hθ0 hτ0 hbound hord`. Establish `hτa : HolomorphicAlong z (fun p => τ p ^ a)` using `hτ.pow a`. Establish `hg : HolomorphicAlong z (fun p => θ p * τ p ^ a)` using `hθ.mul hτa`. Establish `hg0 : (fun p => θ p * τ p ^ a) ≠ 0`. Introduce `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : (fun p => τ p ^ a) = 0` using `hθ.eq_zero_of_mul_eq_zero hτa (fun p => congrFun H p) hθ0`. Conclude with `hτ0 (funext fun p => eq_zero_of_pow_eq_zero (congrFun h0 p))`. Establish `hu : HolomorphicAlong z (fun p => f p * θ p * τ p ^ a)` using `(hf.mul hθ).mul hτa`. Establish `horder : ∀ p, z p = 0 → OrderGT z (fun p => f p * θ p * τ p ^ a) p e`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Cf, hCf⟩` from `hord p hp`. Use `⟨Cf * ((‖θ p‖ + 1) * (‖τ p‖ + 1) ^ a), ?_⟩` and prove the remaining obligations. Use `filter_upwards [hCf, eventually_norm_le_of_continuous hθ.continuous p, eventually_norm_le_of_continuous hτ.continuous p] with q hq1 hq2 hq3`. Rewrite using `[norm_mul, norm_mul, norm_pow]`. Establish `hr : 0 ≤ Cf * Real.sqrt (normSq (z q - z p)) ^ (e + 1)` using `(norm_nonneg _).trans hq1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Establish `hu0` using `hNorm n MS De z δ _ C e hDe hcov hu hbound horder`. Conclude with `hg.eq_zero_of_mul_eq_zero hf (fun p => by`. Use `congrFun hu0 p` as an intermediate fact.
-
-Simplify using `only [Pi.zero_apply] at this`. Take the linear combination `this) hg0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ShareCore.proof (hNorm : NormLemma.Statement) : ShareCore.Statement := by
   intro n MS _ _ _ _ De z δ f θ τ C e a hDe hcov hf hθ hτ hθ0 hτ0 hbound hord
@@ -177,7 +171,7 @@ theorem ShareCore.proof (hNorm : NormLemma.Statement) : ShareCore.Statement := b
     linear_combination this) hg0
 
 /- English proof (translation)
-Introduce `D N T hD hN hT`. Establish `h11 : 11 * D ≤ T` using `by nlinarith`. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ShareNumbers.proof : ShareNumbers.Statement := by
   intro D N T hD hN hT

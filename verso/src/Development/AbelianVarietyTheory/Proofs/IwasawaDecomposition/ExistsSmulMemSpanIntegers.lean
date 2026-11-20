@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory.SmulMemSpanIntegers
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact Submodule.subset_span hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x y _ _ ihx ihy`. Take `⟨d₁, hd₁, h₁⟩` from `ihx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨d₂, hd₂, h₂⟩` from `ihy`. Use `⟨d₁ * d₂, mul_ne_zero hd₁ hd₂, ?_⟩` and prove the remaining obligations. Establish `e : (d₁ * d₂) • (x + y) = d₂ • (d₁ • x) + d₁ • (d₂ • y)`. Rewrite using `[smul_add, mul_smul, mul_smul, smul_comm d₁ d₂ x]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ h₁) (Submodule.smul_mem _ _ h₂)`. Consider the case `smul c x _ ih`. Take `⟨d, hd, h⟩` from `ih`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers Ks) c`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbK : algebraMap (NumberField.RingOfIntegers Ks) Ks b ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ Ks)).2 hb0`. Use `⟨b * d, mul_ne_zero hb0 hd, ?_⟩` and prove the remaining obligations. Establish `e : b • ((algebraMap (NumberField.RingOfIntegers Ks) Ks a / algebraMap (NumberField.RingOfIntegers Ks) Ks b) • x) = a • x`. Rewrite using `[← smul_assoc, Algebra.smul_def, mul_div_cancel₀ _ hbK, algebraMap_smul]`. Rewrite using `[mul_comm, mul_smul, e, smul_comm]`.
-
-Conclude with `Submodule.smul_mem _ _ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_span_integers {Ks : Type} [Field Ks] [NumberField Ks] {WL : Type}
     [AddCommGroup WL] [Module Ks WL] [Module (NumberField.RingOfIntegers Ks) WL]

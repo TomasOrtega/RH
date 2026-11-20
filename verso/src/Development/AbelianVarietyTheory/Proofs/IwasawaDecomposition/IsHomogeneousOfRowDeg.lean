@@ -37,9 +37,9 @@ noncomputable section
 namespace GlobalTheory.PtId
 
 /- English proof (translation)
-Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨zero_mem _, fun _ _ _ _ _ => map_zero _, fun m hm => by simp at hm⟩`. Consider the case `add x y _ _ hx hy`. Use `⟨add_mem hx.1 hy.1, fun σ i i' hi t => by rw [map_add, hx.2.1 σ i i' hi t, hy.2.1 σ i i' hi t], fun m hm => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Break down `Finset.mem_union.1 (MvPolynomial.support_add hm) with h | h` into its components or cases. Conclude with `hx.2.2 m h`. Conclude with `hy.2.2 m h`. Consider the case `smul c x _ hx`. Conclude with `⟨Submodule.smul_mem _ c hx.1, fun σ i i' hi t => by rw [map_smul, hx.2.1 σ i i' hi t], fun m hm => hx.2.2 m (MvPolynomial.support_smul hm)⟩`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_HHa_of_span {T : Type} (r : T → ℕ) (n : ℕ) (k : Type) [Field k] (cc : T → T) (isX : T → Prop) (a : T → ℕ → ℕ)
     {P : MvPolynomial (Letter T r n) k} (h : P ∈ Submodule.span k (HHa r n k cc isX a)) : P ∈ HHa r n k cc isX a := by
@@ -56,9 +56,9 @@ theorem mem_HHa_of_span {T : Type} (r : T → ℕ) (n : ℕ) (k : Type) [Field k
       fun m hm => hx.2.2 m (MvPolynomial.support_smul hm)⟩
 
 /- English proof (translation)
-Introduce `m hm`. Establish `h1` using `h m (MvPolynomial.mem_support_iff.2 hm)`. Rewrite using `[show Finsupp.weight 1 m = Finsupp.degree m from (DFunLike.congr_fun Finsupp.degree_eq_weight_one m).symm, Finsupp.degree_eq_sum, Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => h1 σ j`.
+A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_rowDeg {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ) (k : Type) [Field k] (a : T → ℕ → ℕ)
     {P : MvPolynomial (Letter T r n) k} (h : RowDeg r n k a P) : P.IsHomogeneous (∑ σ, ∑ j : Fin (r σ), a σ j) := by
@@ -71,9 +71,9 @@ theorem isHomogeneous_of_rowDeg {T : Type} [Fintype T] (r : T → ℕ) (n : ℕ)
   exact Finset.sum_congr rfl fun j _ => h1 σ j
 
 /- English proof (translation)
-Set `e1 : D.what₂.Tau ≃ X.Ψ` to `Equiv.ofBijective (fun ρ => ⟨tauE D ρ, (hX.psi _).2 ⟨ρ, rfl⟩⟩) ⟨fun a b h => GlobalTheory.StdRat.tauE_injective D (congrArg Subtype.val h), fun τ => by`. Take `⟨ρ, h⟩` from `(hX.psi τ.1).1 τ.2`. Conclude with `⟨ρ, Subtype.ext h.symm⟩⟩`. Set `e2 : Fin q0 ⊕ Fin X.p0 ≃ Fin W.rank` to `finSumFinEquiv.trans (finCongr (by omega))`. Use `⟨e1.symm.prodCongr (e2.prodCongr (Equiv.refl _)), fun l => ⟨?_, rfl, ?_⟩⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg Subtype.val (e1.apply_symm_apply l.1)).symm`. Apply the tactic sequence `obtain ⟨τ, j | j, b⟩ := l <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_isVarOf {D : D7} (V W : HSp D) {r : ℕ} (hr : W.rank = r) (X : Data D.host.E r) (hX : IsMod W hr X) (q0 : ℕ)
     (hq : X.p0 + q0 = r) : ∃ vr, IsVarOf V W X q0 vr := by
@@ -87,9 +87,9 @@ theorem exists_isVarOf {D : D7} (V W : HSp D) {r : ℕ} (hr : W.rank = r) (X : D
   · obtain ⟨τ, j | j, b⟩ := l <;> rfl
 
 /- English proof (translation)
-Take `⟨ι, Q, es, h1, h2, h3⟩` from `GlobalTheory.PlaceModelSum.isOrthSum_of_isIdemSum h`. Establish `he : e * e = e` using `by conv_lhs => rw [h3, Finset.sum_mul]`. Rewrite using `[h3]`. Conclude with `Finset.sum_congr rfl fun i hi => GlobalTheory.PlaceModelSum.mul_sum_orth h1 h2 hi`. Take `⟨u, hu⟩ : IsUnit (Formalism.L2.Theta.mt V g).det` from `(Matrix.isUnit_iff_isUnit_det _).1 ⟨(matHom V g), rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `k1 : (e * (u : AE D) + (1 - e)) * (e * (u⁻¹ : (AE D)ˣ) + (1 - e)) = 1`. Use `u.mul_inv` as an intermediate fact. Take the linear combination `(e * e) * this + ((2 : AE D) - u - (u⁻¹ : (AE D)ˣ)) * he`. Conclude with `⟨⟨_, _, k1, (mul_comm _ _).trans k1⟩, by rw [IsDetAt, ← hu]⟩`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDetAt {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (h : IsIdemSum e P) (V : HSp D) (g : GA D V) :
     ∃ y, IsDetAt e V g y := by
@@ -105,15 +105,15 @@ theorem exists_isDetAt {D : D7} {e : AE D} {P : Finset (Formalism.L2.DIV.Pl D.ho
   exact ⟨⟨_, _, k1, (mul_comm _ _).trans k1⟩, by rw [IsDetAt, ← hu]⟩
 
 /- English proof (translation)
-Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Take `⟨Wt⟩` from `nonempty_uw (U := Formalism.L2.PjFree.Unf.ofPj U) hU`. Take `⟨hon, γ, hat, hma⟩` from `hmk Wt h`. Establish `hn : Even V.rank` using `hD.2`. Take `⟨-, hsd, hmark, -⟩` from `uw_lattice _ H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU h1 Wt (dict h).1`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Dc, hDe, -⟩` from `exists_dic _ H Dw l c σ r Wt.g V.rank (U.X (dict h).1) a Wt.e hσ hU.1 (hU.2.1 _).1 (hU.2.1 _).2 hsd hD`. Take `⟨hx, hux, -⟩` from `hx_of_isONFr _ r Wt.g V.rank _ Dc.bas Dc.idx Dc.sympl hn _ hon`. Establish `hw : IsIntegral ℤ (H.w0 : D.host.E)` using `H.w0.isIntegral_coe`. Establish `hw' : (H.w0 : D.host.E) + cc (H.w0 : D.host.E) = 1`. Rewrite using `[cc, ← H.bar_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun t : 𝓞 D.host.E => (t : D.host.E)) (PullbackSections.CVA.cmHostUnit_add_conj_eq_one H)` after adjusting the coercions. Take `⟨v, hv⟩` from `(TensVac.vacua _ _ _ _ Dc.bas Dc.idx V.rank Dc.sympl hn _ hw hw' _ hsd 1 _ (Base.stdL_mem_Vset V.rank 1)).1`. Establish `key` using `uw_anFib _ H Dw l Xo c σ r (Formalism.L2.PjFree.Unf.ofPj U) hσ hU h1 Wt (dict h).1 Dc.bas Dc.idx Dc.sympl (hDe ▸ Dc.per_eq) (hDe ▸ Dc.ty_eq) ⟨_, hx⟩ hux`. Rewrite `key` using `[← hDe]`. Take `⟨B, hBm, ϑ, hϑ, -⟩` from `key`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hT` using `isTheta1_of_reads_generator _ H Dw l Xo c _ _ _ Dc.bas Dc.idx Dc.e _ _ _ B Dc.sympl hx hsd ϑ hϑ`. Take `⟨κ', hκ⟩` from `VacProd.prod_eq_mul_thA _ _ _ _ Dc.bas Dc.idx V.rank Dc.sympl hn _ hw hw' _ hsd v hv _ hx ϑ hT`. Use `⟨hx, Wt.g, Dc, γ, Wt.mark (dict h).1, v, ϑ, κ', B, hat, hsd, hmark, hBm, hma, hϑ, hv, hκ, ?_⟩` and prove the remaining obligations. Take `⟨s1, s2⟩` from `((thA_heis_entire_linear_injective _ r Wt.g V.rank _ Dc.bas Dc.idx Dc.sympl hn _ hx v hv.1).2.2 v hv.1).1 (cst (dict h).1 * mu h * κ') 0`. Rewrite `s1`, `s2` using `[zero_smul, add_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `s2` using `[zero_smul, add_zero]`. Use `⟨s1, fun w hw0 => ?_⟩` and prove the remaining obligations. Rewrite using `[hcc.2 h γ hat hx Wt.g Dc.bas Dc.idx Dc.e Dc.sympl ⟨Dc.per_eq, Dc.ty_eq⟩ ϑ ⟨B, hϑ⟩ w hw0, hκ, s2, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_point {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l}
     {σ : c.F →+* ℂ} {r : ℕ} (U : Unf Xo c σ r) (hσ : GoodEmb c σ) (hU : IsUnf U) (h1 : 1 ≤ r) (hA : l.A = 1)
@@ -164,7 +164,7 @@ theorem exists_point {D : D7} {H : Geo.Tor.Host D.host.E} {Dw : Datum H} {l : Ge
   ring
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Take `⟨_, g, e, F, ik, φ, th, h1, h2, h3, h4⟩` from `hL.adPin j hj σ hσ`. Use `⟨h1, h2, (hL.muVal j hj σ hσ).1, fun θ hθ hm h0 Wt h => ?_⟩` and prove the remaining obligations. Take `⟨k1, γ, k2, k3, -⟩` from `dict_atComp_markAd D _ _ _ _ _ σ _ (T.U j σ) hσ (hL.unf j hj σ hσ) h0 hL.pins.2.1.2 θ _ hr (T.dict j σ) _ g e F ik φ th _ hθ hm (hL.familyUniformisationBasePointOrthogonal j hj σ hσ) h3 h4 Wt h`. Conclude with `⟨k1, γ, k2, k3⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dict_cast {D : D7} (T : CoreJ D) (hL : LawsJ T) (j : ℕ) (hj : InR D j) (σ : T.Q.c.F →+* ℂ) (hσ : GoodEmb T.Q.c σ)
     (W : HSp D) (hV : T.V j σ = W) (hr : W.rank = D.R.r) :
@@ -195,9 +195,9 @@ abbrev unfO (O : OMDat T.toCore R i Tp tup) : Unf (T.Q.Xo ((i : ℕ) + 1)) O.c' 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `letI : Algebra O.c'.F ℂ := (inC O.c').toAlgebra`. Use `letI : Algebra (O.dδ t).c₂.F ℂ := ((inC O.c').comp ((O.dδ t).eF.symm : (O.dδ t).c₂.F →+* O.c'.F)).toAlgebra`. Introduce `y B hB hϑ`. Establish `halg : ∀ s : O.c'.F, algebraMap (O.dδ t).c₂.F ℂ ((O.dδ t).eF s) = algebraMap O.c'.F ℂ s` using `fun s => rfl`. Take `⟨hlev, hA₂, hnab⟩` from `hP.cov t`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, B₂, hov₂, hB₂, hrd⟩` from `MarkLift.exists_lift_marked _ _ _ _ _ O.c' _ (O.dδ t) halg hlev hT.laws.pins.2.1.2 hA₂ (fun h => absurd h hpq) _ g X Dc.bas Dc.idx Dc.e x X.Λ y B Dc.sympl hx hsd mk mk₂ hm hB hm₂ hov`. Take `⟨-, cga, hio⟩` from `hP.io`. Establish `h1` using `evR_eq_clsSum GlobalTheory.ChartFree.chartIndep _ _ _ _ _ O.c' _ (O.dδ t) halg hnab _ g X Dc.bas Dc.idx Dc.e x X.Λ y y₂ B₂ hov₂ Dc.sympl hx hsd _ Dc.hr Dc.eL hrk hn Dc.dir_eq ϑ v κ' (hrd ϑ hϑ) hv hκ mk₂ hm₂ hB₂ (O.Cl' t) (O.w t) (O.La t) (O.Nc t) (O.gam t) (O.vol t) (O.ep t) _ O. …`. Substitute `hxk` using the available equality. Rewrite using `[h1, hc t X g Dc.bas Dc.idx Dc.e k xk mk₂ hX hp Dc.sympl ⟨Dc.per_eq, Dc.ty_eq⟩ hΛ hk hm₂ ha₂ y₂ B₂ hB₂]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

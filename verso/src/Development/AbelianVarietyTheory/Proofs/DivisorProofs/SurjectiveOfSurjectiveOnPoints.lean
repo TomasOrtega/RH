@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ComplexAbVarSurj
 
 /- English proof (translation)
-Introduce `A X _ _ ψ hA hX h`. Establish `hAp : IsProper A.hom` using `hA.proper`. Establish `hXp : IsProper X.hom` using `hX.proper`. Establish `: UniversallyClosed (ψ.left ≫ X.hom)` using `by rw [Over.w]; infer_instance`. Establish `: UniversallyClosed ψ.left` using `UniversallyClosed.of_comp_of_isSeparated ψ.left X.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed (Set.range ψ.left)` using `ψ.left.isClosedMap.isClosed_range`. Establish `: JacobsonSpace X.left` using `LocallyOfFiniteType.jacobsonSpace X.hom`. Set `pt : Spec (CommRingCat.of ℂ)` to `IsLocalRing.closedPoint ℂ`. Establish `hsub : closedPoints X.left ⊆ Set.range ψ.left`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `h (Over.homMk (pointOfClosedPoint (K := ℂ) X.hom z hz) (pointOfClosedPoint_comp (K := ℂ) X.hom z hz))`. Use `⟨x.left pt, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, hx]`. Conclude with `pointOfClosedPoint_apply (K := ℂ) X.hom z hz pt`. Establish `hall : Set.range ψ.left = Set.univ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `closure_mono hsub` as an intermediate fact. Rewrite `this` using `[closure_closedPoints, hcl.closure_eq]`. Conclude with `Set.eq_univ_of_univ_subset this`. Conclude with `⟨Set.range_eq_univ.mp hall⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surjective_of_surjective_points : ∀ (A X : Over (Sp ℂ)) [GrpObj A] [GrpObj X] (ψ : A ⟶ X), IsAbelianScheme A → IsAbelianScheme X →
     (∀ y : 𝟙_ (Over (Sp ℂ)) ⟶ X, ∃ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, x ≫ ψ = y) → Surjective ψ.left := by

@@ -9,33 +9,31 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Iwahori
 
 /- English proof (translation)
-Introduce `L V _ _ _ _ s hs h hh g`. Take `⟨hadd2, hsmul2, hsymm, hnd⟩` from `hh`. Establish `hss` using `hs.1`. Establish `hadd1 : ∀ x x' y, h (x + x') y = h x y + h x' y`. Introduce `x x' y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hsymm y (x + x'), hadd2, map_add, ← hsymm, ← hsymm]`. Establish `hsmul1 : ∀ (a : L) x y, h (a • x) y = s a * h x y`. Introduce `a x y`. Rewrite using `[hsymm y (a • x), hsmul2, map_mul, ← hsymm]`. Set `ψ₀ : V → Module.Dual L V` to `fun x => { toFun := h x map_add' := hadd2 x map_smul' := fun a y => by simpa using hsmul2 a x y }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `ψ₀_apply : ∀ x y, ψ₀ x y = h x y` using `fun _ _ => rfl`. Set `ψ : V →+ Module.Dual L V` to `AddMonoidHom.mk' ψ₀ (fun x x' => by`. Use extensionality with `y`. Simplify using `[ψ₀_apply, hadd1])`. Establish `ψ_apply : ∀ x y, ψ x y = h x y` using `fun _ _ => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `ψ_smul : ∀ (a : L) x, ψ (a • x) = s a • ψ x`. Introduce `a x`. Use extensionality with `y`. Simplify using `[ψ_apply, hsmul1]`. Establish `ψ_inj : ∀ x, ψ x = 0 → x = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `hnd x (fun y => by rw [← ψ_apply, hx]; rfl)`. Establish `ψ_inj' : ∀ x x', ψ x = ψ x' → x = x'`. Introduce `x x' hxx`. Conclude with `sub_eq_zero.mp (ψ_inj _ (by rw [map_sub, hxx, sub_self]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b` to `Module.finBasis L V`. Establish `hli : LinearIndependent L (fun i => ψ (b i))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `h0 : ψ (∑ j, s (c j) • b j) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum, ← hc]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[ψ_smul, hss]`. Establish `h1` using `ψ_inj _ h0`. Establish `h2` using `(Fintype.linearIndependent_iff.mp b.linearIndependent) _ h1 i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `congrArg s h2`. Rewrite `h3` using `[hss, map_zero]`. Then use the resulting hypothesis. Establish `hspan : Submodule.span L (Set.range fun i => ψ (b i)) = ⊤`. Use `hli.span_eq_top_of_card_eq_finrank' ?_` and prove the remaining obligations. Rewrite using `[Subspace.dual_finrank_eq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `ψ_surj : ∀ f : Module.Dual L V, ∃ z, ψ z = f`. Introduce `f`. Establish `hf : f ∈ Submodule.span L (Set.range fun i => ψ (b i))`. Rewrite using `[hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result.
 
-Discharge the goal by the elementary cases of `trivial`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun L).mp hf`. Use `⟨∑ j, s (c j) • b j, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, ← hc]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ψ_smul, hss]`. Use `choose z hz using fun y => ψ_surj ((ψ y).comp g)`. Establish `hz' : ∀ y x, h (z y) x = h y (g x)`. Introduce `y x`. Rewrite using `[← ψ_apply, hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use `⟨{ toFun := z, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `y y'`. Apply `ψ_inj'` to reduce the goal to its premises. Rewrite using `[hz, map_add, map_add, hz, hz]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Introduce `a y`. Apply `ψ_inj'` to reduce the goal to its premises. Rewrite using `[hz, RingHom.id_apply, ψ_smul, ψ_smul, hz]`. Both sides reduce to the same expression.
-
-Introduce `x y show h (g x) y = h x (z y)`. Rewrite using `[hsymm (z y) x, hz', ← hsymm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adjoint_herm : ∀ {L V : Type} [NontriviallyNormedField L] [AddCommGroup V] [Module L V]
     [FiniteDimensional L V] (s : L →+* L), IsInv s → ∀ h : V → V → L, IsHerm s h →

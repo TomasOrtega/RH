@@ -16,7 +16,7 @@ namespace SecValue
 variable {K R : Type} [CommRing K] [CommRing R] {X Z : Scheme.{0}}
 
 /- English proof (translation)
-Conclude with `congrArg (fun q : Γ(Sp K, ⊤) ⟶ Γ(X, V) => q.hom ((Scheme.ΓSpecIso (CommRingCat.of K)).inv.hom a)) (p.appLE_map (U := ⊤) (V := U) le_top (homOfLE h).op)`.
+A detailed English derivation is pending.
 -/
 theorem res_constFn (p : X ⟶ Sp K) {U V : X.Opens} (h : V ≤ U) (a : K) :
     (X.presheaf.map (homOfLE h).op).hom (constFn p U a) = constFn p V a := by
@@ -24,7 +24,7 @@ theorem res_constFn (p : X ⟶ Sp K) {U V : X.Opens} (h : V ≤ U) (a : K) :
     (p.appLE_map (U := ⊤) (V := U) le_top (homOfLE h).op)
 
 /- English proof (translation)
-Use `(HolHom.valR_appLE q p ⊤ U le_top _ h).trans ?_` and prove the remaining obligations. Rewrite using `[hq, ← Category.comp_id (spMap f), HolHom.valR_spMap f (𝟙 _) ⊤ le_rfl, HolHom.valR_eq _ _ le_rfl]`. Use `congr 1`. Conclude with `congrArg (fun g : CommRingCat.of K ⟶ CommRingCat.of K => g.hom a) (Scheme.ΓSpecIso (CommRingCat.of K)).inv_hom_id`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem valR_constFn (p : X ⟶ Sp K) (f : K →+* R) (q : Sp R ⟶ X) (hq : q ≫ p = spMap f) (U : X.Opens)
     (h : ⊤ ≤ q ⁻¹ᵁ U) (a : K) : valR q U (constFn p U a) = f a := by
@@ -45,7 +45,7 @@ def subComb (p : X ⟶ Sp K) {M : LB X} (s : M.Sec) {n : ℕ} (r : Fin n → K) 
     ring
 
 /- English proof (translation)
-Simplify using `only [← valR_constFn p f q hq _ h, HolHom.valR_eq _ _ h, subComb, map_sub, map_sum, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valR_subComb (p : X ⟶ Sp K) {M : LB X} (s : M.Sec) {n : ℕ} (r : Fin n → K) (σ : Fin n → M.Sec)
     (f : K →+* R) (q : Sp R ⟶ X) (hq : q ≫ p = spMap f) (j : M.ι) (h : ⊤ ≤ q ⁻¹ᵁ M.U j) :
@@ -53,7 +53,7 @@ theorem valR_subComb (p : X ⟶ Sp K) {M : LB X} (s : M.Sec) {n : ℕ} (r : Fin 
   simp only [← valR_constFn p f q hq _ h, HolHom.valR_eq _ _ h, subComb, map_sub, map_sum, map_mul]
 
 /- English proof (translation)
-Establish `hw : ⊤ ≤ q ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => π) (fun _ => j)` using `fun z hz => Set.mem_iInter.2 fun _ => h hz`. Conclude with `valR_subComb p s r σ f q hq (fun _ => j) hw`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sval_subComb {L : LB Z} {π : X ⟶ Z} {m : ℕ} (p : X ⟶ Sp K) (s : SecP L π m) {n : ℕ} (r : Fin n → K)
     (σ : Fin n → SecP L π m) (f : K →+* R) (q : Sp R ⟶ X) (hq : q ≫ p = spMap f) (j : L.ι)
@@ -64,7 +64,7 @@ theorem sval_subComb {L : LB Z} {π : X ⟶ Z} {m : ℕ} (p : X ⟶ Sp K) (s : S
   exact valR_subComb p s r σ f q hq (fun _ => j) hw
 
 /- English proof (translation)
-Use `(congrArg (valR q _) (hs fun _ => j)).trans ?_` and prove the remaining obligations. Distinguish the cases in `h : ⊤ ≤ q ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => π) (fun _ => j)`. Conclude with `(HolHom.valR_eq q _ h 0).trans (map_zero _)`. Conclude with `dif_neg h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem sval_eq_zero {L : LB Z} {π : X ⟶ Z} {m : ℕ} (s : SecP L π m) (hs : ∀ i, s.f i = 0) (q : Sp R ⟶ X) (j : L.ι) :
     ArcPts.sval s q j = 0 := by
@@ -76,9 +76,9 @@ theorem sval_eq_zero {L : LB Z} {π : X ⟶ Z} {m : ℕ} (s : SecP L π m) (hs :
 end SecValue
 
 /- English proof (translation)
-Introduce `E _ _ _ H _ S A t y Φ j _ s n r α th hth hs R _ f q hq jj hjj`. Establish `h0` using `Φ.sep j (SecValue.subComb (pullback.snd t.G.hom y) s r fun i => Φ.sig j (α i) (th i)) fun v k hk => by`. Establish `hv : fib (Φ.x v) ≫ pullback.snd t.G.hom y = spMap (RingHom.id _)`. Rewrite using `[fib, pullback.lift_snd]`. Conclude with `(Spec.map_id _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SecValue.sval_subComb _ s r _ _ _ hv k hk, hs v k hk, Finset.sum_mul, zero_mul, sub_eq_zero]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Φ.val j (α i) (th i) (hth i) v k hk, RingHom.id_apply, _root_.mul_assoc]`. Establish `h1` using `SecValue.sval_eq_zero _ h0 q jj`. Rewrite `h1` using `[SecValue.sval_subComb _ s r _ f q hq jj hjj, sub_eq_zero]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sval_eq_sum_of_hasVal : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) [StarRing (𝓞 E)] (S : Scheme.{0}) (A : AnArc (𝓞 E)) (t : SAB H S) (y : Sp ℂ⸨X⸩ ⟶ S) (Φ : GenPts A t y) (j : ℕ) [NeZero j] (s : SecP t.PP.L (pullback.fst t.G.hom y) j) (n : ℕ) (r : Fin n → ℂ⸨X⸩) (α : Fin n → A.X) (th : Fin n → (Fin A.gB → ℂ) → ℂ), (∀ i, th i ∈ A.Theta j (α i)) → (∀ v, HasVal s (fib (Φ.x v)) (Φ.τ v) (∑ i, r i * A.FSum j (α i) (th i) v)) → ∀ (R : Type) [CommRing R] (f : ℂ⸨X⸩ →+* R) (q : Sp R ⟶ pullback t.G.hom y), q ≫ pullback.snd _ _ = spMap f → ∀ jj, ⊤ ≤ (q ≫ pullback.fst _ _) ⁻¹ᵁ t.PP.L.U jj → sval s q jj = ∑ i, f (r i) * sval (Φ.sig j (α i) (th i)) q jj := by
   intro E _ _ _ H _ S A t y Φ j _ s n r α th hth hs R _ f q hq jj hjj

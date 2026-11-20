@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem pairA_add (a a' : Ainf F) (b b' : Af F) : pairA F (a + a') (b + b') = pairA F a b + pairA F a' b' := rfl
 
 /- English proof (translation)
-Rewrite using `[← pairA_add, add_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairA_split (a : Ainf F) (b : Af F) : pairA F a b = pairA F a 0 + pairA F 0 b := by
   rw [← pairA_add, add_zero, zero_add]
@@ -39,7 +39,7 @@ theorem algebraMap_AF (q : F) :
     algebraMap F (AF F) q = pairA F (algebraMap F (Ainf F) q) (algebraMap F (Af F) q) := rfl
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ (Algebra.trace ℚ F (y : F))` using `Algebra.isIntegral_trace y.isIntegral_coe`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp h`. Conclude with `⟨z, by rw [← hz]; simp⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trace_int (y : 𝓞 F) : ∃ z : ℤ, Algebra.trace ℚ F (y : F) = z := by
   have h : IsIntegral ℤ (Algebra.trace ℚ F (y : F)) := Algebra.isIntegral_trace y.isIntegral_coe
@@ -47,29 +47,27 @@ theorem trace_int (y : 𝓞 F) : ∃ z : ℤ, Algebra.trace ℚ F (y : F) = z :=
   exact ⟨z, by rw [← hz]; simp⟩
 
 /- English proof (translation)
-Simplify using `only [invDiff, Set.mem_setOf_eq, one_mul]`. Conclude with `trace_int`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_invDiff : (1 : F) ∈ invDiff F := by
   simp only [invDiff, Set.mem_setOf_eq, one_mul]
   exact trace_int
 
 /- English proof (translation)
-Rewrite using `[show (2 * Real.pi * Complex.I * n : ℂ) = n * (2 * Real.pi * Complex.I) by ring]`. Conclude with `Complex.exp_int_mul_two_pi_mul_I n`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_two_pi_int (n : ℤ) : Complex.exp (2 * Real.pi * Complex.I * n) = 1 := by
   rw [show (2 * Real.pi * Complex.I * n : ℂ) = n * (2 * Real.pi * Complex.I) by ring]
   exact Complex.exp_int_mul_two_pi_mul_I n
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (X ⧸ H) := QuotientAddGroup.discreteTopology hH`. Establish `hSfin : ((fun y : X => (y : X ⧸ H)) '' K).Finite` using `(hK.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Establish `hord : ∀ y ∈ K, IsOfFinAddOrder (y : X ⧸ H)`. Introduce `y hy`. Take `⟨a, b, hab, he⟩` from `Set.Finite.exists_lt_map_eq_of_forall_mem (f := fun n : ℕ => ((n • y : X) : X ⧸ H)) (fun n => Set.mem_image_of_mem _ (hKs y hy n)) hSfin`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_lt hab`. Use `isOfFinAddOrder_iff_nsmul_eq_zero.mpr ⟨c + 1, Nat.succ_pos c, ?_⟩` and prove the remaining obligations. Establish `h2 : (a + (c + 1)) • (y : X ⧸ H) = a • (y : X ⧸ H)`. Rewrite using `[← Nat.add_assoc, ← QuotientAddGroup.mk_nsmul, ← QuotientAddGroup.mk_nsmul]`. Conclude with `he.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h2` using `[add_nsmul]`. Simplify using `using h2`. Use `⟨∏ q ∈ hSfin.toFinset, addOrderOf q, ?_, ?_⟩` and prove the remaining obligations. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `q hq`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, rfl⟩` from `hSfin.mem_toFinset.mp hq`. Conclude with `(hord y hy).addOrderOf_pos`. Introduce `y hy`. Establish `hmem : (y : X ⧸ H) ∈ hSfin.toFinset` using `hSfin.mem_toFinset.mpr ⟨y, hy, rfl⟩`. Establish `h0 : (∏ q ∈ hSfin.toFinset, addOrderOf q) • (y : X ⧸ H) = 0` using `addOrderOf_dvd_iff_nsmul_eq_zero.mp (Finset.dvd_prod_of_mem (fun q => addOrderOf q) hmem)`.
-
-Rewrite `h0` using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem_cpt {X : Type*} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     (K : Set X) (hK : IsCompact K) (hKs : ∀ y ∈ K, ∀ n : ℕ, n • y ∈ K) (H : AddSubgroup X)
@@ -108,15 +106,15 @@ section Psi
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (fun τ => Eqv.fEmb D τ)`. Prove the components needed by the constructor for the conclusion. Introduce `τ τ' h`. Simplify using `only at h`. Establish `h' : Eqv.plW D τ = Eqv.plW D τ'` using `by show InfinitePlace.mk (Eqv.fEmb D τ) = InfinitePlace.mk (Eqv.fEmb D τ')`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h]`. Rewrite `h'` using `[Eqv.plW_eq_tauPl, Eqv.plW_eq_tauPl]`. Conclude with `(Formalism.L2.Host.tauPl D).injective h'`. Introduce `φ`. Use `⟨(Formalism.L2.Host.tauPl D).symm (InfinitePlace.mk φ), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `Eqv.plW_embedding D ((Formalism.L2.Host.tauPl D).symm (InfinitePlace.mk φ))`. Rewrite `h1` using `[Eqv.plW_symm]`. Establish `hr` using `Eqv.fEmb_isReal D ((Formalism.L2.Host.tauPl D).symm (InfinitePlace.mk φ))`. Use `show Eqv.fEmb D _ = φ`. Break down `InfinitePlace.embedding_mk_eq φ with h2 | h2` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h1, h2]`. Rewrite `hr` using `[← h1]`. Rewrite using `[← h1, h2]`. Rewrite `hr` using `[h2]`. Conclude with `ComplexEmbedding.isReal_conjugate_iff.mp hr`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `htr` using `trace_eq_sum_embeddings (K := ℚ) (L := D.host.F) (E := ℂ) (x := x)`. Rewrite using `[show ((Algebra.trace ℚ D.host.F x : ℚ) : ℂ) = algebraMap ℚ ℂ (Algebra.trace ℚ D.host.F x) from (eq_ratCast _ _).symm, htr]`. Set `e : (D.host.F →+* ℂ) ≃ (D.host.F →ₐ[ℚ] ℂ)` to `RingHom.equivRatAlgHom D.host.F ℂ`. Conclude with `Fintype.sum_bijective (e ∘ fun τ => Eqv.fEmb D τ) (e.bijective.comp hb) _ _ (fun τ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem sum_fEmb (x : D.host.F) : ∑ τ : D.what₂.Tau, Eqv.fEmb D τ x = ((Algebra.trace ℚ D.host.F x : ℚ) : ℂ) := by
   classical
@@ -148,9 +146,9 @@ theorem sum_fEmb (x : D.host.F) : ∑ τ : D.what₂.Tau, Eqv.fEmb D τ x = ((Al
   exact Fintype.sum_bijective (e ∘ fun τ => Eqv.fEmb D τ) (e.bijective.comp hb) _ _ (fun τ => rfl)
 
 /- English proof (translation)
-Take `⟨-, -, hθ⟩` from `hψ`. Establish `h` using `hθ (Eqv.thetaC D) (Eqv.isInfFam_thetaC D) a`. Simplify using `only [Eqv.thetaC_tmul, map_one, mul_one] at h`. Rewrite using `[show ψ (pairA D.host.F a 0) = psiInf D.host.F ψ a from rfl, h]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_inf (hψ : IsStdChar D ψ (-1)) (a : Ainf D.host.F) :
     ψ (pairA D.host.F a 0) = Complex.exp (-(2 * Real.pi * Complex.I * ∑ τ, Eqv.gW D (Eqv.plW D τ) a)) := by
@@ -163,9 +161,9 @@ theorem psi_inf (hψ : IsStdChar D ψ (-1)) (a : Ainf D.host.F) :
   ring
 
 /- English proof (translation)
-Establish `hrat : ψ (algebraMap D.host.F (AF D.host.F) q) = 1`. Take `⟨⟨-, -, h, -⟩, -⟩` from `hψ`. Conclude with `h q`. Establish `hinf` using `psi_inf hψ (algebraMap D.host.F (Ainf D.host.F) q)`. Simplify using `only [Eqv.gW_algebraMap, sum_fEmb] at hinf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrat` using `[algebraMap_AF, pairA_split, AddChar.map_add_eq_mul, hinf]`. Establish `h2` using `congrArg (fun w => Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ D.host.F q : ℚ) : ℂ)) * w) hrat`. Simplify using `only [← mul_assoc, ← Complex.exp_add, add_neg_cancel, Complex.exp_zero, one_mul, mul_one] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem psi_fin_rat (hψ : IsStdChar D ψ (-1)) (q : D.host.F) :
     ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) q)) =
@@ -182,41 +180,39 @@ theorem psi_fin_rat (hψ : IsStdChar D ψ (-1)) (q : D.host.F) :
   exact h2
 
 /- English proof (translation)
-Rewrite using `[eq_sub_iff_add_eq, ← pairA_add, add_zero, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finite_pairing_sub (X Y : Af D.host.F) :
     pairA D.host.F 0 (X - Y) = pairA D.host.F 0 X - pairA D.host.F 0 Y := by
   rw [eq_sub_iff_add_eq, ← pairA_add, add_zero, sub_add_cancel]
 
 /- English proof (translation)
-Rewrite using `[← AddChar.map_add_eq_mul, ← pairA_add, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_pair0_add (a b : Af D.host.F) :
     ψ (pairA D.host.F 0 (a + b)) = ψ (pairA D.host.F 0 a) * ψ (pairA D.host.F 0 b) := by
   rw [← AddChar.map_add_eq_mul, ← pairA_add, add_zero]
 
 /- English proof (translation)
-Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem mem_Ohat_of_intAf (y : Af D.host.F) (hy : y ∈ intAf D.host.F) : y ∈ Formalism.IndefR.PHeisFC.Ohat D.host.F := by
   exact hy
 
 /- English proof (translation)
-Take `⟨G, hGo, -, hG⟩` from `Formalism.IndefR.PHeisTh.psiOpen D.host.F ψ hψ.1`. Set `md : Af D.host.F →+ Af D.host.F` to `AddMonoidHom.mulLeft (algebraMap D.host.F (Af D.host.F) d)`. Set `H : AddSubgroup (Af D.host.F)` to `AddSubgroup.comap md G`. Establish `hHo : IsOpen (H : Set (Af D.host.F))` using `hGo.preimage (continuous_const.mul continuous_id)`. Take `⟨m, hm, hmH⟩` from `exists_nsmul_mem_cpt (Formalism.IndefR.PHeisFC.Ohat D.host.F) (Formalism.IndefR.PHeisFC.isCompact_Ohat D.host.F) (fun y hy n => (Formalism.L2.GlobalTheoryTheory.FiltrationBoundaryCriterion.CompactFixesLatticeTheory.intAd D.host.F).toAddSubgroup.nsmul_mem hy n) H hHo`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm0 : ((m : ℕ) : 𝓞 D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Take `⟨a, ha⟩` from `ReciprocityTheory.UG.AdeleIntA.exists_approx y (fun v => hy v) _ hm0`. Use `set z : Af D.host.F := algebraMap D.host.F (Af D.host.F) (1 / (m : D.host.F)) * (y - algebraMap D.host.F (Af D.host.F) (a : D.host.F)) with hz`. Establish `hmF : (m : D.host.F) ≠ 0` using `Nat.cast_ne_zero.2 hm.ne'`. Establish `hyz : y = algebraMap D.host.F (Af D.host.F) (a : D.host.F) + m • z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, nsmul_eq_mul, ← mul_assoc, show (m : Af D.host.F) = algebraMap D.host.F (Af D.host.F) (m : D.host.F) by simp, ← map_mul, mul_one_div_cancel hmF, map_one, one_mul]`. Normalize the expressions using the abelian group laws. Establish `hzint : z ∈ Formalism.IndefR.PHeisFC.Ohat D.host.F`. Introduce `v`. Establish `hv` using `ha v`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (algebraMap D.host.F (Af D.host.F) (1 / (m : D.host.F)) * (y - algebraMap D.host.F (Af D.host.F) (a : D.host.F))) v ∈ v.adicCompletionIntegers D.host.F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `e : (algebraMap D.host.F (Af D.host.F) (1 / (m : D.host.F)) * (y - algebraMap D.host.F (Af D.host.F) (a : D.host.F))) v = algebraMap D.host.F (v.adicCompletion D.host.F) (1 / (m : D.host.F)) * (y v - algebraMap D.host.F _ (algebraMap (𝓞 D.host.F) D.host.F a))` using `rfl`. Rewrite using `[e, map_mul]`. Establish `hval : Valued.v (algebraMap D.host.F (v.adicCompletion D.host.F) (1 / (m : D.host.F))) = (v.intValuation ((m : ℕ) : 𝓞 D.host.F))⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[one_div, map_inv₀, map_inv₀]`. Use `congr 1`. Rewrite using `[show ((m : ℕ) : D.host.F) = algebraMap (𝓞 D.host.F) D.host.F ((m : ℕ) : 𝓞 D.host.F) by simp]`. Conclude with `ReciprocityTheory.UG.AdeleIntA.val_R v _`. Rewrite using `[hval]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hv0 : v.intValuation ((m : ℕ) : 𝓞 D.host.F) ≠ 0` using `v.intValuation_ne_zero _ hm0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hyz, mul_add, psi_pair0_add]`. Establish `h1 : ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) d * algebraMap D.host.F (Af D.host.F) (a : D.host.F))) = 1`. Rewrite using `[← map_mul, psi_fin_rat hψ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Take `⟨n, hn⟩` from `hd a`. Rewrite using `[hn]`. Use `push_cast`. Conclude with `exp_two_pi_int n`. Establish `h2 : ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) d * m • z)) = 1` using `hG _ (hmH z hzint)`.
-
-Rewrite using `[h1, h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_invDiff (hψ : IsStdChar D ψ (-1)) (d : D.host.F) (hd : d ∈ invDiff D.host.F) (y : Af D.host.F)
     (hy : y ∈ intAf D.host.F) : ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) d * y)) = 1 := by
@@ -277,33 +273,33 @@ section Kernel
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.StandardLattice.intAf, ReciprocityTheory.UG.AdeleIntA.IsInt] at hy ⊢`. Conclude with `hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isInt_of_intAf (y : Af D.host.F) (hy : y ∈ intAf D.host.F) : ReciprocityTheory.UG.AdeleIntA.IsInt y := by
   simp only [Formalism.MainNotions.StandardLattice.intAf, ReciprocityTheory.UG.AdeleIntA.IsInt] at hy ⊢
   exact hy
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.StandardLattice.intAf, ReciprocityTheory.UG.AdeleIntA.IsInt] at hy ⊢`. Conclude with `hy`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intAf_of_isInt (y : Af D.host.F) (hy : ReciprocityTheory.UG.AdeleIntA.IsInt y) : y ∈ intAf D.host.F := by
   simp only [Formalism.MainNotions.StandardLattice.intAf, ReciprocityTheory.UG.AdeleIntA.IsInt] at hy ⊢
   exact hy
 
 /- English proof (translation)
-Conclude with `intAf_of_isInt _ (ReciprocityTheory.UG.AdeleIntA.isInt_mul (isInt_of_intAf _ hx) (isInt_of_intAf _ hy))`.
+A detailed English derivation is pending.
 -/
 theorem intAf_mul {x y : Af D.host.F} (hx : x ∈ intAf D.host.F) (hy : y ∈ intAf D.host.F) : x * y ∈ intAf D.host.F := by
   exact intAf_of_isInt _ (ReciprocityTheory.UG.AdeleIntA.isInt_mul (isInt_of_intAf _ hx) (isInt_of_intAf _ hy))
 
 /- English proof (translation)
-Conclude with `intAf_of_isInt _ (ReciprocityTheory.UG.AdeleIntA.isInt_add (isInt_of_intAf _ hx) (isInt_of_intAf _ hy))`.
+A detailed English derivation is pending.
 -/
 theorem intAf_add {x y : Af D.host.F} (hx : x ∈ intAf D.host.F) (hy : y ∈ intAf D.host.F) : x + y ∈ intAf D.host.F := by
   exact intAf_of_isInt _ (ReciprocityTheory.UG.AdeleIntA.isInt_add (isInt_of_intAf _ hx) (isInt_of_intAf _ hy))
 
 /- English proof (translation)
-Establish `h` using `ReciprocityTheory.UG.AdeleIntA.isInt_R (K := D.host.F) r`. Rewrite `h` using `[IsScalarTower.algebraMap_apply (𝓞 D.host.F) D.host.F]`. Conclude with `intAf_of_isInt _ h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAf_int (r : 𝓞 D.host.F) : algebraMap D.host.F (Af D.host.F) (r : D.host.F) ∈ intAf D.host.F := by
   have h := ReciprocityTheory.UG.AdeleIntA.isInt_R (K := D.host.F) r
@@ -311,17 +307,15 @@ theorem intAf_int (r : 𝓞 D.host.F) : algebraMap D.host.F (Af D.host.F) (r : D
   exact intAf_of_isInt _ h
 
 /- English proof (translation)
-Simplify using `using intAf_int (D := D) 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := by
   simpa using intAf_int (D := D) 1
 
 /- English proof (translation)
-Take `⟨n, d, y, hd, hy, rfl⟩` from `hα`. Rewrite using `[Finset.sum_mul]`. Establish `key : ∀ s : Finset (Fin n), ψ (pairA D.host.F 0 (∑ i ∈ s, algebraMap D.host.F (Af D.host.F) (d i) * y i * x)) = 1`. Introduce `s`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finset.sum_empty]`. Conclude with `ψ.map_zero_eq_one`. Introduce `i s hi ih`. Rewrite using `[Finset.sum_insert hi, psi_pair0_add, ih, mul_one, mul_assoc]`. Conclude with `psi_invDiff hψ (d i) (hd i) _ (intAf_mul (hy i) hx)`.
-
-Conclude with `key Finset.univ`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invDiffAf_mem (hψ : IsStdChar D ψ (-1)) (α : Af D.host.F) (hα : α ∈ invDiffAf D.host.F)
     (x : Af D.host.F) (hx : x ∈ intAf D.host.F) : ψ (pairA D.host.F 0 (α * x)) = 1 := by
@@ -339,19 +333,17 @@ theorem invDiffAf_mem (hψ : IsStdChar D ψ (-1)) (α : Af D.host.F) (hα : α �
   exact key Finset.univ
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ReciprocityTheory.UG.AdeleIntA.exists_approx_adele (R := 𝓞 D.host.F) α`. Establish `hu' : α - algebraMap D.host.F (Af D.host.F) u ∈ intAf D.host.F` using `intAf_of_isInt _ hu`. Establish `huD : u ∈ invDiff D.host.F`. Introduce `b`. Establish `h1` using `h _ (intAf_int b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `psi_invDiff hψ 1 one_mem_invDiff _ (intAf_mul hu' (intAf_int b))`. Rewrite `h2` using `[map_one, one_mul]`. Establish `e : algebraMap D.host.F (Af D.host.F) (u * b) = α * algebraMap D.host.F (Af D.host.F) (b : D.host.F) - (α - algebraMap D.host.F (Af D.host.F) u) * algebraMap D.host.F (Af D.host.F) (b : D.host.F)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : ψ (pairA D.host.F 0 (algebraMap D.host.F (Af D.host.F) (u * b))) = 1`. Rewrite using `[e, finite_pairing_sub, AddChar.map_sub_eq_div, h1, h2, div_one]`. Rewrite `h3` using `[psi_fin_rat hψ]`. Take `⟨n, hn⟩` from `Complex.exp_eq_one_iff.1 h3`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `: ((Algebra.trace ℚ D.host.F (u * b) : ℚ) : ℂ) = ((n : ℚ) : ℂ)`. Use `hn` as an intermediate fact. Rewrite `this` using `[mul_comm (2 * Real.pi * Complex.I : ℂ)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Conclude with `mul_right_cancel₀ hpi this`. Conclude with `this` after adjusting the coercions. Use `⟨2, ![u, 1], ![1, α - algebraMap D.host.F (Af D.host.F) u], ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Conclude with `huD`. Conclude with `one_mem_invDiff`. Introduce `i`. Use `fin_cases i`.
-
-Conclude with `one_intAf`. Conclude with `hu'`. Simplify using `[Fin.sum_univ_two]`.
+A detailed English derivation is pending.
 -/
 theorem mem_invDiffAf_of (hψ : IsStdChar D ψ (-1)) (α : Af D.host.F)
     (h : ∀ x ∈ intAf D.host.F, ψ (pairA D.host.F 0 (α * x)) = 1) : α ∈ invDiffAf D.host.F := by
@@ -389,15 +381,13 @@ theorem mem_invDiffAf_of (hψ : IsStdChar D ψ (-1)) (α : Af D.host.F)
   · simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Take `⟨a, ha, hint⟩` from `(FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)).isFractional`. Use `⟨a, nonZeroDivisors.ne_zero ha, fun d hd => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F) ≠ 0`. Introduce `h`. Establish `h2 : (1 : D.host.F) ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Conclude with `⟨1, map_one _⟩`. Rewrite `h2` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `one_ne_zero h2`. Establish `hmem : d ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.F)) D.host.F)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FractionalIdeal.mem_dual h1]`. Introduce `y hy`. Rewrite `hy` using `[FractionalIdeal.mem_one_iff]`. Take `⟨y, rfl⟩` from `hy`. Take `⟨z, hz⟩` from `hd y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.traceForm_apply, algebraMap_int_eq, Int.coe_castRingHom]`. Conclude with `hz.symm`. Take `⟨s, hs⟩` from `hint d hmem`. Use `⟨s, ?_⟩` and prove the remaining obligations.
-
-Rewrite `hs` using `[Algebra.smul_def]`. Conclude with `hs.symm`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invDiff_bound : ∃ r : 𝓞 D.host.F, r ≠ 0 ∧
     ∀ d ∈ invDiff D.host.F, ∃ s : 𝓞 D.host.F, (r : D.host.F) * d = s := by
@@ -426,11 +416,11 @@ theorem exists_invDiff_bound : ∃ r : 𝓞 D.host.F, r ≠ 0 ∧
   exact hs.symm
 
 /- English proof (translation)
-Take `⟨r, hr0, hr⟩` from `exists_invDiff_bound (D := D)`. Use `Eqv.AdelDual.eq_zero_of_mem_factorial b fun n => ?_` and prove the remaining obligations. Establish `hrF : (r : D.host.F) ≠ 0` using `by exact_mod_cast hr0`. Establish `hc : (r : D.host.F) * (n.factorial : D.host.F) ≠ 0` using `mul_ne_zero hrF (Nat.cast_ne_zero.2 (Nat.factorial_ne_zero n))`. Use `set α := b * algebraMap D.host.F (Af D.host.F) (1 / ((r : D.host.F) * n.factorial)) with hα`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hαm : α ∈ invDiffAf D.host.F` using `mem_invDiffAf_of hψ α fun x _ => by rw [hα, mul_assoc]; exact h _`. Take `⟨k, d, y, hd, hy, hsum⟩` from `hαm`. Use `⟨algebraMap D.host.F (Af D.host.F) (r : D.host.F) * α, ?_, ?_⟩` and prove the remaining obligations. Apply `mem_Ohat_of_intAf` to reduce the goal to its premises. Rewrite using `[hsum, Finset.mul_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_induction _ (· ∈ intAf D.host.F) (fun _ _ => intAf_add) (intAf_of_isInt _ ReciprocityTheory.UG.AdeleIntA.isInt_zero) fun i _ => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `hr (d i) (hd i)`. Rewrite using `[← mul_assoc, ← map_mul, hs]`. Conclude with `intAf_mul (intAf_int s) (hy i)`. Rewrite using `[hα, nsmul_eq_mul, show (n.factorial : Af D.host.F) = algebraMap D.host.F (Af D.host.F) (n.factorial : D.host.F) by simp, ← mul_assoc, ← map_mul, mul_comm (n.factorial : D.host.F) (r : D.host.F), mul_left_comm, ← map_mul, mul_one_div_cancel hc, map_one, mul_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_nondeg_fin (hψ : IsStdChar D ψ (-1)) (b : Af D.host.F)
     (h : ∀ y : Af D.host.F, ψ (pairA D.host.F 0 (b * y)) = 1) : b = 0 := by
@@ -455,15 +445,15 @@ theorem psi_nondeg_fin (hψ : IsStdChar D ψ (-1)) (b : Af D.host.F)
       mul_one_div_cancel hc, map_one, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Assume the negation of the conclusion as `hne`. Take `⟨τ0, rfl⟩ : ∃ τ0, Eqv.plW D τ0 = w` from `⟨_, Eqv.plW_symm D w⟩`. Establish `hinj : Function.Injective (Eqv.plW D)`. Introduce `τ τ' h'`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h'` using `[Eqv.plW_eq_tauPl, Eqv.plW_eq_tauPl]`. Conclude with `(Formalism.L2.Host.tauPl D).injective h'`. Set `s : Ainf D.host.F` to `Pi.single (Eqv.plW D τ0) ((a (Eqv.plW D τ0))⁻¹ * 2⁻¹)`. Establish `hs` using `h s`. Rewrite `hs` using `[psi_inf hψ]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hsum : ∑ τ, Eqv.gW D (Eqv.plW D τ) (a * s) = 2⁻¹`. Rewrite using `[Finset.sum_eq_single τ0]`. Rewrite using `[map_mul, Eqv.gW_apply, Eqv.gW_apply, show s (Eqv.plW D τ0) = (a (Eqv.plW D τ0))⁻¹ * 2⁻¹ from Pi.single_eq_same _ _, ← map_mul, mul_inv_cancel_left₀ hne, map_inv₀, map_ofNat]`. Introduce `τ _ hτ`. Rewrite using `[map_mul, Eqv.gW_apply, Eqv.gW_apply, show s (Eqv.plW D τ) = 0 from Pi.single_eq_of_ne (hinj.ne hτ) _, map_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Conclude with `absurd (Finset.mem_univ τ0) h0`. Rewrite `hs` using `[hsum]`. Establish `he : Complex.exp (-(2 * Real.pi * Complex.I * 2⁻¹)) = -1`. Rewrite using `[show -(2 * Real.pi * Complex.I * 2⁻¹ : ℂ) = -(Real.pi * Complex.I) by ring, Complex.exp_neg, Complex.exp_pi_mul_I]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions. Rewrite `hs` using `[he]`. Evaluate the numerical expressions using `at hs`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem psi_nondeg_inf (hψ : IsStdChar D ψ (-1)) (a : Ainf D.host.F)
     (h : ∀ s : Ainf D.host.F, ψ (pairA D.host.F (a * s) 0) = 1) : a = 0 := by
@@ -497,11 +487,11 @@ theorem psi_nondeg_inf (hψ : IsStdChar D ψ (-1)) (a : Ainf D.host.F)
   norm_num at hs
 
 /- English proof (translation)
-Take `⟨b1, b2⟩` from `b`. Establish `h1 : b1 = 0` using `psi_nondeg_inf hψ b1 fun s => by`. Use `h (pairA D.host.F s 0)` as an intermediate fact. Express the relevant statement in the definitionally equal form `ψ (pairA D.host.F (b1 * s) (b2 * 0)) = 1 at this`. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : b2 = 0` using `psi_nondeg_fin hψ b2 fun y => by`. Use `h (pairA D.host.F 0 y)` as an intermediate fact. Express the relevant statement in the definitionally equal form `ψ (pairA D.host.F (b1 * 0) (b2 * y)) = 1 at this`. Rewrite `this` using `[mul_zero]`. Then use the resulting hypothesis. Substitute `h1` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem psi_nondeg (hψ : IsStdChar D ψ (-1)) (b : AF D.host.F) (h : ∀ y : AF D.host.F, ψ (b * y) = 1) : b = 0 := by
   obtain ⟨b1, b2⟩ := b
@@ -529,7 +519,7 @@ def Linf (D : D7) : Ainf D.host.F →+ ℝ where
   map_add' a b := by simp only [map_add, Complex.add_re, Finset.sum_add_distrib, neg_add]
 
 /- English proof (translation)
-Establish `hg : ∀ τ, Continuous fun a : Ainf D.host.F => Eqv.gW D (Eqv.plW D τ) a` using `fun τ => (isometry_extensionEmbedding _).continuous.comp (continuous_apply _)`. Use `show Continuous fun a => -∑ τ : D.what₂.Tau, (Eqv.gW D (Eqv.plW D τ) a).re`. Conclude with `(continuous_finset_sum _ fun τ _ => Complex.continuous_re.comp (hg τ)).neg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_Linf : Continuous (Linf D) := by
   have hg : ∀ τ, Continuous fun a : Ainf D.host.F => Eqv.gW D (Eqv.plW D τ) a := fun τ =>
@@ -538,9 +528,9 @@ theorem continuous_Linf : Continuous (Linf D) := by
   exact (continuous_finset_sum _ fun τ _ => Complex.continuous_re.comp (hg τ)).neg
 
 /- English proof (translation)
-Establish `h : ∀ τ, Eqv.gW D (Eqv.plW D τ) a = (((Eqv.gW D (Eqv.plW D τ) a).re : ℝ) : ℂ)`. Introduce `τ`. Rewrite using `[Eqv.gW_real]`. Simplify using the standard rewrite rules. Use `show ∑ τ, Eqv.gW D (Eqv.plW D τ) a = ((-(-∑ τ : D.what₂.Tau, (Eqv.gW D (Eqv.plW D τ) a).re) : ℝ) : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_neg, Complex.ofReal_sum]`. Conclude with `Finset.sum_congr rfl fun τ _ => h τ`.
+A detailed English derivation is pending.
 -/
 theorem sum_gW_eq (a : Ainf D.host.F) : ∑ τ : D.what₂.Tau, Eqv.gW D (Eqv.plW D τ) a = ((-(Linf D a) : ℝ) : ℂ) := by
   have h : ∀ τ, Eqv.gW D (Eqv.plW D τ) a = (((Eqv.gW D (Eqv.plW D τ) a).re : ℝ) : ℂ) := by
@@ -552,9 +542,9 @@ theorem sum_gW_eq (a : Ainf D.host.F) : ∑ τ : D.what₂.Tau, Eqv.gW D (Eqv.pl
   exact Finset.sum_congr rfl fun τ _ => h τ
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `trace_int b`. Use `⟨-z, ?_⟩` and prove the remaining obligations. Use `show -∑ τ : D.what₂.Tau, (Eqv.gW D (Eqv.plW D τ) (algebraMap D.host.F (Ainf D.host.F) (b : D.host.F))).re = ((-z : ℤ) : ℝ)`. Rewrite using `[show (∑ τ : D.what₂.Tau, (Eqv.gW D (Eqv.plW D τ) (algebraMap D.host.F (Ainf D.host.F) (b : D.host.F))).re) = (∑ τ : D.what₂.Tau, Eqv.fEmb D τ b).re by rw [Complex.re_sum]; simp only [Eqv.gW_algebraMap]]`. Rewrite using `[sum_fEmb, hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem Linf_int (b : 𝓞 D.host.F) : ∃ n : ℤ, Linf D (algebraMap D.host.F (Ainf D.host.F) (b : D.host.F)) = n := by
   obtain ⟨z, hz⟩ := trace_int b
@@ -568,9 +558,9 @@ theorem Linf_int (b : 𝓞 D.host.F) : ∃ n : ℤ, Linf D (algebraMap D.host.F 
   simp
 
 /- English proof (translation)
-Establish `hn0 : ((Module.finrank ℚ D.host.F : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `hq : (Module.finrank ℚ D.host.F • (-(1 / (2 * (Module.finrank ℚ D.host.F : ℚ)))) : ℚ) = -(1 / 2)`. Rewrite using `[nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Use `⟨algebraMap D.host.F (Ainf D.host.F) (algebraMap ℚ D.host.F (-(1 / (2 * (Module.finrank ℚ D.host.F : ℚ))))), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `congrArg Complex.re (sum_fEmb (D := D) (algebraMap ℚ D.host.F (-(1 / (2 * (Module.finrank ℚ D.host.F : ℚ))))))`. Rewrite `h` using `[Algebra.trace_algebraMap, hq, Complex.re_sum]`. Use `show -∑ τ : D.what₂.Tau, (Eqv.gW D (Eqv.plW D τ) (algebraMap D.host.F (Ainf D.host.F) (algebraMap ℚ D.host.F (-(1 / (2 * (Module.finrank ℚ D.host.F : ℚ))))))).re = 1 / 2`. Simplify using `only [Eqv.gW_algebraMap, h]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem exists_Linf_half : ∃ t : Ainf D.host.F, Linf D t = 1 / 2 := by
   have hn0 : ((Module.finrank ℚ D.host.F : ℕ) : ℚ) ≠ 0 := by exact_mod_cast Module.finrank_pos.ne'
@@ -588,29 +578,27 @@ theorem exists_Linf_half : ∃ t : Ainf D.host.F, Linf D t = 1 / 2 := by
   norm_num
 
 /- English proof (translation)
-Set `F` to `D.host.F`. Set `mk : ℝ →+ AddCircle (1 : ℝ)` to `QuotientAddGroup.mk' _`. Establish `hmk : Continuous mk` using `continuous_quotient_mk'`. Set `fs : AF F →+ Ainf F` to `(fstA F).toRingHom.toAddMonoidHom`. Establish `hfs : Continuous fs` using `continuous_fst`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : AF F →+ AddCircle (1 : ℝ)` to `mk.comp ((Linf D).comp fs)`. Establish `hg : Continuous g` using `hmk.comp (continuous_Linf.comp hfs)`. Set `K : AddSubgroup (AF F)` to `(algebraMap F (AF F)).range.toAddSubgroup`. Take `⟨h, hc, hK, hU⟩` from `PI.GaugeCharW.extChar (AF F) K (PI.GaugeCharW.intSub F) (PI.GaugeCharW.isOpen_intSub F PI.GaugeCharW.openInt) g hg (by`. Introduce and unpack `x ⟨a, rfl⟩ hx`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨b, rfl⟩` from `PI.GaugeCharW.intInter F a (fun v => by`. Establish `hv` using `hx v`. Rewrite using `[AlgHom.commutes] at hv)` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `Linf_int (D := D) b`. Establish `e1 : fs (algebraMap F (AF F) (b : F)) = algebraMap F (Ainf F) (b : F)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `show mk (Linf D (fs (algebraMap F (AF F) (b : F)))) = 0`. Rewrite using `[e1, hn]`. Use `show ((n : ℝ) : AddCircle (1 : ℝ)) = 0`. Rewrite using `[AddCircle.coe_eq_zero_iff]`. Conclude with `⟨n, by simp⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψ : AddChar (AF F) ℂ` to `{ toFun := fun x => ((AddCircle.toCircle (h x) : Circle) : ℂ), map_zero_eq_one' := by simp, map_add_eq_mul' := fun x y => by simp [map_add, AddCircle.toCircle_add] }`. Establish `hval : ∀ t : Ainf F, ψ (pairA F t 0) = Complex.exp (2 * Real.pi * Complex.I * (Linf D t : ℂ))`. Introduce `t`. Establish `hx0 : pairA F t 0 ∈ PI.GaugeCharW.intSub F` using `fun v => by show (0 : Af F) v ∈ _`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show ((AddCircle.toCircle (h (pairA F t 0)) : Circle) : ℂ) = _`. Rewrite using `[hU _ hx0]`. Use `show ((AddCircle.toCircle ((Linf D t : ℝ) : AddCircle (1 : ℝ)) : Circle) : ℂ) = _`. Rewrite using `[AddCircle.toCircle_apply_mk, Circle.coe_exp]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨ψ, ⟨?_, ?_, ?_, ?_⟩, ⟨Eqv.thetaC D, Eqv.isInfFam_thetaC D⟩, fun θ hθ x => ?_⟩` and prove the remaining obligations. Conclude with `continuous_subtype_val.comp (AddCircle.continuous_toCircle.comp hc)`. Introduce `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Circle.norm_coe _`. Introduce `a`. Establish `ha : h (algebraMap F (AF F) a) = 0` using `hK _ ⟨a, rfl⟩`. Use `show ((AddCircle.toCircle (h (algebraMap F (AF F) a)) : Circle) : ℂ) = 1`. Simplify using `[ha]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `exists_Linf_half (D := D)`. Use `⟨pairA F t 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hval, ht]`. Establish `: Complex.exp (2 * Real.pi * Complex.I * (((1 / 2 : ℝ)) : ℂ)) = -1`. Rewrite using `[show 2 * Real.pi * Complex.I * (((1 / 2 : ℝ)) : ℂ) = Real.pi * Complex.I by push_cast; ring, Complex.exp_pi_mul_I]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Evaluate the numerical expressions. Rewrite using `[Eqv.eq_thetaC D hθ]`. Unfold `psiInf`. Rewrite using `[hval]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Establish `e : ∑ ρ, Eqv.thetaC D ρ (x ⊗ₜ[D.host.F] (1 : D.host.E)) = ((-(Linf D x) : ℝ) : ℂ)`. Rewrite using `[← sum_gW_eq]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[Eqv.thetaC_tmul, map_one, mul_one]`.
-
-Rewrite using `[e]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_stdChar : ∃ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1) := by
   let F := D.host.F
@@ -673,7 +661,7 @@ theorem exists_stdChar : ∃ ψ : AddChar (AF D.host.F) ℂ, IsStdChar D ψ (-1)
     rw [e]; push_cast; ring
 
 /- English proof (translation)
-Unfold `StdCharExists`. Conclude with `⟨exists_stdChar, fun ψ hψ α => ⟨mem_invDiffAf_of hψ α, fun hα x hx => invDiffAf_mem hψ α hα x hx⟩⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem stdCharExists (D : D7) : StdCharExists D := by
   unfold StdCharExists

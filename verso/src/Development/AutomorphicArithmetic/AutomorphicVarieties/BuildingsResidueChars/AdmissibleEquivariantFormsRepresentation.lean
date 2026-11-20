@@ -28,7 +28,7 @@ private noncomputable def eqRep (ρ : Representation ℂ (infU E n) S) : Represe
     congrArg (f.1 v) (mul_assoc g a b).symm)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Gr38.eqRep_adm ρ f`.
+A detailed English derivation is pending.
 -/
 private theorem eqRep_adm [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S) (f : eqForms ρ) :
     ∃ K : Subgroup (finU E n), (∀ k ∈ K, eqRep ρ k f = f) ∧ FiniteDimensional ℂ (GlobalTheory.PRep.fixed (eqRep ρ) K) ∧
@@ -38,31 +38,25 @@ private theorem eqRep_adm [FiniteDimensional ℂ S] (ρ : Representation ℂ (in
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ n B hdefB hinv S _ _ _ ρ hsp f hfa hfe v`. Distinguish the cases in `hv : v = 0`. Rewrite using `[hv, map_zero]`. Conclude with `zero_mem _`. Set `ev : eqForms ρ →ₗ[ℂ] (UA E n → ℂ)` to `LinearMap.applyₗ v ∘ₗ (eqForms ρ).subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B' : eqForms ρ →ₗ⋆[ℂ] eqForms ρ →ₗ[ℂ] ℂ` to `(B.compl₂ ev).comp ev`. Establish `hB' : ∀ u w, B' u w = B (u.1 v) (w.1 v)` using `fun _ _ => rfl`. Establish `hev : ∀ u : eqForms ρ, u.1 v = 0 → u = 0` using `fun u hu => by`. Establish `h1 : ∀ T ∈ Submodule.span ℂ (Set.range ρ), u.1 (T v) = 0`. Introduce `T hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hT using Submodule.span_induction with`. Consider the case `mem T hT`. Take `⟨x, rfl⟩` from `hT`. Rewrite using `[u.2.2, hu, map_zero]`. Consider the case `zero => simp`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [LinearMap.add_apply, map_add, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [LinearMap.smul_apply, map_smul, ha, smul_zero]`. Take `⟨l, hl⟩` from `Module.Projective.exists_dual_eq_one ℂ hv`. Use `Subtype.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Establish `h2` using `h1 (LinearMap.smulRight l w) (hsp ▸ Submodule.mem_top)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[LinearMap.smulRight_apply, hl, one_smul]`. Conclude with `h2`. Establish `hdef : ∀ u, B' u u = 0 → u = 0` using `fun u hu => hev u (hdefB _ (u.2.1 v) hu)`. Establish `hinv' : ∀ g u w, B' (eqRep ρ g u) (eqRep ρ g w) = B' u w` using `fun g u w => hinv g _ _ (u.2.1 _) (w.2.1 _)`. Establish `hmem` using `UpperTheory.mem_iSup_irreducible_of_admissible_unitary (finU E n) (eqForms ρ) (eqRep ρ) B' hdef hinv' (eqRep_adm ρ) ⟨f, hfa, hfe⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `(iSup_le ?_ : _ ≤ (⨆ σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ}, σ.1).comap ev) hmem` and prove the remaining obligations. Introduce and unpack `⟨U, hU0, hU, hirr⟩`. Set `j : U →ₗ[ℂ] S →ₗ[ℂ] (UA E n → ℂ)` to `(eqForms ρ).subtype ∘ₗ U.subtype`. Establish `hj : ∀ (p : U) (x : infU E n) v, j p (ρ x v) = RU E n x.1 (j p v)` using `fun p x v => p.1.2.2 x v`. Establish `hrep : IsAutRepU (Pairs.img j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun φ hφ => ?_, fun x φ hφ => ?_, fun h => hU0 ?_, fun N hle hN => ?_⟩` and prove the remaining obligations. Establish `h1 : Pairs.img j ≤ autU E n` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `p.1.2.1 v)`. Conclude with `h1 hφ`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Pairs.stable_of (fun a => ?_) (fun k => ?_) x φ hφ` and prove the remaining obligations. Establish `h1 : Pairs.img j ≤ (Pairs.img j).comap (RU E n a.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Express the relevant statement in the definitionally equal form `RU E n a.1 _ ∈ Pairs.img j`. Rewrite using `[← hj]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `Pairs.apply_mem_img _ _ _)`. Conclude with `fun φ hφ => h1 hφ`. Establish `h1 : Pairs.img j ≤ (Pairs.img j).comap (RU E n k.1)` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨p, v, rfl⟩`. Conclude with `Pairs.apply_mem_img j ⟨eqRep ρ k p.1, hU k _ p.2⟩ v)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `fun φ hφ => h1 hφ`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce `u hu`. Use `Pairs.apply_mem_img j ⟨u, hu⟩ v` as an intermediate fact. Rewrite `this` using `[h, Submodule.mem_bot]`.
-
-Conclude with `hev u this`. Use `Pairs.eq_bot_or_eq_img hsp (R := fun x => RU E n x.1) hj (Q := fun k : finU E n => (eqRep ρ k).restrict (hU k)) (T := fun k => RU E n k.1) (fun _ _ _ => rfl) (fun P hP => ?_) hle (fun x => hN x.1) (fun k => hN k.1)` and prove the remaining obligations. Break down `hirr (P.map U.subtype) (Submodule.map_subtype_le U P) (by` into its components or cases. Introduce and unpack `g _ ⟨p, hp, rfl⟩`. Conclude with `⟨_, hP g p hp, rfl⟩) with h | h`.
-
-Use `left`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (h.trans (Submodule.map_bot _).symm)`. Use `right`. Conclude with `Submodule.map_injective_of_injective U.injective_subtype (h.trans (Submodule.map_subtype_top _).symm)`. Introduce `u hu`.
-
-Conclude with `le_iSup (fun σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ} => σ.1) ⟨_, hrep⟩ (Pairs.apply_mem_img j ⟨u, hu⟩ v)`.
+Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.admissible_equivariantForms_representation :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (B : (UA E n → ℂ) →ₗ⋆[ℂ] (UA E n → ℂ) →ₗ[ℂ] ℂ), (∀ φ, IsAutFormU φ → B φ φ = 0 → φ = 0) → (∀ x φ ψ, IsAutFormU φ → IsAutFormU ψ → B (RU E n x φ) (RU E n x ψ) = B φ ψ) → ∀ (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S] (ρ : Representation ℂ (infU E n) S), Submodule.span ℂ (Set.range ρ) = ⊤ → ∀ f : S →ₗ[ℂ] (UA E n → ℂ), (∀ v, IsAutFormU (f v)) → (∀ (x : infU E n) v, f (ρ x v) = RU E n x (f v)) → ∀ v, f v ∈ ⨆ σ : {σ : Submodule ℂ (UA E n → ℂ) // IsAutRepU σ}, σ.1 := by

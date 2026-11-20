@@ -41,14 +41,14 @@ def derivOp (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T 
 variable {D T}
 
 /- English proof (translation)
-The claim follows from `(hex Φ.1 Φ.2).choose_spec.2 x`.
+A detailed English derivation is pending.
 -/
 theorem derivOp_spec (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T t Φ x) (Φ₁ x) 0) (Φ : D) (x : α) :
     HasDerivAt (fun t => T t Φ.1 x) (((derivOp D T hex Φ : D) : α → ℂ) x) 0 :=
   (hex Φ.1 Φ.2).choose_spec.2 x
 
 /- English proof (translation)
-The claim follows from `funext fun x => (derivOp_spec hex Φ x).unique (h x)`.
+A detailed English derivation is pending.
 -/
 theorem derivOp_eq (hex : ∀ Φ ∈ D, ∃ Φ₁ ∈ D, ∀ x, HasDerivAt (fun t => T t Φ x) (Φ₁ x) 0) (Φ : D) (Ψ : α → ℂ)
     (h : ∀ x, HasDerivAt (fun t => T t Φ.1 x) (Ψ x) 0) : ((derivOp D T hex Φ : D) : α → ℂ) = Ψ :=
@@ -101,7 +101,7 @@ def quotSub (Nr : Submodule (Algebra.adjoin ℂ s) M) (T : Submodule ℂ (M ⧸ 
     | mul A A' _ _ h h' => exact h _ (h' x hq)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_quotSub (Nr : Submodule (Algebra.adjoin ℂ s) M) (T : Submodule ℂ (M ⧸ Nr))
     (hT : ∀ A ∈ s, ∀ x : M, Nr.mkQ x ∈ T → Nr.mkQ (A x) ∈ T) (q : M ⧸ Nr) : q ∈ quotSub s Nr T hT ↔ q ∈ T :=
@@ -137,7 +137,7 @@ abbrev Alg (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) : Type :=
   Algebra.adjoin ℂ (ops B om (PolData B M))
 
 /- English proof (translation)
-Introduce and unpack `A (⟨γ, hγ, hex, rfl⟩ | ⟨k, hk, hk', rfl⟩) x hx`. Conclude with `hN.lie γ hγ x.1 hx _ (derivOp _ _ hex x).2 (derivOp_spec hex x)`. Conclude with `hN.cpt k hk x.1 hx`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nr_stable (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : GlobalTheory.ThetaFac.WStable B om (PolData B M) N) :
@@ -194,7 +194,7 @@ theorem iota_apply (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Subm
   rfl
 
 /- English proof (translation)
-Rewrite using `[iota_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iota_eq_zero (B : Base F E) (M : Model σ Y W) (om : Rep σ Y W) (N : Submodule ℂ (Fn F n d))
     (hN : GlobalTheory.ThetaFac.WStable B om (PolData B M) N) (φ : ∀ v : Pl F, (Fin n × Fin d → Fv F v) → ℂ) (hφ : Good M φ)

@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Rewrite `hf`, the goal using `[IsLocallyConstant.iff_eventually_eq]`. Conclude with `fun x => (hf x).mono fun y hy => h _ _ hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lc_of_fib {Γ A B : Type} [TopologicalSpace Γ] {f : Γ → A} {g : Γ → B} (hf : IsLocallyConstant f)
     (h : ∀ x y, f x = f y → g x = g y) : IsLocallyConstant g := by
@@ -12,29 +12,25 @@ private theorem lc_of_fib {Γ A B : Type} [TopologicalSpace Γ] {f : Γ → A} {
   exact fun x => (hf x).mono fun y hy => h _ _ hy
 
 /- English proof (translation)
-Set `S` to `{K : Subgroup Γ // K.Normal ∧ @IsLocallyConstant Γ (Γ ⧸ K) T (fun x => (x : Γ ⧸ K))}`. Set `ρ : ∀ K : S, Γ →* Equiv.Perm (Γ ⧸ K.1)` to `fun K => MulAction.toPermHom Γ (Γ ⧸ K.1)`. Set `T' : TopologicalSpace Γ` to `⨅ K : S, TopologicalSpace.induced (ρ K) ⊥`. Establish `htg : ∀ K : S, @IsTopologicalGroup Γ (TopologicalSpace.induced (ρ K) ⊥) _`. Introduce `K`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `letI : TopologicalSpace (Equiv.Perm (Γ ⧸ K.1)) := ⊥`. Use `haveI : DiscreteTopology (Equiv.Perm (Γ ⧸ K.1)) := ⟨rfl⟩`. Conclude with `topologicalGroup_induced (ρ K)`. Use `⟨T', topologicalGroup_iInf htg, ?_⟩` and prove the remaining obligations. Introduce `M _ φ`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hρT : ∀ K : S, @IsLocallyConstant Γ _ T (ρ K)`. Introduce `K`. Use `@lc_of_fib Γ _ _ T _ _ K.2.2 ?_` and prove the remaining obligations. Introduce `x y hxy`. Use extensionality with `c`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `c using QuotientGroup.induction_on with`. Consider the case `H z`. Simplify using `only [ρ, MulAction.toPermHom_apply, MulAction.toPerm_apply, MulAction.Quotient.smul_coe]`. Rewrite `hxy`, the goal using `[QuotientGroup.eq]`. Use `K.2.1.conj_mem _ hxy z⁻¹` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Establish `hρT' : ∀ K : S, @IsLocallyConstant Γ _ T' (ρ K)`. Introduce `K`. Use `letI : TopologicalSpace (Equiv.Perm (Γ ⧸ K.1)) := ⊥`. Use `haveI : DiscreteTopology (Equiv.Perm (Γ ⧸ K.1)) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[@IsLocallyConstant.iff_continuous Γ _ T']`. Apply `continuous_iInf_dom (i := K)` to reduce the goal to its premises. Conclude with `continuous_induced_dom`. Prove the components needed by the constructor for the conclusion. Introduce `hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `K : Subgroup Γ` to `φ.ker`. Establish `hK : ∀ x y : Γ, (x : Γ ⧸ K) = y ↔ φ x = φ y`. Introduce `x y`. Rewrite using `[QuotientGroup.eq, MonoidHom.mem_ker, map_mul]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Combine the equalities or inequalities in the displayed calculation. Introduce `e`. Rewrite using `[← e, ← map_mul, inv_mul_cancel, map_one]`. Establish `hmk : @IsLocallyConstant Γ (Γ ⧸ K) T (fun x => (x : Γ ⧸ K))` using `@lc_of_fib Γ _ _ T _ _ hφ fun x y e => (hK x y).2 e`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `K' : S` to `⟨K, MonoidHom.normal_ker φ, hmk⟩`. Use `@lc_of_fib Γ _ _ T' _ _ (hρT' K') ?_` and prove the remaining obligations. Introduce `x y hxy`. Use `congrArg (fun e : Equiv.Perm (Γ ⧸ K) => e ((1 : Γ) : Γ ⧸ K)) hxy` as an intermediate fact. Simplify using `only [ρ, K', MulAction.toPermHom_apply, MulAction.toPerm_apply, MulAction.Quotient.smul_coe, mul_one] at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[smul_eq_mul, smul_eq_mul, mul_one, mul_one]`. Conclude with `(hK x y).1 this`. Introduce `hφ`. Establish `hid : @Continuous Γ Γ T T' id`. Apply `continuous_iInf_rng.2` to reduce the goal to its premises.
-
-Introduce `K`. Apply `continuous_induced_rng.2` to reduce the goal to its premises. Use `letI : TopologicalSpace (Equiv.Perm (Γ ⧸ K.1)) := ⊥`. Use `haveI : DiscreteTopology (Equiv.Perm (Γ ⧸ K.1)) := ⟨rfl⟩`. Conclude with `(@IsLocallyConstant.iff_continuous Γ _ T _ _ _).1 (hρT K)`.
-
-Conclude with `@IsLocallyConstant.comp_continuous Γ Γ M T T' φ id hφ hid`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem exists_grpTop (Γ : Type) [Group Γ] (T : TopologicalSpace Γ) :
     ∃ T' : TopologicalSpace Γ, @IsTopologicalGroup Γ T' _ ∧
@@ -120,19 +116,17 @@ private def tr {O : Type} [CommRing O] [IsLocalRing O] {Γ ι : Type} [Group Γ]
     (@Lift.red O _ _ Γ ι _ T _ _ rbar R _ _ _ r)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ ι X _ _ _ _ _ w Φ h2 Γ _ T rbar r0 hbar hr0 N L hL R _ _ _ R' _ _ _ p hp hker W hz hW r' hr' hLr' hpart`. Choose the witnesses or unpack the hypotheses as in `⟨U, hU, hiff⟩ : ∃ U : PLift (TopologicalSpace Γ), @IsTopologicalGroup Γ U.down _ ∧ ∀ (M : Type) [Monoid M] (φ : Γ →* M), @IsLocallyConstant Γ M T φ ↔ @IsLocallyConstant Γ M U.down φ := by`. Take `⟨T', h1, h2⟩` from `exists_grpTop Γ T`. Conclude with `⟨⟨T'⟩, h1, h2⟩`. Establish `hf : ∀ (M : Type) [Monoid M] (φ : Γ →* M), @IsLocallyConstant Γ M T φ → @IsLocallyConstant Γ M U.down φ` using `fun M _ φ => (hiff M φ).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hb : ∀ (M : Type) [Monoid M] (φ : Γ →* M), @IsLocallyConstant Γ M U.down φ → @IsLocallyConstant Γ M T φ` using `fun M _ φ => (hiff M φ).2`. Set `L' : @Cond O _ _ Γ ι _ U.down _ _ rbar` to `fun S _ _ _ r => L S (tr U.down T hb r)`. Establish `hL' : @FormData.IsLocCond O _ ι X _ _ _ w Φ _ Γ _ U.down rbar r0.hom N L'`. Use `@FormData.IsLocCond.mk O _ ι X _ _ _ w Φ _ Γ _ U.down rbar r0.hom N L' ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `S _ _ _ r hr`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨I, hI⟩` from `hL.closed S (tr U.down T hb r) hr`. Use `⟨I, fun S' _ _ _ f => ?_⟩` and prove the remaining obligations. Use `hI S' f using 2` and compare the differences between its conclusion and the goal. Conclude with `Lift.ext rfl`. Introduce `S _ _ _ r r2 h hr hh hc hLr`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hL.conj S (tr U.down T hb r) (tr U.down T hb r2) h hr hh hc hLr`. Introduce `S _ _ _ r r2 t hr ht htc hLr`. Conclude with `hL.torus S (tr U.down T hb r) (tr U.down T hb r2) t hr ht htc hLr`. Introduce `S S' _ _ _ _ _ _ q hq hk s hs hLs`. Take `⟨r1, hr1, hL1, hm1⟩` from `hL.lift S S' q hq hk (tr U.down T hb s) hs hLs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨tr T U.down hf r1, hr1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (L S) (Lift.ext rfl : tr U.down T hb (tr T U.down hf r1) = r1)).mpr hL1`. Establish `e` using `congrArg (@Lift.hom O _ _ Γ ι _ T _ _ rbar S' _ _ _) hm1`. Conclude with `Lift.ext e`. Introduce `S S' _ _ _ _ _ _ q hq hk r1 r2 hr1 hr2 hm hL1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e` using `congrArg (@Lift.hom O _ _ Γ ι _ U.down _ _ rbar S' _ _ _) hm`. Conclude with `hL.tangent S S' q hq hk (tr U.down T hb r1) (tr U.down T hb r2) hr1 hr2 (Lift.ext e) hL1`. Establish `hLr'' : L' R' (tr T U.down hf r')`. Conclude with `(congrArg (L R') (Lift.ext rfl : tr U.down T hb (tr T U.down hf r') = r')).mpr hLr'`. Take `⟨r, hr, hLr, hmap, hpart'⟩` from `@loc_graded O _ _ _ _ ι X _ _ _ _ _ w Φ h2 Γ _ U.down hU rbar (tr T U.down hf r0) hbar hr0 N L' hL' R _ _ _ R' _ _ _ p hp hker W hz hW (tr T U.down hf r') hr' hLr'' hpart`.
-
-Establish `e` using `congrArg (@Lift.hom O _ _ Γ ι _ U.down _ _ rbar R' _ _ _) hmap`. Conclude with `⟨tr U.down T hb r, hr, hLr, Lift.ext e, hpart'⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.loc_graded_top :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (ι X : Type) [Fintype ι] [DecidableEq ι] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (w : ι → X) (Φ : FormData O w), IsUnit (2 : O) → ∀ (Γ : Type) [Group Γ] [TopologicalSpace Γ] (rbar : Γ →* Matrix ι ι (ResidueField O)) (r0 : Lift O rbar O) (hbar : Φ.Normalises rbar), Φ.Normalises r0.hom → ∀ (N : Subgroup Γ) (L : Cond O rbar), Φ.IsLocCond r0.hom N L →

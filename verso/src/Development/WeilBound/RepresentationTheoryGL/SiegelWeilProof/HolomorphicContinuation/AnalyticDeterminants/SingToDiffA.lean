@@ -39,7 +39,7 @@ Both sides reduce to the same expression.
 theorem hermL_apply (x : Vr n) : hermL n x = herm x := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[herm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem herm_zero : herm (0 : Vr n) = 0 := by
   ext i j; simp [herm]
@@ -51,13 +51,13 @@ def v2 (r c : Fin n) : Vr n := fun i j =>
   ((if i = c ∧ j = r then 1 else 0) - (if i = r ∧ j = c then 1 else 0)) / 2
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `e1 : (if j = r ∧ i = c then (1:ℝ) else 0) = if i = c ∧ j = r then 1 else 0`. Simplify using `only [and_comm]`. Establish `e2 : (if j = c ∧ i = r then (1:ℝ) else 0) = if i = r ∧ j = c then 1 else 0`. Simplify using `only [and_comm]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e3 : (Matrix.single r c (1:ℂ)) i j = (((if i = r ∧ j = c then (1:ℝ) else 0 : ℝ)) : ℂ)`. Rewrite using `[Matrix.single_apply]`. Distinguish the cases in `h : i = r ∧ j = c`. Take `⟨rfl, rfl⟩` from `h`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (fun h' => h ⟨h'.1.symm, h'.2.symm⟩)]`. Simplify using the standard rewrite rules. Rewrite using `[e3]`. Simplify using `only [herm, v1, v2, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, e1, e2]`. Generalize the expression as in `(if i = r ∧ j = c then (1:ℝ) else 0) = a`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(if i = c ∧ j = r then (1:ℝ) else 0) = b`. Use `push_cast`. Take the linear combination `((b:ℂ) - a) / 2 * Complex.I_sq`.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem herm_v (r c : Fin n) : herm (v1 r c) + Complex.I • herm (v2 r c) = Matrix.single r c 1 := by
   ext i j

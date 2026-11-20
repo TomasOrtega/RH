@@ -15,22 +15,22 @@ open GlobalTheory.Desc
 namespace GlobalTheory.SqDecTransport
 
 /- English proof (translation)
-Simplify using `[spMap, ← Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_spMap {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R'') :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp [spMap, ← Spec.map_comp]
 
 /- English proof (translation)
-Introduce `k K k₁ K' _ _ _ _ a b c d hcd A₀ _ A _ π hA L₀ M₀ L M hL₀ hM₀ hLL hML hL hM hD`. Establish `hw : (pullback.fst A.hom (spMap c) ≫ π) ≫ A₀.hom = (pullback.snd A.hom (spMap c) ≫ spMap d) ≫ spMap b`. Rewrite using `[Category.assoc, hA.1.w, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, spMap_comp_spMap, spMap_comp_spMap, hcd]`. Set `π' : pullback A.hom (spMap c) ⟶ pullback A₀.hom (spMap b)` to `pullback.lift _ _ hw`. Establish `e₁ : π' ≫ pullback.fst A₀.hom (spMap b) = pullback.fst A.hom (spMap c) ≫ π` using `pullback.lift_fst _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : π' ≫ pullback.snd A₀.hom (spMap b) = pullback.snd A.hom (spMap c) ≫ spMap d` using `pullback.lift_snd _ _ _`. Establish `hP : IsGrpPullback ((Over.pullback (spMap c)).obj A) ((Over.pullback (spMap b)).obj A₀) (spMap d) π'`. Establish `n` using `(isGrpPullback_pullback A (spMap c)).comp hA`. Rewrite `n` using `[spMap_comp_spMap, hcd, ← spMap_comp_spMap, ← e₁]`. Conclude with `IsGrpPullback.cancel (isGrpPullback_pullback A₀ (spMap b)) n e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨N, a₀, r, e, β, hN, ha₀, hβ, hI⟩` from `hD`. Establish `hβ' : ∀ i, ∃ f : (Over.pullback (spMap c)).obj A ⟶ (Over.pullback (spMap c)).obj A, IsMonHom f ∧ f.left ≫ π' = π' ≫ (β i).left` using `fun i => by haveI := hβ i`. Conclude with `GlobalTheory.HomDescent.exists_isMonHom_pull hP hP (β i)`. Use `choose β' hβ'm hβ'c using hβ'`. Establish `iL : LBIso (L.pull (pullback.fst A.hom (spMap c))) ((L₀.pull (pullback.fst A₀.hom (spMap b))).pull π')` using `GlobalTheory.ShapePull.iso_linComb_pull hL _ _ _ π' (fun _ => e₁.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `iM : LBIso (M.pull (pullback.fst A.hom (spMap c))) ((M₀.pull (pullback.fst A₀.hom (spMap b))).pull π')` using `GlobalTheory.ShapePull.iso_linComb_pull hM _ _ _ π' (fun _ => e₁.symm)`. Use `⟨N, a₀, r, e, β', hN, ha₀, hβ'm, ?_⟩` and prove the remaining obligations. Establish `j₁ : LBIso (lbPow (L.pull (pullback.fst A.hom (spMap c))) N) ((lbPow (L₀.pull (pullback.fst A₀.hom (spMap b))) N).pull π')` using `GlobalTheory.ShapePull.iso_linComb_pull iL _ _ _ π' (fun _ => by simp)`. Establish `j₂` using `GlobalTheory.RigidBundleGlue.LBIso.pull hI π'`. Establish `j₃ : LBIso (LB.LinComb (M.pull (pullback.fst A.hom (spMap c))) (K` using `Option (Fin r)) (fun o => o.elim (𝟙 _) fun i => (β' i).left) fun o => o.elim (a₀ : ℤ) fun i => (e i : ℤ)) ((LB.LinComb (M₀.pull (pullback.fst A₀.hom (spMap b))) (K := Option (Fin r)) (fun o => o.elim (𝟙 _) fun i => (β i).left) fun o => o.elim (a₀ : ℤ) fun i => (e i : ℤ)).pull π') …`.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `none => simp`. Consider the case `some i => exact hβ'c i)`. Conclude with `LBIso.trans (isLB_lbPow (pull_isLB hLL _) N) (pull_isLB (isLB_lbPow (pull_isLB hL₀ _) N) _) (ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB _ (pull_isLB hML _) _ _) j₁ (LBIso.trans (pull_isLB (isLB_lbPow (pull_isLB hL₀ _) N) _) (pull_isLB (ReciprocityTheory.ChartRestrictio …`.
+A detailed English derivation is pending.
 -/
 theorem transport : ∀ (k K k₁ K' : Type) [Field k] [Field K] [Field k₁] [Field K'] (a : k →+* K) (b : k →+* k₁) (c : K →+* K') (d : k₁ →+* K'), c.comp a = d.comp b → ∀ (A₀ : Over (Sp k)) [GrpObj A₀] (A : Over (Sp K)) [GrpObj A] (π : A.left ⟶ A₀.left), IsGrpPullback A A₀ (spMap a) π → ∀ (L₀ M₀ : LB A₀.left) (L M : LB A.left), L₀.IsLB → M₀.IsLB → L.IsLB → M.IsLB → LBIso L (L₀.pull π) → LBIso M (M₀.pull π) → SqDec ((Over.pullback (spMap b)).obj A₀) (L₀.pull (pullback.fst A₀.hom (spMap b))) (M₀.pull (pullback.fst A₀.hom (spMap b))) → SqDec ((Over.pullback (spMap c)).obj A) (L.pull (pullback.fst A.hom (spMap c))) (M.pull (pullback.fst A.hom (spMap c))) := by
   intro k K k₁ K' _ _ _ _ a b c d hcd A₀ _ A _ π hA L₀ M₀ L M hL₀ hM₀ hLL hML hL hM hD

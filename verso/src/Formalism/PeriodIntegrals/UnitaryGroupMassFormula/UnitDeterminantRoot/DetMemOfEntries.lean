@@ -8,7 +8,7 @@ namespace PI.UnitaryGroupMassFormula.UnitDetRoot
 open PI
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma det_mem_of_entries {m : Type} [Fintype m] [DecidableEq m] {S : IntermediateField ℚ ℂ}
     (U : Matrix m m ℂ) (h : ∀ i j, U i j ∈ S) : U.det ∈ S := by
@@ -16,15 +16,15 @@ lemma det_mem_of_entries {m : Type} [Fintype m] [DecidableEq m] {S : Intermediat
   exact sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => h _ _)
 
 /- English proof (translation)
-The claim follows from `IntermediateField.mem_adjoin_simple_self ℚ (UnitDetRootDefs.cmTheta b d)`.
+A detailed English derivation is pending.
 -/
 lemma theta_mem (b : ℤ) (d : ℕ) : UnitDetRootDefs.cmTheta b d ∈ KF b d :=
     IntermediateField.mem_adjoin_simple_self ℚ (UnitDetRootDefs.cmTheta b d)
 
 /- English proof (translation)
-Rewrite using `[UnitDetRootDefs.stdLat, AddSubgroup.mem_pi]`. Introduce `i _`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(UnitDetRootDefs.cmL a b d ha hd lam hlam).ω₁_mem_lattice`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma single_mem_stdLat {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [DecidableEq m] (j : m) :
@@ -39,15 +39,15 @@ lemma single_mem_stdLat {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} 
     exact zero_mem _
 
 /- English proof (translation)
-Establish `he : Pi.single j (lam * a) ∈ UnitDetRootDefs.stdLat (UnitDetRootDefs.cmL a b d ha hd lam hlam) m` using `single_mem_stdLat j`. Take `⟨n1, hn1, -, h1⟩` from `AddSubgroup.exists_nsmul_mem_of_relIndex_ne_zero hH.2.2.2.2 he`. Establish `h2 : (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) (n1 • Pi.single j (lam * a)) ∈ UnitDetRootDefs.imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa` using `AddSubgroup.mem_map_of_mem _ h1.1`. Take `⟨n2, hn2, -, h3⟩` from `AddSubgroup.exists_nsmul_mem_of_relIndex_ne_zero hA.2.1 h2`. Establish `h4` using `(AddSubgroup.mem_inf.mp h3).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h4` using `[UnitDetRootDefs.stdLat, AddSubgroup.mem_pi]`. Establish `h5` using `h4 i (Set.mem_univ _)`. Rewrite `h5` using `[Submodule.mem_toAddSubgroup, PeriodPair.mem_lattice]`. Take `⟨p, q, hpq⟩` from `h5`. Establish `hs : Pi.single j (lam * (a : ℂ)) = (lam * (a : ℂ)) • Pi.single j (1 : ℂ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `hpq` using `[hs, map_nsmul, map_smul, Pi.smul_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, nsmul_eq_mul, nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `(p : ℂ) * (lam * a) + q * (lam * UnitDetRootDefs.cmTheta b d) = _ at hpq`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ha0 : (a : ℂ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `hN : (n2 : ℂ) * n1 * a ≠ 0` using `mul_ne_zero (mul_ne_zero (by exact_mod_cast hn2.ne') (by exact_mod_cast hn1.ne')) ha0`. Establish `hM : LinearMap.toMatrix' (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) i j = ((p : ℂ) * a + q * UnitDetRootDefs.cmTheta b d) / ((n2 : ℂ) * n1 * a)`. Rewrite using `[LinearMap.toMatrix'_apply, eq_div_iff hN]`. Apply `mul_left_cancel₀ hlam` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [LinearEquiv.coe_coe] at hpq ⊢`. Take the linear combination `-hpq`. Rewrite using `[hM]`. Conclude with `div_mem (add_mem (mul_mem (intCast_mem _ _) (natCast_mem _ _)) (mul_mem (intCast_mem _ _) (theta_mem b d))) (mul_mem (mul_mem (natCast_mem _ _) (natCast_mem _ _)) (natCast_mem _ _))`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma entries_mem {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [Fintype m] [DecidableEq m] {Λa : AddSubgroup (m → ℂ)}
@@ -87,9 +87,9 @@ lemma entries_mem {a : ℕ} {b c : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam
     (mul_mem (mul_mem (natCast_mem _ _) (natCast_mem _ _)) (natCast_mem _ _))
 
 /- English proof (translation)
-Simplify using `only [UnitDetRootDefs.stdH, UnitDetRootDefs.matH, LinearMap.mk₂'ₛₗ_apply, Matrix.smul_apply, smul_eq_mul, Matrix.one_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[if_pos rfl]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `j _ hji`. Rewrite using `[if_neg (Ne.symm hji)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma stdH_apply_lemma (L : PeriodPair) (m : Type) [Fintype m] [DecidableEq m] (z w : m → ℂ) :
     UnitDetRootDefs.stdH L m z w = ((UnitDetRootDefs.area L : ℝ) : ℂ)⁻¹ * ∑ i, z i * conj (w i) := by
@@ -106,17 +106,17 @@ private lemma stdH_apply_lemma (L : PeriodPair) (m : Type) [Fintype m] [Decidabl
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `hA0 : ((UnitDetRootDefs.area (UnitDetRootDefs.cmL a b d ha hd lam hlam) : ℝ) : ℂ) ≠ 0`. Rewrite using `[Complex.ofReal_ne_zero, UnitDetRootDefs.area, abs_ne_zero]`. Express the relevant statement in the definitionally equal form `(conj (lam * (a : ℂ)) * (lam * UnitDetRootDefs.cmTheta b d)).im ≠ 0`. Establish `e : conj (lam * (a : ℂ)) * (lam * UnitDetRootDefs.cmTheta b d) = ((Complex.normSq lam * a : ℝ) : ℂ) * UnitDetRootDefs.cmTheta b d`. Rewrite using `[map_mul, Complex.conj_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.im_ofReal_mul]`. Establish `hθ : (UnitDetRootDefs.cmTheta b d).im = Real.sqrt d / 2`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[UnitDetRootDefs.cmTheta]`. Rewrite using `[hθ]`. Establish `h1 : 0 < Complex.normSq lam` using `Complex.normSq_pos.mpr hlam`. Establish `h2 : (0 : ℝ) < a` using `by exact_mod_cast ha`. Establish `h3 : 0 < Real.sqrt d` using `Real.sqrt_pos.mpr (by exact_mod_cast hd)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_pos (mul_pos h1 h2) (by positivity)).ne'`. Establish `hU : (LinearMap.toMatrix' (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ))).transpose * (LinearMap.toMatrix' (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ))).map (starRingEnd ℂ) = 1`. Use extensionality with `k l`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply, LinearMap.toMatrix'_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `hiso (Pi.single k 1) (Pi.single l 1)`. Rewrite `h` using `[stdH_apply_lemma, stdH_apply_lemma]`. Rewrite using `[mul_left_cancel₀ (inv_ne_zero hA0) h]`. Rewrite using `[Finset.sum_eq_single k (fun i _ hik => by rw [Pi.single_eq_of_ne hik, zero_mul]) (fun hk => absurd (Finset.mem_univ k) hk), Pi.single_eq_same, one_mul, Pi.single_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hd'` using `congrArg Matrix.det hU`. Rewrite `hd'` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Rewrite using `[← LinearMap.det_toMatrix', RingHom.map_det, RingHom.mapMatrix_apply]`. Conclude with `hd'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma unitary_det {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam : ℂ} {hlam : lam ≠ 0}
     {m : Type} [Fintype m] [DecidableEq m] {δ : (m → ℂ) ≃ₗ[ℂ] (m → ℂ)}
@@ -158,7 +158,7 @@ lemma unitary_det {a : ℕ} {b : ℤ} {d : ℕ} {ha : 0 < a} {hd : 0 < d} {lam :
   exact hd'
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam m _ _ Λa hH δ hA`. Use `⟨?_, unitary_det hA.1⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.det_toMatrix']`. Conclude with `det_mem_of_entries _ (entries_mem hH hA)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detInK : DetInK := by
   intro a b c d ha hd lam hlam m _ _ Λa hH δ hA

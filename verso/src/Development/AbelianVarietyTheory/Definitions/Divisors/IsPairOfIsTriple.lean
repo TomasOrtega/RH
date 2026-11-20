@@ -16,12 +16,12 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n d n₁ d₁ : ℕ} {X : Spc F E n} {W : Spc F E d} {W₁ : Spc F E d₁}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one : incM F (1 : Matrix (Fin n) (Fin n) E) = 1 := Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Introduce `_ h` and use `h Heisenberg₂ := fun z Φ _ => by simp [incM_one] inv := fun _ h => h.elim loc := ⟨ContinuousLinearMap.id _ _, fun _ => LinearMap.id, by classical intro h let b : ContDiffBump (0 : Fin n × Fin d → mixedEmbedding.mixedSpace F) := ⟨1, 2, one_pos, one_lt_two⟩ have hs : HasCompactSupp …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isEv_id (B : Base F E) (M : Model σ X W) : IsEv B M M 1 1 ∅ LinearMap.id where
   maps := fun _ h => h
@@ -39,13 +39,13 @@ theorem isEv_id (B : Base F E) (M : Model σ X W) : IsEv B M M 1 1 ∅ LinearMap
     fun v => ⟨rfl, Submodule.map_id _⟩, fun _ _ _ _ => rfl⟩
 
 /- English proof (translation)
-Simplify using `[IsLevi, mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isLevi_one (H' : Plane E d d₁) : IsLevi (σ := σ) (W := W) (W₁ := W₁) H' 1 1 1 := by
   simp [IsLevi, mat]
 
 /- English proof (translation)
-Rewrite using `[shiftA, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.2.1, smul_comm]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem shiftA_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} {h₁ : UA σ W₁.J} {m : UA σ W.J}
     (h : IsLevi H' t h₁ m) (l : (AE F E)ˣ) : shiftA H H' l * (mat m)ᵀ = cA σ (t⁻¹).1 • shiftA H H' l := by
@@ -55,7 +55,7 @@ theorem shiftA_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} 
   simp [Matrix.vecMulVec_apply, mul_left_comm]
 
 /- English proof (translation)
-Rewrite using `[shiftB, Matrix.smul_mul, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, h.1, smul_comm]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.vecMulVec_apply, mul_left_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem shiftB_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} {h₁ : UA σ W₁.J} {m : UA σ W.J}
     (h : IsLevi H' t h₁ m) (l : (AE F E)ˣ) : shiftB σ H H' l * (mat m)ᵀ = t.1 • shiftB σ H H' l := by
@@ -65,21 +65,21 @@ theorem shiftB_levi (H : Plane E n n₁) (H' : Plane E d d₁) {t : (AE F E)ˣ} 
   simp [Matrix.vecMulVec_apply, mul_left_comm]
 
 /- English proof (translation)
-Introduce `μ 𝓕 _ _ h1 h`. Rewrite using `[integral_const, Measure.real, Measure.restrict_apply_univ, h1, ENNReal.toReal_one, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCT_const (H' : Plane E d d₁) (c : ℂ) : IsCT (σ := σ) (W := W) H' (fun _ => c) fun _ => c := by
   intro μ 𝓕 _ _ h1 h
   rw [integral_const, Measure.real, Measure.restrict_apply_univ, h1, ENNReal.toReal_one, one_smul]
 
 /- English proof (translation)
-Introduce `t m _ h`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem hasLaw_const (H' : Plane E d d₁) (c : ℂ) : HasLaw (σ := σ) (W := W) W₁ H' 1 0 fun _ => c := by
   intro t m _ h
   simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Assume the negation of the conclusion as `hg`. Establish `e` using `congrArg norm (mul_right_cancel₀ hg ((h t m hm g).symm.trans (h' t m hm g)))`. Simplify using `only [norm_mul, Circle.norm_coe, one_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.rpow_pos_of_pos h0 _)] at e`. Conclude with `hz ((Real.rpow_right_inj h0 ht).1 e)`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_hasLaw (H' : Plane E d d₁) {χ χ' : Chr F E} {z z' : ℝ} (hz : z ≠ z') {T : UA σ W.J → ℂ}
     (h : HasLaw W₁ H' χ z T) (h' : HasLaw W₁ H' χ' z' T) {t : (AE F E)ˣ} {m : UA σ W.J} (hm : IsLevi (W₁ := W₁) H' t 1 m)
@@ -92,7 +92,7 @@ theorem eq_zero_of_hasLaw (H' : Plane E d d₁) {χ χ' : Chr F E} {z z' : ℝ} 
   exact hz ((Real.rpow_right_inj h0 ht).1 e)
 
 /- English proof (translation)
-Apply the tactic sequence `constructor <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (a a' : ℝ) : (1 - a) / 2 + (a + a' - 1) / 2 = a' / 2 ∧ (1 - a') / 2 + (a + a' - 1) / 2 = a / 2 := by
   constructor <;> ring
@@ -113,7 +113,7 @@ variable (E) in
 def pl : Plane E 2 0 := ⟨![1, 0], ![0, 1], 0, 1⟩
 
 /- English proof (translation)
-The claim follows from `rfl xx := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] yy := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] xy := by simp [form, pl, hyp, dotProduct, Matrix.mulVec, Fin.sum_univ_two] orth := fun u => by simp [form, pl] gram := Subsing …`.
+A detailed English derivation is pending.
 -/
 theorem pl_adapted (B : Base F E) (ε : E) : (pl E).IsAdapted σ B (hyp F ε) (pt F E) 0 1 where
   rank := rfl
@@ -150,7 +150,7 @@ theorem pl_adapted (B : Base F E) (ε : E) : (pl E).IsAdapted σ B (hyp F ε) (p
     refine ⟨fun h r => ?_, fun h r => ?_, fun j => j.elim0⟩ <;> fin_cases i <;> fin_cases r <;> simp_all [pl, hyp]
 
 /- English proof (translation)
-Take `⟨co, -⟩` from `GlobalTheory.RatDarboux.exists_darboux (AF F) h2 σ hσ h1 h5 h1' h5'`. Conclude with `⟨⟨co, fun _ => 0, 0, ∅⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_model (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (h1 : ∀ i j, σ (X.J j i) = X.J i j)
     (h5 : ∀ i j, σ (W.J j i) = -W.J i j) (h1' : X.J.det ≠ 0) (h5' : W.J.det ≠ 0) : Nonempty (Model σ X W) := by
@@ -158,9 +158,9 @@ theorem nonempty_model (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x
   exact ⟨⟨co, fun _ => 0, 0, ∅⟩⟩
 
 /- English proof (translation)
-Apply the tactic sequence `have a1 : ∀ i j, σ ((hyp F (1 : E)).J j i) = (hyp F (1 : E)).J i j := fun i j => by fin_cases i <;> fin_cases j <;> simp [hyp]`. Apply the tactic sequence `have a2 : ∀ i j, σ ((hyp F (-1 : E)).J j i) = -(hyp F (-1 : E)).J i j := fun i j => by fin_cases i <;> fin_cases j <;> simp [hyp]`. Establish `d1 : (hyp F (1 : E)).J.det ≠ 0` using `by simp [hyp, Matrix.det_fin_two]`. Establish `d2 : (hyp F (-1 : E)).J.det ≠ 0` using `by simp [hyp, Matrix.det_fin_two]`. Establish `d0 : (pt F E).J.det ≠ 0` using `by simp`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨M⟩` from `nonempty_model h2 hσ a1 a2 d1 d2`. Take `⟨M₀⟩` from `nonempty_model (X := pt F E) h2 hσ (fun i => i.elim0) a2 d0 d2`. Take `⟨M₁⟩` from `nonempty_model (X := pt F E) (W := pt F E) h2 hσ (fun i => i.elim0) (fun i => i.elim0) d0 d0`. Conclude with `⟨⟨⟨0, 1, pt F E, hyp F 1, hyp F (-1), M₀, M⟩, ⟨0, 0, pt F E, pt F E, pt F E, M₁, M₁⟩, pl E, pl E, rfl, rfl, rfl, pl_adapted B _, pl_adapted B _⟩, ⟨1, 0, hyp F 1, pt F E, hyp F (-1), M, M₀⟩, ⟨0, 0, pt F E, pt F E, pt F E, M₁, M₁⟩, pl E, pl E, rfl, rfl, rfl, rfl, pl_adapted B _, pl …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cfg (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (B : Base F E) :
     (∃ (G : Geo σ 0 (0 + 2)) (G₁ : Geo σ 0 0) (H : Plane E (0 + 2) 0) (H' : Plane E (0 + (0 + 2)) (0 + 0)), CfgB B G G₁ H H') ∧
@@ -181,7 +181,7 @@ theorem exists_cfg (h2 : Module.finrank F E = 2) (hσ : ∀ x, σ (σ x) = x) (B
       rfl, rfl, rfl, rfl, pl_adapted B _, pl_adapted B _⟩
 
 /- English proof (translation)
-Introduce `x` and use `by rw [MonoidHom.div_apply, Circle.coe_div, h x, h' x, hm] split_ifs · simp · rcases neg_one_pow_eq_or ℂ b with e | e <;> simp [pow_add, e, div_neg]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem resEta_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {a b m : ℕ} (h : ResEtaPow K χ a) (h' : ResEtaPow K χ' b)
     (hm : m = a + b) : ResEtaPow K (χ / χ') m := fun x => by
@@ -191,13 +191,13 @@ theorem resEta_div {K : Subgroup (AF F)ˣ} {χ χ' : Chr F E} {a b m : ℕ} (h :
   · rcases neg_one_pow_eq_or ℂ b with e | e <;> simp [pow_add, e, div_neg]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHecke_div {χ χ' : Chr F E} (h : IsHecke F E χ) (h' : IsHecke F E χ') : IsHecke F E (χ / χ') :=
   ⟨h.1.div' h'.1, fun x => by rw [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h.base, h.geo.hV, h.geo.hW, h.geo.hM, h.chars.heckeβ, isHecke_div h.chars.heckeβ h.chars.heckeα, h.chars.resβ, resEta_div h.chars.resβ h.chars.resα rfl, h.weil⟩, h.base, h.geo.hV', h.geo.hW, h.geo.hM', h.chars.heckeα, isHecke_div h.chars.heckeα h.chars.heckeβ, h.chars.resα, res …`.
+Supply the required witnesses or components.
 -/
 theorem isPair_of_isTriple {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {Y : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W}
     (h : IsTriple B G Y om om') :
@@ -209,24 +209,24 @@ theorem isPair_of_isTriple {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} {Y : Ch
       resEta_div h.chars.resα h.chars.resβ (add_comm _ _), h.weil'⟩
 
 /- English proof (translation)
-Use `h.eBig` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem conv_range {a a' : ℕ} {B : Base F E} {G : Geo σ a a'} (h : G.IsGood B) : a + a' + 2 * min (a - G.p) G.p < 2 * a := by
   have := h.eBig
   omega
 
 /- English proof (translation)
-Establish `hU : {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} = Set.pi Set.univ (fun _ => (v.adicCompletionIntegers F : Set (Fv F v)))`. Use extensionality with `x`. Simplify using the standard rewrite rules. Establish `hO : IsOpen (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isOpen_integer _`. Establish `hC : IsClosed (v.adicCompletionIntegers F : Set (Fv F v))` using `Valued.isClosed_integer _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : IsCompact (v.adicCompletionIntegers F : Set (Fv F v))` using `PI.AdicCompletionValuation.isCompact_adicCompletionIntegers F v`. Rewrite using `[hU]`. Establish `hUo : IsOpen (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isOpen_set_pi Set.finite_univ (fun _ _ => hO)`. Establish `hUc : IsClosed (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isClosed_set_pi (fun _ _ => hC)`. Establish `hUk : IsCompact (Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))))` using `isCompact_univ_pi (fun _ => hK)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `Set.pi Set.univ (fun _ : κ => (v.adicCompletionIntegers F : Set (Fv F v))) = U at hUo hUc hUk ⊢`. Use `⟨IsLocallyConstant.iff_isOpen_fiber.2 fun y => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : (1 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = U`. Use extensionality with `x`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h1]`. Rewrite using `[this]`. Conclude with `hUo`. Distinguish the cases in `h0 : (0 : ℂ) = y`. Establish `: U.indicator 1 ⁻¹' {y} = Uᶜ`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx, ← h0]`. Rewrite using `[this]`. Conclude with `hUc.isOpen_compl`. Establish `: U.indicator 1 ⁻¹' {y} = ∅`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `x`. Apply the tactic sequence `by_cases hx : x ∈ U <;> simp [hx] <;> assumption`. Rewrite using `[this]`. Conclude with `isOpen_empty`. Conclude with `hUk.of_isClosed_subset (isClosed_tsupport _) (closure_minimal Set.support_indicator_subset hUc)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intInd_mem_SB {κ : Type} [Fintype κ] (v : HeightOneSpectrum (𝓞 F)) :
     Set.indicator {x : κ → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} 1 ∈ GlobalTheory.WeilM.SB (κ → Fv F v) := by
@@ -274,7 +274,7 @@ def evOrigin (R κ κ' : Type) [Zero R] : ((κ → R) → ℂ) →ₗ[ℂ] ((κ'
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩`.
+Supply the required witnesses or components.
 -/
 theorem const_mem_SB {R κ : Type} [TopologicalSpace R] [IsEmpty κ] (φ : (κ → R) → ℂ) : φ ∈ SB (κ → R) :=
   ⟨IsLocallyConstant.of_discrete _, HasCompactSupport.of_compactSpace _⟩
@@ -282,7 +282,7 @@ theorem const_mem_SB {R κ : Type} [TopologicalSpace R] [IsEmpty κ] (φ : (κ �
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `Φ _` and use `by refine Submodule.subset_span ⟨Φ 0 • oneS (F := F) _, fun _ => 1, const_mem_SB _, ?_⟩ funext x simp [pureA, evOrigin, oneS] Heisenberg₂ := fun z Φ _ => by have hz : z = 0 := by ext i j exact isEmptyElim (i, j) subst hz funext x simp [Darboux.rho, schr, evOrigin] inv := fun u hu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isEv_origin (B : Base F E) {n₁ d₁ : ℕ} [IsEmpty (Fin n₁ × Fin d₁)] {X₁ : Spc F E n₁} {W₁ : Spc F E d₁} (M : Model σ X W)
     (M₁ : Model σ X₁ W₁) (hv : ∀ v, M₁.vac v = fun _ => M.vac v 0) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E)
@@ -327,17 +327,17 @@ theorem isEv_origin (B : Base F E) {n₁ d₁ : ℕ} [IsEmpty (Fin n₁ × Fin d
       simp [oneS]
 
 /- English proof (translation)
-The claim follows from `Subgroup.ext fun g => (h g).trans (h' g).symm`.
+A detailed English derivation is pending.
 -/
 theorem isStab_unique (B : Base F E) {K K' : Subgroup (UA σ X.J)} (h : IsStab B K) (h' : IsStab B K') : K = K' :=
   Subgroup.ext fun g => (h g).trans (h' g).symm
 
 /- English proof (translation)
-Establish `e : fa + fb = ga + gb` using `funext fun g => (h.1 μ 𝓕 hμ h𝓕 h1 g).trans (h'.1 μ 𝓕 hμ h𝓕 h1 g).symm`. Establish `e' : fa - ga = gb - fb` using `by linear_combination e`. Establish `la : HasLaw W₁ H' Y.α ((a' : ℝ) / 2) (fa - ga)` using `fun t m hm g => by`. Rewrite using `[Pi.sub_apply, Pi.sub_apply, h.2.1 t m hm g, h'.2.1 t m hm g]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `lb : HasLaw W₁ H' Y.β ((a : ℝ) / 2) (fa - ga)` using `fun t m hm g => by`. Rewrite using `[e', Pi.sub_apply, Pi.sub_apply, h.2.2 t m hm g, h'.2.2 t m hm g]`. Expand and normalize the polynomial expressions, which then agree. Establish `hz : ((a' : ℝ) / 2) ≠ (a : ℝ) / 2` using `fun k => ha (by exact_mod_cast (by linarith : (a : ℝ) = a'))`. Establish `z` using `eq_zero_of_hasLaw H' hz la lb hm h0 ht`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨sub_eq_zero.1 z, (sub_eq_zero.1 (e' ▸ z)).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem split2_unique {a a' : ℕ} (ha : a ≠ a') {W : Spc F E (a + a')} {H' : Plane E (a + a') d₁} {Y : Chars F E}
     {f fa fb ga gb : UA σ W.J → ℂ} (h : Split2 W₁ H' Y f fa fb) (h' : Split2 W₁ H' Y f ga gb)
@@ -356,9 +356,9 @@ theorem split2_unique {a a' : ℕ} (ha : a ≠ a') {W : Spc F E (a + a')} {H' : 
   exact ⟨sub_eq_zero.1 z, (sub_eq_zero.1 (e' ▸ z)).symm⟩
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `he`. Establish `e : a = a' + 2 * ((a - a') / 2)` using `by omega`. Generalize the expression as in `(a - a') / 2 = x at e`. Substitute `e` using the available equality. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Move the embeddings inside the algebraic operations.
 
-Apply the tactic sequence `constructor <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example {a a' : ℕ} (h : a' < a) (he : Even (a + a')) :
     (a : ℝ) / 2 - (((a - a') / 2 : ℕ) : ℝ) = a' / 2 ∧ ((a' : ℝ) - 2) / 2 + (((a - a') / 2 + 1 : ℕ) : ℝ) = a / 2 := by
@@ -370,7 +370,7 @@ example {a a' : ℕ} (h : a' < a) (he : Even (a + a')) :
   constructor <;> ring
 
 /- English proof (translation)
-Rewrite using `[h, Chars.ν, MonoidHom.div_apply]`. Apply the tactic sequence `constructor <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (Y : Chars F E) (t s : (AE F E)ˣ) (h : Y.ν s = (Y.ν t)⁻¹) : Y.β t * (Y.ν s)⁻¹ = Y.α t ∧ Y.α t * Y.ν s = Y.β t := by
   rw [h, Chars.ν, MonoidHom.div_apply]

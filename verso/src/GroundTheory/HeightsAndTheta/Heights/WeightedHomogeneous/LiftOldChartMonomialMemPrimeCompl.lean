@@ -15,17 +15,17 @@ section Local
 variable {S : Type*} [CommRing S]
 
 /- English proof (translation)
-Set `q : (S ⧸ J) →ₗ[S] (S ⧸ J₁)` to `Submodule.mapQ J J₁ LinearMap.id hJ`. Set `φ` to `IsLocalizedModule.map W.primeCompl (LocalizedModule.mkLinearMap W.primeCompl (S ⧸ J)) (LocalizedModule.mkLinearMap W.primeCompl (S ⧸ J₁)) q`. Establish `hφ : ∀ (x : S) (s : W.primeCompl), φ (LocalizedModule.mk (Submodule.Quotient.mk x) s) = LocalizedModule.mk (Submodule.Quotient.mk x) s`. Introduce `x s`. Rewrite using `[IsLocalizedModule.map_LocalizedModules]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `htW : t ∈ W.primeCompl` using `ht`. Establish `hinj : Function.Injective φ`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `y`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LocalizedModule.induction_on (fun m s hy ↦ ?_) y` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective J m`. Rewrite `hy` using `[hφ, ← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Take `⟨u, hu⟩` from `hy`. Simplify using `only [smul_zero, one_smul] at hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite `hu` using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Rewrite using `[← LocalizedModule.zero_mk 1, LocalizedModule.mk_eq]`. Use `⟨⟨t, htW⟩ * u, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_zero, one_smul]`. Rewrite using `[Submonoid.smul_def, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, smul_eq_mul, Submonoid.coe_mul, mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmul _ hu`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Use `LocalizedModule.induction_on (fun m s ↦ ?_) y` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective J₁ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨LocalizedModule.mk (Submodule.Quotient.mk x) s, hφ x s⟩`. Conclude with `((LinearEquiv.ofBijective φ ⟨hinj, hsurj⟩).extendScalarsOfIsLocalization W.primeCompl (Localization.AtPrime W)).length_eq`.
+A detailed English derivation is pending.
 -/
 theorem length_localized_eq {J J₁ W : Ideal S} [W.IsPrime] (hJ : J ≤ J₁) {t : S} (ht : t ∉ W)
     (hmul : ∀ x ∈ J₁, t * x ∈ J) :
@@ -65,9 +65,9 @@ theorem length_localized_eq {J J₁ W : Ideal S} [W.IsPrime] (hJ : J ≤ J₁) {
     (Localization.AtPrime W)).length_eq
 
 /- English proof (translation)
-Establish `key : ∀ Q : Ideal S, Q.IsPrime → Q ≤ W → (J ≤ Q ↔ J₁ ≤ Q)` using `fun Q hQ hQW ↦ ⟨fun h x hx ↦ (hQ.mem_or_mem (h (hmul x hx))).resolve_left fun htQ ↦ ht (hQW htQ), hJ.trans⟩`. Simplify using `only [Ideal.minimalPrimes, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hWp, hJW⟩, hmin⟩`. Conclude with `⟨⟨hWp, (key W hWp le_rfl).mp hJW⟩, fun Q hQ hQW ↦ hmin ⟨hQ.1, (key Q hQ.1 hQW).mpr hQ.2⟩ hQW⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨hWp, hJW⟩, hmin⟩`. Conclude with `⟨⟨hWp, (key W hWp le_rfl).mpr hJW⟩, fun Q hQ hQW ↦ hmin ⟨hQ.1, (key Q hQ.1 hQW).mp hQ.2⟩ hQW⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_minimalPrimes_iff {J J₁ W : Ideal S} (hJ : J ≤ J₁) {t : S} (ht : t ∉ W)
     (hmul : ∀ x ∈ J₁, t * x ∈ J) : W ∈ J.minimalPrimes ↔ W ∈ J₁.minimalPrimes := by
@@ -87,7 +87,7 @@ section Cycle
 variable {K : Type*} {κ : K → Type*} {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Unfold `NumbersDVR.divCycle`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨hmin, hrel⟩`. Conclude with `h ⟨hmin.1.1, hrel, le_sup_left.trans hmin.1.2⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_zero {I W : Ideal (NumbersDVR.MRing κ R)} (f : NumbersDVR.MRing κ R)
     (h : ¬ (W.IsPrime ∧ NumbersDVR.IsRelevant W ∧ I ≤ W)) : NumbersDVR.divCycle I f W = 0 := by
@@ -97,19 +97,19 @@ theorem divCycle_eq_zero {I W : Ideal (NumbersDVR.MRing κ R)} (f : NumbersDVR.M
   exact h ⟨hmin.1.1, hrel, le_sup_left.trans hmin.1.2⟩
 
 /- English proof (translation)
-Use `set J := I ⊔ Ideal.span {f * g'} with hJdef`. Establish `hfg : f * g' ∈ J` using `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Establish `hIJ : I ≤ J` using `le_sup_left`. Establish `hf'g : f' * g ∈ J`. Establish `h` using `J.sub_mem hfg (hIJ hrel)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Establish `h1 : J ≤ I ⊔ Ideal.span {f}` using `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr (Ideal.mem_sup_right (Ideal.mul_mem_right g' _ (Ideal.mem_span_singleton_self f))))`. Establish `h2 : J ≤ I ⊔ Ideal.span {g}`. Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Establish `h` using `Ideal.add_mem _ (Ideal.mem_sup_left hrel : _ ∈ I ⊔ Ideal.span {g}) (Ideal.mem_sup_right (Ideal.mul_mem_left _ f' (Ideal.mem_span_singleton_self g)) : _ ∈ I ⊔ Ideal.span {g})`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hm1 : ∀ x ∈ I ⊔ Ideal.span {f}, g' * x ∈ J`. Introduce `x hx`. Take `⟨i, hi, y, hy, rfl⟩` from `Submodule.mem_sup.mp hx`. Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, show g' * (r * f) = r * (f * g') by ring]`. Conclude with `J.add_mem (hIJ (I.mul_mem_left _ hi)) (J.mul_mem_left _ hfg)`. Establish `hm2 : ∀ x ∈ I ⊔ Ideal.span {g}, f' * x ∈ J`. Introduce `x hx`. Take `⟨i, hi, y, hy, rfl⟩` from `Submodule.mem_sup.mp hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨r, rfl⟩` from `Ideal.mem_span_singleton'.mp hy`. Rewrite using `[mul_add, show f' * (r * g) = r * (f' * g) by ring]`. Conclude with `J.add_mem (hIJ (I.mul_mem_left _ hi)) (J.mul_mem_left _ hf'g)`. Establish `e1` using `mem_minimalPrimes_iff h1 hg' hm1`. Establish `e2` using `mem_minimalPrimes_iff h2 hf' hm2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `l1` using `length_localized_eq h1 hg' hm1`. Establish `l2` using `length_localized_eq h2 hf' hm2`. Unfold `NumbersDVR.divCycle`. Distinguish the cases in `hc : W ∈ (I ⊔ Ideal.span {f}).minimalPrimes ∧ NumbersDVR.IsRelevant W`. Establish `hc' : W ∈ (I ⊔ Ideal.span {g}).minimalPrimes ∧ NumbersDVR.IsRelevant W` using `⟨e2.mp (e1.mpr hc.1), hc.2⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hc, dif_pos hc']`. Conclude with `congrArg (fun m : ℕ∞ ↦ (m.toNat : ℤ)) (l1.symm.trans l2)`. Establish `hc' : ¬ (W ∈ (I ⊔ Ideal.span {g}).minimalPrimes ∧ NumbersDVR.IsRelevant W)` using `fun h ↦ hc ⟨e1.mp (e2.mpr h.1), h.2⟩`. Rewrite using `[dif_neg hc, dif_neg hc']`.
+A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_cross (I : Ideal (NumbersDVR.MRing κ R)) {f g f' g' : NumbersDVR.MRing κ R}
     {W : Ideal (NumbersDVR.MRing κ R)} [W.IsPrime] (hf' : f' ∉ W) (hg' : g' ∉ W)
@@ -159,9 +159,9 @@ end Cycle
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply]`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, coordDeg, smul_eq_mul, Finsupp.prod]`. Repeatedly rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Rewrite using `[Finset.prod_comm]`. Use `Finset.prod_congr rfl fun v _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_eq_single v.1 (fun k _ hk ↦ by simp [hk]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_pow_weight {M : Type*} [CommMonoid M] (t : ι → M) (s : Coord n →₀ ℕ) :
     ∏ k, t k ^ (Finsupp.weight (coordDeg n) s k) = s.prod fun v e ↦ t v.1 ^ e := by
@@ -179,7 +179,7 @@ section AddBlock
 variable {P : ArithVariety n} (D : AddBlockData P)
 
 /- English proof (translation)
-Introduce `v w h`. Establish `h1 : v.1 = w.1` using `Option.some_injective _ (congrArg Sigma.fst h)`. Conclude with `Sigma.ext h1 (Sigma.mk.inj_iff.mp h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oldCoord_injective : Function.Injective D.oldCoord := by
   intro v w h
@@ -187,9 +187,9 @@ theorem oldCoord_injective : Function.Injective D.oldCoord := by
   exact Sigma.ext h1 (Sigma.mk.inj_iff.mp h).2
 
 /- English proof (translation)
-Rewrite using `[prod_pow_weight (fun k ↦ (X (some k) : MvPolynomial (Option ι) P.FunField))]`. Rewrite using `[AddBlockData.liftOld, rename_monomial, AddBlockData.extMap, coe_eval₂Hom, eval₂_monomial, Finsupp.prod_mapDomain_index_inj (oldCoord_injective D)]`. Rewrite using `[monomial_eq, map_mul, map_finsuppProd, map_mul, map_finsuppProd]`. Simplify using `only [map_pow, mul_pow, Finsupp.prod_mul]`. Establish `ha : C (P.mkF (C a)) = (Int.castRingHom (MvPolynomial (Option ι) P.FunField)) a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.comp_apply P.mkF C, eq_intCast, map_intCast, eq_intCast]`. Rewrite using `[ha, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extMap_liftOld_monomial (s : Coord n →₀ ℕ) (a : ℤ) :
     D.extMap (D.liftOld (monomial s a)) =
@@ -205,7 +205,7 @@ theorem extMap_liftOld_monomial (s : Coord n →₀ ℕ) (a : ℤ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[h.as_sum, map_sum, map_sum, map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun s hs ↦ ?_` and prove the remaining obligations. Rewrite using `[extMap_liftOld_monomial, hh (mem_support_iff.mp hs)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem extMap_liftOld {h : MvPolynomial (Coord n) ℤ} {δ : ι → ℕ}
     (hh : IsWeightedHomogeneous (coordDeg n) h δ) :
@@ -215,7 +215,7 @@ theorem extMap_liftOld {h : MvPolynomial (Coord n) ℤ} {δ : ι → ℕ}
   rw [extMap_liftOld_monomial, hh (mem_support_iff.mp hs)]
 
 /- English proof (translation)
-Rewrite using `[AddBlockData.extMap, eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extMap_newCoord (j : Fin (D.size + 1)) :
     D.extMap (X (D.newCoord j)) = C (D.elt j) * X none := by
@@ -223,7 +223,7 @@ theorem extMap_newCoord (j : Fin (D.size + 1)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[AddBlockData.extIdeal, RingHom.mem_ker, ← finsum_weightedHomogeneousComponent (w := coordDeg n) (φ := p), finsum_eq_sum _ (weightedHomogeneousComponent_finsupp p), map_sum, map_sum]`. Use `Finset.sum_eq_zero fun m _ ↦ ?_` and prove the remaining obligations. Rewrite using `[extMap_liftOld D (weightedHomogeneousComponent_isWeightedHomogeneous m p), (P.mkF_eq_zero_iff _).mpr (P.homogeneous p hp m), map_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftOld_mem {p : MvPolynomial (Coord n) ℤ} (hp : p ∈ P.ideal) : D.liftOld p ∈ D.extIdeal := by
   rw [AddBlockData.extIdeal, RingHom.mem_ker,
@@ -236,7 +236,7 @@ theorem liftOld_mem {p : MvPolynomial (Coord n) ℤ} (hp : p ∈ P.ideal) : D.li
 variable {d : ι → ℕ} {g : ((k : ι) → Fin (n k + 1)) → Fin (D.size + 1) → MvPolynomial (Coord n) ℤ}
 
 /- English proof (translation)
-Take `⟨δ, hδ, hδk⟩` from `hg.homog c j`. Use `hδ using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[← hδk k]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isWeightedHomogeneous_form (hg : D.IsFormSystem d g) (c : (k : ι) → Fin (n k + 1))
     (j : Fin (D.size + 1)) :
@@ -248,7 +248,7 @@ theorem isWeightedHomogeneous_form (hg : D.IsFormSystem d g) (c : (k : ι) → F
   simp
 
 /- English proof (translation)
-Rewrite using `[AddBlockData.extIdeal, RingHom.mem_ker, map_sub, map_mul, map_mul, map_mul, map_mul, extMap_newCoord, extMap_newCoord, extMap_liftOld D (isWeightedHomogeneous_chartMonomial c d), extMap_liftOld D (isWeightedHomogeneous_chartMonomial c' d), extMap_liftOld D (isWeightedHomogeneous …`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cross_mem (hg : D.IsFormSystem d g) {c c' : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     (hc' : P.IsLive c') (j j' : Fin (D.size + 1)) :
@@ -263,7 +263,7 @@ theorem cross_mem (hg : D.IsFormSystem d g) {c c' : (k : ι) → Fin (n k + 1)} 
   ring
 
 /- English proof (translation)
-Rewrite using `[AddBlockData.extIdeal, RingHom.mem_ker, map_sub, map_mul, map_mul, extMap_newCoord, extMap_newCoord, extMap_liftOld D (isWeightedHomogeneous_form D hg c i), extMap_liftOld D (isWeightedHomogeneous_form D hg c j), hg.value c hc, hg.value c hc]`. Simplify using `only [map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem swap_mem (hg : D.IsFormSystem d g) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     (i j : Fin (D.size + 1)) :
@@ -277,24 +277,24 @@ theorem swap_mem (hg : D.IsFormSystem d g) {c : (k : ι) → Fin (n k + 1)} (hc 
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_X_ne_zero {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) (k : ι) :
     P.mkF (X ⟨k, c k⟩) ≠ 0 :=
   fun h ↦ hc k ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-Proceed by induction on `hu using Subring.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, rfl⟩` from `hx`. Use `⟨1, X v * ∏ k ∈ Finset.univ.erase v.1, X ⟨k, c k⟩, ?_⟩` and prove the remaining obligations. Establish `hne` using `mkF_X_ne_zero hc v.1`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ArithVariety.chartCoord, chartMonomial, Pi.one_apply, pow_one, map_prod, map_mul]`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ v.1)]`. Clear the denominators using the available nonvanishing facts. Consider the case `zero => exact ⟨0, 0, by simp⟩`. Consider the case `one => exact ⟨0, 1, by simp⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨e, f, hf⟩` from `hx`. Take `⟨e', f', hf'⟩` from `hy`. Use `⟨e + e', f * chartMonomial c 1 ^ e' + f' * chartMonomial c 1 ^ e, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, map_pow, ← hf, ← hf']`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `neg x _ hx`. Take `⟨e, f, hf⟩` from `hx`. Use `⟨e, -f, ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg, ← hf]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨e, f, hf⟩` from `hx`. Take `⟨e', f', hf'⟩` from `hy`. Use `⟨e + e', f * f', ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, ← hf, ← hf']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_clear_denom {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {u : P.FunField} (hu : u ∈ P.chartRing c) :
@@ -328,7 +328,7 @@ theorem exists_clear_denom {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     ring
 
 /- English proof (translation)
-Use `choose e f hf using fun j ↦ exists_clear_denom hc (hu j)`. Use `⟨∑ j, e j, fun j ↦ f j * chartMonomial c 1 ^ (∑ i, e i - e j), fun j ↦ ?_⟩` and prove the remaining obligations. Establish `hle : e j ≤ ∑ i, e i` using `Finset.single_le_sum (fun i _ ↦ Nat.zero_le (e i)) (Finset.mem_univ j)`. Rewrite using `[map_mul, map_pow, ← hf j, ← Nat.add_sub_cancel' hle, pow_add, Nat.add_sub_cancel_left]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_common_denom {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {m : ℕ} {u : Fin m → P.FunField} (hu : ∀ j, u j ∈ P.chartRing c) :
@@ -341,7 +341,7 @@ theorem exists_common_denom {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
   ring
 
 /- English proof (translation)
-Simplify using `only [chartMonomial, ArithVariety.chartPow, map_prod, map_pow]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (mkF_X_ne_zero hc k), Int.toNat_of_nonneg (hd k)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mkF_chartMonomial_mul_chartPow (hd : ∀ k, 0 ≤ (d k : ℤ) + D.deg k)
     {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c) :
@@ -353,7 +353,7 @@ theorem mkF_chartMonomial_mul_chartPow (hd : ∀ k, 0 ≤ (d k : ℤ) + D.deg k)
   rw [← zpow_natCast, ← zpow_natCast, ← zpow_add₀ (mkF_X_ne_zero hc k), Int.toNat_of_nonneg (hd k)]
 
 /- English proof (translation)
-Rewrite using `[chartMonomial, map_prod]`. Use `Submonoid.prod_mem _ fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_pow, AddBlockData.liftOld, rename_X]`. Conclude with `Submonoid.pow_mem _ ((Ideal.mem_primeCompl_iff).mpr (hW k)) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftOld_chartMonomial_mem_primeCompl {W : Ideal (MvPolynomial (Coord D.extSizes) ℤ)} [W.IsPrime]
     {c : (k : ι) → Fin (n k + 1)} (hW : ∀ k, (X (D.oldCoord ⟨k, c k⟩) : MvPolynomial _ ℤ) ∉ W)
@@ -364,15 +364,15 @@ theorem liftOld_chartMonomial_mem_primeCompl {W : Ideal (MvPolynomial (Coord D.e
   exact Submonoid.pow_mem _ ((Ideal.mem_primeCompl_iff).mpr (hW k)) _
 
 /- English proof (translation)
-Take `⟨u, hu, hsum⟩` from `D.generating c hc`. Take `⟨E, f, hf⟩` from `exists_common_denom hc hu`. Establish `hsum' : ∑ j, u j * D.elt j = P.chartPow c D.deg`. Establish `hcp : P.chartPow c D.deg ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ ↦ zpow_ne_zero _ (mkF_X_ne_zero hc k)`. Rewrite using `[← one_mul (P.chartPow c D.deg), ← hsum, Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Use `set Q := chartMonomial c fun k ↦ ((d k : ℤ) + D.deg k).toNat`. Establish `hmem : ∑ j, f j * g c j - chartMonomial c 1 ^ E * Q ∈ P.ideal`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_sum, map_mul, map_pow, ← mkF_chartMonomial_mul_chartPow D hg.nonneg hc, ← hsum', sub_eq_zero, Finset.mul_sum, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← hf j, hg.value c hc j]`. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `hPW (liftOld_mem D hmem)`. Establish `h2 : D.liftOld (∑ j, f j * g c j) ∈ W`. Rewrite using `[map_sum]`. Conclude with `W.sum_mem fun j _ ↦ by rw [map_mul]; exact W.mul_mem_left _ (h j)`. Establish `h3 : D.liftOld (chartMonomial c 1 ^ E * Q) ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `W.sub_mem h2 h1` as an intermediate fact. Rewrite `this` using `[map_sub, sub_sub_cancel]`. Then use the resulting hypothesis. Rewrite `h3` using `[map_mul, map_pow]`. Conclude with `(Ideal.mem_primeCompl_iff.mp (W.primeCompl.mul_mem (W.primeCompl.pow_mem (liftOld_chartMonomial_mem_primeCompl D hW 1) E) (liftOld_chartMonomial_mem_primeCompl D hW _))) h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form_not_mem (hg : D.IsFormSystem d g) {c : (k : ι) → Fin (n k + 1)} (hc : P.IsLive c)
     {W : Ideal (MvPolynomial (Coord D.extSizes) ℤ)} [W.IsPrime] (hPW : D.extIdeal ≤ W)
@@ -411,21 +411,17 @@ theorem exists_form_not_mem (hg : D.IsFormSystem d g) {c : (k : ι) → Fin (n k
 end AddBlock
 
 /- English proof (translation)
-Introduce `ι _ _ n P D d g hg c j hgc W`. Unfold `NumbersDVR.ratDiv`. Rewrite using `[sub_eq_zero]`. Establish `hc : P.IsLive c`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hgc (by rw [hg.dead c hc j, map_zero]; exact Submodule.zero_mem _)`. Distinguish the cases in `hW : W.IsPrime ∧ NumbersDVR.IsRelevant W ∧ D.extIdeal ≤ W`. Use `swap`. Rewrite using `[divCycle_eq_zero _ hW, divCycle_eq_zero _ hW]`. Take `⟨hWp, hrel, hPW⟩` from `hW`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `hWp` as an intermediate fact. Use `choose c' hc'W using fun k : ι ↦ hrel (some k)`. Take `⟨j', hj'W⟩` from `hrel none`. Set `c'' : (k : ι) → Fin (n k + 1)` to `c'`. Establish `hWc : ∀ k, (X (D.oldCoord ⟨k, c'' k⟩) : MvPolynomial _ ℤ) ∉ W` using `hc'W`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlive : P.IsLive c''` using `fun k hk ↦ by`. Establish `h` using `hPW (liftOld_mem D hk)`. Rewrite `h` using `[AddBlockData.liftOld, rename_X]`. Conclude with `hWc k h`. Take `⟨i, hi⟩` from `exists_form_not_mem D hg hlive hPW hWc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj'' : (X (D.newCoord j') : MvPolynomial (Coord D.extSizes) ℤ) ∉ W` using `hj'W`. Establish `hg' : D.liftOld (g c'' j') ∉ W`. Introduce `hmem`. Establish `hs` using `hPW (swap_mem D hg hlive i j')`. Establish `: D.liftOld (g c'' i) * X (D.newCoord j') ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `W.add_mem hs (W.mul_mem_right (X (D.newCoord i)) hmem)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Break down `Ideal.IsPrime.mem_or_mem hWp this with h | h` into its components or cases. Conclude with `hi h`. Conclude with `hj'' h`.
-
-Establish `hf' : X (D.newCoord j') * D.liftOld (chartMonomial c'' d) ∉ W`. Introduce `hmem`. Break down `Ideal.IsPrime.mem_or_mem hWp hmem with h | h` into its components or cases. Conclude with `hj'' h`. Conclude with `Ideal.mem_primeCompl_iff.mp (liftOld_chartMonomial_mem_primeCompl D hWc d) h`.
-
-Conclude with `divCycle_eq_of_cross _ hf' hg' (cross_mem D hg hc hlive j j')`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem proof : SectionCycle.Statement := by
   intro ι _ _ n P D d g hg c j hgc W

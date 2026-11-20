@@ -27,7 +27,7 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MovedSD.sd_srcLat_tgtLat` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FLatticesSelfDualMovedPair.lean&line=128#L128)
 -/

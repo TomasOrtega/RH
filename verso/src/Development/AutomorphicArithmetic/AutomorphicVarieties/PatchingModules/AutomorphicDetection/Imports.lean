@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Se
 namespace UpperTheory.V.Pa
 
 /- English proof (translation)
-The claim follows from `selmer_cocycles_limit_and_descent_properties`.
+A detailed English derivation is pending.
 -/
 theorem s4 : S4 := selmer_cocycles_limit_and_descent_properties
 

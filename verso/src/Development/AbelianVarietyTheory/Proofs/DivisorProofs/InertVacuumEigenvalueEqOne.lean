@@ -21,19 +21,19 @@ namespace GlobalTheory.SplitVacAnyPrime
 open GlobalTheory.DblVacSiegel
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v d' hd' dd hdd θ _ hvac w₁ hw₁ w₂ hw₂`. Establish `hSB` using `(hT.geo.hM'.vac v).1`. Establish `hψ : ∀ t, ‖B.ψ t‖ = 1` using `GlobalTheory.StdCharWeilDatum.norm_psi hT.base.std`. Establish `hstar : ∀ t, star (B.ψ t) = B.ψ (-t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_def, Complex.normSq_eq_norm_sq, hψ t]`. Simplify using the standard rewrite rules. Establish `hAt : ∀ γ ∈ latAtV G.V' G.W v, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1`. Establish `hco : ∀ γ ∈ latAtV G.V' G.W v, At (evFin F v) (G.M'.co.e γ).1 ∧ At (evFin F v) (G.M'.co.e γ).2`. Introduce `γ hγ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ u, evFin F v u = 0 → u • G.M'.co.e γ = 0` using `fun u hu => by`. Rewrite using `[← map_smul, hAt γ hγ u hu, map_zero]`. Conclude with `⟨fun u hu => congrArg Prod.fst (e u hu), fun u hu => congrArg Prod.snd (e u hu)⟩`. Establish `h1` using `GlobalTheory.DblVacEigen.eigen_pointwise v B.ψ hSB (G.M'.co.e w₁) (hco w₁ hw₁).1 (hco w₁ hw₁).2 _ (hvac w₁ hw₁)`. Establish `h2` using `GlobalTheory.DblVacEigen.eigen_pointwise v B.ψ hSB (G.M'.co.e w₂) (hco w₂ hw₂).1 (hco w₂ hw₂).2 _ (hvac w₂ hw₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2' : ∀ z, B.ψ (z ⬝ᵥ (-(G.M'.co.e w₂).2) + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (-(G.M'.co.e w₂).2))) * (fun x => star (G.M'.vac v x)) (fun i => evFin F v ((z + (G.M'.co.e w₂).1) i)) = star (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂)) * (fun x => star (G.M'.vac v x)) (fun i => evFin F v (z i)) := by`. Introduce `z`. Establish `e` using `congrArg star (h2 z)`. Simplify using `only [star_mul, hstar] at e`. Rewrite using `[hstar, show z ⬝ᵥ (-(G.M'.co.e w₂).2) + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (-(G.M'.co.e w₂).2)) = -(z ⬝ᵥ (G.M'.co.e w₂).2 + ⅟(2 : AF F) * ((G.M'.co.e w₂).1 ⬝ᵥ (G.M'.co.e w₂).2)) by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[dotProduct_neg, dotProduct_neg]`. Use the proof step `ring]`. Take the linear combination `e`. Establish `hbox` using `GlobalTheory.DblVacEigen.acts_box v B.ψ (φ₁ := G.M'.vac v) (φ₂ := fun x => star (G.M'.vac v x)) (G.M'.co.e w₁).1 (G.M'.co.e w₁).2 (G.M'.co.e w₂).1 (-(G.M'.co.e w₂).2) (hco w₁ hw₁).1 (hco w₂ hw₂).1 _ _ h1 h2'`. Establish `hrho : dd.rho B.ψ (Matrix.fromCols w₁ᵀ w₂ᵀ) = schr B.ψ (Sum.elim (G.M'.co.e w₁).1 (G.M'.co.e w₂).1, Sum.elim (G.M'.co.e w₁).2 (-(G.M'.co.e w₂).2))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Darboux.rho, hdd, hd', hd']`. Establish `hS : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.W.J) (dbl (incM F G.V'.J)) (Matrix.fromCols w₁ᵀ w₂ᵀ) (Matrix.fromCols w₁ᵀ w₂ᵀ) = symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂ := by`. Unfold `symp`. Rewrite using `[GlobalTheory.DblVacEigen.hTens_dbl, GlobalTheory.DblVacEigen.hTens_transpose, GlobalTheory.DblVacEigen.hTens_transpose, mul_sub, map_sub]`. Establish `hc : B.ψ (⅟(2 : AF F) * (symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁ - symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₂ w₂)) = B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w₁ w₁) * star (B.ψ (⅟(2 : AF F) * symp (cA …`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hstar, ← AddChar.map_add_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hrho, hS, hc]`. Conclude with `hbox`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem doubled_vac_eigen_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -91,13 +91,13 @@ theorem doubled_vac_eigen_any : ∀ (F E : Type) [Field F] [NumberField F] [Fiel
   exact hbox
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' _ v d' _ dd _ θ _ _ omd hsp g hg φ hφ φ₁ _ hfix hact w₁ hw₁ w₂ hw₂ r hr`. Distinguish the cases in `h0 : φ₁ = 0`. Substitute `h0` using the available equality. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr, tens]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hr' : Rest (evFin F v) φ r` using `GlobalTheory.RestCofactor.rest_of_rest v φ₁ φ r h0 hφ hr`. Take `⟨h1m, h2m⟩` from `GlobalTheory.DblVacTransport.cols_mem G.V' G.W v (GlobalTheory.DblVac.matD g⁻¹) (fun z hz => (hg.2 z hz).2) hw₁ hw₂`. Establish `hsplit : Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ = Matrix.fromCols (((Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ).toCols₁)ᵀ)ᵀ (((Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ).toCols₂)ᵀ)ᵀ`. Rewrite using `[Matrix.transpose_transpose, Matrix.transpose_transpose, Matrix.fromCols_toCols]`. Establish `hback : actB (cA σ) g (Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ) = Matrix.fromCols w₁ᵀ w₂ᵀ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ * (GlobalTheory.DblVac.matD g)ᵀ = _`. Establish `e : GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.matD g⁻¹ = 1` using `Units.mul_inv g.1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, e, Matrix.transpose_one, Matrix.mul_one]`. Establish `hsy` using `GlobalTheory.VacTransport.symp_mul_transpose (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.W.J) (dbl (incM F G.V'.J)) (GlobalTheory.DblVac.matD g⁻¹) (g⁻¹).2 (Matrix.fromCols w₁ᵀ w₂ᵀ) (Matrix.fromCols w₁ᵀ w₂ᵀ)`. Establish `hf` using `hfix _ h1m _ h2m r hr'`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hf` using `[← hsplit, hsy]`. Establish `h1` using `hsp.2.1.impl g (Matrix.fromCols w₁ᵀ w₂ᵀ * (GlobalTheory.DblVac.matD g⁻¹)ᵀ) _ hr'.2`. Rewrite `h1` using `[hback, hf, GlobalTheory.VacTransport.tens_smul, map_smul, hact r hr']`. Rewrite using `[← h1, GlobalTheory.VacTransport.tens_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem transport_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -144,37 +144,33 @@ theorem transport_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Nu
   rw [← h1, GlobalTheory.VacTransport.tens_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v d' hd' dd hdc θ hθ hvac φ hφSB hφ`. Establish `hψ` using `hT.base.std`. Establish `hn` using `GlobalTheory.StdCharFromIsStd.norm_psi hψ`. Establish `hnv : ∀ t, ‖GlobalTheory.LatVac.psiAt B.ψ v t‖ = 1` using `fun t => hn (GlobalTheory.LatVac.liftV v t)`. Establish `hψc : Continuous (GlobalTheory.LatVac.psiAt B.ψ v)` using `GlobalTheory.SchrSB.continuous_psiAt B.ψ hψ.1 v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ1 : GlobalTheory.LatVac.psiAt B.ψ v ≠ 1` using `GlobalTheory.PsiNontriv.psiAt_ne_one B.ψ hψ v`. Use `set Λ := latAtV G.V' G.W v with hΛ`. Establish `hat : ∀ γ ∈ Λ, At (evFin F v) γ` using `(GlobalTheory.LatVac.latAtV_at_stable G.V' G.W v).1`. Establish `hatT : ∀ γ ∈ Λ, At (evFin F v) γᵀ` using `fun γ h u hu => by`. Rewrite using `[← Matrix.transpose_smul, hat γ h u hu, Matrix.transpose_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hvSB, hv0, -⟩` from `hT.geo.hM'.vac v`. Use `set φ₀ := G.M'.vac v with hφ₀`. Use `set φd := boxFun φ₀ (fun x => star (φ₀ x)) with hφd`. Establish `loc : ∀ {κ : Type} [Fintype κ] {W' : Type} [AddCommGroup W'] [Module (AF F) W'] {Bf : W' → W' → AF F} (d : Darboux Bf κ) (f : (κ → Fv F v) → ℂ), f ∈ SB _ → ∀ γ, At (evFin F v) γ → ∀ c : ℂ, Acts (evFin F v) (d.rho B.ψ γ) f (c • f) → schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTh …`. Introduce `κ _ W' _ _ Bf d f hf γ hγ c h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, hr, x₀, hx₀⟩` from `GlobalTheory.RestComplement.exists_rest_ne_zero v f hf`. Use `GlobalTheory.DblVacLine.eq_of_tens v hr.1 hx₀ ?_` and prove the remaining obligations. Rewrite using `[← GlobalTheory.VacBridge.rho_acts_locCo d B.ψ v γ hγ f r hr]`. Conclude with `h r hr`. Establish `hco : ∀ w₁ w₂ : Matrix (Fin a') (Fin (a + a')) (AE F E), GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ᵀ w₂ᵀ) = (Sum.elim (GlobalTheory.LatVac.locCo G.M'.co v w₁).1 (GlobalTheory.LatVac.locCo G.M'.co v w₂).1, Sum.elim (GlobalTheory.LatVac.locCo G.M'.co v w₁).2 (-(GlobalTheory …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w₁ w₂`. Express the relevant statement in the definitionally equal form `((fun k => evFin F v ((dd.e (Matrix.fromCols w₁ᵀ w₂ᵀ)).1 k)), fun k => evFin F v ((dd.e (Matrix.fromCols w₁ᵀ w₂ᵀ)).2 k)) = _`. Rewrite using `[hdc, hd', hd']`. Use `Prod.ext (funext fun k => ?_) (funext fun k => ?_)` and prove the remaining obligations. Apply the tactic sequence `cases k <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Consider the cases of `k with`. Consider the case `inl k => rfl`. Consider the case `inr k => exact map_neg (evFin F v) _`. Set `χ : Matrix (Fin a') (Fin (a + a')) (AE F E) → ℂ` to `fun γ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ)`. Set `cf : Matrix (Fin a') (Fin (a + a')) (AE F E) → Matrix (Fin a') (Fin (a + a')) (AE F E) → ℂ` to `fun w₁ w₂ => B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.W.J) (dbl (incM F G.V'.J)) (Matrix.fromCols w₁ᵀ w₂ᵀ) (Matrix.fromCols w₁ᵀ w₂ᵀ))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ht : ∀ w : Matrix (Fin a') (Fin (a + a')) (AE F E), symp (R` using `AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.W.J) (incM F G.V'.J) wᵀ wᵀ = symp (R := AF F) (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) w w := fun w => by`. Rewrite using `[GlobalTheory.WeilTr.symp_transpose (cA σ) _ (incM F G.V'.J) (incM F G.W.J) wᵀ wᵀ, Matrix.transpose_transpose]`. Establish `hcf : ∀ w₁ w₂, cf w₁ w₂ = χ w₁ * star (χ w₂)`. Introduce `w₁ w₂`. Simplify using `only [cf, χ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.DblVacLine.symp_dbl, GlobalTheory.DblVacLine.star_eq_neg B.ψ hn, ht, ht, ← AddChar.map_add_eq_mul, mul_sub, sub_eq_add_neg]`. Establish `hvl : ∀ γ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo G.M'.co v γ) φ₀ = χ γ • φ₀` using `fun γ h => loc G.M'.co φ₀ hvSB γ (hat γ h) _ (hvac γ h)`. Establish `hφl : ∀ w₁ ∈ Λ, ∀ w₂ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ᵀ w₂ᵀ)) φ = cf w₁ w₂ • φ` using `fun w₁ h₁ w₂ h₂ => loc dd φ hφSB _ (GlobalTheory.DblVacLine.at_fromCols v (hatT w₁ h₁) (hatT w₂ h₂)) _ (hφ w₁ h₁ w₂ h₂)`. Establish `hdl : ∀ w₁ ∈ Λ, ∀ w₂ ∈ Λ, schr (GlobalTheory.LatVac.psiAt B.ψ v) (GlobalTheory.LatVac.locCo dd v (Matrix.fromCols w₁ᵀ w₂ᵀ)) φd = cf w₁ w₂ • φd`. Introduce `w₁ h₁ w₂ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hco, hφd, GlobalTheory.DblVacLine.schr_box _ hnv, hvl w₁ h₁, hvl w₂ h₂, hcf]`. Use function extensionality and compare the values at `x`. Simplify using `only [boxFun, Pi.smul_apply, smul_eq_mul, star_mul']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc0, hcb⟩` from `GlobalTheory.LatBound.locCo_latAtV_bounded G.V' G.W v G.M'.co hT.geo.hV'.lat hT.geo.hW.lat`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsd` using `GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B _ _ G.V' G.W _ _ _ _ hT.base hT.geo.hV' hT.geo.hW v`. Establish `hfill` using `GlobalTheory.SelfDualFirstProjAny.exists_pair_of_annihilator_any F v (Fin a' × Fin (a + a')) (GlobalTheory.LatVac.psiAt B.ψ v) hψc hnv hψ1 (Λ.map (GlobalTheory.LatVac.locCo G.M'.co v)) c hc0 (GlobalTheory.LatVac.DualLoc.map_selfDual v G.M'.co B.ψ Λ hat hsd) (fun l hl i => by`. Take `⟨γ, hγ, rfl⟩` from `AddSubgroup.mem_map.mp hl`. Conclude with `hcb γ hγ i)`. Establish `hφd0 : φd ≠ 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Function.ne_iff.mp hv0`. Use `Function.ne_iff.mpr ⟨Sum.elim t t, ?_⟩` and prove the remaining obligations. Use `show φ₀ t * star (φ₀ t) ≠ 0`. Conclude with `mul_ne_zero ht (star_ne_zero.mpr ht)`. Take `⟨c', hc'⟩` from `GlobalTheory.VacUniqInert.eq_smul_of_eigen (GlobalTheory.LatVac.psiAt B.ψ v) (fun i : Λ × Λ => GlobalTheory.LatVac.locCo dd v (Matrix.fromCols i.1.1ᵀ i.2.1ᵀ)) (fun i => cf i.1.1 i.2.1) (fun u hu => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Establish `eu : u = Sum.elim (u ∘ Sum.inl) (u ∘ Sum.inr)` using `(Sum.elim_comp_inl_inr u).symm`. Take `⟨y₁, γ₁, h₁, e₁⟩` from `hfill (u ∘ Sum.inl) (by`. Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (⟨γ, hγ⟩, 0) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply the tactic sequence `funext k; cases k <;> rfl)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero] at this`. Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Take `⟨y₂, γ₂, h₂, e₂⟩` from `hfill (u ∘ Sum.inr) (by`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce and unpack `b ⟨γ, hγ, he⟩`. Use `hu (0, ⟨-γ, neg_mem hγ⟩) (by` as an intermediate fact. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg]`. Apply the tactic sequence `funext k; cases k <;> simp)`. Simplify using `only [hco, he, ZeroMemClass.coe_zero, map_zero, map_neg] at this`.
-
-Rewrite `this` using `[eu, sumElim_dotProduct_sumElim]`. Simplify using `using this)`. Use `⟨(⟨γ₁, h₁⟩, ⟨γ₂, h₂⟩), ?_⟩` and prove the remaining obligations. Simplify using `only [hco, e₁, e₂]`. Conclude with `eu.symm) φ φd`.
-
-Use the proof step `(fun i => hφl _ i.1.2 _ i.2.2) (fun i => hdl _ i.1.2 _ i.2.2) hφd0`. Conclude with `⟨c', hc'⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -293,27 +289,23 @@ theorem line_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberF
   exact ⟨c', hc'⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v _ _ d' hd' dd omd hdc hsp r hr g hg`. Take `⟨hvSB, -, θ, hθ, hvac⟩` from `hT.geo.hM'.vac v`. Use `set φ := G.M'.vac v with hφ`. Use `set vD := boxFun φ (fun x => star (φ x)) with hvD`. Use `set RD := boxFun r (fun x => star (r x)) with hRD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hvDSB : vD ∈ SB _` using `GlobalTheory.VDblEigAny.boxFun_mem_SB hvSB (GlobalTheory.VDblEigAny.star_mem_SB hvSB)`. Establish `hS : boxFun (tens (evFin F v) φ r) (fun x => star (tens (evFin F v) φ r x)) = tens (evFin F v) vD RD`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, boxFun, hvD, hRD, Function.comp_def, star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hRest : Rest (evFin F v) vD RD`. Use `⟨fun x z hz => ?_, ?_⟩` and prove the remaining obligations. Establish `hz1 : At (evFin F v) (z ∘ Sum.inl)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inl i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2 : At (evFin F v) (z ∘ Sum.inr)` using `fun u hu => by`. Use function extensionality and compare the values at `i`. Conclude with `congrFun (hz u hu) (Sum.inr i)`. Use `show r ((x + z) ∘ Sum.inl) * star (r ((x + z) ∘ Sum.inr)) = r (x ∘ Sum.inl) * star (r (x ∘ Sum.inr))`. Rewrite using `[show (x + z) ∘ Sum.inl = x ∘ Sum.inl + z ∘ Sum.inl from rfl, show (x + z) ∘ Sum.inr = x ∘ Sum.inr + z ∘ Sum.inr from rfl, hr.1 _ _ hz1, hr.1 _ _ hz2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hS]`. Conclude with `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ _ hr.2 _ (GlobalTheory.ConjSch.star_mem_schA _ _ hr.2)`. Establish `hU` using `hsp.2.1`. Choose the witnesses or unpack the hypotheses as in `⟨φ₁, hφ₁, hA⟩ : ∃ φ₁ ∈ SB _, Acts (evFin F v) (omd g) vD φ₁ := by`. Use `GlobalTheory.DblActs.acts_of_comm v B.ψ hT.base.std (omd g) (fun Φ hΦ => hU.pres g Φ hΦ) (fun μ hμ Φ hΦ => hU.unit μ hμ g Φ hΦ) ?_ vD hvDSB` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u hu x y Φ hΦ`. Use `set z := dd.e.symm (x, y) with hz`. Establish `he : dd.e (u • z) = (u • x, u • y)`. Rewrite using `[LinearEquiv.map_smul, hz, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h2` using `hg.1 u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : actB (cA σ) g (u • z) = u • z`. Simplify using `only [actB]`. Use `set P := GlobalTheory.DblVac.matD g with hP`. Use `set c : AE F E := algebraMap (AF F) (AE F E) u with hc`. Establish `hs1 : u • z = c • z` using `(algebraMap_smul (AE F E) u z).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs2 : u • (P - 1) = c • (P - 1)` using `(algebraMap_smul (AE F E) u (P - 1)).symm`. Establish `h2' : c • (P - 1) = 0` using `hs2 ▸ h2`. Establish `: (c • z) * Pᵀ - c • z = z * (c • (P - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `this` using `[h2']`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero] at this`. Rewrite using `[hs1]`. Conclude with `this`. Establish `h3` using `hU.impl g (u • z) Φ hΦ`. Simplify using `only [Darboux.rho, he, e2] at h3`.
-
-Conclude with `h3`. Establish `hE0` using `doubled_vac_eigen_any F E σ B a a' G X om om' hT v d' hd' dd hdc θ hθ hvac`. Establish `hE1` using `transport_any F E σ B a a' G X om om' hT v d' hd' dd hdc θ hθ hvac omd hsp g hg vD hvDSB φ₁ hφ₁ hE0 hA`. Take `⟨μ, hμ⟩` from `line_any F E σ B a a' G X om om' hT v d' hd' dd hdc θ hθ hvac φ₁ hφ₁ hE1`. Use `⟨μ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hS, hA RD hRest, hμ]`. Use function extensionality and compare the values at `x`. Simplify using `only [tens, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem split_vdbl_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -385,23 +377,21 @@ theorem split_vdbl_eigen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hv d' dd omd hdd hW r hr h0 p hp hpd μ hμ`. Take `⟨t, ht₀⟩` from `hpd`. Establish `ht : GlobalTheory.DblVac.matD p * (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) = (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * (t : Matrix (Fin a') (Fin a') (AE F E))` using `ht₀`. Establish `hF` using `hT.base.cm.1`. Use `set Ψ := tens (evFin F v) (G.M'.vac v) r with hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ Ψ hr.2 _ (GlobalTheory.SchAConj.star_mem_schA F _ Ψ hr.2)`. Establish `hl` using `lDiag_box_ne_zero hF hr.2 h0`. Establish `hS0 : (boxFun Ψ fun x => star (Ψ x)) ≠ 0` using `fun h => hl (by rw [h, map_zero])`. Establish `hn` using `norm_eq_one_of_eigen hF hW.2.1.unit hS hS0 hμ`. Establish `hrule` using `hW.2.2 _ DiagForm.lDiag_adm (fun z φ hφ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : z * (diagCols (Fin a') : Matrix _ _ (AE F E))ᵀ = Matrix.fromCols z z`. Rewrite using `[diagCols, Matrix.transpose_fromRows, Matrix.mul_fromCols, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[e, Darboux.rho, hdd]`. Conclude with `DiagForm.lDiag_schr B.ψ _ _ hφ) p t ht _ hS`. Establish `hvec : ∀ (g : GlobalTheory.DblVac.UD σ G.V') (s : Matrix (Fin a') (Fin a') (AE F E)), GlobalTheory.DblVac.matD g * (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) = (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * s → ∀ z, (GlobalTheory.DblVac.m …` using `fun g s hs z => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ z : Fin a' → AE F E, (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) *ᵥ z = Sum.elim z z` using `fun z => by`. Rewrite using `[diagCols, Matrix.fromRows_mulVec, Matrix.one_mulVec]`. Rewrite using `[← e, Matrix.mulVec_mulVec, hs, ← Matrix.mulVec_mulVec, e]`. Both sides reduce to the same expression. Establish `ht' : GlobalTheory.DblVac.matD p⁻¹ * (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) = (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * ((t⁻¹ : GL (Fin a') (AE F E)) : Matrix (Fin a') (Fin a') (AE F E))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e1 : GlobalTheory.DblVac.matD p⁻¹ * GlobalTheory.DblVac.matD p = 1` using `p.1.inv_mul`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, t.mul_inv, Matrix.mul_one]`. Use `_ = _ := by rw [← ht, ← Matrix.mul_assoc, e1, Matrix.one_mul]`. Establish `hunr : ∀ P : HeightOneSpectrum (𝓞 E), P.under (𝓞 F) = v → UnrAt (X.α / X.β) P` using `fun P hP => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hPT : P ∉ above E (X.T : Set (Pl F))` using `fun h => hv (hP ▸ (h : P.under (𝓞 F) ∈ (X.T : Set (Pl F))))`. Rewrite using `[div_eq_mul_inv]`. Conclude with `(hT.chars.unrα P hPT).mul (hT.chars.unrβ P hPT).inv`. Establish `hβ : (X.α / X.β) (Matrix.GeneralLinearGroup.det t) = 1`. Use `GlobalTheory.DblVacSiegelAny.chr_det_eq_one_any (v := v) G.V' hT.geo.hV'.lat hunr t (fun u hu => ?_) fun z hz => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (GlobalTheory.DblVac.matD p - 1) * (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) = (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * ((t : Matrix (Fin a') (Fin a') (AE F E)) - 1)`. Rewrite using `[Matrix.sub_mul, Matrix.mul_sub, ht, Matrix.one_mul, Matrix.mul_one]`. Establish `e2 : (diagCols (Fin a') : Matrix (Fin a' ⊕ Fin a') (Fin a') (AE F E)) * (u • ((t : Matrix (Fin a') (Fin a') (AE F E)) - 1)) = 0`. Rewrite using `[Matrix.mul_smul, ← e1, ← Matrix.smul_mul, hp.1 u hu, Matrix.zero_mul]`. Rewrite `e2` using `[diagCols, Matrix.fromRows_mul, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `i j`. Conclude with `congrFun (congrFun e2 (Sum.inl i)) j`. Establish `hz'` using `hp.2 (Sum.elim z z) ⟨hz, hz⟩`. Conclude with `⟨hvec p _ ht z ▸ hz'.1.1, hvec p⁻¹ _ ht' z ▸ hz'.2.1⟩`. Rewrite `hrule` using `[hμ, map_smul, smul_eq_mul, hβ, Circle.coe_one, one_mul]`.
-
-Establish `hμ'` using `mul_right_cancel₀ hl hrule`. Rewrite `hn` using `[hμ', Complex.norm_real, Real.norm_of_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _)]`. Rewrite using `[hμ', hn, Complex.ofReal_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_eigen_eq_one_any : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -466,23 +456,23 @@ theorem siegel_eigen_eq_one_any : ∀ (F E : Type) [Field F] [NumberField F] [Fi
   rw [hμ', hn, Complex.ofReal_one]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hT v hsp₁ hv k hk c hc`. Establish `hsp₀` using `GlobalTheory.SplitSphV.isSplit_of_nonempty hT.base.cm hsp₁`. Take `⟨d', hd', -, dd, omd, hdc, hsp, hbox⟩` from `hT.weil'.2.1`. Establish `hvac` using `hT.geo.hM'.vac v`. Take `⟨r, hr, hr0⟩` from `GlobalTheory.T.exists_complementaryAdelicSchwartz_tensor_ne_zero _ v (G.M'.vac v) hvac.1 hvac.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set V₀ := tens (evFin F v) (G.M'.vac v) r with hV₀`. Use `set S := boxFun V₀ (fun x => star (V₀ x)) with hS`. Establish `hS0 : ∃ x, S x ≠ 0`. Take `⟨x, hx⟩` from `Function.ne_iff.mp hr0`. Use `⟨Sum.elim x x, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hS, boxFun, Sum.elim_comp_inl, Sum.elim_comp_inr, Pi.zero_apply] at hx ⊢`. Conclude with `mul_ne_zero hx (star_ne_zero.mpr hx)`. Take `⟨gd, hgd, hgdK⟩` from `GlobalTheory.T.exists_diag_mem_doubledVacuumLatticeStabilizer σ G.V' v k hk`. Establish `hb` using `hbox k gd hgd V₀ hr.2 (fun x => star (V₀ x)) (GlobalTheory.T.conj_mem_adelicSchwartzSpaceNumberField_of_mem _ V₀ hr.2)`. Establish `hk1 : (om'.comp (MonoidHom.inl _ _)) k V₀ = c • V₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[MonoidHom.comp_apply, MonoidHom.inl_apply, hV₀, hc r hr]`. Use function extensionality and compare the values at `x`. Simplify using `[tens, mul_assoc]`. Rewrite `hb` using `[hk1]`. Establish `hgS : omd gd S = c • S`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hb]`. Use function extensionality and compare the values at `x`. Simplify using `only [hS, boxFun, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨e, θ, he1, he2, he3, hθ1, hθ2, hθ3, hθ4⟩` from `GlobalTheory.T.split_place_idempotent_lattice σ B hT.base v hsp₀`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀, hw₀, hW⟩` from `GlobalTheory.T.split_lattice_double_vector σ G.V' v e θ he1 he2 he3 hθ1 hθ2 hθ3 (hθ4 G.V')`. Take `⟨h1, h2⟩` from `hW k hk gd hgd hgdK`. Take `⟨μ, hμ⟩` from `split_vdbl_eigen F E σ B a a' G X om om' hT v hsp₀ hv d' hd' dd omd hdc hsp r hr w₀ hw₀`. Establish `hSne : S ≠ 0` using `fun h => by`. Take `⟨x, hx⟩` from `hS0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `hx (by rw [h]; rfl)`. Establish `hμ0 : μ ≠ 0` using `fun h0 => by`. Apply `hSne` to reduce the goal to its premises. Establish `e : omd w₀⁻¹ (omd w₀ S) = S`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hμ, h0, zero_smul, map_zero]`. Establish `hinv : omd w₀⁻¹ S = μ⁻¹ • S`. Establish `e : omd w₀⁻¹ (omd w₀ S) = S`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `e` using `[hμ, LinearMap.map_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hp : omd (w₀ * gd * w₀⁻¹) S = c • S`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, hinv, LinearMap.map_smul, hgS, LinearMap.map_smul, LinearMap.map_smul, hμ, smul_smul, smul_smul]`. Rewrite using `[show μ⁻¹ * c * μ = c by field_simp]`. Conclude with `siegel_eigen_eq_one_any F E σ B a a' G X om om' hT v hv d' dd omd hdc hsp r hr hr0 _ h1 h2 c hp`.
+A detailed English derivation is pending.
 -/
 theorem eigen_eq_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

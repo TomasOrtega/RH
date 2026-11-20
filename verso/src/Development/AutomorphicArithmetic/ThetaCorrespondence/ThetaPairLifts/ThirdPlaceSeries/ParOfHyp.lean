@@ -9,13 +9,13 @@ section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.DIV Formalism.L2.Pj Formalism.IndefR Formalism.IndefR.Links GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.ExpTie
 namespace GlobalTheory.ExpTie
 /- English proof (translation)
-Use `⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ j => ?_⟩⟩⟩` and prove the remaining obligations. Establish `P` using `Fm.params x hx i`. Establish `hrk` using `(Fm.D x i).sp.V_rank ((j : ℕ) + 1) (Nat.le_add_left _ _) j.2`. Establish `h2` using `(Fm.D x i).R.two_le_m`. Establish `h3` using `(Fm.D x i).R.m_add_three_le_k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `(Fm.D x i).R.rank_add_five_le`. Establish `h6` using `(Fm.D x i).R.three_m_lt_t`. Establish `hlst : Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.lstar (parOf (Fm.L x i) j) = Formalism.BasicNotions.LevelStarExponents.lStar (Fm.L x i)`. Simplify using `only [Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.lstar, Formalism.BasicNotions.LevelStarExponents.lStar, Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.N, Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.b, parOf, Formalism.BasicNotions.Ranks.N, …`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb : Formalism.CohomologicalDescent.LogSmallConstantBounds.Par.b (parOf (Fm.L x i) j) = (Fm.L x i).sc.b` using `rfl`. Use `{ x_ge := (Fm.L x i).sc.one_lt_alt.le b'_pos := (Fm.L x i).sc.b'_pos m_pos := by show 1 ≤ (Fm.D x i).R.m; omega n_pos := (Fm.D x i).R.ord_pos f_pos := by show 1 ≤ 2 * (Fm.D x i).R.ord; have := (Fm.D x i).R.ord_pos; omega t_ge := by show (Fm.D x i).R.k + (Fm.D x i).R.m + 4 ≤ (Fm.D …` and prove the remaining obligations. Rewrite using `[hrk]`. Use `show (Fm.D x i).R.k + (Fm.D x i).R.m - 1 + (Fm.D x i).R.t + 1 = (Fm.D x i).R.k + (Fm.D x i).R.m + (Fm.D x i).R.t`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `t_le := P.t_le_eta`. Use `S_nonneg := (Fm.L x i).Sc_pos.le`. Use `sum_lt := by rw [hlst, hb]; exact P.lstar1`. Use `win_lt := by rw [hlst, hb]; exact P.lstar2 }`.
+A detailed English derivation is pending.
 -/
 theorem parOf_hyp_alt : _root_.GlobalTheory.BigOn.AtPtsAlt fun Fm x _ i _ => ∀ j : Fin (Fm.D x i).R.m, (GlobalTheory.ExpTie.parOf (Fm.L x i) j).Hyp := by
   refine ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH _ _ => ⟨0, fun x hx _ i p _ _ j => ?_⟩⟩⟩

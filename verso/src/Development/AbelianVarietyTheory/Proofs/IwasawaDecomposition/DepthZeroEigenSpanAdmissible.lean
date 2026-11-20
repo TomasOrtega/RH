@@ -26,7 +26,7 @@ namespace GlobalTheory.HeightCounting.Up.PendLayer
 variable {hL : GlobalTheory.Published.LocalLanglandsGL}
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp w Z Wt p0 t nch n xd c a b d => hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)`.
+A detailed English derivation is pending.
 -/
 theorem atMem_imp {p q : LayP hL} (h : AtMem hL p)
     (hpq : ∀ K B f T w Z Wt p0 t nch n c, p K B f T w Z Wt p0 t nch n c → q K B f T w Z Wt p0 t nch n c) : AtMem hL q :=
@@ -34,7 +34,7 @@ theorem atMem_imp {p q : LayP hL} (h : AtMem hL p)
     hpq _ B f T w Z Wt p0 t nch n c (H kp w Z Wt p0 t nch n xd c a b d)
 
 /- English proof (translation)
-The claim follows from `EvG.imp (EvG.inter h h') fun _ _ _ _ _ hK => large₂.imp (large₂.inter hK.1 hK.2) fun _ _ _ _ H kp w Z Wt p0 t nch n xd c a b d => ⟨H.1 kp w Z Wt p0 t nch n xd c a b d, H.2 kp w Z Wt p0 t nch n xd c a b d⟩`.
+A detailed English derivation is pending.
 -/
 theorem atMem_and {p q : LayP hL} (h : AtMem hL p) (h' : AtMem hL q) :
     AtMem hL fun K B f T w Z Wt p0 t nch n c => p K B f T w Z Wt p0 t nch n c ∧ q K B f T w Z Wt p0 t nch n c :=
@@ -42,7 +42,7 @@ theorem atMem_and {p q : LayP hL} (h : AtMem hL p) (h' : AtMem hL q) :
     ⟨H.1 kp w Z Wt p0 t nch n xd c a b d, H.2 kp w Z Wt p0 t nch n xd c a b d⟩
 
 /- English proof (translation)
-The claim follows from `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun _ _ T _ H kp w Z _ _ _ _ _ _ _ _ _ _ => H kp T w Z`.
+A detailed English derivation is pending.
 -/
 theorem atMem_of_evLgG {q : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), w.Lt → Prop}
     (h : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), q B f T w Z) :
@@ -50,9 +50,9 @@ theorem atMem_of_evLgG {q : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : C
   EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun _ _ T _ H kp w Z _ _ _ _ _ _ _ _ _ _ => H kp T w Z
 
 /- English proof (translation)
-Establish `hrow : ∀ i : D.nd.Loc, Nonempty (GlobalTheory.NPin.RowMod D P.rep (D.nd.j i))`. Introduce `i`. Establish `h1` using `(D.nd.j_range i).1`. Establish `h2` using `(D.nd.j_range i).2`. Take `⟨Y, -⟩` from `GlobalTheory.RowModCanon.main hP.hc hP.decay hL D P X hX ⟨D.nd.j i - 1, by omega⟩ (D.nd.j i) (by simp; omega)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Y⟩`. Establish `hA` using `GlobalTheory.RowsAClose.main hP.what₂ hL D P hJ`. Establish `hZ` using `GlobalTheory.ZetaSer.rootsOfUnity_and_seriesIdempotent_rational D hroots`. Conclude with `⟨GlobalTheory.TieChiPin.main hP.what₂ hP.dz hL D P hrow hlab hchi, GlobalTheory.PinClose.main hP.what₂ hP.dz hW hS hL D P hrow hlab hcen hgreen hchi hA.tie0 hA.a5 hzl hci (hZ.2 P.ty.grp) hZ.1⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem at_pin (hP : PrN) (hW : GlobalTheory.Published.DepthZeroWild) (hS : GlobalTheory.Published.DepthZeroSupport) (D : D7) (P : GlobalTheory.NPin.Pin hL D)
     (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (hX : GlobalTheory.NJoin.Agree X P.M P.rep) (hJ : JumpsCard D.nd D.naut)
@@ -71,9 +71,9 @@ theorem at_pin (hP : PrN) (hW : GlobalTheory.Published.DepthZeroWild) (hS : Glob
     GlobalTheory.PinClose.main hP.what₂ hP.dz hW hS hL D P hrow hlab hcen hgreen hchi hA.tie0 hA.a5 hzl hci (hZ.2 P.ty.grp) hZ.1⟩
 
 /- English proof (translation)
-Introduce `hH hP hW hS hL`. Establish `h1` using `atMem_and (GlobalTheory.T.central_local_stable_integral hL) (atMem_and (GlobalTheory.HeightCounting.JumpsAt.jumpsCard_atMem hH hL) (atMem_and (GlobalTheory.HeightCounting.Up.tied_of_layer hP hL) (atMem_of_evLgG (hL := hL) GlobalTheory.HeightCounting.Up.sizes_host_at_record)))`. Use `atMem_imp h1 fun K B f T w Z Wt p0 t nch n c h => ?_` and prove the remaining obligations. Take `⟨⟨hcen, hzl, hci⟩, hJ, ⟨X, hpin, -⟩, -, -, hroots, -⟩` from `h`. Establish `hM : X.P.M = c.a.all.gal.mt` using `hpin.M_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `at_pin hP hW hS (w.D Z) X.P X.X X.agree hJ hpin.lab hpin.green hpin.chiT (hM ▸ hcen) hzl hci hroots`.
+A detailed English derivation is pending.
 -/
 theorem main : HtCard → PrN → GlobalTheory.Published.DepthZeroWild → GlobalTheory.Published.DepthZeroSupport → ∀ hL : GlobalTheory.Published.LocalLanglandsGL,
     AtMem hL fun _ _ _ _ w Z _ _ t nch n c => PairedCharacterCondition.tieChi (D := w.D Z) ∧ ∃ Q : PairedCharacterCondition.Pend (w.D Z), PairedCharacterCondition.admDZ Q ∧ GlobalTheory.Pass.EigSpan Q := by

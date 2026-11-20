@@ -10,13 +10,13 @@ import CompanionTheory.HarishChandraModules.KFiniteAnalyticVectors.AdmissibleSmo
 namespace CompanionTheory.D.gk.admitted
 
 /- English proof (translation)
-The claim follows from `admissible_of_finite_rank finite_rank_of_irreducible_unitary (goodPI_of small_irreducible_representation) transfer_holds exists_averaging_operator h`.
+A detailed English derivation is pending.
 -/
 theorem admissible_of_iwasawa {n : ℕ} {ε : Fin n → Bool} (h : Iwa ε) : AdmUJ ε :=
   admissible_of_finite_rank finite_rank_of_irreducible_unitary (goodPI_of small_irreducible_representation) transfer_holds exists_averaging_operator h
 
 /- English proof (translation)
-The claim follows from `kFinSmooth_of finite_rank_of_irreducible_unitary (goodPI_of small_irreducible_representation) transfer_holds exists_averaging_operator iwasawa_decomposition_second_model garding_finite_smooth_vectors`.
+A detailed English derivation is pending.
 -/
 theorem k_finite_smooth : PI.KFinSmooth :=
   kFinSmooth_of finite_rank_of_irreducible_unitary (goodPI_of small_irreducible_representation) transfer_holds exists_averaging_operator iwasawa_decomposition_second_model garding_finite_smooth_vectors

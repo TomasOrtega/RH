@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Use `letI := s.toAlgebra`. Conclude with `evBasic_nEval_eq_tEval f (fun q : Fin n × Fin d => a q.1 q.2) N hN`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem nv_eq_sum {R S : Type} [CommRing R] [CommRing S] (s : R →+* S) {n d : ℕ} (f : PS R n d)
     (a : Fin n → Fin d → S) (N : ℕ) (hN : ∀ q : Fin n × Fin d, a q.1 q.2 ^ N = 0) :
@@ -30,11 +30,11 @@ private theorem nv_eq_sum {R S : Type} [CommRing R] [CommRing S] (s : R →+* S)
   exact evBasic_nEval_eq_tEval f (fun q : Fin n × Fin d => a q.1 q.2) N hN
 
 /- English proof (translation)
-Establish `h0 : ∀ i : κ, IsNilpotent ((0 : κ → S) i)` using `fun _ => IsNilpotent.zero`. Establish `hm : ∀ i, a i ∈ Ideal.span (Set.range a)` using `fun i => Ideal.subset_span ⟨i, rfl⟩`. Establish `h1` using `ChartCompare.nEval_sub_mem f a 0 ha h0 _ _ hm (fun _ => Ideal.zero_mem _) (fun i => by simpa using hm i)`. Establish `h2 : Ideal.span (Set.range a) * Ideal.span (Set.range a) ≤ ⊥`. Rewrite using `[Ideal.span_mul_span', Ideal.span_le]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, _, ⟨j, rfl⟩, rfl⟩`. Conclude with `h i j`. Establish `h3` using `(Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; simp) : Ideal.span _ ≤ (⊥ : Ideal S)) (evBasic_nEval_sub_coeff_mem f (0 : κ → S) h0)`. Establish `h4` using `h2 h1`. Rewrite `h3`, `h4` using `[Ideal.mem_bot, sub_eq_zero]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[h3, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, sub_eq_iff_eq_add']`. Simplify `h4` using `[Algebra.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem nEval_sqZero {R S κ : Type} [CommRing R] [CommRing S] [Algebra R S] [Fintype κ] [DecidableEq κ]
     (f : MvPowerSeries κ R) (a : κ → S) (ha : ∀ i, IsNilpotent (a i)) (h : ∀ i j, a i * a j = 0) :
@@ -56,15 +56,13 @@ private theorem nEval_sqZero {R S κ : Type} [CommRing R] [CommRing S] [Algebra 
   simpa [Algebra.smul_def] using h4
 
 /- English proof (translation)
-Introduce `R S _ _ s n d a ha`. Establish `ha' : ∀ q : Fin n × Fin d, IsNilpotent (a q.1 q.2)` using `fun q => ha _ _`. Take `⟨N, -, hN⟩` from `evBasic_exists_pow (fun q : Fin n × Fin d => a q.1 q.2) ha'`. Use `letI := s.toAlgebra`. Use `⟨?_, fun f hf => ⟨ChartCompare.isNilpotent_nEval f hf _ ha', ?_⟩, fun m e b f hb => ?_, fun R' _ β f => ?_, fun S' _ t f => ?_, fun h f => nEval_sqZero f (fun q : Fin n × Fin d => a q.1 q.2) ha' fun _ _ => h _ _ _ _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Set `ψ : PS R n d →+* S` to `(MvPowerSeries.constantCoeff : MvPowerSeries Empty S →+* S).comp (MvPowerSeries.substAlgHom (R := R) (ChartCompare.hasSubst_C _ ha')).toRingHom`. Establish `hψ : ∀ f, ψ f = nv s f a` using `fun f => by`. Simplify using `[ψ, nv, MvPowerSeries.coe_substAlgHom, ChartCompare.subst_C_eq f _ ha']`. Use `⟨ψ, hψ, fun c => ?_, fun q => (hψ _).trans (ChartCompare.nEval_X _ ha' q)⟩` and prove the remaining obligations. Use `(MvPowerSeries.substAlgHom (R := R) (ChartCompare.hasSubst_C _ ha')).commutes c` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(congrArg MvPowerSeries.constantCoeff this).trans (by`. Rewrite using `[MvPowerSeries.algebraMap_apply, MvPowerSeries.constantCoeff_C]`. Use the proof step `rfl)`. Use `evBasic_nEval_sub_coeff_mem f _ ha'` as an intermediate fact. Rewrite `this` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hf, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Conclude with `ChartCompare.nEval_subst (fun q : Fin m × Fin e => b q.1 q.2) (fun q => hb _ _) f _ ha'`. Rewrite using `[nv_eq_sum _ _ a N hN, nv_eq_sum _ _ a N hN]`. Simplify using `only [MvPowerSeries.coeff_map, RingHom.comp_apply]`. Rewrite using `[nv_eq_sum _ _ a N hN, nv_eq_sum _ _ _ N (fun q => by rw [← map_pow, hN q, map_zero])]`.
-
-Simplify using `only [map_sum, map_mul, map_prod, map_pow, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nv_calculus : ∀ (R S : Type) [CommRing R] [CommRing S] (s : R →+* S) (n d : ℕ) (a : Fin n → Fin d → S), (∀ i j, IsNilpotent (a i j)) → (∃ ψ : PS R n d →+* S, (∀ f, ψ f = nv s f a) ∧ (∀ c, ψ (MvPowerSeries.C c) = s c) ∧ ∀ q : Fin n × Fin d, ψ (MvPowerSeries.X q) = a q.1 q.2) ∧ (∀ f : PS R n d, MvPowerSeries.constantCoeff f = 0 → IsNilpotent (nv s f a) ∧ nv s f a ∈ Ideal.span (Set.range fun q : Fin n × Fin d => a q.1 q.2)) ∧ (∀ (m e : ℕ) (b : Fin m → Fin e → PS R n d) (f : PS R m e), (∀ i j, MvPowerSeries.constantCoeff (b i j) = 0) → nv s (sub b f) a = nv s f (fun i j => nv s (b i j) a)) ∧ (∀ (R' : Type) [CommRing R'] (β : R' →+* R) (f : PS R' n d), nv (s.comp β) f a = nv s (MvPowerSeries.map β f) a) ∧ (∀ (S' : Type) [CommRing S'] (t : S →+* S') (f : PS R n d), t (nv s f a) = nv (t.comp s) f (fun i j => t (a i j))) ∧ ((∀ i j i' j', a i j * a i' j' = 0) → ∀ f : PS R n d, nv s f a = s (MvPowerSeries.constantCoeff f) + ∑ q : Fin n × Fin d, s (MvPowerSeries.coeff (Finsupp.single q 1) f) * a q.1 q.2) := by
   intro R S _ _ s n d a ha

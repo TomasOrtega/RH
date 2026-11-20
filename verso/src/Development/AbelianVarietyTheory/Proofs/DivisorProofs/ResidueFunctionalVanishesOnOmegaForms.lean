@@ -11,9 +11,9 @@ namespace GlobalTheory.PD.ResVan
 variable {F : Type} [Field F] {d : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.ProductZpowAdd.prod_zpow_add`. Consider the case `exact _root_.GlobalTheory.ProductZpowAdd.prod_zpow_add`. Consider the case `(apply _root_.GlobalTheory.ProductZpowAdd.prod_zpow_add <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.ProductZpowAdd.prod_zpow_add <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.ProductZpowAdd.prod_zpow_add <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.ProductZpowAdd.prod_zpow_add ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prod_zpow_add (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (m n : Fin (d + 1) → ℤ) :
     ∏ j, x j ^ (m j + n j) = (∏ j, x j ^ m j) * ∏ j, x j ^ n j := by
@@ -35,7 +35,7 @@ def monoA (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (I : Finset (Fin (d + 
     · simp only [Pi.add_apply]; exact (prod_zpow_add x hx m n).symm
 
 /- English proof (translation)
-Repeatedly rewrite using `[zpow_sub₀ (hx _)]`. Rewrite using `[Finset.prod_div_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_eq_single j (fun l hl => by simp [Pi.single_apply, hl])]; simp`. Rewrite using `[Fintype.prod_eq_single i (fun l hl => by simp [Pi.single_apply, hl])]; simp`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_single_sub (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (i j : Fin (d + 1)) :
     ∏ l, x l ^ ((Pi.single j 1 : Fin (d + 1) → ℤ) l - (Pi.single i 1 : Fin (d + 1) → ℤ) l) = x j / x i := by
@@ -46,9 +46,9 @@ theorem prod_single_sub (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (i j : F
   · rw [Fintype.prod_eq_single i (fun l hl => by simp [Pi.single_apply, hl])]; simp
 
 /- English proof (translation)
-Repeatedly rewrite using `[zpow_sub₀ (hx _), zpow_one]`. Rewrite using `[Finset.prod_div_distrib, Finset.prod_div_distrib]`. Establish `hq : ∏ j, x j ^ (if j = i0 then ((d : ℤ) + 1) else 0) = x i0 ^ (d + 1)`. Rewrite using `[Fintype.prod_eq_single i0 (fun l hl => by simp [hl])]`. Rewrite using `[if_pos rfl, show ((d : ℤ) + 1) = ((d + 1 : ℕ) : ℤ) by push_cast; ring, zpow_natCast]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `h0 : ∏ j, x j ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => hx j`. Establish `h1` using `hx i0`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem prod_exp (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (i0 : Fin (d + 1)) :
     (∏ j, x j ^ ((1 : ℤ) - if j = i0 then ((d : ℤ) + 1) else 0)) * ∏ j, x i0 / x j = 1 := by
@@ -64,21 +64,21 @@ theorem prod_exp (x : Fin (d + 1) → F) (hx : ∀ i, x i ≠ 0) (i0 : Fin (d + 
   field_simp
 
 /- English proof (translation)
-Introduce `k _ F _ _ d x hx ρ hρ i I hI hi y hy`. Take `⟨i0, hi0⟩` from `hI`. Establish `hne` using `hx.ne`. Establish `hii0 : i ≠ i0` using `fun h => hi (h ▸ hi0)`. Establish `h1 : (∏ j, x i0 / x j) * y ∈ rA k x I`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Submodule.mem_iInf _).1 hy i0`. Establish `h3` using `(Submodule.mem_iInf _).1 h2 hi0`. Simplify using `using h3`. Establish `hz : (∏ j, x i0 / x j) * y ∈ Submodule.span k (monoA x hne I : Set F)`. Rewrite `h1` using `[rA, ← Subalgebra.mem_toSubmodule, Algebra.adjoin_eq_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.span_mono (Submonoid.closure_le.2 ?_) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨i', hi', j, rfl⟩`. Use `⟨(Pi.single j 1 : Fin (d + 1) → ℤ) - Pi.single i' 1, by simp, fun l hl => ?_, (prod_single_sub x hne i' j).symm⟩` and prove the remaining obligations. Establish `hl' : l ≠ i'` using `fun h => hl (h ▸ hi')`. Simplify using `only [Pi.sub_apply, Pi.single_apply, hl', if_false, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> omega`. Establish `hP` using `prod_exp x hne i0`. Establish `hy' : y = (∏ j, x j ^ ((1 : ℤ) - if j = i0 then ((d : ℤ) + 1) else 0)) * ((∏ j, x i0 / x j) * y)`. Rewrite using `[← mul_assoc, hP, one_mul]`. Rewrite using `[hy']`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `(∏ j, x i0 / x j) * y = z at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem f hf`. Take `⟨m, hm, hm', rfl⟩` from `hf`. Rewrite using `[← prod_zpow_add x hne]`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hρ.2 _ ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, hm, add_zero, Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Introduce `h0`. Use `congrFun h0 i` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [hii0, if_false, Pi.zero_apply] at this`. Use `hm' i hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [mul_add, map_add, ha, hb, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c a _ ha => rw [mul_smul_comm, map_smul, ha, smul_zero]`.
+Treat this case separately.
 -/
 theorem resvan : ∀ (k : Type) [Field k] (F : Type) [Field F] [Algebra k F] (d : ℕ) (x : Fin (d + 1) → F), IsPd k x →
     ∀ ρ : F →ₗ[k] k, IsRes k x ρ → ∀ (i : Fin (d + 1)) (I : Finset (Fin (d + 1))), I.Nonempty → i ∉ I →

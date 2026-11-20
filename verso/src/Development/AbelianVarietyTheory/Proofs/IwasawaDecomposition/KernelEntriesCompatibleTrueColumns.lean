@@ -20,19 +20,19 @@ namespace GlobalTheory.Mem.Col2.TC
 open Formalism.HermitianLatticesTheory
 
 /- English proof (translation)
-Introduce `D X u C r Pr Ch sel S mu cst L σ v m2 hX hPr hc hm hpi h`. Take `⟨hSS, hlev, pt, ix, yb, pT, hN, hyb, hE, hC, ⟨hTN, hTX⟩, hpin, hpin'⟩` from `h`. Establish `key : ∀ (c' : C.cls (m2 + 1 + 1)) d, OverRow sel mu v d (pT c') → HEq (r.N (m2 + 1 + 1) c') (tilQ sel mu v d).1.N ∧ ∀ c, HEq (r.Xi (m2 + 1) c c') fun x => σ (XiCpl2 Ch sel mu cst m2 (pt (m2 + 1) le_rfl c) (yb c) d x)`. Introduce `c' d hd`. Take `⟨p', hp, hrow⟩` from `hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `gen : ∀ (j : ℕ) (hj : j = m2 + 1 + 1) (q : DecoF X.E (D.R.N j) (Pr.vT v) Pr.vGs (QE sel (mu : Chr X.F X.E X.K))), HEq (pT c') q → HEq (pT c').deco.1.N q.deco.1.N ∧ ∀ c, HEq (fun x => σ (XiTop Ch sel mu cst (m2 + 1) (pt (m2 + 1) le_rfl c) (yb c) (pT c') x)) (fun x => σ (XiTopG Ch …`. Introduce `j hj q hq`. Substitute `hj` using the available equality. Take `rfl` from `eq_of_heq hq`. Conclude with `⟨HEq.rfl, fun _ => HEq.rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨g1, g2⟩` from `gen D.R.m (by omega) p' hp`. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Rewrite using `[hTN c']`. Use `g1.trans (heq_of_eq ?_)` and prove the remaining obligations. Rewrite using `[hrow.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e : r.Xi (m2 + 1) c c' = fun x => σ (XiTop Ch sel mu cst (m2 + 1) (pt (m2 + 1) le_rfl c) (yb c) (pT c') x)` using `funext (hTX c c')`. Rewrite using `[e]`. Use `(g2 c).trans (heq_of_eq ?_)` and prove the remaining obligations. Rewrite using `[xiTopTilQ_holds Ch sel mu cst hX hPr hc hm v hpi _ _ d p' hrow.1 hrow.2 (hyb c)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hSS, hlev, pt, ix, yb, fun c' => if h : ∃ d, OverRow sel mu v d (pT c') then some h.choose else none, hN, hyb, hE, hC, fun c' d hd => ?_, fun c c' d hd => ?_, hpin, fun c' => ?_⟩` and prove the remaining obligations. Simplify using `only at hd split_ifs at hd with h`. Take `rfl` from `Option.some_inj.1 hd`. Conclude with `(key c' _ h.choose_spec).1`. Simplify using `only at hd split_ifs at hd with h`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `Option.some_inj.1 hd`. Conclude with `(key c' _ h.choose_spec).2 c`. Rewrite using `[hpin' c']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨d, hd⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, dif_pos ⟨d, hd⟩⟩`. Introduce and unpack `⟨d, hd⟩ dsimp only at hd split_ifs at hd with h`. Conclude with `h`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 theorem topChain : TopChain := by
   classical
@@ -84,7 +84,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (Ch : Chars X Pr R.m)
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem xiOver_eq_topG {u : Pr.Word} (n : ℕ) {j : ℕ} (h : j = R.m) (p : ChPt (R := R) sel mu u (n + 1))
     (Y : Set (Sp X.E (R.N (n + 1)))) (p' : ChPt (R := R) sel mu u j) :
@@ -103,11 +103,9 @@ def kerRd (u : B.Word) (a : I.ι) : KerRead ((I.rec7 l Z).chTw u a) B.fields whe
   pin i c := i + 1 ≤ B.R.m ∨ ∃ d, OverRow (Pr := B.primes X) (R := B.R) I.sel (I.tup a) u d ((I.stp u a i).rep c).1.1
 
 /- English proof (translation)
-Establish `hm' : (I.rec7 l Z).R.m = m2 + 2` using `hm`. Use `⟨rfl, rfl, fun i _ c => ((I.stp u a i).rep c).1.1, fun i hi c => Idx.get c.1 (by omega), fun c => ((I.stp u a (m2 + 1)).rep c).1.2, fun c => ((I.stp u a (m2 + 1 + 1)).rep c).1.1, fun _ _ _ => rfl, fun c => PtAt.mem_ybSet _ (by omega), fun i hi c c' x => ?_, fun c c' x => ?_, ⟨fun …` and prove the remaining obligations. Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u i c.1 c'.1 _ _ x) = _`. Apply the tactic sequence `rw [xiAt_entry I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get _ (by omega)).symm (Idx.some_get _ (by omega)).symm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u m2 c.1 c'.1 _ _ x) = _`. Rewrite using `[xiAt_penultimate_eq_xiCpl1 I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega) (Idx.some_get _ (by omega)).symm]`. Both sides reduce to the same expression. Use `show B.embLL (xiAt I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) u (m2 + 1) c.1 c'.1 _ _ x) = _`. Rewrite using `[xiAt_last I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) (by omega : m2 + 1 + 1 = B.R.m), xiOver_eq_topG]`.
-
-Both sides reduce to the same expression. Conclude with `or_iff_right (by show ¬ m2 + 1 + 1 + 1 ≤ B.R.m; omega)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kerRd_top {m2 : ℕ} (hm : B.R.m = m2 + 2) (u : B.Word) (a : I.ι) :
     (I.kerRd l Z u a).IsChainTop I.Ch I.sel (I.tup a) (I.cst a) (I.idx a) B.embLL u m2 := by
@@ -127,7 +125,7 @@ theorem kerRd_top {m2 : ℕ} (hm : B.R.m = m2 + 2) (u : B.Word) (a : I.ι) :
   · exact or_iff_right (by show ¬ m2 + 1 + 1 + 1 ≤ B.R.m; omega)
 
 /- English proof (translation)
-Use `⟨fun h k => ?_, fun h k _ => Submodule.mem_one.2 ⟨⟨x k, h k⟩, rfl⟩⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `Submodule.mem_one.1 (h k trivial)`. Rewrite using `[← hr]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe r`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stdL_iff {R : Ranks} (H : Host R) (n : ℕ) (x : Fin n → H.E) : x ∈ Th.stdL H n ↔ ∀ k, IsIntegral ℤ (x k) := by
   refine ⟨fun h k => ?_, fun h k _ => Submodule.mem_one.2 ⟨⟨x k, h k⟩, rfl⟩⟩
@@ -136,13 +134,11 @@ theorem mem_stdL_iff {R : Ranks} (H : Host R) (n : ℕ) (x : Fin n → H.E) : x 
   exact NumberField.RingOfIntegers.isIntegral_coe r
 
 /- English proof (translation)
-Establish `h1` using `(O u a).dt_lat i c`. Establish `h2` using `hidl.2.2.2.2 _ ((O u a).L0 i) ((O u a).lat i c)`. Rewrite `h2` using `[← h1]`. Establish `e0 : ((O u a).L0 i).1 = Th.stdL B.host (B.R.N i)`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[(O u a).lattice_integral_coordinates]`. Conclude with `(mem_stdL_iff B.host _ x).symm`. Establish `e1 : ((O u a).lat i c).1 = ((I.stp u a i).rep c).1.1.deco.1.N` using `hO.lat u a i c`. Rewrite `h2` using `[e0, e1]`. Establish `h3 : Th.detId B.host (Th.stdL B.host (B.R.N i)) ((I.stp u a i).rep c).1.1.deco.1.N = idl (QuotientGroup.mk ((O u a).dt i c))` using `h2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, TaylorLogMetric.chiRec_idl _ _ hidl.1, ← h3]`. Establish `h4 : ((TaylorLogMetric.chiQ (I.rec7 l Z) (QuotientGroup.mk ((O u a).dt i c)) : ℂˣ) : ℂ) = ((tildeQ B.host I.SQ I.C.chiPsi (detPt B.host I.SQ ((I.stp u a i).rep c).1.1) : ℂˣ) : ℂ)`. Rewrite using `[hO.dt u a i c]`. Both sides reduce to the same expression. Rewrite using `[h4]`.
-
-Conclude with `GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ (GlobalTheory.Mem.LevTwist.levOk_twists B X I hok).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chiRec_lat (hok : I.Ok) {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → TaylorLogMetric.IdE (I.rec7 l Z)} (hidl : TaylorLogMetric.RelDetPinned (I.rec7 l Z) idl)
     {Qp : I.ι → Finset ℕ} {O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)} (hO : I.StdO l Z Qp O) (u : B.Word) (a : I.ι) (i : ℕ)
@@ -167,9 +163,9 @@ theorem chiRec_lat (hok : I.Ok) {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → T
   exact GlobalTheory.Mem.ChiDet.tildeQ_detPt_eq_chiId B.R B.host _ I.C _ _ _ _ I.SQ _ (GlobalTheory.Mem.LevTwist.levOk_twists B X I hok).1
 
 /- English proof (translation)
-Use `(congrArg (fun A => (I.kerRd l Z u a).Th (seamOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G) A i c c') (AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J (TaylorLogMetric.chiRec (I.rec7 l Z) idl)).symm).trans ?_` and prove the remaining obligations. Establish `he : (I.J.amb B (TaylorLogMetric.chiRec (I.rec7 l Z) idl)).e _ _ ((I.stp u a i).rep c).1.1.deco.1.N ((I.stp u a (i + 1)).rep c').1.1.deco.1.N = I.A.e _ _ ((I.stp u a i).rep c).1.1.deco.1.N ((I.stp u a (i + 1)).rep c').1.1.deco.1.N`. Use function extensionality and compare the values at `z`. Use `show Th.chiFac B.host _ _ _ _ _ * _ = Th.chiFac B.host _ _ _ _ _ * _`. Unfold `Th.chiFac`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[I.chiRec_lat l Z hok hidl hO u a i c, I.chiRec_lat l Z hok hidl hO u a (i + 1) c']`. Use `show thC _ _ _ _ _ _ _ _ _ _ ((I.J.amb B (TaylorLogMetric.chiRec (I.rec7 l Z) idl)).e _ _ ((I.stp u a i).rep c).1.1.deco.1.N ((I.stp u a (i + 1)).rep c').1.1.deco.1.N) = thC _ _ _ _ _ _ _ _ _ _ (I.A.e _ _ ((I.stp u a i).rep c).1.1.deco.1.N ((I.stp u a (i + 1)).rep c').1.1.deco.1. …`. Rewrite using `[he]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kerRd_Th (hok : I.Ok) {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → TaylorLogMetric.IdE (I.rec7 l Z)} (hidl : TaylorLogMetric.RelDetPinned (I.rec7 l Z) idl)
     {Qp : I.ι → Finset ℕ} {O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)} (hO : I.StdO l Z Qp O) (u : B.Word) (a : I.ι) (i : ℕ)
@@ -190,13 +186,11 @@ theorem kerRd_Th (hok : I.Ok) {idl : (I.rec7 l Z).Dt ⧸ (I.rec7 l Z).UO → Tay
   rfl
 
 /- English proof (translation)
-Introduce `B X I hok hp l Z L hT Gi Gl K Y cX ex O E hQ hO hU hE hS`. Take `⟨idl, hidl⟩` from `GlobalTheory.Mem.NormOneIdeal.pinned_of_finer (I.rec7 l Z) I.SQ (MulEquiv.refl _) (by show UOQ B.host I.SQ = _`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨x, h, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy)`. Use the proof step `(fun z => rfl)`. Use the proof step `(fun N L L' t ht => by`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(trueDtPackQ_relDet I.SQ I.C N L L').trans ht)`. Take `⟨⟨kf, hkf⟩, hAd⟩` from `hE`. Establish `hm` using `hok.hm`. Establish `hpi : ∀ (u : B.Word) (a : I.ι) (w : rowSG (B.primes X) I.sel (I.tup a)), (B.primes X).piT u ∉ w.1.asIdeal` using `fun u a => (TopStep.tilOk_of_avoid l.pr hok.sel_ok u ⟨hok.T_mem u, hok.g_mem⟩).2.1`. Set `t : KerEntTied ex` to `{ cc := ⊤ cc_rec := B.toPre.ccK_top.symm cc_ok := ⟨top_ne_bot, by simp⟩ δ := I.J.δ δ_ok := hok.amb_ok.delta B := I.J.toRec B (I.cols l) Z.W Z.V Z.S Z.N Z.G χ := TaylorLogMetric.chiRec (I.rec7 l Z) idl χ_ok := TaylorLogMetric.isChi_chiRec _ _ hidl idl := idl idl_ok := hidl χ_rec : …`.
-
-Conclude with `⟨t, ⟨rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, rfl, HEq.rfl, HEq.rfl, HEq.rfl, HEq.rfl, rfl, HEq.rfl, heq_of_eq (AmbIn.amb_eq_ambOf B (I.cols l) Z.W Z.V Z.S Z.N Z.G I.J _).symm, rfl, hO⟩, rfl, hAd, fun u a => I.kerRd_top l Z hm u a⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kerEntTied_true : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (L : SizeData₂ (I.rec7 l Z)) (hT : GatTies (I.rec7 l Z)) (Gi : G.Inst (I.rec7 l Z) L) (Gl : G.LatInst (I.rec7 l Z)) (K : G.Consts) (Y : DivX (I.rec7 l Z)) (cX : ExtraC) (ex : Extra (I.rec7 l Z) L hT Gi Gl K Y cX) (O : ∀ u a, GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).chTw u a)) (E : KerEnt (I.rec7 l Z) Y ex.tw), I.QpIs Y.Qp → I.StdO l Z Y.Qp O → (∀ u a i, i < B.R.m → UnfIsAll (O u a) i) → EntOk E O → (∀ u w h, ThAtServed (ex.ker u w h) E) → ∃ t : KerEntTied ex, I.StdKerTie l Z t ∧ t.O = O ∧ t.Adapted ∧ t.TopPinned := by
   intro B X I hok hp l Z L hT Gi Gl K Y cX ex O E hQ hO hU hE hS

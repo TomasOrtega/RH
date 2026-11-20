@@ -15,7 +15,7 @@ Both sides reduce to the same expression.
 theorem eulW_eq : eulW p K r = ProjS.eulL (fun c : Fin r => (Fin.last K, c)) := rfl
 
 /- English proof (translation)
-Simplify using `only [Uop, Wm, eulW_eq, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.mulLeft_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Uop_apply (LL : Letters (K + 1)) (c : ℤ) (Cs : Finset (Fin r)) (a : Fin r)
     (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
@@ -26,7 +26,7 @@ theorem Uop_apply (LL : Letters (K + 1)) (c : ℤ) (Cs : Finset (Fin r)) (a : Fi
     LinearMap.smul_apply, LinearMap.id_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[glAct_split LL K (K + 1) s t]`. Simplify using `only [LinearMap.add_apply, map_add]`. Rewrite using `[glRest_comm LL K (K + 1) (Nat.le_succ K) s t a b F, ← glAct_comm LL K s t a b F]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem glAct_succ_comm (LL : Letters (K + 1)) (s t a b : Fin r) (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) :
     glAct p LL (K + 1) s t (glAct p LL K a b F) - glAct p LL K a b (glAct p LL (K + 1) s t F) =
@@ -37,9 +37,9 @@ theorem glAct_succ_comm (LL : Letters (K + 1)) (s t a b : Fin r) (F : MvPolynomi
   abel
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_restrictSupport_iff]`. Introduce `m hm`. Apply `hx` to reduce the goal to its premises. Rewrite `hm`, the goal using `[Finset.mem_coe, mem_support_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hm` using `[ProjS.coeff_eulL]`. Conclude with `left_ne_zero_of_mul hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulL_keep_supp {σ : Type} {s : ℕ} (t : Fin s → σ) (Q : Set (σ →₀ ℕ)) :
     ∀ x ∈ restrictSupport ℚ_[p] Q, ProjS.eulL t x ∈ restrictSupport ℚ_[p] Q := by
@@ -52,7 +52,7 @@ theorem eulL_keep_supp {σ : Type} {s : ℕ} (t : Fin s → σ) (Q : Set (σ →
   exact left_ne_zero_of_mul hm
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[resL_apply, resL_apply, coeff_initPart, ProjS.coeff_eulL, ProjS.coeff_eulL, coeff_initPart]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem resL_eulL {σ : Type} {s : ℕ} (t : Fin s → σ) (v : σ) (e : ℕ) (x : MvPolynomial σ ℚ_[p]) :
     resL p v e (ProjS.eulL t x) = ProjS.eulL t (resL p v e x) := by
@@ -61,7 +61,7 @@ theorem resL_eulL {σ : Type} {s : ℕ} (t : Fin s → σ) (v : σ) (e : ℕ) (x
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : setLast (setLast LL (o + 1)) ((setLast LL (o + 1)).deg (Fin.last K) - 1) = setLast LL o`. Simplify using `[setLast]`. Establish `h` using `(pol_pow (p := p) (setLast LL (o + 1)) a 1 (by simp [setLast]) G).mpr (by rw [e]; exact hG)`. Rewrite `h` using `[pow_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem X_mul_pol (LL : Letters (K + 1)) (a : Fin r) (o : ℕ) (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
     (hG : G ∈ Pol p r (setLast LL o)) : X (Fin.last K, a) * G ∈ Pol p r (setLast LL (o + 1)) := by
@@ -71,11 +71,11 @@ theorem X_mul_pol (LL : Letters (K + 1)) (a : Fin r) (o : ℕ) (G : MvPolynomial
   rwa [pow_one] at h
 
 /- English proof (translation)
-Establish `hdisj : Disjoint {v : Fin N × Fin r | j ≤ (v.1 : ℕ)} {v : Fin N × Fin r | (v.1 : ℕ) < j}`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `v h1 h2`. Simplify using `only [Set.mem_ofPred_eq] at h1 h2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x hx`. Use `ycond_keep LL j Mt T (fun a b y => FockB.ops_apply_comm hdisj hT (glAct_mem LL j a b) y) (fun y hy => ops_keep_supp {v : Fin N × Fin r | j ≤ (v.1 : ℕ)} _ (fun m m' hmm hm => ?_) hT y hy) x hx` and prove the remaining obligations. Establish `: wt LL j 0 m = wt LL j 0 m'` using `wt_congr LL j 0 m m' (fun i hi => hmm (i, 0) (by simp only [Set.mem_ofPred_eq]; omega))`. Simplify using `only [Set.mem_ofPred_eq] at hm ⊢`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem ops_ycond {N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop ℤ)
     (T : Module.End ℚ_[p] (MvPolynomial (Fin N × Fin r) ℚ_[p]))
@@ -94,7 +94,7 @@ theorem ops_ycond {N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (Mt : WithTop 
   rw [← this]; exact hm
 
 /- English proof (translation)
-Use `congr 1`. Use extensionality with `m`. Simplify using `only [Set.mem_ofPred_eq, WithTop.coe_le_coe]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem supp_coe {N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (k : ℤ) :
     restrictSupport ℚ_[p] {m : Fin N × Fin r →₀ ℕ | ((wt LL j 0 m : ℤ) : WithTop ℤ) ≤ ((k : ℤ) : WithTop ℤ)} =
@@ -104,13 +104,13 @@ theorem supp_coe {N : ℕ} [NeZero r] (LL : Letters N) (j : ℕ) (k : ℤ) :
   simp only [Set.mem_ofPred_eq, WithTop.coe_le_coe]
 
 /- English proof (translation)
-Rewrite using `[Uop_apply]`. Use `Submodule.sub_mem _ ?_ (Submodule.sum_mem _ fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[X_mul_mem p]`. Use `restrictSupport_mono ℚ_[p] ?_ (Submodule.sub_mem _ (Submodule.smul_mem _ _ hF) (eulL_keep_supp _ _ F hF))` and prove the remaining obligations. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at hm ⊢`. Rewrite using `[last_wt LL (K + 1) le_rfl hv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[X_mul_mem p]`. Use `glAct_keep LL K a b _ _ ?_ ?_ F hF` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i hi hvi m hm hb`. Simplify using `only [Set.mem_ofPred_eq] at hm ⊢`. Rewrite using `[last_wt LL (K + 1) le_rfl hv, (wt_shift LL (K + 1) a b 0 i (by omega) m).1 hvi hb]`. Use linear arithmetic over natural numbers and integers. Introduce `i hi hvi m hm hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq] at hm ⊢`. Rewrite using `[last_wt LL (K + 1) le_rfl hv, (wt_shift LL (K + 1) a b 0 i (by omega) m).2 hvi hb]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem Uop_supp [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = true) (c k : ℤ)
     (Cs : Finset (Fin r)) (a : Fin r) (F : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
@@ -137,13 +137,13 @@ theorem Uop_supp [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = t
       omega
 
 /- English proof (translation)
-Rewrite using `[Uop_apply]`. Establish `e : ∀ b, glAct p LL K 0 b G = glAct p LL (K + 1) 0 b G - X (Fin.last K, 0) * pderiv (Fin.last K, b) G`. Introduce `b`. Rewrite using `[glAct_succ LL hv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [e, mul_sub, Finset.sum_sub_distrib]`. Establish `h1 : ∑ b, X (Fin.last K, b) * glAct p LL (K + 1) 0 b G = X (Fin.last K, 0) * (((c : ℤ) : ℚ_[p]) • G)`. Rewrite using `[Finset.sum_eq_single 0, h0]`. Introduce `b _ hb'`. Rewrite using `[hb b hb', mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Establish `h2 : ∑ b, X (Fin.last K, b) * (X (Fin.last K, 0) * pderiv (Fin.last K, b) G) = X (Fin.last K, 0) * ProjS.eulL (fun c : Fin r => (Fin.last K, c)) G`. Rewrite using `[ProjS.eulL_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[h1, h2]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem Uop_top [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = true) (c : ℤ)
     (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p])
@@ -168,15 +168,15 @@ theorem Uop_top [NeZero r] (LL : Letters (K + 1)) (hv : LL.vec (Fin.last K) = tr
 end U
 
 /- English proof (translation)
-Introduce `p _ K r LL c Cs a s t F hv hs ht`. Establish `hlt : ((Fin.last K : Fin (K + 1)) : ℕ) < K + 1` using `(Fin.last K).isLt`. Establish `hX : ∀ (b : Fin r) (G : MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]), glAct p LL (K + 1) s t (X (Fin.last K, b) * G) = (if t = b then X (Fin.last K, s) * G else 0) + X (Fin.last K, b) * glAct p LL (K + 1) s t G`. Introduce `b G`. Rewrite using `[glAct_mul, glAct_X, if_pos hlt, if_pos hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hc : ∀ b, glAct p LL (K + 1) s t (glAct p LL K a b F) = glAct p LL K a b (glAct p LL (K + 1) s t F) + ((if t = a then glAct p LL K s b F else 0) - (if b = s then glAct p LL K a t F else 0))`. Introduce `b`. Rewrite using `[← glAct_succ_comm]`. Normalize the expressions using the abelian group laws.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Uop_apply, Uop_apply, map_sub, map_sum, hX, map_sub, map_smul, eul_glAct]`. Simplify using `only [hX, hc, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]`. Establish `h1 : ∑ b ∈ Cs, (if t = b then X (Fin.last K, s) * glAct p LL K a b F else 0) = X (Fin.last K, s) * glAct p LL K a t F`. Rewrite using `[Finset.sum_ite_eq, if_pos ht]`. Establish `h2 : ∑ b ∈ Cs, X (Fin.last K, b) * (if b = s then glAct p LL K a t F else 0) = X (Fin.last K, s) * glAct p LL K a t F`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mul_ite, mul_zero]`. Rewrite using `[Finset.sum_ite_eq', if_pos hs]`. Rewrite using `[h1, h2]`. Use `split_ifs with hta`. Rewrite using `[Uop_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_sub]`. Normalize the expressions using the abelian group laws. Simplify using `only [mul_zero, Finset.sum_const_zero]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem raising_comm_holds : UComm := by
   intro p _ K r LL c Cs a s t F hv hs ht
@@ -209,9 +209,9 @@ theorem raising_comm_holds : UComm := by
     abel
 
 /- English proof (translation)
-Introduce `p _ K r LL c Cs a o F hF`. Rewrite using `[Uop_apply]`. Use `Submodule.sub_mem _ (X_mul_pol LL a o _ (Submodule.sub_mem _ (Submodule.smul_mem _ _ hF) ?_)) (Submodule.sum_mem _ fun b _ => X_mul_pol LL b o _ ?_)` and prove the remaining obligations. Rewrite using `[(pol_iff_eul _ F).mp hF (Fin.last K)]`. Conclude with `Submodule.smul_mem _ _ hF`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `glAct_pol (setLast LL o) K a b F hF` as an intermediate fact. Rewrite `this` using `[glAct_setLast]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem raising_degree_holds : UDeg := by
   intro p _ K r LL c Cs a o F hF
@@ -224,9 +224,9 @@ theorem raising_degree_holds : UDeg := by
     rwa [glAct_setLast] at this
 
 /- English proof (translation)
-Introduce `p _ K r LL c ρ a F ha`. Express the relevant statement in the definitionally equal form `resL p (Fin.last K, ρ) 0 _ = Uop p LL c (univ.erase ρ) a (resL p (Fin.last K, ρ) 0 F)`. Establish `hne : ∀ b : Fin r, b ≠ ρ → ((Fin.last K, b) : Fin (K + 1) × Fin r) ≠ (Fin.last K, ρ)` using `fun b hb h => hb (Prod.mk.inj h).2`. Rewrite using `[Uop_apply, Uop_apply, map_sub, map_sum, resL_X_mul _ _ (hne a ha), map_sub, map_smul, resL_eulL]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.add_sum_erase univ _ (Finset.mem_univ ρ), resL_apply, initPart_zero_X_mul, zero_add]`. Use `Finset.sum_congr rfl fun b hb => ?_` and prove the remaining obligations. Rewrite using `[resL_X_mul _ _ (hne b (Finset.mem_erase.mp hb).1), resL_glAct LL K a b (Fin.last K, ρ) 0 (fun i hi => ⟨fun h' => last_ne_of_lt i hi (Prod.mk.inj h').1.symm, fun h' => last_ne_of_lt i hi (Prod.mk.inj h').1.symm⟩)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem restriction_raising_holds : ResU := by
   intro p _ K r LL c ρ a F ha
@@ -241,11 +241,11 @@ theorem restriction_raising_holds : ResU := by
     ⟨fun h' => last_ne_of_lt i hi (Prod.mk.inj h').1.symm, fun h' => last_ne_of_lt i hi (Prod.mk.inj h').1.symm⟩)]
 
 /- English proof (translation)
-Introduce `p _ K r _ LL c Cs a j M hj F hF`. Establish `hl : ∀ b : Fin r, ((Fin.last K, b) : Fin (K + 1) × Fin r) ∈ {v : Fin (K + 1) × Fin r | j ≤ (v.1 : ℕ)}`. Introduce `b`. Simplify using `only [Set.mem_ofPred_eq, Fin.val_last]`. Conclude with `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hX : ∀ (b : Fin r), ∀ x ∈ YCond p LL j M, X (Fin.last K, b) * x ∈ YCond p LL j M` using `fun b => ops_ycond LL j M (LinearMap.mulLeft ℚ_[p] (X (Fin.last K, b))) (FockB.mulLeftX_mem (hl b))`. Establish `hD : ∀ (b : Fin r), ∀ x ∈ YCond p LL j M, pderiv (Fin.last K, b) x ∈ YCond p LL j M` using `fun b => ops_ycond LL j M (pderiv (Fin.last K, b)).toLinearMap (FockB.pderiv_mem (hl b))`. Rewrite using `[Uop_apply]`. Use `Submodule.sub_mem _ (hX a _ (Submodule.sub_mem _ (Submodule.smul_mem _ _ hF) ?_)) (Submodule.sum_mem _ fun b _ => hX b _ ?_)` and prove the remaining obligations. Rewrite using `[ProjS.eulL_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sum_mem _ fun b _ => hX b _ (hD b F hF)`. Rewrite using `[glAct_split LL j K a b, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ (ycond_glStable LL j M a b F hF) (ops_ycond LL j M (glRest p LL j K a b) (glRest_mem LL j K hj a b) F hF)`.
+A detailed English derivation is pending.
 -/
 theorem raising_keeps_early_letters : UKeepsEarly := by
   intro p _ K r _ LL c Cs a j M hj F hF
@@ -266,37 +266,31 @@ theorem raising_keeps_early_letters : UKeepsEarly := by
       (ops_ycond LL j M (glRest p LL j K a b) (glRest_mem LL j K hj a b) F hF)
 
 /- English proof (translation)
-Introduce `p _ K r _ LL c a hv`. Use `set Yc : Submodule ℚ_[p] (MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) := YCond p LL (K + 1) ((c : ℤ) : WithTop ℤ) with hYc`. Establish `hYs : ∀ F ∈ Yc, F ∈ restrictSupport ℚ_[p] {m : Fin (K + 1) × Fin r →₀ ℕ | wt LL (K + 1) 0 m ≤ c}`. Introduce `F hF`. Rewrite using `[← supp_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ycond_le_supp LL (K + 1) _ hF`. Establish `hsupp : ∀ (a : Fin r), ∀ F ∈ Yc, Uop p LL c univ a F ∈ restrictSupport ℚ_[p] {m : Fin (K + 1) × Fin r →₀ ℕ | wt LL (K + 1) 0 m ≤ c}`. Introduce `a F hF`. Distinguish the cases in `ha : a = 0`. Substitute `ha set G := compP (fun m => wt LL (K + 1) 0 m = c) F with hG` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGY : G ∈ Yc` using `vdm (glAct p LL (K + 1) 0 0) (wt LL (K + 1) 0) (fun x m => coeff_cartan LL (K + 1) 0 x m) Yc (ycond_glStable LL (K + 1) _ 0 0) F hF c`. Establish `h0 : glAct p LL (K + 1) 0 0 G = ((c : ℤ) : ℚ_[p]) • G`. Use extensionality with `m`. Rewrite using `[coeff_cartan, coeff_smul, smul_eq_mul, hG, coeff_compP]`. Use `split_ifs with h`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hb : ∀ b : Fin r, b ≠ 0 → glAct p LL (K + 1) 0 b G = 0`. Introduce `b hb`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `(MvPolynomial.ne_zero_iff.mp hne)`. Establish `hm' : m ∈ (glAct p LL (K + 1) 0 b G).support` using `mem_support_iff.mpr hm`. Establish `h1` using `hYs _ (ycond_glStable LL (K + 1) _ 0 b G hGY)`. Rewrite `h1` using `[mem_restrictSupport_iff]`. Establish `h2` using `h1 (Finset.mem_coe.mpr hm')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : glAct p LL (K + 1) 0 0 (glAct p LL (K + 1) 0 b G) = (((c + 1 : ℤ)) : ℚ_[p]) • glAct p LL (K + 1) 0 b G`. Use `glAct_comm LL (K + 1) 0 0 0 b G` as an intermediate fact. Rewrite `this` using `[if_pos rfl, if_neg hb, sub_zero, h0, map_smul]`. Rewrite using `[sub_eq_iff_eq_add.mp this]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[add_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `h4` using `eig_supp LL (K + 1) 0 (c + 1) _ h3`. Rewrite `h4` using `[mem_restrictSupport_iff]`. Establish `h5` using `h4 (Finset.mem_coe.mpr hm')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_ofPred_eq] at h2 h5`. Use linear arithmetic over natural numbers and integers. Establish `hR : F - G ∈ restrictSupport ℚ_[p] {m : Fin (K + 1) × Fin r →₀ ℕ | wt LL (K + 1) 0 m ≤ c - 1}`. Establish `hF'` using `hYs F hF`. Rewrite `hF'`, the goal using `[mem_restrictSupport_iff]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `m hm`. Rewrite `hm` using `[Finset.mem_coe, mem_support_iff, coeff_sub, hG, coeff_compP]`. Use `split_ifs at hm with h`. Conclude with `absurd (sub_self _) hm`. Rewrite `hm` using `[sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hF' (Finset.mem_coe.mpr (mem_support_iff.mpr hm))` as an intermediate fact. Simplify using `only [Set.mem_ofPred_eq] at this ⊢`. Use linear arithmetic over natural numbers and integers. Establish `e : Uop p LL c univ 0 F = Uop p LL c univ 0 (F - G)`. Rewrite using `[map_sub, Uop_top LL hv c G h0 hb, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e]`. Use `Uop_supp LL hv c (c - 1) univ 0 (F - G) hR` as an intermediate fact. Rewrite `this` using `[if_pos rfl, sub_add_cancel]`. Conclude with `this`. Use `Uop_supp LL hv c c univ a F (hYs F hF)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[if_neg ha, add_zero]`. Conclude with `this`. Use `set B : Submodule ℚ_[p] (MvPolynomial (Fin (K + 1) × Fin r) ℚ_[p]) := ⨆ a : Fin r, Yc.map (Uop p LL c univ a) with hB`. Establish `hmem : ∀ (a : Fin r), ∀ x ∈ Yc, Uop p LL c univ a x ∈ B` using `fun a x hx => Submodule.mem_iSup_of_mem a (Submodule.mem_map_of_mem hx)`. Establish `hle : B ≤ Yc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `le_ycond LL (K + 1) _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[supp_coe]`. Conclude with `iSup_le fun a => Submodule.map_le_iff_le_comap.mpr fun x hx => hsupp a x hx`. Introduce `s t`. Establish `: B ≤ B.comap (glAct p LL (K + 1) s t)`.
-
-Use `iSup_le fun a => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.mp hy`. Use `show glAct p LL (K + 1) s t (Uop p LL c univ a x) ∈ B`. Establish `e` using `raising_comm_holds p K r LL c univ a s t x hv (Finset.mem_univ _) (Finset.mem_univ _)`.
-
-Rewrite using `[sub_eq_iff_eq_add.mp e]`. Use `Submodule.add_mem _ ?_ (hmem a _ (ycond_glStable LL (K + 1) _ s t x hx))` and prove the remaining obligations. Use `split_ifs`. Conclude with `hmem s x hx`. Conclude with `Submodule.zero_mem _`.
-
-Conclude with `fun y hy => this hy`. Introduce `F hF`. Conclude with `hle (hmem a F hF)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem raising_keeps_last_letter : UKeepsLast := by
   intro p _ K r _ LL c a hv

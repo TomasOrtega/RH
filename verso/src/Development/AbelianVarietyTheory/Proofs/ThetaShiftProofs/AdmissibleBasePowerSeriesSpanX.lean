@@ -16,11 +16,11 @@ open scoped CategoryTheory.Obj
 open NumberField GlobalTheory.TorusExt
 
 /- English proof (translation)
-Establish `z : Sp F` using `(default : PrimeSpectrum F)`. Establish `pe : ∀ k, pt' k z = φ (pt k z)` using `fun k => congrArg (fun g => g z) (hp k).symm`. Establish `key : ∀ (j₀ : K → M₀.ι) (i : K → M'.ι) (q : K → M.ι), (∀ k, Φ (φ (pt k z)) ∈ M₀.U (j₀ k)) → (∀ k, φ (pt k z) ∈ M'.U (i k)) → (∀ k, pt k z ∈ M.U (q k)) → (((∏ k, gw w' (pt k) z (i k) (q k) ^ ε k) * gm (𝟙 _) z (LB.wchart M pt q) (t.s q)).val = toStk z x * (gm (𝟙 _) z (LB.wchart M' …`. Introduce `j₀ i q h₀ h₁ h₂`. Establish `a` using `T.prod (ε := ε) (h' := 𝟙 _) (φ' := pt') (fun k => (hp k).trans (Category.id_comp _).symm) _ (𝟙 _) z j₀ i q h₀ h₁ h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `b` using `H _ (𝟙 _) z j₀ i (fun k => by show Φ (pt' k z) ∈ _; rw [pe]; exact h₀ k) (fun k => by show pt' k z ∈ _; rw [pe]; exact h₁ k)`. Simplify using `only [Category.id_comp] at a b`. Rewrite using `[a, b, _root_.mul_assoc, Units.val_mul (∏ k, gw wD (pt' k) z (j₀ k) (i k) ^ ε k), Units.val_mul (∏ k, gw wD (pt' k) z (j₀ k) (i k) ^ ε k), mul_left_comm, Units.mul_right_inj]`. Rewrite using `[genRel_iff w' t t' x z, genRel_iff w t t₀ x z]`. Use `⟨fun h => ⟨fun k => by rw [← Category.assoc, hp, hc, Category.id_comp], fun q j₀ h₀ h₂ => ?_⟩, fun h => ⟨hp, fun q i h₁ h₂ => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose i hi using fun k => exists_chart hM' (φ (pt k z))`. Conclude with `(key j₀ i q h₀ hi h₂).1 (h.2 q i hi h₂)`. Use `choose j₀ hj using fun k => exists_chart hM₀ (Φ (φ (pt k z)))`. Conclude with `(key j₀ i q hj h₁ h₂).2 (h.2 q j₀ hj h₂)`.
+A detailed English derivation is pending.
 -/
 theorem genRel_target {F : Type} [Field F] {B B' B₀ : Scheme.{0}} {M : LB B} {M' : LB B'} {M₀ : LB B₀} {K : Type}
     [Fintype K] {ε : K → ℤ} {φ : B ⟶ B'} {Φ : B' ⟶ B₀} {wD : LB.Iso M' (M₀.pull Φ)} {w' : LB.Iso M (M'.pull φ)}
@@ -64,27 +64,25 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {g : O'' →+* R} {f
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `letI := H.starRing`. Substitute `hf₀` using the available equality. Take `⟨t, m, P, φ, he, w, e, s1, s2, s3, s4, s5, s6⟩` from `W`. Establish `gpD` using `pull_grp hD`. Establish `sq : φ ≫ a.D₀.P.A.hom = (P.D.toPre.P.A.hom ≫ spMap g) ≫ spMap f`.
+Equip the data with the indicated structure. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[s1.1.w, spMap_comp, Category.assoc]`. Take `⟨φ', rfl, hb⟩ : ∃ φ' : P.D.toPre.P.A.left ⟶ a'.D₀.P.A.left, φ' ≫ proj hD = φ ∧ φ' ≫ a'.D₀.P.A.hom = P.D.toPre.P.A.hom ≫ spMap g` from `⟨gpD.1.lift _ _ sq, gpD.1.lift_fst _ _ _, gpD.1.lift_snd _ _ _⟩`. Establish `gp : IsGrpPullback P.D.toPre.P.A a'.D₀.P.A (spMap g) φ'` using `gpD.cancel (s1.congr (spMap_comp f g) rfl) hb`. Establish `he' : eSec P.D.toPre.P.A ≫ φ' = spMap g ≫ eSec a'.D₀.P.A` using `(cubeMapOf gp).e_comm`. Establish `gD` using `(isGen_iff hD.w).1 hD.w_gen`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0` using `(isGen_iff w).1 s2`. Take `⟨w', T⟩` from `exists_cancel a.D₀.P.isLB hD.w w gD g0 a'.D₀.P.isLB P.D.toPre.P.isLB`. Establish `hc : ∀ y, (P.D.toPre.c (e (hD.xe y))).left ≫ φ' = spMap g ≫ (a'.D₀.c y).left` using `fun y => by`. Use `gpD.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hD.c_pr, ← Category.assoc (spMap g), ← spMap_comp]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `s5 _`. Rewrite using `[Category.assoc, hb, ← Category.assoc, Over.w, Category.assoc, Over.w]`. Conclude with `(Category.id_comp _).trans (Category.comp_id _).symm`. Use `⟨⟨t, m, P, φ', he', w', h.xeL.trans e, gp, (isGen_iff w').2 (T.pgen_cancel a.D₀.P.isLB gD g0), ?_, fun x => ?_, hc, fun F _ _ _ _ uF ha hu => ?_⟩, rfl, HEq.rfl, HEq.rfl, HEq.rfl, fun _ => HEq.rfl, w, HEq.rfl, T⟩` and prove the remaining obligations. Establish `r₀` using `(maps_iff w _ (fun _ => eSec a.D₀.P.A) _ P.D.toPre.rig a.D₀.rig (spMap (g.comp f)) _ (rigPull_le (φ' ≫ proj hD) (spMap (g.comp f)) he a.D₀.P.L) (fun _ => rfl)).1 s3`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `r₁` using `(maps_iff hD.w _ (fun _ => eSec a.D₀.P.A) _ a'.D₀.rig a.D₀.rig (specOf f) _ (rigPull_le (proj hD) (specOf f) hD.he a.D₀.P.L) (fun _ => rfl)).1 hD.w_rig`. Rewrite `r₀` using `[spMap_comp]`. Conclude with `(maps_iff w' _ (fun _ => eSec a'.D₀.P.A) _ P.D.toPre.rig a'.D₀.rig (spMap g) _ (rigPull_le φ' (spMap g) he' a'.D₀.P.L) (fun _ => rfl)).2 (T.pmaps_cancel a.D₀.P.isLB (fun _ => he') r₁ r₀)`. Use `gpD.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, h.act x]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Conclude with `(s4 x).trans (Category.assoc _ _ _)`. Rewrite using `[Category.assoc, Category.assoc, Over.w, hb, ← Category.assoc, Over.w]`. Take `⟨_, hK, -⟩` from `h.etaA 0`. Use `letI : Algebra (FractionRing O') F := ((algebraMap (FractionRing O'') F).comp (algebraMap (FractionRing O') (FractionRing O''))).toAlgebra`. Establish `hF : Compat f F` using `fun x => congrArg (algebraMap (FractionRing O'') F) (hK x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k₁, k₂⟩` from `s6 F uF (fun x => (hF x).trans (ha (f x))) hu`. Establish `hj : jFK (R` using `R) F ≫ jK R ≫ spMap g = jFK (R := O'') F ≫ jK O'' := Compat.sq (φ := g) ha`. Use `⟨fun y => ?_, fun yF hyF k p₀ σ hσ q₀' q x e1 e2 e3 e4 => ?_⟩` and prove the remaining obligations. Rewrite using `[h.be_eq]`. Use `(genRel_target T a.D₀.P.isLB a'.D₀.P.isLB (fun _ => ?_) (fun _ => ?_) (pmaps_psi hD F hF.sq y) _ _).2 (k₁ (hD.xe y))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show (jFK (R := R) F ≫ jK R ≫ (P.D.toPre.c (e (hD.xe y))).left) ≫ φ' = jFK (R := O'') F ≫ jK O'' ≫ (a'.D₀.c y).left`. Rewrite using `[Category.assoc, Category.assoc, hc, ← Category.assoc (jK R), ← Category.assoc]`. Conclude with `(congrArg (· ≫ _) hj).trans (Category.assoc _ _ _)`. Use `show (jFK (R := O'') F ≫ jK O'' ≫ (a'.D₀.c y).left) ≫ proj hD = 𝟙 _ ≫ jFK (R := O') F ≫ jK O' ≫ (a.D₀.c (hD.xe y)).left`. Rewrite using `[Category.id_comp, Category.assoc, Category.assoc, hD.c_pr, ← Category.assoc (jK O''), ← Category.assoc]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg (· ≫ _) hF.sq).trans (Category.assoc _ _ _)`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp, hσ'⟩ : ∃ p : QkPt a.D₀ (FractionRing O') k, IsPullQk hD p p₀ ∧ ((k = l.A ∧ ∃ v, HEq p (a.etaA v) ∧ σ = Y.oF.etaA v) ∨ (k = l.M ∧ ∃ v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), HEq p (a.eta v) ∧ σ = Y.oF.eta v)) := by`. Break down `hσ with ⟨rfl, v, h₁, h₂⟩ | ⟨rfl, v, hv, h₁, h₂⟩` into its components or cases. Conclude with `⟨a.etaA v, eq_of_heq h₁ ▸ h.etaA v, Or.inl ⟨rfl, v, HEq.rfl, h₂⟩⟩`. Conclude with `⟨a.eta v, eq_of_heq h₁ ▸ h.eta v, Or.inr ⟨rfl, v, hv, HEq.rfl, h₂⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q₀, hq₀, -⟩` from `existsUnique_qkExt (F' := F) a.bimult (algebraMap (FractionRing O') F) (RingHom.comp_id _) p`. Take `⟨hy, hg⟩` from `hp.ext hF hq₀ e1`. Establish `hy' : hD.xe q₀'.y = q₀.y` using `by rw [hy, AddEquiv.apply_symm_apply]`. Use `k₂ yF hyF k p σ hσ' q₀ q x hq₀ (e2.trans (congrArg e hy')) (fun z => ?_) e4` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hD.xe.surjective z`.
-
-Take `⟨hψ, hm⟩` from `hg.2 z`. Establish `pm` using `(maps_iff hD.w _ _ _ (q₀'.g.s z) (q₀.g.s (hD.xe z)) (𝟙 _) _ (GeneratorPullback.pullAlong_le _ _ _ _ _ hψ) (fun _ => rfl)).1 hm`. Establish `k'` using `e3 z`. Rewrite `k'` using `[h.be_eq, hy']`. Conclude with `(genRel_target T a.D₀.P.isLB a'.D₀.P.isLB k'.1 hψ pm _ _).1 k'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_witness (h : IsBC f a a' hD) (hf₀ : f₀ = g.comp f) (W : ArcWit Y a I f₀ u χ) :
     ∃ W' : ArcWit Y a' I g u χ, W'.t = W.t ∧ HEq W'.m W.m ∧ HEq W'.P W.P ∧ HEq (W'.φ ≫ proj hD) W.φ ∧
@@ -162,9 +160,9 @@ theorem exists_witness (h : IsBC f a a' hD) (hf₀ : f₀ = g.comp f) (W : ArcWi
 end Witness
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Take `⟨W₁, hD₁, bc, mb, pu, hm, he, w₁, hφ, hw, T₁⟩` from `W.baseChange CubePf.cubePull hP hU h5 (qkPullExists hG) polOActPull hR hR' κ hκ hI`. Take `⟨W', ht, hm', hP', hφ', he', w₂, hw', T₂⟩` from `exists_witness h hi W₁`. Take `⟨t₁, m₁, P₁, φ₁, _, _, e₁, _⟩` from `W₁`. Take `⟨t', m', P', φ', he₀, w', e', sp⟩` from `W'`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at ht`. Substitute `ht` using the available equality. Take `rfl` from `eq_of_heq hm'`. Take `rfl` from `eq_of_heq hP'`. Conclude with `⟨⟨_, _, _, φ', he₀, w', e', sp⟩, hD₁, bc, mb, pu, hm, fun y => (congrArg hD₁.xe (eq_of_heq (he' y))).trans (he _), (eq_of_heq hφ').trans hφ, w₁, w₂, (hw'.trans hw).symm, T₁, T₂⟩`.
+Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_witness_baseChange (hG : GlobalFnsSt) (hP : PolBaseChangeSt) (hU : UnifBaseChangeSt) (h5 : Laws5)
     (h : IsBC f a a' hD) {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {I : Ideal R} {I' : Ideal R'}
@@ -192,7 +190,7 @@ theorem exists_witness_baseChange (hG : GlobalFnsSt) (hP : PolBaseChangeSt) (hU 
     (eq_of_heq hφ').trans hφ, w₁, w₂, (hw'.trans hw).symm, T₁, T₂⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, inferInstance, inferInstance⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissibleBase_powerSeries_span_X (A : Type) [CommRing A] [IsDomain A] [IsPrincipalIdealRing A] :
     AdmBase (PowerSeries A) (Ideal.span {PowerSeries.X}) :=
@@ -209,7 +207,7 @@ def IsArcBase (A : Type) [CommRing A] [IsDomain A] (ϖ : A) : Prop :=
   (IsField A ∧ ϖ = 1) ∨ (IsDiscreteValuationRing A ∧ Irreducible ϖ ∧ IsAdicComplete (Ideal.span {ϖ}) A)
 
 /- English proof (translation)
-Break down `h with ⟨h, -⟩ | ⟨h, -⟩` into its components or cases. Use `letI := h.toField infer_instance`. Use `infer_instance`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem IsArcBase.isPrincipalIdealRing {A : Type} [CommRing A] [IsDomain A] {ϖ : A} (h : IsArcBase A ϖ) :
     IsPrincipalIdealRing A := by
@@ -219,14 +217,14 @@ theorem IsArcBase.isPrincipalIdealRing {A : Type} [CommRing A] [IsDomain A] {ϖ 
   · infer_instance
 
 /- English proof (translation)
-Break down `h with ⟨-, rfl⟩ | ⟨-, h, -⟩` into its components or cases. Use `exacts [one_ne_zero, h.ne_zero]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem IsArcBase.ne_zero {A : Type} [CommRing A] [IsDomain A] {ϖ : A} (h : IsArcBase A ϖ) : ϖ ≠ 0 := by
   rcases h with ⟨-, rfl⟩ | ⟨-, h, -⟩
   exacts [one_ne_zero, h.ne_zero]
 
 /- English proof (translation)
-Break down `h with ⟨h, rfl⟩ | ⟨_, h, -⟩` into its components or cases. Take `⟨y, hy⟩` from `h.mul_inv_cancel hx`. Conclude with `⟨0, y, by rw [pow_zero, hy]⟩`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hx h`. Conclude with `⟨n, hn.dvd⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsArcBase.dvd_pow {A : Type} [CommRing A] [IsDomain A] {ϖ : A} (h : IsArcBase A ϖ) {x : A} (hx : x ≠ 0) :
     ∃ n : ℕ, x ∣ ϖ ^ n := by
@@ -239,14 +237,14 @@ theorem IsArcBase.dvd_pow {A : Type} [CommRing A] [IsDomain A] {ϖ : A} (h : IsA
 section PowerSeries
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => PowerSeries.map_C f x`.
+A detailed English derivation is pending.
 -/
 theorem map_comp_C' (f : O' →+* O'') :
     (PowerSeries.map f).comp (PowerSeries.C (R := O')) = (PowerSeries.C (R := O'')).comp f :=
   RingHom.ext fun x => PowerSeries.map_C f x
 
 /- English proof (translation)
-Take `⟨_, hK, -⟩` from `h.etaA 0`. Introduce `x y hxy`. Apply `IsFractionRing.injective O' (FractionRing O')` to reduce the goal to its premises. Apply `(algebraMap (FractionRing O') (FractionRing O'')).injective` to reduce the goal to its premises. Rewrite using `[hK, hK, hxy]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsBC.injective (h : IsBC f a a' hD) : Function.Injective f := by
   obtain ⟨_, hK, -⟩ := h.etaA 0
@@ -256,7 +254,7 @@ theorem IsBC.injective (h : IsBC f a a' hD) : Function.Injective f := by
   rw [hK, hK, hxy]
 
 /- English proof (translation)
-The claim follows from `exists_witness_baseChange hG hP hU h5 h (admissibleBase_powerSeries_span_X O') (admissibleBase_powerSeries_span_X O'') (PowerSeries.map_injective f h.injective) (by rw [Ideal.map_span, Set.image_singleton, PowerSeries.map_X]) (map_comp_C' f) (PowerSeries.map_X f) W`.
+A detailed English derivation is pending.
 -/
 theorem exists_witness_powerSeries (hG : GlobalFnsSt) (hP : PolBaseChangeSt) (hU : UnifBaseChangeSt) (h5 : Laws5)
     [IsPrincipalIdealRing O'] [IsPrincipalIdealRing O''] (h : IsBC f a a' hD) {χ : Sp (PowerSeries O') ⟶ Y.X}
@@ -275,13 +273,13 @@ theorem exists_witness_powerSeries (hG : GlobalFnsSt) (hP : PolBaseChangeSt) (hU
     (by rw [Ideal.map_span, Set.image_singleton, PowerSeries.map_X]) (map_comp_C' f) (PowerSeries.map_X f) W
 
 /- English proof (translation)
-Use `hϖ.isPrincipalIdealRing` as an intermediate fact. Use `hϖ'.isPrincipalIdealRing` as an intermediate fact. Take `⟨h₁, h₂, h₃, h₄⟩` from `hχ`. Establish `mem : ∀ (x : Sp (PowerSeries O'')) (s : PowerSeries O'), s ∈ (spMap (PowerSeries.map f) x).asIdeal ↔ PowerSeries.map f s ∈ x.asIdeal` using `fun _ _ => Iff.rfl`. Use `⟨?_, fun x => ?_, fun x hx => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, h₁, ← Category.assoc, ← spMap_comp, map_comp_C', spMap_comp, spMap_comp, Category.assoc]`. Use `(h₂ (spMap (PowerSeries.map f) x)).trans ?_` and prove the remaining obligations. Rewrite using `[mem, PowerSeries.map_X]`. Use `h₃ (spMap (PowerSeries.map f) x) fun hm => hx ?_` and prove the remaining obligations. Rewrite `hm` using `[mem, map_mul, PowerSeries.map_X, PowerSeries.map_C]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `x.isPrime.mem_or_mem hm with hm | hm` into its components or cases. Take `⟨n, y, hy⟩` from `hϖ'.dvd_pow ((map_ne_zero_iff f h.injective).2 hϖ.ne_zero)`. Use `Ideal.mul_mem_right _ _ (x.isPrime.mem_of_pow_mem n ?_)` and prove the remaining obligations. Rewrite using `[← map_pow, hy, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ hm`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_left _ _ hm`. Take `⟨W⟩` from `(Y.hasArcData_iff _ _ _ _ _).1 h₄`. Take `⟨W', -⟩` from `exists_witness_powerSeries hG hP hU h5 h W`. Conclude with `(Y.hasArcData_iff _ _ _ _ _).2 ⟨W'⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsArc.baseChange (hG : GlobalFnsSt) (hP : PolBaseChangeSt) (hU : UnifBaseChangeSt) (h5 : Laws5)
     (h : IsBC f a a' hD) {ϖ : O'} {ϖ' : O''} (hϖ : IsArcBase O' ϖ) (hϖ' : IsArcBase O'' ϖ')

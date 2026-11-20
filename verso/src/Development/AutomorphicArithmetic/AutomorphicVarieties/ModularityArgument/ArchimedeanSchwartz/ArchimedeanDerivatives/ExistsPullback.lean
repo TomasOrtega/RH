@@ -16,7 +16,7 @@ attribute [local instance 100] LieRing.ofAssociativeRing
 namespace UpperTheory.V.Z.Inf
 
 /- English proof (translation)
-Use `⟨LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) (fun φ ψ => inner ℂ (p (j φ)) (p (j ψ))) (fun _ _ _ => by rw [map_add, map_add, inner_add_left]) (fun _ _ _ => by rw [map_smul, map_smul, inner_smul_left]; rfl) (fun _ _ _ => by rw [map_add, map_add, inner_add_right]) (fun _ _ _ => …` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inner ℂ (p (j (T g x))) (p (j (T g y))) = inner ℂ (p (j x)) (p (j y))`. Rewrite using `[hT, hT]`. Conclude with `hS g _ _ (hP x) (hP y)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_pullback {V C L G : Type*} [AddCommGroup V] [Module ℂ V] [AddCommGroup C] [Module ℂ C]
     [NormedAddCommGroup L] [InnerProductSpace ℂ L] (j : V →ₗ[ℂ] C) (p : C →ₗ[ℂ] L) (T : G → V → V) (S : G → C → C)
@@ -34,11 +34,11 @@ private theorem exists_pullback {V C L G : Type*} [AddCommGroup V] [Module ℂ V
   exact hS g _ _ (hP x) (hP y)
 
 /- English proof (translation)
-Take `⟨j, hj⟩ : ∃ j : π.V →ₗ[ℂ] cuspForms E a, ∀ φ : π.V, ofCusp E a (j φ) = φ.1 ∧ j φ ∈ carrier π` from `⟨(carrier π).subtype ∘ₗ (carrierEq π).symm.toLinearMap, fun φ => ⟨by`. Use `coe_carrierEq π ((carrierEq π).symm φ)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Conclude with `this.symm, ((carrierEq π).symm φ).2⟩⟩`. Establish `hc : ∀ φ, j φ ∈ centralCuspForms E a` using `fun φ => carrier_le_central π h0 (hj φ).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ g φ, j (π.locRep w g φ) = finRepCusp E a (locGL E a w g) (j φ)` using `fun g φ => by`. Use `ofCusp_injective ?_` and prove the remaining obligations. Rewrite using `[(hj _).1, ofCusp_τ, (hj _).1]`. Both sides reduce to the same expression. Establish `hinj : ∀ x, j x = 0 → x = 0` using `fun x h1 => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hj x).1` as an intermediate fact. Rewrite `this` using `[h1, map_zero]`. Conclude with `Subtype.ext this.symm`. Conclude with `exists_pullback j (CuspidalSpectrum.cuspToL2 (Measure.haar : Measure (Reduction.normOneGL E a))) (fun g => π.locRep w g) (fun g => finRepCusp E a (locGL E a w g)) (· ∈ centralCuspForms E a) hc (fun x hx h => eq_zero_of_petersson_inner_self_eq_zero _ hx h) hinj hτ fun g x y hx hy …`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_form {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (π : CuspSub E a)
     (h0 : ∀ φ ∈ π.V, lie E a (oneL E a) φ = 0) (w : HeightOneSpectrum (𝓞 E)) :
@@ -64,11 +64,9 @@ private theorem exists_form {E : Type} [Field E] [NumberField E] [IsTotallyCompl
     fun g x y hx hy => petersson_inner_finiteAdelic_invariant _ _ hx hy
 
 /- English proof (translation)
-Establish `hd : ((a : ℂ) * (Module.finrank ℚ E : ℂ)) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.2 (by omega)) (Nat.cast_ne_zero.2 Module.finrank_pos.ne')`. Use `set c : ℂ := GlobalTheory.ResW.cex (⟨a, σ⟩ : GlobalTheory.ResW.Letter E) with hc`. Take `⟨χ, hz, hv, -, -⟩` from `GlobalTheory.T.exists_idelic_absValue_cpow_character E (-c / ((a : ℂ) * (Module.finrank ℚ E : ℂ)))`. Use `⟨χ, -(-c / ((a : ℂ) * (Module.finrank ℚ E : ℂ))).re, ?_, fun w => ⟨(hv w).1, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.ResW.zc E a φ = c • φ` using `(GlobalTheory.T.cuspidalLetter_centralExponent_properties E ⟨a, σ⟩).1 φ hφ`. Establish `e2 : GlobalTheory.ResW.zc E a (mulChi a χ φ) = 0`. Rewrite using `[hz, e1, ← add_smul, mul_div_cancel₀ _ hd, add_neg_cancel, zero_smul, map_zero]`. Conclude with `e2`. Establish `hq : 0 < Ideal.absNorm w.asIdeal` using `zero_lt_one.trans (NumberField.HeightOneSpectrum.one_lt_absNorm w)`.
-
-Rewrite using `[(hv w).2, Complex.norm_natCast_cpow_of_pos hq, Complex.neg_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_twist {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (ha : 1 ≤ a) (σ : CuspSub E a) :
     ∃ (χ : HChar E) (s : ℝ), (∀ φ ∈ (σ.twist χ).V, lie E a (oneL E a) φ = 0) ∧
@@ -87,21 +85,19 @@ private theorem exists_twist {E : Type} [Field E] [NumberField E] [IsTotallyComp
     rw [(hv w).2, Complex.norm_natCast_cpow_of_pos hq, Complex.neg_re]
 
 /- English proof (translation)
-Introduce `K _ _ _ n σ`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `⟨0, fun w B hB b hb => ?_⟩` and prove the remaining obligations. Establish `h0 : Multiset.card B = 0` using `GlobalTheory.LFun.HasSatGL.card hB`. Rewrite `hb` using `[Multiset.card_eq_zero.1 h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hb (Multiset.notMem_zero b)`. Take `⟨χ, s, h0, hχ⟩` from `exists_twist hn σ`. Use `set A : ℝ := ((n * n + n : ℕ) : ℝ) with hA`. Establish `hA0 : 0 ≤ A` using `Nat.cast_nonneg _`. Establish `hAn : 0 ≤ A * n` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨A * n + A + |s|, fun w B hB b hb => ?_⟩` and prove the remaining obligations. Take `⟨Bf, f1, f2, f3⟩` from `exists_form (σ.twist χ) h0 w`. Use `set q : ℝ := (Ideal.absNorm w.asIdeal : ℝ) with hq`. Establish `hq1 : 1 ≤ q`. Rewrite using `[hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(NumberField.HeightOneSpectrum.one_lt_absNorm w).le` after adjusting the coercions. Establish `hq0 : 0 < q` using `by linarith`. Establish `hB' : GlobalTheory.LFun.HasSatGL w ((σ.twist χ).locRep w) (B.map (· * χ.val w))` using `CG.HasSat.twist hB (hχ w).1`. Take `⟨k1, k2⟩` from `GlobalTheory.HenQ.local_bound K w n _ _ Bf f1 f2 f3 _ hB' _ (Multiset.mem_map_of_mem _ hb)`. Rewrite `k2` using `[← pow_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `k1`, `k2` using `[← Real.rpow_natCast]`. Use `replace k1 : ‖((b * χ.val w : ℂˣ) : ℂ)‖ ≤ q ^ A := k1`. Use `replace k2 : ‖(((b * χ.val w)⁻¹ : ℂˣ) : ℂ)‖ ≤ q ^ (((n * n + n) * n : ℕ) : ℝ) := k2`. Establish `eA : (((n * n + n) * n : ℕ) : ℝ) = A * n` using `by simp [hA]`. Rewrite `k2` using `[eA]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ‖((χ.val w : ℂˣ) : ℂ)‖ = q ^ s` using `(hχ w).2`. Establish `hcpos : 0 < q ^ s` using `Real.rpow_pos_of_pos hq0 s`. Prove the components needed by the constructor for the conclusion. Establish `e : (b : ℂ) = ((b * χ.val w : ℂˣ) : ℂ) * (((χ.val w)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, mul_inv_cancel_right]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, norm_mul, Units.val_inv_eq_inv_val, norm_inv, hc, ← Real.rpow_neg hq0.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `e : ((b⁻¹ : ℂˣ) : ℂ) = (((b * χ.val w)⁻¹ : ℂˣ) : ℂ) * ((χ.val w : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, mul_inv, inv_mul_cancel_right]`. Rewrite using `[e, norm_mul, hc]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem satBd : SatBd := by
   intro K _ _ _ n σ

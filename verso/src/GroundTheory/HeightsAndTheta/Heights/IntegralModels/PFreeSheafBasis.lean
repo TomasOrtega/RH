@@ -21,7 +21,7 @@ def projC (j : Fin n) : ∐ (fun _ : ULift.{u} (Fin n) => A) ⟶ A :=
   Sigma.desc (fun i : ULift.{u} (Fin n) => if i.down = j then 𝟙 A else 0)
 
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 lemma ι_projC (i j : Fin n) :
     Sigma.ι (fun _ : ULift.{u} (Fin n) => A) (ULift.up i) ≫ projC A n j =
@@ -29,7 +29,7 @@ lemma ι_projC (i j : Fin n) :
   Sigma.ι_desc _ _
 
 /- English proof (translation)
-Use `Sigma.hom_ext _ _ (fun ⟨i⟩ => ?_)` and prove the remaining obligations. Simplify using `only [Preadditive.comp_sum, ← Category.assoc, ι_projC, Category.comp_id]`. Rewrite using `[Finset.sum_eq_single i (fun b _ hb => by simp [Ne.symm hb]) (by simp)]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma sum_projC_ι :
     ∑ j : Fin n, projC A n j ≫ Sigma.ι (fun _ : ULift.{u} (Fin n) => A) (ULift.up j) = 𝟙 _ := by
@@ -49,14 +49,14 @@ def proj (j : Fin n) : freeModule Y n ⟶ structureModule Y :=
   projC (C := SheafOfModules.{u} Y.ringCatSheaf) (SheafOfModules.unit Y.ringCatSheaf) n j
 
 /- English proof (translation)
-The claim follows from `ι_projC (C := SheafOfModules.{u} Y.ringCatSheaf) (SheafOfModules.unit Y.ringCatSheaf) n i j`.
+A detailed English derivation is pending.
 -/
 lemma incl_proj (i j : Fin n) :
     incl Y n i ≫ proj Y n j = if i = j then 𝟙 (structureModule Y) else 0 :=
   ι_projC (C := SheafOfModules.{u} Y.ringCatSheaf) (SheafOfModules.unit Y.ringCatSheaf) n i j
 
 /- English proof (translation)
-The claim follows from `sum_projC_ι (C := SheafOfModules.{u} Y.ringCatSheaf) (SheafOfModules.unit Y.ringCatSheaf) n`.
+A detailed English derivation is pending.
 -/
 lemma sum_proj_incl : ∑ j, proj Y n j ≫ incl Y n j = 𝟙 (freeModule Y n) :=
   sum_projC_ι (C := SheafOfModules.{u} Y.ringCatSheaf) (SheafOfModules.unit Y.ringCatSheaf) n
@@ -78,7 +78,7 @@ lemma evalHom_apply {M N : Y.Modules} (V : Y.Opens) (x : Γ(M, V)) (φ : M ⟶ N
 variable {Y n}
 
 /- English proof (translation)
-Use `congrArg (fun φ => evalHom (M := structureModule Y) (N := structureModule Y) V (show Γ(structureModule Y, V) from r) φ) (incl_proj Y n i j)` as an intermediate fact. Apply the tactic sequence `split_ifs at this ⊢ with hij <;> exact this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma incl_proj_app (V : Y.Opens) (i j : Fin n) (r : Γ(Y, V)) :
     ((proj Y n j).app V).hom (((incl Y n i).app V).hom r) = if i = j then r else 0 := by
@@ -87,7 +87,7 @@ lemma incl_proj_app (V : Y.Opens) (i j : Fin n) (r : Γ(Y, V)) :
   split_ifs at this ⊢ with hij <;> exact this
 
 /- English proof (translation)
-Use `congrArg (fun φ => evalHom V m φ) (sum_proj_incl Y n)` as an intermediate fact. Simplify using `only [map_sum, evalHom_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sum_incl_proj_app (V : Y.Opens) (m : Γ(freeModule Y n, V)) :
     ∑ j, ((incl Y n j).app V).hom (((proj Y n j).app V).hom m) = m := by
@@ -100,15 +100,15 @@ end FreeSheafBasis
 open FreeSheafBasis in
 
 /- English proof (translation)
-Introduce `Y n V h`. Establish `h1 : ((structureModule Y).presheaf.map (homOfLE h).op).hom (1 : Γ(Y, ⊤)) = (1 : Γ(Y, V))`. Express the relevant statement in the definitionally equal form `(Y.presheaf.map (homOfLE h).op).hom 1 = 1`. Conclude with `map_one _`. Establish `hres : ∀ i (r : Γ(Y, V)), r • ((freeModule Y n).presheaf.map (homOfLE h).op).hom (stdSection Y n i) = ((incl Y n i).app V).hom r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i r`. Establish `e` using `app_map_apply (incl Y n i) h (show Γ(structureModule Y, ⊤) from (1 : Γ(Y, ⊤)))`. Establish `h1' : ((structureModule Y).presheaf.map (homOfLE h).op).hom (show Γ(structureModule Y, ⊤) from (1 : Γ(Y, ⊤))) = (show Γ(structureModule Y, V) from (1 : Γ(Y, V)))` using `h1`. Rewrite `e` using `[h1']`. Establish `e2` using `Scheme.Modules.Hom.app_smul (incl Y n i) r (show Γ(structureModule Y, V) from (1 : Γ(Y, V)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : r • (show Γ(structureModule Y, V) from (1 : Γ(Y, V))) = (show Γ(structureModule Y, V) from r)` using `mul_one r`. Express the relevant statement in the definitionally equal form `r • ((freeModule Y n).presheaf.map (homOfLE h).op).hom (((incl Y n i).app ⊤).hom (show Γ(structureModule Y, ⊤) from (1 : Γ(Y, ⊤)))) = _`. Rewrite using `[← e]`. Conclude with `e2.symm.trans (congrArg (fun x => (incl Y n i).app V x) hr)`. Simplify using `only [hres]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Function.bijective_iff_has_inverse.mpr ⟨fun m j => ((proj Y n j).app V).hom m, ?_, ?_⟩` and prove the remaining obligations. Introduce `r`. Use function extensionality and compare the values at `j`. Simplify using `only [map_sum, incl_proj_app]`. Express the relevant statement in the definitionally equal form `(∑ x, if x = j then r x else 0 : Γ(Y, V)) = r j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `m`. Conclude with `sum_incl_proj_app V m`.
+A detailed English derivation is pending.
 -/
 theorem FreeSheafBasis.proof : FreeSheafBasis.Statement.{u} := by
   intro Y n V h

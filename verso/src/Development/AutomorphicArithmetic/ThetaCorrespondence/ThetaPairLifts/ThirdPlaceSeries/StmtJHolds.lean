@@ -55,9 +55,9 @@ noncomputable section
 namespace GlobalTheory.JumpSets
 open Formalism Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.AdmissibleParameterJ
 /- English proof (translation)
-Introduce `L hA`. Take `⟨hG2, hCr, hG2g, hDi, hRd, hP⟩` from `hA`. Establish `hF : ∀ j, 1 ≤ j → j ≤ D.R.m → ∀ ρ, JFacts L j ρ` using `fun j h1 h2 ρ => jFacts_of hP j h1 h2 ρ`. Establish `hpar : L.etaSz + D.R.t + L.Sc ≤ L.sc.b`. Use `L.Sc_pos` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `L.etaSz_pos` as an intermediate fact. Establish `: (0 : ℝ) ≤ D.R.t` using `by positivity`. Combine the linear relations using `[hP.1, hP.2.1]`. Conclude with `⟨_root_.GlobalTheory.JumpSets.jumpLemma_a_of_admissible_alt_alt hP hG2 hCr hG2g hDi hRd, jumpSetBound_of_realPlaceFacts hF, jumpSetCloud_of_realPlaceFacts hF, jumpSetDistinct_of_realPlaceFacts hF, jumpSetEta_of_realPlaceFacts hF hpar D.R.t_odd.pos L.Sc_pos L.etaSz_pos, jumpSetFin …`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 -/
 theorem stmtJ_holds_alt (D : D7) : _root_.Formalism.MainNotions.AdmissibleParameterJ.JumpClosed D := by
   intro L hA

@@ -12,13 +12,13 @@ noncomputable section
 namespace GlobalTheory.BigOn
 
 /- English proof (translation)
-Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, fun c _ _ => EvPt.of_forall fun x hx i p _ _ r O hO => ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨st, td⟩` from `hO.1.depth`. Use `letI := hostAlg (Fm.D x i)`. Establish `g1 : O.g1 = (Fm.D x i).host.g 0` using `td.jets_eq_fact`. Establish `g2 : O.g2 = (Fm.D x i).host.g 1` using `td.g2_eq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1 : O.f = ((Fm.D x i).R.f : ℝ)` using `td.f_eq`. Establish `k1 : O.k = ((Fm.D x i).R.k : ℝ)` using `td.k_eq`. Establish `hrec : (R2 p).grp_record`. Take `⟨plg, iso, -, h2, h3, h4⟩` from `p.grpRecPin`. Conclude with `⟨p.R.eG.trans p.cG, plg, iso, h2, h3, h4⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `yb : ∀ {large₂ : SizeData₂ (Fm.D x i)} {Pm : ParameterChoice' (Fm.D x i) large₂}, ParamsT (Fm.D x i) large₂ Pm → LeafYBound (onOf (R2 p) (F2 p) c (supArgs (R2 p)))` using `fun {_ Pm} _ => leafYBound (F := F2 p) c (supArgs (R2 p)) Pm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `leafLevelSq (F := F2 p) c (supArgs (R2 p)) hrec` as an intermediate fact. Unfold `LeafLevelSq`. Rewrite using `[g1, g2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Use `yb (Fm.parT x hx i)` as an intermediate fact. Unfold `LeafYBound OnObj.y`. Rewrite using `[g1, g2, f1, k1]`. Conclude with `this`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelSq_yBound_atRec :
     AtRec fun Fm x _ i p _ O => LeafLevelSq O (Res (R2 p)) (Fm.D x i).R.f ∧ LeafYBound O := by

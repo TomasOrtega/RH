@@ -9,9 +9,7 @@ section psd
 variable {α : Type} {F : Finset α}
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Establish `: (Matrix.of fun x y : F => k' x y) = Matrix.of fun x y : F => k x y`. Use extensionality with `x y`. Conclude with `(h x x.2 y y.2).symm`. Rewrite using `[this]`.
-
-Conclude with `hk`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_congr {k k' : α → α → ℂ} (h : ∀ x ∈ F, ∀ y ∈ F, k x y = k' x y) (hk : TB.PSDOn F k) :
     TB.PSDOn F k' := by
@@ -23,7 +21,7 @@ theorem psd_congr {k k' : α → α → ℂ} (h : ∀ x ∈ F, ∀ y ∈ F, k x 
 end psd
 
 /- English proof (translation)
-Unfold `TB.PSDOn`. Use `Matrix.posSemidef_vecMulVec_self_star (fun _ : F => (1 : ℂ))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`. Simplify using `[Matrix.vecMulVec]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ones_psd {α : Type} (F : Finset α) : TB.PSDOn F (fun _ _ : α => (1 : ℂ)) := by
   unfold TB.PSDOn
@@ -32,23 +30,23 @@ theorem ones_psd {α : Type} (F : Finset α) : TB.PSDOn F (fun _ _ : α => (1 : 
   ext x y; simp [Matrix.vecMulVec]
 
 /- English proof (translation)
-Unfold `TB.PSDOn`. Conclude with `Matrix.PosSemidef.zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem zero_psd {α : Type} (F : Finset α) : TB.PSDOn F (fun _ _ : α => (0 : ℂ)) := by
   unfold TB.PSDOn; exact Matrix.PosSemidef.zero
 
 /- English proof (translation)
-Introduce `E α _ L F`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t t' h`. Establish `: t ∈ L ↔ t' ∈ L`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `ht`. Use `L.sub_mem ht h` as an intermediate fact. Simplify using `using this`. Introduce `ht`. Use `L.add_mem h ht` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Simplify using `[this]`. Introduce `t`. Distinguish the cases in `h : t ∈ L`. Simplify `ones_psd F` using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `zero_psd F` using `[h]`. Introduce `R hR`. Establish `hcard : (R.filter (fun t => t ∈ L)).card ≤ 1`. Rewrite using `[Finset.card_le_one]`. Introduce `a ha b hb`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter] at ha hb`. Conclude with `hR a ha.1 b hb.1 (L.sub_mem ha.2 hb.2)`. Establish `hsum : (∑ t ∈ R, if t ∈ L then (1 : ℂ) else 0) = ((R.filter (fun t => t ∈ L)).card : ℂ)`. Rewrite using `[Finset.sum_ite]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `interval_cases hc : (R.filter (fun t => t ∈ L)).card`. Simplify using `using ones_psd F`. Simplify using `using zero_psd F`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem t_OutsideOk : OutsideOk := by
   intro E α _ L F
@@ -78,15 +76,15 @@ theorem t_OutsideOk : OutsideOk := by
     · simpa using zero_psd F
 
 /- English proof (translation)
-Introduce `E α _ a S F h`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t t' ht ht' x hx y hy hne`. Apply `h1 t t' ht ht' x hx y hy` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[scaleSys, h0]`. Introduce `t ht`. Conclude with `hD _ _ _ a (h2 t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t t' htt x hx y hy`. Simplify using `only [scaleSys]`. Rewrite using `[h3 t t' htt x hx y hy]`. Introduce `t`. Conclude with `hD _ _ _ a (h4 t)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t ht`. Use `hD _ _ _ a (h5 t ht)` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Simplify using `only [scaleSys]`. Expand and normalize the polynomial expressions, which then agree.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `R hR`. Use `hD _ _ _ a (h6 R hR)` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Simplify using `only [scaleSys]`. Rewrite using `[mul_sub, Finset.mul_sum]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_ScaleOk (hD : DiagScale) : ScaleOk := by
   intro E α _ a S F h
@@ -109,9 +107,9 @@ theorem t_ScaleOk (hD : DiagScale) : ScaleOk := by
     simp only [scaleSys]; rw [mul_sub, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `α F k a h`. Unfold `TB.PSDOn at h ⊢`. Use `h.conjTranspose_mul_mul_same (Matrix.diagonal (fun x : F => ((a x : ℝ) : ℂ)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.diagonal_conjTranspose, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem t_DiagScale : DiagScale := by
   intro α F k a h
@@ -127,9 +125,9 @@ section agree
 variable {α : Type}
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec, Matrix.of_apply, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[← Finset.sum_coe_sort F (fun x => ∑ y ∈ F, conj (a x) * k x y * a y)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Rewrite using `[← Finset.sum_coe_sort F (fun y => conj (a x) * k x y * a y)]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y _`. Simplify using `only [RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadM (F : Finset α) (k : α → α → ℂ) (a : α → ℂ) :
     star (fun x : F => a x) ⬝ᵥ (Matrix.of fun x y : F => k x y) *ᵥ (fun x : F => a x) =
@@ -142,9 +140,9 @@ theorem quadM (F : Finset α) (k : α → α → ℂ) (a : α → ℂ) :
   simp only [RCLike.star_def]; ring
 
 /- English proof (translation)
-Rewrite using `[map_sum, Finset.sum_comm]`. Simplify using `only [map_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[map_mul, map_mul, Complex.conj_conj, ← hh y hy x hx]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem conj_quad (F : Finset α) (k : α → α → ℂ) (hh : ∀ x ∈ F, ∀ y ∈ F, k y x = conj (k x y)) (a : α → ℂ) :
     conj (∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y) = ∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y := by
@@ -157,17 +155,17 @@ theorem conj_quad (F : Finset α) (k : α → α → ℂ) (hh : ∀ x ∈ F, ∀
   rw [map_mul, map_mul, Complex.conj_conj, ← hh y hy x hx]; ring
 
 /- English proof (translation)
-Unfold `TB.PSDOn TA.PSDOn`. Rewrite using `[Matrix.posSemidef_iff_dotProduct_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hH, hp⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx y hy`. Use `congrFun (congrFun hH ⟨y, hy⟩) ⟨x, hx⟩` as an intermediate fact. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, RCLike.star_def] at this`. Conclude with `this.symm`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hp (fun x : F => a x)` as an intermediate fact. Rewrite `this` using `[quadM]`. Conclude with `(Complex.le_def.1 this).1`. Introduce and unpack `⟨hh, hp⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x y`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.of_apply, RCLike.star_def]`. Conclude with `(hh y y.2 x x.2).symm`. Introduce `x`. Set `a : α → ℂ` to `fun z => if h : z ∈ F then x ⟨z, h⟩ else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hx : x = fun z : F => a z`. Use extensionality with `z`. Simplify using `[a]`. Rewrite using `[hx, quadM]`. Rewrite using `[Complex.le_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨hp a, ?_⟩` and prove the remaining obligations. Use `conj_quad F k hh a` as an intermediate fact. Rewrite `this` using `[Complex.conj_eq_iff_im]`. Simplify using `using this.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tb_iff_ta (F : Finset α) (k : α → α → ℂ) : TB.PSDOn F k ↔ TA.PSDOn F k := by
   classical
@@ -201,7 +199,7 @@ theorem tb_iff_ta (F : Finset α) (k : α → α → ℂ) : TB.PSDOn F k ↔ TA.
       simpa using this.symm
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_eq_single x (fun u _ hu => by simp [hu]) (fun h => absurd hx h)]`. Rewrite using `[Finset.sum_eq_single x (fun v _ hv => by simp [hv]) (fun h => absurd hx h)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem quad1 [DecidableEq α] (F : Finset α) (k : α → α → ℂ) (x : α) (hx : x ∈ F) :
     ∑ u ∈ F, ∑ v ∈ F, (if u = x then (1 : ℂ) else 0) * conj (if v = x then (1 : ℂ) else 0) * k u v = k x x := by
@@ -210,11 +208,11 @@ theorem quad1 [DecidableEq α] (F : Finset α) (k : α → α → ℂ) (x : α) 
   simp
 
 /- English proof (translation)
-Establish `hsub : ({x, y} : Finset α) ⊆ F`. Introduce `z hz`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hz`. Apply the tactic sequence `rcases hz with rfl | rfl <;> assumption`. Establish `h0 : ∀ u, u ∉ ({x, y} : Finset α) → (if u = x then (1 : ℂ) else if u = y then c else 0) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `u hu`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hu`. Simplify using `[hu.1, hu.2]`. Rewrite using `[← Finset.sum_subset hsub (fun u _ hu => by simp [h0 u hu])]`. Establish `inner : ∀ u, ∑ v ∈ F, (if u = x then (1 : ℂ) else if u = y then c else 0) * conj (if v = x then (1 : ℂ) else if v = y then c else 0) * k u v = ∑ v ∈ ({x, y} : Finset α), (if u = x then (1 : ℂ) else if u = y then c else 0) * conj (if v = x then (1 : ℂ) else if v = y then c else 0) …` using `fun u => (Finset.sum_subset hsub (fun v _ hv => by simp [h0 v hv])).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [inner]`. Rewrite using `[Finset.sum_pair hxy, Finset.sum_pair hxy, Finset.sum_pair hxy]`. Simplify using `[hxy.symm]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quad2 [DecidableEq α] (F : Finset α) (k : α → α → ℂ) (x y : α) (hx : x ∈ F) (hy : y ∈ F)
     (hxy : x ≠ y) (c : ℂ) :
@@ -239,23 +237,23 @@ theorem quad2 [DecidableEq α] (F : Finset α) (k : α → α → ℂ) (x y : α
   ring
 
 /- English proof (translation)
-Unfold `A5.IsPSD TA.PSDOn`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hd : ∀ x ∈ F, (k x x).im = 0`. Introduce `x hx`.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(h (fun u => if u = x then (1 : ℂ) else 0)).1` as an intermediate fact. Rewrite `this` using `[quad1 F k x hx]`. Then use the resulting hypothesis. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`. Distinguish the cases in `hxy : x = y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hxy` using the available equality. Conclude with `((Complex.conj_eq_iff_im).2 (hd x hx)).symm`. Establish `h1` using `(h (fun u => if u = x then (1 : ℂ) else if u = y then 1 else 0)).1`. Rewrite `h1` using `[quad2 F k x y hx hy hxy 1]`. Establish `h2` using `(h (fun u => if u = x then (1 : ℂ) else if u = y then Complex.I else 0)).1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[quad2 F k x y hx hy hxy Complex.I]`. Simplify using `[hd x hx, hd y hy] at h1 h2`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a`. Use `(h (fun u => conj (a u))).2` as an intermediate fact. Establish `e : ∑ x ∈ F, ∑ y ∈ F, conj (a x) * conj (conj (a y)) * k x y = ∑ x ∈ F, ∑ y ∈ F, conj (a x) * k x y * a y`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `x _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y _`. Rewrite using `[Complex.conj_conj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Introduce and unpack `⟨hh, hp⟩ a`. Establish `e : ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * k x y = ∑ x ∈ F, ∑ y ∈ F, conj (conj (a x)) * k x y * conj (a y)`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `y _`. Rewrite using `[Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `⟨?_, hp (fun u => conj (a u))⟩` and prove the remaining obligations. Use `conj_quad F k hh (fun u => conj (a u))` as an intermediate fact. Rewrite `this` using `[Complex.conj_eq_iff_im]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isPSD_iff_psdOn (F : Finset α) (k : α → α → ℂ) : A5.IsPSD F k ↔ TA.PSDOn F k := by
   classical
@@ -303,20 +301,20 @@ section
 variable {α : Type}
 
 /- English proof (translation)
-The claim follows from `(tb_iff_ta F k).trans (isPSD_iff_psdOn F k).symm`.
+A detailed English derivation is pending.
 -/
 theorem psdOn_iff_isPSD (F : Finset α) (k : α → α → ℂ) : TB.PSDOn F k ↔ A5.IsPSD F k :=
   (tb_iff_ta F k).trans (isPSD_iff_psdOn F k).symm
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Conclude with `hk.submatrix (fun x : F => (⟨x.1, h x.2⟩ : G))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem psd_mono {F G : Finset α} (h : F ⊆ G) {k : α → α → ℂ} (hk : TB.PSDOn G k) : TB.PSDOn F k := by
   unfold TB.PSDOn at *
   exact hk.submatrix (fun x : F => (⟨x.1, h x.2⟩ : G))
 
 /- English proof (translation)
-Establish `h2` using `(psdOn_iff_isPSD F k).1 hk (fun u => if u = x then 1 else 0)`. Establish `h1` using `quad1 F k x hx`. Use `beta_reduce at h2`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_diag {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x : α} (hx : x ∈ F) :
     (k x x).im = 0 ∧ 0 ≤ (k x x).re := by
@@ -328,15 +326,15 @@ theorem psd_diag {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x 
   exact h2
 
 /- English proof (translation)
-Take `⟨ix, rx⟩` from `psd_diag hk hx`. Take `⟨iy, ry⟩` from `psd_diag hk hy`. Establish `hn` using `Complex.norm_le_abs_re_add_abs_im (k x y)`. Distinguish the cases in `hxy : x = y`. Substitute `hxy` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite `hn` using `[ix, abs_zero, add_zero, abs_of_nonneg rx]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hherm : k y x = conj (k x y)` using `((tb_iff_ta F k).1 hk).1 x hx y hy`. Establish `q` using `fun c : ℂ => ((psdOn_iff_isPSD F k).1 hk (fun u => if u = x then 1 else if u = y then c else 0)).2`. Establish `e` using `fun c : ℂ => quad2 F k x y hx hy hxy c`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q1` using `q 1`. Establish `q2` using `q (-1)`. Establish `q3` using `q Complex.I`. Establish `q4` using `q (-Complex.I)`. Use `beta_reduce at q1 q2 q3 q4`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `q1`, `q2`, `q3`, `q4` using `[e, hherm]`. Simplify using `at q1 q2 q3 q4`. Establish `a1 : |(k x y).re| ≤ ((k x x).re + (k y y).re) / 2`. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Establish `a2 : |(k x y).im| ≤ ((k x x).re + (k y y).re) / 2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem psd_off {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x y : α} (hx : x ∈ F) (hy : y ∈ F) :
     ‖k x y‖ ≤ (k x x).re + (k y y).re := by
@@ -365,13 +363,13 @@ theorem psd_off {F : Finset α} {k : α → α → ℂ} (hk : TB.PSDOn F k) {x y
     linarith
 
 /- English proof (translation)
-The claim follows from `hp.inter hq`.
+A detailed English derivation is pending.
 -/
 theorem closed_and {X : Type} [TopologicalSpace X] {p q : X → Prop} (hp : IsClosed {x | p x})
     (hq : IsClosed {x | q x}) : IsClosed {x | p x ∧ q x} := hp.inter hq
 
 /- English proof (translation)
-Simplify using `only [psdOn_iff_isPSD, A5.IsPSD, Set.ofPred_forall]`. Use `isClosed_iInter fun a => ?_` and prove the remaining obligations. Establish `hc : Continuous fun T => ∑ x ∈ F, ∑ y ∈ F, a x * conj (a y) * g T x y` using `continuous_finsetSum _ fun x _ => continuous_finsetSum _ fun y _ => continuous_const.mul (hg x y)`. Conclude with `closed_and (isClosed_eq (Complex.continuous_im.comp hc) continuous_const) (isClosed_le continuous_const (Complex.continuous_re.comp hc))`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem closed_psd {X : Type} [TopologicalSpace X] (F : Finset α) (g : X → α → α → ℂ)
     (hg : ∀ x y, Continuous fun T => g T x y) : IsClosed {T | TB.PSDOn F (g T)} := by
@@ -385,7 +383,7 @@ theorem closed_psd {X : Type} [TopologicalSpace X] (F : Finset α) (g : X → α
 end
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hS`. Conclude with `⟨fun t t' ht ht' x hx y hy => h1 t t' ht ht' x (h hx) y (h hy), fun t ht => psd_mono h (h2 t ht), fun t t' htt x hx y hy => h3 t t' htt x (h hx) y (h hy), fun t => psd_mono h (h4 t), fun t ht => psd_mono h (h5 t ht), fun R hR => psd_mono h (h6 R hR)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ok_mono {E α : Type} [Field E] {S : LocSys E α} {F G : Finset α} (h : F ⊆ G) (hS : S.Ok G) :
     S.Ok F := by
@@ -395,9 +393,9 @@ theorem ok_mono {E α : Type} [Field E] {S : LocSys E α} {F G : Finset α} (h :
     fun t ht => psd_mono h (h5 t ht), fun R hR => psd_mono h (h6 R hR)⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hS`. Use `⟨h1, h2, fun t t' htt x hx y hy => ?_, fun t => psd_congr (h t) (h4 t), fun t ht => psd_congr (fun x hx y hy => ?_) (h5 t ht), fun R hR => psd_congr (fun x hx y hy => ?_) (h6 R hR)⟩` and prove the remaining obligations. Use `show Th' t x y = Th' t' x y`. Rewrite using `[← h t x hx y hy, ← h t' x hx y hy]`. Conclude with `h3 t t' htt x hx y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Th t x y - N t t x y = Th' t x y - N t t x y`. Rewrite using `[h t x hx y hy]`. Use `show B x y - ∑ t ∈ R, Th t x y = B x y - ∑ t ∈ R, Th' t x y`. Rewrite using `[Finset.sum_congr rfl fun t _ => h t x hx y hy]`.
+A detailed English derivation is pending.
 -/
 theorem ok_congr {E α : Type} [Field E] {N : E → E → α → α → ℂ} {B : α → α → ℂ} {L L' : AddSubgroup E}
     {Th Th' : E → α → α → ℂ} {F : Finset α}
@@ -415,25 +413,23 @@ theorem ok_congr {E α : Type} [Field E] {N : E → E → α → α → ℂ} {B 
     rw [Finset.sum_congr rfl fun t _ => h t x hx y hy]
 
 /- English proof (translation)
-Introduce `E α _ N B L L' hyp`. Establish `hS : IsCompact (Set.pi Set.univ fun _ : E => Set.pi Set.univ fun h : α => Set.pi Set.univ fun h' : α => Metric.closedBall (0 : ℂ) ((B h h).re + (B h' h').re))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun h => isCompact_univ_pi fun h' => isCompact_closedBall _ _`. Establish `hcl : ∀ F : Finset α, IsClosed {Th : E → α → α → ℂ | (LocSys.mk N Th B L L').Ok F}`. Introduce `F`. Simplify using `only [LocSys.Ok]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `closed_and isClosed_const (closed_and isClosed_const (closed_and ?_ (closed_and ?_ (closed_and ?_ ?_))))` and prove the remaining obligations. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun t => isClosed_iInter fun t' => isClosed_iInter fun _ => isClosed_iInter fun h => isClosed_iInter fun _ => isClosed_iInter fun h' => isClosed_iInter fun _ => isClosed_eq (by fun_prop) (by fun_prop)`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun t => closed_psd F _ (fun x y => by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun t => isClosed_iInter fun _ => closed_psd F _ (fun x y => by fun_prop)`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun R => isClosed_iInter fun _ => closed_psd F _ (fun x y => by fun_prop)`. Establish `hdiag : ∀ (G : Finset α) (Th : E → α → α → ℂ), (LocSys.mk N Th B L L').Ok G → ∀ t, ∀ h ∈ G, 0 ≤ (Th t h h).re ∧ (Th t h h).re ≤ (B h h).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `G Th hOk t h hh`. Simplify using `only [LocSys.Ok] at hOk`. Take `⟨_, _, _, h4, _, h6⟩` from `hOk`. Use `⟨(psd_diag (h4 t) hh).2, ?_⟩` and prove the remaining obligations. Use `(psd_diag (h6 {t} (by` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `a ha b hb _`. Rewrite using `[mem_singleton.1 ha, mem_singleton.1 hb])) hh).2`. Simplify using `only [sum_singleton, Complex.sub_re] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : ∀ h, 0 ≤ (B h h).re`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `h`. Take `⟨Th, hOk⟩` from `hyp {h}`. Use `hdiag {h} Th hOk 0 h (mem_singleton_self h)` as an intermediate fact. Combine the linear relations using `[this.1, this.2]`. Establish `key` using `hS.inter_iInter_nonempty (fun F : Finset α => {Th : E → α → α → ℂ | (LocSys.mk N Th B L L').Ok F}) hcl ?_`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨Th, _, hTh⟩` from `key`. Conclude with `⟨Th, fun F => Set.mem_iInter.1 hTh F⟩`. Introduce `u`. Take `⟨Th, hOk⟩` from `hyp (u.biUnion id)`. Establish `hOk' : (LocSys.mk N (fun t h h' => if h ∈ u.biUnion id ∧ h' ∈ u.biUnion id then Th t h h' else 0) B L L').Ok (u.biUnion id)` using `ok_congr (fun t x hx y hy => by rw [if_pos ⟨hx, hy⟩]) hOk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Use `⟨_, ?_, Set.mem_iInter₂.2 fun F hF => ok_mono (subset_biUnion_of_mem id hF) hOk'⟩` and prove the remaining obligations. Introduce `t _ h _ h' _`. Rewrite using `[mem_closedBall_zero_iff]`. Use `beta_reduce`. Distinguish the cases in `hc : h ∈ u.biUnion id ∧ h' ∈ u.biUnion id`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_pos hc]`. Establish `hOk2` using `hOk`. Simplify using `only [LocSys.Ok] at hOk2`. Establish `a0` using `psd_off (hOk2.2.2.2.1 t) hc.1 hc.2`. Establish `a1` using `(hdiag _ Th hOk t h hc.1).2`.
-
-Establish `a2` using `(hdiag _ Th hOk t h' hc.2).2`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg hc, norm_zero]`. Conclude with `add_nonneg (hB h) (hB h')`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_UniformMajorant : UniformMajorant := by
   classical
@@ -495,9 +491,7 @@ theorem t_UniformMajorant : UniformMajorant := by
     · rw [if_neg hc, norm_zero]; exact add_nonneg (hB h) (hB h')
 
 /- English proof (translation)
-Unfold `TB.PSDOn at *`. Establish `e : (Matrix.of fun x y : G => k' x y) = (Matrix.of fun x y : F => k x y).submatrix f f`. Use extensionality with `x y`. Conclude with `h x y`. Rewrite using `[e]`.
-
-Conclude with `hk.submatrix f`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psd_pull {α β : Type} {G : Finset β} {F : Finset α} (f : G → F) {k : α → α → ℂ}
     {k' : β → β → ℂ} (h : ∀ x y : G, k' x y = k (f x) (f y)) (hk : TB.PSDOn F k) : TB.PSDOn G k' := by
@@ -507,33 +501,27 @@ theorem psd_pull {α β : Type} {G : Finset β} {F : Finset α} (f : G → F) {k
   rw [e]; exact hk.submatrix f
 
 /- English proof (translation)
-Introduce `E α _ A N B L L' hyp`. Take `⟨Th', hTh'⟩` from `t_UniformMajorant E {h // h ∈ A} (fun t t' h h' => N t t' h.1 h'.1) (fun h h' => B h.1 h'.1) L L' (by`. Introduce `F'`. Take `⟨Th, h1, h2, h3, h4, h5, h6⟩` from `hyp (F'.image Subtype.val) (by`. Introduce `h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, _, rfl⟩` from `Finset.mem_image.1 hh`. Conclude with `x.2)`. Establish `hm : ∀ x ∈ F', (x : α) ∈ F'.image Subtype.val` using `fun x hx => Finset.mem_image_of_mem _ hx`. Set `f : F' → (F'.image Subtype.val : Finset α)` to `fun x => ⟨x.1.1, hm x.1 x.2⟩`. Use `⟨fun t h h' => Th t h.1 h'.1, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t t' ht ht' h hh h' hh' hne`. Conclude with `h1 t t' ht ht' h.1 (hm h hh) h'.1 (hm h' hh') hne`. Introduce `t ht`. Conclude with `psd_pull f (fun _ _ => rfl) (h2 t ht)`. Introduce `t t' htt h hh h' hh'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3 t t' htt h.1 (hm _ hh) h'.1 (hm _ hh')`. Introduce `t`. Conclude with `psd_pull f (fun _ _ => rfl) (h4 t)`. Introduce `t ht`. Conclude with `psd_pull f (fun _ _ => rfl) (h5 t ht)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `R hR`. Conclude with `psd_pull f (fun _ _ => rfl) (h6 R hR))`. Set `Th : E → α → α → ℂ` to `fun t h h' => if hh : h ∈ A ∧ h' ∈ A then Th' t ⟨h, hh.1⟩ ⟨h', hh.2⟩ else 0`. Establish `hT : ∀ t x y (hx : x ∈ A) (hy : y ∈ A), Th t x y = Th' t ⟨x, hx⟩ ⟨y, hy⟩` using `fun t x y hx hy => dif_pos ⟨hx, hy⟩`. Establish `hz : ∀ t x y, ¬ (x ∈ A ∧ y ∈ A) → Th t x y = 0` using `fun t x y h => dif_neg h`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `part1 : ∀ F : Finset α, (∀ h ∈ F, h ∈ A) → (LocSys.mk N Th B L L').Ok F`. Introduce `F hF`. Take `⟨g1, g2, g3, g4, g5, g6⟩` from `hTh' (F.subtype (· ∈ A))`. Set `f : F → (F.subtype (· ∈ A) : Finset {h // h ∈ A})` to `fun x => ⟨⟨x.1, hF x.1 x.2⟩, Finset.mem_subtype.2 x.2⟩`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t t' ht ht' h hh h' hh' hne`. Conclude with `g1 t t' ht ht' ⟨h, hF h hh⟩ (Finset.mem_subtype.2 hh) ⟨h', hF h' hh'⟩ (Finset.mem_subtype.2 hh') hne`. Introduce `t ht`. Conclude with `psd_pull f (fun _ _ => rfl) (g2 t ht)`. Introduce `t t' htt h hh h' hh' show Th t h h' = Th t' h h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT t h h' (hF h hh) (hF h' hh'), hT t' h h' (hF h hh) (hF h' hh')]`. Conclude with `g3 t t' htt ⟨h, hF h hh⟩ (Finset.mem_subtype.2 hh) ⟨h', hF h' hh'⟩ (Finset.mem_subtype.2 hh')`. Introduce `t`. Conclude with `psd_pull f (fun x y => hT t x.1 y.1 (hF x.1 x.2) (hF y.1 y.2)) (g4 t)`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `psd_pull f (fun x y => ?_) (g5 t ht)` and prove the remaining obligations. Use `show Th t x.1 y.1 - N t t x.1 y.1 = _`. Rewrite using `[hT t x.1 y.1 (hF x.1 x.2) (hF y.1 y.2)]`. Introduce `R hR`. Use `psd_pull f (fun x y => ?_) (g6 R hR)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show B x.1 y.1 - ∑ t ∈ R, Th t x.1 y.1 = _`. Rewrite using `[Finset.sum_congr rfl fun t _ => hT t x.1 y.1 (hF x.1 x.2) (hF y.1 y.2)]`. Use `⟨Th, part1, hz, ?_⟩` and prove the remaining obligations. Introduce `t F`. Establish `hA : ∀ h ∈ F.filter (· ∈ A), h ∈ A` using `fun h hh => (Finset.mem_filter.1 hh).2`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hd : TB.PSDOn (F.filter (· ∈ A)) (Th t)` using `(part1 _ hA).2.2.2.1 t`. Take `⟨q1, q2⟩` from `(tb_iff_ta _ _).1 hd`. Rewrite using `[tb_iff_ta]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x hx y hy`.
-
-Distinguish the cases in `h : x ∈ A ∧ y ∈ A`. Conclude with `q1 x (Finset.mem_filter.2 ⟨hx, h.1⟩) y (Finset.mem_filter.2 ⟨hy, h.2⟩)`. Rewrite using `[hz t x y h, hz t y x (fun h' => h ⟨h'.2, h'.1⟩), map_zero]`. Introduce `a`. Establish `inner : ∀ x, ∑ y ∈ F.filter (· ∈ A), conj (a x) * Th t x y * a y = ∑ y ∈ F, conj (a x) * Th t x y * a y` using `fun x => Finset.sum_filter_of_ne (fun y _ hne => by`.
-
-Assume the negation of the conclusion as `hy`. Conclude with `hne (by rw [hz t x y (fun h => hy h.2)]; simp))`. Establish `outer : ∑ x ∈ F.filter (· ∈ A), ∑ y ∈ F, conj (a x) * Th t x y * a y = ∑ x ∈ F, ∑ y ∈ F, conj (a x) * Th t x y * a y` using `Finset.sum_filter_of_ne (fun x _ hne => by`. Assume the negation of the conclusion as `hx`. Conclude with `hne (Finset.sum_eq_zero fun y _ => by rw [hz t x y (fun h => hx h.1)]; simp))`.
-
-Use `q2 a` as an intermediate fact. Simplify using `only [inner] at this`. Rewrite `this` using `[outer]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_UniformMajorantOn : UniformMajorantOn := by
   classical
@@ -611,7 +599,7 @@ theorem t_UniformMajorantOn : UniformMajorantOn := by
     exact this
 
 /- English proof (translation)
-Introduce `E α _ N L L' F h1 h2 h3`. Take `⟨o1, o2, o3⟩` from `t_OutsideOk E α L F`. Conclude with `⟨h1, h2, fun t t' htt h _ h' _ => o1 t t' htt, o2, h3, o3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem t_OutsideSysOk : OutsideSysOk := by
   intro E α _ N L L' F h1 h2 h3
@@ -619,11 +607,11 @@ theorem t_OutsideSysOk : OutsideSysOk := by
   exact ⟨h1, h2, fun t t' htt h _ h' _ => o1 t t' htt, o2, h3, o3⟩
 
 /- English proof (translation)
-Introduce `hPD E α P _ _ k L t F hk hd`. Use `hPD α P F k (fun p _ _ => if t ∈ L p then (1 : ℂ) else 0) hk hd` as an intermediate fact. Use `psd_congr (fun x _ y _ => ?_) this` and prove the remaining obligations. Use `congr 1`. Distinguish the cases in `h : t ∈ ⨅ p, L p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h]`. Establish `h' : ∀ p, t ∈ L p` using `AddSubgroup.mem_iInf.1 h`. Conclude with `Finset.prod_eq_one fun p _ => if_pos (h' p)`. Rewrite using `[if_neg h]`. Establish `: ∃ p, t ∉ L p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Conclude with `h (AddSubgroup.mem_iInf.2 fun p => by_contra fun hp => hc ⟨p, hp⟩)`. Take `⟨p, hp⟩` from `this`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ p) (if_neg hp)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem t_OutsideDomination : OutsideDomination := by
   classical
@@ -643,13 +631,13 @@ theorem t_OutsideDomination : OutsideDomination := by
     exact Finset.prod_eq_zero (Finset.mem_univ p) (if_neg hp)
 
 /- English proof (translation)
-Introduce `E α _ d S F hd hS`. Take `⟨h1, h2, h3, h4, h5, h6⟩` from `hS`. Establish `hdd : ∀ t, d t * conj (d t) = 1`. Introduce `t`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨?_, ?_, h3, h4, ?_, h6⟩` and prove the remaining obligations. Introduce `t t' ht ht' h hh h' hh' hne`. Use `h1 t t' ht ht' h hh h' hh' (fun h0 => hne ?_)` and prove the remaining obligations. Use `show d t * conj (d t') * S.N t t' h h' = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, mul_zero]`. Introduce `t ht`. Use `psd_congr (fun x _ y _ => ?_) (h2 t ht)` and prove the remaining obligations. Use `show S.N t t x y = d t * conj (d t) * S.N t t x y`. Rewrite using `[hdd, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t ht`. Use `psd_congr (fun x _ y _ => ?_) (h5 t ht)` and prove the remaining obligations. Use `show S.Th t x y - S.N t t x y = S.Th t x y - d t * conj (d t) * S.N t t x y`. Rewrite using `[hdd, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem t_PhaseOk : PhaseOk := by
   intro E α _ d S F hd hS
@@ -676,37 +664,37 @@ end Formalism.FourierDecayAlt.P.Jx8
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Jx8.t_ScaleOk Jx8.t_DiagScale`.
+A detailed English derivation is pending.
 -/
 theorem scaling_bound : Formalism.FourierDecayAlt.J.ScaleOk := Jx8.t_ScaleOk Jx8.t_DiagScale
 
 /- English proof (translation)
-The claim follows from `Jx8.t_PhaseOk`.
+A detailed English derivation is pending.
 -/
 theorem phaseOk_statement : Formalism.FourierDecayAlt.J.PhaseOk := Jx8.t_PhaseOk
 
 /- English proof (translation)
-The claim follows from `Jx8.t_OutsideOk`.
+A detailed English derivation is pending.
 -/
 theorem outside_bound : Formalism.FourierDecayAlt.J.OutsideOk := Jx8.t_OutsideOk
 
 /- English proof (translation)
-The claim follows from `Jx8.t_OutsideSysOk`.
+A detailed English derivation is pending.
 -/
 theorem outside_systems_bound : Formalism.FourierDecayAlt.J.OutsideSysOk := Jx8.t_OutsideSysOk
 
 /- English proof (translation)
-The claim follows from `Jx8.t_OutsideDomination`.
+A detailed English derivation is pending.
 -/
 theorem outside_domination : Formalism.FourierDecayAlt.J.OutsideDomination := Jx8.t_OutsideDomination
 
 /- English proof (translation)
-The claim follows from `Jx8.t_UniformMajorant`.
+A detailed English derivation is pending.
 -/
 theorem uniformMajorant_statement : Formalism.FourierDecayAlt.J.UniformMajorant := Jx8.t_UniformMajorant
 
 /- English proof (translation)
-The claim follows from `Jx8.t_UniformMajorantOn`.
+A detailed English derivation is pending.
 -/
 theorem uniform_majorant_on : Formalism.FourierDecayAlt.J.UniformMajorantOn := Jx8.t_UniformMajorantOn
 

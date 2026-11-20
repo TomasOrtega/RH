@@ -11,21 +11,19 @@ open NumberField IsDedekindDomain GlobalTheory.CMVal GlobalTheory.CMVal.Euler
 namespace GlobalTheory.CMVal.Euler
 
 /- English proof (translation)
-Introduce `E _ _ _ v x hv hx`. Take `⟨h2, hN⟩` from `GlobalTheory.T.splitsInCMField_two_primes_degree_one E v hv`. Take `⟨P₁, P₂, hne, hP₁, hP₂⟩` from `hv`. Establish `hx0 : (x : maximalRealSubfield E) ≠ 0` using `fun h => by`. Establish `h0 : x = 0` using `Subtype.ext h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hx P₁ hP₁`. Rewrite `h1` using `[h0, iota_zero, zero_coord, map_zero]`. Conclude with `WithZero.exp_ne_zero h1.symm`. Set `k : (maximalRealSubfield E)ˣ` to `Units.mk0 (x : maximalRealSubfield E) hx0`. Set `y : (Af E)ˣ` to `Units.map (algebraMap E (Af E)).toMonoidHom (Formalism.L2.Host.upF (maximalRealSubfield E) k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy : (y : Af E) = iota x` using `rfl`. Use `set S := Formalism.L2.Host.aboveF (L := E) (maximalRealSubfield E) v with hS`. Establish `hmem : ∀ P, P ∈ S ↔ Over P v` using `fun P => mem_aboveF P v`. Establish `hin : ∀ P, Over P v → ((∏ P ∈ S, single P (coord P y) : (Af E)ˣ) : Af E) P = iota x P` using `fun P hP => by`. Rewrite using `[Fibre.prod_single_apply, if_pos ((hmem P).2 hP), hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hout : ∀ P, ¬ Over P v → ((∏ P ∈ S, single P (coord P y) : (Af E)ˣ) : Af E) P = 1` using `fun P hP => by`. Rewrite using `[Fibre.prod_single_apply, if_neg (fun h => hP ((hmem P).1 h))]`. Use `⟨∏ P ∈ S, single P (coord P y), hin, hout, ?_, fun χ hχ => ?_⟩` and prove the remaining obligations. Establish `hS2 : S = {P₁, P₂}`. Use extensionality with `R`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hmem, Finset.mem_insert, Finset.mem_singleton]`. Apply the tactic sequence `exact ⟨h2 P₁ P₂ hP₁ hP₂ hne R, fun h => by rcases h with rfl | rfl <;> assumption⟩`. Unfold `modF`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := S) _ (fun P hP => by`. Assume the negation of the conclusion as `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hP ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hout P (fun h' => h ((hmem P).2 h'))]`. Use the proof step `simp)]`. Rewrite using `[Finset.prod_congr rfl (g := fun _ => ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)⁻¹) (fun P hP => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hin P ((hmem P).1 hP), hx P ((hmem P).1 hP), WithZero.log_exp, (hN P ((hmem P).1 hP)).1, zpow_neg_one])]`. Rewrite using `[Finset.prod_const, hS2, Finset.card_pair hne]`. Establish `h1` using `hχ.1 v k`. Unfold `Formalism.L2.Host.HChar.resFin at h1`. Rewrite `h1` using `[MonoidHom.finsetProd_apply]`.
-
-Rewrite using `[map_prod, ← h1]`. Conclude with `Finset.prod_congr rfl fun P _ => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_unif_idele : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (v : HeightOneSpectrum (OF E)) (x : OF E),
     Splits v → (∀ P, Over P v → Valued.v (iota x P) = WithZero.exp (-1 : ℤ)) →

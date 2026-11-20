@@ -17,23 +17,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open MeasureTheory in
 
 /- English proof (translation)
-Take `⟨-, -, hconc, hinvw⟩` from `hH`. Take `⟨hKm, hKu⟩` from `hK`. Use `haveI := Formalism.L2.SG.TermOp.Vanish.ROsub_countable X (X.Fu u) (X.Fu u') s.lam s.lam' s.lin`. Use `set Γ := Formalism.L2.SG.TermOp.Vanish.ROsub X (X.Fu u) (X.Fu u') s.lam s.lam' s.lin with hΓ`. Use `set μR := μw.map fun y => g * y * g⁻¹ with hμR`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcm : Measurable fun y : X.B.I.Ginf => g * y * g⁻¹` using `((continuous_const.mul continuous_id).mul continuous_const).measurable`. Establish `hRm : MeasurableSet (Formalism.L2.SG.TermOp.Vanish.Rset s)` using `(Formalism.L2.SG.Pf.rClosedC_holds D X Y u u' s).measurableSet`. Establish `hRc : μR (Formalism.L2.SG.TermOp.Vanish.Rset s)ᶜ = 0`. Rewrite using `[hμR, Measure.map_apply hcm hRm.compl]`. Conclude with `measure_mono_null (fun y hy hySt => hy (Formalism.L2.SG.LoopTerm.stInf_conj hg hg' hdec hySt)) hconc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ q ∈ Γ, μR.map (fun x => q * x) = μR`. Introduce `q hq`. Establish `hq'` using `Formalism.L2.SG.LoopTerm.stInf_conj_inv hg hg' hdec (Formalism.L2.SG.Pf.LoopBPin.roinf_sub_rset s hq)`. Rewrite using `[hμR, Measure.map_map (measurable_const_mul q) hcm]`. Establish `e : (fun x => q * x) ∘ (fun y => g * y * g⁻¹) = (fun y => g * y * g⁻¹) ∘ (fun y => (g⁻¹ * q * g) * y)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Simplify using `only [Function.comp]`. Use `group`. Rewrite using `[e, ← Measure.map_map hcm (measurable_const_mul _), hinvw _ hq']`. Establish `hpre : ∀ q ∈ Γ, ∀ C, MeasurableSet C → μR ((fun x => q * x) ⁻¹' C) = μR C`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q hq C hC`. Rewrite using `[← Measure.map_apply (measurable_const_mul q) hC, hinv q hq]`. Establish `h1 : μR K ≤ ∑' q : Γ, μR (K ∩ (fun x => (q : X.B.I.Ginf) * x) ⁻¹' B)`. Combine the equalities or inequalities in the displayed calculation. Use `measure_mono fun r hr => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, hqr⟩` from `hcov r hr.2`. Conclude with `Set.mem_iUnion.2 ⟨⟨q, hq⟩, hr.1, hqr⟩`. Use `_ ≤ _ := measure_iUnion_le _`. Establish `h2 : ∀ q : Γ, μR (K ∩ (fun x => (q : X.B.I.Ginf) * x) ⁻¹' B) = μR (B ∩ (fun x => ((q⁻¹ : Γ) : X.B.I.Ginf) * x) ⁻¹' K)`. Introduce `q`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : MeasurableSet (B ∩ (fun x => ((q⁻¹ : Γ) : X.B.I.Ginf) * x) ⁻¹' K)` using `hB.inter (hKm.preimage (measurable_const_mul _))`. Rewrite using `[← hpre q q.2 _ hC]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Subgroup.coe_inv, inv_mul_cancel_left]`.
-
-Conclude with `and_comm`. Establish `h3` using `Formalism.L2.SG.Pf.FormAllPf.decomp μR (Formalism.L2.SG.TermOp.Vanish.Rset s) hRc Γ B K hB hKm hKu`. Establish `h4 : ∑' q : Γ, μR (K ∩ (fun x => (q : X.B.I.Ginf) * x) ⁻¹' B) = μR B`. Rewrite using `[h3]`. Repeatedly rewrite using `[h2]`.
-
-Conclude with `(Equiv.inv Γ).tsum_eq (fun q => μR (B ∩ (fun x => (q : X.B.I.Ginf) * x) ⁻¹' K))`. Conclude with `h1.trans_eq h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LoopVol.packing_pinned {D : D7} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word} (s : TT Y u u')
     {γw g g' : X.B.I.Ginf} {μw : Measure X.B.I.Ginf} (hg : g ∈ X.SinfU u) (hg' : g' ∈ X.SinfU u')
@@ -89,11 +85,11 @@ theorem GlobalTheory.LoopVol.packing_pinned {D : D7} {X : HidaSetting D} {Y : Fu
   exact h1.trans_eq h4
 
 /- English proof (translation)
-Establish `hrd` using `GlobalTheory.RealPlaces.one_le_rdE D`. Establish `hg0` using `hSt.2.2.2.2.2.2.2.1.two_le`. Establish `hg1` using `hSt.2.2.2.2.2.2.2.2.1.two_le`. Establish `h0 : (2 : ℝ) ≤ (D.host.g 0 : ℝ)` using `by exact_mod_cast hg0`. Establish `h1 : (2 : ℝ) ≤ (D.host.g 1 : ℝ)` using `by exact_mod_cast hg1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgR : (4 : ℝ) ≤ (X.B.g : ℝ)` using `by rw [X.g_eq]; push_cast; nlinarith`. Establish `e : D.host.ka / (X.B.g : ℝ) / Real.pi = 2 / (D.host.rdE * X.B.g)`. Rewrite using `[show D.host.ka = Real.pi / (D.host.rdE / 2) from rfl]`. Establish `: (0 : ℝ) < D.host.rdE` using `by linarith`. Establish `: (0 : ℝ) < (X.B.g : ℝ)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[e, div_le_one (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem GlobalTheory.LoopVol.ka_div_le_one {D : D7} (X : HidaSetting D) {u u' : D.what₂.Word} (hSt : Formalism.MainNotions.S.Cnt.Stand D u u') :
     D.host.ka / (X.B.g : ℝ) / Real.pi ≤ 1 := by
@@ -112,9 +108,9 @@ theorem GlobalTheory.LoopVol.ka_div_le_one {D : D7} (X : HidaSetting D) {u u' : 
   nlinarith
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 A D X Y W large₂ u u' C' Cl hH s hrel hG w μR K hat hPin hK L U hL hU hZ Ω hΩ hcov`. Take `⟨γw, sf, s', μw, hrep, hsf, hs', hdec, hμwH, hμwS, rfl⟩` from `hPin`. Take `⟨T, hT, hTc⟩` from `GlobalTheory.T.integerPoints_cover_realPoints_rootCoordinates Cg cb Cu cT CT C0 A D X Y W large₂ u u' C' Cl hH s hrel hG w γw sf s' hat hrep hsf hs' hdec L U hL hU hZ Ω hcov`. Establish `hTΩ : MeasurableSet (T ⁻¹' Ω)` using `hT.measurable hΩ`. Establish `hBm : MeasurableSet (GlobalTheory.LoopVol.ratCoord X u' w γw sf ⁻¹' (T ⁻¹' Ω))` using `(GlobalTheory.LoopVol.ratCoord_cont X u' w γw sf).measurable hTΩ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hka` using `GlobalTheory.LoopVol.ka_div_le_one X hH.2.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hT.measure_preimage hΩ.nullMeasurableSet]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.LoopVol.covolume_le_cover : ∀ Cg cb Cu cT CT C0 A : ℝ, ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (W : WittDat X) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), Formalism.MainNotions.S.Cnt.Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → ∀ s : TT Y u u', s.relevant → s.G ≠ 0 → ∀ (w : Point D.host.E (D.R.rS + 1)) (μR : MeasureTheory.Measure X.B.I.Ginf) (K : Set X.B.I.Ginf), s.toTerm.atPt w → Formalism.L2.SG.VolPin.IsPinnedR s w μR → Formalism.L2.SG.LoopTerm.IsFundR s K → ∀ (L U : Formalism.MainNotions.S.Cnt.GramM D), IsLoUni L → IsUpUni U → ZhatOM (ZhatL (lf D (FlagOfWord W u)) (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame)) = L * ptMat w * U → ∀ Ω : Set (D.what₂.Tau → GlobalTheory.LoopV.roots (ptMat w) → ℂ), MeasurableSet Ω → (∀ c : D.what₂.Tau → GlobalTheory.LoopV.roots (ptMat w) → ℂ, ∃ n ∈ NLam (Formalism.HermitianLatticesTheory.gmap (W.δ u) s.lam) (lf D (FlagOfWord W u)) ∩ NLam (Formalism.HermitianLatticesTheory.gmap (W.δ u) s.lam) (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame), ∃ a : Formalism.MainNotions.S.Cnt.GramM D, (∀ j : Fin (D.R.rS + 1), n (frame (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame) j) = ∑ i : Fin (D.R.rS + 1), ((-1) ^ (i.val + j.val) * a i j) • frame (Formalism.L2.SG.Saturated.mapL (W.δ u) (W.isom u) s.frame) i) ∧ (fun τ (q : GlobalTheory.LoopV.roots (ptMat w)) => ((U * a * U⁻¹).map (embS D τ) * GlobalTheory.LoopV.ofRoots (GlobalTheory.LoopV.roots (ptMat w)) (c τ) : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ) q.1.1 q.1.2) ∈ Ω) → μR K ≤ MeasureTheory.volume Ω * ENNReal.ofReal (D.host.rdE ^ (2 * D.R.f * (D.R.rS + 1) ^ 3)) := by
   intro Cg cb Cu cT CT C0 A D X Y W large₂ u u' C' Cl hH s hrel hG w μR K hat hPin hK L U hL hU hZ Ω hΩ hcov

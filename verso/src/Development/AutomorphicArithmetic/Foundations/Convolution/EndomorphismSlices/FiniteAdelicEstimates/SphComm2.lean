@@ -3,7 +3,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.ArchimedeanBaseChangeProof.SatakeExponents.UniformizerValuations.AdelicHeckeBlocks.IsCompactMaximalPairPlace
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w f f' hf hf'`. Conclude with `PositivityTheory.Rg.BcB.F.sphComm E a b w f f' hf hf'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.ConvolutionTheory.EB.sphComm2 :
     UpperTheory.Zero.ConvolutionTheory.EB.SphComm2 := by

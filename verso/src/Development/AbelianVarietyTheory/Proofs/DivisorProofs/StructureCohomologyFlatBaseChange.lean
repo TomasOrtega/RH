@@ -13,33 +13,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Set `Z` to `LinearMap.ker g`. Set `f' : A →ₗ[R] Z` to `f.codRestrict Z hfg`. Set `i : Z →ₗ[R] LinearMap.ker (g.baseChange R)` to `((TensorProduct.mk R R B 1) ∘ₗ Z.subtype).codRestrict _ (fun z ↦ by`. Establish `: g z.1 = 0` using `z.2`. Simplify using `[this])`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hi : ∀ z : Z, (i z).1 = (1 : R) ⊗ₜ[R] z.1` using `fun z ↦ rfl`. Establish `his : Function.Surjective i`. Introduce and unpack `⟨x, hx⟩`. Take `⟨b, rfl⟩` from `(TensorProduct.lid R B).symm.surjective x`. Establish `hb : g b = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : R) ⊗ₜ[R] g b = 0` using `by simpa using hx`. Use `congrArg (TensorProduct.lid R C) h1` as an intermediate fact. Simplify using `using this`. Conclude with `⟨⟨b, hb⟩, Subtype.ext (by simp [hi])⟩`. Set `τ : Z →ₗ[R] H` to `θ ∘ₗ i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hτs : Function.Surjective τ` using `hs.comp his`. Establish `hex : Function.Exact f' τ`. Introduce `z`. Express the relevant statement in the definitionally equal form `θ (i z) = 0 ↔ _`. Rewrite using `[hk, hi]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Take `⟨a, rfl⟩` from `(TensorProduct.lid R A).symm.surjective x`. Use `⟨a, Subtype.ext ?_⟩` and prove the remaining obligations. Use `congrArg (TensorProduct.lid R B) hx` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f a = z.1`. Simplify using `using this`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨1 ⊗ₜ a, rfl⟩`. Establish `hexZ : Function.Exact (Z.subtype.baseChange R') (g.baseChange R')` using `Module.Flat.lTensor_exact R' (LinearMap.exact_subtype_ker_map g)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (Z.subtype.baseChange R')` using `Module.Flat.lTensor_preserves_injective_linearMap (M := R') Z.subtype Z.subtype_injective`. Set `j : R' ⊗[R] Z →ₗ[R'] LinearMap.ker (g.baseChange R')` to `(Z.subtype.baseChange R').codRestrict _ (fun x ↦ hexZ.apply_apply_eq_zero x)`. Establish `hjs : Function.Surjective j`. Introduce and unpack `⟨x, hx⟩`. Take `⟨y, rfl⟩` from `(hexZ x).1 hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y, rfl⟩`. Set `a : R' ⊗[R] Z →ₗ[R'] R' ⊗[R] H` to `τ.baseChange R'`. Set `b : R' ⊗[R] Z →ₗ[R'] H'` to `θ' ∘ₗ j`. Establish `has : Function.Surjective a` using `LinearMap.lTensor_surjective R' hτs`. Establish `hbs : Function.Surjective b` using `hs'.comp hjs`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexa : Function.Exact (f'.baseChange R') a` using `lTensor_exact R' hex hτs`. Establish `hcomp : ∀ y, Z.subtype.baseChange R' (f'.baseChange R' y) = f.baseChange R' y`. Introduce `y`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hker : LinearMap.ker a = LinearMap.ker b`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker, hexa x]`. Express the relevant statement in the definitionally equal form `_ ↔ θ' (j x) = 0`. Rewrite using `[hk']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, (hcomp y).symm⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, hinj ((hcomp y).trans hy)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `⟨(a.quotKerEquivOfSurjective has).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hker ≪≫ₗ b.quotKerEquivOfSurjective hbs, fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hτs c`. Establish `h1 : (a.quotKerEquivOfSurjective has).symm ((1 : R') ⊗ₜ[R] τ z) = Submodule.Quotient.mk ((1 : R') ⊗ₜ[R] z)`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, h1]`. Express the relevant statement in the definitionally equal form `θ' (j (1 ⊗ₜ z)) = p (θ (i z))`. Apply `hp` to reduce the goal to its premises. Rewrite using `[hi, LinearMap.rTensor_tmul]`. Express the relevant statement in the definitionally equal form `(1 : R') ⊗ₜ[R] z.1 = (algebraMap R R' 1) ⊗ₜ[R] z.1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flat_cohomology_baseChange {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R']
     {A B C H H' : Type} [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B] [AddCommGroup C] [Module R C]
@@ -125,11 +125,9 @@ theorem flat_cohomology_baseChange {R R' : Type} [CommRing R] [CommRing R'] [Alg
   rw [map_one]
 
 /- English proof (translation)
-Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace s`. Take `⟨S, hS, e⟩` from `(isCompact_iff_finite_and_eq_biUnion_affineOpens (U := (⊤ : X.Opens))).1 isCompact_univ`. Use `hS.fintype` as an intermediate fact. Set `q` to `(Fintype.equivFin S).symm`. Use `⟨_, fun i ↦ (q i).1.1, fun i ↦ (q i).1.2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `iSup_le fun i ↦ le_iSup₂_of_le (q i).1 (q i).2 le_rfl`. Use `iSup₂_le fun U hU ↦ ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `q.surjective ⟨U, hU⟩`.
-
-Conclude with `le_iSup_of_le i (by simp only [hi]; exact le_rfl)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_fin_affine_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X ⟶ Sp R) [QuasiCompact s] :
     ∃ (n : ℕ) (D : Fin n → X.Opens), (∀ i, IsAffineOpen (D i)) ∧ ⨆ i, D i = ⊤ := by
@@ -146,13 +144,13 @@ theorem exists_fin_affine_cover {R : Type} [CommRing R] {X : Scheme.{0}} (s : X 
     exact le_iSup_of_le i (by simp only [hi]; exact le_rfl)
 
 /- English proof (translation)
-Introduce `R R' _ _ _ _ X X' s s' φ h hsep hqc`. Take `⟨n, D, hD, hcov⟩` from `exists_fin_affine_cover s`. Take `⟨M⟩` from `GlobalTheory.T.orderedCech_finiteAffineCover_models_structureSheafCohomology R X s (Fin n) D hsep hD hcov`. Generalize the expression as in `GlobalTheory.AbLaw.cechLB s (LB.triv X) D = K at M`. Establish `h0 : IsPullback (𝟙 X) s s (spMap (algebraMap R R))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `e : spMap (algebraMap R R) = 𝟙 _` using `spMap_id R`. Rewrite using `[e]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Establish `hdd : ∀ i j k a, (K.d j k).hom ((K.d i j).hom a) = 0`. Introduce `i j k a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, K.d_comp_d]`. Both sides reduce to the same expression. Take `⟨a1, a2, a3, a4⟩` from `M.exact h0`. Take `⟨b1, b2, b3, b4⟩` from `M.exact h`. Take `⟨c1, c2⟩` from `M.nat h0 h (Algebra.ofId R R') φ h.w (Category.comp_id φ)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨flat_cohomology_baseChange _ _ (hdd 0 1 2) (M.θ1 h0) (M.θ1 h) a1 a2 b1 b2 _ c1, flat_cohomology_baseChange _ _ (hdd 1 2 3) (M.θ2 h0) (M.θ2 h) a3 a4 b3 b4 _ c2⟩`.
+A detailed English derivation is pending.
 -/
 theorem flat_baseChange_HO : ∀ (R R' : Type) [CommRing R] [CommRing R'] [Algebra R R'] [Module.Flat R R'] (X X' : Scheme.{0}) (s : X ⟶ Sp R) (s' : X' ⟶ Sp R') (φ : X' ⟶ X) (h : IsPullback φ s' s (spMap (algebraMap R R'))), IsSeparated s → QuasiCompact s → (∃ e : R' ⊗[R] HO1 s ≃ₗ[R'] HO1 s', ∀ c, e (1 ⊗ₜ c) = pullHO1 h.w c) ∧ ∃ e : R' ⊗[R] HO2 s ≃ₗ[R'] HO2 s', ∀ c, e (1 ⊗ₜ c) = pullHO2 h.w c := by
   intro R R' _ _ _ _ X X' s s' φ h hsep hqc

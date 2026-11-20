@@ -12,7 +12,7 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
   Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-Unfold `fsv`. Rewrite using `[← Complex.exp_conj]`. Use `congr 1`. Simplify using `only [map_sub, map_mul, Complex.conj_conj, map_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fsv_conj' (s t : ℂ) : conj (fsv s t) = fsv (-s) t := by
   unfold fsv
@@ -22,11 +22,11 @@ theorem fsv_conj' (s t : ℂ) : conj (fsv s t) = fsv (-s) t := by
   ring
 
 /- English proof (translation)
-Establish `ha : 0 ≤ ‖a‖` using `norm_nonneg a`. Establish `hs : 0 ≤ ‖s‖` using `norm_nonneg s`. Establish `hsa : 0 ≤ ‖s + a‖` using `norm_nonneg (s + a)`. Establish `htri : ‖s‖ ≤ ‖s + a‖ + ‖a‖`. Use `norm_sub_le (s + a) a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hkey : 1 + ‖s‖ ≤ (1 + ‖s + a‖) * (1 + ‖a‖)` using `by nlinarith`. Establish `hA : 0 < (1 + ‖s + a‖) ^ N` using `Real.rpow_pos_of_pos (by linarith) N`. Establish `hB : 0 < (1 + ‖a‖) ^ N` using `Real.rpow_pos_of_pos (by linarith) N`. Establish `hC : 0 < (1 + ‖s‖) ^ N` using `Real.rpow_pos_of_pos (by linarith) N`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmono : (1 + ‖s‖) ^ N ≤ (1 + ‖s + a‖) ^ N * (1 + ‖a‖) ^ N`. Rewrite using `[← Real.mul_rpow (by linarith) (by linarith)]`. Conclude with `Real.rpow_le_rpow (by linarith) hkey hN`. Rewrite using `[Real.rpow_neg (by linarith), Real.rpow_neg (by linarith), ← div_eq_mul_inv, le_div_iff₀ hC, inv_mul_le_iff₀ hA]`. Conclude with `hmono`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem peetre (N : ℝ) (hN : 0 ≤ N) (s a : ℂ) :
     (1 + ‖s + a‖) ^ (-N) ≤ (1 + ‖a‖) ^ N * (1 + ‖s‖) ^ (-N) := by
@@ -56,9 +56,9 @@ variable (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.l
 
 include hμ in
 /- English proof (translation)
-Establish `i1` using `HerC.int_cross μ hμ h1.1 hv.1 c (h1.2 c) (hv.2 c)`. Establish `i2` using `HerC.int_cross μ hμ h2.1 hv.1 c (h2.2 c) (hv.2 c)`. Simplify using `only [HerC.wt0] at i1 i2`. Unfold `LocFacts₂`. Rewrite using `[← integral_add i1 i2]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[HerD.pairAt_add_left_lc μ hμ h1.1 h2.1 hv.1, mul_add]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem formP_add_left_of_mem_squareIntegrable {u1 u2 v : RadSp k r z z' π π'} (h1 : u1 ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ)
     (h2 : u2 ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ) (hv : v ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ) :
@@ -73,7 +73,7 @@ theorem formP_add_left_of_mem_squareIntegrable {u1 u2 v : RadSp k r z z' π π'}
   rw [HerD.pairAt_add_left_lc μ hμ h1.1 h2.1 hv.1, mul_add]
 
 /- English proof (translation)
-Unfold `LocFacts₂`. Repeatedly rewrite using `[pairAt_smul_left]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -84,9 +84,9 @@ theorem formP_smul_left' (u v : RadSp k r z z' π π') (a : ℂ) : LocFacts₂ �
   congr 1; funext c'; ring
 
 /- English proof (translation)
-Unfold `LocFacts₂`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[pairAt_swap, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(Complex.conj_ofReal _).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem formP_swap_eq_conj (u v : RadSp k r z z' π π') : LocFacts₂ μ 0 v u c = conj (LocFacts₂ μ 0 u v c) := by
   unfold LocFacts₂
@@ -98,7 +98,7 @@ theorem formP_swap_eq_conj (u v : RadSp k r z z' π π') : LocFacts₂ μ 0 v u 
 
 include hμ in
 /- English proof (translation)
-Rewrite using `[formP_swap_eq_conj, formP_add_left_of_mem_squareIntegrable μ hμ c h1 h2 hu, map_add, ← formP_swap_eq_conj, ← formP_swap_eq_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formP_add_right_of_mem_squareIntegrable {u v1 v2 : RadSp k r z z' π π'} (hu : u ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ)
     (h1 : v1 ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ) (h2 : v2 ∈ squareIntegrableSmoothSubmoduleGL k r z z' π π' μ hμ) :
@@ -106,7 +106,7 @@ theorem formP_add_right_of_mem_squareIntegrable {u v1 v2 : RadSp k r z z' π π'
   rw [formP_swap_eq_conj, formP_add_left_of_mem_squareIntegrable μ hμ c h1 h2 hu, map_add, ← formP_swap_eq_conj, ← formP_swap_eq_conj]
 
 /- English proof (translation)
-Unfold `LocFacts₂`. Repeatedly rewrite using `[HerA.pairAt_smul_right]`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `c'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -120,20 +120,20 @@ theorem formP_smul_right_eq_conj_mul (u v : RadSp k r z z' π π') (a : ℂ) :
   ring
 
 /- English proof (translation)
-Use `formP_smul_left' μ c (0 : RadSp k r z z' π π') v 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formP_zero_left' (v : RadSp k r z z' π π') : LocFacts₂ μ 0 0 v c = 0 := by
   have := formP_smul_left' μ c (0 : RadSp k r z z' π π') v 0
   simpa using this
 
 /- English proof (translation)
-Simplify using `using formP_smul_right_eq_conj_mul μ c u (0 : ↥(RadSp k r z z' π π')) 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem formP_zero_right' (u : RadSp k r z z' π π') : LocFacts₂ μ 0 u 0 c = 0 := by
   simpa using formP_smul_right_eq_conj_mul μ c u (0 : ↥(RadSp k r z z' π π')) 0
 
 /- English proof (translation)
-Unfold `pairAt`. Simplify using `only [hX, hY]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem pairAt_congr_of_apply_eq (X X' Y Y' : RadSp k r z z' π π') (d : Fin r → ℂ)
     (hX : X.1 d = X'.1 d) (hY : Y.1 d = Y'.1 d) : pairAt μ X Y d = pairAt μ X' Y' d := by
@@ -141,13 +141,13 @@ private theorem pairAt_congr_of_apply_eq (X X' Y Y' : RadSp k r z z' π π') (d 
   simp only [hX, hY]
 
 /- English proof (translation)
-Unfold `LocFacts₂`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Use `congr 1`. Establish `key : fsv s (glue i c c' l) * fsv s1 (glue i c c' l) * conj (fsv s2 (glue i c c' l)) = fsv (s + s1 - s2) (glue i c c' l)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[fsv_conj', HerD.fsv_add, HerD.fsv_add, sub_eq_add_neg]`. Establish `k1` using `pairAt_congr_of_apply_eq μ (W (W1 Φ)) ((fsv s (glue i c c' l) * fsv s1 (glue i c c' l)) • Φ) (W2 Ψ) (fsv s2 (glue i c c' l) • Ψ) (glue i c c') (by`. Use function extensionality and compare the values at `g`. Rewrite using `[hW, h1]`. Simplify using `[smul_smul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `(by`. Use function extensionality and compare the values at `g`. Rewrite using `[h2]`. Use the proof step `simp)`. Establish `k2` using `pairAt_congr_of_apply_eq μ (W' Φ) (fsv (s + s1 - s2) (glue i c c' l) • Φ) Ψ Ψ (glue i c c') (by`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[h']`. Use the proof step `simp) rfl`. Rewrite using `[k1, k2, HerA.pairAt_smul_left, HerA.pairAt_smul_right, HerA.pairAt_smul_left, ← key]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem formP_waves (l : Fin r) (i : Fin (r + 1)) {W W1 W2 W' : Module.End ℂ (RadSp k r z z' π π')} {s s1 s2 : ℂ}
     (hW : multiplicationOperator W (fun c _ => fsv s (c l))) (h1 : multiplicationOperator W1 (fun c _ => fsv s1 (c l)))
@@ -186,21 +186,21 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => (min_le_left _ _).trans (h.2.2 g hg hne)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_min {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {ε ε' : ℝ} {G : Mx k r → (Wq →L[ℂ] Wp)}
     (h : JC.NiceCoef Bs ε G) : JC.NiceCoef Bs (min ε ε') G :=
   ⟨h.1, h.2.1, fun g hg hne => (min_le_left _ _).trans (h.2.2 g hg hne)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2.1, fun g hg hne => (min_le_right _ _).trans (h.2.2 g hg hne)⟩`.
+Supply the required witnesses or components.
 -/
 theorem nice_min' {k r : ℕ} {Bs : B.RealPlaceData k r Wp Wq} {ε ε' : ℝ} {G : Mx k r → (Wq →L[ℂ] Wp)}
     (h : JC.NiceCoef Bs ε' G) : JC.NiceCoef Bs (min ε ε') G :=
   ⟨h.1, h.2.1, fun g hg hne => (min_le_right _ _).trans (h.2.2 g hg hne)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨P5.mulOp (fun x => fsv s0 (x.1 l)) (contDiff_fsv_coord l s0) (fun _ _ _ _ _ _ => rfl), P5.mulOp_isMulOp _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 private theorem exists_isMulOp_fsv_coord {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} (l : Fin r) (s0 : ℂ) :
@@ -209,19 +209,17 @@ private theorem exists_isMulOp_fsv_coord {k r : ℕ} {z z' : Fin (2 * r + k + 1)
     P5.mulOp_isMulOp _ _ _⟩
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hD.2.1.finite_compact⟩`. Take `⟨_, s0, ε, G, hε, hG, hΦG⟩` from `hΦ`. Take `⟨_, s1, ε', H, hε', hH, hΨH⟩` from `hΨ`. Take `⟨Wm0, hWm0⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l (-s0)`. Take `⟨Wm1, hWm1⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l (-s1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Wp0, hWp0⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l s0`. Take `⟨Wp1, hWp1⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l s1`. Establish `eΦ : Wp0 (Wm0 Φ) = Φ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c' g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWp0, hWm0, smul_smul, fsv_mul_fsv_neg, one_smul]`. Establish `eΨ : Wp1 (Wm1 Ψ) = Ψ`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c' g`. Rewrite using `[hWp1, hWm1, smul_smul, fsv_mul_fsv_neg, one_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ0 : ∀ y ∈ DomR P.k P.r z z', (Wm0 Φ).1 y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D G) y.1 y.2`. Introduce `y hy`. Rewrite using `[hWm0, hΦG y hy, smul_smul, mul_comm, fsv_mul_fsv_neg, one_smul]`. Establish `hΨ0 : ∀ y ∈ DomR P.k P.r z z', (Wm1 Ψ).1 y.1 y.2 = resG P.k P.r (Fin.last P.r) (B.JF D H) y.1 y.2`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hWm1, hΨH y hy, smul_smul, mul_comm, fsv_mul_fsv_neg, one_smul]`. Take `⟨C, hC⟩` from `hR Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl (min ε ε') G H (lt_min hε hε') (nice_min hG) (nice_min' hH) (Wm0 Φ) (Wm1 Ψ) hΦ0 hΨ0 c hc n`. Establish `hN : (0 : ℝ) ≤ (n : ℝ) + 3` using `by positivity`. Use `⟨max C 0 * (1 + ‖s0 - s1‖) ^ ((n : ℝ) + 3), fun s Wv hWv => ?_⟩` and prove the remaining obligations. Take `⟨W', hW'⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l (s + s0 - s1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `eq : LocFacts₂ μ l.castSucc (Wv Φ) Ψ c = LocFacts₂ μ l.castSucc (W' (Wm0 Φ)) (Wm1 Ψ) c` using `by conv_lhs => rw [← eΦ, ← eΨ]`. Conclude with `formP_waves μ c l l.castSucc hWv hWp0 hWp1 hW' (Wm0 Φ) (Wm1 Ψ)`. Establish `hb` using `hC (s + s0 - s1) W' hW'`. Rewrite `hb` using `[add_sub_assoc]`. Rewrite using `[eq]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem clsDecayW_lemma_2 (hR : RadDecay) (S : Type) [Fintype S] [DecidableEq S] (P : M.Par)
     (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp)) (π' : Mx P.k P.r → (Wq →L[ℂ] Wq))
@@ -274,23 +272,21 @@ private theorem clsDecayW_lemma_2 (hR : RadDecay) (S : Type) [Fintype S] [Decida
     _ = max C 0 * (1 + ‖s0 - s1‖) ^ ((n : ℝ) + 3) * (1 + ‖s‖) ^ (-((n : ℝ) + 3)) := by ring
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hD.2.1.finite_compact⟩`. Establish `hμ` using `hD.2.1`. Establish `hl0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Establish `hL2` using `wave_operator_le_l2_subspace P z z' π π' μ hμ D hz hz' hπ hπ' l`. Establish `hWJ : ∀ (s : ℂ) (Wv : Module.End ℂ (RadSp P.k P.r z z' π π')), multiplicationOperator Wv (fun c' _ => fsv s (c' l)) → ∀ Φ' ∈ waveJ P z z' π π' D l, Wv Φ' ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hμ` using `fun s Wv hWv Φ' hΦ' => hL2 (HerD.waveJ_wave P z z' π π' D l hWv Φ' hΦ')`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `stepA : ∀ Φ', HerD.IsWaveJ P z z' π π' D l Φ' → ∀ Ψ' ∈ waveJ P z z' π π' D l, ∃ C : ℝ, ∀ (s : ℂ) (Wv : Module.End ℂ (RadSp P.k P.r z z' π π')), multiplicationOperator Wv (fun c' _ => fsv s (c' l)) → ‖LocFacts₂ μ 0 (Wv Φ') Ψ' c‖ ≤ C * (1 + ‖s‖) ^ (-((n : ℝ) + 3))`. Introduce `Φ' hΦ' Ψ' hΨ'`. Establish `hΨs : Ψ' ∈ Submodule.span ℂ {Ψ | HerD.IsWaveJ P z z' π π' D l Ψ}` using `hΨ'`. Proceed by induction on `hΨs using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `clsDecayW_lemma_2 hR S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ' x hΦ' hx c hc n`. Conclude with `⟨C, fun s Wv hWv => by simpa only [hl0] using hC s Wv hWv⟩`. Consider the case `zero`. Conclude with `⟨0, fun s Wv hWv => by simp [formP_zero_right']⟩`. Consider the case `add x y hx hy ihx ihy`.
+Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨C1, hC1⟩` from `ihx hx`. Take `⟨C2, hC2⟩` from `ihy hy`. Use `⟨C1 + C2, fun s Wv hWv => ?_⟩` and prove the remaining obligations. Establish `hΦl : Wv Φ' ∈ squareIntegrableSmoothSubmoduleGL P.k P.r z z' π π' μ hμ` using `hWJ s Wv hWv Φ' (Submodule.subset_span hΦ')`. Rewrite using `[formP_add_right_of_mem_squareIntegrable μ hμ c hΦl (hL2 hx) (hL2 hy), add_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `(norm_add_le _ _).trans (add_le_add (hC1 s Wv hWv) (hC2 s Wv hWv))`. Consider the case `smul a x hx ihx`. Take `⟨C1, hC1⟩` from `ihx hx`. Use `⟨‖a‖ * C1, fun s Wv hWv => ?_⟩` and prove the remaining obligations. Rewrite using `[formP_smul_right_eq_conj_mul, norm_mul, Complex.norm_conj, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC1 s Wv hWv) (norm_nonneg a)`. Simplify using `only [hl0]`. Establish `hΦs : Φ ∈ Submodule.span ℂ {Ψ | HerD.IsWaveJ P z z' π π' D l Ψ}` using `hΦ`. Proceed by induction on `hΦs using Submodule.span_induction with`. Consider the case `mem x hx => exact stepA x hx Ψ hΨ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, fun s Wv hWv => by simp [formP_zero_left']⟩`. Consider the case `add x y hx hy ihx ihy`. Take `⟨C1, hC1⟩` from `ihx hx`. Take `⟨C2, hC2⟩` from `ihy hy`. Use `⟨C1 + C2, fun s Wv hWv => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_add, formP_add_left_of_mem_squareIntegrable μ hμ c (hWJ s Wv hWv x hx) (hWJ s Wv hWv y hy) (hL2 hΨ), add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hC1 s Wv hWv) (hC2 s Wv hWv))`. Consider the case `smul a x hx ihx`. Take `⟨C1, hC1⟩` from `ihx hx`. Use `⟨‖a‖ * C1, fun s Wv hWv => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_smul, formP_smul_left', norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC1 s Wv hWv) (norm_nonneg a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsDecayW (hR : RadDecay) (S : Type) [Fintype S] [DecidableEq S] (P : M.Par)
     (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp)) (π' : Mx P.k P.r → (Wq →L[ℂ] Wq))
@@ -353,7 +349,7 @@ theorem clsDecayW (hR : RadDecay) (S : Type) [Fintype S] [DecidableEq S] (P : M.
 end WaveDecay
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ Ψ hΦ hΨ c hc n`. Conclude with `clsDecayW hR S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ Ψ hΦ hΨ c hc n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem clsDecayJ_of (hR : RadDecay) : ClsDecayJ := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ Ψ hΦ hΨ c hc n
@@ -365,9 +361,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Unfold `form LocFacts₂`. Rewrite using `[← integral_finset_sum]`. Use `congr 1`. Use function extensionality and compare the values at `c'`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce `a _`. Use `HerC.int_cross μ hμ (hu a).1 (hv a).1 c ((hu a).2 c) ((hv a).2 c)` as an intermediate fact. Simplify `this` using `only [HerC.wt0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_eq_sum_components {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {π' : Mx k r → (Wq →L[ℂ] Wq)} (μ : Measure (Mt k r)) [SFinite μ] (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ)
@@ -384,7 +380,7 @@ theorem form_eq_sum_components {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} 
     simpa only [HerC.wt0] using this
 
 /- English proof (translation)
-Unfold `act`. Use `Submodule.sum_mem _ (fun b _ => ?_)` and prove the remaining obligations. Conclude with `HerD.rr_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw a b (x b) (HerD.herKc0_le_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 (hx b))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comps_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -402,11 +398,11 @@ theorem comps_waveJ (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : M
 end Pairs
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasureOnCompacts μ := ⟨hD.2.1.finite_compact⟩`. Establish `hμ` using `hD.2.1`. Establish `hl0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Establish `hb` using `fun a => hC Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl (u a) (v a) (hu a) (hv a) c hc n`. Use `choose C hC' using hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨∑ a, C a, fun s => ?_⟩` and prove the remaining obligations. Take `⟨Wv, hWv⟩` from `exists_isMulOp_fsv_coord (z := z) (z' := z') (π := π) (π' := π') l s`. Establish `hL2` using `wave_operator_le_l2_subspace P z z' π π' μ hμ D hz hz' hπ hπ' l`. Rewrite using `[hW Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl u v hu hv c hc s Wv hWv, hl0, form_eq_sum_components μ hμ _ v (fun a => hL2 (HerD.waveJ_wave P z z' π π' D l hWv _ (hu a))) (fun a => hL2 (hv a)) c, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun a _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hC' a s Wv hWv` as an intermediate fact. Rewrite `this` using `[hl0]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 private theorem decayPair3_of_lemma (hW : WaveOutJ) (hC : ClsDecayJ) (Wp Wq : Type) [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -436,7 +432,7 @@ private theorem decayPair3_of_lemma (hW : WaveOutJ) (hC : ClsDecayJ) (Wp Wq : Ty
   rwa [hl0] at this
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n`. Establish `hl0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Rewrite `hx`, `hv` using `[hl0]`. Rewrite using `[hl0]`. Conclude with `decayPair3_of_lemma hW hC Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl _ v (fun a => comps_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw x hx a) (fun a => HerD.herKc0_le_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 (hv a)) c hc n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decayPair3_of (hW : WaveOutJ) (hC : ClsDecayJ) : DecayPair3 := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n
@@ -448,11 +444,11 @@ theorem decayPair3_of (hW : WaveOutJ) (hC : ClsDecayJ) : DecayPair3 := by
     (fun a => HerD.herKc0_le_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 (hv a)) c hc n
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `c g`. Use `show (dpMul l Φ : Fn k r (Wq →L[ℂ] Wp)) c g = ((Φ + (2 : ℂ) • X.op l 1 (X.op l 4 Φ) + X.op l 1 (X.op l 4 (X.op l 1 (X.op l 4 Φ))) : RadSp k r z z' π π') : Fn k r (Wq →L[ℂ] Wp)) c g`. Establish `hs : ((dpW (c l) : ℝ) : ℂ) = 1 + 2 * (c l * star (c l)) + c l * star (c l) * (c l * star (c l))`. Establish `h : c l * star (c l) = ((‖c l‖ ^ 2 : ℝ) : ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show star (c l) = (starRingEnd ℂ) (c l) from rfl, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Rewrite using `[h]`. Unfold `dpW`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dpMul_isMulOp l Φ c g]`. Simplify using `only [Submodule.coe_add, Submodule.coe_smul, Pi.add_apply, Pi.smul_apply, X.op_apply, crd, opL, cOp, cbOp]`. Rewrite using `[hs]`. Use `module`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpMul_eq {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -477,9 +473,9 @@ theorem dpMul_eq {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type}
   module
 
 /- English proof (translation)
-Establish `hg : ∀ c' : Cf r l.succ, glue l.succ (Function.update c l t) c' l = t`. Introduce `c'`. Simplify using `[glue]`. Unfold `Dens form`. Repeatedly rewrite using `[pairAt_dpMul_right, hg, ← Finset.mul_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[mul_left_comm _ ((dpW t : ℝ) : ℂ)]`. Rewrite using `[integral_const_mul, Complex.real_smul]`. Unfold `dpW`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem one_add_normSq_sq_smul_dens_eq_dens_dpMul {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [NormedAddCommGroup Wp]
     [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp]
@@ -498,11 +494,11 @@ private theorem one_add_normSq_sq_smul_dens_eq_dens_dpMul {k r : ℕ} {z z' : Fi
   ring
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n`. Establish `hl0 : l.castSucc = 0` using `Fin.ext (by simp [hl])`. Rewrite `hx`, `hv` using `[hl0]`. Rewrite using `[hl0]`. Repeatedly rewrite using `[one_add_normSq_sq_smul_dens_eq_dens_dpMul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hvw : ∀ b, dpMul l (v b) ∈ waveJ P z z' π π' D l`. Introduce `b`. Establish `h0` using `HerD.herKc0_le_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 (hv b)`. Establish `hop : ∀ Φ ∈ waveJ P z z' π π' D l, X.op l 1 (X.op l 4 Φ) ∈ waveJ P z z' π π' D l` using `fun Φ hΦ => (hM Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl _ (hM Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl Φ hΦ).2).1`. Rewrite using `[dpMul_eq X l]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (add_mem h0 (Submodule.smul_mem _ _ (hop _ h0))) (hop _ (hop _ h0))`. Conclude with `decayPair3_of_lemma hW hC Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl _ _ (fun a => comps_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw x hx a) hvw c hc n`.
+A detailed English derivation is pending.
 -/
 theorem decayPair4_of (hW : WaveOutJ) (hC : ClsDecayJ) (hM : SiteMulWaveJ) : DecayPair4 := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n
@@ -522,7 +518,7 @@ theorem decayPair4_of (hW : WaveOutJ) (hC : ClsDecayJ) (hM : SiteMulWaveJ) : Dec
     (fun a => comps_waveJ P z z' π π' X μ L st l0 D hD hz hz' hπ hπ' l hl0 w hw x hx a) hvw c hc n
 
 /- English proof (translation)
-Unfold `ClsE OpClos`. Introduce `Φ hΦ`. Conclude with `Submodule.subset_span ⟨[], Φ, hΦ, rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem base_le_closed_extension {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (S : Type) [Fintype S] [DecidableEq S] (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ)
@@ -535,11 +531,9 @@ theorem base_le_closed_extension {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerPr
   exact Submodule.subset_span ⟨[], Φ, hΦ, rfl⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n t ht`. Establish `hl0 : l.castSucc = (0 : Fin (P.r + 1))` using `Fin.ext (by simp [hl])`. Rewrite `hx`, `hv`, the goal using `[hl0]`. Establish `hb` using `base_le_closed_extension S P z z' π π' X L st l0 D l`. Establish `hu : ∀ a, act (RRi L st 0 w) x a ∈ ClsE S P z z' π π' X L st l0 D l` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `hb` to reduce the goal to its premises. Use `show ∑ b, ((RRi L st 0 w) a b).1 (x b) ∈ base0 S P z z' π π' L st l0 D`. Conclude with `Submodule.sum_mem _ fun b _ => Submodule.mem_sup_right (Submodule.subset_span ⟨w, hw, a, b, x b, hx b, rfl⟩)`. Establish `hv' : ∀ a, v a ∈ ClsE S P z z' π π' X L st l0 D l` using `fun a => hb (Submodule.mem_sup_left (hv a))`. Establish `hs` using `(h Wp Wq S P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' l hl _ v hu hv' c hc).1 0`.
-
-Conclude with `(hs.continuousOn.continuousAt (isOpen_compl_singleton.mem_nhds ht))`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem decayPair2_of_smooth (h : DensSmoothCls) : DecayPair2 := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD h1 h2 hz hz' hπ hπ' w hw l hl x v hx hv c hc n t ht

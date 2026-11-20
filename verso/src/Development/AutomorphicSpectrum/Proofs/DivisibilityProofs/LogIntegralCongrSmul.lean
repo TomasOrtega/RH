@@ -7,11 +7,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo (HermLine IsSmoothHerm IsArithVar 
 namespace GlobalTheory.CompanionTheory.Ar.Num
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e φ`. Use `⟨fun g g' hg => ?_, fun c g => ?_⟩` and prove the remaining obligations. Conclude with `(ReciprocityTheory.ChartRestriction.G.Geo.ptsLocal K ι P e 0 φ φ g g' (fun _ _ _ => rfl) hg).2`. Unfold `ptsIntegral split_ifs with h`. Unfold `ReciprocityTheory.ChartRestriction.G.Geo.ptsIntegralAt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `: ∀ w, ReciprocityTheory.ChartRestriction.G.Geo.sheetDensity P h.choose φ (fun z => c * g z) y w = c * ReciprocityTheory.ChartRestriction.G.Geo.sheetDensity P h.choose φ g y w`. Introduce `w`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Geo.sheetDensity`. Apply the tactic sequence `split_ifs <;> ring`. Simplify using `only [this]`. Rewrite using `[← mul_finsum_mem]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_congr_and_homog :
     ∀ (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (P : Ideal (MRing ι ℤ)) (e : ℕ) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ), (∀ g g' : ((Σ k, ι k) → ℂ) → ℝ, (∀ z ∈ mcPts P, g z = g' z) → ptsIntegral P φ g = ptsIntegral P φ g') ∧ ∀ (c : ℝ) (g : ((Σ k, ι k) → ℂ) → ℝ), ptsIntegral P φ (fun z => c * g z) = c * ptsIntegral P φ g := by

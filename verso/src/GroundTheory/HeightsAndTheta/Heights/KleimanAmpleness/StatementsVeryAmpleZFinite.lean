@@ -35,7 +35,7 @@ def VeryAmpleZChartRing.Statement : Prop :=
       ∀ α ∈ ampleChart H.toSubSystem J.1.card (xProd J) K, ∀ᶠ M in atTop, c ^ M * α ∈ chartRing S h J
 
 /- English proof (translation)
-Introduce `h0`. Use `(map_eq_zero_iff _ (IsFractionRing.injective (Poly k 1) (FractionRing (Poly k 1)))).mp h0` as an intermediate fact. Conclude with `MvPolynomial.X_ne_zero _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem genericPt_one_zero_ne_zero (k : Type u) [Field k] : genericPt k 1 0 ≠ 0 := by
   intro h0

@@ -17,9 +17,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [secRow, GlobalTheory.RSTheta.rowMat, Matrix.of_apply, Matrix.updateRow_apply]`. Distinguish the cases in `h : i = Fin.last m`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (fun e => h (Fin.ext (by simpa using e)))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secRow_eq_rowMat {R : Type} [CommRing R] (y : Fin (m + 1) → R) :
     secRow y = GlobalTheory.RSTheta.rowMat (Fin.last m) y := by
@@ -32,9 +32,9 @@ theorem secRow_eq_rowMat {R : Type} [CommRing R] (y : Fin (m + 1) → R) :
 omit [NumberField E] [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `hu` using `GlobalTheory.RSTheta.isUnit_of_mem_rowSet hy`. Establish `hd : IsUnit (secRow y).det` using `by rw [secRow_eq_rowMat, GlobalTheory.RSTheta.det_rowMat]; exact hu`. Rewrite using `[secInv, dif_pos hd]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.RSTheta.val_rowGL hu, ← secRow_eq_rowMat]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem secInv_eq_inv_rowGL {y : Fin (m + 1) → Cinf E} (hy : y ∈ GlobalTheory.RSTheta.rowSet E (Fin.last m)) :
     secInv y = (GlobalTheory.RSTheta.rowGL (Fin.last m) y)⁻¹ := by
@@ -47,7 +47,7 @@ theorem secInv_eq_inv_rowGL {y : Fin (m + 1) → Cinf E} (hy : y ∈ GlobalTheor
   rfl
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => GlobalTheory.ShortVecDecay.continuous_pInf.comp (Units.continuous_val.matrix_elem (Fin.last m) i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_yInf : Continuous (yInf : GA E (m + 1) → Fin (m + 1) → Cinf E) :=
   continuous_pi fun i => GlobalTheory.ShortVecDecay.continuous_pInf.comp
@@ -55,13 +55,13 @@ theorem continuous_yInf : Continuous (yInf : GA E (m + 1) → Fin (m + 1) → Ci
 
 omit [NumberField E] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Complex.continuous_ofReal.comp (Real.continuous_sqrt.comp (Complex.continuous_re.comp hΦ))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sqrtC {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : Continuous Φ) : Continuous (sqrtC Φ) :=
   Complex.continuous_ofReal.comp (Real.continuous_sqrt.comp (Complex.continuous_re.comp hΦ))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.ZEul.lastRow, Units.val_mul, Matrix.mul_apply, hr]`. Rewrite using `[← Matrix.mul_apply, Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lastRow_mul_of_row {h g : GA E (m + 1)}
     (hr : ∀ l, (h : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) l =
@@ -72,9 +72,9 @@ theorem lastRow_mul_of_row {h g : GA E (m + 1)}
   rw [← Matrix.mul_apply, Matrix.one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val x : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) l = _`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_zero, add_zero]`. Introduce `t _`. Rewrite using `[Matrix.single_apply_of_ne]`. Introduce and unpack `⟨e1, -⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `h1 : (t.1.1 : ℕ) = m` using `by rw [e1]; simp`. Establish `h2` using `t.2.1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem blkU_lastRow {r : ℕ} (hr : r ≤ m) (x : UnipotentBlockColumnIndex (m + 1) r m → Ad E) (l : Fin (m + 1)) :
     ((blkU x : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) l =
@@ -90,7 +90,7 @@ theorem blkU_lastRow {r : ℕ} (hr : r ≤ m) (x : UnipotentBlockColumnIndex (m 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (γ.val (Fin.last m) l) = _`. Rewrite using `[hγ (Fin.last m) l (Or.inl (by simp))]`. Distinguish the cases in `h : Fin.last m = l`. Simplify using `[Matrix.one_apply, h]`. Simplify using `[Matrix.one_apply, h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ratGL_lastRow {γ : GL (Fin (m + 1)) E} (hγ : IsMir m γ) (l : Fin (m + 1)) :
     ((ratGL E (m + 1) γ : GA E (m + 1)) : Matrix (Fin (m + 1)) (Fin (m + 1)) (Ad E)) (Fin.last m) l =
@@ -102,9 +102,9 @@ theorem ratGL_lastRow {γ : GL (Fin (m + 1)) E} (hγ : IsMir m γ) (l : Fin (m +
   · simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hp : yInf g ∈ tsupport Φ`. Establish `hU : GlobalTheory.RSTheta.rowSet E (Fin.last m) ∈ nhds (yInf g)` using `(GlobalTheory.RSTheta.isOpen_rowSet (E := E) (Fin.last m)).mem_nhds (hs hp)`. Establish `hc : ContinuousOn (fun u => infGL E (m + 1) (secInv u)) (GlobalTheory.RSTheta.rowSet E (Fin.last m))`. Use `(GlobalTheory.RSTheta.continuousOn_inv_rowGL (E := E) (Fin.last m)).congr fun u hu => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [secInv_eq_inv_rowGL hu, map_inv]`. Establish `h1 : ContinuousAt (fun g : GA E (m + 1) => g * infGL E (m + 1) (secInv (yInf g))) g` using `continuousAt_id.mul ((hc.continuousAt hU).comp continuous_yInf.continuousAt)`. Conclude with `(hφ.continuousAt.comp h1).mul ((continuous_sqrtC hΦ).comp continuous_yInf).continuousAt`. Use `(continuousAt_const (y := (0 : ℂ))).congr ?_ filter_upwards [continuous_yInf.continuousAt.eventually (notMem_tsupport_iff_eventuallyEq.1 hp)] with q hq` and prove the remaining obligations. Simplify using `[fT, sqrtC, hq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_fT {φ : GA E (m + 1) → ℂ} (hφ : Continuous φ) {Φ : (Fin (m + 1) → Cinf E) → ℂ}
     (hΦ : Continuous Φ) (hs : tsupport Φ ⊆ GlobalTheory.RSTheta.rowSet E (Fin.last m)) : Continuous (fT φ Φ) := by
@@ -125,13 +125,13 @@ theorem continuous_fT {φ : GA E (m + 1) → ℂ} (hφ : Continuous φ) {Φ : (F
 end H
 
 /- English proof (translation)
-Introduce `E _ _ _ m φ hφ hl hv Φ hΦ hs ψ`. Use `⟨continuous_fT hφ hΦ hs, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `γ hγ g`. Rewrite using `[fT_of_lastRow (lastRow_mul_of_row (ratGL_lastRow hγ)), mul_assoc, hl, fT]`. Introduce `k hk y g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : IsEmpty (UnipotentBlockColumnIndex (m + 1) k k)` using `⟨fun t => by have := t.1.2.isLt; have := t.2; omega⟩`. Establish `hy : y = 0` using `Subsingleton.elim _ _`. Substitute `hy` using the available equality. Establish `hd : dot (eLast (m + 1) k) (0 : UnipotentBlockColumnIndex (m + 1) k k → Ad E) = 0` using `by simp [dot]`. Rewrite using `[hd, AddChar.map_zero_eq_one, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `blkU`. Rewrite using `[posU_zero, one_mul]`. Introduce `r hr hrm g`. Establish `e : (fun x : UnipotentBlockColumnIndex (m + 1) r m → Ad E => fT φ Φ (blkU x * g)) = fun x => sqrtC Φ (yInf g) * φ (blkU x * (g * infGL E (m + 1) (secInv (yInf g))))`. Use function extensionality and compare the values at `x`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[fT_of_lastRow (lastRow_mul_of_row (blkU_lastRow hrm x)), mul_comm, mul_assoc]`. Rewrite using `[e, avg_const_mul, hv r hr hrm, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_fT : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (φ : GA E (m + 1) → ℂ),
     Continuous φ → (∀ γ g, φ (ratGL E (m + 1) γ * g) = φ g) →

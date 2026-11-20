@@ -17,13 +17,11 @@ def MassPlane : Prop :=
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Establish `hJ : Formalism.UG.Jpq p 0 = 1`. Use extensionality with `i j`. Break down `i with i | i` into its components or cases. Break down `j with j | j` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Formalism.UG.Jpq, Matrix.one_apply]`. Conclude with `j.elim0`. Conclude with `i.elim0`. Establish `hc : Formalism.UG.cT (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin 0) (Fin p ⊕ Fin 0) ℂ) = star (P : Matrix (Fin p ⊕ Fin 0) (Fin p ⊕ Fin 0) ℂ)`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hP` using `[hJ, hc]`. Establish `h1 : (J.reindex e e).PosDef`. Rewrite using `[← Matrix.IsUnit.posDef_star_left_conjugate_iff (Units.isUnit P), hP]`. Conclude with `Matrix.PosDef.one`.
-
-Establish `h2` using `h1.submatrix (e := e) e.injective`. Simplify using `using h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem posDef_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matrix n n ℂ} {p : ℕ}
     (h : Formalism.UG.HasSignature J p 0) : J.PosDef := by
@@ -46,15 +44,15 @@ theorem posDef_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {J : Matri
   simpa using h2
 
 /- English proof (translation)
-Establish `hloc : ∀ τ : E →+* ℂ, 0 < (τ (W.hT x x)).re`. Introduce `τ`. Establish `h0` using `hs τ`. Rewrite `h0` using `[hp τ]`. Establish `hpd` using `posDef_of_hasSignature h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : (fun i => τ (W.frame.repr x i)) ≠ 0`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Apply `W.frame.repr.injective` to reduce the goal to its premises. Use extensionality with `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Simplify using `using congrFun h i`. Establish `h1` using `hpd.re_dotProduct_pos hv`. Establish `h2 : τ (W.hT x x) = star (fun i => τ (W.frame.repr x i)) ⬝ᵥ (W.gram.map τ).mulVec (fun i => τ (W.frame.repr x i))` using `by conv_lhs => rw [← W.frame.sum_repr x]`. Simplify using `only [map_sum, LinearMap.sum_apply, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply, starRingEnd_apply, hst, dotProduct, Matrix.mulVec, Matrix.map_apply, HSpace.gram, Pi.star_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `h1`. Establish `ht` using `trace_eq_sum_embeddings ℂ (K := ℚ) (L := E) (x := W.hT x x)`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hre` using `congrArg Complex.re ht`. Rewrite `hre` using `[Complex.re_sum]`. Establish `hpos : 0 < ∑ σ : E →ₐ[ℚ] ℂ, (σ (W.hT x x)).re` using `Finset.sum_pos (fun σ _ => hloc (σ : E →+* ℂ)) ⟨IsAlgClosed.lift, Finset.mem_univ _⟩`. Rewrite `hpos` using `[← hre]`. Simplify using `using hpos`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trace_pos {E : Type} [Field E] [NumberField E] [StarRing E]
     (hst : ∀ (φ : E →+* ℂ) (a : E), φ (star a) = starRingEnd ℂ (φ a))
@@ -93,11 +91,11 @@ theorem trace_pos {E : Type} [Field E] [NumberField E] [StarRing E]
   simpa using hpos
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Introduce `W hs hp`. Establish `hpos` using `trace_pos D.sp.cm.cmUnram.2.1 W hs hp`. Take `⟨h1, h2, h3⟩` from `Formalism.HermitianLatticesTheory.massBasic _ _ W.hT W.herm hpos W.L0 W.standardTuple_isLattice`. Take `⟨-, hwt, -⟩` from `Formalism.ThetaLiftIndependence.classRepsDefinite _ _ W.hT W.herm hpos W.L0 W.standardTuple_isLattice`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, fun L hL => ?_, h2, h3⟩` and prove the remaining obligations. Take `⟨n, hn, hLn⟩` from `hwt L hL`. Establish `hc : Nat.card (Formalism.ThetaLiftIndependence.autL W.hT L) = n`. Unfold `Formalism.ThetaLiftIndependence.latWt at hLn`. Conclude with `inv_inj.mp hLn` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hn`.
+A detailed English derivation is pending.
 -/
 theorem mass_formula₂ (D : D7) : letI := D.host.cmStar
     ∀ W : HSpace D.host.E, W.SigOK → (∀ τ : D.host.E →+* ℂ, W.sig τ = (2, 0)) →

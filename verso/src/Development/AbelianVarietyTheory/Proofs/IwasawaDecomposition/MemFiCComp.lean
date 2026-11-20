@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.Mem.FormSym
 
 /- English proof (translation)
-Simplify using `only [FiC, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, he'⟩`. Use `⟨h, hh, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨x', rfl⟩` from `he x`. Conclude with `congrFun he' x'`. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨h, hh, rfl⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_FiC_comp {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {T f : ℕ} {bad : Set (HeightOneSpectrum (𝓞 F))}
@@ -103,7 +103,7 @@ variable (A : AtTTied u) (L : LevelCompatibleLattices (D.fm u) (D.mem u).A.T A.r
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `v c z hz` and use `h v β ⟨c, hβ c⟩ z hz`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fvOfG (fMe : ∀ β v, (K β).lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u).A.Fv v) (h : FvTieG L A.eV K fMe) :
     FvTie (lvOfG A L) (clsOfChart β hβ (K β)) (fMe β) :=
@@ -111,7 +111,7 @@ theorem fvOfG (fMe : ∀ β v, (K β).lev.fM (A.eV v).1 (A.eV v).2 ≃+ (D.mem u
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `v c z hz`. Take `⟨_, γ, η, κ, h1, h2, h3, h4, h5, h6⟩` from `h v β ⟨c, hβ c⟩ z hz`. Use `⟨γ, η, κ, h1, h2, h3, h4, h5, fun g s s' hs => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hY]`. Conclude with `h6 g s s' hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem upOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (clsOfChart β hβ (K β))) (hY : W.eY = eY)
     (h : UpNatTieG L eY A.eV K) : UpNatTie (lvOfG A L) (clsOfChart β hβ (K β)) W := by
@@ -123,7 +123,7 @@ theorem upOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (cls
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `v c g hg`. Take `⟨_, γ, η, κ, h1, h2, h3, h4, h6⟩` from `h v β ⟨c, hβ c⟩ g hg`. Use `⟨γ, η, κ, h1, h2, h3, h4, fun f s s' hs => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[hY]`. Conclude with `h6 f s s' hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dnOfG (eY : (D.mem u).C.Y i ≃ Fr D i hi) (W : ValTied u A.eV i hi (clsOfChart β hβ (K β))) (hY : W.eY = eY)
     (h : DnNatTieG L eY A.eV K) : DnNatTie (lvOfG A L) (clsOfChart β hβ (K β)) W := by
@@ -141,7 +141,7 @@ variable {D : D7} {u : D.what₂.Word} {i : ℕ} {hi : i ≤ D.R.m}
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `s x Pc hPc o ho`. Rewrite `hPc` using `[hY]`. Conclude with `h s x Pc hPc o ho`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normOfG {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u i hi} (eY : (D.mem u).C.Y i ≃ Fr D i hi)
     (W : ValTied u eV i hi K) (hY : W.eY = eY) (h : NormTieG (D.fm u) eY) : NormTie W := by
@@ -151,7 +151,7 @@ theorem normOfG {eV : (D.mem u).A.vT ≃ PlT D u} {K : ClsTied u i hi} (eY : (D.
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `w hw hs v x`. Rewrite using `[hY]`. Conclude with `h w hw hs v x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bwOfG (A : AtTTied u) {K : ClsTied u i hi} (eY : (D.mem u).C.Y i ≃ Fr D i hi)
     (W : ValTied u A.eV i hi K) (hY : W.eY = eY)
@@ -165,7 +165,7 @@ end Gen2
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `rfl : chOf = fun _ => β` from `funext hβ`. Take `⟨k, hk⟩` from `h`. Use `⟨fun _ => k β, ⟨fun c c' => ⟨fun _ => (hk.key c c').1 rfl, fun _ => rfl⟩, fun _ => ?_, fun _ => hk.lb β, fun _ => hk.k_std β, fun _ => hk.k_off β, fun _ => hk.k_T β, hk.pt, hk.lev, hk.chr, hk.stab⟩⟩` and prove the remaining obligations. Take `⟨c, _⟩` from `hk.onto β`. Conclude with `⟨c, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem readsK_one {B : Base} {X : PreX B.toPre} (I : TC B X) (l : I.Laws) (Z : TC.Later B (I.cols l)) {u : B.Word} {a : I.ι}
     {i : ℕ} {hi : i ≤ B.R.m} {bad : Set (HeightOneSpectrum (𝓞 B.host.F))} {Ch : Type} {chOf : (I.stp u a i).Cl → Ch}

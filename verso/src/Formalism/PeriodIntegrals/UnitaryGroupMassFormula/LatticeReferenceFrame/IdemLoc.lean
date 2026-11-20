@@ -9,31 +9,27 @@ open NumberField IsDedekindDomain Polynomial
 namespace PI.ScRefExists.Id
 
 /- English proof (translation)
-Introduce `F _ _ v g α β hg hgv hα hβ`. Use `haveI : CharZero (v.adicCompletion F) := charZero_of_injective_algebraMap (algebraMap F (v.adicCompletion F)).injective`. Establish `memO : ∀ x : v.adicCompletion F, x ∈ v.adicCompletionIntegers F ↔ Valued.v x ≤ 1` using `fun x => by`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Set `ϖ : v.adicCompletionIntegers F` to `⟨((g : ℕ) : v.adicCompletion F), (memO _).2 hgv.le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `aO : v.adicCompletionIntegers F` to `⟨α, (memO _).2 hα⟩`. Set `bO : v.adicCompletionIntegers F` to `⟨β, (memO _).2 hβ⟩`. Establish `hϖ : ϖ ≠ 0`. Introduce `h`. Establish `h' : ((g : ℕ) : v.adicCompletion F) = 0` using `congrArg Subtype.val h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Nat.cast_ne_zero.mpr (by omega : g ≠ 0)) h'`. Establish `h1 : ‖(ϖ : v.adicCompletion F)‖ < 1` using `Valued.toNormedField.norm_lt_one_iff.mpr hgv`. Use `haveI := PI.LocalEndW.isAdicComplete v ϖ hϖ h1`. Set `f : Polynomial (v.adicCompletionIntegers F)` to `X ^ 2 - C (1 + ϖ * aO) * X + C (ϖ * bO)`. Establish `hf : f.Monic` using `by simp only [f]; monicity!`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0 : f.eval 0 ∈ Ideal.span {ϖ}`. Establish `e : f.eval 0 = bO * ϖ`. Simplify using `only [f, eval_add, eval_sub, eval_pow, eval_X, eval_mul, eval_C]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Ideal.mem_span_singleton']`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨bO, rfl⟩`. Establish `hd : f.derivative.eval 0 = -(1 + ϖ * aO)` using `by simp [f]`. Establish `hm : Ideal.Quotient.mk (Ideal.span {ϖ}) (-(1 + ϖ * aO)) = -1`. Rewrite using `[← map_one (Ideal.Quotient.mk (Ideal.span {ϖ})), ← map_neg, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Conclude with `⟨-aO, by ring⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hρI⟩` from `HenselianRing.is_henselian (I := Ideal.span {ϖ}) f hf 0 h0 (by rw [hd, hm]; exact isUnit_one.neg)`. Rewrite `hρI` using `[sub_zero, Ideal.mem_span_singleton']`. Take `⟨r0, rfl⟩` from `hρI`. Establish `hroot : (r0 * ϖ) ^ 2 - (1 + ϖ * aO) * (r0 * ϖ) + ϖ * bO = 0`. Establish `h : f.eval (r0 * ϖ) = 0` using `hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h` using `only [f, eval_add, eval_sub, eval_pow, eval_X, eval_mul, eval_C]`. Establish `hu : IsUnit (1 + ϖ * (aO - 2 * r0))`. Rewrite using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `hy : Valued.v ((aO - 2 * r0 : v.adicCompletionIntegers F) : v.adicCompletion F) ≤ 1` using `(memO _).1 (aO - 2 * r0).2`. Establish `hlt : Valued.v ((ϖ : v.adicCompletion F) * ((aO - 2 * r0 : v.adicCompletionIntegers F) : v.adicCompletion F)) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hy) hgv`. Conclude with `(Valued.v).map_one_add_of_lt hlt`. Take `⟨U, hU⟩` from `hu`. Take `⟨wO, hwO⟩ : ∃ w : v.adicCompletionIntegers F, w = ((U⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `huw : (1 + ϖ * (aO - 2 * r0)) * wO = 1` using `by rw [← hU, hwO]; exact U.mul_inv`. Take `⟨c1, hc1⟩ : ∃ c : v.adicCompletionIntegers F, c = -(aO - 2 * r0) * wO` from `⟨_, rfl⟩`. Take `⟨c2, hc2⟩ : ∃ c : v.adicCompletionIntegers F, c = r0 * wO` from `⟨_, rfl⟩`. Establish `hA : (1 + ϖ * aO) * (1 + ϖ * c1) ^ 2 - 2 * (1 + ϖ * c1) * (ϖ * c2) = 1 + ϖ * c1`. Rewrite using `[hc1, hc2]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `((1 + ϖ * (-(aO - 2 * r0) * wO)) * (1 - (1 + ϖ * aO))) * huw`. Establish `hB : (ϖ * c2) ^ 2 - ϖ * bO * (1 + ϖ * c1) ^ 2 = -(ϖ * c2)`. Rewrite using `[hc1, hc2]`. Take the linear combination `(-(r0 * ϖ) * wO + ϖ * bO * (2 * wO - ((1 + ϖ * (aO - 2 * r0)) * wO - 1))) * huw + (-wO ^ 2) * hroot`. Establish `hC : (ϖ * c2) ^ 2 - (1 + ϖ * aO) * (ϖ * c2) * (1 + ϖ * c1) + ϖ * bO * (1 + ϖ * c1) ^ 2 = 0`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc1, hc2]`. Take the linear combination `((1 + ϖ * aO) * (r0 * ϖ) * wO - 2 * (ϖ * bO) * wO + ϖ * bO * ((1 + ϖ * (aO - 2 * r0)) * wO - 1)) * huw + wO ^ 2 * hroot`. Use `⟨(c1 : v.adicCompletion F), (c2 : v.adicCompletion F), (memO _).1 c1.2, (memO _).1 c2.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (v.adicCompletionIntegers F).subtype hA`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_one, map_ofNat] at e`.
-
-Conclude with `e`. Establish `e` using `congrArg (v.adicCompletionIntegers F).subtype hB`. Simplify using `only [map_add, map_sub, map_mul, map_pow, map_one, map_ofNat, map_neg] at e`. Conclude with `e`. Establish `e` using `congrArg (v.adicCompletionIntegers F).subtype hC`.
-
-Simplify using `only [map_add, map_sub, map_mul, map_pow, map_one, map_ofNat, map_zero] at e`. Conclude with `e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locIdem : LocIdem := by
   intro F _ _ v g α β hg hgv hα hβ

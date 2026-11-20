@@ -43,9 +43,9 @@ lemma qb_evL_apply (M : GLMod n) (F : Type) [CommRing F] (nu : Fin n → ℤ) (x
 variable [NeZero n]
 
 /- English proof (translation)
-Simplify using `only [qb_equiv_apply, mul_sum]`. Rewrite using `[sum_comm]`. Use `sum_congr rfl fun K _ => ?_` and prove the remaining obligations. Establish `h2` using `congrArg (Int.cast : ℤ → GLCoord ℤ n) (qb_prMu_ph CF j nu i K)`. Move the coercions through the operations in `at h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [← mul_assoc, ← sum_mul]`. Rewrite using `[h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem qb_keyZ {M : GLMod n} (CF : ColFam M) (j : CF.J) (I : TIdx (CF.mu j)) (nu : Fin n → ℤ) (i : M.ι) :
     ∑ k, (prMu M nu i k : GLCoord ℤ n) * ∑ l, M.A k l * (CF.ph j l I : GLCoord ℤ n) =
@@ -60,7 +60,7 @@ theorem qb_keyZ {M : GLMod n} (CF : ColFam M) (j : CF.J) (I : TIdx (CF.mu j)) (n
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h` using `congrArg (mapCoord F) (qb_keyZ CF j I nu i)`. Simplify using `only [map_sum, map_mul, map_intCast, apply_ite (mapCoord F), map_zero] at h`. Rewrite using `[← h, qb_ev_apply]`. Simplify using `only [ColFam.vec, map_intCast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qb_key {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : CF.J) (I : TIdx (CF.mu j))
     (nu : Fin n → ℤ) (i : M.ι) :
@@ -73,7 +73,7 @@ theorem qb_key {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : CF.J) 
   simp only [ColFam.vec, map_intCast]
 
 /- English proof (translation)
-Rewrite using `[qb_key]`. Simplify using `only [qb_wtT_eq_iff (CF.dom j), sum_ite_eq', mem_univ, if_true, brk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem qb_key_eq {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : CF.J) (I : TIdx (CF.mu j)) (i : M.ι) :
     qb_ev M F (CF.mu j) (fun i => (CF.vec j I i : F)) i =
@@ -82,7 +82,7 @@ theorem qb_key_eq {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : CF.
   simp only [qb_wtT_eq_iff (CF.dom j), sum_ite_eq', mem_univ, if_true, brk]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[qb_key]`. Conclude with `sum_eq_zero fun K _ => if_neg (by intro hK; exact h (by rw [← hK]; exact qb_wtT_le (CF.dom j) K))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qb_key_zero {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : CF.J) (I : TIdx (CF.mu j))
     (nu : Fin n → ℤ) (h : ¬ DomLE nu (CF.mu j)) :
@@ -92,9 +92,9 @@ theorem qb_key_zero {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (j : C
   exact sum_eq_zero fun K _ => if_neg (by intro hK; exact h (by rw [← hK]; exact qb_wtT_le (CF.dom j) K))
 
 /- English proof (translation)
-Introduce `j`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l : Module.Dual k W, l (f j) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hne ((Module.forall_dual_apply_eq_zero_iff k (f j)).1 hcon)`. Use `hl (Fintype.linearIndependent_iff.1 hc (fun j => l (f j)) ?_ j)` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `congrArg l (h i)` as an intermediate fact. Simplify `this` using `[map_sum, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma qb_indep_ext {k W κ ι : Type*} [Field k] [AddCommGroup W] [Module k W] [Fintype κ] (c : κ → ι → k)
     (hc : LinearIndependent k c) (f : κ → W) (h : ∀ i, ∑ j, c j i • f j = 0) : ∀ j, f j = 0 := by
@@ -110,11 +110,11 @@ lemma qb_indep_ext {k W κ ι : Type*} [Field k] [AddCommGroup W] [Module k W] [
   simpa [map_sum, mul_comm] using this
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha`. Take `⟨p, hp⟩` from `CharP.exists F`. Break down `CharP.char_is_prime_or_zero F p with hpp | rfl` into its components or cases. Use `haveI := Fact.mk hpp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure.
 
-Use `letI := ZMod.algebra F p`. Use `qb_indep_ext (k := ZMod p) _ (CF.indepP p hpp nu) a fun i => ?_` and prove the remaining obligations. Use `congrFun ha i` as an intermediate fact. Simplify `this` using `[Algebra.smul_def, mul_comm]`. Use `haveI := CharP.charP_to_charZero F`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `qb_indep_ext (k := ℚ) _ (CF.indepQ nu) a fun i => ?_` and prove the remaining obligations. Use `congrFun ha i` as an intermediate fact. Simplify `this` using `[Algebra.smul_def, mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem qb_indepF {M : GLMod n} (CF : ColFam M) (F : Type) [Field F] (nu : Fin n → ℤ) :
     LinearIndependent F
@@ -147,17 +147,17 @@ lemma qb_vecF_def {M : GLMod n} (CF : ColFam M) (F : Type) [CommRing F] (x : qb_
     qb_vecF CF F x = fun i => (CF.vec x.1 x.2.1 i : F) := rfl
 
 /- English proof (translation)
-Rewrite `h0` using `[← qb_evL_apply, map_sum]`. Simplify using `only [map_smul, qb_evL_apply] at h0`. Set `f : CF.J → GLCoord F n` to `fun j => ∑ I : {I : TIdx (CF.mu j) // StdT I}, a ⟨j, I⟩ • mapCoord F (brk (CF.mu j) I.1)`. Establish `h2 : ∀ (x : qb_Idx CF) (i : M.ι), (a x • qb_ev M F nu (qb_vecF CF F x)) i = if CF.mu x.1 = nu then (CF.ph x.1 i (canT (CF.mu x.1)) : GLCoord F n) * (a x • mapCoord F (brk (CF.mu x.1) x.2.1)) else 0`. Introduce `x i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with hx`. Substitute `hx` using the available equality. Rewrite using `[Pi.smul_apply, qb_vecF_def, qb_key_eq, mul_smul_comm]`. Distinguish the cases in `hax : a x = 0`. Rewrite using `[hax, zero_smul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[qb_vecF_def, qb_key_zero CF F x.1 x.2.1 nu (fun hle => hx (hmax x hax hle)), smul_zero]`. Both sides reduce to the same expression. Establish `h3 : ∀ i, ∑ j : {j : CF.J // CF.mu j = nu}, ((CF.ph j.1 i (canT (CF.mu j.1)) : ℤ) : F) • f j.1 = 0`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h4` using `congrFun h0 i`. Rewrite `h4` using `[Finset.sum_apply, Pi.zero_apply]`. Simplify using `only [h2] at h4`. Rewrite `h4` using `[Fintype.sum_sigma]`. Rewrite using `[← sum_subtype (univ.filter fun j => CF.mu j = nu) (by simp) (fun j => ((CF.ph j i (canT (CF.mu j)) : ℤ) : F) • f j), sum_filter]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h4` and prove the remaining obligations. Use `sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Simplify using `only [f, Algebra.smul_def, map_intCast, mul_sum]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `h5` using `qb_indep_ext (k := F) _ (qb_indepF CF F nu) (fun j => f j.1) h3`. Introduce and unpack `⟨j, I⟩ hj`. Conclude with `Fintype.linearIndependent_iff.1 (hA n (CF.mu j) (CF.dom j) F) (fun I => a ⟨j, I⟩) (h5 ⟨j, hj⟩) I`.
+A detailed English derivation is pending.
 -/
 theorem qb_nonvanish (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (F : Type) [Field F] (a : qb_Idx CF → F)
     (nu : Fin n → ℤ) (hmax : ∀ x, a x ≠ 0 → DomLE nu (CF.mu x.1) → CF.mu x.1 = nu)
@@ -193,9 +193,9 @@ theorem qb_nonvanish (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (F : Type) [Fie
   exact Fintype.linearIndependent_iff.1 (hA n (CF.mu j) (CF.dom j) F) (fun I => a ⟨j, I⟩) (h5 ⟨j, hj⟩) I
 
 /- English proof (translation)
-Introduce `x0 hx0`. Assume the negation of the conclusion as `hn`. Set `s : Finset (Fin n → ℤ)` to `(univ.filter fun x => a x ≠ 0).image fun x => CF.mu x.1`. Establish `hs0 : CF.mu x0.1 ∈ s` using `mem_image.2 ⟨x0, by simp [hx0], rfl⟩`. Take `⟨nu, hnu, hle, hmax⟩` from `qb_exists_max_above s hs0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x1, hx1, rfl⟩` from `mem_image.1 hnu`. Establish `hx1' : a x1 ≠ 0` using `(mem_filter.1 hx1).2`. Establish `hout : CF.mu x1.1 ∉ pi` using `fun hin => hn (hpi.2 _ hin _ (CF.dom _) hle)`. Conclude with `hx1' (qb_nonvanish hA CF F a (CF.mu x1.1) (fun x hx hle' => hmax _ (mem_image.2 ⟨x, by simp [hx], rfl⟩) hle') (h _ (CF.dom _) hout) x1 rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qb_supp_in (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (F : Type) [Field F] (a : qb_Idx CF → F)
     (pi : Set (Fin n → ℤ)) (hpi : DomLowerSet pi)
@@ -214,7 +214,7 @@ theorem qb_supp_in (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (F : Type) [Field
     (fun x hx hle' => hmax _ (mem_image.2 ⟨x, by simp [hx], rfl⟩) hle') (h _ (CF.dom _) hout) x1 rfl)
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha x`. Assume the negation of the conclusion as `hx`. Use `qb_supp_in hA CF F a ∅ ⟨fun _ h => h.elim, fun _ h => h.elim⟩ (fun mu _ _ => ?_) x hx` and prove the remaining obligations. Rewrite using `[ha, ← qb_evL_apply, map_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qb_indep_field (hA : LemmaA) {M : GLMod n} (CF : ColFam M) (F : Type) [Field F] :
     LinearIndependent F (qb_vecF CF F) := by

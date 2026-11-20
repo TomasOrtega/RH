@@ -17,17 +17,17 @@ section Field
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `set A : Set ℕ := {l | l.Prime ∧ ∃ v : HeightOneSpectrum (OF E), v.asIdeal ∣ 𝔣 ∧ (l : OF E) ∈ v.asIdeal} with hAdef`. Establish `hA : A.Finite` using `GlobalTheory.FunObj.SqNum.finite_primes_under (K := maximalRealSubfield E) (p := fun v => v.asIdeal ∣ 𝔣) (Ideal.finite_factors h𝔣)`. Set `B : Finset ℕ` to `(Finset.univ.biUnion fun C => (z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E)).den.primeFactors) ∪ (discr E).natAbs.primeFactors`. Use `(hA.union B.finite_toSet).subset ?_` and prove the remaining obligations. Introduce and unpack `l ⟨hl, hn⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, not_or, Finset.mem_coe] at hc`. Take `⟨hlA, hlB⟩` from `hc`. Apply `hn` to reduce the goal to its premises. Establish `hv : ∀ v : HeightOneSpectrum (OF E), (l : OF E) ∈ v.asIdeal → ¬ v.asIdeal ∣ 𝔣` using `fun v h1 h2 => hlA ⟨hl, v, h2, h1⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : a0 𝔣 l = 0`. Apply `Nat.eq_zero_of_le_zero` to reduce the goal to its premises. Apply `csSup_le'` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, h1, rfl⟩`. Simplify using `[expIn, multiplicity_eq_zero.2 (hv v h1)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcv : c_vp 𝔣 l = 0`. Establish `hd : ¬ l ∣ (discr E).natAbs` using `fun h => hlB (Finset.mem_union_right _ (Nat.mem_primeFactors.2 ⟨hl, h, by simpa using discr_ne_zero E⟩))`. Rewrite using `[c_vp, if_neg (fun ⟨v, h1, h2⟩ => hv v h1 h2), delta_vp]`. Simplify using `[padicValInt, padicValNat.eq_zero_of_not_dvd hd]`. Establish `hcE : cE_vp l z = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cE_vp, ← bot_eq_zero, Finset.sup_eq_bot_iff]`. Introduce `C _`. Use `set q := z C / 2 ^ Module.finrank ℚ (maximalRealSubfield E)`. Establish `hd : ¬ l ∣ q.den` using `fun h => hlB (Finset.mem_union_left _ (Finset.mem_biUnion.2 ⟨C, Finset.mem_univ _, Nat.mem_primeFactors.2 ⟨hl, h, q.den_ne_zero⟩⟩))`. Use `show (-padicValRat l q).toNat = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Int.toNat_eq_zero, padicValRat, padicValNat.eq_zero_of_not_dvd hd]`. Simplify using the standard rewrite rules. Simplify using `[betaBound_vp, hcE, hcv, ha0, n_vp]`.
+A detailed English derivation is pending.
 -/
 theorem finite_support (d s : ℕ) {I : Type} [Fintype I] (κ : I → ℕ) (𝔣 : Ideal (OF E)) (h𝔣 : 𝔣 ≠ ⊥)
     (z : ClassGroup (OF E) → ℚ) :
@@ -72,7 +72,7 @@ end Field
 variable {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts}
 
 /- English proof (translation)
-Take `⟨⟨z, hz'⟩, -⟩` from `@hz D.host.E _ _ hcm s hs`. Use `⟨fun l => ((⌈betaBound_vp D.host.d s (kap D sc.cGap i j s) (condF G.pl) z l / 12⌉₊ : ℕ) : ℝ), ⟨z, hz', fun l _ => rfl⟩, ?_⟩` and prove the remaining obligations. Use `(finite_support D.host.d s (kap D sc.cGap i j s) (condF G.pl) hb.1 z).subset ?_` and prove the remaining obligations. Introduce and unpack `l ⟨hl, h⟩`. Conclude with `⟨hl, fun h' => h (by simp only [h', Nat.cast_zero])⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_denom (hz : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators) (G : GridData Lc sc) (hcm : IsCMField D.host.E)
     (hb : IsBaseCond (condF G.pl)) (i j : Fin D.R.m) (s : ℕ) (hs : 1 ≤ s) :
@@ -85,9 +85,9 @@ theorem exists_denom (hz : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdea
   exact ⟨hl, fun h' => h (by simp only [h', Nat.cast_zero])⟩
 
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `hF`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, h⟩` from `h ε CF hCF`. Use `⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations. Take `⟨hcm, -, -, hb, -⟩` from `h C hC D large₂ he hx hR T Lc μ₀ hL G`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `fun i j s hs _ => exists_denom hz G hcm hb i j s hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem denEx (hz : GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals.ZetaDenominators) (hF : FieldDat) : DenEx := by
   obtain ⟨CF0, h⟩ := hF

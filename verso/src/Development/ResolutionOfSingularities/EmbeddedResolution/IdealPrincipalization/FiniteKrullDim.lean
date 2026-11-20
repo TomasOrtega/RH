@@ -11,7 +11,7 @@ open TopologicalSpace AlgebraicGeometry
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[topologicalKrullDim_eq_of_homeomorph e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_lt_top_of_homeomorph {A : Type u} {B : Type v}
     [TopologicalSpace A] [TopologicalSpace B] (e : A ≃ₜ B) (h : topologicalKrullDim B < ⊤) :
@@ -20,7 +20,7 @@ private theorem topologicalKrullDim_lt_top_of_homeomorph {A : Type u} {B : Type 
   exact h
 
 /- English proof (translation)
-Introduce `s hs`. Rewrite using `[mem_closure_iff]`. Introduce `W hW hsW`. Take `⟨y, hyS, hyW, hyV⟩` from `hS W V hW hV ⟨s, hs, hsW⟩ hne`. Conclude with `⟨y, hyW, hyS, hyV⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem subset_closure_inter_of_isPreirreducible {X : Type u} [TopologicalSpace X]
     {S V : Set X} (hS : IsPreirreducible S) (hV : IsOpen V) (hne : (S ∩ V).Nonempty) :
@@ -32,9 +32,9 @@ private theorem subset_closure_inter_of_isPreirreducible {X : Type u} [Topologic
   exact ⟨y, hyW, hyS, hyV⟩
 
 /- English proof (translation)
-Use `subset_antisymm hCsubD ?_` and prove the remaining obligations. Establish `h1 : D ∩ W ⊆ C`. Introduce and unpack `y ⟨hyD, hyW⟩`. Establish `hy : (⟨y, hyW⟩ : ↥W) ∈ (Subtype.val ⁻¹' D : Set ↥W)` using `hyD`. Rewrite `hy` using `[← heq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hy`. Take `⟨z, hzC, hzW⟩` from `hne`. Establish `h2 : (D ∩ W).Nonempty` using `⟨z, hCsubD hzC, hzW⟩`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem eq_of_preimage_val_eq {X : Type u} [TopologicalSpace X] {W : Set X}
     (hW : IsOpen W) {C D : Set X} (hC : IsClosed C) (hD : IsIrreducible D) (hCsubD : C ⊆ D)
@@ -53,15 +53,15 @@ private theorem eq_of_preimage_val_eq {X : Type u} [TopologicalSpace X] {W : Set
     _ = C := hC.closure_eq
 
 /- English proof (translation)
-Use `iSup_le ?_` and prove the remaining obligations. Introduce `p`. Take `⟨x, hx⟩` from `(p 0).isIrreducible.1`. Establish `hxU : x ∈ ⋃ i, U i` using `by rw [hcov]; trivial`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp hxU`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hoe` using `(hU i).isOpenEmbedding_subtypeVal`. Establish `hsub : ∀ j : Fin (p.length + 1), ((p 0 : IrreducibleCloseds X) : Set X) ⊆ ((p j : IrreducibleCloseds X) : Set X)` using `fun j => SetLike.coe_subset_coe.mpr (LTSeries.monotone p (Fin.zero_le j))`. Set `V : Fin (p.length + 1) → IrreducibleCloseds ↥(U i)` to `fun j => ⟨Subtype.val ⁻¹' ((p j : IrreducibleCloseds X) : Set X), ⟨⟨⟨x, hi⟩, hsub j hx⟩, (p j).isIrreducible.2.preimage hoe⟩, (p j).isClosed.preimage continuous_subtype_val⟩`. Establish `hstep : ∀ j : Fin p.length, V j.castSucc < V j.succ`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlt : p j.castSucc < p j.succ` using `p.step j`. Establish `hsubset : ((p j.castSucc : IrreducibleCloseds X) : Set X) ⊆ ((p j.succ : IrreducibleCloseds X) : Set X)` using `SetLike.coe_subset_coe.mpr hlt.le`. Establish `hle : V j.castSucc ≤ V j.succ`. Use `SetLike.coe_subset_coe.mp ?_` and prove the remaining obligations. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hsubset hz`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `hEq`. Establish `hcar : (Subtype.val ⁻¹' ((p j.castSucc : IrreducibleCloseds X) : Set X) : Set ↥(U i)) = (Subtype.val ⁻¹' ((p j.succ : IrreducibleCloseds X) : Set X) : Set ↥(U i))` using `congrArg (fun s : IrreducibleCloseds ↥(U i) => (s : Set ↥(U i))) hEq`. Establish `hCsubD : ((p j.castSucc : IrreducibleCloseds X) : Set X) = ((p j.succ : IrreducibleCloseds X) : Set X)` using `eq_of_preimage_val_eq (hU i) (p j.castSucc).isClosed (p j.succ).isIrreducible hsubset ⟨x, hsub _ hx, hi⟩ hcar`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `absurd (IrreducibleCloseds.ext hCsubD) hlt.ne`. Set `q : LTSeries (IrreducibleCloseds ↥(U i))` to `⟨p.length, V, hstep⟩`. Establish `hq : ((q.length : ℕ) : WithBot ℕ∞) ≤ topologicalKrullDim ↥(U i)` using `Order.LTSeries.length_le_krullDim q`. Conclude with `le_trans hq (h i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_le_of_iUnion_eq_univ {X : Type u} [TopologicalSpace X] {ι : Type v}
     (U : ι → Set X) (hU : ∀ i, IsOpen (U i)) (hcov : ⋃ i, U i = Set.univ)
@@ -106,7 +106,7 @@ private theorem topologicalKrullDim_le_of_iUnion_eq_univ {X : Type u} [Topologic
   exact le_trans hq (h i)
 
 /- English proof (translation)
-The claim follows from `topologicalKrullDim_le_of_iUnion_eq_univ U hU hcov _ h`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_natCast_of_isOpenCover {X : Type u} [TopologicalSpace X] {ι : Type v}
     (U : ι → Set X) (hU : ∀ i, IsOpen (U i)) (hcov : ⋃ i, U i = Set.univ) (n : ℕ)
@@ -115,9 +115,9 @@ theorem topologicalKrullDim_le_natCast_of_isOpenCover {X : Type u} [TopologicalS
   topologicalKrullDim_le_of_iUnion_eq_univ U hU hcov _ h
 
 /- English proof (translation)
-Introduce `hcontra`. Establish `h2 : ((n : ℕ∞) : WithBot ℕ∞) = ((⊤ : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[WithBot.coe_natCast]`. Conclude with `hcontra`. Establish `h3 : (n : ℕ∞) = ⊤` using `WithBot.coe_injective h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h3`.
+A detailed English derivation is pending.
 -/
 private theorem natCast_withBot_ne_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) ≠ ⊤ := by
   intro hcontra
@@ -128,15 +128,15 @@ private theorem natCast_withBot_ne_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) 
   simp at h3
 
 /- English proof (translation)
-The claim follows from `lt_top_iff_ne_top.mpr (natCast_withBot_ne_top n)`.
+A detailed English derivation is pending.
 -/
 private theorem natCast_withBot_lt_top (n : ℕ) : ((n : ℕ) : WithBot ℕ∞) < ⊤ :=
   lt_top_iff_ne_top.mpr (natCast_withBot_ne_top n)
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact ⟨0, bot_le⟩`. Consider the case `coe b`. Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => exact absurd h (lt_irrefl _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `coe n => exact ⟨n, le_rfl⟩`.
+Treat this case separately.
 -/
 private theorem exists_le_natCast_of_lt_top {a : WithBot ℕ∞} (h : a < ⊤) :
     ∃ n : ℕ, a ≤ ((n : ℕ) : WithBot ℕ∞) := by
@@ -148,9 +148,7 @@ private theorem exists_le_natCast_of_lt_top {a : WithBot ℕ∞} (h : a < ⊤) :
     | coe n => exact ⟨n, le_rfl⟩
 
 /- English proof (translation)
-Use `choose N hN using fun i => exists_le_natCast_of_lt_top (h i)`. Establish `: Fintype ι` using `Fintype.ofFinite ι`. Establish `hle : topologicalKrullDim X ≤ (((Finset.univ.sup N : ℕ) : ℕ) : WithBot ℕ∞)`. Use `topologicalKrullDim_le_natCast_of_isOpenCover U hU hcov _ ?_` and prove the remaining obligations. Introduce `i`.
-
-Conclude with `le_trans (hN i) (Nat.mono_cast (Finset.le_sup (Finset.mem_univ i)))`. Conclude with `lt_of_le_of_lt hle (natCast_withBot_lt_top _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_lt_top_of_finite_isOpenCover {X : Type u} [TopologicalSpace X]
     {ι : Type v} [Finite ι] (U : ι → Set X) (hU : ∀ i, IsOpen (U i))
@@ -166,7 +164,7 @@ theorem topologicalKrullDim_lt_top_of_finite_isOpenCover {X : Type u} [Topologic
   exact lt_of_le_of_lt hle (natCast_withBot_lt_top _)
 
 /- English proof (translation)
-Introduce `h`. Establish `h' : ((2 : ℕ∞) : WithBot ℕ∞) = ((0 : ℕ∞) : WithBot ℕ∞)` using `h`. Establish `h2 : (2 : ℕ∞) = 0` using `WithBot.coe_injective h'`. Simplify using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem two_ne_zero_withBotENat : (2 : WithBot ℕ∞) ≠ 0 := by
   intro h
@@ -175,7 +173,7 @@ private theorem two_ne_zero_withBotENat : (2 : WithBot ℕ∞) ≠ 0 := by
   simp at h2
 
 /- English proof (translation)
-Establish `e2 : (2 : WithBot ℕ∞) = ((2 : ℕ∞) : WithBot ℕ∞)` using `rfl`. Establish `e1 : (1 : WithBot ℕ∞) = ((1 : ℕ∞) : WithBot ℕ∞)` using `rfl`. Rewrite using `[e2, e1, ← WithBot.coe_mul, ← WithBot.coe_add]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem two_mul_natCast_add_one (m : ℕ) :
     (2 : WithBot ℕ∞) * ((m : ℕ∞) : WithBot ℕ∞) + 1 = (((2 * m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞) := by
@@ -185,9 +183,9 @@ private theorem two_mul_natCast_add_one (m : ℕ) :
   congr 1
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot`. Rewrite using `[WithBot.mul_bot two_ne_zero_withBotENat, WithBot.bot_add]`. Conclude with `bot_lt_top`. Consider the case `coe b`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction.
 
-Proceed by induction on `b using WithTop.recTopCoe with`. Consider the case `top => exact absurd rfl h`. Consider the case `coe m`. Use `lt_of_eq_of_lt ?_ (natCast_withBot_lt_top (2 * m + 1))` and prove the remaining obligations. Conclude with `two_mul_natCast_add_one m`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem two_mul_add_one_lt_top {a : WithBot ℕ∞} (h : a ≠ ⊤) : 2 * a + 1 < ⊤ := by
   induction a using WithBot.recBotCoe with
@@ -202,9 +200,9 @@ private theorem two_mul_add_one_lt_top {a : WithBot ℕ∞} (h : a ≠ ⊤) : 2 
       exact two_mul_natCast_add_one m
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `h0 : ((0 : ℕ) : WithBot ℕ∞) = 0` using `Nat.cast_zero`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (MvPolynomial.isEmptyRingEquiv k (Fin 0)), ringKrullDim_eq_zero_of_field k, ← h0]`. Conclude with `natCast_withBot_lt_top 0`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (MvPolynomial.finSuccEquiv k m).toRingEquiv]`. Conclude with `lt_of_le_of_lt Polynomial.ringKrullDim_le (two_mul_add_one_lt_top (ne_of_lt ih))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ringKrullDim_mvPolynomial_lt_top (k : Type u) [Field k] (n : ℕ) :
     ringKrullDim (MvPolynomial (Fin n) k) < ⊤ := by
@@ -219,7 +217,7 @@ private theorem ringKrullDim_mvPolynomial_lt_top (k : Type u) [Field k] (n : ℕ
     exact lt_of_le_of_lt Polynomial.ringKrullDim_le (two_mul_add_one_lt_top (ne_of_lt ih))
 
 /- English proof (translation)
-Take `⟨n, φ, hφ⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp ‹Algebra.FiniteType k A›`. Use `lt_of_le_of_lt (ringKrullDim_le_of_surjective φ.toRingHom hφ) ?_` and prove the remaining obligations. Conclude with `ringKrullDim_mvPolynomial_lt_top k n`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_lt_top_of_finiteType (k : Type u) [Field k] (A : Type v) [CommRing A]
     [Algebra k A] [Algebra.FiniteType k A] : ringKrullDim A < ⊤ := by
@@ -229,7 +227,7 @@ theorem ringKrullDim_lt_top_of_finiteType (k : Type u) [Field k] (A : Type v) [C
   exact ringKrullDim_mvPolynomial_lt_top k n
 
 /- English proof (translation)
-Rewrite using `[PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim]`. Conclude with `ringKrullDim_lt_top_of_finiteType k A`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_primeSpectrum_lt_top (k : Type u) [Field k] (A : Type v) [CommRing A]
     [Algebra k A] [Algebra.FiniteType k A] : topologicalKrullDim (PrimeSpectrum A) < ⊤ := by
@@ -237,18 +235,16 @@ theorem topologicalKrullDim_primeSpectrum_lt_top (k : Type u) [Field k] (A : Typ
   exact ringKrullDim_lt_top_of_finiteType k A
 
 /- English proof (translation)
-The claim follows from `topologicalKrullDim_primeSpectrum_lt_top k R`.
+A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_spec_lt_top (k : Type u) [Field k] (R : CommRingCat.{v})
     [Algebra k R] [Algebra.FiniteType k R] : topologicalKrullDim ↥(Spec R) < ⊤ :=
   topologicalKrullDim_primeSpectrum_lt_top k R
 
 /- English proof (translation)
-Establish `hle : U ≤ f ⁻¹ᵁ (⊤ : (Spec (CommRingCat.of k)).Opens)` using `le_top`. Establish `hQ : RingHom.FiniteType ((f.appLE ⊤ U hle).hom)` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) f hft ⟨⊤, isAffineOpen_top (Spec (CommRingCat.of k))⟩ ⟨U, hU⟩ hle`. Establish `hsurj : Function.Surjective ((Scheme.ΓSpecIso (CommRingCat.of k)).inv).hom`. Introduce `y`. Use `⟨((Scheme.ΓSpecIso (CommRingCat.of k)).hom).hom y, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hid` using `(Scheme.ΓSpecIso (CommRingCat.of k)).hom_inv_id`. Conclude with `congrArg (fun φ => (CommRingCat.Hom.hom φ) y) hid`. Set `_ : Algebra k Γ(X, U)` to `RingHom.toAlgebra (((f.appLE ⊤ U hle).hom).comp ((Scheme.ΓSpecIso (CommRingCat.of k)).inv).hom)`. Establish `: Algebra.FiniteType k Γ(X, U)` using `hQ.comp (RingHom.FiniteType.of_surjective _ hsurj)`. Establish `e : ↥((U : Set ↥X)) ≃ₜ ↥(Spec Γ(X, U))` using `Scheme.homeoOfIso hU.isoSpec`.
-
-Conclude with `topologicalKrullDim_lt_top_of_homeomorph e (topologicalKrullDim_spec_lt_top k Γ(X, U))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem topologicalKrullDim_affineOpen_lt_top {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) (hft : LocallyOfFiniteType f) {U : X.Opens}
@@ -271,13 +267,11 @@ private theorem topologicalKrullDim_affineOpen_lt_top {k : Type u} [Field k] {X 
   exact topologicalKrullDim_lt_top_of_homeomorph e (topologicalKrullDim_spec_lt_top k Γ(X, U))
 
 /- English proof (translation)
-Establish `hcompact : IsCompact (Set.univ : Set ↥(Spec (CommRingCat.of k)))`. Simplify using the standard rewrite rules. Establish `: CompactSpace ↥X`. Prove the components needed by the constructor for the conclusion. Establish `h` using `hqc.isCompact_preimage Set.univ isOpen_univ hcompact`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hcov : ⋃ i : X.affineOpens, ((i : X.Opens) : Set ↥X) = Set.univ`. Rewrite using `[← Opens.coe_iSup, iSup_affineOpens_eq_top X, Opens.coe_top]`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun i : X.affineOpens => ((i : X.Opens) : Set ↥X)) (fun i => ((i : X.Opens)).isOpen) hcov.ge`. Use `topologicalKrullDim_lt_top_of_finite_isOpenCover (ι := {i : X.affineOpens // i ∈ t}) (fun i => ((i.1 : X.Opens) : Set ↥X)) (fun i => ((i.1 : X.Opens)).isOpen) ?_ ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Introduce `x _`. Take `⟨i, hi, hx⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `Set.mem_iUnion.mpr ⟨⟨i, hi⟩, hx⟩`. Introduce `i`.
-
-Conclude with `topologicalKrullDim_affineOpen_lt_top f hft i.1.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_lt_top_of_finiteType {k : Type u} [Field k] {X : Scheme.{u}}
     (f : X ⟶ Spec (CommRingCat.of k)) (hft : LocallyOfFiniteType f) (hqc : QuasiCompact f) :
@@ -305,7 +299,7 @@ theorem topologicalKrullDim_lt_top_of_finiteType {k : Type u} [Field k] {X : Sch
     exact topologicalKrullDim_affineOpen_lt_top f hft i.1.2
 
 /- English proof (translation)
-The claim follows from `topologicalKrullDim_lt_top_of_finiteType T.structMap hT.locallyOfFiniteType hT.quasiCompact`.
+A detailed English derivation is pending.
 -/
 theorem MarkedIdealWithBoundary.IsAdmissible.topologicalKrullDim_lt_top {T : MarkedIdealWithBoundary.{u}} (hT : T.IsAdmissible) :
     topologicalKrullDim ↥T.scheme < ⊤ :=

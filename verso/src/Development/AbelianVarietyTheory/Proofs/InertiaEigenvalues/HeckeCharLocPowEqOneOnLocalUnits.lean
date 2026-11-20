@@ -10,9 +10,9 @@ namespace GlobalTheory.LocUnitPow
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Break down `eq_or_ne γ 0 with rfl | h0` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one' {γ : WithZero (Multiplicative ℤ)} (h : γ < 1) : γ ≤ WithZero.exp (-1 : ℤ) := by
   rcases eq_or_ne γ 0 with rfl | h0
@@ -23,9 +23,9 @@ theorem le_exp_neg_one' {γ : WithZero (Multiplicative ℤ)} (h : γ < 1) : γ �
     omega
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Establish `e : z ^ (m + 1) - 1 = z ^ m * (z - 1) + (z ^ m - 1)` using `by ring`. Rewrite using `[e]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_add_le _ ?_ ih` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hz, one_pow, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pow_sub_one_le {v : HeightOneSpectrum (𝓞 L)} {z : v.adicCompletion L} (hz : Valued.v z = 1) (i : ℕ) :
     Valued.v (z ^ i - 1) ≤ Valued.v (z - 1) := by
@@ -38,9 +38,9 @@ theorem val_pow_sub_one_le {v : HeightOneSpectrum (𝓞 L)} {z : v.adicCompletio
     rw [map_mul, map_pow, hz, one_pow, one_mul]
 
 /- English proof (translation)
-Establish `e : z ^ N - 1 = (z - 1) * ((∑ i ∈ Finset.range N, (z ^ i - 1)) + (N : v.adicCompletion L))`. Rewrite using `[← geom_sum_mul, Finset.sum_sub_distrib]`. Simplify using `[mul_comm]`. Establish `hS : Valued.v ((∑ i ∈ Finset.range N, (z ^ i - 1)) + (N : v.adicCompletion L)) ≤ WithZero.exp (-1 : ℤ)`. Use `Valuation.map_add_le _ ?_ hN` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(val_pow_sub_one_le hz i).trans (hj.trans (WithZero.exp_le_exp.mpr (by omega)))`. Rewrite using `[e, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem val_pow_sub_one_step {v : HeightOneSpectrum (𝓞 L)} {N : ℕ}
     (hN : Valued.v (N : v.adicCompletion L) ≤ WithZero.exp (-1 : ℤ))
@@ -58,9 +58,9 @@ theorem val_pow_sub_one_step {v : HeightOneSpectrum (𝓞 L)} {N : ℕ}
     _ = _ := by rw [← WithZero.exp_add]; congr 1; ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hz1`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_mul]`. Establish `hzk : Valued.v (z ^ N ^ k) = 1` using `by rw [map_pow, hz, one_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `val_pow_sub_one_step hN hzk ih (by omega)` as an intermediate fact. Use `this using 3` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_pow_pow_sub_one_le {v : HeightOneSpectrum (𝓞 L)} {N : ℕ}
     (hN : Valued.v (N : v.adicCompletion L) ≤ WithZero.exp (-1 : ℤ))
@@ -77,21 +77,19 @@ theorem val_pow_pow_sub_one_le {v : HeightOneSpectrum (𝓞 L)} {N : ℕ}
     ring
 
 /- English proof (translation)
-Introduce `L _ _ χ v x hx`. Take `⟨n, hn⟩` from `GlobalTheory.Mem.UnrAe.exists_levelLe χ v`. Use `Formalism.UG.P.glint_finite_residueField (F := L) v` as an intermediate fact. Set `_` to `Fintype.ofFinite (IsLocalRing.ResidueField (v.adicCompletionIntegers L))`. Use `set N := Fintype.card (IsLocalRing.ResidueField (v.adicCompletionIntegers L)) with hNdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN2 : 1 < N` using `Fintype.one_lt_card`. Establish `hNv : Valued.v (N : v.adicCompletion L) ≤ WithZero.exp (-1 : ℤ)`. Establish `hr : IsLocalRing.residue (v.adicCompletionIntegers L) (N : v.adicCompletionIntegers L) = 0`. Rewrite using `[map_natCast]`. Conclude with `FiniteField.cast_card_eq_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hr` using `[IsLocalRing.residue_eq_zero_iff]`. Establish `hlt : Valued.v (((N : v.adicCompletionIntegers L)) : v.adicCompletion L) < 1` using `(Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion L) (WithZero (Multiplicative ℤ))))).1 hr`. Establish `e : (((N : v.adicCompletionIntegers L)) : v.adicCompletion L) = (N : v.adicCompletion L)` using `by push_cast; rfl`. Rewrite `hlt` using `[e]`. Conclude with `le_exp_neg_one' hlt`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxO : (x : v.adicCompletion L) ∈ v.adicCompletionIntegers L`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `hx.le`. Use `set y : v.adicCompletionIntegers L := ⟨x, hxO⟩`. Establish `hyu : IsUnit y` using `HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one.2 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr : IsLocalRing.residue _ y ≠ 0`. Rewrite using `[ne_eq, IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Conclude with `hyu`. Establish `hp : IsLocalRing.residue _ (y ^ (N - 1) - 1) = 0`. Rewrite using `[map_sub, map_pow, map_one, FiniteField.pow_card_sub_one_eq_one _ hr, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp` using `[IsLocalRing.residue_eq_zero_iff]`. Establish `hlt : Valued.v (((y ^ (N - 1) - 1 : v.adicCompletionIntegers L)) : v.adicCompletion L) < 1` using `(Valuation.mem_maximalIdeal_iff (v := (Valued.v : Valuation (v.adicCompletion L) (WithZero (Multiplicative ℤ))))).1 hp`. Establish `e : (((y ^ (N - 1) - 1 : v.adicCompletionIntegers L)) : v.adicCompletion L) = (x : v.adicCompletion L) ^ (N - 1) - 1` using `by push_cast; rfl`. Rewrite `hlt` using `[e]`. Establish `hx1` using `le_exp_neg_one' hlt`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : Valued.v ((x : v.adicCompletion L) ^ (N - 1)) = 1`. Rewrite using `[map_pow, show Valued.v (x : v.adicCompletion L) = 1 from hx, one_pow]`. Establish `key` using `val_pow_pow_sub_one_le hNv hz hx1 n`. Use `⟨(N - 1) * N ^ n, Nat.mul_pos (by omega) (pow_pos (by omega) _), ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
-
-Use `hn _ (GlobalTheory.Mem.UnrAe.isUnitAt_pow hx _) ?_` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, pow_mul]`. Conclude with `key.trans (WithZero.exp_le_exp.mpr (by omega))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_pow_eq_one : ∀ (L : Type) [Field L] [NumberField L] (χ : Formalism.L2.Host.HChar L) (v : HeightOneSpectrum (𝓞 L))
     (x : (v.adicCompletion L)ˣ), Formalism.L2.Host.IsUnitAt v x → ∃ m : ℕ, 0 < m ∧ χ.loc v x ^ m = 1 := by

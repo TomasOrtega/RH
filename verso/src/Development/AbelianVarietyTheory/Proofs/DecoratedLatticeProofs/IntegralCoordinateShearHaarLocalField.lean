@@ -5,17 +5,15 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.CoordShear
 
 /- English proof (translation)
-Use `set e := MeasurableEquiv.piEquivPiSubtypeProd (fun _ : J => k) (fun j => j ∉ S) with he`. Establish `he_mp : MeasurePreserving e (Measure.pi fun _ : J => ν) ((Measure.pi fun _ : {j // j ∉ S} => ν).prod (Measure.pi fun _ : {j // ¬ j ∉ S} => ν))` using `measurePreserving_piEquivPiSubtypeProd (fun _ : J => ν) (fun j => j ∉ S)`. Set `G : ({j // j ∉ S} → k) → ({j // ¬ j ∉ S} → k)` to `fun b i => g (e.symm (b, 0)) i`. Establish `hG : Measurable G`. Use `measurable_pi_lambda _ fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(measurable_pi_apply (i : J)).comp (hg.comp (e.symm.measurable.comp (measurable_id.prodMk measurable_const)))`. Establish `hΦ : MeasurePreserving (fun p : ({j // j ∉ S} → k) × ({j // ¬ j ∉ S} → k) => (id p.1, G p.1 + p.2)) ((Measure.pi fun _ : {j // j ∉ S} => ν).prod (Measure.pi fun _ : {j // ¬ j ∉ S} => ν)) ((Measure.pi fun _ : {j // j ∉ S} => ν).prod (Measure.pi fun _ : {j // ¬ j ∉ S} => ν))`. Use `(MeasurePreserving.id _).skew_product (g := fun b a => G b + a) ?_ ?_` and prove the remaining obligations. Conclude with `(hG.comp measurable_fst).add measurable_snd`. Conclude with `Filter.Eventually.of_forall fun b => (measurePreserving_add_left _ (G b)).map_eq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hGy : ∀ y : J → k, g (e.symm ((e y).1, 0)) = g y`. Introduce `y`. Use `h1 _ _ fun j hj => ?_` and prove the remaining obligations. Simplify using `[he, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, hj]`. Establish `key : (fun y => y + g y) = e.symm ∘ (fun p => (id p.1, G p.1 + p.2)) ∘ e`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `y`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[Function.comp_apply, Function.comp_apply, MeasurableEquiv.apply_symm_apply]`. Use `Prod.ext (funext fun i => ?_) (funext fun i => ?_)` and prove the remaining obligations. Simplify using `[he, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, h2 y i i.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrFun (hGy y) i` as an intermediate fact. Simplify using `only [G, Pi.add_apply]`. Rewrite using `[this]`. Simplify using `[he, MeasurableEquiv.piEquivPiSubtypeProd, Equiv.piEquivPiSubtypeProd, add_comm]`. Rewrite using `[key]`.
-
-Conclude with `(MeasurePreserving.symm e he_mp).comp (hΦ.comp he_mp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_shear {k : Type} [AddCommGroup k] [MeasurableSpace k] [MeasurableAdd₂ k]
     (ν : Measure k) [SigmaFinite ν] [ν.IsAddLeftInvariant]
@@ -59,13 +57,11 @@ theorem measurePreserving_shear {k : Type} [AddCommGroup k] [MeasurableSpace k] 
   exact (MeasurePreserving.symm e he_mp).comp (hΦ.comp he_mp)
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν hν J _ _ S g hg h1 h2 F`. Establish `: SecondCountableTopology k`. Set `` to `IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Set `: (Valued.v (R` to `k)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `: NontriviallyNormedField k` to `Valued.toNontriviallyNormedField k (ValueGroupWithZero k)`. Establish `: ProperSpace k` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace k`. Conclude with `secondCountable_of_proper`. Use `hν` as an intermediate fact. Establish `hgm : Measurable g` using `hg.measurable`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmp` using `measurePreserving_shear ν S g hgm h1 h2`. Establish `hfix : ∀ y, g (y + g y) = g y` using `fun y => h1 _ _ fun j hj => by simp [h2 y j hj]`. Establish `hfix' : ∀ y, g (y - g y) = g y` using `fun y => h1 _ _ fun j hj => by simp [h2 y j hj]`. Establish `hsurj : Function.Surjective (fun y : J → k => y + g y)` using `fun y => ⟨y - g y, by simp [hfix']⟩`. Establish `hemb : MeasurableEmbedding (fun y : J → k => y + g y)` using `MeasurableEmbedding.of_measurable_inverse (g := fun y => y - g y) (measurable_id.add hgm) (by rw [hsurj.range_eq]; exact MeasurableSet.univ) (measurable_id.sub hgm) (fun y => by simp [hfix])`.
-
-Conclude with `hmp.integral_comp hemb F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_shear : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : Measure k), ν.IsAddHaarMeasure → ∀ (J : Type) [Fintype J] [DecidableEq J] (S : Finset J) (g : (J → k) → (J → k)), Continuous g → (∀ y y' : J → k, (∀ j, j ∉ S → y j = y' j) → g y = g y') → (∀ (y : J → k) j, j ∉ S → g y j = 0) → ∀ F : (J → k) → ℂ, ∫ y, F (y + g y) ∂(Measure.pi fun _ => ν) = ∫ y, F y ∂(Measure.pi fun _ => ν) := by
   intro k _ _ _ _ _ _ ν hν J _ _ S g hg h1 h2 F

@@ -30,7 +30,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Hk3
 
 /- English proof (translation)
-Take `⟨hc, hq⟩` from `GlobalTheory.Hk3.eigSum_mul_proj_eq h e Ec lab he hs hl`. Take `⟨a, b, -⟩` from `GlobalTheory.T.conjugateSpace_jointEigenspaces_pairComm_iSup s (fun i => h i * e)`. Use `⟨a hc, fun Q hQ => ?_⟩` and prove the remaining obligations. Establish `h0 : (fun i => cj s ((0 : I → ℂ) i)) = 0` using `by funext i; simp`. Rewrite using `[b Q, hq _ (by rw [h0]; exact hQ)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_cut_eig (s : Bool) {E I C : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     (h : I → Module.End ℂ E) (e : Module.End ℂ E) (Ec : C → Submodule ℂ E) (lab : C → I → ℂ)
@@ -46,9 +46,9 @@ theorem tw_cut_eig (s : Bool) {E I C : Type} [NormedAddCommGroup E] [InnerProduc
   rw [b Q, hq _ (by rw [h0]; exact hQ)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Use `⟨x, hx, funext fun i => ?_⟩` and prove the remaining obligations. Use `congrFun e i` as an intermediate fact. Simplify using `only [h] at this`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `congrArg (cj s) this` using `[cj_cj]`. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x, hx, funext fun i => (h _).symm⟩`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem cxSys_cj_iff {K I : Type} [Field K] {σ τ : K →+* ℂ} {s : Bool} (h : ∀ a, σ a = cj s (τ a)) (H : (I → K) → Prop) (y : I → ℂ) :
     cxSys σ H (fun i => cj s (y i)) ↔ cxSys τ H y := by
@@ -63,27 +63,23 @@ theorem cxSys_cj_iff {K I : Type} [Field K] {σ τ : K →+* ℂ} {s : Bool} (h 
 
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hHowe hHC hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hC hEx hJ s hOk hGG hLU hGU hGE hLW hA hPos hB hParts hTS hPin`. Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk.ok2.irr`. Take `⟨hCoreE, hSF, -, -, -, hWc, -⟩` from `GlobalTheory.T.heckeCharacterisation_places_of_weakCharacterisation R F hC`. Establish `hCore` using `hCoreE hEx`. Establish `hSch : SchurAll R.toRealDat` using `⟨fun _ _ _ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hHC hCusp D _ _ _ _ _ _ _ _).2, (GlobalTheory.MultFinite.hcFinite_and_schurMult hHC hCusp D _ _ _ _ _ _ _ _).2, fun _ => (GlobalTheory.MultFinite.hcFinite_and_schurMult hHC hCusp D _ _ _ _ _ _ _ _).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTr` using `(hPin (GlobalTheory.T.exists_separating_inert_eigenvalue_passage hHowe R F hLI hC hEx hSch hJ hirr hB hPos)).1`. Establish `hOps` using `fun i => GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hSch hirr R.SF hSF i`. Use `choose h hIsW hNorm hGc hSup hInv hEig hChar using hOps`. Establish `hDict` using `GlobalTheory.T.every_liftOperator_is_labelOperator_with_partner hHowe R F hLI hC hEx hSch hJ`. Use `choose pl cV cW hD using hDict`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLaws` using `GlobalTheory.Hk3.eH_laws R.toRealDat F.lv2 hCore hirr`. Establish `hcut` using `fun j => tw_cut_eig (twAt D.what₂.embLL A3.A.v0) (fun i => h j (pl j A3.A.μ0 i) (cW j A3.A.μ0 i)) (eH R.toRealDat j) (Wcc R.toRealDat R.SF j) (fun c => labW j (pl j A3.A.μ0) (cW j A3.A.μ0) c) (hLaws j).1 (hSup j) (fun c w hw i => hEig j c _ ((hD j A3.A.μ0).good i) _ w hw)`. Use `⟨fun j t i => Tw.map (E := (R.HW j (sg0 D A3.A)).H) (F := (R.HW j (sg0 D A3.A)).H) (twAt D.what₂.embLL A3.A.v0) (h j (pl j t i) (cW j t i) * eH R.toRealDat j), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j t i u`. Take `⟨hV, hVo, -⟩` from `(GlobalTheory.T.realization_family_normal_operators R.toRealDat F.lv2 hCore.lev hCore.fam hCore.models).2 j t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK` using `RealDat3.kFormL_of (R := R) (F := F) hCore.models`. Establish `hop : (R.toCx3 F).opLC j t (Sum.inl i) = Tw.map (E` using `(R.HV j t).H) (F := (R.HV j t).H) (twAt D.what₂.embLL A3.A.v0) (hV (pl j t i) (cV j t i)) := by`. Use `LinearMap.ext_on_range (hK j t).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[← CxData.jL_opL _ hK]`. Use `show Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.jV j t ((A3.liftI j t).opAll i _)) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (hV _ _ (R.jV j t _))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (Tw.mk (twAt D.what₂.embLL A3.A.v0)) ((hD j t).op hV hVo i _)`. Establish `hs` using `(GlobalTheory.T.theta_intertwines_matched_operators R.toRealDat F.lv2 hCore hSch hirr R.SF hSF j t (pl j t i) ((hD j t).good i) _ _ ((hD j t).mat i) hV hVo).1 (h j) (hIsW j)`. Rewrite using `[hop]`. Use `show R.phs j • Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.thG j t (hV _ _ (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HV j t).H) u))) = Tw.map (E := (R.HW j (sg0 D A3.A)).H) (F := (R.HW j (sg0 D A3.A)).H) (twAt D.what₂.embLL A3.A.v0) (h j (pl j t i) (cW j t i) * eH R.toRealDat …`. Rewrite using `[map_smul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Use `show Tw.mk (twAt D.what₂.embLL A3.A.v0) (R.thG j t (hV _ _ (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HV j t).H) u))) = Tw.mk (twAt D.what₂.embLL A3.A.v0) (h j (pl j t i) (cW j t i) (eH R.toRealDat j (R.thG j t (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := (R.HV j t).H) …`. Rewrite using `[(hLaws j).2.2.2 t, hs]`. Introduce `j`. Conclude with `(hcut j).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `j p`. Establish `hv` using `fun a => R.toRealDat.emb0 a`. Establish `hQ0 : ¬ cxSys A3.fam3.base3.v0.embedding ((A3.liftI j A3.A.fam.μ0).HasRes3 (A3.fam3.tr3 j p.1)) 0`. Introduce `h0`. Establish `h1 : (0 : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ) = fun i => cj (twAt D.what₂.embLL A3.A.v0) ((0 : (A3.liftI j A3.A.fam.μ0).OpIx → ℂ) i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite `h0` using `[h1]`. Conclude with `GlobalTheory.T.zero_eigensystem_not_passage_of_finiteType R F hC j p ((cxSys_cj_iff hv _ _).1 h0)`. Establish `key` using `(hcut j).2 _ hQ0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show Tw.sub _ (R.Wp3 j p) = _`. Use `Eq.trans ?_ key.symm` and prove the remaining obligations. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun c hc => ?_` and prove the remaining obligations.
-
-Distinguish the cases in `hne : R.Wc' j c = ⊥`. Rewrite using `[hne]`. Conclude with `bot_le`. Conclude with `le_iSup₂_of_le c ((cxSys_cj_iff hv _ _).2 (GlobalTheory.T.carriedPart_eigensystem_passage_of_type hHowe R F hLI hC hEx hSch hJ s hOk hGG hLU hGU hGE hLW hA hPos hB hTr j _ _ _ (hD j A3.A.μ0) p c hc hne)) (hWc j c).le`. Use `iSup₂_le fun c hc => ?_` and prove the remaining obligations.
-
-Rewrite using `[← hWc j c]`. Conclude with `GlobalTheory.T.eigenPart_le_typePart_of_passage hHowe R F hLI hC hEx hSch hJ s hOk hGG hLU hGU hGE hLW hA hPos hB hTr hParts hTS j _ _ _ (hD j A3.A.μ0) p c ((cxSys_cj_iff hv _ _).1 hc)`.
+A detailed English derivation is pending.
 -/
 theorem heckeTheta_level3_exists_alt : HoweUnram → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), GlobalTheory.Chain.LiftInteg D → R.WeakCharacterisation F → R.toRealDat.ExAt → InertJunk A3 → ∀ s, A3.fam3.Ok3 s → GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ → R.toRealDat.LUnif → R.PGUnit F → R.PGEquiv F → R.PLevW F → R.PThmA → (0 < R.kap ∧ ∀ i t p, 0 < R.lam3 i t p A3.A.v0) → R.PThmB → (R.toCx3 F).PartsW false → A3.fam3.TypesSep3 → ((∃ tr, R.TrISem F tr ∧ TrISepWith A3 tr) → R.TrISem F A3.trI ∧ A3.fam3.TrISep) → ∃ hW, HeckeIntertwiningLifts A3 (R.toCx3 F) hW := by
   intro hHowe hHC hCusp D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hLI hC hEx hJ s hOk hGG hLU hGU hGE hLW hA hPos hB hParts hTS hPin

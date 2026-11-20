@@ -18,7 +18,7 @@ def FinCo {D : D7} {u : D.what₂.Word} (T : Formalism.L2.Forms.Forms0 D u) (B :
       ∀ c, flipTwoThree.actAll ((D.fm u).lam 0) (fun τ => (γ c τ)⁻¹) (coT T (gC B) x c) ∈ flipTwoThree.IntSpanAt D w ((D.fm u).lam 0)
 
 /- English proof (translation)
-Establish `hst : ∀ c, Subsingleton ((D.mem u).C.stab 0 c)`. Conclude with `h3 u`. Establish `hne : Nonempty ((D.mem u).C.cls 0)` using `classes_level_zero_nonempty F u`. Conclude with `⟨coT (F.forms u).to0 (gC B), coT_injective (T := (F.forms u).to0) _, coT_range (T := (F.forms u).to0) hst _, hfin, inf_coT (T := (F.forms u).to0) (B := B) hB hst hne⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem colRest_of_fin {D : D7} (F : Formalism.L2.Forms.ColsTiedSym D) (h3 : flipTwoThree.adm3 D) (u : D.what₂.Word) (B : ColBase D u)
     (hB : B.rho = rhoC D) (hfin : FinCo (F.forms u).to0 B) : ColRest B := by
@@ -29,7 +29,7 @@ theorem colRest_of_fin {D : D7} (F : Formalism.L2.Forms.ColsTiedSym D) (h3 : fli
     hfin, inf_coT (T := (F.forms u).to0) (B := B) hB hst hne⟩
 
 /- English proof (translation)
-The claim follows from `colValOfTiedS_of_rest' fun D F h3 u => ⟨rhoC D, fun B hB => colRest_of_fin F h3 u B hB (h D F h3 u B hB)⟩`.
+A detailed English derivation is pending.
 -/
 theorem colValOfTiedS_of_fin
     (h : ∀ D : D7, ∀ F : Formalism.L2.Forms.ColsTiedSym D, flipTwoThree.adm3 D → ∀ (u : D.what₂.Word) (B : ColBase D u),

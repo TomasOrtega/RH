@@ -24,7 +24,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Meas
   [BorelSpace G] {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Rewrite using `[Set.inter_comm, Set.inter_comm s' A]`. Use `hs.measure_set_eq hs' hA fun γ => ?_` and prove the remaining obligations. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Subgroup.smul_def, smul_eq_mul]`. Conclude with `hinv γ γ.2 g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measure_inter_eq_of_isFundamentalDomain {s s' : Set G} (hs : IsFundamentalDomain Γ s μ)
     (hs' : IsFundamentalDomain Γ s' μ) {A : Set G} (hA : MeasurableSet A)
@@ -36,9 +36,9 @@ theorem measure_inter_eq_of_isFundamentalDomain {s s' : Set G} (hs : IsFundament
   exact hinv γ γ.2 g
 
 /- English proof (translation)
-Establish `hU : ∀ n, μ (U n) = 0`. Introduce `n`. Use `hs.measure_zero_of_invariant (U n) (fun γ => ?_) (by rw [Set.inter_comm]; exact hnull n)` and prove the remaining obligations. Use extensionality with `g`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def, smul_eq_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hinv n _ (Γ.inv_mem γ.2) g`. Establish `huniv : μ Set.univ = 0`. Rewrite using `[show (Set.univ : Set G) = ⋃ n, U n from (Set.iUnion_eq_univ_iff.2 hcov).symm]`. Conclude with `measure_iUnion_null hU`. Conclude with `NeZero.ne μ (Measure.measure_univ_eq_zero.1 huniv)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem false_of_isFundamentalDomain {s : Set G} (hs : IsFundamentalDomain Γ s μ)
     (U : ℕ → Set G) (hinv : ∀ n, ∀ γ ∈ Γ, ∀ g, γ * g ∈ U n ↔ g ∈ U n)
@@ -55,11 +55,11 @@ theorem false_of_isFundamentalDomain {s : Set G} (hs : IsFundamentalDomain Γ s 
   exact NeZero.ne μ (Measure.measure_univ_eq_zero.1 huniv)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, C, -, hCtop, hC⟩ s' hs'`. Establish `e : ∀ t, μ (s' ∩ U t) = μ (s ∩ U t)` using `fun t => measure_inter_eq_of_isFundamentalDomain hs' hs (hU t) (hinv t)`. Establish `h1 : μ (s ∩ U 1) = C` using `by rw [hC 1 one_pos]; simp`. Use `⟨by rw [e, h1]; exact hCtop, fun t ht => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, e, h1, hC t ht, ENNReal.ofReal_pow ht.le, mul_comm]`. Introduce `hB`. Take `⟨s, hs⟩` from `hex`. Take `⟨hfin, hscale⟩` from `hB s hs`. Use `⟨s, hs, μ (s ∩ U 1), pos_iff_ne_zero.2 fun h0 => ?_, hfin, fun t ht => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `false_of_isFundamentalDomain hs (fun n => U ((n : ℝ) + 1)) (fun n => hinv _) hcov fun n => ?_` and prove the remaining obligations. Rewrite using `[hscale _ (by positivity), h0, mul_zero]`. Rewrite using `[hscale t ht, ENNReal.ofReal_pow ht.le, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_iff_forall_isFundamentalDomain (k : ℕ) (U : ℝ → Set G)
     (hU : ∀ t, MeasurableSet (U t)) (hinv : ∀ t, ∀ γ ∈ Γ, ∀ g, γ * g ∈ U t ↔ g ∈ U t)
@@ -95,7 +95,7 @@ variable {F E : Type*} [Field F] [Field E] [NumberField F] [NumberField E] [Alge
 variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Take `⟨δ, hδ, rfl⟩` from `Subgroup.mem_map.1 hγ`. Express the relevant statement in the definitionally equal form `archEmbed h v (δ : h.unitaryGroup) • vecAt v x₀ = vecAt v x₀`. Rewrite using `[archEmbed_smul_vecAt]`. Conclude with `congrArg (vecAt v) (MulAction.mem_stabilizer_iff.1 hδ)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecStabGroup_smul_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (La : AddSubgroup W)
     (x₀ : W) {γ : archUnitary h v} (hγ : γ ∈ vecStabGroup h v La x₀) :
@@ -106,7 +106,7 @@ theorem vecStabGroup_smul_vecAt (h : HermitianForm F E W) (v : Basis ι E W) (La
   exact congrArg (vecAt v) (MulAction.mem_stabilizer_iff.1 hδ)
 
 /- English proof (translation)
-Introduce `γ hγ g`. Simplify using `only [Set.mem_ofPred_eq, invApply_eq_smul, _root_.mul_inv_rev, mul_smul, vecStabGroup_smul_vecAt h v La x₀ ((vecStabGroup h v La x₀).inv_mem hγ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem below_invariant (h : HermitianForm F E W) (v : Basis ι E W) (M : Majorant h v)
     (La : AddSubgroup W) (x₀ : W) (t : ℝ) :
@@ -118,7 +118,7 @@ theorem below_invariant (h : HermitianForm F E W) (v : Basis ι E W) (M : Majora
     vecStabGroup_smul_vecAt h v La x₀ ((vecStabGroup h v La x₀).inv_mem hγ)]
 
 /- English proof (translation)
-Use `ArchLatticeDiscrete.proof h v La hLa` as an intermediate fact. Establish `hle : vecStabGroup h v La x₀ ≤ archLatticeGroup h v La`. Introduce and unpack `_ ⟨γ, -, rfl⟩`. Conclude with `⟨(γ : h.unitaryGroup), γ.2, rfl⟩`. Conclude with `DiscreteTopology.of_continuous_injective (f := Subgroup.inclusion hle) (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vecStabGroup_discrete (h : HermitianForm F E W) (v : Basis ι E W) (La : AddSubgroup W)
     (hLa : IsLattice E La) (x₀ : W) : DiscreteTopology (vecStabGroup h v La x₀) := by
@@ -130,9 +130,9 @@ theorem vecStabGroup_discrete (h : HermitianForm F E W) (v : Basis ι E W) (La :
     (continuous_subtype_val.subtype_mk _) (Subgroup.inclusion_injective hle)
 
 /- English proof (translation)
-Establish `hdisc` using `vecStabGroup_discrete h v La hLa.isLattice x₀`. Establish `: Countable (vecStabGroup h v La x₀)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨FD, -, hFD⟩` from `DiscreteFundamentalDomain.proof (archUnitary h v) μ _ hdisc`. Conclude with `exists_iff_forall_isFundamentalDomain (2 * finrank ℚ F * (finrank E W - 1)) (fun t => {g : archUnitary h v | M.len (invApply g (vecAt v x₀)) < t}) (fun t => measurableSet_below M (vecAt v x₀) t) (below_invariant h v M La x₀) (fun g => by`. Take `⟨n, hn⟩` from `exists_nat_gt (M.len (invApply g (vecAt v x₀)))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, hn.trans (lt_add_one _)⟩) ⟨FD, hFD⟩`.
+A detailed English derivation is pending.
 -/
 theorem unfolding_exists_iff_forall (h : HermitianForm F E W) (v : Basis ι E W) (M : Majorant h v)
     (μ : Measure (archUnitary h v)) [μ.IsHaarMeasure] (D : ℕ) (La : AddSubgroup W) (x₀ : W)
@@ -158,7 +158,7 @@ theorem unfolding_exists_iff_forall (h : HermitianForm F E W) (v : Basis ι E W)
       exact ⟨n, hn.trans (lt_add_one _)⟩) ⟨FD, hFD⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hA M μ _ D La x₀ hLa hx₀ hne hiso`. Conclude with `(unfolding_exists_iff_forall h v M μ D La x₀ hLa).1 (hA M μ D La x₀ hLa hx₀ hne hiso)`. Introduce `hB M μ _ D La x₀ hLa hx₀ hne hiso`. Conclude with `(unfolding_exists_iff_forall h v M μ D La x₀ hLa).2 (hB M μ D La x₀ hLa hx₀ hne hiso)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UnfoldingIntegral.iff_forall (h : HermitianForm F E W) (v : Basis ι E W) :
     UnfoldingIntegral.Statement h v ↔
@@ -188,7 +188,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {N : ℕ}
 variable (h : HermitianForm F E W) (v : Basis (Fin N) E W)
 
 /- English proof (translation)
-The claim follows from `(realMeas h v).injective (by rw [MeasurableEquiv.apply_symm_apply, realMeas_apply, MulEquiv.apply_symm_apply])`.
+A detailed English derivation is pending.
 -/
 theorem realMeas_symm_apply (y : IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)) :
     (realMeas h v).symm y = (realEquiv h v).symm y :=
@@ -196,7 +196,7 @@ theorem realMeas_symm_apply (y : IndefiniteRowSideFullHecke.FiniteCovolume.RealP
     rw [MeasurableEquiv.apply_symm_apply, realMeas_apply, MulEquiv.apply_symm_apply])
 
 /- English proof (translation)
-The claim follows from `(realHomeo h v).injective (by rw [Homeomorph.apply_symm_apply, realHomeo_apply, MulEquiv.apply_symm_apply])`.
+A detailed English derivation is pending.
 -/
 theorem realHomeo_symm_apply (y : IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)) :
     (realHomeo h v).symm y = (realEquiv h v).symm y :=
@@ -204,14 +204,14 @@ theorem realHomeo_symm_apply (y : IndefiniteRowSideFullHecke.FiniteCovolume.Real
     rw [Homeomorph.apply_symm_apply, realHomeo_apply, MulEquiv.apply_symm_apply])
 
 /- English proof (translation)
-Use `(realHomeo h v).continuous` as an intermediate fact. Rewrite `this` using `[show ⇑(realHomeo h v) = ⇑(realEquiv h v) from funext (realHomeo_apply h v)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_realEquiv : Continuous (realEquiv h v) := by
   have := (realHomeo h v).continuous
   rwa [show ⇑(realHomeo h v) = ⇑(realEquiv h v) from funext (realHomeo_apply h v)] at this
 
 /- English proof (translation)
-Use `(realHomeo h v).symm.continuous` as an intermediate fact. Rewrite `this` using `[show ⇑(realHomeo h v).symm = ⇑(realEquiv h v).symm from funext (realHomeo_symm_apply h v)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem continuous_realEquiv_symm : Continuous (realEquiv h v).symm := by
   have := (realHomeo h v).symm.continuous
@@ -219,7 +219,7 @@ theorem continuous_realEquiv_symm : Continuous (realEquiv h v).symm := by
     at this
 
 /- English proof (translation)
-Rewrite using `[show ⇑(realMeas h v) = ⇑(realEquiv h v) from funext (realMeas_apply h v)]`. Conclude with `(realEquiv h v).isHaarMeasure_map μ (continuous_realEquiv h v) (continuous_realEquiv_symm h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_realMeas (μ : Measure (archUnitary h v)) [μ.IsHaarMeasure] :
     (μ.map (realMeas h v)).IsHaarMeasure := by
@@ -228,7 +228,7 @@ theorem isHaarMeasure_map_realMeas (μ : Measure (archUnitary h v)) [μ.IsHaarMe
     (continuous_realEquiv_symm h v)
 
 /- English proof (translation)
-Rewrite using `[show ⇑(realMeas h v).symm = ⇑(realEquiv h v).symm from funext (realMeas_symm_apply h v)]`. Conclude with `(realEquiv h v).symm.isHaarMeasure_map μ (continuous_realEquiv_symm h v) (continuous_realEquiv h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_map_realMeas_symm (μ : Measure (IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)))
     [μ.IsHaarMeasure] : (μ.map (realMeas h v).symm).IsHaarMeasure := by
@@ -250,7 +250,7 @@ theorem vecStabEquiv_coe (L : Submodule (𝓞 E) (Fin N → E)) (x₀ : W)
       IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v)) = realEquiv h v γ := rfl
 
 /- English proof (translation)
-Rewrite using `[Subgroup.smul_def, Subgroup.smul_def, smul_eq_mul, smul_eq_mul, realMeas_apply, realMeas_apply, map_mul, ← vecStabEquiv_coe, MulEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem realMeas_semiconj (L : Submodule (𝓞 E) (Fin N → E)) (x₀ : W)
     (g : IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x₀)) (x : archUnitary h v) :
@@ -259,9 +259,9 @@ theorem realMeas_semiconj (L : Submodule (𝓞 E) (Fin N → E)) (x₀ : W)
     realMeas_apply, map_mul, ← vecStabEquiv_coe, MulEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Rewrite using `[MeasurableEquiv.restrict_map, lintegral_map_equiv]`. Establish `hfun : ∀ g, IndefiniteRowSideFullHecke.FiniteCovolume.belowInd (majOf M) (v.equivFun x₀) t (realMeas h v g) = {g : archUnitary h v | M.len (invApply g (vecAt v x₀)) < t}.indicator 1 g`. Introduce `g`. Simplify using `only [IndefiniteRowSideFullHecke.FiniteCovolume.belowInd, Set.indicator_apply, Set.mem_ofPred_eq, realMeas_apply, Majorant.len.equiv, invApply.equiv, vecAt.equiv, Pi.one_apply]`. Establish `hm : MeasurableSet {g : archUnitary h v | M.len (invApply g (vecAt v x₀)) < t}` using `measurableSet_below M (vecAt v x₀) t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Repeatedly rewrite using `[hfun]`. Rewrite using `[lintegral_indicator_one hm, Measure.restrict_apply hm, Set.inter_comm]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_belowInd (M : Majorant h v) (μ : Measure (archUnitary h v)) (x₀ : W)
     (s : Set (IndefiniteRowSideFullHecke.FiniteCovolume.RealPts (divisionPairOfAdelicFormsFaceColumnsData h v))) (t : ℝ) :
@@ -282,7 +282,7 @@ theorem lintegral_belowInd (M : Majorant h v) (μ : Measure (archUnitary h v)) (
 omit h in
 
 /- English proof (translation)
-Rewrite using `[fDeg.equiv (F := F) (E := E), Module.finrank_eq_card_basis v, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exponent_eq (v : Basis (Fin N) E W) :
     2 * finrank ℚ F * (finrank E W - 1) = 2 * IndefiniteRowSideFullHecke.FiniteCovolume.fDeg E * (N - 1) := by
@@ -300,15 +300,15 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {N : ℕ}
 variable (h : HermitianForm F E W) (v : Basis (Fin N) E W)
 
 /- English proof (translation)
-Rewrite `hA` using `[UnfoldingIntegral.iff_forall]`. Introduce `M' D L v₀ hL hv₀ hne hiso μ' hμ' s' hs'`. Take `⟨M, rfl⟩` from `(Majorant.equiv (h := h) (v := v)).2 M'`. Take `⟨x₀, rfl⟩` from `v.equivFun.surjective v₀`. Establish `hLa` using `(IsDIntegral.equiv_of_dualIndexFinite (DualIndexFinite.proof h) D L).2 hL`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne' : x₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hne (map_zero _)`. Establish `hiso' : h.toSesq x₀ x₀ = 0`. Rewrite using `[← HermSpace.h.equiv h v]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hiso`. Use `isHaarMeasure_map_realMeas_symm h v μ'` as an intermediate fact. Establish `hμ : (μ'.map (realMeas h v).symm).map (realMeas h v) = μ'` using `MeasurableEquiv.map_map_symm _`. Establish `hs : IsFundamentalDomain (vecStabGroup h v (latOf v L) x₀) (realMeas h v ⁻¹' s') (μ'.map (realMeas h v).symm)`. Use `hs'.preimage_of_equiv ?_ (vecStabEquiv h v L x₀).symm.bijective (fun g x => realMeas_semiconj h v L x₀ g x)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((realMeas h v).measurable.measurePreserving (μ'.map (realMeas h v).symm))` as an intermediate fact. Rewrite `this` using `[hμ]`. Conclude with `this.quasiMeasurePreserving`. Take `⟨h1, h2⟩` from `hA M (μ'.map (realMeas h v).symm) D (latOf v L) x₀ hLa hv₀ hne' hiso' _ hs`. Rewrite using `[← hμ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lintegral_belowInd]`. Use `⟨h1, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 t ht, exponent_eq (F := F) v]`.
+A detailed English derivation is pending.
 -/
 theorem unfolding_matrix_of_form (hA : UnfoldingIntegral.Statement h v) :
     ∀ (M : IndefiniteRowSideFullHecke.FiniteCovolume.Majorant (divisionPairOfAdelicFormsFaceColumnsData h v)) (D : ℕ) (L : Submodule (𝓞 E) (Fin N → E))
@@ -349,13 +349,13 @@ theorem unfolding_matrix_of_form (hA : UnfoldingIntegral.Statement h v) :
   rw [h2 t ht, exponent_eq (F := F) v]
 
 /- English proof (translation)
-Rewrite using `[UnfoldingIntegral.iff_forall]`. Introduce `M μ _ D La x₀ hLa hx₀ hne hiso s hs`. Take `⟨L, rfl⟩` from `exists_latOf (v := v) hLa.isLattice.smul_mem`. Establish `hL` using `((IsDIntegral.equiv (h := h) D L).1 hLa).1`. Establish `hne' : v.equivFun x₀ ≠ 0` using `fun h0 => hne (v.equivFun.injective (by rw [h0, map_zero]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiso' : (divisionPairOfAdelicFormsFaceColumnsData h v).h (v.equivFun x₀) (v.equivFun x₀) = 0`. Rewrite using `[HermSpace.h.equiv]`. Conclude with `hiso`. Use `isHaarMeasure_map_realMeas h v μ` as an intermediate fact. Establish `hs' : IsFundamentalDomain (IndefiniteRowSideFullHecke.FiniteCovolume.gammaVecInf (divisionPairOfAdelicFormsFaceColumnsData h v) L (v.equivFun x₀)) (realMeas h v '' s) (μ.map (realMeas h v))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hs.image_of_equiv (realMeas h v).toEquiv ?_ (vecStabEquiv h v L x₀).symm.toEquiv (fun g x => realMeas_semiconj h v L x₀ g x)` and prove the remaining obligations. Use `((realMeas h v).symm.measurable.measurePreserving (μ.map (realMeas h v)))` as an intermediate fact. Rewrite `this` using `[MeasurableEquiv.map_symm_map]`. Conclude with `this.quasiMeasurePreserving`. Take `⟨h1, h2⟩` from `hB (majOf M) D L (v.equivFun x₀) hL hx₀ hne' hiso' (μ.map (realMeas h v)) inferInstance _ hs'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [lintegral_belowInd, MeasurableEquiv.preimage_image] at h1 h2`. Use `⟨h1, fun t ht => ?_⟩` and prove the remaining obligations. Rewrite using `[h2 t ht, exponent_eq (F := F) v]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfolding_form_of_matrix
     (hB : ∀ (M : IndefiniteRowSideFullHecke.FiniteCovolume.Majorant (divisionPairOfAdelicFormsFaceColumnsData h v)) (D : ℕ)
@@ -401,15 +401,13 @@ variable {G G' : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [M
   [BorelSpace G']
 
 /- English proof (translation)
-Set `Φh : G ≃ₜ G'` to `⟨Φ.toEquiv, hΦ, hΦ'⟩`. Set `Φm : G ≃ᵐ G'` to `Φh.toMeasurableEquiv`. Establish `hcoe : ⇑Φm = ⇑Φ` using `rfl`. Establish `hHaar : (μ.map Φm).IsHaarMeasure`. Rewrite using `[hcoe]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Φ.isHaarMeasure_map μ hΦ hΦ'`. Set `Ψ : Γ ≃* Γ'` to `(Φ.subgroupMap Γ).trans (MulEquiv.subgroupCongr hΓ)`. Establish `hΨ : ∀ γ : Γ, ((Ψ γ : Γ') : G') = Φ γ` using `fun _ => rfl`. Establish `hs' : IsFundamentalDomain Γ' (Φm '' s) (μ.map Φm)`. Use `hs.image_of_equiv Φm.toEquiv ?_ Ψ.symm.toEquiv (fun g x => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Φm.symm.measurable.measurePreserving (μ.map Φm)` as an intermediate fact. Rewrite `this` using `[MeasurableEquiv.map_symm_map]`. Conclude with `this.quasiMeasurePreserving`. Express the relevant statement in the definitionally equal form `Φ ((Ψ.symm g : G) * x) = (g : G') * Φ x`. Rewrite using `[map_mul, ← hΨ, MulEquiv.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ t, (μ.map Φm) (Φm '' s ∩ U' t) = μ (s ∩ U t)`. Introduce `t`. Rewrite using `[MeasurableEquiv.map_apply, Set.preimage_inter, MeasurableEquiv.preimage_image, hcoe, hU]`. Take `⟨h1, h2⟩` from `hB (μ.map Φm) hHaar _ hs'`. Simplify using `only [key] at h1 h2`.
-
-Conclude with `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem forall_isFundamentalDomain_of_mulEquiv (Φ : G ≃* G') (hΦ : Continuous Φ)
     (hΦ' : Continuous Φ.symm) {Γ : Subgroup G} {Γ' : Subgroup G'} (hΓ : Γ.map Φ.toMonoidHom = Γ')
@@ -452,7 +450,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι κ : Type*} [Fintype ι] 
   [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `reGL_reGL_symm e _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem archReindex_archReindexBack (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (g : archUnitary h (v.reindex e)) : archReindex h v e (archReindexBack h v e g) = g := by
@@ -461,7 +459,7 @@ theorem archReindex_archReindexBack (h : HermitianForm F E W) (v : Basis ι E W)
   exact reGL_reGL_symm e _
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_pi fun w => (continuous_reGL e).comp ((continuous_apply w).comp continuous_subtype_val)) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_archReindex (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ) :
     Continuous (archReindex h v e) :=
@@ -477,7 +475,7 @@ def archReindexEquiv (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ
   map_mul' := map_mul _
 
 /- English proof (translation)
-Unfold `vecStabGroup`. Rewrite using `[Subgroup.map_map]`. Use `congr 1`. Conclude with `MonoidHom.ext fun γ => archReindex_archEmbed h v e _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem vecStabGroup_reindex (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (La : AddSubgroup W) (x₀ : W) :
@@ -489,9 +487,7 @@ theorem vecStabGroup_reindex (h : HermitianForm F E W) (v : Basis ι E W) (e : �
   exact MonoidHom.ext fun γ => archReindex_archEmbed h v e _
 
 /- English proof (translation)
-Rewrite `hS`, the goal using `[UnfoldingIntegral.iff_forall]`. Introduce `M μ _ D La x₀ hLa hx₀ hne hiso`. Conclude with `forall_isFundamentalDomain_of_mulEquiv (archReindexEquiv h v e) (continuous_archReindex h v e) (continuous_archReindexBack h v e) (vecStabGroup_reindex h v e La x₀) (fun t => {g : archUnitary h v | M.len (invApply g (vecAt v x₀)) < t}) (fun t => {g | (majReindex e M).len (invAppl …`. Use extensionality with `g`. Conclude with `iff_of_eq (congrArg (· < t) (len_invApply_reindex e M g x₀)))`.
-
-Use `_ (fun μ' hμ' s' hs' => by`. Use `hμ'` as an intermediate fact. Conclude with `hS (majReindex e M) μ' D La x₀ hLa hx₀ hne hiso s' hs') μ`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UnfoldingIntegral.of_reindex (h : HermitianForm F E W) (v : Basis ι E W) (e : ι ≃ κ)
     (hS : UnfoldingIntegral.Statement h (v.reindex e)) : UnfoldingIntegral.Statement h v := by
@@ -514,7 +510,7 @@ end Reindex
 universe u w x
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ W _ _ ι _ _ h v`. Use `isCMField (F := F) (E := E)` as an intermediate fact. Use `UnfoldingIntegral.of_reindex h v (Fintype.equivFin ι) ?_` and prove the remaining obligations. Conclude with `Unfolding.unfolding_form_of_matrix h (v.reindex (Fintype.equivFin ι)) (hB E (Fintype.card ι) (divisionPairOfAdelicFormsFaceColumnsData h (v.reindex (Fintype.equivFin ι))))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unfolding_form_of_matrix_all (hB : IndefiniteRowSideFullHecke.FiniteCovolume.Unfolding.Statement) :
     ∀ (F : Type u) (E : Type) [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]
@@ -528,7 +524,7 @@ theorem unfolding_form_of_matrix_all (hB : IndefiniteRowSideFullHecke.FiniteCovo
     (hB E (Fintype.card ι) (divisionPairOfAdelicFormsFaceColumnsData h (v.reindex (Fintype.equivFin ι))))
 
 /- English proof (translation)
-Introduce `E _ _ _ N V`. Use `Unfolding.unfolding_matrix_of_form (hermitianFormOfMatrix (maximalRealSubfield E) V) (Pi.basisFun E (Fin N)) (hA _ E _ (Fin N) _ _)` as an intermediate fact. Rewrite `this` using `[matrixHermSpace_surjective]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unfolding_matrix_of_form_all
     (hA : ∀ (F E : Type) [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]
@@ -542,7 +538,7 @@ theorem unfolding_matrix_of_form_all
   rwa [matrixHermSpace_surjective] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Unfolding.unfolding_matrix_of_form_all, fun hB => Unfolding.unfolding_form_of_matrix_all.{0, 0, 0} hB⟩`.
+Supply the required witnesses or components.
 -/
 theorem equiv :
     (∀ (F E : Type) [Field F] [Field E] [NumberField F] [NumberField E] [Algebra F E]

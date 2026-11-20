@@ -10,21 +10,19 @@ open MvPolynomial ComplexSets FieldNumbers
 noncomputable section
 
 /- English proof (translation)
-Set `ψ : MvPolynomial (Fin n) ℂ →+* Ω` to `(algebraMap O Ω).comp φ`. Set `_ : Algebra ℂ Ω` to `(ψ.comp C).toAlgebra`. Set `S : Set Ω` to `Set.range fun i ↦ ψ (X i)`. Establish `hpoly : ∀ f, ψ f ∈ Algebra.adjoin ℂ S`. Introduce `f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => exact Subalgebra.algebraMap_mem _ c`. Consider the case `add f g hf hg => rw [map_add]`. Conclude with `add_mem hf hg`. Consider the case `mul_X f i hf => rw [map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Conclude with `mul_mem hf (Algebra.subset_adjoin ⟨i, rfl⟩)`. Set `A : Subalgebra ℂ Ω` to `{ toSubsemiring := (algebraMap O Ω).rangeS, algebraMap_mem' := fun c ↦ ⟨φ (C c), rfl⟩ }`. Establish `hRA : Algebra.adjoin ℂ S ≤ A` using `Algebra.adjoin_le (by rintro _ ⟨i, rfl⟩; exact ⟨φ (X i), rfl⟩)`. Establish `hloc : ∀ a ∈ A, ∃ r ∈ Algebra.adjoin ℂ S, ∃ d ∈ Algebra.adjoin ℂ S, d ≠ 0 ∧ d⁻¹ ∈ A ∧ a = r * d⁻¹`. Introduce and unpack `_ ⟨o, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨f, s, hs, ho⟩` from `hφ o`. Use `⟨ψ f, hpoly f, ψ s, hpoly s, (hs.map (algebraMap O Ω)).ne_zero, ⟨↑hs.unit⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap O Ω ↑hs.unit⁻¹ = (algebraMap O Ω (φ s))⁻¹`. Rewrite using `[map_units_inv, IsUnit.unit_spec]`. Use `(eq_mul_inv_iff_mul_eq₀ (hs.map (algebraMap O Ω)).ne_zero).2 ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap O Ω o * algebraMap O Ω (φ s) = algebraMap O Ω (φ f)`. Rewrite using `[← map_mul, ho]`. Establish `hE : ∀ x : Ω, x ∈ IntermediateField.adjoin ℂ S`. Establish `hA : ∀ a ∈ A, a ∈ IntermediateField.adjoin ℂ S`. Introduce `a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨r, hr, d, hd, -, -, rfl⟩` from `hloc a ha`. Conclude with `mul_mem (IntermediateField.algebra_adjoin_le_adjoin ℂ S hr) (inv_mem (IntermediateField.algebra_adjoin_le_adjoin ℂ S hd))`. Introduce `x`. Take `⟨a, b, rfl⟩` from `hΩ x`. Conclude with `div_mem (hA _ ⟨a, rfl⟩) (hA _ ⟨b, rfl⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hfin : FiniteDimensional (IntermediateField.adjoin ℂ S) (IntermediateField.extendScalars (le_refl (IntermediateField.adjoin ℂ S)))`. Rewrite using `[IntermediateField.extendScalars_self]`. Use `infer_instance`. Take `⟨t, -, ht⟩` from `exists_finset_integral_span hN (Set.finite_range _) A _ hRA hloc le_rfl hfin`. Set `_ : Algebra O A` to `((algebraMap O Ω).codRestrict A fun o ↦ (⟨o, rfl⟩ : algebraMap O Ω o ∈ (algebraMap O Ω).rangeS)).toAlgebra`.
-
-Establish `: IsScalarTower O A Ω` using `IsScalarTower.of_algebraMap_eq fun _ ↦ rfl`. Establish `hsur : Function.Surjective (algebraMap O A)` using `by rintro ⟨_, o, rfl⟩; exact ⟨o, rfl⟩`. Use `⟨t, fun x hx ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.restrictScalars_span O A hsur]`. Conclude with `ht x (hE x) hx.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_span_integral_of_div (hN : NoetherIntegralClosureFinite.Statement.{0}) {n : ℕ} {O Ω : Type}
     [CommRing O] [Field Ω] [Algebra O Ω] (φ : MvPolynomial (Fin n) ℂ →+* O)
@@ -73,11 +71,11 @@ theorem exists_finset_span_integral_of_div (hN : NoetherIntegralClosureFinite.St
   exact ht x (hE x) hx.tower_top
 
 /- English proof (translation)
-Use `Ideal.IsMinimalPrime.isPrime hp` as an intermediate fact. Establish `hu : ∀ y : nonZeroDivisors O, IsUnit (Algebra.ofId O (FractionRing (O ⧸ p)) y)`. Introduce `y`. Use `IsUnit.mk0 _ fun h ↦ notMem_nonZeroDivisors_of_mem_mem_minimalPrimes ?_ hp y.2` and prove the remaining obligations. Establish `h' : algebraMap (O ⧸ p) (FractionRing (O ⧸ p)) (Ideal.Quotient.mk p y) = algebraMap (O ⧸ p) (FractionRing (O ⧸ p)) 0` using `by rw [map_zero]; exact h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (IsFractionRing.injective _ _ h')`. Take `⟨t, ht⟩` from `exists_finset_span_integral_of_div hN φ hφ (Ω := FractionRing (O ⧸ p)) fun x ↦ by`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := O ⧸ p) x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, b, rfl⟩`. Conclude with `⟨IsLocalization.liftAlgHom (M := nonZeroDivisors O) hu, t, fun x hx ↦ ht _ (hx.map _)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_algHom_span_of_mem_minimalPrimes (hN : NoetherIntegralClosureFinite.Statement.{0}) {n : ℕ}
     {O : Type} [CommRing O] (φ : MvPolynomial (Fin n) ℂ →+* O)
@@ -99,13 +97,13 @@ theorem exists_algHom_span_of_mem_minimalPrimes (hN : NoetherIntegralClosureFini
   exact ⟨IsLocalization.liftAlgHom (M := nonZeroDivisors O) hu, t, fun x hx ↦ ht _ (hx.map _)⟩
 
 /- English proof (translation)
-Use `(minimalPrimes.finite_of_isNoetherianRing O).to_subtype` as an intermediate fact. Use `choose g t ht using fun p : minimalPrimes O ↦ exists_algHom_span_of_mem_minimalPrimes hN φ hφ p.2`. Set `F : integralClosure O (FractionRing O) →ₗ[O] ((p : minimalPrimes O) → Submodule.span O (t p : Set (FractionRing (O ⧸ (p : Ideal O)))))` to `LinearMap.pi fun p ↦ LinearMap.codRestrict _ ((g p).toLinearMap ∘ₗ (integralClosure O (FractionRing O)).val.toLinearMap) fun x ↦ ht p x x.2`. Use `Module.Finite.of_injective F ((injective_iff_map_eq_zero F).2 fun x hx ↦ ?_)` and prove the remaining obligations. Establish `h0 : ∀ p : minimalPrimes O, g p x = 0` using `fun p ↦ congrArg Subtype.val (congr_fun hx p)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, b⟩, hab⟩` from `IsLocalization.surj (nonZeroDivisors O) (x : FractionRing O)`. Establish `ha : a ∈ sInf (minimalPrimes O)`. Use `Ideal.mem_sInf.2 fun p hp ↦ ?_` and prove the remaining obligations. Use `Ideal.IsMinimalPrime.isPrime hp` as an intermediate fact. Establish `e : algebraMap (O ⧸ p) (FractionRing (O ⧸ p)) (Ideal.Quotient.mk p a) = algebraMap (O ⧸ p) (FractionRing (O ⧸ p)) 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero]`. Express the relevant statement in the definitionally equal form `algebraMap O (FractionRing (O ⧸ p)) a = 0`. Rewrite using `[← (g ⟨p, hp⟩).commutes, ← hab, map_mul, h0, zero_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 (IsFractionRing.injective _ _ e)`. Rewrite `ha` using `[Ideal.sInf_minimalPrimes, Ideal.mem_radical_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `ha`. Establish `ha0 : a = 0` using `IsNilpotent.eq_zero ⟨k, by simpa using hk⟩`. Rewrite `hab` using `[ha0, map_zero, (IsLocalization.map_units (FractionRing O) b).mul_left_eq_zero]`. Conclude with `Subtype.ext hab`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_integralClosure_of_isReduced (hN : NoetherIntegralClosureFinite.Statement.{0}) {n : ℕ} {O : Type}
     [CommRing O] [IsReduced O] [IsNoetherianRing O] (φ : MvPolynomial (Fin n) ℂ →+* O)
@@ -136,9 +134,9 @@ theorem finite_integralClosure_of_isReduced (hN : NoetherIntegralClosureFinite.S
   exact Subtype.ext hab
 
 /- English proof (translation)
-Use `(Ideal.isRadical_iff_quotient_reduced _).1 ?_` and prove the remaining obligations. Rewrite using `[Ideal.IsRadical, ← IsLocalization.map_radical (RingHom.ker (eval q)).primeCompl]`. Use `Ideal.map_le_iff_le_comap.2 fun f hf ↦ ?_` and prove the remaining obligations. Take `⟨s, hs, hsf⟩` from `h f hf`. Establish `hu : IsUnit (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))) s)` using `IsLocalization.map_units _ (⟨s, fun h' ↦ hs (RingHom.mem_ker.1 h')⟩ : (RingHom.ker (eval q)).primeCompl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(Ideal.unit_mul_mem_iff_mem _ hu).1 (by rw [← map_mul]; exact Ideal.mem_map_of_mem _ hsf)`.
+A detailed English derivation is pending.
 -/
 theorem isReduced_curveLocalRing {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (h : IsRadicalAt I q) : IsReduced (curveLocalRing I q) := by
@@ -151,9 +149,9 @@ theorem isReduced_curveLocalRing {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)
   exact (Ideal.unit_mul_mem_iff_mem _ hu).1 (by rw [← map_mul]; exact Ideal.mem_map_of_mem _ hsf)
 
 /- English proof (translation)
-Take `⟨z, rfl⟩ : ∃ z, Ideal.Quotient.mk (I.map (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q))))) z = o` from `Ideal.Quotient.mk_surjective o`. Take `⟨⟨f, s⟩, rfl⟩` from `IsLocalization.mk'_surjective (RingHom.ker (eval q)).primeCompl z`. Use `⟨f, s, isUnit_algebraMap_curveLocalRing I q s fun h ↦ s.2 (RingHom.mem_ker.2 h), ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (Ideal.Quotient.mk (I.map (algebraMap _ (Localization.AtPrime (RingHom.ker (eval q)))))) (IsLocalization.mk'_spec (Localization.AtPrime (RingHom.ker (eval q))) f s)`. Rewrite `e` using `[map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem curveLocalRing_eq_div {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)) (q : Fin n → ℂ)
     (o : curveLocalRing I q) : ∃ f s, IsUnit (algebraMap (MvPolynomial (Fin n) ℂ) (curveLocalRing I q) s) ∧

@@ -8,25 +8,21 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `R _ G _ _ g n M B ψ e b hb`. Establish `h0 : e.ex b 0 = 1`. Establish `h` using `e.add b hb 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(left_eq_mul.mp h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `A : AddSubgroup (Fin g → ℂ)` to `{ carrier := e.per b zero_mem' := h0 add_mem' := by`. Introduce `z w hz hw`. Establish `hz' : e.ex b z = 1` using `hz`. Establish `hw' : e.ex b w = 1` using `hw`. Use `show e.ex b (z + w) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e.add b hb, hz', hw', _root_.one_mul]`. Use the proof step `neg_mem' := by`. Introduce `z hz`. Establish `hz' : e.ex b z = 1` using `hz`. Use `show e.ex b (-z) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `h` using `e.add b hb z (-z)`. Rewrite `h` using `[add_neg_cancel, h0, hz', _root_.one_mul]`. Conclude with `h.symm }`. Set `Γ₀ : Submodule ℤ (Fin g → ℂ)` to `AddSubgroup.toIntSubmodule A`. Take `⟨V, N, f, L, -, -, hL, -⟩` from `e.log b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hslice : ∀ᶠ z : Fin g → ℂ in 𝓝 0, L (b, fun j => valAt' (e.ex b z).left V (f j)) = z`. Establish `hc : Tendsto (fun z : Fin g → ℂ => (b, z)) (𝓝 0) (𝓝 (b, 0))` using `(Continuous.prodMk_right b).tendsto 0`. Conclude with `hc.eventually hL`. Establish `hiso : ∀ᶠ z : Fin g → ℂ in 𝓝 0, z ∈ e.per b → z = 0`. Establish `h00` using `hslice.self_of_nhds`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hslice] with z hz hper`. Establish `hz' : e.ex b z = e.ex b 0`. Establish `: e.ex b z = 1` using `hper`. Rewrite using `[this, h0]`. Rewrite `hz` using `[hz']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hz.symm.trans h00`. Establish `hdisc : DiscreteTopology Γ₀`. Take `⟨U, hU, hUo, h0U⟩` from `_root_.eventually_nhds_iff.mp hiso`. Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Establish `: ({0} : Set Γ₀) = Subtype.val ⁻¹' U`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `⟨z, hz⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: z = 0` using `congrArg Subtype.val h`. Simplify `h0U` using `[this]`.
-
-Introduce `h`. Establish `: z = 0` using `hU z h hz`. Conclude with `Subtype.ext this`. Rewrite using `[this]`. Conclude with `hUo.preimage continuous_subtype_val`.
-
-Use `⟨Γ₀, rfl, hdisc, ?_, ?_⟩` and prove the remaining obligations. Conclude with `instModuleFinite_of_discrete_submodule Γ₀`. Conclude with `instModuleFree_of_discrete_submodule Γ₀`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem FamExp.per_discrete : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ), ∀ b ∈ B, ∃ Γ₀ : Submodule ℤ (Fin g → ℂ), (Γ₀ : Set (Fin g → ℂ)) = e.per b ∧ DiscreteTopology Γ₀ ∧ Module.Finite ℤ Γ₀ ∧ Module.Free ℤ Γ₀ := by
   intro R _ G _ _ g n M B ψ e b hb

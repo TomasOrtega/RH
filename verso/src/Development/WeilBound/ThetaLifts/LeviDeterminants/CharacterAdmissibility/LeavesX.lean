@@ -9,13 +9,13 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.ThKF0.Chr
 
 /- English proof (translation)
-The claim follows from `{ axB hψ with delta := axDelta_of lagLine hψ, imp := axImp_of hA hψ }`.
+A detailed English derivation is pending.
 -/
 theorem axX (hA : PositivityTheory.Mix.AdelSt) {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) : Ax (adeleClass F) ψ :=
   { axB hψ with delta := axDelta_of lagLine hψ, imp := axImp_of hA hψ }
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he`. Conclude with `e_om_one_eq_om1_one_e (axX hA hP.base.std) hP hH hP₁ he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_tower_hermitian_first (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -27,7 +27,7 @@ theorem theta_tower_hermitian_first (hA : PositivityTheory.Mix.AdelSt) : ∀ (F 
   exact e_om_one_eq_om1_one_e (axX hA hP.base.std) hP hH hP₁ he
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he`. Conclude with `mixX_levi (axX hA hP.base.std) hP hH hP₁ he`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_tower_hermitian_second (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -40,7 +40,7 @@ theorem theta_tower_hermitian_second (hA : PositivityTheory.Mix.AdelSt) : ∀ (F
   exact mixX_levi (axX hA hP.base.std) hP hH hP₁ he
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he _ g₁ m hm Φ hΦ`. Simplify using `using mixX_levi (axX hA hP.base.std) hP hH hP₁ he 1 g₁ m hm Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_constant_term_hermitian_plane (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -55,7 +55,7 @@ theorem theta_constant_term_hermitian_plane (hA : PositivityTheory.Mix.AdelSt) :
   simpa using mixX_levi (axX hA hP.base.std) hP hH hP₁ he 1 g₁ m hm Φ hΦ
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hm k hk ⟨Φ, hΦ, hne⟩`. Establish `h` using `mixX_levi (axX hA hP.base.std) hP hH hP₁ he t 1 m hm Φ hΦ`. Rewrite `h` using `[hk Φ hΦ, show ((1 : UA σ X₁.J), (1 : UA σ W.J)) = 1 from rfl, map_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hne h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_cusp_integral_hermitian_plane (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -71,7 +71,7 @@ theorem theta_cusp_integral_hermitian_plane (hA : PositivityTheory.Mix.AdelSt) :
   exact smul_left_injective ℂ hne h
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he ⟨Φ, hΦ, hne⟩ c hc`. Use `MonoidHom.ext fun h => Units.ext ?_` and prove the remaining obligations. Establish `e1` using `congrArg (om₁ (1, h)⁻¹) ((hc h Φ hΦ).symm.trans (e_om_one_eq_om1_one_e (axX hA hP.base.std) hP hH hP₁ he h Φ hΦ))`. Rewrite `e1` using `[map_smul, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hne (e1.trans (one_smul _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_restriction_hermitian_plane (hA : PositivityTheory.Mix.AdelSt) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

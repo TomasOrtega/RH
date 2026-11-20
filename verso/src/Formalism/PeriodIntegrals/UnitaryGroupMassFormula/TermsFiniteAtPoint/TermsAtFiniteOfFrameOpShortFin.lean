@@ -18,7 +18,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `termsAtFinite_of (zhatReduce_of cellReduce_holds hF carrierRow_holds zhatIntegral_holds) (fixedZhat_of heisOp_holds skewSolve_holds hS rowsDep_holds rightInv_holds fInt_holds resFin_holds) D u u'`.
+A detailed English derivation is pending.
 -/
 theorem termsAtFinite_of_frameOp_shortFin (hF : FrameOp) (hS : ShortFin) (D : D7) (u u' : D.what₂.Word) :
     TermsAtFinite D u u' :=

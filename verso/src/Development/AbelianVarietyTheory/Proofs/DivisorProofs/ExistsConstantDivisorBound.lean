@@ -10,9 +10,9 @@ open MvPolynomial Finset GlobalTheory.FlagHook Formalism.BasicNotions Formalism.
 namespace GlobalTheory.TailBound
 
 /- English proof (translation)
-Establish `h1 : HasSum (fun n : ℕ => (1 / 2 : ℝ) ^ n * (x * m)) (2 * (x * m))` using `hasSum_geometric_two.mul_right _`. Establish `h2 : ∀ n, ‖|F n|‖ ≤ (1 / 2 : ℝ) ^ n * (x * m)`. Introduce `n`. Rewrite using `[Real.norm_eq_abs, abs_abs]`. Use `(hF n).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: x ^ n ≤ (1 / 2 : ℝ) ^ n` using `pow_le_pow_left₀ hx hx2 n`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `tsum_of_norm_bounded h1 h2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem tsum_abs_le (x m : ℝ) (hx : 0 ≤ x) (hx2 : x ≤ 1 / 2) (hm : 0 ≤ m) (F : ℕ → ℝ)
     (hF : ∀ n, |F n| ≤ x ^ (n + 1) * m) : ∑' n, |F n| ≤ 2 * x * m := by
@@ -31,17 +31,17 @@ theorem tsum_abs_le (x m : ℝ) (hx : 0 ≤ x) (hx2 : x ≤ 1 / 2) (hm : 0 ≤ m
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `hp0 : 0 < p` using `by linarith`. Establish `h1 : ∀ k ∈ Icc 2 N, ∑' n, |F k n| ≤ (2 * c * b / p ^ 2) * (1 / 2 : ℝ) ^ (k - 2)`. Introduce `k hk`. Take `⟨m, rfl⟩ : ∃ m, k = m + 2` from `⟨k - 2, by have := (mem_Icc.1 hk).1; omega⟩`. Establish `hx : (p ^ (m + 2))⁻¹ ≤ 1 / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[one_div]`. Use `inv_anti₀ (by norm_num) (hp.trans ?_)` and prove the remaining obligations. Conclude with `le_self_pow₀ (by linarith) (by omega)`. Use `(tsum_abs_le _ _ (by positivity) hx (by positivity) _ (hF _ hk)).trans ?_` and prove the remaining obligations. Establish `h2 : (b / p) ^ m ≤ (1 / 2 : ℝ) ^ m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `pow_le_pow_left₀ (by positivity) ?_ m` and prove the remaining obligations. Rewrite using `[div_le_iff₀ hp0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : m + 2 - 1 = m + 1` using `by omega`. Establish `e2 : m + 2 - 2 = m` using `by omega`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ _ := mul_le_mul_of_nonneg_left h2 (by positivity)`. Use `(sum_le_sum h1).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_sum]`. Establish `h3 : ∑ k ∈ Icc 2 N, (1 / 2 : ℝ) ^ (k - 2) ≤ 2`. Establish `: ∑ k ∈ Icc 2 N, (1 / 2 : ℝ) ^ (k - 2) = ∑ m ∈ range (N + 1 - 2), (1 / 2 : ℝ) ^ m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.Ico_add_one_right_eq_Icc, sum_Ico_eq_sum_range]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `sum_geometric_two_le _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_tsum_abs_le (p b c : ℝ) (hp : 2 ≤ p) (hb : 0 ≤ b) (hbp : b ≤ p / 2) (hc : 0 ≤ c) (N : ℕ)
     (F : ℕ → ℕ → ℝ)
@@ -80,7 +80,7 @@ section Kap
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[sum_mul, PPowSum.degFl_sum, mul_sum, sum_div]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kap_sum (u : ι → Fin N → ℝ) (k : ℕ) (S : Finset (Fin N))
     (γ : Fin N → MvPolynomial (ι × Fin N) ℝ) (Q : MvPolynomial (ι × Fin N) ℝ) :
@@ -89,7 +89,7 @@ theorem kap_sum (u : ι → Fin N → ℝ) (k : ℕ) (S : Finset (Fin N))
   rw [sum_mul, PPowSum.degFl_sum, mul_sum, sum_div]
 
 /- English proof (translation)
-Unfold `kap`. Rewrite using `[mul_assoc, PPowSum.degFl_C_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kap_C_mul (u : ι → Fin N → ℝ) (k : ℕ) (c : ℝ) (γ Q : MvPolynomial (ι × Fin N) ℝ) :
     kap u k (C c * γ) Q = c * kap u k γ Q := by
@@ -97,9 +97,9 @@ theorem kap_C_mul (u : ι → Fin N → ℝ) (k : ℕ) (c : ℝ) (γ Q : MvPolyn
   rw [mul_assoc, PPowSum.degFl_C_mul]; ring
 
 /- English proof (translation)
-Establish `h0 : kap u k (∑ i, X (τ', i) ^ m) Q = 0`. Unfold `kap`. Rewrite using `[degreePowerSumMulEqZero ι N τ' m Q hm]`. Simplify using the standard rewrite rules. Rewrite `h0` using `[kap_sum, ← sum_add_sum_compl S]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[kap_sum, kap_sum]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kap_compl (u : ι → Fin N → ℝ) (k m : ℕ) (hm : 1 ≤ m) (τ' : ι) (S : Finset (Fin N))
     (Q : MvPolynomial (ι × Fin N) ℝ) :
@@ -111,7 +111,7 @@ theorem kap_compl (u : ι → Fin N → ℝ) (k m : ℕ) (hm : 1 ≤ m) (τ' : �
   rw [kap_sum, kap_sum]; linarith
 
 /- English proof (translation)
-The claim follows from `|kap u k (∑ i ∈ T, X (τ', i) ^ m) Q| ≤ S.card * M := by have h : |kap u k (∑ i ∈ S, X (τ', i) ^ m) Q| ≤ S.card * M := by rw [kap_sum] refine (abs_sum_le_sum_abs _ _).trans ?_ simpa using sum_le_card_nsmul S _ M hM rcases hT with rfl | rfl · exact h · rw [kap_compl u k m hm, abs_n …`.
+A detailed English derivation is pending.
 -/
 theorem abs_kap_block_le (u : ι → Fin N → ℝ) (k m : ℕ) (hm : 1 ≤ m) (τ' : ι) (S T : Finset (Fin N))
     (hT : T = S ∨ T = Sᶜ) (Q : MvPolynomial (ι × Fin N) ℝ) (M : ℝ)
@@ -133,11 +133,11 @@ section Shim
 variable {D : D7} (Y : ShimX D.what₂.Tau)
 
 /- English proof (translation)
-Establish `hj` using `Y.j_lt`. Establish `h1 : (univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j)).card = Y.j`. Rewrite using `[Fin.card_filter_val_lt]`. Use linear arithmetic over natural numbers and integers. Unfold `jS`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : Y.j ≤ Y.N - Y.j`. Establish `: univ.filter (fun i : Fin Y.N => inSmall Y i) = univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j)`. Use extensionality with `i`. Simplify using `[inSmall, h]`. Rewrite using `[this, h1]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `: univ.filter (fun i : Fin Y.N => inSmall Y i) = (univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j))ᶜ`. Use extensionality with `i`. Simplify using `[inSmall, h]`. Rewrite using `[this, card_compl, h1, Fintype.card_fin]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -155,19 +155,17 @@ theorem card_small : (univ.filter (fun i : Fin Y.N => inSmall Y i)).card = jS Y 
     rw [this, card_compl, h1, Fintype.card_fin]; omega
 
 /- English proof (translation)
-Establish `hf : (0 : ℝ) < m.factorial` using `by exact_mod_cast m.factorial_pos`. Establish `key : ∀ (τ' : D.what₂.Tau) (T : Finset (Fin Y.N)), (T = univ.filter (fun i : Fin Y.N => inSmall Y i) ∨ T = (univ.filter (fun i : Fin Y.N => inSmall Y i))ᶜ) → |kap u k (∑ i ∈ T, X (τ', i) ^ m) Q| ≤ jS Y * M`. Introduce `τ' T hT`. Use `abs_kap_block_le u k m hm τ' _ T hT Q M (fun i hi => hM τ' i (mem_filter.1 hi).2)` as an intermediate fact. Rewrite `this` using `[card_small]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `σ with τ' | τ'` into its components or cases. Establish `e : chLie Y.j m (Sum.inl τ' : EmbC D) = C ((m.factorial : ℝ)⁻¹) * ∑ i ∈ univ.filter (fun i : Fin Y.N => (i : ℕ) < Y.j), X (τ', i) ^ m` using `rfl`. Rewrite using `[e, kap_C_mul, abs_mul, abs_of_pos (inv_pos.2 hf), ← mul_assoc, mul_inv_cancel₀ hf.ne', one_mul]`. Apply `key` to reduce the goal to its premises. Distinguish the cases in `h : Y.j ≤ Y.N - Y.j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Use `left`. Use extensionality with `i`. Simplify using `[inSmall, h]`. Use `right`. Use extensionality with `i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[inSmall, h]`. Establish `e : chLie Y.j m (Sum.inr τ' : EmbC D) = C ((m.factorial : ℝ)⁻¹) * (C ((-1 : ℝ) ^ m) * ∑ i ∈ univ.filter (fun i : Fin Y.N => Y.j ≤ (i : ℕ)), X (τ', i) ^ m)`. Express the relevant statement in the definitionally equal form `C ((m.factorial : ℝ)⁻¹) * ∑ i ∈ univ.filter (fun i : Fin Y.N => Y.j ≤ (i : ℕ)), (-X (τ', i)) ^ m = _`. Use `congr 1`. Rewrite using `[mul_sum]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[neg_pow]`. Simplify using the standard rewrite rules. Rewrite using `[e, kap_C_mul, kap_C_mul, abs_mul, abs_of_pos (inv_pos.2 hf), ← mul_assoc, mul_inv_cancel₀ hf.ne', one_mul, abs_mul, abs_neg_one_pow, one_mul]`. Apply `key` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h : Y.j ≤ Y.N - Y.j`. Use `right`. Use extensionality with `i`. Simplify using `[inSmall, h]`. Use `left`.
-
-Use extensionality with `i`. Simplify using `[inSmall, h]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abs_kap_chLie_le (u : D.what₂.Tau → Fin Y.N → ℝ) (k m : ℕ) (hm : 1 ≤ m) (σ : EmbC D)
     (Q : MvPolynomial (D.what₂.Tau × Fin Y.N) ℝ) (M : ℝ)
@@ -205,7 +203,7 @@ theorem abs_kap_chLie_le (u : D.what₂.Tau → Fin Y.N → ℝ) (k m : ℕ) (hm
     · left; ext i; simp [inSmall, h]
 
 /- English proof (translation)
-The claim follows from `|(k.factorial : ℝ) * t * Y.chern (γ * Q) / (((dimY Y : ℝ) + 1) * geoDeg Y u)| ≤ t * (((k - 1).factorial : ℝ) * |kap u k γ Q|) := by unfold geoDeg rw [hc, hc] by_cases hv : Y.vol = 0 · rw [hv]; simp only [zero_mul, mul_zero, div_zero, abs_zero]; positivity · obtain ⟨m, rfl⟩ : ∃ m, …`.
+A detailed English derivation is pending.
 -/
 theorem abs_term_le (hc : ∀ Q, Y.chern Q = Y.vol * degFl D.what₂.Tau Y.N Q)
     (u : D.what₂.Tau → Fin Y.N → ℝ) (k : ℕ) (hk : 1 ≤ k) (t : ℝ) (ht : 0 ≤ t)
@@ -228,16 +226,16 @@ theorem abs_term_le (hc : ∀ Q, Y.chern Q = Y.vol * degFl D.what₂.Tau Y.N Q)
     rw [e, Nat.add_sub_cancel, abs_mul, abs_mul, abs_of_nonneg ht, Nat.abs_cast]
 
 /- English proof (translation)
-The claim follows from `|u τ i| ≤ supAbs Y u := le_ciSup (f := fun x : Rt D.what₂.Tau Y.N => |u x.1 x.2|) (Set.finite_range _).bddAbove (τ, i)`.
+A detailed English derivation is pending.
 -/
 theorem abs_le_supAbs (u : D.what₂.Tau → Fin Y.N → ℝ) (τ : D.what₂.Tau) (i : Fin Y.N) :
     |u τ i| ≤ supAbs Y u :=
   le_ciSup (f := fun x : Rt D.what₂.Tau Y.N => |u x.1 x.2|) (Set.finite_range _).bddAbove (τ, i)
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin Y.N) := ⟨⟨Y.j, Y.j_lt⟩⟩`. Establish `h : ∀ a b, u τ a - u τ b ≤ (⨆ i, u τ i) - ⨅ i, u τ i` using `fun a b => sub_le_sub (le_ciSup (Set.finite_range _).bddAbove a) (ciInf_le (Set.finite_range _).bddBelow b)`. Use `⟨h, by simpa using h ⟨Y.j, Y.j_lt⟩ ⟨Y.j, Y.j_lt⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : (⨆ i, u τ i) ≤ supAbs Y u` using `ciSup_le fun i => (abs_le.1 (abs_le_supAbs Y u τ i)).2`. Establish `h2 : -supAbs Y u ≤ ⨅ i, u τ i` using `le_ciInf fun i => (abs_le.1 (abs_le_supAbs Y u τ i)).1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem spread_spec (u : D.what₂.Tau → Fin Y.N → ℝ) (τ : D.what₂.Tau) :
     (∀ a b, u τ a - u τ b ≤ (⨆ i, u τ i) - ⨅ i, u τ i) ∧ 0 ≤ (⨆ i, u τ i) - (⨅ i, u τ i) ∧
@@ -251,11 +249,11 @@ theorem spread_spec (u : D.what₂.Tau → Fin Y.N → ℝ) (τ : D.what₂.Tau)
   linarith
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ supAbs Y u` using `Real.iSup_nonneg fun _ => abs_nonneg _`. Establish `hH : 0 ≤ supAbs Y u / g` using `div_nonneg h0 hg.le`. Establish `hf : (1 : ℝ) ≤ D.R.f`. Establish `: 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (2 : ℝ) ≤ Y.N`. Establish `h1` using `Y.j_pos`. Establish `h2` using `Y.j_lt`. Conclude with `(by omega : 2 ≤ Y.N)` after adjusting the coercions. Use `⟨hH, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `bigB0`. Use `mul_le_mul_of_nonneg_right ?_ (by linarith)` and prove the remaining obligations. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hf (sq_nonneg (Y.N : ℝ))]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem big_b0_lower_bound (u : D.what₂.Tau → Fin Y.N → ℝ) (g : ℝ) (hg : 0 < g) :
     0 ≤ supAbs Y u / g ∧ 8 * (Y.N : ℝ) * (1 + supAbs Y u / g) ≤ bigB0 Y u g := by

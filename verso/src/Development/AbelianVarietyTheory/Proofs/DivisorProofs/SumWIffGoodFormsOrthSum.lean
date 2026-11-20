@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem cj_coe (x : 𝓞 E) : ((cj E x : 𝓞 E) : E) = star (x : E) := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext (star_star (x : E))`.
+A detailed English derivation is pending.
 -/
 theorem cj_cj (x : 𝓞 E) : cj E (cj E x) = x := RingOfIntegers.ext (star_star (x : E))
 
@@ -37,15 +37,15 @@ Both sides reduce to the same expression.
 theorem coe_algMap (x : 𝓞 F) : ((algebraMap (𝓞 F) (𝓞 E) x : 𝓞 E) : E) = algebraMap F E (x : F) := rfl
 
 /- English proof (translation)
-The claim follows from `RingOfIntegers.ext ((hc.fixed _).2 ⟨x, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cj_algMap (hc : CMData F E) (x : 𝓞 F) : cj E (algebraMap (𝓞 F) (𝓞 E) x) = algebraMap (𝓞 F) (𝓞 E) x :=
   RingOfIntegers.ext ((hc.fixed _).2 ⟨x, rfl⟩)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `(hc.fixed ((y * cj E y : 𝓞 E) : E)).1 (by`. Rewrite using `[← cj_coe, map_mul, cj_cj, mul_comm])`. Establish `hi : IsIntegral ℤ a`. Establish `h1 : IsIntegral ℤ (algebraMap F E a)` using `by rw [ha]; exact (y * cj E y).isIntegral_coe`. Conclude with `(isIntegral_algHom_iff (algebraMap F E).toIntAlgHom (algebraMap F E).injective).1 h1`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, hi⟩, RingOfIntegers.ext ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_norm (hc : CMData F E) (y : 𝓞 E) : ∃ x : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) x = y * cj E y := by
   obtain ⟨a, ha⟩ := (hc.fixed ((y * cj E y : 𝓞 E) : E)).1 (by
@@ -56,21 +56,19 @@ theorem exists_norm (hc : CMData F E) (y : 𝓞 E) : ∃ x : 𝓞 F, algebraMap 
   exact ⟨⟨a, hi⟩, RingOfIntegers.ext ha⟩
 
 /- English proof (translation)
-Establish `hn' : p * cj E p = (g : 𝓞 E)` using `RingOfIntegers.ext (by simpa [cj_coe] using hn)`. Establish `hinj : Function.Injective (algebraMap (𝓞 F) (𝓞 E))` using `fun a b h => RingOfIntegers.ext ((algebraMap F E).injective (by rw [← coe_algMap, ← coe_algMap, h]))`. Establish `hle : ∀ w w' : Pl E, (p ∈ w.asIdeal ∧ w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal) → (p ∈ w'.asIdeal ∧ w'.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal) → w.asIdeal ≤ w'.asIdeal`. Introduce `w w' h h'`. Establish `key : ∀ y ∈ w.asIdeal, y ∉ w'.asIdeal → cj E y ∈ w'.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy hy'`. Take `⟨x, hx⟩` from `exists_norm hc y`. Establish `h1 : x ∈ v.asIdeal`. Rewrite using `[← h.2, Ideal.mem_comap, hx]`. Conclude with `w.asIdeal.mul_mem_right _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← h'.2, Ideal.mem_comap, hx]`. Conclude with `(w'.isPrime.mem_or_mem h1).resolve_left hy'`. Introduce `y hy`. Assume the negation of the conclusion as `hy'`. Establish `h1` using `key y hy hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `key (y + p) (w.asIdeal.add_mem hy h.1) (fun h3 => hy' (by simpa using w'.asIdeal.sub_mem h3 h'.1))`. Rewrite `h2` using `[map_add]`. Conclude with `hs w' h'.1 (cj E p) (cj_coe p) (by simpa using w'.asIdeal.sub_mem h2 h1)`. Establish `hex : ∃ w : Pl E, p ∈ w.asIdeal ∧ w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal` using `by haveI := v.isPrime`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := 𝓞 E) v.asIdeal ⊥ (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite `hx` using `[Ideal.mem_comap, Ideal.mem_bot, map_eq_zero_iff _ hinj]`. Rewrite using `[hx]`. Conclude with `zero_mem _)`. Establish `hne : ∀ Q : Ideal (𝓞 E), Q.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal → Q ≠ ⊥`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `Q hQ rfl`. Conclude with `v.ne_bot (by rw [← hQ, Ideal.comap_bot_of_injective _ hinj])`. Establish `hg : p * cj E p ∈ Q`. Rewrite `hv` using `[← hQv, Ideal.mem_comap, map_natCast]`. Rewrite using `[hn']` and apply the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Break down `hQ.mem_or_mem hg with h | h` into its components or cases. Conclude with `⟨⟨Q, hQ, hne Q hQv⟩, h, hQv⟩`. Establish `hQ' : (Q.comap (cj E)).comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal`. Rewrite using `[← hQv]`. Use extensionality with `x`.
-
-Simplify using `only [Ideal.mem_comap, cj_algMap hc]`. Conclude with `⟨⟨Q.comap (cj E), Ideal.comap_isPrime _ _, hne _ hQ'⟩, h, hQ'⟩`. Take `⟨w, hw⟩` from `hex`. Conclude with `⟨w, hw, fun w' hw' => HeightOneSpectrum.ext (le_antisymm (hle _ _ hw' hw) (hle _ _ hw hw'))⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_place (hc : CMData F E) {g : ℕ} {p : 𝓞 E} (hn : (p : E) * star (p : E) = (g : E))
     (hs : ∀ w : Pl E, p ∈ w.asIdeal → ∀ c : 𝓞 E, (c : E) = star (p : E) → c ∉ w.asIdeal)
@@ -120,14 +118,14 @@ end Places
 variable {D : D7}
 
 /- English proof (translation)
-Use `D.host.g_ne` as an intermediate fact. Apply the tactic sequence `fin_cases i <;> fin_cases k <;> first | rfl | exact absurd h this | exact absurd h.symm this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idx_eq {i k : Fin 2} (h : D.host.g i = D.host.g k) : i = k := by
   have := D.host.g_ne
   fin_cases i <;> fin_cases k <;> first | rfl | exact absurd h this | exact absurd h.symm this
 
 /- English proof (translation)
-Introduce `h0`. Use `h.norm i` as an intermediate fact. Rewrite `this` using `[h0]`. Conclude with `(h.prime i).ne_zero (by exact_mod_cast (by simpa using this.symm : ((D.host.g i : ℕ) : D.host.E) = 0))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pb_ne_zero {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) (i : Fin 2) : pb i ≠ 0 := by
   intro h0
@@ -136,9 +134,9 @@ theorem pb_ne_zero {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) 
   exact (h.prime i).ne_zero (by exact_mod_cast (by simpa using this.symm : ((D.host.g i : ℕ) : D.host.E) = 0))
 
 /- English proof (translation)
-Rewrite using `[mem_primesOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h1⟩`. Break down `w.isPrime.mem_or_mem h1 with h2 | h2` into its components or cases. Use `exacts [⟨0, h2⟩, ⟨1, h2⟩]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, hi⟩`. Use `⟨mul_ne_zero (pb_ne_zero h 0) (pb_ne_zero h 1), ?_⟩` and prove the remaining obligations. Use `fin_cases i`. Use `exacts [w.asIdeal.mul_mem_right _ hi, w.asIdeal.mul_mem_left _ hi]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_typePl {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) (w : Pl D.host.E) :
     w ∈ GoodIdempotentBadPlaces.typePl pb ↔ ∃ i, pb i ∈ w.asIdeal := by
@@ -153,19 +151,17 @@ theorem mem_typePl {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) 
     exacts [w.asIdeal.mul_mem_right _ hi, w.asIdeal.mul_mem_left _ hi]
 
 /- English proof (translation)
-Establish `hu` using `fun v : LevelCuspCharacters.Sq D.host => existsUnique_place D.sp.cm (h.norm v.1) (h.split v.1) v.2.1 v.2.2`. Use `choose w hw hw' using hu`. Set `f : LevelCuspCharacters.Sq D.host → ↥(GoodIdempotentBadPlaces.typePl pb)` to `fun v => ⟨w v, (mem_typePl h _).2 ⟨v.1, (hw v).1⟩⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨i, v⟩ ⟨k, v'⟩ e`. Establish `e' : w ⟨i, v⟩ = w ⟨k, v'⟩` using `congrArg Subtype.val e`. Establish `h1` using `h.deg1 i _ (hw ⟨i, v⟩).1`. Establish `h2` using `h.deg1 k _ (hw ⟨k, v'⟩).1`. Rewrite `h1` using `[e', h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `idx_eq h1`. Establish `h3` using `(hw ⟨k, v⟩).2`. Rewrite `h3` using `[e', (hw ⟨k, v'⟩).2]`. Establish `: v = v'` using `Subtype.ext (HeightOneSpectrum.ext h3.symm)`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨u, hu⟩`. Take `⟨i, hi⟩` from `(mem_typePl h u).1 hu`. Establish `hg : ((D.host.g i : ℕ) : 𝓞 D.host.E) ∈ u.asIdeal`. Establish `: pb i * cj _ (pb i) = (D.host.g i : 𝓞 D.host.E)` using `RingOfIntegers.ext (by simpa [cj_coe] using h.norm i)`. Rewrite using `[← this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `u.asIdeal.mul_mem_right _ hi`. Establish `hg' : ((D.host.g i : ℕ) : 𝓞 D.host.F) ∈ u.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))`. Rewrite using `[Ideal.mem_comap, map_natCast]` and apply the resulting hypothesis. Use `haveI := u.isPrime`. Set `v : HeightOneSpectrum (𝓞 D.host.F)` to `⟨u.asIdeal.comap (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)), Ideal.comap_isPrime _ _, fun h0 => by`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hg'` using `[h0, Ideal.mem_bot]`. Conclude with `(h.prime i).ne_zero (by exact_mod_cast hg')⟩`. Conclude with `⟨⟨i, v, hg'⟩, Subtype.ext (hw' ⟨i, v, hg'⟩ u ⟨hi, rfl⟩).symm⟩`. Use `⟨Equiv.ofBijective f hf, fun v x y hxy => ?_, ⟨fun v => (GoodIdempotentBadPlaces.resIso h ⟨v.1, f v, (hw v).1⟩).symm⟩⟩` and prove the remaining obligations. Establish `: y = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x` using `RingOfIntegers.ext hxy`.
-
-Rewrite using `[← (hw v).2, Ideal.mem_comap, this]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_placeMatch {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) :
     ∃ pl : LevelCuspCharacters.Sq D.host ≃ ↥(GoodIdempotentBadPlaces.typePl pb), GoodReductionModelReading.IsPlaceMatch pl ∧
@@ -206,7 +202,7 @@ theorem exists_placeMatch {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host
   rfl
 
 /- English proof (translation)
-Simplify using `only [LevelCuspCharacters.GoodAt, he.forall, he.exists]`.
+Simplify using the standard rewrite rules.
 -/
 theorem goodAt_comp {p : ℕ} [Fact p.Prime] {K : Type} [Field K] {r : ℕ} {ι κ J : Type} (χ : J → ((ZMod p)ˣ →* Kˣ))
     (e : ι → κ) (he : Function.Surjective e) (s : κ → LevelCuspCharacters.SSParam p K r) :
@@ -214,7 +210,7 @@ theorem goodAt_comp {p : ℕ} [Fact p.Prime] {K : Type} [Field K] {r : ℕ} {ι 
   simp only [LevelCuspCharacters.GoodAt, he.forall, he.exists]
 
 /- English proof (translation)
-Unfold `LevelCuspCharacters.centralIdem`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.single_apply]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coeff_centralIdem {G : Type} [Group G] [Finite G] (τ : G → ℂ) (x : G) :
     (LevelCuspCharacters.centralIdem τ).coeff x = τ 1 / (Nat.card G : ℂ) * τ x⁻¹ := by
@@ -223,11 +219,11 @@ theorem coeff_centralIdem {G : Type} [Group G] [Finite G] (τ : G → ℂ) (x : 
   simp [MonoidAlgebra.coeff_sum, Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `only [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, coeff_centralIdem]`. Use `Finset.sum_bij (fun τ _ => τ ∘ φ) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `τ hτ`. Rewrite `hτ`, the goal using `[Set.Finite.mem_toFinset]`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨τ, hτ, rfl⟩`. Introduce `τ _ τ' _ e`. Conclude with `φ.surjective.injective_comp_right e`. Introduce `τ hτ`. Rewrite `hτ` using `[Set.Finite.mem_toFinset, h]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ, rfl⟩` from `hτ`. Conclude with `⟨σ, hA.mem_toFinset.2 hσ, rfl⟩`. Introduce `τ _`. Simplify using `[Nat.card_congr φ.toEquiv]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_sum_centralIdem {G G' : Type} [Group G] [Finite G] [Group G'] [Finite G'] (φ : G' ≃* G)
     {A : Set (G → ℂ)} (hA : A.Finite) {B : Set (G' → ℂ)} (hB : B.Finite) (h : B = (fun τ => τ ∘ φ) '' A) (x : G') :
@@ -253,7 +249,7 @@ variable {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) (pl : Leve
 
 include h red in
 /- English proof (translation)
-Establish `h1` using `h.deg1 k _ hk`. Rewrite `h1` using `[Nat.card_congr (red v).toEquiv, Nat.card_zmod]`. Conclude with `idx_eq h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idx_of_mem (v : LevelCuspCharacters.Sq D.host) {k : Fin 2} (hk : pb k ∈ (pl v).1.asIdeal) : v.1 = k := by
   have h1 := h.deg1 k _ hk
@@ -262,7 +258,7 @@ theorem idx_of_mem (v : LevelCuspCharacters.Sq D.host) {k : Fin 2} (hk : pb k �
 
 include h red in
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(mem_typePl h _).1 (pl v).2`. Rewrite using `[idx_of_mem h pl red v hk]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem pb_mem (v : LevelCuspCharacters.Sq D.host) : pb v.1 ∈ (pl v).1.asIdeal := by
   obtain ⟨k, hk⟩ := (mem_typePl h _).1 (pl v).2
@@ -280,7 +276,7 @@ def plEquiv (i : Fin 2) : LevelCuspCharacters.PlOver D.host i ≃ GoodIdempotent
       exact ⟨v, rfl⟩)
 
 /- English proof (translation)
-Use extensionality with `a b`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem reduction_reading_apply (x : G0 (GoodIdempotentBadPlaces.typePl pb) D.R.r) (v : LevelCuspCharacters.Sq D.host) :
     GoodReductionModelReading.readG0 pl red rfl x v = Matrix.GeneralLinearGroup.map (red v).toRingHom (x (pl v)) := by
@@ -288,7 +284,7 @@ theorem reduction_reading_apply (x : G0 (GoodIdempotentBadPlaces.typePl pb) D.R.
   rfl
 
 /- English proof (translation)
-Establish `e : GoodIdempotentBadPlaces.resIso h ⟨v.1, plEquiv h pl red v.1 v.2⟩ = (red v).symm` using `Subsingleton.elim _ _`. Rewrite using `[reduction_reading_apply, GoodIdempotentBadPlaces.compAt, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compAt_eq (x : G0 (GoodIdempotentBadPlaces.typePl pb) D.R.r) (v : LevelCuspCharacters.Sq D.host) :
     GoodIdempotentBadPlaces.compAt h x ⟨v.1, plEquiv h pl red v.1 v.2⟩ = GoodReductionModelReading.readG0 pl red rfl x v := by
@@ -317,9 +313,9 @@ def groupIso : G0 (GoodIdempotentBadPlaces.typePl pb) D.R.r ≃* LevelCuspCharac
       exact (red v).apply_symm_apply _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `letI := Fintype.ofFinite (GoodIdempotentBadPlaces.PlAll pb)`. Use `letI := Fintype.ofFinite (LevelCuspCharacters.Sq D.host)`. Use `symm`. Use `Fintype.prod_equiv (Equiv.sigmaCongrRight (plEquiv h pl red)) _ _ fun v => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Equip the data with the indicated structure. Equip the data with the indicated structure. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg _ (compAt_eq h pl red x v).symm`.
+A detailed English derivation is pending.
 -/
 theorem tupleChar_eq (s : ∀ u : GoodIdempotentBadPlaces.PlAll pb, LevelCuspCharacters.SSParam (D.host.g u.1) ℂ D.R.r) :
     GoodIdempotentBadPlaces.tupleChar h s =
@@ -332,11 +328,9 @@ theorem tupleChar_eq (s : ∀ u : GoodIdempotentBadPlaces.PlAll pb, LevelCuspCha
   exact congrArg _ (compAt_eq h pl red x v).symm
 
 /- English proof (translation)
-Use extensionality with `τ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, rfl⟩`. Use `⟨_, ⟨_, fun i => ?_, rfl⟩, (tupleChar_eq h pl red s).symm⟩` and prove the remaining obligations. Conclude with `(goodAt_comp (p := D.host.g i) (K := ℂ) (r := D.R.r) _ _ (plEquiv h pl red i).surjective (fun w : GoodIdempotentBadPlaces.PlOf pb i => (s ⟨i, w⟩ : LevelCuspCharacters.SSParam (D.host.g i) ℂ D.R.r))).2 (hs i)`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, ⟨s, hs, rfl⟩, rfl⟩`. Use `⟨fun u => s ⟨u.1, (plEquiv h pl red u.1).symm u.2⟩, fun i => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(goodAt_comp (p := D.host.g i) (K := ℂ) (r := D.R.r) _ _ (plEquiv h pl red i).symm.surjective (fun w : LevelCuspCharacters.PlOver D.host i => (s ⟨i, w⟩ : LevelCuspCharacters.SSParam (D.host.g i) ℂ D.R.r))).2 (hs i)`. Rewrite using `[tupleChar_eq h pl red]`. Use `congr 2`.
-
-Use function extensionality and compare the values at `v`. Conclude with `congrArg (β := LevelCuspCharacters.SSParam (D.host.g v.1) ℂ D.R.r) (fun w : LevelCuspCharacters.PlOver D.host v.1 => (s ⟨v.1, w⟩ : LevelCuspCharacters.SSParam (D.host.g v.1) ℂ D.R.r)) ((plEquiv h pl red v.1).symm_apply_apply v.2)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem goodTypes_eq (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) :
     GoodIdempotentBadPlaces.goodTypes h om D.R.r = (fun τ => τ ∘ groupIso pl red) '' LevelCuspCharacters.goodTypes (H := D.host) om := by
@@ -357,7 +351,7 @@ theorem goodTypes_eq (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) :
         ((plEquiv h pl red v.1).symm_apply_apply v.2)
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `coeff_sum_centralIdem (groupIso pl red) _ _ (goodTypes_eq h pl red om) x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem coeff_goodIdem (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) {n : ℕ} (hn : n = D.R.r)
     (x : G0 (GoodIdempotentBadPlaces.typePl pb) n) :
@@ -366,7 +360,7 @@ theorem coeff_goodIdem (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) {n
   exact coeff_sum_centralIdem (groupIso pl red) _ _ (goodTypes_eq h pl red om) x
 
 /- English proof (translation)
-Use extensionality with `F x`. Simplify using `only [GoodReductionModelReading.eGoodOp, coeff_goodIdem h, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Use `letI := Fintype.ofFinite (G0 (GoodIdempotentBadPlaces.typePl pb) (D.sp.W j).rank)`. Conclude with `(Finsupp.sum_fintype (GoodIdempotentBadPlaces.goodIdem h om (D.sp.W j).rank).coeff (fun g c => c * Lev.actG0 (D.sp.W j) β (GoodIdempotentBadPlaces.levelDatumAtBasePrime (D.sp.W j) pb ψ) g F x) (fun _ => zero_mul _)).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eGoodOp_eq (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) (ψ : ∀ w : Pl D.host.E, AddChar (kP w) ℂ) (j : ℕ)
     (hj : (D.sp.W j).rank = D.R.r) (β : GL (Fin (D.sp.W j).rank) (Lev.EAf D)) :
@@ -381,15 +375,15 @@ theorem eGoodOp_eq (om : ∀ i : Fin 2, (ZMod (D.host.g i))ˣ →* ℂˣ) (ψ : 
 end Match
 
 /- English proof (translation)
-Simplify using `only [GoodReductionModelReading.IsBadSet, Finset.ext_iff, GoodIdempotentBadPlaces.mem_badPl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isBadSet_iff (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) : GoodReductionModelReading.IsBadSet D Sb ↔ Sb = GoodIdempotentBadPlaces.badPl D := by
   simp only [GoodReductionModelReading.IsBadSet, Finset.ext_iff, GoodIdempotentBadPlaces.mem_badPl]
 
 /- English proof (translation)
-Use `(GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1` as an intermediate fact. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_haar (V : HSp D) : ∃ μ : Measure (GA D V), μ.IsHaarMeasure := by
   have := (GlobalTheory.MemberAdelicTop.locallyCompact_secondCountable_t2 D V).1
@@ -403,7 +397,7 @@ theorem exists_haar (V : HSp D) : ∃ μ : Measure (GA D V), μ.IsHaarMeasure :=
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h μ 𝓕 hμ h𝓕 => (h.2 μ hμ).2 𝓕 h𝓕, fun h => ⟨exists_haar V, fun μ hμ => ⟨GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ, fun 𝓕 h𝓕 => h μ 𝓕 hμ h𝓕⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem petOrth_iff {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (T T' : MMap M) :
     GoodReductionModelReading.PetOrth M T T' ↔ ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure →
@@ -412,11 +406,11 @@ theorem petOrth_iff {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (
     ⟨GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ, fun 𝓕 h𝓕 => h μ 𝓕 hμ h𝓕⟩⟩⟩
 
 /- English proof (translation)
-Establish `e1 : GoodReductionModelReading.goodW θ j hj M β ψ pl red om = GoodIdempotentBadPlaces.goodForms θ h om ψ j β M`. Rewrite using `[GoodReductionModelReading.goodW, eGoodOp_eq h]`. Both sides reduce to the same expression. Establish `e2 : GoodReductionModelReading.partW θ j hj M β ψ pl red om (GoodIdempotentBadPlaces.badPl D) = GoodIdempotentBadPlaces.heckePart θ h om ψ j β M`. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[GoodReductionModelReading.partW, eGoodOp_eq h]`. Both sides reduce to the same expression. Establish `e3 : GoodReductionModelReading.occursW θ D.R.m hm Mm βm ψ pl red om (GoodIdempotentBadPlaces.badPl D) = GoodIdempotentBadPlaces.occurring θ h om ψ D.R.m βm Mm`. Rewrite using `[GoodReductionModelReading.occursW, eGoodOp_eq h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e1, e2, e3]`. Use `and_congr Iff.rfl (and_congr (by rw [iSup_subtype']) (and_congr Iff.rfl ?_))` and prove the remaining obligations. Simplify using `only [petOrth_iff]`. Conclude with `⟨fun H μ 𝓕 hμ h𝓕 c hc c' hc' hne T hT T' hT' => H c hc c' hc' hne T hT T' hT' μ 𝓕 hμ h𝓕, fun H c hc c' hc' hne T hT T' hT' μ 𝓕 hμ h𝓕 => H μ 𝓕 hμ h𝓕 c hc c' hc' hne T hT T' hT'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem conclusion_iff (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ))
     {pb : Fin 2 → 𝓞 D.host.E} (h : IsTypeDatum D.host.g pb) (pl : LevelCuspCharacters.Sq D.host ≃ ↥(GoodIdempotentBadPlaces.typePl pb))
@@ -441,9 +435,9 @@ theorem conclusion_iff (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.ho
     fun H c hc c' hc' hne T hT T' hT' μ 𝓕 hμ h𝓕 => H μ 𝓕 hμ h𝓕 c hc c' hc' hne T hT T' hT'⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H θ hθ pb h om hom ψ hψ βm hβm Mm j h1 h2 β hβ M`. Take `⟨pl, hpl, ⟨red⟩⟩` from `exists_placeMatch h`. Establish `hm` using `D.sp.W_rank D.R.m (h1.trans h2) le_rfl`. Establish `hj` using `D.sp.W_rank j h1 h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(conclusion_iff θ h pl red om ψ hm Mm βm j hj M β).1 (H θ hθ pb _ ⟨h, rfl⟩ pl hpl red ψ hψ om hom _ ((isBadSet_iff _).2 rfl) hm Mm βm hβm j h1 h2 hj M β hβ)`. Introduce and unpack `H θ hθ pb Pg ⟨h, rfl⟩ pl - red ψ hψ om hom Sb hSb hm Mm βm hβm j h1 h2 hj M β hβ`. Take `rfl` from `(isBadSet_iff Sb).1 hSb`. Conclude with `(conclusion_iff θ h pl red om ψ hm Mm βm j hj M β).2 (H θ hθ pb h om hom ψ hψ βm hβm Mm j h1 h2 β hβ M)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sumW_iff_goodFormsOrthSum (D : D7) : GoodReductionModelReading.SumW D ↔ GoodIdempotentBadPlaces.GoodFormsOrthSum D := by
   constructor

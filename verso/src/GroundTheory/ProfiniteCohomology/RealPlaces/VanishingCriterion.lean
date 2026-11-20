@@ -24,9 +24,9 @@ variable (A : Rep.{u} k G) [IsDiscreteRep A] (Aᵥ : ∀ v, Rep.{u} k (H v))
   (ar : ∀ w, Rep.res (ψ w).toMonoidHom A ⟶ Aᵣ w)
 
 /- English proof (translation)
-Establish `h1 : (tateToGlobal φ ψ A Aᵥ a Aᵣ ar (n + 2)).hom x = 0`. Apply `hi` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hom_apply_hom_apply_of_comp_eq (tateToGlobal_tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1)) x`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactCohomology_exact_compact φ ψ A Aᵥ a Aᵣ ar (n + 1)) x h1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hs z`. Rewrite using `[← hz]`. Conclude with `hom_apply_hom_apply_of_comp_eq (tateGlobalToLocal_tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n) y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateCompactCohomology_eq_zero_of_surjective_of_injective (n : ℕ)
     (hs : Function.Surjective (tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar (n + 1)).hom)
@@ -43,7 +43,7 @@ theorem tateCompactCohomology_eq_zero_of_surjective_of_injective (n : ℕ)
   exact hom_apply_hom_apply_of_comp_eq (tateGlobalToLocal_tateLocalToCompact φ ψ A Aᵥ a Aᵣ ar n) y
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun y hy => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactCohomology_exact_global φ ψ A Aᵥ a Aᵣ ar n) y hy`. Rewrite using `[h x]`. Conclude with `map_zero _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_tateGlobalToLocal_of_eq_zero (n : ℕ)
     (h : ∀ x : tateCompactCohomology φ ψ A Aᵥ a Aᵣ ar (n + 1), x = 0) :
@@ -55,7 +55,7 @@ theorem injective_tateGlobalToLocal_of_eq_zero (n : ℕ)
   exact map_zero _
 
 /- English proof (translation)
-Introduce `z` and use `(ShortComplex.moduleCat_exact_iff _).1 (tateCompactCohomology_exact_local φ ψ A Aᵥ a Aᵣ ar n) z (h _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem surjective_tateGlobalToLocal_of_eq_zero (n : ℕ)
     (h : ∀ x : tateCompactCohomology φ ψ A Aᵥ a Aᵣ ar (n + 2), x = 0) :
@@ -66,9 +66,7 @@ theorem surjective_tateGlobalToLocal_of_eq_zero (n : ℕ)
 omit [∀ w, Fintype (F w)] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x y hxy`. Use `h (Prod.ext (funext fun v => Subsingleton.elim _ _) ?_)` and prove the remaining obligations. Conclude with `hxy`. Introduce `h x y hxy`.
-
-Conclude with `h (congrArg Prod.snd hxy)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem injective_tateGlobalToLocal_iff (n : ℕ) (hv : ∀ v, Subsingleton (cohomology (Aᵥ v) n)) :
     Function.Injective (tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n).hom ↔
@@ -83,9 +81,9 @@ theorem injective_tateGlobalToLocal_iff (n : ℕ) (hv : ∀ v, Subsingleton (coh
 omit [∀ w, Fintype (F w)] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h z`. Take `⟨x, hx⟩` from `h (0, z)`. Conclude with `⟨x, congrArg Prod.snd hx⟩`. Introduce `h z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `h z.2`. Conclude with `⟨x, Prod.ext (funext fun v => Subsingleton.elim _ _) hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surjective_tateGlobalToLocal_iff (n : ℕ) (hv : ∀ v, Subsingleton (cohomology (Aᵥ v) n)) :
     Function.Surjective (tateGlobalToLocal φ ψ A Aᵥ a Aᵣ ar n).hom ↔
@@ -105,9 +103,9 @@ section Res
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Establish `: ∀ v, IsDiscreteRep (S.map (Rep.resFunctor (φ v).toMonoidHom)).X₁` using `fun v => IsDiscreteRep.res (continuous_toMonoidHom (φ v)) _`. Establish `: ∀ v, IsDiscreteRep (S.map (Rep.resFunctor (φ v).toMonoidHom)).X₂` using `fun v => IsDiscreteRep.res (continuous_toMonoidHom (φ v)) _`. Establish `: ∀ v, IsDiscreteRep (S.map (Rep.resFunctor (φ v).toMonoidHom)).X₃` using `fun v => IsDiscreteRep.res (continuous_toMonoidHom (φ v)) _`. Establish `: ∀ w, IsDiscreteRep (S.map (Rep.resFunctor (ψ w).toMonoidHom)).X₁` using `fun w => IsDiscreteRep.res (continuous_toMonoidHom (ψ w)) _`. Establish `: ∀ w, IsDiscreteRep (S.map (Rep.resFunctor (ψ w).toMonoidHom)).X₂` using `fun w => IsDiscreteRep.res (continuous_toMonoidHom (ψ w)) _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ∀ w, IsDiscreteRep (S.map (Rep.resFunctor (ψ w).toMonoidHom)).X₃` using `fun w => IsDiscreteRep.res (continuous_toMonoidHom (ψ w)) _`. Establish `hE` using `tateCompactCohomology_exact₂ φ ψ (Sᵥ := fun v => S.map (Rep.resFunctor (φ v).toMonoidHom)) (fun _ => 𝟙 _) (Sᵣ := fun w => S.map (Rep.resFunctor (ψ w).toMonoidHom)) (fun _ => 𝟙 _) hS (fun v => (Rep.shortExact_res (φ v).toMonoidHom).2 hS) (fun w => (Rep.shortExact_res (ψ w).toMonoi …`. Take `⟨y, hy⟩` from `(ShortComplex.moduleCat_exact_iff _).1 hE x (h₃ _)`. Rewrite using `[← hy, h₁ y]`. Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_tateCompactCohomologyRes_of_shortExact {S : ShortComplex (Rep.{u} k G)}
     [IsDiscreteRep S.X₁] [IsDiscreteRep S.X₂] [IsDiscreteRep S.X₃] (hS : S.ShortExact) (n : ℕ)
@@ -135,7 +133,7 @@ theorem eq_zero_tateCompactCohomologyRes_of_shortExact {S : ShortComplex (Rep.{u
   exact map_zero _
 
 /- English proof (translation)
-Substitute `e` using the available equality. Take `rfl : gᵥ = fun v => 𝟙 (Aᵥ v)` from `funext eᵥ`. Take `rfl : gᵣ = fun w => 𝟙 (Aᵣ w)` from `funext eᵣ`. Conclude with `tateCompactCohomologyMap_id φ ψ n`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tateCompactCohomologyMap_eq_id {A : Rep.{u} k G} [IsDiscreteRep A] {Aᵥ : ∀ v, Rep.{u} k (H v)}
     [∀ v, IsDiscreteRep (Aᵥ v)] {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v}
@@ -151,11 +149,11 @@ theorem tateCompactCohomologyMap_eq_id {A : Rep.{u} k G} [IsDiscreteRep A] {Aᵥ
   exact tateCompactCohomologyMap_id φ ψ n
 
 /- English proof (translation)
-Establish `hi : ∀ v, 𝟙 (Rep.res (φ v).toMonoidHom A) ≫ (Rep.resFunctor (φ v).toMonoidHom).map i = (Rep.resFunctor (φ v).toMonoidHom).map i ≫ 𝟙 _` using `fun _ => (Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hir : ∀ w, 𝟙 (Rep.res (ψ w).toMonoidHom A) ≫ (Rep.resFunctor (ψ w).toMonoidHom).map i = (Rep.resFunctor (ψ w).toMonoidHom).map i ≫ 𝟙 _` using `fun _ => (Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hp : ∀ v, 𝟙 (Rep.res (φ v).toMonoidHom B) ≫ (Rep.resFunctor (φ v).toMonoidHom).map p = (Rep.resFunctor (φ v).toMonoidHom).map p ≫ 𝟙 _` using `fun _ => (Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hpr : ∀ w, 𝟙 (Rep.res (ψ w).toMonoidHom B) ≫ (Rep.resFunctor (ψ w).toMonoidHom).map p = (Rep.resFunctor (ψ w).toMonoidHom).map p ≫ 𝟙 _` using `fun _ => (Category.id_comp _).trans (Category.comp_id _).symm`. Establish `hcomp` using `tateCompactCohomologyMap_comp φ ψ i (fun v => (Rep.resFunctor (φ v).toMonoidHom).map i) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map i) hi hir p (fun v => (Rep.resFunctor (φ v).toMonoidHom).map p) (fun w => (Rep.resFunctor (ψ w).toMonoidHom).map p) hp hpr n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcomp` using `[tateCompactCohomologyMap_eq_id φ ψ _ _ _ _ _ hip (fun v => by rw [← CategoryTheory.Functor.map_comp, hip, CategoryTheory.Functor.map_id]) (fun w => by rw [← CategoryTheory.Functor.map_comp, hip, CategoryTheory.Functor.map_id])]`. Establish `hx` using `congrArg (fun f => f.hom x) hcomp`. Express the relevant statement in the definitionally equal form `x = _ at hx`. Rewrite using `[hx]`. Express the relevant statement in the definitionally equal form `(tateCompactCohomologyMap φ ψ p _ _ hp hpr n).hom ((tateCompactCohomologyMap φ ψ i _ _ hi hir n).hom x) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hB ((tateCompactCohomologyMap φ ψ i _ _ hi hir n).hom x)]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_tateCompactCohomologyRes_of_retract {A B : Rep.{u} k G} [IsDiscreteRep A]
     [IsDiscreteRep B] (i : A ⟶ B) (p : B ⟶ A) (hip : i ≫ p = 𝟙 A) (n : ℕ)

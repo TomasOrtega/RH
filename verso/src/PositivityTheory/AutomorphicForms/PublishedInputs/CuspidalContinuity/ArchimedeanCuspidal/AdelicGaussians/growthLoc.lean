@@ -12,9 +12,9 @@ def SumBd (E : Type*) [NormedField E] (c : ℝ) : Prop :=
 variable {E : Type*} [NormedField E] {c : ℝ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `hc (Equiv.Perm (Fin 3)) Finset.univ _ (m ^ 3) (by rw [Finset.card_univ, Fintype.card_perm, Fintype.card_fin]; decide) (by positivity) fun σ _ => ?_` and prove the remaining obligations. Establish `hp : ‖∏ i, M (σ i) i‖ ≤ m ^ 3`. Rewrite using `[norm_prod]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;> rw [h]`. Simplify using `using hp`. Simplify using `using hp`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SumBd.det_le (hc : SumBd E c) {M : Matrix (Fin 3) (Fin 3) E} {m : ℝ} (hm : 0 ≤ m)
     (hM : ∀ i j, ‖M i j‖ ≤ m) : ‖M.det‖ ≤ c * m ^ 3 := by

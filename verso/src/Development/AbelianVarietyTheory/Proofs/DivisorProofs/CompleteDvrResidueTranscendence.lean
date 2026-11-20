@@ -7,13 +7,13 @@ open IsLocalRing Formalism.L2.Pj
 namespace GlobalTheory.GaussCountable
 
 /- English proof (translation)
-Use `set O := Localization.AtPrime p`. Establish `hinj : Function.Injective (algebraMap R O)` using `IsLocalization.injective O (Ideal.primeCompl_le_nonZeroDivisors p)`. Establish `h1 : Ideal.map (algebraMap R O) p = Ideal.span {algebraMap R O g}`. Rewrite using `[congrArg (Ideal.map (algebraMap R O)) hg, Ideal.map_span, Set.image_singleton]`. Establish `hspan : Ideal.span {algebraMap R O g} = IsLocalRing.maximalIdeal O` using `h1.symm.trans (IsLocalization.AtPrime.map_eq_maximalIdeal p O)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : algebraMap R O g ≠ 0` using `by rw [Ne, map_eq_zero_iff _ hinj]; exact hgp.ne_zero`. Establish `hϖ : Prime (algebraMap R O g)` using `(Ideal.span_singleton_prime hϖ0).mp (by rw [hspan]; infer_instance)`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, hϖ.irreducible, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨⟨a, s⟩, hxs⟩` from `IsLocalization.mk'_surjective p.primeCompl x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only at hxs`. Substitute `hxs` using the available equality. Establish `ha : a ≠ 0` using `by rintro rfl; exact hx (by simp)`. Take `⟨n, a', hnd, rfl⟩` from `WfDvdMonoid.max_power_factor ha hgp.irreducible`. Establish `ha' : a' ∈ p.primeCompl` using `by show a' ∉ p`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg, Ideal.mem_span_singleton]`. Conclude with `hnd`. Use `⟨n, ((IsLocalization.AtPrime.isUnit_mk'_iff O p a' s).mpr ha').unit, ?_⟩` and prove the remaining obligations. Rewrite using `[IsUnit.unit_spec, ← map_pow, IsLocalization.mul_mk'_eq_mk'_of_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_localization {R : Type} [CommRing R] [IsDomain R]
     [WfDvdMonoid R] (p : Ideal R) [p.IsPrime] (g : R) (hgp : Prime g)
@@ -43,21 +43,19 @@ theorem isDiscreteValuationRing_localization {R : Type} [CommRing R] [IsDomain R
   rw [IsUnit.unit_spec, ← map_pow, IsLocalization.mul_mk'_eq_mk'_of_mul]
 
 /- English proof (translation)
-Introduce `T`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Set `A` to `MvPolynomial ℕ T.V`. Establish `hp : Prime (MvPolynomial.C ϖ : A)` using `(MvPolynomial.prime_C_iff _).2 hϖ.prime`. Set `P : Ideal A` to `Ideal.span {MvPolynomial.C ϖ}`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : P.IsPrime := (Ideal.span_singleton_prime hp.ne_zero).2 hp`. Use `haveI : IsDiscreteValuationRing (Localization.AtPrime P) := isDiscreteValuationRing_localization P _ hp rfl`. Take `⟨O, _, _, _, _, ψ, hψ, _⟩` from `GlobalTheory.exists_complete_discreteValuationRing_dominating (Localization.AtPrime P) (IsDiscreteValuationRing.not_isField _)`. Set `g : A →+* O` to `ψ.comp (algebraMap A (Localization.AtPrime P))`. Establish `hg : Function.Injective g` using `hψ.comp (IsLocalization.injective _ (Ideal.primeCompl_le_nonZeroDivisors P))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ a : A, residue O (g a) = 0 ↔ MvPolynomial.map (residue T.V) a = 0`. Introduce `a`. Rewrite using `[residue_eq_zero_iff, ← RingHom.mem_ker, MvPolynomial.ker_map, ker_residue, hϖ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton, mem_maximalIdeal, mem_nonunits_iff]`. Express the relevant statement in the definitionally equal form `¬ IsUnit (ψ (algebraMap A (Localization.AtPrime P) a)) ↔ a ∈ P`. Rewrite using `[isUnit_map_iff, IsLocalization.AtPrime.isUnit_to_map_iff _ P]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `not_not`. Set `φ : T.V →+* O` to `g.comp MvPolynomial.C`. Establish `hφ : Function.Injective φ` using `hg.comp (MvPolynomial.C_injective _ _)`. Use `haveI : CharZero O := charZero_of_injective_ringHom hφ`. Use `haveI hl : IsLocalHom φ := ⟨fun a ha => by`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Assume the negation of the conclusion as `hn`. Establish `h1 : residue T.V a = 0` using `(residue_eq_zero_iff _).2 hn`. Establish `h2` using `(hmem (MvPolynomial.C a)).2 (by rw [MvPolynomial.map_C, h1, map_zero])`. Conclude with `((residue_eq_zero_iff _).1 h2) ha⟩`. Use `⟨⟨O⟩, φ, hl, hφ, fun i => residue O (g (MvPolynomial.X i)), ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `letI := (ResidueField.map φ).toAlgebra`. Express the relevant statement in the definitionally equal form `AlgebraicIndependent (ResidueField T.V) (fun i => residue O (g (MvPolynomial.X i)))`. Rewrite using `[algebraicIndependent_iff]`. Introduce `q hq`. Take `⟨a, rfl⟩` from `MvPolynomial.map_surjective (σ := ℕ) (residue T.V) residue_surjective q`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[← hmem, ← hq]`. Establish `: (residue O).comp g = ((MvPolynomial.aeval (R` using `ResidueField T.V) (fun i => residue O (g (MvPolynomial.X i)))).toRingHom).comp (MvPolynomial.map (residue T.V)) := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `only [AlgHom.toRingHom_eq_coe, RingHom.coe_comp, RingHom.coe_coe, Function.comp_apply, MvPolynomial.algHom_C, MvPolynomial.map_C]`.
-
-Both sides reduce to the same expression. Introduce `i`. Simplify using the standard rewrite rules. Conclude with `congr($this a)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_gaussExtension : ∀ T : CDVR, ∃ (T' : CDVR) (φ : T.V →+* T'.V) (_ : IsLocalHom φ),
     Function.Injective φ ∧ ∃ t : ℕ → ResidueField T'.V,

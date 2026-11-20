@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G GlobalTheory.RealMult GlobalTheory.Lat
 namespace GlobalTheory.LatJet.An
 
 /- English proof (translation)
-Introduce `hC hH E _ _ _ I _ 𝔠 φ c y _ _ n T J Y`. Take `⟨B, _, _, hsm, X, δ, j, q, hpull⟩` from `hC (FR E) 𝔠 I n J Y.X'`. Take `⟨δ'', hδ'', -⟩` from `GlobalTheory.RealMult.Obj.IsPullBy.existsUnique_detGen (j : B →+* J.B) hpull δ`. Establish `hmem : Y.δ'.1 ∈ Submodule.span J.B {δ''.1}`. Rewrite using `[δ''.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Take `⟨e, he⟩` from `Submodule.mem_span_singleton.1 hmem`. Take `⟨U, yy, hU, h0, hhol, hjet⟩` from `hH B I n J j`. Conclude with `⟨{ B := B smooth := hsm X := X δ := δ j := j q := q pull := hpull δ'' := δ'' corr := hδ'' e := e he := he.symm U := U isOpen := hU zero := h0 y := yy hol := hhol jet_eq := hjet }⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germEx_of_chart_holLift : Chart → HolLift → GermEx := by
   intro hC hH E _ _ _ I _ 𝔠 φ c y _ _ n T J Y

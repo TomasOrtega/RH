@@ -14,11 +14,11 @@ section Alg
 variable {R : Type*} [CommRing R]
 
 /- English proof (translation)
-Establish `h1` using `h i (by omega) (i + 1) (by omega)`. Rewrite `h1` using `[if_neg (by omega), Finset.sum_eq_add_of_mem i (i + 1) (by simp; omega) (by simp; omega) (by omega)]`. Rewrite `h1` using `[hm i (by omega) i le_rfl (by omega), hm' (i + 1) hi (i + 1) le_rfl (by omega)]`. Simplify using `only [if_true, one_mul, mul_one] at h1`. Rewrite using `[add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Introduce `l hl hne`. Rewrite `hl` using `[Finset.mem_range]`. Break down `lt_or_gt_of_ne hne.1 with h2 | h2` into its components or cases. Rewrite using `[hm l (by omega) i h2.le (by omega), if_neg (by omega), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm' (i + 1) hi l h2 hl, if_neg hne.2, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem superdiag_add (n r : ℕ) (hr : r ≤ n) (m m' : ℕ → ℕ → R)
     (hm : ∀ s < r, ∀ p, s ≤ p → p < n → m p s = if p = s then 1 else 0)
@@ -38,13 +38,13 @@ theorem superdiag_add (n r : ℕ) (hr : r ≤ n) (m m' : ℕ → ℕ → R)
     · rw [hm' (i + 1) hi l h2 hl, if_neg hne.2, mul_zero]
 
 /- English proof (translation)
-Use extensionality with `s s'`. Establish `hs` using `s.2`. Establish `hs'` using `s'.2`. Establish `h1` using `h (a + s.1) (by omega) (a + s'.1) (by omega)`. Take `⟨b, rfl⟩` from `Nat.exists_eq_add_of_le ha`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[Finset.sum_range_add, Finset.sum_range_add, Finset.sum_eq_zero (s := Finset.range a), Finset.sum_eq_zero (s := Finset.range b), zero_add, add_zero]`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun u => m (a + s.1) (a + u) * m' (a + u) (a + s'.1)) t, h1]`. Simplify using `[Fin.ext_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`. Rewrite using `[hm' _ _ (by omega) (by omega) (by omega), mul_zero]`. Introduce `l hl`. Rewrite `hl` using `[Finset.mem_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hm _ _ hl (by omega) (by omega), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem block_mul (n a t : ℕ) (ha : a + t ≤ n) (m m' : ℕ → ℕ → R)
     (hm : ∀ p p', p' < a → a ≤ p → p < n → m p p' = 0)
@@ -77,22 +77,22 @@ section Red
 variable {E : Type} [Field E] [NumberField E] (P : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_one : IntAt P (1 : E) := by simpa using IntAt.coe P 1
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_zero : IntAt P (0 : E) := by simpa using IntAt.coe P 0
 
 /- English proof (translation)
-Simplify using `using reduction_coe P 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reduction_one₂ : redP P (1 : E) = 1 := by simpa using reduction_coe P 1
 
 /- English proof (translation)
-Simplify using `using reduction_coe P 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reduction_zero : redP P (0 : E) = 0 := by simpa using reduction_coe P 0
 
@@ -114,7 +114,7 @@ noncomputable def redHom : intRing P →+* 𝓞 E ⧸ P.asIdeal where
   map_add' a b := reduction_add a.2 b.2
 
 /- English proof (translation)
-Establish `h` using `map_sum (redHom P) (fun i => (⟨f i, hf i⟩ : intRing P)) s`. Establish `h2 : ((∑ i ∈ s, (⟨f i, hf i⟩ : intRing P) : intRing P) : E) = ∑ i ∈ s, f i`. Simplify using the standard rewrite rules. Rewrite using `[← h2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_sum₂ {ι : Type*} (s : Finset ι) (f : ι → E) (hf : ∀ i, IntAt P (f i)) :
     redP P (∑ i ∈ s, f i) = ∑ i ∈ s, redP P (f i) := by
@@ -125,9 +125,9 @@ theorem reduction_sum₂ {ι : Type*} (s : Finset ι) (f : ι → E) (hf : ∀ i
   exact h
 
 /- English proof (translation)
-Set `B : Matrix (Fin t) (Fin t) (intRing P)` to `Matrix.of fun i j => ⟨A i j, hA i j⟩`. Establish `h1 : (B.det : E) = A.det`. Use `(intRing P).subtype.map_det B` as an intermediate fact. Conclude with `this`. Establish `h2` using `(redHom P).map_det B`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem reduction_det {t : ℕ} (A : Matrix (Fin t) (Fin t) E) (hA : ∀ i j, IntAt P (A i j)) :
     redP P A.det = (Matrix.of fun i j => redP P (A i j)).det := by
@@ -140,7 +140,7 @@ theorem reduction_det {t : ℕ} (A : Matrix (Fin t) (Fin t) E) (hA : ∀ i j, In
   exact h2
 
 /- English proof (translation)
-Establish `hq' : (q : E) ≠ 0` using `Nat.cast_ne_zero.2 hq`. Establish `e : a = algebraMap (𝓞 E) E (q : 𝓞 E) * ((q : E)⁻¹ * a)`. Rewrite using `[map_natCast, mul_inv_cancel_left₀ hq']`. Rewrite using `[e, reduction_mul (IntAt.coe P _) h, reduction_coe, Ideal.Quotient.eq_zero_iff_mem.2 hP, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem reduction_eq_zero_of_integral_inv_mul {q : ℕ} (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) {a : E}
     (h : IntAt P ((q : E)⁻¹ * a)) : redP P a = 0 := by
@@ -151,9 +151,9 @@ theorem reduction_eq_zero_of_integral_inv_mul {q : ℕ} (hq : q ≠ 0) (hP : (q 
 
 variable {P} in
 /- English proof (translation)
-Establish `ha : IsUnit (redP P a)` using `IsUnit.of_mul_eq_one _ h`. Establish `hb : IsUnit (redP P b)` using `IsUnit.of_mul_eq_one_right _ h`. Unfold `unitV`. Rewrite using `[dif_pos ha, dif_pos hb, ← Units.val_mul, ← map_mul]`. Establish `: ha.unit * hb.unit = 1` using `Units.ext (by simpa using h)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unitV_mul {K : Type} [Field K] (χ : (𝓞 E ⧸ P.asIdeal)ˣ →* Kˣ) {a b : E}
     (h : redP P a * redP P b = 1) : unitV χ a * unitV χ b = 1 := by
@@ -171,7 +171,7 @@ section Ent
 variable {E : Type} [Field E] [NumberField E] [StarRing E] (P : HeightOneSpectrum (𝓞 E)) (q : ℕ)
 
 /- English proof (translation)
-Unfold `sclLat stdAt`. Rewrite using `[Submodule.mem_comap, mem_localization_standardLattice]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_sclLat (N : ℕ) (e : ℕ → ℤ) (v : Sp E N) :
     v ∈ sclLat P q N e ↔ ∀ l : Fin N, IntAt P (((q : E) ^ e l.1)⁻¹ * v l) := by
@@ -180,26 +180,26 @@ theorem mem_sclLat (N : ℕ) (e : ℕ → ℤ) (v : Sp E N) :
   simp
 
 /- English proof (translation)
-Unfold `fIdx`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fIdx_zero (k₀ n s : ℕ) : fIdx k₀ 0 n s = s := by
   unfold fIdx
   split_ifs <;> omega
 
 /- English proof (translation)
-Unfold `fPos`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fPos_zero (k₀ n l : ℕ) (hl : l < n) : fPos k₀ 0 n l = l := by
   unfold fPos
   split_ifs <;> omega
 
 /- English proof (translation)
-The claim follows from `if_pos hl`.
+A detailed English derivation is pending.
 -/
 theorem scE_lt (n : ℕ) (ex : ℕ → ℕ) (l : ℕ) (hl : l < n) : scE n ex l = 0 := if_pos hl
 
 /- English proof (translation)
-Unfold `lamY`. Rewrite using `[mem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[scE_lt n ex l.1 l.2]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_lamY (n : ℕ) (ex : ℕ → ℕ) (v : Sp E (n + 0)) :
     v ∈ lamY P q n 0 ex ↔ ∀ l : Fin (n + 0), IntAt P (v l) := by
@@ -210,7 +210,7 @@ theorem mem_lamY (n : ℕ) (ex : ℕ → ℕ) (v : Sp E (n + 0)) :
   simp
 
 /- English proof (translation)
-Unfold `flagG`. Rewrite using `[mem_sclLat]`. Use `forall_congr' fun l => ?_` and prove the remaining obligations. Rewrite using `[scE_lt n _ l.1 l.2, fPos_zero k₀ n l.1 l.2, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_flagG (k₀ n s : ℕ) (v : Sp E (n + 0)) :
     v ∈ flagG P q k₀ n 0 s ↔
@@ -224,7 +224,7 @@ noncomputable def ent {N : ℕ} (g : HomE E N N) (p p' : ℕ) : E := atN (g (eN 
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Unfold `entB ent`. Rewrite using `[fIdx_zero, fIdx_zero, scE_lt n ex p hp, scE_lt n ex p' hp']`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem entB_eq (k₀ n : ℕ) (ex : ℕ → ℕ) (g : HomE E (n + 0) (n + 0)) (p p' : ℕ) (hp : p < n) (hp' : p' < n) :
     entB q k₀ 0 n 0 n ex ex g p p' = ent g p p' := by
@@ -234,13 +234,13 @@ theorem entB_eq (k₀ n : ℕ) (ex : ℕ → ℕ) (g : HomE E (n + 0) (n + 0)) (
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Establish `e : ∀ v : Sp E N, v = ∑ l ∈ Finset.range N, atN v l • eN E N l`. Introduce `v`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply, Finset.sum_eq_single i.1]`. Simplify using `[atN, eN]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `l _ hl`. Simplify using `[eN, hl.symm]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 i.2) h`. Establish `h1 : g (g⁻¹ (eN E N p')) = eN E N p'` using `LinearEquiv.apply_symm_apply g _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e (g⁻¹ (eN E N p')), map_sum]`. Establish `h2` using `congrFun h1 ⟨p, hp⟩`. Rewrite `h2` using `[Finset.sum_apply]`. Use `Eq.trans (Finset.sum_congr rfl fun l _ => ?_) (h2.trans ?_)` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `ent atN`. Rewrite using `[dif_pos hp]`. Both sides reduce to the same expression. Simplify using `[eN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ent_mul {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N) (p p' : ℕ) (hp : p < N) (hp' : p' < N) :
     ∑ l ∈ Finset.range N, ent g.toLinearMap p l * ent (g⁻¹).toLinearMap l p' = if p = p' then 1 else 0 := by
@@ -268,9 +268,9 @@ theorem ent_mul {N : ℕ} (g : Sp E N ≃ₗ[E] Sp E N) (p p' : ℕ) (hp : p < N
 variable {P q} {k₀ r t n : ℕ} {g : Sp E (n + 0) ≃ₗ[E] Sp E (n + 0)}
 
 /- English proof (translation)
-Establish `h1 : eN E (n + 0) p' ∈ lamY P q n 0 fun i => i + 1`. Rewrite using `[mem_lamY]`. Introduce `l`. Unfold `eN`. Use `split_ifs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `exacts [intAt_one P, intAt_zero P]`. Establish `h2` using `(mem_lamY P q n _ _).1 ((hg.1 _).2 h1)`. Unfold `ent atN`. Use `split_ifs`. Use `exacts [h2 _, intAt_zero P]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem intAt_ent (hg : g ∈ JG P q k₀ r t n 0) (p p' : ℕ) : IntAt P (ent g.toLinearMap p p') := by
   have h1 : eN E (n + 0) p' ∈ lamY P q n 0 fun i => i + 1 := by
@@ -285,11 +285,11 @@ theorem intAt_ent (hg : g ∈ JG P q k₀ r t n 0) (p p' : ℕ) : IntAt P (ent g
   exacts [h2 _, intAt_zero P]
 
 /- English proof (translation)
-Establish `h1 : eN E (n + 0) p' ∈ flagG P q k₀ n 0 (r + i * t)`. Rewrite using `[mem_flagG]`. Introduce `l`. Unfold `eN`. Distinguish the cases in `hl : l.1 = p'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hl, if_neg (by omega)]`. Simplify using `using intAt_one P`. Rewrite using `[if_neg hl, mul_zero]`. Conclude with `intAt_zero P`. Establish `h2` using `(mem_flagG P q k₀ n _ _).1 ((hg.2.1 _ ⟨i, rfl⟩ _).2 h1) ⟨p, hp⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[if_pos h', zpow_one]`. Establish `h3` using `reduction_eq_zero_of_integral_inv_mul P hq hP h2`. Unfold `ent atN`. Rewrite using `[dif_pos (show p < n + 0 from hp)]`. Conclude with `h3`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_ent_block (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) (hg : g ∈ JG P q k₀ r t n 0) (i p p' : ℕ)
     (h : p' < r + i * t) (h' : r + i * t ≤ p) (hp : p < n) : redP P (ent g.toLinearMap p p') = 0 := by
@@ -310,15 +310,13 @@ theorem red_ent_block (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) (hg : g �
   exact h3
 
 /- English proof (translation)
-Establish `hb : bvecG E q k₀ n 0 s = eN E (n + 0) s`. Unfold `bvecG`. Rewrite using `[fIdx_zero, scE_lt n _ s (by omega)]`. Simplify using the standard rewrite rules. Establish `h1` using `(hg.2.2 s hs).2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[hb]`. Establish `h2` using `(mem_flagG P q k₀ n _ _).1 h1 ⟨p, hp⟩`. Rewrite `h2` using `[if_pos h, zpow_one]`. Establish `h3` using `reduction_eq_zero_of_integral_inv_mul P hq hP h2`. Establish `h4 : ent g.toLinearMap p s = g (eN E (n + 0) s) ⟨p, hp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ent atN`. Rewrite using `[dif_pos (show p < n + 0 from hp)]`. Both sides reduce to the same expression. Establish `h5 : IntAt P (if p = s then 1 else 0 : E)` using `by split_ifs exacts [intAt_one P, intAt_zero P]`. Establish `h6 : IntAt P (ent g.toLinearMap p s - if p = s then 1 else 0)` using `(intRing P).sub_mem (intAt_ent hg p s) h5`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : redP P (ent g.toLinearMap p s - if p = s then 1 else 0) = 0`. Rewrite using `[h4]`. Conclude with `h3`. Rewrite using `[← sub_add_cancel (ent g.toLinearMap p s) (if p = s then 1 else 0), reduction_add h6 h5, h7, zero_add]`. Use `split_ifs`.
-
-Use `exacts [reduction_one₂ P, reduction_zero P]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_ent_uni (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) (hg : g ∈ JG P q k₀ r t n 0) (hr : r ≤ n) (s : ℕ)
     (hs : s < r) (p : ℕ) (h : s ≤ p) (hp : p < n) :
@@ -349,9 +347,7 @@ theorem red_ent_uni (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal) (hg : g ∈
   exacts [reduction_one₂ P, reduction_zero P]
 
 /- English proof (translation)
-Establish `hg'` using `Subgroup.inv_mem _ hg`. Establish `h1` using `congrArg (redP P) (ent_mul g p p' hp hp')`. Rewrite `h1` using `[reduction_sum₂ P _ _ fun l => (intAt_ent hg p l).mul (intAt_ent hg' l p')]`. Use `Eq.trans (Finset.sum_congr rfl fun l _ => (reduction_mul (intAt_ent hg p l) (intAt_ent hg' l p')).symm) (h1.trans ?_)` and prove the remaining obligations. Use `split_ifs`.
-
-Use `exacts [reduction_one₂ P, reduction_zero P]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem red_ent_mul (hg : g ∈ JG P q k₀ r t n 0) (p : ℕ) (hp : p < n) (p' : ℕ) (hp' : p' < n) :
     ∑ l ∈ Finset.range n, redP P (ent g.toLinearMap p l) * redP P (ent (g⁻¹).toLinearMap l p') =
@@ -371,19 +367,17 @@ end RowTypeInv
 open RowTypeInv Formalism.L2.Col.LocE in
 
 /- English proof (translation)
-Establish `hg'` using `Subgroup.inv_mem _ hg`. Establish `hr : r ≤ n` using `by omega`. Establish `e1 : ∀ h ∈ LocE.JG P q k₀ r t n 0, redP P (∑ i ∈ Finset.range (r - 1), entB q k₀ 0 n 0 n (fun i => i + 1) (fun i => i + 1) h.toLinearMap i (i + 1)) = ∑ i ∈ Finset.range (r - 1), redP P (ent h.toLinearMap i (i + 1))`. Introduce `h hh`. Rewrite using `[← reduction_sum₂ P _ _ fun i => intAt_ent hh i (i + 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `entB_eq q k₀ n _ _ _ _ (by omega) (by omega)`. Establish `hb : ∀ i < j, r + i * t + t ≤ n`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `: (i + 1) * t ≤ j * t` using `Nat.mul_le_mul_right t hi`. Rewrite `this` using `[add_mul, one_mul]`. Use linear arithmetic over natural numbers and integers. Establish `e2 : ∀ h ∈ LocE.JG P q k₀ r t n 0, ∀ i < j, redP P (Matrix.det (Matrix.of fun s s' : Fin t => entB q k₀ 0 n 0 n (fun i => i + 1) (fun i => i + 1) h.toLinearMap (r + i * t + s.1) (r + i * t + s'.1))) = Matrix.det (Matrix.of fun s s' : Fin t => redP P (ent h.toLinearMap (r + i * t …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh i hi`. Establish `hi'` using `hb i hi`. Establish `e : (Matrix.of fun s s' : Fin t => entB q k₀ 0 n 0 n (fun i => i + 1) (fun i => i + 1) h.toLinearMap (r + i * t + s.1) (r + i * t + s'.1)) = Matrix.of fun s s' : Fin t => ent h.toLinearMap (r + i * t + s.1) (r + i * t + s'.1)`. Use extensionality with `s s'`. Use `s.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `s'.2` as an intermediate fact. Conclude with `entB_eq q k₀ n _ _ _ _ (by omega) (by omega)`. Rewrite using `[e]`. Conclude with `reduction_det P _ fun s s' => intAt_ent hh _ _`. Unfold `lamGB lamGv`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_mul_mul_comm, ← AddChar.map_add_eq_mul, e1 g hg, e1 _ hg', ← Finset.sum_add_distrib, Finset.sum_eq_zero, AddChar.map_zero_eq_one, one_mul, ← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i hi => unitV_mul _ ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[e2 g hg i hi, e2 _ hg' i hi, ← Matrix.det_mul, block_mul n (r + i * t) t (hb i hi) (fun p p' => redP P (ent g.toLinearMap p p')) (fun p p' => redP P (ent (g⁻¹).toLinearMap p p')) (fun p p' h h' hp => red_ent_block hq hP hg i p p' h h' hp) (fun p p' h h' hp => red_ent_block hq hP …`. Introduce `i hi`.
-
-Rewrite `hi` using `[Finset.mem_range]`. Conclude with `superdiag_add n r hr (fun p p' => redP P (ent g.toLinearMap p p')) (fun p p' => redP P (ent (g⁻¹).toLinearMap p p')) (red_ent_uni hq hP hg hr) (red_ent_uni hq hP hg' hr) (red_ent_mul hg) i (by omega)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamGB_mul_lamGB_inv (E K : Type) [Field E] [NumberField E] [StarRing E] [Field K]
     (P : HeightOneSpectrum (𝓞 E)) (q : ℕ) (hq : q ≠ 0) (hP : (q : 𝓞 E) ∈ P.asIdeal)

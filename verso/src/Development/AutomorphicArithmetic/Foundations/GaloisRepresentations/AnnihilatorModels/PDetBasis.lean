@@ -5,11 +5,11 @@ open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp TensorProd
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `C W X _ _ _ _ a mk hspan hfin`. Take `⟨t, hts, hst, hli⟩` from `exists_linearIndependent C (Set.range mk)`. Establish `htop : ⊤ ≤ Submodule.span C (Set.range ((↑) : t → W))`. Rewrite using `[Subtype.range_coe, hst, hspan]`. Set `b₀ : Basis t C W` to `Basis.mk hli htop`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI : Finite t := Module.Finite.finite_basis b₀`. Use `haveI : Fintype t := Fintype.ofFinite t`. Establish `hcard : Fintype.card t = a`. Rewrite using `[← hfin, Module.finrank_eq_card_basis b₀]`. Set `e : t ≃ Fin a` to `Fintype.equivFinOfCardEq hcard`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ k : Fin a, ∃ x : X, mk x = ((e.symm k : t) : W)` using `fun k => hts (e.symm k).2`. Use `choose x hx using hx`. Use `⟨x, b₀.reindex e, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Basis.reindex_apply, Basis.mk_apply, hx k]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.detBasis_of :
     BasisIn := by

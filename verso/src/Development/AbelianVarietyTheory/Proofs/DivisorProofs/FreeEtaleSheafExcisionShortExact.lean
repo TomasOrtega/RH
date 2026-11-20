@@ -9,9 +9,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GlobalThe
 namespace GlobalTheory.EtC.MVFree
 
 /- English proof (translation)
-Introduce `R _ A A' _ _ _ _ f hN w`. Take `⟨h1, h2⟩` from `hN`. Take `⟨w', hex⟩` from `GlobalTheory.T.etale_mayerVietoris_free_sequence_exact R A A' f h1 h2`. Establish `hm` using `GlobalTheory.T.mono_free_etale_mayerVietoris_left_map R A A' f`. Establish `he` using `GlobalTheory.T.etaleMayerVietoris_free_right_epi R A A' f h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `{ exact := hex, mono_f := hm, epi_g := he }`.
+A detailed English derivation is pending.
 -/
 theorem shortExact : ∀ (R : Type) [CommRing R] (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] [Algebra.Etale A A'] (f : A), IsNbhd A A' f → ∀ (w : biprod.lift ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (Localization.awayMap (algebraMap A A') f))))) (-(free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A' (Localization.Away (algebraMap A A' f))))))) ≫ biprod.desc ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A (Localization.Away f)))))) ((free R).map (yoneda.map (Spec.map (CommRingCat.ofHom (algebraMap A A'))))) = 0), (ShortComplex.mk _ _ w).ShortExact := by
   intro R _ A A' _ _ _ _ f hN w

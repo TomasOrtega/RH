@@ -12,13 +12,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Introduce `a k _ n b hb hli`. Establish `hT : ∀ kk x, FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) ((U σ).un kk x) := by`. Introduce `kk x`. Use `letI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)`. Conclude with `hAT (CAt σ) ((U σ).un kk x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hrel : ∀ kk (x : ((U σ).X kk).dom), ∑ i, g i * toC (evR Xo c (b i) ((U σ).un kk x)) = 0`. Introduce `kk x`. Establish `h` using `congrFun (congrFun hg kk) x.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at h`. Rewrite using `[← h]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← rdU_apply_dom (U σ) _ kk x]`. Establish `hall` using `rel_of_frames (U σ) hU.2.2.1 hT hF b hb g hrel`. Set `_ : Algebra c.F ℂ` to `σ.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc` using `indep_of_complex (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) hW (fun p φ y => hA p y φ) b (fun i => (hb i).1) hli g (fun z hz => hall z hz)`. Introduce `i`. Conclude with `congrFun hc i`.
+A detailed English derivation is pending.
 -/
 theorem rdIndep_of_wt (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (σ : c.F →+* ℂ)
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hAT : AllTest Xo c)

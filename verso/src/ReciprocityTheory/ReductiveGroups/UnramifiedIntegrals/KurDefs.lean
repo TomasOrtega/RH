@@ -20,7 +20,7 @@ def Kmu : Subfield ℂ_[l] := Subfield.closure (muP l)
 def Tch : Set ℂ_[l] := insert 0 (muP l)
 
 /- English proof (translation)
-The claim follows from `(Subfield.isClosed_topologicalClosure (Kmu l)).completeSpace_coe`.
+A detailed English derivation is pending.
 -/
 theorem kur_complete : CompleteSpace (MaximalUnramifiedExtension l) :=
   (Subfield.isClosed_topologicalClosure (Kmu l)).completeSpace_coe

@@ -42,7 +42,7 @@ abbrev q : ℕ := N.H.q
 abbrev d : ℕ := N.H.d
 
 /- English proof (translation)
-The claim follows from `N.H.hyp`.
+A detailed English derivation is pending.
 -/
 theorem hyp : HostHyp N.q N.d := N.H.hyp
 
@@ -90,13 +90,11 @@ def hArt {φ : Formalism.HC.Frame} (H : Formalism.HC.HostRaw φ) (p : ℕ) : φ.
   φ.iotaInv (H.art (frobUnitMod H.condN p)).2
 
 /- English proof (translation)
-Establish `h0 : M.factorization p = 0`. Distinguish the cases in `hp : p.Prime`. Conclude with `Nat.factorization_eq_zero_of_not_dvd (hp.coprime_iff_not_dvd.1 h)`. Conclude with `Nat.factorization_eq_zero_of_not_prime M hp`. Establish `k1 : ∀ (A : ℕ), A = M → ∀ w : ZMod M, ((w.cast : ZMod A) = (p : ZMod A) ↔ w = (p : ZMod M))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `A rfl w`. Rewrite using `[ZMod.cast_id]`. Establish `k2 : ∀ (B : ℕ), B = 1 → ∀ w : ZMod M, (w.cast : ZMod B) = 1`. Introduce and unpack `B rfl w`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ w : (ZMod M)ˣ, (((w : ZMod M).cast : ZMod (ordCompl[p] M)) = (p : ZMod (ordCompl[p] M)) ∧ ((w : ZMod M).cast : ZMod (ordProj[p] M)) = 1) ↔ w = ZMod.unitOfCoprime p h`. Introduce `w`. Rewrite using `[k1 _ (by rw [h0, pow_zero, Nat.div_one]), and_iff_left (k2 _ (by rw [h0, pow_zero]) _), Units.ext_iff, ZMod.coe_unitOfCoprime]`. Establish `hex : ∃ w : (ZMod M)ˣ, ((w : ZMod M).cast : ZMod (ordCompl[p] M)) = (p : ZMod (ordCompl[p] M)) ∧ ((w : ZMod M).cast : ZMod (ordProj[p] M)) = 1` using `⟨_, (key _).2 rfl⟩`. Unfold `frobUnitMod`.
-
-Rewrite using `[dif_pos hex]`. Conclude with `(key _).1 hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobUnitMod_of_coprime {M p : ℕ} (h : Nat.Coprime p M) : frobUnitMod M p = ZMod.unitOfCoprime p h := by
   have h0 : M.factorization p = 0 := by
@@ -131,7 +129,7 @@ def hP (p : ℕ) : N.R.A :=
   else N.R.iotaInv (N.H.art (frobUnitMod N.H.condN p)).2
 
 /- English proof (translation)
-Unfold `hP hArt`. Use `split`. Name the introduced variables `h`. Rewrite using `[frobUnitMod_of_coprime h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hP_eq_hArt (p : ℕ) : N.hP p = hArt N.H.toHostRaw p := by
   unfold hP hArt

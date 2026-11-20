@@ -11,7 +11,7 @@ section Self
 variable (K M : Type) [Field K] [Field M] [Algebra K M]
 
 /- English proof (translation)
-Rewrite using `[unitsRes, ← groupCohomology.map_id]`. Conclude with `groupCohomology.map_congr (by ext; rfl) rfl n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsRes_self (n : ℕ) : unitsRes K K M n = 𝟙 _ := by
   rw [unitsRes, ← groupCohomology.map_id]
@@ -24,9 +24,9 @@ variable (F Ω : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
   [ValuativeRel Ω] [TopologicalSpace Ω] [IsValuativeTopology Ω] [ValuativeExtension F Ω]
 
 /- English proof (translation)
-Set `_ : Algebra (unramifiedLevel F Ω m) (unramifiedLevel F Ω n)` to `(IntermediateField.inclusion (unramifiedLevel_le F Ω h)).toRingHom.toAlgebra`. Establish `: IsScalarTower F (unramifiedLevel F Ω m) (unramifiedLevel F Ω n)` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: ValuativeExtension (unramifiedLevel F Ω m) (unramifiedLevel F Ω n)` using `IntermediateField.valuativeExtension_inclusion _`. Establish `key : unitsInflationOfLE (unramifiedLevel_le F Ω h) 2 = unitsInfl F (unramifiedLevel F Ω m) (unramifiedLevel F Ω n) 2 ≫ unitsRes F F (unramifiedLevel F Ω n) 2`. Rewrite using `[unitsRes_self, Category.comp_id]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[unramifiedLevelInv_apply, unramifiedLevelInv_apply, key, h2GalUnitsAddEquiv_unitsRes_unitsInfl, unramifiedInv_inflation]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem unramifiedLevelInv_unitsInflationOfLE {m n : ℕ+} (h : (m : ℕ) ∣ n)
     (y : groupCohomology (galUnits F (unramifiedLevel F Ω m)) 2) :
@@ -47,11 +47,11 @@ theorem unramifiedLevelInv_unitsInflationOfLE {m n : ℕ+} (h : (m : ℕ) ∣ n)
     h2GalUnitsAddEquiv_unitsRes_unitsInfl, unramifiedInv_inflation]
 
 /- English proof (translation)
-Establish `hm : ((m : ℕ)) ∣ ((m * n : ℕ+) : ℕ)` using `⟨n, by simp⟩`. Establish `hn : ((n : ℕ)) ∣ ((m * n : ℕ+) : ℕ)` using `⟨m, by simp [mul_comm]⟩`. Establish `hinj` using `brauerInflation_injective (L := Ω) (unramifiedLevel F Ω (m * n))`. Establish `heq : (unitsInflationOfLE (unramifiedLevel_le F Ω hm) 2).hom y = (unitsInflationOfLE (unramifiedLevel_le F Ω hn) 2).hom z`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1` using `congrArg (fun φ => φ.hom y) (unitsInflationOfLE_comp_unitsInflation (L := Ω) (unramifiedLevel_le F Ω hm) 2)`. Establish `e2` using `congrArg (fun φ => φ.hom z) (unitsInflationOfLE_comp_unitsInflation (L := Ω) (unramifiedLevel_le F Ω hn) 2)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e1 e2`. Rewrite using `[e1, e2]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← unramifiedLevelInv_unitsInflationOfLE F Ω hm y, heq, unramifiedLevelInv_unitsInflationOfLE F Ω hn z]`.
+A detailed English derivation is pending.
 -/
 theorem unramifiedLevelInv_eq_of_brauerInflation_eq {m n : ℕ+}
     {y : groupCohomology (galUnits F (unramifiedLevel F Ω m)) 2}
@@ -76,7 +76,7 @@ theorem unramifiedLevelInv_eq_of_brauerInflation_eq {m n : ℕ+}
     unramifiedLevelInv_unitsInflationOfLE F Ω hn z]
 
 /- English proof (translation)
-Establish `hex : ∃ (m : ℕ+) (z : groupCohomology (galUnits F (unramifiedLevel F Ω m)) 2), (brauerInflation (unramifiedLevel F Ω m)).hom z = (brauerInflation (unramifiedLevel F Ω n)).hom y` using `⟨n, y, rfl⟩`. Rewrite using `[brauerInvFun, dif_pos hex]`. Conclude with `unramifiedLevelInv_eq_of_brauerInflation_eq F Ω hex.choose_spec.choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInvFun_brauerInflation (n : ℕ+)
     (y : groupCohomology (galUnits F (unramifiedLevel F Ω n)) 2) :

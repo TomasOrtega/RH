@@ -13,15 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GroupBplus.CotRank
 
 /- English proof (translation)
-Establish `hex : Function.Exact ((p : R) • (LinearMap.id : M →ₗ[R] M)) c` using `fun w => by`. Rewrite using `[hk w]`. Conclude with `⟨fun ⟨w', h⟩ => ⟨w', h.symm⟩, fun ⟨w', h⟩ => ⟨w', h.symm⟩⟩`. Establish `hex'` using `lTensor_exact k hex hs`. Establish `hsurj : Function.Surjective (c.baseChange k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `LinearMap.lTensor_surjective k hs`. Establish `hzero : ∀ x : k ⊗[R] M, LinearMap.lTensor k ((p : R) • (LinearMap.id : M →ₗ[R] M)) x = 0` using `fun x => by`. Rewrite using `[LinearMap.lTensor_smul, LinearMap.lTensor_id, LinearMap.smul_apply, LinearMap.id_apply]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[TensorProduct.smul_tmul', Algebra.smul_def, map_natCast, CharP.cast_eq_zero, zero_mul, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, add_zero]`. Establish `hinj : Function.Injective (c.baseChange k)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.baseChange_eq_ltensor]`. Take `⟨y, rfl⟩` from `(hex' x).1 hx`. Conclude with `hzero y`.
-
-Conclude with `(LinearEquiv.ofBijective (c.baseChange k) ⟨hinj, hsurj⟩).finrank_eq.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_baseChange_eq {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (p : ℕ) (c : M →ₗ[R] N) (hs : Function.Surjective c) (hk : ∀ w, c w = 0 ↔ ∃ w', w = (p : R) • w')
@@ -50,7 +48,7 @@ theorem finrank_baseChange_eq {R M N : Type} [CommRing R] [AddCommGroup M] [Modu
   exact (LinearEquiv.ofBijective (c.baseChange k) ⟨hinj, hsurj⟩).finrank_eq.symm
 
 /- English proof (translation)
-Take `⟨hs, hk, -⟩` from `hc 1`. Conclude with `finrank_baseChange_eq p _ hs (fun w => (hk w).trans (by simp only [pow_one])) k`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finrank_cot_one (p : ℕ) [Fact p.Prime] (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (GG : PDivGroup p R)
     (θ : TorsionMap A GG) (c : Pdiv.omega A →ₗ[R] GG.omega) (hc : θ.IsOmega c) (k : Type) [Field k] [Algebra R k]

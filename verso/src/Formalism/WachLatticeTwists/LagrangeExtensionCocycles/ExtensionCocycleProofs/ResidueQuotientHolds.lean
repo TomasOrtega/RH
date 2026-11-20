@@ -5,13 +5,13 @@ noncomputable section
 namespace Formalism.RepresentationBoundsCohomology.N2
 
 /- English proof (translation)
-Unfold `StatResFinite`. Introduce `n _ ℓ c s H hℓ hrec i m`. Establish `hq : (0:ℝ) < ℓ - 1` using `by linarith`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Establish `h1` using `hrec (i + ((m + 1 : ℕ) : ZMod n))`. Establish `he : i + ((m + 1 : ℕ) : ZMod n) - 1 = i + (m : ZMod n)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[he]`. Establish `hpow : 0 < (ℓ - 1) ^ m` using `pow_pos hq m`. Establish `h2 : s (i + (m : ZMod n)) / (ℓ - 1) ^ m ≤ (H (i + ((m + 1 : ℕ) : ZMod n)) + c + 3 + s (i + ((m + 1 : ℕ) : ZMod n)) / (ℓ - 1)) / (ℓ - 1) ^ m`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv _ ((ℓ - 1) ^ m)]`. Conclude with `mul_le_mul_of_nonneg_right h1 (inv_nonneg.mpr hpow.le)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (H (i + ((m + 1 : ℕ) : ZMod n)) + c + 3 + s (i + ((m + 1 : ℕ) : ZMod n)) / (ℓ - 1)) / (ℓ - 1) ^ m = (H (i + ((m + 1 : ℕ) : ZMod n)) + c + 3) / (ℓ - 1) ^ m + s (i + ((m + 1 : ℕ) : ZMod n)) / (ℓ - 1) ^ (m + 1)`. Rewrite using `[pow_succ, ← div_div]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_range_succ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem residue_finite_holds : StatResFinite := by
   unfold StatResFinite
@@ -38,11 +38,11 @@ theorem residue_finite_holds : StatResFinite := by
     linarith
 
 /- English proof (translation)
-Establish `hL0 : L ≠ 0` using `by positivity`. Establish `hL1 : L - 1 ≠ 0`. Introduce `h`. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction on `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.sum_range_succ]`. Establish `hp : L ^ n ≠ 0` using `pow_ne_zero _ hL0`. Establish `key : K / L ^ n + K * L / ((L - 1) * L ^ (n + 1)) = K * L / ((L - 1) * L ^ n)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_succ]`. Apply the tactic sequence `field_simp <;> ring`. Combine the linear relations using `[ih, key]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geom_id (K L : ℝ) (hL : 1 < L) (j : ℕ) :
     (∑ a ∈ Finset.range j, K / L ^ a) + K * L / ((L - 1) * L ^ j) = K * L / (L - 1) := by
@@ -61,17 +61,15 @@ theorem geom_id (K L : ℝ) (hL : 1 < L) (j : ℕ) :
     linarith [ih, key]
 
 /- English proof (translation)
-Unfold `StatResCut`. Introduce `n _ ℓ c G Hm s H i j hℓ hc hG hHm hH hrec`. Establish `hF : StatResFinite` using `residue_finite_holds`. Unfold `StatResFinite at hF`. Establish `hq : (1:ℝ) < ℓ - 1` using `by linarith`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hq0 : (0:ℝ) < ℓ - 1` using `by linarith`. Establish `h1` using `hF n ℓ c s H (by linarith) hrec i j`. Establish `hK0 : (0:ℝ) ≤ 2 * G + c + 3` using `by linarith`. Establish `hsum : ∑ a ∈ Finset.range j, (H (i + ((a + 1 : ℕ) : ZMod n)) + c + 3) / (ℓ - 1) ^ a ≤ ∑ a ∈ Finset.range j, (2 * G + c + 3) / (ℓ - 1) ^ a`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Rewrite `ha` using `[Finset.mem_range]`. Establish `hb` using `hH (a + 1) (by omega) (by omega)`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv (2 * G + c + 3)]`. Apply `mul_le_mul_of_nonneg_right ?_ (inv_nonneg.mpr (pow_pos hq0 a).le)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hg` using `geom_id (2 * G + c + 3) (ℓ - 1) hq j`. Establish `htail : 0 ≤ (2 * G + c + 3) * (ℓ - 1) / ((ℓ - 1 - 1) * (ℓ - 1) ^ j)`. Apply `div_nonneg (mul_nonneg hK0 hq0.le)` to reduce the goal to its premises. Conclude with `mul_nonneg (by linarith) (pow_pos hq0 j).le`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hlast : s (i + (j : ZMod n)) / (ℓ - 1) ^ j ≤ Hm / (ℓ - 1) ^ j`. Rewrite using `[div_eq_mul_inv, div_eq_mul_inv Hm]`. Conclude with `mul_le_mul_of_nonneg_right (hHm _) (inv_nonneg.mpr (pow_pos hq0 j).le)`. Establish `hfin : (2 * G + c + 3) * (ℓ - 1) / (ℓ - 1 - 1) = (2 * G + c + 3) * (ℓ - 1) / (ℓ - 2)`. Rewrite using `[show ℓ - 1 - 1 = ℓ - 2 by ring]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem residue_at_truncation : StatResCut := by
   unfold StatResCut
@@ -103,15 +101,15 @@ theorem residue_at_truncation : StatResCut := by
   linarith
 
 /- English proof (translation)
-Unfold `StatResAlways`. Introduce `ℓ s H c r hℓ hsH hr`. Establish `hℓR : (3:ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hq0 : (0:ℝ) < (ℓ:ℝ) - 1` using `by linarith`. Establish `hne : (ℓ:ℝ) - 1 ≠ 0` using `hq0.ne'`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsH' : (s:ℝ) ≤ H` using `by exact_mod_cast hsH`. Establish `e1 : ((ℓ - 2 : ℕ) : ℝ) = (ℓ:ℝ) - 2`. Apply the tactic sequence `rw [Nat.cast_sub (by omega : 2 ≤ ℓ)] <;> norm_num`. Establish `e2 : ((ℓ - 1 : ℕ) : ℝ) = (ℓ:ℝ) - 1`. Apply the tactic sequence `rw [Nat.cast_sub (by omega : 1 ≤ ℓ)] <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hd0` using `Nat.cast_div_le (α := ℝ) (m := s + (ℓ - 2)) (n := ℓ - 1)`. Rewrite `hd0` using `[Nat.cast_add, e1, e2]`. Establish `hA : (H:ℝ) / ((ℓ:ℝ) - 1) + 1 - ((s:ℝ) + ((ℓ:ℝ) - 2)) / ((ℓ:ℝ) - 1) = ((H:ℝ) - s + 1) / ((ℓ:ℝ) - 1)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA0 : 0 ≤ ((H:ℝ) - s + 1) / ((ℓ:ℝ) - 1)` using `div_nonneg (by linarith) hq0.le`. Establish `hB : (H:ℝ) * (2 * (ℓ:ℝ) - 1) / ((ℓ:ℝ) - 1) ^ 2 + 1 - (((s:ℝ) + ((ℓ:ℝ) - 2)) / ((ℓ:ℝ) - 1) + (s:ℝ) * (ℓ:ℝ) / ((ℓ:ℝ) - 1) ^ 2) = (((H:ℝ) - s) * (2 * (ℓ:ℝ) - 1) + ((ℓ:ℝ) - 1)) / ((ℓ:ℝ) - 1) ^ 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hB0 : 0 ≤ (((H:ℝ) - s) * (2 * (ℓ:ℝ) - 1) + ((ℓ:ℝ) - 1)) / ((ℓ:ℝ) - 1) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Apply `div_nonneg ?_ (sq_nonneg _)` to reduce the goal to its premises. Establish `h5 : (0:ℝ) ≤ (H:ℝ) - s` using `by linarith`. Establish `h6 : (0:ℝ) ≤ 2 * (ℓ:ℝ) - 1` using `by linarith`. Use polynomial arithmetic with `[mul_nonneg h5 h6]`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Prove the components needed by the constructor for the conclusion.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -148,9 +146,9 @@ theorem residue_always_holds : StatResAlways := by
   · linarith
 
 /- English proof (translation)
-Unfold `StatResQ`. Introduce `A _ D _ _ N N' π₀ ℓ a r ha hr`. Establish `hA : π₀ ^ a ∈ N'.colon N` using `Submodule.mem_colon.mpr ha`. Establish `hB : (ℓ : A) ^ r ∈ N'.colon N` using `Submodule.mem_colon.mpr hr`. Establish `hC` using `Ideal.add_pow_mem_of_pow_mem_of_le _ hA hB (show a + r ≤ a + r + 1 by omega)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.mem_colon.mp hC`.
+A detailed English derivation is pending.
 -/
 theorem residue_quotient_holds : StatResQ := by
   unfold StatResQ
@@ -161,9 +159,9 @@ theorem residue_quotient_holds : StatResQ := by
   exact Submodule.mem_colon.mp hC
 
 /- English proof (translation)
-Unfold `StatASuper`. Introduce `ℓ _ r s`. Unfold `aH`. Establish `hd : ℓ ^ (padicValNat ℓ r.factorial + padicValNat ℓ s.factorial) ∣ (r + s).factorial`. Rewrite using `[pow_add]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.mul_dvd_mul pow_padicValNat_dvd pow_padicValNat_dvd).trans (Nat.factorial_mul_factorial_dvd_factorial_add r s)`. Establish `h` using `(padicValNat_dvd_iff_le (Nat.factorial_ne_zero _)).mp hd`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem superadditivity_holds : StatASuper := by
   unfold StatASuper
@@ -177,17 +175,17 @@ theorem superadditivity_holds : StatASuper := by
   omega
 
 /- English proof (translation)
-Unfold `StatFrameInv`. Introduce `ℓ _ E _ I Cf Cf' h0 h0' hCf hconv r`. Establish `hsup : StatASuper` using `superadditivity_holds`. Unfold `StatASuper at hsup`. Establish `hL : ∀ k : ℕ, ((ℓ : E) ^ k) ∈ I` using `fun k => pow_mem (natCast_mem I ℓ) k`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Proceed by induction on `r using Nat.strong_induction_on with`. Consider the case `_ r ih`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Rewrite using `[h0', mul_one]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hL _`. Establish `hs` using `hconv r hr`. Simplify using `only [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Nat.succ_eq_add_one, Finset.sum_range_succ', h0, one_mul, Nat.sub_zero] at hs`. Establish `hCr : Cf' r = -∑ k ∈ Finset.range r, Cf (k + 1) * Cf' (r - (k + 1))`. Rewrite using `[eq_neg_iff_add_eq_zero, add_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hs`. Rewrite using `[hCr, mul_neg, Finset.mul_sum]`. Apply `neg_mem` to reduce the goal to its premises. Apply `sum_mem` to reduce the goal to its premises. Introduce `k hk`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hk` using `[Finset.mem_range]`. Establish `hle : aH ℓ (k + 1) + aH ℓ (r - (k + 1)) ≤ aH ℓ r`. Establish `h7` using `hsup ℓ (k + 1) (r - (k + 1))`. Rewrite `h7` using `[Nat.add_sub_cancel' (by omega)]`. Then use the resulting hypothesis. Establish `hcomm : Commute ((ℓ : E) ^ aH ℓ (r - (k + 1))) (Cf (k + 1))` using `(Nat.cast_commute ℓ (Cf (k + 1))).pow_left _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `heq : (ℓ : E) ^ aH ℓ r * (Cf (k + 1) * Cf' (r - (k + 1))) = (ℓ : E) ^ (aH ℓ r - (aH ℓ (k + 1) + aH ℓ (r - (k + 1)))) * ((ℓ : E) ^ aH ℓ (k + 1) * Cf (k + 1)) * ((ℓ : E) ^ aH ℓ (r - (k + 1)) * Cf' (r - (k + 1)))` using `by conv_lhs => rw [← Nat.sub_add_cancel hle, pow_add, pow_add]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc ((ℓ : E) ^ aH ℓ (r - (k + 1))) (Cf (k + 1)), hcomm.eq, mul_assoc]`. Rewrite using `[heq]`. Conclude with `mul_mem (mul_mem (hL _) (hCf _)) (ih _ (by omega))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_invariance_holds : StatFrameInv := by
   unfold StatFrameInv
@@ -228,13 +226,13 @@ theorem frame_invariance_holds : StatFrameInv := by
       exact mul_mem (mul_mem (hL _) (hCf _)) (ih _ (by omega))
 
 /- English proof (translation)
-Unfold `StatSigJNum`. Introduce `ℓ hℓ j y r hj`. Establish `hℓR : (3:ℝ) ≤ ℓ` using `by exact_mod_cast hℓ`. Establish `hq : (0:ℝ) < (ℓ:ℝ) - 1` using `by linarith`. Establish `hP : (0:ℝ) < (ℓ:ℝ) ^ (j - 1)` using `pow_pos (by linarith) _`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← div_div]`. Use `set Y := (y:ℝ) / (ℓ:ℝ) ^ (j - 1) with hYdef`. Establish `e1 : (r:ℝ) * ℓ / ((ℓ:ℝ) - 1) - Y / ((ℓ:ℝ) - 1) = ((ℓ:ℝ) * r - Y) / ((ℓ:ℝ) - 1)`. Expand and normalize the polynomial expressions, which then agree. Break down `le_total ((ℓ:ℝ) * r - Y) 0 with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[max_eq_left h]`. Establish `h8 : 0 ≤ (-((ℓ:ℝ) * r - Y)) / ((ℓ:ℝ) - 1)` using `div_nonneg (by linarith) hq.le`. Establish `h9 : (-((ℓ:ℝ) * r - Y)) / ((ℓ:ℝ) - 1) = -(((ℓ:ℝ) * r - Y) / ((ℓ:ℝ) - 1))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[max_eq_right h]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h8 : ((ℓ:ℝ) * r - Y) / ((ℓ:ℝ) - 1) ≤ (ℓ:ℝ) * r - Y` using `div_le_self h (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sigma_j_numerical : StatSigJNum := by
   unfold StatSigJNum

@@ -3,7 +3,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RowFormPermutationSplit
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.RowFormPermutationSplit.PermutedRowProductSplit
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.QmRowForm.qmRowForm_of PI.UnitaryGroupMassFormula.QmRowForm.double_row_decreasing PI.UnitaryGroupMassFormula.QmRowForm.double_row_increasing PI.UnitaryGroupMassFormula.QmRowForm.double_row_permutation`.
+A detailed English derivation is pending.
 -/
 theorem quantum_minor_row_form : PI.QmRowForm :=
   PI.UnitaryGroupMassFormula.QmRowForm.qmRowForm_of PI.UnitaryGroupMassFormula.QmRowForm.double_row_decreasing PI.UnitaryGroupMassFormula.QmRowForm.double_row_increasing

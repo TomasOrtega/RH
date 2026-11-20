@@ -8,11 +8,11 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `Φ : V ⊗[k] M ≃ₗ[k] (Fin d → M)` to `(TensorProduct.congr bV.equivFun (LinearEquiv.refl k M)).trans ((TensorProduct.comm k _ _).trans (TensorProduct.piScalarRight k k M (Fin d)))`. Establish `h : ∀ (v : V) (b : M) (i : Fin d), Φ (v ⊗ₜ b) i = bV.repr v i • b`. Introduce `v b i`. Simplify using `[Φ]`. Use `⟨Φ, h, fun z => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Φ.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Rewrite using `[map_sum, Finset.sum_apply]`. Simplify using `only [h, Module.Basis.repr_self]`. Rewrite using `[Finset.sum_eq_single j]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `i _ hij`. Simplify using `[Finsupp.single_apply, hij]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem exists_tensor_coord_of_basis {k V M : Type} [Field k] [AddCommGroup V] [Module k V]
     [AddCommGroup M] [Module k M] {d : ℕ} (bV : Module.Basis (Fin d) k V) :
@@ -37,15 +37,15 @@ theorem exists_tensor_coord_of_basis {k V M : Type} [Field k] [AddCommGroup V] [
   · simp
 
 /- English proof (translation)
-Introduce `G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ d bV`. Take `⟨Φ, h, hz⟩` from `exists_tensor_coord_of_basis (M := BdR) bV`. Use `⟨Φ, fun a z => ⟨?_, fun H => ?_⟩, fun g z => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩ i`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul v b`. Rewrite using `[AlgebraTensorModule.map_tmul, h]`. Conclude with `((PD.Fil a).restrictScalars Qp).smul_mem _ b.2`. Consider the case `add x y hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, Pi.add_apply]`. Conclude with `add_mem hx hy`. Rewrite using `[hz z]`. Use `Submodule.sum_mem _ fun i _ => ⟨bV i ⊗ₜ ⟨Φ z i, H i⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[AlgebraTensorModule.map_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hact : ∀ (v : V) (b : BdR), actVdR PD ρ g (v ⊗ₜ b) = ρ g v ⊗ₜ PD.actdR g b`. Introduce `v b`. Unfold `actVdR`. Rewrite using `[AlgebraTensorModule.map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Use function extensionality and compare the values at `i`. Use `conv_lhs => rw [hz z]`. Rewrite using `[map_sum, map_sum, Finset.sum_apply]`. Simplify using `only [hact, h, Matrix.mulVec, dotProduct, Matrix.of_apply, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coord_tensor_dR : ∀ {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) {LL : Type} [Field LL] [Algebra Qp LL] {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] (ρ : Representation LL G V) {d : ℕ} (bV : Module.Basis (Fin d) Qp V), ∃ Φ : V ⊗[Qp] BdR ≃ₗ[Qp] (Fin d → BdR), (∀ (a : ℤ) (z : V ⊗[Qp] BdR), z ∈ FilV PD (LL := LL) (V := V) a ↔ ∀ i, Φ z i ∈ PD.Fil a) ∧ ∀ (g : G) (z : V ⊗[Qp] BdR), Φ (actVdR PD ρ g z) = (Matrix.of fun i j => algebraMap Qp BdR (bV.repr (ρ g (bV j)) i)).mulVec (fun i => PD.actdR g (Φ z i)) := by
   intro G _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ V _ _ _ _ ρ d bV

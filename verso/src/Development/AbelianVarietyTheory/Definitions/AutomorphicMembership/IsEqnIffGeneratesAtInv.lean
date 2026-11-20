@@ -20,7 +20,7 @@ namespace GlobalTheory.Cartier
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec X).mem_open_set_iff U.isOpen).2 ⟨x, trivial, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈ U :=
   ((genericPoint_spec X).mem_open_set_iff U.isOpen).2 ⟨x, trivial, hx⟩
@@ -28,7 +28,7 @@ theorem gen_mem {U : X.Opens} {x : X} (hx : x ∈ U) : genericPoint X ∈ U :=
 omit [IsIntegral X] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, h'⟩`.
+Supply the required witnesses or components.
 -/
 theorem memInf {U V : X.Opens} {x : X} (h : x ∈ U) (h' : x ∈ V) : x ∈ U ⊓ V := ⟨h, h'⟩
 
@@ -36,13 +36,13 @@ def fnOf (U : X.Opens) (h : genericPoint X ∈ U) : Γ(X, U) →+* X.functionFie
   (X.presheaf.germ U (genericPoint X) h).hom
 
 /- English proof (translation)
-The claim follows from `germ_injective_of_isIntegral X _ h`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_injective (U : X.Opens) (h : genericPoint X ∈ U) : Function.Injective (fnOf U h) :=
   germ_injective_of_isIntegral X _ h
 
 /- English proof (translation)
-Unfold `fnOf resG`. Conclude with `X.presheaf.germ_res_apply (homOfLE e) _ h a`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 @[simp] theorem fnOf_resG {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V) (a : Γ(X, U)) :
     fnOf V h (resG X e a) = fnOf U (e h) a := by
@@ -50,7 +50,7 @@ Unfold `fnOf resG`. Conclude with `X.presheaf.germ_res_apply (homOfLE e) _ h a`.
   exact X.presheaf.germ_res_apply (homOfLE e) _ h a
 
 /- English proof (translation)
-Conclude with `X.presheaf.germ_stalkSpecializes_apply hx _ a`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_germ {U : X.Opens} {x : X} (hx : x ∈ U) (a : Γ(X, U)) :
     algebraMap (X.presheaf.stalk x) X.functionField (X.presheaf.germ U x hx a) =
@@ -58,7 +58,7 @@ theorem algebraMap_germ {U : X.Opens} {x : X} (hx : x ∈ U) (a : Γ(X, U)) :
   exact X.presheaf.germ_stalkSpecializes_apply hx _ a
 
 /- English proof (translation)
-Distinguish the cases in `hU : genericPoint X ∈ U`. Conclude with `fnOf_injective U hU (h hU)`. Conclude with `TopCat.Presheaf.section_ext X.sheaf U a b fun x hx => (hU (gen_mem hx)).elim`.
+Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 theorem fn_ext {U : X.Opens} {a b : Γ(X, U)}
     (h : ∀ hU : genericPoint X ∈ U, fnOf U hU a = fnOf U hU b) : a = b := by
@@ -80,28 +80,28 @@ section Local
 variable {x : X} {f g : X.functionField}
 
 /- English proof (translation)
-The claim follows from `let ⟨a, _, ha⟩ := h; ⟨a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem UnitAt.regAt (h : UnitAt x f) : RegAt x f :=
   let ⟨a, _, ha⟩ := h; ⟨a, ha⟩
 
 /- English proof (translation)
-The claim follows from `let ⟨a, _, ha⟩ := h; ⟨a, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem ZeroAt.regAt (h : ZeroAt x f) : RegAt x f :=
   let ⟨a, _, ha⟩ := h; ⟨a, ha⟩
 
 /- English proof (translation)
-Conclude with `IsFractionRing.injective _ _`.
+A detailed English derivation is pending.
 -/
 private theorem algebraMap_stalk_functionField_injective (x : X) :
     Function.Injective (algebraMap (X.presheaf.stalk x) X.functionField) := by
   exact IsFractionRing.injective _ _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Use `⟨⟨a, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, hb, e⟩`. Rewrite `hb` using `[algebraMap_stalk_functionField_injective x e]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ha hb`. Introduce and unpack `⟨⟨a, rfl⟩, hn⟩`. Conclude with `⟨a, (IsLocalRing.mem_maximalIdeal _).2 fun hu => hn ⟨a, hu, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zeroAt_iff : ZeroAt x f ↔ RegAt x f ∧ ¬ UnitAt x f := by
   constructor
@@ -114,22 +114,22 @@ theorem zeroAt_iff : ZeroAt x f ↔ RegAt x f ∧ ¬ UnitAt x f := by
     exact ⟨a, (IsLocalRing.mem_maximalIdeal _).2 fun hu => hn ⟨a, hu, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem regAt_zero (x : X) : RegAt x 0 := ⟨0, map_zero _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, isUnit_one, map_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_one (x : X) : UnitAt x 1 := ⟨1, isUnit_one, map_one _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Ideal.zero_mem _, map_zero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem zeroAt_zero (x : X) : ZeroAt x 0 := ⟨0, Ideal.zero_mem _, map_zero _⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Conclude with `⟨a + b, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RegAt.add (hf : RegAt x f) (hg : RegAt x g) : RegAt x (f + g) := by
   obtain ⟨a, rfl⟩ := hf
@@ -137,7 +137,7 @@ theorem RegAt.add (hf : RegAt x f) (hg : RegAt x g) : RegAt x (f + g) := by
   exact ⟨a + b, map_add _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Conclude with `⟨a * b, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RegAt.mul (hf : RegAt x f) (hg : RegAt x g) : RegAt x (f * g) := by
   obtain ⟨a, rfl⟩ := hf
@@ -145,7 +145,7 @@ theorem RegAt.mul (hf : RegAt x f) (hg : RegAt x g) : RegAt x (f * g) := by
   exact ⟨a * b, map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Take `⟨b, hb, rfl⟩` from `hg`. Conclude with `⟨a * b, ha.mul hb, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UnitAt.mul (hf : UnitAt x f) (hg : UnitAt x g) : UnitAt x (f * g) := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -153,7 +153,7 @@ theorem UnitAt.mul (hf : UnitAt x f) (hg : UnitAt x g) : UnitAt x (f * g) := by
   exact ⟨a * b, ha.mul hb, map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Use `⟨↑ha.unit⁻¹, Units.isUnit _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, IsUnit.unit_spec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UnitAt.inv (hf : UnitAt x f) : UnitAt x f⁻¹ := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -161,14 +161,14 @@ theorem UnitAt.inv (hf : UnitAt x f) : UnitAt x f⁻¹ := by
   rw [map_units_inv, IsUnit.unit_spec]
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Conclude with `(ha.map _).ne_zero`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UnitAt.ne_zero (hf : UnitAt x f) : f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
   exact (ha.map _).ne_zero
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Take `⟨b, rfl⟩` from `hg`. Conclude with `⟨a * b, Ideal.mul_mem_right _ _ ha, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ZeroAt.mul (hf : ZeroAt x f) (hg : RegAt x g) : ZeroAt x (f * g) := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -176,7 +176,7 @@ theorem ZeroAt.mul (hf : ZeroAt x f) (hg : RegAt x g) : ZeroAt x (f * g) := by
   exact ⟨a * b, Ideal.mul_mem_right _ _ ha, map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Take `⟨b, hb, rfl⟩` from `hg`. Conclude with `⟨a + b, Ideal.add_mem _ ha hb, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ZeroAt.add (hf : ZeroAt x f) (hg : ZeroAt x g) : ZeroAt x (f + g) := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -184,7 +184,7 @@ theorem ZeroAt.add (hf : ZeroAt x f) (hg : ZeroAt x g) : ZeroAt x (f + g) := by
   exact ⟨a + b, Ideal.add_mem _ ha hb, map_add _ _ _⟩
 
 /- English proof (translation)
-Use `⟨fun h => ⟨h.regAt, h.inv.regAt⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Establish `hab : a * b = 1` using `algebraMap_stalk_functionField_injective x (by rw [map_mul, map_one, ha, hb, mul_inv_cancel₀ hf])`. Conclude with `⟨a, ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, rfl⟩, ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem unitAt_iff (hf : f ≠ 0) : UnitAt x f ↔ RegAt x f ∧ RegAt x f⁻¹ := by
   refine ⟨fun h => ⟨h.regAt, h.inv.regAt⟩, ?_⟩
@@ -193,14 +193,14 @@ theorem unitAt_iff (hf : f ≠ 0) : UnitAt x f ↔ RegAt x f ∧ RegAt x f⁻¹ 
   exact ⟨a, ⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, rfl⟩, ha⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.presheaf.germ U x hx a, algebraMap_germ hx a⟩`.
+Supply the required witnesses or components.
 -/
 theorem regAt_fnOf {U : X.Opens} (hx : x ∈ U) (h : genericPoint X ∈ U) (a : Γ(X, U)) :
     RegAt x (fnOf U h a) :=
   ⟨X.presheaf.germ U x hx a, algebraMap_germ hx a⟩
 
 /- English proof (translation)
-Rewrite using `[X.mem_basicOpen a x hx]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb, e⟩`. Rewrite using `[← algebraMap_stalk_functionField_injective x (e.trans (algebraMap_germ hx a).symm)]` and apply the resulting hypothesis. Conclude with `fun hu => ⟨_, hu, algebraMap_germ hx a⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem unitAt_fnOf_iff {U : X.Opens} (hx : x ∈ U) (h : genericPoint X ∈ U) (a : Γ(X, U)) :
     UnitAt x (fnOf U h a) ↔ x ∈ X.basicOpen a := by
@@ -211,14 +211,14 @@ theorem unitAt_fnOf_iff {U : X.Opens} (hx : x ∈ U) (h : genericPoint X ∈ U) 
   · exact fun hu => ⟨_, hu, algebraMap_germ hx a⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.presheaf.germ U x hx a, a.isUnit.map _, algebraMap_germ hx (a : Γ(X, U))⟩`.
+Supply the required witnesses or components.
 -/
 theorem unitAt_fnOf {U : X.Opens} (hx : x ∈ U) (h : genericPoint X ∈ U) (a : Γ(X, U)ˣ) :
     UnitAt x (fnOf U h a) :=
   ⟨X.presheaf.germ U x hx a, a.isUnit.map _, algebraMap_germ hx (a : Γ(X, U))⟩
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h`. Take `⟨U, hx, s, hs⟩` from `X.presheaf.exists_germ_eq b`. Conclude with `⟨U, hx, s, by rw [← algebraMap_germ hx s, hs]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RegAt.exists_fnOf (h : RegAt x f) :
     ∃ (U : X.Opens) (hx : x ∈ U) (a : Γ(X, U)), fnOf U (gen_mem hx) a = f := by
@@ -227,9 +227,9 @@ theorem RegAt.exists_fnOf (h : RegAt x f) :
   exact ⟨U, hx, s, by rw [← algebraMap_germ hx s, hs]⟩
 
 /- English proof (translation)
-Take `⟨b, hu, rfl⟩` from `h`. Take `⟨U, hx, s, hs⟩` from `X.presheaf.exists_germ_eq b`. Use `⟨X.basicOpen s, (X.mem_basicOpen s x hx).2 (hs ▸ hu), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hyU : y ∈ U` using `X.basicOpen_le s hy`. Use `⟨X.presheaf.germ U y hyU s, (X.mem_basicOpen s y hyU).1 hy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[algebraMap_germ, ← hs, algebraMap_germ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UnitAt.exists_nhds (h : UnitAt x f) : ∃ U : X.Opens, x ∈ U ∧ ∀ y ∈ U, UnitAt y f := by
   obtain ⟨b, hu, rfl⟩ := h
@@ -240,20 +240,18 @@ theorem UnitAt.exists_nhds (h : UnitAt x f) : ∃ U : X.Opens, x ∈ U ∧ ∀ y
   rw [algebraMap_germ, ← hs, algebraMap_germ]
 
 /- English proof (translation)
-The claim follows from `X.presheaf.germ_res_apply e _ h a`.
+A detailed English derivation is pending.
 -/
 private theorem fnOf_map' {U V : X.Opens} (e : V ⟶ U) (h : genericPoint X ∈ V) (a : Γ(X, U)) :
     fnOf V h (X.presheaf.map e.op a) = fnOf U (e.le h) a :=
   X.presheaf.germ_res_apply e _ h a
 
 /- English proof (translation)
-Establish `hx : ∀ x : U, ∃ (W : X.Opens) (hW : (x : X) ∈ W) (s : Γ(X, W)), fnOf W (gen_mem hW) s = f` using `fun x => (h x x.2).exists_fnOf`. Use `choose W hW s hs using hx`. Set `W' : U → X.Opens` to `fun x => W x ⊓ U`. Set `sf : ∀ x : U, Γ(X, W' x)` to `fun x => X.presheaf.map (homOfLE inf_le_left).op (s x)`. Establish `hsf : ∀ x : U, ∀ hg, fnOf (W' x) hg (sf x) = f` using `fun x hg => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [sf]`. Rewrite using `[fnOf_map']`. Conclude with `hs x`. Establish `hres : ∀ (x : U) {V : X.Opens} (e : V ⟶ W' x) (hg : genericPoint X ∈ V), fnOf V hg (X.presheaf.map e.op (sf x)) = f` using `fun x V e hg => by`. Rewrite using `[fnOf_map', hsf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, -⟩` from `X.sheaf.existsUnique_gluing' W' U (fun x => homOfLE inf_le_right) (fun y hy => Opens.mem_iSup.2 ⟨⟨y, hy⟩, hW _, hy⟩) sf (fun i j => fn_ext fun hg => (hres i (Opens.infLELeft (W' i) (W' j)) hg).trans (hres j (Opens.infLERight (W' i) (W' j)) hg).symm)`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e1` using `fnOf_map' (homOfLE inf_le_right : W' ⟨_, hU⟩ ⟶ U) ⟨hW _, hU⟩ a`. Establish `e2 : X.presheaf.map (homOfLE inf_le_right : W' ⟨_, hU⟩ ⟶ U).op a = sf ⟨_, hU⟩` using `ha ⟨_, hU⟩`. Rewrite `e1` using `[e2]`.
-
-Conclude with `e1.symm.trans (hsf _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fnOf_eq {U : X.Opens} (hU : genericPoint X ∈ U) (h : ∀ x ∈ U, RegAt x f) :
     ∃ a : Γ(X, U), fnOf U hU a = f := by
@@ -281,9 +279,9 @@ theorem exists_fnOf_eq {U : X.Opens} (hU : genericPoint X ∈ U) (h : ∀ x ∈ 
   exact e1.symm.trans (hsf _ _)
 
 /- English proof (translation)
-Distinguish the cases in `hU : genericPoint X ∈ U`. Take `⟨a, ha⟩` from `exists_fnOf_eq hU fun x hx => (h x hx).regAt`. Take `⟨b, hb⟩` from `exists_fnOf_eq hU fun x hx => (h x hx).inv.regAt`. Establish `hf` using `(h _ hU).ne_zero`. Establish `hab : a * b = 1` using `fnOf_injective U hU (by rw [map_mul, map_one, ha, hb, mul_inv_cancel₀ hf])`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨⟨a, b, hab, by rw [mul_comm, hab]⟩, fun _ => ha⟩`. Conclude with `⟨1, fun h' => (hU h').elim⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_unit_fnOf_eq {U : X.Opens} (h : ∀ x ∈ U, UnitAt x f) :
     ∃ a : Γ(X, U)ˣ, ∀ hU, fnOf U hU a = f := by
@@ -297,7 +295,7 @@ theorem exists_unit_fnOf_eq {U : X.Opens} (h : ∀ x ∈ U, UnitAt x f) :
   · exact ⟨1, fun h' => (hU h').elim⟩
 
 /- English proof (translation)
-Take `⟨U, hU, s, hs⟩` from `X.presheaf.exists_germ_eq f`. Establish `e : fnOf U hU s = f` using `hs`. Conclude with `e ▸ regAt_fnOf hU hU s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem regAt_genericPoint (f : X.functionField) : RegAt (genericPoint X) f := by
   obtain ⟨U, hU, s, hs⟩ := X.presheaf.exists_germ_eq f
@@ -305,7 +303,7 @@ theorem regAt_genericPoint (f : X.functionField) : RegAt (genericPoint X) f := b
   exact e ▸ regAt_fnOf hU hU s
 
 /- English proof (translation)
-The claim follows from `(unitAt_iff hf).2 ⟨regAt_genericPoint f, regAt_genericPoint _⟩`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_genericPoint (hf : f ≠ 0) : UnitAt (genericPoint X) f :=
   (unitAt_iff hf).2 ⟨regAt_genericPoint f, regAt_genericPoint _⟩
@@ -326,7 +324,7 @@ abbrev Germ (x : X) : Type := Additive (X.functionFieldˣ ⧸ unitsAt x)
 def germOf (x : X) (f : X.functionFieldˣ) : Germ x := Additive.ofMul (QuotientGroup.mk f)
 
 /- English proof (translation)
-Unfold `germOf`. Rewrite using `[Additive.ofMul.injective.eq_iff, QuotientGroup.eq]`. Express the relevant statement in the definitionally equal form `UnitAt x ((f⁻¹ * g : X.functionFieldˣ) : X.functionField) ↔ _`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, div_eq_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem germOf_eq_iff {x : X} {f g : X.functionFieldˣ} :
     germOf x f = germOf x g ↔ UnitAt x ((g : X.functionField) / f) := by
@@ -363,7 +361,7 @@ def germ (D : CartierDiv X) (x : X) : Germ x := (show cartierGroup X from D).1 x
 def IsEqn (D : CartierDiv X) (x : X) (g : X.functionFieldˣ) : Prop := D.germ x = germOf x g
 
 /- English proof (translation)
-Take `⟨U, hU, f, hf⟩` from `(show cartierGroup X from D).2 x`. Conclude with `⟨U, hU, f, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isEqn_nhds (D : CartierDiv X) (x : X) :
     ∃ U : X.Opens, x ∈ U ∧ ∃ g, ∀ y ∈ U, D.IsEqn y g := by
@@ -371,14 +369,14 @@ theorem exists_isEqn_nhds (D : CartierDiv X) (x : X) :
   exact ⟨U, hU, f, hf⟩
 
 /- English proof (translation)
-Take `⟨U, hU, g, hg⟩` from `D.exists_isEqn_nhds x`. Conclude with `⟨g, hg x hU⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isEqn (D : CartierDiv X) (x : X) : ∃ g, D.IsEqn x g := by
   obtain ⟨U, hU, g, hg⟩ := D.exists_isEqn_nhds x
   exact ⟨g, hg x hU⟩
 
 /- English proof (translation)
-Establish `h0 : D.germ x = germOf x g` using `h`. Use `show D.germ x = germOf x g' ↔ _`. Rewrite using `[h0, germOf_eq_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEqn.iff_unitAt (h : D.IsEqn x g) :
     D.IsEqn x g' ↔ UnitAt x ((g' : X.functionField) / g) := by
@@ -387,7 +385,7 @@ theorem IsEqn.iff_unitAt (h : D.IsEqn x g) :
   rw [h0, germOf_eq_iff]
 
 /- English proof (translation)
-Take `⟨U, hU, g₀, hg₀⟩` from `D.exists_isEqn_nhds x`. Take `⟨V, hV, hu⟩` from `((hg₀ x hU).iff_unitAt.1 h).exists_nhds`. Conclude with `⟨U ⊓ V, memInf hU hV, fun y hy => (hg₀ y hy.1).iff_unitAt.2 (hu y hy.2)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsEqn.exists_nhds (h : D.IsEqn x g) : ∃ U : X.Opens, x ∈ U ∧ ∀ y ∈ U, D.IsEqn y g := by
   obtain ⟨U, hU, g₀, hg₀⟩ := D.exists_isEqn_nhds x
@@ -395,7 +393,7 @@ theorem IsEqn.exists_nhds (h : D.IsEqn x g) : ∃ U : X.Opens, x ∈ U ∧ ∀ y
   exact ⟨U ⊓ V, memInf hU hV, fun y hy => (hg₀ y hy.1).iff_unitAt.2 (hu y hy.2)⟩
 
 /- English proof (translation)
-Establish `key : (show cartierGroup X from D) = (show cartierGroup X from E)` using `Subtype.ext (funext fun x => by`. Take `⟨g, hD, hE⟩` from `h x`. Conclude with `Eq.trans (hD : D.germ x = germOf x g) (Eq.symm (hE : E.germ x = germOf x g)))`. Conclude with `key`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_of_isEqn (h : ∀ x, ∃ g, D.IsEqn x g ∧ E.IsEqn x g) : D = E := by
   have key : (show cartierGroup X from D) = (show cartierGroup X from E) :=
@@ -405,7 +403,7 @@ theorem ext_of_isEqn (h : ∀ x, ∃ g, D.IsEqn x g ∧ E.IsEqn x g) : D = E := 
   exact key
 
 /- English proof (translation)
-Take `⟨g₀, h₀⟩` from `D.exists_isEqn (genericPoint X)`. Conclude with `h₀.iff_unitAt.2 (unitAt_genericPoint (div_ne_zero g.ne_zero g₀.ne_zero))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isEqn_genericPoint (D : CartierDiv X) (g : X.functionFieldˣ) :
     D.IsEqn (genericPoint X) g := by
@@ -418,7 +416,7 @@ Both sides reduce to the same expression.
 theorem isEqn_zero (x : X) : (0 : CartierDiv X).IsEqn x 1 := rfl
 
 /- English proof (translation)
-Establish `h0 : D.germ x = germOf x g` using `h`. Establish `h1 : E.germ x = germOf x g'` using `h'`. Use `show D.germ x + E.germ x = germOf x (g * g')`. Rewrite using `[h0, h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsEqn.add (h : D.IsEqn x g) (h' : E.IsEqn x g') : (D + E).IsEqn x (g * g') := by
   have h0 : D.germ x = germOf x g := h
@@ -428,7 +426,7 @@ theorem IsEqn.add (h : D.IsEqn x g) (h' : E.IsEqn x g') : (D + E).IsEqn x (g * g
   rfl
 
 /- English proof (translation)
-Establish `h0 : D.germ x = germOf x g` using `h`. Use `show -(D.germ x) = germOf x g⁻¹`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem IsEqn.neg (h : D.IsEqn x g) : (-D).IsEqn x g⁻¹ := by
   have h0 : D.germ x = germOf x g := h
@@ -437,14 +435,14 @@ theorem IsEqn.neg (h : D.IsEqn x g) : (-D).IsEqn x g⁻¹ := by
   rfl
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, div_eq_mul_inv]`. Conclude with `h.add h'.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEqn.sub (h : D.IsEqn x g) (h' : E.IsEqn x g') : (D - E).IsEqn x (g / g') := by
   rw [sub_eq_add_neg, div_eq_mul_inv]
   exact h.add h'.neg
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_smul, pow_zero]`. Conclude with `isEqn_zero x`. Consider the case `succ n ih => rw [succ_nsmul, pow_succ]`. Conclude with `ih.add h`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsEqn.nsmul (h : D.IsEqn x g) (n : ℕ) : (n • D).IsEqn x (g ^ n) := by
   induction n with
@@ -452,7 +450,7 @@ theorem IsEqn.nsmul (h : D.IsEqn x g) (n : ℕ) : (n • D).IsEqn x (g ^ n) := b
   | succ n ih => rw [succ_nsmul, pow_succ]; exact ih.add h
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => rw [Int.ofNat_eq_natCast, natCast_zsmul, zpow_natCast]`. Conclude with `h.nsmul n`. Consider the case `negSucc n => rw [negSucc_zsmul, zpow_negSucc]`. Conclude with `(h.nsmul (n + 1)).neg`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsEqn.zsmul (h : D.IsEqn x g) (n : ℤ) : (n • D).IsEqn x (g ^ n) := by
   cases n with
@@ -488,7 +486,7 @@ def VanishesAt (D : CartierDiv X) (x : X) (f : X.functionField) : Prop :=
   ∃ g, D.IsEqn x g ∧ ZeroAt x (f * g)
 
 /- English proof (translation)
-Establish `h` using `g'.ne_zero`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem mul_eqn_eq (f : X.functionField) (g g' : X.functionFieldˣ) :
     f * g = f * g' * ((g : X.functionField) / g') := by
@@ -496,7 +494,7 @@ theorem mul_eqn_eq (f : X.functionField) (g g' : X.functionFieldˣ) :
   field_simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, h₀, hr⟩`. Rewrite using `[mul_eqn_eq f g g₀]`. Conclude with `hr.mul (h₀.iff_unitAt.1 h).regAt`. Conclude with `fun hr => ⟨g, h, hr⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsEqn.regularAt_iff (h : D.IsEqn x g) : D.RegularAt x f ↔ RegAt x (f * g) := by
   constructor
@@ -506,7 +504,7 @@ theorem IsEqn.regularAt_iff (h : D.IsEqn x g) : D.RegularAt x f ↔ RegAt x (f *
   · exact fun hr => ⟨g, h, hr⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, h₀, hr⟩`. Rewrite using `[mul_eqn_eq f g g₀]`. Conclude with `hr.mul (h₀.iff_unitAt.1 h)`. Conclude with `fun hr => ⟨g, h, hr⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsEqn.generatesAt_iff (h : D.IsEqn x g) : D.GeneratesAt x f ↔ UnitAt x (f * g) := by
   constructor
@@ -516,7 +514,7 @@ theorem IsEqn.generatesAt_iff (h : D.IsEqn x g) : D.GeneratesAt x f ↔ UnitAt x
   · exact fun hr => ⟨g, h, hr⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g₀, h₀, hr⟩`. Rewrite using `[mul_eqn_eq f g g₀]`. Conclude with `hr.mul (h₀.iff_unitAt.1 h).regAt`. Conclude with `fun hr => ⟨g, h, hr⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsEqn.vanishesAt_iff (h : D.IsEqn x g) : D.VanishesAt x f ↔ ZeroAt x (f * g) := by
   constructor
@@ -526,21 +524,21 @@ theorem IsEqn.vanishesAt_iff (h : D.IsEqn x g) : D.VanishesAt x f ↔ ZeroAt x (
   · exact fun hr => ⟨g, h, hr⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite using `[hg.vanishesAt_iff, hg.regularAt_iff, hg.generatesAt_iff, zeroAt_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem vanishesAt_iff : D.VanishesAt x f ↔ D.RegularAt x f ∧ ¬ D.GeneratesAt x f := by
   obtain ⟨g, hg⟩ := D.exists_isEqn x
   rw [hg.vanishesAt_iff, hg.regularAt_iff, hg.generatesAt_iff, zeroAt_iff]
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `h`. Conclude with `⟨g, hg, hu.regAt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GeneratesAt.regularAt (h : D.GeneratesAt x f) : D.RegularAt x f := by
   obtain ⟨g, hg, hu⟩ := h
   exact ⟨g, hg, hu.regAt⟩
 
 /- English proof (translation)
-Take `⟨g, hg, hu⟩` from `h`. Introduce and unpack `rfl`. Conclude with `hu.ne_zero (zero_mul _)`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GeneratesAt.ne_zero (h : D.GeneratesAt x f) : f ≠ 0 := by
   obtain ⟨g, hg, hu⟩ := h
@@ -548,16 +546,16 @@ theorem GeneratesAt.ne_zero (h : D.GeneratesAt x f) : f ≠ 0 := by
   exact hu.ne_zero (zero_mul _)
 
 /- English proof (translation)
-Take `⟨g, hg, hz⟩` from `h`. Conclude with `⟨g, hg, hz.regAt⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem VanishesAt.regularAt (h : D.VanishesAt x f) : D.RegularAt x f := by
   obtain ⟨g, hg, hz⟩ := h
   exact ⟨g, hg, hz.regAt⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨g, h, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel₀ g.ne_zero]`. Conclude with `unitAt_one x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨g₀, h₀, hu⟩`. Establish `hu'` using `hu.inv`. Rewrite `hu'` using `[mul_inv, inv_inv, ← div_eq_mul_inv]`. Conclude with `h₀.iff_unitAt.2 hu'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEqn_iff_generatesAt_inv : D.IsEqn x g ↔ D.GeneratesAt x (g : X.functionField)⁻¹ := by
   constructor
@@ -571,7 +569,7 @@ theorem isEqn_iff_generatesAt_inv : D.IsEqn x g ↔ D.GeneratesAt x (g : X.funct
     exact h₀.iff_unitAt.2 hu'
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn (genericPoint X)`. Conclude with `⟨g, hg, unitAt_genericPoint (mul_ne_zero hf g.ne_zero)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem generatesAt_genericPoint (D : CartierDiv X) (hf : f ≠ 0) :
     D.GeneratesAt (genericPoint X) f := by
@@ -579,7 +577,7 @@ theorem generatesAt_genericPoint (D : CartierDiv X) (hf : f ≠ 0) :
   exact ⟨g, hg, unitAt_genericPoint (mul_ne_zero hf g.ne_zero)⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[zero_mul]`. Conclude with `zeroAt_zero x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishesAt_zero (D : CartierDiv X) (x : X) : D.VanishesAt x 0 := by
   obtain ⟨g, hg⟩ := D.exists_isEqn x
@@ -588,7 +586,7 @@ theorem vanishesAt_zero (D : CartierDiv X) (x : X) : D.VanishesAt x 0 := by
   exact zeroAt_zero x
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite `h`, `h'`, the goal using `[hg.regularAt_iff]`. Rewrite using `[add_mul]`. Conclude with `h.add h'`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularAt.add (h : D.RegularAt x f) (h' : D.RegularAt x f') : D.RegularAt x (f + f') := by
   obtain ⟨g, hg⟩ := D.exists_isEqn x
@@ -597,7 +595,7 @@ theorem RegularAt.add (h : D.RegularAt x f) (h' : D.RegularAt x f') : D.RegularA
   exact h.add h'
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite `h`, `h'`, the goal using `[hg.vanishesAt_iff]`. Rewrite using `[add_mul]`. Conclude with `h.add h'`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VanishesAt.add (h : D.VanishesAt x f) (h' : D.VanishesAt x f') :
     D.VanishesAt x (f + f') := by
@@ -607,9 +605,9 @@ theorem VanishesAt.add (h : D.VanishesAt x f) (h' : D.VanishesAt x f') :
   exact h.add h'
 
 /- English proof (translation)
-Take `⟨g, hg, r⟩` from `h`. Take `⟨g', hg', r'⟩` from `h'`. Use `⟨g * g', hg.add hg', ?_⟩` and prove the remaining obligations. Establish `e : f * f' * ((g * g' : X.functionFieldˣ) : X.functionField) = (f * g) * (f' * g')`. Rewrite using `[Units.val_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `r.mul r'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularAt.mul (h : D.RegularAt x f) (h' : E.RegularAt x f') :
     (D + E).RegularAt x (f * f') := by
@@ -623,9 +621,9 @@ theorem RegularAt.mul (h : D.RegularAt x f) (h' : E.RegularAt x f') :
   exact r.mul r'
 
 /- English proof (translation)
-Take `⟨g, hg, r⟩` from `h`. Take `⟨g', hg', r'⟩` from `h'`. Use `⟨g * g', hg.add hg', ?_⟩` and prove the remaining obligations. Establish `e : f * f' * ((g * g' : X.functionFieldˣ) : X.functionField) = (f * g) * (f' * g')`. Rewrite using `[Units.val_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `r.mul r'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GeneratesAt.mul (h : D.GeneratesAt x f) (h' : E.GeneratesAt x f') :
     (D + E).GeneratesAt x (f * f') := by
@@ -639,9 +637,9 @@ theorem GeneratesAt.mul (h : D.GeneratesAt x f) (h' : E.GeneratesAt x f') :
   exact r.mul r'
 
 /- English proof (translation)
-Take `⟨g, hg, r⟩` from `h`. Take `⟨g', hg', r'⟩` from `h'`. Use `⟨g * g', hg.add hg', ?_⟩` and prove the remaining obligations. Establish `e : f * f' * ((g * g' : X.functionFieldˣ) : X.functionField) = (f * g) * (f' * g')`. Rewrite using `[Units.val_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `r.mul r'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VanishesAt.mul (h : D.VanishesAt x f) (h' : E.RegularAt x f') :
     (D + E).VanishesAt x (f * f') := by
@@ -655,19 +653,19 @@ theorem VanishesAt.mul (h : D.VanishesAt x f) (h' : E.RegularAt x f') :
   exact r.mul r'
 
 /- English proof (translation)
-Rewrite using `[(isEqn_zero x).regularAt_iff, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem regularAt_zero_iff : (0 : CartierDiv X).RegularAt x f ↔ RegAt x f := by
   rw [(isEqn_zero x).regularAt_iff, Units.val_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[(isEqn_zero x).generatesAt_iff, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem generatesAt_zero_iff : (0 : CartierDiv X).GeneratesAt x f ↔ UnitAt x f := by
   rw [(isEqn_zero x).generatesAt_iff, Units.val_one, mul_one]
 
 /- English proof (translation)
-Take `⟨g, hg, r⟩` from `h`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `h'.mul r`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RegularAt.regAt_mul (h : D.RegularAt x f) (h' : RegAt x f') : D.RegularAt x (f' * f) := by
   obtain ⟨g, hg, r⟩ := h
@@ -676,7 +674,7 @@ theorem RegularAt.regAt_mul (h : D.RegularAt x f) (h' : RegAt x f') : D.RegularA
   exact h'.mul r
 
 /- English proof (translation)
-Take `⟨g₀, hg₀⟩` from `D.exists_isEqn x`. Establish `e : f * ((g₀ * g : X.functionFieldˣ) : X.functionField) = f * g * g₀`. Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[(hg₀.add (isEqn_principal g x)).regularAt_iff, hg₀.regularAt_iff, e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem regularAt_add_principal :
     (D + principal g).RegularAt x f ↔ D.RegularAt x (f * g) := by
@@ -688,9 +686,9 @@ theorem regularAt_add_principal :
 def Eff (D : CartierDiv X) : Prop := ∀ x, D.RegularAt x 1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x g hg`. Use `hg.regularAt_iff.1 (h x)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Introduce `h x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Conclude with `hg.regularAt_iff.2 (by rw [one_mul]; exact h x g hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eff_iff : D.Eff ↔ ∀ x g, D.IsEqn x g → RegAt x g := by
   constructor
@@ -702,12 +700,12 @@ theorem eff_iff : D.Eff ↔ ∀ x g, D.IsEqn x g → RegAt x g := by
     exact hg.regularAt_iff.2 (by rw [one_mul]; exact h x g hg)
 
 /- English proof (translation)
-Introduce `x` and use `regularAt_zero_iff.2 (unitAt_one x).regAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eff_zero : (0 : CartierDiv X).Eff := fun x => regularAt_zero_iff.2 (unitAt_one x).regAt
 
 /- English proof (translation)
-Introduce `x`. Use `(h x).mul (h' x)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Eff.add (h : D.Eff) (h' : E.Eff) : (D + E).Eff := by
   intro x
@@ -715,9 +713,9 @@ theorem Eff.add (h : D.Eff) (h' : E.Eff) : (D + E).Eff := by
   rwa [one_mul] at this
 
 /- English proof (translation)
-Use `ext_of_isEqn fun x => ?_` and prove the remaining obligations. Take `⟨g, hg⟩` from `D.exists_isEqn x`. Establish `r1` using `eff_iff.1 h x g hg`. Establish `r2` using `eff_iff.1 h' x _ hg.neg`. Rewrite `r2` using `[Units.val_inv_eq_inv_val]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : UnitAt x g` using `(unitAt_iff g.ne_zero).2 ⟨r1, r2⟩`. Use `⟨1, hg.iff_unitAt.2 ?_, isEqn_zero x⟩` and prove the remaining obligations. Rewrite using `[Units.val_one, one_div]`. Conclude with `hu.inv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eff.eq_zero (h : D.Eff) (h' : (-D).Eff) : D = 0 := by
   refine ext_of_isEqn fun x => ?_
@@ -737,7 +735,7 @@ def supp (D : CartierDiv X) : Closeds X where
     ⟨U, fun y hy => not_not.2 (h y hy), U.isOpen, hU⟩)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `¬ D.IsEqn x 1 ↔ _`. Rewrite using `[h.iff_unitAt, Units.val_one, one_div]`. Conclude with `not_congr ⟨fun u => by simpa using u.inv, fun u => u.inv⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEqn.mem_supp_iff (h : D.IsEqn x g) : x ∈ D.supp ↔ ¬ UnitAt x g := by
   change ¬ D.IsEqn x 1 ↔ _
@@ -745,14 +743,14 @@ theorem IsEqn.mem_supp_iff (h : D.IsEqn x g) : x ∈ D.supp ↔ ¬ UnitAt x g :=
   exact not_congr ⟨fun u => by simpa using u.inv, fun u => u.inv⟩
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite using `[hg.mem_supp_iff, not_not, hg.generatesAt_iff, one_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem notMem_supp_iff : x ∉ D.supp ↔ D.GeneratesAt x 1 := by
   obtain ⟨g, hg⟩ := D.exists_isEqn x
   rw [hg.mem_supp_iff, not_not, hg.generatesAt_iff, one_mul]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Rewrite using `[hg.mem_supp_iff, hg.vanishesAt_iff, one_mul, zeroAt_iff]`. Establish `r` using `eff_iff.1 h x g hg`. Conclude with `⟨fun hn => ⟨r, hn⟩, fun hz => hz.2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Eff.mem_supp_iff (h : D.Eff) : x ∈ D.supp ↔ D.VanishesAt x 1 := by
   obtain ⟨g, hg⟩ := D.exists_isEqn x
@@ -761,12 +759,12 @@ theorem Eff.mem_supp_iff (h : D.Eff) : x ∈ D.supp ↔ D.VanishesAt x 1 := by
   exact ⟨fun hn => ⟨r, hn⟩, fun hz => hz.2⟩
 
 /- English proof (translation)
-The claim follows from `notMem_supp_iff.2 (generatesAt_genericPoint D one_ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_notMem_supp (D : CartierDiv X) : genericPoint X ∉ D.supp := notMem_supp_iff.2 (generatesAt_genericPoint D one_ne_zero)
 
 /- English proof (translation)
-Introduce `h`. Apply `D.genericPoint_notMem_supp` to reduce the goal to its premises. Rewrite using `[h]`. Discharge the goal by the elementary cases of `trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 theorem supp_ne_top (D : CartierDiv X) : D.supp ≠ ⊤ := by
   intro h
@@ -775,11 +773,11 @@ theorem supp_ne_top (D : CartierDiv X) : D.supp ≠ ⊤ := by
   trivial
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `ext_of_isEqn fun x => ⟨1, ?_, isEqn_zero x⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Establish `hx : x ∈ ((D.supp : Closeds X) : Set X)` using `hn`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hx` using `[h, Closeds.coe_bot]`. Conclude with `hx`. Introduce and unpack `rfl`. Use `SetLike.ext fun x => ⟨fun hx => absurd (isEqn_zero x) hx, fun hx => ?_⟩` and prove the remaining obligations. Establish `h2 : x ∈ ((⊥ : Closeds X) : Set X)` using `hx`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[Closeds.coe_bot]`. Conclude with `h2.elim`.
+A detailed English derivation is pending.
 -/
 theorem supp_eq_bot_iff : D.supp = ⊥ ↔ D = 0 := by
   constructor
@@ -796,11 +794,9 @@ theorem supp_eq_bot_iff : D.supp = ⊥ ↔ D = 0 := by
     exact h2.elim
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : ¬ (D + E).IsEqn x 1` using `hx`. Use `show x ∈ ((D.supp ⊔ E.supp : Closeds X) : Set X)`. Rewrite using `[Closeds.coe_sup]`. Assume the negation of the conclusion as `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_union, not_or] at hn`. Establish `hD : D.IsEqn x 1` using `Classical.byContradiction fun h => hn.1 h`. Establish `hE : E.IsEqn x 1` using `Classical.byContradiction fun h => hn.2 h`. Use `hD.add hE` as an intermediate fact. Rewrite `this` using `[mul_one]`.
-
-Conclude with `hx' this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_add_le (D E : CartierDiv X) : (D + E).supp ≤ D.supp ⊔ E.supp := by
   intro x hx
@@ -827,21 +823,21 @@ def secOn (D : CartierDiv X) (S : Set X) : Submodule Γ(X, ⊤) X.functionField 
   smul_mem' a _ h x hx := (h x hx).regAt_mul (regAt_fnOf (U := ⊤) trivial trivial a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_secOn {S : Set X} : f ∈ D.secOn S ↔ ∀ x ∈ S, D.RegularAt x f := Iff.rfl
 
 def sections (D : CartierDiv X) : Submodule Γ(X, ⊤) X.functionField := D.secOn Set.univ
 
 /- English proof (translation)
-Rewrite using `[sections, mem_secOn]`. Conclude with `⟨fun h x => h x (Set.mem_univ x), fun h x _ => h x⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_sections : f ∈ D.sections ↔ ∀ x, D.RegularAt x f := by
   rw [sections, mem_secOn]
   exact ⟨fun h x => h x (Set.mem_univ x), fun h x _ => h x⟩
 
 /- English proof (translation)
-Rewrite using `[mem_sections, add_comm]`. Conclude with `forall_congr' fun x => by rw [regularAt_add_principal, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sections_iff_eff : (g : X.functionField) ∈ D.sections ↔ (principal g + D).Eff := by
   rw [mem_sections, add_comm]
@@ -866,7 +862,7 @@ structure Presents (D : CartierDiv X) (L : LB X) (r : L.ι → X.functionFieldˣ
   isEqn : ∀ i, ∀ x ∈ L.U i, D.IsEqn x (r i)
 
 /- English proof (translation)
-Establish `hij : x ∈ L.U i ⊓ L.U j` using `memInf hi hj`. Establish `hq : (r i : X.functionField) / r j = fnOf _ (gen_mem hij) (L.g i j : Γ(X, L.U i ⊓ L.U j))`. Rewrite using `[hr i j (gen_mem hij), mul_div_assoc, div_self (r j).ne_zero, mul_one]`. Rewrite using `[germOf_eq_iff, hq]`. Conclude with `unitAt_fnOf hij (gen_mem hij) (L.g i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRatSec.germOf_eq (hr : IsRatSec L r) {i j : L.ι} {x : X} (hi : x ∈ L.U i)
     (hj : x ∈ L.U j) : germOf x (r j) = germOf x (r i) := by
@@ -882,14 +878,14 @@ def divOfRatSec (hL : L.IsLB) (hr : IsRatSec L r) : CartierDiv X :=
       fun y hy => hr.germOf_eq hy (exists_chart hL y).choose_spec⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hL, hr, fun _ x hx => hr.germOf_eq hx (exists_chart hL x).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem presents_divOfRatSec (hL : L.IsLB) (hr : IsRatSec L r) :
     Presents (divOfRatSec hL hr) L r :=
   ⟨hL, hr, fun _ x hx => hr.germOf_eq hx (exists_chart hL x).choose_spec⟩
 
 /- English proof (translation)
-Use `ext_of_isEqn fun x => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_chart h.isLB x`. Conclude with `⟨r i, h.isEqn i x hi, h'.isEqn i x hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Presents.unique (h : Presents D L r) (h' : Presents E L r) : D = E := by
   refine ext_of_isEqn fun x => ?_
@@ -903,7 +899,7 @@ def frameRat (L : LB X) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) (i : 
     Units.map (fnOf (L.U i ⊓ L.U i₀) (memInf h h₀)).toMonoidHom (L.g i i₀) else 1
 
 /- English proof (translation)
-Rewrite using `[frameRat, dif_pos h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_frameRat (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) (i : L.ι)
     (h : genericPoint X ∈ L.U i) :
@@ -919,9 +915,9 @@ private theorem units_val_res_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U
   rfl
 
 /- English proof (translation)
-Introduce `i j h`. Establish `hi : genericPoint X ∈ L.U i` using `h.1`. Establish `hj : genericPoint X ∈ L.U j` using `h.2`. Establish `hV : genericPoint X ∈ L.U i ⊓ L.U j ⊓ L.U i₀` using `⟨h, h₀⟩`. Rewrite using `[val_frameRat i₀ h₀ i hi, val_frameRat i₀ h₀ j hj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `congrArg (fun u : Γ(X, L.U i ⊓ L.U j ⊓ L.U i₀)ˣ => fnOf (L.U i ⊓ L.U j ⊓ L.U i₀) hV (u : Γ(X, L.U i ⊓ L.U j ⊓ L.U i₀))) (hL.cocycle i j i₀)`. Simplify using `only [Units.val_mul, map_mul, units_val_res_eq_resG, fnOf_resG] at hc`. Conclude with `hc.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isRatSec_frameRat (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) :
     IsRatSec L (frameRat L i₀ h₀) := by
@@ -943,7 +939,7 @@ private theorem coe_res_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_frameRat i₀ h₀ i₀ h₀, Units.val_one]`. Establish `h2` using `congrArg (fun u : Γ(X, L.U i₀)ˣ => fnOf (L.U i₀) h₀ (u : Γ(X, L.U i₀))) (hL.g_self i₀)`. Simplify using `only [coe_res_eq_resG, fnOf_resG, Units.val_one, map_one] at h2`. Conclude with `h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem frameRat_self (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) :
     frameRat L i₀ h₀ i₀ = 1 := by
@@ -957,7 +953,7 @@ def ofLB (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) : Cart
   divOfRatSec hL (isRatSec_frameRat hL i₀ h₀)
 
 /- English proof (translation)
-The claim follows from `presents_divOfRatSec hL _`.
+A detailed English derivation is pending.
 -/
 theorem presents_ofLB (hL : L.IsLB) (i₀ : L.ι) (h₀ : genericPoint X ∈ L.U i₀) :
     Presents (ofLB hL i₀ h₀) L (frameRat L i₀ h₀) :=
@@ -967,7 +963,7 @@ abbrev EqnChart (D : CartierDiv X) : Type :=
   {p : X.Opens × X.functionFieldˣ // genericPoint X ∈ p.1 ∧ ∀ x ∈ p.1, D.IsEqn x p.2}
 
 /- English proof (translation)
-The claim follows from `exists_unit_fnOf_eq fun y hy => ((j.2.2 y hy.2).iff_unitAt).1 (i.2.2 y hy.1)`.
+A detailed English derivation is pending.
 -/
 theorem exists_trans (i j : EqnChart D) : ∃ a : Γ(X, i.1.1 ⊓ j.1.1)ˣ,
     ∀ h, fnOf _ h a.val = (i.1.2 : X.functionField) / (j.1.2 : X.functionField) :=
@@ -979,7 +975,7 @@ def toLB (D : CartierDiv X) : LB X where
   g i j := (exists_trans i j).choose
 
 /- English proof (translation)
-The claim follows from `(exists_trans i j).choose_spec h`.
+A detailed English derivation is pending.
 -/
 theorem fnOf_toLB_g (i j : (toLB D).ι) (h) : fnOf _ h ((toLB D).g i j).val =
     (i.1.2 : X.functionField) / (j.1.2 : X.functionField) :=
@@ -993,7 +989,7 @@ private theorem val_res_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U)ˣ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(by refine eq_top_iff.2 fun x _ => ?_ obtain ⟨U, hx, g, hg⟩ := D.exists_isEqn_nhds x exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(U, g), gen_mem hx, hg⟩, hx⟩) ; g_self := fun i => (by apply Units.ext apply fn_ext intro hU rw [val_res_eq_resG, fnOf_resG, fnOf_toLB_g, div_self (Units …`.
+A detailed English derivation is pending.
 -/
 theorem isLB_toLB (D : CartierDiv X) : (toLB D).IsLB where
   cover := (by
@@ -1013,14 +1009,14 @@ theorem isLB_toLB (D : CartierDiv X) : (toLB D).IsLB where
       rw [div_mul_div_cancel₀ (Units.ne_zero _)])
 
 /- English proof (translation)
-Conclude with `⟨isLB_toLB D, fun i j h => by rw [fnOf_toLB_g i j h, div_mul_cancel₀ _ (Units.ne_zero _)], fun i x hx => i.2.2 x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem presents_toLB (D : CartierDiv X) : Presents D (toLB D) fun i => i.1.2 := by
   exact ⟨isLB_toLB D, fun i j h => by rw [fnOf_toLB_g i j h, div_mul_cancel₀ _ (Units.ne_zero _)],
     fun i x hx => i.2.2 x hx⟩
 
 /- English proof (translation)
-Conclude with `fnOf_resG e h a`.
+A detailed English derivation is pending.
 -/
 private theorem fnOf_map_homOfLE {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V) (a : Γ(X, U)) :
     fnOf V h ((X.presheaf.map (homOfLE e).op).hom a) = fnOf U (e h) a := by
@@ -1037,9 +1033,9 @@ def rat (h : Presents D L r) : L.Sec →ₗ[Γ(X, ⊤)] X.functionField where
     rfl
 
 /- English proof (translation)
-Establish `key : ∀ j (hj : genericPoint X ∈ L.U j), fnOf _ hj (s.f j) * r i = fnOf _ hi (s.f i) * r j`. Introduce `j hj`. Establish `hij : genericPoint X ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Establish `hc` using `congrArg (fnOf _ hij) (s.compat i j)`. Rewrite `hc` using `[map_mul, fnOf_map_homOfLE, fnOf_map_homOfLE]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc, h.isRatSec i j hij]`. Expand and normalize the polynomial expressions, which then agree. Use `show fnOf _ _ (s.f _) / r _ * r i = _`. Rewrite using `[div_mul_eq_mul_div, key _ _, mul_div_assoc, div_self (r _).ne_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_mul (h : Presents D L r) (s : L.Sec) (i : L.ι) (hi : genericPoint X ∈ L.U i) :
     h.rat s * r i = fnOf _ hi (s.f i) := by
@@ -1055,7 +1051,7 @@ theorem rat_mul (h : Presents D L r) (s : L.Sec) (i : L.ι) (hi : genericPoint X
   rw [div_mul_eq_mul_div, key _ _, mul_div_assoc, div_self (r _).ne_zero, mul_one]
 
 /- English proof (translation)
-Rewrite using `[mem_sections]`. Introduce `x`. Take `⟨i, hi⟩` from `exists_chart h.isLB x`. Conclude with `⟨r i, h.isEqn i x hi, by rw [h.rat_mul s i (gen_mem hi)]; exact regAt_fnOf hi _ _⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rat_mem (h : Presents D L r) (s : L.Sec) : h.rat s ∈ D.sections := by
   rw [mem_sections]
@@ -1064,11 +1060,11 @@ theorem rat_mem (h : Presents D L r) (s : L.Sec) : h.rat s ∈ D.sections := by
   exact ⟨r i, h.isEqn i x hi, by rw [h.rat_mul s i (gen_mem hi)]; exact regAt_fnOf hi _ _⟩
 
 /- English proof (translation)
-Introduce `s t hst`. Take `⟨fs, cs⟩` from `s`. Take `⟨ft, ct⟩` from `t`. Establish `: fs = ft`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `fn_ext` to reduce the goal to its premises. Introduce `hU`. Establish `e1` using `h.rat_mul ⟨fs, cs⟩ i hU`. Establish `e2` using `h.rat_mul ⟨ft, ct⟩ i hU`. Rewrite `e1` using `[hst]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e1.symm.trans e2`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rat_injective (h : Presents D L r) : Function.Injective h.rat := by
   intro s t hst
@@ -1086,20 +1082,18 @@ theorem rat_injective (h : Presents D L r) : Function.Injective h.rat := by
   rfl
 
 /- English proof (translation)
-Conclude with `fnOf_resG e h a`.
+A detailed English derivation is pending.
 -/
 private theorem fnOf_presheaf_map_homOfLE {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V) (a : Γ(X, U)) :
     fnOf V h ((X.presheaf.map (homOfLE e).op).hom a) = fnOf U (e h) a := by
   exact fnOf_resG e h a
 
 /- English proof (translation)
-Establish `hreg : ∀ i, ∃ a : Γ(X, L.U i), ∀ hU, fnOf _ hU a = f * (r i : X.functionField)`. Introduce `i`. Distinguish the cases in `hU : genericPoint X ∈ L.U i`. Take `⟨a, ha⟩` from `exists_fnOf_eq hU (f := f * (r i : X.functionField)) fun x hx => ((h.isEqn i x hx).regularAt_iff).1 ((mem_sections.1 hf) x)`. Conclude with `⟨a, fun _ => ha⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h' => absurd h' hU⟩`. Use `choose a ha using hreg`. Use `⟨⟨a, fun i j => ?_⟩, ?_⟩` and prove the remaining obligations. Apply `fn_ext` to reduce the goal to its premises. Introduce `hU`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : genericPoint X ∈ L.U i` using `hU.1`. Establish `hj : genericPoint X ∈ L.U j` using `hU.2`. Rewrite using `[map_mul, fnOf_presheaf_map_homOfLE, fnOf_presheaf_map_homOfLE, ha i, ha j, h.isRatSec i j hU]`. Expand and normalize the polynomial expressions, which then agree. Use `show fnOf _ _ (a _) / r _ = f`.
-
-Rewrite using `[ha, mul_div_assoc, div_self (r _).ne_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_eq (h : Presents D L r) {f : X.functionField} (hf : f ∈ D.sections) :
     ∃ s, h.rat s = f := by
@@ -1133,11 +1127,9 @@ Both sides reduce to the same expression.
     (h.secEquiv s : X.functionField) = h.rat s := rfl
 
 /- English proof (translation)
-Establish `key : ∀ k (hk : x ∈ L.U k), D.GeneratesAt x (h.rat s) ↔ x ∈ X.basicOpen (s.f k)`. Introduce `k hk`. Rewrite using `[(h.isEqn k x hk).generatesAt_iff, h.rat_mul s k (gen_mem hk), unitAt_fnOf_iff hk]`. Unfold `nonzeroLocus`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hg`. Take `⟨i, hi⟩` from `exists_chart h.isLB x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, (key i hi).1 hg⟩`. Introduce `hx`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`.
-
-Conclude with `(key k (X.basicOpen_le _ hk)).2 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem generatesAt_rat_iff (h : Presents D L r) (s : L.Sec) {x : X} :
     D.GeneratesAt x (h.rat s) ↔ x ∈ nonzeroLocus s := by
@@ -1154,7 +1146,7 @@ theorem generatesAt_rat_iff (h : Presents D L r) (s : L.Sec) {x : X} :
     exact (key k (X.basicOpen_le _ hk)).2 hk
 
 /- English proof (translation)
-Rewrite using `[vanishesAt_iff, h.generatesAt_rat_iff]`. Conclude with `and_iff_right ((mem_sections.1 (h.rat_mem s)) x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanishesAt_rat_iff (h : Presents D L r) (s : L.Sec) {x : X} :
     D.VanishesAt x (h.rat s) ↔ x ∉ nonzeroLocus s := by
@@ -1162,7 +1154,7 @@ theorem vanishesAt_rat_iff (h : Presents D L r) (s : L.Sec) {x : X} :
   exact and_iff_right ((mem_sections.1 (h.rat_mem s)) x)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.isLB, fun i j hij => by rw [Units.val_mul, Units.val_mul, h.isRatSec i j hij, mul_assoc], fun i x hx => (h.isEqn i x hx).add (isEqn_principal g x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem add_principal (h : Presents D L r) (g : X.functionFieldˣ) :
     Presents (D + principal g) L fun i => r i * g :=
@@ -1177,7 +1169,7 @@ private theorem val_res_units_eq_resG {U V : X.Opens} (e : V ≤ U) (u : Γ(X, U
   rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul, fnOf_resG, fnOf_resG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem fnOf_resG_mul {U U' V : X.Opens} (e : V ≤ U) (e' : V ≤ U') (h : genericPoint X ∈ V)
     (a : Γ(X, U)) (b : Γ(X, U')) :
@@ -1185,9 +1177,9 @@ private theorem fnOf_resG_mul {U U' V : X.Opens} (e : V ≤ U) (e' : V ≤ U') (
   rw [map_mul, fnOf_resG, fnOf_resG]
 
 /- English proof (translation)
-Use `⟨isLB_tens h.isLB h'.isLB, fun p q hpq => ?_, fun p x hx => (h.isEqn p.1 x hx.1).add (h'.isEqn p.2 x hx.2)⟩` and prove the remaining obligations. Establish `h1 : genericPoint X ∈ L.U p.1 ⊓ L.U q.1` using `⟨hpq.1.1, hpq.2.1⟩`. Establish `h2 : genericPoint X ∈ M.U p.2 ⊓ M.U q.2` using `⟨hpq.1.2, hpq.2.2⟩`. Establish `key` using `fnOf_resG_mul (V := L.U p.1 ⊓ M.U p.2 ⊓ (L.U q.1 ⊓ M.U q.2)) (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)) hpq (L.g p.1 q.1 : Γ(X, L.U p.1 ⊓ L.U q.1)) (M.g p.2 q.2 : Γ(X, M.U p …`. Simplify using `only [GlobalTheory.CechPic.tens]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions.
 
-Simplify using `only [Units.val_mul, val_res_units_eq_resG]`. Use `erw [key]`. Rewrite using `[h.isRatSec _ _ h1, h'.isRatSec _ _ h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tens (h : Presents D L r) (h' : Presents E M r') :
     Presents (D + E) (tens L M) fun p => r p.1 * r' p.2 := by
@@ -1205,14 +1197,14 @@ theorem tens (h : Presents D L r) (h' : Presents E M r') :
   ring
 
 /- English proof (translation)
-Conclude with `fnOf_resG e h (u : Γ(X, U))`.
+A detailed English derivation is pending.
 -/
 private theorem fnOf_res_units {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V) (u : Γ(X, U)ˣ) :
     fnOf V h ((res e u : Γ(X, V)ˣ) : Γ(X, V)) = fnOf U (e h) (u : Γ(X, U)) := by
   exact fnOf_resG e h (u : Γ(X, U))
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, map_mul, map_mul, map_units_inv]`. Conclude with `congrArg₂ (· * ·) (congrArg₂ (· * ·) (fnOf_resG ea h (a : Γ(X, A))) (congrArg (·⁻¹) (fnOf_resG eb h (b : Γ(X, B))))) (fnOf_resG ec h (c : Γ(X, C)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fnOf_res_mul_inv_mul {A B C V : X.Opens} (ea : V ≤ A) (eb : V ≤ B) (ec : V ≤ C)
     (h : genericPoint X ∈ V) (a : Γ(X, A)ˣ) (b : Γ(X, B)ˣ) (c : Γ(X, C)ˣ) :
@@ -1223,15 +1215,15 @@ private theorem fnOf_res_mul_inv_mul {A B C V : X.Opens} (ea : V ≤ A) (eb : V 
     (congrArg (·⁻¹) (fnOf_resG eb h (b : Γ(X, B))))) (fnOf_resG ec h (c : Γ(X, C)))
 
 /- English proof (translation)
-Establish `ex : ∀ p : M.ι × L.ι, ∃ a : Γ(X, M.U p.1 ⊓ L.U p.2)ˣ, ∀ hU, fnOf (M.U p.1 ⊓ L.U p.2) hU (a : Γ(X, M.U p.1 ⊓ L.U p.2)) = (r' p.1 : X.functionField) / (r p.2 : X.functionField)` using `fun p => exists_unit_fnOf_eq fun x hx => ((h.isEqn p.2 x hx.2).iff_unitAt).1 (h'.isEqn p.1 x hx.1)`. Use `choose s hs using ex`. Use `⟨⟨s⟩, ?_⟩` and prove the remaining obligations. Introduce `p q`. Apply `Units.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `fn_ext` to reduce the goal to its premises. Introduce `hU`. Establish `h1 : genericPoint X ∈ M.U p.1 ⊓ M.U q.1` using `⟨hU.1.1, hU.2.1⟩`. Establish `h2 : genericPoint X ∈ L.U p.2 ⊓ L.U q.2` using `⟨hU.1.2, hU.2.2⟩`. Establish `n1 : fnOf _ h2 ((L.g p.2 q.2 : Γ(X, L.U p.2 ⊓ L.U q.2))) ≠ 0` using `((L.g p.2 q.2).isUnit.map (fnOf _ h2)).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `(r q.2).ne_zero`. Establish `n3` using `(r p.2).ne_zero`. Establish `k1` using `fnOf_res_units (U := M.U p.1 ⊓ L.U p.2) (V := M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2)) inf_le_left hU (s p)`. Establish `k2` using `fnOf_res_mul_inv_mul (V := M.U p.1 ⊓ L.U p.2 ⊓ (M.U q.1 ⊓ L.U q.2)) (A := M.U p.1 ⊓ M.U q.1) (B := L.U p.2 ⊓ L.U q.2) (C := M.U q.1 ⊓ L.U q.2) (le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)) (le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans in …`. Establish `hsp : ∀ hp, fnOf (M.U p.1 ⊓ L.U p.2) hp ((s p : Γ(X, M.U p.1 ⊓ L.U p.2))) = (r' p.1 : X.functionField) / (r p.2 : X.functionField)` using `fun hp => hs p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : ∀ hq, fnOf (M.U q.1 ⊓ L.U q.2) hq ((s q : Γ(X, M.U q.1 ⊓ L.U q.2))) = (r' q.1 : X.functionField) / (r q.2 : X.functionField)` using `fun hq => hs q hq`. Rewrite `k1` using `[hsp]`. Rewrite `k2` using `[hsq]`. Simplify using `only [LB.div]`. Use `erw [k1, k2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[h'.isRatSec p.1 q.1 h1, h.isRatSec p.2 q.2 h2]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem lbIso (h : Presents D L r) (h' : Presents D M r') : LBIso L M := by
   have ex : ∀ p : M.ι × L.ι, ∃ a : Γ(X, M.U p.1 ⊓ L.U p.2)ˣ, ∀ hU,
@@ -1271,7 +1263,7 @@ theorem lbIso (h : Presents D L r) (h' : Presents D M r') : LBIso L M := by
 end Presents
 
 /- English proof (translation)
-Use `⟨⟨?_, fun _ => map_one _, fun _ _ _ => by simp⟩, fun i j h => ?_, fun _ x _ => isEqn_zero x⟩` and prove the remaining obligations. Conclude with `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨PUnit.unit, trivial⟩`. Express the relevant statement in the definitionally equal form `(1 : X.functionField) = fnOf _ h (1 : Γ(X, ⊤ ⊓ ⊤)) * 1`. Rewrite using `[map_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem presents_zero : Presents (0 : CartierDiv X) (LB.triv X) fun _ => 1 := by
   refine ⟨⟨?_, fun _ => map_one _, fun _ _ _ => by simp⟩, fun i j h => ?_,
@@ -1290,14 +1282,14 @@ Both sides reduce to the same expression.
 theorem toPic_apply (D : CartierDiv X) : toPic D = cls _ (isLB_toLB D) := rfl
 
 /- English proof (translation)
-Rewrite using `[toPic_apply, cls_eq_iff]`. Conclude with `(presents_toLB D).lbIso h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Presents.toPic_eq (h : Presents D L r) : toPic D = cls L h.isLB := by
   rw [toPic_apply, cls_eq_iff]
   exact (presents_toLB D).lbIso h
 
 /- English proof (translation)
-Establish `h1` using `presents_zero.add_principal g`. Rewrite `h1` using `[zero_add]`. Rewrite using `[h1.toPic_eq, ← presents_zero.toPic_eq, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPic_principal (g : X.functionFieldˣ) : toPic (principal g) = 0 := by
   have h1 := presents_zero.add_principal g
@@ -1305,7 +1297,7 @@ theorem toPic_principal (g : X.functionFieldˣ) : toPic (principal g) = 0 := by
   rw [h1.toPic_eq, ← presents_zero.toPic_eq, map_zero]
 
 /- English proof (translation)
-Introduce `c`. Use `Quotient.inductionOn c fun a => ?_` and prove the remaining obligations. Take `⟨L, hL⟩` from `a`. Take `⟨i₀, h₀⟩` from `exists_chart hL (genericPoint X)`. Conclude with `⟨ofLB hL i₀ h₀, (presents_ofLB hL i₀ h₀).toPic_eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem toPic_surjective : Function.Surjective (toPic (X := X)) := by
   intro c
@@ -1323,7 +1315,7 @@ variable {k : Type} [CommRing k] (p : X ⟶ Sp k) (d : ℕ)
 def constFn : k →+* X.functionField := (fnOf ⊤ trivial).comp (algX p ⊤)
 
 /- English proof (translation)
-Use extensionality with `c`. Simplify using `only [constFn, RingHom.comp_apply]`. Rewrite using `[← resG_comp_algX p (le_top : U ≤ ⊤), RingHom.comp_apply, fnOf_resG]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fnOf_comp_algX (U : X.Opens) (h : genericPoint X ∈ U) :
     (fnOf U h).comp (algX p U) = constFn p := by
@@ -1339,7 +1331,7 @@ def formOf (U : X.Opens) (h : genericPoint X ∈ U) : FormsOn p d U →ₛₗ[fn
   formMap d (fnOf U h) (fnOf_comp_algX p U h)
 
 /- English proof (translation)
-Simplify using `only [formOf, resForm]`. Conclude with `formMap_formMap _ _ _ (RingHom.ext fun a => fnOf_resG e h a) _ _ _ ω`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 @[simp] theorem formOf_resForm {U V : X.Opens} (e : V ≤ U) (h : genericPoint X ∈ V)
     (ω : FormsOn p d U) : formOf V h (resForm e ω) = formOf U (e h) ω := by
@@ -1347,9 +1339,9 @@ Simplify using `only [formOf, resForm]`. Conclude with `formMap_formMap _ _ _ (R
   exact formMap_formMap _ _ _ (RingHom.ext fun a => fnOf_resG e h a) _ _ _ ω
 
 /- English proof (translation)
-Set `_` to `(algX p U).toAlgebra`. Set `_` to `(constFn p).toAlgebra`. Set `_` to `(fnOf U h).toAlgebra`. Establish `_ : IsScalarTower k Γ(X, U) X.functionField` using `IsScalarTower.of_algebraMap_eq' (fnOf_comp_algX p U h).symm`. Establish `_ : Nonempty U` using `⟨⟨_, h⟩⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `_ : IsFractionRing Γ(X, U) X.functionField` using `functionField_isFractionRing_of_isAffineOpen (U := U) (hU := hω.affine)`. Establish `_ : Algebra.FormallyEtale Γ(X, U) X.functionField` using `Algebra.FormallyEtale.of_isLocalization (nonZeroDivisors Γ(X, U))`. Establish `hb : IsBaseChange X.functionField (KaehlerDifferential.map k k Γ(X, U) X.functionField)` using `KaehlerDifferential.isBaseChange_of_formallyEtale ..`. Conclude with `IsFreeGen.of_isBaseChange (isBaseChange_exteriorPower hb d) hω.gen`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFreeGen_formOf {U : X.Opens} (h : genericPoint X ∈ U) {ω : FormsOn p d U}
     (hω : IsFrame ω) : IsFreeGen X.functionField (formOf U h ω) := by
@@ -1368,7 +1360,7 @@ theorem isFreeGen_formOf {U : X.Opens} (h : genericPoint X ∈ U) {ω : FormsOn 
   exact IsFreeGen.of_isBaseChange (isBaseChange_exteriorPower hb d) hω.gen
 
 /- English proof (translation)
-Take `⟨W, hWa, hgW, hWle⟩` from `exists_isAffineOpen_mem_and_subset (memInf h h')`. Establish `h1 : W ≤ U` using `fun y hy => (hWle hy).1`. Establish `h2 : W ≤ U'` using `fun y hy => (hWle hy).2`. Rewrite using `[← formOf_resForm h2 hgW ω', hω.resForm_eq_ratio_smul hω' hWa h1 h2, map_smulₛₗ, formOf_resForm, fnOf_resG]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem formOf_eq_ratio_smul {U U' : X.Opens} (h : genericPoint X ∈ U) (h' : genericPoint X ∈ U')
     {ω : FormsOn p d U} {ω' : FormsOn p d U'} (hω : IsFrame ω) (hω' : IsFrame ω') :
@@ -1391,7 +1383,7 @@ def baseChart : (CanonLB.all p d).bundle.ι :=
 abbrev baseOpen : X.Opens := (CanonLB.all p d).bundle.U (baseChart p d)
 
 /- English proof (translation)
-The claim follows from `(exists_chart (CanonLB.all p d).isLB (genericPoint X)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_baseOpen : genericPoint X ∈ baseOpen p d :=
   (exists_chart (CanonLB.all p d).isLB (genericPoint X)).choose_spec
@@ -1399,7 +1391,7 @@ theorem gen_mem_baseOpen : genericPoint X ∈ baseOpen p d :=
 abbrev baseFrame : FormsOn p d (baseOpen p d) := (CanonLB.all p d).om (baseChart p d)
 
 /- English proof (translation)
-The claim follows from `(CanonLB.all p d).isFrame (baseChart p d)`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_baseFrame : IsFrame (baseFrame p d) :=
   (CanonLB.all p d).isFrame (baseChart p d)
@@ -1407,13 +1399,13 @@ theorem isFrame_baseFrame : IsFrame (baseFrame p d) :=
 def baseForm : RatForms p d := formOf _ (gen_mem_baseOpen p d) (baseFrame p d)
 
 /- English proof (translation)
-The claim follows from `isFreeGen_formOf (gen_mem_baseOpen p d) (isFrame_baseFrame p d)`.
+A detailed English derivation is pending.
 -/
 theorem isFreeGen_baseForm : IsFreeGen X.functionField (baseForm p d) :=
   isFreeGen_formOf (gen_mem_baseOpen p d) (isFrame_baseFrame p d)
 
 /- English proof (translation)
-Introduce `h0`. Conclude with `one_ne_zero ((isFreeGen_baseForm p d).1 (show (1 : X.functionField) • baseForm p d = (0 : X.functionField) • baseForm p d by simp [h0]))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem baseForm_ne_zero : baseForm p d ≠ 0 := by
   intro h0
@@ -1423,18 +1415,18 @@ theorem baseForm_ne_zero : baseForm p d ≠ 0 := by
 def canonical : CartierDiv X := ofLB (CanonLB.all p d).isLB (baseChart p d) (gen_mem_baseOpen p d)
 
 /- English proof (translation)
-The claim follows from `presents_ofLB _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem presents_canonical : Presents (canonical p d) (CanonLB.all p d).bundle
     (frameRat _ (baseChart p d) (gen_mem_baseOpen p d)) :=
   presents_ofLB _ _ _
 
 /- English proof (translation)
-Introduce `U ω hω x hx g e`. Take `⟨i, hi⟩` from `exists_chart (CanonLB.all p d).isLB x`. Establish `hE` using `(presents_canonical p d).isEqn i x hi`. Establish `hgi : genericPoint X ∈ (CanonLB.all p d).bundle.U i` using `gen_mem hi`. Establish `hF` using `isFreeGen_formOf (gen_mem hx) hω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `formOf_eq_ratio_smul hgi (gen_mem_baseOpen p d) ((CanonLB.all p d).isFrame i) (isFrame_baseFrame p d)`. Establish `e2` using `formOf_eq_ratio_smul (gen_mem hx) hgi hω ((CanonLB.all p d).isFrame i)`. Establish `hu` using `unitAt_fnOf (memInf hx hi) (memInf (gen_mem hx) hgi) (hω.ratio ((CanonLB.all p d).isFrame i))`. Establish `key : (g : X.functionField) = (frameRat _ (baseChart p d) (gen_mem_baseOpen p d) i : X.functionField) * fnOf _ (memInf (gen_mem hx) hgi) (hω.ratio ((CanonLB.all p d).isFrame i)).val`. Apply `hF.1` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only`. Rewrite using `[← e, mul_smul, ← e2, val_frameRat _ _ _ hgi, CanonLB.g_eq_ratio, ← e1]`. Both sides reduce to the same expression. Rewrite using `[hE.iff_unitAt, key, mul_div_cancel_left₀ _ (Units.ne_zero _)]`. Conclude with `hu`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDivOfForm_canonical : IsDivOfForm (canonical p d) (baseForm p d) := by
   intro U ω hω x hx g e
@@ -1460,9 +1452,9 @@ theorem isDivOfForm_canonical : IsDivOfForm (canonical p d) (baseForm p d) := by
 variable {p d} in
 
 /- English proof (translation)
-Apply `ext_of_isEqn` to reduce the goal to its premises. Introduce `x`. Take `⟨U, ω, hx, hω⟩` from `exists_isFrame p d x`. Take `⟨a, ha⟩` from `(isFreeGen_formOf (gen_mem hx) hω).2 η`. Simplify using `only at ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hη (by rw [← ha, zero_smul])`. Conclude with `⟨Units.mk0 a ha0, h U ω hω x hx _ (by rw [Units.val_mk0, ha]), h' U ω hω x hx _ (by rw [Units.val_mk0, ha])⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsDivOfForm.unique {η : RatForms p d} (hη : η ≠ 0) (h : IsDivOfForm D η)
     (h' : IsDivOfForm E η) : D = E := by
@@ -1481,7 +1473,7 @@ omit [SmoothOfRelativeDimension d p] in
 variable {p d} in
 
 /- English proof (translation)
-Introduce `U ω hω x hx g' e`. Establish `h1 : η = ((g⁻¹ * g' : X.functionFieldˣ) : X.functionField) • formOf U (gen_mem hx) ω`. Rewrite using `[Units.val_mul, mul_smul, ← e, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Establish `h2` using `(h U ω hω x hx _ h1).add (isEqn_principal g x)`. Rewrite `h2` using `[mul_comm (g⁻¹ * g') g, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem IsDivOfForm.smul {η : RatForms p d} (h : IsDivOfForm D η) (g : X.functionFieldˣ) :
     IsDivOfForm (D + principal g) ((g : X.functionField) • η) := by

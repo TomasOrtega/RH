@@ -7,15 +7,15 @@ open scoped NNReal
 namespace GlobalTheory.AlmostEt
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `[zero_pow hp.ne_zero]`. Consider the case `insert a s ha ih`. Establish `hxa : v (x a) ≤ 1` using `hx a (Finset.mem_insert_self a s)`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hxs : ∀ i ∈ s, v (x i) ≤ 1` using `fun i hi => hx i (Finset.mem_insert_of_mem hi)`. Establish `hS : v (∑ i ∈ s, x i) ≤ 1`. Establish `: (∑ i ∈ s, x i) ∈ v.integer` using `Subring.sum_mem _ (fun i hi => (Valuation.mem_integer_iff v _).2 (hxs i hi))`. Conclude with `(Valuation.mem_integer_iff v _).1 this`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (⟨x a, (Valuation.mem_integer_iff v _).2 hxa⟩ : v.integer) ⟨∑ i ∈ s, x i, (Valuation.mem_integer_iff v _).2 hS⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr' : (x a + ∑ i ∈ s, x i) ^ p = x a ^ p + (∑ i ∈ s, x i) ^ p + (p : L) * (x a * (∑ i ∈ s, x i) * (r : L))`. Use `congrArg (fun z : v.integer => (z : L)) hr` as an intermediate fact. Move the coercions through the operations in `at this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hrle : v (x a * (∑ i ∈ s, x i) * (r : L)) ≤ 1`. Rewrite using `[Valuation.map_mul, Valuation.map_mul]`. Establish `hr1 : v (r : L) ≤ 1` using `(Valuation.mem_integer_iff v _).1 r.2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hr']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : x a ^ p + (∑ i ∈ s, x i) ^ p + (p : L) * (x a * (∑ i ∈ s, x i) * (r : L)) - (x a ^ p + ∑ i ∈ s, x i ^ p) = (p : L) * (x a * (∑ i ∈ s, x i) * (r : L)) + ((∑ i ∈ s, x i) ^ p - ∑ i ∈ s, x i ^ p)` using `by ring`. Rewrite using `[heq]`. Use `(Valuation.map_add v _ _).trans (max_le ?_ (ih hxs))` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frob_sum_sub_le (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ) (hp : p.Prime)
     (ι : Type) (s : Finset ι) (x : ι → L) (hx : ∀ i ∈ s, v (x i) ≤ 1) :
@@ -53,7 +53,7 @@ theorem frob_sum_sub_le (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ)
       _ = v (p : L) := mul_one _
 
 /- English proof (translation)
-Introduce `L _ v p hp ι s x hx` and use `frob_sum_sub_le L v p hp ι s x hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem frob_sum_sub_le' : ∀ (L : Type) [Field L] (v : Valuation L ℝ≥0) (p : ℕ), p.Prime →
     ∀ (ι : Type) (s : Finset ι) (x : ι → L), (∀ i ∈ s, v (x i) ≤ 1) →

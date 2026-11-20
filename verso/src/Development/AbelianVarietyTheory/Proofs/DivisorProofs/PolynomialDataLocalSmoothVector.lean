@@ -17,19 +17,17 @@ open scoped Classical
 namespace GlobalTheory.ThKSmooth
 
 /- English proof (translation)
-Introduce `hK F E _ _ _ _ _ σ B a a' G X om om' hT v Φ hΦ`. Establish `hP` using `GlobalTheory.ThK.Inhab.pairV hT`. Establish `hA` using `(GlobalTheory.T.theta_action_exists hK.base F E σ B _ _ _ _ G.M _ _ om _ _ _ _ hP v).2.2`. Establish `h1 : (1 : UA σ G.V.J) ∈ UAt σ G.V (evFin F v)`. Introduce `u _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show u • (mat (1 : UA σ G.V.J) - 1) = 0`. Establish `: mat (1 : UA σ G.V.J) = 1` using `rfl`. Rewrite using `[this, sub_self, smul_zero]`. Establish `hc : Filter.Tendsto (fun h : UA σ G.W.J => ((1 : UA σ G.V.J), h)) (𝓝 1) (𝓝 (1 : UA σ G.V.J × UA σ G.W.J))`. Use `((continuous_const (y := (1 : UA σ G.V.J))).prodMk continuous_id).tendsto (1 : UA σ G.W.J)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Conclude with `this`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Ψ hΨ`. Take `⟨f, hf, φ, hSB, hev, rfl⟩` from `hΨ`. Establish `hstd : ∀ᶠ w in Filter.cofinite, φ w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `(hev.and hP.good.std).mono fun w hw => hw.1.trans hw.2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUa⟩` from `hA (φ v) (hSB v)`. Take `⟨ρ, hρ, hρt⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ hstd`. Establish `hpure : tens (evFin F v) (φ v) ρ = pure f φ`. Rewrite using `[hρt, Function.update_eq_self]`. Establish `hRest : Rest (evFin F v) (φ v) ρ` using `⟨hρ, by rw [hpure]; exact GlobalTheory.TensUniq.pure_mem_schA f φ hSB hstd⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, hc hU, fun h hh hhv => ?_⟩` and prove the remaining obligations. Rewrite using `[← hpure]`. Conclude with `hUa (1, h) hh h1 hhv ρ hRest`. Consider the case `zero => exact ⟨Set.univ, Filter.univ_mem, fun h _ _ => map_zero _⟩`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨U, hU, hx⟩` from `hx`. Take `⟨U', hU', hy⟩` from `hy`. Use `⟨U ∩ U', Filter.inter_mem hU hU', fun h hh hhv => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, hx h hh.1 hhv, hy h hh.2 hhv]`. Consider the case `smul c x _ hx`.
-
-Take `⟨U, hU, hx⟩` from `hx`. Conclude with `⟨U, hU, fun h hh hhv => by rw [map_smul, hx h hh hhv]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polData_smooth : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W) (om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B G X om om' → ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, ∀ Φ ∈ GlobalTheory.ThK.PolData B G.M, ∃ U ∈ 𝓝 (1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ G.W.J), ∀ h ∈ U, h ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UAt σ G.W (GlobalTheory.AdelicU.evFin F v) → om (1, h) Φ = Φ := by
   intro hK F E _ _ _ _ _ σ B a a' G X om om' hT v Φ hΦ

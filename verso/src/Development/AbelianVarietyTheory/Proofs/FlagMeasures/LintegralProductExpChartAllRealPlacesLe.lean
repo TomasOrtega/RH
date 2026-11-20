@@ -11,11 +11,11 @@ namespace GlobalTheory.ProductChartAll
 open scoped ENNReal in
 
 /- English proof (translation)
-Establish `hout : K⁻¹ • ν.toOuterMeasure ≤ OuterMeasure.pi fun i => (μ i).toOuterMeasure`. Use `OuterMeasure.le_pi.2 fun s _ => ?_` and prove the remaining obligations. Establish `hsub : Set.pi Set.univ s ⊆ Set.pi Set.univ fun i => toMeasurable (μ i) (s i)` using `Set.pi_mono fun i _ => subset_toMeasurable (μ i) (s i)`. Establish `hbox` using `h (fun i => toMeasurable (μ i) (s i)) fun i => measurableSet_toMeasurable _ _`. Simplify using `only [measure_toMeasurable] at hbox`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.inv_mul_cancel h0 h1, one_mul]`. Both sides reduce to the same expression. Use `Measure.le_iff.2 fun A hA => ?_` and prove the remaining obligations. Establish `hA'` using `hout A`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Measure.smul_apply, smul_eq_mul, Measure.pi_def, toMeasure_apply _ _ hA]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ENNReal.mul_inv_cancel h0 h1, one_mul]`. Use `_ ≤ K * OuterMeasure.pi (fun i => (μ i).toOuterMeasure) A := by gcongr`. Conclude with `hA'`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_smul_pi {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, MeasurableSpace (α i)]
     (ν : Measure (∀ i, α i)) (μ : ∀ i, Measure (α i)) {K : ℝ≥0∞} (h0 : K ≠ 0) (h1 : K ≠ ⊤)
@@ -47,7 +47,7 @@ theorem le_smul_pi {ι : Type} [Fintype ι] {α : ι → Type} [∀ i, Measurabl
         exact hA'
 
 /- English proof (translation)
-Establish `hq` using `Real.abs_exp_sub_one_sub_id_le (x := x) (by rw [abs_of_nonneg h0]; exact h1)`. Establish `hsq : x ^ 2 ≤ x` using `by nlinarith`. Use `(abs_le.mp hq).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_sub_one_le {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1) : Real.exp x - 1 ≤ 2 * x := by
   have hq := Real.abs_exp_sub_one_sub_id_le (x := x) (by rw [abs_of_nonneg h0]; exact h1)
@@ -58,25 +58,23 @@ theorem exp_sub_one_le {x : ℝ} (h0 : 0 ≤ x) (h1 : x ≤ 1) : Real.exp x - 1 
 open scoped Matrix.Norms.Frobenius in
 
 /- English proof (translation)
-Set `T` to `Matrix.toEuclideanCLM (n := Fin n) (𝕜 := ℂ)`. Establish `hTc : Continuous (T : Matrix (Fin n) (Fin n) ℂ → _)` using `LinearMap.continuous_of_finiteDimensional T.toAlgEquiv.toLinearEquiv.toLinearMap`. Establish `hEn : ∀ i, ‖T (E i)‖ ≤ 1`. Introduce `i`. Establish `hF : ‖E i‖ = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ‖E i‖ ^ 2 = 1`. Rewrite using `[← GlobalTheory.ProductChart.ip_self, GlobalTheory.ProductChart.ip_apply, hE i i, if_pos rfl]`. Use polynomial arithmetic with `[norm_nonneg (E i)]`. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => ?_` and prove the remaining obligations. Establish `hv : T (E i) v = WithLp.toLp 2 (E i *ᵥ WithLp.ofLp v)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hv, ← Matrix.frobenius_norm_replicateCol (ι := Unit), Matrix.replicateCol_mulVec, one_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `himg : ∀ (u : UJ ε) (x : Fin (n ^ 2) → ℝ), uMat u = (List.ofFn fun i => NormedSpace.exp ((x i : ℂ) • E i)).prod → T (uMat u) = (List.ofFn fun i => NormedSpace.exp ((ContinuousLinearMap.proj i : (Fin (n ^ 2) → ℝ) →L[ℝ] ℝ) x • T (E i))).prod`. Introduce `u x hu`. Rewrite using `[hu, map_list_prod, List.map_ofFn]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg List.prod (congrArg List.ofFn (funext fun i => ?_))` and prove the remaining obligations. Simplify using `only [Function.comp_apply, ContinuousLinearMap.proj_apply]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨-, B, hB, hBn, -, -, -⟩` from `GlobalTheory.ProductChart.exists_deriv_prod hs t' (n ^ 2) (fun i => T (E i)) (fun i => ContinuousLinearMap.proj i) hEn ht'`. Take `⟨-, -, -, -, hPn, -, -⟩` from `GlobalTheory.ProductChart.exists_deriv_prod hs t (n ^ 2) (fun i => T (E i)) (fun i => ContinuousLinearMap.proj i) hEn ht`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hB` using `[← himg a' t' ha']`. Rewrite `hPn` using `[← himg a t ha]`. Establish `hmul : uMat (a * a'⁻¹) = uMat a * uMat a'⁻¹` using `rfl`. Establish `hr : uMat a' * uMat a'⁻¹ = 1` using `by first`. Consider the case `exact Units.mul_inv (a' : (Matrix (Fin n) (Fin n) ℂ)ˣ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `simp [uMat]`. Establish `hinv : T (uMat a'⁻¹) = B`. Combine the equalities or inequalities in the displayed calculation. Establish `hprod : T (uMat (a * a'⁻¹)) = T (uMat a) * B` using `by rw [hmul, map_mul, hinv]`. Establish `hclose` using `GlobalTheory.ProductChart.norm_mul_sub_one_le hPn hBn`.
+Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hclose` using `[← hprod, ← Real.exp_add]`. Establish `hnorm : ‖T (uMat (a * a'⁻¹))‖ ≤ 2`. Establish `h1 : ‖(1 : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))‖ ≤ 1` using `ContinuousLinearMap.norm_id_le`. Establish `h3 : ‖T (uMat (a * a'⁻¹))‖ ≤ ‖T (uMat (a * a'⁻¹)) - 1‖ + ‖(1 : EuclideanSpace ℂ (Fin n) →L[ℂ] EuclideanSpace ℂ (Fin n))‖`. Simplify using `using norm_add_le (T (uMat (a * a'⁻¹)) - 1) 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : ((n ^ 2 : ℕ) : ℝ) * s + ((n ^ 2 : ℕ) : ℝ) * s = 2 * n ^ 2 * s` using `by push_cast; ring`. Rewrite `hclose` using `[h4]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hd : dOp (uMat (a * a'⁻¹)) = Real.log ‖T (uMat (a * a'⁻¹))‖`. Unfold `dOp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Both sides reduce to the same expression. Rewrite using `[hd]`. Break down `(norm_nonneg (T (uMat (a * a'⁻¹)))).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, Real.log_zero]`. Conclude with `Real.log_nonneg one_le_two`.
-
-Conclude with `Real.log_le_log h0 hnorm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOp_chart_le {n : ℕ} {ε : Fin n → Bool} {s : ℝ} {E : Fin (n ^ 2) → Matrix (Fin n) (Fin n) ℂ}
     (hE : ∀ i j, ((E i * (E j)ᴴ).trace).re = if i = j then 1 else 0) (hs : 0 ≤ s)
@@ -153,53 +151,45 @@ theorem dOp_chart_le {n : ℕ} {ε : Fin n → Bool} {s : ℝ} {E : Fin (n ^ 2) 
   · exact Real.log_le_log h0 hnorm
 
 /- English proof (translation)
-Introduce `I c s E Θ hc hG hE hs h12 h8 hΘ`. Establish `hn0 : (0 : ℝ) ≤ I.n` using `Nat.cast_nonneg _`. Establish `hnum : (I.n : ℝ) * (Real.exp (3 * (I.n : ℝ) ^ 2 * s) - 1) ≤ 1 / 2 ∧ Real.exp (2 * (I.n : ℝ) ^ 2 * s) ≤ 2 ∧ Real.exp (2 * (I.n : ℝ) ^ 3 * (Real.exp (2 * (I.n : ℝ) ^ 2 * s) - 1)) ≤ Real.exp 1`. Break down `Nat.eq_zero_or_pos I.n with h | h` into its components or cases. Simplify using `only [h, Nat.cast_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Evaluate the numerical expressions. Establish `hm : (1 : ℝ) ≤ I.n` using `by exact_mod_cast h`. Establish `hsq : (I.n : ℝ) ^ 2 * s ≤ (I.n : ℝ) ^ 3 * s`. Establish `: (I.n : ℝ) ^ 2 ≤ (I.n : ℝ) ^ 3` using `by nlinarith`. Use the polynomial consequences of the given equalities and inequalities.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hsq5 : (I.n : ℝ) ^ 5 * s = (I.n : ℝ) ^ 3 * ((I.n : ℝ) ^ 2 * s)` using `by ring`. Establish `h3 : 3 * (I.n : ℝ) ^ 2 * s ≤ 1` using `by nlinarith`. Establish `h2 : 2 * (I.n : ℝ) ^ 2 * s ≤ 1` using `by nlinarith`. Establish `hp : 0 ≤ (I.n : ℝ) ^ 2 * s` using `by positivity`. Establish `e3` using `exp_sub_one_le (by positivity) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `exp_sub_one_le (by positivity) h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: (I.n : ℝ) * (Real.exp (3 * (I.n : ℝ) ^ 2 * s) - 1) ≤ (I.n : ℝ) * (2 * (3 * (I.n : ℝ) ^ 2 * s))` using `mul_le_mul_of_nonneg_left e3 hn0`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Establish `hn3 : 0 ≤ 2 * (I.n : ℝ) ^ 3` using `by positivity`. Use `mul_le_mul_of_nonneg_left e2 hn3` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Take `⟨hchart, hexp2, hK1⟩` from `hnum`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Set `C : Set (Fin (I.n ^ 2) → ℝ)` to `Set.pi Set.univ fun _ => Set.Icc (0 : ℝ) s`. Set `Θv : ∀ v, (Fin (I.n ^ 2) → ℝ) → UJ (I.ε v)` to `fun v x => Θ (fun _ => x) v`. Establish `hΘv : ∀ v x, uMat (Θv v x) = (List.ofFn fun i => NormedSpace.exp ((x i : ℂ) • E v i)).prod` using `fun v x => hΘ (fun _ => x) v`. Establish `hΘeq : ∀ t, Θ t = fun v => Θv v (t v)`. Introduce `t`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `v`. Conclude with `GlobalTheory.GaugeConst.uMat_injective (I.ε v) ((hΘ t v).trans (hΘv v (t v)).symm)`. Establish `hcont : ∀ v, Continuous (Θv v)`. Introduce `v`. Establish `hE' : Continuous fun y : EuclideanSpace ℝ (Fin (I.n ^ 2)) => Θv v (WithLp.ofLp y)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.ProductChart.continuous_chart (E := E v) _ fun y => ?_` and prove the remaining obligations. Rewrite using `[hΘv]`. Simplify using `only [Complex.coe_smul]`. Conclude with `hE'.comp (PiLp.continuous_toLp _ _)`. Establish `hmeas : ∀ v, Measurable (Θv v)` using `fun v => (hcont v).measurable`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hCc : IsCompact C` using `isCompact_univ_pi fun _ => isCompact_Icc`. Set `Sv : ∀ v, Set (UJ (I.ε v))` to `fun v => Θv v '' C`. Establish `hSv : ∀ v, MeasurableSet (Sv v)` using `fun v => ((hCc.image (hcont v)).isClosed).measurableSet`. Use `⟨Set.pi Set.univ Sv, MeasurableSet.univ_pi hSv, ?_, ?_⟩` and prove the remaining obligations. Introduce `a ha a' ha' v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, hxa⟩` from `ha v (Set.mem_univ v)`. Take `⟨x', hx', hxa'⟩` from `ha' v (Set.mem_univ v)`. Establish `hb : ∀ y ∈ C, ∀ i, |y i| ≤ s` using `fun y hy i => by`. Establish `hyi` using `hy i (Set.mem_univ i)`. Rewrite using `[abs_of_nonneg hyi.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hyi.2`. Establish `e1 : uMat (a v) = (List.ofFn fun i => NormedSpace.exp ((x i : ℂ) • E v i)).prod`. Rewrite using `[← hxa]`. Conclude with `hΘv v x`. Establish `e2 : uMat (a' v) = (List.ofFn fun i => NormedSpace.exp ((x' i : ℂ) • E v i)).prod`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← hxa']`. Conclude with `hΘv v x'`. Conclude with `dOp_chart_le (hE v) hs.le hexp2 (a v) (a' v) x x' (hb x hx) (hb x' hx') e1 e2`. Introduce `Φ hΦ set Kc := Real.exp (2 * (I.n : ℝ) ^ 3 * (Real.exp (2 * (I.n : ℝ) ^ 2 * s) - 1)) with hKc`. Establish `hone : ∀ v (Ψ : UJ (I.ε v) → ENNReal), Measurable Ψ → ∫⁻ t in C, Ψ (Θv v t) ≤ ENNReal.ofReal (Kc * c v) * ∫⁻ y in Sv v, Ψ y ∂(muG (I.ε v))` using `fun v => GlobalTheory.ProductChart.lintegral_chart_le I.n (I.ε v) (c v) s (E v) (Θv v) (hc v) (hG v) (hE v) hs hchart (hΘv v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `haveI : IsFiniteMeasure ((volume : Measure (Fin (I.n ^ 2) → ℝ)).restrict C) := isFiniteMeasure_restrict.2 hCc.measure_lt_top.ne`. Set `ν : ∀ v, Measure (UJ (I.ε v))` to `fun v => ((volume : Measure (Fin (I.n ^ 2) → ℝ)).restrict C).map (Θv v)`. Set `μS : ∀ v, Measure (UJ (I.ε v))` to `fun v => (muG (I.ε v)).restrict (Sv v)`. Establish `hfac : ∀ v (A : Set (UJ (I.ε v))), MeasurableSet A → ν v A ≤ ENNReal.ofReal (Kc * c v) * μS v A`. Introduce `v A hA`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hind : Measurable (A.indicator (1 : UJ (I.ε v) → ENNReal))` using `measurable_one.indicator hA`. Combine the equalities or inequalities in the displayed calculation. Use `set K : ENNReal := ∏ v, ENNReal.ofReal (Kc * c v) with hK`. Establish `hbox : ∀ A : ∀ v, Set (UJ (I.ε v)), (∀ v, MeasurableSet (A v)) → Measure.pi ν (Set.pi Set.univ A) ≤ K * ∏ v, μS v (A v)`. Introduce `A hA`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.pi_pi, hK, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_le_prod' fun v _ => hfac v (A v) (hA v)`. Establish `hle : Measure.pi ν ≤ K • Measure.pi μS`. Distinguish the cases in `hK0 : K = 0`. Establish `h0 : Measure.pi ν = 0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Measure.measure_univ_eq_zero, ← Set.pi_univ]`. Use `hbox (fun _ => Set.univ) fun _ => MeasurableSet.univ` as an intermediate fact. Rewrite `this` using `[hK0, zero_mul]`. Conclude with `le_antisymm this zero_le`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Measure.zero_le _`. Conclude with `le_smul_pi (Measure.pi ν) μS hK0 (ENNReal.prod_ne_top fun v _ => ENNReal.ofReal_ne_top) hbox`. Establish `hKle : K ≤ ENNReal.ofReal (Real.exp I.f * ∏ v, c v)`. Distinguish the cases in `hc0 : ∀ v, 0 ≤ c v`. Establish `hKc0 : 0 ≤ Kc` using `(Real.exp_pos _).le`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hK, ← ENNReal.ofReal_prod_of_nonneg fun v _ => mul_nonneg hKc0 (hc0 v)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Apply `mul_le_mul_of_nonneg_right _ (Finset.prod_nonneg fun v _ => hc0 v)` to reduce the goal to its premises. Establish `hcard : Fintype.card (InfinitePlace I.F) ≤ I.f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces (K := I.F)`. Establish `h2` using `NumberField.InfinitePlace.card_add_two_mul_card_eq_rank (K := I.F)`. Establish `h3 : I.f = Module.finrank ℚ I.F` using `by unfold AutInst.f; rfl`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[mul_one]`. Conclude with `hcard` after adjusting the coercions. Use `push_neg at hc0`. Take `⟨v, hv⟩` from `hc0`.
-
-Establish `: ENNReal.ofReal (Kc * c v) = 0` using `ENNReal.ofReal_eq_zero.2 (mul_nonpos_of_nonneg_of_nonpos (Real.exp_pos _).le hv.le)`. Rewrite using `[hK, Finset.prod_eq_zero (Finset.mem_univ v) this]`. Conclude with `zero_le`. Establish `hvol : (volume : Measure (InfinitePlace I.F → Fin (I.n ^ 2) → ℝ)).restrict (Set.pi Set.univ fun _ => C) = Measure.pi fun _ => (volume : Measure (Fin (I.n ^ 2) → ℝ)).restrict C`. Rewrite using `[show (volume : Measure (InfinitePlace I.F → Fin (I.n ^ 2) → ℝ)) = Measure.pi fun _ => (volume : Measure (Fin (I.n ^ 2) → ℝ)) from rfl, Measure.restrict_pi_pi]`.
-
-Establish `hmapm : Measurable fun t : InfinitePlace I.F → Fin (I.n ^ 2) → ℝ => fun v => Θv v (t v)` using `measurable_pi_lambda _ fun v => (hmeas v).comp (measurable_pi_apply v)`. Establish `hmap : (Measure.pi fun _ => (volume : Measure (Fin (I.n ^ 2) → ℝ)).restrict C).map (fun t v => Θv v (t v)) = Measure.pi ν` using `Measure.pi_map_pi fun v => (hmeas v).aemeasurable`. Establish `hmu : (muInf I).restrict (Set.pi Set.univ Sv) = Measure.pi μS`. Rewrite using `[show muInf I = Measure.pi fun v => muG (I.ε v) from rfl, Measure.restrict_pi_pi]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hset : (Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => Set.Icc (0 : ℝ) s) = Set.pi Set.univ fun _ : InfinitePlace I.F => C` using `rfl`. Rewrite using `[hset, hvol]`. Conclude with `lintegral_congr fun t => by rw [hΘeq t]`. Use `_ = ∫⁻ y, Φ y ∂(Measure.pi ν) := by rw [← hmap, lintegral_map hΦ hmapm]`. Use `_ ≤ ∫⁻ y, Φ y ∂(K • Measure.pi μS) := lintegral_mono' hle le_rfl`.
-
-Use `_ = K * ∫⁻ y in Set.pi Set.univ Sv, Φ y ∂(muInf I) := by`. Rewrite using `[lintegral_smul_measure, hmu, smul_eq_mul]`. Use `_ ≤ ENNReal.ofReal (Real.exp I.f * ∏ v, c v) * ∫⁻ y in Set.pi Set.univ Sv, Φ y ∂(muInf I) := by gcongr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_chart_all_le : ∀ (I : AutInst) (c : InfinitePlace I.F → ℝ) (s : ℝ) (E : InfinitePlace I.F → Fin (I.n ^ 2) → Matrix (Fin I.n) (Fin I.n) ℂ) (Θ : (InfinitePlace I.F → Fin (I.n ^ 2) → ℝ) → I.Ginf), (∀ v, IsGauge (I.ε v) (c v)) → (∀ v i, inG (I.ε v) (E v i)) → (∀ v i j, ((E v i * (E v j)ᴴ).trace).re = if i = j then 1 else 0) → 0 < s → 12 * (I.n : ℝ) ^ 3 * s ≤ 1 → 8 * (I.n : ℝ) ^ 5 * s ≤ 1 → (∀ t v, uMat (Θ t v) = (List.ofFn fun i => NormedSpace.exp ((t v i : ℂ) • E v i)).prod) → ∃ S : Set I.Ginf, MeasurableSet S ∧ (∀ a ∈ S, ∀ a' ∈ S, ∀ v, dOp (uMat ((a * a'⁻¹) v)) ≤ Real.log 2) ∧ ∀ Φ : I.Ginf → ENNReal, Measurable Φ → ∫⁻ t in Set.pi Set.univ (fun _ => Set.pi Set.univ fun _ => Set.Icc (0 : ℝ) s), Φ (Θ t) ≤ ENNReal.ofReal (Real.exp I.f * ∏ v, c v) * ∫⁻ y in S, Φ y ∂(muInf I) := by
   intro I c s E Θ hc hG hE hs h12 h8 hΘ

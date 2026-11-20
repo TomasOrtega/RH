@@ -11,7 +11,7 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [(cfBasic n).2.1]`. Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, (cfBasic n).1]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem ex_prod' {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Wt n) :
     ∏ a ∈ s, ex (f a) = ex (∑ a ∈ s, f a) := by
@@ -21,7 +21,7 @@ private theorem ex_prod' {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Wt n)
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, ih, (cfBasic n).1]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp [(cfBasic n).2.1]`. Consider the case `succ k ih => rw [pow_succ, ih, ← (cfBasic n).1, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem ex_pow' {n : ℕ} (x : Wt n) (k : ℕ) : ex x ^ k = ex (k • x) := by
   induction k with
@@ -29,28 +29,28 @@ private theorem ex_pow' {n : ℕ} (x : Wt n) (k : ℕ) : ex x ^ k = ex (k • x)
   | succ k ih => rw [pow_succ, ih, ← (cfBasic n).1, succ_nsmul]
 
 /- English proof (translation)
-Rewrite using `[sg, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sg_smul' {n : ℕ} (w : Equiv.Perm (Fin n)) (f : FR n) :
     sg w • f = (((Equiv.Perm.sign w : ℤ) : FR n)) * f := by
   rw [sg, Int.cast_smul_eq_zsmul, zsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `n t`. Use `set Y : Fin n → FR n := fun a => ex (-(t • (Pi.single a (1 : ℝ) : Wt n))) with hY`. Use `set c : Wt n := fun _ => t * (((n : ℝ) - 1) / 2) with hc`. Establish `hA : alt (t • rhoV n) = ex c * (Matrix.vandermonde Y).transpose.det`. Rewrite using `[Matrix.det_apply, Finset.mul_sum, alt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hprod : ex c * ∏ i, (Matrix.vandermonde Y).transpose (w i) i = ex ((t • rhoV n) ∘ ⇑w)`. Simplify using `only [Matrix.transpose_apply, Matrix.vandermonde_apply, hY, ex_pow', ex_prod', ← (cfBasic n).1]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply, rhoV]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_smul_comm, hprod, sg_smul', Units.smul_def, zsmul_eq_mul]`. Establish `h1 : ∀ a b : Fin n, 1 - ex (-(t • rt a b)) = ex (t • (Pi.single b (1 : ℝ) : Wt n)) * (Y b - Y a)`. Introduce `a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_sub, hY]`. Simplify using `only`. Rewrite using `[← (cfBasic n).1, ← (cfBasic n).1, add_neg_cancel, (cfBasic n).2.1]`. Use `congr 2`. Rewrite using `[rt, smul_sub]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `h2 : ∏ p ∈ posP n, (1 - ex (-(t • rt p.1 p.2))) = ∏ i, ∏ j ∈ Finset.Ioi i, (1 - ex (-(t • rt i j)))`. Unfold `posP`. Rewrite using `[Finset.prod_filter, Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `j`. Simplify using the standard rewrite rules. Establish `h3 : ex (t • rhoV n) * ∏ i, ∏ j ∈ Finset.Ioi i, ex (t • (Pi.single j (1 : ℝ) : Wt n)) = ex c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [ex_prod', ← (cfBasic n).1]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, Pi.single_apply, rhoV]`. Rewrite using `[Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, Finset.filter_gt_eq_Iio, Fin.card_Iio, nsmul_eq_mul, hc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, hA, Matrix.det_transpose, Matrix.det_vandermonde, ← h3]`. Repeatedly rewrite using `[h1, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.denom :
     ∀ (n : ℕ) (t : ℝ), alt (t • rhoV n) = ex (t • rhoV n) * ∏ p ∈ posP n, (1 - ex (-(t • rt p.1 p.2))) := by

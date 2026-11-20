@@ -9,11 +9,11 @@ open scoped ContDiff
 namespace GlobalTheory.SiegelSet
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM n J γ hγ s t`. Take `⟨w, τ, Z, -, hγ⟩` from `hγ`. Take `⟨y1, e1, f1⟩` from `hγ (s + t)`. Take `⟨y2, e2, f2⟩` from `hγ s`. Take `⟨y3, e3, f3⟩` from `hγ t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, e2, e3, ← map_mul]`. Use `congr 1`. Apply `(archEquiv J hCM τ).injective` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← GlobalTheory.Orb.archMat_eq_archEquiv, ← GlobalTheory.Orb.archMat_eq_archEquiv, map_mul, f1, f2, f3, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ ((Commute.refl Z).smul_left s |>.smul_right t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRealLine_add : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (γ : ℝ → GAd σ J), IsRealLine σ J γ →

@@ -73,13 +73,13 @@ def PThmB : Prop := Lift.IsKap D.R.m (fun t => R.Th t ∘ₗ LinearMap.adjoint (
 variable {R F}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hC.base.fam.Sb, hC.base.fam.pl_onto, hC.inert.onto⟩, hC.tup.mu_used, hC.base.grp.levels, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem conv_of (hC : R.WeakCharacterisation F) (H : HkDat3 A3) : IndefConv A3.fam3.base3 R.mu (R.convOf F H) :=
   ⟨⟨hC.base.fam.Sb, hC.base.fam.pl_onto, hC.inert.onto⟩, hC.tup.mu_used, hC.base.grp.levels, rfl⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RealDat.kFormR_of (R := R.toRealDat) (F := F.lv2) hM`. Consider the case `exact RealDat.kFormR_of hM`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kFormR_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).KFormR := by
   first
@@ -87,7 +87,7 @@ theorem kFormR_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).KFormR := by
     | exact RealDat.kFormR_of hM
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RealDat.kFormL_of (R := R.toRealDat) (F := F.lv2) hM`. Consider the case `exact RealDat.kFormL_of hM`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem kFormL_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).KFormL := by
   first
@@ -95,7 +95,7 @@ theorem kFormL_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).KFormL := by
     | exact RealDat.kFormL_of hM
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RealDat.jIsoR_of (R := R.toRealDat) (F := F.lv2) hM`. Consider the case `exact RealDat.jIsoR_of hM`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jIsoR_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).JIsoR F.cv := by
   first
@@ -103,7 +103,7 @@ theorem jIsoR_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).JIsoR F.cv := by
     | exact RealDat.jIsoR_of hM
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RealDat.jIsoL_of (R := R.toRealDat) (F := F.lv2) hM`. Consider the case `exact RealDat.jIsoL_of hM`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem jIsoL_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).JIsoL F.cv := by
   first
@@ -111,12 +111,12 @@ theorem jIsoL_of (hM : R.toRealDat.IsModels) : (R.toCx3 F).JIsoL F.cv := by
     | exact RealDat.jIsoL_of hM
 
 /- English proof (translation)
-The claim follows from `RealDat.kForm (F := F.lv2) h b`.
+A detailed English derivation is pending.
 -/
 theorem kForm_of (h : R.toRealDat.LUnif) (b : Bool) : (R.toCx3 F).KForm b := RealDat.kForm (F := F.lv2) h b
 
 /- English proof (translation)
-Use `first`. Consider the case `exact RealDat.ewNorm (R := R.toRealDat) (F := F.lv2) b`. Consider the case `exact RealDat.ewNorm b`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ewNorm (b : Bool) : (R.toCx3 F).EWnorm b := by
   first
@@ -124,7 +124,7 @@ theorem ewNorm (b : Bool) : (R.toCx3 F).EWnorm b := by
     | exact RealDat.ewNorm b
 
 /- English proof (translation)
-Use `⟨h.mu_conj, fun w => ⟨h.mu_ne w, fun hne => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hw`. Conclude with `hne (h.mu_off w hw)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem height_change_of_D0 (h : R.IsTup) : (R.toCx3 F).H0 := by
   refine ⟨h.mu_conj, fun w => ⟨h.mu_ne w, fun hne => ?_⟩⟩
@@ -132,11 +132,11 @@ theorem height_change_of_D0 (h : R.IsTup) : (R.toCx3 F).H0 := by
   exact hne (h.mu_off w hw)
 
 /- English proof (translation)
-Use `symm`. Use `Finset.prod_bij (fun (i : Fin D.R.m) _ => (i : ℕ) + 1) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i _`. Use `i.isLt` as an intermediate fact. Simplify using `only [Finset.mem_Icc]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `a₁ _ a₂ _ h`. Conclude with `Fin.ext (by omega)`. Introduce `b hb`. Simplify using `only [Finset.mem_Icc] at hb`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨⟨b - 1, by omega⟩, Finset.mem_univ _, Nat.sub_add_cancel (by omega)⟩`. Introduce `a _`. Simplify using `[lamN]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_lamN (t : T) (p : A3.fam3.base3.Ix) :
     ∏ j ∈ Finset.Icc 1 D.R.m, R.lamN t j p = ∏ j : Fin D.R.m, R.lam3 j t p A3.A.v0 := by
@@ -155,14 +155,14 @@ theorem prod_lamN (t : T) (p : A3.fam3.base3.Ix) :
     simp [lamN]
 
 /- English proof (translation)
-The claim follows from `map_smulₛₗ LinearMap.adjoint c f`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_smul' {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] (c : ℂ) (f : E →ₗ[ℂ] F) :
     LinearMap.adjoint (c • f) = starRingEnd ℂ c • LinearMap.adjoint f := map_smulₛₗ LinearMap.adjoint c f
 
 /- English proof (translation)
-Simplify using `only [adjoint_smul', LinearMap.smul_apply, map_smul, smul_smul]`. Rewrite using `[hc, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phase_cancel {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] {c : ℂ} (hc : starRingEnd ℂ c * c = 1) (f : E →ₗ[ℂ] F)
@@ -171,7 +171,7 @@ theorem phase_cancel {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ 
   rw [hc, one_smul]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `x y`. Rewrite using `[Tw.inner_eq, Tw.inner_eq]`. Conclude with `congrArg (cj s) (LinearMap.adjoint_inner_left f (Tw.out y) (Tw.out x))`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem adjoint_tw_map {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] (f : E →ₗ[ℂ] F) :
@@ -183,7 +183,7 @@ private theorem adjoint_tw_map {s : Bool} {E F : Type} [NormedAddCommGroup E] [I
   exact congrArg (cj s) (LinearMap.adjoint_inner_left f (Tw.out y) (Tw.out x))
 
 /- English proof (translation)
-Rewrite using `[adjoint_tw_map]`. Use `show Tw.mk s (f (LinearMap.adjoint f (Tw.out e))) = cj s (l : ℂ) • Tw.out e`. Rewrite using `[he, cj_ofReal]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem tw_map_adjoint_apply_of_eigen {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] (f : E →ₗ[ℂ] F)
@@ -195,7 +195,7 @@ private theorem tw_map_adjoint_apply_of_eigen {s : Bool} {E F : Type} [NormedAdd
   rfl
 
 /- English proof (translation)
-Rewrite using `[phase_cancel hc]`. Conclude with `tw_map_adjoint_apply_of_eigen f l e he`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smul_tw_map_adjoint_apply_of_unit_modulus {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] {c : ℂ}
@@ -206,9 +206,9 @@ private theorem smul_tw_map_adjoint_apply_of_unit_modulus {s : Bool} {E F : Type
   exact tw_map_adjoint_apply_of_eigen f l e he
 
 /- English proof (translation)
-Establish `hmap : Tw.map s (c • f) = cj s c • Tw.map s f`. Use extensionality with `x`. Use `show c • f (Tw.out x) = cj s (cj s c) • f (Tw.out x)`. Rewrite using `[cj_cj]`. Establish `hc' : starRingEnd ℂ (cj s c) * cj s c = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cj_conj, ← map_mul, hc, map_one]`. Rewrite using `[hmap]`. Conclude with `phase_cancel hc' _ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_smul_cancel {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F] {c : ℂ} (hc : starRingEnd ℂ c * c = 1) (f : E →ₗ[ℂ] F)
@@ -224,9 +224,9 @@ theorem tw_smul_cancel {s : Bool} {E F : Type} [NormedAddCommGroup E] [InnerProd
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `j t p w hw`. Establish `hw1 : Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) w ∈ R.Wp3 j p := (Submodule.mem_inf.mp hw).1`. Establish `hc : starRingEnd ℂ (R.phs j) * R.phs j = 1`. Rewrite using `[Complex.conj_mul', (hph j).1]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `smul_tw_map_adjoint_apply_of_unit_modulus hc (R.thG j t) (R.lam3 j t p A3.A.v0) w ?_` and prove the remaining obligations. Conclude with `h j t p _ hw1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thmAop_of (hph : R.phase) (h : R.PThmA) (b : Bool) : (R.toCx3 F).ThmAop b := by
   intro j t p w hw
@@ -238,9 +238,9 @@ theorem thmAop_of (hph : R.phase) (h : R.PThmA) (b : Bool) : (R.toCx3 F).ThmAop 
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `t p e he`. Establish `he1 : Tw.out (s` using `twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) e ∈ R.EEp3 p := he.1`. Establish `key : Tw.map (twAt D.what₂.embLL A3.A.v0) (R.Th t) (LinearMap.adjoint (Tw.map (twAt D.what₂.embLL A3.A.v0) (R.Th t)) e) = ((R.kap * ∏ j : Fin D.R.m, R.lam3 j t p A3.A.v0 : ℝ) : ℂ) • e`. Rewrite using `[Tw.adjoint_map]`. Use `show Tw.mk _ (R.Th t (LinearMap.adjoint (R.Th t) (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) e))) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h t p (Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) e) he1`. Rewrite `h2` using `[LinearMap.comp_apply]`. Rewrite using `[h2, Tw.mk_smul, cj_ofReal, prod_lamN]`. Both sides reduce to the same expression. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thmBop_of (h : R.PThmB) (b : Bool) : (R.toCx3 F).ThmBop b := by
   intro t p e he
@@ -299,7 +299,7 @@ structure CovolumeOntoIsometryConditions (R : RealDat3 D A3 Ks) (F : Face3 D A3)
   fun0 : ((R.toCx3 F).data F.cr false).FUN (R.num F C CH)
 
 /- English proof (translation)
-The claim follows from `RealDat3.kFormR_of hC.base.models kFormL := RealDat3.kFormL_of hC.base.models jIsoR := RealDat3.jIsoR_of hC.base.models jIsoL := RealDat3.jIsoL_of hC.base.models npTie := ⟨rfl, rfl⟩ ok := hOk sep := hsep heckeR := hP.heckeR heckeL := hP.heckeL thetaR := hP.hecke.1.choose_spec the …`.
+A detailed English derivation is pending.
 -/
 theorem complex_data_conditions_base_level_of_primitive_links {s : ℕ} (hOk : A3.fam3.Ok3 s) (hsep : A3.fam3.TypesSep3) {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     (hC : R.WeakCharacterisation F) (hP : PrimRows3 R F) :
@@ -350,7 +350,7 @@ theorem complex_data_conditions_base_level_of_primitive_links {s : ℕ} (hOk : A
     hP.sumW (hP.liftOnto _ hP.hecke.2.choose_spec)).2
 
 /- English proof (translation)
-The claim follows from `RealDat3.kFormR_of hC.base.models kFormL := RealDat3.kFormL_of hC.base.models jIsoR := RealDat3.jIsoR_of hC.base.models jIsoL := RealDat3.jIsoL_of hC.base.models npTie := ⟨rfl, rfl⟩ ok := hOk sep := hsep heckeR := hP.heckeR heckeL := hP.heckeL thetaR := hP.hecke.1.choose_spec the …`.
+A detailed English derivation is pending.
 -/
 theorem base_lifts_package_of_primitive_links {s : ℕ} (hOk : A3.fam3.Ok3 s) (hsep : A3.fam3.TypesSep3) {R : RealDat3 D A3 Ks} {F : Face3 D A3}
     {sEE : (R.toCx3 F).EE →ₗ⋆[ℂ] (F.fc (R.toCx3 F).zs).Sp.HH} {H : HkDat3 A3} {C CH : ℝ} (hC : R.WeakCharacterisation F)

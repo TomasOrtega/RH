@@ -4,9 +4,9 @@ import Mathlib.RingTheory.Polynomial.Resultant.Basic
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Rewrite using `[← isUnit_resultant_iff_isCoprime hp]`. Establish `hp' : (p.map (residue B)).Monic` using `hp.map _`. Establish `h1` using `(isUnit_resultant_iff_isCoprime hp').2 h`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le (natDegree_map_le (f := residue B) (p := q))`. Establish `h2 : residue B (p.resultant q) = (p.map (residue B)).resultant (q.map (residue B))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← resultant_map_map, hj, resultant_add_right_deg _ _ _ _ _ le_rfl, ← hp.natDegree_map (residue B), hp'.coeff_natDegree, one_pow, one_mul]`. Rewrite `h1` using `[← h2]`. Conclude with `(isUnit_map_iff (residue B) _).1 h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coprime_of_residue {B : Type} [CommRing B] [IsLocalRing B] (p q : B[X]) (hp : p.Monic)
     (h : IsCoprime (p.map (residue B)) (q.map (residue B))) : IsCoprime p q := by
@@ -21,19 +21,19 @@ private theorem coprime_of_residue {B : Type} [CommRing B] [IsLocalRing B] (p q 
   exact (isUnit_map_iff (residue B) _).1 h1
 
 /- English proof (translation)
-Introduce `B E k _ _ _ _ _ f hf M p d m hp hM hpf hm hu`. Establish `h1 : p.map (residue B) = (Polynomial.X - 1) ^ d`. Establish `h0 : (p - (Polynomial.X - 1) ^ d).map f = 0`. Simplify using `[Polynomial.map_sub, Polynomial.map_pow, hpf]`. Establish `h2 : (p - (Polynomial.X - 1) ^ d).map (residue B) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i`. Rewrite using `[coeff_map, coeff_zero, residue_eq_zero_iff]`. Apply `hf` to reduce the goal to its premises. Rewrite using `[← coeff_map, h0, coeff_zero]`. Simplify `h2` using `[Polynomial.map_sub, Polynomial.map_pow, sub_eq_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set S : B[X] := ∑ i ∈ Finset.range m, Polynomial.X ^ i with hS`. Establish `hc : IsCoprime p S`. Apply `coprime_of_residue p S hp` to reduce the goal to its premises. Rewrite using `[h1]`. Apply `IsCoprime.pow_left` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hirr : Irreducible (Polynomial.X - C (1 : ResidueField B))` using `irreducible_X_sub_C 1`. Rewrite using `[← C_1, hirr.coprime_iff_not_dvd, dvd_iff_isRoot]`. Establish `h3 : ((m : ℕ) : ResidueField B) ≠ 0`. Use `(hu.map (residue B)).ne_zero` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3` using `[hS, Polynomial.map_sum, eval_finset_sum]`. Take `⟨a, b, hab⟩` from `hc`. Establish `h4 : aeval M b * aeval M S = 1`. Use `congrArg (aeval M) hab` as an intermediate fact. Simplify `this` using `[hM]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h5 : aeval M S * (M - 1) = 0`. Establish `: aeval M S = ∑ i ∈ Finset.range m, M ^ i` using `by simp [hS]`. Rewrite using `[this, geom_sum_mul, hm, sub_self]`. Establish `h6 : M - 1 = 0`. Use `congrArg (aeval M b * ·) h5` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [← mul_assoc, h4, one_mul, mul_zero]`. Conclude with `sub_eq_zero.1 h6`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.phiRigid :
     ∀ {B E k : Type} [CommRing B] [IsLocalRing B] [Ring E] [Algebra B E] [Field k] (f : B →+* k), (∀ x, f x = 0 → x ∈ maximalIdeal B) → ∀ (M : E) (p : B[X]) (d m : ℕ), p.Monic → aeval M p = 0 → p.map f = (Polynomial.X - 1) ^ d → M ^ m = 1 → IsUnit (m : B) → M = 1 := by

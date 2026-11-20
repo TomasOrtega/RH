@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.ReframeSmooth
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply']`. Conclude with `ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_det_cplx {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : ℕ}
     {M : X → Matrix (Fin n) (Fin n) ℂ} {s : Set X}
@@ -22,9 +22,9 @@ theorem contDiffOn_det_cplx {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X
   exact ContDiffOn.sum fun σ _ => contDiffOn_const.mul (contDiffOn_prod fun i _ => h _ _)
 
 /- English proof (translation)
-Establish `e : ∀ v, (M v)⁻¹ a b = ((M v).det)⁻¹ * (M v).adjugate a b` using `fun v => by`. Rewrite using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Both sides reduce to the same expression. Simplify using `only [e, Matrix.adjugate_apply]`. Use `ContDiffOn.mul ((contDiffOn_det_cplx h).inv hd) (contDiffOn_det_cplx fun c d => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.updateRow_apply]`. Use `split_ifs`. Conclude with `contDiffOn_const`. Conclude with `h _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_inv_cplx {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] {n : ℕ}
     {M : X → Matrix (Fin n) (Fin n) ℂ} {s : Set X}
@@ -41,11 +41,9 @@ theorem contDiffOn_inv_cplx {X : Type} [NormedAddCommGroup X] [NormedSpace ℝ X
   · exact h _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ g B τ γ hτ hγ`. Establish `hU` using `GlobalTheory.SiegelAction.den_isUnit_of_isPeriodMap B τ γ hγ`. Establish `hden : ∀ k l, ContDiffOn ℝ ∞ (fun P : Pt E g => den γ (τ P.1) k l) (cov B g)`. Introduce `k l`. Simplify using `only [den, Matrix.add_apply, Matrix.mul_apply, Matrix.map_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `(ContDiffOn.sum fun m _ => contDiffOn_const.mul (GlobalTheory.FlatSmooth.contDiffOn_tau hτ m l)).add contDiffOn_const`. Establish `hent : ∀ i j, ContDiffOn ℝ ∞ (fun P : Pt E g => (den γ (τ P.1))⁻¹ i j) (cov B g)` using `contDiffOn_inv_cplx hden fun P hP => ((Matrix.isUnit_iff_isUnit_det _).1 (hU P.1 hP.1)).ne_zero`. Use `contDiffOn_fst.prodMk (contDiffOn_pi.2 fun j => ?_)` and prove the remaining obligations. Simplify using `only [reframe, Matrix.vecMul, dotProduct]`. Use `ContDiffOn.sum fun i _ => ContDiffOn.mul ?_ (hent i j)` and prove the remaining obligations.
-
-Conclude with `((contDiff_apply ℝ ℂ i).comp contDiff_snd).contDiffOn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem reframe_contDiffOn : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {g : ℕ} (B : Set E) (τ : E → Matrix (Fin g) (Fin g) ℂ) (γ : Sp g), IsPeriodMap B τ → IsPeriodMap B (fun b => moeb γ (τ b)) → ContDiffOn ℝ ∞ (reframe τ γ) (cov B g) := by
   intro E _ _ _ g B τ γ hτ hγ

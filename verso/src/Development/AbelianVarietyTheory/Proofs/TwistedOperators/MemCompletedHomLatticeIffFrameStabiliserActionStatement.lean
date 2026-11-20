@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.BasicNotions Formalism
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LatStab.mem_latO_iff_actO_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FMemCompletedHomLatticeIffFrameStabiliserAction.lean&line=98#L98)
 -/

@@ -27,21 +27,21 @@ Both sides reduce to the same expression.
 theorem snd_eq (x : AF F) : sndA F x = x.2 := rfl
 
 /- English proof (translation)
-The claim follows from `hε.1`.
+A detailed English derivation is pending.
 -/
 theorem idF_fst {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) : ε.1 = 1 := hε.1
 
 open Classical in
 /- English proof (translation)
-The claim follows from `hε.2 v`.
+A detailed English derivation is pending.
 -/
 theorem idF_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) (v : HeightOneSpectrum (𝓞 F)) :
     ε.2 v = if v ∈ S then 1 else 0 := hε.2 v
 
 /- English proof (translation)
-Use `Prod.ext ?_ (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ε.1 * ε.1 = ε.1`. Rewrite using `[idF_fst hε, one_mul]`. Express the relevant statement in the definitionally equal form `ε.2 v * ε.2 v = ε.2 v`. Rewrite using `[idF_snd hε v]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem idF_mul {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) : ε * ε = ε := by
   classical
@@ -53,7 +53,7 @@ theorem idF_mul {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
     split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h : (ε * y).1 = 0` using `by rw [hy]; rfl`. Express the relevant statement in the definitionally equal form `ε.1 * y.1 = 0 at h`. Rewrite `h` using `[idF_fst hε, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ker_fst {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {y : AF F} (hy : ε * y = 0) :
     y.1 = 0 := by
@@ -62,7 +62,7 @@ theorem ker_fst {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
   rwa [idF_fst hε, one_mul] at h
 
 /- English proof (translation)
-Establish `h : (ε * y).2 v = 0` using `by rw [hy]; rfl`. Express the relevant statement in the definitionally equal form `ε.2 v * y.2 v = 0 at h`. Rewrite `h` using `[idF_snd hε v, if_pos hv, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ker_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {y : AF F} (hy : ε * y = 0)
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∈ S) : y.2 v = 0 := by
@@ -72,7 +72,7 @@ theorem ker_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
   rwa [idF_snd hε v, if_pos hv, one_mul] at h
 
 /- English proof (translation)
-Establish `h' : (ε * h).2 v = h.2 v` using `by rw [hh]`. Express the relevant statement in the definitionally equal form `ε.2 v * h.2 v = h.2 v at h'`. Rewrite `h'` using `[idF_snd hε v, if_neg hv, zero_mul]`. Conclude with `h'.symm`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsIdF S ε) {h : AF F} (hh : ε * h = h)
     {v : HeightOneSpectrum (𝓞 F)} (hv : v ∉ S) : h.2 v = 0 := by
@@ -83,7 +83,7 @@ theorem fix_snd {S : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F} (hε : IsI
   exact h'.symm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem fix_mul_ker {ε h y : AF F} (hε : ε * ε = ε) (hh : ε * h = h) (hy : ε * y = 0) : h * y = 0 := by
   calc h * y = (ε * h) * y := by rw [hh]

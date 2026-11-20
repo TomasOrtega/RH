@@ -10,7 +10,7 @@ open GlobalTheory.CompanionTheory.GLK (e1 e2 f1)
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.ModelS.fRaw_one | exact GlobalTheory.CompanionTheory.ModelS.fRaw_one | (intros; apply GlobalTheory.CompanionTheory.ModelS.fRaw_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.inducedFunction_at_one : ∀ (n : ℕ) (lam : Fin n → ℤ) (lev : Fin n → ℕ), GlobalTheory.CompanionTheory.ModelS.fRaw lam lev 1 = 1 := by
   first | exact @GlobalTheory.CompanionTheory.ModelS.fRaw_one | exact GlobalTheory.CompanionTheory.ModelS.fRaw_one | (intros; apply GlobalTheory.CompanionTheory.ModelS.fRaw_one <;> assumption)

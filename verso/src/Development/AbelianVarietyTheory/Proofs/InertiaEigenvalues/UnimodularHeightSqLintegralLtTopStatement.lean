@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.NonGaloisDescent.IsTestRep
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.JR.HeightSquareIntegrable.height_sq_lintegral_lt_top` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FUnimodularHeightSqLintegralLtTop.lean&line=65#L65)
 -/

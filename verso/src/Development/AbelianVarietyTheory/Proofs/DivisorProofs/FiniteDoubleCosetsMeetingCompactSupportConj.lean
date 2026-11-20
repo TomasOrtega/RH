@@ -6,9 +6,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ T K y f hK hf hfin`. Establish `hCc : IsCompact ((fun p : G × G => p.1 * p.2 * p.1⁻¹) '' ((K : Set G) ×ˢ tsupport f))` using `(hK.prod hf.isCompact).image ((continuous_fst.mul continuous_snd).mul continuous_fst.inv)`. Use `(hfin _ hCc).subset ?_` and prove the remaining obligations. Introduce and unpack `q ⟨k, hk, hne⟩`. Use `⟨(k, (Quotient.out q * k)⁻¹ * y * (Quotient.out q * k)), ⟨hk, subset_tsupport f hne⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem doubleCoset_finite_of_compactSupport : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (T K : Subgroup G) (y : G) (f : G → ℂ), IsCompact (K : Set G) → HasCompactSupport f → (∀ C : Set G, IsCompact C → {q : DoubleCoset.Quotient (T : Set G) (K : Set G) | (Quotient.out q)⁻¹ * y * Quotient.out q ∈ C}.Finite) → {q : DoubleCoset.Quotient (T : Set G) (K : Set G) | ∃ k ∈ K, f ((Quotient.out q * k)⁻¹ * y * (Quotient.out q * k)) ≠ 0}.Finite := by
   intro G _ _ _ T K y f hK hf hfin

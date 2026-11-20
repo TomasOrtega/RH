@@ -8,7 +8,7 @@ open scoped Real ContDiff
 namespace GlobalTheory.MellinDerivLinear
 
 /- English proof (translation)
-Use `⟨0, 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem isMellinDeriv_zero : IsMellinDeriv (fun _ => (0 : ℂ)) 0 := by
   refine ⟨0, 0, ?_, ?_, ?_⟩
@@ -17,11 +17,11 @@ theorem isMellinDeriv_zero : IsMellinDeriv (fun _ => (0 : ℂ)) 0 := by
   · simp
 
 /- English proof (translation)
-Take `⟨C₁, C₀, hF0, hF1, rfl⟩` from `hF`. Take `⟨D₁, D₀, hG0, hG1, rfl⟩` from `hG`. Establish `e0 : (fun u : ℝ => (F u + G u - (C₁ + D₁) / u - (C₀ + D₀)) / u) = fun u => (F u - C₁ / u - C₀) / u + (G u - D₁ / u - D₀) / u`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e1 : (fun u : ℝ => (F u + G u) / u) = fun u => F u / u + G u / u`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Use `⟨C₁ + D₁, C₀ + D₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e0]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF0.add hG0`. Rewrite using `[e1]`. Conclude with `hF1.add hG1`. Rewrite using `[e0, e1, integral_add hF0 hG0, integral_add hF1 hG1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isMellinDeriv_add {F G : ℝ → ℂ} {S T : ℂ} (hF : IsMellinDeriv F S)
     (hG : IsMellinDeriv G T) : IsMellinDeriv (fun u => F u + G u) (S + T) := by
@@ -39,11 +39,11 @@ theorem isMellinDeriv_add {F G : ℝ → ℂ} {S T : ℂ} (hF : IsMellinDeriv F 
     ring
 
 /- English proof (translation)
-Take `⟨C₁, C₀, hF0, hF1, rfl⟩` from `hF`. Establish `e0 : (fun u : ℝ => (c * F u - c * C₁ / u - c * C₀) / u) = fun u => c * ((F u - C₁ / u - C₀) / u)`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : (fun u : ℝ => c * F u / u) = fun u => c * (F u / u)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree. Use `⟨c * C₁, c * C₀, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e0]`. Conclude with `hF0.const_mul c`.
+Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `hF1.const_mul c`. Rewrite using `[e0, e1, integral_const_mul, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isMellinDeriv_const_mul {F : ℝ → ℂ} {T : ℂ} (c : ℂ) (hF : IsMellinDeriv F T) :
     IsMellinDeriv (fun u => c * F u) (c * T) := by
@@ -60,7 +60,7 @@ theorem isMellinDeriv_const_mul {F : ℝ → ℂ} {T : ℂ} (c : ℂ) (hF : IsMe
     ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using isMellinDeriv_zero`. Consider the case `insert a s ha ih`. Simplify using `only [Finset.sum_insert ha]`. Conclude with `isMellinDeriv_add (isMellinDeriv_const_mul (c a) (h a (Finset.mem_insert_self a s))) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMellinDeriv_sum {ι : Type} (s : Finset ι) (c : ι → ℂ) (F : ι → ℝ → ℂ) (T : ι → ℂ)
     (h : ∀ i ∈ s, IsMellinDeriv (F i) (T i)) :

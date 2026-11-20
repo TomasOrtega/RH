@@ -23,14 +23,14 @@ instance : IsCMField Em :=
 def ζ : Em := IsCyclotomicExtension.zeta 4 ℚ Em
 
 /- English proof (translation)
-The claim follows from `IsCyclotomicExtension.zeta_spec 4 ℚ Em`.
+A detailed English derivation is pending.
 -/
 theorem hζ : IsPrimitiveRoot ζ 4 := IsCyclotomicExtension.zeta_spec 4 ℚ Em
 
 /- English proof (translation)
-Establish `h4 : ζ ^ 4 = 1` using `hζ.pow_eq_one`. Establish `h2 : ζ ^ 2 ≠ 1` using `hζ.pow_ne_one_of_pos_of_lt (l := 2) (by norm_num) (by norm_num)`. Establish `h : (ζ ^ 2 - 1) * (ζ ^ 2 + 1) = ζ ^ 4 - 1` using `by ring`. Rewrite `h` using `[h4, sub_self]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd (sub_eq_zero.1 h) h2`. Conclude with `eq_neg_of_add_eq_zero_left h`.
+A detailed English derivation is pending.
 -/
 theorem ζ_sq : ζ ^ 2 = -1 := by
   have h4 : ζ ^ 4 = 1 := hζ.pow_eq_one
@@ -42,18 +42,18 @@ theorem ζ_sq : ζ ^ 2 = -1 := by
   · exact eq_neg_of_add_eq_zero_left h
 
 /- English proof (translation)
-The claim follows from `hζ.isIntegral (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem ζ_isIntegral : IsIntegral ℤ ζ := hζ.isIntegral (by norm_num)
 
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Rewrite `hy` using `[Set.mem_singleton_iff]`. Substitute `hy` using the available equality. Conclude with `⟨0, 1, by simp⟩`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, d, rfl⟩` from `hz`. Conclude with `⟨a + c, b + d, by simp only [map_add]; ring⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨c, d, rfl⟩` from `hz`. Use `⟨a * c - b * d, a * d + b * c, ?_⟩` and prove the remaining obligations. Simplify using `only [map_sub, map_add, map_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `(algebraMap R Em b * algebraMap R Em d) * ζ_sq`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_of_mem_adjoin {R : Type} [CommRing R] [Algebra R Em] {x : Em}
     (hx : x ∈ Algebra.adjoin R ({ζ} : Set Em)) :
@@ -76,7 +76,7 @@ theorem exists_of_mem_adjoin {R : Type} [CommRing R] [Algebra R Em] {x : Em}
     linear_combination (algebraMap R Em b * algebraMap R Em d) * ζ_sq
 
 /- English proof (translation)
-Establish `hx : x ∈ Algebra.adjoin ℚ ({ζ} : Set Em)`. Rewrite using `[IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨a, b, h⟩` from `exists_of_mem_adjoin hx`. Conclude with `⟨a, b, by rw [h, eq_ratCast, eq_ratCast]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_rat (x : Em) : ∃ a b : ℚ, x = (a : Em) + (b : Em) * ζ := by
   have hx : x ∈ Algebra.adjoin ℚ ({ζ} : Set Em) := by
@@ -86,7 +86,7 @@ theorem exists_rat (x : Em) : ∃ a b : ℚ, x = (a : Em) + (b : Em) * ζ := by
   exact ⟨a, b, by rw [h, eq_ratCast, eq_ratCast]⟩
 
 /- English proof (translation)
-Establish `hcl` using `IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton_of_prime_pow (p := 2) (k := 2) (ζ := ζ) (hcycl := gaussian_isCyclotomic_four) hζ`. Take `⟨y, rfl⟩` from `hcl.isIntegral_iff.1 hx`. Take `⟨a, b, h⟩` from `exists_of_mem_adjoin (R := ℤ) y.2`. Use `⟨a, b, Eq.trans ?_ (h.trans (by rw [eq_intCast, eq_intCast]))⟩` and prove the remaining obligations. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem exists_int {x : Em} (hx : IsIntegral ℤ x) : ∃ a b : ℤ, x = (a : Em) + (b : Em) * ζ := by
   have hcl := IsCyclotomicExtension.Rat.isIntegralClosure_adjoin_singleton_of_prime_pow
@@ -97,7 +97,7 @@ theorem exists_int {x : Em} (hx : IsIntegral ℤ x) : ∃ a b : ℤ, x = (a : Em
   rfl
 
 /- English proof (translation)
-Establish `ha : IsIntegral ℤ (a : Em)` using `by simpa using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ Em a))`. Establish `hb : IsIntegral ℤ (b : Em)` using `by simpa using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ Em b))`. Conclude with `ha.add (hb.mul ζ_isIntegral)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_rep (a b : ℤ) : IsIntegral ℤ ((a : Em) + (b : Em) * ζ) := by
   have ha : IsIntegral ℤ (a : Em) := by simpa using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ Em a))
@@ -109,9 +109,9 @@ abbrev cc : Em ≃ₐ[maximalRealSubfield Em] Em := IsCMField.complexConj Em
 def φ₀ : Em →+* ℂ := Classical.choice inferInstance
 
 /- English proof (translation)
-Establish `hs : σ ζ ^ 2 = -1` using `by rw [← map_pow, ζ_sq, map_neg, map_one]`. Establish `h : (σ ζ - Complex.I) * (σ ζ + Complex.I) = σ ζ ^ 2 - Complex.I ^ 2` using `by ring`. Rewrite `h` using `[hs, Complex.I_sq, sub_self]`. Break down `mul_eq_zero.1 h with h | h` into its components or cases. Conclude with `Or.inl (sub_eq_zero.1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (eq_neg_of_add_eq_zero_left h)`.
+Prove the second alternative.
 -/
 theorem emb_ζ (σ : Em →+* ℂ) : σ ζ = Complex.I ∨ σ ζ = -Complex.I := by
   have hs : σ ζ ^ 2 = -1 := by rw [← map_pow, ζ_sq, map_neg, map_one]
@@ -122,7 +122,7 @@ theorem emb_ζ (σ : Em →+* ℂ) : σ ζ = Complex.I ∨ σ ζ = -Complex.I :=
   · exact Or.inr (eq_neg_of_add_eq_zero_left h)
 
 /- English proof (translation)
-Establish `: σ.toRatAlgHom = σ'.toRatAlgHom` using `AlgHom.ext_of_adjoin_eq_top (IsCyclotomicExtension.adjoin_primitive_root_eq_top hζ) (fun x hx => by rw [Set.mem_singleton_iff] at hx; subst hx; exact h)`. Use extensionality with `x`. Conclude with `congrArg (fun f : Em →ₐ[ℚ] ℂ => f x) this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ringHom_ext {σ σ' : Em →+* ℂ} (h : σ ζ = σ' ζ) : σ = σ' := by
   have : σ.toRatAlgHom = σ'.toRatAlgHom :=
@@ -132,34 +132,32 @@ theorem ringHom_ext {σ σ' : Em →+* ℂ} (h : σ ζ = σ' ζ) : σ = σ' := b
   exact congrArg (fun f : Em →ₐ[ℚ] ℂ => f x) this
 
 /- English proof (translation)
-Apply the tactic sequence `rcases emb_ζ σ with h | h <;> rw [h] <;> simp [Complex.conj_I]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conj_emb_ζ (σ : Em →+* ℂ) : conj (σ ζ) = -σ ζ := by
   rcases emb_ζ σ with h | h <;> rw [h] <;> simp [Complex.conj_I]
 
 /- English proof (translation)
-Apply `φ₀.injective` to reduce the goal to its premises. Rewrite using `[IsCMField.complexEmbedding_complexConj, map_neg, conj_emb_ζ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_ζ : cc ζ = -ζ := by
   apply φ₀.injective
   rw [IsCMField.complexEmbedding_complexConj, map_neg, conj_emb_ζ]
 
 /- English proof (translation)
-The claim follows from `map_ratCast cc q`.
+A detailed English derivation is pending.
 -/
 theorem cc_ratCast (q : ℚ) : cc (q : Em) = q := map_ratCast cc q
 
 /- English proof (translation)
-The claim follows from `map_intCast cc n`.
+A detailed English derivation is pending.
 -/
 theorem cc_intCast (n : ℤ) : cc (n : Em) = n := map_intCast cc n
 
 /- English proof (translation)
-Simplify using `only [exists_const]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl h`. Establish `h1` using `congrArg (fun f : Em →+* ℂ => f ζ) h`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, conj_emb_ζ] at h1`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have h0 : φ₀ ζ ≠ 0 := by rcases emb_ζ φ₀ with h | h <;> rw [h] <;> simp [Complex.I_ne_zero]`. Conclude with `h0 (by linear_combination h1 / 2)`. Introduce `h`. Apply the tactic sequence `rcases emb_ζ σ with hs | hs <;> rcases emb_ζ φ₀ with hp | hp`. Conclude with `ringHom_ext (hp.trans hs.symm)`.
-
-Conclude with `absurd (ringHom_ext (by simp [hs, hp, Complex.conj_I])) h`. Conclude with `absurd (ringHom_ext (by simp [hs, hp, Complex.conj_I])) h`. Conclude with `ringHom_ext (hp.trans hs.symm)`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cmType (σ : Em →+* ℂ) :
     (∃ τ : Unit, (fun _ => φ₀) τ = σ) ↔ ¬ ∃ τ : Unit, (fun _ => φ₀) τ = (starRingEnd ℂ).comp σ := by
@@ -178,21 +176,21 @@ theorem cmType (σ : Em →+* ℂ) :
     · exact ringHom_ext (hp.trans hs.symm)
 
 /- English proof (translation)
-Rewrite using `[IsCyclotomicExtension.finrank Em (cyclotomic.irreducible_rat (n := 4) (by norm_num))]`. Evaluate the decidable proposition.
+Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition.
 -/
 theorem finrank_Em : Module.finrank ℚ Em = 2 := by
   rw [IsCyclotomicExtension.finrank Em (cyclotomic.irreducible_rat (n := 4) (by norm_num))]
   decide
 
 /- English proof (translation)
-Rewrite using `[← map_one (algebraMap ℚ Em), Algebra.trace_algebraMap, finrank_Em]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem trace_one : Algebra.trace ℚ Em 1 = 2 := by
   rw [← map_one (algebraMap ℚ Em), Algebra.trace_algebraMap, finrank_Em]
   norm_num
 
 /- English proof (translation)
-Establish `h` using `Algebra.trace_eq_of_algEquiv (cc.restrictScalars ℚ) ζ`. Rewrite `h` using `[AlgEquiv.restrictScalars_apply, cc_ζ, map_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem trace_ζ : Algebra.trace ℚ Em ζ = 0 := by
   have h := Algebra.trace_eq_of_algEquiv (cc.restrictScalars ℚ) ζ
@@ -200,9 +198,9 @@ theorem trace_ζ : Algebra.trace ℚ Em ζ = 0 := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : Algebra.trace ℚ Em (a : Em) = 2 * a`. Rewrite using `[← eq_ratCast (algebraMap ℚ Em) a, Algebra.trace_algebraMap, finrank_Em, nsmul_eq_mul]`. Evaluate the numerical expressions. Establish `h2 : Algebra.trace ℚ Em ((b : Em) * ζ) = 0`. Rewrite using `[← eq_ratCast (algebraMap ℚ Em) b, ← Algebra.smul_def, map_smul, trace_ζ, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, h1, h2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_rep (a b : ℚ) : Algebra.trace ℚ Em ((a : Em) + (b : Em) * ζ) = 2 * a := by
   have h1 : Algebra.trace ℚ Em (a : Em) = 2 * a := by
@@ -213,16 +211,16 @@ theorem trace_rep (a b : ℚ) : Algebra.trace ℚ Em ((a : Em) + (b : Em) * ζ) 
   rw [map_add, h1, h2, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← eq_ratCast (algebraMap ℚ Em) q]`. Conclude with `Algebra.smul_def q v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qsmul_eq (q : ℚ) (v : Em) : q • v = (q : Em) * v := by
   rw [← eq_ratCast (algebraMap ℚ Em) q]
   exact Algebra.smul_def q v
 
 /- English proof (translation)
-Take `⟨c, d, rfl⟩` from `exists_int hw`. Use `⟨-d, ?_⟩` and prove the remaining obligations. Establish `: ζ / 2 * ((c : Em) + (d : Em) * ζ) = (((-(d : ℚ) / 2 : ℚ)) : Em) + (((c : ℚ) / 2 : ℚ) : Em) * ζ`. Use `push_cast`. Take the linear combination `(d / 2 : Em) * ζ_sq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[this, trace_rep]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_of_integral {w : Em} (hw : IsIntegral ℤ w) : ∃ m : ℤ, Algebra.trace ℚ Em (ζ / 2 * w) = m := by
   obtain ⟨c, d, rfl⟩ := exists_int hw
@@ -235,13 +233,13 @@ theorem trace_of_integral {w : Em} (hw : IsIntegral ℤ w) : ∃ m : ℤ, Algebr
   ring
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `exists_rat v`. Take `⟨m1, hm1⟩` from `h1`. Take `⟨m2, hm2⟩` from `h2`. Establish `e1 : ζ / 2 * ((a : Em) + (b : Em) * ζ) = (((-b / 2 : ℚ)) : Em) + (((a / 2 : ℚ)) : Em) * ζ`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take the linear combination `(b / 2 : Em) * ζ_sq`. Establish `e2 : ζ / 2 * (((a : Em) + (b : Em) * ζ) * ζ) = (((-a / 2 : ℚ)) : Em) + (((-b / 2 : ℚ)) : Em) * ζ`. Use `push_cast`. Take the linear combination `(a / 2 + b / 2 * ζ : Em) * ζ_sq`. Rewrite `hm1` using `[e1, trace_rep]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hm2` using `[e2, trace_rep]`. Establish `hb : b = ((-m1 : ℤ) : ℚ)` using `by push_cast; linarith`. Establish `ha : a = ((-m2 : ℤ) : ℚ)` using `by push_cast; linarith`. Rewrite using `[ha, hb]`. Use `isIntegral_rep (-m2) (-m1)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integral_of_trace {v : Em} (h1 : ∃ m : ℤ, Algebra.trace ℚ Em (ζ / 2 * v) = m)
     (h2 : ∃ m : ℤ, Algebra.trace ℚ Em (ζ / 2 * (v * ζ)) = m) : IsIntegral ℤ v := by
@@ -266,7 +264,7 @@ theorem integral_of_trace {v : Em} (h1 : ∃ m : ℤ, Algebra.trace ℚ Em (ζ /
 def gaussH : Matrix (Fin 2) (Fin 2) Em := !![1, 0; 0, -1]
 
 /- English proof (translation)
-Simplify using `[hermForm, gaussH, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermForm_gauss (x y : Fin 2 → Em) :
     hermForm Em gaussH x y = cc (x 0) * y 0 - cc (x 1) * y 1 := by
@@ -283,14 +281,14 @@ def gaussL : Submodule (𝓞 Em) (Fin 2 → Em) where
     exact (RingOfIntegers.isIntegral_coe c).mul (hx a)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_gaussL {x : Fin 2 → Em} : x ∈ gaussL ↔ ∀ a, IsIntegral ℤ (x a) := Iff.rfl
 
 /- English proof (translation)
-Introduce `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using `using hv`. Rewrite using `[Pi.single_eq_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isIntegral_zero`.
+A detailed English derivation is pending.
 -/
 theorem single_mem (a : Fin 2) {v : Em} (hv : IsIntegral ℤ v) : Pi.single a v ∈ gaussL := by
   intro b
@@ -299,11 +297,9 @@ theorem single_mem (a : Fin 2) {v : Em} (hv : IsIntegral ℤ v) : Pi.single a v 
   · rw [Pi.single_eq_of_ne h]; exact isIntegral_zero
 
 /- English proof (translation)
-Set `f : (Fin 2 → 𝓞 Em) →ₗ[ℤ] (Fin 2 → Em)` to `LinearMap.pi fun a => ((Algebra.linearMap (𝓞 Em) Em).restrictScalars ℤ).comp (LinearMap.proj a)`. Establish `: gaussL.restrictScalars ℤ = Submodule.map f ⊤`. Use extensionality with `x`. Simplify using `only [Submodule.restrictScalars_mem, Submodule.map_top, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Conclude with `⟨fun a => ⟨x a, hx a⟩, by funext a; rfl⟩`. Introduce and unpack `⟨z, rfl⟩ a`. Conclude with `RingOfIntegers.isIntegral_coe (z a)`. Rewrite using `[this]`.
-
-Conclude with `(Module.Finite.fg_top).map f`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussL_fg : (gaussL.restrictScalars ℤ).FG := by
   let f : (Fin 2 → 𝓞 Em) →ₗ[ℤ] (Fin 2 → Em) :=
@@ -320,11 +316,9 @@ theorem gaussL_fg : (gaussL.restrictScalars ℤ).FG := by
   exact (Module.Finite.fg_top).map f
 
 /- English proof (translation)
-Use `Submodule.eq_top_iff'.2 fun x => ?_` and prove the remaining obligations. Take `⟨p0, q0, h0⟩` from `exists_rat (x 0)`. Take `⟨p1, q1, h1⟩` from `exists_rat (x 1)`. Establish `hx : x = p0 • (Pi.single 0 (1 : Em) : Fin 2 → Em) + q0 • (Pi.single 0 ζ : Fin 2 → Em) + (p1 • (Pi.single 1 (1 : Em) : Fin 2 → Em) + q1 • (Pi.single 1 ζ : Fin 2 → Em))`. Use function extensionality and compare the values at `b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases b`. Simplify using `[h0, qsmul_eq]`. Simplify using `[h1, qsmul_eq]`. Establish `m : ∀ (a : Fin 2) (v : Em), IsIntegral ℤ v → Pi.single a v ∈ Submodule.span ℚ (gaussL : Set (Fin 2 → Em))` using `fun a v hv => Submodule.subset_span (single_mem a hv)`. Rewrite using `[hx]`.
-
-Conclude with `add_mem (add_mem (Submodule.smul_mem _ _ (m 0 1 isIntegral_one)) (Submodule.smul_mem _ _ (m 0 ζ ζ_isIntegral))) (add_mem (Submodule.smul_mem _ _ (m 1 1 isIntegral_one)) (Submodule.smul_mem _ _ (m 1 ζ ζ_isIntegral)))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussL_span : Submodule.span ℚ (gaussL : Set (Fin 2 → Em)) = ⊤ := by
   refine Submodule.eq_top_iff'.2 fun x => ?_
@@ -344,21 +338,21 @@ theorem gaussL_span : Submodule.span ℚ (gaussL : Set (Fin 2 → Em)) = ⊤ := 
     (add_mem (Submodule.smul_mem _ _ (m 1 1 isIntegral_one)) (Submodule.smul_mem _ _ (m 1 ζ ζ_isIntegral)))
 
 /- English proof (translation)
-The claim follows from `hv.map (cc : Em →+* Em).toIntAlgHom`.
+A detailed English derivation is pending.
 -/
 theorem cc_isIntegral {v : Em} (hv : IsIntegral ℤ v) : IsIntegral ℤ (cc v) :=
   hv.map (cc : Em →+* Em).toIntAlgHom
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx y hy`. Unfold `trForm`. Rewrite using `[hermForm_gauss]`. Conclude with `trace_of_integral (((cc_isIntegral (hx 0)).mul (hy 0)).sub ((cc_isIntegral (hx 1)).mul (hy 1)))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hv : ∀ (a : Fin 2) (v : Em), IsIntegral ℤ v → ∃ m : ℤ, trForm Em (ζ / 2) gaussH x (Pi.single a v) = m` using `fun a v hv => h _ (single_mem a hv)`. Establish `i0 : IsIntegral ℤ (cc (x 0))`. Use `integral_of_trace ?_ ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `hv 0 1 isIntegral_one`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨m, by simpa [trForm, hermForm_gauss] using hm⟩`. Take `⟨m, hm⟩` from `hv 0 ζ ζ_isIntegral`. Conclude with `⟨m, by simpa [trForm, hermForm_gauss] using hm⟩`. Establish `i1 : IsIntegral ℤ (-cc (x 1))`. Use `integral_of_trace ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hv 1 1 isIntegral_one`. Conclude with `⟨m, by simpa [trForm, hermForm_gauss] using hm⟩`. Take `⟨m, hm⟩` from `hv 1 ζ ζ_isIntegral`. Conclude with `⟨m, by simpa [trForm, hermForm_gauss, neg_mul] using hm⟩`. Introduce `a`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `fin_cases a`. Simplify using `using cc_isIntegral i0`. Simplify using `using cc_isIntegral i1.neg`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem gauss_selfDual (x : Fin 2 → Em) :
     x ∈ gaussL ↔ ∀ y ∈ gaussL, ∃ m : ℤ, trForm Em (ζ / 2) gaussH x y = m := by
@@ -388,7 +382,7 @@ theorem gauss_selfDual (x : Fin 2 → Em) :
     · simpa using cc_isIntegral i1.neg
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [gaussH, signMat, Matrix.diagonal]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gauss_signature :
     (1 : Matrix (Fin 2) (Fin 2) ℂ)ᴴ * gaussH.map φ₀ * 1 = signMat 2 1 := by

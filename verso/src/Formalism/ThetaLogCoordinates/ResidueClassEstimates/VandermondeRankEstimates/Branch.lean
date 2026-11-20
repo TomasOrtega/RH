@@ -12,16 +12,16 @@ namespace Branch
 def ff (j : ℕ) (x : ℝ) : ℝ := ∏ k ∈ range j, (x - k)
 
 /- English proof (translation)
-Simplify using `[ff]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ff_zero (x : ℝ) : ff 0 x = 1 := by simp [ff]
 
 /- English proof (translation)
-Establish `h1 : ff (j + 1) (x + 1) = (x + 1) * ff j x`. Unfold `ff`. Rewrite using `[Finset.prod_range_succ']`. Rewrite using `[mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun k _ => ?_ push_cast` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : ff (j + 1) x = ff j x * (x - j)`. Unfold `ff`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Finset.prod_range_succ]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ff_diff (j : ℕ) (x : ℝ) : ff (j + 1) (x + 1) - ff (j + 1) x = ((j : ℝ) + 1) * ff j x := by
   have h1 : ff (j + 1) (x + 1) = (x + 1) * ff j x := by
@@ -38,7 +38,7 @@ lemma ff_diff (j : ℕ) (x : ℝ) : ff (j + 1) (x + 1) - ff (j + 1) x = ((j : �
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Proceed by induction on `b, h using Int.leInduction with`. Consider the case `base => simp`. Consider the case `succ b hb ih`. Rewrite using `[← Finset.insert_Ico_right_eq_Ico_add_one hb, Finset.sum_insert Finset.right_notMem_Ico, ih]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma sum_Ico_int_sub (F : ℤ → ℝ) (a b : ℤ) (h : a ≤ b) :
     ∑ x ∈ Ico a b, (F (x + 1) - F x) = F b - F a := by
@@ -49,11 +49,11 @@ lemma sum_Ico_int_sub (F : ℤ → ℝ) (a b : ℤ) (h : a ≤ b) :
     ring
 
 /- English proof (translation)
-Use `sum_Ico_int_sub (fun x => - ff (j + 1) (c + 1 - (x : ℝ))) a (b + 1) (by omega)` as an intermediate fact. Rewrite `this` using `[Finset.Ico_add_one_right_eq_Icc]`. Rewrite using `[Finset.mul_sum]`. Establish `e : ∀ x ∈ Icc a b, ((j : ℝ) + 1) * ff j (c - (x : ℝ)) = - ff (j + 1) (c + 1 - ((x + 1 : ℤ) : ℝ)) - - ff (j + 1) (c + 1 - (x : ℝ))`. Introduce `x _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← ff_diff]`. Use `push_cast`. Establish `e1 : c + 1 - ((x : ℝ) + 1) = c - x` using `by ring`. Establish `e2 : c + 1 - (x : ℝ) = c - x + 1` using `by ring`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl e, this]`. Use `push_cast`. Establish `e1 : c + 1 - ((b : ℝ) + 1) = c - b` using `by ring`. Rewrite using `[e1]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -77,7 +77,7 @@ lemma sum_ff (j : ℕ) (c : ℝ) (a b : ℤ) (h : a ≤ b) :
   rw [e1]; ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_eval_matrixOfPolynomials_eq_det_vandermonde v (fun j => descPochhammer ℝ j) (fun j => descPochhammer_natDegree ℝ j) (fun j => monic_descPochhammer ℝ j)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, descPochhammer_eval_eq_prod_range, ff]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma det_vandermonde_eq_ff {n : ℕ} (v : Fin n → ℝ) :
     (Matrix.vandermonde v).det = (Matrix.of fun i j : Fin n => ff j (v i)).det := by
@@ -88,9 +88,9 @@ lemma det_vandermonde_eq_ff {n : ℕ} (v : Fin n → ℝ) :
   simp only [Matrix.of_apply, descPochhammer_eval_eq_prod_range, ff]
 
 /- English proof (translation)
-Use `(Matrix.detRowAlternating (n := Fin n) (R := ℝ)).toMultilinearMap.map_sum_finset g S` as an intermediate fact. Establish `e : (fun i => ∑ x ∈ S i, g i x) = (Matrix.of fun i j : Fin n => ∑ x ∈ S i, g i x j)`. Use extensionality with `i j`. Simplify using `[Finset.sum_apply]`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 lemma sum_det {n : ℕ} (S : Fin n → Finset ℤ) (g : Fin n → ℤ → Fin n → ℝ) :
     ∑ r ∈ Fintype.piFinset S, (Matrix.of fun i j : Fin n => g i (r i) j).det =
@@ -103,11 +103,11 @@ lemma sum_det {n : ℕ} (S : Fin n → Finset ℤ) (g : Fin n → ℤ → Fin n 
   exact this.symm
 
 /- English proof (translation)
-Set `B : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ` to `Matrix.of fun i j => Fin.cases (M 0 j) (fun i' => M i'.succ j - M i'.castSucc j) i`. Establish `h1 : M.det = B.det`. Use `Matrix.det_eq_of_forall_row_eq_smul_add_pred (fun _ => 1) (fun j => ?_) (fun i j => ?_)` and prove the remaining obligations. Simplify using `[B]`. Simplify using `[B]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, Matrix.det_succ_column_zero, Fin.sum_univ_succ]`. Establish `h2 : ∀ i : Fin n, B i.succ 0 = 0`. Introduce `i`. Simplify using `[B, h]`. Establish `h3 : B 0 0 = 1` using `by simp [B, h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [h2, h3, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 lemma det_diff {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (h : ∀ i, M i 0 = 1) :
     M.det = (Matrix.of fun i j : Fin n => M i.succ j.succ - M i.castSucc j.succ).det := by
@@ -127,7 +127,7 @@ lemma det_diff {n : ℕ} (M : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ) (h : ∀ i
 def W (n : ℕ) (u : ℕ → ℝ) : ℝ := ∏ j ∈ range n, ∏ i ∈ range j, (u j - u i)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_vandermonde, W, Finset.prod_comm' (s' := fun j : Fin n => Iio j) (t' := (univ : Finset (Fin n))) (by intro x y; simp), ← Fin.prod_univ_eq_prod_range (fun j => ∏ i ∈ range j, (u j - u i)) n]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Nat.Iio_eq_range, ← Fin.map_valEmbedding_Iio, Finset.prod_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma det_vandermonde_eq_vandermondeProd (n : ℕ) (u : ℕ → ℝ) :
     (Matrix.vandermonde fun i : Fin n => u i).det = W n u := by
@@ -140,15 +140,15 @@ lemma det_vandermonde_eq_vandermondeProd (n : ℕ) (u : ℕ → ℝ) :
   rfl
 
 /- English proof (translation)
-Simplify using `[extW]`.
+Simplify using the standard rewrite rules.
 -/
 lemma extW_val {n : ℕ} (la : Fin n → ℤ) (i : Fin n) : extW la i.val = la i := by
   simp [extW]
 
 /- English proof (translation)
-Unfold `weylDim W`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma weylDim_eq (n : ℕ) (la : ℕ → ℤ) :
     weylDim n la = W n (fun m => (m : ℝ) - (la m : ℝ)) / W n (fun m => (m : ℝ)) := by
@@ -161,7 +161,7 @@ lemma weylDim_eq (n : ℕ) (la : ℕ → ℤ) :
   push_cast; ring
 
 /- English proof (translation)
-Unfold `W`. Use `Finset.prod_ne_zero_iff.2 fun j _ => Finset.prod_ne_zero_iff.2 fun i hi => ?_` and prove the remaining obligations. Establish `: (i : ℝ) < j` using `by exact_mod_cast Finset.mem_range.1 hi`. Conclude with `sub_ne_zero.2 this.ne'`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma W_id_ne_zero (n : ℕ) : W n (fun m => (m : ℝ)) ≠ 0 := by
   unfold W
@@ -170,9 +170,9 @@ lemma W_id_ne_zero (n : ℕ) : W n (fun m => (m : ℝ)) ≠ 0 := by
   exact sub_ne_zero.2 this.ne'
 
 /- English proof (translation)
-Unfold `W`. Rewrite using `[Finset.prod_range_succ, Fin.prod_univ_eq_prod_range (fun j => (j : ℝ) + 1) n, ← Finset.prod_range_reflect (fun j => (j : ℝ) + 1) n]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < n` using `Finset.mem_range.1 hi`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma W_id_succ (n : ℕ) :
     W (n + 1) (fun m => (m : ℝ)) = W n (fun m => (m : ℝ)) * ∏ j : Fin n, ((j : ℝ) + 1) := by
@@ -186,9 +186,9 @@ lemma W_id_succ (n : ℕ) :
   push_cast; ring
 
 /- English proof (translation)
-Repeatedly rewrite using `[det_vandermonde_eq_ff]`. Rewrite using `[sum_det (fun i : Fin n => Icc (mu i.succ) (mu i.castSucc)) (fun i x j => ff j ((i : ℝ) - (x : ℝ))), ← Matrix.det_mul_row, det_diff _ (by intro i; simp [ff_zero])]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Matrix.of_apply]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[sum_ff _ _ _ _ (h i)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma core {n : ℕ} (mu : Fin (n + 1) → ℤ) (h : ∀ i : Fin n, mu i.succ ≤ mu i.castSucc) :
     (∏ j : Fin n, ((j : ℝ) + 1)) *
@@ -205,7 +205,7 @@ lemma core {n : ℕ} (mu : Fin (n + 1) → ℤ) (h : ∀ i : Fin n, mu i.succ �
   simp
 
 /- English proof (translation)
-Rewrite using `[← finsum_mem_coe_finset]`. Use `finsum_congr fun a => ?_` and prove the remaining obligations. Establish `e : p a = (a ∈ (s : Set α))` using `propext (by rw [Finset.mem_coe]; exact h a)`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma finsum_prop_eq_sum {α : Type*} (p : α → Prop) (s : Finset α) (f : α → ℝ) (h : ∀ a, p a ↔ a ∈ s) :
     ∑ᶠ (a : α) (_ : p a), f a = ∑ a ∈ s, f a := by
@@ -215,13 +215,13 @@ lemma finsum_prop_eq_sum {α : Type*} (p : α → Prop) (s : Finset α) (f : α 
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[Fintype.mem_piFinset]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Use `h i.val i.isLt` as an intermediate fact. Rewrite `this` using `[extW_val]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : extW mu i.val = mu i.castSucc` using `extW_val mu i.castSucc`. Establish `e2 : extW mu (i.val + 1) = mu i.succ` using `extW_val mu i.succ`. Rewrite `this` using `[e1, e2]`. Conclude with `Finset.mem_Icc.2 ⟨this.2, this.1⟩`. Introduce `h l hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Finset.mem_Icc.1 (h ⟨l, hl⟩)` as an intermediate fact. Establish `e0 : extW la l = la ⟨l, hl⟩` using `extW_val la ⟨l, hl⟩`. Establish `e1 : extW mu l = mu (Fin.castSucc ⟨l, hl⟩)` using `extW_val mu (Fin.castSucc ⟨l, hl⟩)`. Establish `e2 : extW mu (l + 1) = mu (Fin.succ ⟨l, hl⟩)` using `extW_val mu (Fin.succ ⟨l, hl⟩)`. Rewrite using `[e0, e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨this.2, this.1⟩`.
+A detailed English derivation is pending.
 -/
 lemma interl_iff {n : ℕ} (la : Fin n → ℤ) (mu : Fin (n + 1) → ℤ) :
     Interl n (extW la) (extW mu) ↔
@@ -244,7 +244,7 @@ lemma interl_iff {n : ℕ} (la : Fin n → ℤ) (mu : Fin (n + 1) → ℤ) :
     exact ⟨this.2, this.1⟩
 
 /- English proof (translation)
-Rewrite using `[← det_vandermonde_eq_vandermondeProd]`. Simplify using `only [extW_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma W_extW {n : ℕ} (la : Fin n → ℤ) :
     W n (fun m => (m : ℝ) - (extW la m : ℝ)) = (Matrix.vandermonde fun i : Fin n => (i : ℝ) - (la i : ℝ)).det := by
@@ -256,11 +256,11 @@ end Branch
 open Branch in
 
 /- English proof (translation)
-Introduce `n mu hmu`. Establish `h : ∀ i : Fin n, mu i.succ ≤ mu i.castSucc`. Introduce `i`. Use `hmu i.val (by have := i.isLt; omega)` as an intermediate fact. Establish `e1 : extW mu i.val = mu i.castSucc` using `extW_val mu i.castSucc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : extW mu (i.val + 1) = mu i.succ` using `extW_val mu i.succ`. Rewrite `this` using `[e1, e2]`. Then use the resulting hypothesis. Rewrite using `[finsum_prop_eq_sum _ _ _ (fun la => interl_iff la mu)]`. Repeatedly rewrite using `[weylDim_eq, W_extW]`. Rewrite using `[← Finset.sum_div, ← core mu h, W_id_succ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `W_id_ne_zero n`. Establish `h1 : (∏ j : Fin n, ((j : ℝ) + 1)) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun j _ => by positivity`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem branchingDimensionFormula : BranchDim := by
   intro n mu hmu

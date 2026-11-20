@@ -10,53 +10,49 @@ open scoped ValuativeRel ComplexConjugate
 namespace GlobalTheory.CompanionTheory.JSBoundStep
 
 /- English proof (translation)
-Introduce `h0 h3 h3c`. Unfold `FormHermitianPositive ForR ForF`. Introduce `F _ _ _ _ _ _ μ _ ψ hψ n V _ _ ρ hsm l k B B' hk hW hI hC`. Unfold `L0 ForF at h0`. Unfold `L3 ForR ForF at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `ColumnsMirabolic ForF at h3c`. Take `⟨-, hlat⟩` from `h0 F μ ψ hψ`. Take `⟨hlatM, hcv⟩` from `hlat (k + 1)`. Establish `h3'` using `h3 F μ ψ hψ n V ρ hsm`. Take `⟨hcadd, hc0, hcP, -, -, -⟩` from `h3c F μ ψ hψ n k hk`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨herm, psd, null, quasi, -⟩` from `hI`. Use `clear h0 h3 h3c hlat`. Establish `hψinv : ∀ t : F, ψ (-t) * ψ t = 1` using `fun t => by`. Rewrite using `[← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one]`. Establish `hψconj : ∀ t : F, conj (ψ (-t)) = ψ t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `hn : ‖ψ (-t)‖ = 1` using `hψ.2.2 (-t)`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ∀ (x : Fin (k + 1) → F) (b : V), ρ (PositivityTheory.JacquetShalikaLocal.col n k x) (ρ (PositivityTheory.JacquetShalikaLocal.col n k (-x)) b) = b`. Introduce `x b`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : PositivityTheory.JacquetShalikaLocal.col n k x * PositivityTheory.JacquetShalikaLocal.col n k (-x) = 1`. Rewrite using `[← hcadd, add_neg_cancel, hc0]`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∀ (x : Fin (k + 1) → F) (a b : V), B (ρ (PositivityTheory.JacquetShalikaLocal.col n k x) a) b = B a (ρ (PositivityTheory.JacquetShalikaLocal.col n k (-x)) b)`. Introduce `x a b`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq` using `quasi (PositivityTheory.JacquetShalikaLocal.col n k x) (hcP x).1 a (ρ (PositivityTheory.JacquetShalikaLocal.col n k (-x)) b)`. Rewrite `hq` using `[hinv, (hcP x).2.2.1, map_one]`. Simplify using `using hq`. Establish `hnegS : ∀ (M : ℕ), ∀ x ∈ PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, -x ∈ PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M`. Introduce `M x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [PositivityTheory.JacquetShalikaLocal.lat, Set.mem_setOf_eq, Pi.neg_apply, mul_neg] at hx ⊢`. Conclude with `fun i => neg_mem (hx i)`. Establish `hvol : ∀ M : ℕ, 0 < (Measure.pi fun _ => μ).real (PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M)` using `fun M => (hlatM M).2.2.2`. Establish `hmeas : ∀ M : ℕ, MeasurableSet (PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M)` using `fun M => (hlatM M).2.2.1`. Establish `hvol' : ∀ M : ℕ, ∫ _ in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, (1 : ℂ) ∂(Measure.pi fun _ => μ) = (((Measure.pi fun _ => μ).real (PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M) : ℝ) : ℂ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M`. Rewrite using `[setIntegral_const]`. Simplify using the standard rewrite rules. Establish `hv : ∀ M : ℕ, ∫ _ in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, (1 : ℂ) ∂(Measure.pi fun _ => μ) ≠ 0`. Introduce `M`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hvol' M]`. Conclude with `Complex.ofReal_ne_zero.mpr (hvol M).ne'`. Establish `hmv : ∀ x : Fin (k + 1) → F, (↑(-1 : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F).mulVec x = -x`. Introduce `x`. Rewrite using `[Units.val_neg, Units.val_one, Matrix.neg_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcvS : ∀ (M : ℕ) (f : (Fin (k + 1) → F) → ℂ), ∫ x in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, f (-x) ∂(Measure.pi fun _ => μ) = ∫ x in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, f x ∂(Measure.pi fun _ => μ)`. Introduce `M f`. Establish `himg : (fun x => (↑(-1 : GL (Fin (k + 1)) F) : Matrix (Fin (k + 1)) (Fin (k + 1)) F).mulVec x) '' PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M = PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `only [hmv]`. Conclude with `hnegS M y hy`. Introduce `hx`. Conclude with `⟨-x, hnegS M x hx, by simp only [hmv, neg_neg]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `hcv (-1) (PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M) (fun _ => (1 : ℂ)) (hmeas M)`. Establish `e2` using `hcv (-1) (PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M) f (hmeas M)`. Rewrite `e1`, `e2` using `[himg]`. Simplify using `only [hmv] at e2`. Establish `alg : ∀ c v I J : ℂ, v ≠ 0 → v = c * v → I = c * J → J = I`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c v I J hv0 h1 h2`. Establish `hc : c = 1`. Establish `: c * v = 1 * v` using `by rw [← h1, one_mul]`. Conclude with `mul_right_cancel₀ hv0 this`. Rewrite using `[h2, hc, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `alg _ _ _ _ (hv M) e1 e2`. Establish `hξ : ∀ x : Fin (k + 1) → F, Pi.single (Fin.last k) (1 : F) ⬝ᵥ x = x (Fin.last k)`. Introduce `x`. Simplify using `[dotProduct, Pi.single_apply]`. Use `choose P hP1 hP2 using fun (M : ℕ) (u : V) => h3' k M (Pi.single (Fin.last k) (1 : F)) u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [hξ] at hP1 hP2`. Establish `hSA : ∀ (M : ℕ) (a b : V), B (P M a) b = B a (P M b)`. Introduce `M a b`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hP1 M a (B b), integral_conj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∫ x in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, ψ (-(-x) (Fin.last k)) * B a (ρ (PositivityTheory.JacquetShalikaLocal.col n k (-x)) b) ∂(Measure.pi fun _ => μ) := by`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[map_mul, hψconj, herm, hB x a b]`. Simplify using `only [Pi.neg_apply, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = ∫ x in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, ψ (-x (Fin.last k)) * B a (ρ (PositivityTheory.JacquetShalikaLocal.col n k x) b) ∂(Measure.pi fun _ => μ) := hcvS M (fun x => ψ (-x (Fin.last k)) * B a (ρ (PositivityTheory.JacquetShalikaLocal.col n k x) b))`. Use `_ = B a (P M b) := (hP1 M b (B a)).symm`. Establish `hE : ∀ (M : ℕ) (u v : V), (∀ y ∈ PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, ρ (PositivityTheory.JacquetShalikaLocal.col n k y) v = ψ (y (Fin.last k)) • v) → B u (P M v) = (∫ _ in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, (1 : ℂ) ∂(Measure.pi fun _ => μ)) * …`. Introduce `M u v hv0`. Rewrite using `[hP1 M v (B u), ← integral_mul_const]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `setIntegral_congr_fun (hmeas M) ?_` and prove the remaining obligations. Introduce `x hx`. Use `beta_reduce`. Rewrite using `[hv0 x hx, map_smul, smul_eq_mul, ← mul_assoc, hψinv]`. Establish `hL : ∀ (M : ℕ) (u : V), l (P M u) = (∫ _ in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, (1 : ℂ) ∂(Measure.pi fun _ => μ)) * l u`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M u`. Rewrite using `[hP1 M u l, ← integral_mul_const]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[hW (PositivityTheory.JacquetShalikaLocal.col n k x) (hcP x).2.1.1 u, (hcP x).2.2.2, ← mul_assoc, hψinv]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hrel : ∀ (M : ℕ) (u : V), B (P M u) (P M u) = (∫ _ in PositivityTheory.JacquetShalikaLocal.lat F (k + 1) M, (1 : ℂ) ∂(Measure.pi fun _ => μ)) * B u (P M u)`. Introduce `M u`. Rewrite using `[hSA M u (P M u), hE M u (P M u) (hP2 M u)]`. Establish `hchar : ∀ u u' : V, ∃ M₀ : ℕ, ∀ M, M₀ ≤ M → B' u' u = B u' (P M u)`. Introduce `u u'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨M₀, h⟩` from `hC u u'`. Conclude with `⟨M₀, fun M hM => by rw [h M hM, hP1 M u (B u')]⟩`. Use `⟨fun u u' => ?_, fun u => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Take `⟨M1, h1⟩` from `hchar u u'`. Take `⟨M2, h2⟩` from `hchar u' u`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2 (max M1 M2) (le_max_right _ _), h1 (max M1 M2) (le_max_left _ _), herm, hSA]`. Take `⟨M1, h1⟩` from `hchar u u`. Rewrite using `[h1 M1 le_rfl]`. Establish `hp` using `psd (P M1 u)`. Rewrite `hp` using `[hrel M1 u, hvol' M1, Complex.re_ofReal_mul]`.
-
-Conclude with `(mul_nonneg_iff_of_pos_left (hvol M1)).mp hp`. Take `⟨M1, h1⟩` from `hchar u u`. Rewrite `hu` using `[h1 M1 le_rfl]`. Establish `h0' : B (P M1 u) (P M1 u) = 0` using `by rw [hrel, hu, mul_zero]`. Establish `hl0` using `null (P M1 u) h0'`.
-
-Rewrite `hl0` using `[hL M1 u]`. Conclude with `(mul_eq_zero.mp hl0).resolve_left (hv M1)`.
+A detailed English derivation is pending.
 -/
 theorem column_average_hermitian_positive : L0 → L3 → ColumnsMirabolic → FormHermitianPositive := by
   intro h0 h3 h3c

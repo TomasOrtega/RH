@@ -11,37 +11,33 @@ open ReciprocityTheory.ChartRestriction.G.DVR.FlatBC (algX)
 open GlobalTheory.CxPts TopologicalSpace
 
 /- English proof (translation)
-Introduce `F _ Y p σ hp B hB z hz`. Take `⟨i, hzi⟩ : ∃ i, z ∈ B.U i` from `Opens.mem_iSup.1 (by rw [hB.cover]; trivial)`. Take `⟨U, hU, hzU, hUi⟩` from `Opens.isBasis_iff_nbhd.1 Y.isBasis_affineOpens hzi`. Use `replace hU : IsAffineOpen U := hU`. Use `letI : Algebra F Γ(Y, U) := (algX p U).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hft : (algX p U).FiniteType` using `(HasRingHomProperty.appLE @LocallyOfFiniteType p ‹_› ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ le_top).comp (RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of F)).symm.commRingCatIsoToRingEquiv.surjective)`. Establish `hftA : Algebra.FiniteType F Γ(Y, U)` using `hft`. Use `set x0 := hU.primeIdealOf ⟨z, hzU⟩ with hx0`. Establish `hfx : hU.fromSpec x0 = z` using `hU.fromSpec_primeIdealOf ⟨z, hzU⟩`. Establish `hcl : IsClosed ({x0} : Set (PrimeSpectrum Γ(Y, U)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsClosed (hU.fromSpec.base ⁻¹' {z})` using `hz.preimage hU.fromSpec.base.hom.continuous`. Establish `h2 : hU.fromSpec.base ⁻¹' {z} = {x0}`. Use extensionality with `q`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce `hq`. Conclude with `hU.fromSpec.isOpenEmbedding.injective (hq.trans hfx.symm)`. Introduce and unpack `rfl`. Conclude with `hfx`. Rewrite `h1` using `[h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hmax : x0.asIdeal.IsMaximal` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).1 hcl`. Set `P` to `x0.asIdeal`. Use `letI : Field (Γ(Y, U) ⧸ P) := Ideal.Quotient.field P`. Establish `: Algebra.FiniteType F (Γ(Y, U) ⧸ P)` using `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ F P) Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfin : Module.Finite F (Γ(Y, U) ⧸ P)` using `finite_of_finite_type_of_isJacobsonRing F _`. Establish `hmem : ∀ f : Γ(Y, U), z ∈ Y.basicOpen f ↔ f ∉ P`. Introduce `f`. Establish `h1 : x0 ∈ hU.fromSpec ⁻¹ᵁ Y.basicOpen f ↔ hU.fromSpec x0 ∈ Y.basicOpen f` using `Iff.rfl`. Rewrite `h1` using `[hfx, hU.fromSpec_preimage_basicOpen]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Conclude with `h1.symm.trans (PrimeSpectrum.mem_basicOpen _ _)`. Set `e : B.Sec →+ Γ(Y, U) ⧸ P` to `{ toFun := fun s => Ideal.Quotient.mk P (resG Y hUi (s.f i)) map_zero' := by simp map_add' := fun s t => by simp only [GlobalTheory.LB.add_f, map_add] }`. Use `⟨Γ(Y, U) ⧸ P, inferInstance, inferInstance, hfin, e, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a s`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P (resG Y hUi ((algX p ⊤ a • s).f i)) = _ * Ideal.Quotient.mk P _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hres : resG Y (hUi.trans le_top) (algX p ⊤ a) = algX p U a` using `RingHom.congr_fun (GlobalTheory.TopForm.resG_comp_algX p (hUi.trans le_top)) a`. Rewrite using `[GlobalTheory.LB.smul_f, map_mul, map_mul, GlobalTheory.LB.resG_resG, hres]`. Both sides reduce to the same expression. Introduce `s hs`. Take `⟨k, hk⟩` from `Opens.mem_iSup.1 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hki : z ∈ B.U i ⊓ B.U k` using `⟨hzi, Y.basicOpen_le _ hk⟩`. Establish `hrel` using `GlobalTheory.LB.sec_rel s i k (inf_le_left : B.U i ⊓ B.U k ≤ B.U i) inf_le_right le_rfl`. Establish `h1 : z ∈ Y.basicOpen (resG Y (inf_le_left : B.U i ⊓ B.U k ≤ B.U i) (s.f i))`. Rewrite using `[hrel, Scheme.basicOpen_mul, Y.basicOpen_of_isUnit ((B.g i k).isUnit.map (resG Y le_rfl))]`. Use `⟨hki, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: resG Y (inf_le_right : B.U i ⊓ B.U k ≤ B.U k) (s.f k) = Y.presheaf.map (homOfLE (inf_le_right : B.U i ⊓ B.U k ≤ B.U k)).op (s.f k)` using `rfl`. Rewrite using `[this, Scheme.basicOpen_res]`. Conclude with `⟨hki, hk⟩`. Establish `h2 : z ∈ Y.basicOpen (s.f i)`. Establish `: resG Y (inf_le_left : B.U i ⊓ B.U k ≤ B.U i) (s.f i) = Y.presheaf.map (homOfLE (inf_le_left : B.U i ⊓ B.U k ≤ B.U i)).op (s.f i)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[this, Scheme.basicOpen_res]`. Conclude with `h1.2`. Establish `h3 : z ∈ Y.basicOpen (resG Y hUi (s.f i))`. Establish `: resG Y hUi (s.f i) = Y.presheaf.map (homOfLE hUi).op (s.f i)` using `rfl`. Rewrite using `[this, Scheme.basicOpen_res]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hzU, h2⟩`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk P _ ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `(hmem _).1 h3`. Introduce `τ hτ`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ : Γ(Y, U) →+* ℂ` to `τ.comp (Ideal.Quotient.mk P)`. Establish `hφ : ∀ a, φ (algX p U a) = σ a` using `fun a => by`. Rewrite using `[← hτ]`. Both sides reduce to the same expression. Use `⟨ofHom hU φ hφ, i, ?_, fun s => ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hker : RingHom.ker φ = P`. Rewrite using `[RingHom.ker_comp_of_injective _ τ.injective]`. Conclude with `Ideal.mk_ker`. Establish `hpt : (Spec.map (CommRingCat.ofHom φ)) (IsLocalRing.closedPoint ℂ) = x0`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
-
-Express the relevant statement in the definitionally equal form `Ideal.comap φ (IsLocalRing.maximalIdeal ℂ) = P`. Rewrite using `[IsLocalRing.maximalIdeal_eq_bot]`. Conclude with `hker`. Express the relevant statement in the definitionally equal form `hU.fromSpec ((Spec.map (CommRingCat.ofHom φ)) (IsLocalRing.closedPoint ℂ)) = z`. Rewrite using `[hpt, hfx]`.
-
-Rewrite using `[secVal_apply, ← ev_res hUi (ofHom_mem hU φ hφ), ev_ofHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_residue_eval : ∀ (F : Type) [Field F] (Y : Scheme.{0}) (p : Y ⟶ Sp F) (σ : F →+* ℂ),
     LocallyOfFiniteType p → ∀ (B : LB Y), B.IsLB → ∀ z : Y, IsClosed ({z} : Set Y) →

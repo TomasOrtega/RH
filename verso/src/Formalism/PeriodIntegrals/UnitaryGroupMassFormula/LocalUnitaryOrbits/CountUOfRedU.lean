@@ -13,7 +13,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
 /- English proof (translation)
-The claim follows from `countU_of_bas' σ J ψ v Λ a Y (latBasO_holds σ J ψ v Λ a Y) (resIdx_holds v) hR`.
+A detailed English derivation is pending.
 -/
 theorem countU_of_redU (a : ℕ) (Y : TupV (E := E) v n a) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=
   countU_of_bas' σ J ψ v Λ a Y (latBasO_holds σ J ψ v Λ a Y) (resIdx_holds v) hR

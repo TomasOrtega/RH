@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.EtC.MayerVietoris
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpre_mk, cpre_mk, cpre_mk, ← CohomologyClass.mk_add]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `[zcomp, Cochain.ofHom_add, Cochain.add_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cpull_add {R : Type} [CommRing R] {K L : Cx R} (f g : K ⟶ L) (I : Cx R) (n : ℤ) (x : CohomologyClass L I n) :
     cpull (f + g) I n x = cpull f I n x + cpull g I n x := by
@@ -21,7 +21,7 @@ theorem cpull_add {R : Type} [CommRing R] {K L : Cx R} (f g : K ⟶ L) (I : Cx R
   congr 1; apply Cocycle.ext; simp [zcomp, Cochain.ofHom_add, Cochain.add_comp]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Rewrite using `[cpre_mk, cpre_mk, ← CohomologyClass.mk_neg]`. Use `congr 1`. Apply `Cocycle.ext` to reduce the goal to its premises. Simplify using `[zcomp, Cochain.ofHom_neg, Cochain.neg_comp]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem cpull_neg {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) (I : Cx R) (n : ℤ) (x : CohomologyClass L I n) :
     cpull (-f) I n x = -cpull f I n x := by
@@ -30,13 +30,13 @@ theorem cpull_neg {R : Type} [CommRing R] {K L : Cx R} (f : K ⟶ L) (I : Cx R) 
   congr 1; apply Cocycle.ext; simp [zcomp, Cochain.ofHom_neg, Cochain.neg_comp]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.EtC.ZcFun.main R).2.1 f g I n x`.
+A detailed English derivation is pending.
 -/
 theorem cpull_comp {R : Type} [CommRing R] {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : ℤ) (x : CohomologyClass M I n) :
     cpull (f ≫ g) I n x = cpull f I n (cpull g I n x) := (GlobalTheory.EtC.ZcFun.main R).2.1 f g I n x
 
 /- English proof (translation)
-Rewrite using `[biprod.lift_eq, cpull_add, cpull_comp, cpull_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cpull_lift {R : Type} [CommRing R] {K L M : Cx R} (a : M ⟶ K) (b : M ⟶ L) (I : Cx R) (n : ℤ)
     (y : CohomologyClass (K ⊞ L) I n) :
@@ -50,7 +50,7 @@ def mvS (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) : Shor
       simp)
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `GlobalTheory.T.etaleSpaceChains_mayerVietoris_shortExact R f g h`. Conclude with `hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mvS_exact (R : Type) [CommRing R] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (h : Cover2 R f g) :
     (mvS R f g).ShortExact := by
@@ -72,27 +72,25 @@ end GlobalTheory.EtC.MayerVietoris
 end
 
 /- English proof (translation)
-Introduce `R _ F`. Take `⟨D, hex, hnat⟩` from `GlobalTheory.T.hypercohomology_longExact_first_of_injective R (res R F) (GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties R F).2.1`. Use `⟨fun f g h n => D (GlobalTheory.EtC.MayerVietoris.mvS R f g) (GlobalTheory.EtC.MayerVietoris.mvS_exact R f g h) n, ?_, ?_⟩` and prove the remaining obligations. Introduce `U V E f g h n`. Take `⟨e1, e2, e3⟩` from `hex _ (GlobalTheory.EtC.MayerVietoris.mvS_exact R f g h) n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `bij` using `fun m => GlobalTheory.EtC.cpull_biprod_bijective R ((chains R).obj U) ((chains R).obj V) (res R F) m`. Establish `hg : ∀ m (x : H R E F m), cpull biprod.inl (res R F) m (cpull (GlobalTheory.EtC.MayerVietoris.mvS R f g).g (res R F) m x) = pull R f F m x ∧ cpull biprod.inr (res R F) m (cpull (GlobalTheory.EtC.MayerVietoris.mvS R f g).g (res R F) m x) = pull R g F m x`. Introduce `m x`. Prove the components needed by the constructor for the conclusion. Use `(GlobalTheory.EtC.MayerVietoris.cpull_comp (K := (chains R).obj U) (L := (chains R).obj U ⊞ (chains R).obj V) biprod.inl (biprod.desc ((chains R).map f) ((chains R).map g)) _ m x).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[biprod.inl_desc]`. Both sides reduce to the same expression. Use `(GlobalTheory.EtC.MayerVietoris.cpull_comp (K := (chains R).obj V) (L := (chains R).obj U ⊞ (chains R).obj V) biprod.inr (biprod.desc ((chains R).map f) ((chains R).map g)) _ m x).symm.trans ?_` and prove the remaining obligations. Rewrite using `[biprod.inr_desc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hf : ∀ y, cpull (GlobalTheory.EtC.MayerVietoris.mvS R f g).f (res R F) n y = pull R (pullback.fst f g) F n (cpull biprod.inl (res R F) n y) - pull R (pullback.snd f g) F n (cpull biprod.inr (res R F) n y)`. Introduce `y`. Use `GlobalTheory.EtC.MayerVietoris.cpull_lift (K := (chains R).obj U) (L := (chains R).obj V) ((chains R).map (pullback.fst f g)) (-(chains R).map (pullback.snd f g)) (res R F) n y` as an intermediate fact. Rewrite `this` using `[GlobalTheory.EtC.MayerVietoris.cpull_neg]`. Rewrite using `[sub_eq_add_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `k1 : ∀ y, (pull R (pullback.fst f g) F n (cpull biprod.inl (res R F) n y) - pull R (pullback.snd f g) F n (cpull biprod.inr (res R F) n y) = 0) ↔ ∃ x, cpull (GlobalTheory.EtC.MayerVietoris.mvS R f g).g (res R F) n x = y` using `fun y => (Iff.of_eq (congrArg (· = 0) (hf y))).symm.trans (e1 y)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`. Take `⟨y, hy⟩` from `(bij n).2 (a, b)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq] at hy`. Take `⟨rfl, rfl⟩` from `hy`. Use `sub_eq_zero.symm.trans ((k1 y).trans ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce and unpack `⟨x, rfl⟩`. Conclude with `⟨x, (hg n x).1.symm, (hg n x).2.symm⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, h1, h2⟩`. Conclude with `⟨x, (bij n).1 (Prod.ext ((hg n x).1.trans h1) ((hg n x).2.trans h2))⟩`. Introduce `c show D (GlobalTheory.EtC.MayerVietoris.mvS R f g) (GlobalTheory.EtC.MayerVietoris.mvS_exact R f g h) n c = 0 ↔ _`. Use `(e2 c).trans ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, _, hf y⟩`. Introduce and unpack `⟨a, b, rfl⟩`. Take `⟨y, hy⟩` from `(bij n).2 (a, b)`. Simplify using `only [Prod.mk.injEq] at hy`. Take `⟨rfl, rfl⟩` from `hy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨y, hf y⟩`. Introduce `x show _ ↔ ∃ c, D (GlobalTheory.EtC.MayerVietoris.mvS R f g) (GlobalTheory.EtC.MayerVietoris.mvS_exact R f g h) n c = x`. Use `Iff.trans ?_ (e3 x)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(bij (n + 1)).1` to reduce the goal to its premises. Conclude with `Prod.ext (((hg (n + 1) x).1.trans h1).trans (map_zero _).symm) (((hg (n + 1) x).2.trans h2).trans (map_zero _).symm)`. Introduce `h0`. Apply the tactic sequence `refine ⟨(hg (n + 1) x).1.symm.trans ?_, (hg (n + 1) x).2.symm.trans ?_⟩ <;> rw [h0] <;> exact map_zero _`. Introduce `U V E U' V' E' f g f' g' p u v hu hv h h' n c`.
-
-Conclude with `hnat _ _ _ _ (GlobalTheory.EtC.MayerVietoris.mvMap R f g f' g' p u v hu hv) n c`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EtC.mayerVietoris : ∀ (R : Type) [CommRing R] (F : Shv R), ∃ d : ∀ {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E), Cover2 R f g → ∀ n : ℤ, H R (pullback f g) F n →+ H R E F (n + 1), (∀ {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (h : Cover2 R f g) (n : ℤ), (∀ a b, pull R (pullback.fst f g) F n a = pull R (pullback.snd f g) F n b ↔ ∃ x, pull R f F n x = a ∧ pull R g F n x = b) ∧ (∀ c, d f g h n c = 0 ↔ ∃ a b, c = pull R (pullback.fst f g) F n a - pull R (pullback.snd f g) F n b) ∧ ∀ x, (pull R f F (n + 1) x = 0 ∧ pull R g F (n + 1) x = 0) ↔ ∃ c, d f g h n c = x) ∧ ∀ {U V E U' V' E' : Spc} (f : U ⟶ E) (g : V ⟶ E) (f' : U' ⟶ E') (g' : V' ⟶ E') (p : E ⟶ E') (u : U ⟶ U') (v : V ⟶ V') (hu : f ≫ p = u ≫ f') (hv : g ≫ p = v ≫ g') (h : Cover2 R f g) (h' : Cover2 R f' g') (n : ℤ) c, pull R p F (n + 1) (d f' g' h' n c) = d f g h n (pull R (pullback.map f g f' g' u v p hu hv) F n c) := by
   intro R _ F

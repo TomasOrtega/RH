@@ -8,33 +8,29 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open Module
 
 /- English proof (translation)
-Introduce `E E' _ _ R R' φ φ' _ _ _ _ ψ S C hφ hφ' hψ hnorm hS hSC hC`. Take `⟨Ψ, hΨφ, hΨn, hΨi⟩` from `hExt E E' R R' φ φ' ψ hφ hφ' hψ hnorm`. Use `set Λ := imageLattice φ with hΛdef`. Use `set Λ' := imageLattice φ' with hΛ'def`. Establish `hC0 : 0 < C` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hrk : finrank ℤ Λ' = R'` using `by rw [ZLattice.rank ℝ Λ', finrank_euclideanSpace_fin]`. Set `b' : Basis (Fin R') ℤ Λ'` to `Module.finBasisOfFinrankEq ℤ Λ' hrk`. Set `u : Fin R' → EuclideanSpace ℝ (Fin R')` to `fun i => (b' i : EuclideanSpace ℝ (Fin R'))`. Establish `hcov' : ZLattice.covolume Λ' = Real.sqrt (Matrix.gram ℝ u).det` using `GroundTheory.Heights₂.Heights.covolume_eq_sqrt_det_gram Λ' b'`. Establish `hu : LinearIndependent ℝ u`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : ⇑(b'.ofZLatticeBasis ℝ Λ') = u` using `funext fun i => b'.ofZLatticeBasis_apply ℝ Λ' i`. Rewrite using `[← he]`. Conclude with `Basis.linearIndependent _`. Establish `hv : LinearIndependent ℝ (Ψ ∘ u)` using `hu.map' Ψ (LinearMap.ker_eq_bot.2 hΨi)`. Establish `hRR : R' ≤ R` using `by simpa using hv.fintype_card_le_finrank`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : Submodule.span ℝ (φ '' S) = ⊤`. Establish `h1 : (Λ : Set (EuclideanSpace ℝ (Fin R))) ⊆ Submodule.span ℝ (φ '' S)`. Introduce `x hx`. Take `⟨e, rfl⟩` from `AddMonoidHom.mem_range.1 hx`. Use `clear hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `he : e ∈ AddSubgroup.closure S` using `hS ▸ AddSubgroup.mem_top e`. Proceed by induction on `he using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `neg x _ hx => simpa using neg_mem hx`. Rewrite using `[eq_top_iff, ← (IsZLattice.span_top : Submodule.span ℝ (Λ : Set (EuclideanSpace ℝ (Fin R))) = ⊤)]`. Conclude with `Submodule.span_le.2 h1`. Take `⟨w, hwS, hind⟩` from `hSpan (EuclideanSpace ℝ (Fin R)) (Fin R') (Ψ ∘ u) (φ '' S) hv hspan`. Establish `hcard : Fintype.card (Fin R' ⊕ Fin (finrank ℝ (EuclideanSpace ℝ (Fin R)) - Fintype.card (Fin R'))) = R`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Fintype.card_sum, Fintype.card_fin, finrank_euclideanSpace_fin]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : ∀ i, Sum.elim (Ψ ∘ u) w i ∈ Λ`. Introduce and unpack `(i | j)`. Take `⟨e, he⟩` from `AddMonoidHom.mem_range.1 (b' i).2`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `AddMonoidHom.mem_range.2 ⟨ψ e, ?_⟩` and prove the remaining obligations. Simplify using `only [Sum.elim_inl, Function.comp_apply, u, ← he, hΨφ]`. Take `⟨s, _, hsw⟩` from `hwS j`. Simplify using `only [Sum.elim_inr]`. Rewrite using `[← hsw]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddMonoidHom.mem_range.2 ⟨s, rfl⟩`. Establish `h1` using `hCov R Λ _ (Sum.elim (Ψ ∘ u) w) hmem hind hcard`. Establish `h2` using `hGram (Fin R') _ (EuclideanSpace ℝ (Fin R)) Ψ u w hΨn`. Establish `hw : ∀ j, ‖w j‖ ≤ C` using `fun j => by`. Take `⟨s, hs, hsw⟩` from `hwS j`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← hsw]`. Conclude with `hSC s hs`. Establish `hk : Fintype.card (Fin (finrank ℝ (EuclideanSpace ℝ (Fin R)) - Fintype.card (Fin R'))) ≤ R`. Simplify using `only [Fintype.card_fin, finrank_euclideanSpace_fin]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hprod : ∏ j, ‖w j‖ ^ 2 ≤ (C ^ R) ^ 2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ]`. Use `_ ≤ (C ^ 2) ^ R := pow_le_pow_right₀ (by nlinarith) hk`. Use `_ = (C ^ R) ^ 2 := by ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos' : 0 < ZLattice.covolume Λ'` using `ZLattice.covolume_pos Λ'`. Establish `hpos : 0 < ZLattice.covolume Λ` using `ZLattice.covolume_pos Λ`. Establish `hdu : 0 ≤ (Matrix.gram ℝ u).det`. Rewrite `hpos'` using `[hcov']`. Conclude with `(Real.sqrt_pos.1 hpos').le`.
-
-Establish `hmain : ZLattice.covolume Λ ≤ ZLattice.covolume Λ' * C ^ R`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_mul hdu, Real.sqrt_sq (pow_pos hC0 R).le, hcov']`. Establish `hlog` using `Real.log_le_log hpos hmain`. Rewrite `hlog` using `[Real.log_mul hpos'.ne' (pow_pos hC0 R).ne', Real.log_pow]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SublatticeDegree.proof (hExt : SublatticeExtension.Statement) (hSpan : SpanningExtension.Statement)
     (hCov : CovolumeLeGram.Statement) (hGram : GramContraction.Statement) : SublatticeDegree.Statement := by

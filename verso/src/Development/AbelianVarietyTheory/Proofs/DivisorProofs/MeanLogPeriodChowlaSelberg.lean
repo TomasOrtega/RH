@@ -15,21 +15,19 @@ open Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5 (brN br_meanLogOm
   discr_K discriminant_mod_four br_sqrt_sq br_finrank_K br_finrank_E)
 
 /- English proof (translation)
-Use `haveI : Fact D.host.d.Prime := ⟨D.host.hyp.2.1⟩`. Establish `hd0 : (0 : ℝ) < D.host.d` using `by exact_mod_cast D.host.hyp.2.1.pos`. Establish `hdK : NumberField.discr D.host.K = -(D.host.d : ℤ)` using `discr_K D.host.K D.host.d (discriminant_mod_four D) _ (br_sqrt_sq D) (br_finrank_K D)`. Establish `h1` using `absNorm_inv_mul_different D.host.K D.host.E D.host.conj D.host.𝔟 (br_b_spec D)`. Establish `h2` using `natAbs_discr_eq D.host.K D.host.E D.host.d hdK`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A : ℝ := (Ideal.absNorm (differentIdeal (𝓞 D.host.K) (𝓞 D.host.E)) : ℝ) with hA`. Establish `hsq : brN D ^ 2 = A`. Use `congrArg (fun q : ℚ => (q : ℝ)) h1` as an intermediate fact. Simplify using `only [Rat.cast_pow, Rat.cast_natCast] at this`. Rewrite using `[hA, ← this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set m : ℕ := Module.finrank D.host.K D.host.E with hm`. Establish `hE : Module.finrank ℚ D.host.E = 2 * m` using `br_finrank_E D`. Establish `hm0 : (m : ℝ) ≠ 0`. Establish `: 0 < m` using `Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.ne'` after adjusting the coercions. Establish `hdisc : |(NumberField.discr D.host.E : ℝ)| = A * (D.host.d : ℝ) ^ m`. Use `congrArg (fun n : ℕ => (n : ℝ)) h2` as an intermediate fact. Simplify using `only [Nat.cast_mul, Nat.cast_pow, Nat.cast_natAbs, Int.cast_abs] at this`. Rewrite using `[hA, ← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdisc0 : |(NumberField.discr D.host.E : ℝ)| ≠ 0`. Simplify using `using NumberField.discr_ne_zero D.host.E`. Establish `hA0 : A ≠ 0` using `fun h => hdisc0 (by rw [hdisc, h, zero_mul])`. Establish `hlogA : 2 * Real.log (brN D) = Real.log A`. Rewrite using `[← hsq, Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hrd : Real.log D.host.rdE = (Real.log A + (m : ℝ) * Real.log D.host.d) / (2 * (m : ℝ))`. Unfold `Formalism.BasicNotions.Host.rdE`. Rewrite using `[Real.log_rpow (abs_pos.2 (by simpa using NumberField.discr_ne_zero D.host.E)), hdisc, Real.log_mul hA0 (pow_ne_zero _ hd0.ne'), Real.log_pow, hE]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hrd, Real.log_sqrt hd0.le, hE]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
-
-Take the linear combination `hlogA`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem two_log_brN (D : D7) :
     (2 / (Module.finrank ℚ D.host.E : ℝ)) * Real.log (brN D) =
@@ -73,13 +71,13 @@ theorem two_log_brN (D : D7) :
   linear_combination hlogA
 
 /- English proof (translation)
-Introduce `M _ hM τ`. Establish `hc : Formalism.MainNotions.StandardLatticesGL3.Crv D cc δ` using `⟨hcc, hδ⟩`. Establish `hpos : ∀ ρ : M →ₐ[ℚ] ℂ, 0 < Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.area (Formalism.MainNotions.TaylorLogMetric.lamConj M ρ (Formalism.MainNotions.TaylorLogMetric.lamOf D cc δ))` using `fun ρ => GlobalTheory.Glob.area_lamConj_pos hc hM ρ`. Establish `hmean` using `GlobalTheory.PeriodMean.mean_log_period D (GlobalTheory.InducedType.induced_type D).1 cc δ hc M hM.2.1 hM.2.2`. Establish `e` using `br_meanLogOm_eq D (Formalism.MainNotions.TaylorLogMetric.lamOf D cc δ) M hM.1 τ hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN` using `two_log_brN D`. Use `show Formalism.MainNotions.TaylorLogMetric.meanLogOm D (Formalism.MainNotions.TaylorLogMetric.lamOf D cc δ) M τ = Formalism.MainNotions.TaylorLogMetric.logOmVal D`. Rewrite using `[e, GlobalTheory.IndefiniteRowSideFullHecke.MeanPeriodLogarithms.logOmVal_eq]`. Establish `hmean' : (∑ ρ : M →ₐ[ℚ] ℂ, Real.log (Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.area (Formalism.MainNotions.TaylorLogMetric.lamConj M ρ (Formalism.MainNotions.TaylorLogMetric.lamOf D cc δ)) / Real.pi)) / (Module.finrank ℚ M : ℝ) = Real.eulerMascheroniConstant + Rea …` using `hmean`. Rewrite using `[hmean']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd0 : (0 : ℝ) < Real.sqrt D.host.d` using `Real.sqrt_pos.2 (by exact_mod_cast D.host.hyp.2.1.pos)`. Establish `hr0 : 0 < D.host.rdE`. Unfold `Formalism.BasicNotions.Host.rdE`. Conclude with `Real.rpow_pos_of_pos (abs_pos.2 (by simpa using NumberField.discr_ne_zero D.host.E)) _`. Rewrite using `[Real.log_div (by positivity) hd0.ne', Real.log_div (by positivity) hr0.ne']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[neg_mul, hN]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem meanPeriodAt (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : Formalism.MainNotions.TaylorLogMetric.IsCurveIdeal D cc)
     (hδ : Formalism.MainNotions.TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D cc δ) : GlobalTheory.IndefiniteRowSideFullHecke.MeanPeriodLogarithms.MeanPeriodAt D cc δ := by
@@ -108,7 +106,7 @@ theorem meanPeriodAt (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (hcc : For
   ring
 
 /- English proof (translation)
-Introduce `D cc δ hcc hδ` and use `meanPeriodAt D cc δ hcc hδ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem meanPeriod : GlobalTheory.IndefiniteRowSideFullHecke.MeanPeriodLogarithms.MeanPeriod :=
   fun D cc δ hcc hδ => meanPeriodAt D cc δ hcc hδ

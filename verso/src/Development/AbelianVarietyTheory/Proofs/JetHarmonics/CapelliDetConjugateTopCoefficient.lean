@@ -10,7 +10,7 @@ namespace GlobalTheory.CapelliTop
 variable {A : Type} [Ring A] [Algebra ℂ A]
 
 /- English proof (translation)
-Rewrite using `[← MultilinearMap.mkPiAlgebraFin_apply (R := ℂ), MultilinearMap.map_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ, MultilinearMap.mkPiAlgebraFin_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_sum_smul {t n : ℕ} (q : Fin t → Fin n → ℂ) (x : Fin t → Fin n → A) :
     (List.ofFn fun k : Fin t => ∑ d, q k d • x k d).prod =
@@ -21,9 +21,9 @@ theorem prod_ofFn_sum_smul {t n : ℕ} (q : Fin t → Fin n → ℂ) (x : Fin t 
   rw [MultilinearMap.map_smul_univ, MultilinearMap.mkPiAlgebraFin_apply]
 
 /- English proof (translation)
-Simplify using `only [Function.Injective, not_forall] at hd`. Take `⟨i, j, hij, hne⟩` from `hd`. Establish `h` using `quantumMinorColSkew_holds A n n E hE id d (Equiv.swap i j) u`. Establish `e : d ∘ Equiv.swap i j = d`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Equiv.apply_swap_eq_self hij k`. Rewrite `h` using `[e, Equiv.Perm.sign_swap hne]`. Apply `eq_zero_of_add_self_eq_zero` to reduce the goal to its premises. Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one, neg_mul, one_mul] at h`. Conclude with `add_eq_zero_iff_eq_neg.mpr h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qminor_eq_zero {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (d : Fin n → Fin n)
     (hd : ¬ Function.Injective d) (u : ℂ) : qminor E id d u = 0 := by
@@ -39,13 +39,13 @@ theorem qminor_eq_zero {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (d :
   exact add_eq_zero_iff_eq_neg.mpr h
 
 /- English proof (translation)
-Establish `h1 : ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (List.ofFn fun k : Fin n => ∑ d, Q k d • Tm E (u - (k : ℂ)) (σ k) d).prod = ∑ d : Fin n → Fin n, (∏ k, Q k (d k)) • qminor E id d u`. Simplify using `only [Finset.smul_sum, qminor]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[prod_ofFn_sum_smul (fun k d => Q k d) (fun k d => Tm E (u - (k : ℂ)) (σ k) d), Finset.smul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression. Rewrite using `[h1, ← Matrix.det_transpose, Matrix.det_apply', Finset.sum_smul]`. Use `Fintype.sum_of_injective (fun τ : Equiv.Perm (Fin n) => (τ : Fin n → Fin n)) DFunLike.coe_injective _ _ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `d hd`. Rewrite using `[qminor_eq_zero E hE d, smul_zero]`. Introduce `hinj`. Conclude with `hd ⟨Equiv.ofBijective d (Finite.injective_iff_bijective.mp hinj), rfl⟩`. Introduce `τ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `quantumMinorColSkew_holds A n n E hE id id τ u`. Rewrite `h` using `[Function.id_comp]`. Rewrite using `[h, mul_comm, mul_smul, Int.cast_smul_eq_zsmul, zsmul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_smul_qdet {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (Q : Matrix (Fin n) (Fin n) ℂ)
     (u : ℂ) : Q.det • qdet E u = ∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) •
@@ -76,7 +76,7 @@ theorem det_smul_qdet {n : ℕ} (E : Fin n → Fin n → A) (hE : GlRel E) (Q : 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `zero => simp`. Consider the case `succ s ih`. Rewrite using `[pow_succ, ← mul_assoc, ih, mul_assoc, mul_assoc, add_mul, h, smul_mul_assoc, hy, Nat.cast_succ, add_smul, one_smul, ← mul_smul_comm, ← mul_add]`. Use `congr 2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -91,7 +91,7 @@ theorem mul_pow_shift (x y δ : A) (h : x * δ = δ * (x + y)) (hy : y * δ = δ
     abel
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `succ t ih`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[mul_assoc, ih _ _ (fun k => h k.succ), ← mul_assoc, h, mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_semiconj {t : ℕ} (x y : Fin t → A) (g : A) (h : ∀ k, x k * g = g * y k) :
     (List.ofFn x).prod * g = g * (List.ofFn y).prod := by
@@ -102,9 +102,9 @@ theorem prod_ofFn_semiconj {t : ℕ} (x y : Fin t → A) (g : A) (h : ∀ k, x k
     rw [mul_assoc, ih _ _ (fun k => h k.succ), ← mul_assoc, h, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero => exact (TL.PT.const 1).congr (fun s => by simp) (by simp)`. Consider the case `succ t ih`. Establish `h` using `ih (fun k => x k.succ) (fun k => y k.succ)`. Use `((h.mulL (x 0)).up.add (h.mulL (y 0)).mulS).congr (fun s => ?_) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [List.ofFn_succ, List.prod_cons, add_mul, smul_mul_assoc]`. Simplify using `only [List.ofFn_succ, List.prod_cons, zero_add]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pt_prod {t : ℕ} (x y : Fin t → A) :
     TL.PT t (fun s : ℂ => (List.ofFn fun k => x k + s • y k).prod) (List.ofFn y).prod := by
@@ -117,26 +117,26 @@ theorem pt_prod {t : ℕ} (x y : Fin t → A) :
     · simp only [List.ofFn_succ, List.prod_cons, zero_add]
 
 /- English proof (translation)
-Simplify using `[shiftedGenerator_eq_ite_smul_add, Finset.sum_add_distrib, smul_smul, ite_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_Tm {n : ℕ} (E : Fin n → Fin n → A) (q : Fin n → ℂ) (u : ℂ) (a : Fin n) :
     ∑ d, q d • Tm E u a d = (q a * u) • (1 : A) + ∑ d, q d • E a d := by
   simp [shiftedGenerator_eq_ite_smul_add, Finset.sum_add_distrib, smul_smul, ite_smul]
 
 /- English proof (translation)
-Introduce `A _ _ p m E Q δ ν u hE h1 h2 h3`. Use `set X : Equiv.Perm (Fin (p + m)) → Fin p → A := fun σ k => ∑ d, Q (Fin.castAdd m k) d • Tm E (u - ((k : ℕ) : ℂ)) (σ (Fin.castAdd m k)) d with hX`. Use `set Y : Equiv.Perm (Fin (p + m)) → A := fun σ => (List.ofFn fun k : Fin m => ∑ d, Q (Fin.natAdd p k) d • Tm E (u - (p : ℂ) - ((k : ℕ) : ℂ)) (σ (Fin.natAdd p k)) d).prod with hY`. Establish `e1 : Q.det • qdet E u = ∑ σ : Equiv.Perm (Fin (p + m)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ((List.ofFn (X σ)).prod * Y σ)`. Rewrite using `[det_smul_qdet E hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[List.ofFn_add, List.prod_append]`. Simplify using `only [hX, hY, Fin.val_natAdd, Nat.cast_add, sub_sub]`. Both sides reduce to the same expression. Establish `eY : ∀ σ (s : ℕ), Y σ * δ ^ s = δ ^ s * Y σ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ s`. Use `prod_ofFn_semiconj _ _ _ fun k => Commute.pow_right (?_ : _ * _ = _ * _) s` and prove the remaining obligations. Rewrite using `[sum_smul_Tm, add_mul, mul_add, h2]`. Simplify using the standard rewrite rules. Establish `eX : ∀ σ (s : ℕ), (List.ofFn (X σ)).prod * δ ^ s = δ ^ s * (List.ofFn fun k => X σ k + (s : ℂ) • ν (σ (Fin.castAdd m k)) k).prod`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ s`. Use `prod_ofFn_semiconj _ _ _ fun k => mul_pow_shift _ _ _ ?_ (h3 _ _) s` and prove the remaining obligations. Simplify using `only [hX]`. Rewrite using `[sum_smul_Tm, add_mul, h1, add_assoc, mul_add δ (_ • _)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : ∀ s : Fin (p + 1), Q.det • (δ ^ (p - (s : ℕ)) * (qdet E u * δ ^ (s : ℕ))) = ∑ σ : Equiv.Perm (Fin (p + m)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • (δ ^ p * ((List.ofFn fun k => X σ k + ((s : ℕ) : ℂ) • ν (σ (Fin.castAdd m k)) k).prod * Y σ))`. Introduce `s`. Rewrite using `[← mul_smul_comm, ← smul_mul_assoc, e1, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, mul_assoc, eY, ← mul_assoc _ (δ ^ (s : ℕ)), eX, mul_assoc, ← mul_assoc, ← pow_add, Nat.sub_add_cancel (Nat.lt_succ_iff.mp s.isLt)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.smul_sum, Finset.mul_sum]`. Simplify using `only [smul_comm Q.det, e2, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Establish `h` using `(((pt_prod (X σ) (fun k => ν (σ (Fin.castAdd m k)) k)).mulR (Y σ)).mulL (δ ^ p)).lag`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul_comm]`. Use `Eq.trans ?_ (congrArg _ h.symm)` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_coefficient : ∀ (A : Type) [Ring A] [Algebra ℂ A] (p m : ℕ) (E : Fin (p + m) → Fin (p + m) → A) (Q : Matrix (Fin (p + m)) (Fin (p + m)) ℂ) (δ : A) (ν : Fin (p + m) → Fin p → A) (u : ℂ), GlRel E → (∀ a k, (∑ d, Q (Fin.castAdd m k) d • E a d) * δ = δ * ((∑ d, Q (Fin.castAdd m k) d • E a d) + ν a k)) → (∀ a k, (∑ d, Q (Fin.natAdd p k) d • E a d) * δ = δ * ∑ d, Q (Fin.natAdd p k) d • E a d) → (∀ a k, ν a k * δ = δ * ν a k) → Q.det • ∑ s : Fin (p + 1), ((F7.lagCo (fun j : Fin (p + 1) => ((j : ℕ) : ℝ)) s : ℝ) : ℂ) • (δ ^ (p - (s : ℕ)) * (qdet E u * δ ^ (s : ℕ))) = δ ^ p * ∑ σ : Equiv.Perm (Fin (p + m)), ((Equiv.Perm.sign σ : ℤ) : ℂ) • ((List.ofFn fun k : Fin p => ν (σ (Fin.castAdd m k)) k).prod * (List.ofFn fun k : Fin m => ∑ d, Q (Fin.natAdd p k) d • Tm E (u - (p : ℂ) - ((k : ℕ) : ℂ)) (σ (Fin.natAdd p k)) d).prod) := by
   intro A _ _ p m E Q δ ν u hE h1 h2 h3

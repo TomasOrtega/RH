@@ -7,13 +7,13 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJASAPairLACInv
 namespace Formalism.FourierDecayAlt.P.CutMP.JA.SA
 
 /- English proof (translation)
-The claim follows from `avgCutoff_of_parts averaging_bump_holds averaging_invariance_holds averaging_integrability_holds averaging_haar_positivity h`.
+A detailed English derivation is pending.
 -/
 theorem avgCutoff_of_smooth (h : ACSmooth) : Formalism.FourierDecayAlt.P.JFxI.AvgCutoff :=
   avgCutoff_of_parts averaging_bump_holds averaging_invariance_holds averaging_integrability_holds averaging_haar_positivity h
 
 /- English proof (translation)
-The claim follows from `sAExh_of_avgCutoff (avgCutoff_of_smooth h)`.
+A detailed English derivation is pending.
 -/
 theorem sAExh_of_smooth (h : ACSmooth) : SAExh :=
   sAExh_of_avgCutoff (avgCutoff_of_smooth h)

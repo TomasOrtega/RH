@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.InertBigCell
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, map_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hmul]`. Take the linear combination `(A i k * B k j) * he + A i k * hι (Y k j) + B k j * hι (X i k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_split_mul {R S : Type} [CommRing R] [Ring S] (e : R) (ι : S →+ R)
     (he : (1 - e) * (1 - e) = 1 - e) (hι : ∀ x, (1 - e) * ι x = 0) (hmul : ∀ x y, ι (x * y) = ι x * ι y)
@@ -38,34 +38,34 @@ theorem iotaW_apply (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion 
     iotaW hw x = GlobalTheory.InertLocField.liftT E v ((InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm x) := rfl
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.InertLocField.liftT_injective v).comp (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm.injective`.
+A detailed English derivation is pending.
 -/
 theorem iotaW_injective (hw : Formalism.UG.IsInertAt F E v w) : Function.Injective (iotaW hw) :=
   (GlobalTheory.InertLocField.liftT_injective v).comp (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm.injective
 
 /- English proof (translation)
-Rewrite using `[iotaW_apply, iotaW_apply, iotaW_apply, map_mul, GlobalTheory.InertLocField.liftT_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaW_mul (hw : Formalism.UG.IsInertAt F E v w) (x y : w.adicCompletion E) :
     iotaW hw (x * y) = iotaW hw x * iotaW hw y := by
   rw [iotaW_apply, iotaW_apply, iotaW_apply, map_mul, GlobalTheory.InertLocField.liftT_mul]
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def, GlobalTheory.InertLocField.liftV_one_smul, iotaW_apply, GlobalTheory.InertLocField.evT_liftT]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_iotaW (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) * iotaW hw x = iotaW hw x := by
   rw [← Algebra.smul_def, GlobalTheory.InertLocField.liftV_one_smul, iotaW_apply, GlobalTheory.InertLocField.evT_liftT]
 
 /- English proof (translation)
-Rewrite using `[sub_mul, one_mul, idem_mul_iotaW, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_mul_iotaW (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) * iotaW hw x = 0 := by
   rw [sub_mul, one_mul, idem_mul_iotaW, sub_self]
 
 /- English proof (translation)
-Establish `h : algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) * algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)`. Rewrite using `[← map_mul, ← GlobalTheory.InertLocField.liftV_mul, mul_one]`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_idem (v : Pl F) :
     (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) * (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) =
@@ -76,7 +76,7 @@ theorem one_sub_idem (v : Pl F) :
   linear_combination h
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `_ = toCompl (under_eq_of_isInertAt hw) ((1 : Fv F v) ⊗ₜ[F] x)`. Rewrite using `[toCompl_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem complEquiv_symm_algebraMap' (hw : Formalism.UG.IsInertAt F E v w) (x : E) :
     (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm (algebraMap E _ x) = (1 : Fv F v) ⊗ₜ[F] x := by
@@ -85,7 +85,7 @@ theorem complEquiv_symm_algebraMap' (hw : Formalism.UG.IsInertAt F E v w) (x : E
   rw [toCompl_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[iotaW_apply, complEquiv_symm_algebraMap', GlobalTheory.InertLocField.liftT_tmul]`. Express the relevant statement in the definitionally equal form `_ = (GlobalTheory.LatVac.liftV v 1 ⊗ₜ[F] (1 : E)) * ((1 : AF F) ⊗ₜ[F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaW_algebraMap (hw : Formalism.UG.IsInertAt F E v w) (x : E) :
     iotaW hw (algebraMap E _ x) = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) * inclR (F := F) (AF F) x := by
@@ -94,7 +94,7 @@ theorem iotaW_algebraMap (hw : Formalism.UG.IsInertAt F E v w) (x : E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[iotaW_apply, iotaW_apply, ← GlobalTheory.InertLocField.liftT_sigR]`. Use `congr 1`. Conclude with `(InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem iotaW_conjW (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) (x : w.adicCompletion E) :
     iotaW hw (conjW σ hw x) = cA σ (iotaW hw x) := by
@@ -103,7 +103,7 @@ theorem iotaW_conjW (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) (
   exact (InertChart.complEquiv hw (under_eq_of_isInertAt hw)).symm_apply_apply _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [incM, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, iotaW_algebraMap]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem incM_split (hw : Formalism.UG.IsInertAt F E v w) {l m : Type} (J : Matrix l m E) :
     incM F J = (1 - algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1)) • incM F J +
@@ -120,7 +120,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Rewrite using `[← map_one (algebraMap E (w.adicCompletion E)), iotaW_algebraMap]`. Express the relevant statement in the definitionally equal form `_ * inclR (F := F) (AF F) 1 = _`. Rewrite using `[(inclR (F := F) (AF F)).map_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaW_one (hw : Formalism.UG.IsInertAt F E v w) :
     iotaW hw 1 = algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) := by
@@ -129,9 +129,9 @@ theorem iotaW_one (hw : Formalism.UG.IsInertAt F E v w) :
   rw [(inclR (F := F) (AF F)).map_one, mul_one]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `rcases i with i | i <;>`. Simplify using `only [diagCols, Matrix.add_apply, Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply] split_ifs`. Rewrite using `[iotaW_one]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem diagCols_split (hw : Formalism.UG.IsInertAt F E v w) (ι : Type) [DecidableEq ι] :
     (diagCols ι : Matrix (ι ⊕ ι) ι (AE F E)) =
@@ -146,9 +146,9 @@ theorem diagCols_split (hw : Formalism.UG.IsInertAt F E v w) (ι : Type) [Decida
     · rw [map_zero]; ring
 
 /- English proof (translation)
-Establish `h2 : (2 : w.adicCompletion E) ≠ 0`. Rewrite using `[← map_ofNat (algebraMap E (w.adicCompletion E)) 2]`. Conclude with `(map_ne_zero _).2 two_ne_zero`. Establish `hx : iotaW hw x = iotaW hw (2⁻¹ * x) + iotaW hw (2⁻¹ * x)`. Rewrite using `[← map_add, ← add_mul, ← two_mul, mul_inv_cancel₀ h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hx, show t + t + (iotaW hw (2⁻¹ * x) + iotaW hw (2⁻¹ * x)) = (2 : AF F) • (t + iotaW hw (2⁻¹ * x)) by rw [two_smul]; abel, smul_smul, invOf_mul_self, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem invOf_two_smul_add_iotaW (hw : Formalism.UG.IsInertAt F E v w) (t : AE F E) (x : w.adicCompletion E) :
     ⅟(2 : AF F) • (t + t + iotaW hw x) = t + iotaW hw ((2 : w.adicCompletion E)⁻¹ * x) := by
@@ -161,14 +161,14 @@ theorem invOf_two_smul_add_iotaW (hw : Formalism.UG.IsInertAt F E v w) (t : AE F
       (2 : AF F) • (t + iotaW hw (2⁻¹ * x)) by rw [two_smul]; abel, smul_smul, invOf_mul_self, one_smul]
 
 /- English proof (translation)
-Rewrite using `[glueW, glueW, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one, Matrix.transpose_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem glueW_transpose (hw : Formalism.UG.IsInertAt F E v w) {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : Matrix ι ι (w.adicCompletion E)) : (glueW hw P)ᵀ = glueW hw Pᵀ := by
   rw [glueW, glueW, Matrix.transpose_add, Matrix.transpose_smul, Matrix.transpose_one, Matrix.transpose_map]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [glueW, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, map_add, map_mul, map_sub, map_one, AlgHom.commutes, iotaW_conjW]`. Use `congr 2`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glueW_map_cA (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) {ι : Type} [Fintype ι] [DecidableEq ι]
     (P : Matrix ι ι (w.adicCompletion E)) : (glueW hw P).map (cA σ) = glueW hw (P.map (conjW σ hw)) := by
@@ -180,11 +180,9 @@ theorem glueW_map_cA (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `set e := algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) with he_def`. Use `⟨fun J P => ?_, fun P hP => ?_, fun P => ?_⟩` and prove the remaining obligations. Rewrite using `[glueW_transpose, glueW_map_cA, glueW, glueW, incM_split hw J, idem_split_mul e (iotaW hw) (one_sub_idem v) (one_sub_mul_iotaW hw) (iotaW_mul hw), idem_split_mul e (iotaW hw) (one_sub_idem v) (one_sub_mul_iotaW hw) (iotaW_mul hw), Matrix.one_mul, Matrix.mul_one, add_right_inj]`. Conclude with `(Matrix.map_injective (iotaW_injective hw)).eq_iff`. Rewrite using `[diagCols_split hw ι, glueW, idem_split_mul e (iotaW hw) (one_sub_idem v) (one_sub_mul_iotaW hw) (iotaW_mul hw), Matrix.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun M => (1 - e) • (diagCols ι : Matrix (ι ⊕ ι) ι (AE F E)) + M.map (iotaW hw)) hP`. Use extensionality with `i j`. Simplify using `only [glueW, Matrix.smul_apply, Matrix.add_apply, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.map_apply, smul_eq_mul, Matrix.one_apply, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false, mul_zero, add_zero]`. Rewrite using `[← invOf_two_smul_add_iotaW hw, map_add, map_add, map_add]`. Use `congr 1`.
-
-Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem glueW_read_at_place (σ : E →ₐ[F] E) (hw : Formalism.UG.IsInertAt F E v w) {ι : Type} [Fintype ι] [DecidableEq ι] :
   (∀ (J : Matrix ι ι E) (P : Matrix ι ι (w.adicCompletion E)),

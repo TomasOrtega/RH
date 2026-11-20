@@ -9,9 +9,9 @@ open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl UpperTheory.Gal.Int.Geo.
 attribute [local instance] Ideal.Quotient.field
 
 /- English proof (translation)
-Establish `h` using `UpperTheory.Gal.CertificateRingHomMap.mem_Sim.1 k.2`. Establish `h2` using `congrArg (RingHom.mapMatrix (pLoc E u)) h`. Rewrite `h2` using `[map_mul]`. Use `h2.trans ?_` and prove the remaining obligations. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cjEnt_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (k : GUf E n) (u : Plc E) :
     ((comp (cj u) k).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) u))ᵀ * (comp u k).val =
@@ -25,9 +25,9 @@ private theorem cjEnt_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {n 
   by_cases hij : i = j <;> simp [hij, Matrix.one_apply, sim]
 
 /- English proof (translation)
-Introduce `E _ _ _ n g w i k`. Use `⟨GlobalTheory.SplitPts.conjSrc_conjSrc_cm w, ?_⟩` and prove the remaining obligations. Establish `hrel` using `cjEnt_rel g w`. Establish `hGt : ((comp (cj w) g).val.map (conjLoc (GlobalTheory.SplitPts.conjE E) w))ᵀ = pLoc E w (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ)) • (comp w g⁻¹).val`. Rewrite using `[map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h` using `congrFun (congrFun hGt k) i`. Rewrite `h` using `[Matrix.transpose_apply, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[← (conjLoc_spec (GlobalTheory.SplitPts.conjE E) w).2.2, h]`. Both sides reduce to the same expression.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.cjEnt :
     UpperTheory.Gal.Int.Geo.Pl.Tj.CjEnt := by

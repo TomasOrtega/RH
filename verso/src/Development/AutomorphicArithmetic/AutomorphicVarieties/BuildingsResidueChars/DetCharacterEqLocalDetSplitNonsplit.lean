@@ -6,7 +6,7 @@ open UpperTheory.V.W (Plc)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Establish `hinf : cInf g = 1` using `MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 hg).1`. Use `ga_ext (hinf.trans (pInf_finGL k).symm) ?_` and prove the remaining obligations. Rewrite using `[pFin_finGL]`. Use `Units.ext (GlobalTheory.SplitPts.matAf_ext fun u => ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val (hk u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem eq_finGL {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Plc E} {g : UA E n}
     (hg : g ∈ locU n w) (k : GL (Fin n) (Af E))
@@ -18,7 +18,7 @@ private theorem eq_finGL {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   exact congrArg Units.val (hk u)
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hg).2 u) hu)`.
+A detailed English derivation is pending.
 -/
 private theorem cLoc_off {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w u : Plc E} {g : UA E n}
     (hg : g ∈ locU n w) (hu : u.under (𝓞 (maximalRealSubfield E)) ≠ w.under (𝓞 (maximalRealSubfield E))) :
@@ -26,19 +26,17 @@ private theorem cLoc_off {E : Type} [Field E] [NumberField E] [IsCMField E] {n :
   MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hg).2 u) hu)
 
 /- English proof (translation)
-Introduce `E _ _ _ n ν hν w g hg`. Use `⟨fun hw => ?_, fun hw => ?_⟩` and prove the remaining obligations. Take `⟨hne, hun, hover⟩` from `GlobalTheory.SplitPts.over_split hw set w' := conjSrc (GlobalTheory.SplitPts.conjE E) w with hw'`. Establish `e : (g : GA E n) = finGL E n (locGL E n w (cLoc w g) * locGL E n w' (cLoc w' g))`. Use `eq_finGL hg _ fun u => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Distinguish the cases in `h1 : u = w`. Rewrite using `[h1, pLoc_locGL, pLoc_locGL_of_ne (Ne.symm hne), mul_one]`. Distinguish the cases in `h2 : u = w'`. Rewrite using `[h2, pLoc_locGL, pLoc_locGL_of_ne hne, one_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne h1, pLoc_locGL_of_ne h2, one_mul]`. Conclude with `cLoc_off hg fun h => (hover u h).elim h1 h2`. Establish `hd : Units.map (conjLoc (GlobalTheory.SplitPts.conjE E) w).toMonoidHom (Matrix.GeneralLinearGroup.det (cLoc w' g)) = (Matrix.GeneralLinearGroup.det (cLoc w g))⁻¹`. Use `eq_inv_of_mul_eq_one_left (Units.ext ?_)` and prove the remaining obligations. Establish `h` using `congrArg Matrix.det (GlobalTheory.SplitPts.comp_eq g w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_transpose, Matrix.det_one]`. Use `Eq.trans ?_ h` and prove the remaining obligations. Conclude with `congrArg (· * _) (RingHom.map_det (conjLoc (GlobalTheory.SplitPts.conjE E) w) _)`. Establish `h2 : CuspSub.locDet n ν w' (cLoc w' g) = CuspSub.locDet n ν w (cLoc w g)`. Express the relevant statement in the definitionally equal form `ν.1 (localIdele E w' (Matrix.GeneralLinearGroup.det (cLoc w' g))) = ν.1 (localIdele E w (Matrix.GeneralLinearGroup.det (cLoc w g)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `GlobalTheory.ThetaPull.thetaChar_apply ν (localIdele E w' (Matrix.GeneralLinearGroup.det (cLoc w' g)))`. Rewrite `h3` using `[hν, GlobalTheory.ThetaPull.conjAd_localIdele, hd, map_inv, map_inv, inv_inv]`. Conclude with `h3`. Rewrite using `[e, map_mul, map_mul, CuspSub.chiDet_locGL, CuspSub.chiDet_locGL, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `e : (g : GA E n) = finGL E n (locGL E n w (cLoc w g))`. Use `eq_finGL hg _ fun u => ?_` and prove the remaining obligations. Distinguish the cases in `h1 : u = w`. Rewrite using `[h1, pLoc_locGL]`. Rewrite using `[pLoc_locGL_of_ne h1]`.
-
-Conclude with `cLoc_off hg fun h => hw ⟨u, h1, h⟩`. Rewrite using `[e, CuspSub.chiDet_locGL]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.detCharacter_eq_localDet_split_nonsplit :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (ν : HChar E), GlobalTheory.ThetaPull.thetaChar ν = ν → ∀ (w : Plc E), ∀ g ∈ locU n w, (IsSplitAt w → chiDet n ν (g : UA E n) = CuspSub.locDet n (ν * ν) w (cLoc w g)) ∧ (¬ IsSplitAt w → chiDet n ν (g : UA E n) = CuspSub.locDet n ν w (cLoc w g)) := by

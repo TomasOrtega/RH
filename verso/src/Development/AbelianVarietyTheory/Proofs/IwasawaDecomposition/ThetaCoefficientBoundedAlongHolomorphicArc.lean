@@ -22,23 +22,21 @@ noncomputable section
 namespace GlobalTheory.ArcNormal
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM`. Establish `hL` using `GlobalTheory.abelianSchemeLaws_all.1`. Establish `hL2` using `GlobalTheory.abelianSchemeLaws_all.2`. Take `⟨hA, hB⟩` from `GlobalTheory.theta_generates_along_arc hL.globalFns hL.secBaseChange Y a χ W`. Establish `hw0 : Ha.T < ((Ha.T + 1 : ℝ) * Complex.I : ℂ).im` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ∃ j, th.f j ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Take `⟨hs, hp⟩` from `Θ.pos _ hw0`. Establish `h7` using `(GlobalTheory.ThetaBlock.thetaCharOff_ne_zero_differentiable_quasiPeriodic g Θ.S (Θ.τ ((Ha.T + 1 : ℝ) * Complex.I)) Θ.c₁ Θ.c₂ hs hp Θ.half₁ Θ.half₂ Θ.c₁_S).1`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h7` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Use `set w := ((Ha.T + 1 : ℝ) * Complex.I : ℂ) with hwdef`. Establish `hz : Θ.h.mulVec (∑ k, v k • Ha.Pw w (Θ.bas (Pi.single (.inl k) 1))) = v`. Rewrite using `[Matrix.mulVec_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_smul, (Θ.per w _).1]`. Conclude with `(pi_eq_sum_univ' v).symm`. Rewrite using `[← hz]`. Generalize the expression as in `(∑ k, v k • Ha.Pw w (Θ.bas (Pi.single (.inl k) 1))) = z`. Take `⟨fr, -, n, -, -, hv⟩` from `Θ.onB w hw0`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `exists_chart a.D₀.P.isLB ((show Sp ℂ ⟶ _ from (Ha.ex₀ z).b.left) (IsLocalRing.closedPoint ℂ))`. Establish `hU : ⊤ ≤ (show Sp ℂ ⟶ _ from (Ha.ex₀ z).b.left) ⁻¹ᵁ a.D₀.P.L.U j` using `fun q _ => (Subsingleton.elim (α := PrimeSpectrum ℂ) (IsLocalRing.closedPoint ℂ) q) ▸ hj`. Establish `e` using `hv j z hU`. Establish `e0 : valAt' (show Sp ℂ ⟶ _ from (Ha.ex₀ z).b.left) (a.D₀.P.L.U j) (th.f j) = 0`. Rewrite using `[hc j]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(dif_pos hU).trans ((congrArg _ (map_zero _)).trans (map_zero _))`. Rewrite `e` using `[e0]`. Use `(mul_eq_zero.1 e.symm).resolve_right (n j z hU)` as an intermediate fact. Conclude with `(mul_eq_zero.1 this).resolve_left Θ.κ_ne`. Establish `hth : GlobalTheory.ArcQ.ThNZ th` using `((GlobalTheory.ThetaOverField.nonzero_generates hL hL2 ℂ a.D₀ th).1).1 hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨t, ht, -⟩, hnz⟩` from `hB th`. Take `⟨σ0, fam, hfam0, hexp, -, -, -, -, ⟨w₂, hw₂⟩, hrest⟩` from `hA t (hnz t ht hth _)`. Establish `hpull : GlobalTheory.ThetaUnit.IsPullTerm W.P.D.toPre W.φ W.w th (fam 0)` using `hfam0 ▸ ht`. Take `⟨-, hr⟩` from `(hrest w₂ hw₂.1).2 hPI`. Take `⟨r, hr⟩` from `hr M.U M.θ hM ⟨M.θ_mem, M.gen⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨w₀, h₀⟩` from `GlobalTheory.Reg.ChartInhab.exists_rigIso Y.m0.toSABMap`. Take `⟨w₁, h₁⟩` from `GlobalTheory.Reg.ChartInhab.exists_rigIso Y.m`. Take `⟨fr₀, hfr₀⟩` from `Θ.frame _ hw0`. Take `⟨κ, hκ, -, -, hmain⟩` from `Ha.theta th σ0 fam Θ.bas Θ.S Θ.h Θ.τ Θ.c₁ Θ.c₂ w₂ w₁ w₀ hne hexp hpull Θ.sympl Θ.ker Θ.per Θ.half₁ Θ.half₂ hw₂ h₁ h₀ ⟨_, fr₀, hw0, hfr₀⟩`. Take `⟨T', hT'⟩` from `hmain M.U M.θ r.val hM M.θ_mem hr`.
-
-Use `⟨κ, r.val, w₀, w₁, hκ, ?_, h₀, h₁, T', hT'⟩` and prove the remaining obligations. Conclude with `((PowerSeries.isUnit_iff_constantCoeff).1 r.isUnit).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_chart_theta_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (a : ArcIn Dw l V.subtype ℂ (σ.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : GlobalTheory.ArcQ.Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu) (th : a.D₀.P.L.Sec) (Θ : GlobalTheory.ArcQ.ThetaDat Ha th) (M : GChart Y), Formalism.L2.PjFree.GoodEmb c σ → IsTypeFn H Dw.p Dw.q ty → PushInvertible Y.t.G Y.t.PP.L → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp V.subtype) → (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) → ⊤ ≤ χ ⁻¹ᵁ M.U → ∃ (κ : ℂ) (r : PowerSeries ℂ) (w₀ : LB.Iso Y.oF.t.PP.L (Xo.univ.t.PP.L.pull Y.m0.toSABMap.φ)) (w₁ : LB.Iso Y.oF.t.PP.L (Y.t.PP.L.pull Y.m.φ)), κ ≠ 0 ∧ PowerSeries.constantCoeff r ≠ 0 ∧ IsRigIso Y.m0.toSABMap.cm Y.oF.t.PP Xo.univ.t.PP w₀ ∧ IsRigIso Y.m.cm Y.oF.t.PP Y.t.PP w₁ ∧ ∃ T' : ℝ, ∀ w : ℂ, T' < w.im → ∃ rw : ℂ, SumsAt r w rw ∧ ∀ fr, IsThetaFrameAt Xo.univ.t.PP (Fu.u Ha.i (Ha.Pw w)) (fun z => (Fu.ex Ha.i (Ha.Pw w) z).left) (fun z => thetaChar (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.h.mulVec z)) fr → ∀ (z : Fin g → ℂ) (x : Sp ℂ ⟶ Y.oF.t.G.left) (j : Y.t.PP.L.ι) (k : Y.oF.t.PP.L.ι) (j₀ : Xo.univ.t.PP.L.ι), x ≫ Y.m0.toSABMap.φ = (Fu.ex Ha.i (Ha.Pw w) z).left → x ≫ Y.oF.t.G.hom ≫ pullback.snd _ _ = spMap σ → ⊤ ≤ x ⁻¹ᵁ (LB.div (Y.t.PP.L.pull Y.m.φ) Y.oF.t.PP.L).U (fun _ => j, k) → ⊤ ≤ x ⁻¹ᵁ (LB.div (Xo.univ.t.PP.L.pull Y.m0.toSABMap.φ) Y.oF.t.PP.L).U (fun _ => j₀, k) → valAt' x _ (w₀.s (fun _ => j₀, k)).val * valAt' (x ≫ Y.m.φ) _ (M.θ j) = valAt' x _ (w₁.s (fun _ => j, k)).val * ((κ * rw) * thetaChar (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.h.mulVec z) * fr j₀ z) := by
   intro E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM
@@ -86,29 +84,27 @@ theorem exists_chart_theta_unit : ∀ (E : Type) [Field E] [NumberField E] [IsCM
   exact ((PowerSeries.isUnit_iff_constantCoeff).1 r.isUnit).ne_zero
 
 /- English proof (translation)
-Introduce `κ hκ r hr0`. Distinguish the cases in `hex : ∃ w₀ rw₀, SumsAt r w₀ rw₀`. Use `swap`. Conclude with `⟨0, 1, one_pos, fun w _ rw h => (hex ⟨w, rw, h⟩).elim⟩`. Take `⟨w₀, rw₀, h₀⟩` from `hex`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq₀ : 0 < ‖eTwoPi w₀‖` using `norm_pos_iff.2 (Complex.exp_ne_zero _)`. Choose the witnesses or unpack the hypotheses as in `⟨B, hB⟩ : ∃ B, ∀ n, ‖PowerSeries.coeff n r * eTwoPi w₀ ^ n‖ ≤ B := by`. Take `⟨B, hB⟩` from `h₀.summable.tendsto_atTop_zero.norm.bddAbove_range`. Conclude with `⟨B, fun n => hB ⟨n, rfl⟩⟩`. Establish `ha₀ : 0 < ‖PowerSeries.constantCoeff r‖` using `norm_pos_iff.2 hr0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ' : 0 < ‖κ‖` using `norm_pos_iff.2 hκ`. Use `set A := ‖PowerSeries.constantCoeff r‖ with hA`. Use `set B' := max B 1 with hB'`. Establish `hB'1 : 1 ≤ B'` using `le_max_right _ _`. Use `set t : ℝ := min (1 / 2) (A / (4 * B')) with ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `lt_min (by norm_num) (div_pos ha₀ (by linarith))`. Establish `ht1 : t ≤ 1 / 2` using `min_le_left _ _`. Establish `htB : t ≤ A / (4 * B')` using `min_le_right _ _`. Establish `htB' : 4 * B' * t ≤ A`. Use `mul_le_mul_of_nonneg_left htB (by linarith : (0:ℝ) ≤ 4 * B')` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[mul_div_cancel₀ _ (by linarith : (4 * B' : ℝ) ≠ 0)]`. Then use the resulting hypothesis. Use `⟨-Real.log (t * ‖eTwoPi w₀‖) / (2 * Real.pi), max (3 / 2 * (‖κ‖ * A)) (2 / (‖κ‖ * A)), lt_max_of_lt_left (by positivity), fun w hw rw hrw => ?_⟩` and prove the remaining obligations. Establish `hqn : ‖eTwoPi w‖ = Real.exp (-(2 * Real.pi * w.im))`. Simplify using `[eTwoPi, Complex.norm_exp]`. Establish `hq : ‖eTwoPi w‖ ≤ t * ‖eTwoPi w₀‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hqn]`. Establish `hpos : 0 < t * ‖eTwoPi w₀‖` using `mul_pos ht0 hq₀`. Rewrite using `[← Real.exp_log hpos]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `(div_lt_iff₀ (by positivity : (0:ℝ) < 2 * Real.pi)).1 hw` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hf` using `(hasSum_nat_add_iff' 1).2 hrw`. Simplify using `only [Finset.range_one, Finset.sum_singleton, pow_zero, mul_one, PowerSeries.coeff_zero_eq_constantCoeff_apply] at hf`. Establish `hg : HasSum (fun n : ℕ => B' * t * t ^ n) (B' * t * (1 - t)⁻¹)` using `(hasSum_geometric_of_lt_one ht0.le (by linarith)).mul_left (B' * t)`. Establish `hle : ‖rw - PowerSeries.constantCoeff r‖ ≤ B' * t * (1 - t)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hf.norm_le_of_bounded hg fun n => ?_` and prove the remaining obligations. Establish `h1 : ‖PowerSeries.coeff (n + 1) r‖ * ‖eTwoPi w₀‖ ^ (n + 1) ≤ B'`. Use `hB (n + 1)` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_pow]`. Conclude with `this.trans (le_max_left _ _)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : B' * t * (1 - t)⁻¹ ≤ A / 2`. Establish `h1t : 0 < 1 - t` using `by linarith`. Rewrite using `[← div_eq_mul_inv, div_le_iff₀ h1t]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hlo : A / 2 ≤ ‖rw‖`. Use `norm_sub_norm_le (PowerSeries.constantCoeff r) rw` as an intermediate fact. Rewrite `this` using `[norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hhi : ‖rw‖ ≤ 3 / 2 * A`. Use `norm_sub_norm_le rw (PowerSeries.constantCoeff r)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[norm_mul]`. Prove the components needed by the constructor for the conclusion.
-
-Establish `hx : 0 < ‖κ‖ * A` using `mul_pos hκ' ha₀`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_bounds_of_sumsAt : ∀ (κ : ℂ), κ ≠ 0 → ∀ r : PowerSeries ℂ, PowerSeries.constantCoeff r ≠ 0 → ∃ T C : ℝ, 0 < C ∧ ∀ w : ℂ, T < w.im → ∀ rw : ℂ, SumsAt r w rw → C⁻¹ ≤ ‖κ * rw‖ ∧ ‖κ * rw‖ ≤ C := by
   intro κ hκ r hr0
@@ -183,9 +179,9 @@ theorem exists_bounds_of_sumsAt : ∀ (κ : ℂ), κ ≠ 0 → ∀ r : PowerSeri
       _ ≤ _ := le_max_left _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM`. Take `⟨κ, r, w₀, w₁, hκ, hr0, h₀, h₁, T', hT'⟩` from `exists_chart_theta_unit E H Dw l Xo c σ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM`. Take `⟨T₃, C, hC, hb⟩` from `exists_bounds_of_sumsAt κ hκ r hr0`. Use `⟨max T' (max Ha.T T₃), C, hC, fun w hw yF e₁ e₂ hz x φ hx u c₀ hrig hfib hfn => ?_⟩` and prove the remaining obligations. Simplify using `only [max_lt_iff] at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨rw, hrw, hval⟩` from `hT' w hw.1`. Take `rfl` from `GlobalTheory.T.thetaConstant_uniformisedChartFibre_eq_familyConstant E H Dw l Xo c σ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM w hw.2.1 w₀ w₁ h₀ h₁ (κ * rw) hval yF e₁ e₂ hz x φ hx u c₀ hrig hfib hfn`. Conclude with `hb w hw.2.2 rw hrw`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theta_const_bounded : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (V : ValuationSubring c.F) (Y : Model Xo c V.subtype) (a : ArcIn Dw l V.subtype ℂ (σ.comp V.subtype)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : GlobalTheory.ArcQ.Wit Y a χ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (Fu : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) ty) (Ha : HolArc Y σ a χ W Fu) (th : a.D₀.P.L.Sec) (Θ : GlobalTheory.ArcQ.ThetaDat Ha th) (M : GChart Y), Formalism.L2.PjFree.GoodEmb c σ → IsTypeFn H Dw.p Dw.q ty → PushInvertible Y.t.G Y.t.PP.L → χ ≫ Y.s = spMap (PowerSeries.C (R := ℂ)) ≫ spMap (σ.comp V.subtype) → (∀ x : Sp (PowerSeries ℂ), PowerSeries.X ∉ x.asIdeal → χ x ∈ Set.range Y.j) → ⊤ ≤ χ ⁻¹ᵁ M.U → ∃ T C : ℝ, 0 < C ∧ ∀ w : ℂ, T < w.im → ∀ yF : Sp ℂ ⟶ Xo.XF c, yF ≫ pullback.fst _ _ = Fu.u Ha.i (Ha.Pw w) → yF ≫ pullback.snd _ _ = spMap σ → ∀ (hz : ⊤ ≤ (yF ≫ Y.j) ⁻¹ᵁ M.U) (x : KeyIn ℂ) (φ : x.P.A.left ⟶ Y.t.G.left), GlobalTheory.ArcNormal.KeyAtVia M (yF ≫ Y.j) hz x φ → ∀ (u : HolUnif x.P.A x.P.L g) (c₀ : ℂ), u.IsRig x.rig → GlobalTheory.ArcNormal.ArcFib Y σ Fu Ha.i (Ha.Pw w) x φ u → u.IsFn x.th (fun z => c₀ * thetaChar (Θ.τ w) Θ.c₁ Θ.c₂ (Θ.h.mulVec z)) → C⁻¹ ≤ ‖c₀‖ ∧ ‖c₀‖ ≤ C := by
   intro E _ _ _ H Dw l Xo c σ _ _ V Y a χ W g ty Fu Ha th Θ M hgood hty hPI hχ hrng hM

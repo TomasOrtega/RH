@@ -9,23 +9,21 @@ open NumberField IsDedekindDomain Polynomial in
 open scoped WithZero TensorProduct in
 
 /- English proof (translation)
-Use `set G := E ≃ₐ[F] E`. Establish `hcard : Fintype.card G = Module.finrank F E`. Rewrite using `[← IsGalois.card_aut_eq_finrank F E, Nat.card_eq_fintype_card]`. Set `b : Module.Basis G F E` to `(Module.finBasis F E).reindex (Fintype.equivFinOfCardEq hcard).symm`. Set `b' : Module.Basis G K (K ⊗[F] E)` to `Algebra.TensorProduct.basis K b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set A := Algebra.leftMulMatrix b' y with hA`. Set `P : Matrix G G E` to `fun g j => g (b j)`. Establish `hP : P.det ≠ 0`. Introduce `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hj : ∀ j, ∑ g, v g * g (b j) = 0` using `fun j => by`. Simplify `congrFun hv j` using `[Matrix.vecMul, dotProduct, P]`. Establish `hx : ∀ x : E, ∑ g, v g * g x = 0` using `fun x => by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sum, Algebra.smul_def, map_mul, AlgEquiv.commutes, Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun g _ => by rw [AlgEquiv.commutes]; ring`. Use `_ = 0 := by simp [hj]`. Establish `hli` using `(linearIndependent_monoidHom E E).comp (fun g : G => (g : E ≃* E).toMonoidHom) (fun g₁ g₂ h => by`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `DFunLike.congr_fun h x)`. Use `Fintype.linearIndependent_iff.mp hli v (by` as an intermediate fact. Use function extensionality and compare the values at `x`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, Pi.zero_apply]`. Conclude with `hx x)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `hv0 (funext this)`. Set `P' : Matrix G G (K ⊗[F] E)` to `P.map Algebra.TensorProduct.includeRight`. Establish `key : Matrix.diagonal (fun g : G => Algebra.TensorProduct.map (AlgHom.id K K) (g : E →ₐ[F] E) y) * P' = P' * A.map (algebraMap K (K ⊗[F] E))`. Use extensionality with `g j`. Establish `h1 : y * b' j = ∑ i, A i j • b' i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `(b'.sum_repr (y * b' j)).symm` using `[A, Algebra.leftMulMatrix_eq_repr_mul]`. Establish `h2` using `congrArg (Algebra.TensorProduct.map (AlgHom.id K K) (g : E →ₐ[F] E)) h1`. Simplify using `only [map_mul, map_sum, b', Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one, Algebra.smul_def, AlgHom.commutes] at h2`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_apply]`. Express the relevant statement in the definitionally equal form `_ * (1 ⊗ₜ[F] (g : E →ₐ[F] E) (b j)) = ∑ i, (1 ⊗ₜ[F] (g : E →ₐ[F] E) (b i)) * algebraMap K (K ⊗[F] E) (A i j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `hdet` using `congrArg Matrix.det key`. Establish `hAdet : (A.map (algebraMap K (K ⊗[F] E))).det = algebraMap K (K ⊗[F] E) A.det` using `(RingHom.map_det _ _).symm`. Establish `hPdet : P'.det = Algebra.TensorProduct.includeRight P.det` using `(RingHom.map_det (Algebra.TensorProduct.includeRight : E →ₐ[F] K ⊗[F] E).toRingHom P).symm`.
-
-Rewrite `hdet` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, hAdet, hA, ← Algebra.norm_eq_matrix_det]`. Establish `hu : IsUnit P'.det`. Rewrite using `[hPdet]`. Conclude with `(isUnit_iff_ne_zero.mpr hP).map _`. Conclude with `(hu.mul_left_cancel (by rw [mul_comm]; exact hdet)).symm`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CNorm.algebraMap_norm_tensor_eq_prod_conjugates (F E K : Type) [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [IsGalois F E] [CommRing K] [Algebra F K] (y : K ⊗[F] E) :

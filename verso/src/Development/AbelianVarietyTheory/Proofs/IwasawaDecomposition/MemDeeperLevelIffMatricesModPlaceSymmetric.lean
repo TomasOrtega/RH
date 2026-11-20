@@ -11,25 +11,21 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.GroupLoc
 
 /- English proof (translation)
-Introduce `D X h hE hg k hk Ns hNs`. Establish `hK2 : k ∈ X.K2 ↔ K2cong X.B.I X.B.g X.e0 X.z0 X.bw k` using `⟨fun hm => hm.2, fun hm => ⟨hk, hm⟩⟩`. Establish `hLf : ∀ y ∈ X.B.I.Lf, (X.B.I.fmat k - 1) *ᵥ y ∈ X.B.I.Lf`. Introduce `y hy`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_mem ((hk y).1 hy) hy`. Establish `hS1 : ∀ a : Fin D.R.rS, X.e0 '' {b | b.1 < a.1} ⊆ X.B.I.Lf`. Introduce and unpack `a _ ⟨b, -, rfl⟩`. Conclude with `(X.vectorsInLattice.1 b).1`. Establish `hS2 : Set.range X.e0 ⊆ X.B.I.Lf`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Conclude with `(X.vectorsInLattice.1 b).1`. Establish `hS3 : ∀ i : Fin D.R.k, Set.range X.e0 ∪ X.bw '' {j | j.1 < i.1} ⊆ X.B.I.Lf`. Introduce and unpack `i _ (⟨b, rfl⟩ | ⟨j, -, rfl⟩)`. Conclude with `(X.vectorsInLattice.1 b).1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(X.vectorsInLattice.2.2 j).1`. Establish `hK : K2cong X.B.I X.B.g X.e0 X.z0 X.bw k ↔ ∀ w : HeightOneSpectrum (𝓞 D.host.E), ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → CondAt X w k`. Establish `e1` using `fun a => GlobalTheory.T.inMod_iff_forall_place_memSpanModulo D X h hE _ (hS1 a) _ (hLf _ (X.vectorsInLattice.1 a).1)`. Establish `e2` using `GlobalTheory.T.inMod_iff_forall_place_memSpanModulo D X h hE _ hS2 _ (hLf _ X.vectorsInLattice.2.1)`. Establish `e3` using `fun i => GlobalTheory.T.inMod_iff_forall_place_memSpanModulo D X h hE _ (hS3 i) _ (hLf _ (X.vectorsInLattice.2.2 i).1)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩ w hw`. Conclude with `⟨fun a => (e1 a).1 (h1 a) w hw, e2.1 h2 w hw, fun i => (e3 i).1 (h3 i) w hw⟩`. Introduce `H`. Conclude with `⟨fun a => (e1 a).2 fun w hw => (H w hw).1 a, e2.2 fun w hw => (H w hw).2.1, fun i => (e3 i).2 fun w hw => (H w hw).2.2 i⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hgE : ((X.B.g : ℕ) : 𝓞 D.host.E) = ((D.host.g 0 : ℕ) : 𝓞 D.host.E) * ((D.host.g 1 : ℕ) : 𝓞 D.host.E)`. Rewrite using `[X.g_eq, Nat.cast_mul]`. Establish `hgw : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal`. Introduce and unpack `⟨kk, v⟩`. Rewrite using `[hgE]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases kk`. Conclude with `Ideal.mul_mem_right _ _ (hg ⟨0, v⟩)`. Conclude with `Ideal.mul_mem_left _ _ (hg ⟨1, v⟩)`. Establish `hP : (∀ w : HeightOneSpectrum (𝓞 D.host.E), ((X.B.g : ℕ) : 𝓞 D.host.E) ∈ w.asIdeal → CondAt X w k) ↔ ∀ kv : (Σ k : Fin 2, D.nd.PlG k), CondAt X (D.naut.plGw kv.1 kv.2) k ∧ CondAt X (GlobalTheory.DimPartsCompare.cPl (D.naut.plGw kv.1 kv.2)) k`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `H kv`. Use `⟨H _ (hgw kv), H _ ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.DimPartsCompare.mem_cPl, map_natCast]`. Conclude with `hgw kv`. Introduce `H w hw`.
-
-Rewrite `hw` using `[hgE]`. Break down `w.isPrime.mem_or_mem hw with h0 | h1` into its components or cases. Take `⟨v, rfl | rfl⟩` from `GlobalTheory.DimPartsCompare.cover 0 w h0`. Conclude with `(H ⟨0, v⟩).1`. Conclude with `(H ⟨0, v⟩).2`.
-
-Take `⟨v, rfl | rfl⟩` from `GlobalTheory.DimPartsCompare.cover 1 w h1`. Conclude with `(H ⟨1, v⟩).1`. Conclude with `(H ⟨1, v⟩).2`. Rewrite using `[hK2, hK, hP]`. Conclude with `forall_congr' fun kv => (GlobalTheory.T.symmetricPositionColumnCond_iff_congruence_conj D X h hE hg k hk kv).symm.trans (GlobalTheory.T.symmetricFrame_matrix_mem_unipotent_iff_column_span D X h hE hg k hk kv (Ns kv) (hNs kv)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem membership_iff_unipSym : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → (∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal) → ∀ k ∈ X.B.I.Kset, ∀ Ns : G0g D.nd, (∀ kv : (Σ k : Fin 2, D.nd.PlG k), GlobalTheory.Mem.SymFrame.IsMatIn X (D.naut.plGw kv.1 kv.2) (GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2)) k (((Ns kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))))) → (k ∈ X.K2 ↔ ∀ kv : (Σ k : Fin 2, D.nd.PlG k), Ns kv ∈ unipSym (ZMod (D.host.g kv.1)) D.R.r D.R.rS D.R.k) := by
   intro D X h hE hg k hk Ns hNs

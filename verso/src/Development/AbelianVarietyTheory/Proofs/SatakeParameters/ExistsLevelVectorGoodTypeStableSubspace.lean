@@ -16,19 +16,19 @@ noncomputable section
 namespace GlobalTheory.Hk3.Meet
 
 /- English proof (translation)
-Establish `hconj` using `h.conj`. Take `⟨n, ρ, hi, hρ⟩` from `h`. Set `j` to `algebraMap K (AlgebraicClosure K)`. Establish `hj : Function.Injective j` using `j.injective`. Use `set T : Module.End (AlgebraicClosure K) (Fin n → AlgebraicClosure K) := ∑ g : G, ρ (g * y * g⁻¹) with hTdef`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ a v, T (ρ a v) = ρ a (T v)`. Introduce `a v`. Simplify using `only [hTdef, LinearMap.sum_apply, map_sum]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulLeft a)]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]`. Take `⟨c, hc⟩` from `schur_scalar ρ T hT`. Establish `h1 : ∀ u : G, ∑ g : G, ρ.character (g * y * g⁻¹ * u) = c * ρ.character u`. Introduce `u`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: LinearMap.trace _ _ (T * ρ u) = c * ρ.character u`. Rewrite using `[hc]`. Simplify using `[Representation.character, Module.End.mul_eq_comp]`. Rewrite using `[← this, hTdef, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Representation.character, map_mul]`. Establish `h2 : j ((Fintype.card G : K) * χ y) = c * j (χ 1)`. Use `h1 1` as an intermediate fact. Simplify using `only [mul_one, hρ, hconj] at this`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[j]`. Establish `h3 : j (∑ g : G, χ (g * y * g⁻¹ * s)) = c * j (χ s)`. Use `h1 s` as an intermediate fact. Simplify using `only [hρ] at this`. Rewrite using `[map_sum, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[map_mul, h3, map_mul _ _ (χ s), h2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_char_conj_mul {K G : Type} [Field K] [CharZero K] [Group G] [Fintype G] {χ : G → K}
     (h : IsAbsIrrChar χ) (y s : G) :
@@ -73,15 +73,15 @@ variable {K G W : Type} [Field K] [CharZero K] [Group G] [Fintype G] [AddCommGro
   (σ : K →+* ℂ) (ρ : Representation ℂ G W)
 
 /- English proof (translation)
-Establish `hN : ((Fintype.card G : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `e1 : ∀ g : G, ρ (g * y * g⁻¹) (∑ r : G, σ ((chiIdem χ).coeff r) • ρ r u) = ∑ s : G, σ ((chiIdem χ).coeff ((g * y * g⁻¹)⁻¹ * s)) • ρ s u`. Introduce `g`. Rewrite using `[map_sum, ← Equiv.sum_comp (Equiv.mulLeft (g * y * g⁻¹)⁻¹)]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, ← Module.End.mul_apply, ← map_mul]`. Simplify using `[mul_assoc]`. Simplify using `only [e1]`. Rewrite using `[Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_smul, ← map_sum, smul_smul, ← map_mul]`. Use `congr 2`. Establish `e2 : ∀ g : G, (chiIdem χ).coeff ((g * y * g⁻¹)⁻¹ * s) = χ 1 / (Fintype.card G : K) * χ (g * y * g⁻¹ * s⁻¹)`. Introduce `g`. Rewrite using `[coeff_chiIdem]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `h.conj s (s⁻¹ * (g * y * g⁻¹))` as an intermediate fact. Rewrite using `[_root_.mul_inv_rev, inv_inv, ← this]`. Use `congr 1`. Use `group`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [e2]`. Rewrite using `[← Finset.mul_sum, coeff_chiIdem]`. Use `sum_char_conj_mul h y s⁻¹` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem class_sum_apply {χ : G → K} (h : IsAbsIrrChar χ) (h1 : χ 1 ≠ 0) (y : G) (u : W) :
     ∑ g : G, ρ (g * y * g⁻¹) (∑ r : G, σ ((chiIdem χ).coeff r) • ρ r u) =
@@ -123,7 +123,7 @@ def lvlCoef {K G : Type} [Field K] [Group G] (P : Subgroup G) (ψ : P →* Kˣ) 
 open Classical in
 
 /- English proof (translation)
-Unfold `lvlIdem`. Rewrite using `[Finset.mul_sum, MonoidAlgebra.coeff_sum, Finsupp.finsetSum_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.coeff_mul_single_apply, coeff_chiIdem]`. Simplify using `only [lvlCoef, _root_.mul_inv_rev, inv_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -146,35 +146,31 @@ namespace GlobalTheory.Hk3
 open GlobalTheory.Hk3.Meet in
 
 /- English proof (translation)
-Introduce `K G W _ _ _ _ _ _ _ σ X P ψ ρ U hX hne hst hbot hid`. Establish `hmem : ∀ g, ∀ u ∈ U, ρ g u ∈ U` using `fun g u hu => hst g (Submodule.mem_map_of_mem hu)`. Take `⟨u₀, hu₀, hu₀ne⟩` from `(Submodule.ne_bot_iff U).1 hbot`. Establish `hsplit : ∑ χ ∈ X, ∑ g, σ ((chiIdem χ).coeff g) • ρ g u₀ = u₀`. Use `Eq.trans ?_ (hid u₀ hu₀)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Establish `e : (idemOf X).coeff g = ∑ φ ∈ X, (chiIdem φ).coeff g`. Unfold `idemOf`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_smul, ← map_sum, e]`. Choose the witnesses or unpack the hypotheses as in `⟨χ, hχ, hw⟩ : ∃ χ ∈ X, ∑ g, σ ((chiIdem χ).coeff g) • ρ g u₀ ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hu₀ne (by rw [← hsplit]; exact Finset.sum_eq_zero hcon)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set w₀ := ∑ g, σ ((chiIdem χ).coeff g) • ρ g u₀ with hw₀`. Establish `hw₀U : w₀ ∈ U` using `Submodule.sum_mem _ fun g _ => Submodule.smul_mem _ _ (hmem g _ hu₀)`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t, (chiIdem χ * lvlIdem P ψ).coeff t ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hne χ hχ (by`. Apply `MonoidAlgebra.ext` to reduce the goal to its premises. Use extensionality with `t`. Simplify using `using hcon t)`. Rewrite `ht` using `[coeff_chiIdem_mul_lvlIdem]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : χ 1 ≠ 0` using `fun e => ht (by simp [e])`. Establish `hc : ∑ h : P, lvlCoef P ψ h * χ ((h : G) * t⁻¹) ≠ 0` using `right_ne_zero_of_mul ht`. Establish `hN : ((Fintype.card G : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Use `set L : W → W := fun w => ∑ h : P, σ (lvlCoef P ψ h) • ρ (h : G) w with hL`. Establish `hLU : ∀ w ∈ U, L w ∈ U` using `fun w hw => Submodule.sum_mem _ fun h _ => Submodule.smul_mem _ _ (hmem _ _ hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hLe : ∀ (p : P) w, ρ p (L w) = σ (ψ p : K) • L w`. Introduce `p w`. Simplify using `only [hL, map_sum, map_smul, Finset.smul_sum]`. Use `(Equiv.sum_comp (Equiv.mulLeft p⁻¹) _).symm.trans (Finset.sum_congr rfl fun h _ => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.coe_mulLeft]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : lvlCoef P ψ (p⁻¹ * h) = (ψ p : K) * lvlCoef P ψ h`. Simplify using `only [lvlCoef, _root_.mul_inv_rev, inv_inv, map_mul, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ρ (p : G) (ρ ((p⁻¹ * h : P) : G) w) = ρ (h : G) w`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, e2, map_mul, mul_smul]`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hL0 : ∀ w ∈ U, L w = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Assume the negation of the conclusion as `hLw`. Take `⟨p, hp⟩` from `hno _ (hLU w hw) hLw`. Conclude with `hp (hLe p w)`. Establish `hz : ∑ g : G, ρ g (L (ρ (t⁻¹ * g⁻¹) w₀)) = 0` using `Finset.sum_eq_zero fun g _ => by rw [hL0 _ (hmem _ _ hw₀U), map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hz2 : ∑ g : G, ρ g (L (ρ (t⁻¹ * g⁻¹) w₀)) = σ ((Fintype.card G : K) / χ 1 * ∑ h : P, lvlCoef P ψ h * χ ((h : G) * t⁻¹)) • w₀`. Establish `e : ∀ g : G, ρ g (L (ρ (t⁻¹ * g⁻¹) w₀)) = ∑ h : P, σ (lvlCoef P ψ h) • ρ (g * ((h : G) * t⁻¹) * g⁻¹) w₀`. Introduce `g`. Simplify using `only [hL, map_sum, map_smul]`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Module.End.mul_apply (ρ (h : G)), ← map_mul, ← Module.End.mul_apply (ρ g), ← map_mul]`. Simplify using `[mul_assoc]`. Simplify using `only [e]`. Rewrite using `[Finset.sum_comm]`. Establish `e2 : ∀ h : P, ∑ g : G, σ (lvlCoef P ψ h) • ρ (g * ((h : G) * t⁻¹) * g⁻¹) w₀ = σ (lvlCoef P ψ h * ((Fintype.card G : K) * χ ((h : G) * t⁻¹) / χ 1)) • w₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `h`. Rewrite using `[← Finset.smul_sum, map_mul, mul_smul]`. Use `congr 1`. Conclude with `class_sum_apply σ ρ (hX χ hχ) h1 _ u₀`. Simplify using `only [e2]`.
-
-Rewrite using `[← Finset.sum_smul, ← map_sum, Finset.mul_sum]`. Use `congr 2`. Use `Finset.sum_congr rfl fun h _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[hz2]`.
-
-Break down `smul_eq_zero.1 hz with h0 | h0` into its components or cases. Conclude with `(mul_ne_zero (div_ne_zero hN h1) hc) ((map_eq_zero σ).1 h0)`. Conclude with `hw h0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_level_vector : ∀ {K G W : Type} [Field K] [CharZero K] [Group G] [Fintype G] [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] (σ : K →+* ℂ) (X : Finset (G → K)) (P : Subgroup G) (ψ : P →* Kˣ) (ρ : Representation ℂ G W)

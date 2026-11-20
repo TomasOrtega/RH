@@ -11,7 +11,7 @@ namespace GlobalTheory.CohomologicalConjSelfDualTempered.UnrModel
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Rewrite using `[Valuation.mem_integer_iff, ← map_one (valuation _), ← Valuation.vle_iff_le, Valuation.vle_iff_le Valued.v, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mem_integer_iff (x : w.adicCompletion E) : x ∈ 𝒪[w.adicCompletion E] ↔ x ∈ Formalism.UG.Ov (F := E) w := by
   haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible :=
@@ -20,20 +20,20 @@ theorem mem_integer_iff (x : w.adicCompletion E) : x ∈ 𝒪[w.adicCompletion E
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem range_eq {K : Type} [Field K] {A B : Subring K} (h : A = B) (n : ℕ) :
     (Formalism.UG.bc (n := Fin n) B.subtype).range = (Matrix.GeneralLinearGroup.map (n := Fin n) (algebraMap A K)).range := by
   subst h; rfl
 
 /- English proof (translation)
-The claim follows from `range_eq (SetLike.ext fun x => mem_integer_iff w x) n`.
+A detailed English derivation is pending.
 -/
 theorem kgl_eq_ko (n : ℕ) : GlobalTheory.LFun.KGL w n = GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin n) :=
   range_eq (SetLike.ext fun x => mem_integer_iff w x) n
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Unfold `GlobalTheory.LGrp.IsSpherical at h1`. Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[← kgl_eq_ko]` and apply the resulting hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem isSpherical_of_hasSatGL (n : ℕ) {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V} {B : Multiset ℂˣ} (h : GlobalTheory.LFun.HasSatGL w ρ B) :
@@ -44,7 +44,7 @@ theorem isSpherical_of_hasSatGL (n : ℕ) {V : Type} [AddCommGroup V] [Module �
   rwa [← kgl_eq_ko]
 
 /- English proof (translation)
-The claim follows from `hT L n hn π hc hcoh y σ hσ (isSpherical_of_hasSatGL y n hB)`.
+A detailed English derivation is pending.
 -/
 theorem isTemperedGL_of_hasSatGL (hT : GlobalTheory.CohomologicalConjSelfDualTempered.CohomologicalCsdTemperedUnr) (L : Type) [Field L] [NumberField L]
     [IsCMField L] (n : ℕ) (hn : 2 ≤ n) (π : CuspSub L n) (hc : π.IsCsd) (hcoh : GlobalTheory.GKCoh.IsCohomological π)
@@ -53,7 +53,7 @@ theorem isTemperedGL_of_hasSatGL (hT : GlobalTheory.CohomologicalConjSelfDualTem
   hT L n hn π hc hcoh y σ hσ (isSpherical_of_hasSatGL y n hB)
 
 /- English proof (translation)
-Unfold `GlobalTheory.SmGL.IsSpherical GlobalTheory.SmGL.IsSphericalFor`. Rewrite using `[Submodule.ne_bot_iff]`. Use `⟨1, ?_, one_ne_zero⟩` and prove the remaining obligations. Introduce `h`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isSpherical_trivial (n : ℕ) :
     GlobalTheory.SmGL.IsSpherical (1 : Representation ℂ (GL (Fin n) (w.adicCompletion E)) ℂ) := by

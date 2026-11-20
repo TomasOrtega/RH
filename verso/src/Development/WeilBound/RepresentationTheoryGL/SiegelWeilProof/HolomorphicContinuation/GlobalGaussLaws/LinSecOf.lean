@@ -17,7 +17,7 @@ namespace PositivityTheory.Rg.Sw.Glob
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Establish `h : GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω (a • Φ) g) = fun q => a * GlobalTheory.AutomorphicL2Unitary.descend (GQ V) (theta ω Φ g) q`. Use function extensionality and compare the values at `q`. Simplify using `[GlobalTheory.AutomorphicL2Unitary.descend, theta, map_smul, tsum_mul_left]`. Simplify using `only [thetaInt, h, MeasureTheory.average, MeasureTheory.integral_const_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem thetaInt_smul {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End ℂ (schwartzA θ V.rank n))
     (ν : Measure (GA D V)) (Φ : schwartzA θ V.rank n) (a : ℂ) (g : G D n) :
@@ -28,7 +28,7 @@ theorem thetaInt_smul {θ : InfFam D} {V : HSp D} (ω : G D n →* Module.End �
   simp only [thetaInt, h, MeasureTheory.average, MeasureTheory.integral_const_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, fP, evX, map_add, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_fP_add {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (c : ℝ)
     (Ψ : Mx D m n → ℂ) (P Q : PX m n) :
@@ -38,7 +38,7 @@ theorem tens_fP_add {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [tens, fP, evX, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.eval_C, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tens_fP_smul {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix (Fin m) (Fin m) ℂ) (c : ℝ)
     (Ψ : Mx D m n → ℂ) (a : ℂ) (P : PX m n) :
@@ -48,17 +48,15 @@ theorem tens_fP_smul {m : ℕ} (θ : InfFam D) (τ : D.what₂.Tau) (fr : Matrix
   ring
 
 /- English proof (translation)
-Introduce `hTL D n V ψ χ θ μ ω H l s ν τ ε fr ι c Ψ hΨ`. Establish `hl0 : ∀ τ, l τ ≠ 0` using `lNZ D ψ θ l c.hψ c.hθ c.hl`. Establish `hm : ∀ P, tens θ τ fr (fP (cLoc l τ) P) Ψ ∈ schwartzA θ V.rank n ∧ tens θ τ fr (fP (cLoc l τ) P) Ψ ∈ fockA θ V n l s` using `fun P => tensMem D n V θ l s τ ε fr c.hθ hl0 c.hs c.hfr Ψ hΨ P`. Establish `hphi : ∀ P, phiS θ τ fr (cLoc l τ) Ψ P = ⟨_, (hm P).1⟩` using `fun P => dif_pos (hm P).1`. Establish `hadd : ∀ P Q, phiS θ τ fr (cLoc l τ) Ψ (P + Q) = phiS θ τ fr (cLoc l τ) Ψ P + phiS θ τ fr (cLoc l τ) Ψ Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `P Q`. Rewrite using `[hphi, hphi, hphi]`. Conclude with `Subtype.ext (tens_fP_add θ τ fr _ Ψ P Q)`. Establish `hsmul : ∀ (a : ℂ) P, phiS θ τ fr (cLoc l τ) Ψ (a • P) = a • phiS θ τ fr (cLoc l τ) Ψ P`. Introduce `a P`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hphi, hphi]`. Conclude with `Subtype.ext (tens_fP_smul θ τ fr _ Ψ a P)`. Establish `hstd : ∀ P, PositivityTheory.PfSWUS.Std D n V ψ χ θ μ ω H l s ν (phiS θ τ fr (cLoc l τ) Ψ P)` using `fun P => ⟨c.hψ, c.hχ, c.hη, c.hθ, c.hμ, c.hω, c.hH, c.hl, c.hs, c.hν, by rw [hphi]; exact (hm P).2⟩`. Use `⟨{ toFun := fun P => secF ω τ fr (cLoc l τ) Ψ P map_add' := fun P Q => by` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [secF, hadd, map_add, Submodule.coe_add, Pi.add_apply]`. Use the proof step `map_smul' := fun a P => by`. Use function extensionality and compare the values at `g`. Simplify using `only [secF, hsmul, map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply] },`. Use the proof step `{ toFun := fun P => thF ω ν τ fr (cLoc l τ) Ψ P map_add' := fun P Q => by`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [thF, Pi.add_apply]`. Rewrite using `[hadd]`. Conclude with `hTL D n V ψ χ θ μ ω H l s ν _ _ (hstd P) (hstd Q) c.hr g`. Use the proof step `map_smul' := fun a P => by`.
-
-Use function extensionality and compare the values at `g`. Simplify using `only [thF, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[hsmul]`. Conclude with `thetaInt_smul ω ν _ a g }, fun P => rfl, fun P => rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linSec_of : ThLin → LinSec := by
   intro hTL D n V ψ χ θ μ ω H l s ν τ ε fr ι c Ψ hΨ

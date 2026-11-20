@@ -19,7 +19,7 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 variable {n : ℕ} {ε : Fin n → Bool} {P G : Mx n}
 
 /- English proof (translation)
-Establish `h : ‖A i j‖ ^ 2 ≤ hs A` using `(Finset.single_le_sum (f := fun b => ‖A i b‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun a => ∑ b, ‖A a b‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ i))`. Use polynomial arithmetic with `[norm_nonneg (A i j)]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_entry_le (A : Mx n) (i j : Fin n) : ‖A i j‖ ≤ 1 + hs A := by
   have h : ‖A i j‖ ^ 2 ≤ hs A :=
@@ -28,7 +28,7 @@ theorem norm_entry_le (A : Mx n) (i j : Fin n) : ‖A i j‖ ≤ 1 + hs A := by
   nlinarith [norm_nonneg (A i j)]
 
 /- English proof (translation)
-Establish `h1` using `one_add_hs_mul_le (Q * y) P`. Establish `h2` using `mul_le_mul_of_nonneg_right (one_add_hs_mul_le Q y) (show 0 ≤ 1 + hs P by linarith [hs_nonneg P])`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_hs_conj_le (Q y P : Mx n) : 1 + hs (Q * y * P) ≤ (1 + hs Q) * (1 + hs P) * (1 + hs y) := by
   have h1 := one_add_hs_mul_le (Q * y) P
@@ -36,7 +36,7 @@ theorem one_add_hs_conj_le (Q y P : Mx n) : 1 + hs (Q * y * P) ≤ (1 + hs Q) * 
   nlinarith
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hd]`. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_mul (hP : IsUnit P) (a b : Mx n) : P⁻¹ * (a * b) * P = (P⁻¹ * a * P) * (P⁻¹ * b * P) := by
   have hd := (isUnit_iff_isUnit_det _).1 hP
@@ -45,7 +45,7 @@ theorem conj_mul (hP : IsUnit P) (a b : Mx n) : P⁻¹ * (a * b) * P = (P⁻¹ *
     _ = _ := by simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Rewrite using `[Matrix.mul_assoc, exp_mul_eq hP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_exp (hP : IsUnit P) (X : Mx n) (t : ℝ) :
     P⁻¹ * NormedSpace.exp (t • X) * P = NormedSpace.exp (t • (P⁻¹ * X * P)) := by
@@ -53,9 +53,9 @@ theorem conj_exp (hP : IsUnit P) (X : Mx n) (t : ℝ) :
   rw [Matrix.mul_assoc, exp_mul_eq hP, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Establish `h1 : Xᴴ * Jm ε + Jm ε * X = 0` using `hX`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← h]`. Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Pᴴ * (Xᴴ * Jm ε + Jm ε * X) * P := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hd]`. Simplify using `only [conjTranspose_one, Matrix.mul_one, Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [h1, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_lie (hP : IsUnit P) (h : Pᴴ * Jm ε * P = G) {X : Mx n} (hX : X ∈ lieSet ε) :
     (P⁻¹ * X * P)ᴴ * G + G * (P⁻¹ * X * P) = 0 := by
@@ -70,19 +70,17 @@ theorem conj_lie (hP : IsUnit P) (h : Pᴴ * Jm ε * P = G) {X : Mx n} (hX : X �
     _ = 0 := by rw [h1, Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Establish `hd` using `(isUnit_iff_isUnit_det _).1 hP`. Use `set K : ℝ := (1 + hs P⁻¹) * (1 + hs P) + (1 + hs (1 : Mx V.rank)) with hK`. Use `⟨∑ _τ : D.what₂.Tau, ∑ _i : Fin V.rank, ∑ _j : Fin V.rank, (K + K), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hs1` using `hs_nonneg (1 : Mx V.rank)`. Establish `hsy` using `hs_nonneg y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : 0 ≤ (1 + hs P⁻¹) * (1 + hs P)` using `mul_nonneg (by linarith [hs_nonneg P⁻¹]) (by linarith [hs_nonneg P])`. Establish `b1 : ∀ z : Mx V.rank, hs z = hs y → 1 + hs (P⁻¹ * z * P) ≤ K * (1 + hs y)` using `fun z hz => by`. Use `one_add_hs_conj_le P⁻¹ z P` as an intermediate fact. Rewrite `this` using `[hz]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `b2 : 1 + hs (1 : Mx V.rank) ≤ K * (1 + hs y)` using `by nlinarith`. Establish `sp` using `atTau_spec hθ V τ (conj_inv_mem hP h hy)`. Unfold `normInf`. Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_le_sum fun τ' _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `infMat_mul_inv θ V τ' (atTau θ V τ (P⁻¹ * y * P))`. Rewrite using `[add_mul]`. Use `add_le_add ((norm_entry_le _ i j).trans ?_) ((norm_entry_le _ i j).trans ?_)` and prove the remaining obligations. Distinguish the cases in `c : τ' = τ`. Substitute `c` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sp.2.1]`. Conclude with `b1 y rfl`. Rewrite using `[sp.2.2 τ' c]`. Conclude with `b2`. Distinguish the cases in `c : τ' = τ`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Substitute `c` using the available equality. Rewrite `e` using `[sp.2.1]`. Establish `e2 : (P⁻¹ * y⁻¹ * P) * (P⁻¹ * y * P) = 1`. Rewrite using `[← conj_mul hP, inv_mul_UJ hy, Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]`. Rewrite using `[← left_inv_eq_right_inv e2 e]`.
-
-Conclude with `b1 _ (hs_inv hy)`. Rewrite `e` using `[sp.2.2 τ' c, Matrix.one_mul]`. Rewrite using `[e]`. Conclude with `b2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normInf_atTau_le {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) (τ : D.what₂.Tau)
     {ε : Fin V.rank → Bool} {P : Mx V.rank} (hP : IsUnit P) (h : Pᴴ * Jm ε * P = gramAt D V τ) :
@@ -123,13 +121,13 @@ theorem normInf_atTau_le {D : D7} {θ : InfF D} (hθ : IsInfFam θ) (V : HSp D) 
       exact b2
 
 /- English proof (translation)
-Introduce `D θ hθ V τ φ hφ ε P hP h x`. Take `⟨N, hN⟩` from `hφ.growth`. Take `⟨c, hc⟩` from `normInf_atTau_le hθ V τ hP h`. Establish `hl : ∀ l : List (Mx V.rank), (∀ Y ∈ l, Y ∈ lieSet ε) → ∀ p ∈ l.map fun X => (τ, P⁻¹ * X * P), p.2 ∈ lieAt V p.1` using `fun l hl p hp => by`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `conj_lie hP h (hl Y hY)`. Use `⟨N, fun l y => ((l.map fun X => (τ, P⁻¹ * X * P)).foldr (fun p f => Rder θ V p.1 p.2 f) φ) (x * atTau θ V τ (P⁻¹ * y * P)), fun _ _ => rfl, fun l hl' X hX g hg => ?_, fun l hl' => ?_⟩` and prove the remaining obligations. Establish `hs` using `(linOnSm_foldr (θ := θ) (fun p : D.what₂.Tau × Mx V.rank => Rder θ V p.1 p.2) _ fun p hp => linOnSm_Rder (hl l hl' p hp)).mem φ hφ.smooth`. Establish `hd` using `(differentiable_oneP hs (τ := τ) (conj_lie hP h hX) (x * atTau θ V τ (P⁻¹ * g * P)) 0).hasDerivAt`. Use `HasDerivAt.congr_of_eventuallyEq hd (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[conj_mul hP, atTau_mul hθ V τ (conj_inv_mem hP h hg) (conj_inv_mem hP h (exp_mem_UJ hX t)), conj_exp hP, ← mul_assoc]`. Both sides reduce to the same expression. Take `⟨C, hC⟩` from `hN _ (hl l hl') x`. Use `⟨|C| * c ^ N, fun g hg => (hC _ (atTau_mem V τ _)).trans ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0` using `normInf_nonneg (θ := θ) (atTau θ V τ (P⁻¹ * g * P))`. Rewrite using `[mul_assoc |C|, ← mul_pow]`. Conclude with `mul_le_mul (le_abs_self _) (pow_le_pow_left₀ h0 (hc g hg) N) (pow_nonneg h0 _) (abs_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem umg_atTau : ∀ (D : D7) (θ : InfF D), IsInfFam θ → ∀ (V : HSp D) (τ : D.what₂.Tau) (φ : GA D V → ℂ), IsAutFunSm θ V φ → ∀ (ε : Fin V.rank → Bool) (P : Matrix (Fin V.rank) (Fin V.rank) ℂ), IsUnit P → Pᴴ * Formalism.REAL.Jm ε * P = gramAt D V τ → ∀ x : GA D V, GlobalTheory.TypeSum.UMG ε (fun y => φ (x * atTau θ V τ (P⁻¹ * y * P))) := by
   intro D θ hθ V τ φ hφ ε P hP h x

@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e => simp`. Both sides reduce to the same expression. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem map_comp_apply_evalV (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E) :
     Algebra.TensorProduct.map ((HeckeCharacterZeroLocus.SiegelWeilU.evalV F v).comp (HeckeCharacterZeroLocus.SiegelWeilU.sndA F)) (AlgHom.id F E) z =
@@ -30,7 +30,7 @@ theorem map_comp_apply_evalV (v : HeightOneSpectrum (𝓞 F)) (z : AF F ⊗[F] E
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-The claim follows from `eventually_all.2 fun a => eventually_all.2 fun c => by filter_upwards [eventually_map_evalV_mem_intLoc (Algebra.TensorProduct.map (HeckeCharacterZeroLocus.SiegelWeilU.sndA F) (AlgHom.id F E) (h a c))] with v hv change Algebra.TensorProduct.map ((HeckeCharacterZeroLocus.SiegelWeil …`.
+A detailed English derivation is pending.
 -/
 theorem eventually_matV_mem_intLoc {n : ℕ} (h : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ a c, PositivityTheory.SiegelWeilFormula.Gen.matV v h a c ∈ intLoc F E v :=
@@ -44,7 +44,7 @@ theorem eventually_matV_mem_intLoc {n : ℕ} (h : Matrix (Fin n) (Fin n) (AF F �
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e` using `map_mul (AlgHom.mapMatrix (m := Fin n) (Algebra.TensorProduct.map ((HeckeCharacterZeroLocus.SiegelWeilU.evalV F v).comp (HeckeCharacterZeroLocus.SiegelWeilU.sndA F)) (AlgHom.id F E))) h h'`. Rewrite `e` using `[hh, map_one]`. Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matV_mul_eq_one {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) {h h' : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)}
     (hh : h * h' = 1) : PositivityTheory.SiegelWeilFormula.Gen.matV v h * PositivityTheory.SiegelWeilFormula.Gen.matV v h' = 1 := by
@@ -56,7 +56,7 @@ theorem matV_mul_eq_one {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) {h h' : Matri
 omit [NumberField E] in
 
 /- English proof (translation)
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `sum_mem fun c _ => mul_mem (hM a c) (hx c)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_intLoc {n : ℕ} {v : HeightOneSpectrum (𝓞 F)} {M : Matrix (Fin n) (Fin n) (HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E)}
     (hM : ∀ a c, M a c ∈ intLoc F E v) {x : Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv F v ⊗[F] E} (hx : ∀ c, x c ∈ intLoc F E v)
@@ -65,11 +65,11 @@ theorem mulVec_mem_intLoc {n : ℕ} {v : HeightOneSpectrum (𝓞 F)} {M : Matrix
   exact sum_mem fun c _ => mul_mem (hM a c) (hx c)
 
 /- English proof (translation)
-Use `filter_upwards [GlobalTheory.AdelicU.Cofinite.eventually_mem_intLoc_iff_repr bs, eventually_matV_mem_intLoc h, eventually_matV_mem_intLoc h'] with v hb h1 h2`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Establish `hx'` using `mem_latLoc_stdLattice.1 hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a k`. Use `(hb _).1 ?_ k` and prove the remaining obligations. Conclude with `mulVec_mem_intLoc h1 hx' a`. Introduce `hy`. Establish `hy' : ∀ a, y a ∈ intLoc F E v` using `fun a => (hb _).2 (hy a)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(PositivityTheory.SiegelWeilFormula.Gen.matV v h').mulVec y, mem_latLoc_stdLattice.2 (mulVec_mem_intLoc h2 hy'), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(PositivityTheory.SiegelWeilFormula.Gen.matV v h).mulVec ((PositivityTheory.SiegelWeilFormula.Gen.matV v h').mulVec y) = y`. Rewrite using `[Matrix.mulVec_mulVec, matV_mul_eq_one v hh, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_map_latLoc_eq_latO {n d : ℕ} {h h' : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)} (hh : h * h' = 1)
     (bs : Module.Basis (Fin d) F E) :
@@ -94,7 +94,7 @@ theorem eventually_map_latLoc_eq_latO {n d : ℕ} {h h' : Matrix (Fin n) (Fin n)
     rw [Matrix.mulVec_mulVec, matV_mul_eq_one v hh, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `D n h d bs`. Establish `hh : h.1 * (h⁻¹).1 = 1` using `by simp`. Conclude with `eventually_map_latLoc_eq_latO hh bs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem latAt_eq_latO : ∀ (D : D7) (n : ℕ) (h : GL (Fin n) (AE D)) (d : ℕ) (bs : Module.Basis (Fin d) D.host.F D.host.E), ∀ᶠ v in Filter.cofinite, ((latAt h.1 v : AddSubgroup _) : Set (Fin n → HeckeCharacterZeroLocus.SiegelWeilU.Fv D.host.F v ⊗[D.host.F] D.host.E)) = PositivityTheory.PfSWUS.Loc.latO bs v := by
   intro D n h d bs

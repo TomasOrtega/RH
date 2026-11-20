@@ -12,15 +12,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 namespace GlobalTheory.FlagTan
 /- English proof (translation)
-Introduce `hP hG E _ _ _ H Dw l Xo c K _ _ y x' x'' M hpq h' h'' k' k''`. Take `⟨X, hX, hXy, hXM⟩ : ∃ X : Sp (TrivSqZeroExt K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)) ⟶ Xo.X, X ≫ Xo.s = sOf c _ ∧ spMap (TrivSqZeroExt.fstHom c.F K (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K)).toRingHom ≫ X = y.x ∧ ∀ M : GlobalThe …` from `by first`. Consider the case `exact _root_.GlobalTheory.T.kodaira_spencer_universal_family hP hG E H Dw l Xo c K y hpq`. Consider the case `exact _root_.GlobalTheory.T.kodaira_spencer_universal_family hP E H Dw l Xo c K y hpq`. Consider the case `exact (_root_.GlobalTheory.T.kodaira_spencer_universal_family hP hG E H Dw l Xo c K y hpq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `htan : ∀ N, GlobalTheory.FlagTan.IsTanX y (spMap (GlobalTheory.FlagTan.dir c N).toRingHom ≫ X)` using `fun N => by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hX, sOf, sOf, ← Spec.map_comp]`. Use `congr 1`. Apply `CommRingCat.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Conclude with `(GlobalTheory.FlagTan.dir c N).commutes _`. Rewrite using `[← Category.assoc, ← Spec.map_comp, ← hXy]`. Use `congr 2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Simplify using the standard rewrite rules. Establish `uniq` using `fun x hx => _root_.GlobalTheory.T.flag_tangent_kodaira_spencer_unique hP E H Dw l Xo c K y x hpq hx`. Establish `key` using `exists_dir_eq_of_smooth (KA l) Xo.X Xo.s Dw.dim Xo.smooth K ((algebraMap c.F K).comp (IntermediateField.inclusion c.le).toRingHom) (GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H)) (GlobalTheory.FlagTan.card_HIx (GlobalTheory.FlagTan.isHalf_psiSet H)) X (by rw [hX, sO …`. Establish `hk : ∀ x, GlobalTheory.FlagTan.IsTanX y x → ∃ N, x = spMap (GlobalTheory.FlagTan.dir c N).toRingHom ≫ X` using `fun x hx => key x (by rw [hx.1, sOf]) (hx.2.trans hXy.symm)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨N', rfl⟩` from `hk x' h'`. Take `⟨N'', rfl⟩` from `hk x'' h''`. Rewrite using `[uniq _ (htan N') N' M (hXM N') k', uniq _ (htan N'') N'' M (hXM N'') k'']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_kodaira_spencer_eq : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' x'' : Sp (DualNumber K) ⟶ Xo.X) (M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → GlobalTheory.FlagTan.IsTanX y x'' → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x'' M → x' = x'' := by
   intro hP hG E _ _ _ H Dw l Xo c K _ _ y x' x'' M hpq h' h'' k' k''
@@ -63,7 +63,7 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq | exact _root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq | (intros; apply _root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.flag_deformations_eq_of_kodaira_spencer_eq : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.GrothendieckDeformation → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' x'' : Sp (DualNumber K) ⟶ Xo.X) (M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → GlobalTheory.FlagTan.IsTanX y x'' → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M → GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x'' M → x' = x'' := by
   first | exact @_root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq | exact _root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq | (intros; apply _root_.GlobalTheory.FlagTan.eq_of_kodaira_spencer_eq <;> assumption)

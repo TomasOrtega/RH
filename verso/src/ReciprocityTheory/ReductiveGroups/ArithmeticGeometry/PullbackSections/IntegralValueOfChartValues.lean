@@ -26,18 +26,18 @@ def HarmonicValueAtIntegralPoint : Prop :=
               (MvPolynomial.monomial (colOf mo b) 1))
 
 /- English proof (translation)
-Unfold `Nat.Coprime`. Rewrite using `[Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem coprime_of_mod_one {g p : ℕ} (h : g % p = 1) : Nat.Coprime g p := by
   unfold Nat.Coprime
   rw [Nat.gcd_comm, Nat.gcd_rec, h, Nat.gcd_one_left]
 
 /- English proof (translation)
-Establish `hc` using `D.ntypes.g_cond k`. Establish `hq8` using `D.host.hyp.2.2.1`. Establish `hd16` using `D.host.hyp.2.2.2.1`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hp`. Apply `coprime_of_mod_one` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `hp with rfl | rfl | rfl` into its components or cases. Establish `h2 : 2 ∣ D.host.QS` using `(dvd_pow_self 2 (Nat.succ_ne_zero _)).trans D.host.tower_dvd`. Rewrite using `[← Nat.mod_mod_of_dvd _ (show 2 ∣ D.host.QS * D.host.q * D.host.d from (h2.mul_right _).mul_right _), hc]`. Rewrite using `[← Nat.mod_mod_of_dvd _ (show D.host.q ∣ D.host.QS * D.host.q * D.host.d from ⟨D.host.QS * D.host.d, by ring⟩), hc]`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.mod_mod_of_dvd _ (show D.host.d ∣ D.host.QS * D.host.q * D.host.d from ⟨D.host.QS * D.host.q, by ring⟩), hc]`. Conclude with `Nat.mod_eq_of_lt (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem g_coprime_ram (D : D7) (k : Fin 2) (p : ℕ) (hp : p ∈ ({2, D.host.q, D.host.d} : Finset ℕ)) :
     Nat.Coprime (D.host.g k) p := by
@@ -58,7 +58,7 @@ theorem g_coprime_ram (D : D7) (k : Fin 2) (p : ℕ) (hp : p ∈ ({2, D.host.q, 
     exact Nat.mod_eq_of_lt (by omega)
 
 /- English proof (translation)
-Introduce `hmem`. Rewrite `hmem` using `[h.toLawsCore.pins.2.1.1, Nat.cast_mul]`. Break down `la.isPrime.mem_or_mem hmem with h0 | h1` into its components or cases. Conclude with `Pf.not_both_mem la (g_coprime_ram D 0 p hp) h0 hpl`. Conclude with `Pf.not_both_mem la (g_coprime_ram D 1 p hp) h1 hpl`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem M_not_mem_of_ram (D : D7) (T : Top D) (h : LawsP T) (la : HeightOneSpectrum (𝓞 T.Q.c.F)) (p : ℕ)
     (hp : p ∈ ({2, D.host.q, D.host.d} : Finset ℕ)) (hpl : (p : 𝓞 T.Q.c.F) ∈ la.asIdeal) :
@@ -70,9 +70,9 @@ theorem M_not_mem_of_ram (D : D7) (T : Top D) (h : LawsP T) (la : HeightOneSpect
   · exact Pf.not_both_mem la (g_coprime_ram D 1 p hp) h1 hpl
 
 /- English proof (translation)
-Unfold `vdP`. Use `split_ifs`. Establish `h1 : (2⁻¹ : ℝ) ^ D.R.e ≤ 1` using `pow_le_one₀ (by norm_num) (by norm_num)`. Establish `h2 : (0 : ℝ) ≤ D.R.e` using `Nat.cast_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions.
+A detailed English derivation is pending.
 -/
 theorem differentExponent_nonneg (D : D7) (p : ℕ) : 0 ≤ vdP D p := by
   unfold vdP
@@ -83,9 +83,9 @@ theorem differentExponent_nonneg (D : D7) (p : ℕ) : 0 ≤ vdP D p := by
   · norm_num
 
 /- English proof (translation)
-Unfold `ext0`. Establish `e1 : ∑ i : Fin m, (if h : (i : ℕ) < p then f ⟨i, h⟩ else 0) = ∑ i ∈ Finset.range m, (if h : i < p then f ⟨i, h⟩ else 0)` using `Fin.sum_univ_eq_sum_range (fun i => if h : i < p then f ⟨i, h⟩ else 0) m`. Establish `e2 : ∑ i : Fin p, f i = ∑ i ∈ Finset.range p, (if h : i < p then f ⟨i, h⟩ else 0)`. Rewrite using `[← Fin.sum_univ_eq_sum_range (fun i => if h : i < p then f ⟨i, h⟩ else 0) p]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [dif_pos i.2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, ← Finset.sum_filter_add_sum_filter_not (Finset.range m) (fun i => i < p)]`. Establish `e3 : ∑ i ∈ (Finset.range m).filter (fun i => ¬ i < p), (if h : i < p then f ⟨i, h⟩ else 0) = 0` using `Finset.sum_eq_zero fun i hi => dif_neg (Finset.mem_filter.mp hi).2`. Rewrite using `[e3, add_zero]`. Conclude with `Finset.sum_le_sum_of_subset_of_nonneg (fun i hi => Finset.mem_range.mpr (Finset.mem_filter.mp hi).2) (fun _ _ _ => Nat.zero_le _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_extendByZero_le_sum {p : ℕ} (f : Fin p → ℕ) (m : ℕ) : ∑ i : Fin m, ext0 f i ≤ ∑ i, f i := by
   unfold ext0
@@ -105,11 +105,11 @@ theorem sum_extendByZero_le_sum {p : ℕ} (f : Fin p → ℕ) (m : ℕ) : ∑ i 
 open Classical in
 
 /- English proof (translation)
-Use `show ∑ τ : D.host.E →+* ℂ, ∑ i : Fin ((T.Q.Dw j).mult τ), wtA w (τ, (i : ℕ)) ≤ ∑ t, ((∑ i, w.aP t i) + ∑ i, w.aM t i)`. Establish `hsw : ∀ τ : D.host.E →+* ℂ, ∑ i : Fin ((T.Q.Dw j).mult τ), wtA w (τ, (i : ℕ)) = ∑ t : D.what₂.Tau, ((if τ = DV.tauEmb D t then ∑ i : Fin ((T.Q.Dw j).mult τ), ext0 (w.aP t) (i : ℕ) else 0) + if τ = conjEmb (DV.tauEmb D t) then ∑ i : Fin ((T.Q.Dw j).mult τ), ext0 (w.aM t) (i : ℕ) e …`. Introduce `τ`. Simplify using `only [wtA]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl fun τ _ => hsw τ, Finset.sum_comm]`. Use `Finset.sum_le_sum fun t _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_univ, if_true]`. Conclude with `add_le_add (sum_extendByZero_le_sum _ _) (sum_extendByZero_le_sum _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem DF_wtA_le {D : D7} (T : Top D) (j : ℕ) (w : WeightFamilies.Wt D j) :
     Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) ≤ Formalism.MainNotions.WeightAlgebra.DF w := by
@@ -131,11 +131,11 @@ theorem DF_wtA_le {D : D7} (T : Top D) (j : ℕ) (w : WeightFamilies.Wt D j) :
   exact add_le_add (sum_extendByZero_le_sum _ _) (sum_extendByZero_le_sum _ _)
 
 /- English proof (translation)
-Introduce `D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy p hp hpl _C`. Establish `hM` using `M_not_mem_of_ram D T h la p hp hpl`. Take `⟨T', io', e', yI', ho', hy', C, P', g, hP', hg, hval⟩` from `hVC D T h j hj nab hnab w x P hP f hf Tc io yI e la ho hy hM`. Rewrite using `[hval]`. Use `le_trans ?_ (hCR D T h j hj hnab.1 T' io' yI' e' la ho' hy' p hp hpl C (T.Q.l.M ^ 2) (wtA w) w.n P' hP' g hg)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `EReal.coe_le_coe_iff.2` to reduce the goal to its premises. Establish `hv : (0 : ℝ) ≤ ((vLa la (p : T.Q.c.F) : ℤ) : ℝ)` using `by exact_mod_cast Pf.vLa_nat_nonneg la p`. Establish `hvd : 0 ≤ vdP D p` using `differentExponent_nonneg D p`. Establish `hdf : (Formalism.L2.Pj.DF (T.Q.Dw j) (wtA w) : ℝ) ≤ (Formalism.MainNotions.WeightAlgebra.DF w : ℝ)`. Conclude with `DF_wtA_le T j w` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvv` using `mul_nonneg hv hvd`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem ramifiedValue_of_chartValues (hVC : HarmonicValueAtIntegralPoint) (hCR : ChartValueBoundRamified) : ChartValueRamified := by
   intro D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy p hp hpl _C
@@ -153,9 +153,9 @@ theorem ramifiedValue_of_chartValues (hVC : HarmonicValueAtIntegralPoint) (hCR :
   nlinarith
 
 /- English proof (translation)
-Introduce `D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy hbad _C`. Establish `hM : ((T.Q.l.M : ℕ) : 𝓞 T.Q.c.F) ∉ la.asIdeal`. Introduce `hmem`. Rewrite `hmem` using `[h.toLawsCore.pins.2.1.1, Nat.cast_mul]`. Break down `la.isPrime.mem_or_mem hmem with h0 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hbad (D.host.g 0) (by simp) h0`. Conclude with `hbad (D.host.g 1) (by simp) h1`. Take `⟨T', io', e', yI', ho', hy', C, P', g, hP', hg, hval⟩` from `hVC D T h j hj nab hnab w x P hP f hf Tc io yI e la ho hy hM`. Rewrite using `[hval]`. Conclude with `hCI D T h j hj hnab.1 T' io' yI' e' la ho' hy' (fun p hp => hbad p (by simp only [Finset.mem_insert, Finset.mem_singleton] at hp ⊢; tauto)) C (T.Q.l.M ^ 2) (wtA w) w.n P' hP' g hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integralValue_of_chartValues (hVC : HarmonicValueAtIntegralPoint) (hCI : ChartValueIntegralGood) : ChartValueUnramified := by
   intro D T h j hj _ nab hnab w x P hP f hf Tc io yI e la ho hy hbad _C

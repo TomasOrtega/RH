@@ -21,20 +21,20 @@ def maxLift (D : D7) (g : ℕ → ℝ) : ℝ :=
   (Icc 1 D.R.m).sup' ⟨1, mem_Icc.2 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩⟩ g
 
 /- English proof (translation)
-The claim follows from `le_sup' g (mem_Icc.2 ⟨h1, h2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem le_maxLift {D : D7} (g : ℕ → ℝ) {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : g j ≤ maxLift D g :=
   le_sup' g (mem_Icc.2 ⟨h1, h2⟩)
 
 /- English proof (translation)
-Use `(sup'_le_iff _ _).trans ?_` and prove the remaining obligations. Simplify using `only [mem_Icc, and_imp]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem maxLift_le_iff {D : D7} {g : ℕ → ℝ} {a : ℝ} : maxLift D g ≤ a ↔ ∀ j, 1 ≤ j → j ≤ D.R.m → g j ≤ a := by
   refine (sup'_le_iff _ _).trans ?_
   simp only [mem_Icc, and_imp]
 
 /- English proof (translation)
-Take `⟨j, hj, h⟩` from `exists_mem_eq_sup' (s := Icc 1 D.R.m) ⟨1, mem_Icc.2 ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩⟩ g`. Conclude with `⟨j, (mem_Icc.1 hj).1, (mem_Icc.1 hj).2, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_maxLift (D : D7) (g : ℕ → ℝ) : ∃ j, 1 ≤ j ∧ j ≤ D.R.m ∧ maxLift D g = g j := by
   obtain ⟨j, hj, h⟩ := exists_mem_eq_sup' (s := Icc 1 D.R.m)
@@ -87,7 +87,7 @@ Both sides reduce to the same expression.
 theorem pageOf_lrd : (pageOf Q).lrd = lrd D := rfl
 
 /- English proof (translation)
-The claim follows from `L.logDerivative_at_one_eq.symm`.
+A detailed English derivation is pending.
 -/
 theorem pageOf_Lc : (pageOf Q).Lc = L.logDerivativeAtOne := L.logDerivative_at_one_eq.symm
 
@@ -97,23 +97,23 @@ Both sides reduce to the same expression.
 theorem log_derivative_at_zero : (pageOf Q).L0 = dlogL D 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[SlopeBoundParameters.LL0, pageOf_Lc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pageOf_LL0_eq_placeRankTwoOne_LL0 : (pageOf Q).LL0 = placeRankTwoOne.LL0 D L := by
   rw [SlopeBoundParameters.LL0, pageOf_Lc]; rfl
 
 /- English proof (translation)
-The claim follows from `le_max_of_le_left (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem ppTsq_nonneg : 0 ≤ ppTsq Q := le_max_of_le_left (by positivity)
 
 /- English proof (translation)
-The claim follows from `Real.sq_sqrt (ppTsq_nonneg Q)`.
+A detailed English derivation is pending.
 -/
 theorem pageOf_PPT_sq : (pageOf Q).PPT ^ 2 = ppTsq Q := Real.sq_sqrt (ppTsq_nonneg Q)
 
 /- English proof (translation)
-Rewrite using `[SlopeBoundLiftData.T, pageOf_PPT_sq, h, tR, tN, ← Int.cast_natCast, Int.natCast_ceil_eq_ceil]`. Both sides reduce to the same expression. Use `ppTsq_nonneg Q` as an intermediate fact. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem T_eq {K : Type} [Field K] [NumberField K] [StarRing K] (F : SlopeBoundLiftData K (pageOf Q)) (h : F.DY = dY D) :
     F.T = tR Q := by
@@ -123,13 +123,13 @@ theorem T_eq {K : Type} [Field K] [NumberField K] [StarRing K] (F : SlopeBoundLi
     positivity
 
 /- English proof (translation)
-The claim follows from `le_maxLift (fun j => (numAt Q j).PPp) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem PPp_le {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (numAt Q j).PPp ≤ (pageOf Q).PPp :=
   le_maxLift (fun j => (numAt Q j).PPp) h1 h2
 
 /- English proof (translation)
-The claim follows from `le_maxLift (fun j => (numAt Q j).PPpp) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem PPpp_le {j : ℕ} (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) : (numAt Q j).PPpp ≤ (pageOf Q).PPpp :=
   le_maxLift (fun j => (numAt Q j).PPpp) h1 h2
@@ -140,7 +140,7 @@ Both sides reduce to the same expression.
 theorem leafDiff_pageOf : LeafDiff (pageOf Q) := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by show 2 * (D.host.rdE / 2) = D.host.rdE; ring, congrArg Nat.cast D.what₂.card_Tau⟩`.
+Supply the required witnesses or components.
 -/
 example : 2 * (pageOf Q).v = (pageOf Q).rd ∧ (Fintype.card (pageOf Q).Pl : ℝ) = (pageOf Q).f :=
   ⟨by show 2 * (D.host.rdE / 2) = D.host.rdE; ring, congrArg Nat.cast D.what₂.card_Tau⟩
@@ -169,25 +169,25 @@ def uCan (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) : ℤ := canW D j i + uTwo Q j
 def uTop (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) : ℤ := uCan Q j τ i + (tN Q : ℤ) * uOne Q j τ i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `[kapMinus, twW]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem kapMinus_add_twW (j : ℕ) : kapMinus D j + twW D j = kap D j := by
   funext τ i; simp [kapMinus, twW]
 
 /- English proof (translation)
-Simplify using `only [kapMinus, uMinus, uAn]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kapMinus_eq (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) : kapMinus D j τ i = uMinus D j τ i + wAn D j τ := by
   simp only [kapMinus, uMinus, uAn]; ring
 
 /- English proof (translation)
-Simplify using `[remW, uOne_anchor]`.
+Simplify using the standard rewrite rules.
 -/
 theorem remW_anchor (j : ℕ) (τ : D.what₂.Tau) : remW Q j τ (D.R.k - 2) = 0 := by
   simp [remW, uOne_anchor]
 
 /- English proof (translation)
-Unfold `uOne`. Break down `lt_or_ge i (D.R.k - 2) with h | h` into its components or cases. Rewrite using `[sum_eq_sum_Ico_succ_bot h, Ico_eq_empty_of_le h.le, Ico_eq_empty_of_le (Nat.succ_le_of_lt h)]`. Simplify using the standard rewrite rules. Rewrite using `[Ico_eq_empty_of_le h, Ico_eq_empty_of_le (h.trans (Nat.le_succ i)), sum_Ico_succ_top h]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -198,9 +198,9 @@ theorem uOne_gap (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) : uOne Q j τ i - uOne
   · rw [Ico_eq_empty_of_le h, Ico_eq_empty_of_le (h.trans (Nat.le_succ i)), sum_Ico_succ_top h]; simp
 
 /- English proof (translation)
-Establish `hp : (0 : ℤ) < ((tN Q + placeRankTwoOne.dimY D + 1 : ℕ) : ℤ)` using `by exact_mod_cast Nat.succ_pos _`. Establish `e : remW Q j τ i - remW Q j τ (i + 1) = (aW D j τ i - aW D j τ (i + 1)) % ((tN Q + placeRankTwoOne.dimY D + 1 : ℕ) : ℤ)`. Establish `h` using `uOne_gap Q j τ i`. Rewrite `h` using `[gapOne]`. Rewrite using `[Int.emod_def, ← h, remW, remW]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `h2` using `Int.emod_lt_of_pos (aW D j τ i - aW D j τ (i + 1)) hp`. Conclude with `⟨Int.emod_nonneg _ hp.ne', by push_cast at h2 ⊢; omega⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem remW_gap (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) :
     0 ≤ remW Q j τ i - remW Q j τ (i + 1) ∧ remW Q j τ i - remW Q j τ (i + 1) ≤ tN Q + placeRankTwoOne.dimY D := by
@@ -215,13 +215,13 @@ theorem remW_gap (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) :
   exact ⟨Int.emod_nonneg _ hp.ne', by push_cast at h2 ⊢; omega⟩
 
 /- English proof (translation)
-Simplify using `only [uTop, uCan, uTwo, remW, uMinus, aW]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uTop_eq (j : ℕ) (τ : D.what₂.Tau) (i : ℕ) : uTop Q j τ i = uMinus D j τ i - aW D j τ (D.R.k - 2) := by
   simp only [uTop, uCan, uTwo, remW, uMinus, aW]; push_cast; ring
 
 /- English proof (translation)
-Establish `h : D.R.k - 2 < pp D j`. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [pp, Ranks.sigW]`. Use linear arithmetic over natural numbers and integers. Simplify using `[aW, uAn_anchor, deW, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem aW_anchor {j : ℕ} (h1 : 1 ≤ j) (τ : D.what₂.Tau) : aW D j τ (D.R.k - 2) = -canW D j (D.R.k - 2) := by
   have h : D.R.k - 2 < pp D j := by
@@ -279,7 +279,7 @@ variable (D L) in
 def measureMove : ℝ := 61 * (D.R.f : ℝ) * (D.R.r : ℝ) ^ 2 * L.sc.L
 
 /- English proof (translation)
-The claim follows from `mem_union_right _ (Nat.mem_primeFactors.2 ⟨Nat.prime_two, Dvd.intro _ (mul_assoc _ _ _).symm, mul_ne_zero (mul_ne_zero two_ne_zero (Int.natAbs_ne_zero.2 (discr_ne_zero _))) h⟩)`.
+A detailed English derivation is pending.
 -/
 example (B : ℝ) (h : levDeep D L ≠ 0) : 2 ∈ badPrimes D L B :=
   mem_union_right _ (Nat.mem_primeFactors.2 ⟨Nat.prime_two, Dvd.intro _ (mul_assoc _ _ _).symm,
@@ -302,7 +302,7 @@ def toWt (Dw : Datum H) (v : D.what₂.Tau → ℕ → ℤ) : Weight Dw :=
 variable {Dw : Datum H}
 
 /- English proof (translation)
-Rewrite using `[toWt, sum_eq_single t (fun s _ hs => if_neg fun e => hs ?_) (by simp), if_pos h]`. Conclude with `GlobalTheory.WeightExponents.tauEmb_injective D (e.symm.trans h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toWt_apply (v : D.what₂.Tau → ℕ → ℤ) {τ : Psi H} {t : D.what₂.Tau} (h : τ.1 = DV.tauEmb D t)
     (i : Fin (Dw.p + Dw.q)) : toWt Dw v τ i = v t i := by
@@ -310,7 +310,7 @@ theorem toWt_apply (v : D.what₂.Tau → ℕ → ℤ) {τ : Psi H} {t : D.what�
   exact GlobalTheory.WeightExponents.tauEmb_injective D (e.symm.trans h)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `only [toWt, Pi.add_apply, ← sum_add_distrib]`. Apply the tactic sequence `exact sum_congr rfl fun t _ => by split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toWt_add (v v' : D.what₂.Tau → ℕ → ℤ) : toWt Dw (v + v') = toWt Dw v + toWt Dw v' := by
   funext τ i
@@ -318,7 +318,7 @@ theorem toWt_add (v v' : D.what₂.Tau → ℕ → ℤ) : toWt Dw (v + v') = toW
   exact sum_congr rfl fun t _ => by split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Simplify using `only [toWt, Pi.smul_apply, smul_eq_mul, mul_sum]`. Apply the tactic sequence `exact sum_congr rfl fun t _ => by split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toWt_smul (n : ℤ) (v : D.what₂.Tau → ℕ → ℤ) : toWt Dw (n • v) = n • toWt Dw v := by
   funext τ i
@@ -328,7 +328,7 @@ theorem toWt_smul (n : ℤ) (v : D.what₂.Tau → ℕ → ℤ) : toWt Dw (n •
 def psiOf {T : Par D} (h : T.PinHost) (t : D.what₂.Tau) : Psi T.H := ⟨DV.tauEmb D t, h.2.2.2 t⟩
 
 /- English proof (translation)
-Establish `hj : InR D 1` using `⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩`. Use `⟨fun s t e => GlobalTheory.WeightExponents.tauEmb_injective D (congrArg Subtype.val e), fun τ => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `((GlobalTheory.WeightExponents.weight_exponents D T h 1 hj (WeightAlgebra.wscalar D 1 0 Even.zero)).2.2.1 τ.1).1 τ.2`. Conclude with `⟨t, Subtype.ext ht.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem psiOf_bijective {T : Par D} (h : T.Pins) : Function.Bijective (psiOf h.1) := by
   have hj : InR D 1 := ⟨le_rfl, le_trans one_le_two D.R.two_le_m⟩
@@ -338,7 +338,7 @@ theorem psiOf_bijective {T : Par D} (h : T.Pins) : Function.Bijective (psiOf h.1
   exact ⟨t, Subtype.ext ht.symm⟩
 
 /- English proof (translation)
-The claim follows from `toWt_apply v rfl i`.
+A detailed English derivation is pending.
 -/
 theorem toWt_psiOf {T : Par D} (h : T.PinHost) {Dw : Datum T.H} (v : D.what₂.Tau → ℕ → ℤ) (t : D.what₂.Tau)
     (i : Fin (Dw.p + Dw.q)) : toWt Dw v (psiOf h t) i = v t i := toWt_apply v rfl i
@@ -346,9 +346,9 @@ theorem toWt_psiOf {T : Par D} (h : T.PinHost) {Dw : Datum T.H} (v : D.what₂.T
 variable {T : Par D} {j : ℕ}
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `h.2.2.2 j hj`. Use `⟨h1, h2, ?_⟩` and prove the remaining obligations. Use `D.R.m_add_three_le_k` as an intermediate fact. Use `hj.1` as an intermediate fact. Use `hj.2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Simplify using `only [Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sig_eq (h : T.Pins) (hj : InR D j) :
     (T.Dw j).p = pp D j ∧ (T.Dw j).q = qq D j ∧ (T.Dw j).p + (T.Dw j).q = D.R.r := by
@@ -361,14 +361,14 @@ theorem sig_eq (h : T.Pins) (hj : InR D j) :
   simp only [Ranks.sigW, Ranks.r]; omega
 
 /- English proof (translation)
-Rewrite using `[dimFlag, Formalism.DegreeFormula.dimFl, (sig_eq h hj).2.2, ← Fintype.card_of_bijective (psiOf_bijective h), D.what₂.card_Tau, placeRankTwoOne.dimY, Nat.choose_two_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dimFlag_eq (h : T.Pins) (hj : InR D j) : dimFlag (T.Dw j) = placeRankTwoOne.dimY D := by
   rw [dimFlag, Formalism.DegreeFormula.dimFl, (sig_eq h hj).2.2, ← Fintype.card_of_bijective (psiOf_bijective h), D.what₂.card_Tau,
     placeRankTwoOne.dimY, Nat.choose_two_right]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Take `⟨t, rfl⟩` from `(psiOf_bijective h).2 τ`. Rewrite using `[toWt_psiOf, hodgeWt, barWt, deW, ← (sig_eq h hj).1]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toWt_deW (h : T.Pins) (hj : InR D j) : toWt (T.Dw j) (fun _ => deW D j) = hodgeWt (T.Dw j) := by
   funext τ i
@@ -376,7 +376,7 @@ theorem toWt_deW (h : T.Pins) (hj : InR D j) : toWt (T.Dw j) (fun _ => deW D j) 
   rw [toWt_psiOf, hodgeWt, barWt, deW, ← (sig_eq h hj).1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i`. Rewrite using `[uPrime, ← toWt_deW h hj]`. Take `⟨t, rfl⟩` from `(psiOf_bijective h).2 τ`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, toWt_psiOf, uPr, smul_eq_mul, (sig_eq h hj).2.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem toWt_uPr (h : T.Pins) (hj : InR D j) : toWt (T.Dw j) (uPr Q j) = uPrime (T.Dw j) (toWt (T.Dw j) (uOne Q j)) := by
   funext τ i
@@ -385,9 +385,9 @@ theorem toWt_uPr (h : T.Pins) (hj : InR D j) : toWt (T.Dw j) (uPr Q j) = uPrime 
   simp only [Pi.sub_apply, Pi.smul_apply, toWt_psiOf, uPr, smul_eq_mul, (sig_eq h hj).2.2]
 
 /- English proof (translation)
-Rewrite using `[vdm, GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.degW, ← (psiOf_bijective h).prod_comp, Int.cast_prod]`. Use `prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Simplify using `only [toWt_psiOf]`. Rewrite using `[← (sig_eq h hj).2.2]`. Generalize the expression as in `(T.Dw j).p + (T.Dw j).q = N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[prod_comm' (t' := univ) (s' := fun l => Iio l) (by simp), ← Fin.prod_univ_eq_prod_range (fun l => ∏ i ∈ range l, ((v t i : ℝ) - v t l)), Int.cast_prod]`. Use `prod_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_prod, ← Nat.Iio_eq_range, ← Fin.map_valEmbedding_Iio, prod_map]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vdm_toWt (h : T.Pins) (hj : InR D j) (v : D.what₂.Tau → ℕ → ℤ) : ((vdm (toWt (T.Dw j) v) : ℤ) : ℝ) = GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.degW D v := by
   rw [vdm, GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.degW, ← (psiOf_bijective h).prod_comp, Int.cast_prod]
@@ -402,7 +402,7 @@ theorem vdm_toWt (h : T.Pins) (hj : InR D j) (v : D.what₂.Tau → ℕ → ℤ)
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompHt.rhoB, rhoOf, ← toWt_uPr Q h hj, vdm_toWt h hj, vdm_toWt h hj, GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.rhoB]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rhoB_toWt (h : T.Pins) (hj : InR D j) :
     GlobalTheory.CompHt.rhoB (T.Dw j) (toWt (T.Dw j) (uOne Q j)) = GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.rhoB Q j := by
@@ -417,31 +417,31 @@ variable (D) in
 def plainExp (Dw : Datum H) (v : D.what₂.Tau → ℕ → ℤ) : WTZ D.host.E := wtOf Dw (toWt Dw v) 0
 
 /- English proof (translation)
-Rewrite using `[thetaExp, thetaExp, plainExp, ← wtOf_add, toWt_add, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaExp_add (v v' : D.what₂.Tau → ℕ → ℤ) : thetaExp D Dw (v + v') = thetaExp D Dw v + plainExp D Dw v' := by
   rw [thetaExp, thetaExp, plainExp, ← wtOf_add, toWt_add, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← thetaExp_add, kapMinus_add_twW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaExp_kap (j : ℕ) : thetaExp D Dw (kapMinus D j) + plainExp D Dw (twW D j) = thetaExp D Dw (kap D j) := by
   rw [← thetaExp_add, kapMinus_add_twW]
 
 /- English proof (translation)
-Take `⟨hp, hq, hr⟩` from `sig_eq h hj`. Take `⟨-, -, hΨ, hΨ', hA⟩` from `GlobalTheory.WeightExponents.weight_exponents D T h j hj w`. Establish `hp' : (T.Dw j).p = (D.R.sigW j).1` using `hp`. Establish `hq' : (T.Dw j).q = (D.R.sigW j).2` using `hq`. Use `Prod.ext (funext fun ⟨τ, i⟩ => ?_) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = ((wtA w (τ, i) : ℕ) : ℤ)`. Distinguish the cases in `hτ : InPsi T.H τ`. Take `⟨t, rfl⟩` from `(hΨ τ).1 hτ`. Rewrite using `[(hA t i).1, ext0]`. Distinguish the cases in `hi : i < (T.Dw j).p`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `(wtOf_big _ _ (psiOf h.1 t) i hi).trans ?_` and prove the remaining obligations. Rewrite using `[toWt_psiOf, GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.kap, dif_pos (by show i < _; omega), ← hw, dif_pos (by omega)]`. Simplify using `only [Formalism.L2.Geo.wtOf, Formalism.L2.Geo.wtOfN, hn]`. Rewrite using `[dif_pos (by omega)]; ring`. Rewrite using `[dif_neg (by omega)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [thetaExp, wtOf]`. Unfold `InPsi at hτ`. Rewrite using `[dif_pos hτ, dif_neg hi]`. Both sides reduce to the same expression. Take `⟨t, rfl⟩` from `(hΨ' τ).1 hτ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hA t i).2, ext0]`. Distinguish the cases in `hi : i < (T.Dw j).q`. Use `(wtOf_small _ _ (psiOf h.1 t) i hi).trans ?_` and prove the remaining obligations. Rewrite using `[toWt_psiOf, GlobalTheory.IndefiniteRowSideFullHecke.DescentConstants.kap, dif_pos (by show (T.Dw j).p + _ < _; omega), ← hw, dif_pos (by omega)]`. Simplify using `only [Formalism.L2.Geo.wtOf, Formalism.L2.Geo.wtOfN, hn]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by omega), dif_pos (by omega)]`. Establish `e : ∀ (a : Fin (D.R.sigW j).2) (b : Fin (D.R.sigW j).2), (a : ℕ) + b + 1 = (D.R.sigW j).2 → Fin.rev a = b` using `fun a b hab => Fin.ext (by rw [Fin.val_rev]; omega)`. Rewrite using `[e _ ⟨i, by omega⟩ (by simp only; omega)]; ring`. Rewrite using `[dif_neg (by omega)]`. Simplify using `only [thetaExp, wtOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `InPsi at hτ`. Rewrite using `[dif_neg hτ]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Take `⟨a, ha⟩` from `w.n_even show 2 * ((D.R.nV / 2 : ℕ) : ℤ) = ((w.n : ℕ) : ℤ)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem thetaExp_kap_eq (h : T.Pins) (hj : InR D j) (w : WeightFamilies.Wt D j) (hn : w.n = D.R.nV)
     (hw : Formalism.L2.Geo.wtOf w = DV.kapW D j) : thetaExp D (T.Dw j) (kap D j) = wtZ (wtA w) w.n := by
@@ -483,7 +483,7 @@ theorem thetaExp_kap_eq (h : T.Pins) (hj : InR D j) (w : WeightFamilies.Wt D j) 
     omega
 
 /- English proof (translation)
-The claim follows from `thetaExp_kap_eq h ⟨Nat.le_add_left _ _, i.2⟩ _ rfl (GlobalTheory.RecordWeightVec.wtOf_kapTop D hK i).2`.
+A detailed English derivation is pending.
 -/
 theorem thetaExp_kap_kapTop (h : T.Pins) (hK : DV.KapDef D) (i : Fin D.R.m) :
     thetaExp D (T.Dw ((i : ℕ) + 1)) (kap D ((i : ℕ) + 1)) =

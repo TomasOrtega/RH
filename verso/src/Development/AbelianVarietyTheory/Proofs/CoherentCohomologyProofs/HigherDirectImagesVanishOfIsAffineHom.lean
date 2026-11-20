@@ -23,42 +23,42 @@ variable {X Y : TopCat.{u}} [HasExt.{u} (AbSheaf X)] [HasExt.{u} (AbSheaf Y)] (f
   {V V' : Opens X} {W W' : Opens Y}
 
 /- English proof (translation)
-The claim follows from `sitePull_map _ _ _ n _ x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.pull_map (s : F' ⟶ F) (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F' n V) :
     pull.{u, u} f φ n i (map s n V x) = pull.{u, u} f (s ≫ φ) n i x :=
   sitePull_map _ _ _ n _ x
 
 /- English proof (translation)
-The claim follows from `map_sitePull _ _ _ n _ x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.map_pull (s : G ⟶ G') (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F n V) :
     map s n W (pull.{u, u} f φ n i x) = pull.{u, u} f (φ ≫ (push f).map s) n i x :=
   map_sitePull _ _ _ n _ x
 
 /- English proof (translation)
-The claim follows from `sitePull_res _ _ n _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.pull_res (k : V' ⟶ V) (i : W ⟶ (Opens.map f).obj V') (x : Sheaf.H'.{u} F n V) :
     pull.{u, u} f φ n i (res F n k x) = pull.{u, u} f φ n (i ≫ (Opens.map f).map k) x :=
   sitePull_res _ _ n _ _ x
 
 /- English proof (translation)
-The claim follows from `res_sitePull _ _ n _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.res_pull (k : W' ⟶ W) (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F n V) :
     res G n k (pull.{u, u} f φ n i x) = pull.{u, u} f φ n (k ≫ i) x :=
   res_sitePull _ _ n _ _ x
 
 /- English proof (translation)
-The claim follows from `equivZero_sitePull _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.equivZero_pull (i : W ⟶ (Opens.map f).obj V) (x : Sheaf.H'.{u} F 0 V) :
     equivZero G W (pull.{u, u} f φ 0 i x) = G.obj.map i.op (φ.hom.app (op V) (equivZero F V x)) :=
   equivZero_sitePull _ _ _ x
 
 /- English proof (translation)
-The claim follows from `sitePull_δ _ hA hB ψ n i x`.
+A detailed English derivation is pending.
 -/
 theorem SheafPull.pull_δ {A : ShortComplex (AbSheaf X)} {B : ShortComplex (AbSheaf Y)}
     (hA : A.ShortExact) (hB : B.ShortExact) (ψ : A ⟶ B.map (push f))
@@ -74,7 +74,7 @@ section Morphism
 variable {X Y : Scheme.{u}} {g : Y ⟶ X}
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun W => ?_` and prove the remaining obligations. Use extensionality with `x`. Establish `h : g.app W (restrictGlobal X W r) = restrictGlobal Y (g ⁻¹ᵁ W) (g.appTop r)` using `ConcreteCategory.congr_hom (g.naturality (homOfLE le_top : W ⟶ ⊤).op) _`. Conclude with `congrArg (fun a : Γ(Y, g ⁻¹ᵁ W) => (a • (show Γ(G, g ⁻¹ᵁ W) from x) : Γ(G, g ⁻¹ᵁ W))) h`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smulHom_pushforward (g : Y ⟶ X) (G : Y.Modules) (r : Γ(X, ⊤)) :
     smulHom ((Scheme.Modules.pushforward g).obj G) r =
@@ -132,7 +132,7 @@ def cohOn.pull (φ : F ⟶ (Scheme.Modules.pushforward g).obj G) {V : X.Opens} {
 variable (φ : F ⟶ (Scheme.Modules.pushforward g).obj G) {V V' : X.Opens} {W W' : Y.Opens} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `(cohOn.toH' G W n).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem cohOn.toH'_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n) :
     cohOn.toH' G W n (cohOn.pull hσ φ h n x) =
@@ -140,7 +140,7 @@ theorem cohOn.toH'_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n) :
   (cohOn.toH' G W n).apply_symm_apply _
 
 /- English proof (translation)
-Apply `(cohOn.toH' G W n).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toH'_pull, cohOn.toH'_pull, cohOn.toH'_map, toAbSheafPush_comp]`. Conclude with `SheafPull.pull_map g.base (toAbSheafPush φ) n ((toAbSheaf X).map s) (homOfLE h) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn.pull_map (s : F' ⟶ F) (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F' V n) :
     cohOn.pull hσ φ h n (cohOn.map R s V n x) = cohOn.pull hσ (s ≫ φ) h n x := by
@@ -149,7 +149,7 @@ theorem cohOn.pull_map (s : F' ⟶ F) (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F' V n
   exact SheafPull.pull_map g.base (toAbSheafPush φ) n ((toAbSheaf X).map s) (homOfLE h) _
 
 /- English proof (translation)
-Apply `(cohOn.toH' G' W n).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toH'_map, cohOn.toH'_pull, cohOn.toH'_pull, toAbSheafPush_comp_map]`. Conclude with `SheafPull.map_pull g.base (toAbSheafPush φ) n ((toAbSheaf Y).map s) (homOfLE h) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn.map_pull (s : G ⟶ G') (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n) :
     cohOn.map S s W n (cohOn.pull hσ φ h n x) =
@@ -159,7 +159,7 @@ theorem cohOn.map_pull (s : G ⟶ G') (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n)
   exact SheafPull.map_pull g.base (toAbSheafPush φ) n ((toAbSheaf Y).map s) (homOfLE h) _
 
 /- English proof (translation)
-Apply `(cohOn.toH' G W n).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toH'_pull, cohOn.toH'_pull, cohOn.toH'_res]`. Conclude with `SheafPull.pull_res g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn.pull_res (k : V' ≤ V) (h : W ≤ g ⁻¹ᵁ V') (x : cohOn F V n) :
     cohOn.pull hσ φ h n (cohOn.res R F k n x) =
@@ -169,7 +169,7 @@ theorem cohOn.pull_res (k : V' ≤ V) (h : W ≤ g ⁻¹ᵁ V') (x : cohOn F V n
   exact SheafPull.pull_res g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _
 
 /- English proof (translation)
-Apply `(cohOn.toH' G W' n).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toH'_res, cohOn.toH'_pull, cohOn.toH'_pull]`. Conclude with `SheafPull.res_pull g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn.res_pull (k : W' ≤ W) (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n) :
     cohOn.res S G k n (cohOn.pull hσ φ h n x) = cohOn.pull hσ φ (k.trans h) n x := by
@@ -178,7 +178,7 @@ theorem cohOn.res_pull (k : W' ≤ W) (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V n)
   exact SheafPull.res_pull g.base (toAbSheafPush φ) n (homOfLE k) (homOfLE h) _
 
 /- English proof (translation)
-Apply `(sectionsOn.toΓ G W).injective` to reduce the goal to its premises. Rewrite using `[cohOn.toΓ_zeroEquiv, cohOn.toH'_pull, sectionsOn.toΓ_res, sectionsOn.toΓ_mapOver, cohOn.toΓ_zeroEquiv]`. Conclude with `SheafPull.equivZero_pull g.base (toAbSheafPush φ) (homOfLE h) _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cohOn.zeroEquiv_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V 0) :
     cohOn.zeroEquiv S G W (cohOn.pull hσ φ h 0 x) =
@@ -189,7 +189,7 @@ theorem cohOn.zeroEquiv_pull (h : W ≤ g ⁻¹ᵁ V) (x : cohOn F V 0) :
   exact SheafPull.equivZero_pull g.base (toAbSheafPush φ) (homOfLE h) _
 
 /- English proof (translation)
-Apply `(cohOn.toH' B.X₁ W (n + 1)).injective` to reduce the goal to its premises. Use `(cohOn.toH'_pull hσ (G := B.X₁) ψ.τ₁ h _).trans (Eq.trans ?_ (cohOn.toH'_δ S hB W n _).symm)` and prove the remaining obligations. Conclude with `SheafPull.pull_δ g.base n (shortExact_toAbSheaf hA) (shortExact_toAbSheaf hB) ((toAbSheaf X).mapShortComplex.map ψ) (homOfLE h) (cohOn.toH' A.X₃ V n x)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cohOn.pull_δ {A : ShortComplex X.Modules} {B : ShortComplex Y.Modules}
     (hA : A.ShortExact) (hB : B.ShortExact) (ψ : A ⟶ B.map (Scheme.Modules.pushforward g))
@@ -202,7 +202,7 @@ theorem cohOn.pull_δ {A : ShortComplex X.Modules} {B : ShortComplex Y.Modules}
     ((toAbSheaf X).mapShortComplex.map ψ) (homOfLE h) (cohOn.toH' A.X₃ V n x)
 
 /- English proof (translation)
-The claim follows from `(cohOn.toH' G W n).symm.bijective.comp (H.comp (cohOn.toH' F V n).bijective)`.
+A detailed English derivation is pending.
 -/
 theorem cohOn.pull_bijective_of_toAbSheaf (h : W ≤ g ⁻¹ᵁ V)
     (H : Function.Bijective (SheafPull.pull.{u, u} g.base (toAbSheafPush φ) n (homOfLE h))) :
@@ -210,7 +210,7 @@ theorem cohOn.pull_bijective_of_toAbSheaf (h : W ≤ g ⁻¹ᵁ V)
   (cohOn.toH' G W n).symm.bijective.comp (H.comp (cohOn.toH' F V n).bijective)
 
 /- English proof (translation)
-The claim follows from `SheafPull.higherDirectImagesVanish_of_basis _ _ fun V x hx => by obtain ⟨_, ⟨W, hW, rfl⟩, hxW, hWV⟩ := X.isBasis_affineOpens.exists_subset_of_mem_open hx V.2 exact ⟨W, hWV, hxW, fun n hn => cohOn.subsingleton_of_isAffineOpen G (IsAffineOpen.preimage hW g) hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem higherDirectImagesVanish_of_isAffineHom (g : Y ⟶ X) [IsAffineHom g] (G : Y.Modules)
     [G.IsQuasicoherent] :
@@ -223,7 +223,7 @@ theorem higherDirectImagesVanish_of_isAffineHom (g : Y ⟶ X) [IsAffineHom g] (G
 variable (G V n) in
 
 /- English proof (translation)
-The claim follows from `cohOn.pull_bijective_of_toAbSheaf hσ _ _ (SheafPull.pushComparison_bijective.{u, u} (higherDirectImagesVanish_of_isAffineHom g G) n V)`.
+A detailed English derivation is pending.
 -/
 theorem cohOn.pull_id_bijective [IsAffineHom g] [G.IsQuasicoherent] :
     Function.Bijective (cohOn.pull hσ (𝟙 ((Scheme.Modules.pushforward g).obj G))
@@ -234,7 +234,7 @@ theorem cohOn.pull_id_bijective [IsAffineHom g] [G.IsQuasicoherent] :
 variable (F n) in
 
 /- English proof (translation)
-The claim follows from `cohOn.pull_bijective_of_toAbSheaf hσ _ _ (SheafPull.pull_restrUnit_bijective.{u, u} g.isOpenEmbedding ((toAbSheaf X).obj F) n (homOfLE h) h')`.
+A detailed English derivation is pending.
 -/
 theorem cohOn.pull_restrict_bijective [IsOpenImmersion g] (h : W ≤ g ⁻¹ᵁ V) (h' : V ≤ g ''ᵁ W) :
     Function.Bijective
@@ -269,7 +269,7 @@ theorem cohOn.pushforwardEquiv_apply (V : X.Opens) (n : ℕ)
 variable {G} in
 
 /- English proof (translation)
-Rewrite using `[cohOn.pushforwardEquiv_apply, cohOn.pushforwardEquiv_apply, cohOn.pull_map, cohOn.map_pull, Category.comp_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohOn.pushforwardEquiv_map {G' : Y.Modules} [G'.IsQuasicoherent] (s : G ⟶ G')
     (V : X.Opens) (n : ℕ) (x : cohOn ((Scheme.Modules.pushforward g).obj G) V n) :
@@ -280,7 +280,7 @@ theorem cohOn.pushforwardEquiv_map {G' : Y.Modules} [G'.IsQuasicoherent] (s : G 
     Category.comp_id, Category.id_comp]
 
 /- English proof (translation)
-Rewrite using `[cohOn.pushforwardEquiv_apply, cohOn.zeroEquiv_pull, sectionsOn.res_refl]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohOn.zeroEquiv_pushforwardEquiv (V : X.Opens)
     (x : cohOn ((Scheme.Modules.pushforward g).obj G) V 0) :
@@ -302,7 +302,7 @@ theorem coh.pushforwardEquiv_def (n : ℕ) :
 variable {G} in
 
 /- English proof (translation)
-The claim follows from `cohOn.pushforwardEquiv_map R hg s ⊤ n x`.
+A detailed English derivation is pending.
 -/
 theorem coh.pushforwardEquiv_map {G' : Y.Modules} [G'.IsQuasicoherent] (s : G ⟶ G')
     (n : ℕ) (x : coh ((Scheme.Modules.pushforward g).obj G) n) :
@@ -326,7 +326,7 @@ end Restrict
 end Linear
 
 /- English proof (translation)
-The claim follows from `(coh.pushforwardEquiv k hg G n).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem hdim_pushforward (k : Type v) [Field k] [Algebra k Γ(X, ⊤)] [Algebra k Γ(Y, ⊤)]
     (hg : ∀ r, g.appTop (algebraMap k Γ(X, ⊤) r) = algebraMap k Γ(Y, ⊤) r) [IsAffineHom g]
@@ -335,7 +335,7 @@ theorem hdim_pushforward (k : Type v) [Field k] [Algebra k Γ(X, ⊤)] [Algebra 
   (coh.pushforwardEquiv k hg G n).finrank_eq
 
 /- English proof (translation)
-Substitute `w` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appTop_algebraΓOfHom {R : Type u} [CommRing R] (g : Y ⟶ X) (p : X ⟶ Spec (.of R))
     {q : Y ⟶ Spec (.of R)} (w : g ≫ p = q) (r : R) :

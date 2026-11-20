@@ -6,7 +6,7 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open MvPolynomial
 
 /- English proof (translation)
-Establish `hy0 : (0 : _) < V.valuation y` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hy)`. Rewrite using `[← V.valuation_le_one_iff, map_div₀, div_le_one₀ hy0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem gauss_val_le_iff_div_mem {U : Type} [Field U] (V : ValuationSubring U) {x y : U} (hy : y ≠ 0) :
     V.valuation x ≤ V.valuation y ↔ x / y ∈ V := by
@@ -14,9 +14,9 @@ theorem gauss_val_le_iff_div_mem {U : Type} [Field U] (V : ValuationSubring U) {
   rw [← V.valuation_le_one_iff, map_div₀, div_le_one₀ hy0]
 
 /- English proof (translation)
-Establish `hz : z ∈ IntermediateField.adjoin Ω (Set.range t)` using `by rw [hgen]; trivial`. Take `⟨r, hr, s, hs, rfl⟩` from `IntermediateField.mem_adjoin_iff_div.mp hz`. Rewrite `hr`, `hs` using `[Algebra.adjoin_range_eq_range_aeval]`. Take `⟨p, rfl⟩` from `hr`. Take `⟨q, rfl⟩` from `hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hq : aeval t q = 0`. Use `⟨0, 1, by simp, ?_⟩` and prove the remaining obligations. Simplify using `[hq]`. Conclude with `⟨p, q, hq, rfl⟩`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem gauss_exists_div_aeval {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (hgen : IntermediateField.adjoin Ω (Set.range t) = ⊤) (z : U) :
@@ -32,17 +32,15 @@ theorem gauss_exists_div_aeval {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U]
   · exact ⟨p, q, hq, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ (A : ValuationSubring U) (x : U), x ∈ A.nonunits ↔ (x = 0 ∨ x⁻¹ ∉ A)`. Introduce `A x`. Rewrite using `[A.mem_nonunits_iff]`. Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hv : A.valuation x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Simplify using `only [hx, false_or, ← A.valuation_le_one_iff, map_inv₀, not_le]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `one_lt_inv_iff₀.mpr ⟨zero_lt_iff.mpr hv, h⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `(one_lt_inv_iff₀.mp h).2`. Establish `key' : ∀ (A : ValuationSubring Ω) (x : Ω), x ∈ A.nonunits ↔ (x = 0 ∨ x⁻¹ ∉ A)`. Introduce `A x`. Rewrite using `[A.mem_nonunits_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `hv : A.valuation x ≠ 0` using `(Valuation.ne_zero_iff _).mpr hx`. Simplify using `only [hx, false_or, ← A.valuation_le_one_iff, map_inv₀, not_le]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `one_lt_inv_iff₀.mpr ⟨zero_lt_iff.mpr hv, h⟩`. Introduce `h`. Conclude with `(one_lt_inv_iff₀.mp h).2`. Rewrite using `[key, key', ValuationSubring.mem_comap, map_inv₀]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gauss_nonunits {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] (V : ValuationSubring U)
     (w : Ω) : algebraMap Ω U w ∈ V.nonunits ↔ w ∈ (V.comap (algebraMap Ω U)).nonunits := by
@@ -70,21 +68,19 @@ theorem gauss_nonunits {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] (V : Va
   simp
 
 /- English proof (translation)
-Use `set W := V.comap (algebraMap Ω U) with hWdef`. Distinguish the cases in `hϖ : ϖ = 0`. Simplify using `[hϖ]`. Establish `hϖ' : algebraMap Ω U ϖ ≠ 0` using `by simpa using hϖ`. Take `⟨p, q, hq, rfl⟩` from `gauss_exists_div_aeval t hgen z`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hP` using `gauss_val t V ht hind p`. Establish `hQ` using `gauss_val t V ht hind q`. Establish `hq0 : q ≠ 0` using `by rintro rfl; simp at hq`. Establish `hqs : q.support.Nonempty`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hq0`. Take `⟨β, hβ, hβeq⟩` from `Finset.exists_mem_eq_sup q.support hqs (fun α => V.valuation (algebraMap Ω U (q.coeff α)))`. Establish `hqβ : q.coeff β ≠ 0` using `MvPolynomial.mem_support_iff.mp hβ`. Establish `hqβ' : algebraMap Ω U (q.coeff β) ≠ 0` using `by simpa using hqβ`. Establish `hvQ : V.valuation (aeval t q) = V.valuation (algebraMap Ω U (q.coeff β))` using `hQ.trans hβeq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvQpos : (0 : _) < V.valuation (aeval t q)` using `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hq)`. Establish `hzlt : V.valuation (aeval t p) < V.valuation (aeval t q)`. Use `(V.mem_nonunits_iff).mp hz` as an intermediate fact. Rewrite `this` using `[map_div₀, div_lt_one₀ hvQpos]`. Then use the resulting hypothesis. Rewrite using `[← gauss_val_le_iff_div_mem V hϖ', map_div₀, div_le_iff₀ hvQpos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hP, Finset.sup_le_iff]`. Introduce `α hα`. Establish `hle : V.valuation (algebraMap Ω U (p.coeff α)) ≤ V.valuation (aeval t p)`. Rewrite using `[hP]`. Conclude with `Finset.le_sup (f := fun α => V.valuation (algebraMap Ω U (p.coeff α))) hα`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnu : algebraMap Ω U (p.coeff α / q.coeff β) ∈ V.nonunits`. Rewrite using `[V.mem_nonunits_iff, map_div₀, map_div₀, ← hvQ, div_lt_one₀ hvQpos]`. Conclude with `lt_of_le_of_lt hle hzlt`. Establish `hnuW : p.coeff α / q.coeff β ∈ W.nonunits` using `(gauss_nonunits V _).mp hnu`. Establish `hdivW` using `hdiv _ hnuW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : algebraMap Ω U (p.coeff α / q.coeff β) / algebraMap Ω U ϖ ∈ V`. Rewrite using `[← map_div₀]`. Conclude with `hdivW`. Use `(gauss_val_le_iff_div_mem V hϖ').mpr hmem` as an intermediate fact. Rewrite `this` using `[map_div₀, map_div₀, ← hvQ, div_le_iff₀ hvQpos]`.
-
-Rewrite `this`, the goal using `[hvQ]`. Use `first`. Consider the case `exact this`. Consider the case `exact this.trans_eq (mul_comm _ _)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gauss_unif {Ω U : Type} [Field Ω] [Field U] [Algebra Ω U] {σ : Type}
     (t : σ → U) (hgen : IntermediateField.adjoin Ω (Set.range t) = ⊤)

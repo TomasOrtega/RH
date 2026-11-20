@@ -26,7 +26,7 @@ theorem gramQ_eq (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host.E
     gramQ V x = Formalism.UG.cT (sg D) x * (HSpace.gram V * x) := rfl
 
 /- English proof (translation)
-Rewrite using `[gramQ_eq, gramQ_eq, Formalism.UG.cT_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hδ]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gramQ_mul (V : HSp D) {r : ℕ} {δ : Matrix (Fin V.rank) (Fin V.rank) D.host.E}
     (hδ : Formalism.UG.cT (sg D) δ * HSpace.gram V * δ = HSpace.gram V)
@@ -38,7 +38,7 @@ theorem gramQ_mul (V : HSp D) {r : ℕ} {δ : Matrix (Fin V.rank) (Fin V.rank) D
     _ = _ := by rw [hδ]
 
 /- English proof (translation)
-Establish `hJ : Formalism.UG.cT (sg D) (HSpace.gram V) = HSpace.gram V` using `Matrix.ext fun i j => (GlobalTheory.Doubling.isHermND_gram V).1 i j`. Establish `hx : Formalism.UG.cT (sg D) (Formalism.UG.cT (sg D) x) = x` using `Matrix.ext fun i j => star_star (x i j)`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sg D) (gramQ V x) = gramQ V x`. Rewrite using `[gramQ_eq, Formalism.UG.cT_mul, Formalism.UG.cT_mul, hx, hJ, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramQ_herm (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host.E) :
     ((gramQ V x).map (D.sp.cm.sig : D.host.E → D.host.E)).transpose = gramQ V x := by
@@ -48,9 +48,9 @@ theorem gramQ_herm (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host
   rw [gramQ_eq, Formalism.UG.cT_mul, Formalism.UG.cT_mul, hx, hJ, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `γ hγ h`. Take `⟨δ, hU, hδ⟩ : ∃ δ : GL (Fin V.rank) D.host.E, _ ∧ Formalism.UG.bc (incA D) δ = Formalism.L2.Theta.matHom V γ⁻¹` from `inv_mem hγ`. Establish `hU' : Formalism.UG.cT (sg D) δ.1 * HSpace.gram V * δ.1 = HSpace.gram V` using `hU`. Establish `hUi : Formalism.UG.cT (sg D) (δ⁻¹).1 * HSpace.gram V * (δ⁻¹).1 = HSpace.gram V` using `(Formalism.UG.UJ (sg D) (HSpace.gram V)).inv_mem hU`. Set `e : {ξ : Matrix (Fin V.rank) (Fin n) D.host.E // p ξ} ≃ {ξ : Matrix (Fin V.rank) (Fin n) D.host.E // p ξ}` to `⟨fun ξ => ⟨δ.1 * ξ.1, hp δ hU' _ ξ.2⟩, fun ξ => ⟨(δ⁻¹).1 * ξ.1, hp δ⁻¹ hUi _ ξ.2⟩, fun ξ => Subtype.ext (by simp), fun ξ => Subtype.ext (by simp)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1 : Formalism.L2.Theta.mt V γ⁻¹ = δ.1.map (incA D)` using `(congrArg Units.val hδ).symm`. Establish `h2 : Formalism.L2.Theta.mt V (γ * h)⁻¹ = Formalism.L2.Theta.mt V h⁻¹ * Formalism.L2.Theta.mt V γ⁻¹` using `by rw [mul_inv_rev]; rfl`. Use `(tsum_congr fun ξ => ?_).trans (e.tsum_eq fun ξ => f (GlobalTheory.SiegelFormula.invPt V h ξ.1))` and prove the remaining obligations. Simplify using `only [GlobalTheory.SiegelFormula.invPt, e, Equiv.coe_fn_mk, h2, h1, Matrix.mul_assoc, Matrix.map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem leftInv_subtypeSum {M : Type*} [AddCommMonoid M] [TopologicalSpace M] (V : HSp D) {n : ℕ}
     (f : Mx D V.rank n → M) (p : Matrix (Fin V.rank) (Fin n) D.host.E → Prop)
@@ -84,11 +84,9 @@ def fibreEquiv (V : HSp D) (r : ℕ) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Introduce `D r V θ hθ ν hν φ hφ habs`. Establish `: BorelSpace (GA D V)` using `⟨rfl⟩`. Use `haveI := hν`. Use `haveI := GlobalTheory.ThetaTransformMeas.countable_field D.host.E`. Use `haveI : Countable (Matrix (Fin V.rank) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin V.rank → Fin r → D.host.E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Countable (Matrix (Fin r) (Fin r) D.host.E) := inferInstanceAs (Countable (Fin r → Fin r → D.host.E))`. Use `haveI : Countable (HermE D r) := inferInstanceAs (Countable {b : Matrix (Fin r) (Fin r) D.host.E // _})`. Establish `hcont : Continuous φ` using `(GlobalTheory.CompanionTheory.WeilTheta.schwartzA_continuous_and_dominated D θ hθ _ _ φ hφ).1`. Establish `hrank : ∀ (δ : GL (Fin V.rank) D.host.E) (ξ : Matrix (Fin V.rank) (Fin r) D.host.E), (δ.1 * ξ).rank = ξ.rank` using `fun δ ξ => Matrix.rank_mul_eq_right_of_isUnit_det _ _ ((Matrix.isUnit_iff_isUnit_det _).1 δ.isUnit)`. Establish `hA` using `leftInv_subtypeSum V (fun y => ‖φ y‖ₑ) (fun x : Matrix (Fin V.rank) (Fin r) D.host.E => x.rank = r) (fun δ _ ξ h => (hrank δ ξ).trans h)`.
-
-Establish `hfin : ∫⁻ q, descend (GQ V) (fun g => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r}, ‖φ (GlobalTheory.SiegelFormula.invPt V g x.1)‖ₑ) q ∂autMeasure V ν < ⊤`. Use `(lintegral_mono fun q => ?_).trans_lt habs` and prove the remaining obligations. Conclude with `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective (fun ξ => ‖φ (GlobalTheory.SiegelFormula.invPt V q.out ξ)‖ₑ)`. Establish `key` using `GlobalTheory.CompanionTheory.ThetaOrbit.hasSum_average_descend (Γ := GQ V) (μ := ν) (fibreEquiv V r) (fun h x => φ (GlobalTheory.SiegelFormula.invPt V h x.1)) (fun x => (hcont.comp (GlobalTheory.AbsThetaSemi.continuous_invPt V x.1)).measurable) hA (fun β => leftInv_subtypeSum V φ …`. Conclude with `key`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasSum_IfrB : ∀ (D : Formalism.BasicNotions.D7) (r : ℕ) (V : Formalism.BasicNotions.TH.HSp D) (θ : InfFam D), IsInfFam θ →
     ∀ (ν : Measure (GA D V)), ν.IsHaarMeasure → ∀ φ : Mx D V.rank r → ℂ, φ ∈ schwartzA θ V.rank r →

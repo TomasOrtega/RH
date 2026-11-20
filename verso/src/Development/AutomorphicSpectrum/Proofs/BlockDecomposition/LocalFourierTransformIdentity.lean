@@ -11,9 +11,9 @@ open Ad3 Ad3.LFS Topology
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Rewrite `hU` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, hsub⟩` from `hU`. Establish `ht' : ∀ i, t i ∈ 𝓝 (0 : F)` using `fun i ↦ by simpa using ht i`. Use `choose n hn using fun i ↦ (hasBasis_nhds_zero_valBall (K := F)).mem_iff.1 (ht' i)`. Take `⟨N, hN⟩` from `(Finset.univ.image n).exists_le`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N, fun x hx ↦ hsub fun i _ ↦ (hn i).2 ?_⟩` and prove the remaining obligations. Conclude with `valBall_antitone (hN _ (Finset.mem_image_of_mem n (Finset.mem_univ i))) (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_ball_subset {ι : Type} [Fintype ι] {U : Set (ι → F)} (hU : U ∈ 𝓝 (0 : ι → F)) :
     ∃ n : ℤ, ∀ x : ι → F, (∀ i, x i ∈ valBall F n) → x ∈ U := by
@@ -30,35 +30,33 @@ def bx (ι : Type) (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
   Set.pi Set.univ fun _ ↦ (valBall F n : Set F)
 
 /- English proof (translation)
-Simplify using `[bx, Set.mem_univ_pi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_bx {ι : Type} {n : ℤ} {x : ι → F} : x ∈ bx ι F n ↔ ∀ i, x i ∈ valBall F n := by
   simp [bx, Set.mem_univ_pi]
 
 /- English proof (translation)
-The claim follows from `isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_valBall n`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_bx {ι : Type} [Fintype ι] (n : ℤ) : IsOpen (bx ι F n) :=
   isOpen_set_pi Set.finite_univ fun _ _ ↦ isOpen_valBall n
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, tsupport Φ ⊆ bx ι F (-(m : ℤ)) := by`. Use `hcs.isCompact.elim_directed_cover (fun m : ℕ ↦ bx ι F (-(m : ℤ))) (fun m ↦ isOpen_bx _) ?_ ?_` and prove the remaining obligations. Introduce `x _`. Simplify using `only [Set.mem_iUnion]`. Use `choose a ha using fun i ↦ exists_mem_valBall_neg_nat (x i)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Finset.univ.sup a, mem_bx.2 fun i ↦ valBall_antitone ?_ (ha i)⟩` and prove the remaining obligations. Establish `: a i ≤ Finset.univ.sup a` using `Finset.le_sup (Finset.mem_univ i)`. Use linear arithmetic over natural numbers and integers. Conclude with `Monotone.directed_le fun a b hab x hx ↦ mem_bx.2 fun i ↦ valBall_antitone (by omega) (mem_bx.1 hx i)`. Establish `hloc : ∀ x : ι → F, ∃ n : ℤ, ∀ h, (∀ i, h i ∈ valBall F n) → Φ (x + h) = Φ x`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `ho : IsOpen {h : ι → F | Φ (x + h) = Φ x}` using `(hlc.isOpen_fiber (Φ x)).preimage (continuous_const.add continuous_id)`. Take `⟨n, hn⟩` from `exists_ball_subset (ho.mem_nhds (by simp))`. Conclude with `⟨n, fun h hh ↦ hn h hh⟩`. Use `choose n hn using hloc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t, -, ht⟩` from `hcs.isCompact.elim_nhds_subcover (fun x ↦ {z : ι → F | z - x ∈ bx ι F (n x)}) (fun x _ ↦ ((isOpen_bx _).preimage (continuous_id.sub continuous_const)).mem_nhds (by simp [mem_bx, zero_mem]))`. Take `⟨N₀, hN⟩` from `(t.image n).exists_le`. Establish `hval : ∀ y ∈ tsupport Φ, ∀ h, (∀ i, h i ∈ valBall F N₀) → Φ (y + h) = Φ y`. Introduce `y hy h hh`. Use `ht hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hxt, hyx⟩` from `this`. Establish `hyx'` using `mem_bx.1 hyx`. Establish `hN' : ∀ i, h i ∈ valBall F (n x)` using `fun i ↦ valBall_antitone (hN _ (Finset.mem_image_of_mem n hxt)) (hh i)`. Establish `e1 : Φ y = Φ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `hn x (y - x) hyx'` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `e2 : Φ (y + h) = Φ x`. Use `hn x (y + h - x) (fun i ↦ by` as an intermediate fact. Rewrite using `[show (y + h - x) i = (y - x) i + h i by simp; abel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `add_mem (hyx' i) (hN' i))`. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Rewrite using `[e1, e2]`. Use `⟨N₀, -(m : ℤ), fun y h hh ↦ ?_, fun x hx ↦ mem_bx.1 (hm (subset_tsupport Φ hx))⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport Φ`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hval y hy h hh`. Distinguish the cases in `hyh : y + h ∈ tsupport Φ`. Use `hval (y + h) hyh (-h) (fun i ↦ by simpa using neg_mem (hh i))` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`.
-
-Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hyh]`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariant {ι : Type} [Fintype ι] {Φ : (ι → F) → ℂ} (hlc : IsLocallyConstant Φ)
     (hcs : HasCompactSupport Φ) :
@@ -122,7 +120,7 @@ def mh : (Fin 2 × Fin 3 → F) ≃ₜ Matrix (Fin 2) (Fin 3) F where
   continuous_invFun := continuous_pi fun p ↦ continuous_id.matrix_elem p.1 p.2
 
 /- English proof (translation)
-Take `⟨N, M, h1, h2⟩` from `exists_invariant (Φ := Φ ∘ (mh (F := F))) (hlc.comp_continuous (mh (F := F)).continuous) (hcs.comp_homeomorph (mh (F := F)))`. Use `⟨N, M, fun X Y hY ↦ ?_, fun X hX a b ↦ ?_⟩` and prove the remaining obligations. Conclude with `h1 (mh.symm X) (mh.symm Y) (fun p ↦ hY p.1 p.2)`. Conclude with `h2 (mh.symm X) (by simpa using hX) (a, b)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_invariant_matrix {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
     (hlc : IsLocallyConstant Φ) (hcs : HasCompactSupport Φ) :
@@ -135,9 +133,9 @@ theorem exists_invariant_matrix {Φ : Matrix (Fin 2) (Fin 3) F → ℂ}
   · exact h2 (mh.symm X) (by simpa using hX) (a, b)
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) ≤ residueCard F` using `by exact_mod_cast one_lt_residueCard.le`. Distinguish the cases in `h0 : x = 0`. Substitute `h0` using the available equality. Simplify using `only [modulus_zero, NNReal.coe_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Rewrite using `[modulus_of_ne_zero h0, NNReal.coe_zpow, NNReal.coe_natCast]`. Conclude with `zpow_le_zpow_right₀ hq (by have := (mem_valBall_iff_le_ord h0).mp hx; omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem modulus_le_zpow_of_mem {M : ℤ} {x : F} (hx : x ∈ valBall F M) :
     (GroundTheory.LocalField.modulus x : ℝ) ≤ (residueCard F : ℝ) ^ (-M) := by
@@ -150,7 +148,7 @@ theorem modulus_le_zpow_of_mem {M : ℤ} {x : F} (hx : x ∈ valBall F M) :
   exact zpow_le_zpow_right₀ hq (by have := (mem_valBall_iff_le_ord h0).mp hx; omega)
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [col3]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem column_three_add (k : Matrix (Fin 2) (Fin 2) F) (y e : Fin 2 → F) :
     col3 k (y + e) = col3 k y + col3 0 e := by
@@ -158,21 +156,21 @@ theorem column_three_add (k : Matrix (Fin 2) (Fin 2) F) (y e : Fin 2 → F) :
   fin_cases a <;> fin_cases b <;> simp [col3]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> simp [col3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem three_column_matrix_last (k : Matrix (Fin 2) (Fin 2) F) (y : Fin 2 → F) (a : Fin 2) :
     col3 k y a 2 = y a := by
   fin_cases a <;> simp [col3]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [col3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem three_column_matrix_left (k : Matrix (Fin 2) (Fin 2) F) (y : Fin 2 → F) (a b : Fin 2) :
     col3 k y a b.castSucc = k a b := by
   fin_cases a <;> fin_cases b <;> simp [col3]
 
 /- English proof (translation)
-Establish `h0 : (0 : F) ∈ valBall F N` using `zero_mem _`. Establish `h1` using `he 0`. Establish `h2` using `he 1`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simpa [col3] using (by assumption)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem three_column_zero_mem_ball {N : ℤ} (e : Fin 2 → F) (he : ∀ a, e a ∈ valBall F N) (a : Fin 2) (b : Fin 3) :
     col3 (0 : Matrix (Fin 2) (Fin 2) F) e a b ∈ valBall F N := by
@@ -184,11 +182,11 @@ theorem three_column_zero_mem_ball {N : ℤ} (e : Fin 2 → F) (he : ∀ a, e a 
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Establish `hv : (vol2 ψ).IsAddHaarMeasure` using `by unfold vol2; infer_instance`. Establish `hmem : ∀ a b, col3 (0 : Matrix (Fin 2) (Fin 2) F) (Pi.single j c) a b ∈ valBall F N` using `three_column_zero_mem_ball _ fun a ↦ by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `zero_mem _`. Establish `h` using `integral_add_right_eq_self (μ := vol2 ψ) (fun y ↦ Φ (col3 k y) * (ψ (-(∑ j, ξ j * y j)) : ℂ)) (Pi.single j c)`. Unfold `pft`. Rewrite using `[← integral_const_mul, ← h]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y ↦ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∑ i, ξ i * (y + (Pi.single j c : Fin 2 → F)) i = ∑ i, ξ i * y i + ξ j * c`. Simplify using `[mul_add, Finset.sum_add_distrib, Pi.single_apply]`. Use `show Φ (col3 k (y + (Pi.single j c : Fin 2 → F))) * (ψ (-(∑ i, ξ i * (y + (Pi.single j c : Fin 2 → F)) i)) : ℂ) = _`. Rewrite using `[column_three_add, hinv _ _ hmem, e1, neg_add, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pft_eq_mul (ψ : AddChar F Circle) {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} {N : ℤ}
     (hinv : ∀ X Y : Matrix (Fin 2) (Fin 3) F, (∀ a b, Y a b ∈ valBall F N) → Φ (X + Y) = Φ X)
@@ -214,13 +212,11 @@ theorem pft_eq_mul (ψ : AddChar F Circle) {Φ : Matrix (Fin 2) (Fin 3) F → �
   ring
 
 /- English proof (translation)
-Establish `hv : (vol2 ψ).IsAddHaarMeasure` using `by unfold vol2; infer_instance`. Establish `hS : MeasurableSet (bx (Fin 2) F M)` using `MeasurableSet.univ_pi fun _ ↦ (isClosed_valBall M).measurableSet`. Establish `hfin : vol2 ψ (bx (Fin 2) F M) ≠ ⊤` using `(IsCompact.measure_lt_top (isCompact_univ_pi fun _ ↦ isCompact_valBall M)).ne`. Establish `hint : Integrable ((bx (Fin 2) F M).indicator fun _ ↦ B) (vol2 ψ)` using `(integrable_indicator_iff hS).2 (integrableOn_const hfin)`. Use `norm_integral_le_of_norm_le (μ := vol2 ψ) (f := fun y ↦ Φ (col3 k y) * (ψ (-(∑ j, ξ j * y j)) : ℂ)) hint (Filter.Eventually.of_forall fun y ↦ ?_)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[integral_indicator_const _ hS, smul_eq_mul]`. Conclude with `this`. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`. Distinguish the cases in `hy : y ∈ bx (Fin 2) F M`. Rewrite using `[Set.indicator_of_mem hy]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB _`. Rewrite using `[Set.indicator_of_notMem hy]`. Distinguish the cases in `h0 : Φ (col3 k y) = 0`. Simplify using `[h0]`. Conclude with `absurd (mem_bx.2 fun a ↦ by`.
-
-Simplify `hs _ h0 a 2) hy` using `[three_column_matrix_last]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_pft_le (ψ : AddChar F Circle) {Φ : Matrix (Fin 2) (Fin 3) F → ℂ} {M : ℤ} {B : ℝ}
     (hB : ∀ X, ‖Φ X‖ ≤ B) (hs : ∀ X, Φ X ≠ 0 → ∀ a b, X a b ∈ valBall F M)
@@ -253,17 +249,15 @@ end GlobalTheory.CompanionTheory.LFFour
 open GlobalTheory.CompanionTheory.LFFour in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ Φ hΦ`. Take `⟨N, M, hinv, hsupp⟩` from `exists_invariant_matrix hΦ.1 hΦ.2`. Take `⟨B, hB⟩` from `hΦ.2.exists_bound_of_continuous hΦ.1.continuous`. Take `⟨hc, h1, h0⟩` from `hψ`. Establish `hnot` using `not_isTrivialOn_addCharConductor_sub_one hc h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hnot` using `[h0]`. Simplify using `only [IsTrivialOn, not_forall] at hnot`. Take `⟨y, hy, hy1⟩` from `hnot`. Establish `hy' : y ∈ valBall F (-1)` using `by simpa using hy`. Use `⟨(Ad3.LFS.vol2 ψ).real (bx (Fin 2) F M) * B, max ((residueCard F : ℝ) ^ (-M)) (((residueCard F : NNReal) ^ (N + 1) : NNReal) : ℝ), fun k ξ ↦ ⟨norm_pft_le ψ hB hsupp k ξ, fun hne ↦ ⟨fun i j ↦ ?_, fun j ↦ ?_⟩⟩⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∃ y, Φ (Ad3.LFS.col3 k y) ≠ 0`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Conclude with `hne (by simp [Ad3.LFS.pft, hno])`. Take `⟨z, hz⟩` from `hex`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hsupp _ hz i j.castSucc` as an intermediate fact. Rewrite `this` using `[three_column_matrix_left]`. Conclude with `(modulus_le_zpow_of_mem this).trans (le_max_left _ _)`. Use `le_trans ?_ (le_max_right _ _)` and prove the remaining obligations. Distinguish the cases in `hξ : ξ j = 0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hξ]`. Check the signs of the components of the expression. Use `NNReal.coe_le_coe.mpr (GlobalTheory.CompanionTheory.LFSupp.modulus_le_of_trivial hy' hy1 (Units.mk0 (ξ j) hξ) fun x hx ↦ ?_)` and prove the remaining obligations. Establish `e` using `pft_eq_mul ψ hinv k ξ j (neg_mem hx)`. Establish `e2 : (ψ (-(ξ j * -x)) : ℂ) = 1` using `mul_right_cancel₀ hne (by rw [← e, one_mul])`.
-
-Establish `e3` using `Circle.coe_eq_one.mp e2`. Simplify using `using e3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.LFFour.gFour : Ad3.LFS.GFour := by
   intro F _ _ _ _ _ _ ψ hψ Φ hΦ

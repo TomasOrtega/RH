@@ -16,7 +16,7 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.NonzeroTypes.TensorVect
 namespace UpperTheory.TNZ.Grp
 
 /- English proof (translation)
-The claim follows from `step_spTop G UpperTheory.TNZ.step_spLat (step_spUniq G) (step_spCount G) (step_spLift G) (step_spTwBasic G) (step_spRes G) (step_spPiEta G) step_spOrd (step_spPiSub G) (step_spSupp G) UpperTheory.TNZ.step_cuspSupp UpperTheory.TNZ.step_prodIrr UpperTheory.TNZ.step_tensorVec`.
+A detailed English derivation is pending.
 -/
 theorem step_suppProd {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (G : Grp k n) : G.SupportOfProductProp :=

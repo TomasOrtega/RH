@@ -35,9 +35,9 @@ end Abstract
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hZ : (Ideal.span {((l : ℕ) : ℤ)}).IsMaximal` using `Int.ideal_span_isMaximal_of_prime l`. Establish `hc` using `Ideal.comap_isMaximal_of_surjective (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ).toRingHom (Rat.ringOfIntegersEquiv).surjective (K := Ideal.span {((l : ℕ) : ℤ)})`. Establish `heq : Ideal.comap (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ).toRingHom (Ideal.span {((l : ℕ) : ℤ)}) = Ideal.span {((l : ℕ) : 𝓞 ℚ)}`. Express the relevant statement in the definitionally equal form `Ideal.comap (Rat.ringOfIntegersEquiv : 𝓞 ℚ ≃+* ℤ) _ = _`. Rewrite using `[← Ideal.map_symm, Ideal.map_span]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hc` using `[heq]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma span_prime_isMaximal_ratRingOfIntegers {l : ℕ} [hl : Fact l.Prime] :
     (Ideal.span {((l : ℕ) : 𝓞 ℚ)}).IsMaximal := by
@@ -53,7 +53,7 @@ private lemma span_prime_isMaximal_ratRingOfIntegers {l : ℕ} [hl : Fact l.Prim
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-The claim follows from `(span_prime_isMaximal_ratRingOfIntegers.eq_of_le w.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 hw)).symm`.
+A detailed English derivation is pending.
 -/
 private lemma asIdeal_eq_span_of_prime_mem {l : ℕ} [Fact l.Prime] {w : HeightOneSpectrum (𝓞 ℚ)}
     (hw : ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal) : w.asIdeal = Ideal.span {((l : ℕ) : 𝓞 ℚ)} :=
@@ -62,11 +62,9 @@ private lemma asIdeal_eq_span_of_prime_mem {l : ℕ} [Fact l.Prime] {w : HeightO
 
 open NumberField IsDedekindDomain in
 /- English proof (translation)
-Establish `hT : ∀ w : HeightOneSpectrum (𝓞 ℚ), w ∈ ({v} : Finset _) ↔ ((l : ℕ) : 𝓞 ℚ) ∈ w.asIdeal`. Introduce `w`. Rewrite using `[Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `hv`. Introduce `hw`. Conclude with `HeightOneSpectrum.ext ((asIdeal_eq_span_of_prime_mem hw).trans (asIdeal_eq_span_of_prime_mem hv).symm)`. Establish `h` using `_root_.ReciprocityTheory.Gal.sum_locDegree (F := ℚ) l {v} hT`. Rewrite `h` using `[Finset.sum_singleton, Module.finrank_self]`.
-
-Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.OrdLoc.Dcmp.locDeg_rat {l : ℕ} [Fact l.Prime] {v : HeightOneSpectrum (𝓞 ℚ)}
     (hv : ((l : ℕ) : 𝓞 ℚ) ∈ v.asIdeal) :

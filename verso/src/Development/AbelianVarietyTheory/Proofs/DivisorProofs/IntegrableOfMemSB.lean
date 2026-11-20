@@ -23,15 +23,15 @@ def matInt [MeasurableSpace k] (ν : Measure k) {n d : ℕ} (φ : Matrix (Fin n)
   ∫ v : Fin n × Fin d → k, φ (Matrix.of fun i j => v (i, j)) ∂(Measure.pi fun _ => ν)
 
 /- English proof (translation)
-Set `K : Matrix (Fin n × Fin d) (Fin n × Fin d) k` to `Matrix.kroneckerMap (· * ·) A.val h.valᵀ`. Establish `hK : K.det = (gdet A : k) ^ d * (gdet h : k) ^ n`. Simplify using `[K, Matrix.det_kronecker]`. Set `G : GL (Fin n × Fin d) k` to `Matrix.GeneralLinearGroup.mkOfDetNeZero K (by`. Rewrite using `[hK]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (gdet A).ne_zero) (pow_ne_zero _ (gdet h).ne_zero))`. Establish `hGv : G.val = K` using `rfl`. Establish `hG : Matrix.GeneralLinearGroup.det G = gdet A ^ d * gdet h ^ n` using `Units.ext (by`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hGv, hK]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use the proof step `rfl)`. Establish `key` using `GlobalTheory.WeilM.integral_comp_mulVec ν G (fun v => φ (Matrix.of fun i j => v (i, j)))`. Establish `hv : ∀ v : Fin n × Fin d → k, (Matrix.of fun i j => (G.val *ᵥ v) (i, j)) = A.val * Matrix.of (fun i j => v (i, j)) * h.val`. Introduce `v`. Use extensionality with `i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hGv]`. Simplify using `only [K, Matrix.mulVec, dotProduct, Matrix.of_apply, Matrix.mul_apply, Fintype.sum_prod_type, Matrix.kroneckerMap_apply, Matrix.transpose_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun l _ => by ring` and prove the remaining obligations. Simplify using `only [hv] at key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `matInt`. Rewrite using `[← key, hG]`. Simplify using `[nabs]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matInt_comp [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] {n d : ℕ}
     (A : GL (Fin n) k) (h : GL (Fin d) k) (φ : Matrix (Fin n) (Fin d) k → ℂ) :
@@ -61,7 +61,7 @@ theorem matInt_comp [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAd
   simp [nabs]
 
 /- English proof (translation)
-Use `haveI := SplitWeil.secondCountable k`. Use `haveI := SplitWeil.t2Space k`. Set `e : (Fin n × Fin d → k) ≃ₜ Matrix (Fin n) (Fin d) k` to `{ toEquiv := Equiv.curry _ _ _ continuous_toFun := continuous_pi fun i => continuous_pi fun j => continuous_apply (i, j) continuous_invFun := continuous_pi fun p => (continuous_apply p.2).comp (continuous_apply p.1) }`. Conclude with `(hφ.1.continuous.comp e.continuous).integrable_of_hasCompactSupport (hφ.2.comp_homeomorph e)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem integrable_of_mem_SB [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] {n d : ℕ}
     {φ : Matrix (Fin n) (Fin d) k → ℂ} (hφ : φ ∈ GlobalTheory.WeilM.SB (Matrix (Fin n) (Fin d) k)) :
@@ -75,7 +75,7 @@ theorem integrable_of_mem_SB [MeasurableSpace k] [BorelSpace k] (ν : Measure k)
   exact (hφ.1.continuous.comp e.continuous).integrable_of_hasCompactSupport (hφ.2.comp_homeomorph e)
 
 /- English proof (translation)
-Unfold `matInt`. Simplify using `only [Finset.sum_apply]`. Conclude with `integral_finset_sum s fun i hi => integrable_of_mem_SB ν (hf i hi)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matInt_sum [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAddHaarMeasure] {n d : ℕ}
     {ι : Type*} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin d) k → ℂ)
@@ -86,7 +86,7 @@ theorem matInt_sum [MeasurableSpace k] [BorelSpace k] (ν : Measure k) [ν.IsAdd
   exact integral_finset_sum s fun i hi => integrable_of_mem_SB ν (hf i hi)
 
 /- English proof (translation)
-Use `⟨comp_mul_mem_SB A h hφ.1, fun Y hY => hφ.2 _ ?_⟩` and prove the remaining obligations. Establish `hA : IsUnit A.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 A.isUnit`. Establish `hh : IsUnit h.val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 h.isUnit`. Rewrite using `[Matrix.rank_mul_eq_left_of_isUnit_det _ _ hh, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hA]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem comp_mem_fullRk {n d : ℕ} (A : GL (Fin n) k) (h : GL (Fin d) k) {φ : Matrix (Fin n) (Fin d) k → ℂ}
     (hφ : φ ∈ fullRk k n d) : (fun Y : Matrix (Fin n) (Fin d) k => φ (A.val * Y * h.val)) ∈ fullRk k n d := by

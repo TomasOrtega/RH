@@ -12,9 +12,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf
 
 /- English proof (translation)
-Establish `h : ‖a - b‖ ≤ ‖a - c‖ + ‖b - c‖`. Simplify `norm_sub_le_norm_sub_add_norm_sub a c b` using `[norm_sub_rev]`. Establish `h2 : (‖a - b‖₊ : NNReal) ^ 2 ≤ 2 * (‖a - c‖₊ : NNReal) ^ 2 + 2 * (‖b - c‖₊ : NNReal) ^ 2`. Rewrite using `[← NNReal.coe_le_coe]`. Use `push_cast`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use polynomial arithmetic with `[sq_nonneg (‖a - c‖ - ‖b - c‖), norm_nonneg (a - b), norm_nonneg (a - c), norm_nonneg (b - c)]`. Conclude with `h2` after adjusting the coercions.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sq_nnnorm_sub_le {W : Type} [NormedAddCommGroup W] (a b c : W) :
     (‖a - b‖₊ : ENNReal) ^ 2 ≤ 2 * (‖a - c‖₊ : ENNReal) ^ 2 + 2 * (‖b - c‖₊ : ENNReal) ^ 2 := by
@@ -28,13 +28,13 @@ theorem sq_nnnorm_sub_le {W : Type} [NormedAddCommGroup W] (a b c : W) :
   exact_mod_cast h2
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons w l ih`. Establish `hS : 0 ≤ (l.map a).sum` using `List.sum_nonneg (by`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `ha i)`. Simplify using `only [List.map_cons, List.sum_cons]`. Establish `e : 2 * ENNReal.ofReal (c * a w ^ 2) = ENNReal.ofReal (2 * (c * a w ^ 2))`. Rewrite using `[ENNReal.ofReal_mul (p := 2) (q := c * a w ^ 2) (by norm_num)]; simp`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `(add_le_add le_rfl ih).trans ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.ofReal_add (by have := ha w; positivity) (by positivity)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Use `ha w` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_nonneg hc (mul_nonneg this hS)]`.
+A detailed English derivation is pending.
 -/
 theorem list_sq_le {ι : Type} (c : ℝ) (hc : 0 ≤ c) (a : ι → ℝ) (ha : ∀ i, 0 ≤ a i) (l : List ι) :
     (l.map fun w => 2 * ENNReal.ofReal (c * a w ^ 2)).sum ≤
@@ -57,9 +57,9 @@ theorem list_sq_le {ι : Type} (c : ℝ) (hc : 0 ≤ c) (a : ι → ℝ) (ha : �
     nlinarith [mul_nonneg hc (mul_nonneg this hS)]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons w l ih`. Simplify using `only [List.map_cons, List.sum_cons, mul_add]`. Establish `h1` using `h w List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2` using `ih fun i hi => h i (List.mem_cons_of_mem _ hi)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[add_add_add_comm]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem list_sum_le_two {ι : Type} (l : List ι) (A a b : ι → ENNReal)
     (h : ∀ i ∈ l, A i ≤ 2 * a i + 2 * b i) :
@@ -76,53 +76,47 @@ theorem list_sum_le_two {ι : Type} (l : List ι) (A a b : ι → ENNReal)
           rw [add_add_add_comm]
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ σ μ T hσ hμ hadd hsm hbd heq`. Use `haveI : CompleteSpace Wp := FiniteDimensional.complete ℂ Wp`. Establish `hGae : ∀ᵐ y ∂μ, (Matrix.of y : Mat k r) ∈ GG k r`. Rewrite using `[ae_iff]`. Conclude with `hμ.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGm : MeasurableSet {x : Mt k r | (Matrix.of x : Mat k r) ∈ GG k r}` using `IsClosed.measurableSet (α := Mt k r) (gg_closedSub k r).2.1`. Establish `hrest : μ.restrict {x : Mt k r | (Matrix.of x : Mat k r) ∈ GG k r} = μ` using `Measure.restrict_eq_self_of_ae_mem hGae`. Establish `hcm : ∀ (Λ' : H →L[ℂ] Wp) (v : H), AEStronglyMeasurable (fun y : Mt k r => Λ' (σ (Matrix.of y) v)) μ`. Introduce `Λ' v`. Establish `hc : ContinuousOn (fun y : Mt k r => Λ' (σ (Matrix.of y) v)) {x : Mt k r | (Matrix.of x : Mat k r) ∈ GG k r}` using `Λ'.continuous.comp_continuousOn (hσ.2.2 v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hc.aestronglyMeasurable (μ := μ) hGm` as an intermediate fact. Rewrite `this` using `[hrest]`. Then use the resulting hypothesis. Take `⟨C₀, Ws, K₀, hK₀, hWs, hsob⟩` from `GlobalTheory.T.sobolev_inequality_at_identity_besselModelUnitaryGroup k r μ hμ`. Establish `hsu` using `GlobalTheory.T.sobolev_ineq_translate_compact k r μ C₀ Ws K₀ hμ hK₀ hsob`. Establish `hclm : ∀ Q : Set (Mt k r), IsCompact Q → ∃ K₂ : Set (Mt k r), IsCompact K₂ ∧ ∀ (Λ' : H →L[ℂ] Wp) (u : H), IsSmoothVec (k` using `k) (r := r) σ u → ∀ x ∈ Q, (Matrix.of x : Mat k r) ∈ GG k r → ENNReal.ofReal (‖Λ' (σ (Matrix.of x) u)‖ ^ 2) ≤ ENNReal.ofReal |C₀| * (Ws.map fun ws => ∫⁻ y in K₂, (‖Λ' (σ (Matrix.of y) (dsigW σ ws u))‖₊ : ENNReal) ^ 2 ∂μ).sum := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `Q hQ`. Take `⟨K₂, hK₂, h⟩` from `hsu Q hQ`. Use `⟨K₂, hK₂, fun Λ' u hu x hx hxG => ?_⟩` and prove the remaining obligations. Take `⟨hs, hd⟩` from `GlobalTheory.T.smooth_functional_orbit_smoothVector k r σ Λ' hσ u hu`. Establish `hcont : ∀ ws ∈ Ws, ContinuousOn (rdWord ws fun g : Mat k r => Λ' (σ g u)) (GG k r)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ws hws`. Establish `h1 : ContinuousOn (fun g : Mat k r => Λ' (σ g (dsigW σ ws u))) (GG k r)` using `Λ'.continuous.comp_continuousOn (hσ.2.2 _)`. Conclude with `h1.congr (fun x hx => hd ws (hWs ws hws) x hx)`. Use `(h Wp _ hs hcont x hx hxG).trans (le_of_eq ?_)` and prove the remaining obligations. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `List.map_congr_left fun ws hws => ?_` and prove the remaining obligations. Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`. Rewrite using `[hd ws (hWs ws hws) _ hy]`. Take `⟨K₁, hK₁, hone⟩` from `hclm {oneM k r} isCompact_singleton`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c₁, hc₁⟩` from `hbd K₁ hK₁`. Use `choose Λ hΛ using GlobalTheory.T.ballMean_continuousLinearFunctional k r σ μ T hμ hadd hsm hbd heq`. Use `⟨Real.sqrt (|C₀| * (2 * |c₁|)), Ws, hWs, fun u hu => ?_⟩` and prove the remaining obligations. Establish `hloc : ∀ (v : H) (K : Set (Mt k r)), IsCompact K → AEStronglyMeasurable (fun z : Mt k r => T v (Matrix.of z)) (μ.restrict K) ∧ ∫⁻ x in K, (‖T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ < ⊤`. Introduce `v K hK`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨C, hC⟩` from `hbd K hK`. Conclude with `⟨(hC v).1, (hC v).2.trans_lt ENNReal.ofReal_lt_top⟩`. Establish `hconv : ∀ (v : H) (K : Set (Mt k r)), IsCompact K → Filter.Tendsto (fun j : ℕ => ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) x - T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ) Filter.atTop (nhds 0)` using `fun v K hK => GlobalTheory.T.tendsto_average_L2_compact k r μ hμ _ (hloc v) K hK`. Establish `hAm : ∀ (j : ℕ) (v : H) (K : Set (Mt k r)), IsCompact K → AEMeasurable (fun y : Mt k r => (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) y - T v (Matrix.of y)‖₊ : ENNReal) ^ 2) (μ.restrict K)`. Introduce `j v K hK`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : AEStronglyMeasurable (fun y : Mt k r => avgR μ j (fun z : Mt k r => T v (Matrix.of z)) y) μ`. Use `(hcm (Λ j) v).congr ?_` and prove the remaining obligations. Use `filter_upwards [hGae] with x hx`. Conclude with `hΛ j v x hx`. Conclude with `((h1.restrict.sub (hloc v K hK).1).nnnorm.aemeasurable.coe_nnreal_ennreal).pow_const 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsp : ∀ (j l : ℕ) (v : H) (K : Set (Mt k r)), IsCompact K → ∫⁻ y in K, (‖(Λ j - Λ l) (σ (Matrix.of y) v)‖₊ : ENNReal) ^ 2 ∂μ ≤ 2 * ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) x - T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ + 2 * ∫⁻ x in K, (‖avgR μ l (fun z : Mt k r => …`. Introduce `j l v K hK`. Rewrite using `[← lintegral_const_mul' 2 _ (by simp), ← lintegral_const_mul' 2 _ (by simp), ← lintegral_add_left' ((hAm j v K hK).const_mul 2)]`. Use `lintegral_mono_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousLinearMap.sub_apply, hΛ j v y hy, hΛ l v y hy]`. Conclude with `sq_nnnorm_sub_le _ _ _`. Establish `hsp1 : ∀ (j : ℕ) (v : H) (K : Set (Mt k r)), IsCompact K → ∫⁻ y in K, (‖Λ j (σ (Matrix.of y) v)‖₊ : ENNReal) ^ 2 ∂μ ≤ 2 * ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T v (Matrix.of z)) x - T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ + 2 * ∫⁻ x in K, (‖T v (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ`. Introduce `j v K hK`. Rewrite using `[← lintegral_const_mul' 2 _ (by simp), ← lintegral_const_mul' 2 _ (by simp), ← lintegral_add_left' ((hAm j v K hK).const_mul 2)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `lintegral_mono_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`. Rewrite using `[hΛ j v y hy]`. Simplify using `using sq_nnnorm_sub_le (avgR μ j (fun z : Mt k r => T v (Matrix.of z)) y) 0 (T v (Matrix.of y))`. Establish `hEt : ∀ K : Set (Mt k r), IsCompact K → Filter.Tendsto (fun j : ℕ => (Ws.map fun ws => ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T (dsigW σ ws u) (Matrix.of z)) x - T (dsigW σ ws u) (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ).sum) Filter.atTop (nhds 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `K hK`. Establish `h` using `tendsto_list_sum (f := fun (ws : List (Mat k r)) (j : ℕ) => ∫⁻ x in K, (‖avgR μ j (fun z : Mt k r => T (dsigW σ ws u) (Matrix.of z)) x - T (dsigW σ ws u) (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ) (a := fun _ => 0) Ws (fun ws _ => hconv _ K hK)`. Establish `e0 : (Ws.map fun _ => (0 : ENNReal)).sum = 0` using `by simp`. Rewrite `h` using `[e0]`. Then use the resulting hypothesis. Establish `hCau : ∀ Q : Set (Mt k r), IsCompact Q → ∀ ε : ℝ, 0 < ε → ∃ N : ℕ, ∀ j ≥ N, ∀ l ≥ N, ∀ x ∈ Q, (Matrix.of x : Mat k r) ∈ GG k r → ‖Λ j (σ (Matrix.of x) u) - Λ l (σ (Matrix.of x) u)‖ ≤ ε`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Q hQ ε hε`. Take `⟨K₂, hK₂, h⟩` from `hclm Q hQ`. Establish `hG : Filter.Tendsto (fun j : ℕ => ENNReal.ofReal |C₀| * (2 * (Ws.map fun ws => ∫⁻ x in K₂, (‖avgR μ j (fun z : Mt k r => T (dsigW σ ws u) (Matrix.of z)) x - T (dsigW σ ws u) (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ).sum)) Filter.atTop (nhds 0)`. Establish `h1` using `ENNReal.Tendsto.const_mul (a := ENNReal.ofReal |C₀|) (ENNReal.Tendsto.const_mul (a := 2) (hEt K₂ hK₂) (Or.inr (by simp))) (Or.inr ENNReal.ofReal_ne_top)`. Simplify using `using h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη : (0 : ENNReal) < ENNReal.ofReal (ε ^ 2 / 2)` using `ENNReal.ofReal_pos.2 (by positivity)`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.1 (hG.eventually_lt_const hη)`. Use `⟨N, fun j hj l hl x hx hxG => ?_⟩` and prove the remaining obligations. Establish `hb` using `h (Λ j - Λ l) u hu x hx hxG`. Establish `hs` using `list_sum_le_two Ws _ _ _ (fun ws _ => hsp j l (dsigW σ ws u) K₂ hK₂)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ENNReal.ofReal (‖(Λ j - Λ l) (σ (Matrix.of x) u)‖ ^ 2) ≤ ENNReal.ofReal (ε ^ 2 / 2) + ENNReal.ofReal (ε ^ 2 / 2)`. Use `hb.trans ((mul_le_mul' le_rfl hs).trans ?_)` and prove the remaining obligations. Rewrite using `[mul_add]`. Conclude with `add_le_add (hN j hj).le (hN l hl).le`. Rewrite `h3` using `[← ENNReal.ofReal_add (by positivity) (by positivity), ENNReal.ofReal_le_ofReal_iff (by positivity)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : ‖(Λ j - Λ l) (σ (Matrix.of x) u)‖ ^ 2 ≤ ε ^ 2` using `by linarith`. Establish `h5` using `(pow_le_pow_iff_left₀ (norm_nonneg _) hε.le (by norm_num)).1 h4`. Simplify using `using h5`. Take `⟨F, hFc, hFae, hFl⟩` from `GlobalTheory.T.exists_continuous_limit_uniformCauchy k r μ hμ (fun j g => Λ j (σ g u)) (fun z : Mt k r => T u (Matrix.of z)) (fun j => (Λ j).continuous.comp_continuousOn (hσ.2.2 u)) (fun Q hQ => (hloc u Q hQ).1) hCau (fun Q hQ => by`. Use `(hconv u Q hQ).congr fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `lintegral_congr_ae (ae_restrict_of_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hGae] with x hx`. Rewrite using `[hΛ j u x hx])`. Use `⟨F, hFc, hFae, ?_⟩` and prove the remaining obligations. Establish `h1G : (1 : Mat k r) ∈ GG k r` using `(gg_closedSub k r).2.2.1`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlim` using `hFl 1 h1G`. Establish `hb : ∀ j : ℕ, ENNReal.ofReal (‖Λ j (σ 1 u)‖ ^ 2) ≤ ENNReal.ofReal |C₀| * (2 * (Ws.map fun ws => ∫⁻ x in K₁, (‖avgR μ j (fun z : Mt k r => T (dsigW σ ws u) (Matrix.of z)) x - T (dsigW σ ws u) (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μ).sum + 2 * (Ws.map fun ws => ENNReal.ofReal (|c₁| * ‖ds …`. Introduce `j`. Establish `h0` using `hone (Λ j) u hu (oneM k r) rfl h1G`. Use `h0.trans (mul_le_mul' le_rfl (list_sum_le_two Ws _ _ _ fun ws _ => ?_))` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(hsp1 j (dsigW σ ws u) K₁ hK₁).trans ?_` and prove the remaining obligations. Use `gcongr`. Use `(hc₁ _).2.trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Use `le_abs_self c₁` as an intermediate fact. Establish `h2` using `sq_nonneg ‖dsigW σ ws u‖`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hlimL : Filter.Tendsto (fun j : ℕ => ENNReal.ofReal (‖Λ j (σ 1 u)‖ ^ 2)) Filter.atTop (nhds (ENNReal.ofReal (‖F 1‖ ^ 2)))` using `(ENNReal.continuous_ofReal.tendsto _).comp (hlim.norm.pow 2)`. Establish `hlimR` using `ENNReal.Tendsto.const_mul (a := ENNReal.ofReal |C₀|) ((ENNReal.Tendsto.const_mul (a := 2) (hEt K₁ hK₁) (Or.inr (by simp))).add (tendsto_const_nhds (x := 2 * (Ws.map fun ws => ENNReal.ofReal (|c₁| * ‖dsigW σ ws u‖ ^ 2)).sum))) (Or.inr ENNReal.ofReal_ne_top)`. Establish `hfin` using `le_of_tendsto_of_tendsto' hlimL hlimR hb`. Rewrite `hfin` using `[mul_zero, zero_add, ← List.sum_map_mul_left]`.
-
-Establish `hS` using `list_sq_le |c₁| (abs_nonneg _) (fun ws : List (Mat k r) => ‖dsigW σ ws u‖) (fun _ => norm_nonneg _) Ws`. Establish `hSn : 0 ≤ (Ws.map fun ws => ‖dsigW σ ws u‖).sum` using `List.sum_nonneg (by`. Introduce `x hx`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `norm_nonneg _)`.
-
-Establish `h3` using `hfin.trans (mul_le_mul' le_rfl hS)`. Rewrite `h3` using `[← ENNReal.ofReal_mul (abs_nonneg _), ENNReal.ofReal_le_ofReal_iff (by positivity)]`. Establish `h4` using `Real.abs_le_sqrt (h := h3)`. Rewrite `h4` using `[abs_norm]`. Establish `e : |C₀| * (2 * |c₁| * (Ws.map fun ws => ‖dsigW σ ws u‖).sum ^ 2) = (|C₀| * (2 * |c₁|)) * (Ws.map fun ws => ‖dsigW σ ws u‖).sum ^ 2` using `by ring`.
-
-Rewrite `h4` using `[e, Real.sqrt_mul (by positivity), Real.sqrt_sq hSn]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_main : ∀ (k r : ℕ) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp] (σ : Mat k r → (H →L[ℂ] H)) (μG : Measure (Mt k r)) (T : H → Mat k r → Wp), IsURepOn (GG k r) σ → IsHaarOn (GG k r) μG → (∀ u u' : H, (fun x : Mt k r => T (u + u') (Matrix.of x)) =ᵐ[μG] fun x => T u (Matrix.of x) + T u' (Matrix.of x)) → (∀ (b : ℂ) (u : H), (fun x : Mt k r => T (b • u) (Matrix.of x)) =ᵐ[μG] fun x => b • T u (Matrix.of x)) → (∀ K : Set (Mt k r), IsCompact K → ∃ C : ℝ, ∀ u : H, AEStronglyMeasurable (fun x : Mt k r => T u (Matrix.of x)) (μG.restrict K) ∧ ∫⁻ x in K, (‖T u (Matrix.of x)‖₊ : ENNReal) ^ 2 ∂μG ≤ ENNReal.ofReal (C * ‖u‖ ^ 2)) → (∀ y ∈ GG k r, ∀ u : H, (fun x : Mt k r => T (σ y u) (Matrix.of x)) =ᵐ[μG] fun x => T u (Matrix.of x * y)) → ∃ (C : ℝ) (Ws : List (List (Mat k r))), (∀ ws ∈ Ws, ∀ X ∈ ws, InLieHpk k r X) ∧ ∀ u : H, IsSmoothVec σ u → ∃ f : Mat k r → Wp, ContinuousOn f (GG k r) ∧ (fun x : Mt k r => f (Matrix.of x)) =ᵐ[μG] (fun x => T u (Matrix.of x)) ∧ ‖f 1‖ ≤ C * (Ws.map fun ws => ‖dsigW σ ws u‖).sum := by
   intro k r H _ _ _ Wp _ _ _ σ μ T hσ hμ hadd hsm hbd heq

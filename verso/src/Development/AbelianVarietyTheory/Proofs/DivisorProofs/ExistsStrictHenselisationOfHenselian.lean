@@ -9,13 +9,13 @@ namespace GlobalTheory
 open StrictHensOfHens
 
 /- English proof (translation)
-Introduce `R _ _ Ω _ _ _`. Establish `hflat : Module.Flat R (SH R Ω)`. Use `GlobalTheory.T.flat_of_forall_finset_subset_flat_submodule R (SH R Ω) fun s => ?_` and prove the remaining obligations. Take `⟨E, hE⟩` from `exists_ofA_finset s`. Set `e` to `AlgEquiv.ofInjective (ofA R Ω E) (ofA_injective E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `haveI : Module.Flat R (Lift R Ω E) := Algebra.Smooth.flat _ _`. Use `⟨Subalgebra.toSubmodule (ofA R Ω E).range, fun x hx => ?_, Module.Flat.of_linearEquiv e.symm.toLinearEquiv⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hE x hx`. Conclude with `⟨a, rfl⟩`. Use `⟨SH R Ω, inferInstance, inferInstance, inferInstance, inferInstance, isSepClosed_residueField, hflat, map_maximalIdeal, ⟨resAlgEquiv⟩, Idx R Ω, inferInstance, inferInstance, inferInstance, fun E => (ofA R Ω E).range, ?_, ?_, fun E => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `E F h x hx`. Take `⟨a, rfl⟩` from `hx`. Conclude with `⟨trans R Ω E F h a, ofA_trans h a⟩`. Introduce `s`. Take `⟨E, a, rfl⟩` from `exists_ofA s`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨E, a, rfl⟩`. Use `⟨Lift R Ω E, inferInstance, inferInstance, inferInstance, maximalIdeal _, inferInstance, ⟨?_⟩⟩` and prove the remaining obligations. Establish `hu : (maximalIdeal (Lift R Ω E)).primeCompl ≤ IsUnit.submonoid (Lift R Ω E)` using `fun x hx => by simpa [IsUnit.mem_submonoid_iff, mem_maximalIdeal, mem_nonunits_iff] using hx`. Conclude with `((IsLocalization.atUnits (Lift R Ω E) (maximalIdeal (Lift R Ω E)).primeCompl (S := Localization.AtPrime (maximalIdeal (Lift R Ω E))) hu).restrictScalars R).symm.trans (AlgEquiv.ofInjective (ofA R Ω E) (ofA_injective E))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_strictHenselisation_of_henselian : ∀ (R : Type) [CommRing R] [HenselianLocalRing R] (Ω : Type) [Field Ω] [Algebra (ResidueField R) Ω] [IsSepClosure (ResidueField R) Ω], ∃ (S : Type) (_ : CommRing S) (_ : Algebra R S) (_ : HenselianLocalRing S) (_ : IsLocalHom (algebraMap R S)), IsSepClosed (ResidueField S) ∧ Module.Flat R S ∧ (maximalIdeal R).map (algebraMap R S) = maximalIdeal S ∧ Nonempty (ResidueField S ≃ₐ[ResidueField R] Ω) ∧ (∃ (ι : Type) (_ : Preorder ι) (_ : IsDirected ι (· ≤ ·)) (_ : Nonempty ι) (Si : ι → Subalgebra R S), Monotone Si ∧ (∀ s : S, ∃ i, s ∈ Si i) ∧ ∀ i, ∃ (A : Type) (_ : CommRing A) (_ : Algebra R A) (_ : Algebra.Etale R A) (q : Ideal A) (_ : q.IsPrime), Nonempty (Localization.AtPrime q ≃ₐ[R] Si i)) := by
   intro R _ _ Ω _ _ _

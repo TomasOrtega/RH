@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Use `hX.finite_emb` as an intermediate fact. Establish `hb : ∀ σ : k →+* ℂ, ∃ K : ℝ, ∀ y, (M.φ σ).nsq (CxPts.secVal p σ u) y ≤ K` using `fun σ => by`. Use `hX.compactSpace σ` as an intermediate fact. Take `⟨K, hK⟩` from `(isCompact_range ((M.cInf σ).continuous_nsq u)).bddAbove`. Conclude with `⟨K, fun y => hK ⟨y, rfl⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose K hK using hb`. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Use `⟨∑ τ, |K τ| + 1, ?_, fun σ y => (hK σ y).trans ?_⟩` and prove the remaining obligations. Combine the linear relations using `[Finset.sum_nonneg fun τ (_ : τ ∈ Finset.univ) => abs_nonneg (K τ)]`. Use `Finset.single_le_sum (fun τ (_ : τ ∈ Finset.univ) => abs_nonneg (K τ)) (Finset.mem_univ σ)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[le_abs_self (K σ)]`.
+A detailed English derivation is pending.
 -/
 theorem sec_nsq_le {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} (hX : IsArithVar p D)
     (M : HermLB p) (u : M.B.Sec) :
@@ -37,9 +37,9 @@ theorem sec_nsq_le {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D 
     linarith [le_abs_self (K σ)]
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P a b f hf`. Take `⟨M, hM⟩` from `GlobalTheory.T.exists_hermitianRepresentative_integerCombination k X p P a b`. Take `⟨e, -, hrng, hnu, -⟩` from `GlobalTheory.VolBr.RepDict.rep_dict k X p P a b M hM`. Take `⟨u, rfl⟩ : f ∈ Set.range e` from `by rw [hrng]; exact hf`. Take `⟨C, hC1, hC⟩` from `sec_nsq_le hX M u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨Real.log C, Real.log_nonneg hC1, hf, fun σ y => ?_⟩` and prove the remaining obligations. Rewrite using `[Real.exp_log (by linarith)]`. Establish `h1` using `hnu u σ y`. Establish `h2` using `hC σ y`. Establish `h3 : 0 ≤ P.nu a b σ y (e u)` using `by unfold Pair.nu; positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/

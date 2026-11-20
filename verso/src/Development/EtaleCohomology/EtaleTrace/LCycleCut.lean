@@ -114,24 +114,22 @@ def LGeom : Prop := ∀ (k : Type) [Field k] (d : ℕ) {X : Scheme.{0}} (p : X �
     IsPullback (equalizer.ι c a) (equalizer.ι c a ≫ c) (pullback.lift c a h) (pullback.diagonal p)
 
 /- English proof (translation)
-Simplify using `only [pb, pullHQ, Functor.map_comp, pullHl_comp, LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_comp (l : ℕ) [Fact l.Prime] {Z Y X : Scheme.{0}} (g : Z ⟶ Y) (f : Y ⟶ X) (n : ℤ) (x : V l X n) :
     pb l g n (pb l f n x) = pb l (g ≫ f) n x := by
   simp only [pb, pullHQ, Functor.map_comp, pullHl_comp, LinearMap.baseChange_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Introduce `B l _ k _ _ hl`. Take `⟨τ₀, h₀⟩` from `hT B l k hl`. Take `⟨τ, hτ⟩` from `hU B l k hl τ₀ h₀`. Set `δ : Fam l k` to `fun d _ p => cyc τ d (pullback.fst p p ≫ p) (off (pullback.diagonal p))`. Establish `hcl : ∀ (d : ℕ) {X : Scheme.{0}} (p : X ⟶ S k), SP d p → ∀ y : Pt p, δ.cl d y = cyc τ d p (off y.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `d X p hp y`. Take `⟨hd, hy, -⟩` from `hG k d p hp`. Conclude with `hN l k τ hτ d 0 d p y.1 _ _ (hy y).1 hd _ y.1 (by rw [pullback.lift_fst_assoc, Category.id_comp]) ((hy y).2 _)`. Use `⟨δ, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `d X p hp m β`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `hK B l k hl τ hτ d d _ _ (hG k d p hp).1 m (pb l (pullback.fst p p) m β - pb l (pullback.snd p p) m β) (by rw [map_sub, pb_comp, pb_comp, pullback.diagonal_fst, pullback.diagonal_snd, sub_self])`. Rewrite `h` using `[map_sub, sub_eq_zero]`. Conclude with `h`. Introduce `d Y X q p hq hp c a hc ha he s hs`. Take `⟨hd, -, hE⟩` from `hG k d p hp`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hE1, hE2⟩` from `hE q hq c a hc he (hc.trans ha.symm)`. Establish `h1 : δ.corr d c a hc ha = cyc τ d q (off (equalizer.ι c a))` using `hN l k τ hτ d 0 d q _ _ _ hE1 hd _ _ (by rw [pullback.lift_fst_assoc, hc]) hE2`. Rewrite using `[h1, hA B l k τ hτ d q _ hE1 s fun y => (hs y).trans ⟨fun h => ⟨equalizer.lift y.1 h, equalizer.lift_ι _ _⟩, fun ⟨t, ht⟩ => by`. Rewrite using `[← ht, Category.assoc, Category.assoc, equalizer.condition]⟩]`. Conclude with `Finset.sum_congr rfl fun y _ => (hcl d q hq y).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `d X p hp y U hU' z hz`. Establish `hy` using `((hG k d p hp).2.1 y).1`. Establish `: U = off y.1` using `by ext1`. Express the relevant statement in the definitionally equal form `(U : Set X) = interior _`. Rewrite using `[← hU', U.isOpen.interior_eq]`.
-
-Substitute `this` using the available equality. Rewrite using `[hcl d p hp y]`. Conclude with `hS B l k τ hτ d p y hy z hz`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal_of (_h1 : LDbl) (_h2 : LExc) (_h3 : LDisj) (_h4 : LSemi) (_h5 : LSupp) (hT : LThom) (_h7 : LUnit) (hU : LUntwist)
     (hN : LNat) (hK : LKill) (_h11 : LPts) (hA : LAdd) (hS : LSpan) (hG : LGeom) : LCycle := by

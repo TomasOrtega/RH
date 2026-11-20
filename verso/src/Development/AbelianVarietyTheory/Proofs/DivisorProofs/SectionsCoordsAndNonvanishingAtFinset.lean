@@ -11,31 +11,27 @@ open scoped ENNReal ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ _ ι La _ A H hH T G`. Take `⟨q, hq, hk9⟩` from `GlobalTheory.T.exists_sections_approx_firstJets_positive n Y ι La A H hH T`. Take `⟨ε, hε, hk10⟩` from `GlobalTheory.T.quotient_jets_fderiv_det_ne_zero n`. Take `⟨k0, hk0⟩` from `hk9 0 (fun _ _ => 1) (fun _ => differentiable_const _) ε hε`. Establish `hpj : ∀ j : Fin n, ∀ P : Y, Differentiable ℂ (fun v : V n => v j - (A.chart (A.pick P) P) j)` using `fun j P => ((EuclideanSpace.proj (𝕜 := ℂ) j).differentiable).sub_const _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose kj hkj using fun j : Fin n => hk9 0 (fun P v => v j - (A.chart (A.pick P) P) j) (hpj j) ε hε`. Take `⟨ka, hka⟩` from `hk9 G (fun _ _ => 1) (fun _ => differentiable_const _) (1/2) (by norm_num)`. Use `⟨max k0 (max ka (Finset.univ.sup kj)), fun k hk => ?_⟩` and prove the remaining obligations. Establish `hk0' : k ≥ k0` using `le_trans (le_max_left _ _) hk`. Establish `hka' : k ≥ ka` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkj' : ∀ j, k ≥ kj j` using `fun j => le_trans (le_trans (Finset.le_sup (f := kj) (Finset.mem_univ j)) (le_trans (le_max_right _ _) (le_max_right _ _))) hk`. Take `⟨F0, hF0s, hF0⟩` from `hk0 k hk0'`. Use `choose Fj hFjs hFj using fun j => hkj j k (hkj' j)`. Take `⟨Fa, hFas, hFa⟩` from `hka k hka'`. Rewrite `hF0s`, `hFjs` using `[zero_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨F0, Fj, Fa, hF0s, hFjs, hFas, fun P hP => ?_⟩` and prove the remaining obligations. Use `set i := A.pick P with hi`. Use `set p := A.chart i P with hp`. Establish `hPs : P ∈ (A.chart i).source` using `A.mem_pick P`. Establish `hpt : p ∈ (A.chart i).target` using `(A.chart i).map_source hPs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsymm : (A.chart i).symm p = P` using `(A.chart i).left_inv hPs`. Establish `hdiffF : ∀ F : ι → Y → ℂ, ∀ la, A.IsSec la F → DifferentiableAt ℂ (fun v => F i ((A.chart i).symm v)) p`. Introduce `F la hF`. Establish `h1` using `hF.1 i`. Establish `h2 : (A.chart i).target ∩ (A.chart i).symm ⁻¹' Set.univ = (A.chart i).target` using `by simp`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Conclude with `h1.differentiableAt ((A.chart i).open_target.mem_nhds hpt)`. Establish `hE : DifferentiableAt ℂ (fun v => Complex.exp (-((k : ℂ) * q P v))) p` using `((((hq P hP) p).const_mul (k : ℂ)).neg).cexp`. Use `set w0 : V n → ℂ := fun v => F0 i ((A.chart i).symm v) * Complex.exp (-((k : ℂ) * q P v)) with hw0`. Use `set w : Fin n → V n → ℂ := fun j v => Fj j i ((A.chart i).symm v) * Complex.exp (-((k : ℂ) * q P v)) with hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd0 : DifferentiableAt ℂ w0 p` using `(hdiffF F0 _ hF0s).mul hE`. Establish `hdj : ∀ j, DifferentiableAt ℂ (w j) p` using `fun j => (hdiffF (Fj j) _ (hFjs j)).mul hE`. Take `⟨h0a, h0b⟩` from `hF0 P hP`. Establish `e1 : ‖w0 p - 1‖ ≤ ε`. Simplify using `only [hw0, hsymm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h0a`. Establish `e2 : ‖fderiv ℂ (fun v => w0 v - 1) p‖ ≤ ε` using `h0b`. Establish `e3 : ∀ j, ‖w j p‖ ≤ ε`. Introduce `j`. Use `(hFj j P hP).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_self, sub_zero] at this`. Simplify using `only [hw, hsymm]`. Conclude with `this`. Establish `e4 : ∀ j, ‖fderiv ℂ (fun v : V n => w j v - (v j - p j)) p‖ ≤ ε` using `fun j => (hFj j P hP).2`. Take `⟨hne, hdet⟩` from `hk10 p w0 w hd0 hdj e1 e2 e3 e4`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `only [hw0, hsymm, h0, zero_mul]`. Unfold `WeightedAtlas.IsCoordAt`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfun : A.zLoc F0 Fj i = fun v : V n => (WithLp.toLp 2 (fun j => w j v / w0 v) : V n)`. Use function extensionality and compare the values at `v`. Simplify using `only [WeightedAtlas.zLoc, hw, hw0]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
-
-Rewrite using `[mul_div_mul_right _ _ (Complex.exp_ne_zero _)]`. Rewrite using `[← hi, ← hp, hfun]`. Conclude with `hdet`. Introduce `h0`. Use `(hFa P hP).1` as an intermediate fact.
-
-Rewrite `this` using `[h0, zero_mul, zero_sub, norm_neg, norm_one]`. Evaluate the numerical expressions using `at this`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem sections_coords_and_nonvanishing_at_finset : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] [CompactSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (H : La), (∀ i y, y ∈ (A.chart i).source → ∀ ξ : Fin n → ℂ, ξ ≠ 0 → 0 < A.leviAt i (A.ph H i) y ξ) → ∀ (T : Finset Y) (G : La), ∃ k0 : ℕ, ∀ k ≥ k0, ∃ (t0 : ι → Y → ℂ) (t : Fin n → ι → Y → ℂ) (a : ι → Y → ℂ), A.IsSec (A.kap + k • H) t0 ∧ (∀ j, A.IsSec (A.kap + k • H) (t j)) ∧ A.IsSec (A.kap + (G + k • H)) a ∧ ∀ P ∈ T, t0 (A.pick P) P ≠ 0 ∧ A.IsCoordAt t0 t P ∧ a (A.pick P) P ≠ 0 := by
   intro n Y _ _ _ _ _ _ ι La _ A H hH T G

@@ -4,17 +4,15 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Transversal
 
 /- English proof (translation)
-Set `f : T → A ⧸ L.addSubgroupOf A` to `fun t => QuotientAddGroup.mk ⟨t.1, hT t.1 t.2⟩`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht⟩ ⟨t', ht'⟩ h`. Establish `h' : -(⟨t, hT t ht⟩ : A) + ⟨t', hT t' ht'⟩ ∈ L.addSubgroupOf A` using `QuotientAddGroup.eq.mp h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h'` using `[AddSubgroup.mem_addSubgroupOf]`. Establish `hL : t - t' ∈ L`. Establish `h2` using `L.neg_mem h'`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Normalize the expressions using the abelian group laws. Take `⟨u, _, hu'⟩` from `hu t (hT t ht)`. Establish `e1 : t = u` using `hu' t ⟨ht, by simp⟩`. Establish `e2 : t' = u` using `hu' t' ⟨ht', hL⟩`. Conclude with `Subtype.ext (e1.trans e2.symm)`.
+Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective q`. Take `⟨t, ⟨ht, hat⟩, _⟩` from `hu a.1 a.2`. Use `⟨⟨t, ht⟩, QuotientAddGroup.eq.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((-(⟨t, hT t ht⟩ : A) + a : A) : X) = a.1 - t`. Use `push_cast`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `hat`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_eq_relIndex (X : Type) [AddCommGroup X] (A L : AddSubgroup X) (T : Finset X)
     (_hLA : L ≤ A) (hT : ∀ t ∈ T, t ∈ A) (hu : ∀ a ∈ A, ∃! t, t ∈ T ∧ a - t ∈ L) :

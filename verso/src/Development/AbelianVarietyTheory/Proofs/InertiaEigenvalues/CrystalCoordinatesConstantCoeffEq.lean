@@ -9,7 +9,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysConst
 
 /- English proof (translation)
-Use `letI : Module B C := Module.compHom C k`. Set `F' : N →ₗ[B] C` to `{ toFun := F, map_add' := F.map_add, map_smul' := hF }`. Set `G' : N →ₗ[B] C` to `{ toFun := G, map_add' := G.map_add, map_smul' := hG }`. Conclude with `LinearMap.congr_fun (h.hom_ext (w := F') (w' := G') hx) y`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem semi_ext {A B C M N : Type} [CommRing A] [CommRing B] [CommRing C] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) (k : B →+* C)
@@ -21,7 +21,7 @@ theorem semi_ext {A B C M N : Type} [CommRing A] [CommRing B] [CommRing C] [AddC
   exact LinearMap.congr_fun (h.hom_ext (w := F') (w' := G') hx) y
 
 /- English proof (translation)
-Use `letI : Module B C := Module.compHom C k`. Set `F' : M →ₛₗ[f] C` to `{ toFun := F, map_add' := F.map_add, map_smul' := hF }`. Take `⟨w, hw, -⟩` from `h C F'`. Conclude with `⟨w.toAddMonoidHom, fun r y => w.map_smul r y, hw⟩`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem semi_lift {A B C M N : Type} [CommRing A] [CommRing B] [CommRing C] [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module B N] {f : A →+* B} {u : M →ₛₗ[f] N} (h : SemiBC u) (k : B →+* C)
@@ -33,13 +33,11 @@ theorem semi_lift {A B C M N : Type} [CommRing A] [CommRing B] [CommRing C] [Add
   exact ⟨w.toAddMonoidHom, fun r y => w.map_smul r y, hw⟩
 
 /- English proof (translation)
-Take `⟨μ, hμ, hμx⟩` from `semi_lift (E.tr_bc (δ.comp p₀)) k (F.comp (E.tr p₀).toAddMonoidHom) (fun r x => by`. Express the relevant statement in the definitionally equal form `F (E.tr p₀ (r • x)) = k (δ.f (p₀.f r)) * F (E.tr p₀ x)`. Rewrite using `[LinearMap.map_smulₛₗ, hF])`. Establish `hν : ∀ (r : PP.A) y, (μ.comp (E.tr δ).toAddMonoidHom) (r • y) = (k.comp δ.f) r * (μ.comp (E.tr δ).toAddMonoidHom) y` using `fun r y => by`. Express the relevant statement in the definitionally equal form `μ (E.tr δ (r • y)) = k (δ.f r) * μ (E.tr δ y)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LinearMap.map_smulₛₗ, hμ]`. Establish `h0` using `semi_ext (E.tr_bc p₀) (k.comp δ.f) F _ hF hν (fun x => by`. Express the relevant statement in the definitionally equal form `_ = μ (E.tr δ (E.tr p₀ x))`. Rewrite using `[← E.tr_comp, hμx]`. Use the proof step `rfl) y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `semi_ext (E.tr_bc p₁) (k.comp δ.f) G _ hG hν (fun x => by`. Express the relevant statement in the definitionally equal form `_ = μ (E.tr δ (E.tr p₁ x))`. Rewrite using `[← E.tr_comp, ← hx]`. Establish `: ∀ q : GlobalTheory.Prism.Hom P S, δ.comp p₀ = q → μ (E.tr q x) = F (E.tr p₀ x)`. Introduce and unpack `_ rfl`.
-
-Conclude with `hμx x`. Conclude with `(this _ hδ).symm) y`. Conclude with `h0.trans h1.symm`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eq_of_diagonal {l : ℕ} {R C : Type} [CommRing R] [CommRing C] (E : FCrys l R) {P PP S : Obj l R}
     (p₀ p₁ : GlobalTheory.Prism.Hom P PP) (δ : GlobalTheory.Prism.Hom PP S) (hδ : δ.comp p₀ = δ.comp p₁) (k : S.A →+* C)
@@ -66,11 +64,11 @@ theorem eq_of_diagonal {l : ℕ} {R C : Type} [CommRing R] [CommRing C] (E : FCr
   exact h0.trans h1.symm
 
 /- English proof (translation)
-Introduce `l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ EE c _ sh hsh PP S₀ p₀ p₁ δ j j₀ hδ hj _ lam₀ lam₁ h₀ h₁ hx₀ hx₁ y τ i`. Establish `hc : ∀ f : K⟦X⟧, PowerSeries.constantCoeff (sh f) = f` using `fun f => by`. Simplify using `using hsh f 0`. Set `pr : (ZMod a → ι → K⟦X⟧⟦X⟧) →+ K⟦X⟧` to `{ toFun := fun q => PowerSeries.constantCoeff (q τ i) map_zero' := by simp map_add' := fun q q' => by simp }`. Use `eq_of_diagonal EE p₀ p₁ δ hδ (j₀ τ) (pr.comp lam₀) (pr.comp lam₁) (fun r y => ?_) (fun r y => ?_) (fun x => ?_) y` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (lam₀ (r • y) τ i) = _ * PowerSeries.constantCoeff (lam₀ y τ i)`. Rewrite using `[h₀, map_mul, hj]`. Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (lam₁ (r • y) τ i) = _ * PowerSeries.constantCoeff (lam₁ y τ i)`. Rewrite using `[h₁, map_mul, hj]`. Express the relevant statement in the definitionally equal form `PowerSeries.constantCoeff (lam₀ (EE.tr p₀ x) τ i) = PowerSeries.constantCoeff (lam₁ (EE.tr p₁ x) τ i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hx₀, hx₁, hc, PowerSeries.constantCoeff_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_eq : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type) [CommRing O] [Algebra ℤ_[l] O] [Module.Free ℤ_[l] O] [Module.Finite ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K] [NormedAlgebra ℚ_[l] K] (t : Wq l a →ₐ[ℤ_[l]] O) (ϖ : PiSys l e) (ι : Type) [Fintype ι] [DecidableEq ι] (EE : FCrys l ↥(OL (ϖ.field a))) (c : EE.M (ϖ.prism a) →+ Vec K a ι), (∀ (w : (ϖ.prism a).A) (x : EE.M (ϖ.prism a)), c (w • x) = fun τ i => (toAc t K w τ : K⟦X⟧) * c x τ i) → ∀ (sh : K⟦X⟧ →+* K⟦X⟧⟦X⟧), (∀ (f : K⟦X⟧) (i : ℕ), (i.factorial : K⟦X⟧) * coeff i (sh f) = (PowerSeries.derivative K)^[i] f) → ∀ (PP S₀ : Obj l ↥(OL (ϖ.field a))) (p₀ p₁ : GlobalTheory.Prism.Hom (ϖ.prism a) PP) (δ : GlobalTheory.Prism.Hom PP S₀) (j : ZMod a → PP.A →+* K⟦X⟧⟦X⟧) (j₀ : ZMod a → S₀.A →+* K⟦X⟧), δ.comp p₀ = δ.comp p₁ → (∀ τ y, j₀ τ (δ.f y) = PowerSeries.constantCoeff (j τ y)) → (∀ τ (x : (Wq l a)⟦X⟧), j τ (p₀.f x) = PowerSeries.C (toAc t K (frobS l a x) τ : K⟦X⟧) ∧ j τ (p₁.f x) = sh (toAc t K (frobS l a x) τ : K⟦X⟧)) → ∀ (lam₀ lam₁ : EE.M PP →+ (ZMod a → ι → K⟦X⟧⟦X⟧)), (∀ (r : PP.A) (y : EE.M PP) τ i, lam₀ (r • y) τ i = j τ r * lam₀ y τ i) → (∀ (r : PP.A) (y : EE.M PP) τ i, lam₁ (r • y) τ i = j τ r * lam₁ y τ i) → (∀ x τ i, lam₀ (EE.tr p₀ x) τ i = PowerSeries.C (frob K l (c x (τ - 1) i))) → (∀ x τ i, lam₁ (EE.tr p₁ x) τ i = sh (frob K l (c x (τ - 1) i))) → ∀ y τ i, PowerSeries.constantCoeff (lam₀ y τ i) = PowerSeries.constantCoeff (lam₁ y τ i) := by
   intro l _ a e _ _ O K _ _ _ _ _ _ _ _ _ t ϖ ι _ _ EE c _ sh hsh PP S₀ p₀ p₁ δ j j₀ hδ hj _ lam₀ lam₁ h₀ h₁ hx₀ hx₁

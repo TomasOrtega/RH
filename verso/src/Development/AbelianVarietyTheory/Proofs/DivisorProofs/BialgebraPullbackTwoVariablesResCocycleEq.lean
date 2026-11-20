@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Establish `hc` using `(_root_.GlobalTheory.T.crystallineCocycleOnPoints_isCocycle_and_eval_eq R A d.f).1 (G.A (n + 1)) (G.A n) D (G.res n : G.A (n + 1) →ₐ[R] G.A n) φ (t.y (n + 1)) (sm_whole _)`. Rewrite using `[hc, t.res n, d.res n, AlgHom.comp_apply, map_sub]`. Simplify using `only [BialgHom.coe_toAlgHom]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Dat.fv_add_h_res {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {p : ℕ} {G : PDivGroup p R}
     {t : G.TorsionTower A} {c : primDR A} (d : Dat t c) (n : ℕ) (D : Type) [CommRing D] [Algebra R D]
@@ -31,13 +31,13 @@ theorem Dat.fv_add_h_res {R : Type} [CommRing R] {A : Over (Sp R)} [GrpObj A] {p
   abel
 
 /- English proof (translation)
-Set `L : G.A n →ₐ[R] G.A n ⊗[R] G.A n` to `Algebra.TensorProduct.includeLeft`. Set `Rt : G.A n →ₐ[R] G.A n ⊗[R] G.A n` to `Algebra.TensorProduct.includeRight`. Establish `hres : ∀ u : G.A (n + 1) ⊗[R] G.A (n + 1), pullbackTwo (G.res n) u = Algebra.TensorProduct.lift (L.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) (Rt.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) (fun _ _ ↦ Commute.all _ _) u`. Introduce `u`. Proceed by induction on `u using TensorProduct.induction_on with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [L, Rt]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hid : ∀ u : G.A n ⊗[R] G.A n, Algebra.TensorProduct.lift L Rt (fun _ _ ↦ Commute.all _ _) u = u`. Introduce `u`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [L, Rt]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Establish `hmul : (toConv (L.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)) * toConv (Rt.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n))).ofConv = (toConv L * toConv Rt).ofConv.comp (G.res n : G.A (n + 1) →ₐ[R] G.A n)` using `(AlgHom.convMul_comp_bialgHom_distrib (toConv L) (toConv Rt) (G.res n)).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hres, _root_.GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue, hmul, d.fv_add_h_res n, d.fv_add_h_res n, d.fv_add_h_res n]`. Use `conv_rhs => rw [← hid (d.coc n), _root_.GlobalTheory.T.cocycle_tensorLift_apply_eq_twoPointValue]`. Simplify using `only [← spOver_comp, Category.assoc, t.res]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Dat.pullTwo_res_coc (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (n : ℕ) :

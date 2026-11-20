@@ -12,19 +12,17 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `A₀ _ g hA _ D _ _ π κ hκ hπ k`. Use `haveI : Smooth A₀.hom := hA.smooth`. Use `haveI : IsProper A₀.hom := hA.proper`. Set `P : Over (Sp ℂ)` to `A₀ ⊗ A₀`. Use `haveI : Smooth P.hom := smooth_tensorObj_hom A₀ A₀`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsProper P.hom := by`. Express the relevant statement in the definitionally equal form `IsProper (A₀ ⊗ A₀).hom`. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`. Establish `m2 : IsMor (dp0 ℂ) (P.hom ≫ 𝟙 _) κ (P.hom ≫ spMap π) (algebraMap ℂ D) (𝟙 P.left)` using `⟨k.dp, by rw [Category.assoc, ← k.base]; simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (f : P ⟶ A₀) (x : FirstDeRham (A₀.hom ≫ 𝟙 _)), pullOver κ (spMap π) f (k.isMor.pull1 x) = m2.pull1 (pullOver (dp0 ℂ) (𝟙 _) f x)`. Introduce `f x`. Establish `h'' : IsMor (dp0 ℂ) (A₀.hom ≫ 𝟙 _) κ (P.hom ≫ spMap π) (algebraMap ℂ D) f.left` using `⟨k.dp, by rw [← Category.assoc, Over.w f, Category.assoc, ← k.base]; simp⟩`. Conclude with `(IsMor.pullback1_comp k.isMor (IsMor.of_over κ (φ := f.left) (by rw [← Category.assoc, Over.w])) h'' (fun _ ↦ rfl) (by simp) x).trans (IsMor.pullback1_comp (IsMor.of_over (dp0 ℂ) (φ := f.left) (by rw [← Category.assoc, Over.w])) m2 h'' (fun _ ↦ rfl) (by simp) x).symm`. Establish `hM : Function.Bijective (liftSemi k.isMor.pull1)` using `GlobalTheory.T.crystalline_thickening_pullback_bijective ℂ D π κ hκ hπ A₀.left (A₀.hom ≫ 𝟙 _) (A₀.hom ≫ spMap π) (Over.Hom.left (𝟙 A₀)) (by rw [Category.comp_id]; infer_instance) (by rw [Category.comp_id]; infer_instance) (by rw [Category.comp_id]; infer_instance) (by simp) (by s …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hN : Function.Bijective (liftSemi m2.pull1)` using `GlobalTheory.T.crystalline_thickening_pullback_bijective ℂ D π κ hκ hπ P.left (P.hom ≫ 𝟙 _) (P.hom ≫ spMap π) (𝟙 P.left) (by rw [Category.comp_id]; infer_instance) (by rw [Category.comp_id]; infer_instance) (by rw [Category.comp_id]; infer_instance) (by simp) rfl m2`. Establish `hZ : Function.Bijective (liftSemi k.pull)`. Use `GlobalTheory.FlatKerLarge.liftSemi_bijective_of_exact_large ℂ D _ _ _ _ _ _ (prim (dp0 ℂ) (𝟙 _) A₀).subtype (pullOver (dp0 ℂ) (𝟙 _) μ[A₀] - pullOver (dp0 ℂ) (𝟙 _) (fst A₀ A₀) - pullOver (dp0 ℂ) (𝟙 _) (snd A₀ A₀)) (prim κ (spMap π) A₀).subtype (pullOver κ (spMap π) μ[A₀] - pullOve …` and prove the remaining obligations. Introduce `y`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, sub_sub, sub_eq_zero, ← mem_prim_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h ↦ ⟨⟨y, h⟩, rfl⟩, fun ⟨z, hz⟩ ↦ hz ▸ z.2⟩`. Introduce `y`. Rewrite using `[LinearMap.sub_apply, LinearMap.sub_apply, sub_sub, sub_eq_zero, ← mem_prim_iff]`. Conclude with `⟨fun h ↦ ⟨⟨y, h⟩, rfl⟩, fun ⟨z, hz⟩ ↦ hz ▸ z.2⟩`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [LinearMap.sub_apply, map_sub, key]`. Use `⟨hZ, eq_top_iff.2 fun y _ ↦ ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hZ.2 y`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`.
-
-Consider the case `tmul x c => rw [liftSemi_tmul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨c, rfl⟩)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem (hx trivial) (hy trivial)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem primCris_isBC_of_nilThick : ∀ (A₀ : Over (Sp ℂ)) [GrpObj A₀] (g : ℕ), IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom → ∀ (D : Type) [CommRing D] [Algebra ℂ D] (π : D →+* ℂ) (κ : DividedPowers (RingHom.ker π)), IsNilDP κ → (∀ a : ℂ, π (algebraMap ℂ D a) = a) → ∀ (k : GrpMor (dp0 ℂ) (𝟙 _) A₀ κ (spMap π) A₀ (algebraMap ℂ D) (𝟙 _) (Over.Hom.left (𝟙 A₀))), k.IsBC ∧ Submodule.span D (Set.range k.pull) = ⊤ := by
   intro A₀ _ g hA _ D _ _ π κ hκ hπ k

@@ -11,9 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Coc.Pf
 
 /- English proof (translation)
-Establish `hf : f y ∈ U` using `e hy`. Establish `key` using `Y.presheaf.germ_res_apply (homOfLE e) y hy ((f.app U).hom a)`. Unfold `gs`. Rewrite using `[dif_pos hf]`. Use `split_ifs with h1`.
-
-Conclude with `key`. Conclude with `absurd hy h1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (e : V ≤ f ⁻¹ᵁ U) (y : Y) (hy : y ∈ V)
     (a : Γ(X, U)) : gs (𝟙 Y) y V ((f.appLE U V e).hom a) = gs f y U a := by
@@ -26,9 +24,9 @@ theorem gs_appLE {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (V : Y.Opens) (e
   · exact absurd hy h1
 
 /- English proof (translation)
-Establish `key` using `congrArg (fun g => (CommRingCat.Hom.hom g) (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at key`. Unfold `gm`. Rewrite using `[dif_pos (show (spMap f) z ∈ (⊤ : (Sp A).Opens) from trivial)]`. Rewrite using `[dif_pos (show (𝟙 (Sp B)) z ∈ (⊤ : (Sp B).Opens) from trivial)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, pullU, unitΓ, toΓ, MonoidHom.coe_coe, Scheme.Hom.id_app, CommRingCat.hom_id, RingHom.id_apply]`. Use `erw [key]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gm_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ) (z : Sp B) :
     gm (spMap f) z ⊤ (unitΓ u) = gm (𝟙 _) z ⊤ (unitΓ (Units.map (f : A →* B) u)) := by
@@ -43,9 +41,9 @@ theorem gm_spMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ
   rfl
 
 /- English proof (translation)
-Establish `hz : r z ∈ t.PP.L.wchart φ (fun k => J (r ≫ φ k))` using `by show r z ∈ ⋂ k, ⇑(φ k) ⁻¹' ↑(t.PP.L.U (J (r ≫ φ k)))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Use `hJ (r ≫ φ k)` as an intermediate fact. Simplify `this` using `[Scheme.Hom.comp_apply]`. Unfold `val scaleGenG`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions.
 
-Use `erw [map_mul, gm_res r z _ hz]`.
+A detailed English derivation is pending.
 -/
 theorem val_scale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ) (u : Γ(Y, ⊤)ˣ)
@@ -60,7 +58,7 @@ theorem val_scale {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
   erw [map_mul, gm_res r z _ hz]
 
 /- English proof (translation)
-The claim follows from `map_pow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_genPow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {Y Z : Scheme.{0}} {K : Type} [Fintype K] (φ : K → (Y ⟶ t.G.left)) (ε : K → ℤ)
@@ -69,21 +67,19 @@ theorem val_genPow {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host 
   map_pow _ _ _
 
 /- English proof (translation)
-Establish `hsurj : Function.Surjective (jetAug : Jet k κ n →ₐ[k] k).toRingHom` using `fun c => ⟨algebraMap k _ c, (jetAug : Jet k κ n →ₐ[k] k).commutes c⟩`. Establish `hnil : ∀ a : Jet k κ n, jetAug a = 0 → IsNilpotent a`. Introduce `a ha`. Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Establish `h0 : MvPolynomial.constantCoeff P = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: jetAug (Ideal.Quotient.mk _ P : Jet k κ n) = MvPolynomial.aeval (fun _ : κ => (0 : k)) P` using `rfl`. Rewrite `ha` using `[this]`. Simplify `ha` using `[MvPolynomial.aeval_zero']`. Establish `hP : P ∈ orig k κ`. Establish `: P ∈ Ideal.span (MvPolynomial.X '' (Set.univ : Set κ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.mem_ideal_span_X_image]`. Introduce `m hm`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hm0 : m = 0` using `by ext i; exact hc i (Set.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hm0` using the available equality. Rewrite `hm` using `[MvPolynomial.mem_support_iff, ← MvPolynomial.constantCoeff_eq]`. Conclude with `hm h0`. Simplify `this` using `[orig, Set.image_univ]`. Use `⟨n + 1, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.pow_mem_pow hP _`. Establish `hrange` using `range_comap_of_surjective _ _ hsurj`. Establish `huniv : PrimeSpectrum.zeroLocus (RingHom.ker (jetAug : Jet k κ n →ₐ[k] k).toRingHom : Set (Jet k κ n)) = Set.univ`. Rewrite using `[PrimeSpectrum.zeroLocus_eq_univ_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Conclude with `mem_nilradical.2 (hnil a (RingHom.mem_ker.1 ha))`. Choose the witnesses or unpack the hypotheses as in `⟨p, hp⟩ : q ∈ Set.range (PrimeSpectrum.comap (jetAug : Jet k κ n →ₐ[k] k).toRingHom) := by`. Rewrite using `[hrange, huniv]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl` using `congrArg (fun g => Over.Hom.left g) h`. Simplify using `only [Over.comp_left] at hl`. Establish `hq : ψ.left q = (1 : overAt x k ⟶ t.G).left p`. Rewrite using `[← hl, ← hp]`. Both sides reduce to the same expression.
-
-Rewrite using `[hq]`. Conclude with `hj₀ (show p ∈ (⊤ : (Sp k).Opens) from trivial)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jet_left_mem {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} (t : SAB H X0)
     {k : Type} [Field k] (x : Sp k ⟶ X0) {κ : Type} {n : ℕ} (j₀ : t.PP.L.ι)

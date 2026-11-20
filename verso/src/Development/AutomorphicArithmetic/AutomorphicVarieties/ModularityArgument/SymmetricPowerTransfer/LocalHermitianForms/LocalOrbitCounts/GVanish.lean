@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL j hj χ z hz hne`. Use `haveI := hL.frac`. Take `⟨s, u, t, hn, ht⟩` from `exists_of_gOrb_ne (O := O) hj hne`. Establish `hu : algebraMap O K ↑u⁻¹ * algebraMap O K ↑u = 1`. Rewrite using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Break down `hz with h | h` into its components or cases. Rewrite `hn`, `ht` using `[h]`. Simplify using `[trace, QuadraticAlgebra.norm] at hn ht`. Establish `h2 : (s : K) ^ 2 = algebraMap O K ↑u⁻¹`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, hu, one_mul]`. Use `_ = _ := by rw [← hn, mul_one]`. Establish `hi : IsIntegral O (s : K)` using `IsIntegral.of_pow two_pos (h2 ▸ isIntegral_algebraMap)`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨y * t, by rw [map_mul, hy, ht]⟩`. Rewrite `hn`, `ht` using `[h]`. Simplify using `[trace, QuadraticAlgebra.norm] at hn ht`. Establish `e : algebraMap O K t = algebraMap O K ↑u * s`. Apply `mul_left_cancel₀ s.ne_zero` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `hn - ht`. Establish `hs : (s : K) = algebraMap O K (↑u⁻¹ * t)`. Rewrite using `[map_mul, e, ← mul_assoc, hu, one_mul]`. Use `⟨↑u⁻¹ * t * t - 2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, ← hs, map_ofNat]`.
-
-Take the linear combination `-ht`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Loc.gVanish : UpperTheory.V.Z.Sym.Loc.GVanish := by
   intro O K _ _ _ _ _ Δ τ hL j hj χ z hz hne

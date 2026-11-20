@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeDeform
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia
 
 /- English proof (translation)
-Introduce `D E E' _ _ _ _ _ _ I φ hcl hd q w' e hw' hw'I hqe`. Take `⟨d, hdc, hdI, hdφ⟩` from `hd (orderOf e) (orderOf_pos e)`. Use `haveI : NeZero (orderOf e) := ⟨(orderOf_pos e).ne'⟩`. Set `w : D →* E` to `{ toFun := fun g => e ^ (Multiplicative.toAdd (d g)).val map_one' := by simp map_mul' := fun x y => by`. Simplify using `only [map_mul, toAdd_mul, ZMod.val_add, pow_mod_orderOf, pow_add] }`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hwapp : ∀ g, w g = e ^ (Multiplicative.toAdd (d g)).val` using `fun g => rfl`. Establish `hwc : IsLocallyConstant w` using `hdc.comp fun x => e ^ (Multiplicative.toAdd x).val`. Establish `hφ : w φ = e`. Rewrite using `[hwapp, hdφ, toAdd_ofAdd, ZMod.val_one_eq_one_mod, pow_mod_orderOf, pow_one]`. Establish `hwI : ∀ s ∈ I, w s = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite using `[hwapp, hdI s hs]`. Simplify using the standard rewrite rules. Use `⟨w, hwc, hwI, ?_, fun g => by rw [hwapp]; exact Subgroup.npow_mem_zpowers e _⟩` and prove the remaining obligations. Establish `hf : IsLocallyConstant fun x => (q (w x))⁻¹ * w' x` using `IsLocallyConstant.comp₂ (hwc.comp q) hw' fun a b => a⁻¹ * b`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed ((q.comp w).eqLocus w' : Set D)`. Establish `e1 : ((q.comp w).eqLocus w' : Set D) = (fun x => (q (w x))⁻¹ * w' x) ⁻¹' {1}`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, inv_mul_eq_one]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `(hf.isClopen_fiber 1).isClosed`. Establish `hle : I ⊔ Subgroup.zpowers φ ≤ (q.comp w).eqLocus w'`. Use `sup_le (fun s hs => ?_) (Subgroup.zpowers_le.2 ?_)` and prove the remaining obligations. Use `show q (w s) = w' s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hwI s hs, map_one, hw'I s hs]`. Use `show q (w φ) = w' φ`. Rewrite using `[hφ, hqe]`. Establish `htop : ⊤ ≤ (q.comp w).eqLocus w'`. Rewrite using `[← hcl]`.
-
-Conclude with `Subgroup.topologicalClosure_minimal _ hle hclosed`. Use extensionality with `g`. Conclude with `htop (Subgroup.mem_top g)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.UnitaryThreeInertia.lt_zhat :
     ∀ {D E E' : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [Group E] [Finite E] [Group E'] (I : Subgroup D) (φ : D),

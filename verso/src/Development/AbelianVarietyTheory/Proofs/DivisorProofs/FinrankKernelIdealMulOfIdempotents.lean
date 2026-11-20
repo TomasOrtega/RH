@@ -7,11 +7,11 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Establish `hdim : Module.finrank k (G.A n) = p ^ (n * G.height)`. Take `⟨q⟩ : Nonempty (PrimeSpectrum k)` from `inferInstance`. Establish `h` using `G.rank_eq n q`. Rewrite `h` using `[Module.rankAtStalk_eq_finrank_of_free]`. Simplify using `using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hker` using `GlobalTheory.T.ker_app_eq_bialgHomKernelIdeal_of_idempotents p k G u v huv h1 h2 n`. Establish `hord` using `finrank_eq_ker_mul_range k (G.A n) (G.A n) (u.app n)`. Establish `hr : Module.finrank k (LinearMap.range ((u.app n : G.A n →ₐ[k] G.A n).toLinearMap)) = Module.finrank k (G.A n ⧸ kerIdeal (v.app n))`. Rewrite using `[← hker]`. Conclude with `(((u.app n : G.A n →ₐ[k] G.A n).toLinearMap.quotKerEquivRange).symm.finrank_eq).trans rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdim, hord, hr]`.
+A detailed English derivation is pending.
 -/
 theorem finrank_quot_kerIdeal_mul_of_idem (p : ℕ) [Fact p.Prime] (k : Type) [Field k]
     (G : PDivGroup p k) (u v : G ⟶ G) (huv : u + v = 𝟙 G) (h1 : u ≫ v = 0) (h2 : v ≫ u = 0)

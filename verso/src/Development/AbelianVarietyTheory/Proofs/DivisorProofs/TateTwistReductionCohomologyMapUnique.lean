@@ -15,11 +15,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.RedUniq
 
 /- English proof (translation)
-Introduce `Q q _ hq i ρ ρ' h E n x`. Take `⟨u, hu⟩` from `GlobalTheory.T.exists_factor_through_extendScalars_zmod Q q hq _ _ ρ`. Take `⟨u', hu'⟩` from `GlobalTheory.T.exists_factor_through_extendScalars_zmod Q q hq _ _ ρ'`. Establish `e1` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective _ _ (extπ (ZMod.castHom hq (ZMod q)) (res _ (tw Q i))) ρ u hu).1 E n x`. Establish `e2` using `(GlobalTheory.T.sheafComplexSemilinearMap_comp_bijective _ _ (extπ (ZMod.castHom hq (ZMod q)) (res _ (tw Q i))) ρ' u' hu').1 E n x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε` using `GlobalTheory.T.extendScalars_tateTwistResolution_hom_ext_augmentation Q q hq i _ u u' (fun U ζ => by rw [← hu, ← hu', h])`. Use `haveI := GlobalTheory.T.quasiIso_extendScalars_tateTwist_augmentation Q q hq i`. Use `haveI : (res (ZMod q) (tw q i)).IsKInjective := inferInstanceAs ((injectiveResolution (tw q i)).cochainComplex.IsKInjective)`. Use `haveI : (res (ZMod q) (tw q i)).IsStrictlyGE 0 := inferInstanceAs ((injectiveResolution (tw q i)).cochainComplex.IsStrictlyGE 0)`. Take `⟨H⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective (ZMod q) _ _ (res _ (tw q i)) (extAug (ZMod.castHom hq (ZMod q)) (tw Q i))).2 u u' hε`.
-
-Establish `e3` using `((GlobalTheory.T.hypercohomologyPullbackPushforward_functorial (ZMod q)).2.2.2.2 u u' ⟨H⟩ ((chains (ZMod q)).obj E) n).2`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_eq : ∀ (Q q : ℕ) [NeZero Q], q ∣ Q → ∀ (i : ℤ) (ρ ρ' : SemiMap (res _ (tw Q i)) (res _ (tw q i))),
     (∀ (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)), ρ.app U 0 (resGen i ζ) = ρ'.app U 0 (resGen i ζ)) →

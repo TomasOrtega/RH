@@ -7,13 +7,13 @@ namespace GlobalTheory.ContinuityFromFixedPoints
 open Topology
 
 /- English proof (translation)
-Use `choose x hx using h`. Use `continuous_of_continuousAt_one φ ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one]`. Introduce `s hs`. Take `⟨E', hE', hs'⟩` from `(krullTopology_mem_nhds_one_iff k' F' s).1 hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasis k' E'`. Set `S : Set F` to `Set.range fun i => x (b i : F')`. Establish `hS : S.Finite` using `Set.finite_range _`. Use `haveI : Finite S := hS.to_subtype`. Establish `hfin : FiniteDimensional k (IntermediateField.adjoin k S)` using `IntermediateField.finiteDimensional_adjoin fun z _ => Algebra.IsIntegral.isIntegral z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Filter.mem_map]`. Use `(krullTopology_mem_nhds_one_iff k F _).2 ⟨IntermediateField.adjoin k S, hfin, ?_⟩` and prove the remaining obligations. Introduce `σ hσ`. Apply `hs'` to reduce the goal to its premises. Rewrite `hσ`, the goal using `[SetLike.mem_coe, IntermediateField.mem_fixingSubgroup_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, φ σ (b i : F') = b i` using `fun i => hx _ σ (hσ _ (IntermediateField.subset_adjoin k S ⟨i, rfl⟩))`. Introduce `y hy`. Establish `hlin : ((φ σ).toLinearMap ∘ₗ E'.val.toLinearMap) = E'.val.toLinearMap` using `b.ext fun i => by simpa using hb i`. Simplify using `using LinearMap.congr_fun hlin ⟨y, hy⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem continuous_of_forall_exists_fix {k : Type u_1} {F : Type u_2} {k' : Type u_3}
     {F' : Type u_4} [Field k] [Field F] [Algebra k F] [Field k'] [Field F'] [Algebra k' F']

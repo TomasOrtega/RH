@@ -5,9 +5,9 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ σ τ _ a h g`. Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero h`. Establish `e : g = MvPowerSeries.C (constantCoeff g) + (g - MvPowerSeries.C (constantCoeff g))` using `by ring`. Use `conv_lhs => rw [e]`. Rewrite using `[subst_add ha, map_add, subst_C, constantCoeff_subst_eq_zero ha h (f := g - MvPowerSeries.C (constantCoeff g)) (by simp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_of_constantCoeff_zero :
     ∀ (R : Type) [CommRing R] (σ τ : Type) [Finite σ] (a : σ → MvPowerSeries τ R),

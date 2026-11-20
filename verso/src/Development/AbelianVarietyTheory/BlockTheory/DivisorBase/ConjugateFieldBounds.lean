@@ -135,7 +135,7 @@ def ColumnNorms : Prop :=
   ∀ Cs : ℝ, ∃ CK C : ℝ, 0 ≤ CK ∧ 0 ≤ C ∧ ∀ (D : D7) (large₂ : SizeData₂ D) (EX : ErrX D), ColumnNormsAt Cs CK C D large₂ EX
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨AlgHom.card ℚ M ℂ, Module.finrank_pos⟩`.
+Supply the required witnesses or components.
 -/
 example (M : IntermediateField ℚ ℂ) [NumberField M] :
     Fintype.card (M →ₐ[ℚ] ℂ) = Module.finrank ℚ M ∧ 0 < Module.finrank ℚ M :=
@@ -144,9 +144,9 @@ example (M : IntermediateField ℚ ℂ) [NumberField M] :
 open Formalism.L2.DIV.Inst Formalism.L2.Indef.Examples₂ in
 
 /- English proof (translation)
-Use `⟨fun i hi => absurd hi (Nat.not_lt_zero i), fun φ => ?_⟩` and prove the remaining obligations. Rewrite using `[ptInF_eta φ, pt_cpl]`. Establish `h1` using `pt_ipAt pt_ok v ((1 * 1 : K3) • fun _ : Fin 1 => (φ () : Unit → K3) ())`. Establish `h2` using `pt_famIpAt v (fun _ : Fin 1 => (φ () : Unit → K3) ())`. Use `le_of_eq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg Complex.re h1).trans ?_` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (fun z : ℂ => Real.exp (0 + 0) * z.re) h2).symm` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example (v : InfinitePlace K3) : FactorBounds (ptQ 0 (fun _ => 1) 1 1) v fun _ => 0 := by
   refine ⟨fun i hi => absurd hi (Nat.not_lt_zero i), fun φ => ?_⟩
@@ -161,9 +161,9 @@ example (v : InfinitePlace K3) : FactorBounds (ptQ 0 (fun _ => 1) 1 1) v fun _ =
 open Formalism.L2.DIV.Inst Formalism.L2.Indef.Examples₂ in
 
 /- English proof (translation)
-Introduce `h`. Establish `h0` using `h.2 (ptInF fun _ => 1)`. Rewrite `h0` using `[pt_cpl]`. Establish `h1` using `congrArg Complex.re (pt_ipAt pt_ok v ((1 * 2 : K3) • fun _ : Fin 1 => (1 : K3)))`. Establish `h2` using `congrArg (fun z : ℂ => Real.exp (0 + 0) * z.re) (pt_famIpAt v (fun _ : Fin 1 => 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h1.symm.le.trans (h0.trans h2.le)`. Simplify using `only [Complex.ofReal_re, Pi.smul_apply, smul_eq_mul, mul_one, one_mul, map_ofNat, map_one, add_zero, Real.exp_zero] at h3`. Evaluate the numerical expressions using `at h3`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 -/
 example (v : InfinitePlace K3) : ¬ FactorBounds (ptQ 0 (fun _ => 1) 2 1) v fun _ => 0 := by
   intro h

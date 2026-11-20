@@ -9,7 +9,7 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-The claim follows from `|Formalism.Gz y| ≤ ((Real.exp ((8 / c) ^ 2) * (8 / c) ^ 2 + (8 / c) ^ 2 + 2) * Real.exp 1) * y * Real.exp (-(c / 8) * Real.sqrt (Real.log y)) := by have hy0 : 0 < y := by linarith have hlog : 0 ≤ Real.log y := Real.log_nonneg (by linarith) have hsq : 0 ≤ Real.sqrt (Real.log y) := …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_zetaPrimeSumError_le_of_sqrt_log_lt (c : ℝ) (hc : 0 < c) (y : ℝ) (hy : 2 ≤ y)
     (hs : Real.sqrt (Real.log y) < 8 / c) :
@@ -49,19 +49,19 @@ private theorem abs_zetaPrimeSumError_le_of_sqrt_log_lt (c : ℝ) (hc : 0 < c) (
     _ = M * Real.exp 1 * y * Real.exp (-(c / 8) * Real.sqrt (Real.log y)) := by ring
 
 /- English proof (translation)
-Introduce `hZF hLD hRH hP hRS`. Take `⟨c₀, hc₀, hZ⟩` from `hZF`. Take `⟨c₁, C₁, hc₁, hD⟩` from `hLD`. Take `⟨C₂, hC₂, hR⟩` from `hRH`. Take `⟨D, hDdef⟩ : ∃ D : ℝ, D = max C₁ 0` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hD0 : 0 ≤ D` using `hDdef ▸ le_max_right _ _`. Establish `hD' : ∀ s : ℂ, s ≠ 1 → 1 - c₁ / Real.log (|s.im| + 2) ≤ s.re → ‖deriv riemannZeta s / riemannZeta s + 1 / (s - 1)‖ ≤ D * Real.log (|s.im| + 2) ^ 2`. Introduce `s hs hre`. Conclude with `(hD s hs hre).trans (mul_le_mul_of_nonneg_right (hDdef ▸ le_max_left _ _) (sq_nonneg _))`. Take `⟨c, hcdef⟩ : ∃ c : ℝ, c = min (min c₀ c₁) (1 / 2)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hc : 0 < c` using `hcdef ▸ lt_min (lt_min hc₀ hc₁) (by norm_num)`. Establish `hc2 : c ≤ 1 / 2` using `hcdef ▸ min_le_right _ _`. Establish `hcc₀ : c ≤ c₀` using `hcdef ▸ (min_le_left _ _).trans (min_le_left _ _)`. Establish `hcc₁ : c ≤ c₁` using `hcdef ▸ (min_le_left _ _).trans (min_le_right _ _)`. Take `⟨A, hA⟩ : ∃ A : ℝ, A = (2 * Real.pi * Real.exp 1 * (1 + C₂) + 4 * Real.exp 1 * (D + 1) + 4 * (D + 1)) * (6 * (8 / c) ^ 3)` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩ : ∃ B : ℝ, B = (Real.exp ((8 / c) ^ 2) * (8 / c) ^ 2 + (8 / c) ^ 2 + 2) * Real.exp 1` from `⟨_, rfl⟩`. Use `⟨c / 8, max A B, div_pos hc (by norm_num), ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hy0 : 0 ≤ y` using `by linarith`. Establish `hyE : 0 ≤ y * Real.exp (-(c / 8) * Real.sqrt (Real.log y))` using `mul_nonneg hy0 (Real.exp_pos _).le`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h8c : 16 ≤ 8 / c`. Rewrite using `[le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `hs : 8 / c ≤ Real.sqrt (Real.log y)`. Establish `hs1 : 1 ≤ Real.sqrt (Real.log y)` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `abs_zetaPrimeSumError_le_of_large c₀ c₁ D C₂ hD0 hC₂ hZ hD' hR hP hRS c hc hc2 hcc₀ hcc₁ y hy hs hs1`. Rewrite `h` using `[← hA]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hs` using `[not_le]`. Establish `h` using `abs_zetaPrimeSumError_le_of_sqrt_log_lt c hc y hy hs`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← hB]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zetaPrimeSumErrorBoundOfBounds : GzPNTOf := by
   intro hZF hLD hRH hP hRS

@@ -17,9 +17,9 @@ namespace GlobalTheory.CompanionTheory.RmHol.GelCoef
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hR : fderiv ℝ f z = (fderiv ℂ f z).restrictScalars ℝ` using `(hf.hasFDerivAt.restrictScalars ℝ).fderiv`. Establish `hI : z * Matrix.single a b Complex.I = Complex.I • (z * Matrix.single a b (1 : ℂ))`. Rewrite using `[← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Establish `hII : Complex.I * Complex.I = -1` using `Complex.I_mul_I`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [Eu, Rd, Pi.smul_apply, Pi.add_apply, if_true, hR, ContinuousLinearMap.coe_restrictScalars', hI, map_smul, smul_eq_mul]`. Take the linear combination `(-(1 / 2 : ℂ) * fderiv ℂ f z (z * Matrix.single a b (1 : ℂ))) * hII`. Simplify using `only [Eu, Rd, Pi.smul_apply, Pi.add_apply, hR, Bool.false_eq_true, if_false, ContinuousLinearMap.coe_restrictScalars', hI, map_smul, smul_eq_mul]`. Take the linear combination `((1 / 2 : ℂ) * fderiv ℂ f z (z * Matrix.single a b (1 : ℂ))) * hII`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Eu_of_differentiableAt {f : Mat n → ℂ} {z : Mat n} (hf : DifferentiableAt ℂ f z) (a b : Fin n) :
     Eu true a b f z = fderiv ℂ f z (z * Matrix.single a b 1) ∧ Eu false a b f z = 0 := by
@@ -37,7 +37,7 @@ theorem Eu_of_differentiableAt {f : Mat n → ℂ} {z : Mat n} (hf : Differentia
     linear_combination ((1 / 2 : ℂ) * fderiv ℂ f z (z * Matrix.single a b (1 : ℂ))) * hII
 
 /- English proof (translation)
-Simplify using `only [Eu, Rd, Pi.smul_apply, Pi.add_apply, e.fderiv_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_congr_germ {f h : Mat n → ℂ} {g : Mat n} (e : f =ᶠ[𝓝 g] h) (s : Bool) (a b : Fin n) :
     Eu s a b f g = Eu s a b h g := by

@@ -12,11 +12,9 @@ open GlobalTheory.HkFam
 namespace GlobalTheory.HkFam
 
 /- English proof (translation)
-Introduce `X Y Z q π _ _ _ _ _ _ _`. Establish `he : Etale π` using `GlobalTheory.etale_of_comp_of_etale_of_surjective q π`. Establish `: UniversallyClosed π` using `UniversallyClosed.of_comp_surjective q π`. Establish `: IsProper π` using `{}`. Establish `: LocallyQuasiFinite π`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun {U} hU {V} hV e => ?_⟩` and prove the remaining obligations. Establish `h₁` using `π.formallyUnramified_appLE hU hV e`. Establish `h₂` using `π.finiteType_appLE hU hV e`. Use `algebraize [(π.appLE U V e).hom]`. Conclude with `inferInstanceAs (Algebra.QuasiFinite _ _)`.
-
-Conclude with `⟨.of_isProper_of_locallyQuasiFinite _, he⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFinite_and_etale_of_comp_of_finite_etale_cover :
     ∀ (X Y Z : Scheme.{0}) (q : X ⟶ Y) (π : Y ⟶ Z), IsFinite q → Etale q → Surjective q → IsFinite (q ≫ π) → Etale (q ≫ π) → IsSeparated π → LocallyOfFinitePresentation π → IsFinite π ∧ Etale π := by

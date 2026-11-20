@@ -17,15 +17,13 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hle : I ^ (e + 1) ≤ (I' ^ (e + 1)).comap φ` using `(Ideal.pow_right_mono hI _).trans (Ideal.le_comap_pow φ _)`. Establish `hw : (hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) ≫ D.P.A.hom = D'.P.A.hom ≫ specOf φ` using `(pull_grp hD).1.w`. Establish `hc` using `ExpGTrans.famφB_pull hD x`. Unfold `PullB at H`. Establish `ht : thick R' I' e ≫ specOf φ = spMap (Ideal.quotientMap (I' ^ (e + 1)) φ hle) ≫ thick R I e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨h, hh⟩ : ∃ h : pullback D'.P.A.hom (thick R' I' e) ⟶ pullback D.P.A.hom (thick R I e), h ≫ pullback.fst D.P.A.hom (thick R I e) = pullback.fst D'.P.A.hom (thick R' I' e) ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)` from `⟨pullback.lift _ (pullback.snd D'.P.A.hom (thick R' I' e) ≫ spMap (Ideal.quotientMap (I' ^ (e + 1)) φ hle)) (by`. Rewrite using `[Category.assoc, hw, ← Category.assoc, pullback.condition, Category.assoc, ht, Category.assoc]),`. Use the proof step `pullback.lift_fst _ _ _⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose p hp using fun κ => exists_chart D.P.isLB ((hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)) (D'.famφB x κ (pullback.fst D'.P.A.hom (thick R' I' e) y)))`. Establish `e₁` using `H _ (pullback.fst D'.P.A.hom (thick R' I' e)) y p q hp (Set.mem_iInter.1 hy)`. Establish `hm : pullback.fst D.P.A.hom (thick R I e) (h y) ∈ LB.wchart D.P.L (D.famφB (hD.xe x)) p` using `Set.mem_iInter.2 fun κ => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a : h ≫ pullback.fst D.P.A.hom (thick R I e) ≫ D.famφB (hD.xe x) κ = pullback.fst D'.P.A.hom (thick R' I' e) ≫ D'.famφB x κ ≫ hD.e.hom.left ≫ pullback.fst D.P.A.hom (specOf φ)`. Rewrite using `[← Category.assoc, hh, Category.assoc, ← hc κ]`. Conclude with `(congrArg (fun m => m y ∈ D.P.L.U (p κ)) a).mpr (hp κ)`. Establish `z₀ : ∀ {X Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (U : X.Opens), f y ∈ U → gs f y U 0 = 0` using `fun f y U h => by`. Rewrite using `[gs_eq f y U h, map_zero, map_zero]`.
-
-Rewrite `e₁` using `[← hh]`. Establish `e₂` using `(Units.mul_right_eq_zero _).1 (e₁.symm.trans ((gs_pull h _ y _ hm _).symm.trans ((congrArg (gs h y _) (hb p)).trans (z₀ h y _ hm))))`. Conclude with `((gs_pull (𝟙 _) _ y _ hy _).trans ((congrArg (fun m => gs m y _ _) (Category.id_comp _)).trans e₂)).trans (z₀ _ y _ hy).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PullB.vanMod {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ : R →+* R'}
     {D : DegPre R} {D' : DegPre R'} {hD : IsPullDeg φ D D'} {k : ℕ} {x : D'.X} {b : D.SecB k (hD.xe x)}
@@ -67,9 +65,9 @@ theorem PullB.vanMod {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDo
     (z₀ _ y _ hy).symm
 
 /- English proof (translation)
-Introduce `R _ _ _ _ D W _ _ _ φ D' hD _ hl k F`. Use `choose f' hf' using fun x => (SecPull.existsUnique_secPull _ _ _ _ _ _ _ D.toPre.P.isLB D'.toPre.P.isLB hD.w hD.w_gen (Fin 4) (D'.toPre.famφB x) (D.toPre.famφB (hD.xe x)) (DegPre.famε k) _ (ExpGTrans.famφB_pull hD x) (F.f (hD.xe x))).exists`. Establish `s₁ : scal (DegPre.BF D.toPre (FractionRing R)).hom 1 = 1` using `by rw [scal, map_one, map_one]`. Establish `s₂ : scal (DegPre.BF D'.toPre (FractionRing W)).hom 1 = 1` using `by rw [scal, map_one, map_one]`. Take `⟨E, hE⟩` from `exists_fam_of_isPullDeg GlobalTheory.allSixLaws.1.globalFns R W φ D.toPre D'.toPre hD k F.F F.f f' (fun α => s₁ ▸ F.ext α) hf'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI : maximalIdeal R ≤ (maximalIdeal W).comap φ` using `fun a ha => map_nonunit φ a ha`. Use `⟨{ F := E, f := f', ext := fun α => s₂.symm ▸ hE α, small := fun e => ?_ }, hf'⟩` and prove the remaining obligations. Conclude with `((F.small e).preimage hD.xe.injective.injOn).subset fun x hx hv => hx (PullB.vanMod (hf' x) hI hv)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_intFam_pull : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (D : DegData R (maximalIdeal R)) (W : Type) [CommRing W] [IsDomain W] [IsLocalRing W] (φ : R →+* W) (D' : DegData W (maximalIdeal W)) (hD : IsPullDeg φ D.toPre D'.toPre), Function.Injective φ → IsLocalHom φ → ∀ (k : ℕ) (F : IntFam (maximalIdeal R) D.toPre k), ∃ F' : IntFam (maximalIdeal W) D'.toPre k, ∀ x, PullB hD x (F.f (hD.xe x)) (F'.f x) := by
   intro R _ _ _ _ D W _ _ _ φ D' hD _ hl k F

@@ -3,13 +3,11 @@ import Mathlib
 namespace GlobalTheory.ResidueSpanScale
 
 /- English proof (translation)
-Use `haveI : Nonempty J := ⟨j⟩`. Take `⟨j₀, h₀⟩` from `Finite.exists_max (fun i => ValuationRing.valuation O K (c i))`. Establish `hv : ValuationRing.valuation O K (c j₀) ≠ 0`. Introduce `h`. Establish `h1` using `h₀ j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h, le_zero_iff]`. Conclude with `hj ((Valuation.zero_iff _).1 h1)`. Establish `hc : c j₀ ≠ 0` using `fun h => hv (by rw [h, map_zero])`. Establish `hex : ∀ i, ∃ a : O, algebraMap O K a = c i / c j₀`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ValuationRing.mem_integer_iff, Valuation.mem_integer_iff, map_div₀]`. Conclude with `div_le_one_of_le₀ (h₀ i) zero_le`. Use `choose d hd using hex`. Use `⟨j₀, d, hc, ?_, fun i => ?_⟩` and prove the remaining obligations. Apply `IsFractionRing.injective O K` to reduce the goal to its premises.
-
-Rewrite using `[hd, div_self hc, map_one]`. Rewrite using `[hd]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_scale {O K J : Type} [CommRing O] [IsDomain O] [ValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] [Finite J] (c : J → K) (j : J) (hj : c j ≠ 0) :
@@ -34,19 +32,17 @@ theorem exists_scale {O K J : Type} [CommRing O] [IsDomain O] [ValuationRing O] 
   · rw [hd]; field_simp
 
 /- English proof (translation)
-Take `⟨κ, e, he, hsp, hli⟩` from `exists_linearIndependent' (IsLocalRing.ResidueField O) g`. Use `haveI : Finite κ := Finite.of_injective e he`. Use `haveI : Fintype κ := Fintype.ofFinite κ`. Establish `hf : LinearIndependent K (f ∘ e)`. Rewrite using `[Fintype.linearIndependent_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Take `⟨j, hj⟩` from `hne`. Take `⟨j₀, d, hc₀, hd₀, hd⟩` from `exists_scale (O := O) c j hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `hz : ∑ i, IsLocalRing.residue O (d i) • (g ∘ e) i = 0`. Use function extensionality and compare the values at `b`. Take `⟨a, w, hw⟩` from `h b`. Establish `h1` using `congrFun hc a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Function.comp_apply, Pi.zero_apply] at h1 ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : c j₀ * algebraMap O K (∑ i, d i * w (e i)) = 0`. Rewrite using `[← h1, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (hw (e i)).1, ← mul_assoc, ← hd i]`. Establish `h3 : ∑ i, d i * w (e i) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `IsFractionRing.injective O K` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(mul_eq_zero.1 h2).resolve_left hc₀`. Establish `h4` using `congrArg (IsLocalRing.residue O) h3`. Rewrite `h4` using `[map_sum, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h4]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (hw (e i)).2]`. Use `Fintype.linearIndependent_iff.1 hli _ hz j₀` as an intermediate fact. Rewrite `this` using `[hd₀, map_one]`.
-
-Conclude with `one_ne_zero this`. Use `haveI : Module.Finite K (Submodule.span K (Set.range f)) := Module.Finite.span_of_finite K (Set.finite_range f)`. Rewrite using `[← hsp, finrank_span_eq_card hli, ← finrank_span_eq_card hf]`. Conclude with `Submodule.finrank_mono (Submodule.span_mono (Set.range_comp_subset_range e f))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_span_residue_le {O K I A B : Type} [CommRing O] [IsDomain O] [ValuationRing O]
     [Field K] [Algebra O K] [IsFractionRing O K] [Finite I] (f : I → A → K)

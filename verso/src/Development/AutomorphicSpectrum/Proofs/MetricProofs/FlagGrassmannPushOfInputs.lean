@@ -35,9 +35,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {I : Ideal (MRing ι) → (n : ℕ) → (Fin n → HermLine ι) → ℝ} {P : Ideal (MRing ι)} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← Fin.snoc_update]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Break down `eq_or_ne i j with rfl | h` into its components or cases. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.update_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem snoc_update_fsHerm (c : HermLine ι) (v : Fin n → K → ℤ) (j : Fin n) (d : K → ℤ) :
     (Fin.snoc (α := fun _ => HermLine ι) (fun i => fsHerm ι (Function.update v j d i)) c) =
@@ -51,7 +51,7 @@ theorem snoc_update_fsHerm (c : HermLine ι) (v : Fin n → K → ℤ) (j : Fin 
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `i using Fin.lastCases with`. Consider the case `last => rw [Fin.snoc_last]`. Conclude with `hc`. Consider the case `cast i => rw [Fin.snoc_castSucc]`. Conclude with `FsInvPow.isSmoothHerm_fsHerm _`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isSmooth_snoc_fsHerm {c : HermLine ι} (hc : IsSmoothHerm c) (v : Fin n → K → ℤ)
     (i : Fin (n + 1)) :
@@ -61,7 +61,7 @@ theorem isSmooth_snoc_fsHerm {c : HermLine ι} (hc : IsSmoothHerm c) (v : Fin n 
   | cast i => rw [Fin.snoc_castSucc]; exact FsInvPow.isSmoothHerm_fsHerm _
 
 /- English proof (translation)
-Establish `hL` using `isSmooth_snoc_fsHerm hc v`. Rewrite using `[snoc_update_fsHerm, snoc_update_fsHerm, snoc_update_fsHerm, Inter.fam_update_eq_snoc hI hP _ hL _ (FsInvPow.isSmoothHerm_fsHerm _), Inter.fam_update_eq_snoc hI hP _ hL _ (FsInvPow.isSmoothHerm_fsHerm _), Inter.fam_update_eq_snoc hI hP _ hL _ (FsInvPow.isSmoothHerm_fsHerm _)]`. Conclude with `FlagHeightMultilinear.I_snoc_fsHerm_add hI hP _ (fun i => hL _) a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem snoc_update_add (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {c : HermLine ι}
     (hc : IsSmoothHerm c) (v : Fin n → K → ℤ) (j : Fin n) (a b : K → ℤ) :
@@ -93,7 +93,7 @@ def snocMultilin (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {c : 
     exact map_zsmul g t a
 
 /- English proof (translation)
-The claim follows from `(Inter.Conservation.proof K ι I hI P n (fun i => fsHerm ι (v i)) 2 hP (fun _ => FsInvPow.isSmoothHerm_fsHerm _) Nat.prime_two).2`.
+A detailed English derivation is pending.
 -/
 theorem snocMultilin_apply (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) (v : Fin n → K → ℤ) :
     snocMultilin hI hP (isSmoothHerm_constLine (-Real.log ((2 : ℕ) : ℝ))) v =
@@ -102,13 +102,13 @@ theorem snocMultilin_apply (hI : IsIntersectionFamily I) (hP : IsArithVar P (n +
     (fun _ => FsInvPow.isSmoothHerm_fsHerm _) Nat.prime_two).2
 
 /- English proof (translation)
-The claim follows from `(Real.log_pos (by norm_num)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem log_two_ne : Real.log ((2 : ℕ) : ℝ) ≠ 0 :=
   (Real.log_pos (by norm_num)).ne'
 
 /- English proof (translation)
-Use `mul_left_cancel₀ log_two_ne ?_` and prove the remaining obligations. Rewrite using `[← snocMultilin_apply hI hP, MultilinearMap.map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.map_smul_univ _ (fun i => ℓ i (r i)) (fun i => x (r i)), snocMultilin_apply hI hP, zsmul_eq_mul, Int.cast_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pts_fsHerm_sum (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) {α : Type} [Fintype α]
     (ℓ : Fin n → α → ℤ) (x : α → K → ℤ) :
@@ -123,11 +123,11 @@ theorem pts_fsHerm_sum (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1))
   ring
 
 /- English proof (translation)
-Establish `hg : geomDeg P (fsMulti ι) n = ptsIntegral P (pot fun _ : Fin n => fsHerm ι fun _ => 1) (fun _ => 1)`. Unfold `geomDeg`. Use `congr 1`. Use function extensionality and compare the values at `_ z`. Use `show Real.log ((fsMulti ι).h z) = Real.log ((fsHerm ι fun _ => 1).h z)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FsInvPow.fsHerm_h_eq]`. Both sides reduce to the same expression. Rewrite using `[hg]`. Use `mul_left_cancel₀ log_two_ne ?_` and prove the remaining obligations. Establish `e : (fun _ : Fin n => (fun _ => -1 : K → ℤ)) = fun i => (fun _ : Fin n => (-1 : ℤ)) i • (fun _ : Fin n => (fun _ => 1 : K → ℤ)) i`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `_ _`. Simplify using the standard rewrite rules. Rewrite using `[← snocMultilin_apply hI hP, e, MultilinearMap.map_smul_univ, snocMultilin_apply hI hP]`. Simplify using `only [Finset.prod_const, Finset.card_univ, Fintype.card_fin, zsmul_eq_mul, Int.cast_pow, Int.cast_neg, Int.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pts_neg_eq (hI : IsIntersectionFamily I) (hP : IsArithVar P (n + 1)) :
     ptsIntegral P (pot fun _ : Fin n => fsHerm ι fun _ => -1) (fun _ => 1) =
@@ -163,9 +163,9 @@ def flagIntAdd : RootPoly Ψ N →+ ℚ :=
     simp only [map_add, smul_add, Finset.sum_add_distrib, coeff_add]
 
 /- English proof (translation)
-Establish `h : ∏ i, LowerBoundFree.linForm Ψ N (ℓ i) = ∑ r : Fin d → Ψ × Fin N, C (∏ i, (ℓ i (r i) : ℚ)) * ∏ i, (X (r i) : RootPoly Ψ N)`. Unfold `LowerBoundFree.linForm`. Rewrite using `[Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_C_mul, Finset.prod_mul_distrib, map_prod]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Use `(map_sum (flagIntAdd Ψ N) _ _).trans (Finset.sum_congr rfl fun r _ => ?_)` and prove the remaining obligations. Conclude with `flagInt_C_mul Ψ N _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flagInt_prod_linForm {d : ℕ} (ℓ : Fin d → Ψ × Fin N → ℤ) :
     flagInt Ψ N (∏ i, LowerBoundFree.linForm Ψ N (ℓ i)) =
@@ -181,11 +181,11 @@ theorem flagInt_prod_linForm {d : ℕ} (ℓ : Fin d → Ψ × Fin N → ℤ) :
   exact flagInt_C_mul Ψ N _ _
 
 /- English proof (translation)
-Substitute `hd` using the available equality. Establish `hP` using `FlagArithVar.proof Ψ N hN`. Establish `hI` using `hII (FlBlock Ψ N) (FlIdx Ψ N)`. Establish `hlin : (fun i => linLine Ψ N (ℓ i)) = fun i => fsHerm (FlIdx Ψ N) (∑ p, ℓ i p • xDeg Ψ N p)`. Use function extensionality and compare the values at `i`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `linLine linDeg`. Use `congr 1`. Use function extensionality and compare the values at `q`. Simplify using `[Finset.sum_apply]`. Rewrite using `[hlin, pts_fsHerm_sum hI hP, flagInt_prod_linForm]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations. Rewrite using `[← hB r]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pts_linForms [Nonempty Ψ] (II : IntersectionSystem) (hII : IsIntersectionSystem II) (hN : 2 ≤ N)
     (hB : ∀ w : Fin (dimFl Ψ N) → Ψ × Fin N,
@@ -216,7 +216,7 @@ def jForms : Fin (dimN Ψ N j + vandCount Ψ N j) → Ψ × Fin N → ℤ :=
   Fin.append (fun _ => muForm Ψ N j) (fun i => vandForm Ψ N j ((Fintype.equivFin (VandPair Ψ N j)).symm i))
 
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_add]`. Simplify using `only [jForms, Fin.append_left, Fin.append_right, Finset.prod_const, Finset.card_univ, Fintype.card_fin, linForm_muForm, prod_vandForm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_jForms :
     ∏ i, LowerBoundFree.linForm Ψ N (jForms Ψ N j i) = muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j := by
@@ -225,7 +225,7 @@ theorem prod_jForms :
     linForm_muForm, prod_vandForm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Simplify using `[jForms]`. Simplify using `[jForms, vandLine]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linLine_jForms :
     (fun i => linLine Ψ N (jForms Ψ N j i)) =
@@ -245,17 +245,17 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 open GroundTheory.Heights₂.Heights GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar.Giv.Push
 
 /- English proof (translation)
-Introduce `hIn hSys II Ψ _ _ _ N j cf hII hN hj hjN`. Establish `hcnt : dimN Ψ N j + vandCount Ψ N j = dimFl Ψ N` using `VandCount.proof Ψ N j (by omega)`. Establish `hAr0 : IsArithVar (PFl Ψ N) (dimFl Ψ N + 1)` using `FlagArithVar.proof Ψ N hN`. Establish `hArFl : IsArithVar (PFl Ψ N) (dimN Ψ N j + 1 + vandCount Ψ N j)`. Rewrite `hAr0` using `[show dimFl Ψ N + 1 = dimN Ψ N j + 1 + vandCount Ψ N j by omega]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hArFl' : IsArithVar (PFl Ψ N) (dimN Ψ N j + vandCount Ψ N j + 1)`. Rewrite `hArFl` using `[show dimN Ψ N j + 1 + vandCount Ψ N j = dimN Ψ N j + vandCount Ψ N j + 1 by omega]`. Then use the resulting hypothesis. Establish `hArGr : IsArithVar (grassIdeal (Fintype.card Ψ) j (N - j)) (dimN Ψ N j + 1)` using `GrassArithVar.full (Fintype.card Ψ) j (N - j) Fintype.card_pos`. Establish `hIm` using `FlagImageGrass.proof Ψ N j hj hjN`. Establish `hArIm : IsArithVar (imageZ (grFlV Ψ N j hj hjN) (PFl Ψ N)) (dimN Ψ N j + 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hIm]`. Conclude with `hArGr`. Establish `hb` using `isBlockMap_grFl (Ψ := Ψ) (N := N) (j := j) hj hjN`. Take `⟨G⟩` from `Targets.genFibreExists _ _ _ _ _ _ (PFl Ψ N) _ hb hArFl`. Take `⟨J, hJ, -⟩` from `Targets.ExistsUnique.full G.Φ (fibreIdx (FlIdx Ψ N) (grFlKappa Ψ N j hj hjN))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPF` using `hIn.projFormula II hII (Fin (Fintype.card Ψ)) (plBlocks (Fintype.card Ψ) j (N - j)) (FlBlock Ψ N) (FlIdx Ψ N) (grFlKappa Ψ N j hj hjN) (grFlV Ψ N j hj hjN) (PFl Ψ N) (dimN Ψ N j + 1) (vandCount Ψ N j) G J (fun _ => fsHerm (plBlocks (Fintype.card Ψ) j (N - j)) (fun _ => -1)) (fun …`. Rewrite `hPF` using `[hIm]`. Establish `hprod` using `HFlProdLinear.proof FlagArithVar.proof II Ψ N (dimN Ψ N j + 1 + vandCount Ψ N j) cf (faForms Ψ N j) hII hN (by omega)`. Rewrite `hprod` using `[linLine_faForms Ψ N j, hPF, ← FA_eq_prod]`. Establish `hinv` using `FsInvPow.proof II (Fin (Fintype.card Ψ)) (plBlocks (Fintype.card Ψ) j (N - j)) (grassIdeal (Fintype.card Ψ) j (N - j)) (dimN Ψ N j + 1) hII hArGr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgeo` using `ptsIntegral_projection hIn.projFormula ⟨II, hII⟩ (Fin (Fintype.card Ψ)) (plBlocks (Fintype.card Ψ) j (N - j)) (FlBlock Ψ N) (FlIdx Ψ N) (grFlKappa Ψ N j hj hjN) (grFlV Ψ N j hj hjN) (PFl Ψ N) (dimN Ψ N j) (vandCount Ψ N j) G J (fun _ => fsHerm (plBlocks (Fintype.card Ψ) j (N - j) …`. Rewrite `hgeo` using `[hIm, pts_neg_eq (hII _ _) hArGr, ← linLine_jForms, pts_linForms Ψ N II hII hN (fun w => GlobalTheory.T.flag_points_integral_product_formula hIn hSys Ψ N w hN) _ hcnt, prod_jForms]`. Establish `hJint : (Jint Ψ N j cf : ℝ) = (cf : ℝ) * ((flagInt Ψ N (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) : ℚ) : ℝ)`. Unfold `Jint fib`. Rewrite using `[show muPoly Ψ N j ^ dimN Ψ N j * (C cf * vandBlocks Ψ N j) = C cf * (muPoly Ψ N j ^ dimN Ψ N j * vandBlocks Ψ N j) by ring, flagInt_C_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[hprod, hinv, hJint, hgeo]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem flagGrassPush : GlobalTheory.CompanionTheory.Ar.PB.Inputs → ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement →
     GroundTheory.Heights₂.Heights.LowerBoundFree.FlagGrassPush.Statement := by

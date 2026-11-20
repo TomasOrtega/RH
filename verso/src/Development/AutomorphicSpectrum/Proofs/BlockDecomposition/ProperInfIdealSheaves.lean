@@ -10,9 +10,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry GroundTheory.Arith.S
 namespace GlobalTheory.CompanionTheory.GE.Union
 
 /- English proof (translation)
-Establish `hle : T₁ * T₂ ≤ T₁ ⊓ T₂` using `fun U => Ideal.mul_le_inf`. Establish `h` using `Scheme.IdealSheafData.support_antitone hle`. Introduce `x hx`. Establish `hx' : x ∈ (T₁ * T₂).support` using `h hx`. Rewrite `hx'` using `[Scheme.IdealSheafData.support_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem support_inf_subset {X : Scheme.{0}} (T₁ T₂ : X.IdealSheafData) :
     ((T₁ ⊓ T₂).support : Set X) ⊆ (T₁.support : Set X) ∪ T₂.support := by
@@ -24,17 +24,15 @@ theorem support_inf_subset {X : Scheme.{0}} (T₁ T₂ : X.IdealSheafData) :
   exact hx'
 
 /- English proof (translation)
-Rewrite using `[universallyClosed_iff]`. Introduce `X' Y' i₁ i₂ f' H`. Establish `key : ∀ {W : Scheme.{0}} (p : W ⟶ Z), UniversallyClosed (p ≫ h) → IsClosedMap (pullback.fst i₁ p ≫ f')`. Introduce `W p hp`. Establish `H' : IsPullback (pullback.fst i₁ p ≫ f') (pullback.snd i₁ p) i₂ (p ≫ h)` using `(IsPullback.of_hasPullback i₁ p).paste_horiz H`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(universallyClosed_iff _).mp hp _ _ _ H'`. Establish `lift : ∀ {W : Scheme.{0}} (p : W ⟶ Z) (x : X'), i₁ x ∈ Set.range p → ∃ z : ↑(pullback i₁ p), pullback.fst i₁ p z = x`. Introduce and unpack `W p x ⟨w, hw⟩`. Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback x w hw.symm`. Conclude with `⟨z, hz⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show IsClosedMap f'`. Introduce `C hC`. Establish `hEq : f' '' C = (pullback.fst i₁ p₁ ≫ f') '' (pullback.fst i₁ p₁ ⁻¹' C) ∪ (pullback.fst i₁ p₂ ≫ f') '' (pullback.fst i₁ p₂ ⁻¹' C)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Break down `hc (i₁ x) with hr | hr` into its components or cases. Take `⟨z, hz⟩` from `lift p₁ x hr`. Conclude with `Or.inl ⟨z, by simpa [hz] using hx, by simp [hz]⟩`. Take `⟨z, hz⟩` from `lift p₂ x hr`.
+Extract witnesses or component facts from the available result. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inr ⟨z, by simpa [hz] using hx, by simp [hz]⟩`. Introduce and unpack `(⟨z, hz, rfl⟩ | ⟨z, hz, rfl⟩)`. Conclude with `⟨_, hz, by simp⟩`. Conclude with `⟨_, hz, by simp⟩`. Rewrite using `[hEq]`.
-
-Conclude with `(key p₁ h₁ _ (hC.preimage (pullback.fst i₁ p₁).continuous)).union (key p₂ h₂ _ (hC.preimage (pullback.fst i₁ p₂).continuous))`.
+Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem universallyClosed_of_cover {Z₁ Z₂ Z S : Scheme.{0}} (p₁ : Z₁ ⟶ Z) (p₂ : Z₂ ⟶ Z)
     (h : Z ⟶ S) (h₁ : UniversallyClosed (p₁ ≫ h)) (h₂ : UniversallyClosed (p₂ ≫ h))
@@ -72,17 +70,15 @@ theorem universallyClosed_of_cover {Z₁ Z₂ Z S : Scheme.{0}} (p₁ : Z₁ ⟶
     (key p₂ h₂ _ (hC.preimage (pullback.fst i₁ p₂).continuous))
 
 /- English proof (translation)
-Introduce `X S f _ _ T₁ T₂ hT₁ hT₂`. Set `K : X.IdealSheafData` to `T₁ ⊓ T₂`. Set `p₁ : T₁.subscheme ⟶ K.subscheme` to `IsClosedImmersion.lift K.subschemeι T₁.subschemeι (by simpa [K] using (inf_le_left : T₁ ⊓ T₂ ≤ T₁))`. Set `p₂ : T₂.subscheme ⟶ K.subscheme` to `IsClosedImmersion.lift K.subschemeι T₂.subschemeι (by simpa [K] using (inf_le_right : T₁ ⊓ T₂ ≤ T₂))`. Establish `e₁ : p₁ ≫ K.subschemeι = T₁.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e₂ : p₂ ≫ K.subschemeι = T₂.subschemeι` using `IsClosedImmersion.lift_fac _ _ _`. Establish `u₁ : UniversallyClosed (p₁ ≫ K.subschemeι ≫ f)`. Rewrite using `[← Category.assoc, e₁]`. Use `infer_instance`. Establish `u₂ : UniversallyClosed (p₂ ≫ K.subschemeι ≫ f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, e₂]`. Use `infer_instance`. Establish `cover : ∀ {T : X.IdealSheafData} (p : T.subscheme ⟶ K.subscheme), p ≫ K.subschemeι = T.subschemeι → ∀ z : K.subscheme, K.subschemeι z ∈ (T.support : Set X) → z ∈ Set.range p`. Introduce `T p e z hz`. Take `⟨w, hw⟩` from `T.range_subschemeι.ge hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w, K.subschemeι.isEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← hw, ← e]`. Both sides reduce to the same expression. Establish `hc : ∀ z : K.subscheme, z ∈ Set.range p₁ ∨ z ∈ Set.range p₂`. Introduce `z`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hz : K.subschemeι z ∈ (K.support : Set X)` using `K.range_subschemeι.le ⟨z, rfl⟩`. Break down `support_inf_subset T₁ T₂ hz with h | h` into its components or cases. Conclude with `Or.inl (cover p₁ e₁ z h)`. Conclude with `Or.inr (cover p₂ e₂ z h)`. Establish `: UniversallyClosed (K.subschemeι ≫ f)` using `universallyClosed_of_cover p₁ p₂ _ u₁ u₂ hc`.
-
-Conclude with `⟨⟩`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isProper_inf : ∀ {X S : Scheme.{0}} (f : X ⟶ S) [IsSeparated f] [LocallyOfFiniteType f]
     (T₁ T₂ : X.IdealSheafData), IsProper (T₁.subschemeι ≫ f) → IsProper (T₂.subschemeι ≫ f) →

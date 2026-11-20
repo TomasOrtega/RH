@@ -15,7 +15,7 @@ namespace GlobalTheory.SS.MaxUnr
 open IsLocalRing Polynomial
 
 /- English proof (translation)
-Proceed by induction on `g with`. Consider the case `zero => simp`. Consider the case `succ g ih => rw [Nat.mul_succ, pow_add, pow_mul, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_pow_mul_eq {M : Type*} [Monoid M] {q f : ℕ} {x : M} (h : x ^ q ^ f = x) (g : ℕ) :
     x ^ q ^ (f * g) = x := by
@@ -29,13 +29,13 @@ section
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-The claim follows from `Finite.one_lt_card`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_card [Finite (ResidueField V)] : 1 < Nat.card (ResidueField V) :=
   Finite.one_lt_card
 
 /- English proof (translation)
-Take `⟨f, hf, h⟩` from `ht`. Use `⟨X ^ q ^ f - X, monic_X_pow_sub ?_, by simp [h]⟩` and prove the remaining obligations. Use `lt_of_le_of_lt degree_X_le ?_` and prove the remaining obligations. Conclude with `Nat.one_lt_pow (by omega) hq` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_teich {q : ℕ} (hq : 1 < q) {S : Type*} [CommRing S] [Algebra V S] {t : S}
     (ht : t ∈ Teich q S) : IsIntegral V t := by
@@ -45,9 +45,9 @@ theorem isIntegral_of_teich {q : ℕ} (hq : 1 < q) {S : Type*} [CommRing S] [Alg
   exact_mod_cast Nat.one_lt_pow (by omega) hq
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun a => ?_` and prove the remaining obligations. Establish `: Module.Finite V (Algebra.adjoin V {a})` using `Algebra.finite_adjoin_simple_of_isIntegral (Algebra.IsIntegral.isIntegral a)`. Use `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := V) (Algebra.adjoin V {a})` as an intermediate fact. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨a, Algebra.self_mem_adjoin_singleton V a⟩ : Algebra.adjoin V {a}) with h | h` into its components or cases. Conclude with `Or.inl (h.map (Algebra.adjoin V {a}).val)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr (by simpa using h.map (Algebra.adjoin V {a}).val)`.
+Prove the second alternative.
 -/
 theorem isLocalRing_of_isIntegral [IsAdicComplete (maximalIdeal V) V] (S : Type*) [CommRing S]
     [IsDomain S] [Algebra V S] [Algebra.IsIntegral V S] : IsLocalRing S := by
@@ -61,7 +61,7 @@ theorem isLocalRing_of_isIntegral [IsAdicComplete (maximalIdeal V) V] (S : Type*
   · exact Or.inr (by simpa using h.map (Algebra.adjoin V {a}).val)
 
 /- English proof (translation)
-Use `RingHom.IsIntegral.isLocalHom (fun x => ?_) hg` and prove the remaining obligations. Set `` to `g.toRingHom.toAlgebra`. Establish `: IsScalarTower V S S'` using `.of_algebraMap_eq fun v => (g.commutes v).symm`. Conclude with `(Algebra.IsIntegral.isIntegral (R := V) x).tower_top (A := S)`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalHom_of_injective {S S' : Type*} [CommRing S] [CommRing S'] [Algebra V S] [Algebra V S']
     [Algebra.IsIntegral V S'] (g : S →ₐ[V] S') (hg : Function.Injective g) :
@@ -72,7 +72,7 @@ theorem isLocalHom_of_injective {S S' : Type*} [CommRing S] [CommRing S'] [Algeb
   exact (Algebra.IsIntegral.isIntegral (R := V) x).tower_top (A := S)
 
 /- English proof (translation)
-Use `Fintype.ofFinite (ResidueField V)` as an intermediate fact. Take `⟨p, hp, n, hp', h⟩` from `FiniteField.card' (ResidueField V)`. Use `⟨p, n, hp', ?_, by rw [Nat.card_eq_fintype_card, h]⟩` and prove the remaining obligations. Rewrite using `[← residue_eq_zero_iff, map_natCast, CharP.cast_eq_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_prime [Finite (ResidueField V)] : ∃ p n : ℕ, p.Prime ∧ (p : V) ∈ maximalIdeal V ∧
     Nat.card (ResidueField V) = p ^ n := by
@@ -82,7 +82,7 @@ theorem exists_prime [Finite (ResidueField V)] : ∃ p n : ℕ, p.Prime ∧ (p :
   rw [← residue_eq_zero_iff, map_natCast, CharP.cast_eq_zero]
 
 /- English proof (translation)
-Use `Fintype.ofFinite (ResidueField V)` as an intermediate fact. Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow, Nat.card_eq_fintype_card, FiniteField.pow_card, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_card_sub_mem [Finite (ResidueField V)] (v : V) :
     v ^ Nat.card (ResidueField V) - v ∈ maximalIdeal V := by
@@ -90,17 +90,17 @@ theorem pow_card_sub_mem [Finite (ResidueField V)] (v : V) :
   rw [← residue_eq_zero_iff, map_sub, map_pow, Nat.card_eq_fintype_card, FiniteField.pow_card, sub_self]
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial Q with _ | _` into its components or cases. Conclude with `⟨1, le_rfl, Subsingleton.elim _ _⟩`. Take `⟨p, n, hp, hpm, hq⟩` from `exists_prime (V := V)`. Use `Fact.mk hp` as an intermediate fact. Establish `: CharP Q p` using `(CharP.charP_iff_prime_eq_zero hp).2 (by simpa using h0 _ hpm)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `algebraMap v`. Use `⟨1, le_rfl, ?_⟩` and prove the remaining obligations. Use `h0 _ (pow_card_sub_mem v)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[map_sub, map_pow, sub_eq_zero]`. Rewrite using `[pow_one, this]`. Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, hx⟩` from `hx`. Take `⟨g, hg, hy⟩` from `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨f * g, Nat.mul_pos hf hg, ?_⟩` and prove the remaining obligations. Establish `h1` using `pow_pow_mul_eq hx g`. Establish `h2` using `pow_pow_mul_eq hy f`. Rewrite `h2` using `[mul_comm]`. Rewrite `h1`, `h2`, the goal using `[hq, ← pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[add_pow_char_pow, h1, h2]`. Consider the case `mul x y _ _ hx hy`. Take `⟨f, hf, hx⟩` from `hx`. Take `⟨g, hg, hy⟩` from `hy`. Use `⟨f * g, Nat.mul_pos hf hg, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `pow_pow_mul_eq hy f`. Rewrite `h2` using `[mul_comm]`. Rewrite using `[mul_pow, pow_pow_mul_eq hx g, h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem teich_of_mem_adjoin [Finite (ResidueField V)] {Q : Type*} [CommRing Q] [Algebra V Q]
     (h0 : ∀ v ∈ maximalIdeal V, algebraMap V Q v = 0) {x : Q}
@@ -136,7 +136,7 @@ theorem teich_of_mem_adjoin [Finite (ResidueField V)] {Q : Type*} [CommRing Q] [
     rw [mul_pow, pow_pow_mul_eq hx g, h2]
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `: Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) ≤ integralClosure V S` using `Algebra.adjoin_le fun t ht => isIntegral_of_teich one_lt_card ht`. Conclude with `this (hS ▸ Algebra.mem_top)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [Algebra V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) : Algebra.IsIntegral V S := by
@@ -146,9 +146,9 @@ theorem isIntegral_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [Al
   exact this (hS ▸ Algebra.mem_top)
 
 /- English proof (translation)
-Use `teich_of_mem_adjoin (fun v hv => ?_) ?_` and prove the remaining obligations. Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (hI (Ideal.mem_map_of_mem _ hv))`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Establish `hx : x ∈ Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S)` using `hS ▸ Algebra.mem_top`. Establish `h2` using `Subalgebra.mem_map.2 ⟨x, hx, (rfl : Ideal.Quotient.mkₐ V I x = _)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[AlgHom.map_adjoin]`. Use `Algebra.adjoin_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ⟨f, hf, ht⟩, rfl⟩`. Conclude with `⟨f, hf, by rw [← map_pow, ht]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem teich_quot_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [Algebra V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) (I : Ideal S)
@@ -165,9 +165,9 @@ theorem teich_quot_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [Al
   exact ⟨f, hf, by rw [← map_pow, ht]⟩
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.map_le_iff_le_comap.2 fun v hv => map_nonunit _ v hv) fun x hx => ?_` and prove the remaining obligations. Take `⟨f, hf, h⟩` from `teich_quot_of_gen hS _ le_rfl (Ideal.Quotient.mk _ x)`. Rewrite `h` using `[← map_pow, Ideal.Quotient.eq]`. Take `⟨N, hN⟩ : ∃ N, Nat.card (ResidueField V) ^ f = N + 2` from `Nat.exists_eq_add_of_le' (Nat.one_lt_pow (by omega) one_lt_card)`. Establish `hu : IsUnit (1 - x ^ (N + 1))` using `isUnit_one_sub_self_of_mem_nonunits _ (Ideal.pow_mem_of_mem (maximalIdeal S) hx _ (by omega))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.unit_mul_mem_iff_mem _ hu]`. Establish `e : (1 - x ^ (N + 1)) * x = -(x ^ (N + 2) - x)` using `by ring`. Rewrite using `[e, ← hN]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [Algebra V S]
     [IsLocalRing S] [IsLocalHom (algebraMap V S)]
@@ -186,7 +186,7 @@ theorem maximalIdeal_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [
   exact neg_mem h
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff, ← Algebra.adjoin_adjoin_coe_preimage (R := V) (s := T)]`. Use `Algebra.adjoin_mono fun t ht => ?_` and prove the remaining obligations. Take `⟨f, hf, h⟩` from `hT ht`. Conclude with `⟨f, hf, Subtype.ext h⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gen_adjoin {q : ℕ} {S : Type*} [CommRing S] [Algebra V S] {T : Set S} (hT : T ⊆ Teich q S) :
     Algebra.adjoin V (Teich q (Algebra.adjoin V T)) = ⊤ := by
@@ -196,9 +196,9 @@ theorem gen_adjoin {q : ℕ} {S : Type*} [CommRing S] [Algebra V S] {T : Set S} 
   exact ⟨f, hf, Subtype.ext h⟩
 
 /- English proof (translation)
-Establish `: IsLocalHom (algebraMap V S)` using `isLocalHom_of_injective (Algebra.ofId V S) (FaithfulSMul.algebraMap_injective V S)`. Establish `: IsNoetherianRing S` using `IsNoetherianRing.of_finite V S`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Establish `hm` using `maximalIdeal_of_gen hS`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnf : ¬ IsField S`. Rewrite using `[isField_iff_maximalIdeal_eq, ← hm, Ideal.span_singleton_eq_bot, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective V S)]`. Conclude with `hπ.ne_zero`. Conclude with `((IsDiscreteValuationRing.TFAE S hnf).out 0 4).2 (show (maximalIdeal S).IsPrincipal from ⟨⟨_, hm.symm⟩⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvr_of_gen [Finite (ResidueField V)] {S : Type*} [CommRing S] [IsDomain S] [Algebra V S]
     [FaithfulSMul V S] [IsLocalRing S] [Module.Finite V S]
@@ -222,15 +222,13 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 omit [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [Finite (ResidueField V)] in
 /- English proof (translation)
-Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, h⟩` from `hx`. Conclude with `⟨f, hf, fun g => Algebra.subset_adjoin (pow_pow_mul_eq h g)⟩`. Consider the case `algebraMap v => exact ⟨1, le_rfl, fun g => Subalgebra.algebraMap_mem _ v⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨f, hf, hx⟩` from `hx`. Take `⟨g, hg, hy⟩` from `hy`. Use `⟨f * g, Nat.mul_pos hf hg, fun k => add_mem ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx _`. Rewrite using `[mul_comm f g, mul_assoc]`. Conclude with `hy _`. Consider the case `mul x y _ _ hx hy`. Take `⟨f, hf, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, hg, hy⟩` from `hy`. Use `⟨f * g, Nat.mul_pos hf hg, fun k => mul_mem ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `hx _`. Rewrite using `[mul_comm f g, mul_assoc]`.
-
-Conclude with `hy _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level {q : ℕ} {S : Type*} [CommRing S] [Algebra V S] {x : S}
     (hx : x ∈ Algebra.adjoin V (Teich q S)) :
@@ -254,17 +252,15 @@ theorem exists_level {q : ℕ} {S : Type*} [CommRing S] [Algebra V S] {x : S}
     · rw [mul_comm f g, mul_assoc]; exact hy _
 
 /- English proof (translation)
-Use `set q := Nat.card (ResidueField V) with hq`. Establish `hI` using `isIntegral_of_gen hS`. Use `choose F hF hF' using fun x : S => exists_level (V := V) (q := q) (x := x) (hS ▸ Algebra.mem_top)`. Establish `hf : 1 ≤ ∏ x ∈ s, F x` using `Finset.one_le_prod' fun x _ => hF x`. Use `set f := ∏ x ∈ s, F x with hfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : {t : S | t ^ q ^ f = t} ⊆ Teich q S` using `fun t ht => ⟨f, hf, ht⟩`. Establish `hfin : {t : S | t ^ q ^ f = t}.Finite`. Establish `hm : (X ^ q ^ f - X : S[X]).Monic`. Use `monic_X_pow_sub (lt_of_le_of_lt degree_X_le ?_)` and prove the remaining obligations. Conclude with `Nat.one_lt_pow (by omega) (one_lt_card (V := V))` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(X ^ q ^ f - X : S[X]).roots.finite_toSet.subset fun t ht => ?_` and prove the remaining obligations. Establish `ht' : t ^ q ^ f = t` using `ht`. Simplify using `[mem_roots hm.ne_zero, ht']`. Use `set W := Algebra.adjoin V {t : S | t ^ q ^ f = t} with hW`. Establish `hWfin : Module.Finite V W` using `Algebra.finite_adjoin_of_finite_of_isIntegral hfin fun x _ => Algebra.IsIntegral.isIntegral x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : IsLocalRing W` using `isLocalRing_of_isIntegral (V := V) W`. Establish `hg : Algebra.adjoin V (Teich q W) = ⊤` using `gen_adjoin hT`. Establish `hfa : FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective V W).2 fun a b h => FaithfulSMul.algebraMap_injective V S (congrArg Subtype.val h)`. Establish `: IsLocalHom (algebraMap V W)` using `isLocalHom_of_injective (Algebra.ofId V W) (FaithfulSMul.algebraMap_injective V W)`. Establish `hm` using `maximalIdeal_of_gen hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hc` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isAdicComplete_finite_algebra (R := V) W`. Rewrite `hc` using `[hm]`. Use `⟨W, dvr_of_gen hg, fun x hx => ?_, hc, hWfin, isLocalHom_of_injective W.val Subtype.val_injective, hm, f, hf, rfl⟩` and prove the remaining obligations. Take `⟨g, hg⟩ : F x ∣ f` from `Finset.dvd_prod_of_mem F hx`. Rewrite using `[hW, hg]`.
-
-Conclude with `hF' x g`.
+A detailed English derivation is pending.
 -/
 theorem exists_stage {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [FaithfulSMul V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) (s : Finset S) :
@@ -305,11 +301,9 @@ theorem exists_stage {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [Faithfu
   exact hF' x g
 
 /- English proof (translation)
-Establish `hI` using `isIntegral_of_gen hS`. Establish `hloc : IsLocalRing S` using `isLocalRing_of_isIntegral (V := V) S`. Establish `: IsLocalHom (algebraMap V S)` using `isLocalHom_of_injective (Algebra.ofId V S) (FaithfulSMul.algebraMap_injective V S)`. Establish `hm` using `maximalIdeal_of_gen hS`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : algebraMap V S π ≠ 0`. Rewrite using `[Ne, map_eq_zero_iff _ (FaithfulSMul.algebraMap_injective V S)]`. Conclude with `hπ.ne_zero`. Use `Prime.irreducible ((Ideal.span_singleton_prime h0).1 ?_)` and prove the remaining obligations. Rewrite using `[hm]`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_of_gen {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [FaithfulSMul V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) {π : V} (hπ : Irreducible π) :
@@ -327,9 +321,9 @@ theorem irreducible_of_gen {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [F
   rw [hm]; infer_instance
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Use `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, irreducible_of_gen hS hπ, fun {x} hx => ?_⟩` and prove the remaining obligations. Take `⟨W, _, hs, -, -, -, hm, -⟩` from `exists_stage hS {x}`. Establish `hxW : x ∈ W` using `hs (by simp)`. Rewrite `hm` using `[hπ.maximalIdeal_eq, Ideal.map_span, Set.image_singleton]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hi : Irreducible (algebraMap V W π)` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer _).2 hm.symm`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible (x := (⟨x, hxW⟩ : W)) (fun h => hx (congrArg Subtype.val h)) hi`. Conclude with `⟨n, by simpa using (hn.map W.val).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dvr_of_gen' {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [FaithfulSMul V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) :
@@ -347,13 +341,13 @@ theorem dvr_of_gen' {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [Faithful
   exact ⟨n, by simpa using (hn.map W.val).symm⟩
 
 /- English proof (translation)
-Establish `hI` using `isIntegral_of_gen hS`. Establish `hloc : IsLocalRing S` using `isLocalRing_of_isIntegral (V := V) S`. Use `⟨fun P hP a h1 h2 => ?_⟩` and prove the remaining obligations. Take `⟨W, _, hs, hc, -, hl, -⟩` from `exists_stage hS (insert a P.coeffs)`. Establish `haW : a ∈ W` using `hs (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hH` using `GlobalTheory.henselianLocalRing_of_isAdicComplete W`. Establish `hlift : P ∈ lifts W.val.toRingHom`. Rewrite using `[lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `h : P.coeff n = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, by simp [h]⟩`. Conclude with `⟨⟨P.coeff n, hs (by simp [coeff_mem_coeffs h])⟩, rfl⟩`. Take `⟨P', rfl, -, hP'⟩` from `lifts_and_natDegree_eq_and_monic hlift hP`. Establish `e : ∀ Q : W[X], (Q.map W.val.toRingHom).eval a = W.val.toRingHom (Q.eval ⟨a, haW⟩)` using `fun Q => eval_map_apply (p := Q) W.val.toRingHom ⟨a, haW⟩`. Rewrite `h2` using `[derivative_map, e]`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[e]`. Take `⟨b, hb, hb'⟩` from `HenselianLocalRing.is_henselian P' hP' ⟨a, haW⟩ (fun h => h1 (h.map _)) (isUnit_of_map_unit _ _ h2)`. Conclude with `⟨b, hb.map (f := W.val.toRingHom), map_nonunit W.val.toRingHom _ hb'⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem henselian_of_gen {S : Type} [CommRing S] [IsDomain S] [Algebra V S] [FaithfulSMul V S]
     (hS : Algebra.adjoin V (Teich (Nat.card (ResidueField V)) S) = ⊤) :
@@ -385,17 +379,17 @@ section
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Finite (ResidueField V)]
 
 /- English proof (translation)
-Take `⟨f, hf, ht⟩` from `ht`. Take `⟨g, hg, hu⟩` from `hu`. Establish `h1` using `pow_pow_mul_eq ht g`. Establish `h2` using `pow_pow_mul_eq hu f`. Rewrite `h2` using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, n, hp, hpm, hq⟩` from `exists_prime (V := V)`. Establish `hN : ((Nat.card (ResidueField V) ^ (f * g) : ℕ) : ResidueField S) = 0`. Establish `hp0 : (p : ResidueField S) = 0`. Establish `: residue S (algebraMap V S p) = 0` using `(residue_eq_zero_iff _).2 (map_nonunit _ _ hpm)`. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hn : n ≠ 0`. Introduce and unpack `rfl`. Use `one_lt_card (V := V)` as an intermediate fact. Simplify using `[hq] at this`. Use `Nat.mul_pos hf hg` as an intermediate fact.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hq, ← pow_mul, Nat.cast_pow, hp0, zero_pow (by positivity)]`. Generalize the expression as in `Nat.card (ResidueField V) ^ (f * g) = N at h1 h2 hN`. Establish `h3` using `geom_sum₂_mul t u N`. Rewrite `h3` using `[h1, h2]`. Establish `h4 : (∑ i ∈ Finset.range N, t ^ i * u ^ (N - 1 - i)) ∈ maximalIdeal S`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : residue S t = residue S u`. Rewrite using `[← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `h`. Rewrite using `[← residue_eq_zero_iff, map_sum]`. Simplify using `only [map_mul, map_pow, h5]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum₂_self, hN, zero_mul]`. Establish `h6` using `isUnit_one_sub_self_of_mem_nonunits _ h4`. Rewrite using `[← sub_eq_zero, ← h6.mul_right_eq_zero, sub_mul, h3, one_mul, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_inj {S : Type*} [CommRing S] [IsLocalRing S] [Algebra V S] [IsLocalHom (algebraMap V S)]
     {t u : S} (ht : t ∈ Teich (Nat.card (ResidueField V)) S)
@@ -429,11 +423,11 @@ theorem teich_inj {S : Type*} [CommRing S] [IsLocalRing S] [Algebra V S] [IsLoca
   rw [← sub_eq_zero, ← h6.mul_right_eq_zero, sub_mul, h3, one_mul, sub_self]
 
 /- English proof (translation)
-Establish `hc : IsIntegral (ResidueField V) (residue S a)`. Establish `: IsIntegral V (residue S a)` using `(Algebra.IsIntegral.isIntegral (R := V) a).map (IsScalarTower.toAlgHom V S (ResidueField S))`. Conclude with `this.tower_top`. Set `F` to `IntermediateField.adjoin (ResidueField V) {residue S a}`. Establish `: FiniteDimensional (ResidueField V) F` using `IntermediateField.adjoin.finiteDimensional hc`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite F` using `Module.finite_of_finite (ResidueField V)`. Use `Fintype.ofFinite F` as an intermediate fact. Use `⟨Module.finrank (ResidueField V) F, Module.finrank_pos, ?_⟩` and prove the remaining obligations. Establish `h` using `FiniteField.pow_card (⟨_, IntermediateField.mem_adjoin_simple_self _ _⟩ : F)`. Rewrite `h` using `[← Nat.card_eq_fintype_card, Module.natCard_eq_pow_finrank (K := ResidueField V)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow, sub_eq_zero]`. Conclude with `congrArg Subtype.val h`.
+A detailed English derivation is pending.
 -/
 theorem residue_teich {S : Type*} [CommRing S] [IsLocalRing S] [Algebra V S]
     [IsLocalHom (algebraMap V S)] [Algebra.IsIntegral V S] (a : S) :
@@ -456,20 +450,20 @@ variable {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra V Ω] [FaithfulSMul V 
 
 omit [IsDomain V] [IsDiscreteValuationRing V] [Finite (ResidueField V)] [IsAlgClosed Ω] in
 /- English proof (translation)
-The claim follows from `(faithfulSMul_iff_algebraMap_injective V R).2 fun _ _ h => FaithfulSMul.algebraMap_injective V Ω (congrArg Subtype.val h)`.
+A detailed English derivation is pending.
 -/
 theorem faithful_sub (R : Subalgebra V Ω) : FaithfulSMul V R :=
   (faithfulSMul_iff_algebraMap_injective V R).2 fun _ _ h =>
     FaithfulSMul.algebraMap_injective V Ω (congrArg Subtype.val h)
 
 /- English proof (translation)
-Use `faithful_sub (integralClosure V Ω)` as an intermediate fact. Establish `: IsLocalHom (algebraMap V (integralClosure V Ω))` using `isLocalHom_of_injective (Algebra.ofId V _) (FaithfulSMul.algebraMap_injective V _)`. Take `⟨f, hf, h⟩` from `residue_teich (V := V) a`. Use `set q := Nat.card (ResidueField V) with hq`. Establish `hm : (X ^ q ^ f - X : (integralClosure V Ω)[X]).Monic`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `monic_X_pow_sub (lt_of_le_of_lt degree_X_le ?_)` and prove the remaining obligations. Conclude with `Nat.one_lt_pow (by omega) (one_lt_card (V := V))` after adjusting the coercions. Establish `hs : (X ^ q ^ f - X : (integralClosure V Ω)[X]).Splits`. Use `Polynomial.Splits.of_splits_map_of_injective (i := (integralClosure V Ω).val.toRingHom) Subtype.val_injective (IsAlgClosed.splits _) fun b hb => ?_` and prove the remaining obligations. Establish `hb'` using `isRoot_of_mem_roots hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: b ∈ Teich q Ω` using `⟨f, hf, by simpa [sub_eq_zero] using hb'⟩`. Conclude with `⟨⟨b, isIntegral_of_teich one_lt_card this⟩, rfl⟩`. Establish `h1 : (X ^ q ^ f - X : (integralClosure V Ω)[X]).eval a ∈ maximalIdeal (integralClosure V Ω)`. Simplify using `using h`. Rewrite `h1` using `[hs.eval_eq_prod_roots_of_monic hm]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hcm⟩` from `(Ideal.IsPrime.multiset_prod_mem_iff_exists_mem inferInstance _).1 h1`. Take `⟨t, ht, rfl⟩` from `Multiset.mem_map.1 hc`. Conclude with `⟨t, ⟨f, hf, by simpa [sub_eq_zero] using isRoot_of_mem_roots ht⟩, hcm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_teich [IsLocalRing (integralClosure V Ω)] (a : integralClosure V Ω) :
     ∃ t ∈ Teich (Nat.card (ResidueField V)) (integralClosure V Ω),
@@ -496,15 +490,15 @@ theorem exists_teich [IsLocalRing (integralClosure V Ω)] (a : integralClosure V
   exact ⟨t, ⟨f, hf, by simpa [sub_eq_zero] using isRoot_of_mem_roots ht⟩, hcm⟩
 
 /- English proof (translation)
-Use `set R := Algebra.adjoin V (Teich (Nat.card (ResidueField V)) Ω) with hR`. Establish `hRI : Algebra.IsIntegral V R` using `isIntegral_of_gen (gen_adjoin subset_rfl)`. Establish `hle : R ≤ integralClosure V Ω` using `Algebra.adjoin_le fun t ht => isIntegral_of_teich one_lt_card ht`. Use `IsAlgClosed.of_exists_root _ fun p hp hi => ?_` and prove the remaining obligations. Take `⟨P, hP, hd, hPm⟩` from `lifts_and_natDegree_eq_and_monic (f := residue R) (p := p) (map_surjective _ residue_surjective _) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdeg : P.degree ≠ 0`. Use `hi.natDegree_pos` as an intermediate fact. Conclude with `(natDegree_pos_iff_degree_pos.1 (by omega)).ne'`. Take `⟨α, hα⟩` from `IsAlgClosed.exists_aeval_eq_zero_of_injective Ω (R := R) Subtype.val_injective P hdeg`. Establish `hαi : IsIntegral V α` using `isIntegral_trans (A := R) α ⟨P, hPm, hα⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨t, ⟨f, hf, ht⟩, hαt⟩` from `exists_teich (⟨α, hαi⟩ : integralClosure V Ω)`. Set `t' : R` to `⟨t, Algebra.subset_adjoin ⟨f, hf, congrArg Subtype.val ht⟩⟩`. Set `ι : R →+* integralClosure V Ω` to `(Subalgebra.inclusion hle).toRingHom`. Use `⟨residue R t', ?_⟩` and prove the remaining obligations. Rewrite using `[← hP, eval_map_apply, residue_eq_zero_iff]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h0 : (P.map ι).eval ⟨α, hαi⟩ = 0`. Apply `Subtype.val_injective` to reduce the goal to its premises. Use `eval_map_apply (p := P.map ι) (integralClosure V Ω).val.toRingHom ⟨α, hαi⟩` as an intermediate fact. Use `this.symm.trans ?_` and prove the remaining obligations. Rewrite using `[Polynomial.map_map, eval_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hα`. Establish `h1` using `Ideal.mem_of_dvd _ (sub_dvd_eval_sub _ _ (P.map ι)) hαt`. Rewrite `h1` using `[h0, zero_sub, neg_mem_iff, show t = ι t' from rfl, eval_map_apply]`. Conclude with `fun hu => h1 (hu.map ι)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isAlgClosed_residue [IsLocalRing (integralClosure V Ω)]
     [IsLocalRing (Algebra.adjoin V (Teich (Nat.card (ResidueField V)) Ω))] :
@@ -537,9 +531,9 @@ theorem isAlgClosed_residue [IsLocalRing (integralClosure V Ω)]
 end
 
 /- English proof (translation)
-Set `F` to `FractionRing R`. Set `_ : Algebra F Ω` to `FractionRing.liftAlgebra R Ω`. Establish `: IsScalarTower R F Ω` using `FractionRing.isScalarTower_liftAlgebra R Ω`. Establish `hinj : Function.Injective ((algebraMap R F).comp (algebraMap V R))` using `(IsFractionRing.injective R F).comp (FaithfulSMul.algebraMap_injective V R)`. Set `_ : Algebra K F` to `(IsFractionRing.lift hinj).toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨F, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, this, ?_⟩` and prove the remaining obligations. Use `.of_algebraMap_eq' (IsFractionRing.ringHom_ext (A := V) fun v => ?_)` and prove the remaining obligations. Establish `e : algebraMap K F (algebraMap V K v) = algebraMap R F (algebraMap V R v)` using `IsFractionRing.lift_algebraMap hinj v`. Rewrite using `[RingHom.comp_apply, e, ← IsScalarTower.algebraMap_apply R F Ω, ← IsScalarTower.algebraMap_apply V K Ω, ← IsScalarTower.algebraMap_apply V R Ω]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_fractionField {V : Type} (K : Type) {Ω : Type} (R : Type) [CommRing V] [IsDomain V] [Field K] [Algebra V K] [IsFractionRing V K]
     [Field Ω] [Algebra K Ω] [Algebra V Ω] [IsScalarTower V K Ω] [CommRing R] [IsDomain R] [Algebra V R]
@@ -561,53 +555,47 @@ theorem exists_fractionField {V : Type} (K : Type) {Ω : Type} (R : Type) [CommR
 
 open GlobalTheory.SS in
 /- English proof (translation)
-Introduce `V K _ _ _ _ _ _ _ _ hfin l hl hlu Ω _ _ _ _ _ q hq`. Substitute `hq` using the available equality. Establish `: IsAlgClosed Ω` using `IsAlgClosure.isAlgClosed K`. Establish `: FaithfulSMul V Ω` using `(faithfulSMul_iff_algebraMap_injective V Ω).2 (by`. Rewrite using `[IsScalarTower.algebraMap_eq V K Ω]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(algebraMap K Ω).injective.comp (IsFractionRing.injective V K))`. Establish `hAloc : IsLocalRing (integralClosure V Ω)` using `isLocalRing_of_isIntegral (V := V) _`. Take `⟨φ, hφ⟩` from `hC V K hfin Ω`. Use `set q := Nat.card (ResidueField V) with hq`. Establish `hres` using `@isAlgClosed_residue V _ _ _ _ Ω _ _ _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hres` using `[← hq]`. Use `set R := Algebra.adjoin V (Teich q Ω) with hR`. Establish `hg : Algebra.adjoin V (Teich q R) = ⊤` using `gen_adjoin subset_rfl`. Establish `hRI : Algebra.IsIntegral V R` using `isIntegral_of_gen hg`. Establish `hle : R ≤ integralClosure V Ω` using `Algebra.adjoin_le fun t ht => isIntegral_of_teich one_lt_card ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `faithful_sub R` as an intermediate fact. Use `faithful_sub (integralClosure V Ω)` as an intermediate fact. Establish `hRloc : IsLocalRing R` using `isLocalRing_of_isIntegral (V := V) _`. Establish `hVR : IsLocalHom (algebraMap V R)` using `isLocalHom_of_injective (Algebra.ofId V _) (FaithfulSMul.algebraMap_injective V _)`. Establish `hVA : IsLocalHom (algebraMap V (integralClosure V Ω))` using `isLocalHom_of_injective (Algebra.ofId V _) (FaithfulSMul.algebraMap_injective V _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hSH : SH R (FractionRing R)` using `⟨dvr_of_gen' hg, henselian_of_gen hg, hres, inferInstance⟩`. Establish `hφV : ∀ v : V, φ (algebraMap V Ω v) = algebraMap V Ω v` using `fun v => by`. Rewrite using `[IsScalarTower.algebraMap_apply V K Ω, AlgEquiv.commutes]`. Establish `hφT : ∀ t ∈ Teich q Ω, φ t = t ^ q`. Introduce and unpack `t ⟨f, hf, ht⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hy'⟩` from `hφ ⟨t, isIntegral_of_teich one_lt_card ⟨f, hf, ht⟩⟩`. Use `teich_inj (V := V) ⟨f, hf, Subtype.ext (by` as an intermediate fact. Rewrite using `[Subalgebra.coe_pow, hy, ← map_pow]`. Conclude with `congrArg φ ht)⟩`. Use the proof step `⟨f, hf, Subtype.ext (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Subalgebra.coe_pow, Subalgebra.coe_pow, ← pow_mul, mul_comm, pow_mul]`. Conclude with `congrArg (· ^ q) ht)⟩ hy'`. Conclude with `hy.symm.trans (congrArg Subtype.val this)`. Establish `hTq : ∀ t ∈ Teich q Ω, ∀ n, t ^ n ∈ Teich q Ω`. Introduce and unpack `t ⟨f, hf, ht⟩ n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨f, hf, by rw [← pow_mul, mul_comm, pow_mul, ht]⟩`. Establish `hφR : ∀ x ∈ R, φ x ∈ R`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx => rw [hφT x hx]`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `Algebra.subset_adjoin (hTq x hx q)`. Consider the case `algebraMap v => rw [hφV]`. Conclude with `Subalgebra.algebraMap_mem _ v`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`. Establish `hφn : ∀ t ∈ Teich q Ω, ∀ n, (φ ^ n) t = t ^ q ^ n`. Introduce `t ht n`. Proceed by induction on `n with`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', AlgEquiv.mul_apply, ih, hφT _ (hTq t ht _), ← pow_mul, pow_succ]`. Establish `hζ : ∀ (m : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → ζ ∈ Teich q Ω`. Introduce `m ζ h`. Take `⟨p, n, hp, hpm, hqp⟩` from `exists_prime (V := V)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : p ≠ l`. Introduce and unpack `rfl`. Conclude with `hpm hlu`. Establish `hco : Nat.Coprime q (l ^ m)`. Rewrite using `[hq, hqp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Nat.Coprime.pow _ _ ((Nat.coprime_primes hp hl).2 hne)`. Use `⟨(l ^ m).totient, Nat.totient_pos.2 (pow_pos hl.pos m), ?_⟩` and prove the remaining obligations. Establish `h1` using `Nat.ModEq.pow_totient hco`. Rewrite using `[pow_eq_pow_of_modEq h1 h, pow_one]`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Take `⟨F, _, _, hF, _, _, _, _⟩` from `exists_fractionField (V := V) (Ω := Ω) K R`. Establish `: CharZero F` using `charZero_of_injective_algebraMap (algebraMap K F).injective`. Establish `: IsAlgClosure F Ω` using `⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := K) F⟩`. Take `⟨hT1, hT2, σ, hσ⟩` from `hT R F ⟨hSH.1, hSH.2.1, hSH.2.2.1, hF⟩ _ (irreducible_of_gen hg hπ) l hl (by simpa using hlu.map (algebraMap V R)) Ω`. Establish `hRF : ∀ x : R, algebraMap F Ω (algebraMap R F x) = x` using `fun x => (IsScalarTower.algebraMap_apply R F Ω x).symm`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `hσR : ∀ x ∈ R, σ x = x` using `fun x hx => by`. Use `σ.commutes (algebraMap R F ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[hRF]`. Then use the resulting hypothesis. Use `⟨R, hRloc, σ.restrictScalars K, φ, hSH, hVR, fun c => ?_, fun s => ?_, hσR, fun x => ?_, fun m ζ h => ⟨hσR ζ (Algebra.subset_adjoin (hζ m ζ h)), hφT ζ (hζ m ζ h)⟩, ?_⟩` and prove the remaining obligations. Conclude with `teich_quot_of_gen hg (maximalIdeal R) (maximalIdeal_of_gen hg).le c`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W, hW, h1, h2, h3, h4, -, f, hf, hWf⟩` from `exists_stage hg s`. Use `⟨W, hW, h1, h2, h3, h4, f, hf, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[hWf]`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hx' : (x : Ω) ^ q ^ f = x` using `congrArg Subtype.val hx`. Rewrite using `[hφn x ⟨f, hf, hx'⟩, hx']`. Consider the case `algebraMap v => show (φ ^ f) (algebraMap V Ω v) = algebraMap V Ω v`. Rewrite using `[IsScalarTower.algebraMap_apply V K Ω, AlgEquiv.commutes]`. Consider the case `add x y _ _ hx hy => rw [Subalgebra.coe_add, map_add, hx, hy]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy => rw [Subalgebra.coe_mul, map_mul, hx, hy]`. Use `⟨⟨φ x, hφR x x.2⟩, rfl, fun hu => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hy'⟩` from `hφ ⟨x, hle x.2⟩`. Use `hy' ?_` and prove the remaining obligations. Use `hu.map (Subalgebra.inclusion hle) using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[hy]`. Introduce `L h1 h2 h3 x hx`. Take `⟨a1, a2, a3⟩` from `hA K F Ω l L h1 h2 h3`. Take `⟨m, ρ, hρ, hL⟩` from `hT1 _ a1 a2 a3`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨ζ, hζp, hσρ⟩` from `hσ m ρ hρ`. Establish `hfrac : ∀ a : F, ∃ u v : R, v ≠ 0 ∧ algebraMap F Ω a = (u : Ω) / v` using `fun a => by`. Take `⟨u, v, hv, rfl⟩` from `IsFractionRing.div_surjective (A := R) a`. Conclude with `⟨u, v, nonZeroDivisors.ne_zero hv, by rw [map_div₀, hRF, hRF]⟩`. Take `⟨b1, b2⟩` from `hB F Ω (l ^ m) q ρ ζ _ σ (φ : Ω →+* Ω) (pow_pos hl.pos m) hρ (by rw [hRF]; exact hφV π) (fun a => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, v, -, h⟩` from `hfrac a`. Use `⟨algebraMap R F ⟨φ u, hφR u u.2⟩ / algebraMap R F ⟨φ v, hφR v v.2⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h, map_div₀, map_div₀, hRF, hRF]`. Use the proof step `rfl)`. Use the proof step `(hT2 m) hζp hσρ (hφT ζ (hζ m ζ hζp.pow_eq_one)) x`.
-
-Use the proof step `(hL (IntermediateField.subset_adjoin F _ hx))`. Use `⟨b1.trans ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `: ∀ (n : ℕ) (y : Ω), (σ ^ n) y = (σ.restrictScalars K ^ n) y` using `fun n => by`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
-
-Both sides reduce to the same expression. Consider the case `succ n ih => intro y`. Rewrite using `[pow_succ, pow_succ, AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih]`. Both sides reduce to the same expression. Conclude with `this _ _`.
-
-Take `⟨a, rfl⟩` from `b2 h`. Take `⟨u, v, hv, h⟩` from `hfrac a`. Establish `hv' : (v : Ω) ≠ 0` using `fun e => hv (Subtype.ext e)`. Conclude with `⟨u, u.2, v, v.2, hv', by rw [h, div_mul_cancel₀ _ hv']⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main_of (hT : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [Field K] [CharZero K] [Algebra R K], SH R K → ∀ (π : R), Irreducible π → ∀ (l : ℕ), l.Prime → IsUnit (l : R) → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω], (∀ L : IntermediateField K Ω, FiniteDimensional K L → Normal K L → IsPGroup l (L ≃ₐ[K] L) → ∃ (m : ℕ) (ρ : Ω), ρ ^ l ^ m = algebraMap K Ω (algebraMap R K π) ∧ L ≤ IntermediateField.adjoin K {ρ}) ∧ (∀ (m : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → ζ ∈ Set.range (algebraMap K Ω)) ∧ ∃ σ : Ω ≃ₐ[K] Ω, ∀ (m : ℕ) (ρ : Ω), ρ ^ l ^ m = algebraMap K Ω (algebraMap R K π) → ∃ ζ, IsPrimitiveRoot ζ (l ^ m) ∧ σ ρ = ζ * ρ) (hA : ∀ (K K' Ω : Type) [Field K] [Field K'] [Field Ω] [Algebra K K'] [Algebra K' Ω] [Algebra K Ω] [IsScalarTower K K' Ω] (l : ℕ) (L : IntermediateField K Ω), FiniteDimensional K L → Normal K L → IsPGroup l (L ≃ₐ[K] L) → FiniteDimensional K' (IntermediateField.adjoin K' (L : Set Ω)) ∧ Normal K' (IntermediateField.adjoin K' (L : Set Ω)) ∧ IsPGroup l (IntermediateField.adjoin K' (L : Set Ω) ≃ₐ[K'] IntermediateField.adjoin K' (L : Set Ω))) (hB : ∀ (F Ω : Type) [Field F] [CharZero F] [Field Ω] [Algebra F Ω] (n q : ℕ) (ρ ζ : Ω) (c : F) (σ : Ω ≃ₐ[F] Ω) (φ : Ω →+* Ω), 0 < n → ρ ^ n = algebraMap F Ω c → φ (algebraMap F Ω c) = algebraMap F Ω c → (∀ a : F, φ (algebraMap F Ω a) ∈ Set.range (algebraMap F Ω)) → (∀ ξ : Ω, ξ ^ n = 1 → ξ ∈ Set.range (algebraMap F Ω)) → IsPrimitiveRoot ζ n → σ ρ = ζ * ρ → φ ζ = ζ ^ q → ∀ x ∈ IntermediateField.adjoin F ({ρ} : Set Ω), φ (σ x) = (σ ^ q) (φ x) ∧ (σ x = x → x ∈ Set.range (algebraMap F Ω))) (hC : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], Finite (IsLocalRing.ResidueField V) → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra V Ω] [IsScalarTower V K Ω] [IsLocalRing (integralClosure V Ω)], ∃ φ : Ω ≃ₐ[K] Ω, ∀ x : integralClosure V Ω, ∃ y : integralClosure V Ω, (y : Ω) = φ x ∧ y - x ^ Nat.card (IsLocalRing.ResidueField V) ∈ IsLocalRing.maximalIdeal (integralClosure V Ω)) :
     ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], Finite (IsLocalRing.ResidueField V) → ∀ (l : ℕ), l.Prime → IsUnit (l : V) → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra V Ω] [IsScalarTower V K Ω] (q : ℕ), q = Nat.card (IsLocalRing.ResidueField V) → ∃ (R : Subalgebra V Ω) (_ : IsLocalRing R) (σ φ : Ω ≃ₐ[K] Ω), SH R (FractionRing R) ∧ IsLocalHom (algebraMap V R) ∧ (∀ c : IsLocalRing.ResidueField R, ∃ m, 1 ≤ m ∧ c ^ (q ^ m) = c) ∧ (∀ s : Finset R, ∃ (W : Subalgebra V R) (_ : IsDiscreteValuationRing W), (↑s : Set R) ⊆ W ∧ IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧ Module.Finite V W ∧ IsLocalHom W.val.toRingHom ∧ ∃ f, 1 ≤ f ∧ ∀ x ∈ W, (φ ^ f) ((x : R) : Ω) = x) ∧ (∀ x ∈ R, σ x = x) ∧ (∀ x : R, ∃ y : R, (y : Ω) = φ x ∧ y - x ^ q ∈ IsLocalRing.maximalIdeal R) ∧ (∀ (m : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → σ ζ = ζ ∧ φ ζ = ζ ^ q) ∧ ∀ L : IntermediateField K Ω, FiniteDimensional K L → Normal K L → IsPGroup l (L ≃ₐ[K] L) → ∀ x ∈ L, φ (σ x) = (σ ^ q) (φ x) ∧ (σ x = x → ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a) := by
@@ -735,7 +723,7 @@ end GlobalTheory.SS.MaxUnr
 open GlobalTheory.SS in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SS.MaxUnr.main_of GlobalTheory.TameKummer.galois_of_prime_power_degree GlobalTheory.compositum_finite_normal_isPGroup GlobalTheory.kummer_twist_relation_and_fixed_field GlobalTheory.exists_arithFrobenius_absGalois`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SS.exists_maxUnramified_frobenius_tame : ∀ (V K : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (IsLocalRing.maximalIdeal V) V] [Field K] [CharZero K] [Algebra V K] [IsFractionRing V K], Finite (IsLocalRing.ResidueField V) → ∀ (l : ℕ), l.Prime → IsUnit (l : V) → ∀ (Ω : Type) [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] [Algebra V Ω] [IsScalarTower V K Ω] (q : ℕ), q = Nat.card (IsLocalRing.ResidueField V) → ∃ (R : Subalgebra V Ω) (_ : IsLocalRing R) (σ φ : Ω ≃ₐ[K] Ω), SH R (FractionRing R) ∧ IsLocalHom (algebraMap V R) ∧ (∀ c : IsLocalRing.ResidueField R, ∃ m, 1 ≤ m ∧ c ^ (q ^ m) = c) ∧ (∀ s : Finset R, ∃ (W : Subalgebra V R) (_ : IsDiscreteValuationRing W), (↑s : Set R) ⊆ W ∧ IsAdicComplete (IsLocalRing.maximalIdeal W) W ∧ Module.Finite V W ∧ IsLocalHom W.val.toRingHom ∧ ∃ f, 1 ≤ f ∧ ∀ x ∈ W, (φ ^ f) ((x : R) : Ω) = x) ∧ (∀ x ∈ R, σ x = x) ∧ (∀ x : R, ∃ y : R, (y : Ω) = φ x ∧ y - x ^ q ∈ IsLocalRing.maximalIdeal R) ∧ (∀ (m : ℕ) (ζ : Ω), ζ ^ l ^ m = 1 → σ ζ = ζ ∧ φ ζ = ζ ^ q) ∧ ∀ L : IntermediateField K Ω, FiniteDimensional K L → Normal K L → IsPGroup l (L ≃ₐ[K] L) → ∀ x ∈ L, φ (σ x) = (σ ^ q) (φ x) ∧ (σ x = x → ∃ a ∈ R, ∃ b ∈ R, b ≠ 0 ∧ x * b = a) :=
   GlobalTheory.SS.MaxUnr.main_of GlobalTheory.TameKummer.galois_of_prime_power_degree GlobalTheory.compositum_finite_normal_isPGroup

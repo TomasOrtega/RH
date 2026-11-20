@@ -19,13 +19,11 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 namespace GlobalTheory.CovTop
 /- English proof (translation)
-Introduce `hX hP hGD hQ hST hTF hSA hGC hGr hEx hDG hS hF hD hSh`. Establish `h1` using `_root_.GlobalTheory.T.lifts_badAt_last_of_green_cuspidal hP hGC hGr`. Establish `h2` using `_root_.GlobalTheory.T.covers_badAt_of_deep_good_size_flat_degree hX hP hGD hQ hST hTF hSA hGC hGr hDG hS hF hD hSh`. Unfold `_root_.GlobalTheory.CovTop.LiftBadSet _root_.GlobalTheory.CovTop.LiftsCondition`. Unfold `_root_.GlobalTheory.CovTop.CoversCondition _root_.GlobalTheory.CovTop.LiftsCondition at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `_root_.GlobalTheory.CovTop.LiftsCondition at h1`. Unfold `_root_.GlobalTheory.CovTop.DeepExistence _root_.GlobalTheory.CovTop.LiftsCondition at hEx`. Use `((h1.and h2).and hEx).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨⟨C1, -, e1⟩, ⟨C2, -, e2⟩⟩, ⟨C3, -, e3⟩⟩` from `h`. Take `⟨x0, e⟩` from `(e1.and e2).and e3`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i => ?_⟩` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3⟩` from `e x hx hle ι p hp`. Break down `Nat.lt_or_ge ((i : ℕ) + 1) (Fm.D x ι).R.m with hlt | hge` into its components or cases. Take `⟨Y, hY⟩` from `a3 i hlt`. Conclude with `a2 i hlt Y hY`.
-
-Conclude with `a1 i (le_antisymm (Nat.succ_le_of_lt i.isLt) hge)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem covering_bad_locus_of_descent_steps_alt : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral →
     GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal →
@@ -61,7 +59,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt | exact _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.liftBadSet_of_deep_size_flatDeg_share : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.GreenCuspidal → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.DeepExistence → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree → _root_.GlobalTheory.CovTop.ShareCondition → _root_.GlobalTheory.CovTop.LiftBadSet := by
   first | exact @_root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt | exact _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt | (intros; apply _root_.GlobalTheory.CovTop.covering_bad_locus_of_descent_steps_alt <;> assumption)

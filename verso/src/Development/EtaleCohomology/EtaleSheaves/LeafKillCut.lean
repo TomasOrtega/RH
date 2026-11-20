@@ -12,13 +12,13 @@ def LeafOne : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (Ω : Type) [Field Ω] [
   ∃ (C' : Scheme.{0}) (γ : C' ⟶ C), IsCurve (γ ≫ c) ∧ Surjective γ ∧ pl q i γ m x = 0
 
 /- English proof (translation)
-Introduce `hy q _ Ω _ _ hq C c hc m i hm hfin`. Establish `key : ∀ s : Finset (Ht q (sch.obj C) m i), ∃ (C' : Scheme.{0}) (γ : C' ⟶ C), IsCurve (γ ≫ c) ∧ Surjective γ ∧ ∀ x ∈ s, pl q i γ m x = 0`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨C, 𝟙 C, by simpa using hc, inferInstance, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha IH`. Take `⟨C1, γ1, h1, s1, k1⟩` from `IH`. Take `⟨C2, γ2, h2, s2, k2⟩` from `hOne hy q Ω hq (γ1 ≫ c) h1 m i hm (pl q i γ1 m a)`. Use `s1` as an intermediate fact. Use `s2` as an intermediate fact.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨C2, γ2 ≫ γ1, by simpa [Category.assoc] using h2, inferInstance, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Rewrite using `[pl_comp]`. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `k2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[k1 x hx, map_zero]`. Use `Fintype.ofFinite (Ht q (sch.obj C) m i)` as an intermediate fact. Take `⟨C', γ, h1, h2, h3⟩` from `key Finset.univ`. Conclude with `⟨C', γ, h1, h2, AddMonoidHom.ext fun x => by simpa using h3 x (Finset.mem_univ x)⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal_of (hOne : LeafOne) : LateralTheory.E.E4.LeafKill := by
   intro hy q _ Ω _ _ hq C c hc m i hm hfin

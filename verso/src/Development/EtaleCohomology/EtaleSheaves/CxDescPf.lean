@@ -32,13 +32,13 @@ def shift : Prop := ∀ (R : Type) [CommRing R] (I : Cx R) {A B : Shv R} (φ : A
     Function.Injective (cpull ((CochainComplex.singleFunctor (Shv R) (-(p : ℤ))).map φ) I j))
 
 /- English proof (translation)
-Introduce `R _ I _ hI K L _ _ g n hlow hn h0`. Take `⟨hb, hlim⟩` from `hS R I hI g`. Establish `base : Good (trm g 0) I (n + 1)` using `⟨fun j _ => hb h0 j, (hb h0 (n + 1)).1⟩`. Establish `step : ∀ N : ℕ, Good (trm g N) I (n + 1)`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `N with`. Consider the case `zero => exact base`. Consider the case `succ N ih`. Use `hL R I hI g (n + 1) N ⟨fun j hj => ?_, ?_⟩ ih` and prove the remaining obligations. Conclude with `(hH R I (g.f (-((N + 1 : ℕ) : ℤ))) (N + 1) j).1 (hlow (N + 1) (j - ((N + 1 : ℕ) : ℤ)) (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(hH R I (g.f (-((N + 1 : ℕ) : ℤ))) (N + 1) (n + 1)).2` to reduce the goal to its premises. Break down `Nat.eq_zero_or_pos N with h | h` into its components or cases. Substitute `h` using the available equality. Establish `e : n + 1 - ((0 + 1 : ℕ) : ℤ) = n` using `by omega`. Rewrite using `[e]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hn (0 + 1)`. Conclude with `(hlow (N + 1) _ (by omega)).1`. Establish `hg` using `hlim (n + 1) (n + 2).toNat (by omega) (step _)`. Conclude with `⟨hg.1, hg.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem CxDesc_of (hS : stupid) (hL : long) (hH : shift) : LateralTheory.E.DescStepPf.CxDesc := by
   intro R _ I _ hI K L _ _ g n hlow hn h0

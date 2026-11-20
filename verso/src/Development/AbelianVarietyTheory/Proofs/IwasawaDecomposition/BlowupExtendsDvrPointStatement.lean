@@ -10,7 +10,7 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.TorRef.blow_sabMap_trait` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FBlowupExtendsDvrPoint.lean&line=13#L13)
 -/

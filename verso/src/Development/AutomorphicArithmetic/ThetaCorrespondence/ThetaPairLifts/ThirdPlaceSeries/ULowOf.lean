@@ -14,9 +14,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 /- English proof (translation)
-Use `Closed.imp (Closed.and h1 (Closed.and h2 (Closed.and h3 (Closed.and h4 (Closed.and h5 (Closed.and h6 h7)))))) ?_` and prove the remaining obligations. Introduce and unpack `_ Fm _ _ ⟨⟨_, -, a1⟩, ⟨A, -, a2⟩, ⟨_, -, a3⟩, ⟨_, -, a4⟩, ⟨C1, hC1, a5⟩, ⟨C2, hC2, a6⟩, ⟨_, -, a7⟩⟩`. Use `⟨2 * (3 * C1 + C2 + 4), by positivity, ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `a1.and (a2.and (a3.and (a4.and (a5.and (a6.and a7)))))`. Use `⟨x0, fun x hx hle ι p hp i hi Y hY => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b1, b2, b3, b4, b5, b6, b7⟩` from `h x hx hle ι p hp`. Conclude with `atPoint p i Y _ A C1 C2 hi (b1 i hi Y hY) (b2 i) (b3 i hi Y hY) (b4 i hi Y hY) (b5 i hi Y hY) (b6 i hi Y hY) (b7 i hi Y hY)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem u_low_of_cover_hyps (h1 : _root_.GlobalTheory.CovTop.DeepGoodness) (h2 : _root_.GlobalTheory.CovTop.SizeCondition) (h3 : _root_.GlobalTheory.CovTop.CoverDegree) (h4 : _root_.GlobalTheory.CovTop.ShareCondition) (h5 : _root_.GlobalTheory.CovTop.HeightCondition) (h6 : _root_.GlobalTheory.CovTop.CoverHeightSum) (h7 : _root_.GlobalTheory.CovTop.SumBoundCondition) : _root_.GlobalTheory.CovTop.UniformLowerBound := by
   refine Closed.imp (Closed.and h1 (Closed.and h2 (Closed.and h3 (Closed.and h4 (Closed.and h5 (Closed.and h6 h7)))))) ?_

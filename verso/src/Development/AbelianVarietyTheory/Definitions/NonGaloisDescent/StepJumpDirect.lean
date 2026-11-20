@@ -191,7 +191,7 @@ def Steps : Prop :=
     StepJumpDual ∧ StepLift ∧ StepSub ∧ StepCont ∧ StepLocDirect ∧ StepLocDual ∧ StepHfChar ∧ StepRes ∧ StepGlobal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨a, b, c, d⟩ => ⟨c, a, b, d⟩, fun ⟨c, a, b, d⟩ => ⟨a, b, c, d⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem steps_iff : Steps ↔ StepCut ∧ StepsNoCut :=
   ⟨fun ⟨a, b, c, d⟩ => ⟨c, a, b, d⟩, fun ⟨c, a, b, d⟩ => ⟨a, b, c, d⟩⟩

@@ -24,7 +24,7 @@ structure GramShape (m : ℕ) (G : Matrix (Fin n) (Fin n) R) : Prop where
   one : ∀ i b : Fin n, Outer m i → i.val + b.val + 1 = n → G i b = 1
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases b <;> simp_all`. Use `mid i b hi _ := by`. Apply the tactic sequence `exact absurd (by fin_cases i <;> simp [Outer]) hi`. Apply the tactic sequence `one i b _ h := by fin_cases i <;> fin_cases b <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 example : GramShape 1 (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) where
   out i b _ h := by
@@ -35,7 +35,7 @@ example : GramShape 1 (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) ℂ) where
     fin_cases i <;> fin_cases b <;> simp_all
 
 /- English proof (translation)
-Establish `hil` using `i.isLt`. Unfold `Outer at hi ⊢`. Rewrite using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rev_outer (i : Fin n) (hi : Outer m i) (h2 : 2 * m ≤ n) : Outer m (Fin.rev i) := by
   have hil := i.isLt
@@ -44,17 +44,17 @@ theorem rev_outer (i : Fin n) (hi : Outer m i) (h2 : 2 * m ≤ n) : Outer m (Fin
   omega
 
 /- English proof (translation)
-Establish `hal` using `a.isLt`. Establish `hout` using `rev_outer a ha h2`. Establish `hra : (Fin.rev a).val + a.val + 1 = n` using `by rw [Fin.val_rev]; omega`. Establish `key : (G * W) (Fin.rev a) q = W a q`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG.one _ _ hout hra, one_mul]`. Introduce `b _ hb`. Establish `hz : G (Fin.rev a) b = 0`. Assume the negation of the conclusion as `hc`. Establish `h3` using `hG.out _ _ hout hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Apply `hb` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite `h3` using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`. Rewrite `key` using `[hGW]`. Rewrite `hne` using `[← key]`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Apply `Matrix.one_apply_ne` to reduce the goal to its premises. Introduce `h`. Apply `hcon` to reduce the goal to its premises. Rewrite using `[← h, Fin.val_rev]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem inv_row (h2 : 2 * m ≤ n) (hG : GramShape m G) (hGW : G * W = 1) (a q : Fin n) (ha : Outer m a)
     (hne : W a q ≠ 0) : a.val + q.val + 1 = n := by
@@ -86,17 +86,17 @@ theorem inv_row (h2 : 2 * m ≤ n) (hG : GramShape m G) (hGW : G * W = 1) (a q :
   omega
 
 /- English proof (translation)
-Establish `hql` using `q.isLt`. Establish `hout` using `rev_outer q hq h2`. Establish `hrq : q.val + (Fin.rev q).val + 1 = n` using `by rw [Fin.val_rev]; omega`. Establish `key : (W * G) a (Fin.rev q) = W a q`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single q]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG.one _ _ hq hrq, mul_one]`. Introduce `b _ hb`. Establish `hz : G b (Fin.rev q) = 0`. Assume the negation of the conclusion as `hc`. Distinguish the cases in `hbo : Outer m b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails.
 
-Establish `h3` using `hG.out _ _ hbo hc`. Apply `hb` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Rewrite `h3` using `[Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `hG.mid _ _ hbo hc hout`. Rewrite using `[hz, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ q) h`. Rewrite `key` using `[hWG]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hne` using `[← key]`. Assume the negation of the conclusion as `hcon`. Apply `hne` to reduce the goal to its premises. Apply `Matrix.one_apply_ne` to reduce the goal to its premises. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `hcon` to reduce the goal to its premises. Rewrite using `[h, Fin.val_rev]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem inv_col (h2 : 2 * m ≤ n) (hG : GramShape m G) (hWG : W * G = 1) (a q : Fin n) (hq : Outer m q)
     (hne : W a q ≠ 0) : a.val + q.val + 1 = n := by
@@ -130,15 +130,15 @@ theorem inv_col (h2 : 2 * m ≤ n) (hG : GramShape m G) (hWG : W * G = 1) (a q :
   omega
 
 /- English proof (translation)
-Take `⟨e, he, hpe, heq⟩` from `hpq`. Establish `hWne : W a q ≠ 0` using `left_ne_zero_of_mul hne`. Establish `hGne : G p b ≠ 0` using `right_ne_zero_of_mul hne`. Establish `hql` using `q.isLt`. Use `⟨n - e, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Distinguish the cases in `hq : Outer m q`. Establish `h3` using `inv_col h2 hG hWG a q hq hWne`. Use linear arithmetic over natural numbers and integers. Establish `ha : ¬ Outer m a` using `fun ha => hq (by`.
+Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3` using `inv_row h2 hG hGW a q ha hWne`. Unfold `Outer at ha ⊢`. Use the proof step `omega)`. Unfold `Outer at hq ha`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : Outer m p`. Establish `h3` using `hG.out p b hp hGne`. Use linear arithmetic over natural numbers and integers. Establish `hb : ¬ Outer m b` using `hG.mid p b hp hGne`. Unfold `Outer at hp hb`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem cut_core {l d : ℕ} (hlm : l + d ≤ m) (h2 : 2 * m ≤ n) (hG : GramShape m G) (hGW : G * W = 1) (hWG : W * G = 1)
     (p q a b : Fin n) (hpq : ∃ e : ℕ, (e = l ∨ e = l + d ∨ e + l + d = n ∨ e + l = n) ∧ p.val < e ∧ e ≤ q.val)
@@ -173,7 +173,7 @@ section Gram
 variable {n m : ℕ} {H P : Matrix (Fin n) (Fin n) ℂ} {Xc Yc : Matrix (Fin n) (Fin m) ℂ}
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conjTranspose_mul_mul_apply_eq_of_col_eq {u v w : ℕ} {Q : Matrix (Fin u) (Fin u) ℂ} {Z : Matrix (Fin u) (Fin v) ℂ}
     (K : Matrix (Fin u) (Fin u) ℂ) (N : Matrix (Fin u) (Fin w) ℂ) (i : Fin u) (j : Fin v)
@@ -181,7 +181,7 @@ private theorem conjTranspose_mul_mul_apply_eq_of_col_eq {u v w : ℕ} {Q : Matr
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, h]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem col_lemma_2 {u v r : ℕ} {Q : Matrix (Fin u) (Fin u) ℂ} {Z : Matrix (Fin u) (Fin v) ℂ}
     (M : Matrix (Fin r) (Fin u) ℂ) (b : Fin u) (j : Fin v) (h : ∀ k, Q k b = Z k j) (i : Fin r) :
@@ -189,7 +189,7 @@ private theorem col_lemma_2 {u v r : ℕ} {Q : Matrix (Fin u) (Fin u) ℂ} {Z : 
   simp only [Matrix.mul_apply, h]
 
 /- English proof (translation)
-Establish `h3` using `congrFun h j`. Rewrite using `[Matrix.mul_apply]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conjTranspose_mul_mul_apply_eq_zero_of_mulVec {u v : ℕ} {K Q : Matrix (Fin u) (Fin u) ℂ} {Z : Matrix (Fin u) (Fin v) ℂ} (i : Fin u)
     (h : (Zᴴ * K) *ᵥ (fun k => Q k i) = 0) (j : Fin v) : (Zᴴ * K * Q) j i = 0 := by
@@ -198,25 +198,23 @@ private theorem conjTranspose_mul_mul_apply_eq_zero_of_mulVec {u v : ℕ} {K Q :
   exact h3
 
 /- English proof (translation)
-Establish `hyx : Ycᴴ * H * Xc = 1`. Establish `h3` using `congrArg Matrix.conjTranspose hxy`. Simplify `h3` using `[Matrix.conjTranspose_mul, hH, Matrix.mul_assoc]`. Establish `hGs : ∀ i b : Fin n, (Pᴴ * H * P) i b = star ((Pᴴ * H * P) b i)`. Introduce `i b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hA : (Pᴴ * H * P)ᴴ = Pᴴ * H * P`. Simplify using `[Matrix.conjTranspose_mul, hH, Matrix.mul_assoc]`. Establish `h3` using `congrFun (congrFun hA i) b`. Rewrite `h3` using `[Matrix.conjTranspose_apply]`. Conclude with `h3.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrow : ∀ i b : Fin n, Outer m i → (Pᴴ * H * P) i b = if i.val + b.val + 1 = n then 1 else 0`. Introduce `i b hi`. Establish `hil` using `i.isLt`. Establish `hbl` using `b.isLt`. Break down `(show i.val < m ∨ n ≤ i.val + m from hi) with hi | hi` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_mul_mul_apply_eq_of_col_eq H P i ⟨i.val, hi⟩ (colX i ⟨i.val, hi⟩ rfl) b]`. Distinguish the cases in `hb1 : b.val < m`. Rewrite using `[col_lemma_2 (Xcᴴ * H) b ⟨b.val, hb1⟩ (colX b ⟨b.val, hb1⟩ rfl), hxx, Matrix.zero_apply, if_neg (show ¬ (i.val + b.val + 1 = n) by omega)]`. Distinguish the cases in `hb2 : n ≤ b.val + m`. Establish `hj : n - 1 - b.val < m` using `by omega`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[col_lemma_2 (Xcᴴ * H) b ⟨n - 1 - b.val, hj⟩ (columnBlock b ⟨n - 1 - b.val, hj⟩ (show b.val + (n - 1 - b.val) + 1 = n by omega)), hxy, Matrix.one_apply]`. Distinguish the cases in `hc : i.val + b.val + 1 = n`. Rewrite using `[if_pos hc, if_pos (Fin.ext (show i.val = n - 1 - b.val by omega))]`. Rewrite using `[if_neg hc, if_neg (fun h => hc (by have h4 := Fin.mk.inj h; omega))]`. Rewrite using `[conjTranspose_mul_mul_apply_eq_zero_of_mulVec b (perpX b (by omega) (by omega)), if_neg (show ¬ (i.val + b.val + 1 = n) by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hj : n - 1 - i.val < m` using `by omega`. Rewrite using `[conjTranspose_mul_mul_apply_eq_of_col_eq H P i ⟨n - 1 - i.val, hj⟩ (columnBlock i ⟨n - 1 - i.val, hj⟩ (show i.val + (n - 1 - i.val) + 1 = n by omega)) b]`. Distinguish the cases in `hb1 : b.val < m`. Rewrite using `[col_lemma_2 (Ycᴴ * H) b ⟨b.val, hb1⟩ (colX b ⟨b.val, hb1⟩ rfl), hyx, Matrix.one_apply]`. Distinguish the cases in `hc : i.val + b.val + 1 = n`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hc, if_pos (Fin.ext (show n - 1 - i.val = b.val by omega))]`. Rewrite using `[if_neg hc, if_neg (fun h => hc (by have h4 := Fin.mk.inj h; omega))]`. Distinguish the cases in `hb2 : n ≤ b.val + m`. Establish `hj2 : n - 1 - b.val < m` using `by omega`. Rewrite using `[col_lemma_2 (Ycᴴ * H) b ⟨n - 1 - b.val, hj2⟩ (columnBlock b ⟨n - 1 - b.val, hj2⟩ (show b.val + (n - 1 - b.val) + 1 = n by omega)), hyy, Matrix.zero_apply, if_neg (show ¬ (i.val + b.val + 1 = n) by omega)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[conjTranspose_mul_mul_apply_eq_zero_of_mulVec b (perpY b (by omega) (by omega)), if_neg (show ¬ (i.val + b.val + 1 = n) by omega)]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i b hi hne`. Rewrite `hne` using `[hrow i b hi]`. Assume the negation of the conclusion as `hc`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (if_neg hc)`. Introduce `i b hi hne hb`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hGs i b, hrow b i hb, if_neg (show ¬ (b.val + i.val + 1 = n) by unfold Outer at hi hb; omega), star_zero]`. Introduce `i b hi hc`.
-
-Rewrite using `[hrow i b hi, if_pos hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramShape (hH : Hᴴ = H) (hxx : Xcᴴ * H * Xc = 0) (hyy : Ycᴴ * H * Yc = 0) (hxy : Xcᴴ * H * Yc = 1) (h2 : 2 * m ≤ n)
     (colX : ∀ (i : Fin n) (j : Fin m), i.val = j.val → ∀ k, P k i = Xc k j)
@@ -278,11 +276,11 @@ theorem gramShape (hH : Hᴴ = H) (hxx : Xcᴴ * H * Xc = 0) (hyy : Ycᴴ * H * 
     rw [hrow i b hi, if_pos hc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single p]`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single q]`. Simplify using `[Matrix.single_apply]`. Introduce `y _ hy`. Simplify using `[Matrix.single_apply, Ne.symm hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ q) h`. Introduce `x _ hx`. Rewrite using `[Matrix.mul_apply]`. Simplify using `[Matrix.single_apply, Ne.symm hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ p) h`.
+A detailed English derivation is pending.
 -/
 private theorem valuation_single_one_le_one {u : ℕ} (A B : Matrix (Fin u) (Fin u) ℂ) (q p a b : Fin u) :
     (A * Matrix.single q p (1 : ℂ) * B : Matrix (Fin u) (Fin u) ℂ) a b = A a q * B p b := by
@@ -300,9 +298,9 @@ private theorem valuation_single_one_le_one {u : ℕ} (A B : Matrix (Fin u) (Fin
     exact absurd (Finset.mem_univ p) h
 
 /- English proof (translation)
-Establish `hS : (Matrix.single p q (1 : ℂ))ᴴ = Matrix.single q p 1`. Use extensionality with `x y`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single_apply]`. Apply the tactic sequence `by_cases h1 : p = y <;> by_cases h2 : q = x <;> simp [h1, h2]`. Establish `e2 : P⁻¹ * (-(H⁻¹ * (P * Matrix.single p q 1 * P⁻¹)ᴴ * H)) * P = -((P⁻¹ * H⁻¹ * (P⁻¹)ᴴ) * Matrix.single q p 1 * (Pᴴ * H * P))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hS]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Rewrite using `[e2, Matrix.neg_apply, valuation_single_one_le_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_entry (H P : Matrix (Fin n) (Fin n) ℂ) (p q a b : Fin n) :
     (P⁻¹ * (-(H⁻¹ * (P * Matrix.single p q 1 * P⁻¹)ᴴ * H)) * P : Matrix (Fin n) (Fin n) ℂ) a b =
@@ -320,35 +318,31 @@ theorem conj_entry (H P : Matrix (Fin n) (Fin n) ℂ) (p q a b : Fin n) :
 end Gram
 
 /- English proof (translation)
-Introduce `D V m X Y hW l d hlm C hA τ p q a b hpq hne`. Establish `hsig : ∀ x : D.host.E, tauE D τ (D.sp.cm.sig x) = star (tauE D τ x)` using `fun x => GlobalTheory.FockCompare.tauE_star τ x`. Establish `hcT : ∀ {r : ℕ} (M : Matrix (Fin V.rank) (Fin r) D.host.E), (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) M).map (tauE D τ) = (M.map (tauE D τ))ᴴ`. Introduce `r M`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Conclude with `hsig (M j i)`. Establish `hgram : ∀ i j, star (V.gram j i) = V.gram i j` using `fun i j => (Formalism.BasicNotions.HSpace.herm V).eq _ _`. Establish `hH : (gramAt D V τ)ᴴ = gramAt D V τ`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Formalism.BasicNotions.TH.gramAt, Matrix.conjTranspose_apply, Matrix.map_apply]`. Rewrite using `[← hgram i j]`. Conclude with `(GlobalTheory.FockCompare.tauE_star τ _).symm`. Establish `hdetJ : V.gram.det ≠ 0`. Introduce `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨z, hz0, hz⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hz0` to reduce the goal to its premises. Apply `hW.aniso z` to reduce the goal to its premises. Rewrite using `[← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`. Rewrite using `[← Matrix.mulVec_mulVec, hz, Matrix.mulVec_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE, Formalism.UG.hform, mul_assoc, ← Finset.mul_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `i _`. Establish `h3` using `congrFun hz i`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h3, mul_zero]`. Establish `hdetH : (gramAt D V τ).det ≠ 0`. Establish `h3` using `RingHom.map_det (tauE D τ) V.gram`. Rewrite `h3` using `[RingHom.mapMatrix_apply]`. Simplify using `only [Formalism.BasicNotions.TH.gramAt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h3]`. Conclude with `(map_ne_zero _).mpr hdetJ`. Establish `hmap : ∀ {r s : ℕ} (A : Matrix (Fin V.rank) (Fin r) D.host.E) (B : Matrix (Fin V.rank) (Fin s) D.host.E), (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) A * V.gram * B).map (tauE D τ) = (A.map (tauE D τ))ᴴ * gramAt D V τ * B.map (tauE D τ)`. Introduce `r s A B`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, hcT]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hxx : (X.map (tauE D τ))ᴴ * gramAt D V τ * X.map (tauE D τ) = 0`. Rewrite using `[← hmap, hW.xx]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `hyy : (Y.map (tauE D τ))ᴴ * gramAt D V τ * Y.map (tauE D τ) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hmap, hW.yy]`. Conclude with `Matrix.map_zero _ (map_zero _)`. Establish `hxy : (X.map (tauE D τ))ᴴ * gramAt D V τ * Y.map (tauE D τ) = 1`. Rewrite using `[← hmap, hW.xy]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hperp : ∀ {r : ℕ} (Z : Matrix (Fin V.rank) (Fin r) D.host.E) (i : Fin V.rank), (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Z * V.gram) *ᵥ (fun k => C.1 k i) = 0 → ((Z.map (tauE D τ))ᴴ * gramAt D V τ) *ᵥ (fun k => (C.1.map (tauE D τ)) k i) = 0`. Introduce `r Z i h`. Use function extensionality and compare the values at `j`. Establish `h3` using `congrArg (tauE D τ) (congrFun h j)`. Rewrite `h3` using `[RingHom.map_mulVec, Pi.zero_apply, map_zero, Matrix.map_mul, hcT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `hGS` using `gramShape (H := gramAt D V τ) (P := C.1.map (tauE D τ)) (Xc := X.map (tauE D τ)) (Yc := Y.map (tauE D τ)) hH hxx hyy hxy hA.le (fun i j h k => by simp only [Matrix.map_apply, hA.colX i j h k]) (fun i j h k => by simp only [Matrix.map_apply, hA.columnBlock i j h k]) (fun i h1 h2 = …`. Establish `hPQ : C.1.map (tauE D τ) * (C⁻¹).1.map (tauE D τ) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, mul_inv_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQP : (C⁻¹).1.map (tauE D τ) * C.1.map (tauE D τ) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hPinv : (C.1.map (tauE D τ))⁻¹ = (C⁻¹).1.map (tauE D τ)` using `Matrix.inv_eq_right_inv hPQ`. Establish `hPi1 : C.1.map (tauE D τ) * (C.1.map (tauE D τ))⁻¹ = 1` using `by rw [hPinv]; exact hPQ`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hPi2 : (C.1.map (tauE D τ))⁻¹ * C.1.map (tauE D τ) = 1` using `by rw [hPinv]; exact hQP`. Establish `hHu : IsUnit (gramAt D V τ).det` using `isUnit_iff_ne_zero.mpr hdetH`. Establish `hHi1 : gramAt D V τ * (gramAt D V τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hHu`. Establish `hHi2 : (gramAt D V τ)⁻¹ * gramAt D V τ = 1` using `Matrix.nonsing_inv_mul _ hHu`. Establish `hGW : ((C.1.map (tauE D τ))ᴴ * gramAt D V τ * C.1.map (tauE D τ)) * ((C.1.map (tauE D τ))⁻¹ * (gramAt D V τ)⁻¹ * ((C.1.map (tauE D τ))⁻¹)ᴴ) = 1`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hPi1, Matrix.one_mul, ← Matrix.mul_assoc (gramAt D V τ), hHi1, Matrix.one_mul]`. Use `_ = 1 := by rw [← Matrix.conjTranspose_mul, hPi2, Matrix.conjTranspose_one]`. Establish `hWG : ((C.1.map (tauE D τ))⁻¹ * (gramAt D V τ)⁻¹ * ((C.1.map (tauE D τ))⁻¹)ᴴ) * ((C.1.map (tauE D τ))ᴴ * gramAt D V τ * C.1.map (tauE D τ)) = 1`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← Matrix.conjTranspose_mul, hPi1, Matrix.conjTranspose_one, Matrix.one_mul, ← Matrix.mul_assoc (gramAt D V τ)⁻¹, hHi2, Matrix.one_mul]`. Use `_ = 1 := hPi2`. Rewrite `hne` using `[Formalism.L2.Theta.conjAt, conj_entry]`. Conclude with `cut_core hlm hA.le hGS hGW hWG p q a b hpq (neg_ne_zero.mp hne)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_strict : ∀ (D : D7) (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E),
     GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ l d : ℕ, l + d ≤ m →

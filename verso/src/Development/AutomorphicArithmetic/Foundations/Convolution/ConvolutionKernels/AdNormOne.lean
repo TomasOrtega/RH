@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain GroundTheory.Automorphic GroundTheory.Automorp
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Establish `h1 : DenseRange (fun x : WithAbs u.1 => (x : UniformSpace.Completion (WithAbs u.1)))` using `UniformSpace.Completion.denseRange_coe`. Establish `h2 : DenseRange (InfinitePlace.Completion.ofCompletion : _ → u.Completion)` using `(InfinitePlace.Completion.equiv u).symm.surjective.denseRange`. Establish `h3` using `h2.comp h1 (InfinitePlace.Completion.continuous_ofCompletion u)`. Use `h3.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x.ofAbs, rfl⟩`.
+Supply the required witnesses or components.
 -/
 private theorem denseInf {K : Type} [Field K] (u : InfinitePlace K) :
     DenseRange (algebraMap K u.Completion) := by
@@ -23,14 +23,14 @@ private theorem denseInf {K : Type} [Field K] (u : InfinitePlace K) :
   exact ⟨x.ofAbs, rfl⟩
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.Completion.norm_coe (K := K) (v := w) _`.
+A detailed English derivation is pending.
 -/
 private theorem normAlg {K : Type} [Field K] [NumberField K] (w : InfinitePlace K) (x : K) :
     ‖algebraMap K w.Completion x‖ = w x :=
   InfinitePlace.Completion.norm_coe (K := K) (v := w) _
 
 /- English proof (translation)
-Establish `h` using `(denseInf (u.comap j.toRingHom)).equalizer (continuous_norm.comp (CT.continuous_infEquiv j u)) continuous_norm (funext fun x => ?_)`. Conclude with `congrFun h y`. Simplify using `only [Function.comp_apply]`. Rewrite using `[CT.infEquiv_algebraMap, normAlg, normAlg]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem norm_infEquiv {K : Type} [Field K] [NumberField K] (j : K ≃+* K) (u : InfinitePlace K)
     (y : (u.comap j.toRingHom).Completion) : ‖CT.infEquiv j u y‖ = ‖y‖ := by
@@ -42,7 +42,7 @@ private theorem norm_infEquiv {K : Type} [Field K] [NumberField K] (j : K ≃+* 
   rfl
 
 /- English proof (translation)
-Establish `h : (u.comap j.toRingHom).IsReal ↔ u.IsReal` using `InfinitePlace.isReal_comap_iff (f := j)`. Unfold `InfinitePlace.mult`. Distinguish the cases in `hu : u.IsReal`. Rewrite using `[if_pos (h.2 hu), if_pos hu]`. Rewrite using `[if_neg (mt h.1 hu), if_neg hu]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mult_comap_equiv {K : Type} [Field K] [NumberField K] (j : K ≃+* K) (u : InfinitePlace K) :
     (u.comap j.toRingHom).mult = u.mult := by
@@ -72,9 +72,9 @@ private def finPerm {K : Type} [Field K] [NumberField K] (j : K ≃+* K) :
   right_inv v := CT.plMap_symm_plMap j v
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Global.IdeleGroup.ideleModule_eq, GroundTheory.Global.IdeleGroup.ideleModule_eq]`. Use `congr 1`. Use `Fintype.prod_equiv (infPerm σ) _ _ fun u => ?_ show ‖CT.infEquiv σ u ((x : 𝔸[K]).1 (u.comap σ.toRingHom))‖ ^ u.mult = ‖(x : 𝔸[K]).1 (u.comap σ.toRingHom)‖ ^ (u.comap σ.toRingHom).mult` and prove the remaining obligations. Rewrite using `[norm_infEquiv, mult_comap_equiv]`. Establish `h : ∀ v : HeightOneSpectrum (𝓞 K), ‖((Units.map (CT.adMap σ).toMonoidHom x : (𝔸[K])ˣ) : 𝔸[K]).2 v‖ = ‖(x : 𝔸[K]).2 (finPerm σ v)‖` using `fun v => by show ‖(CT.compEquiv σ.symm v).symm ((x : 𝔸[K]).2 (CT.plMap σ.symm v))‖ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `CT.norm_compEquiv σ.symm v ((CT.compEquiv σ.symm v).symm ((x : 𝔸[K]).2 (CT.plMap σ.symm v)))`. Rewrite `e` using `[RingEquiv.apply_symm_apply]`. Conclude with `e.symm`. Conclude with `(finprod_congr h).trans (finprod_comp_equiv (finPerm σ) (f := fun w => ‖(x : 𝔸[K]).2 w‖))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem module_map {K : Type} [Field K] [NumberField K] (σ : K ≃+* K) (x : (𝔸[K])ˣ) :
     (GroundTheory.Global.IdeleGroup.ideleModule K (Units.map (CT.adMap σ).toMonoidHom x) : ℝ) =
@@ -96,7 +96,7 @@ private theorem module_map {K : Type} [Field K] [NumberField K] (σ : K ≃+* K)
       (finprod_comp_equiv (finPerm σ) (f := fun w => ‖(x : 𝔸[K]).2 w‖))
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Conclude with `(RingHom.map_det (CT.adMap σ) (g : AdelicGLn.AdelicMatrix K n)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem det_map {K : Type} [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (g : AdelicGLn.AdelicGL K n) :
     AdelicGLn.det K n (Matrix.GeneralLinearGroup.map (CT.adMap σ) g : AdelicGLn.AdelicGL K n) =
@@ -105,7 +105,7 @@ private theorem det_map {K : Type} [Field K] [NumberField K] (n : ℕ) (σ : K �
   exact (RingHom.map_det (CT.adMap σ) (g : AdelicGLn.AdelicMatrix K n)).symm
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Use `show CT.adMap σ.symm (CT.adMap σ ((g : AdelicGLn.AdelicMatrix K n) a b)) = _`. Rewrite using `[← (UpperTheory.ConvolutionTheory.K.adBasic K).2.2 σ σ.symm, RingEquiv.self_trans_symm]`. Conclude with `(UpperTheory.ConvolutionTheory.K.adBasic K).2.1 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_symm_map {K : Type} [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (g : AdelicGLn.AdelicGL K n) :
     (Matrix.GeneralLinearGroup.map (CT.adMap σ.symm)
@@ -116,7 +116,7 @@ private theorem map_symm_map {K : Type} [Field K] [NumberField K] (n : ℕ) (σ 
   exact (UpperTheory.ConvolutionTheory.K.adBasic K).2.1 _
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `hg`. Use `⟨Matrix.GeneralLinearGroup.map (σ : K →+* K) γ, Units.ext (Matrix.ext fun a b => ?_)⟩` and prove the remaining obligations. Conclude with `((UpperTheory.ConvolutionTheory.K.adBasic K).1 σ _).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem map_rational {K : Type} [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (g : AdelicGLn.AdelicGL K n)
     (hg : g ∈ AdelicGLn.rationalGL K n) :
@@ -126,7 +126,7 @@ private theorem map_rational {K : Type} [Field K] [NumberField K] (n : ℕ) (σ 
   exact ((UpperTheory.ConvolutionTheory.K.adBasic K).1 σ _).symm
 
 /- English proof (translation)
-Introduce `K _ _ n σ g`. Use `⟨?_, fun h => ?_, map_rational n σ g⟩` and prove the remaining obligations. Rewrite using `[mem_normOneGL, mem_normOneGL, det_map, module_map]`. Use `map_rational n σ.symm _ h` as an intermediate fact. Rewrite `this` using `[map_symm_map]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.ConvolutionTheory.K.adNormOne :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ) (σ : K ≃+* K) (g : AdelicGLn.AdelicGL K n),

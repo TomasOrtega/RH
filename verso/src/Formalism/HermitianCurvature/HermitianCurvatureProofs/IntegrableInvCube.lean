@@ -22,7 +22,7 @@ def GSup (S : C.HidaSetting E Wp Wq) (ε : ℝ) (b n : ℕ) (P : ℝ) : Prop :=
             P * ∑ u ∈ S.base.Wb (S.base.cnt w' + n * C.Kst), θ u * S.base.N0 ε (b - 1) u Y κ
 
 /- English proof (translation)
-Establish `hi : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ)))` using `integrable_one_add_norm (by rw [Complex.finrank_real_complex]; norm_num)`. Use `hi.congr (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Use `show (1 + ‖c‖) ^ (-(3 : ℝ)) = ((1 + ‖c‖) ^ 3)⁻¹`. Rewrite using `[Real.rpow_neg (by positivity)]`. Use `norm_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. A detailed English derivation is pending.
 -/
 theorem integrable_inv_cube : Integrable (fun c : ℂ => ((1 + ‖c‖) ^ 3)⁻¹) := by
   have hi : Integrable (fun c : ℂ => (1 + ‖c‖) ^ (-(3 : ℝ))) :=
@@ -33,13 +33,13 @@ theorem integrable_inv_cube : Integrable (fun c : ℂ => ((1 + ‖c‖) ^ 3)⁻�
   norm_cast
 
 /- English proof (translation)
-Introduce `z _`. Simplify using `[Lat.psi_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem zero_mem_dual {f : ℕ} (La : Submodule ℤ (crystallineComparison.V f)) : (0 : crystallineComparison.V f) ∈ crystallineComparison.dualSet La := by
   intro z _; simp [Lat.psi_zero]
 
 /- English proof (translation)
-Use `hs.le_tsum (⟨0, zero_mem_dual La⟩ : crystallineComparison.dualSet La) (fun σ _ => mL_nonneg K L hL _)` as an intermediate fact. Simplify `this` using `[mL_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_le_tsum_mL {f : ℕ} (La : Submodule ℤ (crystallineComparison.V f)) (K : ℕ) (L : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v) (g : ℝ)
     (hs : Summable fun σ : crystallineComparison.dualSet La => crystallineComparison.mL K L (g • (σ : crystallineComparison.V f))) :
@@ -48,11 +48,11 @@ theorem one_le_tsum_mL {f : ℕ} (La : Submodule ℤ (crystallineComparison.V f)
   simpa [mL_zero] using this
 
 /- English proof (translation)
-Take `⟨φ, hφc, hφ, ⟨Cφ, hC⟩, -⟩` from `hI v ε hε b hb hbr w h h' hh hh'`. Establish `e : b + 1 - 1 = b` using `by omega`. Rewrite using `[e]`. Establish `hcongr : ∀ c ∈ ({0}ᶜ : Set ℂ), φ c / (S.sizeAt v (w.1 v) : ℂ) = KB.gN S v ε b (w.1 v) (h ++ [(1, c)]) (h' ++ [(1, c)])`. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `KB.gN`. Rewrite using `[hφ c hc]`. Establish `hφi : Integrable φ` using `Integrable.mono' (integrable_inv_cube.const_mul Cφ) hφc.aestronglyMeasurable (ae_of_all _ hC)`. Use `⟨(hφc.div_const _).continuousOn.congr fun c hc => (hcongr c hc).symm, ?_⟩` and prove the remaining obligations. Use `(hφi.div_const (S.sizeAt v (w.1 v) : ℂ)).congr ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))] with c hc`. Conclude with `hcongr c hc`.
+A detailed English derivation is pending.
 -/
 theorem gN_one_reg (S : C.HidaSetting E Wp Wq) (hI : KB.IntAll S) (v : Fin S.f) (ε : ℝ) (hε : 0 < ε) (b : ℕ)
     (hb : 1 ≤ b) (hbr : b ≤ S.G.r + 1) (w : S.W) (h h' : C.LPt) (hh : D.ptSize h = b - 1)
@@ -80,9 +80,9 @@ def SumBound (f : ℕ) (Cs : ℝ) : Prop :=
     ∑' σ : crystallineComparison.dualSet (Lstd f R), crystallineComparison.mL C.Kst L (g • (σ : crystallineComparison.V f)) ≤ ∏ v, Cs * (1 + (R * L v / g) ^ 2)
 
 /- English proof (translation)
-Use `le_trans ?_ hV` and prove the remaining obligations. Use `div_le_div_of_nonneg_right ?_ (by positivity)` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left (hM.trans ?_) hdl` and prove the remaining obligations. Use `Finset.prod_le_prod (fun v _ => by positivity) fun v _ => ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_left ?_ (by linarith)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : R * L v / g ≤ R * thr v / g` using `div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_left (hL v).2 hR.le) hg.le`. Establish `h0 : 0 ≤ R * L v / g` using `div_nonneg (mul_nonneg hR.le (hL v).1) hg.le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem size_step (f : ℕ) (Cs : ℝ) (hCs1 : 1 ≤ Cs) (dl R g : ℝ) (hdl : 0 ≤ dl) (hR : 0 < R) (hg : 0 < g)
     (L thr : Fin f → ℝ) (hL : ∀ v, 0 ≤ L v ∧ L v ≤ thr v) (M V : ℝ) (hM : M ≤ ∏ v, Cs * (1 + (R * L v / g) ^ 2))
@@ -97,19 +97,19 @@ theorem size_step (f : ℕ) (Cs : ℝ) (hCs1 : 1 ≤ Cs) (dl R g : ℝ) (hdl : 0
   nlinarith
 
 /- English proof (translation)
-Take `⟨i1, i2, hcov, -⟩` from `pbc_lstdFacts S.f R hR`. Use `i1` as an intermediate fact. Use `i2` as an intermediate fact. Establish `hg' : (0 : ℝ) < S.g` using `by exact_mod_cast hg`. Establish `hL0 : ∀ v, 0 ≤ X b v` using `fun v => (hX v).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hsm, hsle⟩` from `hCs R S.g (fun v => X b v) hR hg' hL0`. Establish `hM1` using `one_le_tsum_mL (Lstd S.f R) C.Kst (fun v => X b v) hL0 (S.g : ℝ) hsm`. Use `set M := ∑' σ : crystallineComparison.dualSet (Lstd S.f R), crystallineComparison.mL C.Kst (fun v => X b v) ((S.g : ℝ) • (σ : crystallineComparison.V S.f)) with hMdef`. Establish `hdl0 : 0 ≤ ∏ _v : Fin S.f, KB.dlB S b 1` using `Finset.prod_nonneg fun v _ => (dlB_pos S hg b 1).le`. Use `⟨(∏ _v : Fin S.f, KB.dlB S b 1) * M / R ^ (2 * S.f), by positivity, size_step S.f Cs hCs1 _ R S.g hdl0 hR hg' _ (thr S b 1) hX M _ hsle hRB, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w' hw' hcnt`. Simplify using `only [one_mul] at hcnt ⊢`. Take `⟨θ, hθ, hWV⟩` from `Formalism.FourierDecayAlt.P.plane_wave_bound E Wp Wq S X hW ε hε b hb hbr w' hw' hcnt`. Take `⟨θ', hθ', hmix⟩` from `tsum_mix (S.base.Wb (S.base.cnt w' + C.Kst)) (fun σ : crystallineComparison.dualSet (Lstd S.f R) => crystallineComparison.mL C.Kst (fun v => X b v) ((S.g : ℝ) • (σ : crystallineComparison.V S.f))) (fun σ => mL_nonneg _ _ hL0 _) hsm (by linarith) (fun σ => θ (crystallineComparison …`. Use `⟨θ', hθ', fun Y hY κ hκ t ht => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `D : Fin S.f → TB.Pt E → TB.Pt E → ℂ → ℂ` to `fun v h h' c => KB.gN S v ε (b + 1 - 1) (w'.1 v) (C.loc (S.σ v) h ++ [(1, c)]) (C.loc (S.σ v) h' ++ [(1, c)])`. Establish `hD : ∀ v (z : ℂ), z ≠ 0 → TB.PSDOn Y (fun h h' => D v h h' z)`. Introduce `v z _`. Use `PBB.gN_psd S hpos v ε hε (b + 1 - 1) (by omega) w' (Y.image fun h => C.loc (S.σ v) h ++ [(1, z)])` as an intermediate fact. Conclude with `JCx1.decay.psd_pull _ _ this Y (fun h => C.loc (S.σ v) h ++ [(1, z)]) (fun h hh => Finset.mem_image_of_mem _ hh)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hreg` using `fun v h (hh : h ∈ Y) h' (hh' : h' ∈ Y) => gN_one_reg S hI v ε hε b hb hbr w' (C.loc (S.σ v) h) (C.loc (S.σ v) h') (by rw [JCx1.needs.ptSize_loc]; exact hY h hh) (by rw [JCx1.needs.ptSize_loc]; exact hY h' hh')`. Use `set N0 : S.W → ℝ := fun u => S.base.N0 ε (b - 1) u Y κ`. Establish `hF : ∀ σ ∈ crystallineComparison.dualSet (Lstd S.f R), ‖Hh Y κ (fun v l h h' => KB.hatB S v ε b 1 (w'.1 v) l (C.loc (S.σ v) h) (C.loc (S.σ v) h')) ((S.g : ℝ) • σ)‖ ≤ crystallineComparison.mL C.Kst (fun v => X b v) ((S.g : ℝ) • σ) * ∑ u ∈ S.base.Wb (S.base.cnt w' + C.Kst), θ (crys …`. Introduce `σ _`. Conclude with `bound_mL C.Kst (fun v => X b v) hL0 _ _ _ (hWV Y hY κ hκ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hH` using `herglotz_plain (H := TB.Pt E) Y κ hκ D hD (fun v h hh h' hh' => (hreg v h hh h' hh').1) (fun v h hh h' hh' => (hreg v h hh h' hh').2) (S.g : ℝ) hg' (fun _ => KB.dlB S b 1) (fun _ => dlB_pos S hg b 1) (fun v l h h' => KB.hatB S v ε b 1 (w'.1 v) l (C.loc (S.σ v) h) (C.loc (S.σ v) h …`. Rewrite `hH` using `[(hmix N0).2, hcov, Finset.sum_singleton]`. Establish `hN : Nz Y κ D t = (KB.NstV S ε (b + 1 - 1) 1 w' Y κ t t).re`. Simplify using `only [Nz, if_pos ht]`. Rewrite using `[nstV_eq]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Both sides reduce to the same expression. Rewrite `hH` using `[hN]`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (by positivity), mul_comm]`. Combine the linear relations using `[hH]`.
+A detailed English derivation is pending.
 -/
 theorem gsup_one (S : C.HidaSetting E Wp Wq) (hg : 0 < S.g) (hpos : C.ThmPPos S) (hI : KB.IntAll S)
     (X : ℕ → Fin S.f → ℝ) (hW : ∀ v, KB.WaveLoc S v fun i => X i v) (ε : ℝ) (hε : 0 < ε) (b : ℕ) (hb : 1 ≤ b)

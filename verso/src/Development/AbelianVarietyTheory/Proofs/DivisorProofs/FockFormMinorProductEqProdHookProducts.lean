@@ -18,13 +18,13 @@ namespace GlobalTheory.LowRowFock
 open MvPolynomial
 
 /- English proof (translation)
-Simplify using `[Formalism.E.fock, Formalism.A.mfact]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fock_one {σ : Type} : Formalism.E.fock (1 : MvPolynomial σ ℂ) 1 = 1 := by
   simp [Formalism.E.fock, Formalism.A.mfact]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.JointHarm.fock_rename_mul (g := (fun e : Empty => e.elim : Empty → τ)) hf (fun x => x.elim) (fun _ y => y.elim) P P' 1 1`. Simplify `h` using `[fock_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fock_rename_inj {σ τ : Type} {f : σ → τ} (hf : Function.Injective f) (P P' : MvPolynomial σ ℂ) :
     Formalism.E.fock (rename f P) (rename f P') = Formalism.E.fock P P' := by
@@ -33,9 +33,9 @@ theorem fock_rename_inj {σ τ : Type} {f : σ → τ} (hf : Function.Injective 
   simpa [fock_one] using h
 
 /- English proof (translation)
-Rewrite `hP`, `hP'`, `hQ`, `hQ'` using `[supported_eq_range_rename]`. Take `⟨P₀, rfl⟩` from `(AlgHom.mem_range _).mp hP`. Take `⟨P₁, rfl⟩` from `(AlgHom.mem_range _).mp hP'`. Take `⟨Q₀, rfl⟩` from `(AlgHom.mem_range _).mp hQ`. Take `⟨Q₁, rfl⟩` from `(AlgHom.mem_range _).mp hQ'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[GlobalTheory.JointHarm.fock_rename_mul Subtype.val_injective Subtype.val_injective (fun x y h => Set.disjoint_left.mp hAB x.2 (h ▸ y.2)), fock_rename_inj Subtype.val_injective, fock_rename_inj Subtype.val_injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_mul_of_supported {σ : Type} {A B : Set σ} (hAB : Disjoint A B) {P P' Q Q' : MvPolynomial σ ℂ}
     (hP : P ∈ supported ℂ A) (hP' : P' ∈ supported ℂ A) (hQ : Q ∈ supported ℂ B) (hQ' : Q' ∈ supported ℂ B) :
@@ -50,9 +50,9 @@ theorem fock_mul_of_supported {σ : Type} {A B : Set σ} (hAB : Disjoint A B) {P
     fock_rename_inj Subtype.val_injective, fock_rename_inj Subtype.val_injective]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [fock_one]`. Consider the case `insert a s ha ih`. Establish `hd : Disjoint (A a) (⋃ i ∈ s, A i)` using `Set.disjoint_iUnion₂_right.mpr fun i hi => hA (fun e => ha (e ▸ hi))`. Establish `hmem : ∀ H : ι → MvPolynomial σ ℂ, (∀ i, H i ∈ supported ℂ (A i)) → ∏ i ∈ s, H i ∈ supported ℂ (⋃ i ∈ s, A i)` using `fun H hH => Subalgebra.prod_mem _ fun i hi => supported_mono (Set.subset_biUnion_of_mem hi) (hH i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha, Finset.prod_insert ha, fock_mul_of_supported hd (hF a) (hG a) (hmem F hF) (hmem G hG), ih]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_prod_of_supported {σ ι : Type} [DecidableEq ι] (A : ι → Set σ) (hA : Pairwise fun i j => Disjoint (A i) (A j))
     (F G : ι → MvPolynomial σ ℂ) (hF : ∀ i, F i ∈ supported ℂ (A i)) (hG : ∀ i, G i ∈ supported ℂ (A i))
@@ -70,7 +70,7 @@ theorem fock_prod_of_supported {σ ι : Type} [DecidableEq ι] (A : ι → Set �
       fock_mul_of_supported hd (hF a) (hG a) (hmem F hF) (hmem G hG), ih]
 
 /- English proof (translation)
-Rewrite using `[mem_supported]`. Introduce `v hv`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.mp (vars_rename f P hv)`. Conclude with `hs w`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rename_mem_supported {σ τ : Type} (f : σ → τ) (s : Set τ) (hs : ∀ x, f x ∈ s) (P : MvPolynomial σ ℂ) :
     rename f P ∈ supported ℂ s := by
@@ -83,9 +83,9 @@ theorem rename_mem_supported {σ τ : Type} (f : σ → τ) (s : Set τ) (hs : �
 variable {D : D7} {m n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.topMinor, AlgHom.map_det]`. Unfold `minorPlus`. Use `congr 1`. Use extensionality with `α β`. Use `α.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `β.2` as an intermediate fact. Use `i.2` as an intermediate fact. Simplify using `only [Matrix.of_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, rename_X, varF]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorPlus_eq (τ : D.what₂.Tau) {p : ℕ} (hpm : p ≤ m) (hpn : p ≤ n) (i : Fin p) :
     minorPlus (D := D) (m := m) (n := n) τ (i + 1) =
@@ -102,9 +102,9 @@ theorem minorPlus_eq (τ : D.what₂.Tau) {p : ℕ} (hpm : p ≤ m) (hpn : p ≤
   rw [dif_pos ⟨by omega, by omega⟩]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.bottomMinor, AlgHom.map_det]`. Unfold `minorMinus`. Use `congr 1`. Use extensionality with `α β`. Use `α.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `β.2` as an intermediate fact. Use `i.2` as an intermediate fact. Simplify using `only [Matrix.of_apply, AlgHom.mapMatrix_apply, Matrix.map_apply, rename_X, varF]`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem minorMinus_eq (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (hqn : q ≤ n) (i : Fin q) :
     minorMinus (D := D) (m := m) (n := n) τ p (i + 1) =
@@ -127,7 +127,7 @@ def embBot (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) : Fin n × Fin q 
   fun v => (τ, ⟨p + v.2, by have := v.2.2; omega⟩, v.1)
 
 /- English proof (translation)
-Introduce `x y e`. Simplify using `only [embTop, Prod.mk.injEq, Fin.mk.injEq] at e`. Conclude with `Prod.ext e.2.2 (Fin.ext e.2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embTop_injective (τ : D.what₂.Tau) {p : ℕ} (hpm : p ≤ m) : Function.Injective (embTop (n := n) τ hpm) := by
   intro x y e
@@ -135,7 +135,7 @@ theorem embTop_injective (τ : D.what₂.Tau) {p : ℕ} (hpm : p ≤ m) : Functi
   exact Prod.ext e.2.2 (Fin.ext e.2.1)
 
 /- English proof (translation)
-Introduce `x y e`. Simplify using `only [embBot, Prod.mk.injEq, Fin.mk.injEq, add_right_inj] at e`. Conclude with `Prod.ext e.2.2 (Fin.ext e.2.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem embBot_injective (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) :
     Function.Injective (embBot (n := n) τ (q := q) hm) := by
@@ -144,7 +144,7 @@ theorem embBot_injective (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) :
   exact Prod.ext e.2.2 (Fin.ext e.2.1)
 
 /- English proof (translation)
-Introduce `e`. Simplify using `only [embTop, embBot, Prod.mk.injEq, Fin.mk.injEq] at e`. Use `x.2.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem embTop_ne_embBot (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (x : Fin n × Fin p) (y : Fin n × Fin q) :
     embTop τ (by omega) x ≠ embBot τ hm y := by
@@ -154,7 +154,7 @@ theorem embTop_ne_embBot (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (x 
   omega
 
 /- English proof (translation)
-The claim follows from `Subalgebra.mul_mem _ (rename_mem_supported (embTop τ (by omega)) {v : FVar D m n | v.1 = τ} (fun x => by simp [embTop]) P) (rename_mem_supported (embBot τ hm) {v : FVar D m n | v.1 = τ} (fun x => by simp [embBot]) Q)`.
+A detailed English derivation is pending.
 -/
 theorem minorProduct_rename_mem_supported_place (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (P : MvPolynomial (Fin n × Fin p) ℂ)
     (Q : MvPolynomial (Fin n × Fin q) ℂ) :
@@ -163,11 +163,11 @@ theorem minorProduct_rename_mem_supported_place (τ : D.what₂.Tau) {p q : ℕ}
     (rename_mem_supported (embBot τ hm) {v : FVar D m n | v.1 = τ} (fun x => by simp [embBot]) Q)
 
 /- English proof (translation)
-Unfold `deltaAt GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.delTop GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.delBottom`. Rewrite using `[map_prod, map_prod, Finset.prod_range, Finset.prod_range]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, minorPlus_eq τ (by omega) hpn i]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply the tactic sequence `try (unfold GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart; split_ifs <;> rfl)`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, minorMinus_eq τ hm hqn i]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `try (unfold GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart; split_ifs <;> rfl)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem deltaAt_eq (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (hpn : p ≤ n) (hqn : q ≤ n) (ap am : ℕ → ℕ) :
     deltaAt (D := D) (m := m) (n := n) τ p ap q am =
@@ -186,19 +186,19 @@ theorem deltaAt_eq (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (hpn : p 
     try (unfold GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.nextPart; split_ifs <;> rfl)
 
 /- English proof (translation)
-Establish `ha' : ∀ x y, x ≤ y → y < l → a y ≤ a x` using `fun x y h _ => ha h`. Establish `hant : Antitone (fun i : Fin l => a i)` using `fun i j h => ha (Fin.le_iff_val_le_val.mp h)`. It suffices to establish `h : (hookOf l a : ℚ) = GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookProd (fun i : Fin l => a i) by`. Rewrite using `[← h]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[GlobalTheory.HookDiagram.hookOf_eq l a ha', GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookProd, eq_div_iff (GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen_pos hant).ne']`. Establish `key` using `congrArg (Nat.cast : ℕ → ℚ) (GlobalTheory.LiftSizeCompare.hookProd_mul l a ha')`. Move the coercions through the operations in `[Nat.cast_prod] at key`. Establish `hden : (∏ r ∈ Finset.range l, ∏ j ∈ Finset.Ioo r l, ((a r - a j + (j - r) : ℕ) : ℚ)) = GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen (fun i : Fin l => a i)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_range, GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `symm`. Use `Finset.prod_bij (fun j _ => (j : ℕ)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.mem_Ioo.mpr ⟨Fin.lt_iff_val_lt_val.mp (Finset.mem_Ioi.mp hj), j.2⟩`. Introduce `j _ j' _ e`. Conclude with `Fin.ext e`. Introduce `b hb`. Use `Finset.mem_Ioo.mp hb` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨b, this.2⟩, Finset.mem_Ioi.mpr (Fin.lt_iff_val_lt_val.mpr this.1), rfl⟩`. Introduce `j hj`. Establish `hij : (i : ℕ) < j` using `Fin.lt_iff_val_lt_val.mp (Finset.mem_Ioi.mp hj)`. Establish `h1 : a j ≤ a i` using `ha hij.le`. Rewrite using `[Nat.cast_add, Nat.cast_sub h1, Nat.cast_sub hij.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hnum : (∏ r ∈ Finset.range l, (((a r + l - 1 - r).factorial : ℕ) : ℚ)) = ∏ i : Fin l, (((a i + (l - ((i : ℕ) + 1))).factorial : ℕ) : ℚ)`. Rewrite using `[Finset.prod_range]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 3`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hden, ← hnum]`. Conclude with `key` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hookOf_eq_hookProd (l : ℕ) (a : ℕ → ℕ) (ha : Antitone a) :
     (hookOf l a : ℂ) = ((GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookProd (fun i : Fin l => a i) : ℚ) : ℂ) := by
@@ -239,7 +239,7 @@ theorem hookOf_eq_hookProd (l : ℕ) (a : ℕ → ℕ) (ha : Antitone a) :
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `hp : Antitone (fun i : Fin p => ap i)` using `fun i j h => hap (Fin.le_iff_val_le_val.mp h)`. Establish `hq : Antitone (fun i : Fin q => am i)` using `fun i j h => ham (Fin.le_iff_val_le_val.mp h)`. Rewrite using `[deltaAt_eq τ hm hpn hqn, GlobalTheory.JointHarm.fock_rename_mul (embTop_injective τ _) (embBot_injective τ hm) (embTop_ne_embBot τ hm), GlobalTheory.MinorNorm.hookNorm _ _ _ _ hp, GlobalTheory.MinorNorm.hookNormBottom _ _ _ _ hq, hookOf_eq_hookProd _ _ hap, hookOf_eq_hookProd _ …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem fock_deltaAt (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (hpn : p ≤ n) (hqn : q ≤ n) (ap am : ℕ → ℕ)
     (hap : Antitone ap) (ham : Antitone am) :
@@ -253,9 +253,7 @@ theorem fock_deltaAt (τ : D.what₂.Tau) {p q : ℕ} (hm : p + q ≤ m) (hpn : 
     hookOf_eq_hookProd _ _ hap, hookOf_eq_hookProd _ _ ham]
 
 /- English proof (translation)
-Establish `hmem : ∀ τ, deltaAt (D` using `D) (m := m) (n := n) τ (p τ) (ap τ) (q τ) (am τ) ∈ supported ℂ {v : FVar D m n | v.1 = τ} := fun τ => by`. Rewrite using `[deltaAt_eq τ (h1 τ) (h2 τ).1 (h2 τ).2]`. Conclude with `minorProduct_rename_mem_supported_place τ (h1 τ) _ _`. Unfold `Formalism.IndefR.Datum.delta`. Rewrite using `[fock_prod_of_supported (fun τ => {v : FVar D m n | v.1 = τ}) (fun a b hab => Set.disjoint_left.mpr fun v ha hb => hab (ha.symm.trans hb)) _ _ hmem hmem Finset.univ]`.
-
-Conclude with `Finset.prod_congr rfl fun τ _ => fock_deltaAt τ (h1 τ) (h2 τ).1 (h2 τ).2 _ _ (h3 τ).1 (h3 τ).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_delta (D : D7) (m n : ℕ) (p q : D.what₂.Tau → ℕ) (ap am : D.what₂.Tau → ℕ → ℕ)
     (h1 : ∀ τ, p τ + q τ ≤ m) (h2 : ∀ τ, p τ ≤ n ∧ q τ ≤ n) (h3 : ∀ τ, Antitone (ap τ) ∧ Antitone (am τ)) :

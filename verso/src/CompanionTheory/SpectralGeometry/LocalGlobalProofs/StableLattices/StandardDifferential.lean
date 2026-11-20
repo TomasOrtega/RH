@@ -8,7 +8,7 @@ open scoped InnerProductSpace Kronecker
 namespace GlobalTheory.CompanionTheory.ZuckStdD
 
 /- English proof (translation)
-Use extensionality with `c d`. Apply the tactic sequence `exact (PI.ComplexConjugateDerivative.exp_entry X c d).deriv`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem dR_std (k r : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     (vr k r false).dR X = X := by
@@ -16,9 +16,9 @@ theorem dR_std (k r : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1
   exact (PI.ComplexConjugateDerivative.exp_entry X c d).deriv
 
 /- English proof (translation)
-Use extensionality with `c d`. Apply the tactic sequence `have h := (PI.ComplexConjugateDerivative.exp_entry (-X) d c).deriv`. Establish `e : (fun t : ℝ => (vr k r true).ρ (NormedSpace.exp ((t : ℂ) • X)) c d) = fun t : ℝ => (NormedSpace.exp ((t : ℂ) • (-X))) d c`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_neg, Matrix.exp_neg]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dualM]`. Use `show deriv (fun t : ℝ => (vr k r true).ρ (NormedSpace.exp ((t : ℂ) • X)) c d) 0 = _`. Rewrite using `[e, h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dR_dual (k r : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     (vr k r true).dR X = -Xᵀ := by
@@ -34,9 +34,9 @@ theorem dR_dual (k r : ℕ) (X : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 
   rfl
 
 /- English proof (translation)
-Unfold `reH imH`. Establish `hI : Complex.I * (1 / (2 * Complex.I)) = 1 / 2`. Use `Complex.I_ne_zero` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[smul_smul, hI, ← smul_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ Z : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, Y + Z + (Y - Z) = (2 : ℂ) • Y`. Introduce `Z`. Rewrite using `[two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -53,9 +53,9 @@ theorem reH_add_imH (k r : ℕ) (Y : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + 
   norm_num
 
 /- English proof (translation)
-Introduce `k r Y`. Prove the components needed by the constructor for the conclusion. Unfold `FRep.dC`. Rewrite using `[dR_std, dR_std]`. Conclude with `reH_add_imH k r Y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `FRep.dC`. Rewrite using `[dR_dual, dR_dual]`. Use `conv_rhs => rw [← reH_add_imH k r Y]`. Rewrite using `[Matrix.transpose_add, Matrix.transpose_smul, neg_add, smul_neg]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stdD : StdD := by
   intro k r Y

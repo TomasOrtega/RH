@@ -10,7 +10,7 @@ open scoped BigOperators
 open NumberField Formalism.IncomingBounds Formalism.L2.FormalSeriesBounds Formalism.L2.Pj GlobalTheory.RowLaw ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RowLaw.intGerm_eq_expInt` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUnramifiedDepth%2FIntegralGermEqGaugedFormalGroupLawExpIntegral.lean&line=311#L311)
 -/

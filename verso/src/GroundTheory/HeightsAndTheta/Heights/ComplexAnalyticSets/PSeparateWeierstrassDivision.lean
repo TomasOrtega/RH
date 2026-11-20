@@ -9,19 +9,17 @@ namespace GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets
 open Topology Filter
 
 /- English proof (translation)
-It suffices to establish `H : ∀ (N : ℕ) (σ : Type) [Fintype σ] [DecidableEq σ], Fintype.card σ = N → ∀ (d : ℕ) (y₀ : Fin d → ℂ) (u₀ : σ → ℂ) (n : σ → ℕ) (b : (m : σ) → Fin (n m) → (Fin d → ℂ) → ℂ) (f : (Fin d → ℂ) × (σ → ℂ) → ℂ), (∀ m j, AnalyticAt ℂ (b m j) y₀) → (∀ m (T : ℂ), T ^ n m + ∑ j, b m j y₀ * T …`. Introduce `σ _ _ d y₀ u₀ n b f hb hG hf`. Conclude with `H _ σ rfl d y₀ u₀ n b f hb hG hf`. Introduce `N`. Proceed by induction on `N using Nat.strong_induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `_ N ih`. Introduce `σ _ _ hN d y₀ u₀ n b f hb hG hf`. Break down `isEmpty_or_nonempty σ with hσ | ⟨⟨k⟩⟩` into its components or cases. Use `⟨fun _ _ => 0, fun _ y => f (y, u₀), fun _ => analyticAt_const, fun _ => hf.comp_of_eq (analyticAt_id.prod analyticAt_const) rfl, Eventually.of_forall fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x = (x.1, u₀)` using `Prod.ext rfl (Subsingleton.elim _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, Finset.prod_empty, mul_one, zero_add, Fintype.sum_unique]`. Rewrite using `[← hx]`. Take `⟨q, e, hq, he, hev⟩` from `weierstrassDivision_in_coordinate h k d y₀ u₀ (n k) (b k) f (hb k) (hG k) hf`. Establish `hlt : Fintype.card {m // m ≠ k} < N` using `hN ▸ Fintype.card_subtype_lt (p := fun m => m ≠ k) (x := k) (by simp)`. Establish `IH` using `fun i => ih _ hlt {m // m ≠ k} rfl d y₀ (fun m => u₀ m) (fun m => n m) (fun m => b m) (e i) (fun m j => hb m j) (fun m T => hG m T) (he i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose V R hV hR hVR using IH`. Establish `hπ : AnalyticAt ℂ (fun x : (Fin d → ℂ) × (σ → ℂ) => (x.1, fun m : {m // m ≠ k} => x.2 m)) (y₀, u₀)` using `analyticAt_fst.prod (AnalyticAt.pi (f := fun (m : {m // m ≠ k}) (x : (Fin d → ℂ) × (σ → ℂ)) => x.2 m) fun m => (analyticAt_coord _ _).comp analyticAt_snd)`. Use `⟨fun m x => if hm : m = k then q x else ∑ i, V i ⟨m, hm⟩ (x.1, fun m' => x.2 m') * x.2 k ^ (i : ℕ), fun α y => R (α k) (fun m' => α m') y, fun m => ?_, fun α => hR _ _, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hm : m = k`. Simplify `hq` using `[hm]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hm, dite_false]`. Conclude with `Finset.analyticAt_fun_sum _ fun i _ => ((hV i ⟨m, hm⟩).comp_of_eq hπ rfl).fun_mul (((analyticAt_coord k _).comp analyticAt_snd).fun_pow _)`. Establish `hT : Tendsto (fun x : (Fin d → ℂ) × (σ → ℂ) => (x.1, fun m' : {m // m ≠ k} => x.2 m')) (𝓝 (y₀, u₀)) (𝓝 (y₀, fun m' => u₀ m'))` using `hπ.continuousAt.tendsto filter_upwards [hev, hT.eventually (Filter.eventually_all.2 hVR)] with x hx hx'`. Rewrite using `[hx, Fintype.sum_eq_add_sum_subtype_ne _ k, ← (Equiv.piSplitAt k (fun m => Fin (n m))).symm.sum_comp, Fintype.sum_prod_type]`. Establish `hne : ∀ m : {m // m ≠ k}, ¬ ((m : σ) = k)` using `fun m => m.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[Fintype.prod_eq_mul_prod_subtype_ne _ k]`. Simplify using `only [Equiv.piSplitAt_symm_apply, dite_true, hne, dite_false, Subtype.coe_eta, hx']`. Simplify using `only [add_mul, Finset.sum_add_distrib, Finset.sum_mul]`. Rewrite using `[add_assoc]`. Use `congr 1`.
-
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun i _ => by ring`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun α _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SeparateWeierstrassDivision.proof (h : WeierstrassPolynomialDivision.Statement) :
     SeparateWeierstrassDivision.Statement := by

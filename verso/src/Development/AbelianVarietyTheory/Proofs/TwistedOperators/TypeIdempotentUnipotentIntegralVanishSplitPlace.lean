@@ -19,9 +19,9 @@ namespace GlobalTheory.LocConst
 open GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalParabolic ValuativeRel
 
 /- English proof (translation)
-Take `⟨x | x, rfl⟩` from `(stdSum h).surjective i`. Rewrite using `[show blk (two (stdSum h)) (stdSum h (Sum.inl x)) = false from blk_apply (two (stdSum h)) false x]`. Use `x.isLt` as an intermediate fact. Simplify using `only [stdSum_inl]`. Conclude with `(decide_eq_false (by omega)).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show blk (two (stdSum h)) (stdSum h (Sum.inr x)) = true from blk_apply (two (stdSum h)) true x]`. Simplify using `only [stdSum_inr]`. Conclude with `(decide_eq_true (by omega)).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_two_stdSum {a b r : ℕ} (h : a + b = r) (i : Fin r) :
     blk (two (stdSum h)) i = decide (a ≤ (i : ℕ)) := by
@@ -35,15 +35,15 @@ theorem blk_two_stdSum {a b r : ℕ} (h : a + b = r) (i : Fin r) :
     exact (decide_eq_true (by omega)).symm
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases hp : p <;> by_cases hq : q <;> simp [hp, hq]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem decide_lt_decide (p q : Prop) [Decidable p] [Decidable q] : decide p < decide q ↔ ¬ p ∧ q := by
   by_cases hp : p <;> by_cases hq : q <;> simp [hp, hq]
 
 /- English proof (translation)
-Rewrite using `[stdMaxRad, GlobalTheory.RadRev.mem_unipRad_entries]`. Simplify using `only [blk_two_stdSum, decide_lt_decide, not_le, GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical, Set.mem_ofPred_eq]`. Use `forall₂_congr fun i j => ⟨fun H hne => ?_, fun H hlt => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Conclude with `hne (H hc)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hlt (H hne)`.
+A detailed English derivation is pending.
 -/
 theorem mem_stdMaxRad_iff {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) {g : GL (Fin r) R} :
     g ∈ stdMaxRad R h ↔ g ∈ GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical R r a := by
@@ -56,9 +56,7 @@ theorem mem_stdMaxRad_iff {R : Type} [CommRing R] {a b r : ℕ} (h : a + b = r) 
     exact hlt (H hne)
 
 /- English proof (translation)
-Set `e : Subrepresentation (ρ.comp f : Representation ℂ G W) ≃o Subrepresentation ρ` to `{ toFun := fun S => ⟨S.toSubmodule, fun g w hw => by`. Take `⟨x, rfl⟩` from `hf g`. Conclude with `S.apply_mem_toSubmodule x hw⟩`. Use `invFun := fun S => ⟨S.toSubmodule, fun g w hw => S.apply_mem_toSubmodule (f g) hw⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := h`. Conclude with `e.isSimpleOrder`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {G H W : Type} [Group G] [Group H] [AddCommGroup W] [Module ℂ W]
     (ρ : Representation ℂ H W) (f : G →* H) (hf : Function.Surjective f) (h : ρ.IsIrreducible) :
@@ -75,16 +73,16 @@ theorem isIrreducible_comp {G H W : Type} [Group G] [Group H] [AddCommGroup W] [
   exact e.isSimpleOrder
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun i j => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem map_map_symm {R S : Type} [CommRing R] [CommRing S] {r : ℕ} (ι : R ≃+* S) (u : GL (Fin r) S) :
     Matrix.GeneralLinearGroup.map (ι : R →+* S) (Matrix.GeneralLinearGroup.map (ι.symm : S →+* R) u) = u :=
   Units.ext (Matrix.ext fun i j => by simp)
 
 /- English proof (translation)
-Introduce `w hw`. Use `hN w fun u hu => ?_` and prove the remaining obligations. Establish `hu' : Matrix.GeneralLinearGroup.map (ι.symm : S →+* R) u ∈ stdMaxRad R h`. Use `(mem_stdMaxRad_iff h).2 fun i j hij => hu i j fun e => hij ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ι.symm ((u : Matrix (Fin r) (Fin r) S) i j) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `hw _ hu'` as an intermediate fact. Rewrite `this` using `[MonoidHom.comp_apply, map_map_symm]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem noFixed_comp {R S W : Type} [CommRing R] [CommRing S] [AddCommGroup W] [Module ℂ W] {a b r : ℕ}
     (h : a + b = r) (ι : R ≃+* S) (τ : Representation ℂ (GL (Fin r) S) W)
@@ -113,7 +111,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (Fv F v)) (Valued.v : Valuation (Fv F v) (WithZero (Multiplicative ℤ)))`. Rewrite using `[Valuation.mem_integer_iff, he.le_one_iff_le_one]`. Conclude with `Iff.rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. A detailed English derivation is pending.
 -/
 theorem mem_integers_iff (v : HeightOneSpectrum (𝓞 F)) (z : Fv F v) :
     z ∈ 𝒪[Fv F v] ↔ z ∈ v.adicCompletionIntegers F := by
@@ -144,11 +142,9 @@ variable {E : Type} [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
   {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `h1` using `GlobalTheory.LocGL.redK_apply (k := Fv F v) (⟨s.equiv g, hE⟩ : GlobalTheory.SplitWeil.KO (Fv F v) (Fin n)) i j`. Establish `h2` using `splitRed_val s.cm s.herm s.selfDual s.isBasis ⟨g, hg⟩`. Establish `h3` using `coe_stabLocEquiv s.cm s.herm s.selfDual s.isBasis ⟨g, hg⟩ i j`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h1, resEquiv_residue]`. Conclude with `congrArg _ (Subtype.ext h3.symm)`. Use `_ = _ := by`. Express the relevant statement in the definitionally equal form `_ = ((splitRed s.cm s.herm s.selfDual s.isBasis ⟨g, hg⟩ : GL (Fin n) (ResF v)) : Matrix (Fin n) (Fin n) (ResF v)) i j`. Rewrite using `[h2]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_redK (s : SplitAt σ J L v) (g : GLoc σ J v) (hg : g ∈ stabLoc σ J L v)
     (hE : s.equiv g ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin n)) :
@@ -183,7 +179,7 @@ variable {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField 
   {n : ℕ} {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Use `s.equiv.toHomeomorph.toMeasurableEquiv.map_apply (μ := μ) (GlobalTheory.SplitWeil.KO (Fv F v) (Fin n) : Set (GL (Fin n) (Fv F v)))` as an intermediate fact. Simplify using `only [Measure.real]`. Use `(congrArg ENNReal.toReal this).trans (congrArg (fun t => (μ t).toReal) (Set.ext fun g => ?_))` and prove the remaining obligations. Conclude with `s.mem_stabLoc_iff.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem real_map_KO (s : SplitAt σ J L v) (μ : Measure (GLoc σ J v)) :
     (Measure.map s.equiv μ).real (GlobalTheory.SplitWeil.KO (Fv F v) (Fin n) : Set (GL (Fin n) (Fv F v))) =
@@ -195,9 +191,9 @@ theorem real_map_KO (s : SplitAt σ J L v) (μ : Measure (GLoc σ J v)) :
   exact s.mem_stabLoc_iff.symm
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ stabLoc σ J L v`. Establish `hE : s.equiv g ∈ GlobalTheory.SplitWeil.KO (Fv F v) (Fin n)` using `s.mem_stabLoc_iff.1 hg`. Use `(typeIdem_coe _ (GlobalTheory.LocGL.redK (Fv F v) (Fin n)) _ ⟨_, hE⟩).trans (Eq.trans ?_ (typeIdem_coe μ s.red τ ⟨g, hg⟩).symm)` and prove the remaining obligations. Establish `hc : Representation.character (τ.comp (Matrix.GeneralLinearGroup.map (resEquiv v : 𝓀[Fv F v] →+* ResF v))) (GlobalTheory.LocGL.redK (Fv F v) (Fin n) ⟨_, hE⟩) = τ.character (s.red ⟨g, hg⟩)`. Rewrite using `[← map_redK s g hg hE]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[real_map_KO, hc]`. Conclude with `(typeIdem_of_notMem _ (GlobalTheory.LocGL.redK (Fv F v) (Fin n)) _ (fun h => hg (s.mem_stabLoc_iff.2 h))).trans (typeIdem_of_notMem μ s.red τ hg).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemGL_equiv (s : SplitAt σ J L v) (μ : Measure (GLoc σ J v)) {W : Type} [AddCommGroup W] [Module ℂ W]
     (τ : Representation ℂ (GL (Fin n) (ResF v)) W) (g : GLoc σ J v) :
@@ -227,7 +223,7 @@ variable {G H : Type} [Group G] [TopologicalSpace G] [MeasurableSpace G] [BorelS
   [Group H] [TopologicalSpace H] [MeasurableSpace H] [BorelSpace H] [IsTopologicalGroup H]
 
 /- English proof (translation)
-Use `integral_map_equiv (μ := μ) e.toHomeomorph.toMeasurableEquiv fun z => A' z * B' (z⁻¹ * e g)` as an intermediate fact. Use `this.trans (integral_congr_ae (.of_forall fun z => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `A' (e z) * B' ((e z)⁻¹ * e g) = A z * B (z⁻¹ * g)`. Rewrite using `[hA, ← map_inv, ← map_mul, hB]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_map_equiv (e : G ≃ₜ* H) (μ : Measure G) {A B : G → ℂ} {A' B' : H → ℂ} (hA : ∀ g, A' (e g) = A g)
     (hB : ∀ g, B' (e g) = B g) (g : G) : GlobalTheory.AutomorphicL2Unitary.conv (Measure.map e μ) A' B' (e g) = GlobalTheory.AutomorphicL2Unitary.conv μ A B g := by
@@ -237,7 +233,7 @@ theorem conv_map_equiv (e : G ≃ₜ* H) (μ : Measure G) {A B : G → ℂ} {A' 
   rw [hA, ← map_inv, ← map_mul, hB]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Simplify using `using hn`. Introduce `hu`. Conclude with `⟨_, hu, e.apply_symm_apply u⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_map_iff (e : G ≃ₜ* H) (N : Subgroup G) (u : H) : u ∈ N.map (e : G →* H) ↔ e.symm u ∈ N := by
   constructor
@@ -256,9 +252,9 @@ def mapSubgroupEquiv (e : G ≃ₜ* H) (N : Subgroup G) : N ≃ₜ* N.map (e : G
   continuous_invFun := (e.symm.continuous.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-Set `ψ` to `(mapSubgroupEquiv e N).toHomeomorph.toMeasurableEquiv`. Use `haveI : (Measure.map ψ ν).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map ν (mapSubgroupEquiv e N)`. Take `⟨h1, h2⟩` from `h (Measure.map ψ ν)`. Establish `key : ∀ n : N, f' (e x * (ψ n : H) * e y) = f (x * n * y)` using `fun n => by`. Express the relevant statement in the definitionally equal form `f' (e x * e n * e y) = _`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, hf]`. Use `⟨((integrable_map_equiv ψ _).1 h1).congr (.of_forall key), ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, integral_map_equiv]`. Conclude with `integral_congr_ae (.of_forall fun n => (key n).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unip_integral_of_map (e : G ≃ₜ* H) (N : Subgroup G) (ν : Measure N) [ν.IsHaarMeasure] {f : G → ℂ}
     {f' : H → ℂ} (hf : ∀ g, f' (e g) = f g) (x y : G)
@@ -287,15 +283,13 @@ open GlobalTheory.SmGL GlobalTheory.IndefiniteRowSideFullHecke.StandardMaximalPa
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D V T v a ha har hNF 𝔉 hP μ _ φ hφ f hf ν _ x y`. Use `letI := GlobalTheory.LocalData.complRel v.1`. Use `haveI := GlobalTheory.LocalData.isLocalField v.1`. Generalize the expression as in `T.frame v = s at hP hf`. Set `τ' : Representation ℂ (GL (Fin V.rank) 𝓀[Fv D.host.F v.1]) (T.W v)` to `(T.τ v).comp (Matrix.GeneralLinearGroup.map (resEquiv v.1 : 𝓀[Fv D.host.F v.1] →+* ResF v.1))`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hirr : τ'.IsIrreducible` using `isIrreducible_comp _ _ (fun u => ⟨_, map_map_symm (resEquiv v.1) u⟩) (T.irred v)`. Establish `hab : a + (V.rank - a) = V.rank` using `by omega`. Establish `hNF' : NoFixed τ' (stdMaxRad 𝓀[Fv D.host.F v.1] hab)` using `noFixed_comp hab (resEquiv v.1) (T.τ v) hNF`. Use `haveI : (Measure.map s.equiv μ).IsHaarMeasure := ContinuousMulEquiv.isHaarMeasure_map μ s.equiv`. Establish `hφ' : φ ∘ s.equiv.symm ∈ GlobalTheory.SplitWeil.SB (GL (Fin V.rank) (Fv D.host.F v.1))` using `comp_mem_SB hφ s.equiv.symm.toHomeomorph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφB : ∀ g, (φ ∘ s.equiv.symm) (s.equiv g) = φ g` using `fun g => by simp`. Establish `hidem : ∀ g, idemGL (Fv D.host.F v.1) (Measure.map s.equiv μ) τ' (s.equiv g) = s.idem μ (T.τ v) g` using `idemGL_equiv s μ (T.τ v)`. Choose the witnesses or unpack the hypotheses as in `⟨f', hf', hff⟩ : ∃ f' : GL (Fin V.rank) (Fv D.host.F v.1) → ℂ, (f' = GlobalTheory.AutomorphicL2Unitary.conv (Measure.map s.equiv μ) (idemGL (Fv D.host.F v.1) (Measure.map s.equiv μ) τ') (φ ∘ s.equiv.symm) ∨ f' = GlobalTheory.AutomorphicL2Unitary.conv (Measure.map s.equiv μ) (φ ∘ …`. Break down `hf with rfl | rfl` into its components or cases. Conclude with `⟨_, Or.inl rfl, conv_map_equiv s.equiv μ hidem hφB⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨_, Or.inr rfl, conv_map_equiv s.equiv μ hφB hidem⟩`. Establish `hg₀ : ∃ g₀, parAt 𝔉 s ≤ conjBy g₀ (stdMaxParab (Fv D.host.F v.1) hab)`. Take `⟨g, hg⟩` from `hP`. Conclude with `⟨g, fun p hp => mem_conjBy.2 ((mem_stdMaxParab hab).2 (hg p hp))⟩`. Use `unip_integral_of_map s.equiv (NLoc 𝔉 v.1) ν hff x y fun ν' _ => ?_` and prove the remaining obligations.
-
-Conclude with `hTV (Fv D.host.F v.1) V.rank a (V.rank - a) hab ha (by omega) (T.W v) τ' hirr hNF' (Measure.map s.equiv μ) (φ ∘ s.equiv.symm) hφ' f' hf' (parAt 𝔉 s) _ (hpr D V v.1 s 𝔉) hg₀ ν' (s.equiv x) (s.equiv y)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unip_integral_vanish_of (hTV : TypeConstTermVanish)
     (hpr : ∀ (D : D7) (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (s : SplitAt D.sp.cm.sig V.gram (frameLat V) v)
@@ -342,7 +336,7 @@ theorem unip_integral_vanish_of (hTV : TypeConstTermVanish)
     (s.equiv x) (s.equiv y)
 
 /- English proof (translation)
-The claim follows from `unip_integral_vanish_of GlobalTheory.T.typeIdempotent_constantTerm_vanish GlobalTheory.T.isParabolic_isotropicFlag_stabilizer_split_place`.
+A detailed English derivation is pending.
 -/
 theorem unip_integral_vanish : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (v : T.S) (a : ℕ), 0 < a → a < V.rank →
     GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.NoFixed (T.τ v) (GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical (ResF v.1) V.rank a) →

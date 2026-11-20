@@ -10,21 +10,19 @@ open Formalism.BasicNotions Formalism.MainNotions.product_first_zeroth_parts For
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hy'` using `fun c => hy c (Set.mem_univ c)`. Use `choose q hq hqy using hy'`. Use `choose Q hQ hQq using hq`. Establish `hQI : ∀ c, Q c ∈ Formalism.L2.Forms.IntSpan D w ((D.fm u).lam 0)` using `fun c => mem_intSubm w _ _ (hQ c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `γ : (D.mem u).C.cls 0 → D.what₂.Tau → GL (Fin (D.R.N 0)) D.host.E` to `fun c τ => if τ = (D.fm u).tauOf w v then (B' c)⁻¹ * B c else 1`. Establish `hγ : ∀ c, (fun τ => atInf (Formalism.L2.Forms.embT D) ((γ c τ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ) = bwA_N D ((D.fm u).tauOf w v) (B c) (B' c)`. Introduce `c`. Use function extensionality and compare the values at `τ`. Simplify using `only [γ]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Unfold `bwA_N`. Use `split_ifs`. Both sides reduce to the same expression. Simplify using `[atInf]`. Establish `ho : ∀ c τ, τ ≠ (D.fm u).tauOf w v → bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce `c τ h`. Unfold `bwA_N`. Rewrite using `[if_neg h]`. Establish `hprod : ∀ c, ∏ τ, (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ).det ^ shiftOf (lamT u 0) τ = (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) ((D.fm u).tauOf w v)).det ^ ((D.fm u).lam 0 ((D.fm u).tauOf w v)).detShift`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[Fintype.prod_eq_single ((D.fm u).tauOf w v) (fun τ h => by rw [ho c τ h, Matrix.det_one, one_zpow]), lamT_zero]`. Both sides reduce to the same expression. Establish `hyc : ∀ c, y c = MvPolynomial.C (∏ τ, (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ).det ^ shiftOf (lamT u 0) τ) * Formalism.L2.Forms.subP (bwA_N D ((D.fm u).tauOf w v) (B c) (B' c)) (Q c)`. Introduce `c`. Rewrite using `[hprod c, MvPolynomial.C_mul', ← hqy c, ← hQq c]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Establish `hyR : ∀ c, y c ∈ RatSpan D ((D.fm u).lam 0)`. Introduce `c`. Establish `h` using `hRG (γ c) (Q c) (intSpan_le_rat w _ (hQI c))`. Establish `hpt : ∀ τ, atInf (Formalism.L2.Forms.embT D) ((γ c τ : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ = bwA_N D ((D.fm u).tauOf w v) (B c) (B' c) τ` using `fun τ => congrFun (hγ c) τ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hpt] at h`. Rewrite using `[hyc c]`. Conclude with `h`. Take `⟨x, hx⟩` from `crd_surj T hA B y fun c => ⟨_, hRG (fun _ => (B c)⁻¹) _ (hyR c), hRC _ (hRG (fun _ => (B c)⁻¹) _ (hyR c)), fun z => fnOf_frame (B c) (y c) z⟩`. Use `⟨x, (T.bw0 w hw hs v x).2 fun c B₁ B₁' hB₁ hB₁' => ?_, funext fun c => crd_eq T B (hx c)⟩` and prove the remaining obligations.
-
-Take `⟨P₁, hP₁, he⟩` from `mixed_change w hw ((D.fm u).tauOf w v) (hB c) hB₁ (hB' c) hB₁' (Q c) (hQI c)`. Use `⟨P₁, hP₁, fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[hx c z, hyc c, ← fnOf_mul, bwA_N_mul]`. Conclude with `he _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto_Bw (hRC : RatInC D u) (hRG : RatGL D u) (T : Forms0 D u) (hA : admS D u) (w : D.what₂.places.Pl)
     (hw : OverT D u w) (hs : (D.fm u).seenP w = true) (v : (D.mem u).A.vT)
@@ -85,13 +83,13 @@ theorem onto_Bw (hRC : RatInC D u) (hRG : RatGL D u) (T : Forms0 D u) (hA : admS
   exact he _
 
 /- English proof (translation)
-Introduce `T hA w hw hs v _ B B' hB hB'` and use `⟨onto_Bw hRC hRG T hA w hw hs v B B' hB hB', onto_tL hRC hRG T hA w hw B hB _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem ontoAll_of (hRC : RatInC D u) (hRG : RatGL D u) : OntoAll D u :=
   fun T hA w hw hs v _ B B' hB hB' => ⟨onto_Bw hRC hRG T hA w hw hs v B B' hB hB', onto_tL hRC hRG T hA w hw B hB _⟩
 
 /- English proof (translation)
-The claim follows from `second_branch_of_surjectivity (fun D u => ontoAll_of (hRC D u) (hRG D u)) duCount_holds`.
+A detailed English derivation is pending.
 -/
 theorem second_branch_of_rationality (hRC : ∀ (D : D7) (u : D.what₂.Word), RatInC D u) (hRG : ∀ (D : D7) (u : D.what₂.Word), RatGL D u) :
     ∀ (D : D7) (u : D.what₂.Word), Formalism.MainNotions.RT.SecondBranchIntegralityUnderForms D u :=

@@ -11,9 +11,9 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ _ _ j Γ Y L hY hL hΓ hint hle`. Establish `h` using `GlobalTheory.TestLat.neg_log_le_lcv_of_integral_form K j Y hY Γ 1 one_pos hΓ hle L hL (by`. Introduce `x hx y hy`. Establish `h1` using `hint x hx y hy`. Rewrite `h1` using `[RationalHermitianForm.hform_eq_dot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1)`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lcv_nonneg_of_integral_full :
     ∀ (K : Type) [Field K] [NumberField K] [StarRing K] [IsTotallyComplex K] (j : ℕ) (Γ : Matrix (Fin j) (Fin j) K) (Y : InfinitePlace K → Matrix (Fin j) (Fin j) ℂ) (L : Submodule (𝓞 K) (Fin j → K)), (∀ v, IsUnit (Y v).det) → Submodule.IsLattice K L → Γ.det ≠ 0 → Formalism.HermitianLatticesTheory.IsIntegralLat (R := 𝓞 K) (hform Γ) L → (∏ v : InfinitePlace K, ‖v.embedding Γ.det‖ ≤ ∏ v : InfinitePlace K, (gram Y v (fun i => (Pi.single i 1 : Fin j → K))).det.re) → 0 ≤ lcv Y L := by

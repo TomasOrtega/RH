@@ -73,9 +73,9 @@ def eigSub (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (S : Finset (Hei
     LinearMap.ker (heckeLin V Rp - c P d • LinearMap.id)
 
 /- English proof (translation)
-Establish `h1 : (4 : ℝ) ^ (-((1 : ℝ) / 2)) = 1 / 2`. Rewrite using `[Real.rpow_neg (by norm_num), ← Real.sqrt_eq_rpow, show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`. Evaluate the numerical expressions. Establish `h2 : (4 : ℝ) ^ ((1 : ℝ) / 2) = 2`. Rewrite using `[← Real.sqrt_eq_rpow, show (4 : ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : -((((2 : ℕ) : ℝ) - 1 - 2 * (((0 : Fin 2) : ℕ) : ℝ)) / 2) = -((1 : ℝ) / 2)` using `by norm_num`. Establish `e2 : -((((2 : ℕ) : ℝ) - 1 - 2 * (((1 : Fin 2) : ℕ) : ℝ)) / 2) = (1 : ℝ) / 2` using `by norm_num`. Establish `h4 : ((4 : ℕ) : ℝ) = 4` using `by norm_num`. Simplify using `only [sphVal, Fin.prod_univ_two, false_imp_iff, if_true, e1, e2, h4, h1, h2]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -93,7 +93,7 @@ example (α : Fin 2 → ℂ) : 4 * sphVal False 4 α ![1, 0] + sphVal False 4 α
   ring
 
 /- English proof (translation)
-Simplify using `[str]`.
+Simplify using the standard rewrite rules.
 -/
 example (x : ℂ) (q t : ℕ) : (str x q t).card = t := by simp [str]
 

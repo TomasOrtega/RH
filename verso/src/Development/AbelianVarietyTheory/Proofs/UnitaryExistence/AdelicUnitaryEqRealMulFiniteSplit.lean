@@ -27,7 +27,7 @@ Both sides reduce to the same expression.
 theorem val_bc (p : R →+* A) (g : GL n R) : ((bc p g : GL n A) : Matrix n n A) = (g : Matrix n n R).map p := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `hi _ _ (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mat_ext (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x = q y → x = y) {M N : Matrix n n R}
     (h1 : M.map p = N.map p) (h2 : M.map q = N.map q) : M = N := by
@@ -35,16 +35,16 @@ theorem mat_ext (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x
   exact hi _ _ (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)
 
 /- English proof (translation)
-The claim follows from `Units.ext (mat_ext p q hi (congrArg Units.val h1) (congrArg Units.val h2))`.
+A detailed English derivation is pending.
 -/
 theorem gl_ext (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x = q y → x = y) {g h : GL n R}
     (h1 : bc p g = bc p h) (h2 : bc q g = bc q h) : g = h :=
   Units.ext (mat_ext p q hi (congrArg Units.val h1) (congrArg Units.val h2))
 
 /- English proof (translation)
-Use `choose f hp hq using hs`. Set `G : Matrix n n A → Matrix n n B → Matrix n n R` to `fun M N => Matrix.of fun i j => f (M i j) (N i j)`. Establish `Gp : ∀ M N, (G M N).map p = M` using `fun M N => by ext i j; simp [G, hp]`. Establish `Gq : ∀ M N, (G M N).map q = N` using `fun M N => by ext i j; simp [G, hq]`. Apply the tactic sequence `refine ⟨⟨G a.1 b.1, G (a⁻¹).1 (b⁻¹).1, ?_, ?_⟩, Units.ext (Gp _ _), Units.ext (Gq _ _)⟩ <;>`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply mat_ext p q hi <;> simp [Matrix.map_mul, Gp, Gq]`.
+A detailed English derivation is pending.
 -/
 theorem gl_glue (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x = q y → x = y)
     (hs : ∀ a b, ∃ x, p x = a ∧ q x = b) (a : GL n A) (b : GL n B) : ∃ g : GL n R, bc p g = a ∧ bc q g = b := by
@@ -56,7 +56,7 @@ theorem gl_glue (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x
     apply mat_ext p q hi <;> simp [Matrix.map_mul, Gp, Gq]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Use `congr 2`. Use extensionality with `i j`. Simplify using `[cT, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_cond (p : R →+* A) (s : R →+* R) (t : A →+* A) (hc : ∀ x, p (s x) = t (p x)) (J g : Matrix n n R) :
     (cT s g * J * g).map p = cT t (g.map p) * J.map p * g.map p := by
@@ -66,7 +66,7 @@ theorem map_cond (p : R →+* A) (s : R →+* R) (t : A →+* A) (hc : ∀ x, p 
   simp [cT, hc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cT s g.1 * J * g.1 = J ↔ cT t (g.1.map p) * J.map p * g.1.map p = J.map p ∧ cT u (g.1.map q) * J.map q * g.1.map q = J.map q`. Rewrite using `[← map_cond p s t hp, ← map_cond q s u hq]`. Conclude with `⟨fun h => by rw [h]; exact ⟨rfl, rfl⟩, fun h => mat_ext p q hi h.1 h.2⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_iff (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x = q y → x = y)
     (s : R →+* R) (t : A →+* A) (u : B →+* B) (hp : ∀ x, p (s x) = t (p x)) (hq : ∀ x, q (s x) = u (q x))
@@ -78,11 +78,11 @@ theorem mem_iff (p : R →+* A) (q : R →+* B) (hi : ∀ x y, p x = p y → q x
   exact ⟨fun h => by rw [h]; exact ⟨rfl, rfl⟩, fun h => mat_ext p q hi h.1 h.2⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cT t g.1 * J * g.1 = J`. Use extensionality with `i j`. Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [hform, Matrix.mulVec_single_one, Matrix.col, Matrix.transpose_apply] at this`. Rewrite `this` using `[Finset.sum_comm]`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[this, Finset.sum_eq_single i, Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_of_form (t : A →+* A) (J : Matrix n n A) (g : GL n A)
     (h : ∀ x y, hform t J (g.1 *ᵥ x) (g.1 *ᵥ y) = hform t J x y) : g ∈ UJ t J := by
@@ -106,7 +106,7 @@ section Tens
 variable {F E R R' : Type} [Field F] [Field E] [Algebra F E] [CommRing R] [Algebra F R] [CommRing R'] [Algebra F R']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem map_sig (f : R →ₐ[F] R') (σ : E →ₐ[F] E) (x : R ⊗[F] E) :
     (Algebra.TensorProduct.map f (AlgHom.id F E)).toRingHom (sigR R σ x) =
@@ -117,7 +117,7 @@ theorem map_sig (f : R →ₐ[F] R') (σ : E →ₐ[F] E) (x : R ⊗[F] E) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[JR, inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_JR (f : R →ₐ[F] R') {m : ℕ} (J : Matrix (Fin m) (Fin m) E) :
     (JR R J).map (Algebra.TensorProduct.map f (AlgHom.id F E)).toRingHom = JR R' J := by
@@ -129,14 +129,14 @@ end Tens
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Conclude with `e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem parts_inj (D : D7) (x y : AE D) (h1 : infPart D x = infPart D y) (h2 : finPart D x = finPart D y) : x = y := by
   obtain ⟨e, he, -⟩ := GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E
   exact e.injective (Prod.ext (((he x).1.trans h1).trans (he y).1.symm) (((he x).2.trans h2).trans (he y).2.symm))
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Apply the tactic sequence `refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem parts_surj (D : D7) (a : Ainf D.host.F ⊗[D.host.F] D.host.E) (b : Af D.host.F ⊗[D.host.F] D.host.E) :
     ∃ x : AE D, infPart D x = a ∧ finPart D x = b := by
@@ -144,7 +144,7 @@ theorem parts_surj (D : D7) (a : Ainf D.host.F ⊗[D.host.F] D.host.E) (b : Af D
   refine ⟨e.symm (a, b), (he _).1.symm.trans ?_, (he _).2.symm.trans ?_⟩ <;> simp
 
 /- English proof (translation)
-Use `mem_iff (infPart D) (finPart D) (parts_inj D) (sigR _ D.sp.cm.sig) (sigR _ D.sp.cm.sig) (sigR _ D.sp.cm.sig) (map_sig _ _) (map_sig _ _) (JR _ V.gram) g` as an intermediate fact. Rewrite `this` using `[show (JR _ V.gram).map (infPart D) = JR _ V.gram from map_JR _ _, show (JR _ V.gram).map (finPart D) = JR _ V.gram from map_JR _ _]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_parts (V : HSp D) (g : GL (Fin V.rank) (AE D)) :
     g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram ↔
@@ -157,13 +157,13 @@ theorem mem_parts (V : HSp D) (g : GL (Fin V.rank) (AE D)) :
   exact this
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (gl_ext (infPart D) (finPart D) (parts_inj D) h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem ga_ext (V : HSp D) {g h : GA D V} (h1 : infHom V g = infHom V h) (h2 : finHom V g = finHom V h) : g = h :=
   Subtype.ext (gl_ext (infPart D) (finPart D) (parts_inj D) h1 h2)
 
 /- English proof (translation)
-Take `⟨g, h1, h2⟩` from `gl_glue (infPart D) (finPart D) (parts_inj D) (parts_surj D) a b`. Conclude with `⟨⟨g, (mem_parts V g).2 ⟨h1 ▸ ha, h2 ▸ hb⟩⟩, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ga_glue (V : HSp D) (a : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E))
     (b : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E)) (ha : a ∈ HR (Ainf D.host.F) D.sp.cm.sig V.gram)
@@ -172,19 +172,19 @@ theorem ga_glue (V : HSp D) (a : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.
   exact ⟨⟨g, (mem_parts V g).2 ⟨h1 ▸ ha, h2 ▸ hb⟩⟩, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `((mem_parts V (matHom V g)).1 (Subtype.property (p := fun x => x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) g)).1`.
+A detailed English derivation is pending.
 -/
 theorem infHom_mem (V : HSp D) (g : GA D V) : infHom V g ∈ HR (Ainf D.host.F) D.sp.cm.sig V.gram :=
   ((mem_parts V (matHom V g)).1 (Subtype.property (p := fun x => x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) g)).1
 
 /- English proof (translation)
-The claim follows from `((mem_parts V (matHom V g)).1 (Subtype.property (p := fun x => x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) g)).2`.
+A detailed English derivation is pending.
 -/
 theorem finHom_mem (V : HSp D) (g : GA D V) : finHom V g ∈ HR (Af D.host.F) D.sp.cm.sig V.gram :=
   ((mem_parts V (matHom V g)).1 (Subtype.property (p := fun x => x ∈ HR (AF D.host.F) D.sp.cm.sig V.gram) g)).2
 
 /- English proof (translation)
-Unfold `GlobalTheory.AdLat.hermA Formalism.UG.hform`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x b * (JR (Af D.host.F) V.gram a b) * sigR (Af D.host.F) D.sp.cm.sig (y a) = _`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermA_eq (V : HSp D) (x y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E) :
     GlobalTheory.AdLat.hermA (cF D) V.gramᵀ x y =
@@ -196,13 +196,13 @@ theorem hermA_eq (V : HSp D) (x y : Fin V.rank → Af D.host.F ⊗[D.host.F] D.h
   ring
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨fun h => ?_, fun a ha k hk => ?_, fun h h1 h2 => ?_, fun g hg => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨a, a1, a2⟩` from `ga_glue V _ 1 (infHom_mem V h) (one_mem _)`. Take `⟨k, k1, k2⟩` from `ga_glue V 1 _ (one_mem _) (finHom_mem V h)`. Use `⟨a, a2, k, k1, ga_ext V ?_ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, a1, k1, mul_one]`. Rewrite using `[map_mul, a2, k2, one_mul]`. Establish `a2 : finHom V a = 1` using `ha`. Establish `k1 : infHom V k = 1` using `hk`. Use `ga_ext V ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, k1, mul_one, one_mul]`. Rewrite using `[map_mul, map_mul, a2, mul_one, one_mul]`. Establish `a2 : finHom V h = 1` using `h1`. Establish `k1 : infHom V h = 1` using `h2`. Conclude with `ga_ext V (by rw [k1, map_one]) (by rw [a2, map_one])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : g ∈ HR (Af D.host.F) D.sp.cm.sig V.gram` using `mem_of_form _ _ g fun x y => by rw [← hermA_eq, ← hermA_eq, hg]`. Take `⟨k, k1, k2⟩` from `ga_glue V 1 g (one_mem _) hm`. Conclude with `⟨k, k1, k2⟩`. Take `⟨a, a1, a2⟩` from `ga_glue V g 1 hg (one_mem _)`. Conclude with `⟨a, a2, a1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem real_finite_split : ∀ (D : D7) (V : HSp D), (∀ h : GA D V, ∃ a ∈ GinfC V, ∃ k ∈ GfC V, h = a * k) ∧ (∀ a ∈ GinfC V, ∀ k ∈ GfC V, a * k = k * a) ∧ (∀ h : GA D V, h ∈ GinfC V → h ∈ GfC V → h = 1) ∧ (∀ g : GL (Fin V.rank) (Af D.host.F ⊗[D.host.F] D.host.E), (∀ x y, GlobalTheory.AdLat.hermA (cF D) V.gramᵀ (g.1 *ᵥ x) (g.1 *ᵥ y) = GlobalTheory.AdLat.hermA (cF D) V.gramᵀ x y) → ∃ k ∈ GfC V, finHom V k = g) ∧ ∀ g : GL (Fin V.rank) (Ainf D.host.F ⊗[D.host.F] D.host.E), g ∈ HR (Ainf D.host.F) D.sp.cm.sig V.gram → ∃ a ∈ GinfC V, infHom V a = g := by
   intro D V

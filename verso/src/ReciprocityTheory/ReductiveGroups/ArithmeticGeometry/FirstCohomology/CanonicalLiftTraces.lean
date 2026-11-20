@@ -18,9 +18,9 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
   {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
 /- English proof (translation)
-Use `fin_cases i`. Simplify using `[DegPre.famφ]`. Use `show X.left ≫ (DegPre.prB D.toPre F * (toUnit _ ≫ D.toPre.c ξ)).left = ((X ≫ DegPre.prB D.toPre F) * cP D.toPre T ξ).left`. Rewrite using `[← Over.comp_left, comp_mul, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show X.left ≫ (toUnit _ ≫ D.toPre.c ξ).left = (cP D.toPre T ξ).left`. Rewrite using `[← Over.comp_left, ← Category.assoc, comp_toUnit]`. Both sides reduce to the same expression. Use `show X.left ≫ (toUnit _ ≫ η[D.toPre.P.A]).left = (1 : T ⟶ D.toPre.P.A).left`. Rewrite using `[← Over.comp_left, ← Hom.one_def, comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_famφ {T : Over (Spec (CommRingCat.of V))} (X : T ⟶ DegPre.BF D.toPre F) (ξ : D.toPre.X) (i : Fin 4) :
     X.left ≫ DegPre.famφ D.toPre F ξ i =
@@ -38,14 +38,14 @@ theorem comp_famφ {T : Over (Spec (CommRingCat.of V))} (X : T ⟶ DegPre.BF D.t
     rw [← Over.comp_left, ← Hom.one_def, comp_one]
 
 /- English proof (translation)
-Simplify using `[DegPre.trPt, DegPre.zF, DegPre.prB, padd, ← Hom.mul_def, ← Hom.one_def, comp_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zF_tr_pr (b : TF (R := V) F ⟶ D.toPre.P.A) :
     (DegPre.zF D.toPre F ≫ DegPre.trPt D.toPre F b) ≫ DegPre.prB D.toPre F = b := by
   simp [DegPre.trPt, DegPre.zF, DegPre.prB, padd, ← Hom.mul_def, ← Hom.one_def, comp_mul]
 
 /- English proof (translation)
-Use `haveI := oa.onB.hom a`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;>`. Simplify using `[aF, DegPre.zF, DegPre.prB, IsMonHom.one_hom]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zF_aF (oa : D.toPre.OAct O) (a : O) : DegPre.zF D.toPre F ≫ aF D F oa a = DegPre.zF D.toPre F := by
   haveI := oa.onB.hom a
@@ -53,15 +53,13 @@ theorem zF_aF (oa : D.toPre.OAct O) (a : O) : DegPre.zF D.toPre F ≫ aF D F oa 
     simp [aF, DegPre.zF, DegPre.prB, IsMonHom.one_hom]
 
 /- English proof (translation)
-Use `oa.onB.hom a` as an intermediate fact. Establish `h1 : (DegPre.zF D.toPre F ≫ DegPre.trPt D.toPre F b) ≫ DegPre.prB D.toPre F = b` using `zF_tr_pr b`. Establish `h2 : ((DegPre.zF D.toPre F ≫ DegPre.trPt D.toPre F b) ≫ aF D F oa a) ≫ DegPre.prB D.toPre F = cP D.toPre _ (-z)`. Rewrite using `[Category.assoc, show aF D F oa a ≫ DegPre.prB D.toPre F = DegPre.prB D.toPre F ≫ oa.onB.act a by`. Simplify using `[aF, DegPre.prB], ← Category.assoc, h1, hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ i, (DegPre.zF D.toPre F ≫ DegPre.trPt D.toPre F b).left ≫ (aF D F oa a).left ≫ DegPre.famφ D.toPre F 0 i = ((DegPre.zF D.toPre F ≫ DegPre.trPt D.toPre F b) ≫ aF D F oa a).left ≫ DegPre.famφ D.toPre F 0 i` using `fun i => by rw [← Category.assoc, ← Over.comp_left]`. Establish `c0 : cP D.toPre (TF (R` using `V) F) 0 = 1 := cPoint_zero _`. Establish `p0 : (DegPre.zeroF D.toPre F).left = (1 : TF (R` using `V) F ⟶ D.toPre.P.A).left := rfl`. Establish `p1 : jFK (R` using `V) F ≫ (toUnit (TK V)).left ≫ eSec D.toPre.P.A = (1 : TF (R := V) F ⟶ D.toPre.P.A).left := (Category.assoc _ _ _).symm`. Establish `p2 : jFK (R` using `V) F ≫ D.toPre.xK (-z) = (cP D.toPre (TF (R := V) F) (-z)).left := (Category.assoc _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN' : ((1 * (N - 1) : ℕ) : ℤ) = ((1 * N : ℕ) : ℤ) - 1` using `by omega`. Take `⟨w, hw, hv⟩` from `exists_gen D.toPre.P.isLB (φ' := DegPre.lineφ D.toPre F b) (ε' := DegPre.lineε (1 * N)) (fun U _ h => by`. Simplify using `only [pullφ, pullε, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Fintype.prod_unique, e2, p1, p2]`. Simplify using `only [comp_famφ, h1, h2, Fin.prod_univ_four, Fin.prod_univ_two, Matrix.cons_val, DegPre.famε, smul_zero, c0, _root_.mul_one, DegPre.lineφ, DegPre.lineε, p0, hN']`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [ofMul_mul, ofMul_zpow]`. Use `push_cast`. Use the proof step `module)`. Use the proof step `(LB.mulGen D.toPre.P.L _ _ _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (LB.pullGen D.toPre.P.L _ _ (GeneratorPullback.powGen D.toPre.P.L _ _ D.toPre.rigK (1 * (N - 1))) (jFK (R := V) F)) (LB.pullGen D.toPre.P.L _ _ (LB.mulGen D.toPre.P.L _ _ _ _ (GeneratorPullback.powGen D.toPre.P.L _ _ ( …`. Use the proof step `(mulGen_isGen _ _ _ _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (pullGen_isGen _ _ _ _ (powGen_isGen _ _ _ _ (pullGen_isGen _ _ _ _ D.toPre.rig_gen _) _) _) (pullGen_isGen _ _ _ _ (mulGen_isGen _ _ _ _ _ _ _ (powGen_isGen _ _ _ _ (D.toPre.psi_gen _) _) (powGen_isGen _ _ _ _ (pullGen_isGe …`.
-
-Use `⟨w, hw, fun y J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv _ _ y J hJ, val_mul hJ, val_mul hJ, val_inv, val_pull hJ u0, Category.id_comp]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_w (oa : D.toPre.OAct O) (a : O) (N : ℕ) (hN : 1 ≤ N) (b : TF (R := V) F ⟶ D.toPre.P.A)
     (z : D.toPre.X) (hb : b ≫ oa.onB.act a = cP D.toPre _ (-z))

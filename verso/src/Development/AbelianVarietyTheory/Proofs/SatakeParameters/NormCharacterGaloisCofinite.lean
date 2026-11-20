@@ -19,29 +19,25 @@ open Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω _ K _ _ _ _ M _ _ _ _ _ _ η hη χ hχo hχ g hg`. Set `r : G M Ω →* G K Ω` to `AlgEquiv.restrictScalarsHom K`. Establish `hr : Continuous r` using `GlobalTheory.WeilRes.continuous_res`. Set `u : HeightOneSpectrum (𝓞 M) → HeightOneSpectrum (𝓞 K)` to `fun w => w.under (𝓞 K)`. Establish `hu : ∀ w : HeightOneSpectrum (𝓞 M), w.asIdeal.LiesOver (u w).asIdeal` using `fun w => ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS` using `Filter.eventually_cofinite.1 hχ`. Establish `hT₁` using `Filter.eventually_cofinite.1 hη.2.2`. Set `T : Set (HeightOneSpectrum (𝓞 M))` to `{w | ¬ ∀ f : ℕ, normV w = normV (w.under (𝓞 K)) ^ f → η.val (w.under (𝓞 K)) ^ f = 1} ∪ u ⁻¹' {v | ¬ ∀ (A : ValuationSubring Ω) (σ : G K Ω), IsPlaceOver A v → IsFrob A (normV v) σ → χ σ = η.val v}`. Establish `hT : T.Finite` using `hT₁.union (hS.preimage' (f := u) fun v _ => by`. Use `v.isMaximal` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 M)).preimage (f := fun w : HeightOneSpectrum (𝓞 M) => w.asIdeal) (fun a _ b _ h => HeightOneSpectrum.ext h)).subset ?_` and prove the remaining obligations. Introduce and unpack `w rfl`. Conclude with `⟨w.isPrime, hu w⟩)`. Establish `hdense` using `GlobalTheory.Published.chebotarevDegreeOne'.dense (F := M) (Ω := Ω) hT`. Set `H : Subgroup (G M Ω)` to `(χ.comp r).ker`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hHc : IsClosed (H : Set (G M Ω))` using `H.isClosed_of_isOpen (by exact hχo.preimage hr)`. Establish `hsub : {σ : G M Ω | ∃ w : HeightOneSpectrum (𝓞 M), w ∉ T ∧ w.asIdeal.inertiaDeg ℤ = 1 ∧ ∃ B : ValuationSubring Ω, IsPlaceOver B w ∧ IsFrob B (normV w) σ} ⊆ H`. Introduce and unpack `σ ⟨w, hw, hd, B, hB, hσ⟩`. Establish `hw1 : ∀ f : ℕ, normV w = normV (u w) ^ f → η.val (u w) ^ f = 1`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw (Or.inl h)`. Establish `hw2 : ∀ (A : ValuationSubring Ω) (σ : G K Ω), IsPlaceOver A (u w) → IsFrob A (normV (u w)) σ → χ σ = η.val (u w)`. Assume the negation of the conclusion as `h`. Conclude with `hw (Or.inr h)`. Establish `hp : (Ideal.absNorm w.asIdeal).Prime` using `((GlobalTheory.absNorm_prime_iff_inertiaDeg_eq_one_and_finite_ramified M).1 w).2 hd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : Ideal.absNorm (u w).asIdeal = Ideal.absNorm w.asIdeal` using `by haveI := hu w`. Establish `h` using `Ideal.absNorm_pow_inertiaDeg (u w).asIdeal w.asIdeal`. Establish `h1` using `Nat.Prime.eq_one_of_pow (h ▸ hp)`. Rewrite `h` using `[h1, pow_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnv : normV w = normV (u w)` using `hn.symm`. Establish `hBv : IsPlaceOver B (u w)` using `fun x => by`. Establish `e : algebraMap K Ω (x : K) = algebraMap M Ω ((algebraMap (𝓞 K) (𝓞 M) x : 𝓞 M) : M)`. Rewrite using `[IsScalarTower.algebraMap_apply K M Ω]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `hB _`. Establish `hrσ : IsFrob B (normV (u w)) (r σ)`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h : σ • B = B` using `hσ.1 show (σ.restrictScalars K) • B = B`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `x`. Use `conv_rhs => rw [← h]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression. Rewrite using `[← hnv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hσ.2 x hx`. Establish `h1 : χ (r σ) = η.val (u w)` using `hw2 B (r σ) hBv hrσ`. Establish `h2 : η.val (u w) ^ 1 = 1` using `hw1 1 (by rw [pow_one]; exact hnv)`. Rewrite `h2` using `[pow_one]`. Use `show χ (r σ) = 1`.
-
-Rewrite using `[h1, h2]`. Establish `hall : ∀ τ : G M Ω, τ ∈ H` using `fun τ => hHc.closure_subset_iff.2 hsub (hdense τ)`. Set `τ : G M Ω` to `{ g.toRingEquiv with commutes' := hg }`. Establish `hτ : r τ = g` using `AlgEquiv.ext fun _ => rfl`. Use `hall τ` as an intermediate fact.
-
-Use `show χ g = 1`. Rewrite using `[← hτ]`. Conclude with `this`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivial_on_ext_of_frob_eq_normChar : ∀ (Ω : Type) [Field Ω] (K : Type) [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] (M : Type) [Field M] [NumberField M] [Algebra M Ω] [IsAlgClosure M Ω] [Algebra K M] [IsScalarTower K M Ω] (η : HChar K), UpperTheory.V.Published.IsNormChar M η → ∀ χ : G K Ω →* ℂˣ, IsOpen (χ.ker : Set (G K Ω)) → (∀ᶠ v : HeightOneSpectrum (𝓞 K) in Filter.cofinite, ∀ (A : ValuationSubring Ω) (σ : G K Ω), IsPlaceOver A v → IsFrob A (normV v) σ → χ σ = η.val v) → ∀ g : G K Ω, (∀ x : M, g (algebraMap M Ω x) = algebraMap M Ω x) → χ g = 1 := by
   intro Ω _ K _ _ _ _ M _ _ _ _ _ _ η hη χ hχo hχ g hg

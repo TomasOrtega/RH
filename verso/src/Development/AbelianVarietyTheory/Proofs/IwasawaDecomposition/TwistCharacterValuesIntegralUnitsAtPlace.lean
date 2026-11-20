@@ -10,11 +10,11 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D C X ψ0 h j w g`. Establish `hint : ∀ g, ∃ y : OcC X j w, algebraMap (OcC X j w) (FractionRing (OcC X j w)) y = ecC X j w ((ψ0 w g : (D.what₂.LL)ˣ) : D.what₂.LL)`. Introduce `g`. Establish `h0 : 0 ≤ D.what₂.places.val w ((ψ0 w g : (D.what₂.LL)ˣ) : D.what₂.LL)` using `(C.embW_w w _).2 ⟨_, (h w g).symm⟩`. Conclude with `(ecC_w X j w _).1 h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hint g`. Take `⟨b, hb⟩` from `hint g⁻¹`. Establish `hab : a * b = 1`. Apply `IsFractionRing.injective (OcC X j w) (FractionRing (OcC X j w))` to reduce the goal to its premises. Rewrite using `[map_mul, ha, hb, ← map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨Units.mkOfMulEqOne a b hab, ha⟩`.
+A detailed English derivation is pending.
 -/
 theorem psiInt_of_embW : ∀ (D : D7) (C : NChoice D) (X : CoefIn D.what₂) (ψ0 : D.what₂.places.Pl → (G D.host.E D.nd.Om →* (D.what₂.LL)ˣ)), (∀ w g, C.embW w ((ψ0 w g : (D.what₂.LL)ˣ) : D.what₂.LL) = algebraMap (C.Oe w) (FractionRing (C.Oe w)) (algebraMap (D.ntw.Ok (C.twI w) (C.k' w)) (C.Oe w) ((C.psi' w (D.ntw.art (C.twI w) (C.Q w) g) : (D.ntw.Ok (C.twI w) (C.k' w))ˣ) : D.ntw.Ok (C.twI w) (C.k' w)))) → PsiInt X ψ0 := by
   intro D C X ψ0 h j w g

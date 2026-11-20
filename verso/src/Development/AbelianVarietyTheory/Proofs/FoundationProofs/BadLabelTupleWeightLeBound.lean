@@ -10,9 +10,9 @@ open Polynomial Classical GlobalTheory.BadShare
 namespace GlobalTheory.BadShare
 
 /- English proof (translation)
-Unfold `conv dirac`. Simplify using `only [Pi.sub_apply, Finset.sum_apply, sub_mul, Finset.sum_sub_distrib, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single (1 : G)]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conv_dirac_sub_sum {G κ : Type} [Group G] [Fintype G] (s : Finset κ) (a : κ → G → ℂ) (b : G → ℂ) (x : G) :
     conv (dirac - ∑ i ∈ s, a i) b x = b x - ∑ i ∈ s, conv (a i) b x := by
@@ -27,9 +27,9 @@ theorem conv_dirac_sub_sum {G κ : Type} [Group G] [Fintype G] (s : Finset κ) (
   · simp
 
 /- English proof (translation)
-Establish `h1 : ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹ ≤ ∑ F ∈ Fintype.piFinset fun _ : ι => sqSet g N, ∏ v, ((torusCard g (F v) : ℝ))⁻¹`. Use `Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _) fun F _ _ => ?_` and prove the remaining obligations. Conclude with `Finset.prod_nonneg fun v _ => inv_nonneg.2 (Nat.cast_nonneg _)`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_univ_sum (fun _ : ι => sqSet g N) fun _ f => ((torusCard g f : ℝ))⁻¹]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.T.squarefreeLabelTorusMass_divisor_bound g).1 N`. Establish `h3` using `mass_nonneg (g := g) N fun _ => True`. Simplify using `only [mass, Finset.filter_true] at h2 h3`. Conclude with `Finset.prod_le_one (fun _ _ => h3) fun _ _ => h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_goodSet_le_one (g : ℕ) [Fact g.Prime] (N m : ℕ) (ι : Type) [Fintype ι] (ch : ι → Fin m → (ZMod g)ˣ) :
     ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹ ≤ 1 := by
@@ -45,21 +45,19 @@ theorem sum_goodSet_le_one (g : ℕ) [Fact g.Prime] (N m : ℕ) (ι : Type) [Fin
   exact Finset.prod_le_one (fun _ _ => h3) fun _ _ => h2
 
 /- English proof (translation)
-Introduce `g _ N m q d ι _ L τ ch hN hP hτ`. Take `⟨h1, h2, h3, h4, h5, h6, h7, hg⟩` from `hP`. Establish `hS` using `GlobalTheory.T.goodSquarefreeLabelTuples_weight_ge g N m q d ι ch hN hg ⟨h1, h2, h3, h4, h5, h6, h7⟩`. Establish `hS1` using `sum_goodSet_le_one g N m ι ch`. Establish `hS0 : 0 ≤ ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹` using `Finset.sum_nonneg fun F _ => Finset.prod_nonneg fun v _ => inv_nonneg.2 (Nat.cast_nonneg _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose! w hw1 hw2 using fun v => GlobalTheory.T.series_representation_weight_lower_bound g N (L v) (τ v) (hτ v)`. Establish `hmem : ∀ F ∈ goodSet g N ch, ∀ v, F v ∈ sqSet g N` using `fun F hF => (good_iff.1 (mem_goodSet_iff_good.1 hF)).1`. Use `⟨1 - ∑ F ∈ goodSet g N ch, ∏ v, w v (F v), ?_, ?_⟩` and prove the remaining obligations. Unfold `eGood`. Rewrite using `[conv_dirac_sub_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[sub_mul, one_mul, Finset.sum_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun F hF => ?_` and prove the remaining obligations. Rewrite using `[(tens_calculus ι (GG g N) (GG g N)).1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `tens`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun v _ => hw1 v (F v) (hmem F hF v)`. Establish `hg1 : (1 : ℝ) ≤ g` using `by exact_mod_cast (Fact.out : g.Prime).one_le`. Establish `hg0 : (0 : ℝ) < g` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv : 1 / (g : ℝ) ≤ 1` using `by rw [div_le_one hg0]; exact hg1`. Establish `hinv0 : 0 ≤ 1 / (g : ℝ)` using `by positivity`. Establish `hA : (1 - 1 / (g : ℝ)) ^ Fintype.card ι * ∑ F ∈ goodSet g N ch, ∏ v, ((torusCard g (F v) : ℝ))⁻¹ ≤ ∑ F ∈ goodSet g N ch, ∏ v, w v (F v)`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_le_sum fun F hF => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_le_prod (fun v _ => ?_) fun v _ => hw2 v (F v) (hmem F hF v)` and prove the remaining obligations. Conclude with `mul_nonneg (by linarith) (inv_nonneg.2 (Nat.cast_nonneg _))`. Establish `hB : 1 - (Fintype.card ι : ℝ) / g ≤ (1 - 1 / (g : ℝ)) ^ Fintype.card ι`. Use `one_add_mul_le_pow (a := -(1 / (g : ℝ))) (by linarith) (Fintype.card ι)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `this` using `[← sub_eq_add_neg]`. Use `le_trans (le_of_eq ?_) this` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hC : 0 ≤ (Fintype.card ι : ℝ) / g` using `by positivity`. Establish `hD` using `mul_le_mul_of_nonneg_right hB hS0`.
-
-Establish `hE` using `mul_le_mul_of_nonneg_left hS1 hC`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem badWeight_le : ∀ (g : ℕ) [Fact g.Prime] (N : ℕ), ∀ (m q d : ℕ) (ι : Type) [Fintype ι] (L : ι → Lev g N) (τ : ι → (ZMod g)[X] → GG g N → ℂ) (ch : ι → Fin m → (ZMod g)ˣ), 100000 ≤ N → PrimeOK g q d → (∀ v, IsSeries (τ v)) → ∃ w : ℝ, conv (dirac - eGood τ ch) (tens fun v => (L v).e) 1 = (w : ℂ) * (tens fun v => (L v).e) 1 ∧ w ≤ badBound g (Fintype.card ι) m N ((min q d : ℕ) : ℝ) := by
   intro g _ N m q d ι _ L τ ch hN hP hτ

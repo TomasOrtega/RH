@@ -6,13 +6,13 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ a Ξ`. Use `⟨fun X Y => GlobalTheory.AlgInfChar.dmat_bracket Ξ X Y, fun P hP => ?_⟩` and prove the remaining obligations. Break down `subsingleton_or_nontrivial (Fin Ξ.d → ℂ) with h | h` into its components or cases. Conclude with `⟨0, Matrix.ext fun i => congrFun (Subsingleton.elim (α := Fin Ξ.d → ℂ) _ _)⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (Matrix.toLin' P : Module.End ℂ (Fin Ξ.d → ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hs : Stab (eEnd Ξ) (Module.End.eigenspace (Matrix.toLin' P : Module.End ℂ (Fin Ξ.d → ℂ)) c)`. Introduce `τ i j w hw`. Establish `hcm : Commute P (eL Ξ.dmat τ i j)` using `((hP _).sub_right ((hP _).smul_right _)).smul_right _`. Rewrite `hw`, the goal using `[Module.End.mem_eigenspace_iff, Matrix.toLin'_apply]`. Rewrite using `[eEnd, Matrix.toLin'_apply, Matrix.mulVec_mulVec, hcm.eq, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `((algIrr E a Ξ).2 _ hs).resolve_left hc`. Use `⟨c, Matrix.toLin'.injective (LinearMap.ext fun v => ?_)⟩` and prove the remaining obligations. Establish `hv : v ∈ Module.End.eigenspace (Matrix.toLin' P : Module.End ℂ (Fin Ξ.d → ℂ)) c`. Rewrite using `[ht]`. Discharge the goal by the elementary cases of `trivial`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Rewrite using `[Module.End.mem_eigenspace_iff.1 hv, map_smul, Matrix.toLin'_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem UpperTheory.V.Lit.Bor.xiSchur :
     UpperTheory.V.Lit.Bor.XiSchur := by

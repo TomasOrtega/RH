@@ -8,18 +8,16 @@ open Matrix
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inst_gram_entry {n : ℕ} (X J Y : Matrix (Fin n) (Fin n) ℂ) (a b : Fin n) :
     (Xᴴ * J * Y) a b = ∑ s, ∑ r, star (X r a) * J r s * Y s b := by
   simp only [Matrix.mul_apply, Matrix.conjTranspose_apply, Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hpos : 0 < |l|` using `abs_pos.mpr hl`. Establish `hs : Real.sqrt |l| * Real.sqrt |l| = |l|` using `Real.mul_self_sqrt hpos.le`. Establish `h1 : (Real.sqrt |l|)⁻¹ * l * (Real.sqrt |l|)⁻¹ = l / |l|`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = l / |l| := by rw [hs, div_eq_mul_inv]`. Rewrite using `[h1]`. Use `split_ifs with h`. Rewrite using `[abs_of_pos h, div_self hl]`.
-
-Rewrite using `[abs_of_neg (lt_of_le_of_ne (not_lt.mp h) hl), div_neg, div_self hl]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inst_sign_real (l : ℝ) (hl : l ≠ 0) :
     (Real.sqrt |l|)⁻¹ * l * (Real.sqrt |l|)⁻¹ = if 0 < l then 1 else -1 := by
@@ -35,7 +33,7 @@ theorem inst_sign_real (l : ℝ) (hl : l ≠ 0) :
   · rw [abs_of_neg (lt_of_le_of_ne (not_lt.mp h) hl), div_neg, div_self hl]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.rank_add_le X Y`. Consider the case `(unfold Matrix.rank`. Rewrite using `[Matrix.mulVecLin_add]`. Conclude with `(Submodule.finrank_mono (LinearMap.range_add_le _ _)).trans (Submodule.finrank_add_le_finrank_add_finrank _ _))`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inst_rank_add_le {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) : (X + Y).rank ≤ X.rank + Y.rank := by
   first
@@ -46,15 +44,13 @@ theorem inst_rank_add_le {n : ℕ} (X Y : Matrix (Fin n) (Fin n) ℂ) : (X + Y).
          (Submodule.finrank_add_le_finrank_add_finrank _ _))
 
 /- English proof (translation)
-Establish `h1 : star (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1` using `by first`. Consider the case `exact hX.eigenvectorUnitary.2.1`. Consider the case `exact (Matrix.mem_unitaryGroup_iff'.mp hX.eigenvectorUnitary.2)`. Consider the case `exact Unitary.star_mul_self_of_mem hX.eigenvectorUnitary.2`. Consider the case `exact unitary.star_mul_self_of_mem hX.eigenvectorUnitary.2`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) * star (hX.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) = 1` using `by first`. Consider the case `exact hX.eigenvectorUnitary.2.2`. Consider the case `exact (Matrix.mem_unitaryGroup_iff.mp hX.eigenvectorUnitary.2)`. Consider the case `exact Unitary.mul_star_self_of_mem hX.eigenvectorUnitary.2`. Consider the case `exact unitary.mul_star_self_of_mem hX.eigenvectorUnitary.2`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `⟨hX.eigenvectorUnitary, hX.eigenvalues, h1, h2, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(conv_lhs => rw [hX.spectral_theorem])`. Simplify using `[Function.comp_def]`. Consider the case `(conv_lhs => rw [hX.spectral_theorem])`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[Function.comp_def, Unitary.conjStarAlgAut_apply]`. Consider the case `(have h3 := hX.star_mul_self_mul_eq_diagonal`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← Matrix.mul_assoc, h2, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, h2, Matrix.mul_one]`.
-
-Use `_ = _ := by rw [h3]; simp [Function.comp_def])`.
+Treat this case separately. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_unitary_diagonal_of_isHermitian {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) (hX : X.IsHermitian) :
     ∃ (U : Matrix (Fin n) (Fin n) ℂ) (d : Fin n → ℝ), star U * U = 1 ∧ U * star U = 1 ∧
@@ -87,37 +83,35 @@ private theorem exists_unitary_diagonal_of_isHermitian {n : ℕ} (X : Matrix (Fi
          _ = _ := by rw [h3]; simp [Function.comp_def])
 
 /- English proof (translation)
-Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_mul_diagonal]`. Rewrite using `[← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hJs : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε`. Simplify using `only [Formalism.REAL.Jm, Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `by_cases h : ε a <;> simp [h]`. Use `set J := Formalism.REAL.Jm ε with hJdef`. Establish `hQJQ : Qᴴ * J * Q = J * Q` using `by rw [hQJ, Matrix.mul_assoc, hQQ]`. Establish `hMh : (Qᴴ * J * Q).IsHermitian` using `by show (Qᴴ * J * Q)ᴴ = Qᴴ * J * Q`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJs, Matrix.mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨V, μ, hVV, hVV', hM⟩` from `exists_unitary_diagonal_of_isHermitian (Qᴴ * J * Q) hMh`. Rewrite `hM` using `[hQJQ]`. Use `set s : Fin n → ℂ := fun i => if μ i = 0 then 0 else (((Real.sqrt |μ i|)⁻¹ : ℝ) : ℂ) with hsdef`. Use `⟨Q * V * diagonal s, μ, ?_, ?_, ?_, ?_, V, s, rfl⟩` and prove the remaining obligations. Establish `hD : star V * (J * Q) * V = diagonal (fun i => (μ i : ℂ))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hM]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hVV, Matrix.one_mul, Matrix.mul_one]`. Establish `h1 : (Q * V * diagonal s)ᴴ * J * (Q * V * diagonal s) = (diagonal s)ᴴ * (star V * (Qᴴ * J * Q) * V) * diagonal s`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.star_eq_conjTranspose, Matrix.mul_assoc]`. Rewrite using `[h1, hQJQ, hD, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hμ : μ i = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hsdef, hμ]`. Establish `hsr` using `inst_sign_real (μ i) hμ`. Establish `hc : star (s i) * (μ i : ℂ) * s i = (((Real.sqrt |μ i|)⁻¹ * μ i * (Real.sqrt |μ i|)⁻¹ : ℝ) : ℂ)`. Simplify using `only [hsdef, hμ, if_false, Complex.star_def, Complex.conj_ofReal]`. Use `first`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(push_cast; ring)`. Consider the case `push_cast`. Simplify using `only [Pi.star_apply]`. Rewrite using `[hc, hsr, if_neg hμ]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hQQ]`. Introduce `x hx`. Take `⟨z, hz⟩ : ∃ z : Fin n → ℂ, z = star V *ᵥ x` from `⟨_, rfl⟩`. Take `⟨w2, hw2⟩ : ∃ w2 : Fin n → ℂ, w2 = fun i => if μ i = 0 then z i else 0` from `⟨_, rfl⟩`. Use `⟨fun i => if μ i = 0 then 0 else (Real.sqrt |μ i| : ℂ) * z i, fun i hi => by simp [hi], ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVz : V *ᵥ z = x` using `by rw [hz, Matrix.mulVec_mulVec, hVV', Matrix.one_mulVec]`. Establish `h1 : (J * Q) *ᵥ (V *ᵥ w2) = 0`. Rewrite using `[hM, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_mulVec w2 (star V) V, hVV, Matrix.one_mulVec]`. Establish `h2 : diagonal (fun i => (μ i : ℂ)) *ᵥ w2 = 0`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_diagonal, hw2]`. Apply the tactic sequence `by_cases hμ : μ i = 0 <;> simp [hμ]`. Rewrite using `[h2, Matrix.mulVec_zero]`. Establish `hkill : Q *ᵥ (V *ᵥ w2) = 0`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hSy : diagonal s *ᵥ (fun i => if μ i = 0 then 0 else (Real.sqrt |μ i| : ℂ) * z i) = fun i => if μ i = 0 then 0 else z i`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `hμ : μ i = 0`. Simplify using `[hμ]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpos : 0 < Real.sqrt |μ i|` using `Real.sqrt_pos.mpr (abs_pos.mpr hμ)`. Simplify using `only [hsdef, hμ, if_false]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hpos.ne', Complex.ofReal_one, one_mul]`. Establish `hsplit : z = (fun i => if μ i = 0 then 0 else z i) + w2`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hw2]`. Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = Q *ᵥ (V *ᵥ (fun i => if μ i = 0 then 0 else z i)) := by rw [hkill, add_zero]`. Use `_ = (Q * V * diagonal s) *ᵥ (fun i => if μ i = 0 then 0 else (Real.sqrt |μ i| : ℂ) * z i) := by`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hSy]`. Establish `hrk1 : (J * Q).rank = Q.rank` using `Matrix.rank_mul_eq_right_of_isUnit_det J Q (Matrix.isUnit_det_of_left_inverse hJJ)`. Establish `hVunit : IsUnit V.det` using `Matrix.isUnit_det_of_left_inverse hVV`.
-
-Establish `hsVunit : IsUnit (star V).det` using `Matrix.isUnit_det_of_left_inverse hVV'`. Rewrite using `[← hrk1, hM, Matrix.rank_mul_eq_left_of_isUnit_det _ _ hsVunit, Matrix.rank_mul_eq_right_of_isUnit_det _ _ hVunit, Matrix.rank_diagonal]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquivRight fun i => Complex.ofReal_ne_zero.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inst_qfamily {n : ℕ} (ε : Fin n → Bool) (Q : Matrix (Fin n) (Fin n) ℂ) (hQQ : Q * Q = Q)
     (hQJ : Qᴴ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Q) :

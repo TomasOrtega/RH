@@ -13,7 +13,7 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (archProj_of_mem (A := ((a : archGroup K n) : ArchUnits K n)) (maxCompact_le_normOneGL a.2))`.
+A detailed English derivation is pending.
 -/
 private theorem archimedean_projection_val (a : archCompact K n) :
     ((arc1 a : G1 K n) : AdelicGLn.AdelicGL K n) = infEmb K n (a : archGroup K n) :=
@@ -21,7 +21,7 @@ private theorem archimedean_projection_val (a : archCompact K n) :
     (maxCompact_le_normOneGL a.2))
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (MultiplicityOne.finProj_of_mem (maxCompact_le_normOneGL (finEmb_mem_maxCompact h.2)))`.
+A detailed English derivation is pending.
 -/
 private theorem finite_projection_integral_val (h : AdelicGLn.integralFiniteGL K n) :
     ((fin1 (h : FA K n) : G1 K n) : AdelicGLn.AdelicGL K n) = finEmb K n (h : FA K n) :=
@@ -30,19 +30,17 @@ private theorem finite_projection_integral_val (h : AdelicGLn.integralFiniteGL K
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ n`. Establish `hval : Continuous fun k : KG K n => ((k : G1 K n) : AdelicGLn.AdelicGL K n)` using `continuous_subtype_val.comp continuous_subtype_val`. Establish `hpe : Continuous fun k : KG K n => AdelicGLn.prodEquiv K n ((k : G1 K n) : AdelicGLn.AdelicGL K n)` using `(AdelicGLn.prodEquiv K n).continuous.comp hval`. Use `⟨fun k => ⟨archPart ((k : G1 K n) : AdelicGLn.AdelicGL K n), archPart_mem_archCompact k.2⟩, fun k => ⟨finPart ((k : G1 K n) : AdelicGLn.AdelicGL K n), finPart_mem_integralFiniteGL k.2⟩, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Continuous.subtype_mk ((archEquiv K n).continuous.comp (continuous_fst.comp hpe)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Continuous.subtype_mk (continuous_snd.comp hpe) _`. Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, archimedean_projection_val, finite_projection_integral_val]`. Conclude with `(infEmb_mul_finEmb _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a h k hk`. Establish `e : ((k : G1 K n) : AdelicGLn.AdelicGL K n) = infEmb K n (a : archGroup K n) * finEmb K n (h : FA K n)`. Rewrite using `[hk, Subgroup.coe_mul, archimedean_projection_val, finite_projection_integral_val]`. Establish `e' : AdelicGLn.prodEquiv K n ((k : G1 K n) : AdelicGLn.AdelicGL K n) = ((archEquiv K n).symm (a : archGroup K n), (h : FA K n))`. Rewrite using `[e, map_mul, prodEquiv_infEmb, prodEquiv_finEmb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `archEquiv K n (AdelicGLn.prodEquiv K n ((k : G1 K n) : AdelicGLn.AdelicGL K n)).1 = _`. Rewrite using `[e']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(AdelicGLn.prodEquiv K n ((k : G1 K n) : AdelicGLn.AdelicGL K n)).2 = _`. Rewrite using `[e']`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `((arc1 a : G1 K n) : AdelicGLn.AdelicGL K n) ∈ Reduction.maxCompact`. Rewrite using `[archimedean_projection_val]`. Conclude with `a.2`. Introduce `h`. Express the relevant statement in the definitionally equal form `((fin1 (h : FA K n) : G1 K n) : AdelicGLn.AdelicGL K n) ∈ Reduction.maxCompact`.
-
-Rewrite using `[finite_projection_integral_val]`. Conclude with `finEmb_mem_maxCompact h.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.maximalCompact_unique_arch_finite_decomposition :
     ∀ {K : Type} [Field K] [NumberField K] (n : ℕ), ∃ (α : KG K n → archCompact K n) (β : KG K n → AdelicGLn.integralFiniteGL K n), Continuous α ∧ Continuous β ∧ (∀ k : KG K n, (k : G1 K n) = arc1 (α k) * fin1 (β k : FA K n)) ∧ (∀ (a : archCompact K n) (h : AdelicGLn.integralFiniteGL K n) (k : KG K n), (k : G1 K n) = arc1 a * fin1 (h : FA K n) → α k = a ∧ β k = h) ∧ (∀ a : archCompact K n, arc1 a ∈ KG K n) ∧ ∀ h : AdelicGLn.integralFiniteGL K n, fin1 (h : FA K n) ∈ KG K n := by

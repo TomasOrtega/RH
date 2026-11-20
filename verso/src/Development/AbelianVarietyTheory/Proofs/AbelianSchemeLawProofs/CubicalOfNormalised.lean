@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A]
 
 /- English proof (translation)
-The claim follows from `corr_of_val hL fun y J hJ => gen_unique' hL hF Y.hom e.left (Over.w e) hY hu hu' h _ _ y J hJ`.
+A detailed English derivation is pending.
 -/
 theorem corr_of_val_section {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {Y : Over S}
     (hY : Function.Surjective Y.hom.appTop.hom) (e : 𝟙_ (Over S) ⟶ Y) {K K' : Type} [Fintype K] [Fintype K']
@@ -24,7 +24,7 @@ theorem corr_of_val_section {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {Y : Over 
   corr_of_val hL fun y J hJ => gen_unique' hL hF Y.hom e.left (Over.w e) hY hu hu' h _ _ y J hJ
 
 /- English proof (translation)
-Rewrite using `[← Over.w (snd A T)]`. Conclude with `surj_comp (surj_snd hG hA T) hT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_tensor (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {T : Over S}
     (hT : Function.Surjective T.hom.appTop.hom) : Function.Surjective (A ⊗ T).hom.appTop.hom := by
@@ -35,7 +35,7 @@ variable [IsCommMonObj A] {L : LB A.left}
 
 omit [IsCommMonObj A] in
 /- English proof (translation)
-Apply the tactic sequence `have e : lift (x3 A 0) (lift (x3 A 1) (x3 A 2)) = 𝟙 (G3 A) := by ext <;> simp [x3]`. Rewrite using `[e]`. Conclude with `Finset.prod_congr rfl fun I _ => congrArg (fun q => h q ^ thε I) (Category.id_comp _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_theta {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ A.left) → U) :
     ∏ I : thK.{0}, h (thφ A (x3 A) I) ^ thε I =
@@ -46,7 +46,7 @@ theorem prod_theta {U : Type} [CommGroup U] (h : ((G3 A).left ⟶ A.left) → U)
 
 omit [GrpObj A] [IsCommMonObj A] in
 /- English proof (translation)
-Introduce `_ _` and use `(map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem oneGen_isGen {Y : Scheme.{0}} : (LB.oneGen L (Y := Y)).IsGen :=
   fun _ _ => (map_one _).trans ((congrArg₂ (· * ·) (Fintype.prod_empty _) (map_one _)).trans (_root_.mul_one _)).symm
@@ -56,9 +56,9 @@ def IsNormalised (t : LB.Gen (Theta A L)) : Prop :=
     val (L := L) (φ := thφ A (x3 A)) (ε := thε) t (lift (1 : 𝟙_ (Over S) ⟶ A) (lift 1 1)).left y J = 1
 
 /- English proof (translation)
-Take `⟨t', ht', hv⟩` from `exists_gen hL (φ' := thφ A (x3 A)) (ε' := thε) (fun V _ k => by`. Use `Eq.trans (DVR.prod_sum₂ (K := thK) (K' := thK) (U := V) _ (c := ∏ i, k (thφ A (x3 A) i) ^ thε i) rfl (DVR.prod_neg _ _ (prod_cub (1 : G3 A ⟶ A) 1 1 k))) ?_` and prove the remaining obligations. Use the proof step `simp)`. Use the proof step `(LB.mulGen L (thφ A (x3 A)) thε _ _ t (LB.invGen L _ _ (LB.pullGen L (thφ A (x3 A)) thε t (lift (1 : G3 A ⟶ A) (lift 1 1)).left)))`. Use the proof step `(DVR.mulGen_isGen _ _ _ _ _ _ _ ht (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ ht _)))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t', ht', fun y J hJ => ?_⟩` and prove the remaining obligations. Use `(hv _ _ y J hJ).trans ((val_mul hJ _ _ _).trans ((congrArg _ (val_inv _ _)).trans (mul_inv_eq_one.2 (Eq.symm ((val_pull hJ _ _ _).trans ?_)))))` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, comp_lift, MonObj.comp_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_normalised (hL : L.IsLB) (t : LB.Gen (Theta A L)) (ht : t.IsGen) :
     ∃ t' : LB.Gen (Theta A L), t'.IsGen ∧ IsNormalised t' := by
@@ -77,7 +77,7 @@ theorem exists_normalised (hL : L.IsLB) (t : LB.Gen (Theta A L)) (ht : t.IsGen) 
   rfl
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, comp_lift, ha, hb, hc]`. Conclude with `ht y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsNormalised.pull {t : LB.Gen (Theta A L)} (ht : IsNormalised t) {T : Over S} (e : 𝟙_ (Over S) ⟶ T)
     {a b c : T ⟶ A} (ha : e ≫ a = 1) (hb : e ≫ b = 1) (hc : e ≫ c = 1) {y J} (hJ : Good L y J) :
@@ -150,7 +150,7 @@ def cubicalOfNormalised (hG : GlobalFnsSt) (hA : IsAbelianScheme A) (M : RigLB A
       abel }
 
 /- English proof (translation)
-The claim follows from `corr_of_val_section M.isLB (surj_tensor hG hA (surj_tensor hG hA (hG _ _ hA).2)) (lift 1 (lift 1 1)) (φ := thφ A (x3 A)) (ε := thε) (φ' := thφ A (x3 A)) (ε' := thε) (fun _ _ _ => rfl) c.isGen c'.isGen fun _ _ hJ => ((isCub_cubV c hJ).face 1 1).trans ((isCub_cubV c' hJ).face 1 1). …`.
+A detailed English derivation is pending.
 -/
 theorem cubical_unique (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {M : RigLB A} (c c' : CubicalStr A M) :
     LB.Gen.Corr M.L _ _ _ _ c.t c'.t :=
@@ -159,7 +159,7 @@ theorem cubical_unique (hG : GlobalFnsSt) (hA : IsAbelianScheme A) {M : RigLB A}
     fun _ _ hJ => ((isCub_cubV c hJ).face 1 1).trans ((isCub_cubV c' hJ).face 1 1).symm
 
 /- English proof (translation)
-Introduce `hG hT S _ P M _`. Use `P.isAb.comm` as an intermediate fact. Take `⟨t, ht⟩` from `hT S P M.L M.isLB`. Take `⟨t', ht', hn⟩` from `exists_normalised M.isLB t ht`. Conclude with `⟨⟨cubicalOfNormalised hG P.isAb M t' ht' hn⟩, cubical_unique hG P.isAb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cube_of_gen : GlobalFnsSt → (∀ (S : Scheme.{0}) (P : PolAV S) (M : LB P.A.left), M.IsLB →
     ∃ t : LB.Gen (Theta P.A M), t.IsGen) → CubeSt := by

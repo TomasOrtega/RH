@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.RgEisBInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hker : RingHom.ker (algebraMap (𝓞 F) (𝓞 E)) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective (𝓞 F) (𝓞 E))`. Take `⟨Q, -, hQ, hQv⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral v.asIdeal (⊥ : Ideal (𝓞 E)) (hker.le.trans bot_le)`. Establish `hne : Q ≠ ⊥`. Introduce and unpack `rfl`. Apply `v.ne_bot` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hQv]`. Conclude with `hker`. Conclude with `⟨⟨Q, hQ, hne⟩, HeightOneSpectrum.ext hQv⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_below_eq (v : HeightOneSpectrum (𝓞 F)) :
     ∃ w : HeightOneSpectrum (𝓞 E), below F w = v := by
@@ -28,11 +28,9 @@ theorem exists_below_eq (v : HeightOneSpectrum (𝓞 F)) :
   exact ⟨⟨Q, hQ, hne⟩, HeightOneSpectrum.ext hQv⟩
 
 /- English proof (translation)
-Establish `key : ∀ w : HeightOneSpectrum (𝓞 E), finEval w (adeleMap F E x) ∈ w.adicCompletionIntegers E ↔ finEval (below F w) x ∈ (below F w).adicCompletionIntegers F`. Introduce `w`. Use `haveI := liesOver_below (K := F) w`. Use `haveI := w.isPrime`. Establish `h1 : finEval w (adeleMap F E x) = SemiLocal.completionMap (below F w) w (finEval (below F w) x)` using `finiteAdeleMap_apply x.2 w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, SemiLocal.valued_completionMap]`. Conclude with `pow_le_one_iff (Ideal.ramificationIdx_pos w.asIdeal (𝓞 F)).ne'`. Simplify using `only [intAd, Subring.mem_iInf, Subring.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`.
-
-Take `⟨w, rfl⟩` from `exists_below_eq (E := E) v`. Conclude with `(key w).1 (h w)`. Introduce `h w`. Conclude with `(key w).2 (h _)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adeleMap_mem_intAd_iff (x : 𝔸[F]) : adeleMap F E x ∈ intAd E ↔ x ∈ intAd F := by
   have key : ∀ w : HeightOneSpectrum (𝓞 E),
@@ -56,14 +54,14 @@ theorem adeleMap_mem_intAd_iff (x : 𝔸[F]) : adeleMap F E x ∈ intAd E ↔ x 
     exact (key w).2 (h _)
 
 /- English proof (translation)
-Establish `h` using `(GroundTheory.BlockD.ThmBHecke.adeleEquiv F E).commutes x`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nuCM_eqv (x : 𝔸[F]) : eqv F E (nuCM F E x) = adeleMap F E x := by
   have h := (GroundTheory.BlockD.ThmBHecke.adeleEquiv F E).commutes x
   exact h
 
 /- English proof (translation)
-Unfold `BInt ForCM`. Introduce `F E _ _ _ _ _ σ χ c _ _ _ _ x`. Simplify using `only [adCM, Subring.mem_comap]`. Express the relevant statement in the definitionally equal form `eqv F E (nuCM F E x) ∈ intAd E ↔ _`. Rewrite using `[nuCM_eqv, adeleMap_mem_intAd_iff]`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bInt : BInt := by
   unfold BInt ForCM

@@ -40,7 +40,7 @@ def lev0AtOf_compatible {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.
   K.tie u w h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem lev0AtOf_lev {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
     (K : CmpTied D X T Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -50,7 +50,7 @@ theorem lev0AtOf_lev {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.wha
   ⟨rfl, rfl, rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hJ.Lb_eq, hJ.Uloc_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem lev0AtOf_joint {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.what₂.Word, Forms0 D u} {Gt : GatTies D} {c : LatCmp D}
     (K : CmpTied D X T Gt c) (u : D.what₂.Word) (w : D.what₂.places.Pl)
@@ -60,7 +60,7 @@ theorem lev0AtOf_joint {D : D7} {X : Formalism.L2.Herm.Herm0 D} {T : ∀ u : D.w
   ⟨hJ.Lb_eq, hJ.Uloc_eq⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[gramN, Spaces.gram0, Matrix.reindex_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_level_zero_eq_reindex (D : D7) :
     gramN D 0 (Nat.zero_le _) = D.sp.gram0.reindex (finCongr (rank_eq_first_level D.R)) (finCongr (rank_eq_first_level D.R)) := by

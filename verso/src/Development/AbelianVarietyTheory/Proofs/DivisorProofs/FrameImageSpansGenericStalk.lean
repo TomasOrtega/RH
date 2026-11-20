@@ -9,11 +9,11 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `X _ E E' n u hu V f f' hf hf' hV`. Set `b : Module.Basis (Fin n) X.functionField (genStalk E)` to `hf.stalkBasis _ hV`. Set `b' : Module.Basis (Fin n) X.functionField (genStalk E')` to `hf'.stalkBasis _ hV`. Set `φ : genStalk E →ₗ[X.functionField] genStalk E'` to `QCoh.stalkLinear u (genericPoint X)`. Establish `hφ : Function.Injective φ` using `QCoh.stalkLinear_injective u (genericPoint X)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent X.functionField (φ ∘ b)` using `b.linearIndependent.map' φ (LinearMap.ker_eq_bot.2 hφ)`. Establish `heq : (fun i => (E'.presheaf.germ V _ hV ((u.app V (f i))) : genStalk E')) = φ ∘ b`. Use function extensionality and compare the values at `i`. Establish `h1 : b i = E.presheaf.germ V _ hV (f i)` using `hf.stalkBasis_apply _ hV i`. Rewrite using `[Function.comp_apply, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(QCoh.stalkLinear_germ u _ hV (f i)).symm`. Use `haveI : Module.Finite X.functionField (genStalk E') := Module.Finite.of_basis b'`. Rewrite using `[heq]`. Conclude with `hli.span_eq_top_of_card_eq_finrank' (Module.finrank_eq_card_basis b').symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_germ_map_frame_eq_top_of_mono : ∀ {X : Scheme.{0}} [IsIntegral X] {E E' : X.Modules} {n : ℕ} (u : E ⟶ E'), Mono u → ∀ {V : X.Opens} (f : Fin n → Γ(E, V))
     (f' : Fin n → Γ(E', V)), IsFrame f → IsFrame f' → ∀ hV : genericPoint X ∈ V,

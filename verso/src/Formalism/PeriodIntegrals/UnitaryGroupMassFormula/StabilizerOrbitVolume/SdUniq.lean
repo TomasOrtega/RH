@@ -20,15 +20,15 @@ def TestEx {V : Type} [AddCommGroup V] [TopologicalSpace V] [MeasurableSpace V] 
     Integrable (fun y => ∫ x, Φ x * χ x y ∂μ) μ ∧ ∃ z, Φ (-z) ≠ 0
 
 /- English proof (translation)
-Take `⟨hμH, hμD⟩` from `hμ`. Take `⟨hνH, hνD⟩` from `hν`. Take `⟨Φ, hc, hs, hi, z, hz⟩` from `hT`. Establish `hνeq : ν = ((Measure.addHaarScalarFactor ν μ : NNReal) : ENNReal) • μ` using `(Measure.isAddLeftInvariant_eq_smul ν μ).trans (ENNReal.smul_def _ _)`. Generalize the expression as in `hcdef : ((Measure.addHaarScalarFactor ν μ : NNReal) : ENNReal) = c at hνeq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hcT : c ≠ ⊤` using `by rw [← hcdef]; exact ENNReal.coe_ne_top`. Substitute `hνeq` using the available equality. Establish `htr : ∀ y, ∫ x, Φ x * χ x y ∂(c • μ) = c.toReal • ∫ x, Φ x * χ x y ∂μ` using `fun y => integral_smul_measure _ _`. Establish `hiν : Integrable (fun y => ∫ x, Φ x * χ x y ∂(c • μ)) (c • μ)`. Repeatedly rewrite using `[htr]`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `(hi.smul c.toReal).smul_measure hcT`. Establish `e1` using `hμD Φ hc hs hi z`. Establish `e2` using `hνD Φ hc hs hiν z`. Rewrite `e2` using `[integral_smul_measure]`. Rewrite `e2` using `[htr, smul_mul_assoc, integral_smul, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : c.toReal * c.toReal = 1`. Rewrite `e2` using `[smul_smul, Complex.real_smul]`. Establish `h3 : ((c.toReal * c.toReal : ℝ) : ℂ) = 1` using `mul_right_cancel₀ hz (e2.trans (one_mul _).symm)`. Conclude with `h3` after adjusting the coercions. Establish `hr1 : c.toReal = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hpos : 0 ≤ c.toReal` using `ENNReal.toReal_nonneg`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[(ENNReal.toReal_eq_one_iff c).mp hr1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_testEx {V : Type} [AddCommGroup V] [TopologicalSpace V]
     [IsTopologicalAddGroup V] [LocallyCompactSpace V] [SecondCountableTopology V]
@@ -71,17 +71,17 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
 include hχ in
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ ann χ L`. Rewrite using `[Set.indicator_of_mem hy]`. Establish `e : (fun x => (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y) = (L : Set V).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (L : Set V)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Set.indicator, hx, hy x hx]`. Simplify using `[Set.indicator, hx]`. Rewrite using `[e, integral_indicator_const _ hLo.measurableSet]`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_apply, if_neg hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ann, Set.mem_setOf_eq, not_forall] at hy`. Take `⟨t, ht, hty⟩` from `hy`. Use `set f : V → ℂ := fun x => (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y with hf`. Establish `key : ∫ x, f x ∂μ = χ t y * ∫ x, f x ∂μ`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (L : Set V)`. Establish `htx : t + x ∈ L` using `L.add_mem ht hx`. Establish `hx' : x ∈ L` using `hx`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hf, Set.indicator, hx', htx, hχ]`. Establish `htx : t + x ∉ L` using `fun h => hx (by simpa using L.sub_mem h ht)`. Establish `hx' : x ∉ L` using `hx`. Simplify using `[hf, Set.indicator, hx', htx]`. Use `_ = χ t y * ∫ x, f x ∂μ := integral_const_mul _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h2 : (1 - χ t y) * ∫ x, f x ∂μ = 0` using `by rw [sub_mul, one_mul, ← key, sub_self]`. Break down `mul_eq_zero.mp h2 with h1 | h1` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h1).symm hty`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem transform_indicator (hLo : IsOpen (L : Set V)) (y : V) :
     ∫ x, (L : Set V).indicator (fun _ => (1 : ℂ)) x * χ x y ∂μ =
@@ -122,9 +122,9 @@ theorem transform_indicator (hLo : IsOpen (L : Set V)) (y : V) :
 include hχ in
 
 /- English proof (translation)
-Use `⟨(L : Set V).indicator (fun _ => (1 : ℂ)), ?_, ?_, ?_, 0, ?_⟩` and prove the remaining obligations. Conclude with `IsClopen.continuous_indicator ⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩ continuous_const`. Conclude with `HasCompactSupport.intro hLc fun x hx => by simp [Set.indicator, hx]`. Establish `e` using `funext (transform_indicator μ χ hχ L hLo)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcomp : IsCompact (ann χ L)` using `hK.of_isClosed_subset hA hAK`. Conclude with `(integrable_indicator_iff hA.measurableSet).2 (continuousOn_const.integrableOn_compact hcomp)`. Simplify using `[Set.indicator]`.
+A detailed English derivation is pending.
 -/
 theorem testEx_of_lattice (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V))
     (hA : IsClosed (ann χ L)) (K : Set V) (hK : IsCompact K) (hAK : ann χ L ⊆ K) :
@@ -150,17 +150,15 @@ variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup
   [MeasurableSpace V] [BorelSpace V] (μ : Measure V) [μ.IsAddHaarMeasure] (χ : V → V → ℂ)
 
 /- English proof (translation)
-Establish `hLcl : IsClopen (L : Set V)` using `⟨AddSubgroup.isClosed_of_isOpen L hLo, hLo⟩`. Distinguish the cases in `hL : ∀ t, t ∈ L`. Establish `hu : (Set.univ : Set V) = L` using `(Set.eq_univ_of_forall (s := (L : Set V)) hL).symm haveI : IsFiniteMeasure μ := ⟨by rw [hu]; exact hLc.measure_lt_top⟩`. Use `⟨fun _ => 1, continuous_const, HasCompactSupport.intro hLc fun x hx => absurd (hL x) hx, ?_, 0, one_ne_zero⟩` and prove the remaining obligations. Repeatedly rewrite using `[hχ, mul_one]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `integrable_const _`. Use `push_neg at hL`. Take `⟨t, ht⟩` from `hL`. Use `set S : Set V := (fun x => -t + x) ⁻¹' (L : Set V) with hS`. Establish `hScl : IsClopen S` using `hLcl.preimage (continuous_const.add continuous_id)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSc : IsCompact S` using `(Homeomorph.addLeft (-t)).isCompact_preimage.2 hLc`. Establish `hSμ : μ S = μ (L : Set V)` using `measure_preimage_add μ (-t) (L : Set V)`. Establish `hiL : Integrable ((L : Set V).indicator fun _ => (1 : ℂ)) μ` using `(integrable_indicator_iff hLo.measurableSet).2 (continuousOn_const.integrableOn_compact hLc)`. Establish `hiS : Integrable (S.indicator fun _ => (1 : ℂ)) μ` using `(integrable_indicator_iff hScl.isOpen.measurableSet).2 (continuousOn_const.integrableOn_compact hSc)`. Use `⟨fun x => (L : Set V).indicator (fun _ => (1 : ℂ)) x - S.indicator (fun _ => (1 : ℂ)) x, ?_, ?_, ?_, 0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(hLcl.continuous_indicator continuous_const).sub (hScl.continuous_indicator continuous_const)`. Use `HasCompactSupport.intro (hLc.union hSc) fun x hx => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_union, not_or] at hx`. Simplify using `[Set.indicator, hx.1, hx.2]`. Establish `h0 : (fun y => ∫ x, ((L : Set V).indicator (fun _ => (1 : ℂ)) x - S.indicator (fun _ => (1 : ℂ)) x) * χ x y ∂μ) = fun _ => 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Repeatedly rewrite using `[hχ, mul_one]`. Rewrite using `[integral_sub hiL hiS, integral_indicator_const _ hLo.measurableSet, integral_indicator_const _ hScl.isOpen.measurableSet]`. Simplify using `[Measure.real, hSμ]`. Rewrite using `[h0]`.
-
-Conclude with `integrable_zero _ _ _`. Simplify using `[Set.indicator, hS, ht]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem testEx_of_trivial (hχ : ∀ x y, χ x y = 1) (L : AddSubgroup V)
     (hLc : IsCompact (L : Set V)) (hLo : IsOpen (L : Set V)) : TestEx μ χ := by
@@ -213,9 +211,9 @@ def DualAt {V : Type} [AddCommGroup V] [TopologicalSpace V] (B : V → V → Fv 
       {y | ∀ x ∈ L, B x y ∈ (fun s => c * s) '' (v.adicCompletionIntegers F : Set (Fv F v))} ⊆ K
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Establish `ht0 : t ≠ 0` using `fun h => hn ⟨0, zero_mem _, by simp [h]⟩`. Establish `hs : r0 * t⁻¹ ∉ v.adicCompletionIntegers F` using `fun hs => h0 (by`. Use `ht _ hs` as an intermediate fact. Rewrite using `[inv_mul_cancel_right₀ ht0] at this)` and apply the resulting hypothesis.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hs0 : r0 * t⁻¹ ≠ 0` using `fun h => hs (by rw [h]; exact zero_mem _)`. Establish `hr0 : r0 ≠ 0` using `fun h => hs0 (by rw [h, zero_mul])`. Rewrite `hs` using `[HeightOneSpectrum.mem_adicCompletionIntegers, not_le]`. Establish `hlt` using `((Valued.v : Valuation (Fv F v) _).one_lt_val_iff hs0).mp hs`. Use `hn ⟨(r0 * t⁻¹)⁻¹, (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).2 (le_of_lt hlt), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -235,11 +233,11 @@ theorem mem_of_psi (ψ0 : Fv F v → ℂ) (r0 t : Fv F v) (h0 : ψ0 r0 ≠ 1)
   field_simp
 
 /- English proof (translation)
-Take `⟨L, hLc, hLo, hstab, hbd⟩` from `hD`. Use `⟨L, hLc, hLo, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ann (fun x y => ψ0 (B x y)) (L : Set V) = ⋂ x ∈ (L : Set V), {y | ψ0 (B x y) = 1}`. Use extensionality with `y`. Simplify using `[ann]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `isClosed_biInter fun x _ => isClosed_eq (hψ.comp (hB x)) continuous_const`. Take `⟨K, hK, hsub⟩` from `hbd r0`. Use `⟨K, hK, fun y hy => hsub ?_⟩` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mem_of_psi v ψ0 r0 (B x y) h0` to reduce the goal to its premises. Introduce `s hs`. Take `⟨x', hx', hB'⟩` from `hstab s hs x hx`. Rewrite using `[← hB' y]`. Conclude with `hy x' hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annAt_of_dual {V : Type} [AddCommGroup V] [TopologicalSpace V] (B : V → V → Fv F v)
     (ψ0 : Fv F v → ℂ) (hψ : Continuous ψ0) (hB : ∀ x, Continuous (B x)) (r0 : Fv F v)
@@ -268,7 +266,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 open Classical in
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `Pi.single_add v r s`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem singleV_add (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
     singleV F v (r + s) = singleV F v r + singleV F v s := by
@@ -276,9 +274,9 @@ theorem singleV_add (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
   exact Pi.single_add v r s
 
 /- English proof (translation)
-Establish `e : pairA F 0 (singleV F v (r + s)) = pairA F 0 (singleV F v r) + pairA F 0 (singleV F v s)`. Rewrite using `[singleV_add]`. Use `show ((0 : Ainf F), singleV F v r + singleV F v s) = ((0 : Ainf F) + 0, singleV F v r + singleV F v s)`. Rewrite using `[add_zero]`. Unfold `psiV`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, AddChar.map_add_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (r s : Fv F v) :
     psiV F ψ v (r + s) = psiV F ψ v r * psiV F ψ v s := by
@@ -292,7 +290,7 @@ theorem psiV_add (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)) (r s
   rw [e, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Establish `e : pairA F (r + s) 0 = pairA F r 0 + pairA F s 0` using `by show (r + s, (0 : Af F)) = (r + s, (0 : Af F) + 0)`. Rewrite using `[add_zero]`. Unfold `psiInf`. Rewrite using `[e, AddChar.map_add_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiInf_add (ψ : AddChar (AF F) ℂ) (r s : Ainf F) :
     psiInf F ψ (r + s) = psiInf F ψ r * psiInf F ψ s := by
@@ -303,13 +301,11 @@ theorem psiInf_add (ψ : AddChar (AF F) ℂ) (r s : Ainf F) :
   rw [e, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Establish `hS : Filter.cofinite ≤ Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F)))` using `Filter.le_principal_iff.2 (Set.finite_singleton v).compl_mem_cofinite`. Set `s0 : Fv F v → RestrictedProduct (fun w : HeightOneSpectrum (𝓞 F) => w.adicCompletion F) (fun w => (w.adicCompletionIntegers F : Set (w.adicCompletion F))) (Filter.principal ({v}ᶜ : Set (HeightOneSpectrum (𝓞 F))))` to `fun y => ⟨Pi.single v y, Filter.eventually_principal.2 fun w hw => by`. Rewrite using `[Pi.single_eq_of_ne (by simpa using hw)]`. Conclude with `zero_mem _⟩`. Establish `hc : Continuous s0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RestrictedProduct.continuous_rng_of_principal_iff_forall]`. Introduce `w`. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Conclude with `continuous_id.congr fun y => (Pi.single_eq_same _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(continuous_const (y := (0 : Fv F w))).congr fun y => (Pi.single_eq_of_ne hw y).symm`. Establish `e : singleV F v = fun y => RestrictedProduct.inclusion _ _ hS (s0 y)`. Use function extensionality and compare the values at `y`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `j`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(RestrictedProduct.continuous_inclusion hS).comp hc`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_singleV (v : HeightOneSpectrum (𝓞 F)) : Continuous (singleV F v) := by
   classical
@@ -337,7 +333,7 @@ theorem continuous_singleV (v : HeightOneSpectrum (𝓞 F)) : Continuous (single
   exact (RestrictedProduct.continuous_inclusion hS).comp hc
 
 /- English proof (translation)
-Unfold `psiV`. Conclude with `hψ.comp (continuous_const.prodMk (continuous_singleV v))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_psiV (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (psiV F ψ v) := by
@@ -347,14 +343,14 @@ theorem continuous_psiV (ψ : AddChar (AF F) ℂ) (hψ : Continuous ψ) (v : Hei
 variable (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Simplify using `only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem BR_add (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X T Y : Fin n → Fin M → R ⊗[F] E) : BR R σ J (T + X) Y = BR R σ J T Y + BR R σ J X Y := by
   simp only [BR, hR, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [pairHerm, AddSubgroup.coe_add, Matrix.add_apply, add_mul, Finset.sum_add_distrib, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairHerm_add (σ : E →ₐ[F] E) (n : ℕ) (S T U : HermR R σ n) :
     pairHerm R σ n (T + S) U = pairHerm R σ n T U + pairHerm R σ n S U := by
@@ -370,13 +366,13 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] [FiniteDimensional F E]
   [LocallyCompactSpace R] [T2Space R]
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_trace_tens : Continuous (Algebra.trace R (R ⊗[F] E)) :=
   IsModuleTopology.continuous_of_linearMap _
 
 /- English proof (translation)
-Unfold `BR hR Formalism.UG.hform`. Use `continuous_finset_sum _ fun a _ => (continuous_trace_tens R).comp ?_` and prove the remaining obligations. Use `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul ((continuous_apply j).comp (continuous_apply a))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_BR_right (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
     (X : Fin n → Fin M → R ⊗[F] E) : Continuous (BR R σ J X) := by
@@ -386,7 +382,7 @@ theorem continuous_BR_right (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M)
   exact continuous_const.mul ((continuous_apply j).comp (continuous_apply a))
 
 /- English proof (translation)
-Unfold `pairHerm`. Use `continuous_const.mul ((continuous_trace_tens R).comp ?_)` and prove the remaining obligations. Use `continuous_finset_sum _ fun a _ => continuous_finset_sum _ fun b _ => ?_` and prove the remaining obligations. Conclude with `continuous_const.mul (continuous_subtype_val.matrix_elem b a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_pairHerm_right (σ : E →ₐ[F] E) (n : ℕ) (S : HermR R σ n) :
     Continuous (pairHerm R σ n S) := by
@@ -423,9 +419,9 @@ def AnnV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
     AnnAt (V := HermR (Fv F v) σ a) (fun S T => psiV F ψ v (pairHerm (Fv F v) σ a S T))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Take `⟨⟨L, hLc, hLo, hA, K, hK, hAK⟩, ⟨L', hLc', hLo', hA', K', hK', hAK'⟩⟩` from `h F E σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun μ hμ => ?_, fun ν hν => ?_⟩` and prove the remaining obligations. Use `hμ.1` as an intermediate fact. Conclude with `testEx_of_lattice μ _ (fun X T Y => by rw [BR_add, psiV_add]) L hLc hLo hA K hK hAK`. Use `hν.1` as an intermediate fact. Conclude with `testEx_of_lattice ν _ (fun S T U => by rw [pairHerm_add, psiV_add]) L' hLc' hLo' hA' K' hK' hAK'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sdTestV_of (h : AnnV) : SdTestV := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v
@@ -447,15 +443,13 @@ def DualLatV : Prop := InCtx fun F E _ _ _ _ _ σ M J a _X0 _hT =>
     DualAt v (BR (Fv F v) σ J (n := a)) ∧ DualAt v (pairHerm (Fv F v) σ a)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Take `⟨hDW, hDH⟩` from `h F E σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hψv : ∃ r, psiV F ψ v r ≠ 1`. Take `⟨r0, h0⟩` from `hψv`. Establish `hc` using `continuous_psiV ψ hψ.1 v`. Take `⟨L, hLc, hLo, hA, K, hK, hAK⟩` from `annAt_of_dual v _ _ hc (fun X => continuous_BR_right (Fv F v) σ J X) r0 h0 hDW`. Take `⟨L', hLc', hLo', hA', K', hK', hAK'⟩` from `annAt_of_dual v _ _ hc (fun S => continuous_pairHerm_right (Fv F v) σ a S) r0 h0 hDH`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun μ hμ => ?_, fun ν hν => ?_⟩` and prove the remaining obligations. Use `hμ.1` as an intermediate fact. Conclude with `testEx_of_lattice μ _ (fun X T Y => by rw [BR_add, psiV_add]) L hLc hLo hA K hK hAK`. Use `hν.1` as an intermediate fact. Conclude with `testEx_of_lattice ν _ (fun S T U => by rw [pairHerm_add, psiV_add]) L' hLc' hLo' hA' K' hK' hAK'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [not_exists, not_not] at hψv`. Take `⟨L, hLc, hLo, -⟩` from `hDW`. Take `⟨L', hLc', hLo', -⟩` from `hDH`. Use `⟨fun μ hμ => ?_, fun ν hν => ?_⟩` and prove the remaining obligations. Use `hμ.1` as an intermediate fact.
-
-Conclude with `testEx_of_trivial μ _ (fun _ _ => hψv _) L hLc hLo`. Use `hν.1` as an intermediate fact. Conclude with `testEx_of_trivial ν _ (fun _ _ => hψv _) L' hLc' hLo'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sdTestV_of_dual (h : DualLatV) : SdTestV := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v
@@ -487,11 +481,11 @@ theorem sdTestV_of_dual (h : DualLatV) : SdTestV := by
       exact testEx_of_trivial ν _ (fun _ _ => hψv _) L' hLc' hLo'
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hCM.2.2.1]; norm_num)`. Take `⟨hIW, hIH⟩` from `hI F E σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ`. Establish `: SecondCountableTopology (HermR (Ainf F) σ a)`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) (Ainf F ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Ainf F ⊗[F] E))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `⟨fun μ1 μ2 e1 e2 => eq_of_testEx e1 e2 (hIW μ1 e1), fun ν1 ν2 e1 e2 => eq_of_testEx e1 e2 (hIH ν1 e1), fun v => ?_⟩` and prove the remaining obligations. Use `secondCountable_Fv F v` as an intermediate fact. Use `locallyCompact_Fv F v` as an intermediate fact. Take `⟨hVW, hVH⟩` from `hV F E σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology (HermR (Fv F v) σ a)`. Establish `: SecondCountableTopology (Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E))` using `inferInstanceAs (SecondCountableTopology (Fin a → Fin a → Fv F v ⊗[F] E))`. Use the proof step `Topology.IsInducing.subtypeVal.secondCountableTopology`. Conclude with `⟨fun μ1 μ2 e1 e2 => eq_of_testEx e1 e2 (hVW μ1 e1), fun ν1 ν2 e1 e2 => eq_of_testEx e1 e2 (hVH ν1 e1)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sdUniq_of (hI : SdTestInf) (hV : SdTestV) : SdUniq := by
   intro F E _ _ _ _ _ σ hCM M J hJ h1 h2 a h3 h4 X0 hT hdet ψ hψ
@@ -514,12 +508,12 @@ theorem sdUniq_of (hI : SdTestInf) (hV : SdTestV) : SdUniq := by
     fun ν1 ν2 e1 e2 => eq_of_testEx e1 e2 (hVH ν1 e1)⟩
 
 /- English proof (translation)
-The claim follows from `sdUniq_of hI (sdTestV_of hA)`.
+A detailed English derivation is pending.
 -/
 theorem sdUniq_of_ann (hI : SdTestInf) (hA : AnnV) : SdUniq := sdUniq_of hI (sdTestV_of hA)
 
 /- English proof (translation)
-The claim follows from `sdUniq_of hI (sdTestV_of_dual hD)`.
+A detailed English derivation is pending.
 -/
 theorem sdUniq_of_dual (hI : SdTestInf) (hD : DualLatV) : SdUniq :=
   sdUniq_of hI (sdTestV_of_dual hD)

@@ -8,11 +8,11 @@ namespace LevelTowerAlt
 variable {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)]
 
 /- English proof (translation)
-Take `⟨g0, hg0⟩ : ∃ g0 : Ideal (MRing J) → ℤ, ∀ V b, geoNum 0 V b = g0 V` from `⟨fun V => geoNum 0 V (fun i => Fin.elim0 i), fun V b => congrArg _ (Subsingleton.elim _ _)⟩`. Establish `hnn : ∀ V, 0 ≤ g0 V`. Introduce `V`. Rewrite using `[← hg0 V (fun i => Fin.elim0 i)]`. Conclude with `dite_nonneg (fun _ => Int.natCast_nonneg _) (fun _ => le_rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hW : IsRelevant W`. Use `⟨fun k => ∑ᶠ V ∈ divSupp W (X ⟨k, (hW k).choose⟩ : MRing J), (multAt (W ⊔ Ideal.span {(X ⟨k, (hW k).choose⟩ : MRing J)}) V : ℤ) * g0 V, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Conclude with `finsum_nonneg fun V => finsum_nonneg fun _ => mul_nonneg (Int.natCast_nonneg _) (hnn V)`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(if h : IsRelevant W then ∑ k, a k * ∑ᶠ V ∈ divSupp W (X ⟨k, (h k).choose⟩ : MRing J), (multAt (W ⊔ Ideal.span {(X ⟨k, (h k).choose⟩ : MRing J)}) V : ℤ) * geoNum 0 V (Fin.init fun _ : Fin 1 => a) else 0) = _`. Rewrite using `[dif_pos hW]`. Simplify using `only [hg0]`. Use `⟨fun _ => 0, fun _ => le_rfl, fun a => (dif_neg hW).trans ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem geoNum_one_lin (W : Ideal (MRing J)) :
     ∃ d : K → ℤ, (∀ k, 0 ≤ d k) ∧ ∀ a : K → ℤ, geoNum 1 W (fun _ => a) = ∑ k, a k * d k := by

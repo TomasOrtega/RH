@@ -9,9 +9,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem y hy => exact IntermediateField.subset_adjoin ℚ _ hy`. Consider the case `algebraMap r`. Rewrite using `[eq_intCast]`. Conclude with `intCast_mem _ r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `mul y z _ _ hy hz => exact mul_mem hy hz`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ChartDetRatio.mem_adjoin_of_mem_chartRing {Ω : Type} [Field Ω] [CharZero Ω] {ι : Type} (x : ι → Ω)
     (i₀ : ι) {a : Ω} (ha : a ∈ chartRing ℤ x i₀) :
@@ -25,7 +25,7 @@ theorem ChartDetRatio.mem_adjoin_of_mem_chartRing {Ω : Type} [Field Ω] [CharZe
   | mul y z _ _ hy hz => exact mul_mem hy hz
 
 /- English proof (translation)
-Simplify using `only [T.detE, Fin.sum_univ_two, map_add, map_smul, Finsupp.add_apply, Finsupp.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ChartDetRatio.detE_sum {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
     (e : Module.Basis (Fin 2) Ω E) (b : Fin 2 → E) (a a' : Fin 2 → Ω) :
@@ -34,9 +34,9 @@ theorem ChartDetRatio.detE_sum {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup
   ring
 
 /- English proof (translation)
-Establish `hu : IsUnit (e.det b)` using `(Module.Basis.is_basis_iff_det e).1 ⟨hli, hsp⟩`. Establish `h : e.det b = T.detE e (b 0) (b 1)`. Rewrite using `[Module.Basis.det_apply, Matrix.det_fin_two]`. Simplify using `only [Module.Basis.toMatrix_apply, T.detE]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← h]`. Conclude with `hu.ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartDetRatio.detE_ne_zero {Ω : Type*} [Field Ω] {E : Type*} [AddCommGroup E] [Module Ω E]
     (e : Module.Basis (Fin 2) Ω E) (b : Fin 2 → E) (hli : LinearIndependent Ω b)
@@ -50,37 +50,33 @@ theorem ChartDetRatio.detE_ne_zero {Ω : Type*} [Field Ω] {E : Type*} [AddCommG
   exact hu.ne_zero
 
 /- English proof (translation)
-Introduce `Ω _ _ ι ν _ _ E _ _ x B e δ i₀ hx hδ`. Use `set F := IntermediateField.adjoin ℚ (Set.range fun j => x j / x i₀)`. Establish `hR : ∀ a ∈ chartRing ℤ x i₀, a ∈ F` using `fun a ha => ChartDetRatio.mem_adjoin_of_mem_chartRing x i₀ ha`. Take `⟨k, f, c, hf, -, hcf, hb⟩` from `B.frame i₀ hx`. Choose the witnesses or unpack the hypotheses as in `⟨l₁, hl₁⟩ : ∃ l, f l ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Simplify using `[h] at hcf`. Take `⟨b, hbli, hbsp, hbiff⟩` from `hb l₁`. Establish `hfF : f l₁ ∈ F` using `hR _ (hf l₁)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoord : ∀ u ∈ B.lat i₀, ∃ a : Fin 2 → Ω, (∀ q, a q ∈ F) ∧ u = ∑ q, a q • b q`. Introduce `u hu`. Take `⟨a, ha, rfl⟩` from `(hbiff u).1 ⟨0, by simpa using hu⟩`. Use `⟨a, fun q => ?_, rfl⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ha q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : a q = (f l₁ ^ n)⁻¹ * (f l₁ ^ n * a q)`. Rewrite using `[← mul_assoc, inv_mul_cancel₀ (pow_ne_zero _ hl₁), one_mul]`. Rewrite using `[h2]`. Conclude with `mul_mem (inv_mem (pow_mem hfF n)) (hR _ hn)`. Use `set D := T.detE e (b 0) (b 1) with hDdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hD : D ≠ 0` using `ChartDetRatio.detE_ne_zero e b hbli hbsp`. Establish `hdet : ∀ u ∈ B.lat i₀, ∀ w ∈ B.lat i₀, ∃ s ∈ F, T.detE e u w = D * s`. Introduce `u hu w hw`. Take `⟨a, ha, rfl⟩` from `hcoord u hu`. Take `⟨a', ha', rfl⟩` from `hcoord w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨a 0 * a' 1 - a 1 * a' 0, sub_mem (mul_mem (ha 0) (ha' 1)) (mul_mem (ha 1) (ha' 0)), ?_⟩` and prove the remaining obligations. Rewrite using `[ChartDetRatio.detE_sum, mul_comm]`. Establish `hspan : ∀ y ∈ Submodule.span (chartRing ℤ x i₀) {d | ∃ u ∈ B.lat i₀, ∃ w ∈ B.lat i₀, d = x i₀ * T.detE e u w}, ∃ s ∈ F, y = x i₀ * D * s`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mem y hy`. Take `⟨u, hu, w, hw, rfl⟩` from `hy`. Take `⟨s, hs, h⟩` from `hdet u hu w hw`. Conclude with `⟨s, hs, by rw [h]; ring⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by ring⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨s, hs, rfl⟩` from `hy`. Take `⟨t, ht, rfl⟩` from `hz`. Conclude with `⟨s + t, add_mem hs ht, by ring⟩`. Consider the case `smul a y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨s, hs, rfl⟩` from `hy`. Use `⟨(a : Ω) * s, mul_mem (hR _ a.2) hs, ?_⟩` and prove the remaining obligations. Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hδs : ∀ l, ∃ s ∈ F, δ l = x i₀ * D * s` using `fun l => hspan _ ((hδ i₀ hx).1 l)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `hbmem : ∀ q, ∃ n : ℕ, f l₁ ^ n • b q ∈ B.lat i₀`. Introduce `q`. Use `(hbiff (b q)).2 ⟨Pi.single q 1, fun q' => ⟨0, ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : q' = q`. Substitute `h` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Simplify using `[one_mem (chartRing ℤ x i₀)]`. Simplify using `[h, zero_mem (chartRing ℤ x i₀)]`. Apply the tactic sequence `fin_cases q <;> simp`. Take `⟨n0, h0⟩` from `hbmem 0`. Take `⟨n1, h1⟩` from `hbmem 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨l₀, hl₀⟩ : ∃ l₀, δ l₀ ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `hm` using `(hδ i₀ hx).2 _ h0 _ h1`. Establish `hbot : Submodule.span (chartRing ℤ x i₀) (Set.range fun l => (x i₀)⁻¹ * δ l) = ⊥`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨l, rfl⟩`. Simplify using `[h l]`. Rewrite `hm` using `[hbot, Submodule.mem_bot]`. Establish `hsm : T.detE e (f l₁ ^ n0 • b 0) (f l₁ ^ n1 • b 1) = f l₁ ^ n0 * f l₁ ^ n1 * D`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [T.detE, map_smul, Finsupp.smul_apply, smul_eq_mul, hDdef]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hm` using `[hsm]`. Conclude with `mul_ne_zero (mul_ne_zero (pow_ne_zero _ hl₁) (pow_ne_zero _ hl₁)) hD hm`. Take `⟨s₀, hs₀, hδ₀⟩` from `hδs l₀`.
-
-Establish `hs₀ne : s₀ ≠ 0`. Introduce and unpack `rfl`. Conclude with `hl₀ (by rw [hδ₀, mul_zero])`. Use `⟨l₀, hl₀, fun l => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hδl⟩` from `hδs l`.
-
-Rewrite using `[hδl, hδ₀, mul_div_mul_left _ _ (mul_ne_zero hx hD)]`. Conclude with `div_mem hs hs₀`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartDetRatio.proof : ChartDetRatio.Statement := by
   intro Ω _ _ ι ν _ _ E _ _ x B e δ i₀ hx hδ

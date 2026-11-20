@@ -22,7 +22,7 @@ def box (K : Type) [Field K] [NumberField K] (n : ℕ) (𝒦 : Set (FiniteAdeleR
     ∀ w : InfinitePlace K, w ((γ : Matrix (Fin n) (Fin n) K) i j) ≤ T i j}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Counting.exists_ncard_entrywiseBox_le K n 𝒦 h𝒦`.
+A detailed English derivation is pending.
 -/
 theorem exists_ncard_box_le (K : Type) [Field K] [NumberField K] (n : ℕ)
     {𝒦 : Set (FiniteAdeleRing (𝓞 K) K)} (h𝒦 : IsCompact 𝒦) :
@@ -31,7 +31,7 @@ theorem exists_ncard_box_le (K : Type) [Field K] [NumberField K] (n : ℕ)
   GlobalTheory.CompanionTheory.Counting.exists_ncard_entrywiseBox_le K n 𝒦 h𝒦
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.EntrywiseCount.prod_entrywise_le n r d hr C β t hC hβ ht`.
+A detailed English derivation is pending.
 -/
 theorem prod_bound (n r d : ℕ) (hr : r ≤ n) (C β t : ℝ) (hC : 0 ≤ C) (hβ : 0 ≤ β) (ht : 0 ≤ t) :
     ∏ i : Fin n, ∏ j : Fin n, C * (1 + β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1)) ^ d ≤
@@ -43,21 +43,21 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 abbrev cen (K : Type) [Field K] [NumberField K] (n : ℕ) : AdelicGLn.AdelicGL K n := An.tor K fun _ : Fin n => (1 : ℝ)
 
 /- English proof (translation)
-The claim follows from `scalarUnits_mul_comm (n := n) (posIdele (K := K) (Real.exp 1) (Real.exp_pos _)) g`.
+A detailed English derivation is pending.
 -/
 theorem cen_comm (g : AdelicGLn.AdelicGL K n) : cen K n * g = g * cen K n :=
   scalarUnits_mul_comm (n := n) (posIdele (K := K) (Real.exp 1) (Real.exp_pos _)) g
 
 /- English proof (translation)
-The claim follows from `Commute.zpow_left (cen_comm g) m`.
+A detailed English derivation is pending.
 -/
 theorem cen_zpow_comm (m : ℤ) (g : AdelicGLn.AdelicGL K n) : cen K n ^ m * g = g * cen K n ^ m :=
   Commute.zpow_left (cen_comm g) m
 
 /- English proof (translation)
-Establish `: (Subgroup.zpowers (cen K n)).Normal` using `⟨fun x hx g => by`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hx`. Rewrite using `[← cen_zpow_comm k g, mul_inv_cancel_right]`. Conclude with `Subgroup.zpow_mem_zpowers _ k⟩`. Take `⟨y, hy, z, hz, rfl⟩` from `Subgroup.mem_sup_of_normal_right.1 hγ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ₀, rfl⟩` from `MonoidHom.mem_range.1 hy`. Take `⟨m, rfl⟩` from `Subgroup.mem_zpowers_iff.1 hz`. Conclude with `⟨γ₀, m, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_lat {γ : AdelicGLn.AdelicGL K n} (hγ : γ ∈ An.lat K n) :
     ∃ (γ₀ : GL (Fin n) K) (m : ℤ), γ = AdelicGLn.diagonal K n γ₀ * cen K n ^ m := by
@@ -71,7 +71,7 @@ theorem mem_lat {γ : AdelicGLn.AdelicGL K n} (hγ : γ ∈ An.lat K n) :
   exact ⟨γ₀, m, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Latexp.exponent_mem_finset K n r hn Q hQ`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_exp (r : ℕ) (hn : 0 < n) {Q : Set (AdelicGLn.AdelicGL K n)} (hQ : IsCompact Q) :
     ∃ M : Finset ℤ, ∀ (t : ℝ) (X Y : UPos n r → 𝔸[K]), ∀ q ∈ Q, ∀ (γ₀ : GL (Fin n) K) (m : ℤ),
@@ -80,11 +80,11 @@ theorem exists_finset_exp (r : ℕ) (hn : 0 < n) {Q : Set (AdelicGLn.AdelicGL K 
   GlobalTheory.CompanionTheory.Latexp.exponent_mem_finset K n r hn Q hQ
 
 /- English proof (translation)
-Use `⟨⋃ i : Fin n, ⋃ j : Fin n, (fun p : (UPos n r → 𝔸[K]) × (UPos n r → 𝔸[K]) × AdelicGLn.AdelicGL K n => ((AdelicGLn.prodEquiv K n (unipGL p.1 * p.2.2 * (unipGL p.2.1)⁻¹)).2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) i j) '' (D ×ˢ D ×ˢ Q), ?_, ?_⟩` and prove the remaining obligations. Use `isCompact_iUnion fun i => isCompact_iUnion fun j => (hD.prod (hD.prod hQ)).image ?_` and prove the remaining obligations. Conclude with `((continuous_apply j).comp (continuous_apply i)).comp (Units.continuous_val.comp (continuous_snd.comp ((AdelicGLn.prodEquiv K n).continuous.comp (((continuous_unipGL.comp continuous_fst).mul (continuous_snd.comp continuous_snd)).mul (continuous_unipGL.comp (continuous_fst.comp co …`. Introduce `t X hX Y hY q hq γ hγ i j`. Establish `hA : (AdelicGLn.prodEquiv K n (An.aR K n r t)).2 = 1` using `prodEquiv_diagUnits_posIdele_snd _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : algebraMap K (FiniteAdeleRing (𝓞 K) K) ((γ : Matrix (Fin n) (Fin n) K) i j) = ((AdelicGLn.prodEquiv K n (unipGL X * An.aR K n r t * q * (An.aR K n r t)⁻¹ * (unipGL Y)⁻¹)).2 : Matrix (Fin n) (Fin n) (FiniteAdeleRing (𝓞 K) K)) i j`. Rewrite using `[← hγ, AdelicGLn.prodEquiv_apply_snd, AdelicGLn.diagonal_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `Set.mem_iUnion₂.2 ⟨i, j, (X, Y, q), ⟨hX, hY, hq⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv, Prod.snd_mul, Prod.snd_inv, hA, mul_one, inv_one]`.
+A detailed English derivation is pending.
 -/
 theorem exists_fin_bound (r : ℕ) {D : Set (UPos n r → 𝔸[K])} {Q : Set (AdelicGLn.AdelicGL K n)}
     (hD : IsCompact D) (hQ : IsCompact Q) :
@@ -114,23 +114,19 @@ theorem exists_fin_bound (r : ℕ) {D : Set (UPos n r → 𝔸[K])} {Q : Set (Ad
     simp only [map_mul, map_inv, Prod.snd_mul, Prod.snd_inv, hA, mul_one, inv_one]
 
 /- English proof (translation)
-Establish `hρ : ∀ l, 0 < Real.exp (x l)` using `fun l => Real.exp_pos _`. Use `set d : Fin n → w.Completion := fun l => ((posRealToUnits w ⟨Real.exp (x l) ^ w.mult, pow_pos (hρ l) _⟩ : (w.Completion)ˣ) : w.Completion)`. Use `set d' : Fin n → w.Completion := fun l => (((posRealToUnits w ⟨Real.exp (x l) ^ w.mult, pow_pos (hρ l) _⟩)⁻¹ : (w.Completion)ˣ) : w.Completion)`. Establish `hd : ∀ l, ‖d l‖ = Real.exp (x l)` using `fun l => norm_posRealToUnits w (hρ l)`. Establish `hd' : ∀ l, ‖d' l‖ = (Real.exp (x l))⁻¹` using `fun l => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [d', Units.val_inv_eq_inv_val, norm_inv]`. Rewrite using `[norm_posRealToUnits w (hρ l)]`. Use `set B := (infAt w U : Matrix (Fin n) (Fin n) w.Completion)`. Use `set B' := (infAt w V : Matrix (Fin n) (Fin n) w.Completion)`. Use `set Qm := (infAt w q : Matrix (Fin n) (Fin n) w.Completion)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hmat : (infAt w (U * An.tor K x * q * (An.tor K x)⁻¹ * V) : Matrix (Fin n) (Fin n) w.Completion) = B * (Matrix.diagonal d * Qm * Matrix.diagonal d') * B'`. Express the relevant statement in the definitionally equal form `(infAt w (U * (diagUnits n fun i => posIdele (K := K) (Real.exp (x i)) (hρ i)) * q * (diagUnits n fun i => posIdele (K := K) (Real.exp (x i)) (hρ i))⁻¹ * V) : Matrix (Fin n) (Fin n) w.Completion) = _`. Rewrite using `[infAt_mul, infAt_mul, infAt_mul, infAt_mul, infAt_inv w (diagUnits n _), infAt_diagUnits_posIdele, ← map_inv (diagUnits n)]`. Simplify using `only [Units.val_mul, coe_diagUnits, Pi.inv_apply, mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hE : ∀ l m, (Matrix.diagonal d * Qm * Matrix.diagonal d') l m = d l * Qm l m * d' m`. Introduce `l m`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hterm : ∀ l m, ‖B i l * (Matrix.diagonal d * Qm * Matrix.diagonal d') l m * B' m j‖ ≤ β₁ * (L * β₂) * β₃`. Introduce `l m`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hb : B i l = 0`. Rewrite using `[hb, zero_mul, zero_mul, norm_zero]`. Conclude with `mul_nonneg (mul_nonneg hβ₁ (mul_nonneg hL0 hβ₂)) hβ₃`. Distinguish the cases in `hb' : B' m j = 0`. Rewrite using `[hb', mul_zero, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (mul_nonneg hβ₁ (mul_nonneg hL0 hβ₂)) hβ₃`. Rewrite using `[hE, norm_mul, norm_mul, norm_mul, norm_mul, hd, hd']`. Establish `hr` using `hL l m hb hb'`. Establish `e : Real.exp (x l) * ‖Qm l m‖ * (Real.exp (x m))⁻¹ = Real.exp (x l) / Real.exp (x m) * ‖Qm l m‖`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `h4 : Real.exp (x l) / Real.exp (x m) * ‖Qm l m‖ ≤ L * β₂` using `mul_le_mul hr (h2 l m) (norm_nonneg _) hL0`. Conclude with `mul_le_mul (mul_le_mul (h1 i l) h4 (by positivity) hβ₁) (h3 m j) (norm_nonneg _) (mul_nonneg hβ₁ (mul_nonneg hL0 hβ₂))`. Rewrite using `[hmat, Matrix.mul_apply]`. Establish `hsum : (∑ m, (B * (Matrix.diagonal d * Qm * Matrix.diagonal d')) i m * B' m j) = ∑ m, ∑ l, B i l * (Matrix.diagonal d * Qm * Matrix.diagonal d') l m * B' m j`.
-
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[hsum]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem norm_entry_le (w : InfinitePlace K) (U q V : AdelicGLn.AdelicGL K n) (x : Fin n → ℝ)
     {β₁ β₂ β₃ L : ℝ} (i j : Fin n)
@@ -197,7 +193,7 @@ theorem norm_entry_le (w : InfinitePlace K) (U q V : AdelicGLn.AdelicGL K n) (x 
         ring
 
 /- English proof (translation)
-Establish `h1 : a ≠ b` using `fun e => h (Or.inl e)`. Establish `h2 : ¬ ((a : ℕ) < r ∧ r ≤ (b : ℕ))` using `fun e => h (Or.inr e)`. Rewrite using `[infAt_apply, coe_unipGL, unipMatrix, Matrix.add_apply, Matrix.one_apply_ne h1, blockEntry_apply, dif_neg h2, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infAt_unip_eq_zero (w : InfinitePlace K) (r : ℕ) (X : UPos n r → 𝔸[K]) (a b : Fin n)
     (h : ¬ (a = b ∨ ((a : ℕ) < r ∧ r ≤ (b : ℕ)))) :
@@ -209,7 +205,7 @@ theorem infAt_unip_eq_zero (w : InfinitePlace K) (r : ℕ) (X : UPos n r → �
   rfl
 
 /- English proof (translation)
-Establish `h1 : a ≠ b` using `fun e => h (Or.inl e)`. Establish `h2 : ¬ ((a : ℕ) < r ∧ r ≤ (b : ℕ))` using `fun e => h (Or.inr e)`. Rewrite using `[infAt_apply, coe_unipGL_inv, unipMatrix, Matrix.add_apply, Matrix.one_apply_ne h1, blockEntry_apply, dif_neg h2, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem infAt_unip_inv_eq_zero (w : InfinitePlace K) (r : ℕ) (X : UPos n r → 𝔸[K]) (a b : Fin n)
     (h : ¬ (a = b ∨ ((a : ℕ) < r ∧ r ≤ (b : ℕ)))) :
@@ -221,17 +217,17 @@ theorem infAt_unip_inv_eq_zero (w : InfinitePlace K) (r : ℕ) (X : UPos n r →
   rfl
 
 /- English proof (translation)
-Take `⟨β₁, hβ₁0, hβ₁⟩` from `exists_norm_infAt_entry_le (hD.image (continuous_unipGL (K := K) (n := n) (r := r)))`. Take `⟨β₂, hβ₂0, hβ₂⟩` from `exists_norm_infAt_entry_le hQ`. Take `⟨β₃, hβ₃0, hβ₃⟩` from `exists_norm_infAt_entry_le (hD.image ((continuous_unipGL (K := K) (n := n) (r := r)).inv))`. Use `⟨(n : ℝ) ^ 2 * (β₁ * β₂ * β₃), by positivity, ?_⟩` and prove the remaining obligations. Introduce `t ht X hX Y hY q hq γ hγ i j w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : w ((γ : Matrix (Fin n) (Fin n) K) i j) = ‖(infAt w (unipGL X * An.aR K n r t * q * (An.aR K n r t)⁻¹ * (unipGL Y)⁻¹) : Matrix (Fin n) (Fin n) w.Completion) i j‖`. Rewrite using `[infAt_apply, ← hγ, AdelicGLn.diagonal_apply, ← GroundTheory.Global.norm_algebraMap_apply]`. Both sides reduce to the same expression. Rewrite using `[e1]`. Use `set L : ℝ := if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1 with hLdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have hL0 : 0 ≤ L := by rw [hLdef]; split_ifs <;> positivity`. Establish `key` using `norm_entry_le w (unipGL X) q (unipGL Y)⁻¹ (fun l : Fin n => if (l : ℕ) < r then t else 0) (L := L) i j (hβ₁ _ ⟨X, hX, rfl⟩ w) (hβ₂ q hq w) (hβ₃ _ ⟨Y, hY, rfl⟩ w) hβ₁0 hβ₂0 hβ₃0 hL0 ?_`. Use `le_trans key (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Introduce `l m hl hm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hl' : l = i ∨ ((i : ℕ) < r ∧ r ≤ (l : ℕ))`. Assume the negation of the conclusion as `h`. Conclude with `hl (infAt_unip_eq_zero w r X i l (fun h' => h (h'.elim (fun e => Or.inl e.symm) Or.inr)))`. Establish `hm' : m = j ∨ ((m : ℕ) < r ∧ r ≤ (j : ℕ))`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `hm (infAt_unip_inv_eq_zero w r Y m j h)`. Rewrite using `[← Real.exp_sub, hLdef]`. Distinguish the cases in `hij : (i : ℕ) < r ∧ r ≤ (j : ℕ)`. Rewrite using `[if_pos hij]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> linarith`. Rewrite using `[if_neg hij]`. Use `Real.exp_le_one_iff.2 ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hl' with rfl | ⟨h1, h2⟩ <;> rcases hm' with rfl | ⟨h3, h4⟩ <;> split_ifs <;> first | linarith | (exfalso; omega)`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_inf_bound (r : ℕ) {D : Set (UPos n r → 𝔸[K])} {Q : Set (AdelicGLn.AdelicGL K n)}
     (hD : IsCompact D) (hQ : IsCompact Q) :
@@ -277,25 +273,21 @@ theorem exists_inf_bound (r : ℕ) {D : Set (UPos n r → 𝔸[K])} {Q : Set (Ad
 end count
 
 /- English proof (translation)
-Introduce `K _ _ n r hr hrn D Q hD hQ`. Use `set c := count.cen K n with hc`. Take `⟨M, hM⟩` from `count.exists_finset_exp (K := K) r (by omega) hQ`. Use `set Q' : Set (AdelicGLn.AdelicGL K n) := ⋃ m ∈ M, (fun q => c ^ (-m) * q) '' Q with hQ'_def`. Establish `hQ' : IsCompact Q'` using `M.isCompact_biUnion fun m _ => hQ.image (continuous_const.mul continuous_id)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨𝒦, h𝒦, hfinb⟩` from `count.exists_fin_bound r hD hQ'`. Take `⟨β, hβ, hinfb⟩` from `count.exists_inf_bound r hD hQ'`. Take `⟨C, hC, hbox⟩` from `count.exists_ncard_box_le K n h𝒦`. Use `set d := Module.finrank ℚ K`. Use `⟨M.card * (C ^ (n * n) * (1 + β) ^ (d * (n * n))), fun t ht => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `set T : Fin n → Fin n → ℝ := fun i j => β * (if (i : ℕ) < r ∧ r ≤ (j : ℕ) then Real.exp t else 1) with hT`. Apply the tactic sequence `obtain ⟨hfin, hcard⟩ := hbox T (fun i j => by simp only [T]; split_ifs <;> positivity)`. Use `set B := hfin.toFinset`. Use `set g : ℤ × GL (Fin n) K → AdelicGLn.AdelicGL K n := fun p => AdelicGLn.diagonal K n p.2 * c ^ p.1`. Use `set S := {γ : An.lat K n | ∃ X ∈ D, ∃ Y ∈ D, ∃ q ∈ Q, (γ : AdelicGLn.AdelicGL K n) = unipGL X * An.aR K n r t * q * (An.aR K n r t)⁻¹ * (unipGL Y)⁻¹}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : Subtype.val '' S ⊆ (((M ×ˢ B).image g : Finset _) : Set (AdelicGLn.AdelicGL K n))`. Introduce and unpack `_ ⟨γ, ⟨X, hX, Y, hY, q, hq, hγ⟩, rfl⟩`. Take `⟨γ₀, m, hγm⟩` from `count.mem_lat γ.2`. Establish `hm : m ∈ M` using `hM t X Y q hq γ₀ m (hγm ▸ hγ)`. Establish `h0 : AdelicGLn.diagonal K n γ₀ = unipGL X * An.aR K n r t * (c ^ (-m) * q) * (An.aR K n r t)⁻¹ * (unipGL Y)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : AdelicGLn.diagonal K n γ₀ = (γ : AdelicGLn.AdelicGL K n) * c ^ (-m)`. Rewrite using `[hγm, mul_assoc, ← zpow_add, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[e1, hγ]`. Establish `e2` using `count.cen_zpow_comm (-m) (q * (An.aR K n r t)⁻¹ * (unipGL Y)⁻¹)`. Simplify using `only [mul_assoc] at e2 ⊢`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Establish `hq' : c ^ (-m) * q ∈ Q'` using `Set.mem_biUnion hm ⟨q, hq, rfl⟩`. Establish `hB : γ₀ ∈ B`. Rewrite using `[Set.Finite.mem_toFinset]`. Introduce `i j`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `⟨hfinb t X hX Y hY _ hq' γ₀ h0 i j, fun w => hinfb t ht X hX Y hY _ hq' γ₀ h0 i j w⟩`. Rewrite using `[Finset.coe_image]`. Conclude with `⟨(m, γ₀), Finset.mem_coe.2 (Finset.mem_product.2 ⟨hm, hB⟩), hγm.symm⟩`. Establish `hB : (B.card : ℝ) ≤ C ^ (n * n) * (1 + β) ^ (d * (n * n)) * Real.exp (2 * An.rho K n r * t)`. Rewrite using `[← Set.ncard_eq_toFinset_card _ hfin]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Use `hcard.trans ((count.prod_bound n r d hrn.le C β t hC hβ ht).trans (le_of_eq ?_))` and prove the remaining obligations. Use `congr 2`. Simplify using `only [An.rho, d]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnat : (((M ×ˢ B).image g).card : ℝ) ≤ M.card * (C ^ (n * n) * (1 + β) ^ (d * (n * n))) * Real.exp (2 * An.rho K n r * t)`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Use `Nat.le_ceil (M.card * (C ^ (n * n) * (1 + β) ^ (d * (n * n))) * Real.exp (2 * An.rho K n r * t))` as an intermediate fact. Establish `h2 : ((M ×ˢ B).image g).card ≤ ⌈M.card * (C ^ (n * n) * (1 + β) ^ (d * (n * n))) * Real.exp (2 * An.rho K n r * t)⌉₊`. Conclude with `hnat.trans this` after adjusting the coercions.
-
-Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem count_holds : An.Count := by
   intro K _ _ n r hr hrn D Q hD hQ

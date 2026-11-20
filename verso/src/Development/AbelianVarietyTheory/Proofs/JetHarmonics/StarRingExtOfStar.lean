@@ -16,7 +16,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Break down `s with @⟨@⟨@⟨@⟨s⟩, _⟩, _⟩, _⟩` into its components or cases. Break down `t with @⟨@⟨@⟨@⟨t⟩, _⟩, _⟩, _⟩` into its components or cases. Take `rfl : s = t` from `funext h`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.PowGerm.starRing_ext_of_star {R : Type*} [NonUnitalNonAssocSemiring R] (s t : StarRing R)
     (h : ∀ a : R, s.toStarMul.toInvolutiveStar.toStar.star a =
@@ -31,7 +31,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.PowGerm.StarSt`. Introduce `E _ _ _ H inst h`. Conclude with `_root_.GlobalTheory.PowGerm.starRing_ext_of_star _ _ fun a => (h a).trans rfl`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PowGerm.starSt : _root_.GlobalTheory.PowGerm.StarSt := by
   unfold _root_.GlobalTheory.PowGerm.StarSt

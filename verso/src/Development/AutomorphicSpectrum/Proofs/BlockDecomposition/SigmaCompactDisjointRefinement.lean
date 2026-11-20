@@ -7,7 +7,7 @@ open scoped ENNReal ComplexConjugate
 namespace GlobalTheory.CompanionTheory.CroftonPartition
 
 /- English proof (translation)
-Establish `: LocallyCompactSpace U` using `hU.locallyCompactSpace`. Conclude with `isSigmaCompact_iff_sigmaCompactSpace.2 inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSigmaCompact_of_isOpen_compact {X : Type} [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [SecondCountableTopology X] {U : Set X} (hU : IsOpen U) : IsSigmaCompact U := by
@@ -15,7 +15,7 @@ theorem isSigmaCompact_of_isOpen_compact {X : Type} [TopologicalSpace X] [Compac
   exact isSigmaCompact_iff_sigmaCompactSpace.2 inferInstance
 
 /- English proof (translation)
-Take `⟨K, hK, hKs⟩` from `hs`. Use `⟨fun n => K n ∩ C, fun n => (hK n).inter_right hC, ?_⟩` and prove the remaining obligations. Rewrite using `[← hKs, Set.iUnion_inter]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSigmaCompact_inter_isClosed {X : Type} [TopologicalSpace X] {s C : Set X}
     (hs : IsSigmaCompact s) (hC : IsClosed C) : IsSigmaCompact (s ∩ C) := by
@@ -24,15 +24,13 @@ theorem isSigmaCompact_inter_isClosed {X : Type} [TopologicalSpace X] {s C : Set
   rw [← hKs, Set.iUnion_inter]
 
 /- English proof (translation)
-Introduce `X _ _ _ _ ι S hS hcov`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover S hS hcov.ge`. Set `e` to `t.equivFin`. Set `l : Fin t.card → ι` to `fun j => (e.symm j : ι)`. Set `A : Fin t.card → Set X` to `fun j => S (l j) \ ⋃ (i : Fin t.card) (_ : i < j), S (l i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `⟨t.card, l, A, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `j j' hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `Set.disjoint_left.2 fun x hx hx' => hx'.2 (Set.mem_iUnion₂.2 ⟨j, h, hx.1⟩)`. Conclude with `Set.disjoint_left.2 fun x hx hx' => hx.2 (Set.mem_iUnion₂.2 ⟨j', h, hx'.1⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Set.eq_univ_of_forall fun x => ?_` and prove the remaining obligations. Take `⟨i, hit, hxi⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ x))`. Establish `hl : l (e ⟨i, hit⟩) = i` using `by simp [l]`. Take `⟨j, hj, hmin⟩` from `wellFounded_lt.has_min {j : Fin t.card | x ∈ S (l j)} ⟨e ⟨i, hit⟩, by simpa [hl] using hxi⟩`. Use `Set.mem_iUnion.2 ⟨j, hj, fun hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i', hi', hxi'⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `hmin i' hxi' hi'`. Introduce `j`. Conclude with `Set.sdiff_subset`. Introduce `j show IsSigmaCompact (S (l j) \ ⋃ (i : Fin t.card) (_ : i < j), S (l i))`.
-
-Rewrite using `[Set.sdiff_eq]`. Conclude with `isSigmaCompact_inter_isClosed (isSigmaCompact_of_isOpen_compact (hS _)) (isClosed_compl_iff.2 (isOpen_iUnion fun i => isOpen_iUnion fun _ => hS _))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sigmaCompact_partition : ∀ (X : Type) [TopologicalSpace X] [CompactSpace X] [T2Space X]
     [SecondCountableTopology X] (ι : Type) (S : ι → Set X), (∀ i, IsOpen (S i)) →

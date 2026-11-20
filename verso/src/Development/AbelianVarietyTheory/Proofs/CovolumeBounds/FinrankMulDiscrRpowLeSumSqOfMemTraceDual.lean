@@ -6,7 +6,7 @@ open scoped nonZeroDivisors
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : (0 : ℝ) < Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Establish `h` using `Real.geom_mean_le_arith_mean_weighted Finset.univ (fun _ : ι => (Fintype.card ι : ℝ)⁻¹) z (fun _ _ => by positivity) (by simp [hc.ne']) (fun i _ => hz i)`. Rewrite `h` using `[Real.finsetProd_rpow _ _ (fun i _ => hz i), ← Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem card_mul_rpow_prod_le_sum {ι : Type*} [Fintype ι] [Nonempty ι] (z : ι → ℝ)
     (hz : ∀ i, 0 ≤ z i) :
@@ -24,7 +24,7 @@ section General
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => f x) (fun φ => φ x) (fun _ => rfl), ← Algebra.norm_eq_prod_embeddings ℚ ℂ x]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_eq_prod_complexEmbeddings (x : K) :
     ((Algebra.norm ℚ x : ℚ) : ℂ) = ∏ σ : K →+* ℂ, σ x := by
@@ -33,7 +33,7 @@ theorem norm_eq_prod_complexEmbeddings (x : K) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) (fun f => f x) (fun φ => φ x) (fun _ => rfl), ← trace_eq_sum_embeddings ℂ (K := ℚ) (x := x)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq_sum_complexEmbeddings (x : K) :
     ((Algebra.trace ℚ K x : ℚ) : ℂ) = ∑ σ : K →+* ℂ, σ x := by
@@ -42,14 +42,14 @@ theorem trace_eq_sum_complexEmbeddings (x : K) :
   simp
 
 /- English proof (translation)
-The claim follows from `|((Algebra.norm ℚ x : ℚ) : ℝ)| = ∏ σ : K →+* ℂ, ‖σ x‖ := by rw [← norm_prod, ← norm_eq_prod_complexEmbeddings, Complex.norm_ratCast]`.
+A detailed English derivation is pending.
 -/
 theorem abs_norm_eq_prod_complexEmbeddings (x : K) :
     |((Algebra.norm ℚ x : ℚ) : ℝ)| = ∏ σ : K →+* ℂ, ‖σ x‖ := by
   rw [← norm_prod, ← norm_eq_prod_complexEmbeddings, Complex.norm_ratCast]
 
 /- English proof (translation)
-Rewrite using `[abs_norm_eq_prod_complexEmbeddings, ← Embeddings.card K ℂ]`. Conclude with `card_mul_rpow_prod_le_sum _ fun _ => norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_mul_abs_norm_rpow_le_sum (x : K) :
     (finrank ℚ K : ℝ) * |((Algebra.norm ℚ x : ℚ) : ℝ)| ^ ((finrank ℚ K : ℝ)⁻¹)
@@ -58,7 +58,7 @@ theorem finrank_mul_abs_norm_rpow_le_sum (x : K) :
   exact card_mul_rpow_prod_le_sum _ fun _ => norm_nonneg _
 
 /- English proof (translation)
-Establish `h` using `finrank_mul_abs_norm_rpow_le_sum (x ^ 2)`. Simplify using `only [map_pow, norm_pow, Rat.cast_pow, abs_pow] at h`. Rewrite using `[div_eq_mul_inv, Real.rpow_mul (abs_nonneg _), Real.rpow_two]` and apply the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_mul_abs_norm_rpow_le_sum_sq (x : K) :
     (finrank ℚ K : ℝ) * |((Algebra.norm ℚ x : ℚ) : ℝ)| ^ (2 / (finrank ℚ K : ℝ))
@@ -68,9 +68,9 @@ theorem finrank_mul_abs_norm_rpow_le_sum_sq (x : K) :
   rwa [div_eq_mul_inv, Real.rpow_mul (abs_nonneg _), Real.rpow_two]
 
 /- English proof (translation)
-Establish `hn : IsIntegral ℤ (Algebra.norm ℚ x)` using `Algebra.isIntegral_norm ℚ hx`. Take `⟨m, hm⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hn`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`. Rewrite `hm` using `[map_zero, eq_comm, Algebra.norm_eq_zero_iff]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h0 hm`. Rewrite using `[← hm, eq_intCast]`. Conclude with `Int.one_le_abs hm0` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_abs_norm_of_isIntegral {x : K} (hx : IsIntegral ℤ x) (h0 : x ≠ 0) :
     1 ≤ |Algebra.norm ℚ x| := by
@@ -84,7 +84,7 @@ theorem one_le_abs_norm_of_isIntegral {x : K} (hx : IsIntegral ℤ x) (h0 : x �
   exact_mod_cast Int.one_le_abs hm0
 
 /- English proof (translation)
-Use `le_trans ?_ (finrank_mul_abs_norm_rpow_le_sum x)` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ |((Algebra.norm ℚ x : ℚ) : ℝ)|`. Conclude with `one_le_abs_norm_of_isIntegral hx h0` after adjusting the coercions. Conclude with `le_mul_of_one_le_right (Nat.cast_nonneg _) (Real.one_le_rpow h1 (by positivity))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_le_sum_norm_of_isIntegral {x : K} (hx : IsIntegral ℤ x) (h0 : x ≠ 0) :
     (finrank ℚ K : ℝ) ≤ ∑ σ : K →+* ℂ, ‖σ x‖ := by
@@ -94,7 +94,7 @@ theorem finrank_le_sum_norm_of_isIntegral {x : K} (hx : IsIntegral ℤ x) (h0 : 
   exact le_mul_of_one_le_right (Nat.cast_nonneg _) (Real.one_le_rpow h1 (by positivity))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Conclude with `absurd h (not_lt.mpr (finrank_le_sum_norm_of_isIntegral hx h0))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isIntegral_of_sum_norm_lt {x : K} (hx : IsIntegral ℤ x)
     (h : ∑ σ : K →+* ℂ, ‖σ x‖ < finrank ℚ K) : x = 0 := by
@@ -102,13 +102,11 @@ theorem eq_zero_of_isIntegral_of_sum_norm_lt {x : K} (hx : IsIntegral ℤ x)
   exact absurd h (not_lt.mpr (finrank_le_sum_norm_of_isIntegral hx h0))
 
 /- English proof (translation)
-Establish `hJ : J ≠ 0`. Introduce and unpack `rfl`. Conclude with `h0 ((FractionalIdeal.mem_zero_iff _).mp hx)`. Establish `hle : FractionalIdeal.spanSingleton (𝓞 K)⁰ x * J⁻¹ ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Conclude with `FractionalIdeal.spanSingleton_le_iff_mem.mpr hx`. Use `_ = 1 := mul_inv_cancel₀ hJ`. Take `⟨I, hI⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.mp hle`. Establish `hI' : FractionalIdeal.spanSingleton (𝓞 K)⁰ x = I * J`. Rewrite using `[hI, inv_mul_cancel_right₀ hJ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hI0 : I ≠ ⊥`. Introduce and unpack `rfl`. Conclude with `h0 (FractionalIdeal.spanSingleton_eq_zero_iff.mp (by simpa using hI'))`. Establish `h1 : (1 : ℚ) ≤ Ideal.absNorm I`. Conclude with `Nat.one_le_iff_ne_zero.mpr (Ideal.absNorm_eq_zero_iff.not.mpr hI0)` after adjusting the coercions.
-
-Rewrite using `[← FractionalIdeal.absNorm_span_singleton (𝓞 K), hI', map_mul, FractionalIdeal.coeIdeal_absNorm]`. Conclude with `le_mul_of_one_le_left (FractionalIdeal.absNorm_nonneg _) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_abs_norm_of_mem {J : FractionalIdeal (𝓞 K)⁰ K} {x : K} (hx : x ∈ J)
     (h0 : x ≠ 0) : FractionalIdeal.absNorm J ≤ |Algebra.norm ℚ x| := by
@@ -133,9 +131,7 @@ theorem absNorm_le_abs_norm_of_mem {J : FractionalIdeal (𝓞 K)⁰ K} {x : K} (
   exact le_mul_of_one_le_left (FractionalIdeal.absNorm_nonneg _) h1
 
 /- English proof (translation)
-Use `le_trans ?_ (finrank_mul_abs_norm_rpow_le_sum_sq x)` and prove the remaining obligations. Establish `h1 : ((FractionalIdeal.absNorm J : ℚ) : ℝ) ≤ |((Algebra.norm ℚ x : ℚ) : ℝ)|`. Conclude with `absNorm_le_abs_norm_of_mem hx h0` after adjusting the coercions. Establish `h2 : (0 : ℝ) ≤ ((FractionalIdeal.absNorm J : ℚ) : ℝ)`. Conclude with `FractionalIdeal.absNorm_nonneg J` after adjusting the coercions.
-
-Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_mul_absNorm_rpow_le_sum_sq {J : FractionalIdeal (𝓞 K)⁰ K} {x : K} (hx : x ∈ J)
     (h0 : x ≠ 0) :
@@ -151,7 +147,7 @@ theorem finrank_mul_absNorm_rpow_le_sum_sq {J : FractionalIdeal (𝓞 K)⁰ K} {
 variable (K) in
 
 /- English proof (translation)
-Rewrite using `[coeIdeal_differentIdeal ℤ ℚ K (𝓞 K), inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_one_eq_inv_differentIdeal :
     FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (𝓞 K)⁰ K)
@@ -161,7 +157,7 @@ theorem dual_one_eq_inv_differentIdeal :
 variable (K) in
 
 /- English proof (translation)
-Rewrite using `[map_inv₀, FractionalIdeal.coeIdeal_absNorm, absNorm_differentIdeal K]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem absNorm_inv_differentIdeal :
     FractionalIdeal.absNorm (differentIdeal ℤ (𝓞 K) : FractionalIdeal (𝓞 K)⁰ K)⁻¹
@@ -170,7 +166,7 @@ theorem absNorm_inv_differentIdeal :
   simp
 
 /- English proof (translation)
-Establish `h` using `finrank_mul_absNorm_rpow_le_sum_sq hx h0`. Rewrite `h` using `[absNorm_inv_differentIdeal]`. Rewrite using `[neg_div, Real.rpow_neg (abs_nonneg _), ← Real.inv_rpow (abs_nonneg _)]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_mul_discr_rpow_le_sum_sq {x : K}
     (hx : x ∈ (differentIdeal ℤ (𝓞 K) : FractionalIdeal (𝓞 K)⁰ K)⁻¹) (h0 : x ≠ 0) :
@@ -182,7 +178,7 @@ theorem finrank_mul_discr_rpow_le_sum_sq {x : K}
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `finrank_mul_discr_rpow_le_sum_sq hx h0`. Rewrite `h` using `[neg_div, Real.rpow_neg (abs_nonneg _), div_eq_inv_mul, Real.rpow_mul (abs_nonneg _), Real.rpow_two]`. Rewrite using `[rootDiscr_def, div_eq_mul_inv]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_div_rootDiscr_sq_le_sum_sq {x : K}
     (hx : x ∈ (differentIdeal ℤ (𝓞 K) : FractionalIdeal (𝓞 K)⁰ K)⁻¹) (h0 : x ≠ 0) :
@@ -194,7 +190,7 @@ theorem finrank_div_rootDiscr_sq_le_sum_sq {x : K}
   simpa using h
 
 /- English proof (translation)
-Use `finrank_mul_discr_rpow_le_sum_sq ?_ h0` and prove the remaining obligations. Rewrite using `[← dual_one_eq_inv_differentIdeal, ← FractionalIdeal.mem_coe, FractionalIdeal.coe_dual_one]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_mul_discr_rpow_le_sum_sq_of_mem_traceDual {x : K}
     (hx : x ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 K) K)) (h0 : x ≠ 0) :
@@ -207,14 +203,14 @@ theorem finrank_mul_discr_rpow_le_sum_sq_of_mem_traceDual {x : K}
 omit [NumberField K] in
 
 /- English proof (translation)
-The claim follows from `(map_eq_zero σ).mp h`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_embedding_eq_zero {A : Type*} [Ring A] [Nontrivial A] (σ : K →+* A) {x : K}
     (h : σ x = 0) : x = 0 :=
   (map_eq_zero σ).mp h
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Submodule.mem_traceDual.mp hx q (Submodule.mem_span_singleton_self _)`. Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite `hm` using `[Algebra.traceForm_apply, mul_comm, ← Rat.smul_def, map_smul, smul_eq_mul, eq_intCast]`. Conclude with `hm.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_eq_mul_trace_of_mem_traceDual {q : ℚ} {x : K}
     (hx : x ∈ Submodule.traceDual ℤ ℚ (Submodule.span (𝓞 K) {(q : K)})) :
@@ -225,7 +221,7 @@ theorem exists_int_eq_mul_trace_of_mem_traceDual {q : ℚ} {x : K}
   exact hm.symm
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_int_eq_mul_trace_of_mem_traceDual hx`. Conclude with `⟨m, by rw [← hm, inv_mul_cancel_left₀ hq]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem trace_mem_of_mem_traceDual {q : ℚ} (hq : q ≠ 0) {x : K}
     (hx : x ∈ Submodule.traceDual ℤ ℚ (Submodule.span (𝓞 K) {(q : K)})) :
@@ -234,7 +230,7 @@ theorem trace_mem_of_mem_traceDual {q : ℚ} (hq : q ≠ 0) {x : K}
   exact ⟨m, by rw [← hm, inv_mul_cancel_left₀ hq]⟩
 
 /- English proof (translation)
-Use `trace_mem_of_mem_traceDual hq ?_` and prove the remaining obligations. Rewrite `hx` using `[← FractionalIdeal.mem_coe, FractionalIdeal.coe_dual ℤ ℚ (FractionalIdeal.spanSingleton_ne_zero_iff.mpr (by exact_mod_cast hq)), FractionalIdeal.coe_spanSingleton]`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_mem_of_mem_dual_spanSingleton {q : ℚ} (hq : q ≠ 0) {x : K}
     (hx : x ∈ FractionalIdeal.dual ℤ ℚ (FractionalIdeal.spanSingleton (𝓞 K)⁰ (q : K))) :
@@ -255,7 +251,7 @@ omit [NumberField F] in
 variable (F) in
 
 /- English proof (translation)
-Use `⟨fun σ τ h => RingHom.ext fun x => ?_, fun φ => ?_⟩` and prove the remaining obligations. Simplify using `using RingHom.congr_fun h x`. Conclude with `⟨(IsTotallyReal.complexEmbedding_isReal φ).embedding, RingHom.ext fun x => by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem bijective_ofRealHom_comp :
     Function.Bijective (fun σ : F →+* ℝ => Complex.ofRealHom.comp σ) := by
@@ -266,14 +262,14 @@ theorem bijective_ofRealHom_comp :
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[← Embeddings.card F ℂ]`. Conclude with `Fintype.card_of_bijective (bijective_ofRealHom_comp F)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_realEmbeddings : Fintype.card (F →+* ℝ) = finrank ℚ F := by
   rw [← Embeddings.card F ℂ]
   exact Fintype.card_of_bijective (bijective_ofRealHom_comp F)
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, norm_eq_prod_complexEmbeddings, Complex.ofReal_prod]`. Conclude with `((bijective_ofRealHom_comp F).prod_comp (fun φ => φ x)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_prod_realEmbeddings (x : F) :
     ((Algebra.norm ℚ x : ℚ) : ℝ) = ∏ σ : F →+* ℝ, σ x := by
@@ -282,7 +278,7 @@ theorem norm_eq_prod_realEmbeddings (x : F) :
   exact ((bijective_ofRealHom_comp F).prod_comp (fun φ => φ x)).symm
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, trace_eq_sum_complexEmbeddings, Complex.ofReal_sum]`. Conclude with `((bijective_ofRealHom_comp F).sum_comp (fun φ => φ x)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum_realEmbeddings (x : F) :
     ((Algebra.trace ℚ F x : ℚ) : ℝ) = ∑ σ : F →+* ℝ, σ x := by
@@ -291,7 +287,7 @@ theorem trace_eq_sum_realEmbeddings (x : F) :
   exact ((bijective_ofRealHom_comp F).sum_comp (fun φ => φ x)).symm
 
 /- English proof (translation)
-Rewrite using `[← (bijective_ofRealHom_comp F).sum_comp (fun φ => ‖φ x‖)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_abs_realEmbeddings (x : F) :
     ∑ σ : F →+* ℝ, |σ x| = ∑ σ : F →+* ℂ, ‖σ x‖ := by
@@ -299,7 +295,7 @@ theorem sum_abs_realEmbeddings (x : F) :
   simp
 
 /- English proof (translation)
-Establish `: (0 : ℝ) < ((Algebra.norm ℚ a : ℚ) : ℝ)`. Rewrite using `[norm_eq_prod_realEmbeddings]`. Conclude with `Finset.prod_pos fun σ _ => ha σ`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pos_of_totallyPos {a : F} (ha : ∀ σ : F →+* ℝ, 0 < σ a) : 0 < Algebra.norm ℚ a := by
   have : (0 : ℝ) < ((Algebra.norm ℚ a : ℚ) : ℝ) := by
@@ -308,14 +304,14 @@ theorem norm_pos_of_totallyPos {a : F} (ha : ∀ σ : F →+* ℝ, 0 < σ a) : 0
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `using norm_pos_of_totallyPos ha`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne_zero_of_totallyPos {a : F} (ha : ∀ σ : F →+* ℝ, 0 < σ a) : a ≠ 0 := by
   rintro rfl
   simpa using norm_pos_of_totallyPos ha
 
 /- English proof (translation)
-Establish `h` using `finrank_mul_abs_norm_rpow_le_sum a`. Establish `hp : (0 : ℝ) < ((Algebra.norm ℚ a : ℚ) : ℝ)`. Conclude with `norm_pos_of_totallyPos ha` after adjusting the coercions. Rewrite `h` using `[abs_of_pos hp, ← sum_abs_realEmbeddings, Finset.sum_congr rfl fun σ _ => abs_of_pos (ha σ)]`. Rewrite using `[one_div, trace_eq_sum_realEmbeddings]` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem finrank_mul_norm_rpow_le_trace {a : F} (ha : ∀ σ : F →+* ℝ, 0 < σ a) :
     (finrank ℚ F : ℝ) * ((Algebra.norm ℚ a : ℚ) : ℝ) ^ (1 / (finrank ℚ F : ℝ))
@@ -328,7 +324,7 @@ theorem finrank_mul_norm_rpow_le_trace {a : F} (ha : ∀ σ : F →+* ℝ, 0 < �
   rwa [one_div, trace_eq_sum_realEmbeddings]
 
 /- English proof (translation)
-Establish `h` using `finrank_le_sum_norm_of_isIntegral hi (ne_zero_of_totallyPos ha)`. Rewrite `h` using `[← sum_abs_realEmbeddings, Finset.sum_congr rfl fun σ _ => abs_of_pos (ha σ), ← trace_eq_sum_realEmbeddings]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_trace_of_isIntegral {a : F} (hi : IsIntegral ℤ a)
     (ha : ∀ σ : F →+* ℝ, 0 < σ a) : (finrank ℚ F : ℚ) ≤ Algebra.trace ℚ F a := by
@@ -338,14 +334,14 @@ theorem finrank_le_trace_of_isIntegral {a : F} (hi : IsIntegral ℤ a)
   exact_mod_cast h
 
 /- English proof (translation)
-The claim follows from `eq_zero_of_isIntegral_of_sum_norm_lt hx (by rwa [← sum_abs_realEmbeddings])`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_isIntegral_of_sum_abs_lt {x : F} (hx : IsIntegral ℤ x)
     (h : ∑ σ : F →+* ℝ, |σ x| < finrank ℚ F) : x = 0 :=
   eq_zero_of_isIntegral_of_sum_norm_lt hx (by rwa [← sum_abs_realEmbeddings])
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a = 0`. Conclude with `Or.inl h0`. Conclude with `Or.inr fun σ => (ha σ).lt_of_ne' fun h => h0 (eq_zero_of_embedding_eq_zero σ h)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative.
 -/
 theorem eq_zero_or_totallyPos {a : F} (ha : ∀ σ : F →+* ℝ, 0 ≤ σ a) :
     a = 0 ∨ ∀ σ : F →+* ℝ, 0 < σ a := by
@@ -356,7 +352,7 @@ theorem eq_zero_or_totallyPos {a : F} (ha : ∀ σ : F →+* ℝ, 0 ≤ σ a) :
 end TotallyReal
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ ha => finrank_mul_norm_rpow_le_trace ha, fun _ hi ha => finrank_le_trace_of_isIntegral hi ha, fun _ hi h => eq_zero_of_isIntegral_of_sum_norm_lt hi h, fun _ hx h0 => finrank_mul_discr_rpow_le_sum_sq hx h0, fun _ _ hx h0 => finrank_mul_absNorm_rpow_le_sum_sq hx h0, fun _ σ …`.
+Supply the required witnesses or components.
 -/
 theorem trace_lower_bounds (F K : Type*) [Field F] [NumberField F] [IsTotallyReal F]
     [Field K] [NumberField K] :

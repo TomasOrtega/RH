@@ -10,13 +10,13 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F _ _ _`. Take `⟨hK, hKc⟩` from `M.kkCpt F`. Take `⟨hB, e, he⟩` from `M.borHomeo F`. Use `⟨hKc, fun C hC => ?_⟩` and prove the remaining obligations. Establish `hemb : IsClosedEmbedding (Subtype.val : M.Bor F → G1 F)` using `hB.isClosedEmbedding_subtypeVal`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hS : IsCompact ((fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F))` using `(hC.prod hKc).image continuous_mul`. Use `⟨Prod.fst '' (e.symm '' ((Subtype.val : M.Bor F → G1 F) ⁻¹' ((fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F)))), ((hemb.isCompact_preimage hS).image e.symm.continuous).image continuous_fst, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨b, a, k, hk, rfl⟩` from `M.iwa F g`. Use `⟨b, a, ?_, k, hk, rfl⟩` and prove the remaining obligations. Use `⟨(a, b), ⟨e (a, b), ?_, e.symm_apply_apply _⟩, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((e (a, b) : M.Bor F) : G1 F) ∈ (fun p : G1 F × G1 F => p.1 * p.2) '' (C ×ˢ KK F)`. Rewrite using `[he]`. Use `⟨(nU b * mD a * k, k⁻¹), ⟨hg, ?_⟩, by simp⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `k⁻¹ ∈ KK F`. Rewrite `hk`, the goal using `[hK]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(M.Ks F).inv_mem hk`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.iwa :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], Iwa F := by

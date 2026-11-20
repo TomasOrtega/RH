@@ -12,7 +12,7 @@ open scoped ComplexConjugate
 namespace GlobalTheory.StdPar
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ r X Y hW S φ _ hφ`. Use `haveI : LocallyCompactSpace (unip σ J X S) := (isClosed_unip S h hJ hW).locallyCompactSpace`. Conclude with `⟨_, GlobalTheory.UAut.isConstTermOn_constTermOn (N := unip σ J X S) fun γ hγ g => hφ γ hγ.1 g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isConstAlong : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

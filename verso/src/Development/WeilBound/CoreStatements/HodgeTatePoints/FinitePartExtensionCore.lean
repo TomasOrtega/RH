@@ -30,7 +30,7 @@ variable {C : Type u₁} [Category.{v₁} C] [CartesianMonoidalCategory C]
   {D : Type u₂} [Category.{v₂} D] [CartesianMonoidalCategory D] (F : C ⥤ D) [F.Monoidal]
 
 /- English proof (translation)
-Establish `h` using `hp.map F`. Use `IsPullback.of_iso h (Iso.refl _) (Iso.refl _) (Functor.Monoidal.εIso F).symm (Iso.refl _) (by simp) (toUnit_unique _ _) ?_ ?_` and prove the remaining obligations. Simplify using `[Tors.map_pow_id]`. Simplify using `[Functor.obj.η_def]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem kernel_map [PreservesLimitsOfShape WalkingCospan F] {A B : C} [GrpObj B] {N : ℕ} {j : A ⟶ B}
     (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B]) :
@@ -42,7 +42,7 @@ theorem kernel_map [PreservesLimitsOfShape WalkingCospan F] {A B : C} [GrpObj B]
   · simp [Functor.obj.η_def]
 
 /- English proof (translation)
-Use `IsPullback.of_iso h (Iso.refl _) (Iso.refl _) (Functor.Monoidal.εIso F) (Iso.refl _) (by simp) (by rw [← cancel_mono (Functor.Monoidal.εIso F).inv]; exact toUnit_unique _ _) (by simp) (by simp)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isPullback_map_unit {A E B : C} {a : A ⟶ E} {b : E ⟶ B} {e : 𝟙_ C ⟶ B}
     (h : IsPullback (F.map a) (toUnit (F.obj A)) (F.map b) (Functor.LaxMonoidal.ε F ≫ F.map e)) :
@@ -57,7 +57,7 @@ universe v u
 variable {C : Type u} [Category.{v} C] [CartesianMonoidalCategory C]
 
 /- English proof (translation)
-Use `IsPullback.of_iso hp (Iso.refl _) β (Iso.refl _) β (by simp) (by simp) ?_ (by simp)` and prove the remaining obligations. Rewrite using `[MonObj.pow_comp, MonObj.comp_pow]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem kernel_iso {A B B' : C} [GrpObj B] [GrpObj B'] {N : ℕ} {j : A ⟶ B} (β : B ≅ B') [IsMonHom β.hom]
     (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B]) :
@@ -67,7 +67,7 @@ theorem kernel_iso {A B B' : C} [GrpObj B] [GrpObj B'] {N : ℕ} {j : A ⟶ B} (
   simp
 
 /- English proof (translation)
-Use `Tors.lift_of_torsion hQ _ ?_` and prove the remaining obligations. Establish `h` using `Tors.torsion_of_comp hP (𝟙 _)`. Rewrite `h` using `[Category.id_comp]`. Rewrite using `[← MonObj.pow_comp, h]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem factor_of_kernel [BraidedCategory C] {P P' Q Q' : C} [GrpObj P'] [IsCommMonObj P'] [GrpObj Q'] [IsCommMonObj Q']
     {N : ℕ} {jP : P ⟶ P'} {jQ : Q ⟶ Q'}
@@ -82,7 +82,7 @@ theorem factor_of_kernel [BraidedCategory C] {P P' Q Q' : C} [GrpObj P'] [IsComm
 end Iso
 
 /- English proof (translation)
-The claim follows from `kernel_map (Over.pullback x) hp`.
+A detailed English derivation is pending.
 -/
 theorem kernel_pull {S' S : Scheme.{0}} (x : S' ⟶ S) {A B : Over S} [GrpObj B] {N : ℕ} {j : A ⟶ B}
     (hp : IsPullback j (toUnit A) ((𝟙 B) ^ N) η[B]) :
@@ -91,11 +91,11 @@ theorem kernel_pull {S' S : Scheme.{0}} (x : S' ⟶ S) {A B : Over S} [GrpObj B]
   kernel_map (Over.pullback x) hp
 
 /- English proof (translation)
-Establish `hc : y ≫ P.hom = y' ≫ pullback.snd G.hom x ≫ x`. Rewrite using `[← pullback.condition, ← Category.assoc, hy, Category.assoc, Over.w]`. Set `w : Y ⟶ ((Over.pullback x).obj P).left` to `pullback.lift y (y' ≫ pullback.snd G.hom x) (by simpa using hc)`. Establish `hw1 : w ≫ pullback.fst P.hom x = y` using `pullback.lift_fst _ _ _`. Establish `hw2 : w ≫ ((Over.pullback x).map v).left = y'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Establish `h1 : ((Over.pullback x).map v).left ≫ pullback.fst G.hom x = pullback.fst P.hom x ≫ v.left` using `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, h1, ← Category.assoc, hw1, hy]`. Establish `h2 : ((Over.pullback x).map v).left ≫ pullback.snd G.hom x = pullback.snd P.hom x` using `pullback.lift_snd _ _ _`. Rewrite using `[Category.assoc, h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_snd _ _ _`. Establish `h3 : ((Over.pullback x).map c).left ≫ pullback.fst B.hom x = pullback.fst P.hom x ≫ c.left` using `pullback.lift_fst _ _ _`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Over.comp_left, Category.assoc, ← Category.assoc, ← Category.assoc, ← Category.assoc, hw2, Category.assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_left_of_map {S' S : Scheme.{0}} (x : S' ⟶ S) {P G B : Over S} (v : P ⟶ G) (c : P ⟶ B)
     (qq : (Over.pullback x).obj G ⟶ (Over.pullback x).obj B)
@@ -124,7 +124,7 @@ theorem comp_left_of_map {S' S : Scheme.{0}} (x : S' ⟶ S) {P G B : Over S} (v 
         Category.assoc]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [mulN, Hom.one_def]`. Consider the case `succ n ih => rw [pow_succ, ← ih, mulN, Hom.mul_def]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem mulN_eq_pow {S : Scheme.{0}} (P : Over S) [GrpObj P] (n : ℕ) : mulN P n = (𝟙 P) ^ n := by
   induction n with
@@ -132,7 +132,7 @@ theorem mulN_eq_pow {S : Scheme.{0}} (P : Over S) [GrpObj P] (n : ℕ) : mulN P 
   | succ n ih => rw [pow_succ, ← ih, mulN, Hom.mul_def]
 
 /- English proof (translation)
-Introduce `S X _ _ _ N hN`. Rewrite using `[← mulN_eq_pow]`. Conclude with `GlobalTheory.Diag.isFinite_mulN S X (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteMulTorus : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (N : ℕ), 1 ≤ N → IsFinite ((𝟙 (splitTorus S X)) ^ N).left := by
   intro S X _ _ _ N hN
@@ -140,13 +140,13 @@ theorem finiteMulTorus : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] [Modul
   exact GlobalTheory.Diag.isFinite_mulN S X (by omega)
 
 /- English proof (translation)
-Introduce `S _ P _ hP N hN hfin`. Use `hP.comm` as an intermediate fact. Use `hP.smooth` as an intermediate fact. Use `hP.separated` as an intermediate fact. Use `hP.quasiCompact` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.T.power_map_flat_semiabelian S P hP N hN` as an intermediate fact. Use `GlobalTheory.T.power_map_locally_quasi_finite S P hP N hN` as an intermediate fact. Establish `hp : IsPullback (pullback.fst ((𝟙 P) ^ N) η[P]) (toUnit (pullback ((𝟙 P) ^ N) η[P])) ((𝟙 P) ^ N) η[P]`. Establish `h` using `IsPullback.of_hasPullback ((𝟙 P) ^ N) η[P]`. Rewrite `h` using `[toUnit_unique (pullback.snd _ _) (toUnit _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨g1, g2, g3⟩` from `Tors.exists_kernel_grp hp`. Take `⟨h1, -⟩` from `Tors.kernel_props hp`. Use `⟨_, g1, g2, _, g3, hp, ?_, h1⟩` and prove the remaining obligations. Establish `hl` using `hp.map (Over.forget S)`. Establish `hA : (toUnit (pullback ((𝟙 P) ^ N) η[P])).left = (pullback ((𝟙 P) ^ N) η[P]).hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Over.w (toUnit (pullback ((𝟙 P) ^ N) η[P]))`. Establish `hl' : IsPullback (pullback.fst ((𝟙 P) ^ N) η[P]).left (pullback ((𝟙 P) ^ N) η[P]).hom ((𝟙 P) ^ N).left (η[P]).left`. Rewrite using `[← hA]`. Conclude with `hl`. Conclude with `MorphismProperty.of_isPullback hl' hfin`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernelOf : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Over S) [GrpObj P], IsSemiAbelian P → ∀ N : ℕ, 1 ≤ N → IsFinite ((𝟙 P) ^ N).left → ∃ (A : Over S) (_ : GrpObj A) (_ : IsCommMonObj A) (j : A ⟶ P), IsMonHom j ∧ IsPullback j (toUnit A) ((𝟙 P) ^ N) η[P] ∧ IsFinite A.hom ∧ Flat A.hom := by
   intro S _ P _ hP N hN hfin
@@ -170,11 +170,11 @@ theorem kernelOf : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (P : Over S) [Gr
   exact MorphismProperty.of_isPullback hl' hfin
 
 /- English proof (translation)
-Introduce `R _ _ I D A G _ _ U e`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Establish `h` using `U.gt_q e`. Establish `h1 : thickMap R I e D.toPre.P.A ≫ pullback.fst _ _ = pullback.fst _ _` using `pullback.lift_fst _ _ _ |>.trans (Category.comp_id _)`. Simplify using `only [Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1]`. Conclude with `h`. Establish `w1` using `Over.w (U.gt (e + 1)).q`. Establish `w2` using `Over.w (U.gt e).q`. Establish `s1 : thickMap R I e D.toPre.P.A ≫ pullback.snd _ _ = pullback.snd _ _ ≫ thickTrans R I e` using `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : thickMap R I e G ≫ pullback.snd _ _ = pullback.snd _ _ ≫ thickTrans R I e` using `pullback.lift_snd _ _ _`. Simplify using `only [Over.pullback_obj_hom] at w1 w2`. Simplify using `only [Category.assoc]`. Rewrite using `[w1, s1, s2, ← Category.assoc, w2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gt_q_compat : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : DegData R I) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre I D A G) (e : ℕ), thickMap R I e G ≫ (U.gt (e + 1)).q.left = (U.gt e).q.left ≫ thickMap R I e D.toPre.P.A := by
   intro R _ _ I D A G _ _ U e
@@ -193,9 +193,9 @@ theorem gt_q_compat : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D 
     rw [w1, s1, s2, ← Category.assoc, w2]
 
 /- English proof (translation)
-Introduce `S _ B _ hB N hN`. Use `hB.proper` as an intermediate fact. Use `GlobalTheory.T.power_map_locally_quasi_finite S B (GlobalTheory.isSemiAbelian_of_isAbelianScheme B hB) N hN` as an intermediate fact. Establish `hw : ((𝟙 B) ^ N).left ≫ B.hom = B.hom` using `Over.w _`. Establish `: IsProper ((𝟙 B) ^ N).left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : IsProper (((𝟙 B) ^ N).left ≫ B.hom)` using `by rw [hw]; infer_instance`. Conclude with `IsProper.of_comp _ B.hom`. Conclude with `IsFinite.of_isProper_of_locallyQuasiFinite _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteMulAbelian : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (B : Over S) [GrpObj B], IsAbelianScheme B → ∀ N : ℕ, 1 ≤ N → IsFinite ((𝟙 B) ^ N).left := by
   intro S _ B _ hB N hN
@@ -208,35 +208,31 @@ theorem finiteMulAbelian : ∀ (S : Scheme.{0}) [IsLocallyNoetherian S] (B : Ove
   exact IsFinite.of_isProper_of_locallyQuasiFinite _
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ G B _ _ _ _ X _ _ _ q ii hBab qhom ihom hcq hci hiq hfl hsu hqc hk0 N hN T _ Γ i hi H _ Γf u _ hop hfin hcl`. Establish `hBs : IsSemiAbelian B` using `GlobalTheory.isSemiAbelian_of_isAbelianScheme B hBab`. Take `⟨AB, _, _, jB, _, hpB, finB, flatB⟩` from `kernelOf (Spec (CommRingCat.of R)) B hBs N hN (finiteMulAbelian _ B hBab N hN)`. Take `⟨AT, _, _, jT, _, hpT, finT, flatT⟩` from `kernelOf (Spec (CommRingCat.of R)) (splitTorus (Spec (CommRingCat.of R)) X) inferInstance N hN (finiteMulTorus _ X N hN)`. Take `⟨v, hvl, _, _, hker⟩` from `GlobalTheory.T.torsion_group_open_immersion_lift R G N T Γ i hi H Γf u hop hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `monoB : Mono jB` using `Tors.mono_of_pullback hpB`. Establish `hfb : ∀ e, ∃ w : thickObj R (IsLocalRing.maximalIdeal R) e Γf.G ⟶ thickObj R (IsLocalRing.maximalIdeal R) e AB, w ≫ (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB = (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map v ≫ q e` using `fun e => by`. Use `qhom e` as an intermediate fact. Establish `h1` using `kernel_pull (thick R (IsLocalRing.maximalIdeal R) e) hpB`. Establish `h2` using `hker e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `factor_of_kernel h2 h1 (q e)`. Use `haveI := hfin`. Take `⟨b, _, hb⟩` from `GlobalTheory.T.thickening_group_hom_extends R (IsLocalRing.maximalIdeal R) Γf.G AB G B v jB q qhom hcq hfb`. Establish `hfa : ∀ e, ∃ w : thickObj R (IsLocalRing.maximalIdeal R) e AT ⟶ thickObj R (IsLocalRing.maximalIdeal R) e Γf.G, w ≫ (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map v = (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jT ≫ ((GlobalTheory.Diag.baseChangeIso …` using `fun e => by`. Use `ihom e` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `kernel_pull (thick R (IsLocalRing.maximalIdeal R) e) hpT`. Establish `h2` using `hker e`. Conclude with `factor_of_kernel h1 h2 _`. Take `⟨a, _, ha⟩` from `GlobalTheory.T.thickening_group_hom_extends R (IsLocalRing.maximalIdeal R) AT Γf.G (splitTorus (Spec (CommRingCat.of R)) X) G jT v (fun e => (GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) e) X).hom ≫ ii e) (fun e => by have := ihom e; infer_instance) (fun …`. Establish `hb0` using `hb 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0` using `ha 0`. Rewrite `hb0`, `ha0` using `[Functor.map_comp]`. Establish `hk1` using `kernel_iso (GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) 0) X) (kernel_pull (thick R (IsLocalRing.maximalIdeal R) 0) hpT)`. Establish `hk2` using `kernel_pull (thick R (IsLocalRing.maximalIdeal R) 0) hpB`. Establish `hk3` using `hker 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `qhom 0` as an intermediate fact. Use `ihom 0` as an intermediate fact. Take `⟨hf, hs, hpk⟩` from `GlobalTheory.T.split_torus_extension_torsion _ X (thickObj R (IsLocalRing.maximalIdeal R) 0 G) (thickObj R (IsLocalRing.maximalIdeal R) 0 B) (ii 0) (q 0) hfl hsu hqc hk0 N hN _ _ _ _ _ _ η[(Over.pullback (thick R (IsLocalRing.maximalIdeal R) 0)).obj AB] hk1 hk3 hk2 (IsMonHom.one_ …`. Rewrite `hpk` using `[Functor.obj.η_def AB]`. Establish `flatG : Flat Γf.G.hom` using `Γf.flat`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hab : a ≫ b = toUnit AT ≫ η[AB]`. Use `GlobalTheory.T.finite_map_eq_of_thickenings_eq R (IsLocalRing.maximalIdeal R) AT AB _ _ (fun e => ?_)` and prove the remaining obligations. Establish `hm : Mono ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB)` using `Tors.mono_of_pullback (kernel_pull (thick R (IsLocalRing.maximalIdeal R) e) hpB)`. Rewrite using `[← cancel_mono ((Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map jB)]`. Establish `e1` using `ha e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `hb e`. Rewrite `e1`, `e2` using `[Functor.map_comp]`. Establish `e3 : η[thickObj R (IsLocalRing.maximalIdeal R) e B] = Functor.LaxMonoidal.ε (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)) ≫ (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e)).map η[B]` using `Functor.obj.η_def B`. Rewrite using `[Functor.map_comp, Category.assoc, e2, ← Category.assoc, e1, Category.assoc, Category.assoc, hiq e, e3, ← Functor.map_comp, Category.assoc, IsMonHom.one_hom, Functor.map_comp]`. Simplify using `only [← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr 1`. Rewrite using `[← cancel_mono (Functor.Monoidal.εIso (Over.pullback (thick R (IsLocalRing.maximalIdeal R) e))).inv]`. Conclude with `toUnit_unique _ _`. Take `⟨hcl', hfb', hsb', hpb'⟩` from `GlobalTheory.CompanionTheory.Ar.BT.FinFlat.exact_of_closedFibre R AT Γf.G AB a b η[AB] hab (isPullback_map_unit _ hpk) hf hs`. Take `⟨C, _, ΓB, φB, _, htB⟩` from `GlobalTheory.T.generic_points_of_torsion_kernel R B hBs N hN AB jB hpB (fun g hg => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, rfl⟩` from `hsb'.surj g`. Establish `hw : (Γf.G.hom w).asIdeal = ⊥`. Rewrite `hg` using `[← Scheme.Hom.comp_apply, Over.w b]`. Conclude with `hg`. Take `⟨t, x, hx⟩` from `Γf.pt_onto w hw`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Γf.pt t ≫ b, x, by simp [hx]⟩)`. Take `⟨M, _, ΓM, φM, _, htM⟩` from `GlobalTheory.T.generic_points_of_torsion_kernel R _ inferInstance N hN AT jT hpT (GlobalTheory.T.generic_points_of_closed_subgroup R H Γf AT AB a b η[AB] hcl' hpb')`. Establish `hinv : IsMonHom φB.inv` using `inferInstance`. Establish `isoL : IsIso φB.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map φB.inv))`. Establish `isoM : IsIso φM.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map φM.hom))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, C, _, _, ΓM, ΓB, φM.hom.left ≫ jT.left, φB.hom.left ≫ jB.left, φM.hom ≫ a, b ≫ φB.inv, htM, htB, inferInstance, inferInstance, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Over.comp_left]`. Use `infer_instance`. Rewrite using `[Over.comp_left]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Over.comp_left]`. Use `infer_instance`. Use `IsPullback.of_iso hpb' φM.symm (Iso.refl _) (Iso.refl _) φB.symm (by simp) (toUnit_unique _ _) (by simp) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `e Y y y' h`.
-
-Establish `hv : y' ≫ pullback.fst G.hom (thick R (IsLocalRing.maximalIdeal R) e) = y ≫ v.left`. Rewrite using `[hvl]`. Conclude with `h`. Establish `key` using `comp_left_of_map (thick R (IsLocalRing.maximalIdeal R) e) v (b ≫ jB) (q e) (hb e) y y' hv`. Rewrite using `[← key]`.
-
-Simplify using `[Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (G B : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] [GrpObj B] [IsCommMonObj B] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (q : ∀ e, thickObj R (IsLocalRing.maximalIdeal R) e G ⟶ thickObj R (IsLocalRing.maximalIdeal R) e B) (ii : ∀ e, splitTorus (Spec (CommRingCat.of (R ⧸ IsLocalRing.maximalIdeal R ^ (e + 1)))) X ⟶ thickObj R (IsLocalRing.maximalIdeal R) e G), IsAbelianScheme B → (∀ e, IsMonHom (q e)) → (∀ e, IsMonHom (ii e)) → (∀ e, thickMap R (IsLocalRing.maximalIdeal R) e G ≫ (q (e + 1)).left = (q e).left ≫ thickMap R (IsLocalRing.maximalIdeal R) e B) → (∀ e, thickMap R (IsLocalRing.maximalIdeal R) e (splitTorus (Spec (CommRingCat.of R)) X) ≫ (GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) (e + 1)) X).hom.left ≫ (ii (e + 1)).left = (GlobalTheory.Diag.baseChangeIso (thick R (IsLocalRing.maximalIdeal R) e) X).hom.left ≫ (ii e).left ≫ thickMap R (IsLocalRing.maximalIdeal R) e G) → (∀ e, ii e ≫ q e = toUnit _ ≫ η[thickObj R (IsLocalRing.maximalIdeal R) e B]) → Flat (q 0).left → Surjective (q 0).left → QuasiCompact (q 0).left → IsPullback (ii 0) (toUnit _) (q 0) η[thickObj R (IsLocalRing.maximalIdeal R) 0 B] → ∀ (N : ℕ), 1 ≤ N → ∀ (T : Type) [CommGroup T] (Γ : QFGroup R T) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G (𝟙 _) N i → ∀ (H : Type) [CommGroup H] (Γf : QFGroup R H) (u : Γf.G ⟶ Γ.G) [IsMonHom u], IsOpenImmersion u.left → IsFinite Γf.G.hom → (∀ g : Γ.G.left, Γ.G.hom g = IsLocalRing.closedPoint R → g ∈ Set.range u.left) → ∃ (M C : Type) (_ : CommGroup M) (_ : CommGroup C) (ΓM : QFGroup R M) (ΓB : QFGroup R C) (iM : ΓM.G.left ⟶ (splitTorus (Spec (CommRingCat.of R)) X).left) (iB : ΓB.G.left ⟶ B.left) (a : ΓM.G ⟶ Γf.G) (b : Γf.G ⟶ ΓB.G), ΓM.IsTorsionAlong _ (𝟙 _) N iM ∧ ΓB.IsTorsionAlong B (𝟙 _) N iB ∧ IsMonHom a ∧ IsMonHom b ∧ IsClosedImmersion a.left ∧ Flat b.left ∧ Surjective b.left ∧ IsPullback a (toUnit _) b η[ΓB.G] ∧ ∀ (e : ℕ) (Y : Scheme.{0}) (y : Y ⟶ Γf.G.left) (y' : Y ⟶ (thickObj R (IsLocalRing.maximalIdeal R) e G).left), y' ≫ (fstG (IsLocalRing.maximalIdeal R) e G).left = y ≫ u.left ≫ i → y ≫ b.left ≫ iB = y' ≫ (q e).left ≫ pullback.fst B.hom (thick R (IsLocalRing.maximalIdeal R) e) := by
   intro R _ _ _ _ _ _ G B _ _ _ _ X _ _ _ q ii hBab qhom ihom hcq hci hiq hfl hsu hqc hk0 N hN T _ Γ i hi H _ Γf u _ hop hfin hcl
@@ -321,7 +317,7 @@ theorem finitePart_extension_core : ∀ (R : Type) [CommRing R] [IsDomain R] [Is
     simp [Over.comp_left]
 
 /- English proof (translation)
-Introduce `R _ _ _ _ _ _ D A G _ _ U N hN T _ _ Γ i hi H _ _ Γf u _ hop hfin hcl`. Establish `hq0 : QuasiCompact (U.gt 0).q.left`. Use `(U.gt 0).q_affine` as an intermediate fact. Use `infer_instance`. Conclude with `finitePart_extension_core R G D.toPre.P.A D.toPre.X (fun e => (U.gt e).q) (fun e => (U.gt e).i) D.toPre.P.isAb (fun e => (U.gt e).q_hom) (fun e => (U.gt e).i_hom) (gt_q_compat R _ D A G U) (GlobalTheory.T.uniformization_thickening_compat R _ D A G U) (fun e => (U.gt e).isKernel.w …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finitePart_extension : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsNoetherianRing R] [CharZero R] [IsAdicComplete (IsLocalRing.maximalIdeal R) R] (D : DegData R (IsLocalRing.maximalIdeal R)) (A : PolAV (Spec (CommRingCat.of (FractionRing R)))) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (U : UnifPre (IsLocalRing.maximalIdeal R) D A G) (N : ℕ), 1 ≤ N → ∀ (T : Type) [CommGroup T] [Finite T] (Γ : QFGroup R T) (i : Γ.G.left ⟶ G.left), Γ.IsTorsionAlong G (𝟙 _) N i → ∀ (H : Type) [CommGroup H] [Finite H] (Γf : QFGroup R H) (u : Γf.G ⟶ Γ.G) [IsMonHom u], IsOpenImmersion u.left → IsFinite Γf.G.hom → (∀ g : Γ.G.left, Γ.G.hom g = IsLocalRing.closedPoint R → g ∈ Set.range u.left) → ∃ (M C : Type) (_ : CommGroup M) (_ : CommGroup C) (ΓM : QFGroup R M) (ΓB : QFGroup R C) (iM : ΓM.G.left ⟶ (splitTorus (Spec (CommRingCat.of R)) D.toPre.X).left) (iB : ΓB.G.left ⟶ D.toPre.P.A.left) (a : ΓM.G ⟶ Γf.G) (b : Γf.G ⟶ ΓB.G), ΓM.IsTorsionAlong _ (𝟙 _) N iM ∧ ΓB.IsTorsionAlong D.toPre.P.A (𝟙 _) N iB ∧ IsMonHom a ∧ IsMonHom b ∧ IsClosedImmersion a.left ∧ Flat b.left ∧ Surjective b.left ∧ IsPullback a (toUnit _) b η[ΓB.G] ∧ ∀ (e : ℕ) (Y : Scheme.{0}) (y : Y ⟶ Γf.G.left) (y' : Y ⟶ (thickObj R (IsLocalRing.maximalIdeal R) e G).left), y' ≫ (fstG (IsLocalRing.maximalIdeal R) e G).left = y ≫ u.left ≫ i → y ≫ b.left ≫ iB = y' ≫ (U.gt e).pG.left := by
   intro R _ _ _ _ _ _ D A G _ _ U N hN T _ _ Γ i hi H _ _ Γf u _ hop hfin hcl

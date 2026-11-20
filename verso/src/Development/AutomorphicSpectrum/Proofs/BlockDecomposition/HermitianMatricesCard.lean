@@ -7,15 +7,15 @@ open PositivityTheory.PfSWUS.Loc GlobalTheory.CompanionTheory.UnrDens
 namespace GlobalTheory.CompanionTheory.UnrDens
 
 /- English proof (translation)
-Establish `hq : q ≠ 0` using `by have := hE.one_lt; omega`. Use `haveI : Finite E := Nat.finite_of_card_ne_zero (by rw [hE.card]; exact pow_ne_zero 2 hq)`. Take `⟨u, hu, -⟩` from `hE.basis`. Establish `key` using `GlobalTheory.GramCount.card_hermitian_dvd_sq τ hE.inv u hu 1 (map_one τ) n`. Establish `hiff : ∀ H : Matrix (Fin n) (Fin n) E, cT τ H = H ↔ ((∀ a b, τ (H b a) = H a b) ∧ ∀ a b, (1 : E) ∣ H a b)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun a b => ?_, fun a b => one_dvd _⟩` and prove the remaining obligations. Use `congrFun (congrFun h a) b` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[cT]`. Introduce and unpack `⟨h, -⟩`. Use extensionality with `a b`. Simplify `h a b` using `[cT]`. Establish `e1 : Nat.card {H : Matrix (Fin n) (Fin n) E // cT τ H = H} = Nat.card {H : Matrix (Fin n) (Fin n) E // (∀ a b, τ (H b a) = H a b) ∧ ∀ a b, (1 : E) ∣ H a b}` using `Nat.card_congr (Equiv.subtypeEquivRight hiff)`.
+Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : Nat.card {x : E // (1 : E) ∣ x} = q ^ 2`. Rewrite using `[← hE.card]`. Conclude with `Nat.card_congr (Equiv.subtypeUnivEquiv fun x => one_dvd x)`. Rewrite `key` using `[e2]`. Establish `hsq : (q ^ (n ^ 2)) ^ 2 = (q ^ 2) ^ (n * n)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← pow_mul, ← pow_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Conclude with `Nat.pow_left_injective (by norm_num) (key.trans hsq.symm)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_hermitian_resAlg (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ)
     (hE : ResAlg E τ q ε) (n : ℕ) :

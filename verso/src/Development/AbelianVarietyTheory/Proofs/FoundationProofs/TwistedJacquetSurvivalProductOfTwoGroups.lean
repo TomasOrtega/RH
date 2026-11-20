@@ -6,27 +6,25 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil ValuativeRel Glo
 namespace GlobalTheory.PsType
 
 /- English proof (translation)
-Introduce `G₁ G₂ V _ _ _ _ _ _ _ _ ρ hρ U₁ U₂ J₁ J₂ θ₁ θ₂ h₁ h₂ v hv e₁ e₂`. Establish `s₁ : IsSmooth (ρ.comp (MonoidHom.inl G₁ G₂))` using `fun w => (hρ w).preimage (f := fun g : G₁ => ((g, 1) : G₁ × G₂)) (by fun_prop)`. Establish `s₂ : IsSmooth (ρ.comp (MonoidHom.inr G₁ G₂))` using `fun w => (hρ w).preimage (f := fun g : G₂ => ((1, g) : G₁ × G₂)) (by fun_prop)`. Use `set ρ₁ : Representation ℂ G₁ V := ρ.comp (MonoidHom.inl G₁ G₂) with hρ₁`. Use `set ρ₂ : Representation ℂ G₂ V := ρ.comp (MonoidHom.inr G₁ G₂) with hρ₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `comm : ∀ (a : G₁) (b : G₂) (w : V), ρ₁ a (ρ₂ b w) = ρ₂ b (ρ₁ a w)`. Introduce `a b w`. Express the relevant statement in the definitionally equal form `ρ (a, 1) (ρ (1, b) w) = ρ (1, b) (ρ (a, 1) w)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set A : Submodule ℂ V := twKer ρ₂ U₂ 1 with hA`. Establish `hst : ∀ g : G₁, A ≤ A.comap (ρ₁ g)`. Introduce `g`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `Submodule.subset_span ⟨n, ρ₁ g x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, comm]`. Set `σ : Representation ℂ G₁ (V ⧸ A)` to `Representation.quotient ρ₁ A hst`. Establish `hσ : ∀ g x, σ g (A.mkQ x) = A.mkQ (ρ₁ g x)` using `fun g x => rfl`. Establish `sσ : IsSmooth σ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce `w`. Take `⟨x, rfl⟩` from `A.mkQ_surjective w`. Set `S : Subgroup G₁` to `{ carrier := {g | σ g (A.mkQ x) = A.mkQ x} mul_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at ha hb ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, Module.End.mul_apply, hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := by`. Introduce `a ha`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using `}`. Establish `: (S : Set G₁) ∈ nhds (1 : G₁)`. Use `Filter.mem_of_superset ((s₁ x).mem_nhds (by simp)) ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `g hg`. Express the relevant statement in the definitionally equal form `σ g (A.mkQ x) = A.mkQ x`. Rewrite using `[hσ, show ρ₁ g x = x from hg]`. Conclude with `S.isOpen_of_mem_nhds this`. Establish `hmap : twKer ρ₁ U₁ 1 ≤ (twKer σ U₁ 1).comap A.mkQ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `w ⟨n, x, rfl⟩`. Use `Submodule.subset_span ⟨n, A.mkQ x, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, hσ]`. Establish `hA0 : A ≤ (twKer σ U₁ 1).comap A.mkQ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `: A.mkQ x = 0` using `(Submodule.Quotient.mk_eq_zero A).2 hx`. Rewrite using `[Submodule.mem_comap, this]`. Conclude with `zero_mem _`. Establish `hv' : A.mkQ v ∈ twKer σ U₁ 1` using `sup_le hmap hA0 hv`.
-
-Establish `hz : A.mkQ v = 0` using `h₁ _ σ sσ _ hv' (by`. Introduce `h hh`. Rewrite using `[hσ, e₁ h hh, map_smul])`. Conclude with `h₂ V ρ₂ s₂ v ((Submodule.Quotient.mk_eq_zero A).1 hz) e₂`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_mem_sup_twKer_prod : ∀ (G₁ G₂ V : Type) [Group G₁] [TopologicalSpace G₁] [IsTopologicalGroup G₁] [Group G₂] [TopologicalSpace G₂] [IsTopologicalGroup G₂] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ (G₁ × G₂) V), IsSmooth ρ → ∀ (U₁ : Subgroup G₁) (U₂ : Subgroup G₂) (J₁ : Set G₁) (J₂ : Set G₂) (θ₁ : G₁ → ℂ) (θ₂ : G₂ → ℂ), (∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G₁ W), IsSmooth σ → ∀ w ∈ twKer σ U₁ 1, IsEig σ J₁ θ₁ w → w = 0) → (∀ (W : Type) [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ G₂ W), IsSmooth σ → ∀ w ∈ twKer σ U₂ 1, IsEig σ J₂ θ₂ w → w = 0) → ∀ v ∈ twKer (ρ.comp (MonoidHom.inl G₁ G₂)) U₁ 1 ⊔ twKer (ρ.comp (MonoidHom.inr G₁ G₂)) U₂ 1, IsEig (ρ.comp (MonoidHom.inl G₁ G₂)) J₁ θ₁ v → IsEig (ρ.comp (MonoidHom.inr G₁ G₂)) J₂ θ₂ v → v = 0 := by
   intro G₁ G₂ V _ _ _ _ _ _ _ _ ρ hρ U₁ U₂ J₁ J₂ θ₁ θ₂ h₁ h₂ v hv e₁ e₂

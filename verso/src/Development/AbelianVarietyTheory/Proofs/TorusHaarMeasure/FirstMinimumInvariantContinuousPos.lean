@@ -11,9 +11,9 @@ namespace GlobalTheory.FirstMinimum
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Distinguish the cases in `h : τ ∈ X.Ψ`. Conclude with `⟨⟨τ, h⟩⟩`. Establish `h' : ComplexEmbedding.conjugate τ ∈ X.Ψ`. Assume the negation of the conclusion as `h2`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ((X.cmType τ).mpr h2)`. Conclude with `⟨⟨_, h'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cmType_nonempty {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -26,7 +26,7 @@ theorem cmType_nonempty {r : ℕ} (X : Data E r) : Nonempty X.Ψ := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Data.emb, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem emb_mulVec {r : ℕ} (τ : E →+* ℂ) (M : Matrix (Fin r) (Fin r) E) (v : Fin r → E) :
     Data.emb τ (M.mulVec v) = (M.map τ).mulVec (Data.emb τ v) := by

@@ -13,7 +13,7 @@ attribute [local instance] Matrix.frobeniusNormedAddCommGroup Matrix.frobeniusNo
   Matrix.frobeniusNormedRing Matrix.frobeniusNormedAlgebra
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [w0B, tM, Matrix.mul_diagonal, bigCell, tv]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bigCell_eq_w0B_mul_tM (k r : ℕ) (c : Fin r → ℂ) :
     bigCell k r c 1 = w0B k r * tM k r c := by
@@ -22,14 +22,14 @@ theorem bigCell_eq_w0B_mul_tM (k r : ℕ) (c : Fin r → ℂ) :
   split_ifs <;> simp_all
 
 /- English proof (translation)
-The claim follows from `Matrix.exp_neg X`.
+A detailed English derivation is pending.
 -/
 theorem exp_neg_eq_inv (k r : ℕ) (X : Mat k r) :
     NormedSpace.exp (-X) = (NormedSpace.exp X)⁻¹ :=
   Matrix.exp_neg X
 
 /- English proof (translation)
-Introduce `k r X x Z X'`. Rewrite using `[Phi, exp_neg_eq_inv, bigCell_eq_w0B_mul_tM]`. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem phiForm : PhiForm := by
   intro k r X x Z X'

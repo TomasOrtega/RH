@@ -13,7 +13,7 @@ namespace PositivityTheory.Rg.Rs.ParabolicProjection
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Rewrite using `[mulChi_apply, mulChi_apply, ExponentTwist.chiDet_absC_val, ExponentTwist.chiDet_absC_val, mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulChi_absC_neg (n : ℕ) (z : ℂ) (φ : Sm E n) :
     mulChi n (Model.absC E (-z)) (mulChi n (Model.absC E z) φ) = φ := by
@@ -22,7 +22,7 @@ theorem mulChi_absC_neg (n : ℕ) (z : ℂ) (φ : Sm E n) :
   simp
 
 /- English proof (translation)
-Establish `h` using `mulChi_absC_neg n (-z) φ`. Rewrite `h` using `[neg_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mulChi_absC_neg' (n : ℕ) (z : ℂ) (φ : Sm E n) :
     mulChi n (Model.absC E z) (mulChi n (Model.absC E (-z)) φ) = φ := by
@@ -30,7 +30,7 @@ theorem mulChi_absC_neg' (n : ℕ) (z : ℂ) (φ : Sm E n) :
   rwa [neg_neg] at h
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, add_mem (U.smul_mem _ (hU o φ hφ)) (U.smul_mem _ hφ), (act_mulChi _ o φ).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isStable_tw {n : ℕ} {U : Submodule ℂ (Sm E n)} (hU : IsStable U) (z : ℂ) : IsStable (tw U z) := by
   rintro o _ ⟨φ, hφ, rfl⟩
@@ -46,7 +46,7 @@ theorem twMap_apply (n : ℕ) (z : ℂ) (f : Sm E n →ₗ[ℂ] Sm E n) (φ : Sm
     twMap n z f φ = mulChi n (Model.absC E z) (f (mulChi n (Model.absC E (-z)) φ)) := rfl
 
 /- English proof (translation)
-Introduce and unpack `o _ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `twMap n z f (act o (mulChi n (Model.absC E z) φ)) = act o (twMap n z f (mulChi n (Model.absC E z) φ))`. Rewrite using `[twMap_apply, twMap_apply, mulChi_absC_neg, act_mulChi, mulChi_absC_neg, map_add, map_smul, map_smul, hf o φ hφ, act_mulChi]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twMap_equiv {n : ℕ} {z : ℂ} {U : Submodule ℂ (Sm E n)} (_hU : IsStable U) {f : Sm E n →ₗ[ℂ] Sm E n}
     (hf : ∀ o, ∀ ψ ∈ U, f (act o ψ) = act o (f ψ)) : ∀ o, ∀ ψ ∈ tw U z, twMap n z f (act o ψ) = act o (twMap n z f ψ) := by
@@ -56,7 +56,7 @@ theorem twMap_equiv {n : ℕ} {z : ℂ} {U : Submodule ℂ (Sm E n)} (_hU : IsSt
     act_mulChi]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Express the relevant statement in the definitionally equal form `twMap n z f (mulChi n (Model.absC E z) φ) ∈ tw W z`. Rewrite using `[twMap_apply, mulChi_absC_neg]`. Conclude with `⟨_, hf φ hφ, rfl⟩`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem twMap_mem {n : ℕ} {z : ℂ} {U W : Submodule ℂ (Sm E n)} {f : Sm E n →ₗ[ℂ] Sm E n} (hf : ∀ ψ ∈ U, f ψ ∈ W) :
     ∀ ψ ∈ tw U z, twMap n z f ψ ∈ tw W z := by
@@ -66,7 +66,7 @@ theorem twMap_mem {n : ℕ} {z : ℂ} {U W : Submodule ℂ (Sm E n)} {f : Sm E n
   exact ⟨_, hf φ hφ, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨φ, hφ, rfl⟩ h`. Express the relevant statement in the definitionally equal form `twMap n z f (mulChi n (Model.absC E z) φ) = 0 at h`. Rewrite `h` using `[twMap_apply, mulChi_absC_neg, LinearEquiv.map_eq_zero_iff]`. Express the relevant statement in the definitionally equal form `mulChi n (Model.absC E z) φ = 0`. Rewrite using `[hf φ hφ h, map_zero]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem twMap_ne {n : ℕ} {z : ℂ} {U : Submodule ℂ (Sm E n)} {f : Sm E n →ₗ[ℂ] Sm E n} (hf : ∀ ψ ∈ U, f ψ = 0 → ψ = 0) :
     ∀ ψ ∈ tw U z, twMap n z f ψ = 0 → ψ = 0 := by
@@ -79,13 +79,13 @@ theorem twMap_ne {n : ℕ} {z : ℂ} {U : Submodule ℂ (Sm E n)} {f : Sm E n �
 variable {r s : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `hF`. Conclude with `⟨1, fun _ => φ₁, fun _ => φ₂, fun _ => h₁, fun _ => h₂, fun m => by simp⟩`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, fun m => by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add F G _ _ hF hG`. Take `⟨n, a₁, a₂, ha₁, ha₂, ha⟩` from `hF`. Take `⟨n', b₁, b₂, hb₁, hb₂, hb⟩` from `hG`. Use `⟨n + n', Fin.append a₁ b₁, Fin.append a₂ b₂, fun i => ?_, fun i => ?_, fun m => ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using ha₁ j`. Simplify using `using hb₁ j`. Use `Fin.addCases (fun j => ?_) (fun j => ?_) i` and prove the remaining obligations. Simplify using `using ha₂ j`. Simplify using `using hb₂ j`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[Fin.sum_univ_add, ha, hb]`. Consider the case `smul c F _ hF`. Take `⟨n, a₁, a₂, ha₁, ha₂, ha⟩` from `hF`. Conclude with `⟨n, fun i => c • a₁ i, a₂, fun i => Submodule.smul_mem _ c (ha₁ i), ha₂, fun m => by`. Simplify using `[ha, Finset.mul_sum, mul_assoc]⟩`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem tensor_pair_finite_sum {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule ℂ (Sm E s)} {F : GA E r × GA E s → ℂ}
     (hF : F ∈ tens2 V₁ V₂) : ∃ (n : ℕ) (ψ₁ : Fin n → Sm E r) (ψ₂ : Fin n → Sm E s), (∀ i, ψ₁ i ∈ V₁) ∧ (∀ i, ψ₂ i ∈ V₂) ∧
@@ -112,7 +112,7 @@ theorem tensor_pair_finite_sum {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule
       simp [ha, Finset.mul_sum, mul_assoc]⟩
 
 /- English proof (translation)
-Establish `e : (fun m : GA E r × GA E s => ∑ i, (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2) = ∑ i, fun m : GA E r × GA E s => (ψ₁ i).1 m.1 * (ψ₂ i).1 m.2`. Use function extensionality and compare the values at `m`. Simplify using `[Finset.sum_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨ψ₁ i, h₁ i, ψ₂ i, h₂ i, rfl⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_mem_tens2 {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule ℂ (Sm E s)} {n : ℕ} {ψ₁ : Fin n → Sm E r}
     {ψ₂ : Fin n → Sm E s} (h₁ : ∀ i, ψ₁ i ∈ V₁) (h₂ : ∀ i, ψ₂ i ∈ V₂) :
@@ -125,7 +125,7 @@ theorem sum_mem_tens2 {V₁ : Submodule ℂ (Sm E r)} {V₂ : Submodule ℂ (Sm 
   exact Submodule.sum_mem _ fun i _ => Submodule.subset_span ⟨ψ₁ i, h₁ i, ψ₂ i, h₂ i, rfl⟩
 
 /- English proof (translation)
-Take `⟨T, hT⟩` from `GlobalTheory.CompanionTheory.CTFin.IwaAd.iwasawa_finite_cosets E r s ⊤ isOpen_univ`. Take `⟨x, m, t, k, l, -, -, rfl⟩` from `hT g`. Use `⟨x, m, k, t * l, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← mul_assoc (infGL E (r + s) _), infGL_comm]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_decomp (g : GA E (r + s)) : ∃ (x : BlockIx (r + s) r → Ad E) (m : GA E r × GA E s) (k : Kinf E (r + s))
     (g' : GL (Fin (r + s)) (Af E)), g = unip x * lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g') := by
@@ -136,9 +136,9 @@ theorem exists_decomp (g : GA E (r + s)) : ∃ (x : BlockIx (r + s) r → Ad E) 
   simp only [mul_assoc]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hF` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Take `⟨x, m, k, g', rfl⟩` from `exists_decomp g`. Rewrite using `[mul_assoc, hu, hcon k g' m]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_slice_ne {F : Sm E (r + s)} (hF : F ≠ 0) (hu : ∀ (x : BlockIx (r + s) r → Ad E) g, F.1 (unip x * g) = F.1 g) :
     ∃ (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) (m : GA E r × GA E s),
@@ -153,7 +153,7 @@ theorem exists_slice_ne {F : Sm E (r + s)} (hF : F ≠ 0) (hu : ∀ (x : BlockIx
   rfl
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `congrArg (fun φ : Sm E r => φ.1 m₁) h0` as an intermediate fact. Simplify `this` using `[Submodule.coe_sum, Finset.sum_apply, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_left_ne {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E s} {m₁ : GA E r} {m₂ : GA E s}
     (h : ∑ i, (ψ₁ i).1 m₁ * (ψ₂ i).1 m₂ ≠ 0) : ∑ i, (ψ₂ i).1 m₂ • ψ₁ i ≠ 0 := by
@@ -163,7 +163,7 @@ theorem sum_left_ne {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E
   simpa [Submodule.coe_sum, Finset.sum_apply, mul_comm] using this
 
 /- English proof (translation)
-Introduce `h0`. Apply `h` to reduce the goal to its premises. Use `congrArg (fun φ : Sm E s => φ.1 m₂) h0` as an intermediate fact. Simplify `this` using `[Submodule.coe_sum, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_right_ne {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E s} {m₁ : GA E r} {m₂ : GA E s}
     (h : ∑ i, (ψ₁ i).1 m₁ * (ψ₂ i).1 m₂ ≠ 0) : ∑ i, (ψ₁ i).1 m₁ • ψ₂ i ≠ 0 := by
@@ -173,9 +173,9 @@ theorem sum_right_ne {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm 
   simpa [Submodule.coe_sum, Finset.sum_apply] using this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hc b` as an intermediate fact. Simplify `this` using `[map_sum, Submodule.coe_sum, Finset.sum_apply, mul_comm]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem step_left {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E s} {m₂ : GA E s} (f : Sm E r →ₗ[ℂ] Sm E r)
     (h : f (∑ i, (ψ₂ i).1 m₂ • ψ₁ i) ≠ 0) : ∃ b₁, ∑ i, (f (ψ₁ i)).1 b₁ * (ψ₂ i).1 m₂ ≠ 0 := by
@@ -188,9 +188,9 @@ theorem step_left {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E s
   simpa [map_sum, Submodule.coe_sum, Finset.sum_apply, mul_comm] using this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Apply `h` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `b`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `hc b` as an intermediate fact. Simplify `this` using `[map_sum, Submodule.coe_sum, Finset.sum_apply]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem step_right {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E s} {m₁ : GA E r} (f : Sm E s →ₗ[ℂ] Sm E s)
     (h : f (∑ i, (ψ₁ i).1 m₁ • ψ₂ i) ≠ 0) : ∃ b₂, ∑ i, (ψ₁ i).1 m₁ * (f (ψ₂ i)).1 b₂ ≠ 0 := by
@@ -203,9 +203,9 @@ theorem step_right {n : ℕ} {ψ₁ : Fin n → Sm E r} {ψ₂ : Fin n → Sm E 
   simpa [map_sum, Submodule.coe_sum, Finset.sum_apply] using this
 
 /- English proof (translation)
-Introduce `φ hφ h0`. Establish `hW : IsStable (V ⊓ LinearMap.ker T)` using `fun o ψ hψ => by`. Rewrite `hψ`, the goal using `[Submodule.mem_inf, LinearMap.mem_ker]`. Conclude with `⟨hV.stable o ψ hψ.1, by rw [hT o ψ hψ.1, hψ.2, map_zero]⟩`. Break down `hV.irred _ inf_le_left hW with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hm : φ ∈ V ⊓ LinearMap.ker T` using `Submodule.mem_inf.2 ⟨hφ, h0⟩`. Rewrite `hm` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`. Take `⟨ψ, hψ, hne⟩` from `hne`. Conclude with `absurd (LinearMap.mem_ker.1 (Submodule.mem_inf.1 (h.ge hψ)).2) hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inj_of_irred {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {T : Sm E N →ₗ[ℂ] Sm E N}
     (hT : ∀ o, ∀ φ ∈ V, T (act o φ) = act o (T φ)) (hne : ∃ φ ∈ V, T φ ≠ 0) : ∀ φ ∈ V, T φ = 0 → φ = 0 := by

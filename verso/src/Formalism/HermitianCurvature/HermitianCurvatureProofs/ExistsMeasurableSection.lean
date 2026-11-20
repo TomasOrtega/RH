@@ -13,11 +13,11 @@ section coef
 variable {r : ℕ} (T T' : ℝ) (Zm : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
 
 /- English proof (translation)
-Establish `hs : ((Real.sqrt (T / T') : ℝ) : ℂ) * conj ((Real.sqrt (T / T') : ℝ) : ℂ) = ((T / T' : ℝ) : ℂ)`. Rewrite using `[Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (div_pos hT hT').le]`. Simplify using `only [hco, fco, Pi.zero_apply, map_zero, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, zero_add]`. Apply the tactic sequence `by_cases ha : a = Fin.last r <;> by_cases ha' : a' = Fin.last r`. Substitute `ha ha'` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Simplify using `only [if_true, and_self]`. Establish `hT0 : ((T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`. Rewrite using `[mul_assoc, hs]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[ha, ha']`. Simplify using `[ha, ha']`. Simplify using `[ha, ha']`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fco_gram (hT : 0 < T) (hT' : 0 < T') (a a' : Fin (r + 1)) :
     hco T' (fco T T' a) (fco T T' a') = if a = Fin.last r ∧ a' = Fin.last r then -((T : ℝ) : ℂ) else 0 := by
@@ -34,33 +34,33 @@ theorem fco_gram (hT : 0 < T) (hT' : 0 < T') (a a' : Fin (r + 1)) :
   · simp [ha, ha']
 
 /- English proof (translation)
-Rewrite using `[hco_symm, xco_fco T T' Zm hT hT' hdet]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (a b : Fin (r + 1)) :
     hco T' (fco T T' a) (xco T T' Zm b) = conj (Zm a b) := by
   rw [hco_symm, xco_fco T T' Zm hT hT' hdet]
 
 /- English proof (translation)
-Simplify using `[Ap, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ap_cs (c : Fin r) (d : Fin (r + 1)) : Ap T' c.castSucc d = 0 := by
   simp [Ap, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Simplify using `[Ap, Fin.castSucc_ne_last]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ap_cs' (d : Fin (r + 1)) (c : Fin r) : Ap T' d c.castSucc = 0 := by
   simp [Ap, Fin.castSucc_ne_last]
 
 /- English proof (translation)
-Simplify using `[Ap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Ap_last : Ap T' (Fin.last r) (Fin.last r) = -((T' : ℝ) : ℂ) := by simp [Ap]
 
 /- English proof (translation)
-Simplify using `only [y0, hco_sum_left, hco_smul_left, fco_xco T T' Zm hT hT' hdet, Matrix.conjTranspose_apply]`. Establish `hu : IsUnit Zm.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `h` using `congrArg (fun M => conj (M b.castSucc c)) (Matrix.nonsing_inv_mul Zm hu)`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Matrix.one_apply, Complex.star_def] at h`. Simplify using `only [Complex.star_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Distinguish the cases in `hc : c = b.castSucc`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg hc, if_neg (Ne.symm hc)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -77,7 +77,7 @@ theorem dual_coordinates_kronecker (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det �
   · rw [if_neg hc, if_neg (Ne.symm hc)]; simp
 
 /- English proof (translation)
-Simplify using `only [ysco, hco_sub_left, hco_smul_left, hco_sum_left, xco_gram T T' Zm hT hT' hdet hG, Ap_cs, mul_zero, Finset.sum_const_zero, sub_zero, dual_coordinates_kronecker T T' Zm hT hT' hdet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ysco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (b : Fin r)
     (d : Fin (r + 1)) : hco T' (ysco T T' Zm b) (xco T T' Zm d) = if d = b.castSucc then 1 else 0 := by
@@ -85,18 +85,18 @@ theorem ysco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPo
     Finset.sum_const_zero, sub_zero, dual_coordinates_kronecker T T' Zm hT hT' hdet]
 
 /- English proof (translation)
-Apply the tactic sequence `rw [hco_symm, ysco_xco T T' Zm hT hT' hdet hG]; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem xco_ysco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (b : Fin r)
     (d : Fin (r + 1)) : hco T' (xco T T' Zm d) (ysco T T' Zm b) = if d = b.castSucc then 1 else 0 := by
   rw [hco_symm, ysco_xco T T' Zm hT hT' hdet hG]; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hx : ∀ (c : Fin r) (d : Fin r), hco T' (xco T T' Zm c.castSucc) (y0 T T' Zm d) = if c = d then 1 else 0`. Introduce `c d`. Rewrite using `[hco_symm, dual_coordinates_kronecker T T' Zm hT hT' hdet]`. Simplify using `[Fin.castSucc_inj, eq_comm]`. Establish `hy : ∀ (c : Fin r) (d : Fin r), hco T' (y0 T T' Zm d) (xco T T' Zm c.castSucc) = if c = d then 1 else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c d`. Rewrite using `[dual_coordinates_kronecker T T' Zm hT hT' hdet]`. Simplify using `[Fin.castSucc_inj]`. Establish `hxx : ∀ (c d : Fin r), hco T' (xco T T' Zm c.castSucc) (xco T T' Zm d.castSucc) = 0`. Introduce `c d`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[xco_gram T T' Zm hT hT' hdet hG, Ap_cs]`. Simplify using `only [ysco, hco_sub_left, hco_sub_right, hco_smul_left, hco_smul_right, hco_sum_left, hco_sum_right, hx, hy, hxx, mul_zero, Finset.sum_const_zero, mul_ite, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.sum_ite_eq]`. Simplify using `only [sub_zero, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[← hco_symm T' (y0 T T' Zm e) (y0 T T' Zm b)]`. Simplify using `only [map_div₀, map_one, map_ofNat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -117,9 +117,9 @@ theorem ysco_ysco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gP
   ring
 
 /- English proof (translation)
-Simplify using `only [cofco, hco_sum_left, hco_smul_left, fco_xco T T' Zm hT hT' hdet]`. Establish `h` using `congrArg (fun M => conj (M (Fin.last r) b)) (Matrix.adjugate_mul Zm)`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul] at h`. Rewrite using `[h]`. Distinguish the cases in `hb : b = Fin.last r`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hb` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hb), if_neg hb]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cofco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (b : Fin (r + 1)) :
     hco T' (cofco T T' Zm) (xco T T' Zm b) = if b = Fin.last r then conj Zm.det else 0 := by
@@ -132,9 +132,9 @@ theorem cofco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (b : Fin (r 
   · rw [if_neg (Ne.symm hb), if_neg hb]; simp
 
 /- English proof (translation)
-Simplify using `only [cofco, hco_sum_left, hco_sum_right, hco_smul_left, hco_smul_right, fco_gram T T' hT hT']`. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_irrel, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_eq_single (Fin.last r), Finset.sum_eq_single (Fin.last r)]`. Simplify using `only [and_self, if_true, kap, Complex.conj_conj, Complex.normSq_eq_conj_mul_self]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -150,11 +150,11 @@ theorem cofco_self (hT : 0 < T) (hT' : 0 < T') :
   · simp
 
 /- English proof (translation)
-Establish `hT0 : ((T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`. Simplify using `only [pco, hco_add_left, hco_sub_left, hco_smul_left, hco_sum_left, xco_gram T T' Zm hT hT' hdet hG, Ap_cs, mul_zero, Finset.sum_const_zero, sub_zero, ysco_xco T T' Zm hT hT' hdet hG]`. Proceed by induction on `d using Fin.lastCases with`. Consider the case `last`. Simplify using `only [Ap_last, if_false]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_ite, mul_one, mul_zero, Finset.sum_const_zero, sub_zero]`. Establish `: ∀ b : Fin r, ¬ (Fin.last r = b.castSucc)` using `fun b h => Fin.castSucc_ne_last b h.symm`. Simplify using `only [this, if_false, Finset.sum_const_zero, sub_zero]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `cast d`. Simplify using `only [Ap_cs', mul_zero, add_zero, mul_ite, mul_one, Fin.castSucc_inj, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]`.
+Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem pco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (d : Fin (r + 1)) :
     hco T' (pco T T' Zm) (xco T T' Zm d) = 0 := by
@@ -173,7 +173,7 @@ theorem pco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPol
       Finset.sum_ite_eq, Finset.mem_univ, if_true, sub_self]
 
 /- English proof (translation)
-Simplify using `only [pco, hco_add_left, hco_sub_left, hco_smul_left, hco_sum_left, xco_ysco T T' Zm hT hT' hdet hG, ysco_ysco T T' Zm hT hT' hdet hG, mul_zero, Finset.sum_const_zero, sub_zero, mul_ite, mul_one, Fin.castSucc_inj, Finset.sum_ite_eq, Finset.mem_univ, if_true, if_false, add_zero]`. Simplify using `[Fin.castSucc_ne_last, eq_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pco_ysco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (e : Fin r) :
     hco T' (pco T T' Zm) (ysco T T' Zm e) = 0 := by
@@ -183,11 +183,11 @@ theorem pco_ysco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPo
   simp [Fin.castSucc_ne_last, eq_comm]
 
 /- English proof (translation)
-Establish `hT0 : ((T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hT'.ne'`. Establish `h1 : hco T' (pco T T' Zm) (pco T T' Zm) = hco T' (pco T T' Zm) (cofco T T' Zm)` using `by conv_lhs => arg 3; rw [pco]`. Simplify using `only [hco_add_right, hco_sub_right, hco_smul_right, hco_sum_right, pco_xco T T' Zm hT hT' hdet hG, pco_ysco T T' Zm hT hT' hdet hG, mul_zero, Finset.sum_const_zero, sub_zero, add_zero]`. Establish `hxc : ∀ d, hco T' (xco T T' Zm d) (cofco T T' Zm) = if d = Fin.last r then Zm.det else 0`. Apply the tactic sequence `intro d; rw [hco_symm, cofco_xco T T' Zm hT hT' hdet]; split_ifs <;> simp`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1]`. Simplify using `only [pco, hco_add_left, hco_sub_left, hco_smul_left, hco_sum_left, hxc, cofco_xco T T' Zm hT hT' hdet, cofco_self T T' Zm hT hT', Fin.castSucc_ne_last, if_false, mul_zero, zero_mul, Finset.sum_const_zero, sub_zero, if_true]`. Rewrite using `[kap_last]`. Simplify using `only [gPoly]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Complex.normSq_eq_conj_mul_self (z := Zm.det)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pco_self (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) :
     hco T' (pco T T' Zm) (pco T T' Zm) = ((gPoly (T * T') Zm / T' : ℝ) : ℂ) := by
@@ -210,29 +210,29 @@ theorem pco_self (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPo
   ring
 
 /- English proof (translation)
-Introduce `h`. Use `ph_conj Zm hdet` as an intermediate fact. Rewrite `this` using `[h, zero_mul]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ph_ne (hdet : Zm.det ≠ 0) : ph Zm ≠ 0 := by
   intro h; have := ph_conj Zm hdet; rw [h, zero_mul] at this; exact zero_ne_one this
 
 /- English proof (translation)
-Rewrite using `[nco, hco_smul_left, pco_xco T T' Zm hT hT' hdet hG, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nco_xco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (d : Fin (r + 1)) :
     hco T' (nco T T' Zm) (xco T T' Zm d) = 0 := by
   rw [nco, hco_smul_left, pco_xco T T' Zm hT hT' hdet hG, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[nco, hco_smul_left, pco_ysco T T' Zm hT hT' hdet hG, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nco_ysco (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) (e : Fin r) :
     hco T' (nco T T' Zm) (ysco T T' Zm e) = 0 := by
   rw [nco, hco_smul_left, pco_ysco T T' Zm hT hT' hdet hG, mul_zero]
 
 /- English proof (translation)
-Establish `hq : 0 < gPoly (T * T') Zm / T'` using `div_pos hG hT'`. Establish `hs : sGT' T T' Zm ^ 2 = gPoly (T * T') Zm / T'` using `Real.sq_sqrt hq.le`. Establish `hs0 : sGT' T T' Zm ≠ 0` using `(Real.sqrt_pos.2 hq).ne'`. Establish `hs0' : ((sGT' T T' Zm : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hs0`. Rewrite using `[nco, hco_smul_left, hco_smul_right, pco_self T T' Zm hT hT' hdet hG, ← hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpc` using `ph_conj Zm hdet`. Simplify using `only [map_div₀, Complex.conj_ofReal]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Take the linear combination `hpc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem nco_self (hT : 0 < T) (hT' : 0 < T') (hdet : Zm.det ≠ 0) (hG : 0 < gPoly (T * T') Zm) :
     hco T' (nco T T' Zm) (nco T T' Zm) = 1 := by
@@ -253,7 +253,7 @@ section vecs
 variable {k r : ℕ} {z' ν' : Fin (2 * r + k + 1) → ℂ}
 
 /- English proof (translation)
-Simplify using `only [cvec, B2x4.herm_add_right, herm_sum_right, B2x4.herm_smul_right, Complex.star_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_x_cvec (x : Fin (2 * r + k + 1) → ℂ) (c : Co r) :
     herm (Hpk k r) x (cvec k z' ν' c) = (∑ a, conj (c.1 a) * herm (Hpk k r) x (ee k r a)) +
@@ -262,14 +262,14 @@ theorem herm_x_cvec (x : Fin (2 * r + k + 1) → ℂ) (c : Co r) :
   simp only [cvec, B2x4.herm_add_right, herm_sum_right, B2x4.herm_smul_right, Complex.star_def]
 
 /- English proof (translation)
-Use `prW_smul (k := k) (r := r) z 0 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prW_zero (z : Fin (2 * r + k + 1) → ℂ) : D.prW k r z 0 = 0 := by
   have := prW_smul (k := k) (r := r) z 0 0
   simpa using this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [prW_zero]`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, prW_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prW_sum (z : Fin (2 * r + k + 1) → ℂ) {ι : Type*} (s : Finset ι) (f : ι → Fin (2 * r + k + 1) → ℂ) :
     D.prW k r z (∑ i ∈ s, f i) = ∑ i ∈ s, D.prW k r z (f i) := by
@@ -279,19 +279,19 @@ theorem prW_sum (z : Fin (2 * r + k + 1) → ℂ) {ι : Type*} (s : Finset ι) (
   | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, prW_add, ih]
 
 /- English proof (translation)
-Rewrite using `[prW_eq, Wb_ee]`. Simplify using `[herm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prW_ee (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : D.prW k r z (ee k r a) = 0 := by
   rw [prW_eq, Wb_ee]; simp [herm]
 
 /- English proof (translation)
-Rewrite using `[prW_eq, Wb_es]`. Simplify using `[herm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prW_es (z : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : D.prW k r z (es k r a) = 0 := by
   rw [prW_eq, Wb_es]; simp [herm]
 
 /- English proof (translation)
-Simplify using `only [cvec, prW_add, prW_smul, prW_sum, prW_ee, prW_es, smul_zero, Finset.sum_const_zero, zero_add, prW_self hz' hzz0, prW_perp hν hνz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prW_cvec (hz' : inWb k r z') (hν : inWb k r ν') (hνz : herm (Hpk k r) ν' z' = 0)
     (hzz0 : herm (Hpk k r) z' z' ≠ 0) (c : Co r) : D.prW k r z' (cvec k z' ν' c) = c.2.2.2 • ν' := by
@@ -306,101 +306,89 @@ variable {k r : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-Take `⟨hν, hνz, hνν, ⟨hmU, hmfix⟩, hmz⟩` from `hbase`. Establish `hme : ∀ a : Fin r, m₀ *ᵥ ee k r a = ee k r a` using `fun a => (hmfix a a.isLt).1`. Establish `hms : ∀ a : Fin r, m₀ *ᵥ es k r a = es k r a` using `fun a => (hmfix a a.isLt).2`. Establish `hz` using `S.z_mem`. Establish `hz'` using `S.z'_mem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `S.T_pos`. Establish `hT'` using `S.T'_pos`. Use `set T := Tz k r S.z with hTdef`. Use `set T' := Tz k r S.z' with hT'def`. Use `set s := Real.sqrt T' with hsdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs : 0 < s` using `Real.sqrt_pos.2 hT'`. Establish `hs' : (s : ℂ) ≠ 0` using `by exact_mod_cast hs.ne'`. Establish `hs2 : s ^ 2 = T'` using `Real.sq_sqrt hT'.le`. Establish `hzz : herm (Hpk k r) S.z' S.z' = -((s : ℂ) ^ 2)`. Rewrite using `[herm_self_alt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `hs2.symm` after adjusting the coercions. Establish `hzzT : herm (Hpk k r) S.z' S.z' = -((T' : ℝ) : ℂ)` using `herm_self_alt`. Establish `hzz0 : herm (Hpk k r) S.z' S.z' ≠ 0` using `by rw [hzz]; simpa using hs'`. Establish `hzν : herm (Hpk k r) S.z' ν' = 0` using `herm_zν hνz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set μ := Real.sqrt (T' / T) with hμdef`. Establish `hμ : 0 < μ` using `Real.sqrt_pos.2 (div_pos hT' hT)`. Establish `hμ' : (μ : ℂ) ≠ 0` using `by exact_mod_cast hμ.ne'`. Establish `hdet : Zm.det ≠ 0` using `Sm.det_ne_of_gPoly (T := T) (T' := T') hT hT' hG`. Establish `hdn : (‖Zm.det‖ : ℝ) ≠ 0` using `norm_ne_zero_iff.mpr hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdn' : 0 < ‖Zm.det‖` using `norm_pos_iff.mpr hdet`. Use `set Y := Yv S.z' ν' T T' Zm with hYdef`. Use `set σ := smat (Hpk k r) (uB S.z' ν') (wB S.z' ν' s) Y with hσdef`. Establish `hcv : ∀ c d : Co r, herm (Hpk k r) (cvec k S.z' ν' c) (cvec k S.z' ν' d) = hco T' c d` using `herm_cvec hz' hν hνz hνν`. Use `show m₀ * σ ∈ B.GV k r ∧ Zhat k r S.z S.z' (m₀ * σ) = Zm ∧ D.IsDFrame S ν' m₀ (m₀ * σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxx` using `xco_gram T T' Zm hT hT' hdet hG`. Establish `hxy` using `xco_ysco T T' Zm hT hT' hdet hG`. Establish `hyx` using `ysco_xco T T' Zm hT hT' hdet hG`. Establish `hyy` using `ysco_ysco T T' Zm hT hT' hdet hG`. Establish `hnx` using `nco_xco T T' Zm hT hT' hdet hG`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Establish `hny` using `nco_ysco T T' Zm hT hT' hdet hG`. Establish `hnn` using `nco_self T T' Zm hT hT' hdet hG`. Establish `hxn : ∀ d, hco T' (xco T T' Zm d) (nco T T' Zm) = 0` using `fun d => by rw [hco_symm, hnx]; simp`. Establish `hyn : ∀ e, hco T' (ysco T T' Zm e) (nco T T' Zm) = 0` using `fun e => by rw [hco_symm, hny]; simp`. Establish `h3 : ∀ i j, herm (Hpk k r) (Y i) (Y j) = herm (Hpk k r) (uB S.z' ν' i) (uB S.z' ν' j)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Apply the tactic sequence `rcases i with ((b | b) | i) <;> rcases j with ((c | c) | j)`. Apply the tactic sequence `all_goals try fin_cases i`. Apply the tactic sequence `all_goals try fin_cases j`. Apply the tactic sequence `all_goals simp only [hYdef, Yv, uB, Fin.zero_eta, Fin.mk_one, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, hcv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `all_goals simp [hxx, hxy, hyx, hyy, hnx, hny, hnn, hxn, hyn, Ap, Fin.castSucc_inj, Fin.castSucc_ne_last, h_w_ee hz', h_w_ee hν, h_w_es hz', h_w_es hν, h_ee_w hz', h_ee_w hν, h_es_w hz', h_es_w hν, hzz, hνz, hνν, hzν, hs2]`. Apply the tactic sequence `all_goals first`. Consider the case `(intro h; exact Fin.castSucc_ne_last _ h.symm)`. Consider the case `(split_ifs <;> simp_all)`. Consider the case `(exact_mod_cast hs2.symm)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Consider the case `(simp only [hT'def, ← hs2]; push_cast; ring)`. Establish `h4 : ∀ x, (∀ j, herm (Hpk k r) x (uB S.z' ν' j) = 0) → ∀ i, herm (Hpk k r) x (Y i) = 0`. Introduce `x hx i`. Establish `he : ∀ a, herm (Hpk k r) x (ee k r a) = 0` using `fun a => hx (Sum.inl (Sum.inl a))`. Establish `hs0 : ∀ a, herm (Hpk k r) x (es k r a) = 0` using `fun a => hx (Sum.inl (Sum.inr a))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : herm (Hpk k r) x S.z' = 0` using `by simpa [uB] using hx (Sum.inr 0)`. Establish `hn0 : herm (Hpk k r) x ν' = 0` using `by simpa [uB] using hx (Sum.inr 1)`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, Y i = cvec k S.z' ν' c := by`. Break down `i with ((b | b) | j)` into its components or cases. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨_, rfl⟩`. Use `fin_cases j`. Conclude with `⟨xco T T' Zm (Fin.last r), rfl⟩`. Conclude with `⟨nco T T' Zm, rfl⟩`. Rewrite using `[hc, herm_x_cvec]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[he, hs0, hz0, hn0]`. Establish `hσU : σ ∈ UH (Hpk k r)` using `sig_UH Y hz' hν hs hzz hνz hνν h3 h4`. Establish `hσu : ∀ i, σ *ᵥ uB S.z' ν' i = Y i` using `sig_u Y hz' hν hs hzz hνz hνν`. Establish `hγ : m₀ * σ ∈ UH (Hpk k r)` using `mul_UH hmU hσU`. Establish `hγu : IsUnit (m₀ * σ).det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ hγ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm0u : IsUnit m₀.det` using `(Formalism.FourierDecayAlt.P.unitary_group_closed k r).unit _ hmU`. Establish `hσf : ∀ b, σ *ᵥ fvec k r S.z' b = cvec k S.z' ν' (xco T T' Zm b)`. Introduce `b`. Break down `cast_or_last b with hb | ⟨b', rfl⟩` into its components or cases. Substitute `hb` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[fvec_lastI]`. Conclude with `hσu (Sum.inr 0)`. Rewrite using `[fvec_cs]`. Conclude with `hσu (Sum.inl (Sum.inl b'))`. Establish `hσc : ∀ d : Co r, σ *ᵥ cvec k S.z' ν' d = cvec k S.z' ν' ((∑ a, d.1 a • xco T T' Zm a.castSucc) + (∑ b, d.2.1 b • ysco T T' Zm b) + d.2.2.1 • xco T T' Zm (Fin.last r) + d.2.2.2 • nco T T' Zm)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `d`. Simplify using `only [cvec_add, cvec_sum, cvec_smul]`. Simplify using `only [cvec, Matrix.mulVec_add, Matrix.mulVec_sum, Matrix.mulVec_smul]`. Establish `e1 : ∀ a, σ *ᵥ ee k r a = cvec k S.z' ν' (xco T T' Zm a.castSucc)` using `fun a => hσu (Sum.inl (Sum.inl a))`. Establish `e2 : ∀ a, σ *ᵥ es k r a = cvec k S.z' ν' (ysco T T' Zm a)` using `fun a => hσu (Sum.inl (Sum.inr a))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : σ *ᵥ S.z' = cvec k S.z' ν' (xco T T' Zm (Fin.last r))` using `hσu (Sum.inr 0)`. Establish `e4 : σ *ᵥ ν' = cvec k S.z' ν' (nco T T' Zm)` using `hσu (Sum.inr 1)`. Simplify using `only [e1, e2, e3, e4, cvec]`. Establish `hsq : (μ : ℂ)⁻¹ = ((Real.sqrt (T / T') : ℝ) : ℂ)`. Rewrite using `[hμdef, ← Complex.ofReal_inv, ← Real.sqrt_inv, inv_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hff : ∀ a, fvec k r ((μ : ℂ)⁻¹ • S.z') a = cvec k S.z' ν' (fco T T' a)`. Introduce `a`. Break down `cast_or_last a with ha | ⟨a', rfl⟩` into its components or cases. Substitute `ha` using the available equality. Rewrite using `[fvec_lastI, hsq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[cvec, fco, Fin.castSucc_ne_last, (Fin.castSucc_ne_last _).symm]`. Rewrite using `[fvec_cs]`. Simplify using `[cvec, fco, Fin.castSucc_ne_last, Fin.castSucc_inj, Pi.single_apply, ite_smul]`. Establish `hZ : Zhat k r S.z S.z' (m₀ * σ) = Zm`. Use extensionality with `a b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[reduced_matrix_of_stabilizer m₀ σ hmU hme μ hμ.ne' hmz a b, hσf, hff, hcv, xco_fco T T' Zm hT hT' hdet]`. Use `⟨hγ, hZ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hsG : 0 < sGT T T' Zm` using `Real.sqrt_pos.2 (div_pos hG hT)`. Use `⟨sGT T T' Zm / ‖Zm.det‖, div_pos hsG hdn', ?_⟩` and prove the remaining obligations. Establish `hcof : D.cofR S (m₀ * σ) = m₀ *ᵥ cvec k S.z' ν' (∑ b, kap Zm b • xco T T' Zm b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `D.cofR`. Rewrite using `[hZ, cvec_sum, Matrix.mulVec_sum]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hσf, cvec_smul, Matrix.mulVec_smul, kap]`. Rewrite using `[hcof, orthoProj_m0_intertwine m₀ hmU hme hms hz hz' μ hμ.ne' hmz hzz0, prW_cvec hz' hν hνz hzz0, Matrix.mulVec_smul, hZ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `hsum : (∑ b, kap Zm b • xco T T' Zm b).2.2.2 = ∑ b, kap Zm b * be T T' Zm b`. Simplify using `[Prod.snd_sum, xco]`. Rewrite using `[hsum, sum_kap_be T T' Zm hdet, ph]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Clear the denominators using the available nonvanishing facts. Establish `hsG : 0 < sGT' T T' Zm` using `Real.sqrt_pos.2 (div_pos hG hT')`. Establish `hsG0 : ((sGT' T T' Zm : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hsG.ne'`. Establish `hph` using `ph_ne Zm hdet`. Use `⟨sGT' T T' Zm / ‖Zm.det‖, div_pos hsG hdn', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hfz : ∀ a, fvec k r S.z a = m₀ *ᵥ cvec k S.z' ν' (fco T T' a)`. Introduce `a`. Rewrite using `[← hff]`. Break down `cast_or_last a with ha | ⟨a', rfl⟩` into its components or cases. Substitute `ha` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[fvec_lastI, fvec_lastI, Matrix.mulVec_smul, hmz, smul_smul, inv_mul_cancel₀ hμ', one_smul]`. Rewrite using `[fvec_cs, fvec_cs, hme]`. Establish `hcofL : D.cofL S (m₀ * σ) = m₀ *ᵥ cvec k S.z' ν' (cofco T T' Zm)`. Unfold `D.cofL`. Rewrite using `[hZ, cofco, cvec_sum, Matrix.mulVec_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[hfz, cvec_smul, Matrix.mulVec_smul]`. Use `set d : Co r := (fun c => hco T' (cofco T T' Zm) (ysco T T' Zm c), fun b => hco T' (cofco T T' Zm) (xco T T' Zm b.castSucc), -(hco T' (cofco T T' Zm) (xco T T' Zm (Fin.last r)) / ((T' : ℝ) : ℂ)), ((sGT' T T' Zm : ℝ) : ℂ) / ph Zm) with hddef`. Establish `hσd : σ *ᵥ cvec k S.z' ν' d = cvec k S.z' ν' (cofco T T' Zm)`. Rewrite using `[hσc]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hn : (((sGT' T T' Zm : ℝ) : ℂ) / ph Zm) • nco T T' Zm = pco T T' Zm`. Rewrite using `[nco, smul_smul, div_mul_div_comm, mul_comm (ph Zm), div_self (mul_ne_zero hsG0 hph), one_smul]`. Simplify using `only [hddef]`. Rewrite using `[hn, pco]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [neg_smul, neg_div]`. Normalize the expressions using the abelian group laws. Establish `hinv : (m₀ * σ)⁻¹ *ᵥ D.cofL S (m₀ * σ) = cvec k S.z' ν' d`. Establish `: (m₀ * σ) *ᵥ cvec k S.z' ν' d = D.cofL S (m₀ * σ)`. Rewrite using `[← Matrix.mulVec_mulVec, hσd, hcofL]`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mulVec]`. Rewrite using `[hinv, prW_cvec hz' hν hνz hzz0, hZ]`. Use `congr 1`. Simplify using `only [hddef]`. Establish `hpc` using `ph_conj Zm hdet`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hph' : ph Zm = Zm.det / ((‖Zm.det‖ : ℝ) : ℂ)` using `rfl`. Establish `hnorm : Zm.det * conj Zm.det = ((‖Zm.det‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hdn'' : ((‖Zm.det‖ : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hdn`. Rewrite using `[hph']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Apply the tactic sequence `first | exact hnorm.symm | linear_combination -hnorm | linear_combination (-(((sGT' T T' Zm : ℝ) : ℂ))) * hnorm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Use `set v := m₀⁻¹ *ᵥ u with hvdef`. Establish `hmv : m₀ *ᵥ v = u`. Rewrite using `[hvdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hm0u, Matrix.one_mulVec]`. Establish `hv1 : ∀ a : Fin r, herm (Hpk k r) v (ee k r a) = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a`. Use `(hu a.castSucc).1` as an intermediate fact. Rewrite `this` using `[fvec_cs, ← hmv, ← hme a, herm_m0_mulVec_invariant m₀ hmU]`. Conclude with `this`. Establish `hzeq : S.z = (μ : ℂ)⁻¹ • (m₀ *ᵥ S.z')` using `by rw [hmz, smul_smul, inv_mul_cancel₀ hμ', one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hv2 : herm (Hpk k r) v S.z' = 0`. Use `(hu (Fin.last r)).1` as an intermediate fact. Rewrite `this` using `[fvec_lastI, ← hmv, hzeq, B2x4.herm_smul_right, herm_m0_mulVec_invariant m₀ hmU]`. Simplify `this` using `[hμ']`. Establish `hvY : ∀ b, herm (Hpk k r) v (cvec k S.z' ν' (xco T T' Zm b)) = 0`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b`. Use `(hu b).2` as an intermediate fact. Rewrite `this` using `[← hmv, ← Matrix.mulVec_mulVec, herm_m0_mulVec_invariant m₀ hmU, hσf]`. Conclude with `this`. Use `set t : Fin r → ℂ := fun a => herm (Hpk k r) v (es k r a) with htdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set tn : ℂ := herm (Hpk k r) v ν' with htndef`. Establish `hlin : ∀ b, (∑ a, Zm a.castSucc b * conj (t a)) + be T T' Zm b * conj tn = 0`. Introduce `b`. Establish `h` using `hvY b`. Rewrite `h` using `[herm_x_cvec]`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [hv1, hv2, mul_zero, Finset.sum_const_zero, zero_add, add_zero, xco] at h`. Establish `h'` using `congrArg conj h`. Simplify using `only [map_add, map_sum, map_mul, Complex.conj_conj, map_zero] at h'`. Rewrite using `[← h']`. Establish `htn : tn = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : ∑ b, kap Zm b * ((∑ a, Zm a.castSucc b * conj (t a)) + be T T' Zm b * conj tn) = 0`. Simplify using `[hlin]`. Establish `hsplit : ∑ b, kap Zm b * ((∑ a, Zm a.castSucc b * conj (t a)) + be T T' Zm b * conj tn) = (∑ a, conj (t a) * ∑ b, Zm a.castSucc b * kap Zm b) + conj tn * ∑ b, kap Zm b * be T T' Zm b`. Simplify using `only [mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => by ring))`. Conclude with `Finset.sum_congr rfl (fun b _ => by ring)`. Rewrite `hsum` using `[hsplit]`. Simplify using `only [mul_kap, Fin.castSucc_ne_last, if_false, mul_zero, Finset.sum_const_zero, zero_add, sum_kap_be T T' Zm hdet] at hsum`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hsG : 0 < sGT T T' Zm` using `Real.sqrt_pos.2 (div_pos hG hT)`. Establish `hsG0 : ((sGT T T' Zm : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hsG.ne'`. Use `mul_eq_zero.1 hsum` as an intermediate fact. Break down `this with h | h` into its components or cases. Simplify using `using h`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Conclude with `mul_ne_zero hsG0 (ph_ne Zm hdet) h`. Establish `ht : ∀ a, t a = 0` using `by set w : Fin (r + 1) → ℂ := Fin.lastCases 0 (fun a => conj (t a)) with hwdef`. Establish `hw : Matrix.vecMul w Zm = 0`. Use extensionality with `b`.
-
-Simplify using `only [Matrix.vecMul, dotProduct, Fin.sum_univ_castSucc, hwdef, Fin.lastCases_castSucc, Fin.lastCases_last, zero_mul, add_zero, Pi.zero_apply]`. Use `hlin b` as an intermediate fact. Rewrite `this` using `[htn]`. Simplify `this` using `[mul_comm]`. Establish `hw0 : w = 0`.
-
-Establish `hu' : IsUnit Zm.det` using `isUnit_iff_ne_zero.mpr hdet`. Establish `: w = Matrix.vecMul (Matrix.vecMul w Zm) Zm⁻¹`. Rewrite using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hu', Matrix.vecMul_one]`. Rewrite using `[this, hw, Matrix.zero_vecMul]`. Introduce `a`.
-
-Use `congrFun hw0 a.castSucc` as an intermediate fact. Simplify using `only [hwdef, Fin.lastCases_castSucc, Pi.zero_apply, map_eq_zero] at this`. Conclude with `this`. Establish `hfix : σ *ᵥ v = v`. Apply `sig_fix Y v` to reduce the goal to its premises.
-
-Introduce `i`. Break down `i with ((b | b) | i)` into its components or cases. Conclude with `ht b`. Conclude with `hv1 b`. Use `fin_cases i`.
-
-Simplify using `[wB, B2x4.herm_smul_right, herm_neg_right, hv2]`. Simplify `htn` using `[wB]`. Establish `hinv : (m₀ * σ)⁻¹ *ᵥ u = v`. Establish `: (m₀ * σ) *ᵥ v = u` using `by rw [← Matrix.mulVec_mulVec, hfix, hmv]`. Rewrite using `[← this, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hγu, Matrix.one_mulVec]`.
-
-Rewrite using `[hinv, ← hmv, orthoProj_m0_intertwine m₀ hmU hme hms hz hz' μ hμ.ne' hmz hzz0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secM_spec (S : B.RealPlaceData k r Wp Wq) (ν' : Fin (2 * r + k + 1) → ℂ) (m₀ : B.Mat k r)
     (hbase : D.IsBaseFrame S ν' m₀) (Zm : Matrix (Fin (r + 1)) (Fin (r + 1)) ℂ)
@@ -659,7 +647,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ Bs ν' m₀ hbase`. Use `⟨fun Z => Matrix.of.symm (PBI.secM Bs.z' ν' m₀ (Tz k r Bs.z) (Tz k r Bs.z') (Matrix.of Z)), PBI.secM_contDiffOn Bs.z' ν' m₀ _ _ Bs.T_pos Bs.T'_pos, fun Z hZ => ?_⟩` and prove the remaining obligations. Use `PBI.secM_spec Bs ν' m₀ hbase (Matrix.of Z) hZ` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pbi_sectionExists_proof : PBI.SectionExists := by
   intro k r Wp Wq _ _ _ _ Bs ν' m₀ hbase

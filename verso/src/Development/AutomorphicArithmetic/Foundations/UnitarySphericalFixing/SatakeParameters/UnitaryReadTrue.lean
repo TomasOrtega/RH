@@ -13,7 +13,7 @@ noncomputable section
 namespace UpperTheory.One.M
 
 /- English proof (translation)
-Introduce `s hs`. Distinguish the cases in `e : s.w = w`. Conclude with `hw (e ▸ GlobalTheory.SplitPlaceConj.isSplitPl_w D s)`. Use `not_isSplitAt D w hw ⟨s.w, e, HeightOneSpectrum.ext ?_⟩` and prove the remaining obligations. Conclude with `s.w_under.trans ((congrArg HeightOneSpectrum.asIdeal hs).trans hv.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem noSplit (D : D7) (w : PlE D.host) (v) (hw : ¬ IsSplitPl D.host w) (hv : NG.OverPl w v) : NoSplit D.host.E v := by
   intro s hs

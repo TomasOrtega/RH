@@ -13,21 +13,21 @@ namespace GlobalTheory.ThetaLaw
 open GlobalTheory.ThetaParam
 
 /- English proof (translation)
-Introduce `Λ hΛ t₀ ht y N hy ω hω z`. Establish `hlaw : ∀ x ∈ Λ, ∀ v, sgStar Λ (v + x) = (if x / 2 ∈ Λ then 1 else -1) * sgStar Λ v * Complex.exp ((Real.pi : ℂ) * v * (starRingEnd ℂ) x / (area Λ : ℂ) + (Real.pi : ℂ) * x * (starRingEnd ℂ) x / (2 * (area Λ : ℂ)))`. Introduce `x hx v`. Establish `e` using `hΛ.sg_law hx v`. Simplify using `only [U1] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e, mul_assoc, ← Complex.exp_add]`. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Establish `hne : ∃ z, sgStar Λ z ≠ 0`. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Establish `hd` using `(GlobalTheory.OddTheta.sgStar_laws Λ hΛ).1.2.1`. Rewrite `hd` using `[show sgStar Λ = fun _ => 0 from funext h]`. Simplify using `at hd`. Establish `hsl : ∀ ω ∈ Λ, ∀ z, U1 Λ ω (sgStar Λ) z = (if ω / 2 ∈ Λ then 1 else -1) * sgStar Λ z` using `fun ω hω z => hΛ.sg_law hω z`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx : (N : ℂ) * ω ∈ Λ` using `by simpa [nsmul_eq_mul] using nsmul_mem hω N`. Establish `c1 : cocy Λ ((N : ℂ) * ω) y ^ 2 = 1`. Establish `e` using `cocy_pow Λ ω y N 1`. Establish `r` using `cocy_root (m := 1) (n := N) hne hsl (by simpa using hω) hy`. Simplify using `only [Nat.cast_one, one_mul, mul_one] at e r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← pow_mul, r]`. Establish `c2 : cocy Λ ((N : ℂ) * ω) t₀ ^ 4 = 1`. Establish `r` using `cocy_root (m := 1) (n := 2) hne hsl (a := (N : ℂ) * ω) (b := t₀) (by simpa using hx) (by simpa using ht)`. Simplify using `using r`. Establish `hψ : ∀ x : ℂ, (if x / 2 ∈ Λ then (1 : ℂ) else -1) ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `intro x; split_ifs <;> norm_num`. Establish `hprod : ∀ v, U1 Λ y (GL3Theta.th0 Λ t₀) v * GL3Theta.th0 Λ t₀ v = sgStar Λ (v + y + t₀) * sgStar Λ (v + t₀) * (Complex.exp (-(Real.pi : ℂ) * (v + y) * (starRingEnd ℂ) t₀ / (area Λ : ℂ) - (Real.pi : ℂ) * t₀ * (starRingEnd ℂ) t₀ / (2 * (area Λ : ℂ))) * Complex.exp (-(Real.pi : ℂ) * …`. Introduce `v`. Simplify using `only [GL3Theta.th0, U1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hE : Complex.exp ((Real.pi : ℂ) * ((N : ℂ) * z + y + t₀) * (starRingEnd ℂ) ((N : ℂ) * ω) / (area Λ : ℂ) + (Real.pi : ℂ) * ((N : ℂ) * ω) * (starRingEnd ℂ) ((N : ℂ) * ω) / (2 * (area Λ : ℂ))) * Complex.exp ((Real.pi : ℂ) * ((N : ℂ) * z + t₀) * (starRingEnd ℂ) ((N : ℂ) * ω) / (area …`. Simplify using `only [cocy, ← Complex.exp_nat_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [map_mul, map_add, map_natCast]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hE` using `[c1, c2, mul_one, mul_one]`. Rewrite using `[hprod, hprod, show (N : ℂ) * (z + ω) + y + t₀ = ((N : ℂ) * z + y + t₀) + (N : ℂ) * ω by ring, show (N : ℂ) * (z + ω) + t₀ = ((N : ℂ) * z + t₀) + (N : ℂ) * ω by ring, hlaw _ hx, hlaw _ hx, hlaw _ hω z, mul_pow, mul_pow, pow_mul (if ω / 2 ∈ Λ then (1 : ℂ) else -1) 2 (N ^ 2), hψ ω, …`. Take the linear combination `(sgStar Λ ((N : ℂ) * z + y + t₀) * sgStar Λ ((N : ℂ) * z + t₀) * sgStar Λ z ^ (2 * N ^ 2) / (U1 Λ t₀ (sgStar Λ) 0) ^ 2) * ((if (N : ℂ) * ω / 2 ∈ Λ then (1 : ℂ) else -1) ^ 2 * hE + (Complex.exp (-(Real.pi : ℂ) * ((N : ℂ) * z + y) * (starRingEnd ℂ) t₀ / (area Λ : ℂ) - (Real.pi : ℂ) …`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pull_law : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ t₀ : ℂ, 2 * t₀ ∈ Λ → ∀ (y : ℂ) (N : ℕ), (N : ℂ) * y ∈ Λ → ∀ ω ∈ Λ, ∀ z : ℂ, (U1 Λ y (GL3Theta.th0 Λ t₀) ((N : ℂ) * (z + ω)) * GL3Theta.th0 Λ t₀ ((N : ℂ) * (z + ω))) * sgStar Λ z ^ (2 * N ^ 2) = (U1 Λ y (GL3Theta.th0 Λ t₀) ((N : ℂ) * z) * GL3Theta.th0 Λ t₀ ((N : ℂ) * z)) * sgStar Λ (z + ω) ^ (2 * N ^ 2) := by
   intro Λ hΛ t₀ ht y N hy ω hω z

@@ -28,9 +28,9 @@ Both sides reduce to the same expression.
 theorem trF_trF {m n : ℕ} (f : Mx D m n → ℂ) : trF (trF f) = f := rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => Finset.sum_comm`. Use `_ = ∑ b, ∑ d, ∑ c, ∑ a, F a b c d := by`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_comm`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_comm`.
+A detailed English derivation is pending.
 -/
 theorem sum_sum_sum_sum_comm {M : Type} [AddCommMonoid M] {m n : ℕ} (F : Fin m → Fin m → Fin n → Fin n → M) :
     ∑ a, ∑ b, ∑ c, ∑ d, F a b c d = ∑ d, ∑ c, ∑ b, ∑ a, F a b c d := by
@@ -49,7 +49,7 @@ variable (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (ΛS : Submodule (𝓞 D
   (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
 
 /- English proof (translation)
-Unfold `hO`. Rewrite using `[dualSp_gram_inv, dualSp_gram, sum_sum_sum_sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hO_tr (x y : WO S T) : hO (dualSp T ΛT hT) (dualSp S ΛS hS) xᵀ yᵀ = hO S T x y := by
   unfold hO
@@ -60,14 +60,14 @@ theorem hO_tr (x y : WO S T) : hO (dualSp T ΛT hT) (dualSp S ΛS hS) xᵀ yᵀ 
   ring
 
 /- English proof (translation)
-Unfold `symplOH symplO`. Rewrite using `[hO_tr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplOH_tr (x y : WO S T) : symplOH (dualSp T ΛT hT) (dualSp S ΛS hS) xᵀ yᵀ = symplOH S T x y := by
   unfold symplOH symplO
   rw [hO_tr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ (symplOH (dualSp T ΛT hT) (dualSp S ΛS hS) xᵀ wᵀᵀ) * f (xᵀ + w) = ψ (symplOH S T x wᵀ) * f (xᵀ + w)`. Rewrite using `[symplOH_tr]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trF_heis (w : WO (dualSp T ΛT hT) (dualSp S ΛS hS)) (f : WO (dualSp T ΛT hT) (dualSp S ΛS hS) → ℂ) :
     trF (heisO ψ (dualSp T ΛT hT) (dualSp S ΛS hS) w f) = heisO ψ S T wᵀ (trF f) := by
@@ -76,7 +76,7 @@ theorem trF_heis (w : WO (dualSp T ΛT hT) (dualSp S ΛS hS)) (f : WO (dualSp T 
   rw [symplOH_tr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `ψ (symplOH S T xᵀ w) * f (xᵀ + w) = ψ (symplOH (dualSp T ΛT hT) (dualSp S ΛS hS) xᵀᵀ wᵀ) * f (xᵀ + w)`. Rewrite using `[symplOH_tr]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem trF_heis' (w : WO S T) (f : WO S T → ℂ) :
     trF (heisO ψ S T w f) = heisO ψ (dualSp T ΛT hT) (dualSp S ΛS hS) wᵀ (trF f) := by
@@ -90,14 +90,14 @@ def trA {m n : ℕ} : Mx D m n →+ Mx D n m where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_transpose`.
+A detailed English derivation is pending.
 -/
 theorem continuous_tr {m n : ℕ} : Continuous (fun x : Mx D m n => (xᵀ : Mx D n m)) := continuous_id.matrix_transpose
 
 /- English proof (translation)
-Use `h.quasi γᵀ wᵀ` as an intermediate fact. Rewrite using `[← symplOH_tr S T ΛS ΛT hS hT]`. Conclude with `this`. Use `level := by`. Take `⟨U, hU, hU'⟩` from `h.level`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U.comap trA, hU.preimage continuous_tr, fun u hu hu' => ?_⟩` and prove the remaining obligations. Use `congrArg trF (hU' uᵀ hu (congrArg Matrix.transpose hu'))` as an intermediate fact. Rewrite `this` using `[trF_heis]`. Then use the resulting hypothesis. Use `cont := h.cont.comp continuous_tr`. Use `smooth k L hL hL' w := h.smooth k (trA.comp L) (continuous_tr.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_trF {f : WO (dualSp T ΛT hT) (dualSp S ΛS hS) → ℂ} (h : IsThetaFunO ψ (dualSp T ΛT hT) (dualSp S ΛS hS) f) :
     IsThetaFunO ψ S T (trF f) where
@@ -114,9 +114,9 @@ theorem theta_trF {f : WO (dualSp T ΛT hT) (dualSp S ΛS hS) → ℂ} (h : IsTh
   smooth k L hL hL' w := h.smooth k (trA.comp L) (continuous_tr.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ
 
 /- English proof (translation)
-Use `h.quasi γᵀ wᵀ` as an intermediate fact. Rewrite `this` using `[← symplOH_tr S T ΛS ΛT hS hT]`. Conclude with `this`. Use `level := by`. Take `⟨U, hU, hU'⟩` from `h.level`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨U.comap trA, hU.preimage continuous_tr, fun u hu hu' => ?_⟩` and prove the remaining obligations. Use `congrArg trF (hU' uᵀ hu (congrArg Matrix.transpose hu'))` as an intermediate fact. Rewrite `this` using `[trF_heis' ψ S T ΛS ΛT hS hT]`. Then use the resulting hypothesis. Use `cont := h.cont.comp continuous_tr`. Use `smooth k L hL hL' w := h.smooth k (trA.comp L) (continuous_tr.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem theta_trF' {f : WO S T → ℂ} (h : IsThetaFunO ψ S T f) :
     IsThetaFunO ψ (dualSp T ΛT hT) (dualSp S ΛS hS) (trF f) where
@@ -133,7 +133,7 @@ theorem theta_trF' {f : WO S T → ℂ} (h : IsThetaFunO ψ S T f) :
   smooth k L hL hL' w := h.smooth k (trA.comp L) (continuous_tr.comp hL) (fun t => congrArg Matrix.transpose (hL' t)) wᵀ
 
 /- English proof (translation)
-Unfold `actO`. Rewrite using `[mt_dualG, mt_dualG_inv, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem actO_tr (g : GA D (dualSp T ΛT hT)) (h : GA D (dualSp S ΛS hS)) (x : WO (dualSp T ΛT hT) (dualSp S ΛS hS)) :
     actO S T (dualG S ΛS hS h) (dualG T ΛT hT g) xᵀ = (actO (dualSp T ΛT hT) (dualSp S ΛS hS) g h x)ᵀ := by
@@ -165,7 +165,7 @@ theorem swapOm_apply (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)
     swapOm S T ΛS ΛT hS hT om (g, h) f = trF (om (dualG S ΛS hS h, dualG T ΛT hT g) (trF f)) := rfl
 
 /- English proof (translation)
-The claim follows from `theta_trF' ψ S T ΛS ΛT hS hT (h.pres _ _ (theta_trF ψ S T ΛS ΛT hS hT hf)) cont f hf w := (h.cont _ (theta_trF ψ S T ΛS ΛT hS hT hf) wᵀ).comp (((continuous_dualG S ΛS hS).comp continuous_snd).prodMk ((continuous_dualG T ΛT hT).comp continuous_fst)) unit μ 𝓕 hμ h𝓕 p f hf := by hav …`.
+A detailed English derivation is pending.
 -/
 theorem swap_unitary {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (h : IsUnitaryOnTheta ψ S T om) :
     IsUnitaryOnTheta ψ (dualSp T ΛT hT) (dualSp S ΛS hS) (swapOm S T ΛS ΛT hS hT om) where
@@ -200,9 +200,9 @@ theorem swap_unitary {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)
     exact e1.symm.trans (key.trans e2)
 
 /- English proof (translation)
-Establish `h1 : ε • ((g : Matrix (Fin n) (Fin n) A) - 1) = (g : Matrix (Fin n) (Fin n) A) - 1` using `Matrix.ext h`. Establish `h2 : ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) - 1 = -(((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) * ((g : Matrix (Fin n) (Fin n) A) - 1))`. Rewrite using `[Matrix.mul_sub, Units.inv_mul, Matrix.mul_one, neg_sub]`. Establish `h3 : ε • (((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) - 1) = ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A) - 1`. Rewrite using `[h2, smul_neg, ← Matrix.mul_smul, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4` using `congrArg Matrix.transpose h3`. Rewrite `h4` using `[Matrix.transpose_smul, Matrix.transpose_sub, Matrix.transpose_one]`. Conclude with `congrFun (congrFun h4 i) j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp_inv {A : Type} [CommRing A] {n : ℕ} (ε : A) (g : GL (Fin n) A)
     (h : ∀ i j, ε * ((g : Matrix (Fin n) (Fin n) A) - 1) i j = ((g : Matrix (Fin n) (Fin n) A) - 1) i j) (i j : Fin n) :
@@ -220,9 +220,9 @@ theorem supp_inv {A : Type} [CommRing A] {n : ℕ} (ε : A) (g : GL (Fin n) A)
   exact congrFun (congrFun h4 i) j
 
 /- English proof (translation)
-Establish `h1 : (g : Matrix (Fin n) (Fin n) A).det * ((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A).det = 1`. Rewrite using `[← Matrix.det_mul, Units.mul_inv, Matrix.det_one]`. Use `Units.inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations. Rewrite using `[h, Matrix.det_transpose]`. Generalize the expression as in `(g : Matrix (Fin n) (Fin n) A).det = a at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `((g⁻¹ : GL (Fin n) A) : Matrix (Fin n) (Fin n) A).det = b at h1`. Take the linear combination `(e * e) * h1 + (2 - a - b) * he`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem det_inv_at {A : Type} [CommRing A] {n : ℕ} {e : A} (he : e * e = e) (g : GL (Fin n) A) (x : Aˣ)
     (h : (x : A) = e * (g : Matrix (Fin n) (Fin n) A).det + (1 - e)) :
@@ -236,19 +236,17 @@ theorem det_inv_at {A : Type} [CommRing A] {n : ℕ} {e : A} (he : e * e = e) (g
   linear_combination (e * e) * h1 + (2 - a - b) * he
 
 /- English proof (translation)
-Establish `key : ∀ (t : Fin T.rank → D.host.E) (j : Fin T.rank), ∑ k, star ((star t ᵥ* T.gram) k) * (dualSp T ΛT hT).gram k j = t j`. Introduce `t j`. Establish `: star (star t ᵥ* T.gram) ᵥ* (dualSp T ΛT hT).gram = t`. Rewrite using `[dualSp_gram, Matrix.vecMul_transpose, Matrix.star_vecMul, star_star, gram_herm, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit T), Matrix.one_mulVec]`. Conclude with `congrFun this j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hu`. Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, _, ⟨t, ht, rfl⟩, _, ⟨s, hs, rfl⟩, rfl⟩` from `hw`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, s, hs, t, ht, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`. Rewrite using `[key, mul_right_comm]`. Both sides reduce to the same expression. Consider the case `zero => exact zero_mem _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`. Introduce `hu`. Establish `: ∀ w ∈ latO S T ΛS ΛT P, (wᵀ : WO (dualSp T ΛT hT) (dualSp S ΛS hS)) ∈ latO (dualSp T ΛT hT) (dualSp S ΛS hS) (formLat T.gram ΛT) (formLat S.gram ΛS) P`. Introduce `w hw`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, hP, a, ha, s, hs, t, ht, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨α, hα, hP, a, ha, _, ⟨t, ht, rfl⟩, _, ⟨s, hs, rfl⟩, Matrix.ext fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, Matrix.of_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, mul_right_comm]`. Both sides reduce to the same expression. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `neg x _ hx => exact neg_mem hx`.
-
-Conclude with `this _ hu`.
+Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_latO_tr (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (u : WO (dualSp T ΛT hT) (dualSp S ΛS hS)) :
     u ∈ latO (dualSp T ΛT hT) (dualSp S ΛS hS) (formLat T.gram ΛT) (formLat S.gram ΛS) P ↔
@@ -290,7 +288,7 @@ theorem mem_latO_tr (P : HeightOneSpectrum (𝓞 D.host.F) → Prop) (u : WO (du
     exact this _ hu
 
 /- English proof (translation)
-The claim follows from `swap_unitary ψ S T ΛS ΛT hS hT h.toIsUnitaryOnTheta triv g hg k hk f hf := by rw [swapOm_apply, h.triv _ (dualG_mem_GinfC S ΛS hS hk) _ (dualG_mem_GinfC T ΛT hT hg) _ (theta_trF ψ S T ΛS ΛT hS hT hf), trF_trF] Heisenberg₂ g hg k hk w f hf := by rw [swapOm_apply, swapOm_apply, trF …`.
+A detailed English derivation is pending.
 -/
 theorem swap_fin {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (h : IsFinWeil ψ S T ΛS ΛT χS χT om) :
@@ -330,13 +328,13 @@ theorem swap_fin {χS χT : (AE D)ˣ →* Circle} {om : GA D S × GA D T →* Mo
     rw [swapOm_apply, this, trF_trF]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Establish `hG' : G * G'ᵀ = 1` using `mul_eq_one_comm.1 hG`. Establish `e1 : sᵀ * sᵀ = 1` using `by rw [← Matrix.transpose_mul, h1, Matrix.transpose_one]`. Establish `e2 : sᵀᴴ * sᵀᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, e1, Matrix.conjTranspose_one]`. Establish `e3 : sᵀ * G'ᵀ * sᵀᴴ = G'ᵀ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.transpose h2` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_mul, ← Matrix.mul_assoc]`. Conclude with `this`. Use `⟨e1, ?_, ?_⟩` and prove the remaining obligations. Establish `e4 : sᵀᴴ * G * sᵀ * G'ᵀ = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e3]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `e5 : ((G' * s)ᵀ)⁻¹ = G * sᵀ`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e5]`. Conclude with `h3.transpose.inv`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cartan_tr {k : ℕ} {G G' s : Matrix (Fin k) (Fin k) ℂ} (hG : G'ᵀ * G = 1) (h : IsCartanInv G' s) :
     IsCartanInv G sᵀ := by
@@ -364,7 +362,7 @@ theorem cartan_tr {k : ℕ} {G G' s : Matrix (Fin k) (Fin k) ℂ} (hG : G'ᵀ * 
     exact h3.transpose.inv
 
 /- English proof (translation)
-Unfold `detPlus`. Establish `hk : ∀ (x : Matrix (Fin n) (Fin n) ℂ) (y : Matrix (Fin m) (Fin m) ℂ), Matrix.kroneckerMap (· * ·) x y = (Matrix.kroneckerMap (· * ·) y x).submatrix (Equiv.prodComm (Fin n) (Fin m)) (Equiv.prodComm (Fin n) (Fin m))` using `fun x y => Matrix.ext fun _ _ => mul_comm _ _`. Rewrite using `[← Matrix.det_submatrix_equiv_self (Equiv.prodComm (Fin n) (Fin m)) (_ + _), hk sSᵀ, hk aᵀ, ← Matrix.submatrix_one_equiv (Equiv.prodComm (Fin n) (Fin m))]`. Use `congr 1`. Conclude with `congrArg₂ (· + ·) (congrArg ((1 / 2 : ℂ) • ·) (Matrix.submatrix_mul_equiv (1 + Matrix.kroneckerMap (· * ·) sT sSᵀ) (Matrix.kroneckerMap (· * ·) b aᵀ) _ (Equiv.prodComm (Fin n) (Fin m)) _)) rfl`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem detPlus_tr {m n : ℕ} (sS a : Matrix (Fin n) (Fin n) ℂ) (sT b : Matrix (Fin m) (Fin m) ℂ) :
     detPlus sTᵀ sSᵀ bᵀ aᵀ = detPlus sS sT a b := by
@@ -380,9 +378,9 @@ theorem detPlus_tr {m n : ℕ} (sS a : Matrix (Fin n) (Fin n) ℂ) (sT b : Matri
     (1 + Matrix.kroneckerMap (· * ·) sT sSᵀ) (Matrix.kroneckerMap (· * ·) b aᵀ) _ (Equiv.prodComm (Fin n) (Fin m)) _)) rfl
 
 /- English proof (translation)
-Establish `h1 : IsLineAt θ τ z (lineAt θ τ z)` using `Classical.epsilon_spec ((GlobalTheory.RealLineAt.lineAt_exists_unique D).1 θ hθ m n τ z)`. Establish `h2 : IsLineAt θ τ zᵀ (lineAt θ τ zᵀ)` using `Classical.epsilon_spec ((GlobalTheory.RealLineAt.lineAt_exists_unique D).1 θ hθ n m τ zᵀ)`. Establish `h3 : IsLineAt θ τ zᵀ (trA.comp (lineAt θ τ z))`. Use `⟨continuous_tr.comp h1.1, fun t => congrArg Matrix.transpose (h1.2.1 t), fun t τ' => ?_⟩` and prove the remaining obligations. Use `congrArg Matrix.transpose (h1.2.2 t τ')` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eq.trans this ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[(GlobalTheory.RealLineAt.lineAt_exists_unique D).2 θ hθ n m τ zᵀ _ _ h2 h3]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lineAt_tr {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what₂.Tau) (z : Matrix (Fin m) (Fin n) ℂ) (t : ℝ) :
     lineAt θ τ zᵀ t = (lineAt θ τ z t)ᵀ := by
@@ -399,7 +397,7 @@ theorem lineAt_tr {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (τ : D.what�
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Express the relevant statement in the definitionally equal form `deriv (fun t : ℝ => heisO ψ S T (lineAt θ τ z t) (trF f) x) 0 = deriv (fun t : ℝ => trF (heisO ψ (dualSp T ΛT hT) (dualSp S ΛS hS) (lineAt θ τ zᵀ t) f) x) 0`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[trF_heis, lineAt_tr hθ, Matrix.transpose_transpose]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem dRho_tr {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Matrix (Fin T.rank) (Fin S.rank) ℂ)
     (f : WO (dualSp T ΛT hT) (dualSp S ΛS hS) → ℂ) :
@@ -412,7 +410,7 @@ theorem dRho_tr {θ : InfFam D} (hθ : IsInfFam θ) (τ : D.what₂.Tau) (z : Ma
   rw [trF_heis, lineAt_tr hθ, Matrix.transpose_transpose]
 
 /- English proof (translation)
-The claim follows from `swap_unitary ψ S T ΛS ΛT hS hT h.toIsUnitaryOnTheta triv g hg k hk f hf := by rw [swapOm_apply, h.triv _ (dualG_mem_GfC S ΛS hS hk) _ (dualG_mem_GfC T ΛT hT hg) _ (theta_trF ψ S T ΛS ΛT hS hT hf), trF_trF] Heisenberg₂ g hg k hk w f hf := by rw [swapOm_apply, swapOm_apply, trF_hei …`.
+A detailed English derivation is pending.
 -/
 theorem swap_inf {θ : InfFam D} (hθ : IsInfFam θ) {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}
     (h : IsInfWeil ψ θ S T om) :
@@ -456,7 +454,7 @@ theorem swap_inf {θ : InfFam D} (hθ : IsInfFam θ) {om : GA D S × GA D T →*
     exact Finset.prod_congr rfl fun τ _ => detPlus_tr (sT τ) _ (sS τ) _
 
 /- English proof (translation)
-Introduce `D ψ hψ S T θ hθ ΛS ΛT hS hT η hη of oi hf hi γ hγ f hth`. Take `⟨γ', hγ', rfl⟩` from `exists_dualG_of_GQ S ΛS hS hγ`. Use `GlobalTheory.T.thetaDistribution_invariant_rationalTarget D ψ hψ (dualSp T ΛT hT) (dualSp S ΛS hS) θ hθ _ _ (dualSp_selfDual T ΛT hT) (dualSp_selfDual S ΛS hS) η hη _ _ (swap_fin ψ S T ΛS ΛT hS hT hf) (swap_inf ψ S T ΛS ΛT hS hT hθ hi) γ' hγ' _ (theta_trF' ψ S T ΛS ΛT hS hT hth)` as an intermediate fact. Rewrite `this` using `[swapOm_apply, swapOm_apply, map_one]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem automorphy_source : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (θ : InfFam D), IsInfFam θ → ∀ (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S ΛS → IsSelfDualC T ΛT → ∀ η, IsEtaTilde D η → ∀ (of oi : (GA D S × GA D T →* Module.End ℂ (WO S T → ℂ))), IsFinWeil ψ S T ΛS ΛT (η ^ S.rank) (η ^ T.rank) of → IsInfWeil ψ θ S T oi → ∀ γ ∈ GQ S, ∀ f, IsThetaFunO ψ S T f → of (γ, 1) (oi (γ, 1) f) 0 = f 0 := by
   intro D ψ hψ S T θ hθ ΛS ΛT hS hT η hη of oi hf hi γ hγ f hth

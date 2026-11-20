@@ -17,9 +17,9 @@ noncomputable section
 namespace PI.EF
 
 /- English proof (translation)
-Take `⟨Cw, hCw, hW⟩` from `hZW`. Take `⟨Cl, hCl, hL⟩` from `hLL`. Establish `hκ0 : (0 : ℝ) < 12 * Cw + 4` using `by linarith`. Establish `hCI : ContourIdentity` using `glueContour rectResidue zeroLocus zerosFinite`. Establish `hH : ∃ C, 0 < C ∧ LogDerivHoriz (12 * Cw + 4) C` using `⟨_, by have := mul_pos hCw hκ0; linarith, logDerivHoriz_of hCw.le hCl.le hκ0 hW hL zeroLocus⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLf : ∃ C, 0 < C ∧ LogDerivLeft C` using `⟨_, by linarith, logDerivLeft_of hCw.le hCl.le hW hL zeroLocus⟩`. Take `⟨Cs, hCs, hS⟩` from `hSides (12 * Cw + 4) hκ0 hH hLf`. Conclude with `explicitFormula_of_perron_shift (12 * Cw + 4) ⟨500, by norm_num, PK.perronL_of (by norm_num) (PK.perronTrunc_of PK.perron_kernel_single_term perronSumBound)⟩ ⟨Cs + (Cw + Cl) + 3, by linarith, shiftBound_of hκ0 hCs.le (by linarith) regularPart hCI hS (regAtZero_of hW hL)⟩ (goodHei …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem explicitFormula_of_local (hZW : PI.ZerosWindow) (hLL : ∃ C, 0 < C ∧ LocalLemma C)
     (hSides : GlueSides) : PI.ExplicitFormula := by

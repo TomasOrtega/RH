@@ -5,21 +5,19 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnramifiedAdj
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨d, s, hs, hsn, -⟩` from `GlobalTheory.CMGen.exists_sqrt_totallyNegative E`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Apply `hsn` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: s = 0` using `by simpa using hs`. Rewrite using `[this]`. Conclude with `zero_mem _`. Establish `h2d : (2 * d : 𝓞 (maximalRealSubfield E)) ≠ 0` using `mul_ne_zero two_ne_zero hd0`. Use `⟨Ideal.absNorm (Ideal.span {2 * d}), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `h2d`. Introduce `K _ _ _ _ w hw`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {2 * d}))`. Use `haveI : Algebra.IsAlgebraic E K := Algebra.IsAlgebraic.tower_top (K := ℚ) E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ x : 𝓞 (maximalRealSubfield E), IsIntegral ℤ (algebraMap E K ((x : maximalRealSubfield E) : E))` using `fun x => (RingOfIntegers.isIntegral_coe x).map ((algebraMap E K).comp (maximalRealSubfield E).subtype).toIntAlgHom`. Establish `hmem : algebraMap E K ((d : maximalRealSubfield E) : E) ∈ maximalRealSubfield K` using `(GlobalTheory.algebraMap_mem_maximalRealSubfield_iff _).2 (d : maximalRealSubfield E).2`. Establish `hai : IsIntegral ℤ (⟨_, hmem⟩ : maximalRealSubfield K)` using `(isIntegral_algHom_iff (maximalRealSubfield K).subtype.toIntAlgHom Subtype.val_injective).1 (hint d)`. Set `a : 𝓞 (maximalRealSubfield K)` to `⟨_, hai⟩`. Use `GlobalTheory.unramified_adjoin_sqrt_of_not_mem K a (algebraMap E K s) ?_ ?_ w ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[← map_pow, hs]`. Both sides reduce to the same expression. Conclude with `fun h => hsn ((GlobalTheory.algebraMap_mem_maximalRealSubfield_iff _).1 h)`. Introduce `h`. Apply `hw` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : algebraMap (𝓞 (maximalRealSubfield K)) (𝓞 K) (2 * a) ∈ w.asIdeal` using `h`. Set `c' : 𝓞 K` to `⟨_, hint c⟩`. Establish `h2 : ((Ideal.absNorm (Ideal.span {2 * d}) : ℕ) : 𝓞 K) = c' * algebraMap (𝓞 (maximalRealSubfield K)) (𝓞 K) (2 * a)`. Apply `FaithfulSMul.algebraMap_injective (𝓞 K) K` to reduce the goal to its premises. Set `f : 𝓞 (maximalRealSubfield E) →+* K` to `((algebraMap E K).comp (maximalRealSubfield E).subtype).comp (algebraMap _ _)`.
+Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `congrArg f hc`. Rewrite `h3` using `[map_natCast, map_mul, map_mul, map_ofNat]`. Rewrite using `[map_natCast, ← h3, map_mul, map_mul, map_mul, map_ofNat, map_ofNat]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
-
-Conclude with `Ideal.mul_mem_left _ _ h1`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_nat_unramified_over_real_of_cm_subfield :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], ∃ N : ℕ, N ≠ 0 ∧ ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] [Algebra E K] (w : HeightOneSpectrum (𝓞 K)), (N : 𝓞 K) ∉ w.asIdeal → Algebra.IsUnramifiedAt (𝓞 (maximalRealSubfield K)) w.asIdeal := by

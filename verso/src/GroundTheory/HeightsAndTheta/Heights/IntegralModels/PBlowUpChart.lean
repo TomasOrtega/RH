@@ -7,21 +7,19 @@ namespace GroundTheory.Heights₂.Heights.Model
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `A _ _ _ _ K _ _ _ n x hx ⟨j, hj⟩`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (algebraMap A K)`. Use `set f := (algebraMap A K).codRestrict V.toSubring hV with hf`. Establish `: Nonempty (Fin n)` using `⟨j⟩`. Take `⟨i, hi⟩` from `Finite.exists_max fun k => V.valuation (algebraMap A K (x k))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj` using `IsFractionRing.injective A K`. Establish `hxi : x i ≠ 0`. Introduce `h0`. Apply `hj` to reduce the goal to its premises. Establish `h1` using `hi j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h0, map_zero, map_zero, le_zero_iff, Valuation.zero_iff]`. Conclude with `hinj (by rw [h1, map_zero])`. Establish `hvi : 0 < V.valuation (algebraMap A K (x i))`. Rewrite using `[zero_lt_iff, Valuation.ne_zero_iff]`. Conclude with `fun h => hxi (hinj (by rw [h, map_zero]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ y ∈ blowUpChart K x i, y ∈ V`. Introduce `y hy`. Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← V.valuation_le_one_iff, map_div₀, div_le_one₀ hvi]`. Conclude with `hi k`. Consider the case `algebraMap r => exact hV r`. Consider the case `add _ _ _ _ h₁ h₂ => exact add_mem h₁ h₂`. Consider the case `mul _ _ _ _ h₁ h₂ => exact mul_mem h₁ h₂`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : blowUpChart K x i →+* V` to `{ toFun := fun y => ⟨y.1, hle y.1 y.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hφ : ∀ a : A, φ (algebraMap A (blowUpChart K x i) a) = f a` using `fun _ => rfl`. Establish `hxm : x i ∈ maximalIdeal A` using `hx ▸ Ideal.subset_span ⟨i, rfl⟩`. Establish `hnu : ¬ IsUnit (f (x i))`. Rewrite using `[isUnit_map_iff f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `hxm`. Use `⟨i, hxi, fun hu => hnu (hφ (x i) ▸ hu.map φ), (maximalIdeal V).comap φ, Ideal.comap_isPrime _ _, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, hφ]`. Conclude with `hnu`. Use extensionality with `a`.
-
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hφ, mem_maximalIdeal, mem_nonunits_iff, mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff f]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BlowUpChart.proof : BlowUpChart.Statement := by
   intro A _ _ _ _ K _ _ _ n x hx ⟨j, hj⟩

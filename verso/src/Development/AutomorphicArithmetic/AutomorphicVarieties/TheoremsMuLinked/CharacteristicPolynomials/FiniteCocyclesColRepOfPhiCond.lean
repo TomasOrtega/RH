@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.F
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.HV UpperTheory.V.Alg GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ_[l] (x : PadicAlgCl l)` using `(Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val`. Establish `h0 : ‖(x : PadicAlgCl l)‖ = spectralValue (minpoly ℚ_[l] (x : PadicAlgCl l))` using `rfl`. Rewrite using `[h0, spectralValue_le_one_iff (minpoly.monic (Algebra.IsIntegral.isIntegral _))]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] hi, Polynomial.coeff_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PadicInt.norm_le_one _`.
+A detailed English derivation is pending.
 -/
 private theorem zc_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) : ‖(x : PadicAlgCl l)‖ ≤ 1 := by
   have hi : IsIntegral ℤ_[l] (x : PadicAlgCl l) := (Algebra.IsIntegral.isIntegral (R := ℤ_[l]) x).map c.O.val
@@ -19,7 +19,7 @@ private theorem zc_norm {l : ℕ} [Fact l.Prime] (c : Coef l) (x : c.O) : ‖(x 
   exact PadicInt.norm_le_one _
 
 /- English proof (translation)
-Break down `ValuationRing.dvd_total y x with h1 | ⟨u, rfl⟩` into its components or cases. Conclude with `h1`. It suffices to derive a contradiction. Rewrite `h` using `[Subalgebra.coe_mul, norm_mul]`. Conclude with `absurd (mul_le_of_le_one_right (norm_nonneg _) (zc_norm c u)) (not_le.2 h)`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zc_dvd {l : ℕ} [Fact l.Prime] (c : Coef l) (x y : c.O)
     (h : ‖(x : PadicAlgCl l)‖ < ‖(y : PadicAlgCl l)‖) : y ∣ x := by
@@ -30,7 +30,7 @@ private theorem zc_dvd {l : ℕ} [Fact l.Prime] (c : Coef l) (x y : c.O)
     exact absurd (mul_le_of_le_one_right (norm_nonneg _) (zc_norm c u)) (not_le.2 h)
 
 /- English proof (translation)
-Establish `hl0 : (l : PadicAlgCl l) ^ N ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 hl.out.ne_zero)`. Establish `h1 : ∀ᶠ y in nhds x, ‖(f y : PadicAlgCl l) - f x‖ < ‖(l : PadicAlgCl l) ^ N‖` using `((hf.sub continuous_const).norm.tendsto x).eventually_lt_const (by simpa using norm_pos_iff.2 hl0)`. Use `filter_upwards [h1] with y hy`. Conclude with `zc_dvd c _ _ (by push_cast; exact hy)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem zc_ev {l : ℕ} [hl : Fact l.Prime] {G : Type} [TopologicalSpace G] (c : Coef l)
     (f : G → c.O) (hf : Continuous fun g => (f g : PadicAlgCl l)) (N : ℕ) (x : G) :
@@ -42,15 +42,13 @@ private theorem zc_ev {l : ℕ} [hl : Fact l.Prime] {G : Type} [TopologicalSpace
   exact zc_dvd c _ _ (by push_cast; exact hy)
 
 /- English proof (translation)
-Take `⟨-, -, hlm, -⟩` from `UpperTheory.V.abelian₂.dvr_finite l c.O`. Use `letI : Algebra c.O c'.O := (Subalgebra.inclusion hcc).toRingHom.toAlgebra`. Establish `ha : ∀ (a : c.O) (x : c'.O), ((a • x : c'.O) : PadicAlgCl l) = a * x` using `fun _ _ => rfl`. Use `haveI : IsScalarTower ℤ_[l] c.O c'.O := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite c.O c'.O := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : FaithfulSMul c.O c'.O := (faithfulSMul_iff_algebraMap_injective _ _).2 (Subalgebra.inclusion_injective hcc)`. Use `haveI : Module.Free c.O c'.O := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis c.O c'.O`. Set `f : G → Fin m → c'.O` to `fun g i => ⟨z g i, hm g i⟩`. Use `⟨_, fun k => b k, fun k g i => b.coord k (f g i), fun k => ⟨fun i N => ?_, fun g h => ?_⟩, fun g i => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun x => ?_ filter_upwards [zc_ev c' (fun g => f g i) ((continuous_apply i).comp hz) N x] with y ⟨u, hu⟩` and prove the remaining obligations. Establish `e : (l : c'.O) ^ N * u = ((l : c.O) ^ N) • u` using `by rw [Algebra.smul_def, map_pow, map_natCast]`. Rewrite using `[Ideal.Quotient.eq, ← map_sub, hu, e, map_smul, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hlm N)`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : f (g * h) i = f g i + ∑ j, W.mat σ g i j • f h j` using `Subtype.ext (by`. Rewrite using `[Subalgebra.coe_add, AddSubmonoidClass.coe_finset_sum]`. Conclude with `congrFun (hc g h) i)`. Simplify using `only [e, map_add, map_sum, map_smul, Pi.add_apply, Matrix.mulVec, dotProduct, smul_eq_mul]`. Establish `e` using `congrArg Subtype.val (b.sum_repr (f g i))`.
-
-Rewrite `e` using `[AddSubmonoidClass.coe_finset_sum]`. Use `e.symm.trans (Finset.sum_congr rfl fun k _ => ?_)` and prove the remaining obligations. Rewrite using `[ha, mul_comm]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem zc_split {l : ℕ} [hl : Fact l.Prime] (c c' : Coef l) (hcc : c.O ≤ c'.O) {G : Type} [Group G]
     [TopologicalSpace G] {m : ℕ} (σ : G →* GL (Fin m) c.O) (z : G → Fin m → PadicAlgCl l) (hz : Continuous z)
@@ -87,27 +85,23 @@ private theorem zc_split {l : ℕ} [hl : Fact l.Prime] (c c' : Coef l) (hcc : c.
     rfl
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ _ _ m σ hΦ hσ`. Take `⟨c₀, -⟩` from `UpperTheory.V.X.So.coefOf l ⊥`. Take `⟨c, Q, σ₀, -, hQ, hσ₀⟩` from `UpperTheory.V.Ws.Eb.intModel c₀ σ hσ`. Establish `hQ' : ∀ g, W.pushRep (algebraMap c.O (PadicAlgCl l)) σ₀ g = Q⁻¹ * σ g * Q` using `fun g => by`. Rewrite using `[mul_assoc, hQ, inv_mul_cancel_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `Z : Submodule c.O (G → Fin m → c.O)` to `{ carrier := {z | (∀ i, AdicCont (maximalIdeal c.O) fun g => z g i) ∧ ∀ g h, z (g * h) = z g + W.mat σ₀ g *ᵥ z h} add_mem' := fun {a b} ha hb => ⟨fun i N => by`. Simplify using `only [Pi.add_apply, map_add]`. Conclude with `(ha.1 i N).add (hb.1 i N),`. Use `fun g h => by simp only [Pi.add_apply, Matrix.mulVec_add, ha.2 g h, hb.2 g h]; abel⟩`. Use the proof step `zero_mem' := ⟨fun i N => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Pi.zero_apply, map_zero]; exact IsLocallyConstant.const _, fun g h => by simp⟩`. Use the proof step `smul_mem' := fun r a ha => ⟨fun i N => by`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `(ha.1 i N).comp (fun x => Ideal.Quotient.mk _ r * x),`. Use `fun g h => by simp only [Pi.smul_apply, Matrix.mulVec_smul, ha.2 g h, smul_add]⟩ }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs⟩` from `UpperTheory.V.Th.Det.continuousCocycles_fg_integral_of_phiCond c σ₀ Z hΦ hσ₀ fun z hz => hz`. Set `ι : (G → Fin m → c.O) → G → Fin m → PadicAlgCl l` to `fun w g i => (w g i : PadicAlgCl l)`. Set `S : Submodule (PadicAlgCl l) (G → Fin m → PadicAlgCl l)` to `Submodule.span _ (ι '' s)`. Establish `hS : ∀ w ∈ Z, ι w ∈ S`. Introduce `w hw`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `hw` using `[← hs]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`. Consider the case `zero => exact S.zero_mem`. Consider the case `add y z _ _ hy hz => exact S.add_mem hy hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `smul a y _ hy => exact S.smul_mem (a : PadicAlgCl l) hy`. Set `T : (G → Fin m → PadicAlgCl l) →ₗ[PadicAlgCl l] (G → Fin m → PadicAlgCl l)` to `(Matrix.toLin' (Q : Matrix (Fin m) (Fin m) (PadicAlgCl l))).compLeft G`. Establish `hfg : (S.map T).FG` using `(Submodule.fg_span (s.finite_toSet.image ι)).map T`. Use `Module.Finite.iff_fg.2 (Submodule.FG.of_le hfg fun z hz => ?_)` and prove the remaining obligations. Set `z' : G → Fin m → PadicAlgCl l` to `fun g => ((Q⁻¹ : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l)) *ᵥ z g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT : ∀ g, (Q : Matrix (Fin m) (Fin m) (PadicAlgCl l)) *ᵥ z' g = z g` using `fun g => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `hz' : Continuous z'` using `continuous_const.matrix_mulVec hz.1`. Establish `hc' : ∀ g h, z' (g * h) = z' g + W.mat (W.pushRep (algebraMap c.O (PadicAlgCl l)) σ₀) g *ᵥ z' h`. Introduce `g h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : W.mat (W.pushRep (algebraMap c.O (PadicAlgCl l)) σ₀) g = ((Q⁻¹ * σ g * Q : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l))`. Rewrite using `[← hQ']`. Both sides reduce to the same expression. Rewrite using `[e, Units.val_mul, Units.val_mul, ← Matrix.mulVec_mulVec, hT, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_add]`. Conclude with `congrArg (fun v => ((Q⁻¹ : GL (Fin m) (PadicAlgCl l)) : Matrix (Fin m) (Fin m) (PadicAlgCl l)) *ᵥ v) (hz.2 g h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hσ₁ : Continuous (W.pushRep (algebraMap c.O (PadicAlgCl l)) σ₀)`. Rewrite using `[show (W.pushRep (algebraMap c.O (PadicAlgCl l)) σ₀ : G → _) = fun g => Q⁻¹ * σ g * Q from funext hQ']`. Conclude with `(continuous_const.mul hσ).mul continuous_const`. Take `⟨c', a, hcc, ha, hm⟩` from `UpperTheory.V.Th.Det.cocField c _ z' hσ₁ hz' hc'`. Take `⟨n, b, w, hw, e⟩` from `zc_split c c' hcc σ₀ (a • z') (hz'.const_smul a) hm fun g h => by`.
-
-Simplify using `only [Pi.smul_apply, hc', smul_add, Matrix.mulVec_smul]`. Use `⟨z', ?_, funext hT⟩` and prove the remaining obligations. Establish `e' : a • z' = ∑ k, b k • ι (w k)`. Use function extensionality and compare the values at `g i`. Rewrite using `[e, Finset.sum_apply, Finset.sum_apply]`.
-
-Both sides reduce to the same expression. Rewrite using `[SetLike.mem_coe, ← S.smul_mem_iff ha, e']`. Conclude with `S.sum_mem fun k _ => S.smul_mem _ (hS _ (hw k))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.Det.finite_cocycles_colRep_of_phiCond :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] {m : ℕ} (σ : G →* GL (Fin m) (Qbar l)), PhiCond G l → Continuous σ → Module.Finite (Qbar l) (Z1 (Loc.colRep σ)) := by

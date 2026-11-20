@@ -16,19 +16,19 @@ Both sides reduce to the same expression.
 @[simp] theorem opWord_nil (D : Λ → B) : opWord D [] = 1 := rfl
 
 /- English proof (translation)
-Simplify using `[opWord]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem opWord_cons (D : Λ → B) (l : Λ) (w : List Λ) :
     opWord D (l :: w) = D l * opWord D w := by simp [opWord]
 
 /- English proof (translation)
-Simplify using `[opWord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem opWord_append (D : Λ → B) (w w' : List Λ) :
     opWord D (w ++ w') = opWord D w * opWord D w' := by simp [opWord]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons l _ ih => simp [ih]`. Consider the case `swap l l' w => simp only [opWord_cons, ← mul_assoc, (hD l l').eq]`. Consider the case `trans _ _ h₁ h₂ => exact h₁.trans h₂`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem opWord_perm {D : Λ → B} (hD : ∀ l l', Commute (D l) (D l')) {w w' : List Λ}
     (h : w.Perm w') : opWord D w = opWord D w' := by
@@ -42,14 +42,14 @@ def IsOrderingRule (ord : (Λ →₀ ℕ) → List Λ) : Prop :=
   ∀ α, (ord α : Multiset Λ) = Finsupp.toMultiset α
 
 /- English proof (translation)
-Introduce `_` and use `Multiset.coe_toList _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isOrderingRule_toList :
     IsOrderingRule (fun α : Λ →₀ ℕ => (Finsupp.toMultiset α).toList) :=
   fun _ => Multiset.coe_toList _
 
 /- English proof (translation)
-Rewrite using `[← Multiset.coe_card, h α, Finsupp.card_toMultiset]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem IsOrderingRule.length_eq {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord)
     (α : Λ →₀ ℕ) : (ord α).length = degree α := by
@@ -60,7 +60,7 @@ noncomputable def opPoly (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) : Mv
   (MvPolynomial.basisMonomials Λ R).constr R (fun α => opWord D (ord α))
 
 /- English proof (translation)
-Establish `h : MvPolynomial.monomial α c = c • MvPolynomial.basisMonomials Λ R α`. Simplify using `[MvPolynomial.smul_monomial]`. Rewrite using `[h, map_smul, opPoly, Module.Basis.constr_basis]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem opPoly_monomial (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) (α : Λ →₀ ℕ) (c : R) :
     opPoly D ord (MvPolynomial.monomial α c) = c • opWord D (ord α) := by
@@ -69,9 +69,9 @@ theorem opPoly_monomial (D : Λ → B) (ord : (Λ →₀ ℕ) → List Λ) (α :
   rw [h, map_smul, opPoly, Module.Basis.constr_basis]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [add_mul, map_add, hp, hq]`. Consider the case `monomial α a`. Proceed by induction on `Q using MvPolynomial.induction_on' with`. Consider the case `add p q hp hq => simp only [mul_add, map_add, hp, hq]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `monomial β b`. Establish `hp : (ord (α + β)).Perm (ord α ++ ord β)`. Rewrite using `[← Multiset.coe_eq_coe, ← Multiset.coe_add, h, h, h, map_add]`. Rewrite using `[MvPolynomial.monomial_mul, opPoly_monomial, opPoly_monomial, opPoly_monomial, opWord_perm hD hp, opWord_append, smul_mul_smul_comm]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem opPoly_mul_of_commute {D : Λ → B} (hD : ∀ l l', Commute (D l) (D l'))
     {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (P Q : MvPolynomial Λ R) :
@@ -88,7 +88,7 @@ theorem opPoly_mul_of_commute {D : Λ → B} (hD : ∀ l l', Commute (D l) (D l'
         opWord_perm hD hp, opWord_append, smul_mul_smul_comm]
 
 /- English proof (translation)
-Use `h 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsOrderingRule.ord_zero {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) :
     ord 0 = [] := by
@@ -96,7 +96,7 @@ theorem IsOrderingRule.ord_zero {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrder
   simpa using this
 
 /- English proof (translation)
-Use `h (single l 1)` as an intermediate fact. Rewrite `this` using `[Finsupp.toMultiset_single, one_smul]`. Conclude with `List.perm_singleton.mp (Multiset.coe_eq_coe.mp this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsOrderingRule.ord_single {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (l : Λ) :
     ord (single l 1) = [l] := by
@@ -105,14 +105,14 @@ theorem IsOrderingRule.ord_single {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrd
   exact List.perm_singleton.mp (Multiset.coe_eq_coe.mp this)
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.C_apply, opPoly_monomial, h.ord_zero, opWord_nil, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem opPoly_C (D : Λ → B) {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (c : R) :
     opPoly D ord (MvPolynomial.C c) = algebraMap R B c := by
   rw [MvPolynomial.C_apply, opPoly_monomial, h.ord_zero, opWord_nil, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.X, opPoly_monomial, h.ord_single]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opPoly_X (D : Λ → B) {ord : (Λ →₀ ℕ) → List Λ} (h : IsOrderingRule ord) (l : Λ) :
     opPoly D ord (MvPolynomial.X l : MvPolynomial Λ R) = D l := by
@@ -126,7 +126,7 @@ noncomputable def commEval (D : Λ → B) (hD : ∀ l l', Commute (D l) (D l')) 
     (opPoly_mul_of_commute hD isOrderingRule_toList)
 
 /- English proof (translation)
-The claim follows from `opPoly_X D isOrderingRule_toList l`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem commEval_X (D : Λ → B) (hD : ∀ l l', Commute (D l) (D l')) (l : Λ) :
     commEval D hD (MvPolynomial.X l : MvPolynomial Λ R) = D l :=
@@ -151,15 +151,15 @@ noncomputable def constDeriv (v : σ → R) : Derivation R (MvPolynomial σ R) (
   mkDerivation R fun i => C (v i)
 
 /- English proof (translation)
-The claim follows from `mkDerivation_X _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem constDeriv_X (v : σ → R) (i : σ) : constDeriv v (X i) = C (v i) :=
   mkDerivation_X _ _ _
 
 /- English proof (translation)
-Use `derivation_ext fun j => ?_` and prove the remaining obligations. Rewrite using `[constDeriv_X, pderiv_X]`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constDeriv_single [DecidableEq σ] (i : σ) :
     constDeriv (Pi.single i (1 : R)) = pderiv i := by
@@ -170,7 +170,7 @@ theorem constDeriv_single [DecidableEq σ] (i : σ) :
   · simp [h]
 
 /- English proof (translation)
-Establish `h : ⁅constDeriv v, constDeriv v'⁆ = 0` using `derivation_ext fun j => by simp [Derivation.commutator_apply]`. Use `LinearMap.ext fun p => ?_` and prove the remaining obligations. Use `congrArg (fun D : Derivation R (MvPolynomial σ R) (MvPolynomial σ R) => D p) h` as an intermediate fact. Simplify `this` using `[Derivation.commutator_apply, sub_eq_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constDeriv_commute (v v' : σ → R) :
     Commute ((constDeriv v).toLinearMap : Module.End R (MvPolynomial σ R))
@@ -182,7 +182,7 @@ theorem constDeriv_commute (v v' : σ → R) :
   simpa [Derivation.commutator_apply, sub_eq_zero] using this
 
 /- English proof (translation)
-Rewrite using `[← constDeriv_single, ← constDeriv_single]`. Conclude with `constDeriv_commute _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pderiv_commute (i j : σ) :
     Commute ((pderiv i).toLinearMap : Module.End R (MvPolynomial σ R)) (pderiv j).toLinearMap := by
@@ -194,7 +194,7 @@ noncomputable def pderivEval : MvPolynomial σ R →ₐ[R] Module.End R (MvPolyn
   commEval (fun i => (pderiv i).toLinearMap) pderiv_commute
 
 /- English proof (translation)
-The claim follows from `commEval_X _ _ i`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem pderivEval_X (i : σ) :
     pderivEval (X i : MvPolynomial σ R) = (pderiv i).toLinearMap := commEval_X _ _ i
@@ -204,7 +204,7 @@ noncomputable def constDerivEval (v : Λ → σ → R) :
   commEval (fun l => (constDeriv (v l)).toLinearMap) fun _ _ => constDeriv_commute _ _
 
 /- English proof (translation)
-The claim follows from `commEval_X _ _ l`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem constDerivEval_X (v : Λ → σ → R) (l : Λ) :
     constDerivEval v (X l) = (constDeriv (v l)).toLinearMap := commEval_X _ _ l
@@ -223,23 +223,21 @@ noncomputable abbrev germIdeal (σ R : Type*) [CommRing R] : Ideal (MvPowerSerie
   RingHom.ker (constantCoeff : MvPowerSeries σ R →+* R)
 
 /- English proof (translation)
-Simplify using `[RingHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem X_mem_germIdeal (i : σ) : (X i : MvPowerSeries σ R) ∈ germIdeal σ R := by
   simp [RingHom.mem_ker]
 
 /- English proof (translation)
-Establish `hidx : ∀ d : σ →₀ ℕ, d ≠ 0 → ∃ i, d i ≠ 0` using `fun d hd => by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `hd (Finsupp.ext hc)`. Use `choose idx hidx using hidx`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `part : σ → MvPowerSeries σ R` to `fun i d => if hd : d ≠ 0 then (if idx d hd = i then coeff d g else 0) else 0`. Establish `hpart : ∀ i d, coeff d (part i) = if hd : d ≠ 0 then (if idx d hd = i then coeff d g else 0) else 0` using `fun _ _ => rfl`. Establish `hdvd : ∀ i, (X i : MvPowerSeries σ R) ∣ part i` using `fun i => by`. Rewrite using `[X_dvd_iff]`. Introduce `d hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Rewrite using `[hpart]`. Use `split_ifs with h₁ h₂`. Conclude with `absurd hd (h₂ ▸ hidx d h₁)`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `choose h hh using hdvd`. Use `⟨h, fun i d hd => ?_, ?_⟩` and prove the remaining obligations. Establish `h₁ : coeff (single i 1 + d) (part i) = coeff d (h i)`. Rewrite using `[hh, X_def, coeff_add_monomial_mul, one_mul]`. Rewrite using `[← h₁, hpart]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `h₂ : coeff (single i 1 + d) g = 0` using `hg _ (by simp; omega)`. Simplify using `[h₂]`. Use extensionality with `d`. Simplify using `only [← hh, map_sum, hpart]`. Distinguish the cases in `hd : d = 0`.
-
-Substitute `hd` using the available equality. Simplify using `using hg 0 (by simp)`. Simplify using `[hd]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_X_mul [Fintype σ] {n : ℕ} {g : MvPowerSeries σ R}
     (hg : ∀ d : σ →₀ ℕ, degree d < n + 1 → coeff d g = 0) :
@@ -278,9 +276,9 @@ theorem exists_eq_sum_X_mul [Fintype σ] {n : ℕ} {g : MvPowerSeries σ R}
     · simp [hd]
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype σ`. Use `le_antisymm (fun g hg => ?_) (Ideal.span_le.mpr ?_)` and prove the remaining obligations. Take `⟨h, -, rfl⟩` from `exists_eq_sum_X_mul (n := 0) (g := g) fun d hd => by`. Take `rfl : d = 0` from `by simpa [degree_eq_zero_iff] using hd`. Simplify using `using hg`.
+Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `X_mem_germIdeal i`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem germIdeal_eq_span [Finite σ] :
     germIdeal σ R = Ideal.span (Set.range (X : σ → MvPowerSeries σ R)) := by
@@ -294,15 +292,15 @@ theorem germIdeal_eq_span [Finite σ] :
     exact X_mem_germIdeal i
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype σ`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. It suffices to establish `h : (n : ℕ∞) ≤ g.order from fun d hd => coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hd) h)`. Proceed by induction on `n generalizing g with`.
+Split into cases according to the possible forms of the given data. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite `hg` using `[pow_succ]`. Use `Submodule.mul_induction_on hg (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Use `le_trans ?_ le_order_mul` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Use `add_le_add (ih ha) ?_` and prove the remaining obligations. Conclude with `nat_le_order (n := 1) fun d hd => by` after adjusting the coercions. Take `rfl : d = 0` from `by simpa [degree_eq_zero_iff] using hd`. Simplify using `using hb`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Proceed by induction.
 
-Conclude with `(le_min ha hb).trans min_order_le_add`. Proceed by induction on `n generalizing g with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Introduce `hg`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, hh, rfl⟩` from `exists_eq_sum_X_mul hg`. Rewrite using `[pow_succ']`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_mul (X_mem_germIdeal i) (ih (hh i))`.
+A detailed English derivation is pending.
 -/
 theorem mem_germIdeal_pow_iff [Finite σ] {n : ℕ} {g : MvPowerSeries σ R} :
     g ∈ germIdeal σ R ^ n ↔ ∀ d : σ →₀ ℕ, degree d < n → coeff d g = 0 := by
@@ -332,7 +330,7 @@ theorem mem_germIdeal_pow_iff [Finite σ] {n : ℕ} {g : MvPowerSeries σ R} :
       exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_mul (X_mem_germIdeal i) (ih (hh i))
 
 /- English proof (translation)
-Rewrite using `[mem_germIdeal_pow_iff]`. Conclude with `⟨nat_le_order, fun h d hd => coeff_of_lt_order (lt_of_lt_of_le (by exact_mod_cast hd) h)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_germIdeal_pow_iff_le_order [Finite σ] {n : ℕ} {g : MvPowerSeries σ R} :
     g ∈ germIdeal σ R ^ n ↔ (n : ℕ∞) ≤ g.order := by

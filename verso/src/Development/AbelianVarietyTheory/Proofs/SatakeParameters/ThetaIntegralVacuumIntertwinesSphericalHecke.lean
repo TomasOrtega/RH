@@ -19,15 +19,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ThetaIntHecke
 
 /- English proof (translation)
-Establish `hu : ∀ γ ∈ Γ, ∀ h, (fun h => Kn h * F (h * x)) (γ * h) = (fun h => Kn h * F (h * x)) h`. Introduce `γ hγ h`. Simplify using `only [hKl γ hγ, mul_assoc, hFl γ hγ]`. Establish `h1e : ∀ a ∈ A, ∃ y, (fun h => Kn h * F (h * a)) = fun h => (fun h => Kn h * F (h * x)) (h * y)`. Introduce `a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA a ha`. Use `⟨k₁, funext fun h => ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hKr k₁ hk₁, ← mul_assoc, hFr k₂ hk₂, ← mul_assoc]`. Establish `h2e : ∀ a ∈ A', ∃ y, (fun h => Kn (h * a) * F h) = fun h => (fun h => Kn h * F (h * x)) (h * y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA' a ha`. Use `⟨k₁ * x⁻¹, funext fun h => ?_⟩` and prove the remaining obligations. Establish `: h * (k₁ * x⁻¹) * x = h * k₁` using `by group`. Simplify using `only [this]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hFr k₁ hk₁, ← mul_assoc, hKr k₂ hk₂]`. Establish `key : ∀ u : H → ℂ, (∃ y, u = fun h => (fun h => Kn h * F (h * x)) (h * y)) → IntegrableOn u 𝓕 μ ∧ ∫ h in 𝓕, u h ∂μ = ∫ h in 𝓕, Kn h * F (h * x) ∂μ`. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨integrableOn_fundamentalDomain_mul_right h𝓕 y _ hu hx, setIntegral_fundamentalDomain_mul_right h𝓕 y _ hu⟩`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `⟨integrable_finsetSum _ fun a ha => (key _ (h1e a ha)).1, integrable_finsetSum _ fun a ha => (key _ (h2e a ha)).1, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_finsetSum _ fun a ha => (key _ (h1e a ha)).1, integral_finsetSum _ fun a ha => (key _ (h2e a ha)).1, Finset.sum_congr rfl fun a ha => (key _ (h1e a ha)).2, Finset.sum_congr rfl fun a ha => (key _ (h2e a ha)).2, Finset.sum_const, Finset.sum_const, hcard]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_move {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [MeasurableSpace H]
     [BorelSpace H] {μ : Measure H} [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]
@@ -73,17 +73,17 @@ theorem integral_move {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGr
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hef, hϖ, hϖ2, hd, hJ, hχ, hα, hdiv, hR, hrep⟩` from `h`. Take `⟨he, v, hf⟩` from `HeckeDual.idem_of_isPrimeIdem hef`. Take `⟨a, rfl⟩` from `(HeckeDual.suppF_iff V hf α).1 hα`. Take `⟨δ, hδ, hσδ⟩` from `HeckeDual.exists_skew D`. Use `HeckeDual.isLattice_frameLat V` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hK : ∀ g, g ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k} ↔ ∃ k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram (GlobalTheory.AdelicU.frameLat V) v, GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k = g` using `fun g => by`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h3, h2⟩`. Take `⟨k, rfl⟩` from `(HeckeDual.suppF_iff V hf g).1 h2`. Rewrite `h3` using `[GlobalTheory.AdelicU.KsphC_eq]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `(GlobalTheory.AdelicU.mem_levelOff.1 h3).2.2 v (Finset.notMem_empty v)`. Rewrite `h4` using `[GlobalTheory.AdelicU.proj_emb_self]`. Conclude with `⟨k, h4, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `h2` using `(HeckeDual.suppF_iff V hf _).2 ⟨k, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.AdelicU.KsphC_eq]`. Conclude with `GlobalTheory.AdelicU.emb_mem_levelOff (Finset.notMem_empty v) hk`. Take `⟨R', h1, h2, h3⟩` from `HeckeDual.exists_rep_inv (HeckeDual.modular_eq_one D.sp.cm.sig V.gram (fun x => star_star x) hδ hσδ ((GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).2 V) v) (GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v) (GlobalTheory.AdelicU.emb_injective _ _ v) _ (GlobalThe …`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0` using `fun h => hϖ2 (by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ϖ = 0 from RingOfIntegers.ext h]`. Conclude with `zero_mem _)`. Establish `hh : ∀ (β γ : GA D V), (∃ k₁ ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k}, ∃ k₂ ∈ {k | k ∈ KsphC V ∅ ∧ SuppF V f k}, γ = k₁ * β * k₂) → ∃ k₁ ∈ hyp V P, ∃ k₂ ∈ hyp V P, γ = k₁ * β * k₂`. Introduce and unpack `β γ ⟨k₁, g₁, k₂, g₂, rfl⟩`. Conclude with `⟨k₁, ⟨g₁.1, e, f, hef, g₁.2⟩, k₂, ⟨g₂.1, e, f, hef, g₂.2⟩, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v a), R', ⟨e, f, ϖ, _, hS, hef, hϖ, hϖ2, ?_, hJ, hχ, (HeckeDual.suppF_iff V hf _).2 (inv_mem ⟨a, rfl⟩), (GlobalTheory.DivDual.divAt_inv_and_mul V e _ d _ he hϖ0 hdiv).1, fun γ hγ => (HeckeDual.suppF_iff V …` and prove the remaining obligations. Rewrite using `[dualLab, List.pairwise_reverse, List.pairwise_map]`. Conclude with `hd.imp fun h => neg_le_neg h`. Take `⟨x, rfl⟩` from `(h1 γ hγ).1`. Conclude with `GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_dual (V : HSp D) (P : Pl D.host.E) (d : List ℤ) (R : Finset (GA D V)) (h : SphOp V P d R) :
     ∃ α ∈ GfC V, ∃ R', SphOp V P (dualLab d) R' ∧ R'.card = R.card ∧
@@ -133,7 +133,7 @@ theorem exists_dual (V : HSp D) (P : Pl D.host.E) (d : List ℤ) (R : Finset (GA
     exact GlobalTheory.AdelicU.mem_finPts.2 (GlobalTheory.AdelicU.projInf_emb _ _ v x)
 
 /- English proof (translation)
-Unfold `opOf`. Rewrite using `[Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem opOf_single {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M)
     (P : Pl D.host.E) (d : List ℤ) : opOf π P (Finsupp.single d 1) = ∑ γ ∈ Hk3.rep V P d, π γ := by
@@ -141,7 +141,7 @@ theorem opOf_single {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π :
   rw [Finsupp.sum_single_index (by exact zero_smul _ _), one_smul]
 
 /- English proof (translation)
-Unfold `opOf dualC`. Rewrite using `[Finsupp.sum_mapDomain_index (by exact fun _ => zero_smul _ _) (by exact fun _ _ _ => add_smul _ _ _)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem opOf_dualC {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : GA D V →* Module.End ℂ M)
     (P : Pl D.host.E) (c : List ℤ →₀ ℂ) :
@@ -151,11 +151,11 @@ theorem opOf_dualC {V : HSp D} {M : Type} [AddCommGroup M] [Module ℂ M] (π : 
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h : IsLab V P d`. Establish `hs : SphOp V P d (Hk3.rep V P d)`. Unfold `Hk3.rep`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, R', h1, h2, h3, h4⟩` from `exists_dual V P d _ hs`. Use `⟨α, hα, R', h2, h3, h4, fun M _ _ π u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).1 _ _ h1).2 M π u hu, opOf_single, LinearMap.sum_apply]`. Establish `h0 : Hk3.rep V P d = ∅` using `dif_neg h`. Establish `h1 : Hk3.rep V P (dualLab d) = ∅` using `dif_neg fun h' => h (((GlobalTheory.T.spherical_label_operators_on_hyperspecial_fixed_vectors V P).2.2.2.1 d).1.2 h')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨1, one_mem _, ∅, by rw [h0], by simp [h0], by simp, fun M _ _ π u _ => by rw [h1]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual_rep (V : HSp D) (P : Pl D.host.E) (d : List ℤ) :
     ∃ α ∈ GfC V, ∃ R' : Finset (GA D V), R'.card = (Hk3.rep V P d).card ∧
@@ -176,7 +176,7 @@ theorem exists_dual_rep (V : HSp D) (P : Pl D.host.E) (d : List ℤ) :
     exact ⟨1, one_mem _, ∅, by rw [h0], by simp [h0], by simp, fun M _ _ π u _ => by rw [h1]⟩
 
 /- English proof (translation)
-Unfold `hk Finsupp.sum`. Rewrite using `[LinearMap.sum_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hk_apply (V : HSp D) (P : Pl D.host.E) (c : List ℤ →₀ ℂ) (F : GA D V → ℂ) (g : GA D V) :
     hk V P c F g = ∑ d ∈ c.support, c d * ∑ γ ∈ Hk3.rep V P d, F (g * γ) := by
@@ -185,29 +185,27 @@ theorem hk_apply (V : HSp D) (P : Pl D.host.E) (c : List ℤ →₀ ℂ) (F : GA
   rfl
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om P hW ν 𝓕 hν h𝓕 hfix cS cT hM f hf Φ hΦl hΦr hint`. Establish `: IsTopologicalGroup (GA D T)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Establish `: BorelSpace (GA D T)` using `⟨rfl⟩`. Establish `: Countable (GQ T)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig T.gram`. Establish `: ν.IsMulRightInvariant` using `GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D T ν hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hl, hr⟩` from `GlobalTheory.thetaKO_rat_left_and_eigen_right ψ S T χS χT om hW f hf.1`. Establish `hfT : ∀ k ∈ hyp T P, om (1, k) f = f` using `fun k hk => by`. Take `⟨e, f', hef⟩ : ∃ e f', IsPrimeIdem P e f'` from `hk.2.imp fun _ h => h.imp fun _ h => h.1`. Use `hfix f hf 1 ⟨⟨one_mem _, fun y => ?_, by simp⟩, e, f', hef, fun i j => ?_⟩ k hk` and prove the remaining obligations. Establish `: finMat D.sp.cm.sig S.gram (1 : GA D S) = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `finMat`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[this, Matrix.one_mulVec]`. Establish `: Formalism.L2.Theta.mt S (1 : GA D S) = 1` using `by simp [Formalism.L2.Theta.mt]`. Rewrite using `[this, sub_self, Matrix.zero_apply, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hth : ∀ g h a b, thetaKO om (g * a) (h * b) f = om (g, h) (om (a, b) f) 0` using `fun g h a b => by`. Unfold `thetaKO`. Rewrite using `[show ((g * a, h * b) : GA D S × GA D T) = (g, h) * (a, b) from rfl, map_mul, Module.End.mul_apply]`. Use function extensionality and compare the values at `g`. Establish `step : ∀ d, IntegrableOn (fun h => thetaKO om g h f * ∑ a ∈ Hk3.rep T P d, Φ (h * a)) 𝓕 ν ∧ IntegrableOn (fun h => (∑ a ∈ Hk3.rep T P (dualLab d), thetaKO om g (h * a) f) * Φ h) 𝓕 ν ∧ ∫ h in 𝓕, thetaKO om g h f * ∑ a ∈ Hk3.rep T P d, Φ (h * a) ∂ν = ∫ h in 𝓕, (∑ a ∈ Hk3.rep T P (d …` using `fun d => by`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨α, hα, R', h1, h2, h3, h4⟩` from `exists_dual_rep T P d`. Establish `h5` using `h4 _ (om.comp (MonoidHom.inr _ _)) f hfT`. Establish `h6 : ∀ h, ∑ a ∈ Hk3.rep T P (dualLab d), thetaKO om g (h * a) f = ∑ a ∈ R', thetaKO om g (h * a) f` using `fun h => by`. Establish `h7` using `congrArg (fun u => om (g, h) u 0) h5`. Simplify using `only [map_sum, Finset.sum_apply] at h7`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h8 : ∀ a, thetaKO om g (h * a) f = om (g, h) (om (1, a) f) 0` using `fun a => by rw [← hth, mul_one]`. Simplify using `only [h8]`. Conclude with `h7.symm`. Simplify using `only [h6]`. Conclude with `integral_move h𝓕 (hyp T P) α _ R' (fun h => thetaKO om g h f) Φ h2 h3 h1 hΦl hΦr (fun γ hγ h => by simpa only [one_mul] using hl 1 (one_mem _) γ hγ g h) (fun k hk h => by simpa only [one_mul, mul_one] using hr 1 k 1 (by rw [hfT k hk, one_smul]) g h) (hint g α hα)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hker : ∀ h, ∑ d ∈ cT.support, cT d * ∑ a ∈ Hk3.rep T P (dualLab d), thetaKO om g (h * a) f = ∑ d ∈ cS.support, cS d * ∑ a ∈ Hk3.rep S P d, thetaKO om (g * a) h f` using `fun h => by`. Establish `h7` using `congrArg (fun u => om (g, h) u 0) (hM f hf)`. Rewrite `h7` using `[opOf_dualC]`. Simplify using `only [opOf, Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h7`. Establish `h8 : ∀ a, thetaKO om g (h * a) f = om (g, h) (om (1, a) f) 0` using `fun a => by rw [← hth, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h9 : ∀ a, thetaKO om (g * a) h f = om (g, h) (om (a, 1) f) 0` using `fun a => by rw [← hth, mul_one]`. Simplify using `only [h8, h9]`. Conclude with `h7.symm`. Establish `hi1 : ∀ g, IntegrableOn (fun h => thetaKO om g h f * Φ h) 𝓕 ν` using `fun g => by`. Simplify `hint g 1 (one_mem _)` using `only [mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hk_apply]`. Unfold `Lift.liftInt`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun d _ => mul_left_comm _ _ _`. Use `_ = ∫ h in 𝓕, ∑ d ∈ cT.support, cT d * ((∑ a ∈ Hk3.rep T P (dualLab d), thetaKO om g (h * a) f) * Φ h) ∂ν := by`. Rewrite using `[integral_finsetSum _ fun d _ => (step d).1.const_mul _, integral_finsetSum _ fun d _ => (step d).2.1.const_mul _]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_const_mul, (step d).2.2]`. Use `_ = ∫ h in 𝓕, ∑ d ∈ cS.support, cS d * ∑ a ∈ Hk3.rep S P d, thetaKO om (g * a) h f * Φ h ∂ν := by`. Use `congr 1`. Use function extensionality and compare the values at `h`. Simplify using `only [← mul_assoc, ← Finset.sum_mul]`.
-
-Rewrite using `[hker]`. Use `_ = _ := by`. Rewrite using `[integral_finsetSum _ fun d _ => (integrable_finsetSum _ fun a _ => hi1 (g * a)).const_mul _]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul, integral_finsetSum _ fun a _ => hi1 (g * a)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftInt_hk : ∀ {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (P : Pl D.host.E), IsWeilDatumO ψ S T χS χT om → ∀ (ν : Measure (GA D T)) (𝓕 : Set (GA D T)), ν.IsHaarMeasure → IsFundamentalDomain (GQ T) 𝓕 ν → VacFix ψ om P → ∀ cS cT, Match ψ om P cS (dualC cT) → ∀ f, IsVacAt ψ S T P f → ∀ Φ : GA D T → ℂ, (∀ γ ∈ GQ T, ∀ h, Φ (γ * h) = Φ h) → (∀ k ∈ hyp T P, ∀ h, Φ (h * k) = Φ h) → (∀ g, ∀ y ∈ GfC T, IntegrableOn (fun h => thetaKO om g h f * Φ (h * y)) 𝓕 ν) → Lift.liftInt ν 𝓕 (thetaKO om) f (hk T P cT Φ) = hk S P cS (Lift.liftInt ν 𝓕 (thetaKO om) f Φ) := by
   intro D ψ S T χS χT om P hW ν 𝓕 hν h𝓕 hfix cS cT hM f hf Φ hΦl hΦr hint

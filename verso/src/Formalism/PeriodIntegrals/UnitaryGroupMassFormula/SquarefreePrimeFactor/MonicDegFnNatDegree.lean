@@ -9,14 +9,14 @@ namespace PI.SqfPrimeFactor.W
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_add (degree_sum_fin_lt c)`.
+A detailed English derivation is pending.
 -/
 theorem monicDeg_fn_monic (d : ℕ) (c : Fin d → ZMod g) :
     (X ^ d + ∑ i, C (c i) * X ^ (i : ℕ) : (ZMod g)[X]).Monic :=
   monic_X_pow_add (degree_sum_fin_lt c)
 
 /- English proof (translation)
-Rewrite using `[natDegree_add_eq_left_of_degree_lt, natDegree_X_pow]`. Rewrite using `[degree_X_pow]`. Conclude with `degree_sum_fin_lt c`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monicDeg_fn_natDegree (d : ℕ) (c : Fin d → ZMod g) :
     (X ^ d + ∑ i, C (c i) * X ^ (i : ℕ) : (ZMod g)[X]).natDegree = d := by
@@ -25,9 +25,9 @@ theorem monicDeg_fn_natDegree (d : ℕ) (c : Fin d → ZMod g) :
   exact degree_sum_fin_lt c
 
 /- English proof (translation)
-Rewrite using `[coeff_add, coeff_X_pow, if_neg (Nat.ne_of_lt i.is_lt), zero_add, finsetSum_coeff]`. Simplify using `only [coeff_C_mul_X_pow]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hj (Fin.ext h).symm`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monicDeg_fn_coeff (d : ℕ) (c : Fin d → ZMod g) (i : Fin d) :
     (X ^ d + ∑ j, C (c j) * X ^ (j : ℕ) : (ZMod g)[X]).coeff i = c i := by
@@ -42,11 +42,9 @@ theorem monicDeg_fn_coeff (d : ℕ) (c : Fin d → ZMod g) (i : Fin d) :
   · simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hf`. Conclude with `⟨monicDeg_fn_monic d c, monicDeg_fn_natDegree d c⟩`. Introduce and unpack `⟨hm, hd⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `Finset.mem_image.2 ⟨fun i => f.coeff i, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `show X ^ d + ∑ i : Fin d, C (f.coeff i) * X ^ (i : ℕ) = f`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => C (f.coeff i) * X ^ i) d]`. Establish `h` using `hm.as_sum`. Rewrite `h` using `[hd]`.
-
-Conclude with `h.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_monicDeg {d : ℕ} {f : (ZMod g)[X]} :
     f ∈ monicDeg g d ↔ f.Monic ∧ f.natDegree = d := by
@@ -63,9 +61,9 @@ theorem mem_monicDeg {d : ℕ} {f : (ZMod g)[X]} :
     exact h.symm
 
 /- English proof (translation)
-Unfold `monicDeg`. Rewrite using `[Finset.card_image_of_injective]`. Simplify using `[Finset.card_univ, ZMod.card]`. Introduce `c c' h`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun f : (ZMod g)[X] => f.coeff i) h` as an intermediate fact. Simplify `this` using `only [monicDeg_fn_coeff]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_monicDeg (d : ℕ) : (monicDeg g d).card = g ^ d := by
   unfold monicDeg
@@ -78,7 +76,7 @@ theorem card_monicDeg (d : ℕ) : (monicDeg g d).card = g ^ d := by
 
 open Classical in
 /- English proof (translation)
-Unfold `irrDeg`. Rewrite using `[Finset.mem_filter, mem_monicDeg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_irrDeg {d : ℕ} {q : (ZMod g)[X]} :
     q ∈ irrDeg g d ↔ (q.Monic ∧ q.natDegree = d) ∧ Irreducible q := by

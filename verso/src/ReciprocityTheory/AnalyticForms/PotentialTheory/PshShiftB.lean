@@ -11,9 +11,9 @@ noncomputable section
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact WithTop.coe_le_coe.2 le_top`. Consider the case `exact_mod_cast (le_top : ((2 : ℕ∞) ≤ ⊤))`. Consider the case `norm_num`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `decide`.
+A detailed English derivation is pending.
 -/
 theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   first
@@ -24,23 +24,21 @@ theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   | decide
 
 /- English proof (translation)
-Use `set φ : (Fin e → ℂ) → ℝ := Ω.φ p ∘ (A.chart j).symm with hφdef`. Use `set ψ : (Fin e → ℂ) → ℝ := w ∘ (A.chart j).symm with hψdef`. Use `set S : Set (Fin e → ℂ) := (A.chart j).target ∩ (A.chart j).symm ⁻¹' Ω.U p with hSdef`. Establish `hSo : IsOpen S` using `(A.chart j).isOpen_inter_preimage_symm (Ω.isOpen_U p)`. Establish `hz0 : A.chart j p ∈ S`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(A.chart j).map_source hp, ?_⟩` and prove the remaining obligations. Use `show (A.chart j).symm (A.chart j p) ∈ Ω.U p`. Rewrite using `[(A.chart j).left_inv hp]`. Conclude with `Ω.mem_U p`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 hSo _ hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Metric.closedBall (A.chart j p) (ε / 2) ⊆ S` using `(Metric.closedBall_subset_ball (by linarith)).trans hball`. Establish `hφc : ContDiffOn ℝ 2 φ S` using `(hΩ.1 p j).of_le two_le_infty`. Establish `hψc : ContDiffOn ℝ 2 ψ S` using `((hw j).of_le two_le_infty).mono (fun y hy => ⟨hy.1, Set.mem_univ _⟩)`. Establish `hLφ` using `continuousOn_levi hSo hφc`. Establish `hLψ` using `continuousOn_levi hSo hψc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set K : Set ((Fin e → ℂ) × (Fin e → ℂ)) := Metric.closedBall (A.chart j p) (ε / 2) ×ˢ Metric.sphere 0 1 with hKdef`. Establish `hK : IsCompact K` using `(isCompact_closedBall _ _).prod (isCompact_sphere _ _)`. Establish `hKS : K ⊆ S ×ˢ Set.univ` using `Set.prod_mono hsub (Set.subset_univ _)`. Establish `hposK : ∀ q ∈ K, 0 < levi φ q.1 q.2`. Introduce `q hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hpos p j q.1 (hsub hq.1) q.2 ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `hq.2`. Rewrite `h1` using `[h0]`. Simplify using `at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hg : ContinuousOn (fun q : (Fin e → ℂ) × (Fin e → ℂ) => levi ψ q.1 q.2 / levi φ q.1 q.2) K` using `(hLψ.mono hKS).div (hLφ.mono hKS) (fun q hq => (hposK q hq).ne')`. Take `⟨M, hM⟩` from `hK.bddBelow_image hg`. Use `⟨ε / 2, by positivity, M, hsub, ?_⟩` and prove the remaining obligations. Introduce `y hy u`. Distinguish the cases in `hu : u = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Substitute `hu` using the available equality. Simplify using `[levi_zero]`. Establish `ht : 0 < ‖u‖` using `norm_pos_iff.2 hu`. Choose the witnesses or unpack the hypotheses as in `⟨s, v, hv, rfl⟩ : ∃ s : ℝ, ∃ v ∈ Metric.sphere (0 : Fin e → ℂ) 1, u = s • v := by`. Use `⟨‖u‖, ‖u‖⁻¹ • u, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[norm_smul, hu, ht.ne']`. Simplify using `[smul_smul, hu, ht.ne']`. Establish `hq : ((y, v) : (Fin e → ℂ) × (Fin e → ℂ)) ∈ K` using `⟨hy, hv⟩`. Establish `h1` using `hM ⟨(y, v), hq, rfl⟩`. Establish `h2` using `hposK _ hq`.
-
-Simplify using `only at h1 h2`. Establish `h3 : M * levi φ y v ≤ levi ψ y v`. Rewrite `h1` using `[le_div_iff₀ h2]`. Then use the resulting hypothesis. Rewrite using `[levi_smul_dir, levi_smul_dir]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 (sq_nonneg s)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pshShift_local (A : FinHolAtlas e X) (Ω : LocPot X) (hΩ : IsPotential A Ω)
     (hpos : IsPosPot A Ω) (w : X → ℝ) (hw : A.Smooth w) (p : X) (j : Fin A.n)
@@ -102,35 +100,31 @@ theorem pshShift_local (A : FinHolAtlas e X) (Ω : LocPot X) (hΩ : IsPotential 
     nlinarith [mul_le_mul_of_nonneg_left h3 (sq_nonneg s)]
 
 /- English proof (translation)
-Introduce `e X _ _ _ A Ω hΩ hpos w hw`. Use `choose jq hjq using A.cover`. Use `choose r hr m hsubq hlocq using fun q => pshShift_local A Ω hΩ hpos w hw q (jq q) (hjq q)`. Establish `hVo : ∀ q, IsOpen ((A.chart (jq q)).source ∩ A.chart (jq q) ⁻¹' Metric.ball (A.chart (jq q) q) (r q))` using `fun q => (A.chart (jq q)).continuousOn.isOpen_inter_preimage (A.chart (jq q)).open_source Metric.isOpen_ball`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun q => (A.chart (jq q)).source ∩ A.chart (jq q) ⁻¹' Metric.ball (A.chart (jq q) q) (r q)) hVo (fun q _ => Set.mem_iUnion.2 ⟨q, hjq q, Metric.mem_ball_self (hr q)⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ q ∈ t, |m q|, ?_⟩` and prove the remaining obligations. Introduce `x k y hy u`. Use `show 0 ≤ levi ((fun z => w z + (∑ q ∈ t, |m q|) * Ω.φ x z) ∘ (A.chart k).symm) y u`. Establish `hyk : y ∈ (A.chart k).target` using `hy.1`. Establish `hzx : (A.chart k).symm y ∈ Ω.U x` using `(show (A.chart k).symm y ∈ Set.univ ∩ Ω.U x from hy.2).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hqt, hzq⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ ((A.chart k).symm y)))`. Establish `hzq1 : (A.chart k).symm y ∈ (A.chart (jq q)).source ∩ A.chart (jq q) ⁻¹' Metric.ball (A.chart (jq q) q) (r q)` using `hzq`. Establish `hsub1` using `hsubq q`. Establish `hloc1` using `hlocq q`. Establish `hC : -m q ≤ ∑ q ∈ t, |m q|` using `(neg_le_abs (m q)).trans (Finset.single_le_sum (fun i _ => abs_nonneg (m i)) hqt)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Generalize the expression as in `∑ q ∈ t, |m q| = C at hC ⊢`. Generalize the expression as in `jq q = jj at hzq1 hsub1 hloc1`. Take `⟨hzj, hzb⟩` from `hzq1`. Establish `hτS : A.chart jj ((A.chart k).symm y) ∈ (A.chart jj).target ∩ (A.chart jj).symm ⁻¹' Ω.U q` using `hsub1 (Metric.ball_subset_closedBall hzb)`. Establish `hzq' : (A.chart k).symm y ∈ Ω.U q`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h` using `hτS.2`. Rewrite `h` using `[Set.mem_preimage, (A.chart jj).left_inv hzj]`. Then use the resulting hypothesis. Establish `hτx : A.chart jj ((A.chart k).symm y) ∈ (A.chart jj).target ∩ (A.chart jj).symm ⁻¹' Ω.U x`. Use `⟨(A.chart jj).map_source hzj, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, (A.chart jj).left_inv hzj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hzx`. Establish `hψ2 : ContDiffAt ℝ 2 (w ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y))` using `((hw jj).contDiffAt (((A.chart jj).isOpen_inter_preimage_symm isOpen_univ).mem_nhds ⟨(A.chart jj).map_source hzj, Set.mem_univ _⟩)).of_le two_le_infty`. Establish `hΦx2 : ContDiffAt ℝ 2 (Ω.φ x ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y))` using `((hΩ.1 x jj).contDiffAt (((A.chart jj).isOpen_inter_preimage_symm (Ω.isOpen_U x)).mem_nhds hτx)).of_le two_le_infty`. Establish `hΦq2 : ContDiffAt ℝ 2 (Ω.φ q ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y))` using `((hΩ.1 q jj).contDiffAt (((A.chart jj).isOpen_inter_preimage_symm (Ω.isOpen_U q)).mem_nhds hτS)).of_le two_le_infty`. Establish `hτa : AnalyticAt ℂ (A.chart jj ∘ (A.chart k).symm) y` using `A.holo k jj y ⟨hyk, hzj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf2 : ContDiffAt ℝ 2 ((fun z => w z + C * Ω.φ x z) ∘ (A.chart jj).symm) ((A.chart jj ∘ (A.chart k).symm) y)` using `hψ2.add (contDiffAt_const.mul hΦx2)`. Establish `hev1 : (fun z => w z + C * Ω.φ x z) ∘ (A.chart k).symm =ᶠ[𝓝 y] ((fun z => w z + C * Ω.φ x z) ∘ (A.chart jj).symm) ∘ (A.chart jj ∘ (A.chart k).symm)`. Use `Filter.eventuallyEq_of_mem (((A.chart k).isOpen_inter_preimage_symm (A.chart jj).open_source).mem_nhds ⟨hyk, hzj⟩) ?_` and prove the remaining obligations. Introduce `y' hy'`. Simplify using `only [Function.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(A.chart jj).left_inv hy'.2]`. Establish `hpt : (A.chart jj ∘ (A.chart k).symm) y = A.chart jj ((A.chart k).symm y)` using `rfl`. Use `set v := fderiv ℂ (A.chart jj ∘ (A.chart k).symm) y u with hvdef`. Establish `hL : levi ((fun z => w z + C * Ω.φ x z) ∘ (A.chart k).symm) y u = levi (w ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y)) v + C * levi (Ω.φ x ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y)) v`. Rewrite using `[levi_congr hev1, levi_comp u hτa hf2, hpt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `levi_add_smul C hψ2 hΦx2 v`. Take `⟨W, hWo, hzW, G, hG, hGeq⟩` from `hΩ.2 x q ((A.chart k).symm y) ⟨hzx, hzq'⟩`. Establish `hτW : A.chart jj ((A.chart k).symm y) ∈ (A.chart jj).target ∩ (A.chart jj).symm ⁻¹' (W ∩ Ω.U x ∩ Ω.U q)`. Use `⟨(A.chart jj).map_source hzj, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, (A.chart jj).left_inv hzj]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨hzW, hzx⟩, hzq'⟩`. Establish `hN2` using `((A.chart jj).isOpen_inter_preimage_symm ((hWo.inter (Ω.isOpen_U x)).inter (Ω.isOpen_U q))).mem_nhds hτW`. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y))` using `hG jj _ ⟨hτW.1, hτW.2.1.1⟩`. Establish `hev2 : Ω.φ x ∘ (A.chart jj).symm =ᶠ[𝓝 (A.chart jj ((A.chart k).symm y))] fun y' => (Ω.φ q ∘ (A.chart jj).symm) y' + 1 * ((G ∘ (A.chart jj).symm) y').re`. Use `Filter.eventuallyEq_of_mem hN2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y' hy'`. Use `hGeq _ hy'.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev3 : (fun y' => ((G ∘ (A.chart jj).symm) y').re) =ᶠ[𝓝 (A.chart jj ((A.chart k).symm y))] fun y' => (Ω.φ x ∘ (A.chart jj).symm) y' - (Ω.φ q ∘ (A.chart jj).symm) y'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Filter.eventuallyEq_of_mem hN2 ?_` and prove the remaining obligations. Introduce `y' hy'`. Use `hGeq _ hy'.2` as an intermediate fact. Simplify using `only [Function.comp_apply]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRe2 : ContDiffAt ℝ 2 (fun y' => ((G ∘ (A.chart jj).symm) y').re) (A.chart jj ((A.chart k).symm y))` using `(hΦx2.sub hΦq2).congr_of_eventuallyEq hev3`. Establish `hLx : levi (Ω.φ x ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y)) v = levi (Ω.φ q ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y)) v`. Rewrite using `[levi_congr hev2, levi_add_smul 1 hΦq2 hRe2 v, levi_re_analytic hGa v]`. Expand and normalize the polynomial expressions, which then agree. Establish `hloc2` using `hloc1 (A.chart jj ((A.chart k).symm y)) (Metric.ball_subset_closedBall hzb) v`.
-
-Establish `hnn : 0 ≤ levi (Ω.φ q ∘ (A.chart jj).symm) (A.chart jj ((A.chart k).symm y)) v`. Distinguish the cases in `hv0 : v = 0`. Rewrite using `[hv0, levi_zero]`. Conclude with `(hpos q jj _ hτS v hv0).le`. Rewrite using `[hL, hLx]`.
-
-Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ m q + C) hnn]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem plurisubharmonicShift_proof : PshShiftStatement := by
   intro e X _ _ _ A Ω hΩ hpos w hw

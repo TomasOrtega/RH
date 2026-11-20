@@ -25,9 +25,9 @@ section Local
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => if l < m then (1 : ℤ) else 0) n, Finset.sum_boole]`. Establish `: (Finset.range n).filter (fun l => l < m) = Finset.range m`. Use extensionality with `l`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Finset.card_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_ite_val_lt {m : ℕ} (hm : m ≤ n) :
     ∑ l : Fin n, (if (l : ℕ) < m then (1 : ℤ) else 0) = m := by
@@ -39,13 +39,11 @@ private theorem sum_ite_val_lt {m : ℕ} (hm : m ≤ n) :
   rw [this, Finset.card_range]
 
 /- English proof (translation)
-Use `split_ifs with h`. Assume the negation of the conclusion as `hne`. Establish `hi : μ i = 0` using `by have := h0 i; have := h1 i; omega`. Establish `hle : ∑ l : Fin n, μ l ≤ ∑ l : Fin n, (if (l : ℕ) < (i : ℕ) then (1 : ℤ) else 0)`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `split_ifs with hl`. Conclude with `h1 l`. Conclude with `(hμ (show i ≤ l from Fin.le_def.2 (by omega))).trans hi.le`. Rewrite `hle` using `[hs, sum_ite_val_lt i.2.le]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `hi : μ i = 1` using `by have := h0 i; have := h1 i; omega`. Establish `hle : ∑ l : Fin n, (if (l : ℕ) < (i : ℕ) + 1 then (1 : ℤ) else 0) ≤ ∑ l : Fin n, μ l`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations. Use `split_ifs with hl`.
-
-Conclude with `hi.symm.le.trans (hμ (show l ≤ i from Fin.le_def.2 (by omega)))`. Conclude with `h0 l`. Rewrite `hle` using `[hs, sum_ite_val_lt (show (i : ℕ) + 1 ≤ n from i.2)]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem eq_ite_of_antitone {μ : Fin n → ℤ} (hμ : Antitone μ) (h0 : ∀ i, 0 ≤ μ i) (h1 : ∀ i, μ i ≤ 1)
     {j : ℕ} (hs : ∑ i, μ i = j) (i : Fin n) : μ i = if (i : ℕ) < j then 1 else 0 := by
@@ -70,9 +68,9 @@ private theorem eq_ite_of_antitone {μ : Fin n → ℤ} (hμ : Antitone μ) (h0 
     omega
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hm`. Take `⟨k, rfl⟩ : ∃ k : ℕ, m = -((k : ℤ) + 1)` from `⟨(-m - 1).toNat, by omega⟩`. Establish `h1 : (uniformizer F) ^ (k + 1) * (⟨_, h⟩ : 𝒪[F]) = 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h2 : ((uniformizer F : F)) ≠ 0` using `Cartan.uniformizer_ne_zero F`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Subring.coe_mul, Subring.coe_pow, Subring.coe_one]`. Rewrite using `[_root_.zpow_neg, ← Nat.cast_succ, zpow_natCast, mul_inv_cancel₀ (pow_ne_zero _ h2)]`. Conclude with `(irreducible_uniformizer F).not_isUnit ((isUnit_pow_succ_iff).1 (IsUnit.of_mul_eq_one _ h1))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exponent_nonneg {m : ℤ} (h : (uniformizer F : F) ^ m ∈ 𝒪[F]) : 0 ≤ m := by
   by_contra hm
@@ -86,9 +84,9 @@ private theorem exponent_nonneg {m : ℤ} (h : (uniformizer F : F) ^ m ∈ 𝒪[
     ((isUnit_pow_succ_iff).1 (IsUnit.of_mul_eq_one _ h1))
 
 /- English proof (translation)
-Establish `hv : valuation F (uniformizer F : F) ≠ 0` using `valuation_uniformizer_ne_zero F`. Rewrite using `[Cartan.coe_diagPow, det_diagonal, map_prod]`. Simplify using `only [map_zpow₀]`. Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty => simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hv, ih]`.
+Treat this case separately.
 -/
 private theorem valuation_det_diagPow (μ : Fin n → ℤ) :
     valuation F ((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F).det =
@@ -102,9 +100,9 @@ private theorem valuation_det_diagPow (μ : Fin n → ℤ) :
   | insert a s ha ih => rw [Finset.prod_insert ha, Finset.sum_insert ha, zpow_add₀ hv, ih]
 
 /- English proof (translation)
-Establish `hπ : (uniformizer F : F) ∈ 𝒪[F]` using `(uniformizer F).2`. Use `⟨fun a b => ?_, fun a b => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((Cartan.diagPow F n (fun i => if (i : ℕ) < j then 1 else 0) : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) a b ∈ 𝒪[F]`. Rewrite using `[Cartan.coe_diagPow, diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp [hπ, (𝒪[F]).one_mem, (𝒪[F]).zero_mem]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: ((Cartan.diagPow F n (fun i => if (i : ℕ) < j then 1 else 0))⁻¹ : GL (Fin n) F) a b = (diagonal fun i : Fin n => (uniformizer F : F) ^ (-(if (i : ℕ) < j then (1 : ℤ) else 0))) a b` using `rfl`. Rewrite using `[this, diagonal_apply]`. Establish `h2 : ((uniformizer F : F)) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Apply the tactic sequence `split_ifs <;> simp [hπ, h2, (𝒪[F]).one_mem, (𝒪[F]).zero_mem]`. Rewrite using `[valuation_det_diagPow, sum_ite_val_lt hj, zpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem diagPow_mem_minusculeSet {j : ℕ} (hj : j ≤ n) :
     Cartan.diagPow F n (fun i => if (i : ℕ) < j then 1 else 0) ∈ minusculeSet F n j := by
@@ -122,17 +120,17 @@ private theorem diagPow_mem_minusculeSet {j : ℕ} (hj : j ≤ n) :
   · rw [valuation_det_diagPow, sum_ite_val_lt hj, zpow_natCast]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨μ, hdom, k₁, hk₁, k₂, hk₂, rfl⟩` from `Cartan.exists_eq_mul_diagPow_mul F n g`. Establish `hm : Cartan.diagPow F n μ ∈ minusculeSet F n j`. Use `mul_mem_minusculeSet hg (inv_mem hk₁) (inv_mem hk₂)` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[mul_assoc]`. Take `⟨m1, m2, m3⟩` from `hm`. Establish `h0 : ∀ i, 0 ≤ μ i` using `fun i => exponent_nonneg (by`. Use `m1 i i` as an intermediate fact. Rewrite using `[show (Cartan.diagPow F n μ) i i = (uniformizer F : F) ^ μ i by` and apply the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Express the relevant statement in the definitionally equal form `((Cartan.diagPow F n μ : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i i = _`. Rewrite using `[Cartan.coe_diagPow, diagonal_apply_eq]] at this)`. Establish `h1 : ∀ i, μ i ≤ 1` using `fun i => by`. Establish `h2 : ((uniformizer F : F)) ≠ 0` using `Cartan.uniformizer_ne_zero F`. Establish `e : (uniformizer F : F) * ((Cartan.diagPow F n μ)⁻¹ : GL (Fin n) F) i i = (uniformizer F : F) ^ (1 - μ i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ((Cartan.diagPow F n μ)⁻¹ : GL (Fin n) F) i i = (diagonal fun i : Fin n => (uniformizer F : F) ^ (-μ i)) i i` using `rfl`. Rewrite using `[this, diagonal_apply_eq, sub_eq_add_neg, zpow_add₀ h2, zpow_one]`. Use `exponent_nonneg (F := F) (e ▸ m2 i i)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hs : ∑ i, μ i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hv : valuation F (uniformizer F : F) ≠ 0` using `valuation_uniformizer_ne_zero F`. Rewrite `m3` using `[valuation_det_diagPow, ← zpow_natCast]`. Conclude with `(zpow_right_strictAnti₀ (zero_lt_iff.2 hv) (valuation_uniformizer_lt_one F)).injective m3`. Establish `hμ : μ = fun i : Fin n => if (i : ℕ) < j then (1 : ℤ) else 0`. Use function extensionality and compare the values at `(eq_ite_of_antitone hdom h0 h1 hs)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components.
 
-Conclude with `⟨k₁, hk₁, k₂, hk₂, by rw [← hμ]⟩`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `mul_mem_minusculeSet (diagPow_mem_minusculeSet hj) ha hb`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem mem_minusculeSet_iff {j : ℕ} (hj : j ≤ n) (g : GL (Fin n) F) :
     g ∈ minusculeSet F n j ↔ ∃ a ∈ integralGL F n, ∃ b ∈ integralGL F n,
@@ -172,15 +170,15 @@ variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   (m : Measure (GL (Fin n) F)) [m.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hcH : HasCompactSupport ((H : HeckeAlgebra m) : GL (Fin n) F → ℂ)` using `(H : HeckeAlgebra m).mem.2`. Establish `hfin0 : (Function.support fun c : GL (Fin n) F ⧸ integralGL F n => (H : HeckeAlgebra m) c.out).Finite`. Use `(finite_image_mk_tsupport (integralOpen F n) hcH).subset fun (c : GL (Fin n) F ⧸ integralGL F n) hc' => ?_` and prove the remaining obligations. Conclude with `⟨c.out, subset_tsupport _ hc', QuotientGroup.out_eq' c⟩`. Use `⟨hfin0, eq_of_forall_dual fun φ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm` using `smooth_of_mem_fixedVectors (isOpen_integralGL F n) hv`. Use `set Φ : GL (Fin n) F → ℂ := fun g => (H : HeckeAlgebra m) g * φ (ρ g v) with hΦ`. Establish `hcs : HasCompactSupport Φ` using `hcH.mul_right`. Establish `hKΦ : ∀ x, ∀ k ∈ integralOpen F n, Φ (x * k) = Φ x`. Introduce `x k hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [hΦ]`. Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ H k hk x).2, map_mul, Module.End.mul_apply, hv k hk]`. Establish `hfin : (Function.support fun c : GL (Fin n) F ⧸ integralGL F n => (H : HeckeAlgebra m) c.out • ρ c.out v).Finite`. Use `hfin0.subset fun c hc' h0 => hc' ?_` and prove the remaining obligations. Conclude with `(congrArg (fun t : ℂ => t • ρ c.out v) h0).trans (zero_smul ℂ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dual_heckeAct m (H : HeckeAlgebra m).mem hsm φ, integral_eq_smul_finsum_coset m (integralOpen F n) (isCompact_integralGL F n) hcs hKΦ]`. Establish `hmap` using `AddMonoidHom.map_finsum (φ : V →+ ℂ) hfin`. Establish `h1 : m.real ((integralOpen F n : OpenSubgroup _) : Set (GL (Fin n) F)) = 1` using `hm`. Rewrite using `[h1, one_smul]`. Express the relevant statement in the definitionally equal form `(∑ᶠ x : GL (Fin n) F ⧸ integralGL F n, Φ x.out) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ hmap.symm` and prove the remaining obligations. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Simplify using `[hΦ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem heckeAct_eq_finsum {V : Type*} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) F) V) (hm : m.real (integralGL F n : Set (GL (Fin n) F)) = 1)
@@ -230,7 +228,7 @@ private def Hs (i : Fin n) : SphericalHecke m (F := F) (n := n) :=
   (sqrtQ F ^ (((i : ℕ) + 1) * (n - ((i : ℕ) + 1))))⁻¹ • minusculeHecke m ((i : ℕ) + 1)
 
 /- English proof (translation)
-Establish `h0 : sqrtQ F ^ (((i : ℕ) + 1) * (n - ((i : ℕ) + 1))) ≠ 0` using `pow_ne_zero _ sqrtQ_ne_zero`. Rewrite using `[Hs, map_smul, satakeTransform_minusculeHecke (Nat.succ_le_of_lt i.2), polyEmb_esymm, hm, smul_smul, Complex.ofReal_one, one_mul, inv_mul_cancel₀ h0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sat_Hs (hm : m.real (integralGL F n : Set (GL (Fin n) F)) = 1) (i : Fin n) :
     satakeTransform m (Hs m i) = polyEmb n (esymm (Fin n) ℂ ((i : ℕ) + 1)) := by
@@ -239,7 +237,7 @@ private theorem sat_Hs (hm : m.real (integralGL F n : Set (GL (Fin n) F)) = 1) (
     smul_smul, Complex.ofReal_one, one_mul, inv_mul_cancel₀ h0, one_smul]
 
 /- English proof (translation)
-Use `satakeTransform_injective ?_` and prove the remaining obligations. Establish `e : (satakeTransform m (F` using `F) (n := n)).comp (aeval (Hs m)) = (polyEmb n).comp (aeval fun i : Fin n => esymm (Fin n) ℂ (i + 1)) := MvPolynomial.algHom_ext fun i => by simp [sat_Hs m hm]`. Rewrite using `[hS]`. Conclude with `(DFunLike.congr_fun e p).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_aeval (hm : m.real (integralGL F n : Set (GL (Fin n) F)) = 1)
     (H : SphericalHecke m (F := F) (n := n)) (p : MvPolynomial (Fin n) ℂ)
@@ -275,9 +273,9 @@ Both sides reduce to the same expression.
 private theorem rr_apply (g : GL (Fin n) (w.adicCompletion K)) (v : LL μ) : rr μ w g v = rhoL μ w g v := rfl
 
 /- English proof (translation)
-Take `⟨-, hmem, -⟩` from `UpperTheory.ConvolutionTheory.Tf.commPrj K n μ (J.map (AdelicGLn.localEmbedding w))`. Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Conclude with `(hmem u).1 h _ ⟨k, hk, rfl⟩`. Introduce `h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hmem u).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Conclude with `h k hk`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem mem_fix (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (u : LL μ) :
     u ∈ fixL μ w J ↔ u ∈ fixedVectors (rr μ w) J := by
@@ -291,7 +289,7 @@ private theorem mem_fix (J : Subgroup (GL (Fin n) (w.adicCompletion K))) (u : LL
     exact h k hk
 
 /- English proof (translation)
-Set `E : (LL μ →L[ℂ] LL μ) →+ LL μ` to `{ toFun := fun T => T u, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Establish `hf : (Function.support fun c : GL (Fin n) (w.adicCompletion K) ⧸ integralGL (w.adicCompletion K) n => h c.out • rhoL μ w c.out).Finite`. Use `hfin.subset fun c hc h0 => hc ?_` and prove the remaining obligations. Conclude with `(congrArg (fun t : ℂ => t • rhoL μ w c.out) h0).trans (zero_smul ℂ _)`. Conclude with `AddMonoidHom.map_finsum E hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem sphOp_apply (h : GL (Fin n) (w.adicCompletion K) → ℂ)
     (hfin : (Function.support fun c : GL (Fin n) (w.adicCompletion K) ⧸ integralGL (w.adicCompletion K) n =>
@@ -306,9 +304,9 @@ private theorem sphOp_apply (h : GL (Fin n) (w.adicCompletion K) → ℂ)
   exact AddMonoidHom.map_finsum E hf
 
 /- English proof (translation)
-Establish `hq : qF (w.adicCompletion K) = Ideal.absNorm w.asIdeal` using `GroundTheory.Global.natCard_residueField_adicCompletion w`. Establish `hq0 : (0 : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℝ)` using `Nat.cast_nonneg _`. Establish `hs : sqrtQ (w.adicCompletion K) = ((Real.sqrt (Ideal.absNorm w.asIdeal : ℝ) : ℝ) : ℂ)`. Rewrite using `[sqrtQ, hq, Real.coe_sqrt, NNReal.coe_natCast]`. Rewrite using `[hs, ← Complex.ofReal_pow, ← Complex.ofReal_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Real.sqrt_eq_rpow, ← Real.rpow_natCast, ← Real.rpow_mul hq0, ← Real.rpow_neg hq0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem scal_eq (N : ℕ) :
     (((Ideal.absNorm w.asIdeal : ℝ) ^ (-(N : ℝ) / 2) : ℝ) : ℂ) = (sqrtQ (w.adicCompletion K) ^ N)⁻¹ := by
@@ -331,9 +329,9 @@ variable {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL
   (m : Measure (GL (Fin n) (w.adicCompletion K))) [m.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hx : (fun a : Fin n => if (a : ℕ) < (i : ℕ) + 1 then (1 : ℤ) else 0) = fun a => if a ≤ i then 1 else 0`. Use function extensionality and compare the values at `a`. Simplify using `only [Nat.lt_succ_iff, Fin.le_def]`. Rewrite using `[mem_minusculeSet_iff (Nat.succ_le_of_lt i.2), hx]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, ha, b, hb, e⟩`. Conclude with `⟨a, ha, by rw [← c.out_eq', e]; exact QuotientGroup.mk_mul_of_mem _ hb⟩`. Introduce and unpack `⟨k, hk, rfl⟩`. Take `⟨b, hb⟩` from `QuotientGroup.mk_out_eq_mul (integralGL (w.adicCompletion K) n) (k * Cartan.diagPow (w.adicCompletion K) n fun a => if a ≤ i then 1 else 0)`. Conclude with `⟨k, hk, b, b.2, hb⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem out_mem_iff (i : Fin n) (c : GL (Fin n) (w.adicCompletion K) ⧸ integralGL (w.adicCompletion K) n) :
     c.out ∈ minusculeSet (w.adicCompletion K) n ((i : ℕ) + 1) ↔
@@ -352,13 +350,13 @@ private theorem out_mem_iff (i : Fin n) (c : GL (Fin n) (w.adicCompletion K) ⧸
     exact ⟨k, hk, b, b.2, hb⟩
 
 /- English proof (translation)
-Establish `hKo` using `isOpen_integralGL (w.adicCompletion K) n`. Establish `hKc` using `isCompact_integralGL (w.adicCompletion K) n`. Take `⟨hS, -⟩` from `UpperTheory.ConvolutionTheory.Tf.hopBasic K n μ w (integralGL (w.adicCompletion K) n) (Cartan.diagPow (w.adicCompletion K) n fun a => if a ≤ i then 1 else 0) hKo hKc`. Establish `hp : prj (fixL μ w (integralGL (w.adicCompletion K) n)) u = u` using `(UpperTheory.ConvolutionTheory.Tf.commPrj K n μ _).2.2.2.1 u ((mem_fix μ w _ u).2 hu)`. Establish `hT` using `(heckeAct_eq_finsum m (rr μ w) hm (minusculeHecke m ((i : ℕ) + 1)) hu).2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm` using `smooth_of_mem_fixedVectors hKo hu`. Rewrite using `[Hs, val_smul, HeckeAlgebra.coe_smul, heckeAct_smul_left _ (minusculeHecke m ((i : ℕ) + 1) : HeckeAlgebra m).mem hsm, hT, Tsph, ContinuousLinearMap.smul_apply, Hop, ContinuousLinearMap.comp_apply, hp, scal_eq]`. Use `congr 1`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hS, ContinuousLinearMap.sum_apply, finsum_eq_sum_of_support_subset (s := hS.toFinset)]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[minusculeHecke_apply, Set.indicator_of_mem ((out_mem_iff w i c).2 ((Set.Finite.mem_toFinset hS).1 hc)), one_smul, rr_apply]`. Introduce `c hc`. Rewrite using `[Set.Finite.coe_toFinset]`. Use `(out_mem_iff w i c).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hc` to reduce the goal to its premises. Simplify using `only [minusculeHecke_apply, Set.indicator_of_notMem h, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem heckeAct_Hs (hm : m.real (integralGL (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) = 1)
     (i : Fin n) {u : LL μ} (hu : u ∈ fixedVectors (rr μ w) (integralGL (w.adicCompletion K) n)) :
@@ -388,13 +386,13 @@ private theorem heckeAct_Hs (hm : m.real (integralGL (w.adicCompletion K) n : Se
     simp only [minusculeHecke_apply, Set.indicator_of_notMem h, zero_smul]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a`. Introduce `v`. Rewrite using `[aeval_C, algebraMap_smul_fixedVectors]`. Simplify using `[atPl, hev.const]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add p q hp hq`. Introduce `v`. Rewrite using `[map_add, add_smul, Submodule.coe_add, hp, hq]`. Simplify using `[atPl]`. Consider the case `mul_X p i ih`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v`. Rewrite using `[map_mul, aeval_X, mul_smul, ih]`. Establish `h1 : (((Hs m i) • v : fixedVectors (rr μ w) (integralGL (w.adicCompletion K) n)) : LL μ) = Tsph μ w i v` using `heckeAct_Hs μ w m hm i v.2`. Establish `h2 : (map C (atPl w (p * X i)) : PR K n) = map C (atPl w p) * X (w, i)`. Simplify using `[atPl]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, map_mul, hev.hecke w hw i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem core (hm : m.real (integralGL (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) = 1)
     {𝔞 : Amp μ} {ev : PR K n →+* (LL μ →L[ℂ] LL μ)} (hev : 𝔞.IsEv ev) (hw : w ∉ 𝔞.S) (p : MvPolynomial (Fin n) ℂ) :
@@ -423,11 +421,11 @@ private theorem core (hm : m.real (integralGL (w.adicCompletion K) n : Set (GL (
 end Main
 
 /- English proof (translation)
-Introduce `K _ _ n _ μ _ 𝔞 ev hev w hw p h hsph u hu`. Take `⟨_, _, m, _, hm1, H, hH, hS⟩` from `hsph`. Establish `hm : m.real (integralGL (w.adicCompletion K) n : Set (GL (Fin n) (w.adicCompletion K))) = 1`. Simplify using `[Measure.real, hm1]`. Take `rfl : h = fun x => (H : HeckeAlgebra m) x` from `funext fun x => (hH x).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hu'` using `(mem_fix μ w _ u).1 hu`. Take `⟨hfin, he⟩` from `heckeAct_eq_finsum m (rr μ w) hm H hu'`. Establish `hc` using `core μ w m hm hev hw p ⟨u, hu'⟩`. Rewrite `hc` using `[← eq_aeval m hm H p hS]`. Rewrite using `[sphOp_apply μ w _ hfin u]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(he.symm.trans hc)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.sphAct :
     SphAct := by

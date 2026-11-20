@@ -18,9 +18,9 @@ section OneParam
 variable {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s => U (s - t) v) (A v) t`. Establish `h` using `hd v`. Rewrite `h` using `[← sub_self t]`. Conclude with `HasDerivAt.comp_sub_const t t h`. Establish `h2` using `((U t).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : HasDerivAt (fun s => U t (U (s - t) v)) (U t (A v)) t` using `h2`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `s`. Simplify using `[← hadd]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_right (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (hadd : ∀ s t v, U (s + t) v = U s (U t v))
     (hd : ∀ v, HasDerivAt (fun t => U t v) (A v) 0) (v : W) (t : ℝ) :
@@ -36,9 +36,9 @@ theorem deriv_right (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (hadd : �
   simp [← hadd]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun s => U (s - t) (U t v)) (A (U t v)) t`. Establish `h` using `hd (U t v)`. Rewrite `h` using `[← sub_self t]`. Conclude with `HasDerivAt.comp_sub_const t t h`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `s`. Simplify using `[← hadd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_left (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (hadd : ∀ s t v, U (s + t) v = U s (U t v))
     (hd : ∀ v, HasDerivAt (fun t => U t v) (A v) 0) (v : W) (t : ℝ) :
@@ -52,11 +52,11 @@ theorem deriv_left (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (hadd : ∀
   simp [← hadd]
 
 /- English proof (translation)
-Establish `hg : ∀ t : ℝ, HasDerivAt (fun t : ℝ => Complex.exp (-(c * t)) • U t v) 0 t`. Introduce `t`. Establish `h1 : HasDerivAt (fun t : ℝ => Complex.exp (-(c * t))) (Complex.exp (-(c * t)) * (-c)) t`. Establish `: HasDerivAt (fun t : ℝ => -(c * (t : ℂ))) (-c) t`. Simplify using `using ((Complex.ofRealCLM.hasDerivAt (x := t)).const_mul c).fun_neg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `this.cexp`. Establish `h2` using `h1.fun_smul (deriv_right U A hadd hd v t)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hv, map_smul, smul_smul, ← add_smul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hc` using `is_const_of_deriv_eq_zero (fun t => (hg t).differentiableAt) (fun t => (hg t).deriv) 1 0`. Simplify using `only [Complex.ofReal_one, mul_one, Complex.ofReal_zero, mul_zero, neg_zero, Complex.exp_zero, one_smul, h0] at hc`. Use `conv_rhs => rw [← hc, smul_smul, ← Complex.exp_add]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eigen (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (h0 : ∀ v, U 0 v = v)
     (hadd : ∀ s t v, U (s + t) v = U s (U t v))
@@ -79,13 +79,13 @@ theorem eigen (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (h0 : ∀ v, U 0
   simp
 
 /- English proof (translation)
-Use `set Q : W →L[ℂ] W := ContinuousLinearMap.id ℂ W - S.starProjection with hQ`. Establish `hQ0 : ∀ y ∈ S, Q y = 0` using `fun y hy => by`. Simplify using `[hQ, (Submodule.starProjection_eq_self_iff (K := S)).2 hy]`. Use `set B : W →L[ℂ] W := Q.comp (LinearMap.toContinuousLinearMap A) with hB`. Establish `hq : ∀ t, HasDerivAt (fun s => Q (U s v)) (B (Q (U t v))) t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Establish `h2 : HasDerivAt (fun s => Q (U s v)) (Q (A (U t v))) t` using `(Q.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt t (deriv_left U A hadd hd v t)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Establish `h3 : Q (A (S.starProjection (U t v))) = 0` using `hQ0 _ (hS _ (Submodule.starProjection_apply_mem S _))`. Establish `h4 : Q (U t v) = U t v - S.starProjection (U t v)` using `by simp [hQ]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hB, ContinuousLinearMap.comp_apply, LinearMap.coe_toContinuousLinearMap']`. Rewrite using `[h4, map_sub, map_sub, h3, sub_zero]`. Establish `hz : (fun s => Q (U s v)) = fun _ => (0 : W)`. Use `ODE_solution_unique_univ (v := fun _ y => B y) (s := fun _ => Set.univ) (K := ‖B‖₊) (t₀ := 0) (fun _ => B.lipschitz.lipschitzOnWith) (fun t => ⟨hq t, trivial⟩) (fun t => ⟨by simpa using hasDerivAt_const t (0 : W), trivial⟩) ?_` and prove the remaining obligations. Simplify using `only [h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQ0 v hv`. Establish `h5 : U t v - S.starProjection (U t v) = 0` using `by simpa [hQ] using congrFun hz t`. Rewrite using `[sub_eq_zero.1 h5]`. Conclude with `Submodule.starProjection_apply_mem S _`.
+A detailed English derivation is pending.
 -/
 theorem stable [FiniteDimensional ℂ W] (U : ℝ → W →L[ℂ] W) (A : W →ₗ[ℂ] W) (h0 : ∀ v, U 0 v = v)
     (hadd : ∀ s t v, U (s + t) v = U s (U t v))
@@ -120,13 +120,13 @@ end OneParam
 open PI.UpqRep
 
 /- English proof (translation)
-Simplify using `[Jm, allPos]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Jm_allPos (k : ℕ) : Jm (allPos k) = 1 := by
   simp [Jm, allPos]
 
 /- English proof (translation)
-Use `show (g ∈ Matrix.unitaryGroup (Fin k) ℂ ∧ g * Jm (allPos k) = Jm (allPos k) * g) ↔ gᴴ * Jm (allPos k) * g = Jm (allPos k)`. Rewrite using `[Jm_allPos, Matrix.mul_one, Matrix.mul_one, Matrix.one_mul, Matrix.mem_unitaryGroup_iff']`. Simplify using `[Matrix.star_eq_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_K_iff {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) :
     g ∈ Kset (allPos k) ↔ g ∈ UJset (allPos k) := by
@@ -136,7 +136,7 @@ theorem mem_K_iff {k : ℕ} (g : Matrix (Fin k) (Fin k) ℂ) :
   simp [Matrix.star_eq_conjTranspose]
 
 /- English proof (translation)
-Use `Formalism.REAL.exp_indefinite_unitary_holds k (allPos k) Z ?_ t` and prove the remaining obligations. Use `show Zᴴ * Jm (allPos k) + Jm (allPos k) * Z = 0`. Rewrite using `[Jm_allPos, hZ]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exp_mem {k : ℕ} {Z : Matrix (Fin k) (Fin k) ℂ} (hZ : Zᴴ = -Z) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Z) ∈ UJset (allPos k) := by
@@ -149,14 +149,14 @@ variable {k : ℕ} {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
   {π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)}
 
 /- English proof (translation)
-Simplify using `[hπ.1.1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem group_zero (hπ : IsURepOn (UJset (allPos k)) π) (Z : Matrix (Fin k) (Fin k) ℂ) (v : W) :
     π (NormedSpace.exp (((0 : ℝ) : ℂ) • Z)) v = v := by
   simp [hπ.1.1]
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_add, add_smul, Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left _).smul_right _), hπ.1.2 _ (exp_mem hZ s) _ (exp_mem hZ t)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem group_add (hπ : IsURepOn (UJset (allPos k)) π) {Z : Matrix (Fin k) (Fin k) ℂ} (hZ : Zᴴ = -Z)
     (s t : ℝ) (v : W) :
@@ -167,7 +167,7 @@ theorem group_add (hπ : IsURepOn (UJset (allPos k)) π) {Z : Matrix (Fin k) (Fi
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_conjTranspose, Matrix.diagonal_neg]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem diag_skew (θ : Fin k → ℝ) :
     (Matrix.diagonal fun a => (θ a : ℂ) * Complex.I)ᴴ = -Matrix.diagonal fun a => (θ a : ℂ) * Complex.I := by
@@ -177,7 +177,7 @@ theorem diag_skew (θ : Fin k → ℝ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal, Pi.exp_def]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[← Complex.exp_eq_exp_ℂ]`. Simplify using `[mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_diag (θ : Fin k → ℝ) (t : ℝ) :
     NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I) =
@@ -189,7 +189,7 @@ theorem exp_diag (θ : Fin k → ℝ) (t : ℝ) :
   simp [mul_assoc]
 
 /- English proof (translation)
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[Matrix.diagonal_apply, ite_smul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_diag (E : Fin k → Fin k → Module.End ℂ W) (d : Fin k → ℂ) (v : W) :
     ∑ a, ∑ b, Matrix.diagonal d a b • E a b v = ∑ a, d a • E a a v := by
@@ -197,11 +197,11 @@ theorem sum_diag (E : Fin k → Fin k → Module.End ℂ W) (d : Fin k → ℂ) 
   simp [Matrix.diagonal_apply, ite_smul]
 
 /- English proof (translation)
-Introduce `θ _`. Establish `h` using `eigen (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I))) (∑ a, ((θ a : ℂ) * Complex.I) • E a a) (group_zero hπ _) (group_add hπ (diag_skew θ)) (fun w => by`. Use `hE _ (diag_skew θ) w` as an intermediate fact. Rewrite `this` using `[sum_diag]`. Simplify `this)` using `only [LinearMap.sum_apply, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `v (((∑ a, μ a * θ a : ℝ) : ℂ) * Complex.I) (by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, hv _, smul_smul, ← Finset.sum_smul]`. Use `congr 1`. Use `push_cast`. Rewrite using `[Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun a _ => by ring)`. Simplify using `only [exp_diag, one_mul] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isWtOn_of_isWeight (hπ : IsURepOn (UJset (allPos k)) π) (E : Fin k → Fin k → Module.End ℂ W)
     (hE : ∀ Z : Matrix (Fin k) (Fin k) ℂ, Zᴴ = -Z → ∀ v,
@@ -224,17 +224,15 @@ theorem isWtOn_of_isWeight (hπ : IsURepOn (UJset (allPos k)) π) (E : Fin k →
   exact h
 
 /- English proof (translation)
-Introduce `a`. Use `set θ : Fin k → ℝ := Pi.single a 1 with hθ`. Establish `h1` using `hE _ (diag_skew θ) v`. Rewrite `h1` using `[sum_diag]`. Establish `h2 : (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Matrix.diagonal fun a => (θ a : ℂ) * Complex.I)) v) = fun t : ℝ => Complex.exp ((μ a * Complex.I) * t) • v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `t`. Establish `hm` using `exp_mem (diag_skew θ) t`. Rewrite `hm`, the goal using `[exp_diag]`. Rewrite using `[hv (fun b => t * θ b) ((mem_K_iff _).2 hm)]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `[hθ, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp ((μ a * Complex.I) * t) • v) ((μ a * Complex.I) • v) 0`. Establish `h4 : HasDerivAt (fun t : ℝ => (μ a * Complex.I) * (t : ℂ)) (μ a * Complex.I) 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt (x := (0 : ℝ))).const_mul (μ a * Complex.I)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h4.cexp.smul_const v`. Rewrite `h1` using `[h2]`. Establish `h5` using `h1.unique h3`. Establish `h6 : ∑ b, ((θ b : ℂ) * Complex.I) • E b b v = Complex.I • E a a v`. Rewrite using `[Finset.sum_eq_single a]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hθ]`. Introduce `b _ hb`. Simplify using `[hθ, Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite `h5` using `[h6, mul_comm, ← smul_smul]`.
-
-Conclude with `smul_right_injective W Complex.I_ne_zero h5`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWeight_of_isWtOn (E : Fin k → Fin k → Module.End ℂ W)
     (hE : ∀ Z : Matrix (Fin k) (Fin k) ℂ, Zᴴ = -Z → ∀ v,
@@ -269,9 +267,9 @@ theorem isWeight_of_isWtOn (E : Fin k → Fin k → Module.End ℂ W)
   exact smul_right_injective W Complex.I_ne_zero h5
 
 /- English proof (translation)
-Introduce `g hg v hv`. Take `⟨Y, hY, hg', -⟩` from `Formalism.REAL.compact_exponential_surjective k (allPos k) g ((mem_K_iff g).2 hg)`. Establish `hZ : Yᴴ = -Y`. Establish `h : Yᴴ * Jm (allPos k) + Jm (allPos k) * Y = 0` using `hY.1`. Rewrite `h` using `[Jm_allPos, Matrix.mul_one, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_neg_of_add_eq_zero_left h`. Establish `h` using `stable (fun t : ℝ => π (NormedSpace.exp ((t : ℂ) • Y))) (∑ a, ∑ b, Y a b • E a b) (group_zero hπ _) (group_add hπ hZ) (fun w => by simpa only [LinearMap.sum_apply, LinearMap.smul_apply] using hE _ hZ w) S (fun w hw => by`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `S.sum_mem fun a _ => S.sum_mem fun b _ => S.smul_mem _ (hS a b rfl w hw)) v hv 1`. Simplify `h` using `[hg']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stable_of_derived [FiniteDimensional ℂ W] (hπ : IsURepOn (UJset (allPos k)) π)
     (E : Fin k → Fin k → Module.End ℂ W)
@@ -294,13 +292,11 @@ theorem stable_of_derived [FiniteDimensional ℂ W] (hπ : IsURepOn (UJset (allP
   simpa [hg'] using h
 
 /- English proof (translation)
-Introduce `k W _ _ _ _ π hπ hirr`. Take `⟨E, hgl, hun, hE⟩` from `GlobalTheory.T.exists_derivedAction_finiteDimUnitaryRep k W π hπ`. Take `⟨x, -, hx, Λ, hΛ⟩` from `Formalism.REAL.highestWeightExists_holds W k (allPos k) E ⊤ inferInstance (Formalism.REAL.glRel_kRel _ E hgl) (Formalism.REAL.isUnitary_kUnit _ E hun) (fun _ _ _ _ _ => trivial) top_ne_bot`. Establish `hxm : x ∈ Formalism.REAL.kSpan (allPos k) E x` using `Submodule.mem_sInf.2 fun S hS => hS.1`. Establish `hst : Formalism.REAL.KStable (allPos k) E (Formalism.REAL.kSpan (allPos k) E x)` using `fun a b hab y hy => Submodule.mem_sInf.2 fun S hS => hS.2 a b hab y (Submodule.mem_sInf.1 hy S hS)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : Formalism.REAL.kSpan (allPos k) E x = ⊤`. Break down `hirr _ (stable_of_derived hπ E hE _ hst) with h | h` into its components or cases. Rewrite `hxm` using `[h]`. Conclude with `absurd hxm hx`. Conclude with `h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Λ - rhoN (allPos k) + rhoC (allPos k), inferInstance, inferInstance, hπ, ?_⟩` and prove the remaining obligations. Establish `hl : lowK (allPos k) (Λ - rhoN (allPos k) + rhoC (allPos k)) = Λ`. Unfold `lowK`. Normalize the expressions using the abelian group laws. Rewrite using `[hl]`.
-
-Use `⟨inferInstance, fun _ _ _ _ => trivial, fun S _ hS => hirr S fun g hg => hS g ((mem_K_iff g).2 hg), ⟨x, trivial, hx, isWtOn_of_isWeight hπ E hE Λ x hΛ.1⟩, fun μ v _ hv hw => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.weight_compactDominance_of_mem_highestWeightSpan k W E Λ μ x v hgl hun hΛ (htop ▸ trivial) hv (isWeight_of_isWtOn E hE μ v hw)`.
+Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isHCTypeU : ∀ (k : ℕ) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [Nontrivial W] (π : Matrix (Fin k) (Fin k) ℂ → (W →L[ℂ] W)), PI.UpqRep.IsURepOn (PI.UpqRep.UJset (PI.UpqRep.allPos k)) π → (∀ S : Submodule ℂ W, (∀ g ∈ PI.UpqRep.UJset (PI.UpqRep.allPos k), ∀ v ∈ S, π g v ∈ S) → S = ⊥ ∨ S = ⊤) → ∃ u, PI.UpqRep.IsHCTypeU k u π := by
   intro k W _ _ _ _ π hπ hirr

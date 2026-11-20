@@ -12,9 +12,9 @@ namespace Formalism.L2.S.S7.ZsCovR
 open NumberField Formalism.MainNotions.S Formalism.MainNotions.BridgeLemma Formalism.MainNotions.LeviCoordinates Formalism.L2.S.S7.IwasawaCovolume
 
 /- English proof (translation)
-Unfold `volgU`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.prod_le_prod (fun i _ => by positivity) fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i + 1 ≤ N` using `Finset.mem_range.1 hi`. Establish `hf : (1 : ℝ) ≤ ((i.factorial : ℕ) : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (Nat.factorial_ne_zero i)`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2pi : 2 * Real.pi ≤ 7` using `by linarith [Real.pi_lt_d2]`. Combine the equalities or inequalities in the displayed calculation. Use `_ = (7 : ℝ) ^ (N * N) := by rw [Finset.prod_const, Finset.card_range, ← pow_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem volgU_le (N : ℕ) : volgU N ≤ 7 ^ (N * N) := by
   unfold volgU
@@ -31,11 +31,11 @@ theorem volgU_le (N : ℕ) : volgU N ≤ 7 ^ (N * N) := by
     _ = (7 : ℝ) ^ (N * N) := by rw [Finset.prod_const, Finset.card_range, ← pow_mul]
 
 /- English proof (translation)
-Proceed by induction on `n, hn using Nat.le_induction with`. Consider the case `base => rw [Finset.Icc_eq_empty (by omega), Finset.prod_empty, mul_one]`. Consider the case `succ n hn ih`. Establish `h3 : 3 ≤ n + 1` using `by omega`. Establish `hr` using `hMR E hE (n + 1) h3`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `replace hr : Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm E (n + 1)) (Formalism.MainNotions.StandardLattice.stdLat E (n + 1)) / Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotio …`. Establish `hpos` using `Formalism.MainNotions.MassRatioBoundPower.massRatio_pos (K := E) h3`. Establish `hne : Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n) ≠ 0`. Introduce `h0`. Rewrite `hr` using `[h0, div_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpos.ne' hr.symm`. Rewrite `hr` using `[div_eq_iff hne]`. Rewrite using `[hr, ih, Finset.prod_Icc_succ_top (by omega)]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mass_chain (hMR : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.MassRatioStd) (E : Type) [Field E] [NumberField E] [StarRing E]
     (hE : Formalism.HermitianLatticesTheory.IsCMUnram E) (n : ℕ) (hn : 2 ≤ n) :
@@ -57,7 +57,7 @@ theorem mass_chain (hMR : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.MassR
     ring
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.mass`. Use `split_ifs`. Conclude with `Finset.sum_nonneg fun _ _ => by positivity`. Conclude with `le_rfl`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem mass_nonneg (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) :
     0 ≤ Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm E n) (Formalism.MainNotions.StandardLattice.stdLat E n) := by
@@ -67,9 +67,9 @@ theorem mass_nonneg (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) 
   · exact le_rfl
 
 /- English proof (translation)
-Establish `: IsTotallyComplex I.E` using `I.cm.cmUnram.1`. Establish `h1` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces I.E`. Establish `h2` using `InfinitePlace.card_add_two_mul_card_eq_rank I.E`. Rewrite `h1`, `h2` using `[IsTotallyComplex.nrRealPlaces_eq_zero]`. Rewrite `h2` using `[Formalism.MainNotions.BridgeLevelGen.finrank_E]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `Formalism.HermitianLatticesTheory.fDeg`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem fDeg_E (I : AutInst) : Formalism.HermitianLatticesTheory.fDeg I.E = I.f := by
   have : IsTotallyComplex I.E := I.cm.cmUnram.1
@@ -81,7 +81,7 @@ theorem fDeg_E (I : AutInst) : Formalism.HermitianLatticesTheory.fDeg I.E = I.f 
   omega
 
 /- English proof (translation)
-Establish `: IsTotallyReal I.F` using `I.cm.totReal`. Rewrite using `[InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`. Establish `h2` using `InfinitePlace.card_add_two_mul_card_eq_rank I.F`. Rewrite `h2` using `[IsTotallyReal.nrComplexPlaces_eq_zero]`. Simplify `h2` using `[AutInst.f]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem card_F (I : AutInst) : Fintype.card (InfinitePlace I.F) = I.f := by
   have : IsTotallyReal I.F := I.cm.totReal
@@ -91,7 +91,7 @@ theorem card_F (I : AutInst) : Fintype.card (InfinitePlace I.F) = I.f := by
   simpa [AutInst.f] using h2
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.vInv AutInst.rd`. Rewrite using `[fDeg_E]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_vInv_E (I : AutInst) : 2 * Formalism.HermitianLatticesTheory.vInv I.E = I.rd := by
   unfold Formalism.HermitianLatticesTheory.vInv AutInst.rd
@@ -100,7 +100,7 @@ theorem two_vInv_E (I : AutInst) : 2 * Formalism.HermitianLatticesTheory.vInv I.
 def CasimirBaseCount : ℕ := 27 + Formalism.MainNotions.MassRatioBoundPower.cZ
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (pow_nonneg (volgU_pos _).le _) (mass_nonneg _ _)`.
+A detailed English derivation is pending.
 -/
 theorem covolR_nonneg (X : CData) : 0 ≤ covolR X :=
   mul_nonneg (pow_nonneg (volgU_pos _).le _) (mass_nonneg _ _)
@@ -108,33 +108,31 @@ theorem covolR_nonneg (X : CData) : 0 ≤ covolR X :=
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 
 /- English proof (translation)
-Unfold `covolR`. Rewrite using `[card_F]`. Take `⟨hset, -, -⟩` from `hX`. Establish `hb : (2 : ℝ) ≤ X.b` using `hset.2.2.1`. Establish `hg : 1 ≤ X.g` using `hset.2.2.2.2.2.2.2.1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf1 : 1 ≤ X.I.f` using `Formalism.MainNotions.BridgeVolRatio.one_le_f X.I`. Establish `hrd : 1 ≤ X.I.rd` using `Formalism.MainNotions.BridgeVolRatio.one_le_rd X.I`. Establish `hE : Formalism.HermitianLatticesTheory.IsCMUnram X.I.E` using `X.I.cm.cmUnram`. Establish `hd : Module.finrank ℚ X.I.E ≤ 2 * Formalism.HermitianLatticesTheory.fDeg X.I.E`. Rewrite using `[Formalism.MainNotions.BridgeLevelGen.finrank_E, fDeg_E]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hchain` using `mass_chain hMR X.I.E hE X.I.n hn2`. Establish `hvI` using `two_vInv_E X.I`. Establish `hfD` using `fDeg_E X.I`. Use `set n := X.I.n with hndef`. Use `set f := X.I.f with hfdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Y := cn_Y X with hY`. Establish `hYdef : Y = (n : ℝ) * f * X.I.rd * (X.g : ℝ) * X.b` using `rfl`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`. Establish `hf1' : (1 : ℝ) ≤ f` using `by exact_mod_cast hf1`. Establish `hg1 : (1 : ℝ) ≤ X.g` using `by exact_mod_cast hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : (1 : ℝ) ≤ X.b` using `by linarith`. Establish `hnf : (1 : ℝ) ≤ (n : ℝ) * f` using `one_le_mul_of_one_le_of_one_le hn1 hf1'`. Establish `hnfr : (1 : ℝ) ≤ (n : ℝ) * f * X.I.rd` using `one_le_mul_of_one_le_of_one_le hnf hrd`. Establish `hnfrg : (1 : ℝ) ≤ (n : ℝ) * f * X.I.rd * X.g` using `one_le_mul_of_one_le_of_one_le hnfr hg1`. Establish `hY1' : (n : ℝ) * f * X.I.rd * X.g ≤ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hYdef]; exact le_mul_of_one_le_right (by linarith) hb1`. Establish `hY2 : 2 ≤ Y` using `by rw [hYdef]; nlinarith`. Establish `hY1 : (1 : ℝ) ≤ Y` using `by linarith`. Establish `hrdY : X.I.rd ≤ Y`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hnY : (n : ℝ) ≤ Y`. Combine the equalities or inequalities in the displayed calculation. Establish `hfY : (f : ℝ) ≤ Y`. Combine the equalities or inequalities in the displayed calculation. Establish `hv : 2 * Formalism.HermitianLatticesTheory.vInv X.I.E ≤ Y` using `by rw [hvI]; exact hrdY`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfDY : (Formalism.HermitianLatticesTheory.fDeg X.I.E : ℝ) ≤ Y` using `by rw [hfD]; exact hfY`. Establish `hprod` using `Formalism.MainNotions.MassRatioBoundPower.prod_massRatio_le (K := X.I.E) hd n hY2 hnY hv`. Rewrite `hprod` using `[hfD]`. Establish `hmass2` using `Formalism.MainNotions.BridgeLemV.mass_two_le_pow hE hY2 hv hfDY`. Rewrite `hmass2` using `[hfD]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Establish `h8 : (8 : ℝ) ≤ Y ^ 3`. Use `pow_le_pow_left₀ (by norm_num : (0 : ℝ) ≤ 2) hY2 3` as an intermediate fact. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hvol : volgU n ^ f ≤ Y ^ (3 * (n * n) * f)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = Y ^ (3 * (n * n) * f) := by rw [← pow_mul, ← pow_mul]; ring_nf`. Establish `hpn : 0 ≤ ∏ M ∈ Finset.Icc 3 n, Formalism.HermitianLatticesTheory.massRatioRightSide X.I.E M` using `Finset.prod_nonneg fun M hM => Formalism.MainNotions.MassRatioBoundPower.mass_ratio_rhs_nonneg (Finset.mem_Icc.1 hM).1`. Establish `hmn : Formalism.HermitianLatticesTheory.mass (Formalism.MainNotions.StandardLattice.stdForm X.I.E n) (Formalism.MainNotions.StandardLattice.stdLat X.I.E n) ≤ Y ^ (22 * f) * Y ^ ((2 * n + Formalism.MainNotions.MassRatioBoundPower.cZ) * n * f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hchain]`. Conclude with `mul_le_mul hmass2 hprod hpn (by positivity)`. Establish `hexp : 3 * (n * n) * f + (22 * f + (2 * n + Formalism.MainNotions.MassRatioBoundPower.cZ) * n * f) ≤ CasimirBaseCount * n ^ 2 * f`. Establish `e1 : 3 * (n * n) * f + (22 * f + (2 * n + Formalism.MainNotions.MassRatioBoundPower.cZ) * n * f) = 5 * (n * n * f) + 22 * f + Formalism.MainNotions.MassRatioBoundPower.cZ * (n * f)` using `by ring`. Establish `e2 : CasimirBaseCount * n ^ 2 * f = 27 * (n * n * f) + Formalism.MainNotions.MassRatioBoundPower.cZ * (n * n * f)`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `CasimirBaseCount`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : f ≤ n * n * f` using `Nat.le_mul_of_pos_left f (Nat.mul_pos (by omega) (by omega))`. Establish `h2 : n * f ≤ n * n * f` using `Nat.mul_le_mul_right f (Nat.le_mul_of_pos_left n (by omega))`. Establish `h3` using `Nat.mul_le_mul_left Formalism.MainNotions.MassRatioBoundPower.cZ h2`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, ← pow_add]`. Use `_ ≤ Y ^ (CasimirBaseCount * n ^ 2 * f) := pow_le_pow_right₀ hY1 hexp`.
-
-Use `_ = Y ^ ((CasimirBaseCount : ℝ) * (n : ℝ) ^ 2 * (f : ℝ)) := by`. Rewrite using `[← Real.rpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem covolR_le (hMR : Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.MassRatioStd) (X : CData) {n₀ : ℕ} {A : ℝ}
     (hX : X.HypB n₀ A) (hn2 : 2 ≤ X.I.n) :

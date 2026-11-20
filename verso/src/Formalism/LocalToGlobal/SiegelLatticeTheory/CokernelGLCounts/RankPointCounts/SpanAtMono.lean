@@ -15,17 +15,17 @@ open Formalism.L2.SG.KappaOffDiagonal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `E _ φ m N A c hc`. Use `letI : Algebra E ℂ := φ.toAlgebra`. Set `b` to `Module.Basis.ofVectorSpace E ℂ`. Set `J` to `Finset.univ.biUnion (fun i : Fin N => (b.repr (c i)).support)`. Set `s : Module.Basis.ofVectorSpaceIndex E ℂ → Fin N → E` to `fun j i => b.repr (c i) j`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hs : ∀ j, A *ᵥ s j = 0`. Introduce `j`. Use function extensionality and compare the values at `k`. Establish `h0 : (A.map φ *ᵥ c) k = 0` using `by rw [hc]; rfl`. Establish `h1 : ∑ i, A k i • c i = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h0]`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Establish `h2` using `congrArg (fun z => b.repr z j) h1`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h2`. Simplify `h2` using `[Matrix.mulVec, dotProduct, s]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcsum : c = ∑ j ∈ J, b j • (fun i => φ (s j i))`. Use function extensionality and compare the values at `i`. Rewrite using `[Finset.sum_apply]`. Use `conv_lhs => rw [← b.linearCombination_repr (c i)]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun i => (b.repr (c i)).support) (Finset.mem_univ i))]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def, RingHom.algebraMap_toAlgebra, s]`. Expand and normalize the polynomial expressions, which then agree. Introduce `j _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s j, hs j, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cplxKer : CplxKer := by
   intro E _ φ m N A c hc
@@ -59,28 +59,28 @@ theorem cplxKer : CplxKer := by
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨s j, hs j, rfl⟩)
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_add, dotProduct_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_add_r {n : ℕ} (ε : Fin n → Bool) (a y z : Fin n → ℂ) : hJ ε a (y + z) = hJ ε a y + hJ ε a z := by
   unfold hJ
   rw [Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_smul_r {n : ℕ} (ε : Fin n → Bool) (a y : Fin n → ℂ) (c : ℂ) : hJ ε a (c • y) = c * hJ ε a y := by
   unfold hJ
   rw [Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_zero, dotProduct_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_zero_r {n : ℕ} (ε : Fin n → Bool) (a : Fin n → ℂ) : hJ ε a 0 = 0 := by
   unfold hJ
   rw [Matrix.mulVec_zero, dotProduct_zero]
 
 /- English proof (translation)
-Unfold `hJ`. Rewrite using `[Matrix.mulVec_sum, dotProduct_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hJ_sum_r {n : ℕ} {ι : Type} [Fintype ι] (ε : Fin n → Bool) (a : Fin n → ℂ) (c : ι → ℂ)
     (y : ι → Fin n → ℂ) : hJ ε a (∑ i, c i • y i) = ∑ i, c i * hJ ε a (y i) := by
@@ -96,9 +96,9 @@ variable {D : D7} (X : HidaSetting D) (v : InfinitePlace X.B.I.F)
 abbrev psiV (p : (VS D).V) : Fin X.B.I.n → ℂ := rv X.B.I v (X.crd p)
 
 /- English proof (translation)
-Simplify using `only [psiV, rv]`. Rewrite using `[← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [HidaSetting.crd, Pi.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_add]`. Use `congr 1`. Simplify using `[crdOf, map_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem psiV_add (p q : (VS D).V) : psiV X v (p + q) = psiV X v p + psiV X v q := by
   simp only [psiV, rv]
@@ -111,7 +111,7 @@ theorem psiV_add (p q : (VS D).V) : psiV X v (p + q) = psiV X v p + psiV X v q :
   simp [crdOf, map_add]
 
 /- English proof (translation)
-Unfold `psiV rv HidaSetting.crd crdOf`. Rewrite using `[← Matrix.mulVec_smul]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[X.φ_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem psiV_smul (c : D.host.E) (p : (VS D).V) : psiV X v (c • p) = embS D (X.pl v) c • psiV X v p := by
   unfold psiV rv HidaSetting.crd crdOf
@@ -121,26 +121,26 @@ theorem psiV_smul (c : D.host.E) (p : (VS D).V) : psiV X v (c • p) = embS D (X
 def psiHom : (VS D).V →+ (Fin X.B.I.n → ℂ) := AddMonoidHom.mk' (psiV X v) (psiV_add X v)
 
 /- English proof (translation)
-Conclude with `map_sum (psiHom X v) f J`.
+A detailed English derivation is pending.
 -/
 theorem psiV_sum {ι : Type} (J : Finset ι) (f : ι → (VS D).V) : psiV X v (∑ i ∈ J, f i) = ∑ i ∈ J, psiV X v (f i) := by exact map_sum (psiHom X v) f J
 
 /- English proof (translation)
-Conclude with `map_zero (psiHom X v)`.
+A detailed English derivation is pending.
 -/
 theorem psiV_zero : psiV X v 0 = 0 := by exact map_zero (psiHom X v)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q`.
+A detailed English derivation is pending.
 -/
 theorem hJ_psiV (p q : (VS D).V) :
     hJ (X.B.I.ε v) (psiV X v p) (psiV X v q) = embS D (X.pl v) ((VS D).hT p q) :=
   Formalism.L2.SG.PoincareInHH.Cut.hJ_crd X v p q
 
 /- English proof (translation)
-Establish `hPu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Use `⟨X.B.I.P v *ᵥ y, ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ i, psiV X v (X.bas i) = (X.B.I.P v)⁻¹ *ᵥ (fun k => if i = k then (1 : ℂ) else 0)`. Introduce `i`. Unfold `psiV rv HidaSetting.crd crdOf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `by_cases h : i = k <;> simp [h]`. Simplify using `only [h1, ← Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum, ← pi_eq_sum_univ, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hPu, Matrix.one_mulVec]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem psiV_span (y : Fin X.B.I.n → ℂ) : ∃ c : Fin X.B.I.n → ℂ, y = ∑ i, c i • psiV X v (X.bas i) := by
   have hPu : IsUnit (X.B.I.P v).det := (Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)
@@ -156,21 +156,19 @@ theorem psiV_span (y : Fin X.B.I.n → ℂ) : ∃ c : Fin X.B.I.n → ℂ, y = �
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `letI : Algebra D.host.E ℂ := (embS D (X.pl v)).toAlgebra`. Set `b` to `Module.Basis.ofVectorSpace D.host.E ℂ`. Set `J` to `Finset.univ.biUnion (fun i : ι => (b.repr (c i)).support)`. Set `s : Module.Basis.ofVectorSpaceIndex D.host.E ℂ → ι → D.host.E` to `fun j i => b.repr (c i) j`. Set `w : Module.Basis.ofVectorSpaceIndex D.host.E ℂ → (VS D).V` to `fun j => ∑ i, s j i • g i`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw : ∀ j, w j ∈ perpS (VS D) U ⊓ Submodule.span D.host.E (Set.range g)`. Introduce `j`. Use `⟨fun p hp => ?_, Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)⟩` and prove the remaining obligations. Establish `h1 : ∑ i, (VS D).hT p (g i) • c i = 0`. Rewrite using `[← hc p hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, mul_comm]`. Establish `h2` using `congrArg (fun z => b.repr z j) h1`. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h2`. Use `show (VS D).hT p (w j) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [w, map_sum, map_smul, smul_eq_mul]`. Rewrite using `[← h2]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [s]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hc' : ∀ i, c i = ∑ j ∈ J, embS D (X.pl v) (s j i) * b j`. Introduce `i`. Use `conv_lhs => rw [← b.linearCombination_repr (c i)]`. Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (Finset.subset_biUnion_of_mem (fun i => (b.repr (c i)).support) (Finset.mem_univ i))]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra]`. Introduce `j _`. Simplify using the standard rewrite rules. Establish `hsum : ∑ i, c i • psiV X v (g i) = ∑ j ∈ J, b j • psiV X v (w j)`. Simplify using `only [w, psiV_sum, psiV_smul, Finset.smul_sum, smul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hc' i, Finset.sum_smul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨w j, hw j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplx_comb {ι : Type} [Fintype ι] (g : ι → (VS D).V) (U : Submodule D.host.E (VS D).V) (c : ι → ℂ)
     (hc : ∀ p ∈ U, ∑ i, c i * embS D (X.pl v) ((VS D).hT p (g i)) = 0) :
@@ -212,20 +210,20 @@ theorem cplx_comb {ι : Type} [Fintype ι] (g : ι → (VS D).V) (U : Submodule 
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨w j, hw j, rfl⟩)
 
 /- English proof (translation)
-Unfold `spanAt`. Conclude with `Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.mpr h))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem spanAt_mono {U U' : Submodule D.host.E (VS D).V} (h : U ≤ U') : spanAt X v U ≤ spanAt X v U' := by
   unfold spanAt
   exact Submodule.span_mono (Set.image_mono (SetLike.coe_subset_coe.mpr h))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `psiV_span X v y`. Establish `hmem` using `cplx_comb X v X.bas F.Xplus c (fun p hp => by`. Rewrite using `[← hy p hp, hJ_sum_r]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hJ_psiV])`. Establish `hmem'` using `spanAt_mono X v (inf_le_left.trans (le_of_eq rfl) : perpS (VS D) F.Xplus ⊓ Submodule.span D.host.E (Set.range X.bas) ≤ F.XplusPerp) hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem'` using `[← hsup]`. Use `Submodule.span_induction (p := fun y _ => ∃ x ∈ spanAt X v F.X, ∀ p ∈ V0, hJ (X.B.I.ε v) (psiV X v p) (y - x) = 0) ?_ ?_ ?_ ?_ hmem'` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Take `⟨a, ha, x, hx, rfl⟩` from `Submodule.mem_sup.1 hw`. Use `⟨psiV X v x, Submodule.subset_span ⟨x, hx, rfl⟩, fun p hp => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show hJ (X.B.I.ε v) (psiV X v p) (psiV X v (a + x) - psiV X v x) = 0`. Rewrite using `[psiV_add, add_sub_cancel_right, hJ_psiV, ha p hp, map_zero]`. Conclude with `⟨0, Submodule.zero_mem _, fun p _ => by rw [sub_zero, hJ_zero_r]⟩`. Introduce and unpack `y1 y2 - - ⟨x1, hx1, h1⟩ ⟨x2, hx2, h2⟩`. Use `⟨x1 + x2, Submodule.add_mem _ hx1 hx2, fun p hp => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[show y1 + y2 - (x1 + x2) = (y1 - x1) + (y2 - x2) by abel, hJ_add_r, h1 p hp, h2 p hp, add_zero]`. Introduce and unpack `a y1 - ⟨x1, hx1, h1⟩`. Use `⟨a • x1, Submodule.smul_mem _ _ hx1, fun p hp => ?_⟩` and prove the remaining obligations. Rewrite using `[← smul_sub, hJ_smul_r, h1 p hp, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplx_part1 {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T) (V0 : Submodule D.host.E (VS D).V)
     (hsup : perpS (VS D) V0 ⊔ F.X = F.XplusPerp) (y : Fin X.B.I.n → ℂ)
@@ -254,13 +252,11 @@ theorem cplx_part1 {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T) (V0 : Submodu
     rw [← smul_sub, hJ_smul_r, h1 p hp, mul_zero]
 
 /- English proof (translation)
-Establish `hle : spanAt X v F.X ≤ Submodule.span ℂ (Set.range fun a => psiV X v (F.e a))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Use `Submodule.span_induction (p := fun p _ => psiV X v p ∈ Submodule.span ℂ (Set.range fun a => psiV X v (F.e a))) ?_ ?_ ?_ ?_ hp` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨a, rfl⟩`. Rewrite using `[psiV_zero]`. Conclude with `Submodule.zero_mem _`. Introduce `x1 x2 _ _ h1 h2`. Rewrite using `[psiV_add]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ h1 h2`. Introduce `a x1 _ h1`. Rewrite using `[psiV_smul]`. Conclude with `Submodule.smul_mem _ _ h1`. Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hle hyX)`.
-
-Establish `hmem` using `cplx_comb X v F.e V0 c (fun p hp => by`. Rewrite using `[← hy p hp, hJ_sum_r]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hJ_psiV])`. Rewrite using `[← hinf]`. Conclude with `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplx_part3 {r : ℕ} {T : D.host.E} (F : FlagG (VS D) r T) (V0 I : Submodule D.host.E (VS D).V)
     (hinf : perpS (VS D) V0 ⊓ F.X = I) (y : Fin X.B.I.n → ℂ) (hyX : y ∈ spanAt X v F.X)
@@ -292,7 +288,7 @@ def NFRat : Prop :=
       perpS (VS D) (fixedSubspaceOfRepresentative X q) ⊔ (frq X q).fl.X = (frq X q).fl.XplusPerp
 
 /- English proof (translation)
-Introduce `D X u u' Λ Λ' q hrel hG v`. Take `⟨h1, h2, h3⟩` from `h D X u u' Λ Λ' q hrel hG`. Conclude with `⟨cplx_part1 X v _ _ h2, cplx_part1 X v _ _ h3, cplx_part3 X v _ _ _ h1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cplxNF_of (h : NFRat) : CplxNF := by
   intro D X u u' Λ Λ' q hrel hG v

@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.ExistsMoveRight
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LevOne.cong_mem_level_chr_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FCongruentOneMemStepLevelLevelCharEqOne.lean&line=17#L17)
 -/

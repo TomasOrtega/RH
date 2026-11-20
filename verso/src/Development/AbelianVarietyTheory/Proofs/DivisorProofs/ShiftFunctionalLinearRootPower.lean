@@ -10,14 +10,14 @@ namespace GlobalTheory.FlagPoly.DerivPow
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 /- English proof (translation)
-Simplify using `[linRoot, pderiv_X, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pderiv_linRoot (u : ι → Fin N → ℝ) (x : ι × Fin N) :
     pderiv x (linRoot u) = C (-(u x.1 x.2)) := by
   simp [linRoot, pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Establish `h : pderiv (τ, i) (linRoot u ^ (dimFl ι N + 1)) = C (-((dimFl ι N : ℝ) + 1) * u τ i) * linRoot u ^ dimFl ι N`. Rewrite using `[pderiv_pow, pderiv_linRoot]`. Simplify using `only [Nat.add_sub_cancel, map_mul, map_neg, map_add, map_natCast, map_one, Nat.cast_add, Nat.cast_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, PPowSum.degFl_C_mul, flagDeg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -34,9 +34,7 @@ theorem degFl_pderiv_pow (u : ι → Fin N → ℝ) (τ : ι) (i : Fin N) :
   ring
 
 /- English proof (translation)
-Introduce `ι _ _ N j u τ`. Prove the components needed by the constructor for the conclusion. Rewrite using `[shF, PPowSum.degFl_sum, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => degFl_pderiv_pow u τ i`. Rewrite using `[totF, PPowSum.degFl_sum, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => degFl_pderiv_pow u τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shF_totF_linRoot_pow :
     ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (u : ι → Fin N → ℝ) (τ : ι), shF j τ (linRoot u ^ (dimFl ι N + 1)) = -((dimFl ι N : ℝ) + 1) * flagDeg ι N u * ∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), u τ i ∧ totF τ (linRoot u ^ (dimFl ι N + 1)) = -((dimFl ι N : ℝ) + 1) * flagDeg ι N u * ∑ i : Fin N, u τ i := by

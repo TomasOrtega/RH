@@ -37,20 +37,20 @@ def gkGen (ψ : GA D V → ℂ) : Submodule ℂ (GA D V → ℂ) :=
   sInf {A | ψ ∈ A ∧ IsGKSub θ M A}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun _ h => h.1`.
+A detailed English derivation is pending.
 -/
 theorem mem_gkGen (ψ : GA D V → ℂ) : ψ ∈ gkGen θ M ψ :=
   Submodule.mem_sInf.2 fun _ h => h.1
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun A hA => hA.2.k τ g hg f (Submodule.mem_sInf.1 hf A hA) lie τ X hX f hf := Submodule.mem_sInf.2 fun A hA => hA.2.lie τ X hX f (Submodule.mem_sInf.1 hf A hA)`.
+A detailed English derivation is pending.
 -/
 theorem isGKSub_gkGen (ψ : GA D V → ℂ) : IsGKSub θ M (gkGen θ M ψ) where
   k τ g hg f hf := Submodule.mem_sInf.2 fun A hA => hA.2.k τ g hg f (Submodule.mem_sInf.1 hf A hA)
   lie τ X hX f hf := Submodule.mem_sInf.2 fun A hA => hA.2.lie τ X hX f (Submodule.mem_sInf.1 hf A hA)
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨hψ, hA⟩`.
+A detailed English derivation is pending.
 -/
 theorem gkGen_le {ψ : GA D V → ℂ} {A : Submodule ℂ (GA D V → ℂ)} (hψ : ψ ∈ A) (hA : IsGKSub θ M A) :
     gkGen θ M ψ ≤ A :=
@@ -78,7 +78,7 @@ def IsKFinCuspOfType (f : GA D V → ℂ) : Prop :=
       M.fr τ * g * (M.fr τ)⁻¹ ∈ Formalism.REAL.Kset (M.ε τ) → ∀ h ∈ W, rTr V (atTau θ V τ g) h ∈ W
 
 /- English proof (translation)
-The claim follows from `Formalism.IndefR.Mult.isAutFunSm_smul θ V (h.aut u) c cusp u := Formalism.IndefR.Mult.isCuspFun_smul V (h.cusp u) c equivK τ g hg hk u w hw := by rw [MultilinearMap.smul_apply, MultilinearMap.smul_apply, h.equivK τ g hg hk u w hw] rfl equivLie τ X hX u w hw := by rw [MultilinearM …`.
+A detailed English derivation is pending.
 -/
 theorem IsGKMult.smul {F : MultilinearMap ℂ (fun τ : D.what₂.Tau => GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ))
     (GA D V → ℂ)} (h : IsGKMult θ M F) (c : ℂ) : IsGKMult θ M (c • F) where
@@ -92,9 +92,9 @@ theorem IsGKMult.smul {F : MultilinearMap ℂ (fun τ : D.what₂.Tau => GlobalT
       Formalism.IndefR.Mult.rder_smul]
 
 /- English proof (translation)
-Take `⟨n, c, f, hf⟩` from `Submodule.mem_span_set'.1 hψ`. Use `choose F u hF hFu using fun i => (f i).2`. Use `⟨n, fun l => c l • F l, u, fun l => (hF l).smul θ M (c l), fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hFu l]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_sum_of_mem_multSpan {ψ : GA D V → ℂ} (hψ : ψ ∈ multSpan θ M) :
     ∃ (n : ℕ) (F : Fin n → MultilinearMap ℂ (fun τ : D.what₂.Tau => GlobalTheory.IndefiniteRowSideFullHecke.FinitePartTypes.kFin (M.ε τ) (M.σ τ))

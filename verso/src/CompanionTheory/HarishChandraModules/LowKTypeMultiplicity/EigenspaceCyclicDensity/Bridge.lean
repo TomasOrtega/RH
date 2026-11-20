@@ -5,7 +5,7 @@ import Formalism.LocalToGlobal.IndefiniteReal.FockTheta.DiscreteSeriesUnitary
 namespace CompanionTheory.D.LK
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem low_K_type_multiplicity_one_of (h : LowKMultOneP) : Formalism.MainNotions.DiscreteSeriesWeylDimension.LowKMultOne := h
 

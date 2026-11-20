@@ -53,7 +53,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.Subsingleton
 import Development.AbelianVarietyTheory.Proofs.TwistedOperators.MemStdMaxParabolicOfBlockParabolicLeConj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _`. Conclude with `⟨⟨⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.T.column_twisted_args_first : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.ChevalleyUnits → GlobalTheory.Published.BrauerDegreeZero → GlobalTheory.Published.LocalConverseGL → GlobalTheory.Published.LanglandsExhaustionGL → GlobalTheory.Published.StandardCosocleGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ hL : GlobalTheory.Published.LocalLanglandsGL, GlobalTheory.HeightCounting.LpCmp hL := by
   intro _ _ _ _ _ _ _ _ _ _

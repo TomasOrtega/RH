@@ -11,11 +11,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ _ _`. Distinguish the cases in `h3 : IsUnit ((3 : ℕ) : R)`. Conclude with `⟨3, Nat.prime_three, ⟨1, rfl⟩, h3⟩`. Distinguish the cases in `h5 : IsUnit ((5 : ℕ) : R)`. Conclude with `⟨5, by norm_num, ⟨2, rfl⟩, h5⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-It suffices to derive a contradiction. Establish `m3 : ((3 : ℕ) : R) ∈ maximalIdeal R` using `(mem_maximalIdeal _).2 h3`. Establish `m5 : ((5 : ℕ) : R) ∈ maximalIdeal R` using `(mem_maximalIdeal _).2 h5`. Establish `m2 : ((5 : ℕ) : R) - ((3 : ℕ) : R) ∈ maximalIdeal R` using `Ideal.sub_mem _ m5 m3`. Establish `m1 : ((3 : ℕ) : R) - (((5 : ℕ) : R) - ((3 : ℕ) : R)) ∈ maximalIdeal R` using `Ideal.sub_mem _ m3 m2`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((3 : ℕ) : R) - (((5 : ℕ) : R) - ((3 : ℕ) : R)) = 1` using `by push_cast; ring`. Rewrite `m1` using `[e]`. Conclude with `(mem_maximalIdeal _).1 m1 isUnit_one`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_odd_prime_isUnit_of_base :
     ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∃ n : ℕ, n.Prime ∧ Odd n ∧ IsUnit (n : R) := by

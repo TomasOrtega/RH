@@ -17,7 +17,7 @@ namespace GlobalTheory.CompanionTheory.GE
 variable {R : Type} [CommRing R] {N : ℕ}
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `(ConcreteCategory.bijective_of_isIso (Proj.basicOpenIsoAway (GlobalTheory.ProjSpace.grading R N) (X k) (GlobalTheory.ProjSpace.X_mem R N k) one_pos).hom).2 s`. Take `⟨n, f, hf, rfl⟩` from `HomogeneousLocalization.Away.mk_surjective _ (GlobalTheory.ProjSpace.X_mem R N k) x`. Establish `hf' : f.IsHomogeneous n` using `by simpa using hf`. Use `⟨n, f, hf', ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.ProjFrac.awayToSection_mk _ _ _).trans (GlobalTheory.ProjFrac.frac_eq rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_eq_formOn (k : Fin (N + 1)) (s : Γ(PSpace R N, GlobalTheory.ProjSpace.chart R N k)) :
     ∃ (n : ℕ) (a : MvPolynomial (Fin (N + 1)) R) (ha : a.IsHomogeneous n),
@@ -30,9 +30,7 @@ theorem exists_eq_formOn (k : Fin (N + 1)) (s : Γ(PSpace R N, GlobalTheory.Proj
   exact (GlobalTheory.ProjFrac.awayToSection_mk _ _ _).trans (GlobalTheory.ProjFrac.frac_eq rfl)
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[mem_map_C_iff]`. Introduce `m`. Rewrite using `[coeff_homogeneousComponent]`. Use `split_ifs`. Conclude with `hv m`.
-
-Conclude with `zero_mem _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homogeneousComponent_mem_map_C {K : Ideal R} {d : ℕ} {v : MvPolynomial (Fin (N + 1)) R}
     (hv : v ∈ K.map (C : R →+* MvPolynomial (Fin (N + 1)) R)) :
@@ -51,13 +49,13 @@ def homogOf (J : Ideal (MvPolynomial (Fin (N + 1)) R)) (hJ : HomogIdeal J) :
     rwa [← decomposition.decompose'_apply f d] at this⟩
 
 /- English proof (translation)
-Introduce `s hs`. Take `⟨n, a, ha, rfl⟩` from `exists_eq_formOn k s`. Rewrite `hs` using `[Scheme.Hom.ker_apply]`. Take `⟨m, h, hK⟩` from `GlobalTheory.T.chart_vanishing_kills_form_mul_pow φ n a ha k hs`. Take `⟨m', hm'⟩` from `hge _ ((GlobalTheory.T.mem_vanishing_ideal_iff_kills_form φ _ _ h).2 hK) k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, v, hv, huv⟩` from `Submodule.mem_sup.1 hm'`. Establish `hb : (X k ^ m' * (X k ^ m * a) : MvPolynomial (Fin (N + 1)) R).IsHomogeneous (m' + (m + n))` using `(isHomogeneous_X_pow k m').mul h`. Establish `hcu` using `homogeneousComponent_isHomogeneous (m' + (m + n)) u`. Establish `hcv` using `homogeneousComponent_isHomogeneous (m' + (m + n)) v`. Establish `hsum : homogeneousComponent (m' + (m + n)) u + homogeneousComponent (m' + (m + n)) v = X k ^ m' * (X k ^ m * a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_add, huv, homogeneousComponent_of_mem hb, if_pos rfl]`. Establish `e1 : GlobalTheory.ProjSpace.formOn (GlobalTheory.ProjSpace.chart R N k) k le_rfl n a ha = GlobalTheory.ProjSpace.formOn (GlobalTheory.ProjSpace.chart R N k) k le_rfl (m' + (m + n)) _ (hcu.add hcv)` using `GlobalTheory.ProjFrac.frac_eq (by rw [hsum]; ring)`. Rewrite using `[e1, GlobalTheory.ProjSpace.formOn_add hcu hcv]`. Use `Submodule.add_mem_sup ?_ ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.ker_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.ProjSpace.vPlusι_app_formOn_eq_zero_iff (homogOf J hJ) k hcu).2 ⟨0, by rw [pow_zero, one_mul]; exact hJ _ _ hu⟩`. Conclude with `(GlobalTheory.T.thickening_section_homogeneous_form I N e k).2 _ _ hcv (homogeneousComponent_mem_map_C hv)`.
+A detailed English derivation is pending.
 -/
 theorem ker_le_sup_chart {Y : Scheme.{0}} (I : Ideal R) (e : ℕ)
     (J : Ideal (MvPolynomial (Fin (N + 1)) R)) (hJ : HomogIdeal J)
@@ -99,22 +97,20 @@ instance isClosedImmersion_thickι (I : Ideal R) (e : ℕ) : IsClosedImmersion (
   infer_instance
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_thickι (I : Ideal R) (e : ℕ) :
     thickMap R I e (PO R N) ≫ thickι R I N (e + 1) = thickι R I N e :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Introduce `R _ _ I N Cs i β hi hsq J hJ hle hge`. Establish `hcl : ∀ e, IsClosedImmersion (i e ≫ thickι R I N e)` using `fun e => by`. Use `hi e` as an intermediate fact. Use `infer_instance`. Establish `hfac : ∀ e, ∃ ψ : Cs e ⟶ GlobalTheory.ProjSpace.VPlus (homogOf J hJ), ψ ≫ GlobalTheory.ProjSpace.vPlusι (homogOf J hJ) = i e ≫ thickι R I N e` using `fun e => (GlobalTheory.ProjSpace.exists_comp_vPlusι_iff (homogOf J hJ) _).2 fun k n f hf hfJ => (GlobalTheory.T.mem_vanishing_ideal_iff_kills_form _ n f hf).1 (hle e hfJ) k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose b hb using hfac`. Use `⟨GlobalTheory.ProjSpace.VPlus (homogOf J hJ), GlobalTheory.ProjSpace.vPlusι (homogOf J hJ), b, inferInstance, fun e => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `hc : IsClosedImmersion (b e ≫ GlobalTheory.ProjSpace.vPlusι (homogOf J hJ))`. Rewrite using `[hb]`. Conclude with `hcl e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.T.is_pullback_of_kernel_sup _ _ _ _ (hb e) ?_` and prove the remaining obligations. Rewrite using `[hb]`. Use `hcl e` as an intermediate fact. Establish `h1 : Scheme.Hom.ker (GlobalTheory.ProjSpace.vPlusι (homogOf J hJ)) ≤ Scheme.Hom.ker (i e ≫ thickι R I N e)`. Rewrite using `[← hb e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Scheme.Hom.le_ker_comp _ _`. Establish `h2 : Scheme.Hom.ker (thickι R I N e) ≤ Scheme.Hom.ker (i e ≫ thickι R I N e)` using `Scheme.Hom.le_ker_comp _ _`. Use `Scheme.IdealSheafData.ext_of_iSup_eq_top (fun k => ⟨GlobalTheory.ProjSpace.chart R N k, GlobalTheory.ProjSpace.isAffineOpen_chart R N k⟩) (GlobalTheory.ProjSpace.iSup_chart R N) fun k => le_antisymm ?_ ?_` and prove the remaining obligations. Conclude with `ker_le_sup_chart I e J hJ _ (hge e) k`. Conclude with `(Scheme.IdealSheafData.le_def.1 (sup_le h1 h2)) _`.
-
-Use `(cancel_mono (GlobalTheory.ProjSpace.vPlusι (homogOf J hJ))).1 ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hb, hb, ← Category.assoc, (hsq e).w, Category.assoc, thickMap_thickι]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_closed_of_homogIdeal : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (N : ℕ)
     (Cs : ℕ → Scheme.{0}) (i : ∀ e, Cs e ⟶ (thickObj R I e (PO R N)).left)

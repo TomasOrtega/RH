@@ -15,7 +15,7 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (u : D.what₂.Wo
   (θ : TpX X p ≃ₐ[FpX X p] FpX X p × FpX X p) (Q : GL (IdxD D) (FpX X p))
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `adq_gLam1 (X := X) (p := p) (θ := θ) (Q := Q) hL (v - w) hd i`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Simplify using `only [crd1, map_sub, Pi.sub_comp, Matrix.mulVec_sub, Pi.sub_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem firstCoords_congruent_mod (hL : LatBasis X p θ (reindex₂ X p Q)) (v w : Fin X.B.I.n → TpX X p) (hd : v - w ∈ gLam X p)
     (i : IdxD D) : InG X p (crd1 X p θ Q v i - crd1 X p θ Q w i) := by
@@ -25,7 +25,7 @@ theorem firstCoords_congruent_mod (hL : LatBasis X p θ (reindex₂ X p Q)) (v w
   simp only [crd1, map_sub, Pi.sub_comp, Matrix.mulVec_sub, Pi.sub_apply]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `adq_gLam2 (X := X) (p := p) (θ := θ) (Q := Q) hL (v - w) hd i`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy]`. Simplify using `only [crd2, map_sub, Pi.sub_comp, Matrix.mulVec_sub, Pi.sub_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem secondCoords_congruent_mod (hL : LatBasis X p θ (reindex₂ X p Q)) (v w : Fin X.B.I.n → TpX X p) (hd : v - w ∈ gLam X p)
     (i : IdxD D) : InG X p (crd2 X p θ Q v i - crd2 X p θ Q w i) := by
@@ -39,14 +39,14 @@ abbrev adqRef (t : IdxD D) : Fin X.B.I.n → TpX X p := adqM X hb u p *ᵥ PI.Fi
 abbrev adqRefR (s : IdxD D) : Fin X.B.I.n → TpX X p := adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (rowV X s)
 
 /- English proof (translation)
-The claim follows from `adq_lat (X := X) (hb := hb) (u := u) (p := p) _ (colV_lat (X := X) (p := p) t)`.
+A detailed English derivation is pending.
 -/
 theorem adq_ref_lat (t : IdxD D) :
     adqRef X hb u p t ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
   adq_lat (X := X) (hb := hb) (u := u) (p := p) _ (colV_lat (X := X) (p := p) t)
 
 /- English proof (translation)
-The claim follows from `adq_lat (X := X) (hb := hb) (u := u) (p := p) _ (rowV_lat (X := X) (p := p) s)`.
+A detailed English derivation is pending.
 -/
 theorem adq_refR_lat (s : IdxD D) :
     adqRefR X hb u p s ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
@@ -54,7 +54,7 @@ theorem adq_refR_lat (s : IdxD D) :
 
 include hb u in
 /- English proof (translation)
-Establish `h` using `colV_lat (X := X) (p := p) (Sum.inr (Sum.inr (Fin.rev a)))`. Simplify using `only [colV, Fin.rev_rev] at h`. Conclude with `adq_lat_of (X := X) (p := p) _ _ (adq_lat (X := X) (hb := hb) (u := u) (p := p) _ h) (adq_f_cong (X := X) (hb := hb) (u := u) (p := p) a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adq_F_lat (a : Fin D.R.rS) :
     adqF X p a ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) := by
@@ -65,7 +65,7 @@ theorem adq_F_lat (a : Fin D.R.rS) :
 
 include hb in
 /- English proof (translation)
-The claim follows from `adq_lat_of (X := X) (p := p) _ _ (adq_lat (X := X) (hb := hb) (u := u) (p := p) _ (colV_lat (X := X) (p := p) zI)) (adq_z_cong (X := X) (hb := hb) (u := u) (p := p))`.
+A detailed English derivation is pending.
 -/
 theorem adq_Z_lat :
     adqZ X u p ∈ latLoc (E := X.B.I.E) p.1 (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=
@@ -76,11 +76,11 @@ theorem adq_Z_lat :
 include hb in
 
 /- English proof (translation)
-Establish `hw` using `adq_ref_lat X hb u p zI`. Establish `hz` using `adq_Z_lat X hb u p`. Establish `hd` using `adq_z_cong X hb u p`. Take `⟨y, hy⟩` from `adq_dotG X p (a := crd2 X p θ Q (adqZ X u p)) (a' := crd2 X p θ Q (adqRef X hb u p zI)) (b := crd1 X p θ Q (adqZ X u p)) (b' := crd1 X p θ Q (adqRef X hb u p zI)) (fun i => ((latCrd_of X p θ Q hL _).1 hw).2 i) (fun i => ((latCrd_of X p θ Q hL _).1 hz).1 i) (secondCoords_congruent …`. Rewrite `hy` using `[adq_pairM X hb u p θ Q hθ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz'⟩` from `cong_dir X p θ Q hθ hL X.z0 X.z0 (-1) (by rw [sub_neg_eq_add]; exact X.formsAtZero.1)`. Establish `h1 : (θ (PI.FinKW.psiV X.B.I p.1 (-1))).1 = -1` using `by simp`. Rewrite `hz'` using `[h1]`. Use `⟨y + z, ?_⟩` and prove the remaining obligations. Establish `e : adqTau X u p θ Q = crd2 X p θ Q (adqZ X u p) ⬝ᵥ crd1 X p θ Q (adqZ X u p)` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 (colV X zI)) ⬝ᵥ crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 (colV X zI)) = crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0) ⬝ᵥ crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0)` using `rfl`. Rewrite `hy` using `[e2, hz']`. Rewrite using `[e]`. Use `push_cast`. Take the linear combination `hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adq_tau (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p Q)) :
     ∃ o : OvA X p, adqTau X u p θ Q = -1 + ((gOf p : ℕ) : FpX X p) * (o : FpX X p) := by
@@ -107,13 +107,13 @@ theorem adq_tau (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X 
 include hb in
 
 /- English proof (translation)
-Take `⟨o, ho⟩` from `adq_tau X hb u p θ Q hθ hL`. Establish `hg : ((gOf p : ℕ) : OvA X p) * o ∈ IsLocalRing.maximalIdeal (OvA X p)` using `Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).mpr (gOf_nonunit X p))`. Establish `hu1 : IsUnit (1 - ((gOf p : ℕ) : OvA X p) * o)` using `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ ((IsLocalRing.mem_maximalIdeal _).mp hg)`. Establish `hu : IsUnit (-1 + ((gOf p : ℕ) : OvA X p) * o)`. Use `hu1.neg` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[neg_sub, sub_eq_neg_add]`. Then use the resulting hypothesis. Take `⟨w, hw⟩` from `hu`. Establish `hτ : adqTau X u p θ Q = ((w : OvA X p) : FpX X p)`. Rewrite using `[hw, ho]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Establish `e : ((w : OvA X p) : FpX X p) * ((↑w⁻¹ : OvA X p) : FpX X p) = 1` using `congrArg Subtype.val w.mul_inv`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hτ, inv_eq_of_mul_eq_one_right e]`. Conclude with `(↑w⁻¹ : OvA X p).2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ]`. Introduce `h0`. Conclude with `w.ne_zero (Subtype.ext h0)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adq_tau_inv (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p Q)) :
     (adqTau X u p θ Q)⁻¹ ∈ OvA X p ∧ adqTau X u p θ Q ≠ 0 := by
@@ -147,17 +147,15 @@ def adqCol : IdxD D → IdxD D → FpX X p
   | Sum.inr (Sum.inr c) => crd1 X p θ Q (adqF X p (Fin.rev c))
 
 /- English proof (translation)
-Break down `t with a | ((i | v) | c)` into its components or cases. Conclude with `firstCoords_congruent_mod X p θ Q hL _ _ (adq_e_cong X hb u p a) s`. Use `set y := crd1 X p θ Q (adqM X hb u p *ᵥ PI.FinKW.vecV X.B.I p.1 (X.bw i)) with hy`. Establish `hyi : ∀ j, y j ∈ OvA X p` using `fun j => ((latCrd_of X p θ Q hL _).1 (adq_ref_lat X hb u p (MassDataIdxStIm.wI i))).1 j`. Establish `hca : ∀ a, InG X p (crd2 X p θ Q (adqE X p a) ⬝ᵥ y)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `h1` using `adq_dotG X p (a := crd2 X p θ Q (adqE X p a)) (a' := crd2 X p θ Q (adqRef X hb u p (Sum.inl a))) (b := y) (b' := y) (fun j => ((latCrd_of X p θ Q hL _).1 (adq_ref_lat X hb u p _)).2 j) hyi (secondCoords_congruent_mod X p θ Q hL _ _ (adq_e_cong X hb u p a)) (fun j => by rw [sub_se …`. Establish `h2 : crd2 X p θ Q (adqRef X hb u p (Sum.inl a)) ⬝ᵥ y = crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.e0 a)) ⬝ᵥ crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.bw i))` using `adq_pairM X hb u p θ Q hθ _ _`. Take `⟨z, hz⟩` from `fin_dir X p θ Q hθ hL _ _ ((X.weightVectorsIntegral i).2.2 a).1`. Rewrite `h1` using `[h2, hz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3` using `inG_add h1 (inG_g_mul (X := X) (p := p) z)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hcz : InG X p (crd2 X p θ Q (adqZ X u p) ⬝ᵥ y)`. Establish `h1` using `adq_dotG X p (a := crd2 X p θ Q (adqZ X u p)) (a' := crd2 X p θ Q (adqRef X hb u p zI)) (b := y) (b' := y) (fun j => ((latCrd_of X p θ Q hL _).1 (adq_ref_lat X hb u p _)).2 j) hyi (secondCoords_congruent_mod X p θ Q hL _ _ (adq_z_cong X hb u p)) (fun j => by rw [sub_self]; exact …`. Establish `h2 : crd2 X p θ Q (adqRef X hb u p zI) ⬝ᵥ y = crd2 X p θ Q (PI.FinKW.vecV X.B.I p.1 X.z0) ⬝ᵥ crd1 X p θ Q (PI.FinKW.vecV X.B.I p.1 (X.bw i))` using `adq_pairM X hb u p θ Q hθ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz⟩` from `fin_dir X p θ Q hθ hL _ _ (X.weightVectorsIntegral i).1`. Rewrite `h1` using `[h2, hz]`. Establish `h3` using `inG_add h1 (inG_g_mul (X := X) (p := p) z)`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `hti` using `(adq_tau_inv X hb u p θ Q hθ hL).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : adqCol X hb u p θ Q (Sum.inr (Sum.inl (Sum.inl i))) s - crd1 X p θ Q (adqRef X hb u p (Sum.inr (Sum.inl (Sum.inl i)))) s = 0 - (∑ a, (crd2 X p θ Q (adqE X p a) ⬝ᵥ y) * crd1 X p θ Q (adqF X p a) s + (crd1 X p θ Q (adqZ X u p) s * (adqTau X u p θ Q)⁻¹) * (crd2 X p θ Q (adqZ X u …` using `by show adqProj X u p θ Q y s - y s = _`. Simplify using `only [adqProj, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `inG_sub inG_zero (inG_add (inG_sum _ _ fun a _ => ?_) (inG_mul_int _ ?_ hcz))` and prove the remaining obligations.
-
-Rewrite using `[mul_comm]`. Conclude with `inG_mul_int _ (((latCrd_of X p θ Q hL _).1 (adq_F_lat X hb u p a)).1 s) (hca a)`. Conclude with `(OvA X p).mul_mem _ _ (((latCrd_of X p θ Q hL _).1 (adq_Z_lat X hb u p)).1 s) hti`. Conclude with `firstCoords_congruent_mod X p θ Q hL _ _ (adq_z_cong X hb u p) s`. Conclude with `firstCoords_congruent_mod X p θ Q hL _ _ (adq_f_cong X hb u p (Fin.rev c)) s`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adq_col_cong (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p Q)) (t s : IdxD D) :
     InG X p (adqCol X hb u p θ Q t s - crd1 X p θ Q (adqRef X hb u p t) s) := by
@@ -205,7 +203,7 @@ theorem adq_col_cong (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex�
   · exact firstCoords_congruent_mod X p θ Q hL _ _ (adq_f_cong X hb u p (Fin.rev c)) s
 
 /- English proof (translation)
-Establish `h1` using `adq_inG_int (X := X) (p := p) (adq_col_cong X hb u p θ Q hθ hL t s)`. Establish `h2` using `((latCrd_of (X := X) (p := p) (θ := θ) (Q := Q) hL _).mp (adq_ref_lat X hb u p t)).1 s`. Establish `h3` using `add_mem h1 h2`. Rewrite `h3` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem adq_col_int (hθ : IsSplitEquiv X p θ) (hL : LatBasis X p θ (reindex₂ X p Q)) (t s : IdxD D) :
     adqCol X hb u p θ Q t s ∈ OvA X p := by
@@ -220,9 +218,9 @@ def adqR : Matrix (IdxD D) (IdxD D) (FpX X p) :=
   fun s i => sgnV X p s * crd2 X p θ Q (adqRefR X hb u p s) i
 
 /- English proof (translation)
-Establish `e1 : (adqR X hb u p θ Q * adqC X hb u p θ Q) s t = sgnV X p s * (crd2 X p θ Q (adqRefR X hb u p s) ⬝ᵥ adqCol X hb u p θ Q t)`. Simplify using `only [Matrix.mul_apply, adqR, adqC, dotProduct, Finset.mul_sum, mul_assoc]`. Establish `hD` using `adq_dotG X p (a := crd2 X p θ Q (adqRefR X hb u p s)) (a' := crd2 X p θ Q (adqRefR X hb u p s)) (b := adqCol X hb u p θ Q t) (b' := crd1 X p θ Q (adqRef X hb u p t)) (fun j => ((latCrd_of X p θ Q hL _).1 (adq_refR_lat X hb u p s)).2 j) (fun j => adq_col_int X hb u p θ Q hθ hL t j …`. Rewrite `hD` using `[adq_pairM X hb u p θ Q hθ]`. Take `⟨y, hy⟩` from `inG_mul_int _ (sgnV_int X p s) hD`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `rc_cong X p θ Q hθ hε hL s t`. Use `⟨y + z, ?_⟩` and prove the remaining obligations. Rewrite using `[e1]`. Use `push_cast`. Take the linear combination `hy + hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem adq_RC (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : LatBasis X p θ (reindex₂ X p Q))
     (s t : IdxD D) : ∃ z : OvA X p, (adqR X hb u p θ Q * adqC X hb u p θ Q) s t =
@@ -244,9 +242,9 @@ theorem adq_RC (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : 
   linear_combination hy + hz
 
 /- English proof (translation)
-Use `choose N hN using fun s t => adq_RC X hb u p θ Q hθ hε hL s t`. Establish `hgc : ((gA X p : OvA X p) : FpX X p) = ((gOf p : ℕ) : FpX X p)` using `by simp [gA]`. Establish `hRC : adqR X hb u p θ Q * adqC X hb u p θ Q = 1 + ((gA X p : OvA X p) : FpX X p) • Matrix.of (fun s t => ((N s t : OvA X p) : FpX X p))`. Use extensionality with `s t`. Rewrite using `[hN s t, hgc]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨c, hc⟩` from `exists_gl_of_left_inv (OvA X p) (gA X p) (PIW.MassDataColumns.gOf_nonunit X p) (adqC X hb u p θ Q) (adqR X hb u p θ Q) _ (fun i t => adq_col_int X hb u p θ Q hθ hL t i) (fun s i => (OvA X p).mul_mem _ _ (sgnV_int X p s) (((latCrd_of X p θ Q hL _).1 (adq_refR_lat X hb u p s)).2 i) …`. Conclude with `⟨c, by rw [glK_val]; exact hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem adq_gl (hθ : IsSplitEquiv X p θ) (hε : θ (epsP X p) = (1, 0)) (hL : LatBasis X p θ (reindex₂ X p Q)) :
     ∃ c : GL (IdxD D) (OvA X p),

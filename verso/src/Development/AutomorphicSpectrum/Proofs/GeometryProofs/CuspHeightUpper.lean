@@ -31,15 +31,13 @@ section Places
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `hx`. Use `haveI : Nonempty Jx := ⟨i₀⟩`. Establish `hS : (⋃ i ∈ Finset.univ.filter (fun i => x i ≠ 0), Function.mulSupport fun v : FinitePlace L => v (x i)).Finite`. Use `Set.Finite.biUnion (Finset.finite_toSet _) fun i hi => ?_` and prove the remaining obligations. Conclude with `FinitePlace.mulSupport_finite (by simpa using hi)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Use `hS.subset fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Apply `hv` to reduce the goal to its premises. Establish `h1 : ∀ i, x i ≠ 0 → v (x i) = 1`. Introduce `i hi`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (Set.mem_biUnion (by simpa using hi) h)`. Establish `h2 : ∀ i, v (x i) ≤ 1`. Introduce `i`. Distinguish the cases in `hi : x i = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hi]`. Conclude with `(h1 i hi).le`. Establish `h3 : (⨆ i, v (x i)) = 1`. Establish `hle : (⨆ i, v (x i)) ≤ 1` using `ciSup_le h2`. Establish `hge : (1 : ℝ) ≤ ⨆ i, v (x i)`.
-
-Establish `hb : BddAbove (Set.range fun i => v (x i))` using `(Set.finite_range _).bddAbove`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_antisymm hle hge`. Simplify using `[h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma log_iSup_support {Jx : Type} [Fintype Jx] (x : Jx → L) (hx : ∃ i, x i ≠ 0) :
     (Function.support fun v : FinitePlace L => Real.log (⨆ i, v (x i))).Finite := by
@@ -72,7 +70,7 @@ lemma log_iSup_support {Jx : Type} [Fintype Jx] (x : Jx → L) (hx : ∃ i, x i 
   simp [h3]
 
 /- English proof (translation)
-Use `(Set.finite_iUnion fun k => log_iSup_support (x k) (hx k)).subset fun v hv => ?_` and prove the remaining obligations. Take `⟨k, -, hk⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hv`. Conclude with `Set.mem_iUnion.2 ⟨k, right_ne_zero_of_mul hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 lemma blocks_support {K : Type} [Fintype K] {Jx : K → Type} [∀ k, Fintype (Jx k)] (a : K → ℝ)
     (x : ∀ k, Jx k → L) (hx : ∀ k, ∃ i, x k i ≠ 0) :
@@ -86,13 +84,13 @@ end Places
 variable {K : Type} [Fintype K] {Jx : K → Type} [∀ k, Fintype (Jx k)]
 
 /- English proof (translation)
-Establish `hd : (Module.finrank ℚ L : ℝ) ≠ 0` using `by exact_mod_cast Module.finrank_pos.ne'`. Establish `s1` using `blocks_support (L := L) (fun k => (a k : ℝ)) (fun k i => w ⟨k, i⟩) hw`. Establish `s2` using `blocks_support (L := L) (fun k => (A.a k : ℝ)) (fun k i => w ⟨k, i⟩) hw`. Establish `hfin : (∑ᶠ v : FinitePlace L, ∑ k, (M.a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))) = q * (∑ᶠ v : FinitePlace L, ∑ k, (a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))) + p * ∑ᶠ v : FinitePlace L, ∑ k, (A.a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))`. Rewrite using `[mul_finsum, mul_finsum, ← finsum_add_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finsum_congr fun v => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[ha]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, Int.cast_add, Int.cast_mul, Int.cast_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `s1.subset (Function.support_mul_subset_right _ _)`. Conclude with `s2.subset (Function.support_mul_subset_right _ _)`. Establish `harch : ∑ σ : L →+* ℂ, Real.log (M.h fun x => σ (w x)) = q * (∑ σ : L →+* ℂ, φ (fun x => σ (w x)) + ∑ σ : L →+* ℂ, G (fun x => σ (w x))) + p * ∑ σ : L →+* ℂ, Real.log (A.h fun x => σ (w x))`. Rewrite using `[Finset.sum_congr rfl fun σ _ => hh σ, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, Finset.sum_add_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `Ht.lineHt Ht.ptHt`. Simplify using `only []`. Rewrite using `[hfin, harch]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma lineHt_decomp (M A : HermLine Jx) (a : K → ℤ) (p q : ℕ) (φ G : ((Σ k, Jx k) → ℂ) → ℝ) (L : Type) [Field L]
     [NumberField L] (w : (Σ k, Jx k) → L) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (ha : M.a = (q : ℤ) • a + (p : ℤ) • A.a)
@@ -128,7 +126,7 @@ lemma lineHt_decomp (M A : HermLine Jx) (a : K → ℤ) (p q : ℕ) (φ G : ((Σ
   ring
 
 /- English proof (translation)
-Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hw.1 k`. Conclude with `⟨i, (map_ne_zero σ).2 hi⟩`. Establish `h1 : aeval (fun p => σ (w p)) f = σ (aeval w f)` using `(comp_aeval_apply (R := ℤ) (f := w) σ.toIntAlgHom f).symm`. Rewrite using `[MvPolynomial.eval_map, ← algebraMap_int_eq, ← MvPolynomial.aeval_def, h1, hw.2 f hf, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma mem_mcPts_of_ptsOver {P : Ideal (MRing Jx)} {L : Type} [Field L] (σ : L →+* ℂ) {w : (Σ k, Jx k) → L}
     (hw : w ∈ Small.ptsOver L P) : (fun p => σ (w p)) ∈ mcPts P := by
@@ -144,39 +142,37 @@ end GlobalTheory.CompanionTheory.Ar.Cusp.TopHt
 namespace GlobalTheory.CompanionTheory.Ar.Cusp.TopHt
 
 /- English proof (translation)
-Introduce `hG hF`. Take `⟨C, -, hU4⟩` from `GlobalTheory.T.phiDeg_fibLat_le_of_isOFamily_of_isAdapted hG hF`. Use `⟨C, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or B₁ U M S' hII hAdm hU hTied`. Introduce `B p q hB hp hpq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq0 : 0 < q` using `by omega`. Establish `hq : (0 : ℝ) < q` using `by exact_mod_cast hq0`. Take `⟨u, hu, hsub⟩` from `mem_nhdsGT_iff_exists_Ioo_subset.1 (GlobalTheory.T.regularized_weight_dominates_eventually K J II (CMType H) Ω W Dc Hd M _ S' hTied)`. Use `⟨u / 2, half_pos hu, fun t' ht' ht'u P hP hyP => ?_⟩` and prove the remaining obligations. Take `⟨hge, -, hreg⟩` from `hsub ⟨ht', by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hsm, hdeg, hlog⟩` from `hreg B p q`. Take `⟨L₀, _, _, w, -, hw, hII'⟩` from `GlobalTheory.T.height_of_zero_dim_variety K J II hII.1 P hP`. Establish `hdeg0 : (0 : ℝ) < degC P` using `Nat.cast_pos.2 (degC_pos_of_isArithVar_one hP)`. Establish `hMU : htMUc Hd S' B p q t' P = Ht.lineHt (MUc Hd S' B p q t') L₀ w / q`. Unfold `htMUc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← hII' _ hsm]`. Clear the denominators using the available nonvanishing facts. Establish `hA' : -Dc.KA ≤ Ht.lineHt Dc.A' L₀ w`. Rewrite using `[← hII' _ Dc.A'_pos.1, le_div_iff₀ hdeg0]`. Combine the linear relations using `[Dc.heights P hP hyP]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hwy : w ∈ Small.ptsOver L₀ (mCoordIdeal Dc.y)` using `⟨hw.1, fun f hf => hw.2 f (hyP hf)⟩`. Establish `hpq1 : 1 ≤ D.p + D.q`. Establish `h1` using `Or.N_eq`. Establish `h2` using `Dc.two_le_N`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Take `⟨L, _, _, e, z, Pa, V, _, _, _, _, MV, A, hco, hlin, hrk, hBq⟩` from `GlobalTheory.T.small_points_over_number_field hG E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L₀ hpq1 w hwy`. Take `⟨-, -, -, -, -, hcard, -⟩` from `GlobalTheory.T.cusp_correspondence_bound E H D l (Xo l) c Y S₀ Ω K J Dc.y Or.𝔐 L (spMap (algebraMap (𝓞 L) L) ≫ z)`. Take `⟨⟨r, v, hv⟩, hadp⟩` from `GlobalTheory.T.adapted_family_exists_on_eigenspace E L (CMType H) V A hcard`. Establish `hne : Nonempty (CMType H)`. Establish `h1 : 0 < Module.finrank ℚ E` using `Module.finrank_pos`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hcard]`. Conclude with `Fintype.card_pos_iff.1 (by omega)`. Take `⟨τ₀⟩` from `hne`. Establish `hrj : r + (Dc.j' - r) = Dc.j'`. Take `⟨k, -, -, -, h3, -⟩` from `hadp r v hv (Or.sm τ₀)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[hrk, Or.rk_sm]`. Unfold `ComponentData.j'`. Use linear arithmetic over natural numbers and integers. Establish `hk : ∀ τ, ∃ qq : Fin (Dc.j' - r) → A.Λ, (∀ i, (qq i : V) ∈ A.eig (Or.sm τ)) ∧ A.IsAdapted (Or.sm τ) v qq`. Introduce `τ`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, qq, h1, h2, h3, -⟩` from `hadp r v hv (Or.sm τ)`. Establish `hk' : k = Dc.j' - r`. Rewrite `h3` using `[hrk, Or.rk_sm]`. Unfold `ComponentData.j'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Substitute using the available equality.
 
-Substitute `hk'` using the available equality. Conclude with `⟨qq, h1, h2⟩`. Use `choose qq hqq1 hqq2 using hk`. Take `⟨x, hx, hht⟩` from `GlobalTheory.T.cusp_intersection_height hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B L z Pa V MV A (fun p => e (w p)) r (Dc.j' - r) v qq hAdm.2.1 hco hlin hv (fun τ => ⟨hqq2 τ, hqq1 τ⟩)`. Establish `hu4` using `hU4 E H D Xo l c Y II K J Ω W Dc Hd S₀ Or B₁ B L z Pa V MV A r (Dc.j' - r) v qq hAdm hB hlin hBq hrj hv (fun τ => ⟨hqq2 τ, hqq1 τ⟩)`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxe : ∀ σ : L →+* ℂ, x σ ≤ Real.log (S'.ref.h fun p => σ (e (w p))) + S'.bregWeight t' (M.proj fun p => σ (e (w p)))`. Introduce `σ`. Establish `hc` using `RootHt.PullCoords.coordsAt_embedding _ _ Or.𝔐.ξ K J Dc.y L (fun p => e (w p)) z σ hco`. Establish `e1 : spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z = spMap σ ≫ spMap (algebraMap (𝓞 L) L) ≫ z`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hc` using `[e1]`. Establish `h1` using `GlobalTheory.T.cusp_intersection_finite hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U M S' _ _ (x σ) hU hc (hx σ)`. Combine the linear relations using `[hge (M.proj fun p => σ (e (w p)))]`. Establish `hext : ∀ A₀ : HermLine J, Ht.lineHt A₀ L (fun p => e (w p)) = Ht.lineHt A₀ L₀ w`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `A₀`. Establish `h1` using `GlobalTheory.T.line_height_invariant_scaling K J A₀ L₀ L e w (fun _ => 1) hw.1 (fun _ => one_ne_zero)`. Simplify using `using h1`. Establish `hw' : ∀ k, ∃ i, e (w ⟨k, i⟩) ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hw.1 k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨i, (map_ne_zero e).2 hi⟩`. Establish `hdec` using `lineHt_decomp (MUc Hd S' B p q t') Dc.A' (muTwDeg Hd B) p q (twW (D := Dc) B fun _ => 0) (fun z' => Real.log (S'.ref.h z') + S'.bregWeight t' (M.proj z')) L (fun p => e (w p)) hw' (by rw [hdeg, Dc.A'_deg]) (fun σ => by`. Establish `hm` using `mem_mcPts_of_ptsOver (σ.comp e) hwy`. Simplify using `only [RingHom.comp_apply] at hm`. Rewrite using `[hlog _ hm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [twW, RingHom.comp_apply, zero_add]`. Use the proof step `ring)`. Rewrite `hdec` using `[hext, hext]`. Establish `hsum : ∑ σ : L →+* ℂ, x σ ≤ ∑ σ : L →+* ℂ, (Real.log (S'.ref.h fun p => σ (e (w p))) + S'.bregWeight t' (M.proj fun p => σ (e (w p))))` using `Finset.sum_le_sum fun σ _ => hxe σ`. Establish `hn : (0 : ℝ) < Module.finrank ℚ L` using `by exact_mod_cast Module.finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiv` using `div_le_div_of_nonneg_right hsum hn.le`. Establish `hpq' : (0 : ℝ) ≤ p / q` using `div_nonneg (Nat.cast_nonneg _) hq.le`. Rewrite using `[hMU, hdec]`. Establish `hAq : -(p / q * Dc.KA) ≤ p / q * Ht.lineHt Dc.A' L₀ w` using `by nlinarith`. Rewrite using `[show (q * (Ht.ptHt (fun k => (muTwDeg Hd B k : ℝ)) (twW (D := Dc) B fun _ => 0) L (fun p => e (w p)) + (∑ σ : L →+* ℂ, (Real.log (S'.ref.h fun p => σ (e (w p))) + S'.bregWeight t' (M.proj fun p => σ (e (w p))))) / Module.finrank ℚ L) + p * Ht.lineHt Dc.A' L₀ w) / q = Ht.ptHt (fu …`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem htU_of_given : Top.Given → Fl.FlatDegree → ∃ Ch : ℝ, ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H)

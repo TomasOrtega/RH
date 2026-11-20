@@ -10,23 +10,21 @@ open GlobalTheory.ConeBumpB
 open scoped GlobalTheory.VacAny
 
 /- English proof (translation)
-Establish `key : ∀ y ∈ tsupport T, ∀ᶠ z : A × A in nhds ((0 : A), y), χ (z.1 * z.2) = 1 ∧ T (z.2 + z.1) = T z.2 ∧ T (z.2 - z.1) = T z.2`. Introduce `y _`. Establish `e1` using `(hl.comp_continuous (continuous_fst.mul continuous_snd : Continuous fun z : A × A => z.1 * z.2)).eventually_eq (x := ((0 : A), y))`. Establish `e2` using `(hTl.comp_continuous (continuous_snd.add continuous_fst : Continuous fun z : A × A => z.2 + z.1)).eventually_eq (x := ((0 : A), y))`. Establish `e3` using `(hTl.comp_continuous (continuous_snd.sub continuous_fst : Continuous fun z : A × A => z.2 - z.1)).eventually_eq (x := ((0 : A), y))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4` using `(hTl.comp_continuous (continuous_snd : Continuous fun z : A × A => z.2)).eventually_eq (x := ((0 : A), y))`. Use `filter_upwards [e1, e2, e3, e4] with z h1 h2 h3 h4`. Simplify using `only [Function.comp_apply, Pi.mul_apply, Pi.add_apply, Pi.sub_apply, zero_mul, add_zero, sub_zero, h0] at h1 h2 h3 h4`. Conclude with `⟨h1, h2.trans h4.symm, h3.trans h4.symm⟩`. Establish `h` using `hTc.eventually_forall_of_forall_eventually (x₀ := (0 : A)) (P := fun (w y : A) => χ (w * y) = 1 ∧ T (y + w) = T y ∧ T (y - w) = T y) key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Establish `hc : Tendsto (fun t : A => t - x) (nhds x) (nhds 0)`. Establish `: Continuous fun t : A => t - x` using `continuous_id.sub continuous_const`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this.tendsto x`. Use `filter_upwards [hc.eventually h] with t ht`. Use `congr 1`. Use function extensionality and compare the values at `s`. Distinguish the cases in `hs : s ∈ tsupport T`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : t * s = x * s + (t - x) * s` using `by ring`. Rewrite using `[e, hadd, (ht s hs).1, mul_one]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hs, zero_mul, zero_mul]`. Use `HasCompactSupport.intro (hann _ h) fun l hl' => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hl' fun u hu => ?_` and prove the remaining obligations. Establish `hT : ∀ s, T (s + u) = T s`. Introduce `s`. Distinguish the cases in `hs : s ∈ tsupport T`. Conclude with `(hu s hs).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Distinguish the cases in `hs' : s + u ∈ tsupport T`. Use `(hu _ hs').2.2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hs, image_eq_zero_of_notMem_tsupport hs']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `integral_add_right_eq_self (μ := m) (fun s => T s * χ (l * s)) u`. Establish `e2 : ∀ s, T (s + u) * χ (l * (s + u)) = χ (u * l) * (T s * χ (l * s))`. Introduce `s`. Rewrite using `[hT, mul_add, hadd, mul_comm l u]`. Expand and normalize the polynomial expressions, which then agree.
-
-Simplify using `only [e2, integral_const_mul] at e`. Conclude with `mul_right_cancel₀ hne (e.trans (one_mul _).symm)`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.locally_constant_fourier {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] [T2Space A]
     [MeasurableSpace A] [BorelSpace A] (m : Measure A) [m.IsAddRightInvariant] (χ : A → ℂ)
@@ -84,9 +82,7 @@ private theorem UpperTheory.locally_constant_fourier {A : Type} [CommRing A] [To
     exact mul_right_cancel₀ hne (e.trans (one_mul _).symm)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v ψ hc hψ _ _ m _ T hT`. Use `haveI := GlobalTheory.LocTateInt.isTopologicalRing_Ev (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.t2Space_Fv_tensor (E := E) v`. Use `haveI := GlobalTheory.LocTateInt.isModuleTopology_Ev (E := E) v`. Establish `hψl : IsLocallyConstant ψ` using `GlobalTheory.SchrSB.isLocallyConstant_addChar ψ hc`.
-
-Take `⟨hTl, hTc⟩` from `hT`. Conclude with `UpperTheory.locally_constant_fourier m (fun a => ψ (Algebra.trace (Fv F v) (Fv F v ⊗[F] E) a)) (hψl.comp_continuous (IsModuleTopology.continuous_of_linearMap (Algebra.trace (Fv F v) (Fv F v ⊗[F] E)))) (by simp) (fun a b => by simp only [map_add, AddChar.map_add_eq_mul]) (GlobalTh …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.fourier_schwartz_bruhat_preserved :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F) (ψ : AddChar (Fv F v) ℂ), Continuous ψ → ψ ≠ 1 →

@@ -29,13 +29,13 @@ namespace GlobalTheory.FinIdlRead
 open GlobalTheory.Mem.Col2.SplitChar
 
 /- English proof (translation)
-Set `f : Formalism.MainNotions.StandardLatticesGL3.AE D →+* Formalism.MainNotions.StandardLatticesGL3.AE D` to `(adEquiv D).symm.toRingHom.comp (GlobalTheory.BotFormula.toFinE D).toRingHom`. Establish `hf : ∀ z, adEquiv D (f z) = GlobalTheory.BotFormula.toFinE D z` using `fun z => (adEquiv D).apply_symm_apply _`. Establish `hι : ∀ (x : D.host.E) (a : FiniteAdeleRing (𝓞 ℚ) ℚ), (GlobalTheory.BotFormula.toFinE D).toRingHom (x ⊗ₜ[ℚ] a) = algebraMap D.host.E _ x * GlobalTheory.AdeleBaseChange.adMap ℚ D.host.E a` using `GlobalTheory.BotClassDict.toFinE_tmul`. Establish `hinc : ∀ a : D.host.E, f (inc D a) = inc D a` using `fun a => by`. Apply `(adEquiv D).injective` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hf, adEquiv_inc]`. Establish `h1 : GlobalTheory.BotFormula.toFinE D (inc D a) = algebraMap D.host.E _ a * GlobalTheory.AdeleBaseChange.adMap ℚ D.host.E 1` using `GlobalTheory.BotClassDict.toFinE_tmul a 1`. Rewrite using `[h1, map_one, mul_one]`. Establish `hint : ∀ r ∈ OhE D, f r ∈ OhE D` using `fun r hr => by`. Rewrite using `[mem_OhE_iff, hf]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.AdeleBaseChange.map_mem_int (F := ℚ) (E := D.host.E) hι hr`. Establish `h0 : f y - y = 0`. Use `GlobalTheory.AdeleBaseChange.eq_zero_of_divisible (F := ℚ) (E := D.host.E) (f y - y) fun N hN => ?_` and prove the remaining obligations. Take `⟨a, r, hr, e⟩` from `exists_approx y hN`. Use `⟨f r - r, sub_mem (hint r hr) hr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nsmul_eq_mul]`. Express the relevant statement in the definitionally equal form `f y - y = (N : Formalism.MainNotions.StandardLatticesGL3.AE D) * (f r - r)`. Rewrite using `[e, map_add, map_mul, map_natCast, hinc]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hf, sub_eq_zero.1 h0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toFinE_eq_adEquiv (D : D7) (y : Formalism.MainNotions.StandardLatticesGL3.AE D) : GlobalTheory.BotFormula.toFinE D y = adEquiv D y := by
   let f : Formalism.MainNotions.StandardLatticesGL3.AE D →+* Formalism.MainNotions.StandardLatticesGL3.AE D := (adEquiv D).symm.toRingHom.comp (GlobalTheory.BotFormula.toFinE D).toRingHom
@@ -62,7 +62,7 @@ theorem toFinE_eq_adEquiv (D : D7) (y : Formalism.MainNotions.StandardLatticesGL
   rw [← hf, sub_eq_zero.1 h0]
 
 /- English proof (translation)
-Use `show GlobalTheory.LFun.toFinAd D.host.F D.host.E ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finAdEquiv_one_tmul (D : D7) (x : D.host.E) :
     GlobalTheory.LFun.finAdEquiv D.host.F D.host.E ((1 : Af D.host.F) ⊗ₜ[D.host.F] x) =
@@ -71,13 +71,11 @@ theorem finAdEquiv_one_tmul (D : D7) (x : D.host.E) :
   rw [GlobalTheory.LFun.toFinAd_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Set `c` to `(Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E).toRingEquiv`. Set `ι : Formalism.L2.DIV.AfE D.host.F D.host.E →+* FiniteAdeleRing (𝓞 D.host.E) D.host.E` to `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).toRingHom.comp c.symm.toRingHom`. Establish `hι : ∀ x a, ι (x ⊗ₜ[D.host.F] a) = algebraMap D.host.E _ x * GlobalTheory.AdeleBaseChange.adMap D.host.F D.host.E a` using `fun x a => (GlobalTheory.LFun.toFinAd_tmul a x).trans (mul_comm _ _)`. Establish `e : ι (Algebra.TensorProduct.comm D.host.F (Af D.host.F) D.host.E y) = GlobalTheory.LFun.finAdEquiv D.host.F D.host.E y`. Express the relevant statement in the definitionally equal form `GlobalTheory.LFun.finAdEquiv D.host.F D.host.E (c.symm (c y)) = _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[c.symm_apply_apply]`. Rewrite using `[GlobalTheory.HostAdeleIso.mem_intAE_iff_comm]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `GlobalTheory.AdeleBaseChange.map_mem_int hι hy` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[e]`. Conclude with `this`. Introduce `hy`. Use `GlobalTheory.AdeleBaseChange.mem_int_of_map hι ?_` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `hy`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_intAE_iff_finAdEquiv (D : D7) (y : Af D.host.F ⊗[D.host.F] D.host.E) :
     y ∈ intAE D ↔ ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E y P) ≤ 1 := by
@@ -101,13 +99,13 @@ theorem mem_intAE_iff_finAdEquiv (D : D7) (y : Af D.host.F ⊗[D.host.F] D.host.
     exact hy
 
 /- English proof (translation)
-Introduce `D ν χ h x y hxy`. Take `⟨Φ, -, hΦ', h1, h2, h3⟩` from `GlobalTheory.DetRootRead.exists_adele_equiv_fin D (GlobalTheory.LFun.finAdEquiv D.host.F D.host.E) (finAdEquiv_one_tmul D) (mem_intAE_iff_finAdEquiv D)`. Rewrite using `[GlobalTheory.DetRootRead.read_of_equiv D ν χ h Φ hΦ' h1 h2 x]`. Take `⟨s, hs, -⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Establish `split : ∀ z w : AE D, infPart D z = infPart D w → finPart D z = finPart D w → z = w` using `fun z w hi hf => s.injective (Prod.ext ((hs z).1.trans (hi.trans (hs w).1.symm)) ((hs z).2.trans (hf.trans (hs w).2.symm)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfst : (Φ (x : AE D)).1 = 1`. Set `w : AE D` to `Φ.symm (1, (Φ (x : AE D)).2)`. Establish `hw : Φ w = (1, (Φ (x : AE D)).2)` using `Φ.apply_symm_apply _`. Establish `hwi : infPart D w = 1` using `(h3 w).1 (by rw [hw])`. Establish `hwf : finPart D w = finPart D (x : AE D)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(GlobalTheory.LFun.finAdEquiv D.host.F D.host.E).injective` to reduce the goal to its premises. Rewrite using `[← (h3 w).2, ← (h3 (x : AE D)).2, hw]`. Establish `: w = (x : AE D)` using `split _ _ (hwi.trans hxy.1.symm) hwf`. Rewrite using `[← this, hw]`. Establish `he : Units.map Φ.toRingHom.toMonoidHom x = GlobalTheory.Mem.Col2.SplitChar.finIdl D y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Units.ext (Prod.ext ?_ ?_)` and prove the remaining obligations. Conclude with `hfst`. Express the relevant statement in the definitionally equal form `(Φ (x : AE D)).2 = adEquiv D (y : Formalism.MainNotions.StandardLatticesGL3.AE D)`. Rewrite using `[(h3 _).2, hxy.2, toFinE_eq_adEquiv]`. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chr_finIdl : ∀ {D : D7} (ν : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq ν χ → ∀ x y, IsFinIdl x y →
     ((ν x : Circle) : ℂ) = ((χ.1 (GlobalTheory.Mem.Col2.SplitChar.finIdl D y) : ℂˣ) : ℂ) := by

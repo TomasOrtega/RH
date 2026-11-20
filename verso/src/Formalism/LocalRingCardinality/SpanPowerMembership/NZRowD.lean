@@ -79,21 +79,21 @@ def divXStd (n : ℕ → ℕ) (bM : ∀ j, OrthonormalBasis (Fin (n j)) ℂ (D.w
   surfFpCh2 := fun _ => 0
 
 /- English proof (translation)
-Unfold `Idx.IjIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[h]`. Conclude with `sub_self _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ijIdx_zero {D : D7} (X : DivX D) (μ j w) (h : (X.MjH j).L = Idx.thTj X μ j) : Idx.IjIdx X μ j w = 0 := by
   unfold Idx.IjIdx Formalism.HermitianLatticesTheory.lidx
   rw [h]; exact sub_self _
 
 /- English proof (translation)
-Unfold `Idx.jwIdx Formalism.HermitianLatticesTheory.lidx`. Rewrite using `[← h]`. Conclude with `sub_self _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jwIdx_zero (μ j w) (h : Idx.TjL D μ j = Idx.TjDual D μ j) : Idx.jwIdx D μ j w = 0 := by
   unfold Idx.jwIdx Formalism.HermitianLatticesTheory.lidx
   rw [← h]; exact sub_self _
 
 /- English proof (translation)
-Introduce `μ j _ _ π h0` and use `(DV.lamTr_of_scalar D μ j π _ h0 (h μ j π)).symm`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lamDef_of (h : ∀ μ j π, ∀ x ∈ D.what₂.isot j π,
     D.what₂.thetaP μ j (D.what₂.thetaT μ j x) = ((D.what₂.lamP μ j π : ℝ) : ℂ) • x) : DV.LamDef D :=
@@ -105,11 +105,11 @@ variable {D} {EE : Type} [NormedAddCommGroup EE] [InnerProductSpace ℂ EE] [Fin
   (S : RowSide D EE)
 
 /- English proof (translation)
-Establish `hi : Function.Injective (S.iota D.what₂.mu0)`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `x hx`. Use `hiso x x` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker.mp hx, inner_zero_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inner_self_eq_zero.mp this.symm`. Use extensionality with `x`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hs y`. Establish `hz : z ∈ S.Qsp D.what₂.mu0` using `by rw [Qsp_top S he hi]; trivial`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show inner ℂ (S.iota D.what₂.mu0 (LinearMap.adjoint (S.iotaQ D.what₂.mu0) x : S.Amb D.what₂.mu0)) (S.iota D.what₂.mu0 z) = inner ℂ x (S.iota D.what₂.mu0 z)`. Rewrite using `[hiso]`. Establish `h1 : inner ℂ (LinearMap.adjoint (S.iotaQ D.what₂.mu0) x) (⟨z, hz⟩ : S.Qsp D.what₂.mu0) = inner ℂ x (S.iotaQ D.what₂.mu0 ⟨z, hz⟩)` using `LinearMap.adjoint_inner_left _ _ _`. Conclude with `h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iiStar_id (he : S.eOp D.what₂.mu0 = LinearMap.id)
     (hiso : ∀ x y, inner ℂ (S.iota D.what₂.mu0 x) (S.iota D.what₂.mu0 y) = inner ℂ x y)
@@ -132,9 +132,9 @@ theorem iiStar_id (he : S.eOp D.what₂.mu0 = LinearMap.id)
   exact h1
 
 /- English proof (translation)
-Establish `hr : S.kapRatio ty = 1`. Unfold `RowSide.kapRatio DV.lamProd`. Rewrite using `[hii, LinearMap.det_id]`. Simplify using `[hl]`. Unfold `RowSide.kapOf`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hr, if_pos one_pos, Real.one_rpow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kapOf_one {n : ℕ} (ty : Fin n → D.what₂.FT) (hii : S.iiStar = LinearMap.id)
     (hl : ∀ j π, D.what₂.lamP D.what₂.mu0 j π = 1) : S.kapOf ty = 1 := by

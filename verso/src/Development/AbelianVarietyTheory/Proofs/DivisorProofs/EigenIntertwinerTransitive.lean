@@ -13,23 +13,19 @@ noncomputable section
 namespace GlobalTheory.EvNonzero
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨yi, hyi⟩ : ∃ y, f y ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hf (SchwartzMap.ext h)`. Establish `hS : Set.Finite {v | ¬ (φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1)}` using `Filter.eventually_cofinite.mp hstd`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use `choose p hp using fun v => Function.ne_iff.mp (h0 v)`. Use `set S := hS.toFinset with hSdef`. Set `yf : κ → FiniteAdeleRing (𝓞 F) F` to `fun i => (⟨fun v => if v ∈ S then p v i else 0, by`. Apply `Filter.eventually_cofinite.mpr` to reduce the goal to its premises. Use `S.finite_toSet.subset ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hvS`. Apply `hv` to reduce the goal to its premises. Establish `hvS' : v ∉ S` using `fun h => hvS (Finset.mem_coe.mpr h)`. Use `show (if v ∈ S then p v i else 0) ∈ (v.adicCompletionIntegers F : Set (v.adicCompletion F))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg hvS']`. Conclude with `zero_mem (v.adicCompletionIntegers F)⟩ :`. Use `RestrictedProduct (fun v : Pl F => v.adicCompletion F) (fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) cofinite)`. Set `x : κ → AdeleRing (𝓞 F) F` to `fun i => (((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (yi i), yf i) : InfiniteAdeleRing F × FiniteAdeleRing (𝓞 F) F)`. Introduce `hz`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx` using `congrFun hz x`. Establish `h1 : (fun i => evI F (x i)) = yi`. Use function extensionality and compare the values at `i`. Use `show InfiniteAdeleRing.ringEquiv_mixedSpace F ((InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (yi i)) = yi i`. Conclude with `RingEquiv.apply_symm_apply _ _`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ v, (fun i => evFin F v (x i)) = fun i => if v ∈ S then p v i else 0` using `fun v => rfl`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.zero_apply, h1, h2] at hx`. Establish `hg : ∀ v, v ∉ S → φ v (fun i => if v ∈ S then p v i else 0) = 1`. Introduce `v hv`. Establish `hv' : φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (hS.mem_toFinset.mpr h)`. Rewrite using `[hv']`. Establish `hzero : (fun i : κ => if v ∈ S then p v i else 0) = fun _ => 0` using `funext fun i => if_neg hv`. Rewrite using `[hzero, Set.indicator_of_mem (show (fun _ : κ => (0 : Fv F v)) ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => zero_mem _)]`.
-
-Both sides reduce to the same expression. Establish `hsub : Function.mulSupport (fun v => φ v (fun i => if v ∈ S then p v i else 0)) ⊆ S`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Conclude with `hv (hg v h)`.
-
-Rewrite `hx` using `[finprod_eq_prod_of_mulSupport_subset _ hsub]`. Use `(mul_ne_zero hyi (Finset.prod_ne_zero_iff.mpr fun v hv => ?_)) hx` and prove the remaining obligations. Establish `hpv : (fun i : κ => if v ∈ S then p v i else 0) = p v` using `funext fun i => if_pos hv`. Rewrite using `[hpv]`. Conclude with `hp v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ) (hf : f ≠ 0)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) (h0 : ∀ v, φ v ≠ 0)
@@ -86,11 +82,9 @@ theorem pure_ne_zero {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   exact hp v
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hE`. Take `⟨ei, ev, hei, hev, hpure⟩` from `hE.loc`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hei (ContinuousLinearMap.ext h)`. Use `⟨GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f M.vac, GlobalTheory.TensUniq.pure_mem_schA f M.vac (fun v => (hM.vac v).1) hM.std, ?_⟩` and prove the remaining obligations. Rewrite using `[hpure f M.vac (fun v => (hM.vac v).1) (Filter.Eventually.of_forall fun _ => rfl)]`. Establish `hv : (fun v => ev v (M.vac v)) = M₁.vac` using `funext fun v => (hev v).1`. Rewrite using `[hv]`.
-
-Conclude with `pure_ne_zero (ei f) hf M₁.vac (fun v => (hM₁.vac v).2.1) hM₁.std`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_schA_ev_ne_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d n₁ d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (X₁ : Spc F E n₁) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X₁ W₁) (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E))) (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e → ∃ Φ ∈ schA F (Fin n × Fin d), e Φ ≠ 0 := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ ι ι' I e hM hM₁ hE

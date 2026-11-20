@@ -12,23 +12,23 @@ section Pairing
 variable {k : Type*} [Field k] {G G' : Type*} [AddCommGroup G] [AddCommGroup G']
 
 /- English proof (translation)
-Establish `: (M.addSubgroupOf N).FiniteIndex` using `⟨hfin⟩`. Establish `: Finite (N ⧸ M.addSubgroupOf N)` using `AddSubgroup.finite_quotient_of_finiteIndex`. Set `_` to `Fintype.ofFinite (N ⧸ M.addSubgroupOf N)`. Establish `hcl : ∀ y : N', ∀ n n' : N, (QuotientAddGroup.mk n : N ⧸ M.addSubgroupOf N) = QuotientAddGroup.mk n' → d y n = d y n'`. Introduce `y n n' h`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Establish `h3` using `h1 y y.2 _ h (-n + n').2`. Establish `e : (n' : G) = (n : G) + ((-n + n' : N) : G)`. Simplify using the standard rewrite rules. Rewrite using `[e, hd.2.2, h3, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `χ : (N' ⧸ M'.addSubgroupOf N') → (Multiplicative (N ⧸ M.addSubgroupOf N) →* k)` to `fun q' => { toFun := fun q => d ((Quotient.out q' : N') : G') ((Quotient.out (Multiplicative.toAdd q) : N) : G) map_one' := by`. Use `hcl (Quotient.out q') (Quotient.out (0 : N ⧸ M.addSubgroupOf N)) 0 (by rw [QuotientAddGroup.out_eq']; rfl)` as an intermediate fact. Simplify `this` using `[IsBichar.map_zero_right hd]`. Use the proof step `map_mul' := by`. Introduce `q₁ q₂`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hcl (Quotient.out q') (Quotient.out (Multiplicative.toAdd q₁ + Multiplicative.toAdd q₂)) (Quotient.out (Multiplicative.toAdd q₁) + Quotient.out (Multiplicative.toAdd q₂)) (by rw [QuotientAddGroup.mk_add]; simp only [QuotientAddGroup.out_eq'])` as an intermediate fact. Rewrite `this` using `[AddSubgroup.coe_add, hd.2.2]`. Conclude with `this }`. Establish `hχ : Function.Injective χ`. Introduce `q₁ q₂ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ x ∈ N, d (((Quotient.out q₁ : N') - Quotient.out q₂ : N') : G') x = 1`. Introduce `x hx`. Establish `h3` using `DFunLike.congr_fun h (Multiplicative.ofAdd (QuotientAddGroup.mk (⟨x, hx⟩ : N)))`. Establish `e1` using `hcl (Quotient.out q₁) (Quotient.out (QuotientAddGroup.mk (⟨x, hx⟩ : N) : N ⧸ M.addSubgroupOf N)) ⟨x, hx⟩ (QuotientAddGroup.out_eq' _)`. Establish `e2` using `hcl (Quotient.out q₂) (Quotient.out (QuotientAddGroup.mk (⟨x, hx⟩ : N) : N ⧸ M.addSubgroupOf N)) ⟨x, hx⟩ (QuotientAddGroup.out_eq' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : d ((Quotient.out q₁ : N') : G') x = d ((Quotient.out q₂ : N') : G') x`. Rewrite using `[← e1, ← e2]`. Conclude with `h3`. Rewrite using `[AddSubgroup.coe_sub, IsBichar.map_sub_left hd, h4, mul_inv_cancel₀ (hd.1 _ _)]`. Establish `hm` using `h2 _ ((Quotient.out q₁ : N') - Quotient.out q₂ : N').2 hall`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientAddGroup.out_eq' q₁, ← QuotientAddGroup.out_eq' q₂]`. Use `symm`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`. Use `hm using 1` and compare the differences between its conclusion and the goal. Simplify using `only [AddSubgroup.coe_add, AddSubgroup.coe_neg, AddSubgroup.coe_sub]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Normalize the expressions using the abelian group laws. Establish `hli : LinearIndependent k (fun q' => (χ q' : Multiplicative (N ⧸ M.addSubgroupOf N) → k))` using `(linearIndependent_monoidHom (Multiplicative (N ⧸ M.addSubgroupOf N)) k).comp χ hχ`. Establish `hF : Finite (N' ⧸ M'.addSubgroupOf N')` using `hli.finite`. Set `_` to `Fintype.ofFinite (N' ⧸ M'.addSubgroupOf N')`. Establish `hle` using `hli.fintype_card_le_finrank`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `hle` using `[Module.finrank_fintype_fun_eq_card, Fintype.card_multiplicative, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card]`. Use `⟨?_, hle⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Nat.card (N' ⧸ M'.addSubgroupOf N') ≠ 0`. Conclude with `Nat.card_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_le_of_pairing (d : G' → G → k) (hd : IsBichar d) (M N : AddSubgroup G) (M' N' : AddSubgroup G')
     (h1 : ∀ y ∈ N', ∀ x ∈ M, x ∈ N → d y x = 1) (h2 : ∀ y ∈ N', (∀ x ∈ N, d y x = 1) → y ∈ M')
@@ -92,7 +92,7 @@ theorem relIndex_le_of_pairing (d : G' → G → k) (hd : IsBichar d) (M N : Add
 end Pairing
 
 /- English proof (translation)
-Introduce `k _ A B _ _ c hc A₀ A₁ B₀ B₁ h1 h2 h3 hfin`. Take `⟨hfinB, hle⟩` from `relIndex_le_of_pairing c hc A₁ A₀ B₀ B₁ (fun b hb a ha _ => h2 b hb a ha) (fun b _ h => (h1 b).2 h) hfin`. Take `⟨-, hge⟩` from `relIndex_le_of_pairing (fun a b => c b a) (bichar_swap hc) B₀ B₁ A₁ A₀ (fun a ha b hb _ => (h1 b).1 hb a ha) h3 hfinB`. Conclude with `le_antisymm hle hge`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem index_duality_holds : IndexDual := by
   intro k _ A B _ _ c hc A₀ A₁ B₀ B₁ h1 h2 h3 hfin
@@ -106,9 +106,9 @@ section Vol
 variable {G : Type*} [AddCommGroup G]
 
 /- English proof (translation)
-Establish `e1 : W.relIndex (X ⊓ Y) * X.relIndex Y = W.relIndex Y`. Rewrite using `[← AddSubgroup.inf_relIndex_right X Y]`. Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ hW inf_le_right`. Establish `e2 : W.relIndex (X ⊓ Y) * Y.relIndex X = W.relIndex X`. Rewrite using `[← AddSubgroup.inf_relIndex_left X Y]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ hW inf_le_left`. Rewrite using `[← e1, ← e2]`. Use `push_cast`. Establish `: ((W.relIndex (X ⊓ Y) : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hfin`. Rewrite using `[mul_div_mul_left _ _ this]`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_relIndex (X Y W : AddSubgroup G) (hW : W ≤ X ⊓ Y) (hfin : W.relIndex (X ⊓ Y) ≠ 0) :
     ((X.relIndex Y : ℕ) : ℝ) / ((Y.relIndex X : ℕ) : ℝ) = ((W.relIndex Y : ℕ) : ℝ) / ((W.relIndex X : ℕ) : ℝ) := by
@@ -124,13 +124,13 @@ theorem ratio_relIndex (X Y W : AddSubgroup G) (hW : W ≤ X ⊓ Y) (hfin : W.re
   rw [mul_div_mul_left _ _ this]
 
 /- English proof (translation)
-Establish `aux : ∀ P Q R : AddSubgroup G, R.relIndex Q ≠ 0 → (X ⊓ Y ⊓ Z) = P ⊓ Q ⊓ R → (X ⊓ Y ⊓ Z).relIndex (P ⊓ Q) ≠ 0`. Introduce `P Q R h e`. Rewrite using `[e, AddSubgroup.inf_relIndex_left]`. Introduce `h0`. Conclude with `h (AddSubgroup.relIndex_eq_zero_of_le_right inf_le_right h0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `fXY : (X ⊓ Y ⊓ Z).relIndex (X ⊓ Y) ≠ 0` using `aux X Y Z hZY rfl`. Establish `fYZ : (X ⊓ Y ⊓ Z).relIndex (Y ⊓ Z) ≠ 0` using `aux Z Y X hXY (by`. Use extensionality with `x; simp only [AddSubgroup.mem_inf]; tauto) |> fun h => by rwa [inf_comm Z Y] at h`. Establish `wY : (X ⊓ Y ⊓ Z).relIndex Y ≠ 0`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex (X ⊓ Y ⊓ Z) (X ⊓ Y) Y inf_le_left inf_le_right, AddSubgroup.inf_relIndex_right X Y]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.mul_ne_zero fXY hXY`. Establish `wX : (X ⊓ Y ⊓ Z).relIndex X ≠ 0`. Rewrite using `[← AddSubgroup.relIndex_mul_relIndex (X ⊓ Y ⊓ Z) (X ⊓ Y) X inf_le_left inf_le_left, AddSubgroup.inf_relIndex_left X Y]`. Conclude with `Nat.mul_ne_zero fXY hYX`. Establish `fXZ : (X ⊓ Y ⊓ Z).relIndex (X ⊓ Z) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Conclude with `wX (AddSubgroup.relIndex_eq_zero_of_le_right inf_le_left h0)`. Rewrite using `[ratio_relIndex X Y (X ⊓ Y ⊓ Z) inf_le_left fXY, ratio_relIndex Y Z (X ⊓ Y ⊓ Z) (le_inf (inf_le_left.trans inf_le_right) inf_le_right) fYZ, ratio_relIndex X Z (X ⊓ Y ⊓ Z) (le_inf (inf_le_left.trans inf_le_left) inf_le_right) fXZ]`. Establish `: (((X ⊓ Y ⊓ Z).relIndex Y : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast wY`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ratio_cocycle (X Y Z : AddSubgroup G) (hXY : X.relIndex Y ≠ 0) (hYX : Y.relIndex X ≠ 0)
     (hZY : Z.relIndex Y ≠ 0) :
@@ -165,7 +165,7 @@ theorem ratio_cocycle (X Y Z : AddSubgroup G) (hXY : X.relIndex Y ≠ 0) (hYX : 
 end Vol
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Simplify using `at h`. Introduce and unpack `rfl`. Simplify using `at h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem pos_div_ne {a b : ℕ} (h : 0 < (a : ℝ) / (b : ℝ)) : a ≠ 0 ∧ b ≠ 0 := by
   constructor
@@ -173,19 +173,19 @@ theorem pos_div_ne {a b : ℕ} (h : 0 < (a : ℝ) / (b : ℝ)) : a ≠ 0 ∧ b �
   · rintro rfl; simp at h
 
 /- English proof (translation)
-Introduce `V _ _ H α A B Λ₀ Λ₁ Λ₂ hH hA hB g0 g1 g2 h01 h12 h02 θ hθ`. Take `⟨hbc, hheis⟩` from `heisenberg_unitary_holds V H α A B hH hA hB`. Take `⟨hfa, hfb⟩` from `fixed_of_good H α A B Λ₀ g0 θ hθ`. Take `⟨Xi, hXi, -⟩` from `hXE ℂ A B (V → ℂ) (cU H A B) (wA H α A) (wB H α B) hbc hheis (Λ₀.addSubgroupOf A) θ hfa hfb`. Take `⟨Xi', hXi'⟩` from `LinearMap.exists_extend Xi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hext : ∀ (Φ : A → ℂ) (h : Φ ∈ Sch (cU H A B) (Λ₀.addSubgroupOf A)), Xi' Φ = Xi ⟨Φ, h⟩`. Introduce `Φ h`. Rewrite using `[← hXi']`. Both sides reduce to the same expression. Take `⟨m1, pos01, eq01⟩` from `hMU V H α A B Λ₀ Λ₁ hH hA hB g0 g1 h01 θ hθ Xi hXi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨m2, pos02, eq02⟩` from `hMU V H α A B Λ₀ Λ₂ hH hA hB g0 g2 h02 θ hθ Xi hXi`. Establish `hθ1 : inter H α Λ₀ Λ₁ θ ∈ fixedBy H α Λ₁` using `interFixed V H hH Λ₀ Λ₁ α g1.1 h01 θ hθ`. Set `Xi1 : Sch (cU H A B) (Λ₁.addSubgroupOf A) →ₗ[ℂ] (V → ℂ)` to `(((Real.sqrt (volA A Λ₀ Λ₁))⁻¹ : ℝ) : ℂ) • (Xi' ∘ₗ (Sch (cU H A B) (Λ₁.addSubgroupOf A)).subtype)`. Establish `hXi1 : IsXi (cU H A B) (wA H α A) (wB H α B) (Λ₁.addSubgroupOf A) (inter H α Λ₀ Λ₁ θ) Xi1`. Introduce `a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨mb, eb⟩` from `(hXI ℂ A B (V → ℂ) (cU H A B) (wA H α A) (wB H α B) hbc hheis (Λ₀.addSubgroupOf A) θ Xi hXi _ m1).2 b`. Take `⟨ma, ea⟩` from `(hXI ℂ A B (V → ℂ) (cU H A B) (wA H α A) (wB H α B) hbc hheis (Λ₀.addSubgroupOf A) θ Xi hXi _ mb).1 a`. Express the relevant statement in the definitionally equal form `(((Real.sqrt (volA A Λ₀ Λ₁))⁻¹ : ℝ) : ℂ) • Xi' (gen (cU H A B) (Λ₁.addSubgroupOf A) a b) = _`. Rewrite using `[eq01, map_smul, map_smul, ← eb, ← ea]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hext _ ma`. Take `⟨m12, pos12, eq12⟩` from `hMU V H α A B Λ₁ Λ₂ hH hA hB g1 g2 h12 _ hθ1 Xi1 hXi1`. Rewrite using `[eq12, eq02, ← hext _ m2]`. Express the relevant statement in the definitionally equal form `_ • ((((Real.sqrt (volA A Λ₀ Λ₁))⁻¹ : ℝ) : ℂ) • Xi' (ind ((Λ₂.addSubgroupOf A : AddSubgroup A) : Set A))) = _`. Rewrite using `[smul_smul, ← Complex.ofReal_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Establish `hc : volA A Λ₀ Λ₁ * volA A Λ₁ Λ₂ = volA A Λ₀ Λ₂`. Unfold `volA at pos01 pos12 ⊢`. Take `⟨n1, n2⟩` from `pos_div_ne pos01`. Take `⟨-, n4⟩` from `pos_div_ne pos12`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ratio_cocycle (Λ₀ ⊓ A) (Λ₁ ⊓ A) (Λ₂ ⊓ A) n1 n2 n4`. Rewrite using `[← hc, Real.sqrt_mul pos01.le, mul_inv, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem MovesComposeU_of (hMU : MovesU) (hXE : XiExists) (hXI : XiInter) : MovesComposeU := by
   intro V _ _ H α A B Λ₀ Λ₁ Λ₂ hH hA hB g0 g1 g2 h01 h12 h02 θ hθ

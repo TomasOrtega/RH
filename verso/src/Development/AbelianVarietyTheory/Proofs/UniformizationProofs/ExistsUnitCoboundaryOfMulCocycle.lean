@@ -8,17 +8,15 @@ open AddMonoidAlgebra
 namespace GlobalTheory.MulCocycle
 
 /- English proof (translation)
-Set `s : (X × X →₀ N) →+ (X →₀ N)` to `Finsupp.comapDomain.addMonoidHom (f := fun x => ((0 : X), x)) (Prod.mk_right_injective 0)`. Establish `hs : ∀ f x, s f x = f (0, x)` using `fun _ _ => rfl`. Take `rfl : g = s f` from `Finsupp.ext hg`. Use `clear hg`. Proceed by induction on `f using Finsupp.induction_linear with`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add f g hf hg`. Simplify using `only [map_add, Finsupp.mapDomain_add, Finsupp.add_apply, Finsupp.sub_apply] at hf hg ⊢`. Rewrite `hf`, `hg`, the goal using `[← sub_eq_zero]`. Rewrite using `[← add_zero (0 : N)]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [← hf]`. Rewrite using `[← hg]`. Normalize the expressions using the abelian group laws. Consider the case `single p m`. Take `⟨y, z⟩` from `p`.
+Normalize the expressions using the abelian group laws. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : y = 0`. Substitute `h` using the available equality. Establish `: s (Finsupp.single (0, z) m) = Finsupp.single z m`. Use extensionality with `x`. Simplify using `[hs, Finsupp.single_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `[this, Finsupp.single_apply]`. Normalize the expressions using the abelian group laws. Establish `: s (Finsupp.single (y, z) m) = 0`. Use extensionality with `x`. Simplify using `[hs, h]`.
-
-Simplify using `[this, Finsupp.single_apply, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsupp_homotopy {X : Type*} [Zero X] {N : Type*} [AddCommGroup N] (f : X × X →₀ N)
     (g : X →₀ N) (hg : ∀ x, g x = f (0, x)) (q : X × X) :
@@ -56,13 +54,13 @@ theorem finsupp_homotopy {X : Type*} [Zero X] {N : Type*} [AddCommGroup N] (f : 
 variable {B : Type*} [CommRing B] {X Y : Type*} [AddCommGroup X] [AddCommGroup Y]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hb`. Establish `hb' : b ∈ J • (⊤ : Submodule B B[X])`. Rewrite using `[Ideal.smul_top_eq_map]`. Conclude with `hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.smul_induction_on hb' (p := fun b => ∀ x, b.coeff x ∈ J) ?_ ?_` and prove the remaining obligations. Introduce `r hr m _ x`. Simplify using `using J.mul_mem_right _ hr`. Introduce `m m' h h' x`. Simplify using `using J.add_mem (h x) (h' x)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[← AddMonoidAlgebra.sum_coeff_single b]`. Use `Ideal.sum_mem _ fun x _ => ?_` and prove the remaining obligations. Establish `: single x (b.coeff x) = single x 1 * algebraMap B B[X] (b.coeff x)`. Simplify using `[AddMonoidAlgebra.single_mul_single]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (h x))`.
+A detailed English derivation is pending.
 -/
 theorem mem_map_algebraMap_iff (J : Ideal B) (b : B[X]) :
     b ∈ J.map (algebraMap B B[X]) ↔ ∀ x, b.coeff x ∈ J := by
@@ -84,7 +82,7 @@ theorem mem_map_algebraMap_iff (J : Ideal B) (b : B[X]) :
     exact Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ (h x))
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (φ : C →+* C') ha` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem algHom_mem_map {C C' : Type*} [CommRing C] [Algebra B C] [CommRing C'] [Algebra B C']
     {J : Ideal B} (φ : C →ₐ[B] C') {a : C} (ha : a ∈ J.map (algebraMap B C)) :
@@ -93,7 +91,7 @@ theorem algHom_mem_map {C C' : Type*} [CommRing C] [Algebra B C] [CommRing C'] [
   rwa [Ideal.map_map, AlgHom.comp_algebraMap] at this
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_pow, pow_two]`. Conclude with `Ideal.mul_mem_mul ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_map_sq {C : Type*} [CommRing C] [Algebra B C] {J : Ideal B} {a b : C}
     (ha : a ∈ J.map (algebraMap B C)) (hb : b ∈ J.map (algebraMap B C)) :
@@ -102,25 +100,25 @@ theorem mul_mem_map_sq {C : Type*} [CommRing C] [Algebra B C] {J : Ideal B} {a b
   exact Ideal.mul_mem_mul ha hb
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `K hK f hf _`. Rewrite `hK` using `[pow_zero, pow_one]`. Rewrite `hf` using `[hK, Ideal.map_bot, Ideal.mem_bot, sub_eq_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨1, by simp, by simp [hf]⟩`. Consider the case `succ n ih`. Introduce `K hK f hf hc`. Take `⟨φ, rfl⟩ : ∃ φ, f = 1 + φ` from `⟨f - 1, by ring⟩`. Rewrite `hf` using `[add_sub_cancel_left]`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc'` using `hc`. Simplify using `only [map_add, map_one] at hc'`. Take `⟨ψ, hψ, e⟩` from `H K (K ^ 2) φ hf (by`. Establish `: d₀ φ - d₁ φ + d₂ φ - d₃ φ = d₁ φ * d₃ φ - d₂ φ * d₀ φ`. Take the linear combination `-hc'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[this]`. Conclude with `sub_mem (mul_mem_map_sq (algHom_mem_map _ hf) (algHom_mem_map _ hf)) (mul_mem_map_sq (algHom_mem_map _ hf) (algHom_mem_map _ hf)))`. Establish `hn : IsNilpotent ψ` using `⟨2 ^ (n + 1), by`. Use `Ideal.pow_mem_pow hψ (2 ^ (n + 1))` as an intermediate fact. Rewrite using `[← Ideal.map_pow, hK, Ideal.map_bot, Ideal.mem_bot] at this⟩` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `hn.isUnit_one_add`. Establish `huv : u.val * (u⁻¹).val = 1` using `u.mul_inv`. Generalize the expression as in `(u⁻¹).val = v at huv`. Establish `k (e : R₁ →ₐ[B] R₂) : e u.val * e v = 1` using `by rw [← map_mul, huv, map_one]`. Establish `k' (d : R₂ →ₐ[B] R₃) (e : R₁ →ₐ[B] R₂) : d (e u.val) * d (e v) = 1`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, k, map_one]`. Take `⟨g, hg, hg'⟩` from `ih (K ^ 2) (by rw [← pow_mul, ← pow_succ', hK]) ((1 + φ) * e₁ u.val * e₂ v * e₀ v) (by`. Establish `: (1 + φ) * e₁ u.val * e₂ v * e₀ v - 1 = ((φ - (e₀ ψ - e₁ ψ + e₂ ψ)) + φ * e₁ ψ - e₂ ψ * e₀ ψ) * (e₂ v * e₀ v)`. Establish `k₀` using `k e₀`. Establish `k₂` using `k e₂`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `k₀`, `k₂`, the goal using `[hu]`. Simplify using `only [map_add, map_one] at k₀ k₂ ⊢`. Take the linear combination `((1 + e₀ ψ) * e₀ v) * k₂ + k₀`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (sub_mem (add_mem e (mul_mem_map_sq hf (algHom_mem_map _ hψ))) (mul_mem_map_sq (algHom_mem_map _ hψ) (algHom_mem_map _ hψ)))) (by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁` using `k' d₃ e₁`. Establish `k₂` using `k' d₀ e₁`. Generalize the expression as in `1 + φ = f at hc`. Simplify using `only [map_mul, h₁, h₂, h₃, h₄, h₅, h₆]`. Take the linear combination `(d₂ (e₁ u.val) * d₂ (e₂ v) * d₀ (e₂ v) * d₀ (e₀ v)) * (d₁ f * d₃ f * k₁ - d₂ f * d₀ f * k₂ + hc))`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨u * g, ?_, ?_⟩` and prove the remaining obligations. Establish `: (u * g).val - 1 = u.val * (g.val - 1) + ψ`. Rewrite using `[Units.val_mul, hu]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `add_mem (Ideal.mul_mem_left _ _ (Ideal.map_mono (Ideal.pow_le_self two_ne_zero) hg)) hψ`. Establish `k₀` using `k e₀`. Establish `k₂` using `k e₂`. Simplify using `only [Units.val_mul, map_mul]`. Take the linear combination `(e₂ u.val * e₀ u.val) * hg' - ((1 + φ) * e₁ u.val * e₁ g.val) * (e₀ u.val * e₀ v * k₂ + k₀)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_unit_of_faces {R₁ R₂ R₃ : Type*} [CommRing R₁] [CommRing R₂] [CommRing R₃]
     [Algebra B R₁] [Algebra B R₂] [Algebra B R₃]
@@ -200,11 +198,11 @@ namespace GlobalTheory
 open MulCocycle
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `hI`. Establish `hn' : I ^ 2 ^ n = ⊥` using `le_bot_iff.1 ((Ideal.pow_le_pow_right (Nat.lt_two_pow_self).le).trans hn.le)`. Establish `key : ∀ (a a' : X →+ X × X) (b b' : X × X →+ X × X × X), (∀ x, b (a x) = b' (a' x)) → ∀ w : B[X], mapDomainAlgHom B B b (mapDomainAlgHom B B a w) = mapDomainAlgHom B B b' (mapDomainAlgHom B B a' w)`. Introduce `a a' b b' h w`. Proceed by induction on `w using AddMonoidAlgebra.induction_linear with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single x r => simp [h]`. Take `⟨g, hg, hg'⟩` from `exists_unit_of_faces (B := B) (mapDomainAlgHom B B (AddMonoidHom.inr X X)) (mapDomainAlgHom B B ((AddMonoidHom.id X).prod (AddMonoidHom.id X))) (mapDomainAlgHom B B (AddMonoidHom.inl X X)) (mapDomainAlgHom B B (AddMonoidHom.inr X (X × X))) (mapDomainAlgHom B B ((AddMonoidHom.fst …`. Rewrite `hφ`, `hd` using `[mem_map_algebraMap_iff]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ofCoeff (φ.coeff.comapDomain (fun x => ((0 : X), x)) (Prod.mk_right_injective 0).injOn), (mem_map_algebraMap_iff _ _).2 fun x => hφ (0, x), (mem_map_algebraMap_iff _ _).2 fun q => ?_⟩` and prove the remaining obligations. Use `finsupp_homotopy φ.coeff (φ.coeff.comapDomain (fun x => ((0 : X), x)) (Prod.mk_right_injective 0).injOn) (fun _ => rfl) q` as an intermediate fact. Conclude with `(congrArg (· ∈ L) this).mp (hd (0, q)))`. Use `n I hn' f ((mem_map_algebraMap_iff _ _).2 hf) hc`. Conclude with `⟨g, (mem_map_algebraMap_iff _ _).1 hg, hg'⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_coboundary_of_mul_cocycle (B : Type) [CommRing B] (I : Ideal B)
     (hI : IsNilpotent I) (X : Type) [AddCommGroup X] (f : AddMonoidAlgebra B (X × X))

@@ -19,9 +19,9 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun σ ↦ ⟨(σ : Gal(L/fixedField H)).restrictScalars K, σ.2⟩) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `σ τ h`. Conclude with `Subtype.ext (AlgEquiv.restrictScalars_injective K (congrArg Subtype.val h))`. Introduce and unpack `⟨τ, hτ⟩`. Establish `hτH : τ ∈ fixingSubgroup (fixedField H)` using `(fixingSubgroup_fixedField H).symm ▸ hD hτ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨⟨fixingSubgroupEquiv (fixedField H) ⟨τ, hτH⟩, hτ⟩, Subtype.ext (AlgEquiv.ext fun _ ↦ rfl)⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_stabilizer_fixedField_eq (H : Subgroup Gal(L/K)) (w : HeightOneSpectrum (𝓞 L))
     (hD : MulAction.stabilizer Gal(L/K) w.asIdeal ≤ H) [FiniteDimensional K L] :
@@ -36,11 +36,11 @@ theorem card_stabilizer_fixedField_eq (H : Subgroup Gal(L/K)) (w : HeightOneSpec
     exact ⟨⟨fixingSubgroupEquiv (fixedField H) ⟨τ, hτH⟩, hτ⟩, Subtype.ext (AlgEquiv.ext fun _ ↦ rfl)⟩
 
 /- English proof (translation)
-Establish `: w.asIdeal.LiesOver v.asIdeal` using `Ideal.LiesOver.trans w.asIdeal w'.asIdeal v.asIdeal`. Establish `h1` using `card_decompositionGroup v w`. Establish `h2` using `card_decompositionGroup w' w`. Rewrite `h2` using `[card_stabilizer_fixedField_eq H w hD]`. Rewrite `h1` using `[Ideal.ramificationIdx_tower (R := 𝓞 K) w'.asIdeal w.asIdeal, Ideal.inertiaDeg_tower (R := 𝓞 K) w'.asIdeal w.asIdeal, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < w.asIdeal.ramificationIdx (𝓞 (fixedField H)) * w.asIdeal.inertiaDeg (𝓞 (fixedField H))`. Rewrite using `[← h2]`. Conclude with `Nat.card_pos`. Establish `key : w'.asIdeal.ramificationIdx (𝓞 K) * w'.asIdeal.inertiaDeg (𝓞 K) * (w.asIdeal.ramificationIdx (𝓞 (fixedField H)) * w.asIdeal.inertiaDeg (𝓞 (fixedField H))) = 1 * (w.asIdeal.ramificationIdx (𝓞 (fixedField H)) * w.asIdeal.inertiaDeg (𝓞 (fixedField H)))`. Rewrite using `[one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `conv_rhs => rw [h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `mul_eq_one.1 (Nat.eq_of_mul_eq_mul_right hpos key)`.
+A detailed English derivation is pending.
 -/
 theorem ramificationIdx_eq_one_and_inertiaDeg_eq_one_of_stabilizer_le (H : Subgroup Gal(L/K))
     (v : HeightOneSpectrum (𝓞 K)) (w' : HeightOneSpectrum (𝓞 (fixedField H)))
@@ -67,7 +67,7 @@ theorem ramificationIdx_eq_one_and_inertiaDeg_eq_one_of_stabilizer_le (H : Subgr
   exact mul_eq_one.1 (Nat.eq_of_mul_eq_mul_right hpos key)
 
 /- English proof (translation)
-Introduce `w' hw'`. Take `⟨w⟩` from `nonempty_placesOver L w'`. Establish `: w.1.asIdeal.LiesOver v.asIdeal` using `Ideal.LiesOver.trans w.1.asIdeal w'.asIdeal v.asIdeal`. Conclude with `ramificationIdx_eq_one_and_inertiaDeg_eq_one_of_stabilizer_le H v w' w.1 (hD w.1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem splitsCompletely_fixedField_of_stabilizer_le (H : Subgroup Gal(L/K))
     (v : HeightOneSpectrum (𝓞 K))
@@ -82,7 +82,7 @@ theorem splitsCompletely_fixedField_of_stabilizer_le (H : Subgroup Gal(L/K))
 omit [NumberField K] [NumberField L] [IsGalois K L] in
 
 /- English proof (translation)
-The claim follows from `(below_eq_iff (σ • w) (below K w)).2 (by rw [smul_asIdeal]; infer_instance)`.
+A detailed English derivation is pending.
 -/
 theorem below_smul (σ : Gal(L/K)) (w : HeightOneSpectrum (𝓞 L)) : below K (σ • w) = below K w :=
   (below_eq_iff (σ • w) (below K w)).2 (by rw [smul_asIdeal]; infer_instance)
@@ -97,13 +97,11 @@ variable {K L : Type u} [Field K] [NumberField K] [Field L] [NumberField L] [Alg
   [IsGalois K L]
 
 /- English proof (translation)
-Use `set S : Set Gal(L/K) := ⋃ (w : HeightOneSpectrum (𝓞 L)) (_ : below K w ∉ T), (MulAction.stabilizer Gal(L/K) w.asIdeal : Set Gal(L/K)) with hS`. Use `set H := Subgroup.closure S`. Establish `hconj : ∀ g : Gal(L/K), (MulAut.conj g).toMonoidHom '' S ⊆ S`. Introduce and unpack `g _ ⟨σ, hσ, rfl⟩`. Take `⟨w, hw, hσ⟩` from `Set.mem_iUnion₂.1 hσ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.mem_iUnion₂.2 ⟨g • w, by rwa [below_smul], ?_⟩` and prove the remaining obligations. Establish `hσ' : σ • w.asIdeal = w.asIdeal` using `hσ`. Express the relevant statement in the definitionally equal form `(g * σ * g⁻¹) • (g • w).asIdeal = (g • w).asIdeal`. Rewrite using `[smul_asIdeal, mul_smul, mul_smul, inv_smul_smul, hσ']`. Establish `hH : H.Normal` using `⟨fun n hn g ↦ by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (MulAut.conj g).toMonoidHom n ∈ H.map (MulAut.conj g).toMonoidHom` using `⟨n, hn, rfl⟩`. Rewrite `this` using `[MonoidHom.map_closure]`. Conclude with `Subgroup.closure_mono (hconj g) this⟩`. Establish `hsplit : ∀ v ∉ T, SplitsCompletely (fixedField H) v` using `fun v hv ↦ splitsCompletely_fixedField_of_stabilizer_le H v fun w hw _ hσ ↦ Subgroup.subset_closure (Set.mem_iUnion₂.2 ⟨w, by rwa [(below_eq_iff w v).2 hw], hσ⟩)`. Establish `h1` using `hFI.finrank_eq_one_of_splitsCompletely_of_finite_of_isGalois (L := fixedField H) hT hsplit`.
-
-Rewrite `h1` using `[IntermediateField.finrank_eq_one_iff]`. Rewrite using `[← fixingSubgroup_fixedField H, h1, fixingSubgroup_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FirstInequality.closure_stabilizer_eq_top (hFI : FirstInequality.{u})
     {T : Set (HeightOneSpectrum (𝓞 K))} (hT : T.Finite) :
@@ -141,11 +139,11 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 open AdicLiesOver in
 
 /- English proof (translation)
-Establish `h : GroundTheory.LocalField.ramificationIndex (v.adicCompletion K) (w.adicCompletion L) = 1`. Rewrite using `[GroundTheory.LocalField.ramificationIndex, ramificationIdx_integer v w, he]`. Establish `hfr : decompositionToLocal v w (arithFrobAtDecomposition w) = GroundTheory.LocalField.frobenius _ _ h` using `(eq_decompositionToLocal_arithFrobAt v w he _ (GroundTheory.LocalField.frobenius_sub_pow_mem_maximalIdeal _ _ h)).symm`. Establish `htop : Subgroup.zpowers (arithFrobAtDecomposition (K` using `K) w) = ⊤ := by`. Use `eq_top_iff.2 fun σ _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : decompositionToLocal v w σ ∈ (Subgroup.zpowers (arithFrobAtDecomposition (K` using `K) w)).map (decompositionToLocal v w) := by`. Rewrite using `[MonoidHom.map_zpowers, hfr, GroundTheory.LocalField.zpowers_frobenius]`. Conclude with `Subgroup.mem_top _`. Take `⟨τ, hτ, hτσ⟩` from `hmem`. Rewrite using `[← decompositionToLocal_injective v w hτσ]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (fun σ hσ ↦ ?_) ((Subgroup.zpowers_le).2 (IsArithFrobAt.arithFrobAt_mem_stabilizer (𝓞 K) Gal(L/K) w.asIdeal))` and prove the remaining obligations. Take `⟨k, hk⟩` from `Subgroup.mem_zpowers_iff.1 (htop ▸ Subgroup.mem_top (⟨σ, hσ⟩ : MulAction.stabilizer Gal(L/K) w.asIdeal))`. Establish `hk'` using `congrArg Subtype.val hk`. Rewrite `hk'` using `[Subgroup.coe_zpow]`. Conclude with `Subgroup.mem_zpowers_iff.2 ⟨k, hk'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stabilizer_eq_zpowers_arithFrobAt (v : HeightOneSpectrum (𝓞 K))
     (w : HeightOneSpectrum (𝓞 L)) [w.asIdeal.LiesOver v.asIdeal]

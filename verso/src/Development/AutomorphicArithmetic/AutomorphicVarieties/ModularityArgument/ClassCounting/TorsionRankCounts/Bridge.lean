@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open NumberField UpperTheory.V UpperTheory.V.KL UpperTheory.V.ZK UpperTheory.V.ZK.Up CategoryTheory
 
 /- English proof (translation)
-Rewrite using `[groupHomology.inhomogeneousChains.d_def]`. Proceed by induction on `z using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`. Consider the case `single g c`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[groupHomology.inhomogeneousChains.d_single]`. Simplify using `[bd, Finsupp.linearCombination_single, Finset.smul_sum, smul_smul, mul_comm c]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem d_eq (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : Ch A G (k + 1)) :
     (groupHomology.inhomogeneousChains (Rep.trivial A G A)).d (k + 1) k z = bd A G k z := by
@@ -18,7 +18,7 @@ private theorem d_eq (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : Ch A G (
     simp [bd, Finsupp.linearCombination_single, Finset.smul_sum, smul_smul, mul_comm c]
 
 /- English proof (translation)
-The claim follows from `(ModuleCat.mono_iff_injective (groupHomology.iCycles (Rep.trivial A G A) k)).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 private theorem i_inj (A G : Type) [CommRing A] [Group G] (k : ℕ) :
     Function.Injective (groupHomology.iCycles (Rep.trivial A G A) k) :=
@@ -31,7 +31,7 @@ private noncomputable def mk (A G : Type) [CommRing A] [Group G] (k : ℕ) :
   map_smul' c a := i_inj A G _ (by rw [map_smul, groupHomology.iCycles_mk, groupHomology.iCycles_mk]; rfl)
 
 /- English proof (translation)
-Simplify using `only [_root_.mk, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `groupHomology.iCycles_mk _ _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem i_mk (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : LinearMap.ker (bd A G k)) :
     groupHomology.iCycles (Rep.trivial A G A) (k + 1) (mk A G k z) = z.1 := by
@@ -39,13 +39,13 @@ private theorem i_mk (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : LinearMa
   exact groupHomology.iCycles_mk _ _ _
 
 /- English proof (translation)
-Set `K` to `groupHomology.inhomogeneousChains (Rep.trivial A G A)`. Establish `hex : (ShortComplex.mk (K.toCycles (k + 2) (k + 1)) (K.homologyπ (k + 1)) (K.toCycles_comp_homologyπ _ _)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ (K.homologyIsCokernel (k + 2) (k + 1) (by simp))`. Rewrite `hex` using `[ShortComplex.moduleCat_exact_iff]`. Establish `hti : ∀ y, groupHomology.iCycles (Rep.trivial A G A) (k + 1) (K.toCycles (k + 2) (k + 1) y) = bd A G (k + 1) y`. Introduce `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← d_eq A G (k + 1) y, ← K.toCycles_i (k + 2) (k + 1)]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨y, hy⟩` from `hex _ h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Use `congrArg (groupHomology.iCycles (Rep.trivial A G A) (k + 1)) hy` as an intermediate fact. Rewrite `this` using `[i_mk]`. Simplify `this` using `[hti]`. Introduce and unpack `⟨y, hy⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Establish `hm : mk A G k z = K.toCycles (k + 2) (k + 1) y`. Apply `i_inj` to reduce the goal to its premises. Rewrite using `[i_mk, hti, hy]`. Rewrite using `[hm]`. Conclude with `congrArg (fun f => f y) (congrArg ModuleCat.Hom.hom (K.toCycles_comp_homologyπ (k + 2) (k + 1)))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pi_zero (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : LinearMap.ker (bd A G k)) :
     groupHomology.π (Rep.trivial A G A) (k + 1) (mk A G k z) = 0 ↔ Bd z.1 := by
@@ -74,17 +74,17 @@ private theorem pi_zero (A G : Type) [CommRing A] [Group G] (k : ℕ) (z : Linea
     exact congrArg (fun f => f y) (congrArg ModuleCat.Hom.hom (K.toCycles_comp_homologyπ (k + 2) (k + 1)))
 
 /- English proof (translation)
-Introduce `k`. Use `⟨fun G _ => ((groupHomology.π (Rep.trivial ℤ G ℤ) (k + 1)).hom ∘ₗ mk ℤ G k).toAddMonoidHom, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `G _ x`. Use `groupHomology_induction_on x ?_` and prove the remaining obligations. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : groupHomology.iCycles (Rep.trivial ℤ G ℤ) (k + 1) c ∈ LinearMap.ker (bd ℤ G k)`. Rewrite using `[LinearMap.mem_ker, ← d_eq]`. Conclude with `congrArg (fun g => g.hom c) ((groupHomology.inhomogeneousChains (Rep.trivial ℤ G ℤ)).iCycles_d (k + 1) k)`. Use `⟨⟨_, hc⟩, ?_⟩` and prove the remaining obligations. Establish `hm : mk ℤ G k ⟨_, hc⟩ = c` using `i_inj ℤ G _ (by rw [i_mk])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hm]`. Introduce `G _ z`. Conclude with `pi_zero ℤ G k z`. Introduce `G H _ _ f z z' hz`. Simplify using `only [LinearMap.toAddMonoidHom_coe, LinearMap.coe_comp, Function.comp_apply, grpHMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[groupHomology.π_map_apply]`. Use `congr 1`. Apply `i_inj` to reduce the goal to its premises. Establish `h1` using `congrArg (fun g => g.hom (mk ℤ G k z)) (HomologicalComplex.cyclesMap_i (groupHomology.chainsMap f (trivHom f)) (k + 1))`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at h1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Rewrite using `[i_mk, hz]`. Use `erw [h1, i_mk]`. Proceed by induction on `(z : Ch ℤ G (k + 1)) using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `single g a`. Rewrite using `[groupHomology.chainsMap_f_single]`. Simplify using `only [cm, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Up.bridge : UpperTheory.V.ZK.Up.Bridge := by
   intro k

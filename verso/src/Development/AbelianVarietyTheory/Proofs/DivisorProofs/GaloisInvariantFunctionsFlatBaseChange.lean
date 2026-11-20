@@ -14,21 +14,21 @@ namespace GlobalTheory.Mum.InvFun
 open TensorProduct in
 
 /- English proof (translation)
-Consider the cases of `nonempty_fintype J`. Set `e` to `Algebra.IsPushout.equiv R A R' B`. Establish `he : ∀ (a : A) (r : R'), e (a ⊗ₜ r) = algebraMap A B a * algebraMap R' B r` using `fun a r => Algebra.IsPushout.equiv_tmul R A R' B a r`. Establish `hA : ∀ a : A, algebraMap A B a = e ((Algebra.linearMap R R').lTensor A (a ⊗ₜ 1))` using `fun a => by`. Simplify using `[he]`.
+Split into cases according to the possible forms of the given data. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun a b hab => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[hA, hA]`. Establish `h₁` using `Module.Flat.lTensor_preserves_injective_linearMap (M := A) (Algebra.linearMap R R') hinj (e.injective hab)`. Simplify using `using congrArg (TensorProduct.rid R A) h₁`. Set `d : R' →ₗ[R] (J → R')` to `LinearMap.pi fun i => (s i).toLinearMap - LinearMap.id`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Establish `hex : Function.Exact (Algebra.linearMap R R') d`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `hs x fun i => sub_eq_zero.1 (congrFun hx i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨r, rfl⟩`. Use extensionality with `i`. Simplify using `[d]`. Establish `hexA` using `Module.Flat.lTensor_exact A hex`. Take `⟨w, rfl⟩` from `e.surjective u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (w : A ⊗[R] R') (i : J), e (TensorProduct.piRight R R A (fun _ : J => R') (d.lTensor A w) i) = t i (e w) - e w`. Introduce `w i`. Proceed by induction on `w with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `tmul a r => simp [d, he, htA, htR, mul_sub, tmul_sub]`. Establish `h0 : d.lTensor A w = 0`. Apply `(TensorProduct.piRight R R A (fun _ : J => R')).injective` to reduce the goal to its premises. Use extensionality with `i`.
+Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[key, hu]`. Simplify using the standard rewrite rules. Take `⟨v, rfl⟩` from `(hexA w).1 h0`. Use `⟨TensorProduct.rid R A v, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA]`. Use `congr 2`. Conclude with `(TensorProduct.rid R A).symm_apply_apply v`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem alg_inv {R A R' B : Type} [CommRing R] [CommRing A] [CommRing R'] [CommRing B] [Algebra R A] [Algebra R R']
     [Algebra R B] [Algebra A B] [Algebra R' B] [IsScalarTower R A B] [IsScalarTower R R' B]
@@ -79,7 +79,7 @@ theorem alg_inv {R A R' B : Type} [CommRing R] [CommRing A] [CommRing R'] [CommR
     exact (TensorProduct.rid R A).symm_apply_apply v
 
 /- English proof (translation)
-Use `(Scheme.Hom.comp_appLE f β U (β ⁻¹ᵁ U) e).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_eq_app]`. Simplify using `only [hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem app_comp_appLE {Y Y' : Scheme.{0}} {β : Y' ⟶ Y} {f : Y' ⟶ Y'} (hf : f ≫ β = β) (U : Y.Opens)
     (e : β ⁻¹ᵁ U ≤ f ⁻¹ᵁ (β ⁻¹ᵁ U)) : β.app U ≫ f.appLE (β ⁻¹ᵁ U) (β ⁻¹ᵁ U) e = β.app U := by
@@ -88,7 +88,7 @@ theorem app_comp_appLE {Y Y' : Scheme.{0}} {β : Y' ⟶ Y} {f : Y' ⟶ Y'} (hf :
   simp only [hf]
 
 /- English proof (translation)
-Establish `e₁ : y.appLE ⊤ U le_top ≫ f.appLE U U e = (Spec.map s).appTop ≫ y.appLE ⊤ U le_top`. Use `(Scheme.Hom.appLE_comp_appLE f y ⊤ U U le_top e).trans ?_` and prove the remaining obligations. Simplify using `only [hf]`. Conclude with `Scheme.Hom.comp_appLE y (Spec.map s) ⊤ U le_top`. Rewrite using `[Category.assoc, e₁, Scheme.ΓSpecIso_inv_naturality_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_comp_appLE {R : CommRingCat.{0}} {Y : Scheme.{0}} {y : Y ⟶ Spec R} {f : Y ⟶ Y} {s : R ⟶ R}
     (hf : f ≫ y = y ≫ Spec.map s) (U : Y.Opens) (e : U ≤ f ⁻¹ᵁ U) :
@@ -101,13 +101,13 @@ theorem const_comp_appLE {R : CommRingCat.{0}} {Y : Scheme.{0}} {y : Y ⟶ Spec 
   rw [Category.assoc, e₁, Scheme.ΓSpecIso_inv_naturality_assoc]
 
 /- English proof (translation)
-Establish `hp` using `(isIso_pushoutSection_iff h (US := ⊤) (UT := ⊤) (UX := U) (UY := β ⁻¹ᵁ U) le_top le_top (by simp)).mp (isIso_pushoutSection_of_isAffineOpen h _ _ _ (isAffineOpen_top _) (isAffineOpen_top _) hU)`. Establish `hp' : IsPushout ((Scheme.ΓSpecIso (.of R)).inv ≫ y.appLE ⊤ U le_top) (CommRingCat.ofHom ρ) (β.app U) ((Scheme.ΓSpecIso (.of R')).inv ≫ y'.appLE ⊤ (β ⁻¹ᵁ U) le_top)`. Use `hp.of_iso (Scheme.ΓSpecIso _) (.refl _) (Scheme.ΓSpecIso _) (.refl _) (by simp) ?_ (by simp [Scheme.Hom.appLE_eq_app]) (by simp)` and prove the remaining obligations. Conclude with `Scheme.ΓSpecIso_naturality _`. Establish `hfl : ((Scheme.ΓSpecIso (.of R)).inv ≫ y.appLE ⊤ U le_top).hom.Flat`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.hom_comp]`. Conclude with `RingHom.Flat.comp (RingHom.Flat.of_bijective (ConcreteCategory.bijective_of_isIso _)) (y.flat_appLE (isAffineOpen_top _) hU le_top)`. Establish `hle : ∀ σ, β ⁻¹ᵁ U ≤ act σ ⁻¹ᵁ (β ⁻¹ᵁ U)` using `fun σ => by`. Rewrite using `[← Scheme.Hom.comp_preimage, hβ]`. Use `algebraize [ρ, ((Scheme.ΓSpecIso (.of R)).inv ≫ y.appLE ⊤ U le_top).hom, (β.app U).hom, ((Scheme.ΓSpecIso (.of R')).inv ≫ y'.appLE ⊤ (β ⁻¹ᵁ U) le_top).hom, (((Scheme.ΓSpecIso (.of R)).inv ≫ y.appLE ⊤ U le_top) ≫ β.app U).hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsScalarTower R Γ(Y, U) Γ(Y', β ⁻¹ᵁ U)` using `.of_algebraMap_eq' rfl`. Establish `: IsScalarTower R R' Γ(Y', β ⁻¹ᵁ U)` using `.of_algebraMap_eq' congr($(hp'.w).hom)`. Establish `: Algebra.IsPushout R Γ(Y, U) R' Γ(Y', β ⁻¹ᵁ U)` using `CommRingCat.isPushout_iff_isPushout.mp hp'`. Use `hG.1` as an intermediate fact. Establish `H` using `alg_inv (R := R) (A := Γ(Y, U)) (R' := R') (B := Γ(Y', β ⁻¹ᵁ U)) hρ (fun σ : Gal ρ => (⟨Gal.hom σ, σ.2⟩ : R' →ₐ[R] R')) (fun x hx => hG.2 x fun σ hσ => hx ⟨σ, hσ⟩) (fun σ => ((act σ).appLE _ _ (hle σ)).hom) ?_ ?_`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨H.1, fun u hu => H.2 u fun σ => hu σ _⟩`. Introduce `σ a`. Conclude with `congr($(app_comp_appLE (hβ σ) U (hle σ)).hom a)`. Introduce `σ r`. Conclude with `congr($(const_comp_appLE (hy σ) (β ⁻¹ᵁ U) (hle σ)).hom r)`.
+A detailed English derivation is pending.
 -/
 theorem affine_inv {R R' : Type} [CommRing R] [CommRing R'] (ρ : R →+* R') (hρ : Function.Injective ρ) (hG : IsGal ρ)
     {Y Y' : Scheme.{0}} {y : Y ⟶ Sp R} {y' : Y' ⟶ Sp R'} {β : Y' ⟶ Y} [Flat y] (h : IsPullback β y' y (spMap ρ))
@@ -149,7 +149,7 @@ theorem affine_inv {R R' : Type} [CommRing R] [CommRing R'] (ρ : R →+* R') (h
     exact congr($(const_comp_appLE (hy σ) (β ⁻¹ᵁ U) (hle σ)).hom r)
 
 /- English proof (translation)
-The claim follows from `congr($(β.naturality (homOfLE e).op).hom a)`.
+A detailed English derivation is pending.
 -/
 theorem app_res {Y Y' : Scheme.{0}} (β : Y' ⟶ Y) {U V : Y.Opens} (e : U ≤ V) (a : Γ(Y, V)) :
     (β.app U).hom ((Y.presheaf.map (homOfLE e).op).hom a) =
@@ -157,7 +157,7 @@ theorem app_res {Y Y' : Scheme.{0}} (β : Y' ⟶ Y) {U V : Y.Opens} (e : U ≤ V
   congr($(β.naturality (homOfLE e).op).hom a)
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (e : U ≤ V) (e' : V ≤ W) (a : Γ(Y, W)) :
     (Y.presheaf.map (homOfLE e).op).hom ((Y.presheaf.map (homOfLE e').op).hom a) =
@@ -166,7 +166,7 @@ theorem res_res {Y : Scheme.{0}} {U V W : Y.Opens} (e : U ≤ V) (e' : V ≤ W) 
   rfl
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨_, ⟨U, hU, rfl⟩, hxU, hUV⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hx V.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUV⟩, hxU⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_iSup_affine {Y : Scheme.{0}} (V : Y.Opens) :
     V ≤ ⨆ U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V}, U.1 := by
@@ -175,7 +175,7 @@ theorem le_iSup_affine {Y : Scheme.{0}} (V : Y.Opens) :
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hUV⟩, hxU⟩
 
 /- English proof (translation)
-Introduce `a b hab`. Use `Y.sheaf.eq_of_locally_eq' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => U.1) V (fun U => homOfLE U.2.2) (le_iSup_affine V) a b fun U => H U.1 U.2.1 ?_` and prove the remaining obligations. Conclude with `(app_res β U.2.2 a).trans ((congrArg _ hab).trans (app_res β U.2.2 b).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem injective_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
     (H : ∀ U : Y.Opens, IsAffineOpen U → Function.Injective (β.app U).hom) (V : Y.Opens) :
@@ -186,9 +186,9 @@ theorem injective_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
   exact (app_res β U.2.2 a).trans ((congrArg _ hab).trans (app_res β U.2.2 b).symm)
 
 /- English proof (translation)
-Use `choose a ha using fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => hu U.1 U.2.1 U.2.2`. Take `⟨s, hs, -⟩` from `Y.sheaf.existsUnique_gluing' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => U.1) V (fun U => homOfLE U.2.2) (le_iSup_affine V) a (fun i j => H (i.1 ⊓ j.1) (by`. Use `(app_res β inf_le_left (a i)).trans (Eq.trans ?_ (app_res β inf_le_right (a j)).symm)` and prove the remaining obligations. Rewrite using `[ha, ha, res_res, res_res]))`. Use `⟨s, Y'.sheaf.eq_of_locally_eq' (fun U : {U : Y.Opens // IsAffineOpen U ∧ U ≤ V} => β ⁻¹ᵁ U.1) (β ⁻¹ᵁ V) (fun U => homOfLE (β.preimage_mono U.2.2)) ?_ _ _ fun U => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← β.preimage_iSup]`. Conclude with `β.preimage_mono (le_iSup_affine V)`. Conclude with `(app_res β U.2.2 s).symm.trans ((congrArg _ (hs U)).trans (ha U))`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
     (H : ∀ U : Y.Opens, Function.Injective (β.app U).hom) (V : Y.Opens) (u : Γ(Y', β ⁻¹ᵁ V))
@@ -207,9 +207,9 @@ theorem mem_range_of_affine {Y Y' : Scheme.{0}} (β : Y' ⟶ Y)
   · exact (app_res β U.2.2 s).symm.trans ((congrArg _ (hs U)).trans (ha U))
 
 /- English proof (translation)
-Introduce `R _ _ R' _ _ _ ρ hF hG Y Y' y y' β _ h act hβ hy V`. Establish `H` using `fun (U : Y.Opens) (hU : IsAffineOpen U) => affine_inv ρ hF.2.1 hG h act hβ hy hU`. Establish `hinj` using `injective_of_affine β fun U hU => (H U hU).1`. Use `⟨hinj V, fun u hu => mem_range_of_affine β hinj V u fun U hU e => (H U hU).2 _ fun σ hσ => ?_⟩` and prove the remaining obligations. Establish `hle : β ⁻¹ᵁ V ≤ act σ ⁻¹ᵁ (β ⁻¹ᵁ V)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, hβ]`. Establish `e₁ : Y'.presheaf.map (homOfLE (β.preimage_mono e)).op ≫ (act σ).appLE _ _ hσ = (act σ).appLE _ _ hle ≫ Y'.presheaf.map (homOfLE (β.preimage_mono e)).op`. Rewrite using `[Scheme.Hom.map_appLE, Scheme.Hom.appLE_map]`. Conclude with `(congr($(e₁).hom u)).trans (congrArg _ (hu σ hle))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_functions : ∀ (R : Type) [CommRing R] [IsDomain R] (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R']
     (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (Y Y' : Scheme.{0}) (y : Y ⟶ Sp R) (y' : Y' ⟶ Sp R') (β : Y' ⟶ Y), Flat y →

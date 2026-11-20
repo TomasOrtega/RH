@@ -21,7 +21,7 @@ variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B] (f : A ⟶ B) [Is
 def sub (T : Over S) : Subgroup (T ⟶ A) := (IsMonHom.monoidHom f T).ker
 
 /- English proof (translation)
-Simplify using `[sub, MonoidHom.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_sub {T : Over S} (x : T ⟶ A) : x ∈ sub f T ↔ x ≫ f = 1 := by
   simp [sub, MonoidHom.mem_ker]
@@ -37,7 +37,7 @@ def pts : (Over S)ᵒᵖ ⥤ GrpCat.{0} where
   map_comp g h := by ext x; exact Category.assoc _ _ _
 
 /- English proof (translation)
-Rewrite using `[pullback.condition, Hom.one_def, toUnit_unique (pullback.snd f η[B]) (toUnit _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fst_comp : pullback.fst f η[B] ≫ f = 1 := by
   rw [pullback.condition, Hom.one_def, toUnit_unique (pullback.snd f η[B]) (toUnit _)]
@@ -46,13 +46,13 @@ def lift {T : Over S} (x : T ⟶ A) (hx : x ≫ f = 1) : T ⟶ ker f :=
   pullback.lift x (toUnit T) (by rw [hx, Hom.one_def])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem lift_fst {T : Over S} (x : T ⟶ A) (hx : x ≫ f = 1) : lift f x hx ≫ pullback.fst f η[B] = x :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.hom_ext h (toUnit_unique _ _)`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {T : Over S} {y z : T ⟶ ker f} (h : y ≫ pullback.fst f η[B] = z ≫ pullback.fst f η[B]) :
     y = z :=
@@ -71,7 +71,7 @@ def rep : (pts f ⋙ forget _).RepresentableBy (ker f) where
 def grp : GrpObj (ker f) := GrpObj.ofRepresentableBy _ (pts f) (rep f)
 
 /- English proof (translation)
-Use `letI := grp f`. Use `((yonedaGrpObjIsoOfRepresentableBy (ker f) _ (rep f)).hom.app (.op T)).hom.map_mul y z` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mul_fst {T : Over S} (y z : T ⟶ ker f) :
     letI := grp f
@@ -81,7 +81,7 @@ theorem mul_fst {T : Over S} (y z : T ⟶ ker f) :
   exact congrArg Subtype.val this
 
 /- English proof (translation)
-Use `letI := grp f`. Conclude with `isMonHom_of_mul _ fun T y z => mul_fst f y z`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isMonHom_fst : letI := grp f; IsMonHom (pullback.fst f η[B]) := by
   letI := grp f

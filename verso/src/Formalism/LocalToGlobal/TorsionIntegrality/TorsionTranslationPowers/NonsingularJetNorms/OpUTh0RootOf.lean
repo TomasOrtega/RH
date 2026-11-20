@@ -10,7 +10,7 @@ namespace OperatorUThetaLemmas
 open Formalism.L2.Th1.F
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [opU]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem opU_const_mul (L : PeriodPair) (x a : ℂ) (f : ℂ → ℂ) :
     opU L x (fun z => a * f z) = fun z => a * opU L x f z := by
@@ -19,7 +19,7 @@ theorem opU_const_mul (L : PeriodPair) (x a : ℂ) (f : ℂ → ℂ) :
   ring
 
 /- English proof (translation)
-Establish `h : herm L ((N : ℂ) * x) ((N : ℂ) * y) = (((N : ℝ) ^ 2 : ℝ) : ℂ) * herm L x y`. Simplify using `only [herm, map_mul, Complex.conj_natCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [altE, h, Complex.im_ofReal_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem altE_nat_mul (L : PeriodPair) (N : ℕ) (x y : ℂ) :
     altE L ((N : ℂ) * x) ((N : ℂ) * y) = (N : ℝ) ^ 2 * altE L x y := by
@@ -30,9 +30,9 @@ theorem altE_nat_mul (L : PeriodPair) (N : ℕ) (x y : ℂ) :
   simp only [altE, h, Complex.im_ofReal_mul]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `altEInt L _ _ hx hy`. Rewrite `hk` using `[altE_nat_mul]`. Establish `hk' : ((N : ℂ)) ^ 2 * (altE L x y : ℂ) = (k : ℂ)`. Conclude with `congrArg (fun r : ℝ => (r : ℂ)) hk` after adjusting the coercions. Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨-k, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hk']`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exp_altE_pow (L : PeriodPair) (N : ℕ) (x y : ℂ)
     (hx : (N : ℂ) * x ∈ L.lattice) (hy : (N : ℂ) * y ∈ L.lattice) :
@@ -51,9 +51,9 @@ end OperatorUThetaLemmas
 
 open Formalism.L2.Th1.F in
 /- English proof (translation)
-Introduce `L t t₀ N hN ht ht₀ _`. Use `⟨Complex.exp (-(Real.pi : ℂ) * Complex.I * (altE L t t₀ : ℂ)), 2 * N ^ 2, by positivity, OperatorUThetaLemmas.exp_altE_pow L N t t₀ ht ht₀, ?_⟩` and prove the remaining obligations. Establish `h0 : th0 L t₀ = fun z => (opU L t₀ (sgStar L) 0)⁻¹ * opU L t₀ (sgStar L) z`. Use function extensionality and compare the values at `z`. Simplify using `only [th0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[div_eq_mul_inv, mul_comm]`. Rewrite using `[h0, OperatorUThetaLemmas.opU_const_mul]`. Use function extensionality and compare the values at `z`. Rewrite using `[opUMul L t t₀ (sgStar L) z]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem OpUTh0Root_of : OpUTh0Root := by
   intro L t t₀ N hN ht ht₀ _

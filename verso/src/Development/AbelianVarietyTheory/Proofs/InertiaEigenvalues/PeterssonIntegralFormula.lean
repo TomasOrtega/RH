@@ -18,23 +18,23 @@ noncomputable section
 namespace GlobalTheory.AdjUp
 
 /- English proof (translation)
-Introduce `hC D G _ _ Pl0 T A Ks _ _ _ R F hL i v hv`. Take `⟨-, hr, hip⟩` from `hL.models.HW i (sg0 D A)`. Establish `hmem : ∀ x, (R.HW i (sg0 D A)).e x ∈ R.Wall i (sg0 D A)` using `fun x => hr ▸ LinearMap.mem_range_self _ x`. Establish `hS` using `(GlobalTheory.Hk3.schurAll_of_cuspRapidDecay hC R).2.2 i`. Use `set Q : ℝ := ∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℝ) with hQ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQc : (∏ ρ, ((dimK _ _ (kapAt (Wc D i) (sg0 D A) ρ) : ℚ) : ℂ)) = (Q : ℂ)`. Rewrite using `[hQ, Complex.ofReal_prod]`. Both sides reduce to the same expression. Establish `key : ∀ y z : (R.HW i (sg0 D A)).H, ⟪y, z⟫_ℂ = (Q : ℂ) * ∫ g in R.fdW i, star (val R i v y g) * val R i v z g ∂(R.νW i)`. Introduce `y z`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hS hL.models.inf (hL.models.νW i).1.1 (hL.models.νW i).2 _ (hmem y) _ (hmem z)`. Establish `hex : ∃ c, IsMultIP (R.MW i (sg0 D A)) (R.νW i) (R.fdW i) ((R.HW i (sg0 D A)).e y) ((R.HW i (sg0 D A)).e z) c` using `⟨c, hc⟩`. Establish `hv1` using `(hex.choose_spec (fun ρ => v ρ) (fun ρ => v ρ)).2`. Establish `hprod : (∏ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ), ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ) = 1`. Use `Finset.prod_eq_one fun ρ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, hv ρ]`. Evaluate the numerical expressions. Rewrite using `[hip, ipAt, hQc, ipM, dif_pos hex]`. Unfold `val`. Rewrite using `[hv1, hprod, mul_one]`.
+Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : 0 ≤ Q`. Conclude with `⟨Q, h0, key⟩`. Use `⟨0, le_rfl, fun y z => ?_⟩` and prove the remaining obligations. Establish `hy : y = 0`. Establish `e1` using `key y y`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ ∫ g in R.fdW i, ‖val R i v y g‖ ^ 2 ∂(R.νW i)` using `MeasureTheory.setIntegral_nonneg_of_ae (Filter.Eventually.of_forall fun _ => by positivity)`. Establish `hI : (∫ g in R.fdW i, star (val R i v y g) * val R i v y g ∂(R.νW i)) = ((∫ g in R.fdW i, ‖val R i v y g‖ ^ 2 ∂(R.νW i) : ℝ) : ℂ)`. Rewrite using `[← integral_complex_ofReal]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.ofReal_pow, ← Complex.conj_mul']`. Both sides reduce to the same expression. Rewrite `e1` using `[hI]`. Establish `e2 : ‖y‖ ^ 2 = Q * ∫ g in R.fdW i, ‖val R i v y g‖ ^ 2 ∂(R.νW i)`. Use `congrArg Complex.re e1` as an intermediate fact.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[inner_self_eq_norm_sq_to_K]`. Simplify `this` using `[← Complex.ofReal_pow, Complex.re_ofReal_mul]`. Establish `hle : ‖y‖ ^ 2 ≤ 0`. Rewrite using `[e2]`. Conclude with `mul_nonpos_of_nonpos_of_nonneg (le_of_lt (not_le.1 h0)) hnn`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖y‖ = 0` using `by nlinarith [norm_nonneg y]`. Conclude with `norm_eq_zero.1 this`. Rewrite using `[hy, inner_zero_left, Complex.ofReal_zero, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem ip_eq_mul_integral_val : GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type)
     (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]

@@ -29,7 +29,7 @@ variable (II : IntersectionSystem)
 
 omit II hII in
 /- English proof (translation)
-Conclude with `WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)`.
+A detailed English derivation is pending.
 -/
 theorem two_le_infty : (2 : WithTop ℕ∞) ≤ ∞ := by
   exact WithTop.coe_le_coe.2 (le_top : (2 : ℕ∞) ≤ ⊤)

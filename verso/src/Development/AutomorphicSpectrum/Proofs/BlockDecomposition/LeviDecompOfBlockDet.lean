@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.RgEisLevi
 variable {E R : Type} [Field E] [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h r c`. Conclude with `h (Sum.inr r) (by simp) (Sum.inl c) (by simp)`. Introduce `h r hr c hc`. Take `⟨c', -, rfl⟩` from `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `r with r | r` into its components or cases. Conclude with `absurd ⟨r, trivial, rfl⟩ hr`. Conclude with `h r c'`.
+A detailed English derivation is pending.
 -/
 theorem mem_stab_univ {g : GL (ι ⊕ ι) R} :
     g ∈ stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)) ↔
@@ -28,7 +28,7 @@ theorem mem_stab_univ {g : GL (ι ⊕ ι) R} :
     · exact h r c'
 
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `[Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, hy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_mul (x y : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (hy : ∀ r c, y (Sum.inr r) (Sum.inl c) = 0) :
     (x * y).toBlocks₁₁ = x.toBlocks₁₁ * y.toBlocks₁₁ := by
@@ -36,7 +36,7 @@ theorem blk_mul (x y : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (hy : ∀ r c, y (Sum.i
   simp [Matrix.toBlocks₁₁, Matrix.mul_apply, Fintype.sum_sum_type, hy]
 
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `[Matrix.toBlocks₁₁, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem blk_one : (1 : Matrix (ι ⊕ ι) (ι ⊕ ι) R).toBlocks₁₁ = 1 := by
   ext r c
@@ -52,7 +52,7 @@ def piP : stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)) →* GL ι R
     exact blk_mul _ _ (fun r c => (mem_stab_univ.1 b.2 r c).1))
 
 /- English proof (translation)
-Rewrite using `[Matrix.transpose_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_mul (σ : R →+* R) (a b : Matrix ι ι R) : (aᵀ.map σ) * (bᵀ.map σ) = ((b * a)ᵀ).map σ := by
   rw [Matrix.transpose_mul, Matrix.map_mul]
@@ -84,17 +84,17 @@ theorem jG_inv_val (σ : R →+* R) (m : GL ι R) : (((jG σ m)⁻¹ : GL (ι �
     fromBlocks ((m⁻¹ : GL ι R) : Matrix ι ι R) 0 0 ((m : Matrix ι ι R)ᵀ.map σ) := rfl
 
 /- English proof (translation)
-The claim follows from `mem_stab_univ.2 fun r c => by rw [jG_val, jG_inv_val]; simp`.
+A detailed English derivation is pending.
 -/
 theorem jG_mem_stab (σ : R →+* R) (m : GL ι R) : jG σ m ∈ stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)) :=
   mem_stab_univ.2 fun r c => by rw [jG_val, jG_inv_val]; simp
 
 /- English proof (translation)
-Use `show ((jG A.σ m : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R)ᵀ * Ad.J R ε ι * ((jG A.σ m : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R).map A.σ = Ad.J R ε ι`. Establish `hmm : ((((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ.map A.σ).map A.σ) = ((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ`. Use extensionality with `r c`. Simplify using `[h]`. Establish `h1 : (m : Matrix ι ι R)ᵀ * ((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ = 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_mul, Units.inv_mul, Matrix.transpose_one]`. Establish `h2 : (((m⁻¹ : GL ι R) : Matrix ι ι R).map A.σ) * ((m : Matrix ι ι R).map A.σ) = 1`. Rewrite using `[← Matrix.map_mul, Units.inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h3 : (((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ.map A.σ)ᵀ = ((m⁻¹ : GL ι R) : Matrix ι ι R).map A.σ`. Use extensionality with `r c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[jG_val, Ad.J, Matrix.fromBlocks_transpose, Matrix.fromBlocks_map, Matrix.fromBlocks_multiply, Matrix.fromBlocks_multiply, hmm, h3]`. Simplify using `[-Matrix.coe_units_inv, h1, h2, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jG_mem_uSub (A : Ad E R) (ε : ℤˣ) (h : ∀ x, A.σ (A.σ x) = x) (m : GL ι R) : jG A.σ m ∈ A.uSub ε ι := by
   show ((jG A.σ m : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R)ᵀ * Ad.J R ε ι * ((jG A.σ m : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R).map A.σ = Ad.J R ε ι
@@ -124,7 +124,7 @@ def jQ (h : ∀ x, A.σ (A.σ x) = x) : GL ι R →* A.uQ ε (Set.univ : Set ι)
   map_mul' a b := Subtype.ext (Subtype.ext (map_mul (jG A.σ) a b))
 
 /- English proof (translation)
-The claim follows from `Units.ext (by show (fromBlocks (m : Matrix ι ι R) 0 0 (((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ.map A.σ)).toBlocks₁₁ = m simp)`.
+A detailed English derivation is pending.
 -/
 theorem piQ_jQ (h : ∀ x, A.σ (A.σ x) = x) (m : GL ι R) : piQ A ε (jQ A ε h m) = m :=
   Units.ext (by
@@ -134,9 +134,9 @@ theorem piQ_jQ (h : ∀ x, A.σ (A.σ x) = x) (m : GL ι R) : piQ A ε (jQ A ε 
 end Alg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h r hr c hc`. Conclude with `h (Sum.inl r) (by simpa using hr) (Sum.inl c) ⟨c, hc, rfl⟩`. Introduce `h r hr c hc`. Take `⟨c', hc', rfl⟩` from `hc`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `r with r | r` into its components or cases. Conclude with `h r (fun hrs => hr ⟨r, hrs, rfl⟩) c' hc'`. Conclude with `mem_stab_univ.1 q.2 r c'`.
+A detailed English derivation is pending.
 -/
 theorem mem_stab_inl_iff (s : Set ι) (q : stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι))) :
     q.1 ∈ stab R (Sum.inl '' s : Set (ι ⊕ ι)) ↔ piP q ∈ stab R s := by
@@ -151,9 +151,9 @@ theorem mem_stab_inl_iff (s : Set ι) (q : stab R (Sum.inl '' (Set.univ : Set ι
 
 open Classical in
 /- English proof (translation)
-Establish `hdet : ((g : Matrix κ' κ' R).submatrix (Subtype.val : t → κ') Subtype.val).det = ((m : Matrix κ κ R).submatrix (Subtype.val : s → κ) Subtype.val).det`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Use `congr 1`. Use extensionality with `a b`. Conclude with `h a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Unfold `bdet`. Simplify using `only [hdet]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bdet_congr {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [DecidableEq κ'] (s : Set κ) (t : Set κ')
     (e : s ≃ t) (g : GL κ' R) (m : GL κ R)
@@ -168,7 +168,7 @@ theorem bdet_congr {κ κ' : Type} [Fintype κ] [DecidableEq κ] [Fintype κ'] [
   simp only [hdet]
 
 /- English proof (translation)
-The claim follows from `bdet_congr s _ (Equiv.Set.image Sum.inl s Sum.inl_injective) g m fun a b => h a.1 b.1`.
+A detailed English derivation is pending.
 -/
 theorem bdet_inl (s : Set ι) (g : GL (ι ⊕ ι) R) (m : GL ι R)
     (h : ∀ r c, (g : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl r) (Sum.inl c) = (m : Matrix ι ι R) r c) :
@@ -176,7 +176,7 @@ theorem bdet_inl (s : Set ι) (g : GL (ι ⊕ ι) R) (m : GL ι R)
   bdet_congr s _ (Equiv.Set.image Sum.inl s Sum.inl_injective) g m fun a b => h a.1 b.1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff']`. Use extensionality with `r c`. Use `congrFun (congrFun (Matrix.mem_unitaryGroup_iff'.1 hQ) (Sum.inl r)) (Sum.inl c)` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Fintype.sum_sum_type, Matrix.star_apply, h0, Matrix.one_apply, Matrix.toBlocks₁₁]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_corner (Q : Matrix (ι ⊕ ι) (ι ⊕ ι) ℂ) (hQ : Q ∈ Matrix.unitaryGroup (ι ⊕ ι) ℂ)
     (h0 : ∀ r c, Q (Sum.inr r) (Sum.inl c) = 0) : Q.toBlocks₁₁ ∈ Matrix.unitaryGroup ι ℂ := by
@@ -186,7 +186,7 @@ theorem unit_corner (Q : Matrix (ι ⊕ ι) (ι ⊕ ι) ℂ) (hQ : Q ∈ Matrix.
   simpa [Matrix.mul_apply, Fintype.sum_sum_type, Matrix.star_apply, h0, Matrix.one_apply, Matrix.toBlocks₁₁] using this
 
 /- English proof (translation)
-Use `⟨fun r c => ⟨(hq.1 _ _).1, (hq.1 _ _).2⟩, fun w => ?_⟩` and prove the remaining obligations. Use `unit_corner _ (hq.2 w) (fun r c => by` as an intermediate fact. Simplify using `[(mem_stab_univ.1 q.2 r c).1])`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem piP_mem_kGL (A : Ad E R) (q : stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)))
     (hq : q.1 ∈ A.kGL (ι ⊕ ι)) : piP q ∈ A.kGL ι := by
@@ -196,19 +196,15 @@ theorem piP_mem_kGL (A : Ad E R) (q : stab R (Sum.inl '' (Set.univ : Set ι) : S
   exact this
 
 /- English proof (translation)
-Use `⟨fun r c => ⟨?_, ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[jG_val]`. Apply the tactic sequence `rcases r with r | r <;> rcases c with c | c`. Conclude with `(hm.1 r c).1`. Conclude with `A.O.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `A.O.zero_mem`. Conclude with `hO _ (hm.1 c r).2`. Rewrite using `[jG_inv_val]`. Apply the tactic sequence `rcases r with r | r <;> rcases c with c | c`. Conclude with `(hm.1 r c).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `A.O.zero_mem`. Conclude with `A.O.zero_mem`. Conclude with `hO _ (hm.1 c r).1`. Use `set M := (m : Matrix ι ι R).map (A.φ w) with hM`. Establish `hMu` using `hm.2 w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : M * ((m⁻¹ : GL ι R) : Matrix ι ι R).map (A.φ w) = 1`. Rewrite using `[hM, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `h2 : star M * M = 1` using `Matrix.mem_unitaryGroup_iff'.1 hMu`. Establish `h3 : ((m⁻¹ : GL ι R) : Matrix ι ι R).map (A.φ w) = star M`. Rewrite using `[← Matrix.one_mul (((m⁻¹ : GL ι R) : Matrix ι ι R).map (A.φ w)), ← h2, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h4 : ((((m⁻¹ : GL ι R) : Matrix ι ι R)ᵀ.map A.σ).map (A.φ w)) = M`. Use extensionality with `r c`. Use `congrFun (congrFun h3 c) r` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.star_apply] at this`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, hφ, this]`.
-
-Simplify using `[hM]`. Establish `h5 : ((jG A.σ m : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R).map (A.φ w) = fromBlocks M 0 0 M`. Rewrite using `[jG_val, Matrix.fromBlocks_map, h4]`. Simplify using `[hM]`. Rewrite using `[h5, Matrix.mem_unitaryGroup_iff, Matrix.star_eq_conjTranspose, Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply]`.
-
-Establish `h6 : M * Mᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hMu`. Simplify using `[h6]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jG_mem_k (A : Ad E R) (hO : ∀ x ∈ A.O, A.σ x ∈ A.O)
     (hφ : ∀ w x, A.φ w (A.σ x) = (starRingEnd ℂ) (A.φ w x)) (m : GL ι R) (hm : m ∈ A.kGL ι) :
@@ -255,17 +251,17 @@ def tau (A : Ad E R) (hi : Function.Injective A.i) (h : ∀ x, ∃ y, A.σ (A.i 
   map_add' a b := hi (by rw [← (h (a + b)).choose_spec, map_add, map_add, map_add, ← (h a).choose_spec, ← (h b).choose_spec])
 
 /- English proof (translation)
-The claim follows from `(h x).choose_spec.symm`.
+A detailed English derivation is pending.
 -/
 theorem i_tau (A : Ad E R) (hi : Function.Injective A.i) (h : ∀ x, ∃ y, A.σ (A.i x) = A.i y) (x : E) :
     A.i (tau A hi h x) = A.σ (A.i x) := (h x).choose_spec.symm
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hq`. Establish `hxm : ∀ a b, ((Matrix.GeneralLinearGroup.map A.i x : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) a b = A.i ((x : Matrix (ι ⊕ ι) (ι ⊕ ι) E) a b)` using `fun a b => rfl`. Establish `hxi : ∀ a b, (((Matrix.GeneralLinearGroup.map A.i x)⁻¹ : GL (ι ⊕ ι) R) : Matrix (ι ⊕ ι) (ι ⊕ ι) R) a b = A.i (((x⁻¹ : GL (ι ⊕ ι) E) : Matrix (ι ⊕ ι) (ι ⊕ ι) E) a b)` using `fun a b => by`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hst : x ∈ stab E (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι))` using `mem_stab_univ.2 fun r c => by`. Establish `h` using `mem_stab_univ.1 q.2 r c`. Rewrite `h` using `[← hx, hxm, hxi]`. Conclude with `⟨hi (by rw [h.1, map_zero]), hi (by rw [h.2, map_zero])⟩`. Use `⟨piP ⟨x, hst⟩, Units.ext ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `r c`. Use `show A.i ((x : Matrix (ι ⊕ ι) (ι ⊕ ι) E) (Sum.inl r) (Sum.inl c)) = (q.1 : Matrix (ι ⊕ ι) (ι ⊕ ι) R) (Sum.inl r) (Sum.inl c)`. Rewrite using `[← hx, hxm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piP_mem_ratGL (A : Ad E R) (hi : Function.Injective A.i) (q : stab R (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)))
     (hq : q.1 ∈ A.ratGL (ι ⊕ ι)) : piP q ∈ A.ratGL ι := by
@@ -283,11 +279,9 @@ theorem piP_mem_ratGL (A : Ad E R) (hi : Function.Injective A.i) (q : stab R (Su
   rw [← hx, hxm]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hm`. Use `⟨jG (tau A hi h) y, Units.ext ?_⟩` and prove the remaining obligations. Establish `hinv : ∀ a b, (((Matrix.GeneralLinearGroup.map A.i y)⁻¹ : GL ι R) : Matrix ι ι R) a b = A.i (((y⁻¹ : GL ι E) : Matrix ι ι E) a b)` using `fun a b => by`. Rewrite using `[← map_inv]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `r c`. Apply the tactic sequence `rcases r with r | r <;> rcases c with c | c`. Both sides reduce to the same expression. Use `show A.i 0 = 0`. Conclude with `map_zero _`.
-
-Use `show A.i 0 = 0`. Conclude with `map_zero _`. Use `show A.i (tau A hi h (((y⁻¹ : GL ι E) : Matrix ι ι E) c r)) = A.σ ((((Matrix.GeneralLinearGroup.map A.i y)⁻¹ : GL ι R) : Matrix ι ι R) c r)`. Rewrite using `[i_tau, hinv]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jG_mem_rat (A : Ad E R) (hi : Function.Injective A.i) (h : ∀ x, ∃ y, A.σ (A.i x) = A.i y) (m : GL ι R)
     (hm : m ∈ A.ratGL ι) : jG A.σ m ∈ A.ratGL (ι ⊕ ι) := by
@@ -310,7 +304,7 @@ section Top
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Establish `hv : Continuous fun q : A.uQ ε (Set.univ : Set ι) => (q.1.1 : GL (ι ⊕ ι) R)` using `continuous_subtype_val.comp continuous_subtype_val`. Rewrite using `[Units.continuous_iff]`. Use `⟨continuous_matrix fun r c => ?_, continuous_matrix fun r c => ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.comp hv).matrix_elem _ _`. Conclude with `(Units.continuous_val.comp hv.inv).matrix_elem _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_piQ (A : Ad E R) (ε : ℤˣ) : Continuous (piQ A ε (ι := ι)) := by
   have hv : Continuous fun q : A.uQ ε (Set.univ : Set ι) => (q.1.1 : GL (ι ⊕ ι) R) :=
@@ -321,7 +315,7 @@ theorem continuous_piQ (A : Ad E R) (ε : ℤˣ) : Continuous (piQ A ε (ι := �
   · exact (Units.continuous_val.comp hv.inv).matrix_elem _ _
 
 /- English proof (translation)
-Establish `hm : Continuous fun m : GL ι R => (m : Matrix ι ι R)` using `Units.continuous_val`. Establish `hi : Continuous fun m : GL ι R => ((m⁻¹ : GL ι R) : Matrix ι ι R)` using `Units.continuous_val.comp continuous_inv`. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨hm.matrix_fromBlocks continuous_const continuous_const (hi.matrix_transpose.matrix_map hσ), hi.matrix_fromBlocks continuous_const continuous_const (hm.matrix_transpose.matrix_map hσ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_jG (σ : R →+* R) (hσ : Continuous σ) : Continuous (jG σ : GL ι R → GL (ι ⊕ ι) R) := by
   have hm : Continuous fun m : GL ι R => (m : Matrix ι ι R) := Units.continuous_val
@@ -331,14 +325,14 @@ theorem continuous_jG (σ : R →+* R) (hσ : Continuous σ) : Continuous (jG σ
     hi.matrix_fromBlocks continuous_const continuous_const (hm.matrix_transpose.matrix_map hσ)⟩
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (Continuous.subtype_mk (continuous_jG A.σ hσ) _) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_jQ (A : Ad E R) (ε : ℤˣ) (h : ∀ x, A.σ (A.σ x) = x) (hσ : Continuous A.σ) :
     Continuous (jQ A ε h (ι := ι)) :=
   Continuous.subtype_mk (Continuous.subtype_mk (continuous_jG A.σ hσ) _) _
 
 /- English proof (translation)
-The claim follows from `h.preimage continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_uQ (A : Ad E R) (ε : ℤˣ) (s : Set ι)
     (h : IsClosed (stab R (Sum.inl '' s : Set (ι ⊕ ι)) : Set (GL (ι ⊕ ι) R))) :
@@ -348,14 +342,14 @@ theorem isClosed_uQ (A : Ad E R) (ε : ℤˣ) (s : Set ι)
 end Top
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_subgroupOf.trans (mem_stab_inl_iff s ⟨q.1.1, Subgroup.mem_subgroupOf.1 q.2⟩)`.
+A detailed English derivation is pending.
 -/
 theorem mem_uQ_iff (A : Ad E R) (ε : ℤˣ) (s : Set ι) (q : A.uQ ε (Set.univ : Set ι)) :
     q.1 ∈ A.uQ ε s ↔ piQ A ε q ∈ stab R s :=
   Subgroup.mem_subgroupOf.trans (mem_stab_inl_iff s ⟨q.1.1, Subgroup.mem_subgroupOf.1 q.2⟩)
 
 /- English proof (translation)
-Use `⟨q * (jQ A ε h k)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, piQ_jQ, e, mul_inv_cancel_right]`. Rewrite using `[← Subgroup.coe_mul, inv_mul_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor (A : Ad E R) (ε : ℤˣ) (h : ∀ x, A.σ (A.σ x) = x) (q : A.uQ ε (Set.univ : Set ι)) (p k : GL ι R)
     (e : piQ A ε q = p * k) : ∃ q' : A.uQ ε (Set.univ : Set ι), piQ A ε q' = p ∧ q.1 = q'.1 * (jQ A ε h k).1 := by
@@ -368,9 +362,9 @@ section Main
 variable [TopologicalSpace R]
 
 /- English proof (translation)
-Introduce `g`. Take `⟨q, hq, k, hk, rfl⟩` from `hI g`. Take `⟨p, hp, k', hk', e⟩` from `hA.iwa ι s (piQ A ε ⟨q, hq⟩)`. Take `⟨q', h1, h2⟩` from `factor A ε hA.σσ ⟨q, hq⟩ p k' e`. Establish `hjk : ((jQ A ε hA.σσ k').1 : A.U ε ι) ∈ A.uK ε ι` using `Subgroup.mem_subgroupOf.2 (jG_mem_k A hA.σO hA.σφ k' hk')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨q'.1, ⟨(mem_uQ_iff A ε s q').2 (h1 ▸ hp), q'.2⟩, (jQ A ε hA.σσ k').1 * k, mul_mem hjk hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem iwa_inf (A : Ad E R) (hA : A.Good) (ε : ℤˣ) (hI : Iwa (A.uQ ε (Set.univ : Set ι)) (A.uK ε ι)) (s : Set ι) :
     Iwa (A.uQ ε s ⊓ A.uQ ε Set.univ) (A.uK ε ι) := by
@@ -390,7 +384,7 @@ section Ext
 variable [TopologicalSpace R] [IsTopologicalRing R] [T2Space R] [LocallyCompactSpace R] [SecondCountableTopology R]
 
 /- English proof (translation)
-Establish `hb` using `hB E R A hA.toGoodL ι s`. Conclude with `(hE (GL ι R) (A.kGL ι) (A.kGL ι) (stab R s) (fun p => A.lg (bdet s p)) (hA.kcpt ι) hb.1 (hA.iwa ι s) (fun p hp q hq => by simp only [hb.2.1 p hp q hq, hA.lgmul]) (hA.lgcont.comp_continuousOn hb.2.2.1) (fun p hp hk => hb.2.2.2.2.1 p hp hk) (fun p hp hk => hb.2.2.2.2.1 p hp hk)).2 …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ht_GL (hB : BdetLaw) (hE : ExtLaw) (A : Ad E R) (hA : A.Good) (s : Set ι) (p : GL ι R) (hp : p ∈ stab R s)
     (k : GL ι R) (hk : k ∈ A.kGL ι) : A.htGL s (p * k) = A.lg (bdet s p) := by
@@ -400,9 +394,9 @@ theorem ht_GL (hB : BdetLaw) (hE : ExtLaw) (A : Ad E R) (hA : A.Good) (s : Set �
     (fun p hp hk => hb.2.2.2.2.1 p hp hk) (fun p hp hk => hb.2.2.2.2.1 p hp hk)).2 p hp k hk
 
 /- English proof (translation)
-Establish `hb` using `hB E R A hA.toGoodL (ι ⊕ ι) (Sum.inl '' s)`. Establish `hc : ContinuousOn (fun p : A.U ε ι => bdet (Sum.inl '' s : Set (ι ⊕ ι)) p.1) (A.uQ ε s : Set (A.U ε ι))` using `hb.2.2.1.comp continuous_subtype_val.continuousOn fun x hx => hx`. Establish `hv : ∀ p ∈ A.uQ ε s, p ∈ A.uK ε ι → A.lg (bdet (Sum.inl '' s : Set (ι ⊕ ι)) p.1) = 0` using `fun p hp hk => hb.2.2.2.2.1 p.1 (Subgroup.mem_subgroupOf.1 hp) (Subgroup.mem_subgroupOf.1 hk)`. Conclude with `(hE (A.U ε ι) (A.uK ε ι) (A.uK ε ι) (A.uQ ε s) (fun p => A.lg (bdet (Sum.inl '' s : Set (ι ⊕ ι)) p.1)) hK (isClosed_uQ A ε s hb.1) hI (fun p hp q hq => by`. Use `hb.2.1 p.1 (Subgroup.mem_subgroupOf.1 hp) q.1 (Subgroup.mem_subgroupOf.1 hq)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, this, hA.lgmul])`. Use the proof step `(hA.lgcont.comp_continuousOn hc) hv hv).2 p hp k hk`.
+A detailed English derivation is pending.
 -/
 theorem ht_U (hB : BdetLaw) (hE : ExtLaw) (A : Ad E R) (hA : A.Good) (ε : ℤˣ) [T2Space (A.U ε ι)]
     (hK : IsCompact (A.uK ε ι : Set (A.U ε ι))) (s : Set ι) (hI : Iwa (A.uQ ε s) (A.uK ε ι))
@@ -423,15 +417,13 @@ theorem ht_U (hB : BdetLaw) (hE : ExtLaw) (A : Ad E R) (hA : A.Good) (ε : ℤˣ
 end Ext
 
 /- English proof (translation)
-Introduce `hB hE hT E R _ _ _ _ _ _ _ A hA ι _ _ ε hI`. Take `⟨-, -, -, hT2, -, -, hK⟩` from `hT E R A hA ι ε`. Establish `hbu` using `hB E R A hA.toGoodL (ι ⊕ ι) (Sum.inl '' (Set.univ : Set ι))`. Use `⟨piQ A ε, jQ A ε hA.σσ, ?_, ?_, iwa_inf A hA ε hI, ?_⟩` and prove the remaining obligations. Conclude with `{ contπ := continuous_piQ A ε contι := continuous_jQ A ε hA.σσ hA.σcont sect := piQ_jQ A ε hA.σσ par := { closed := isClosed_uQ A ε _ hbu.1 iwa := hI ch := { mul := fun _ _ _ _ => by simp norm := fun _ _ => by simp rat := fun _ _ _ => rfl cont := continuousOn_const } } triv := fu …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Use `⟨fun g => ⟨fun h => ⟨h.2, (mem_uQ_iff A ε s ⟨g, h.2⟩).1 h.1⟩, fun ⟨hg, h⟩ => ⟨(mem_uQ_iff A ε s ⟨g, hg⟩).2 h, hg⟩⟩, fun q _ => ?_⟩` and prove the remaining obligations. Establish `h1 : bdet (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)) q.1.1 = Matrix.GeneralLinearGroup.det (piQ A ε q)`. Rewrite using `[bdet_inl Set.univ _ (piQ A ε q) (fun _ _ => rfl)]`. Conclude with `(hB E R A hA.toGoodL ι Set.univ).2.2.2.2.2 _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((A.χ (bdet (Sum.inl '' (Set.univ : Set ι) : Set (ι ⊕ ι)) q.1.1) : Circle) : ℂ) = 1 * ((A.χ (Matrix.GeneralLinearGroup.det (piQ A ε q)) : Circle) : ℂ)`. Rewrite using `[h1, one_mul]`. Introduce `s q k hk`. Establish `hinf` using `iwa_inf A hA ε hI s`. Establish `hIs : Iwa (A.uQ ε s) (A.uK ε ι)` using `fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hp, k, hk, e⟩` from `hinf g`. Conclude with `⟨p, hp.1, k, hk, e⟩`. Take `⟨p, hp, k', hk', e⟩` from `hA.iwa ι s (piQ A ε q)`. Take `⟨q', h1, h2⟩` from `factor A ε hA.σσ q p k' e`. Establish `hjk : ((jQ A ε hA.σσ k').1 : A.U ε ι) ∈ A.uK ε ι` using `Subgroup.mem_subgroupOf.2 (jG_mem_k A hA.σO hA.σφ k' hk')`.
-
-Establish `hq' : q'.1 ∈ A.uQ ε s` using `(mem_uQ_iff A ε s q').2 (h1 ▸ hp)`. Rewrite using `[e, ht_GL hB hE A hA s p hp k' hk', h2, mul_assoc, ht_U hB hE A hA ε hK s hIs q'.1 hq' _ (mul_mem hjk hk), bdet_inl s _ (piQ A ε q') (fun _ _ => rfl), h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviS : BdetLaw → ExtLaw → GrpTop → LeviS := by
   intro hB hE hT E R _ _ _ _ _ _ _ A hA ι _ _ ε hI

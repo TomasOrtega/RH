@@ -5,7 +5,7 @@ open scoped MatrixGroups Matrix Classical
 open GlobalTheory.KZ GlobalTheory.K4 UpperTheory.V.Z.Kato.Sym UpperTheory.Kd.K4 UpperTheory.V.Z.Kato.Nb
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l _ N w _ hl hc hw`. Establish `h : ∃ c, LiftsWith X l N w c` using `UpperTheory.Kd.K4.liftH ε X l N w hl (Nat.pos_of_ne_zero (NeZero.ne N)) hc hw`. Conclude with `Classical.epsilon_spec h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sLiftOk :
     UpperTheory.V.Z.Kato.Nb.SLiftOk := by

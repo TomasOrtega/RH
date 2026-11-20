@@ -8,14 +8,12 @@ noncomputable section
 namespace GlobalTheory.KZ.ValAt
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hs : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
 /- English proof (translation)
-Rewrite `h` using `[Filter.Germ.coe_eq]`. Establish `h1` using `(mem_codiscreteWithin_iff_forall_mem_nhdsNE.1 h) τ hτ`. Establish `h2 : Hs ∈ 𝓝[≠] τ` using `mem_nhdsWithin_of_mem_nhds (isOpen_Hs.mem_nhds hτ)`. Use `filter_upwards [h1, h2] with z hz hz'`. Break down `hz with hz | hz` into its components or cases.
-
-Conclude with `hz`. Conclude with `absurd hz' hz`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem nhdsNE_of_germ_eq {τ : ℂ} (hτ : τ ∈ Hs) {φ ψ : ℂ → ℂ} (h : (φ : Mero) = (ψ : Mero)) :
     φ =ᶠ[𝓝[≠] τ] ψ := by
@@ -33,7 +31,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Quot.exists_rep g`. Conclude with `⟨φ, hφ.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.exists_rep (g : _root_.GlobalTheory.KZ.Mero) :
     ∃ φ : ℂ → ℂ, g = (φ : _root_.GlobalTheory.KZ.Mero) := by
@@ -43,14 +41,14 @@ theorem _root_.GlobalTheory.KZ.ValAt.exists_rep (g : _root_.GlobalTheory.KZ.Mero
 def rep (X : Tower Ω ε) (x : X.K) : ℂ → ℂ := (exists_rep (X.an x)).choose
 
 /- English proof (translation)
-The claim follows from `(exists_rep (X.an x)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem rep_spec (X : Tower Ω ε) (x : X.K) : X.an x = (rep X x : Mero) := (exists_rep (X.an x)).choose_spec
 
 def ord (X : Tower Ω ε) (τ : ℂ) (x : X.K) : WithTop ℤ := meromorphicOrderAt (rep X x) τ
 
 /- English proof (translation)
-The claim follows from `meromorphicOrderAt_congr (nhdsNE_of_germ_eq hτ ((rep_spec X x).symm.trans h))`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq (X : Tower Ω ε) {τ : ℂ} (hτ : τ ∈ Hs) {x : X.K} {φ : ℂ → ℂ} (h : X.an x = (φ : Mero)) :
     ord X τ x = meromorphicOrderAt φ τ :=
@@ -60,7 +58,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-The claim follows from `(_root_.GlobalTheory.KZ.ValAt.exists_rep (X.an x)).choose_spec`.
+A detailed English derivation is pending.
 -/
 private theorem an_eq_germ_rep (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     (x : X.K) :
@@ -71,7 +69,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.KZ.Hs`. Conclude with `isOpen_lt continuous_const Complex.continuous_im`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem isOpen_upperHalfPlaneSet' : IsOpen _root_.GlobalTheory.KZ.Hs := by
   unfold _root_.GlobalTheory.KZ.Hs
@@ -81,9 +79,9 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Establish `h'` using `(Filter.Germ.coe_eq.1 h : φ =ᶠ[codiscreteWithin _root_.GlobalTheory.KZ.Hs] ψ)`. Rewrite `h'` using `[Filter.EventuallyEq, Filter.Eventually, mem_codiscreteWithin]`. Establish `hd` using `h' τ hτ`. Rewrite `hd` using `[Filter.disjoint_principal_right]`. Use `filter_upwards [hd, nhdsWithin_le_nhds (isOpen_upperHalfPlaneSet'.mem_nhds hτ)] with z h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Conclude with `h1 ⟨h2, hne⟩`.
+A detailed English derivation is pending.
 -/
 private theorem eventuallyEq_nhdsNE_of_mero_coe_eq {φ ψ : ℂ → ℂ}
     (h : (φ : _root_.GlobalTheory.KZ.Mero) = ψ) {τ : ℂ} (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) :
@@ -100,7 +98,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.KZ.ValAt.ord`. Rewrite `h` using `[an_eq_germ_rep]`. Conclude with `meromorphicOrderAt_congr (eventuallyEq_nhdsNE_of_mero_coe_eq h hτ)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ord_eq_meromorphicOrderAt_of_an_eq_coe {φ : ℂ → ℂ} (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     (x : X.K) (h : X.an x = (φ : _root_.GlobalTheory.KZ.Mero)) {τ : ℂ}
@@ -114,7 +112,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.KZ.Hs`. Conclude with `(convex_halfSpace_im_gt 0).isPreconnected`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem isPreconnected_upperHalfPlaneSet : IsPreconnected _root_.GlobalTheory.KZ.Hs := by
   unfold _root_.GlobalTheory.KZ.Hs
@@ -124,9 +122,9 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Establish `ha` using `hb.analyticOnNhd isOpen_upperHalfPlaneSet'`. Break down `(ha τ hτ).eventually_eq_zero_or_eventually_ne_zero with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hb0` to reduce the goal to its premises. Establish `hz` using `ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_upperHalfPlaneSet hτ h`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Filter.Germ.coe_zero, Filter.Germ.coe_eq]`. Conclude with `Filter.eventually_of_mem (self_mem_codiscreteWithin _) hz`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eventually_ne_zero_nhdsNE_of_mero_coe_ne_zero {b : ℂ → ℂ}
     (hb : DifferentiableOn ℂ b _root_.GlobalTheory.KZ.Hs)
@@ -146,9 +144,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Take `⟨a, b, ha, hb, hb0, hab⟩` from `X.an_mero x`. Use `⟨a, b, ha, hb, ?_⟩` and prove the remaining obligations. Rewrite `hab` using `[an_eq_germ_rep, ← Filter.Germ.coe_mul]`. Use `filter_upwards [eventuallyEq_nhdsNE_of_mero_coe_eq hab hτ, eventually_ne_zero_nhdsNE_of_mero_coe_ne_zero hb hb0 hτ] with z h1 h2`. Rewrite using `[Pi.div_apply, eq_div_iff h2]`.
-
-Conclude with `h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_differentiableOn_rep_eventuallyEq_div (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     (x : X.K) {τ : ℂ} (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) :
@@ -167,7 +163,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Take `⟨a, b, ha, hb, h⟩` from `exists_differentiableOn_rep_eventuallyEq_div X x hτ`. Establish `ha'` using `(ha.analyticOnNhd isOpen_upperHalfPlaneSet' τ hτ).meromorphicAt`. Establish `hb'` using `(hb.analyticOnNhd isOpen_upperHalfPlaneSet' τ hτ).meromorphicAt`. Conclude with `(ha'.div hb').congr h.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem meromorphicAt_rep_of_mem_upperHalfPlaneSet (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     (x : X.K) {τ : ℂ} (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) :
@@ -181,7 +177,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[ord_eq_meromorphicOrderAt_of_an_eq_coe X (x * y) (φ := _root_.GlobalTheory.KZ.ValAt.rep X x * _root_.GlobalTheory.KZ.ValAt.rep X y) ?_ hτ]`. Conclude with `meromorphicOrderAt_mul (meromorphicAt_rep_of_mem_upperHalfPlaneSet X x hτ) (meromorphicAt_rep_of_mem_upperHalfPlaneSet X y hτ)`. Rewrite using `[map_mul, Filter.Germ.coe_mul, ← an_eq_germ_rep, ← an_eq_germ_rep]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.ord_mul (X : _root_.GlobalTheory.KZ.Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) (x y : X.K) :
@@ -198,7 +194,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[ord_eq_meromorphicOrderAt_of_an_eq_coe X (x + y) (φ := _root_.GlobalTheory.KZ.ValAt.rep X x + _root_.GlobalTheory.KZ.ValAt.rep X y) ?_ hτ]`. Conclude with `meromorphicOrderAt_add (meromorphicAt_rep_of_mem_upperHalfPlaneSet X x hτ) (meromorphicAt_rep_of_mem_upperHalfPlaneSet X y hτ)`. Rewrite using `[map_add, Filter.Germ.coe_add, ← an_eq_germ_rep, ← an_eq_germ_rep]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.ord_add (X : _root_.GlobalTheory.KZ.Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) (x y : X.K) :
@@ -215,7 +211,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[ord_eq_meromorphicOrderAt_of_an_eq_coe X _ (X.an_c c) hτ]`. Conclude with `analyticAt_const.meromorphicOrderAt_nonneg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.ord_const (X : _root_.GlobalTheory.KZ.Tower Ω ε)
     {τ : ℂ} (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) (c : Ω) :
@@ -227,7 +223,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[ord_eq_meromorphicOrderAt_of_an_eq_coe X 1 (φ := fun _ => 1) (by rw [map_one]; rfl) hτ, meromorphicOrderAt_const]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.ord_one (X : _root_.GlobalTheory.KZ.Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) : _root_.GlobalTheory.KZ.ValAt.ord X τ 1 = 0 := by
@@ -240,7 +236,7 @@ open Matrix in
 open Filter Topology in
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} in
 /- English proof (translation)
-Rewrite using `[← _root_.GlobalTheory.KZ.ValAt.ord_mul X hτ, mul_inv_cancel₀ hx, _root_.GlobalTheory.KZ.ValAt.ord_one X hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.KZ.ValAt.ord_add_ord_inv (X : _root_.GlobalTheory.KZ.Tower Ω ε) {τ : ℂ}
     (hτ : τ ∈ _root_.GlobalTheory.KZ.Hs) {x : X.K} (hx : x ≠ 0) :
@@ -279,16 +275,16 @@ def place (X : Tower Ω ε) {τ : ℂ} (hτ : τ ∈ Hs) : ValuationSubring X.K 
       exact absurd h1 (not_lt.2 h4)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_place (X : Tower Ω ε) {τ : ℂ} (hτ : τ ∈ Hs) (x : X.K) : x ∈ place X hτ ↔ 0 ≤ ord X τ x := Iff.rfl
 
 /- English proof (translation)
-Use `⟨place X hτ, ⟨fun c => ord_const X hτ c, ?_⟩, fun x hx φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨φ, h, hφ⟩` from `X.j_hol`. Rewrite using `[mem_place, ord_eq X hτ h]`. Conclude with `(hφ.analyticOnNhd isOpen_Hs τ hτ).meromorphicOrderAt_nonneg`. Establish `h0 : x ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hx`. Establish `h1 : 0 ≤ ord X τ x` using `(mem_place X hτ x).1 (((place X hτ).valuation_le_one_iff x).1 hx.le)`. Establish `h2 : 0 ≤ ord X τ x⁻¹` using `(mem_place X hτ _).1 (((place X hτ).valuation_le_one_iff _).1 (by rw [map_inv₀, hx, inv_one]))`. Establish `h3` using `ord_add_ord_inv X hτ h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ord_eq X hτ hφ]`. Use `le_antisymm ?_ h1` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_place {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (τ : ℂ) (hτ : τ ∈ Hs) :
     ∃ W : ValuationSubring X.K, X.OverY W ∧ ∀ x : X.K, W.valuation x = 1 →

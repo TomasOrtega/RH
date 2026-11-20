@@ -10,16 +10,16 @@ section
 variable {R D : Type} [CommRing R] [CommRing D] (h : R →+* D)
 
 /- English proof (translation)
-Rewrite using `[eval₂_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eval_map_rr (p : R[X]) (x : D) :
     (p.map h.rangeRestrict).eval₂ h.range.subtype x = p.eval₂ h x := by
   rw [eval₂_map]; rfl
 
 /- English proof (translation)
-Use `letI : Algebra h.range D := h.range.subtype.toAlgebra`. Use `⟨p.map h.rangeRestrict, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hn` to reduce the goal to its premises. Establish `h1` using `congrArg (fun q => ((q.coeff n : h.range) : D)) h0`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using h1`. Rewrite using `[aeval_def]`. Conclude with `(eval_map_rr h p x).trans hp`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_of (x : D) (p : R[X]) (n : ℕ) (hn : h (p.coeff n) ≠ 0) (hp : p.eval₂ h x = 0) :
     letI : Algebra h.range D := h.range.subtype.toAlgebra
@@ -33,11 +33,11 @@ theorem alg_of (x : D) (p : R[X]) (n : ℕ) (hn : h (p.coeff n) ≠ 0) (hp : p.e
   · rw [aeval_def]; exact (eval_map_rr h p x).trans hp
 
 /- English proof (translation)
-Use `letI : Algebra h.range D := h.range.subtype.toAlgebra`. Introduce and unpack `⟨q, hq0, hq⟩`. Take `⟨p, rfl⟩` from `Polynomial.map_surjective h.rangeRestrict h.rangeRestrict_surjective q`. Use `⟨p, ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc push_neg at hc`.
+Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hq0` to reduce the goal to its premises. Use extensionality with `n`. Simplify using `only [coeff_map, coeff_zero]`. Simplify using `using hc n`. Rewrite `hq` using `[aeval_def]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(eval_map_rr h p x).symm.trans hq`.
+A detailed English derivation is pending.
 -/
 theorem of_alg (x : D) :
     letI : Algebra h.range D := h.range.subtype.toAlgebra
@@ -56,21 +56,17 @@ theorem of_alg (x : D) :
 end
 
 /- English proof (translation)
-Introduce `A B C f g hf hg Q hQ c`. Use `haveI := hQ`. Set `gB : B →+* C ⧸ Q` to `(Ideal.Quotient.mk Q).comp g.hom`. Set `fA : A →+* C ⧸ Q` to `gB.comp f.hom`. Establish `hle : fA.range ≤ gB.range` using `by rintro _ ⟨a, rfl⟩; exact ⟨f.hom a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : Algebra fA.range (C ⧸ Q) := fA.range.subtype.toAlgebra`. Use `letI : Algebra gB.range (C ⧸ Q) := gB.range.subtype.toAlgebra`. Use `letI : Algebra fA.range gB.range := (Subring.inclusion hle).toAlgebra`. Use `haveI : IsScalarTower fA.range gB.range (C ⧸ Q) := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI h1 : Algebra.IsAlgebraic fA.range gB.range := ⟨by`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `⟨_, b, rfl⟩`. Take `⟨p, ⟨n, hn⟩, hp⟩` from `hf (Q.comap g.hom) (hQ.comap _) b`. Establish `hb` using `alg_of fA (gB b) p n (by`. Introduce `h0`. Apply `hn` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h0)`. Use the proof step `(by`. Establish `h5 : (Ideal.Quotient.mk Q) (g.hom (p.eval₂ f.hom b)) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hp`. Rewrite `h5` using `[hom_eval₂, hom_eval₂]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h5)`. Conclude with `(isAlgebraic_algHom_iff (IsScalarTower.toAlgHom fA.range gB.range (C ⧸ Q)) Subtype.val_injective).mp hb⟩`. Use `haveI h2 : Algebra.IsAlgebraic gB.range (C ⧸ Q) := ⟨by`. Introduce `x`. Take `⟨c', rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, ⟨n, hn⟩, hp⟩` from `hg Q hQ c'`. Conclude with `alg_of gB _ p n (fun h0 => hn (Ideal.Quotient.eq_zero_iff_mem.mp h0)) (by`. Establish `h5 : (Ideal.Quotient.mk Q) (p.eval₂ g.hom c') = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hp`. Rewrite `h5` using `[hom_eval₂]`. Conclude with `h5)⟩`.
-
-Establish `h3` using `(Algebra.IsAlgebraic.trans fA.range gB.range (C ⧸ Q)).1 (Ideal.Quotient.mk Q c)`. Take `⟨p, ⟨n, hn⟩, hp⟩` from `of_alg fA _ h3`. Use `⟨p, ⟨n, fun hm => hn (Ideal.Quotient.eq_zero_iff_mem.mpr hm)⟩, ?_⟩` and prove the remaining obligations. Apply `Ideal.Quotient.eq_zero_iff_mem.mp` to reduce the goal to its premises. Rewrite using `[hom_eval₂]`.
-
-Conclude with `hp`.
+A detailed English derivation is pending.
 -/
 theorem Comp_of : LateralTheory.E.AlgResPropsPf.Comp := by
   intro A B C f g hf hg Q hQ c

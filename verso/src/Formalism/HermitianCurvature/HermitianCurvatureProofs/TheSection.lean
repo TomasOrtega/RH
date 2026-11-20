@@ -12,11 +12,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Fo
 variable (k : ℕ)
 
 /- English proof (translation)
-Establish `hcs : star ((Real.sqrt t : ℝ) : ℂ) = ((Real.sqrt t : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `hs : ((Real.sqrt t : ℝ) : ℂ) * ((Real.sqrt t : ℝ) : ℂ) = (t : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt ht.le]`. Unfold `herm Hb`. Rewrite using `[dotProduct, Finset.sum_eq_single (Fin.last k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec_diagonal, Matrix.mulVec_smul, Pi.star_apply, Pi.smul_apply, Pi.single_eq_same, if_pos rfl, smul_eq_mul, mul_one, star_mul', star_one]`. Rewrite using `[hcs]`. Simplify using `only [↓reduceIte]`. Take the linear combination `(-1 : ℂ) * hs`. Introduce `i _ hi`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.mulVec_diagonal, Pi.single_apply, hi]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem herm_last_scaled (t : ℝ) (ht : 0 < t) :
     herm (Hb k) (((Real.sqrt t : ℝ) : ℂ) • Pi.single (Fin.last k) 1)
@@ -47,7 +47,7 @@ def gB (b : Fin (k + 1) → ℂ) (T' : ℝ) : Matrix (Fin (k + 1)) (Fin (k + 1))
   else 1
 
 /- English proof (translation)
-Establish `h : 0 < T ∧ herm (Hb k) a a = -(T : ℂ)` using `⟨hT, ha⟩`. Unfold `gA`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec (transitive (Hb k) (Hb_herm k) _ a T h.1 (herm_last_scaled k T h.1) h.2)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gA_spec {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb k) a a = -(T : ℂ)) :
     (gA k a T)ᴴ * Hb k * gA k a T = Hb k ∧
@@ -59,7 +59,7 @@ theorem gA_spec {a : Fin (k + 1) → ℂ} {T : ℝ} (hT : 0 < T) (ha : herm (Hb 
     (transitive (Hb k) (Hb_herm k) _ a T h.1 (herm_last_scaled k T h.1) h.2)
 
 /- English proof (translation)
-Establish `h : 0 < T' ∧ herm (Hb k) b b = -(T' : ℂ)` using `⟨hT', hb⟩`. Unfold `gB`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec (transitive (Hb k) (Hb_herm k) b _ T' h.1 h.2 (herm_last_scaled k T' h.1))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gB_spec {b : Fin (k + 1) → ℂ} {T' : ℝ} (hT' : 0 < T') (hb : herm (Hb k) b b = -(T' : ℂ)) :
     (gB k b T')ᴴ * Hb k * gB k b T' = Hb k ∧
@@ -81,7 +81,7 @@ def theSection (r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) : ℂ → Matrix (
   theSecB k (wbPart k r z) (wbPart k r z') (Tz k r z) (Tz k r z')
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem herm_mulVec_of_conjTranspose_mul_eq (H g : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hg : gᴴ * H * g = H)
     (x y : Fin (k + 1) → ℂ) : herm H (g *ᵥ x) (g *ᵥ y) = herm H x y := by
@@ -89,7 +89,7 @@ private theorem herm_mulVec_of_conjTranspose_mul_eq (H g : Matrix (Fin (k + 1)) 
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mul_conjTranspose_form_preserving (H A B : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hA : Aᴴ * H * A = H)
     (hB : Bᴴ * H * B = H) : (A * B)ᴴ * H * (A * B) = H := by
@@ -98,17 +98,17 @@ private theorem mul_conjTranspose_form_preserving (H A B : Matrix (Fin (k + 1)) 
     _ = H := by rw [hA, hB]
 
 /- English proof (translation)
-Establish `h0L : (0 : Fin (k + 1)) ≠ Fin.last k`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [Fin.val_zero, Fin.val_last] at h'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Unfold `nu`. Simplify using `only [Matrix.add_apply, Matrix.one_apply, Matrix.vecMulVec_apply, Pi.add_apply, Pi.smul_apply, Pi.single_apply, smul_eq_mul]`. Distinguish the cases in `hm0 : m = 0`. Substitute `hm0` using the available equality. Distinguish the cases in `hl0 : l = 0`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hl0` using the available equality. Simplify using `[h0L]`. Distinguish the cases in `hlL : l = Fin.last k`. Substitute `hlL` using the available equality. Simplify using `[h0L, h0L.symm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hl0, hlL, h0L]`. Distinguish the cases in `hmL : m = Fin.last k`. Substitute `hmL` using the available equality. Distinguish the cases in `hl0 : l = 0`. Substitute `hl0` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[h0L, h0L.symm]`. Distinguish the cases in `hlL : l = Fin.last k`. Substitute `hlL` using the available equality. Simplify using `[h0L.symm]`. Simplify using `[hl0, hlL, h0L.symm]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hm0, hmL]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nu_apply' (hk : 1 ≤ k) (w s : ℂ) (l m : Fin (k + 1)) :
     nu k w s l m =
@@ -144,25 +144,25 @@ private theorem nu_apply' (hk : 1 ≤ k) (w s : ℂ) (l m : Fin (k + 1)) :
     · simp [hm0, hmL]
 
 /- English proof (translation)
-Establish `h0L : (0 : Fin (k + 1)) ≠ Fin.last k`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [Fin.val_zero, Fin.val_last] at h'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Hb, Matrix.mul_diagonal, Matrix.conjTranspose_apply, Matrix.diagonal_apply, nu_apply' k hk]`. Distinguish the cases in `hi0 : i = 0`. Substitute `hi0` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Fintype.sum_eq_add 0 (Fin.last k) h0L]`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Simplify using `only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false, ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]`. Take the linear combination `hws`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Distinguish the cases in `hjL : j = Fin.last k`. Substitute `hjL` using the available equality. Simplify using `only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false, ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h0L, h0L.symm, hj0, hjL, Ne.symm hj0, Ne.symm hjL]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `x hx`. Simplify using `[hx.1, hx.2]`. Distinguish the cases in `hiL : i = Fin.last k`. Substitute `hiL` using the available equality. Rewrite using `[Fintype.sum_eq_add 0 (Fin.last k) h0L]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality. Simplify using `only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false, ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `hjL : j = Fin.last k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails.
 
-Substitute `hjL` using the available equality. Simplify using `only [h0L, h0L.symm, hs, star_star, eq_self_iff_true, if_true, if_false, ↓reduceIte, mul_one, one_mul, mul_neg, neg_mul]`. Take the linear combination `(-1 : ℂ) * hws`. Simplify using `[h0L, h0L.symm, hj0, hjL, Ne.symm hj0, Ne.symm hjL]`. Introduce `x hx`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hx.1, hx.2]`. Rewrite using `[Fintype.sum_eq_single i]`. Simplify using `only [hi0, hiL, if_false, if_true, ↓reduceIte, eq_self_iff_true, star_one, one_mul]`. Distinguish the cases in `hj0 : j = 0`. Substitute `hj0` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hi0, hiL]`. Distinguish the cases in `hjL : j = Fin.last k`. Substitute `hjL` using the available equality. Simplify using `[hi0, hiL]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using `[hi0, hiL]`. Simplify using `[hj0, hjL, hij, Ne.symm hij]`. Introduce `x hx`. Simplify using `[hi0, hiL, hx]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem nu_conjTranspose_mul_Hb_mul_nu (hk : 1 ≤ k) (w s : ℂ) (hs : star s = s)
     (hws : star w * w - s * s = 1) : (nu k w s)ᴴ * Hb k * nu k w s = Hb k := by
@@ -223,13 +223,13 @@ private theorem nu_conjTranspose_mul_Hb_mul_nu (hk : 1 ≤ k) (w s : ℂ) (hs : 
         simp [hi0, hiL, hx]
 
 /- English proof (translation)
-Establish `h0L : (0 : Fin (k + 1)) ≠ Fin.last k`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`. Simplify using `only [Fin.val_zero, Fin.val_last] at h'`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use function extensionality and compare the values at `l`. Establish `e : (nu k w s *ᵥ Pi.single (Fin.last k) 1) l = nu k w s l (Fin.last k)`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Rewrite using `[e, nu_apply' k hk]`. Distinguish the cases in `hl0 : l = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hl0` using the available equality. Simplify using `[h0L.symm, h0L]`. Distinguish the cases in `hlL : l = Fin.last k`. Substitute `hlL` using the available equality. Simplify using `[h0L.symm]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hl0, hlL, h0L.symm]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem nu_mulVec_single_last (hk : 1 ≤ k) (w s : ℂ) :
     nu k w s *ᵥ Pi.single (Fin.last k) 1 = s • Pi.single 0 1 + w • Pi.single (Fin.last k) 1 := by
@@ -251,43 +251,37 @@ private theorem nu_mulVec_single_last (hk : 1 ≤ k) (w s : ℂ) :
     · simp [hl0, hlL, h0L.symm]
 
 /- English proof (translation)
-Establish `hTT : 0 < T * T'` using `mul_pos hT hT'`. Set `S : Set ℂ` to `{ζ : ℂ | T * T' < Complex.normSq ζ}`. Establish `hw : ContDiff ℝ ∞ (fun ζ : ℂ => wZ T T' ζ)`. Unfold `wZ`. Conclude with `contDiff_const.mul contDiff_id`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hws : ContDiff ℝ ∞ (fun ζ : ℂ => star (wZ T T' ζ))` using `Complex.conjCLE.contDiff.comp hw`. Establish `hsz : ContDiffOn ℝ ∞ (fun ζ : ℂ => sZ T T' ζ) S`. Unfold `sZ`. Establish `hn2 : ContDiff ℝ ∞ (fun ζ : ℂ => Complex.normSq ζ)`. Establish `e : (fun ζ : ℂ => Complex.normSq ζ) = fun ζ => ‖ζ‖ ^ 2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `ζ`. Conclude with `Complex.normSq_eq_norm_sq ζ`. Rewrite using `[e]`. Conclude with `contDiff_norm_sq ℝ`. Establish `hn : ContDiff ℝ ∞ (fun ζ : ℂ => Complex.normSq ζ / (T * T') - 1)` using `(hn2.div_const _).sub contDiff_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq : ContDiffOn ℝ ∞ (fun ζ : ℂ => Real.sqrt (Complex.normSq ζ / (T * T') - 1)) S`. Use `hn.contDiffOn.sqrt ?_` and prove the remaining obligations. Introduce `ζ hζ`. Establish `h1 : 1 < Complex.normSq ζ / (T * T')`. Rewrite using `[lt_div_iff₀ hTT, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hζ`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Complex.ofRealCLM.contDiff.comp_contDiffOn hsq`. Establish `hnu : ∀ y x, ContDiffOn ℝ ∞ (fun ζ => nu k (wZ T T' ζ) (sZ T T' ζ) y x) S`. Introduce `y x`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [nu_apply' k hk]`. Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `exact contDiffOn_const`. Consider the case `exact hws.contDiffOn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `exact hw.contDiffOn`. Consider the case `exact hsz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [theSecB, Matrix.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `ContDiffOn.sum` to reduce the goal to its premises. Introduce `x _`. Apply `ContDiffOn.mul _ contDiffOn_const` to reduce the goal to its premises. Apply `ContDiffOn.sum` to reduce the goal to its premises. Introduce `y _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Conclude with `contDiffOn_const.mul (hnu y x)`. Introduce `ζ hζ`. Establish `h0L : (0 : Fin (k + 1)) ≠ Fin.last k`. Introduce `h`. Establish `h'` using `congrArg Fin.val h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.val_zero, Fin.val_last] at h'`. Use linear arithmetic over natural numbers and integers. Establish `hsr : star (sZ T T' ζ) = sZ T T' ζ`. Unfold `sZ`. Conclude with `Complex.conj_ofReal _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hkey : star (wZ T T' ζ) * wZ T T' ζ - sZ T T' ζ * sZ T T' ζ = 1`. Establish `hx : 0 ≤ Complex.normSq ζ / (T * T') - 1`. Establish `h1 : 1 < Complex.normSq ζ / (T * T')`. Rewrite using `[lt_div_iff₀ hTT, one_mul]`. Conclude with `hζ`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : Complex.normSq (wZ T T' ζ) = Complex.normSq ζ / (T * T')`. Unfold `wZ`. Rewrite using `[Complex.normSq_mul, Complex.normSq_neg, Complex.normSq_inv, Complex.normSq_ofReal]`. Rewrite using `[show Real.sqrt T * Real.sqrt T' * (Real.sqrt T * Real.sqrt T') = (Real.sqrt T * Real.sqrt T) * (Real.sqrt T' * Real.sqrt T') by ring, Real.mul_self_sqrt hT.le, Real.mul_self_sqrt hT'.le, div_eq_inv_mul]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : star (wZ T T' ζ) * wZ T T' ζ = (Complex.normSq (wZ T T' ζ) : ℂ)` using `Complex.normSq_eq_conj_mul_self.symm`. Establish `h3 : sZ T T' ζ * sZ T T' ζ = ((Complex.normSq ζ / (T * T') - 1 : ℝ) : ℂ)`. Unfold `sZ`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hx]`. Rewrite using `[h2, h3, h1]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hA` using `gA_spec k hT ha`. Establish `hB` using `gB_spec k hT' hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `theSecB`. Conclude with `mul_conjTranspose_form_preserving k _ _ _ (mul_conjTranspose_form_preserving k _ _ _ hA.1 (nu_conjTranspose_mul_Hb_mul_nu k hk _ _ hsr hkey)) hB.1`. Unfold `theSecB`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hB.2]`. Use `conv_lhs => arg 3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← hA.2]`. Rewrite using `[herm_mulVec_of_conjTranspose_mul_eq k _ _ hA.1, Matrix.mulVec_smul, nu_mulVec_single_last k hk]`. Establish `hcs : star ((Real.sqrt T : ℝ) : ℂ) = ((Real.sqrt T : ℝ) : ℂ)` using `Complex.conj_ofReal _`. Establish `hT0 : ((Real.sqrt T : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hT).ne'`. Establish `hT0' : ((Real.sqrt T' : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast (Real.sqrt_pos.2 hT').ne'`.
-
-Unfold `herm Hb`. Rewrite using `[dotProduct, Finset.sum_eq_single (Fin.last k)]`. Simplify using `only [Matrix.mulVec_diagonal, Pi.star_apply, Pi.smul_apply, Pi.add_apply, Pi.single_eq_same, Pi.single_eq_of_ne h0L.symm, smul_eq_mul, mul_one, mul_zero, zero_add, star_mul', star_one, eq_self_iff_true, if_true, ↓reduceIte]`. Rewrite using `[hcs]`. Unfold `wZ`.
-
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Introduce `i _ hi`. Simplify using `[Pi.single_apply, hi]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theSecB_core (hk : 1 ≤ k) (a b : Fin (k + 1) → ℂ) (T T' : ℝ) (hT : 0 < T) (hT' : 0 < T')
     (ha : herm (Hb k) a a = -(T : ℂ)) (hb : herm (Hb k) b b = -(T' : ℂ)) :
@@ -393,23 +387,21 @@ theorem theSecB_core (hk : 1 ≤ k) (a b : Fin (k + 1) → ℂ) (T T' : ℝ) (hT
         exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Establish `hin : ∀ i : Fin (2 * r + k + 1), r ≤ i.val → i.val ≤ r + k → (Hpk k r *ᵥ z) i = (if i.val = r + k then -1 else 1) * z i`. Introduce `i h1 h2`. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `only [Hpk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega), if_pos (by simp [h1, h2])]`. Introduce `j _ hji`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Rewrite using `[hz j hj, mul_zero]`. Simplify using `only [Hpk]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega), if_neg (by omega), if_neg (by`. Introduce and unpack `⟨_, _, h⟩`. Conclude with `hji h.symm), zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `herm`. Simplify using `only [dotProduct, Pi.star_apply]`. Use `Fintype.sum_of_injective (wI k r) ?_ _ _ ?_ ?_` and prove the remaining obligations. Introduce `a b h`. Simplify using `only [wI, Fin.mk.injEq] at h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Fin.ext (by omega)`. Introduce `i hi`. Establish `hout : i.val < r ∨ r + k < i.val`. Assume the negation of the conclusion as `hc`. Apply `hi` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨i.val - r, by omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [wI]`. Conclude with `Fin.ext (by simp only; omega)`. Rewrite using `[hz i hout, star_zero, zero_mul]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj` using `j.isLt`. Establish `h1 : r ≤ (wI k r j).val` using `by simp [wI]`. Establish `h2 : (wI k r j).val ≤ r + k` using `by simp [wI]; omega`. Rewrite using `[hin _ h1 h2]`. Unfold `Hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mulVec_diagonal]`. Establish `hc : (j = Fin.last k) ↔ (wI k r j).val = r + k`. Simplify using `[wI, Fin.ext_iff]`. Simplify using `only [wbPart]`. Distinguish the cases in `hjl : j = Fin.last k`.
-
-Rewrite using `[if_pos hjl, if_pos (hc.1 hjl)]`. Rewrite using `[if_neg hjl, if_neg (fun h => hjl (hc.2 h))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem herm_Hb_wbPart_eq_herm_Hpk_of_inWb (r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) :
     herm (Hb k) (wbPart k r z) (wbPart k r z) = herm (Hpk k r) z z := by
@@ -458,11 +450,11 @@ private theorem herm_Hb_wbPart_eq_herm_Hpk_of_inWb (r : ℕ) (z : Fin (2 * r + k
     · rw [if_neg hjl, if_neg (fun h => hjl (hc.2 h))]
 
 /- English proof (translation)
-Establish `hreal : ∀ x : Fin (k + 1) → ℂ, (herm (Hb k) x x).im = 0`. Introduce `x`. Unfold `herm Hb`. Rewrite using `[dotProduct, Complex.im_sum]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j _`. Rewrite using `[Matrix.mulVec_diagonal]`. Apply the tactic sequence `split_ifs <;> simp [Complex.mul_im] <;> (try ring)`. Establish `hrel : ∀ v : Fin (2 * r + k + 1) → ℂ, inWb k r v → herm (Hb k) (wbPart k r v) (wbPart k r v) = -(Tz k r v : ℂ)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `herm_Hb_wbPart_eq_herm_Hpk_of_inWb k r v hv`. Unfold `Tz`. Rewrite using `[← e]`. Apply the tactic sequence `apply Complex.ext <;> simp [hreal]`. Conclude with `theSecB_core k hk _ _ _ _ hT hT' (hrel z hz) (hrel z' hz')`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem theSection_isSection (r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (hk : 1 ≤ k) (hz : inWb k r z)
     (hz' : inWb k r z') (hT : 0 < Tz k r z) (hT' : 0 < Tz k r z') :

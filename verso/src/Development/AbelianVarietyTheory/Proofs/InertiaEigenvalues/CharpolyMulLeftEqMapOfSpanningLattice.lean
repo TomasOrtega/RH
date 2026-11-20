@@ -4,19 +4,17 @@ open Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hRF : Function.Injective (algebraMap R F)` using `IsFractionRing.injective R F`. Use `haveI : Module.IsTorsionFree R S := by`. Use `Module.IsTorsionFree.of_smul_eq_zero ?_` and prove the remaining obligations. Introduce `r x h`. Distinguish the cases in `hr : r = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Conclude with `Or.inl hr`. Use `right`. Apply `hι` to reduce the goal to its premises. Establish `h1 : algebraMap R F r • ι x = 0`. Rewrite using `[algebraMap_smul, ← map_smul, h, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : algebraMap R F r ≠ 0` using `fun h0 => hr (hRF (by simpa using h0))`. Rewrite using `[map_zero]`. Conclude with `(smul_eq_zero.mp h1).resolve_left h2`. Use `haveI : Module.Free R S := Module.free_of_finite_type_torsion_free'`. Set `b : Module.Basis (Fin (Module.finrank R S)) R S` to `Module.finBasis R S`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨_, b, fun x => ?_⟩` and prove the remaining obligations. Establish `hexp : ∀ y : S, ι y = ∑ i, algebraMap R F (b.repr y i) • ι (b i)`. Introduce `y`. Use `conv_lhs => rw [← b.sum_repr y]`. Simplify using `only [map_sum, map_smul, algebraMap_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hliR : LinearIndependent R (fun i => ι (b i))` using `b.linearIndependent.map' ι.toLinearMap (LinearMap.ker_eq_bot.mpr hι)`. Establish `hli : LinearIndependent F (fun i => ι (b i))` using `(LinearIndependent.iff_fractionRing R F).mp hliR`. Establish `hsp : ⊤ ≤ Submodule.span F (Set.range (fun i => ι (b i)))`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hexp y]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Set `b' : Module.Basis (Fin (Module.finrank R S)) F A` to `Module.Basis.mk hli hsp`. Establish `hb' : ∀ i, b' i = ι (b i)` using `fun i => by simp [b']`. Establish `hM : LinearMap.toMatrix b' b' (LinearMap.mulLeft F (ι x)) = (LinearMap.toMatrix b b (LinearMap.mulLeft R x)).map (algebraMap R F)`.
-
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, LinearMap.toMatrix_apply, LinearMap.toMatrix_apply, LinearMap.mulLeft_apply, LinearMap.mulLeft_apply, hb', ← map_mul, hexp]`. Simplify using `only [← hb']`. Rewrite using `[b'.repr_sum_self]`. Rewrite using `[← LinearMap.charpoly_toMatrix _ b', hM, Matrix.charpoly_map]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpoly_mulLeft_eq_map_of_spanning_lattice (R F A S : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] [Field F] [Algebra R F] [IsFractionRing R F] [CommRing A]

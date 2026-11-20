@@ -24,7 +24,7 @@ open GlobalTheory.QCoh (pullbackSections)
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `DualPull.dual_pull_ext f le_rfl fun W hW S hS e' s => by rw [DualPull.dualApp_theta f _ hW, IsFrame.dualApp_coord, IsFrame.dualApp_coord] exact (he.pullback_basis_repr f hW e' s i).symm`.
+A detailed English derivation is pending.
 -/
 theorem theta_coord {E : X.Modules} [E.IsQuasicoherent] (f : Y ⟶ X) {J : Type} [Fintype J]
     {U : X.Opens} {e : J → Γ(E, U)} (he : IsFrame e) (i : J) :
@@ -35,7 +35,7 @@ theorem theta_coord {E : X.Modules} [E.IsQuasicoherent] (f : Y ⟶ X) {J : Type}
     exact (he.pullback_basis_repr f hW e' s i).symm
 
 /- English proof (translation)
-Use `(he.map_iso φ.hom).dual_ext le_rfl fun j => ?_` and prove the remaining obligations. Rewrite using `[IsFrame.dualApp_coord_frame, dualApp_dualMap, ← Twist.app_resM]`. Establish `: ∀ s : Γ(E, U), φ.inv.app U (φ.hom.app U s) = s` using `fun s => congr(($(φ.hom_inv_id)).app U s)`. Rewrite using `[this, IsFrame.dualApp_coord_frame]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualMap_coord {E F : X.Modules} (φ : E ≅ F) {J : Type} [Fintype J]
     {U : X.Opens} {e : J → Γ(E, U)} (he : IsFrame e) (i : J) :
@@ -47,13 +47,11 @@ theorem dualMap_coord {E F : X.Modules} (φ : E ≅ F) {J : Type} [Fintype J]
   rw [this, IsFrame.dualApp_coord_frame]
 
 /- English proof (translation)
-Introduce `k _ X Y p q f hf r E F φ`. Establish `hE` using `E.h.isVB`. Use `hE.isQuasicoherent` as an intermediate fact. Use `DualPull.isIso_theta f hE` as an intermediate fact. Set `χ : (Scheme.Modules.pullback f).obj (VB.dual E.E) ≅ VB.dual F` to `asIso (DualPull.theta f E.E) ≪≫ dualIso φ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨χ, VMetric.isIsometry_iff _ |>.2 (VMetric.ext (funext fun σ => Met.ext_of_exists fun z => ?_))⟩` and prove the remaining obligations. Establish `hc` using `hE.mem_pick (Points.PtsOver.map f hf _ z)`. Use `set c := hE.pick (Points.PtsOver.map f hf _ z)`. Establish `hch : ((c.pull hE f).map φ).dual = (c.dual.pull hE.dual f).map χ`. Establish `H : ((c.pull hE f).map φ).dual.e = ((c.dual.pull hE.dual f).map χ).e` using `funext fun i => ((congrArg ((dualMap φ.inv).app _) (theta_coord f c.isFrame i)).trans (dualMap_coord φ _ i)).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congr(VB.Chart.mk _ $H _)`. Use `⟨((c.pull hE f).map φ).dual, hc, ?_⟩` and prove the remaining obligations. Establish `e₁ : (((E.h.met σ).pull f hf).map φ).dual.G ((c.pull hE f).map φ).dual z = HermFrame.dualGram ((E.h.met σ).G c (Points.PtsOver.map f hf _ z))` using `(Met.dual_G (y := z) _ ((c.pull hE f).map φ) hc).trans (congrArg _ ((Met.map_G (y := z) _ φ (c.pull hE f) hc).trans (Met.pull_G _ f hf c hc)))`. Establish `e₂ : (((E.h.met σ).dual.pull f hf).map χ).G ((c.dual.pull hE.dual f).map χ) z = HermFrame.dualGram ((E.h.met σ).G c (Points.PtsOver.map f hf _ z))` using `(Met.map_G (y := z) _ χ (c.dual.pull hE.dual f) hc).trans ((Met.pull_G _ f hf c.dual hc).trans (Met.dual_G _ c hc))`. Rewrite `e₂` using `[← hch]`.
-
-Conclude with `e₁.trans e₂.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIsometry_dual_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (f : Y ⟶ X) (hf : f ≫ p = q) (r : ℕ) (E : HermVB p r) (F : Y.Modules) (φ : (Scheme.Modules.pullback f).obj E.E ≅ F), ∃ χ : (E.dual.pull f hf).E ≅ VB.dual F, (E.dual.pull f hf).h.IsIsometry ((E.h.pull f hf).map φ).dual χ := by
   intro k _ X Y p q f hf r E F φ

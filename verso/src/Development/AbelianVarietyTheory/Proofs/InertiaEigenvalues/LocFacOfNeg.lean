@@ -30,7 +30,7 @@ def bInt {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} (�
     ENNReal.ofReal ((ideleModule E (GeneralLinearGroup.det g) : ℝ) ^ x)
 
 /- English proof (translation)
-Establish `h : (fun i : Fin n => ((0 : Fin n → ℤ) i).toNat) = fun _ => 0` using `funext fun _ => rfl`. Rewrite using `[locFac, if_pos (show Antitone (0 : Fin n → ℤ) ∧ ∀ i, (0 : ℤ) ≤ (0 : Fin n → ℤ) i from ⟨fun _ _ _ => le_rfl, fun _ => le_rfl⟩), h]`. Simplify using `[GlobalTheory.JSW.schurAt, GlobalTheory.JSW.schur_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem locFac_zero (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : ℝ) : locFac q α x 0 = 1 := by
   have h : (fun i : Fin n => ((0 : Fin n → ℤ) i).toNat) = fun _ => 0 := funext fun _ => rfl
@@ -38,14 +38,14 @@ theorem locFac_zero (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : ℝ) : locFac 
   simp [GlobalTheory.JSW.schurAt, GlobalTheory.JSW.schur_zero]
 
 /- English proof (translation)
-Rewrite using `[locFac, if_neg fun h' => absurd (h'.2 i) (not_le.2 h)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locFac_of_neg (q : ℕ) {n : ℕ} (α : Fin n → ℂ) (x : ℝ) {ν : Fin n → ℤ} {i : Fin n} (h : ν i < 0) :
     locFac q α x ν = 0 := by
   rw [locFac, if_neg fun h' => absurd (h'.2 i) (not_le.2 h)]
 
 /- English proof (translation)
-Simplify using `[cellProd]`.
+Simplify using the standard rewrite rules.
 -/
 example {E : Type} [Field E] [NumberField E] {n : ℕ} (T : Finset (HeightOneSpectrum (𝓞 E)))
     (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin n → ℂ) (x : ℝ) : cellProd T α x 0 = 1 := by

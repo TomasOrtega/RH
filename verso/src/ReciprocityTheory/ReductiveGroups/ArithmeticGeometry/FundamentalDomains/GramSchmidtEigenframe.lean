@@ -11,14 +11,14 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E]
 
 /- English proof (translation)
-The claim follows from `map_sub (AddMonoidHom.mk' (fun x => hermC τ G x v) (fun a b => hermC_add_left τ G a b v)) u u'`.
+A detailed English derivation is pending.
 -/
 private theorem hermC_sub_left_eq_sub {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (u u' v : Fin r → ℂ) : hermC τ G (u - u') v = hermC τ G u v - hermC τ G u' v :=
   map_sub (AddMonoidHom.mk' (fun x => hermC τ G x v) (fun a b => hermC_add_left τ G a b v)) u u'
 
 /- English proof (translation)
-The claim follows from `map_sum (AddMonoidHom.mk' (fun x => hermC τ G x v) (fun a b => hermC_add_left τ G a b v)) u s`.
+A detailed English derivation is pending.
 -/
 private theorem hermC_finset_sum_left' {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     {ι : Type} (s : Finset ι) (u : ι → Fin r → ℂ) (v : Fin r → ℂ) :
@@ -26,7 +26,7 @@ private theorem hermC_finset_sum_left' {r : ℕ} (τ : E →+* ℂ) (G : Matrix 
   map_sum (AddMonoidHom.mk' (fun x => hermC τ G x v) (fun a b => hermC_add_left τ G a b v)) u s
 
 /- English proof (translation)
-Rewrite using `[← hermC_conj τ hG _ u, hermC_finset_sum_left', map_sum]`. Conclude with `Finset.sum_congr rfl (fun i _ => hermC_conj τ hG _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hermC_finset_sum_right_of_conj_symm {r : ℕ} (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) {ι : Type} (s : Finset ι) (u : Fin r → ℂ)
@@ -35,7 +35,7 @@ private theorem hermC_finset_sum_right_of_conj_symm {r : ℕ} (τ : E →+* ℂ)
   exact Finset.sum_congr rfl (fun i _ => hermC_conj τ hG _ _)
 
 /- English proof (translation)
-Rewrite using `[← hermC_conj τ hG _ u, hermC_sub_left_eq_sub, map_sub, hermC_conj τ hG, hermC_conj τ hG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem hermC_sub_right_of_conj_symm {r : ℕ} (τ : E →+* ℂ) {G : Matrix (Fin r) (Fin r) E}
     (hG : ∀ a b, cc (G a b) = G b a) (u v v' : Fin r → ℂ) :
@@ -43,11 +43,11 @@ private theorem hermC_sub_right_of_conj_symm {r : ℕ} (τ : E →+* ℂ) {G : M
   rw [← hermC_conj τ hG _ u, hermC_sub_left_eq_sub, map_sub, hermC_conj τ hG, hermC_conj τ hG]
 
 /- English proof (translation)
-Establish `hH : (X.gramPos x τ).IsHermitian`. Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Data.gramPos, Matrix.submatrix_apply, gram, Matrix.of_apply]`. Rewrite using `[← starRingEnd_apply]`. Conclude with `hermC_conj _ X.Gm_herm _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hM` using `hH.inv`. Simplify using `only [Data.ppos]`. Rewrite using `[hermC_finset_sum_left', hermC_finset_sum_right_of_conj_symm _ X.Gm_herm]`. Simplify using `only [hermC_smul_left, hermC_smul_right, Finset.sum_mul, map_sum, map_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl (fun a _ => Finset.sum_congr rfl (fun b _ => ?_))` and prove the remaining obligations. Rewrite using `[hermC_conj _ X.Gm_herm, starRingEnd_apply, hM.apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem ppos_self_adjoint_hermC {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ)
     (w v : Fin r → ℂ) :
@@ -68,7 +68,7 @@ private theorem ppos_self_adjoint_hermC {r : ℕ} (X : Data E r) (x : Frame X.Ψ
   ring
 
 /- English proof (translation)
-Simplify using `only [Data.Jt] at hJ`. Rewrite `hJ` using `[hermC_smul_right, hermC_sub_right_of_conj_symm _ X.Gm_herm, hermC_smul_right, h0]`. Simplify using `using hJ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hermC_ppos_eq_zero_of_hermC_eq_zero_of_Jt {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ)
     (w v : Fin r → ℂ) (h0 : hermC τ.1 X.Gm w v = 0) (hJ : hermC τ.1 X.Gm w (X.Jt x τ v) = 0) :
@@ -78,27 +78,23 @@ private theorem hermC_ppos_eq_zero_of_hermC_eq_zero_of_Jt {r : ℕ} (X : Data E 
   simpa using hJ
 
 /- English proof (translation)
-Establish `hgs` using `fun τ : X.Ψ => GramSchmidtSelfImaginary.gs_exists (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (Y := Y τ) (hind := hYind τ) (horth := hYorth τ) (hpos := hYpos τ) (hneg := hYneg τ) X.Gm_herm`. Use `choose g hg1 hg2 hg3 hg4 using hgs`. Establish `hgf : ∀ τ k, g τ k ∈ Submodule.span ℂ (Set.range (f τ))`. Introduce `τ k`. Establish `hsub : Submodule.span ℂ (Set.range (Y τ)) ≤ Submodule.span ℂ (Set.range (f τ))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hYU τ j`. Conclude with `hsub (hg3 τ k)`. Establish `e0 : ∀ τ : X.Ψ, ∀ k, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (f τ k) = 0` using `fun τ k => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hermC_conj τ.1 X.Gm_herm, ((hf τ).1 k).1, map_zero]`. Establish `eP : ∀ τ : X.Ψ, ∀ k, hermC τ.1 X.Gm (Data.emb τ.1 ξ) (X.ppos z0 τ (f τ k)) = 0` using `fun τ k => by`. Use `hermC_ppos_eq_zero_of_hermC_eq_zero_of_Jt X.toData z0 τ _ _ (e0 τ k) ?_` and prove the remaining obligations. Rewrite using `[(hf τ).2.1 k, hermC_smul_right, e0 τ k, mul_zero]`. Establish `hspan : ∀ τ : X.Ψ, ∀ y ∈ Submodule.span ℂ (Set.range (f τ)), hermC τ.1 X.Gm y (Data.emb τ.1 ξ) = 0 ∧ hermC τ.1 X.Gm y (X.ppos z0 τ (Data.emb τ.1 ξ)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce `τ y hy`. Use `⟨GramSchmidtSelfImaginary.perp_span (τ := τ.1) (G := X.Gm) ?_ y hy, GramSchmidtSelfImaginary.perp_span (τ := τ.1) (G := X.Gm) ?_ y hy⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `((hf τ).1 k).1`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ppos_self_adjoint_hermC, ← hermC_conj τ.1 X.Gm_herm, eP τ k, map_zero]`. Establish `hJspan : ∀ τ : X.Ψ, ∀ y ∈ Submodule.span ℂ (Set.range (f τ)), hermC τ.1 X.Gm (I • ((2 : ℂ) • X.ppos z0 τ y - y)) (Data.emb τ.1 ξ) = 0`. Introduce `τ y hy`. Rewrite using `[hermC_smul_left, hermC_sub_left_eq_sub, hermC_smul_left, ppos_self_adjoint_hermC, (hspan τ y hy).1, (hspan τ y hy).2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun τ => EigenframeMatrices.Mmat (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ), ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ u w`. Conclude with `EigenframeMatrices.Mmat_unitary (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) (hG := X.Gm_herm) (hf := (hf τ).2.2.1) (hgf τ) (hg1 τ) u w`. Introduce `s t`. Use function extensionality and compare the values at `τ`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Data.applyV]`. Use `EigenframeMatrices.Mmat_fix (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) (hG := X.Gm_herm) (hf := (hf τ).2.2.1) _ (fun k => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Data.lineV, Data.Jz]`. Simplify using `only [hermC_add_left, hermC_smul_left, hermC_sub_left_eq_sub, ppos_self_adjoint_hermC, e0, eP, mul_zero, sub_zero, add_zero, zero_add]`. Introduce `u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove both required implications or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨hu1, hu2⟩` from `hu`. Establish `hmem : ∀ τ : X.Ψ, EigenframeMatrices.Mmat (τ` using `τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) *ᵥ u τ ∈ Submodule.span ℂ (Set.range (f τ)) := fun τ => EigenframeMatrices.Mmat_span (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) (hG := X.Gm_herm) (hf := (hf τ).2.2.1) (hgf τ) (u τ) ((hf τ).2.2.2.2 (u τ) (hu1 …`. Conclude with `And.intro (fun τ => (hspan τ _ (hmem τ)).1) (fun τ => hJspan τ _ (hmem τ))`. Introduce `τ v hv`. Establish `hle : Submodule.span ℂ (f τ '' {k | (k : ℕ) < X.p0 - 1}) ≤ (Submodule.span ℂ (Y τ '' {j | (j : ℕ) < X.p0 - 1})).comap (Matrix.mulVecLin (EigenframeMatrices.Mmat (τ` using `τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ))) := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, hk, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply, EigenframeMatrices.Mmat_f (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) (hG := X.Gm_herm)`. Use the proof step `(hf := (hf τ).2.2.1)]`. Conclude with `hg2 τ k hk`.
-
-Establish `hv'` using `hle hv`. Rewrite `hv'` using `[Submodule.mem_comap, Matrix.mulVecLin_apply]`. Then use the resulting hypothesis. Introduce `τ j`. Take `⟨β, hβ, hYj⟩` from `hg4 τ j`. Use `⟨∑ c, β c • f τ c, GramSchmidtSelfImaginary.sum_mem_of (f τ) _ β hβ, ?_⟩` and prove the remaining obligations.
-
-Use `show EigenframeMatrices.Mmat (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) *ᵥ (∑ c, β c • f τ c) = Y τ j`. Rewrite using `[EigenframeMatrices.Mmat_comb (τ := τ.1) (G := X.Gm) (p := X.p0 - 1) (f := f τ) (g := g τ) (hG := X.Gm_herm) (hf := (hf τ).2.2.1), hYj]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramSchmidt_eigenframe (r : ℕ) (X : DataX E r) (ξ : Fin r → E) (z0 : Frame X.Ψ r)
     (f Y : X.Ψ → Fin (r - 2) → Fin r → ℂ) (hξ : X.IsIso ξ) (hz : z0 ∈ X.dom) (hf : X.UBasis z0 ξ f)

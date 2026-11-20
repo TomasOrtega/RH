@@ -6,13 +6,13 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.RelConj
 
 /- English proof (translation)
-Introduce `p _ G P P' B y y' g s s' sg hs hs' hsg hβ hβ' hg hγ`. Establish `shm : ∀ a b : G.C, sh G (a * b) = sh G b * sh G a` using `fun a b => by simp [sh]`. Establish `hyi : ((y⁻¹ : G.Cˣ) : G.C) * y = 1` using `Units.inv_mul y`. Establish `hshy : sh G y * sh G ((y⁻¹ : G.Cˣ) : G.C) = 1`. Rewrite using `[← shm, hyi]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sh]`. Establish `key : ((y' * g * y⁻¹ : G.Cˣ) : G.C) * P.β * sh G ((y' * g * y⁻¹ : G.Cˣ) : G.C) = algebraMap ℚ G.C (s * sg) * (y' * B * sh G y')`. Rewrite using `[hβ, Units.val_mul, Units.val_mul, shm, shm, ← Algebra.smul_def]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_smul_comm, smul_mul_assoc, mul_assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = s • ((y' : G.C) * ((g : G.C) * B * sh G g) * sh G y') := by`. Rewrite using `[hyi, hshy, mul_one, mul_one]`. Use `_ = s • (sg • ((y' : G.C) * B * sh G y')) := by`. Rewrite using `[hg, ← Algebra.smul_def, mul_smul_comm, smul_mul_assoc]`. Use `_ = _ := by rw [smul_smul, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨y' * g * y⁻¹, s' / (s * sg), div_pos hs' (mul_pos hs hsg), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, ← mul_assoc, ← map_mul, div_mul_cancel₀ _ (mul_pos hs hsg).ne', hβ']`. Establish `e : P'.γ = y' * (y'⁻¹ * P'.γ * y') * y'⁻¹` using `by group`. Rewrite using `[e, ← hγ]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_of_conj_in_form : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (P P' : Pair G) (B y y' g : G.Cˣ) (s s' sg : ℚ), 0 < s → 0 < s' → 0 < sg → (P.β : G.C) = algebraMap ℚ G.C s * (y * B * sh G y) → (P'.β : G.C) = algebraMap ℚ G.C s' * (y' * B * sh G y') → (g : G.C) * B * sh G g = algebraMap ℚ G.C sg * B → g * (y⁻¹ * P.γ * y) * g⁻¹ = y'⁻¹ * P'.γ * y' → P.Rel P' := by
   intro p _ G P P' B y y' g s s' sg hs hs' hsg hβ hβ' hg hγ

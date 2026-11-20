@@ -27,7 +27,7 @@ private def colsH : ((Fin 2 → Kv v) × (Fin 2 → Kv v)) ≃ₜ M2 v where
       (continuous_pi fun i => continuous_id.matrix_elem i 1)
 
 /- English proof (translation)
-Use `haveI : (μ2 v).IsAddHaarMeasure := by unfold μ2; infer_instance`. Establish `hc : Continuous fun p : (Fin 2 → Kv v) × (Fin 2 → Kv v) => b (cols p.1 p.2)` using `hb.1.continuous.comp (colsH (v := v)).continuous`. Establish `hs : HasCompactSupport fun p : (Fin 2 → Kv v) × (Fin 2 → Kv v) => b (cols p.1 p.2)` using `hb.2.comp_homeomorph (colsH (v := v))`. Conclude with `(hc.mul hg).integrable_of_hasCompactSupport hs.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem integrable_cols {b : M2 v → ℂ} (hb : b ∈ SB (M2 v)) {g : (Fin 2 → Kv v) × (Fin 2 → Kv v) → ℂ}
     (hg : Continuous g) :
@@ -46,11 +46,11 @@ namespace UpperTheory.ConvolutionTheory.R2.I.ColumnIntegrability
 variable {F : Type} [Field F] [NumberField F] {v : P F}
 
 /- English proof (translation)
-Establish `h` using `(UpperTheory.ConvolutionTheory.R2.I.ptInv F v a ha).1 (cols e c)`. Use `Eq.trans ?_ h` and prove the remaining obligations. Establish `hP : ∀ (g : M2 v → ℂ) (Y : M2 v), Pt g Y = ∫ c', g (cols (fun i => Y i 1) c') * ψl v (Y 0 0 * c' 1 - Y 1 0 * c' 0) ∂(μ2 v)` using `fun _ _ => rfl`. Rewrite using `[hP (fun X => Pt a (sw X))]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (fun i => sw (cols e c) i 1) = e`. Apply the tactic sequence `funext i; fin_cases i <;> simp [sw, cols]`. Establish `h2 : ∀ y : Fin 2 → Kv v, sw (cols e y) = cols y e`. Apply the tactic sequence `intro y; ext i j; fin_cases i <;> fin_cases j <;> simp [sw, cols]`. Establish `h3 : sw (cols e c) 0 0 = c 0` using `by simp [sw, cols]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h4 : sw (cols e c) 1 0 = c 1` using `by simp [sw, cols]`. Simplify using `only [h1, h3, h4]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inv_col {a : M2 v → ℂ} (ha : a ∈ SB (M2 v)) (e c : Fin 2 → Kv v) :
     ∫ e₁, Pt a (cols e₁ e) * ψl v (c 0 * e₁ 1 - c 1 * e₁ 0) ∂(μ2 v) = a (cols e c) := by
@@ -70,21 +70,21 @@ private theorem inv_col {a : M2 v → ℂ} (ha : a ∈ SB (M2 v)) (e c : Fin 2 �
   rw [h2]
 
 /- English proof (translation)
-Use `fun_prop`.
+A detailed English derivation is pending.
 -/
 private theorem cont_lin {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (s t u w : R) :
     Continuous fun p : (Fin 2 → R) × (Fin 2 → R) => (s * p.2 0 - t * p.2 1) + (u * p.1 1 - w * p.1 0) := by
   fun_prop
 
 /- English proof (translation)
-Simplify using `[BM, cols]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem bm_cols (X : M2 v) (x e : Fin 2 → Kv v) :
     BM (cols x e) X = (X 1 0 * e 0 - X 0 0 * e 1) + (X 0 1 * x 1 - X 1 1 * x 0) := by
   simp [BM, cols]; ring
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; fin_cases i <;> fin_cases j <;> simp [cols, Matrix.mul_apply, Fin.sum_univ_two]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cols_mul_w (c c' : Fin 2 → Kv v) :
     cols c c' * !![0, 1; -1, 0] = cols (-c') c := by
@@ -94,19 +94,17 @@ end UpperTheory.ConvolutionTheory.R2.I.ColumnIntegrability
 
 open UpperTheory.ConvolutionTheory.R2.I.ColumnIntegrability in
 /- English proof (translation)
-Introduce `F _ _ v a ha X`. Take `⟨T, hT⟩` from `UpperTheory.ConvolutionTheory.R2.I.ptMem F v`. Establish `hb : Pt a ∈ SB (M2 v)`. Use `(T ⟨a, ha⟩).2` as an intermediate fact. Rewrite `this` using `[hT ⟨a, ha⟩]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨-, -, hadd, hlc, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.I.psiLaws F v`. Use `haveI : (μ2 v).IsAddHaarMeasure := by unfold μ2; infer_instance`. Establish `hcont : Continuous fun p : (Fin 2 → Kv v) × (Fin 2 → Kv v) => ψl v (BM (cols p.1 p.2) X)`. Simplify using `only [bm_cols]`. Conclude with `hlc.continuous.comp (cont_lin _ _ _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hint` using `integrable_cols hb hcont`. Unfold `IM`. Rewrite using `[integral_prod_symm _ hint]`. Use `set c : Fin 2 → Kv v := fun i => X i 1 with hc`. Establish `hin : ∀ e : Fin 2 → Kv v, ∫ e₁, Pt a (cols e₁ e) * ψl v (BM (cols e₁ e) X) ∂(μ2 v) = ψl v (X 1 0 * e 0 - X 0 0 * e 1) * a (cols e c)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e`. Rewrite using `[← inv_col ha e c, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Establish `hc0 : c 0 = X 0 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Establish `hc1 : c 1 = X 1 1` using `rfl`. Rewrite using `[bm_cols, hadd, hc0, hc1]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hin]`. Rewrite using `[← integral_neg_eq_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pt]`. Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[cols_mul_w]`. Establish `: X 1 0 * (-x) 0 - X 0 0 * (-x) 1 = X 0 0 * x 1 - X 1 0 * x 0` using `by simp; ring`.
-
-Rewrite using `[this]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.I.ptW :
     ∀ (F : Type) [Field F] [NumberField F] (v : P F), ∀ a ∈ SB (M2 v), ∀ X, IM (fun Y => Pt a Y * ψl v (BM Y X)) = Pt (fun m => a (m * !![0, 1; -1, 0])) X := by

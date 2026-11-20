@@ -21,19 +21,17 @@ def MapsD {N : ℕ} (V : Submodule ℂ (Sm E N)) (w : HeightOneSpectrum (𝓞 E)
   {f : σ.V →ₗ[ℂ] Sm E N // (∀ v, f v ∈ V) ∧ ∀ g v, f (σ.ρ g v) = finRep E N (locGL E N w g) (f v)}
 
 /- English proof (translation)
-Establish `comm : ∀ o : Op E N, (∀ g, act o * finRep E N (locGL E N w g) = finRep E N (locGL E N w g) * act o) → ∀ (f : MapsD V w σ) v, act o (f.1 v) ∈ ⨆ f : MapsD V w σ, LinearMap.range f.1` using `fun o ho f v => Submodule.mem_iSup_of_mem (⟨act o ∘ₗ f.1, fun v => hV.stable o _ (f.2.1 v), fun g v => by`. Rewrite using `[LinearMap.comp_apply, f.2.2]`. Conclude with `LinearMap.congr_fun (ho g) _⟩ : MapsD V w σ) ⟨v, rfl⟩`. Use `(hV.irred _ (iSup_le fun f => ?_) fun o φ hφ => ?_).resolve_left fun hb => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `f.2.1 v`. Establish `: (⨆ f : MapsD V w σ, LinearMap.range f.1) ≤ (⨆ f : MapsD V w σ, LinearMap.range f.1).comap (act o)`. Use `iSup_le fun f => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[Submodule.mem_comap]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the cases of `o with`. Consider the case `fin k`. Set `g` to `GeneralLinearGroup.map (pLoc E w) k`. Establish `h1` using `comm (.fin (k * (locGL E N w g)⁻¹)) (fun g' => by`. Express the relevant statement in the definitionally equal form `finRep E N _ * _ = _ * finRep E N _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← map_mul, comm_locGL w _ (by rw [map_mul, map_inv, pLoc_locGL, mul_inv_cancel])]) f (σ.ρ g v)`. Establish `h2 : act (.fin (k * (locGL E N w g)⁻¹)) (f.1 (σ.ρ g v)) = act (.fin k) (f.1 v)`. Rewrite using `[f.2.2, act, act, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel_right]`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Consider the case `cpt k`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `comm (.cpt k) (fun g => ?_) f v` and prove the remaining obligations. Establish `h2` using `congrArg (rt E N) (infGL_comm (Unitary.toUnits k) (locGL E N w g))`. Rewrite `h2` using `[map_mul, map_mul]`. Conclude with `h2`. Consider the case `lie X => exact comm (.lie X) (fun g => lie_rt_fin X (locGL E N w g)) f v`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this hφ`. Take `⟨f, h0, hfV, hf⟩` from `h`. Use `h0 (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Establish `: f v ∈ ⨆ f : MapsD V w σ, LinearMap.range f.1` using `Submodule.mem_iSup_of_mem (⟨f, hfV, hf⟩ : MapsD V w σ) ⟨v, rfl⟩`. Rewrite `this` using `[hb]`.
-
-Conclude with `(Submodule.mem_bot ℂ).1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_range_eq {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin N) (w.adicCompletion E))) (h : IsLocCompGL V w σ) :
@@ -76,11 +74,11 @@ end SatakeVectorEventually
 open SatakeVectorEventually in
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `(Submodule.ne_bot_iff _).1 hV.ne_bot`. Use `filter_upwards [eventually_mem ((hV.aut φ hφ).level.mem_nhds (by simp))] with w hw`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.discreteAutomorphicRepGL_exists_localComponent PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL E N V hV w`. Establish `hfix : ∀ k ∈ GlobalTheory.LFun.KGL w N, finRep E N (locGL E N w k) φ = φ` using `fun k hk => by`. Take `⟨g, rfl⟩` from `hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hw g`. Establish `hmem : ∀ ψ ∈ V, ψ ∈ ⨆ f : MapsD V w σ, LinearMap.range f.1` using `fun ψ hψ => by`. Rewrite using `[iSup_range_eq hV w σ hσ]`. Conclude with `hψ`. Take `⟨v, hv0, hv⟩` from `exists_fixed_of_mem_iSup ((finRep E N).comp (locGL E N w)) σ.ρ σ.irred (fun f : MapsD V w σ => f.1) (fun f => f.2.2) (GlobalTheory.LFun.KGL w N : Set _) φ h0 hfix (hmem φ hφ)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsph : GlobalTheory.LGrp.IsSpherical σ.ρ (GlobalTheory.LFun.KGL w N)` using `(Submodule.ne_bot_iff _).2 ⟨v, GlobalTheory.LGrp.mem_fixed.2 hv, hv0⟩`. Take `⟨B, hB⟩` from `GlobalTheory.SatInd.exists_hasSatGL_of_isIrreducible σ.smooth σ.irred hsph`. Establish `key : ∀ ψ ∈ V, (∀ k ∈ GlobalTheory.LFun.KGL w N, finRep E N (locGL E N w k) ψ = ψ) → ψ ≠ 0 → GlobalTheory.LFun.IsSatVecGL w ((finRep E N).comp (locGL E N w)) ψ B` using `fun ψ hψ hψK hψ0 => GlobalTheory.HeightCounting.Blocks.isSatVecGL_of_mem_iSup σ.irred hB (fun f : MapsD V w σ => f.1) (fun f => f.2.2) (hmem ψ hψ) (GlobalTheory.LGrp.mem_fixed.2 hψK) hψ0`. Conclude with `⟨B, ⟨φ, hφ, key φ hφ hfix h0⟩, key⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_satV {N : ℕ} {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) :
     ∀ᶠ w : HeightOneSpectrum (𝓞 E) in Filter.cofinite, ∃ B, SatV V w B := by

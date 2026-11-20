@@ -17,13 +17,13 @@ noncomputable section
 namespace GlobalTheory.ConstNZ
 
 /- English proof (translation)
-Introduce `h1 h2 hLM h3 h4 h5`. Take `⟨CF0, hH⟩` from `((GlobalTheory.T.big_theta_kernel_integrable h1 h2 h3 h4 h5).and (GlobalTheory.T.small_theta_kernel_translate_integrable h1 h2 h3 h4 h5)).and (GlobalTheory.T.exists_matched_flip_theta_integral h1 h2 hLM h3 h4 h5)`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hH ε CF hCF`. Use `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨hb, hs⟩, hn⟩` from `hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hch hsc`. Introduce `i j t`. Take `⟨M, hM, a, τ, τ', n, Φ, hnat, hfl, g, g₁, hI⟩` from `hn i j t`. Take `⟨b', hb'⟩` from `ch.rm.onto_big i j (toTens a)`. Take `⟨b, rfl⟩` from `toTens_surjective b'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΘ : IsMatched ch.S.B t ch.rm i j (tensT ch.W a τ) (tensT ch.W b τ')` using `⟨a, b, τ, τ', n, Φ, hb', hnat, hfl, rfl, rfl⟩`. Take `⟨z, hz, hzi⟩` from `hs i j t M hM _ _ hΘ g g₁`. Establish `hconv : SquareConv ch.W M _ _ z g g₁` using `⟨hb i j t M hM _ _ hΘ g g₁, hzi⟩`. Establish `hc` using `hch.const i j t M hM _ _ hΘ z g g₁ hconv`. Establish `hL : zdeg z * ∫ u in M.fd _, kerBig ch.W (tensT ch.W a τ) g g₁ u ∂M.ν _ ≠ 0` using `mul_ne_zero hz hI`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hL` using `[hc]`. Conclude with `⟨⟨M, hM, _, _, hΘ, z, g, g₁, hconv, right_ne_zero_of_mul hL⟩, left_ne_zero_of_mul hL⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem constK : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.RowClaim.ConstK := by

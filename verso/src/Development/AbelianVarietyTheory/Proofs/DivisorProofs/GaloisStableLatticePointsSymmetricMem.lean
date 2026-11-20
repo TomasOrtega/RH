@@ -10,17 +10,15 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Introduce `h₂ h₃ hS hT`. Establish `key : ∀ σ : ℂ ≃+* ℂ, (∀ x ∈ F, σ x = x) → ∃ e : ι ≃ ι, (∀ i, σ (L.weierstrassP (T i)) = L.weierstrassP (T (e i))) ∧ (∀ i, σ (L.derivWeierstrassP (T i)) = L.derivWeierstrassP (T (e i))) ∧ ((∀ i, 2 * T i ∉ L.lattice) → ∀ i, σ (L.weierstrassP (2 * T i)) = L.weierstrassP (2 * T (e i) …`. Introduce `σ hσ`. Take `⟨e, he⟩` from `hS σ hσ`. Establish `g₂e : L.g₂ = σ L.g₂` using `(hσ _ h₂).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `g₃e : L.g₃ = σ L.g₃` using `(hσ _ h₃).symm`. Use `⟨e, fun i ↦ ?_, fun i ↦ ?_, fun h2 i ↦ ?_, hσ _ h₂⟩` and prove the remaining obligations. Conclude with `(((he i).resolve_left fun h ↦ hT i h.1).2.2.1).symm`. Conclude with `(((he i).resolve_left fun h ↦ hT i h.1).2.2.2).symm`. Use `GlobalTheory.ConjPoint.IsConj.add g₂e g₃e (he i) (he i)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← two_mul, ← two_mul]`. Conclude with `((this.resolve_left fun h ↦ h2 i h.1).2.2.1).symm`. Use `⟨GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_, GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_, GlobalTheory.T.mem_intermediateField_of_forall_complexAut_fixed F _ fun σ hσ ↦ ?_, fun h2 ↦ GlobalTheory.T.mem_in …` and prove the remaining obligations. Take `⟨e, a, -, -, -⟩` from `key σ hσ`. Rewrite using `[map_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [a]`. Conclude with `Equiv.sum_comp e (fun i ↦ L.weierstrassP (T i))`. Take `⟨e, -, b, -, -⟩` from `key σ hσ`. Rewrite using `[map_sum]`. Simplify using `only [map_div₀, map_ofNat, b]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `Equiv.sum_comp e (fun i ↦ L.derivWeierstrassP (T i) / 2)`. Take `⟨e, a, b, -, g⟩` from `key σ hσ`. Rewrite using `[map_sum]`. Simplify using `only [map_div₀, map_add, map_mul, map_pow, map_neg, map_ofNat, a, b, g]`. Conclude with `Equiv.sum_comp e (fun i ↦ (3 * L.weierstrassP (T i) ^ 2 + -L.g₂ / 4) / (2 * (L.derivWeierstrassP (T i) / 2)))`.
-
-Take `⟨e, a, -, c, -⟩` from `key σ hσ`. Rewrite using `[map_prod]`. Simplify using `only [map_sub, a, c h2]`. Conclude with `Equiv.prod_comp e (fun i ↦ L.weierstrassP (T i) - L.weierstrassP (2 * T i))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stable_sym_mem (F : IntermediateField ℚ ℂ) (L : PeriodPair) (ι : Type) [Fintype ι] (T : ι → ℂ) :
     L.g₂ ∈ F → L.g₃ ∈ F → Stable L F T → (∀ i, T i ∉ L.lattice) →

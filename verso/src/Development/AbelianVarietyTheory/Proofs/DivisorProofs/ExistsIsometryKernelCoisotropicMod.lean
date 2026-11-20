@@ -11,17 +11,17 @@ noncomputable section
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDat GlobalTheory.LowFilt
 
 /- English proof (translation)
-Introduce `E _ _ _ H D X _ _ _ _ y n N hn hNn hC Z Z' h hrk hN hon`. Establish `hN0 : 0 < N` using `Nat.pos_of_dvd_of_pos hNn hn`. Establish `hinj` using `GlobalTheory.T.injective_mod_of_surjective_mod_opposite D y n hn Z Z' h hrk hon`. Take `⟨σ, hσZ', hσid, hσy, hσN⟩` from `GlobalTheory.T.exists_linear_section_opposite_congr_mod D y n N hn hNn Z Z' h hN hon`. Take `⟨w, hw⟩` from `exists_adjoint D σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hiso, hdvd⟩` from `GlobalTheory.T.exists_isotropic_shear_of_adjoint D y n N hn hNn hC Z Z' h σ w hσZ' hσid hσy hσN hw hinj`. Establish `ht' : ∀ z : Z, t z - z ∈ perp D Z'` using `fun z => by`. Take `⟨e, he, hze⟩` from `ht z`. Rewrite using `[hze, add_sub_cancel_left]`. Conclude with `(perp D Z').nsmul_mem he N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hker` using `GlobalTheory.T.ker_mod_eq_orthogonal_range_shear_add_nsmul D y n hn Z Z' h hon t ht' hiso hdvd`. Take `⟨g, hg, hgN, hgt⟩` from `GlobalTheory.T.exists_isometry_extending_isotropic_shear D N hN0 Z Z' h t ht hiso`. Apply the tactic sequence `refine ⟨equivOfIsometry D g hg, hg, hgN, fun a => ?_⟩`. Simplify using `only [equivOfIsometry_apply]`. Rewrite using `[hker (g a)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro ⟨b, hb, e, he⟩ set G := equivOfIsometry D g hg`. Establish `hG : ∀ x, G x = g x` using `fun x => rfl`. Use `⟨G.symm b, fun z hz => ?_, G.symm e, ?_⟩` and prove the remaining obligations. Use `hb (t ⟨z, hz⟩) ⟨⟨z, hz⟩, rfl⟩` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hgt ⟨z, hz⟩, ← G.apply_symm_apply b, hG, hg]`. Conclude with `this`. Apply `G.injective` to reduce the goal to its premises. Rewrite using `[map_add, map_nsmul, G.apply_symm_apply, G.apply_symm_apply, hG, he]`. Introduce and unpack `⟨b, hb, e, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨g b, ?_, g e, by rw [map_add, map_nsmul]⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`. Rewrite using `[← hgt z, hg]`. Conclude with `hb z z.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LowFilt.exists_isometry_kerIs : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H) {X : Type} [AddCommGroup X] [Module (𝓞 E) X] [Module.Free ℤ X] [Module.Finite ℤ X]
     (y : D.La →ₗ[𝓞 E] X) (n N : ℕ), 0 < n → N ∣ n → Cois D y n → ∀ Z Z' : Submodule (𝓞 E) D.La, IsOpp D Z Z' →

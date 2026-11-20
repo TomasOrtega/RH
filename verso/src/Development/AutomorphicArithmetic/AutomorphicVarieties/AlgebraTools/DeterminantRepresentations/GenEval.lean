@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeilGroupCharacter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ D B _ _ m y b`. Rewrite using `[← D.nat (MvPolynomial (Fin m) A) B (MvPolynomial.aeval b)]`. Use `congr 1`. Simplify using `only [GDet.gen, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `g`. Simplify using `[MonoidAlgebra.mapRingHom]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.genEval :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (B : Type) [CommRing B] [Algebra A B] (m : ℕ) (y : Fin m → MonoidAlgebra A G) (b : Fin m → B),

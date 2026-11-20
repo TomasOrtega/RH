@@ -19,16 +19,16 @@ def reflectedWeight (mu : Fin n → ℤ) (t : ℕ) : Fin n → ℤ :=
   fun c => if c.val < t ∨ (Fin.rev c).val < t then mu (Fin.rev c) else mu c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `[reflectedWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem reflectedWeight_zero (mu : Fin n → ℤ) : reflectedWeight mu 0 = mu := by
   funext c
   simp [reflectedWeight]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Unfold `reflectedWeight lowWt`. Use `split_ifs with h`. Both sides reduce to the same expression. Establish `h1` using `Fin.val_rev c`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `c.2`. Establish `: Fin.rev c = c`. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reflectedWeight_half_eq_lowestWeight (mu : Fin n → ℤ) : reflectedWeight mu (n / 2) = lowWt mu := by
   funext c
@@ -43,7 +43,7 @@ theorem reflectedWeight_half_eq_lowestWeight (mu : Fin n → ℤ) : reflectedWei
     rw [this]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem commute_pow_apply_of_commute {A : Type*} [AddCommGroup A] [Module (KK O) A] (X Y : Module.End (KK O) A)
     (h : ∀ x, X (Y x) = Y (X x)) (k : ℕ) (x : A) : X ((Y ^ k) x) = (Y ^ k) (X x) := by
@@ -52,13 +52,13 @@ theorem commute_pow_apply_of_commute {A : Type*} [AddCommGroup A] [Module (KK O)
   | succ k ih => rw [pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
 /- English proof (translation)
-Simplify using `[divPowE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dividedPower_zero_apply (E : GLOps n (KK O) V) (a b : Fin n) (x : V) : divPowE E a b 0 x = x := by
   simp [divPowE]
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Simplify using `only [divPowE, LinearMap.smul_apply]`. Rewrite using `[pow_succ, Module.End.mul_apply, h, map_zero, smul_zero]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dividedPower_eq_zero_of_annihilated (E : GLOps n (KK O) V) (a b : Fin n) {x : V} (h : E a b x = 0) {k : ℕ} (hk : 1 ≤ k) :
     divPowE E a b k x = 0 := by
@@ -67,9 +67,9 @@ theorem dividedPower_eq_zero_of_annihilated (E : GLOps n (KK O) V) (a b : Fin n)
   rw [pow_succ, Module.End.mul_apply, h, map_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[raise_lower_dividedPower_binomial hE hab hy k k, Finset.sum_range_succ, Finset.sum_eq_zero, zero_add, if_pos le_rfl]`. Rewrite using `[Nat.sub_self, dividedPower_zero_apply, dividedPower_zero_apply]`. Establish `: nu a - nu b + (k : ℤ) - (k : ℤ) = (k : ℤ)` using `by rw [hk]; ring`. Rewrite using `[this]`. Establish `h1 : Ring.choose (k : ℤ) k = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ring.choose_natCast, Nat.choose_self, Nat.cast_one]`. Rewrite using `[h1, Int.cast_one, one_smul]`. Introduce `j hj`. Establish `hj' : j < k` using `Finset.mem_range.1 hj`. Rewrite using `[if_pos hj'.le, dividedPower_eq_zero_of_annihilated E a b h0 (by omega), map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dividedPower_reverse_dividedPower_eq_self [CharZero (KK O)] {E : GLOps n (KK O) V} (hE : IsGLRep E) {a b : Fin n} (hab : a ≠ b)
     {nu : Fin n → ℤ} {y : V} (hy : y ∈ weightSp E nu) (h0 : E a b y = 0) (k : ℕ) (hk : nu a - nu b = (k : ℤ)) :
@@ -86,17 +86,17 @@ theorem dividedPower_reverse_dividedPower_eq_self [CharZero (KK O)] {E : GLOps n
     rw [if_pos hj'.le, dividedPower_eq_zero_of_annihilated E a b h0 (by omega), map_zero, smul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Establish `hr` using `Fin.val_rev c`. Establish `hc` using `c.2`. Establish `hra` using `Fin.val_rev a`. Simplify using `only [Pi.add_apply, Pi.smul_apply, rootW, Pi.sub_apply, Pi.single_apply, smul_eq_mul, reflectedWeight]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : c = a`. Substitute `h1` using the available equality. Establish `e1 : ¬ (c = Fin.rev c)`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg e1, if_pos rfl, if_neg (by omega), if_pos (by omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Distinguish the cases in `h2 : c = Fin.rev a`. Substitute `h2` using the available equality.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, if_neg h1, Fin.rev_rev, if_neg (by rw [Fin.rev_rev] at hr; omega), if_pos (by rw [Fin.rev_rev] at hr; omega)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1' : c.val ≠ t` using `fun h => h1 (Fin.ext (h.trans ha.symm))`. Establish `h2' : (Fin.rev c).val ≠ t`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h2` to reduce the goal to its premises. Apply `Fin.ext` to reduce the goal to its premises. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg h2, if_neg h1]`. Establish `e : (c.val < t ∨ (Fin.rev c).val < t) ↔ (c.val < t + 1 ∨ (Fin.rev c).val < t + 1)` using `by omega`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem reflectedWeight_succ_eq_add_root {mu : Fin n → ℤ} {t : ℕ} (a : Fin n) (ha : a.val = t) (ht : 2 * (t + 1) ≤ n) (k : ℕ)
     (hk : mu a - mu (Fin.rev a) = (k : ℤ)) :
@@ -131,23 +131,23 @@ theorem reflectedWeight_succ_eq_add_root {mu : Fin n → ℤ} {t : ℕ} (a : Fin
       ring
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero`. Use `⟨v, Submodule.subset_span ⟨1, Submonoid.one_mem _, rfl⟩, ?_, ?_, 1, Submonoid.one_mem _, rfl⟩` and prove the remaining obligations. Rewrite using `[reflectedWeight_zero]`. Conclude with `hI.2.2.1.2.1`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _ h`. Conclude with `hI.2.2.1.2.2 a _ h`. Consider the case `succ t ih`. Take `⟨y, hyD, hyw, hyk, u, hu, huy⟩` from `ih (by omega)`. Establish `hE` using `hI.1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : Fin n` to `⟨t, by omega⟩`. Establish `hra` using `Fin.val_rev a`. Establish `hat : a.val = t` using `rfl`. Establish `hlt : a < Fin.rev a`. Rewrite using `[Fin.lt_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hab : a ≠ Fin.rev a` using `ne_of_lt hlt`. Establish `hdom : mu (Fin.rev a) ≤ mu a` using `hI.2.1 hlt.le`. Take `⟨k, hk⟩ : ∃ k : ℕ, mu a - mu (Fin.rev a) = (k : ℤ)` from `⟨(mu a - mu (Fin.rev a)).toNat, by omega⟩`. Establish `hna : reflectedWeight mu t a = mu a`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `reflectedWeight`. Rewrite using `[if_neg (by omega)]`. Establish `hnb : reflectedWeight mu t (Fin.rev a) = mu (Fin.rev a)`. Unfold `reflectedWeight`. Rewrite using `[if_neg (by rw [Fin.rev_rev]; omega)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨divPowE E (Fin.rev a) a k y, ?_, ?_, ?_, u * divPowE E a (Fin.rev a) k, ?_, ?_⟩` and prove the remaining obligations. Conclude with `delta_integral_enveloping_stable E v _ (Or.inl ⟨_, _, k, hab.symm, rfl⟩) y hyD`. Rewrite using `[← reflectedWeight_succ_eq_add_root a hat ht k hk]`. Simplify using `only [divPowE, LinearMap.smul_apply]`. Conclude with `Submodule.smul_mem _ _ (integral_operator_pow_shifts_weight hE hyw _ _ k)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c hc hcr`. Simplify using `only [divPowE, LinearMap.smul_apply, map_smul]`. Establish `hrc` using `Fin.val_rev c`. Establish `hcomm : ∀ x, E c (Fin.rev c) (E (Fin.rev a) a x) = E (Fin.rev a) a (E c (Fin.rev c) x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[gl_rep_commutation_apply hE c (Fin.rev c) (Fin.rev a) a x, if_neg, if_neg, add_zero, sub_zero]`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Fin.val h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[commute_pow_apply_of_commute _ _ hcomm, hyk c (by omega) hcr, map_zero, smul_zero]`. Conclude with `Submonoid.mul_mem _ hu (Submonoid.subset_closure (Or.inl ⟨_, _, k, hab, rfl⟩))`. Rewrite using `[Module.End.mul_apply, dividedPower_reverse_dividedPower_eq_self hE hab hyw (hyk a le_rfl hlt) k (by rw [hna, hnb]; exact hk), huy]`.
+A detailed English derivation is pending.
 -/
 theorem exists_integral_reflected_weight_vector [CharZero (KK O)] {E : GLOps n (KK O) V} {mu : Fin n → ℤ} {v : V} (hI : IsIrrHW E mu v) (t : ℕ)
     (ht : 2 * t ≤ n) :
@@ -200,7 +200,7 @@ theorem exists_integral_reflected_weight_vector [CharZero (KK O)] {E : GLOps n (
 end ext
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ _S n V _ _ _ _ E mu v hI`. Establish `: CharZero (KK O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`. Take `⟨y, hyD, hyw, _, u, hu, huy⟩` from `exists_integral_reflected_weight_vector (O := O) hI (n / 2) (by omega)`. Rewrite `hyw` using `[reflectedWeight_half_eq_lowestWeight]`. Conclude with `⟨y, hyD, hyw, u, hu, huy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lowest_weight_extremal_vector : LowestWeightExtremalVector := by
   intro p _ O _ _ _ _ _S n V _ _ _ _ E mu v hI
@@ -210,21 +210,19 @@ theorem lowest_weight_extremal_vector : LowestWeightExtremalVector := by
   exact ⟨y, hyD, hyw, u, hu, huy⟩
 
 /- English proof (translation)
-Introduce `p _ O _ _ _ _ S n V _ _ _ _ E mu v v' hI hv' hnorm`. Establish `: CharZero (KK O)` using `charZero_of_injective_algebraMap (IsFractionRing.injective O (KK O))`. Take `⟨hL1, hL2⟩` from `hLow p O S n V E mu v v' hI hv'`. Take `⟨w, hwD, hww, u, hu, huw⟩` from `hExt p O S n V E mu v hI`. Establish `hst` using `delta_integral_enveloping_stable (O := O) E v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (1 : KK O) ∈ v' '' (Delta (O` using `O) E v : Set V) := by`. Rewrite using `[hnorm]`. Conclude with `⟨1, map_one _⟩`. Take `⟨y, hyD, hy1⟩` from `h1`. Take `⟨y0, F, f, hlF, hy0, hf, he⟩` from `weight_component_decomposition E hI.1.2.2 (lowWt mu) y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hy0D : y0 ∈ Delta (O` using `O) E v := lattice_weight_components_mem E _ hst (lowWt mu) F hlF y0 f hy0 hf (he ▸ hyD)`. Establish `hv0 : v' y0 = 1`. Rewrite `hy1` using `[he, map_add, map_sum, Finset.sum_eq_zero, add_zero]`. Conclude with `hy1`. Introduce `nu hnu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hL2 nu (fun e => hlF (e ▸ hnu)) (f nu) (hf nu hnu)`. Establish `hwc : v' w ∈ Set.range (algebraMap O (KK O))`. Rewrite using `[← hnorm]`. Conclude with `⟨w, hwD, rfl⟩`. Take `⟨c, hc⟩` from `hwc`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : w = c • y0`. Establish `h0 : w - (v' w) • y0 = 0`. Apply `hL1 _ (Submodule.sub_mem _ hww (Submodule.smul_mem _ _ hy0))` to reduce the goal to its premises. Rewrite using `[map_sub, map_smul, hv0, smul_eq_mul, mul_one, sub_self]`. Rewrite using `[← algebraMap_smul (KK O) c y0, hc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_eq_zero.1 h0`. Use `⟨y0, hy0D, hy0, hv0, le_antisymm ?_ ?_⟩` and prove the remaining obligations. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u', hu', rfl⟩`. Establish `: u' v = c • (u' * u) y0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← huw, hw, ← algebraMap_smul (KK O) c y0, map_smul, map_smul, algebraMap_smul, Module.End.mul_apply]`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨u' * u, Submonoid.mul_mem _ hu' hu, rfl⟩)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `x ⟨u', hu', rfl⟩`.
-
-Conclude with `integral_enveloping_preserves_submodule hst hu' y0 hy0D`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem deltaGenerated_of_extremalVector_of_dualInjective (hExt : LowestWeightExtremalVector) (hLow : DualFunctionalInjectiveOnLowestWeightSpace) : DeltaGeneratedByLowestWeightVector := by
   intro p _ O _ _ _ _ S n V _ _ _ _ E mu v v' hI hv' hnorm
@@ -263,29 +261,27 @@ theorem deltaGenerated_of_extremalVector_of_dualInjective (hExt : LowestWeightEx
     exact integral_enveloping_preserves_submodule hst hu' y0 hy0D
 
 /- English proof (translation)
-Introduce `O _ _ _ V _ _ _ _ M hfg hspan`. Establish `hinj : Function.Injective (algebraMap O (KK O))` using `IsFractionRing.injective O (KK O)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hφ x hx`. Introduce `hx`. Establish `: Module.Finite O M` using `Module.Finite.iff_fg.2 hfg`. Establish `htf : Module.IsTorsionFree O V`. Use `Module.IsTorsionFree.of_smul_eq_zero fun c y h => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← algebraMap_smul (KK O) c y, smul_eq_zero]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl (hinj (by rw [h, map_zero]))`. Conclude with `Or.inr h`. Establish `htfM : Module.IsTorsionFree O M` using `Function.Injective.moduleIsTorsionFree (M.subtype) (Submodule.injective_subtype M) (fun _ _ => rfl)`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨d, b⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := O) (M := M)`. Use `set bV : Fin d → V := fun i => (b i : V) with hbV`. Establish `hMspan : Submodule.span O (Set.range bV) = M`. Establish `h1 : Set.range bV = M.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1, ← Submodule.map_span, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hLIO : LinearIndependent O bV` using `b.linearIndependent.map' M.subtype (Submodule.ker_subtype M)`. Establish `hLIK : LinearIndependent (KK O) bV` using `(LinearIndependent.iff_fractionRing O (KK O)).1 hLIO`. Establish `hsp : ⊤ ≤ Submodule.span (KK O) (Set.range bV)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hspan]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce `y hy`. Rewrite `hy` using `[SetLike.mem_coe, ← hMspan]`. Conclude with `Submodule.span_le_restrictScalars O (KK O) _ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Bs : Module.Basis (Fin d) (KK O) V` to `Module.Basis.mk hLIK hsp`. Establish `hBs : ∀ i, Bs i = bV i` using `fun i => Module.Basis.mk_apply hLIK hsp i`. Establish `hcoord : ∀ i, ∀ y ∈ M, Bs.coord i y ∈ Set.range (algebraMap O (KK O))`. Introduce `i y hy`. Rewrite `hy` using `[← hMspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨j, rfl⟩` from `hz`. Rewrite using `[← hBs j, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨1, map_one _⟩`. Conclude with `⟨0, map_zero _⟩`. Consider the case `zero => exact ⟨0, by rw [map_zero, map_zero]⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha⟩` from `hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hz`. Conclude with `⟨a + c, by rw [map_add, map_add, ha, hc]⟩`. Consider the case `smul a y _ hy`. Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a * c, by rw [← algebraMap_smul (KK O) a y, map_smul, map_mul, hc, smul_eq_mul]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hxs : x = ∑ i, Bs.coord i x • Bs i` using `(Bs.sum_repr x).symm`. Rewrite using `[SetLike.mem_coe, hxs]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hx (Bs.coord i) (hcoord i)`. Rewrite using `[← hc, algebraMap_smul, hBs]`.
-
-Conclude with `Submodule.smul_mem _ _ (b i).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_lattice_bidual : LatticeBiduality := by
   classical

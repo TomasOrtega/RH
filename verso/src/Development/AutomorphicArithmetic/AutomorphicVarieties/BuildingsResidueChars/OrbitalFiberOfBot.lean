@@ -2,11 +2,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 
 open MulAction in
 /- English proof (translation)
-Introduce `H Y _ _ H₀ k`. Establish `hmul : ∀ (a : ℂ) (g : orbitRel.Quotient H Y → ℂ), ∑ᶠ o, a * g o = a * ∑ᶠ o, g o` using `fun a g => by simpa only [smul_eq_mul] using (smul_finsum a g).symm`. Use `⟨fun a => ?_, fun hc htriv => ?_⟩` and prove the remaining obligations. Unfold `UpperTheory.V.Z.Sym.gq`. Rewrite using `[← hmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finsum_congr fun o => mul_div_assoc _ _ _`. Unfold `UpperTheory.V.Z.Sym.gq`. Rewrite using `[← hmul]`. Use `finsum_congr fun o => ?_` and prove the remaining obligations. Establish `hle : H₀ ≤ stabilizer H o.out` using `fun z hz => htriv z hz _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Subgroup.relIndex_mul_relIndex ⊥ H₀ (stabilizer H o.out) bot_le hle`. Rewrite `h` using `[Subgroup.relIndex_bot_left]`. Establish `hc' : (Nat.card H₀ : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hc`. Rewrite using `[← h, Nat.cast_mul, ← mul_div_assoc, mul_div_mul_left _ _ hc']`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.orbitalFiber_of_bot :
     UpperTheory.V.Z.Sym.Glob.Fib.Bot := by

@@ -4,15 +4,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _ ι _ _ P β hβ i`. Use extensionality with `i'`. Rewrite using `[inclL_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, ← ϖ.iW_of_mem (thetaW a LL) ↥LL.1, frobMat, Matrix.map_apply, Matrix.of_apply, ← map_mul, ← map_sum]`. Simplify using `only [Pi.single_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ i' i τ, ∑ j, P.mx τ i' j * (E ↥LL.1 l e ^ β * P.mxInv τ j i) = E ↥LL.1 l e ^ β * (1 : Matrix ι ι _) i' i`. Introduce `i' i τ`. Rewrite using `[← P.mx_mul_mxInv τ, Matrix.mul_apply, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Use `split_ifs with h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `h` using the available equality. Use `congrArg _ (funext fun τ => Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Establish `h1` using `key i' i' τ`. Rewrite `h1` using `[Matrix.one_apply_eq, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `hz : ∀ F : ZMod a → invE l e (A ↥(OL LL) ↥LL.1), (∀ τ, ((F τ : invE l e (A ↥(OL LL) ↥LL.1)) : PowerSeries ↥LL.1) = 0) → ϖ.iW (thetaW a LL) ↥LL.1 F = 0` using `fun F hF => by`. Establish `hF0 : F = 0` using `funext fun τ => Subtype.ext (hF τ)`. Rewrite using `[hF0]`. Conclude with `map_zero _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hz _ fun τ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_apply, AddSubmonoidClass.coe_finsetSum]`. Establish `h1` using `key i' i τ`. Rewrite `h1` using `[Matrix.one_apply_ne h, mul_zero]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.inclL_eisensteinPow_phiInv_eq_single : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a] (ι : Type) [Fintype ι] [DecidableEq ι] (P : PhiMod ↥(OL LL) ↥LL.1 l e a ι) (β : ℕ) (hβ : ∀ τ j i, E ↥LL.1 l e ^ β * P.mxInv τ j i ∈ A ↥(OL LL) ↥LL.1) (i : ι), inclL (thetaW a LL) ϖ P (fun j => ϖ.iTot (thetaW a LL) ↥LL.1 (fun τ => ⟨E ↥LL.1 l e ^ β * P.mxInv τ j i, hβ τ j i⟩)) = Pi.single i (inclO l ↥(OL LL) (ϖ.iTot (thetaW a LL) ↥LL.1 (fun _ => ⟨E ↥LL.1 l e ^ β, pow_mem (E_mem l e _) β⟩))) := by
   intro l _ a e _ _ ϖ LL _ _ ι _ _ P β hβ i

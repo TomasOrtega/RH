@@ -12,7 +12,7 @@ namespace WirtingerDerivatives
 variable {m : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Establish `: OmX m = ⋂ l : Fin m, {x : Fin m → ℂ | x l ≠ 0}` using `by ext x; simp [OmX]`. Rewrite using `[this]`. Conclude with `isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_omX (m : ℕ) : IsOpen (OmX m) := by
   have : OmX m = ⋂ l : Fin m, {x : Fin m → ℂ | x l ≠ 0} := by ext x; simp [OmX]
@@ -20,13 +20,13 @@ theorem isOpen_omX (m : ℕ) : IsOpen (OmX m) := by
   exact isOpen_iInter_of_finite fun l => isOpen_ne_fun (continuous_apply l) continuous_const
 
 /- English proof (translation)
-Conclude with `(le_top : (⊤ : ℕ∞) + 1 ≤ ⊤)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem top_add_one_le : (∞ : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
   exact_mod_cast (le_top : (⊤ : ℕ∞) + 1 ≤ ⊤)
 
 /- English proof (translation)
-Establish `: ((1 : ℕ∞) : ℕ∞ω) + ((1 : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)`. Rewrite using `[← WithTop.coe_add]`. Conclude with `WithTop.coe_le_coe.mpr le_top`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_add_one_le : (1 : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
   have : ((1 : ℕ∞) : ℕ∞ω) + ((1 : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω) := by
@@ -34,7 +34,7 @@ theorem one_add_one_le : (1 : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
   exact this
 
 /- English proof (translation)
-Rewrite using `[minSmoothness_of_isRCLikeNormedField]`. Establish `: (((2 : ℕ) : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)` using `WithTop.coe_le_coe.mpr le_top`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem two_le_smooth : minSmoothness ℝ 2 ≤ (∞ : ℕ∞ω) := by
   rw [minSmoothness_of_isRCLikeNormedField]
@@ -42,7 +42,7 @@ theorem two_le_smooth : minSmoothness ℝ 2 ≤ (∞ : ℕ∞ω) := by
   exact this
 
 /- English proof (translation)
-Conclude with `WithTop.coe_ne_zero.mpr (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem top_ne_zero' : (∞ : ℕ∞ω) ≠ 0 := by
   exact WithTop.coe_ne_zero.mpr (by simp)
@@ -60,21 +60,21 @@ theorem Wc_apply (u w : Fin m → ℂ) (s : ℂ) (T : (Fin m → ℂ) →L[ℝ] 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Wc_apply, wirt, neg_smul, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wirt_eq (l : Fin m) (g : (Fin m → ℂ) → E) (x : Fin m → ℂ) :
     wirt l g x = Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) (fderiv ℝ g x) := by
   rw [Wc_apply, wirt, neg_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Rewrite using `[Wc_apply, wirtBar]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wirtBar_eq (l : Fin m) (g : (Fin m → ℂ) → E) (x : Fin m → ℂ) :
     wirtBar l g x = Wc (Pi.single l 1) (Pi.single l Complex.I) Complex.I (fderiv ℝ g x) := by
   rw [Wc_apply, wirtBar]
 
 /- English proof (translation)
-Conclude with `((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => ℂ) k)).hasFDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_star_apply (k : Fin m) (x : Fin m → ℂ) :
     HasFDerivAt (fun y : Fin m → ℂ => star (y k))
@@ -83,7 +83,7 @@ theorem hasFDerivAt_star_apply (k : Fin m) (x : Fin m → ℂ) :
     (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin m => ℂ) k)).hasFDerivAt
 
 /- English proof (translation)
-Conclude with `((hasDerivAt_inv hx).hasFDerivAt.restrictScalars ℝ).comp x (hasFDerivAt_apply (𝕜 := ℝ) k x)`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_inv_apply (k : Fin m) {x : Fin m → ℂ} (hx : x k ≠ 0) :
     HasFDerivAt (fun y : Fin m → ℂ => (y k)⁻¹)
@@ -95,35 +95,35 @@ theorem hasFDerivAt_inv_apply (k : Fin m) {x : Fin m → ℂ} (hx : x k ≠ 0) :
 def Reg (g : (Fin m → ℂ) → E) : Prop := ∀ x ∈ OmX m, ContDiffAt ℝ ∞ g x
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `hf.1.contDiffAt ((isOpen_omX m).mem_nhds hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_of_mem {f : (Fin m → ℂ) → E} (hf : f ∈ WSm m E) : Reg f := by
   intro x hx
   exact hf.1.contDiffAt ((isOpen_omX m).mem_nhds hx)
 
 /- English proof (translation)
-Conclude with `hg.differentiableAt top_ne_zero'`.
+A detailed English derivation is pending.
 -/
 theorem diff_of_reg {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt ℝ ∞ g x) :
     DifferentiableAt ℝ g x := by
   exact hg.differentiableAt top_ne_zero'
 
 /- English proof (translation)
-Conclude with `(hg.fderiv_right (m := 1) one_add_one_le).differentiableAt one_ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem diff_fderiv {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt ℝ ∞ g x) :
     DifferentiableAt ℝ (fderiv ℝ g) x := by
   exact (hg.fderiv_right (m := 1) one_add_one_le).differentiableAt one_ne_zero
 
 /- English proof (translation)
-Conclude with `(Wc u w s).contDiff.contDiffAt.comp x (hg.fderiv_right (m := ∞) top_add_one_le)`.
+A detailed English derivation is pending.
 -/
 theorem contDiffAt_Wc {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt ℝ ∞ g x)
     (u w : Fin m → ℂ) (s : ℂ) : ContDiffAt ℝ ∞ (fun y => Wc u w s (fderiv ℝ g y)) x := by
   exact (Wc u w s).contDiff.contDiffAt.comp x (hg.fderiv_right (m := ∞) top_add_one_le)
 
 /- English proof (translation)
-Conclude with `((Wc u w s).hasFDerivAt.comp x (diff_fderiv hg).hasFDerivAt).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem fderiv_Wc {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt ℝ ∞ g x)
     (u w : Fin m → ℂ) (s : ℂ) :
@@ -131,7 +131,7 @@ theorem fderiv_Wc {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiff
   exact ((Wc u w s).hasFDerivAt.comp x (diff_fderiv hg).hasFDerivAt).fderiv
 
 /- English proof (translation)
-Establish `hs` using `hg.isSymmSndFDerivAt two_le_smooth`. Rewrite using `[fderiv_Wc hg, fderiv_Wc hg]`. Simplify using `only [Wc_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, map_add, map_smul]`. Rewrite using `[hs u' u, hs u' w, hs w' u, hs w' w]`. Use `module`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Wc_comm {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt ℝ ∞ g x)
     (u w : Fin m → ℂ) (s : ℂ) (u' w' : Fin m → ℂ) (s' : ℂ) :
@@ -145,7 +145,7 @@ theorem Wc_comm {g : (Fin m → ℂ) → E} {x : Fin m → ℂ} (hg : ContDiffAt
   module
 
 /- English proof (translation)
-Establish `H : HasFDerivAt (fun y => a y • h y) (a x • fderiv ℝ h x + (fderiv ℝ a x).smulRight (h x)) x` using `ha.hasFDerivAt.smul hh.hasFDerivAt`. Rewrite using `[H.fderiv]`. Simplify using `only [ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_smul', Pi.smul_apply, ContinuousLinearMap.smulRight_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_smul_apply {a : (Fin m → ℂ) → ℂ} {h : (Fin m → ℂ) → E} {x : Fin m → ℂ}
     (ha : DifferentiableAt ℝ a x) (hh : DifferentiableAt ℝ h x) (v : Fin m → ℂ) :
@@ -158,7 +158,7 @@ theorem fderiv_smul_apply {a : (Fin m → ℂ) → ℂ} {h : (Fin m → ℂ) →
     ContinuousLinearMap.smulRight_apply]
 
 /- English proof (translation)
-Rewrite using `[Wc_apply, Wc_apply, Wc_apply, fderiv_smul_apply ha hh, fderiv_smul_apply ha hh]`. Simplify using `only [smul_eq_mul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Wc_smul {a : (Fin m → ℂ) → ℂ} {h : (Fin m → ℂ) → E} {x : Fin m → ℂ}
     (ha : DifferentiableAt ℝ a x) (hh : DifferentiableAt ℝ h x) (u w : Fin m → ℂ) (s : ℂ) :
@@ -169,7 +169,7 @@ theorem Wc_smul {a : (Fin m → ℂ) → ℂ} {h : (Fin m → ℂ) → E} {x : F
   module
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Conclude with `wirt_eq l g y`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem wirt_fun (l : Fin m) (g : (Fin m → ℂ) → E) :
     wirt l g = fun y => Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) (fderiv ℝ g y) := by
@@ -177,7 +177,7 @@ theorem wirt_fun (l : Fin m) (g : (Fin m → ℂ) → E) :
   exact wirt_eq l g y
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Conclude with `wirtBar_eq l g y`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem wirtBar_fun (l : Fin m) (g : (Fin m → ℂ) → E) :
     wirtBar l g = fun y => Wc (Pi.single l 1) (Pi.single l Complex.I) Complex.I (fderiv ℝ g y) := by
@@ -185,9 +185,9 @@ theorem wirtBar_fun (l : Fin m) (g : (Fin m → ℂ) → E) :
   exact wirtBar_eq l g y
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [Wc_apply, hT, hT] <;> by_cases hl : l = k`. Simplify using `only [hl, Pi.single_eq_same, if_true, smul_eq_mul]`. Take the linear combination `(-c / 2) * Complex.I_sq`. Simplify using `[hl, Pi.single_eq_of_ne (Ne.symm hl)]`. Simplify using `only [hl, Pi.single_eq_same, smul_eq_mul]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(c / 2) * Complex.I_sq`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hl)]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem Wc_hol (k l : Fin m) (c : ℂ) (T : (Fin m → ℂ) →L[ℝ] ℂ) (hT : ∀ v, T v = c * v k) :
     Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) T = (if l = k then c else 0) ∧
@@ -201,9 +201,9 @@ theorem Wc_hol (k l : Fin m) (c : ℂ) (T : (Fin m → ℂ) →L[ℝ] ℂ) (hT :
   · simp [Pi.single_eq_of_ne (Ne.symm hl)]
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [Wc_apply, hT, hT] <;> by_cases hl : l = k`. Simplify using `only [hl, Pi.single_eq_same, smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]`. Take the linear combination `(c / 2) * Complex.I_sq`. Simplify using `[Pi.single_eq_of_ne (Ne.symm hl)]`. Simplify using `only [hl, Pi.single_eq_same, if_true, smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-c / 2) * Complex.I_sq`. Simplify using `[hl, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem Wc_anti (k l : Fin m) (c : ℂ) (T : (Fin m → ℂ) →L[ℝ] ℂ) (hT : ∀ v, T v = c * star (v k)) :
     Wc (Pi.single l 1) (Pi.single l Complex.I) (-Complex.I) T = 0 ∧
@@ -249,15 +249,15 @@ theorem star_fun_eq (k : Fin m) :
   rfl
 
 /- English proof (translation)
-Establish `hxk : x k ≠ 0` using `hx k`. Use `match j with`. Consider the case `0 => show fderiv ℝ (fun y : Fin m → ℂ => y k) x v = _`. Rewrite using `[(hasFDerivAt_apply (𝕜 := ℝ) k x).fderiv]`. Simplify using `[ck]`.
+Establish an intermediate fact. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `1 => show fderiv ℝ (fun y : Fin m → ℂ => y k) x v = _`. Rewrite using `[(hasFDerivAt_apply (𝕜 := ℝ) k x).fderiv]`. Simplify using `[ck]`. Consider the case `2 => show fderiv ℝ (fun y : Fin m → ℂ => (y k)⁻¹) x v = _`. Rewrite using `[(hasFDerivAt_inv_apply k hxk).fderiv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ck, mul_comm]`. Consider the case `3 => show fderiv ℝ (fun y : Fin m → ℂ => star (y k)) x v = _`. Rewrite using `[(hasFDerivAt_star_apply k x).fderiv]`. Simplify using `[ck]`. Consider the case `4 => show fderiv ℝ (fun y : Fin m → ℂ => star (y k)) x v = _`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hasFDerivAt_star_apply k x).fderiv]`. Simplify using `[ck]`. Consider the case `5 => show fderiv ℝ (fun y : Fin m → ℂ => (star (y k))⁻¹) x v = _`. Establish `hs : star (x k) ≠ 0` using `star_ne_zero.mpr hxk`. Establish `h5 : HasFDerivAt (fun y : Fin m → ℂ => (star (y k))⁻¹) (((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ) (-(star (x k) ^ 2)⁻¹)).restrictScalars ℝ).comp ((Complex.conjCLE : ℂ →L[ℝ] ℂ).comp (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin m => ℂ) k))) x := ((hasDerivAt_inv hs).hasFDerivAt.restrictScalars ℝ).comp x (hasFDerivAt_star_apply k x)`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h5.fderiv]`. Simplify using `[ck, mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fderiv_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (j : Fin 6) (v : Fin m → ℂ) :
     fderiv ℝ (coef k j) x v =
@@ -296,9 +296,9 @@ theorem fderiv_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (j : Fin 
     simp [ck, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[wirt, fderiv_coef hx, fderiv_coef hx]`. Apply the tactic sequence `by_cases hj : (j : ℕ) < 3 <;> by_cases hl : l = k`. Simplify using `only [hl, hj, if_true, and_self, Pi.single_eq_same, smul_eq_mul]`. Take the linear combination `(-(ck k j x) / 2) * Complex.I_sq`. Simplify using `[hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl, hj, if_false, false_and, Pi.single_eq_same, smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]`. Take the linear combination `(ck k j x / 2) * Complex.I_sq`. Simplify using `[hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem wirt_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin m) (j : Fin 6) :
     wirt l (coef k j) x = if (j : ℕ) < 3 ∧ l = k then ck k j x else 0 := by
@@ -313,9 +313,9 @@ theorem wirt_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin m)
   · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
 
 /- English proof (translation)
-Rewrite using `[wirtBar, fderiv_coef hx, fderiv_coef hx]`. Apply the tactic sequence `by_cases hj : (j : ℕ) < 3 <;> by_cases hl : l = k`. Simplify using `only [hl, hj, if_true, not_true_eq_false, false_and, if_false, Pi.single_eq_same, smul_eq_mul]`. Take the linear combination `(ck k j x / 2) * Complex.I_sq`. Simplify using `[hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [hl, hj, if_false, not_false_eq_true, and_self, if_true, Pi.single_eq_same, smul_eq_mul, star_one, Complex.star_def, Complex.conj_I]`. Take the linear combination `(-(ck k j x) / 2) * Complex.I_sq`. Simplify using `[hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem wirtBar_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin m) (j : Fin 6) :
     wirtBar l (coef k j) x = if ¬ (j : ℕ) < 3 ∧ l = k then ck k j x else 0 := by
@@ -331,7 +331,7 @@ theorem wirtBar_coef {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (l : Fin
   · simp [hj, hl, Pi.single_eq_of_ne (Ne.symm hl)]
 
 /- English proof (translation)
-Rewrite using `[star_fun_eq]`. Conclude with `((Complex.conjCLE : ℂ →L[ℝ] ℂ).contDiff.comp (contDiff_apply ℝ ℂ k)).contDiffAt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffAt_star_apply (k : Fin m) (x : Fin m → ℂ) :
     ContDiffAt ℝ ∞ (fun y : Fin m → ℂ => star (y k)) x := by
@@ -339,9 +339,9 @@ theorem contDiffAt_star_apply (k : Fin m) (x : Fin m → ℂ) :
   exact ((Complex.conjCLE : ℂ →L[ℝ] ℂ).contDiff.comp (contDiff_apply ℝ ℂ k)).contDiffAt
 
 /- English proof (translation)
-Establish `hxk : x k ≠ 0` using `hx k`. Use `match j with`. Consider the case `0 => exact (contDiff_apply ℝ ℂ k).contDiffAt`. Consider the case `1 => exact (contDiff_apply ℝ ℂ k).contDiffAt`. Consider the case `2 => exact (contDiffAt_inv ℝ hxk).comp x (contDiff_apply ℝ ℂ k).contDiffAt`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `3 => exact contDiffAt_star_apply k x`. Consider the case `4 => exact contDiffAt_star_apply k x`. Consider the case `5 => exact (contDiffAt_inv ℝ (star_ne_zero.mpr hxk)).comp x (contDiffAt_star_apply k x)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem coef_contDiffAt {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (j : Fin 6) :
     ContDiffAt ℝ ∞ (coef k j) x := by
@@ -355,9 +355,9 @@ theorem coef_contDiffAt {k : Fin m} {x : Fin m → ℂ} (hx : x ∈ OmX m) (j : 
   | 5 => exact (contDiffAt_inv ℝ (star_ne_zero.mpr hxk)).comp x (contDiffAt_star_apply k x)
 
 /- English proof (translation)
-Establish `hev : ∀ᶠ y in 𝓝 x, y ∈ OmX m` using `(isOpen_omX m).mem_nhds hx`. Use `match j with`. Consider the case `0 => filter_upwards [hev] with y hy show pOp k g y = y k • wirt k g y`. Simplify using `[pOp, hy]`. Consider the case `1 => exact Filter.Eventually.of_forall fun y => rfl`.
+Establish an intermediate fact. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 
-Consider the case `2 => exact Filter.Eventually.of_forall fun y => rfl`. Consider the case `3 => filter_upwards [hev] with y hy show pbOp k g y = star (y k) • wirtBar k g y`. Simplify using `[pbOp, hy]`. Consider the case `4 => exact Filter.Eventually.of_forall fun y => rfl`. Consider the case `5 => exact Filter.Eventually.of_forall fun y => rfl`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem opL_ev (k : Fin m) (j : Fin 6) (g : (Fin m → ℂ) → E) {x : Fin m → ℂ} (hx : x ∈ OmX m) :
     opL k j g =ᶠ[𝓝 x] fun y => coef k j y • Dop k j g y := by
@@ -377,18 +377,18 @@ theorem opL_ev (k : Fin m) (j : Fin 6) (g : (Fin m → ℂ) → E) {x : Fin m �
   | 5 => exact Filter.Eventually.of_forall fun y => rfl
 
 /- English proof (translation)
-Conclude with `(opL_ev k j g hx).self_of_nhds`.
+A detailed English derivation is pending.
 -/
 theorem opL_on (k : Fin m) (j : Fin 6) (g : (Fin m → ℂ) → E) {x : Fin m → ℂ} (hx : x ∈ OmX m) :
     opL k j g x = coef k j x • Dop k j g x := by
   exact (opL_ev k j g hx).self_of_nhds
 
 /- English proof (translation)
-Use `match j with`. Consider the case `0 => show pOp k g x = 0`. Simplify using `[pOp, hx]`. Consider the case `1 => show x k • g x = 0`. Rewrite using `[h0, smul_zero]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `2 => show (x k)⁻¹ • g x = 0`. Rewrite using `[h0, smul_zero]`. Consider the case `3 => show pbOp k g x = 0`. Simplify using `[pbOp, hx]`. Consider the case `4 => show star (x k) • g x = 0`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, smul_zero]`. Consider the case `5 => show (star (x k))⁻¹ • g x = 0`. Rewrite using `[h0, smul_zero]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opL_off (k : Fin m) (j : Fin 6) (g : (Fin m → ℂ) → E) {x : Fin m → ℂ} (hx : x ∉ OmX m)
     (h0 : g x = 0) : opL k j g x = 0 := by
@@ -401,11 +401,9 @@ theorem opL_off (k : Fin m) (j : Fin 6) (g : (Fin m → ℂ) → E) {x : Fin m �
   | 5 => show (star (x k))⁻¹ • g x = 0; rw [h0, smul_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Use `match j with`. Consider the case `0 => show ContDiffAt ℝ ∞ (wirt k g) x`. Rewrite using `[wirt_fun]`. Conclude with `contDiffAt_Wc (hg x hx) _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `1 => exact hg x hx`. Consider the case `2 => exact hg x hx`. Consider the case `3 => show ContDiffAt ℝ ∞ (wirtBar k g) x`. Rewrite using `[wirtBar_fun]`. Conclude with `contDiffAt_Wc (hg x hx) _ _ _`.
-
-Consider the case `4 => exact hg x hx`. Consider the case `5 => exact hg x hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem reg_Dop {g : (Fin m → ℂ) → E} (hg : Reg g) (k : Fin m) (j : Fin 6) : Reg (Dop k j g) := by
   intro x hx
@@ -424,7 +422,7 @@ theorem reg_Dop {g : (Fin m → ℂ) → E} (hg : Reg g) (k : Fin m) (j : Fin 6)
   | 5 => exact hg x hx
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `((coef_contDiffAt hx j).smul (reg_Dop hg k j x hx)).congr_of_eventuallyEq (opL_ev k j g hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reg_opL {g : (Fin m → ℂ) → E} (hg : Reg g) (k : Fin m) (j : Fin 6) : Reg (opL k j g) := by
   intro x hx
@@ -437,13 +435,13 @@ def dco (l : Fin m) (i : Fin 6) (k : Fin m) (j : Fin 6) (x : Fin m → ℂ) : �
   | _ => 0
 
 /- English proof (translation)
-Establish `hc` using `diff_of_reg (coef_contDiffAt (k := k) hx j)`. Establish `hd` using `diff_of_reg (reg_Dop hg k j x hx)`. Establish `hfe : fderiv ℝ (opL k j g) x = fderiv ℝ (fun y => coef k j y • Dop k j g y) x` using `(opL_ev k j g hx).fderiv_eq`. Use `match i with`. Consider the case `0 => show wirt l (opL k j g) x = wirt l (coef k j) x • Dop k j g x + coef k j x • wirt l (Dop k j g) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[wirt_eq, wirt_eq, wirt_eq, hfe, Wc_smul hc hd]`. Consider the case `1 => show opL k j g x = (0 : ℂ) • Dop k j g x + coef k j x • Dop k j g x`. Rewrite using `[opL_on k j g hx, zero_smul, zero_add]`. Consider the case `2 => show opL k j g x = (0 : ℂ) • Dop k j g x + coef k j x • Dop k j g x`. Rewrite using `[opL_on k j g hx, zero_smul, zero_add]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `3 => show wirtBar l (opL k j g) x = wirtBar l (coef k j) x • Dop k j g x + coef k j x • wirtBar l (Dop k j g) x`. Rewrite using `[wirtBar_eq, wirtBar_eq, wirtBar_eq, hfe, Wc_smul hc hd]`. Consider the case `4 => show opL k j g x = (0 : ℂ) • Dop k j g x + coef k j x • Dop k j g x`. Rewrite using `[opL_on k j g hx, zero_smul, zero_add]`. Consider the case `5 => show opL k j g x = (0 : ℂ) • Dop k j g x + coef k j x • Dop k j g x`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[opL_on k j g hx, zero_smul, zero_add]`.
+A detailed English derivation is pending.
 -/
 theorem Dop_opL {g : (Fin m → ℂ) → E} (hg : Reg g) {x : Fin m → ℂ} (hx : x ∈ OmX m)
     (l k : Fin m) (i j : Fin 6) :
@@ -474,17 +472,15 @@ theorem Dop_opL {g : (Fin m → ℂ) → E} (hg : Reg g) {x : Fin m → ℂ} (hx
     rw [opL_on k j g hx, zero_smul, zero_add]
 
 /- English proof (translation)
-Use `match i with`. Consider the case `0 => match j with`. Consider the case `0 => show wirt l (wirt k g) x = wirt k (wirt l g) x`. Rewrite using `[wirt_fun k g, wirt_fun l g, wirt_eq l, wirt_eq k]`. Conclude with `Wc_comm (hg x hx) _ _ _ _ _ _`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `3 => show wirt l (wirtBar k g) x = wirtBar k (wirt l g) x`. Rewrite using `[wirtBar_fun k g, wirt_fun l g, wirt_eq l, wirtBar_eq k]`. Conclude with `Wc_comm (hg x hx) _ _ _ _ _ _`. Consider the case `1 => rfl`. Consider the case `2 => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `4 => rfl`. Consider the case `5 => rfl`. Consider the case `3 => match j with`. Consider the case `0 => show wirtBar l (wirt k g) x = wirt k (wirtBar l g) x`. Rewrite using `[wirt_fun k g, wirtBar_fun l g, wirtBar_eq l, wirt_eq k]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Wc_comm (hg x hx) _ _ _ _ _ _`. Consider the case `3 => show wirtBar l (wirtBar k g) x = wirtBar k (wirtBar l g) x`. Rewrite using `[wirtBar_fun k g, wirtBar_fun l g, wirtBar_eq l, wirtBar_eq k]`. Conclude with `Wc_comm (hg x hx) _ _ _ _ _ _`. Consider the case `1 => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `2 => rfl`. Consider the case `4 => rfl`. Consider the case `5 => rfl`. Consider the case `1 => rfl`. Consider the case `2 => rfl`.
-
-Consider the case `4 => rfl`. Consider the case `5 => rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Dop_comm {g : (Fin m → ℂ) → E} (hg : Reg g) {x : Fin m → ℂ} (hx : x ∈ OmX m)
     (l k : Fin m) (i j : Fin 6) : Dop l i (Dop k j g) x = Dop k j (Dop l i g) x := by
@@ -523,13 +519,11 @@ theorem Dop_comm {g : (Fin m → ℂ) → E} (hg : Reg g) {x : Fin m → ℂ} (h
   | 5 => rfl
 
 /- English proof (translation)
-Use `match i with`. Consider the case `0 => show wirt l (coef k j) x = 0`. Rewrite using `[wirt_coef hx, if_neg]`. Introduce and unpack `⟨hj, hlk⟩`. Break down `hc with h | h` into its components or cases.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Conclude with `h hlk`. Conclude with `(h.mp (show holoIdx (0 : Fin 6) by unfold holoIdx; decide)) hj`. Consider the case `3 => show wirtBar l (coef k j) x = 0`. Rewrite using `[wirtBar_coef hx, if_neg]`. Introduce and unpack `⟨hj, hlk⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Break down `hc with h | h` into its components or cases. Conclude with `h hlk`. Conclude with `absurd (h.mpr hj) (show ¬ holoIdx (3 : Fin 6) by unfold holoIdx; decide)`. Consider the case `1 => rfl`. Consider the case `2 => rfl`.
-
-Consider the case `4 => rfl`. Consider the case `5 => rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dco_zero {x : Fin m → ℂ} (hx : x ∈ OmX m) (l k : Fin m) (i j : Fin 6)
     (hc : l ≠ k ∨ (holoIdx i ↔ ¬ holoIdx j)) : dco l i k j x = 0 := by
@@ -558,13 +552,11 @@ end WirtingerDerivatives
 open WirtingerDerivatives
 
 /- English proof (translation)
-Introduce `m E _ _ l k i j f hf hc`. Establish `hr` using `reg_of_mem hf`. Establish `hc' : k ≠ l ∨ (holoIdx j ↔ ¬ holoIdx i)`. Break down `hc with h | h` into its components or cases. Conclude with `Or.inl (Ne.symm h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Use `right`. Prove the components needed by the constructor for the conclusion. Introduce `hj hi`. Conclude with `(h.mp hi) hj`. Introduce `hi`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument.
 
-Assume the negation of the conclusion as `hj`. Conclude with `hi (h.mpr hj)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ OmX m`. Rewrite using `[opL_on l i _ hx, opL_on k j _ hx, Dop_opL hr hx, Dop_opL hr hx, dco_zero hx l k i j hc, dco_zero hx k l j i hc', zero_smul, zero_add, zero_smul, zero_add, Dop_comm hr hx, smul_smul, smul_smul, mul_comm]`.
-
-Rewrite using `[opL_off l i _ hx (opL_off k j f hx (hf.2 x hx)), opL_off k j _ hx (opL_off l i f hx (hf.2 x hx))]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem commuting_functional_holds : CommFun := by
   intro m E _ _ l k i j f hf hc
@@ -588,27 +580,27 @@ theorem commuting_functional_holds : CommFun := by
       opL_off k j _ hx (opL_off l i f hx (hf.2 x hx))]
 
 /- English proof (translation)
-Introduce `m E _ _ l f hf`. Establish `hr` using `reg_of_mem hf`. Establish `h0 : ∀ x, x ∉ OmX m → f x = 0` using `hf.2`. Establish `hnot : ∀ x : Fin m → ℂ, x l = 0 → x ∉ OmX m` using `fun x h hx => hx l h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [cOp, ciOp, smul_smul]`. Distinguish the cases in `h : x l = 0`. Rewrite using `[h0 x (hnot x h), smul_zero]`. Rewrite using `[mul_inv_cancel₀ h, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [cOp, ciOp, smul_smul]`. Distinguish the cases in `h : x l = 0`. Rewrite using `[h0 x (hnot x h), smul_zero]`. Rewrite using `[inv_mul_cancel₀ h, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ OmX m`. Establish `e` using `Dop_opL hr hx l l 0 1`. Establish `hw : wirt l (coef l 1) x = 1`. Rewrite using `[wirt_coef hx, if_pos ⟨by decide, rfl⟩]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `opL l 0 (opL l 1 f) x = _`. Rewrite using `[opL_on l 0 _ hx]`. Express the relevant statement in the definitionally equal form `x l • Dop l 0 (opL l 1 f) x = _`. Rewrite using `[e]`.
+Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `x l • (wirt l (coef l 1) x • f x + x l • wirt l f x) = x l • pOp l f x + x l • f x`. Simplify using `only [pOp, hx, if_true, hw, one_smul]`. Rewrite using `[smul_add, add_comm]`. Simplify using `only [Pi.add_apply, pOp, cOp, hx, if_false, h0 x hx, smul_zero, add_zero]`. Use function extensionality and compare the values at `x`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cbOp, cbiOp, smul_smul]`. Distinguish the cases in `h : x l = 0`. Rewrite using `[h0 x (hnot x h), smul_zero]`. Rewrite using `[mul_inv_cancel₀ (star_ne_zero.mpr h), one_smul]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [cbOp, cbiOp, smul_smul]`. Distinguish the cases in `h : x l = 0`. Rewrite using `[h0 x (hnot x h), smul_zero]`. Rewrite using `[inv_mul_cancel₀ (star_ne_zero.mpr h), one_smul]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hx : x ∈ OmX m`. Establish `e` using `Dop_opL hr hx l l 3 4`. Establish `hw : wirtBar l (coef l 4) x = 1`. Rewrite using `[wirtBar_coef hx, if_pos ⟨by decide, rfl⟩]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `opL l 3 (opL l 4 f) x = _`. Rewrite using `[opL_on l 3 _ hx]`. Express the relevant statement in the definitionally equal form `star (x l) • Dop l 3 (opL l 4 f) x = _`. Rewrite using `[e]`. Express the relevant statement in the definitionally equal form `star (x l) • (wirtBar l (coef l 4) x • f x + star (x l) • wirtBar l f x) = star (x l) • pbOp l f x + star (x l) • f x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [pbOp, hx, if_true, hw, one_smul]`. Rewrite using `[smul_add, add_comm]`. Simplify using `only [Pi.add_apply, pbOp, cbOp, hx, if_false, h0 x hx, smul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weyl_functional_holds : WeylFun := by
   intro m E _ _ l f hf

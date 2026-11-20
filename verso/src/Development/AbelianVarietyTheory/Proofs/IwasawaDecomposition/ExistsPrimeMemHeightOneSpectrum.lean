@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.PrimeInHeightOneSpectrum
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `hn hmem`. Establish `h1 : n ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one P).mpr (by simpa using hmem))`. Establish `hpr : Nat.Prime n.minFac` using `Nat.minFac_prime h1`. Take `⟨m, hm⟩` from `Nat.minFac_dvd n`. Establish `hmul : ((n.minFac : R) * (m : R)) ∈ P`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_mul, ← hm]`. Conclude with `hmem`. Break down `hP.mem_or_mem hmul with h | h` into its components or cases. Conclude with `⟨_, hpr, h⟩`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm; exact hn hm`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : m < n`. Rewrite using `[hm]`. Use `hpr.two_le` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Conclude with `ih m hlt hm0 h`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_prime_natCast_mem {R : Type} [CommRing R] (P : Ideal R) [hP : P.IsPrime] :
     ∀ n : ℕ, n ≠ 0 → (n : R) ∈ P → ∃ p : ℕ, Nat.Prime p ∧ (p : R) ∈ P := by
@@ -35,7 +35,7 @@ theorem exists_prime_natCast_mem {R : Type} [CommRing R] (P : Ideal R) [hP : P.I
       exact ih m hlt hm0 h
 
 /- English proof (translation)
-Use `haveI := v.isPrime`. Conclude with `exists_prime_natCast_mem v.asIdeal (Ideal.absNorm v.asIdeal) (Ideal.absNorm_eq_zero_iff.not.mpr v.ne_bot) (Ideal.absNorm_mem _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_mem_heightOneSpectrum {K : Type} [Field K] [NumberField K]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)) :
@@ -46,7 +46,7 @@ theorem exists_prime_mem_heightOneSpectrum {K : Type} [Field K] [NumberField K]
     (Ideal.absNorm_eq_zero_iff.not.mpr v.ne_bot) (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Introduce `v` and use `exists_prime_mem_heightOneSpectrum v`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target : ∀ {K : Type} [inst : Field K] [NumberField K]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K)),

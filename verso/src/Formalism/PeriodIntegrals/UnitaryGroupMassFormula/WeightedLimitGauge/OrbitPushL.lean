@@ -38,25 +38,25 @@ def blkLin (k : ℕ) (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : ((Fin k →
       ((Fin k → ℂ) × ℂ) →ₗ[ℂ] (Fin (k + 1) → ℂ))
 
 /- English proof (translation)
-Simplify using `[blkLin, blkAct, wEquiv, Matrix.toLin'_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkLin_apply {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (p : (Fin k → ℂ) × ℂ) :
     blkLin k μ p = blkAct k μ p := by
   simp [blkLin, blkAct, wEquiv, Matrix.toLin'_apply]
 
 /- English proof (translation)
-Unfold `blkLin`. Rewrite using `[LinearMap.det_conj, LinearMap.det_toLin']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_blkLin {k : ℕ} (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : LinearMap.det (blkLin k μ) = μ.det := by
   unfold blkLin
   rw [LinearMap.det_conj, LinearMap.det_toLin']
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det hμ`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `hb : (Hb k).det ≠ 0`. Unfold `Hb`. Rewrite using `[Matrix.det_diagonal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `exact Finset.prod_ne_zero_iff.2 fun j _ => by split_ifs <;> norm_num`. Establish `h2 : star μ.det * μ.det = 1`. Establish `e : (star μ.det * μ.det) * (Hb k).det = 1 * (Hb k).det`. Rewrite using `[show (star μ.det * μ.det) * (Hb k).det = star μ.det * (Hb k).det * μ.det by ring, h, one_mul]`. Conclude with `mul_right_cancel₀ hb e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (Complex.normSq μ.det : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Conclude with `h2`. Conclude with `h3` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normSq_det_hb {k : ℕ} {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hμ : μᴴ * Hb k * μ = Hb k) :
     Complex.normSq μ.det = 1 := by
@@ -76,11 +76,11 @@ theorem normSq_det_hb {k : ℕ} {μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (h
   exact_mod_cast h3
 
 /- English proof (translation)
-Introduce `k μ hμ`. Establish `h1 : (volume : Measure ℂ).IsAddHaarMeasure` using `inferInstance`. Establish `h2 : (volume : Measure (Fin k → ℂ)).IsAddHaarMeasure` using `inferInstance`. Establish `h3 : (volume : Measure ((Fin k → ℂ) × ℂ)).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Use `set f : ((Fin k → ℂ) × ℂ) →ₗ[ℝ] ((Fin k → ℂ) × ℂ) := (blkLin k μ).restrictScalars ℝ with hfdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : LinearMap.det f = 1`. Rewrite using `[hfdef, LinearMap.det_restrictScalars, det_blkLin, Algebra.norm_complex_apply, normSq_det_hb hμ]`. Establish `hf : blkAct k μ = ⇑f`. Use function extensionality and compare the values at `p`. Rewrite using `[hfdef, LinearMap.coe_restrictScalars, blkLin_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf, Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure ((Fin k → ℂ) × ℂ))) (by rw [hdet]; norm_num), hdet]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lebInvB : LebInvB := by
   intro k μ hμ

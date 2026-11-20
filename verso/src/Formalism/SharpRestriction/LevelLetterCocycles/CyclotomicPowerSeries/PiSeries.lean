@@ -7,13 +7,13 @@ namespace LevelStatements.Lv
 open PowerSeries IsLocalRing
 
 /- English proof (translation)
-Introduce `LL ι _`. Use `⟨fun f => ?_, fun F => ⟨fun k => ?_, ?_⟩⟩` and prove the remaining obligations. Use `⟨PowerSeries.mk fun n i => coeff n (f i), fun i => ?_, fun G hG => ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Simplify using `[coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `n i`. Rewrite using `[coeff_mk, ← hG i, coeff_map]`. Both sides reduce to the same expression. Simplify using `only [X_pow_dvd_iff, coeff_map]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i d hd`. Rewrite using `[h d hd]`. Both sides reduce to the same expression. Introduce `h d hd`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h i d hd`. Rewrite using `[isUnit_iff_constantCoeff, Pi.isUnit_iff]`. Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[isUnit_iff_constantCoeff, ← coeff_zero_eq_constantCoeff_apply, ← coeff_zero_eq_constantCoeff_apply, coeff_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem piSeries : PiSeriesStatement := by
   intro LL ι _

@@ -12,9 +12,9 @@ attribute [-instance] Formalism.DoubleCosetMeasures.instMeasGL
 namespace UpperTheory.V.Z.Gam
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ χ`. Set `ξ : HChar L` to `⟨χ.1.comp (GroundTheory.Global.ideleNorm K L), χ.2.1.comp GroundTheory.Global.continuous_ideleNorm, fun k => (congrArg χ.1 (GroundTheory.Global.ideleNorm_diagonal (K := K) k)).trans (χ.2.2 _)⟩`. Use `⟨ξ, ?_⟩` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw⟩`. Establish `hN : Ideal.absNorm w.asIdeal = Ideal.absNorm v.asIdeal ^ fdeg (⟨w, hw⟩ : PlacesOver L v)` using `Ideal.absNorm_eq_pow_inertiaDeg'_of_liesOver w.asIdeal v.asIdeal v.isPrime v.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `rfl : v = w.under (𝓞 K)` from `HeightOneSpectrum.ext hw.over`. Use `⟨MonoidHom.ext fun x => ?_, GlobalTheory.NormValGen.unrAt_val_of_comp_norm K L χ ξ (fun _ => rfl) w _ hN, hN⟩` and prove the remaining obligations. Conclude with `congrArg χ.1 (GroundTheory.Global.ideleNorm_finiteEmbedding (K := K) w x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normLoc : NormLoc := by
   intro K L _ _ _ _ _ χ

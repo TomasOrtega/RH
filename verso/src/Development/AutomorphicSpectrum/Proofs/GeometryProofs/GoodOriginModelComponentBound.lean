@@ -26,13 +26,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨⟨-, hC, hB, -, hA, -⟩, -⟩` from `GlobalTheory.Exist.frame_laws_of_moduli E H Dw l Xo c`. Establish `hWD` using `evalWD_fr hC`. Establish `key : ∀ {T : Type} [CommRing T] [Algebra c.F T] (p : TRing c.F) (χ : p.R →ₐ[c.F] T) (u : FrPt Xo c p.R) (v : FrPt Xo c T), FrMap χ u v → evR Xo c g v = χ (g p u)`. Introduce `T _ _ p χ u v hv`. Establish `hft : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) v := ⟨p, χ, u, hv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Unfold `evR evalAt`. Rewrite using `[dif_pos hft]`. Conclude with `hWD g hg.1 T _ p _ χ _ u v hft.choose_spec.choose_spec.choose_spec hv`. Establish `hbor : ∀ {T : Type} [CommRing T] [IsReduced T] [Algebra c.F T] (t : Ix Dw → Tˣ) (v v' : FrPt Xo c T), FrBor t v v' → evR Xo c g v' = ((∏ i, t i ^ GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw a i : Tˣ) : T) * evR Xo c g v`. Introduce `T _ _ _ t v v' hv`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `FinRd.evalAt_bor_zpow hB (GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw a) hg.1 (fun p t y y' hb => by rw [hg.2 p t y y' hb, Units.coe_prod]) T t v v' (hA T v) (hA T v') hv`. Take `⟨q, χ, u, hu⟩` from `hA C.R C.y`. Use `⟨χ (g q u), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hbor C.t _ _ C.bor`. Rewrite `h1` using `[key q (C.R.val.comp χ) u C.yg (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ C.R.val hu C.gen)]`.
-
-Conclude with `h1`. Rewrite using `[hbor t _ _ hb, key q (ψ.comp χ) u z (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ ψ hu hz), AlgHom.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_value {h : GenFrEx Xo c} (C : GlobalTheory.Reg.FChart h) {L : Type} [Field L] [Algebra c.F L]
     (ψ : C.R →ₐ[c.F] L) (z w : FrPt Xo c L) (t : Ix Dw → Lˣ) (hz : FrMap ψ C.y z) (hb : FrBor t z w)
@@ -61,7 +59,7 @@ theorem chart_value {h : GenFrEx Xo c} (C : GlobalTheory.Reg.FChart h) {L : Type
   · rw [hbor t _ _ hb, key q (ψ.comp χ) u z (ReciprocityTheory.ChartRestriction.G.PullbackSections.frMap_trans χ ψ hu hz), AlgHom.comp_apply]
 
 /- English proof (translation)
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Break down `i with _ | x` into its components or cases. Simplify using `[GlobalTheory.CompanionTheory.Ar.Rec.exZ]`. Simplify using `[GlobalTheory.CompanionTheory.Ar.Rec.exZ]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem prod_exZ_zero {M : Type} [CommGroup M] (t : Ix Dw → M) : ∏ i, t i ^ GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw (0 : WZ E) i = 1 := by
   refine Finset.prod_eq_one fun i _ => ?_
@@ -70,11 +68,11 @@ theorem prod_exZ_zero {M : Type} [CommGroup M] (t : Ix Dw → M) : ∏ i, t i ^ 
   · simp [GlobalTheory.CompanionTheory.Ar.Rec.exZ]
 
 /- English proof (translation)
-Take `⟨hfn, hfb⟩` from `hf`. Take `⟨hgn, hgb⟩` from `hg`. Use `⟨fun p q φ y z hyz => ?_, fun p t y y' hb => ?_⟩` and prove the remaining obligations. Use `show f q z * g q z = φ (f p y * g p y)`. Rewrite using `[hfn p q φ y z hyz, hgn p q φ y z hyz, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show f p y' * g p y' = _ * (f p y * g p y)`. Rewrite using `[hfb p t y y' hb, hgb p t y y' hb]`. Establish `hex : ∀ i, GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw (a + b) i = GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw a i + GlobalTheory.CompanionTheory.Ar.Rec.exZ Dw b i`. Introduce `i`. Apply the tactic sequence `rcases i with _ | x <;> simp [GlobalTheory.CompanionTheory.Ar.Rec.exZ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [hex, zpow_add, Units.val_mul, Finset.prod_mul_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem mul_mem_secZ' {a b : WZ E} {f g : Rul Xo c} (hf : f ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c a)
     (hg : g ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c b) : f * g ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c (a + b) := by
@@ -93,7 +91,7 @@ private theorem mul_mem_secZ' {a b : WZ E} {f g : Rul Xo c} (hf : f ∈ GlobalTh
     ring
 
 /- English proof (translation)
-Use `⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩` and prove the remaining obligations. Use `show (1 : q.R) = φ 1`. Conclude with `(map_one φ).symm`. Use `show (1 : p.R) = _ * 1`. Rewrite using `[mul_one, ← Units.coe_prod, prod_exZ_zero, Units.val_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_secZ_zero' : (1 : Rul Xo c) ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c (0 : WZ E) := by
   refine ⟨fun p q φ y z _ => ?_, fun p t y y' _ => ?_⟩
@@ -103,7 +101,7 @@ private theorem one_mem_secZ_zero' : (1 : Rul Xo c) ∈ GlobalTheory.CompanionTh
     rw [mul_one, ← Units.coe_prod, prod_exZ_zero, Units.val_one]
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.evC Formalism.L2.Pj.evR`. Conclude with `Formalism.L2.Pj.evalAt_mul _ _ f g _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evC_mul_geometry (h : GenFrEx Xo c) (Z : Comp Xo c) (f g : Rul Xo c) :
     evC h Z (f * g) = evC h Z f * evC h Z g := by
@@ -111,7 +109,7 @@ private theorem evC_mul_geometry (h : GenFrEx Xo c) (Z : Comp Xo c) (f g : Rul X
   exact Formalism.L2.Pj.evalAt_mul _ _ f g _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.evC Formalism.L2.Pj.evR`. Conclude with `Formalism.L2.Pj.evalAt_add _ _ f g _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evC_add' (h : GenFrEx Xo c) (Z : Comp Xo c) (f g : Rul Xo c) :
     evC h Z (f + g) = evC h Z f + evC h Z g := by
@@ -119,14 +117,14 @@ private theorem evC_add' (h : GenFrEx Xo c) (Z : Comp Xo c) (f g : Rul Xo c) :
   exact Formalism.L2.Pj.evalAt_add _ _ f g _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.evC Formalism.L2.Pj.evR`. Conclude with `Formalism.L2.Pj.evalAt_zero _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evC_zero' (h : GenFrEx Xo c) (Z : Comp Xo c) : evC h Z (0 : Rul Xo c) = 0 := by
   unfold Formalism.L2.Pj.evC Formalism.L2.Pj.evR
   exact Formalism.L2.Pj.evalAt_zero _ _ _
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.evC Formalism.L2.Pj.evR`. Conclude with `Formalism.L2.Pj.evalAt_one _ _ _ (hT Z)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evC_one_of_genFromTest {h : GenFrEx Xo c} (hT : GenFromTest Xo c h) (Z : Comp Xo c) :
     evC h Z (1 : Rul Xo c) = 1 := by
@@ -134,7 +132,7 @@ private theorem evC_one_of_genFromTest {h : GenFrEx Xo c} (hT : GenFromTest Xo c
   exact Formalism.L2.Pj.evalAt_one _ _ _ (hT Z)
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.evC Formalism.L2.Pj.evR`. Conclude with `Formalism.L2.Pj.evalAt_smul _ _ k f _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem evC_smul' (h : GenFrEx Xo c) (Z : Comp Xo c) (k : c.F) (f : Rul Xo c) :
     evC h Z (k • f) = algebraMap c.F (Om Z) k * evC h Z f := by
@@ -142,19 +140,19 @@ private theorem evC_smul' (h : GenFrEx Xo c) (Z : Comp Xo c) (k : c.F) (f : Rul 
   exact Formalism.L2.Pj.evalAt_smul _ _ k f _
 
 /- English proof (translation)
-Establish `hx : x ∈ (⊤ : IntermediateField c.F (Om Z))` using `IntermediateField.mem_top`. Rewrite `hx` using `[← hB.2]`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, g j, g 0, hg j, hg 0, hB.1, div_mul_cancel₀ _ hB.1⟩`. Consider the case `algebraMap k`. Use `⟨0, k • 1, 1, Submodule.smul_mem _ k one_mem_secZ_zero', one_mem_secZ_zero', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[evC_one_of_genFromTest hT]`. Conclude with `one_ne_zero`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evC_smul', evC_one_of_genFromTest hT]`. Consider the case `add x y _ _ ihx ihy`. Take `⟨u1, f1, f1', hf1, hf1', h1, e1⟩` from `ihx`. Take `⟨u2, f2, f2', hf2, hf2', h2, e2⟩` from `ihy`. Use `⟨u1 + u2, f1 * f2' + f2 * f1', f1' * f2', add_mem (mul_mem_secZ' hf1 hf2') (by rw [add_comm u1 u2]; exact mul_mem_secZ' hf2 hf1'), mul_mem_secZ' hf1' hf2', ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[evC_mul_geometry]`. Conclude with `mul_ne_zero h1 h2`. Rewrite using `[evC_add', evC_mul_geometry, evC_mul_geometry, evC_mul_geometry, ← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inv x _ ihx`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨u, f, f', hf, hf', h0, e⟩` from `ihx`. Distinguish the cases in `hx0 : x = 0`. Conclude with `⟨u, 0, f', Submodule.zero_mem _, hf', h0, by rw [hx0, inv_zero, zero_mul, evC_zero']⟩`. Use `⟨u, f', f, hf', hf, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← e]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `mul_ne_zero hx0 h0`. Rewrite using `[← e, ← mul_assoc, inv_mul_cancel₀ hx0, one_mul]`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨u1, f1, f1', hf1, hf1', h1, e1⟩` from `ihx`. Take `⟨u2, f2, f2', hf2, hf2', h2, e2⟩` from `ihy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u1 + u2, f1 * f2, f1' * f2', mul_mem_secZ' hf1 hf2, mul_mem_secZ' hf1' hf2', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[evC_mul_geometry]`. Conclude with `mul_ne_zero h1 h2`. Rewrite using `[evC_mul_geometry, evC_mul_geometry, ← e1, ← e2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_ratio {h : GenFrEx Xo c} (hT : GenFromTest Xo c h) {Z : Comp Xo c} {a : WZ E} {N : ℕ}
     {g : Fin (N + 1) → Rul Xo c} (hg : ∀ j, g j ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c a) (hB : BirOn h Z g) (x : Om Z) :
@@ -193,19 +191,19 @@ theorem exists_ratio {h : GenFrEx Xo c} (hT : GenFromTest Xo c h) {Z : Comp Xo c
     · rw [evC_mul_geometry, evC_mul_geometry, ← e1, ← e2]; ring
 
 /- English proof (translation)
-Take `⟨hL, -, -, hA⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨C, ψ, z, t', hz, hb⟩` from `hA h L y`. Establish `hZ : C.Z = Z`. Assume the negation of the conclusion as `hne`. Take `⟨ε, hε, e1, e0⟩` from `hE C.Z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hv⟩` from `chart_value C ψ z y t' hz hb hε`. Rewrite `hs` using `[prod_exZ_zero, e1, Units.val_one, one_mul]`. Establish `hs1 : s = 1` using `Subtype.ext hs`. Rewrite `hv` using `[hrd 0 ε hε, e0 Z (Ne.symm hne), map_zero, mul_zero, prod_exZ_zero, hs1, map_one, Units.val_one, one_mul]`. Conclude with `zero_ne_one hv`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hZ` using the available equality. Establish `hψ : φ.comp C.R.val = ψ`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨u, f, f', hf, hf', hn, e⟩` from `exists_ratio hT hg hB (x : Om C.Z)`. Take `⟨sf, hsf, hvf⟩` from `chart_value C ψ z y t' hz hb hf`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨sg, hsg, hvg⟩` from `chart_value C ψ z y t' hz hb hf'`. Establish `hs : sf = x * sg`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (sf : Om C.Z) = (x : Om C.Z) * (sg : Om C.Z)`. Rewrite using `[hsf, hsg, ← e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hne : evR Xo c f' y ≠ 0`. Rewrite using `[hrd u f' hf']`. Conclude with `mul_ne_zero (Units.ne_zero _) ((map_ne_zero φ).2 hn)`. Apply `mul_right_cancel₀ hne` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show φ (x : Om C.Z) * _ = _`. Establish `h1 : φ (x : Om C.Z) * evR Xo c f' y = evR Xo c f y`. Rewrite using `[hrd u f hf, hrd u f' hf', ← e, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, hvf, hvg, hs, map_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hz' : FrMap φ C.yg z` using `frMap_cancel _ _ _ C.R.val φ C.y C.yg z C.gen (by rw [hψ]; exact hz)`. Take `⟨y', hy'⟩` from `hL.bc _ _ φ (genFr h C.Z)`. Take `⟨-, hmul, -, -⟩` from `GlobalTheory.Reg.BorelGroupoid.frBor_groupoid E H Dw l Xo c L`. Conclude with `⟨y', _, hy', hmul _ _ _ _ _ (frBorBC _ _ φ C.t _ _ y' z C.bor hy' hz') hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem frame_of_birOn {h : GenFrEx Xo c} (hT : GenFromTest Xo c h) {Z : Comp Xo c} {L : Type} [Field L]
     [Algebra c.F L] (y : FrPt Xo c L) (φ : Om Z →ₐ[c.F] L) (t : Ix Dw → Lˣ)
@@ -250,9 +248,9 @@ theorem frame_of_birOn {h : GenFrEx Xo c} (hT : GenFromTest Xo c h) {Z : Comp Xo
   exact ⟨y', _, hy', hmul _ _ _ _ _ (frBorBC _ _ φ C.t _ _ y' z C.bor hy' hz') hb⟩
 
 /- English proof (translation)
-Take `⟨hnat, hw⟩` from `hC.e_sec Z'`. Use `⟨e Z', ⟨hnat, fun p t y y' hb => ?_⟩, (hC.e_val Z').1, (hC.e_val Z').2⟩` and prove the remaining obligations. Establish `hw0 : Formalism.L2.Pj.wchar (Formalism.L2.Pj.ex Dw 0 0) t = 1`. Unfold `Formalism.L2.Pj.wchar`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases i with _ | x <;> simp [Formalism.L2.Pj.ex]`. Rewrite using `[hw p t y y' hb, hw0, ← Units.coe_prod, prod_exZ_zero, Units.val_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem indicators {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {h : GenFrEx Xo c} {e : Comp Xo c → Rul Xo c}
     (hC : CompLaws U h e) (Z' : Comp Xo c) : ∃ ε ∈ GlobalTheory.CompanionTheory.Ar.Rec.secZ Xo c (0 : WZ E), evC h Z' ε = 1 ∧
@@ -273,7 +271,7 @@ variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S : Fin
   {Or : RootOrigin Y S RM Fx} {Fr : Small.GenFrame Or} {h : GenFrEx Xo c} {Z : Comp Xo c}
 
 /- English proof (translation)
-Use `letI := Small.cstAlg Or`. Conclude with `frame_of_birOn hC.genT Fr.y₀ (FinTr.phiAlg Rd) Rd.t (fun a f hf => Rd.rd_eq a f hf) (indicators hC) hg hB`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem linked_of_birOn {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {e : Comp Xo c → Rul Xo c}
     (hC : CompLaws U h e) (Rd : Reading Fr h Z) {a : WZ E} {N : ℕ} {g : Fin (N + 1) → Rul Xo c}
@@ -285,7 +283,7 @@ theorem linked_of_birOn {r : ℕ} {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {e
 end Read
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H Dw l Xo c r U h e hC Y₀ _ T hO O _ β Y SS RM Sys Fx Or Fr Z Rd`. Take `⟨a, N, g, hg, hB⟩` from `GlobalTheory.T.good_origin_component_sections hG E H Dw l Xo c r U h e hC Y₀ T hO Z`. Conclude with `linked_of_birOn hC Rd hg hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem linked : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (h : GenFrEx Xo c) (e : Comp Xo c → Rul Xo c), CompLaws U h e → ∀ (Y₀ : Model Xo c (algebraMap (𝓞 c.F) c.F)) [DecidableEq (CMType H)] (T : Top.RootTower (CMType H) (Dw.p + Dw.q)), Top.GoodOrigin Y₀ T → ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (SS : Finset ℕ) (RM : Top.RootModel (CMType H) (Dw.p + Dw.q)) (Sys : PB.AnSys (Top.dimFl (CMType H) (Dw.p + Dw.q)) (Option (RootIx Dw))) (Fx : FixedData Y Sys) (Or : RootOrigin Y SS RM Fx) (Fr : Small.GenFrame Or) (Z : Comp Xo c) (Rd : Reading Fr h Z), FinTr.Linked Rd := by
   intro hG E _ _ _ H Dw l Xo c r U h e hC Y₀ _ T hO O _ β Y SS RM Sys Fx Or Fr Z Rd

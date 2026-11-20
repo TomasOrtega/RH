@@ -17,7 +17,7 @@ namespace GlobalTheory.LatMulAt
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : t * a ∈ I⁻¹ * I` using `FractionalIdeal.mul_mem_mul ht ha`. Rewrite `h1` using `[FractionalIdeal.inv_eq, mul_comm]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 (FractionalIdeal.mul_one_div_le_one h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_of_mem_inv {I : GlobalTheory.SeeSaw.FI D} {a t : D.host.E} (ha : a ∈ I) (ht : t ∈ I⁻¹) :
     ∃ r : 𝓞 D.host.E, algebraMap (𝓞 D.host.E) D.host.E r = t * a := by
@@ -26,9 +26,9 @@ theorem exists_int_of_mem_inv {I : GlobalTheory.SeeSaw.FI D} {a t : D.host.E} (h
   exact (FractionalIdeal.mem_one_iff _).1 (FractionalIdeal.mul_one_div_le_one h1)
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_int_of_mem_inv ha ht`. Use `AddSubgroup.subset_closure ⟨β * α, ?_, ?_, 1, rfl, r • x, L.smul_mem r hx, ?_⟩` and prove the remaining obligations. Introduce `w`. Rewrite using `[map_mul]`. Conclude with `mul_mem (hβ w) (hα w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Rewrite using `[map_mul, hβv w hw, zero_mul]`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, Algebra.TensorProduct.tmul_mul_tmul, ← GlobalTheory.FinPlLoc.pairA_mul, Pi.smul_apply, Algebra.smul_def, hr, one_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_mul (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (I : GlobalTheory.SeeSaw.FI D) (v : GlobalTheory.FinPl.Pl D)
     {α β : Af D.host.F} (hα : α ∈ intAf D.host.F) (hβ : β ∈ intAf D.host.F)
@@ -48,13 +48,13 @@ theorem gen_mul (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (I : GlobalTheory.See
       Algebra.smul_def, hr, one_mul, mul_assoc]
 
 /- English proof (translation)
-Introduce `D S L I v y hy`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, hα, hαv, a, ha, x, hx, rfl⟩` from `hy`. Use `⟨fun i => GlobalTheory.FinPlLoc.pair_mem_idAt _ α hαv _, fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `hs using AddSubgroup.closure_induction with`. Consider the case `mem s hs`. Take `⟨β, hβ, hβv, t, ht, rfl⟩` from `hs`. Conclude with `gen_mul S L I v hα hβ hαv hβv ha ht hx`. Consider the case `zero => rw [zero_smul]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add s s' _ _ h h' => rw [add_smul]`. Conclude with `add_mem h h'`. Consider the case `neg s _ h => rw [neg_smul]`. Conclude with `neg_mem h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨fun i => zero_mem _, fun s _ => by rw [smul_zero]; exact zero_mem _⟩`. Consider the case `add y z _ _ hy hz`. Conclude with `⟨fun i => add_mem (hy.1 i) (hz.1 i), fun s hs => by rw [smul_add]; exact add_mem (hy.2 s hs) (hz.2 s hs)⟩`. Consider the case `neg y _ hy`. Conclude with `⟨fun i => neg_mem (hy.1 i), fun s hs => by rw [smul_neg]; exact neg_mem (hy.2 s hs)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem latMul_inv_smul : ∀ {D : D7} (S : HSp D) (L : GlobalTheory.FinPl.Lat S) (I : GlobalTheory.SeeSaw.FI D) (v : GlobalTheory.FinPl.Pl D) (y : Fin S.rank → AE D), y ∈ GlobalTheory.FinPl.latMul S {a | a ∈ I} L (· = v) → (∀ i, y i ∈ idAt D (· = v)) ∧ ∀ s ∈ GlobalTheory.SeeSaw.idV I⁻¹ v, s • y ∈ latV S L (· = v) := by
   intro D S L I v y hy

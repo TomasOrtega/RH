@@ -12,7 +12,7 @@ namespace GlobalTheory
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
 
 /- English proof (translation)
-Take `⟨p, hp, q, hq, h⟩` from `W.exists_add_mem_mem_orthogonal u`. Use `⟨p, hp, q, hq, h, ?_⟩` and prove the remaining obligations. Rewrite using `[h, norm_add_sq_real, Submodule.inner_right_of_mem_orthogonal hp hq]`. Use polynomial arithmetic with `[sq_nonneg ‖p‖]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_add_orthogonal_norm_sq_le (W : Submodule ℝ E) (u : E) :
     ∃ p ∈ W, ∃ q ∈ Wᗮ, u = p + q ∧ ‖q‖ ^ 2 ≤ ‖u‖ ^ 2 := by
@@ -22,15 +22,15 @@ theorem exists_add_orthogonal_norm_sq_le (W : Submodule ℝ E) (u : E) :
   nlinarith [sq_nonneg ‖p‖]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on generalizing x with`. Consider the case `empty`. Use `⟨0, zero_mem _, ?_⟩` and prove the remaining obligations. Establish `: x = 0` using `by simpa using hx`. Simplify using `[this]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `insert a s ha ih`. Rewrite `hx`, the goal using `[Finset.coe_insert, Set.image_insert_eq]`. Take `⟨t, y, hy, rfl⟩` from `mem_span_insert.1 hx`. Take `⟨p, hp, q, hq, hv, hle⟩` from `exists_add_orthogonal_norm_sq_le (span ℝ (v '' s)) (v a)`. Establish `hy' : y + (t - round t) • p ∈ span ℝ (v '' s)` using `add_mem hy (smul_mem _ _ hp)`.
+Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hwle⟩` from `ih hy'`. Establish `hwR : w ∈ span ℝ (v '' s)` using `span_subset_span ℤ ℝ _ hw`. Use `⟨round t • v a + w, mem_span_insert.2 ⟨_, _, hw, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `he : t • v a + y - (round t • v a + w) = (y + (t - round t) • p - w) + (t - round t) • q`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ, hv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `module`. Rewrite using `[he, norm_add_sq_real, Submodule.inner_right_of_mem_orthogonal (sub_mem hy' hwR) (smul_mem _ _ hq), Finset.sum_insert ha, norm_smul, mul_pow, Real.norm_eq_abs]`. Establish `h1 : |t - round t| ^ 2 ≤ 1 / 4`. Use `pow_le_pow_left₀ (abs_nonneg _) (abs_sub_round t) 2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[mul_le_mul h1 hle (sq_nonneg _) (by norm_num : (0 : ℝ) ≤ 1 / 4)]`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_span_int_norm_sub_sq_le_sum {ι : Type*} (v : ι → E) (s : Finset ι) {x : E}
     (hx : x ∈ span ℝ (v '' s)) :
@@ -61,27 +61,23 @@ theorem exists_mem_span_int_norm_sub_sq_le_sum {ι : Type*} (v : ι → E) (s : 
     nlinarith [mul_le_mul h1 hle (sq_nonneg _) (by norm_num : (0 : ℝ) ≤ 1 / 4)]
 
 /- English proof (translation)
-Use `set W := span ℝ (v '' s) with hW`. Use `set C := ‖u‖ ^ 2 + (1 / 4) * ∑ i ∈ s, ‖v i‖ ^ 2 with hC`. Take `⟨p, hp, q, hq, hupq, hle⟩` from `exists_add_orthogonal_norm_sq_le W u`. Establish `hZ : span ℤ (v '' s) ≤ L` using `span_le.2 (by rintro _ ⟨i, hi, rfl⟩; exact hv i hi)`. Establish `red : ∀ (t : ℝ) (y : E), y ∈ W → t • u + y ∈ L → 0 < t → t ≤ 1 → ∃ y' ∈ W, t • u + y' ∈ L ∧ ‖t • u + y'‖ ^ 2 ≤ C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t y hy hL h0 h1`. Establish `hy' : y + t • p ∈ W` using `add_mem hy (smul_mem _ _ hp)`. Take `⟨w, hw, hwle⟩` from `exists_mem_span_int_norm_sub_sq_le_sum v s hy'`. Establish `hwR : w ∈ W` using `span_subset_span ℤ ℝ _ hw`. Use `⟨y - w, sub_mem hy hwR, by rw [← add_sub_assoc]; exact sub_mem hL (hZ hw), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : t • u + (y - w) = (y + t • p - w) + t • q` using `by rw [hupq]; module`. Rewrite using `[he, norm_add_sq_real, Submodule.inner_right_of_mem_orthogonal (sub_mem hy' hwR) (smul_mem _ _ hq), norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Establish `h2 : t ^ 2 ≤ 1` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul h2 hle (sq_nonneg _) zero_le_one]`. Establish `uniq : ∀ (t t' : ℝ) (y y' : E), y ∈ W → y' ∈ W → t • u + y = t' • u + y' → t = t'`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `t t' y y' hy hy' h`. Assume the negation of the conclusion as `hne`. Apply `hu` to reduce the goal to its premises. Establish `: u = (t - t')⁻¹ • (y' - y)`. Rewrite using `[eq_inv_smul_iff₀ (sub_ne_zero.2 hne), sub_smul, sub_eq_sub_iff_add_eq_add, h, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[this]`. Conclude with `smul_mem _ _ (sub_mem hy' hy)`. Set `T : Set ℝ` to `{t | 0 < t ∧ t ≤ 1 ∧ ∃ y ∈ W, t • u + y ∈ L ∧ ‖t • u + y‖ ^ 2 ≤ C}`. Establish `hT : T.Finite` using `by choose! f hfW hfL hfC using fun (t : ℝ) (ht : t ∈ T) => ht.2.2`. Use `Set.Finite.of_injOn (f := fun t => t • u + f t) ?_ ?_ (finite_mem_and_norm_le L √C)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun t ht => ⟨hfL t ht, Real.le_sqrt_of_sq_le (hfC t ht)⟩`. Conclude with `fun t ht t' ht' h => uniq _ _ _ _ (hfW t ht) (hfW t' ht') h`. Establish `hT1 : (1 : ℝ) ∈ T` using `⟨one_pos, le_rfl, red 1 0 (zero_mem _) (by simpa using huL) one_pos le_rfl⟩`. Take `⟨t₀, ⟨h0, h1, y₀, hy₀, hbL, hbC⟩, hmin⟩` from `Set.exists_min_image T id hT ⟨1, hT1⟩`. Use `⟨t₀ • u + y₀, le_antisymm ?_ (sup_le ?_ ?_), hbC⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `x ⟨hxL, hx⟩`. Take `⟨t, y, hy, rfl⟩` from `mem_span_insert.1 hx`. Use `set k : ℤ := ⌊t / t₀⌋ with hk`. Establish `hk1 : k * t₀ ≤ t` using `(le_div_iff₀ h0).1 (Int.floor_le _)`. Establish `hk2 : t < (k + 1) * t₀` using `(div_lt_iff₀ h0).1 (Int.lt_floor_add_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : t • u + y - k • (t₀ • u + y₀) = (t - k * t₀) • u + (y - (k : ℝ) • y₀)`. Rewrite using `[← Int.cast_smul_eq_zsmul ℝ]`. Use `module`. Establish `hyW : y - (k : ℝ) • y₀ ∈ W` using `sub_mem hy (smul_mem _ _ hy₀)`. Establish `hL' : (t - k * t₀) • u + (y - (k : ℝ) • y₀) ∈ L` using `he ▸ sub_mem hxL (smul_mem _ _ hbL)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : t - k * t₀ = 0`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < t - k * t₀` using `lt_of_le_of_ne (by linarith) (Ne.symm hne)`. Establish `hlt : t - k * t₀ < t₀` using `by linarith`. Conclude with `absurd (hmin _ ⟨hpos, by linarith, red _ _ hyW hL' hpos (by linarith)⟩) (not_le.2 hlt)`.
-
-Rewrite `he`, `hL'` using `[hz, zero_smul, zero_add]`. Rewrite using `[eq_add_of_sub_eq' he]`. Conclude with `add_mem (mem_sup_left (smul_mem _ _ (mem_span_singleton_self _))) (mem_sup_right ⟨hL', hyW⟩)`. Rewrite using `[span_singleton_le_iff_mem]`. Conclude with `⟨hbL, mem_span_insert.2 ⟨_, _, hy₀, rfl⟩⟩`.
-
-Conclude with `inf_le_inf_left _ fun x hx => span_mono (Set.subset_insert _ _) hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_short_generator_inf_span_insert (L : Submodule ℤ E) [DiscreteTopology L]
     {ι : Type*} (v : ι → E) (s : Finset ι) (hv : ∀ i ∈ s, v i ∈ L) {u : E} (huL : u ∈ L)
@@ -148,19 +144,19 @@ theorem exists_short_generator_inf_span_insert (L : Submodule ℤ E) [DiscreteTo
   · exact inf_le_inf_left _ fun x hx => span_mono (Set.subset_insert _ _) hx
 
 /- English proof (translation)
-Use `choose b hb hbn using fun i : Fin n => exists_short_generator_inf_span_insert L v (Finset.Iio i) (fun j _ => hL j) (hL i) (hv.notMem_span_image (by simp))`. Establish `key : ∀ s : ℕ, span ℤ (b '' {i : Fin n | (i : ℕ) < s}) = L ⊓ (span ℝ (v '' {i : Fin n | (i : ℕ) < s})).restrictScalars ℤ`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ s ih`. Distinguish the cases in `hs : s < n`. Establish `h1 : {i : Fin n | (i : ℕ) < s + 1} = insert ⟨s, hs⟩ {i : Fin n | (i : ℕ) < s}`. Use extensionality with `i`. Simplify using `[Fin.ext_iff]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `h2 : ((Finset.Iio (⟨s, hs⟩ : Fin n) : Finset (Fin n)) : Set (Fin n)) = {i : Fin n | (i : ℕ) < s}`. Use extensionality with `i`. Simplify using `[Fin.lt_def]`. Establish `h3` using `hb ⟨s, hs⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h3` using `[h2]`. Rewrite using `[h1, Set.image_insert_eq, Set.image_insert_eq, h3, span_insert, ih]`. Establish `h1 : {i : Fin n | (i : ℕ) < s + 1} = {i : Fin n | (i : ℕ) < s}`. Use extensionality with `i`. Use `i.2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, ih]`. Use `⟨b, ?_, key, hbn⟩` and prove the remaining obligations. Establish `hu : {i : Fin n | (i : ℕ) < n} = Set.univ` using `by ext i; simp`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `key n`. Rewrite `h` using `[hu, Set.image_univ, Set.image_univ]`. Establish `hsp : span ℝ (Set.range b) = span ℝ (Set.range v)`. Use `le_antisymm (span_le.2 fun x hx => ?_) (span_le.2 ?_)` and prove the remaining obligations. Conclude with `(h.le (subset_span hx)).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `span_subset_span ℤ ℝ _ (h.ge ⟨hL i, subset_span ⟨i, rfl⟩⟩)`. Rewrite using `[linearIndependent_iff_card_eq_finrank_span, Set.finrank, hsp, finrank_span_eq_card hv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_short_family_adapted (L : Submodule ℤ E) [DiscreteTopology L] {n : ℕ}
     {v : Fin n → E} (hv : LinearIndependent ℝ v) (hL : ∀ i, v i ∈ L) :
@@ -200,11 +196,11 @@ theorem exists_short_family_adapted (L : Submodule ℤ E) [DiscreteTopology L] {
   rw [linearIndependent_iff_card_eq_finrank_span, Set.finrank, hsp, finrank_span_eq_card hv]
 
 /- English proof (translation)
-Take `⟨b, hb, hflag, hn⟩` from `exists_short_family_adapted L hv hL`. Establish `hu : {i : Fin n | (i : ℕ) < n} = Set.univ` using `by ext i; simp`. Establish `h` using `hflag n`. Rewrite `h` using `[hu, Set.image_univ, Set.image_univ, inf_eq_left.2 (show L ≤ _ from hspan)]`. Establish `hbZ : LinearIndependent ℤ b` using `hb.restrict_scalars' ℤ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : ∀ i, (((Basis.span hbZ).map (LinearEquiv.ofEq _ _ h) i : L) : E) = b i`. Introduce `i`. Simplify using the standard rewrite rules. Use `⟨(Basis.span hbZ).map (LinearEquiv.ofEq _ _ h), ?_, ?_⟩` and prove the remaining obligations. Simplify `hflag` using `only [hc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hn` using `only [hc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_short_basis_adapted_of_subset_span (L : Submodule ℤ E) [DiscreteTopology L] {n : ℕ}
     {v : Fin n → E} (hv : LinearIndependent ℝ v) (hL : ∀ i, v i ∈ L)
@@ -227,7 +223,7 @@ theorem exists_short_basis_adapted_of_subset_span (L : Submodule ℤ E) [Discret
 omit [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] in
 
 /- English proof (translation)
-Establish `h1 : ∑ j ∈ Finset.Iio i, ‖v j‖ ^ 2 ≤ (Finset.Iio i).card • r ^ 2` using `Finset.sum_le_card_nsmul _ _ _ fun j hj => pow_le_pow_left₀ (norm_nonneg _) (h j (Finset.mem_Iio.1 hj).le) 2`. Rewrite `h1` using `[Fin.card_Iio, nsmul_eq_mul]`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) (h i le_rfl) 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_sq_add_sum_Iio_le {n : ℕ} {v : Fin n → E} {i : Fin n} {r : ℝ}
     (h : ∀ j ≤ i, ‖v j‖ ≤ r) :

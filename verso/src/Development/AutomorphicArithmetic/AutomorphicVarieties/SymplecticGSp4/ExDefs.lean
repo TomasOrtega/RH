@@ -25,30 +25,30 @@ section
 variable {R R' : Type} [CommRing R] [CommRing R']
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[adj_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem adj_map' (f : R →+* R') (X : M4 R) : adj (f.mapMatrix X) = f.mapMatrix (adj X) := by
   ext i j
   simp [adj_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[RingHom.mapMatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem smul_map' (f : R →+* R') (a : R) (X : M4 R) : f.mapMatrix (a • X) = f a • f.mapMatrix X := by
   ext i j
   simp [RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Unfold `IsGSp at *`. Rewrite using `[adj_map', ← map_mul, h, smul_map', map_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGSp_map (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) : IsGSp (f ν) (f.mapMatrix g) := by
   unfold IsGSp at *
   rw [adj_map', ← map_mul, h, smul_map', map_one]
 
 /- English proof (translation)
-Rewrite using `[Polynomial.aeval_def, Polynomial.aeval_def, Polynomial.eval₂_map, Polynomial.hom_eval₂]`. Use `congr 1`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Use extensionality with `i j`. Distinguish the cases in `h : i = j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Matrix.algebraMap_eq_diagonal]`. Simplify using `[Matrix.algebraMap_eq_diagonal, Matrix.diagonal_apply, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem aeval_map' (f : R →+* R') (X : M4 R) (p : Polynomial R) :
     Polynomial.aeval (f.mapMatrix X) (p.map f) = f.mapMatrix (Polynomial.aeval X p) := by
@@ -62,7 +62,7 @@ theorem aeval_map' (f : R →+* R') (X : M4 R) (p : Polynomial R) :
   · simp [Matrix.algebraMap_eq_diagonal, Matrix.diagonal_apply, h]
 
 /- English proof (translation)
-Simplify using `only [prj]`. Rewrite using `[← aeval_map']`. Use `congr 1`. Simplify using `[Polynomial.map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem prj_map (f : R →+* R') (c : Fin 4 → R) (X : M4 R) (i : Fin 4) :
     prj (fun a => f (c a)) (f.mapMatrix X) i = f.mapMatrix (prj c X i) := by
@@ -72,9 +72,9 @@ theorem prj_map (f : R →+* R') (c : Fin 4 → R) (X : M4 R) (i : Fin 4) :
   simp [Polynomial.map_prod]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hr, hps, RingHom.mapMatrix_apply, Matrix.charpoly_map, h.charpoly, Polynomial.map_prod, Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Introduce `g i j hij`. Simplify using `only [hr, hps]`. Rewrite using `[prj_map, prj_map, ← map_mul, ← map_mul, h.stable g i j hij, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s hs i`. Simplify using `only [hr, hps]`. Establish `e : f.mapMatrix (r s) - f (ps i s) • (1 : M4 R') = f.mapMatrix (r s - ps i s • 1)`. Rewrite using `[map_sub, smul_map', map_one]`. Rewrite using `[e, prj_map, ← map_mul, ← map_mul, h.inert s hs i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_map {H : Type} [Group H] (f : R →+* R') {I : Subgroup H} {ps : Fin 4 → H → R} {s₀ : H}
     {r : H →* M4 R} {r' : H →* M4 R'} (hr : ∀ g, r' g = f.mapMatrix (r g)) {ps' : Fin 4 → H → R'}
@@ -99,9 +99,7 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] {R' : Type} [CommRing R'] [Algebra c.O R'] [IsCO c.O R']
 
 /- English proof (translation)
-Establish `hm : ∀ g, (ρ.map f).hom g = (f : R →+* R').mapMatrix (ρ.hom g)` using `fun g => by`. Use extensionality with `a b`. Conclude with `Lift.map_hom f ρ g a b`. Use `⟨fun g => ?_, ord_map (f : R →+* R') hm (fun i g => (f.commutes _).symm) h.2⟩` and prove the remaining obligations. Rewrite using `[hm, ← f.commutes]`.
-
-Conclude with `isGSp_map (f : R →+* R') (h.1 g)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condL_map (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt l) R) (h : D.condL R ρ) :
     D.condL R' (ρ.map f) := by
@@ -113,9 +111,7 @@ theorem condL_map (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt l) R) (h : D.c
   exact isGSp_map (f : R →+* R') (h.1 g)
 
 /- English proof (translation)
-Use `⟨fun g => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Use `isGSp_map (f : R →+* R') (h.1 g)` as an intermediate fact. Rewrite `this` using `[RingHom.coe_coe, f.commutes]`. Conclude with `this`. Use `show (f : R →+* R').mapMatrix (ρ.hom g) = 1`.
-
-Rewrite using `[h.2 g hg, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condP_map (p : ℕ) (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt p) R) (h : D.condP p R ρ) :
     D.condP p R' (ρ.map f) := by
@@ -127,9 +123,7 @@ theorem condP_map (p : ℕ) (f : R →ₐ[c.O] R') (ρ : Lift c.O (D.rbarAt p) R
     rw [h.2 g hg, map_one]
 
 /- English proof (translation)
-Introduce `g`. Establish `hm : (ρ.map f).hom g = (f : R →+* R').mapMatrix (ρ.hom g)`. Use extensionality with `a b`. Conclude with `Lift.map_hom f ρ g a b`. Rewrite using `[hm, ← f.commutes]`.
-
-Conclude with `isGSp_map (f : R →+* R') (h g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mult_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.Mult ρ.hom) : D.Mult (ρ.map f).hom := by
   intro g
@@ -140,7 +134,7 @@ theorem mult_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.Mult ρ.
   exact isGSp_map (f : R →+* R') (h g)
 
 /- English proof (translation)
-Introduce `A hA g hg h1`. Use `show (f : R →+* R').mapMatrix (ρ.hom g) = 1`. Rewrite using `[h A hA g hg h1, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unr_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.UnrT ρ.hom 1) :
     D.UnrT (ρ.map f).hom 1 := by
@@ -149,20 +143,20 @@ theorem unr_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.UnrT ρ.h
   rw [h A hA g hg h1, map_one]
 
 /- English proof (translation)
-Simplify using `only [Raw.hEl, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Lift.map_hom, map_add, map_mul, AlgHom.commutes]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hEl_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (i j : Fin 4) :
     D.hEl (ρ.map f).hom i j = f (D.hEl ρ.hom i j) := by
   simp only [Raw.hEl, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Lift.map_hom, map_add, map_mul, AlgHom.commutes]
 
 /- English proof (translation)
-The claim follows from `Lift.ext (MonoidHom.ext fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem loc_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (v : ℕ) :
     D.loc (ρ.map f) v = (D.loc ρ v).map f := Lift.ext (MonoidHom.ext fun _ => rfl)
 
 /- English proof (translation)
-Use `⟨fun i j hij => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Lift.map_hom, h.1 i j hij, map_zero]`. Rewrite using `[hEl_map, h.2.1, map_zero]`. Rewrite using `[hEl_map, h.2.2, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_map (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (h : D.Nrm ρ.hom) : D.Nrm (ρ.map f).hom := by
   refine ⟨fun i j hij => ?_, ?_, ?_⟩
@@ -177,7 +171,7 @@ end Ex
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ex.condL_map D f _ h.1, fun p hp => Ex.condP_map D p f _ (h.2 p hp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Raw.LocEqs.map {D : Raw Ω c} {R : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] {R' : Type} [CommRing R']
     [Algebra c.O R'] [IsCO c.O R'] {ρ : ∀ v : D.T, Lift c.O (D.rbarAt v) R} (h : D.LocEqs ρ) (f : R →ₐ[c.O] R') :

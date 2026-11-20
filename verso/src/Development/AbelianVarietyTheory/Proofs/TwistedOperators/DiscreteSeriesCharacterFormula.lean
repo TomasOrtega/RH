@@ -22,9 +22,9 @@ open GlobalTheory.HCChar GlobalTheory.Published GlobalTheory.LowestKTypeDetermin
 namespace GlobalTheory.DSCharLowest
 
 /- English proof (translation)
-Take `⟨c1, c2, c3, c4, c5⟩` from `h`. Use `⟨c1, c2, c3, c4, c5, h1, fun μ S hS => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, rfl⟩` from `h2 μ S hS`. Unfold `vNormSq`. Rewrite using `[add_right_comm, lowK_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `nsq_add_cone (strictAnti_add_rho hl.1).antitone hc` as an intermediate fact. Combine the linear relations using `[nsq_nonneg (∑ a, ∑ b, (c a b : ℝ) • root a b)]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isDS_of_cone {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hl : Formalism.QuantumDeterminants.IsHCParam lam) {V : Type}
     [NormedAddCommGroup V] [InnerProductSpace ℂ V] {σ : Matrix (Fin n) (Fin n) ℂ → (V →L[ℂ] V)} (h : IsSqIntIrr ε σ)
@@ -41,9 +41,9 @@ theorem isDS_of_cone {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} (hl :
   linarith [nsq_nonneg (∑ a, ∑ b, (c a b : ℝ) • root a b)]
 
 /- English proof (translation)
-Introduce `hadm han hreg hpar huniq n ε μ _ V _ _ _ lam σ hl hσ hU`. Establish `hA : IsAdmRep ε σ` using `GlobalTheory.T.admissible_unitary_K_finite.1 hadm n ε V σ hU hσ.2.2.2.1`. Establish `hF` using `(GlobalTheory.T.irreducible_admissible_finite_length han n ε V σ ⟨hσ.2.1, hA, hσ.2.2.2.1⟩).2`. Take `⟨Θ, hΘ⟩` from `hreg n ε μ V σ hA hF`. Take `⟨V₀, _, _, _, σ₀, h₀, h1, h2, Θ₀, hΘ₀, hval⟩` from `hpar n ε μ lam hl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT⟩` from `huniq n ε lam V₀ σ₀ V σ hl (isDS_of_cone hl h₀ h1 h2) hσ`. Establish `he : IsUnitEquiv (ujRep h₀.2.2.1) (ujRep hU)` using `⟨T, fun g v => hT _ g.2 v⟩`. Use `⟨Θ, hΘ, fun θ hθ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hval θ hθ]`. Conclude with `IsCharFn.unique isInducing_matCoord hΘ.1 (hΘ₀.of_isUnitEquiv he) hθ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discreteSeriesCharacter_of_parameter : GlobalTheory.Published.IrreducibleUnitaryAdmissible →
     GlobalTheory.Published.KFiniteCoefficientsAnalytic → GlobalTheory.Published.CharacterRegularityFiniteLength →

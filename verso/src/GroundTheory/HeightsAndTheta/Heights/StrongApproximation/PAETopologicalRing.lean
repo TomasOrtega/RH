@@ -15,9 +15,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ h2`. Assume the negation of the conclusion as `h`. Establish `hc2 : c * c ≠ c` using `fun h' => hc (by simpa using congrArg (c⁻¹ * ·) h')`. Establish `hcard : ({1, c, c * c} : Finset (E ≃ₐ[F] E)).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair (Ne.symm hc2)]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or]`. Conclude with `⟨Ne.symm hc, Ne.symm h⟩`. Establish `hle` using `Finset.card_le_univ ({1, c, c * c} : Finset (E ≃ₐ[F] E))`. Use `AlgEquiv.card_le (F := F) (K := E)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem AETopologicalRing.aut_mul_self (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) :
     c * c = 1 := by
@@ -34,9 +34,9 @@ theorem AETopologicalRing.aut_mul_self (c : E ≃ₐ[F] E) (h2 : Module.finrank 
   omega
 
 /- English proof (translation)
-Establish `hcc` using `AETopologicalRing.aut_mul_self c h2 hc`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, c x ≠ x := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hc (AlgEquiv.ext h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨x - c x, ?_, sub_ne_zero.2 (Ne.symm hx)⟩` and prove the remaining obligations. Establish `hx2 : c (c x) = x` using `by rw [← AlgEquiv.mul_apply, hcc, AlgEquiv.one_apply]`. Rewrite using `[map_sub, hx2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem AETopologicalRing.exists_anti (c : E ≃ₐ[F] E) (h2 : Module.finrank F E = 2) (hc : c ≠ 1) :
     ∃ δ : E, c δ = -δ ∧ δ ≠ 0 := by
@@ -53,11 +53,11 @@ theorem AETopologicalRing.exists_anti (c : E ≃ₐ[F] E) (h2 : Module.finrank F
 omit [NumberField F] in
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `h'` using `congrArg c hst`. Simplify using `only [map_add, map_mul, AlgEquiv.commutes, hδ, map_zero] at h'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `ht : algebraMap F E t = 0`. Establish `: (2 * δ) * algebraMap F E t = 0` using `by linear_combination hst - h'`. Conclude with `(mul_eq_zero.1 this).resolve_left (mul_ne_zero two_ne_zero h0)`. Establish `ht' : t = 0` using `(map_eq_zero_iff _ (algebraMap F E).injective).1 ht`. Substitute `ht'` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero, zero_mul, add_zero] at hst`. Conclude with `⟨(map_eq_zero_iff _ (algebraMap F E).injective).1 hst, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AETopologicalRing.linearIndependent_one_anti (c : E ≃ₐ[F] E) {δ : E} (hδ : c δ = -δ)
     (h0 : δ ≠ 0) : LinearIndependent F ![(1 : E), δ] := by
@@ -80,7 +80,7 @@ def AETopologicalRing.sigALinear (c : E ≃ₐ[F] E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem AETopologicalRing.sigALinear_apply (c : E ≃ₐ[F] E) (a : AE F E) :
     AETopologicalRing.sigALinear c a = sigA c a := by
@@ -94,7 +94,7 @@ end
 open scoped RestrictedProduct in
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (T2Space (Πʳ v : HeightOneSpectrum (𝓞 F), [v.adicCompletion F, v.adicCompletionIntegers F]))`.
+A detailed English derivation is pending.
 -/
 theorem AETopologicalRing.t2Space_finiteAdeleRing (F : Type) [Field F] [NumberField F] :
     T2Space (FiniteAdeleRing (𝓞 F) F) :=
@@ -102,17 +102,17 @@ theorem AETopologicalRing.t2Space_finiteAdeleRing (F : Type) [Field F] [NumberFi
     [v.adicCompletion F, v.adicCompletionIntegers F]))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ c h2 hc _ _`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_eq_succ h2`. Establish `: IsTopologicalRing (AE F E)` using `IsModuleTopology.isTopologicalRing (FiniteAdeleRing (𝓞 F) F) (AE F E)`. Establish `hσ : Continuous (sigA c)`. Use `IsModuleTopology.continuous_of_linearMap (R := FiniteAdeleRing (𝓞 F) F) (AETopologicalRing.sigALinear c)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a`. Conclude with `(AETopologicalRing.sigALinear_apply c a).symm`. Take `⟨δ, hδ, h0⟩` from `AETopologicalRing.exists_anti c h2 hc`. Set `b : Module.Basis (Fin 2) F E` to `basisOfLinearIndependentOfCardEqFinrank (AETopologicalRing.linearIndependent_one_anti c hδ h0) (by simp [h2])`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B` to `Algebra.TensorProduct.basis (FiniteAdeleRing (𝓞 F) F) b`. Establish `hB0 : B 0 = (1 : AE F E)`. Simplify using `[B, b, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.one_def]`. Establish `hB1 : B 1 = inclA F E δ`. Simplify using `[B, b, Algebra.TensorProduct.basis_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `AETopologicalRing.t2Space_finiteAdeleRing F` as an intermediate fact. Establish `: T2Space (AE F E)` using `T2Space.of_injective_continuous B.equivFun.injective (IsModuleTopology.continuous_of_linearMap (R := FiniteAdeleRing (𝓞 F) F) B.equivFun.toLinearMap)`. Use `⟨inferInstance, hσ, ⟨δ, hδ, fun a => ⟨(B.repr a 0, B.repr a 1), ?_, ?_⟩⟩, fun N J => ?_⟩` and prove the remaining obligations. Use `B.sum_repr a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Fin.sum_univ_two, hB0, hB1]`. Conclude with `this.symm`. Introduce and unpack `⟨p₁, p₂⟩ hp`. Rewrite using `[hp, ← hB0, ← hB1]`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul : Continuous (fun p : Matrix (Fin N) (Fin N) (AE F E) × Matrix (Fin N) (Fin N) (AE F E) => p.1 * p.2)` using `continuous_fst.matrix_mul continuous_snd`. Establish `hform : Continuous (fun g : Matrix (Fin N) (Fin N) (AE F E) => gᵀ * J * g.map (sigA c))` using `(continuous_id.matrix_transpose.matrix_mul continuous_const).matrix_mul (continuous_id.matrix_map hσ)`. Establish `hdet : Continuous (fun g : Matrix (Fin N) (Fin N) (AE F E) => g.det)` using `continuous_id.matrix_det`. Conclude with `⟨hmul, hform, hdet, (isClosed_eq hdet continuous_const).inter (isClosed_eq hform continuous_const)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem AETopologicalRing.proof : AETopologicalRing.Statement := by
   intro F E _ _ _ _ _ c h2 hc _ _

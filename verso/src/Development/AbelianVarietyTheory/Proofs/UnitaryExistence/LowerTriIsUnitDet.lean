@@ -18,9 +18,9 @@ section Tri
 variable {S : Type} [CommRing S] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LowerTriangularMul.main`. Consider the case `exact _root_.GlobalTheory.LowerTriangularMul.main`. Consider the case `(apply _root_.GlobalTheory.LowerTriangularMul.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LowerTriangularMul.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LowerTriangularMul.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LowerTriangularMul.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem lowerTri_mul (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hB : ∀ i j, i < j → B i j = 0) : ∀ i j, i < j → (A * B) i j = 0 := by
@@ -33,7 +33,7 @@ theorem lowerTri_mul (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A
   | (intros; exact _root_.GlobalTheory.LowerTriangularMul.main ..)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single i (fun k _ hk => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hB k i h, mul_zero]`. Rewrite using `[hA i k h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerTri_mul_diag (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hB : ∀ i j, i < j → B i j = 0) (i : Fin n) : (A * B) i i = A i i * B i i := by
@@ -44,7 +44,7 @@ theorem lowerTri_mul_diag (A B : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j 
   · rw [hA i k h, zero_mul]
 
 /- English proof (translation)
-Establish `h : A.BlockTriangular OrderDual.toDual` using `fun i j hij => hA i j hij`. Rewrite using `[Matrix.det_of_lowerTriangular A h]`. Conclude with `IsUnit.prod_univ_iff.mpr hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lowerTri_isUnit_det (A : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hd : ∀ i, IsUnit (A i i)) : IsUnit A.det := by
@@ -53,7 +53,7 @@ theorem lowerTri_isUnit_det (A : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j 
   exact IsUnit.prod_univ_iff.mpr hd
 
 /- English proof (translation)
-Establish `h : A.BlockTriangular OrderDual.toDual` using `fun i j hij => hA i j hij`. Use `letI := Matrix.invertibleOfIsUnitDet A hd`. Establish `h'` using `Matrix.blockTriangular_inv_of_blockTriangular h`. Conclude with `fun i j hij => h' hij`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lowerTri_inv (A : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i j = 0)
     (hd : IsUnit A.det) : ∀ i j, i < j → A⁻¹ i j = 0 := by
@@ -65,11 +65,9 @@ theorem lowerTri_inv (A : Matrix (Fin n) (Fin n) S) (hA : ∀ i j, i < j → A i
 end Tri
 
 /- English proof (translation)
-Establish `hid : spMap (RingHom.id S) = 𝟙 _` using `by show Spec.map (𝟙 (CommRingCat.of S)) = _`. Conclude with `Spec.map_id _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hu, pm, h1, h2, h3⟩ choose cf hd hz hc using hu`. Use `⟨fun τ => Matrix.of (cf τ), fun τ i j h => hz τ i j h, hd, hx, hc, pm, h1, ?_, h3⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hid]`. Conclude with `h2.trans (Category.comp_id _).symm`. Introduce and unpack `⟨g, hz, hd, hx, hc, pm, h1, h2, h3⟩`. Use `⟨hx, fun τ i => ⟨g τ i, hd τ i, hz τ i, hc τ i⟩, pm, h1, ?_, h3⟩` and prove the remaining obligations. Rewrite `h2` using `[hid]`.
-
-Conclude with `h2.trans (Category.comp_id _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frBor_iff_frChg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
@@ -92,17 +90,17 @@ theorem frBor_iff_frChg {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
     exact h2.trans (Category.comp_id _)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ y y' y''`. Use `⟨frBor_iff_frChg y y', fun hx hu => ?_, fun t t' h h' => ?_, fun t h => ?_⟩` and prove the remaining obligations. Take `⟨g₀, a, -, -, -, hs⟩` from `(GlobalTheory.T.frameChange_exists_unique_of_same_point E H Dw l Xo c S y y').1 hx choose cf hd hz hc using hu`. Use `⟨fun k => match k with` and prove the remaining obligations. Consider the case `none => a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Consider the case `some ⟨τ, i⟩ => (hd τ i).unit, (frBor_iff_frChg y y' _).2 ⟨fun τ => Matrix.of (cf τ), fun τ i j h => hz τ i j h, fun τ i => ?_, hx, hc, hs⟩⟩`. Conclude with `(hd τ i).unit_spec.symm`. Take `⟨g, hz, hd, hc⟩` from `(frBor_iff_frChg y y' t).1 h`. Take `⟨g', hz', hd', hc'⟩` from `(frBor_iff_frChg y' y'' t').1 h'`. Use `(frBor_iff_frChg y y'' _).2 ⟨fun τ => g' τ * g τ, fun τ => lowerTri_mul _ _ (hz' τ) (hz τ), fun τ i => ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show (g' τ * g τ) i i = _`. Rewrite using `[lowerTri_mul_diag _ _ (hz' τ) (hz τ), hd, hd', Pi.mul_apply, Units.val_mul]`. Rewrite using `[Pi.mul_apply, Units.val_mul]`. Conclude with `(GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c S y y' y'').2 g g' _ _ hc hc'`. Take `⟨g, hz, hd, hc⟩` from `(frBor_iff_frChg y y' t).1 h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : ∀ τ, IsUnit (g τ).det` using `fun τ => lowerTri_isUnit_det _ (hz τ) fun i => by rw [hd]; exact Units.isUnit _`. Establish `hinv : ∀ τ, (g τ)⁻¹ * g τ = 1` using `fun τ => Matrix.nonsing_inv_mul _ (hdet τ)`. Establish `hzi : ∀ τ i j, i < j → (g τ)⁻¹ i j = 0` using `fun τ => lowerTri_inv _ (hz τ) (hdet τ)`. Take `⟨z, hzc, -⟩` from `GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c S y' (fun τ => (g τ)⁻¹) (t none)⁻¹ fun τ => Matrix.isUnit_nonsing_inv_det _ (hdet τ)`. Establish `h1` using `(GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c S y y' z).2 g _ _ _ hc hzc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hinv, Units.inv_mul] at h1`. Establish `h0` using `(GlobalTheory.T.frameChangeByMatrices_refl_and_comp E H Dw l Xo c S y y y).1`. Establish `hzy : z = y` using `(GlobalTheory.T.existsUnique_frameChangeByMatrices E H Dw l Xo c S y (fun _ => 1) 1 (fun τ => by simp)).unique h1 h0`. Substitute `hzy` using the available equality. Use `(frBor_iff_frChg y' z _).2 ⟨fun τ => (g τ)⁻¹, hzi, fun τ i => ?_, hzc⟩` and prove the remaining obligations.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `lowerTri_mul_diag _ _ (hzi τ) (hz τ) i`. Rewrite `h2` using `[hinv, Matrix.one_apply_eq, hd]`. Rewrite using `[Pi.inv_apply]`. Conclude with `Units.eq_inv_of_mul_eq_one_right h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem frBor_calculus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (y y' y'' : FrPt Xo c S), (∀ t : Ix Dw → Sˣ, FrBor t y y' ↔ ∃ g : (∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S), (∀ τ i j, i < j → g τ i j = 0) ∧ (∀ τ i, g τ i i = (t (some ⟨τ, i⟩) : S)) ∧ FrChg g (t none : S) y y') ∧ (y'.x = y.x → (∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → S, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧ IsCombAt y.x (y.u τ) cf (y'.u τ i)) → ∃ t : Ix Dw → Sˣ, FrBor t y y') ∧ (∀ t t' : Ix Dw → Sˣ, FrBor t y y' → FrBor t' y' y'' → FrBor (t' * t) y y'') ∧ (∀ t : Ix Dw → Sˣ, FrBor t y y' → FrBor t⁻¹ y' y) := by
   intro E _ _ _ H Dw l Xo c S _ _ y y' y''

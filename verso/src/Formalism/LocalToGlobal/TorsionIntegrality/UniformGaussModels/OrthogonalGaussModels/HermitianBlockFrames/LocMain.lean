@@ -10,77 +10,69 @@ open Formalism.L2.Th1.Top.FrP Jac
 
 set_option maxHeartbeats 400000 in
 /- English proof (translation)
-Introduce `l _ dK σ δ h5 hld hin hσ hδ hσδ n _ _ M₁ M₂ R₁ R₂ c hc hGram hmv`. Use `set S := setup h5 dK hld hin σ hσ δ hδ hσδ with hS`. Establish `hSσ : S.σ = σ` using `rfl`. Use `set M := lmat δ M₁ M₂ with hM`. Use `set Mb := lmat δ M₁ (-M₂) with hMb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMσ : M.map σ = Mb` using `lmat_map_σ σ δ hσδ M₁ M₂`. Establish `hMbσ : Mb.map σ = M` using `by rw [hMb, lmat_map_σ σ δ hσδ, neg_neg]`. Establish `hc0 : (c : MaximalUnramifiedExtension l) ≠ 0`. Establish `: c ≠ 0` using `by rintro rfl; simp at hc`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set H₀ : Matrix n n (MaximalUnramifiedExtension l) := (c : MaximalUnramifiedExtension l)⁻¹ • (lmat δ R₁ R₂).map σ with hH₀`. Establish `hE : Mbᵀ * bd4 H₀ * M = 1`. Establish `h1` using `congrArg (fun X => X.map σ) hGram`. Simplify using `only [Matrix.map_mul, transpose_map, blockDiag_map', hMσ, hMbσ] at h1`. Establish `h1' : ((c : MaximalUnramifiedExtension l) • (1 : Matrix (Fin 4 × n) (Fin 4 × n) (MaximalUnramifiedExtension l))).map σ = (c : MaximalUnramifiedExtension l) • 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Matrix.ext fun x y => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h1` using `[h1']`. Rewrite using `[hH₀, bd4_smul, Matrix.mul_smul, Matrix.smul_mul, h1, smul_smul, inv_mul_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hE2 : Mbᵀ * bd4 (H₀.map σ)ᵀ * M = 1`. Establish `h1` using `congrArg (fun X => (X.map σ)ᵀ) hE`. Simplify using `only [Matrix.map_mul, transpose_map, blockDiag_map', hMσ, hMbσ, transpose_mul, transpose_transpose, Matrix.map_one σ (map_zero σ) (map_one σ), transpose_one, bd4_transpose] at h1`. Simplify `h1` using `[Matrix.mul_assoc]`. Use `set Z : Matrix n (Fin 4 × n) (MaximalUnramifiedExtension l) := what₂ M 0 with hZ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set Zb : Matrix n (Fin 4 × n) (MaximalUnramifiedExtension l) := what₂ Mb 0 with hZb'`. Establish `hZb : Z.map σ = Zb` using `Matrix.ext fun i w => congrFun (congrFun hMσ (0, i)) w`. Establish `hZbσ : Zb.map σ = Z` using `Matrix.ext fun i w => congrFun (congrFun hMbσ (0, i)) w`. Establish `hZZ : Z * (Zbᵀ * H₀) = 1`. Establish `h1 : M * (Mbᵀ * bd4 H₀) = 1` using `mul_eq_one_comm.mp hE`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `congrFun (congrFun h1 (0, i)) (0, j)` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, mul_bd4_apply]`. Rewrite using `[← Matrix.mul_assoc, Matrix.mul_apply]`. Simplify using `only [Matrix.one_apply, Prod.mk.injEq, true_and] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_apply]`. Simplify `this` using `[Matrix.mul_apply, hZ, hZb', what₂]`. Take `⟨Γ, hΓ⟩ : ∃ Γ : Matrix (Fin 4 × n) (Fin 4 × n) (MaximalUnramifiedExtension l), Γ = Zbᵀ * H₀ * Z` from `⟨_, rfl⟩`. Use `choose U₁ U₂ hUint hUeq using hmv`. Use `set U : Fin 4 → Matrix (Fin 4 × n) (Fin 4 × n) (MaximalUnramifiedExtension l) := fun b => lmat δ (U₁ b) (U₂ b) with hU`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hUO : ∀ b x y, U b x y ∈ S.O` using `fun b x y => lmat_mem (dK := dK) (hδ := hδ) (U₁ b) (U₂ b) (hUint b) x y`. Establish `hZc : ∀ b, what₂ M b = Z * U b`. Introduce `b`. Use `Matrix.ext fun i w => ?_` and prove the remaining obligations. Use `congrFun (congrFun (hUeq b) (0, i)) w` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `this` using `[blockShift_mul_apply, if_pos rfl]`. Conclude with `this`. Establish `hrowsN : ∀ b, what₂ (M * U 0) b = if b = 0 then Z else 0`. Introduce `b`. Use `Matrix.ext fun i w => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun (congrFun (hUeq 0) (b, i)) w` as an intermediate fact. Rewrite `this` using `[blockShift_mul_apply]`. Rewrite using `[what₂, ← this]`. Apply the tactic sequence `split_ifs <;> rfl`. Establish `hΓU : Γ = ((U 0).map σ)ᵀ * U 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hN : ((M * U 0).map σ)ᵀ * bd4 H₀ * (M * U 0) = ((U 0).map σ)ᵀ * U 0`. Rewrite using `[Matrix.map_mul, hMσ, transpose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hE, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hN, transpose_mul_blockDiag_mul, Fin.sum_univ_four]`. Establish `hr : ∀ b, what₂ ((M * U 0).map σ) b = (what₂ (M * U 0) b).map σ` using `fun b => rfl`. Simplify using `only [hr, hrowsN]`. Simplify using `[hZb, hΓ]`. Establish `hΓI : S.IntM Γ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `w w'`. Rewrite using `[hΓU, Matrix.mul_apply]`. Conclude with `S.O.sum_mem fun k _ => S.O.mul_mem (S.hσO _ (hUO 0 k w)) (hUO 0 k w')`. Establish `hΓH : S.Herm Γ`. Introduce `w w'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hΓU]`. Simplify using `only [hSσ, Matrix.mul_apply, transpose_apply, Matrix.map_apply, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h` using `S.hσσ _ (hUO 0 k w)`. Rewrite `h` using `[hSσ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Establish `hidem : Γ * Γ = Γ`. Combine the equalities or inequalities in the displayed calculation. Establish `hΓUM : S.UM Γ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x hx hNU`. Use `choose y hyO hy using hNU`. Use `⟨y, hyO, ?_⟩` and prove the remaining obligations. Establish `hΓx : Γ *ᵥ x = S.p • y` using `funext fun i => by rw [hy i]; rfl`. Establish `h2 : Γ *ᵥ (Γ *ᵥ x) = Γ *ᵥ x` using `by rw [mulVec_mulVec, hidem]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h2` using `[hΓx, mulVec_smul]`. Rewrite using `[hΓx, h2]`. Take `⟨k, v, hvI, hvo, hvs⟩` from `S.jac Γ hΓI hΓH hΓUM`. Use `clear_value Z Zb H₀ M Mb`. Use `set A : Matrix (Fin 4 × n) (Fin k) (MaximalUnramifiedExtension l) := Matrix.of fun w c => v c w with hA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hAO : ∀ w c, A w c ∈ S.O` using `fun w c => hvI c w`. Establish `hAo : (A.map σ)ᵀ * Γ * A = 1`. Use `Matrix.ext fun c c' => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, ← hvo c c']`. Simplify using `only [JSetup.hf, JSetup.cv, hSσ, dotProduct, mulVec, Matrix.mul_apply, transpose_apply, Matrix.map_apply, hA, Matrix.of_apply, Finset.sum_mul, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hAs : Γ * A * ((A.map σ)ᵀ * Γ) = Γ` using `by conv_rhs => rw [← hvs]`. Use `Matrix.ext fun w w' => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Matrix.mul_apply, Matrix.sum_apply]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [vecMulVec_apply, Matrix.mul_apply, mulVec, dotProduct, vecMul, JSetup.cv, hSσ, transpose_apply, Matrix.map_apply, hA, Matrix.of_apply]`. Take `⟨V, hV⟩ : ∃ V : Matrix n (Fin k) (MaximalUnramifiedExtension l), V = Z * A` from `⟨_, rfl⟩`. Take `⟨Ti₀, hTi₀⟩ : ∃ Ti₀ : Matrix (Fin k) n (MaximalUnramifiedExtension l), Ti₀ = (V.map σ)ᵀ * H₀` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVσ : V.map σ = Zb * A.map σ` using `by rw [hV, Matrix.map_mul, hZb]`. Establish `hTZ : Ti₀ * Z = (A.map σ)ᵀ * Γ`. Rewrite using `[hTi₀, hVσ, transpose_mul, hΓ]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hTV : Ti₀ * V = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hV, ← Matrix.mul_assoc, hTZ, hAo]`. Establish `hZΓ : Z * Γ = Z`. Combine the equalities or inequalities in the displayed calculation. Establish `hGZ : Zbᵀ * H₀ = Γ * (Zbᵀ * H₀)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hTi₀' : Ti₀ = (A.map σ)ᵀ * (Zbᵀ * H₀)` using `by rw [hTi₀, hVσ, transpose_mul, Matrix.mul_assoc]`. Establish `hVT : V * Ti₀ = 1`. Establish `s1 : V * Ti₀ = Z * A * ((A.map σ)ᵀ * (Zbᵀ * H₀))` using `by rw [hV, hTi₀']`. Establish `s2 : Z * A * ((A.map σ)ᵀ * (Zbᵀ * H₀)) = Z * Γ * A * ((A.map σ)ᵀ * (Γ * (Zbᵀ * H₀)))` using `(congrArg (fun X => Z * A * ((A.map σ)ᵀ * X)) hGZ).trans (congrArg (fun X => X * A * ((A.map σ)ᵀ * (Γ * (Zbᵀ * H₀)))) hZΓ.symm)`. Establish `s3 : Z * Γ * A * ((A.map σ)ᵀ * (Γ * (Zbᵀ * H₀))) = Z * (Γ * A * ((A.map σ)ᵀ * Γ)) * (Zbᵀ * H₀)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `s4 : Z * (Γ * A * ((A.map σ)ᵀ * Γ)) * (Zbᵀ * H₀) = 1` using `by rw [hAs, hZΓ, hZZ]`. Conclude with `s1.trans (s2.trans (s3.trans s4))`. Establish `hk : Fintype.card n = k` using `card_eq_of_mul_eq_one V Ti₀ hVT hTV`. Use `set e : Fin k ≃ n := (Fintype.equivFinOfCardEq hk).symm with he`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set T : Matrix n n (MaximalUnramifiedExtension l) := V.submatrix id e.symm with hT`. Use `set Ti : Matrix n n (MaximalUnramifiedExtension l) := Ti₀.submatrix e.symm id with hTi`. Establish `hTTi : T * Ti = 1`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun hVT i) j`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h1` using `[Matrix.mul_apply]`. Rewrite using `[← h1, Matrix.mul_apply]`. Simplify using `only [hT, hTi, submatrix_apply, id_eq]`. Conclude with `Equiv.sum_comp e.symm (fun c => V i c * Ti₀ c j)`. Establish `hAσσ : (A.map σ).map σ = A` using `Matrix.ext fun w c => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `S.hσσ _ (hAO w c)`. Rewrite `h` using `[hSσ]`. Simplify using `using h`. Establish `hVσσ : (V.map σ).map σ = V` using `by rw [hVσ, Matrix.map_mul, hZbσ, hAσσ, hV]`. Establish `hTi₀σ : (Ti₀.map σ)ᵀ * Ti₀ = (H₀.map σ)ᵀ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (Ti₀.map σ)ᵀ = (H₀.map σ)ᵀ * V`. Rewrite using `[hTi₀, Matrix.map_mul, transpose_mul, transpose_map, transpose_transpose, hVσσ]`. Rewrite using `[h1, Matrix.mul_assoc, hVT, Matrix.mul_one]`. Establish `hTiσ : (Ti.map σ)ᵀ * Ti = (H₀.map σ)ᵀ`. Rewrite using `[← hTi₀σ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [hTi, Matrix.mul_apply, transpose_apply, Matrix.map_apply, submatrix_apply, id_eq]`. Conclude with `Equiv.sum_comp e.symm (fun c => σ (Ti₀ c i) * Ti₀ c j)`. Establish `hU1 : ((bd4 Ti * M).map σ)ᵀ * (bd4 Ti * M) = 1`. Rewrite using `[Matrix.map_mul, blockDiag_map', hMσ, transpose_mul, bd4_transpose]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [blockDiag_mul', hTiσ]; exact hE2`. Establish `hγ : ∀ b i w, (bd4 Ti * M) (b, i) w = ((A.map σ)ᵀ * Γ * U b) (e.symm i) w`. Introduce `b i w`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[blockDiag_mul_apply']`. Establish `h1 : (Ti * what₂ M b) i w = ∑ j, Ti i j * M (b, j) w` using `rfl`. Rewrite using `[← h1, hZc b, ← Matrix.mul_assoc, Matrix.mul_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun w' _ => ?_` and prove the remaining obligations. Use `congr 1`.
-
-Use `show (Ti₀ * Z) (e.symm i) w' = _`. Rewrite using `[hTZ]`. Establish `hγO : ∀ x y, (bd4 Ti * M) x y ∈ S.O`. Introduce and unpack `⟨b, i⟩ w`. Rewrite using `[hγ, Matrix.mul_apply]`.
-
-Use `S.O.sum_mem fun w' _ => S.O.mul_mem ?_ (hUO b w' w)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Use `S.O.sum_mem fun x _ => S.O.mul_mem ?_ (hΓI x w')` and prove the remaining obligations. Establish `h` using `S.hσO _ (hAO x (e.symm i))`. Rewrite `h` using `[hSσ]`.
-
-Simplify using `using h`. Use `⟨T, Ti, hTTi, ?_⟩` and prove the remaining obligations. Unfold `IsUnitaryK`. Use `⟨fun a b => ⟨norm_le_one_of_mem (dK := dK) (hδ := hδ) (hγO a b), ?_⟩, fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `S.hσσ _ (hγO a b)`.
-
-Rewrite `h` using `[hSσ]`. Then use the resulting hypothesis. Establish `h` using `congrFun (congrFun hU1 a) b`. Rewrite `h` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [transpose_apply, Matrix.map_apply] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem local_core' : LocCore := by
   intro l _ dK σ δ h5 hld hin hσ hδ hσδ n _ _ M₁ M₂ R₁ R₂ c hc hGram hmv

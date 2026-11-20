@@ -39,9 +39,9 @@ section Map
 variable {R S : Type}
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [substR]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Rewrite using `[map_mul, map_mul, map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[substR, map_sum, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_substR [CommRing R] [CommRing S] (f : R →+* S)
     (G : ∀ v, Fin (P.n' v) → Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) R) (Q : XR P R) :
@@ -54,7 +54,7 @@ theorem map_substR [CommRing R] [CommRing S] (f : R →+* S)
     simp [substR, map_sum, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `only [natActR, LinearMap.smul_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[MvPolynomial.smul_eq_C_mul, MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, map_substR]`. Use `congr 2`. Simplify using `only [map_prod, map_zpow₀, RingHom.map_det]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem map_natActR [Field R] [Field S] (f : R →+* S) (g : ∀ v, Fin (P.n' v) → GL (Fin (P.m + 1)) R) (Q : XR P R) :
     MvPolynomial.map f (natActR P R g Q) =
@@ -73,14 +73,14 @@ def reM (h : P.m + 1 = n) (A : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin (P.m + 
   A.submatrix (finCongr h) (finCongr h)
 
 /- English proof (translation)
-Unfold `reM`. Conclude with `(Matrix.submatrix_mul_equiv A B (finCongr h) (finCongr h) (finCongr h)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reM_mul (h : P.m + 1 = n) (A B : Matrix (Fin n) (Fin n) ℂ) : reM P h (A * B) = reM P h A * reM P h B := by
   unfold reM
   exact (Matrix.submatrix_mul_equiv A B (finCongr h) (finCongr h) (finCongr h)).symm
 
 /- English proof (translation)
-Unfold `reM`. Conclude with `Matrix.submatrix_one_equiv _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reM_one (h : P.m + 1 = n) : reM P h (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold reM
@@ -115,11 +115,9 @@ def hAt (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (M g :
   else invT (reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹))
 
 /- English proof (translation)
-Establish `key : reM P h ((M (pos ⟨v, s⟩) : Matrix (Fin n) (Fin n) ℂ) * y' (pos ⟨v, s⟩)) = (reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * reM P h ((M (pos ⟨v, s⟩) : Matrix (Fin n) (Fin n) ℂ) * y (pos ⟨v, s⟩))` using `by show _ = reM P h _ * _`. Rewrite using `[← reM_mul, hy]`. Use `congr 1`. Simplify using `[Matrix.mul_assoc]`. Unfold `zAt hAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `split_ifs with hs`. Conclude with `key`. Rewrite using `[key] show _ = (((reG P h (M (pos ⟨v, s⟩) * g (pos ⟨v, s⟩) * (M (pos ⟨v, s⟩))⁻¹))⁻¹ : GL (Fin (P.m + 1)) ℂ) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)ᵀ * _`. Rewrite using `[Matrix.coe_units_inv, Matrix.mul_inv_rev, Matrix.transpose_mul]`. Use extensionality with `i j`.
-
-Simplify using `[Matrix.mul_apply]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zAt_tr (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (M g : Tau → GL (Fin n) ℂ)
     (y y' : Tau → Matrix (Fin n) (Fin n) ℂ) (hy : ∀ τ, y' τ = (g τ : Matrix (Fin n) (Fin n) ℂ) * y τ)
@@ -145,17 +143,17 @@ theorem zAt_tr (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau)
     simp [Matrix.mul_apply]
 
 /- English proof (translation)
-Establish `hz' : ∀ v s, zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 v s = (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y.1 v s` using `fun v s => zAt_tr P h pos M g y.1 y'.1 hy v s`. Establish `hz : ∀ v s, ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ) * zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 v s = zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y.1 v s`. Introduce `v s`. Rewrite using `[hz', ← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Establish `hev : ∀ Q : XR P ℂ, MvPolynomial.eval (fun x : Var P => zAt P h pos (fun τ => (M τ : Matrix (Fin n) (Fin n) ℂ)) y'.1 x.1 x.2.1 x.2.2.1 x.2.2.2) (substR P ℂ (fun v s => ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) Q) = MvPolynomi …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Q`. Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a => simp [substR]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p x hp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[map_mul, map_mul, map_mul, hp]`. Use `congr 1`. Simplify using `only [substR, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X]`. Rewrite using `[← hz x.1 x.2.1, Matrix.mul_apply]`. Establish `hdet : ∀ v s, (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ≠ 0` using `fun v s => ((Matrix.isUnit_iff_isUnit_det _).1 (Units.isUnit _)).ne_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (-(eAt P v s))) * (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (eAt P v s)) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun s _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[_root_.zpow_neg, inv_mul_cancel₀ (zpow_ne_zero _ (hdet v s))]`. Establish `hnat : natActR P ℂ (hAt P h pos M g) Q = (∏ v, ∏ s : Fin (P.n' v), (hAt P h pos M g v s : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ).det ^ (-(eAt P v s))) • substR P ℂ (fun v s => ((((hAt P h pos M g v s)⁻¹ : GL (Fin (P.m + 1)) ℂ)) : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) ℂ)) Q` using `rfl`. Rewrite using `[hnat, map_smul, Pi.smul_apply, smul_eq_mul]`. Simplify using `only [evC, LinearMap.coe_mk, AddHom.coe_mk]`. Rewrite using `[hev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hz', Matrix.det_mul, mul_zpow, Finset.prod_mul_distrib]`. Rewrite using `[← mul_assoc, ← mul_assoc, hc, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_natAct (h : P.m + 1 = n) (pos : (Σ v : Fin P.nV, Fin (P.n' v)) ≃ Tau) (G : Tau → Matrix (Fin n) (Fin n) ℂ)
     (M g : Tau → GL (Fin n) ℂ) (y y' : Frames G) (hy : IsTr (fun τ => (g τ : Matrix (Fin n) (Fin n) ℂ)) y y') (Q : XR P ℂ) :

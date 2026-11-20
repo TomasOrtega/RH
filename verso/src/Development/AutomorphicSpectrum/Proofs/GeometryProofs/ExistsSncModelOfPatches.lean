@@ -24,7 +24,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.SncBase.Mdl
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simpa using intCast_mem (regAt ξ p) a`. Consider the case `add a b ha hb => simpa using (regAt ξ p).add_mem ha hb`. Consider the case `mul_X a i ha`. Simplify using `using (regAt ξ p).mul_mem ha (hc.2 i.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ratEval_mem {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {N : ℕ} {x : Fin (N + 1) → Ω}
     {c : Fin (N + 1)} {p : Cpt ξ} (hc : InChart ξ x c p) (g : MRing (fun _ : Unit => Fin (N + 1))) :
@@ -36,11 +36,11 @@ theorem ratEval_mem {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {
     simpa using (regAt ξ p).mul_mem ha (hc.2 i.2)
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨d, -, h⟩` from `hG`. Conclude with `h c p hp hc`. Consider the case `zero => simpa [unitAt] using fun h : (0 : Ω) ≠ 0 => absurd rfl h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Use `not_unitAt_add hξ (ratEval_mem hc a) (ratEval_mem hc b) ha hb` as an intermediate fact. Simplify using `using this`. Consider the case `smul a b _ hb`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ratEval x c (a • b) = ratEval x c a * ratEval x c b` using `by simp`. Rewrite `h` using `[e]`. Conclude with `hb (unitAt_of_mul_right h (ratEval_mem hc a) (ratEval_mem hc b))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_unitAt_of_mem_span {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {N : ℕ}
     {x : Fin (N + 1) → Ω} {B : Set (Cpt ξ)} (hξ : IsCptGen ξ) {c : Fin (N + 1)} {p : Cpt ξ} (hp : p ∈ B)
@@ -61,13 +61,11 @@ theorem not_unitAt_of_mem_span {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp 
     exact hb (unitAt_of_mul_right h (ratEval_mem hc a) (ratEval_mem hc b))
 
 /- English proof (translation)
-Set `z' : Fin e → invAdj A g` to `fun i => ⟨z i, le_invAdj A g (z i).2⟩`. Establish `hd` using `GlobalTheory.T.kaehler_basis_adjoin_inverse Ω A g hg h0 e z z' (fun _ => rfl) hA.li hA.span`. Use `⟨z', ⟨?_, GlobalTheory.T.smooth_adjoin_inverse Ω A g hg h0 hA.smooth, hA.le, hd.1, hd.2, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hA.fg classical`. Use `⟨insert g⁻¹ S, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.coe_insert]`. Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_mono (Set.insert_subset_insert ?_)` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `Algebra.subset_adjoin`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Algebra.adjoin_le (Set.insert_subset (Algebra.subset_adjoin (Set.mem_insert _ _)) ?_)` and prove the remaining obligations. Rewrite using `[← hS]`. Conclude with `Algebra.adjoin_mono (Set.subset_insert _ _)`. Introduce `q hq`. Take `⟨R, hR, hloc, hbd⟩` from `hA.pts (primeUnder A g q) (Ideal.comap_isPrime _ _)`.
-
-Use `⟨R, hR, isLocAt_invAdj hg h0 hq hloc, hbd.trans ?_⟩` and prove the remaining obligations. Conclude with `exists_congr fun i => and_congr_right fun _ => Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem patch_invAdj {Ω : Type} [Field Ω] [Algebra ℚ Ω] {Pt Bd : Set (Subring Ω)} {e : ℕ} {A : Subalgebra ℚ Ω}
     {z : Fin e → A} {n : ℕ} (hA : IsSncPatch Pt Bd e A z n) {g : Ω} (hg : g ∈ A) (h0 : g ≠ 0) :
@@ -92,14 +90,14 @@ theorem patch_invAdj {Ω : Type} [Field Ω] [Algebra ℚ Ω] {Pt Bd : Set (Subri
     exact exists_congr fun i => and_congr_right fun _ => Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Set.finite_range (fun j => x j / x c)).toFinset, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem chartQ_fg {Ω : Type} [Field Ω] [Algebra ℚ Ω] {N : ℕ} (x : Fin (N + 1) → Ω) (c : Fin (N + 1)) :
     (chartQ x c).FG :=
   ⟨(Set.finite_range (fun j => x j / x c)).toFinset, by simp⟩
 
 /- English proof (translation)
-The claim follows from `not_mem_of_isPrime hg h0 hq`.
+A detailed English derivation is pending.
 -/
 theorem not_mem_primeUnder {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : Subalgebra ℚ Ω} {g : Ω} (hg : g ∈ A) (h0 : g ≠ 0)
     {q : Ideal (invAdj A g)} (hq : q.IsPrime) : (⟨g, hg⟩ : A) ∉ primeUnder A g q :=
@@ -108,11 +106,11 @@ theorem not_mem_primeUnder {Ω : Type} [Field Ω] [Algebra ℚ Ω] {A : Subalgeb
 variable {Ω : Type} [Field Ω] [CharZero Ω] {X : Scheme.{0}} {ξ : Sp Ω ⟶ X}
 
 /- English proof (translation)
-Take `⟨A, z, n, q, hA, hq, hl⟩` from `hP p hp`. Take `⟨I, hI, hu, hIl⟩` from `GlobalTheory.T.component_gives_chart_prime Ω X ξ _ x c hT p hp hc`. Take `⟨g, h, hg, hh, he⟩` from `GlobalTheory.T.localizations_equal_basic_opens Ω A (chartQ x c) q I (regAt ξ p) hA.fg (chartQ_fg x c) hq hI hl hIl`. Establish `hg0 : (g : Ω) ≠ 0` using `fun h0 => hg (by`. Establish `: g = 0` using `Subtype.ext h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `q.zero_mem)`. Take `⟨z', hz', -⟩` from `patch_invAdj hA g.2 hg0`. Use `⟨h, h.2, (hu h).1 hh, ?_⟩` and prove the remaining obligations. Rewrite using `[← he]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨z', n, hz'⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_patch {N : ℕ} {x : Fin (N + 1) → Ω} {e : ℕ} {B : Set (Cpt ξ)} (hT : CoordTie ℤ ξ x)
     (hP : ∀ p, Char0 ξ p → ∃ (A : Subalgebra ℚ Ω) (z : Fin e → A) (n : ℕ) (q : Ideal A),
@@ -132,9 +130,9 @@ theorem exists_patch {N : ℕ} {x : Fin (N + 1) → Ω} {e : ℕ} {B : Set (Cpt 
   exact ⟨z', n, hz'⟩
 
 /- English proof (translation)
-Take `⟨p, hp, hc, hu, hl⟩` from `GlobalTheory.T.chart_prime_gives_component Ω X ξ κ x c hT hx (primeUnder _ h q) (Ideal.comap_isPrime _ _)`. Establish `hhu : unitAt ξ p h` using `(hu ⟨h, hh⟩).1 (not_mem_primeUnder hh h0 hq)`. Use `⟨p, hp, hc, hhu, ?_, isLocAt_invAdj hh h0 hq hl⟩` and prove the remaining obligations. Introduce `s`. Take `⟨k, hk⟩` from `exists_mul_pow_mem hh h0 s.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hreg : (s : Ω) ∈ regAt ξ p` using `invAdj_le hp (fun _ => chartQ_le hp hc) hhu s.2`. Rewrite using `[not_congr (mem_iff_mul_pow hh h0 hq s k ⟨_, hk⟩ rfl), hu]`. Conclude with `⟨fun u => unitAt_of_mul_left u hreg (unitAt_pow hhu k).2.1, fun u => unitAt_mul u (unitAt_pow hhu k)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem primePoint {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x) (hx : x c ≠ 0) {h : Ω}
     (hh : h ∈ chartQ x c) (h0 : h ≠ 0) (q : Ideal (invAdj (chartQ x c) h)) (hq : q.IsPrime) :
@@ -151,15 +149,13 @@ theorem primePoint {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x)
   exact ⟨fun u => unitAt_of_mul_left u hreg (unitAt_pow hhu k).2.1, fun u => unitAt_mul u (unitAt_pow hhu k)⟩
 
 /- English proof (translation)
-Use `haveI hloc : IsLocalRing (regAt ξ p) := (regAt_isLocalRing_isFractionRing_stalk X Ω ξ hT.gen p).1`. Establish `hmem : ∀ s : invAdj (chartQ x c) h, (s : Ω) ∈ regAt ξ p` using `fun s => invAdj_le hp (fun _ => chartQ_le hp hc) hu s.2`. Set `f : invAdj (chartQ x c) h →+* regAt ξ p` to `((invAdj (chartQ x c) h).val : invAdj (chartQ x c) h →+* Ω).codRestrict (regAt ξ p) hmem`. Establish `hq : (Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p))).IsPrime` using `inferInstance`. Establish `hs : ∀ s : invAdj (chartQ x c) h, s ∉ Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p)) ↔ unitAt ξ p (s : Ω)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Prove the components needed by the constructor for the conclusion. Introduce `hu'`. Take `⟨b, hb⟩` from `hu'.exists_right_inv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : (s : Ω) * (b : Ω) = 1` using `congrArg Subtype.val hb`. Establish `h0 : (s : Ω) ≠ 0` using `fun h0 => by simp [h0] at e1`. Use `⟨h0, hmem s, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right e1]`. Conclude with `b.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨h0, -, hinv⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, hinv⟩, Subtype.ext (mul_inv_cancel₀ h0)⟩`. Take `⟨I, -, hI, hIl⟩` from `GlobalTheory.T.component_gives_chart_prime Ω X ξ κ x c hT p hp hc`. Establish `e : primeUnder (chartQ x c) h (Ideal.comap f (IsLocalRing.maximalIdeal (regAt ξ p))) = I`. Use extensionality with `a`.
-
-Conclude with `not_iff_not.1 ((hs ⟨a, le_invAdj _ h a.2⟩).trans (hI a).symm)`. Conclude with `⟨_, hq, hs, isLocAt_invAdj hh hu.1 hq (e ▸ hIl)⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pointPrime {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x) {h : Ω} (hh : h ∈ chartQ x c)
     (p : Cpt ξ) (hp : Char0 ξ p) (hc : InChart ξ x c p) (hu : unitAt ξ p h) :
@@ -193,9 +189,9 @@ theorem pointPrime {κ : Type} {x : κ → Ω} {c : κ} (hT : CoordTie ℤ ξ x)
   exact ⟨_, hq, hs, isLocAt_invAdj hh hu.1 hq (e ▸ hIl)⟩
 
 /- English proof (translation)
-Take `⟨R, -, hRl, hbd⟩` from `hS.pts q hq`. Establish `hR : R = regAt ξ p` using `Subring.ext fun a => (hRl a).trans (hl a).symm`. Substitute `hR` using the available equality. Rewrite using `[← hbd]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `fun hp => ⟨p, hp, rfl⟩`. Introduce and unpack `⟨p', hp', e'⟩`. Use `GlobalTheory.T.regular_ring_determines_component X Ω ξ ℤ κ x hT p' p e'` as an intermediate fact. Conclude with `this ▸ hp'`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem patchClause {κ : Type} {x : κ → Ω} {e : ℕ} {B : Set (Cpt ξ)} (hT : CoordTie ℤ ξ x)
     {S : Subalgebra ℚ Ω} {z : Fin e → S} {n : ℕ} (hS : IsSncPatch (Pts ξ) (regAt ξ '' B) e S z n)
@@ -218,17 +214,17 @@ namespace GlobalTheory.CompanionTheory.Ar.SncBase
 open Mdl in
 
 /- English proof (translation)
-Introduce `Ω _ _ X ξ N x e B hT hB hP`. Establish `hcov` using `fun c p hp hc => exists_patch (B := B) hT hP c p hp hc`. Establish `hsep : ∀ c (p : Cpt ξ), Char0 ξ p → InChart ξ x c p → p ∉ B → ∃ G ∈ bdGens ξ x B, unitAt ξ p (ratEval x c G)`. Introduce `c p hp hc hnB`. Take `⟨h, hh, hu, z, n, hz⟩` from `hcov c p hp hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcl : ∀ q : Cpt ξ, Char0 ξ q → InChart ξ x c q → unitAt ξ q h → (q ∈ B ↔ ∃ i : Fin e, (i : ℕ) < n ∧ ¬ unitAt ξ q (z i : Ω))`. Introduce `q hq hcq huq`. Take `⟨Q, hQ, hs, hl⟩` from `pointPrime hT hh q hq hcq huq`. Rewrite using `[patchClause hT hz Q hQ q hl]`. Use `exists_congr fun i => and_congr_right fun _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs (z i), not_not]`. Take `⟨a, ha, hau, hnon⟩` from `GlobalTheory.T.snc_patch_boundary_units Ω X ξ _ x c B h e n z p hT.gen hB hh hu.1 hcl hp hc hu hnB`. Conclude with `GlobalTheory.T.boundary_generator_unit Ω X ξ N x c B p a hB hp hc ha hau hnon`. Use `⟨Ideal.span (bdGens ξ x B), ?_, GlobalTheory.T.boundary_points_coords Ω X ξ N x B hT.gen hsep⟩` and prove the remaining obligations. Use `GlobalTheory.T.snc_model_from_local_patches Ω X ξ N x e B _ hcov ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hx I hI`. Take `⟨p, a, b, d, -⟩` from `GlobalTheory.T.chart_prime_gives_component Ω X ξ _ x c hT hx I hI`. Conclude with `⟨p, a, b, d⟩`. Introduce `c h hx hh h0 q hq`. Take `⟨p, hp, hc, -, hs, hl⟩` from `primePoint hT hx hh h0 q hq`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨p, hp, hc, hs, fun z n hz => patchClause hT hz q hq p hl⟩`. Introduce `c p hp hc`. Prove the components needed by the constructor for the conclusion. Introduce `hpB g hg`. Conclude with `not_unitAt_of_mem_span hT.gen hpB hc hg`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `hall`. Assume the negation of the conclusion as `hn`. Take `⟨G, hG, hu⟩` from `hsep c p hp hc hn`. Conclude with `hall G (Ideal.subset_span hG) hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_isSncModel_of_patches : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (N : ℕ) (x : Fin (N + 1) → Ω) (e : ℕ) (B : Set (Cpt ξ)), CoordTie ℤ ξ x → (∀ p ∈ B, Char0 ξ p) → (∀ p, Char0 ξ p → ∃ (A : Subalgebra ℚ Ω) (z : Fin e → A) (n : ℕ) (q : Ideal A), IsSncPatch (Pts ξ) (regAt ξ '' B) e A z n ∧ q.IsPrime ∧ IsLocAt A q (regAt ξ p)) → ∃ bd : Ideal (MRing (fun _ : Unit => Fin (N + 1))), Cmp.IsSncModel (fun p : (Σ _ : Unit, Fin (N + 1)) => x p.2) e bd ∧ ∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) w, CoordsAt ξ (fun p : (Σ _ : Unit, Fin (N + 1)) => x p.2) z w → (w ∈ mcPts bd ↔ ∃ h : genPt ξ ⤳ centre z, (⟨centre z, h⟩ : Cpt ξ) ∈ B) := by
   intro Ω _ _ X ξ N x e B hT hB hP

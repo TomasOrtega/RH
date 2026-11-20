@@ -22,13 +22,13 @@ namespace GlobalTheory.SBCount
 open TopologicalSpace Cardinal
 
 /- English proof (translation)
-Establish `hB` using `isBasis_countableBasis X`. Use `haveI : Countable (countableBasis X) := (countable_countableBasis X).to_subtype`. Use `(Set.countable_range fun t : Finset (countableBasis X) => ⋃ b ∈ t, (b : Set X)).mono ?_` and prove the remaining obligations. Introduce and unpack `K ⟨hKc, hKo⟩`. Take `⟨t, ht⟩` from `hKc.elim_finite_subcover (fun b : {b : countableBasis X // (b : Set X) ⊆ K} => (b.1 : Set X)) (fun b => hB.isOpen b.1.2) (fun x hx => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hbB, hxb, hbK⟩` from `hB.exists_subset_of_mem_open hx hKo`. Conclude with `Set.mem_iUnion.2 ⟨⟨⟨b, hbB⟩, hbK⟩, hxb⟩)`. Use `⟨t.image (fun c => c.1), ?_⟩` and prove the remaining obligations. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[Set.mem_iUnion₂]`. Take `⟨b, hb, hxb⟩` from `hx`. Take `⟨c, -, rfl⟩` from `Finset.mem_image.1 hb`. Conclude with `c.2 hxb`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `ht hx` as an intermediate fact. Rewrite `this` using `[Set.mem_iUnion₂]`. Take `⟨c, hc, hxc⟩` from `this`. Rewrite using `[Set.mem_iUnion₂]`. Conclude with `⟨c.1, Finset.mem_image.2 ⟨c, hc, rfl⟩, hxc⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem countable_compactOpen (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     {K : Set X | IsCompact K ∧ IsOpen K}.Countable := by
@@ -56,9 +56,9 @@ theorem countable_compactOpen (X : Type) [TopologicalSpace X] [SecondCountableTo
     exact ⟨c.1, Finset.mem_image.2 ⟨c, hc, rfl⟩, hxc⟩
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover (fun w => f ⁻¹' {w}) (fun w => hf _) fun x _ => Set.mem_iUnion.2 ⟨f x, rfl⟩`. Use `(t.finite_toSet.insert 0).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Distinguish the cases in `hx : f x = 0`. Conclude with `Or.inl hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Simplify `ht (subset_tsupport f hx))` using `using Or.inr (by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_range_of_sb {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf : IsLocallyConstant f)
     (hc : HasCompactSupport f) : (Set.range f).Finite := by
@@ -71,15 +71,15 @@ theorem finite_range_of_sb {X : Type} [TopologicalSpace X] {f : X → ℂ} (hf :
   · simpa using Or.inr (by simpa using ht (subset_tsupport f hx))
 
 /- English proof (translation)
-Introduce and unpack `f ⟨hf, hcs⟩`. Establish `hfin` using `finite_range_of_sb hf hcs`. Establish `hsum : f = ∑ c ∈ hfin.toFinset.erase 0, c • (f ⁻¹' {c}).indicator (1 : X → ℂ)`. Use function extensionality and compare the values at `x`. Rewrite using `[Finset.sum_apply]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : f x = 0`. Rewrite using `[hx]`. Use `(Finset.sum_eq_zero fun c hc => ?_).symm` and prove the remaining obligations. Establish `hc0 : c ≠ 0` using `(Finset.mem_erase.1 hc).1`. Establish `: x ∉ f ⁻¹' {c}` using `by simp [hx, Ne.symm hc0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_of_notMem this]`. Rewrite using `[Finset.sum_eq_single (f x)]`. Simplify using the standard rewrite rules. Introduce `c _ hcx`. Establish `: x ∉ f ⁻¹' {c}` using `by simp [Ne.symm hcx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Set.indicator_of_notMem this]`. Introduce `h`. Conclude with `absurd (Finset.mem_erase.2 ⟨hx, by simp⟩) h`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun c hc => Submodule.smul_mem _ _ (Submodule.subset_span ⟨f ⁻¹' {c}, ⟨?_, hf _⟩, rfl⟩)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0` using `(Finset.mem_erase.1 hc).1`. Use `hcs.isCompact.of_isClosed_subset (hf.isClosed_fiber c) fun x hx => subset_tsupport f ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff] at hx`. Simplify using `[Function.mem_support, hx, hc0]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sb_le_span (X : Type) [TopologicalSpace X] :
     GlobalTheory.WeilM.SB X ≤ Submodule.span ℂ
@@ -111,7 +111,7 @@ theorem sb_le_span (X : Type) [TopologicalSpace X] :
   simp [Function.mem_support, hx, hc0]
 
 /- English proof (translation)
-Use `(Submodule.rank_mono (sb_le_span X)).trans ((rank_span_le _).trans ?_)` and prove the remaining obligations. Conclude with `Cardinal.mk_le_aleph0_iff.2 ((countable_compactOpen X).image _).to_subtype`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rank_sb_le_aleph0 (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     Module.rank ℂ (GlobalTheory.WeilM.SB X) ≤ Cardinal.aleph0 := by
@@ -119,7 +119,7 @@ theorem rank_sb_le_aleph0 (X : Type) [TopologicalSpace X] [SecondCountableTopolo
   exact Cardinal.mk_le_aleph0_iff.2 ((countable_compactOpen X).image _).to_subtype
 
 /- English proof (translation)
-Introduce `F _ _ v κ _`. Use `letI := GlobalTheory.LocalData.complRel v`. Use `haveI := GlobalTheory.LocalData.isLocalField v`. Use `haveI := GlobalTheory.LocAtTopology.secondCountable_localField (Fv F v)`. Conclude with `rank_sb_le_aleph0 _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem rank_sb_localField_le : ∀ {F : Type} [Field F] [NumberField F] (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (κ : Type) [Fintype κ],
     Module.rank ℂ (GlobalTheory.WeilM.SB (κ → Fv F v)) ≤ Cardinal.aleph0 := by

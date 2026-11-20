@@ -12,7 +12,7 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_inUJ_iff (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.inUJ ε g ↔ inUJ ε g := by
   first
@@ -20,7 +20,7 @@ theorem mir_inUJ_iff (ε : Fin n → Bool) (g : Matrix (Fin n) (Fin n) ℂ) : Fo
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_UJset_eq (ε : Fin n → Bool) : Formalism.MainNotions.S.UJset ε = UJset ε := by
   first
@@ -28,7 +28,7 @@ theorem mir_UJset_eq (ε : Fin n → Bool) : Formalism.MainNotions.S.UJset ε = 
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_Kset_eq (ε : Fin n → Bool) : Formalism.REAL.Kset ε = Kset ε := by
   first
@@ -36,7 +36,7 @@ theorem mir_Kset_eq (ε : Fin n → Bool) : Formalism.REAL.Kset ε = Kset ε := 
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_inP_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL.inP ε X ↔ inP ε X := by
   first
@@ -44,7 +44,7 @@ theorem mir_inP_iff (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) : For
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_lowK_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.lowK ε lam = lowK ε lam := by
   first
@@ -52,7 +52,7 @@ theorem mir_lowK_eq (ε : Fin n → Bool) (lam : Fin n → ℝ) : Formalism.Quan
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_isHCParam_iff (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.IsHCParam lam ↔ S7.IsHCParam lam := by
   first
@@ -60,7 +60,7 @@ theorem mir_isHCParam_iff (lam : Fin n → ℝ) : Formalism.QuantumDeterminants.
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_gapAtLeast_iff (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ) :
     Formalism.QuantumDeterminants.GapAtLeast ε lam h ↔ GapAtLeast ε lam h := by
@@ -69,7 +69,7 @@ theorem mir_gapAtLeast_iff (ε : Fin n → Bool) (lam : Fin n → ℝ) (h : ℝ)
   | exact Iff.rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `exact Iff.rfl`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mir_isURepOn_iff {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (G : Set (Matrix (Fin n) (Fin n) ℂ)) (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
@@ -79,7 +79,7 @@ theorem mir_isURepOn_iff {H : Type*} [NormedAddCommGroup H] [InnerProductSpace �
   | exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `hF _ (Formalism.REAL.instIsHaarMuG n ε)`.
+A detailed English derivation is pending.
 -/
 theorem memLp_muG_of_haar (ε : Fin n → Bool) {X : Type*} [NormedAddCommGroup X]
     (F : Matrix (Fin n) (Fin n) ℂ → X) (p : ENNReal)
@@ -88,7 +88,7 @@ theorem memLp_muG_of_haar (ε : Fin n → Bool) {X : Type*} [NormedAddCommGroup 
   exact hF _ (Formalism.REAL.instIsHaarMuG n ε)
 
 /- English proof (translation)
-Conclude with `hF _ (Formalism.REAL.instIsHaarMuG n ε)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_muG_of_haar (ε : Fin n → Bool) {X : Type*} [NormedAddCommGroup X]
     (F : Matrix (Fin n) (Fin n) ℂ → X)
@@ -97,7 +97,7 @@ theorem integrable_muG_of_haar (ε : Fin n → Bool) {X : Type*} [NormedAddCommG
   exact hF _ (Formalism.REAL.instIsHaarMuG n ε)
 
 /- English proof (translation)
-Conclude with `⟨(continuous_mul_const y).measurable, Formalism.REAL.indefinite_unitary_unimodular n ε y⟩`.
+Supply the required witnesses or components.
 -/
 theorem measurePreserving_mul_right (ε : Fin n → Bool) (y : Formalism.REAL.UJ ε) :
     MeasurePreserving (fun x : Formalism.REAL.UJ ε => x * y) (Formalism.REAL.muG ε) (Formalism.REAL.muG ε) := by

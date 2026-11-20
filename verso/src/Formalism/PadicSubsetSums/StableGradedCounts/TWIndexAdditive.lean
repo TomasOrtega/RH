@@ -11,9 +11,9 @@ section General
 variable {O V : Type} [CommRing O] [AddCommGroup V] [Module O V]
 
 /- English proof (translation)
-Unfold `relLen`. Establish `: N.comap M.subtype = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Conclude with `h x.2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Module.length_eq_zero`.
+A detailed English derivation is pending.
 -/
 theorem relLen_of_le {M N : Submodule O V} (h : M ≤ N) : relLen M N = 0 := by
   unfold relLen
@@ -23,7 +23,7 @@ theorem relLen_of_le {M N : Submodule O V} (h : M ≤ N) : relLen M N = 0 := by
   exact Module.length_eq_zero
 
 /- English proof (translation)
-Unfold `relLen`. Establish `: (M ⊓ N).comap M.subtype = N.comap M.subtype`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem relLen_inf (M N : Submodule O V) : relLen M (M ⊓ N) = relLen M N := by
   unfold relLen
@@ -32,17 +32,15 @@ theorem relLen_inf (M N : Submodule O V) : relLen M (M ⊓ N) = relLen M N := by
   rw [this]
 
 /- English proof (translation)
-Unfold `relLen`. Establish `h1 : A.comap B.subtype ≤ (A.comap C.subtype).comap (Submodule.inclusion hBC)`. Introduce `x hx`. Conclude with `hx`. Establish `h2 : A.comap C.subtype ≤ B.comap C.subtype` using `Submodule.comap_mono hAB`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.length_eq_add_of_exact (Submodule.mapQ _ _ (Submodule.inclusion hBC) h1) (Submodule.factor h2) ?_ (Submodule.factor_surjective h2) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hx`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfac : Submodule.factor h2 (Submodule.Quotient.mk y) = Submodule.Quotient.mk y` using `rfl`. Rewrite using `[hfac, Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Conclude with `⟨Submodule.Quotient.mk ⟨y.1, hy⟩, by rw [Submodule.mapQ_apply]; rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨x, hx⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Rewrite `hx` using `[Submodule.mapQ_apply, Submodule.Quotient.eq]`. Establish `h3 : (x : V) - y ∈ A` using `hx`. Establish `h4 : (y : V) = x - (x - y)` using `by abel`.
-
-Use `show (y : V) ∈ B`. Rewrite using `[h4]`. Conclude with `B.sub_mem x.2 (hAB h3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_tower {A B C : Submodule O V} (hAB : A ≤ B) (hBC : B ≤ C) :
     relLen C A = relLen B A + relLen C B := by
@@ -82,7 +80,7 @@ section LenDet
 variable {O : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha i)), ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_prod {ι : Type} (s : Finset ι) (a : ι → O) (ha : ∀ i, a i ≠ 0) :
     Ring.ord O (∏ i ∈ s, a i) = ∑ i ∈ s, Ring.ord O (a i) := by
@@ -94,13 +92,13 @@ theorem ord_prod {ι : Type} (s : Finset ι) (a : ι → O) (ha : ∀ i, a i ≠
       Ring.ord_mul' O (mem_nonZeroDivisors_of_ne_zero (ha i)), ih]
 
 /- English proof (translation)
-Establish `h : finrank O (LinearMap.range f) = finrank O B` using `(LinearEquiv.ofInjective f hf).finrank_eq.symm`. Rewrite using `[(Submodule.quotientEquivPiSpan _ b h).length_eq, Module.length_pi_of_fintype]`. Establish `ab_eq` using `Submodule.smithNormalFormBotBasis_def b h`. Establish `hne` using `Submodule.smithNormalFormCoeffs_ne_zero b h`. Generalize the expression as in `Submodule.smithNormalFormCoeffs b h = a at *`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Submodule.smithNormalFormTopBasis b h = b' at *`. Generalize the expression as in `Submodule.smithNormalFormBotBasis b h = ab at *`. Set `e' : B ≃ₗ[O] LinearMap.range f` to `b'.equiv ab (Equiv.refl _)`. Establish `hass : Associated (LinearMap.det f) (LinearMap.det ((LinearMap.range f).subtype ∘ₗ (e' : B →ₗ[O] LinearMap.range f)))`. Use `LinearMap.associated_det_comp_equiv (LinearMap.range f).subtype (LinearEquiv.ofInjective f hf) e'` as an intermediate fact.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Both sides reduce to the same expression. Establish `hg : LinearMap.det ((LinearMap.range f).subtype ∘ₗ (e' : B →ₗ[O] LinearMap.range f)) = ∏ i, a i`. Establish `: (LinearMap.range f).subtype ∘ₗ (e' : B →ₗ[O] LinearMap.range f) = Matrix.toLin b' b' (Matrix.diagonal a)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `b'.ext` to reduce the goal to its premises. Introduce `i`. Simplify using `[e', ab_eq, Matrix.toLin_self, Matrix.diagonal_apply]`. Rewrite using `[this, LinearMap.det_toLin, Matrix.det_diagonal]`. Rewrite using `[Ring.ord_eq_of_associated hass, hg, ord_prod _ _ hne]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -142,19 +140,19 @@ variable {O K V : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [F
   [IsScalarTower O K V]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLattice_of_isLat {M : Submodule O V} (h : IsLat O K M) : Submodule.IsLattice K M :=
   ⟨h.1, h.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Submodule.IsLattice.fg, Submodule.IsLattice.span_eq_top⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLat_of_isLattice (M : Submodule O V) [Submodule.IsLattice K M] : IsLat O K M :=
   ⟨Submodule.IsLattice.fg, Submodule.IsLattice.span_eq_top⟩
 
 /- English proof (translation)
-Rewrite using `[Ring.ord_mul_of_isUnit_left u.isUnit, Ring.ord_pow (mem_nonZeroDivisors_of_ne_zero hϖ.ne_zero), Ring.ord_of_irreducible hϖ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ord_unit_mul_pow {ϖ : O} (hϖ : Irreducible ϖ) (u : Oˣ) (n : ℕ) :
     Ring.ord O ((u : O) * ϖ ^ n) = n := by
@@ -163,9 +161,9 @@ theorem ord_unit_mul_pow {ϖ : O} (hϖ : Irreducible ϖ) (u : Oˣ) (n : ℕ) :
   simp
 
 /- English proof (translation)
-Use `isLattice_of_isLat h` as an intermediate fact. Establish `: Module.IsTorsionFree O V` using `Module.IsTorsionFree.trans_faithfulSMul O K V`. Take `⟨n, c⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := O) (M := M)`. Use `⟨n, c.extendOfIsLattice K, ?_⟩` and prove the remaining obligations. Establish `: Set.range (c.extendOfIsLattice K) = M.subtype '' Set.range c`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Set.range_comp]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Rewrite using `[this, ← Submodule.map_span, c.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_basis {M : Submodule O V} (h : IsLat O K M) :
     ∃ (n : ℕ) (β : Basis (Fin n) K V), Submodule.span O (Set.range β) = M := by
@@ -178,7 +176,7 @@ theorem exists_basis {M : Submodule O V} (h : IsLat O K M) :
   rw [this, ← Submodule.map_span, c.span_eq, Submodule.map_top, Submodule.range_subtype]
 
 /- English proof (translation)
-Use `⟨Submodule.fg_span (Set.finite_range b), ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_span_of_tower, b.span_eq]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLat_span_basis {d : ℕ} (b : Basis (Fin d) K V) :
     IsLat O K (Submodule.span O (Set.range b)) := by
@@ -186,17 +184,15 @@ theorem isLat_span_basis {d : ℕ} (b : Basis (Fin d) K V) :
   rw [Submodule.span_span_of_tower, b.span_eq]
 
 /- English proof (translation)
-Set `bO` to `b.restrictScalars O`. Set `w' : Fin d → Submodule.span O (Set.range b)` to `fun i => ⟨w i, hw (Submodule.subset_span ⟨i, rfl⟩)⟩`. Set `f : Submodule.span O (Set.range b) →ₗ[O] Submodule.span O (Set.range b)` to `bO.constr O w'`. Establish `hD : algebraMap O K (LinearMap.det f) = b.det w`. Rewrite using `[← LinearMap.det_toMatrix bO, RingHom.map_det, Basis.det_apply]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[LinearMap.toMatrix_apply, Basis.toMatrix_apply, f, w', bO]`. Establish `hne : LinearMap.det f ≠ 0`. Introduce `h`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hD` using `[h, map_zero]`. Conclude with `hdet hD.symm`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `hM : (LinearMap.toMatrix bO bO f).det ≠ 0` using `by rwa [LinearMap.det_toMatrix]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.mulVec_injective_of_det_ne_zero hM (a₁ := bO.repr x) (a₂ := bO.repr y) (by rw [LinearMap.toMatrix_mulVec_repr, LinearMap.toMatrix_mulVec_repr, hxy])` as an intermediate fact. Conclude with `bO.repr.injective (DFunLike.coe_injective this)`. Establish `hrange : (Submodule.span O (Set.range w)).comap (Submodule.span O (Set.range b)).subtype = LinearMap.range f`. Rewrite using `[Basis.constr_range]`. Apply `Submodule.map_injective_of_injective (Submodule.span O (Set.range b)).injective_subtype` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Submodule.map_comap_subtype, Submodule.map_span, ← Set.range_comp, inf_eq_right.2 hw]`. Both sides reduce to the same expression. Use `⟨_, hD, ?_⟩` and prove the remaining obligations. Unfold `relLen`. Rewrite using `[hrange]`.
-
-Conclude with `length_quot_range bO f hinj`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_span_of_le {d : ℕ} (b : Basis (Fin d) K V) (w : Fin d → V)
     (hw : Submodule.span O (Set.range w) ≤ Submodule.span O (Set.range b))
@@ -232,7 +228,7 @@ theorem relLen_span_of_le {d : ℕ} (b : Basis (Fin d) K V) (w : Fin d → V)
   exact length_quot_range bO f hinj
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hD hϖ`. Rewrite using `[ord_unit_mul_pow hϖ]`. Conclude with `ENat.natCast_ne_top n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_ne_top' {D : O} (hD : D ≠ 0) : Ring.ord O D ≠ ⊤ := by
   obtain ⟨ϖ, hϖ⟩ := IsDiscreteValuationRing.exists_irreducible O
@@ -241,11 +237,11 @@ theorem ord_ne_top' {D : O} (hD : D ≠ 0) : Ring.ord O D ≠ ⊤ := by
   exact ENat.natCast_ne_top n
 
 /- English proof (translation)
-Take `⟨n, β, rfl⟩` from `exists_basis hM`. Take `⟨n', γ, rfl⟩` from `exists_basis hN`. Establish `hn : n' = n`. Establish `h1` using `Module.finrank_eq_card_basis β`. Establish `h2` using `Module.finrank_eq_card_basis γ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h2.symm.trans h1`. Substitute `hn` using the available equality. Take `⟨D, hD, hlen⟩` from `relLen_span_of_le (O := O) β γ hle (β.isUnit_det γ).ne_zero`. Rewrite using `[hlen]`. Apply `ord_ne_top'` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `rfl`. Rewrite `hD` using `[map_zero]`. Conclude with `(β.isUnit_det γ).ne_zero hD.symm`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_ne_top_of_le {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N)
     (hle : N ≤ M) : relLen M N ≠ ⊤ := by
@@ -266,7 +262,7 @@ theorem relLen_ne_top_of_le {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat
 variable [FiniteDimensional K V]
 
 /- English proof (translation)
-Use `isLattice_of_isLat hM` as an intermediate fact. Use `isLattice_of_isLat hN` as an intermediate fact. Conclude with `isLat_of_isLattice _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLat_inf {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N) :
     IsLat O K (M ⊓ N) := by
@@ -275,7 +271,7 @@ theorem isLat_inf {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N) :
   exact isLat_of_isLattice _
 
 /- English proof (translation)
-Rewrite using `[← relLen_inf]`. Conclude with `relLen_ne_top_of_le hM (isLat_inf hM hN) inf_le_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLen_ne_top {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N) :
     relLen M N ≠ ⊤ := by
@@ -283,11 +279,11 @@ theorem relLen_ne_top {M N : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N
   exact relLen_ne_top_of_le hM (isLat_inf hM hN) inf_le_left
 
 /- English proof (translation)
-Establish `h1` using `relLen_tower (le_inf hQM hQN) (inf_le_left : M ⊓ N ≤ M)`. Establish `h2` using `relLen_tower (le_inf hQM hQN) (inf_le_right : M ⊓ N ≤ N)`. Rewrite `h1` using `[relLen_inf]`. Rewrite `h2` using `[inf_comm, relLen_inf]`. Establish `f0` using `relLen_ne_top (isLat_inf hN hM) hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `f1` using `relLen_ne_top hM hN`. Establish `f2` using `relLen_ne_top hN hM`. Rewrite `h1` using `[inf_comm]`. Unfold `sIdx`. Rewrite using `[h1, h2, ENat.toNat_add f0 f1, ENat.toNat_add f0 f2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sIdx_eq_sub {M N Q : Submodule O V} (hM : IsLat O K M) (hN : IsLat O K N)
     (hQ : IsLat O K Q) (hQM : Q ≤ M) (hQN : Q ≤ N) :
@@ -310,9 +306,9 @@ end Lat
 end Idx
 
 /- English proof (translation)
-Introduce `O K V _ _ _ _ _ _ _ _ _ _ _ M N P hM hN hP`. Use `⟨Idx.relLen_ne_top hM hN, ?_⟩` and prove the remaining obligations. Establish `hQ` using `Idx.isLat_inf (Idx.isLat_inf hM hN) hP`. Establish `q1 : M ⊓ N ⊓ P ≤ M` using `inf_le_left.trans inf_le_left`. Establish `q2 : M ⊓ N ⊓ P ≤ N` using `inf_le_left.trans inf_le_right`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q3 : M ⊓ N ⊓ P ≤ P` using `inf_le_right`. Rewrite using `[Idx.sIdx_eq_sub hM hN hQ q1 q2, Idx.sIdx_eq_sub hN hP hQ q2 q3, Idx.sIdx_eq_sub hM hP hQ q1 q3]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem index_additive : IndexAdditive := by
   intro O K V _ _ _ _ _ _ _ _ _ _ _ M N P hM hN hP

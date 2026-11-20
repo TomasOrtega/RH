@@ -18,7 +18,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory.GalOfCusp UpperTheory.V UpperTheory.V.Af UpperTheory.V.Af.Wd
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hf`. Establish `h1 : Continuous fun s : ↥H => (g * r s * g⁻¹ : GL (Fin n) (Qbar l))` using `(continuous_const.mul (hr.comp continuous_subtype_val)).mul continuous_const`. Conclude with `((Units.continuous_val.comp h1).matrix_elem i i).congr fun s => (hg s).2 i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_diag {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {r : Γ →* GL (Fin n) (Qbar l)} (hr : Continuous r) {H : Subgroup Γ} {κ : Fin n → ↥H →* (Qbar l)ˣ}
@@ -29,7 +29,7 @@ private theorem cont_diag {Γ : Type} [Group Γ] [TopologicalSpace Γ] {l : ℕ}
   exact ((Units.continuous_val.comp h1).matrix_elem i i).congr fun s => (hg s).2 i
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `b.equivFun.surjective v`. Express the relevant statement in the definitionally equal form `b.equivFun (a.ρ σ (b.equivFun.symm (b.equivFun x))) = _`. Rewrite using `[LinearEquiv.symm_apply_apply, Matrix.toLin'_apply, ← hX]`. Conclude with `(LinearMap.toMatrix_mulVec_repr b b (a.ρ σ) x).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport_rho {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
     {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w} {W : Type} [AddCommGroup W] [Module ℂ W]

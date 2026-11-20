@@ -40,71 +40,71 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 universe u
 
 /- English proof (translation)
-The claim follows from `SymmetricSpanHsymm.proof`.
+A detailed English derivation is pending.
 -/
 theorem SymmetricSpanHsymm.full : SymmetricSpanHsymm.Statement := SymmetricSpanHsymm.proof
 
 /- English proof (translation)
-The claim follows from `DivisorIdealCycle.proof`.
+A detailed English derivation is pending.
 -/
 theorem DivisorIdealCycle.full : DivisorIdealCycle.Statement.{u} := DivisorIdealCycle.proof
 
 /- English proof (translation)
-The claim follows from `VNumCut.proof CutByForm.full`.
+A detailed English derivation is pending.
 -/
 theorem VNumCut.full : VNumCut.Statement.{u} := VNumCut.proof CutByForm.full
 
 /- English proof (translation)
-The claim follows from `VertCutEff.proof VNumCut.full DivisorIdealCycle.full IntNumAddFirst.full`.
+A detailed English derivation is pending.
 -/
 theorem VertCutEff.full : VertCutEff.Statement.{u} :=
   VertCutEff.proof VNumCut.full DivisorIdealCycle.full IntNumAddFirst.full
 
 /- English proof (translation)
-The claim follows from `LeftExpansion.proof VNumCut.full`.
+A detailed English derivation is pending.
 -/
 theorem LeftExpansion.full : LeftExpansion.Statement.{u} := LeftExpansion.proof VNumCut.full
 
 /- English proof (translation)
-The claim follows from `RightExpansion.proof VertCutEff.full DivisorIdealCycle.full`.
+A detailed English derivation is pending.
 -/
 theorem RightExpansion.full : RightExpansion.Statement.{u} :=
   RightExpansion.proof VertCutEff.full DivisorIdealCycle.full
 
 /- English proof (translation)
-The claim follows from `ExcessPositive.proof`.
+A detailed English derivation is pending.
 -/
 theorem ExcessPositive.full : ExcessPositive.Statement.{u} := ExcessPositive.proof
 
 /- English proof (translation)
-The claim follows from `AvoidingFormExists.proof`.
+A detailed English derivation is pending.
 -/
 theorem AvoidingFormExists.full : AvoidingFormExists.Statement.{u} := AvoidingFormExists.proof
 
 /- English proof (translation)
-The claim follows from `HorizontalAvoidingForm.proof`.
+A detailed English derivation is pending.
 -/
 theorem HorizontalAvoidingForm.full : HorizontalAvoidingForm.Statement.{u} :=
   HorizontalAvoidingForm.proof
 
 /- English proof (translation)
-The claim follows from `LeftSideAdditiveInDegree.proof`.
+A detailed English derivation is pending.
 -/
 theorem LeftSideAdditiveInDegree.full : LeftSideAdditiveInDegree.Statement.{u} := LeftSideAdditiveInDegree.proof
 
 /- English proof (translation)
-The claim follows from `RightSideMultiplicativeInForm.proof DivCycleMul.full DivCycleFiniteSupport.full`.
+A detailed English derivation is pending.
 -/
 theorem RightSideMultiplicativeInForm.full : RightSideMultiplicativeInForm.Statement.{u} :=
   RightSideMultiplicativeInForm.proof DivCycleMul.full DivCycleFiniteSupport.full
 
 /- English proof (translation)
-The claim follows from `CommonFactorRemoval.proof DivCycleMul.full`.
+A detailed English derivation is pending.
 -/
 theorem CommonFactorRemoval.full : CommonFactorRemoval.Statement.{u} := CommonFactorRemoval.proof DivCycleMul.full
 
 /- English proof (translation)
-The claim follows from `AdditivityInDivisor.proof DivCycleMul.full DivCycleFiniteSupport.full IntNumAddFirst.full SupSpanMultiHomog.full MinimalPrimeMultiHomog.full SpecialIdealMultiHomog.full SpecialIdealCorresp.full SpecialQuotDim.full DimStrictDrop.full`.
+A detailed English derivation is pending.
 -/
 theorem AdditivityInDivisor.full : AdditivityInDivisor.Statement.{u} :=
   AdditivityInDivisor.proof DivCycleMul.full DivCycleFiniteSupport.full IntNumAddFirst.full
@@ -112,21 +112,21 @@ theorem AdditivityInDivisor.full : AdditivityInDivisor.Statement.{u} :=
     SpecialIdealCorresp.full SpecialQuotDim.full DimStrictDrop.full
 
 /- English proof (translation)
-The claim follows from `TautologicalCase.proof IntNumAddFirst.full MinimalPrimeMultiHomog.full SupSpanMultiHomog.full SpecialQuotDim.full SpecialIdealCorresp.full SpecialIdealMultiHomog.full DimStrictDrop.full`.
+A detailed English derivation is pending.
 -/
 theorem TautologicalCase.full : TautologicalCase.Statement.{u} :=
   TautologicalCase.proof IntNumAddFirst.full MinimalPrimeMultiHomog.full SupSpanMultiHomog.full
     SpecialQuotDim.full SpecialIdealCorresp.full SpecialIdealMultiHomog.full DimStrictDrop.full
 
 /- English proof (translation)
-The claim follows from `FlagBundlePullbackVanish.proof FieldNumbers.ProjectionFormulaContracted.full hdim`.
+A detailed English derivation is pending.
 -/
 theorem FlagBundlePullbackVanish.of_open (hdim : FlagBundleDim.Statement) :
     FlagBundlePullbackVanish.Statement :=
   FlagBundlePullbackVanish.proof FieldNumbers.ProjectionFormulaContracted.full hdim
 
 /- English proof (translation)
-The claim follows from `FlagBundleCut.proof hdim hforms hdiv FieldNumbers.CutRational.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagBundleCut.of_open (hdim : FlagBundleDim.Statement)
     (hforms : FlagBundleSectionForms.Statement) (hdiv : FlagBundleSectionDiv.Statement) :
@@ -134,7 +134,7 @@ theorem FlagBundleCut.of_open (hdim : FlagBundleDim.Statement)
   FlagBundleCut.proof hdim hforms hdiv FieldNumbers.CutRational.full
 
 /- English proof (translation)
-The claim follows from `FlagBundleLineBase.proof hdim hsec hdeg (FieldNumbers.ProjectionFormulaDegree.of_divPushForward (FieldNumbers.DivPushForward.proof FieldNumbers.ContractRelDimLe.proof hloc))`.
+A detailed English derivation is pending.
 -/
 theorem FlagBundleLineBase.of_open (hdim : FlagBundleDim.Statement)
     (hsec : FlagLineSection.Statement) (hdeg : FlagLineDegree.Statement)
@@ -144,7 +144,7 @@ theorem FlagBundleLineBase.of_open (hdim : FlagBundleDim.Statement)
       (FieldNumbers.DivPushForward.proof FieldNumbers.ContractRelDimLe.proof hloc))
 
 /- English proof (translation)
-The claim follows from `NumericalSegre.proof FieldNumbers.IntNumAdd.full hdim (FlagBundleCut.of_open hdim hforms hdiv) (FlagBundlePullbackVanish.of_open hdim) (FlagBundleLineBase.of_open hdim hsec hdeg hloc)`.
+A detailed English derivation is pending.
 -/
 theorem NumericalSegre.of_open (hdim : FlagBundleDim.Statement)
     (hforms : FlagBundleSectionForms.Statement) (hdiv : FlagBundleSectionDiv.Statement)
@@ -154,7 +154,7 @@ theorem NumericalSegre.of_open (hdim : FlagBundleDim.Statement)
     (FlagBundlePullbackVanish.of_open hdim) (FlagBundleLineBase.of_open hdim hsec hdeg hloc)
 
 /- English proof (translation)
-The claim follows from `LocalCoefficient.proof hl hr hring`.
+A detailed English derivation is pending.
 -/
 theorem LocalCoefficient.of_open (hl : LeftTermSupport.Statement.{u})
     (hr : RightTermSupport.Statement.{u}) (hring : LocalCoeffRing.Statement.{u}) :
@@ -162,7 +162,7 @@ theorem LocalCoefficient.of_open (hl : LeftTermSupport.Statement.{u})
   LocalCoefficient.proof hl hr hring
 
 /- English proof (translation)
-The claim follows from `NoCommonComponentCase.proof LeftExpansion.full RightExpansion.full (LocalCoefficient.of_open hl hr hring) IntNumVanish.full`.
+A detailed English derivation is pending.
 -/
 theorem NoCommonComponentCase.of_open (hl : LeftTermSupport.Statement.{u})
     (hr : RightTermSupport.Statement.{u}) (hring : LocalCoeffRing.Statement.{u}) :
@@ -171,20 +171,20 @@ theorem NoCommonComponentCase.of_open (hl : LeftTermSupport.Statement.{u})
     IntNumVanish.full
 
 /- English proof (translation)
-The claim follows from `BlowUpModel.proof hrees`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpModel.of_open (hrees : ReesAlgebraDim.Statement.{u}) : BlowUpModel.Statement.{u} :=
   BlowUpModel.proof hrees
 
 /- English proof (translation)
-The claim follows from `BlowUpDecomposition.proof (BlowUpModel.of_open hrees) hst`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpDecomposition.of_open (hrees : ReesAlgebraDim.Statement.{u})
     (hst : BlowUpStrictTransform.Statement.{u}) : BlowUpDecomposition.Statement.{u} :=
   BlowUpDecomposition.proof (BlowUpModel.of_open hrees) hst
 
 /- English proof (translation)
-The claim follows from `BlowUpInvariance.proof hvert hdiv hhor hcomp DivCycleFiniteSupport.full`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpInvariance.of_open (hvert : BlowUpVerticalPush.Statement.{u})
     (hdiv : BlowUpDivisorPush.Statement.{u}) (hhor : BlowUpHorizontalCorresp.Statement.{u})
@@ -192,7 +192,7 @@ theorem BlowUpInvariance.of_open (hvert : BlowUpVerticalPush.Statement.{u})
   BlowUpInvariance.proof hvert hdiv hhor hcomp DivCycleFiniteSupport.full
 
 /- English proof (translation)
-The claim follows from `BlowUpReduction.proof (BlowUpDecomposition.of_open hrees hst) (BlowUpInvariance.of_open hvert hdiv hhor hcomp) CommonFactorRemoval.full AdditivityInDivisor.full RightSideMultiplicativeInForm.full LeftSideAdditiveInDegree.full TautologicalCase.full`.
+A detailed English derivation is pending.
 -/
 theorem BlowUpReduction.of_open (hrees : ReesAlgebraDim.Statement.{u})
     (hst : BlowUpStrictTransform.Statement.{u}) (hvert : BlowUpVerticalPush.Statement.{u})
@@ -203,7 +203,7 @@ theorem BlowUpReduction.of_open (hrees : ReesAlgebraDim.Statement.{u})
     RightSideMultiplicativeInForm.full LeftSideAdditiveInDegree.full TautologicalCase.full
 
 /- English proof (translation)
-The claim follows from `CommonFactorInduction.proof ExcessPositive.full AvoidingFormExists.full HorizontalAvoidingForm.full (BlowUpDecomposition.of_open hrees hst) hdrop (BlowUpReduction.of_open hrees hst hvert hdiv hhor hcomp) LeftSideAdditiveInDegree.full RightSideMultiplicativeInForm.full DivCycleMul …`.
+A detailed English derivation is pending.
 -/
 theorem CommonFactorInduction.of_open (hrees : ReesAlgebraDim.Statement.{u})
     (hst : BlowUpStrictTransform.Statement.{u}) (hdrop : BlowUpExcessDecreases.Statement.{u})
@@ -216,7 +216,7 @@ theorem CommonFactorInduction.of_open (hrees : ReesAlgebraDim.Statement.{u})
     DivCycleMul.full
 
 /- English proof (translation)
-The claim follows from `VerticalDivisorsCommute.of_steps (NoCommonComponentCase.of_open hl hr hring) (CommonFactorInduction.of_open hrees hst hdrop hvert hdiv hhor hcomp)`.
+A detailed English derivation is pending.
 -/
 theorem VerticalDivisorsCommute.of_open (hl : LeftTermSupport.Statement.{u})
     (hr : RightTermSupport.Statement.{u}) (hring : LocalCoeffRing.Statement.{u})
@@ -228,7 +228,7 @@ theorem VerticalDivisorsCommute.of_open (hl : LeftTermSupport.Statement.{u})
     (CommonFactorInduction.of_open hrees hst hdrop hvert hdiv hhor hcomp)
 
 /- English proof (translation)
-The claim follows from `HsymmPairFlagIndependence.proof (PairNumberExpansionIndependence.proof hC2) hclos hseg`.
+A detailed English derivation is pending.
 -/
 theorem HsymmPairFlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
@@ -236,7 +236,7 @@ theorem HsymmPairFlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Stateme
   HsymmPairFlagIndependence.proof (PairNumberExpansionIndependence.proof hC2) hclos hseg
 
 /- English proof (translation)
-The claim follows from `FlagIndependence.proof (PairNumberExpansionIndependence.proof hC2) (HsymmPairFlagIndependence.of_open hC2 hclos hseg) SymmetricSpanHsymm.full`.
+A detailed English derivation is pending.
 -/
 theorem FlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
@@ -245,7 +245,7 @@ theorem FlagIndependence.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (HsymmPairFlagIndependence.of_open hC2 hclos hseg) SymmetricSpanHsymm.full
 
 /- English proof (translation)
-The claim follows from `PairCocycle.proof (FlagIndependence.of_open hC2 hclos hseg) hC2 IntNumAddFirst.full`.
+A detailed English derivation is pending.
 -/
 theorem PairCocycle.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
@@ -253,7 +253,7 @@ theorem PairCocycle.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
   PairCocycle.proof (FlagIndependence.of_open hC2 hclos hseg) hC2 IntNumAddFirst.full
 
 /- English proof (translation)
-The claim follows from `SubQuotient.proof (FlagIndependence.of_open hC2 hclos hseg)`.
+A detailed English derivation is pending.
 -/
 theorem SubQuotient.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :
@@ -261,7 +261,7 @@ theorem SubQuotient.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
   SubQuotient.proof (FlagIndependence.of_open hC2 hclos hseg)
 
 /- English proof (translation)
-The claim follows from `ScalarQuotient.proof (FlagIndependence.of_open hC2 hclos hseg)`.
+A detailed English derivation is pending.
 -/
 theorem ScalarQuotient.of_open (hC2 : VerticalDivisorsCommute.Statement.{0})
     (hclos : GenericProjClosureModel.Statement) (hseg : SegreClosureNumber.Statement) :

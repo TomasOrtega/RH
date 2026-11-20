@@ -16,7 +16,7 @@ section Sets
 variable {r J : ℕ} (nL : ZMod J → ℕ)
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [NSet, Set.mem_union, Set.mem_setOf_eq] at hx ⊢`. Break down `hx with ⟨l, hl, hlu⟩ | ⟨m, hm, hmu⟩` into its components or cases. Conclude with `Or.inl ⟨l, hl, by omega⟩`. Conclude with `Or.inr ⟨m, hm, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem NSet_mono (j : ZMod J) {u u' : ℕ} (h : u ≤ u') : NSet (r := r) nL j u ⊆ NSet nL j u' := by
   intro x hx
@@ -26,7 +26,7 @@ theorem NSet_mono (j : ZMod J) {u u' : ℕ} (h : u ≤ u') : NSet (r := r) nL j 
   · exact Or.inr ⟨m, hm, by omega⟩
 
 /- English proof (translation)
-Rewrite using `[Set.disjoint_left]`. Introduce `x hx hx'`. Simplify using `only [NSet, Set.mem_union, Set.mem_setOf_eq] at hx hx'`. Apply the tactic sequence `rcases hx with ⟨l, rfl, -⟩ | ⟨m, rfl, -⟩ <;> rcases hx' with ⟨l', e, -⟩ | ⟨m', e, -⟩ <;>`. Conclude with `h (congrArg Sigma.fst e)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem NSet_disj {j j' : ZMod J} (h : j ≠ j') (u u' : ℕ) : Disjoint (NSet (r := r) nL j u) (NSet nL j' u') := by
   rw [Set.disjoint_left]
@@ -49,7 +49,7 @@ def eeN (i : NIdx Dt) : (Fin K → ℤ) → Module.End (KK O) (MvPolynomial (TL 
     Dt.trueLet K (NSet Dt.nL i.1 i.2.val))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Formalism.MainNotions.G.Joints.polIsoDecompB_of D (Formalism.MainNotions.G.GLWeightTheory.weight_condition_from_integral_form D) (KK O) (TL J Dt.nL r) Dt.trueLet K (NSet Dt.nL i.1 i.2.val))`.
+A detailed English derivation is pending.
 -/
 theorem eeN_spec (i : NIdx Dt) :
     (∀ mu, IsIsoProj (normE p K Dt i) mu (eeN D K Dt i mu)) ∧
@@ -59,13 +59,11 @@ theorem eeN_spec (i : NIdx Dt) :
     Dt.trueLet K (NSet Dt.nL i.1 i.2.val))
 
 /- English proof (translation)
-Establish `hmono : Monotone (fun k : Fin 2 => if k.val = 0 then NSet (r` using `r) Dt.nL j a.val else NSet Dt.nL j b.val) := by`. Introduce `x y hxy`. Establish `hxy' : x.val ≤ y.val` using `hxy`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> first | exact le_refl _ | exact NSet_mono Dt.nL j hab | omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h` using `((Formalism.MainNotions.G.GLWeightTheory.filtered_projector_corollary_field D) p n' O S hR K (TL J Dt.nL r) Dt.trueLet 2 _ hmono).2 (fun k => if k.val = 0 then eeN D K Dt ⟨j, a⟩ else eeN D K Dt ⟨j, b⟩) (by`. Introduce `k lam`. Distinguish the cases in `hk : k.val = 0`. Simplify using `only [hk, ↓reduceIte]`. Conclude with `(eeN_spec D K Dt ⟨j, a⟩).1 lam`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hk, ↓reduceIte]`. Conclude with `(eeN_spec D K Dt ⟨j, b⟩).1 lam)`. Establish `h01` using `h.2.2.1 0 1 mu mu'`. Establish `h0 : (0 : Fin 2).val = 0` using `rfl`. Establish `h1 : ¬ (1 : Fin 2).val = 0` using `by decide`.
-
-Simplify using `only [h0, h1, ↓reduceIte] at h01`. Conclude with `h01`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem eeN_mul_comm_of_val_le {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (j : ZMod J)
     (a b : Fin (Dt.nL j + r + 1)) (hab : a.val ≤ b.val) (mu mu' : Fin K → ℤ) :
@@ -90,7 +88,7 @@ private theorem eeN_mul_comm_of_val_le {n' : ℕ} (S : UniformizedDVR p O) (hR :
   exact h01
 
 /- English proof (translation)
-Establish `hc` using `((Formalism.MainNotions.G.GLWeightTheory.filtered_projector_corollary_field D) p n' O S hR K (TL J Dt.nL r) Dt.trueLet 1 (fun _ => NSet (r := r) Dt.nL j a.val) monotone_const).2 (fun _ => eeN D K Dt ⟨j, a⟩) (fun _ lam => (eeN_spec D K Dt ⟨j, a⟩).1 lam)`. Establish `hdisj : Disjoint (NSet (r` using `r) Dt.nL j a.val) (NSet Dt.nL j' b.val) := NSet_disj Dt.nL hj a.val b.val`. Establish `hA : ∀ c d, eeN D K Dt ⟨j, a⟩ mu * glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val) c d = glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val) c d * eeN D K Dt ⟨j, a⟩ mu` using `hc.2.1 0 mu _ hdisj`. Establish `hpres` using `comm_pres_isoSub (E := glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val)) _ hA`. Conclude with `(comm_isoProj (E := glOps (KK O) K Dt.trueLet (NSet Dt.nL j' b.val)) (eeN D K Dt ⟨j, a⟩ mu) hpres (eeN D K Dt ⟨j', b⟩) (eeN_spec D K Dt ⟨j', b⟩).1 (eeN_spec D K Dt ⟨j', b⟩).2 mu').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eeN_mul_comm_of_ne_index {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) {j j' : ZMod J} (hj : j ≠ j')
     (a : Fin (Dt.nL j + r + 1)) (b : Fin (Dt.nL j' + r + 1)) (mu mu' : Fin K → ℤ) :
@@ -107,9 +105,9 @@ private theorem eeN_mul_comm_of_ne_index {n' : ℕ} (S : UniformizedDVR p O) (hR
     (eeN D K Dt ⟨j', b⟩) (eeN_spec D K Dt ⟨j', b⟩).1 (eeN_spec D K Dt ⟨j', b⟩).2 mu').symm
 
 /- English proof (translation)
-Take `⟨j, a⟩` from `i`. Take `⟨j', b⟩` from `i'`. Distinguish the cases in `hj : j = j'`. Substitute `hj` using the available equality. Break down `le_total a.val b.val with hab | hab` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `eeN_mul_comm_of_val_le D K Dt S hR j a b hab mu mu'`. Conclude with `(eeN_mul_comm_of_val_le D K Dt S hR j b a hab mu' mu).symm`. Conclude with `eeN_mul_comm_of_ne_index D K Dt S hR hj a b mu mu'`.
+A detailed English derivation is pending.
 -/
 theorem eeN_comm {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (i i' : NIdx Dt) (mu mu' : Fin K → ℤ) :
     eeN D K Dt i mu * eeN D K Dt i' mu' = eeN D K Dt i' mu' * eeN D K Dt i mu := by
@@ -123,7 +121,7 @@ theorem eeN_comm {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O)
   · exact eeN_mul_comm_of_ne_index D K Dt S hR hj a b mu mu'
 
 /- English proof (translation)
-Establish `hc` using `((Formalism.MainNotions.G.GLWeightTheory.filtered_projector_corollary_field D) p n' O S hR K (TL J Dt.nL r) Dt.trueLet 1 (fun _ => NSet (r := r) Dt.nL i.1 i.2.val) monotone_const).2 (fun _ => eeN D K Dt i) (fun _ lam => (eeN_spec D K Dt i).1 lam)`. Conclude with `hc.2.2.2.1 0 mu F G`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eeN_selfadj {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (i : NIdx Dt) (mu : Fin K → ℤ)
     (F G : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) :
@@ -134,7 +132,7 @@ theorem eeN_selfadj {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n'
   exact hc.2.2.2.1 0 mu F G
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨hiso, hdec⟩` from `eeN_spec D K Dt i`. Establish `sys : Formalism.MainNotions.G.Joints.DecSys (fun mu => isoSub (glOps (KK O) K Dt.trueLet (NSet Dt.nL i.1 i.2.val)) mu) (eeN D K Dt i)` using `{ id_on := fun mu x hx => (hiso mu).1 x hx zero_on := fun mu nu h x hx => (hiso mu).2 nu h x hx cover := fun x => (hdec x).elim fun T hT => ⟨T, hT.1⟩ mem := fun mu x => (hdec x).elim fun T hT => hT.2 mu }`. Conclude with `Formalism.MainNotions.G.Joints.e_mem_Pol (sys := sys) (d := d) (mu := mu) (F := F) (hF := hF)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eeN_pol (i : NIdx Dt) (mu : Fin K → ℤ) (d : TL J Dt.nL r → ℕ) :
     ∀ F ∈ Pol (KK O) K d, eeN D K Dt i mu F ∈ Pol (KK O) K d := by
@@ -149,11 +147,11 @@ theorem eeN_pol (i : NIdx Dt) (mu : Fin K → ℤ) (d : TL J Dt.nL r → ℕ) :
   exact Formalism.MainNotions.G.Joints.e_mem_Pol (sys := sys) (d := d) (mu := mu) (F := F) (hF := hF)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `F G`. Simplify using `only [List.prod_nil]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Consider the case `cons A l ih`. Introduce `F G`. Establish `hA0 : A ∈ A :: l` using `List.mem_cons.mpr (Or.inl rfl)`. Establish `hA` using `hs A hA0`. Establish `ih'` using `ih (fun B hB => hs B (List.mem_cons.mpr (Or.inr hB))) (fun B hB C hC => hc B (List.mem_cons.mpr (Or.inr hB)) C (List.mem_cons.mpr (Or.inr hC)))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : A * l.prod = l.prod * A` using `(Commute.list_prod_right l A (fun B hB => hc A hA0 B (List.mem_cons.mpr (Or.inr hB)))).eq`. Rewrite using `[List.prod_cons]`. Use `show fock (A (l.prod F)) G = fock F ((A * l.prod) G)`. Apply the tactic sequence `rw [hA, ih', hcomm] <;> rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem fock_list_prod_symm_of_symm_of_comm {σ R : Type*} [CommRing R] (l : List (Module.End R (MvPolynomial σ R)))
     (hs : ∀ A ∈ l, ∀ F G, fock (A F) G = fock F (A G)) (hc : ∀ A ∈ l, ∀ B ∈ l, A * B = B * A) :
@@ -176,11 +174,9 @@ private theorem fock_list_prod_symm_of_symm_of_comm {σ R : Type*} [CommRing R] 
     rw [hA, ih', hcomm] <;> rfl
 
 /- English proof (translation)
-Establish `hcomm : ∀ i i' mu mu', eeN D K Dt i mu * eeN D K Dt i' mu' = eeN D K Dt i' mu' * eeN D K Dt i mu` using `fun i i' mu mu' => eeN_comm D K Dt S hR i i' mu mu'`. Use `⟨jointE_isJProj (fun i mu => (eeN_spec D K Dt i).1 mu) hcomm ka, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `F G`. Use `fock_list_prod_symm_of_symm_of_comm ((Finset.univ : Finset (NIdx Dt)).toList.map fun i => eeN D K Dt i (ka i)) ?_ (jointE_comm hcomm ka) F G` and prove the remaining obligations. Introduce `A hA`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, -, rfl⟩` from `List.mem_map.mp hA`. Conclude with `eeN_selfadj D K Dt S hR i (ka i)`. Introduce `d F hF`. Conclude with `jointE_pres (Pol (KK O) K d) (fun i mu F hF => eeN_pol D K Dt i mu d F hF) ka F hF`. Introduce `F i`.
-
-Conclude with `jointE_mem hcomm (fun i G => (eeN_spec D K Dt i).2 G) ka F i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jointN_props {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (ka : NIdx Dt → Fin K → ℤ) :
     IsJProj (normE p K Dt) {ka} (jointE (eeN D K Dt) ka) ∧
@@ -205,9 +201,9 @@ def costN (dNo : TL J Dt.nL r → ℕ) (i : NIdx Dt) : ℕ :=
   N0 K * Nat.log p (2 * degIn dNo (NSet Dt.nL i.1 i.2.val) + K - 1)
 
 /- English proof (translation)
-Establish `hc` using `((Formalism.MainNotions.G.GLWeightTheory.filtered_projector_corollary_field D) p n' O S hR K (TL J Dt.nL r) Dt.trueLet 1 (fun _ => NSet (r := r) Dt.nL i.1 i.2.val) monotone_const).2 (fun _ => eeN D K Dt i) (fun _ lam => (eeN_spec D K Dt i).1 lam)`. Establish `h5 : InBB (O` using `O) p (((p : KK O) ^ (∑ _k : Fin 1, N0 K * Nat.log p (2 * degIn dNo (NSet Dt.nL i.1 i.2.val) + K - 1))) • (∑ t ∈ ({fun _ => mu} : Finset (Fin 1 → Fin K → ℤ)), (List.ofFn fun k => eeN D K Dt i (t k)).prod) F) := (hc.2.2.2.2 _ dNo F hF).2 hB`. Establish `e1 : (∑ t ∈ ({fun _ => mu} : Finset (Fin 1 → Fin K → ℤ)), (List.ofFn fun k => eeN D K Dt i (t k)).prod) = eeN D K Dt i mu`. Rewrite using `[Finset.sum_singleton]`. Simplify using `[List.ofFn_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2 : (∑ _k : Fin 1, N0 K * Nat.log p (2 * degIn dNo (NSet Dt.nL i.1 i.2.val) + K - 1)) = costN K Dt dNo i`. Simplify using `[costN]`. Rewrite `h5` using `[e1, e2]`. Conclude with `h5`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eeN_int {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (i : NIdx Dt) (mu : Fin K → ℤ)
     (dNo : TL J Dt.nL r → ℕ) (F : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) (hF : F ∈ Pol (KK O) K dNo)
@@ -228,9 +224,9 @@ theorem eeN_int {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) 
   exact h5
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using ⟨hF, hB⟩`. Consider the case `cons i l ih`. Take `⟨h1, h2⟩` from `ih`. Establish `e1 : ((p : KK O) ^ ((i :: l).map (costN K Dt dNo)).sum) • ((i :: l).map fun i => eeN D K Dt i (ka i)).prod F = ((p : KK O) ^ costN K Dt dNo i) • eeN D K Dt i (ka i) (((p : KK O) ^ (l.map (costN K Dt dNo)).sum) • (l.map fun i => eeN D K Dt i (ka i)).prod F)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[List.map_cons, List.sum_cons, List.map_cons, List.prod_cons, Module.End.mul_apply, map_smul, smul_smul, pow_add]`. Rewrite using `[e1]`. Conclude with `⟨Submodule.smul_mem _ _ (eeN_pol D K Dt i (ka i) dNo _ h1), eeN_int D K Dt S hR i (ka i) dNo _ h1 h2⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem jointE_int_list {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (ka : NIdx Dt → Fin K → ℤ)
     (dNo : TL J Dt.nL r → ℕ) (l : List (NIdx Dt)) (F : MvPolynomial (TL J Dt.nL r × Fin K) (KK O))
@@ -250,9 +246,9 @@ theorem jointE_int_list {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR 
     exact ⟨Submodule.smul_mem _ _ (eeN_pol D K Dt i (ka i) dNo _ h1), eeN_int D K Dt S hR i (ka i) dNo _ h1 h2⟩
 
 /- English proof (translation)
-Establish `h` using `(jointE_int_list D K Dt S hR ka dNo (Finset.univ : Finset (NIdx Dt)).toList F hF hB).2`. Establish `hs : (List.map (costN K Dt dNo) (Finset.univ : Finset (NIdx Dt)).toList).sum = ∑ i : NIdx Dt, costN K Dt dNo i` using `by first`. Consider the case `exact Finset.sum_map_toList _ _`. Consider the case `exact Finset.sum_toList _ _`. Consider the case `simp`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `h` using `[hs]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointE_int {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (ka : NIdx Dt → Fin K → ℤ)
     (dNo : TL J Dt.nL r → ℕ) (F : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) (hF : F ∈ Pol (KK O) K dNo)
@@ -274,15 +270,15 @@ section VBB
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {σ : Type}
 
 /- English proof (translation)
-Simplify using `[vK, ordW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem vK_zero' : vK (O := O) p 0 = ⊤ := by
   simp [vK, ordW]
 
 /- English proof (translation)
-Distinguish the cases in `hm : m ∈ F.support`. Unfold `vBB`. Conclude with `Finset.inf_le (f := fun m => vK (O := O) p (F.coeff m) + (((padicValNat p (expFact m) : ℚ) / 2 : ℚ) : WithTop ℚ)) hm`. Establish `h0 : F.coeff m = 0` using `by simpa using hm`. Rewrite using `[h0, vK_zero']`.
+Consider separately whether the proposition holds or fails. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem vBB_le_coeff (F : MvPolynomial σ (KK O)) (m : σ →₀ ℕ) :
     vBB (O := O) p F ≤ vK p (F.coeff m) + (((padicValNat p (expFact m) : ℚ) / 2 : ℚ) : WithTop ℚ) := by
@@ -295,9 +291,9 @@ theorem vBB_le_coeff (F : MvPolynomial σ (KK O)) (m : σ →₀ ℕ) :
     simp
 
 /- English proof (translation)
-Establish `key : ∀ m ∈ (F + G).support, min (vBB (O` using `O) p F) (vBB (O := O) p G) ≤ vK (O := O) p ((F + G).coeff m) + (((padicValNat p (expFact m) : ℚ) / 2 : ℚ) : WithTop ℚ) := by`. Introduce `m _`. Establish `h1` using `vBB_le_coeff (p := p) (O := O) F m`. Establish `h2` using `vBB_le_coeff (p := p) (O := O) G m`. Establish `hv` using `Formalism.MainNotions.G.GLWeightTheory.valuation_add_ge_min p (F.coeff m) (G.coeff m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_add]`. Combine the equalities or inequalities in the displayed calculation. Unfold `vBB`. Conclude with `Finset.le_inf key`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vBB_add (S : UniformizedDVR p O) (F G : MvPolynomial σ (KK O)) :
     min (vBB (O := O) p F) (vBB (O := O) p G) ≤ vBB (O := O) p (F + G) := by
@@ -319,7 +315,7 @@ theorem vBB_add (S : UniformizedDVR p O) (F G : MvPolynomial σ (KK O)) :
   exact Finset.le_inf key
 
 /- English proof (translation)
-Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Simplify using `[vBB]`. Introduce `a s ha ih`. Rewrite using `[Finset.inf_insert, Finset.sum_insert ha]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem vBB_sum (S : UniformizedDVR p O) {κ : Type} (T : Finset κ) (f : κ → MvPolynomial σ (KK O)) :
     T.inf (fun i => vBB (O := O) p (f i)) ≤ vBB (O := O) p (∑ i ∈ T, f i) := by
@@ -340,9 +336,9 @@ variable (D : Formalism.BasicNotions.D7) {p : ℕ} {O : Type} [CommRing O] [IsDo
   [NeZero J] [NeZero r] (K : ℕ) [NeZero K] [CharZero (KK O)] (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Take `⟨T, hT, -⟩` from `(eeN_spec D K Dt i).2 y`. Break down `T.eq_empty_or_nonempty with hE | hne` into its components or cases. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `hy : y = 0` using `by rw [hT, hE, Finset.sum_empty]`. Apply the tactic sequence `rw [hy, map_zero] <;> exact le_rfl`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨mu, -, hinf⟩` from `Finset.exists_mem_eq_inf T hne (fun mu => vBB (O := O) p (eeN D K Dt i mu y))`. Use `⟨mu, ?_⟩` and prove the remaining obligations. Rewrite using `[← hinf]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem greedy_one (S : UniformizedDVR p O) (i : NIdx Dt) (y : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) :
     ∃ mu, vBB (O := O) p (eeN D K Dt i mu y) ≤ vBB (O := O) p y := by
@@ -359,13 +355,13 @@ theorem greedy_one (S : UniformizedDVR p O) (i : NIdx Dt) (y : MvPolynomial (TL 
       _ = vBB (O := O) p y := by rw [← hT]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Use `⟨fun _ _ => 0, ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_nil, List.prod_nil]`. Conclude with `le_rfl`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons i l ih`. Take `⟨hi, hl'⟩` from `List.nodup_cons.mp hl`. Take `⟨ka', hka'⟩` from `ih hl'`. Take `⟨mu, hmu⟩` from `greedy_one D K Dt S i ((l.map fun i => eeN D K Dt i (ka' i)).prod y)`. Use `⟨Function.update ka' i mu, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmap : (l.map fun j => eeN D K Dt j (Function.update ka' i mu j)) = l.map fun j => eeN D K Dt j (ka' j)`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `j hj`. Establish `hne : j ≠ i` using `fun h => hi (h ▸ hj)`. Rewrite using `[Function.update_apply, if_neg hne]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi' : Function.update ka' i mu i = mu` using `by simp`. Rewrite using `[List.map_cons, List.prod_cons, Module.End.mul_apply, hmap, hi']`. Conclude with `hmu.trans hka'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem greedy_list (S : UniformizedDVR p O) (l : List (NIdx Dt)) (hl : l.Nodup)
     (y : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) :
@@ -392,11 +388,9 @@ theorem greedy_list (S : UniformizedDVR p O) (l : List (NIdx Dt)) (hl : l.Nodup)
 include D in
 
 /- English proof (translation)
-Take `⟨ka0, hka0⟩` from `greedy_list D K Dt S (Finset.univ : Finset (NIdx Dt)).toList (Finset.nodup_toList _) y`. Take `⟨ka, hka⟩ : ∃ ka : ZMod J → ℕ → Fin K → ℤ, ∀ i : NIdx Dt, ka i.1 i.2.val = ka0 i` from `⟨fun j u => if h : u < Dt.nL j + r + 1 then ka0 ⟨j, ⟨u, h⟩⟩ else 0, fun i => dif_pos i.2.isLt⟩`. Establish `hfun : (fun i : Σ j, Fin (Dt.nL j + r + 1) => ka i.1 i.2.val) = ka0` using `funext hka`. Take `⟨h1, h2, h3, h4⟩` from `jointN_props D K Dt S hR ka0`. Establish `hj` using `jointE_int D K Dt S hR ka0 dNo`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨ka, jointE (eeN D K Dt) ka0, ?_, hka0, h2, fun F hF => ⟨h3 dNo F hF, fun hB => hj F hF hB⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `h1`. Introduce `F i`. Rewrite using `[hka i]`.
-
-Conclude with `h4 F i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restJP {n' : ℕ} (S : UniformizedDVR p O) (hR : AdmissibleDVR p n' O) (dNo : TL J Dt.nL r → ℕ)
     (y : MvPolynomial (TL J Dt.nL r × Fin K) (KK O)) :

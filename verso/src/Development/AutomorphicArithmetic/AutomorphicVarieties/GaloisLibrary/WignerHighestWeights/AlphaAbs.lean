@@ -10,9 +10,9 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Al
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro b x`. Rewrite using `[rp_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `succ n ih`. Introduce `b x`. Rewrite using `[rp_succ, ih, List.ofFn_succ, List.prod_cons, MulOpposite.unop_mul]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rp_eq {X M : Type} [AddCommGroup X] [Module ℂ X] [AddCommGroup M] [Module ℂ M] :
     ∀ (n : ℕ) (b : Fin n → X →ₗ[ℂ] Module.End ℂ M) (x : Fin n → X),
@@ -37,7 +37,7 @@ private theorem sh_apply {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     sh A c x = A x + (c * x.trace) • (1 : Module.End ℂ M) := rfl
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.trace_single_eq_of_ne _ _ _ h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem trace_single' {n : ℕ} (i j : Fin n) :
     (Matrix.single i j (1 : ℂ)).trace = if i = j then 1 else 0 := by
@@ -46,7 +46,7 @@ private theorem trace_single' {n : ℕ} (i j : Fin n) :
   · simp [Matrix.trace_single_eq_of_ne _ _ _ h]
 
 /- English proof (translation)
-Rewrite using `[sh_apply, trace_single', Formalism.REAL.Tm]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.algebraMap_eq_smul_one, add_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sh_single {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) (c : ℂ) (i j : Fin n) :
@@ -55,7 +55,7 @@ private theorem sh_single {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
   split_ifs <;> simp [Algebra.algebraMap_eq_smul_one, add_comm]
 
 /- English proof (translation)
-Rewrite using `[sh_apply, trace_single', Formalism.REAL.Tm]`. Apply the tactic sequence `split_ifs <;> simp [Algebra.algebraMap_eq_smul_one, add_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sh_single_op {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ}
     (B : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) (c : ℂ) (i j : Fin n) :
@@ -71,26 +71,24 @@ private noncomputable def epsL {M : Type} [AddCommGroup M] [Module ℂ M] (n : �
   map_smul' c u := by simp [eps, Finset.smul_sum, smul_comm c]
 
 /- English proof (translation)
-Simplify using `only [eps, map_sum, map_zsmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem map_eps {M : Type} [AddCommGroup M] [Module ℂ M] {n : ℕ} (κ : Module.End ℂ M)
     (μ : (Fin n → Matrix (Fin n) (Fin n) ℂ) → M) : κ (eps μ) = eps fun x => κ (μ x) := by
   simp only [eps, map_sum, map_zsmul]
 
 /- English proof (translation)
-Introduce `M _ _ n A B arg hc`. Take `⟨T, hT⟩` from `telML (Matrix (Fin n) (Fin n) ℂ) M n (fun i => sh A (arg i)) (fun i => sh (-B) (arg i))`. Set `α : (Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] M) →ₗ[ℂ] M` to `{ toFun := fun f => eps (T f) map_add' := fun u v => by rw [map_add]; exact (epsL n).map_add _ _ map_smul' := fun c u => by rw [map_smul]; exact (epsL n).map_smul _ _ }`. Establish `hα : ∀ f, α f = eps (T f)` using `fun _ => rfl`. Use `⟨α, fun m f hf => ?_, fun κ g g' hg hA hB f f' hf => ?_, fun D y hA hB f f' hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `telSum (Matrix (Fin n) (Fin n) ℂ) M n (fun i => sh A (arg i)) (fun i => sh (-B) (arg i)) (fun i j x y => by`. Rewrite using `[sh_apply, sh_apply]`. Conclude with `((hc x y).neg_right.add_right ((Commute.one_right _).smul_right _)).add_left ((Commute.one_left _).smul_left _)) m f`. Use the proof step `(fun i x => by rw [hf, sh_apply, sh_apply]; simp)`. Rewrite using `[hα]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `eps Formalism.HermitianLatticeCounting.P.doublyAntisymmetrizedProduct Formalism.HermitianLatticeCounting.P.orderedTermProduct`. Simplify using `only [hT, h, rp_eq, units, sh_single_op]`. Simplify using `only [sh_single, ← zsmul_eq_mul, smul_smul, Finset.unop_sum, MulOpposite.unop_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_sub, Finset.sum_sub_distrib]`. Establish `htr : ∀ x : Matrix (Fin n) (Fin n) ℂ, (g * x * g').trace = x.trace` using `fun x => by`. Rewrite using `[Matrix.trace_mul_cycle, hg, one_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `telGrp (Matrix (Fin n) (Fin n) ℂ) M n (fun i => sh A (arg i)) (fun i => sh (-B) (arg i)) κ (fun x => g * x * g') (fun i x => by rw [sh_apply, sh_apply, htr, mul_add, add_mul, hA]; simp) (fun i x => by`. Rewrite using `[sh_apply, sh_apply, htr, mul_add, add_mul, LinearMap.neg_apply, LinearMap.neg_apply, mul_neg, hB]`. Use the proof step `simp) f f' hf`. Rewrite using `[hα, hα, map_eps, ← epsGrp M n (T f') g g' hg]`. Simplify using `only [hT, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `htr : ∀ x : Matrix (Fin n) (Fin n) ℂ, (y * x - x * y).trace = 0` using `fun x => by`. Rewrite using `[Matrix.trace_sub, Matrix.trace_mul_comm, sub_self]`. Establish `h` using `telDer (Matrix (Fin n) (Fin n) ℂ) M n (fun i => sh A (arg i)) (fun i => sh (-B) (arg i)) D (fun x => y * x - x * y) (fun i x => by rw [sh_apply, sh_apply, htr, mul_add, add_mul, ← hA]; simp) (fun i x => by`. Rewrite using `[sh_apply, sh_apply, htr, mul_add, add_mul, LinearMap.neg_apply, LinearMap.neg_apply, ← hB]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `abel) f f' hf`. Establish `e : (fun x => D (T f x)) = ⇑(T f') + fun x => ∑ k, T f (Function.update x k (y * x k - x k * y))`. Use function extensionality and compare the values at `x`. Simplify using `only [hT, h, Pi.add_apply]`. Rewrite using `[hα, hα, map_eps, e]`.
-
-Use `((epsL n).map_add _ _).trans ?_` and prove the remaining obligations. Conclude with `(congrArg (eps (T f') + ·) (epsDer M n (T f) y)).trans (add_zero _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgRepEndIrreducible.alphaAbs :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (n : ℕ) (A B : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ M) (arg : Fin n → ℂ),

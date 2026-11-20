@@ -11,15 +11,15 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.CxForm.HolAtlas
 
 /- English proof (translation)
-Establish `hloc : ∀ i, A.loc (GlobalTheory.LineForm.fld A w * β) i = fun v => A.loc (GlobalTheory.LineForm.fld A w) i v * A.loc β i v`. Introduce `i`. Use function extensionality and compare the values at `v`. Unfold `HolAtlas.loc`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish `hd : ∀ α : A.Fld, A.IsForm α → ∀ (x : A.Pt) (S), DifferentiableAt ℝ (fun v => (bas n).repr (A.loc α x.1.1 v) S) x.crd` using `fun α hα x S => ((hα.smooth x.1.1 S).contDiffAt ((A.e x.1.1).open_target.mem_nhds (x.ch.map_source x.2))).differentiableAt (by simp)`. Establish `key` using `fun x : A.Pt => GlobalTheory.T.delOperatorAt_dbarOperatorAt_leibniz_of_commute n (A.loc (GlobalTheory.LineForm.fld A w) x.1.1) (A.loc β x.1.1) x.crd (GlobalTheory.LineForm.fld A w x) (hd _ hw x) (hd _ hβ x)`. Establish `hc : ∀ (x : A.Pt) (b : Alt n), b * A.loc (GlobalTheory.LineForm.fld A w) x.1.1 x.crd = GlobalTheory.LineForm.fld A w x * b`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x b`. Rewrite using `[A.loc_crd]`. Conclude with `Subalgebra.mem_center_iff.1 (w x).2 b`. Prove the components needed by the constructor for the conclusion. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(key x).1 fun a => hc x _` as an intermediate fact. Rewrite `this` using `[A.loc_crd β x]`. Simplify using `only [HolAtlas.del, Pi.add_apply, Pi.mul_apply, hloc]`. Conclude with `this`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(key x).2 fun a => hc x _` as an intermediate fact. Rewrite `this` using `[A.loc_crd β x]`. Simplify using `only [HolAtlas.dbar, Pi.add_apply, Pi.mul_apply, hloc]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem del_dbar_even_mul (M : Type) [TopologicalSpace M] (n : ℕ) (A : HolAtlas M n) (w : A.Pt → Ev n) (β : A.Fld)
     (hw : A.IsForm (GlobalTheory.LineForm.fld A w)) (hβ : A.IsForm β) :

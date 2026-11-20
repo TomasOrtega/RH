@@ -13,20 +13,20 @@ section
 variable {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {M : ℕ} {ρ : Fin M → ℝ}
 
 /- English proof (translation)
-Introduce `α` and use `le_trans (WithTop.coe_le_coe.2 (by linarith)) (h α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_mono {g : MvPowerSeries (Fin M) C} {w w' : ℝ} (h : OrdGe v ρ g w) (hw : w' ≤ w) :
     OrdGe v ρ g w' := fun α =>
   le_trans (WithTop.coe_le_coe.2 (by linarith)) (h α)
 
 /- English proof (translation)
-Introduce `α` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_zero (w : ℝ) : OrdGe v ρ (0 : MvPowerSeries (Fin M) C) w := fun α => by
   simp
 
 /- English proof (translation)
-Introduce `α` and use `by rw [map_add] exact le_trans (le_min (h α) (h' α)) (v.map_add _ _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_add {g g' : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w)
     (h' : OrdGe v ρ g' w) : OrdGe v ρ (g + g') w := fun α => by
@@ -34,7 +34,7 @@ theorem ord_add {g g' : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w)
   exact le_trans (le_min (h α) (h' α)) (v.map_add _ _)
 
 /- English proof (translation)
-Introduce `α` and use `by rw [map_neg, v.map_neg] exact h α`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_neg {g : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w) :
     OrdGe v ρ (-g) w := fun α => by
@@ -42,14 +42,14 @@ theorem ord_neg {g : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w) :
   exact h α
 
 /- English proof (translation)
-The claim follows from `Finset.sum_induction g (fun x => OrdGe v ρ x w) (fun _ _ => ord_add) (ord_zero w) h`.
+A detailed English derivation is pending.
 -/
 theorem ord_sum {ι : Type*} (s : Finset ι) {g : ι → MvPowerSeries (Fin M) C} {w : ℝ}
     (h : ∀ i ∈ s, OrdGe v ρ (g i) w) : OrdGe v ρ (∑ i ∈ s, g i) w :=
   Finset.sum_induction g (fun x => OrdGe v ρ x w) (fun _ _ => ord_add) (ord_zero w) h
 
 /- English proof (translation)
-Introduce `α` and use `by rw [coeff_C_mul, v.map_mul, add_sub_assoc, WithTop.coe_add] exact add_le_add hx (h α)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_C_mul {g : MvPowerSeries (Fin M) C} {w a : ℝ} {x : C} (hx : (a : WithTop ℝ) ≤ v x)
     (h : OrdGe v ρ g w) : OrdGe v ρ (MvPowerSeries.C (R := C) x * g) (a + w) := fun α => by
@@ -57,7 +57,7 @@ theorem ord_C_mul {g : MvPowerSeries (Fin M) C} {w a : ℝ} {x : C} (hx : (a : W
   exact add_le_add hx (h α)
 
 /- English proof (translation)
-Introduce `α` and use `by have e : ∀ β : Fin M →₀ ℕ, β.sum (fun j e => ρ j * (e : ℝ)) = ∑ m, ρ m * β m := fun β => Finsupp.sum_fintype _ _ (by simp) have := (GlobalTheory.psWeight_calculus C v (Fin M) ρ g g w w (fun β => by rw [e]; exact h β)).2 N α rwa [e] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ord_pow {g : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w) (N : ℕ) :
     OrdGe v ρ (g ^ N) (N * w) := fun α => by
@@ -67,9 +67,9 @@ theorem ord_pow {g : MvPowerSeries (Fin M) C} {w : ℝ} (h : OrdGe v ρ g w) (N 
   rwa [e] at this
 
 /- English proof (translation)
-Use `ord_sum _ fun j _ α => ?_` and prove the remaining obligations. Rewrite using `[coeff_C_mul, coeff_X_pow]`. Use `split_ifs with hα`. Substitute `hα` using the available equality. Rewrite using `[mul_one, Finset.sum_eq_single j (fun b _ hb => by simp [Finsupp.single_apply, Ne.symm hb]) (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_pure {r w : ℝ} {N : ℕ} {a : Fin M → C}
     (h : ∀ j, ((w - r * N : ℝ) : WithTop ℝ) ≤ v (a j)) :
@@ -85,13 +85,13 @@ theorem ord_pure {r w : ℝ} {N : ℕ} {a : Fin M → C}
   · simp
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero, ← map_sub, ← (Commute.all f g).mul_geom_sum₂ m]`. Apply `coeff_of_lt_order` to reduce the goal to its premises. Establish `h1 : (D : ℕ∞) ≤ (f - g).order` using `nat_le_order fun β hβ => by`. Rewrite using `[map_sub, h β hβ, sub_self]`. Establish `h2 : ((1 : ℕ) : ℕ∞) ≤ (∑ i ∈ Finset.range m, f ^ i * g ^ (m - 1 - i)).order` using `nat_le_order fun β hβ => by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: β = 0`. Rewrite using `[← Finsupp.degree_eq_zero_iff]`. Use linear arithmetic over natural numbers and integers. Substitute `this` using the available equality. Rewrite using `[coeff_zero_eq_constantCoeff_apply, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i hi => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, hf, hg, ← pow_add, zero_pow]`. Use `Finset.mem_range.1 hi` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `lt_of_lt_of_le ?_ (le_trans (add_le_add h1 h2) le_order_mul)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hα]`. Conclude with `Nat.lt_succ_self D` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_pow_congr {f g : MvPowerSeries (Fin M) C} (hf : constantCoeff f = 0)
     (hg : constantCoeff g = 0) {D m : ℕ} (hm : 2 ≤ m)
@@ -116,7 +116,7 @@ theorem coeff_pow_congr {f g : MvPowerSeries (Fin M) C} (hf : constantCoeff f = 
   exact_mod_cast Nat.lt_succ_self D
 
 /- English proof (translation)
-Apply `coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (le_order_pow_of_constantCoeff_eq_zero m hf)` and prove the remaining obligations. Conclude with `hα` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coeff_pow_eq_zero {f : MvPowerSeries (Fin M) C} (hf : constantCoeff f = 0) {m : ℕ}
     (α : Fin M →₀ ℕ) (hα : Finsupp.degree α < m) : coeff α (f ^ m) = 0 := by
@@ -125,9 +125,9 @@ theorem coeff_pow_eq_zero {f : MvPowerSeries (Fin M) C} (hf : constantCoeff f = 
   exact_mod_cast hα
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ n ∈ Finset.range (Finsupp.degree α + 1), ∑ a, al a n e * coeff α (t a ^ (l ^ n)) = _`. Use `Finset.sum_subset (Finset.range_subset_range.2 hN) fun n _ hn => ?_` and prove the remaining obligations. Use `Finset.sum_eq_zero fun a _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_pow_eq_zero (ht a), mul_zero]`. Establish `h1 : n < l ^ n` using `Nat.lt_pow_self hl`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_range] at hn`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem coeff_lgSum {d l : ℕ} (hl : 2 ≤ l) (al : Fin d → ℕ → Fin d → C)
     (t : Fin d → MvPowerSeries (Fin M) C) (ht : ∀ c, constantCoeff (t c) = 0) (e : Fin d)
@@ -143,11 +143,11 @@ theorem coeff_lgSum {d l : ℕ} (hl : 2 ≤ l) (al : Fin d → ℕ → Fin d →
   omega
 
 /- English proof (translation)
-Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[v.map_zero]`. Conclude with `WithTop.top_ne_one hx`. Establish `h1 : v ((x ^ E)⁻¹) + v (x ^ E) = 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← v.map_mul, inv_mul_cancel₀ (pow_ne_zero _ hx0), v.map_one]`. Establish `h2 : v (x ^ E) = ((E : ℝ) : WithTop ℝ)`. Rewrite using `[v.map_pow, hx, ← WithTop.coe_one, ← WithTop.coe_nsmul]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hv : v ((x ^ E)⁻¹) with`. Consider the case `top => exact le_top`. Consider the case `coe r`. Rewrite `h1` using `[hv, ← WithTop.coe_add, ← WithTop.coe_zero, WithTop.coe_inj]`. Conclude with `WithTop.coe_le_coe.2 (by linarith)`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_inv_pow {x : C} (hx : v x = 1) (E : ℕ) :
     ((-(E : ℝ) : ℝ) : WithTop ℝ) ≤ v ((x ^ E)⁻¹) := by
@@ -167,17 +167,17 @@ theorem v_inv_pow {x : C} (hx : v x = 1) (E : ℕ) :
     exact WithTop.coe_le_coe.2 (by linarith)
 
 /- English proof (translation)
-Establish `key : ∀ D : ℕ, ∀ α : Fin M →₀ ℕ, Finsupp.degree α = D → ∀ c, (((w - ∑ m, ρ m * α m : ℝ)) : WithTop ℝ) ≤ v (coeff α (t c - μ c))`. Introduce `D`. Proceed by induction on `D using Nat.strong_induction_on with`. Consider the case `_ D ih`. Introduce `α hα e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ν : Fin d → MvPowerSeries (Fin M) C` to `fun c β => if Finsupp.degree β < D then coeff β (t c - μ c) else 0`. Establish `hν : ∀ c β, coeff β (ν c) = if Finsupp.degree β < D then coeff β (t c - μ c) else 0` using `fun _ _ => rfl`. Establish `h1 : ∀ c, OrdGe v ρ (μ c + ν c - μ c) w` using `fun c β => by`. Rewrite using `[add_sub_cancel_left, hν]`. Use `split_ifs with hβ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `ih _ hβ β rfl c`. Simplify using the standard rewrite rules. Establish `h2` using `step (fun c => μ c + ν c) h1 D e α`. Establish `h3 : ∀ c, constantCoeff (μ c + ν c) = 0` using `fun c => by`. Rewrite using `[map_add, hμ, zero_add, ← coeff_zero_eq_constantCoeff_apply, hν]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs`. Rewrite using `[coeff_zero_eq_constantCoeff_apply, map_sub, ht, hμ, sub_self]`. Both sides reduce to the same expression. Establish `h4 : ∀ c n, coeff α ((μ c + ν c) ^ (l ^ (n + 1))) = coeff α (t c ^ (l ^ (n + 1)))` using `fun c n => by`. Use `coeff_pow_congr (h3 c) (ht c) ?_ (fun β hβ => ?_) α hα` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Conclude with `le_trans hl (Nat.le_self_pow (by omega) l)`. Rewrite using `[map_add, hν, if_pos hβ, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Establish `h5` using `coeff_lgSum hl al t ht e α (D + 2 + 1) (by omega)`. Rewrite `h5` using `[hz, Finset.sum_range_succ']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [h0, pow_zero, pow_one, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h5`. Use `h2 using 2` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, map_sum, coeff_C_mul, h4, h5]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `fun c α => key _ α rfl c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem ord_of_step {d l : ℕ} (hl : 2 ≤ l) (al : Fin d → ℕ → Fin d → C)
     (h0 : ∀ c e, al c 0 e = if c = e then 1 else 0)
@@ -226,7 +226,7 @@ theorem ord_of_step {d l : ℕ} (hl : 2 ≤ l) (al : Fin d → ℕ → Fin d →
 end
 
 /- English proof (translation)
-Establish `h3 : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h : (l : ℝ) ^ 2 - 1 ≠ 0` using `by nlinarith`. Use `push_cast`. Rewrite using `[← geom_sum_mul]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem geom_real {l : ℕ} (hl : 3 ≤ l) (s : ℕ) :
     ((∑ u ∈ Finset.range s, (l ^ 2) ^ u : ℕ) : ℝ) =
@@ -238,11 +238,11 @@ theorem geom_real {l : ℕ} (hl : 3 ≤ l) (s : ℕ) :
   field_simp
 
 /- English proof (translation)
-Establish `h3 : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `h : 0 < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `h1 : k + 3 ≤ l ^ (k + 1)`. Establish `: k < l ^ k` using `Nat.lt_pow_self (by omega)`. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `h2 : ((k : ℝ) + 3) ≤ (l : ℝ) ^ (k + 1)` using `by exact_mod_cast h1`. Establish `h4 : ((k : ℝ) + 3) ≤ ((l : ℝ) ^ (k + 3) - 1) * (1 / ((l : ℝ) ^ 2 - 1))`. Rewrite using `[mul_one_div, le_div_iff₀ h, show (l : ℝ) ^ (k + 3) = (l : ℝ) ^ (k + 1) * l ^ 2 by ring]`. Establish `: (0 : ℝ) ≤ k` using `by positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem high_real {l : ℕ} (hl : 3 ≤ l) (k : ℕ) :
     1 + 1 / ((l : ℝ) ^ 2 - 1) ≤
@@ -267,7 +267,7 @@ noncomputable def kap (C : Type) [Field C] (l s : ℕ) : C :=
   (-1) ^ s * ((l : C) ^ (∑ u ∈ Finset.range s, (l ^ 2) ^ u))⁻¹
 
 /- English proof (translation)
-Establish `: v ((-1 : C) ^ s) = 0` using `by rw [v.map_pow, v.map_neg, v.map_one, smul_zero]`. Rewrite using `[kap, v.map_mul, this, zero_add]`. Conclude with `v_inv_pow hv _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v_kap {v : AddValuation C (WithTop ℝ)} {l : ℕ} (hv : v (l : C) = 1) (s : ℕ) :
     ((-((∑ u ∈ Finset.range s, (l ^ 2) ^ u : ℕ) : ℝ) : ℝ) : WithTop ℝ) ≤ v (kap C l s) := by
@@ -276,9 +276,9 @@ theorem v_kap {v : AddValuation C (WithTop ℝ)} {l : ℕ} (hv : v (l : C) = 1) 
   exact v_inv_pow hv _
 
 /- English proof (translation)
-Establish `h1 : ((-1 : C) ^ s) ^ (l ^ 2) = (-1) ^ s`. Rewrite using `[← pow_mul, mul_comm, pow_mul, (ho.pow (n := 2)).neg_one_pow]`. Establish `h2 : ∑ u ∈ Finset.range (s + 1), (l ^ 2) ^ u = (∑ u ∈ Finset.range s, (l ^ 2) ^ u) * l ^ 2 + 1`. Rewrite using `[Finset.sum_range_succ', Finset.sum_mul]`. Simplify using `[pow_succ (l ^ 2)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[kap, kap, mul_pow, h1, h2, inv_pow, ← pow_mul, pow_succ (l : C), mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kap_succ {l : ℕ} (ho : Odd l) (s : ℕ) :
     kap C l (s + 1) = -((l : C)⁻¹ * kap C l s ^ (l ^ 2)) := by
@@ -297,7 +297,7 @@ noncomputable def pure {d M : ℕ} (l : ℕ) (π : ℕ → Fin d → Fin M → C
     (X j : MvPowerSeries (Fin M) C) ^ ((l ^ 2) ^ s)
 
 /- English proof (translation)
-Rewrite using `[v.map_mul]`. Use `le_trans ?_ (add_le_add (v_kap hv s) (h j))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add, geom_real hl]`. Use `WithTop.coe_le_coe.2 (le_of_eq ?_)` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -317,65 +317,63 @@ theorem ord_pure_level {v : AddValuation C (WithTop ℝ)} {l : ℕ} (hl : 3 ≤ 
 end
 
 /- English proof (translation)
-Introduce `C _ _ v l hp hv hl d M s₀ good Gs al π t hgood huniq h0 hall hg hout hπ0 hπ0' hπ ht hz`. Establish `h3 : (3 : ℝ) ≤ l` using `by exact_mod_cast hl`. Establish `hq : 0 < (l : ℝ) ^ 2 - 1` using `by nlinarith`. Establish `hl0 : (l : C) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Take `⟨ρ, hρ⟩ : ∃ ρ : ℝ, ρ = 1 / ((l : ℝ) ^ 2 - 1)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, hσ⟩ : ∃ σ : ℝ, σ = 3 / (8 * (l : ℝ) ^ (2 * s₀ + 1))` from `⟨_, rfl⟩`. Establish `hρ0 : 0 < ρ` using `by rw [hρ]; positivity`. Establish `hσ0 : 0 < σ` using `by rw [hσ]; positivity`. Establish `hρq : (l : ℝ) ^ 2 * ρ = 1 + ρ` using `by rw [hρ]; field_simp; ring`. Establish `hσq : ((l : ℝ) ^ 2) ^ (s₀ + 1) * σ = 3 * l / 8` using `by rw [hσ]; field_simp; ring`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : ((1 : ℝ) : WithTop ℝ) ≤ v (l : C)` using `by rw [hv]; simp`. Establish `hint : ∀ s c j, ((0 : ℝ) : WithTop ℝ) ≤ v (π s c j)`. Introduce `s`. Proceed by induction on `s with`. Consider the case `zero => exact hπ0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ s ih`. Introduce `e j`. Rewrite using `[hπ]`. Use `v.map_le_sum fun c hc => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul, v.map_mul, v.map_pow]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `((hg c (hgood s c hc)).2 2 e (by norm_num))`. Use `le_trans ?_ (add_le_add (add_le_add hv1 h1) (nsmul_nonneg (ih c j) _))` and prove the remaining obligations. Rewrite using `[← WithTop.coe_add]`. Evaluate the numerical expressions. Establish `hint1 : ∀ s < s₀, ∀ e, e ∉ Gs (s + 1) → ∀ j, ((1 : ℝ) : WithTop ℝ) ≤ v (π (s + 1) e j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Introduce `s hs e he j`. Rewrite using `[hπ]`. Use `v.map_le_sum fun c hc => ?_` and prove the remaining obligations. Rewrite using `[v.map_mul, v.map_mul, v.map_pow]`. Use `le_trans ?_ (add_le_add (add_le_add hv1 (hout s hs c hc e he)) (nsmul_nonneg (hint s c j) _))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hlev : ∀ (s : ℕ) (c : Fin d) (a : ℝ), (∀ j, (a : WithTop ℝ) ≤ v (π s c j)) → ∀ j, ((a + ρ + ((l : ℝ) ^ 2) ^ s * σ - (ρ + σ) * (((l ^ 2) ^ s : ℕ) : ℝ) : ℝ) : WithTop ℝ) ≤ v (kap C l s * π s c j)` using `fun s c a h j => by`. Rewrite using `[hρ]`. Conclude with `ord_pure_level hl hv h j`. Establish `hP : ∀ (s : ℕ) (c : Fin d) (a : ℝ), (∀ j, (a : WithTop ℝ) ≤ v (π s c j)) → OrdGe v (fun _ => ρ + σ) (pure l π s c) (a + ρ + ((l : ℝ) ^ 2) ^ s * σ)` using `fun s c a h => ord_pure (hlev s c a h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `μ : Fin d → MvPowerSeries (Fin M) C` to `fun c => ∑ s ∈ Finset.range (s₀ + 1), if c ∈ Gs s then pure l π s c else 0`. Establish `hsel : ∀ (f : ℕ → MvPowerSeries (Fin M) C) s, s ≤ s₀ → ∀ c ∈ Gs s, (∑ s ∈ Finset.range (s₀ + 1), if c ∈ Gs s then f s else 0) = f s`. Introduce `f s hs c hc`. Rewrite using `[Finset.sum_eq_single s, if_pos hc]`. Introduce `b hb hbs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `h`. Conclude with `hbs (huniq b s c (by simpa [Nat.lt_succ_iff] using hb) hs h hc)`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (by omega)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsel0 : ∀ (f : ℕ → MvPowerSeries (Fin M) C) c, (∀ s ≤ s₀, c ∉ Gs s) → (∑ s ∈ Finset.range (s₀ + 1), if c ∈ Gs s then f s else 0) = 0` using `fun f c hc => Finset.sum_eq_zero fun s hs => if_neg (hc s (by simpa [Nat.lt_succ_iff] using hs))`. Establish `main : ∀ c, OrdGe v (fun _ => ρ + σ) (t c - μ c) (1 + ρ)`. Use `ord_of_step (by omega) al h0 t μ _ ht (fun c => ?_) hz _ ?_` and prove the remaining obligations. Simplify using `only [μ, map_sum]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using `only [pure, map_sum, map_mul, map_pow, constantCoeff_X]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[zero_pow (by positivity), mul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t' ht' N e`. Set `F : ℕ → Fin d → MvPowerSeries (Fin M) C` to `fun s c => MvPowerSeries.C (R := C) (al c 2 e) * ∑ j, MvPowerSeries.C (R := C) ((kap C l s * π s c j) ^ (l ^ 2)) * (X j : MvPowerSeries (Fin M) C) ^ ((l ^ 2) ^ s * l ^ 2)`. Set `G : Fin d → MvPowerSeries (Fin M) C` to `fun c => ∑ s ∈ Finset.range (s₀ + 1), if c ∈ Gs s then F s c else 0`. Establish `hF : ∀ s, ∑ c ∈ Gs s, F s c = - pure l π (s + 1) e`. Introduce `s`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [F, pure, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_succ, ← neg_mul, ← map_neg, hπ, kap_succ (hp.odd_of_ne_two (by omega)), Finset.mul_sum, ← Finset.sum_neg_distrib, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[← mul_assoc, ← map_mul]`. Use `congr 2`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hG : ∑ c, G c = - ∑ s ∈ Finset.range (s₀ + 1), pure l π (s + 1) e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[← hF, Finset.sum_ite_mem, Finset.univ_inter]`. Establish `hz0 : (∑ j, MvPowerSeries.C (R` using `C) (π 0 e j) * (X j : MvPowerSeries (Fin M) C)) = pure l π 0 e := by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pure, kap]`. Establish `hA : OrdGe v (fun _ => ρ + σ) (∑ s ∈ Finset.range (s₀ + 1), (pure l π s e - if e ∈ Gs s then pure l π s e else 0)) (1 + ρ)`. Use `ord_sum _ fun s hs => ?_` and prove the remaining obligations. Use `split_ifs with he`. Rewrite using `[sub_self]`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ord_zero _`. Rewrite using `[sub_zero]`. Consider the cases of `s with`. Consider the case `zero`. Establish `: pure l π 0 e = 0` using `by simp [pure, hπ0' e he]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `ord_zero _`. Consider the case `succ s`. Use `ord_mono (hP _ _ 1 (hint1 s (by simpa using hs) e he)) ?_` and prove the remaining obligations. Establish `: 0 ≤ ((l : ℝ) ^ 2) ^ (s + 1) * σ` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : OrdGe v (fun _ => ρ + σ) (pure l π (s₀ + 1) e) (1 + ρ)` using `ord_mono (hP _ _ 0 (hint _ e)) (by rw [hσq]; linarith)`. Establish `hT : ∀ n c, OrdGe v (fun _ => ρ + σ) (MvPowerSeries.C (R` using `C) (al c (n + 1) e) * t' c ^ (l ^ (n + 1)) - if n = 1 then G c else 0) (1 + ρ) := by`. Introduce `n c`. Distinguish the cases in `hc : ∃ s ≤ s₀, c ∈ Gs s`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Treat this case separately.
 
-Take `⟨s, hs, hc⟩` from `hc`. Establish `hν` using `ht' c`. Establish `hμ : μ c = pure l π s c` using `hsel (fun s => pure l π s c) s hs c hc`. Rewrite `hν` using `[hμ]`. Take `⟨hg1, hg2⟩` from `hg c (hgood s c hc)`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqs : 0 ≤ ((l : ℝ) ^ 2) ^ s * σ` using `by positivity`. Use `match n with`. Consider the case `0 => simp [hg1, ord_zero]`. Consider the case `1`. Establish `hGc : G c = F s c` using `hsel (fun s => F s c) s hs c hc`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1` using `GlobalTheory.WeightFrobenius.main C v l hp hv M ((l ^ 2) ^ s) 2 (ρ + σ) ρ (1 + ρ) (fun j => kap C l s * π s c j) (t' c - pure l π s c) (by linarith) (fun j => le_trans (WithTop.coe_le_coe.2 (by linarith)) (hlev s c 0 (hint s c) j)) hν`. Establish `h2` using `ord_C_mul (hg2 2 e (by norm_num)) h1`. Rewrite using `[if_pos rfl, hGc]`. Use `ord_mono (w := _) (by` and prove the remaining obligations. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [F, pure, add_sub_cancel, mul_sub]) ?_`. Rewrite using `[mul_add, hρq]`. Apply the tactic sequence `rcases min_cases (1 + (1 + ρ)) ((l : ℝ) ^ 2 * 1 + (1 + ρ)) with h | h <;>`. Apply the tactic sequence `rw [h.1] <;> push_cast <;> nlinarith`. Consider the case `k + 2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by omega), sub_zero]`. Establish `h1 : OrdGe v (fun _ => ρ + σ) (t' c) ρ`. Use `ord_add (ord_mono hν (by linarith : ρ ≤ 1 + ρ)) (ord_mono (hP s c 0 (hint s c)) (by linarith : ρ ≤ _))` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `ord_mono (ord_C_mul (hg2 _ e (by omega)) (ord_pow h1 _)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hρ]`. Conclude with `high_real hl k`. Use `push_neg at hc`. Establish `hν` using `ht' c`. Establish `hμ : μ c = 0` using `hsel0 (fun s => pure l π s c) c hc`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : G c = 0` using `hsel0 (fun s => F s c) c hc`. Rewrite `hν` using `[hμ, sub_zero]`. Rewrite using `[hGc, ite_self, sub_zero]`. Use `ord_mono (ord_C_mul (hall c _ e) (ord_pow hν _)) ?_` and prove the remaining obligations. Establish `h1 : n + 1 < l ^ (n + 1)` using `Nat.lt_pow_self (by omega)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((n + 1 : ℕ) : ℝ) + 1 ≤ ((l ^ (n + 1) : ℕ) : ℝ)` using `by exact_mod_cast h1`. Establish `h4 : (0 : ℝ) ≤ ((n + 1 : ℕ) : ℝ)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hS` using `ord_sum (Finset.range (N + 2)) fun n _ => ord_sum Finset.univ fun c _ => hT n c`. Establish `hfin` using `ord_add (ord_add hA hB) (ord_neg hS)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `hfin using 1` and compare the differences between its conclusion and the goal. Establish `hi : ∑ n ∈ Finset.range (N + 2), ∑ c, (if n = 1 then G c else 0) = ∑ c, G c`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq', if_pos (by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hs : ∑ s ∈ Finset.range (s₀ + 1), pure l π (s + 1) e + pure l π 0 e = ∑ s ∈ Finset.range (s₀ + 1), pure l π s e + pure l π (s₀ + 1) e`. Rewrite using `[← Finset.sum_range_succ' (fun s => pure l π s e), Finset.sum_range_succ]`. Simplify using `only [Finset.sum_sub_distrib, hi, hG, hz0]`. Take the linear combination `hs`. Rewrite using `[← hρ, ← hσ]`.
-
-Use `⟨fun s hs c hc => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Use `main c` as an intermediate fact. Rewrite `this` using `[show μ c = pure l π s c from hsel (fun s => pure l π s c) s hs c hc]`. Then use the resulting hypothesis. Use `main c` as an intermediate fact. Rewrite `this` using `[show μ c = 0 from hsel0 (fun s => pure l π s c) c hc, sub_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem chain :
   (∀ (C : Type) [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ)) (l : ℕ), l.Prime → v (l : C) = 1 → 3 ≤ l → ∀ (d M s₀ : ℕ) (good : Set (Fin d)) (Gs : ℕ → Finset (Fin d)) (al : Fin d → ℕ → Fin d → C) (π : ℕ → Fin d → Fin M → C)

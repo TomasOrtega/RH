@@ -26,16 +26,16 @@ def mOrbitSpan (ρ : Representation ℂ M V) (v : V) : Subrepresentation ρ wher
     | smul c x _ hx => simpa using Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨1, by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_mOrbitSpan_self (ρ : Representation ℂ M V) (v : V) :
     v ∈ (mOrbitSpan ρ v).toSubmodule :=
   Submodule.subset_span ⟨1, by simp⟩
 
 /- English proof (translation)
-Break down `IsSimpleOrder.eq_bot_or_eq_top (mOrbitSpan ρ v) with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hv` to reduce the goal to its premises. Use `mem_mOrbitSpan_self ρ v` as an intermediate fact. Rewrite `this` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hx : x ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `trivial`. Rewrite `hx` using `[← h]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_mOrbit {ρ : Representation ℂ M V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0)
     (x : V) : x ∈ Submodule.span ℂ (range fun m => ρ m v) := by
@@ -50,9 +50,9 @@ theorem mem_span_mOrbit {ρ : Representation ℂ M V} [ρ.IsIrreducible] {v : V}
     exact hx
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx` using `mem_span_mOrbit (ρ := ρ) hv x`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, rfl⟩` from `hx`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `h m`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul c x _ hx => simp [hx]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_apply' {ρ : Representation ℂ M V} [ρ.IsIrreducible] {v : V} (hv : v ≠ 0)
     {l : Dual ℂ V} (h : ∀ m, l (ρ m v) = 0) : l = 0 := by
@@ -70,14 +70,14 @@ def mOrbitMap (ρ : Representation ℂ M V) (v : V) : (M →₀ ℂ) →ₗ[ℂ]
   Finsupp.linearCombination ℂ fun m => ρ m v
 
 /- English proof (translation)
-Rewrite using `[mOrbitMap, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mOrbitMap_single (ρ : Representation ℂ M V) (v : V) (m : M) (a : ℂ) :
     mOrbitMap ρ v (Finsupp.single m a) = a • ρ m v := by
   rw [mOrbitMap, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Proceed by induction on `c using Finsupp.induction_linear with`. Consider the case `zero => simp [mOrbitMap]`. Consider the case `add c d hc hd => rw [Finsupp.mapDomain_add, map_add, hc, hd, map_add, map_add]`. Consider the case `single g a => simp [Finsupp.mapDomain_single, mOrbitMap_single, map_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mOrbitMap_mapDomain (ρ : Representation ℂ M V) (v : V) (h : M) (c : M →₀ ℂ) :
     mOrbitMap ρ v (Finsupp.mapDomain (h * ·) c) = ρ h (mOrbitMap ρ v c) := by
@@ -87,7 +87,7 @@ theorem mOrbitMap_mapDomain (ρ : Representation ℂ M V) (v : V) (h : M) (c : M
   | single g a => simp [Finsupp.mapDomain_single, mOrbitMap_single, map_mul]
 
 /- English proof (translation)
-Rewrite using `[mOrbitMap, Finsupp.linearCombination_apply, map_finsuppSum, map_finsuppSum]`. Use `Finsupp.sum_congr fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem linearForm_mOrbitMap (ρ : Representation ℂ M V) (v : V) (l : Dual ℂ V) (h : M)
     (c : M →₀ ℂ) : l (ρ h (mOrbitMap ρ v c)) = c.sum fun g a => a * l (ρ (h * g) v) := by
@@ -96,23 +96,23 @@ theorem linearForm_mOrbitMap (ρ : Representation ℂ M V) (v : V) (l : Dual ℂ
   rw [map_smul, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Take `⟨g₀, hg₀⟩` from `hne`. Establish `hv : v ≠ 0` using `by rintro rfl; simp at hg₀`. Establish `hm : m ≠ 0` using `by rintro rfl; exact hg₀ (by rw [h]; rfl)`. Establish `hker : LinearMap.ker (mOrbitMap ρ v) ≤ LinearMap.ker (mOrbitMap σ w)`. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc`, the goal using `[LinearMap.mem_ker]`. Assume the negation of the conclusion as `hne`. Apply `hm` to reduce the goal to its premises. Use `eq_zero_of_forall_apply' (ρ := σ) hne fun k => ?_` and prove the remaining obligations. Rewrite using `[linearForm_mOrbitMap]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `linearForm_mOrbitMap ρ v l k c` as an intermediate fact. Rewrite `this` using `[hc, map_zero, map_zero]`. Rewrite using `[this]`. Conclude with `Finsupp.sum_congr fun g _ => by rw [h]`. Establish `hsurj : Function.Surjective (mOrbitMap ρ v)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Establish `hx` using `mem_span_mOrbit (ρ := ρ) hv x`. Rewrite `hx` using `[← Finsupp.range_linearCombination]`. Conclude with `hx`. Set `e` to `LinearMap.quotKerEquivOfSurjective (mOrbitMap ρ v) hsurj`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : V →ₗ[ℂ] W` to `((LinearMap.ker (mOrbitMap ρ v)).liftQ (mOrbitMap σ w) hker).comp e.symm.toLinearMap`. Establish `hF : ∀ c, F (mOrbitMap ρ v c) = mOrbitMap σ w c`. Introduce `c`. Establish `: e.symm (mOrbitMap ρ v c) = Submodule.Quotient.mk c`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Simplify using `only [F, LinearMap.comp_apply, LinearEquiv.coe_coe, this, Submodule.liftQ_apply]`. Establish `hFint : ∀ g x, F (ρ g x) = σ g (F x)`. Introduce `g x`. Take `⟨c, rfl⟩` from `hsurj x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← mOrbitMap_mapDomain, hF, hF, mOrbitMap_mapDomain]`. Set `Fi : Representation.IntertwiningMap ρ σ` to `⟨F, fun g => LinearMap.ext fun x => hFint g x⟩`. Establish `hFi0 : Fi ≠ 0`. Introduce `h0`. Establish `h1 : F v = w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hF (Finsupp.single 1 1)` as an intermediate fact. Rewrite `this` using `[mOrbitMap_single, mOrbitMap_single, one_smul, one_smul, map_one, Module.End.one_apply, map_one, Module.End.one_apply]`. Then use the resulting hypothesis. Establish `h2 : F v = 0`. Establish `: Fi v = 0` using `by rw [h0]; rfl`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `hg₀` to reduce the goal to its premises. Rewrite using `[h, ← h1, h2, map_zero, map_zero]`. Break down `Representation.IsIrreducible.bijective_or_eq_zero Fi with hb | h0` into its components or cases. Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective F hb) fun g => LinearMap.ext fun x => hFint g x⟩`. Conclude with `absurd h0 hFi0`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_matrixCoeff_eq' {ρ : Representation ℂ M V} {σ : Representation ℂ M W}
     [ρ.IsIrreducible] [σ.IsIrreducible] {v : V} {l : Dual ℂ V} {w : W} {m : Dual ℂ W}
@@ -179,7 +179,7 @@ structure IsWinProj (e : End ℂ V) : Prop where
 variable {ρ} {e : End ℂ V}
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hv`. Conclude with `he.idem w`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsWinProj.apply_of_mem (he : IsWinProj ρ e) {v : V} (hv : v ∈ LinearMap.range e) :
     e v = v := by
@@ -203,13 +203,13 @@ theorem winOp_apply (m : M) (x : LinearMap.range e) : (winOp ρ e m x : V) = e (
   rfl
 
 /- English proof (translation)
-Use `⟨Submodule.nontrivial_iff_ne_bot.2 hne, fun p hp => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hp0 : p = ⊥`. Conclude with `Or.inl hp0`. Use `right`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hp0`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx0' : (x : V) ≠ 0` using `fun h => hx0 (Subtype.ext h)`. Rewrite using `[eq_top_iff]`. Introduce `y _`. Establish `hle : Submodule.span ℂ (range fun m => ρ m (x : V)) ≤ (p.map (LinearMap.range e).subtype).comap e`. Rewrite using `[Submodule.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨m, rfl⟩`. Conclude with `⟨winOp ρ e m x, hp _ ⟨m, rfl⟩ x hx, rfl⟩`. Use `hle (mem_span_mOrbit (ρ := ρ) hx0' (y : V))` as an intermediate fact. Take `⟨z, hz, hzy⟩` from `this`. Establish `: z = y` using `Subtype.ext (hzy.trans (he.apply_of_mem y.2))`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← this]` and apply the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isSimpleUnder_winOps [ρ.IsIrreducible] (he : IsWinProj ρ e)
     (hne : LinearMap.range e ≠ ⊥) : IsSimpleUnder (winOps ρ e) := by
@@ -232,17 +232,15 @@ theorem isSimpleUnder_winOps [ρ.IsIrreducible] (he : IsWinProj ρ e)
   rwa [← this]
 
 /- English proof (translation)
-Establish `: Nontrivial (LinearMap.range e)` using `Submodule.nontrivial_iff_ne_bot.2 hne`. Set `T' : End ℂ (LinearMap.range e)` to `LinearMap.codRestrict _ (T ∘ₗ (LinearMap.range e).subtype) fun x => by`. Take `⟨w, hw⟩` from `x.2`. Use `⟨T w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← hTe, Module.End.mul_apply, hw]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T'`. Take `⟨x, hx⟩` from `hc.exists_hasEigenvector`. Use `⟨c, ?_⟩` and prove the remaining obligations. Set `Y : Subrepresentation ρ` to `{ toSubmodule := LinearMap.ker (T - c • 1) apply_mem_toSubmodule := fun m v hv => by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, ← Module.End.mul_apply, hTρ, Module.End.mul_apply, ← map_smul, ← map_sub]`. Rewrite `hv` using `[LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[hv, map_zero] }`. Establish `hxY : (x : V) ∈ Y.toSubmodule`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hx.apply_eq_smul` as an intermediate fact. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `congrArg Subtype.val this`. Break down `IsSimpleOrder.eq_bot_or_eq_top Y with h | h` into its components or cases. It suffices to derive a contradiction.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxY` using `[h]`. Conclude with `hx.2 (Subtype.ext hxY)`. Use extensionality with `v`. Establish `: v ∈ Y.toSubmodule` using `by rw [h]; trivial`. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
-
-Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_smul_of_commute [ρ.IsIrreducible] (he : IsWinProj ρ e)
     (hne : LinearMap.range e ≠ ⊥) [FiniteDimensional ℂ (LinearMap.range e)] {T : End ℂ V}
@@ -297,13 +295,13 @@ def mGenSubrep (N : Submodule ℂ V) : Subrepresentation ρ where
     exact this hx
 
 /- English proof (translation)
-Introduce `n hn` and use `Submodule.mem_iSup_of_mem 1 ⟨n, hn, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_mGenSubrep (N : Submodule ℂ V) : N ≤ (mGenSubrep ρ N).toSubmodule := fun n hn =>
   Submodule.mem_iSup_of_mem 1 ⟨n, hn, by simp⟩
 
 /- English proof (translation)
-The claim follows from `iSup_le fun g => by rintro _ ⟨n, hn, rfl⟩ exact X.apply_mem_toSubmodule g (h hn)`.
+A detailed English derivation is pending.
 -/
 theorem mGenSubrep_le {N : Submodule ℂ V} {X : Subrepresentation ρ} (h : N ≤ X.toSubmodule) :
     (mGenSubrep ρ N).toSubmodule ≤ X.toSubmodule :=
@@ -322,7 +320,7 @@ def mGenKernel : Submodule ℂ (mGenSubrep ρ N).toSubmodule where
     simp only [mem_setOf_eq, Submodule.coe_smul, map_smul, ha g, smul_zero]
 
 /- English proof (translation)
-Introduce `u hu h`. Use `show e (ρ h (ρ g u)) = 0`. Rewrite using `[show ρ h (ρ g u) = ρ (h * g) u by rw [map_mul]; rfl]`. Conclude with `hu (h * g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mGenKernel_le_comap (g : M) :
     mGenKernel ρ e N ≤ (mGenKernel ρ e N).comap ((mGenSubrep ρ N).toRepresentation g) := by
@@ -348,9 +346,9 @@ theorem mGenQuotRep_mk (g : M) (u : (mGenSubrep ρ N).toSubmodule) :
 variable {ρ e N}
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[LinearMap.mem_ker, mGenQuotMk, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hn 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Submodule.coe_inclusion] at this`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext ((he.apply_of_mem (hNe n.2)).symm.trans this)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mGenQuotMk_injective (he : IsWinProj ρ e) (hNe : N ≤ LinearMap.range e) :
     Function.Injective (mGenQuotMk ρ e N) := by
@@ -365,29 +363,25 @@ theorem mGenQuotMk_injective (he : IsWinProj ρ e) (hNe : N ≤ LinearMap.range 
   exact Subtype.ext ((he.apply_of_mem (hNe n.2)).symm.trans this)
 
 /- English proof (translation)
-Use `set U := mGenSubrep ρ N`. Use `set U₀ := mGenKernel ρ e N`. Use `set π := mGenQuotRep ρ e N`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN0`. Establish `hmk0 : mGenQuotMk ρ e N ⟨n, hn⟩ ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Use `mGenQuotMk_injective he hNe (a₁ := ⟨n, hn⟩) (a₂ := 0) (by rw [h, map_zero])` as an intermediate fact. Conclude with `hn0 (congrArg Subtype.val this)`. Establish `hbt : (⊥ : Subrepresentation π) ≠ ⊤`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: mGenQuotMk ρ e N ⟨n, hn⟩ ∈ (⊤ : Subrepresentation π).toSubmodule` using `Submodule.mem_top`. Rewrite `this` using `[← h0]`. Conclude with `hmk0 this`. Establish `hUN : ∀ u ∈ U.toSubmodule, e u ∈ N`. Introduce `u hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `: U.toSubmodule ≤ N.comap e`. Use `iSup_le fun g => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `hNst g m hm`. Conclude with `this hu`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `{ exists_pair_ne := ⟨⊥, ⊤, hbt⟩, eq_bot_or_eq_top := fun X => ?_ }` and prove the remaining obligations. Set `Y : Subrepresentation ρ` to `{ toSubmodule := (X.toSubmodule.comap U₀.mkQ).map U.toSubmodule.subtype apply_mem_toSubmodule := by`. Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Use `⟨U.toRepresentation g u, ?_, rfl⟩` and prove the remaining obligations. Establish `hu' : U₀.mkQ u ∈ X.toSubmodule` using `hu`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Use `X.apply_mem_toSubmodule g hu'` as an intermediate fact. Conclude with `this }`. Establish `hYU : ∀ {x : V}, x ∈ Y.toSubmodule → x ∈ U.toSubmodule`. Introduce and unpack `_ ⟨u, _, rfl⟩`. Conclude with `u.2`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hst : ∀ g, ∀ m ∈ Y.toSubmodule ⊓ N, e (ρ g m) ∈ Y.toSubmodule ⊓ N`. Introduce and unpack `g m ⟨hmY, hmN⟩`. Conclude with `⟨he.mem Y _ (Y.apply_mem_toSubmodule g hmY), hNst g m hmN⟩`. Distinguish the cases in `hYN : Y.toSubmodule ⊓ N = ⊥`. Use `left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use extensionality with `q`. Use `⟨fun hq => ?_, fun hq => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q show Submodule.Quotient.mk u = (0 : U.toSubmodule ⧸ U₀)`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY : (U.toRepresentation g u : V) ∈ Y.toSubmodule` using `⟨U.toRepresentation g u, X.apply_mem_toSubmodule g hq, rfl⟩`. Establish `h1` using `he.mem Y _ hY`. Establish `h2 : e (ρ g u) ∈ N` using `hUN _ (hYU hY)`. Establish `h3 : e (ρ g u) ∈ Y.toSubmodule ⊓ N` using `⟨h1, h2⟩`. Rewrite `h3` using `[hYN, Submodule.mem_bot]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `: q = 0` using `hq`. Rewrite using `[this]`. Conclude with `X.toSubmodule.zero_mem`. Use `right`.
-
-Establish `heq` using `hNmin _ inf_le_right hYN hst`. Establish `hNY : N ≤ Y.toSubmodule` using `heq ▸ inf_le_left`. Establish `hUY` using `mGenSubrep_le ρ hNY`. Use extensionality with `q`. Use `⟨fun _ => Submodule.mem_top, fun _ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨u', hu', hu'u⟩` from `hUY u.2`. Establish `: u' = u` using `Subtype.ext hu'u`. Rewrite using `[← this]`. Conclude with `hu'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_mGenQuotRep (he : IsWinProj ρ e) (hNe : N ≤ LinearMap.range e)
     (hNst : ∀ g, ∀ n ∈ N, e (ρ g n) ∈ N) (hN0 : N ≠ ⊥)

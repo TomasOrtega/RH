@@ -15,7 +15,7 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Use `isUnit_iff_exists_inv.2 ⟨(_root_.Formalism.QuantumDeterminants.Hpk k r).det, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.det_mul, _root_.Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.det_Hpk : IsUnit (_root_.Formalism.QuantumDeterminants.Hpk k r).det := by
   refine isUnit_iff_exists_inv.2 ⟨(_root_.Formalism.QuantumDeterminants.Hpk k r).det, ?_⟩
@@ -25,7 +25,7 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-The claim follows from `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.unit_det {g : _root_.Formalism.MainNotions.S.MatKR k r} (hg : g ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk k r)) :
     IsUnit g.det := _root_.Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hg
@@ -36,7 +36,7 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [_root_.GlobalTheory.Amp.RootMove.lr, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.continuous_lr (a b : _root_.Formalism.MainNotions.S.MatKR k r) :
     Continuous (_root_.GlobalTheory.Amp.RootMove.lr a b) := by
@@ -48,9 +48,9 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Establish `hent : ∀ i j, Continuous fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => g i j` using `fun i j => (continuous_apply j).comp (continuous_apply i)`. Establish `e : _root_.Formalism.QuantumDeterminants.Nset k r = {g | gᴴ * _root_.Formalism.QuantumDeterminants.Hpk k r * g = _root_.Formalism.QuantumDeterminants.Hpk k r} ∩ ((⋂ (a : Fin r) (i : Fin (2 * r + k + 1)) (_ : (a : ℕ) ≤ i), {g | g i (_root_.Formalism.QuantumDeterminants.eI k r a) = …`. Use extensionality with `g`. Simplify using `only [_root_.Formalism.QuantumDeterminants.Nset, _root_.Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `IsClosed.inter (isClosed_eq ?_ continuous_const) (IsClosed.inter ?_ ?_)` and prove the remaining obligations. Conclude with `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (hent _ _) continuous_const`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (hent _ _) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isClosed_Nset' : IsClosed (_root_.Formalism.QuantumDeterminants.Nset k r) := by
   have hent : ∀ i j, Continuous fun g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ => g i j :=
@@ -74,7 +74,7 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Establish `h1 : Continuous fun x : _root_.Formalism.QuantumDeterminants.Mt k r => (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)` using `continuous_id`. Establish `h2 : Continuous fun x : _root_.Formalism.QuantumDeterminants.Mt k r => (g * Matrix.of x * g⁻¹ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)` using `(continuous_const.matrix_mul h1).matrix_mul continuous_const`. Establish `hc : IsClosed {x : _root_.Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∈ _root_.Formalism.MainNotions.S.Rset k r g}` using `(isClosed_Nset'.preimage h1).inter (isClosed_Nset'.preimage h2)`. Conclude with `hc.measurableSet.compl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.measurableSet_notR (g : _root_.Formalism.MainNotions.S.MatKR k r) :
     MeasurableSet {x : _root_.Formalism.QuantumDeterminants.Mt k r | Matrix.of x ∉ _root_.Formalism.MainNotions.S.Rset k r g} := by
@@ -91,7 +91,7 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Use `measurable_pi_lambda _ fun q => Continuous.measurable ?_` and prove the remaining obligations. Distinguish the cases in `hi : ((q : Fin (r + 1) × Fin (r + 1)).1 : ℕ) < r`. Simplify using `only [_root_.Formalism.MainNotions.S.rootCoords, _root_.Formalism.MainNotions.S.flagMat, hi, dite_true, Matrix.mulVec, dotProduct, Matrix.of_apply] fun_prop`. Simplify using `only [_root_.Formalism.MainNotions.S.rootCoords, _root_.Formalism.MainNotions.S.flagMat, hi, dite_false]`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.measurable_rootCoords (z : Fin (2 * r + k + 1) → ℂ) (p : _root_.Formalism.MainNotions.S.Point ℂ (r + 1)) :
     Measurable (_root_.Formalism.MainNotions.S.rootCoords k r z p) := by
@@ -106,15 +106,13 @@ open MeasureTheory Matrix in
 open scoped ENNReal in
 variable {k r : ℕ} in
 /- English proof (translation)
-Establish `hfix : ∀ {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}, g ∈ _root_.Formalism.QuantumDeterminants.UWset k r z → ∀ c, g *ᵥ _root_.Formalism.QuantumDeterminants.fvec k r z c = _root_.Formalism.QuantumDeterminants.fvec k r z c`. Introduce `g hg c`. Take `⟨-, hb, hz⟩` from `hg`. Unfold `_root_.Formalism.QuantumDeterminants.fvec`. Use `split_ifs with hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `(hb _).1`. Conclude with `hz`. Take `⟨hU, hb, -⟩` from `id hh`. Establish `hrow : ∀ (a : Fin r) (j : Fin (2 * r + k + 1)), h (_root_.Formalism.QuantumDeterminants.eI k r a) j = if _root_.Formalism.QuantumDeterminants.eI k r a = j then 1 else 0`. Introduce `a j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hτ : _root_.Formalism.QuantumDeterminants.WeylGroupFacts.tau k r (_root_.Formalism.QuantumDeterminants.esI k r a) = _root_.Formalism.QuantumDeterminants.eI k r a`. Use `a.isLt` as an intermediate fact. Use `ext`. Simplify using `only [_root_.Formalism.QuantumDeterminants.WeylGroupFacts.tau, _root_.Formalism.QuantumDeterminants.esI, _root_.Formalism.QuantumDeterminants.eI]`. Distinguish the cases in `hc : 2 * r + k - (a : ℕ) < r ∨ r + k < 2 * r + k - (a : ℕ)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [hc, ↓reduceIte]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hτ]`. Conclude with `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.row_of_fixed_col hU _ (_root_.Formalism.QuantumDeterminants.WeylGroupFacts.col_of_fix (hb a).2) j`.
-
-Use extensionality with `i j`. Simplify using `only [_root_.Formalism.MainNotions.S.flagMat, Matrix.of_apply]`. Use `split_ifs with hi`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hfix (_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh), _root_.Formalism.QuantumDeterminants.WeylGroupFacts.mulVec_apply_of_row _ _ (hrow _)]`. Apply the tactic sequence `all_goals rfl`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flagMat_conj_eq_of_mem_UWset {z : Fin (2 * r + k + 1) → ℂ}
     {h : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hh : h ∈ _root_.Formalism.QuantumDeterminants.UWset k r z)
@@ -152,27 +150,25 @@ open scoped ENNReal in
 variable {k r : ℕ} in
 
 /- English proof (translation)
-Introduce `D z z' p g a a' μ hz hz' _ _ _ ha ha' hμ`. Take `⟨h, hh, m, hm, rfl⟩` from `ha`. Take `⟨h', hh', m', hm', rfl⟩` from `ha'`. Take `⟨n, hn, n', hn', g₀, rfl, hZ, μ₀, hnull, hmap, rfl⟩` from `hμ`. Establish `hd : IsUnit h.det` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd' : IsUnit h'.det` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh hh'.1`. Establish `hdm' : IsUnit m'.det` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.isUnit_of_uh ((_root_.Formalism.QuantumDeterminants.WeylGroupFacts.nset_iff m').1 hm').1`. Establish `hc' : Continuous (_root_.GlobalTheory.Amp.RootMove.lr h' h'⁻¹)` using `_root_.GlobalTheory.Amp.RootMove.continuous_lr h' h'⁻¹`. Use `⟨h * (m * n) * h⁻¹, (_root_.Formalism.QuantumDeterminants.uWNormal _ _ z hz h hh _ (_root_.Formalism.QuantumDeterminants.WeylGroupFacts.mem_n_mul hm hn)).1, h' * (n' * m'⁻¹) * h'⁻¹, (_root_.Formalism.QuantumDeterminants.uWNormal _ _ z' hz' h' hh' _ (_root_.Formalism.QuantumDeterm …` and prove the remaining obligations. Rewrite using `[Matrix.mul_inv_rev]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd, Matrix.nonsing_inv_mul_cancel_left _ _ hd']`. Establish `hF : h⁻¹ * _root_.Formalism.QuantumDeterminants.Fm _ _ z = _root_.Formalism.QuantumDeterminants.Fm _ _ z` using `_root_.Formalism.QuantumDeterminants.UW_F (_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh)`. Establish `hF' : h'⁻¹ * _root_.Formalism.QuantumDeterminants.Fm _ _ z' = _root_.Formalism.QuantumDeterminants.Fm _ _ z'` using `_root_.Formalism.QuantumDeterminants.UW_F (_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uw_inv hh')`. Establish `hU : (h⁻¹)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * h⁻¹ = _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `_root_.Formalism.QuantumDeterminants.WeylGroupFacts.uh_inv hh.1`. Establish `hU2 : (h⁻¹)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS = _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * h` using `by conv_rhs => rw [← hU]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hd, Matrix.mul_one]`. Establish `key : (_root_.Formalism.QuantumDeterminants.Fm _ _ z)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * h = (_root_.Formalism.QuantumDeterminants.Fm _ _ z)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS`. Rewrite using `[Matrix.mul_assoc, ← hU2, ← Matrix.mul_assoc, ← Matrix.conjTranspose_mul, hF]`. Establish `E : (_root_.Formalism.QuantumDeterminants.Fm _ _ z)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (h * g₀ * h'⁻¹) * _root_.Formalism.QuantumDeterminants.Fm _ _ z' = (_root_.Formalism.QuantumDeterminants.Fm _ _ z)ᴴ * _root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R. …`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [key, hF']`. Rewrite using `[← hZ]`. Unfold `_root_.Formalism.MainNotions.S.ZhatO`. Rewrite using `[_root_.Formalism.QuantumDeterminants.Zhat_eq, _root_.Formalism.QuantumDeterminants.Zhat_eq, E]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.map_apply hc'.measurable (_root_.GlobalTheory.Amp.RootMove.measurableSet_notR _)]`. Use `measure_mono_null ?_ hnull` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_preimage, Set.mem_setOf_eq] at hx ⊢`. Introduce `hR`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Take `⟨hR1, hR2⟩` from `hR`. Establish `e : (h * g₀ * h'⁻¹) * (h' * Matrix.of x * h'⁻¹) * (h * g₀ * h'⁻¹)⁻¹ = h * (g₀ * Matrix.of x * g₀⁻¹) * h⁻¹`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hd', Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd']`. Use `⟨(_root_.Formalism.QuantumDeterminants.uWNormal _ _ z' hz' h' hh' _ hR1).1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(h * g₀ * h'⁻¹) * (h' * Matrix.of x * h'⁻¹) * (h * g₀ * h'⁻¹)⁻¹ ∈ _`. Rewrite using `[e]`. Conclude with `(_root_.Formalism.QuantumDeterminants.uWNormal _ _ z hz h hh _ hR2).1`. Rewrite using `[Measure.map_map (_root_.GlobalTheory.Amp.RootMove.measurable_rootCoords z' p) hc'.measurable]`. Use `hmap using 2` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Establish `hx` using `flagMat_conj_eq_of_mem_UWset hh' (Matrix.of x)`. Simplify using `only [Function.comp_apply]`. Unfold `_root_.Formalism.MainNotions.S.rootCoords`. Conclude with `congrArg (fun M => fun q : ↥(_root_.Formalism.MainNotions.S.rootPat p) => M q.1.1 q.1.2) hx`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `E : ∀ X : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ, (h' * m') * (n'⁻¹ * X * n') * (h' * m')⁻¹ = (h' * (n' * m'⁻¹) * h'⁻¹)⁻¹ * (h' * X * h'⁻¹) * (h' * (n' * m'⁻¹) * h'⁻¹)`. Introduce `X`. Simplify using `only [Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hd', Matrix.nonsing_inv_nonsing_inv _ hdm', Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ hd']`. Rewrite using `[Measure.map_map, Measure.map_map]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `x i j`. Conclude with `congrArg (fun M : Matrix _ _ ℂ => M i j) (E (Matrix.of x))`. Apply the tactic sequence `all_goals exact (_root_.GlobalTheory.Amp.RootMove.continuous_lr _ _).measurable`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Amp.RootMove.rootMeas_move : ∀ (D : _root_.Formalism.BasicNotions.D7) (z z' : Fin (2 * D.R.rS + D.R.k + 1) → ℂ) (p : _root_.Formalism.MainNotions.S.Point ℂ (D.R.rS + 1)) (g a a' : _root_.Formalism.MainNotions.S.MatKR D.R.k D.R.rS) (μ : Measure (_root_.Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)), _root_.Formalism.QuantumDeterminants.inWb D.R.k D.R.rS z → _root_.Formalism.QuantumDeterminants.inWb D.R.k D.R.rS z' → 0 < _root_.Formalism.QuantumDeterminants.Tz D.R.k D.R.rS z → 0 < _root_.Formalism.QuantumDeterminants.Tz D.R.k D.R.rS z' → g ∈ _root_.Formalism.QuantumDeterminants.UH (_root_.Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS) → a ∈ _root_.Formalism.QuantumDeterminants.Sset D.R.k D.R.rS z → a' ∈ _root_.Formalism.QuantumDeterminants.Sset D.R.k D.R.rS z' → _root_.Formalism.MainNotions.S.IsRootMeasR D z z' p g μ → _root_.Formalism.MainNotions.S.IsRootMeasR D z z' p (a * g * a'⁻¹) (μ.map fun x => fun i j => (a' * Matrix.of x * a'⁻¹) i j) := by
   intro D z z' p g a a' μ hz hz' _ _ _ ha ha' hμ

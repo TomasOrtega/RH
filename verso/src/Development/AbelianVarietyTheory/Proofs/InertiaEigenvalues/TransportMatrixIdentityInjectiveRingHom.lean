@@ -4,11 +4,11 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R L _ _ ι hι d N q p ξ s Qm Q₁ X B c V h1 h2 h3`. Establish `key : (X * B * c).map ι = ι s ^ N • Q₁`. Rewrite using `[Matrix.map_mul, ← h1, h3, Matrix.smul_mul]`. Use extensionality with `i j`. Apply `hι` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : ι ((X * B * c) i j) = ι s ^ N * Q₁ i j`. Use `congrFun (congrFun key i) j` as an intermediate fact. Simplify `this` using `[Matrix.map_apply, Matrix.smul_apply]`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.mul_diagonal, map_mul, map_pow]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `h2 i j`. Simplify using `only [map_mul, map_pow] at h`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem transport_matrix_identity_star_alg :
     ∀ {R L : Type} [CommRing R] [CommRing L] (ι : R →+* L), Function.Injective ι →

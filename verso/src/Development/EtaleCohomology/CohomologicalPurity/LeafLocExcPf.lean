@@ -6,13 +6,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.CohomologicalPurity.TubeCut
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero v3).2 fun a ha => ?_, fun b => ?_⟩` and prove the remaining obligations. Establish `e4 : f3 a = 0` using `h4.1 (by rw [← c3, ha]; simp)`. Take `⟨a2, rfl⟩` from `(hf3 a).1 e4`. Establish `e2 : g2 (v2 a2) = 0` using `by rw [c2, ha]`. Take `⟨b1, hb1⟩` from `(hg2 _).1 e2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, rfl⟩` from `h1 b1`. Establish `e1 : f1 a1 = a2` using `h2.1 (by rw [← c1, hb1])`. Substitute `e1` using the available equality. Conclude with `(hf2 _).2 ⟨a1, rfl⟩`. Take `⟨a4, ha4⟩` from `h4.2 (g3 b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e5 : f4 a4 = 0` using `h5 (by rw [← c4, ha4, map_zero]; exact (hg4 _).2 ⟨b, rfl⟩)`. Take `⟨a3, ha3⟩` from `(hf4 a4).1 e5`. Establish `e3 : g3 (b - v3 a3) = 0` using `by rw [map_sub, c3, ha3, ha4, sub_self]`. Take `⟨b2, hb2⟩` from `(hg3 _).1 e3`. Take `⟨a2, rfl⟩` from `h2.2 b2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨a3 + f2 a2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← c2, hb2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem five_bij {A1 A2 A3 A4 A5 B1 B2 B3 B4 B5 : Type*} [AddCommGroup A1] [AddCommGroup A2] [AddCommGroup A3]
     [AddCommGroup A4] [AddCommGroup A5] [AddCommGroup B1] [AddCommGroup B2] [AddCommGroup B3] [AddCommGroup B4]
@@ -45,7 +45,7 @@ theorem five_bij {A1 A2 A3 A4 A5 B1 B2 B3 B4 B5 : Type*} [AddCommGroup A1] [AddC
     abel
 
 /- English proof (translation)
-Establish `hy : Mono (yoneda.map U.ι)`. Use `@NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun T => ?_` and prove the remaining obligations. Conclude with `(mono_iff_injective _).2 fun a b h => (cancel_mono U.ι).1 h`. Conclude with `@NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun _ => hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mono_sch_open {X : Scheme.{0}} (U : X.Opens) : Mono (sch.map U.ι) := by
   have hy : Mono (yoneda.map U.ι) := by
@@ -54,16 +54,16 @@ theorem mono_sch_open {X : Scheme.{0}} (U : X.Opens) : Mono (sch.map U.ι) := by
   exact @NatTrans.mono_of_mono_app _ _ _ _ _ _ _ fun _ => hy
 
 /- English proof (translation)
-Introduce `n` and use `@a1 R _ _ _ _ (L R Y g) F n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eqv_of_loc (a1 : A1) {X : Scheme.{0}} {E : Spc} {π : E ⟶ sch.obj X} (L : Loc π) (R : Type) [CommRing R]
     {Y : Scheme.{0}} (g : Y ⟶ X) (F : Shv R) : Eqv R (pullback.snd π (sch.map g)) F :=
   fun n => @a1 R _ _ _ _ (L R Y g) F n
 
 /- English proof (translation)
-Establish `hi : IsIso (sch.map (𝟙 X))` using `inferInstance`. Establish `e : pullback.fst π (sch.map (𝟙 X)) ≫ π = pullback.snd π (sch.map (𝟙 X)) ≫ sch.map (𝟙 X)` using `pullback.condition`. Establish `h1 : Eqv R (pullback.fst π (sch.map (𝟙 X)) ≫ π) F`. Rewrite using `[e]`. Conclude with `eqv_comp (eqv_of_loc a1 L R _ F) (eqv_iso _ F)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : π = inv (pullback.fst π (sch.map (𝟙 X))) ≫ pullback.fst π (sch.map (𝟙 X)) ≫ π` using `(IsIso.inv_hom_id_assoc _ _).symm`. Rewrite using `[e']`. Conclude with `eqv_comp (eqv_iso _ F) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eqv_base (a1 : A1) {X : Scheme.{0}} {E : Spc} {π : E ⟶ sch.obj X} (L : Loc π) (R : Type) [CommRing R]
     (F : Shv R) : Eqv R π F := by
@@ -77,7 +77,7 @@ theorem eqv_base (a1 : A1) {X : Scheme.{0}} {E : Spc} {π : E ⟶ sch.obj X} (L 
   exact eqv_comp (eqv_iso _ F) h1
 
 /- English proof (translation)
-Establish `e : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P` using `pushout.inl_desc _ _ _`. Express the relevant statement in the definitionally equal form `pull _ (dbl.inl P') _ n (pull _ (dbl.map φ) _ n x.1) = pull _ φ.right _ n (pull _ (dbl.inl P) _ n x.1)`. Rewrite using `[← pull_comp, ← pull_comp, e]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fgt_nat (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs q P n i) :
     Hs.fgt q P' n i (Hs.pull q φ n i x) = pull _ φ.right _ _ (Hs.fgt q P n i x) := by
@@ -86,18 +86,18 @@ theorem fgt_nat (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Hs
   rw [← pull_comp, ← pull_comp, e]
 
 /- English proof (translation)
-Rewrite using `[← pull_comp, ← pull_comp, Arrow.w φ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hom_nat (q : ℕ) {P' P : Arrow Spc} (φ : P' ⟶ P) (n i : ℤ) (x : Ht q P.right n i) :
     pull _ P'.hom (tw q i) n (pull _ φ.right _ _ x) = pull _ φ.left _ _ (pull _ P.hom _ n x) := by
   rw [← pull_comp, ← pull_comp, Arrow.w φ]
 
 /- English proof (translation)
-Introduce `a1 q X U E π L`. Take `⟨δ, ex, nat, -⟩` from `bd`. Establish `hm : Mono (opn U).hom` using `mono_sch_open U`. Establish `hm' : Mono (abv U π).hom`. Express the relevant statement in the definitionally equal form `Mono (pullback.fst π (sch.map U.ι))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `mono_sch_open U` as an intermediate fact. Use `infer_instance`. Establish `eR : ∀ i n, Function.Bijective (pull _ (abvMap U π).right (tw q i) n)` using `fun i => eqv_base a1 L (ZMod q) (tw q i)`. Establish `eL : ∀ i n, Function.Bijective (pull _ (abvMap U π).left (tw q i) n)` using `fun i => eqv_of_loc a1 L (ZMod q) U.ι (tw q i)`. Introduce `n i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩ : ∃ m, n = m + 1` from `⟨n - 1, by ring⟩`. Conclude with `five_bij (pull _ (opn U).hom (tw q i) m) (δ q (opn U) m i) (Hs.fgt q (opn U) (m + 1) i) (pull _ (opn U).hom (tw q i) (m + 1)) (pull _ (abv U π).hom (tw q i) m) (δ q (abv U π) m i) (Hs.fgt q (abv U π) (m + 1) i) (pull _ (abv U π).hom (tw q i) (m + 1)) (pull _ (abvMap U π).right _ …`.
+A detailed English derivation is pending.
 -/
 theorem LeafLocExc_of (bd : LeafBd) : LeafLocExc := by
   intro a1 q X U E π L

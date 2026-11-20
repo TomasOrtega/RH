@@ -31,9 +31,9 @@ structure GoodPlace {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (B : Base F E) (
   unr : ∀ w : HeightOneSpectrum (𝓞 E), w.under (𝓞 F) = v → UnrAt χX w
 
 /- English proof (translation)
-Introduce `F _ _`. Establish `h0 : (Ideal.span {(2 : 𝓞 F)}) ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `two_ne_zero`. Establish `hf` using `Ideal.finite_factors h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf.subset ?_` and prove the remaining obligations. Introduce `v hv`. Establish `hv' : (2 : 𝓞 F) ∈ v.asIdeal` using `by simpa using hv`. Conclude with `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hv')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_two_not_mem : ∀ (F : Type) [Field F] [NumberField F], ∀ᶠ v : Pl F in Filter.cofinite, (2 : 𝓞 F) ∉ v.asIdeal := by
   intro F _ _

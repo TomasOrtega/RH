@@ -16,9 +16,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.GoodFirst
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hP hL`. Establish `h` using `GlobalTheory.HeightCounting.Up.RowModel.overRows_allSt (_root_.GlobalTheory.T.nonGalois_typeVec_fixed_by_e0 hP)`. Use `EvG.imp h fun _ _ _ _ _ hK => large₂.imp hK fun B f T _ H kp fo tr w s P x l => ?_` and prove the remaining obligations. Establish `hloc` using `H kp fo tr w s P x`. Establish `ty : TypesTrue (Dof x).ntypes (Fr.at (w.st x.o.Z) f).P (Fr.at (w.st x.o.Z) f).W` using `x.fits.grp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `_root_.UpperTheory.Lit.Dz.firstTermCondition_all_stages hP.green hP.zel hL (Dof x) (cfOf x) (repOf x.r.Y) l.a (GlobalTheory.CoefDuty.OPinModel.labFixed_of_typesTrue ty) hloc`.
+A detailed English derivation is pending.
 -/
 theorem firstTermCondition_forall_stages_alt : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → GoodFTAll (Dof x) := by
   intro hP hL
@@ -35,7 +35,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt | exact _root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt | (intros; apply _root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.allSt_goodFTAll_of_levelA : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ _ _ _ x => _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → GoodFTAll (Dof x) := by
   first | exact @_root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt | exact _root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt | (intros; apply _root_.GlobalTheory.GoodFirst.firstTermCondition_forall_stages_alt <;> assumption)

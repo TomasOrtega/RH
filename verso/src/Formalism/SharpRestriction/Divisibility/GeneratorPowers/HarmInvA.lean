@@ -12,7 +12,7 @@ open Formalism.L2.Pj Formalism.MainNotions.ModuliIntegralCharts.H1.FBIdJet Forma
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `h' : Ideal.Quotient.mk (orig R ι ^ (D + 1)) (psTrunc D a) = Ideal.Quotient.mk (orig R ι ^ (D + 1)) (psTrunc D b)` using `h`. Establish `hm` using `Ideal.Quotient.eq.mp h'`. Establish `h0` using `coeff_eq_zero_of_mem hm (show e.degree < D + 1 by omega)`. Rewrite `h0` using `[MvPolynomial.coeff_sub, coeff_psTrunc D a e he, coeff_psTrunc D b e he]`. Conclude with `sub_eq_zero.mp h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eq_of_psJet {ι : Type} [Fintype ι] [DecidableEq ι] {D : ℕ} {a b : MvPowerSeries ι R}
     (h : psJet D a = psJet D b) {e : ι →₀ ℕ} (he : e.degree ≤ D) :
@@ -25,7 +25,7 @@ theorem coeff_eq_of_psJet {ι : Type} [Fintype ι] [DecidableEq ι] {D : ℕ} {a
   exact sub_eq_zero.mp h0
 
 /- English proof (translation)
-Rewrite using `[psJet_subst D a ha f, psJet_subst D a ha g, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psJet_subst_congr {σ τ : Type} [Fintype σ] [DecidableEq σ] [Fintype τ] [DecidableEq τ] (D : ℕ)
     (a : σ → MvPowerSeries τ R) (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) {f g : MvPowerSeries σ R}
@@ -38,7 +38,7 @@ def psJetM {ι : Type} [Fintype ι] [DecidableEq ι] (D : ℕ) : MvPowerSeries �
   map_mul' := psJet_mul D
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `psJetM D (∏ b, f b) = psJetM D (∏ b, g b)`. Rewrite using `[map_prod, map_prod]`. Conclude with `Finset.prod_congr rfl fun b _ => h b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psJet_prod_congr {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] (D : ℕ)
     {f g : κ → MvPowerSeries ι R} (h : ∀ b, psJet D (f b) = psJet D (g b)) :
@@ -48,14 +48,14 @@ theorem psJet_prod_congr {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype �
   exact Finset.prod_congr rfl fun b _ => h b
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha hg`.
+A detailed English derivation is pending.
 -/
 theorem cc_subst0 {σ τ : Type} [Finite σ] {a : σ → MvPowerSeries τ R}
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) {g : MvPowerSeries σ R}
     (hg : MvPowerSeries.constantCoeff g = 0) : MvPowerSeries.constantCoeff (MvPowerSeries.subst a g) = 0 := MvPowerSeries.constantCoeff_subst_eq_zero (MvPowerSeries.hasSubst_of_constantCoeff_zero ha) ha hg
 
 /- English proof (translation)
-Conclude with `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp a ha hg`.
+A detailed English derivation is pending.
 -/
 theorem subst_exp {σ τ : Type} [Finite σ] [Algebra ℚ R] (a : σ → MvPowerSeries τ R)
     (ha : ∀ i, MvPowerSeries.constantCoeff (a i) = 0) (g : MvPowerSeries σ R)
@@ -65,7 +65,7 @@ theorem subst_exp {σ τ : Type} [Finite σ] [Algebra ℚ R] (a : σ → MvPower
   exact ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.subst_exp a ha hg
 
 /- English proof (translation)
-The claim follows from `| 0, q, _ => by rw [Fin.prod_univ_zero, Fin.sum_univ_zero, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.exp_zero] | n + 1, q, hq => by rw [Fin.prod_univ_succ, Fin.sum_univ_succ, prod_exp n (fun b => q b.succ) (fun b => hq _), ReciprocityTheory.ChartRestriction.G.TB.WickV …`.
+A detailed English derivation is pending.
 -/
 theorem prod_exp {τ : Type} [Algebra ℚ R] : ∀ (n : ℕ) (q : Fin n → MvPowerSeries τ R),
     (∀ b, MvPowerSeries.constantCoeff (q b) = 0) →

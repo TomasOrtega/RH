@@ -14,7 +14,7 @@ namespace GlobalTheory.Poinc.Basic₂
 variable {o : Type} [CommRing o] {ζ : o} {g n : ℕ} {F : SFam g n ζ}
 
 /- English proof (translation)
-Simplify using `using T.mono.nonneg 0 x`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trait_nonneg (T : Trait F) (x : T.D.toPre.X) : 0 ≤ T.β x x := by
   simpa using T.mono.nonneg 0 x

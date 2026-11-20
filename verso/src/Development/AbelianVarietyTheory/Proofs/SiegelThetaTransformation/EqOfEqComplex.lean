@@ -16,11 +16,9 @@ open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory.NaturalValues
 
 /- English proof (translation)
-Use `haveI : IsJacobsonRing R := isJacobsonRing_of_finiteType (A := K)`. Rewrite using `[← sub_eq_zero]`. Establish `hb : (⊥ : Ideal R).jacobson = ⊥` using `IsJacobsonRing.out inferInstance ((Ideal.isRadical_iff_quotient_reduced _).2 (isReduced_of_injective (RingEquiv.quotientBot R) (RingEquiv.quotientBot R).injective))`. Rewrite using `[← Ideal.mem_bot, ← hb]`. Use `Ideal.mem_sInf.2 fun {m} hm => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `haveI := hm.2`. Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite K (R ⧸ m) := finite_of_finite_type_of_isJacobsonRing K (R ⧸ m)`. Set `ψ : (R ⧸ m) →ₐ[K] Ω` to `IsAlgClosed.lift`. Establish `e` using `h (ψ.comp (Ideal.Quotient.mkₐ K m))`.
-
-Rewrite `e` using `[← sub_eq_zero, ← map_sub, AlgHom.comp_apply, map_eq_zero]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_points {K R Ω : Type} [Field K] [CommRing R] [Algebra K R] [IsReduced R] [Algebra.FiniteType K R]
     [Field Ω] [IsAlgClosed Ω] [Algebra K Ω] {x y : R} (h : ∀ φ : R →ₐ[K] Ω, φ x = φ y) : x = y := by
@@ -40,11 +38,11 @@ theorem eq_of_points {K R Ω : Type} [Field K] [CommRing R] [Algebra K R] [IsRed
   exact Ideal.Quotient.eq_zero_iff_mem.1 e
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c s u u' hu hu' hc S _ _ y`. Establish `hF` using `GlobalTheory.RepCompare.frameLaws Xo c`. Use `letI := s.toAlgebra`. Use `eq_of_locM (K := c.F) fun m hm => ?_` and prove the remaining obligations. Take `⟨A, v, cw, -, -, -, ⟨wm, h1, h2⟩, -⟩` from `hF.cover S y y rfl m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : u A.R v = u' A.R v`. Use `eq_of_points (K := c.F) (Ω := ℂ) fun φ => ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `hF.bc _ _ φ v`. Rewrite using `[hu _ _ φ v z hz, hu' _ _ φ v z hz]`. Conclude with `hc z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu _ _ _ y wm h1, hu' _ _ _ y wm h1, ← hu _ _ cw v wm h2, ← hu' _ _ cw v wm h2, e]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_eq_complex : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ (s : c.F →+* ℂ) (u u' : ∀ (S : Type) [CommRing S] [Algebra c.F S], FrPt Xo c S → S), (∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap φ y z → φ (u S y) = u T z) → (∀ (S T : Type) [CommRing S] [Algebra c.F S] [CommRing T] [Algebra c.F T] (φ : S →ₐ[c.F] T) (y : FrPt Xo c S) (z : FrPt Xo c T), FrMap φ y z → φ (u' S y) = u' T z) → (∀ y : @FrPt E _ _ _ H Dw l Xo c ℂ _ s.toAlgebra, @u ℂ _ s.toAlgebra y = @u' ℂ _ s.toAlgebra y) → ∀ (S : Type) [CommRing S] [Algebra c.F S] (y : FrPt Xo c S), u S y = u' S y := by
   intro E _ _ _ H Dw l Xo c s u u' hu hu' hc S _ _ y

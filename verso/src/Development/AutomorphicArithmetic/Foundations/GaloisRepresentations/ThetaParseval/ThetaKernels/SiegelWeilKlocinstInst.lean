@@ -21,9 +21,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.KLI
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Establish `hG : _root_.PositivityTheory.SiegelWeilFormula.GoodAwayEx_k` using `_root_.PositivityTheory.SiegelWeilFormula.KFock.goodAwayEx_k`. Use `{ sw := fun y f hf => (hL y f hf).1 one := R.locOp_one hT hG hL mul := R.locOp_mul hT hG hL lin := R.locOp_lin hT hG hL nU := R.locOp_nU hT hG hL mM := ?_ nbar := ?_ longWeylFunctional := R.localOperator_longWeyl_integral hT hA hG hL cont := _root_.PositivityTheory.SiegelWeilForm …` and prove the remaining obligations. Take `⟨k, hk⟩` from `R.locOp_mM_law w hT hG hL`. Conclude with `⟨k, fun y a ha hy f hf => hk y a ha hy f hf⟩`. Take `⟨C, s, κ, ε, hs, hκ, h4, hf, -, hs2, hη⟩` from `R.locOp_nbar hT hA hG hL`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, s, κ, ((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹, hs, hκ, hs2, hη, h4, fun y c hc hy f hf' => hf y c hc hy f hf'⟩`.
+Supply the required witnesses or components.
 -/
 theorem locHyp_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) {w : InfinitePlace F}
     {L : GR d.n → ((Fin d.m → Fin d.n → ℂ) → ℂ) → (Fin d.m → Fin d.n → ℂ) → ℂ} (hL : R.IsLocOp w L) :
@@ -44,7 +44,7 @@ theorem locHyp_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA 
   · obtain ⟨C, s, κ, ε, hs, hκ, h4, hf, -, hs2, hη⟩ := R.locOp_nbar hT hA hG hL
     exact ⟨C, s, κ, ((ε : ℤ) : ℂ) * R.ζ⁻¹ * R.ζ⁻¹, hs, hκ, hs2, hη, h4, fun y c hc hy f hf' => hf y c hc hy f hf'⟩
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d R w L hL`. Take `⟨sL, ρ, e, hD, h1, h2⟩` from `locData_of (_root_.PositivityTheory.SiegelWeilFormula.KLI.locHyp_of_k hT hA R hL)`. Conclude with `⟨sL, ρ, pOf (R.sg w) d.m, qOf (R.sg w) d.m, e, fun hnm => goodSig_pq _ hnm, hD, h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locInst_of_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TAll_k) (hA : _root_.PositivityTheory.SiegelWeilFormula.SiegelWeilDatumProperties) (_hF : _root_.PositivityTheory.SiegelWeilFormula.FockMem_k) (_hLi : _root_.PositivityTheory.SiegelWeilFormula.LiftEx_k) : _root_.PositivityTheory.SiegelWeilFormula.LocInst_k := by
   intro F E _ _ _ _ _ σ d R w L hL

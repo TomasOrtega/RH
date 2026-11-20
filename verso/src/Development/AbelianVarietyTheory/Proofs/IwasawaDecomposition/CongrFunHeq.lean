@@ -30,23 +30,23 @@ def Mv.lam (x : GlobalTheory.LamTie.LamDat D) : GlobalTheory.LamTie.LamDat m.D :
     (c := (by with_unfolding_all exact (x.c :)))
     (chi := (by with_unfolding_all exact (x.chi :)))
 /- English proof (translation)
-The claim follows from `@_root_.GlobalTheory.LamTie.LamDat.Ok.mk (_) (_) (places := (by with_unfolding_all exact (x.places :))) (aux := (by with_unfolding_all exact (x.aux :))) (big := (by with_unfolding_all exact (x.big :)))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.lam_ok {l : GlobalTheory.LamTie.LamDat D} (x : l.Ok) : (m.lam l).Ok := @_root_.GlobalTheory.LamTie.LamDat.Ok.mk (_) (_)
     (places := (by with_unfolding_all exact (x.places :)))
     (aux := (by with_unfolding_all exact (x.aux :)))
     (big := (by with_unfolding_all exact (x.big :)))
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x :))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.lam_teich {l : GlobalTheory.LamTie.LamDat D} (x : l.Teich) : (m.lam l).Teich := (by with_unfolding_all exact (x :))
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (x :))`.
+A detailed English derivation is pending.
 -/
 theorem Mv.lam_tie {l : GlobalTheory.LamTie.LamDat D} (x : GlobalTheory.LamTie.IsLamTieFull D.ntw l) : GlobalTheory.LamTie.IsLamTieFull m.D.ntw (m.lam l) := (by with_unfolding_all exact (x :))
 
 /- English proof (translation)
-Take `⟨rep, inj⟩` from `F`. Take `⟨rep', inj'⟩` from `F'`. Establish `e : rep' = (by with_unfolding_all exact (rep :))` using `eq_of_heq ((by with_unfolding_all exact (hF :)))`. Substitute `e` using the available equality. Conclude with `(@_root_.Formalism.L2.RowLocTied.mk (_) (_) (_) (sat := (by with_unfolding_all exact (x.sat :))) )`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem Mv.rowLoc {D : D7} (m : Mv D) {C : NChoice D} (a : NAllC D C) (F : Formalism.L2.RowFrame D) (F' : Formalism.L2.RowFrame m.D)
     (hF : HEq F'.rep F.rep) (x : Formalism.L2.RowLocTied D a.gal.lp F) : Formalism.L2.RowLocTied m.D (m.all a).gal.lp F' := by
@@ -59,26 +59,26 @@ theorem Mv.rowLoc {D : D7} (m : Mv D) {C : NChoice D} (a : NAllC D C) (F : Forma
     )
 
 /- English proof (translation)
-Rewrite using `[eq_of_heq h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem congrFun_heq {α β : Type} {f g : α → β} (h : HEq f g) (x : α) : f x = g x := by rw [eq_of_heq h]
 
 /- English proof (translation)
-Consider the cases of `t' with | mk hX' r' exAt' inGeo' grpAt' grp' mu' exact' untw' emt0' emt' etaF' rowInt' idx' => ?_`. Consider the cases of `r' with | mk z' holds' Y' ZZ' tupix' => ?_`. Consider the cases of `z' with | mk Xg' tr' core' alg_eq' R' cG' geo' pins' lev' idG' good' muz' le' ks' => ?_`. Name the introduced variables `alg'`. Establish `e1 : Xg' = t.r.z.Xg` using `hs.Xg`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : tr' = t.r.z.tr` using `hs.tr`. Substitute `e1 e2` using the available equality. Establish `e3 : core' = R3.Tr.coreJ (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) t.r.z.core := eq_of_heq hs.core`. Substitute `e3` using the available equality. Establish `e4 : alg' = t.r.z.alg`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Algebra.algebra_ext` to reduce the goal to its premises. Introduce `y`. Apply `(w.D Z).what₂.embLL.injective` to reduce the goal to its premises. Conclude with `(alg_eq' y).trans (t.r.z.alg_eq y).symm`. Substitute `e4` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e5 : R' = R3.Tr.real3 (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.R := eq_of_heq hs.R`. Substitute `e5` using the available equality. Establish `e6 : cG' = t.r.z.cG` using `eq_of_heq hs.cG`. Substitute `e6` using the available equality. Establish `e7 : geo' = (by with_unfolding_all exact ((R3.Tr.geoHalf (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) (upL Z S' N h) (iK := t.r.z.alg) t.r.z.geo) :)) := eq_of_heq ((by with_unfolding_all exact (hg :)))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e7` using the available equality. Take `⟨nt', all', chr_eq', host', frameN', chrN', chrGal', Pq', Pq_over', pq', jE_eq', mt_eq', Pq_eq', hlow', split', ratIn', r1', r2', r3', depth'⟩` from `a'`. Take `⟨s1, s2, s3, s4, s5, s6, s7⟩` from `hA`. Establish `e8 : all' = (by with_unfolding_all exact (((mvOf w Z S' N h).all a.all) :))` using `eq_of_heq ((by with_unfolding_all exact (s1 :)))`. Establish `e9 : Pq' = (by with_unfolding_all exact (a.Pq :))` using `eq_of_heq ((by with_unfolding_all exact (s2 :)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Substitute `e8 e9` using the available equality. Take `⟨kKs, hk, nexp, hecke, grp, rowLoc, S_eq, hL_eq, rep_eq⟩` from `r`. Take `⟨ad, fi, hrow, cHk, eig, ser, tau, geo, ok, th, xda, large, labc, zeta, pht⟩` from `e`. Take `⟨geo⟩` from `geo`. Take `⟨_, _, _, _, _, _, _, _, _, _, _, IL', _, _, _, eFT', _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _, ⟨eW', _⟩, _⟩` from `Y'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `e10 : eW' = (by with_unfolding_all exact (t.r.Y.mj.eW :))` using `eq_of_heq ((by with_unfolding_all exact (hs.eW :)))`. Substitute `e10` using the available equality. Take `⟨Sb, ev, hSb, hev, hE⟩` from `eig`. Take `⟨i1, i2, i3⟩` from `s7 ⟨labc, zeta, pht⟩`. Take `⟨l1, l2, l3, l4, l5, lv⟩` from `grp.lvl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Nonempty.elim (hser kKs hk nexp ((by with_unfolding_all exact (kKs :))) ((by with_unfolding_all exact (hk :))) (@_root_.Formalism.IndefR.NX.NExpRealS.mk (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (fi := (by with_unfolding_all exact (nexp.fi :))) (geq := (by with_ …` and prove the remaining obligations. Use `⟨@NRow.mk (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) ((by with_unfolding_all exact (kKs :))) ((by with_unfolding_all exact (hk :))) (@_root_.Formalism.IndefR.NX.NExpRealS.mk (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) (_) ( …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_row (hL : GlobalTheory.Published.LocalLanglandsGL) (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z : w.Lt) (Wt : Set B.places.Pl) (S' : SStage B w.C Z.W) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ) (nch : NChoice (w.D Z)) (xd : ThData (w.D Z))
     (p0 : BaseLevelRowSide (w.D Z)) (t : RowsT K w Z Wt p0) (p0' : BaseLevelRowSide (w.D (upL Z S' N h))) (t' : RowsT K w (upL Z S' N h) Wt p0')

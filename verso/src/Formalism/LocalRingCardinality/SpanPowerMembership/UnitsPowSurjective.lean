@@ -11,7 +11,7 @@ section ToC
 variable (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-Set `f : ℤ_[p] →+* WittVector p (AlgebraicClosure (ZMod p))` to `(WittVector.map (algebraMap (ZMod p) (AlgebraicClosure (ZMod p)))).comp (WittVector.equiv p).symm.toRingHom`. Establish `hf : Function.Injective f` using `(WittVector.map_injective _ (algebraMap (ZMod p) (AlgebraicClosure (ZMod p))).injective).comp (WittVector.equiv p).symm.injective`. Conclude with `charZero_of_injective_ringHom hf`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem teich_charZero : CharZero (WittVector p (AlgebraicClosure (ZMod p))) := by
   let f : ℤ_[p] →+* WittVector p (AlgebraicClosure (ZMod p)) :=
@@ -23,7 +23,7 @@ theorem teich_charZero : CharZero (WittVector p (AlgebraicClosure (ZMod p))) := 
   exact charZero_of_injective_ringHom hf
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `(Algebra.IsAlgebraic.cardinalMk_le_max (ZMod p) (AlgebraicClosure (ZMod p))).trans ?_` and prove the remaining obligations. Conclude with `max_le (Cardinal.mk_le_aleph0) le_rfl`. Conclude with `Cardinal.aleph0_le_mk _`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem teich_card_Fbar : #(AlgebraicClosure (ZMod p)) = ℵ₀ := by
   apply le_antisymm
@@ -38,7 +38,7 @@ def teichCoeffEquiv (R : Type) : WittVector p R ≃ (ℕ → R) where
   right_inv f := by funext n; rfl
 
 /- English proof (translation)
-Rewrite using `[Cardinal.mk_congr (teichCoeffEquiv p (AlgebraicClosure (ZMod p)))]`. Simplify using `[teich_card_Fbar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_wittVector : #(WittVector p (AlgebraicClosure (ZMod p))) = 𝔠 := by
   rw [Cardinal.mk_congr (teichCoeffEquiv p (AlgebraicClosure (ZMod p)))]
@@ -48,9 +48,9 @@ abbrev TeichOm : Type :=
   AlgebraicClosure (FractionRing (WittVector p (AlgebraicClosure (ZMod p))))
 
 /- English proof (translation)
-Establish `hK : #(FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) = 𝔠`. Rewrite using `[Cardinal.mk_fractionRing, mk_wittVector]`. Apply `le_antisymm` to reduce the goal to its premises. Use `(Algebra.IsAlgebraic.cardinalMk_le_max (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) (TeichOm p)).trans ?_` and prove the remaining obligations. Rewrite using `[hK]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `max_le le_rfl Cardinal.aleph0_le_continuum`. Rewrite using `[← hK]`. Conclude with `Cardinal.mk_le_of_injective (algebraMap (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) (TeichOm p)).injective`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem teich_card_Om : #(TeichOm p) = 𝔠 := by
   have hK : #(FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) = 𝔠 := by
@@ -70,7 +70,7 @@ def teichWOm : WittVector p (AlgebraicClosure (ZMod p)) →+* TeichOm p :=
       (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))))
 
 /- English proof (translation)
-The claim follows from `(algebraMap (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) (TeichOm p)).injective.comp (IsFractionRing.injective (WittVector p (AlgebraicClosure (ZMod p))) (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))))`.
+A detailed English derivation is pending.
 -/
 theorem teichWOm_injective : Function.Injective (teichWOm p) :=
   (algebraMap (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))) (TeichOm p)).injective.comp
@@ -78,16 +78,16 @@ theorem teichWOm_injective : Function.Injective (teichWOm p) :=
       (FractionRing (WittVector p (AlgebraicClosure (ZMod p)))))
 
 /- English proof (translation)
-The claim follows from `haveI := teich_charZero p charZero_of_injective_ringHom (teichWOm_injective p)`.
+A detailed English derivation is pending.
 -/
 theorem teich_Om_charZero : CharZero (TeichOm p) :=
   haveI := teich_charZero p
   charZero_of_injective_ringHom (teichWOm_injective p)
 
 /- English proof (translation)
-Use `teich_Om_charZero p` as an intermediate fact. Apply `IsAlgClosed.ringEquiv_of_equiv_of_charZero` to reduce the goal to its premises. Rewrite using `[teich_card_Om]`. Conclude with `Cardinal.aleph0_lt_continuum`. Apply `Cardinal.eq.1` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[teich_card_Om, Cardinal.mk_complex]`.
+A detailed English derivation is pending.
 -/
 theorem teich_Om_equiv : Nonempty (TeichOm p ≃+* ℂ) := by
   have := teich_Om_charZero p
@@ -102,7 +102,7 @@ def teichToC : AlgebraicClosure (ZMod p) →* ℂ :=
       WittVector p (AlgebraicClosure (ZMod p)) →* ℂ).comp (WittVector.teichmuller p)
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1 : WittVector.teichmuller p x = WittVector.teichmuller p y` using `teichWOm_injective p ((teich_Om_equiv p).some.injective h)`. Establish `h2` using `congrArg (fun w => w.coeff 0) h1`. Simplify `h2` using `[WittVector.teichmuller_coeff_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem teichToC_injective : Function.Injective (teichToC p) := by
   intro x y h
@@ -132,7 +132,7 @@ def extZeroHom {K L : Type*} [Field K] [Field L] (χ : Kˣ →* Lˣ) : K →* L 
     simp [hx, hy, h1]
 
 /- English proof (translation)
-Simplify using `[extZeroHom, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extZeroHom_of_ne {K L : Type*} [Field K] [Field L] (χ : Kˣ →* Lˣ) {x : K} (h : x ≠ 0) :
     extZeroHom χ x = (χ (Units.mk0 x h) : L) := by
@@ -143,9 +143,9 @@ end ExtZero
 section Iota
 
 /- English proof (translation)
-Introduce `u`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (u : L) (Nat.pos_of_ne_zero hn)`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `u.ne_zero hz.symm`. Conclude with `⟨Units.mk0 z hz0, by ext; simpa using hz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem units_pow_surjective (L : Type*) [Field L] [IsAlgClosed L] {n : ℕ} (hn : n ≠ 0) :
     Function.Surjective (fun a : Lˣ => a ^ n) := by
@@ -186,7 +186,7 @@ def primeToSub : Subgroup (AlgebraicClosure (ZMod g))ˣ where
 
 omit [Fact l.Prime] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_primeToSub (x : (AlgebraicClosure (ZMod g))ˣ) :
     x ∈ primeToSub g l ↔ (orderOf x).Coprime l := Iff.rfl
@@ -194,19 +194,19 @@ theorem mem_primeToSub (x : (AlgebraicClosure (ZMod g))ˣ) :
 def teichU (p : ℕ) [Fact p.Prime] : (AlgebraicClosure (ZMod p))ˣ →* ℂˣ := Units.map (teichToC p)
 
 /- English proof (translation)
-The claim follows from `Units.map_injective (teichToC_injective p)`.
+A detailed English derivation is pending.
 -/
 theorem teichU_injective (p : ℕ) [Fact p.Prime] : Function.Injective (teichU p) :=
   Units.map_injective (teichToC_injective p)
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN0⟩`. Establish `: NeZero (N : AlgebraicClosure (ZMod l))`. Use `⟨fun h => ?_⟩` and prove the remaining obligations. Establish `h2 : (l : ℕ) ∣ N` using `(CharP.cast_eq_zero_iff (AlgebraicClosure (ZMod l)) l N).1 h`. Establish `h3 : l ∣ Nat.gcd N l` using `Nat.dvd_gcd h2 dvd_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[hN]`. Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h3)`. Establish `hcard : Nat.card (rootsOfUnity N (AlgebraicClosure (ZMod l))) = N` using `HasEnoughRootsOfUnity.natCard_rootsOfUnity (AlgebraicClosure (ZMod l)) N`. Establish `hcardC : Nat.card (rootsOfUnity N ℂ) = N` using `Complex.card_rootsOfUnity N`. Set `r : rootsOfUnity N (AlgebraicClosure (ZMod l)) → rootsOfUnity N ℂ` to `fun y => ⟨teichU l y.1, by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_rootsOfUnity, ← map_pow, (mem_rootsOfUnity _ _).1 y.2, map_one]⟩`. Establish `hr : Function.Injective r`. Introduce `a b hab`. Conclude with `Subtype.ext (teichU_injective l (congrArg Subtype.val hab))`. Establish `: Finite (rootsOfUnity N ℂ)` using `Nat.finite_of_card_ne_zero (by rw [hcardC]; exact hN0)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (rootsOfUnity N (AlgebraicClosure (ZMod l)))` using `Nat.finite_of_card_ne_zero (by rw [hcard]; exact hN0)`. Establish `hbij : Function.Bijective r` using `(Nat.bijective_iff_injective_and_card r).2 ⟨hr, by rw [hcard, hcardC]⟩`. Take `⟨y, hy⟩` from `hbij.2 ⟨z, (mem_rootsOfUnity _ _).2 hz⟩`. Conclude with `⟨y.1, congrArg Subtype.val hy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem teichU_range {N : ℕ} (hN : N.Coprime l) (hN0 : N ≠ 0) (z : ℂˣ) (hz : z ^ N = 1) :
     z ∈ (teichU l).range := by
@@ -248,7 +248,7 @@ def iotaSub : primeToSub g l →* (AlgebraicClosure (ZMod l))ˣ :=
       rw [← map_pow, pow_orderOf_eq_one, map_one]))
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h1` using `(MonoidHom.ofInjective (teichU_injective l)).symm.injective h`. Establish `h2 : teichU g x.1 = teichU g y.1` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext (teichU_injective g h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iotaSub_injective : Function.Injective (iotaSub g l) := by
   intro x y h
@@ -257,7 +257,7 @@ theorem iotaSub_injective : Function.Injective (iotaSub g l) := by
   exact Subtype.ext (teichU_injective g h2)
 
 /- English proof (translation)
-Set `_` to `unitsDivisible (AlgebraicClosure (ZMod l))`. Take `⟨h, hh⟩` from `(Module.Baer.of_divisible (Additive (AlgebraicClosure (ZMod l))ˣ)).extension_property_addMonoidHom (MonoidHom.toAdditive (primeToSub g l).subtype) (fun a b hab => Subtype.ext (congrArg Additive.toMul hab : _)) (MonoidHom.toAdditive (iotaSub g l))`. Use `⟨MonoidHom.toAdditive.symm h, fun x => ?_⟩` and prove the remaining obligations. Use `DFunLike.congr_fun hh (Additive.ofMul x)` as an intermediate fact. Conclude with `congrArg Additive.toMul this`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iotaU_exists : ∃ χ : (AlgebraicClosure (ZMod g))ˣ →* (AlgebraicClosure (ZMod l))ˣ,
     ∀ x : primeToSub g l, χ x.1 = iotaSub g l x := by
@@ -274,11 +274,9 @@ def teichIota : AlgebraicClosure (ZMod g) →* AlgebraicClosure (ZMod l) :=
   extZeroHom (iotaU_exists g l).choose
 
 /- English proof (translation)
-Establish `hX : Units.mk0 x hx ∈ primeToSub g l`. Rewrite using `[mem_primeToSub, ← orderOf_units]`. Conclude with `hxl`. Establish `hY : Units.mk0 y hy ∈ primeToSub g l`. Rewrite using `[mem_primeToSub, ← orderOf_units]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `hyl`. Unfold `teichIota at h`. Rewrite `h` using `[extZeroHom_of_ne _ hx, extZeroHom_of_ne _ hy]`. Establish `h1` using `Units.ext h`. Rewrite `h1` using `[(iotaU_exists g l).choose_spec ⟨_, hX⟩, (iotaU_exists g l).choose_spec ⟨_, hY⟩]`.
-
-Establish `h2` using `iotaSub_injective g l h1`. Conclude with `congrArg (fun u : primeToSub g l => ((u.1 : (AlgebraicClosure (ZMod g))ˣ) : AlgebraicClosure (ZMod g))) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem teichIota_inj (x y : AlgebraicClosure (ZMod g)) (hx : x ≠ 0) (hy : y ≠ 0)
     (hxl : (orderOf x).Coprime l) (hyl : (orderOf y).Coprime l)

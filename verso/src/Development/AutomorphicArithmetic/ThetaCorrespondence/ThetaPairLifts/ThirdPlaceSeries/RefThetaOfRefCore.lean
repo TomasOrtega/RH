@@ -13,9 +13,9 @@ noncomputable section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 namespace GlobalTheory.RefSum
 /- English proof (translation)
-Introduce `hS hR`. Establish `hW` using `_root_.GlobalTheory.T.quotient_weight_gap_bounds' hS`. Use `Closed.imp (Closed.and hR hW) fun _ _ _ ⟨⟨C, hC, a, h⟩, _, _, b, h'⟩ => ⟨C, hC, max a b, fun x hx hle ι p hp i hi Y hY u1 hu => ?_⟩` and prove the remaining obligations. Take `⟨S, e, s, hPS, hT, hq⟩` from `h x hx ((le_max_left _ _).trans hle) ι p hp i hi u1 hu`. Establish `hD` using `(h' x hx ((le_max_right _ _).trans hle) ι p hp i hi u1 hu).2.2.2.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨S, e, s, hPS, hT, fun q hq' => le_trans ?_ (hq q hq')⟩` and prove the remaining obligations. Conclude with `refExp_vp_cover_le _ p.T _ Y _ _ p.fw.laws ⟨by omega, by omega⟩ hY.1 _ _ hD _ q hq'`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem refTheta_of_refCore_alt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.RefSum.ReferenceCore → _root_.GlobalTheory.RefSum.ReferenceTheta := by
   intro hS hR

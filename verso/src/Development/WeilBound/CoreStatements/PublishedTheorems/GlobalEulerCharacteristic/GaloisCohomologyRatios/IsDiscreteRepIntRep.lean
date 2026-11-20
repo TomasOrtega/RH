@@ -33,7 +33,7 @@ instance isDiscreteRep_intRep (M : Rep.{0} (ZMod ℓ) G) [IsDiscreteRep M] : IsD
 instance finite_intRep (M : Rep.{0} (ZMod ℓ) G) [Finite M] : Finite (intRep M) := ‹Finite M›
 
 /- English proof (translation)
-Establish `h : ℓ • (show M from m) = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod ℓ), ZMod.natCast_self, zero_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_intRep (M : Rep.{0} (ZMod ℓ) G) (m : intRep M) : ℓ • m = 0 := by
   have h : ℓ • (show M from m) = 0 := by

@@ -13,9 +13,9 @@ noncomputable def mvPolynomialOnLine {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a
   MvPolynomial.aeval (fun i => Polynomial.C (a i) + Polynomial.C (b i - a i) * Polynomial.X) q
 
 /- English proof (translation)
-Unfold `mvPolynomialOnLine`. Proceed by induction on `q using MvPolynomial.induction_on with`. Consider the case `C c => simp`. Consider the case `add p r hp hr => rw [map_add, Polynomial.eval_add, hp, hr, map_add]`. Consider the case `mul_X p i hp`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [map_mul, Polynomial.eval_mul, hp, MvPolynomial.aeval_X, MvPolynomial.eval_X, Polynomial.eval_add, Polynomial.eval_C, Polynomial.eval_X, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_mvPolynomialOnLine {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a b : Fin d → ℂ) (t : ℂ) :
     (mvPolynomialOnLine q a b).eval t = MvPolynomial.eval (a + t • (b - a)) q := by
@@ -30,9 +30,9 @@ theorem eval_mvPolynomialOnLine {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a b : 
     ring
 
 /- English proof (translation)
-Establish `hP : mvPolynomialOnLine q a b ≠ 0`. Introduce `h`. Apply `hb` to reduce the goal to its premises. Use `eval_mvPolynomialOnLine q a b 1` as an intermediate fact. Simplify `this.symm` using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Polynomial.finite_setOfPred_isRoot hP using 1` and compare the differences between its conclusion and the goal. Use extensionality with `t`. Simplify using `only [Set.mem_ofPred_eq, Polynomial.IsRoot, eval_mvPolynomialOnLine]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finite_zeros_on_line {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a b : Fin d → ℂ)
     (hb : MvPolynomial.eval b q ≠ 0) :
@@ -47,7 +47,7 @@ theorem finite_zeros_on_line {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a b : Fin
   simp only [Set.mem_ofPred_eq, Polynomial.IsRoot, eval_mvPolynomialOnLine]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hq (MvPolynomial.funext fun x => by simp [h x])`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 private theorem mvPolynomial_exists_eval_ne_zero {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (hq : q ≠ 0) :
     ∃ x : Fin d → ℂ, MvPolynomial.eval x q ≠ 0 := by
@@ -56,9 +56,9 @@ private theorem mvPolynomial_exists_eval_ne_zero {d : ℕ} (q : MvPolynomial (Fi
   exact hq (MvPolynomial.funext fun x => by simp [h x])
 
 /- English proof (translation)
-Establish `hZ` using `finite_zeros_on_line q a b hb`. Establish `hpc : IsPathConnected {t : ℂ | MvPolynomial.eval (a + t • (b - a)) q = 0}ᶜ` using `hZ.countable.isPathConnected_compl_of_one_lt_rank (by rw [Complex.rank_real_complex]; norm_num)`. Establish `h0 : (0 : ℂ) ∈ {t : ℂ | MvPolynomial.eval (a + t • (b - a)) q = 0}ᶜ` using `by simpa using ha`. Establish `h1 : (1 : ℂ) ∈ {t : ℂ | MvPolynomial.eval (a + t • (b - a)) q = 0}ᶜ` using `by simpa using hb`. Establish `hf : Continuous fun t : ℂ => a + t • (b - a)` using `by fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj` using `(hpc.joinedIn 0 h0 1 h1).map hf`. Simplify using `only [zero_smul, add_zero, one_smul, add_sub_cancel] at hj`. Use `hj.mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨t, ht, rfl⟩`. Conclude with `ht`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem joinedIn_setOf_eval_ne_zero {d : ℕ} (q : MvPolynomial (Fin d) ℂ) (a b : Fin d → ℂ)
     (ha : MvPolynomial.eval a q ≠ 0) (hb : MvPolynomial.eval b q ≠ 0) :
@@ -77,13 +77,11 @@ private theorem joinedIn_setOf_eval_ne_zero {d : ℕ} (q : MvPolynomial (Fin d) 
   exact ht
 
 /- English proof (translation)
-Introduce `d q hq`. Take `⟨b, hb⟩` from `mvPolynomial_exists_eval_ne_zero q hq`. Use `⟨(isPathConnected_iff.2 ⟨⟨b, hb⟩, fun x hx y hy => joinedIn_setOf_eval_ne_zero q x y hx hy⟩).isConnected, fun x => ?_⟩` and prove the remaining obligations. Establish `hf : Continuous fun t : ℂ => x + t • (b - x)` using `by fun_prop`. Establish `hlim : Tendsto (fun t : ℂ => x + t • (b - x)) (𝓝[≠] (0 : ℂ)) (𝓝 x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hf.tendsto 0` as an intermediate fact. Simplify using `only [zero_smul, add_zero] at this`. Conclude with `tendsto_nhdsWithin_of_tendsto_nhds this`. Use `mem_closure_of_tendsto hlim ?_` and prove the remaining obligations. Establish `hZ` using `finite_zeros_on_line q x b hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcl : IsClosed ({t : ℂ | MvPolynomial.eval (x + t • (b - x)) q = 0} \ {0})` using `(hZ.subset Set.sdiff_subset).isClosed`. Establish `e1 : ∀ᶠ t in 𝓝[≠] (0 : ℂ), t ∉ ({t : ℂ | MvPolynomial.eval (x + t • (b - x)) q = 0} \ {0})` using `nhdsWithin_le_nhds (hcl.isOpen_compl.mem_nhds (by simp))`. Establish `e2 : ∀ᶠ t in 𝓝[≠] (0 : ℂ), t ≠ 0` using `self_mem_nhdsWithin`. Use `filter_upwards [e1, e2] with t ht1 ht2`. Simplify using `only [Set.mem_sdiff, Set.mem_ofPred_eq, Set.mem_singleton_iff, not_and, not_not] at ht1`.
-
-Use `show MvPolynomial.eval (x + t • (b - x)) q ≠ 0`. Conclude with `fun h => ht2 (ht1 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isConnected_and_dense_compl_hypersurface :
     (∀ (d : ℕ) (q : MvPolynomial (Fin d) ℂ), q ≠ 0 →

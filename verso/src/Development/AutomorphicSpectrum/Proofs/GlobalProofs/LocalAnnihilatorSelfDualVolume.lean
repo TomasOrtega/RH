@@ -12,23 +12,19 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.OneV.Coef.Test
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ`. Establish `hcont : Continuous (psiF ψ)`. Establish `h : Continuous (fun y : Af F => ψ ((0 : InfiniteAdeleRing F), y))` using `hψ.1.comp (continuous_const.prodMk continuous_id)`. Conclude with `h`. Establish `hW : psiF ψ ⁻¹' Metric.ball (1 : ℂ) (1 / 2) ∈ nhds (0 : Af F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hcont.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[psiF_zero]`. Conclude with `Metric.ball_mem_nhds _ (by norm_num)`. Set `R` to `fun v : HeightOneSpectrum (𝓞 F) => v.adicCompletion F`. Set `A` to `fun v : HeightOneSpectrum (𝓞 F) => (v.adicCompletionIntegers F : Set (v.adicCompletion F))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous (RestrictedProduct.structureMap R A Filter.cofinite)` using `RestrictedProduct.isEmbedding_structureMap.continuous`. Establish `hp : (RestrictedProduct.structureMap R A Filter.cofinite) ⁻¹' (psiF ψ ⁻¹' Metric.ball (1 : ℂ) (1 / 2)) ∈ nhds (fun v => (0 : A v))` using `hc.continuousAt.preimage_mem_nhds hW`. Rewrite `hp` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hsub⟩` from `hp`. Use `⟨hI.toFinset, fun c hint hT => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `H : AddSubgroup (Af F)` to `{ carrier := {y | (∀ v, y v ∈ v.adicCompletionIntegers F) ∧ ∀ v ∈ hI.toFinset, y v = 0} add_mem' := by`. Introduce `a b ha hb`. Use `⟨fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a v + b v ∈ v.adicCompletionIntegers F`. Conclude with `add_mem (ha.1 v) (hb.1 v)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `a v + b v = 0`. Rewrite using `[ha.2 v hv, hb.2 v hv, add_zero]`. Use the proof step `zero_mem' := ⟨fun v => zero_mem _, fun v _ => rfl⟩`. Use the proof step `neg_mem' := by`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun v => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(a v) ∈ v.adicCompletionIntegers F`. Conclude with `neg_mem (ha.1 v)`. Express the relevant statement in the definitionally equal form `-(a v) = 0`. Rewrite using `[ha.2 v hv, neg_zero] }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ y ∈ H, ‖psiF ψ y - 1‖ < 1 / 2`. Introduce `y hy`. Establish `hmem : (fun v => (⟨y v, hy.1 v⟩ : A v)) ∈ (RestrictedProduct.structureMap R A Filter.cofinite) ⁻¹' (psiF ψ ⁻¹' Metric.ball (1 : ℂ) (1 / 2))`. Use `hsub fun v hv => ?_` and prove the remaining obligations. Establish `h0 : (⟨y v, hy.1 v⟩ : A v) = (0 : A v)` using `Subtype.ext (hy.2 v (by simpa using hv))`.
-
-Rewrite using `[h0]`. Conclude with `mem_of_mem_nhds (ht v)`. Establish `he : RestrictedProduct.structureMap R A Filter.cofinite (fun v => (⟨y v, hy.1 v⟩ : A v)) = y` using `by ext v; rfl`. Establish `h2 : psiF ψ y ∈ Metric.ball (1 : ℂ) (1 / 2)`. Rewrite using `[← he]`.
-
-Conclude with `hmem`. Rewrite `h2` using `[Metric.mem_ball, dist_eq_norm]`. Conclude with `h2`. Conclude with `char_eq_one_of_near H (psiF ψ) (psiF_zero ψ) (psiF_add ψ) hs (x := c) ⟨hint, hT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psiF_eq_one_of_int_of_vanish : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ),
     IsCharAF F ψ → ∃ T : Finset (HeightOneSpectrum (𝓞 F)), ∀ c : Af F,

@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ K) := QuotientGroup.discreteTopology hK'`. Establish `hc : Continuous fun g : G => ((g * x : G) : G ⧸ K)` using `QuotientGroup.continuous_mk.comp (continuous_id.mul continuous_const)`. Use `((hL.image hc).finite_of_discrete).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`. Conclude with `⟨g, g.2, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sphC_fin {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     {K : Subgroup G} (hL : IsCompact (K : Set G)) (hK' : IsOpen (K : Set G)) (x : G) :
@@ -20,15 +20,13 @@ private theorem sphC_fin {G : Type} [Group G] [TopologicalSpace G] [IsTopologica
   exact ⟨g, g.2, rfl⟩
 
 /- English proof (translation)
-Use `Set.ncard_le_ncard_of_injOn (fun q => ((θ q.out : H) : H ⧸ K)) ?_ ?_ (hfin _)` and prove the remaining obligations. Introduce and unpack `q ⟨a, ha⟩`. Establish `h : (((a : H) * x : H) : H ⧸ K) = (q.out : H ⧸ K)`. Rewrite using `[QuotientGroup.out_eq']`. Conclude with `ha`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hK _ (QuotientGroup.eq.mp h)`. Take `⟨l, hl, l', hl', h2⟩` from `hd x⁻¹`. Rewrite `h2` using `[inv_inv]`. Use `⟨⟨θ a * l, mul_mem (hK _ a.2) hl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((θ a * l * x⁻¹ : H) : H ⧸ K) = _`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotientGroup.eq.mpr ?_` and prove the remaining obligations. Establish `h3 : (θ a * l * x⁻¹)⁻¹ * θ q.out = l' * θ (((a : H) * x)⁻¹ * q.out)`. Rewrite using `[map_mul, map_inv, map_mul, h2]`. Use `group`. Rewrite using `[h3]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `mul_mem hl' h1`. Introduce `p _ q _ h`. Establish `h1` using `hK _ (QuotientGroup.eq.mp h)`. Rewrite `h1` using `[← map_inv, ← map_mul, hθ]`. Rewrite using `[← QuotientGroup.out_eq' p, ← QuotientGroup.out_eq' q]`.
-
-Conclude with `QuotientGroup.eq.mpr h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sphC_le {H : Type} [Group H] (K : Subgroup H) (θ : H →* H) (hθ : ∀ x, θ (θ x) = x)
     (hK : ∀ k ∈ K, θ k ∈ K) (hd : ∀ x, ∃ k ∈ K, ∃ k' ∈ K, θ x⁻¹ = k * x * k')
@@ -55,11 +53,11 @@ private theorem sphC_le {H : Type} [Group H] (K : Subgroup H) (θ : H →* H) (h
     exact QuotientGroup.eq.mpr h1
 
 /- English proof (translation)
-Establish `ho : MulAction.orbit K (z : H ⧸ K) = {(z : H ⧸ K)}`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Express the relevant statement in the definitionally equal form `(((a : H) * z : H) : H ⧸ K) = _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hz]`. Conclude with `QuotientGroup.eq.mpr (by simp)`. Introduce and unpack `rfl`. Conclude with `MulAction.mem_orbit_self _`. Rewrite using `[dc, finsum_set_coe_eq_finsum_mem (f := fun q : H ⧸ K => ρ q.out), ho, finsum_mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, hm⟩` from `QuotientGroup.mk_out_eq_mul K z`. Rewrite using `[hm, map_mul, Module.End.mul_apply, hv m m.2]`.
+A detailed English derivation is pending.
 -/
 private theorem sphC_central {A H M : Type} [CommRing A] [Group H] [AddCommGroup M] [Module A M]
     (ρ : Representation A H M) (K : Subgroup H) (z : H) (hz : ∀ g, g * z = z * g) (v : M) (hv : v ∈ fixd ρ K) :
@@ -78,7 +76,7 @@ private theorem sphC_central {A H M : Type} [CommRing A] [Group H] [AddCommGroup
   rw [hm, map_mul, Module.End.mul_apply, hv m m.2]
 
 /- English proof (translation)
-Rewrite `hg`, the goal using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Conclude with `⟨fun i j => hg.2 j i, fun i j => hg.1 j i⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem sphC_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (g : GL (Fin n) k) (hg : g ∈ KO k (Fin n)) : GlobalTheory.CuspRep.invT n k g ∈ KO k (Fin n) := by
@@ -86,17 +84,17 @@ private theorem sphC_invT {k : Type} [Field k] [ValuativeRel k] [TopologicalSpac
   exact ⟨fun i j => hg.2 j i, fun i j => hg.1 j i⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors 𝒪[k]) (fun p : Fin n × Fin n => g.val p.1 p.2)`. Use `choose f hf using hc`. Take `⟨U, V, d, hU, hV, hΦ, -⟩` from `KStar.Selmer.exists_smith n (Matrix.of fun i j => f (i, j))`. Take `⟨u, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det U).2 hU`. Take `⟨w, rfl⟩` from `(Matrix.isUnit_iff_isUnit_det V).2 hV`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set u' : GL (Fin n) k := Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) u with hu'`. Use `set w' : GL (Fin n) k := Matrix.GeneralLinearGroup.map (algebraMap 𝒪[k] k) w with hw'`. Establish `hu : u' ∈ KO k (Fin n)` using `⟨u, rfl⟩`. Establish `hw : w' ∈ KO k (Fin n)` using `⟨w, rfl⟩`. Establish `hc0 : algebraMap 𝒪[k] k c ≠ 0` using `fun h => nonZeroDivisors.ne_zero c.2 (Subtype.ext h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : algebraMap 𝒪[k] k c • g.val = u'.val * Matrix.diagonal (fun i => algebraMap 𝒪[k] k (d i)) * w'.val`. Establish `h2` using `congrArg (algebraMap 𝒪[k] k).mapMatrix hΦ`. Rewrite `h2` using `[map_mul, map_mul, RingHom.mapMatrix_apply (M := Matrix.diagonal d), Matrix.diagonal_map (map_zero _)]`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `(hf (i, j)).symm`. Establish `h3 : algebraMap 𝒪[k] k c • (u'⁻¹ * g * w'⁻¹).val = Matrix.diagonal (fun i => algebraMap 𝒪[k] k (d i))`. Rewrite using `[Units.val_mul, Units.val_mul, ← smul_mul_assoc, ← mul_smul_comm, h1]`. Simplify using `only [← mul_assoc, Units.inv_mul, one_mul]`. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h4 : GlobalTheory.CuspRep.invT n k (u'⁻¹ * g * w'⁻¹)⁻¹ = u'⁻¹ * g * w'⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(u'⁻¹ * g * w'⁻¹).val.transpose = _`. Apply `smul_right_injective _ hc0` to reduce the goal to its premises. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.transpose_smul, h3, Matrix.diagonal_transpose]`. Use `⟨GlobalTheory.CuspRep.invT n k w'⁻¹ * u'⁻¹, mul_mem (sphC_invT _ (inv_mem hw)) (inv_mem hu), w'⁻¹ * GlobalTheory.CuspRep.invT n k u'⁻¹, mul_mem (inv_mem hw) (sphC_invT _ (inv_mem hu)), ?_⟩` and prove the remaining obligations. Establish `h5 : g⁻¹ = w'⁻¹ * (u'⁻¹ * g * w'⁻¹)⁻¹ * u'⁻¹` using `by group`. Rewrite using `[h5, map_mul, map_mul, h4]`. Simplify using `only [mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sphC_cartan {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n : ℕ} (g : GL (Fin n) k) :
@@ -137,17 +135,17 @@ private theorem sphC_cartan {k : Type} [Field k] [ValuativeRel k] [TopologicalSp
   simp only [mul_assoc]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A M _ _ _ ρ`. Establish `hfin : ∀ x : GL (Fin n) k, (MulAction.orbit (KO k (Fin n)) (x : GL (Fin n) k ⧸ KO k (Fin n))).Finite` using `sphC_fin GlobalTheory.SplitFlip.isCompact_KO GlobalTheory.SplitFlip.isOpen_KO`. Establish `hθ : ∀ x, GlobalTheory.CuspRep.invT n k (GlobalTheory.CuspRep.invT n k x) = x` using `fun x => Units.ext rfl`. Establish `hle` using `sphC_le (KO k (Fin n)) (GlobalTheory.CuspRep.invT n k) hθ sphC_invT sphC_cartan hfin`. Use `⟨hfin, ?_, fun v hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `dcGelfand A _ M ρ _ (fun x => GlobalTheory.CuspRep.invT n k x⁻¹) ?_ ?_ ?_ sphC_cartan hfin ?_` and prove the remaining obligations. Introduce `x y`. Rewrite using `[mul_inv_rev, map_mul]`. Introduce `x`. Rewrite using `[← map_inv, inv_inv, hθ]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Conclude with `sphC_invT _ (inv_mem ha)`. Introduce `x`. Use `le_antisymm (hle x) ?_` and prove the remaining obligations. Simplify using `using hle x⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : al k n 0 = 1`. Rewrite using `[al, upow, ← (diagT k (Fin n)).map_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sphOp, h1, sphC_central ρ _ 1 (by simp) v hv, map_one, Module.End.one_apply]`. Use `sphC_central ρ _ _ (fun g => Units.ext ?_) v hv` and prove the remaining obligations. Establish `h1 : (al k n n).val = Matrix.scalar (Fin n) (unif k : k)`. Rewrite using `[al, upow, val_diagT, Matrix.scalar_apply]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[Units.val_mul, Units.val_mul, h1]`. Conclude with `(Matrix.scalar_commute _ (fun _ => Commute.all _ _) _).eq.symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.sphComm :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A M : Type) [CommRing A] [AddCommGroup M] [Module A M] (ρ : Representation A (GL (Fin n) k) M), (∀ x : GL (Fin n) k, (MulAction.orbit (KO k (Fin n)) (x : GL (Fin n) k ⧸ KO k (Fin n))).Finite) ∧ (∀ x y, ∀ v ∈ fixd ρ (KO k (Fin n)), dc ρ (KO k (Fin n)) (KO k (Fin n)) x (dc ρ (KO k (Fin n)) (KO k (Fin n)) y v) = dc ρ (KO k (Fin n)) (KO k (Fin n)) y (dc ρ (KO k (Fin n)) (KO k (Fin n)) x v)) ∧ ∀ v ∈ fixd ρ (KO k (Fin n)), sphOp ρ 0 v = v ∧ sphOp ρ n v = ρ (al k n n) v := by

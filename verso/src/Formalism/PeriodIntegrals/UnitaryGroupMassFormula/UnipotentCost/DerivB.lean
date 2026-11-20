@@ -15,7 +15,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 open PI.UnitaryGroupMassFormula.UsCost PI.UnitaryGroupMassFormula.UsCost.DA
 
 /- English proof (translation)
-Unfold `dmuP`. Rewrite using `[P.Ux4.block3_add]`. Simplify using `only [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, add_zero, neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma leviDifferential_add (k j ρ : ℕ) (Q Q' : Matrix (Fin j) (Fin j) ℂ) :
     dmuP k j ρ (Q + Q') = dmuP k j ρ Q + dmuP k j ρ Q' := by
@@ -24,7 +24,7 @@ lemma leviDifferential_add (k j ρ : ℕ) (Q Q' : Matrix (Fin j) (Fin j) ℂ) :
   simp only [Matrix.conjTranspose_add, Matrix.mul_add, Matrix.add_mul, add_zero, neg_add]
 
 /- English proof (translation)
-Unfold `dmuP`. Apply `P.Ux4.ext_eB` to reduce the goal to its premises. Apply the tactic sequence `rintro (((a | a) | a)) (((b | b) | b)) <;>`. Simplify using `[P.Ux4.block3_apply, Matrix.conjTranspose_smul]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 lemma leviDifferential_smul (k j ρ : ℕ) (c : ℝ) (Q : Matrix (Fin j) (Fin j) ℂ) :
     dmuP k j ρ (c • Q) = c • dmuP k j ρ Q := by
@@ -34,7 +34,7 @@ lemma leviDifferential_smul (k j ρ : ℕ) (c : ℝ) (Q : Matrix (Fin j) (Fin j)
     simp [P.Ux4.block3_apply, Matrix.conjTranspose_smul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`. Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma block_matrix_two_zero_add {p s : ℕ} (e e' : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (e + e') = blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 e + blk2 0 0 0 e' := by
@@ -45,7 +45,7 @@ lemma block_matrix_two_zero_add {p s : ℕ} (e e' : Matrix (Fin s) (Fin s) ℂ) 
   rcases u with a | a <;> rcases v with b | b <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.smul_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`. Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma block_matrix_two_zero_smul {p s : ℕ} (c : ℝ) (e : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (c • e) = c • blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 e := by
@@ -56,15 +56,15 @@ lemma block_matrix_two_zero_smul {p s : ℕ} (c : ℝ) (e : Matrix (Fin s) (Fin 
   rcases u with a | a <;> rcases v with b | b <;> simp
 
 /- English proof (translation)
-Simplify using `[blk2, Matrix.fromBlocks_one]`.
+Simplify using the standard rewrite rules.
 -/
 lemma symmetricScalarBlockMatrix_one_zero {p s : ℕ} : blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (1 : Matrix (Fin s) (Fin s) ℂ) = 1 := by
   simp [blk2, Matrix.fromBlocks_one]
 
 /- English proof (translation)
-Rewrite using `[← symmetricScalarBlockMatrix_one_zero]`. Use extensionality with `i j`. Simplify using `only [blk2, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply, Matrix.smul_apply]`. Generalize the expression as in `finSumFinEquiv.symm i = u`. Generalize the expression as in `finSumFinEquiv.symm j = v`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Apply the tactic sequence `rcases u with a | a <;> rcases v with b | b <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma block_matrix_two_line {p s : ℕ} (t : ℝ) (A : Matrix (Fin s) (Fin s) ℂ) :
     blk2 (1 : Matrix (Fin p) (Fin p) ℂ) 0 0 (1 + t • A) = 1 + t • blk2 (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 A := by
@@ -91,7 +91,7 @@ def lamL (k : ℕ) {p s : ℕ} (ρ : ℕ) {σ : Equiv.Perm (Fin p)} (ξ : Xi k p
     simp only [lamZ, block_matrix_two_zero_smul, Matrix.mul_smul, Matrix.smul_mul, leviDifferential_smul, RingHom.id_apply]
 
 /- English proof (translation)
-Use extensionality with `x y`. Rewrite using `[Matrix.sum_apply]`. Simplify using `only [Matrix.smul_apply, eMat, Matrix.of_apply]`. Simplify using `[Fintype.sum_prod_type, smul_ite, ite_and, Finset.sum_ite_eq, coefZ, Complex.real_smul, Complex.re_add_im]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma coef_sum {s : ℕ} (Z W : G.Mat s) :
     ∑ i : Fin s × Fin s × Bool, coefZ Z W i • eMat i.1 i.2.1 i.2.2 = (Matrix.of Z)⁻¹ * Matrix.of W := by
@@ -102,7 +102,7 @@ lemma coef_sum {s : ℕ} (Z W : G.Mat s) :
     Complex.real_smul, Complex.re_add_im]
 
 /- English proof (translation)
-Rewrite using `[← coef_sum Z W]`. Express the relevant statement in the definitionally equal form `_ = lamL k ρ ξ _`. Rewrite using `[map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma sum_dirZ {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} (ξ : Xi k p s ρ σ) (Z W : G.Mat s) :
     ∑ i : Fin s × Fin s × Bool, coefZ Z W i • dirZ k ρ ξ i = lamZ k ρ ξ ((Matrix.of Z)⁻¹ * Matrix.of W) := by
@@ -113,16 +113,14 @@ lemma sum_dirZ {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} (ξ : Xi k p s ρ σ) 
   rfl
 
 /- English proof (translation)
-Establish `h : Rn k j ρ x ∈ Rset k j ρ` using `(hRad k j ρ).2.1 ▸ Set.mem_range_self x`. Conclude with `h.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma rn_mem (hRad : RadicalParam) (k j ρ : ℕ) (x : RC k j ρ) : Rn k j ρ x ∈ B.GV k (j + ρ) := by
   have h : Rn k j ρ x ∈ Rset k j ρ := (hRad k j ρ).2.1 ▸ Set.mem_range_self x
   exact h.1
 
 /- English proof (translation)
-Establish `hdet : (ZjH σ d ξ.2 Z).det ≠ 0`. Rewrite using `[P.level_determinant_z]`. Use `mul_ne_zero ?_ hZ` and prove the remaining obligations. Rewrite using `[hMat, Matrix.det_mul, Matrix.det_diagonal]`. Conclude with `mul_ne_zero (P.Ux5.det_permutationMatrix_ne_zero σ) (Finset.prod_ne_zero_iff.mpr fun i _ => hd i)`.
-
-Conclude with `P.BetaSesquilinearity.gv_mul (P.BetaSesquilinearity.gv_mul (P.BetaSesquilinearity.gv_inv (rn_mem hRad _ _ _ _)) ((hMem k (p + s) ρ).1 _ γ hdet hγ)) (rn_mem hRad _ _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ga_mem (hMem : SliceMem) (hRad : RadicalParam) {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ}
     (hd : ∀ i, d i ≠ 0) (ξ : Xi k p s ρ σ) {Z : G.Mat s} {γ : B.Mat k ρ} (hZ : G.detM Z ≠ 0)
@@ -138,7 +136,7 @@ lemma ga_mem (hMem : SliceMem) (hRad : RadicalParam) {k p s ρ : ℕ} {σ : Equi
 variable {k p s ρ : ℕ} {σ : Equiv.Perm (Fin p)} {d : Fin p → ℂ}
 
 /- English proof (translation)
-Establish `hZu : IsUnit (Matrix.of Z).det` using `isUnit_iff_ne_zero.mpr hZ`. Use `hSZ k p s ρ σ d ξ Z ((Matrix.of Z)⁻¹ * Matrix.of Z') γ` as an intermediate fact. Rewrite `this` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma phi_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z ≠ 0) (γ : B.Mat k ρ) (Z' : G.Mat s) :
     gaXi k ρ σ d ξ Z' γ = gaXi k ρ σ d ξ Z γ * ((Rn k (p + s) ρ ξ.1.2)⁻¹ *
@@ -151,7 +149,7 @@ lemma phi_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z 
   exact this
 
 /- English proof (translation)
-Apply `Matrix.nonsing_inv_mul` to reduce the goal to its premises. Rewrite using `[P.Ux4.block2_det_upper_triangular]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma U_inv_mul {p s : ℕ} (b : Fin p → Fin s → ℂ) :
     (blk2 (1 : Matrix (Fin p) (Fin p) ℂ) (Matrix.of b) 0 (1 : Matrix (Fin s) (Fin s) ℂ))⁻¹ *
@@ -161,9 +159,9 @@ lemma U_inv_mul {p s : ℕ} (b : Fin p → Fin s → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[phi_rep hSZ ξ hZ γ (Z + t • W)]`. Establish `hZu : IsUnit (Matrix.of Z).det` using `isUnit_iff_ne_zero.mpr hZ`. Establish `e1 : (Matrix.of Z)⁻¹ * Matrix.of (Z + t • W) = 1 + t • ((Matrix.of Z)⁻¹ * Matrix.of W)`. Establish `: Matrix.of (Z + t • W) = Matrix.of Z + t • Matrix.of W` using `rfl`. Rewrite using `[this, Matrix.mul_add, Matrix.nonsing_inv_mul _ hZu, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, block_matrix_two_line, Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, U_inv_mul, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma line_rep (hSZ : SliceZ) (ξ : Xi k p s ρ σ) {Z : G.Mat s} (hZ : G.detM Z ≠ 0) (γ : B.Mat k ρ) (W : G.Mat s)
     (t : ℝ) :

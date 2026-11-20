@@ -4,17 +4,17 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g H H' S hS h`. Use `set D := H - H' with hD`. Establish `hS0 : ∀ a ∈ S, ∀ b ∈ S, (a ⬝ᵥ D.mulVec (star b)).im = 0`. Introduce `a ha b hb`. Simplify using `only [hD, Matrix.sub_mulVec, dotProduct_sub, Complex.sub_im, h a ha b hb, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `B : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ) →ₗ[ℝ] ℝ` to `LinearMap.mk₂ ℝ (fun a b => (a ⬝ᵥ D.mulVec (star b)).im) (by intro a a' b; simp [add_dotProduct]) (by intro r a b; simp [smul_dotProduct]) (by intro a b b'; simp [star_add, Matrix.mulVec_add, dotProduct_add]) (by intro r a b; simp [star_smul, Matrix.mulVec_smul, dotProduct_smul])`. Establish `hB : B = 0`. Apply `LinearMap.ext_on hS` to reduce the goal to its premises. Introduce `a ha`. Apply `LinearMap.ext_on hS` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Simplify `hS0 a ha b hb` using `[B]`. Establish `hall : ∀ a b, (a ⬝ᵥ D.mulVec (star b)) = 0`. Introduce `a b`. Establish `h1 : (a ⬝ᵥ D.mulVec (star b)).im = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun f => f a b) hB` as an intermediate fact. Simplify `this` using `[B]`. Establish `h2 : ((Complex.I • a) ⬝ᵥ D.mulVec (star b)).im = 0`. Use `congrArg (fun f => f (Complex.I • a) b) hB` as an intermediate fact. Simplify `this` using `[B]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[smul_dotProduct, smul_eq_mul, Complex.mul_im]`. Simplify using `at h2`. Conclude with `Complex.ext h2 h1`. Establish `hDz : D = 0`. Use extensionality with `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hall (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one, Pi.star_single]`. Conclude with `sub_eq_zero.mp hDz`.
+A detailed English derivation is pending.
 -/
 theorem matrix_eq_of_im_dotProduct_mulVec_star_eq_on_span :
     ∀ (g : ℕ) (H H' : Matrix (Fin g) (Fin g) ℂ) (S : Set (Fin g → ℂ)),

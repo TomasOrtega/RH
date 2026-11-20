@@ -10,7 +10,7 @@ import Development.AbelianVarietyTheory.Proofs.GlobalInterpolation.UnipotentChar
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.HermitianLatticesTheory Formalism.L2.DIV Formalism.L2.Col GlobalTheory.QNormal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Proof.vectors_linearMaps_bounded_denominators_atPrime.bounded_denominators` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FVectorsLinearMapsBoundedDenominatorsAtPrime.lean&line=45#L45)
 -/

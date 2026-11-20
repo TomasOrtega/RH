@@ -17,7 +17,7 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory.TameDescent
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec t hU hU h, ← Category.assoc, cancel_mono, ← Spec.map_comp, Spec.map_injective.eq_iff]`. Simplify using `only [map_sub, sub_eq_zero]`. Conclude with `⟨fun e b => congr(($e).hom b), fun e => CommRingCat.hom_ext (RingHom.ext e)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem specMap_fromSpec_comp_eq_iff {X : Scheme.{0}} (t : X ⟶ X) {U : X.Opens}
     (hU : IsAffineOpen U) (h : U ≤ t ⁻¹ᵁ U) {k : CommRingCat.{0}} (a : Γ(X, U) ⟶ k) :
@@ -29,11 +29,11 @@ theorem specMap_fromSpec_comp_eq_iff {X : Scheme.{0}} (t : X ⟶ X) {U : X.Opens
   exact ⟨fun e b => congr(($e).hom b), fun e => CommRingCat.hom_ext (RingHom.ext e)⟩
 
 /- English proof (translation)
-Set `` to `a.toAlgebra`. Set `` to `(p.appLE U W e).hom.toAlgebra`. Establish `: Module.Flat Γ(X, U) Γ(Y, W)` using `p.flat_appLE hU hW e`. Use `mem_map_ker_of_one_tmul_eq_zero_of_flat Γ(X, U) Γ(Y, W) k _ ?_` and prove the remaining obligations. Set `r : Γ(Y, W) ⟶ CommRingCat.of (k ⊗[Γ(X, U)] Γ(Y, W))` to `CommRingCat.ofHom Algebra.TensorProduct.includeRight.toRingHom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `l : CommRingCat.of k ⟶ CommRingCat.of (k ⊗[Γ(X, U)] Γ(Y, W))` to `CommRingCat.ofHom Algebra.TensorProduct.includeLeftRingHom`. Establish `w : (Spec.map r ≫ hW.fromSpec) ≫ p = Spec.map l ≫ Spec.map (CommRingCat.ofHom a) ≫ hU.fromSpec`. Rewrite using `[Category.assoc, ← IsAffineOpen.SpecMap_appLE_fromSpec p hU hW e, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc]`. Use `congr 2`. Conclude with `(CommRingCat.isPushout_tensorProduct Γ(X, U) k Γ(Y, W)).w.symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `(specMap_fromSpec_comp_eq_iff t hW h r).1 ?_ c` and prove the remaining obligations. Rewrite using `[← pullback.lift_fst _ _ w, Category.assoc, ht]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appLE_sub_mem_map {X Y : Scheme.{0}} (p : Y ⟶ X) [Flat p] (t : Y ⟶ Y) {U : X.Opens}
     {W : Y.Opens} (hU : IsAffineOpen U) (hW : IsAffineOpen W) (e : W ≤ p ⁻¹ᵁ U)
@@ -59,7 +59,7 @@ theorem appLE_sub_mem_map {X Y : Scheme.{0}} (p : Y ⟶ X) [Flat p] (t : Y ⟶ Y
   rw [← pullback.lift_fst _ _ w, Category.assoc, ht]
 
 /- English proof (translation)
-The claim follows from `IsOpenImmersion.isPullback _ _ _ _ (by rw [Scheme.Hom.app_eq_appLE, IsAffineOpen.SpecMap_appLE_fromSpec]) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_specMap_app {X X' : Scheme.{0}} (π : X ⟶ X') [IsAffineHom π] {V : X'.Opens}
     (hV : IsAffineOpen V) :
@@ -68,15 +68,13 @@ theorem isPullback_specMap_app {X X' : Scheme.{0}} (π : X ⟶ X') [IsAffineHom 
     (by rw [Scheme.Hom.app_eq_appLE, IsAffineOpen.SpecMap_appLE_fromSpec]) (by simp)
 
 /- English proof (translation)
-Establish `h : ∀ y : Y', ∃ (V : X'.Opens) (W : Y'.Opens), IsAffineOpen V ∧ IsAffineOpen W ∧ y ∈ W ∧ W ≤ p' ⁻¹ᵁ V` using `fun y => by`. Take `⟨_, ⟨V, hV, rfl⟩, hx, -⟩` from `X'.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (p' y)) isOpen_univ`. Take `⟨_, ⟨W, hW, rfl⟩, hy, hle⟩` from `Y'.isBasis_affineOpens.exists_subset_of_mem_open (show y ∈ p' ⁻¹ᵁ V from hx) (p' ⁻¹ᵁ V).isOpen`. Conclude with `⟨V, W, hV, hW, hy, hle⟩`. Use `choose V W hV hW hy hle using h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `𝒰 : Y'.OpenCover` to `Scheme.Cover.mkOfCovers Y' (fun y => Spec Γ(Y', W y)) (fun y => (hW y).fromSpec) (fun y => ⟨y, by`. Establish `: y ∈ Set.range (hW y).fromSpec`. Rewrite using `[IsAffineOpen.range_fromSpec]`. Conclude with `hy y`. Conclude with `this⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Scheme.isPullback_of_openCover φ p p' π 𝒰 fun y => ?_` and prove the remaining obligations. Establish `e' : φ ⁻¹ᵁ W y ≤ p ⁻¹ᵁ π ⁻¹ᵁ V y`. Rewrite using `[← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]`. Conclude with `φ.preimage_mono (hle y)`. Establish `H1` using `isPullback_specMap_app φ (hW y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `H2` using `(isPullback_SpecMap_of_isPushout _ _ _ _ (H _ _ (hV y) (hW y) (hle y) e')).paste_vert (isPullback_specMap_app π (hV y)).flip.flip`. Rewrite `H2` using `[IsAffineOpen.SpecMap_appLE_fromSpec p _ ((hW y).preimage φ), IsAffineOpen.SpecMap_appLE_fromSpec p' _ (hW y)]`. Use `H2.of_iso H1.flip.isoPullback (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ((Category.comp_id _).trans (Category.id_comp _).symm) (by simp)` and prove the remaining obligations. Conclude with `(Category.comp_id _).trans (H1.flip.isoPullback_hom_snd).symm`. Rewrite using `[Iso.refl_hom, Category.comp_id, ← Category.assoc]`.
-
-Use `congr 1`. Conclude with `(H1.flip.isoPullback_hom_fst).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isPullback_of_isPushout_app {X X' Y Y' : Scheme.{0}} (π : X ⟶ X') (φ : Y ⟶ Y')
     (p : Y ⟶ X) (p' : Y' ⟶ X') [IsAffineHom π] [IsAffineHom φ] (w : φ ≫ p' = p ≫ π)
@@ -114,23 +112,23 @@ theorem isPullback_of_isPushout_app {X X' Y Y' : Scheme.{0}} (π : X ⟶ X') (φ
     exact (H1.flip.isoPullback_hom_fst).symm
 
 /- English proof (translation)
-Establish `hU : IsAffineOpen (π ⁻¹ᵁ V)` using `hV.preimage π`. Establish `hU' : IsAffineOpen (φ ⁻¹ᵁ W)` using `hW.preimage φ`. Establish `hst` using `preimage_le_of_invariant ρ π hπ V`. Establish `hst'` using `preimage_le_of_invariant τ φ hφ W`. Set `` to `sectionsAction ρ _ hst`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `` to `sectionsAction τ _ hst'`. Set `` to `(π.app V).hom.toAlgebra`. Set `` to `(φ.app W).hom.toAlgebra`. Set `` to `(p'.appLE V W e).hom.toAlgebra`. Set `` to `(p.appLE _ _ e').hom.toAlgebra`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `` to `(p'.appLE V W e ≫ φ.app W).hom.toAlgebra`. Establish `sq : p'.appLE V W e ≫ φ.app W = π.app V ≫ p.appLE _ _ e'`. Simplify using `only [Scheme.Hom.app_eq_appLE, Scheme.Hom.appLE_comp_appLE, w]`. Establish `: IsScalarTower Γ(X', V) Γ(Y', W) Γ(Y, φ ⁻¹ᵁ W)` using `.of_algebraMap_eq' rfl`. Establish `: IsScalarTower Γ(X', V) Γ(X, π ⁻¹ᵁ V) Γ(Y, φ ⁻¹ᵁ W)` using `.of_algebraMap_eq' congr(($sq).hom)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SMulCommClass Γ Γ(X', V) Γ(X, π ⁻¹ᵁ V)` using `⟨fun g a s ↦ by`. Establish `hfix : g • algebraMap Γ(X', V) Γ(X, π ⁻¹ᵁ V) a = algebraMap _ _ a` using `(isInvariantSection_app ρ π hπ V a g⁻¹).2`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', hfix]⟩`. Establish `: SMulCommClass Γ Γ(Y', W) Γ(Y, φ ⁻¹ᵁ W)` using `⟨fun g a s ↦ by`. Establish `hfix : g • algebraMap Γ(Y', W) Γ(Y, φ ⁻¹ᵁ W) a = algebraMap _ _ a` using `(isInvariantSection_app τ φ hφ W a g⁻¹).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul', hfix]⟩`. Establish `: Algebra.IsInvariant Γ(X', V) Γ(X, π ⁻¹ᵁ V) Γ` using `⟨fun s hs ↦ (hπ' V).2 s fun g _ ↦ by simpa only [inv_inv] using (show (ρ g⁻¹⁻¹).hom.appLE _ _ (hst _) s = s from hs g⁻¹)⟩`. Establish `: Algebra.IsInvariant Γ(Y', W) Γ(Y, φ ⁻¹ᵁ W) Γ` using `⟨fun s hs ↦ (hφ' W).2 s fun g _ ↦ by simpa only [inv_inv] using (show (τ g⁻¹⁻¹).hom.appLE _ _ (hst' _) s = s from hs g⁻¹)⟩`. Establish `heq : ∀ (g : Γ) (b : Γ(X, π ⁻¹ᵁ V)), g • algebraMap _ Γ(Y, φ ⁻¹ᵁ W) b = algebraMap _ Γ(Y, φ ⁻¹ᵁ W) (g • b)` using `fun g b => by`. Express the relevant statement in the definitionally equal form `(τ g⁻¹).hom.appLE _ _ (hst' _) (p.appLE _ _ e' b) = p.appLE _ _ e' ((ρ g⁻¹).hom.appLE _ _ (hst _) b)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE, hp]`. Establish `hflat : Module.Flat Γ(X, π ⁻¹ᵁ V) Γ(Y, φ ⁻¹ᵁ W)` using `p.flat_appLE hU hU' e'`. Establish `key : ∀ q : Ideal Γ(X, π ⁻¹ᵁ V), q.IsPrime → ((Nat.card (q.inertia Γ) : Γ(X, π ⁻¹ᵁ V)) ∉ q) ∧ ∀ g ∈ q.inertia Γ, ∀ c : Γ(Y, φ ⁻¹ᵁ W), g • c - c ∈ q.map (algebraMap _ Γ(Y, φ ⁻¹ᵁ W))`. Introduce `q hq`. Set `k` to `AlgebraicClosure q.ResidueField`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `a : Γ(X, π ⁻¹ᵁ V) →+* k` to `(algebraMap q.ResidueField k).comp (algebraMap _ _)`. Establish `ha : ∀ b, a b = 0 ↔ b ∈ q` using `fun b => by`. Simplify using `[a]`. Establish `hker : RingHom.ker a = q` using `Ideal.ext ha`. Set `x : Sp k ⟶ X` to `Spec.map (CommRingCat.ofHom a) ≫ hU.fromSpec`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx : ∀ g, x ≫ (ρ g⁻¹).hom = x ↔ g ∈ q.inertia Γ` using `fun g => (specMap_fromSpec_comp_eq_iff _ hU (hst _) _).trans (forall_congr' fun b => ha _)`. Use `⟨fun h => htame k x ?_, fun g hg c => ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.card_congr ((Equiv.inv Γ).subtypeEquiv (p := fun g => g ∈ q.inertia Γ) (q := fun g => x ≫ (ρ g).hom = x) fun g => (hx g).symm), ← map_natCast a]`. Conclude with `(ha _).2 h`. Rewrite using `[← hker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `appLE_sub_mem_map p _ hU hU' e' (hst' _) a (hfix k x _ ((hx g).2 hg)) c`. Establish `hpo : Algebra.IsPushout Γ(X', V) Γ(X, π ⁻¹ᵁ V) Γ(Y', W) Γ(Y, φ ⁻¹ᵁ W)` using `GlobalTheory.T.invariant_tower_isPushout Γ _ _ _ _ (hπ' V).1 (hφ' W).1 heq (IsLocallyNoetherian.component_noetherian ⟨W, hW⟩) (π.finite_app V hV) (φ.finite_app W hW) hflat (fun q hq => (key q hq).1) (fun q hq => (key q hq).2)`. Use `⟨CommRingCat.isPushout_iff_isPushout.2 hpo.symm, ?_⟩` and prove the remaining obligations. Conclude with `flat_of_tame_descent Γ _ _ _ _ (hπ' V).1 (hφ' W).1 heq hpo hflat (exists_finsum_smul_eq_one_of_tame Γ _ fun q hq => (key q hq).1)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPushout_and_flat {Γ : Type} [Group Γ] [Finite Γ] {X X' Y Y' : Scheme.{0}}
     [IsLocallyNoetherian Y'] (ρ : Γ →* Aut X) (τ : Γ →* Aut Y) (π : X ⟶ X') (φ : Y ⟶ Y')
@@ -214,9 +212,9 @@ theorem isPushout_and_flat {Γ : Type} [Group Γ] [Finite Γ] {X X' Y Y' : Schem
     (exists_finsum_smul_eq_one_of_tame Γ _ fun q hq => (key q hq).1)
 
 /- English proof (translation)
-Introduce `Γ _ _ X X' Y Y' _ ρ τ π φ p p' hπ hφ w hp _ _ _ htame hfix`. Take `⟨_, _, -⟩` from `GlobalTheory.T.quotient_isFinite_and_descends_finiteness_properties Γ Y Y' τ φ hφ X' p' (by rw [w]; infer_instance)`. Establish `: IsLocallyNoetherian Y'` using `LocallyOfFiniteType.isLocallyNoetherian p'`. Establish `H` using `isPushout_and_flat ρ τ π φ p p' hπ.2.1 hπ.2.2 hφ.2.1 hφ.2.2 w hp htame hfix`. Use `⟨isPullback_of_isPushout_app π φ p p' w fun V W hV hW e e' => (H V W hV hW e e').1, ⟨fun {V} hV {W} hW e => (H V W hV hW e ?_).2⟩, inferInstance⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_preimage, ← w, Scheme.Hom.comp_preimage]`. Conclude with `φ.preimage_mono e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_flat_of_tame :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (X X' Y Y' : Scheme.{0}) [IsLocallyNoetherian X'] (ρ : Γ →* Aut X) (τ : Γ →* Aut Y) (π : X ⟶ X') (φ : Y ⟶ Y') (p : Y ⟶ X) (p' : Y' ⟶ X'), (IsAffineHom π ∧ (∀ g, (ρ g).hom ≫ π = π) ∧ ∀ V : X'.Opens, Function.Injective (π.app V).hom ∧ ∀ f : Γ(X, π ⁻¹ᵁ V), (∀ g (h : π ⁻¹ᵁ V ≤ (ρ g).hom ⁻¹ᵁ (π ⁻¹ᵁ V)), ((ρ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (π.app V).hom) → (IsAffineHom φ ∧ (∀ g, (τ g).hom ≫ φ = φ) ∧ ∀ V : Y'.Opens, Function.Injective (φ.app V).hom ∧ ∀ f : Γ(Y, φ ⁻¹ᵁ V), (∀ g (h : φ ⁻¹ᵁ V ≤ (τ g).hom ⁻¹ᵁ (φ ⁻¹ᵁ V)), ((τ g).hom.appLE _ _ h).hom f = f) → f ∈ Set.range (φ.app V).hom) → φ ≫ p' = p ≫ π → (∀ g, (τ g).hom ≫ p = p ≫ (ρ g).hom) → IsFinite π → Flat p → LocallyOfFiniteType p → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X), (Nat.card {g // x ≫ (ρ g).hom = x} : k) ≠ 0) → (∀ (k : Type) [Field k] [IsAlgClosed k] (x : Sp k ⟶ X) g, x ≫ (ρ g).hom = x → pullback.fst p x ≫ (τ g).hom = pullback.fst p x) → IsPullback φ p p' π ∧ Flat p' ∧ LocallyOfFiniteType p' := by

@@ -12,7 +12,7 @@ section AdmAux
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `show P.u (x.1 fun i => P.φ (g i)) = P.u (x.1 g)`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem pair_hom_f_coe_of_id {M M' : TRep R G} (P : Pair M M') (h : P.φ = MonoidHom.id G) (n : ℕ)
     (x : M.coch.X n) : (P.hom.f n x).1 = fun g => P.u (x.1 g) := by
@@ -30,24 +30,22 @@ Both sides reduce to the same expression.
     (mkC M n f hf).1 = f := rfl
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 private theorem coch_cont {M : TRep R G} {n : ℕ} (x : M.coch.X n) : Continuous x.1 := x.2
 
 end AdmAux
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ A B C i p h`. Use `⟨fun n x y hxy => ?_, fun n => ?_, fun n => ?_⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun g => h.emb.injective ?_)` and prove the remaining obligations. Establish `hg` using `congrArg (fun z => z.1 g) hxy`. Simplify using `only [pair_hom_f_coe_of_id i h.i_id] at hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hg`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy' : ∀ g, p.u (y.1 g) = 0` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `congrArg (fun z => z.1 g) hy`. Simplify using `only [pair_hom_f_coe_of_id p h.p_id] at hg`. Conclude with `hg`. Establish `hex : ∀ g, ∃ a, i.u a = y.1 g` using `fun g => (h.exact (y.1 g)).1 (hy' g)`. Use `choose x hx using hex`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxc : Continuous x`. Rewrite using `[h.emb.continuous_iff]`. Establish `hfx : (i.u ∘ x) = y.1` using `funext hx`. Rewrite using `[hfx]`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨⟨x, hxc⟩, Subtype.ext ((pair_hom_f_coe_of_id i h.i_id n _).trans (funext hx))⟩`. Introduce and unpack `⟨x, rfl⟩`. Use `Subtype.ext ((pair_hom_f_coe_of_id p h.p_id n _).trans ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[pair_hom_f_coe_of_id i h.i_id]`.
-
-Conclude with `(h.exact (i.u (x.1 g))).2 ⟨x.1 g, rfl⟩`. Introduce `c`. Take `⟨s, hs, hps⟩` from `h.sec`. Conclude with `⟨⟨s ∘ c.1, hs.comp c.2⟩, Subtype.ext ((pair_hom_f_coe_of_id p h.p_id n _).trans (funext fun g => hps _))⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem admissibility_holds : AdmStatement.{u} := by
   intro R _ G _ _ _ A B C i p h
@@ -82,17 +80,15 @@ theorem admissibility_holds : AdmStatement.{u} := by
       Subtype.ext ((pair_hom_f_coe_of_id p h.p_id n _).trans (funext fun g => hps _))⟩
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ A _ τ L π hτ hemb hlift`. Establish `cτ : ∀ m n (x : (A (m + 1)).coch.X n), ((τ m).hom.f n x).1 = fun g => (τ m).u (x.1 g)` using `fun m n x => pair_hom_f_coe_of_id (τ m) (hτ m).1 n x`. Establish `cπ : ∀ m n (x : L.coch.X n), ((π m).hom.f n x).1 = fun g => (π m).u (x.1 g)` using `fun m n x => pair_hom_f_coe_of_id (π m) (hτ m).2.1 n x`. Use `⟨fun m n c => ?_, fun m n x => ?_, fun n x hx => ?_, fun n y hy => ?_⟩` and prove the remaining obligations. Use `choose s hs using (hτ m).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨⟨s ∘ c.1, (continuous_of_discreteTopology (f := s)).comp c.2⟩, Subtype.ext ((cτ m n _).trans (funext fun g => hs _))⟩`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[cτ, cπ, cπ]`. Use function extensionality and compare the values at `g`. Conclude with `(hτ m).2.2.2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Apply `hemb.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `hg` using `congrArg (fun z => z.1 g) (hx m)`. Simplify using `only [cπ] at hg`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hg.trans ?_` and prove the remaining obligations. Use `show (0 : (A m).V) = (π m).u 0`. Rewrite using `[map_zero]`. Establish `hy' : ∀ g m, (τ m).u ((y (m + 1)).1 g) = (y m).1 g` using `fun g m => by`. Establish `hg` using `congrArg (fun z => z.1 g) (hy m)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cτ] at hg`. Conclude with `hg`. Use `choose x hx using fun g => hlift (fun m => (y m).1 g) (hy' g)`. Establish `hxc : Continuous x`. Rewrite using `[hemb.continuous_iff]`.
-
-Establish `hfx : ((fun (x : L.V) m => (π m).u x) ∘ x) = fun g m => (y m).1 g`. Use function extensionality and compare the values at `fun g => funext (hx g)`. Rewrite using `[hfx]`. Conclude with `continuous_pi fun m => by exact (y m).2`. Conclude with `⟨⟨x, hxc⟩, fun m => Subtype.ext ((cπ m n _).trans (funext fun g => hx g m))⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem limRep_holds : LimRepStatement.{u} := by
   intro R _ G _ _ _ A _ τ L π hτ hemb hlift
@@ -134,7 +130,7 @@ section ColimAux
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `choose a ha using hcov`. Take `⟨z, hz⟩` from `(directed_id : Directed (· ≤ ·) (id : ι → ι)).finset_le (insert a0 (hS.toFinset.image a))`. Use `⟨z, hz a0 (Finset.mem_insert_self _ _), fun x hx => ?_⟩` and prove the remaining obligations. Conclude with `hJ _ _ (hz (a x) (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (hS.mem_toFinset.2 hx)))) (ha x)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_upper_range {ι V : Type u} [Preorder ι] [IsDirected ι (· ≤ ·)] [Nonempty ι]
     (J : ι → Set V) (hJ : ∀ a b, a ≤ b → J a ⊆ J b) (hcov : ∀ x, ∃ a, x ∈ J a) (S : Set V)
@@ -147,9 +143,9 @@ private theorem exists_upper_range {ι V : Type u} [Preorder ι] [IsDirected ι 
   exact hJ _ _ (hz (a x) (Finset.mem_insert_of_mem (Finset.mem_image_of_mem _ (hS.mem_toFinset.2 hx)))) (ha x)
 
 /- English proof (translation)
-Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Establish `hg : (P.hom.f n x).1 g = (P.hom.f n y).1 g` using `by rw [hxy]`. Rewrite `hg` using `[pair_hom_f_coe_of_id P h, pair_hom_f_coe_of_id P h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hu hg`.
+A detailed English derivation is pending.
 -/
 private theorem pair_hom_f_inj_of_id {M M' : TRep R G} (P : Pair M M') (h : P.φ = MonoidHom.id G)
     (hu : Function.Injective P.u) (n : ℕ) : Function.Injective (P.hom.f n) := by
@@ -161,9 +157,9 @@ private theorem pair_hom_f_inj_of_id {M M' : TRep R G} (P : Pair M M') (h : P.φ
   exact hu hg
 
 /- English proof (translation)
-Set `s : M'.V → M.V` to `fun y => if hy : y ∈ Set.range P.u then hy.choose else 0`. Establish `hs : ∀ y ∈ Set.range P.u, P.u (s y) = y` using `fun y hy => by`. Simplify using `only [s, dif_pos hy]`. Conclude with `hy.choose_spec`. Set `c' : M.coch.X n` to `⟨s ∘ c.1, (continuous_of_discreteTopology (f := s)).comp c.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c', ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `(pair_hom_f_coe_of_id P h n c').trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Conclude with `hs _ (hc ⟨g, rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem pair_hom_lift_of_id {M M' : TRep R G} [DiscreteTopology M'.V] (P : Pair M M')
     (h : P.φ = MonoidHom.id G) (n : ℕ) (c : M'.coch.X n) (hc : Set.range c.1 ⊆ Set.range P.u) :
@@ -181,7 +177,7 @@ private theorem pair_hom_lift_of_id {M M' : TRep R G} [DiscreteTopology M'.V] (P
   exact hs _ (hc ⟨g, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `(isCompact_range (coch_cont c)).finite_of_discrete`.
+A detailed English derivation is pending.
 -/
 private theorem coch_range_finite [CompactSpace G] {M : TRep R G} [DiscreteTopology M.V] {n : ℕ}
     (c : M.coch.X n) : (Set.range c.1).Finite :=
@@ -190,27 +186,25 @@ private theorem coch_range_finite [CompactSpace G] {M : TRep R G} [DiscreteTopol
 end ColimAux
 
 /- English proof (translation)
-Introduce `R _ G _ _ _ _ ι _ _ _ A L _ _ j t hj ht hcov n`. Establish `hJ : ∀ a b, a ≤ b → Set.range (j a).u ⊆ Set.range (j b).u`. Introduce and unpack `a b hab _ ⟨x, rfl⟩`. Conclude with `⟨(t a b hab).u x, (ht a b hab).2 x⟩`. Establish `hJc : ∀ x, ∃ a, x ∈ Set.range (j a).u` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨a, y, hy⟩` from `hcov x`. Conclude with `⟨a, y, hy⟩`. Establish `lift : ∀ m (c : L.coch.X m) (a0 : ι), ∃ b, a0 ≤ b ∧ ∃ c' : (A b).coch.X m, (j b).hom.f m c' = c`. Introduce `m c a0`. Take `⟨b, hab, hsub⟩` from `exists_upper_range (fun a => Set.range (j a).u) hJ hJc _ (coch_range_finite c) a0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, hab, pair_hom_lift_of_id (j b) (hj b).1 m c hsub⟩`. Establish `cj : ∀ a m (x : (A a).coch.X m), ((j a).hom.f m x).1 = fun g => (j a).u (x.1 g)` using `fun a m x => pair_hom_f_coe_of_id (j a) (hj a).1 m x`. Establish `jt : ∀ a b (h : a ≤ b) m (x : (A a).coch.X m), (j b).hom.f m ((t a b h).hom.f m x) = (j a).hom.f m x`. Introduce `a b h m x`. Apply `Subtype.ext` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[cj, cj, pair_hom_f_coe_of_id (t a b h) (ht a b h).1]`. Use function extensionality and compare the values at `g`. Conclude with `(ht a b h).2 _`. Establish `jinj : ∀ a m, Function.Injective ((j a).hom.f m)` using `fun a m => pair_hom_f_inj_of_id (j a) (hj a).1 (hj a).2 m`. Use `⟨fun x => ?_, fun a y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Take `⟨b, -, c', hc'⟩` from `lift n z.1 (Classical.arbitrary ι)`. Establish `hcz : c' ∈ (A b).coch.Z n` using `by show (A b).coch.d n c' = 0`. Apply `jinj b (n + 1)` to reduce the goal to its premises. Rewrite using `[(j b).hom.comm, hc', map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `z.2`. Use `⟨b, Submodule.Quotient.mk ⟨c', hcz⟩, ?_⟩` and prove the remaining obligations. Unfold `Cx.Hom.H`. Rewrite using `[Submodule.mapQ_apply]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Conclude with `Subtype.ext hc'`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Unfold `Cx.Hom.H at hy`. Rewrite `hy` using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Consider the cases of `n with`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Consider the case `zero`. Establish `hz : z = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `jinj a 0` to reduce the goal to its premises. Use `show (j a).hom.f 0 z.1 = (j a).hom.f 0 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[map_zero]`. Conclude with `hy`. Use `⟨a, le_refl a, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, Submodule.Quotient.mk_zero, map_zero]`. Consider the case `succ m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `hy`. Take `⟨b, hab, w', hw'⟩` from `lift m w a`. Use `⟨b, hab, ?_⟩` and prove the remaining obligations. Unfold `Cx.Hom.H`. Rewrite using `[Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`.
-
-Use `⟨w', ?_⟩` and prove the remaining obligations. Apply `jinj b (m + 1)` to reduce the goal to its premises. Use `show (j b).hom.f (m + 1) ((A b).coch.d m w') = (j b).hom.f (m + 1) ((t a b hab).hom.f (m + 1) z.1)`. Rewrite using `[(j b).hom.comm, hw', jt]`. Conclude with `hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colim_holds : ColimStatement.{u} := by
   intro R _ G _ _ _ _ ι _ _ _ A L _ _ j t hj ht hcov n

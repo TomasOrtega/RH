@@ -12,15 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Introduce `R _ A B K W J _ a b n ha hb hn D _ _ x`. Introduce `E _ _ E' _ _ E'' _ _ φ ψ z hz`. Establish `hz' : Sm W (z ≫ x ▷ B)`. Take `⟨k, hk⟩` from `hz`. Use `⟨k, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `hk` using `[parCov, Over.comp_left, Scheme.Hom.comp_preimage]`. Establish `h1` using `hn E E' E'' φ ψ (z ≫ x ▷ B) hz'`. Establish `hfst : (z ≫ x ▷ B) ≫ fst _ _ = spOver (ptAlg (z ≫ fst _ _)) ≫ x`. Rewrite using `[Category.assoc, whiskerRight_fst, ← Category.assoc, spOver_ptAlg]`. Establish `hsnd : (z ≫ x ▷ B) ≫ snd _ _ = z ≫ snd _ _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, whiskerRight_snd]`. Establish `hα : ptAlg ((spOver φ ≫ z) ≫ fst _ _) = φ.comp (ptAlg (z ≫ fst _ _))`. Rewrite using `[Category.assoc, ptAlg_comp]`. Establish `ha'` using `fun i ↦ ha i D E E' (ptAlg (z ≫ fst _ _)) φ x (sm_whole _)`. Establish `hb'` using `fun i ↦ hb i E E' E'' φ ψ (z ≫ snd _ _) (sm_whole _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hfst]`. Simplify using `only [Category.assoc, whiskerRight_snd] at h1`. Simplify using `only [parCoc]`. Rewrite using `[hα]`. Simplify using `only [ha', hb', Category.assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_sum, map_mul, map_add, AlgHom.comp_apply, add_mul, mul_add, Finset.sum_add_distrib]`. Take the linear combination `-h1`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem parCoc_isCoc : ∀ (R : Type) [CommRing R] (A B : Over (Sp R)) (K : Type) (W : K → (A ⊗ B).left.Opens) (J : Type) [Fintype J] (a : J → Fn1 A) (b : J → Fn1 B) (n : Fn1 (A ⊗ B)), (∀ i, IsCoc (whole A) (a i)) → (∀ i, IsCoc (whole B) (b i)) → IsCupCob W a b n → ∀ (D : Type) [CommRing D] [Algebra R D] (x : Pt A D), IsCoc (parCov W x) (parCoc a b n x) := by
   intro R _ A B K W J _ a b n ha hb hn D _ _ x

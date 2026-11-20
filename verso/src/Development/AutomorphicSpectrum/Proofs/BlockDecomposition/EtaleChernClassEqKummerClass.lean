@@ -14,9 +14,9 @@ section Cochains
 variable {R : Type} [CommRing R] {C : Type 1} [Category.{0} C] (F : C ⥤ ModuleCat.{w} R)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin 2, (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (f (face i s)) = _`. Rewrite using `[Fin.sum_univ_two]`. Establish `e0 : toLast (0 : Fin 2) s = 𝟙 _` using `s.map_id _`. Establish `e1 : toLast (1 : Fin 2) s = s.map' 0 1` using `rfl`. Rewrite using `[e0, e1, F.map_id]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sub_eq_add_neg]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d_zero_apply (f : Cn F 0) (s : ComposableArrows C 1) :
     d F 0 f s = (show F.obj (s.obj (Fin.last 1)) from f (face 0 s)) - (show F.obj (s.obj (Fin.last 1)) from (F.map (s.map' 0 1)).hom (f (face 1 s))) := by
@@ -29,9 +29,9 @@ theorem d_zero_apply (f : Cn F 0) (s : ComposableArrows C 1) :
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (f (face i s)) = _`. Rewrite using `[Fin.sum_univ_three]`. Establish `e0 : toLast (0 : Fin 3) s = 𝟙 _` using `s.map_id _`. Establish `e1 : toLast (1 : Fin 3) s = 𝟙 _` using `s.map_id _`. Establish `e2 : toLast (2 : Fin 3) s = s.map' 1 2` using `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0, e1, e2, F.map_id]`. Simplify using `[sub_eq_add_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d_one_apply (f : Cn F 1) (s : ComposableArrows C 2) :
     d F 1 f s = (show F.obj (s.obj (Fin.last 2)) from f (face 0 s)) - (show F.obj (s.obj (Fin.last 2)) from f (face 1 s)) +
@@ -48,7 +48,7 @@ theorem d_one_apply (f : Cn F 1) (s : ComposableArrows C 2) :
 end Cochains
 
 /- English proof (translation)
-Establish `e : tce = kv + kw - kvw + tbe - tbc` using `by rw [← h₁]; abel`. Rewrite using `[e, h₂]`. Simplify using `only [pow_one, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem close_sum {M : Type*} [AddCommGroup M] (tce tbe tbc kv kw ku kvw i : M)
     (h₁ : tce - tbe + tbc = kv + kw - kvw) (h₂ : kvw = ku + i) :
@@ -59,7 +59,7 @@ theorem close_sum {M : Type*} [AddCommGroup M] (tce tbe tbc kv kw ku kvw i : M)
   abel
 
 /- English proof (translation)
-Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem u_congr {X : Scheme.{0}} (D : LineData X) {V : Scheme.{0}} {a a' b b' : V ⟶ D.Y}
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) (ha : a = a') (hb : b = b') :
@@ -67,31 +67,29 @@ theorem u_congr {X : Scheme.{0}} (D : LineData X) {V : Scheme.{0}} {a a' b b' : 
   subst ha hb; rfl
 
 /- English proof (translation)
-Introduce `hES hRG hSC hCP hKP hGen hKum hC1 q _ C _ P X Y D L hL hInv x hx z Λ`. Take `⟨a, η, θ, hRep, hηn, hθn, hdη, hdiff, hcoc⟩` from `hCP hC1 q X D L hL hInv x hx`. Establish `hθc : ∀ (V : Scheme.{0}) (b b' c : V ⟶ D.Y) (h : b ≫ D.f = c ≫ D.f) (h' : b' ≫ D.f = c ≫ D.f), b = b' → θ V b c h = θ V b' c h'`. Introduce `V b b' c h h' e`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Both sides reduce to the same expression. Establish `hG : (P.res 1).Good` using `hRG hGen q C P 1`. Take `⟨hιd, hdd, hinj, -, -⟩` from `hSC ℤ C P.L (P.res 1) hG`. Establish `hpp : ∀ {c c' : C} (φ : c ⟶ c'), ((P.S.map φ).unop ≫ Λ.p c) ≫ D.f = Λ.p c' ≫ D.f`. Introduce `c c' φ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, Λ.hp, Λ.hp, Y.nat]`. Set `A₀ : ∀ {c c' : C} (φ : c ⟶ c'), Sec ((res _ (tw q 1)).X 0) (P.U c')` to `fun {c c'} φ => θ _ ((P.S.map φ).unop ≫ Λ.p c) (Λ.p c') (hpp φ) - kumT q _ (Λ.r φ)`. Set `a₁ : Cn ((P.res 1).K 1) 0` to `fun s => η _ (Λ.p (s.obj 0))`. Set `a₀ : Cn ((P.res 1).K 0) 1` to `fun s => A₀ (s.map' 0 1)`. Establish `h1 : (P.res 1).dvC 1 0 a₁ = Y.glob 1 2 a`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Use `(hdη _ (Λ.p (s.obj 0))).trans ?_` and prove the remaining obligations. Rewrite using `[Λ.hp]`. Both sides reduce to the same expression. Establish `h2 : (-1 : ℤ) ^ 0 • d ((P.res 1).K 1) 0 a₁ = (P.res 1).dvC 0 1 a₀`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Rewrite using `[pow_zero, one_smul, d_zero_apply]`. Establish `e` using `hdiff _ ((P.S.map (s.map' 0 1)).unop ≫ Λ.p (s.obj 0)) (Λ.p (s.obj 1)) (hpp (s.map' 0 1)) _ (Λ.hr _)`. Rewrite `e` using `[← hηn]`. Conclude with `e`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (-1 : ℤ) ^ 1 • d ((P.res 1).K 0) 1 a₀ = (P.res 1).ιC 2 z`. Use function extensionality and compare the values at `s`. Rewrite using `[Pi.smul_apply, d_one_apply]`. Set `g` to `(P.S.map (s.map' 1 2)).unop`. Establish `hg : g ≫ (P.S.map (s.map' 0 1)).unop = (P.S.map (s.map' 0 2)).unop`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : s.map' 0 2 = s.map' 0 1 ≫ s.map' 1 2` using `s.map_comp _ _`. Rewrite using `[e, P.S.map_comp, unop_comp]`. Establish `hb : g ≫ (P.S.map (s.map' 0 1)).unop ≫ Λ.p (s.obj 0) = (P.S.map (s.map' 0 2)).unop ≫ Λ.p (s.obj 0)`. Rewrite using `[← Category.assoc, hg]`. Establish `hbc' : (g ≫ (P.S.map (s.map' 0 1)).unop ≫ Λ.p (s.obj 0)) ≫ D.f = (g ≫ Λ.p (s.obj 1)) ≫ D.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ((P.S.map (s.map' 0 1)).unop ≫ Λ.p (s.obj 0)) ≫ D.f = Λ.p (s.obj 1) ≫ D.f` using `hpp (s.map' 0 1)`. Rewrite using `[Category.assoc g, e, Category.assoc]`. Establish `hbc : ((P.S.map (s.map' 0 2)).unop ≫ Λ.p (s.obj 0)) ≫ D.f = (g ≫ Λ.p (s.obj 1)) ≫ D.f`. Rewrite using `[← hb]`. Conclude with `hbc'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `v` to `Units.map g.appTop.hom.toMonoidHom (Λ.r (s.map' 0 1))`. Set `w` to `Λ.r (s.map' 1 2)`. Set `u` to `Λ.r (s.map' 0 2)`. Establish `hv : v ^ q = D.u _ _ hbc`. Express the relevant statement in the definitionally equal form `Units.map g.appTop.hom.toMonoidHom (Λ.r (s.map' 0 1)) ^ q = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Λ.hr, ← D.nat]`. Conclude with `u_congr D _ _ hb rfl`. Establish `hw : w ^ q = D.u (g ≫ Λ.p (s.obj 1)) (Λ.p (s.obj 2)) (hpp (s.map' 1 2))` using `Λ.hr _`. Establish `hc` using `hcoc _ _ _ _ hbc (hpp (s.map' 1 2)) v w hv hw`. Establish `hk` using `hKP hKum q _ (P.ζ (s.obj (Fin.last 2))) (z s) (v * w * u⁻¹) u (Λ.hz s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hk` using `[inv_mul_cancel_right]`. Establish `hn : ((((P.res 1).K 0).map (s.map' 1 2)).hom (a₀ (face 2 s))) = θ _ ((P.S.map (s.map' 0 2)).unop ≫ Λ.p (s.obj 0)) (g ≫ Λ.p (s.obj 1)) hbc - kumT q _ v`. Establish `t₁ : Sec.res g (θ _ ((P.S.map (s.map' 0 1)).unop ≫ Λ.p (s.obj 0)) (Λ.p (s.obj 1)) (hpp (s.map' 0 1))) = θ _ ((P.S.map (s.map' 0 2)).unop ≫ Λ.p (s.obj 0)) (g ≫ Λ.p (s.obj 1)) hbc` using `(hθn _ _ g _ _ _ hbc').trans (hθc _ _ _ _ _ _ hb)`. Establish `t₂ : Sec.res g (kumT q _ (Λ.r (s.map' 0 1))) = kumT q _ v` using `(hKum q).1 _ _ g _ (P.ζ _).2.1`. Conclude with `(map_sub _ _ _).trans (congrArg₂ (· - ·) t₁ t₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hn]`. Conclude with `close_sum _ _ _ _ _ _ _ _ hc hk`. Establish `hSt : (P.res 1).St z 2 0 (Y.glob 1 2 a)` using `⟨a₁, h1, a₀, h2.symm, rfl, h3.symm⟩`. Establish `hz : d P.L 2 z = 0`. Apply `hinj 3` to reduce the goal to its premises.
-
-Rewrite using `[map_zero, ← hιd, ← h3, map_smul, d_d, smul_zero]`. Conclude with `⟨hz, ((hES hGen q C P X Y 1 2 x).2 _ ⟨a, hRep, z, hz, hSt, rfl⟩).symm⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_chern_class_eq_kummer_class : CrystallineSemistableComparison.E.EtSpec → CrystallineSemistableComparison.E.ResGood → CrystallineSemistableComparison.E.StCol → CrystallineSemistableComparison.E.FirstChernCoboundary → CrystallineSemistableComparison.E.KumPow →
     CrystallineSemistableComparison.E.EtaleFirstChernKummer := by

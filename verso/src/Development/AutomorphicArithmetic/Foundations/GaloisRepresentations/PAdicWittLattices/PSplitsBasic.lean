@@ -6,9 +6,9 @@ open CategoryTheory Limits AlgebraicGeometry GlobalTheory.GalV
 namespace UpperTheory.Gal.G3
 
 /- English proof (translation)
-Establish `h0` using `h`. Take `⟨hc, -⟩` from `h`. Use `hS s (g ≫ c) J (fun j => g ≫ σ j) (fun j => by simp [hc j]) ?_` and prove the remaining obligations. Introduce `Ω _ _ x y hy`. Establish `hy' : y ≫ s = (x ≫ g) ≫ c` using `by simpa using hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨j, hj, huniq⟩` from `hP s c J σ h0 Ω (x ≫ g) y hy'`. Conclude with `⟨j, by simpa using hj, fun i hi => huniq i (by simpa using hi)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem splits_restrict (hS : SplitsPts) (hP : PtsOfSplits) {Z Y W W' : Scheme.{0}} (s : Y ⟶ Z) [IsFinite s] [Etale s]
     (c : W ⟶ Z) (J : Type) [Finite J] (σ : J → (W ⟶ Y)) (g : W' ⟶ W) (h : Splits s c σ) :
@@ -22,11 +22,11 @@ private theorem splits_restrict (hS : SplitsPts) (hP : PtsOfSplits) {Z Y W W' : 
   exact ⟨j, by simpa using hj, fun i hi => huniq i (by simpa using hi)⟩
 
 /- English proof (translation)
-Use `hS s (c ≫ g) J (fun j => σ j ≫ v) (fun j => by rw [Category.assoc, sq.w, ← Category.assoc, hσ j]) ?_` and prove the remaining obligations. Introduce `Ω _ _ x y hy`. Establish `hw : y ≫ s = (x ≫ c) ≫ g` using `by simpa using hy`. Take `⟨j, hj, huniq⟩` from `hP s' c J σ h Ω x (sq.lift y (x ≫ c) hw) (by simp)`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[← Category.assoc, hj, sq.lift_fst]`. Introduce `i hi`. Apply `huniq` to reduce the goal to its premises. Apply `sq.hom_ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `using hi`. Simplify using `[hσ i]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 private theorem splits_down (hS : SplitsPts) (hP : PtsOfSplits) {P Y Z' Z W : Scheme.{0}} {v : P ⟶ Y} {s' : P ⟶ Z'} {s : Y ⟶ Z}
     {g : Z' ⟶ Z} [IsFinite s] [Etale s] (sq : IsPullback v s' s g) (c : W ⟶ Z') (J : Type) [Finite J] (σ : J → (W ⟶ P))
@@ -46,11 +46,11 @@ private theorem splits_down (hS : SplitsPts) (hP : PtsOfSplits) {P Y Z' Z W : Sc
     · simp [hσ i]
 
 /- English proof (translation)
-Establish `: IsFinite s'` using `MorphismProperty.of_isPullback (P := @IsFinite) sq ‹_›`. Establish `: Etale s'` using `MorphismProperty.of_isPullback (P := @Etale) sq ‹_›`. Use `hS s' c J σ hσ ?_` and prove the remaining obligations. Introduce `Ω _ _ x y hy`. Establish `hw : (y ≫ v) ≫ s = x ≫ c ≫ g`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, sq.w, ← Category.assoc, hy, Category.assoc]`. Take `⟨j, hj, huniq⟩` from `hP s (c ≫ g) J (fun j => σ j ≫ v) h Ω x (y ≫ v) hw`. Use `⟨j, ?_, ?_⟩` and prove the remaining obligations. Apply `sq.hom_ext` to reduce the goal to its premises. Simplify using `using hj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[hσ j, hy]`. Introduce `i hi`. Apply `huniq` to reduce the goal to its premises. Rewrite using `[← Category.assoc, hi]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem splits_up (hS : SplitsPts) (hP : PtsOfSplits) {P Y Z' Z W : Scheme.{0}} {v : P ⟶ Y} {s' : P ⟶ Z'} {s : Y ⟶ Z}
     {g : Z' ⟶ Z} [IsFinite s] [Etale s] (sq : IsPullback v s' s g) (c : W ⟶ Z') (J : Type) [Finite J] (σ : J → (W ⟶ P))
@@ -71,7 +71,7 @@ private theorem splits_up (hS : SplitsPts) (hP : PtsOfSplits) {P Y Z' Z W : Sche
     rw [← Category.assoc, hi]
 
 /- English proof (translation)
-Introduce `hS hP` and use `⟨fun s _ _ c J _ σ g h => splits_restrict hS hP s c J σ g h, fun _ _ _ _ _ _ sq c J _ σ hσ => ⟨splits_down hS hP sq c J σ hσ, splits_up hS hP sq c J σ hσ⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pSplitsBasic : SplitsPts → PtsOfSplits → SplitsBasic := fun hS hP =>
   ⟨fun s _ _ c J _ σ g h => splits_restrict hS hP s c J σ g h,

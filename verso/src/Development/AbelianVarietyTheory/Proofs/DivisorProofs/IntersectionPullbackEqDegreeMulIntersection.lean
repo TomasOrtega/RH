@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B f hd J _ hJ c`. Distinguish the cases in `hi : IsIsogeny f`. Conclude with `GlobalTheory.T.intersection_pullback_isogeny_eq_degree_mul K A B f hi J hJ c`. Establish `hs : ¬ Surjective f.hom.left`. Introduce `hs`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hi ⟨GlobalTheory.AV.AbVar.isFinite_of_surjective_of_dim_eq K A B f hd hs, hs⟩`. Rewrite using `[GlobalTheory.T.intersection_number_pullback_not_surjective_eq_zero K A B f hd hs J hJ c, deg, if_neg hi]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inter_pull_eq_deg_mul_inter : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), A.dim = B.dim →
     ∀ (J : Type) [Fintype J], Fintype.card J = A.dim → ∀ c : J → Pic B.X.left,

@@ -36,9 +36,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle (Rig stdFst stdSnd
 open scoped ComplexOrder
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `h`. Rewrite `h3` using `[Matrix.one_mul]`. Establish `hu : IsUnit (s + 1)` using `(h3.add Matrix.PosDef.one).isUnit`. Establish `e : (s + 1) * (s - 1) = 0`. Rewrite using `[Matrix.mul_sub, Matrix.add_mul, h1, Matrix.one_mul, Matrix.mul_one, add_comm, sub_self]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (hu.mul_right_eq_zero.1 e)`.
+A detailed English derivation is pending.
 -/
 theorem cartan_eq_one {k : ℕ} {s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv 1 s) : s = 1 := by
   obtain ⟨h1, -, h3⟩ := h
@@ -51,18 +51,18 @@ theorem cartan_eq_one {k : ℕ} {s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanIn
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `funext fun τ => by have e : gramAt D V τ = 1 := by rw [gramAt, hV]; simp exact cartan_eq_one (e ▸ (h.2.2 τ).1)`.
+A detailed English derivation is pending.
 -/
 theorem rigging_cartan_eq_one_of_gram_one {V : HSp D} (hV : V.gram = 1) {r : Rig V} (h : r.Is) : r.s = fun _ => 1 := funext fun τ => by
   have e : gramAt D V τ = 1 := by rw [gramAt, hV]; simp
   exact cartan_eq_one (e ▸ (h.2.2 τ).1)
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4, h5, -, h7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Take `⟨a1, a2⟩` from `hμ`. Take `⟨b1, b2⟩` from `hν`. Establish `e` using `Measure.isMulLeftInvariant_eq_smul μ ν`. Establish `hc` using `Measure.haarScalarFactor_pos_of_isHaarMeasure μ ν`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `μ.haarScalarFactor ν = c at e hc`. Establish `b3 : IsFundamentalDomain (GQ V) 𝓖 μ` using `b2.mono (e ▸ Measure.smul_absolutelyContinuous)`. Use `⟨(c : ℝ), by exact_mod_cast hc.ne', fun F hF => ⟨fun hi => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[a2.integrableOn_iff b3 fun γ y => hF γ.1 γ.2 y, e, IntegrableOn, Measure.restrict_smul]`. Conclude with `hi.smul_measure_nnreal`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[a2.setIntegral_eq b3 fun γ y => hF γ.1 γ.2 y, e, Measure.restrict_smul, integral_smul_nnreal_measure]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_haar_factor (V : HSp D) {μ ν : Measure (GA D V)} {𝓕 𝓖 : Set (GA D V)}
     (hμ : μ.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓕 μ) (hν : ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ V) 𝓖 ν) :
@@ -82,9 +82,9 @@ theorem exists_haar_factor (V : HSp D) {μ ν : Measure (GA D V)} {𝓕 𝓖 : S
     rfl
 
 /- English proof (translation)
-Establish `k : ∀ V : HSp D, V.gram = 1 → HSpace.SigOK ({ V with sig` using `fun _ => (V.rank, 0) } : HSp D) := fun V hV φ => by`. Use `GlobalTheory.Proof.GenusMassSignature.hasSignature_of_posDef (J := V.gram.map φ) ?_` and prove the remaining obligations. Rewrite using `[hV, Matrix.map_one φ (map_zero φ) (map_one φ)]`. Conclude with `Matrix.PosDef.one`. Set `S₁ : HSp D` to `{ S with sig := fun _ => (S.rank, 0) }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T₁ : HSp D` to `{ T with sig := fun _ => (T.rank, 0) }`. Establish `conv : ∀ g, IsVacO ψ θ (sgn ε S) T sS sT ΛS ΛT g → IsVacO ψ θ (sgn ε S₁) T₁ sS sT ΛS ΛT g` using `fun g hg => ⟨hg.1, ⟨hg.2.inf, ⟨hg.2.theta.quasi, hg.2.theta.level, hg.2.theta.cont, hg.2.theta.smooth⟩, hg.2.lat, hg.2.fock, hg.2.norm⟩⟩`. Conclude with `GlobalTheory.VacUnique.vacUniqueO D ψ θ h.1 h.2.inf (sgn ε S₁) T₁ sS sT (GlobalTheory.Grid.sigOK_sgn ε (k S hS)) (k T hT) cS cT ΛS ΛT dS dT f f' (conv f h) (conv f' h')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vac_unique (ε : Bool) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} (hS : S.gram = 1) (hT : T.gram = 1)
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -106,9 +106,7 @@ theorem vac_unique (ε : Bool) {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} 
     dS dT f f' (conv f h) (conv f' h')
 
 /- English proof (translation)
-Take `⟨⟨Tm, hT⟩, hall⟩` from `h`. Rewrite using `[hall Tm hT]`. Conclude with `h'.2 (a • Tm) { trans := fun Φ hΦ x hx => by`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hT.trans Φ hΦ x hx, GlobalTheory.SeeSaw.Resc.heisO_smul]`. Use `modul := fun Φ hΦ y hy => by`.
-
-Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, hT.modul Φ hΦ y hy, GlobalTheory.SeeSaw.Resc.heisO_smul]`. Use `vac := by rw [LinearMap.smul_apply, hT.vac] }`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAt_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {e : AE D} {Λ : AddSubgroup (WO S T)} {c a : ℂ}
     {f₀ Φ f f' : WO S T → ℂ} (h : IsThetaAt ψ (symplO S T) (heisO ψ S T) e Λ c f₀ Φ f)
@@ -123,7 +121,7 @@ theorem thetaAt_smul {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {e : AE D} {
       vac := by rw [LinearMap.smul_apply, hT.vac] }
 
 /- English proof (translation)
-Take `⟨⟨es, hes, rfl⟩, -⟩` from `h`. Take `⟨⟨es', hes', rfl⟩, -⟩` from `h'`. Conclude with `Finset.sum_congr rfl fun PP hPP => (((GlobalTheory.IdemSupport.supported_group_and_prime_idempotents V).2.2.1 PP _ _ (Or.inl ⟨hes PP hPP, rfl⟩)).2.2.2.1 _ _ (Or.inl ⟨hes' PP hPP, rfl⟩)).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Formalism.L2.DIV.Pl D.host.E)} (h : IsIdemSum e P)
     (h' : IsIdemSum e' P) : e' = e := by
@@ -134,7 +132,7 @@ theorem idemSum_unique (V : HSp D) {e e' : AE D} {P : Finset (Formalism.L2.DIV.P
       (Or.inl ⟨hes' PP hPP, rfl⟩)).1
 
 /- English proof (translation)
-Establish `e : ((γ * g, h) : GA D S × GA D T) = (γ, 1) * (g, h)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hom.om_aut γ hγ 1 (one_mem _) _ (hom.om_pres _ _ hf)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaKO_left {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) {f : WO S T → ℂ}
@@ -149,7 +147,7 @@ variable {T : Type} {A A' WW : HSp D} {X Y : Tri T A A' WW} {ψ : AddChar (AF D.
   {α β : T → ((AE D)ˣ →* Circle)} {νH : T → HChar D.host.E} {S : T → Finset (Formalism.L2.DIV.Pl D.host.E)}
 
 /- English proof (translation)
-Use `⟨idemSum_unique A (hX.idem t) (hY.idem t), Finset.prod_congr rfl fun w hw => ?_⟩` and prove the remaining obligations. Establish `a` using `hX.expo t w hw`. Establish `b` using `hY.expo t w hw`. Rewrite using `[le_antisymm ((b _).1 ((a _).2 le_rfl)) ((a _).1 ((b _).2 le_rfl))]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_ideal_eq (hX : X.Is ψ θ α β νH S) (hY : Y.Is ψ θ α β νH S) (t : T) :
     Y.e t = X.e t ∧ Y.ideal S t = X.ideal S t := by
@@ -159,7 +157,7 @@ theorem e_ideal_eq (hX : X.Is ψ θ α β νH S) (hY : Y.Is ψ θ α β νH S) (
   rw [le_antisymm ((b _).1 ((a _).2 le_rfl)) ((a _).1 ((b _).2 le_rfl))]
 
 /- English proof (translation)
-Introduce `γ hγ g` and use `thetaKO_left (hX.weil t) (GlobalTheory.GalLift.Vec.theta_pureTensorO (S := neg A) hX.isVac.1 hX.isVac.2.inf _ _ _ _ (GlobalTheory.GalLift.Vec.theta_of_thetaAt hX.isVac.1 hX.isVac.2.inf (hX.fst t) hX.isVac.2.theta) P) (γ := (ofSgn true A).symm γ) ((GlobalTheory.SgnIdent.mem_GQ_sgn …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ker_left (hX : X.Is ψ θ α β νH S) (t : T) (P h) : ∀ γ ∈ GQ A, ∀ g, X.ker ψ θ t P h (γ * g) = X.ker ψ θ t P h g :=
   fun γ hγ g => thetaKO_left (hX.weil t) (GlobalTheory.GalLift.Vec.theta_pureTensorO (S := neg A) hX.isVac.1 hX.isVac.2.inf _ _ _ _
@@ -167,7 +165,7 @@ theorem ker_left (hX : X.Is ψ θ α β νH S) (t : T) (P h) : ∀ γ ∈ GQ A, 
     (γ := (ofSgn true A).symm γ) ((GlobalTheory.SgnIdent.mem_GQ_sgn true A _).2 hγ) ((ofSgn true A).symm g) h
 
 /- English proof (translation)
-Introduce `γ hγ g` and use `thetaKO_left (hX.weil' t) (GlobalTheory.GalLift.Vec.theta_pureTensorO hX.isVac.1 hX.isVac.2.inf _ _ _ _ (GlobalTheory.GalLift.Vec.theta_of_thetaAt hX.isVac.1 hX.isVac.2.inf (hX.snd t) hX.isVac'.2.theta) P) hγ g h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ker'_left (hX : X.Is ψ θ α β νH S) (t : T) (P h) : ∀ γ ∈ GQ A', ∀ g, X.ker' ψ θ t P h (γ * g) = X.ker' ψ θ t P h g :=
   fun γ hγ g => thetaKO_left (hX.weil' t) (GlobalTheory.GalLift.Vec.theta_pureTensorO hX.isVac.1 hX.isVac.2.inf _ _ _ _
@@ -176,15 +174,15 @@ theorem ker'_left (hX : X.Is ψ θ α β νH S) (t : T) (P h) : ∀ γ ∈ GQ A'
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hψ` using `hX.isVac.1`. Establish `hθ` using `hX.isVac.2.inf`. Establish `x1` using `rigging_cartan_eq_one_of_gram_one sA.1 hX.rigA`. Establish `x3` using `rigging_cartan_eq_one_of_gram_one sW.1 hX.rigW`. Establish `y1` using `rigging_cartan_eq_one_of_gram_one sA.1 hY.rigA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `y3` using `rigging_cartan_eq_one_of_gram_one sW.1 hY.rigW`. Establish `hv` using `hY.isVac`. Rewrite `hv` using `[l1, l3, y1, y3, ← x1, ← x3]`. Take `⟨a, ha, e⟩` from `vac_unique true sA.1 sW.1 (sS := fun τ => -X.rA.s τ) (fun τ => GlobalTheory.Grid.isCartanInv_sgn true A τ (hX.rigA.2.2 τ).1) (fun τ => (hX.rigW.2.2 τ).1) (GlobalTheory.ChiGrid.isSelfDualC_neg hX.rigA.1) hX.rigW.1 hX.isVac hv`. Use `⟨a, fun h0 => by simp [h0] at ha, fun P => ⟨GlobalTheory.CompactHowe.substF (fun τ => (Y.rW.B τ).map (starRingEnd ℂ)) (fun τ => (((Y.rA.B τ)⁻¹)ᵀ).map (starRingEnd ℂ)) P, fun t h g => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf` using `hY.fst t`. Rewrite `hf` using `[(e_ideal_eq hX hY t).1, (e_ideal_eq hX hY t).2, l1, l3, b1, b3, e]`. Establish `ef : Y.f t = a • X.f t` using `thetaAt_smul (S := neg A) (hX.fst t) hf`. Establish `tX` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hψ hθ (hX.fst t) hX.isVac.2.theta`. Establish `key` using `GlobalTheory.FockNegSubst.pureTensorO_negSp_subst D ψ θ A WW hψ hθ (fun _ => 1) Y.rA.B (fun _ => 1) Y.rW.B _ tX P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.one_mul] at key`. Establish `key' : pureTensorO ψ θ (neg A) WW (fun τ => -Y.rA.s τ) Y.rW.s Y.rA.B Y.rW.B (X.f t) P = pureTensorO ψ θ (neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B (X.f t) (GlobalTheory.CompactHowe.substF (fun τ => (Y.rW.B τ).map (starRingEnd ℂ)) (fun τ => (((Y.rA.B τ)⁻¹)ᵀ).map (starRin …`. Rewrite using `[x1, x3, y1, y3, show X.rA.B = fun _ => 1 from funext fun τ => (sA.2.2 τ).2, show X.rW.B = fun _ => 1 from funext fun τ => (sW.2.2 τ).2]`. Conclude with `key`. Unfold `Tri.ker thetaKO`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ef, GlobalTheory.SeeSaw.Resc.pureTensorO_smul ψ θ (neg A) WW, LinearMap.smul_apply, key', map_smul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Conclude with `congrFun (GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ (neg A) WW _ _ _ _ (hY.weil t) (hX.weil t) ((ofSgn true A).symm g, h) _ (GlobalTheory.GalLift.Vec.theta_pureTensorO (S := neg A) hψ hθ _ _ _ _ tX _)) 0`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ker_eq (hX : X.Is ψ θ α β νH S) (hY : Y.Is ψ θ α β νH S) (sA : X.rA.IsStd) (sW : X.rW.IsStd)
     (l1 : Y.rA.Λ = X.rA.Λ) (l3 : Y.rW.Λ = X.rW.Λ) (b1 : Y.rA.β = X.rA.β) (b3 : Y.rW.β = X.rW.β) :
@@ -224,15 +222,15 @@ theorem ker_eq (hX : X.Is ψ θ α β νH S) (hY : Y.Is ψ θ α β νH S) (sA :
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hψ` using `hX.isVac.1`. Establish `hθ` using `hX.isVac.2.inf`. Establish `x1` using `rigging_cartan_eq_one_of_gram_one sA.1 hX.rigA'`. Establish `x3` using `rigging_cartan_eq_one_of_gram_one sW.1 hX.rigW`. Establish `y1` using `rigging_cartan_eq_one_of_gram_one sA.1 hY.rigA'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `y3` using `rigging_cartan_eq_one_of_gram_one sW.1 hY.rigW`. Establish `hv` using `hY.isVac'`. Rewrite `hv` using `[l1, l3, y1, y3, ← x1, ← x3]`. Take `⟨a, ha, e⟩` from `vac_unique false sA.1 sW.1 (fun τ => (hX.rigA'.2.2 τ).1) (fun τ => (hX.rigW.2.2 τ).1) hX.rigA'.1 hX.rigW.1 hX.isVac' hv`. Use `⟨a, fun h0 => by simp [h0] at ha, fun P => ⟨GlobalTheory.CompactHowe.substF Y.rW.B (fun τ => ((Y.rA'.B τ)⁻¹)ᵀ) P, fun t h g => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf` using `hY.snd t`. Rewrite `hf` using `[(e_ideal_eq hX hY t).1, (e_ideal_eq hX hY t).2, l1, l3, b1, b3, e]`. Establish `ef : Y.f' t = a • X.f' t` using `thetaAt_smul (hX.snd t) hf`. Establish `tX` using `GlobalTheory.GalLift.Vec.theta_of_thetaAt hψ hθ (hX.snd t) hX.isVac'.2.theta`. Establish `key` using `GlobalTheory.FockBaseChange.pureTensorO_subst D ψ θ A' WW hψ hθ (fun _ => 1) Y.rA'.B (fun _ => 1) Y.rW.B _ tX P`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.one_mul] at key`. Establish `key' : pureTensorO ψ θ A' WW Y.rA'.s Y.rW.s Y.rA'.B Y.rW.B (X.f' t) P = pureTensorO ψ θ A' WW X.rA'.s X.rW.s X.rA'.B X.rW.B (X.f' t) (GlobalTheory.CompactHowe.substF Y.rW.B (fun τ => ((Y.rA'.B τ)⁻¹)ᵀ) P)`. Rewrite using `[x1, x3, y1, y3, show X.rA'.B = fun _ => 1 from funext fun τ => (sA.2.2 τ).2, show X.rW.B = fun _ => 1 from funext fun τ => (sW.2.2 τ).2]`. Conclude with `key`. Unfold `Tri.ker' thetaKO`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ef, GlobalTheory.SeeSaw.Resc.pureTensorO_smul ψ θ A' WW, LinearMap.smul_apply, key', map_smul, Pi.smul_apply, smul_eq_mul]`. Use `congr 1`. Conclude with `congrFun (GlobalTheory.WeilUniq.weilDatum_unique D ψ hψ A' WW _ _ _ _ (hY.weil' t) (hX.weil' t) (g, h) _ (GlobalTheory.GalLift.Vec.theta_pureTensorO hψ hθ _ _ _ _ tX _)) 0`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ker'_eq (hX : X.Is ψ θ α β νH S) (hY : Y.Is ψ θ α β νH S) (sA : X.rA'.IsStd) (sW : X.rW.IsStd)
     (l1 : Y.rA'.Λ = X.rA'.Λ) (l3 : Y.rW.Λ = X.rW.Λ) (b1 : Y.rA'.β = X.rA'.β) (b3 : Y.rW.β = X.rW.β) :
@@ -274,19 +272,19 @@ namespace GlobalTheory.SqTower
 open MeasureTheory GlobalTheory.SqTower.Normal
 
 /- English proof (translation)
-Introduce `D T Lc sc G W i j A A' WW X Y hB hS l1 l2 l3 b1 b2 b3 c hc`. Establish `hX` using `hB.is`. Establish `hY` using `hS.2.2.2.2.2.2.2`. Take `⟨a, ha, k1⟩` from `ker_eq hX hY hB.std hB.stdW l1 l3 b1 b3`. Take `⟨a', ha', k2⟩` from `ker'_eq hX hY hB.std' hB.stdW l2 l3 b2 b3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, m1⟩` from `exists_haar_factor A hX.meas hY.meas`. Take `⟨m', hm', m2⟩` from `exists_haar_factor A' hX.meas' hY.meas'`. Take `⟨⟨t₀, ht₀⟩, P, P', H⟩` from `hc`. Take `⟨Q, hQ⟩` from `k1 P`. Take `⟨Q', hQ'⟩` from `k2 P'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e1 : ∀ t h, X.ker W.ψ W.θ t Q h = fun g => a⁻¹ * Y.ker W.ψ W.θ t P h g` using `fun t h => funext fun g => by`. Rewrite using `[hQ, inv_mul_cancel_left₀ ha]`. Establish `e2 : ∀ t h, X.ker' W.ψ W.θ t Q' h = fun g => a'⁻¹ * Y.ker' W.ψ W.θ t P' h g` using `fun t h => funext fun g => by`. Rewrite using `[hQ', inv_mul_cancel_left₀ ha']`. Establish `i1 : ∀ t h, X.I W.ψ W.θ t Q h = m * a⁻¹ * Y.I W.ψ W.θ t P h` using `fun t h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Tri.I, (m1 _ (ker_left hX t Q h)).2, e1, integral_const_mul, mul_assoc]`. Both sides reduce to the same expression. Establish `i2 : ∀ t h, X.I' W.ψ W.θ t Q' h = m' * a'⁻¹ * Y.I' W.ψ W.θ t P' h` using `fun t h => by`. Rewrite using `[Tri.I', (m2 _ (ker'_left hX t Q' h)).2, e2, integral_const_mul, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `n1 : m * a⁻¹ ≠ 0` using `mul_ne_zero hm (inv_ne_zero ha)`. Establish `n2 : m' * a'⁻¹ ≠ 0` using `mul_ne_zero hm' (inv_ne_zero ha')`. Use `⟨m * a⁻¹ / (m' * a'⁻¹), div_ne_zero n1 n2, ⟨t₀, mul_ne_zero (div_ne_zero n1 n2) ht₀⟩, Q, Q', fun t => ⟨fun h => ⟨(m1 _ (ker_left hX t Q h)).1 ?_, (m2 _ (ker'_left hX t Q' h)).1 ?_⟩, ?_, fun h => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[e1]`. Conclude with `((H t).1 h).1.const_mul _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `((H t).1 h).2.const_mul _`. Take `⟨h, hh⟩` from `(H t).2.1`. Conclude with `⟨h, by rw [i2]; exact mul_ne_zero n2 hh⟩`. Rewrite using `[i1, i2, (H t).2.2 h]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `m * a⁻¹ = u`. Generalize the expression as in `m' * a'⁻¹ = v at n2`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem bottom_const_normal : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData Lc sc} (W : G.Weil) (i j : Fin D.R.m) {A A' WW : HSp D} (X Y : Tri T A A' WW),
   IsBottomTri W i j X → GlobalTheory.SqTower.IsStageC W i j 0 0 Y →

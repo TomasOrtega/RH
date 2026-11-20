@@ -8,21 +8,19 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.PairingInvariants
 
 /- English proof (translation)
-Establish `hP : (gᴴ * g).PosDef` using `Matrix.PosDef.conjTranspose_mul_self g (Matrix.mulVec_injective_iff_isUnit.2 hg)`. Establish `hH` using `hP.isHermitian`. Use `set U : Matrix (Fin n) (Fin n) ℂ := (hH.eigenvectorUnitary : Matrix (Fin n) (Fin n) ℂ) with hU`. Establish `hUm : U ∈ Matrix.unitaryGroup (Fin n) ℂ` using `hH.eigenvectorUnitary.2`. Establish `h1 : star U * (gᴴ * g) * U = diagonal (fun i => ((hH.eigenvalues i : ℝ) : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hH.conjStarAlgAut_star_eigenvectorUnitary` as an intermediate fact. Simplify `this` using `[hU, Function.comp_def]`. Establish `hpos : ∀ i, 0 < hH.eigenvalues i` using `hP.eigenvalues_pos`. Set `a : Fin n → ℝ` to `fun i => Real.log (hH.eigenvalues i) / 2`. Establish `ha : ∀ i, cexp (-(a i : ℂ)) * ((hH.eigenvalues i : ℝ) : ℂ) * cexp (-(a i : ℂ)) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `: ((hH.eigenvalues i : ℝ) : ℂ) = cexp ((a i : ℂ) + a i)`. Rewrite using `[← Complex.ofReal_add, ← Complex.ofReal_exp]`. Use `congr 1`. Simplify using `only [a, add_halves]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.exp_log (hpos i)]`. Rewrite using `[this, ← Complex.exp_add, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Use `⟨g * U * diagonal (fun i => cexp (-(a i : ℂ))), star U, a, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : star (diagonal (fun i => cexp (-(a i : ℂ)))) = diagonal (fun i => cexp (-(a i : ℂ)))`. Rewrite using `[Matrix.star_eq_conjTranspose, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[← Complex.exp_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[star_mul, star_mul, hd]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.star_eq_conjTranspose]`. Use `_ = 1 := by`. Rewrite using `[h1, diagonal_mul_diagonal, diagonal_mul_diagonal]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [ha, diagonal_one]`. Conclude with `Unitary.star_mem hUm`. Establish `h2 : diagonal (fun i => cexp (-(a i : ℂ))) * diagonal (fun i => cexp (a i : ℂ)) = 1`. Rewrite using `[diagonal_mul_diagonal]`. Simplify using `[← Complex.exp_add]`.
-
-Establish `h3 : U * star U = 1` using `Matrix.mem_unitaryGroup_iff.1 hUm`. Rewrite using `[Matrix.mul_assoc (g * U), h2, Matrix.mul_one, Matrix.mul_assoc, h3, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unitary_diagonal_unitary {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) (hg : IsUnit g) :
     ∃ (u₁ u₂ : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℝ), u₁ ∈ Matrix.unitaryGroup (Fin n) ℂ ∧
@@ -73,7 +71,7 @@ noncomputable def act (g h : T → Matrix (Fin n) (Fin n) ℂ) (z : T × Bool ×
   fun v => ∑ l, (if v.2.1 then g v.1 v.2.2.1 l else h v.1 v.2.2.1 l) * z (v.1, v.2.1, l, v.2.2.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨t, b, k, j⟩`. Apply the tactic sequence `cases b <;>`. Simplify using `only [act, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, if_true, Bool.false_eq_true, if_false, mul_assoc]`. Conclude with `Finset.sum_comm`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem act_mul (g h g' h' : T → Matrix (Fin n) (Fin n) ℂ) (z : T × Bool × Fin n × Fin N → ℂ) :
     act (fun t => g t * g' t) (fun t => h t * h' t) z = act g h (act g' h' z) := by
@@ -83,7 +81,7 @@ theorem act_mul (g h g' h' : T → Matrix (Fin n) (Fin n) ℂ) (z : T × Bool ×
     exact Finset.sum_comm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨t, c, k, j⟩`. Apply the tactic sequence `cases c <;> simp [act, diagonal_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem act_diagonal (a b : T → Fin n → ℂ) (z : T × Bool × Fin n × Fin N → ℂ) :
     act (fun t => diagonal (a t)) (fun t => diagonal (b t)) z =
@@ -92,9 +90,7 @@ theorem act_diagonal (a b : T → Fin n → ℂ) (z : T × Bool × Fin n × Fin 
   cases c <;> simp [act, diagonal_apply]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `hp.fun_add hq`. Consider the case `mul_X p v hp => simp only [map_mul, MvPolynomial.eval_X]`.
-
-Conclude with `hp.fun_mul (hf v)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem differentiable_eval {σ : Type} (p : MvPolynomial σ ℂ) (f : ℂ → σ → ℂ)
     (hf : ∀ v, Differentiable ℂ (fun c => f c v)) :
@@ -105,19 +101,17 @@ theorem differentiable_eval {σ : Type} (p : MvPolynomial σ ℂ) (f : ℂ → �
   | mul_X p v hp => simp only [map_mul, MvPolynomial.eval_X]; exact hp.fun_mul (hf v)
 
 /- English proof (translation)
-Set `F : ℂ → ℂ` to `fun c => MvPolynomial.eval (act (fun t => diagonal fun i => cexp (c * a t i)) (fun t => diagonal fun i => cexp (-(c * a t i : ℂ))) z) p`. Establish `hF : Differentiable ℂ F`. Apply `differentiable_eval` to reduce the goal to its premises. Introduce and unpack `⟨t, b, k, j⟩`. Simplify using `only [act_diagonal]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `cases b <;> simp only [if_true, Bool.false_eq_true, if_false] <;> fun_prop`. Establish `hI : ∀ y : ℝ, F (y * I) = MvPolynomial.eval z p`. Introduce `y`. Rewrite using `[← hp (fun t => diagonal fun i => cexp (y * I * a t i)) ?_ z]`. Simplify using `only [F]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 3`. Use function extensionality and compare the values at `t`. Rewrite using `[diagonal_map (by simp)]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[← Complex.exp_conj]`. Introduce `t`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, diagonal_conjTranspose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[← Complex.exp_conj, ← Complex.exp_add]`. Establish `hfr : ∃ᶠ c in 𝓝[≠] (0 : ℂ), F c = (fun _ => MvPolynomial.eval z p) c`. Establish `ht : Tendsto (fun y : ℝ => (y : ℂ) * I) (𝓝[≠] 0) (𝓝[≠] 0)`. Apply `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within` to reduce the goal to its premises. Establish `: Continuous (fun y : ℝ => (y : ℂ) * I)` using `by fun_prop`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using (this.tendsto 0).mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with y hy`. Simplify using `using hy`. Conclude with `ht.frequently (Frequently.of_forall hI)`. Use `AnalyticOnNhd.eq_of_frequently_eq (fun c _ => hF.analyticAt c) analyticOnNhd_const hfr` as an intermediate fact.
-
-Simplify `congrFun this 1` using `[F]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eval_act_diagonal (p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)
     (hp : ∀ u : T → Matrix (Fin n) (Fin n) ℂ, (∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ) →
@@ -159,11 +153,11 @@ theorem eval_act_diagonal (p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)
   simpa [F] using congrFun this 1
 
 /- English proof (translation)
-Establish `hg : ∀ t, IsUnit (g t)` using `fun t => IsUnit.of_mul_eq_one _ (hgh t)`. Use `choose u₁ u₂ a h₁ h₂ e using fun t => exists_unitary_diagonal_unitary (g t) (hg t)`. Establish `eh : h = fun t => (u₁ t).map conj * diagonal (fun i => cexp (-(a t i : ℂ))) * (u₂ t).map conj`. Use function extensionality and compare the values at `t`. Apply `Matrix.transpose_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(hg t).mul_left_cancel` to reduce the goal to its premises. Rewrite using `[hgh t, e t]`. Establish `h2 : diagonal (fun i => cexp (a t i : ℂ)) * diagonal (fun i => cexp (-(a t i : ℂ))) = 1`. Rewrite using `[diagonal_mul_diagonal]`. Simplify using `[← Complex.exp_add]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `k₁ : u₁ t * ((u₁ t).map conj)ᵀ = 1` using `Matrix.mem_unitaryGroup_iff.1 (h₁ t)`. Establish `k₂ : u₂ t * ((u₂ t).map conj)ᵀ = 1` using `Matrix.mem_unitaryGroup_iff.1 (h₂ t)`. Rewrite using `[transpose_mul, transpose_mul, diagonal_transpose, Matrix.mul_assoc _ (u₂ t), ← Matrix.mul_assoc (u₂ t), k₂, Matrix.one_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (diagonal _), h2, Matrix.one_mul, k₁]`. Establish `eg : g = fun t => u₁ t * diagonal (fun i => cexp (a t i)) * u₂ t` using `funext e`. Rewrite using `[eh, eg, act_mul, act_mul, hp _ h₁, eval_act_diagonal p hp, hp _ h₂]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_act_of_mul_eq_one (p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)
     (hp : ∀ u : T → Matrix (Fin n) (Fin n) ℂ, (∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ) →
@@ -193,30 +187,30 @@ noncomputable def base (z : T × Bool × Fin n × Fin N → ℂ) : T × Bool × 
       ∑ l, z (v.1, false, l, v.2.2.2) * z (v.1, true, l, ⟨v.2.2.1.val, h⟩) else 0
 
 /- English proof (translation)
-The claim follows from `congrFun (Continuous.ext_on (hS.dense_compl ℂ) hF.continuous hG.continuous h) 0`.
+A detailed English derivation is pending.
 -/
 theorem eq_at_zero_of_countable {F G : ℂ → ℂ} (hF : Differentiable ℂ F) (hG : Differentiable ℂ G)
     {S : Set ℂ} (hS : S.Countable) (h : ∀ c ∉ S, F c = G c) : F 0 = G 0 :=
   congrFun (Continuous.ext_on (hS.dense_compl ℂ) hF.continuous hG.continuous h) 0
 
 /- English proof (translation)
-Establish `hinv : ∀ t, (G t)⁻¹ * G t = 1` using `fun t => Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).1 (hG t))`. Use `set y := act (fun t => (G t)⁻¹) (fun t => (G t)ᵀ) z with hy`. Establish `h1 : MvPolynomial.eval y p = MvPolynomial.eval z p` using `hp _ _ (by simpa using hinv) z`. Establish `hyt : ∀ t k j, y (t, true, k, j) = if k.val = j.val then 1 else 0`. Introduce `t k j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun (hinv t) k) (Fin.castLE hN j)` as an intermediate fact. Simplify using `only [hy, act, hz, if_true]`. Rewrite using `[← Matrix.mul_apply, this, Matrix.one_apply]`. Simplify using `[Fin.ext_iff]`. Set `Y : ℂ → T × Bool × Fin n × Fin N → ℂ` to `fun c v => if v.2.1 then y v else (if v.2.2.1.val < N then 1 else c) * y v`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hY : Differentiable ℂ (fun c => MvPolynomial.eval (Y c) p)`. Apply `differentiable_eval` to reduce the goal to its premises. Introduce `v`. Simplify using `only [Y]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h2 : MvPolynomial.eval (Y 0) p = MvPolynomial.eval y p`. Use `eq_at_zero_of_countable hY (differentiable_const _) (Set.countable_singleton 0) ?_` and prove the remaining obligations. Introduce `c hc`. Establish `hc : c ≠ 0` using `hc`. Rewrite using `[← hp (fun _ => diagonal fun k => if k.val < N then 1 else c⁻¹) (fun _ => diagonal fun k => if k.val < N then 1 else c) ?_ y, act_diagonal]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `⟨t, b, k, j⟩`. Consider the cases of `b`. Simplify using `[Y]`. Simplify using `only [Y, if_true, hyt]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `j.2` as an intermediate fact. Apply the tactic sequence `split_ifs <;> first | omega | simp`. Introduce `t`. Rewrite using `[diagonal_transpose, diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Apply the tactic sequence `split_ifs <;> simp [hc]`. Rewrite using `[← h1, ← h2]`. Use `congr 2`. Use function extensionality and compare the values at `⟨t, b, k, j⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Simplify using `only [Y, base, Bool.false_eq_true, if_false] split_ifs with h`. Simplify using `only [hy, act, hz, Bool.false_eq_true, if_false, one_mul, transpose_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using `only [Y, base, if_true, hyt]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_eq_base_of_isUnit (hN : N ≤ n) (p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)
     (hp : ∀ g h : T → Matrix (Fin n) (Fin n) ℂ, (∀ t, g t * (h t)ᵀ = 1) →
@@ -273,15 +267,13 @@ theorem eval_eq_base_of_isUnit (hN : N ≤ n) (p : MvPolynomial (T × Bool × Fi
   · simp only [Y, base, if_true, hyt]
 
 /- English proof (translation)
-Set `G : T → Matrix (Fin n) (Fin n) ℂ` to `fun t k l => if h : l.val < N then z (t, true, k, ⟨l.val, h⟩) else 0`. Set `Z : ℂ → T × Bool × Fin n × Fin N → ℂ` to `fun c v => z v - (if v.2.1 then (if v.2.2.1.val = v.2.2.2.val then 1 else 0) else 0) * c`. Establish `hZ : ∀ v, Differentiable ℂ (fun c => Z c v)`. Introduce `v`. Simplify using `only [Z]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `fun_prop`. Establish `hZ0 : Z 0 = z`. Use function extensionality and compare the values at `v`. Simplify using `[Z]`. Use `eq_at_zero_of_countable (F := fun c => MvPolynomial.eval (Z c) p) (G := fun c => MvPolynomial.eval (base (Z c)) p) (differentiable_eval p _ hZ) (differentiable_eval p _ ?_) (S := ⋃ t, spectrum ℂ (G t)) (Set.countable_iUnion fun t => (Matrix.finite_spectrum (G t)).countable) ?_` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[hZ0]`. Introduce `v`. Simplify using `only [base]`. Use `split_ifs`. Use `fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_prop`. Conclude with `Differentiable.fun_sum fun l _ => (hZ _).fun_mul (hZ _)`. Use `fun_prop`. Introduce `c hc`. Simplify using `only [Set.mem_iUnion, not_exists, spectrum.mem_iff, not_not] at hc`.
-
-Use `eval_eq_base_of_isUnit hN p hp (fun t => -(algebraMap ℂ _ c - G t)) (fun t => (hc t).neg) _ ?_` and prove the remaining obligations. Introduce `t k j`. Rewrite using `[Matrix.neg_apply, Matrix.sub_apply, Matrix.algebraMap_matrix_apply]`. Simplify using `[Z, G, Fin.ext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_eq_base [Finite T] (hN : N ≤ n) (p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)
     (hp : ∀ g h : T → Matrix (Fin n) (Fin n) ℂ, (∀ t, g t * (h t)ᵀ = 1) →
@@ -324,11 +316,11 @@ end GlobalTheory.PairingInvariants
 open GlobalTheory.PairingInvariants in
 
 /- English proof (translation)
-Introduce `T _ _ n N hN p hp`. Establish `key` using `eval_eq_base hN p (eval_act_of_mul_eq_one p hp)`. Use `⟨MvPolynomial.aeval (fun v : T × Bool × Fin n × Fin N => if v.2.1 then (if v.2.2.1.val = v.2.2.2.val then 1 else 0) else if h : v.2.2.1.val < N then MvPolynomial.X (v.1, v.2.2.2, ⟨v.2.2.1.val, h⟩) else 0) p, ?_⟩` and prove the remaining obligations. Apply `MvPolynomial.funext` to reduce the goal to its premises. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key z, ← AlgHom.comp_apply, MvPolynomial.comp_aeval, ← MvPolynomial.coe_aeval_eq_eval, ← MvPolynomial.coe_aeval_eq_eval]`. Simplify using `only [RingHom.coe_coe]`. Rewrite using `[← AlgHom.comp_apply, MvPolynomial.comp_aeval]`. Use `congr 2`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [base]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem GlobalTheory.invariant_polynomial_eq_aeval_pairings :
     ∀ (T : Type) [Fintype T] [DecidableEq T] (n N : ℕ), N ≤ n → ∀ p : MvPolynomial (T × Bool × Fin n × Fin N) ℂ, (∀ u : T → Matrix (Fin n) (Fin n) ℂ, (∀ t, u t ∈ Matrix.unitaryGroup (Fin n) ℂ) → ∀ z : T × Bool × Fin n × Fin N → ℂ, MvPolynomial.eval (fun v => ∑ l, (if v.2.1 then u v.1 v.2.2.1 l else conj (u v.1 v.2.2.1 l)) * z (v.1, v.2.1, l, v.2.2.2)) p = MvPolynomial.eval z p) → ∃ s : MvPolynomial (T × Fin N × Fin N) ℂ, p = MvPolynomial.aeval (fun v : T × Fin N × Fin N => ∑ k, (MvPolynomial.X (v.1, false, k, v.2.1) * MvPolynomial.X (v.1, true, k, v.2.2) : MvPolynomial (T × Bool × Fin n × Fin N) ℂ)) s := by

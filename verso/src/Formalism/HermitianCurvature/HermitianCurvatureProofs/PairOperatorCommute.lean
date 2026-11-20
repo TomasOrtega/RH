@@ -16,39 +16,37 @@ section Abstract
 variable {A : Type} [Ring A] [StarRing A] [Algebra ℂ A] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `L.fns_comm x hx y hy`.
+A detailed English derivation is pending.
 -/
 theorem fn_comm6 (L : R.LevelData A r) {x y : A} (hx : x ∈ L.fns) (hy : y ∈ L.fns) : x * y = y * x := L.fns_comm x hx y hy
 
 /- English proof (translation)
-Conclude with `Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))`.
+Prove the first alternative.
 -/
 theorem c_fns (L : R.LevelData A r) (l : Fin r) : L.c l ∈ L.fns := by
   exact Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))
 /- English proof (translation)
-Conclude with `Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))`.
+Prove the first alternative.
 -/
 theorem ci_fns (L : R.LevelData A r) (l : Fin r) : L.ci l ∈ L.fns := by
   exact Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))
 /- English proof (translation)
-Conclude with `Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))`.
+Prove the first alternative.
 -/
 theorem cb_fns (L : R.LevelData A r) (l : Fin r) : L.cb l ∈ L.fns := by
   exact Or.inl (Or.inl (Or.inr ⟨l, rfl⟩))
 /- English proof (translation)
-Conclude with `Or.inl (Or.inr ⟨l, rfl⟩)`.
+Prove the first alternative.
 -/
 theorem cbi_fns (L : R.LevelData A r) (l : Fin r) : L.cbi l ∈ L.fns := by
   exact Or.inl (Or.inr ⟨l, rfl⟩)
 
 /- English proof (translation)
-Establish `hf : ∀ x ∈ L.fns, ∀ y ∈ L.fns, Commute x y` using `fun x hx y hy => L.fns_comm x hx y hy`. Introduce `x hx y hy`. Simplify using `only [hol, Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy`. Break down `hy with rfl | rfl | rfl` into its components or cases. Rewrite using `[hp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Use `Commute.neg_right ?_` and prove the remaining obligations. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `L.p_pb l m`. Conclude with `(L.pb_c m l).symm`. Conclude with `(L.pb_ci m l).symm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc]`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `L.p_cb l m`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inr ⟨m, rfl⟩)))`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inr ⟨m, rfl⟩)))`.
-
-Rewrite using `[hci]`. Break down `hx with rfl | rfl | rfl` into its components or cases. Conclude with `L.p_cbi l m`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))) _ (Or.inl (Or.inr ⟨m, rfl⟩))`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inr ⟨m, rfl⟩))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem hol_comm_star (L : R.LevelData A r) (hp : ∀ l, star (L.p l) = -L.pb l) (hc : ∀ l, star (L.c l) = L.cb l)
     (hci : ∀ l, star (L.ci l) = L.cbi l) (l m : Fin r) :
@@ -75,15 +73,11 @@ theorem hol_comm_star (L : R.LevelData A r) (hp : ∀ l, star (L.p l) = -L.pb l)
     · exact hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inr ⟨m, rfl⟩))
 
 /- English proof (translation)
-Establish `hf : ∀ x ∈ L.fns, ∀ y ∈ L.fns, Commute x y` using `fun x hx y hy => L.fns_comm x hx y hy`. Establish `hlm' : m ≠ l` using `fun h => hlm h.symm`. Introduce `x hx y hy`. Simplify using `only [hol, Set.mem_insert_iff, Set.mem_singleton_iff] at hx hy`. Apply the tactic sequence `rcases hx with rfl | rfl | rfl <;> rcases hy with rfl | rfl | rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `L.p_p l m`. Use `L.p_c l m` as an intermediate fact. Rewrite `this` using `[if_neg hlm, add_zero]`. Conclude with `this`. Use `L.p_ci l m` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[if_neg hlm, sub_zero]`. Conclude with `this`. Use `L.p_c m l` as an intermediate fact. Rewrite `this` using `[if_neg hlm', add_zero]`. Conclude with `this.symm`.
-
-Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨m, rfl⟩))))`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨m, rfl⟩))))`. Use `L.p_ci m l` as an intermediate fact. Rewrite `this` using `[if_neg hlm', sub_zero]`. Conclude with `this.symm`.
-
-Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inl (Or.inl ⟨m, rfl⟩))))`. Conclude with `hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨m, rfl⟩))))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hol_comm_hol (L : R.LevelData A r) {l m : Fin r} (hlm : l ≠ m) :
     ∀ x ∈ hol (⟨L.p l, L.c l, L.ci l⟩ : Site A), ∀ y ∈ hol (⟨L.p m, L.c m, L.ci m⟩ : Site A), Commute x y := by
@@ -103,9 +97,9 @@ theorem hol_comm_hol (L : R.LevelData A r) {l m : Fin r} (hlm : l ≠ m) :
   · exact hf _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨l, rfl⟩)))) _ (Or.inl (Or.inl (Or.inl (Or.inr ⟨m, rfl⟩))))
 
 /- English proof (translation)
-Take `⟨h1, h2, -, h4⟩` from `hw`. Use `⟨h1, h2, h4.imp fun {l l'} h => ?_⟩` and prove the remaining obligations. Unfold `RegL`. Use `split_ifs`. Simplify using `using h 1 (by norm_num)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h'`. Apply `h (-1) (by norm_num)` to reduce the goal to its premises. Use `push_cast`. Take the linear combination `-h'`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem good_of_adm {S : Type} (st : Fr.Start A) (w : List (Letter ℂ S)) (hw : Fr.admitted st w) : Good w := by
   obtain ⟨h1, h2, -, h4⟩ := hw
@@ -125,7 +119,7 @@ section Pairs
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show a * c = c * a`. Conclude with `h1`. Use `show MulOpposite.op b * MulOpposite.op d = MulOpposite.op d * MulOpposite.op b`. Rewrite using `[← MulOpposite.op_mul, ← MulOpposite.op_mul, h2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_operator_commute {a b c d : Module.End ℂ V} (h1 : a * c = c * a) (h2 : d * b = b * d) :
     (mkP a b : Pr V) * mkP c d = mkP c d * mkP a b := by
@@ -144,9 +138,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨hp, hpb, hc, hci, hcb, hcbi, -⟩` from `hL`. Establish `hs : ∀ a b : Module.End ℂ (RadSp k r z z' π π'), star (mkP a b : Pr (RadSp k r z z' π π')) = mkP b a` using `fun a b => rfl`. Use `⟨fun l => ?_, fun l => ?_, fun l => ?_⟩` and prove the remaining obligations. Rewrite using `[hp, hpb, hs]`. Use `Prod.ext rfl ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show MulOpposite.op (X.op l 0) = -MulOpposite.op (-X.op l 0)`. Rewrite using `[← MulOpposite.op_neg, neg_neg]`. Rewrite using `[hc, hcb, hs]`. Rewrite using `[hci, hcbi, hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_site_ops {X : ActualOps k r z z' π π'} {L : R.LevelData (Pr (RadSp k r z z' π π')) r}
     (hL : IsActualLevel X L) :
@@ -163,7 +157,7 @@ theorem star_site_ops {X : ActualOps k r z z' π π'} {L : R.LevelData (Pr (RadS
   · rw [hci, hcbi, hs]
 
 /- English proof (translation)
-Take `⟨hp, hc, hci⟩` from `star_site_ops hL`. Use `⟨⟨L.c_ci l, L.ci_c l, ?_⟩, hol_comm_star L hp hc hci l l⟩` and prove the remaining obligations. Establish `h` using `L.p_c l l`. Rewrite `h` using `[if_pos rfl]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSite_actual {X : ActualOps k r z z' π π'} {L : R.LevelData (Pr (RadSp k r z z' π π')) r}
     (hL : IsActualLevel X L) (l : Fin r) : IsSite (site L l) := by
@@ -174,19 +168,15 @@ theorem isSite_actual {X : ActualOps k r z z' π π'} {L : R.LevelData (Pr (RadS
   exact h
 
 /- English proof (translation)
-Establish `hmul : ∀ M N : M2 (Pr (RadSp k r z z' π π')), (∀ a b, M a b ∈ 𝒜) → (∀ a b, N a b ∈ 𝒜) → ∀ a b, (M * N) a b ∈ 𝒜`. Introduce `M N hM hN a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subalgebra.sum_mem _ fun c _ => Subalgebra.mul_mem _ (hM a c) (hN c b)`. Establish `hone : ∀ a b, (1 : M2 (Pr (RadSp k r z z' π π'))) a b ∈ 𝒜`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hct : ∀ M : M2 (Pr (RadSp k r z z' π π')), (∀ a b, M a b ∈ 𝒜) → ∀ a b, Mᴴ a b ∈ 𝒜`. Introduce `M hM a b`. Rewrite using `[Matrix.conjTranspose_apply]`. Conclude with `star_mem (hM b a)`. Establish `hts : ∀ (Y' : ℂ) (l : Fin r), i.val ≤ l.val → ∀ a b, Ts (site L l) Y' a b ∈ 𝒜`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y' l hl a b`. Take `⟨hp, hc, hci⟩` from `hS l hl`. Apply the tactic sequence `fin_cases a <;> fin_cases b`. Conclude with `add_mem (algebraMap_mem 𝒜 Y') hp`. Conclude with `neg_mem hc`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hci`. Conclude with `zero_mem _`. Establish `htp : ∀ (Y' : ℂ) (n j : ℕ), r - j = n → i.val ≤ j → ∀ a b, tprod L Y' j a b ∈ 𝒜`. Introduce `Y' n`. Proceed by induction on `n with`.
-
-Consider the case `zero`. Introduce `j hj hij`. Rewrite using `[tprod, dif_neg (by omega)]`. Conclude with `hone`. Consider the case `succ n ih`.
-
-Introduce `j hj hij`. Rewrite using `[tprod, dif_pos (by omega)]`. Conclude with `hmul _ _ (ih (j + 1) (by omega) (by omega)) (hts Y' ⟨j, by omega⟩ hij)`. Unfold `QQi`. Conclude with `hmul _ _ (hmul _ _ (hct _ (htp _ _ _ rfl le_rfl)) hQ) (htp _ _ _ rfl le_rfl) a b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem QQi_mem_all (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (𝒜 : StarSubalgebra ℂ (Pr (RadSp k r z z' π π'))) (i : Fin (r + 1)) (Y : ℂ)
@@ -231,9 +221,9 @@ theorem QQi_mem_all (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.St
   exact hmul _ _ (hmul _ _ (hct _ (htp _ _ _ rfl le_rfl)) hQ) (htp _ _ _ rfl le_rfl) a b
 
 /- English proof (translation)
-Establish `ht : ∀ Y' : ℂ, tprod L Y' (l.castSucc : ℕ) = tprod L Y' (l.succ : ℕ) * Ts (site L l) Y'`. Introduce `Y'`. Rewrite using `[tprod, dif_pos (show (l.castSucc : ℕ) < r from l.isLt)]`. Both sides reduce to the same expression. Unfold `QQi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[ht, ht, hY, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem QQi_castSucc (L : R.LevelData (Pr (RadSp k r z z' π π')) r) (st : Fr.Start (Pr (RadSp k r z z' π π')))
     (l : Fin r) (Y : ℂ) (hY : star Y = Y) :
@@ -254,23 +244,23 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Take `⟨hpl, -, hL, hQQ, -⟩` from `hD`. Take `⟨sp, sc, sci⟩` from `star_site_ops hL`. Take `⟨hp, -, hc, hci, -⟩` from `hL`. Establish `ht : ∀ (i : Fin 6) (Y : ℂ) (a b : Fin 2), X.t Y a b * X.op l i = X.op l i * X.t Y a b` using `fun i => (Formalism.FourierDecayAlt.P.level_coordinates_commute Wp Wq P z z' π π' hpl X l i).1`. Establish `htn : ∀ (i : Fin 6) (Y : ℂ) (a b : Fin 2), X.t Y a b * -X.op l i = -X.op l i * X.t Y a b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i Y a b`. Rewrite using `[mul_neg, neg_mul, ht]`. Introduce `Y`. Establish `hmem : ∀ a b, QQi L st l.succ Y a b ∈ StarSubalgebra.centralizer ℂ (hol (site L l))`. Use `QQi_mem_all L st _ l.succ Y ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Rewrite using `[hQQ Y, Matrix.smul_apply]`. Use `SMulMemClass.smul_mem _ ?_` and prove the remaining obligations. Simplify using `only [ActualOps.QQ, Matrix.of_apply]`. Rewrite using `[StarSubalgebra.mem_centralizer_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Simplify using `only [hol, site, Set.mem_insert_iff, Set.mem_singleton_iff] at hg`. Break down `hg with rfl | rfl | rfl` into its components or cases. Rewrite using `[hp l]`. Conclude with `⟨pair_operator_commute (ht _ _ _ _).symm (htn _ _ _ _), pair_operator_commute (htn _ _ _ _).symm (ht _ _ _ _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hc l]`. Conclude with `⟨pair_operator_commute (ht _ _ _ _).symm (ht _ _ _ _), pair_operator_commute (ht _ _ _ _).symm (ht _ _ _ _)⟩`. Rewrite using `[hci l]`. Conclude with `⟨pair_operator_commute (ht _ _ _ _).symm (ht _ _ _ _), pair_operator_commute (ht _ _ _ _).symm (ht _ _ _ _)⟩`. Introduce `m hm`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : l ≠ m`. Introduce `h`. Rewrite `hm` using `[← h, Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Establish `key : ∀ y ∈ hol (site L m), y ∈ StarSubalgebra.centralizer ℂ (hol (site L l))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `y hy`. Rewrite using `[StarSubalgebra.mem_centralizer_iff]`. Introduce `g hg`. Conclude with `⟨hol_comm_hol L hne g hg y hy, (hol_comm_star L sp sc sci m l y hy g hg).symm⟩`. Conclude with `⟨key _ (by simp [hol, site]), key _ (by simp [hol, site]), key _ (by simp [hol, site])⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Introduce `a b x hx`. Establish `h` using `hmem a b`. Rewrite `h` using `[StarSubalgebra.mem_centralizer_iff]`. Break down `hx with hx | hx` into its components or cases. Conclude with `(h x hx).1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2` using `(h _ hx).2`. Rewrite `h2` using `[star_star]`. Conclude with `h2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qqCommutes_actual (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))
@@ -319,7 +309,7 @@ theorem qqCommutes_actual (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (
     exact h2.symm
 
 /- English proof (translation)
-The claim follows from `(by have hL := hD.2.2.1 exact Formalism.FourierDecayAlt.P.site_exchange_relation ℂ _ S (site L l) (QQi L st l.succ) (QQi L st l.castSucc) w (isSite_actual hL l) (qqCommutes_actual P z z' π π' X μ L st l0 hD l) (fun Y hY => QQi_castSucc L st l Y hY) (good_of_adm st w hw.1))`.
+A detailed English derivation is pending.
 -/
 theorem siteStep_actual (P : M.Par) (z z' : Fin (2 * P.r + P.k + 1) → ℂ) (π : Mx P.k P.r → (Wp →L[ℂ] Wp))
     (π' : Mx P.k P.r → (Wq →L[ℂ] Wq)) (X : ActualOps P.k P.r z z' π π') (μ : Measure (Mt P.k P.r))

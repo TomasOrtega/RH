@@ -4,7 +4,7 @@ open CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul]`. Use extensionality with `x`. Simplify using `[Submodule.mem_smul_pointwise_iff_exists, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ideal_span_natCast_smul_top_eq_range (M : Type) [AddCommGroup M] [Module ℤ M] (p : ℕ) :
     (Ideal.span {(p : ℤ)}) • (⊤ : Submodule ℤ M) =
@@ -19,7 +19,7 @@ noncomputable def intQuotSpanNatLinearEquivZMod (p : ℕ) :
     (Int.quotientSpanNatEquivZMod p).bijective
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_congr ((intQuotSpanNatLinearEquivZMod p).rTensor M).toEquiv, Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul M (Ideal.span {(p : ℤ)})).toEquiv, ideal_span_natCast_smul_top_eq_range]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_zmod_tensor_eq_card_quot (M : Type) [AddCommGroup M] [Module ℤ M] (p : ℕ) :
     Nat.card (TensorProduct ℤ (ZMod p) M) =
@@ -29,7 +29,7 @@ theorem card_zmod_tensor_eq_card_quot (M : Type) [AddCommGroup M] [Module ℤ M]
     ideal_span_natCast_smul_top_eq_range]
 
 /- English proof (translation)
-Introduce `M _ _ p` and use `card_zmod_tensor_eq_card_quot M p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem card_zmod_tensor_eq_card_quot' : ∀ (M : Type) [AddCommGroup M] [Module ℤ M] (p : ℕ),
     Nat.card (TensorProduct ℤ (ZMod p) M) =

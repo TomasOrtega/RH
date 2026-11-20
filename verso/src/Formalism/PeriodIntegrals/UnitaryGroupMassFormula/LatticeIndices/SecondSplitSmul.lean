@@ -11,38 +11,38 @@ variable {K T : Type} [Field K] [CommRing T] [Algebra K T] (O : ValuationSubring
   [DecidableEq n] (θ : T ≃ₐ[K] K × K) (s : T →+* T) (J : Matrix n n T) (P : GL n K)
 
 /- English proof (translation)
-Simplify using `[t1, map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem firstSplit_smul (c : K) (t : T) : t1 θ (c • t) = c * t1 θ t := by
   simp [t1, map_smul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_sub_one (M : Matrix n n T) (f : T →+* K) : (M - 1).map f = M.map f - 1 := by
   ext i j
   by_cases h : i = j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Introduce `i j`. Set `y : n → T` to `fun k => θ.symm ((P : Matrix n n K) k j, 0)`. Establish `ht1 : (fun k => t1 θ (y k)) = fun k => (P : Matrix n n K) k j`. Use function extensionality and compare the values at `k`. Simplify using `[y, t1]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `ht2 : (fun k => t2 θ (y k)) = 0`. Use function extensionality and compare the values at `k`. Simplify using `[y, t2]`. Establish `hcol : (fun k => (P : Matrix n n K) k j) = (P : Matrix n n K) *ᵥ Pi.single j 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec_single_one]`. Establish `hPinv : ((P⁻¹ : GL n K) : Matrix n n K) * (P : Matrix n n K) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hyL : y ∈ Lat O θ J P`. Unfold `Lat`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [Set.mem_setOf_eq]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[ht1, hcol, Matrix.mulVec_mulVec, hPinv, Matrix.one_mulVec]`. Unfold `IntV`. Introduce `k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Rewrite using `[ht2, Matrix.mulVec_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `IntV`. Introduce `k`. Simplify using the standard rewrite rules. Take `⟨z, hz, e⟩` from `hg y hyL`. Unfold `Lat at hz`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Simplify using `only [Set.mem_setOf_eq] at hz`. Establish `e1 : ((g : Matrix n n T).map (t1 θ) - 1) *ᵥ (fun k => (P : Matrix n n K) k j) = c • (fun k => t1 θ (z k))`. Use function extensionality and compare the values at `k`. Establish `h1 : t1 θ ((((g : Matrix n n T) - 1) *ᵥ y) k) = t1 θ ((c • z) k)` using `by rw [e]`. Rewrite `h1` using `[RingHom.map_mulVec, map_sub_one, Pi.smul_apply, firstSplit_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, ← h1, ← ht1]`. Both sides reduce to the same expression. Use `⟨(((P⁻¹ : GL n K) : Matrix n n K) *ᵥ fun k => t1 θ (z k)) i, hz.1 i, ?_⟩` and prove the remaining obligations. Establish `key : (conjPrime₂ θ P g - 1) *ᵥ Pi.single j 1 = c • (((P⁻¹ : GL n K) : Matrix n n K) *ᵥ fun k => t1 θ (z k))`. Establish `hc : (conjPrime₂ θ P g - 1 : Matrix n n K) = ((P⁻¹ : GL n K) : Matrix n n K) * ((g : Matrix n n T).map (t1 θ) - 1) * (P : Matrix n n K)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `conjPrime₂`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, hPinv]`. Rewrite using `[hc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← hcol, e1, Matrix.mulVec_smul]`. Establish `h2` using `congrFun key i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_fwd (c : K) (g : GL n T)
     (hg : ∀ y ∈ Lat O θ J P, ∃ z ∈ Lat O θ J P, ((g : Matrix n n T) - 1) *ᵥ y = c • z) :
@@ -107,11 +107,11 @@ def SurjCore : Prop :=
     conjPrime₂ θ P g = (A : Matrix n n O).map (algebraMap O K)
 
 /- English proof (translation)
-Use `⟨psi O θ J P m hK, ?_, ?_⟩` and prove the remaining obligations. Introduce `A`. Take `⟨g, hgU, hgL, hgA⟩` from `hSU A`. Take `⟨h, rfl⟩` from `hon g hgU hgL`. Use `⟨h, Units.ext (map_inj O ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[psi_map, hgA]`. Introduce `h`. Rewrite using `[psi_ker_iff]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hw`. Conclude with `hKB (c : K) (m h) (hmU h) (hK h) hw`. Introduce `hl`. Conclude with `ker_fwd O θ J P (c : K) (m h) hl`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latGL_gen (hKB : KerBack O θ s J P) (hSU : SurjCore O θ s J P) (c : O) {H : Type} [Group H]
     (m : H →* GL n T) (hmU : ∀ h, m h ∈ Formalism.UG.UJ s J)

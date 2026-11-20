@@ -10,13 +10,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite
 noncomputable section
 
 /- English proof (translation)
-Set `I : ℕ →o Ideal A` to `⟨fun j => LinearMap.ker (LinearMap.mulLeft A ((j.factorial : ℕ) : A)), by`. Introduce `i j hij a ha`. Simplify using `only [LinearMap.mem_ker, LinearMap.mulLeft_apply] at ha ⊢`. Take `⟨c, hc⟩` from `Nat.factorial_dvd_factorial hij`. Rewrite using `[hc, Nat.cast_mul, mul_right_comm, ha, zero_mul]⟩`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨N₀, hN₀⟩` from `monotone_stabilizes_iff_noetherian.mpr (inferInstance : IsNoetherian A A) I`. Use `⟨N₀.factorial, Nat.factorial_pos _, fun n a hn ha => ?_⟩` and prove the remaining obligations. Establish `hM : a ∈ I (max N₀ n.natAbs)`. Establish `hd : n ∣ (((max N₀ n.natAbs).factorial : ℕ) : ℤ)`. Rewrite using `[← Int.natAbs_dvd_natAbs, Int.natAbs_natCast]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.dvd_factorial (Int.natAbs_pos.mpr hn) (le_max_right _ _)`. Take `⟨c, hc⟩` from `hd`. Establish `hc' : (((max N₀ n.natAbs).factorial : ℕ) : A) = (n : A) * (c : A)`. Conclude with `congrArg (Int.cast : ℤ → A) hc` after adjusting the coercions. Use `show LinearMap.mulLeft A _ a = 0`.
-
-Rewrite using `[LinearMap.mulLeft_apply, hc', mul_right_comm, ha, zero_mul]`. Rewrite `hM` using `[← hN₀ _ (le_max_left _ _)]`. Conclude with `hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_torsion_bound (A : Type*) [CommRing A] [IsNoetherianRing A] :
     ∃ N : ℕ, 0 < N ∧ ∀ (n : ℤ) (a : A), n ≠ 0 → (n : A) * a = 0 → (N : A) * a = 0 := by
@@ -41,11 +39,11 @@ lemma exists_torsion_bound (A : Type*) [CommRing A] [IsNoetherianRing A] :
   exact hM
 
 /- English proof (translation)
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective S b`. Establish `key : ∀ z : ℤ, (z : B) * IsLocalization.mk' B a s = IsLocalization.mk' B ((z : A) * a) s`. Introduce `z`. Rewrite using `[← IsLocalization.mul_mk'_eq_mk'_of_mul, map_intCast]`. Rewrite `hb` using `[key, IsLocalization.mk'_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc⟩` from `hb`. Establish `h` using `hN n ((c : A) * a) hn (by rw [← hc]; ring)`. Establish `key'` using `key (N : ℤ)`. Move the coercions through the operations in `at key'`. Rewrite using `[key', IsLocalization.mk'_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨c, by rw [← h]; ring⟩`.
+Supply the required witnesses or components.
 -/
 lemma torsion_bound_localization {A B : Type*} [CommRing A] [CommRing B] [Algebra A B]
     (S : Submonoid A) [IsLocalization S B] {N : ℕ}
@@ -64,9 +62,9 @@ lemma torsion_bound_localization {A B : Type*} [CommRing A] [CommRing B] [Algebr
   exact ⟨c, by rw [← h]; ring⟩
 
 /- English proof (translation)
-Establish `h : invOpen f k = f ⁻¹ᵁ (SpecZ.basicOpen ((Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv k))`. Unfold `invOpen`. Conclude with `congrArg (f ⁻¹ᵁ ·) (basicOpen_eq_of_affine (R := CommRingCat.of ℤ) k).symm`. Rewrite using `[h, Scheme.preimage_basicOpen]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [eq_intCast]`. Conclude with `map_intCast (f.app ⊤).hom k`.
+A detailed English derivation is pending.
 -/
 lemma invOpen_eq_basicOpen {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ) :
     invOpen f k = X.basicOpen ((k : Γ(X, f ⁻¹ᵁ ⊤))) := by
@@ -79,9 +77,9 @@ lemma invOpen_eq_basicOpen {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ) :
   exact map_intCast (f.app ⊤).hom k
 
 /- English proof (translation)
-Rewrite `hV` using `[invOpen_eq_basicOpen]`. Establish `hu` using `X.toRingedSpace.isUnit_res_basicOpen ((k : Γ(X, f ⁻¹ᵁ ⊤)))`. Rewrite `hu` using `[map_intCast]`. Use `hu.map (X.presheaf.map (homOfLE hV).op).hom` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `(map_intCast (X.presheaf.map (homOfLE hV).op).hom k).symm`.
+A detailed English derivation is pending.
 -/
 lemma isUnit_intCast_of_le_invOpen {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ) {V : X.Opens}
     (hV : V ≤ invOpen f k) : IsUnit (k : Γ(X, V)) := by
@@ -93,13 +91,13 @@ lemma isUnit_intCast_of_le_invOpen {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ) 
   exact (map_intCast (X.presheaf.map (homOfLE hV).op).hom k).symm
 
 /- English proof (translation)
-Use `X.IsSheaf.section_ext fun x hx => ?_` and prove the remaining obligations. Take `⟨U, N, hxU, hNk, hN⟩` from `hcov x`. Take `⟨a, haW, hxa⟩` from `U.2.exists_basicOpen_le ⟨x, hx⟩ hxU`. Use `⟨X.basicOpen a, haW, hxa, ?_⟩` and prove the remaining obligations. Use `U.2.isLocalization_basicOpen a` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set t := X.presheaf.map (homOfLE haW).op s with ht_def`. Establish `ht : (n : Γ(X, X.basicOpen a)) * t = 0`. Rewrite using `[ht_def, ← map_intCast (X.presheaf.map (homOfLE haW).op).hom n, ← map_mul, hs, map_zero]`. Establish `hNt` using `torsion_bound_localization (Submonoid.powers a) hN n t hn ht`. Establish `hk` using `isUnit_intCast_of_le_invOpen f k (haW.trans hW)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNu : IsUnit (N : Γ(X, X.basicOpen a))`. Take `⟨c, hc⟩` from `hNk`. Establish `hkc : ((k : ℤ) : Γ(X, X.basicOpen a)) = ((N : ℤ) : Γ(X, X.basicOpen a)) * (c : Γ(X, X.basicOpen a))`. Rewrite using `[hc]`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hk` using `[hkc]`. Conclude with `isUnit_of_mul_isUnit_left hk` after adjusting the coercions. Rewrite using `[map_zero]`. Conclude with `hNu.mul_right_eq_zero.mp hNt`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma eq_zero_of_intCast_mul_eq_zero {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ)
     (hcov : ∀ x : X, ∃ (U : X.affineOpens) (N : ℕ), x ∈ (U : X.Opens) ∧ (N : ℤ) ∣ k ∧
@@ -127,13 +125,11 @@ lemma eq_zero_of_intCast_mul_eq_zero {X : Scheme.{0}} (f : X ⟶ SpecZ) (k : ℤ
   exact hNu.mul_right_eq_zero.mp hNt
 
 /- English proof (translation)
-Use `HasRingHomProperty.HasAffineProperty @Flat` as an intermediate fact. Rewrite using `[HasAffineProperty.iff_of_isAffine (P := @Flat) (Q := sourceAffineLocally RingHom.Flat)]`. Introduce `V`. Set `e : ℤ ≃+* Γ(SpecZ, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of ℤ)).commRingCatIsoToRingEquiv.symm`. Establish `hφ : (g.appLE ⊤ V le_top).hom = (((g.appLE ⊤ V le_top).hom).comp e.toRingHom).comp e.symm.toRingHom` using `by ext x; simp only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hφ]`. Use `RingHom.Flat.comp (RingHom.Flat.of_bijective e.symm.bijective) ?_` and prove the remaining obligations. Generalize the expression as in `((g.appLE ⊤ V le_top).hom).comp e.toRingHom = ψ`. Establish `hψ : ψ = algebraMap ℤ Γ(Y, V)` using `RingHom.ext_int _ _`. Rewrite using `[hψ, RingHom.flat_algebraMap_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Module.IsTorsionFree ℤ Γ(Y, V)` using `⟨fun r hr b c hbc => by`. Establish `hr0 : r ≠ 0` using `hr.ne_zero`. Simplify using `only [zsmul_eq_mul] at hbc`. Rewrite using `[← sub_eq_zero]`. Conclude with `hT V r _ hr0 (by rw [mul_sub, hbc, sub_self])⟩`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma flat_of_eq_zero_of_intCast_mul {Y : Scheme.{0}} (g : Y ⟶ SpecZ)
     (hT : ∀ (V : Y.Opens) (n : ℤ) (s : Γ(Y, V)), n ≠ 0 → (n : Γ(Y, V)) * s = 0 → s = 0) :
@@ -159,17 +155,15 @@ lemma flat_of_eq_zero_of_intCast_mul {Y : Scheme.{0}} (g : Y ⟶ SpecZ)
   infer_instance
 
 /- English proof (translation)
-Introduce `X f _ _`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian f`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace f`. Use `choose N hNpos hN using fun U : X.affineOpens => haveI := IsLocallyNoetherian.component_noetherian U exists_torsion_bound Γ(X, U)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun U : X.affineOpens => ((U : X.Opens) : Set X)) (fun U => (U : X.Opens).isOpen) (fun x _ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨_, ⟨U, hU, rfl⟩, hxU, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ x) isOpen_univ`. Conclude with `Set.mem_iUnion.mpr ⟨⟨U, hU⟩, hxU⟩)`. Use `⟨∏ U ∈ t, N U, Finset.prod_pos fun U _ => hNpos U, fun k hk hmk W => ?_⟩` and prove the remaining obligations. Establish `hcov : ∀ x : X, ∃ (U : X.affineOpens) (N' : ℕ), x ∈ (U : X.Opens) ∧ (N' : ℤ) ∣ k ∧ ∀ (n : ℤ) (a : Γ(X, U)), n ≠ 0 → (n : Γ(X, U)) * a = 0 → (N' : Γ(X, U)) * a = 0`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨U, hUt, hxU⟩` from `Set.mem_iUnion₂.mp (ht (Set.mem_univ x))`. Conclude with `⟨U, N U, hxU, dvd_trans (by exact_mod_cast Finset.dvd_prod_of_mem N hUt) hmk, hN U⟩`. Establish `hflat : Flat ((invOpen f k).ι ≫ f)` using `flat_of_eq_zero_of_intCast_mul _ fun V n s hn hs => by`. Set `e` to `((invOpen f k).ι.appIso V).commRingCatIsoToRingEquiv`. Establish `h0` using `eq_zero_of_intCast_mul_eq_zero f k hcov ((invOpen f k).ι_image_le V) n hn (e.symm s) (by rw [← map_intCast e.symm, ← map_mul, hs, map_zero])`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Simplify using `using congrArg e h0`. Set `φ : Spec (CommRingCat.of ℚ) ⟶ SpecZ` to `Spec.map (CommRingCat.ofHom (Int.castRingHom ℚ))`. Establish `H : IsPullback (toInvOpen f ℚ k hk) (𝟙 _ ≫ pullback.snd f φ) ((invOpen f k).ι ≫ f) φ` using `(IsOpenImmersion.isPullback_lift_id _ _ _).paste_vert (IsPullback.of_hasPullback _ _)`. Establish `: IsDominant φ`. Rewrite using `[isDominant_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).mpr (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).mp (Int.cast_injective (α := ℚ))]`. Conclude with `bot_le)`. Establish `: IsSchemeTheoreticallyDominant φ` using `.of_isDominant φ`. Establish `: IsSchemeTheoreticallyDominant (toInvOpen f ℚ k hk)` using `.of_isPullback H.flip`.
-
-Establish `: QuasiCompact (toInvOpen f ℚ k hk)` using `MorphismProperty.of_isPullback H.flip inferInstance`. Conclude with `(toInvOpen f ℚ k hk).app_injective W`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GenericSectionsInj.proof : GenericSectionsInj.Statement := by
   intro X f _ _

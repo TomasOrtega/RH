@@ -9,7 +9,7 @@ namespace LateralTheory.EtaleFoundations.ExactIffPf
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `: Mono φ.hom` using `inferInstance`. Establish `: Mono (φ.hom.app (op U))` using `inferInstance`. Conclude with `(ModuleCat.mono_iff_injective _).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inj_of_mono {F G : Shv R} (φ : F ⟶ G) [Mono φ] (U : Scheme.{0}) :
     Function.Injective (Sec.map φ (U := U)) := by
@@ -18,11 +18,11 @@ theorem inj_of_mono {F G : Shv R} (φ : F ⟶ G) [Mono φ] (U : Scheme.{0}) :
   exact (ModuleCat.mono_iff_injective _).1 this
 
 /- English proof (translation)
-Set `E` to `sheafToPresheaf Scheme.etaleTopology.{0} (ModuleCat.{1} (ULift.{1} R)) ⋙ (evaluation _ _).obj (op U)`. Establish `hl : IsLimit (Fork.ofι (E.map (kernel.ι φ)) (by rw [← Functor.map_comp, kernel.condition, Functor.map_zero, comp_zero]) : Fork (E.map φ) 0)` using `isLimitOfHasKernelOfPreservesLimit E φ`. Set `M` to `LinearMap.ker (φ.hom.app (op U)).hom`. Set `s : ModuleCat.of (ULift.{1} R) M ⟶ E.obj F` to `ModuleCat.ofHom M.subtype`. Establish `hs : s ≫ E.map φ = s ≫ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `[s, E]`. Take `⟨l, hl'⟩` from `Fork.IsLimit.lift' hl s hs`. Use `⟨l.hom ⟨b, hb⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (fun m => m.hom (⟨b, hb⟩ : M)) hl'` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `this` using `[s, E]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_sec {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) (b : Sec F U) (hb : Sec.map φ b = 0) :
     ∃ k : Sec (kernel φ) U, Sec.map (kernel.ι φ) k = b := by
@@ -42,19 +42,17 @@ theorem ker_sec {F G : Shv R} (φ : F ⟶ G) (U : Scheme.{0}) (b : Sec F U) (hb 
   simpa [s, E] using this
 
 /- English proof (translation)
-Rewrite using `[S.exact_iff_epi_kernel_lift, ← Sheaf.isLocallySurjective_iff_epi' (φ := kernel.lift S.g S.f S.zero)]`. Use `set φ := kernel.lift S.g S.f S.zero with hφ`. Establish `hfac : ∀ V (a : Sec S.X₁ V), Sec.map (kernel.ι S.g) (Sec.map φ a) = Sec.map S.f a`. Introduce `V a`. Use `show ((φ ≫ kernel.ι S.g).hom.app (op V)).hom a = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ, kernel.lift_ι]`. Establish `hnat : ∀ {V U : Scheme.{0}} (g : V ⟶ U) (k : Sec (kernel S.g) U), Sec.map (kernel.ι S.g) (Sec.res g k) = Sec.res g (Sec.map (kernel.ι S.g) k)`. Introduce `V U g k`. Use `congrArg (fun m => m.hom k) ((kernel.ι S.g).hom.naturality g.op)` as an intermediate fact. Simplify using `[Sec.map, Sec.res] at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h U b hb`. Take `⟨k, rfl⟩` from `ker_sec S.g U b hb`. Use `⟨_, Presheaf.imageSieve_mem Scheme.etaleTopology.{0} φ.hom k, ?_⟩` and prove the remaining obligations. Introduce and unpack `V g ⟨t, ht⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← hfac]`. Rewrite using `[show Sec.map φ t = Sec.res g k from ht, hnat]`. Introduce `h`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `U k`. Take `⟨T, hT, hTk⟩` from `h U (Sec.map (kernel.ι S.g) k) (by show ((kernel.ι S.g ≫ S.g).hom.app (op U)).hom k = 0`. Rewrite using `[kernel.condition]`. Use the proof step `rfl)`. Use `Scheme.etaleTopology.superset_covering ?_ hT` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `V g hg`. Take `⟨a, ha⟩` from `hTk V g hg`. Use `⟨a, ?_⟩` and prove the remaining obligations. Apply `inj_of_mono (kernel.ι S.g) V` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Sec.map (kernel.ι S.g) (Sec.map φ a) = Sec.map (kernel.ι S.g) (Sec.res g k)`.
-
-Rewrite using `[hfac, hnat, ha]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔ ∀ U (b : Sec S.X₂ U), Sec.map S.g b = 0 →
     Loc U fun V g => ∃ a : Sec S.X₁ V, Sec.map S.f a = Sec.res g b := by
@@ -94,7 +92,7 @@ theorem exact_iff (S : ShortComplex (Shv R)) : S.Exact ↔ ∀ U (b : Sec S.X₂
 end LateralTheory.EtaleFoundations.ExactIffPf
 
 /- English proof (translation)
-Introduce `R _ S`. Conclude with `LateralTheory.EtaleFoundations.ExactIffPf.exact_iff S`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.etale_sheaf_short_complex_exact_iff_local_lifts_holds : LateralTheory.EtaleFoundations.EtaleSheafShortComplexExactIffLocallyLifts := by
   intro R _ S

@@ -10,33 +10,33 @@ namespace PI.PolynomialProperness.CoreW
 def eN {n : ℕ} (x : Fin n → ℂ) : ℝ := ‖(WithLp.toLp 2 x : EuclideanSpace ℂ (Fin n))‖
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem eN_nonneg {n : ℕ} (x : Fin n → ℂ) : 0 ≤ eN x := norm_nonneg _
 
 /- English proof (translation)
-Simplify using `only [eN, WithLp.toLp_add]`. Conclude with `norm_add_le _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eN_add {n : ℕ} (x y : Fin n → ℂ) : eN (x + y) ≤ eN x + eN y := by
   simp only [eN, WithLp.toLp_add]
   exact norm_add_le _ _
 
 /- English proof (translation)
-Simplify using `only [eN, WithLp.toLp_sub]`. Conclude with `norm_sub_le _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eN_sub {n : ℕ} (x y : Fin n → ℂ) : eN (x - y) ≤ eN x + eN y := by
   simp only [eN, WithLp.toLp_sub]
   exact norm_sub_le _ _
 
 /- English proof (translation)
-Simplify using `only [eN, WithLp.toLp_smul]`. Conclude with `norm_smul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eN_smul {n : ℕ} (c : ℂ) (x : Fin n → ℂ) : eN (c • x) = ‖c‖ * eN x := by
   simp only [eN, WithLp.toLp_smul]
   exact norm_smul _ _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [eN]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Conclude with `(eN_add _ _).trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eN_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Fin n → ℂ) :
     eN (∑ i ∈ s, f i) ≤ ∑ i ∈ s, eN (f i) := by
@@ -48,14 +48,14 @@ theorem eN_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → Fin n → ℂ) 
     exact (eN_add _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-Rewrite using `[eN, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))]`. Simplify using `[nsq, Complex.sq_norm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eN_sq {n : ℕ} (x : Fin n → ℂ) : eN x ^ 2 = nsq x := by
   rw [eN, EuclideanSpace.norm_eq, Real.sq_sqrt (Finset.sum_nonneg (fun i _ => sq_nonneg _))]
   simp [nsq, Complex.sq_norm]
 
 /- English proof (translation)
-Establish `e : star w ⬝ᵥ v = inner ℂ (WithLp.toLp 2 w : EuclideanSpace ℂ (Fin n)) (WithLp.toLp 2 v)`. Simplify using `[PiLp.inner_apply, dotProduct, RCLike.inner_apply, mul_comm]`. Rewrite using `[e]`. Conclude with `norm_inner_le_norm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_le {n : ℕ} (w v : Fin n → ℂ) : ‖star w ⬝ᵥ v‖ ≤ eN w * eN v := by
   have e : star w ⬝ᵥ v =
@@ -65,7 +65,7 @@ theorem dot_le {n : ℕ} (w v : Fin n → ℂ) : ‖star w ⬝ᵥ v‖ ≤ eN w 
   exact norm_inner_le_norm _ _
 
 /- English proof (translation)
-Simplify using `[nsq, dotProduct, Complex.normSq_eq_conj_mul_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nsq_ofReal {n : ℕ} (x : Fin n → ℂ) : ((nsq x : ℝ) : ℂ) = star x ⬝ᵥ x := by
   simp [nsq, dotProduct, Complex.normSq_eq_conj_mul_self]
@@ -75,7 +75,7 @@ section form
 variable {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hH, hHH, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_H_dot (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) :
     star (H *ᵥ v) ⬝ᵥ (H *ᵥ v) = star v ⬝ᵥ v := by
@@ -83,7 +83,7 @@ theorem star_H_dot (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) :
     Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `h : ((nsq (H *ᵥ v) : ℝ) : ℂ) = ((nsq v : ℝ) : ℂ)`. Rewrite using `[nsq_ofReal, nsq_ofReal, star_H_dot H hH hHH v]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsq_H (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) : nsq (H *ᵥ v) = nsq v := by
   have h : ((nsq (H *ᵥ v) : ℝ) : ℂ) = ((nsq v : ℝ) : ℂ) := by
@@ -91,14 +91,14 @@ theorem nsq_H (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) : nsq (H *�
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h : eN (H *ᵥ v) ^ 2 = eN v ^ 2` using `by rw [eN_sq, eN_sq, nsq_H H hH hHH]`. Conclude with `(pow_left_inj₀ (eN_nonneg _) (eN_nonneg _) two_ne_zero).mp h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eN_H (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) : eN (H *ᵥ v) = eN v := by
   have h : eN (H *ᵥ v) ^ 2 = eN v ^ 2 := by rw [eN_sq, eN_sq, nsq_H H hH hHH]
   exact (pow_left_inj₀ (eN_nonneg _) (eN_nonneg _) two_ne_zero).mp h
 
 /- English proof (translation)
-Unfold `herm`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem herm_le (hH : Hᴴ = H) (hHH : H * H = 1) (v w : Fin n → ℂ) :
     ‖herm H v w‖ ≤ eN v * eN w := by
@@ -107,7 +107,7 @@ theorem herm_le (hH : Hᴴ = H) (hHH : H * H = 1) (v w : Fin n → ℂ) :
     _ = eN v * eN w := by rw [eN_H H hH hHH, mul_comm]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_H_dot H hH hHH, nsq_ofReal]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_H_self (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) :
     herm H v (H *ᵥ v) = ((nsq v : ℝ) : ℂ) := by
@@ -115,7 +115,7 @@ theorem herm_H_self (hH : Hᴴ = H) (hHH : H * H = 1) (v : Fin n → ℂ) :
   rw [star_H_dot H hH hHH, nsq_ofReal]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_iso (s : Matrix (Fin n) (Fin n) ℂ) (hs : sᴴ * H * s = H) (v w : Fin n → ℂ) :
     herm H (s *ᵥ v) (s *ᵥ w) = herm H v w := by
@@ -123,7 +123,7 @@ theorem herm_iso (s : Matrix (Fin n) (Fin n) ℂ) (hs : sᴴ * H * s = H) (v w :
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hs]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[← Complex.star_def, Matrix.star_dotProduct, star_star, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, hH]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_conj (hH : Hᴴ = H) (v w : Fin n → ℂ) : conj (herm H v w) = herm H w v := by
   unfold herm
@@ -131,40 +131,40 @@ theorem herm_conj (hH : Hᴴ = H) (v w : Fin n → ℂ) : conj (herm H v w) = he
     ← Matrix.dotProduct_mulVec, hH]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_sub, dotProduct_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sub_left (v v' w : Fin n → ℂ) : herm H (v - v') w = herm H v w - herm H v' w := by
   simp [herm, Matrix.mulVec_sub, dotProduct_sub]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_left (c : ℂ) (v w : Fin n → ℂ) : herm H (c • v) w = c * herm H v w := by
   simp [herm, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[herm, Matrix.mulVec_sum, dotProduct_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sum_left {ι : Type} [Fintype ι] (f : ι → Fin n → ℂ) (w : Fin n → ℂ) :
     herm H (∑ i, f i) w = ∑ i, herm H (f i) w := by
   simp [herm, Matrix.mulVec_sum, dotProduct_sum]
 
 /- English proof (translation)
-Simplify using `[herm, star_sub, sub_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sub_right (hH : Hᴴ = H) (v w w' : Fin n → ℂ) :
     herm H v (w - w') = herm H v w - herm H v w' := by
   simp [herm, star_sub, sub_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, star_smul, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_smul_right (hH : Hᴴ = H) (c : ℂ) (v w : Fin n → ℂ) :
     herm H v (c • w) = conj c * herm H v w := by
   simp [herm, star_smul, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `[herm, star_sum, sum_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_sum_right (hH : Hᴴ = H) {ι : Type} [Fintype ι] (f : ι → Fin n → ℂ) (v : Fin n → ℂ) :
     herm H v (∑ i, f i) = ∑ i, herm H v (f i) := by
@@ -185,9 +185,9 @@ def proj (H : Matrix (Fin n) (Fin n) ℂ) (Γi : Matrix ι ι ℂ) (p : ι → F
   ∑ i, coef H Γi p y i • p i
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[herm_sum_left]`. Simplify using `only [herm_smul_left]`. Establish `e : (∑ i, coef H Γi p y i * herm H (p i) (p j)) = (gramOf H p *ᵥ coef H Γi p y) j`. Simplify using `only [Matrix.mulVec, dotProduct, gramOf, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl (fun i _ => mul_comm _ _)`. Rewrite using `[e, coef, Matrix.mulVec_mulVec, hG, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_proj_left (H : Matrix (Fin n) (Fin n) ℂ) (Γi : Matrix ι ι ℂ) (p : ι → Fin n → ℂ)
     (hG : gramOf H p * Γi = 1) (y : Fin n → ℂ) (j : ι) :
@@ -201,7 +201,7 @@ theorem herm_proj_left (H : Matrix (Fin n) (Fin n) ℂ) (Γi : Matrix ι ι ℂ)
   rw [e, coef, Matrix.mulVec_mulVec, hG, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[herm_sub_left, herm_proj_left H Γi p hG y j, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_orth (H : Matrix (Fin n) (Fin n) ℂ) (Γi : Matrix ι ι ℂ) (p : ι → Fin n → ℂ)
     (hG : gramOf H p * Γi = 1) (y : Fin n → ℂ) (j : ι) :
@@ -209,7 +209,7 @@ theorem proj_orth (H : Matrix (Fin n) (Fin n) ℂ) (Γi : Matrix ι ι ℂ) (p :
   rw [herm_sub_left, herm_proj_left H Γi p hG y j, sub_self]
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[herm_sum_right H hH]`. Simplify using `[herm_smul_right H hH, hx]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_proj_right (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (Γi : Matrix ι ι ℂ)
     (p : ι → Fin n → ℂ) (y x : Fin n → ℂ) (hx : ∀ j, herm H x (p j) = 0) :
@@ -219,7 +219,7 @@ theorem herm_proj_right (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (Γi : 
   simp [herm_smul_right H hH, hx]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lincomb_bound (c : ι → ℂ) (q : ι → Fin n → ℂ) (a R : ℝ) (_hR : 0 ≤ R)
     (hc : ∀ i, ‖c i‖ ≤ a) (hq : ∀ i, eN (q i) ≤ R) :
@@ -233,9 +233,9 @@ theorem lincomb_bound (c : ι → ℂ) (q : ι → Fin n → ℂ) (a R : ℝ) (_
         ring
 
 /- English proof (translation)
-Establish `hb : ∀ k, ‖herm H y (p k)‖ ≤ eN y * R` using `fun k => (herm_le H hH hHH y (p k)).trans (mul_le_mul_of_nonneg_left (hp k) (eN_nonneg _))`. Unfold `coef`. Simplify using `only [Matrix.mulVec, dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hb k) (norm_nonneg _))`. Use `_ = (∑ k, ‖Γi i k‖) * (eN y * R) := by rw [Finset.sum_mul]`. Use `_ ≤ (∑ j, ∑ k, ‖Γi j k‖) * (eN y * R) := by`. Apply `mul_le_mul_of_nonneg_right _ ((norm_nonneg _).trans (hb i))` to reduce the goal to its premises. Conclude with `Finset.single_le_sum (f := fun j => ∑ k, ‖Γi j k‖) (fun j _ => Finset.sum_nonneg (fun k _ => norm_nonneg _)) (Finset.mem_univ i)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem coef_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (Γi : Matrix ι ι ℂ) (p : ι → Fin n → ℂ) (R : ℝ) (hp : ∀ k, eN (p k) ≤ R)
@@ -256,7 +256,7 @@ theorem coef_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H
           (fun j _ => Finset.sum_nonneg (fun k _ => norm_nonneg _)) (Finset.mem_univ i)
 
 /- English proof (translation)
-The claim follows from `lincomb_bound _ _ _ R hR (fun i => coef_bound H hH hHH Γi p R hp y i) hp`.
+A detailed English derivation is pending.
 -/
 theorem proj_bound (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (hHH : H * H = 1)
     (Γi : Matrix ι ι ℂ) (p : ι → Fin n → ℂ) (R : ℝ) (hR : 0 ≤ R) (hp : ∀ k, eN (p k) ≤ R)

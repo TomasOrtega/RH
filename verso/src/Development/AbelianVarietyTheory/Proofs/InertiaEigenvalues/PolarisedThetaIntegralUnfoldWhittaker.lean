@@ -24,9 +24,9 @@ open GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.ZEul.lastRow, Units.val_mul, GroundTheory.Automorphic.FourierWhittaker.coe_uGL, Matrix.mul_apply, GroundTheory.Automorphic.FourierWhittaker.uMat_apply]`. Rewrite using `[Finset.sum_eq_single (Fin.last m)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg (Ne.symm hc), dif_neg (not_lt.2 (Fin.le_last c)), zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lastRow_uGL_mul (X : GroundTheory.Automorphic.FourierWhittaker.Pos (m + 1) → Ad E) (g : GA E (m + 1)) :
     GlobalTheory.ZEul.lastRow (GroundTheory.Automorphic.FourierWhittaker.uGL X * g) = GlobalTheory.ZEul.lastRow g := by
@@ -40,7 +40,7 @@ theorem lastRow_uGL_mul (X : GroundTheory.Automorphic.FourierWhittaker.Pos (m + 
   · simp
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.JSW.whit, GroundTheory.Automorphic.FourierWhittaker.whittaker]`. Rewrite using `[← MeasureTheory.integral_const_mul]`. Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[fT_of_lastRow (lastRow_uGL_mul X g), mul_assoc (GroundTheory.Automorphic.FourierWhittaker.uGL X) g]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -61,19 +61,19 @@ open GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `unfold indN; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indN_eq_re (N : ℕ) (y : Fin (m + 1) → Af E) : indN N y = ((indN N y).re : ℂ) := by
   unfold indN; split_ifs <;> simp
 
 /- English proof (translation)
-Apply the tactic sequence `unfold indN; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem indN_re_nonneg (N : ℕ) (y : Fin (m + 1) → Af E) : 0 ≤ (indN N y).re := by
   unfold indN; split_ifs <;> simp
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ detPow E (m + 1) x g` using `norm_nonneg _`. Rewrite using `[wt, Real.coe_toNNReal _ (mul_nonneg (indN_re_nonneg N _) h0), Complex.ofReal_mul, ← indN_eq_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_coe (N : ℕ) (x : ℝ) (g : GA E (m + 1)) :
     (((wt N x g : ℝ≥0) : ℝ) : ℂ) = indN N (yFin g) * (detPow E (m + 1) x g : ℂ) := by
@@ -81,7 +81,7 @@ theorem wt_coe (N : ℕ) (x : ℝ) (g : GA E (m + 1)) :
   rw [wt, Real.coe_toNNReal _ (mul_nonneg (indN_re_nonneg N _) h0), Complex.ofReal_mul, ← indN_eq_re]
 
 /- English proof (translation)
-Rewrite using `[sqrtC, Complex.conj_ofReal, ← Complex.ofReal_mul, Real.mul_self_sqrt (hΦ u).1]`. Conclude with `Complex.ext (by simp) (by simp [(hΦ u).2])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sqrtC_mul_conj {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0) (u : Fin (m + 1) → Cinf E) :
     sqrtC Φ u * conj (sqrtC Φ u) = Φ u := by
@@ -89,7 +89,7 @@ theorem sqrtC_mul_conj {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 �
   exact Complex.ext (by simp) (by simp [(hΦ u).2])
 
 /- English proof (translation)
-Rewrite using `[wt_coe, fT, fT, map_mul]`. Establish `h` using `sqrtC_mul_conj hΦ (yInf g)`. Express the relevant statement in the definitionally equal form `φ (g * (infGL E (m + 1)) (secInv (yInf g))) * conj (φ' (g * (infGL E (m + 1)) (secInv (yInf g)))) * Φ (yInf g) * indN N (yFin g) * (detPow E (m + 1) x g : ℂ) = _`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_lastRow_eq {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0)
     (φ φ' : GA E (m + 1) → ℂ) (N : ℕ) (x : ℝ) (g : GA E (m + 1)) :
@@ -110,7 +110,7 @@ open GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[wt_coe, jswWhit_fT, jswWhit_fT, map_mul]`. Establish `h` using `sqrtC_mul_conj hΦ (yInf g)`. Express the relevant statement in the definitionally equal form `GlobalTheory.JSW.whit φ (g * (infGL E (m + 1)) (secInv (yInf g))) * conj (GlobalTheory.JSW.whit φ' (g * (infGL E (m + 1)) (secInv (yInf g)))) * Φ (yInf g) * indN N (yFin g) * (detPow E (m + 1) x g : ℂ) = _`. Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem uInt_eq {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0)
     (φ φ' : GA E (m + 1) → ℂ) (N : ℕ) (x : ℝ) (g : GA E (m + 1)) :
@@ -127,7 +127,7 @@ theorem uInt_eq {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ 
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-Establish `h : GlobalTheory.SmGL.unipB E (Fin (m + 1)) = mirU E (m + 1) 0`. Use extensionality with `γ`. Rewrite using `[GlobalTheory.SmGL.mem_unipB, mem_mirU_zero]`. Rewrite using `[GlobalTheory.CellDec.NE, ratMirU, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem NE_eq_ratMirU_zero : GlobalTheory.CellDec.NE E (m + 1) = ratMirU E (m + 1) 0 := by
   have h : GlobalTheory.SmGL.unipB E (Fin (m + 1)) = mirU E (m + 1) 0 := by
@@ -137,9 +137,9 @@ theorem NE_eq_ratMirU_zero : GlobalTheory.CellDec.NE E (m + 1) = ratMirU E (m + 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Introduce `i k h`. Use `hγ i k (Nat.zero_le _) ?_` and prove the remaining obligations. Break down `h with h | h` into its components or cases. Use `k.2` as an intermediate fact. Express the relevant statement in the definitionally equal form `(k : ℕ) ≤ i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use linear arithmetic over natural numbers and integers. Use `k.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isMir_of_mem_mirU_zero {γ : GL (Fin (m + 1)) E} (hγ : γ ∈ mirU E (m + 1) 0) : IsMir m γ := by
   intro i k h
@@ -154,9 +154,9 @@ namespace GlobalTheory.ZUnf
 open GlobalTheory.MirTower GlobalTheory.CuspGeneric Formalism.L2.Host
 
 /- English proof (translation)
-Rewrite using `[uInt_eq hΦ, enorm_mul, enorm_mul, RCLike.enorm_conj, pow_two]`. Use `congr 1`. Establish `h0 : (((wt N x g : ℝ≥0) : ℝ) : ℂ) = ((wt N x g : ℝ≥0) : ℂ)` using `rfl`. Rewrite using `[h0, enorm_eq_nnnorm]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem enorm_uInt_self {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {m : ℕ}
     {Φ : (Fin (m + 1) → Cinf E) → ℂ} (hΦ : ∀ u, 0 ≤ (Φ u).re ∧ (Φ u).im = 0)
@@ -171,21 +171,19 @@ theorem enorm_uInt_self {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
   simp
 
 /- English proof (translation)
-Introduce `E _ _ _ m μ _`. Use `⟨1, one_pos, ?_⟩` and prove the remaining obligations. Introduce `π π' ω ω' hω hω' hπ hπ' φ φ' hφ hφ' N Φ _hN hΦs _hΦc hΦr hΦp 𝓕 𝓕₀ h𝓕 h𝓕₀ x _hx h1 h2`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E (m + 1)`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E (m + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E (m + 1)`. Take `⟨𝓕P, h𝓕P⟩ : ∃ 𝓕P, IsFundamentalDomain (ratMirU E (m + 1) m) 𝓕P μ` from `by haveI : DiscreteTopology (ratMirU E (m + 1) m) := discrete_of_le_range (Subgroup.map_le_range _ _)`. Conclude with `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain _ μ`. Establish `h𝓕₀' : IsFundamentalDomain (ratMirU E (m + 1) 0) 𝓕₀ μ` using `NE_eq_ratMirU_zero (E := E) (m := m) ▸ h𝓕₀`. Take `⟨hc, hl, hv⟩` from `GlobalTheory.T.cuspFormRapidSpan_continuous_automorphic_cuspidal E m π ω hω hπ φ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hc', hl', hv'⟩` from `GlobalTheory.T.cuspFormRapidSpan_continuous_automorphic_cuspidal E m π' ω' hω' hπ' φ' hφ'`. Establish `hΦcont : Continuous Φ` using `hΦs.continuous`. Establish `hG` using `GlobalTheory.T.archTranslatedSqrtWeightedFun_good_mirabolicTop E m φ hc hl hv Φ hΦcont hΦr (GlobalTheory.StdCharConductor.psi E)`. Establish `hG'` using `GlobalTheory.T.archTranslatedSqrtWeightedFun_good_mirabolicTop E m φ' hc' hl' hv' Φ hΦcont hΦr (GlobalTheory.StdCharConductor.psi E)`. Take `⟨hwm, hwΓ, hwU⟩` from `GlobalTheory.T.lastRowCongruenceDetWeight_measurable_invariant E m N x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU` using `GlobalTheory.MirTower.unfold_mirabolic E (m + 1) μ (GlobalTheory.StdCharConductor.psi E) (GlobalTheory.StdCharConductor.stdPsi_psi E) 𝓕P 𝓕₀ h𝓕P h𝓕₀' (wt N x) hwm hwΓ hwU`. Establish `hW : ∀ f : GA E (m + 1) → ℂ, Good (GlobalTheory.StdCharConductor.psi E) m f → ∀ g, GlobalTheory.JSW.whit f g = GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m f g` using `fun f hf g => GlobalTheory.T.globalWhittakerCoeff_eq_iteratedColumnTransform E m f hf.cont (fun γ hγ g => hf.left γ (isMir_of_mem_mirU_zero hγ) g) g`. Establish `hd : ∫⁻ g in 𝓕P, ‖fT φ Φ g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) ∂μ ≠ ⊤`. Rewrite using `[hU.1 _ hG]`. Use `show ∫⁻ g in 𝓕₀, ‖GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ Φ) g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) ∂μ ≠ ⊤`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ∀ g, ‖GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ Φ) g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) = ‖GlobalTheory.ZEul.uInt φ φ Φ N x g‖ₑ` using `fun g => by rw [enorm_uInt_self hΦp, hW _ hG]`. Simplify using `only [e]`. Conclude with `h1`. Establish `hd' : ∫⁻ g in 𝓕P, ‖fT φ' Φ g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) ∂μ ≠ ⊤`. Rewrite using `[hU.1 _ hG']`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show ∫⁻ g in 𝓕₀, ‖GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ' Φ) g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) ∂μ ≠ ⊤`. Establish `e : ∀ g, ‖GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ' Φ) g‖ₑ ^ 2 * (wt N x g : ℝ≥0∞) = ‖GlobalTheory.ZEul.uInt φ' φ' Φ N x g‖ₑ` using `fun g => by rw [enorm_uInt_self hΦp, hW _ hG']`. Simplify using `only [e]`. Conclude with `h2`. Take `⟨hI1, hI2, hEq⟩` from `hU.2 _ _ hG hG' hd hd'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : GlobalTheory.ZEul.uInt φ φ' Φ N x = fun g => GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ Φ) g * conj (GlobalTheory.CuspGeneric.whit (GlobalTheory.StdCharConductor.psi E) m (fT φ' Φ) g) * ((wt N x g : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[uInt_eq hΦp, hW _ hG, hW _ hG']`. Establish `e2 : (fun g => Psi φ φ' Φ N g (GlobalTheory.ZEul.lastRow g) * (detPow E (m + 1) x g : ℂ)) = fun g => fT φ Φ g * conj (fT φ' Φ g) * ((wt N x g : ℝ) : ℂ)` using `funext fun g => psi_lastRow_eq hΦp φ φ' N x g`. Establish `hfin : ∫⁻ g in 𝓕P, ‖Psi φ φ' Φ N g (GlobalTheory.ZEul.lastRow g) * (detPow E (m + 1) x g : ℂ)‖ₑ ∂μ ≠ ⊤`.
-
-Rewrite using `[show (fun g => ‖Psi φ φ' Φ N g (GlobalTheory.ZEul.lastRow g) * (detPow E (m + 1) x g : ℂ)‖ₑ) = fun g => ‖fT φ Φ g * conj (fT φ' Φ g) * ((wt N x g : ℝ) : ℂ)‖ₑ from funext fun g => by rw [psi_lastRow_eq hΦp]]`. Conclude with `hI1.2.ne`. Use `⟨by rw [e1]; exact hI2, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.rankinSelbergThetaIntegral_unfold_mirabolic E m μ 𝓕 𝓕P h𝓕 h𝓕P φ φ' hc.measurable hc'.measurable hl hl' N Φ hΦcont x hfin, e2, Complex.ofReal_one, one_mul, e1]`. Conclude with `hEq`.
+A detailed English derivation is pending.
 -/
 theorem zint_unfold : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (μ : Measure (GA E (m + 1))) [μ.IsHaarMeasure],
   ∃ c : ℝ, 0 < c ∧ ∀ (π π' : CuspSub E (m + 1)) (ω ω' : HChar E), ω.IsUnitary → ω'.IsUnitary → π.HasCentChar ω →

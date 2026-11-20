@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteClassSum
 
 /- English proof (translation)
-Set `S : Subgroup G` to `{ carrier := {k | ∀ h, Φ (h * k) = Φ h} mul_mem' := fun {a b} ha hb h => by rw [← mul_assoc, hb, ha] one_mem' := fun h => by rw [mul_one] inv_mem' := fun {a} ha h => by rw [← ha (h * a⁻¹), inv_mul_cancel_right] }`. Conclude with `fun k hk => (sup_le (show A ≤ S from hA) (show B ≤ S from hB) : A ⊔ B ≤ S) hk`.
+Introduce a local definition for the expression. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem invariant_sup {G X : Type} [Group G] {A B : Subgroup G} {Φ : G → X} (hA : ∀ k ∈ A, ∀ h, Φ (h * k) = Φ h)
     (hB : ∀ k ∈ B, ∀ h, Φ (h * k) = Φ h) : ∀ k ∈ A ⊔ B, ∀ h, Φ (h * k) = Φ h := by
@@ -23,19 +23,19 @@ theorem invariant_sup {G X : Type} [Group G] {A B : Subgroup G} {Φ : G → X} (
   exact fun k hk => (sup_le (show A ≤ S from hA) (show B ≤ S from hB) : A ⊔ B ≤ S) hk
 
 /- English proof (translation)
-Establish `hs : ∀ i, (Bridge.stab (π.comp Γ.subtype) J (y i) : Set Γ) = {γ : Γ | (a i)⁻¹ * (γ : G) * a i ∈ J.comap π}`. Introduce `i`. Use extensionality with `γ`. Rewrite using `[SetLike.mem_coe, Bridge.mem_stab, Set.mem_setOf_eq, Subgroup.mem_comap, map_mul, map_mul, map_inv, ha]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfin : ∀ i, {γ : Γ | (a i)⁻¹ * (γ : G) * a i ∈ J.comap π}.Finite` using `fun i => GlobalTheory.InnerClassSum.finite_stab_of_measure ν Γ _ h𝓖 (h1 ▸ one_ne_zero) (h1 ▸ ENNReal.one_ne_top) (a i)`. Establish `him : ∀ i, {γ : G | γ ∈ Γ ∧ (a i)⁻¹ * γ * a i ∈ J.comap π} = Subtype.val '' {γ : Γ | (a i)⁻¹ * (γ : G) * a i ∈ J.comap π}`. Introduce `i`. Use extensionality with `γ`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image, Subtype.exists, exists_and_right, exists_eq_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => ⟨h.1, h.2⟩, fun ⟨h, h'⟩ => ⟨h, h'⟩⟩`. Establish `hu : ∀ x : G, ∃! i, ∃ γ ∈ Γ, ∃ k ∈ J.comap π, x = γ * a i * k`. Introduce `x`. Use `(existsUnique_congr fun i => ?_).1 (hy (π x))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, γ.2, ((γ : G) * a i)⁻¹ * x, ?_, by group⟩` and prove the remaining obligations. Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, map_mul, ha, e]`. Express the relevant statement in the definitionally equal form `(π γ * y i)⁻¹ * (π γ * y i * k) ∈ J`. Rewrite using `[inv_mul_cancel_left]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `k.2`. Introduce and unpack `⟨γ, hγ, k, hk, rfl⟩`. Conclude with `⟨⟨γ, hγ⟩, ⟨π k, hk⟩, by rw [map_mul, map_mul, ha]; rfl⟩`. Take `⟨-, hi, he⟩` from `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset G ν Γ (J.comap π) 𝓖 h𝓖 ho (h1 ▸ ENNReal.one_ne_top) I a hu (fun i => him i ▸ (hfin i).image _) Φ hl hr`. Use `⟨fun i => ?_, hi, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hfin i` as an intermediate fact. Rewrite `this` using `[← hs]`. Conclude with `this`. Rewrite using `[he, h1]`. Simplify using `only [ENNReal.toReal_one, Complex.ofReal_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[him, Set.ncard_image_of_injective _ Subtype.val_injective, ← hs, ← Nat.card_coe_set_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [Group H] (ν : Measure G) [ν.IsMulLeftInvariant] (π : G →* H) (Γ : Subgroup G) [Countable Γ] {𝓖 : Set G}
@@ -82,11 +82,11 @@ theorem integral_eq_sum {G H : Type} [Group G] [TopologicalSpace G] [IsTopologic
     rfl
 
 /- English proof (translation)
-Introduce `D V _ K hK μ 𝓕 hμ I _ y hy z hz Φ hΦ`. Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hB` using `hT.2.2.2.1`. Establish `hG` using `hT.2.2.2.2.1`. Establish `hC` using `hT.2.2.2.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hμ.1.1` as an intermediate fact. Establish `hr : ∀ k ∈ K.comap (Lev.finE V), ∀ h, Φ (h * k) = Φ h`. Rewrite using `[GlobalTheory.Mass.Levels.comap_finE]`. Conclude with `invariant_sup hΦ.level hΦ.real`. Establish `ho : IsOpen (((GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin V K).comap (finHom V).rangeRestrict : Subgroup (GA D V)) : Set (GA D V))` using `hK.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : μ ((GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin V K).comap (finHom V).rangeRestrict : Subgroup (GA D V)) = 1` using `GlobalTheory.Mass.Levels.measure_comap_finE hμ.1`. Conclude with `integral_eq_sum μ (finHom V).rangeRestrict (GQ V) hμ.2 (GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.levelFin V K) ho h1 y hy z hz Φ hΦ.left hr`.
+A detailed English derivation is pending.
 -/
 theorem classSumIntegral : GlobalTheory.IndefiniteRowSideFullHecke.ClassFunctionSumIntegral.ClassSumIntegral := by
   intro D V _ K hK μ 𝓕 hμ I _ y hy z hz Φ hΦ

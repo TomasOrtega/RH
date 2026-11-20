@@ -24,9 +24,9 @@ namespace GlobalTheory.GlueDat
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[finrank_Vp]`. Establish `h1` using `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Establish `h3` using `D.R.m_add_three_le_k`. Take `⟨c, hc⟩` from `h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Ranks.r, Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_loc (p : PlF D) :
     Module.finrank (D.s.atP p).Ep (Vp D p) = D.R.k + 2 * D.R.rS + 1 := by
@@ -39,7 +39,7 @@ theorem finrank_loc (p : PlF D) :
   omega
 
 /- English proof (translation)
-Use `(GlobalTheory.HL.PlacesRec.lattice_local (GlobalTheory.HL.placesOf Z) (nV D) (LatLoc.cL Λ) (LatLoc.isLattice_map _ _ h)).2.1 p` as an intermediate fact. Rewrite using `[LatLoc.localLattice_eq]`. Conclude with `this.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLattice_fg (Z : LocDat D) (Λ : LV D) (h : Submodule.IsLattice D.host.E Λ) (p : PlF D) :
     (lattice₂ D Z.M p Λ).FG := by
@@ -49,9 +49,9 @@ theorem localLattice_fg (Z : LocDat D) (Λ : LV D) (h : Submodule.IsLattice D.ho
   exact this.1
 
 /- English proof (translation)
-Take `⟨A, hA, hAc⟩` from `hG`. Take `⟨A', hA', hAc'⟩` from `hG'`. Take `⟨Ap, hAp, -⟩` from `GlobalTheory.T.rational_unitriangular_frame_change_local_scalings D Z _ _ A hA hAc`. Take `⟨Ap', hAp', -⟩` from `GlobalTheory.T.rational_unitriangular_frame_change_local_scalings D Z _ _ A' hA' hAc'`. Establish `hN` using `(hR p).2.2.2.2.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hfA : (FP p).A.f = scaled Z p (frame F)` using `(hB p).1`. Establish `hfB : (FP p).B.f = scaled Z p (frame F')` using `(hB p).2.1`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).A hN.2.1).2.2 (scaled Z p (frame G)) (by rw [hfA]; exact ⟨Ap p, (hAp p).1, (hAp p).2⟩)`. Conclude with `(GlobalTheory.T.frameDual_unipotentGroup_acts_unitriangular_onto (Z.M p) (Z.agree p).1 (locH Z p) D.R.rS (FP p).B hN.2.2.2.1).2.2 (scaled Z p (frame G')) (by rw [hfB]; exact ⟨Ap' p, (hAp' p).1, (hAp' p).2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem orbit (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) {Tn T'n : ℕ}
     (F G : LFlag (VS D) D.R.rS (Tn : D.host.E)) (F' G' : LFlag (VS D) D.R.rS (T'n : D.host.E))
@@ -73,7 +73,7 @@ theorem orbit (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS)
       (by rw [hfB]; exact ⟨Ap' p, (hAp' p).1, (hAp' p).2⟩)
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Rewrite using `[← hS]`. Conclude with `(hf.mem_set_image).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_img {α : Type*} {S S' : Set α} {f : α → α} (hf : Function.Injective f) (hS : f '' S = S')
     {a b : α} (hb : b = f a) : a ∈ S ↔ b ∈ S' := by
@@ -84,29 +84,27 @@ end GlobalTheory.GlueDat
 open GlobalTheory.GlueDat in
 
 /- English proof (translation)
-Introduce `D Z FP u u' F G F' G' P d0 hk hB hS Λ`. Establish `hOK : ∀ p, (Z.M p).OK` using `fun p => (Z.agree p).1`. Establish `hR` using `hB.2.1`. Establish `hO` using `fun p => orbit Z FP F G F' G' hB.1 hR hS.1 hS.2.1 p`. Establish `hLM` using `fun p (L : Submodule (Z.M p).L.O (Vp D p)) => GlobalTheory.T.generic_local_terms_selfDual_lattices (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_loc p) (hR p) (scaled Z p (frame G)) (scaled Z p (frame G')) (hO p).1 (hO p).2 L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.glued_unimodular_lattice_iff_local_completions D Z FP u u' G G' (GlobalTheory.T.linearIndependent_changedRationalFrames_of_unitriangular D Z FP _ _ F G F' G' hB.1 hR hS.1 hS.2.1) Λ]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hL, hp⟩`. Establish `: ∀ p, ∃ d, lattice₂ D Z.M p Λ ∈ locSet G G' p d` using `fun p => (hLM p _).1.1 ⟨(hp p).1, localLattice_fg Z Λ hL p, (hp p).2.1, (hp p).2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `choose y hy using this`. Conclude with `⟨y, hL, hy⟩`. Introduce and unpack `⟨y, hL, hy⟩`. Use `⟨hL, fun p => ?_⟩` and prove the remaining obligations. Take `⟨h1, -, h3, h4⟩` from `(hLM p _).1.2 ⟨y p, hy p⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h3, h4⟩`. Introduce `y y' h h'`. Use function extensionality and compare the values at `p`. Conclude with `(hLM p _).2 (y p) (y' p) (h.2 p).1 (h'.2 p).1`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨fun p hp => ?_, ?_⟩` and prove the remaining obligations. Take `⟨A, A', hA, hA', hint, hc, hc'⟩` from `hS.2.2.2.2 p hp`. Use `GlobalTheory.T.hermitian_orbit_unique_lattice_integral_frames (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) hk (finrank_loc p) (hR p) (hB.2.2.1 p hp) A A' (fun a b hab => ⟨hA.1 a b hab, hA'.1 a b hab⟩) (fun a => ⟨hA.2 a, hA'.2 a⟩) hint (scaled Z p (frame G)) (scaled Z p (frame G …` as an intermediate fact. Conclude with `this.2 ⟨_, (hy.2 p).1⟩`. Take `⟨Λ₀, hΛ₀, hΛ₀p⟩` from `hB.2.2.2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `(((LatLoc.lattices_local_global D Z).1 Λ Λ₀ hy.1 hΛ₀).1.union P.finite_toSet).subset ?_` and prove the remaining obligations. Introduce `p hp`. Assume the negation of the conclusion as `hc`. Simplify using `only [Set.mem_union, Set.mem_setOf_eq, not_or, not_not, Finset.mem_coe] at hc`. Apply `hp` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(GlobalTheory.T.hermitianDatum_of_term_read_on_lattice (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_loc p) (hR p)).2 (y p) (d0 p) _ _ (hy.2 p).1 (hΛ₀p p hc.2) (by dsimp only [tm]; rw [hc.1]) (by dsimp only [tm]; rw [hc.1]) (fun g _ => by dsimp only [tm]; rw [hc.1])`. Introduce `y y' h hh hmv`. Establish `hloc : ∀ p, ∃ g : Vp D p ≃ₗ[(D.s.atP p).Ep] Vp D p, g ∈ (FP p).UW0 ∧ LocNG.Datum.Moves g (y p) (y' p) ∧ lattice₂ D Z.M p (Formalism.HermitianLatticesTheory.gmap h Λ) = LocNG.img g (lattice₂ D Z.M p Λ)`. Introduce `p`. Apply the tactic sequence `obtain ⟨g, hext, hU, huniq, himg, -⟩ := GlobalTheory.T.rational_isometry_extends_local_isometry D Z p h hh.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g', hext', hm⟩` from `hmv p`. Take `rfl : g' = g` from `huniq g' hext'`. Use `⟨g', Subgroup.subset_closure ⟨hU, fun b => ⟨?_, ?_⟩⟩, hm, (himg Λ).symm⟩` and prove the remaining obligations. Rewrite using `[(hB.1 p).1] show g' (frFac Z.δ p b • baseChange₂ D p (frame F b)) = _`. Rewrite using `[map_smul, hext', hh.2.1 b]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(hB.1 p).2.1] show g' (frFac Z.δ p b • baseChange₂ D p (frame F' b)) = _`. Rewrite using `[map_smul, hext', hh.2.2 b]`. Use `choose g hgU hgm hgimg using hloc`. Establish `hset` using `fun p => (GlobalTheory.T.unitaryComplement_moves_hermitianTerms (Z.M p) (hOK p) (locH Z p) D.R.rS D.R.k (FP p) (finrank_loc p) (hR p) (scaled Z p (frame G)) (scaled Z p (frame G')) (hO p).1 (hO p).2 (g p) (hgU p) (y p) (y' p) (hgm p)).2`. Establish `hlat : Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap h Λ) ↔ Submodule.IsLattice D.host.E Λ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hl`. Establish `e : Λ = Formalism.HermitianLatticesTheory.gmap h.symm (Formalism.HermitianLatticesTheory.gmap h Λ)`. Use extensionality with `x`. Simplify using `[Formalism.HermitianLatticesTheory.gmap]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `LatLoc.isLattice_map _ _ hl`. Conclude with `LatLoc.isLattice_map _ _`. Use `show (Submodule.IsLattice D.host.E Λ ∧ ∀ p, lattice₂ D Z.M p Λ ∈ locSet G G' p (y p)) ↔ (Submodule.IsLattice D.host.E (Formalism.HermitianLatticesTheory.gmap h Λ) ∧ ∀ p, lattice₂ D Z.M p (Formalism.HermitianLatticesTheory.gmap h Λ) ∈ locSet G G' p (y' p))`. Rewrite using `[hlat]`.
-
-Use `and_congr_right fun _ => forall_congr' fun p => ?_` and prove the remaining obligations. Establish `e` using `hgimg p`. Establish `key : ∀ L, L ∈ LocNG.img (g p) '' locSet G G' p (y p) ↔ L ∈ locSet G G' p (y' p)` using `fun L => Set.ext_iff.mp (hset p) L`. Establish `hinj : Function.Injective (LocNG.img (M` using `Z.M p) (g p)) := fun L₁ L₂ e => Submodule.map_injective_of_injective (f := ((g p : Vp D p →ₗ[(D.s.atP p).Ep] Vp D p).restrictScalars (Z.M p).L.O)) (g p).injective e`. Conclude with `mem_iff_of_img hinj (Set.ext key) e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GlueDat.glued_data : ∀ (D : D7) (Z : LocDat D) (FP : ∀ p : PlF D, LocNG.FPair (locH Z p) D.R.rS) (u u' : D.what₂.Word) (F G : LFlag (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)) (F' G' : LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E)) (P : Finset (PlF D)) (d0 : Dat Z FP), 4 * D.R.rS + 7 ≤ D.R.k → BaseOK (Tu D u) (Tu D u') F F' P d0 → StdOff Z P F G F' G' → ∀ Λ : LV D, (Λ ∈ Formalism.L2.SG.Pf.Cnt.GlueSet (VS D).hT (Formalism.L2.SG.Pf.Cnt.UPair D G.fl G') (Formalism.L2.SG.Pf.Cnt.MMof D G.fl G') ↔ ∃ y : Dat Z FP, Λ ∈ globSet G G' y) ∧ (∀ y y' : Dat Z FP, Λ ∈ globSet G G' y → Λ ∈ globSet G G' y' → y = y') ∧ (∀ y : Dat Z FP, Λ ∈ globSet G G' y → (∀ p, p ∉ P → LocNG.Datum.Rel (d0 p) (y p)) ∧ {p | y p ≠ d0 p}.Finite) ∧ ∀ (y y' : Dat Z FP), ∀ h ∈ H0 F F', RMoves h y y' → (Λ ∈ globSet G G' y ↔ Formalism.HermitianLatticesTheory.gmap h Λ ∈ globSet G G' y') := by
   intro D Z FP u u' F G F' G' P d0 hk hB hS Λ

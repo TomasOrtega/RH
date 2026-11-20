@@ -29,7 +29,7 @@ def RestDimBC : Prop :=
 variable {C0 CE1 CE2 X}
 
 /- English proof (translation)
-Introduce `aTop hT aPlus hP b hk` and use `(hQ aTop hT aPlus hP b hk).trans (hB aTop hT aPlus hP b hk)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restDir_of (hQ : RestDirQ C0 CE1 CE2 X) (hB : RestDimBC C0 CE1 CE2 X) : RestDir C0 CE1 CE2 X :=
   fun aTop hT aPlus hP b hk => (hQ aTop hT aPlus hP b hk).trans (hB aTop hT aPlus hP b hk)

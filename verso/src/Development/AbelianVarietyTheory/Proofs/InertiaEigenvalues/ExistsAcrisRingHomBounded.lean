@@ -16,7 +16,7 @@ section General
 variable {l : ℕ} {A : Type} [CommRing A] {u : A} {ρ : ℝ≥0}
 
 /- English proof (translation)
-Use `(denseRange_ofPre l u ρ).induction_on₂ (p := fun x y : Disc l u ρ => ‖x + y‖ ≤ max ‖x‖ ‖y‖) ?_ ?_ x y` and prove the remaining obligations. Conclude with `isClosed_le (continuous_norm.comp (continuous_fst.add continuous_snd)) ((continuous_norm.comp continuous_fst).max (continuous_norm.comp continuous_snd))`. Introduce `a b`. Rewrite using `[← map_add, norm_ofPre, norm_ofPre, norm_ofPre]`. Conclude with `gauge_add_le_max l u ρ a b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_add_le_max_disc (x y : Disc l u ρ) : ‖x + y‖ ≤ max ‖x‖ ‖y‖ := by
   refine (denseRange_ofPre l u ρ).induction_on₂ (p := fun x y : Disc l u ρ => ‖x + y‖ ≤ max ‖x‖ ‖y‖) ?_ ?_ x y
@@ -43,7 +43,7 @@ section Complete
 variable {l : ℕ} [hl : Fact l.Prime] {A : Type} [CommRing A] {u : A} {ρ : ℝ≥0}
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', mul_assoc, hL, ih, pow_succ']`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_lpow_mul (hL : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (l : ℝ)⁻¹ * ‖y‖) (n : ℕ)
     (y : Disc l u ρ) : ‖(l : Disc l u ρ) ^ n * y‖ = (l : ℝ)⁻¹ ^ n * ‖y‖ := by
@@ -52,7 +52,7 @@ theorem norm_lpow_mul (hL : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (
   | succ n ih => rw [pow_succ', mul_assoc, hL, ih, pow_succ']; ring
 
 /- English proof (translation)
-The claim follows from `inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)`.
+A detailed English derivation is pending.
 -/
 theorem inv_l_lt_one : (l : ℝ)⁻¹ < 1 := inv_lt_one_of_one_lt₀ (by exact_mod_cast hl.out.one_lt)
 
@@ -60,12 +60,12 @@ namespace UnitBall
 open Filter Topology
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem (x : unitBall l u ρ) : ‖(x : Disc l u ρ)‖ ≤ 1 := x.2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ', mul_assoc, hmul, ih, pow_succ']`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_pow_mul (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (l : ℝ)⁻¹ * ‖y‖) (n : ℕ)
     (y : Disc l u ρ) : ‖(l : Disc l u ρ) ^ n * y‖ = ((l : ℝ)⁻¹) ^ n * ‖y‖ := by
@@ -74,7 +74,7 @@ theorem norm_pow_mul (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = 
   | succ n ih => rw [pow_succ', mul_assoc, hmul, ih, pow_succ']; ring
 
 /- English proof (translation)
-Rewrite using `[smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_smul_top_iff (n : ℕ) (x : unitBall l u ρ) :
     x ∈ (Ideal.span {((l : ℕ) : unitBall l u ρ)}) ^ n • (⊤ : Submodule (unitBall l u ρ) (unitBall l u ρ)) ↔
@@ -82,14 +82,14 @@ theorem mem_smul_top_iff (n : ℕ) (x : unitBall l u ρ) :
   rw [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']
 
 /- English proof (translation)
-Establish `: (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem inv_pow_pos (n : ℕ) : (0 : ℝ) < ((l : ℝ)⁻¹) ^ n := by
   have : (0 : ℝ) < l := Nat.cast_pos.2 hl.out.pos
   positivity
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(mem_smul_top_iff n x).1 hx`. Establish `e : ((a * ((l : ℕ) : unitBall l u ρ) ^ n : unitBall l u ρ) : Disc l u ρ) = (l : Disc l u ρ) ^ n * (a : Disc l u ρ)` using `by push_cast; ring`. Rewrite using `[e, norm_pow_mul hmul]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_le_of_mem (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (l : ℝ)⁻¹ * ‖y‖) (n : ℕ)
     (x : unitBall l u ρ)
@@ -105,28 +105,26 @@ theorem norm_le_of_mem (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ 
     _ = _ := mul_one _
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) < l` using `Nat.one_lt_cast.2 hl.out.one_lt`. Conclude with `tendsto_pow_atTop_nhds_zero_of_lt_one (inv_nonneg.2 (by linarith)) (inv_lt_one_of_one_lt₀ h1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tendsto_inv_pow : Tendsto (fun n : ℕ => ((l : ℝ)⁻¹) ^ n) atTop (𝓝 0) := by
   have h1 : (1 : ℝ) < l := Nat.one_lt_cast.2 hl.out.one_lt
   exact tendsto_pow_atTop_nhds_zero_of_lt_one (inv_nonneg.2 (by linarith)) (inv_lt_one_of_one_lt₀ h1)
 
 /- English proof (translation)
-Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Establish `hb : ∀ n : ℕ, ‖(x : Disc l u ρ)‖ ≤ ((l : ℝ)⁻¹) ^ n` using `fun n => norm_le_of_mem hmul n x (by simpa [SModEq.sub_mem] using hx n)`. Establish `h0 : ‖(x : Disc l u ρ)‖ ≤ 0` using `ge_of_tendsto' tendsto_inv_pow hb`. Conclude with `Subtype.ext (by simpa using norm_le_zero_iff.1 h0)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f hf`. Establish `hd : ∀ m n, m ≤ n → ‖((f m : Disc l u ρ) - f n)‖ ≤ ((l : ℝ)⁻¹) ^ m` using `fun m n hmn => by`. Use `norm_le_of_mem hmul m (f m - f n) (SModEq.sub_mem.1 (hf hmn))` as an intermediate fact. Simplify using `using this`. Establish `hc : CauchySeq (fun n => (f n : Disc l u ρ))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `cauchySeq_of_le_tendsto_0 (fun N => 2 * ((l : ℝ)⁻¹) ^ N) (fun n m N hn hm => ?_) ?_` and prove the remaining obligations. Rewrite using `[dist_eq_norm]`. Establish `e : (f n : Disc l u ρ) - f m = ((f N : Disc l u ρ) - f m) - ((f N : Disc l u ρ) - f n)` using `by ring`. Rewrite using `[e]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[hd N m hm, hd N n hn]`. Simplify using `using tendsto_inv_pow.const_mul (2 : ℝ)`. Take `⟨L₀, hL⟩` from `cauchySeq_tendsto_of_complete hc`. Establish `hL1 : ‖L₀‖ ≤ 1` using `(isClosed_le continuous_norm continuous_const).mem_of_tendsto hL (Eventually.of_forall fun n => norm_le_one_of_mem (f n))`. Set `L : unitBall l u ρ` to `⟨L₀, hL1⟩`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, mem_smul_top_iff]`. Establish `hn : ‖(f n : Disc l u ρ) - L₀‖ ≤ ((l : ℝ)⁻¹) ^ n`. Establish `ht : Tendsto (fun k => (f n : Disc l u ρ) - f k) atTop (𝓝 ((f n : Disc l u ρ) - L₀))` using `tendsto_const_nhds.sub hL`. Conclude with `(isClosed_le continuous_norm continuous_const).mem_of_tendsto ht (eventually_atTop.2 ⟨n, fun k hk => hd n k hk⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `v : (Disc l u ρ)ˣ` to `(isUnit_l_disc l u ρ).unit`. Establish `hv : (v : Disc l u ρ) = (l : Disc l u ρ)` using `(isUnit_l_disc l u ρ).unit_spec`. Use `set y : Disc l u ρ := ((v⁻¹ ^ n : (Disc l u ρ)ˣ) : Disc l u ρ) * ((f n : Disc l u ρ) - L₀) with hy`. Establish `hly : (l : Disc l u ρ) ^ n * y = (f n : Disc l u ρ) - L₀`. Rewrite using `[hy, ← mul_assoc, ← hv, ← Units.val_pow_eq_pow_val, ← Units.val_mul, ← mul_pow, mul_inv_cancel, one_pow, Units.val_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : ‖y‖ ≤ 1`. Establish `h2 : ((l : ℝ)⁻¹) ^ n * ‖y‖ ≤ ((l : ℝ)⁻¹) ^ n * 1`. Rewrite using `[← norm_pow_mul hmul, hly, mul_one]`. Conclude with `hn`. Conclude with `le_of_mul_le_mul_left h2 (inv_pow_pos n)`.
-
-Use `⟨⟨y, hy1⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[mul_comm]`. Conclude with `hly`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAdicComplete_unitBall (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (l : ℝ)⁻¹ * ‖y‖) :
     IsAdicComplete (Ideal.span {((l : ℕ) : unitBall l u ρ)}) (unitBall l u ρ) := by
@@ -179,7 +177,7 @@ theorem isAdicComplete_unitBall (hmul : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ
 end UnitBall
 
 /- English proof (translation)
-The claim follows from `UnitBall.isAdicComplete_unitBall hL`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_unitBall (hL : ∀ y : Disc l u ρ, ‖(l : Disc l u ρ) * y‖ = (l : ℝ)⁻¹ * ‖y‖) :
     IsAdicComplete (Ideal.span {(l : unitBall l u ρ)}) (unitBall l u ρ) :=
@@ -195,7 +193,7 @@ def locMap : Per.AinfP l →+* bk.DA bk.ρ₀ :=
   IsLocalization.Away.lift (l : Ainf l) (g := bk.iA) (by rw [map_natCast]; exact isUnit_l_disc _ _ _)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem locMap_alg (a : Ainf l) : locMap bk (algebraMap (Ainf l) (Per.AinfP l) a) = bk.iA a :=
   IsLocalization.Away.lift_eq _ _ a
@@ -203,13 +201,11 @@ theorem locMap_alg (a : Ainf l) : locMap bk (algebraMap (Ainf l) (Per.AinfP l) a
 variable {bk}
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (m : ℤ) (l : ℤ)`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one, Int.gcd_natCast_natCast]`. Conclude with `((Nat.Prime.coprime_iff_not_dvd hl.out).2 hm).symm`. Take `⟨a, b, hab⟩` from `hcop`. Establish `h1 : ((a : ℤ) : bk.DA bk.ρ₀) * m + (b : bk.DA bk.ρ₀) * l = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → bk.DA bk.ρ₀) hab`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ c : ℤ, ‖(c : bk.DA bk.ρ₀)‖ ≤ 1` using `fun c => by`. Simplify using `using norm_toDisc_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) (c : Ainf l)`. Establish `e : w = (a : bk.DA bk.ρ₀) * ((m : bk.DA bk.ρ₀) * w) + (b : bk.DA bk.ρ₀) * ((l : bk.DA bk.ρ₀) * w)`. Take the linear combination `(-w) * h1`. Establish `h2 : ‖w‖ ≤ max ‖(m : bk.DA bk.ρ₀) * w‖ ((l : ℝ)⁻¹ * ‖w‖)` using `by conv_lhs => rw [e]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_add_le_max_disc _ _).trans (max_le_max ?_ ?_)` and prove the remaining obligations. Conclude with `(norm_mul_le _ _).trans (mul_le_of_le_one_left (norm_nonneg _) (hn a))`. Rewrite using `[← hL]`. Conclude with `(norm_mul_le _ _).trans (mul_le_of_le_one_left (norm_nonneg _) (hn b))`. Break down `le_max_iff.1 h2 with h | h` into its components or cases.
-
-Conclude with `h`. Establish `: ‖w‖ ≤ 0` using `by nlinarith [inv_l_lt_one (l := l), norm_nonneg w]`. Conclude with `this.trans (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_norm_mul_coprime (hL : ∀ y : bk.DA bk.ρ₀, ‖(l : bk.DA bk.ρ₀) * y‖ = (l : ℝ)⁻¹ * ‖y‖)
     {m : ℕ} (hm : ¬ l ∣ m) (w : bk.DA bk.ρ₀) : ‖w‖ ≤ ‖(m : bk.DA bk.ρ₀) * w‖ := by
@@ -233,17 +229,15 @@ theorem le_norm_mul_coprime (hL : ∀ y : bk.DA bk.ρ₀, ‖(l : bk.DA bk.ρ₀
     exact this.trans (norm_nonneg _)
 
 /- English proof (translation)
-Establish `h1` using `congrArg (locMap bk) hn`. Rewrite `h1` using `[map_mul, map_natCast, map_pow, locMap_alg]`. Establish `hxn' : ∀ k : ℕ, ‖bk.iA x ^ k‖ ≤ (l : ℝ)⁻¹ ^ k`. Introduce `n`. Proceed by induction on `n with`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simpa using norm_toDisc_le (l := l) (u := bk.ev X) (ρ := bk.ρ₀) (1 : Ainf l)`. Consider the case `succ k ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `(norm_mul_le _ _).trans (mul_le_mul ih (hθ x hx) (norm_nonneg _) (by positivity))`. Establish `hxn` using `hxn' n`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set v := n.factorial.factorization l`. Use `set m := n.factorial / l ^ v`. Establish `hfac : (n.factorial : bk.DA bk.ρ₀) = (l : bk.DA bk.ρ₀) ^ v * (m : bk.DA bk.ρ₀)`. Conclude with `congrArg (Nat.cast : ℕ → bk.DA bk.ρ₀) (Nat.ordProj_mul_ordCompl_eq_self n.factorial l).symm` after adjusting the coercions. Establish `hm : ¬ l ∣ m` using `Nat.not_dvd_ordCompl hl.out (Nat.factorial_ne_zero n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : v ≤ n` using `(Nat.factorization_factorial_le_div_pred hl.out n).trans (Nat.div_le_self _ _)`. Rewrite `h1` using `[hfac, mul_assoc]`. Use `replace h1 := congrArg norm h1`. Rewrite `h1` using `[norm_lpow_mul hL]`. Establish `h2` using `le_norm_mul_coprime hL hm (locMap bk y)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hpos : (0 : ℝ) < (l : ℝ)⁻¹ ^ v`. Establish `: (0 : ℝ) < l` using `Nat.cast_pos.2 hl.out.pos`. Check the signs of the components of the expression. Establish `h3 : (l : ℝ)⁻¹ ^ v * ‖locMap bk y‖ ≤ (l : ℝ)⁻¹ ^ v * 1`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `le_of_mul_le_mul_left h3 hpos`.
+A detailed English derivation is pending.
 -/
 theorem norm_locMap_gen (hL : ∀ y : bk.DA bk.ρ₀, ‖(l : bk.DA bk.ρ₀) * y‖ = (l : ℝ)⁻¹ * ‖y‖)
     (hθ : ∀ a : Ainf l, Per.θ l a = 0 → ‖bk.iA a‖ ≤ (l : ℝ)⁻¹)
@@ -283,11 +277,9 @@ theorem norm_locMap_gen (hL : ∀ y : bk.DA bk.ρ₀, ‖(l : bk.DA bk.ρ₀) * 
   exact le_of_mul_le_mul_left h3 hpos
 
 /- English proof (translation)
-Set `S : Subalgebra (Ainf l) (Per.AinfP l)` to `{ carrier := {y | ‖locMap bk y‖ ≤ 1} mul_mem' := fun {x y} a b => by`. Express the relevant statement in the definitionally equal form `‖locMap bk (x * y)‖ ≤ 1`. Rewrite using `[map_mul]`. Conclude with `(norm_mul_le _ _).trans (mul_le_one₀ a (norm_nonneg _) b)`. Use the proof step `add_mem' := fun {x y} a b => by`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `‖locMap bk (x + y)‖ ≤ 1`. Rewrite using `[map_add]`. Conclude with `(norm_add_le_max_disc _ _).trans (max_le a b)`. Use the proof step `algebraMap_mem' := fun r => by`. Express the relevant statement in the definitionally equal form `‖locMap bk (algebraMap (Ainf l) (Per.AinfP l) r)‖ ≤ 1`.
-
-Rewrite using `[locMap_alg]`. Conclude with `norm_toDisc_le r }`. Conclude with `GlobalTheory.RingIface.Acris0_le_of_dividedPowers l S (fun x n y hx hn => norm_locMap_gen hL hθ y x hx n hn) hy`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_locMap_acris0 (hL : ∀ y : bk.DA bk.ρ₀, ‖(l : bk.DA bk.ρ₀) * y‖ = (l : ℝ)⁻¹ * ‖y‖)
     (hθ : ∀ a : Ainf l, Per.θ l a = 0 → ‖bk.iA a‖ ≤ (l : ℝ)⁻¹)
@@ -310,15 +302,13 @@ end Main
 section Ext
 
 /- English proof (translation)
-Introduce `l _ K bk`. Take `⟨-, hL, hθ⟩` from `GlobalTheory.T.breuilKisin_seedDisc_norm_bounds l K bk`. Set `B` to `unitBall l (bk.ev X) bk.ρ₀`. Use `haveI : IsAdicComplete (Ideal.span {(l : B)}) B := isAdicComplete_unitBall hL`. Set `f0 : Per.Acris0 l →+* B` to `((locMap bk).comp (Per.Acris0 l).val.toRingHom).codRestrict B (fun y => norm_locMap_acris0 hL hθ y y.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective (algebraMap B (GlobalTheory.AdicMaps.PHat l B))`. Establish `: ⇑(algebraMap B (GlobalTheory.AdicMaps.PHat l B)) = ⇑(AdicCompletion.of (Ideal.span {(l : B)}) B)`. Use function extensionality and compare the values at `b`. Rewrite using `[AdicCompletion.algebraMap_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `AdicCompletion.of_bijective _ _`. Set `e` to `RingEquiv.ofBijective (algebraMap B (GlobalTheory.AdicMaps.PHat l B)) hbij`. Take `⟨c, hc⟩` from `GlobalTheory.AdicMaps.exists_acris_completion l`. Set `γ : Per.Acris l →+* bk.DA bk.ρ₀` to `B.subtype.comp (e.symm.toRingHom.comp ((GlobalTheory.AdicMaps.padicMap l f0).comp c.toRingHom))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨γ, fun a => ?_, fun x => (e.symm (GlobalTheory.AdicMaps.padicMap l f0 (c x))).2⟩` and prove the remaining obligations. Establish `h1 : GlobalTheory.AdicMaps.padicMap l f0 (c (algebraMap (Ainf l) (Per.Acris l) a)) = algebraMap B (GlobalTheory.AdicMaps.PHat l B) (f0 (algebraMap (Ainf l) (Per.Acris0 l) a))`. Rewrite using `[GlobalTheory.RingIface.tower, hc]`. Conclude with `GlobalTheory.AdicMaps.padicMap_alg l f0 _`. Use `show ((e.symm (GlobalTheory.AdicMaps.padicMap l f0 (c (algebraMap (Ainf l) (Per.Acris l) a))) : B) : bk.DA bk.ρ₀) = bk.iA a`.
-
-Rewrite using `[h1]`. Establish `h2 : e.symm (algebraMap B (GlobalTheory.AdicMaps.PHat l B) (f0 (algebraMap (Ainf l) (Per.Acris0 l) a))) = f0 (algebraMap (Ainf l) (Per.Acris0 l) a)` using `e.symm_apply_apply _`. Rewrite using `[h2]`. Conclude with `locMap_alg bk a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_acris_to_disc : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K),
     ∃ γ : Per.Acris l →+* bk.DA bk.ρ₀,

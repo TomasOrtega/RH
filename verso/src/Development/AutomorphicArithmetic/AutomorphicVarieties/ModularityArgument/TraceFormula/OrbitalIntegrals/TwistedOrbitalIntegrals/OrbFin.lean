@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open MeasureTheory Topology PositivityTheory.Rg.Tf.Loc UpperTheory.V.Z.Tf.Orb
 
 /- English proof (translation)
-Introduce `hT hU k _ _ _ _ _ n _ _ μk hμk f hf hc γ hγ μ hμ`. Use `haveI : ValuativeExtension k k := ⟨fun _ _ => Iff.rfl⟩`. Take `⟨h0, h1, h2, h3⟩` from `hU k n μk γ`. Take `⟨μ', a, b, c⟩` from `h3 μ hμ`. Take `⟨⟨ρ, hρ⟩, t2, t3⟩` from `hT k k 1 h0 n μk hμk f hf hc γ (h2 hγ) μ' a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [twConj, h1] at t2 t3`. Conclude with `⟨⟨ρ, (b ρ).1 hρ⟩, fun ρ h => t2 ρ ((b ρ).2 h), fun p q => c f ▸ t3 p q⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.Orb.orbFin :
     UpperTheory.V.Z.Tf.Orb.TwOrbFin → UpperTheory.V.Z.Tf.Orb.Untwist → UpperTheory.V.Z.Tf.Orb.OrbFin := by

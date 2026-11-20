@@ -16,7 +16,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 /- English proof (translation)
-Use `(Closed.and h1 h2).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨⟨A, hA, hH⟩, _, _, hW⟩` from `h`. Use `⟨A + 2, by linarith, ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `hH.and hW`. Conclude with `⟨x0, fun x hx hle ι p hp i => sizeAt_of p i ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem size_of_alt (h1 : _root_.GlobalTheory.CovTop.HostNAlt 1) (h2 : _root_.GlobalTheory.CovTop.LiftWeightNumerator) : _root_.GlobalTheory.CovTop.SizeCondition := by
   refine (Closed.and h1 h2).imp fun Fm CH _ h => ?_
@@ -25,7 +25,7 @@ theorem size_of_alt (h1 : _root_.GlobalTheory.CovTop.HostNAlt 1) (h2 : _root_.Gl
   obtain ⟨x0, h⟩ := hH.and hW
   exact ⟨x0, fun x hx hle ι p hp i => sizeAt_of p i ((h x hx hle ι p hp).1 i) ((h x hx hle ι p hp).2 i)⟩
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.CovTop.SizeRows.size_of_alt (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1) _root_.GlobalTheory.CovTop.WtShape.wtN_z`.
+A detailed English derivation is pending.
 -/
 theorem size_alt_bis : _root_.GlobalTheory.CovTop.SizeCondition := _root_.GlobalTheory.CovTop.SizeRows.size_of_alt (_root_.GlobalTheory.CovTop.Sizes.hostN_alt 1) _root_.GlobalTheory.CovTop.WtShape.wtN_z
 end GlobalTheory.CovTop.SizeRows

@@ -18,11 +18,11 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hp` using `hd x hx`. Establish `ht` using `trace_eq_sum_embeddings (K := ℚ) (L := K) ℂ (x := h x x)`. Establish `hre` using `congrArg Complex.re ht`. Rewrite `hre` using `[Complex.re_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ∑ σ : K →ₐ[ℚ] ℂ, (σ (h x x)).re` using `Finset.sum_pos (fun σ _ => hp σ.toRingHom) ⟨(Classical.arbitrary (K →+* ℂ)).toRatAlgHom, Finset.mem_univ _⟩`. Rewrite `hpos` using `[← hre]`. Establish `: (algebraMap ℚ ℂ (Algebra.trace ℚ K (h x x))).re = ((Algebra.trace ℚ K (h x x) : ℚ) : ℝ)`. Simplify using the standard rewrite rules. Rewrite `hpos` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hpos` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem trace_pos {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) :
     ∀ x : V, x ≠ 0 → 0 < Algebra.trace ℚ K (h x x) := by
@@ -41,7 +41,7 @@ theorem trace_pos {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) :
   exact_mod_cast hpos
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_second_form.goal1 .. | (apply Bl.general_b_fact_second_form.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_second_form.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem {Λ : Submodule (𝓞 K) V} (hΛ : Submodule.IsLattice K Λ) (v : V) :
     ∃ r : 𝓞 K, r ≠ 0 ∧ r • v ∈ Λ := by
@@ -83,7 +83,7 @@ def pairs (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (𝓞 K) V) (n : K) 
   {p | p.1 ∈ Formalism.HermitianLatticesTheory.genus h L ∧ p.2 ∈ p.1 ∧ h p.2 p.2 = n}
 
 /- English proof (translation)
-Rewrite using `[Formalism.HermitianLatticesTheory.isomAct_mem_gmap, LinearEquiv.symm_apply_apply]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_gmap (g : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} {x : V} (hx : x ∈ Λ) :
     g x ∈ Formalism.HermitianLatticesTheory.gmap g Λ := by
@@ -91,7 +91,7 @@ theorem apply_mem_gmap (g : V ≃ₗ[K] V) {Λ : Submodule (𝓞 K) V} {x : V} (
   exact hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨OrbitRepresentatives.gmap_mem_genus hs hp.1 g.2, apply_mem_gmap g.1 hp.2.1, (g.2 p.2 p.2).trans hp.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem pairs_stable (hs : h.IsSymm) (L : Submodule (𝓞 K) V) (n : K) (g : Formalism.HermitianLatticesTheory.isom h)
     (p : Submodule (𝓞 K) V × V) (hp : p ∈ pairs h L n) : g • p ∈ pairs h L n :=
@@ -101,7 +101,7 @@ def perpO (h : V →ₗ⋆[K] V →ₗ[K] K) (x : V) : Submodule (𝓞 K) V :=
   (LinearMap.ker (h x)).restrictScalars (𝓞 K)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perpO (x v : V) : v ∈ perpO h x ↔ h x v = 0 := Iff.rfl
 
@@ -109,9 +109,9 @@ def proj (h : V →ₗ⋆[K] V →ₗ[K] K) (p : Submodule (𝓞 K) V × V) : Su
   (p.1 ⊓ perpO h p.2, p.2)
 
 /- English proof (translation)
-Use `Prod.ext ?_ rfl` and prove the remaining obligations. Use extensionality with `v`. Express the relevant statement in the definitionally equal form `v ∈ Formalism.HermitianLatticesTheory.gmap g.1 p.1 ⊓ perpO h (g.1 p.2) ↔ v ∈ Formalism.HermitianLatticesTheory.gmap g.1 (p.1 ⊓ perpO h p.2)`. Rewrite using `[Submodule.mem_inf, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Formalism.HermitianLatticesTheory.isomAct_mem_gmap, Submodule.mem_inf, mem_perpO, mem_perpO]`. Establish `: h (g.1 p.2) v = h p.2 (g.1.symm v)` using `by conv_lhs => rw [← LinearEquiv.apply_symm_apply g.1 v]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `g.2 _ _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_smul (g : Formalism.HermitianLatticesTheory.isom h) (p : Submodule (𝓞 K) V × V) :
     proj h (g • p) = g • proj h p := by
@@ -139,13 +139,11 @@ variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K
 open SplitBAux
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `isNoetherian_of_fg_of_noetherian _ hΛ.fg` as an intermediate fact. Establish `hle : (S.cut Λ).map (S.ι.restrictScalars (𝓞 K)) ≤ Λ` using `Submodule.map_comap_le _ _`. Conclude with `Submodule.fg_of_fg_map_injective (S.ι.restrictScalars (𝓞 K)) S.inj (Submodule.FG.of_le_of_isNoetherian hle)`. Rewrite using `[eq_top_iff]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a _`. Take `⟨r, hr, hra⟩` from `exists_smul_mem hΛ (S.ι a)`. Establish `h1 : r • a ∈ S.cut Λ`. Rewrite using `[VecSplit.mem_cut_iff, ← algebraMap_smul K r a, map_smul, algebraMap_smul]`. Conclude with `hra`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr' : algebraMap (𝓞 K) K r ≠ 0`. Simplify using `using hr`. Establish `e : a = (algebraMap (𝓞 K) K r)⁻¹ • (r • a)`. Rewrite using `[← algebraMap_smul K r a, smul_smul, inv_mul_cancel₀ hr', one_smul]`. Rewrite using `[e]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLattice_cut (S : VecSplit h h') {Λ : Submodule (𝓞 K) V}
     (hΛ : Submodule.IsLattice K Λ) : Submodule.IsLattice K (S.cut Λ) := by
@@ -171,21 +169,21 @@ def emb (S : VecSplit h h') (Λ' : Submodule (𝓞 K) V') : Submodule (𝓞 K) V
   Λ'.map (S.ι.restrictScalars (𝓞 K))
 
 /- English proof (translation)
-The claim follows from `Submodule.comap_map_eq_of_injective (f := S.ι.restrictScalars (𝓞 K)) S.inj Λ'`.
+A detailed English derivation is pending.
 -/
 theorem cut_emb (S : VecSplit h h') (Λ' : Submodule (𝓞 K) V') : S.cut (emb S Λ') = Λ' :=
   Submodule.comap_map_eq_of_injective (f := S.ι.restrictScalars (𝓞 K)) S.inj Λ'
 
 /- English proof (translation)
-Introduce `A B e` and use `by rw [← cut_emb S A, e, cut_emb]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_injective (S : VecSplit h h') : Function.Injective (emb S) := fun A B e => by
   rw [← cut_emb S A, e, cut_emb]
 
 /- English proof (translation)
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hv0⟩`. Take `⟨a, rfl⟩` from `exists_of_orth S hv0`. Conclude with `Submodule.mem_map.mpr ⟨a, hv, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Take `⟨a, ha, rfl⟩` from `Submodule.mem_map.mp hv`. Conclude with `⟨ha, S.orth a⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inf_perpO (S : VecSplit h h') (Λ : Submodule (𝓞 K) V) :
     Λ ⊓ perpO h S.x₀ = emb S (S.cut Λ) := by
@@ -199,7 +197,7 @@ theorem inf_perpO (S : VecSplit h h') (Λ : Submodule (𝓞 K) V) :
     exact ⟨ha, S.orth a⟩
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.gmap emb`. Rewrite using `[← Submodule.map_comp, ← Submodule.map_comp]`. Use `congr 1`. Use extensionality with `a`. Conclude with `extOf_ι S g' a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem gmap_extOf_emb (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (C : Submodule (𝓞 K) V') :
     Formalism.HermitianLatticesTheory.gmap (extOf S g') (emb S C) = emb S (Formalism.HermitianLatticesTheory.gmap g' C) := by
@@ -210,7 +208,7 @@ theorem gmap_extOf_emb (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (C : Submodule
   exact extOf_ι S g' a
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[VecSplit.mem_cut_iff, mem_gmap_iff, mem_gmap_iff, VecSplit.mem_cut_iff, eq_decomp_ι S a, extOf_symm_apply, ← eq_decomp_ι]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cut_gmap_extOf (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (Λ : Submodule (𝓞 K) V) :
     S.cut (Formalism.HermitianLatticesTheory.gmap (extOf S g') Λ) = Formalism.HermitianLatticesTheory.gmap g' (S.cut Λ) := by
@@ -219,7 +217,7 @@ theorem cut_gmap_extOf (S : VecSplit h h') (g' : V' ≃ₗ[K] V') (Λ : Submodul
     extOf_symm_apply, ← eq_decomp_ι]
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff, smul_pair, Prod.ext_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stab_pair_iff (S : VecSplit h h') (Λ' : Submodule (𝓞 K) V') (g : Formalism.HermitianLatticesTheory.isom h) :
     g ∈ MulAction.stabilizer (Formalism.HermitianLatticesTheory.isom h) ((emb S Λ', S.x₀) : Submodule (𝓞 K) V × V) ↔

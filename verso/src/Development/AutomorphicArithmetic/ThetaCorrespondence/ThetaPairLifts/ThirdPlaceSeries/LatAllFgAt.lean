@@ -13,11 +13,11 @@ namespace GlobalTheory.CovTop.LatAllFG
 end GlobalTheory.CovTop.LatAllFG
 open GlobalTheory.CovTop.LatAllFG in
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y0 cX ex Csz p _ _ i`. Establish `hj : InR D ((i : ℕ) + 1)` using `⟨by omega, i.2⟩`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Establish `hn : 0 < (p.κ i).n`. Rewrite using `[(p.fw.kap i τ).2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `D.R.three_m_lt_t` as an intermediate fact. Rewrite using `[Ranks.nV]`. Use linear arithmetic over natural numbers and integers. Establish `hW` using `latW_fg p.T p.fw.laws _ hj (p.κ i) hn`. Take `⟨ι, -, -, himg⟩` from `GlobalTheory.T.exists_semilinear_emb_supLattice_onto_realisation _ _ _ _ _ _ _ _ _ p.fw i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Unfold `latAll`. Rewrite using `[← himg]`. Conclude with `fg_span_image ι _ hW`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CovTop.latAll_fg_at_alt : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D}
     {Kc : Formalism.MainNotions.G.Consts} {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz),

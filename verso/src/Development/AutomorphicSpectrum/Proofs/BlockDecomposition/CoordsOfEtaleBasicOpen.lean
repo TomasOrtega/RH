@@ -7,13 +7,11 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.CompanionTheory.GeoCoord
 
 /- English proof (translation)
-Use `letI := (strV q W).toAlgebra`. Introduce `h`. Use `haveI := hW.isLocalization_basicOpen g`. Set `φ` to `IsLocalization.algEquiv (Submonoid.powers g) (Localization.Away g) Γ(X, X.basicOpen g)`. Establish `hφ : ∀ x, φ (algebraMap Γ(X, W) (Localization.Away g) x) = resO (X.basicOpen_le g) x` using `fun x => φ.commutes x`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨hW.basicOpen g, fun k => resO (X.basicOpen_le g) (s k), ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Establish `h2` using `RingHom.Etale.stableUnderComposition _ _ h (RingHom.Etale.of_bijective (f := (φ : Localization.Away g →+* Γ(X, X.basicOpen g))) φ.bijective)`. Establish `e : (MvPolynomial.eval₂Hom (strV q (X.basicOpen g)) (fun k => resO (X.basicOpen_le g) (s k)) : MvPolynomial (Fin d) K →+* Γ(X, X.basicOpen g)) = (φ : Localization.Away g →+* Γ(X, X.basicOpen g)).comp (MvPolynomial.eval₂Hom (algebraMap K (Localization.Away g)) (fun k => algebraMap …`. Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun k => ?_)` and prove the remaining obligations. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_C, RingHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[strV_res q (X.basicOpen_le g), RingHom.comp_apply, IsScalarTower.algebraMap_apply K Γ(X, W) (Localization.Away g)]`. Conclude with `(hφ _).symm`. Simplify using `only [MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_X, RingHom.comp_apply]`. Conclude with `(hφ _).symm`. Rewrite using `[e]`.
-
-Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord_basicOpen {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K))
     {W : X.Opens} (hW : IsAffineOpen W) (g : Γ(X, W)) {d : ℕ} (s : Fin d → Γ(X, W)) :

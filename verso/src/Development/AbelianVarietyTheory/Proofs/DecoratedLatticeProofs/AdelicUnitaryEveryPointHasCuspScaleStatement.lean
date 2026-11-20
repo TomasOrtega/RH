@@ -8,7 +8,7 @@ open scoped TensorProduct Topology
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CuspGeo.near | exact GlobalTheory.CuspGeo.near | (intros; apply GlobalTheory.CuspGeo.near <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.adelicUnitary_every_point_has_cusp_scale : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ V : HSp D, Near θ V := by
   first | exact @GlobalTheory.CuspGeo.near | exact GlobalTheory.CuspGeo.near | (intros; apply GlobalTheory.CuspGeo.near <;> assumption)

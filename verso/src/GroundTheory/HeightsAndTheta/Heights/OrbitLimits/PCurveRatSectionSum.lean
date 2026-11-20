@@ -24,9 +24,9 @@ namespace CurveRationalSectionSum
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `logNorm`. Rewrite using `[eval_smul_homog s a hs c z, X.smul c z hc, norm_mul]`. Establish `hprod : (∏ k, ‖c k‖ ^ X.a k) = ‖∏ k, c k ^ a k‖`. Rewrite using `[norm_prod]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hXa k, zpow_natCast, norm_pow]`. Rewrite using `[hprod, mul_div_mul_left _ _ (norm_ne_zero_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem logNorm_smul {X : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {s : MRing ι} {a : K → ℕ} (hXa : ∀ k, X.a k = a k)
     (hs : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog s a) (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (hc : ∀ k, c k ≠ 0) :
@@ -41,9 +41,9 @@ theorem logNorm_smul {X : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} 
     (norm_ne_zero_iff.mpr (Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)))]
 
 /- English proof (translation)
-Establish `: Nonempty K` using `hP.1`. Establish `hφ : (fun (j : Fin 0) (z : (Σ k, ι k) → ℂ) => Real.log (((Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) j).h z)) = Fin.elim0`. Use function extensionality and compare the values at `fun j => j.elim0`. Unfold `arInt`. Rewrite using `[hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PtsIntegralPoints.homogProof K ι P _ hP.2.1.2.1 (HilbertSamuel.CurvePointsFinite.proof K ι P hP) fun c z hc _ => logNorm_smul hXa hs c z hc`.
+A detailed English derivation is pending.
 -/
 theorem arInt_eq_sum {P : Ideal (MRing ι)} (hP : IsArithVar P 1) {X : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι}
     {s : MRing ι} {a : K → ℕ} (hXa : ∀ k, X.a k = a k) (hs : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog s a) :
@@ -59,7 +59,7 @@ theorem arInt_eq_sum {P : Ideal (MRing ι)} (hP : IsArithVar P 1) {X : Reciproci
     fun c z hc _ => logNorm_smul hXa hs c z hc
 
 /- English proof (translation)
-Unfold `cycR vertR`. Use `finsum_mem_congr rfl fun W hW => ?_` and prove the remaining obligations. Establish `hnh : ¬ IsHorizontal W` using `fun hh => Inter.arithVarZero K ι W ((divSuppArith K ι P 0 X s W hP hs hW).1 hh)`. Rewrite using `[if_neg hnh, if_neg hnh]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cycR_eq_vertR (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) → ℝ)
     {P : Ideal (MRing ι)} (hP : IsArithVar P 1) {X : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι} {s : MRing ι}
@@ -75,7 +75,7 @@ theorem cycR_eq_vertR (I : Ideal (MRing ι) → (n : ℕ) → (Fin n → Recipro
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem snoc_elim0 (X : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) :
     (Fin.snoc (Fin.elim0 : Fin 0 → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) X : Fin (0 + 1) → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι) =
@@ -89,21 +89,19 @@ end CurveRationalSectionSum
 open CurveRationalSectionSum in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y A II hII har hA n dg dh g h hg hh hd hgy hhy`. Take `⟨-, hAdd, hR⟩` from `hII K ι`. Establish `hB` using `isSmoothHerm_sqMetric (ι := ι) dh`. Establish `hnA` using `Inter.isSmoothHerm_hermZpow hA (n : ℤ)`. Establish `hgP : g ∉ mCoordIdeal y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Inter.mCoordIdeal_eq_ker_multiConeMap]`. Conclude with `(Inter.DiagRAux.not_mem_ker_iff_aeval_ne y g dg hg).mpr hgy`. Establish `hhP : h ∉ mCoordIdeal y`. Rewrite using `[Inter.mCoordIdeal_eq_ker_multiConeMap]`. Conclude with `(Inter.DiagRAux.not_mem_ker_iff_aeval_ne y h dh hh).mpr hhy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hda : ∀ k, ((Inter.hermZpow A n).tensor (HermLine.sqMetric dh)).a k = dg k` using `fun k => by show (n : ℤ) • A.a k + (dh k : ℤ) = dg k`. Rewrite using `[hd k, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hRg` using `hR _ 0 Fin.elim0 _ g dg har (fun j => j.elim0) (ReciprocityTheory.ChartRestriction.G.Geo.isSmoothHerm_tensor hnA hB) hda hg hgP`. Establish `hRh` using `hR _ 0 Fin.elim0 _ h dh har (fun j => j.elim0) hB (fun k => rfl) hh hhP`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum` using `hAdd _ 0 Fin.elim0 _ _ har (fun j => j.elim0) hnA hB`. Establish `hpow : II K ι (mCoordIdeal y) 1 (fun _ => Inter.hermZpow A n) = (n : ℝ) ^ 1 * II K ι (mCoordIdeal y) 1 (fun _ => A)` using `HilbertSamuel.Mono.fam_hermZpow (hII K ι) (D := 0) har hA n`. Rewrite `hRg` using `[recR_eq, cycR_eq_vertR _ har ⟨dg, hda, hg, hgP⟩, arInt_eq_sum har hda hg, snoc_elim0]`. Rewrite `hRh` using `[recR_eq, cycR_eq_vertR _ har (X := HermLine.sqMetric dh) ⟨dh, fun k => rfl, hh, hhP⟩, arInt_eq_sum har (X := HermLine.sqMetric dh) (fun k => rfl) hh, snoc_elim0]`. Rewrite `hsum` using `[snoc_elim0, snoc_elim0, snoc_elim0]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hpow` using `[pow_one]`. Use `HilbertSamuel.CurvePointsFinite.proof K ι _ har` as an intermediate fact. Establish `hcomb : ∑ᶠ q : projPts (mCoordIdeal y), logNorm ((Inter.hermZpow A n).tensor (HermLine.sqMetric dh)) g (Quot.out q : mcPts (mCoordIdeal y)) - ∑ᶠ q : projPts (mCoordIdeal y), logNorm (HermLine.sqMetric dh) h (Quot.out q : mcPts (mCoordIdeal y)) = ∑ᶠ q : projPts (mCoordIdeal y), ra …`. Rewrite using `[← finsum_sub_distrib (Set.toFinite _) (Set.toFinite _)]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `(Quot.out q).2`. Establish `hg0` using `norm_pos_iff.mpr (hNV K ι Ω y dg g har hg hgy _ hz)`. Establish `hh0` using `norm_pos_iff.mpr (hNV K ι Ω y dh h har hh hhy _ hz)`. Establish `hA0` using `A.pos _ hz.1`. Establish `hB0` using `(HermLine.sqMetric (ι := ι) dh).pos _ hz.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `logNorm ratLogNormPow`. Use `show Real.log (_ / (A.h _ ^ (n : ℤ) * (HermLine.sqMetric dh).h _)) - Real.log (_ / (HermLine.sqMetric dh).h _) = Real.log (_ / (_ * A.h _ ^ n))`. Rewrite using `[zpow_natCast, Real.log_div hg0.ne' (mul_pos (pow_pos hA0 n) hB0).ne', Real.log_mul (pow_pos hA0 n).ne' hB0.ne', Real.log_div hh0.ne' hB0.ne', Real.log_div hg0.ne' (mul_pos hh0 (pow_pos hA0 n)).ne', Real.log_mul hh0.ne' (pow_pos hA0 n).ne']`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : II K ι (mCoordIdeal y) 1 (fun _ => (Inter.hermZpow A n).tensor (HermLine.sqMetric dh)) = II K ι (mCoordIdeal y) 1 (fun _ => Inter.hermZpow A n) + II K ι (mCoordIdeal y) 1 (fun _ => HermLine.sqMetric dh)` using `hsum`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem CurveRatSectionSum.proof (hNV : CurveFormNonvanishing.Statement) : CurveRatSectionSum.Statement := by
   intro K _ ι _ Ω _ y A II hII har hA n dg dh g h hg hh hd hgy hhy

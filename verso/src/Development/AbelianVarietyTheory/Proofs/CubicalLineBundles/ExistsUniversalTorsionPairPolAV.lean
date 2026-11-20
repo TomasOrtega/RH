@@ -11,11 +11,9 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Establish `hs : Smooth ((Over.pullback f).obj G).hom` using `inferInstanceAs (Smooth (pullback.snd G.hom f))`. Establish `he : Etale ((Over.pullback f).map (mulN G n)).left`. Rewrite using `[GrpTangent.pullback_map_mulN]`. Conclude with `GrpTangent.etale_mulN _ hn`. Establish `h` using `((IsPullback.of_hasPullback (mulN G n) (η : 𝟙_ (Over S) ⟶ G)).map (Over.pullback f)).map (Over.forget S')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Etale ((Over.pullback f).map (pullback.snd (mulN G n) (η : 𝟙_ (Over S) ⟶ G))).left` using `MorphismProperty.of_isPullback (P := @Etale) h he`. Establish `h2 : Etale ((Over.pullback f).obj (𝟙_ (Over S))).hom` using `inferInstanceAs (Etale (pullback.snd (𝟙 S) f))`. Establish `e` using `Over.w ((Over.pullback f).map (pullback.snd (mulN G n) (η : 𝟙_ (Over S) ⟶ G)))`. Establish `h3 : Etale (((Over.pullback f).map (pullback.snd (mulN G n) (η : 𝟙_ (Over S) ⟶ G))).left ≫ ((Over.pullback f).obj (𝟙_ (Over S))).hom)` using `inferInstance`. Rewrite `h3` using `[e]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_pullback_torsion {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] {n : ℕ} (hn : IsUnit (n : Γ(S', ⊤))) :
@@ -37,7 +35,7 @@ theorem etale_pullback_torsion {S S' : Scheme.{0}} (f : S' ⟶ S) (G : Over S) [
   exact h3
 
 /- English proof (translation)
-Establish `h : Etale ((Over.pullback f).obj A ⊗ (Over.pullback f).obj B).hom` using `inferInstanceAs (Etale (pullback.fst ((Over.pullback f).obj A).hom ((Over.pullback f).obj B).hom ≫ ((Over.pullback f).obj A).hom))`. Rewrite using `[← Over.w (Functor.Monoidal.μIso (Over.pullback f) A B).inv]`. Establish `: IsIso (Functor.Monoidal.μIso (Over.pullback f) A B).inv.left` using `inferInstanceAs (IsIso ((Over.forget S').map (Functor.Monoidal.μIso (Over.pullback f) A B).inv))`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_pullback_tensor {S S' : Scheme.{0}} (f : S' ⟶ S) (A B : Over S)
     (hA : Etale ((Over.pullback f).obj A).hom) (hB : Etale ((Over.pullback f).obj B).hom) :
@@ -51,9 +49,9 @@ theorem etale_pullback_tensor {S S' : Scheme.{0}} (f : S' ⟶ S) (A B : Over S)
   infer_instance
 
 /- English proof (translation)
-Use `⟨?_, fun T x hx => ⟨pullback.lift x (toUnit T) ?_, pullback.lift_fst _ _ _⟩⟩` and prove the remaining obligations. Rewrite using `[← GrpTangent.comp_mulN]`. Use `pullback.condition.trans ?_` and prove the remaining obligations. Rewrite using `[Hom.one_def]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `toUnit_unique _ _`. Rewrite using `[GrpTangent.comp_mulN, hx, Hom.one_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsion_universal {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) :
     torsion.ι G n ^ n = 1 ∧ ∀ (T : Over S) (x : T ⟶ G), x ^ n = 1 → ∃ t : T ⟶ torsion G n, t ≫ torsion.ι G n = x := by
@@ -66,17 +64,15 @@ theorem torsion_universal {S : Scheme.{0}} (G : Over S) [GrpObj G] (n : ℕ) :
   · rw [GrpTangent.comp_mulN, hx, Hom.one_def]
 
 /- English proof (translation)
-Introduce `hL R _ _ _ X Y k hk`. Establish `fin : ∀ P : Out.PolAV (Sp R), IsFinite (torsion P.A k).hom ∧ Flat (torsion P.A k).hom` using `fun P => by`. Take `⟨h1, h2, -⟩` from `hL.mulN (Sp R) P k hk`. Rewrite `h1`, `h2` using `[Out.mulA, ← GrpTangent.mulN_eq_pow]`. Conclude with `⟨MorphismProperty.of_isPullback (P := @IsFinite) (GrpTangent.isPullback_torsion P.A k) h1, MorphismProperty.of_isPullback (P := @Flat) (GrpTangent.isPullback_torsion P.A k) h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `haveI : CharZero (FractionRing R) := algebraRat.charZero _`. Establish `hu : IsUnit (k : Γ(Sp (FractionRing R), ⊤))`. Establish `: IsUnit (k : FractionRing R)` using `(Nat.cast_ne_zero.mpr hk.ne').isUnit`. Simplify using `using this.map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing R))).inv.hom`. Establish `et : ∀ P : Out.PolAV (Sp R), Etale ((Over.pullback (spMap (algebraMap R (FractionRing R)))).obj (torsion P.A k)).hom` using `fun P => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P.isAb.comm` as an intermediate fact. Use `P.isAb.smooth` as an intermediate fact. Conclude with `etale_pullback_torsion _ P.A hu`. Take `⟨hX, uX⟩` from `torsion_universal X.A k`. Take `⟨hY, uY⟩` from `torsion_universal Y.A k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨torsion X.A k ⊗ torsion Y.A k, fst _ _ ≫ torsion.ι X.A k, snd _ _ ≫ torsion.ι Y.A k, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← comp_pow, hX, comp_one]`. Rewrite using `[← comp_pow, hY, comp_one]`. Introduce `T x y hx hy`. Take `⟨s, hs⟩` from `uX T x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨t, ht⟩` from `uY T y hy`. Conclude with `⟨lift s t, by rw [lift_fst_assoc, hs], by rw [lift_snd_assoc, ht]⟩`. Take `⟨f1, f2⟩` from `fin X`. Take `⟨g1, g2⟩` from `fin Y`. Use `GlobalTheory.LamF.eq_of_geomPoints R (FractionRing R) _ ?_ ?_ (etale_pullback_tensor _ _ _ (et X) (et Y))` and prove the remaining obligations.
-
-Conclude with `inferInstanceAs (IsFinite (pullback.fst (torsion X.A k).hom (torsion Y.A k).hom ≫ (torsion X.A k).hom))`. Conclude with `inferInstanceAs (Flat (pullback.fst (torsion X.A k).hom (torsion Y.A k).hom ≫ (torsion X.A k).hom))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_universal_torsion_pair :
     Out.Laws → ∀ (R : Type) [CommRing R] [IsDedekindDomain R] [CharZero R] (X Y : Out.PolAV (Sp R)) (k : ℕ), 0 < k → ∃ (T₀ : Over (Sp R)) (x₀ : T₀ ⟶ X.A) (y₀ : T₀ ⟶ Y.A), x₀ ^ k = 1 ∧ y₀ ^ k = 1 ∧ (∀ (T : Over (Sp R)) (x : T ⟶ X.A) (y : T ⟶ Y.A), x ^ k = 1 → y ^ k = 1 → ∃ t : T ⟶ T₀, x = t ≫ x₀ ∧ y = t ≫ y₀) ∧ ∀ a b : Γ(T₀.left, ⊤), (∀ (k' : Type) [Field k'] [IsAlgClosed k'] [CharZero k'] (β : R →+* k') (t : Over.mk (spMap β) ⟶ T₀), t.left.appTop.hom a = t.left.appTop.hom b) → a = b := by

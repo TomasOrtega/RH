@@ -15,7 +15,7 @@ def padMat {n m : ℕ} (A : Matrix (Fin n) (Fin n) R) : Matrix (Fin m) (Fin m) R
     if h : (i : ℕ) < n ∧ (j : ℕ) < n then A ⟨i, h.1⟩ ⟨j, h.2⟩ else if i = j then 1 else 0
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun a => ?_) (fun a => ?_) i <;> refine Fin.addCases (fun c => ?_) (fun c => ?_) j <;>`. Apply the tactic sequence `simp [padMat, Matrix.one_apply, Fin.ext_iff] <;> omega`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem padMat_add {n k : ℕ} (A : Matrix (Fin n) (Fin n) R) :
     (padMat R A : Matrix (Fin (n + k)) (Fin (n + k)) R) =

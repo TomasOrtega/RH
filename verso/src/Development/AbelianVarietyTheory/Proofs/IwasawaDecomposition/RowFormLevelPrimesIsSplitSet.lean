@@ -14,7 +14,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.Mem.R3.LiftBrg
 
 /- English proof (translation)
-Rewrite using `[hL.Pg, hL.Q t, Col2.ColIn.Q, tup_ixOf I t]`. Conclude with `Finset.mem_union`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_sgL_iff (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)) (hL : LevOf X I U L) (t : TupU I U) (PP : Pl X.toD7.host.E) :
@@ -24,7 +24,7 @@ theorem mem_sgL_iff (X : Stages) {px : PreX X.B.toPre} (I : Col2.ColIn X.B px) (
   exact Finset.mem_union
 
 /- English proof (translation)
-Introduce `X px I U L _ hL t PP h PP' h' hc`. Establish `hc' : Formalism.IndefR.Lev.IsConjPl (D` using `X.toD7) PP PP' := fun c hm => ⟨Formalism.DivisionValues.cO X.toD7.host.E c, (hc c (Formalism.DivisionValues.cO X.toD7.host.E c) rfl).1 hm, rfl⟩`. Conclude with `GlobalTheory.HeckeCharacterRestriction.not_isConjPl_union hL.is t ((mem_sgL_iff X I U L hL t PP).1 h) ((mem_sgL_iff X I U L hL t PP').1 h') hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSplitSet_sgL : ∀ (X : Stages) (px : PreX X.B.toPre) (I : Col2.ColIn X.B px) (U : Set I.ι)
     (L : Formalism.IndefR.Links.LevCh X.toD7 (TupU I U)), I.Ok → LevOf X I U L →

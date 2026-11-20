@@ -28,13 +28,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `hL`. Establish `hA` using `_root_.GlobalTheory.T.coefficient_duty_pin_at_each_member hL`. Establish `hO` using `GlobalTheory.TypeVecConj.typeVec`. Use `EvG.imp (EvG.inter hA hO) fun K _ _ _ _ h => ?_` and prove the remaining obligations. Use `large₂.imp (large₂.inter h.1 h.2) fun B f T _ g => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hK w Z Wt p0 t nch n xd c _ _ hpin`. Establish `hop` using `g.1 hK w Z Wt p0 t nch n xd c ‹_› ‹_› hpin`. Establish `hrow` using `g.2 hK w hpin Z Wt t.hX t.r.z p0 t.r.Y t.r.intersectionNumber_baseChange t.exAt t.inGeo t.grp t.grpAt`. Use `_root_.UpperTheory.Lit.Dz.nonGaloisTwistType h1 h2 hL (w.D Z) _ nch n.tp c.a hop ?_` and prove the remaining obligations. Establish `key : ∀ (D' : D7) (_ : D' = withLoc c.a.nt.L) (r' : D'.what₂.FT → NG.FinTyp D'.host.E D'.R.r), HEq c.a.nt.rep r' → (∀ (I : GlobalTheory.TypeRec.Ident D') cp, GlobalTheory.TypeRec.IsComp I r' cp → ∀ σ, ∃ (V : Type) (_ : AddCommGroup V) (_ : Module ℂ V) (ρ : Representation ℂ (G0g D …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl r' hr h`. Establish `e : c.a.nt.rep = r'` using `eq_of_heq hr`. Rewrite using `[e]`. Introduce `I cp hc σ`. Conclude with `h ⟨I.i, I.cont⟩ cp hc σ`.
-
-Conclude with `key _ c.a.nt.eq _ c.row.rep_eq hrow`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goodFTAll_at_members_of_depthZero (h1 : GlobalTheory.GLq.Green) (h2 : GlobalTheory.Published.ZelevinskyPolynomialRing) :
     ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists,
@@ -70,9 +68,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.Fc.GoodLinked
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Use `GlobalTheory.Mem.Top.EvG.imp (_root_.GlobalTheory.Fc.GoodLinked.goodFTAll_at_members_of_depthZero h1 h2 hL) fun K _ _ _ _ H => H.imp fun B f T _ t k C W V S' N G c q => ?_` and prove the remaining obligations. Take `⟨w, Z, c', ⟨b, _⟩, e⟩` from `q`. Establish `key : ∀ x : Σ (C : Cols B) (Y : TC.Later B C), V4.Core K ⟨B, C, Y.W, Y.V, Y.S, Y.N, Y.G⟩ f T, x = ⟨w.C, Z, c'⟩ → Formalism.BasicNotions.GoodFTAll (⟨B, x.1, x.2.1.W, x.2.1.V, x.2.1.S, x.2.1.N, x.2.1.G⟩ : Stages).toD7`. Introduce and unpack `_ rfl`. Conclude with `t k w Z c'.Wt c'.O.p0 b.what₂ c'.O.nch b.n c'.O.xd b.nx.1 ((hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2).map Prod.fst) ⟨b.rx⟩ b.pin`.
-
-Conclude with `key _ e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem largeBasePropertyG_goodRec_alt_alt (h1 : GlobalTheory.GLq.Green) (h2 : GlobalTheory.Published.ZelevinskyPolynomialRing)
     (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP)
@@ -87,7 +83,7 @@ theorem largeBasePropertyG_goodRec_alt_alt (h1 : GlobalTheory.GLq.Green) (h2 : G
     exact t k w Z c'.Wt c'.O.p0 b.what₂ c'.O.nch b.n c'.O.xd b.nx.1 ((hN _ _ _ _ _ _ _ _ _ _ _ _ _ b.nx.2).map Prod.fst) ⟨b.rx⟩ b.pin
   exact key _ e
 /- English proof (translation)
-Introduce `h1 h2 hL N S Γ hN` and use `LgModel.rowL_of_good (_root_.GlobalTheory.Fc.GoodLinked.largeBasePropertyG_goodRec_alt_alt h1 h2 hL N S Γ hN) (_root_.GlobalTheory.Fc.GoodLinked.row_goodRec_alt _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem linkedAt_goodFTAll : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP),
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c →
@@ -95,7 +91,7 @@ theorem linkedAt_goodFTAll : GlobalTheory.GLq.Green → GlobalTheory.Published.Z
     _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) fun Q L => Row Q L (AtAll fun D _ _ (_ : _root_.GlobalTheory.Fc.BundleCondition _ _ _) => Formalism.BasicNotions.GoodFTAll D) :=
   fun h1 h2 hL N S Γ hN => LgModel.rowL_of_good (_root_.GlobalTheory.Fc.GoodLinked.largeBasePropertyG_goodRec_alt_alt h1 h2 hL N S Γ hN) (_root_.GlobalTheory.Fc.GoodLinked.row_goodRec_alt _)
 /- English proof (translation)
-Introduce `h1 h2 hL N S Γ hN`. Use `⟨_root_.GlobalTheory.Fc.GoodLinked.linkedAt_goodFTAll h1 h2 hL N S Γ hN, ?_⟩` and prove the remaining obligations. Take `⟨R, hR, h⟩` from `_root_.GlobalTheory.Fc.GoodLinked.linkedAt_goodFTAll h1 h2 hL N S Γ hN`. Use `⟨R, hR, h.imp fun _ _ _ key => ?_⟩` and prove the remaining obligations. Conclude with `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ hc => Ind.ev_of_atAll key Fm (w3_a hc)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem row_good_alt_alt : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP),
     (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c →
@@ -114,7 +110,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt | exact _root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt | (intros; apply _root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.linked_bundles_good_of_local_langlands_alt_alt : GlobalTheory.GLq.Green → GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP), (∀ K B f T w Z Wt p0 t nch n xd c, N K B f T w Z Wt p0 t nch n xd c → Nonempty (_root_.GlobalTheory.HeightCounting.Up.extensionWithLaw hL K B f T w Z Wt p0 t nch n xd c)) → _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) (fun Q L => Row Q L (AtAll fun D _ _ (_ : _root_.GlobalTheory.Fc.BundleCondition _ _ _) => Formalism.BasicNotions.GoodFTAll D)) ∧ _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.RL.RowGoodnessCondition := by
   first | exact @_root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt | exact _root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt | (intros; apply _root_.GlobalTheory.Fc.GoodLinked.row_good_alt_alt <;> assumption)

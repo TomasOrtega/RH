@@ -25,7 +25,7 @@ section Hom
 variable {G H : Over S} [GrpObj G] [GrpObj H]
 
 /- English proof (translation)
-Rewrite using `[MonObj.one_eq_one, MonObj.one_eq_one]`. Conclude with `map_one (MonoidHom.mk' (fun x : 𝟙_ (Over S) ⟶ G ↦ x ≫ f) (h _))`. Use `mul_hom := by`. Rewrite using `[MonObj.mul_eq_mul, h, MonObj.mul_eq_mul, MonObj.comp_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMonHom_of_mul_comp (f : G ⟶ H)
     (h : ∀ (T : Over S) (x y : T ⟶ G), (x * y) ≫ f = (x ≫ f) * (y ≫ f)) : IsMonHom f where
@@ -37,7 +37,7 @@ theorem isMonHom_of_mul_comp (f : G ⟶ H)
     simp
 
 /- English proof (translation)
-The claim follows from `isMonHom_of_mul_comp _ fun T x y ↦ by simp only [MonObj.comp_mul, MonObj.mul_comp] exact mul_mul_mul_comm _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_mul [IsCommMonObj H] (f g : G ⟶ H) [IsMonHom f] [IsMonHom g] :
     IsMonHom (f * g) :=
@@ -46,13 +46,13 @@ theorem isMonHom_mul [IsCommMonObj H] (f g : G ⟶ H) [IsMonHom f] [IsMonHom g] 
     exact mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-The claim follows from `isMonHom_of_mul_comp _ fun T x y ↦ by simp`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_one : IsMonHom (1 : G ⟶ H) :=
   isMonHom_of_mul_comp _ fun T x y ↦ by simp
 
 /- English proof (translation)
-The claim follows from `isMonHom_of_mul_comp _ fun T x y ↦ by simp only [GrpObj.comp_zpow, MonObj.mul_comp, mul_zpow]`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_zpow [IsCommMonObj H] (f : G ⟶ H) [IsMonHom f] (n : ℤ) : IsMonHom (f ^ n) :=
   isMonHom_of_mul_comp _ fun T x y ↦ by
@@ -65,7 +65,7 @@ section Points
 variable {O : Type} [CommRing O] {G H K : Over S} [GrpObj G] [GrpObj H] [GrpObj K]
 
 /- English proof (translation)
-Use `a.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `mul_eq_left.mp this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_zero (a : OAct O G) : a.act 0 = 1 := by
   have := a.add 0 0
@@ -73,7 +73,7 @@ theorem act_zero (a : OAct O G) : a.act 0 = 1 := by
   exact mul_eq_left.mp this.symm
 
 /- English proof (translation)
-Rewrite using `[← a.mul, ← a.mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem act_comm (a : OAct O G) (c d : O) : a.act c ≫ a.act d = a.act d ≫ a.act c := by
   rw [← a.mul, ← a.mul, mul_comm]
@@ -110,13 +110,13 @@ structure IsLinearHom (a : OAct O G) (b : OAct O H) (f : G ⟶ H) : Prop where
   comm : ∀ c : O, a.act c ≫ f = f ≫ b.act c
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun c ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.id (a : OAct O G) : IsLinearHom a a (𝟙 G) :=
   ⟨inferInstance, fun c ↦ by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by have := hf.1; have := hg.1; infer_instance, fun x ↦ by rw [← Category.assoc, hf.comm, Category.assoc, hg.comm, Category.assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.comp {a : OAct O G} {b : OAct O H} {c : OAct O K} {f : G ⟶ H} {g : H ⟶ K}
     (hf : IsLinearHom a b f) (hg : IsLinearHom b c g) : IsLinearHom a c (f ≫ g) :=
@@ -124,13 +124,13 @@ theorem IsLinearHom.comp {a : OAct O G} {b : OAct O H} {c : OAct O K} {f : G ⟶
     rw [← Category.assoc, hf.comm, Category.assoc, hg.comm, Category.assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨a.hom c, fun d ↦ act_comm a d c⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.act (a : OAct O G) (c : O) : IsLinearHom a a (a.act c) :=
   ⟨a.hom c, fun d ↦ act_comm a d c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by have := hf.1; have := hg.1; exact isMonHom_mul f g, fun c ↦ by have := b.hom c rw [MonObj.comp_mul, MonObj.mul_comp, hf.comm, hg.comm]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.mul [IsCommMonObj H] {a : OAct O G} {b : OAct O H} {f g : G ⟶ H}
     (hf : IsLinearHom a b f) (hg : IsLinearHom a b g) : IsLinearHom a b (f * g) :=
@@ -139,13 +139,13 @@ theorem IsLinearHom.mul [IsCommMonObj H] {a : OAct O G} {b : OAct O H} {f g : G 
     rw [MonObj.comp_mul, MonObj.mul_comp, hf.comm, hg.comm]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isMonHom_one, fun c ↦ by have := b.hom c; simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.one (a : OAct O G) (b : OAct O H) : IsLinearHom a b (1 : G ⟶ H) :=
   ⟨isMonHom_one, fun c ↦ by have := b.hom c; simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by have := he.1; infer_instance, fun c ↦ by rw [Iso.comp_inv_eq, Category.assoc, he.comm, Iso.inv_hom_id_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.inv {a : OAct O G} {b : OAct O H} (e : G ≅ H) (he : IsLinearHom a b e.hom) :
     IsLinearHom b a e.inv :=
@@ -153,7 +153,7 @@ theorem IsLinearHom.inv {a : OAct O G} {b : OAct O H} (e : G ≅ H) (he : IsLine
     rw [Iso.comp_inv_eq, Category.assoc, he.comm, Iso.inv_hom_id_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun n ↦ by simp [GrpObj.zpow_comp, GrpObj.comp_zpow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLinearHom.int [IsCommMonObj G] [IsCommMonObj H] (f : G ⟶ H) [IsMonHom f] :
     IsLinearHom (intAct G) (intAct H) f :=
@@ -210,7 +210,7 @@ Both sides reduce to the same expression.
 @[simp] theorem mk_symm_apply (x : Pts a T) : (mk a).symm x = x.hom := rfl
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem ext {x y : Pts a T} (h : x.hom = y.hom) : x = y := h
 
@@ -261,7 +261,7 @@ Both sides reduce to the same expression.
 theorem mk_comp_act (x : T ⟶ G) (r : O) : mk a (x ≫ a.act r) = r • mk a x := rfl
 
 /- English proof (translation)
-The claim follows from `toMul_sum s x`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem hom_sum {I : Type*} (s : Finset I) (x : I → Pts a T) :
     (∑ i ∈ s, x i).hom = ∏ i ∈ s, (x i).hom := toMul_sum s x
@@ -279,12 +279,12 @@ Both sides reduce to the same expression.
 @[simp] theorem hom_pre (u : T' ⟶ T) (x : Pts a T) : (pre a u x).hom = u ≫ x.hom := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pre_id : pre a (𝟙 T) = LinearMap.id := by ext x; simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pre_comp (v : T'' ⟶ T') (u : T' ⟶ T) : pre a (v ≫ u) = pre a v ∘ₗ pre a u := by
   ext x; simp
@@ -301,19 +301,19 @@ Both sides reduce to the same expression.
     (post hf T x).hom = x.hom ≫ f := rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem post_id : post (IsLinearHom.id a) T = LinearMap.id := by ext x; simp
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem post_comp {f : G ⟶ H} {g : H ⟶ K} (hf : IsLinearHom a b f) (hg : IsLinearHom b c g) :
     post (hf.comp hg) T = post hg T ∘ₗ post hf T := by
   ext x; simp
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pre_post {f : G ⟶ H} (hf : IsLinearHom a b f) (u : T' ⟶ T) (x : Pts a T) :
     pre b u (post hf T x) = post hf T' (pre a u x) := by
@@ -344,7 +344,7 @@ variable (hφ : ∀ {T T' : Over S} (u : T' ⟶ T) (x : Pts a T), φ T' (pre a u
 include hφ
 
 /- English proof (translation)
-Use `congrArg hom (hφ x (mk a (𝟙 G)))` as an intermediate fact. Rewrite `this` using `[hom_pre]`. Rewrite using `[homOfNat, ← this]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem comp_homOfNat (x : T ⟶ G) : x ≫ homOfNat φ = (φ T (mk a x)).hom := by
   have := congrArg hom (hφ x (mk a (𝟙 G)))
@@ -353,7 +353,7 @@ theorem comp_homOfNat (x : T ⟶ G) : x ≫ homOfNat φ = (φ T (mk a x)).hom :=
   congr 2
 
 /- English proof (translation)
-The claim follows from `isMonHom_of_mul_comp _ fun T x y ↦ by simp only [comp_homOfNat φ hφ, mk_mul, map_add, hom_add] comm r := by rw [comp_homOfNat φ hφ, ← Category.id_comp (a.act r), mk_comp_act, map_smul] rfl`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_homOfNat : IsLinearHom a b (homOfNat φ) where
   isMonHom := isMonHom_of_mul_comp _ fun T x y ↦ by
@@ -393,7 +393,7 @@ section Basic
 variable (h : IsTensor H b G a M)
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, h.natural, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem natural_symm (u : T' ⟶ T) (y : Pts b T) :
     (h.equiv T').symm (Pts.pre b u y) = (Pts.pre a u).lTensor M ((h.equiv T).symm y) := by
@@ -402,7 +402,7 @@ theorem natural_symm (u : T' ⟶ T) (y : Pts b T) :
 def tmul (m : M) : G ⟶ H := (h.equiv G (m ⊗ₜ Pts.mk a (𝟙 G))).hom
 
 /- English proof (translation)
-Use `congrArg Pts.hom (h.natural x.hom (m ⊗ₜ Pts.mk a (𝟙 G)))` as an intermediate fact. Rewrite `this` using `[Pts.hom_pre, LinearMap.lTensor_tmul]`. Rewrite using `[tmul, ← this]`. Use `congr 3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 @[simp] theorem hom_equiv_tmul (m : M) (x : Pts a T) :
     (h.equiv T (m ⊗ₜ x)).hom = x.hom ≫ h.tmul m := by
@@ -412,7 +412,7 @@ Use `congrArg Pts.hom (h.natural x.hom (m ⊗ₜ Pts.mk a (𝟙 G)))` as an inte
   congr 3
 
 /- English proof (translation)
-The claim follows from `Pts.isLinearHom_homOfNat (fun T ↦ (h.equiv T).toLinearMap ∘ₗ TensorProduct.mk O M _ m) (fun u x ↦ by ext; simp)`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_tmul (m : M) : IsLinearHom a b (h.tmul m) :=
   Pts.isLinearHom_homOfNat (fun T ↦ (h.equiv T).toLinearMap ∘ₗ TensorProduct.mk O M _ m)
@@ -421,24 +421,24 @@ theorem isLinearHom_tmul (m : M) : IsLinearHom a b (h.tmul m) :=
 instance isMonHom_tmul (m : M) : IsMonHom (h.tmul m) := (h.isLinearHom_tmul m).isMonHom
 
 /- English proof (translation)
-Simplify using `[tmul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem tmul_zero : h.tmul 0 = 1 := by simp [tmul]
 
 /- English proof (translation)
-Simplify using `only [tmul, add_tmul, map_add, Pts.hom_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_add (m n : M) : h.tmul (m + n) = h.tmul m * h.tmul n := by
   simp only [tmul, add_tmul, map_add, Pts.hom_add]
 
 /- English proof (translation)
-Simplify using `only [tmul, ← smul_tmul', map_smul, Pts.hom_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_smul (c : O) (m : M) : h.tmul (c • m) = h.tmul m ≫ b.act c := by
   simp only [tmul, ← smul_tmul', map_smul, Pts.hom_smul]
 
 /- English proof (translation)
-Rewrite using `[tmul_smul, (h.isLinearHom_tmul m).comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_smul' (c : O) (m : M) : h.tmul (c • m) = a.act c ≫ h.tmul m := by
   rw [tmul_smul, (h.isLinearHom_tmul m).comm]
@@ -454,16 +454,16 @@ Both sides reduce to the same expression.
 @[simp] theorem hom_tmulLinear (m : M) : (h.tmulLinear m).hom = h.tmul m := rfl
 
 /- English proof (translation)
-Rewrite using `[← hom_tmulLinear, map_sum, Pts.hom_sum]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tmul_sum {I : Type*} (s : Finset I) (m : I → M) :
     h.tmul (∑ i ∈ s, m i) = ∏ i ∈ s, h.tmul (m i) := by
   rw [← hom_tmulLinear, map_sum, Pts.hom_sum]; rfl
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `(h.equiv T).surjective (Pts.mk b y)`. Establish `e : y = (h.equiv T z).hom` using `by rw [hz]; rfl`. Rewrite using `[e]`. Use `clear hz e`. Proceed by induction on `z with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simpa using one`. Consider the case `tmul m x => simpa using tmul m x.hom`. Consider the case `add z w hz hw => simpa using mul _ _ hz hw`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem induction_on {P : (T ⟶ H) → Prop} (y : T ⟶ H) (one : P 1)
     (tmul : ∀ (m : M) (x : T ⟶ G), P (x ≫ h.tmul m)) (mul : ∀ y z, P y → P z → P (y * z)) :
@@ -478,7 +478,7 @@ theorem induction_on {P : (T ⟶ H) → Prop} (y : T ⟶ H) (one : P 1)
   | add z w hz hw => simpa using mul _ _ hz hw
 
 /- English proof (translation)
-Rewrite using `[← Category.id_comp f, ← Category.id_comp g]`. Use `h.induction_on (P := fun y ↦ y ≫ f = y ≫ g) (𝟙 H) (by simp) (fun m x ↦ ?_) fun y z hy hz ↦ ?_` and prove the remaining obligations. Simplify using `only [Category.assoc, e]`. Simplify using `only [MonObj.mul_comp, hy, hz]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hom_ext {K : Over S} [GrpObj K] {f g : H ⟶ K} [IsMonHom f] [IsMonHom g]
     (e : ∀ m : M, h.tmul m ≫ f = h.tmul m ≫ g) : f = g := by
@@ -489,9 +489,9 @@ theorem hom_ext {K : Over S} [GrpObj K] {f g : H ⟶ K} [IsMonHom f] [IsMonHom g
   · simp only [MonObj.mul_comp, hy, hz]
 
 /- English proof (translation)
-Take `⟨e₁, n₁⟩` from `h₁`. Take `⟨e₂, n₂⟩` from `h₂`. Use `congr 1`. Use function extensionality and compare the values at `T`. Use `LinearEquiv.toLinearMap_injective (TensorProduct.ext' fun m x ↦ Pts.ext ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hom_equiv_tmul ⟨e₁, n₁⟩ m x).trans (by rw [e])).trans (hom_equiv_tmul ⟨e₂, n₂⟩ m x).symm`.
+A detailed English derivation is pending.
 -/
 theorem ext_tmul {h₁ h₂ : IsTensor H b G a M} (e : ∀ m, h₁.tmul m = h₂.tmul m) : h₁ = h₂ := by
   obtain ⟨e₁, n₁⟩ := h₁
@@ -509,7 +509,7 @@ def liftPts {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K} (f : M →�
     (fun m x y ↦ map_add _ _ _) (fun r m x ↦ map_smul _ _ _)) ∘ₗ (h.equiv T).symm.toLinearMap
 
 /- English proof (translation)
-Simplify using `[liftPts]`.
+Simplify using the standard rewrite rules.
 -/
 theorem liftPts_equiv_tmul {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K}
     (f : M →ₗ[O] Pts c G) (hf : ∀ m, IsLinearHom a c (f m).hom) (m : M) (x : Pts a T) :
@@ -517,9 +517,9 @@ theorem liftPts_equiv_tmul {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O 
   simp [liftPts]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `(h.equiv T).surjective y`. Rewrite using `[← h.natural]`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m x => ext`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[liftPts_equiv_tmul]`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem liftPts_natural {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K}
     (f : M →ₗ[O] Pts c G) (hf : ∀ m, IsLinearHom a c (f m).hom) (u : T' ⟶ T) (y : Pts b T) :
@@ -536,7 +536,7 @@ def lift {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K} (f : M →ₗ[O
   Pts.homOfNat (h.liftPts f hf)
 
 /- English proof (translation)
-The claim follows from `Pts.isLinearHom_homOfNat _ (h.liftPts_natural f hf) @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_lift {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K}
     (f : M →ₗ[O] Pts c G) (hf : ∀ m, IsLinearHom a c (f m).hom) :
@@ -545,7 +545,7 @@ theorem isLinearHom_lift {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K}
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[lift, Pts.comp_homOfNat _ (h.liftPts_natural f hf)]`. Conclude with `(h.liftPts_equiv_tmul f hf m (Pts.mk a (𝟙 G))).trans (Category.id_comp _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_lift {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O K}
     (f : M →ₗ[O] Pts c G) (hf : ∀ m, IsLinearHom a c (f m).hom) (m : M) :
@@ -563,7 +563,7 @@ def map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) : H ⟶ H
   h.lift (Pts.pre b' f ∘ₗ h'.tmulLinear ∘ₗ φ) fun m ↦ hf.comp (h'.isLinearHom_tmul (φ m))
 
 /- English proof (translation)
-The claim follows from `h.isLinearHom_lift _ _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
     IsLinearHom b b' (h.map h' φ hf) :=
@@ -575,14 +575,14 @@ instance isMonHom_map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `h.tmul_lift _ _ m`.
+A detailed English derivation is pending.
 -/
 theorem tmul_map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) (m : M) :
     h.tmul m ≫ h.map h' φ hf = f ≫ h'.tmul (φ m) :=
   h.tmul_lift _ _ m
 
 /- English proof (translation)
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul m x => simp`. Consider the case `add z w hz hw => simp only [map_add, Pts.hom_add, MonObj.mul_comp, hz, hw]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem hom_equiv_comp_map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f)
     (z : M ⊗[O] Pts a T) :
@@ -594,13 +594,13 @@ theorem hom_equiv_comp_map (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHo
   | add z w hz hw => simp only [map_add, Pts.hom_add, MonObj.mul_comp, hz, hw]
 
 /- English proof (translation)
-The claim follows from `h.hom_ext fun m ↦ by simp`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem map_id : h.map h LinearMap.id (IsLinearHom.id a) = 𝟙 H :=
   h.hom_ext fun m ↦ by simp
 
 /- English proof (translation)
-The claim follows from `h.hom_ext fun m ↦ by simp`.
+A detailed English derivation is pending.
 -/
 theorem map_comp (φ : M →ₗ[O] M') (ψ : M' →ₗ[O] M'') {f : G ⟶ G'} (hf : IsLinearHom a a' f)
     {g : G' ⟶ G''} (hg : IsLinearHom a' a'' g) :
@@ -608,7 +608,7 @@ theorem map_comp (φ : M →ₗ[O] M') (ψ : M' →ₗ[O] M'') {f : G ⟶ G'} (h
   h.hom_ext fun m ↦ by simp
 
 /- English proof (translation)
-Use `isMonHom_mul (h.map h' φ hf) (h.map h' ψ hf)` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp [MonObj.comp_mul, tmul_add]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_add_left (φ ψ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
     h.map h' (φ + ψ) hf = h.map h' φ hf * h.map h' ψ hf := by
@@ -616,7 +616,7 @@ theorem map_add_left (φ ψ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a
   exact h.hom_ext fun m ↦ by simp [MonObj.comp_mul, tmul_add]
 
 /- English proof (translation)
-Use `isMonHom_mul (h.map h' φ hf) (h.map h' φ hg)` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp [MonObj.comp_mul, MonObj.mul_comp]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_mul_right (φ : M →ₗ[O] M') {f g : G ⟶ G'} (hf : IsLinearHom a a' f)
     (hg : IsLinearHom a a' g) :
@@ -625,14 +625,14 @@ theorem map_mul_right (φ : M →ₗ[O] M') {f g : G ⟶ G'} (hf : IsLinearHom a
   exact h.hom_ext fun m ↦ by simp [MonObj.comp_mul, MonObj.mul_comp]
 
 /- English proof (translation)
-Use `isMonHom_one (G := H) (H := H')` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[simp] theorem map_zero_left {f : G ⟶ G'} (hf : IsLinearHom a a' f) : h.map h' 0 hf = 1 := by
   have := isMonHom_one (G := H) (H := H')
   exact h.hom_ext fun m ↦ by simp
 
 /- English proof (translation)
-Use `b'.hom c` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp [tmul_smul]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_smul_left (c : O) (φ : M →ₗ[O] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
     h.map h' (c • φ) hf = h.map h' φ hf ≫ b'.act c := by
@@ -648,7 +648,7 @@ variable (h : IsTensor H b G a M) (h' : IsTensor H' b' G a M') (h'' : IsTensor H
 def mapLeft (φ : M →ₗ[O] M') : H ⟶ H' := h.map h' φ (IsLinearHom.id a)
 
 /- English proof (translation)
-The claim follows from `h.isLinearHom_map h' φ _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_mapLeft (φ : M →ₗ[O] M') : IsLinearHom b b' (h.mapLeft h' φ) :=
   h.isLinearHom_map h' φ _
@@ -658,51 +658,51 @@ instance isMonHom_mapLeft (φ : M →ₗ[O] M') : IsMonHom (h.mapLeft h' φ) :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `[mapLeft]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_mapLeft (φ : M →ₗ[O] M') (m : M) : h.tmul m ≫ h.mapLeft h' φ = h'.tmul (φ m) := by
   simp [mapLeft]
 
 /- English proof (translation)
-Rewrite using `[mapLeft, hom_equiv_comp_map, Pts.post_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hom_equiv_comp_mapLeft (φ : M →ₗ[O] M') (z : M ⊗[O] Pts a T) :
     (h.equiv T z).hom ≫ h.mapLeft h' φ = (h'.equiv T (φ.rTensor _ z)).hom := by
   rw [mapLeft, hom_equiv_comp_map, Pts.post_id]; rfl
 
 /- English proof (translation)
-The claim follows from `h.map_id`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mapLeft_id : h.mapLeft h LinearMap.id = 𝟙 H := h.map_id
 
 /- English proof (translation)
-The claim follows from `h.hom_ext fun m ↦ by simp`.
+A detailed English derivation is pending.
 -/
 theorem mapLeft_comp (φ : M →ₗ[O] M') (ψ : M' →ₗ[O] M'') :
     h.mapLeft h'' (ψ ∘ₗ φ) = h.mapLeft h' φ ≫ h'.mapLeft h'' ψ :=
   h.hom_ext fun m ↦ by simp
 
 /- English proof (translation)
-The claim follows from `h.map_add_left h' φ ψ _`.
+A detailed English derivation is pending.
 -/
 theorem mapLeft_add (φ ψ : M →ₗ[O] M') :
     h.mapLeft h' (φ + ψ) = h.mapLeft h' φ * h.mapLeft h' ψ :=
   h.map_add_left h' φ ψ _
 
 /- English proof (translation)
-The claim follows from `h.map_zero_left h' _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mapLeft_zero : h.mapLeft h' 0 = 1 := h.map_zero_left h' _
 
 /- English proof (translation)
-The claim follows from `h.map_smul_left h' c φ _`.
+A detailed English derivation is pending.
 -/
 theorem mapLeft_smul (c : O) (φ : M →ₗ[O] M') :
     h.mapLeft h' (c • φ) = h.mapLeft h' φ ≫ b'.act c :=
   h.map_smul_left h' c φ _
 
 /- English proof (translation)
-Rewrite using `[mapLeft_smul, mapLeft_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mapLeft_smul_id (c : O) : h.mapLeft h (c • LinearMap.id) = b.act c := by
   rw [mapLeft_smul, mapLeft_id, Category.id_comp]
@@ -745,7 +745,7 @@ variable (h : IsTensor H b G a M) (h' : IsTensor H' b' G' a' M) (h'' : IsTensor 
 def mapRight {f : G ⟶ G'} (hf : IsLinearHom a a' f) : H ⟶ H' := h.map h' LinearMap.id hf
 
 /- English proof (translation)
-The claim follows from `h.isLinearHom_map h' _ hf`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_mapRight {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
     IsLinearHom b b' (h.mapRight h' hf) :=
@@ -757,19 +757,19 @@ instance isMonHom_mapRight {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `[mapRight]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tmul_mapRight {f : G ⟶ G'} (hf : IsLinearHom a a' f) (m : M) :
     h.tmul m ≫ h.mapRight h' hf = f ≫ h'.tmul m := by
   simp [mapRight]
 
 /- English proof (translation)
-The claim follows from `h.map_id`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem mapRight_id : h.mapRight h (IsLinearHom.id a) = 𝟙 H := h.map_id
 
 /- English proof (translation)
-The claim follows from `h.hom_ext fun m ↦ by simp`.
+A detailed English derivation is pending.
 -/
 theorem mapRight_comp {f : G ⟶ G'} (hf : IsLinearHom a a' f) {g : G' ⟶ G''}
     (hg : IsLinearHom a' a'' g) :
@@ -777,14 +777,14 @@ theorem mapRight_comp {f : G ⟶ G'} (hf : IsLinearHom a a' f) {g : G' ⟶ G''}
   h.hom_ext fun m ↦ by simp
 
 /- English proof (translation)
-The claim follows from `h.map_mul_right h' _ hf hg`.
+A detailed English derivation is pending.
 -/
 theorem mapRight_mul {f g : G ⟶ G'} (hf : IsLinearHom a a' f) (hg : IsLinearHom a a' g) :
     h.mapRight h' (hf.mul hg) = h.mapRight h' hf * h.mapRight h' hg :=
   h.map_mul_right h' _ hf hg
 
 /- English proof (translation)
-Use `b.hom c` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp [(h.isLinearHom_tmul m).comm]`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapRight_act (c : O) : h.mapRight h (IsLinearHom.act a c) = b.act c := by
   have := b.hom c
@@ -805,7 +805,7 @@ variable (h : IsTensor H b G a M) (h' : IsTensor H' b' G a M)
 def uniqueIso : H ≅ H' := h.mapLeftIso h' (LinearEquiv.refl O M)
 
 /- English proof (translation)
-The claim follows from `h.isLinearHom_mapLeft h' _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_uniqueIso : IsLinearHom b b' (h.uniqueIso h').hom :=
   h.isLinearHom_mapLeft h' _
@@ -814,13 +814,13 @@ instance isMonHom_uniqueIso : IsMonHom (h.uniqueIso h').hom := (h.isLinearHom_un
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `h.tmul_mapLeft h' _ m`.
+A detailed English derivation is pending.
 -/
 theorem tmul_uniqueIso_hom (m : M) : h.tmul m ≫ (h.uniqueIso h').hom = h'.tmul m :=
   h.tmul_mapLeft h' _ m
 
 /- English proof (translation)
-Use `(h.hom_equiv_comp_mapLeft h' _ z).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hom_equiv_comp_uniqueIso (z : M ⊗[O] Pts a T) :
     (h.equiv T z).hom ≫ (h.uniqueIso h').hom = (h'.equiv T z).hom := by
@@ -828,7 +828,7 @@ theorem hom_equiv_comp_uniqueIso (z : M ⊗[O] Pts a T) :
   simp
 
 /- English proof (translation)
-Establish `e` using `(hf H ((h.equiv H).symm (Pts.mk b (𝟙 H)))).trans (h.hom_equiv_comp_uniqueIso h' _).symm`. Simplify using `using e`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_uniqueIso (f : H ⟶ H')
     (hf : ∀ (T : Over S) (z : M ⊗[O] Pts a T), (h.equiv T z).hom ≫ f = (h'.equiv T z).hom) :
@@ -838,7 +838,7 @@ theorem eq_uniqueIso (f : H ⟶ H')
   simpa using e
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.uniqueIso h', fun _ z ↦ h.hom_equiv_comp_uniqueIso h' z, fun e he ↦ Iso.ext (h.eq_uniqueIso h' e.hom he)⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_iso : ∃! e : H ≅ H',
     ∀ (T : Over S) (z : M ⊗[O] Pts a T), (h.equiv T z).hom ≫ e.hom = (h'.equiv T z).hom :=
@@ -879,7 +879,7 @@ def congrRight (h : IsTensor H b G a M) (e : G' ≅ G) (he : IsLinearHom a' a e.
     | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Conclude with `(h.hom_equiv_tmul m (Pts.postEquiv e he G' (Pts.mk a' (𝟙 G')))).trans (by simp)`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem congrRight_tmul (h : IsTensor H b G a M) (e : G' ≅ G)
     (he : IsLinearHom a' a e.hom) (m : M) : (h.congrRight e he).tmul m = e.hom ≫ h.tmul m := by
@@ -907,7 +907,7 @@ def self (a : OAct O G) : IsTensor G a G a O where
     | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Simplify using `[tmul, self, -hom_equiv_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem self_tmul (a : OAct O G) (c : O) : (self a).tmul c = a.act c := by
   simp [tmul, self, -hom_equiv_tmul]
@@ -930,13 +930,13 @@ variable {O'}
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `h.tmul_mapLeft h _ m`.
+A detailed English derivation is pending.
 -/
 theorem tmul_algAct (c : O') (m : M) : h.tmul m ≫ (h.algAct O').act c = h.tmul (c • m) :=
   h.tmul_mapLeft h _ m
 
 /- English proof (translation)
-Use `b.hom c` as an intermediate fact. Use `(h.algAct O').hom (algebraMap O O' c)` as an intermediate fact. Conclude with `h.hom_ext fun m ↦ by simp [tmul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[simp] theorem algAct_algebraMap (c : O) : (h.algAct O').act (algebraMap O O' c) = b.act c := by
   have := b.hom c
@@ -944,7 +944,7 @@ Use `b.hom c` as an intermediate fact. Use `(h.algAct O').hom (algebraMap O O' c
   exact h.hom_ext fun m ↦ by simp [tmul_smul]
 
 /- English proof (translation)
-The claim follows from `h.isLinearHom_mapLeft h _`.
+A detailed English derivation is pending.
 -/
 theorem isLinearHom_algAct (c : O') : IsLinearHom b b ((h.algAct O').act c) :=
   h.isLinearHom_mapLeft h _
@@ -952,7 +952,7 @@ theorem isLinearHom_algAct (c : O') : IsLinearHom b b ((h.algAct O').act c) :=
 variable (O') in
 
 /- English proof (translation)
-Take `⟨act, _, _, _, _⟩` from `b`. Simplify using `only [comapAct, OAct.mk.injEq]`. Conclude with `funext fun c ↦ h.algAct_algebraMap c`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comapAct_algAct : comapAct (h.algAct O') (algebraMap O O') = b := by
   obtain ⟨act, _, _, _, _⟩ := b
@@ -984,7 +984,7 @@ Both sides reduce to the same expression.
     (h.algEquiv O' T z).hom = (h.equiv T z).hom := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun c ↦ by have := (h.algAct O').hom c have := (h'.algAct O').hom c exact h.hom_ext fun m ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_algAct_map [Module O' M'] [IsScalarTower O O' M']
     (h' : IsTensor H' b' G' a' M') (φ : M →ₗ[O'] M') {f : G ⟶ G'} (hf : IsLinearHom a a' f) :
@@ -1019,7 +1019,7 @@ def trans {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O' K} {N : Type} [A
       | tmul n m => ext; simp
 
 /- English proof (translation)
-The claim follows from `k.hom_equiv_tmul n (h.algEquiv O' G (m ⊗ₜ Pts.mk a (𝟙 G)))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem trans_tmul {K : Over S} [GrpObj K] [IsCommMonObj K] {c : OAct O' K} {N : Type}
     [AddCommGroup N] [Module O' N] [Module O N] [IsScalarTower O O' N]
@@ -1051,20 +1051,20 @@ Both sides reduce to the same expression.
     (prodAct b b').act c = b.act c ⊗ₘ b'.act c := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun c ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_fst (b : OAct O H) (b' : OAct O H') : IsLinearHom (prodAct b b') b (fst H H') :=
   ⟨inferInstance, fun c ↦ by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun c ↦ by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_snd (b : OAct O H) (b' : OAct O H') :
     IsLinearHom (prodAct b b') b' (snd H H') :=
   ⟨inferInstance, fun c ↦ by simp⟩
 
 /- English proof (translation)
-The claim follows from `p.lim.hom_ext fun i ↦ e i.as`.
+A detailed English derivation is pending.
 -/
 theorem pow_hom_ext {n : ℕ} (p : IsPowGrp G' G n) {T : Over S} {x y : T ⟶ G'}
     (e : ∀ i, x ≫ p.pr i = y ≫ p.pr i) : x = y :=
@@ -1075,7 +1075,7 @@ def powLift {n : ℕ} (p : IsPowGrp G' G n) {T : Over S} (x : Fin n → (T ⟶ G
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `p.lim.fac (Fan.mk T x) ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem powLift_pr {n : ℕ} (p : IsPowGrp G' G n) {T : Over S} (x : Fin n → (T ⟶ G)) (i : Fin n) :
     powLift p x ≫ p.pr i = x i :=
@@ -1095,14 +1095,14 @@ def powAct {n : ℕ} (p : IsPowGrp G' G n) (a : OAct O G) : OAct O G' where
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `powLift_pr p _ i`.
+A detailed English derivation is pending.
 -/
 theorem powAct_act_pr {n : ℕ} (p : IsPowGrp G' G n) (a : OAct O G) (c : O) (i : Fin n) :
     (powAct p a).act c ≫ p.pr i = p.pr i ≫ a.act c :=
   powLift_pr p _ i
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p.hom i, fun c ↦ powAct_act_pr p a c i⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_pr {n : ℕ} (p : IsPowGrp G' G n) (a : OAct O G) (i : Fin n) :
     IsLinearHom (powAct p a) a (p.pr i) :=
@@ -1174,18 +1174,18 @@ def pow {n : ℕ} (p : IsPowGrp G' G n) (a : OAct O G) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `[tmul, pow, -hom_equiv_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pow_tmul_pr {n : ℕ} (p : IsPowGrp G' G n) (a : OAct O G) (v : Fin n → O) (i : Fin n) :
     (pow p a).tmul v ≫ p.pr i = a.act (v i) := by
   simp [tmul, pow, -hom_equiv_tmul]
 
 /- English proof (translation)
-Establish `key : ∀ (T : Over S) (y : T ⟶ G'), y ≫ ∏ j, p.pr j ≫ a.act (A i j) = ∏ j, y ≫ p.pr j ≫ a.act (A i j)` using `fun T y ↦ map_prod (preHom y) _ _`. Use `q.hom i` as an intermediate fact. Establish `: IsMonHom (∏ j, p.pr j ≫ a.act (A i j))` using `isMonHom_of_mul_comp _ fun T x y ↦ by`. Simplify using `only [key, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun j _ ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `p.hom j` as an intermediate fact. Use `a.hom (A i j)` as an intermediate fact. Conclude with `MonObj.mul_comp _ _ _`. Use `(pow p a).hom_ext fun v ↦ ?_` and prove the remaining obligations. Simplify using `only [tmul_mapLeft_assoc, pow_tmul_pr, key, pow_tmul_pr_assoc, ← a.mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← self_tmul, Matrix.toLin'_apply, Matrix.mulVec, dotProduct, tmul_sum]`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_mapLeft_pr {n k : ℕ} (p : IsPowGrp G' G n) (q : IsPowGrp H G k) (a : OAct O G)
     (A : Matrix (Fin k) (Fin n) O) (i : Fin k) :
@@ -1221,14 +1221,14 @@ structure IsLinearPullback (a₁ : OAct O G₁) (a : OAct O G) (f : S' ⟶ S) (�
   comm : ∀ c : O, (a₁.act c).left ≫ φ = φ ≫ (a.act c).left
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isGrpPullback_pullback G f, fun _ ↦ pullback.lift_fst _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearPullback_pullback [IsCommMonObj G] (a : OAct O G) (f : S' ⟶ S) :
     IsLinearPullback (a.pullback f G) a f (pullback.fst G.hom f) :=
   ⟨isGrpPullback_pullback G f, fun _ ↦ pullback.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Use `he.1` as an intermediate fact. Conclude with `((isGrpPullback_of_iso e).comp hφ.1).congr (Category.id_comp f) rfl`. Use `comm c := by`. Rewrite using `[Category.assoc, ← hφ.comm, ← Category.assoc, ← Category.assoc, ← Over.comp_left, ← Over.comp_left, he.comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLinearPullback.of_iso {a₁ : OAct O G₁} {b₁ : OAct O H₁} {a : OAct O G} {f : S' ⟶ S}
     {φ : G₁.left ⟶ G.left} (hφ : IsLinearPullback a₁ a f φ) (e : H₁ ≅ G₁)
@@ -1276,7 +1276,7 @@ Both sides reduce to the same expression.
     (x : Pts a₁ T) : (Pts.pullbackEquiv hφ T x).hom.left = x.hom.left ≫ φ := rfl
 
 /- English proof (translation)
-The claim follows from `Pts.ext (Over.OverMorphism.ext (Category.assoc u.left x.hom.left φ))`.
+A detailed English derivation is pending.
 -/
 theorem Pts.pullbackEquiv_pre (hφ : IsLinearPullback a₁ a f φ) {T T' : Over S'} (u : T' ⟶ T)
     (x : Pts a₁ T) : Pts.pullbackEquiv hφ T' (Pts.pre a₁ u x) =
@@ -1302,7 +1302,7 @@ def baseChange (h : IsTensor H b G a M) (hφ : IsLinearPullback a₁ a f φ)
     | add z w hz hw => simp only [map_add, hz, hw]
 
 /- English proof (translation)
-Establish `e : Pts.pullbackEquiv hψ G₁ (Pts.mk b₁ ((h.baseChange hφ hψ).tmul m)) = h.equiv _ (m ⊗ₜ Pts.pullbackEquiv hφ G₁ (Pts.mk a₁ (𝟙 G₁)))` using `(Pts.pullbackEquiv hψ G₁).apply_symm_apply _`. Establish `e'` using `congrArg (fun y ↦ y.hom.left) e`. Simplify using `only [Pts.hom_pullbackEquiv_left, hom_equiv_tmul, Over.comp_left, Pts.hom_mk, Over.id_left, Category.id_comp] at e'`. Conclude with `e'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem baseChange_tmul (h : IsTensor H b G a M) (hφ : IsLinearPullback a₁ a f φ)
     (hψ : IsLinearPullback b₁ b f ψ) (m : M) :
@@ -1321,7 +1321,7 @@ def pullback (h : IsTensor H b G a M) (f : S' ⟶ S) :
   h.baseChange (isLinearPullback_pullback a f) (isLinearPullback_pullback b f)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(isGrpPullback_pullback H f).1.hom_ext` to reduce the goal to its premises. Conclude with `(h.baseChange_tmul _ _ m).trans (Limits.pullback.lift_fst _ _ _).symm`. Conclude with `(Over.w _).trans (Over.w _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 @[simp] theorem pullback_tmul (h : IsTensor H b G a M) (f : S' ⟶ S) (m : M) :
     (h.pullback f).tmul m = (Over.pullback f).map (h.tmul m) := by
@@ -1331,7 +1331,7 @@ Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(isGrpP
   · exact (Over.w _).trans (Over.w _).symm
 
 /- English proof (translation)
-The claim follows from `(h.pullback f).hom_ext fun m ↦ by rw [tmul_mapLeft, pullback_tmul, pullback_tmul, ← Functor.map_comp, tmul_mapLeft]`.
+A detailed English derivation is pending.
 -/
 theorem pullback_mapLeft {H' : Over S} [GrpObj H'] [IsCommMonObj H'] {b' : OAct O H'} {M' : Type}
     [AddCommGroup M'] [Module O M'] (h : IsTensor H b G a M) (h' : IsTensor H' b' G a M')
@@ -1341,7 +1341,7 @@ theorem pullback_mapLeft {H' : Over S} [GrpObj H'] [IsCommMonObj H'] {b' : OAct 
     rw [tmul_mapLeft, pullback_tmul, pullback_tmul, ← Functor.map_comp, tmul_mapLeft]
 
 /- English proof (translation)
-Set `h₂` to `h.baseChange hφ (isLinearPullback_pullback b f)`. Use `⟨_, (isLinearPullback_pullback b f).of_iso (h₁.uniqueIso h₂) (h₁.isLinearHom_uniqueIso h₂), fun m ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Over.comp_left, tmul_uniqueIso_hom]`. Conclude with `h.baseChange_tmul hφ _ m`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isLinearPullback (h : IsTensor H b G a M) (h₁ : IsTensor H₁ b₁ G₁ a₁ M)
     (hφ : IsLinearPullback a₁ a f φ) :
@@ -1399,7 +1399,7 @@ instance mono_fixIncl {K : Over S} (p : K ⟶ K) : Mono (fixIncl p) :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(equalizer.condition p (𝟙 K)).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem fixIncl_comp {K : Over S} (p : K ⟶ K) : fixIncl p ≫ p = fixIncl p :=
   (equalizer.condition p (𝟙 K)).trans (Category.comp_id _)
@@ -1409,14 +1409,14 @@ def fixProj {K : Over S} {p : K ⟶ K} (hp : p ≫ p = p) : K ⟶ fixObj p :=
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `equalizer.lift_ι _ _ @[reassoc (attr := simp)]`.
+A detailed English derivation is pending.
 -/
 theorem fixProj_incl {K : Over S} {p : K ⟶ K} (hp : p ≫ p = p) : fixProj hp ≫ fixIncl p = p :=
   equalizer.lift_ι _ _
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Rewrite using `[← cancel_mono (fixIncl p)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fixIncl_proj {K : Over S} {p : K ⟶ K} (hp : p ≫ p = p) :
     fixIncl p ≫ fixProj hp = 𝟙 _ := by
@@ -1427,7 +1427,7 @@ theorem fixIncl_proj {K : Over S} {p : K ⟶ K} (hp : p ≫ p = p) :
   grpObjOfRetract (fixIncl p) (fixProj hp) (fixIncl_proj hp)
 
 /- English proof (translation)
-Use `letI := fixGrp hp`. Use `isMonHom_of_mul_comp _ fun T x y ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(lift x y ≫ (fst _ _ ≫ fixIncl p * snd _ _ ≫ fixIncl p) ≫ fixProj hp) ≫ fixIncl p = _`. Simplify using `[MonObj.mul_comp, MonObj.comp_mul]`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem isMonHom_fixIncl {p : K ⟶ K} [IsMonHom p] (hp : p ≫ p = p) :
     letI := fixGrp hp; IsMonHom (fixIncl p) := by
@@ -1437,7 +1437,7 @@ theorem isMonHom_fixIncl {p : K ⟶ K} [IsMonHom p] (hp : p ≫ p = p) :
   simp [MonObj.mul_comp, MonObj.comp_mul]
 
 /- English proof (translation)
-Use `letI := fixGrp hp`. Use `isMonHom_fixIncl hp` as an intermediate fact. Use `isMonHom_of_mul_comp _ fun T x y ↦ ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (fixIncl p)]`. Simplify using `[MonObj.mul_comp]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isMonHom_fixProj {p : K ⟶ K} [IsMonHom p] (hp : p ≫ p = p) :
     letI := fixGrp hp; IsMonHom (fixProj hp) := by
@@ -1448,7 +1448,7 @@ theorem isMonHom_fixProj {p : K ⟶ K} [IsMonHom p] (hp : p ≫ p = p) :
   simp [MonObj.mul_comp]
 
 /- English proof (translation)
-Use `letI := fixGrp hp`. Use `isMonHom_fixIncl hp` as an intermediate fact. Rewrite using `[isCommMonObj_iff_isMulCommutative]`. Use `fun T ↦ ⟨⟨fun x y ↦ ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (fixIncl p), MonObj.mul_comp, MonObj.mul_comp, mul_comm]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCommMonObj_fix [IsCommMonObj K] {p : K ⟶ K} [IsMonHom p] (hp : p ≫ p = p) :
     letI := fixGrp hp; IsCommMonObj (fixObj p) := by
@@ -1471,7 +1471,7 @@ def retractAct (c : OAct O K) (i : H ⟶ K) (r : K ⟶ H) [IsMonHom i] [IsMonHom
   add x y := by rw [c.add, MonObj.mul_comp, MonObj.comp_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun x ↦ by change (i ≫ c.act x ≫ r) ≫ i = _ simp only [Category.assoc] rw [hc, reassoc_of% hir]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_retract_incl (c : OAct O K) (i : H ⟶ K) (r : K ⟶ H) [IsMonHom i] [IsMonHom r]
     (hir : i ≫ r = 𝟙 H) (hc : ∀ x, c.act x ≫ r ≫ i = r ≫ i ≫ c.act x) :
@@ -1482,7 +1482,7 @@ theorem isLinearHom_retract_incl (c : OAct O K) (i : H ⟶ K) (r : K ⟶ H) [IsM
     rw [hc, reassoc_of% hir]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, fun x ↦ by change _ = r ≫ i ≫ c.act x ≫ r rw [← reassoc_of% hc x, hir, Category.comp_id]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLinearHom_retract_proj (c : OAct O K) (i : H ⟶ K) (r : K ⟶ H) [IsMonHom i] [IsMonHom r]
     (hir : i ≫ r = 𝟙 H) (hc : ∀ x, c.act x ≫ r ≫ i = r ≫ i ≫ c.act x) :
@@ -1551,7 +1551,7 @@ def Summand.free (O : Type) [CommRing O] (n : ℕ) : Summand O (Fin n → O) :=
 variable (O M) in
 
 /- English proof (translation)
-Take `⟨n, f, g, -, -, h⟩` from `Module.Finite.exists_comp_eq_id_of_projective O M`. Conclude with `⟨⟨n, g, f, h⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Summand.nonempty [Module.Finite O M] [Module.Projective O M] : Nonempty (Summand O M) := by
   obtain ⟨n, f, g, -, -, h⟩ := Module.Finite.exists_comp_eq_id_of_projective O M
@@ -1571,12 +1571,12 @@ variable (P : Summand O M) (a : OAct O G)
 def matrix : Matrix (Fin P.n) (Fin P.n) O := LinearMap.toMatrix' (P.incl ∘ₗ P.proj)
 
 /- English proof (translation)
-The claim follows from `Matrix.toLin'_toMatrix' _`.
+A detailed English derivation is pending.
 -/
 theorem toLin'_matrix : Matrix.toLin' P.matrix = P.incl ∘ₗ P.proj := Matrix.toLin'_toMatrix' _
 
 /- English proof (translation)
-Rewrite using `[matrix, ← LinearMap.toMatrix'_comp, LinearMap.comp_assoc, ← LinearMap.comp_assoc _ _ P.proj, P.proj_incl, LinearMap.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem matrix_mul_self : P.matrix * P.matrix = P.matrix := by
   rw [matrix, ← LinearMap.toMatrix'_comp, LinearMap.comp_assoc, ← LinearMap.comp_assoc _ _ P.proj,
@@ -1587,7 +1587,7 @@ def idem : powObj G P.n ⟶ powObj G P.n :=
     (P.incl ∘ₗ P.proj)
 
 /- English proof (translation)
-Rewrite using `[idem, ← toLin'_matrix]`. Conclude with `IsTensor.pow_mapLeft_pr _ (powIsPowGrp G P.n) a _ i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_pr (i : Fin P.n) :
     P.idem a ≫ powPr G i = ∏ j, powPr G j ≫ a.act (P.matrix i j) := by
@@ -1597,7 +1597,7 @@ theorem idem_pr (i : Fin P.n) :
 instance isMonHom_idem : IsMonHom (P.idem a) := IsTensor.isMonHom_mapLeft _ _ _
 
 /- English proof (translation)
-Rewrite using `[idem, ← IsTensor.mapLeft_comp, LinearMap.comp_assoc, ← LinearMap.comp_assoc _ _ P.proj, P.proj_incl, LinearMap.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_idem : P.idem a ≫ P.idem a = P.idem a := by
   rw [idem, ← IsTensor.mapLeft_comp, LinearMap.comp_assoc, ← LinearMap.comp_assoc _ _ P.proj,
@@ -1618,17 +1618,17 @@ instance isMonHom_objIncl : IsMonHom (P.objIncl a) := isMonHom_fixIncl (P.idem_i
 instance isMonHom_objProj : IsMonHom (P.objProj a) := isMonHom_fixProj (P.idem_idem a)
 
 /- English proof (translation)
-The claim follows from `fixIncl_proj (P.idem_idem a)`.
+A detailed English derivation is pending.
 -/
 theorem objIncl_objProj : P.objIncl a ≫ P.objProj a = 𝟙 _ := fixIncl_proj (P.idem_idem a)
 
 /- English proof (translation)
-The claim follows from `fixProj_incl (P.idem_idem a)`.
+A detailed English derivation is pending.
 -/
 theorem objProj_objIncl : P.objProj a ≫ P.objIncl a = P.idem a := fixProj_incl (P.idem_idem a)
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc (P.objProj a), objProj_objIncl]`. Conclude with `(IsTensor.isLinearHom_mapLeft _ _ _).comm x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_idem (x : O) : (powAct (powIsPowGrp G P.n) a).act x ≫ P.objProj a ≫ P.objIncl a =
     P.objProj a ≫ P.objIncl a ≫ (powAct (powIsPowGrp G P.n) a).act x := by
@@ -1664,7 +1664,7 @@ end Existence
 section Properties
 
 /- English proof (translation)
-The claim follows from `| 0 => h₀ | n + 1 => P.comp_mem _ _ (P.pullback_fst G.hom (powObj G n).hom (powObj_property P h₀ G hG n)) hG`.
+A detailed English derivation is pending.
 -/
 theorem powObj_property (P : MorphismProperty Scheme.{0}) [P.IsStableUnderComposition]
     [P.IsStableUnderBaseChange] (h₀ : P (𝟙 S)) (G : Over S) (hG : P G.hom) :
@@ -1674,7 +1674,7 @@ theorem powObj_property (P : MorphismProperty Scheme.{0}) [P.IsStableUnderCompos
     P.comp_mem _ _ (P.pullback_fst G.hom (powObj G n).hom (powObj_property P h₀ G hG n)) hG
 
 /- English proof (translation)
-The claim follows from `| 0 => inferInstanceAs (GeometricallyConnected (𝟙 S)) | n + 1 => by have := powObj_geometricallyConnected G n have : UniversallyOpen (powObj G n).hom := powObj_property @UniversallyOpen inferInstance G ‹_› n exact GeometricallyConnected.comp (pullback.fst G.hom (powObj G n).hom) …`.
+A detailed English derivation is pending.
 -/
 theorem powObj_geometricallyConnected (G : Over S) [UniversallyOpen G.hom]
     [GeometricallyConnected G.hom] : ∀ n : ℕ, GeometricallyConnected (powObj G n).hom
@@ -1697,7 +1697,7 @@ def retract (P : Summand O M) : Retract H (powObj G P.n) where
   retract := by rw [← mapLeft_comp, P.proj_incl, mapLeft_id]
 
 /- English proof (translation)
-Rewrite using `[tmul_mapLeft, self_tmul, hm, a.one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_mapLeft_self (t : M →ₗ[O] O) {m : M} (hm : t m = 1) :
     h.tmul m ≫ h.mapLeft (self a) t = 𝟙 G := by
@@ -1707,13 +1707,13 @@ variable [Module.Finite O M] [Module.Projective O M]
 include h
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, h.retract (Summand.choose O M), isMonHom_mapLeft _ _ _, isMonHom_mapLeft _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_retract : ∃ (n : ℕ) (ρ : Retract H (powObj G n)), IsMonHom ρ.i ∧ IsMonHom ρ.r :=
   ⟨_, h.retract (Summand.choose O M), isMonHom_mapLeft _ _ _, isMonHom_mapLeft _ _ _⟩
 
 /- English proof (translation)
-Take `⟨n, ρ, -⟩` from `h.exists_retract`. Conclude with `hP (GlobalTheory.Retract.over_left_comp ρ) (Over.w ρ.r) (powObj_property P h₀ G hG n)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem property (P : MorphismProperty Scheme.{0}) [P.IsStableUnderComposition]
     [P.IsStableUnderBaseChange] (h₀ : P (𝟙 S))
@@ -1723,14 +1723,14 @@ theorem property (P : MorphismProperty Scheme.{0}) [P.IsStableUnderComposition]
   exact hP (GlobalTheory.Retract.over_left_comp ρ) (Over.w ρ.r) (powObj_property P h₀ G hG n)
 
 /- English proof (translation)
-The claim follows from `h.property @Smooth inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.smooth h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem smooth [hG : Smooth G.hom] : Smooth H.hom :=
   h.property @Smooth inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.smooth h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `haveI : MorphismProperty.IsStableUnderComposition @Etale.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩ h.property @Etale inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.etale h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem etale [hG : Etale G.hom] : Etale H.hom :=
   haveI : MorphismProperty.IsStableUnderComposition @Etale.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩
@@ -1738,21 +1738,21 @@ theorem etale [hG : Etale G.hom] : Etale H.hom :=
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.etale h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @Flat inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.flat h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem flat [hG : Flat G.hom] : Flat H.hom :=
   h.property @Flat inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.flat h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @LocallyOfFiniteType inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFiniteType h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem locallyOfFiniteType [hG : LocallyOfFiniteType G.hom] : LocallyOfFiniteType H.hom :=
   h.property @LocallyOfFiniteType inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFiniteType h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @LocallyOfFinitePresentation inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFinitePresentation h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem locallyOfFinitePresentation [hG : LocallyOfFinitePresentation G.hom] :
     LocallyOfFinitePresentation H.hom :=
@@ -1760,28 +1760,28 @@ theorem locallyOfFinitePresentation [hG : LocallyOfFinitePresentation G.hom] :
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.locallyOfFinitePresentation h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @QuasiCompact inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.quasiCompact h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem quasiCompact [hG : QuasiCompact G.hom] : QuasiCompact H.hom :=
   h.property @QuasiCompact inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.quasiCompact h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @IsSeparated inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isSeparated h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem isSeparated [hG : IsSeparated G.hom] : IsSeparated H.hom :=
   h.property @IsSeparated inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isSeparated h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @IsProper inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isProper h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem isProper [hG : IsProper G.hom] : IsProper H.hom :=
   h.property @IsProper inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isProper h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `haveI : MorphismProperty.IsStableUnderComposition @IsAffineHom.{0} := ⟨fun _ _ _ _ ↦ inferInstance⟩ h.property @IsAffineHom inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isAffineHom h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem isAffineHom [hG : IsAffineHom G.hom] : IsAffineHom H.hom :=
   haveI : MorphismProperty.IsStableUnderComposition @IsAffineHom.{0} :=
@@ -1790,14 +1790,14 @@ theorem isAffineHom [hG : IsAffineHom G.hom] : IsAffineHom H.hom :=
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isAffineHom h₁ h₂) hG
 
 /- English proof (translation)
-The claim follows from `h.property @IsFinite inferInstance (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isFinite h₁ h₂) hG`.
+A detailed English derivation is pending.
 -/
 theorem isFinite [hG : IsFinite G.hom] : IsFinite H.hom :=
   h.property @IsFinite inferInstance
     (fun h₁ h₂ _ ↦ GlobalTheory.Retract.isFinite h₁ h₂) hG
 
 /- English proof (translation)
-Take `⟨n, ρ, -⟩` from `h.exists_retract`. Use `powObj_geometricallyConnected G n` as an intermediate fact. Conclude with `GlobalTheory.Retract.geometricallyConnected (GlobalTheory.Retract.over_left_comp ρ) (Over.w ρ.r)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected [UniversallyOpen G.hom] [GeometricallyConnected G.hom] :
     GeometricallyConnected H.hom := by
@@ -1806,7 +1806,7 @@ theorem geometricallyConnected [UniversallyOpen G.hom] [GeometricallyConnected G
   exact GlobalTheory.Retract.geometricallyConnected (GlobalTheory.Retract.over_left_comp ρ) (Over.w ρ.r)
 
 /- English proof (translation)
-Use `hG.smooth` as an intermediate fact. Use `hG.proper` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Conclude with `⟨inferInstance, h.smooth, h.isProper, h.geometricallyConnected⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme (hG : IsAbelianScheme G) : IsAbelianScheme H := by
   have := hG.smooth
@@ -1815,7 +1815,7 @@ theorem isAbelianScheme (hG : IsAbelianScheme G) : IsAbelianScheme H := by
   exact ⟨inferInstance, h.smooth, h.isProper, h.geometricallyConnected⟩
 
 /- English proof (translation)
-Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `hG.geomConnected` as an intermediate fact. Conclude with `⟨h.smooth, h.isSeparated, h.quasiCompact, h.geometricallyConnected⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem of_isSemiAbelian (hG : IsSemiAbelian G) :
     Smooth H.hom ∧ IsSeparated H.hom ∧ QuasiCompact H.hom ∧ GeometricallyConnected H.hom := by
@@ -1826,7 +1826,7 @@ theorem of_isSemiAbelian (hG : IsSemiAbelian G) :
   exact ⟨h.smooth, h.isSeparated, h.quasiCompact, h.geometricallyConnected⟩
 
 /- English proof (translation)
-The claim follows from `fun s hs K _ _ t ht ↦ by have : IsProper ((Over.pullback t).obj G).hom := hs K t ht exact (h.pullback t).isProper`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem abLocus_subset : abLocus G ⊆ abLocus H := fun s hs K _ _ t ht ↦ by
   have : IsProper ((Over.pullback t).obj G).hom := hs K t ht
@@ -1857,7 +1857,7 @@ instance projective_fractionalIdeal (I : FractionalIdeal (𝓞 E)⁰ E) : Module
   Module.Flat.projective_of_finitePresentation
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, (isTensor I a).algAct (𝓞 E), (isTensor I a).comapAct_algAct (𝓞 E)⟩`.
+Supply the required witnesses or components.
 -/
 example (A : Over S) [GrpObj A] [IsCommMonObj A] [IsAbelianScheme A] (a : OAct (𝓞 K) A)
     (I : FractionalIdeal (𝓞 E)⁰ E) :
@@ -1872,13 +1872,11 @@ section Examples
 abbrev gmRat : Over (Spec (CommRingCat.of ℚ)) := splitTorusAff (CommRingCat.of ℚ) ℤ
 
 /- English proof (translation)
-Introduce `e`. Set `φ : AddMonoidAlgebra ℚ ℤ →ₐ[ℚ] AddMonoidAlgebra ℚ ℤ` to `AddMonoidAlgebra.lift ℚ _ ℤ 1`. Set `x : gmRat ⟶ gmRat` to `Over.homMk (Spec.map (CommRingCat.ofHom φ.toRingHom)) (by`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `CommRingCat.hom_ext φ.comp_algebraMap)`. Establish `hx : x = 𝟙 gmRat` using `by rw [← Category.comp_id x, e, MonObj.comp_one]`. Establish `h₁ : Spec.map (CommRingCat.ofHom φ.toRingHom) = Spec.map (𝟙 _)` using `(congrArg (fun y ↦ y.left) hx).trans (Spec.map_id _).symm`. Establish `h₂` using `congrArg (fun g ↦ g.hom (AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ))) (Spec.map_injective h₁)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : (1 : AddMonoidAlgebra ℚ ℤ) = AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ)`. Use `Eq.trans ?_ h₂` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = φ (AddMonoidAlgebra.single (1 : ℤ) (1 : ℚ))`. Rewrite using `[AddMonoidAlgebra.lift_single, MonoidHom.one_apply, one_smul]`. Rewrite `h₃` using `[AddMonoidAlgebra.one_def]`.
-
-Conclude with `zero_ne_one (AddMonoidAlgebra.single_left_injective one_ne_zero h₃)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gmRat_id_ne_one : (𝟙 gmRat : gmRat ⟶ gmRat) ≠ 1 := by
   intro e
@@ -1905,7 +1903,7 @@ def gmRatSquare : IsTensor (powObj gmRat 2) (powAct (powIsPowGrp gmRat 2) (intAc
   IsTensor.pow _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(IsTensor.pow_tmul_pr (powIsPowGrp gmRat 2) _ _ 0).trans (by simp), IsTensor.pow_tmul_pr (powIsPowGrp gmRat 2) _ _ 1⟩`.
+Supply the required witnesses or components.
 -/
 example : gmRatSquare.tmul ![1, -3] ≫ powPr gmRat 0 = 𝟙 gmRat ∧
     gmRatSquare.tmul ![1, -3] ≫ powPr gmRat 1 = (𝟙 gmRat) ^ (-3 : ℤ) :=
@@ -1913,14 +1911,14 @@ example : gmRatSquare.tmul ![1, -3] ≫ powPr gmRat 0 = 𝟙 gmRat ∧
     IsTensor.pow_tmul_pr (powIsPowGrp gmRat 2) _ _ 1⟩
 
 /- English proof (translation)
-The claim follows from `fun e ↦ gmRat_id_ne_one <| by rw [← (isTensor (Fin 2 → ℤ) (intAct gmRat)).tmul_mapLeft_self (LinearMap.proj 0) (m := ![1, 0]) rfl, e, MonObj.one_comp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : (isTensor (Fin 2 → ℤ) (intAct gmRat)).tmul ![1, 0] ≠ 1 := fun e ↦ gmRat_id_ne_one <| by
   rw [← (isTensor (Fin 2 → ℤ) (intAct gmRat)).tmul_mapLeft_self (LinearMap.proj 0)
     (m := ![1, 0]) rfl, e, MonObj.one_comp]
 
 /- English proof (translation)
-Introduce `c`. Establish `e : (⟨0, 1⟩ * ⟨0, 1⟩ + 1 : QuadraticAlgebra ℤ (-1) 0) = 0`. Evaluate the decidable proposition. Rewrite using `[← c.mul, eq_inv_iff_mul_eq_one, ← c.one, ← c.add, e, act_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities.
 -/
 example (G : Over S) [GrpObj G] [IsCommMonObj G] :
     let c := (isTensor (QuadraticAlgebra ℤ (-1) 0) (intAct G)).algAct (QuadraticAlgebra ℤ (-1) 0)
@@ -1931,7 +1929,7 @@ example (G : Over S) [GrpObj G] [IsCommMonObj G] :
   rw [← c.mul, eq_inv_iff_mul_eq_one, ← c.one, ← c.add, e, act_zero]
 
 /- English proof (translation)
-Use `isMonHom_one (G := tensorObj PUnit a) (H := tensorObj PUnit a)` as an intermediate fact. Conclude with `(isTensor PUnit a).hom_ext fun m ↦ by`. Rewrite using `[Subsingleton.elim m 0, IsTensor.tmul_zero]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {O : Type} [CommRing O] {G : Over S} [GrpObj G] [IsCommMonObj G] (a : OAct O G) :
     𝟙 (tensorObj PUnit a) = 1 := by

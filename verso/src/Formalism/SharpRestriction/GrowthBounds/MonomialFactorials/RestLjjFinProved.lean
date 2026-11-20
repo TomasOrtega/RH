@@ -13,15 +13,13 @@ section Lvl
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Unfold `xiMons`. Rewrite using `[Finset.mem_image]`. Use `⟨fun c => m (Formalism.GM.M.xiVar N r G.T.t c), (CountingStatementReduction.mem_Ev _).2 hsum, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Finsupp.finsetSum_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : ∃ c, v = Formalism.GM.M.xiVar N r G.T.t c`. Take `⟨c, rfl⟩` from `hv`. Rewrite using `[Finset.sum_eq_single c]`. Simplify using the standard rewrite rules. Introduce `d _ hd`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hd (xiVar_inj G h)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ c) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : m v = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hv (hsupp v (Finsupp.mem_support_iff.2 hne))`. Rewrite using `[h0]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hv ⟨c, h.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_xiMons_of (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ)
     (hsupp : ∀ v ∈ m.support, ∃ c, v = Formalism.GM.M.xiVar N r G.T.t c)
@@ -51,11 +49,11 @@ theorem mem_xiMons_of (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ)
     exact hv ⟨c, h.symm⟩
 
 /- English proof (translation)
-Take `⟨hs, hint⟩` from `Submodule.mem_inf.1 hg`. Rewrite `hs` using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Take `⟨g0, hg0⟩` from `hint`. Establish `hc : ∀ m, coeff m g = algebraMap ℤ_[p] ℚ_[p] (coeff m g0)`. Introduce `m`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hg0]`. Simplify using `[MvPolynomial.coeff_map]`. Rewrite using `[g.as_sum]`. Use `Submodule.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Take `⟨hsupp, hsum⟩` from `hs hm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmono : monomial m (coeff m g) = (coeff m g0) • monomial m (1 : ℚ_[p])`. Rewrite using `[hc m, smul_monomial, Algebra.smul_def, mul_one]`. Rewrite using `[hmono]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, mem_xiMons_of G n m hsupp hsum, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xi_mem_spanZ (n : ℕ) (g : MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p])
     (hg : g ∈ Formalism.GM.M.XiPolZ p N r G.T.t n) :
@@ -77,19 +75,15 @@ theorem xi_mem_spanZ (n : ℕ) (g : MvPolynomial (Formalism.GM.M.BVar N r G.T.t)
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨m, mem_xiMons_of G n m hsupp hsum, rfl⟩)
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `Formalism.GM.TM.yZ_fg (p := p) (r := r) (G.lettersAt j jp) G.T.J G.T.thr`. Set `S : Set (MvPolynomial (Formalism.GM.M.BVar N r G.T.t) ℚ_[p])` to `(fun am : _ × _ => rename (Formalism.GM.M.chainEmb N r G.T.t) am.1 * monomial am.2 (1 : ℚ_[p])) '' ((A : Set _) ×ˢ (xiMons (r := r) G (G.B - jp) : Set _))`. Establish `hS : S.Finite` using `(A.finite_toSet.prod (xiMons (r := r) G (G.B - jp)).finite_toSet).image _`. Establish `hle : Ljj p (r` using `r) G j jp ≤ Submodule.span ℤ_[p] S := by`. Unfold `Ljj`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, g, hg, rfl⟩`. Establish `hy' : y ∈ Submodule.span ℤ_[p] (A : Set _)` using `by rw [hA]; exact hy`. Establish `hg'` using `xi_mem_spanZ G (G.B - jp) g hg`. Use `clear hy hg`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hy' using Submodule.span_induction with`. Consider the case `mem a ha`. Proceed by induction on `hg' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨m, hm, rfl⟩` from `hx`.
+Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨(a, m), ⟨ha, hm⟩, rfl⟩`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [mul_add]`. Conclude with `Submodule.add_mem _ hu hv`. Consider the case `smul c u _ hu`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem _ c hu`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [map_add, add_mul]`. Conclude with `Submodule.add_mem _ hu hv`.
-
-Consider the case `smul c u _ hu`. Establish `: rename (Formalism.GM.M.chainEmb N r G.T.t) (c • u) = c • rename (Formalism.GM.M.chainEmb N r G.T.t) u`. Rewrite using `[← algebraMap_smul ℚ_[p] c u, ← algebraMap_smul ℚ_[p] c (rename (Formalism.GM.M.chainEmb N r G.T.t) u)]`. Conclude with `map_smul (rename (Formalism.GM.M.chainEmb N r G.T.t)) _ _`. Rewrite using `[this, smul_mul_assoc]`.
-
-Conclude with `Submodule.smul_mem _ c hu`. Conclude with `Submodule.FG.of_le (Submodule.fg_span hS) hle`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ljj_fg (j : Fin G.T.t → ℕ) (jp : ℕ) : (Ljj p (r := r) G j jp).FG := by
   classical
@@ -133,7 +127,7 @@ section Lvl2
 variable {p : ℕ} [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Ljj_fg G j jp, _, Ljj_span_fd G j jp, fun _ hu => Submodule.subset_span hu⟩`.
+Supply the required witnesses or components.
 -/
 theorem ljjFin_gen (j : Fin G.T.t → ℕ) (jp : ℕ) :
     (Ljj p (r := r) G j jp).FG ∧
@@ -144,7 +138,7 @@ theorem ljjFin_gen (j : Fin G.T.t → ℕ) (jp : ℕ) :
 end Lvl2
 
 /- English proof (translation)
-Introduce `_ _ aTop _ x _` and use `ljjFin_gen (p := X.p) (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem restLjjFin_proved (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst) : RestLjjFin C0 CE1 CE2 X :=
   fun _ _ aTop _ x _ => ljjFin_gen (p := X.p) (r := X.r) (gB C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2

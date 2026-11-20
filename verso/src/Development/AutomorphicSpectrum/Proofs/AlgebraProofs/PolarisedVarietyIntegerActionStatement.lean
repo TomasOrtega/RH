@@ -21,7 +21,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.CompanionTheory.Ar.GR
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.GR.polAV_oAct_int` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FAlgebraProofs%2FPolarisedVarietyIntegerAction.lean&line=24#L24)
 -/

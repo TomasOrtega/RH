@@ -27,9 +27,9 @@ Both sides reduce to the same expression.
 theorem mulDvdEquiv_apply (c b : NZIdeal E) : (mulDvdEquiv c b).1.1 = c.1 * b.1 := rfl
 
 /- English proof (translation)
-Use `set g : NZIdeal E → ℂ := fun a => χ ((Ideal.absNorm a.1 : ℕ) : ZMod l) * ((Ideal.absNorm a.1 : ℕ) : ℂ) ^ (-(s : ℂ)) with hg`. Establish `h1 : (∑' a : NZIdeal E, (if c.1 ∣ a.1 then g a else 0)) = ∑' a : {a : NZIdeal E // c.1 ∣ a.1}, g a.1`. Rewrite using `[show (∑' a : {a : NZIdeal E // c.1 ∣ a.1}, g a.1) = ∑' a : ({a : NZIdeal E | c.1 ∣ a.1} : Set (NZIdeal E)), g a.1 from rfl, tsum_subtype]`. Conclude with `tsum_congr (fun a => by simp [Set.indicator_apply])`. Rewrite using `[h1, ← (mulDvdEquiv c).tsum_eq, Lser, ← tsum_mul_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `tsum_congr (fun b => ?_)` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[mulDvdEquiv_apply]`. Simplify using `only [map_mul, Nat.cast_mul, Complex.natCast_mul_natCast_cpow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tsum_dvd_eq {l : ℕ} (χ : DirichletCharacter ℂ l) (c : NZIdeal E) {s : ℝ} (hs : 1 < s) :
     ∑' a : NZIdeal E, (if c.1 ∣ a.1 then
@@ -50,9 +50,9 @@ theorem tsum_dvd_eq {l : ℕ} (χ : DirichletCharacter ℂ l) (c : NZIdeal E) {s
   ring
 
 /- English proof (translation)
-Rewrite using `[← Summable.tsum_finsetSum (fun C _ => ?_)]`. Use `tsum_congr (fun a => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules. Use `hF.indicator {a | cls a = C}` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this.congr (fun a => ?_)` and prove the remaining obligations. Simplify using `[Set.indicator_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem tsum_eq_sum_cls (F : NZIdeal E → ℂ) (hF : Summable F) :
     ∑' a : NZIdeal E, F a = ∑ C : ClassGroup (𝓞 E), ∑' a : NZIdeal E, (if cls a = C then F a else 0) := by
@@ -65,7 +65,7 @@ theorem tsum_eq_sum_cls (F : NZIdeal E → ℂ) (hF : Summable F) :
     simp [Set.indicator_apply]
 
 /- English proof (translation)
-Take `⟨I, hI⟩` from `ClassGroup.mk0_surjective C`. Conclude with `⟨⟨I.1, nonZeroDivisors.ne_zero I.2⟩, hI⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cls_eq (C : ClassGroup (𝓞 E)) : ∃ b : NZIdeal E, cls b = C := by
   obtain ⟨I, hI⟩ := ClassGroup.mk0_surjective C

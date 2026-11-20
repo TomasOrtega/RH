@@ -9,7 +9,7 @@ open UpperTheory.V.Z.Tf.GOne UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheor
 namespace UpperTheory.V.Z.Tf.SR
 
 /- English proof (translation)
-Use `splitRigid E hE n hn (CG.mk π) (unitOf E n hn π hd) (Fin D.c) D.N D.P D.pos (fun i => ?_) (hs.mono fun w hw h => ?_)` and prove the remaining obligations. Take `⟨P, e, -, hu⟩` from `partNorm absInf E n hn π hd D hr hs i`. Conclude with `e ▸ (CG.isUnitary_mk P).2 hu`. Take `⟨B, ⟨b, hb, rfl⟩, hB⟩` from `hw h`. Conclude with `⟨b, hb, hB⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem has_of_split {E : Type} [Field E] [NumberField E] [IsCMField E] (hE : GlobalTheory.BCT.Unr E) {n : ℕ} (hn : 1 ≤ n) (π : CuspSub E n)
     (hd : GlobalTheory.ContraPair.DualIsConj π) (D : CD E n) (hr : D.Reg)
@@ -27,13 +27,13 @@ def DescWeakAll : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
         IsCompAlong σ (locU n w) ((cLoc w).comp (locU n w).subtype) τ.ρ ∧ HasSatGL w τ.ρ B ∧ (CG.mk π).HasSat w B
 
 /- English proof (translation)
-Introduce `E _ _ _ hE n hn π hreg hd hs` and use `(runTh E hE n hn π hreg hd hs).resolve_right fun ⟨D, h1, h2, _, h4⟩ => h1 (has_of_split hE hn π hd D h2 h4)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem descWeakAll : DescWeakAll := fun E _ _ _ hE n hn π hreg hd hs =>
   (runTh E hE n hn π hreg hd hs).resolve_right fun ⟨D, h1, h2, _, h4⟩ => h1 (has_of_split hE hn π hd D h2 h4)
 
 /- English proof (translation)
-Introduce `E _ _ _ hunr _ _ _ _ hsp _ n hn _ π hreg hd hsat` and use `descWeakAll E hunr n (le_trans one_le_two hn) π hreg hd fun w hw => hsat w fun h => hw (hsp w h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem descWeak : UpperTheory.V.Z.Desc.DescWeak := fun E _ _ _ hunr _ _ _ _ hsp _ n hn _ π hreg hd hsat =>
   descWeakAll E hunr n (le_trans one_le_two hn) π hreg hd fun w hw => hsat w fun h => hw (hsp w h)

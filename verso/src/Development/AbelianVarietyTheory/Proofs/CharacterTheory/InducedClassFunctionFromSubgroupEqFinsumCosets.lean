@@ -5,11 +5,11 @@ noncomputable section
 namespace GlobalTheory.BI
 
 /- English proof (translation)
-Unfold `ext0`. Distinguish the cases in `ha : a ∈ H`. Establish `h1 : (y : G)⁻¹ * a * y ∈ H` using `H.mul_mem (H.mul_mem (H.inv_mem y.2) ha) y.2`. Rewrite using `[dif_pos ha, dif_pos h1]`. Conclude with `hψ ⟨a, ha⟩ y`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ¬ (y : G)⁻¹ * a * y ∈ H`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Establish `h2 : (y : G) * ((y : G)⁻¹ * a * y) * (y : G)⁻¹ ∈ H` using `H.mul_mem (H.mul_mem y.2 h) (H.inv_mem y.2)`. Establish `h3 : (y : G) * ((y : G)⁻¹ * a * y) * (y : G)⁻¹ = a` using `by group`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Rewrite using `[dif_neg ha, dif_neg h1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subgroupFunctionExtendByZero_conj_of_mem {L G : Type} [Field L] [Group G] (H : Subgroup G) (ψ : H → L)
     (hψ : ∀ h x : H, ψ (x⁻¹ * h * x) = ψ h) (a : G) (y : H) :
@@ -29,11 +29,11 @@ theorem subgroupFunctionExtendByZero_conj_of_mem {L G : Type} [Field L] [Group G
     rw [dif_neg ha, dif_neg h1]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨q, y⟩ ⟨q', y'⟩ h`. Simplify using `only at h`. Establish `hq : q = q'`. Establish `h1 : ((q.out * (y : G) : G) : G ⧸ H) = ((q'.out * (y' : G) : G) : G ⧸ H)` using `by rw [h]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[QuotientGroup.mk_mul_of_mem _ y.2, QuotientGroup.mk_mul_of_mem _ y'.2, QuotientGroup.out_eq', QuotientGroup.out_eq']`. Conclude with `h1`. Substitute `hq` using the available equality. Establish `: y = y'` using `Subtype.ext (mul_left_cancel h)`. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨y, hy⟩` from `QuotientGroup.mk_out_eq_mul H x`. Use `⟨((x : G ⧸ H), y⁻¹), ?_⟩` and prove the remaining obligations. Simplify using `[hy]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem out_mul_bijective {G : Type} [Group G] (H : Subgroup G) :
     Function.Bijective (fun p : (G ⧸ H) × H => p.1.out * (p.2 : G)) := by
@@ -54,13 +54,13 @@ theorem out_mul_bijective {G : Type} [Group G] (H : Subgroup G) :
     simp [hy]
 
 /- English proof (translation)
-Introduce `L _ _ G _ _ H ψ hψ g`. Use `Fintype.ofFinite G` as an intermediate fact. Use `Fintype.ofFinite (G ⧸ H)` as an intermediate fact. Use `Fintype.ofFinite H` as an intermediate fact. Establish `hc : (Nat.card H : L) ≠ 0` using `Nat.cast_ne_zero.mpr Nat.card_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ind`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, ← (out_mul_bijective H).sum_comp (fun x : G => ext0 H ψ (x⁻¹ * g * x)), Fintype.sum_prod_type]`. Establish `h1 : ∀ q : G ⧸ H, ∑ y : H, ext0 H ψ ((q.out * (y : G))⁻¹ * g * (q.out * (y : G))) = (Nat.card H : L) * ext0 H ψ (q.out⁻¹ * g * q.out)`. Introduce `q`. Establish `h2 : ∀ y : H, ext0 H ψ ((q.out * (y : G))⁻¹ * g * (q.out * (y : G))) = ext0 H ψ (q.out⁻¹ * g * q.out)`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← subgroupFunctionExtendByZero_conj_of_mem H ψ hψ (q.out⁻¹ * g * q.out) y]`. Use `congr 1`. Use `group`. Simplify using `only [h2, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1]`. Rewrite using `[← Finset.mul_sum, ← mul_assoc, inv_mul_cancel₀ hc, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_eq_finsum_cosets : ∀ (L : Type) [Field L] [CharZero L] (G : Type) [Group G] [Finite G] (H : Subgroup G) (ψ : H → L), (∀ h x : H, ψ (x⁻¹ * h * x) = ψ h) → ∀ g : G, ind H ψ g = ∑ᶠ q : G ⧸ H, ext0 H ψ (q.out⁻¹ * g * q.out) := by
   intro L _ _ G _ _ H ψ hψ g

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.CstChart
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_assoc, Scheme.germ_stalkClosedPointTo]`. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, Scheme.Hom.appTop]`. Establish `e : ∀ (f : (⊤ : (Spec (CommRingCat.of Ω)).Opens) ⟶ ξ ⁻¹ᵁ ⊤), (Spec (CommRingCat.of Ω)).presheaf.map f.op = 𝟙 _` using `fun f => (Spec (CommRingCat.of Ω)).presheaf.map_id _`. Use `erw [e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem germ_top_stalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) {q : X}
     (hq : ξ (IsLocalRing.closedPoint Ω) ⤳ q) :
@@ -27,11 +27,11 @@ theorem germ_top_stalk {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommR
   simp
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `p`. Use `⟨X.presheaf.germ ⊤ q (show q ∈ (⊤ : X.Opens) from trivial) (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o)), ?_⟩` and prove the remaining obligations. Establish `h1` using `germ_top_stalk ξ hq`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ s.appTop ≫ ξ.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of Ω)).hom = CommRingCat.ofHom φ`. Establish `: s.appTop ≫ ξ.appTop = (ξ ≫ s).appTop` using `by simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[reassoc_of% this, h]`. Simplify using the standard rewrite rules. Establish `h3` using `congrArg (fun f => f.hom o) h2`. Establish `h4` using `congrArg (fun f => f.hom (s.appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom o))) h1`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at h3 h4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h3` using `[CommRingCat.hom_ofHom]`. Use `Eq.trans ?_ (h4.trans h3)` and prove the remaining obligations. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 -/
 theorem ringHom_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X)
     {O : Type} [CommRing O] (φ : O →+* Ω) (s : X ⟶ Spec (CommRingCat.of O))
@@ -53,7 +53,7 @@ theorem ringHom_mem_regAt {X : Scheme.{0}} {Ω : Type} [Field Ω] (ξ : Spec (Co
   rfl
 
 /- English proof (translation)
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c', rfl⟩`. Use `show (∏ k, y ⟨k, c' k⟩) / ∏ k, y ⟨k, cc k⟩ ∈ Algebra.adjoin ℚ (Set.range fun p : Σ k, J k => y p / y ⟨p.1, cc p.1⟩)`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segre_adjoin_le {Ω : Type} [Field Ω] [CharZero Ω] {K : Type} [Fintype K] {J : K → Type}
     (y : (Σ k, J k) → Ω) (cc : (k : K) → J k) :
@@ -67,11 +67,11 @@ theorem segre_adjoin_le {Ω : Type} [Field Ω] [CharZero Ω] {K : Type} [Fintype
   exact Subalgebra.prod_mem _ fun k _ => Algebra.subset_adjoin ⟨⟨k, c' k⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 cc hcc r`. Establish `hx : (∏ k, y ⟨k, cc k⟩) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hcc k`. Establish `hint : ∀ a : 𝓞 c.F, 𝔐.cst (algebraMap (𝓞 c.F) c.F a) ∈ Algebra.adjoin ℚ (Set.range fun p : Σ k, J k => y p / y ⟨p.1, cc p.1⟩)` using `fun a => segre_adjoin_le y cc ((𝔐.tie.ring cc hx _).2 fun p _ => ringHom_mem_regAt 𝔐.ξ (𝔐.cst.comp (algebraMap (𝓞 c.F) c.F)) (𝔐.f ≫ Y.s) 𝔐.cst_over p a)`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Establish `halg : IsAlgebraic ℤ r` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ c.F).2 (Algebra.IsAlgebraic.isAlgebraic r)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hr⟩` from `halg.exists_integral_multiple`. Establish `hn' : (n : Ω) ≠ 0` using `Int.cast_ne_zero.2 hn`. Establish `e : 𝔐.cst r = algebraMap ℚ Ω (n : ℚ)⁻¹ * 𝔐.cst (algebraMap (𝓞 c.F) c.F (IsIntegralClosure.mk' (𝓞 c.F) (n • r) hr))`. Rewrite using `[IsIntegralClosure.algebraMap_mk', zsmul_eq_mul, map_mul, map_intCast]`. Simplify using `[hn']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.algebraMap_mem _ _) (hint _)`.
+A detailed English derivation is pending.
 -/
 theorem cst_mem_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Tor.Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (cc : (k : K) → J k), (∀ k, y ⟨k, cc k⟩ ≠ 0) → ∀ r : c.F, 𝔐.cst r ∈ Algebra.adjoin ℚ (Set.range fun p : Σ k, J k => y p / y ⟨p.1, cc p.1⟩) := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 cc hcc r

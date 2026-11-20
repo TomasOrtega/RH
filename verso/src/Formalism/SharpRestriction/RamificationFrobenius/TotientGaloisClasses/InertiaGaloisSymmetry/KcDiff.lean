@@ -15,11 +15,9 @@ variable {φ : Frame} (H : HostRaw φ)
 abbrev kcBelow (P : Ideal (𝓞 H.E)) : Ideal (𝓞 H.K) := P.comap (algebraMap (𝓞 H.K) (𝓞 H.E))
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [kcBelow, Ideal.mem_comap]`. Rewrite using `[Ideal.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `hσ' : H.gal σ⁻¹ ∈ φ.Psi`. Rewrite using `[map_inv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mem hσ`. Establish `e : σ⁻¹ • algebraMap (𝓞 H.K) (𝓞 H.E) a = algebraMap (𝓞 H.K) (𝓞 H.E) a`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises. Use `show σ⁻¹ ((a : H.K) : H.E) = ((a : H.K) : H.E)`. Conclude with `kc_fixK H σ⁻¹ hσ' (a : H.K)`.
-
-Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kc_below_smul (σ : H.E ≃ₐ[ℚ] H.E) (hσ : H.gal σ ∈ φ.Psi) (P : Ideal (𝓞 H.E)) :
     kcBelow H (σ • P) = kcBelow H P := by
@@ -36,9 +34,9 @@ theorem kc_below_smul (σ : H.E ≃ₐ[ℚ] H.E) (hσ : H.gal σ ∈ φ.Psi) (P 
   rw [e]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `hmax : (span {(p : ℤ)} : Ideal ℤ).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Use `hmax.eq_of_le (inferInstance : (P.under ℤ).IsPrime).ne_top ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]`. Use `show algebraMap ℤ (𝓞 M) (p : ℤ) ∈ P`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h`.
+A detailed English derivation is pending.
 -/
 private theorem liesOver_span_of_natCast_mem_prime {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)) [hP : P.IsPrime] (p : ℕ)
     (hp : p.Prime) (h : (p : 𝓞 M) ∈ P) : P.LiesOver (span {(p : ℤ)}) := by
@@ -51,15 +49,15 @@ private theorem liesOver_span_of_natCast_mem_prime {M : Type} [Field M] [NumberF
   simpa using h
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Establish `hn1 : n ≠ 1`. Introduce and unpack `rfl`. Conclude with `hP.ne_top ((Ideal.eq_top_iff_one _).mpr (by simpa using hm))`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hpm` using `Nat.minFac_prime hn1`. Take `⟨k, hk⟩` from `Nat.minFac_dvd n`. Establish `hm' : (n.minFac : 𝓞 M) * (k : 𝓞 M) ∈ P`. Rewrite using `[← Nat.cast_mul, ← hk]`. Conclude with `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `hP.mem_or_mem hm' with h | h` into its components or cases. Conclude with `⟨n.minFac, hpm, Nat.minFac_dvd n, liesOver_span_of_natCast_mem_prime P _ hpm h⟩`. Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hk`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hn hk`. Establish `hkn : k < n`. Establish `h2` using `hpm.two_le`. Establish `hkpos` using `Nat.pos_of_ne_zero hk0`. Rewrite using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the polynomial consequences of the given equalities and inequalities. Take `⟨p, hp, hpk, hl⟩` from `ih k hkn hk0 h`. Conclude with `⟨p, hp, hpk.trans (Dvd.intro_left _ hk.symm), hl⟩`.
+A detailed English derivation is pending.
 -/
 theorem kc_exists_prime {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)) [hP : P.IsPrime] (n : ℕ) (hn : n ≠ 0)
     (hm : (n : 𝓞 M) ∈ P) : ∃ p : ℕ, p.Prime ∧ p ∣ n ∧ P.LiesOver (span {(p : ℤ)}) := by
@@ -88,7 +86,7 @@ theorem kc_exists_prime {M : Type} [Field M] [NumberField M] (P : Ideal (𝓞 M)
     exact ⟨p, hp, hpk.trans (Dvd.intro_left _ hk.symm), hl⟩
 
 /- English proof (translation)
-Apply `H.gal.injective` to reduce the goal to its premises. Rewrite using `[map_mul, kc_gal_conj, map_one]`. Apply the tactic sequence `ext <;> simp [Frame.cc, c0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kc_conj_sq : H.conj * H.conj = 1 := by
   apply H.gal.injective
@@ -99,17 +97,15 @@ variable (C : HostCore H)
 include C
 
 /- English proof (translation)
-Introduce `P hP hdvd`. Use `H.galois` as an intermediate fact. Assume the negation of the conclusion as `hnot`. Use `kc_not_dvd_different H.K H.E P ?_ hdvd` and prove the remaining obligations. Introduce `hbot σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hn0 : Ideal.absNorm P ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Take `⟨l, hl, -, hlo⟩` from `kc_exists_prime P (Ideal.absNorm P) hn0 (Ideal.absNorm_mem P)`. Establish `: Fact l.Prime` using `⟨hl⟩`. Establish `hlP : (l : 𝓞 H.E) ∈ P`. Establish `h1 : (l : ℤ) ∈ P.under ℤ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hlo.over]`. Conclude with `Ideal.mem_span_singleton_self _`. Simplify using `using h1`. Establish `hlq : ¬ l ∣ H.QS * H.q`. Introduce and unpack `⟨m, hm⟩`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hnot` to reduce the goal to its premises. Rewrite using `[hm, Nat.cast_mul]`. Conclude with `P.mul_mem_right _ hlP`. Take `⟨u, hu, hgal⟩` from `(C.inertia l P (σ.restrictScalars ℚ)).mp fun x => hσ x`. Establish `hmod : (u : ZMod H.condN).val ≡ 1 [MOD H.QS * H.q]` using `Nat.ModEq.of_dvd (Nat.dvd_ordCompl_of_dvd_not_dvd (Dvd.intro _ rfl) hlq) hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `H.art_d u hmod with h1 | h1` into its components or cases. Establish `h2 : σ.restrictScalars ℚ = 1` using `H.gal.injective (by rw [hgal, h1, map_one])`. Use extensionality with `x`. Conclude with `congrArg (fun τ : H.E ≃ₐ[ℚ] H.E => τ x) h2`. It suffices to derive a contradiction.
-
-Establish `hpsi` using `kc_restrict_mem_Psi H σ`. Rewrite `hpsi` using `[hgal, h1]`. Conclude with `kc_iod_not_mem hpsi`.
+By extensionality, compare the relevant components. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffSupport : ∀ P : Ideal (𝓞 H.E), P.IsPrime → P ∣ differentIdeal (𝓞 H.K) (𝓞 H.E) →
     ((H.QS * H.q : ℕ) : 𝓞 H.E) ∈ P := by
@@ -144,13 +140,13 @@ theorem diffSupport : ∀ P : Ideal (𝓞 H.E), P.IsPrime → P ∣ differentIde
     exact kc_iod_not_mem hpsi
 
 /- English proof (translation)
-Use `H.galois` as an intermediate fact. Introduce `heq`. Establish `hn0 : H.QS * H.q ≠ 0` using `Nat.mul_ne_zero H.QS_pos.ne' (by`. Introduce and unpack `h0`. Use `H.QS_coprime` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `this` using `[h0, zero_mul, Nat.coprime_zero_right]`. Establish `h2` using `kc_two_dvd H`. Rewrite `h2` using `[this]`. Use the proof step `omega)`. Take `⟨l, hl, hldvd, hlo⟩` from `kc_exists_prime P (H.QS * H.q) hn0 hm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: P.LiesOver (kcBelow H P)` using `⟨rfl⟩`. Establish `: (H.conj • P).LiesOver (kcBelow H P)` using `⟨heq⟩`. Take `⟨τ, hτ⟩` from `exists_smul_eq_of_isGaloisGroup (kcBelow H P) P (H.conj • P) (H.E ≃ₐ[H.K] H.E)`. Establish `hτ' : (τ.restrictScalars ℚ) • P = H.conj • P` using `hτ`. Establish `hst : (τ.restrictScalars ℚ)⁻¹ * H.conj ∈ MulAction.stabilizer (H.E ≃ₐ[ℚ] H.E) P`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MulAction.mem_stabilizer_iff, mul_smul, ← hτ', inv_smul_smul]`. Establish `hpsi` using `C.decomp_typeI l hl hldvd P _ hst`. Rewrite `hpsi` using `[map_mul, map_inv, Subgroup.mul_mem_cancel_left _ (inv_mem (kc_restrict_mem_Psi H τ)), kc_gal_conj]`. Conclude with `kc_cc_not_mem hpsi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kc_below_ne (P : Ideal (𝓞 H.E)) [P.IsPrime] (hm : ((H.QS * H.q : ℕ) : 𝓞 H.E) ∈ P) :
     kcBelow H P ≠ kcBelow H (H.conj • P) := by
@@ -178,23 +174,19 @@ theorem kc_below_ne (P : Ideal (𝓞 H.E)) [P.IsPrime] (hm : ((H.QS * H.q : ℕ)
 attribute [local instance] FractionRing.liftAlgebra FractionRing.isScalarTower_liftAlgebra
 
 /- English proof (translation)
-Use `H.galois` as an intermediate fact. Take `⟨f, hf⟩ : ∃ f : Ideal (𝓞 H.E) ≃* Ideal (𝓞 H.E), ∀ I, f I = H.conj • I` from `⟨(MulSemiringAction.toRingEquiv _ (Ideal (𝓞 H.E)) H.conj).toMulEquiv, fun _ => rfl⟩`. Establish `hD0 : differentIdeal (𝓞 H.K) (𝓞 H.E) ≠ ⊥` using `differentIdeal_ne_bot`. Establish `hfD : f (differentIdeal (𝓞 H.K) (𝓞 H.E)) = differentIdeal (𝓞 H.K) (𝓞 H.E)`. Rewrite using `[hf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `kc_diff_smul_eq H H.conj`. Establish `hcc : ∀ I : Ideal (𝓞 H.E), H.conj • H.conj • I = I` using `fun I => by`. Rewrite using `[← mul_smul, kc_conj_sq, one_smul]`. Set `p : Ideal (𝓞 H.E) → Prop` to `fun P => WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P))`. Establish `hp : ∀ P ∈ UniqueFactorizationMonoid.normalizedFactors (differentIdeal (𝓞 H.K) (𝓞 H.E)), (p (f P) ↔ ¬ p P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Establish `hPp : P.IsPrime` using `Ideal.isPrime_of_prime (UniqueFactorizationMonoid.prime_of_normalized_factor P hP)`. Establish `hPd : P ∣ differentIdeal (𝓞 H.K) (𝓞 H.E)` using `UniqueFactorizationMonoid.dvd_of_mem_normalizedFactors hP`. Establish `hne` using `kc_below_ne H C P (diffSupport H C P hPp hPd)`. Use `show WellOrderingRel (kcBelow H (f P)) (kcBelow H (H.conj • f P)) ↔ ¬ WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hf, hcc]`. Prove the components needed by the constructor for the conclusion. Introduce `h1 h2`. Conclude with `asymm h1 h2`. Introduce `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `trichotomous_of WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P)) with h | h | h` into its components or cases. Conclude with `absurd h h1`. Conclude with `absurd h hne`. Conclude with `h`. Take `⟨B, hB, -, hBtop, hinv, -⟩` from `kc_pairing _ hD0 f hfD p hp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, ?_, ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[← hf]`. Conclude with `hB`. Rewrite using `[← hf]`. Conclude with `hBtop`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g, hg⟩ : ∃ g : Ideal (𝓞 H.E) ≃* Ideal (𝓞 H.E), ∀ I, g I = σ • I` from `⟨(MulSemiringAction.toRingEquiv _ (Ideal (𝓞 H.E)) σ).toMulEquiv, fun _ => rfl⟩`. Rewrite using `[← hg]`. Use `hinv g (by rw [hg]; exact kc_diff_smul_eq H σ) fun P _ => ?_` and prove the remaining obligations. Establish `hn : H.gal (H.conj * σ * H.conj⁻¹) ∈ φ.Psi`. Establish `hσ' : φ.chD (H.gal σ) = 1` using `hσ`.
-
-Use `show φ.chD (H.gal (H.conj * σ * H.conj⁻¹)) = 1`. Simplify using `only [map_mul, map_inv, hσ', mul_one, mul_inv_cancel]`. Establish `e1 : (H.conj * σ * H.conj⁻¹) • H.conj • P = H.conj • σ • P`. Rewrite using `[← mul_smul, inv_mul_cancel_right, mul_smul]`. Use `show WellOrderingRel (kcBelow H (g P)) (kcBelow H (H.conj • g P)) ↔ WellOrderingRel (kcBelow H P) (kcBelow H (H.conj • P))`.
-
-Rewrite using `[hg, kc_below_smul H σ hσ P, ← e1, kc_below_smul H _ hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem principal : ∃ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞 H.E) = 𝔟 * (H.conj • 𝔟) ∧ 𝔟 ⊔ H.conj • 𝔟 = ⊤ ∧
     ∀ σ : H.E ≃ₐ[ℚ] H.E, H.gal σ ∈ φ.Psi → σ • 𝔟 = 𝔟 := by
@@ -249,17 +241,17 @@ theorem principal : ∃ 𝔟 : Ideal (𝓞 H.E), differentIdeal (𝓞 H.K) (𝓞
     rw [hg, kc_below_smul H σ hσ P, ← e1, kc_below_smul H _ hn]
 
 /- English proof (translation)
-Use `C.cm` as an intermediate fact. Establish `hdiff : differentIdeal (𝓞 H.F) (𝓞 H.E) = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `kc_not_dvd_different H.F H.E P ?_ (Ideal.dvd_iff_le.mpr hle)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hbot σ hσ`. Establish `hmem : σ ∈ Subgroup.zpowers (IsCMField.complexConj H.E)`. Rewrite using `[IsCMField.zpowers_complexConj_eq_top]`. Conclude with `Subgroup.mem_top σ`. Take `⟨k, rfl⟩` from `Subgroup.mem_zpowers_iff.mp hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : k % (orderOf (IsCMField.complexConj H.E) : ℤ) = k % 2`. Rewrite using `[IsCMField.orderOf_complexConj]`. Both sides reduce to the same expression. Rewrite `hσ`, the goal using `[← zpow_mod_orderOf, h2]`. Break down `Int.emod_two_eq_zero_or_one k with hk | hk` into its components or cases.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, zpow_zero]`. It suffices to derive a contradiction. Rewrite `hσ` using `[hk, zpow_one]`. Conclude with `kc_unr H C P hPmax.isPrime hbot hσ`. Establish `h` using `natAbs_discr_eq_absNorm_differentIdeal_mul_natAbs_discr_pow H.F (𝓞 H.F) H.E (𝓞 H.E)`.
+It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[hdiff, Ideal.absNorm_top, one_mul, Algebra.IsQuadraticExtension.finrank_eq_two]`. Establish `hsign : (discr H.E).sign = 1`. Rewrite using `[sign_discr]`. Establish `h1` using `IsTotallyComplex.finrank H.E`. Rewrite `h1` using `[C.finrank_E]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : NumberField.InfinitePlace.nrComplexPlaces H.E = 2 * φ.ord` using `by omega`. Rewrite using `[h3, pow_mul, neg_one_sq, one_pow]`. Rewrite using `[← Int.sign_mul_natAbs (discr H.E), hsign, one_mul, h, Nat.cast_pow, Int.natAbs_sq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem discr_sq : discr H.E = discr H.F ^ 2 := by
   have := C.cm

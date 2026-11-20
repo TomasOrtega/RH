@@ -10,7 +10,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.PosNea
 namespace PI.VolStabS
 
 /- English proof (translation)
-The claim follows from `nuNeZero_of_route hLam hFV hIS hAC exFDStab_holds hS witt_holds invInv_holds measOrb_holds measGrp_holds testNear_holds`.
+A detailed English derivation is pending.
 -/
 theorem nuNeZero_of_open (hLam : LamEx) (hFV : FinVolStab) (hIS : InvStab) (hAC : AdmCpt) (hS : SWeqOm) :
     NuNeZero :=

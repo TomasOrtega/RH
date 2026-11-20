@@ -14,19 +14,19 @@ open scoped Formalism.Per
 namespace GlobalTheory.LTChar
 
 /- English proof (translation)
-Introduce `l _ P AI T K x h1 h2 c hc`. Take `⟨-, -, hsh, -, -, -, -, hact, -⟩` from `GlobalTheory.PMon.bdR_tied l P AI T`. Take `⟨S, θ, hS, -, hker, hOm, hθ⟩` from `GlobalTheory.PMon.exists_theta_deRhamFilZero_surjective_alt l P AI T`. Establish `hu0 : tz P (-1) * P.ιB x ∈ Fil P 0`. Use `(hsh 1 (-1) _).1 h1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hu1 : tz P (-1) * P.ιB x ∉ Fil P 1`. Introduce `h`. Apply `h2` to reduce the goal to its premises. Rewrite using `[hsh 2 (-1)]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`. Use `set u : S := ⟨tz P (-1) * P.ιB x, (hS _).2 hu0⟩ with hu`. Establish `hy : θ u ≠ 0` using `fun h => hu1 ((hker u).1 h)`. Establish `key : ∀ g : ↥(GK K), (((c g : ↥(MaximalUnramifiedExtension l)) : Om l) : ℂ_[l]) = algebraMap ℚ_[l] ℂ_[l] ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) * Formalism.Per.σC (g : GQ l) (θ u) / θ u`. Introduce `g`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hg, hg'⟩` from `hθ g u`. Take `⟨ha, ha'⟩` from `hOm (algebraMap ℚ_[l] (Om l) ((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]))`. Take `⟨hb, hb'⟩` from `hOm ((c g : ↥(MaximalUnramifiedExtension l)) : Om l)`. Establish `e : (⟨_, ha⟩ : S) * ⟨_, hg⟩ = ⟨_, hb⟩ * u`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show algebraMap (Om l) P.R.BdR _ * P.actQdR g (tz P (-1) * P.ιB x) = kd P (c g) * (tz P (-1) * P.ιB x)`. Rewrite using `[map_mul, hact, ← iota_act, hc, map_mul, iota_kur, ← IsScalarTower.algebraMap_apply, ← mul_assoc, ← mul_assoc, ← mul_assoc, ← map_mul, ← Units.val_mul]`. Simplify using `only [zpow_neg, zpow_one, mul_inv_cancel, Units.val_one, map_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `e'` using `congrArg θ e`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e'` using `[map_mul θ, map_mul θ, ha', hb', hg']`. Rewrite using `[eq_div_iff hy, ← e']`. Both sides reduce to the same expression. Establish `hemb : Topology.IsEmbedding (fun y : Om l => (y : ℂ_[l]))` using `UniformSpace.Completion.coe_isometry.isEmbedding`. Use `hemb.continuous_iff.2 ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ((fun y : Om l => (y : ℂ_[l])) ∘ fun g => ((c g : ↥(MaximalUnramifiedExtension l)) : Om l)) = _` using `funext key`. Rewrite using `[this]`. Use `Continuous.div_const (Continuous.mul ?_ ?_) _` and prove the remaining obligations. Conclude with `(continuous_algebraMap ℚ_[l] ℂ_[l]).comp ((GlobalTheory.Cyc.IsCyc.continuous P.χQ_cyc).comp continuous_subtype_val)`. Conclude with `(orbit_cont (θ u)).comp continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem char_cont : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI) (K : FinExt l) (x : P.R.B), P.ιB x ∈ Fil P 1 → P.ιB x ∉ Fil P 2 → ∀ (c : ↥(GK K) → ↥(MaximalUnramifiedExtension l)), (∀ g : ↥(GK K), P.actQ (g : GQ l) x = algebraMap ↥(MaximalUnramifiedExtension l) P.R.B (c g) * x) → Continuous fun g => ((c g : ↥(MaximalUnramifiedExtension l)) : Om l) := by
   intro l _ P AI T K x h1 h2 c hc

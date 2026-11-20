@@ -14,9 +14,9 @@ open GlobalTheory GlobalTheory.ChowHt GlobalTheory.Adelic GlobalTheory.HermTools
 namespace GlobalTheory.HSShort
 
 /- English proof (translation)
-Use `GlobalTheory.ZeroCycleHt.exists_rightInv fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ Submodule.span F (Set.range w.col)` using `hw ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun F).1 hv`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_rightInv_of_span {F : Type} [Field F] {N n : ℕ} {w : Matrix (Fin N) (Fin n) F}
     (hw : Submodule.span F (Set.range w.col) = ⊤) : ∃ P : Matrix (Fin n) (Fin N) F, w * P = 1 := by
@@ -29,11 +29,11 @@ theorem exists_rightInv_of_span {F : Type} [Field F] {N n : ℕ} {w : Matrix (Fi
   simp [Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Introduce `F _ _ B N n w A Λ hL`. Take `⟨P, hP⟩` from `exists_rightInv_of_span hL.spans`. Use `⟨fun a a' G G' hG hG' ha ha' => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.ZeroCycleHt.formHeight_mul 0 0 hP hL.det hG hG' ha ha'`. Establish `h1 : IsMultiHomogeneous (fun _ : Fin B => 0) (1 : MvPolynomial (Fin B × Fin N) F)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht b`. Rewrite `ht` using `[MvPolynomial.mem_support_iff, MvPolynomial.coeff_one]`. Use `split_ifs at ht with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd rfl ht`. Use `GlobalTheory.HeightUnique.formHeight_C_mul hL.pos 0 hL.spans hL.det one_ne_zero h1 hc` as an intermediate fact. Rewrite `this` using `[mul_one, GlobalTheory.ZeroCycleHt.formHeight_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem htMul : HtMul := by
   intro F _ _ B N n w A Λ hL

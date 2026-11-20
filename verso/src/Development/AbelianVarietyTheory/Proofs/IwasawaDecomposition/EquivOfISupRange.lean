@@ -6,11 +6,11 @@ open NumberField IsDedekindDomain MeasureTheory Formalism.L2.Host GlobalTheory.C
 namespace GlobalTheory.CuspRep.LocUniq
 
 /- English proof (translation)
-Set `s : Set (Submodule R M)` to `{m | Nonempty (m ≃ₗ[R] S)}`. Establish `: ∀ m : s, IsSimpleModule R m` using `fun m => m.2.elim fun e => IsSimpleModule.congr e`. Establish `e0` using `LinearEquiv.ofInjective g hg`. Establish `: IsSimpleModule R (LinearMap.range g)` using `IsSimpleModule.congr e0.symm`. Establish `hle : LinearMap.range g ≤ sSup s` using `fun x _ => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(iSup_le (a := sSup s) fun f => ?_) (h x)` and prove the remaining obligations. Break down `LinearMap.injective_or_eq_zero f with hf | rfl` into its components or cases. Conclude with `le_sSup ⟨(LinearEquiv.ofInjective f hf).symm⟩`. Simplify using the standard rewrite rules. Take `⟨m, ⟨e⟩, ⟨e'⟩⟩` from `(LinearMap.range g).linearEquiv_of_le_sSup s hle`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(e0.trans (e'.trans e)).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem equiv_of_iSup_range {R M S S' : Type} [Ring R] [AddCommGroup M] [Module R M] [AddCommGroup S] [Module R S]
     [AddCommGroup S'] [Module R S'] [IsSimpleModule R S] [IsSimpleModule R S']
@@ -37,7 +37,7 @@ def isoPart (σ : Representation ℂ G W) (ρ : Representation ℂ G V) : Submod
   ⨆ f : σ.IntertwiningMap ρ, LinearMap.range f.toLinearMap
 
 /- English proof (translation)
-Use `(iSup_le (a := (isoPart σ ρ).comap (ρ g)) fun f => ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `Submodule.mem_iSup_of_mem f ⟨σ g v, LinearMap.congr_fun (f.isIntertwining' g) v⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isoPart_act (σ : Representation ℂ G W) (ρ : Representation ℂ G V) (g : G) {x : V} (hx : x ∈ isoPart σ ρ) :
     ρ g x ∈ isoPart σ ρ := by
@@ -46,7 +46,7 @@ theorem isoPart_act (σ : Representation ℂ G W) (ρ : Representation ℂ G V) 
   exact Submodule.mem_iSup_of_mem f ⟨σ g v, LinearMap.congr_fun (f.isIntertwining' g) v⟩
 
 /- English proof (translation)
-Use `(iSup_le (a := (isoPart σ ρ).comap T) fun f => ?_) hx` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `Submodule.mem_iSup_of_mem (⟨T ∘ₗ f.toLinearMap, fun g => LinearMap.ext fun u => ?_⟩ : σ.IntertwiningMap ρ) ⟨v, rfl⟩` and prove the remaining obligations. Conclude with `(congrArg T (LinearMap.congr_fun (f.isIntertwining' g) u)).trans (hT g _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoPart_comm (σ : Representation ℂ G W) (ρ : Representation ℂ G V) (T : Module.End ℂ V)
     (hT : ∀ g x, T (ρ g x) = ρ g (T x)) {x : V} (hx : x ∈ isoPart σ ρ) : T x ∈ isoPart σ ρ := by
@@ -57,9 +57,9 @@ theorem isoPart_comm (σ : Representation ℂ G W) (ρ : Representation ℂ G V)
   exact (congrArg T (LinearMap.congr_fun (f.isIntertwining' g) u)).trans (hT g _)
 
 /- English proof (translation)
-Establish `hi` using `(Representation.IsIrreducible.injective_or_eq_zero f').resolve_right hf'`. Take `⟨e⟩` from `equiv_of_iSup_range (R := MonoidAlgebra ℂ G) (S := σ.asModule) (M := ρ.asModule) (fun x => by`. Establish `hx : ρ.asModuleEquiv x ∈ isoPart σ ρ` using `h ▸ Submodule.mem_top`. Establish `hle : isoPart σ ρ ≤ ((⨆ f : σ.asModule →ₗ[MonoidAlgebra ℂ G] ρ.asModule, LinearMap.range f).restrictScalars ℂ).comap ρ.asModuleEquiv.symm.toLinearMap`. Use `iSup_le fun f => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Establish `: Representation.IntertwiningMap.equivLinearMapAsModule σ ρ f (σ.asModuleEquiv.symm v) ∈ ⨆ f : σ.asModule →ₗ[MonoidAlgebra ℂ G] ρ.asModule, LinearMap.range f` using `Submodule.mem_iSup_of_mem (Representation.IntertwiningMap.equivLinearMapAsModule σ ρ f) ⟨_, rfl⟩`. Conclude with `this`. Conclude with `hle hx) (Representation.IntertwiningMap.equivLinearMapAsModule σ' ρ f') hi`. Conclude with `⟨((Representation.IntertwiningMap.equivLinearMapAsModule σ σ').symm e.toLinearMap).ofBijective e.bijective⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem equiv_of_isoPart (σ : Representation ℂ G W) (σ' : Representation ℂ G W') (ρ : Representation ℂ G V)
     [σ.IsIrreducible] [σ'.IsIrreducible] (h : isoPart σ ρ = ⊤) (f' : σ'.IntertwiningMap ρ) (hf' : f' ≠ 0) :
@@ -83,7 +83,7 @@ end Rep
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => FiniteAdeleRing.ext E fun v => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x.val i j) (H v)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gl_ext {g h : GL (Fin a) (Af E)}
     (H : ∀ v, GeneralLinearGroup.map (pLoc E v) g = GeneralLinearGroup.map (pLoc E v) h) : g = h := by
@@ -91,9 +91,9 @@ theorem gl_ext {g h : GL (Fin a) (Af E)}
   exact congrArg (fun x : GL (Fin a) (v.adicCompletion E) => x.val i j) (H v)
 
 /- English proof (translation)
-Use `gl_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Rewrite using `[hk, one_mul, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pLoc_locGL_of_ne h, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comm_locGL (w : HeightOneSpectrum (𝓞 E)) {k : GL (Fin a) (Af E)}
     (hk : GeneralLinearGroup.map (pLoc E w) k = 1) (g : GL (Fin a) (w.adicCompletion E)) :
@@ -105,9 +105,9 @@ theorem comm_locGL (w : HeightOneSpectrum (𝓞 E)) {k : GL (Fin a) (Af E)}
   · rw [pLoc_locGL_of_ne h, one_mul, mul_one]
 
 /- English proof (translation)
-Take `⟨g, hg⟩ : ∃ g, g = GeneralLinearGroup.map (pLoc E w) k` from `⟨_, rfl⟩`. Establish `hk : GeneralLinearGroup.map (pLoc E w) ((locGL E a w g)⁻¹ * k) = 1`. Rewrite using `[map_mul, map_inv, pLoc_locGL, hg, inv_mul_cancel]`. Establish `h1` using `isoPart_act σ _ g (isoPart_comm σ _ (τ ((locGL E a w g)⁻¹ * k)) (fun g' y => by`. Simplify using `only [MonoidHom.comp_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, comm_locGL w hk]) hx)`. Rewrite `h1` using `[MonoidHom.comp_apply, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isoPart_fin {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representation ℂ (GL (Fin a) (Af E)) V)
     (w : HeightOneSpectrum (𝓞 E)) {W : Type} [AddCommGroup W] [Module ℂ W]
@@ -124,9 +124,9 @@ theorem isoPart_fin {V : Type} [AddCommGroup V] [Module ℂ V] (τ : Representat
 variable [IsTotallyComplex E]
 
 /- English proof (translation)
-Consider the cases of `o with`. Consider the case `fin k`. Conclude with `isoPart_fin π.finPart w σ k hx`. Consider the case `cpt k`. Use `isoPart_comm σ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(rt E a (infGL E a (Unitary.toUnits k)) * rt E a (finGL E a (locGL E a w g))) y.1 = (rt E a (finGL E a (locGL E a w g)) * rt E a (infGL E a (Unitary.toUnits k))) y.1`. Rewrite using `[← map_mul, ← map_mul, infGL_comm]`. Consider the case `lie X`. Use `isoPart_comm σ _ _ (fun g y => Subtype.ext ?_) hx` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isoPart_op (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) {W : Type} [AddCommGroup W] [Module ℂ W]
     (σ : Representation ℂ (GL (Fin a) (w.adicCompletion E)) W) (o : Op E a) {x : π.V}
@@ -144,11 +144,11 @@ theorem isoPart_op (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E)) {W : Type
     exact LinearMap.congr_fun (lie_rt_fin X (locGL E a w g)) y.1
 
 /- English proof (translation)
-Take `⟨f, h0, hf⟩` from `h`. Take `⟨f', h0', hf'⟩` from `h'`. Use `σ.irred` as an intermediate fact. Use `σ'.irred` as an intermediate fact. Use `equiv_of_isoPart σ.ρ σ'.ρ (π.locRep w) ?_ ⟨f', fun g => LinearMap.ext (hf' g)⟩ fun e => h0' (congrArg Representation.IntertwiningMap.toLinearMap e)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi` using `Submodule.map_injective_of_injective π.V.injective_subtype`. Break down `π.irred ((isoPart σ.ρ (π.locRep w)).map π.V.subtype) (Submodule.map_subtype_le _ _) (by` into its components or cases. Introduce and unpack `o _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, isoPart_op π w σ.ρ o hx, rfl⟩) with h1 | h1`. Use `absurd (LinearMap.ext fun v => ?_) h0` and prove the remaining obligations.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : isoPart σ.ρ (π.locRep w) = ⊥` using `hi (h1.trans (Submodule.map_bot _).symm)`. Establish `h3 : f v ∈ isoPart σ.ρ (π.locRep w)` using `Submodule.mem_iSup_of_mem (⟨f, fun g => LinearMap.ext (hf g)⟩ : σ.ρ.IntertwiningMap (π.locRep w)) ⟨v, rfl⟩`. Rewrite `h3` using `[h2]`. Conclude with `h3`. Conclude with `hi (h1.trans (Submodule.map_subtype_top _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocComp_unique (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
     (σ σ' : SmIrr (GL (Fin a) (w.adicCompletion E))) (h : π.IsLocComp w σ) (h' : π.IsLocComp w σ') :
@@ -174,7 +174,7 @@ theorem isLocComp_unique (π : CuspSub E a) (w : HeightOneSpectrum (𝓞 E))
 end GlobalTheory.CuspRep.LocUniq
 
 /- English proof (translation)
-Introduce `E _ _ _ a π w σ σ' h h'`. Proceed by induction on `π using Quotient.inductionOn`. Proceed by induction on `σ using Quotient.inductionOn`. Proceed by induction on `σ' using Quotient.inductionOn`. Conclude with `Quotient.sound (GlobalTheory.CuspRep.LocUniq.isLocComp_unique _ w _ _ h h')`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Proceed by induction. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CuspRep.CG.IsLoc.unique : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (π : CG E a) (w : HeightOneSpectrum (𝓞 E)) (σ σ' : Irr (GL (Fin a) (w.adicCompletion E))), π.IsLoc w σ → π.IsLoc w σ' → σ = σ' := by
   intro E _ _ _ a π w σ σ' h h'

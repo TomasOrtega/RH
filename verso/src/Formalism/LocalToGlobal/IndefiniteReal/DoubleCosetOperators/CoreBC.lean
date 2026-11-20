@@ -42,9 +42,9 @@ Both sides reduce to the same expression.
 theorem incl_apply (x : WL) : incl Ks L0 L WL x = ((1 : L) ⊗ₜ[L0] x : L ⊗[L0] WL) := rfl
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap L0 L) (LinearMap.ker_eq_bot.mpr (algebraMap L0 L).injective)`. Establish `h1 : f 1 = 1`. Use `LinearMap.congr_fun hf 1` as an intermediate fact. Simplify using `using this`. Introduce `x y hxy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (fun t : L ⊗[L0] WL => TensorProduct.lid L0 WL (LinearMap.rTensor WL f t)) hxy`. Express the relevant statement in the definitionally equal form `TensorProduct.lid L0 WL (LinearMap.rTensor WL f ((1 : L) ⊗ₜ[L0] x)) = TensorProduct.lid L0 WL (LinearMap.rTensor WL f ((1 : L) ⊗ₜ[L0] y)) at h`. Rewrite `h` using `[LinearMap.rTensor_tmul, LinearMap.rTensor_tmul, TensorProduct.lid_tmul, TensorProduct.lid_tmul, h1, one_smul, one_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem incl_injective : Function.Injective (incl Ks L0 L WL) := by
   obtain ⟨f, hf⟩ := LinearMap.exists_leftInverse_of_injective (Algebra.linearMap L0 L)
@@ -81,7 +81,7 @@ theorem jBil_apply (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L �
     jBil jj σ a x = σ a • jj (σ.comp (algebraMap L0 L)) x := rfl
 
 /- English proof (translation)
-Rewrite using `[jBil_apply, jBil_apply, LinearMap.map_smulₛₗ, Algebra.smul_def, map_mul, mul_smul, smul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem jBil_balanced (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) (r : L0) (a : L) (x : WL) :
     jBil jj σ (r • a) x = jBil jj σ a (r • x) := by
@@ -92,7 +92,7 @@ def jAdd (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) 
   TensorProduct.liftAddHom (jBil jj σ) (jBil_balanced jj σ)
 
 /- English proof (translation)
-The claim follows from `TensorProduct.liftAddHom_tmul _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem jAdd_tmul (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) (a : L) (x : WL) :
     jAdd jj σ (a ⊗ₜ[L0] x) = σ a • jj (σ.comp (algebraMap L0 L)) x :=
@@ -111,7 +111,7 @@ def jbc (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) :
     | add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]
 
 /- English proof (translation)
-The claim follows from `jAdd_tmul jj σ a x`.
+A detailed English derivation is pending.
 -/
 theorem jbc_tmul (jj : ∀ τ : L0 →+* ℂ, WL →ₛₗ[τ] W τ) (σ : L →+* ℂ) (a : L) (x : WL) :
     jbc (Ks := Ks) jj σ (a ⊗ₜ[L0] x : L ⊗[L0] WL) = (σ a • jj (σ.comp (algebraMap L0 L)) x : W _) :=
@@ -158,34 +158,34 @@ def bc : Arith.FormsL L Ks (BCW Ks L0 L WL) (Wbc L0 L W) G0 where
 def wkE : A.WK ≃ₗ[Ks] (bc L A).WK := wkEquiv L A
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `A.nrm lp y ((wkEquiv L A).symm (wkEquiv L A f)) = _`. Rewrite using `[LinearEquiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_nrm_wkE (lp) (y : A.Pt lp) (f : A.WK) : (bc L A).nrm lp y (wkE L A f) = A.nrm lp y f := by
   change A.nrm lp y ((wkEquiv L A).symm (wkEquiv L A f)) = _
   rw [LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `LinearMap.baseChange_tmul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem bc_rho_tmul (g : G0) (a : L) (x : WL) :
     (bc L A).ρ g (a ⊗ₜ[L0] x : L ⊗[L0] WL) = (a ⊗ₜ[L0] (A.ρ g x) : L ⊗[L0] WL) :=
   LinearMap.baseChange_tmul _ _ _
 
 /- English proof (translation)
-The claim follows from `bc_rho_tmul L A g 1 x`.
+A detailed English derivation is pending.
 -/
 theorem bc_rho_incl (g : G0) (x : WL) : (bc L A).ρ g (incl Ks L0 L WL x) = incl Ks L0 L WL (A.ρ g x) :=
   bc_rho_tmul L A g 1 x
 
 /- English proof (translation)
-The claim follows from `jbc_tmul A.j σ a x`.
+A detailed English derivation is pending.
 -/
 theorem bc_j_tmul (σ : L →+* ℂ) (a : L) (x : WL) :
     (bc L A).j σ (a ⊗ₜ[L0] x : L ⊗[L0] WL) = σ a • A.j (σ.comp (algebraMap L0 L)) x :=
   jbc_tmul A.j σ a x
 
 /- English proof (translation)
-Rewrite using `[incl_apply, bc_j_tmul, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bc_j_incl (σ : L →+* ℂ) (x : WL) :
     (bc L A).j σ (incl Ks L0 L WL x) = A.j (σ.comp (algebraMap L0 L)) x := by
@@ -215,7 +215,7 @@ abbrev algKsLL (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) : Algebra C.Ks what�
   ((ιOf C eL).comp (algebraMap C.Ks C.L0)).toAlgebra
 
 /- English proof (translation)
-The claim follows from `letI := baseFieldAlgebra C eL letI := algKsLL C eL IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem towKsLL (C : Core.RatCore) (eL : C.L0 ≃+* ↥LL0) :
     letI := baseFieldAlgebra C eL
@@ -291,7 +291,7 @@ def testA : Arith.FormsL ℚ ℚ ℚ (fun _ => ℂ) Unit where
   j σ := { toFun := σ, map_add' := map_add σ, map_smul' := fun c x => by simp [smul_eq_mul] }
 
 /- English proof (translation)
-The claim follows from `bc ℚ testA`.
+A detailed English derivation is pending.
 -/
 example : Arith.FormsL ℚ ℚ (BCW ℚ ℚ ℚ ℚ) (Wbc ℚ ℚ fun _ => ℂ) Unit := bc ℚ testA
 

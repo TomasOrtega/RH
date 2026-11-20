@@ -14,23 +14,23 @@ def merge (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) : P → Fin n
 
 omit [Fintype P] [DecidableEq P] in
 /- English proof (translation)
-Simplify using `[merge, x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem merge_left (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) (x : {p // q p}) :
     merge q J I x.1 = J x := by simp [merge, x.2]
 
 omit [Fintype P] [DecidableEq P] in
 /- English proof (translation)
-Simplify using `[merge, x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem merge_right (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) (x : {p // ¬ q p}) :
     merge q J I x.1 = I x := by simp [merge, x.2]
 
 omit [Fintype P] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `h : q p`. Distinguish the cases in `hp : p = x.1`. Substitute `hp` using the available equality. Simplify using `[merge, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hx : (⟨p, h⟩ : {p // q p}) ≠ x` using `fun e => hp (congrArg Subtype.val e)`. Simplify using `[merge, h, hp, Function.update_of_ne hx]`. Establish `hp : p ≠ x.1` using `fun e => h (e ▸ x.2)`. Simplify using `[merge, h, hp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem merge_upd_left (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) (x : {p // q p}) (c : Fin n) :
     merge q (Function.update J x c) I = Function.update (merge q J I) x.1 c := by
@@ -46,9 +46,9 @@ theorem merge_upd_left (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) 
 
 omit [Fintype P] in
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Distinguish the cases in `h : q p`. Establish `hp : p ≠ x.1` using `fun e => x.2 (e ▸ h)`. Simplify using `[merge, h, hp]`. Distinguish the cases in `hp : p = x.1`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hp` using the available equality. Simplify using `[merge, h]`. Establish `hx : (⟨p, h⟩ : {p // ¬ q p}) ≠ x` using `fun e => hp (congrArg Subtype.val e)`. Simplify using `[merge, h, hp, Function.update_of_ne hx]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem merge_upd_right (J : {p // q p} → Fin n) (I : {p // ¬ q p} → Fin n) (x : {p // ¬ q p}) (c : Fin n) :
     merge q J (Function.update I x c) = Function.update (merge q J I) x.1 c := by
@@ -89,13 +89,13 @@ theorem spl_apply (F : TV n M P) (J : {p // q p} → Fin n) (I : {p // ¬ q p} �
 
 omit [Fintype P] in
 /- English proof (translation)
-Use function extensionality and compare the values at `J I`. Simplify using `only [spl_apply, tE, lift, eAt, LinearMap.add_apply, LinearMap.sum_apply, Finset.sum_apply, LinearMap.pi_apply, LinearMap.comp_apply, LinearMap.proj_apply, Pi.add_apply]`. Rewrite using `[add_assoc]`. Use `congr 1`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S q, add_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_subtype_eq_sum_filter]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : I x = a`. Simplify using `[h, merge_right, spl_apply, merge_upd_right]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, merge_right]`. Rewrite using `[← Finset.sum_subtype_eq_sum_filter]`. Use `Finset.sum_congr rfl (fun x _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : J x = a`. Simplify using `[h, merge_left, spl_apply, merge_upd_left]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, merge_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spl_tE (S : Finset P) (F : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : TV n M P) :
     spl q (tE S F a b f) =
@@ -119,7 +119,7 @@ theorem spl_tE (S : Finset P) (F : Fin n → Fin n → Module.End ℂ M) (a b : 
 
 omit [DecidableEq P] in
 /- English proof (translation)
-Rewrite using `[← Finset.card_map (Function.Embedding.subtype q)]`. Use `congr 1`. Use extensionality with `p`. Simplify using `[and_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem card_sub (r : P → Prop) [DecidablePred r] :
     (Finset.univ.filter fun x : {p // q p} => r x.1).card = (Finset.univ.filter fun p => q p ∧ r p).card := by
@@ -129,7 +129,7 @@ theorem card_sub (r : P → Prop) [DecidablePred r] :
   simp [and_comm]
 
 /- English proof (translation)
-Use extensionality with `x`. Distinguish the cases in `hx : q x`. Rewrite using `[Equiv.Perm.subtypeCongr.left_apply _ _ hx]`. Both sides reduce to the same expression. Rewrite using `[Equiv.Perm.subtypeCongr.right_apply _ _ hx]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -144,23 +144,23 @@ private theorem subtypePerm_subtypeCongr_eq {q : P → Prop} [DecidablePred q] (
     rfl
 
 /- English proof (translation)
-Simplify using `only [cA, alt, colG, LinearMap.comp_apply, LinearMap.proj_apply, LinearMap.sum_apply, Finset.sum_apply, LinearMap.smul_apply, Pi.smul_apply, map_sum, map_smul, pm, LinearMap.pi_apply]`. Repeatedly rewrite using `[Finset.smul_sum, smul_smul, spl_apply]`. Rewrite using `[← Finset.sum_product']`. Use `symm`. Use `Finset.sum_bij (fun τ _ => τ.1.subtypeCongr τ.2) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨σ0, σ1⟩ hτ`. Simplify using `only [Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and] at hτ ⊢`. Introduce `x`. Distinguish the cases in `hx : q x`. Rewrite using `[Equiv.Perm.subtypeCongr.left_apply _ _ hx]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hτ.1 ⟨x, hx⟩`. Rewrite using `[Equiv.Perm.subtypeCongr.right_apply _ _ hx]`. Conclude with `hτ.2 ⟨x, hx⟩`. Introduce and unpack `⟨σ0, σ1⟩ _ ⟨σ0', σ1'⟩ _ he`. Simplify using `only at he`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e0 : σ0 = σ0'`. Use extensionality with `x`. Use `congrArg (fun σ : Equiv.Perm P => σ x.1) he` as an intermediate fact. Simplify using `only [Equiv.Perm.subtypeCongr.left_apply _ _ x.2] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `e1 : σ1 = σ1'`. Use extensionality with `x`. Use `congrArg (fun σ : Equiv.Perm P => σ x.1) he` as an intermediate fact. Simplify using `only [Equiv.Perm.subtypeCongr.right_apply _ _ x.2] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e0, e1]`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Establish `h0 : ∀ x, q (σ x) ↔ q x` using `fun x => hq _ _ (hσ x)`. Establish `h1 : ∀ x, ¬ q (σ x) ↔ ¬ q x` using `fun x => not_congr (h0 x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(σ.subtypePerm h0, σ.subtypePerm (p := fun x => ¬ q x) h1), ?_, subtypePerm_subtypeCongr_eq σ h0 h1⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_product, Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `⟨fun x => hσ x.1, fun x => hσ x.1⟩`. Introduce and unpack `⟨σ0, σ1⟩ _`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Equiv.Perm.sign_subtypeCongr]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : q x`. Simplify using `[merge, hx, Equiv.Perm.subtypeCongr.left_apply _ _ hx]`. Simplify using `[merge, hx, Equiv.Perm.subtypeCongr.right_apply _ _ hx]`.
+A detailed English derivation is pending.
 -/
 theorem cA_split {C : Type} [DecidableEq C] (col : P → C) (hq : ∀ p p', col p = col p' → (q p ↔ q p'))
     (b : P → Fin n) (F : TV n M P) :

@@ -14,22 +14,22 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.PieriRule
 namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 /- English proof (translation)
-The claim follows from `pieriCount_of compRed kRepRel`.
+A detailed English derivation is pending.
 -/
 theorem pieriCount : PieriCountStatement := pieriCount_of compRed kRepRel
 
 /- English proof (translation)
-The claim follows from `pieriStd_of compRed kRepRel`.
+A detailed English derivation is pending.
 -/
 theorem pieriStd : PieriStdStatement := pieriStd_of compRed kRepRel
 
 /- English proof (translation)
-The claim follows from `pieriDual_of compRed kRepRel`.
+A detailed English derivation is pending.
 -/
 theorem pieriDual : PieriDualStatement := pieriDual_of compRed kRepRel
 
 /- English proof (translation)
-The claim follows from `pPlus_of_parts pieriCount tensHW kTypeIntDom weylSumP (fun _ ε β => ⟨pRho ε β, pDRho ε β, pRho_continuous ε β, fun X hX γ hγ i j => pRho_hasDerivAt ε β X hX γ hγ i j, fun a b => pDRho_single ε β a b⟩) (fun _ ε β => pAdM_kRel ε β)`.
+A detailed English derivation is pending.
 -/
 theorem pPlus : PPlusStatement :=
   pPlus_of_parts pieriCount tensHW kTypeIntDom weylSumP

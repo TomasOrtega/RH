@@ -17,9 +17,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.Semi GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Rewrite using `[Fl.Test.lieMult_iff_exists_frame]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩ choose e he using fun i => M.onto (v i) (hv.1 i).1`. Take `rfl : v = fun i => M.pt (e i)` from `funext fun i => (he i).symm`. Conclude with `⟨e, (Fl.Test.isEigFrame_iff M act ρ h τ e).1 hv⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, hb⟩`. Conclude with `⟨fun i => M.pt (b i), (Fl.Test.isEigFrame_iff M act ρ h τ b).2 hb⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem lieMult_iff_family {S : Scheme.{0}} {k : Type} [Field k] {G : Over S} [GrpObj G] {O : Type} [CommRing O]
     {V : Type} [AddCommGroup V] [Module k V] {x : Sp k ⟶ S} (M : LieModel G x V) (act : OAct O G)
@@ -35,33 +35,29 @@ theorem lieMult_iff_family {S : Scheme.{0}} {k : Type} [Field k] {G : Over S} [G
     exact ⟨fun i => M.pt (b i), (Fl.Test.isEigFrame_iff M act ρ h τ b).2 hb⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H S t L _ _ z P`. Use `letI := P.τ.addCommGroup`. Use `letI := P.τ.grpB`. Use `haveI := P.τ.free`. Use `haveI := P.τ.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := P.τ.q_hom`. Use `haveI := P.τ.i_hom`. Use `haveI := P.e_hom`. Use `haveI heinv : IsMonHom P.e.inv := inferInstance`. Take `⟨m, hm⟩` from `GlobalTheory.T.torus_extension_module_structure L P.tK.G P.τ (𝓞 E) P.tK.act (fun a => by haveI := P.tB.act.hom a`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨P.e.hom ≫ P.tB.act.act a ≫ P.e.inv, inferInstance, ?_⟩` and prove the remaining obligations. Use `(cancel_mono P.e.hom).1 ?_` and prove the remaining obligations. Simplify `P.act a)` using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Use `letI := m`. Use `⟨Module.finrank ℤ P.τ.X / Module.finrank ℚ E, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Introduce `k _ _ g τ n hn`. Use `haveI : CharZero k := charZero_of_injective_ringHom g.injective`. Take `⟨V₂, _, _, ⟨M₂⟩⟩` from `lieModel_exists (Sp L) P.tK.G k (spMap g)`. Take `⟨V₃, _, _, ⟨M₃⟩⟩` from `lieModel_exists (Sp L) P.tB.G k (spMap g)`. Set `D` to `GlobalTheory.Diag.diagAct (Sp L) (𝓞 E) P.τ.X`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `M₁` to `Fl.Test.torusModel (spMap g) P.τ.X`. Take `⟨ρ₁, hρ₁, -⟩` from `lieModel_exists_unique_act _ _ k (spMap g) _ M₁ (𝓞 E) D.act D.hom D.one D.mul D.add`. Take `⟨ρ₂, hρ₂, -⟩` from `lieModel_exists_unique_act _ _ k (spMap g) _ M₂ (𝓞 E) P.tK.act.act P.tK.act.hom P.tK.act.one P.tK.act.mul P.tK.act.add`. Take `⟨ρ₃, hρ₃, -⟩` from `lieModel_exists_unique_act _ _ k (spMap g) _ M₃ (𝓞 E) P.tB.act.act P.tB.act.hom P.tB.act.one P.tB.act.mul P.tB.act.add`. Take `⟨f, hf, -⟩` from `lieModel_exists_unique_diff _ _ _ k (spMap g) _ _ M₁ M₂ P.τ.i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh, -⟩` from `lieModel_exists_unique_diff _ _ _ k (spMap g) _ _ M₂ M₃ (P.τ.q ≫ P.e.hom)`. Take `⟨hker, hsurj⟩` from `GlobalTheory.T.torus_extension_tangent_exact L P.tK.G P.τ k g`. Use `haveI hmono : Mono P.τ.i := ⟨fun a b hab => P.τ.isKernel.hom_ext hab (toUnit_unique _ _)⟩`. Establish `finj : Function.Injective f` using `fun a b hab => M₁.inj ((cancel_mono P.τ.i).1 (by`. Rewrite using `[← hf, ← hf, hab]))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hsur : Function.Surjective h` using `fun y => by`. Take `⟨v, hv, hvq⟩` from `hsurj (M₃.pt y ≫ P.e.inv) ((M₃.tan y).comp_monHom P.e.inv)`. Take `⟨a, rfl⟩` from `M₂.onto v hv`. Use `⟨a, M₃.inj ?_⟩` and prove the remaining obligations. Rewrite using `[hh, ← Category.assoc, hvq, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hex : LinearMap.range f = LinearMap.ker h`. Use extensionality with `a`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`. Establish `h1 : h a = 0 ↔ M₂.pt a ≫ P.τ.q = 1`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Use `hh a` as an intermediate fact. Rewrite `this` using `[h0, Fl.Test.pt_zero, ← Category.assoc]`. Use `(cancel_mono P.e.hom).1 ?_` and prove the remaining obligations. Rewrite using `[← this, MonObj.one_comp]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `h0`. Use `M₃.inj ?_` and prove the remaining obligations. Rewrite using `[hh, ← Category.assoc, h0, MonObj.one_comp, Fl.Test.pt_zero]`. Rewrite using `[h1, hker _ (M₂.tan a)]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨c, rfl⟩`. Conclude with `⟨M₁.pt c, M₁.tan c, (hf c).symm⟩`. Introduce and unpack `⟨w, hw, hwa⟩`. Take `⟨c, rfl⟩` from `M₁.onto w hw`. Conclude with `⟨c, M₂.inj ((hf c).trans hwa)⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `eqf : ∀ a c, f (ρ₁ a c) = ρ₂ a (f c)` using `fun a c => M₂.inj (by`. Rewrite using `[hf, hρ₂ a (f c), hρ₁ a c, hf, Category.assoc, Category.assoc]`. Conclude with `congrArg (M₁.pt c ≫ ·) (hm a))`. Establish `eqh : ∀ a c, h (ρ₂ a c) = ρ₃ a (h c)` using `fun a c => M₃.inj (by`. Rewrite using `[hh, hρ₃ a (h c), hρ₂ a c, hh, Category.assoc, Category.assoc, Category.assoc]`.
-
-Conclude with `congrArg (M₂.pt c ≫ ·) (P.act a))`. Take `⟨bas⟩` from `GlobalTheory.T.eigenspace_basis_exists E P.τ.X k τ`. Take `⟨b₁, hb₁, hb₁'⟩` from `(lieMult_iff_family M₁ D ρ₁ hρ₁ τ _).1 ((GlobalTheory.Diag.lieMult_iff (spMap g) τ _).2 ⟨bas⟩)`. Take `⟨b₂, hb₂, hb₂'⟩` from `(lieMult_iff_family M₂ P.tK.act ρ₂ hρ₂ τ n).1 hn`. Take `⟨hle, b₃, hb₃⟩` from `GlobalTheory.T.eigen_decomposition_exact_sequence E k _ _ _ ρ₁ ρ₂ ρ₃ f h finj hsur hex eqf eqh τ _ n b₁ b₂ hb₁ hb₁' hb₂ hb₂'`.
-
-Conclude with `⟨hle, (lieMult_iff_family M₃ P.tB.act ρ₃ hρ₃ τ _).2 ⟨b₃, hb₃⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lieMult_abPart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (S : Scheme.{0}) (t : SAB H S) (L : Type) [Field L] [CharZero L] (z : Sp L ⟶ S) (P : AbPart t z), ∃ r : ℕ, ∀ (k : Type) [Field k] [IsAlgClosed k] (g : L →+* k) (τ : 𝓞 E →+* k) (n : ℕ), LieMult P.tK.act (spMap g) τ n → r ≤ n ∧ LieMult P.tB.act (spMap g) τ (n - r) := by
   intro E _ _ _ H S t L _ _ z P

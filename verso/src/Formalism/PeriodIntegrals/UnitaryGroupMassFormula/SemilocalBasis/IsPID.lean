@@ -9,9 +9,7 @@ noncomputable section
 namespace PI.UnitaryGroupMassFormula.LocBasisSemi
 
 /- English proof (translation)
-Establish `: IsDedekindDomain (A K p)` using `IsLocalization.isDedekindDomain (𝓞 K) (T_le K p) (A K p)`. Establish `: (Ideal.span {(p : ℤ)}).IsPrime` using `(Ideal.span_singleton_prime (by exact_mod_cast hp.out.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp.out)`. Establish `hP0 : Ideal.span {(p : ℤ)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.out.ne_zero` after adjusting the coercions.
-
-Conclude with `IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 K) (Ideal.span {(p : ℤ)}) hP0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPID (K : Type) [Field K] [NumberField K] (p : ℕ) [hp : Fact p.Prime] :
     IsPrincipalIdealRing (A K p) := by
@@ -26,19 +24,17 @@ theorem isPID (K : Type) [Field K] [NumberField K] (p : ℕ) [hp : Fact p.Prime]
     (Ideal.span {(p : ℤ)}) hP0
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ p hp Y hY`. Establish `: Fact p.Prime` using `⟨hp⟩`. Use `isPID K p` as an intermediate fact. Use `set Y' : Submodule (A K p) V := Submodule.span (A K p) (Y : Set V) with hY'`. Establish `: Module.Finite (A K p) Y'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS⟩` from `hY`. Rewrite using `[Module.Finite.iff_fg]`. Use `⟨S, ?_⟩` and prove the remaining obligations. Rewrite using `[hY', ← hS, Submodule.span_span_of_tower]`. Establish `: Module.IsTorsionFree (A K p) Y'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Module.IsTorsionFree.of_smul_eq_zero fun a m h => ?_` and prove the remaining obligations. Establish `hV : (a : K) • (m : V) = 0` using `congrArg Subtype.val h`. Break down `smul_eq_zero.mp hV with h0 | h0` into its components or cases. Conclude with `Or.inl (Subtype.ext h0)`. Conclude with `Or.inr (Subtype.ext h0)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result.
 
-Take `⟨r, B⟩` from `Module.basisOfFiniteTypeTorsionFree' (R := A K p) (M := Y')`. Use `⟨r, fun i => (B i : V), ?_, fun i => smul_mem_of_mem_span Y (B i).2, ?_⟩` and prove the remaining obligations. Establish `h1 : LinearIndependent (A K p) (fun i => (B i : V))` using `B.linearIndependent.map' Y'.subtype Y'.ker_subtype`. Conclude with `(LinearIndependent.iff_fractionRing (A K p) K).mp h1`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy' : y ∈ Y'` using `Submodule.subset_span hy`. Take `⟨s, hs, x, hx⟩` from `common_denom (fun i => B.repr ⟨y, hy'⟩ i)`. Use `⟨s, hs, x, ?_⟩` and prove the remaining obligations. Establish `hsum : (∑ i, B.repr ⟨y, hy'⟩ i • (B i : V)) = y`. Use `congrArg Subtype.val (B.sum_repr ⟨y, hy'⟩)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this`. Use `conv_lhs => rw [← hsum]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[Subalgebra.smul_def, smul_smul, hx i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : PI.LocBasisSemi := by
   intro K _ _ V _ _ _ _ p hp Y hY

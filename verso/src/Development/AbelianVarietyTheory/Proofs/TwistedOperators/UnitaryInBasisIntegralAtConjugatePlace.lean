@@ -25,7 +25,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents (cjA inc)
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨h, rfl⟩` from `hg`. Conclude with `⟨(h.1 i j).2, by rw [← map_inv]; exact ((h⁻¹).1 i j).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem entries_of_mem_GLint {L : Type} [Field L] {n : ℕ} (O : Subring L) {g : GL (Fin n) L}
     (hg : g ∈ Formalism.UG.GLint (Fin n) O) (i j : Fin n) : g.1 i j ∈ O ∧ (g⁻¹).1 i j ∈ O := by
@@ -33,9 +33,7 @@ theorem entries_of_mem_GLint {L : Type} [Field L] {n : ℕ} (O : Subring L) {g :
   exact ⟨(h.1 i j).2, by rw [← map_inv]; exact ((h⁻¹).1 i j).2⟩
 
 /- English proof (translation)
-Establish `h1 : β'.1 *ᵥ Pi.single j 1 ∈ Formalism.L2.Herm.hatL (F` using `D.host.F) Λ := (h' _).2 fun k => by`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
-
-Establish `h2` using `(h _).1 h1 i`. Rewrite `h2` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_change {n : ℕ} {β β' : GL (Fin n) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     (h : IsFrame β Λ) (h' : IsFrame β' Λ) (i j : Fin n) : (β⁻¹ * β').1 i j ∈ OA D := by
@@ -49,9 +47,9 @@ theorem frame_change {n : ℕ} {β β' : GL (Fin n) (Lev.EAf D)} {Λ : Submodule
   exact h2
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.DiagLiftFix.isLattice_of_isFrame hβ`. Establish `hΛ` using `GlobalTheory.StdFrames.eq_lat hβ hL`. Take `⟨β', h1, -⟩` from `exists_dual_frame V β`. Establish `e : GlobalTheory.NormSum.AdLattice.lat β' = Λ` using `by rw [← dualL_lat_eq h1, ← hΛ, hd]`. Establish `h' : IsFrame β' Λ` using `e ▸ GlobalTheory.StdFrames.isFrame_lat β'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨β', h1, frame_change hβ h', frame_change h' hβ⟩`.
+Supply the required witnesses or components.
 -/
 theorem dual_frame {V : HSp D} {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)}
     (hβ : IsFrame β Λ) (hd : Formalism.L2.Herm.dualL D.sp.cm V Λ = Λ) :
@@ -72,13 +70,11 @@ open GlobalTheory.AdIsom
 open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents (cjA inc)
 
 /- English proof (translation)
-Establish `hcBi : Formalism.UG.cT σ Bi * Formalism.UG.cT σ B = 1`. Rewrite using `[← GlobalTheory.StdFrames.cT_mul', hB, GlobalTheory.StdFrames.cT_one']`. Establish `hzi : Formalism.UG.cT σ Zi * Formalism.UG.cT σ Z = 1`. Rewrite using `[← GlobalTheory.StdFrames.cT_mul', hZ, GlobalTheory.StdFrames.cT_one']`. Establish `hM : Formalism.UG.cT σ B * J = B'i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1' : B' * (Formalism.UG.cT σ B * J) = 1` using `by rw [hM, hB']`. Establish `hz' : Formalism.UG.cT σ Zi * (Formalism.UG.cT σ Z * J * Z) = J * Z`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hzi, Matrix.one_mul]`. Rewrite using `[GlobalTheory.StdFrames.cT_mul', GlobalTheory.StdFrames.cT_mul', ← hM]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hz']`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Bi * B' * Formalism.UG.cT σ B * (Formalism.UG.cT σ Zi * (Formalism.UG.cT σ Bi * Formalism.UG.cT σ B) * J) * B := by`. Rewrite using `[hz, hcBi, Matrix.mul_one]`.
-
-Use `_ = _ := by simp only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_formula_gen {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ}
     (J B Bi B' B'i Z Zi : Matrix (Fin n) (Fin n) A) (hB : B * Bi = 1) (hB' : B' * B'i = 1) (hZ : Z * Zi = 1)
@@ -106,7 +102,7 @@ theorem conj_formula_gen {A : Type} [CommRing A] (σ : A →+* A) {n : ℕ}
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [Units.val_mul]`. Conclude with `conj_formula_gen (cjA D) J β.val (β⁻¹).val β'.val (β'⁻¹).val z.val (z⁻¹).val (Units.mul_inv β) (Units.mul_inv β') (Units.mul_inv z) h1 hz`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_formula {n : ℕ} (J : Matrix (Fin n) (Fin n) (Lev.EAf D)) (β β' z : GL (Fin n) (Lev.EAf D))
     (h1 : Formalism.UG.cT (cjA D) β.val * J * β'.val = 1) (hz : Formalism.UG.cT (cjA D) z.val * J * z.val = J) :
@@ -125,9 +121,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents (cjA inc)
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FunObj.conjPl_eq_cP]`. Simplify using `only [Matrix.mul_apply, map_sum, map_mul]`. Use `sum_mem fun l _ => mul_mem (sum_mem fun k _ => mul_mem ?_ ?_) ?_` and prove the remaining obligations. Conclude with `(mem_OA_iff _).1 (hP i k) _`. Conclude with `ConjugatePlaceIntegrality.GlobalTheory.CompanionTheory.ConjPlaceInt.cpt_sg_mem_integers w (C l k) (hC l k)`.
-
-Conclude with `(mem_OA_iff _).1 (hM l j) _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cpt_conj_mem {n : ℕ} (w : Pl D.host.E) (P C M : Matrix (Fin n) (Fin n) (Lev.EAf D))
     (hP : ∀ i j, P i j ∈ OA D) (hM : ∀ i j, M i j ∈ OA D)
@@ -149,13 +143,11 @@ open GlobalTheory.AdIsom
 open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents (cjA inc)
 
 /- English proof (translation)
-Introduce `D V β Λ hβ hd x hx w hw`. Take `⟨β', h1, hP, hM⟩` from `dual_frame hβ hd`. Establish `hu : ∀ z ∈ UA D.sp.cm V.gram, Formalism.UG.cT (cjA D) z.val * V.gram.map (inc D) * z.val = V.gram.map (inc D)` using `fun z hz => hz`. Rewrite `hw`, the goal using `[GlobalTheory.SmGL.SphCompletion.KO_completion]`. Establish `hC : ∀ a b, cpt w ((β⁻¹ * x * β).val a b) ∈ w.adicCompletionIntegers D.host.E` using `fun a b => (entries_of_mem_GLint _ hw a b).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hC' : ∀ a b, cpt w ((β⁻¹ * x⁻¹ * β).val a b) ∈ w.adicCompletionIntegers D.host.E` using `fun a b => by`. Use `(entries_of_mem_GLint _ hw a b).2` as an intermediate fact. Rewrite `this` using `[← map_inv]`. Conclude with `this`. Use `GlobalTheory.FunObj.mem_GLint_of_entries _ _ (fun i j => ?_) (fun i j => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.FunObj.inBasis_apply, conj_formula _ β β' x h1 (hu x hx)]`. Conclude with `cpt_conj_mem w _ _ _ hP hM hC' _ _`. Rewrite using `[← map_inv, GlobalTheory.FunObj.inBasis_apply]`. Establish `e` using `conj_formula _ β β' x⁻¹ h1 (hu _ (inv_mem hx))`. Rewrite `e` using `[inv_inv]`.
-
-Rewrite using `[e]`. Conclude with `cpt_conj_mem w _ _ _ hP hM hC _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inBasis_conjPl_mem_KO : ∀ {D : D7} (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)), IsFrame β Λ → Formalism.L2.Herm.dualL D.sp.cm V Λ = Λ → ∀ x ∈ UA D.sp.cm V.gram, ∀ w : Pl D.host.E, inBasis rfl β w x ∈ GlobalTheory.SplitWeil.KO (Kw w) (Fin V.rank) → inBasis rfl β (Formalism.DivisionValues.conjPl w) x ∈ GlobalTheory.SplitWeil.KO (Kw (Formalism.DivisionValues.conjPl w)) (Fin V.rank) := by
   intro D V β Λ hβ hd x hx w hw

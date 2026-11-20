@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NadelVanishingPairs
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.NefLineBundleNumericalTheoremsProofStatement
 
 /- English proof (translation)
-Introduce `hP` and use `GlobalTheory.T.kollarTwoPointSeparation_of_nadelVanishing hP (GlobalTheory.T.nadel_vanishing_pairs_of_principalisation hP) GlobalTheory.T.nefLineBundleNumericalTheorems_proof`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.pointSeparationPair_of_principalisation :
     GlobalTheory.Published.Principalisation → GlobalTheory.Published.PointSeparationPair := fun hP =>

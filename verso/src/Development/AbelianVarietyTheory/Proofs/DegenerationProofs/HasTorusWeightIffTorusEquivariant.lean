@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.ZH.PureWt
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `hb.2 s`. Proceed by induction on `a using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp only [map_zero, WtPart.cf_zero, mul_zero]`. Consider the case `add x y hx hy => simp only [map_add, WtPart.cf_add, mul_add, hx, hy]`. Consider the case `single ψ b`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[AddMonoidAlgebra.liftNCRingHom_single, hσ, ← _root_.mul_assoc, ← map_mul, WtPart.cf_mono, WtPart.cf_mono]`. Use `split_ifs with h`. Rewrite using `[h]`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cf_diag {A R X : Type} [CommRing A] [CommRing R] [AddCommGroup X]
     {f : A →+* R} {m : Multiplicative X →* R}
@@ -37,13 +37,13 @@ theorem cf_diag {A R X : Type} [CommRing A] [CommRing R] [AddCommGroup X]
     · rw [mul_zero]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, b.repr χ i ≠ b.repr α i := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h (b.repr.injective (Finsupp.ext hn))`. Establish `hn : (b.repr χ i - b.repr α i).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (sub_ne_zero.2 hi)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x : kˣ, x ^ (b.repr χ i - b.repr α i).natAbs ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Generalize the expression as in `(b.repr χ i - b.repr α i).natAbs = n at hn hc`. Establish `: NeZero n` using `⟨hn⟩`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `: Finite kˣ` using `Finite.of_surjective (fun x : rootsOfUnity n k => (x : kˣ)) fun x => ⟨⟨x, (mem_rootsOfUnity n x).2 (hc x)⟩, rfl⟩`. Establish `: Finite k` using `Finite.of_surjective (fun x : Option kˣ => x.elim (0 : k) Units.val) fun x => by`. Distinguish the cases in `hx : x = 0`. Conclude with `⟨none, hx.symm⟩`. Conclude with `⟨some (Units.mk0 x hx), rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `not_finite k`. Use `⟨(zpowersHom kˣ x).comp (AddMonoidHom.toMultiplicative (b.coord i).toAddMonoidHom), fun e => hx ?_⟩` and prove the remaining obligations. Establish `e' : x ^ (b.repr χ i) = x ^ (b.repr α i)` using `e`. Rewrite using `[pow_natAbs_eq_one, zpow_sub, e', mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem exists_char_ne {k X K : Type} [Field k] [Infinite k] [AddCommGroup X] (b : Module.Basis K ℤ X)
     {χ α : X} (h : χ ≠ α) :
@@ -72,7 +72,7 @@ theorem exists_char_ne {k X K : Type} [Field k] [Infinite k] [AddCommGroup X] (b
 variable {S : Scheme.{0}} {E : SplitExt S} {G : Over S} [GrpObj G] (D : E.GtDatum G)
 
 /- English proof (translation)
-The claim follows from `haveI := D.q_hom GtBaseChange.translate_mem D.q D.i D.isKernel τ g V z hz`.
+A detailed English derivation is pending.
 -/
 theorem translate_mem {Z : Over S} (τ : Z ⟶ splitTorus S E.X) (g : Z ⟶ G) (V : E.B.left.Opens) (z : Z.left)
     (hz : g.left z ∈ D.q.left ⁻¹ᵁ V) : ((τ ≫ D.i) * g).left z ∈ D.q.left ⁻¹ᵁ V :=
@@ -80,7 +80,7 @@ theorem translate_mem {Z : Over S} (τ : Z ⟶ splitTorus S E.X) (g : Z ⟶ G) (
   GtBaseChange.translate_mem D.q D.i D.isKernel τ g V z hz
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val _ _ ⊤ trivial, gm_val _ _ ⊤ trivial, splitTorusPointsEquiv_val]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_points {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitTorus S X) (z : Z.left) (χ : X) :
     gm (𝟙 Z.left) z ⊤ (splitTorusPointsEquiv S X Z τ (Multiplicative.ofAdd χ)) =
@@ -90,13 +90,13 @@ theorem gm_points {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitToru
   rfl
 
 /- English proof (translation)
-Introduce `Z τ g z hz`. Establish `hz'` using `translate_mem D τ g V z hz`. Use `set v := AddMonoidHom.toMultiplicativeLeft (E.basis.constr ℤ (fun k => Additive.ofMul (res (Scheme.Hom.preimage_mono D.q.left h) (D.u j k)))).toAddMonoidHom with hv`. Set `A : Multiplicative E.X →* (Z.left.presheaf.stalk z)ˣ` to `(gm ((τ ≫ D.i) * g).left z _).comp v`. Set `C : Multiplicative E.X →* (Z.left.presheaf.stalk z)ˣ` to `(gm (𝟙 Z.left) z ⊤).comp (splitTorusPointsEquiv S E.X Z τ) * (gm g.left z _).comp v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hAC : (MonoidHom.toAdditiveRight A).toIntLinearMap = (MonoidHom.toAdditiveRight C).toIntLinearMap`. Use `E.basis.ext fun k => ?_` and prove the remaining obligations. Establish `hvk : v (Multiplicative.ofAdd (E.basis k)) = res (Scheme.Hom.preimage_mono D.q.left h) (D.u j k)`. Simplify using `[hv]`. Use `congrArg Additive.ofMul ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `gm _ z _ (v (Multiplicative.ofAdd (E.basis k))) = gm (𝟙 Z.left) z ⊤ (splitTorusPointsEquiv S E.X Z τ (Multiplicative.ofAdd (E.basis k))) * gm _ z _ (v (Multiplicative.ofAdd (E.basis k)))`. Rewrite using `[hvk, gm_points, gm_res _ z _ hz, gm_res _ z _ hz']`. Conclude with `(GtBaseChange.hasWeight_iff D.i _ _ _ (D.act_le _) _).2 (D.equiv j k) Z τ g z (h hz)`. Establish `e : gm ((τ ≫ D.i) * g).left z _ (v (Multiplicative.ofAdd χ)) = gm (𝟙 Z.left) z ⊤ (splitTorusPointsEquiv S E.X Z τ (Multiplicative.ofAdd χ)) * gm g.left z _ (v (Multiplicative.ofAdd χ))` using `congrArg (fun φ => Additive.toMul (φ χ)) hAC`. Establish `em : WtPart.mono D j V h (Multiplicative.ofAdd χ) = (v (Multiplicative.ofAdd χ)).val` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[em, gs_mul _ z _ hz, gs_mul _ z _ hz', gs_unit _ z _ hz, gs_unit _ z _ hz', e, gm_points, gs_pull _ _ z V hz, gs_pull _ _ z V hz', TorusTranslate.translate_comp_q, Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem hasWt_mono (j : E.ChartIdx) (V : E.B.left.Opens) (h : V ≤ E.chart j) (c : Γ(E.B.left, V)) (χ : E.X) :
     UFib.HasWt D.i (D.q.left ⁻¹ᵁ V)
@@ -129,9 +129,9 @@ theorem hasWt_mono (j : E.ChartIdx) (V : E.B.left.Opens) (h : V ≤ E.chart j) (
   ring
 
 /- English proof (translation)
-Use `fn_ext fun z hz => ?_` and prove the remaining obligations. Establish `e` using `hs G τ (𝟙 G) z hz`. Establish `e₁ : gs (𝟙 G.left) z _ ((((τ ≫ D.i) * 𝟙 G).left.appLE _ _ hle).hom s) = gs ((τ ≫ D.i) * 𝟙 G).left z _ s` using `(gs_res (𝟙 G.left) z hle hz _).trans ((gs_pull (𝟙 G.left) ((τ ≫ D.i) * 𝟙 G).left z (D.q.left ⁻¹ᵁ V) (hle hz) s).trans (by rw [Category.id_comp]))`. Establish `e₂ : gs (𝟙 G.left) z _ ((D.q.left.app V).hom ((E.B.hom.appLE ⊤ V le_top).hom a)) = gs G.hom z ⊤ a`. Use `(gs_pull (𝟙 G.left) _ z V hz _).trans ((gs_res (𝟙 G.left ≫ D.q.left) z (U := E.B.hom ⁻¹ᵁ ⊤) le_top hz _).trans ((gs_pull _ E.B.hom z ⊤ trivial a).trans ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp, Over.w]`. Rewrite using `[e₁, e, gs_mul (𝟙 G.left) z (D.q.left ⁻¹ᵁ V) hz, e₂, gm_val _ _ ⊤ trivial, gs_eq _ _ ⊤ trivial]`. Conclude with `congrArg₂ (· * ·) (congrArg (G.left.presheaf.germ ⊤ z trivial).hom ha) rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem translate_appLE (V : E.B.left.Opens) (τ : G ⟶ splitTorus S E.X)
     (hle : D.q.left ⁻¹ᵁ V ≤ ((τ ≫ D.i) * 𝟙 G).left ⁻¹ᵁ (D.q.left ⁻¹ᵁ V))
@@ -153,17 +153,17 @@ theorem translate_appLE (V : E.B.left.Opens) (τ : G ⟶ splitTorus S E.X)
   exact congrArg₂ (· * ·) (congrArg (G.left.presheaf.germ ⊤ z trivial).hom ha) rfl
 
 /- English proof (translation)
-Introduce `k _ _ E G _ D j V hV h f α`. Establish `hb` using `D.coord j V hV h`. Prove the components needed by the constructor for the conclusion. Introduce `hf χ hχ`. Take `⟨t, ht⟩` from `exists_char_ne (k := k) E.basis hχ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Set `c : k →+* Γ(Sp k, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom`. Set `e` to `splitTorusPointsEquiv (Sp k) E.X G`. Set `τ` to `e.symm ((Units.map (G.hom.appTop.hom.comp c).toMonoidHom).comp t)`. Establish `hτ : ∀ ψ, τ.left.appTop.hom (charUnit (Sp k) E.X ψ).val = G.hom.appTop.hom (c (t (Multiplicative.ofAdd ψ)))` using `fun ψ => by`. Rewrite using `[← splitTorusPointsEquiv_val]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(e (e.symm _) _).val = _`. Rewrite using `[e.apply_symm_apply]`. Both sides reduce to the same expression. Establish `hle : D.q.left ⁻¹ᵁ V ≤ ((τ ≫ D.i) * 𝟙 G).left ⁻¹ᵁ (D.q.left ⁻¹ᵁ V)` using `fun z hz => translate_mem D τ (𝟙 G) V z hz`. Set `κ : k →+* Γ(E.B.left, V)` to `(E.B.hom.appLE ⊤ V le_top).hom.comp c`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `e₁` using `cf_diag hb (((τ ≫ D.i) * 𝟙 G).left.appLE _ _ hle).hom.toAddMonoidHom (fun ψ => κ (t (Multiplicative.ofAdd ψ))) (fun b ψ => translate_appLE D V τ hle _ ψ (hasWt_mono D j V h b ψ) _ (hτ ψ)) χ f`. Establish `e₂` using `cf_diag hb (AddMonoidHom.mulLeft ((D.q.left.app V).hom (κ (t (Multiplicative.ofAdd α))))) (fun _ => κ (t (Multiplicative.ofAdd α))) (fun _ _ => rfl) χ f`. Establish `e₃` using `e₁.symm.trans ((congrArg (WtPart.cf hb χ) (translate_appLE D V τ hle f α hf _ (hτ α))).trans e₂)`. Rewrite `e₃` using `[← sub_eq_zero, ← sub_mul, ← map_sub]`. Conclude with `((IsUnit.mk0 _ (sub_ne_zero.2 fun e => ht (Units.ext e))).map κ).mul_right_eq_zero.1 e₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hf`. Establish `e : f = (D.q.left.app V).hom (WtPart.cf hb α f) * WtPart.mono D j V h (Multiplicative.ofAdd α)`. Use `WtPart.cf_ext hb fun χ => ?_` and prove the remaining obligations. Rewrite using `[WtPart.cf_mono]`. Use `split_ifs with hχ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ]`. Conclude with `hf χ fun e => hχ e.symm`. Rewrite using `[e]`. Conclude with `hasWt_mono D j V h _ α`.
+A detailed English derivation is pending.
 -/
 theorem hasWt_iff_weight : ∀ (k : Type) [Field k] [IsAlgClosed k] (E : SplitExt (Sp k)) (G : Over (Sp k)) [GrpObj G] (D : E.GtDatum G) (j : E.ChartIdx) (V : E.B.left.Opens) (hV : IsAffineOpen V) (h : V ≤ E.chart j) (f : Γ(G.left, D.q.left ⁻¹ᵁ V)) (α : E.X), UFib.HasWt D.i (D.q.left ⁻¹ᵁ V) f α ↔ ∀ χ, χ ≠ α → D.weight j V hV h χ f = 0 := by
   intro k _ _ E G _ D j V hV h f α

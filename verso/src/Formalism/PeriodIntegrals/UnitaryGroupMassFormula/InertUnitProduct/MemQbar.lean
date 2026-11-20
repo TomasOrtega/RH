@@ -10,7 +10,7 @@ namespace PI.UnitaryGroupMassFormula.ProdUnitInert
 open PI.ProdUnitInert
 
 /- English proof (translation)
-Rewrite using `[Qbar, mem_algebraicClosure_iff']`. Conclude with `(Algebra.IsIntegral.isIntegral (R := ℚ) e).map φ₀.toRatAlgHom`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_Qbar {E : Type} [Field E] [NumberField E] (φ₀ : E →+* ℂ) (e : E) :
     φ₀ e ∈ Qbar := by
@@ -18,19 +18,19 @@ lemma mem_Qbar {E : Type} [Field E] [NumberField E] (φ₀ : E →+* ℂ) (e : E
   exact (Algebra.IsIntegral.isIntegral (R := ℚ) e).map φ₀.toRatAlgHom
 
 /- English proof (translation)
-Introduce `E _ _ K c φ₀ S _ emb hinj hagree hcard hc hK d p _ b hb hjac lam z hz`. Establish `hd0 : d ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : jacobiSym 0 p = 0` using `jacobiSym.zero_left (Fact.out : p.Prime).one_lt`. Simplify using `[h0] at hjac`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hns : ¬ IsSquare (((-(d : ℤ) : ℤ) : ZMod p))` using `(legendreSym.eq_neg_one_iff (p := p)).mp (by rw [jacobiSym.legendreSym.to_jacobiSym]; exact hjac)`. Establish `hP` using `prod_emb_eq_norm K φ₀ S emb hinj hagree hcard z`. Take `⟨x, y, hw⟩` from `exists_rat_coords K hK d hd0 b hb (Algebra.norm K z)`. Establish `hβ : (φ₀ (b : E)) ^ 2 = -(d : ℂ)`. Establish `h` using `congrArg (fun t : K => φ₀ (t : E)) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `hPxy : ∏ s, emb s z = (x : ℂ) + y * φ₀ (b : E)`. Rewrite using `[hP, hw]`. Simplify using the standard rewrite rules. Establish `hPP : (∏ s, emb s z) * (starRingEnd ℂ) (∏ s, emb s z) = 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[map_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one (fun s _ => by rw [← hc, ← map_mul, hz, map_one])`. Rewrite `hPP` using `[hPxy]`. Establish `hconic` using `conic_of_norm_one d _ hβ x y hPP`. Establish `hβmem : φ₀ (b : E) ∈ Qbar` using `mem_Qbar φ₀ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPmem : (∏ s, emb s z) ∈ Qbar` using `by rw [hP]; exact mem_Qbar φ₀ _`. Unfold `PI.ProdUnitInert.lamC`. Rewrite using `[dif_pos hPmem]`. Establish `hsub : (⟨∏ s, emb s z, hPmem⟩ : Qbar) = (x : Qbar) + (y : Qbar) * ⟨φ₀ (b : E), hβmem⟩`. Apply `Subtype.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[hPxy]`. Rewrite using `[hsub, map_add, map_mul, map_ratCast, map_ratCast]`. Apply `norm_conic_eq_one d hns x y hconic` to reduce the goal to its premises. Establish `hsq : (⟨φ₀ (b : E), hβmem⟩ : Qbar) ^ 2 = -(d : Qbar)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[hβ]`. Rewrite using `[← map_pow, hsq, map_neg, map_natCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : PI.ProdUnitInert := by
   intro E _ _ K c φ₀ S _ emb hinj hagree hcard hc hK d p _ b hb hjac lam z hz

@@ -7,11 +7,11 @@ open scoped NNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : ExpChar V l := ExpChar.prime Fact.out`. Use `PerfectRing.ofSurjective V l ?_` and prove the remaining obligations. Introduce `v`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (v : L) (Nat.pos_of_ne_zero hl0)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyV : y ∈ V`. Rewrite using `[← V.valuation_le_one_iff]`. Establish `hv : V.valuation (v : L) ≤ 1` using `(V.valuation_le_one_iff _).2 v.2`. Rewrite `hv` using `[← hy, map_pow]`. Conclude with `(pow_le_one_iff_of_nonneg (zero_le') hl0).1 hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨y, hyV⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[frobenius_def, hy]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perfectRing_valuationSubring_of_isAlgClosed (l : ℕ) [Fact l.Prime] {L : Type} [Field L]
     [IsAlgClosed L] (V : ValuationSubring L) [CharP V l] : PerfectRing V l := by
@@ -30,13 +30,11 @@ theorem perfectRing_valuationSubring_of_isAlgClosed (l : ℕ) [Fact l.Prime] {L 
   simp [frobenius_def, hy]
 
 /- English proof (translation)
-Introduce `l _ R _ u x hl hu hrad H M`. Break down `GlobalTheory.T.pow_dvd_bound_or_exists_valuationSubring_dvd R u x M hu hrad with h | ⟨L, _, _, V, f, hfu, hfnu, hdvd⟩` into its components or cases. Conclude with `h`. It suffices to derive a contradiction. Use `haveI : CharP V l := (CharP.charP_iff_prime_eq_zero Fact.out).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_natCast f, hl, map_zero])`. Use `haveI : PerfectRing V l := perfectRing_valuationSubring_of_isAlgClosed l V`. Take `⟨hdom, hpre, hne, hnu, hcomp⟩` from `GlobalTheory.T.adicCompletion_valuationRing_complete_valuationDomain V (f u) hfu hfnu`. Take `⟨hl', hbij⟩` from `GlobalTheory.T.adicCompletion_principal_perfect l V (f u)`. Use `set O := AdicCompletion (Ideal.span {f u}) V`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : IsDomain O := hdom`. Use `haveI : ValuationRing O := { toPreValuationRing := hpre }`. Use `haveI : CharP O l := (CharP.charP_iff_prime_eq_zero Fact.out).2 hl'`. Use `haveI : PerfectRing O l := ⟨hbij⟩`. Set `g : R →+* O` to `(algebraMap V O).comp f`.
-
-Establish `hgx : g x = 0` using `H O g hne hnu hcomp`. Establish `hd : g x ∣ g u ^ M`. Simplify `map_dvd (algebraMap V O) hdvd` using `[g, map_pow]`. Rewrite `hd` using `[hgx, zero_dvd_iff]`. Conclude with `hne (by_contra fun h => pow_ne_zero M h hd)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem s_points_kpt : ∀ (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (u x : R), ((l : ℕ) : R) = 0 →
     u ∈ nonZeroDivisors R → (∀ r, IsUnit (1 - u * r)) →

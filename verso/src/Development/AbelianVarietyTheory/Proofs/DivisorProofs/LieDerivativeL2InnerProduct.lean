@@ -20,13 +20,13 @@ theorem expGL_val (X : Lie E a) (t : ℝ) :
     ((expGL X t : GL (Fin a) (Cinf E)) : Matrix (Fin a) (Fin a) (Cinf E)) = NormedSpace.exp (t • Matrix.of X) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [expGL_val, zero_smul, NormedSpace.exp_zero]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem expGL_zero (X : Lie E a) : expGL X 0 = 1 :=
   Units.ext (by rw [expGL_val, zero_smul, NormedSpace.exp_zero]; rfl)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, expGL_val, expGL_val, expGL_val, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl (Matrix.of X)).smul_left s).smul_right t)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expGL_add (X : Lie E a) (s t : ℝ) : expGL X (s + t) = expGL X s * expGL X t := by
   apply Units.ext
@@ -34,9 +34,9 @@ theorem expGL_add (X : Lie E a) (s t : ℝ) : expGL X (s + t) = expGL X s * expG
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl (Matrix.of X)).smul_left s).smul_right t)
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin a) (Fin a) (Cinf E)) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin a) (Fin a) (Cinf E)) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin a) (Fin a) (Cinf E)) := FiniteDimensional.complete ℝ _`. Set `T : Matrix (Fin a) (Fin a) (Cinf E) →L[ℝ] Lie E a` to `LinearMap.toContinuousLinearMap (LinearMap.id : Lie E a →ₗ[ℝ] Lie E a)`. Establish `h` using `hasDerivAt_exp_smul_const' (𝕂 := ℝ) (Matrix.of X) (0 : ℝ)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zero_smul, NormedSpace.exp_zero, mul_one]`. Conclude with `T.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_expGL (X : Lie E a) : HasDerivAt (fun t => toL (expGL X t).val) X 0 := by
   letI : NormedRing (Matrix (Fin a) (Fin a) (Cinf E)) := Matrix.linftyOpNormedRing
@@ -49,9 +49,9 @@ theorem hasDerivAt_expGL (X : Lie E a) : HasDerivAt (fun t => toL (expGL X t).va
   exact T.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h
 
 /- English proof (translation)
-Establish `h` using `hasDerivAt_curve ψ (g * infGL E a (expGL X t)) (expGL X) X (expGL_zero X) (hasDerivAt_expGL X)`. Establish `h2` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact h)`. Establish `e : (fun s => ψ.1 (g * infGL E a (expGL X s))) = fun x => ψ.1 (g * infGL E a (expGL X t) * infGL E a (expGL X (x - t)))`. Use function extensionality and compare the values at `s`. Rewrite using `[mul_assoc, ← map_mul, ← expGL_add, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_along (X : Lie E a) (ψ : Sm E a) (g : GA E a) (t : ℝ) :
     HasDerivAt (fun s => ψ.1 (g * infGL E a (expGL X s)))

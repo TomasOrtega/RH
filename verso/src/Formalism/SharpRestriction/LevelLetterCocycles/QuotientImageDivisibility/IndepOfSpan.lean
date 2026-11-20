@@ -16,7 +16,7 @@ def sumAt {r : ℕ} (e : Fin r → ℤ → E) (j : ℤ) : (Fin r → LL) →ₗ[
   ∑ m, (LinearMap.proj m : (Fin r → LL) →ₗ[LL] LL).smulRight (e m j)
 
 /- English proof (translation)
-Simplify using `[sumAt, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumAt_apply {r : ℕ} (e : Fin r → ℤ → E) (j : ℤ) (c : Fin r → LL) :
     sumAt e j c = ∑ m, c m • e m j := by
@@ -27,14 +27,14 @@ def Ub {r : ℕ} (Fil : ℤ → Submodule LL E) (e : Fin r → ℤ → E) (j : �
   ⨅ (i : ℤ) (_ : i < j), (Fil (-i + 1)).comap (sumAt e i)
 
 /- English proof (translation)
-Simplify using `only [Ub, Submodule.mem_iInf, Submodule.mem_comap, sumAt_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Ub {r : ℕ} (Fil : ℤ → Submodule LL E) (e : Fin r → ℤ → E) (j : ℤ) (c : Fin r → LL) :
     c ∈ Ub Fil e j ↔ ∀ i < j, ∑ m, c m • e m i ∈ Fil (-i + 1) := by
   simp only [Ub, Submodule.mem_iInf, Submodule.mem_comap, sumAt_apply]
 
 /- English proof (translation)
-Introduce `c hc` and use `(mem_Ub Fil e j c).2 fun i hi => (mem_Ub Fil e j' c).1 hc i (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ub_anti {r : ℕ} (Fil : ℤ → Submodule LL E) (e : Fin r → ℤ → E) {j j' : ℤ} (h : j ≤ j') :
     Ub Fil e j' ≤ Ub Fil e j := fun c hc =>
@@ -46,21 +46,19 @@ variable {r : ℕ} {Fil : ℤ → Submodule LL E} (hFa : Antitone Fil) (D : Subm
 include hFa in
 
 /- English proof (translation)
-Set `ψ : ↥(Ub Fil e j) →ₗ[LL] E ⧸ Fil (-j + 1)` to `(Fil (-j + 1)).mkQ ∘ₗ sumAt e j ∘ₗ (Ub Fil e j).subtype`. Establish `hle : Ub Fil e (j + 1) ≤ Ub Fil e j` using `Ub_anti Fil e (by omega)`. Establish `hker : LinearMap.ker ψ = (Ub Fil e (j + 1)).comap (Ub Fil e j).subtype`. Use extensionality with `⟨c, hc⟩`. Simplify using `only [ψ, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.coe_subtype, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, sumAt_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_Ub]`. Prove the components needed by the constructor for the conclusion. Introduce `h i hi`. Break down `lt_or_eq_of_le (show i ≤ j by omega) with hi' | rfl` into its components or cases. Conclude with `(mem_Ub Fil e j c).1 hc i hi'`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h`. Introduce `h`. Conclude with `h j (by omega)`. Establish `hrange : LinearMap.range ψ = (D ⊓ Fil (-j)).map (Fil (-j + 1)).mkQ`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨⟨c, hc⟩, rfl⟩`. Use `⟨sumAt e j c, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[sumAt_apply]`. Conclude with `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ (he m j)`. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hlow, hk⟩` from `hS j w hw`. Use `⟨⟨c, (mem_Ub Fil e j c).2 hlow⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ψ, LinearMap.comp_apply, Submodule.coe_subtype, Submodule.mkQ_apply]`. Rewrite using `[Submodule.Quotient.eq, sumAt_apply]`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker ψ`. Rewrite `h1` using `[hker, (Submodule.comapSubtypeEquivOfLe hle).finrank_eq, hrange]`. Establish `: FiniteDimensional LL ↥(D ⊓ Fil (-j))` using `Submodule.finiteDimensional_of_le inf_le_left`. Set `φ : ↥(D ⊓ Fil (-j)) →ₗ[LL] E ⧸ Fil (-j + 1)` to `(Fil (-j + 1)).mkQ ∘ₗ (D ⊓ Fil (-j)).subtype`. Establish `hle' : D ⊓ Fil (-j + 1) ≤ D ⊓ Fil (-j)` using `inf_le_inf_left _ (hFa (by omega))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hφr : LinearMap.range φ = (D ⊓ Fil (-j)).map (Fil (-j + 1)).mkQ`. Simplify using `only [φ, LinearMap.range_comp, Submodule.range_subtype]`. Establish `hφk : LinearMap.ker φ = (D ⊓ Fil (-j + 1)).comap (D ⊓ Fil (-j)).subtype`. Use extensionality with `⟨x, hx⟩`. Simplify using `only [φ, LinearMap.mem_ker, LinearMap.comp_apply, Submodule.coe_subtype, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_inf]`.
-
-Conclude with `⟨fun h => ⟨(Submodule.mem_inf.1 hx).1, h⟩, fun h => h.2⟩`. Establish `h2` using `LinearMap.finrank_range_add_finrank_ker φ`. Rewrite `h2` using `[hφr, hφk, (Submodule.comapSubtypeEquivOfLe hle').finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem count_step (he : ∀ m k, e m k ∈ D ⊓ Fil (-k))
     (hS : ∀ k : ℤ, ∀ w ∈ D ⊓ Fil (-k), ∃ c : Fin r → LL,
@@ -114,23 +112,21 @@ theorem count_step (he : ∀ m k, e m k ∈ D ⊓ Fil (-k))
 include hFa in
 
 /- English proof (translation)
-Set `H : ℤ → ℕ` to `fun j => finrank LL ↥(Ub Fil e j) + finrank LL ↥(D ⊓ Fil (-j + 1))`. Establish `hstep : ∀ j, H (j + 1) = H j`. Introduce `j`. Use `count_step hFa D he hS j` as an intermediate fact. Simplify using `only [H]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[show -(j + 1) + 1 = -j by ring]`. Conclude with `this`. Establish `hiter : ∀ (j : ℤ) (N : ℕ), H (j + N) = H j`. Introduce `j N`. Proceed by induction on `N with`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[show j + ((N + 1 : ℕ) : ℤ) = (j + N) + 1 by push_cast; ring, hstep, ih]`. Establish `hzero : ∀ m i, i < 1 - a₁ → e m i = 0`. Introduce `m i hi`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `he m i`. Establish `h' : e m i ∈ D ⊓ Fil a₁` using `⟨(Submodule.mem_inf.1 h).1, hFa (by omega) (Submodule.mem_inf.1 h).2⟩`. Rewrite `h'` using `[h₁]`. Conclude with `(Submodule.mem_bot LL).1 h'`. Establish `htop : Ub Fil e (1 - a₁) = ⊤`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `eq_top_iff.2 fun c _ => (mem_Ub Fil e _ c).2 fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_zero fun m _ => by rw [hzero m i hi, smul_zero]]`. Conclude with `Submodule.zero_mem _`. Establish `hUr : finrank LL ↥(Ub Fil e (1 - a₁)) = r`. Rewrite using `[htop, finrank_top, Module.finrank_fin_fun]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hH0 : H (1 - a₁) = r`. Simplify using `only [H]`. Rewrite using `[show -(1 - a₁) + 1 = a₁ by ring, h₁, finrank_bot, hUr, add_zero]`. Set `N : ℕ` to `(a₁ - a₀).toNat`. Establish `hJ : -((1 - a₁) + (N : ℤ)) + 1 ≤ a₀`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `Int.self_le_toNat (a₁ - a₀)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hD : D ⊓ Fil (-((1 - a₁) + (N : ℤ)) + 1) = D` using `inf_eq_left.2 (h₀.trans (hFa hJ))`. Establish `hHJ` using `hiter (1 - a₁) N`. Rewrite `hHJ` using `[hH0]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [H] at hHJ`. Rewrite `hHJ` using `[hD]`. Establish `hU : finrank LL ↥(Ub Fil e ((1 - a₁) + (N : ℤ))) = 0` using `by omega`. Rewrite `hU` using `[Submodule.finrank_eq_zero]`. Establish `hcU : c ∈ Ub Fil e ((1 - a₁) + (N : ℤ))` using `(mem_Ub Fil e _ c).2 fun i _ => hc i`.
-
-Rewrite `hcU` using `[hU]`. Conclude with `(Submodule.mem_bot LL).1 hcU`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_of_span (a₀ a₁ : ℤ) (h₀ : D ≤ Fil a₀) (h₁ : D ⊓ Fil a₁ = ⊥)
     (he : ∀ m k, e m k ∈ D ⊓ Fil (-k))
@@ -184,7 +180,7 @@ theorem indep_of_span (a₀ a₁ : ℤ) (h₀ : D ≤ Fil a₀) (h₁ : D ⊓ Fi
 include hFa in
 
 /- English proof (translation)
-Take `⟨N, hN⟩ : ∃ N : ℕ, j - M < (N + 1 : ℕ)` from `⟨(j - M).toNat, by have := Int.self_le_toNat (j - M); push_cast; omega⟩`. Rewrite using `[smulS_eq_sum hf g j (N + 1) hN, Finset.sum_range_succ']`. Simplify using `only [Nat.cast_zero, sub_zero, PowerSeries.coeff_zero_eq_constantCoeff_apply, add_sub_cancel_right]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Conclude with `hFa (show -j + 1 ≤ -(j - ((i + 1 : ℕ) : ℤ)) by push_cast; omega) (hfF _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smulS_sub_cc {M : ℤ} {f : ℤ → E} (hf : LB M f) (hfF : ∀ k, f k ∈ Fil (-k))
     (g : PowerSeries LL) (j : ℤ) :
@@ -200,19 +196,19 @@ theorem smulS_sub_cc {M : ℤ} {f : ℤ → E} (hf : LB M f) (hfF : ∀ k, f k �
 include hFa in
 
 /- English proof (translation)
-Establish `hLB : ∀ m, LB (1 - a₁) (e m)`. Introduce `m i hi`. Establish `h` using `he m i`. Establish `h' : e m i ∈ D ⊓ Fil a₁` using `⟨(Submodule.mem_inf.1 h).1, hFa (by omega) (Submodule.mem_inf.1 h).2⟩`. Rewrite `h'` using `[h₁]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Submodule.mem_bot LL).1 h'`. Establish `hF : ∀ m k, e m k ∈ Fil (-k)` using `fun m k => (Submodule.mem_inf.1 (he m k)).2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro g _ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `g hg`. Establish `hcc : (fun m => PowerSeries.constantCoeff (g m)) = 0`. Apply `hind` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Establish `h1 : ∑ m, smulS (g m) (e m) j ∈ Fil (-j + 1)` using `hFa (show -j + 1 ≤ ((k + 1 : ℕ) : ℤ) - j by push_cast; omega) (hg j)`. Establish `h2 : ∑ m, (smulS (g m) (e m) j - PowerSeries.constantCoeff (g m) • e m j) ∈ Fil (-j + 1)` using `Submodule.sum_mem _ fun m _ => smulS_sub_cc hFa (hLB m) (hF m) (g m) j`. Use `Submodule.sub_mem _ h1 h2` as an intermediate fact. Rewrite `this` using `[← Finset.sum_sub_distrib, Finset.sum_congr rfl fun m _ => sub_sub_cancel _ _]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hX : ∀ m, PowerSeries.X ∣ g m` using `fun m => (PowerSeries.X_dvd_iff).2 (congrFun hcc m)`. Use `choose g' hg' using hX`. Establish `hshift : ∀ m (j : ℤ), smulS (g m) (e m) (j + 1) = smulS (g' m) (e m) j`. Introduce `m j`. Rewrite using `[hg' m, smulS_mul (hLB m), show (PowerSeries.X : PowerSeries LL) = PowerSeries.X ^ 1 by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_one], smulS_X_pow (LB_smulS (hLB m) (g' m)) 1]`. Simplify using the standard rewrite rules. Establish `hg'd` using `ih g' fun j => by`. Use `hg (j + 1)` as an intermediate fact. Rewrite `this` using `[Finset.sum_congr rfl fun m _ => hshift m j]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[show ((k + 1 : ℕ) : ℤ) - (j + 1) = (k : ℤ) - j by push_cast; ring]`. Then use the resulting hypothesis. Introduce `m`. Rewrite using `[hg' m, pow_succ']`. Conclude with `mul_dvd_mul_left _ (hg'd m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_dg (a₁ : ℤ) (h₁ : D ⊓ Fil a₁ = ⊥) (he : ∀ m k, e m k ∈ D ⊓ Fil (-k))
     (hind : ∀ c : Fin r → LL, (∀ j, ∑ m, c m • e m j ∈ Fil (-j + 1)) → c = 0) :

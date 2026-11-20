@@ -10,9 +10,9 @@ namespace GlobalTheory
 universe u
 
 /- English proof (translation)
-Introduce `j j' c₁ c₂ c₃`. Establish `e` using `H j j' (fun a b e => c₁ a b (hc _ _ e)) (fun a b e => c₂ a b (hc _ _ e)) (fun a b e => c₃ a b (hc _ _ e))`. Establish `le : h ⁻¹ᵁ (LB.wchart L φ j ⊓ LB.wchart L φ' j') ≤ LB.wchart L (fun k => h ≫ φ k) j ⊓ LB.wchart L (fun k => h ≫ φ' k) j'` using `fun _ hy => ⟨Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 k, Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k⟩`. Establish `e'` using `congrArg (res le) e`. Express the relevant statement in the definitionally equal form `res le (res _ (LB.ts (LB.pullGen L _ _ t h) j)) = res le (res _ (LB.ts (LB.pullGen L _ _ t' h) j')) at e'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `e'` using `[LB.ts_pullGen, LB.ts_pullGen]`. Simplify using `only [LB.res_res] at e'`. Use `Units.map_injective (f := (h.app (LB.wchart L φ j ⊓ LB.wchart L φ' j')).hom.toMonoidHom) (hinj _) ?_` and prove the remaining obligations. Conclude with `(LB.pullU_res h _ _).trans (e'.trans (LB.pullU_res h _ _).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem corr_of_corr_pullGen {X Y Z : Scheme.{u}} (L : LB X) {I I' : Type u} [Fintype I] [Fintype I']
     (φ : I → (Y ⟶ X)) (ε : I → ℤ) (φ' : I' → (Y ⟶ X)) (ε' : I' → ℤ)
@@ -35,7 +35,7 @@ theorem corr_of_corr_pullGen {X Y Z : Scheme.{u}} (L : LB X) {I I' : Type u} [Fi
   exact (LB.pullU_res h _ _).trans (e'.trans (LB.pullU_res h _ _).symm)
 
 /- English proof (translation)
-Use `(ExtUnique.spec_fractionRing V K).2` as an intermediate fact. Establish `: IsSchemeTheoreticallyDominant (pullback.fst T.hom (Spec.map (CommRingCat.ofHom (algebraMap V K))))` using `.of_isPullback (IsPullback.of_hasPullback _ _).flip`. Use `corr_of_corr_pullGen L φ ε φ' ε' t t' _ (fun U => Scheme.Hom.app_injective _ U) (fun a b e => ?_) H` and prove the remaining obligations. Conclude with `ExtUnique.hom_ext_of_dominant (G.hom ≫ terminal.from _) (terminal.hom_ext _ _) _ e`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem corr_of_generic_of_isSeparated
     (V : Type u) [CommRing V] (K : Type u) [Field K] [Algebra V K] [IsFractionRing V K]
@@ -64,9 +64,9 @@ instance {i j : WalkingSpan} (f : i ⟶ j) : IsOpenImmersion ((span U.ι U.ι).m
   rcases f with _ | (_ | _) <;> (dsimp; infer_instance)
 
 /- English proof (translation)
-Introduce `e`. Establish `h : colimit.ι (span U.ι U.ι) WalkingSpan.left x = colimit.ι (span U.ι U.ι) WalkingSpan.right x` using `congrArg (fun q : X ⟶ pushout U.ι U.ι => q x) e`. Take `⟨k, fi, fj, y, h₁, -⟩` from `(Scheme.IsLocallyDirected.ι_eq_ι_iff _).1 h`. Break down `fi with _ | _` into its components or cases. Conclude with `nomatch (show WidePushoutShape.Hom (some WalkingPair.left) (some WalkingPair.right) from fj)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hx (by`. Establish `: U.ι y = x` using `h₁`. Rewrite using `[← this]`. Conclude with `y.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inl_ne_inr (x : X) (hx : x ∉ U) : pushout.inl U.ι U.ι ≠ pushout.inr U.ι U.ι := by
   intro e

@@ -26,7 +26,7 @@ attribute [local instance] Formalism.BasicNotions.Examples₂.NZ.neZero_g Formal
 variable (D : D7)
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.atPlace`. Rewrite using `[MonoidAlgebra.coeff_add, Finsupp.mapDomain_add, MonoidAlgebra.ofCoeff_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_add (k : Fin 2) (v : D.nd.PlG k) (a b : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) :
     Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (a + b) = Formalism.MainNotions.ArithmeticCylinders.atPlace D k v a + Formalism.MainNotions.ArithmeticCylinders.atPlace D k v b := by
@@ -34,14 +34,14 @@ theorem atPlace_add (k : Fin 2) (v : D.nd.PlG k) (a b : MonoidAlgebra ℂ (GL (F
   rw [MonoidAlgebra.coeff_add, Finsupp.mapDomain_add, MonoidAlgebra.ofCoeff_add]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.atPlace`. Rewrite using `[MonoidAlgebra.coeff_zero, Finsupp.mapDomain_zero, MonoidAlgebra.ofCoeff_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_zero (k : Fin 2) (v : D.nd.PlG k) : Formalism.MainNotions.ArithmeticCylinders.atPlace D k v 0 = 0 := by
   unfold Formalism.MainNotions.ArithmeticCylinders.atPlace
   rw [MonoidAlgebra.coeff_zero, Finsupp.mapDomain_zero, MonoidAlgebra.ofCoeff_zero]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty, atPlace_zero]`. Consider the case `insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, atPlace_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem atPlace_sum (k : Fin 2) (v : D.nd.PlG k) {ι : Type} (S : Finset ι)
     (a : ι → MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) :
@@ -52,15 +52,15 @@ theorem atPlace_sum (k : Fin 2) (v : D.nd.PlG k) {ι : Type} (S : Finset ι)
   | insert i S hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, atPlace_add, ih]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Pi.mulSingle (M` using `fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k)) := by`. Introduce `x y h`. Use `congrFun h ⟨k, v⟩` as an intermediate fact. Rewrite `this` using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Then use the resulting hypothesis. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `g`. Rewrite using `[Formalism.BasicNotions.Examples₂.NZ.tens_coeff]`. Unfold `Formalism.MainNotions.ArithmeticCylinders.atPlace`. Rewrite using `[MonoidAlgebra.coeff_ofCoeff]`. Distinguish the cases in `hg : g ∈ Set.range (Pi.mulSingle (M := fun kv : (Σ k : Fin 2, D.nd.PlG k) => GL (Fin D.R.r) (ZMod (D.host.g kv.1))) (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨h, rfl⟩` from `hg`. Rewrite using `[Finsupp.mapDomain_apply hinj, Fintype.prod_eq_single (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k) (fun i hi => by rw [Function.update_of_ne hi, Pi.mulSingle_eq_of_ne hi, MonoidAlgebra.coeff_one_one]), Function.update_self, Pi.mulSingle_eq_same]`. Rewrite using `[Finsupp.mapDomain_of_notMem_range _ _ hg]`. Establish `hex : ∃ i, i ≠ (⟨k, v⟩ : Σ k : Fin 2, D.nd.PlG k) ∧ g i ≠ 1`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [not_exists, not_and, not_not] at hc`. Apply `hg` to reduce the goal to its premises. Use `⟨g ⟨k, v⟩, funext fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hi : i = ⟨k, v⟩`. Substitute `hi` using the available equality.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne hi, hc i hi]`. Take `⟨i, hi, hgi⟩` from `hex`. Use `(Finset.prod_eq_zero (Finset.mem_univ i) ?_).symm` and prove the remaining obligations. Rewrite using `[Function.update_of_ne hi, MonoidAlgebra.one_def, MonoidAlgebra.coeff_single, Finsupp.single_apply, if_neg (Ne.symm hgi)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem atPlace_eq_tens (k : Fin 2) (v : D.nd.PlG k)
     (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) :
@@ -101,7 +101,7 @@ theorem atPlace_eq_tens (k : Fin 2) (v : D.nd.PlG k)
       if_neg (Ne.symm hgi)]
 
 /- English proof (translation)
-Establish `hu : Function.update (fun kv : (Σ k : Fin 2, D.nd.PlG k) => (1 : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g kv.1))))) ⟨k, v⟩ 1 = fun _ => 1` using `Function.update_eq_self_iff.mpr rfl`. Rewrite using `[atPlace_eq_tens, hu]`. Conclude with `Formalism.BasicNotions.Examples₂.NZ.tens_single (k := ℂ) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPlace_one (k : Fin 2) (v : D.nd.PlG k) : Formalism.MainNotions.ArithmeticCylinders.atPlace D k v 1 = 1 := by
   classical
@@ -112,9 +112,9 @@ theorem atPlace_one (k : Fin 2) (v : D.nd.PlG k) : Formalism.MainNotions.Arithme
   exact Formalism.BasicNotions.Examples₂.NZ.tens_single (k := ℂ) 1
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_center_iff, atPlace_eq_tens]`. Introduce `b`. Use `(Formalism.BasicNotions.Examples₂.NZ.tens_central _ (fun i c => ?_) b).symm` and prove the remaining obligations. Break down `eq_or_ne i ⟨k, v⟩ with rfl | hi` into its components or cases. Rewrite using `[Function.update_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha c`. Rewrite using `[Function.update_of_ne hi, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem atPlace_mem_center (k : Fin 2) (v : D.nd.PlG k)
     (a : MonoidAlgebra ℂ (GL (Fin D.R.r) (ZMod (D.host.g k)))) (ha : ∀ b, a * b = b * a) :
@@ -137,7 +137,7 @@ variable (D : D7) (μ : D.what₂.Tup) (j : ℕ)
 local notation "CZ" => Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.mul_mem _ ha hb), dif_pos ha, dif_pos hb]`. Establish `e : (⟨a * b, Subalgebra.mul_mem _ ha hb⟩ : ↥CZ) = ⟨a, ha⟩ * ⟨b, hb⟩` using `Subtype.ext rfl`. Rewrite using `[e, map_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem onMt_mul {a b : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) (hb : b ∈ CZ) :
     D.ntypes.onMt μ j (a * b) = D.ntypes.onMt μ j a * D.ntypes.onMt μ j b := by
@@ -147,7 +147,7 @@ theorem onMt_mul {a b : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) (hb : b �
   rw [e, map_mul]
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.add_mem _ ha hb), dif_pos ha, dif_pos hb]`. Conclude with `map_add (D.ntypes.cenMt μ j) ⟨a, ha⟩ ⟨b, hb⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onMt_add {a b : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) (hb : b ∈ CZ) :
     D.ntypes.onMt μ j (a + b) = D.ntypes.onMt μ j a + D.ntypes.onMt μ j b := by
@@ -156,7 +156,7 @@ theorem onMt_add {a b : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) (hb : b �
   exact map_add (D.ntypes.cenMt μ j) ⟨a, ha⟩ ⟨b, hb⟩
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.one_mem _)]`. Conclude with `map_one (D.ntypes.cenMt μ j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onMt_one : D.ntypes.onMt μ j 1 = 1 := by
   unfold NTypes.onMt
@@ -164,7 +164,7 @@ theorem onMt_one : D.ntypes.onMt μ j 1 = 1 := by
   exact map_one (D.ntypes.cenMt μ j)
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.smul_mem _ ha c), dif_pos ha]`. Conclude with `map_smul (D.ntypes.cenMt μ j) c ⟨a, ha⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onMt_smul (c : ℂ) {a : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) :
     D.ntypes.onMt μ j (c • a) = c • D.ntypes.onMt μ j a := by
@@ -173,9 +173,9 @@ theorem onMt_smul (c : ℂ) {a : MonoidAlgebra ℂ (G0g D.nd)} (ha : a ∈ CZ) :
   exact map_smul (D.ntypes.cenMt μ j) c ⟨a, ha⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Unfold `NTypes.onMt`. Rewrite using `[Finset.sum_empty, Finset.sum_empty, dif_pos (Subalgebra.zero_mem _)]`. Conclude with `map_zero (D.ntypes.cenMt μ j)`.
+Proceed by induction. Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert i S hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, onMt_add D μ j (ha i (Finset.mem_insert_self i S)) (Subalgebra.sum_mem _ fun x hx => ha x (Finset.mem_insert_of_mem hx)), ih fun x hx => ha x (Finset.mem_insert_of_mem hx)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onMt_sum {ι : Type} (S : Finset ι) (a : ι → MonoidAlgebra ℂ (G0g D.nd)) (ha : ∀ i ∈ S, a i ∈ CZ) :
     D.ntypes.onMt μ j (∑ i ∈ S, a i) = ∑ i ∈ S, D.ntypes.onMt μ j (a i) := by
@@ -192,9 +192,9 @@ theorem onMt_sum {ι : Type} (S : Finset ι) (a : ι → MonoidAlgebra ℂ (G0g 
       ih fun x hx => ha x (Finset.mem_insert_of_mem hx)]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact ⟨onMt_one D μ j, Subalgebra.one_mem _⟩`. Consider the case `cons a L ih`. Take `⟨h1, h2⟩` from `ih fun b hb => hL b (List.mem_cons_of_mem a hb)`. Establish `ha` using `hL a List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons, onMt_mul D μ j ha h2, h1]`. Conclude with `⟨rfl, Subalgebra.mul_mem _ ha h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem onMt_prod (L : List (MonoidAlgebra ℂ (G0g D.nd))) (hL : ∀ a ∈ L, a ∈ CZ) :
     D.ntypes.onMt μ j L.prod = (L.map (D.ntypes.onMt μ j)).prod ∧ L.prod ∈ CZ := by
@@ -213,9 +213,9 @@ section Record
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `isoLoc`. Proceed by induction on `h with`. Consider the case `nil => rfl`. Consider the case `cons p _ ih => simp only [List.foldr_cons, ih]`. Consider the case `swap p q l`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[← D.naut.lpSum_assoc, D.naut.lpSum_comm (spehLoc D.nd D.naut q w), D.naut.lpSum_assoc]`. Consider the case `trans _ _ ih1 ih2 => exact ih1.trans ih2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem isoLoc_perm {Pa Pb : List (Part D.naut.CG)} (h : Pa.Perm Pb) (w : PlE D.host) :
     isoLoc D.nd D.naut Pa w = isoLoc D.nd D.naut Pb w := by
@@ -229,13 +229,13 @@ theorem isoLoc_perm {Pa Pb : List (Part D.naut.CG)} (h : Pa.Perm Pb) (w : PlE D.
   | trans _ _ ih1 ih2 => exact ih1.trans ih2
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `D.naut.etaTinv_def w`. Establish `d1` using `D.naut.locG_dim D.naut.etaTinv w`. Establish `d2` using `D.naut.locG_dim D.naut.etaT w`. Establish `hu2` using `D.naut.etaT_unr w`. Take `⟨c, hc⟩` from `Multiset.card_eq_one.mp ((D.naut.frobEig_card _ hu2).trans d2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hc0 : c ≠ 0`. Use `D.naut.frobEig_ne_zero _ hu2` as an intermediate fact. Rewrite `this` using `[hc]`. Simplify `this` using `[eq_comm]`. Establish `hc' : D.naut.frobEig (D.naut.locG D.naut.etaTinv w) = {c⁻¹}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[h2, hc, Multiset.map_singleton]`. Establish `hu` using `D.naut.unr_char _ _ d1 hu2 h1`. Establish `hf : D.naut.frobEig (D.naut.lpChar (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaTinv w)) = {1}`. Rewrite using `[D.naut.frobEig_char _ _ c⁻¹ hu2 h1 d1 hc', hc]`. Simplify using `[hc0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `he : D.naut.lpChar (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaTinv w) = D.naut.lpUnr w {1}`. Rewrite using `[D.naut.unr_eq_lpUnr _ hu, hf]`. Take `⟨-, -, -, e1, e2, -⟩` from `hL w (D.naut.locG π w) (D.naut.locG π w) (D.naut.locG D.naut.etaT w) (D.naut.locG D.naut.etaTinv w) 0 d2 d1`. Rewrite using `[D.naut.locG_tw, D.naut.locG_tw, e1, he, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem locG_tw_back (hL : Formalism.MainNotions.SumRepresentations.At.TieLP D.nd D.naut) {a : ℕ} (π : D.naut.CG a) (w : PlE D.host) :
     D.naut.locG (D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv) w = D.naut.locG π w := by
@@ -261,11 +261,9 @@ theorem locG_tw_back (hL : Formalism.MainNotions.SumRepresentations.At.TieLP D.n
   rw [D.naut.locG_tw, D.naut.locG_tw, e1, he, e2]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6⟩` from `h`. Use `⟨fun p hp' => h1 p (hp.mem_iff.2 hp'), (hp.map _).nodup_iff.1 h2, ?_, fun w hw => ?_, fun w hw => ?_, fun τ => ?_⟩` and prove the remaining obligations. Unfold `rankIso at h3 ⊢`. Rewrite using `[← (hp.map _).sum_eq]`. Conclude with `h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← isoLoc_perm hp w]`. Conclude with `h4 w hw`. Rewrite using `[← isoLoc_perm hp w]`. Conclude with `h5 w hw`. Unfold `isoInf at h6 ⊢`.
-
-Rewrite using `[← (hp.map _).sum_eq]`. Conclude with `h6 τ`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBCV_perm {i : D.nd.Loc} {P : D.naut.AV i} {Pa Pa' : List (Part D.naut.CG)}
     (h : IsBCV D.nd D.naut i P Pa) (hp : Pa.Perm Pa') : IsBCV D.nd D.naut i P Pa' := by
@@ -284,7 +282,7 @@ theorem isBCV_perm {i : D.nd.Loc} {P : D.naut.AV i} {Pa Pa' : List (Part D.naut.
     exact h6 τ
 
 /- English proof (translation)
-Take `⟨Pa, hPa⟩` from `hBC i PI`. Establish `hp` using `GlobalTheory.T.base_change_partitions_perm D hT0 hG h5 i x P0 PI Pa0 Pa h0 hx hB0 hPa`. Conclude with `isBCV_perm hPa hp.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bc_all (hT0 : SumRepresentations.tie0 D) (hG : SumRepresentations.adm2 D) (h5 : SumRepresentations.adm5 D) (hBC : SumRepresentations.adm1 D) {i : D.nd.Loc}
     {x : D.nd.X i} {P0 PI : D.naut.AV i} (h0 : D.naut.ptV i P0 = some x) (hx : D.naut.ptV i PI = some x)
@@ -294,7 +292,7 @@ theorem bc_all (hT0 : SumRepresentations.tie0 D) (hG : SumRepresentations.adm2 D
   exact isBCV_perm hPa hp.symm
 
 /- English proof (translation)
-Rewrite using `[D.mtpar_tie i σ']`. Conclude with `le_iSup₂_of_le (f := fun P _ => D.naut.typeV i P) PI ⟨Sig, fun w => (hσ w).symm, hB⟩ le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeV_le_mtPar {i : D.nd.Loc} {PI : D.naut.AV i} {Sig : List (Part D.naut.CG)} {σ' : D.ntypes.Par}
     (hσ : ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w)
@@ -304,7 +302,7 @@ theorem typeV_le_mtPar {i : D.nd.Loc} {PI : D.naut.AV i} {Sig : List (Part D.nau
   exact le_iSup₂_of_le (f := fun P _ => D.naut.typeV i P) PI ⟨Sig, fun w => (hσ w).symm, hB⟩ le_rfl
 
 /- English proof (translation)
-Establish `hloc : ∀ w, D.naut.locG (D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv) w = D.naut.locG π w` using `fun w => locG_tw_back hT0.1 π w`. Establish `hp` using `h5.1 [⟨a, D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv, 1⟩] [⟨a, π, 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by`. Simplify using `only [isoLoc, spehLoc, List.foldr_cons, List.foldr_nil, hloc])`. Establish `hpp` using `List.singleton_perm_singleton.1 hp`. Conclude with `eq_of_heq (Formalism.BasicNotions.Part.mk.inj hpp).2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tw_tw (hT0 : SumRepresentations.tie0 D) (h5 : SumRepresentations.adm5 D) {a : ℕ} (π : D.naut.CG a) (ha : 1 ≤ a) :
     D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv = π := by
@@ -317,11 +315,11 @@ theorem tw_tw (hT0 : SumRepresentations.tie0 D) (h5 : SumRepresentations.adm5 D)
   exact eq_of_heq (Formalism.BasicNotions.Part.mk.inj hpp).2.1
 
 /- English proof (translation)
-Take `⟨P1, hP1, Pa, hB, hm⟩` from `(D.Z_tie i x).1 hx`. Use `⟨twistIso D.nd D.naut (Pa.erase ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩) D.naut.etaT, P1, hP1, isBCV_perm hB ?_⟩` and prove the remaining obligations. Establish `hid : ∀ p ∈ Pa.erase ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩, (⟨p.a, D.naut.tw (D.naut.tw p.π D.naut.etaT) D.naut.etaTinv, p.d⟩ : Part D.naut.CG) = p`. Introduce `p hp`. Establish `hpa` using `(hB.1 p (List.mem_of_mem_erase hp)).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨pa, pπ, pd⟩` from `p`. Simplify using `only [tw_tw hT0 h5 pπ hpa]`. Establish `e : twistIso D.nd D.naut (twistIso D.nd D.naut (Pa.erase ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩) D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = Pa.erase ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ ++ [⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R. …`. Unfold `twistIso muPart`. Rewrite using `[List.map_append, List.map_map]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg₂ (· ++ ·) ?_ rfl` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `(List.perm_cons_erase hm).trans (List.perm_append_singleton _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasParamX_of_Z (hT0 : SumRepresentations.tie0 D) (h5 : SumRepresentations.adm5 D) {i : D.nd.Loc} {x : D.nd.X i}
     (hx : x ∈ D.nd.Z i) : ∃ Sig, HasParamX D.nd D.naut i x Sig := by
@@ -349,7 +347,7 @@ theorem hasParamX_of_Z (hT0 : SumRepresentations.tie0 D) (h5 : SumRepresentation
   exact (List.perm_cons_erase hm).trans (List.perm_append_singleton _ _).symm
 
 /- English proof (translation)
-Rewrite using `[D.ntypes.labPar_def, hσ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem labPar_eq {σ' : D.ntypes.Par} {Sig : List (Part D.naut.CG)}
     (hσ : ∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w) (k : Fin 2) (v : D.nd.PlG k) :
@@ -357,9 +355,9 @@ theorem labPar_eq {σ' : D.ntypes.Par} {Sig : List (Part D.naut.CG)}
   rw [D.ntypes.labPar_def, hσ]
 
 /- English proof (translation)
-Introduce `k`. Establish `e : (fun v => D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig' (D.naut.plGw k v))) = (fun v => D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v)))`. Use function extensionality and compare the values at `fun v => (h k v).symm`. Use `hg k` as an intermediate fact. Simplify using `only [e] at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem goodSig_of_labels {Sig Sig' : List (Part D.naut.CG)}
     (h : ∀ k v, D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v)) =
@@ -374,11 +372,9 @@ theorem goodSig_of_labels {Sig Sig' : List (Part D.naut.CG)}
   exact this
 
 /- English proof (translation)
-Establish `: Fact (D.host.g k).Prime` using `⟨D.host.g_prime k⟩`. Take `⟨h1, h2⟩` from `hg k`. Use `⟨h1.2.1 v, fun u hu hr => ?_⟩` and prove the remaining obligations. Take `⟨ℓ, hℓg, hℓ⟩` from `Nat.exists_infinite_primes (D.host.g k + 1)`. Establish `hℓne : ℓ ≠ D.host.g k` using `by omega`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : algebraMap (ZMod (D.host.g k)) (Formalism.CyclotomicNorms.Fbar (D.host.g k)) (u : ZMod (D.host.g k)) ∈ Formalism.CyclotomicNorms.rootsBar (D.naut.items₂ k (D.naut.plGw k v) (isoLoc D.nd D.naut Sig (D.naut.plGw k v)))`. Unfold `Formalism.CyclotomicNorms.rootsBar`. Rewrite using `[Polynomial.mem_roots (Polynomial.map_monic_ne_zero (h1.1 v).1)]`. Conclude with `hr.map`. Break down `hu with rfl | rfl` into its components or cases.
-
-Conclude with `h1.2.2.2.1 ℓ hℓ hℓne v ⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩ _ hmem rfl`. Conclude with `h2.2.2.2.1 ℓ hℓ hℓne v ⟨D.nd.j i - 1, by have := D.nd.j_range i; omega⟩ _ hmem rfl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem good_labels {Sig : List (Part D.naut.CG)} (hg : goodSig D.nd D.naut Sig) (i : D.nd.Loc) (k : Fin 2)
     (v : D.nd.PlG k) :
@@ -409,14 +405,14 @@ variable {D : D7}
 local notation "CZ" => Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))
 
 /- English proof (translation)
-The claim follows from `atPlace_mem_center D k v _ (D.ntypes.eSer_central k f)`.
+A detailed English derivation is pending.
 -/
 theorem eSer_mem (k : Fin 2) (v : D.nd.PlG k) (f : (ZMod (D.host.g k))[X]) :
     Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k f) ∈ CZ :=
   atPlace_mem_center D k v _ (D.ntypes.eSer_central k f)
 
 /- English proof (translation)
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos c.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem onMt_coe (μ : D.what₂.Tup) (j : ℕ) (c : ↥CZ) :
     D.ntypes.onMt μ j (c : MonoidAlgebra ℂ (G0g D.nd)) = D.ntypes.cenMt μ j c := by
@@ -424,11 +420,11 @@ theorem onMt_coe (μ : D.what₂.Tup) (j : ℕ) (c : ↥CZ) :
   rw [dif_pos c.2]
 
 /- English proof (translation)
-Take `⟨S, -, hsum⟩` from `D.ntypes.eSer_sum k`. Establish `h1 : D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v 1) F = F`. Rewrite using `[atPlace_one, onMt_one]`. Both sides reduce to the same expression. Rewrite `h1` using `[← hsum, atPlace_sum, onMt_sum D _ _ S _ (fun f _ => eSer_mem k v f), LinearMap.sum_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : ∀ f, f ≠ D.ntypes.labPar k σ' v → D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k f)) F = 0`. Introduce `f hf`. Assume the negation of the conclusion as `hne`. Conclude with `hf (hSer i σ' k v f F hF hne)`. Distinguish the cases in `hm : D.ntypes.labPar k σ' v ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Finset.sum_eq_single_of_mem _ hm (fun f _ hf => hz f hf)]`. Conclude with `h1`. Rewrite `h1` using `[Finset.sum_eq_zero (fun f hf => hz f (fun h => hm (h ▸ hf)))]`. Rewrite using `[← h1, map_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem series_fix (hSer : GlobalTheory.TypeLeaf.SerLoc D) (i : D.nd.Loc) (σ' : D.ntypes.Par)
     (F : D.what₂.Mt (D.nd.mu i) (D.nd.j i)) (hF : F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ')
@@ -456,7 +452,7 @@ def ef (s : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g kv.1))[X]) (kv 
   ⟨Formalism.MainNotions.ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (s kv)), eSer_mem kv.1 kv.2 (s kv)⟩
 
 /- English proof (translation)
-Establish `h1 : (L.map fun kv => Formalism.MainNotions.ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (s kv))) = (L.map (ef s)).map (Subalgebra.val CZ)`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Establish `h2 : L.toFinset = Finset.univ` using `Finset.eq_univ_of_forall fun kv => List.mem_toFinset.2 (hall kv)`. Rewrite using `[h1, ← map_list_prod (Subalgebra.val CZ), ← List.prod_toFinset (ef s) hnd, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -474,7 +470,7 @@ theorem list_prod_eq (s : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g k
   rfl
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, map_one]`. Both sides reduce to the same expression. Consider the case `insert a S ha ih`. Rewrite using `[Finset.prod_insert ha, map_mul, Module.End.mul_apply, ih fun b hb => h b (Finset.mem_insert_of_mem hb), h a (Finset.mem_insert_self a S)]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem cen_prod_fix {M : Type} [AddCommGroup M] [Module ℂ M] (cen : ↥CZ →ₐ[ℂ] Module.End ℂ M)
     {ι : Type} (e : ι → ↥CZ) (S : Finset ι) (F : M) (h : ∀ a ∈ S, cen (e a) F = F) :
@@ -487,7 +483,7 @@ theorem cen_prod_fix {M : Type} [AddCommGroup M] [Module ℂ M] (cen : ↥CZ →
       ih fun b hb => h b (Finset.mem_insert_of_mem hb), h a (Finset.mem_insert_self a S)]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← Finset.prod_erase_mul S e ha, map_mul, Module.End.mul_apply, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cen_prod_ne {M : Type} [AddCommGroup M] [Module ℂ M] (cen : ↥CZ →ₐ[ℂ] Module.End ℂ M)
     {ι : Type} [DecidableEq ι] (e : ι → ↥CZ) (S : Finset ι) (F : M) (hne : cen (∏ a ∈ S, e a) F ≠ 0)
@@ -501,7 +497,7 @@ end Series
 section Main
 
 /- English proof (translation)
-Use `D.nd.lPrime i` as an intermediate fact. Establish `h` using `Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.addVal_int (O := D.nd.O i) (D.nd.l i) (Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.l_not_unit D.nd i) (n : ℤ) (by exact_mod_cast hn)`. Rewrite `h` using `[Int.cast_natCast, padicValInt.of_nat]`. Rewrite using `[Formalism.MainNotions.TruncatedSeriesCountingIdentities.Br.lenUnit_span D.nd i h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lenUnit_natCast_le {D : D7} (i : D.nd.Loc) (n : ℕ) (hn : n ≠ 0) :
     lenUnit (O := D.nd.O i) (D.nd.l i) (D.nd.O i ⧸ Ideal.span {(n : D.nd.O i)}) ≤ (padicValNat (D.nd.l i) n : ℚ) := by
@@ -514,47 +510,41 @@ theorem lenUnit_natCast_le {D : D7} (i : D.nd.Loc) (n : ℕ) (hn : n ≠ 0) :
 end Main
 
 /- English proof (translation)
-Introduce `D P hSer hBC hLGC hT0 h5 hEig hCE i k hl π hπ`. Take `⟨hπZN, Sig, hSig, hgood⟩` from `(D.Zgood_tie i π).1 hπ`. Take `⟨σ', hσ'⟩` from `P.Par_surj i π Sig hSig`. Take `⟨P0, hP0, hB0⟩` from `hSig`. Set `s : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), (ZMod (D.host.g kv.1))[X]` to `fun kv => D.ntypes.labPar kv.1 σ' kv.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨z, L, hLnd, hLall, hz⟩` from `hCE i s`. Establish `hz' : ∀ F, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd))) F = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F`. Introduce `F`. Rewrite using `[hz, list_prod_eq s L hLnd hLall]`. Rewrite using `[show (D.what₂.restRowsFiniteGroupCard : ℂ) • ((∏ kv, ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)) = (((D.what₂.restRowsFiniteGroupCard : ℂ) • ∏ kv, ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hfixπ : ∀ PI : D.naut.AV i, D.naut.ptV i PI = some π → ∀ F ∈ D.naut.typeV i PI, D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F = F`. Introduce `PI hPI F hF`. Establish `hB` using `bc_all hT0 hLGC h5 hBC hP0 hPI hB0`. Establish `hF'` using `typeV_le_mtPar hσ' hB hF`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `cen_prod_fix _ _ _ F fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[← onMt_coe]`. Conclude with `series_fix hSer i σ' F hF' kv.1 kv.2`. Establish `hιb : iotaO D.nd D.naut i (D.what₂.restRowsFiniteGroupCard : D.nd.O i) = (D.what₂.restRowsFiniteGroupCard : ℂ)` using `map_natCast _ _`. Establish `hscal : ∀ u ∈ heckeEig (D.nd.T i) (D.nd.act i) π, (P.zO i z).baseChange (FractionRing (D.nd.O i)) u = (D.what₂.restRowsFiniteGroupCard : D.nd.O i) • u` using `hEig i z π _ fun PI hPI F hF => by rw [hz', hfixπ PI hPI F hF, hιb]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `Xs : Set (D.nd.X i)` to `{x | ∃ u ∈ heckeEig (D.nd.T i) (D.nd.act i) x, (P.zO i z).baseChange (FractionRing (D.nd.O i)) u ≠ 0}`. Establish `hwit : ∀ x ∈ Xs, ∃ PI : D.naut.AV i, D.naut.ptV i PI = some x ∧ ∃ F ∈ D.naut.typeV i PI, ∀ kv, D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (ef s kv) F ≠ 0`. Introduce and unpack `x ⟨u, hu, hne⟩`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hne` to reduce the goal to its premises. Establish `h0` using `hEig i z x 0 (fun PI hPI F hF => ?_) u hu`. Rewrite using `[h0, zero_smul]`. Take `⟨kv, hkv⟩` from `hcon PI hPI F hF`. Rewrite using `[hz', map_zero, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Establish `hc' : D.ntypes.cenMt (D.nd.mu i) (D.nd.j i) (∏ kv, ef s kv) F ≠ 0` using `fun h => hc (by rw [h, smul_zero])`. Conclude with `cen_prod_ne _ _ _ F hc' kv (Finset.mem_univ kv) hkv`. Establish `hcard : D.what₂.restRowsFiniteGroupCard ≠ 0`. Rewrite using `[D.nd.restN_card_levelGroup_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.prod_ne_zero_iff.2 fun k' _ => ?_` and prove the remaining obligations. Establish `: NeZero (D.host.g k')` using `⟨(D.host.g_prime k').ne_zero⟩`. Conclude with `pow_ne_zero _ Nat.card_pos.ne'`. Establish `hb0 : (D.what₂.restRowsFiniteGroupCard : D.nd.O i) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (iotaO D.nd D.naut i) h` as an intermediate fact. Rewrite `this` using `[hιb, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 hcard) this`. Establish `hπX : π ∈ Xs`. Establish `hpos : 0 < Module.finrank ℂ ↥(⨆ P ∈ {P | D.naut.ptV i P = some π}, D.naut.typeV i P)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨P2, hP2⟩` from `D.naut.pt_surj i π`. Use `Nat.pos_of_ne_zero fun h0 => D.naut.typeV_ne i P2 ?_` and prove the remaining obligations. Establish `hbot` using `Submodule.finrank_eq_zero.1 h0`. Conclude with `le_bot_iff.1 (hbot ▸ le_iSup₂_of_le (f := fun P _ => D.naut.typeV i P) P2 hP2 le_rfl)`. Rewrite `hpos` using `[← D.naut.eig_dim i π]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hne : heckeEig (D.nd.T i) (D.nd.act i) π ≠ ⊥`. Introduce `h`. Establish `e : D.nd.mult i π = Module.finrank (FractionRing (D.nd.O i)) ↥(heckeEig (D.nd.T i) (D.nd.act i) π)` using `rfl`. Rewrite `hpos` using `[e, h, finrank_bot]`. Conclude with `lt_irrefl 0 hpos`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu, hu0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨u, hu, ?_⟩` and prove the remaining obligations. Rewrite using `[hscal u hu, ← algebraMap_smul (FractionRing (D.nd.O i))]`. Use `smul_ne_zero ?_ hu0` and prove the remaining obligations. Rewrite using `[Ne, ← map_zero (algebraMap (D.nd.O i) (FractionRing (D.nd.O i)))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(IsFractionRing.injective (D.nd.O i) (FractionRing (D.nd.O i))).ne hb0`. Use `⟨Xs, P.zO i z, (D.what₂.restRowsFiniteGroupCard : D.nd.O i), ⟨hπX, (D.Z_tie i π).2 hπZN, ?_, fun f => P.zO_comm i z f, hb0, hscal, fun x hx u hu => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx hxZ`. Take `⟨PI, hPI, F, hF, hne⟩` from `hwit x hx`. Take `⟨Sig1, hS1⟩` from `hasParamX_of_Z hT0 h5 hxZ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ1, hσ1⟩` from `P.Par_surj i x Sig1 hS1`. Take `⟨P1, hP1, hB1⟩` from `hS1`. Establish `hF1` using `typeV_le_mtPar hσ1 (bc_all hT0 hLGC h5 hBC hP1 hPI hB1) hF`. Establish `hlab : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), s kv = D.ntypes.labPar kv.1 σ1 kv.2` using `fun kv => hSer i σ1 kv.1 kv.2 (s kv) F hF1 (by rw [show Formalism.MainNotions.ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (s kv)) = ((ef s kv : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) : MonoidAlgebra ℂ (G0g D.nd)) from rfl, onMt_coe]; exact hne kv)`. Establish `hg1 : goodSig D.nd D.naut Sig1` using `goodSig_of_labels (fun k' v => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← labPar_eq hσ' k' v, ← labPar_eq hσ1 k' v]`. Conclude with `hlab ⟨k', v⟩) hgood`. Conclude with `(D.Zgood_tie i x).2 ⟨(D.Z_tie i x).1 hxZ, Sig1, ⟨P1, hP1, hB1⟩, hg1⟩`. Assume the negation of the conclusion as `h`. Conclude with `hx ⟨u, hu, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hl]`. Conclude with `lenUnit_natCast_le i _ hcard`. Use `⟨fun v => s ⟨k, v⟩, fun v => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show Squarefree (D.ntypes.labPar k σ' v) ∧ ∀ u : (ZMod (D.host.g k))ˣ, u = PairedCharacterCondition.chiJ D i k v ∨ u = (PairedCharacterCondition.chiJ D i k v)⁻¹ → ¬ (D.ntypes.labPar k σ' v).IsRoot (u : ZMod (D.host.g k))`. Rewrite using `[labPar_eq hσ' k v]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `good_labels hgood i k v`. Take `⟨PI, hPI, F, hF, hne⟩` from `hwit x hx`. Use `⟨PI, hPI, fun v => ?_⟩` and prove the remaining obligations. Establish `h1` using `hne ⟨k, v⟩`. Rewrite `h1` using `[← onMt_coe]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (D.ntypes.eSer k (s ⟨k, v⟩))) F ≠ 0 at h1`. Establish `hc : ∀ τ ∈ (Finset.univ : Finset ((P.lz k).Irr D.R.r)), Formalism.MainNotions.ArithmeticCylinders.atPlace D k v (if (P.lz k).lab τ = s ⟨k, v⟩ then (P.lz k).idem τ else 0) ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))`. Introduce `τ _`. Use `split_ifs`. Conclude with `atPlace_mem_center D k v _ fun b => (P.lz k).idem_central τ b`.
-
-Rewrite using `[atPlace_zero]`. Conclude with `Subalgebra.zero_mem _`. Rewrite `h1` using `[P.eSer_eq k, atPlace_sum, onMt_sum D _ _ _ _ hc, LinearMap.sum_apply]`. Take `⟨τ, -, hτ⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Distinguish the cases in `hlab : (P.lz k).lab τ = s ⟨k, v⟩`.
-
-Rewrite `hτ` using `[if_pos hlab]`. Conclude with `⟨τ, (P.kty_spec i PI k v τ).2 ⟨F, hF, hτ⟩, hlab⟩`. It suffices to derive a contradiction. Apply `hτ` to reduce the goal to its premises. Rewrite using `[if_neg hlab, atPlace_zero]`.
-
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.zero_mem _)]`. Establish `e0 : (⟨0, Subalgebra.zero_mem _⟩ : ↥(Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd)))) = 0` using `rfl`. Rewrite using `[e0, map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (P : Pend D), GlobalTheory.TypeLeaf.SerLoc D → admBC (D := D) → LocalGlobalCompatibilityAlt (D := D) → SumRepresentations.tie0 D → SumRepresentations.adm5 D → EigSpan P → CentralElt D → ∀ (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∀ π ∈ D.nd.Zgood i, ∃ (Xs : Set (D.nd.X i)) (β : Module.End (D.nd.O i) (D.nd.Mt i)) (b : D.nd.O i), CutAt i k π Xs β b ∧ TypeLocus P i k Xs := by
   intro D P hSer hBC hLGC hT0 h5 hEig hCE i k hl π hπ

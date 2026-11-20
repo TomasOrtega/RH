@@ -13,7 +13,7 @@ section Tools
 variable {R : Type u} [CommRing R]
 
 /- English proof (translation)
-Establish `hs : HasSubst s` using `HasSubst.of_constantCoeff_zero' h0`. Establish `hT : HasSubst t` using `HasSubst.of_constantCoeff_zero' ht0`. Establish `key` using `subst_comp_subst_apply hs hT (s.substInvOfIsUnit h1)`. Rewrite `key` using `[subst_substInvOfIsUnit_left s h0 h1, subst_X hT, ht, X_subst]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_substInv_of_right (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsUnit (coeff 1 s))
     (t : R⟦X⟧) (ht0 : constantCoeff t = 0) (ht : s.subst t = X) :
@@ -25,7 +25,7 @@ theorem eq_substInv_of_right (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsU
   exact key
 
 /- English proof (translation)
-Establish `hs : HasSubst s` using `HasSubst.of_constantCoeff_zero' h0`. Establish `hq : HasSubst (s.substInvOfIsUnit h1)` using `HasSubst.substInvOfIsUnit s h1`. Establish `key` using `subst_comp_subst_apply hs hq t`. Rewrite `key` using `[subst_substInvOfIsUnit_right s h0 h1, ht, subst_X hq, X_subst]`. Conclude with `key.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_substInv_of_left (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsUnit (coeff 1 s))
     (t : R⟦X⟧) (ht : t.subst s = X) :
@@ -37,7 +37,7 @@ theorem eq_substInv_of_left (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsUn
   exact key.symm
 
 /- English proof (translation)
-Establish `hex : ∃ t : R⟦X⟧, constantCoeff t = 0 ∧ s.subst t = X` using `⟨s.substInvOfIsUnit h1, constantCoeff_substInvOfIsUnit s h1, subst_substInvOfIsUnit_right s h0 h1⟩`. Unfold `compInv`. Rewrite using `[dif_pos hex]`. Conclude with `eq_substInv_of_right s h0 h1 _ hex.choose_spec.1 hex.choose_spec.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compInv_eq_substInv (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsUnit (coeff 1 s)) :
     compInv s = s.substInvOfIsUnit h1 := by
@@ -51,7 +51,7 @@ theorem compInv_eq_substInv (s : R⟦X⟧) (h0 : constantCoeff s = 0) (h1 : IsUn
 end Tools
 
 /- English proof (translation)
-Introduce `R _ s h0 h1`. Rewrite using `[compInv_eq_substInv s h0 h1]`. Use `⟨constantCoeff_substInvOfIsUnit s h1, subst_substInvOfIsUnit_right s h0 h1, subst_substInvOfIsUnit_left s h0 h1, ?_, fun t ht0 ht => eq_substInv_of_right s h0 h1 t ht0 ht, fun t _ ht => eq_substInv_of_left s h0 h1 t ht⟩` and prove the remaining obligations. Rewrite using `[coeff_one_substInvOfIsUnit]`. Conclude with `h1.val_inv_mul`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem composition_inverse_spec : CompInvSpec.{u} := by
   intro R _ s h0 h1
@@ -63,11 +63,11 @@ theorem composition_inverse_spec : CompInvSpec.{u} := by
   exact h1.val_inv_mul
 
 /- English proof (translation)
-Introduce `R S _ _ φ s h0 h1`. Establish `h0' : constantCoeff (PowerSeries.map φ s) = 0`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, h0, map_zero]`. Establish `h1' : IsUnit (coeff 1 (PowerSeries.map φ s))`. Rewrite using `[coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.map φ`. Rewrite using `[compInv_eq_substInv _ h0' h1', compInv_eq_substInv s h0 h1]`. Apply `eq_substInv_of_right _ h0' h1'` to reduce the goal to its premises. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, constantCoeff_substInvOfIsUnit, map_zero]`. Use `PowerSeries.map_subst (HasSubst.substInvOfIsUnit s h1) (h := φ) s` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[subst_substInvOfIsUnit_right s h0 h1]`. Rewrite using `[← PowerSeries.map_X φ]`. Conclude with `this.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem composition_inverse_map : CompInvMap.{u, v} := by
   intro R S _ _ φ s h0 h1
@@ -86,17 +86,17 @@ theorem composition_inverse_map : CompInvMap.{u, v} := by
     exact this.symm
 
 /- English proof (translation)
-Unfold `IntegSpec`. Introduce `K _ _ f`. Establish `hc : ∀ n : ℕ, coeff (n + 1) (integ f) = coeff n f / ((n : K) + 1)`. Introduce `n`. Unfold `integ`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Establish `hd : derivative K (integ f) = f`. Use extensionality with `n`. Rewrite using `[coeff_derivative, hc]`. Establish `: ((n : K) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨?_, hd, ?_⟩` and prove the remaining obligations. Unfold `integ`. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_mk]`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g hg0 hg`. Use extensionality with `n`. Consider the cases of `n with`. Consider the case `zero`. Rewrite using `[coeff_zero_eq_constantCoeff_apply, hg0]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Unfold `integ`. Simplify using the standard rewrite rules. Consider the case `succ k`. Rewrite using `[hc]`. Establish `h1` using `congrArg (coeff k) hg`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[coeff_derivative]`. Establish `: ((k : K) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero k`. Rewrite using `[← h1]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem integration_spec : IntegSpec.{u} := by
   unfold IntegSpec

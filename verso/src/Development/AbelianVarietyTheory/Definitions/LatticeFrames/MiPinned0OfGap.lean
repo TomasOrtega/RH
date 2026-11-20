@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.SG.PackageTie2 Fo
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-The claim follows from `haveI : Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc := ⟨ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc⟩ Formalism.L2.SG.Pf.finXC_of GlobalTheory.wuDecayOfGap CompanionTheory.D.gk.RF.automorphic_forms_finite_dimensional`.
+A detailed English derivation is pending.
 -/
 theorem finX_of_gap : Formalism.L2.SG.PoincareAmplitudeLowerBounds.FinXC :=
   haveI : Fact Formalism.L2.SG.SplitPrimeNormLemmas.CoefWeightedLoc := ⟨ReciprocityTheory.ChartRestriction.DS.coefWeightedLoc⟩
@@ -64,13 +64,13 @@ Both sides reduce to the same expression.
 theorem World0.bare_ofGap (w : World0 I l Z) (h : GapHyp (I.rec7 l Z)) : (w.ofGap h).bare = w := rfl
 
 /- English proof (translation)
-The claim follows from `hQ (w.ofGap h)`.
+A detailed English derivation is pending.
 -/
 theorem World0.of_forall_world {Q : World0 I l Z → Prop} (hQ : ∀ w : World I l Z, Q w.bare) (h : GapHyp (I.rec7 l Z))
     (w : World0 I l Z) : Q w := hQ (w.ofGap h)
 
 /- English proof (translation)
-The claim follows from `(miPinned_withFin_iff w _ u).1 (hQ (w.ofGap h))`.
+A detailed English derivation is pending.
 -/
 theorem miPinned0_of_gap {u : (I.rec7 l Z).what₂.Word} (hQ : ∀ w : World I l Z, MIPinned w u) (h : GapHyp (I.rec7 l Z))
     (w : World0 I l Z) : MIPinned0 w u := (miPinned_withFin_iff w _ u).1 (hQ (w.ofGap h))
@@ -78,12 +78,12 @@ theorem miPinned0_of_gap {u : (I.rec7 l Z).what₂.Word} (hQ : ∀ w : World I l
 end Worlds
 
 /- English proof (translation)
-The claim follows from `trueD_iff fun T => finX_of_gap D T h`.
+A detailed English derivation is pending.
 -/
 theorem trueD_iff_of_gap {D : D7} (h : GapHyp D) : TrueD D ↔ IsTrueColumnDatum D := trueD_iff fun T => finX_of_gap D T h
 
 /- English proof (translation)
-The claim follows from `hQ D ((trueD_iff_of_gap h).2 hD)`.
+A detailed English derivation is pending.
 -/
 theorem IsTrueColumnDatum.of_forall_trueD {Q : D7 → Prop} (hQ : ∀ D, TrueD D → Q D) {D : D7} (hD : IsTrueColumnDatum D) (h : GapHyp D) : Q D :=
   hQ D ((trueD_iff_of_gap h).2 hD)

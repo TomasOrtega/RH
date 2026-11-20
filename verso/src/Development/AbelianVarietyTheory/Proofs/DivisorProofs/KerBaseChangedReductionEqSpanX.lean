@@ -6,27 +6,25 @@ open scoped TensorProduct
 namespace GlobalTheory.KeyOriginBC
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ A A₁ _ _ f i i₁ EA _ _ _ _ QA _ jA hcomp hj ρ hρA hρX hunit hker`. Establish `hψ : ∀ p : A₁[X], algebraMap A₁[X] (Loc₁ f i i₁ EA QA jA hcomp hj) p = algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) (algebraMap A₁[X] (Ext f EA) p)` using `fun _ => rfl`. Establish `hC : ∀ c : A₁, algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) c = algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) (algebraMap A₁[X] (Ext f EA) (C c))`. Introduce `c`. Rewrite using `[IsScalarTower.algebraMap_apply A₁ (Ext f EA), IsScalarTower.algebraMap_apply A₁ A₁[X] (Ext f EA)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hlocX : locBC f i i₁ EA QA jA hcomp hj (algebraMap A[X] (Localization.AtPrime QA) Polynomial.X) = algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) (algebraMap A₁[X] (Ext f EA) Polynomial.X)`. Rewrite using `[IsScalarTower.algebraMap_apply A[X] EA (Localization.AtPrime QA), locBC_algebraMap]`. Establish `h1 : inclE f EA (algebraMap A[X] EA Polynomial.X) = algebraMap A[X] (Ext f EA) Polynomial.X` using `(Algebra.TensorProduct.includeRight : EA →ₐ[A[X]] Ext f EA).commutes _`. Rewrite using `[h1, Algebra.TensorProduct.algebraMap_apply, algebraMap_polyOver, Polynomial.map_X]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hpol : ∀ q : A₁[X], Ideal.Quotient.mk (Ideal.span {algebraMap A₁[X] (Loc₁ f i i₁ EA QA jA hcomp hj) Polynomial.X}) (algebraMap (Ext f EA) (Loc₁ f i i₁ EA QA jA hcomp hj) (algebraMap A₁[X] (Ext f EA) q)) = Ideal.Quotient.mk _ (algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj) (Polynom …`. Introduce `q`. Rewrite using `[hC, Ideal.Quotient.eq, ← map_sub, ← map_sub, ← Polynomial.coeff_zero_eq_eval_zero]`. Take `⟨r, hr⟩` from `Polynomial.X_dvd_sub_C (p := q)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hr, map_mul, map_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`. Establish `key : (Ideal.Quotient.mk (Ideal.span {algebraMap A₁[X] (Loc₁ f i i₁ EA QA jA hcomp hj) Polynomial.X}) : Loc₁ f i i₁ EA QA jA hcomp hj →+* _) = (Ideal.Quotient.mk _).comp ((algebraMap A₁ (Loc₁ f i i₁ EA QA jA hcomp hj)).comp (reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit))`. Apply `IsLocalization.ringHom_ext (ideal₁ f i i₁ EA QA jA hcomp hj).primeCompl` to reduce the goal to its premises. Apply `RingHom.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Simplify using `only [RingHom.comp_apply, reduceLoc, IsLocalization.lift_eq]`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul p x`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[reduce_tmul]`. Simplify using `only`. Establish `hsplit : (p ⊗ₜ[A[X]] x : Ext f EA) = algebraMap A₁[X] (Ext f EA) p * inclE f EA x` using `by show (p ⊗ₜ[A[X]] x : Ext f EA) = (p ⊗ₜ[A[X]] (1 : EA)) * ((1 : PolyOver f) ⊗ₜ[A[X]] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[hsplit]`.
+Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Use `congr 1`. Conclude with `hpol p`. Rewrite using `[← locBC_algebraMap, ← locBC_algebraMap_base]`. Establish `hmem : algebraMap EA (Localization.AtPrime QA) x - algebraMap A (Localization.AtPrime QA) (ρ (algebraMap EA (Localization.AtPrime QA) x)) ∈ RingHom.ker ρ`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[RingHom.mem_ker, map_sub]`. Use `congrArg (fun w => w (ρ (algebraMap EA (Localization.AtPrime QA) x))) hρA` as an intermediate fact. Simplify using `only [RingHom.comp_apply, RingHom.id_apply] at this`. Rewrite using `[this, sub_self]`. Rewrite `hmem` using `[hker, Ideal.mem_span_singleton']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hmem`. Rewrite using `[Ideal.Quotient.eq, ← map_sub, ← hc, map_mul, hlocX]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Apply `le_antisymm` to reduce the goal to its premises.
+Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Rewrite `hx` using `[RingHom.mem_ker]`. Establish `h` using `congrArg (fun w => w x) key`. Simplify using `only [RingHom.comp_apply, hx, map_zero] at h`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h`.
-
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show reduceLoc f i i₁ EA QA jA hcomp hj ρ hρA hρX hunit (algebraMap A₁[X] (Loc₁ f i i₁ EA QA jA hcomp hj) Polynomial.X) = 0`. Rewrite using `[hψ, reduceLoc, IsLocalization.lift_eq, show algebraMap A₁[X] (Ext f EA) Polynomial.X = (@id (PolyOver f) Polynomial.X) ⊗ₜ[A[X]] (1 : EA) from rfl, reduce_tmul]`. Use `show Polynomial.eval 0 (Polynomial.X : A₁[X]) * _ = 0`. Rewrite using `[Polynomial.eval_X, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_reduceLoc_eq_span_X : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

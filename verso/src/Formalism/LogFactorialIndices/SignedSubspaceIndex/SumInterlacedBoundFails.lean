@@ -7,15 +7,15 @@ namespace Formalism.LatticeIndexTer
 open Finset
 
 /- English proof (translation)
-Simplify using `[ph]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ph_zero : ph 0 = 0 := by
   simp [ph]
 
 /- English proof (translation)
-Break down `hx.eq_or_lt with rfl | hx'` into its components or cases. Simplify using `[ph]`. Establish `h1` using `Real.log_le_sub_one_of_pos (inv_pos.mpr hx')`. Rewrite `h1` using `[Real.log_inv]`. Establish `h2 : x * x⁻¹ = 1` using `mul_inv_cancel₀ hx'.ne'`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `mul_le_mul_of_nonneg_left h1 hx`. Rewrite `h3` using `[mul_sub, h2, mul_one, mul_neg]`. Unfold `ph`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma ph_ge_neg_one {x : ℝ} (hx : 0 ≤ x) : -1 ≤ ph x := by
   rcases hx.eq_or_lt with rfl | hx'
@@ -29,9 +29,9 @@ lemma ph_ge_neg_one {x : ℝ} (hx : 0 ≤ x) : -1 ≤ ph x := by
     linarith
 
 /- English proof (translation)
-Establish `hb : 0 < b` using `lt_of_lt_of_le ha hab`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos ha hb)`. Rewrite `h1` using `[Real.log_div ha.ne' hb.ne']`. Establish `h2` using `mul_le_mul_of_nonneg_left h1 hb.le`. Apply the tactic sequence `have h3 : b * (a / b - 1) = a - b := by field_simp <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite `h2` using `[h3]`. Unfold `ph`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma le_ph_sub {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
     (b - a) * Real.log a ≤ ph b - ph a := by
@@ -45,7 +45,7 @@ lemma le_ph_sub {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `le_ph_sub (by linarith : (0 : ℝ) < a) hab`. Establish `h2 : 0 ≤ Real.log a` using `Real.log_nonneg ha`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.mpr hab) h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma ph_mono {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) : ph a ≤ ph b := by
   have h1 := le_ph_sub (by linarith : (0 : ℝ) < a) hab
@@ -53,18 +53,18 @@ lemma ph_mono {a b : ℝ} (ha : 1 ≤ a) (hab : a ≤ b) : ph a ≤ ph b := by
   nlinarith [mul_nonneg (sub_nonneg.mpr hab) h2]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma one_le_log {t : ℝ} (ht : 3 ≤ t) : 1 ≤ Real.log t := by
   calc (1 : ℝ) = Real.log (Real.exp 1) := (Real.log_exp 1).symm
     _ ≤ Real.log t := Real.log_le_log (Real.exp_pos 1) (by linarith [Real.exp_one_lt_d9])
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `a b _`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, sub_zero] <;> exact le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `succ k ih`. Introduce `a b hab`. Establish `ih'` using `ih (fun i => a i.castSucc) (fun i => b i.castSucc) (fun i => ⟨(hab i.castSucc).1, (hab i.castSucc).2⟩)`. Simplify using `only [Fin.castSucc_zero] at ih'`. Take `⟨h1, h2⟩` from `hab (Fin.last k)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `m1` using `hf h1`. Establish `m2` using `hf h2`. Rewrite `m2` using `[Fin.succ_last]`. Rewrite using `[Fin.sum_univ_castSucc (fun i => f (a i)), Fin.sum_univ_castSucc (fun i => f (b i))]`. Apply the tactic sequence `constructor <;> linarith [ih'.1, ih'.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alt_bound {α : Type*} [Preorder α] (f : α → ℝ) (hf : Monotone f) :
     ∀ (k : ℕ) (a : Fin (k + 1) → α) (b : Fin k → α),
@@ -91,7 +91,7 @@ theorem alt_bound {α : Type*} [Preorder α] (f : α → ℝ) (hf : Monotone f) 
 def phm (x : ℝ) : ℝ := ph (max x 1)
 
 /- English proof (translation)
-Introduce `x y hxy`. Unfold `phm`. Conclude with `ph_mono (le_max_right _ _) (max_le (le_trans hxy (le_max_left _ _)) (le_max_right _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma phm_mono : Monotone phm := by
   intro x y hxy
@@ -99,20 +99,20 @@ lemma phm_mono : Monotone phm := by
   exact ph_mono (le_max_right _ _) (max_le (le_trans hxy (le_max_left _ _)) (le_max_right _ _))
 
 /- English proof (translation)
-The claim follows from `ph_ge_neg_one (le_trans zero_le_one (le_max_right x 1))`.
+A detailed English derivation is pending.
 -/
 lemma phm_ge {x : ℝ} : -1 ≤ phm x := ph_ge_neg_one (le_trans zero_le_one (le_max_right x 1))
 
 /- English proof (translation)
-Introduce `k c c' S w hI hw`. Take `⟨hc, hc'⟩` from `hI`. Establish `hS : 0 ≤ S` using `le_trans (hc 0).1 (hc 0).2`. Establish `e1 : ∀ x : ℝ, 1 ≤ x → phm x = ph x` using `fun x hx => by unfold phm; rw [max_eq_left hx]`. Establish `hb : phm (w + c (Fin.last k)) ≤ (∑ i, phm (w + c i)) - ∑ i, phm (w + c' i) ∧ (∑ i, phm (w + c i)) - ∑ i, phm (w + c' i) ≤ phm (w + c 0)` using `alt_bound phm phm_mono k (fun i => w + c i) (fun i => w + c' i) (fun i => ⟨by show w + c' i ≤ w + c i.castSucc; linarith [(hc' i).1], by show w + c i.succ ≤ w + c' i; linarith [(hc' i).2]⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : (∑ i, phm (w + c i)) = ∑ i, ph (w + c i)` using `Finset.sum_congr rfl fun i _ => e1 _ (by linarith [(hc i).1])`. Establish `s2 : (∑ i, phm (w + c' i)) = ∑ i, ph (w + c' i)` using `Finset.sum_congr rfl fun i _ => e1 _ (by linarith [(hc' i).2, (hc i.succ).1])`. Rewrite `hb` using `[s1, s2]`. Establish `e0 : phm (w + c 0) = ph (w + c 0)` using `e1 _ (by linarith [(hc 0).1])`. Establish `up : ph (w + c 0) ≤ ph (w + S)` using `ph_mono (by linarith [(hc 0).1]) (by linarith [(hc 0).2])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lo : -1 ≤ phm (w + c (Fin.last k))` using `phm_ge`. Establish `hL : 1 ≤ Real.log (w + S + 2)` using `one_le_log (by linarith)`. Establish `hphS : ph (w + S) ≤ (w + 2 * S) * Real.log (w + S + 2)`. Establish `hl` using `Real.log_le_log (by linarith : 0 < w + S) (by linarith : w + S ≤ w + S + 2)`. Unfold `ph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl (by linarith : 0 ≤ w + S), mul_nonneg hS (by linarith : 0 ≤ Real.log (w + S + 2))]`. Establish `hp : 1 ≤ (w + 2 * S) * Real.log (w + S + 2)`. Use polynomial arithmetic with `[mul_nonneg (by linarith : 0 ≤ w + 2 * S - 1) (by linarith : 0 ≤ Real.log (w + S + 2) - 1)]`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Combine the linear relations using `[hb.1]`. Combine the linear relations using `[hb.2]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem sumInterlacedBound : Interlace := by
   intro k c c' S w hI hw

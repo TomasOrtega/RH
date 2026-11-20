@@ -19,9 +19,9 @@ variable {k ρ : ℕ} {z z' : Fin (2 * (1 + ρ) + k + 1) → ℂ} {Wp Wq : Type}
   {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)} {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-Use `List.ext_getElem (by simp; omega) fun i h1 h2 => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i < ρ`. Rewrite using `[List.getElem_append_left (by simpa using hi)]`. Simplify using `only [List.getElem_reverse, List.getElem_map, List.getElem_finRange, List.length_finRange]`. Use `ext`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `[shS]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[List.getElem_append_right (by simp; omega)]`. Simplify using `only [List.getElem_reverse, List.getElem_finRange, List.length_finRange, List.length_map, List.length_reverse, List.getElem_singleton]`. Use `ext`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
@@ -42,7 +42,7 @@ theorem finRange_split (ρ : ℕ) :
     omega
 
 /- English proof (translation)
-Unfold `P5.bTall`. Rewrite using `[finRange_split, List.map_append, List.map_map, List.prod_append]`. Simplify using `[Function.comp_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bTall_split (L : R.LevelData (Pr (RadSp k (1 + ρ) z z' π π')) (1 + ρ)) (w : List (Wd.Letter ℂ S)) :
     P5.bTall L w = ((List.finRange ρ).reverse.map fun l => P5.bTl L (shS l) w).prod * P5.bTl L ⟨0, by omega⟩ w := by
@@ -58,7 +58,7 @@ variable {V V' : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module
   {S : Type} [Fintype S] [DecidableEq S]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp only [List.map_nil, List.prod_nil]; exact arel_one | a :: l => by simp only [List.map_cons, List.prod_cons] exact arel_mul (h a) (arel_listProd f f' h l)`.
+A detailed English derivation is pending.
 -/
 theorem arel_listProd {ι : Type} (f : ι → Wd.SlopeTestRemainingChoices S (Pr V)) (f' : ι → Wd.SlopeTestRemainingChoices S (Pr V'))
     (h : ∀ i, ARel T (f i) (f' i)) : ∀ l : List ι, ARel T (l.map f).prod (l.map f').prod
@@ -76,13 +76,9 @@ variable {k ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
   {z z' : Fin (2 * ρ + k + 1) → ℂ} {π : Mx k (1 + ρ) → (Wp →L[ℂ] Wp)} {π' : Mx k (1 + ρ) → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `hop` using `fun (l : Fin ρ) (i : Fin 6) Φ => op_tr ht X Xs l i Φ`. Establish `hsite : ∀ l : Fin ρ, ARel (trL ht z z' π π') (P5.bTl L (shS l) w) (P5.bTl Ls l w)`. Introduce `l`. Use `Formalism.FourierDecayAlt.P.PBP.arel_bT ?_ ?_ ?_ w` and prove the remaining obligations. Use `show Rel _ (L.p (shS l)) (Ls.p l)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL.1, hLs.1]`. Conclude with `rel_mk (fun v => hop l 0 v) (fun v => by simp only [LinearMap.neg_apply, hop l 3, map_neg])`. Use `show Rel _ (L.c (shS l)) (Ls.c l)`. Rewrite using `[hL.2.2.1, hLs.2.2.1]`. Conclude with `rel_mk (fun v => hop l 1 v) (fun v => hop l 4 v)`.
-
-Use `show Rel _ (L.ci (shS l)) (Ls.ci l)`. Rewrite using `[hL.2.2.2.1, hLs.2.2.2.1]`. Conclude with `rel_mk (fun v => hop l 2 v) (fun v => hop l 5 v)`. Establish `hall : ARel (trL ht z z' π π') ((List.finRange ρ).reverse.map fun l => P5.bTl L (shS l) w).prod (P5.bTall Ls w)` using `arel_listProd _ _ hsite _`. Rewrite using `[bTall_split, Formalism.FourierDecayAlt.P5.act_mul]`.
-
-Conclude with `act_tr hall _ e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bTall_tr {t : ℂ} (ht : t ≠ 0)
     {X : ActualOps k (1 + ρ) (liftVec k 1 ρ z) (liftVec k 1 ρ z') π π'}
@@ -120,9 +116,9 @@ variable {k n ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpac
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Rewrite `hz`, `hz'` using `[Formalism.FourierDecayAlt.P.JCTx5.castV_rfl]`. Substitute `hz hz'` using the available equality. Take `rfl : πs = fun y => π (ιLev k 1 ρ y)` from `funext fun y => by rw [hπ, Formalism.FourierDecayAlt.P.JCTx5.castM_rfl]`. Take `rfl : πs' = fun y => π' (ιLev k 1 ρ y)` from `funext fun y => by rw [hπ', Formalism.FourierDecayAlt.P.JCTx5.castM_rfl]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨trL ht zs zs' π π', fun Φ c g => ?_, fun S _ _ w x e => bTall_tr ht hL hLs w x e⟩` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx5.castM_rfl]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem bTall_cast (hn : 1 + ρ = n) {z z' : Fin (2 * n + k + 1) → ℂ} {zs zs' : Fin (2 * ρ + k + 1) → ℂ}
     (hz : z = D.castV hn (liftVec k 1 ρ zs)) (hz' : z' = D.castV hn (liftVec k 1 ρ zs'))
@@ -153,9 +149,9 @@ end cast
 section misc
 
 /- English proof (translation)
-Use `⟨c ⟨0, by omega⟩, fun i => c ⟨i.val + 1, by omega⟩, funext fun l => ?_⟩` and prove the remaining obligations. Unfold `consC`. Distinguish the cases in `h : l.val = 0`. Rewrite using `[dif_pos (by simpa using h)]`. Conclude with `congrArg c (Fin.ext h)`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by simpa using h)]`. Conclude with `congrArg c (Fin.ext (by simp; omega))`.
+A detailed English derivation is pending.
 -/
 theorem exists_cons {n ρ : ℕ} (hn : 1 + ρ = n) (c : Fin n → ℂ) :
     ∃ (t : ℂ) (c' : Fin ρ → ℂ), c = fun l => consC t c' (Fin.cast hn.symm l) := by
@@ -168,7 +164,7 @@ theorem exists_cons {n ρ : ℕ} (hn : 1 + ρ = n) (c : Fin n → ℂ) :
     exact congrArg c (Fin.ext (by simp; omega))
 
 /- English proof (translation)
-Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Use `h ⟨0, by omega⟩` as an intermediate fact. Simplify `this` using `[consC]`. Use `h ⟨i.val + 1, by omega⟩` as an intermediate fact. Simplify `this` using `[consC]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem omX_cons {n ρ : ℕ} (hn : 1 + ρ = n) {t : ℂ} {c : Fin ρ → ℂ}
     (h : (fun l => consC t c (Fin.cast hn.symm l)) ∈ OmX n) : t ≠ 0 ∧ c ∈ OmX ρ := by
@@ -179,9 +175,9 @@ theorem omX_cons {n ρ : ℕ} (hn : 1 + ρ = n) {t : ℂ} {c : Fin ρ → ℂ}
     simpa [consC] using this
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Use `List.ext_getElem (by simp [PBI.hcell]; omega) fun i h1 h2 => ?_` and prove the remaining obligations. Simplify using `only [PBI.hcell, List.getElem_ofFn]`. Break down `i with _ | i` into its components or cases. Simplify using `[consC]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[consC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hcell_cons {n ρ : ℕ} (hn : 1 + ρ = n) (t : ℂ) (c : Fin ρ → ℂ) :
     PBI.hcell (fun l : Fin n => consC t c (Fin.cast hn.symm l)) = (1, t) :: PBI.hcell c := by
@@ -193,15 +189,15 @@ theorem hcell_cons {n ρ : ℕ} (hn : 1 + ρ = n) (t : ℂ) (c : Fin ρ → ℂ)
   · simp [consC]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem hcell_nil {n : ℕ} (hn : n = 0) (c : Fin n → ℂ) : PBI.hcell c = [] := by
   subst hn; rfl
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Rewrite using `[← (finCongr (Nat.add_comm ρ 1)).prod_comp, Fin.prod_univ_succ]`. Use `congr 1`. Simplify using `only [consC, finCongr_apply, Fin.val_cast, Fin.val_succ]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 -/
 theorem prod_cons {n ρ : ℕ} (hn : 1 + ρ = n) (k : ℕ) (t : ℂ) (c : Fin ρ → ℂ) :
     (∏ i : Fin n, ‖consC t c (Fin.cast hn.symm i)‖ ^ (2 * (n - (i : ℕ)) + k)) =
@@ -215,7 +211,7 @@ theorem prod_cons {n ρ : ℕ} (hn : 1 + ρ = n) (k : ℕ) (t : ℂ) (c : Fin ρ
   omega
 
 /- English proof (translation)
-Substitute `hn hm` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.JCTx5.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castM_rfl, Formalism.FourierDecayAlt.P.JCTx5.castM_rfl]`. Conclude with `(ιLev_comp g).symm`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_split {k n ρ m : ℕ} (hn : 1 + ρ = n) (hm : m = 0) (e1 : n + m = n) (e2 : ρ + m = ρ)
     (g : B.Mat k m) :
@@ -225,14 +221,14 @@ theorem iota_split {k n ρ m : ℕ} (hn : 1 + ρ = n) (hm : m = 0) (e1 : n + m =
   exact (ιLev_comp g).symm
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Conclude with `Formalism.FourierDecayAlt.P.Dx2.Tower.castMat_levelEmbed_zero e g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem castM_iota_self {k a : ℕ} (ha : a = 0) (e : a + a = a) (g : B.Mat k a) : D.castM e (ιLev k a a g) = g := by
   subst ha
   exact Formalism.FourierDecayAlt.P.Dx2.Tower.castMat_levelEmbed_zero e g
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Simplify using `[resG, wCell]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem resG_empty {k a : ℕ} (ha : a = 0) {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (J : Mx k a → E)
     (c : Fin a → ℂ) (g : Mx k a) : resG k a (Fin.last a) J c g = J g := by
@@ -240,7 +236,7 @@ theorem resG_empty {k a : ℕ} (ha : a = 0) {E : Type*} [NormedAddCommGroup E] [
   simp [resG, wCell]
 
 /- English proof (translation)
-Simplify using `[D.ptSize]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptSize_append (h h' : C.LPt) : D.ptSize (h ++ h') = D.ptSize h + D.ptSize h' := by
   simp [D.ptSize]

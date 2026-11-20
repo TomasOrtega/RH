@@ -24,13 +24,11 @@ noncomputable abbrev coindShortComplexOf (X : ShortComplex (Rep.{u} k U)) : Shor
     exact congrArg (fun φ => φ.hom (F.1 x)) X.zero)
 
 /- English proof (translation)
-Establish `hf : Function.Injective X.f.hom` using `(Rep.mono_iff_injective _).1 hX.mono_f`. Establish `hexact` using `hX.exact.map (forget₂ (Rep.{u} k U) (ModuleCat.{u} k))`. Rewrite `hexact` using `[ShortComplex.moduleCat_exact_iff]`. Use `{ exact := ?_, mono_f := ?_, epi_g := ?_ }` and prove the remaining obligations. Rewrite using `[← ShortComplex.exact_map_iff_of_faithful _ (forget₂ (Rep.{u} k G) (ModuleCat.{u} k)), ShortComplex.moduleCat_exact_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `F₀ hF₀`. Set `F : Rep.coind U.subtype X.X₂` to `F₀`. Establish `hF : ∀ x, X.g.hom (F.1 x) = 0` using `fun x => congrArg (fun φ : Rep.coind U.subtype X.X₃ => φ.1 x) hF₀`. Establish `hy : ∀ x, ∃ y, X.f.hom y = F.1 x` using `fun x => hexact (F.1 x) (hF x)`. Use `choose y hy using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(⟨y, fun u x => hf ?_⟩ : Rep.coind U.subtype X.X₁), Subtype.ext (funext hy)⟩` and prove the remaining obligations. Rewrite using `[hy, F.2 u x, ← hy x]`. Conclude with `(Rep.hom_comm_apply X.f u (y x)).symm`. Use `(Rep.mono_iff_injective _).2 fun a b h => Subtype.ext (funext fun x => hf ?_)` and prove the remaining obligations. Conclude with `congrArg (fun φ : Rep.coind U.subtype X.X₂ => φ.1 x) h`.
-
-Use `hX.epi_g` as an intermediate fact. Conclude with `(Rep.coindFunctor k U.subtype).map_epi X.g`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shortExact_coindShortComplexOf {X : ShortComplex (Rep.{u} k U)} (hX : X.ShortExact) :
     (coindShortComplexOf U X).ShortExact := by
@@ -74,7 +72,7 @@ section Naturality
 
 @[reassoc]
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, ← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap, shapiroMap, ← cohomologyMapAlong_comp, ← cohomologyMapAlong_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem shapiroMap_naturality {B B' : Rep.{u} k (U : Subgroup G)} [IsDiscreteRep B]
     [IsDiscreteRep B'] (g : B ⟶ B') (n : ℕ) :
@@ -131,7 +129,7 @@ noncomputable def coindDiscreteCoindIso :
     simp
 
 /- English proof (translation)
-The claim follows from `(isZero_cohomology_discreteCoind k G X n).of_iso (cohomologyIsoOfIso (coindDiscreteCoindIso U X) (n + 1))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_coind_discreteCoind (n : ℕ) :
     IsZero (cohomology (Rep.coind.{u} (U : Subgroup G).subtype
@@ -148,7 +146,7 @@ variable (B : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep B]
 omit [IsTopologicalGroup G] [CompactSpace G] [IsDiscreteRep B] in
 
 /- English proof (translation)
-Establish `h : f.1.1 (1 * x) = f.1.1 1` using `congrArg (fun φ : Rep.coind (U : Subgroup G).subtype B => φ.1 1) (f.2 x)`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coind_invariant_apply (f : (Rep.coind (U : Subgroup G).subtype B).ρ.invariants) (x : G) :
     f.1.1 x = f.1.1 1 := by
@@ -167,9 +165,9 @@ noncomputable def coindInvariantsEval :
 
 omit [IsTopologicalGroup G] [CompactSpace G] [IsDiscreteRep B] in
 /- English proof (translation)
-Use `⟨fun f f' h => ?_, fun b => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[coind_invariant_apply, coind_invariant_apply U B f']`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val h`. Use `⟨⟨⟨fun _ => b.1, fun u _ => (b.2 u).symm⟩, fun g => rfl⟩, rfl⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coindInvariantsEval_bijective : Function.Bijective (coindInvariantsEval U B) := by
   refine ⟨fun f f' h => ?_, fun b => ?_⟩
@@ -181,7 +179,7 @@ theorem coindInvariantsEval_bijective : Function.Bijective (coindInvariantsEval 
   · refine ⟨⟨⟨fun _ => b.1, fun u _ => (b.2 u).symm⟩, fun g => rfl⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `only [cocyclesIso₀, KernelFork.mapIsoOfIsLimit]`. Conclude with `(KernelFork.mapOfIsLimit_ι _ _ _).trans (Category.comp_id _)`.
+Simplify by unfolding definitions. A detailed English derivation is pending.
 -/
 private theorem cocyclesIso₀_hom_comp_f {Γ : Type u} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ]
     (A : Rep.{u} k Γ) [IsDiscreteRep A] :
@@ -191,17 +189,15 @@ private theorem cocyclesIso₀_hom_comp_f {Γ : Type u} [Group Γ] [TopologicalS
   exact (KernelFork.mapOfIsLimit_ι _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Use `set ψ := cochainsMapAlong (A := Rep.coind (U : Subgroup G).subtype B) (B := B) (U : Subgroup G).subtype (continuous_subgroup_subtype _) (coindEvalOne (U : Subgroup G) B)`. Establish `hψ : HomologicalComplex.cyclesMap ψ 0 = (cocyclesIso₀ _).hom ≫ ModuleCat.ofHom (coindInvariantsEval U B) ≫ (cocyclesIso₀ B).inv`. Establish `hK` using `cocyclesIso₀_hom_comp_f (Rep.coind (U : Subgroup G).subtype B)`. Establish `hL` using `cocyclesIso₀_hom_comp_f B`. Establish `hinj : Function.Injective ((cochainsComplex B).iCycles 0).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ModuleCat.hom_ext (LinearMap.ext fun z => hinj ?_)` and prove the remaining obligations. Establish `e1` using `congrArg (fun f => f.hom z) (HomologicalComplex.cyclesMap_i ψ 0)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at e1`. Rewrite using `[e1, ← hL, ← hK]`. Use `set w := (cocyclesIso₀ (Rep.coind (U : Subgroup G).subtype B)).hom.hom z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : (cocyclesIso₀ B).hom.hom ((cocyclesIso₀ B).inv.hom (coindInvariantsEval U B w)) = coindInvariantsEval U B w`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(ψ.f 0).hom (invariantsToCochains₀ _ w) = invariantsToCochains₀ B ((cocyclesIso₀ B).hom.hom ((cocyclesIso₀ B).inv.hom (coindInvariantsEval U B w)))`. Rewrite using `[e2]`. Apply `Subtype.ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `x`. Both sides reduce to the same expression. Use `haveI : IsIso (ModuleCat.ofHom (coindInvariantsEval U B)) := (LinearEquiv.ofBijective _ (coindInvariantsEval_bijective U B)).toModuleIso.isIso_hom`. Use `haveI : IsIso (HomologicalComplex.cyclesMap ψ 0) := by`. Rewrite using `[hψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `infer_instance`. Establish `h` using `CochainComplex.isoHomologyπ₀_inv_naturality ψ`. Establish `h' : HomologicalComplex.homologyMap ψ 0 = (cochainsComplex _).isoHomologyπ₀.inv ≫ HomologicalComplex.cyclesMap ψ 0 ≫ (cochainsComplex B).isoHomologyπ₀.hom`. Rewrite using `[← Category.assoc, ← h, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Express the relevant statement in the definitionally equal form `IsIso (HomologicalComplex.homologyMap ψ 0)`.
-
-Rewrite using `[h']`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_shapiroMap_zero : IsIso (shapiroMap U B 0) := by
   set ψ := cochainsMapAlong (A := Rep.coind (U : Subgroup G).subtype B) (B := B)
@@ -245,23 +241,21 @@ end DegreeZero
 section Shapiro
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro B _`. Conclude with `isIso_shapiroMap_zero U B`. Consider the case `succ n ih`. Introduce `B _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `X` to `coindShortComplex B`. Establish `hX : X.ShortExact` using `coindShortComplex_shortExact B`. Establish `hY : (coindShortComplexOf (U : Subgroup G) X).ShortExact` using `shortExact_coindShortComplexOf _ hX`. Establish `i1 : IsDiscreteRep X.X₁` using `isDiscreteRep_coindShortComplex_X₁ B`. Establish `i2 : IsDiscreteRep X.X₂` using `isDiscreteRep_coindShortComplex_X₂ B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i3 : IsDiscreteRep X.X₃` using `isDiscreteRep_coindShortComplex_X₃ B`. Establish `j1 : IsDiscreteRep (coindShortComplexOf (U : Subgroup G) X).X₁` using `isDiscreteRep_coind U X.X₁`. Establish `j2 : IsDiscreteRep (coindShortComplexOf (U : Subgroup G) X).X₂` using `isDiscreteRep_coind U X.X₂`. Establish `j3 : IsDiscreteRep (coindShortComplexOf (U : Subgroup G) X).X₃` using `isDiscreteRep_coind U X.X₃`. Establish `hcomm : δ hY n (n + 1) rfl ≫ shapiroMap U X.X₁ (n + 1) = shapiroMap U X.X₃ n ≫ δ hX n (n + 1) rfl` using `δ_comp_cohomologyMapAlong (U : Subgroup G).subtype (continuous_subgroup_subtype _) (coindEvalOneShortComplex (U : Subgroup G) X) hY hX n (n + 1) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδU : Epi (δ hX n (n + 1) rfl)` using `(cohomology_exact₁ hX n (n + 1) rfl).epi_f ((isZero_cohomology_discreteCoind k (U : Subgroup G) B n).eq_of_tgt _ _)`. Establish `hδG : Epi (δ hY n (n + 1) rfl)` using `(cohomology_exact₁ hY n (n + 1) rfl).epi_f ((isZero_cohomology_coind_discreteCoind U B n).eq_of_tgt _ _)`. Establish `e3 : IsIso (shapiroMap U X.X₃ n)` using `ih X.X₃`. Establish `e2 : IsIso (shapiroMap U X.X₂ n)` using `ih X.X₂`. Establish `hepi : Epi (shapiroMap U X.X₁ (n + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Epi (δ hY n (n + 1) rfl ≫ shapiroMap U X.X₁ (n + 1))`. Rewrite using `[hcomm]`. Conclude with `@epi_comp _ _ _ _ _ (shapiroMap U X.X₃ n) (@IsIso.epi_of_iso _ _ _ _ _ e3) (δ hX n (n + 1) rfl) hδU`. Conclude with `epi_of_epi (δ hY n (n + 1) rfl) _`. Establish `hmono : Mono (shapiroMap U X.X₁ (n + 1))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[ModuleCat.mono_iff_injective, injective_iff_map_eq_zero]`. Introduce `x hx`. Take `⟨y, rfl⟩` from `(ModuleCat.epi_iff_surjective _).1 hδG x`. Establish `h1 : (δ hX n (n + 1) rfl).hom ((shapiroMap U X.X₃ n).hom y) = 0`. Use `congrArg (fun f => f.hom y) hcomm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Rewrite using `[← this, hx]`. Take `⟨z, hz⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hX n (n + 1) rfl) _ h1`. Take `⟨z', rfl⟩` from `(ModuleCat.epi_iff_surjective _).1 (@IsIso.epi_of_iso _ _ _ _ (shapiroMap U X.X₂ n) e2) z`. Establish `h2 : (shapiroMap U X.X₃ n).hom ((cohomologyMap (coindShortComplexOf (U : Subgroup G) X).g n).hom z') = (shapiroMap U X.X₃ n).hom y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (fun f => f.hom z') (shapiroMap_naturality U X.g n)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at this`. Conclude with `this.trans hz`. Establish `hinj` using `(ModuleCat.mono_iff_injective _).1 (@IsIso.mono_of_iso _ _ _ _ (shapiroMap U X.X₃ n) e3)`. Rewrite using `[← hinj h2]`.
-
-Use `congrArg (fun f => f.hom z') (comp_δ hY n (n + 1) rfl)` as an intermediate fact. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply, ModuleCat.hom_zero, LinearMap.zero_apply] at this`. Conclude with `this`. Use `show IsIso (shapiroMap U X.X₁ (n + 1))`. Conclude with `@isIso_of_mono_of_epi _ _ _ _ _ _ hmono hepi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIso_shapiroMap (n : ℕ) :
     ∀ (B : Rep.{u} k (U : Subgroup G)) [IsDiscreteRep B], IsIso (shapiroMap U B n) := by
@@ -349,7 +343,7 @@ section Corestriction
 variable (A : Rep.{u} k G) [IsDiscreteRep A]
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap, shapiroMap, ← cohomologyMapAlong_comp]`. Use `erw [coindUnit_comp_coindEvalOne]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cohomologyRes_eq_coindUnit_shapiroMap (n : ℕ) :
     cohomologyRes A (U : Subgroup G) n =
@@ -361,11 +355,9 @@ theorem cohomologyRes_eq_coindUnit_shapiroMap (n : ℕ) :
 
 omit [CompactSpace G] in
 /- English proof (translation)
-Establish `h : cochainsMap (m • f) = m • cochainsMap f`. Proceed by induction on `m with`. Consider the case `zero`. Rewrite using `[zero_smul, zero_smul]`. Conclude with `cochainsMap_zero`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[succ_nsmul, succ_nsmul, ← ih]`. Use extensionality with `i c : 3`. Both sides reduce to the same expression. Rewrite using `[cohomologyMap, h]`.
-
-Conclude with `(HomologicalComplex.homologyFunctor (ModuleCat k) (ComplexShape.up ℕ) n).map_nsmul`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cohomologyMap_nsmul {B : Rep.{u} k G} [IsDiscreteRep B] (f : A ⟶ B) (m n : ℕ) :
     cohomologyMap (m • f) n = m • cohomologyMap f n := by
@@ -387,7 +379,7 @@ noncomputable def cohomologyCores (n : ℕ) :
     cohomologyMap (coindTrace (U : Subgroup G) A) n
 
 /- English proof (translation)
-Rewrite using `[cohomologyRes_eq_coindUnit_shapiroMap, cohomologyCores, Category.assoc, IsIso.hom_inv_id_assoc, ← cohomologyMap_comp, coindUnit_comp_coindTrace, cohomologyMap_nsmul, cohomologyMap_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyRes_comp_cohomologyCores (n : ℕ) :
     cohomologyRes A (U : Subgroup G) n ≫ cohomologyCores U A n = (U : Subgroup G).index • 𝟙 _ := by

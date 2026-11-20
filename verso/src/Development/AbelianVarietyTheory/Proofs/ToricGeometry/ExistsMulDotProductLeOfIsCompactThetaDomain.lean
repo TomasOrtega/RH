@@ -14,9 +14,9 @@ variable {ι : Type*} [Fintype ι]
 open Complex Matrix in
 variable {ι : Type*} [Fintype ι] in
 /- English proof (translation)
-Establish `h : ((τ.map Complex.im) + (τ.map Complex.im).transpose).PosDef`. Unfold `_root_.ReciprocityTheory.PTheta.ThetaDomain at hτ`. Conclude with `hτ`. Establish `h1 : x ⬝ᵥ (τ.map Complex.im)ᵀ *ᵥ x = x ⬝ᵥ τ.map Complex.im *ᵥ x`. Rewrite using `[dotProduct_mulVec, vecMul_transpose, dotProduct_comm]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h.dotProduct_mulVec_pos hx`. Rewrite `h2` using `[add_mulVec, dotProduct_add, star_trivial, h1]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma im_quadForm_pos_of_mem_thetaDomain {τ : Matrix ι ι ℂ} (hτ : τ ∈ _root_.ReciprocityTheory.PTheta.ThetaDomain ι)
     (x : ι → ℝ) (hx : x ≠ 0) : 0 < x ⬝ᵥ τ.map Complex.im *ᵥ x := by
@@ -32,25 +32,23 @@ private lemma im_quadForm_pos_of_mem_thetaDomain {τ : Matrix ι ι ℂ} (hτ : 
 open Complex Matrix in
 variable {ι : Type*} [Fintype ι] in
 /- English proof (translation)
-Use `set g : ((ι → ℂ) × (ι → ι → ℂ)) × (ι → ℝ) → ℝ := fun q => q.2 ⬝ᵥ (Matrix.of q.1.2).map Complex.im *ᵥ q.2 with hg_def`. Establish `hg : Continuous g`. Simplify using `only [hg_def, dotProduct, mulVec, Matrix.map_apply, Matrix.of_apply]`. Use `fun_prop`. Establish `hS : IsCompact (K ×ˢ Metric.sphere (0 : ι → ℝ) 1)` using `hK.prod (isCompact_sphere 0 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Break down `(K ×ˢ Metric.sphere (0 : ι → ℝ) 1).eq_empty_or_nonempty with he | hne` into its components or cases. Use `⟨1, one_pos, fun p hp x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact.
 
-It suffices to derive a contradiction. Establish `hmem : (p, ‖x‖⁻¹ • x) ∈ K ×ˢ Metric.sphere (0 : ι → ℝ) 1` using `⟨hp, by simp [norm_smul, hx]⟩`. Rewrite `hmem` using `[he]`. Conclude with `hmem`. Take `⟨q, hq, hmin⟩` from `hS.exists_isMinOn hne hg.continuousOn`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq0 : q.2 ≠ 0`. Introduce `h`. Use `hq.2` as an intermediate fact. Simplify using `[h] at this`. Establish `hm : 0 < g q` using `im_quadForm_pos_of_mem_thetaDomain (hKd q.1 hq.1) q.2 hq0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨g q / (Fintype.card ι + 1), by positivity, fun p hp x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `ht : 0 < ‖x‖` using `norm_pos_iff.mpr hx`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : g q ≤ g (p, ‖x‖⁻¹ • x)` using `hmin ⟨hp, by simp [norm_smul, ht.ne']⟩`. Establish `h2 : g (p, ‖x‖⁻¹ • x) = ‖x‖⁻¹ ^ 2 * (x ⬝ᵥ (Matrix.of p.2).map Complex.im *ᵥ x)`. Simplify using `only [hg_def, mulVec_smul, smul_dotProduct, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : x ⬝ᵥ x ≤ Fintype.card ι * ‖x‖ ^ 2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [dotProduct]`. Combine the equalities or inequalities in the displayed calculation. Use `norm_le_pi_norm x i` as an intermediate fact. Rewrite `this` using `[Real.norm_eq_abs]`. Use polynomial arithmetic with `[abs_nonneg (x i), abs_mul_abs_self (x i)]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `_ = _ := by simp`. Use `set Q := x ⬝ᵥ (Matrix.of p.2).map Complex.im *ᵥ x`. Establish `h4 : g q * ‖x‖ ^ 2 ≤ Q`. Rewrite `h1` using `[h2]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hxx : 0 ≤ x ⬝ᵥ x`. Simplify using `only [dotProduct]`. Conclude with `Finset.sum_nonneg fun i _ => mul_self_nonneg (x i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_mul_eq_mul_div, div_le_iff₀ (by positivity)]`.
-
-Use polynomial arithmetic with `[mul_nonneg hm.le (sq_nonneg ‖x‖)]`. Use `_ ≤ Q := h4`.
+A detailed English derivation is pending.
 -/
 private lemma exists_uniform_im_quadForm_lower_bound_on_compact {K : Set ((ι → ℂ) × (ι → ι → ℂ))}
     (hK : IsCompact K) (hKd : ∀ p ∈ K, Matrix.of p.2 ∈ _root_.ReciprocityTheory.PTheta.ThetaDomain ι) :
@@ -113,9 +111,9 @@ open Complex Matrix in
 variable {ι : Type*} [Fintype ι] in
 
 /- English proof (translation)
-Unfold `_root_.ReciprocityTheory.PTheta.ThetaMTestStatement`. Introduce `ι _ a K hK hKd`. Take `⟨c, hc, hcK⟩` from `exists_uniform_im_quadForm_lower_bound_on_compact hK hKd`. Take `⟨S, hS⟩` from `hK.exists_bound_of_continuousOn (f := fun p => p.1) continuous_fst.continuousOn`. Use `⟨_root_.GlobalTheory.riemannThetaBound a c S, _root_.GlobalTheory.summable_riemannThetaBound a hc S, fun b p hp l => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `_root_.GlobalTheory.norm_riemannThetaTerm_le a b (hcK p hp) (fun i => (_root_.GlobalTheory.abs_im_apply_le_norm p.1 i).trans (hS p hp)) l`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.thetaMTest_holds : _root_.ReciprocityTheory.PTheta.ThetaMTestStatement := by
   unfold _root_.ReciprocityTheory.PTheta.ThetaMTestStatement
@@ -131,9 +129,9 @@ open Complex Matrix in
 variable {ι : Type*} [Fintype ι] in
 
 /- English proof (translation)
-Establish `hM` using `_root_.GlobalTheory.thetaMTest_holds`. Unfold `_root_.ReciprocityTheory.PTheta.ThetaMTestStatement at hM`. Unfold `_root_.ReciprocityTheory.PTheta.ThetaSummableStatement`. Introduce `ι _ a b z τ hτ`. Take `⟨u, hu, hbound⟩` from `hM ι a {(z, (τ : ι → ι → ℂ))} isCompact_singleton (fun p hp => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `rfl : p = (z, (τ : ι → ι → ℂ))` from `hp`. Conclude with `hτ)`. Conclude with `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun l => hbound b _ (Set.mem_singleton _) l) hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.thetaSummable_holds : _root_.ReciprocityTheory.PTheta.ThetaSummableStatement := by
   have hM := _root_.GlobalTheory.thetaMTest_holds
@@ -151,7 +149,7 @@ open Complex Matrix in
 variable {ι : Type*} [Fintype ι] in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_root_.GlobalTheory.thetaMTest_holds, _root_.GlobalTheory.thetaSummable_holds⟩`.
+Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.thetaMTest_and_thetaSummable : _root_.ReciprocityTheory.PTheta.ThetaMTestStatement ∧ _root_.ReciprocityTheory.PTheta.ThetaSummableStatement :=
   ⟨_root_.GlobalTheory.thetaMTest_holds, _root_.GlobalTheory.thetaSummable_holds⟩

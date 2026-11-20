@@ -13,9 +13,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 def halfFactorialValuation (p : ℕ) {σ : Type} (m : σ →₀ ℕ) : WithTop ℚ := (((padicValNat p (expFact m) : ℚ) / 2 : ℚ) : WithTop ℚ)
 
 /- English proof (translation)
-Take `⟨hV0, -, -, -, -, -⟩` from `id hV`. Rewrite using `[InBB, vBB, Finset.le_inf_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h m`. Distinguish the cases in `hm : m ∈ F.support`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h m hm`. Rewrite using `[MvPolynomial.notMem_support_iff.1 hm, hV0, top_add]`. Conclude with `le_top`. Introduce `h m _`. Conclude with `h m`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_fock_lattice_iff_coeff {p : ℕ} (hV : ValuationProperties p O) {σ : Type} (F : MvPolynomial σ (KK O)) :
     InBB (O := O) p F ↔ ∀ m, 0 ≤ vK p (F.coeff m) + halfFactorialValuation p m := by
@@ -31,7 +31,7 @@ theorem mem_fock_lattice_iff_coeff {p : ℕ} (hV : ValuationProperties p O) {σ 
     exact h m
 
 /- English proof (translation)
-Take `⟨hV0, -, -, -, -, -⟩` from `id hV`. Use `(mem_fock_lattice_iff_coeff hV 0).2 fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_zero, hV0, top_add]`. Conclude with `le_top`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_lattice_zero_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Type} : InBB (O := O) p (0 : MvPolynomial σ (KK O)) := by
   obtain ⟨hV0, -, -, -, -, -⟩ := id hV
@@ -40,7 +40,7 @@ theorem fock_lattice_zero_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Typ
   exact le_top
 
 /- English proof (translation)
-Take `⟨-, -, hVadd, -, -, -⟩` from `id hV`. Rewrite `hF`, `hG`, the goal using `[mem_fock_lattice_iff_coeff hV]`. Introduce `m`. Rewrite using `[coeff_add]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem fock_lattice_add_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Type} {F G : MvPolynomial σ (KK O)}
     (hF : InBB (O := O) p F) (hG : InBB (O := O) p G) : InBB (O := O) p (F + G) := by
@@ -54,16 +54,16 @@ theorem fock_lattice_add_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Type
     _ ≤ vK p (F.coeff m + G.coeff m) + halfFactorialValuation p m := add_le_add_left (hVadd _ _) _
 
 /- English proof (translation)
-Conclude with `Finset.sum_induction f (InBB (O := O) p) (fun _ _ => fock_lattice_add_mem hV) (fock_lattice_zero_mem hV) h`.
+A detailed English derivation is pending.
 -/
 theorem fock_lattice_sum_mem {p : ℕ} (hV : ValuationProperties p O) {σ α : Type} (s : Finset α) (f : α → MvPolynomial σ (KK O))
     (h : ∀ i ∈ s, InBB (O := O) p (f i)) : InBB (O := O) p (∑ i ∈ s, f i) := by
   exact Finset.sum_induction f (InBB (O := O) p) (fun _ _ => fock_lattice_add_mem hV) (fock_lattice_zero_mem hV) h
 
 /- English proof (translation)
-Take `⟨-, hVmul, -, -, -, hVint⟩` from `id hV`. Rewrite `hF`, the goal using `[mem_fock_lattice_iff_coeff hV]`. Introduce `m`. Rewrite using `[coeff_smul, Algebra.smul_def, hVmul]`. Establish `ho : 0 ≤ vK p (algebraMap O (KK O) o)` using `(hVint _).2 ⟨o, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem fock_lattice_smul_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Type} (o : O) {F : MvPolynomial σ (KK O)}
     (hF : InBB (O := O) p F) : InBB (O := O) p (o • F) := by
@@ -77,11 +77,11 @@ theorem fock_lattice_smul_mem {p : ℕ} (hV : ValuationProperties p O) {σ : Typ
         add_le_add_left (le_add_of_nonneg_left ho) _
 
 /- English proof (translation)
-Take `⟨hV0, -, -, -, -, -⟩` from `id hV`. Rewrite using `[mem_fock_lattice_iff_coeff hV]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hm` using `h m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[coeff_monomial, if_pos rfl]`. Then use the resulting hypothesis. Introduce `h m'`. Rewrite using `[coeff_monomial]`. Use `split_ifs with hm`. Rewrite using `[← hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[hV0, top_add]`. Conclude with `le_top`.
+A detailed English derivation is pending.
 -/
 theorem fock_lattice_monomial_iff {p : ℕ} (hV : ValuationProperties p O) {σ : Type} (m : σ →₀ ℕ) (c : KK O) :
     InBB (O := O) p (monomial m c) ↔ 0 ≤ vK p c + halfFactorialValuation p m := by
@@ -101,7 +101,7 @@ theorem fock_lattice_monomial_iff {p : ℕ} (hV : ValuationProperties p O) {σ :
       exact le_top
 
 /- English proof (translation)
-Rewrite using `[mem_fock_lattice_iff_coeff hV]`. Conclude with `forall_congr' fun m => (fock_lattice_monomial_iff hV m _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_lattice_iff_monomials {p : ℕ} (hV : ValuationProperties p O) {σ : Type} (F : MvPolynomial σ (KK O)) :
     InBB (O := O) p F ↔ ∀ m, InBB (O := O) p (monomial m (F.coeff m)) := by
@@ -109,7 +109,7 @@ theorem fock_lattice_iff_monomials {p : ℕ} (hV : ValuationProperties p O) {σ 
   exact forall_congr' fun m => (fock_lattice_monomial_iff hV m _).symm
 
 /- English proof (translation)
-Rewrite using `[← F.support_sum_monomial_coeff, map_sum]`. Conclude with `fock_lattice_sum_mem hV _ _ fun m _ => h m _ ((fock_lattice_iff_monomials hV F).1 hF m)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fock_lattice_linear_map_closed {p : ℕ} (hV : ValuationProperties p O) {σ : Type}
     (u : MvPolynomial σ (KK O) →ₗ[KK O] MvPolynomial σ (KK O))
@@ -119,11 +119,9 @@ theorem fock_lattice_linear_map_closed {p : ℕ} (hV : ValuationProperties p O) 
   exact fock_lattice_sum_mem hV _ _ fun m _ => h m _ ((fock_lattice_iff_monomials hV F).1 hF m)
 
 /- English proof (translation)
-Take `⟨-, -, -, hVnat, hVneg, -⟩` from `id hV`. Establish `hn : z.natAbs ≠ 0` using `Int.natAbs_ne_zero.2 hz`. Establish `e : padicValInt p z = padicValNat p z.natAbs` using `rfl`. Rewrite using `[e]`. Break down `Int.natAbs_eq z with h | h` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `conv_lhs => rw [h]`. Rewrite using `[Int.cast_natCast]`. Conclude with `hVnat _ hn`. Use `conv_lhs => rw [h]`. Rewrite using `[Int.cast_neg, Int.cast_natCast, hVneg]`.
-
-Conclude with `hVnat _ hn`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_intCast_padicVal {p : ℕ} (hV : ValuationProperties p O) (z : ℤ) (hz : z ≠ 0) :
     vK p (z : KK O) = ((padicValInt p z : ℚ) : WithTop ℚ) := by
@@ -140,13 +138,11 @@ theorem valuation_intCast_padicVal {p : ℕ} (hV : ValuationProperties p O) (z :
     exact hVnat _ hn
 
 /- English proof (translation)
-Take `⟨hV0, hVmul, -, -, -, -⟩` from `id hV`. Rewrite `h`, the goal using `[fock_lattice_monomial_iff hV]`. Distinguish the cases in `hz0 : z = 0`. Rewrite using `[hz0, Int.cast_zero, mul_zero, hV0, top_add]`. Conclude with `le_top`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hz' : padicValNat p (expFact m) ≤ 2 * padicValInt p z + padicValNat p (expFact m')` using `hz.resolve_left hz0`. Rewrite using `[hVmul, valuation_intCast_padicVal hV z hz0]`. Establish `hq : ((padicValNat p (expFact m) : ℚ) / 2) ≤ (padicValInt p z : ℚ) + (padicValNat p (expFact m') : ℚ) / 2`. Establish `: (padicValNat p (expFact m) : ℚ) ≤ 2 * (padicValInt p z : ℚ) + padicValNat p (expFact m')`. Conclude with `hz'` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw : halfFactorialValuation p m ≤ ((padicValInt p z : ℚ) : WithTop ℚ) + halfFactorialValuation p m'`. Simplify using `only [halfFactorialValuation]`. Rewrite using `[← WithTop.coe_add]`. Conclude with `WithTop.coe_le_coe.2 hq`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fock_lattice_monomial_rescale {p : ℕ} (hV : ValuationProperties p O) {σ : Type} (m m' : σ →₀ ℕ) (c : KK O) (z : ℤ)
     (h : InBB (O := O) p (monomial m c))
@@ -174,7 +170,7 @@ theorem fock_lattice_monomial_rescale {p : ℕ} (hV : ValuationProperties p O) {
     _ = vK p c + ((padicValInt p z : ℚ) : WithTop ℚ) + halfFactorialValuation p m' := (add_assoc _ _ _).symm
 
 /- English proof (translation)
-Simplify using `only [IntPol, LinearMap.mem_range, AlgHom.toLinearMap_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_integral_poly_iff_map {σ : Type} (F : MvPolynomial σ (KK O)) :
     F ∈ IntPol O σ ↔ ∃ F0 : MvPolynomial σ O, MvPolynomial.map (algebraMap O (KK O)) F0 = F := by
@@ -182,9 +178,9 @@ theorem mem_integral_poly_iff_map {σ : Type} (F : MvPolynomial σ (KK O)) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_integral_poly_iff_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨F0, rfl⟩ m`. Conclude with `⟨F0.coeff m, coeff_map _ _ _⟩`. Introduce `h choose g hg using h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨∑ m ∈ F.support, monomial m (g m), ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `conv_rhs => rw [← F.support_sum_monomial_coeff]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_monomial, hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integral_poly_iff_coeff {σ : Type} (F : MvPolynomial σ (KK O)) :
     F ∈ IntPol O σ ↔ ∀ m, ∃ o : O, F.coeff m = algebraMap O (KK O) o := by
@@ -201,15 +197,15 @@ theorem mem_integral_poly_iff_coeff {σ : Type} (F : MvPolynomial σ (KK O)) :
     rw [map_monomial, hg]
 
 /- English proof (translation)
-Conclude with `(mem_integral_poly_iff_map _).2 ⟨monomial m (z : O), by rw [map_monomial, map_intCast]⟩`.
+A detailed English derivation is pending.
 -/
 theorem integer_monomial_mem_integral {σ : Type} (m : σ →₀ ℕ) (z : ℤ) : monomial m (z : KK O) ∈ IntPol O σ := by
   exact (mem_integral_poly_iff_map _).2 ⟨monomial m (z : O), by rw [map_monomial, map_intCast]⟩
 
 /- English proof (translation)
-Use `choose g hg using (mem_integral_poly_iff_coeff F).1 hF`. Rewrite using `[← F.support_sum_monomial_coeff, map_sum]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Establish `e : monomial m (F.coeff m) = (algebraMap O (KK O) (g m)) • monomial m (1 : KK O)`. Rewrite using `[smul_monomial, smul_eq_mul, mul_one, hg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_smul, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ (h m)`.
+A detailed English derivation is pending.
 -/
 theorem integral_poly_linear_map_closed {σ : Type} (u : MvPolynomial σ (KK O) →ₗ[KK O] MvPolynomial σ (KK O))
     (h : ∀ m, u (monomial m 1) ∈ IntPol O σ) (F : MvPolynomial σ (KK O)) (hF : F ∈ IntPol O σ) :
@@ -223,7 +219,7 @@ theorem integral_poly_linear_map_closed {σ : Type} (u : MvPolynomial σ (KK O) 
   exact Submodule.smul_mem _ _ (h m)
 
 /- English proof (translation)
-Introduce `_` and use `⟨fock_lattice_zero_mem hV, fun _ _ => fock_lattice_add_mem hV, fun o _ => fock_lattice_smul_mem hV o, fun m c => fock_lattice_monomial_iff hV m c, fock_lattice_iff_monomials hV, fun u h F hF => fock_lattice_linear_map_closed hV u h F hF, fun m m' c z h hz => fock_lattice_monomial …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem fock_lattice_closure_holds {p : ℕ} (hV : ValuationProperties p O) : FockLatticeClosure p O :=
   fun _ => ⟨fock_lattice_zero_mem hV, fun _ _ => fock_lattice_add_mem hV, fun o _ => fock_lattice_smul_mem hV o,

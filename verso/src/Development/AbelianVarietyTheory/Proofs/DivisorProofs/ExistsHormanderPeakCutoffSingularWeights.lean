@@ -27,7 +27,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [mat, nmat, Matrix.sub_apply, Matrix.of_apply, Matrix.one_apply]`. Distinguish the cases in `h : c < a`. Simplify using `[h, h.ne']`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem low_apply (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a c : Fin r) :
     (mat (nmat X w) τ - 1) a c =
@@ -38,11 +38,11 @@ theorem low_apply (X : Data E r) (w : V (nd X)) (τ : X.Ψ) (a c : Fin r) :
   · simp [h]
 
 /- English proof (translation)
-Establish `e : ∑ j, ‖ξ j‖ ^ 2 = ∑ e : Ent X, ‖ξ (Fintype.equivFin (Ent X) e)‖ ^ 2` using `((Fintype.equivFin (Ent X)).sum_comp (fun j => ‖ξ j‖ ^ 2)).symm`. Rewrite using `[e, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `h2 : ∀ a c : Fin r, ‖(mat (nmat X (WithLp.toLp 2 ξ)) τ - 1) a c‖ ^ 2 = if c < a then ‖(mat (nmat X (WithLp.toLp 2 ξ)) τ - 1) a c‖ ^ 2 else 0`. Introduce `a c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs with h`. Both sides reduce to the same expression. Rewrite using `[low_apply, dif_neg h]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun c _ => h2 a c, ← Fintype.sum_prod_type' (f := fun a c : Fin r => if c < a then ‖(mat (nmat X (WithLp.toLp 2 ξ)) τ - 1) a c‖ ^ 2 else 0), ← Finset.sum_filter, Finset.sum_subtype (p := fun p : Fin r × Fin r => p.2 < p.1) _ ( …`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[low_apply, dif_pos y.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_entries (X : Data E r) (ξ : Fin (nd X) → ℂ) :
     ∑ j, ‖ξ j‖ ^ 2 = ∑ τ, ∑ a, ∑ c, ‖(mat (nmat X (WithLp.toLp 2 ξ)) τ - 1) a c‖ ^ 2 := by
@@ -64,17 +64,17 @@ theorem sum_entries (X : Data E r) (ξ : Fin (nd X) → ℂ) :
   rw [low_apply, dif_pos y.2]
 
 /- English proof (translation)
-Establish `hzO : z ∈ OmF X x` using `(GlobalTheory.T.chartBall_weightPotential_density_bounds E r X 0 x z hx hz).1`. Take `⟨x1, ho, b, hb, hxb⟩` from `ortho_holds r X _ hzO`. Take `⟨ξ', h1, B, hB, hrel⟩` from `GlobalTheory.T.leviForms_transport_to_orthonormal_chart_origin E r X x x1 b z ho hzO hb hxb ξ`. Use `⟨x1, ξ', ho, h1, ?_⟩` and prove the remaining obligations. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hδ : (r : ℝ) * ‖z‖ ≤ 1 / 100`. Rewrite `hz` using `[le_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[mul_nonneg (norm_nonneg z) (mul_nonneg (sub_nonneg.2 hr1) (by positivity : (0 : ℝ) ≤ r))]`. Rewrite using `[sum_entries, sum_entries, Finset.mul_sum]`. Use `Finset.sum_le_sum fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit (mat x1 τ).det` using `isUnit_iff_ne_zero.mpr ((IW.orth_mem_dom X x1 ho) τ).1`. Establish `hm : mat x τ * mat (nmat X z) τ = mat x1 τ * mat b τ` using `congrFun hxb τ`. Establish `hG : (mat b τ)ᵀ * PoinPf.Jd X * (mat b τ).map (starRingEnd ℂ) = PoinPf.Gw X z τ`. Use `congrArg (gram τ.1 X.Gm) hm` as an intermediate fact. Rewrite `this` using `[FrameDegreeData.gram_mul, FrameDegreeData.gram_mul, hx τ, ho τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Apply the tactic sequence `obtain ⟨hd, hoff⟩ := GlobalTheory.T.upperTriangular_near_unitDiagonal_of_twistedGram_near r (fun a => sgn X.p0 a) (mat b τ) ‖z‖ (fun a => by unfold sgn; split_ifs <;> simp) (norm_nonneg _) hδ (hb τ).2 (fun a c => by`. Use `GlobalTheory.GramChartNear.gw_sub_jd_le E r X z τ a c (by linarith)` as an intermediate fact. Rewrite `this` using `[← hG]`. Conclude with `this)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.T.frobenius_strictLower_comparison_near_identity r ((mat x1 τ)⁻¹ * mat x τ) (mat (nmat X z) τ) (mat b τ) (mat B τ) _ _ ‖z‖ (norm_nonneg _) hδ (fun a c h => ?_) (fun a => ?_) (fun a c h => ?_) (hb τ).2 hd hoff (hB τ) (fun a c h => ?_) (fun a c h => ?_) ?_ ?_` and prove the remaining obligations. Simplify using `[mat, nmat, not_lt.2 h.le, h.ne]`. Simplify using `[mat, nmat]`. Use `GlobalTheory.ChartNearOne.nmat_entry_le X z τ a c` as an intermediate fact. Rewrite `this` using `[if_neg h.ne', sub_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[low_apply, dif_neg (not_lt.2 h)]`. Rewrite using `[low_apply, dif_neg (not_lt.2 h)]`. Rewrite using `[Matrix.mul_assoc, hm, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`. Rewrite using `[Matrix.mul_assoc, hrel τ, Matrix.nonsing_inv_mul_cancel_left _ _ hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_ball (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (hr : 0 < r) {z : V (nd X)}
     (hz : ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2)) (ξ : Fin (nd X) → ℂ) :
@@ -120,7 +120,7 @@ def smoothLevi (X : Data E r) (la : Wt X.Ψ r) (bb : ℝ) (x : Frame X.Ψ r) (z 
     leviM X (phla X (kapW X)) x z ξ
 
 /- English proof (translation)
-Use `filter_upwards [(ExF.isOpen_OmF X x).mem_nhds hz] with w hw`. Rewrite using `[GlobalTheory.CurvMargin.phla_blockWt_cpt X x hx hw, IW.phla_kapW_cpt X x hx hw]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weight_eventually (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (la : Wt X.Ψ r) (bb : ℝ)
     (ψ : Frame X.Ψ r → ℝ) {z : V (nd X)} (hz : z ∈ OmF X x) :
@@ -132,7 +132,7 @@ theorem weight_eventually (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (l
   ring
 
 /- English proof (translation)
-Introduce `z hz`. Use `ContDiffAt.contDiffWithinAt (ContDiffAt.congr_of_eventuallyEq ?_ (weight_eventually X hx la bb ψ hz))` and prove the remaining obligations. Conclude with `(IW.phla_cpt_cdAt X x hz _).add ((contDiffAt_const.mul (IW.phla_cpt_cdAt X x hz _)).add ((contDiffAt_const.mul (IW.phla_cpt_cdAt X x hz _)).add (hψ.contDiffAt ((ExF.isOpen_OmF X x).mem_nhds hz))))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem weight_smooth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (la : Wt X.Ψ r) (bb : ℝ)
     {ψ : Frame X.Ψ r → ℝ} (hψ : ContDiffOn ℝ ∞ (fun w => ψ (cpt X x w)) (OmF X x)) :
@@ -145,9 +145,9 @@ theorem weight_smooth (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (la : 
       (hψ.contDiffAt ((ExF.isOpen_OmF X x).mem_nhds hz))))
 
 /- English proof (translation)
-Establish `hev : (fun w => ((phla X la (cpt X x w) - bb * rhF X x w - Real.log (densF X x w) + ψ (cpt X x w) : ℝ) : ℂ)) =ᶠ[𝓝 z] fun w => ((phla X la (cpt X x w) + ((-bb) * phla X (GlobalTheory.CurvMargin.blockWt X) (cpt X x w) + ((-1) * phla X (kapW X) (cpt X x w) + ψ (cpt X x w))) : ℝ) : ℂ …` using `by filter_upwards [weight_eventually X hx la bb ψ hz] with w hw`. Rewrite using `[hw]`. Establish `h1` using `(IW.phla_cpt_cdAt X x hz la).of_le HE.two_le_inf`. Establish `h2` using `(IW.phla_cpt_cdAt X x hz (GlobalTheory.CurvMargin.blockWt X)).of_le HE.two_le_inf`. Establish `h3` using `(IW.phla_cpt_cdAt X x hz (kapW X)).of_le HE.two_le_inf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `(hψ.contDiffAt ((ExF.isOpen_OmF X x).mem_nhds hz)).of_le HE.two_le_inf`. Rewrite using `[leviV_congr hev, Y.LocalMaximumSecondDerivative.leviV_ofReal_add h1 ((contDiffAt_const.mul h2).add ((contDiffAt_const.mul h3).add h4)), Y.LocalMaximumSecondDerivative.leviV_ofReal_add (contDiffAt_const.mul h2) ((contDiffAt_const.mul h3).add h4), Y.LocalMaximumSecondDerivative.le …`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, leviM, smoothLevi]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_levi (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (la : Wt X.Ψ r) (bb : ℝ)
     {ψ : Frame X.Ψ r → ℝ} (hψ : ContDiffOn ℝ ∞ (fun w => ψ (cpt X x w)) (OmF X x))
@@ -173,7 +173,7 @@ theorem weight_levi (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (la : Wt
   ring
 
 /- English proof (translation)
-Simplify using `only [leviM, KU.cpt_lact, phla, Data.nfac, KU.dmin_lact X hγ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviM_phla_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (la : Wt X.Ψ r)
     (x : Frame X.Ψ r) (z : V (nd X)) (ξ : Fin (nd X) → ℂ) :
@@ -181,9 +181,9 @@ theorem leviM_phla_lact (X : Data E r) {γ : GL (Fin r) E} (hγ : γ ∈ X.Γ) (
   simp only [leviM, KU.cpt_lact, phla, Data.nfac, KU.dmin_lact X hγ]
 
 /- English proof (translation)
-Establish `h : nd X ≤ X.Ψ.card * r ^ 2`. Unfold `nd`. Rewrite using `[Fintype.card_prod, Fintype.card_coe]`. Use `Nat.mul_le_mul_left _ ((Fintype.card_subtype_le _).trans ?_)` and prove the remaining obligations. Simplify using `[sq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `h` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem nd_le (X : Data E r) : (nd X : ℝ) ≤ (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 := by
   have h : nd X ≤ X.Ψ.card * r ^ 2 := by
@@ -194,7 +194,7 @@ theorem nd_le (X : Data E r) : (nd X : ℝ) ≤ (X.Ψ.card : ℝ) * (r : ℝ) ^ 
   exact_mod_cast h
 
 /- English proof (translation)
-Establish `h` using `QuadraticCoefficientForms.card_Psi X`. Rewrite `h` using `[Fintype.card_coe]`. Rewrite using `[h]`. Conclude with `one_le_field_half_degree`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_card (X : Data E r) : (1 : ℝ) ≤ (X.Ψ.card : ℝ) := by
   have h := QuadraticCoefficientForms.card_Psi X
@@ -203,27 +203,27 @@ theorem one_le_card (X : Data E r) : (1 : ℝ) ≤ (X.Ψ.card : ℝ) := by
   exact one_le_field_half_degree
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `hp0.trans hp1`. Establish `hdom : ∀ z : V (nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → z ∈ OmF X x` using `fun z hz => (GlobalTheory.T.chartBall_weightPotential_density_bounds E r X 0 x z hx hz).1`. Establish `hball : ∀ z : V (nd X), ‖z‖ < 1 / (100 * (r : ℝ) ^ 2) → ∀ ξ : Fin (nd X) → ℂ, M * ∑ j, ‖ξ j‖ ^ 2 ≤ smoothLevi X la bb x z ξ + leviM X ψ x z ξ`. Introduce `z hz ξ`. Take `⟨x1, ξ', ho, e, hle⟩` from `levi_ball X hx hr hz.le ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hO` using `GlobalTheory.T.leviMargin_orthonormal_chart_origin E r X la x1 g bb hp0 hp1 ho hg hbb h1 h2 ξ'`. Establish `hev : (fun w => ((ψ (cpt X x w) : ℝ) : ℂ)) =ᶠ[𝓝 z] fun w => ((η w : ℝ) : ℂ)` using `by filter_upwards [(isOpen_lt continuous_norm continuous_const).mem_nhds hz] with w hw`. Use `ha 1 X.Γ.one_mem _ (ExtFPf.oneF_mem X) w (le_of_lt hw)` as an intermediate fact. Rewrite `this` using `[ExtFPf.rmul_oneF, KU.lact_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : leviM X ψ x z ξ = (leviV (nd X) (fun w => ((η w : ℝ) : ℂ)) z ξ).re`. Rewrite using `[leviM, leviV_congr hev]`. Establish `h3` using `hη z ξ`. Establish `hS : 0 ≤ ∑ j, ‖ξ j‖ ^ 2` using `by positivity`. Establish `hS' : 0 ≤ ∑ j, ‖ξ' j‖ ^ 2` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smoothLevi, e, e, e, hψ]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hm hS', mul_le_mul_of_nonneg_left hle (add_nonneg hK hM)]`. Use `⟨hball, fun z hz ξ => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hc : ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z' : V (nd X), ‖z'‖ ≤ ρ ∧ cpt X x z = lact γ (rmul (cpt X x z') b)`. Take `⟨γ, hγ, b, hbB, z1, hz1, e⟩` from `hc`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hz1'` using `hz1.trans_lt hρ`. Establish `hz1O` using `hdom z1 hz1'.le`. Establish `e' : cpt X x z = rmul (cpt X (lact γ x) z1) b`. Rewrite using `[e, KU.cpt_lact, KU.lact_rmul']`. Take `⟨ξ', e1, e2⟩` from `GlobalTheory.InterpCompare.levi_transport X (KU.isOrth_lact X hγ hx) hz (by rw [KU.OmF_lact X hγ]; exact hz1O) hbB e' ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hfun : (fun w => ψ (cpt X (lact γ x) w)) = fun w => ψ (cpt X x w)`. Use function extensionality and compare the values at `w`. Rewrite using `[KU.cpt_lact, hl γ hγ]`. Establish `e3` using `e2 ψ (fun γ' hγ' y _ b' hb' => by rw [hl γ' hγ', hr' y b' hb']) (by`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hs.contDiffAt ((ExF.isOpen_OmF X x).mem_nhds hz1O)).of_le HE.two_le_inf)`. Establish `e4 : leviM X ψ (lact γ x) z1 ξ' = leviM X ψ x z1 ξ'`. Simplify using `only [leviM, KU.cpt_lact, hl γ hγ]`. Use `hball z1 hz1' ξ'` as an intermediate fact. Rewrite `this`, the goal using `[smoothLevi]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e1, e1, e3, e4, leviM_phla_lact X hγ, leviM_phla_lact X hγ, leviM_phla_lact X hγ]`. Conclude with `le_trans (by positivity) this`. Establish `hev` using `GlobalTheory.T.eventually_not_mem_chartBall_saturation E r X x ρ (fun w hw => hdom w (hw.trans hρ.le)) _ hz hc`. Establish `hev' : (fun w => ((ψ (cpt X x w) : ℝ) : ℂ)) =ᶠ[𝓝 z] fun _ => (((0 : ℝ) : ℝ) : ℂ)` using `by filter_upwards [(IW.cpt_diff X x).continuous.continuousAt.eventually hev] with w hw`. Rewrite using `[hb _ hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : leviM X ψ x z ξ = 0`. Rewrite using `[leviM, leviV_congr hev']`. Establish `: ∀ k, wdb (nd X) k (fun _ : V (nd X) => (((0 : ℝ) : ℝ) : ℂ)) = fun _ => 0`. Introduce `k`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[wdb]`. Simplify using `only [leviV, this]`. Simplify using `[wd]`. Take `⟨x1, ho, b, hbB, hxb⟩` from `ortho_holds r X _ hz`. Take `⟨ξ', e, -⟩` from `GlobalTheory.T.leviForms_transport_to_orthonormal_chart_origin E r X x x1 b z ho hz hbB hxb ξ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO` using `GlobalTheory.T.leviMargin_orthonormal_chart_origin E r X la x1 g bb hp0 hp1 ho hg hbb h1 h2 ξ'`. Rewrite using `[smoothLevi, e, e, e, hψ, add_zero]`. Conclude with `le_trans (mul_nonneg (by linarith) (by positivity)) hO`.
+A detailed English derivation is pending.
 -/
 theorem levi_lower (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (hp0 : 0 < X.p0) (hp1 : X.p0 < r)
     (la : Wt X.Ψ r) {g bb K M ρ : ℝ} (hg : 0 ≤ g) (hbb : 0 ≤ bb) (hK : 0 ≤ K) (hM : 0 ≤ M)
@@ -300,9 +300,9 @@ theorem levi_lower (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) (hp0 : 0 
     exact le_trans (mul_nonneg (by linarith) (by positivity)) hO
 
 /- English proof (translation)
-Establish `hO : MeasurableSet (OmF X x)` using `(ExF.isOpen_OmF X x).measurableSet`. Establish `hB : MeasurableSet (Metric.ball (0 : V (nd X)) ρ ∩ OmF X x)` using `measurableSet_ball.inter hO`. Rewrite using `[muF, withDensity_apply _ hB, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, ← lintegral_indicator hB]`. Use `setLIntegral_mono' hO fun z hz => ?_` and prove the remaining obligations. Distinguish the cases in `hz' : ρ / 2 ≤ ‖z‖ ∧ ‖z‖ < ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem (by exact hz'), Set.indicator_of_mem (show z ∈ Metric.ball (0 : V (nd X)) ρ ∩ OmF X x from ⟨mem_ball_zero_iff.2 hz'.2, hz⟩), one_mul, ← ENNReal.ofReal_mul hM]`. Conclude with `ENNReal.ofReal_le_ofReal (h z hz'.1 hz'.2)`. Rewrite using `[Set.indicator_of_notMem (by exact hz'), zero_mul]`. Conclude with `zero_le`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annulus_integral (X : Data E r) (x : Frame X.Ψ r) {ρ M : ℝ} (hM : 0 ≤ M) {φ : V (nd X) → ℝ}
     (h : ∀ z : V (nd X), ρ / 2 ≤ ‖z‖ → ‖z‖ < ρ → Real.exp (-φ z) ≤ M * densF X x z) :
@@ -322,15 +322,15 @@ theorem annulus_integral (X : Data E r) (x : Frame X.Ψ r) {ρ M : ℝ} (hM : 0 
     exact zero_le
 
 /- English proof (translation)
-Distinguish the cases in `hw : w = 0`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Use `le_trans (ENNReal.ofReal_le_ofReal ?_) (le_iSup (fun k => ENNReal.ofReal (u k)) 0)` and prove the remaining obligations. Simplify using `using hu 0`. Establish `: (-(2 * (n : ℝ))) ≠ 0`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < n` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hw, norm_zero, Real.zero_rpow this, mul_zero, ENNReal.ofReal_zero]`. Conclude with `zero_le`. Establish `hw' : 0 < ‖w‖` using `norm_pos_iff.2 hw`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht : 0 < ‖w‖ ^ 2 / ρ ^ 2` using `by positivity`. Take `⟨k, hk⟩` from `exists_nat_one_div_lt ht`. Use `le_trans (ENNReal.ofReal_le_ofReal (le_trans ?_ (hu k))) (le_iSup (fun k => ENNReal.ofReal (u k)) k)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hc` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlog : Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2) ≤ Real.log (‖w‖ ^ 2 / ρ ^ 2)` using `Real.log_le_log (by positivity) (by linarith)`. Establish `e : ρ ^ (2 * n) * ‖w‖ ^ (-(2 * (n : ℝ))) = Real.exp (-(n * Real.log (‖w‖ ^ 2 / ρ ^ 2)))`. Rewrite using `[← Real.log_pow, Real.exp_neg, Real.exp_log (by positivity), Real.rpow_neg hw'.le, show (2 * (n : ℝ)) = ((2 * n : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast, div_pow, ← pow_mul, ← pow_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Real.exp_le_exp.2 (neg_le_neg (mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg n)))` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem pole {n : ℕ} {ρ c : ℝ} (hρ : 0 < ρ) (hc : 0 ≤ c) (w : V n) (u : ℕ → ℝ)
     (hu : ∀ k : ℕ, c * Real.exp (-(n * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2))) ≤ u k) :
@@ -361,11 +361,9 @@ theorem pole {n : ℕ} {ρ c : ℝ} (hρ : 0 < ρ) (hc : 0 ≤ c) (w : V n) (u :
     refine Real.exp_le_exp.2 (neg_le_neg (mul_le_mul_of_nonneg_left hlog (Nat.cast_nonneg n)))
 
 /- English proof (translation)
-Establish `hO : MeasurableSet (OmF X x)` using `(ExF.isOpen_OmF X x).measurableSet`. Establish `hB : MeasurableSet (Metric.ball (0 : V (nd X)) (1 / (100 * (r : ℝ) ^ 2)) ∩ OmF X x)` using `measurableSet_ball.inter hO`. Rewrite using `[muF, withDensity_apply _ hB]`. Use `lt_of_le_of_lt (setLIntegral_mono' (g := fun _ => ENNReal.ofReal (Real.exp ((X.Ψ.card : ℝ) * r))) hB fun z hz => ?_) ?_` and prove the remaining obligations. Take `⟨-, -, -, h1, h2⟩` from `GlobalTheory.T.chartBall_weightPotential_density_bounds E r X 0 x z hx (mem_ball_zero_iff.1 hz.1).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_log h2]`. Conclude with `Real.exp_le_exp.2 (abs_le.1 h1).2`. Rewrite using `[setLIntegral_const]`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_` and prove the remaining obligations.
-
-Conclude with `((Measure.restrict_apply_le _ _).trans (measure_mono Set.inter_subset_left)).trans_lt measure_ball_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem muF_ball_lt_top (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) :
     muF X x (Metric.ball 0 (1 / (100 * (r : ℝ) ^ 2)) ∩ OmF X x) < ⊤ := by
@@ -385,13 +383,13 @@ theorem muF_ball_lt_top (X : Data E r) {x : Frame X.Ψ r} (hx : IsOrth X x) :
       measure_ball_lt_top
 
 /- English proof (translation)
-Use `set χ : ℝ → ℝ := fun t => Real.smoothTransition ((1 - t) * (4 / 3)) with hχ`. Establish `hs : ContDiff ℝ ∞ χ` using `Real.smoothTransition.contDiff.comp ((contDiff_const.sub contDiff_id).mul contDiff_const)`. Establish `h1 : ∀ t, t ≤ 1 / 4 → χ t = 1` using `fun t ht => Real.smoothTransition.one_of_one_le (by linarith)`. Establish `h0 : ∀ t, 1 ≤ t → χ t = 0` using `fun t ht => Real.smoothTransition.zero_of_nonpos (by linarith)`. Establish `hc : HasCompactSupport (deriv χ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `HasCompactSupport.intro (isCompact_Icc (a := (1 / 4 : ℝ)) (b := 1)) fun t ht => ?_` and prove the remaining obligations. Rewrite `ht` using `[Set.mem_Icc, not_and_or, not_le, not_le]`. Break down `ht with ht | ht` into its components or cases. Establish `: χ =ᶠ[𝓝 t] fun _ => 1` using `by filter_upwards [Iio_mem_nhds ht] with s hs' using h1 s (le_of_lt hs')`. Rewrite using `[this.deriv_eq, deriv_const]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: χ =ᶠ[𝓝 t] fun _ => 0` using `by filter_upwards [Ioi_mem_nhds ht] with s hs' using h0 s (le_of_lt hs')`. Rewrite using `[this.deriv_eq, deriv_const]`. Establish `hs1 : ContDiff ℝ ∞ (deriv χ)` using `(contDiff_infty_iff_deriv.1 hs).2`. Establish `hs2 : ContDiff ℝ ∞ (deriv (deriv χ))` using `(contDiff_infty_iff_deriv.1 hs1).2`. Take `⟨A1, hA1⟩` from `hs1.continuous.bounded_above_of_compact_support hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A2, hA2⟩` from `hs2.continuous.bounded_above_of_compact_support hc.deriv`. Use `⟨χ, max A1 A2, (norm_nonneg _).trans ((hA1 0).trans (le_max_left _ _)), hs, fun t => ⟨Real.smoothTransition.nonneg _, Real.smoothTransition.le_one _⟩, h1, h0, fun t => (hA1 t).trans (le_max_left _ _), fun t => (hA2 t).trans (le_max_right _ _)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_cutoff : ∃ (χ : ℝ → ℝ) (A : ℝ), 0 ≤ A ∧ ContDiff ℝ ∞ χ ∧ (∀ t, 0 ≤ χ t ∧ χ t ≤ 1) ∧ (∀ t, t ≤ 1 / 4 → χ t = 1) ∧ (∀ t, 1 ≤ t → χ t = 0) ∧ (∀ t, |deriv χ t| ≤ A) ∧ (∀ t, |deriv (deriv χ) t| ≤ A) := by
   set χ : ℝ → ℝ := fun t => Real.smoothTransition ((1 - t) * (4 / 3)) with hχ
@@ -418,9 +416,9 @@ theorem exists_cutoff : ∃ (χ : ℝ → ℝ) (A : ℝ), 0 ≤ A ∧ ContDiff �
     fun t => (hA1 t).trans (le_max_left _ _), fun t => (hA2 t).trans (le_max_right _ _)⟩
 
 /- English proof (translation)
-Establish `e1 : (13 * A + 20) / ρ ^ 2 = (13 * A + 20) * (40000 * r ^ 4)` using `by rw [← hρ2]; ring`. Establish `e2 : A ^ 2 / ρ ^ 2 = A ^ 2 * (40000 * r ^ 4)` using `by rw [← hρ2]; ring`. Establish `i1 : D * r ^ 4 ≤ T` using `le_trans (mul_le_mul_of_nonneg_right hD (by positivity)) n6`. Establish `i2` using `mul_le_mul_of_nonneg_left i1 (show 0 ≤ 13 * A + 20 by positivity)`. Establish `i3` using `mul_le_mul_of_nonneg_left n7 (sq_nonneg A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem margin_num {A D f r T ρ : ℝ} (hA : 0 ≤ A) (hρ2 : 1 / ρ ^ 2 = 40000 * r ^ 4) (hD : D ≤ f * r ^ 2)
     (n1 : 1 ≤ T) (n2 : r ≤ T) (n4 : f * r ^ 2 ≤ T) (n6 : f * r ^ 2 * r ^ 4 ≤ T) (n7 : r ^ 4 ≤ T) :
@@ -435,21 +433,21 @@ theorem margin_num {A D f r T ρ : ℝ} (hA : 0 ≤ A) (hρ2 : 1 / ρ ^ 2 = 4000
   linarith
 
 /- English proof (translation)
-Rewrite using `[div_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem quarter {a ρ : ℝ} (hρ : 0 < ρ) (ha : 0 ≤ a) (h : a ≤ ρ / 2) : a ^ 2 / ρ ^ 2 ≤ 1 / 4 := by
   rw [div_le_iff₀ (by positivity)]
   nlinarith
 
 /- English proof (translation)
-The claim follows from `hχ.comp ((contDiff_norm_sq ℂ).div_const _)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_cut {n : ℕ} {χ : ℝ → ℝ} (hχ : ContDiff ℝ ∞ χ) (ρ : ℝ) :
     ContDiff ℝ ∞ fun w : V n => χ (‖w‖ ^ 2 / ρ ^ 2) :=
   hχ.comp ((contDiff_norm_sq ℂ).div_const _)
 
 /- English proof (translation)
-The claim follows from `(contDiff_cut hχ ρ).mul (((((contDiff_norm_sq ℂ).div_const _).add contDiff_const).div_const _).log fun w => by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_eta {n : ℕ} {χ : ℝ → ℝ} (hχ : ContDiff ℝ ∞ χ) (ρ : ℝ) {δ : ℝ} (hδ : 0 < δ) :
     ContDiff ℝ ∞ fun w : V n => χ (‖w‖ ^ 2 / ρ ^ 2) * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + δ) / 2) :=
@@ -460,21 +458,21 @@ def eta (n : ℕ) (χ : ℝ → ℝ) (ρ : ℝ) (k : ℕ) (w : V n) : ℝ :=
   n * (χ (‖w‖ ^ 2 / ρ ^ 2) * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2))
 
 /- English proof (translation)
-Rewrite using `[div_le_one (by positivity)]`. Combine the linear relations using `[Nat.cast_nonneg (α := ℝ) k]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem delta_le (k : ℕ) : 1 / ((k : ℝ) + 1) ≤ 1 := by
   rw [div_le_one (by positivity)]
   linarith [Nat.cast_nonneg (α := ℝ) k]
 
 /- English proof (translation)
-Rewrite using `[eta, h0 _ (by rw [one_le_div (by positivity)]; gcongr), zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_zero {n : ℕ} {χ : ℝ → ℝ} (h0 : ∀ t, 1 ≤ t → χ t = 0) {ρ : ℝ} (hρ : 0 < ρ) (k : ℕ) {w : V n}
     (hw : ρ ≤ ‖w‖) : eta n χ ρ k w = 0 := by
   rw [eta, h0 _ (by rw [one_le_div (by positivity)]; gcongr), zero_mul, mul_zero]
 
 /- English proof (translation)
-Use `mul_nonpos_of_nonneg_of_nonpos (Nat.cast_nonneg n) ?_` and prove the remaining obligations. Distinguish the cases in `ht : 1 ≤ ‖w‖ ^ 2 / ρ ^ 2`. Rewrite using `[h0 _ ht, zero_mul]`. Use `mul_nonpos_of_nonneg_of_nonpos (hr _).1 (Real.log_nonpos (by positivity) ?_)` and prove the remaining obligations. Combine the linear relations using `[delta_le k]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eta_nonpos {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ t ≤ 1) (h0 : ∀ t, 1 ≤ t → χ t = 0) (ρ : ℝ)
     (k : ℕ) (w : V n) : eta n χ ρ k w ≤ 0 := by
@@ -485,7 +483,7 @@ theorem eta_nonpos {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ t
     linarith [delta_le k]
 
 /- English proof (translation)
-Use `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (Real.log_le_log (by positivity) ?_) (hr _).1) (Nat.cast_nonneg n)` and prove the remaining obligations. Establish `: 1 / (((k + 1 : ℕ) : ℝ) + 1) ≤ 1 / ((k : ℝ) + 1)` using `by gcongr`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eta_succ_le {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ t ≤ 1) (ρ : ℝ)
     (k : ℕ) (w : V n) : eta n χ ρ (k + 1) w ≤ eta n χ ρ k w := by
@@ -497,11 +495,11 @@ theorem eta_succ_le {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ 
   linarith
 
 /- English proof (translation)
-Establish `ht : 1 / 4 ≤ ‖w‖ ^ 2 / ρ ^ 2`. Rewrite using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hδ : 0 < 1 / ((k : ℝ) + 1)` using `by positivity`. Establish `h8 : -3 ≤ Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.log (1 / 8) ≤ Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2)` using `Real.log_le_log (by norm_num) (by linarith)`. Establish `h2 : Real.log (1 / 8) = -(3 * Real.log 2)`. Rewrite using `[one_div, Real.log_inv, show (8 : ℝ) = 2 ^ 3 by norm_num, Real.log_pow]; norm_num`. Combine the linear relations using `[Real.log_two_lt_d9]`. Establish `h3 : -3 ≤ χ (‖w‖ ^ 2 / ρ ^ 2) * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[(hr (‖w‖ ^ 2 / ρ ^ 2)).1, (hr (‖w‖ ^ 2 / ρ ^ 2)).2]`. Use `mul_le_mul_of_nonneg_left h3 (Nat.cast_nonneg (α := ℝ) n)` as an intermediate fact. Rewrite using `[eta]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eta_lower {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ t ≤ 1) {ρ : ℝ} (hρ : 0 < ρ)
     (k : ℕ) {w : V n} (hw : ρ / 2 ≤ ‖w‖) : -(3 * n) ≤ eta n χ ρ k w := by
@@ -522,11 +520,9 @@ theorem eta_lower {n : ℕ} {χ : ℝ → ℝ} (hr : ∀ t, 0 ≤ χ t ∧ χ t 
   linarith
 
 /- English proof (translation)
-Establish `key : ∀ a b : ℕ, a ≤ 8 → b ≤ 8 → f ^ a * r ^ b ≤ (f * r) ^ 8` using `fun a b ha hb => by`. Rewrite using `[mul_pow]`. Conclude with `mul_le_mul (pow_le_pow_right₀ hf ha) (pow_le_pow_right₀ hr hb) (by positivity) (by positivity)`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `using key 0 0 (by norm_num) (by norm_num)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using key 0 1 (by norm_num) (by norm_num)`. Conclude with `le_of_eq_of_le (by ring) (key 2 2 (by norm_num) (by norm_num))`. Conclude with `le_of_eq_of_le (by ring) (key 1 2 (by norm_num) (by norm_num))`. Simplify using `using key 1 0 (by norm_num) (by norm_num)`. Conclude with `le_of_eq_of_le (by ring) (key 1 6 (by norm_num) (by norm_num))`.
-
-Simplify using `using key 0 4 (by norm_num) (by norm_num)`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem numerics {f r : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) :
     1 ≤ (f * r) ^ 8 ∧ r ≤ (f * r) ^ 8 ∧ f * r ^ 2 * f ≤ (f * r) ^ 8 ∧ f * r ^ 2 ≤ (f * r) ^ 8 ∧
@@ -544,53 +540,45 @@ theorem numerics {f r : ℝ} (hf : 1 ≤ f) (hr : 1 ≤ r) :
   · simpa using key 0 4 (by norm_num) (by norm_num)
 
 /- English proof (translation)
-Take `⟨χ, A, hA, hχ, hχr, hχ1, hχ0, hd1, hd2⟩` from `exists_cutoff`. Use `⟨8 + 80000 * (13 * A + 20 + A ^ 2), by positivity, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ r X la x hp0 hp1 hx hg1 hg2 hinj`. Use `set C1 : ℝ := 8 + 80000 * (13 * A + 20 + A ^ 2) with hC1`. Establish `hC8 : 8 ≤ C1` using `le_add_of_nonneg_right (by positivity)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast (hp0.trans hp1)`. Establish `hf1` using `one_le_card X`. Take `⟨n1, n2, n3, n4, n5, n6, n7⟩` from `numerics hf1 hr1`. Establish `hD` using `nd_le X`. Use `set f : ℝ := (X.Ψ.card : ℝ) with hf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T : ℝ := (f * r) ^ 8 with hT`. Use `set S : ℝ := ∑ τ, ∑ a, |(la τ a : ℝ)| with hS`. Establish `hS0 : 0 ≤ S` using `by positivity`. Use `set bb : ℝ := 4 * f * (r : ℝ) ^ 2 + 1 with hbb`. Establish `hbb0 : 0 ≤ bb` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨ρ, hρ⟩ : ∃ ρ : ℝ, ρ = 1 / (200 * (r : ℝ) ^ 2)` from `⟨_, rfl⟩`. Establish `hρ0 : 0 < ρ` using `by rw [hρ]; positivity`. Establish `hρR : ρ < 1 / (100 * (r : ℝ) ^ 2)`. Rewrite using `[hρ]`. Conclude with `one_div_lt_one_div_of_lt (by positivity) (by linarith [show (0 : ℝ) < (r : ℝ) ^ 2 by positivity])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ2 : 1 / ρ ^ 2 = 40000 * (r : ℝ) ^ 4` using `by rw [hρ]; field_simp; norm_num`. Establish `hsz` using `fun (z : V (nd X)) (hz : ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2)) => GlobalTheory.T.chartBall_weightPotential_density_bounds E r X la x z hx hz`. Establish `hdom : ∀ z : V (nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → z ∈ OmF X x` using `fun z hz => (hsz z hz).1`. Use `choose ψ ha hb hl hrm using fun k : ℕ => GlobalTheory.T.chartBall_extend_by_zero_invariant E r X x _ hx hdom hinj (eta (nd X) χ ρ k)`. Establish `hcpt : ∀ k (z : V (nd X)), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ψ k (cpt X x z) = eta (nd X) χ ρ k z`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Introduce `k z hz`. Use `ha k 1 X.Γ.one_mem _ (ExtFPf.oneF_mem X) z hz` as an intermediate fact. Rewrite `this` using `[ExtFPf.rmul_oneF, KU.lact_one]`. Then use the resulting hypothesis. Establish `hb' : ∀ k y, (¬ ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ ρ ∧ y = lact γ (rmul (cpt X x z) b)) → ψ k y = 0`. Introduce `k y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hc : ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) ∧ y = lact γ (rmul (cpt X x z) b)`. Take `⟨γ, hγ, b, hbB, z, hz, e⟩` from `hc`. Rewrite using `[e, ha k γ hγ b hbB z hz]`. Use `eta_zero hχ0 hρ0 k (not_lt.1 fun h => hy ⟨γ, hγ, b, hbB, z, h.le, e⟩)` and prove the remaining obligations. Conclude with `hb k y hc`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hηs : ∀ k, ContDiff ℝ ∞ (eta (nd X) χ ρ k)` using `fun k => contDiff_const.mul (contDiff_eta hχ ρ (by positivity))`. Establish `hsm` using `fun k => GlobalTheory.T.invariantExtension_measurable_contDiffOn_chart E r X x ρ _ _ (ψ k) hx hρR hdom (hηs k) (ha k) (hb' k) (GlobalTheory.T.eventually_not_mem_chartBall_saturation E r X x ρ fun w hw => hdom w (hw.trans hρR.le))`. Establish `hlevi` using `fun k : ℕ => levi_lower X hx hp0 hp1 la (g := C1 * T) (bb := bb) (K := nd X * ((13 * A + 20) / ρ ^ 2)) (M := A ^ 2 / ρ ^ 2) (ρ := ρ) (by positivity) hbb0 (by positivity) (by positivity) (margin_num hA hρ2 hD n1 n2 n4 n6 n7) hρR hg1 hg2 (η := eta (nd X) χ ρ k) (ψ := ψ k) (fun z ξ …`. Establish `h` using `GlobalTheory.T.leviForm_cutoffLogWeight_lower_bound χ A hχ hχr hχ1 hχ0 hd1 hd2 (nd X) ρ (1 / ((k : ℝ) + 1)) hρ0 (by positivity) (delta_le k) z ξ`. Establish `h2 : ContDiffAt ℝ 2 (fun w : V (nd X) => χ (‖w‖ ^ 2 / ρ ^ 2) * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2)) z` using `(contDiff_eta hχ ρ (by positivity)).contDiffAt.of_le HE.two_le_inf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Unfold `eta`. Rewrite using `[Y.LocalMaximumSecondDerivative.leviV_ofReal_const_mul _ h2, Complex.re_ofReal_mul]`. Use `mul_le_mul_of_nonneg_left h (Nat.cast_nonneg (α := ℝ) (nd X))` as an intermediate fact. Use the proof step `linarith)`. Use the proof step `(ha k) (hb' k) (hl k) (hrm k) (hsm k).2`.
+Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hψcase : ∀ y, (∃ z, ∀ k, ψ k y = eta (nd X) χ ρ k z) ∨ ∀ k, ψ k y = 0`. Introduce `y`. Distinguish the cases in `hc : ∃ γ ∈ X.Γ, ∃ b ∈ Bor X.Ψ r, ∃ z : V (nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) ∧ y = lact γ (rmul (cpt X x z) b)`. Take `⟨γ, hγ, b, hbB, z, hz, e⟩` from `hc`. Conclude with `Or.inl ⟨z, fun k => by rw [e, ha k γ hγ b hbB z hz]⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Or.inr fun k => hb k y hc`. Establish `hbf : bb * f ≤ 5 * T` using `by rw [hbb]; linarith`. Establish `hrh : ∀ z : V (nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → |bb * rhF X x z| ≤ bb * f` using `fun z hz => by`. Rewrite using `[abs_mul, abs_of_nonneg hbb0]`. Conclude with `mul_le_mul_of_nonneg_left (hsz z hz).2.2.1 hbb0`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hST : S + 8 * T ≤ C1 * (S + T)`. Use `mul_le_mul_of_nonneg_right hC8 (show 0 ≤ S + T by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hhalf : ∀ k (w : V (nd X)), ‖w‖ < ρ / 2 → ψ k (cpt X x w) = nd X * Real.log ((‖w‖ ^ 2 / ρ ^ 2 + 1 / ((k : ℝ) + 1)) / 2)`. Introduce `k w hw`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcpt k w (by linarith), eta, hχ1 _ (quarter hρ0 (norm_nonneg w) hw.le), one_mul]`. Use `set c0 : ℝ := Real.exp (-(S + bb * f + f * r)) with hc0`. Use `⟨ρ, c0 * ρ ^ (2 * nd X), fun w => ((χ (‖w‖ ^ 2 / ρ ^ 2) : ℝ) : ℂ), ψ, fun k w => phla X la (cpt X x w) - bb * rhF X x w - Real.log (densF X x w) + ψ k (cpt X x w), {w : V (nd X) | ρ / 2 ≤ ‖w‖ ∧ ‖w‖ < ρ}.indicator (fun _ => (1 : ℝ≥0∞)), hρ0, hρR.le, by positivity, fun z hz => hdom …` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hχ1 _ (quarter hρ0 (norm_nonneg z) hz), Complex.ofReal_one]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hχ0 _ (by rw [one_le_div (by positivity)]; gcongr), Complex.ofReal_zero]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hχr _).1]`. Conclude with `(hχr _).2`. Break down `hψcase y with ⟨z, h⟩ | h` into its components or cases.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Conclude with `eta_nonpos hχr hχ0 ρ k z`. Rewrite using `[h]`. Rewrite using `[weight_levi X hx la bb (hsm k).2 hz]`. Conclude with `(hlevi k).2 z hz ξ`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: ψ (k + 1) (cpt X x z) ≤ ψ k (cpt X x z)`. Break down `hψcase (cpt X x z) with ⟨z', h⟩ | h` into its components or cases. Rewrite using `[h, h]`. Conclude with `eta_succ_le hχr ρ k z'`. Rewrite using `[h, h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Use `measurable_const.indicator ?_` and prove the remaining obligations. Conclude with `(measurableSet_le measurable_const measurable_norm).inter (measurableSet_lt measurable_norm measurable_const)`. Establish `h` using `GlobalTheory.T.dbarDeriv_cutoff_normSq_bound_annulus χ A hχ hχr hχ1 hχ0 hd1 (nd X) ρ hρ0 z ξ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hz' : ρ / 2 ≤ ‖z‖ ∧ ‖z‖ < ρ`. Rewrite `h` using `[if_pos hz']`. Rewrite using `[Set.indicator_of_mem (by exact hz'), one_mul, weight_levi X hx la bb (hsm k).2 hz]`. Conclude with `ENNReal.ofReal_le_ofReal (h.trans ((hlevi k).1 z (hz'.2.trans hρR) ξ))`. Rewrite `h` using `[if_neg hz']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ENNReal.ofReal_eq_zero.2 h]`. Conclude with `zero_le`. Use `annulus_integral X x (Real.exp_pos _).le fun z h1 h2 => ?_` and prove the remaining obligations. Establish `hz` using `(h2.trans hρR).le`. Take `⟨-, s1, -, -, s4⟩` from `hsz z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s5` using `eta_lower hχr hρ0 k h1`. Use `conv_rhs => rw [← Real.exp_log s4, ← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hcpt k z hz]`.
-
-Combine the linear relations using `[(abs_le.1 s1).1, (abs_le.1 (hrh z hz)).2]`. Establish `hz'` using `((mem_ball_zero_iff.1 hz).trans hρR).le`. Rewrite using `[← Real.exp_add]`. Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the linear relations using `[(abs_le.1 (hsz z hz').2.1).1, (abs_le.1 (hrh z hz')).2]`.
-
-Use `pole hρ0 (Real.exp_pos _).le w _ fun k => ?_` and prove the remaining obligations. Rewrite using `[hhalf k w (mem_ball_zero_iff.1 hw)]`. Use `mul_le_of_le_one_left (Real.exp_pos _).le (Real.exp_le_one_iff.2 ?_)` and prove the remaining obligations. Establish `: 0 ≤ S + bb * f + f * r` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `pole hρ0 (Real.exp_pos _).le w _ fun k => ?_` and prove the remaining obligations. Establish `hw' : ‖w‖ < ρ / 2` using `mem_ball_zero_iff.1 hw`. Establish `hw2 : ‖w‖ ≤ 1 / (100 * (r : ℝ) ^ 2)` using `by linarith`. Simplify using `only`. Rewrite using `[hhalf k w hw', ← Real.exp_add]`.
-
-Use `Real.exp_le_exp.2 ?_` and prove the remaining obligations. Combine the linear relations using `[(abs_le.1 (hsz w hw2).2.1).2, (abs_le.1 (hrh w hw2)).1, (abs_le.1 (hsz w hw2).2.2.2.1).1]`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem peak_weight : ∃ C1 : ℝ, 0 ≤ C1 ∧ ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : ReciprocityTheory.ChartRestriction.G.FD.Wt X.Ψ r) (x : Frame X.Ψ r), 0 < X.p0 → X.p0 < r → ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → (∀ τ (a b : Fin r), (b : ℕ) = a + 1 → (b : ℕ) ≠ X.p0 → C1 * ((X.Ψ.card : ℝ) * r) ^ 8 ≤ (la τ a : ℝ) - la τ b) → (∀ τ (a b : Fin r), (a : ℕ) = 0 → (b : ℕ) = r - 1 → C1 * ((X.Ψ.card : ℝ) * r) ^ 8 ≤ (la τ b : ℝ) - la τ a) → (∀ γ ∈ X.Γ, ∀ z z' : ReciprocityTheory.L2DbarEstimates.V (ReciprocityTheory.ChartRestriction.G.AR.Inst.nd X), ‖z‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ‖z'‖ ≤ 1 / (100 * (r : ℝ) ^ 2) → ∀ b ∈ Bor X.Ψ r, lact γ (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z) = rmul (ReciprocityTheory.ChartRestriction.G.AR.Inst.cpt X x z') b → γ = 1) → ∃ (ρ c : ℝ) (F0 : V (nd X) → ℂ) (ψ : ℕ → Frame X.Ψ r → ℝ) (φ : ℕ → V (nd X) → ℝ) (h : V (nd X) → ℝ≥0∞), 0 < ρ ∧ ρ ≤ 1 / (100 * (r : ℝ) ^ 2) ∧ 0 < c ∧ Metric.closedBall (0 : V (nd X)) ρ ⊆ OmF X x ∧ muF X x (Metric.ball 0 (1 / (100 * (r : ℝ) ^ 2)) ∩ OmF X x) < ⊤ ∧ ContDiffOn ℝ ∞ F0 (OmF X x) ∧ (∀ z, ‖z‖ ≤ ρ / 2 → F0 z = 1) ∧ (∀ z, ρ ≤ ‖z‖ → F0 z = 0) ∧ (∀ z, ‖F0 z‖ ≤ 1) ∧ (∀ k, Measurable (ψ k)) ∧ (∀ k, ∀ y ∈ X.dom, ∀ b ∈ Bor X.Ψ r, ψ k (rmul y b) = ψ k y) ∧ (∀ k, ∀ γ ∈ X.Γ, ∀ y ∈ X.dom, ψ k (lact γ y) = ψ k y) ∧ (∀ k y, ψ k y ≤ 0) ∧ (∀ k, ∀ z ∈ OmF X x, φ k z = phla X la (cpt X x z) - (4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) * rhF X x z - Real.log (densF X x z) + ψ k (cpt X x z)) ∧ (∀ k, ContDiffOn ℝ ∞ (φ k) (OmF X x)) ∧ (∀ k, ∀ z ∈ OmF X x, ∀ ξ : Fin (nd X) → ℂ, 0 ≤ (leviV (nd X) (fun w => ((φ k w : ℝ) : ℂ)) z ξ).re) ∧ (∀ k, ∀ z ∈ OmF X x, φ (k + 1) z ≤ φ k z) ∧ Measurable h ∧ (∀ k, ∀ z ∈ OmF X x, ∀ ξ : Fin (nd X) → ℂ, ENNReal.ofReal (‖∑ j, wdb (nd X) j F0 z * (starRingEnd ℂ) (ξ j)‖ ^ 2) ≤ h z * ENNReal.ofReal (leviV (nd X) (fun w => ((φ k w : ℝ) : ℂ)) z ξ).re) ∧ (∀ k, ∫⁻ z in OmF X x, h z * ENNReal.ofReal (Real.exp (-φ k z)) ≤ ENNReal.ofReal (Real.exp (C1 * ((∑ τ, ∑ a, |(la τ a : ℝ)|) + ((X.Ψ.card : ℝ) * r) ^ 8))) * muF X x (Metric.ball 0 ρ ∩ OmF X x)) ∧ (∀ z ∈ Metric.ball (0 : V (nd X)) ρ, Real.exp (-phla X la (cpt X x z)) * Real.exp ((4 * (X.Ψ.card : ℝ) * (r : ℝ) ^ 2 + 1) * rhF X x z) ≤ Real.exp (C1 * ((∑ τ, ∑ a, |(la τ a : ℝ)|) + ((X.Ψ.card : ℝ) * r) ^ 8))) ∧ (∀ w ∈ Metric.ball (0 : V (nd X)) (ρ / 2), ENNReal.ofReal (c * ‖w‖ ^ (-(2 * (nd X : ℝ)))) ≤ ⨆ k, ENNReal.ofReal (Real.exp (-ψ k (cpt X x w)))) ∧ (∀ w ∈ Metric.ball (0 : V (nd X)) (ρ / 2), ENNReal.ofReal (c * ‖w‖ ^ (-(2 * (nd X : ℝ)))) ≤ ⨆ k, ENNReal.ofReal (Real.exp (-φ k w))) := by
   obtain ⟨χ, A, hA, hχ, hχr, hχ1, hχ0, hd1, hd2⟩ := exists_cutoff

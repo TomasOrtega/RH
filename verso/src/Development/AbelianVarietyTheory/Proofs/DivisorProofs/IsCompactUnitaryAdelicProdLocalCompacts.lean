@@ -11,15 +11,13 @@ namespace GlobalTheory.OrbFinAf.CompactOrbitVectors
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Set `S : Set (AwayP p)` to `{v | K v ⊆ v.1.adicCompletionIntegers ℚ}`. Establish `hS : Filter.cofinite ≤ Filter.principal S` using `Filter.le_principal_iff.2 h`. Set `P` to `RestrictedProduct (fun v : AwayP p => v.1.adicCompletion ℚ) (fun v => (v.1.adicCompletionIntegers ℚ : Set (v.1.adicCompletion ℚ))) (Filter.principal S)`. Establish `h1 : IsCompact {x : P | ∀ v, x v ∈ K v}`. Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.isCompact_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `isCompact_univ_pi hK` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ v -`. Conclude with `hy v`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Conclude with `⟨⟨x, fun v hv => hv (hx v trivial)⟩, fun v => hx v trivial, rfl⟩`. Establish `h2` using `h1.image (RestrictedProduct.continuous_inclusion hS)`. Establish `e : {a : AfP p | ∀ v, AfP.eval v a ∈ K v} = RestrictedProduct.inclusion _ _ hS '' {x : P | ∀ v, x v ∈ K v}`. Use extensionality with `a`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `⟨⟨(LevelExists.rp a).1, fun v hv => hv (ha v)⟩, ha, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `hy`.
-
-Rewrite using `[e]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box (K : ∀ v : AwayP p, Set (Qv v)) (hK : ∀ v, IsCompact (K v))
     (h : ∀ᶠ v in Filter.cofinite, K v ⊆ v.1.adicCompletionIntegers ℚ) :
@@ -61,7 +59,7 @@ def tv (v : AwayP p) : AfP p ⊗[ℚ] G.C →+* Qv v ⊗[ℚ] G.C :=
   (Algebra.TensorProduct.map (AfP.eval v) (AlgHom.id ℚ G.C)).toRingHom
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a c`. Simplify using `[tv, basV, basA, Algebra.TensorProduct.basis_repr_tmul, Algebra.smul_def]`. Consider the case `add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem repr_tv (v : AwayP p) (y : AfP p ⊗[ℚ] G.C) (i : Fin (Module.finrank ℚ G.C)) :
     (basV G v).repr (tv G v y) i = AfP.eval v ((basA G).repr y i) := by
@@ -72,7 +70,7 @@ theorem repr_tv (v : AwayP p) (y : AfP p ⊗[ℚ] G.C) (i : Fin (Module.finrank 
   | add x y hx hy => simp only [map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.continuous_eval v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eval (v : AwayP p) : Continuous (AfP.eval (p := p) v) :=
   RestrictedProduct.continuous_eval v
@@ -84,7 +82,7 @@ namespace GlobalTheory.OrbFinAf.CompactOrbitVectors
 variable {p : ℕ} [Fact p.Prime] (G : HTGroup p)
 
 /- English proof (translation)
-Apply `(basV G v).equivFun.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `i`. Simplify using `only [Module.Basis.equivFun_apply]`. Conclude with `repr_tv G v y i`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tv_eq (v : AwayP p) (y : AfP p ⊗[ℚ] G.C) :
     tv G v y = (basV G v).equivFun.symm (fun i => AfP.eval v ((basA G).equivFun y i)) := by
@@ -95,11 +93,9 @@ theorem tv_eq (v : AwayP p) (y : AfP p ⊗[ℚ] G.C) :
   exact repr_tv G v y i
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (Qv v ⊗[ℚ] G.C) := IsModuleTopology.toContinuousAdd (Qv v) _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Continuous (basA G).equivFun` using `IsModuleTopology.continuous_of_linearMap (basA G).equivFun.toLinearMap`. Establish `h2 : Continuous (basV G v).equivFun.symm` using `IsModuleTopology.continuous_of_linearMap (basV G v).equivFun.symm.toLinearMap`. Establish `: tv G v = fun y => (basV G v).equivFun.symm (fun i => AfP.eval v ((basA G).equivFun y i))`. Use function extensionality and compare the values at `(tv_eq G v)`. Rewrite using `[this]`.
-
-Conclude with `h2.comp (continuous_pi fun i => (continuous_eval v).comp ((continuous_apply i).comp h1))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_tv (v : AwayP p) :
     @Continuous _ _ (moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)) (moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)) (tv G v) := by
@@ -117,11 +113,11 @@ theorem continuous_tv (v : AwayP p) :
   exact h2.comp (continuous_pi fun i => (continuous_eval v).comp ((continuous_apply i).comp h1))
 
 /- English proof (translation)
-Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Establish `ht` using `continuous_tv G v`. Establish `hval : Continuous fun x : G.GAf => ((x : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1 : AfP p ⊗[ℚ] G.C)` using `Units.continuous_val.comp (continuous_fst.comp continuous_subtype_val)`. Establish `hinv : Continuous fun x : G.GAf => ((((x : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).1)⁻¹ : (AfP p ⊗[ℚ] G.C)ˣ) : AfP p ⊗[ℚ] G.C)` using `Units.continuous_coe_inv.comp (continuous_fst.comp continuous_subtype_val)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval2 : Continuous fun x : G.GAf => ((x : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2 : AfP p)` using `Units.continuous_val.comp (continuous_snd.comp continuous_subtype_val)`. Establish `hinv2 : Continuous fun x : G.GAf => ((((x : (AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ).2)⁻¹ : (AfP p)ˣ) : AfP p)` using `Units.continuous_coe_inv.comp (continuous_snd.comp continuous_subtype_val)`. Apply `Continuous.subtype_mk` to reduce the goal to its premises. Apply `Continuous.prodMk` to reduce the goal to its premises. Rewrite using `[Units.continuous_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨ht.comp hval, ht.comp hinv⟩`. Rewrite using `[Units.continuous_iff]`. Conclude with `⟨(continuous_eval v).comp hval2, (continuous_eval v).comp hinv2⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem continuous_piV (v : AwayP p) : Continuous (piV G v) := by
   letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)
@@ -153,39 +149,29 @@ variable {p : ℕ} [Fact p.Prime]
 open CompactOrbitVectors in
 
 /- English proof (translation)
-Introduce `p _ G D hDc hDi`. Use `haveI : T2Space (AfP p) := inferInstanceAs (T2Space (Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]))`. Use `letI : TopologicalSpace (AfP p ⊗[ℚ] G.C) := moduleTopology (AfP p) (AfP p ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (AfP p) (AfP p ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (AfP p ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (AfP p) _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : T2Space (AfP p ⊗[ℚ] G.C) := LevelExists.t2Space_tensor_rat_finite_algebra_moduleTopology (AfP p) G.C`. Set `c1 : ∀ v : AwayP p, Fin (Module.finrank ℚ G.C) → Gv G v → Qv v` to `fun v i h => (basV G v).repr (((h : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1 : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) i`. Set `c2 : ∀ v : AwayP p, Fin (Module.finrank ℚ G.C) → Gv G v → Qv v` to `fun v i h => (basV G v).repr ((((h : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).1)⁻¹ : (Qv v ⊗[ℚ] G.C)ˣ) : Qv v ⊗[ℚ] G.C) i`. Set `c3 : ∀ v : AwayP p, Gv G v → Qv v` to `fun v h => (((h : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2 : (Qv v)ˣ) : Qv v)`. Set `c4 : ∀ v : AwayP p, Gv G v → Qv v` to `fun v h => ((((h : (Qv v ⊗[ℚ] G.C)ˣ × (Qv v)ˣ).2)⁻¹ : (Qv v)ˣ) : Qv v)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hc : ∀ v, (∀ i, Continuous (c1 v i)) ∧ (∀ i, Continuous (c2 v i)) ∧ Continuous (c3 v) ∧ Continuous (c4 v)`. Introduce `v`. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Establish `hr : Continuous (basV G v).equivFun` using `IsModuleTopology.continuous_of_linearMap (basV G v).equivFun.toLinearMap`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => ?_, fun i => ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_apply i).comp (hr.comp (Units.continuous_val.comp (continuous_fst.comp continuous_subtype_val)))`. Conclude with `(continuous_apply i).comp (hr.comp (Units.continuous_coe_inv.comp (continuous_fst.comp continuous_subtype_val)))`. Conclude with `Units.continuous_val.comp (continuous_snd.comp continuous_subtype_val)`. Conclude with `Units.continuous_coe_inv.comp (continuous_snd.comp continuous_subtype_val)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `K : ∀ v : AwayP p, Set (Qv v)` to `fun v => ((⋃ i, c1 v i '' D v) ∪ (⋃ i, c2 v i '' D v)) ∪ (c3 v '' D v ∪ c4 v '' D v)`. Establish `hKc : ∀ v, IsCompact (K v)` using `fun v => ((isCompact_iUnion fun i => (hDc v).image ((hc v).1 i)).union (isCompact_iUnion fun i => (hDc v).image ((hc v).2.1 i))).union (((hDc v).image (hc v).2.2.1).union ((hDc v).image (hc v).2.2.2))`. Establish `hKi : ∀ᶠ v in Filter.cofinite, K v ⊆ v.1.adicCompletionIntegers ℚ` using `by filter_upwards [hDi] with v hv`. Introduce and unpack `y ((hy | hy) | (hy | hy))`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hy`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨h, hh, rfl⟩` from `hi`. Conclude with `(hv hh).1 i`. Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hy`. Take `⟨h, hh, rfl⟩` from `hi`. Conclude with `(hv hh).2.1 i`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h, hh, rfl⟩` from `hy`. Conclude with `(hv hh).2.2.1`. Take `⟨h, hh, rfl⟩` from `hy`. Conclude with `(hv hh).2.2.2`. Set `E : Set (AfP p)` to `{a | ∀ v, AfP.eval v a ∈ K v}`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Establish `hE : IsCompact E` using `isCompact_box K hKc hKi`. Set `Bm : Set (AfP p ⊗[ℚ] G.C)` to `(basA G).equivFun.symm '' Set.univ.pi fun _ => E`. Establish `hBm : IsCompact Bm` using `(isCompact_univ_pi fun _ => hE).image (IsModuleTopology.continuous_of_linearMap (basA G).equivFun.symm.toLinearMap)`. Set `B : Set (((AfP p ⊗[ℚ] G.C) × (AfP p ⊗[ℚ] G.C)ᵐᵒᵖ) × (AfP p × (AfP p)ᵐᵒᵖ))` to `(Bm ×ˢ (MulOpposite.op '' Bm)) ×ˢ (E ×ˢ (MulOpposite.op '' E))`. Establish `hB : IsCompact B` using `(hBm.prod (hBm.image MulOpposite.continuous_op)).prod (hE.prod (hE.image MulOpposite.continuous_op))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ : Continuous (fun y : AfP p ⊗[ℚ] G.C ↦ (starT G.star (AfP p) y).unop)`. Set `σl : (AfP p ⊗[ℚ] G.C) →ₗ[AfP p] (AfP p ⊗[ℚ] G.C)` to `{ toFun := fun y ↦ (starT G.star (AfP p) y).unop map_add' := fun x y ↦ by simp only [map_add, MulOpposite.unop_add] map_smul' := by`. Introduce `r x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `tmul a y`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, starT_tmul, RingHom.id_apply]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, MulOpposite.unop_add, hx, hy, RingHom.id_apply] }`. Conclude with `IsModuleTopology.continuous_of_linearMap σl`. Establish `hj : Continuous (algebraMap (AfP p) (AfP p ⊗[ℚ] G.C))` using `IsModuleTopology.continuous_of_linearMap (Algebra.linearMap (AfP p) (AfP p ⊗[ℚ] G.C))`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hGcl : IsClosed (UPts G.star (AfP p) : Set ((AfP p ⊗[ℚ] G.C)ˣ × (AfP p)ˣ))`. Apply `isClosed_eq` to reduce the goal to its premises. Conclude with `(Units.continuous_val.comp continuous_fst).mul (hσ.comp (Units.continuous_val.comp continuous_fst))`. Conclude with `hj.comp (Units.continuous_val.comp continuous_snd)`. Set `emb : G.GAf → ((AfP p ⊗[ℚ] G.C) × (AfP p ⊗[ℚ] G.C)ᵐᵒᵖ) × (AfP p × (AfP p)ᵐᵒᵖ)` to `fun x ↦ (Units.embedProduct _ x.1.1, Units.embedProduct _ x.1.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the first alternative.
 
-Establish `hemb : Topology.IsClosedEmbedding emb` using `(Units.isClosedEmbedding_embedProduct.prodMap Units.isClosedEmbedding_embedProduct).comp hGcl.isClosedEmbedding_subtypeVal`. Establish `hS : IsClosed {g : G.GAf | ∀ v, piV G v g ∈ D v}`. Establish `: {g : G.GAf | ∀ v, piV G v g ∈ D v} = ⋂ v, piV G v ⁻¹' D v`. Use extensionality with `g`. Simplify using the standard rewrite rules.
-
-Rewrite using `[this]`. Use `isClosed_iInter fun v => ?_` and prove the remaining obligations. Use `letI : TopologicalSpace (Qv v ⊗[ℚ] G.C) := moduleTopology (Qv v) (Qv v ⊗[ℚ] G.C)`. Use `haveI : IsModuleTopology (Qv v) (Qv v ⊗[ℚ] G.C) := ⟨rfl⟩`. Use `haveI : IsTopologicalRing (Qv v ⊗[ℚ] G.C) := IsModuleTopology.isTopologicalRing (Qv v) _`.
-
-Use `haveI : T2Space (Qv v ⊗[ℚ] G.C) := LevelExists.t2Space_tensor_rat_finite_algebra_moduleTopology (Qv v) G.C`. Use `haveI : T2Space (Gv G v) := inferInstance`. Conclude with `(hDc v).isClosed.preimage (continuous_piV G v)`. Establish `hsub : emb '' {g : G.GAf | ∀ v, piV G v g ∈ D v} ⊆ B`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
-
-Establish `hco : ∀ y : AfP p ⊗[ℚ] G.C, (∀ v i, (basV G v).repr (tv G v y) i ∈ K v) → y ∈ Bm`. Introduce `y hy`. Use `⟨(basA G).equivFun y, fun i _ v => ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[Module.Basis.equivFun_apply, ← repr_tv]`. Conclude with `hy v i`.
-
-Use `⟨⟨hco _ fun v i => ?_, ⟨_, hco _ fun v i => ?_, rfl⟩⟩, ⟨fun v => ?_, ⟨_, fun v => ?_, rfl⟩⟩⟩` and prove the remaining obligations. Conclude with `Or.inl (Or.inl (Set.mem_iUnion.2 ⟨i, piV G v x, hx v, rfl⟩))`. Conclude with `Or.inl (Or.inr (Set.mem_iUnion.2 ⟨i, piV G v x, hx v, rfl⟩))`. Conclude with `Or.inr (Or.inl ⟨piV G v x, hx v, rfl⟩)`. Conclude with `Or.inr (Or.inr ⟨piV G v x, hx v, rfl⟩)`.
-
-Conclude with `hemb.isInducing.isCompact_iff.2 (hB.of_isClosed_subset (hemb.isClosedMap _ hS) hsub)`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem isCompact_prod_local : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (D : ∀ v : AwayP p, Set (Gv G v)),
     (∀ v, IsCompact (D v)) → (∀ᶠ v in (Filter.cofinite : Filter (AwayP p)), D v ⊆ IntV G v) →

@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.OrthoFlatFac
 
 /- English proof (translation)
-Establish `key : ∀ ρ : E →+* ℂ, ∑ i : Fin (Dw.mult ρ), (((wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) : ℤ) : ℝ) = (if ρ = conjEmb τ.1 then (Dw.q : ℝ) else 0) - if ρ = τ.1 then (Dw.p : ℝ) else 0` using `fun ρ => by`. Distinguish the cases in `h : ρ (H.rt : E) = H.rt0`. Establish `hm : Dw.mult ρ = Dw.p` using `if_pos h`. Establish `h1 : ρ ≠ conjEmb τ.1` using `fun e => conj_not_mem τ (e ▸ h)`. Establish `h2 : ∀ i : Fin (Dw.mult ρ), (wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) = if ρ = τ.1 then -1 else 0` using `fun i => (wtOf_big (flatWt Dw τ) 0 ⟨ρ, h⟩ i (hm ▸ i.2)).trans (by simp [flatWt, parWt, Subtype.ext_iff])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h2]`. Apply the tactic sequence `split_ifs <;> simp_all`. Establish `hm : Dw.mult ρ = Dw.q` using `if_neg h`. Establish `h1 : ρ ≠ τ.1` using `fun e => h (e ▸ τ.2)`. Establish `h2 : ∀ i : Fin (Dw.mult ρ), (wtOf Dw (flatWt Dw τ) 0).1 (ρ, i) = if ρ = conjEmb τ.1 then 1 else 0` using `fun i => by`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `wtOf_small (flatWt Dw τ) 0 ⟨_, conj_mem h⟩ i (hm ▸ i.2)` as an intermediate fact. Simplify using `only [Formalism.L2.Pj.conjEmb_conjEmb] at this`. Rewrite using `[this]`. Distinguish the cases in `e : ρ = conjEmb τ.1`. Simplify using `[flatWt, parWt, e, Formalism.L2.Pj.conjEmb_conjEmb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `: conjEmb ρ ≠ τ.1` using `fun e' => e (by rw [← e', Formalism.L2.Pj.conjEmb_conjEmb])`. Simplify using `[flatWt, parWt, Subtype.ext_iff, e, this]`. Simplify using `only [h2]`. Apply the tactic sequence `split_ifs <;> simp_all`. Simplify using `only [key, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem sum_wtOf_flatWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (τ : Psi H) :
@@ -51,7 +51,7 @@ theorem sum_wtOf_flatWt {E : Type} [Field E] [NumberField E] [IsCMField E] {H : 
   simp only [key, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U x τ k w ho`. Rewrite using `[GlobalTheory.CompHS.homFac, GlobalTheory.OrbitNfac.nfac_ortho _ ho, mul_one, lieFacZ, sum_wtOf_flatWt]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem homFac_flatWt_ortho : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (x : ℝ)

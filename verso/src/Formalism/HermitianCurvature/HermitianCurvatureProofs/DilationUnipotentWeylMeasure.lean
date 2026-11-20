@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 lemma aDil_eq (k r : ℕ) (t : ℝ) : aDil k r t = Matrix.diagonal (dg k r t) := rfl
 
 /- English proof (translation)
-Unfold `dg`. Rewrite using `[if_neg (by omega), if_pos h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma dg_mid (k r : ℕ) (t : ℝ) (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) :
     dg k r t i = 1 := by
@@ -30,7 +30,7 @@ lemma dg_mid (k r : ℕ) (t : ℝ) (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) 
   rw [if_neg (by omega), if_pos h2]
 
 /- English proof (translation)
-Unfold `dg`. Use `split_ifs with h1 h2`. Rewrite using `[← Complex.ofReal_mul, ← mul_pow, mul_inv_cancel₀ ht, one_pow, Complex.ofReal_one]`. Rewrite using `[one_mul]`. Rewrite using `[← Complex.ofReal_mul, inv_pow, inv_inv, inv_mul_cancel₀ (pow_ne_zero _ ht), Complex.ofReal_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dg_mul_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) :
     dg k r t i * dg k r t⁻¹ i = 1 := by
@@ -41,9 +41,9 @@ lemma dg_mul_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (i : Fin (2 * r + k + 1)) 
   · rw [← Complex.ofReal_mul, inv_pow, inv_inv, inv_mul_cancel₀ (pow_ne_zero _ ht), Complex.ofReal_one]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[aDil_eq, aDil_eq, Matrix.diagonal_mul_diagonal]`. Establish `e : (fun i => dg k r t⁻¹ i * dg k r t i) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Rewrite using `[mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dg_mul_inv k r t ht i`. Rewrite using `[e, Matrix.diagonal_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aDil_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : (aDil k r t)⁻¹ = aDil k r t⁻¹ := by
   apply Matrix.inv_eq_left_inv
@@ -55,7 +55,7 @@ theorem aDil_inv (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : (aDil k r t)⁻¹ = aDil
   rw [e, Matrix.diagonal_one]
 
 /- English proof (translation)
-Establish `hj1 : ¬ j.val < r` using `by omega`. Establish `hj2 : ¬ j.val ≤ r + k` using `by omega`. Establish `e : j.val - (r + k) = r - i.val` using `by omega`. Unfold `dg`. Rewrite using `[if_pos hi, if_neg hj1, if_neg hj2, e, ← Complex.ofReal_mul, mul_inv_cancel₀ (pow_ne_zero _ ht), Complex.ofReal_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma dg_pair_lemma (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (i j : Fin (2 * r + k + 1))
     (hi : i.val < r) (hij : i.val + j.val = 2 * r + k) : dg k r t i * dg k r t j = 1 := by
@@ -67,17 +67,17 @@ private lemma dg_pair_lemma (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (i j : Fin (2 *
     mul_inv_cancel₀ (pow_ne_zero _ ht), Complex.ofReal_one]
 
 /- English proof (translation)
-Use `show (aDil k r t)ᴴ * Hpk k r * aDil k r t = Hpk k r`. Establish `hs : ∀ l, star (dg k r t l) = dg k r t l`. Introduce `l`. Unfold `dg`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hD : (Matrix.diagonal (dg k r t))ᴴ = Matrix.diagonal (dg k r t)`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.diagonal_apply, Matrix.diagonal_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Conclude with `hs i`. Rewrite using `[if_neg (Ne.symm h), if_neg h, star_zero]`. Rewrite using `[aDil_eq, hD]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Use `split_ifs with h1 h2 h3 h4`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_one, dg_pair_lemma k r t ht i j h1.1 h1.2]`. Rewrite using `[mul_one, mul_comm, dg_pair_lemma k r t ht j i h2.1 (by omega)]`. Take `⟨ha, hb, rfl⟩` from `h3`. Rewrite using `[dg_mid k r t i ha hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨ha, hb, rfl⟩` from `h3`. Rewrite using `[dg_mid k r t i ha hb]`. Simplify using the standard rewrite rules. Rewrite using `[mul_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aDil_mem (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : aDil k r t ∈ GV k r := by
   show (aDil k r t)ᴴ * Hpk k r * aDil k r t = Hpk k r
@@ -111,14 +111,14 @@ theorem aDil_mem (k r : ℕ) (t : ℝ) (ht : t ≠ 0) : aDil k r t ∈ GV k r :=
   · rw [mul_zero, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[aDil_inv k r t ht, aDil_eq, aDil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma conj_apply (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (n : Mat k r) (i j : Fin (2 * r + k + 1)) :
     (aDil k r t * n * (aDil k r t)⁻¹) i j = dg k r t i * n i j * dg k r t⁻¹ j := by
   rw [aDil_inv k r t ht, aDil_eq, aDil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Establish `e : r - a.val = (r - (a.val + 1)) + 1` using `by omega`. Simplify using `only [dg, eI, Fin.is_lt, h, ↓reduceIte]`. Rewrite using `[← Complex.ofReal_mul, e, pow_succ, inv_pow]`. Use `congr 1`. Rewrite using `[mul_comm (t ^ _) t, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ ht), mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 lemma dg_step (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (a : Fin r) (h : a.val + 1 < r) :
     dg k r t (eI k r a) * dg k r t⁻¹ (eI k r ⟨a.val + 1, h⟩) = (t : ℂ) := by
@@ -129,7 +129,7 @@ lemma dg_step (k r : ℕ) (t : ℝ) (ht : t ≠ 0) (a : Fin r) (h : a.val + 1 < 
   rw [mul_comm (t ^ _) t, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ ht), mul_one]
 
 /- English proof (translation)
-Establish `e : r - a.val = 1` using `by have := a.isLt; omega`. Simplify using `only [dg, eI, Fin.is_lt, ↓reduceIte, e, pow_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma dg_last (k r : ℕ) (t : ℝ) (a : Fin r) (h : ¬ a.val + 1 < r) :
     dg k r t (eI k r a) = (t : ℂ) := by
@@ -139,14 +139,14 @@ lemma dg_last (k r : ℕ) (t : ℝ) (a : Fin r) (h : ¬ a.val + 1 < r) :
 variable {k r : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /- English proof (translation)
-Unfold `inLie`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma inLie_zero : inLie k r (0 : Mat k r) := by
   unfold inLie
   simp
 
 /- English proof (translation)
-Unfold `inLie at *`. Rewrite using `[Matrix.conjTranspose_add, add_mul, mul_add]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma inLie_add {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k r (X + Y) := by
   unfold inLie at *
@@ -155,7 +155,7 @@ lemma inLie_add {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k 
     _ = 0 := by rw [hX, hY, add_zero]
 
 /- English proof (translation)
-Unfold `inLie at *`. Establish `hc : star (c : ℂ) = (c : ℂ)` using `Complex.conj_ofReal c`. Rewrite using `[Matrix.conjTranspose_smul, hc, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma inLie_rsmul {X : Mat k r} (hX : inLie k r X) (c : ℝ) : inLie k r ((c : ℂ) • X) := by
   unfold inLie at *
@@ -163,27 +163,27 @@ lemma inLie_rsmul {X : Mat k r} (hX : inLie k r X) (c : ℝ) : inLie k r ((c : �
   rw [Matrix.conjTranspose_smul, hc, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Unfold `inLie at *`. Rewrite using `[Matrix.conjTranspose_neg, neg_mul, mul_neg, ← neg_add, hX, neg_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma inLie_neg {X : Mat k r} (hX : inLie k r X) : inLie k r (-X) := by
   unfold inLie at *
   rw [Matrix.conjTranspose_neg, neg_mul, mul_neg, ← neg_add, hX, neg_zero]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `inLie_add hX (inLie_neg hY)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma inLie_sub {X Y : Mat k r} (hX : inLie k r X) (hY : inLie k r Y) : inLie k r (X - Y) := by
   rw [sub_eq_add_neg]
   exact inLie_add hX (inLie_neg hY)
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `key : ∀ l : Fin (2 * r + k + 1), l.val ≠ (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) → Hpk k r i l = 0`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `l hl`. Establish `hl'` using `l.isLt`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff]`. Apply the tactic sequence `split_ifs at hl ⊢ <;> first | rfl | (exfalso; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [Finset.sum_eq_single_of_mem ⟨(if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val), by split_ifs <;> omega⟩ (Finset.mem_univ _)]`. Unfold `Hpk`. Simplify using `only [Fin.ext_iff, Fin.val_mk]`. Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | norm_num`. Introduce `l _ hl`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key l (fun h => hl (Fin.ext h)), MulZeroClass.zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -208,23 +208,23 @@ private lemma hpk_sq_lemma : Hpk k r * Hpk k r = 1 := by
     rw [key l (fun h => hl (Fin.ext h)), MulZeroClass.zero_mul]
 
 /- English proof (translation)
-Conclude with `Matrix.inv_eq_left_inv hpk_sq_lemma`.
+A detailed English derivation is pending.
 -/
 lemma hpk_inv : (Hpk k r)⁻¹ = Hpk k r := by
   exact Matrix.inv_eq_left_inv hpk_sq_lemma
 
 /- English proof (translation)
-Conclude with `⟨⟨Hpk k r, Hpk k r, hpk_sq_lemma, hpk_sq_lemma⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 lemma hpk_isUnit : IsUnit (Hpk k r) := by
   exact ⟨⟨Hpk k r, Hpk k r, hpk_sq_lemma, hpk_sq_lemma⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hU : IsUnit (Hpk k r)` using `hpk_isUnit`. Establish `hHH : Hpk k r * Hpk k r = 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hY' : Yᴴ = Hpk k r * (-Y) * (Hpk k r)⁻¹`. Establish `h1 : Yᴴ * Hpk k r = -(Hpk k r * Y)` using `eq_neg_of_add_eq_zero_left hY`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hpk_inv]`. Combine the equalities or inequalities in the displayed calculation. Use `show (NormedSpace.exp Y)ᴴ * Hpk k r * NormedSpace.exp Y = Hpk k r`. Rewrite using `[← Matrix.exp_conjTranspose, hY', Matrix.exp_conj _ _ hU, hpk_inv]`. Establish `hE : NormedSpace.exp (-Y) * NormedSpace.exp Y = 1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.exp_add_of_commute _ _ (Commute.neg_left (Commute.refl Y)), show -Y + Y = (0 : Mat k r) by abel, NormedSpace.exp_zero]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by`. Rewrite using `[hHH, Matrix.mul_one, hE, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exp_mem {Y : Mat k r} (hY : inLie k r Y) : NormedSpace.exp Y ∈ GV k r := by
   have hU : IsUnit (Hpk k r) := hpk_isUnit
@@ -298,13 +298,13 @@ Both sides reduce to the same expression.
 lemma vf_false (X g : Mat k r) : vf false X g = g * X := rfl
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp [cv]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma cv_zero (b : Bool) (X g : Mat k r) : cv b X 0 g = g := by
   cases b <;> simp [cv]
 
 /- English proof (translation)
-Use `show (a * c)ᴴ * Hpk k r * (a * c) = Hpk k r`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hc' : cᴴ * Hpk k r * c = Hpk k r` using `hc`. Rewrite using `[Matrix.conjTranspose_mul, show cᴴ * aᴴ * Hpk k r * (a * c) = cᴴ * (aᴴ * Hpk k r * a) * c by simp only [Matrix.mul_assoc], ha', hc']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma gv_mul_lemma {a c : Mat k r} (ha : a ∈ GV k r) (hc : c ∈ GV k r) : a * c ∈ GV k r := by
   show (a * c)ᴴ * Hpk k r * (a * c) = Hpk k r
@@ -315,7 +315,7 @@ private lemma gv_mul_lemma {a c : Mat k r} (ha : a ∈ GV k r) (hc : c ∈ GV k 
     ha', hc']
 
 /- English proof (translation)
-Consider the cases of `b`. Simplify using `only [cv]`. Conclude with `gv_mul_lemma hg (exp_mem (inLie_rsmul hX t))`. Simplify using `only [cv]`. Conclude with `gv_mul_lemma (exp_mem (inLie_neg (inLie_rsmul hX t))) hg`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cv_mem {b : Bool} {X g : Mat k r} (hX : inLie k r X) (hg : g ∈ GV k r) (t : ℝ) :
     cv b X t g ∈ GV k r := by
@@ -326,9 +326,9 @@ lemma cv_mem {b : Bool} {X g : Mat k r} (hX : inLie k r X) (hg : g ∈ GV k r) (
     exact gv_mul_lemma (exp_mem (inLie_neg (inLie_rsmul hX t))) hg
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `hasDerivAt_mul_exp_smul_zero g X`. Establish `h` using `hasDerivAt_mul_exp_smul_zero (1 : Mat k r) (-X)`. Establish `h2` using `(mulR g).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Use `(h2.congr_deriv ?_).congr_of_eventuallyEq (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show (1 * -X) * g = -(X * g)`. Simplify using the standard rewrite rules. Use `show NormedSpace.exp (-((t : ℂ) • X)) * g = (1 * NormedSpace.exp ((t : ℂ) • -X)) * g`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma cv_hasDerivAt (b : Bool) (X g : Mat k r) :
     HasDerivAt (fun t : ℝ => cv b X t g) (vf b X g) 0 := by
@@ -343,11 +343,11 @@ lemma cv_hasDerivAt (b : Bool) (X g : Mat k r) :
       simp
 
 /- English proof (translation)
-Consider the cases of `b`. Simplify using `only [cv]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _)]`. Use `congr 2`. Use `push_cast`.
+Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_smul]`. Simplify using `only [cv]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.exp_add_of_commute _ _ ((((Commute.refl X).smul_left _).smul_right _).neg_left.neg_right)]`. Use `congr 2`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[add_smul, neg_add, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma cv_add (b : Bool) (X g : Mat k r) (s t : ℝ) : cv b X (s + t) g = cv b X t (cv b X s g) := by
   cases b
@@ -364,11 +364,11 @@ lemma cv_add (b : Bool) (X g : Mat k r) (s t : ℝ) : cv b X (s + t) g = cv b X 
     rw [add_smul, neg_add, add_comm]
 
 /- English proof (translation)
-Establish `hc` using `cv_hasDerivAt b X g`. Establish `h0 : cv b X 0 g = g` using `cv_zero b X g`. Establish `hd' : HasFDerivAt f' (fderiv ℝ f' g) (cv b X 0 g)`. Rewrite using `[h0]`. Conclude with `hd.hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomp` using `hd'.comp_hasDerivAt 0 hc`. Apply `hcomp.congr_of_eventuallyEq` to reduce the goal to its premises. Establish `hcont : ContinuousAt (fun t => cv b X t g) 0` using `hc.continuousAt`. Establish `hUn : U ∈ nhds ((fun t => cv b X t g) 0)` using `by show U ∈ nhds (cv b X 0 g)`. Rewrite using `[h0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hU.mem_nhds hg`. Establish `hU' : ∀ᶠ t in nhds (0 : ℝ), cv b X t g ∈ U` using `hcont.preimage_mem_nhds hUn`. Use `filter_upwards [hU'] with t ht`. Conclude with `hff _ ht (cv_mem hX hgG t)`.
+A detailed English derivation is pending.
 -/
 lemma hasDerivAt_ext {f f' : Mat k r → E} {U : Set (Mat k r)} {g X : Mat k r} (b : Bool)
     (hU : IsOpen U) (hg : g ∈ U) (hgG : g ∈ GV k r) (hd : DifferentiableAt ℝ f' g)
@@ -391,7 +391,7 @@ lemma hasDerivAt_ext {f f' : Mat k r → E} {U : Set (Mat k r)} {g X : Mat k r} 
   exact hff _ ht (cv_mem hX hgG t)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact le_of_eq (by norm_cast)`. Consider the case `exact le_of_eq (by simp)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma natCast_succ_le (m : ℕ) :
     (((m : ℕ) : ℕ∞) : WithTop ℕ∞) + 1 ≤ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) := by
@@ -401,7 +401,7 @@ lemma natCast_succ_le (m : ℕ) :
     | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact_mod_cast Nat.succ_le_succ (Nat.zero_le m)`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma one_le_cast (m : ℕ) : (1 : WithTop ℕ∞) ≤ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) := by
   first
@@ -409,7 +409,7 @@ lemma one_le_cast (m : ℕ) : (1 : WithTop ℕ∞) ≤ (((m + 1 : ℕ) : ℕ∞)
     | simp
 
 /- English proof (translation)
-Use `first`. Consider the case `exact_mod_cast Nat.succ_ne_zero m`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma cast_ne_zero (m : ℕ) : (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) ≠ 0 := by
   first
@@ -420,7 +420,7 @@ def op' (b : Bool) (X : Mat k r) (f' : Mat k r → E) : Mat k r → E :=
   fun g => fderiv ℝ f' g (vf b X g)
 
 /- English proof (translation)
-Conclude with `(hf.fderiv_of_isOpen hU (natCast_succ_le m)).clm_apply (vf b X).contDiff.contDiffOn`.
+A detailed English derivation is pending.
 -/
 lemma op'_contDiffOn {f' : Mat k r → E} {U : Set (Mat k r)} (m : ℕ) (b : Bool) (X : Mat k r)
     (hU : IsOpen U) (hf : ContDiffOn ℝ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) f' U) :
@@ -428,7 +428,7 @@ lemma op'_contDiffOn {f' : Mat k r → E} {U : Set (Mat k r)} (m : ℕ) (b : Boo
   exact (hf.fderiv_of_isOpen hU (natCast_succ_le m)).clm_apply (vf b X).contDiff.contDiffOn
 
 /- English proof (translation)
-Introduce `g hg hgG`. Establish `hd : DifferentiableAt ℝ f' g` using `(hf.contDiffAt (hU.mem_nhds hg)).differentiableAt (cast_ne_zero m)`. Conclude with `(hasDerivAt_ext b hU hg hgG hd hff hX).deriv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma op_eq_op' {f f' : Mat k r → E} {U : Set (Mat k r)} {X : Mat k r} (m : ℕ) (b : Bool)
     (hU : IsOpen U) (hf : ContDiffOn ℝ (((m + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) f' U)
@@ -440,7 +440,7 @@ lemma op_eq_op' {f f' : Mat k r → E} {U : Set (Mat k r)} {X : Mat k r} (m : �
   exact (hasDerivAt_ext b hU hg hgG hd hff hX).deriv
 
 /- English proof (translation)
-Unfold `CkOn at *`. Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Conclude with `⟨U, op' b X f', hU, hgU, op'_contDiffOn m b X hU hc, fun g hg hgG => op_eq_op' m b hU hc hff hX g hg hgG⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma ckOn_op {f : Mat k r → E} {X : Mat k r} (m : ℕ) (b : Bool)
     (hf : CkOn ((m + 1 : ℕ) : ℕ∞) (GV k r) f) (hX : inLie k r X) :
@@ -452,7 +452,7 @@ lemma ckOn_op {f : Mat k r → E} {X : Mat k r} (m : ℕ) (b : Bool)
     fun g hg hgG => op_eq_op' m b hU hc hff hX g hg hgG⟩
 
 /- English proof (translation)
-Unfold `CkOn at hf`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g hg`. Establish `hd : DifferentiableAt ℝ f' g` using `(hc.contDiffAt (hU.mem_nhds hgU)).differentiableAt (cast_ne_zero m)`. Conclude with `(hasDerivAt_ext b hU hgU hg hd hff hX).differentiableAt`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ckOn_diff {f : Mat k r → E} {X g : Mat k r} (m : ℕ) (b : Bool)
     (hf : CkOn ((m + 1 : ℕ) : ℕ∞) (GV k r) f) (hX : inLie k r X) (hg : g ∈ GV k r) :
@@ -464,7 +464,7 @@ lemma ckOn_diff {f : Mat k r → E} {X g : Mat k r} (m : ℕ) (b : Bool)
   exact (hasDerivAt_ext b hU hgU hg hd hff hX).differentiableAt
 
 /- English proof (translation)
-Unfold `CkOn at *`. Introduce `g₀ hg`. Take `⟨U, f', hU, hgU, hc, he⟩` from `hf g₀ hg`. Conclude with `⟨U, f', hU, hgU, hc.of_le (by exact_mod_cast h), he⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma ckOn_mono {f : Mat k r → E} {m n : ℕ} (h : m ≤ n) (hf : CkOn ((n : ℕ) : ℕ∞) (GV k r) f) :
     CkOn ((m : ℕ) : ℕ∞) (GV k r) f := by
@@ -474,9 +474,9 @@ lemma ckOn_mono {f : Mat k r → E} {m n : ℕ} (h : m ≤ n) (hf : CkOn ((n : �
   exact ⟨U, f', hU, hgU, hc.of_le (by exact_mod_cast h), he⟩
 
 /- English proof (translation)
-Unfold `CkOn at *`. Introduce `g₀ hg`. Take `⟨U₁, f₁', hU₁, hg₁, hc₁, he₁⟩` from `hf g₀ hg`. Take `⟨U₂, f₂', hU₂, hg₂, hc₂, he₂⟩` from `hf₂ g₀ hg`. Use `⟨U₁ ∩ U₂, f₁' + f₂', hU₁.inter hU₂, ⟨hg₁, hg₂⟩, (hc₁.mono Set.inter_subset_left).add (hc₂.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hgU hgG`. Simplify using `only [Pi.add_apply]`. Rewrite using `[he₁ g hgU.1 hgG, he₂ g hgU.2 hgG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ckOn_add {f f₂ : Mat k r → E} {m : ℕ∞} (hf : CkOn m (GV k r) f) (hf₂ : CkOn m (GV k r) f₂) :
     CkOn m (GV k r) (f + f₂) := by
@@ -491,9 +491,9 @@ lemma ckOn_add {f f₂ : Mat k r → E} {m : ℕ∞} (hf : CkOn m (GV k r) f) (h
   rw [he₁ g hgU.1 hgG, he₂ g hgU.2 hgG]
 
 /- English proof (translation)
-Unfold `CkOn at *`. Introduce `g₀ hg`. Take `⟨U, f', hU, hgU, hc, he⟩` from `hf g₀ hg`. Use `⟨U, a • f', hU, hgU, hc.const_smul a, ?_⟩` and prove the remaining obligations. Introduce `g hgU' hgG`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Pi.smul_apply]`. Rewrite using `[he g hgU' hgG]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma ckOn_smul {f : Mat k r → E} {m : ℕ∞} (a : ℂ) (hf : CkOn m (GV k r) f) :
     CkOn m (GV k r) (a • f) := by
@@ -506,7 +506,7 @@ lemma ckOn_smul {f : Mat k r → E} {m : ℕ∞} (a : ℂ) (hf : CkOn m (GV k r)
   rw [he g hgU' hgG]
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [op]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `h _ (cv_mem hX hg t)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 lemma op_congr {f f₂ : Mat k r → E} {X : Mat k r} (b : Bool) (hX : inLie k r X)
     (h : ∀ g ∈ GV k r, f g = f₂ g) : ∀ g ∈ GV k r, op b X f g = op b X f₂ g := by
@@ -517,13 +517,11 @@ lemma op_congr {f f₂ : Mat k r → E} {X : Mat k r} (b : Bool) (hX : inLie k r
   exact h _ (cv_mem hX hg t)
 
 /- English proof (translation)
-Unfold `CkOn at hf hf₂`. Take `⟨U₁, f₁', hU₁, hg₁, hc₁, he₁⟩` from `hf g hg`. Take `⟨U₂, f₂', hU₂, hg₂, hc₂, he₂⟩` from `hf₂ g hg`. Establish `hU` using `hU₁.inter hU₂`. Establish `hgU : g ∈ U₁ ∩ U₂` using `⟨hg₁, hg₂⟩`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc₁'` using `hc₁.mono (Set.inter_subset_left (s := U₁) (t := U₂))`. Establish `hc₂'` using `hc₂.mono (Set.inter_subset_right (s := U₁) (t := U₂))`. Establish `d1 : DifferentiableAt ℝ f₁' g` using `(hc₁'.contDiffAt (hU.mem_nhds hgU)).differentiableAt (cast_ne_zero 0)`. Establish `d2 : DifferentiableAt ℝ f₂' g` using `(hc₂'.contDiffAt (hU.mem_nhds hgU)).differentiableAt (cast_ne_zero 0)`. Rewrite using `[op_eq_op' (f := f + f₂) 0 b hU (hc₁'.add hc₂') (fun h hh hG => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[he₁ h hh.1 hG, he₂ h hh.2 hG]) hX g hgU hg,`. Use the proof step `op_eq_op' 0 b hU hc₁' (fun h hh hG => he₁ h hh.1 hG) hX g hgU hg,`. Use the proof step `op_eq_op' 0 b hU hc₂' (fun h hh hG => he₂ h hh.2 hG) hX g hgU hg]`. Simplify using `only [op']`.
-
-Conclude with `congrArg (fun L => L (vf b X g)) (d1.hasFDerivAt.add d2.hasFDerivAt).fderiv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma op_add {f f₂ : Mat k r → E} {X g : Mat k r} (b : Bool) (hX : inLie k r X)
     (hf : CkOn ((1 : ℕ) : ℕ∞) (GV k r) f) (hf₂ : CkOn ((1 : ℕ) : ℕ∞) (GV k r) f₂) (hg : g ∈ GV k r) :
@@ -549,7 +547,7 @@ lemma op_add {f f₂ : Mat k r → E} {X g : Mat k r} (b : Bool) (hX : inLie k r
   exact congrArg (fun L => L (vf b X g)) (d1.hasFDerivAt.add d2.hasFDerivAt).fderiv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [op, Pi.smul_apply]`. Use `first`. Consider the case `exact deriv_const_smul' (f := fun t : ℝ => f (cv b X t g)) (x := 0) a`. Consider the case `exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma op_smul (b : Bool) (X : Mat k r) (a : ℂ) (f : Mat k r → E) : op b X (a • f) = a • op b X f := by
   funext g
@@ -559,7 +557,7 @@ lemma op_smul (b : Bool) (X : Mat k r) (a : ℂ) (f : Mat k r → E) : op b X (a
     | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [op, Pi.smul_apply]`. Use `first`. Consider the case `exact deriv_const_smul' (f := fun t : ℝ => f (cv b X t g)) (x := 0) a`. Consider the case `exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma op_rsmul (b : Bool) (X : Mat k r) (a : ℝ) (f : Mat k r → E) : op b X (a • f) = a • op b X f := by
   funext g
@@ -569,13 +567,13 @@ lemma op_rsmul (b : Bool) (X : Mat k r) (a : ℝ) (f : Mat k r → E) : op b X (
     | exact deriv_const_smul_field (f := fun t : ℝ => f (cv b X t g)) (x := 0) a
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp only [cv, smul_smul, Complex.ofReal_mul, mul_comm]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma cv_rsmul (b : Bool) (X g : Mat k r) (c t : ℝ) : cv b ((c : ℂ) • X) t g = cv b X (c * t) g := by
   cases b <;> simp only [cv, smul_smul, Complex.ofReal_mul, mul_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [op, Pi.smul_apply]`. Repeatedly rewrite using `[cv_rsmul]`. Use `deriv_comp_mul_left c (fun s => f (cv b X s g)) 0` as an intermediate fact. Simplify `this` using `[mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma op_letter_smul (b : Bool) (X : Mat k r) (c : ℝ) (f : Mat k r → E) :
     op b ((c : ℂ) • X) f = c • op b X f := by
@@ -586,9 +584,9 @@ lemma op_letter_smul (b : Bool) (X : Mat k r) (c : ℝ) (f : Mat k r → E) :
   simpa [mul_zero] using this
 
 /- English proof (translation)
-Unfold `CkOn at hf`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g hg`. Rewrite using `[op_eq_op' 0 b hU hc hff (inLie_add hX hY) g hgU hg, op_eq_op' 0 b hU hc hff hX g hgU hg, op_eq_op' 0 b hU hc hff hY g hgU hg]`. Simplify using `only [op']`. Establish `hv : vf b (X + Y) g = vf b X g + vf b Y g`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Consider the cases of `b`. Rewrite using `[vf_false, vf_false, vf_false, Matrix.mul_add]`. Rewrite using `[vf_true, vf_true, vf_true, Matrix.add_mul, neg_add]`. Rewrite using `[hv, map_add]`.
+Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma op_letter_add {f : Mat k r → E} {X Y g : Mat k r} (b : Bool) (hX : inLie k r X)
     (hY : inLie k r Y) (hf : CkOn ((1 : ℕ) : ℕ∞) (GV k r) f) (hg : g ∈ GV k r) :
@@ -619,7 +617,7 @@ lemma W_cons (x : Bool × Mat k r) (w : List (Bool × Mat k r)) (f : Mat k r →
     W (x :: w) f = op x.1 x.2 (W w f) := rfl
 
 /- English proof (translation)
-Unfold `W`. Rewrite using `[List.foldr_append]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma W_append (p q : List (Bool × Mat k r)) (f : Mat k r → E) : W (p ++ q) f = W p (W q f) := by
   unfold W
@@ -629,13 +627,13 @@ def lr (u v : List (Mat k r)) : List (Bool × Mat k r) :=
   u.map (fun X => (true, X)) ++ v.map (fun X => (false, X))
 
 /- English proof (translation)
-Establish `hv : ∀ v : List (Mat k r), Rw v f = W (v.map fun X => (false, X)) f`. Introduce `v`. Proceed by induction on `v with`. Consider the case `nil => rfl`. Consider the case `cons X v ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[List.map_cons, W_cons, ← ih, op_false]`. Both sides reduce to the same expression. Establish `hu : ∀ (u : List (Mat k r)) (F : Mat k r → E), u.foldr LdV F = W (u.map fun X => (true, X)) F`. Introduce `u F`. Proceed by induction on `u with`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `nil => rfl`. Consider the case `cons X u ih`. Rewrite using `[List.map_cons, W_cons, ← ih, op_true]`. Both sides reduce to the same expression. Unfold `lr`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[W_append, ← hv, ← hu]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma dLR_eq (u v : List (Mat k r)) (f : Mat k r → E) : dLR u v f = W (lr u v) f := by
   have hv : ∀ v : List (Mat k r), Rw v f = W (v.map fun X => (false, X)) f := by
@@ -659,13 +657,11 @@ lemma dLR_eq (u v : List (Mat k r)) (f : Mat k r → E) : dLR u v f = W (lr u v)
 def AllLie (w : List (Bool × Mat k r)) : Prop := ∀ x ∈ w, inLie k r x.2
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `m hm`. Rewrite using `[W_nil]`. Use `first`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `exact hm`. Consider the case `simpa using hm`. Consider the case `cons x w ih`. Introduce `m hm`. Rewrite using `[W_cons]`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : inLie k r x.2` using `hw x (by simp)`. Establish `hw' : AllLie w` using `fun y hy => hw y (by simp [hy])`. Establish `hm' : CkOn ((m + 1 + w.length : ℕ) : ℕ∞) (GV k r) f`. Rewrite using `[show m + 1 + w.length = m + (x :: w).length by simp only [List.length_cons]; omega]`. Conclude with `hm`.
-
-Conclude with `ckOn_op m x.1 (ih hw' (m + 1) hm') hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smooth_on_of_word_derivatives {f : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w) :
     ∀ m : ℕ, CkOn ((m + w.length : ℕ) : ℕ∞) (GV k r) f → CkOn ((m : ℕ) : ℕ∞) (GV k r) (W w f) := by
@@ -687,9 +683,9 @@ lemma smooth_on_of_word_derivatives {f : Mat k r → E} (w : List (Bool × Mat k
     exact ckOn_op m x.1 (ih hw' (m + 1) hm') hx
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact h`. Consider the case `cons x w ih`. Introduce `g hg`. Rewrite using `[W_cons, W_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `op_congr x.1 (hw x (by simp)) (ih (fun y hy => hw y (by simp [hy]))) g hg`.
+A detailed English derivation is pending.
 -/
 lemma W_congr {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w)
     (h : ∀ g ∈ GV k r, f g = f₂ g) : ∀ g ∈ GV k r, W w f g = W w f₂ g := by
@@ -701,11 +697,11 @@ lemma W_congr {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie
     exact op_congr x.1 (hw x (by simp)) (ih (fun y hy => hw y (by simp [hy]))) g hg
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => intro g _`. Both sides reduce to the same expression. Consider the case `cons x w ih`. Introduce `g hg`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : inLie k r x.2` using `hw x (by simp)`. Establish `hw' : AllLie w` using `fun y hy => hw y (by simp [hy])`. Establish `hf' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f` using `ckOn_mono (by simp only [List.length_cons]; omega) hf`. Establish `hf₂' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂` using `ckOn_mono (by simp only [List.length_cons]; omega) hf₂`. Establish `g1 : CkOn ((1 + w.length : ℕ) : ℕ∞) (GV k r) f` using `ckOn_mono (by simp only [List.length_cons]; omega) hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g2 : CkOn ((1 + w.length : ℕ) : ℕ∞) (GV k r) f₂` using `ckOn_mono (by simp only [List.length_cons]; omega) hf₂`. Rewrite using `[W_cons, W_cons, W_cons]`. Rewrite using `[op_congr (f₂ := W w f + W w f₂) x.1 hx (ih hw' hf' hf₂') g hg]`. Conclude with `op_add x.1 hx (smooth_on_of_word_derivatives w hw' 1 g1) (smooth_on_of_word_derivatives w hw' 1 g2) hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma W_add {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w)
     (hf : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f) (hf₂ : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂) :
@@ -729,7 +725,7 @@ lemma W_add {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w
     exact op_add x.1 hx (smooth_on_of_word_derivatives w hw' 1 g1) (smooth_on_of_word_derivatives w hw' 1 g2) hg
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => rw [W_cons, W_cons, ih, op_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma W_smul (w : List (Bool × Mat k r)) (a : ℂ) (f : Mat k r → E) : W w (a • f) = a • W w f := by
   induction w with
@@ -737,7 +733,7 @@ lemma W_smul (w : List (Bool × Mat k r)) (a : ℂ) (f : Mat k r → E) : W w (a
   | cons x w ih => rw [W_cons, W_cons, ih, op_smul]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih => rw [W_cons, W_cons, ih, op_rsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma W_rsmul (w : List (Bool × Mat k r)) (a : ℝ) (f : Mat k r → E) : W w (a • f) = a • W w f := by
   induction w with
@@ -745,9 +741,9 @@ lemma W_rsmul (w : List (Bool × Mat k r)) (a : ℝ) (f : Mat k r → E) : W w (
   | cons x w ih => rw [W_cons, W_cons, ih, op_rsmul]
 
 /- English proof (translation)
-Introduce `g hg`. Establish `e : f - f₂ = f + ((-1 : ℂ) • f₂)`. Use function extensionality and compare the values at `x`. Simplify using `[sub_eq_add_neg]`. Rewrite using `[e, W_add w hw hf (ckOn_smul (-1) hf₂) g hg, W_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 lemma W_sub {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w)
     (hf : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f) (hf₂ : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f₂) :
@@ -760,9 +756,7 @@ lemma W_sub {f f₂ : Mat k r → E} (w : List (Bool × Mat k r)) (hw : AllLie w
   simp [sub_eq_add_neg]
 
 /- English proof (translation)
-Unfold `AllLie`. Introduce `x hx`. Simplify using `only [lr, List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `(hu X hX).1`.
-
-Conclude with `(hv X hX).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma allLie_lr {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : ∀ X ∈ v, unitLie k r X) :
     AllLie (lr u v) := by
@@ -774,21 +768,19 @@ lemma allLie_lr {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : �
   · exact (hv X hX).1
 
 /- English proof (translation)
-Simplify using `[lr]`.
+Simplify using the standard rewrite rules.
 -/
 lemma length_lr (u v : List (Mat k r)) : (lr u v).length = u.length + v.length := by
   simp [lr]
 
 /- English proof (translation)
-Conclude with `Real.rpow_nonneg (Real.sqrt_nonneg _) A`.
+A detailed English derivation is pending.
 -/
 lemma gN_rpow_nonneg (g : Mat k r) (A : ℝ) : 0 ≤ gN g ^ A := by
   exact Real.rpow_nonneg (Real.sqrt_nonneg _) A
 
 /- English proof (translation)
-Rewrite using `[op_eq_op' 0 b hU (op'_contDiffOn 1 b' Y hU hc) (op_eq_op' 1 b' hU hc hff hY) hX g hg hgG]`. Establish `hd : DifferentiableAt ℝ (fderiv ℝ f') g` using `((hc.fderiv_of_isOpen hU (natCast_succ_le 1)).differentiableOn (cast_ne_zero 0)).differentiableAt (hU.mem_nhds hg)`. Establish `H` using `(hd.hasFDerivAt.clm_apply (vf b' Y).hasFDerivAt).fderiv`. Unfold `op'`. Use `erw [H]`.
-
-Conclude with `add_comm _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma op_op_ext {f f' : Mat k r → E} {U : Set (Mat k r)} {X Y g : Mat k r} (b b' : Bool)
     (hU : IsOpen U) (hc : ContDiffOn ℝ (((1 + 1 : ℕ) : ℕ∞) : WithTop ℕ∞) f' U)
@@ -806,9 +798,9 @@ lemma op_op_ext {f f' : Mat k r → E} {U : Set (Mat k r)} {X Y g : Mat k r} (b 
   exact add_comm _ _
 
 /- English proof (translation)
-Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g hg`. Rewrite using `[op_op_ext false true hU hc hff hY hX hgU hg, op_op_ext true false hU hc hff hX hY hgU hg]`. Establish `hsym : IsSymmSndFDerivAt ℝ f' g` using `(hc.contDiffAt (hU.mem_nhds hgU)).isSymmSndFDerivAt (by rw [minSmoothness_of_isRCLikeNormedField]; norm_cast)`. Establish `h1` using `hsym (vf false Y g) (vf true X g)`. Establish `h2 : vf true X (vf false Y g) = vf false Y (vf true X g)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[vf_true, vf_false, Matrix.mul_assoc]`. Rewrite using `[h2]`. Conclude with `congrArg (· + fderiv ℝ f' g (vf false Y (vf true X g))) h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma op_comm {f : Mat k r → E} {X Y g : Mat k r} (hf : CkOn ((2 : ℕ) : ℕ∞) (GV k r) f)
     (hX : inLie k r X) (hY : inLie k r Y) (hg : g ∈ GV k r) :
@@ -825,11 +817,11 @@ lemma op_comm {f : Mat k r → E} {X Y g : Mat k r} (hf : CkOn ((2 : ℕ) : ℕ�
   exact congrArg (· + fderiv ℝ f' g (vf false Y (vf true X g))) h1
 
 /- English proof (translation)
-Proceed by induction on `u with`. Consider the case `nil => intro K _ g _`. Both sides reduce to the same expression. Consider the case `cons X u ih`. Introduce `K hK g hg`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu' : ∀ X ∈ u, inLie k r X` using `fun Y hY => hu Y (List.mem_cons_of_mem _ hY)`. Establish `hl : AllLie (lr u ([] : List (Mat k r)))`. Introduce `x hx`. Simplify using `only [lr, List.map_nil, List.append_nil, List.mem_map] at hx`. Take `⟨Y, hY, rfl⟩` from `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `hu' Y hY`. Establish `e : ∀ K' : Mat k r → E, W (lr (X :: u) []) K' = op true X (W (lr u []) K')` using `fun _ => rfl`. Rewrite using `[e, e, op_comm (smooth_on_of_word_derivatives _ hl 2 (ckOn_mono (by simp [lr]; omega) hK)) (hu X List.mem_cons_self) hZ hg]`. Conclude with `op_congr true (hu X List.mem_cons_self) (ih hu' K (ckOn_mono (by simp) hK)) g hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma op_W_comm {Z : Mat k r} (hZ : inLie k r Z) (u : List (Mat k r)) (hu : ∀ X ∈ u, inLie k r X) :
     ∀ K : Mat k r → E, CkOn ((u.length + 1 : ℕ) : ℕ∞) (GV k r) K → ∀ g ∈ GV k r,
@@ -852,11 +844,11 @@ lemma op_W_comm {Z : Mat k r} (hZ : inLie k r Z) (u : List (Mat k r)) (hu : ∀ 
 def LRt (τ : List Bool) : Prop := ∃ a b, τ = List.replicate a true ++ List.replicate b false
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro b _`. Both sides reduce to the same expression. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `b h`. Consider the cases of `b with`. Consider the case `zero => simp at h`. Consider the case `succ b`. Simplify using `only [List.map_cons, List.replicate_succ, List.cons.injEq] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Take `⟨hx, hw⟩` from `h`. Simplify using `only [List.map_cons]`. Rewrite using `[← ih b hw]`. Use `congr 1`. Conclude with `Prod.ext hx rfl`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private lemma tags_false_lemma : ∀ (w : List (Bool × Mat k r)) (b : ℕ),
     w.map Prod.fst = List.replicate b false → w = (w.map Prod.snd).map (fun X => (false, X)) := by
@@ -876,13 +868,13 @@ private lemma tags_false_lemma : ∀ (w : List (Bool × Mat k r)) (b : ℕ),
       exact Prod.ext hx rfl
 
 /- English proof (translation)
-Introduce `w a`. Proceed by induction on `a generalizing w with`. Consider the case `zero`. Introduce `b h`. Simplify using `only [List.replicate_zero, List.nil_append] at h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨[], w.map Prod.snd, rfl, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [tags_false_lemma w b h]`. Simplify using `[lr]`. Consider the case `succ a ih`. Introduce `b h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `w with`. Consider the case `nil => simp at h`. Consider the case `cons x w`. Simplify using `only [List.map_cons, List.replicate_succ, List.cons_append, List.cons.injEq] at h`. Take `⟨hx, hw⟩` from `h`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, v, hu, rfl⟩` from `ih w b hw`. Use `⟨x.2 :: u, v, by simp [hu], ?_⟩` and prove the remaining obligations. Simplify using `only [lr, List.map_cons, List.cons_append]`. Use `congr 1`. Conclude with `Prod.ext hx rfl`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 lemma of_tags : ∀ (w : List (Bool × Mat k r)) (a b : ℕ),
     w.map Prod.fst = List.replicate a true ++ List.replicate b false →
@@ -909,7 +901,7 @@ lemma of_tags : ∀ (w : List (Bool × Mat k r)) (a b : ℕ),
       exact Prod.ext hx rfl
 
 /- English proof (translation)
-Use `⟨u.length, v.length, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(simp [lr, Function.comp_def]; done)`. Consider the case `(simp [lr, Function.comp_def, List.map_const']; done)`. Consider the case `(simp [lr, List.map_map, Function.comp_def, List.eq_replicate_iff]; done)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma lrt_lr (u v : List (Mat k r)) : LRt ((lr u v).map Prod.fst) := by
   refine ⟨u.length, v.length, ?_⟩
@@ -919,11 +911,9 @@ lemma lrt_lr (u v : List (Mat k r)) : LRt ((lr u v).map Prod.fst) := by
     | (simp [lr, List.map_map, Function.comp_def, List.eq_replicate_iff]; done)
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨a, b, hab⟩` from `ht`. Take `⟨u, v, _, rfl⟩` from `of_tags w a b hab`. Rewrite using `[← dLR_eq]`. Establish `hu' : ∀ X ∈ u, unitLie k r X` using `fun X hX => hu (true, X) (by simp [lr, hX])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : ∀ X ∈ v, unitLie k r X` using `fun X hX => hu (false, X) (by simp [lr, hX])`. Establish `hl' : u.length + v.length ≤ m`. Rewrite `hl` using `[length_lr]`. Conclude with `hl`. Unfold `CCle at h`.
-
-Conclude with `h.2 u v hu' hv' hl' g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma bound_tag {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) (w : List (Bool × Mat k r))
     (ht : LRt (w.map Prod.fst)) (hu : ∀ x ∈ w, unitLie k r x.2) (hl : w.length ≤ m) :
@@ -943,7 +933,7 @@ lemma bound_tag {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) (w 
 def nrm (x : Bool × Mat k r) : Bool × Mat k r := (x.1, ((‖x.2‖⁻¹ : ℝ) : ℂ) • x.2)
 
 /- English proof (translation)
-Distinguish the cases in `hX : X = 0`. Simplify using `[hX]`. Rewrite using `[smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ (norm_ne_zero_iff.mpr hX), Complex.ofReal_one, one_smul]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma nrm_smul (X : Mat k r) : X = ((‖X‖ : ℝ) : ℂ) • (((‖X‖⁻¹ : ℝ) : ℂ) • X) := by
   by_cases hX : X = 0
@@ -952,7 +942,7 @@ lemma nrm_smul (X : Mat k r) : X = ((‖X‖ : ℝ) : ℂ) • (((‖X‖⁻¹ :
       Complex.ofReal_one, one_smul]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.norm_entry_le_entrywise_sup_norm A`. Consider the case `exact (norm_le_pi_norm (A i) j).trans (norm_le_pi_norm A i)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma entry_le_lemma (A : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖A i j‖ ≤ ‖A‖ := by
   first
@@ -960,7 +950,7 @@ private lemma entry_le_lemma (A : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖A i 
     | exact (norm_le_pi_norm (A i) j).trans (norm_le_pi_norm A i)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (Matrix.norm_le_iff hc).mpr h`. Consider the case `exact (pi_norm_le_iff_of_nonneg hc).mpr fun i => (pi_norm_le_iff_of_nonneg hc).mpr (h i)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private lemma norm_le_lemma_2 {A : Mat k r} {c : ℝ} (hc : 0 ≤ c) (h : ∀ i j, ‖A i j‖ ≤ c) :
     ‖A‖ ≤ c := by
@@ -969,9 +959,9 @@ private lemma norm_le_lemma_2 {A : Mat k r} {c : ℝ} (hc : 0 ≤ c) (h : ∀ i 
     | exact (pi_norm_le_iff_of_nonneg hc).mpr fun i => (pi_norm_le_iff_of_nonneg hc).mpr (h i)
 
 /- English proof (translation)
-Use `⟨inLie_rsmul hx _, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [nrm, Matrix.smul_apply, smul_eq_mul, norm_mul]`. Rewrite using `[show ‖((‖x.2‖⁻¹ : ℝ) : ℂ)‖ = ‖x.2‖⁻¹ by simp]`. Distinguish the cases in `h0 : ‖x.2‖ = 0`. Rewrite using `[h0, _root_.inv_zero, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le_one`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma nrm_unit {x : Bool × Mat k r} (hx : inLie k r x.2) : unitLie k r (nrm x).2 := by
   refine ⟨inLie_rsmul hx _, fun i j => ?_⟩
@@ -987,9 +977,9 @@ lemma nrm_unit {x : Bool × Mat k r} (hx : inLie k r x.2) : unitLie k r (nrm x).
 def pn (w : List (Bool × Mat k r)) : ℝ := (w.map fun x => ‖x.2‖).prod
 
 /- English proof (translation)
-Unfold `pn`. Apply `List.prod_nonneg` to reduce the goal to its premises. Introduce `a ha`. Simplify using `only [List.mem_map] at ha`. Take `⟨x, _, rfl⟩` from `ha`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 lemma pn_nonneg (w : List (Bool × Mat k r)) : 0 ≤ pn w := by
   unfold pn
@@ -1000,21 +990,21 @@ lemma pn_nonneg (w : List (Bool × Mat k r)) : 0 ≤ pn w := by
   exact norm_nonneg _
 
 /- English proof (translation)
-Simplify using `only [pn, List.map_cons, List.prod_cons]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pn_cons (x : Bool × Mat k r) (w : List (Bool × Mat k r)) : pn (x :: w) = ‖x.2‖ * pn w := by
   simp only [pn, List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Simplify using `only [pn, List.map_append, List.prod_append]`.
+Simplify using the standard rewrite rules.
 -/
 lemma pn_append (p q : List (Bool × Mat k r)) : pn (p ++ q) = pn p * pn q := by
   simp only [pn, List.map_append, List.prod_append]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [pn]`. Consider the case `cons x w ih`. Rewrite using `[pn_cons, List.length_cons, pow_succ']`. Establish `hx` using `h x (by simp)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun y hy => h y (by simp [hy]))`. Conclude with `mul_le_mul hx ih' (pn_nonneg w) (le_trans (norm_nonneg _) hx)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma pn_le_pow (w : List (Bool × Mat k r)) (K : ℝ) (h : ∀ x ∈ w, ‖x.2‖ ≤ K) :
     pn w ≤ K ^ w.length := by
@@ -1027,9 +1017,9 @@ lemma pn_le_pow (w : List (Bool × Mat k r)) (K : ℝ) (h : ∀ x ∈ w, ‖x.2�
     exact mul_le_mul hx ih' (pn_nonneg w) (le_trans (norm_nonneg _) hx)
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simp [pn, W]`. Consider the case `cons x w ih`. Rewrite using `[W_cons, ih, List.map_cons, W_cons, pn_cons, op_rsmul]`. Use `conv_lhs => rw [nrm_smul x.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[op_letter_smul, smul_smul, mul_comm (pn w)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma W_nrm (w : List (Bool × Mat k r)) (F : Mat k r → E) : W w F = pn w • W (w.map nrm) F := by
   induction w with
@@ -1041,11 +1031,9 @@ lemma W_nrm (w : List (Bool × Mat k r)) (F : Mat k r → E) : W w F = pn w • 
     rfl
 
 /- English proof (translation)
-Introduce `g hg`. Establish `e : (w.map nrm).map Prod.fst = w.map Prod.fst`. Rewrite using `[List.map_map]`. Both sides reduce to the same expression. Establish `hb` using `bound_tag h (w.map nrm) (by rw [e]; exact ht) (fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [List.mem_map] at hx`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `nrm_unit (hw y hy))`. Use the proof step `(by rw [List.length_map]; exact hl) g hg`. Rewrite using `[W_nrm, Pi.smul_apply, norm_smul, Real.norm_of_nonneg (pn_nonneg w)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma bound_scaled {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) (w : List (Bool × Mat k r))
     (ht : LRt (w.map Prod.fst)) (hw : AllLie w) (hl : w.length ≤ m) :
@@ -1065,9 +1053,9 @@ lemma bound_scaled {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) 
     _ ≤ pn w * c := mul_le_mul_of_nonneg_left hb (pn_nonneg w)
 
 /- English proof (translation)
-Introduce `g hg`. Simplify using `only [W_append, W_cons]`. Establish `hWq : CkOn ((p.length + 1 : ℕ) : ℕ∞) (GV k r) (W q F)` using `smooth_on_of_word_derivatives q hq (p.length + 1) hF`. Establish `hWq1 : CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W q F)` using `ckOn_mono (by omega) hWq`. Establish `hinner : ∀ h ∈ GV k r, op b (X + Y) (W q F) h = (op b X (W q F) + op b Y (W q F)) h` using `fun h hh => op_letter_add b hX hY hWq1 hh`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[W_congr p hp hinner g hg]`. Conclude with `W_add p hp (ckOn_op p.length b hWq hX) (ckOn_op p.length b hWq hY) g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma W_mid_add {F : Mat k r → E} (p q : List (Bool × Mat k r)) (b : Bool) {X Y : Mat k r}
     (hp : AllLie p) (hq : AllLie q) (hX : inLie k r X) (hY : inLie k r Y)
@@ -1083,37 +1071,33 @@ lemma W_mid_add {F : Mat k r → E} (p q : List (Bool × Mat k r)) (b : Bool) {X
   exact W_add p hp (ckOn_op p.length b hWq hX) (ckOn_op p.length b hWq hY) g hg
 
 /- English proof (translation)
-Conclude with `norm_le_lemma_2 zero_le_one h.2`.
+A detailed English derivation is pending.
 -/
 lemma unit_norm_le {X : Mat k r} (h : unitLie k r X) : ‖X‖ ≤ 1 := by
   exact norm_le_lemma_2 zero_le_one h.2
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro p _ _ _ _ g _`. Simplify using the standard rewrite rules. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `p hp hw ht hl g hg`. Establish `hx : unitLie k r x.2` using `hw x List.mem_cons_self`. Establish `hw' : ∀ y ∈ w, unitLie k r y.2` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hε : 0 ≤ ε` using `le_trans (norm_nonneg _) (hφε x hx)`. Establish `hpL : AllLie p` using `fun y hy => (hp y hy).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqL : AllLie (w.map φ)`. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `List.mem_map.mp hy`. Conclude with `hφL y' (hw' y' hy')`. Establish `hlen : p.length + 1 + w.length ≤ m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.length_append, List.length_cons] at hl`. Use linear arithmetic over natural numbers and integers. Establish `hδL : inLie k r ((φ x).2 - x.2)` using `inLie_sub (hφL x hx) hx.1`. Establish `e1 : W (p ++ φ x :: w.map φ) F g = W (p ++ x :: w.map φ) F g + W (p ++ (x.1, (φ x).2 - x.2) :: w.map φ) F g`. Establish `hφx : φ x = (x.1, x.2 + ((φ x).2 - x.2))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext (hφ1 x) ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Use `W_mid_add p (w.map φ) x.1 hpL hqL hx.1 hδL (ckOn_mono (by simpa using hlen) h.1) g hg` as an intermediate fact. Rewrite `this` using `[← hφx]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `tags : ((p ++ (x.1, (φ x).2 - x.2) :: w.map φ).map Prod.fst) = (p ++ x :: w).map Prod.fst`. Simplify using `[List.map_append, List.map_map, Function.comp_def, hφ1]`. Establish `b1` using `bound_scaled h (p ++ (x.1, (φ x).2 - x.2) :: w.map φ) (by rw [tags]; exact ht) (by`. Introduce `y hy`. Break down `List.mem_append.mp hy with hy | hy` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `hpL y hy`. Break down `List.mem_cons.mp hy with rfl | hy` into its components or cases. Conclude with `hδL`. Conclude with `hqL y hy)`. Use the proof step `(by simp only [List.length_append, List.length_cons, List.length_map]; omega) g hg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hpn : pn (p ++ (x.1, (φ x).2 - x.2) :: w.map φ) ≤ K ^ m * ε`. Rewrite using `[pn_append, pn_cons]`. Establish `h1 : pn p ≤ 1`. Use `pn_le_pow p 1 (fun y hy => unit_norm_le (hp y hy))` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : pn (w.map φ) ≤ K ^ m`. Use `le_trans (pn_le_pow (w.map φ) K ?_) (pow_le_pow_right₀ hK (by simp; omega))` and prove the remaining obligations. Introduce `y hy`. Take `⟨y', hy', rfl⟩` from `List.mem_map.mp hy`. Conclude with `hφK y' (hw' y' hy')`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `b2` using `ih (p ++ [x]) (by`. Introduce `y hy`. Break down `List.mem_append.mp hy with hy | hy` into its components or cases. Conclude with `hp y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[List.mem_singleton.mp hy]`. Conclude with `hx)`. Use the proof step `hw' (by simpa using ht) (by simpa using hl) g hg`. Simplify using `only [List.append_assoc, List.singleton_append] at b2`. Rewrite using `[List.map_cons, e1]`.
-
-Establish `hsplit : W (p ++ x :: w.map φ) F g + W (p ++ (x.1, (φ x).2 - x.2) :: w.map φ) F g - W (p ++ x :: w) F g = W (p ++ (x.1, (φ x).2 - x.2) :: w.map φ) F g + (W (p ++ x :: w.map φ) F g - W (p ++ x :: w) F g)` using `by abel`. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [List.length_cons]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma telescope {F : Mat k r → E} {A c K ε : ℝ} {m : ℕ} (h : CCle A m F c) (hc : 0 ≤ c) (hK : 1 ≤ K)
     (φ : Bool × Mat k r → Bool × Mat k r) (hφ1 : ∀ x, (φ x).1 = x.1)
@@ -1200,17 +1184,15 @@ lemma telescope {F : Mat k r → E} {A c K ε : ℝ} {m : ℕ} (h : CCle A m F c
           simp only [List.length_cons]; push_cast; ring
 
 /- English proof (translation)
-Establish `hH : IsUnit (Hpk k r).det` using `(Matrix.isUnit_iff_isUnit_det _).mp hpk_isUnit`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Establish `hdet : IsUnit a.det`. Establish `hd` using `congrArg Matrix.det ha'`. Rewrite `hd` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hH`, the goal using `[isUnit_iff_ne_zero]`. Introduce `h0`. Rewrite `hd` using `[h0, MulZeroClass.mul_zero]`. Conclude with `hH hd.symm`. Establish `e1 : aᴴ * Hpk k r = Hpk k r * a⁻¹`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Use `_ = Hpk k r * a⁻¹ := by rw [← Matrix.mul_assoc, ha']`. Establish `e2 : (a⁻¹)ᴴ * Hpk k r = Hpk k r * a`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r * a := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one, Matrix.one_mul]`. Unfold `inLie at *`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = aᴴ * (Xᴴ * Hpk k r + Hpk k r * X) * a := by`. Rewrite using `[e2, ← e1]`.
-
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX, Matrix.mul_zero, Matrix.zero_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma inLie_conj {a X : Mat k r} (ha : a ∈ GV k r) (hX : inLie k r X) : inLie k r (a⁻¹ * X * a) := by
   have hH : IsUnit (Hpk k r).det := (Matrix.isUnit_iff_isUnit_det _).mp hpk_isUnit
@@ -1251,14 +1233,14 @@ def adj (t : ℝ × ℝ) (x : Bool × Mat k r) : Bool × Mat k r :=
   (x.1, (aDil k r (sel t x.1))⁻¹ * x.2 * aDil k r (sel t x.1))
 
 /- English proof (translation)
-Rewrite using `[aDil_eq, Matrix.det_diagonal]`. Conclude with `IsUnit.mk0 _ (Finset.prod_ne_zero_iff.mpr fun i _ => left_ne_zero_of_mul_eq_one (dg_mul_inv k r t ht i))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aDil_isUnit_det (t : ℝ) (ht : t ≠ 0) : IsUnit (aDil k r t).det := by
   rw [aDil_eq, Matrix.det_diagonal]
   exact IsUnit.mk0 _ (Finset.prod_ne_zero_iff.mpr fun i _ => left_ne_zero_of_mul_eq_one (dg_mul_inv k r t ht i))
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Matrix.exp_conj' a A ha`. Consider the case `(have h := Matrix.exp_conj a⁻¹ A ((Matrix.isUnit_nonsing_inv_iff).mpr ha)`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp ha)] at h)` and apply the resulting hypothesis.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private lemma exp_conj_lemma (a A : Mat k r) (ha : IsUnit a) :
     NormedSpace.exp (a⁻¹ * A * a) = a⁻¹ * NormedSpace.exp A * a := by
@@ -1268,13 +1250,13 @@ private lemma exp_conj_lemma (a A : Mat k r) (ha : IsUnit a) :
        rwa [Matrix.nonsing_inv_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).mp ha)] at h)
 
 /- English proof (translation)
-Establish `hu1 : IsUnit (aDil k r t.1)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (aDil_isUnit_det _ h1)`. Establish `hu2 : IsUnit (aDil k r t.2)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (aDil_isUnit_det _ h2)`. Establish `hsm : ∀ (c : ℂ) (a : Mat k r), c • (a⁻¹ * X * a) = a⁻¹ * (c • X) * a`. Introduce `c a`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hsm' : ∀ (c : ℂ) (a : Mat k r), -(c • (a⁻¹ * X * a)) = a⁻¹ * (-(c • X)) * a`. Introduce `c a`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul]`. Consider the cases of `b`. Simplify using `only [cv, adj, sel]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsm, exp_conj_lemma _ _ hu2]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (aDil_isUnit_det _ h2)]`. Simplify using `only [cv, adj, sel]`. Rewrite using `[hsm', exp_conj_lemma _ _ hu1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ (aDil_isUnit_det _ h1)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cv_dil (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (b : Bool) (X g : Mat k r) (s : ℝ) :
     (aDil k r t.1)⁻¹ * cv b X s g * aDil k r t.2 =
@@ -1300,7 +1282,7 @@ lemma cv_dil (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (b : Bool) (X g 
 def dl (t : ℝ × ℝ) (f : Mat k r → E) (g : Mat k r) : E := f ((aDil k r t.1)⁻¹ * g * aDil k r t.2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [op, dl]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[cv_dil t h1 h2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 lemma op_dl (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (b : Bool) (X : Mat k r) (f : Mat k r → E) :
     op b X (dl t f) = dl t (op b (adj t (b, X)).2 f) := by
@@ -1311,7 +1293,7 @@ lemma op_dl (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (b : Bool) (X : M
   rw [cv_dil t h1 h2]
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons x w ih`. Rewrite using `[W_cons, ih, op_dl t h1 h2, List.map_cons, W_cons]`. Apply the tactic sequence `try rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma W_dl (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (w : List (Bool × Mat k r)) (f : Mat k r → E) :
     W w (dl t f) = dl t (W (w.map (adj t)) f) := by
@@ -1322,11 +1304,9 @@ lemma W_dl (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) (w : List (Bool ×
     try rfl
 
 /- English proof (translation)
-Unfold `CkOn at *`. Establish `hin : ∀ g ∈ GV k r, (aDil k r t.1)⁻¹ * g * aDil k r t.2 ∈ GV k r`. Introduce `g hg`. Rewrite using `[aDil_inv k r t.1 h1]`. Conclude with `gv_mul_lemma (gv_mul_lemma (aDil_mem k r _ (inv_ne_zero h1)) hg) (aDil_mem k r _ h2)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf _ (hin g₀ hg₀)`. Set `L : Mat k r →L[ℝ] Mat k r` to `(mulR (aDil k r t.2)).comp (mulL (aDil k r t.1)⁻¹)`. Use `⟨L ⁻¹' U, f' ∘ L, hU.preimage L.continuous, hgU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hc.comp L.contDiff.contDiffOn (fun x hx => hx)`.
-
-Introduce `g hgU' hgG`. Conclude with `hff (L g) hgU' (hin g hgG)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma ckOn_dl {m : ℕ∞} (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) {f : Mat k r → E}
     (hf : CkOn m (GV k r) f) : CkOn m (GV k r) (dl t f) := by
@@ -1344,9 +1324,9 @@ lemma ckOn_dl {m : ℕ∞} (t : ℝ × ℝ) (h1 : t.1 ≠ 0) (h2 : t.2 ≠ 0) {f
     exact hff (L g) hgU' (hin g hgG)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ht`. Establish `hpos : 0 < t` using `by linarith`. Establish `hs : t⁻¹ * t = 1` using `inv_mul_cancel₀ hpos.ne'`. Establish `hsp : 0 < t⁻¹` using `inv_pos.mpr hpos`. Rewrite using `[Set.mem_Icc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h2 hsp.le]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h1 hsp.le]`.
+Prove the components needed by the constructor for the conclusion. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma inv_mem_I {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : t⁻¹ ∈ Set.Icc (1 / 2 : ℝ) 2 := by
   obtain ⟨h1, h2⟩ := ht
@@ -1359,9 +1339,9 @@ lemma inv_mem_I {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : t⁻¹ ∈ Set.
   · nlinarith [mul_le_mul_of_nonneg_left h1 hsp.le]
 
 /- English proof (translation)
-Establish `hpos : 0 < t` using `by linarith [ht.1]`. Establish `e : t⁻¹ - 1 = -(t - 1) * t⁻¹` using `by first`. Consider the case `(field_simp; ring)`. Consider the case `field_simp`. Rewrite using `[e, abs_mul, abs_neg, abs_of_pos (inv_pos.mpr hpos), mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (inv_mem_I ht).2 (abs_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma abs_inv_sub_one {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |t⁻¹ - 1| ≤ 2 * |t - 1| := by
   have hpos : 0 < t := by linarith [ht.1]
@@ -1373,9 +1353,9 @@ lemma abs_inv_sub_one {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |t⁻¹ -
   exact mul_le_mul_of_nonneg_right (inv_mem_I ht).2 (abs_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : t ^ (n + 1) - 1 = t * (t ^ n - 1) + (t - 1)` using `by ring`. Combine the equalities or inequalities in the displayed calculation.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `mul_le_mul h2 ih (abs_nonneg _) (by norm_num : (0 : ℝ) ≤ 2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `_ = (2 ^ (n + 1) - 1) * |t - 1| := by ring`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma pow_sub_one_le {t : ℝ} (h0 : 0 ≤ t) (h2 : t ≤ 2) (n : ℕ) : |t ^ n - 1| ≤ (2 ^ n - 1) * |t - 1| := by
   induction n with
@@ -1390,23 +1370,21 @@ lemma pow_sub_one_le {t : ℝ} (h0 : 0 ≤ t) (h2 : t ≤ 2) (n : ℕ) : |t ^ n 
       _ = (2 ^ (n + 1) - 1) * |t - 1| := by ring
 
 /- English proof (translation)
-Conclude with `pow_le_pow_right₀ (by norm_num) h`.
+A detailed English derivation is pending.
 -/
 lemma two_pow_le (n : ℕ) (h : n ≤ r) : (2 : ℝ) ^ n ≤ 2 ^ r := by
   exact pow_le_pow_right₀ (by norm_num) h
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma normc_lemma (x : ℝ) : ‖(x : ℂ)‖ = |x| := by
   rw [Complex.norm_real, Real.norm_eq_abs]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ht`. Establish `hpos : 0 < t` using `by linarith`. Establish `hi` using `i.isLt`. Unfold `dg`. Use `split_ifs with ha hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normc_lemma, abs_of_pos (pow_pos hpos _)]`. Conclude with `le_trans (pow_le_pow_left₀ hpos.le h2 _) (two_pow_le _ (by omega))`. Rewrite using `[norm_one]`. Conclude with `one_le_pow₀ (by norm_num)`. Rewrite using `[normc_lemma, ← inv_pow, abs_of_pos (pow_pos (inv_pos.mpr hpos) _)]`.
-
-Conclude with `le_trans (pow_le_pow_left₀ (inv_pos.mpr hpos).le (inv_mem_I ⟨h1, h2⟩).2 _) (two_pow_le _ (by omega))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dg_norm_le {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) (i : Fin (2 * r + k + 1)) :
     ‖dg k r t i‖ ≤ 2 ^ r := by
@@ -1424,17 +1402,17 @@ lemma dg_norm_le {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) (i : Fin (2 * r 
       (two_pow_le _ (by omega))
 
 /- English proof (translation)
-Establish `ht'` using `ht`. Take `⟨h1, h2⟩` from `ht`. Establish `hpos : 0 < t` using `by linarith`. Establish `hi` using `i.isLt`. Establish `hA : 0 ≤ |t - 1|` using `abs_nonneg _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : (2 : ℝ) ^ (r + 1) = 2 ^ r * 2` using `pow_succ 2 r`. Establish `h6 : (1 : ℝ) ≤ 2 ^ r` using `one_le_pow₀ (by norm_num)`. Rewrite using `[h5]`. Unfold `dg`. Use `split_ifs with ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, normc_lemma]`. Establish `h3` using `pow_sub_one_le hpos.le h2 (r - i.val)`. Establish `h4 : (2 : ℝ) ^ (r - i.val) ≤ 2 ^ r` using `two_pow_le _ (by omega)`. Establish `h7` using `mul_le_mul_of_nonneg_right (show (2 : ℝ) ^ (r - i.val) - 1 ≤ 2 ^ r * 2 by linarith) hA`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self, norm_zero]`. Check the signs of the components of the expression. Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, normc_lemma, ← inv_pow]`. Establish `hinv` using `inv_mem_I ht'`. Establish `h3` using `pow_sub_one_le (inv_pos.mpr hpos).le hinv.2 (i.val - (r + k))`.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (2 : ℝ) ^ (i.val - (r + k)) ≤ 2 ^ r` using `two_pow_le _ (by omega)`. Establish `h8` using `abs_inv_sub_one ht'`. Establish `h9 : (1 : ℝ) ≤ 2 ^ (i.val - (r + k))` using `one_le_pow₀ (by norm_num)`. Establish `h10` using `mul_le_mul_of_nonneg_left h8 (show (0 : ℝ) ≤ 2 ^ (i.val - (r + k)) - 1 by linarith)`. Establish `h11` using `mul_le_mul_of_nonneg_right h4 hA`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 lemma dg_sub_one {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) (i : Fin (2 * r + k + 1)) :
     ‖dg k r t i - 1‖ ≤ 2 ^ (r + 1) * |t - 1| := by
@@ -1466,30 +1444,30 @@ lemma dg_sub_one {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) (i : Fin (2 * r 
     nlinarith
 
 /- English proof (translation)
-Rewrite using `[aDil_inv k r τ hτ, aDil_eq, aDil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma adj_apply {τ : ℝ} (hτ : τ ≠ 0) (X : Mat k r) (i j : Fin (2 * r + k + 1)) :
     ((aDil k r τ)⁻¹ * X * aDil k r τ) i j = dg k r τ⁻¹ i * X i j * dg k r τ j := by
   rw [aDil_inv k r τ hτ, aDil_eq, aDil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Use `ht.1` as an intermediate fact. Conclude with `ne_of_gt (by linarith)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma ne_zero_of_mem_I {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : t ≠ 0 := by
   have := ht.1
   exact ne_of_gt (by linarith)
 
 /- English proof (translation)
-Rewrite using `[← mul_pow]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 lemma four_pow (r : ℕ) : (4 : ℝ) ^ r = 2 ^ r * 2 ^ r := by
   rw [← mul_pow]
   norm_num
 
 /- English proof (translation)
-Establish `hτ0` using `ne_zero_of_mem_I hτ`. Apply `norm_le_lemma_2 (by positivity)` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[adj_apply hτ0, norm_mul, norm_mul, four_pow]`. Establish `a1` using `dg_norm_le (k := k) (inv_mem_I hτ) i`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `dg_norm_le (k := k) hτ j`. Establish `a3 : ‖X i j‖ ≤ ‖X‖` using `entry_le_lemma X i j`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma adj_norm {τ : ℝ} (hτ : τ ∈ Set.Icc (1 / 2 : ℝ) 2) (X : Mat k r) :
     ‖(aDil k r τ)⁻¹ * X * aDil k r τ‖ ≤ 4 ^ r * ‖X‖ := by
@@ -1504,15 +1482,15 @@ lemma adj_norm {τ : ℝ} (hτ : τ ∈ Set.Icc (1 / 2 : ℝ) 2) (X : Mat k r) :
     _ = 2 ^ r * 2 ^ r * ‖X‖ := by ring
 
 /- English proof (translation)
-Establish `hτ0` using `ne_zero_of_mem_I hτ`. Establish `hA : 0 ≤ |τ - 1|` using `abs_nonneg _`. Apply `norm_le_lemma_2 (by positivity)` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.sub_apply, adj_apply hτ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e : dg k r τ⁻¹ i * X i j * dg k r τ j - X i j = X i j * (dg k r τ⁻¹ i * (dg k r τ j - 1) + (dg k r τ⁻¹ i - 1))` using `by ring`. Rewrite using `[e, norm_mul]`. Establish `a1` using `dg_norm_le (k := k) (inv_mem_I hτ) i`. Establish `a2` using `dg_sub_one (k := k) hτ j`. Establish `a3` using `dg_sub_one (k := k) (inv_mem_I hτ) i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a4` using `abs_inv_sub_one hτ`. Establish `a5 : ‖X i j‖ ≤ ‖X‖` using `entry_le_lemma X i j`. Establish `a6 : ‖dg k r τ⁻¹ i - 1‖ ≤ 2 ^ (r + 1) * (2 * |τ - 1|)` using `a3.trans (mul_le_mul_of_nonneg_left a4 (by positivity))`. Establish `b : ‖dg k r τ⁻¹ i * (dg k r τ j - 1) + (dg k r τ⁻¹ i - 1)‖ ≤ 8 * 4 ^ r * |τ - 1|`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[four_pow, pow_succ]`. Establish `h2r : (1 : ℝ) ≤ 2 ^ r` using `one_le_pow₀ (by norm_num)`. Establish `h3` using `mul_le_mul_of_nonneg_right (show (2 : ℝ) ^ r ≤ 2 ^ r * 2 ^ r by nlinarith) hA`. Establish `h4 : 0 ≤ 2 ^ r * 2 ^ r * |τ - 1|` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 lemma adj_sub_norm {τ : ℝ} (hτ : τ ∈ Set.Icc (1 / 2 : ℝ) 2) (X : Mat k r) :
     ‖(aDil k r τ)⁻¹ * X * aDil k r τ - X‖ ≤ 8 * 4 ^ r * |τ - 1| * ‖X‖ := by
@@ -1545,15 +1523,13 @@ lemma adj_sub_norm {τ : ℝ} (hτ : τ ∈ Set.Icc (1 / 2 : ℝ) 2) (X : Mat k 
     _ = 8 * 4 ^ r * |τ - 1| * ‖X‖ := by ring
 
 /- English proof (translation)
-Unfold `gN`. Establish `hκ : 0 ≤ κ` using `le_trans (norm_nonneg _) (h₁ ⟨0, by omega⟩)`. Rewrite using `[show κ ^ 2 = Real.sqrt ((κ ^ 2) ^ 2) by rw [Real.sqrt_sq (by positivity)], ← Real.sqrt_mul (by positivity)]`. Apply `Real.sqrt_le_sqrt` to reduce the goal to its premises. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.mul_sum]`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `j _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul, Complex.normSq_mul, Complex.normSq_mul]`. Establish `a1 : Complex.normSq (d₁ i) ≤ κ ^ 2`. Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h₁ i) 2`. Establish `a2 : Complex.normSq (d₂ j) ≤ κ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (h₂ j) 2`. Establish `a3` using `Complex.normSq_nonneg (g i j)`. Establish `a4` using `Complex.normSq_nonneg (d₁ i)`. Establish `a5` using `Complex.normSq_nonneg (d₂ j)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma gN_diag (d₁ d₂ : Fin (2 * r + k + 1) → ℂ) (κ : ℝ) (h₁ : ∀ i, ‖d₁ i‖ ≤ κ)
     (h₂ : ∀ i, ‖d₂ i‖ ≤ κ) (g : Mat k r) :
@@ -1584,11 +1560,11 @@ lemma gN_diag (d₁ d₂ : Fin (2 * r + k + 1) → ℂ) (κ : ℝ) (h₁ : ∀ i
     _ = (κ ^ 2) ^ 2 * Complex.normSq (g i j) := by ring
 
 /- English proof (translation)
-Establish `h10` using `ne_zero_of_mem_I h₁`. Establish `h20` using `ne_zero_of_mem_I h₂`. Establish `hg : g = Matrix.diagonal (dg k r τ₁⁻¹) * (aDil k r τ₁ * g * aDil k r τ₂) * Matrix.diagonal (dg k r τ₂⁻¹)`. Rewrite using `[← aDil_eq, ← aDil_eq, ← aDil_inv k r τ₁ h10, ← aDil_inv k r τ₂ h20]`. Simplify using `only [← Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.nonsing_inv_mul _ (aDil_isUnit_det _ h10), Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (aDil_isUnit_det _ h20), Matrix.mul_one]`. Establish `hle : gN g ≤ (2 ^ r) ^ 2 * gN (aDil k r τ₁ * g * aDil k r τ₂)` using `by conv_lhs => rw [hg]`. Conclude with `gN_diag _ _ _ (dg_norm_le (inv_mem_I h₁)) (dg_norm_le (inv_mem_I h₂)) _`. Establish `h0 : 0 ≤ gN g` using `Real.sqrt_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Real.mul_rpow (by positivity) (show (0 : ℝ) ≤ gN (aDil k r τ₁ * g * aDil k r τ₂) from Real.sqrt_nonneg _), four_pow, sq]`.
+A detailed English derivation is pending.
 -/
 lemma gN_dil {τ₁ τ₂ A : ℝ} (h₁ : τ₁ ∈ Set.Icc (1 / 2 : ℝ) 2) (h₂ : τ₂ ∈ Set.Icc (1 / 2 : ℝ) 2)
     (hA : 0 ≤ A) (g : Mat k r) :
@@ -1617,13 +1593,13 @@ def zd (k r : ℕ) (i : Fin (2 * r + k + 1)) : ℝ :=
 def Zm (k r : ℕ) : Mat k r := Matrix.diagonal fun i => ((zd k r i : ℝ) : ℂ)
 
 /- English proof (translation)
-Unfold `Zm`. Rewrite using `[← Matrix.diagonal_smul, Matrix.exp_diagonal, aDil_eq]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp, ← Complex.exp_eq_exp_ℂ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Unfold `zd dg`. Distinguish the cases in `c1 : i.val < r`. Simplify using `only [c1, if_true, Pi.smul_apply, smul_eq_mul]`. Use `push_cast`. Rewrite using `[← Complex.exp_nat_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `c2 : i.val ≤ r + k`. Simplify using `[c1, c2]`. Simplify using `only [c1, c2, if_false, Pi.smul_apply, smul_eq_mul]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[← Complex.exp_nat_mul, ← Complex.exp_neg]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma exp_Zm (s : ℝ) : NormedSpace.exp ((s : ℂ) • Zm k r) = aDil k r (Real.exp s) := by
   unfold Zm
@@ -1647,7 +1623,7 @@ lemma exp_Zm (s : ℝ) : NormedSpace.exp ((s : ℂ) • Zm k r) = aDil k r (Real
       ring
 
 /- English proof (translation)
-Establish `hj1 : ¬ j.val < r` using `by omega`. Establish `hj2 : ¬ j.val ≤ r + k` using `by omega`. Establish `e : j.val - (r + k) = r - i.val` using `by omega`. Unfold `zd`. Rewrite using `[if_pos hi, if_neg hj1, if_neg hj2, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -1661,7 +1637,7 @@ private lemma zd_pair_lemma (i j : Fin (2 * r + k + 1)) (hi : i.val < r)
   ring
 
 /- English proof (translation)
-Unfold `zd`. Rewrite using `[if_neg (by omega), if_pos h2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private lemma zd_mid_lemma_2 (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : i.val ≤ r + k) :
     zd k r i = 0 := by
@@ -1669,17 +1645,17 @@ private lemma zd_mid_lemma_2 (i : Fin (2 * r + k + 1)) (h1 : r ≤ i.val) (h2 : 
   rw [if_neg (by omega), if_pos h2]
 
 /- English proof (translation)
-Unfold `inLie`. Establish `hD : (Zm k r)ᴴ = Zm k r`. Unfold `Zm`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Matrix.diagonal_apply, Matrix.diagonal_apply]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm h), if_neg h, star_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD]`. Use extensionality with `i j`. Rewrite using `[Matrix.add_apply, Matrix.zero_apply]`. Unfold `Zm`. Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hi` using `i.isLt`. Establish `hj` using `j.isLt`. Unfold `Hpk`. Use `split_ifs with h1 h2 h3 h4`. Rewrite using `[mul_one, one_mul, ← Complex.ofReal_add, zd_pair_lemma i j h1.1 h1.2, Complex.ofReal_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_one, one_mul, ← Complex.ofReal_add, add_comm, zd_pair_lemma j i h2.1 (by omega), Complex.ofReal_zero]`. Take `⟨ha, hb, rfl⟩` from `h3`. Rewrite using `[zd_mid_lemma_2 i ha hb]`. Simplify using the standard rewrite rules. Take `⟨ha, hb, rfl⟩` from `h3`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zd_mid_lemma_2 i ha hb]`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Zm_lie : inLie k r (Zm k r) := by
   unfold inLie
@@ -1713,11 +1689,11 @@ lemma Zm_lie : inLie k r (Zm k r) := by
   · simp
 
 /- English proof (translation)
-Apply `norm_le_lemma_2 (Nat.cast_nonneg r)` to reduce the goal to its premises. Introduce `i j`. Establish `hi` using `i.isLt`. Unfold `Zm`. Rewrite using `[Matrix.diagonal_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Rewrite using `[normc_lemma]`. Unfold `zd`. Use `split_ifs with ha hb`. Rewrite using `[abs_of_nonneg (Nat.cast_nonneg _)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by omega : r - i.val ≤ r)` after adjusting the coercions. Simplify using the standard rewrite rules. Rewrite using `[abs_neg, abs_of_nonneg (Nat.cast_nonneg _)]`. Conclude with `(by omega : i.val - (r + k) ≤ r)` after adjusting the coercions. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Zm_norm : ‖Zm k r‖ ≤ r := by
   apply norm_le_lemma_2 (Nat.cast_nonneg r)
@@ -1737,7 +1713,7 @@ lemma Zm_norm : ‖Zm k r‖ ≤ r := by
   · simp
 
 /- English proof (translation)
-Simplify using `only [cv]`. Rewrite using `[← exp_Zm (-s)]`. Use `congr 2`. Use `push_cast`. Rewrite using `[neg_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma cv_Zm_true (s : ℝ) (g : Mat k r) : cv true (Zm k r) s g = aDil k r (Real.exp (-s)) * g := by
   simp only [cv]
@@ -1747,16 +1723,16 @@ lemma cv_Zm_true (s : ℝ) (g : Mat k r) : cv true (Zm k r) s g = aDil k r (Real
   rw [neg_smul]
 
 /- English proof (translation)
-Simplify using `only [cv]`. Rewrite using `[exp_Zm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma cv_Zm_false (s : ℝ) (g : Mat k r) : cv false (Zm k r) s g = g * aDil k r (Real.exp s) := by
   simp only [cv]
   rw [exp_Zm]
 
 /- English proof (translation)
-Establish `hg' : cv b Z σ g ∈ GV k r` using `cv_mem hZ hg σ`. Establish `hd` using `ckOn_diff 0 b hH hZ hg'`. Establish `h1 : HasDerivAt (fun s => H (cv b Z s (cv b Z σ g))) (op b Z H (cv b Z σ g)) 0` using `hd.hasDerivAt`. Establish `h2` using `HasDerivAt.comp_sub_const σ σ (by rw [sub_self]; exact h1)`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← cv_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hasDerivAt_cv {H : Mat k r → E} (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) {Z g : Mat k r}
     (hZ : inLie k r Z) (hg : g ∈ GV k r) (b : Bool) (σ : ℝ) :
@@ -1773,13 +1749,11 @@ lemma hasDerivAt_cv {H : Mat k r → E} (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r)
   ring
 
 /- English proof (translation)
-Establish `hL : 0 ≤ L` using `le_trans (abs_nonneg s) hs`. Establish `hB0 : 0 ≤ B` using `le_trans (mul_nonneg hlm (norm_nonneg _)) (hB 0 (by rw [abs_zero]; exact hL))`. Break down `eq_or_lt_of_le hlm with h0 | hpos` into its components or cases. Rewrite using `[← h0, zero_mul]`. Conclude with `mul_nonneg hB0 (abs_nonneg s)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmv` using `Convex.norm_image_sub_le_of_norm_hasDerivWithin_le (f := fun σ => H (cv b Z σ g)) (f' := fun σ => op b Z H (cv b Z σ g)) (C := B / lm) (s := Set.Icc (-L) L) (fun x _ => (hasDerivAt_cv hH hZ hg b x).hasDerivWithinAt) (fun x hx => by`. Rewrite using `[le_div_iff₀ hpos, mul_comm]`. Conclude with `hB x (abs_le.mpr hx))`. Use the proof step `(convex_Icc _ _) (show (0 : ℝ) ∈ Set.Icc (-L) L from ⟨by linarith, hL⟩)`. Use the proof step `(show s ∈ Set.Icc (-L) L from abs_le.mp hs)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [sub_zero, Real.norm_eq_abs] at hmv`. Rewrite `hmv` using `[cv_zero]`. Establish `hne : lm ≠ 0` using `hpos.ne'`. Combine the equalities or inequalities in the displayed calculation. Consider the case `(field_simp; done)`.
-
-Consider the case `(field_simp; ring)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma mean_value {H : Mat k r → E} (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) {Z g : Mat k r}
     (hZ : inLie k r Z) (hg : g ∈ GV k r) (b : Bool) {lm B L : ℝ} (hlm : 0 ≤ lm)
@@ -1810,9 +1784,9 @@ lemma mean_value {H : Mat k r → E} (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H)
           | (field_simp; ring)
 
 /- English proof (translation)
-Establish `hpos : 0 < t` using `by linarith [ht.1]`. Establish `h2` using `abs_inv_sub_one ht`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Establish `h1` using `Real.one_sub_inv_le_log_of_pos hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Combine the linear relations using `[le_abs_self (t⁻¹ - 1)]`. Use `Real.log_le_sub_one_of_pos hpos` as an intermediate fact. Combine the linear relations using `[le_abs_self (t - 1), abs_nonneg (t - 1)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma abs_log_le {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |Real.log t| ≤ 2 * |t - 1| := by
   have hpos : 0 < t := by linarith [ht.1]
@@ -1825,9 +1799,9 @@ lemma abs_log_le {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |Real.log t| �
     linarith [le_abs_self (t - 1), abs_nonneg (t - 1)]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `ht`. Establish `hpos : 0 < t` using `by linarith`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Use `Real.log_le_log (by norm_num : (0 : ℝ) < 1 / 2) h1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[one_div, Real.log_inv]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Real.log_le_log hpos h2`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma abs_log_le_log_two {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |Real.log t| ≤ Real.log 2 := by
   obtain ⟨h1, h2⟩ := ht
@@ -1840,9 +1814,9 @@ lemma abs_log_le_log_two {t : ℝ} (ht : t ∈ Set.Icc (1 / 2 : ℝ) 2) : |Real.
   · exact Real.log_le_log hpos h2
 
 /- English proof (translation)
-Rewrite `h` using `[abs_le]`. Rewrite using `[Set.mem_Icc]`. Prove the components needed by the constructor for the conclusion. Use `Real.exp_le_exp.mpr h.1` as an intermediate fact. Rewrite `this` using `[Real.exp_neg, Real.exp_log (by norm_num), ← one_div]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Real.exp_le_exp.mpr h.2` as an intermediate fact. Rewrite `this` using `[Real.exp_log (by norm_num)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma exp_mem_I {σ : ℝ} (h : |σ| ≤ Real.log 2) : Real.exp σ ∈ Set.Icc (1 / 2 : ℝ) 2 := by
   rw [abs_le] at h
@@ -1854,7 +1828,7 @@ lemma exp_mem_I {σ : ℝ} (h : |σ| ≤ Real.log 2) : Real.exp σ ∈ Set.Icc (
     rwa [Real.exp_log (by norm_num)] at this
 
 /- English proof (translation)
-Unfold `CCle at h`. Establish `h1 : (1 : Mat k r) ∈ GV k r` using `by show (1 : Mat k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules. Use `h.2 [] [] (by simp) (by simp) (by simp) 1 h1` as an intermediate fact. Conclude with `le_trans (mul_nonneg (Real.rpow_nonneg (Real.sqrt_nonneg _) A) (norm_nonneg _)) this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma cc_nonneg {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) : 0 ≤ c := by
   unfold CCle at h
@@ -1865,14 +1839,14 @@ lemma cc_nonneg {F : Mat k r → E} {A c : ℝ} {m : ℕ} (h : CCle A m F c) : 0
   exact le_trans (mul_nonneg (Real.rpow_nonneg (Real.sqrt_nonneg _) A) (norm_nonneg _)) this
 
 /- English proof (translation)
-Unfold `CCle at *`. Conclude with `⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hc⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 lemma cc_mono {F : Mat k r → E} {A c c' : ℝ} {m : ℕ} (h : CCle A m F c) (hc : c ≤ c') : CCle A m F c' := by
   unfold CCle at *
   exact ⟨h.1, fun u v hu hv hl g hg => (h.2 u v hu hv hl g hg).trans hc⟩
 
 /- English proof (translation)
-Rewrite using `[aDil_eq, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Unfold `dg`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma aDil_one : aDil k r 1 = 1 := by
   rw [aDil_eq, ← Matrix.diagonal_one]
@@ -1882,7 +1856,7 @@ lemma aDil_one : aDil k r 1 = 1 := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Consider the cases of `b`. Conclude with `h2`. Conclude with `h1`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 lemma sel_mem {t : ℝ × ℝ} (h1 : t.1 ∈ Set.Icc (1 / 2 : ℝ) 2) (h2 : t.2 ∈ Set.Icc (1 / 2 : ℝ) 2) (b : Bool) :
     sel t b ∈ Set.Icc (1 / 2 : ℝ) 2 := by
@@ -1891,13 +1865,13 @@ lemma sel_mem {t : ℝ × ℝ} (h1 : t.1 ∈ Set.Icc (1 / 2 : ℝ) 2) (h2 : t.2 
   · exact h1
 
 /- English proof (translation)
-Apply the tactic sequence `cases b <;> simp only [sel] <;> linarith [abs_nonneg (t.1 - 1), abs_nonneg (t.2 - 1)]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma sel_sub_le (t : ℝ × ℝ) (b : Bool) : |sel t b - 1| ≤ |t.1 - 1| + |t.2 - 1| := by
   cases b <;> simp only [sel] <;> linarith [abs_nonneg (t.1 - 1), abs_nonneg (t.2 - 1)]
 
 /- English proof (translation)
-Conclude with `one_le_pow₀ (by norm_num)`.
+A detailed English derivation is pending.
 -/
 lemma one_le_K (r : ℕ) : (1 : ℝ) ≤ 4 ^ r := by
   exact one_le_pow₀ (by norm_num)
@@ -1909,13 +1883,13 @@ variable {t : ℝ × ℝ} (h1 : t.1 ∈ Set.Icc (1 / 2 : ℝ) 2) (h2 : t.2 ∈ S
 include h1 h2
 
 /- English proof (translation)
-Conclude with `inLie_conj (aDil_mem k r _ (ne_zero_of_mem_I (sel_mem h1 h2 x.1))) hx.1`.
+A detailed English derivation is pending.
 -/
 lemma adj_lie (x : Bool × Mat k r) (hx : unitLie k r x.2) : inLie k r (adj t x).2 := by
   exact inLie_conj (aDil_mem k r _ (ne_zero_of_mem_I (sel_mem h1 h2 x.1))) hx.1
 
 /- English proof (translation)
-Establish `a1` using `adj_norm (k := k) (sel_mem h1 h2 x.1) x.2`. Establish `a2` using `unit_norm_le hx`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma adj_le (x : Bool × Mat k r) (hx : unitLie k r x.2) : ‖(adj t x).2‖ ≤ 4 ^ r := by
   have a1 := adj_norm (k := k) (sel_mem h1 h2 x.1) x.2
@@ -1925,7 +1899,7 @@ lemma adj_le (x : Bool × Mat k r) (hx : unitLie k r x.2) : ‖(adj t x).2‖ �
     _ = 4 ^ r := mul_one _
 
 /- English proof (translation)
-Establish `a1` using `adj_sub_norm (k := k) (sel_mem h1 h2 x.1) x.2`. Establish `a2` using `unit_norm_le hx`. Establish `a3` using `sel_sub_le t x.1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma adj_sub_le (x : Bool × Mat k r) (hx : unitLie k r x.2) :
     ‖(adj t x).2 - x.2‖ ≤ 8 * 4 ^ r * (|t.1 - 1| + |t.2 - 1|) := by
@@ -1937,7 +1911,7 @@ lemma adj_sub_le (x : Bool × Mat k r) (hx : unitLie k r x.2) :
     _ = 8 * 4 ^ r * (|t.1 - 1| + |t.2 - 1|) := mul_one _
 
 /- English proof (translation)
-Rewrite using `[aDil_inv k r t.1 (ne_zero_of_mem_I h1)]`. Conclude with `gv_mul_lemma (gv_mul_lemma (aDil_mem k r _ (inv_ne_zero (ne_zero_of_mem_I h1))) hg) (aDil_mem k r _ (ne_zero_of_mem_I h2))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dl_mem {g : Mat k r} (hg : g ∈ GV k r) : (aDil k r t.1)⁻¹ * g * aDil k r t.2 ∈ GV k r := by
   rw [aDil_inv k r t.1 (ne_zero_of_mem_I h1)]
@@ -1945,7 +1919,7 @@ lemma dl_mem {g : Mat k r} (hg : g ∈ GV k r) : (aDil k r t.1)⁻¹ * g * aDil 
     (aDil_mem k r _ (ne_zero_of_mem_I h2))
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [lr, List.mem_append, List.mem_map] at hx`. Break down `hx with ⟨X, hX, rfl⟩ | ⟨X, hX, rfl⟩` into its components or cases. Conclude with `hu X hX`. Conclude with `hv X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma unit_lr {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : ∀ X ∈ v, unitLie k r X) :
     ∀ x ∈ lr u v, unitLie k r x.2 := by
@@ -1956,19 +1930,17 @@ lemma unit_lr {u v : List (Mat k r)} (hu : ∀ X ∈ u, unitLie k r X) (hv : ∀
   · exact hv X hX
 
 /- English proof (translation)
-Establish `ht1` using `ne_zero_of_mem_I h1`. Establish `ht2` using `ne_zero_of_mem_I h2`. Establish `hc0 : 0 ≤ c` using `cc_nonneg hF`. Unfold `CCle at *`. Use `⟨ckOn_dl t ht1 ht2 hF.1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u v hu hv hl g hg`. Establish `hunit` using `unit_lr h1 h2 hu hv`. Use `set w' := (lr u v).map (adj t) with hw'`. Use `set g' := (aDil k r t.1)⁻¹ * g * aDil k r t.2 with hg'`. Establish `hgd : g' ∈ GV k r` using `dl_mem h1 h2 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlen : w'.length ≤ m`. Rewrite using `[hw', List.length_map, length_lr]`. Conclude with `hl`. Establish `hb` using `bound_scaled (A := A) hF w' (by rw [hw', List.map_map]; exact lrt_lr u v) (fun x hx => by`. Rewrite `hx` using `[hw', List.mem_map]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `adj_lie h1 h2 y (hunit y hy))`. Use `hlen g' hgd`. Establish `hpn : pn w' ≤ (4 ^ r) ^ m`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `hx` using `[hw', List.mem_map]`. Take `⟨y, hy, rfl⟩` from `hx`. Conclude with `adj_le h1 h2 y (hunit y hy))`. Use `_ ≤ (4 ^ r) ^ m := pow_le_pow_right₀ (one_le_K r) hlen`. Establish `hW : dLR u v (dl t F) g = W w' F g'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dLR_eq, W_dl t ht1 ht2]`. Both sides reduce to the same expression. Establish `hgn : gN g ^ A ≤ ((4 : ℝ) ^ r) ^ A * gN g' ^ A`. Use `gN_dil (k := k) (inv_mem_I h1) h2 hA g` as an intermediate fact. Rewrite `this` using `[← aDil_inv k r t.1 ht1]`.
-
-Conclude with `this`. Rewrite using `[hW]`. Establish `hWn` using `norm_nonneg (W w' F g')`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma dil_bound1 {F : Mat k r → E} {A c : ℝ} {m : ℕ} (hA : 0 ≤ A) (hF : CCle A m F c) :
     CCle A m (dl t F) (((4 : ℝ) ^ r) ^ A * ((4 ^ r) ^ m * c)) := by
@@ -2013,45 +1985,39 @@ lemma dil_bound1 {F : Mat k r → E} {A c : ℝ} {m : ℕ} (hA : 0 ≤ A) (hF : 
     _ ≤ ((4 : ℝ) ^ r) ^ A * ((4 ^ r) ^ m * c) := by gcongr
 
 /- English proof (translation)
-Establish `n1` using `ne_zero_of_mem_I h1`. Establish `n2` using `ne_zero_of_mem_I h2`. Establish `p1 : 0 < t.1` using `by linarith [h1.1]`. Establish `p2 : 0 < t.2` using `by linarith [h2.1]`. Establish `hc` using `cc_nonneg hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : CkOn ((m : ℕ) : ℕ∞) (GV k r) F` using `ckOn_mono (Nat.le_succ m) hF.1`. Establish `hsub : dl t F - F = dl t F + (-1 : ℂ) • F` using `by simp [sub_eq_add_neg]`. Use `⟨by rw [hsub]; exact ckOn_add (ckOn_dl t n1 n2 hFm) (ckOn_smul _ hFm), ?_⟩` and prove the remaining obligations. Introduce `u v hu hv hlen g hg`. Establish `hun` using `unit_lr h1 h2 hu hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hL : AllLie (lr u v)` using `allLie_lr hu hv`. Establish `hl : (lr u v).length ≤ m` using `by rw [length_lr]; exact hlen`. Rewrite using `[dLR_eq, W_sub _ hL (ckOn_mono hl (ckOn_dl t n1 n2 hFm)) (ckOn_mono hl hFm) g hg, W_dl t n1 n2]`. Use `show gN g ^ A * ‖W ((lr u v).map (adj t)) F ((aDil k r t.1)⁻¹ * g * aDil k r t.2) - W (lr u v) F g‖ ≤ _`. Use `set κ : ℝ := ((4 : ℝ) ^ r) ^ A with hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ0 : 0 ≤ κ` using `by positivity`. Use `set δ : ℝ := |t.1 - 1| + |t.2 - 1| with hδ`. Establish `hδ0 : 0 ≤ δ` using `by positivity`. Use `set g' : Mat k r := (aDil k r t.1)⁻¹ * g * aDil k r t.2 with hg'`. Establish `hg'G : g' ∈ GV k r` using `dl_mem h1 h2 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g₂ : Mat k r := g * aDil k r t.2 with hg₂`. Establish `hg₂G : g₂ ∈ GV k r` using `WeylGroupFacts.uh_mul hg (aDil_mem k r t.2 n2)`. Use `set H : Mat k r → E := W (lr u v) F with hH`. Establish `hH1 : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H` using `smooth_on_of_word_derivatives _ hL 1 (ckOn_mono (by omega) hF.1)`. Establish `hpw : pn (lr u v) ≤ 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `pn_le_pow (lr u v) 1 (fun y hy => unit_norm_le (hun y hy))` as an intermediate fact. Simplify using `using this`. Establish `T1 : gN g ^ A * ‖W ((lr u v).map (adj t)) F g' - H g'‖ ≤ κ * (m * ((4 ^ r) ^ (m + 1) * (8 * 4 ^ r * δ) * c))`. Establish `hN : gN g ^ A ≤ κ * gN g' ^ A`. Use `gN_dil (k := k) (r := r) (inv_mem_I h1) h2 hA g` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite `this` using `[← aDil_inv k r t.1 n1]`. Then use the resulting hypothesis. Establish `ht` using `telescope hF hc (one_le_K r) (adj t) (fun _ => rfl) (adj_lie h1 h2) (adj_le h1 h2) (adj_sub_le h1 h2) (lr u v) [] (by simp) hun (lrt_lr u v) (by simpa using le_trans hl (Nat.le_succ m)) g' hg'G`. Simplify using `only [List.nil_append] at ht`. Establish `hm : ((lr u v).length : ℝ) ≤ m` using `by exact_mod_cast hl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `T2 : gN g ^ A * ‖H g' - H g₂‖ ≤ κ * (r * c) * |Real.log t.1|`. Establish `hB : ∀ σ : ℝ, |σ| ≤ Real.log 2 → gN g ^ A * ‖op true (Zm k r) H (cv true (Zm k r) σ g₂)‖ ≤ κ * (r * c)`. Introduce `σ hσ`. Establish `hpt : cv true (Zm k r) σ g₂ ∈ GV k r` using `cv_mem Zm_lie hg₂G σ`. Establish `hN : gN g ^ A ≤ κ * gN (cv true (Zm k r) σ g₂) ^ A`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `gN_dil (k := k) (r := r) (exp_mem_I (by rwa [abs_neg] : |-σ| ≤ Real.log 2)) h2 hA g` as an intermediate fact. Rewrite using `[cv_Zm_true, hg₂, ← Matrix.mul_assoc]` and apply the resulting hypothesis. Establish `hb` using `bound_scaled hF (lr (Zm k r :: u) v) (lrt_lr _ _) (by`. Introduce `x hx`. Break down `List.mem_cons.mp hx with rfl | hx` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Zm_lie`. Conclude with `hL x hx)`. Use the proof step `(by rw [length_lr, List.length_cons]; omega) _ hpt`. Establish `hpn : pn (lr (Zm k r :: u) v) ≤ r`. Establish `e : pn (lr (Zm k r :: u) v) = ‖Zm k r‖ * pn (lr u v)` using `pn_cons _ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `_ ≤ κ * (r * c) := mul_le_mul_of_nonneg_left (le_trans hb (mul_le_mul_of_nonneg_right hpn hc)) hκ0`. Establish `h` using `mean_value hH1 Zm_lie hg₂G true (gN_rpow_nonneg g A) hB (abs_log_le_log_two h1)`. Rewrite `h` using `[cv_Zm_true, Real.exp_neg, Real.exp_log p1, ← aDil_inv k r t.1 n1, hg₂, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `T3 : gN g ^ A * ‖H g₂ - H g‖ ≤ κ * (r * c) * |Real.log t.2|`. Establish `hB : ∀ σ : ℝ, |σ| ≤ Real.log 2 → gN g ^ A * ‖op false (Zm k r) H (cv false (Zm k r) σ g)‖ ≤ κ * (r * c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `σ hσ`. Establish `hpt : cv false (Zm k r) σ g ∈ GV k r` using `cv_mem Zm_lie hg σ`. Establish `hN : gN g ^ A ≤ κ * gN (cv false (Zm k r) σ g) ^ A`. Use `gN_dil (k := k) (r := r) (τ₁ := 1) (by norm_num) (exp_mem_I hσ) hA g` as an intermediate fact. Rewrite `this` using `[aDil_one, Matrix.one_mul, ← cv_Zm_false]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hsp : lr u v = lr u [] ++ lr [] v` using `by simp [lr]`. Establish `hsp2 : lr u (Zm k r :: v) = lr u [] ++ (false, Zm k r) :: lr [] v` using `by simp [lr]`. Establish `hLv : AllLie (lr ([] : List (Mat k r)) v)` using `allLie_lr (by simp) hv`. Establish `hcomm : op false (Zm k r) H (cv false (Zm k r) σ g) = W (lr u (Zm k r :: v)) F (cv false (Zm k r) σ g)`. Rewrite using `[hH, hsp, W_append, op_W_comm Zm_lie u (fun X hX => (hu X hX).1) _ (smooth_on_of_word_derivatives _ hLv _ (ckOn_mono (by rw [length_lr]; simp; omega) hF.1)) _ hpt, hsp2, W_append, W_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hb` using `bound_scaled hF (lr u (Zm k r :: v)) (lrt_lr _ _) (by`. Introduce `x hx`. Rewrite `hx` using `[hsp2]`. Break down `List.mem_append.mp hx with hx | hx` into its components or cases. Conclude with `hL x (by rw [hsp]; exact List.mem_append_left _ hx)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Break down `List.mem_cons.mp hx with rfl | hx` into its components or cases. Conclude with `Zm_lie`. Conclude with `hL x (by rw [hsp]; exact List.mem_append_right _ hx))`. Use the proof step `(by rw [length_lr, List.length_cons]; omega) _ hpt`. Establish `hpn : pn (lr u (Zm k r :: v)) ≤ r`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : pn (lr u (Zm k r :: v)) = ‖Zm k r‖ * pn (lr u v)`. Rewrite using `[hsp2, hsp, pn_append, pn_append, pn_cons]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hcomm]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ κ * (r * c) := mul_le_mul_of_nonneg_left (le_trans hb (mul_le_mul_of_nonneg_right hpn hc)) hκ0`. Establish `h` using `mean_value hH1 Zm_lie hg false (gN_rpow_nonneg g A) hB (abs_log_le_log_two h2)`.
-
-Rewrite `h` using `[cv_Zm_false, Real.exp_log p2]`. Then use the resulting hypothesis. Establish `l1` using `abs_log_le h1`. Establish `l2` using `abs_log_le h2`. Establish `hrc : 0 ≤ κ * (r * c)` using `by positivity`. Establish `tri : ‖W ((lr u v).map (adj t)) F g' - H g‖ ≤ ‖W ((lr u v).map (adj t)) F g' - H g'‖ + ‖H g' - H g₂‖ + ‖H g₂ - H g‖`.
-
-Establish `e : W ((lr u v).map (adj t)) F g' - H g = (W ((lr u v).map (adj t)) F g' - H g') + (H g' - H g₂) + (H g₂ - H g)` using `by abel`. Rewrite using `[e]`. Conclude with `norm_add₃_le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma dil_bound2 {F : Mat k r → E} {A c : ℝ} {m : ℕ} (hA : 0 ≤ A) (hF : CCle A (m + 1) F c) :
     CCle A m (dl t F - F)
@@ -2202,17 +2168,17 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.FourierDecayAlt.P.B4
 
 /- English proof (translation)
-Introduce `k r z t ht hz n hn`. Establish `hn'` using `(WeylGroupFacts.nset_iff n).1 hn`. Establish `hell : ell k r z (aDil k r t * n * (aDil k r t)⁻¹) = (t : ℂ) * ell k r z n`. Unfold `ell`. Rewrite using `[Finset.mul_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val + 1 < r`. Simplify using `only [h, dif_pos]`. Rewrite using `[conj_apply k r t ht, mul_right_comm, dg_step k r t ht a h]`. Simplify using `only [h, dif_neg, not_false_eq_true]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[conj_apply k r t ht, dg_last k r t a h]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hz j hj]`. Simplify using the standard rewrite rules. Rewrite using `[dg_mid k r t⁻¹ j (by omega) (by omega)]; ring`. Use `⟨?_, hell, ?_⟩` and prove the remaining obligations. Rewrite using `[WeylGroupFacts.nset_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul (aDil_mem k r t ht) hn'.1) (WeylGroupFacts.uh_inv (aDil_mem k r t ht)), ?_⟩` and prove the remaining obligations. Introduce `i j hj hi`. Rewrite using `[conj_apply k r t ht, hn'.2 i j hj hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[dg_mul_inv k r t ht i]`. Simplify using `[hij]`. Unfold `lam`. Rewrite using `[hell, mul_left_comm, Complex.re_ofReal_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dilation_unipotent_measure : Formalism.FourierDecayAlt.B.DilN := by
   intro k r z t ht hz n hn
@@ -2245,13 +2211,13 @@ theorem dilation_unipotent_measure : Formalism.FourierDecayAlt.B.DilN := by
     rw [hell, mul_left_comm, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Introduce `k r z t h hh`. Take `⟨hc, hr⟩` from `WeylGroupFacts.uw_block hh`. Use extensionality with `i j`. Rewrite using `[aDil_eq, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hc i j hj]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Rewrite using `[hr i j hi]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hij]`. Rewrite using `[dg_mid k r t i (by omega) (by omega), dg_mid k r t j (by omega) (by omega)]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dilation_unipotent_weyl_measure : Formalism.FourierDecayAlt.B.DilUW := by
   intro k r z t h hh
@@ -2271,11 +2237,11 @@ theorem dilation_unipotent_weyl_measure : Formalism.FourierDecayAlt.B.DilUW := b
     · rw [dg_mid k r t i (by omega) (by omega), dg_mid k r t j (by omega) (by omega)]; ring
 
 /- English proof (translation)
-Introduce `k r E _ _ A m F F' c c' a hF hF'`. Take `⟨hF, hb⟩` from `hF`. Take `⟨hF', hb'⟩` from `hF'`. Use `⟨⟨ckOn_add hF hF', ?_⟩, ⟨ckOn_smul a hF, ?_⟩⟩` and prove the remaining obligations. Introduce `u v hu hv hlen g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : (lr u v).length ≤ m` using `by rw [length_lr]; exact hlen`. Rewrite using `[dLR_eq, W_add _ (allLie_lr hu hv) (ckOn_mono hl hF) (ckOn_mono hl hF') g hg, ← dLR_eq, ← dLR_eq]`. Combine the equalities or inequalities in the displayed calculation. Introduce `u v hu hv hlen g hg`. Rewrite using `[dLR_eq, W_smul, ← dLR_eq, Pi.smul_apply, norm_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem matrix_coefficient_linear : Formalism.FourierDecayAlt.B.CCLin := by
   intro k r E _ _ A m F F' c c' a hF hF'
@@ -2296,13 +2262,13 @@ theorem matrix_coefficient_linear : Formalism.FourierDecayAlt.B.CCLin := by
       _ ≤ ‖a‖ * c := mul_le_mul_of_nonneg_left (hb u v hu hv hlen g hg) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ A hA`. Use `⟨((4 : ℝ) ^ r) ^ A * (4 ^ r) ^ 5 + ((4 : ℝ) ^ r) ^ A * (((4 : ℕ) : ℝ) * ((4 ^ r) ^ (4 + 1) * (8 * 4 ^ r)) + 2 * r), ?_⟩` and prove the remaining obligations. Introduce `t ht F c hF`. Take `⟨h1, h2⟩` from `Set.mem_prod.mp ht`. Establish `hc` using `cc_nonneg hF`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hδ : 0 ≤ |t.1 - 1| + |t.2 - 1|` using `by positivity`. Establish `a1 : (0 : ℝ) ≤ ((4 : ℝ) ^ r) ^ A * (4 ^ r) ^ 5` using `by positivity`. Establish `a2 : (0 : ℝ) ≤ ((4 : ℝ) ^ r) ^ A * (((4 : ℕ) : ℝ) * ((4 ^ r) ^ (4 + 1) * (8 * 4 ^ r)) + 2 * r)`. Check the signs of the components of the expression. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Prove the components needed by the constructor for the conclusion.
 
-Use `cc_mono (dil_bound1 h1 h2 hA hF) ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (le_add_of_nonneg_right a2 : ((4 : ℝ) ^ r) ^ A * (4 ^ r) ^ 5 ≤ _) hc` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `cc_mono (dil_bound2 h1 h2 hA hF) ?_` and prove the remaining obligations. Use `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_add_of_nonneg_left a1 : ((4 : ℝ) ^ r) ^ A * (((4 : ℕ) : ℝ) * ((4 ^ r) ^ (4 + 1) * (8 * 4 ^ r)) + 2 * r) ≤ _) hδ) hc` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem dilation_matrix_coefficient : Formalism.FourierDecayAlt.B.DilCC := by
   intro k r Wp Wq _ _ _ _ A hA

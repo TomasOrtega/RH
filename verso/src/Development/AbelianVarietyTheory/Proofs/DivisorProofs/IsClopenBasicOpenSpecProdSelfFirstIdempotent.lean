@@ -15,14 +15,14 @@ abbrev fst1 (O : Type) [CommRing O] : Γ(Spec (.of (O × O)), ⊤) :=
   (Scheme.ΓSpecIso (.of (O × O))).inv.hom ((1, 0) : O × O)
 
 /- English proof (translation)
-Use `haveI : IsFinite (twoπ O) := (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_twoπ (O : Type) [CommRing O] : IsProper (twoπ O) := by
   haveI : IsFinite (twoπ O) := (IsFinite.SpecMap_iff _).2 (RingHom.finite_algebraMap.2 inferInstance)
   infer_instance
 
 /- English proof (translation)
-Rewrite using `[basicOpen_eq_of_affine]`. Apply the tactic sequence `exact PrimeSpectrum.isClopen_iff.2 ⟨((1, 0) : O × O), by ext <;> simp [IsIdempotentElem], rfl⟩`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isClopen_basicOpen_specProdSelfFirstIdempotent (O : Type) [CommRing O] :
     IsClopen (((Spec (.of (O × O))).basicOpen (fst1 O) : (Spec (.of (O × O))).Opens) :

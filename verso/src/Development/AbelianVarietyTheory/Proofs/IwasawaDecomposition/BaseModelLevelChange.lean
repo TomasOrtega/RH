@@ -13,9 +13,9 @@ open GlobalTheory.Models
 namespace GlobalTheory.Models.Domination
 
 /- English proof (translation)
-Introduce `L₁ L₂ L₃ E _ _ _ H D Xo n N T l₀ l B c R O' _ _ ω β' bR C Y' b' k r ν hr hk hlev A hω hβ' hb hR`. Take `⟨_, _, _, _, _, m₁, -⟩` from `sabPull Out.CubePf.cubePull (pullback.fst C.s (spMap b')) C.t`. Take `⟨m₂, hm₂⟩` from `GlobalTheory.LevelCover.sab_comp m₁ A.mu rfl`. Use `dominates_of_map_to_base L₁ L₂ L₃ E H D Xo n N T l₀ l B c R O' ω β' C Y' b' _ _ m₁ m₂ r ν k hω hβ' hb hR hlev hk hr (fun g hg => ?_) (fun y hy => ?_)` and prove the remaining obligations. Establish `hj : C.j ≫ A.π = r ≫ B.C.j` using `A.j_comm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ A.π) hg).trans hj)`. Establish `hφ : C.m.φ ≫ A.mu.φ = ν.φ ≫ B.C.m.φ` using `A.φ_comm`. Rewrite using `[hm₂, ← Category.assoc, hy, hφ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominates_of_above : Out.Laws → Out.Laws2 → Out.Laws3 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (Xo : ∀ l : Level H, Moduli D l) (n N : ℕ) (T : Top Xo n N) (l₀ l : Level H) (B : BaseModel T l₀) (c : Coeff l) (R O' : Type) [CommRing R] [CommRing O'] (ω : R →+* c.F) (β' : O' →+* c.F) (bR : RZ H (n * l₀.M) 1 →+* R) (C : Model (Xo l) c ω) (Y' : Model (Xo l) c β') (b' : R →+* O') (k : KA l₀ →+* c.F) (r : (Xo l).XF c ⟶ (Xo l₀).X) (ν : SABMap C.oF.t (Xo l₀).univ.t r), r ≫ (Xo l₀).s = pullback.snd _ _ ≫ spMap k → IsInc (KA l₀).val.toRingHom c.F.val.toRingHom k → LevComp C.oF (Xo l₀).univ r ν → (ofModel C).Above B.C bR r ν → IsDedFrac ω → IsDedFrac β' → β'.comp b' = ω → Raises B Y' → Dominates C Y' b' := by
   intro L₁ L₂ L₃ E _ _ _ H D Xo n N T l₀ l B c R O' _ _ ω β' bR C Y' b' k r ν hr hk hlev A hω hβ' hb hR

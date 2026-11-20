@@ -16,11 +16,11 @@ noncomputable section
 
 namespace GlobalTheory.TrUnitLat
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ r P`. Use `filter_upwards [eventually_one_tmul_mem_intLoc (F := F) (alpha P), eventually_one_tmul_mem_intLoc (F := F) (alpha P)⁻¹] with v h1 h2`. Establish `e0 : ∀ Y : Fin 1 → Fv F v ⊗[F] Fld P, (matHom _ (star' P) (one₁ P) (diagH (star' P) (one₁ P) (Fv F v) (alphaRat P))).1 *ᵥ Y ∈ latLoc F (stdLattice (Fld P) 1) v ↔ (1 : Fv F v) ⊗ₜ[F] alpha P * Y 0 ∈ intLoc F (Fld P) v` using `fun Y => by`. Establish `e : (matHom _ (star' P) (one₁ P) (diagH (star' P) (one₁ P) (Fv F v) (alphaRat P))).1 0 0 = (1 : Fv F v) ⊗ₜ[F] alpha P` using `rfl`. Rewrite using `[mem_latLoc_stdLattice, Fin.forall_fin_one, ← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct]`. Establish `hinv : (1 : Fv F v) ⊗ₜ[F] (alpha P)⁻¹ * (1 : Fv F v) ⊗ₜ[F] alpha P = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, inv_mul_cancel₀ (alpha_ne_zero P), Algebra.TensorProduct.one_def]`. Use `mem_stabLoc.2 fun Y => ?_` and prove the remaining obligations. Rewrite using `[e0, mem_latLoc_stdLattice, Fin.forall_fin_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mul_mem h1, fun hY => ?_⟩` and prove the remaining obligations. Use `mul_mem h2 hY` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hinv, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem alpha_mem_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (r : ℕ) (P : PPol σ r), ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, diagH (star' P) (one₁ P) (Fv F v) (alphaRat P) ∈ stabLoc (star' P) (one₁ P) (stdLattice (Fld P) 1) v := by
   intro F E _ _ _ _ _ σ r P
@@ -42,13 +42,13 @@ theorem alpha_mem_stab : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [N
   rwa [← mul_assoc, hinv, one_mul] at this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ σ r n P v J L x φ h hφ t`. Establish `e1 : (matHom _ σ J (torEmb h t)).1 = mulMat φ (torUnit t).1` using `rfl`. Establish `e0 : (torUnit t).1 = t.1.1 0 0` using `Matrix.det_fin_one _`. Establish `e2 : ∀ Y : Fin 1 → Fv F v ⊗[F] Fld P, (matHom _ (star' P) (one₁ P) t).1 *ᵥ Y ∈ latLoc F (stdLattice (Fld P) 1) v ↔ (torUnit t).1 * Y 0 ∈ intLoc F (Fld P) v` using `fun Y => by`. Rewrite using `[mem_latLoc_stdLattice, Fin.forall_fin_one, e0]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, matHom]`. Conclude with `Iff.rfl`. Rewrite using `[mem_stabLoc, mem_stabLoc]`. Prove the components needed by the constructor for the conclusion. Introduce `H Y`.
+Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e2, mem_latLoc_stdLattice, Fin.forall_fin_one]`. Use `H (φ (Y 0))` as an intermediate fact. Rewrite `this` using `[e1, mulMat_mulVec, ← hφ, ← hφ]`. Then use the resulting hypothesis. Introduce `H Y`. Take `⟨y, rfl⟩` from `φ.surjective Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e1, mulMat_mulVec, ← hφ, ← hφ]`. Use `H (fun _ => y)` as an intermediate fact. Rewrite `this` using `[e2, mem_latLoc_stdLattice, Fin.forall_fin_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem stab_torEmb_iff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (r n : ℕ) (P : PPol σ r) (v : HeightOneSpectrum (𝓞 F)) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) (x : Fv F v ⊗[F] Fld P) (φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin n → Fv F v ⊗[F] E)) (h : IsIsom P (Fv F v) J x φ), (∀ y, y ∈ intLoc F (Fld P) v ↔ φ y ∈ latLoc F L v) → ∀ t, torEmb h t ∈ stabLoc σ J L v ↔ t ∈ stabLoc (star' P) (one₁ P) (stdLattice (Fld P) 1) v := by
   intro F E _ _ _ _ σ r n P v J L x φ h hφ t
@@ -77,9 +77,9 @@ end GlobalTheory.TrUnitLat
 namespace GlobalTheory.TrUnitLat
 
 /- English proof (translation)
-Establish `e2 : ∀ (J : Matrix (Fin n) (Fin n) A) a b, Formalism.UG.hform s J a b = (s ∘ a) ⬝ᵥ J *ᵥ b`. Introduce `J a b`. Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, Function.comp_apply, mul_assoc]`. Establish `e3 : s ∘ (k *ᵥ a) = (s ∘ a) ᵥ* Formalism.UG.cT s k`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Formalism.UG.cT, Matrix.vecMul_transpose, Function.comp_apply, RingHom.map_mulVec]`. Rewrite using `[e2, e2, e3, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hform_mulVec' {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (J k : Matrix (Fin n) (Fin n) A) (a b : Fin n → A) :
     Formalism.UG.hform s J (k *ᵥ a) (k *ᵥ b) = Formalism.UG.hform s (Formalism.UG.cT s k * J * k) a b := by
@@ -92,11 +92,9 @@ theorem hform_mulVec' {A : Type} [CommRing A] (s : A →+* A) {n : ℕ} (J k : M
   rw [e2, e2, e3, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm r P J hJ L _`. Use `haveI := isLattice_stdLattice (E := E) (n := r)`. Use `filter_upwards [GlobalTheory.T.traceFormGramPowerBasis_hermitian_nondegenerate F E σ hcm r P |> fun hH => GlobalTheory.T.eventually_hermitian_integrally_congruent_cmExt F E σ hcm r J (gramOne P) hJ hH, eventually_latLoc_eq F L (stdLattice E r), GlobalTheory.T.eventually_localInte …`. Take `⟨u, hu, hul⟩` from `hu`. Set `φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin r → Fv F v ⊗[F] E)` to `(coordEquiv P (Fv F v)).trans (Matrix.toLinearEquiv' u.1 (Units.invertible u))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eφ : ∀ y, φ y = u.1 *ᵥ coordEquiv P (Fv F v) y` using `fun y => rfl`. Establish `hφ : IsIsom P (Fv F v) J (1 : plusUnits P (Fv F v)).1.1 φ` using `fun y y' => by`. Rewrite using `[eφ, eφ, hform_mulVec', hu]`. Apply the tactic sequence `exact GlobalTheory.T.powerBasisCoords_isTorusHermitianIsometry F E σ r P (Fv F v) y y'`. Establish `h5 : ∀ y, y ∈ intLoc F (Fld P) v ↔ φ y ∈ latLoc F L v` using `fun y => by`.
-
-Rewrite using `[eφ, hL, hul, h3]`. Conclude with `⟨φ, hφ, (GlobalTheory.TrUnitLat.stab_torEmb_iff F E σ r r P v J L _ φ hφ h5 _).2 h4, GlobalTheory.TrUnitLat.stab_torEmb_iff F E σ r r P v J L _ φ hφ h5⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_unitClass_isom : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r : ℕ) (P : PPol σ r) (J : Matrix (Fin r) (Fin r) E), IsHermND σ J → ∀ (L : Submodule (𝓞 E) (Fin r → E)) [Submodule.IsLattice E L], ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∃ (φ : (Fv F v ⊗[F] Fld P) ≃ₗ[Fv F v ⊗[F] E] (Fin r → Fv F v ⊗[F] E)) (h : IsIsom P (Fv F v) J (1 : plusUnits P (Fv F v)).1.1 φ), gam h ∈ stabLoc σ J L v ∧ ∀ t, torEmb h t ∈ stabLoc σ J L v ↔ t ∈ stabLoc (star' P) (one₁ P) (stdLattice (Fld P) 1) v := by
   intro F E _ _ _ _ _ σ hcm r P J hJ L _

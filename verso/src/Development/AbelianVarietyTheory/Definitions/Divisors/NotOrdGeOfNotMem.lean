@@ -32,14 +32,14 @@ def ThroughU {X : Scheme.{0}} (U₀ : M.Z.Opens) (u₀ : U₀.toScheme ⟶ X) (c
 variable {M}
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem OrdGe.mem_O {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x : Ω} {a : ℕ} (h : OrdGe M T ξ x a) :
     x ∈ M.O ((jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))) :=
   h.1
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hx`. Take `⟨w, hw⟩` from `h`. Rewrite `hw` using `[RatModel.val_of_notMem _ hx]`. Establish `h0 : (T.ϖ ^ a * (w : T.V)) = 0` using `IsFractionRing.injective T.V (FractionRing T.V) (by rw [← hw, map_zero])`. Conclude with `mul_ne_zero (pow_ne_zero _ T.irr.ne_zero) w.ne_zero h0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem OrdEq.mem_O {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x : Ω} {a : ℕ} (h : OrdEq M T ξ x a) :
     x ∈ M.O ((jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))) := by
@@ -51,7 +51,7 @@ theorem OrdEq.mem_O {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x : Ω} {a : ℕ} (h : 
   exact mul_ne_zero (pow_ne_zero _ T.irr.ne_zero) w.ne_zero h0
 
 /- English proof (translation)
-Take `⟨hx, w, hw⟩` from `h`. Use `⟨hx, T.ϖ ^ (a - b) * w, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hba]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem OrdGe.mono {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x : Ω} {a b : ℕ} (h : OrdGe M T ξ x a) (hba : b ≤ a) :
     OrdGe M T ξ x b := by
@@ -60,9 +60,9 @@ theorem OrdGe.mono {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x : Ω} {a b : ℕ} (h :
   rw [hw, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' hba]
 
 /- English proof (translation)
-Take `⟨hx0, w, hw⟩` from `hx`. Take `⟨hy0, w', hw'⟩` from `hy`. Establish `hsp : ∀ v, (jK T.V ≫ ξ) v ⤳ (jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))` using `fun v => by`. Rewrite using `[Subsingleton.elim v (IsLocalRing.closedPoint (FractionRing T.V))]`. Use `⟨Subalgebra.add_mem _ hx0 hy0, w + w', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RatModel.val_add hsp hx0 hy0, hw, hw', ← map_add, mul_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem OrdGe.add {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x y : Ω} {a : ℕ} (hx : OrdGe M T ξ x a) (hy : OrdGe M T ξ y a) :
     OrdGe M T ξ (x + y) a := by
@@ -74,9 +74,9 @@ theorem OrdGe.add {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x y : Ω} {a : ℕ} (hx :
   rw [RatModel.val_add hsp hx0 hy0, hw, hw', ← map_add, mul_add]
 
 /- English proof (translation)
-Take `⟨hx0, w, hw⟩` from `hx`. Take `⟨hy0, w', hw'⟩` from `hy`. Establish `hsp : ∀ v, (jK T.V ≫ ξ) v ⤳ (jK T.V ≫ ξ) (IsLocalRing.closedPoint (FractionRing T.V))` using `fun v => by`. Rewrite using `[Subsingleton.elim v (IsLocalRing.closedPoint (FractionRing T.V))]`. Use `⟨Subalgebra.mul_mem _ hx0 hy0, w * w', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RatModel.val_mul hsp hx0 hy0, hw, hw', ← map_mul, pow_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem OrdGe.mul {T : Trait F} {ξ : Sp T.V ⟶ M.Z} {x y : Ω} {a b : ℕ} (hx : OrdGe M T ξ x a) (hy : OrdGe M T ξ y b) :
     OrdGe M T ξ (x * y) (a + b) := by

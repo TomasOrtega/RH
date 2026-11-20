@@ -6,13 +6,13 @@ open Filter UpperTheory.V.AlgebraTools
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `R σ _ _ F hF I M _ _ y a k hI hak hq`. Use `set Y : Ideal R := Ideal.span (Set.range y) with hY`. Establish `hYfg : Y.FG` using `⟨(Set.finite_range y).toFinset, by simp [hY]⟩`. Establish `hK : Antitone (fun j ↦ Y ^ k ⊔ I j)` using `fun i j hij ↦ sup_le_sup_left (hI hij) _`. Establish `hk1 : Y ^ k ≤ Y ^ (a + 1)` using `Ideal.pow_le_pow_right (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Use `choose p hp using fun α ↦ ULim.mk_surjective F (fun j ↦ Y ^ k ⊔ I j) M (c α)`. Establish `hsum : ∑ α : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y ↑α • c α = ULim.mk F (fun j ↦ Y ^ k ⊔ I j) M (fun N ↦ ∑ α : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y ↑α • p α N)`. Establish `e : (fun N ↦ ∑ α : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y ↑α • p α N) = ∑ α : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y ↑α • p α`. Use extensionality with `N`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_apply]`. Rewrite using `[e, map_sum]`. Simplify using `[hp]`. Rewrite `hc` using `[sup_bot_eq, hsum, ULim.mem_smul_top_iff R F hF _ M (Y ^ (a + 1)) hYfg.pow hK]`. Introduce `α`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[sup_bot_eq, ← hp α, ULim.mem_smul_top_iff R F hF _ M Y hYfg hK]`. Introduce `j`. Use `filter_upwards [hc j, hq j] with N hN hqN`. Establish `hN' : ∑ β : GlobalTheory.MonoDeg σ a, GlobalTheory.monoVal y ↑β • p β N ∈ (Y ^ (a + 1) ⊔ I j) • (⊤ : Submodule R (M N))` using `Submodule.smul_mono_left (sup_le le_sup_left (sup_le (hk1.trans le_sup_left) le_sup_right)) hN`. Conclude with `Submodule.smul_mono_left (sup_le_sup_left le_sup_right Y) (hqN (fun β ↦ p β N) hN' α)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.qRegAt_uLim :
     ∀ (R σ : Type) [CommRing R] [Finite σ] (F : Filter ℕ), F ≤ atTop → ∀ (I : ℕ → Ideal R) (M : ℕ → Type) [∀ i, AddCommGroup (M i)] [∀ i, Module R (M i)] (y : σ → R) (a k : ℕ), Antitone I → a < k →

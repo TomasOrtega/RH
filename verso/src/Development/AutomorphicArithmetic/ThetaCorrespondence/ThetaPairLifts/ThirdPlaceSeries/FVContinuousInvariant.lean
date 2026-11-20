@@ -23,7 +23,7 @@ end Frame
 section Forms
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D} {X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp}
 /- English proof (translation)
-Substitute `hk` using the available equality. Conclude with `A.wt μ hμ j h γ hγ he v`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem eW_cast_cV_rho_eq_wt_rho (A : GlobalTheory.NJoin.Agree X P.M P.rep) {μ : D.what₂.Tup} (hμ : Formalism.IndefR.RecTie.Used0 D μ)
     (j : Fin D.R.m) (k : ℕ) (hk : j.1 + 1 = k) (p1 : 1 ≤ k) (p2 : k ≤ D.R.m)
@@ -36,7 +36,7 @@ theorem eW_cast_cV_rho_eq_wt_rho (A : GlobalTheory.NJoin.Agree X P.M P.rep) {μ 
   subst hk
   exact A.wt μ hμ j h γ hγ he v
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ThetaFormV.eW_cast_cV_rho_eq_wt_rho A hμ j _ hj _ _ h hγ he v`.
+A detailed English derivation is pending.
 -/
 theorem eWloc_cV_rho_eq_wt_rho (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (h : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) {γ : GA D (Vc D j)}
@@ -65,13 +65,11 @@ theorem formToVectorMap_eq_ext_fFin (A : GlobalTheory.NJoin.Agree X P.M P.rep) (
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) :
     _root_.GlobalTheory.ThetaTri.formToVectorMap A i j hj hμ F = (X.R.cV j).ext (_root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F) := rfl
 /- English proof (translation)
-Use `set x := preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ) with hxdef`. Establish `hx : finHom (Vc D j) γ = finHom (Vc D j) ((A.PV j).ψ x)` using `(congrArg Subtype.val (GlobalTheory.ThetaFormV.fin_preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ))).symm`. Establish `e0 : (A.a j)⁻¹ * (A.a j * x * (A.a j)⁻¹) * A.a j = x` using `by group`. Establish `hrat : A.a j * x * (A.a j)⁻¹ ∈ ReciprocityTheory.Aut.GQ D.host.E D.R.nV` using `(A.rat j _).2 ⟨γ, hγ, by rw [e0]; exact hx⟩`. Establish `he : finHom (Vc D j) γ = finHom (Vc D j) ((A.PV j).ψ ((A.a j)⁻¹ * ((⟨_, hrat⟩ : ReciprocityTheory.Aut.GQ D.host.E D.R.nV) : GAf D.host.E D.R.nV) * A.a j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Conclude with `hx`. Establish `e1 : A.a j * preF (A.PV j) ((finHom (Vc D j)).rangeRestrict γ * k) = (A.a j * x * (A.a j)⁻¹) * (A.a j * preF (A.PV j) k)`. Rewrite using `[GlobalTheory.ThetaFormV.preF_mul, ← hxdef]`. Use `group`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hF` using `F.2.1 ⟨_, hrat⟩ (A.a j * preF (A.PV j) k)`. Unfold `_root_.GlobalTheory.ThetaFormV.agreementLocalMap`. Rewrite using `[e1]`. Use `(LinearEquiv.symm_apply_eq _).2 ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.ThetaFormV.eWloc_cV_rho_eq_wt_rho A i j hj hμ ⟨_, hrat⟩ hγ he, LinearEquiv.apply_symm_apply]`.
-
-Conclude with `hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fFin_rangeRestrict_mul (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ))
@@ -96,9 +94,9 @@ theorem fFin_rangeRestrict_mul (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D
   rw [_root_.GlobalTheory.ThetaFormV.eWloc_cV_rho_eq_wt_rho A i j hj hμ ⟨_, hrat⟩ hγ he, LinearEquiv.apply_symm_apply]
   exact hF
 /- English proof (translation)
-Introduce `γ hγ h`. Rewrite using `[_root_.GlobalTheory.ThetaFormV.formToVectorMap_eq_ext_fFin, GlobalTheory.ThetaFormV.ext_apply, GlobalTheory.ThetaFormV.ext_apply, map_mul, _root_.GlobalTheory.ThetaFormV.fFin_rangeRestrict_mul A i j hj hμ F hγ]`. Establish `e : (X.R.cV j).ρ (γ * h)⁻¹ * (X.R.cV j).ρ γ = (X.R.cV j).ρ h⁻¹`. Rewrite using `[← map_mul]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Conclude with `congrArg (fun T : Module.End ℂ (X.R.cV j).W => T _) e`.
+A detailed English derivation is pending.
 -/
 theorem formToVectorMap_left_invariant (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) :
@@ -112,11 +110,9 @@ end Main
 section Cont
 variable {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {D : D7} {P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D} {X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp}
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF D.host.F) (AE D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `haveI : IsTopologicalGroup (GA D (Vc D j)) := inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig (Vc D j).gram))`. Take `⟨N, hN, hlev⟩` from `F.2.2`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `J : Subgroup (Bridge.Gf (Vc D j))` to `{ carrier := {q | ∀ k, _root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F (k * q) = _root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F k} mul_mem' := fun {a b} ha hb k => by simp only [Set.mem_setOf_eq] at ha hb ⊢; rw [← mul_assoc, hb, ha] one_mem' := fun …`. Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Rewrite using `[← ha (k * a⁻¹), inv_mul_cancel_right] }`. Establish `hfJ : _root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F ∈ Bridge.AdForms ((finHom (Vc D j)).rangeRestrict.comp (GQ (Vc D j)).subtype) ((X.R.cV j).ρ.comp (GQ (Vc D j)).subtype) J 1`. Conclude with `GlobalTheory.ThetaFormV.mem_adForms_one _ _ (fun γ hγ k => _root_.GlobalTheory.ThetaFormV.fFin_rangeRestrict_mul A i j hj hμ F hγ k) J (fun q hq => hq)`.
-
-Establish `hJ : ∀ᶠ κ in 𝓝 (1 : GA D (Vc D j)), ∃ h : (finHom (Vc D j)).rangeRestrict κ ∈ J, (1 : J →* ℂˣ) ⟨_, h⟩ = 1` using `by filter_upwards [eventually_cong_preF (A.PV j) A.hF (A.stdV j) hN] with κ hκ`. Use `⟨fun k => ?_, rfl⟩` and prove the remaining obligations. Use `show _root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F (k * (finHom (Vc D j)).rangeRestrict κ) = _root_.GlobalTheory.ThetaFormV.agreementLocalMap A i j hj hμ F k`. Rewrite using `[_root_.GlobalTheory.ThetaFormV.fFin_apply', _root_.GlobalTheory.ThetaFormV.fFin_apply', GlobalTheory.ThetaFormV.preF_mul, ← mul_assoc, hlev _ hκ]`. Conclude with `(GlobalTheory.ThetaIntegrand.form_continuous (finHom (Vc D j)).rangeRestrict (GQ (Vc D j)) (X.R.cV j).ρ ((X.given.core.models.cV j).2.2.1) hJ hfJ).congr fun g => (GlobalTheory.ThetaFormV.ext_apply _ _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_formToVectorMap (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)) :
@@ -147,7 +143,7 @@ theorem continuous_formToVectorMap (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i
     ((X.given.core.models.cV j).2.2.1) hJ hfJ).congr fun g => (GlobalTheory.ThetaFormV.ext_apply _ _ _).symm
 end Cont
 /- English proof (translation)
-Introduce `_ _ _ _ A i j hj hμ F` and use `⟨_root_.GlobalTheory.ThetaFormV.continuous_formToVectorMap A i j hj hμ F, _root_.GlobalTheory.ThetaFormV.formToVectorMap_left_invariant A i j hj hμ F⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem formToVectorMap_continuous_and_left_invariant : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp)
     (A : GlobalTheory.NJoin.Agree X P.M P.rep) (i : D.nd.Loc) (j : Fin D.R.m) (hj : j.1 + 1 = D.nd.j i)

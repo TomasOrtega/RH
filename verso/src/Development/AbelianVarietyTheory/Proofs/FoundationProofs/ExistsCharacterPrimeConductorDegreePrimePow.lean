@@ -13,11 +13,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2.PrimeChar
 
 /- English proof (translation)
-Use `haveI := v.isPrime`. Use `haveI := v.isMaximal`. Use `haveI : Finite (𝓞 ℚ ⧸ v.asIdeal) := Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Establish `hp : (ringChar (𝓞 ℚ ⧸ v.asIdeal)).Prime` using `CharP.char_is_prime (𝓞 ℚ ⧸ v.asIdeal) _`. Use `haveI : Fact (ringChar (𝓞 ℚ ⧸ v.asIdeal)).Prime := ⟨hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : Function.Surjective (ZMod.castHom (dvd_refl (ringChar (𝓞 ℚ ⧸ v.asIdeal))) (𝓞 ℚ ⧸ v.asIdeal))`. Introduce `y`. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨n, rfl⟩` from `Rat.ringOfIntegersEquiv.symm.surjective x`. Conclude with `⟨(n : ZMod _), by simp⟩`.
-
-Establish `hb` using `Nat.card_eq_of_bijective _ ⟨RingHom.injective _, hs⟩`. Rewrite using `[normV, ← hb, Nat.card_zmod]`. Conclude with `hp`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normV_prime (v : Pl) : (normV v).Prime := by
   haveI := v.isPrime
@@ -35,12 +33,12 @@ theorem normV_prime (v : Pl) : (normV v).Prime := by
   exact hp
 
 /- English proof (translation)
-The claim follows from `Ideal.absNorm_mem v.asIdeal`.
+A detailed English derivation is pending.
 -/
 theorem normV_mem (v : Pl) : ((normV v : ℕ) : 𝓞 ℚ) ∈ v.asIdeal := Ideal.absNorm_mem v.asIdeal
 
 /- English proof (translation)
-Use `(h _).2 (normV_mem v)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_normV_lt_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {B : ValuationSubring Ω} {v : Pl}
     (h : IsPlaceOver B v) : B.valuation ((normV v : ℕ) : Ω) < 1 := by
@@ -48,9 +46,9 @@ theorem val_normV_lt_one {Ω : Type} [Field Ω] [Algebra ℚ Ω] {B : ValuationS
   simpa using this
 
 /- English proof (translation)
-Establish `hp` using `normV_prime w`. Establish `hpr : Prime ((normV w : ℕ) : 𝓞 ℚ)`. Establish `h1 : Prime ((normV w : ℕ) : ℤ)` using `Nat.prime_iff_prime_int.mp hp`. Establish `e : ((normV w : ℕ) : 𝓞 ℚ) = Rat.ringOfIntegersEquiv.symm ((normV w : ℕ) : ℤ)` using `by simp`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(MulEquiv.prime_iff Rat.ringOfIntegersEquiv.symm.toMulEquiv).mpr h1`. Establish `hI : (Ideal.span {((normV w : ℕ) : 𝓞 ℚ)}).IsMaximal` using `Ideal.IsPrime.isMaximal ((Ideal.span_singleton_prime hpr.ne_zero).mpr hpr) (by rw [Ne, Ideal.span_singleton_eq_bot]; exact hpr.ne_zero)`. Establish `hv : Ideal.span {((normV w : ℕ) : 𝓞 ℚ)} = v.asIdeal` using `hI.eq_of_le v.isPrime.ne_top (by rw [Ideal.span_singleton_le_iff_mem, ← h]; exact normV_mem v)`. Establish `hw : Ideal.span {((normV w : ℕ) : 𝓞 ℚ)} = w.asIdeal` using `hI.eq_of_le w.isPrime.ne_top (by rw [Ideal.span_singleton_le_iff_mem]; exact normV_mem w)`. Conclude with `HeightOneSpectrum.ext (hv.symm.trans hw)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_normV_eq {v w : Pl} (h : normV v = normV w) : v = w := by
   have hp := normV_prime w
@@ -69,9 +67,9 @@ theorem eq_of_normV_eq {v w : Pl} (h : normV v = normV w) : v = w := by
   exact HeightOneSpectrum.ext (hv.symm.trans hw)
 
 /- English proof (translation)
-Establish `hc : IsCyclic (ZMod p)ˣ` using `inferInstance`. Establish `hcard : N ∣ Nat.card (ZMod p)ˣ` using `by rw [Nat.card_eq_fintype_card, ZMod.card_units]; exact h`. Set `c : ZMod (Nat.card (ZMod p)ˣ) →+ ZMod N` to `(ZMod.castHom hcard (ZMod N)).toAddMonoidHom`. Use `⟨(AddMonoidHom.toMultiplicative c).comp (zmodCyclicMulEquiv hc).symm.toMonoidHom, ?_⟩` and prove the remaining obligations. Introduce `y`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `ZMod.castHom_surjective hcard (Multiplicative.toAdd y)`. Use `⟨zmodCyclicMulEquiv hc (Multiplicative.ofAdd x), ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.comp_apply, MulEquiv.coe_toMonoidHom, MulEquiv.symm_apply_apply]`. Use `show Multiplicative.ofAdd (c x) = y`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_surj (p N : ℕ) [Fact p.Prime] (h : N ∣ p - 1) :
     ∃ f : (ZMod p)ˣ →* Multiplicative (ZMod N), Function.Surjective f := by
@@ -87,7 +85,7 @@ theorem exists_surj (p N : ℕ) [Fact p.Prime] (h : N ∣ p - 1) :
   exact hx
 
 /- English proof (translation)
-Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, toAdd_one, nsmul_eq_mul, ZMod.natCast_self, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_self_eq_one (N : ℕ) (a : Multiplicative (ZMod N)) : a ^ N = 1 := by
   apply Multiplicative.toAdd.injective
@@ -98,31 +96,27 @@ end GlobalTheory.Ord2.PrimeChar
 namespace GlobalTheory.Ord2.PrimeChar
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ n w _ hdiv`. Establish `hp` using `normV_prime w`. Use `haveI : Fact (normV w).Prime := ⟨hp⟩`. Use `haveI : NeZero (normV w) := ⟨hp.ne_zero⟩`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, hf⟩` from `exists_surj (normV w) (l ^ n) hdiv`. Establish `hine : ∀ B : ValuationSubring Ω, IsPlaceOver B w → ∃ τ ∈ Ine (F` using `ℚ) B, (f.comp (Chr.cls ℚ Ω (normV w)) τ).toAdd = 1 := by`. Introduce `B hB`. Establish `hBp` using `val_normV_lt_one hB`. Take `⟨g0, hg0⟩` from `hf (Multiplicative.ofAdd 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hd : normV w ^ 1 ∣ normV w` using `by rw [pow_one]`. Take `⟨w0, hw0⟩` from `KStar.TotallyRealRoots.redPow_surjective (l := normV w) 1 (ZMod.unitsMap hd g0)`. Take `⟨σ, hσ, hσw⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω (normV w) B hBp w0`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero ((normV w : ℕ) : Ω) := ⟨Nat.cast_ne_zero.mpr hp.ne_zero⟩`. Establish `hX : PadicInt.toZModPow 1 (w0 : ℤ_[normV w]) = (((g0 : ZMod (normV w)).val : ℕ) : ZMod (normV w ^ 1))`. Establish `h2` using `congrArg (fun u : (ZMod (normV w ^ 1))ˣ => (u : ZMod (normV w ^ 1))) hw0`. Simplify using `only [ZMod.unitsMap_val] at h2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ZMod.cast_natCast (R := ZMod (normV w ^ 1)) hd ((g0 : ZMod (normV w)).val), ZMod.natCast_zmod_val]`. Conclude with `h2`. Establish `hcls : Chr.cls ℚ Ω (normV w) σ = g0`. Use `(Chr.clsFacts ℚ Ω (normV w)).2.2.1 σ g0 fun ζ hζ => ?_` and prove the remaining obligations. Establish `hζ' : ζ ^ (normV w ^ 1) = 1` using `by rw [pow_one]; exact hζ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hspec : σ ζ = ζ ^ (PadicInt.toZModPow 1 ((cycZ ℚ Ω (normV w) σ : ℤ_[normV w]ˣ) : ℤ_[normV w])).val` using `cyclotomicCharacter.spec (L := Ω) (normV w) (MulSemiringAction.toRingAut (G ℚ Ω) Ω σ) ζ hζ'`. Rewrite using `[hspec, hσw, hX, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ']`. Rewrite using `[MonoidHom.comp_apply, hcls, hg0, toAdd_ofAdd]`. Use `⟨f.comp (Chr.cls ℚ Ω (normV w)), fun s hs => ?_, fun y => ?_, hine, fun v hvw hx B hB => ?_⟩` and prove the remaining obligations. Establish `h1 : Chr.cls ℚ Ω (normV w) s = 1` using `(Chr.clsFacts ℚ Ω (normV w)).2.2.1 s 1 fun ζ hζ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_one, ZMod.val_one_eq_one_mod, ← pow_eq_pow_mod 1 hζ, pow_one]`. Conclude with `hs ζ hζ`. Rewrite using `[MonoidHom.comp_apply, h1, map_one]`. Take `⟨B, hB⟩` from `exists_isPlaceOver Ω w`. Take `⟨τ, -, hτ⟩` from `hine B hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨τ ^ (Multiplicative.toAdd y).val, ?_⟩` and prove the remaining obligations. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[map_pow, toAdd_pow, hτ, nsmul_eq_mul, mul_one, ZMod.natCast_zmod_val]`. Establish `hq` using `normV_prime v`. Use `haveI : Fact (normV v).Prime := ⟨hq⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hne : normV v ≠ normV w` using `fun h => hvw (eq_of_normV_eq h)`. Establish `hcop : (normV w).Coprime (normV v)` using `(Nat.coprime_primes hp hq).2 (Ne.symm hne)`. Establish `hBq` using `val_normV_lt_one hB`. Take `⟨x, hx⟩` from `hx`. Establish `hq0 : ((normV v : ℕ) : ZMod (normV w)) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ne, CharP.cast_eq_zero_iff (ZMod (normV w)) (normV w)]`. Conclude with `fun h => hne ((Nat.prime_dvd_prime_iff_eq hp hq).1 h).symm`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Rewrite `hx` using `[zero_pow (pow_ne_zero _ (Fact.out : l.Prime).ne_zero)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hq0 hx.symm`. Set `uq : (ZMod (normV w))ˣ` to `ZMod.unitOfCoprime (normV v) hcop.symm`. Establish `huq : uq = Units.mk0 x hx0 ^ (l ^ n)`. Use `ext`. Simplify using `[uq, hx]`.
-
-Establish `hfq : f uq = 1` using `by rw [huq, map_pow, pow_self_eq_one]`. Introduce `g hg`. Take `⟨k, hk⟩` from `UpperTheory.V.LDataCardLeFinrank.decActRoots ℚ Ω (normV v) B hBq (normV w) hcop g hg`. Establish `hcls : Chr.cls ℚ Ω (normV w) g = uq ^ k`. Use `(Chr.clsFacts ℚ Ω (normV w)).2.2.1 g (uq ^ k) fun ζ hζ => ?_` and prove the remaining obligations.
-
-Rewrite using `[hk ζ hζ, Units.val_pow_eq_pow_val, ZMod.coe_unitOfCoprime, ← Nat.cast_pow, ZMod.val_natCast, ← pow_eq_pow_mod _ hζ]`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hcls, map_pow, hfq, one_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_prime_char : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (n : ℕ) (w : Pl),
     1 ≤ n → l ^ n ∣ normV w - 1 → ∃ ψ : G ℚ Ω →* Multiplicative (ZMod (l ^ n)), KillsMu (normV w) ψ ∧

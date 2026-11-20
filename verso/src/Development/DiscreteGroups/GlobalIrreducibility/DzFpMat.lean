@@ -13,7 +13,7 @@ section Ring
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-The claim follows from `Units.ext (antidiag_mul_self n R)`.
+A detailed English derivation is pending.
 -/
 theorem longElt_mul_self (n : ℕ) : longElt n R * longElt n R = 1 := Units.ext (antidiag_mul_self n R)
 
@@ -25,11 +25,11 @@ theorem invT_val_apply {n : ℕ} (z : GL (Fin n) R) (i j : Fin n) :
       ((z⁻¹ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) j i := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[invT_val_apply, ← corner_inv]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => simp [corner_last_last]`. Consider the case `cast j => simp [corner_last_cs, corner_cs_last]`. Consider the case `cast i`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [corner_last_cs, corner_cs_last]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `cast j => rw [corner_cs_cs, corner_cs_cs, invT_val_apply]`.
+Treat this case separately.
 -/
 theorem invT_corner {m : ℕ} (y : GL (Fin m) R) :
     GlobalTheory.CuspRep.invT (m + 1) R (corner y) = corner (GlobalTheory.CuspRep.invT m R y) := by
@@ -46,7 +46,7 @@ theorem invT_corner {m : ℕ} (y : GL (Fin m) R) :
     | cast j => rw [corner_cs_cs, corner_cs_cs, invT_val_apply]
 
 /- English proof (translation)
-Simplify using `only [tilde]`. Rewrite using `[mul_assoc, ← corner_mul, ← mul_assoc (longElt m R), longElt_mul_self, one_mul, invT_corner]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem tilde_corner {m : ℕ} (y : GL (Fin m) R) :
     tilde (corner y) = longElt (m + 1) R * corner (longElt m R) * corner (tilde y) := by
@@ -54,13 +54,13 @@ theorem tilde_corner {m : ℕ} (y : GL (Fin m) R) :
   rw [mul_assoc, ← corner_mul, ← mul_assoc (longElt m R), longElt_mul_self, one_mul, invT_corner]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rev_eq_iff' {n : ℕ} (i j : Fin n) : i = j.rev ↔ j = i.rev :=
   ⟨fun h => by rw [h, Fin.rev_rev], fun h => by rw [h, Fin.rev_rev]⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[invT_val_apply, longElt_inv, val_longElt, val_longElt]`. Conclude with `if_congr (rev_eq_iff' i j) rfl rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invT_longElt (n : ℕ) : GlobalTheory.CuspRep.invT n R (longElt n R) = longElt n R := by
   ext i j
@@ -68,7 +68,7 @@ theorem invT_longElt (n : ℕ) : GlobalTheory.CuspRep.invT n R (longElt n R) = l
   exact if_congr (rev_eq_iff' i j) rfl rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[invT_val_apply, show (GlobalTheory.CuspRep.invT n R y)⁻¹ = GlobalTheory.CuspRep.invT n R y⁻¹ from (map_inv _ y).symm, invT_val_apply, inv_inv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_invT {n : ℕ} (y : GL (Fin n) R) : GlobalTheory.CuspRep.invT n R (GlobalTheory.CuspRep.invT n R y) = y := by
   ext i j
@@ -76,13 +76,13 @@ theorem invT_invT {n : ℕ} (y : GL (Fin n) R) : GlobalTheory.CuspRep.invT n R (
     invT_val_apply, inv_inv]
 
 /- English proof (translation)
-Simplify using `only [tilde, map_mul, invT_longElt, invT_invT, ← mul_assoc, longElt_mul_self, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tilde_tilde {n : ℕ} (y : GL (Fin n) R) : tilde (tilde y) = y := by
   simp only [tilde, map_mul, invT_longElt, invT_invT, ← mul_assoc, longElt_mul_self, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_inv]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjT_inv {n : ℕ} (u : GL (Fin n) R) :
     longElt n R * GlobalTheory.CuspRep.invT n R u⁻¹ * (longElt n R)⁻¹ =
@@ -91,7 +91,7 @@ theorem conjT_inv {n : ℕ} (u : GL (Fin n) R) :
   group
 
 /- English proof (translation)
-Use extensionality with `r k`. Simplify using `[Matrix.mul_apply, ha]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem columnMatrix_sq_zero {n : ℕ} (a : Fin n → R) (c : Fin n) (ha : a c = 0) :
     Matrix.of (fun r k : Fin n => if k = c then a r else 0) * Matrix.of (fun r k : Fin n => if k = c then a r else 0) =
@@ -118,11 +118,11 @@ theorem colElt_apply {n : ℕ} (a : Fin n → R) (c : Fin n) (ha : a c = 0) (r k
   rfl
 
 /- English proof (translation)
-Use `(mem_unipB R).2 ⟨fun i j hji => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[colElt_apply, Matrix.one_apply_ne (ne_of_gt hji)]`. Distinguish the cases in `hj : j = c`. Substitute `hj` using the available equality. Simplify using `[h i hji]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hj]`. Rewrite using `[colElt_apply, Matrix.one_apply_eq]`. Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Simplify using `[ha]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colElt_mem {n : ℕ} (a : Fin n → R) (c : Fin n) (ha : a c = 0) (h : ∀ r, c < r → a r = 0) :
     colElt a c ha ∈ unipB R (Fin n) := by
@@ -137,13 +137,13 @@ theorem colElt_mem {n : ℕ} (a : Fin n → R) (c : Fin n) (ha : a c = 0) (h : �
     · simp [hi]
 
 /- English proof (translation)
-Establish `key : ∀ r k : Fin (m + 1), (if k.val = r.val + 1 then (colElt a i.succ ha : Matrix (Fin (m + 1)) (Fin (m + 1)) R) r k else 0) = if r = i.castSucc then (if k = i.succ then a r else 0) else 0`. Introduce `r k`. Rewrite using `[colElt_apply]`. Distinguish the cases in `h1 : k.val = r.val + 1`. Establish `hrk : r ≠ k` using `fun h => by rw [h] at h1; omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[if_pos h1, Matrix.one_apply_ne hrk, zero_add]`. Distinguish the cases in `h2 : k = i.succ`. Establish `: r = i.castSucc` using `Fin.ext (by rw [h2, Fin.val_succ] at h1; rw [Fin.val_castSucc]; omega)`. Rewrite using `[if_pos this]`. Apply the tactic sequence `rw [if_neg h2]; split_ifs <;> rfl`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[if_neg h1]`. Distinguish the cases in `h3 : r = i.castSucc`. Distinguish the cases in `h2 : k = i.succ`. Conclude with `absurd (by rw [h2, h3, Fin.val_succ, Fin.val_castSucc]) h1`. Rewrite using `[if_pos h3, if_neg h2]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h3]`. Simplify using `only [superDiag, Finset.sum_filter, key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem superDiag_colElt {m : ℕ} (a : Fin (m + 1) → R) (i : Fin m) (ha : a i.succ = 0) :
     superDiag (colElt a i.succ ha) = a i.castSucc := by
@@ -168,11 +168,11 @@ theorem superDiag_colElt {m : ℕ} (a : Fin (m + 1) → R) (i : Fin m) (ha : a i
   simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, colElt_val, colElt_val, add_mul, mul_add, one_mul, mul_one]`. Use `congr 1`. Use extensionality with `r k`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply, ite_mul, zero_mul, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrow]`. Distinguish the cases in `hk : k = c`. Substitute `hk` using the available equality. Simplify using `[Pi.single_apply, Matrix.one_apply_eq]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[hk, Matrix.one_apply_ne (Ne.symm hk)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem colElt_comm {n : ℕ} (Y : GL (Fin n) R) (c j : Fin n) (s : R)
     (hrow : ∀ k, (Y : Matrix (Fin n) (Fin n) R) c k = (1 : Matrix (Fin n) (Fin n) R) c k)
@@ -192,9 +192,9 @@ theorem colElt_comm {n : ℕ} (Y : GL (Fin n) R) (c j : Fin n) (s : R)
   · simp [hk, Matrix.one_apply_ne (Ne.symm hk)]
 
 /- English proof (translation)
-Establish `h` using `(mem_unipB R).1 hu`. Use extensionality with `i j`. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Rewrite using `[hb i j hij, Units.val_one, Matrix.one_apply_ne (ne_of_lt hij)]`. Rewrite using `[h.2 i, Units.val_one, Matrix.one_apply_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.1 i j hij, Units.val_one, Matrix.one_apply_ne (ne_of_gt hij)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_one_of_unip_lower {n : ℕ} {g : GL (Fin n) R} (hu : g ∈ unipB R (Fin n))
     (hb : ∀ i j : Fin n, i < j → (g : Matrix (Fin n) (Fin n) R) i j = 0) : g = 1 := by
@@ -230,14 +230,14 @@ def lowB (n : ℕ) : Subgroup (GL (Fin n) k) where
     exact blockTriangular_inv_of_blockTriangular ha
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i j hij => h hij, fun h _ _ hij => h _ _ hij⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_lowB {n : ℕ} {g : GL (Fin n) k} :
     g ∈ lowB k n ↔ ∀ i j : Fin n, i < j → (g : Matrix (Fin n) (Fin n) k) i j = 0 :=
   ⟨fun h i j hij => h hij, fun h _ _ hij => h _ _ hij⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[GroundTheory.Automorphic.permGL_apply, val_longElt, Fin.revPerm_apply]`. Conclude with `if_congr (rev_eq_iff' j i) rfl rfl`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem longElt_eq_permGL (n : ℕ) : longElt n k = GroundTheory.Automorphic.permGL k Fin.revPerm := by
   ext i j
@@ -245,7 +245,7 @@ theorem longElt_eq_permGL (n : ℕ) : longElt n k = GroundTheory.Automorphic.per
   exact if_congr (rev_eq_iff' j i) rfl rfl
 
 /- English proof (translation)
-Rewrite using `[← map_inv, Units.val_mul, Units.val_mul, GroundTheory.Automorphic.mul_permGL_apply, GroundTheory.Automorphic.permGL_mul_apply, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem permConj_apply {n : ℕ} (σ : Equiv.Perm (Fin n)) (M : GL (Fin n) k) (r c : Fin n) :
     (((GroundTheory.Automorphic.permGL k σ)⁻¹ * M * GroundTheory.Automorphic.permGL k σ : GL (Fin n) k) :
@@ -254,9 +254,9 @@ theorem permConj_apply {n : ℕ} (σ : Equiv.Perm (Fin n)) (M : GL (Fin n) k) (r
     GroundTheory.Automorphic.permGL_mul_apply, inv_inv]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hmono : StrictMono π` using `Fin.strictMono_iff_lt_succ.2 fun i => lt_of_le_of_ne (hne i) (π.injective.ne (ne_of_lt Fin.castSucc_lt_succ))`. Establish `hle : ∀ x, x ≤ π x` using `fun x => hmono.le_apply`. Apply `h` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: π⁻¹ = 1` using `GroundTheory.Automorphic.perm_eq_one_of_forall_le π⁻¹ fun y => by`. Use `hle (π⁻¹ y)` as an intermediate fact. Simplify using `using this`. Conclude with `inv_eq_one.mp this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_descent {k' : ℕ} (π : Equiv.Perm (Fin (k' + 1))) (h : π ≠ 1) :
     ∃ i : Fin k', π i.succ < π i.castSucc := by

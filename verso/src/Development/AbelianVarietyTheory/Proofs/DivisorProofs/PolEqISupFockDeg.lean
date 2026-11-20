@@ -39,16 +39,16 @@ def lowPartInf (B : Base F E) (M : Model σ Y W) {P : Type} [AddCommGroup P] [Mo
   (fockDeg M B.ψ B.emb (lowDegInf B M p)).map p
 
 /- English proof (translation)
-The claim follows from `monotone_nat_of_le_succ fun _ => le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem fockDeg_mono (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     Monotone (fockDeg M ψ τ) :=
   monotone_nat_of_le_succ fun _ => le_sup_left
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact Submodule.span_le.2 fun f hf => Submodule.mem_sInf.2 fun N hN => hN.1 f hf`. Consider the case `succ k ih`. Use `sup_le ih (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `f₁ ⟨u, hu, f, hf, hd⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 (ih hf) N hN) f₁ hd`.
+A detailed English derivation is pending.
 -/
 theorem fockDeg_le_pol (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (k : ℕ) :
     fockDeg M ψ τ k ≤ M.Pol ψ τ := by
@@ -60,7 +60,7 @@ theorem fockDeg_le_pol (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w 
     exact Submodule.mem_sInf.2 fun N hN => hN.2 u hu f (Submodule.mem_sInf.1 (ih hf) N hN) f₁ hd
 
 /- English proof (translation)
-Use `le_antisymm (sInf_le ⟨fun f₀ hf₀ => ?_, fun u hu f hf f₁ hd => ?_⟩) (iSup_le (fockDeg_le_pol M ψ τ))` and prove the remaining obligations. Conclude with `Submodule.mem_iSup_of_mem 0 (Submodule.subset_span hf₀)`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (fockDeg_mono M ψ τ).directed_le).1 hf`. Conclude with `Submodule.mem_iSup_of_mem (k + 1) (Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, f, hk, hd⟩))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pol_eq_iSup_fockDeg (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : ∀ w : InfinitePlace F, EmbOver E w) :
     M.Pol ψ τ = ⨆ k, fockDeg M ψ τ k := by
@@ -71,9 +71,9 @@ theorem pol_eq_iSup_fockDeg (M : Model σ Y W) (ψ : AddChar (AF F) ℂ) (τ : �
       (Submodule.mem_sup_right (Submodule.subset_span ⟨u, hu, f, hk, hd⟩))
 
 /- English proof (translation)
-Take `⟨f, hf, hp⟩` from `h`. Rewrite `hf` using `[pol_eq_iSup_fockDeg]`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ (fockDeg_mono M B.ψ B.emb).directed_le).1 hf`. Establish `hne : {k | ∃ f ∈ fockDeg M B.ψ B.emb k, p f ≠ 0}.Nonempty` using `⟨k, f, hk, hp⟩`. Take `⟨g, hg, hpg⟩` from `Nat.sInf_mem hne`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `hbot`. Conclude with `hpg ((Submodule.eq_bot_iff _).1 hbot (p g) ⟨g, hg, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lowPartInf_ne_bot (B : Base F E) (M : Model σ Y W) {P : Type} [AddCommGroup P] [Module ℂ P]
     (p : SInf F (Fin n × Fin d) →ₗ[ℂ] P) (h : ∃ f ∈ M.Pol B.ψ B.emb, p f ≠ 0) : lowPartInf B M p ≠ ⊥ := by

@@ -12,7 +12,7 @@ section FG
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Rewrite using `[valuation_algebraMap_eq_alt p _ (pow_ne_zero _ hw.ne_zero), dvr_order_pow hw.ne_zero, nv_irr hw, ramE_two hw h2]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem vK_wpow {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) (n : ℕ) :
     vK p (algebraMap O (KK O) (w ^ n)) = ((((n : ℚ) / 2 : ℚ)) : WithTop ℚ) := by
@@ -21,15 +21,15 @@ theorem vK_wpow {p : ℕ} {w : O} (hw : Irreducible w) (h2 : w ^ 2 = (p : O)) (n
   ring_nf
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨μ', c, hc, rfl⟩` from `hx`. Rewrite using `[coeff_monomial]`. Use `split_ifs with h`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `h` using the available equality. Apply `(valuation_nonneg_iff_integral S _).1` to reduce the goal to its premises. Rewrite using `[valuation_mul_alt, vK_wpow S.w_irr h2]`. Establish `e : (((padicValNat p (expFact μ') + padicValNat p sp : ℕ) : ℚ) / 2 : ℚ) = (padicValNat p (expFact μ') : ℚ) / 2 + (padicValNat p sp : ℚ) / 2` using `by push_cast; ring`. Rewrite using `[e, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hc`. Conclude with `⟨0, by simp⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [coeff_add, mul_add, ha, hb, map_add]⟩`. Consider the case `smul o x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨o * a, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[coeff_smul, Algebra.smul_def, map_mul, ← ha]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bb_coeff {p : ℕ} (S : UniformizedDVR p O) (h2 : S.w ^ 2 = (p : O)) {σ : Type} (sp : ℕ)
     (F : MvPolynomial σ (KK O)) (hF : F ∈ bbSpec O p σ sp) (μ : σ →₀ ℕ) :
@@ -61,27 +61,23 @@ theorem bb_coeff {p : ℕ} (S : UniformizedDVR p O) (h2 : S.w ^ 2 = (p : O)) {σ
     ring
 
 /- English proof (translation)
-Use `haveI := hV`. Set `bV` to `Module.finBasis (KK O) V`. Set `Sμ : Finset (σ →₀ ℕ)` to `Finset.univ.biUnion fun k => ((bV k : V) : MvPolynomial σ (KK O)).support`. Establish `hsupp : ∀ F ∈ V, ∀ μ, μ ∉ Sμ → F.coeff μ = 0`. Introduce `F hF μ hμ`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF' : (⟨F, hF⟩ : V) = ∑ k, (bV.repr ⟨F, hF⟩ k) • bV k` using `(bV.sum_repr _).symm`. Establish `: F = ∑ k, (bV.repr ⟨F, hF⟩ k) • ((bV k : V) : MvPolynomial σ (KK O))`. Establish `h` using `congrArg (fun v : V => (v : MvPolynomial σ (KK O))) hF'`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, coeff_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeff_smul]`. Establish `: μ ∉ ((bV k : V) : MvPolynomial σ (KK O)).support` using `fun h => hμ (Finset.mem_biUnion.2 ⟨k, Finset.mem_univ _, h⟩)`. Rewrite using `[MvPolynomial.notMem_support_iff.1 this, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `set Λ := (V.restrictScalars O ⊓ bbSpec O p σ sp : Submodule O (MvPolynomial σ (KK O)))`. Set `nμ : (σ →₀ ℕ) → ℕ` to `fun μ => padicValNat p (expFact μ) + padicValNat p sp`. Set `gen : Sμ → (Sμ → KK O)` to `fun μ => Pi.single μ (algebraMap O (KK O) (S.w ^ nμ μ))⁻¹`. Set `N : Submodule O (Sμ → KK O)` to `Submodule.span O (Set.range gen)`. Set `Φ : MvPolynomial σ (KK O) →ₗ[O] (Sμ → KK O)` to `{ toFun := fun F μ => F.coeff μ map_add' := fun F G => by funext μ; simp map_smul' := fun o F => by funext μ; simp }`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΦN : ∀ F ∈ Λ, Φ F ∈ N`. Introduce `F hF`. Establish `hw0 : algebraMap O (KK O) (S.w ^ 1) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective O (KK O))]`. Conclude with `pow_ne_zero _ S.w_irr.ne_zero`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `choose a ha using fun μ => bb_coeff S h2 sp F hF.2 μ`. Establish `: Φ F = ∑ μ : Sμ, a μ • gen μ`. Use function extensionality and compare the values at `μ`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, gen]`. Rewrite using `[Finset.sum_eq_single μ (fun b _ hb => by rw [Pi.single_eq_of_ne (Ne.symm hb), smul_zero]) (by simp), Pi.single_eq_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 
-Use `show F.coeff μ = a μ • (algebraMap O (KK O) (S.w ^ nμ μ))⁻¹`. Establish `hne : algebraMap O (KK O) (S.w ^ nμ μ) ≠ 0`. Rewrite using `[map_ne_zero_iff _ (IsFractionRing.injective O (KK O))]`. Conclude with `pow_ne_zero _ S.w_irr.ne_zero`. Rewrite using `[Algebra.smul_def, ← ha μ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun μ _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨μ, rfl⟩)`. Establish `hinj : ∀ F ∈ Λ, Φ F = 0 → F = 0`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `F hF h0`. Use extensionality with `μ`. Distinguish the cases in `hμ : μ ∈ Sμ`. Conclude with `congrFun h0 ⟨μ, hμ⟩`. Simplify using `using hsupp F hF.1 μ hμ`.
-
-Use `haveI : Module.Finite O N := Module.Finite.span_of_finite O (Set.finite_range gen)`. Use `haveI : IsNoetherian O N := isNoetherian_of_isNoetherianRing_of_finite O N`. Set `f : Λ →ₗ[O] N` to `(Φ.comp Λ.subtype).codRestrict N fun F => hΦN F.1 F.2`. Use `Module.Finite.of_injective f ?_` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
-
-Introduce `F hF`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hinj F.1 F.2 (congrArg Subtype.val hF)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fg_inter {p : ℕ} (S : UniformizedDVR p O) (h2 : S.w ^ 2 = (p : O)) {σ : Type} (sp : ℕ)
     (V : Submodule (KK O) (MvPolynomial σ (KK O))) (hV : FiniteDimensional (KK O) V) :
@@ -147,7 +143,7 @@ theorem fg_inter {p : ℕ} (S : UniformizedDVR p O) (h2 : S.w ^ 2 = (p : O)) {σ
 end FG
 
 /- English proof (translation)
-Conclude with `fg_inter Sd h2 _ _ (spanSSZ_finite (O := O) (N := 2 * s + 1) (r := r) (blockData p S aTop aPlus m b))`.
+A detailed English derivation is pending.
 -/
 theorem blockFG_all (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p r : ℕ) [NeZero r] (s : ℕ)
     (S : SegData s) (aTop : Fin s → ℕ) (aPlus : ℕ) (m : ℝ) (b : SegBlock s r) (Sd : UniformizedDVR p O)
@@ -155,19 +151,19 @@ theorem blockFG_all (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRin
   exact fg_inter Sd h2 _ _ (spanSSZ_finite (O := O) (N := 2 * s + 1) (r := r) (blockData p S aTop aPlus m b))
 
 /- English proof (translation)
-Introduce `X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS _ _ j`. Conclude with `smithData_seg X.p X.m _ _ _ _ fun b => blockFG_all O X.p X.m _ _ _ _ _ b (dvrOfStd hS) (dvrOfStd_sq hS)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smithAt_all (C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc : ℝ) : SmithAt C0 CYb Cde Ck CD Cb CE1 CE2 Cm Cc := by
   intro X _ W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ jO w hS _ _ j
   exact smithData_seg X.p X.m _ _ _ _ fun b => blockFG_all O X.p X.m _ _ _ _ _ b (dvrOfStd hS) (dvrOfStd_sq hS)
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.of_all fun _ _ _ _ _ _ _ _ _ _ => smithAt_all _ _ _ _ _ _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem restSmith : RestSmith := TransportedAlt.of_all fun _ _ _ _ _ _ _ _ _ _ => smithAt_all _ _ _ _ _ _ _ _ _ _
 
 /- English proof (translation)
-The claim follows from `partners_factors_of_smith_bases restSmith`.
+A detailed English derivation is pending.
 -/
 theorem partners_to_factors_holds : PartnersToFactors := partners_factors_of_smith_bases restSmith
 

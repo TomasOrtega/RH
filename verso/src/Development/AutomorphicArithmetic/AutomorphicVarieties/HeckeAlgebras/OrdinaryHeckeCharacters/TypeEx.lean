@@ -18,7 +18,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Introduce `P` and use `UpperTheory.NonzeroTypeTheory.exists_type_for_residual_rep P.litN`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.typeEx :
     Af.HypothesesH → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

@@ -10,12 +10,12 @@ variable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pFin : Continuous (pFin E) := continuous_snd
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp ((continuous_apply w).comp continuous_fst)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) :=
   continuous_pi fun w =>
@@ -25,25 +25,25 @@ theorem continuous_pInf : Continuous (pInf E) :=
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_pFin E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map_pFin :
     Continuous (GeneralLinearGroup.map (pFin E) : GA E a → GL (Fin a) (Af E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_pFin E))
 
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (continuous_id.matrix_map (continuous_pInf E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_map_pInf :
     Continuous (GeneralLinearGroup.map (pInf E) : GA E a → GL (Fin a) (Cinf E)) :=
   Continuous.units_map _ (continuous_id.matrix_map (continuous_pInf E))
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ hφ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Establish `hm : Continuous fun x : GA E a => g⁻¹ * x` using `continuous_const.mul continuous_id`. Establish `h1 : Continuous fun x : GA E a => toL (GeneralLinearGroup.map (pInf E) (g⁻¹ * x)).val` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (Cinf E))).comp ((continuous_map_pInf E a).comp hm)`. Establish `h2 : ContinuousAt (fun x : GA E a => chart φ.1 g (toL (GeneralLinearGroup.map (pInf E) (g⁻¹ * x)).val)) g` using `ContinuousAt.comp (f := fun x : GA E a => toL (GeneralLinearGroup.map (pInf E) (g⁻¹ * x)).val) (contDiffAt_chart φ.2 g (val_mem_invSet _)).continuousAt h1.continuousAt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h2.congr ?_` and prove the remaining obligations. Establish `h3 : {x : GA E a | finRep E a (GeneralLinearGroup.map (pFin E) (g⁻¹ * x)) φ = φ} ∈ 𝓝 g` using `(hφ.preimage ((continuous_map_pFin E a).comp hm)).mem_nhds (by simp)`. Use `filter_upwards [h3] with x hx`. Rewrite using `[chart_val]`. Use `conv_lhs => rw [← hx]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ.1 (g * infGL E a _ * finGL E a _) = _`. Rewrite using `[mul_assoc, infGL_mul_finGL, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_isOpen_stab : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (φ : Sm E a),
     IsOpen {k | finRep E a k φ = φ} → Continuous φ.1 := by

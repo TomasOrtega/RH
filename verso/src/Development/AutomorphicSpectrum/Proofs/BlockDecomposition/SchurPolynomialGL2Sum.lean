@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.WS.SchurTwo
 open GroundTheory.Automorphic.Spherical
 
 /- English proof (translation)
-Proceed by induction on `A, h using Int.le_induction with`. Consider the case `base => simp`. Consider the case `succ A hA ih`. Establish `hI : Finset.Icc D (A + 1) = insert (A + 1) (Finset.Icc D A)`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_Icc, Finset.mem_insert]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, Finset.sum_insert (by simp), ih]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem sum_Icc_sub_succ {G : Type*} [AddCommGroup G] (f : ℤ → G) (D A : ℤ) (h : D ≤ A) :
     ∑ j ∈ Finset.Icc D A, (f j - f (j + 1)) = f D - f (A + 1) := by
@@ -32,9 +32,9 @@ theorem sum_Icc_sub_succ {G : Type*} [AddCommGroup G] (f : ℤ → G) (D A : ℤ
     abel
 
 /- English proof (translation)
-Rewrite using `[alternant_eq_det, Matrix.det_fin_two]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← monomial_add, ← monomial_add]`. Use `congr 2`. Apply the tactic sequence `funext i fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `funext i fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem alternant_two (a b : ℤ) :
     alternant ![a, b] = monomial ![a, b] - monomial ![b, a] := by
@@ -48,7 +48,7 @@ theorem alternant_two (a b : ℤ) :
     fin_cases i <;> simp
 
 /- English proof (translation)
-Rewrite using `[← monomial_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem monomial_mul_two (a b c d : ℤ) :
     (monomial ![a, b] : LaurentRing 2) * monomial ![c, d] = monomial ![a + c, b + d] := by
@@ -58,15 +58,15 @@ theorem monomial_mul_two (a b c d : ℤ) :
   fin_cases i <;> simp
 
 /- English proof (translation)
-Use `mul_left_cancel₀ (alternant_staircase_ne_zero (n := 2)) ?_` and prove the remaining obligations. Establish `hs : staircase 2 = ![1, 0]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp [staircase]`. Establish `hl : ![A, D] + staircase 2 = ![A + 1, D]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> simp`. Rewrite using `[alternant_mul_schur, hl, hs, alternant_two, alternant_two, Finset.mul_sum]`. Establish `hterm : ∀ j ∈ Finset.Icc D A, ((monomial ![1, 0] : LaurentRing 2) - monomial ![0, 1]) * monomial ![A + D - j, j] = (fun j : ℤ => (monomial ![A + D + 1 - j, j] : LaurentRing 2)) j - (fun j : ℤ => (monomial ![A + D + 1 - j, j] : LaurentRing 2)) (j + 1)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `j _`. Rewrite using `[sub_mul, monomial_mul_two, monomial_mul_two]`. Establish `e1 : (1 : ℤ) + (A + D - j) = A + D + 1 - j` using `by ring`. Establish `e2 : (0 : ℤ) + j = j` using `by ring`. Establish `e3 : (0 : ℤ) + (A + D - j) = A + D + 1 - (j + 1)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : (1 : ℤ) + j = j + 1` using `by ring`. Rewrite using `[e1, e2, e3, e4]`. Rewrite using `[Finset.sum_congr rfl hterm, sum_Icc_sub_succ _ D A h]`. Establish `e5 : A + D + 1 - D = A + 1` using `by ring`. Establish `e6 : A + D + 1 - (A + 1) = D` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e5, e6]`.
+Simplify using the standard rewrite rules.
 -/
 theorem schur_two_eq_sum (A D : ℤ) (h : D ≤ A) :
     schur ![A, D] = ∑ j ∈ Finset.Icc D A, (monomial ![A + D - j, j] : LaurentRing 2) := by
@@ -96,7 +96,7 @@ theorem schur_two_eq_sum (A D : ℤ) (h : D ≤ A) :
   simp only [e5, e6]
 
 /- English proof (translation)
-Rewrite using `[evalAt_single, one_mul, monomialChar_apply, Fin.prod_univ_two]`. Simplify using `[Units.val_zpow_eq_zpow_val]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evalAt_monomial_two (x y : ℂˣ) (a b : ℤ) :
     evalAt ![x, y] (monomial ![a, b]) = (x : ℂ) ^ a * (y : ℂ) ^ b := by
@@ -104,7 +104,7 @@ theorem evalAt_monomial_two (x y : ℂˣ) (a b : ℤ) :
   simp [Units.val_zpow_eq_zpow_val]
 
 /- English proof (translation)
-Introduce `x y A D h`. Rewrite using `[schur_two_eq_sum A D h, map_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => evalAt_monomial_two x y _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalAt_schur_two :
     ∀ (x y : ℂˣ) (A D : ℤ), D ≤ A → Spherical.evalAt ![x, y] (Spherical.schur ![A, D]) = ∑ j ∈ Finset.Icc D A, (x : ℂ) ^ (A + D - j) * (y : ℂ) ^ j := by

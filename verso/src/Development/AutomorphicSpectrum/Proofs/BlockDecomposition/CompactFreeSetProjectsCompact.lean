@@ -7,19 +7,19 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.StageF.Tails
 
 /- English proof (translation)
-Establish `hfree` using `Fintype.linearIndependent_iff.1 hY`. Establish `hnzd : ∀ b : K, b * Y 0 0 = 0 → b = 0`. Introduce `b hb`. Establish `hsum : ∑ i, (Pi.single 0 b : Fin (n + 1) → K) i • Y i = 0`. Rewrite using `[Finset.sum_eq_single_of_mem (0 : Fin (n + 1)) (Finset.mem_univ _) (fun i _ hi => by simp [Pi.single_eq_of_ne hi])]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations. Simplify using `using hb`. Simplify using `[h0 i]`. Simplify using `using hfree _ hsum 0`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Fintype.linearIndependent_iff.2 fun w hw j => ?_` and prove the remaining obligations. Establish `hw' : ∀ i : Fin M, ∑ j, w j * Y j.succ i.succ = 0`. Introduce `i`. Use `congrFun hw i` as an intermediate fact. Simplify `this` using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `set r : K := ∑ j, w j * Y j.succ 0 with hr`. Establish `hsum : ∑ i, (Fin.cons (-r) (fun j => Y 0 0 * w j) : Fin (n + 1) → K) i • Y i = 0`. Rewrite using `[Fin.sum_univ_succ]`. Use function extensionality and compare the values at `i`. Use `Fin.cases ?_ (fun i => ?_) i` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Pi.zero_apply]`. Establish `h1 : ∑ j, Y 0 0 * w j * Y j.succ 0 = r * Y 0 0`. Rewrite using `[hr, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Fin.cons_zero, Fin.cons_succ, Pi.add_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul, Pi.zero_apply, h0 i, mul_zero, zero_add]`. Establish `: ∑ j, Y 0 0 * w j * Y j.succ i.succ = Y 0 0 * ∑ j, w j * Y j.succ i.succ`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, hw' i, mul_zero]`. Establish `hj` using `hfree _ hsum j.succ`. Rewrite `hj` using `[Fin.cons_succ]`. Conclude with `hnzd _ (by rw [mul_comm]; exact hj)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_tails {K : Type} [CommRing K] {M n : ℕ} {Y : Fin (n + 1) → Fin (M + 1) → K}
     (hY : LinearIndependent K Y) (h0 : ∀ i : Fin M, Y 0 i.succ = 0) :
@@ -64,11 +64,11 @@ theorem linearIndependent_tails {K : Type} [CommRing K] {M n : ℕ} {Y : Fin (n 
   exact hnzd _ (by rw [mul_comm]; exact hj)
 
 /- English proof (translation)
-Set `tl : (Fin (n + 1) → Fin (M + 1) → K) → Fin n → Fin M → K` to `fun Y j i => Y j.succ i.succ`. Establish `htl : Continuous tl` using `continuous_pi fun j => continuous_pi fun i => (continuous_apply i.succ).comp (continuous_apply j.succ)`. Establish `hclosed : IsClosed {Y : Fin (n + 1) → Fin (M + 1) → K | ∀ i : Fin M, Y 0 i.succ = 0}`. Establish `: {Y : Fin (n + 1) → Fin (M + 1) → K | ∀ i : Fin M, Y 0 i.succ = 0} = ⋂ i : Fin M, {Y | Y 0 i.succ = 0}`. Use extensionality with `Y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `isClosed_iInter fun i => isClosed_eq ((continuous_apply i.succ).comp (continuous_apply 0)) continuous_const`. Use `⟨tl '' (Q ∩ {Y | ∀ i : Fin M, Y 0 i.succ = 0}), (hQ.inter_right hclosed).image htl, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Y, ⟨hYQ, h0⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `linearIndependent_tails (hfree Y hYQ) h0`. Introduce `A c X h`. Conclude with `⟨vec A c X, ⟨h, fun i => by simp [vec]⟩, by funext j i; simp [tl, vec]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_tails (K : Type) [CommRing K] [TopologicalSpace K] [T2Space K] (M n : ℕ)
     (Q : Set (Fin (n + 1) → Fin (M + 1) → K)) (hQ : IsCompact Q)

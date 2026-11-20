@@ -10,9 +10,9 @@ open scoped CategoryTheory.Obj
 namespace PositivityTheory.Xgn.FiniteSurjectivePointLift
 
 /- English proof (translation)
-Use `letI := φ.toAlgebra`. Use `haveI : Module.Finite L A := hφ`. Take `⟨m, hm⟩` from `Ideal.exists_maximal A`. Use `letI := Ideal.Quotient.field m`. Use `haveI : Module.Finite L (A ⧸ m) := inferInstance`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Algebra.IsAlgebraic L (A ⧸ m) := inferInstance`. Set `j : (A ⧸ m) →ₐ[L] AlgebraicClosure L` to `IsAlgClosed.lift`. Use `⟨(j.comp (Ideal.Quotient.mkₐ L m)).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `(j.comp (Ideal.Quotient.mkₐ L m)).commutes x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_ringHom (L A : Type) [Field L] [CommRing A] [Nontrivial A] (φ : L →+* A) (hφ : φ.Finite) :
     ∃ ψ : A →+* AlgebraicClosure L, ψ.comp φ = algebraMap L (AlgebraicClosure L) := by
@@ -28,11 +28,11 @@ theorem exists_ringHom (L A : Type) [Field L] [CommRing A] [Nontrivial A] (φ : 
   exact (j.comp (Ideal.Quotient.mkₐ L m)).commutes x
 
 /- English proof (translation)
-Use `haveI hA : IsAffine P := isAffine_of_isAffineHom g`. Establish `hfin : (g.appTop).hom.Finite` using `g.finite_app ⊤ (isAffineOpen_top _)`. Set `φ : L →+* Γ(P, ⊤)` to `((Scheme.ΓSpecIso (CommRingCat.of L)).inv ≫ g.appTop).hom`. Establish `hφ : φ.Finite`. Use `RingHom.Finite.comp hfin ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `RingHom.Finite.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of L)).inv).2`. Use `haveI : Nonempty (⊤ : P.Opens) := ⟨⟨Classical.arbitrary P, trivial⟩⟩`. Take `⟨ψ, hψ⟩` from `exists_ringHom L Γ(P, ⊤) φ hφ`. Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ P.isoSpec.inv, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Scheme.isoSpec_inv_naturality, Scheme.isoSpec_Spec_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [← Spec.map_comp]`. Use `congr 1`. Use extensionality with `x`. Conclude with `congrArg (fun f => f x) hψ`.
+A detailed English derivation is pending.
 -/
 theorem exists_point (L : Type) [Field L] (P : Scheme.{0}) [Nonempty P] (g : P ⟶ Spec (CommRingCat.of L))
     [IsFinite g] : ∃ x : Spec (CommRingCat.of (AlgebraicClosure L)) ⟶ P,
@@ -56,9 +56,9 @@ theorem exists_point (L : Type) [Field L] (P : Scheme.{0}) [Nonempty P] (g : P �
 end PositivityTheory.Xgn.FiniteSurjectivePointLift
 
 /- English proof (translation)
-Introduce `Z' Z π hfin hsurj L _ zZ`. Use `haveI : Surjective (pullback.snd π zZ) := inferInstance`. Take `⟨p, -⟩` from `(pullback.snd π zZ).surjective (IsLocalRing.closedPoint L)`. Use `haveI : Nonempty ↥(pullback π zZ) := ⟨p⟩`. Take `⟨x, hx⟩` from `FiniteSurjectivePointLift.exists_point L (pullback π zZ) (pullback.snd π zZ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨x ≫ pullback.fst π zZ, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx]`.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.finite_surjective_point_lift : ∀ (Z' Z : Scheme.{0}) (π : Z' ⟶ Z), IsFinite π → Surjective π → ∀ (L : Type) [Field L] (zZ : Sp L ⟶ Z),
     ∃ x : Sp (AlgebraicClosure L) ⟶ Z', x ≫ π = spMap (algebraMap L (AlgebraicClosure L)) ≫ zZ := by

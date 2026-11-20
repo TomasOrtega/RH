@@ -11,7 +11,7 @@ namespace GlobalTheory.GelfandInj
 open Finset Polynomial
 
 /- English proof (translation)
-Unfold `GlobalTheory.CapelliNewton.capQ`. Rewrite using `[Multiset.map_map, Multiset.map_map, Finset.prod_eq_multiset_prod]`. Use `congr 1`. Use `Multiset.map_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, map_sub]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -26,28 +26,28 @@ theorem capQ_eq_prod (m : ℕ) (χ : Fin (m+1) → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[capQ_eq_prod, Polynomial.roots_multiset_prod_X_sub_C]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem capQ_roots (m : ℕ) (χ : Fin (m+1) → ℂ) :
     (GlobalTheory.CapelliNewton.capQ m χ).roots = (Multiset.map χ Finset.univ.val).map (fun a => ((m : ℂ) / 2 - a)) := by
   rw [capQ_eq_prod, Polynomial.roots_multiset_prod_X_sub_C]
 
 /- English proof (translation)
-Introduce `n χ χ' h`. Consider the cases of `n with`. Consider the case `zero => simp`. Consider the case `succ m`. Establish `hall : ∀ k, GlobalTheory.Dec.gelfVal χ k = GlobalTheory.Dec.gelfVal χ' k`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `k`. Consider the cases of `k with`. Consider the case `zero => rw [GlobalTheory.CapelliNewton.gelfVal_zero, GlobalTheory.CapelliNewton.gelfVal_zero]`. Consider the case `succ k => exact h k`. Establish `hgv : GlobalTheory.Dec.gelfVal χ = GlobalTheory.Dec.gelfVal χ'` using `funext hall`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Take `⟨r, hr, hrE⟩` from `GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m (m + 1) χ`. Take `⟨r', hr', hrE'⟩` from `GlobalTheory.T.scalar_capelli_truncated_perelomov_popov m (m + 1) χ'`. Establish `hf` using `GlobalTheory.T.poly_eq_zero_of_newton_recursion m (m + 1) (GlobalTheory.Dec.gelfVal χ) (GlobalTheory.CapelliNewton.capQ m χ - GlobalTheory.CapelliNewton.capQ m χ') (r - r') (Nat.lt_succ_self m) (GlobalTheory.CapelliNewton.gelfVal_zero m χ) ?_ ?_ ?_`. Establish `hQ : GlobalTheory.CapelliNewton.capQ m χ = GlobalTheory.CapelliNewton.capQ m χ'` using `sub_eq_zero.mp hf`. Establish `hroots` using `congrArg Polynomial.roots hQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hroots` using `[capQ_roots, capQ_roots]`. Conclude with `Multiset.map_injective (fun a b hab => by simpa using hab) hroots`. Rewrite using `[natDegree_le_iff_coeff_eq_zero]`. Introduce `k hk`. Rewrite using `[coeff_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.lt_or_ge (m + 1) k with hlt | hge` into its components or cases. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by rw [GlobalTheory.CapelliNewton.capQ_natDegree]; exact hlt), coeff_eq_zero_of_natDegree_lt (by rw [GlobalTheory.CapelliNewton.capQ_natDegree]; exact hlt), sub_zero]`. Establish `hk' : k = m + 1` using `le_antisymm hge hk`. Substitute `hk'` using the available equality. Establish `h1` using `(GlobalTheory.CapelliNewton.capQ_monic m χ).coeff_natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(GlobalTheory.CapelliNewton.capQ_monic m χ').coeff_natDegree`. Rewrite `h1`, `h2` using `[GlobalTheory.CapelliNewton.capQ_natDegree]`. Rewrite using `[h1, h2, sub_self]`. Conclude with `(natDegree_sub_le _ _).trans (max_le hr hr')`. Introduce `u`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hrE u`. Establish `h2` using `hrE' u`. Rewrite `h2` using `[← hgv]`. Rewrite `h1` using `[← GlobalTheory.CapelliNewton.capQ_eval m χ (u + 1), ← GlobalTheory.CapelliNewton.capQ_eval m χ u]`. Rewrite `h2` using `[← GlobalTheory.CapelliNewton.capQ_eval m χ' (u + 1), ← GlobalTheory.CapelliNewton.capQ_eval m χ' u]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [eval_sub]`. Take the linear combination `h1 - h2`.
+A detailed English derivation is pending.
 -/
 theorem gelfVal_multiset_eq : ∀ (n : ℕ) (χ χ' : Fin n → ℂ), (∀ k : ℕ, GlobalTheory.Dec.gelfVal χ (k + 1) = GlobalTheory.Dec.gelfVal χ' (k + 1)) → Multiset.map χ Finset.univ.val = Multiset.map χ' Finset.univ.val := by
   intro n χ χ' h

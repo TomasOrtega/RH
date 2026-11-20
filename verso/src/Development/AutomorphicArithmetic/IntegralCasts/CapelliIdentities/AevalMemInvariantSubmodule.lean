@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `Y _ _ A p hA q y hy`. Establish `hpow : ∀ n : ℕ, (A ^ n) y ∈ p`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `hA _ ih`. Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply]`. Use `p.sum_mem fun i _ => ?_` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply]`. Conclude with `p.smul_mem _ (hpow i)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qj11.aeval_mem_invariant_submodule.{u_1} :
     ∀ {Y : Type u_1} [inst : AddCommGroup Y] [inst_1 : _root_.Module ℂ Y]

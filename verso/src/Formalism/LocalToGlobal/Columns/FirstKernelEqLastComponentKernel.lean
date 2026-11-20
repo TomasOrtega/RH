@@ -37,7 +37,7 @@ def OneYbKer : Prop :=
 
 include hQ in
 /- English proof (translation)
-Unfold `rowSG uSG`. Rewrite using `[hQ, Finset.union_empty]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rcol_rowSG_eq : Pr.vGs = rowSG Pr sel mu := by
   classical

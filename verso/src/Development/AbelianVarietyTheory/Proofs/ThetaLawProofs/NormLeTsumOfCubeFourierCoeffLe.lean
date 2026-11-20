@@ -14,25 +14,23 @@ namespace GlobalTheory
 namespace Koecher
 
 /- English proof (translation)
-Use `set p : (ι → ℝ) → UnitAddTorus ι := fun x i ↦ (x i : UnitAddCircle) with hp`. Establish `hq : IsOpenQuotientMap p` using `IsOpenQuotientMap.piMap fun _ ↦ QuotientAddGroup.isOpenQuotientMap_mk`. Use `set f₀ : UnitAddTorus ι → ℂ := fun z ↦ A (Function.surjInv hq.surjective z) with hf₀`. Establish `hfp : ∀ x, f₀ (p x) = A x` using `fun x ↦ by set x' := Function.surjInv hq.surjective (p x)`. Establish `h1 : p x' = p x` using `Function.surjInv_eq _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ i, ∃ n : ℤ, (n : ℝ) = x' i - x i` using `fun i ↦ by`. Establish `h3 : ((x' i - x i : ℝ) : UnitAddCircle) = 0`. Rewrite using `[AddCircle.coe_sub, sub_eq_zero]`. Conclude with `congrFun h1 i`. Take `⟨n, hn⟩` from `(AddCircle.coe_eq_zero_iff _).1 h3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `⟨n, by simpa using hn⟩`. Use `choose n hn using h2`. Rewrite using `[← apply_add_intCast_vec_of_unit_periods hA n x]`. Express the relevant statement in the definitionally equal form `A x' = _`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[hn]`. Set `f : C(UnitAddTorus ι, ℂ)` to `⟨f₀, hq.isQuotientMap.continuous_iff.2 <| by`. Rewrite using `[show f₀ ∘ p = A from funext hfp]`. Conclude with `hc⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hchar : ∀ n x, UnitAddTorus.mFourier (-n) (p x) = cexp (-(2 * Real.pi * I) * ∑ i, (n i : ℂ) * (x i : ℂ))` using `fun n x ↦ by`. Simplify using `only [UnitAddTorus.mFourier, ContinuousMap.coe_mk, hp, fourier_coe_apply, ← Complex.exp_sum]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.neg_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hcoeff : ∀ n, ‖UnitAddTorus.mFourierCoeff f n‖ ≤ b n` using `fun n ↦ by`. Use `le_of_eq_of_le ?_ (h n)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `congr 1`. Rewrite using `[UnitAddTorus.mFourierCoeff_eq_integral f n 0]`. Simplify using `only [Pi.zero_apply, zero_add]`. Establish `h2 : {x : ι → ℝ | ∀ i, x i ∈ Set.Ioc (0 : ℝ) 1} = Set.pi Set.univ fun i ↦ Set.Ioc ((0 : ι → ℝ) i) ((1 : ι → ℝ) i)`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2, MeasureTheory.setIntegral_congr_set (μ := MeasureTheory.volume) MeasureTheory.Measure.univ_pi_Ioc_ae_eq_Icc]`. Use `MeasureTheory.integral_congr_ae (.of_forall fun x ↦ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `UnitAddTorus.mFourier (-n) (p x) • f₀ (p x) = _`. Simplify using `only [hchar, hfp, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum` using `UnitAddTorus.hasSum_mFourier_series_apply_of_summable (f := f) (Summable.of_norm_bounded hb hcoeff) (p y)`. Express the relevant statement in the definitionally equal form `HasSum _ (f₀ (p _)) at hsum`. Rewrite `hsum` using `[hfp]`. Use `hsum.norm_le_of_bounded hb.hasSum fun n => ?_` and prove the remaining obligations. Rewrite using `[norm_smul]`.
-
-Use `(UnitAddTorus.mFourier n).norm_coe_le_norm (p y)` as an intermediate fact. Rewrite `this` using `[UnitAddTorus.mFourier_norm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_le_tsum_of_cube_fourierCoeff_le {ι : Type*} [Fintype ι] [DecidableEq ι]
     {A : (ι → ℝ) → ℂ} (hc : Continuous A)
@@ -96,15 +94,15 @@ theorem norm_le_tsum_of_cube_fourierCoeff_le {ι : Type*} [Fintype ι] [Decidabl
     _ ≤ b n := by rw [mul_one]; exact hcoeff n
 
 /- English proof (translation)
-Establish `hd : DifferentiableOn ℂ (fun w => ∫ x in Set.Icc (0 : ι → ℝ) 1, f ((fun i => (x i : ℂ)) + w)) U`. Use `(differentiableOn_setIntegral_of_holomorphic_of_continuousOn (F := fun (x : ι → ℝ) w => f ((fun i => (x i : ℂ)) + w)) hU isCompact_Icc subset_rfl measurableSet_Icc isCompact_Icc.measure_lt_top.ne ?_ ?_).1` and prove the remaining obligations. Use `hf.continuousOn.comp (f := fun q : (ι → ℝ) × (ι → ℂ) => (fun i => (q.1 i : ℂ)) + q.2) (by fun_prop) ?_` and prove the remaining obligations. Conclude with `fun q hq => htube _ hq.2 _`. Introduce `x _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hf.comp ((differentiable_const _).add differentiable_id).differentiableOn fun z hz => htube _ hz _`. Conclude with `SCV.eq_of_invariant_real hU hU' hd (fun z hz t _ => by`. Use `setIntegral_unitCube_add_right_of_periodic (F := fun x : ι → ℝ => f ((fun i => (x i : ℂ)) + z)) (fun i x => by` as an intermediate fact. Rewrite using `[← hper _ (htube z hz x) i]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hij]) t`. Rewrite using `[← this]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Use the proof step `ring) hw hw'`.
+A detailed English derivation is pending.
 -/
 theorem setIntegral_unitCube_tube {ι : Type*} [Fintype ι] [DecidableEq ι]
     {f : (ι → ℂ) → ℂ} {U : Set (ι → ℂ)} (hU : IsOpen U) (hU' : IsPreconnected U)
@@ -143,27 +141,27 @@ theorem setIntegral_unitCube_tube {ι : Type*} [Fintype ι] [DecidableEq ι]
       ring) hw hw'
 
 /- English proof (translation)
-Break down `U.eq_empty_or_nonempty with rfl | ⟨w₀, hw₀⟩` into its components or cases. Conclude with `⟨0, fun _ => le_rfl, fun z hz => hz.elim, fun z hz => hz.elim⟩`. Use `set G : (ι → ℤ) → (ι → ℂ) → ℂ := fun m z => f z * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * z i) with hG`. Establish `key : ∀ m, ∀ w ∈ U, ‖∫ x in Set.Icc (0 : ι → ℝ) 1, f ((fun i => (x i : ℂ)) + w) * cexp (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * (x i : ℂ))‖ = ‖∫ x in Set.Icc (0 : ι → ℝ) 1, G m ((fun i => (x i : ℂ)) + w₀)‖ * Real.exp (-(2 * π * ∑ i, (m i : ℝ) * (w i).im))`. Introduce `m w hw`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `setIntegral_unitCube_tube (f := G m) hU hU' htube (hf.mul (Differentiable.differentiableOn (by fun_prop))) (fun z hz i => by`. Simplify using `only [hG]`. Rewrite using `[hper z hz]`. Use `congr 1`. Establish `e : ∑ j, (m j : ℂ) * (z + (Pi.single i 1 : ι → ℂ)) j = ∑ j, (m j : ℂ) * z j + m i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_add, Finset.sum_add_distrib, Pi.single_apply]`. Rewrite using `[e, mul_add, Complex.exp_add]`. Establish `: cexp (-(2 * Real.pi * I) * (m i : ℂ)) = 1`. Use `Complex.exp_int_mul_two_pi_mul_I (-m i)` as an intermediate fact. Rewrite using `[← this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, mul_one]) hw₀ hw`. Establish `e : Real.exp (-(2 * π * ∑ i, (m i : ℝ) * (w i).im)) = ‖cexp (2 * Real.pi * I * ∑ i, (m i : ℂ) * w i)‖`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_exp]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.im_sum]`. Rewrite using `[h, e, ← norm_mul, ← integral_mul_const]`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [hG]`. Rewrite using `[mul_assoc (f _), ← Complex.exp_add]`. Use `congr 2`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun m => ‖∫ x in Set.Icc (0 : ι → ℝ) 1, G m ((fun i => (x i : ℂ)) + w₀)‖, fun _ => norm_nonneg _, fun z hz M hM m => ?_, fun z hz b hb hle => ?_⟩` and prove the remaining obligations. Rewrite using `[← key m z hz]`. Establish `hv : (volume : Measure (ι → ℝ)).real (Set.Icc (0 : ι → ℝ) 1) = 1`. Simplify using `[measureReal_def, Real.volume_Icc_pi]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_le_of_eq (norm_setIntegral_le_of_norm_le_const (C := M) isCompact_Icc.measure_lt_top fun x _ => ?_) (by rw [hv, mul_one])` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_exp]`. Establish `: (-(2 * Real.pi * I) * ∑ i, (m i : ℂ) * (x i : ℂ)).re = 0`. Simplify using `[Complex.mul_re, Complex.im_sum]`. Rewrite using `[this, Real.exp_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hM x`. Use `norm_le_tsum_of_cube_fourierCoeff_le (A := fun x : ι → ℝ => f ((fun i => (x i : ℂ)) + z)) (hf.continuousOn.comp_continuous (by fun_prop) fun x => htube z hz x) (fun i x => by` as an intermediate fact. Rewrite using `[← hper _ (htube z hz x) i]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hij]) hb (fun m => by rw [key m z hz]; exact hle m) 0`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h1 : (fun i => (((0 : ι → ℝ) i : ℝ) : ℂ)) + z = z`. Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules. Rewrite `this` using `[h1]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_tube_fourierCoeff {ι : Type*} [Fintype ι] [DecidableEq ι]
     {f : (ι → ℂ) → ℂ} {U : Set (ι → ℂ)} (hU : IsOpen U) (hU' : IsPreconnected U)
@@ -241,9 +239,9 @@ theorem exists_tube_fourierCoeff {ι : Type*} [Fintype ι] [DecidableEq ι]
 open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `(isCompact_Icc (a := (0 : ι → ℝ)) (b := 1)).exists_bound_of_continuousOn hc.continuousOn`. Use `⟨M, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `apply_add_intCast_vec_of_unit_periods hA (fun i => ⌊x i⌋) fun i => Int.fract (x i)`. Establish `e : ((fun i => Int.fract (x i)) + fun i => ((⌊x i⌋ : ℤ) : ℝ)) = x`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Rewrite using `[h]`. Conclude with `hM _ ⟨fun i => Int.fract_nonneg _, fun i => (Int.fract_lt_one _).le⟩`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_bound_of_unit_periods {ι : Type*} [Fintype ι] [DecidableEq ι]
     {A : (ι → ℝ) → ℂ} (hc : Continuous A) (hA : ∀ (i : ι) x, A (x + Pi.single i 1) = A x) :
@@ -259,37 +257,35 @@ theorem exists_bound_of_unit_periods {ι : Type*} [Fintype ι] [DecidableEq ι]
   exact hM _ ⟨fun i => Int.fract_nonneg _, fun i => (Int.fract_lt_one _).le⟩
 
 /- English proof (translation)
-Establish `hN0 : (N : ℝ) ≠ 0` using `by positivity`. Establish `hNc : (N : ℂ) ≠ 0` using `by exact_mod_cast hN0`. Set `ψ : (Fin g × Fin g → ℂ) →ₗ[ℝ] (Fin g → Fin g → ℂ)` to `{ toFun := fun z i j => 2 * N * z (i, j) map_add' := fun z w => by funext i j; simp [mul_add] map_smul' := fun c z => by funext i j; simp; ring }`. Establish `hψ : Differentiable ℂ ψ`. Express the relevant statement in the definitionally equal form `Differentiable ℂ fun (z : Fin g × Fin g → ℂ) i j => 2 * N * z (i, j)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `fun_prop`. Use `set Φ : (Fin g × Fin g → ℂ) → Matrix (Fin g) (Fin g) ℂ := fun z => phSym (Matrix.of (ψ z)) with hΦ`. Establish `hΦa : ∀ z i j, Φ z i j = N * (z (i, j) + z (j, i))` using `fun z i j => by`. Simplify using `[hΦ, phSym, ψ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦs : ∀ z, (Φ z).IsSymm` using `fun z => isSymm_phSym _`. Establish `hΦim : ∀ z (t : Fin g × Fin g → ℝ), (Φ ((fun q => (t q : ℂ)) + z)).map Complex.im = (Φ z).map Complex.im` using `fun z t => by`. Use extensionality with `i j`. Simplify using `[hΦa]`. Establish `hU : IsOpen (ψ ⁻¹' phDom g)` using `(isOpen_phDom g).preimage hψ.continuous`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU' : IsPreconnected (ψ ⁻¹' phDom g)` using `((convex_phDom g).linear_preimage ψ).isPreconnected`. Establish `hmem : ∀ z, z ∈ ψ ⁻¹' phDom g ↔ Φ z ∈ SiegelH (Fin g)` using `fun z => Iff.rfl`. Establish `htube : ∀ z ∈ ψ ⁻¹' phDom g, ∀ t : Fin g × Fin g → ℝ, (fun q => (t q : ℂ)) + z ∈ ψ ⁻¹' phDom g` using `fun z hz t => (hmem _).2 ⟨hΦs _, by rw [hΦim]; exact ((hmem _).1 hz).2⟩`. Establish `hf : DifferentiableOn ℂ (fun z => F (Φ z)) (ψ ⁻¹' phDom g)` using `DifferentiableOn.comp (g := fun x : Fin g → Fin g → ℂ => F (phSym (Matrix.of x))) (f := ψ) hF hψ.differentiableOn fun z hz => hz`. Establish `hp : ∀ z ∈ ψ ⁻¹' phDom g, ∀ q, F (Φ (z + Pi.single q 1)) = F (Φ z)` using `fun z hz q => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hper (Matrix.of (fun i j => (Pi.single q 1 : Fin g × Fin g → ℤ) (i, j) + (Pi.single q 1 : Fin g × Fin g → ℤ) (j, i))) (by ext i j; simp [add_comm]) _ ((hmem _).1 hz)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[hΦa, Pi.single_apply]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hsym : ∀ τ : Matrix (Fin g) (Fin g) ℂ, τ.IsSymm → Φ (fun q => τ q.1 q.2 / (2 * N)) = τ` using `fun τ hτ => by`. Use extensionality with `i j`. Rewrite using `[hΦa, hτ.apply i j]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨fun Y hY => ?_, ?_⟩` and prove the remaining obligations. Use `set z : Fin g × Fin g → ℂ := fun q => I * Y q.1 q.2 / (2 * N) with hz`. Establish `hYs : ∀ i j, Y j i = Y i j` using `fun i j => by simpa using hY.1.apply i j`. Establish `hzU : z ∈ ψ ⁻¹' phDom g`. Use `(hmem _).2 ⟨hΦs _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `hY using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Establish `: Φ z i j = I * Y i j`. Rewrite using `[hΦa]`. Simplify using `only [hz, hYs i j]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `[this]`. Take `⟨M, hM⟩` from `exists_bound_of_unit_periods (A := fun x : Fin g × Fin g → ℝ => F (Φ ((fun i => (x i : ℂ)) + z))) (hf.continuousOn.comp_continuous (by fun_prop) fun x => htube z hzU x) (fun i x => by`. Rewrite using `[← hp _ (htube z hzU x) i]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hij : j = i`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[hij])`. Use `⟨M, fun τ hτ hτY => ?_⟩` and prove the remaining obligations. Establish `h` using `hM fun q => (τ q.1 q.2).re / (2 * N)`. Rewrite using `[← hsym τ hτ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `h using 4` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `q`. Simplify using `only [Pi.add_apply, hz, ← hτY, Matrix.map_apply]`. Use `push_cast`. Rewrite using `[← add_div, mul_comm I, Complex.re_add_im]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨a, ha0, ha1, ha2⟩` from `exists_tube_fourierCoeff hU hU' htube hf hp`. Use `⟨a, ha0, fun Y hY M hM m => ?_, fun τ hτ b hb hle => ?_⟩` and prove the remaining obligations. Use `set z : Fin g × Fin g → ℂ := fun q => I * Y q.1 q.2 with hz`. Establish `him : (Φ z).map Complex.im = (N : ℝ) • (Y + Yᵀ)`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[hΦa, hz]`. Use `ha1 z ((hmem _).2 ⟨hΦs _, by rwa [him]⟩) M (fun t => hM _ (hΦs _) (by rw [hΦim, him])) m` as an intermediate fact. Simplify `this` using `[hz]`. Use `ha2 (fun q => τ q.1 q.2 / (2 * N)) ((hmem _).2 (by rwa [hsym τ hτ.1])) b hb fun m => by` as an intermediate fact. Use `hle m using 4` and compare the differences between its conclusion and the goal.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `: (τ q.1 q.2 / (2 * N)).im = (τ q.1 q.2).im / (2 * N)`. Rewrite using `[show (2 * N : ℂ) = ((2 * N : ℝ) : ℂ) by push_cast; rfl, Complex.div_ofReal_im]`. Rewrite using `[this]`.
-
-Clear the denominators using the available nonvanishing facts. Rewrite `this` using `[hsym τ hτ.1]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_siegel_fourierCoeff {g N : ℕ} (hN : 1 ≤ N) {F : Matrix (Fin g) (Fin g) ℂ → ℂ}
     (hF : IsHoloSiegel g F)
@@ -392,7 +388,7 @@ theorem exists_siegel_fourierCoeff {g N : ℕ} (hN : 1 ≤ N) {F : Matrix (Fin g
       rwa [hsym τ hτ.1] at this
 
 /- English proof (translation)
-Use `⟨-(M / a), fun r hr => ?_⟩` and prove the remaining obligations. Establish `h1 : Real.exp (-r) ≤ M / a` using `by rw [le_div_iff₀ ha]; linarith`. Establish `h2` using `Real.add_one_le_exp (-r)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exists_lower_bound_of_mul_exp_neg_le {a : ℝ} (ha : 0 < a) (M : ℝ) :
     ∃ B : ℝ, ∀ r : ℝ, a * Real.exp (-r) ≤ M → B ≤ r := by
@@ -402,9 +398,9 @@ theorem exists_lower_bound_of_mul_exp_neg_le {a : ℝ} (ha : 0 < a) (M : ℝ) :
   linarith
 
 /- English proof (translation)
-Use `Matrix.posSemidef_iff_dotProduct_mulVec.2 ⟨?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[hT.apply i j]`. Rewrite using `[star_trivial]`. Establish `hd : DenseRange (Pi.map fun (_ : Fin g) => (Rat.cast : ℚ → ℝ))` using `DenseRange.piMap fun _ => Rat.denseRange_cast`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hd.induction_on x (isClosed_le continuous_const (by fun_prop)) fun v => ?_` and prove the remaining obligations. Use `h v` as an intermediate fact. Simplify using `only [dotProduct, mulVec, Matrix.map_apply, Pi.map_apply] at this ⊢`. Conclude with `this` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem posSemidef_of_rat_nonneg {g : ℕ} {T : Matrix (Fin g) (Fin g) ℤ} (hT : T.IsSymm)
     (h : ∀ v : Fin g → ℚ, 0 ≤ v ⬝ᵥ (T.map (Int.cast : ℤ → ℚ)).mulVec v) :
@@ -421,7 +417,7 @@ theorem posSemidef_of_rat_nonneg {g : ℕ} {T : Matrix (Fin g) (Fin g) ℤ} (hT 
     exact_mod_cast this
 
 /- English proof (translation)
-Establish `h` using `(hT.hadamard hP).dotProduct_mulVec_nonneg fun _ => 1`. Simplify `h` using `[dotProduct, mulVec, Fintype.sum_prod_type]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_nonneg_of_posSemidef {g : ℕ} {T P : Matrix (Fin g) (Fin g) ℝ}
     (hT : T.PosSemidef) (hP : P.PosSemidef) : 0 ≤ ∑ q : Fin g × Fin g, T q.1 q.2 * P q.1 q.2 := by
@@ -429,9 +425,9 @@ theorem sum_mul_nonneg_of_posSemidef {g : ℕ} {T P : Matrix (Fin g) (Fin g) ℝ
   simpa [dotProduct, mulVec, Fintype.sum_prod_type] using h
 
 /- English proof (translation)
-Establish `hd : ∀ k, T k k ≤ T.trace` using `fun k => Finset.single_le_sum (f := fun k => T k k) (fun k _ => hT.diag_nonneg) (Finset.mem_univ k)`. Establish `hs : T j i = T i j` using `by simpa using hT.1.apply i j`. Establish `h1` using `hT.dotProduct_mulVec_nonneg (Pi.single i 1 + Pi.single j 1)`. Establish `h2` using `hT.dotProduct_mulVec_nonneg (Pi.single i 1 - Pi.single j 1)`. Simplify using `only [star_trivial, mulVec_add, mulVec_sub, add_dotProduct, sub_dotProduct, dotProduct_add, dotProduct_sub, single_dotProduct, mulVec_single_one, col_apply, one_mul, hs] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hd i` as an intermediate fact. Use `hd j` as an intermediate fact. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem abs_apply_le_trace_of_posSemidef {g : ℕ} {T : Matrix (Fin g) (Fin g) ℝ}
     (hT : T.PosSemidef) (i j : Fin g) : |T i j| ≤ T.trace := by
@@ -448,9 +444,9 @@ theorem abs_apply_le_trace_of_posSemidef {g : ℕ} {T : Matrix (Fin g) (Fin g) �
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `h0 : Summable fun n : ℕ => Real.exp (-(ε * n))`. Use `summable_geometric_of_lt_one (Real.exp_pos (-ε)).le (Real.exp_lt_one_iff.2 (by linarith))` as an intermediate fact. Use `this.congr fun n => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_nat_mul]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1 : Summable fun n : ℤ => Real.exp (-(ε * |(n : ℝ)|))` using `Summable.of_nat_of_neg (by simpa using h0) (by simpa using h0)`. Use `(summable_prod_tuples (J := fun _ : ι => ℤ) (u := fun _ n => Real.exp (-(ε * |(n : ℝ)|))) (fun _ _ => (Real.exp_pos _).le) fun _ => h1).congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← Real.exp_sum, Finset.mul_sum, Finset.sum_neg_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem summable_exp_neg_mul_sum_abs {ι : Type*} [Fintype ι] {ε : ℝ} (hε : 0 < ε) :
     Summable fun m : ι → ℤ => Real.exp (-(ε * ∑ q, |(m q : ℝ)|)) := by
@@ -467,15 +463,13 @@ theorem summable_exp_neg_mul_sum_abs {ι : Type*} [Fintype ι] {ε : ℝ} (hε :
   rw [← Real.exp_sum, Finset.mul_sum, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Use `set V := U.adjugate with hV`. Establish `hUV : U * V = 1` using `by rw [hV, mul_adjugate, hU, one_smul]`. Establish `hVU : V * U = 1` using `by rw [hV, adjugate_mul, hU, one_smul]`. Establish `hC : U.map (Int.cast : ℤ → ℂ) * V.map (Int.cast : ℤ → ℂ) = 1`. Use `congrArg (Int.castRingHom ℂ).mapMatrix hUV` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[map_mul, map_one]`. Then use the resulting hypothesis. Establish `hR : V.map (Int.cast : ℤ → ℝ) * U.map (Int.cast : ℤ → ℝ) = 1`. Use `congrArg (Int.castRingHom ℝ).mapMatrix hVU` as an intermediate fact. Rewrite `this` using `[map_mul, map_one]`. Then use the resulting hypothesis. Use `set σ := V.map (Int.cast : ℤ → ℂ) * τ * (V.map (Int.cast : ℤ → ℂ))ᵀ with hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσs : σ.IsSymm`. Rewrite using `[Matrix.IsSymm, hσ, transpose_mul, transpose_mul, transpose_transpose, hτ.eq, Matrix.mul_assoc]`. Establish `hσim : σ.map Complex.im = s • (1 : Matrix (Fin g) (Fin g) ℝ)`. Establish `e : σ.map Complex.im = V.map (Int.cast : ℤ → ℝ) * τ.map Complex.im * (V.map (Int.cast : ℤ → ℝ))ᵀ`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hσ, Matrix.mul_apply, Complex.im_sum]`. Rewrite using `[e, him, Matrix.mul_smul, Matrix.smul_mul, ← Matrix.mul_assoc, hR, Matrix.one_mul, ← transpose_mul, hR, transpose_one]`. Establish `hτσ : U.map (Int.cast : ℤ → ℂ) * σ * (U.map (Int.cast : ℤ → ℂ))ᵀ = τ`. Rewrite using `[hσ, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hC, Matrix.one_mul, Matrix.mul_assoc, ← transpose_mul, hC, transpose_one, Matrix.mul_one]`. Rewrite using `[← hτσ, hinv σ ⟨hσs, by rw [hσim]; exact Matrix.PosDef.one.smul hs⟩]`.
-
-Conclude with `hM σ hσs hσim`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_of_invariant {g : ℕ} {F : Matrix (Fin g) (Fin g) ℂ → ℂ}
     {U : Matrix (Fin g) (Fin g) ℤ} (hU : U.det = 1)
@@ -518,55 +512,49 @@ end Koecher
 open ReciprocityTheory.PTheta ReciprocityTheory.ChartRestriction.G.Key Koecher in
 
 /- English proof (translation)
-Introduce `g hg N hN F hF hper hinv c hc`. Establish `hNpos : (0 : ℝ) < N` using `by exact_mod_cast hN`. Establish `hgpos : (0 : ℝ) < g` using `by exact_mod_cast (by omega : 0 < g)`. Take `⟨hbd, a, ha0, ha1, ha2⟩` from `exists_siegel_fourierCoeff hN hF hper`. Establish `hc2 : 0 < c / 2` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨M, hM⟩` from `hbd ((c / 2) • 1) (Matrix.PosDef.one.smul hc2)`. Establish `hM0 : 0 ≤ M` using `(norm_nonneg _).trans (hM ((I * (c / 2 : ℝ)) • 1) (by simp [Matrix.IsSymm]) (by`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [hij]))`. Use `set s : ℝ := c / (4 * N) with hs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hs0 : 0 < s` using `by positivity`. Establish `hA : ∀ A : Matrix (Fin g) (Fin g) ℝ, Aᵀ = -A → ∀ m, a m * Real.exp (-(2 * π * ∑ q, (m q : ℝ) * (s • (1 : Matrix (Fin g) (Fin g) ℝ) + A) q.1 q.2)) ≤ M`. Introduce `A hA`. Establish `e : (N : ℝ) • ((s • (1 : Matrix (Fin g) (Fin g) ℝ) + A) + (s • (1 : Matrix (Fin g) (Fin g) ℝ) + A)ᵀ) = (c / 2) • 1`. Rewrite using `[transpose_add, hA, transpose_smul, transpose_one, add_add_add_comm, add_neg_cancel, add_zero, ← add_smul, smul_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Conclude with `ha1 _ (by rw [e]; exact Matrix.PosDef.one.smul hc2) M (by rw [e]; exact hM)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ U : Matrix (Fin g) (Fin g) ℤ, U.det = 1 → (∀ i j, (N : ℤ) ∣ U i j - (1 : Matrix (Fin g) (Fin g) ℤ) i j) → ∀ m, a m * Real.exp (-(2 * π * ∑ q, (m q : ℝ) * (s • (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ)) q.1 q.2)) ≤ M`. Introduce `U hU hUN`. Establish `e : (N : ℝ) • (s • (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ) + (s • (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ))ᵀ) = (c / 2) • (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ)`. Rewrite using `[transpose_smul, transpose_mul, transpose_transpose, ← add_smul, smul_smul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hs]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hunit : IsUnit (U.map (Int.cast : ℤ → ℝ))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, ← Int.cast_det, hU]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hpd : (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ).PosDef`. Use `Matrix.PosDef.mul_conjTranspose_self (U.map (Int.cast : ℤ → ℝ)) (Matrix.vecMul_injective_of_isUnit hunit)` as an intermediate fact. Rewrite `this` using `[conjTranspose_eq_transpose_of_trivial]`. Then use the resulting hypothesis. Conclude with `ha1 _ (by rw [e]; exact hpd.smul hc2) M (by rw [e]; exact bound_of_invariant hU (hinv U hU hUN) hc2 hM)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hpsd : ∀ m, 0 < a m → ((Matrix.of fun i j => m (i, j)).map (Int.cast : ℤ → ℝ)).PosSemidef`. Introduce `m hm`. Take `⟨B, hBr⟩` from `exists_lower_bound_of_mul_exp_neg_le hm M`. Use `set T : Matrix (Fin g) (Fin g) ℤ := Matrix.of fun i j => m (i, j) with hT`. Establish `hsymm : T.IsSymm`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, m (i, j) ≠ m (j, i) := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hne (by ext i j; simp [hT, hcon i j])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hii : i ≠ j` using `fun h => hij (by rw [h])`. Establish `hd : ((m (i, j) : ℝ) - m (j, i)) ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hij)`. Use `set r₀ : ℝ := ∑ q, (m q : ℝ) * (s • (1 : Matrix (Fin g) (Fin g) ℝ)) q.1 q.2 with hr₀`. Use `set u : ℝ := ((B - 1) / (2 * π) - r₀) / ((m (i, j) : ℝ) - m (j, i)) with hu`. Establish `h` using `hBr _ (hA (Matrix.single i j u - Matrix.single j i u) (by rw [transpose_sub, transpose_single, transpose_single, neg_sub]) m)`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `e : ∑ q, (m q : ℝ) * (s • (1 : Matrix (Fin g) (Fin g) ℝ) + (Matrix.single i j u - Matrix.single j i u)) q.1 q.2 = r₀ + u * ((m (i, j) : ℝ) - m (j, i))`. Establish `h1 : ∀ k l : Fin g, ∑ q : Fin g × Fin g, (m q : ℝ) * Matrix.single k l u q.1 q.2 = m (k, l) * u` using `fun k l => by`. Rewrite using `[Finset.sum_eq_single (k, l)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨k', l'⟩ _ hq`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.single_apply_of_ne, mul_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hq rfl`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.add_apply, Matrix.sub_apply, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, h1, ← hr₀]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e, hu, div_mul_cancel₀ _ hd, add_sub_cancel, mul_div_cancel₀ _ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `posSemidef_of_rat_nonneg hsymm fun v => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push Not at hv`. Take `⟨k, hk⟩` from `exists_rat_lt (B / (2 * π * s))`. Take `⟨U, hU, hUN, hlt⟩` from `exists_congruence_trace_lt g N hg hN (T.map (Int.cast : ℤ → ℚ)) (hsymm.map _) ⟨v, hv⟩ k`. Establish `h` using `hBr _ (hB U hU hUN m)`. Establish `e : ∑ q, (m q : ℝ) * (s • (U.map (Int.cast : ℤ → ℝ) * (U.map (Int.cast : ℤ → ℝ))ᵀ)) q.1 q.2 = s * ((((U.map (Int.cast : ℤ → ℚ)).transpose * T.map (Int.cast : ℤ → ℚ) * U.map (Int.cast : ℤ → ℚ)).trace : ℚ) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Matrix.trace_mul_cycle]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply (M := _ * _), Matrix.map_apply, hT, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, Fintype.sum_prod_type, Finset.mul_sum]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.mul_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mul_apply, transpose_apply, Matrix.map_apply]`. Use `push_cast`. Simplify using `only [mul_comm ((U j _ : ℤ) : ℝ)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Rewrite `h` using `[e]`. Establish `hlt'` using `(Rat.cast_lt (K := ℝ)).2 hlt`. Establish `h3` using `hlt'.trans hk`. Rewrite `h3` using `[lt_div_iff₀ (by positivity)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ε : ℝ := π * c / (2 * N * g ^ 2) with hε`. Establish `hε0 : 0 < ε` using `by positivity`. Use `⟨∑' m : Fin g × Fin g → ℤ, M * Real.exp (-(ε * ∑ q, |(m q : ℝ)|)), fun τ hτ hτc => ha2 τ hτ _ ((summable_exp_neg_mul_sum_abs hε0).mul_left M) fun m => ?_⟩` and prove the remaining obligations. Break down `(ha0 m).eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Check the signs of the components of the expression. Establish `hT` using `hpsd m h0`. Use `set t : ℝ := ((Matrix.of fun i j => m (i, j)).map (Int.cast : ℤ → ℝ)).trace with ht`. Establish `hone : ∑ q : Fin g × Fin g, (m q : ℝ) * (1 : Matrix (Fin g) (Fin g) ℝ) q.1 q.2 = t`. Simplify using `[ht, Fintype.sum_prod_type, Matrix.one_apply, Matrix.trace]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h1` using `hA 0 (by simp) m`. Establish `e1 : ∑ q : Fin g × Fin g, (m q : ℝ) * (s • (1 : Matrix (Fin g) (Fin g) ℝ) + 0) q.1 q.2 = s * t`. Rewrite using `[← hone, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Simplify using `only [add_zero, Matrix.smul_apply, smul_eq_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e1]`. Establish `h2 : c * t ≤ ∑ q : Fin g × Fin g, (m q : ℝ) * (τ q.1 q.2).im`. Use `sum_mul_nonneg_of_posSemidef hT hτc` as an intermediate fact. Rewrite using `[← hone, Finset.mul_sum, ← sub_nonneg, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this.trans_eq (Finset.sum_congr rfl fun q _ => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, Matrix.of_apply, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∑ q : Fin g × Fin g, |(m q : ℝ)| ≤ g ^ 2 * t`. Use `Finset.sum_le_card_nsmul Finset.univ (fun q : Fin g × Fin g => |(m q : ℝ)|) t fun q _ => abs_apply_le_trace_of_posSemidef hT q.1 q.2` as an intermediate fact.
-
-Simplify `this` using `[sq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`. Use `gcongr`. Establish `h4 : ε * ∑ q, |(m q : ℝ)| ≤ ε * (g ^ 2 * t)` using `by gcongr`.
-
-Establish `h5 : π / N * (c * t) ≤ π / N * ∑ q : Fin g × Fin g, (m q : ℝ) * (τ q.1 q.2).im` using `by gcongr`. Establish `h6 : π / N * (c * t) = 2 * π * (s * t) + ε * (g ^ 2 * t)`. Rewrite using `[hs, hε]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `_ ≤ M * Real.exp (-(ε * ∑ q, |(m q : ℝ)|)) := by`. Rewrite using `[← mul_assoc]`. Use `gcongr`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phKoecher : PhKoecherStatement := by
   intro g hg N hN F hF hper hinv c hc

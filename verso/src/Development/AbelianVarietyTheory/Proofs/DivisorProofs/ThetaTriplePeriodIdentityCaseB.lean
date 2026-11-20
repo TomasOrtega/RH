@@ -15,9 +15,9 @@ namespace GlobalTheory.ThK.InfB
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hS` using `IsUWeilPair.isUSplitting hW`. Establish `hact : actAB (cA σ) ((g, 1) : UA σ X.J × UA σ W.J) (partInf F u) = partInf F (mat g * u)`. Express the relevant statement in the definitionally equal form `mat g * (partInf F u) * (mat (1 : UA σ W.J))ᵀ = _`. Establish `h1 : mat (1 : UA σ W.J) = 1` using `rfl`. Rewrite using `[h1, Matrix.transpose_one, Matrix.mul_one, partInf, partInf, Matrix.mul_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r, h0, hr⟩` from `exists_rest_inf F (Fin n × Fin d)`. Use `DFunLike.coe_injective (eq_of_tens_inf h0 (hr f).1 ?_)` and prove the remaining obligations. Establish `h2` using `hS.impl (g, 1) (partInf F u) _ (hr f).2`. Rewrite `h2` using `[hact, (locOpInf_rho M.co hψ u f).1 r (hr _), acts_locOpInf (hex _) r (hr _), acts_locOpInf (hex _) r (hr _), (locOpInf_rho M.co hψ _ _).1 r (hr _)]`. Conclude with `h2.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locOpInf_om_rho {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     (hψ : IsStd ψ) {χX χW : Chr F E} {om : Rep σ X W} (hW : M.IsWeil ψ χX χW om) {g : UA σ X.J}
@@ -40,7 +40,7 @@ theorem locOpInf_om_rho {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model �
 omit [NumberField E] in
 
 /- English proof (translation)
-Rewrite using `[shiftB, shiftB, Matrix.mul_smul, Matrix.mul_vecMulVec, hm.2.1, Matrix.smul_vecMulVec, smul_smul, ← map_mul, Units.val_mul, mul_comm (t : AE F E), mul_assoc, Units.mul_inv, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul_shiftB {n d n₁ d₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n₁} {H : Plane E n n₁} (H' : Plane E d d₁)
     {t : (AE F E)ˣ} {g₀ : UA σ X₁.J} {m : UA σ X.J} (hm : IsLevi (W₁ := X₁) H t g₀ m) (s : (AE F E)ˣ) :
@@ -49,7 +49,7 @@ theorem mat_mul_shiftB {n d n₁ d₁ : ℕ} {X : Spc F E n} {X₁ : Spc F E n�
     Units.val_mul, mul_comm (t : AE F E), mul_assoc, Units.mul_inv, mul_one]
 
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B a b G G₁ H H' hC e' he ei' ev' hL X om om' om₁ om₁' hT hT₁ t g₀ m hm hmi hg s f`. Establish `hex` using `GlobalTheory.ArchLocalityX.acts_arch_left hP F E σ _ _ _ _ G.M' B.ψ _ _ om' hT.base.cm hT.base.std hT.weil' m hmi`. Rewrite using `[← mat_mul_shiftB H' hm s, locOpInf_om_rho hT.base.std hT.weil' hex]`. Conclude with `(GlobalTheory.T.config_b_local_eigen_triple hP F E σ B a b G G₁ H H' hC e' he ei' ev' hL X om om' om₁ om₁' hT hT₁).2 t g₀ m hm hmi hg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_cone_law : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ)
     (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' →

@@ -31,7 +31,7 @@ noncomputable def rightMulLin (h : GL (Fin 3) ℂ) :
       Matrix.mul_one, Equiv.symm_apply_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (rightMulLin h).toContinuousLinearEquiv Ψ, fun _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_rightTranslate (h : GL (Fin 3) ℂ) (Ψ : Sw) :
     ∃ Ψ' : Sw, ∀ (X : M23) (q : Fin 2 → ℂ),
@@ -40,7 +40,7 @@ theorem exists_rightTranslate (h : GL (Fin 3) ℂ) (Ψ : Sw) :
     fun _ _ => rfl⟩
 
 /- English proof (translation)
-Unfold `inn`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[SchwartzMap.smul_apply, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,7 +54,7 @@ theorem inn_smul (c : ℂ) (Ψ : Sw) (g : GL (Fin 3) ℂ) (M : Matrix (Fin 2) (F
   ring
 
 /- English proof (translation)
-Unfold `inn`. Use `congr 1`. Use function extensionality and compare the values at `p`. Rewrite using `[hΨ, Units.val_mul, ← Matrix.mul_assoc]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inn_mul_right (Ψ Ψ₀ : Sw) (g h : GL (Fin 3) ℂ)
     (hΨ : ∀ (X : M23) (q : Fin 2 → ℂ),
@@ -68,15 +68,15 @@ theorem inn_mul_right (Ψ Ψ₀ : Sw) (g h : GL (Fin 3) ℂ)
   simp
 
 /- English proof (translation)
-Introduce `k _ Ψ h`. Take `⟨Ψ₀, hΨ₀⟩` from `exists_rightTranslate h Ψ`. Use `set c : ℂ := ((‖(h : Matrix (Fin 3) (Fin 3) ℂ).det‖ ^ 2 : ℝ) : ℂ) with hc`. Use `⟨c • Ψ₀, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `sec`. Simplify using `only [inn_smul, inn_mul_right Ψ Ψ₀ g h hΨ₀]`. Establish `hdet : ((‖((g * h : GL (Fin 3) ℂ) : Matrix (Fin 3) (Fin 3) ℂ).det‖ ^ 2 : ℝ) : ℂ) = ((‖(g : Matrix (Fin 3) (Fin 3) ℂ).det‖ ^ 2 : ℝ) : ℂ) * c`. Rewrite using `[Units.val_mul, Matrix.det_mul, norm_mul, mul_pow, Complex.ofReal_mul]`. Establish `hin : ∀ y : M22, (∫ t : ℂ, c * inn Ψ₀ g (Matrix.of y) t * ph (4 * (k : ℤ) - 4) t) = c * ∫ t : ℂ, inn Ψ₀ g (Matrix.of y) t * ph (4 * (k : ℤ) - 4) t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hout : (∫ y : M22, (c * ∫ t : ℂ, inn Ψ₀ g (Matrix.of y) t * ph (4 * (k : ℤ) - 4) t) * ph (-(2 * (k : ℤ) - 2)) (Matrix.of y).det * ((‖(Matrix.of y).det‖ ^ (-(2 : ℝ)) : ℝ) : ℂ)) = c * ∫ y : M22, (∫ t : ℂ, inn Ψ₀ g (Matrix.of y) t * ph (4 * (k : ℤ) - 4) t) * ph (-(2 * (k : ℤ) - 2)) …`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [hin]`. Rewrite using `[hdet, hout]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem stStable : StStable := by
   intro k _ Ψ h

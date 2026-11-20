@@ -17,9 +17,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
   {D : ComponentData II Ψ K ι Ω E} {O Lt : Type} [CommRing O] [AddCommGroup Lt] [Module O Lt]
 
 /- English proof (translation)
-Establish `ha : (X.MUq B p q t').a = (X.NbarQ B p q t).a`. Simplify using `only [ComponentSetting.MUq, MUc, ComponentSetting.NbarQ, smoothRepConj_a, smoothRep_a]`. Both sides reduce to the same expression. Establish `hpos : 0 < ∏ k, ‖c k‖ ^ (X.NbarQ B p q t).a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hc k)) _`. Establish `e : torusSmul c z = fun x => c x.1 * z x` using `rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(X.MUq B p q t').smul c z hc`. Establish `h2` using `(X.NbarQ B p q t).smul c z hc`. Rewrite `h1` using `[ha]`. Unfold `ComponentSetting.wSt`. Rewrite using `[e, h1, h2, Real.log_mul hpos.ne' ((X.MUq B p q t').pos z hz.1).ne', Real.log_mul hpos.ne' ((X.NbarQ B p q t).pos z hz.1).ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,11 +41,11 @@ theorem ComponentSetting.wSt_torusSmul (X : ComponentSetting D O Lt) (B p q : �
   ring
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X B p q hp hpq`. Establish `hq : 1 ≤ q` using `hp.trans hpq`. Establish `hr : (0 : ℝ) < q` using `by exact_mod_cast hq`. Take `⟨t₁, ht₁, hL⟩` from `hLim II Ψ K ι Ω E D O Lt X B p q hq`. Take `⟨t₃, ht₃, N₂, hN₂, hA⟩` from `hAbove II Ψ K ι Ω E D O Lt X`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨min t₁ t₃, lt_min ht₁ ht₃, fun t ht0 ht hsp => ?_⟩` and prove the remaining obligations. Take `⟨N₁, C, s₀, hs₀, hN₁, hbd, hpt⟩` from `hL t ht0 (ht.trans (min_le_left _ _))`. Take `⟨hint, hlim⟩` from `hConv K ι (mCoordIdeal D.y) D.n (X.NbarQ B p q t) q (X.wSt B p q t) (fun z => cuspCorr X.H X.Cd z - (Real.log (X.S.ref.h z) + X.S.regWeight t (X.M.proj z))) N₁ C s₀ D.arith hsp.1 hr hN₁ hs₀ (fun s hs hs' => ⟨(hbd s hs hs').1, (hbd s hs hs').2, fun c hc z hz => X.wSt_torusSmul B p …`. Use `⟨hlim, ?_⟩` and prove the remaining obligations. Use `hMono K ι (mCoordIdeal D.y) D.n (X.NbarQ B p q t) q _ (fun z => X.Cd.cuspWeight z / 2) N₂ D.arith hsp hr hN₂ (fun z hz hzN => ?_) hint (hU II Ψ K ι Ω E D O Lt X B p q t hsp.1)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hA t ht0 (ht.trans (min_le_right _ _)) z hz hzN`. Use `show phMu X.H z + X.Cd.cuspWeight z / 2 - (Real.log (X.S.ref.h z) + X.S.regWeight t (X.M.proj z)) ≤ X.Cd.cuspWeight z / 2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem StokesLimitTp.proof (hLim : TpIntegrandLimit.Statement) (hAbove : RegAboveWeight.Statement)
     (hU : TpCuspIntegrable.Statement) (hConv : PtsBddConv.Statement) (hMono : PtsMonoSemipos.Statement) :

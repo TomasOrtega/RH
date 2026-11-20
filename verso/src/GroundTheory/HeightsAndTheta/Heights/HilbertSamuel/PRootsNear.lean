@@ -7,9 +7,9 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial Filter Topology
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, norm_mul, Multiset.card_cons, pow_succ, mul_comm]`. Establish `h1 : ε ≤ ‖t₀ - a‖`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← dist_eq_norm, dist_comm]`. Conclude with `h a (Multiset.mem_cons_self _ _)`. Establish `h2` using `ih (fun b hb => h b (Multiset.mem_cons_of_mem hb))`. Conclude with `mul_le_mul h1 h2 (pow_nonneg hε _) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem RootsNear.pow_card_le_norm_prod (s : Multiset ℂ) (t₀ : ℂ) {ε : ℝ} (hε : 0 ≤ ε)
     (h : ∀ a ∈ s, ε ≤ dist a t₀) :
@@ -24,9 +24,9 @@ theorem RootsNear.pow_card_le_norm_prod (s : Multiset ℂ) (t₀ : ℂ) {ε : �
     exact mul_le_mul h1 h2 (pow_nonneg hε _) (norm_nonneg _)
 
 /- English proof (translation)
-Simplify using `only [Polynomial.eval₂_eq_sum_range]`. Use `continuous_finsetSum _ fun i _ => Continuous.mul ?_ continuous_const` and prove the remaining obligations. Establish `: (fun y : Fin e → ℂ => (aeval y).toRingHom (G.coeff i)) = fun y => eval y (MvPolynomial.map (algebraMap ℚ ℂ) (G.coeff i))`. Use function extensionality and compare the values at `y`. Simplify using `[MvPolynomial.eval_map, MvPolynomial.aeval_def]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `MvPolynomial.continuous_eval _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootsNear.continuous_eval₂ {e : ℕ} (G : Polynomial (MvPolynomial (Fin e) ℚ)) (t : ℂ) :
     Continuous fun y : Fin e → ℂ => G.eval₂ (aeval y).toRingHom t := by
@@ -40,17 +40,15 @@ theorem RootsNear.continuous_eval₂ {e : ℕ} (G : Polynomial (MvPolynomial (Fi
   exact MvPolynomial.continuous_eval _
 
 /- English proof (translation)
-Introduce `e G hG y₀ t₀ h0 ε hε`. Establish `hpos : (0 : ℝ) < ε ^ G.natDegree` using `pow_pos hε _`. Establish `ht` using `(RootsNear.continuous_eval₂ G t₀).tendsto y₀`. Rewrite `ht` using `[h0]`. Use `filter_upwards [ht (Metric.ball_mem_nhds 0 hpos)] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[Set.mem_preimage, mem_ball_zero_iff]`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Use `set p := G.map (aeval y).toRingHom with hp`. Establish `hpm : p.Monic` using `hG.map _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdeg : p.natDegree = G.natDegree` using `hG.natDegree_map _`. Establish `hcard : Multiset.card p.roots = p.natDegree` using `IsAlgClosed.card_roots_eq_natDegree`. Establish `hprod` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hpm hcard`. Establish `hev : G.eval₂ (aeval y).toRingHom t₀ = (p.roots.map fun a => t₀ - a).prod`. Rewrite using `[← Polynomial.eval_map, ← hp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `conv_lhs => rw [← hprod]`. Rewrite using `[Polynomial.eval_multiset_prod, Multiset.map_map]`. Use `congr 1`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hle` using `RootsNear.pow_card_le_norm_prod p.roots t₀ hε.le (fun a ha => by`. Establish `ha' : p.eval₂ (RingHom.id ℂ) a = 0`. Rewrite using `[Polynomial.eval₂_id]`. Conclude with `(Polynomial.mem_roots hpm.ne_zero).1 ha`.
-
-Use `hno a (by rw [hp, Polynomial.eval₂_map] at ha'; simpa using ha')` as an intermediate fact. Conclude with `this)`. Rewrite `hle` using `[hcard, hdeg, ← hev]`. Conclude with `absurd hy (not_lt.2 hle)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem RootsNear.proof : RootsNear.Statement := by
   intro e G hG y₀ t₀ h0 ε hε

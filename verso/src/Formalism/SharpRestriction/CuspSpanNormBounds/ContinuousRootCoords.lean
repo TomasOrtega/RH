@@ -13,12 +13,12 @@ section Meas2
 variable {k r : ℕ} {κ τ : ℝ}
 
 /- English proof (translation)
-The claim follows from `(ENNReal.ofReal_pos.mpr hα).ne'`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_ne_zero_of_pos {α : ℝ} (hα : 0 < α) : ENNReal.ofReal α ≠ 0 := (ENNReal.ofReal_pos.mpr hα).ne'
 
 /- English proof (translation)
-Rewrite using `[Measure.map_smul, Measure.map_map measurable_cjT continuous_cjIT.measurable]`. Establish `e : cjT k r κ τ ∘ cjIT k r κ τ = id` using `funext (cjT_cjIT hκ hτ)`. Rewrite using `[e, Measure.map_id, smul_smul, ENNReal.mul_inv_cancel (ofReal_ne_zero_of_pos hα) ENNReal.ofReal_ne_top, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_cjT_cjIT_smul (hκ : 0 < κ) (hτ : 0 < τ) {α : ℝ} (hα : 0 < α) (μ₁ : Measure (Mt k r)) :
     ENNReal.ofReal α • ((ENNReal.ofReal α)⁻¹ • μ₁.map (cjIT k r κ τ)).map (cjT k r κ τ) = μ₁ := by
@@ -28,13 +28,13 @@ theorem map_cjT_cjIT_smul (hκ : 0 < κ) (hτ : 0 < τ) {α : ℝ} (hα : 0 < α
     one_smul]
 
 /- English proof (translation)
-The claim follows from `Prod.ext (Prod.ext (cjT_cjIT hκ hτ _) (cjT_cjIT hκ hτ _)) (Prod.ext (cjT_cjIT hκ hτ _) (cjT_cjIT hκ hτ _))`.
+A detailed English derivation is pending.
 -/
 theorem phiP_phiPI (hκ : 0 < κ) (hτ : 0 < τ) (p : PairSp k r) : phiP k r κ τ (phiPI k r κ τ p) = p :=
   Prod.ext (Prod.ext (cjT_cjIT hκ hτ _) (cjT_cjIT hκ hτ _)) (Prod.ext (cjT_cjIT hκ hτ _) (cjT_cjIT hκ hτ _))
 
 /- English proof (translation)
-Rewrite using `[Measure.map_smul, Measure.map_map measurable_phiP measurable_phiPI]`. Establish `e : phiP k r κ τ ∘ phiPI k r κ τ = id` using `funext (phiP_phiPI hκ hτ)`. Rewrite using `[e, Measure.map_id, smul_smul, ENNReal.inv_mul_cancel (ofReal_ne_zero_of_pos hα) ENNReal.ofReal_ne_top, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem use₉ (hκ : 0 < κ) (hτ : 0 < τ) {α : ℝ} (hα : 0 < α) (ν₁ : Measure (PairSp k r)) :
     (ENNReal.ofReal α)⁻¹ • (ENNReal.ofReal α • ν₁.map (phiPI k r κ τ)).map (phiP k r κ τ) = ν₁ := by
@@ -44,9 +44,9 @@ theorem use₉ (hκ : 0 < κ) (hτ : 0 < τ) {α : ℝ} (hα : 0 < α) (ν₁ : 
     one_smul]
 
 /- English proof (translation)
-Take `⟨⟨h, n⟩, ⟨h', n'⟩⟩` from `x`. Use `Prod.ext (Prod.ext rfl ?_) (Prod.ext rfl ?_)` and prove the remaining obligations. Use function extensionality and compare the values at `i j show (cj k r κ τ a * cj k r κ τ (Matrix.of n)) i j = cj k r κ τ (a * Matrix.of n) i j`. Rewrite using `[cj_mul hκ hτ]`. Use function extensionality and compare the values at `i j show ((cj k r κ τ g)⁻¹ * cj k r κ τ a * cj k r κ τ g * cj k r κ τ (Matrix.of n')) i j = cj k r κ τ (g⁻¹ * a * g * Matrix.of n') i j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cj_mul hκ hτ, cj_mul hκ hτ, cj_mul hκ hτ, cj_inv hκ hτ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem stabAct_phiP (hκ : 0 < κ) (hτ : 0 < τ) (g a : Mx k r) (x : PairSp k r) :
     stabAct (cj k r κ τ g) (cj k r κ τ a) (phiP k r κ τ x) = phiP k r κ τ (stabAct g a x) := by
@@ -61,15 +61,15 @@ theorem stabAct_phiP (hκ : 0 < κ) (hτ : 0 < τ) (g a : Mx k r) (x : PairSp k 
     rw [cj_mul hκ hτ, cj_mul hκ hτ, cj_mul hκ hτ, cj_inv hκ hτ]
 
 /- English proof (translation)
-Establish `ha0` using `ofReal_ne_zero_of_pos hα`. Establish `hat : ENNReal.ofReal α ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `key : ∀ f : PairSp k r → ENNReal, ∫⁻ x, (∫⁻ a, f (stabAct (cj k r κ τ g) (Matrix.of a) x) ∂(ENNReal.ofReal α • μR.map (cjT k r κ τ))) ∂((ENNReal.ofReal α)⁻¹ • ν.map (phiP k r κ τ)) = ∫⁻ x, (∫⁻ a, f (phiP k r κ τ (stabAct g (Matrix.of a) x)) ∂μR) ∂ν`. Introduce `f`. Establish `inner : ∀ x, ∫⁻ a, f (stabAct (cj k r κ τ g) (Matrix.of a) x) ∂(ENNReal.ofReal α • μR.map (cjT k r κ τ)) = ENNReal.ofReal α * ∫⁻ a, f (stabAct (cj k r κ τ g) (cj k r κ τ (Matrix.of a)) x) ∂μR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, ← cjE_coe hκ hτ, lintegral_map_equiv]`. Both sides reduce to the same expression. Repeatedly rewrite using `[inner]`. Rewrite using `[lintegral_smul_measure, smul_eq_mul, lintegral_const_mul' _ _ hat, ← mul_assoc, ENNReal.inv_mul_cancel ha0 hat, one_mul, ← phiE_coe hκ hτ, lintegral_map_equiv]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [phiE_coe, stabAct_phiP hκ hτ]`. Establish `hs : ∀ y, (phiE hκ hτ).symm (phiP k r κ τ y) = y` using `fun y => (phiE hκ hτ).symm_apply_apply y`. Unfold `IsOrbQuot`. Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h f hf`. Establish `h1` using `h (f ∘ (phiE hκ hτ).symm) (hf.comp (phiE hκ hτ).symm.measurable)`. Rewrite `h1` using `[key (f ∘ (phiE hκ hτ).symm)]`. Rewrite `h1` using `[← phiE_coe hκ hτ, lintegral_map_equiv]`. Simplify using `only [Function.comp_apply, phiE_coe, hs] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h1`. Introduce `h f hf`. Rewrite using `[key f, ← phiE_coe hκ hτ, lintegral_map_equiv]`. Conclude with `h (fun y => f (phiE hκ hτ y)) (hf.comp (phiE hκ hτ).measurable)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrbQuot_map_iff (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r)
     (hP : pairMeas L₁ = (pairMeas L).map (phiP k r κ τ))
@@ -108,7 +108,7 @@ theorem isOrbQuot_map_iff (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r)
     exact h (fun y => f (phiE hκ hτ y)) (hf.comp (phiE hκ hτ).measurable)
 
 /- English proof (translation)
-The claim follows from `isOrbQuot_map_iff hκ hτ L _ (pairMeas_trD hκ hτ L hz hz' hπ hπ' hμW hμW') g μR ν hα`.
+A detailed English derivation is pending.
 -/
 theorem IsOrbQuot_trD_iff (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))
@@ -128,14 +128,14 @@ def scC {P : Type*} [Fintype P] (lam : P → ℝ) : (P → ℂ) →ₗ[ℝ] (P �
   LinearMap.pi fun p => (lam p • LinearMap.id) ∘ₗ LinearMap.proj p
 
 /- English proof (translation)
-Simplify using `[scC, Complex.real_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scC_apply {P : Type*} [Fintype P] (lam : P → ℝ) (v : P → ℂ) (p : P) :
     scC lam v p = ((lam p : ℝ) : ℂ) * v p := by
   simp [scC, Complex.real_smul]
 
 /- English proof (translation)
-Rewrite using `[scC, LinearMap.det_pi]`. Use `Finset.prod_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.det_smul, LinearMap.det_id, Complex.finrank_real_complex, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_scC {P : Type*} [Fintype P] (lam : P → ℝ) : LinearMap.det (scC lam) = ∏ p, lam p ^ 2 := by
   rw [scC, LinearMap.det_pi]
@@ -143,9 +143,9 @@ theorem det_scC {P : Type*} [Fintype P] (lam : P → ℝ) : LinearMap.det (scC l
   rw [LinearMap.det_smul, LinearMap.det_id, Complex.finrank_real_complex, mul_one]
 
 /- English proof (translation)
-Establish `hd : LinearMap.det (scC lam) ≠ 0`. Rewrite using `[det_scC]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun p _ => pow_ne_zero _ (h p)`. Establish `e : (fun (v : P → ℂ) p => ((lam p : ℝ) : ℂ) * v p) = ⇑(scC lam)`. Use function extensionality and compare the values at `fun v => funext fun p => (scC_apply lam v p).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Measure.map_linearMap_addHaar_eq_smul_addHaar volume hd, det_scC, abs_of_nonneg (inv_nonneg.mpr (Finset.prod_nonneg fun p _ => sq_nonneg _))]`.
+A detailed English derivation is pending.
 -/
 theorem map_scC_volume {P : Type*} [Fintype P] (lam : P → ℝ) (h : ∀ p, lam p ≠ 0) :
     (volume : Measure (P → ℂ)).map (fun v p => ((lam p : ℝ) : ℂ) * v p) =
@@ -158,11 +158,11 @@ theorem map_scC_volume {P : Type*} [Fintype P] (lam : P → ℝ) (h : ∀ p, lam
     abs_of_nonneg (inv_nonneg.mpr (Finset.prod_nonneg fun p _ => sq_nonneg _))]
 
 /- English proof (translation)
-Use `continuous_pi fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hi : (p.1.1 : ℕ) < r`. Establish `e : (fun x => rootCoords k r z γ x p) = fun x : Mt k r => ((Matrix.of x : Mx k r) *ᵥ fvec k r z p.1.2) (eI k r ⟨p.1.1.val, hi⟩)`. Use function extensionality and compare the values at `x`. Simplify using `only [rootCoords, flagMat, dif_pos hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Establish `hc : Continuous fun x : Mt k r => ((Matrix.of x : Mx k r) *ᵥ fvec k r z p.1.2)` using `Continuous.matrix_mulVec (A := fun x : Mt k r => (Matrix.of x : Mx k r)) (B := fun _ => fvec k r z p.1.2) continuous_id continuous_const`. Conclude with `(continuous_apply (eI k r ⟨p.1.1.val, hi⟩)).comp hc`. Establish `e : (fun x => rootCoords k r z γ x p) = fun _ : Mt k r => (if p.1.1 = p.1.2 then (1 : ℂ) else 0)`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [rootCoords, flagMat, dif_neg hi]`. Rewrite using `[e]`. Conclude with `continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_rootCoords (z : Fin (2 * r + k + 1) → ℂ) (γ : Point ℂ (r + 1)) :
     Continuous (rootCoords k r z γ) := by
@@ -182,7 +182,7 @@ theorem continuous_rootCoords (z : Fin (2 * r + k + 1) → ℂ) (γ : Point ℂ 
     exact continuous_const
 
 /- English proof (translation)
-Unfold `IsRootMeas rootCoords`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRootMeas_congr_pat (L : LocBessel k r) {γ₁ γ : Point ℂ (r + 1)} (h : rootPat γ₁ = rootPat γ)
     (g : Mx k r) (μR : Measure (Mt k r)) : IsRootMeas L γ₁ g μR ↔ IsRootMeas L γ g μR := by
@@ -190,7 +190,7 @@ theorem isRootMeas_congr_pat (L : LocBessel k r) {γ₁ γ : Point ℂ (r + 1)} 
   rw [h]
 
 /- English proof (translation)
-Rewrite using `[mul_inv]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ar1 {a b c : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) : (a * b)⁻¹ * (a * c) * b = c := by
   rw [mul_inv]
@@ -198,40 +198,38 @@ theorem ar1 {a b c : ℝ} (ha : a ≠ 0) (hb : b ≠ 0) : (a * b)⁻¹ * (a * c)
     _ = c := by rw [inv_mul_cancel₀ ha, inv_mul_cancel₀ hb]; ring
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem ar2 {a b c : ℝ} (hb : b ≠ 0) : a * b * c * b⁻¹ = a * c := by
   calc a * b * c * b⁻¹ = a * c * (b * b⁻¹) := by ring
     _ = a * c := by rw [mul_inv_cancel₀ hb, mul_one]
 
 /- English proof (translation)
-Establish `hz` using `L.hz.1`. Take `⟨lam, hlam_def⟩ : ∃ lam : rootPat γ → ℝ, lam = fun p => tF r κ τ p.1.2.val / tF r κ τ p.1.1.val` from `⟨_, rfl⟩`. Establish `hlam : ∀ p, 0 < lam p` using `fun p => by`. Rewrite using `[hlam_def]`. Conclude with `div_pos (tF_pos hκ hτ _) (tF_pos hκ hτ _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB_def⟩ : ∃ B : ℝ, B = ∏ p, lam p ^ 2` from `⟨_, rfl⟩`. Establish `hB : 0 < B` using `by rw [hB_def]; exact Finset.prod_pos fun p _ => pow_pos (hlam p) 2`. Establish `hA : alphaPt κ τ γ = κ ^ (rootPat γ).card * B`. Rewrite using `[hB_def, hlam_def]`. Unfold `alphaPt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_coe_sort]`. Establish `hApos : 0 < alphaPt κ τ γ` using `by rw [hA]; exact mul_pos (pow_pos hκ _) hB`. Establish `hκn : κ ^ (rootPat γ).card ≠ 0` using `pow_ne_zero _ hκ.ne'`. Take `⟨D, hD⟩ : ∃ D : (rootPat γ → ℂ) → (rootPat γ → ℂ), D = fun v p => ((lam p : ℝ) : ℂ) * v p` from `⟨_, rfl⟩`. Take `⟨D', hD'⟩ : ∃ D' : (rootPat γ → ℂ) → (rootPat γ → ℂ), D' = fun v p => (((lam p)⁻¹ : ℝ) : ℂ) * v p` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hDm : Measurable D`. Rewrite using `[hD]`. Conclude with `(continuous_pi fun p => continuous_const.mul (continuous_apply p)).measurable`. Establish `hD'm : Measurable D'`. Rewrite using `[hD']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(continuous_pi fun p => continuous_const.mul (continuous_apply p)).measurable`. Establish `hDD : D' ∘ D = id`. Use function extensionality and compare the values at `v p`. Rewrite using `[hD, hD']`. Use `show (((lam p)⁻¹ : ℝ) : ℂ) * (((lam p : ℝ) : ℂ) * v p) = v p`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ (hlam p).ne', Complex.ofReal_one, one_mul]`. Establish `hRc` using `(continuous_rootCoords (k := k) (r := r) L.z γ).measurable`. Establish `hcomp : rootCoords k r ((τ : ℂ) • L.z) γ ∘ cjT k r κ τ = D ∘ rootCoords k r L.z γ`. Use function extensionality and compare the values at `fun x => funext fun p => by rw [hD, hlam_def]; exact rootCoords_cjT hκ hτ hz γ x p`. Establish `hmap : (ENNReal.ofReal (alphaPt κ τ γ) • μR.map (cjT k r κ τ)).map (rootCoords k r ((τ : ℂ) • L.z) γ) = ENNReal.ofReal (alphaPt κ τ γ) • (μR.map (rootCoords k r L.z γ)).map D`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_smul, Measure.map_map (continuous_rootCoords _ γ).measurable measurable_cjT, hcomp, ← Measure.map_map hDm hRc]`. Establish `hnorm : (‖(κ : ℂ) * L.c‖ / (2 * Real.pi)) ^ (rootPat γ).card = κ ^ (rootPat γ).card * (‖L.c‖ / (2 * Real.pi)) ^ (rootPat γ).card`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hκ.le, mul_div_assoc, mul_pow]`. Establish `hB' : ∏ p, ((lam p)⁻¹) ^ 2 = B⁻¹`. Rewrite using `[hB_def, ← Finset.prod_inv_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun p _ => inv_pow _ _`. Establish `hC0 : 0 ≤ (‖L.c‖ / (2 * Real.pi)) ^ (rootPat γ).card` using `by positivity`. Establish `hvolD : (volume : Measure (rootPat γ → ℂ)).map D = ENNReal.ofReal B⁻¹ • volume`. Rewrite using `[hD, map_scC_volume lam (fun p => (hlam p).ne'), ← hB_def]`. Establish `hvolD' : (volume : Measure (rootPat γ → ℂ)).map D' = ENNReal.ofReal B • volume`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD', map_scC_volume (fun p => (lam p)⁻¹) (fun p => inv_ne_zero (hlam p).ne'), hB', inv_inv]`. Unfold `IsRootMeas`. Rewrite using `[hz₁, hc₁]`. Apply `and_congr` to reduce the goal to its premises. Rewrite using `[Measure.smul_apply, smul_eq_mul, ← cjE_coe hκ hτ, MeasurableEquiv.map_apply, mul_eq_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hset : (cjE hκ hτ) ⁻¹' {x : Mt k r | Matrix.of x ∉ RStab k r (cj k r κ τ g)} = {x : Mt k r | Matrix.of x ∉ RStab k r g}`. Use extensionality with `x`. Simplify using `only [Set.mem_preimage, Set.mem_ofPred_eq, cjE_coe, of_cjT, cj_mem_RStab_iff hκ hτ]`. Rewrite using `[hset]`. Conclude with `or_iff_right (ofReal_ne_zero_of_pos hApos)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hmap, hnorm]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : (μR.map (rootCoords k r L.z γ)).map D = (ENNReal.ofReal (alphaPt κ τ γ))⁻¹ • ENNReal.ofReal (κ ^ (rootPat γ).card * (‖L.c‖ / (2 * Real.pi)) ^ (rootPat γ).card) • volume`. Rewrite using `[← h, smul_smul, ENNReal.inv_mul_cancel (ofReal_ne_zero_of_pos hApos) ENNReal.ofReal_ne_top, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hX : μR.map (rootCoords k r L.z γ) = ((μR.map (rootCoords k r L.z γ)).map D).map D'`. Rewrite using `[Measure.map_map hD'm hDm, hDD, Measure.map_id]`. Rewrite using `[hX, h2, Measure.map_smul, Measure.map_smul, hvolD', smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[← ENNReal.ofReal_inv_of_pos hApos, ← ENNReal.ofReal_mul (inv_nonneg.mpr hApos.le), ← ENNReal.ofReal_mul (mul_nonneg (inv_nonneg.mpr hApos.le) (mul_nonneg (pow_nonneg hκ.le _) hC0)), hA]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `ar1 hκn hB.ne'`. Introduce `h`. Rewrite using `[h, Measure.map_smul, hvolD, smul_smul, smul_smul]`. Use `congr 1`.
-
-Rewrite using `[← ENNReal.ofReal_mul hApos.le, ← ENNReal.ofReal_mul (mul_nonneg hApos.le hC0), hA]`. Use `congr 1`. Conclude with `ar2 hB.ne'`.
+A detailed English derivation is pending.
 -/
 theorem isRootMeas_map_iff (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r) (hz₁ : L₁.z = (τ : ℂ) • L.z)
     (hc₁ : L₁.c = (κ : ℂ) * L.c) (γ : Point ℂ (r + 1)) (g : Mx k r) (μR : Measure (Mt k r)) :
@@ -311,7 +309,7 @@ theorem isRootMeas_map_iff (hκ : 0 < κ) (hτ : 0 < τ) (L L₁ : LocBessel k r
       exact ar2 hB.ne'
 
 /- English proof (translation)
-Rewrite using `[isRootMeas_congr_pat _ hγ]`. Conclude with `isRootMeas_map_iff hκ hτ L _ rfl rfl γ g μR`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRootMeas_trD_iff (hκ : 0 < κ) (hτ : 0 < τ) (L : LocBessel k r) (κN₁ : ENNReal)
     (hz : inWb k r ((τ : ℂ) • L.z) ∧ 0 < Tz k r ((τ : ℂ) • L.z))

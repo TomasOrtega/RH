@@ -17,17 +17,13 @@ noncomputable section
 namespace GlobalTheory.LieProj
 
 /- English proof (translation)
-Introduce `R M _ _ _ n h`. Set `t : Set R` to `{r | Nonempty (Module.Basis (Fin n) (Localization.Away r) (LocalizedModule (Submonoid.powers r) M))}`. Establish `ht : Ideal.span t = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hb⟩` from `h ⟨m, hm.isPrime⟩`. Conclude with `hr (hle (Ideal.subset_span hb))`. Establish `hfree : ∀ g : t, Module.Free (Localization.Away g.1) (LocalizedModule (Submonoid.powers g.1) M)` using `fun g => Module.Free.of_basis g.2.some`. Establish `hfp : ∀ g : t, Module.FinitePresentation (Localization.Away g.1) (LocalizedModule (Submonoid.powers g.1) M)` using `fun g => by haveI := hfree g haveI : Module.Finite (Localization.Away g.1) (LocalizedModule (Submonoid.powers g.1) M) := Module.Finite.of_basis g.2.some`. Conclude with `Module.finitePresentation_of_projective _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.FinitePresentation R M := Module.FinitePresentation.of_localizationSpan t ht hfp`. Use `haveI : Module.Flat R M := by`. Use `Module.flat_of_localized_span R M t ht ?_` and prove the remaining obligations. Introduce `g`. Use `haveI := hfree g`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.Flat R (Localization.Away g.1) := IsLocalization.flat _ (Submonoid.powers g.1)`. Conclude with `Module.Flat.trans R (Localization.Away g.1) _`. Use `⟨inferInstance, Module.Flat.projective_of_finitePresentation, fun p => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, ⟨b⟩⟩` from `h p`. Establish `hq : p ∈ Set.range (PrimeSpectrum.comap (algebraMap R (Localization.Away r)))`.
-
-Rewrite using `[PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `hr`. Take `⟨q, rfl⟩` from `hq`. Use `haveI := Module.Free.of_basis b`. Use `haveI : Nontrivial (Localization.Away r) := q.nontrivial`.
-
-Rewrite using `[← Module.rankAtStalk_isBaseChange (LocalizedModule.isBaseChange (Submonoid.powers r) M) q, Module.rankAtStalk_eq_finrank_of_free]`. Express the relevant statement in the definitionally equal form `Module.finrank (Localization.Away r) (LocalizedModule (Submonoid.powers r) M) = n`. Rewrite using `[Module.finrank_eq_card_basis b, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_projective_of_localBasis : ∀ {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] (n : ℕ),
     (∀ p : PrimeSpectrum R, ∃ r ∉ p.asIdeal,
@@ -71,11 +67,11 @@ theorem finite_projective_of_localBasis : ∀ {R M : Type} [CommRing R] [AddComm
   rw [Module.finrank_eq_card_basis b, Fintype.card_fin]
 
 /- English proof (translation)
-Introduce `R _ G _ _ n h p`. Set `e : Spec (CommRingCat.of R) ⟶ G.left` to `η[G].left`. Take `⟨S, _, _, j, hS, hj, hmem⟩` from `GlobalTheory.LieLoc.exists_standardSmooth_chart G n h (e p)`. Take `⟨_, ⟨r, rfl⟩, hr, hsub⟩` from `PrimeSpectrum.isTopologicalBasis_basic_opens.exists_subset_of_mem_open (a := p) (u := (e ⁻¹ᵁ j.left.opensRange).1) hmem (e ⁻¹ᵁ j.left.opensRange).2`. Use `⟨r, hr, ReciprocityTheory.ChartRestriction.G.Chart.chart_away G j.left.opensRange (by haveI : IsAffine (ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) S).left := inferInstanceAs (IsAffine (Spec (CommRingCat.of S))); exact isAffineOpen_opensRange j.left) r (fun x hx => hs …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ε, hε⟩` from `GlobalTheory.SqZero.exists_chart_pt j (1 : ReciprocityTheory.ChartRestriction.G.Chart.sp (R₀ := R) (Localization.Away r) ⟶ G) (by`. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `: PrimeSpectrum.comap (algebraMap R (Localization.Away r)) t ∈ (PrimeSpectrum.basicOpen r : Set (PrimeSpectrum R))`. Rewrite using `[← PrimeSpectrum.localization_away_comap_range (Localization.Away r) r]`. Conclude with `⟨t, rfl⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `hsub this)`. Take `⟨x, hx⟩` from `GlobalTheory.LieLoc.univChart_baseChange G n S j _ ε hε.symm`. Conclude with `⟨_, ReciprocityTheory.ChartRestriction.G.Chart.basis_of_chart hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart_lieBasis : ∀ {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (n : ℕ),
     SmoothOfRelativeDimension n G.hom → ∀ p : PrimeSpectrum R, ∃ r ∉ p.asIdeal,

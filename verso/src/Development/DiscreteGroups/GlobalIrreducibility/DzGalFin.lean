@@ -3,13 +3,13 @@ import Mathlib
 namespace DiscreteGroups.sglob.DzType
 
 /- English proof (translation)
-Use `Fintype.ofFinite K` as an intermediate fact. Set `F : K → AddChar K Circle` to `fun β => (ψ₀.compAddMonoidHom (Algebra.trace (ZMod g) K).toAddMonoidHom).mulShift β`. Establish `hF : ∀ β x, F β x = ψ₀ (Algebra.trace (ZMod g) K (β * x))` using `fun β x => rfl`. Establish `hinj : Function.Injective F`. Introduce `a b hab`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Establish `hd : a - b ≠ 0` using `sub_ne_zero.2 hne`. Apply `h₀` to reduce the goal to its premises. Use extensionality with `c`. Take `⟨y, rfl⟩` from `Algebra.trace_surjective (ZMod g) K c`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `DFunLike.congr_fun hab ((a - b)⁻¹ * y)`. Rewrite `h1` using `[hF, hF]`. Establish `h2 : y = a * ((a - b)⁻¹ * y) - b * ((a - b)⁻¹ * y)`. Rewrite using `[← sub_mul, ← mul_assoc, mul_inv_cancel₀ hd, one_mul]`. Rewrite using `[h2, map_sub, AddChar.map_sub_eq_div, h1, div_self', AddChar.one_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Finite (AddChar K Circle)` using `Finite.of_equiv _ (AddChar.circleEquivComplex (α := K)).toEquiv.symm`. Establish `hc : Nat.card K = Nat.card (AddChar K Circle)`. Rewrite using `[Nat.card_congr (AddChar.circleEquivComplex (α := K)).toEquiv, Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, AddChar.card_eq]`. Take `⟨β, hβ⟩` from `((Nat.bijective_iff_injective_and_card F).2 ⟨hinj, hc⟩).2 ψb`. Conclude with `⟨β, fun x => by rw [← hβ, hF]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem addChar_eq_trace {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Finite K] [Algebra (ZMod g) K]
     (ψ₀ : AddChar (ZMod g) Circle) (h₀ : ψ₀ ≠ 1) (ψb : AddChar K Circle) :
@@ -39,7 +39,7 @@ theorem addChar_eq_trace {g : ℕ} [Fact g.Prime] {K : Type} [Field K] [Finite K
   exact ⟨β, fun x => by rw [← hβ, hF]⟩
 
 /- English proof (translation)
-Establish `: Finite K` using `Nat.finite_of_card_ne_zero (by rw [hK]; exact pow_ne_zero _ (Fact.out : g.Prime).ne_zero)`. Rewrite using `[FiniteField.algebraMap_norm_eq_pow, hK, Nat.card_zmod]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem algebraMap_norm_eq_pow {g n : ℕ} [Fact g.Prime] {K : Type} [Field K] [Algebra (ZMod g) K]
     (hK : Nat.card K = g ^ n) (x : K) :
@@ -48,11 +48,11 @@ theorem algebraMap_norm_eq_pow {g n : ℕ} [Fact g.Prime] {K : Type} [Field K] [
   rw [FiniteField.algebraMap_norm_eq_pow, hK, Nat.card_zmod]
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN.ne'⟩`. Establish `hle : α.range ≤ rootsOfUnity N ℂ`. Introduce and unpack `_ ⟨t, rfl⟩`. Conclude with `(mem_rootsOfUnity _ _).2 (hα t)`. Establish `: Finite α.range` using `Finite.of_injective _ (Subgroup.inclusion_injective hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, t₀, rfl⟩, h0⟩` from `IsCyclic.exists_generator (α := α.range)`. Take `⟨j, hj⟩` from `h1 t₀`. Use `⟨j, fun t => ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `h0 ⟨α t, t, rfl⟩`. Establish `hk' : α t₀ ^ k = α t` using `congrArg Subtype.val hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `h1 (t * (t₀ ^ k)⁻¹)`. Rewrite `hi` using `[map_mul α, map_inv α, map_zpow α, hk', mul_inv_cancel, one_pow, map_mul, map_inv, map_zpow, mul_inv_eq_one]`. Rewrite using `[hi, hj, ← hk', ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_orbit {G : Type*} [Group G] (α β : G →* ℂˣ) (N : ℕ) (hN : 0 < N) (hα : ∀ t, α t ^ N = 1) (q : ℕ)
     (h1 : ∀ t, ∃ j : ℕ, β t = α t ^ q ^ j) : ∃ j : ℕ, ∀ t, β t = α t ^ q ^ j := by

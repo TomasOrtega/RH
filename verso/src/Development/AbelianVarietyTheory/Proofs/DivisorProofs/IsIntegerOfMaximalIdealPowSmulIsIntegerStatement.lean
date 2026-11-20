@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocal
 open IsLocalRing TensorProduct Pointwise
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.isInteger_of_maximalIdeal_pow_smul_isInteger` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIsIntegerOfMaximalIdealPowSmulIsInteger.lean&line=72#L72)
 -/

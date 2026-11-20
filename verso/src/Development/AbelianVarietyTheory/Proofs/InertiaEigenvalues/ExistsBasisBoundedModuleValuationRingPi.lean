@@ -4,21 +4,19 @@ open IsDedekindDomain NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨D, hD, hDM⟩` from `hbd`. Use `set A : ValuationSubring F := p.valuationSubringAtPrime F with hA`. Use `haveI : IsDiscreteValuationRing A := IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F) p.ne_bot _`. Establish `memA : ∀ a : F, a ∈ A ↔ p.valuation F a ≤ 1`. Introduce `a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hA, HeightOneSpectrum.valuationSubringAtPrime_eq_valuationSubring, Valuation.mem_valuationSubring_iff]`. Set `M' : Submodule A (Fin d → F)` to `{ carrier := M add_mem' := fun {x y} hx hy => hadd x hx y hy zero_mem' := h0 smul_mem' := fun c x hx => by`. Establish `: c • x = (c : F) • x` using `rfl`. Rewrite using `[this]`. Conclude with `hsmul _ ((memA _).1 c.2) x hx }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : Fin d → Fin d → F` to `fun i => D⁻¹ • Pi.single i 1`. Establish `heF : LinearIndependent F e`. Establish `h1` using `(Pi.basisFun F (Fin d)).linearIndependent.units_smul (fun _ => Units.mk0 D⁻¹ (inv_ne_zero hD))`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[e, Pi.basisFun_apply]`. Establish `heA : LinearIndependent A e` using `(LinearIndependent.iff_fractionRing A F).2 heF`. Establish `hle : M' ≤ Submodule.span A (Set.range e)`. Introduce `x hx`. Establish `hx' : x = ∑ i, (D * x i) • e i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `j`. Simplify using `[e, Finset.sum_apply, Pi.single_apply]`. Rewrite using `[mul_comm D, mul_assoc, mul_inv_cancel₀ hD, mul_one]`. Rewrite using `[hx']`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : D * x i ∈ A` using `(memA _).2 (hDM x hx i)`. Establish `: (D * x i) • e i = (⟨D * x i, hc⟩ : A) • e i` using `rfl`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨n, bas⟩` from `Submodule.basisOfPidOfLE hle (Module.Basis.span heA)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨n, fun k => (bas k : Fin d → F), fun k => (bas k).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Use `⟨fun k => (bas.repr ⟨x, hx⟩ k : F), fun k => (memA _).1 (bas.repr ⟨x, hx⟩ k).2, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun y : M' => (y : Fin d → F)) (bas.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`.
-
-Conclude with `h.symm`. Establish `h1 : LinearIndependent A (M'.subtype ∘ bas)` using `bas.linearIndependent.map' M'.subtype (Submodule.ker_subtype M')`. Conclude with `(LinearIndependent.iff_fractionRing A F).1 h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem locBasis_of_bounded {F : Type} [Field F] [NumberField F] (p : HeightOneSpectrum (𝓞 F))
     (d : ℕ) (M : Set (Fin d → F)) (h0 : (0 : Fin d → F) ∈ M)

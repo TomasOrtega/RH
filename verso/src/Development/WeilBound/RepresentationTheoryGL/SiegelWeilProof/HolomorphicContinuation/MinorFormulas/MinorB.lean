@@ -7,9 +7,9 @@ open MvPolynomial
 namespace PositivityTheory.Rg.Sw.SP.Mi
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih, Finset.sum_insert ha, Finset.erase_insert ha, smul_eq_mul, smul_eq_mul, Finset.mul_sum, add_comm]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations. Establish `hca : c ≠ a` using `fun h => ha (h ▸ hc)`. Rewrite using `[Finset.erase_insert_of_ne hca.symm, Finset.prod_insert (fun h => ha (Finset.mem_of_mem_erase h))]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem deriv_prod {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (D : Derivation R A A) {ι : Type*} [DecidableEq ι]
     (s : Finset ι) (f : ι → A) : D (∏ i ∈ s, f i) = ∑ c ∈ s, (∏ i ∈ s.erase c, f i) * D (f c) := by
@@ -26,11 +26,11 @@ theorem deriv_prod {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (D : De
       ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Rewrite using `[map_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.map_smul_of_tower, deriv_prod, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ c)]`. Simplify using `only [Matrix.updateCol_self]`. Rewrite using `[mul_comm]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateCol_ne (Finset.ne_of_mem_erase hi)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem deriv_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (D : Derivation R A A) {ρ : ℕ}
     (M : Matrix (Fin ρ) (Fin ρ) A) :
@@ -49,17 +49,17 @@ theorem deriv_det {R A : Type*} [CommRing R] [CommRing A] [Algebra R A] (D : Der
   rw [Matrix.updateCol_ne (Finset.ne_of_mem_erase hi)]
 
 /- English proof (translation)
-Introduce `R _ ρ p q`. Rewrite using `[deriv_det]`. Establish `h1 : ∀ c, Matrix.updateCol (Xm R ρ) c (fun a => del p q (Xm R ρ a c)) = Matrix.updateCol (Xm R ρ) c (fun a => X (q, c) * X (a, p))`. Introduce `c`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `a`. Simplify using `only [Xm, del, mkDerivation_X]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1]`. Establish `h2 : ∀ c, (Matrix.updateCol (Xm R ρ) c (fun a => X (q, c) * X (a, p))).det = X (q, c) * (Matrix.updateCol (Xm R ρ) c (fun a => Xm R ρ a p)).det`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c`. Establish `: (fun a => (X (q, c) * X (a, p) : Pm R ρ)) = (X (q, c) : Pm R ρ) • fun a => Xm R ρ a p`. Use function extensionality and compare the values at `a`. Simplify using `[Xm]`. Rewrite using `[this, Matrix.det_updateCol_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h2]`. Rewrite using `[Finset.sum_eq_single p]`. Use `congr 1`. Use `congr 1`. Use extensionality with `a d`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hd : d = p`. Substitute `hd` using the available equality. Simplify using `[Matrix.updateCol_self]`. Simplify using `[Matrix.updateCol_ne hd]`. Introduce `c _ hc`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.det_zero_of_column_eq (i := c) (j := p) hc, mul_zero]`. Simplify using `[Matrix.updateCol_self, Matrix.updateCol_ne (Ne.symm hc)]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ p) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem delDet : DelDet := by
   intro R _ ρ p q
@@ -92,11 +92,11 @@ theorem delDet : DelDet := by
   · intro h; exact absurd (Finset.mem_univ p) h
 
 /- English proof (translation)
-Introduce `R _ r s I J α p q f`. Simplify using `only [opE, LinearMap.add_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, map_add, map_mul]`. Use `congr 1`. Simplify using `[ren, rename_X]`. Proceed by induction on `f using MvPolynomial.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `C a => simp [ren]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f ad hf`. Establish `e1 : ren I J (f * X ad) = ren I J f * X (J ad.1, I ad.2)` using `by simp [ren, rename_X]`. Rewrite using `[e1, Derivation.leibniz, Derivation.leibniz, map_add, hf, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, map_mul, map_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [del, mkDerivation_X, ren, map_mul, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem renInt : RenInt := by
   intro R _ r s I J α p q f
@@ -113,7 +113,7 @@ theorem renInt : RenInt := by
       simp only [del, mkDerivation_X, ren, map_mul, rename_X]
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, Derivation.leibniz, smul_eq_mul, smul_eq_mul, smul_eq_mul, smul_eq_mul, MvPolynomial.derivation_C, del, mkDerivation_X]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem del_CX_mul {R : Type} [CommRing R] {ρ : ℕ} (p q : Fin ρ) (α : R) (a b : Fin ρ) (g : Pm R ρ) :
     del p q (C α * X (a, b) * g) = C α * (X (a, p) * X (q, b)) * g + C α * X (a, b) * del p q g := by
@@ -122,9 +122,9 @@ theorem del_CX_mul {R : Type} [CommRing R] {ρ : ℕ} (p q : Fin ρ) (α : R) (a
   ring
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [del]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f ad hf`. Simplify using `only [Derivation.leibniz, map_add, smul_eq_mul, hf]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [del, mkDerivation_X, Derivation.leibniz, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem del_comm {R : Type} [CommRing R] {ρ : ℕ} (p q p' q' : Fin ρ) (g : Pm R ρ) :
     del p q (del p' q' g) = del p' q' (del p q g) := by
@@ -137,7 +137,7 @@ theorem del_comm {R : Type} [CommRing R] {ρ : ℕ} (p q p' q' : Fin ρ) (g : Pm
     ring
 
 /- English proof (translation)
-Introduce `R _ ρ α p q p' q'`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Simplify using `only [LinearMap.comp_apply, opE, LinearMap.add_apply, LinearMap.mulLeft_apply, Derivation.coeFn_coe, map_add]`. Rewrite using `[del_CX_mul, del_CX_mul, del_comm p q p' q']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

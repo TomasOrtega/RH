@@ -19,7 +19,7 @@ open GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.PolFan GlobalTheory.ZM
 namespace GlobalTheory.Mum.CanonPull
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.DVR.linComb_isLB L hL _ _`.
+A detailed English derivation is pending.
 -/
 theorem lam_isLB {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] {L : LB G.left} (hL : L.IsLB) :
     (abelian₂ G L).IsLB :=
@@ -30,11 +30,11 @@ end GlobalTheory.Mum.CanonPull
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `R V' _ _ _ _ _ _ θ hR hV hθ Q W G₁ _ _ P hG hC hW D' ex hP`. Take `⟨hPl, D₀, F, A₀, G₀, i₀, c₀, U₀, oA, oG, inc, pr, hψ, hG₀, lin, mi, mp, hip, hpi, hL⟩` from `hC`. Establish `bR : Base R` using `⟨⟨hR.1, inferInstance, hR.2.1, hR.2.2.1⟩, hR.2.2.2⟩`. Establish `bV : Base V'` using `⟨⟨hV.1, inferInstance, hV.2.1, hV.2.2.1⟩, hV.2.2.2⟩`. Take `⟨D₁, hD, A₁, U₁, m, o₁, oA₁, oG₁, hL₁, hx, ho, ha, lin₁⟩` from `GlobalTheory.T.linearUniformisation_pullback_localHom R V' θ bR bV hθ D₀ A₀ G₀ hG₀ U₀ F.O F.o oA oG lin W hψ hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, gβ, hc, H⟩` from `GlobalTheory.T.polarisedIdempotentFactor_pairing_periods_pullback R V' θ Q D₀.toPre F D₁.toPre hD o₁ hx ho (GlobalTheory.PolDeg.Wit.ofDeg D'.toPre D'.tau_bimult) ex hP`. Take `⟨inc', pr', xi, xp, h₁, h₂, b₁, b₂, b₃, b₄, b₅, b₆, b₇, b₈, b₉⟩` from `GlobalTheory.T.polarisedFactor_algebraic_part_pullback R V' θ Q D₀.toPre F D₁.toPre hD o₁ hx ho (GlobalTheory.PolDeg.Wit.ofDeg D'.toPre D'.tau_bimult) ex β gβ hc`. Take `⟨w, hw, hτ⟩` from `H inc' xi h₁ h₂ b₇`. Set `F₁ : Factor D'.toPre D₁.toPre` to `{ O := F.O, o := o₁, e := F.e, f := F.f, inc := inc', pr := pr', xi := xi, xp := xp, w := w, idem := F.idem, inc_hom := b₁, pr_hom := b₂, inc_pr := b₃, pr_inc := b₄, xp_xi := b₅, xi_xp := b₆, c_xi := b₇, inj := b₈, onto := b₉, w_gen := hw, tau := fun a b z J J' hJ hJ' => ((Global …`. Take `⟨π₂, sq, hl⟩` from `GlobalTheory.T.mumfordPairingRetract_baseChange _ _ (specOf θ) G₁ G₀ inc (oG.act F.f) U₀.LG.L U₁.LG.L P U₀.LG.isLB U₁.LG.isLB hPl hL₁ hL`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨A, U, hU⟩` from `GlobalTheory.T.idempotent_image_uniformised_by_factor_data V' bV D' D₁ F₁ F.alg A₁ _ (IsSemiAbelian.pullback _ G₀ hG₀) U₁ oA₁ oG₁ lin₁ ((Over.pullback (specOf θ)).obj G₁) (IsSemiAbelian.pullback _ G₁ hG) ((Over.pullback (specOf θ)).map inc) ((Over.pullback (specOf θ)).map pr) inf …`. Use `⟨(Over.pullback (specOf θ)).obj G₁, inferInstance, inferInstance, _, π₂, A, U, isGrpPullback_pullback G₁ (specOf θ), sq, ?_⟩` and prove the remaining obligations. Rewrite `hU` using `[show oG₁.act F₁.f = (Over.pullback (specOf θ)).map (oG.act F.f) from ha _]`. Conclude with `LBIso.trans (GlobalTheory.Mum.CanonPull.lam_isLB _ U.LG.isLB) (pull_isLB (GlobalTheory.Mum.CanonPull.lam_isLB _ U₁.LG.isLB) _) (pull_isLB hPl _) hU hl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.canon_pull_unif : ∀ (R V' : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing V'] [IsDomain V'] [IsLocalRing V'] (θ : R →+* V'), IsCN R → IsCN V' → IsLocalHom θ → ∀ (Q : Data R) (W : (Sp R).Opens) (G₁ : Over (Sp R)) [GrpObj G₁] [IsCommMonObj G₁] (P : LB (G2 G₁).left), IsSemiAbelian G₁ → CanonOn Q W G₁ P → spMap θ (genericPoint (Sp V')) ∈ W → ∀ (D' : DegData V' (maximalIdeal V')) (ex : D'.toPre.X ≃+ Q.X), PullData Q θ (GlobalTheory.PolDeg.Wit.ofDeg D'.toPre D'.tau_bimult) ex → ∃ (G' : Over (Sp V')) (_ : GrpObj G') (_ : IsCommMonObj G') (π : G'.left ⟶ G₁.left) (π₂ : (G2 G').left ⟶ (G2 G₁).left) (A : PolAV (Sp (FractionRing V'))) (U : Unif (maximalIdeal V') D' A G'), IsGrpPullback G' G₁ (spMap θ) π ∧ IsSquare π π₂ ∧ LBIso (abelian₂ G' U.LG.L) (P.pull π₂)
 := by

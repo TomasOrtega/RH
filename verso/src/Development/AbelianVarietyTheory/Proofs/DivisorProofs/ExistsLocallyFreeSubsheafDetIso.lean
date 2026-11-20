@@ -20,7 +20,7 @@ abbrev spanRes (s : ∀ k : L.ι, Fin r → Γ(F, L.U k)) (k : L.ι) {W : X.Open
   Submodule.span Γ(X, W) (Set.range fun i => resM F hk (s k i))
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun _).1 hx`. Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨fun i => resG X hW (c i), ?_⟩` and prove the remaining obligations. Simplify using `only [map_sum, resM_smul, resM_resM]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem resM_mem_spanRes (s : ∀ k : L.ι, Fin r → Γ(F, L.U k)) {k : L.ι} {W W' : X.Opens}
     (hW : W' ≤ W) (hk : W ≤ L.U k) {x : Γ(F, W)} (hx : x ∈ spanRes s k hk) :
@@ -30,9 +30,9 @@ theorem resM_mem_spanRes (s : ∀ k : L.ι, Fin r → Γ(F, L.U k)) {k : L.ι} {
   simp only [map_sum, resM_smul, resM_resM]
 
 /- English proof (translation)
-Rewrite using `[spanRes, Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Establish `e` using `congrArg (resM F (le_inf hk hk')) (hA k k' i)`. Simplify using `only [resM_resM, map_sum, resM_smul] at e`. Express the relevant statement in the definitionally equal form `resM F hk' (s k' i) ∈ spanRes s k hk`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[show resM F hk' (s k' i) = _ from e]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spanRes_le (s : ∀ k : L.ι, Fin r → Γ(F, L.U k))
     (A : ∀ k k' : L.ι, Matrix (Fin r) (Fin r) Γ(X, L.U k ⊓ L.U k'))
@@ -92,13 +92,11 @@ def sub (hL : L.IsLB) (s : ∀ k : L.ι, Fin r → Γ(F, L.U k))
     exact hx'
 
 /- English proof (translation)
-Establish `hx' : IsLoc s V x` using `hx`. Use `choose k' W hW hk' hpW hxW using fun p : V => hx' p p.2`. Establish `hc : V ≤ iSup W` using `fun p hp => Opens.mem_iSup.2 ⟨⟨p, hp⟩, hpW _⟩`. Establish `hin (p : V) : resM F (hW p) x ∈ spanRes s k ((hW p).trans hV)` using `hmono k (k' p) _ _ _ (hxW p)`. Use `choose c hc' using fun p => (Submodule.mem_span_range_iff_exists_fun _).1 (hin p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (p q : V) (i : Fin r) : resG X (inf_le_left : W p ⊓ W q ≤ W p) (c p i) = resG X (inf_le_right : W p ⊓ W q ≤ W q) (c q i)`. Establish `hl` using `hli k (W p ⊓ W q) (inf_le_left.trans ((hW p).trans hV))`. Establish `e1` using `congrArg (resM F (inf_le_left : W p ⊓ W q ≤ W p)) (hc' p)`. Establish `e2` using `congrArg (resM F (inf_le_right : W p ⊓ W q ≤ W q)) (hc' q)`. Simplify using `only [map_sum, resM_smul, resM_resM] at e1 e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Fintype.linearIndependent_iffₛ.1 hl _ _ (e1.trans e2.symm) i`. Use `choose b hb using fun i => exists_fun_of_cover W hW hc (fun p => c p i) fun p q => key p q i`. Use `(Submodule.mem_span_range_iff_exists_fun _).2 ⟨b, ?_⟩` and prove the remaining obligations. Use `sec_ext_of_cover W hW hc fun p => ?_` and prove the remaining obligations. Simplify using `only [map_sum, resM_smul, resM_resM, hb]`.
-
-Conclude with `hc' p`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_spanRes_of_mem (hL : L.IsLB) (s : ∀ k : L.ι, Fin r → Γ(F, L.U k))
     (hmono : ∀ (k k' : L.ι) (W : X.Opens) (hk : W ≤ L.U k) (hk' : W ≤ L.U k'),
@@ -133,13 +131,13 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM sec_ext_of_
 open GlobalTheory.QCoh (appLinear appLinear_apply)
 
 /- English proof (translation)
-Introduce `X F r L hL s A hli hA hdet`. Establish `hmono` using `spanRes_le s A hA`. Set `N` to `sub hL s hmono`. Establish `hmem (k : L.ι) (i : Fin r) : s k i ∈ N.sec (L.U k)` using `fun p hp => ⟨k, L.U k, le_rfl, le_rfl, hp, Submodule.subset_span ⟨i, rfl⟩⟩`. Establish `hfr (k : L.ι) : VB.IsFrame fun i => N.mkSec (s k i) (hmem k i)` using `GlobalTheory.EigenFrames.isFrame_mkSec N (s k) (hmem k) (hli k) fun V h x hx => mem_spanRes_of_mem hL s hmono hli h hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv (k k' : L.ι) (i : Fin r) : resM N.toMod (inf_le_right : L.U k ⊓ L.U k' ≤ L.U k') (N.mkSec (s k' i) (hmem k' i)) = ((hfr k).basis (inf_le_left : L.U k ⊓ L.U k' ≤ L.U k)).equivFun.symm fun j => A k k' j i`. Rewrite using `[VB.IsFrame.basis_equivFun_symm]`. Apply `N.incl_app_injective` to reduce the goal to its premises. Rewrite using `[app_resM, VB.Sub.incl_app_mkSec, hA]`. Rewrite using `[← appLinear_apply, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, appLinear_apply, app_resM, VB.Sub.incl_app_mkSec]`. Use `⟨N.toMod, N.incl, inferInstance, ?_⟩` and prove the remaining obligations. Use `VB.lbIso_det_of_frames hL _ hfr fun k k' => Units.ext ?_` and prove the remaining obligations. Rewrite using `[hdet, VB.IsFrame.val_detUnit, Module.Basis.det_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a b`. Rewrite using `[Module.Basis.toMatrix_apply, hv, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_isVB_lbIso_det : ∀ (X : Scheme.{0}) (F : X.Modules) (r : ℕ) (L : LB X), L.IsLB → ∀ (s : ∀ k : L.ι, Fin r → Γ(F, L.U k)) (A : ∀ k k' : L.ι, Matrix (Fin r) (Fin r) Γ(X, L.U k ⊓ L.U k')), (∀ (k : L.ι) (V : X.Opens) (h : V ≤ L.U k), LinearIndependent Γ(X, V) fun i => GlobalTheory.Twist.resM F h (s k i)) → (∀ (k k' : L.ι) (i : Fin r), GlobalTheory.Twist.resM F (inf_le_right : L.U k ⊓ L.U k' ≤ L.U k') (s k' i) = ∑ j, A k k' j i • GlobalTheory.Twist.resM F (inf_le_left : L.U k ⊓ L.U k' ≤ L.U k) (s k j)) → (∀ k k' : L.ι, (L.g k k').val = (A k k').det) → ∃ (W : X.Modules) (ι : W ⟶ F), Mono ι ∧ GlobalTheory.VB.IsVB W r ∧ LBIso L (GlobalTheory.VB.det W r) := by
   intro X F r L hL s A hli hA hdet

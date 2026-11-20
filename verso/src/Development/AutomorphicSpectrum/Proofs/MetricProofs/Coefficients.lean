@@ -13,7 +13,7 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace GlobalTheory.CompanionTheory.Ar.PB.Top
 
 /- English proof (translation)
-The claim follows from `|Re.limNum II w - Re'.limNum II w| ≤ B := by refine le_of_tendsto (h1.sub h2).abs ?_ filter_upwards [Ioc_mem_nhdsGT ht] with t ht' exact hb t ht'.1 ht'.2`.
+A detailed English derivation is pending.
 -/
 theorem abs_limNum_sub_le {D : ℕ} {σ : Type} {S : AnSys D σ} {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)} (Re Re' : Realis S P) (II : IntersectionSystem)
@@ -27,21 +27,19 @@ theorem abs_limNum_sub_le {D : ℕ} {σ : Type} {S : AnSys D σ} {K : Type} [Fin
   exact hb t ht'.1 ht'.2
 
 /- English proof (translation)
-Introduce `hI D N Ψ _ S thH hth`. Take `⟨C₂', hC⟩` from `GlobalTheory.T.realisation_height_independence hI D (Option (Ψ × Fin N)) S thH hth`. Take `⟨Cst, hW, hWS⟩` from `GlobalTheory.T.weighted_polynomial_homogeneous_coeff_bound Ψ N (D + 1)`. Establish `ht : 0 < S.t₀` using `(S.reg none).1`. Use `⟨Cst * ((Fintype.card (Option (Ψ × Fin N)) : ℝ) ^ (D + 1)) * C₂', fun II hII K _ ι _ P Re => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C₃, s₀, -, hag⟩` from `GlobalTheory.T.agreement_positive hI D (Option (Ψ × Fin N)) S 0 ht`. Establish `hPB : ∀ R : Realis S P, R.PBs II = toWtS (formPoly (D + 1) (R.limNum II))` using `fun R => rfl`. Establish `hPBwt : ∀ R : Realis S P, R.PBwt II = toWt (formPoly (D + 1) fun w => R.limNum II (some ∘ w))` using `fun R => rfl`. Use `⟨⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hPB]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hWS _ 0 (formPoly_isHomogeneous_and_eval _ _ _).1).1`. Rewrite using `[hPBwt]`. Conclude with `(hW _ 0 (formPoly_isHomogeneous_and_eval _ _ _).1).1`. Rewrite using `[hPB, hPBwt]`. Conclude with `(poly_s_zero Ψ N (D + 1)).1 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `Re' T α H hdeg hT hH hpot hvc hnef`. Establish `hb` using `hC II hII K ι P Re Re' T α H hdeg hT hH hpot hvc hnef`. Establish `hlim : ∀ w, |Re.limNum II w - Re'.limNum II w| ≤ C₂' * ∑ p ∈ T, α p * Real.log p` using `fun w => abs_limNum_sub_le Re Re' II w _ ht ((hag II hII K ι P Re).1 w) ((hag II hII K ι P Re').1 w) fun t h0 h1 => hb t h0 h1 w`. Establish `hB0 : 0 ≤ C₂' * ∑ p ∈ T, α p * Real.log p` using `(abs_nonneg _).trans (hlim fun _ => none)`. Establish `hcard : ((Fintype.card (Ψ × Fin N) : ℝ)) ^ (D + 1) * (C₂' * ∑ p ∈ T, α p * Real.log p) ≤ ((Fintype.card (Option (Ψ × Fin N)) : ℝ)) ^ (D + 1) * (C₂' * ∑ p ∈ T, α p * Real.log p)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (Nat.cast_nonneg _) ?_ _) hB0` and prove the remaining obligations. Rewrite using `[Fintype.card_option]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hhom` using `((formPoly_isHomogeneous_and_eval (Option (Ψ × Fin N)) (D + 1) (Re.limNum II)).1).sub ((formPoly_isHomogeneous_and_eval (Option (Ψ × Fin N)) (D + 1) (Re'.limNum II)).1)`. Establish `hco : ∀ m, |coeff m (formPoly (D + 1) (Re.limNum II) - formPoly (D + 1) (Re'.limNum II))| ≤ ((Fintype.card (Option (Ψ × Fin N)) : ℝ)) ^ (D + 1) * (C₂' * ∑ p ∈ T, α p * Real.log p)` using `fun m => by`. Rewrite using `[coeff_sub]`. Conclude with `(formPoly_sub_bound _ _ _ _ _ hlim).1 m`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hPB, hPB, ← coeff_sub, ← map_sub]`. Combine the equalities or inequalities in the displayed calculation. Establish `hhom` using `((formPoly_isHomogeneous_and_eval (Ψ × Fin N) (D + 1) (fun w => Re.limNum II (some ∘ w))).1).sub ((formPoly_isHomogeneous_and_eval (Ψ × Fin N) (D + 1) (fun w => Re'.limNum II (some ∘ w))).1)`. Establish `hco : ∀ m, |coeff m (formPoly (D + 1) (fun w => Re.limNum II (some ∘ w)) - formPoly (D + 1) (fun w => Re'.limNum II (some ∘ w)))| ≤ ((Fintype.card (Option (Ψ × Fin N)) : ℝ)) ^ (D + 1) * (C₂' * ∑ p ∈ T, α p * Real.log p)` using `fun m => by`. Rewrite using `[coeff_sub]`.
-
-Conclude with `((formPoly_sub_bound _ _ _ _ _ fun w => hlim (some ∘ w)).1 m).trans hcard`. Introduce `m`. Rewrite using `[hPBwt, hPBwt, ← coeff_sub, ← map_sub]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coefficients : Coefficients := by
   intro hI D N Ψ _ S thH hth

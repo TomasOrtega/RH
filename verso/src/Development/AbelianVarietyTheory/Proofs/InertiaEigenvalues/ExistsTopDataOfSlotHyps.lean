@@ -8,7 +8,7 @@ namespace GlobalTheory.TopWindow
 open GlobalTheory.AdmLoc GlobalTheory.TopSteps Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions
 
 /- English proof (translation)
-Establish `h0 : (0 : ℝ) ≤ ∑' j : ℕ, (h (i + ((j + 1 : ℕ) : ZMod n)) : ℝ) / (l : ℝ) ^ (j + 1)` using `tsum_nonneg fun j => by positivity`. Simplify using `only [GlobalTheory.PhiGam.sg, tableLineDegreeTwo.sg, Formalism.WachCohomologyFacts.V2.sgN]`. Conclude with `Int.natCast_floor_eq_floor h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sg_cast_eq (l n : ℕ) (h : ZMod n → ℕ) (i : ZMod n) :
     (GlobalTheory.PhiGam.sg l h i : ℤ) = tableLineDegreeTwo.sg n l h i := by
@@ -18,7 +18,7 @@ theorem sg_cast_eq (l n : ℕ) (h : ZMod n → ℕ) (i : ZMod n) :
   exact Int.natCast_floor_eq_floor h0
 
 /- English proof (translation)
-Unfold `InWin Formalism.WachCohomologyFacts.V2.InWinN`. Apply the tactic sequence `cases typ <;> simp [h1, h2]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem inWin_iff (typ : Bool) (h η : ℕ) (u : ℤ) (h1 : 1 ≤ u) (h2 : u ≤ (h : ℤ) - 1) :
     InWin typ h η u ↔ Formalism.WachCohomologyFacts.V2.InWinN typ h η u := by
@@ -26,21 +26,17 @@ theorem inWin_iff (typ : Bool) (h η : ℕ) (u : ℤ) (h1 : 1 ≤ u) (h2 : u ≤
   cases typ <;> simp [h1, h2]
 
 /- English proof (translation)
-Introduce `l n t r _ h w η typ U _ ht hc hS`. Unfold `tableLineDegreeTwo.PositionHyps at hS`. Establish `hsg : ∀ i, (GlobalTheory.PhiGam.sg l h i : ℤ) = tableLineDegreeTwo.sg n l h i` using `fun i => sg_cast_eq l n h i`. Take `⟨Dt, hDt, hw, h1, h2, h3⟩` from `exists_topData l n t r h η typ (fun i => (w i : ℤ)) U (fun i => by obtain ⟨-, hw1, hw2, -⟩ := hS i; omega) (fun i => by`. Take `⟨-, hw1, hw2, hG, hB, -⟩` from `hS i`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hc : typ i = true`. Use `hG hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hB (by simpa using hc); omega)` as an intermediate fact. Use `ht hc (fun i => (hS i).1)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use the proof step `(fun i β hβ1 hβ2 => by`. Take `⟨-, hw1, hw2, hG, hB, -⟩` from `hS i`. Use `⟨by omega, by omega, ?_⟩` and prove the remaining obligations. Unfold `InWin`. Use `split_ifs with hc`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `hG hc` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `hB (by simpa using hc); omega)` as an intermediate fact. Use the proof step `(fun i => by have := (hS i).2.2.2.2.2.1; have := hsg i; omega)`. Use the proof step `(fun i u hu hin β hβ1 hβ2 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `(hS i).1 u hu`. Establish `hlow` using `(hS i).2.2.2.2.2.2.1 u (by classical`. Unfold `tableLineDegreeTwo.lows`. Conclude with `Multiset.mem_filter.2 ⟨hu, (inWin_iff _ _ _ _ hr.1 hr.2).1 hin⟩) β`. Use the proof step `(by rw [Formalism.WachCohomologyFacts.Top.GlobalTheory, Finset.mem_Icc]; omega)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsg i]`. Conclude with `hlow)`. Use the proof step `(fun i u hu hin y hy1 hy2 => by`. Establish `hr` using `(hS i).1 u hu`. Establish `hT` using `(hS i).2.2.2.2.2.2.2 u (by classical`.
-
-Unfold `Formalism.WachCohomologyFacts.V2.ClN`. Conclude with `Multiset.mem_filter.2 ⟨hu, fun h' => hin ((inWin_iff _ _ _ _ hr.1 hr.2).2 h')⟩) y`. Use the proof step `(by have := hsg i; omega) (by have := hsg i; omega)`. Introduce `hmod`. Conclude with `hT ((ZMod.intCast_eq_intCast_iff _ _ _).2 hmod))`.
-
-Use `⟨Dt, hDt, fun i => ⟨(hw i).1, (hw i).2.1, fun a => ?_⟩, h1, h2, h3⟩` and prove the remaining obligations. Rewrite using `[(hw i).2.2 a]`. Unfold `tableLineDegreeTwo.jTil`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_topData_of_positionHyps : ∀ (l n t r : ℕ) [NeZero n] (h w η : ZMod n → ℕ)
     (typ : ZMod n → Bool) (U : ZMod n → Multiset ℤ), 2 ≤ l → 1 ≤ t →

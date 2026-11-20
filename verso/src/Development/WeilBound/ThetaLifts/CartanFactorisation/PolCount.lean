@@ -12,7 +12,7 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Forma
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM, piInf, compInf, inclR, infEmb_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_map {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : EmbOver E w) :
     (incM F J).map (piInf τ) = J.map τ.1 := by
@@ -20,17 +20,17 @@ theorem incM_map {n m : Type} (J : Matrix n m E) {w : InfinitePlace F} (τ : Emb
   simp [incM, piInf, compInf, inclR, infEmb_tmul]
 
 /- English proof (translation)
-Establish `hL` using `PositivityTheory.RL.actsLaws`. Establish `hz : ∀ (u : Matrix (Fin n) (Fin d) (AE F E)) (t : ℝ), M.co.rho ψ (realAd F t • u) 0 = 0`. Introduce `u t`. Use function extensionality and compare the values at `x`. Simplify using `[Darboux.rho, schr]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `toD : ∀ u (f f₁ : SInf F (Fin n × Fin d)), SD (fun t => M.co.rho ψ (realAd F t • u)) f f₁ → ActsD (evI F) (M.heisLine ψ u) f f₁` using `fun u f f₁ h => (hL F (Fin n × Fin d) f f₁ f₁).1 _ (hz u) h`. Use `choose A' hA' using fun w => (hfr.2.1 w).2`. Use `choose C' hC' using fun w => (hfr.2.2 w).2`. Establish `decomp : ∀ (u : Matrix (Fin n) (Fin d) (AE F E)) w, u.map (piInf (τ w)) = A w * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * (C w)ᵀ`. Introduce `u w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show A w * (A' w * u.map (piInf (τ w)) * (C' w)ᵀ) * (C w)ᵀ = (A w * A' w) * u.map (piInf (τ w)) * ((C w) * (C' w))ᵀ by`. Rewrite using `[Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc], hA', hC']`. Simplify using the standard rewrite rules. Establish `tw : ∀ w (c : Matrix (Ix P Q) (Ix R S) ℂ) (e : ℂ), A w * (e • (Jm P Q * c * Jm R S)) * (C w)ᵀ = e • (X.θ w * (A w * c * (C w)ᵀ) * (W.θ w)ᵀ)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w c e`. Establish `h2 : (C w)ᵀ * (W.θ w)ᵀ = Jm R S * (C w)ᵀ`. Rewrite using `[← Matrix.transpose_mul, hθW w, Matrix.transpose_mul, show (Jm R S)ᵀ = Jm R S by simp [Jm, Formalism.UG.Jpq, Matrix.fromBlocks_transpose]]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = _ := by rw [← hθX w, ← h2]; simp only [Matrix.mul_assoc]`. Unfold `Model.Pol`. Use `sInf_le ⟨fun f₀ hf₀ => ?_, fun u hu f hf f₁ h1 => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε⟩` from `hf₀`. Take `⟨z, hz⟩` from `hV F E σ (Fin n) (Fin d) (Fin n × Fin d) P Q R S ψ τ (incM F X.J) (incM F W.J) M.co 1 Complex.I A C Φ hcm hψ hfr hΦ f₀ ε (fun u u' hu hu' c hc hc' f f' hf hf' => hε u u' hu hu' (fun w => by rw [hc' w, tw, ← hc w]) f f' (toD _ _ _ hf) (toD _ _ _ hf'))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z • PiTensorProduct.tprod ℂ (fun _ => (1 : Formalism.BasicNotions.TH.Pol P Q R S)), by rw [map_smul, hz]⟩`. Take `⟨T, rfl⟩` from `hf`. Conclude with `⟨_, (hL F _ _ _ _).2.2.1 _ (toD _ _ _ (hΦ.2 u hu _ (decomp u) T)) h1⟩`.
+A detailed English derivation is pending.
 -/
 theorem pol_le (hV : VacLine) {n d P Q R S : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) {ψ : AddChar (AF F) ℂ}
     {τ : ∀ w : InfinitePlace F, EmbOver E w} {A : InfinitePlace F → Matrix (Fin n) (Ix P Q) ℂ}
@@ -72,7 +72,7 @@ theorem pol_le (hV : VacLine) {n d P Q R S : ℕ} {X : Spc F E n} {W : Spc F E d
     exact ⟨_, (hL F _ _ _ _).2.2.1 _ (toD _ _ _ (hΦ.2 u hu _ (decomp u) T)) h1⟩
 
 /- English proof (translation)
-Use `choose A hA using fun w => PositivityTheory.RL.frameEx n r s _ _ (hp.herm.sig w) (hp.herm.cartan w)`. Use `choose C hC using fun w => PositivityTheory.RL.frameEx d r' s' _ _ (hp.skew.sig w) (hp.skew.cartan w)`. Establish `hfr : Framed B.emb (incM F X.J) (incM F W.J) 1 Complex.I A C` using `⟨one_mul _, fun w => by rw [one_smul, incM_map]; exact (hA w).1, fun w => by rw [incM_map]; exact (hC w).1⟩`. Take `⟨Φ, hΦ⟩` from `hF F E σ _ _ _ r s r' s' B.ψ B.emb _ _ M.co 1 Complex.I A C hp.base.cm hp.base.std hfr`. Conclude with `⟨A, C, Φ, hfr, fun w => (hA w).2, fun w => (hC w).2, hΦ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_fock (hF : FockEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B : Base F E} {M : Model σ X W} {χX χW : Chr F E}
     {om : Rep σ X W} {r s r' s' : ℕ} (hp : IsPair B M χX χW om r s r' s') :
@@ -87,7 +87,7 @@ theorem exists_fock (hF : FockEx) {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {B
   exact ⟨A, C, Φ, hfr, fun w => (hA w).2, fun w => (hC w).2, hΦ⟩
 
 /- English proof (translation)
-Establish `b` using `Basis.piTensorProduct fun _ : ι => MvPolynomial.basisMonomials L ℂ`. Rewrite using `[← b.mk_eq_rank'']`. Conclude with `Cardinal.mk_le_aleph0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_tens {ι L : Type} [Fintype ι] [Finite L] : Module.rank ℂ (⨂[ℂ] _ : ι, MvPolynomial L ℂ) ≤ Cardinal.aleph0 := by
   have b := Basis.piTensorProduct fun _ : ι => MvPolynomial.basisMonomials L ℂ
@@ -95,7 +95,7 @@ theorem rank_tens {ι L : Type} [Fintype ι] [Finite L] : Module.rank ℂ (⨂[�
   exact Cardinal.mk_le_aleph0
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp`. Take `⟨A, C, Φ, h1, h2, h3, h4⟩` from `exists_fock hF hp`. Conclude with `(Submodule.rank_mono (pol_le hV M hp.base.cm hp.base.std h1 h2 h3 h4)).trans ((rank_range_le Φ).trans rank_tens)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem polCount_of (hF : FockEx) (hV : VacLine) : PolCount := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp

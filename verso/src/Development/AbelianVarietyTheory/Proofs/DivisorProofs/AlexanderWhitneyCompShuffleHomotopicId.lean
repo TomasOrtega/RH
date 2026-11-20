@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.EZ
 
 /- English proof (translation)
-Use extensionality with `j`. Simplify using `[fc, clampHom, faceFun, SimplexCategory.δ, Fin.succAbove, Fin.lt_def]`. Apply the tactic sequence `split_ifs <;> simp_all <;> omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fc_succ_eq_δ (n i : ℕ) (hi : i < n + 2) :
     fc (n + 1) n i = SimplexCategory.δ (⟨i, hi⟩ : Fin (n + 2)) := by
@@ -21,7 +21,7 @@ theorem fc_succ_eq_δ (n i : ℕ) (hi : i < n + 2) :
 def diagOp : SimplicialObject BOp := Functor.diag SimplexCategoryᵒᵖ ⋙ Free.embedding ℤ _
 
 /- English proof (translation)
-Rewrite using `[dD, if_pos rfl, AlternatingFaceMapComplex.objD, ← Fin.sum_univ_eq_sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fc_succ_eq_δ n i i.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dD_succ_eq_objD (n : ℕ) : dD (n + 1) n = AlternatingFaceMapComplex.objD diagOp n := by
   rw [dD, if_pos rfl, AlternatingFaceMapComplex.objD, ← Fin.sum_univ_eq_sum_range]
@@ -30,9 +30,9 @@ theorem dD_succ_eq_objD (n : ℕ) : dD (n + 1) n = AlternatingFaceMapComplex.obj
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `h1 : n = m + 1`. Substitute `h1` using the available equality. Distinguish the cases in `h2 : m = k + 1`. Substitute `h2` using the available equality. Rewrite using `[dD_succ_eq_objD, dD_succ_eq_objD]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AlternatingFaceMapComplex.d_squared diagOp k`. Rewrite using `[show dD m k = 0 from if_neg h2, Limits.comp_zero]`. Rewrite using `[show dD n m = 0 from if_neg h1, Limits.zero_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dD_comp_dD (n m k : ℕ) : dD n m ≫ dD m k = 0 := by
   by_cases h1 : n = m + 1
@@ -45,7 +45,7 @@ theorem dD_comp_dD (n m k : ℕ) : dD n m ≫ dD m k = 0 := by
   · rw [show dD n m = 0 from if_neg h1, Limits.zero_comp]
 
 /- English proof (translation)
-Rewrite using `[awO, if_pos rfl]`. Establish `h1 : idc 0 0 = 𝟙 _` using `Subsingleton.elim _ _`. Establish `h2 : backc 0 0 0 = 𝟙 _` using `Subsingleton.elim _ _`. Rewrite using `[h1, h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem awO_zero : awO 0 0 0 = 𝟙 (bo 0 0) := by
   rw [awO, if_pos rfl]
@@ -64,9 +64,9 @@ def awHtpy (G : ∀ a b n : ℕ, bo a b ⟶ bo n n)
     (fun k K => cone (k + 1) (k + 1) (k + 1) (awThen G (k + 1) - 𝟙 _ - dD (k + 1) k ≫ K)) n
 
 /- English proof (translation)
-Simplify using `only [awThen, Preadditive.sum_comp, Preadditive.comp_sum, Category.assoc]`. Establish `e1 : ∀ x ∈ Finset.HasAntidiagonal.antidiagonal (n + 1), awO (n + 1) x.1 x.2 ≫ G x.1 x.2 (n + 1) ≫ dD (n + 1) n = ∑ y ∈ Finset.HasAntidiagonal.antidiagonal n, awO (n + 1) x.1 x.2 ≫ dT x.1 x.2 y.1 y.2 ≫ G y.1 y.2 n` using `fun x hx => by rw [hG _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.mp hx), Preadditive.comp_sum]`. Establish `e2 : ∀ y ∈ Finset.HasAntidiagonal.antidiagonal n, dD (n + 1) n ≫ awO n y.1 y.2 ≫ G y.1 y.2 n = ∑ x ∈ Finset.HasAntidiagonal.antidiagonal (n + 1), awO (n + 1) x.1 x.2 ≫ dT x.1 x.2 y.1 y.2 ≫ G y.1 y.2 n` using `fun y hy => by`. Rewrite using `[← Category.assoc, haw _ _ _ (Finset.HasAntidiagonal.mem_antidiagonal.mp hy), Preadditive.sum_comp]`. Simplify using `only [Category.assoc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem awThen_comm (G : ∀ a b n : ℕ, bo a b ⟶ bo n n)
     (hG : ∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n =
@@ -88,13 +88,13 @@ theorem awThen_comm (G : ∀ a b n : ℕ, bo a b ⟶ bo n n)
   rw [Finset.sum_congr rfl e1, Finset.sum_congr rfl e2, Finset.sum_comm]
 
 /- English proof (translation)
-Establish `h0 : awThen G 0 = 𝟙 _`. Simplify using `[awThen, awO_zero, hG0]`. Establish `key : ∀ k : ℕ, (awThen G (k + 1) - 𝟙 _ - dD (k + 1) k ≫ awHtpy G cone k) ≫ dD (k + 1) k = 0 → awThen G (k + 1) = 𝟙 _ + awHtpy G cone (k + 1) ≫ dD (k + 1 + 1) (k + 1) + dD (k + 1) k ≫ awHtpy G cone k`. Introduce `k hk`. Establish `h` using `hcone (k + 1) (k + 1) k (awThen G (k + 1) - 𝟙 _ - dD (k + 1) k ≫ awHtpy G cone k)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[hk, map_zero, sub_zero]`. Establish `h' : awHtpy G cone (k + 1) ≫ dD (k + 1 + 1) (k + 1) = awThen G (k + 1) - 𝟙 _ - dD (k + 1) k ≫ awHtpy G cone k` using `h`. Rewrite using `[h']`. Normalize the expressions using the abelian group laws. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Apply `key` to reduce the goal to its premises. Establish `hK : awHtpy G cone 0 = 0` using `rfl`. Rewrite using `[hK, Preadditive.sub_comp, Preadditive.sub_comp, awThen_comm G hG haw 0, h0]`.
+Proceed by induction. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Consider the case `succ j ih`. Apply `key` to reduce the goal to its premises. Rewrite using `[Preadditive.sub_comp, Preadditive.sub_comp, awThen_comm G hG haw (j + 1), ih, Preadditive.comp_add, Preadditive.comp_add, ← Category.assoc (dD (j + 1 + 1) (j + 1)) (dD (j + 1) j), dD_comp_dD, Limits.zero_comp]`. Simplify using `only [Category.comp_id, Category.id_comp, Category.assoc, add_zero]`.
+Simplify using the standard rewrite rules. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -137,11 +137,11 @@ theorem awHtpy_spec (G : ∀ a b n : ℕ, bo a b ⟶ bo n n) (hG0 : G 0 0 0 = �
     abel
 
 /- English proof (translation)
-Introduce `G hG0 hG`. Take `⟨cone, ε, -, -, hcone⟩` from `GlobalTheory.T.cone_contracting_homotopy`. Establish `haw` using `GlobalTheory.T.dD_comp_awO_eq_sum_awO_comp_dT`. Use `⟨fun n m => if h : m = n + 1 then awHtpy G cone n ≫ eqToHom (by rw [h]) else 0, fun n => ?_⟩` and prove the remaining obligations. Consider the cases of `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Establish `h0 : awThen G 0 = 𝟙 _`. Simplify using `[awThen, awO_zero, hG0]`. Establish `hK : awHtpy G cone 0 = 0` using `rfl`. Express the relevant statement in the definitionally equal form `awThen G 0 = _`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[h0, hK, dD]`. Consider the case `succ k`. Express the relevant statement in the definitionally equal form `awThen G (k + 1) = _`. Simplify using `only [dif_pos, eqToHom_refl, Category.comp_id, Nat.add_sub_cancel]`. Conclude with `awHtpy_spec G hG0 hG haw cone hcone k`.
+Simplify using the standard rewrite rules. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem awThen_homotopic : ∀ G : ∀ a b n : ℕ, bo a b ⟶ bo n n, G 0 0 0 = 𝟙 (bo 0 0) →
     (∀ a b n : ℕ, a + b = n + 1 → G a b (n + 1) ≫ dD (n + 1) n =

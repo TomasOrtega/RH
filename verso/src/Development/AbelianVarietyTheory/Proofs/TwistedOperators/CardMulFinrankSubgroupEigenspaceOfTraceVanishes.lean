@@ -6,15 +6,15 @@ noncomputable section
 namespace GlobalTheory.DefFree
 
 /- English proof (translation)
-Establish `hcard : (Fintype.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Establish `happ : ∀ x : M, ((Fintype.card P : ℂ)⁻¹ • ∑ g : P, (((χ g)⁻¹ : ℂˣ) : ℂ) • (ρ g : M →ₗ[ℂ] M)) x = (Fintype.card P : ℂ)⁻¹ • ∑ g : P, (((χ g)⁻¹ : ℂˣ) : ℂ) • ρ g x`. Introduce `x`. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply]`. Use `⟨fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[happ, mem_eig]`. Introduce `h`. Establish `hsum : ρ h (∑ g : P, (((χ g)⁻¹ : ℂˣ) : ℂ) • ρ g x) = ((χ h : ℂˣ) : ℂ) • ∑ g : P, (((χ g)⁻¹ : ℂˣ) : ℂ) • ρ g x`. Rewrite using `[map_sum, Finset.smul_sum]`. Use `Fintype.sum_equiv (Equiv.mulLeft h) _ _ fun g => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ((χ h : ℂˣ) : ℂ) * (((χ (h * g))⁻¹ : ℂˣ) : ℂ) = (((χ g)⁻¹ : ℂˣ) : ℂ)`. Rewrite using `[← Units.val_mul, map_mul, mul_inv, mul_inv_cancel_left]`. Use `show ρ h ((((χ g)⁻¹ : ℂˣ) : ℂ) • ρ g x) = ((χ h : ℂˣ) : ℂ) • ((((χ (h * g))⁻¹ : ℂˣ) : ℂ) • ρ ((h * g : P) : G) x)`. Rewrite using `[smul_smul, hc, map_smul, Subgroup.coe_mul, map_mul, Module.End.mul_apply]`. Use `show ρ h (_ • _) = ((χ h : ℂˣ) : ℂ) • (_ • _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_smul, hsum, smul_comm]`. Establish `hx' : ∀ g : P, ρ g x = ((χ g : ℂˣ) : ℂ) • x` using `fun g => (mem_eig.mp hx) g`. Establish `hterm : ∀ g : P, (((χ g)⁻¹ : ℂˣ) : ℂ) • ρ g x = x` using `fun g => by`. Rewrite using `[hx' g, smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Rewrite using `[happ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hterm, Finset.sum_const, Finset.card_univ]`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem isProj_eig_average {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M] (ρ : Representation ℂ G M)
     (P : Subgroup G) [Fintype P] (χ : P →* ℂˣ) :
@@ -50,11 +50,11 @@ theorem isProj_eig_average {G M : Type} [Group G] [AddCommGroup M] [Module ℂ M
     rw [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, inv_mul_cancel₀ hcard, one_smul]
 
 /- English proof (translation)
-Use `haveI : Fintype P := Fintype.ofFinite P`. Establish `htr` using `(isProj_eig_average ρ P χ).trace`. Rewrite `htr` using `[map_smul, map_sum, smul_eq_mul]`. Simplify using `only [map_smul, smul_eq_mul] at htr`. Rewrite using `[Finset.sum_eq_single (1 : P) (fun g _ hg => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h g g.2 (fun h1 => hg (Subtype.ext h1)), mul_zero])`. Use the proof step `(fun h1 => absurd (Finset.mem_univ _) h1)] at htr`. Rewrite `htr` using `[map_one, inv_one, Units.val_one, one_mul, OneMemClass.coe_one, map_one, LinearMap.trace_one]`. Establish `hcard : (Fintype.card P : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Rewrite using `[Nat.card_eq_fintype_card]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : (Fintype.card P : ℂ) * (Module.finrank ℂ (GlobalTheory.DefFree.eig ρ P fun g => ((χ g : ℂˣ) : ℂ)) : ℂ) = (Module.finrank ℂ M : ℂ)`. Rewrite using `[← htr, ← mul_assoc, mul_inv_cancel₀ hcard, one_mul]`. Conclude with `key` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_mul_finrank_eig (G M : Type) [Group G] [Finite G] [AddCommGroup M] [Module ℂ M]
     [FiniteDimensional ℂ M] (ρ : Representation ℂ G M) (P : Subgroup G) (χ : P →* ℂˣ)

@@ -23,11 +23,11 @@ def IsBas (M : Submodule k N) (b : Fin m → N) : Prop :=
   (∀ i, b i ∈ M) ∧ ∀ n ∈ M, ∃! a : Fin m → k, n = ∑ j, a j • b j
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hm : ∀ a : Fin m → k, ∑ j, a j • b j ∈ M` using `fun a => Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (h1 i)`. Use `⟨fun a a' h => (h2 _ (hm a)).unique rfl h, le_antisymm ?_ fun n hn => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hm a`. Take `⟨a, ha, -⟩` from `h2 n hn`. Conclude with `⟨a, ha.symm⟩`. Introduce and unpack `⟨h1, rfl⟩`. Use `⟨fun i => ⟨Pi.single i 1, by simp⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `⟨a, rfl, fun a' h => (h1 h).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBas_iff (M : Submodule k N) (b : Fin m → N) :
     IsBas M b ↔ Function.Injective (Fintype.linearCombination k b) ∧
@@ -47,11 +47,11 @@ theorem isBas_iff (M : Submodule k N) (b : Fin m → N) :
     exact ⟨a, rfl, fun a' h => (h1 h).symm⟩
 
 /- English proof (translation)
-Set `L : (Fin m → k) →ₗ[k] (Fin m → k)` to `Fintype.linearCombination k A`. Establish `key : ∀ {P : Type} [AddCommGroup P] [Module k P] (d : Fin m → P), Fintype.linearCombination k (fun i => ∑ j, A i j • d j) = Fintype.linearCombination k d ∘ₗ L`. Introduce `P _ _ d`. Use `LinearMap.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [L, LinearMap.comp_apply, Fintype.linearCombination_apply, Finset.smul_sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_smul, mul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_comm`. Take `rfl : b' = fun i => ∑ j, A i j • b j` from `funext hA`. Rewrite `hb'`, the goal using `[isBas_iff, key]`. Rewrite `hc` using `[isBas_iff]`. Establish `hL : Function.Injective L` using `Function.Injective.of_comp (f := Fintype.linearCombination k b) hb'.1`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : Function.Surjective L` using `LinearMap.surjective_of_injective hL`. Conclude with `⟨hc.1.comp hL, by rw [LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 hS), hc.2]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsBas.transfer {M : Submodule k N} {M' : Submodule k N'} {b b' : Fin m → N} {c : Fin m → N'}
     (A : Fin m → Fin m → k) (hb' : IsBas M b') (hA : ∀ i, b' i = ∑ j, A i j • b j) (hc : IsBas M' c) :
@@ -75,11 +75,11 @@ def head (r : ℕ) (d : Fin m → N) : Submodule k N :=
   Submodule.span k (Set.range fun j : {j : Fin m // (j : ℕ) < r} => d j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun k).1 h`. Use `⟨fun j => if h : (j : ℕ) < r then a ⟨j, h⟩ else 0, fun j hj => dif_neg (not_lt.2 hj), ?_⟩` and prove the remaining obligations. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun j : Fin m => (j : ℕ) < r)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_zero (s := Finset.univ) (f := fun j : {j : Fin m // ¬ (j : ℕ) < r} => _) (fun j _ => by simp only [dif_neg j.2, zero_smul]), add_zero]`. Conclude with `Finset.sum_congr rfl fun j _ => by simp only [dif_pos j.2]`. Introduce and unpack `⟨cf, h0, rfl⟩`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : (j : ℕ) < r`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨⟨j, hj⟩, rfl⟩)`. Rewrite using `[h0 j (not_lt.1 hj), zero_smul]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem mem_head {r : ℕ} {d : Fin m → N} {w : N} :
     w ∈ (head r d : Submodule k N) ↔ ∃ cf : Fin m → k, (∀ j : Fin m, r ≤ (j : ℕ) → cf j = 0) ∧ w = ∑ j, cf j • d j := by
@@ -100,7 +100,7 @@ theorem mem_head {r : ℕ} {d : Fin m → N} {w : N} :
       exact zero_mem _
 
 /- English proof (translation)
-Rewrite using `[head, Submodule.span_le, Set.range_subset_iff]`. Conclude with `⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i i.2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem head_le_iff {r : ℕ} {d d' : Fin m → N} :
     (head r d' : Submodule k N) ≤ head r d ↔ ∀ i : Fin m, (i : ℕ) < r → d' i ∈ (head r d : Submodule k N) := by
@@ -108,7 +108,7 @@ theorem head_le_iff {r : ℕ} {d d' : Fin m → N} :
   exact ⟨fun h i hi => h ⟨i, hi⟩, fun h i => h i i.2⟩
 
 /- English proof (translation)
-Establish `hl : LinearIndependent k b` using `Fintype.linearIndependent_iff.2 fun g hg => congrFun (((isBas_iff M b).1 hb).1 (a₁ := g) (a₂ := 0) (hg.trans (map_zero _).symm))`. Establish `hl' : LinearIndependent k fun j : {j : Fin m // (j : ℕ) < r} => b j` using `hl.comp _ Subtype.val_injective`. Establish `: FiniteDimensional k (head r d : Submodule k N)` using `FiniteDimensional.span_of_finite k (Set.finite_range _)`. Use `(Submodule.eq_of_le_of_finrank_le h ?_).ge` and prove the remaining obligations. Conclude with `(finrank_range_le_card (R := k) _).trans (finrank_span_eq_card hl').ge`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem head_ge {M : Submodule k N} {r : ℕ} {d b : Fin m → N} (hb : IsBas M b)
     (h : (head r b : Submodule k N) ≤ head r d) : (head r d : Submodule k N) ≤ head r b := by
@@ -128,7 +128,7 @@ section Tan
 variable {X X' : Scheme.{0}} {t : SAB H X} {t' : SAB H X'}
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Take `⟨u', hu', rfl⟩` from `h'`. Take `rfl : u = u'` from `funext fun i => Over.OverMorphism.ext ((hu i).trans (hu' i).symm)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem comb_unique {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {v : Fin m → (Sp (DualNumber S) ⟶ t.G.left)}
     {a : Fin m → S} {w w' : Sp (DualNumber S) ⟶ t.G.left} (h : IsCombAtG t x v a w) (h' : IsCombAtG t x v a w') :
@@ -139,9 +139,9 @@ theorem comb_unique {S : Type} [CommRing S] {x : Sp S ⟶ X} {m : ℕ} {v : Fin 
   rfl
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Set `U : tEpsG (x ≫ τ) ⟶ Over.mk ((tEpsG x).hom ≫ τ)` to `Over.homMk (𝟙 _) (by simp)`. Set `P : (tEpsG x ⟶ t'.G) →* (tEpsG (x ≫ τ) ⟶ t.G)` to `(ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom U).comp (pushHom mu.cart (tEpsG x))`. Establish `hP : ∀ z, (P z).left = z.left ≫ mu.φ` using `fun z => Category.id_comp _`. Use `⟨fun i => P (u i), fun i => by rw [hP, hu, Category.assoc], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hP, map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comb_push {τ : X' ⟶ X} (mu : SABMap t' t τ) {S : Type} [CommRing S] {x : Sp S ⟶ X'} {m : ℕ}
     {v : Fin m → (Sp (DualNumber S) ⟶ t'.G.left)} {a : Fin m → S} {w : Sp (DualNumber S) ⟶ t'.G.left}
@@ -155,7 +155,7 @@ theorem comb_push {τ : X' ⟶ X} (mu : SABMap t' t τ) {S : Type} [CommRing S] 
   rfl
 
 /- English proof (translation)
-Introduce `σ r hr i hi` and use `by obtain ⟨cf, h0, hc⟩ := h σ r (hty σ hr) i hi exact ⟨cf, h0, comb_push mu hc⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameFlag_push {τ : X' ⟶ X} (mu : SABMap t' t τ) {S : Type} [CommRing S] {x : Sp S ⟶ X'}
     {ty ty' : (E →+* ℂ) → Finset ℕ} (hty : ∀ σ, ty σ ⊆ ty' σ) {u v : Vecs Dw t' S} (h : SameFlag ty' t' x u v) :
@@ -167,7 +167,7 @@ variable {k : Type} [Field k] {x : Sp k ⟶ X} {n : ℕ}
   {xc : ∀ m : ℕ, sp (R₀ := k) (ReciprocityTheory.ChartRestriction.G.Chart.JetR k (Fin n) m) ⟶ (Over.pullback x).obj t.G}
 
 /- English proof (translation)
-Use `choose b hb using fun σ i => vec_exists hx (u σ i) (hu σ i)`. Conclude with `⟨b, funext fun σ => funext fun i => hb σ i⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_coord (hx : IsUnivChart _ n xc) (u : Vecs Dw t k) (hu : ∀ σ i, IsTanAtG t x (u σ i)) :
     ∃ b : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → Fin n → k, u = fun σ i => vec t x xc (b σ i) := by
@@ -175,9 +175,9 @@ theorem exists_coord (hx : IsUnivChart _ n xc) (u : Vecs Dw t k) (hu : ∀ σ i,
   exact ⟨b, funext fun σ => funext fun i => hb σ i⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ σ`. Use `⟨fun i => (vec_eig_iff hx _ _).1 (h1 σ i).2, fun cc hc => ?_⟩` and prove the remaining obligations. Simplify `h2 σ _ (vec_tan hx cc) ((vec_eig_iff hx _ _).2 hc)` using `only [comb_iff hx]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun σ i => ⟨vec_tan hx _, (vec_eig_iff hx _ _).2 ((h σ).1 i)⟩, fun σ w hw he => ?_⟩` and prove the remaining obligations. Take `⟨cc, rfl⟩` from `vec_exists hx w hw`. Simplify `(h σ).2 cc ((vec_eig_iff hx _ _).1 he)` using `only [comb_iff hx]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isFrame_iff (hx : IsUnivChart _ n xc) {l : Level H} {c : Coeff l} (f : c.F →+* k)
     (b : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → Fin n → k) :
@@ -192,7 +192,7 @@ theorem isFrame_iff (hx : IsUnivChart _ n xc) {l : Level H} {c : Coeff l} (f : c
     simpa only [comb_iff hx] using (h σ).2 cc ((vec_eig_iff hx _ _).1 he)
 
 /- English proof (translation)
-Simplify using `only [SameFlag, head_le_iff, mem_head, comb_iff hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sameFlag_iff (hx : IsUnivChart _ n xc) (ty : (E →+* ℂ) → Finset ℕ)
     (b b' : ∀ σ : E →+* ℂ, Fin (Dw.mult σ) → Fin n → k) :
@@ -201,9 +201,9 @@ theorem sameFlag_iff (hx : IsUnivChart _ n xc) (ty : (E →+* ℂ) → Finset �
   simp only [SameFlag, head_le_iff, mem_head, comb_iff hx]
 
 /- English proof (translation)
-Take `⟨n, xc, hx⟩` from `exists_chart t x`. Take `⟨a, rfl⟩` from `exists_coord hx u hu`. Take `⟨b, rfl⟩` from `exists_coord hx v hv`. Take `⟨c, rfl⟩` from `exists_coord hx w hw`. Rewrite `h`, `h'`, the goal using `[sameFlag_iff hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `fun σ r hr => (h' σ r hr).trans (h σ r hr)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameFlag_trans {ty : (E →+* ℂ) → Finset ℕ} {u v w : Vecs Dw t k} (hu : ∀ σ i, IsTanAtG t x (u σ i))
     (hv : ∀ σ i, IsTanAtG t x (v σ i)) (hw : ∀ σ i, IsTanAtG t x (w σ i)) (h : SameFlag ty t x u v)
@@ -216,9 +216,9 @@ theorem sameFlag_trans {ty : (E →+* ℂ) → Finset ℕ} {u v w : Vecs Dw t k}
   exact fun σ r hr => (h' σ r hr).trans (h σ r hr)
 
 /- English proof (translation)
-Take `⟨n, xc, hx⟩` from `exists_chart t x`. Take `⟨a, rfl⟩` from `exists_coord hx u hu`. Take `⟨b, rfl⟩` from `exists_coord hx v fun σ i => (hv.1 σ i).1`. Rewrite `h`, the goal using `[sameFlag_iff hx]`. Rewrite `hv` using `[isFrame_iff hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `fun σ r hr => head_ge (hv σ) (h σ r hr)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sameFlag_symm {ty : (E →+* ℂ) → Finset ℕ} {l : Level H} {c : Coeff l} {f : c.F →+* k} {u v : Vecs Dw t k}
     (hu : ∀ σ i, IsTanAtG t x (u σ i)) (hv : IsFrame t f x v) (h : SameFlag ty t x u v) : SameFlag ty t x v u := by
@@ -230,11 +230,11 @@ theorem sameFlag_symm {ty : (E →+* ℂ) → Finset ℕ} {l : Level H} {c : Coe
   exact fun σ r hr => head_ge (hv σ) (h σ r hr)
 
 /- English proof (translation)
-Use `choose A hA using fun σ i => (hu.2 σ (v σ i) (hv.1 σ i).1 (hv.1 σ i).2).exists`. Establish `hA'` using `fun σ i => comb_push mu (hA σ i)`. Take `⟨n, xc, hx⟩` from `exists_chart t (x' ≫ τ)`. Take `⟨n', xc', hx'⟩` from `exists_chart t' x'`. Take `⟨d, hd⟩` from `exists_coord hx _ fun σ i => (h.1 σ i).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `exists_coord hx' u fun σ i => (hu.1 σ i).1`. Take `⟨b, rfl⟩` from `exists_coord hx' v fun σ i => (hv.1 σ i).1`. Rewrite `h` using `[hd, isFrame_iff hx]`. Rewrite `hv` using `[isFrame_iff hx']`. Establish `e : (fun σ i => vec t' x' xc' (b σ i) ≫ mu.φ : Vecs Dw t k) = fun σ i => vec t (x' ≫ τ) xc (∑ j, A σ i j • d σ j)` using `funext fun σ => funext fun i => by`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `comb_unique (hA' σ i) ?_` and prove the remaining obligations. Rewrite using `[show (fun j => vec t' x' xc' (a σ j) ≫ mu.φ) = fun j => vec t (x' ≫ τ) xc (d σ j) from congrFun hd σ]`. Conclude with `(comb_iff hx _ _ _).2 rfl`. Rewrite using `[e, isFrame_iff hx]`. Conclude with `fun σ => IsBas.transfer (A σ) (hv σ) (fun i => (comb_iff hx' _ _ _).1 (hA σ i)) (h σ)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem isFrame_push {τ : X' ⟶ X} (mu : SABMap t' t τ) {x' : Sp k ⟶ X'} {l l' : Level H} {c : Coeff l} {c' : Coeff l'}
     {f : c.F →+* k} {f' : c'.F →+* k} {u v : Vecs Dw t' k} (hu : IsFrame t' f' x' u) (hv : IsFrame t' f' x' v)
@@ -260,13 +260,13 @@ theorem isFrame_push {τ : X' ⟶ X} (mu : SABMap t' t τ) {x' : Sp k ⟶ X'} {l
 end Tan
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => by rcases V.mem_or_inv_mem x with hx | hx · exact RingHom.congr_fun h ⟨x, hx⟩ · have : f x⁻¹ = g x⁻¹ := RingHom.congr_fun h ⟨x⁻¹, hx⟩ rwa [map_inv₀, map_inv₀, inv_inj] at this`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_valuationSubring {F k : Type} [Field F] [Field k] (V : ValuationSubring F) {f g : F →+* k}
     (h : f.comp V.subtype = g.comp V.subtype) : f = g := RingHom.ext fun x => by
@@ -276,9 +276,9 @@ theorem ringHom_ext_valuationSubring {F k : Type} [Field F] [Field k] (V : Valua
     rwa [map_inv₀, map_inv₀, inv_inj] at this
 
 /- English proof (translation)
-Set `U : Over.mk (T₂.hom ≫ f₂) ⟶ Over.mk (T₁.hom ≫ f₁)` to `Over.homMk r (by`. Use `congrArg (· ≫ G.hom) h` as an intermediate fact. Simplify using `only [Category.assoc, h₁.1.w, h₂.1.w, Over.w_assoc] at this`. Conclude with `this.symm)`. Establish `e : pushHom h₂ T₂ x₂ = ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom U (pushHom h₁ T₁ x₁)` using `Over.OverMorphism.ext h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : pushHom h₂ T₂ (x₂ ^ n) = ReciprocityTheory.ChartRestriction.G.Geo.Tor.preHom U (pushHom h₁ T₁ (x₁ ^ n))`. Rewrite using `[map_pow, map_pow, map_pow, e]`. Conclude with `congrArg (fun q => q.left) e'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_left_comp {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁} {G₂ : Over S₂} [GrpObj G] [GrpObj G₁] [GrpObj G₂]
     {f₁ : S₁ ⟶ S} {f₂ : S₂ ⟶ S} {φ₁ : G₁.left ⟶ G.left} {φ₂ : G₂.left ⟶ G.left} (h₁ : IsGrpPullback G₁ G f₁ φ₁)
@@ -296,17 +296,17 @@ theorem pow_left_comp {S S₁ S₂ : Scheme.{0}} {G : Over S} {G₁ : Over S₁}
 variable {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p}
 
 /- English proof (translation)
-Take `⟨b₁, π₁, r₁, hb₁, hf₁, hs₁, fin₁, hj₁, he₁, hA₁⟩` from `h₁`. Take `⟨b₂, π₂, r₂, hb₂, hf₂, hs₂, fin₂, hj₂, he₂, hA₂⟩` from `h₂`. Establish `w₁ : τ₁ ≫ (Y i).s = (Y i₁).s ≫ spMap b₁`. Rewrite using `[← hf₁, ← hs₁, Category.assoc, Category.assoc, pullback.condition]`. Set `q : pullback (Y i₁).s (spMap b₂) ⟶ pullback (Y i).s (spMap (b₂.comp b₁))` to `pullback.lift (pullback.fst _ _ ≫ τ₁) (pullback.snd _ _) (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[Category.assoc, w₁, pullback.condition_assoc, sp_comp])`. Set `ρ : pullback (Y i).s (spMap (b₂.comp b₁)) ⟶ pullback (Y i).s (spMap b₁)` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ spMap b₂) (by`. Rewrite using `[Category.assoc, sp_comp, pullback.condition])`. Establish `hρ : IsPullback ρ (pullback.snd _ _) (pullback.snd _ _) (spMap b₂)`. Use `IsPullback.of_right ?_ (pullback.lift_snd _ _ _) (IsPullback.of_hasPullback (Y i).s (spMap b₁))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pullback.lift_fst, sp_comp]`. Conclude with `IsPullback.of_hasPullback _ _`. Establish `hq : IsPullback (pullback.fst (Y i₁).s (spMap b₂)) q π₁ ρ`. Use `IsPullback.of_bot ?_ ?_ hρ` and prove the remaining obligations. Rewrite using `[pullback.lift_snd, hs₁]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `IsPullback.of_hasPullback _ _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hf₁, q, ρ, pullback.lift_fst]`. Simplify using `only [Category.assoc, hs₁, q, ρ, pullback.lift_snd, pullback.lift_snd_assoc, pullback.condition]`. Establish `finq : IsFinite q` using `MorphismProperty.of_isPullback hq fin₁`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `pw : ∀ {a a₁ a₂ : ℕ}, a ∣ a₁ → a₁ ∣ a₂ → ∀ (e : 𝟙_ (Over _) ⟶ (Y i).oF.t.G) (e₁ : 𝟙_ (Over _) ⟶ (Y i₁).oF.t.G) (e₂ : 𝟙_ (Over _) ⟶ (Y i₂).oF.t.G), (e₁ ^ (a₁ / a)).left ≫ (Y i₁).m.φ ≫ mu₁.φ = r₁ ≫ e.left ≫ (Y i).m.φ → (e₂ ^ (a₂ / a₁)).left ≫ (Y i₂).m.φ ≫ mu₂.φ = r₂ ≫ e₁.left ≫ (Y …`. Introduce `a a₁ a₂ da da₁ e e₁ e₂ k₁ k₂`. Establish `k` using `pow_left_comp (Y i₁).m.cart ((Y i₂).m.cart.comp mu₂.cart) e₁ (e₂ ^ (a₂ / a₁)) r₂ k₂ (a₁ / a)`. Rewrite `k` using `[← pow_mul, Nat.div_mul_div da₁ da]`. Rewrite using `[hmu, Category.assoc, ← k₁]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `congrArg (· ≫ mu₁.φ) k` using `only [Category.assoc]`. Use `⟨b₂.comp b₁, π₂ ≫ q, r₂ ≫ r₁, fun x => (hb₂ _).trans (hb₁ x), ?_, ?_, inferInstance, ?_, fun a => pw d₁.1 d₂.1 _ _ _ (he₁ a) (he₂ a), fun a => pw d₁.2.2 d₂.2.2 _ _ _ (hA₁ a) (hA₂ a)⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.lift_fst, ← Category.assoc, hf₂]`. Rewrite using `[Category.assoc, pullback.lift_snd, hs₂]`. Rewrite using `[← Category.assoc, hj₂, Category.assoc, hj₁, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTrans_comp {i i₁ i₂ : Idx H p} {τ₁ : (Y i₁).X ⟶ (Y i).X} {τ₂ : (Y i₂).X ⟶ (Y i₁).X}
     {mu₁ : SABMap (Y i₁).t (Y i).t τ₁} {mu₂ : SABMap (Y i₂).t (Y i₁).t τ₂} (d₁ : i.l.Dvd i₁.l) (d₂ : i₁.l.Dvd i₂.l)
@@ -351,19 +351,19 @@ theorem isTrans_comp {i i₁ i₂ : Idx H p} {τ₁ : (Y i₁).X ⟶ (Y i).X} {�
   · rw [← Category.assoc, hj₂, Category.assoc, hj₁, Category.assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ => subset_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem corr_refl (Z : Mdl Y i₀) : LocM.Corr Z Z := ⟨⟨dvd_rfl, le_rfl, dvd_rfl⟩, le_rfl, fun _ => subset_rfl⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1, fun σ => (h'.2.2 σ).trans (h.2.2 σ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem corr_trans {Z₁ Z₂ Z₃ : Mdl Y i₀} (h : LocM.Corr Z₁ Z₂) (h' : LocM.Corr Z₂ Z₃) : LocM.Corr Z₁ Z₃ :=
   ⟨⟨h'.1.1.trans h.1.1, h.1.2.1.trans h'.1.2.1, h'.1.2.2.trans h.1.2.2⟩, h'.2.1.trans h.2.1,
     fun σ => (h'.2.2 σ).trans (h.2.2 σ)⟩
 
 /- English proof (translation)
-Rewrite using `[← h, Category.assoc]`. Conclude with `GlobalTheory.FactorDepth.isTanAtG_map _ φ ((Z.frame a).1 σ j).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : Fin Z.m} {φ : Γ(Z.X, (Z.U a).1) →+* k}
     (h : spMap φ ≫ Z.chart a = w) (σ : E →+* ℂ) (j : Fin (Dw.mult σ)) :
@@ -372,7 +372,7 @@ theorem tan_chart (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {a : 
   exact GlobalTheory.FactorDepth.isTanAtG_map _ φ ((Z.frame a).1 σ j).1
 
 /- English proof (translation)
-Take `⟨a, φ, rfl, -⟩` from `h`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[← Z.cover]`. Conclude with `Set.mem_iUnion.2 ⟨a, (Z.U a).2.range_fromSpec.le ⟨spMap φ y, (Scheme.Hom.comp_apply _ _ _).symm⟩⟩`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_subset_opn (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u : Vecs Dw (Y Z.i).t k}
     (h : Z.FlagAt w u) : Set.range w ⊆ Z.opn := by
@@ -382,9 +382,9 @@ theorem range_subset_opn (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X
   exact Set.mem_iUnion.2 ⟨a, (Z.U a).2.range_fromSpec.le ⟨spMap φ y, (Scheme.Hom.comp_apply _ _ _).symm⟩⟩
 
 /- English proof (translation)
-Take `⟨a, φ, ha, fu, su⟩` from `hu`. Take `⟨b, ψ, hb, fv, sv⟩` from `hv`. Establish `e : φ.comp (Z.alg a) = ψ.comp (Z.alg b)` using `ringHom_ext_valuationSubring (Z.i.c.V W) (spMap_inj (by`. Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, ← sp_comp _ φ, ← sp_comp _ ψ, ← Z.alg_s, ← Z.alg_s, ← Category.assoc, ← Category.assoc, ha, hb]))`. Establish `g` using `Z.glue k a b φ ψ (ha.trans hb.symm)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `g` using `[← Category.assoc, ha]`. Use `⟨_, fu, e ▸ fv, ?_⟩` and prove the remaining obligations. Conclude with `sameFlag_trans (fun σ j => (fu.1 σ j).1) (tan_chart Z ha) (fun σ j => (fv.1 σ j).1) (sameFlag_symm (tan_chart Z ha) fu su) (sameFlag_trans (tan_chart Z ha) (tan_chart Z hb) (fun σ j => (fv.1 σ j).1) g sv)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem flagAt_two (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u v : Vecs Dw (Y Z.i).t k}
     (hu : Z.FlagAt w u) (hv : Z.FlagAt w v) : ∃ f : Z.i.c.F →+* k, IsFrame (Y Z.i).t f (w ≫ Z.π) u ∧
@@ -402,13 +402,13 @@ theorem flagAt_two (Z : Mdl Y i₀) {k : Type} [Field k] {w : Sp k ⟶ Z.X} {u v
     (sameFlag_trans (tan_chart Z ha) (tan_chart Z hb) (fun σ j => (fv.1 σ j).1) g sv)
 
 /- English proof (translation)
-Use `⟨corr_trans hf.1 hg.1, fun k _ w hw => ?_⟩` and prove the remaining obligations. Take `⟨τ₁, mu₁, u, t₁, e₁, fu, fu'⟩` from `hf.2 k w hw`. Take `⟨τ₂, mu₂, v, t₂, e₂, fv, b, ψ, hb, fv', sv'⟩` from `hg.2 k (w ≫ f) (range_subset_opn Z₂ fu')`. Take `⟨mu, hmu⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ mu₂ mu₁`. Take `⟨c, k₁, k₂, k₃⟩` from `flagAt_two Z₂ fv fu'`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ex : ((w ≫ f) ≫ g) ≫ Z₃.π = ((w ≫ f) ≫ Z₂.π) ≫ τ₂` using `e₂.trans (Category.assoc _ _ _).symm`. Establish `fr : IsFrame (Y Z₃.i).t (ψ.comp (Z₃.alg b)) (((w ≫ f) ≫ g) ≫ Z₃.π) (Dw` using `Dw) fun σ j => (u σ j ≫ mu₁.φ) ≫ mu₂.φ := by`. Rewrite `fv'`, the goal using `[ex]`. Conclude with `isFrame_push mu₂ k₁ k₂ fv'`. Establish `sf` using `sameFlag_push mu₂ hg.1.2.2 k₃`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `sf` using `[← ex]`. Use `⟨τ₁ ≫ τ₂, mu, u, isTrans_comp hg.1.1 hf.1.1 t₂ t₁ mu hmu, ?_, fu, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc w f g, ex, e₁]`. Simplify using `only [Category.assoc]`. Rewrite using `[hmu, ← Category.assoc w f g]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc (u _ _)]`. Conclude with `⟨b, ψ, hb, fr, sameFlag_trans (tan_chart Z₃ hb) (fun σ j => (fv'.1 σ j).1) (fun σ j => (fr.1 σ j).1) sv' sf⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMap_comp {Z₁ Z₂ Z₃ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} {g : Z₂.X ⟶ Z₃.X} (hf : IsMap Z₁ Z₂ f) (hg : IsMap Z₂ Z₃ g) :
     IsMap Z₁ Z₃ (f ≫ g) := by
@@ -432,13 +432,13 @@ theorem isMap_comp {Z₁ Z₂ Z₃ : Mdl Y i₀} {f : Z₁.X ⟶ Z₂.X} {g : Z�
     exact ⟨b, ψ, hb, fr, sameFlag_trans (tan_chart Z₃ hb) (fun σ j => (fv'.1 σ j).1) (fun σ j => (fr.1 σ j).1) sv' sf⟩
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin (n + 1)), ∃ Z' : Mdl Y i₀, Z'.i = (Z 0).i ∧ Z'.ty = (Z 0).ty ∧ ∀ a ∈ s, ∃ f : Z'.X ⟶ (Z a).X, IsMap Z' (Z a) f`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨Z 0, rfl, rfl, by simp⟩`. Consider the case `insert b s _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨Z', hi, ht, hm⟩` from `ih`. Establish `hc : LocM.Corr Z' (Z b)`. Unfold `LocM.Corr`. Rewrite using `[hi, ht, (hZ b).1, (hZ b).2]`. Conclude with `corr_refl (Z 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨Z'', hi', ht', f₁, f₂, m₁, m₂, -⟩` from `hd Z' (Z b) hc`. Use `⟨Z'', hi'.trans hi, ht'.trans ht, fun a ha => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 ha with rfl | ha` into its components or cases. Conclude with `⟨f₂, m₂⟩`. Take `⟨g, hg⟩` from `hm a ha`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨f₁ ≫ g, isMap_comp m₁ hg⟩`. Take `⟨Z', hi, ht, hm⟩` from `key Finset.univ`. Conclude with `⟨Z', hi, ht, fun a => hm a (Finset.mem_univ a)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dominating (hd : ∀ Z₁ Z₂ : Mdl Y i₀, LocM.Corr Z₁ Z₂ → ∃ Z', IsDiag Z₁ Z₂ Z') (n : ℕ)
     (Z : Fin (n + 1) → Mdl Y i₀) (hZ : ∀ a, (Z a).i = (Z 0).i ∧ (Z a).ty = (Z 0).ty) :

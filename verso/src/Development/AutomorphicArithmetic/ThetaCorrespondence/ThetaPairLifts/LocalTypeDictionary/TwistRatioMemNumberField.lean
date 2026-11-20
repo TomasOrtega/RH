@@ -16,11 +16,9 @@ end GlobalTheory.RowEx.RatioField
 namespace GlobalTheory.RowEx.RatioField
 open GlobalTheory.FunObj.SqNum GlobalTheory.CMVal
 /- English proof (translation)
-Introduce `_ hTR hFD _`. Take `⟨CF0, hF⟩` from `hFD`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, hF⟩` from `hF ε CF hCF`. Use `⟨x₀, fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch _ hsc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hRec : GlobalTheory.SqTop.Rec large₂` using `(GlobalTheory.SqTop.Model.rec_iff large₂).2 ⟨hS.size, hS.host⟩`. Use `haveI : Finite T := hS.fin`. Establish `key : ∀ (sc : Consts) (G : GridData R.toLevCh sc), sc = ⟨1, CF, large₂.sc.b⟩ → InNF fun _ σ => ∀ i j, LRatiosIn G σ A.μ0 i j`. Introduce and unpack `sc G rfl`. Take `⟨hcm, -, hfd, hbc, -⟩` from `hF C0 le_rfl D large₂ he hx hRec T R.toLevCh A.μ0 hS.core.lev G`.
-
-Conclude with `inNF_ratios hTR hS.core.lev G hcm hfd hbc`. Conclude with `key ch.sc ch.G hsc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem twistRatio_mem_numberField : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.ToricRatioConjugates → GlobalTheory.SqTop.FieldDat → GlobalTheory.SqTop.LNe → NFRatio := by
   intro _ hTR hFD _

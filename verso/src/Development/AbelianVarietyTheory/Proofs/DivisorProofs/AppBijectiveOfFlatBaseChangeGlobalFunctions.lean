@@ -10,9 +10,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ S Y Z π y p q hqc hqs hbij hy H V`. Establish `: IsIso π.appTop` using `(ConcreteCategory.isIso_iff_bijective _).mpr hbij`. Establish `hV : IsIso (p.app V)` using `GlobalTheory.ProperFunctions.isIso_app_of_forall_affineOpens p (fun W ↦`. Establish `: IsAffine W.1` using `W.2`. Use the proof step `GlobalTheory.ProperFunctions.isIso_appTop_of_isPullback ((isPullback_morphismRestrict p W.1).flip.paste_horiz H.flip)) V`.
-
-Conclude with `(ConcreteCategory.isIso_iff_bijective _).mp hV`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem app_bijective_of_flat_baseChange : ∀ (R : Type) [CommRing R] (S Y Z : Scheme.{0}) (π : S ⟶ Sp R) (y : Y ⟶ Sp R)
     (p : Z ⟶ Y) (q : Z ⟶ S), QuasiCompact π → QuasiSeparated π → Function.Bijective π.appTop.hom → Flat y →

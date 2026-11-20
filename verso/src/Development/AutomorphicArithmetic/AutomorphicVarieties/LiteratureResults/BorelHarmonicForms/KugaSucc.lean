@@ -4,7 +4,7 @@ open NumberField Matrix GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `h'` using `h.eq`. Rewrite using `[sub_mul, mul_add, mul_add, h']`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 private theorem ring_sq {R : Type} [Ring R] {x y : R} (h : Commute x y) : (y - x) * (x + y) = y * y - x * x := by
   have h' := h.eq
@@ -12,7 +12,7 @@ private theorem ring_sq {R : Type} [Ring R] {x y : R} (h : Commute x y) : (y - x
   abel
 
 /- English proof (translation)
-Simplify using `only [sub_mul, mul_add, add_mul, mul_sub, h.eq, h'.eq]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 private theorem ring_br {R : Type} [Ring R] {x y x' y' : R} (h : Commute x y') (h' : Commute x' y) :
     (x + y) * (y' - x') - (y' - x') * (x + y) = (y * y' - y' * y) - (x * x' - x' * x) := by
@@ -20,21 +20,21 @@ private theorem ring_br {R : Type} [Ring R] {x y x' y' : R} (h : Commute x y') (
   abel
 
 /- English proof (translation)
-Introduce `E _ _ _ a n e he M _ _ _ _ A B hA hB hAB q ω hω X`. Establish `hs : ∀ j, star (Complex.I • (e j).1) = -(Complex.I • (e j).1)` using `fun j => by`. Establish `h : star (e j).1 = (e j).1` using `(e j).2`. Rewrite using `[star_smul, h, Complex.star_def, Complex.conj_I, neg_smul]`. Establish `hsq : ∀ (Z : Lie E a) (m : M), (B - A) Z ((A + B) Z m) = (B Z * B Z - A Z * A Z) m` using `fun Z m => LinearMap.congr_fun (ring_sq (hAB Z Z)) m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbr : ∀ (Y Z : Matrix (Fin a) (Fin a) (Cinf E)) (m : M), (A + B) (toL Y) ((B - A) (toL Z) m) - (B - A) (toL Z) ((A + B) (toL Y) m) = (B - A) (toL (Y * Z - Z * Y)) m` using `fun Y Z m => by`. Establish `h` using `ring_br (hAB (toL Y) (toL Z)) (hAB (toL Z) (toL Y))`. Rewrite `h` using `[hA, hB]`. Conclude with `LinearMap.congr_fun h m`. Establish `hup : ∀ (i : Fin (q + 1)) (Y : Herm E a), (-1 : ℤ) ^ (i : ℕ) • ω (Matrix.vecCons Y (i.removeNth X)) = ω (Function.update X i Y)` using `fun i Y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.insertNth_removeNth, AlternatingMap.map_insertNth]`. Establish `hfr : ∀ i : Fin (q + 1), ∑ j, (B - A) (toL ((X i).1 * (e j).1 - (e j).1 * (X i).1)) (ω (Function.update X i (e j))) = -∑ j, (B - A) (toL (Complex.I • (e j).1)) (ω (Function.update X i (brH _ (hs j) (X i))))` using `fun i => (frameBr E a n e he M).2 (LinearMap.mk₂ ℝ (fun Z Y => (B - A) (toL Z) (ω (Function.update X i Y))) (fun Z Z' Y => LinearMap.congr_fun (map_add (B - A) (toL Z) (toL Z')) _) (fun c Z Y => LinearMap.congr_fun (map_smul (B - A) c (toL Z)) _) (fun Z Y Y' => by rw [Alternating …`. Establish `h1 : dCo (A + B) (del (B - A) e ω) X = ∑ j, ∑ i, (A + B) (toL (X i).1) ((B - A) (toL (e j).1) (ω (Function.update X i (e j))))`. Rewrite using `[dCo_apply, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[del_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hup, map_zsmul, map_zsmul]`. Establish `h2 : del (B - A) e (dCo (A + B) ω) X = ∑ j, ((B - A) (toL (e j).1) ((A + B) (toL (e j).1) (ω X)) - ∑ i, (B - A) (toL (e j).1) ((A + B) (toL (X i).1) (ω (Function.update X i (e j)))))`. Rewrite using `[del_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[dCo_cons, map_sub, dCo_apply, map_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hup, map_zsmul, map_zsmul, map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h3 : ∑ j, ∑ i, (A + B) (toL (X i).1) ((B - A) (toL (e j).1) (ω (Function.update X i (e j)))) - ∑ j, ∑ i, (B - A) (toL (e j).1) ((A + B) (toL (X i).1) (ω (Function.update X i (e j)))) = -∑ j, (B - A) (toL (Complex.I • (e j).1)) ((A + B) (toL (Complex.I • (e j).1)) (ω X))`. Simplify using `only [← Finset.sum_sub_distrib, hbr]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [hfr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_neg_distrib, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hω _ (hs j), map_sum]`. Rewrite using `[h1, h2, Finset.sum_sub_distrib, add_sub_left_comm, h3, ← sub_eq_add_neg, ← Finset.sum_sub_distrib, cas, cas, ← Finset.sum_sub_distrib, LinearMap.sum_apply]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hsq, hsq]`. Simplify using `only [LinearMap.sub_apply]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.kugaSucc :
     UpperTheory.V.Lit.Bor.KugaSucc := by

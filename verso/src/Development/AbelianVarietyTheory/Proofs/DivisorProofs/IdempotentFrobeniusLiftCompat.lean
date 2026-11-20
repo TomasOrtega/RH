@@ -17,13 +17,13 @@ open GlobalTheory.ChainParts
 namespace GlobalTheory.ChainParts.FrobPart
 
 /- English proof (translation)
-Substitute `h` using the available equality. Set `r : X ⟶ kernel (𝟙 X - e)` to `kernel.lift _ e (by rw [Preadditive.comp_sub, he, Category.comp_id, sub_self])`. Establish `hri : r ≫ kernel.ι _ = e` using `kernel.lift_ι _ _ _`. Establish `hie : kernel.ι (𝟙 X - e) ≫ e = kernel.ι (𝟙 X - e)`. Use `kernel.condition (𝟙 X - e)` as an intermediate fact.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `this.symm`. Establish `hir : kernel.ι (𝟙 X - e) ≫ r = 𝟙 _`. Rewrite using `[← cancel_mono (kernel.ι (𝟙 X - e)), Category.assoc, hri, hie, Category.id_comp]`. Establish `hje : kernel.ι (𝟙 (F.obj X) - F.map e) ≫ F.map e = kernel.ι (𝟙 (F.obj X) - F.map e)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `kernel.condition (𝟙 (F.obj X) - F.map e)` as an intermediate fact. Rewrite `this` using `[Preadditive.comp_sub, Category.comp_id, sub_eq_zero]`. Conclude with `this.symm`. Use `⟨⟨kernel.ι _ ≫ F.map r, kernel.lift _ (F.map (kernel.ι _)) ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Preadditive.comp_sub, Category.comp_id, ← F.map_comp, hie, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (kernel.ι _), Category.assoc, kernel.lift_ι, Category.assoc, ← F.map_comp, hri, hje, Category.id_comp]`. Rewrite using `[← Category.assoc, kernel.lift_ι, ← F.map_comp, hir, F.map_id]`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_kernel_iso {C D : Type*} [Category C] [Category D] [Preadditive C] [Preadditive D] [HasKernels C]
     [HasKernels D] (F : C ⥤ D) [F.Additive] {X : C} (e : X ⟶ X) (he : e ≫ e = e) (e' : F.obj X ⟶ F.obj X)
@@ -53,7 +53,7 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : �
   {B : Vert.Model O} (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0)
 
 /- English proof (translation)
-Unfold `frobFun`. Rewrite using `[Functor.comp_map, VB.pullback_map_smulHom, GlobalTheory.MixedLocalChains.FrobQuot.appTop_absFrob_comp p B h g, ← map_pow]`. Conclude with `pushforward_map_smulHom _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_smulHom (F : B.X.Modules) (g : Γ(B.X, ⊤)) :
     (frobFun p h).map (smulHom F g) = smulHom _ (g ^ p) := by
@@ -62,7 +62,7 @@ theorem map_smulHom (F : B.X.Modules) (g : Γ(B.X, ⊤)) :
   exact pushforward_map_smulHom _ _ _
 
 /- English proof (translation)
-Establish `k` using `pushforward_map_smulHom (fibI p B).subschemeι ((Scheme.Modules.pullback (GlobalTheory.SS.FrobField.absFrob _ p 1 Fact.out h ≫ (fibI p B).subschemeι)).obj F) (p : Γ(B.X, ⊤))`. Rewrite `k` using `[map_natCast, h, smulHom_zero, Functor.map_zero]`. Conclude with `k.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smulHom_p (F : B.X.Modules) : smulHom ((frobFun p h).obj F) (p : Γ(B.X, ⊤)) = 0 := by
   have k := pushforward_map_smulHom (fibI p B).subschemeι
@@ -74,11 +74,11 @@ theorem smulHom_p (F : B.X.Modules) : smulHom ((frobFun p h).obj F) (p : Γ(B.X,
 end
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B Λ _ h n c c' a hc hidem M hM`. Use `haveI := Examples₂.additive_frobFun p h`. Use `nonempty_kernel_iso (frobFun p h) (eA M c a) (hidem M hM) (eA (frobA p h M) c' a) ?_` and prove the remaining obligations. Unfold `eA`. Rewrite using `[Functor.map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Take `⟨v, hv⟩` from `hc k`. Establish `e : smulHom ((frobFun p h).obj M.V) (c' k) = smulHom _ (c k ^ p)`. Rewrite using `[hv, smulHom_add, smulHom_mul, smulHom_p, comp_zero, add_zero]`. Rewrite using `[Functor.map_comp, map_smulHom, ← e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] {B : Vert.Model O} {Λ : Type} [CommRing Λ] (h : (p : Γ((fibI p B).subscheme, ⊤)) = 0) {n : ℕ} (c c' : Fin n → Γ(B.X, ⊤)) (a : Fin n → Λ) (hc : ∀ k, ∃ v : Γ(B.X, ⊤), c' k = c k ^ p + p * v) (hidem : ∀ M : AM B Λ, IsAdd M → eA M c a ≫ eA M c a = eA M c a) (M : AM B Λ) (hM : IsAdd M), Nonempty ((partF c' a).obj (frobA p h M) ≅ (frobFun p h).obj ((partF c a).obj M)) := by
   intro O _ _ _ p _ _ _ B Λ _ h n c c' a hc hidem M hM

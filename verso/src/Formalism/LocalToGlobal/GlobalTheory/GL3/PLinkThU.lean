@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 private theorem Hf_eq (T : Tor D) (z w : VC D N N') : Hf D T z w = sS z w / (area T.abelian₂ : ℂ) := rfl
 
 /- English proof (translation)
-Simplify using `only [sS, map_sum, map_mul, starRingEnd_self_apply]`. Conclude with `Finset.sum_congr rfl fun τ _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sS_swap (z w : VC D N N') : sS w z = (starRingEnd ℂ) (sS z w) := by
   simp only [sS, map_sum, map_mul, starRingEnd_self_apply]
@@ -36,7 +36,7 @@ private theorem sS_swap (z w : VC D N N') : sS w z = (starRingEnd ℂ) (sS z w) 
     Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Simplify using `only [sS, Pi.add_apply, map_add, add_mul, mul_add, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem sS_add (z x : VC D N N') :
     sS (z + x) (z + x) = sS z z + sS z x + sS x z + sS x x := by
@@ -44,7 +44,7 @@ private theorem sS_add (z x : VC D N N') :
   ring
 
 /- English proof (translation)
-Rewrite using `[Hf_eq, Hf_eq, Hf_eq, Hf_eq, sS_add, sS_swap z x]`. Simplify using `only [Complex.div_ofReal_re, Complex.add_re, Complex.conj_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem re_Hf_add (T : Tor D) (z x : VC D N N') :
     (Hf D T (z + x) (z + x)).re =
@@ -57,9 +57,9 @@ def dens (D : D7) (T : Tor D) {N N' : ℕ} (G : VC D N N' → ℂ) (z : VC D N N
   ‖G z‖ ^ 2 * Real.exp (-Real.pi * (Hf D T z z).re)
 
 /- English proof (translation)
-Establish `h` using `re_Hf_add T z x`. Simplify using `only [dens, U, norm_mul, Complex.norm_exp, mul_pow]`. Rewrite using `[h, mul_assoc, ← Real.exp_nat_mul, ← Real.exp_add]`. Use `congr 1`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Complex.sub_re, Complex.neg_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.div_ofNat_re, zero_mul, sub_zero, Complex.neg_im, neg_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem dens_U (T : Tor D) (G : VC D N N' → ℂ) (x z : VC D N N') :
     dens D T (U D T x G) z = dens D T G (z + x) := by
@@ -74,13 +74,13 @@ theorem dens_U (T : Tor D) (G : VC D N N' → ℂ) (x z : VC D N N') :
   ring
 
 /- English proof (translation)
-Simplify using `[al, norm_zpow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem norm_al (T : Tor D) (x : VC D N N') : ‖al D T x‖ = 1 := by
   simp [al, norm_zpow]
 
 /- English proof (translation)
-Rewrite using `[← dens_U]`. Simplify using `only [dens]`. Rewrite using `[← hG.2 y hy z, norm_mul, norm_al, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dens_periodic (T : Tor D) (La' : AddSubgroup (VC D N N')) (G : VC D N N' → ℂ)
     (hG : G ∈ ThSp D T La') (y : VC D N N') (hy : y ∈ La') (z : VC D N N') :
@@ -90,11 +90,11 @@ theorem dens_periodic (T : Tor D) (La' : AddSubgroup (VC D N N')) (G : VC D N N'
   rw [← hG.2 y hy z, norm_mul, norm_al, one_mul]
 
 /- English proof (translation)
-Establish `hF` using `Classical.epsilon_spec hfd`. Use `show (⨍ z in _, dens D T (U D T x G) z) = ⨍ z in _, dens D T G z`. Repeatedly rewrite using `[dens_U]`. Use `set F := Classical.epsilon fun Fd : Set (VC D N N') => IsAddFundamentalDomain La' Fd volume`. Establish `hper : ∀ (g : La') (z : VC D N N'), dens D T G ((g +ᵥ z) + x) = dens D T G (z + x)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g z`. Use `show dens D T G ((g : VC D N N') + z + x) = dens D T G (z + x)`. Rewrite using `[show (g : VC D N N') + z + x = z + x + g by abel]`. Conclude with `dens_periodic T La' G hG g g.2 (z + x)`. Establish `h1 : ∫ z in F, dens D T G (z + x) = ∫ z in (-x) +ᵥ F, dens D T G (z + x)` using `hF.setIntegral_eq (hF.vadd_of_comm (-x)) hper`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∫ z in (-x) +ᵥ F, dens D T G (z + x) = ∫ z in F, dens D T G z`. Rewrite using `[← Set.preimage_vadd]`. Repeatedly rewrite using `[add_comm _ x]`. Conclude with `(measurePreserving_vadd x volume).setIntegral_preimage_emb (MeasurableEquiv.vadd x).measurableEmbedding (dens D T G) F`. Rewrite using `[setAverage_eq, setAverage_eq, h1, h2]`.
+A detailed English derivation is pending.
 -/
 theorem normSq_U_of_fd (T : Tor D) (La' : AddSubgroup (VC D N N')) [Countable La']
     (hfd : ∃ Fd : Set (VC D N N'), IsAddFundamentalDomain La' Fd volume)
@@ -122,9 +122,7 @@ def FullLat {V : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V] (La' : AddSub
   DiscreteTopology La' ∧ Submodule.span ℝ (La' : Set V) = ⊤
 
 /- English proof (translation)
-Take `⟨hd, hs⟩` from `hL`. Use `haveI := hd`. Use `haveI : Countable La' := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Use `haveI : DiscreteTopology (AddSubgroup.toIntSubmodule La') := hd`. Use `haveI : IsZLattice ℝ (AddSubgroup.toIntSubmodule La') := ⟨hs⟩`.
-
-Use `normSq_U_of_fd T La' ⟨_, ZLattice.isAddFundamentalDomain (Module.Free.chooseBasis ℤ (AddSubgroup.toIntSubmodule La')) volume⟩ G hG x` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem normSq_U_of_full (T : Tor D) (La' : AddSubgroup (VC D N N')) (hL : FullLat La')
     (G : VC D N N' → ℂ) (hG : G ∈ ThSp D T La') (x : VC D N N') :
@@ -138,7 +136,7 @@ theorem normSq_U_of_full (T : Tor D) (La' : AddSubgroup (VC D N N')) (hL : FullL
     (Module.Free.chooseBasis ℤ (AddSubgroup.toIntSubmodule La')) volume⟩ G hG x
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ N N' L L' hA G hG x`. Take `⟨hc, hfd'⟩` from `hfd D cc hcc δ hδ N N' L L' hA`. Use `haveI := hc`. Conclude with `normSq_U_of_fd (tor0 D cc δ) _ hfd' G hG x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LinkThU_of_fd
     (hfd : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
@@ -152,7 +150,7 @@ theorem LinkThU_of_fd
   exact normSq_U_of_fd (tor0 D cc δ) _ hfd' G hG x
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ N N' L L' hA G hG x`. Conclude with `normSq_U_of_full (tor0 D cc δ) _ (hfull D cc hcc δ hδ N N' L L' hA) G hG x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LinkThU_of_full
     (hfull : ∀ D : D7, ∀ cc : Ideal (𝓞 D.host.K), IsCurveIdeal D cc → ∀ δ : ℂ, IsDiscriminantTwelfthRootOfIdealLattice D cc δ →
@@ -162,7 +160,7 @@ theorem LinkThU_of_full
   exact normSq_U_of_full (tor0 D cc δ) _ (hfull D cc hcc δ hδ N N' L L' hA) G hG x
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ e he N N' L L' hA x`. Conclude with `h D cc hcc δ hδ N N' L L' hA _ (he N N' L L' hA).1 x`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LinkThUFam_of_ThU (h : LinkThU) : LinkThUFam := by
   intro D cc hcc δ hδ e he N N' L L' hA x
@@ -177,27 +175,25 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 variable (D : D7)
 
 /- English proof (translation)
-Conclude with `D.host.gal.apply_symm_apply g`.
+A detailed English derivation is pending.
 -/
 theorem galE_sigmaOf (g : D.R.GG) :
     D.host.galE (D.host.sigmaOf g) = g := by
   exact D.host.gal.apply_symm_apply g
 
 /- English proof (translation)
-Conclude with `D.host.gal.symm_apply_apply σ`.
+A detailed English derivation is pending.
 -/
 theorem sigmaOf_galE (σ : D.host.E ≃ₐ[ℚ] D.host.E) :
     D.host.sigmaOf (D.host.galE σ) = σ := by
   exact D.host.gal.symm_apply_apply σ
 
 /- English proof (translation)
-Use `set σ := D.host.sigmaOf ((D.eTau τ : D.R.Psi) : D.R.GG)`. Establish `hb : σ (D.host.sqd) = D.host.sqd`. Rewrite using `[← D.host.galE_mem_Psi_iff]`. Rewrite using `[galE_sigmaOf]`. Conclude with `(D.eTau τ).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfix : σ x = x`. Establish `hx' : x ∈ IntermediateField.adjoin ℚ {D.host.sqd}` using `hx`. Use `clear hx`. Proceed by induction on `hx' using IntermediateField.adjoin_induction with`. Consider the case `mem y hy => rw [Set.mem_singleton_iff.mp hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hb`. Consider the case `algebraMap r => rw [eq_ratCast (algebraMap ℚ D.host.E) r]`. Conclude with `map_ratCast σ r`. Consider the case `add y z _ _ h1 h2 => rw [map_add, h1, h2]`. Consider the case `inv y _ h1 => rw [map_inv₀, h1]`.
-
-Consider the case `mul y z _ _ h1 h2 => rw [map_mul, h1, h2]`. Use `show D.host.φ₀ (σ x) = _`. Rewrite using `[hfix]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embT_K (τ : D.what₂.Tau) (x : D.host.E) (hx : x ∈ D.host.K) :
     embT D τ x = D.host.φ₀ x := by
@@ -219,17 +215,15 @@ theorem embT_K (τ : D.what₂.Tau) (x : D.host.E) (hx : x ∈ D.host.K) :
   rw [hfix]
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `(D.host.hostEmb D.host.φ₀).2 φ`. Use `set g := D.host.galE ρ`. Distinguish the cases in `hg : g ∈ D.R.Psi`. Use `⟨D.eTau.symm ⟨g, hg⟩, Or.inl ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [embT, Equiv.apply_symm_apply, Host.emb]`. Rewrite using `[show g = D.host.galE ρ from rfl, sigmaOf_galE]`. Establish `hg' : g * D.R.cc ∈ D.R.Psi`. Rewrite `hg`, the goal using `[Formalism.HC.Frame.mem_Psi_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: g.1.2 = -1`. Break down `Int.units_eq_one_or g.1.2 with h | h` into its components or cases. Conclude with `absurd h hg`. Conclude with `h`. Use `show g.1.2 * (D.R.cc).1.2 = 1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Both sides reduce to the same expression. Use `set c := D.host.conj`. Establish `hgc : g * D.R.cc = D.host.galE (ρ * c)`. Rewrite using `[D.host.galE_mul, D.host.galE_conjE]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨D.eTau.symm ⟨g * D.R.cc, hg'⟩, Or.inr ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ]`. Use extensionality with `x`. Simplify using `only [embT, Equiv.apply_symm_apply, Host.emb, RingHom.comp_apply]`. Rewrite using `[hgc, sigmaOf_galE]`.
-
-Establish `h1` using `D.host.conjE_apply (D.host.φ₀.comp (ρ : D.host.E →+* D.host.E)) x`. Establish `h2 : D.host.φ₀ (ρ (c x)) = starRingEnd ℂ (D.host.φ₀ (ρ x))` using `h1`. Use `show D.host.φ₀ (ρ x) = starRingEnd ℂ (D.host.φ₀ (ρ (c x)))`. Rewrite using `[h2, Complex.conj_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem emb_cases (φ : D.host.E →+* ℂ) :
     ∃ τ : D.what₂.Tau, φ = embT D τ ∨ φ = (starRingEnd ℂ).comp (embT D τ) := by
@@ -274,7 +268,7 @@ variable (D : D7)
 def embP (x : D.host.E) : D.what₂.Tau → ℂ := fun τ => embT D τ x
 
 /- English proof (translation)
-Take `⟨τ, rfl | rfl⟩` from `emb_cases D φ`. Conclude with `h τ`. Establish `h1` using `congrArg (starRingEnd ℂ) (h τ)`. Simplify `h1` using `[map_sum, map_mul, Complex.conj_ofReal]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_emb_zero {ι : Type*} [Fintype ι] (b : ι → D.host.E) (g : ι → ℝ)
     (h : ∀ τ, ∑ i, (g i : ℂ) * embT D τ (b i) = 0) (φ : D.host.E →+* ℂ) :
@@ -285,21 +279,21 @@ theorem sum_emb_zero {ι : Type*} [Fintype ι] (b : ι → D.host.E) (g : ι →
     simpa [map_sum, map_mul, Complex.conj_ofReal] using h1
 
 /- English proof (translation)
-Rewrite using `[← Nat.card_eq_fintype_card, Nat.card_congr D.eTau, Formalism.HC.Frame.natCard_Psi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_tau : Fintype.card D.what₂.Tau = 2 * D.R.ord := by
   rw [← Nat.card_eq_fintype_card, Nat.card_congr D.eTau, Formalism.HC.Frame.natCard_Psi]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hτ : ∀ τ, ∑ i, (g i : ℂ) * embT D τ (integralBasis D.host.E i) = 0`. Introduce `τ`. Use `congrFun hg τ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[embP, Finset.sum_apply, Complex.real_smul]`. Establish `hcard : Fintype.card (D.host.E →ₐ[ℚ] ℂ) = Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E))`. Rewrite using `[AlgHom.card, Module.finrank_eq_card_basis (integralBasis D.host.E)]`. Set `e` to `(Fintype.equivOfCardEq hcard).symm`. Use `set M := Algebra.embeddingsMatrixReindex ℚ ℂ (fun i => integralBasis D.host.E i) e`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdet : M.det ≠ 0`. Introduce `h0`. Establish `h1` using `Algebra.discr_eq_det_embeddingsMatrixReindex_pow_two ℚ ℂ (fun i => integralBasis D.host.E i) e`. Express the relevant statement in the definitionally equal form `_ = M.det ^ 2 at h1`. Rewrite `h1` using `[h0, zero_pow two_ne_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Algebra.discr_not_zero_of_basis ℚ (integralBasis D.host.E) ((map_eq_zero_iff (algebraMap ℚ ℂ) (algebraMap ℚ ℂ).injective).mp h1)`. Establish `hv : Matrix.vecMul (fun i => (g i : ℂ)) M = 0`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply, M, Algebra.embeddingsMatrixReindex, Algebra.embeddingsMatrix, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply, Equiv.refl_symm, Equiv.coe_refl, id, Equiv.symm_symm]`. Conclude with `sum_emb_zero D _ g hτ (e j : D.host.E →+* ℂ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0` using `Matrix.eq_zero_of_vecMul_eq_zero hdet hv`. Introduce `i`. Use `congrFun h0 i` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem linInd_embP :
     LinearIndependent ℝ (fun i => embP D (integralBasis D.host.E i)) := by
@@ -334,11 +328,11 @@ theorem linInd_embP :
   simpa using this
 
 /- English proof (translation)
-Establish `hne : Nonempty (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E))`. Rewrite using `[← Fintype.card_pos_iff, ← Module.finrank_eq_card_basis (integralBasis D.host.E)]`. Conclude with `Module.finrank_pos`. Establish `hc : Fintype.card (Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)) = Module.finrank ℝ (D.what₂.Tau → ℂ)`. Rewrite using `[← Module.finrank_eq_card_basis (integralBasis D.host.E), D.host.finrank_cmField, Module.finrank_pi_fintype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.finrank_real_complex, Finset.sum_const, Finset.card_univ, card_tau, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `htop` using `(linInd_embP D).span_eq_top_of_card_eq_finrank hc`. Rewrite using `[eq_top_iff, ← htop]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨RingOfIntegers.basis D.host.E i, by simp [integralBasis_apply]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem span_embP :
     Submodule.span ℝ (Set.range (fun b : 𝓞 D.host.E => embP D (b : D.host.E))) = ⊤ := by
@@ -359,9 +353,9 @@ theorem span_embP :
   exact ⟨RingOfIntegers.basis D.host.E i, by simp [integralBasis_apply]⟩
 
 /- English proof (translation)
-Establish `hfin` using `NumberField.Embeddings.finite_of_norm_le D.host.E ℂ r`. Use `Set.Finite.of_finite_image (hfin.subset ?_) NumberField.RingOfIntegers.coe_injective.injOn` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `⟨NumberField.RingOfIntegers.isIntegral_coe x, fun φ => ?_⟩` and prove the remaining obligations. Take `⟨τ, rfl | rfl⟩` from `emb_cases D φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hx τ`. Simplify using `using hx τ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_ball (r : ℝ) : {x : 𝓞 D.host.E | ∀ τ, ‖embT D τ (x : D.host.E)‖ ≤ r}.Finite := by
   have hfin := NumberField.Embeddings.finite_of_norm_le D.host.E ℂ r
@@ -374,9 +368,9 @@ theorem finite_ball (r : ℝ) : {x : 𝓞 D.host.E | ∀ τ, ‖embT D τ (x : D
   · simpa using hx τ
 
 /- English proof (translation)
-Establish `hF` using `finite_ball D r`. Establish `h2 : {A : Fin N' → Fin N → 𝓞 D.host.E | ∀ τ i j, ‖embT D τ (A i j : D.host.E)‖ ≤ r} = Set.pi Set.univ fun _ => Set.pi Set.univ fun _ => {x : 𝓞 D.host.E | ∀ τ, ‖embT D τ (x : D.host.E)‖ ≤ r}`. Use extensionality with `A`. Simplify using `only [Set.mem_setOf_eq, Set.mem_pi]`. Conclude with `⟨fun h i _ j _ τ => h τ i j, fun h τ i j => h i (Set.mem_univ _) j (Set.mem_univ _) τ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Rewrite using `[h2]`. Conclude with `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hF`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_mat (N N' : ℕ) (r : ℝ) :
     {A : Fin N' → Fin N → 𝓞 D.host.E | ∀ τ i j, ‖embT D τ (A i j : D.host.E)‖ ≤ r}.Finite := by
@@ -399,7 +393,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 variable (D : D7)
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_range]`. Conclude with `(IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_iff_mem (x : D.host.E) :
     x ∈ (algebraMap (𝓞 D.host.E) D.host.E).range ↔ IsIntegral ℤ x := by
@@ -407,9 +401,9 @@ theorem isIntegral_iff_mem (x : D.host.E) :
   exact (IsIntegralClosure.isIntegral_iff (A := 𝓞 D.host.E)).symm
 
 /- English proof (translation)
-Establish `hI : (Ideal.span {b}).comap (algebraMap ℤ (𝓞 D.host.E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hb (Ideal.mem_span_singleton_self b) (Algebra.IsIntegral.isIntegral b)`. Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite `hm` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hm`. Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg m`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n, by exact_mod_cast hm0, a, ?_⟩` and prove the remaining obligations. Rewrite using `[ha]`. Simplify using the standard rewrite rules. Use `⟨n, by simpa using hm0, -a, ?_⟩` and prove the remaining obligations. Rewrite using `[neg_mul, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -430,15 +424,15 @@ theorem natMul_of (b : 𝓞 D.host.E) (hb : b ≠ 0) :
     simp
 
 /- English proof (translation)
-Establish `h1 : ∀ x : D.host.E, ∃ m : ℤ, m ≠ 0 ∧ IsIntegral ℤ ((m : D.host.E) * x)`. Introduce `x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 D.host.E) x`. Take `⟨n, hn, t, ht⟩` from `natMul_of D b (nonZeroDivisors.ne_zero hb)`. Use `⟨n, by exact_mod_cast hn, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hb' : algebraMap (𝓞 D.host.E) D.host.E b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `h2 : ((n : ℤ) : D.host.E) * (algebraMap (𝓞 D.host.E) D.host.E a / algebraMap (𝓞 D.host.E) D.host.E b) = algebraMap (𝓞 D.host.E) D.host.E (t * a)`. Rewrite using `[map_mul, Int.cast_natCast, ← map_natCast (algebraMap (𝓞 D.host.E) D.host.E), ht, map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NumberField.RingOfIntegers.isIntegral_coe _`. Establish `hcast : ∀ m : ℤ, IsIntegral ℤ (m : D.host.E)` using `fun m => by`. Simplify using `using (isIntegral_algebraMap : IsIntegral ℤ (algebraMap ℤ D.host.E m))`. Use `Finset.induction_on T ⟨1, one_ne_zero, by simp⟩ ?_` and prove the remaining obligations. Introduce `a s _ ih`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hs⟩` from `ih`. Take `⟨k, hk, ha'⟩` from `h1 a`. Use `⟨m * k, mul_ne_zero hm hk, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Establish `h3 : ((m * k : ℤ) : D.host.E) * x = (m : D.host.E) * ((k : D.host.E) * x)` using `by push_cast; ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `(hcast m).mul ha'`. Establish `h3 : ((m * k : ℤ) : D.host.E) * x = (k : D.host.E) * ((m : D.host.E) * x)` using `by push_cast; ring`. Rewrite using `[h3]`. Conclude with `(hcast k).mul (hs x hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_mul (T : Finset D.host.E) :
     ∃ m : ℤ, m ≠ 0 ∧ ∀ x ∈ T, IsIntegral ℤ ((m : D.host.E) * x) := by
@@ -474,17 +468,15 @@ theorem exists_int_mul (T : Finset D.host.E) :
     exact (hcast k).mul (hs x hx)
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Take `⟨⟨s, hs⟩, -, hdual⟩` from `hL`. Take `⟨m, hm, hmT⟩` from `exists_int_mul D (Finset.univ.biUnion fun i => s.image fun g => g i)`. Establish `h1 : ∀ x ∈ L, ∀ i, IsIntegral ℤ ((m : D.host.E) * x i)`. Set `S : Submodule (𝓞 D.host.E) (Fin N → D.host.E)` to `{ carrier := {x | ∀ i, IsIntegral ℤ ((m : D.host.E) * x i)} add_mem' := fun {a b} ha hb i => by simpa [mul_add] using (ha i).add (hb i) zero_mem' := fun i => by simpa using (isIntegral_zero : IsIntegral ℤ (0 : D.host.E)) smul_mem' := fun c a ha i => by`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h2 : (m : D.host.E) * (c • a) i = algebraMap (𝓞 D.host.E) D.host.E c * ((m : D.host.E) * a i)`. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe c).mul (ha i) }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : L ≤ S`. Rewrite using `[← hs, Submodule.span_le]`. Introduce `g hg i`. Conclude with `hmT _ (Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finset.mem_image.2 ⟨g, hg, rfl⟩⟩)`. Conclude with `fun x hx => hle hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m, hm, h1, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[hdual]`. Introduce `x hx`. Rewrite using `[isIntegral_iff_mem D]`. Use `show IsIntegral ℤ (∑ i, star (x i) * ((m : D.host.E) * z i))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `IsIntegral.sum _ fun i _ => ?_` and prove the remaining obligations. Establish `h3 : star (x i) * ((m : D.host.E) * z i) = starRingEnd D.host.E ((m : D.host.E) * x i) * z i`. Rewrite using `[map_mul, map_intCast, starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3]`.
-
-Conclude with `((h1 x hx i).map (starRingEnd D.host.E).toIntAlgHom).mul (hz i)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sd_bounds {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (hL : letI := D.host.cmStar; IsSDLat D.host.E N L) :
@@ -525,9 +517,9 @@ theorem sd_bounds {N : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
   exact ((h1 x hx i).map (starRingEnd D.host.E).toIntAlgHom).mul (hz i)
 
 /- English proof (translation)
-Establish `hb : D.host.𝔟 ≠ ⊥`. Introduce `h`. Use `D.host.𝔟_spec.2` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `at this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hle : (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≤ D.host.AA0`. Use `FractionalIdeal.inv_anti_mono (I := (D.host.𝔟 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) (J := 1) (FractionalIdeal.coeIdeal_ne_zero.mpr hb) one_ne_zero FractionalIdeal.coeIdeal_le_one` as an intermediate fact. Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Conclude with `hle (FractionalIdeal.one_mem_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem one_mem_inverse_halfDifferent : (1 : D.host.E) ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) := by
   have hb : D.host.𝔟 ≠ ⊥ := by
@@ -543,9 +535,9 @@ theorem one_mem_inverse_halfDifferent : (1 : D.host.E) ∈ (D.host.AA0 : Submodu
   exact hle (FractionalIdeal.one_mem_one _)
 
 /- English proof (translation)
-Take `⟨a, ha, hint⟩` from `(D.host.AA0).isFractional`. Take `⟨n, hn, t, ht⟩` from `natMul_of D a (nonZeroDivisors.ne_zero ha)`. Use `⟨n, by exact_mod_cast hn, fun b hb => ?_⟩` and prove the remaining obligations. Take `⟨y, hy⟩` from `hint b hb`. Establish `h1 : ((n : ℤ) : D.host.E) * b = algebraMap (𝓞 D.host.E) D.host.E (t * y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[map_mul, hy, Algebra.smul_def, ← mul_assoc, ← map_mul, ← ht]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_clearing_order_denominators : ∃ k : ℤ, k ≠ 0 ∧ ∀ a ∈ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E),
     IsIntegral ℤ ((k : D.host.E) * a) := by
@@ -568,17 +560,15 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Fo
 variable (D : D7)
 
 /- English proof (translation)
-Take `⟨m, hm, hLi, hLo⟩` from `sd_bounds D L hL`. Take `⟨m', hm', hL'i, hL'o⟩` from `sd_bounds D L' hL'`. Use `⟨m' * m, mul_ne_zero hm' hm, fun A hA => ?_⟩` and prove the remaining obligations. Set `S : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)` to `{ carrier := {A | ∀ i j, IsIntegral ℤ (((m' * m : ℤ) : D.host.E) * A i j)} add_mem' := fun {a b} ha hb i j => by`. Simplify `(ha i j).add (hb i j)` using `[mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `zero_mem' := fun i j => by`. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : D.host.E))`. Use the proof step `smul_mem' := fun c a ha i j => by`. Establish `h2 : ((m' * m : ℤ) : D.host.E) * (c • a) i j = algebraMap (𝓞 D.host.E) D.host.E c * (((m' * m : ℤ) : D.host.E) * a i j)`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe c).mul (ha i j) }`. Establish `hle : homL D L L' ≤ S`. Use `Submodule.span_le.2 fun A hA => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `show ∀ i j, IsIntegral ℤ (((m' * m : ℤ) : D.host.E) * A i j)`. Introduce `i j`. Establish `hz : ∀ k, IsIntegral ℤ ((Pi.single j (1 : D.host.E) : Fin N → D.host.E) k)` using `fun k => by`. Break down `eq_or_ne k j with rfl | hk` into its components or cases. Simplify using `using (isIntegral_one : IsIntegral ℤ (1 : D.host.E))`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `(isIntegral_zero : IsIntegral ℤ (0 : D.host.E))` using `[hk]`. Establish `hx` using `hLo (Pi.single j (1 : D.host.E) : Fin N → D.host.E) hz`. Establish `he : (A.mulVec (fun k => (m : D.host.E) * (Pi.single j (1 : D.host.E) : Fin N → D.host.E) k)) i = (m : D.host.E) * A i j`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`. Establish `h1` using `hL'i _ (hA _ hx) i`.
-
-Rewrite `h1` using `[he]`. Simplify `h1` using `[mul_assoc]`. Conclude with `hle hA`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hom_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -619,11 +609,11 @@ theorem hom_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.
   exact hle hA
 
 /- English proof (translation)
-Take `⟨m, hm, hLi, hLo⟩` from `sd_bounds D L hL`. Take `⟨m', hm', hL'i, hL'o⟩` from `sd_bounds D L' hL'`. Use `⟨m * m', mul_ne_zero hm hm', fun A hA => Submodule.subset_span ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hz : ∀ i, IsIntegral ℤ ((A.mulVec (fun k => (m : D.host.E) * x k)) i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `IsIntegral.sum _ fun k _ => (hA i k).mul (hLi x hx k)`. Establish `h1` using `hL'o _ hz`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hom_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -648,15 +638,13 @@ theorem hom_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.
   ring
 
 /- English proof (translation)
-Take `⟨M, hM, hhom⟩` from `hom_upper D L L' hL hL'`. Take `⟨k, hk, hAA⟩` from `exists_int_clearing_order_denominators D`. Use `⟨k * M, mul_ne_zero hk hM, fun B hB => ?_⟩` and prove the remaining obligations. Set `S : Submodule (𝓞 D.host.E) (Matrix (Fin N') (Fin N) D.host.E)` to `{ carrier := {A | ∀ i j, IsIntegral ℤ (((k * M : ℤ) : D.host.E) * A i j)} add_mem' := fun {a b} ha hb i j => by`. Simplify `(ha i j).add (hb i j)` using `[mul_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Simplify to obtain the desired conclusion from the available facts.
 
-Use the proof step `zero_mem' := fun i j => by`. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : D.host.E))`. Use the proof step `smul_mem' := fun c a ha i j => by`. Establish `h2 : ((k * M : ℤ) : D.host.E) * (c • a) i j = algebraMap (𝓞 D.host.E) D.host.E c * (((k * M : ℤ) : D.host.E) * a i j)`. Rewrite using `[Matrix.smul_apply, Algebra.smul_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(NumberField.RingOfIntegers.isIntegral_coe c).mul (ha i j) }`. Establish `hle : YYl D L L' ≤ S`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨a, ha, A, hA, rfl⟩`. Use `show ∀ i j, IsIntegral ℤ (((k * M : ℤ) : D.host.E) * (a • A) i j)`. Introduce `i j`. Establish `h2 : ((k * M : ℤ) : D.host.E) * (a • A) i j = ((k : D.host.E) * a) * ((M : D.host.E) * A i j)`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `(hAA a ha).mul (hhom A hA i j)`. Conclude with `hle hB`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem YY_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -694,7 +682,7 @@ theorem YY_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
   exact hle hB
 
 /- English proof (translation)
-Take `⟨M, hM, hhom⟩` from `hom_lower D L L' hL hL'`. Conclude with `⟨M, hM, fun A hA => Submodule.subset_span ⟨1, one_mem_inverse_halfDifferent D, (M : D.host.E) • A, hhom A hA, (one_smul _ _).symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem YY_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E))
@@ -707,15 +695,15 @@ theorem YY_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
     ⟨1, one_mem_inverse_halfDifferent D, (M : D.host.E) • A, hhom A hA, (one_smul _ _).symm⟩⟩
 
 /- English proof (translation)
-Conclude with `IsIntegral.algebraMap (B := D.host.E) (NumberField.RingOfIntegers.isIntegral_coe c)`.
+A detailed English derivation is pending.
 -/
 theorem intK (c : 𝓞 D.host.K) : IsIntegral ℤ (((c : D.host.K) : D.host.E)) := by
   exact IsIntegral.algebraMap (B := D.host.E) (NumberField.RingOfIntegers.isIntegral_coe c)
 
 /- English proof (translation)
-Set `f : 𝓞 D.host.K →+ ℂ` to `(AddMonoidHom.mulLeft δ).comp ((D.host.φ₀ : D.host.E →+* ℂ).toAddMonoidHom.comp ((algebraMap D.host.K D.host.E).toAddMonoidHom.comp (algebraMap (𝓞 D.host.K) D.host.K).toAddMonoidHom))`. Establish `hle : lamOf D cc δ ≤ (Submodule.toAddSubgroup cc).map f` using `by show AddSubgroup.closure _ ≤ _`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `_ ⟨c, hc, rfl⟩`. Conclude with `⟨c, hc, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨c, hc, hcw⟩` from `hle hw`. Conclude with `⟨c, hc, hcw.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lam_mem (cc : Ideal (𝓞 D.host.K)) (δ w : ℂ) (hw : w ∈ lamOf D cc δ) :
     ∃ c ∈ cc, w = δ * D.host.φ₀ (((c : D.host.K) : D.host.E)) := by
@@ -737,13 +725,13 @@ def Phi {N N' : ℕ} (u : ℂ) : (Fin N' → Fin N → 𝓞 D.host.E) →+ VC D 
   map_add' A B := by funext τ i j; simp [mul_add]
 
 /- English proof (translation)
-Take `⟨M, hM, hY⟩` from `YY_upper D L L' hA.2.2.1 hA.2.2.2`. Establish `hM' : (M : ℂ) ≠ 0` using `by exact_mod_cast hM`. Use `⟨M, hM, ?_⟩` and prove the remaining obligations. Use `show AddSubgroup.closure _ ≤ _`. Rewrite using `[AddSubgroup.closure_le]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨w, hw, A, hA', rfl⟩`. Take `⟨c, -, rfl⟩` from `lam_mem D cc δ w hw`. Establish `hint : ∀ i j, IsIntegral ℤ ((M : D.host.E) * (((c : D.host.K) : D.host.E) * A i j))`. Introduce `i j`. Establish `h1` using `(intK D c).mul (hY A hA' i j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[mul_left_comm]`. Then use the resulting hypothesis. Use `choose B hB using fun i j => RingHom.mem_range.1 ((isIntegral_iff_mem D _).2 (hint i j))`. Use `⟨B, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j`. Establish `hB' : ((B i j : 𝓞 D.host.E) : D.host.E) = (M : D.host.E) * (((c : D.host.K) : D.host.E) * A i j)` using `hB i j`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show δ / M * embT D τ ((B i j : 𝓞 D.host.E) : D.host.E) = δ * D.host.φ₀ ((c : D.host.K) : D.host.E) * embT D τ (A i j)`. Rewrite using `[hB', map_mul, map_mul, map_intCast, embT_K D τ _ (SetLike.coe_mem (c : D.host.K))]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem La_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
@@ -771,11 +759,11 @@ theorem La_upper {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
   field_simp
 
 /- English proof (translation)
-Apply `discreteTopology_of_isOpen_singleton_zero` to reduce the goal to its premises. Establish `hT : (({x | x ∈ S ∧ ‖x‖ ≤ 1} : Set V) \ {0}).Finite` using `(h 1).subset fun x hx => hx.1`. Use `isOpen_induced_iff.2 ⟨Metric.ball (0 : V) 1 ∩ (({x | x ∈ S ∧ ‖x‖ ≤ 1} : Set V) \ {0})ᶜ, Metric.isOpen_ball.inter hT.isClosed.isOpen_compl, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, Metric.mem_ball, dist_zero_right, Set.mem_compl_iff, Set.mem_diff, Set.mem_setOf_eq, Set.mem_singleton_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Assume the negation of the conclusion as `hne`. Conclude with `h2 ⟨⟨y.2, h1.le⟩, fun h0 => hne (Subtype.ext h0)⟩`. Introduce and unpack `rfl`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem disc_of_finite {V : Type*} [NormedAddCommGroup V] (S : AddSubgroup V)
     (h : ∀ r : ℝ, {x | x ∈ S ∧ ‖x‖ ≤ r}.Finite) : DiscreteTopology S := by
@@ -794,11 +782,11 @@ theorem disc_of_finite {V : Type*} [NormedAddCommGroup V] (S : AddSubgroup V)
     simp
 
 /- English proof (translation)
-Take `⟨M, hM, hle⟩` from `La_upper D L L' hA cc δ`. Establish `hu : (δ / M : ℂ) ≠ 0` using `div_ne_zero hδ (by exact_mod_cast hM)`. Use `((finite_mat D N N' (r / ‖(δ / M : ℂ)‖)).image (Phi D (N := N) (N' := N') (δ / M))).subset ?_` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hxr⟩`. Take `⟨A, rfl⟩` from `hle hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨A, fun τ i j => ?_, rfl⟩` and prove the remaining obligations. Establish `h2 : ‖Phi D (N` using `N) (N' := N') (δ / M) A τ i j‖ ≤ r := ((norm_le_pi_norm _ j).trans ((norm_le_pi_norm _ i).trans (norm_le_pi_norm _ τ))).trans hxr`. Express the relevant statement in the definitionally equal form `‖(δ / M : ℂ) * embT D τ (A i j : D.host.E)‖ ≤ r at h2`. Rewrite `h2` using `[norm_mul]`. Rewrite using `[le_div_iff₀ (norm_pos_iff.2 hu), mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem La_finite {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
@@ -822,19 +810,19 @@ def ins {N N' : ℕ} (i0 : Fin N') (j0 : Fin N) (w : D.what₂.Tau → ℂ) : VC
   fun τ i j => if i = i0 ∧ j = j0 then w τ else 0
 
 /- English proof (translation)
-Take `⟨M, hM, hY⟩` from `YY_lower D L L' hA.2.2.1 hA.2.2.2`. Take `⟨c, hc, hc0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hcc.1`. Establish `hI : cc.comap (algebraMap ℤ (𝓞 D.host.K)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem hc0 hc (Algebra.IsIntegral.isIntegral c)`. Take `⟨m, hm, hm0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Rewrite `hm` using `[Ideal.mem_comap]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcast : D.host.φ₀ (((algebraMap ℤ (𝓞 D.host.K) m : 𝓞 D.host.K) : D.host.K) : D.host.E) = (m : ℂ)`. Simplify using the standard rewrite rules. Establish `key : ∀ (i0 : Fin N') (j0 : Fin N) (b : 𝓞 D.host.E), ins D i0 j0 (fun τ => δ * ((m * M : ℤ) : ℂ) * embT D τ (b : D.host.E)) ∈ La D (tor0 D cc δ) L L'`. Introduce `i0 j0 b`. Establish `hAint : ∀ i j, IsIntegral ℤ ((Matrix.of fun i j => if i = i0 ∧ j = j0 then (b : D.host.E) else 0 : Matrix (Fin N') (Fin N) D.host.E) i j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i j`. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`. Conclude with `NumberField.RingOfIntegers.isIntegral_coe b`. Conclude with `isIntegral_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hw : δ * D.host.φ₀ (((algebraMap ℤ (𝓞 D.host.K) m : 𝓞 D.host.K) : D.host.K) : D.host.E) ∈ (tor0 D cc δ).abelian₂` using `AddSubgroup.subset_closure ⟨_, hm, rfl⟩`. Establish `hmem : (δ * D.host.φ₀ (((algebraMap ℤ (𝓞 D.host.K) m : 𝓞 D.host.K) : D.host.K) : D.host.E)) • embV D (tor0 D cc δ) ((M : D.host.E) • (Matrix.of fun i j => if i = i0 ∧ j = j0 then (b : D.host.E) else 0 : Matrix (Fin N') (Fin N) D.host.E)) ∈ La D (tor0 D cc δ) L L'` using `AddSubgroup.subset_closure ⟨_, hw, _, hY _ hAint, rfl⟩`. Use `hmem using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ i j`. Simplify using `only [ins, Pi.smul_apply, smul_eq_mul, embV, tor0, Matrix.smul_apply, Matrix.of_apply, hcast]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp [map_mul] <;> ring`. Take `⟨n, hn⟩` from `Int.eq_nat_or_neg (m * M)`. Use `⟨n, ?_, fun i0 j0 b => ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Apply the tactic sequence `rcases hn with h | h <;> simp [hm0, hM] at h`.
+Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hn with hn | hn` into its components or cases. Establish `h1` using `key i0 j0 b`. Rewrite `h1` using `[hn]`. Simplify using `using h1`. Establish `h1` using `neg_mem (key i0 j0 b)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h1` using `[hn]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `τ i j`. Simplify using `only [ins, Pi.neg_apply]`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem La_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
@@ -889,21 +877,19 @@ theorem La_lower {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E
       split_ifs <;> simp <;> ring
 
 /- English proof (translation)
-Take `⟨n, hn, hmem⟩` from `La_lower D L L' hA cc hcc δ`. Establish `hc : (δ * n : ℂ) ≠ 0` using `mul_ne_zero hδ (by exact_mod_cast hn)`. Establish `key : ∀ (i0 : Fin N') (j0 : Fin N) (w : D.what₂.Tau → ℂ), ins D i0 j0 w ∈ Submodule.span ℝ (La D (tor0 D cc δ) L L' : Set (VC D N N'))`. Introduce `i0 j0 w`. Set `Ψ : (D.what₂.Tau → ℂ) →ₗ[ℝ] VC D N N'` to `{ toFun := fun u => ins D i0 j0 (fun τ => δ * n * u τ) map_add' := fun u u' => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `τ i j`. Simplify using `only [ins, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> ring`. Use the proof step `map_smul' := fun c u => by`. Use function extensionality and compare the values at `τ i j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [ins, Pi.smul_apply, RingHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp [Complex.real_smul] <;> ring }`. Establish `h1 : Submodule.map Ψ (Submodule.span ℝ (Set.range fun b : 𝓞 D.host.E => embP D (b : D.host.E))) ≤ Submodule.span ℝ (La D (tor0 D cc δ) L L' : Set (VC D N N'))`. Rewrite using `[Submodule.map_span]`. Apply `Submodule.span_mono` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨b, rfl⟩, rfl⟩`. Conclude with `hmem i0 j0 b`. Establish `hw : (fun τ => (δ * n)⁻¹ * w τ) ∈ Submodule.span ℝ (Set.range fun b : 𝓞 D.host.E => embP D (b : D.host.E))`. Rewrite using `[span_embP D]`. Conclude with `Submodule.mem_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `h1 (Submodule.mem_map_of_mem hw)`. Establish `h3 : Ψ (fun τ => (δ * n)⁻¹ * w τ) = ins D i0 j0 w` using `by show ins D i0 j0 (fun τ => δ * n * ((δ * n)⁻¹ * w τ)) = ins D i0 j0 w`. Simplify using `only [mul_inv_cancel_left₀ hc]`. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `v _`. Establish `hv : v = ∑ i0, ∑ j0, ins D i0 j0 (fun τ => v τ i0 j0)`. Use function extensionality and compare the values at `τ i j`. Simplify using `only [Finset.sum_apply]`. Rewrite using `[Fintype.sum_eq_single i, Fintype.sum_eq_single j]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[ins]`. Introduce `j0 hj`. Simplify using `[ins, Ne.symm hj]`. Introduce `i0 hi`. Conclude with `Finset.sum_eq_zero fun j0 _ => by simp [ins, Ne.symm hi]`.
-
-Rewrite using `[hv]`. Conclude with `Submodule.sum_mem _ fun i0 _ => Submodule.sum_mem _ fun j0 _ => key i0 j0 _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_La {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
@@ -955,7 +941,7 @@ theorem span_La {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)
   exact Submodule.sum_mem _ fun i0 _ => Submodule.sum_mem _ fun j0 _ => key i0 j0 _
 
 /- English proof (translation)
-Conclude with `⟨disc_of_finite _ (La_finite D L L' hA cc δ hδ), span_La D L L' hA cc hcc δ hδ⟩`.
+Supply the required witnesses or components.
 -/
 theorem fullLat {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (hA : admitted D N N' L L')
@@ -964,9 +950,9 @@ theorem fullLat {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)
   exact ⟨disc_of_finite _ (La_finite D L L' hA cc δ hδ), span_La D L L' hA cc hcc δ hδ⟩
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff]`. Use `show AddSubgroup.closure _ ≤ ⊥`. Rewrite using `[AddSubgroup.closure_le]`. Introduce and unpack `z ⟨w, hw, A, -, rfl⟩`. Take `⟨c, -, rfl⟩` from `lam_mem D cc 0 w hw`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem La_zero {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E))
     (L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)) (cc : Ideal (𝓞 D.host.K)) :
@@ -979,7 +965,7 @@ theorem La_zero {N N' : ℕ} (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)
   simp
 
 /- English proof (translation)
-The claim follows from `nullMeasurableSet_univ ae_covers := Filter.Eventually.of_forall fun _ => ⟨0, Set.mem_univ _⟩ aedisjoint := fun a b hab => absurd (Subtype.ext ((AddSubgroup.mem_bot.mp a.2).trans (AddSubgroup.mem_bot.mp b.2).symm)) hab`.
+A detailed English derivation is pending.
 -/
 theorem fd_bot {V : Type*} [AddGroup V] [MeasurableSpace V] (μ : Measure V) :
     IsAddFundamentalDomain (⊥ : AddSubgroup V) Set.univ μ where
@@ -995,9 +981,9 @@ namespace Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric MeasureTheory
 
 /- English proof (translation)
-Introduce `D cc hcc δ hδ N N' L L' hA G hG x`. Distinguish the cases in `h0 : δ = 0`. Substitute `h0` using the available equality. Establish `hc : Countable (La D (tor0 D cc 0) L L')`. Rewrite using `[FL.La_zero D L L' cc]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Function.Injective.countable (f := fun _ => (0 : ℕ)) fun a b _ => Subtype.ext ((AddSubgroup.mem_bot.1 a.2).trans (AddSubgroup.mem_bot.1 b.2).symm)`. Conclude with `normSq_U_of_fd (tor0 D cc 0) _ ⟨Set.univ, by rw [FL.La_zero D L L' cc]; exact FL.fd_bot _⟩ G hG x`. Conclude with `normSq_U_of_full (tor0 D cc δ) _ (FL.fullLat D L L' hA cc hcc δ h0) G hG x`.
+A detailed English derivation is pending.
 -/
 theorem theta_unitary_linkage : LinkThU := by
   intro D cc hcc δ hδ N N' L L' hA G hG x
@@ -1012,7 +998,7 @@ theorem theta_unitary_linkage : LinkThU := by
   · exact normSq_U_of_full (tor0 D cc δ) _ (FL.fullLat D L L' hA cc hcc δ h0) G hG x
 
 /- English proof (translation)
-Conclude with `LinkThUFam_of_ThU theta_unitary_linkage`.
+A detailed English derivation is pending.
 -/
 theorem theta_unitary_family_linkage : LinkThUFam := by
   exact LinkThUFam_of_ThU theta_unitary_linkage

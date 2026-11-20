@@ -19,13 +19,13 @@ def DiscreteSeriesLowestKType : Prop :=
       ∃ U : H ≃ₗᵢ[ℂ] H', ∀ g ∈ Formalism.MainNotions.S.UJset ε, ∀ v, U (σ g v) = σ' g (U v)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hT`. Use `⟨lowKSub ε lam σ, hT, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hle : S ≤ lowKSub ε lam σ` using `le_sSup (s := {S | IsKTypeOf ε σ (lowK ε lam) S}) hS`. Break down `hT.2.2.1 S hle hS.2.1 with h0 | h1` into its components or cases.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-It suffices to derive a contradiction. Take `⟨v, hv, hv0, -⟩` from `hS.2.2.2.1`. Rewrite `hv` using `[h0]`. Conclude with `hv0 ((Submodule.mem_bot ℂ).1 hv)`. Conclude with `h1`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨S, hS, huniq⟩`. Establish `hset : {S' : Submodule ℂ H | IsKTypeOf ε σ (lowK ε lam) S'} = {S}`. Use extensionality with `S'`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff]`. Conclude with `⟨huniq S', fun h => h ▸ hS⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hEq : lowKSub ε lam σ = S` using `by show sSup {S' : Submodule ℂ H | IsKTypeOf ε σ (lowK ε lam) S'} = S`. Rewrite using `[hset, sSup_singleton]`. Rewrite using `[hEq]`. Conclude with `hS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isKTypeOf_lowKSub_iff {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} :
@@ -52,9 +52,9 @@ theorem isKTypeOf_lowKSub_iff {n : ℕ} {ε : Fin n → Bool} {lam : Fin n → �
     exact hS
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, fun n ε lam hp => (h n ε lam hp).2⟩` and prove the remaining obligations. Introduce `n ε lam H _ _ σ hp hds S S' hS hS'`. Conclude with `(isKTypeOf_lowKSub_iff.1 ((h n ε lam hp).1 H σ hds)).unique hS hS'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hm, hu⟩ n ε lam hp`. Use `⟨fun H _ _ σ hds => ?_, hu n ε lam hp⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hds.2.2.2.2.2.1`. Conclude with `isKTypeOf_lowKSub_iff.2 ⟨S, hS, fun S' hS' => hm n ε lam H σ hp hds S' S hS' hS⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem discreteSeriesLowestKType_iff :
     DiscreteSeriesLowestKType ↔ GlobalTheory.Dec.LowKMultOne ∧ DiscreteSeriesUpqUnique := by

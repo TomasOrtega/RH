@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc.Ind
 
 /- English proof (translation)
-Introduce `𝒜 σ hS hP`. Use `Formalism.MainNotions.Pk.Closed.of_class fun Fm CH hw _ _ => ⟨0, le_refl _, fun C _ => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `GlobalTheory.four_f_r_le_min_g_family _ Fm`. Use `⟨x0, fun x hx hx0' i => ?_⟩` and prove the remaining obligations. Establish `hA` using `hx0 x hx0' hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs` using `hS Fm (w3_a hw) x hx i`. Establish `hp` using `hP Fm (w3_a hw) x hx i`. Use `⟨fun w hw1 => ((σ Fm (w3_a hw) x hx i).muDef C CH).2.2.2 w |>.2 hw1, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.indefinite_scale_theta_limit _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ hs`. Conclude with `GlobalTheory.T.indefinite_scale_theta_degree _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (Fm.D x i).tcLL hA (σ Fm (w3_a hw) x hx i).ok1 hp.1 C CH`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem small_along : ∀ (𝒜 : FamClass) (σ : RawSel Part 𝒜), AtAll PSeeEx 𝒜 σ → AtAll PPA 𝒜 σ → EvWC (fun _ => True) Small 𝒜 σ := by
   intro 𝒜 σ hS hP

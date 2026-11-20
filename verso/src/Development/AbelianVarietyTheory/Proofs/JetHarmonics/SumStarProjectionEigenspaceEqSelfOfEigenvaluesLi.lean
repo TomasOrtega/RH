@@ -7,31 +7,29 @@ open Module
 open Module in
 
 /- English proof (translation)
-Introduce `Y _ _ _ V _ _ t m s Om ev K q y v l hm hOm hspec hK hq hKy`. Use `set P : Fin t → Y → Y := fun j x => (Module.End.eigenspace Om (m j + s)).starProjection x with hP`. Use `set c : Fin t → ℂ → ℂ := fun j u => ∏ k ∈ Finset.univ.erase j, (u + m k) with hc`. Establish `key : ∀ x : Y, ∀ u : ℂ, (∏ k, (u + m k)) • K u x = (∏ k, (u + m k)) • ∑ j, c j u • ev (P j x)`. Introduce `x u`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x ∈ ⨆ μ, Module.End.eigenspace Om μ`. Rewrite using `[Submodule.orthogonal_eq_bot_iff.mp hOm.orthogonalComplement_iSup_eigenspaces_eq_bot]`. Conclude with `Submodule.mem_top`. Use `Submodule.iSup_induction (fun μ => Module.End.eigenspace Om μ) (motive := fun x => (∏ k, (u + m k)) • K u x = (∏ k, (u + m k)) • ∑ j, c j u • ev (P j x)) hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `μ x hxμ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx0 : x = 0`. Substitute `hx0` using the available equality. Simplify using `[hP]`. Establish `hOmx : Om x = μ • x` using `Module.End.mem_eigenspace_iff.mp hxμ`. Take `⟨i, rfl⟩` from `hspec μ x hx0 hOmx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `hPx : ∀ j, P j x = if j = i then x else 0`. Introduce `j`. Use `split_ifs with hji`. Substitute `hji` using the available equality. Conclude with `Submodule.starProjection_eq_self_iff.mpr hxμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : m j + s ≠ m i + s` using `fun h => hji (hm (add_right_cancel h))`. Establish `hortho` using `hOm.orthogonalFamily_eigenspaces.isOrtho hne`. Conclude with `(Submodule.starProjection_apply_eq_zero_iff _).mpr (hortho.symm hxμ)`. Establish `hsum : ∑ j, c j u • ev (P j x) = c i u • ev x`. Rewrite using `[Finset.sum_eq_single i (fun j _ hji => by rw [hPx, if_neg hji, map_zero, smul_zero]) (by simp), hPx, if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hKx : (u + m i) • K u x = (∏ k, (u + m k)) • ev x`. Rewrite using `[← hK u x, hOmx, ← map_smul]`. Use `congr 1`. Rewrite using `[← add_smul]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hprod : ∏ k, (u + m k) = c i u * (u + m i)`. Simplify using `only [hc]`. Conclude with `(Finset.prod_erase_mul _ _ (Finset.mem_univ i)).symm`. Rewrite using `[hsum, smul_comm (∏ k, (u + m k)) (c i u), ← hKx, hprod, mul_smul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hP]`. Introduce `x₁ x₂ h₁ h₂`. Simplify using `only [hP] at h₁ h₂ ⊢`. Simplify using `only [map_add, smul_add, Finset.sum_add_distrib, h₁, h₂]`. Establish `hgen : ∀ u, ∏ k, (u + m k) ≠ 0 → q u • v = ∑ j, c j u • ev (P j y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu`. Rewrite using `[← hKy]`. Conclude with `smul_right_injective V hu (key y u)`. Establish `hdense : Dense {u : ℂ | ∏ k, (u + m k) ≠ 0}`. Establish `hfin : {u : ℂ | ∏ k, (u + m k) = 0}.Countable`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `Set.Finite.countable` to reduce the goal to its premises. Apply `(Set.finite_range (fun k => -m k)).subset` to reduce the goal to its premises. Introduce `u hu`. Simplify using `only [Set.mem_setOf_eq, Finset.prod_eq_zero_iff, Finset.mem_univ, true_and] at hu`. Take `⟨k, hk⟩` from `hu`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨k, by linear_combination -hk⟩`. Simplify `hfin.dense_compl ℝ` using `[Set.compl_setOf]`. Establish `hcont : Continuous fun u => ∑ j, c j u • ev (P j y)`. Simplify using `only [hc]`. Use `fun_prop`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hf : Continuous fun u => q u • v` using `hq.smul continuous_const`. Establish `hl` using `congrFun (Continuous.ext_on hdense hf hcont hgen) (-m l)`. Rewrite using `[Finset.sum_eq_single l (fun j _ hjl => by`. Simplify using `only [hc]`. Rewrite `hl` using `[Finset.prod_eq_zero (i := l) (Finset.mem_erase.mpr ⟨Ne.symm hjl, Finset.mem_univ l⟩) (by ring), zero_smul]) (by simp)]`.
-
-Establish `hcl : c l (-m l) = ∏ j ∈ Finset.univ.erase l, (m j - m l)` using `Finset.prod_congr rfl (fun k _ => by ring)`. Establish `hD : ∏ j ∈ Finset.univ.erase l, (m j - m l) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun j hj => sub_ne_zero.mpr (hm.ne (Finset.ne_of_mem_erase hj)))`. Rewrite `hl` using `[hcl]`. Express the relevant statement in the definitionally equal form `ev (P l y) = _`. Rewrite using `[div_eq_inv_mul, mul_smul, hl, smul_smul, inv_mul_cancel₀ hD, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ev_starProjection_eigenspace_eq_residue :
     ∀ (Y : Type) [NormedAddCommGroup Y] [InnerProductSpace ℂ Y] [FiniteDimensional ℂ Y] (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (t : ℕ) (m : Fin t → ℂ) (s : ℂ) (Om : Module.End ℂ Y) (ev : Y →ₗ[ℂ] V) (K : ℂ → (Y →ₗ[ℂ] V)) (q : ℂ → ℂ) (y : Y) (v : V) (l : Fin t), Function.Injective m → Om.IsSymmetric → (∀ (lam : ℂ) (x : Y), x ≠ 0 → Om x = lam • x → ∃ j, lam = m j + s) → (∀ (u : ℂ) (x : Y), K u ((u - s) • x + Om x) = (∏ j, (u + m j)) • ev x) → Continuous q → (∀ u, K u y = q u • v) → ev ((Module.End.eigenspace Om (m l + s)).starProjection y) = (q (-m l) / ∏ j ∈ Finset.univ.erase l, (m j - m l)) • v := by

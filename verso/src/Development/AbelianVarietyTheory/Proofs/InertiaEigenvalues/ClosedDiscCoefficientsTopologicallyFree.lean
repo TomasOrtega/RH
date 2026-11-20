@@ -11,17 +11,17 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk A _ s ι TB ρ h0 h1 j hj`. Take `⟨cD, hc1, hc2, hc3⟩` from `GlobalTheory.T.exists_topologicalBasis_coeff_disc_extension l K bk A s ι TB ρ h0 h1 j hj`. Establish `hs` using `GlobalTheory.T.closedDisc_topologicalBasis_expansion l K bk A s ι TB ρ h0 h1 j hj cD ⟨hc1, hc2, hc3⟩`. Use `haveI : IsUltrametricDist (Disc l (s X) ρ) := (GlobalTheory.T.closedDiscGaugeCompletion_basic_properties l A (s X) ρ).1`. Establish `hb : ∀ (x : bk.DS ρ) (i : ι), ‖j x * toDisc l (s X) ρ (TB.b i)‖ ≤ ‖x‖` using `fun x i => (norm_mul_le _ _).trans ((mul_le_mul (hj.norm_le x) (norm_toDisc_le _) (norm_nonneg _) (norm_nonneg _)).trans (mul_one _).le)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ∀ i, Continuous (cD i)` using `fun i => AddMonoidHomClass.continuous_of_bound _ 1 fun y => (hc3 i y).trans (one_mul _).ge`. Use `⟨cD, hc1, hc2, hc3, fun y => (hs y).1, fun y => (hs y).2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `y r hr h`. Rewrite using `[← (hs y).2.tsum_eq]`. Conclude with `IsUltrametricDist.norm_tsum_le_of_forall_le_of_nonneg hr fun i => (hb _ i).trans (h i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Establish `ht : Filter.Tendsto (fun i => j (z i) * toDisc l (s X) ρ (TB.b i)) Filter.cofinite (nhds 0)` using `squeeze_zero_norm (fun i => hb (z i) i) (tendsto_zero_iff_norm_tendsto_zero.1 hz)`. Establish `hsum` using `NonarchimedeanAddGroup.summable_of_tendsto_cofinite_zero ht`. Use `⟨_, fun i => ((hsum.hasSum.map (cD i) (hcont i)).unique ?_)⟩` and prove the remaining obligations. Establish `e : ((cD i) ∘ fun i => j (z i) * toDisc l (s X) ρ (TB.b i)) = fun i' => if i' = i then z i else 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i'`. Simplify using `only [Function.comp]`. Rewrite using `[hc2, hc1]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TB.c_self, map_one, mul_one]`. Rewrite using `[TB.c_ne _ _ (Ne.symm h), map_zero, mul_zero]`. Rewrite using `[e]`. Conclude with `hasSum_ite_eq i (z i)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `le_antisymm (hj.norm_le x) ?_` and prove the remaining obligations. Establish `e : cD TB.i₀ (j x * toDisc l (s X) ρ (TB.b TB.i₀)) = x`. Rewrite using `[hc2, hc1, TB.c_self, map_one, mul_one]`. Establish `h` using `hc3 TB.i₀ (j x * toDisc l (s X) ρ (TB.b TB.i₀))`. Rewrite `h` using `[e, TB.b_i₀, map_one, mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem disc_coefficients : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (A : Type) [CommRing A] (s : bk.S →+* A) (ι : Type) (TB : TopBasis s bk.J ι) (ρ : ℝ≥0), 0 < ρ → ρ < 1 → ∀ j : bk.DS ρ →+* Disc l (s X) ρ, IsDiscMap s j → ∃ cD : ι → (Disc l (s X) ρ →+ bk.DS ρ), (∀ i a, cD i (toDisc l (s X) ρ a) = toDisc l (X : bk.S) ρ (TB.c i a)) ∧ (∀ i x y, cD i (j x * y) = x * cD i y) ∧ (∀ i y, ‖cD i y‖ ≤ ‖y‖) ∧ (∀ y, Filter.Tendsto (fun i => cD i y) Filter.cofinite (nhds 0)) ∧ (∀ y, HasSum (fun i => j (cD i y) * toDisc l (s X) ρ (TB.b i)) y) ∧ (∀ y (r : ℝ), 0 ≤ r → (∀ i, ‖cD i y‖ ≤ r) → ‖y‖ ≤ r) ∧ (∀ z : ι → bk.DS ρ, Filter.Tendsto z Filter.cofinite (nhds 0) → ∃ y, ∀ i, cD i y = z i) ∧ ∀ x, ‖j x‖ = ‖x‖ := by
   intro l _ K bk A _ s ι TB ρ h0 h1 j hj

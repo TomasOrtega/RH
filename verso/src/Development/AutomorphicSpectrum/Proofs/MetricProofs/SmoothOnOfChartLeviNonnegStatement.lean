@@ -8,7 +8,7 @@ open MeasureTheory Metric Filter Topology ReciprocityTheory.AnForm ReciprocityTh
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Metric.PshBack.smoothOn_isPshOn_chartBack` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FMetricProofs%2FSmoothOnOfChartLeviNonneg.lean&line=10#L10)
 -/

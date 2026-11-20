@@ -13,9 +13,9 @@ def psum {N : ℕ} (ν : Fin N → ℤ) (j : ℕ) : ℤ :=
 def pot {N : ℕ} (ν : Fin N → ℤ) : ℤ := ∑ j ∈ Finset.range (N + 1), psum ν j
 
 /- English proof (translation)
-Unfold `psum`. Establish `: Finset.univ.filter (fun j : Fin N => (j : ℕ) < i + 1) = insert i (Finset.univ.filter (fun j : Fin N => (j : ℕ) < i))`. Use extensionality with `j`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[this, Finset.sum_insert (by simp), add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psum_succ {N : ℕ} (ν : Fin N → ℤ) (i : Fin N) : psum ν (i + 1) = psum ν i + ν i := by
   unfold psum
@@ -27,11 +27,9 @@ theorem psum_succ {N : ℕ} (ν : Fin N → ℤ) (i : Fin N) : psum ν (i + 1) =
   rw [this, Finset.sum_insert (by simp), add_comm]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, μ i ≠ ν i := by`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Conclude with `hne (funext h')`. Establish `hiN` using `i.isLt`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `: ∃ j ∈ Finset.range (N + 1), psum μ j < psum ν j`. Assume the negation of the conclusion as `h'`. Use `push_neg at h'`. Establish `e1 : psum μ i = psum ν i` using `le_antisymm (h _) (h' _ (Finset.mem_range.2 (by omega)))`. Establish `e2 : psum μ (i + 1) = psum ν (i + 1)` using `le_antisymm (h _) (h' _ (Finset.mem_range.2 (by omega)))`.
-
-Rewrite `e2` using `[psum_succ, psum_succ, e1]`. Conclude with `hi (by linarith)`. Take `⟨j, hj, hlt⟩` from `this`. Conclude with `Finset.sum_lt_sum (fun j _ => h j) ⟨j, hj, hlt⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pot_lt {N : ℕ} {μ ν : Fin N → ℤ} (h : ∀ j, psum μ j ≤ psum ν j) (hne : μ ≠ ν) : pot μ < pot ν := by
   obtain ⟨i, hi⟩ : ∃ i, μ i ≠ ν i := by
@@ -47,15 +45,15 @@ theorem pot_lt {N : ℕ} {μ ν : Fin N → ℤ} (h : ∀ j, psum μ j ≤ psum 
   exact Finset.sum_lt_sum (fun j _ => h j) ⟨j, hj, hlt⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun i _ => h i`.
+A detailed English derivation is pending.
 -/
 theorem pot_nonneg {N : ℕ} {ν : Fin N → ℤ} (h : ∀ i, 0 ≤ ν i) : 0 ≤ pot ν :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun i _ => h i
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card`. Consider the case `exact _root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card`. Consider the case `(apply _root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pos_iff_lt {N : ℕ} {e : Fin N → ℤ} (ha : Antitone e) (i : Fin N) :
     0 < e i ↔ (i : ℕ) < (Finset.univ.filter fun j => 0 < e j).card := by
@@ -68,11 +66,11 @@ theorem pos_iff_lt {N : ℕ} {e : Fin N → ℤ} (ha : Antitone e) (i : Fin N) :
   | (intros; exact _root_.GlobalTheory.PositiveIffLtCard.pos_iff_lt_card ..)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `sν` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun j : Fin N => (j : ℕ) < i) ν`. Establish `se` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun j : Fin N => (j : ℕ) < i) e`. Establish `tν : ∑ j ∈ Finset.univ.filter (fun j : Fin N => ¬ (j : ℕ) < i), ν j < 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_neg (fun j hj => ?_) ⟨i, by simp⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, not_lt] at hj`. Conclude with `lt_of_le_of_lt (hν (Fin.le_def.2 hj)) hneg`. Establish `te : 0 ≤ ∑ j ∈ Finset.univ.filter (fun j : Fin N => ¬ (j : ℕ) < i), e j` using `Finset.sum_nonneg fun j _ => he j`. Use `hle i` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `psum at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem nonneg_of_dom {N : ℕ} {ν e : Fin N → ℤ} (hν : Antitone ν) (he : ∀ i, 0 ≤ e i)
     (hle : ∀ j, psum ν j ≤ psum e j) (hsum : ∑ i, ν i = ∑ i, e i) (i : Fin N) : 0 ≤ ν i := by
@@ -93,7 +91,7 @@ theorem nonneg_of_dom {N : ℕ} {ν e : Fin N → ℤ} (hν : Antitone ν) (he :
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, val_torusElt, val_torusElt, val_torusElt, diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[zpow_add₀ (Units.ne_zero ϖ)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem torusElt_add' {N : ℕ} (ϖ : kˣ) (a b : Fin N → ℤ) :
     torusElt k (Fin N) ϖ (a + b) = torusElt k (Fin N) ϖ a * torusElt k (Fin N) ϖ b := by
@@ -102,14 +100,14 @@ theorem torusElt_add' {N : ℕ} (ϖ : kˣ) (a b : Fin N → ℤ) :
   congr 1; funext i; simp [zpow_add₀ (Units.ne_zero ϖ)]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_torusElt]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem torusElt_zero' {N : ℕ} (ϖ : kˣ) : torusElt k (Fin N) ϖ (fun _ => 0) = 1 := by
   apply Units.ext
   rw [val_torusElt]; simp
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, val_torusElt]`. Use extensionality with `i j`. Simplify using `[Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem torusElt_one_comm {N : ℕ} (ϖ : kˣ) (g : GL (Fin N) k) :
     g * torusElt k (Fin N) ϖ (fun _ => 1) = torusElt k (Fin N) ϖ (fun _ => 1) * g := by
@@ -118,15 +116,15 @@ theorem torusElt_one_comm {N : ℕ} (ϖ : kˣ) (g : GL (Fin N) k) :
   ext i j; simp [Matrix.diagonal_mul, Matrix.mul_diagonal, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `j generalizing m with`. Consider the case `zero => simpa [torusElt_zero'] using hm`. Consider the case `succ j ih`. Apply `ih` to reduce the goal to its premises. Establish `hz : indic (Finset.univ : Finset (Fin N)) = fun _ => 1` using `funext fun i => by simp [indic]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `hex (torusElt k (Fin N) ϖ (indic Finset.univ))`. Use `set z := torusElt k (Fin N) ϖ (fun _ => 1) with hzdef`. Use `set m' := m * torusElt k (Fin N) ϖ (fun _ => (j : ℤ))`. Establish `hsplit : torusElt k (Fin N) ϖ (fun _ => ((j + 1 : ℕ) : ℤ)) = torusElt k (Fin N) ϖ (fun _ => (j : ℤ)) * z`. Rewrite using `[hzdef, ← torusElt_add']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hm' : h (m' * z) = 0` using `by rw [← hm, hsplit, mul_assoc]`. Establish `key` using `hT Finset.univ R hR m'`. Establish `hterm : ∀ g ∈ R, h (m' * g) = 0`. Introduce `g hg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨κ, hκ, κ', hκ', rfl⟩` from `hR.1 g hg`. Rewrite `*` using `[hz]`. Establish `e : m' * (κ * z * κ') = (m' * z) * (κ * κ')`. Rewrite using `[torusElt_one_comm]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, (hK _ (mul_mem hκ hκ') _).2, hm']`. Rewrite `key` using `[Finset.sum_eq_zero hterm, Finset.card_univ, Fintype.card_fin]`. Conclude with `(mul_eq_zero.1 key.symm).resolve_left hc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vanish_of_shift {N : ℕ} {ϖ : kˣ} {c : ℕ → ℂ} (hc : c N ≠ 0) {h : GL (Fin N) k → ℂ}
     (hK : ∀ κ ∈ KO k (Fin N), ∀ m, h (κ * m) = h m ∧ h (m * κ) = h m)
@@ -157,45 +155,41 @@ theorem vanish_of_shift {N : ℕ} {ϖ : kˣ} {c : ℕ → ℂ} (hc : c N ≠ 0) 
     exact (mul_eq_zero.1 key.symm).resolve_left hc
 
 /- English proof (translation)
-Introduce `n`. Use `Nat.strong_induction_on n ?_` and prove the remaining obligations. Introduce `n ih e ha he hpot`. Establish `IH : ∀ ν : Fin N → ℤ, Antitone ν → (∀ i, 0 ≤ ν i) → pot ν < pot e → h (torusElt k (Fin N) ϖ ν) = 0`. Introduce `ν hν hν0 hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `pot_nonneg hν0`. Conclude with `ih (pot ν).toNat (by omega) ν hν hν0 (by omega)`. Distinguish the cases in `hzero : ∀ i, e i = 0`. Establish `: e = fun _ => 0` using `funext hzero`. Rewrite using `[this, torusElt_zero', h1]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push_neg at hzero`. Take `⟨i₀, hi₀⟩` from `hzero`. Establish `hi₀pos : 0 < e i₀` using `lt_of_le_of_ne (he i₀) (Ne.symm hi₀)`. Take `⟨n₀, hn₀⟩ : ∃ n₀, n₀ = (Finset.univ.filter fun j => 0 < e j).card` from `⟨_, rfl⟩`. Establish `key : ∀ i, 0 < e i ↔ (i : ℕ) < n₀` using `fun i => hn₀ ▸ pos_iff_lt ha i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hn₀N : n₀ ≤ N` using `by rw [hn₀]; exact (Finset.card_le_univ _).trans (by simp)`. Take `⟨s, hs⟩ : ∃ s : Finset (Fin N), s = Finset.univ.filter fun i : Fin N => (i : ℕ) < n₀` from `⟨_, rfl⟩`. Establish `hind : ∀ i, indic s i = if 0 < e i then 1 else 0`. Introduce `i`. Simplify using `only [indic, hs, Finset.mem_filter, Finset.mem_univ, true_and, ← key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hscard : s.card = n₀`. Rewrite using `[hn₀]`. Use `congr 1`. Rewrite using `[hs]`. Use extensionality with `i`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[key]`. Use `set μ : Fin N → ℤ := fun i => e i - indic s i with hμdef`. Establish `hμe : ∀ i, μ i + indic s i = e i` using `fun i => by simp [hμdef]`. Establish `hμa : Antitone μ`. Introduce `i j hij`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ha hij` as an intermediate fact. Establish `hi` using `he i`. Establish `hj` using `he j`. Simplify using `only [hμdef, hind]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hμ0 : ∀ i, 0 ≤ μ i`. Apply the tactic sequence `intro i; have := he i; simp only [hμdef, hind]; split_ifs <;> omega`. Establish `hμlt : pot μ < pot e`. Apply `pot_lt` to reduce the goal to its premises. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `psum`. Apply the tactic sequence `exact Finset.sum_le_sum fun i _ => by simp only [hμdef, hind]; split_ifs <;> omega`. Introduce `hh`. Use `congrFun hh i₀` as an intermediate fact. Simplify using `only [hμdef, hind, if_pos hi₀pos] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hμv` using `IH μ hμa hμ0 hμlt`. Establish `hTe : torusElt k (Fin N) ϖ e = torusElt k (Fin N) ϖ μ * torusElt k (Fin N) ϖ (indic s)`. Rewrite using `[← torusElt_add']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `(hμe i).symm`. Establish `hsumind : ∑ i, indic s i = (n₀ : ℤ)`. Rewrite using `[← hscard]`. Simplify using `[indic]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨R, hR⟩` from `hex (torusElt k (Fin N) ϖ (indic s))`. Establish `hsum` using `hT s R hR (torusElt k (Fin N) ϖ μ)`. Rewrite `hsum` using `[hμv, mul_zero]`. Establish `hterm : ∀ g ∈ R, h (torusElt k (Fin N) ϖ μ * g) = 0 ∨ h (torusElt k (Fin N) ϖ μ * g) = h (torusElt k (Fin N) ϖ e)`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, κ1, hκ1, κ2, hκ2, hx⟩` from `hcart (torusElt k (Fin N) ϖ μ * g)`. Establish `hval : h (torusElt k (Fin N) ϖ μ * g) = h (torusElt k (Fin N) ϖ ν)`. Rewrite using `[hx, mul_assoc, (hK κ1 hκ1 _).1, (hK κ2 hκ2 _).2]`. Take `⟨κ, hκ, κ', hκ', hgeq⟩` from `hR.1 g hg`. Establish `hd` using `hdom μ ν hμa hν n₀ hn₀N g ⟨κ, hκ, κ', hκ', by rw [← hs]; exact hgeq⟩ ⟨κ1, hκ1, κ2, hκ2, hx⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [← hs] at hd`. Take `⟨hd1, hd2⟩` from `hd`. Establish `hle : ∀ j, psum ν j ≤ psum e j`. Introduce `j`. Use `hd2 j` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hμe] at this`. Conclude with `this`. Establish `hsumeq : ∑ i, ν i = ∑ i, e i`. Rewrite using `[hd1, ← hsumind, ← Finset.sum_add_distrib]`. Simplify using `only [hμe]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hν0` using `nonneg_of_dom hν he hle hsumeq`. Distinguish the cases in `hνe : ν = e`. Use `right`. Rewrite using `[hval, hνe]`. Use `left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hval]`. Conclude with `IH ν hν hν0 (pot_lt hle hνe)`. Take `⟨g₁, ⟨hg₁R, hg₁K⟩, -⟩` from `hR.2 1 (one_mem _)`. Establish `hg₁ : h (torusElt k (Fin N) ϖ μ * g₁) = h (torusElt k (Fin N) ϖ e)`. Establish `e1 : torusElt k (Fin N) ϖ μ * g₁ = torusElt k (Fin N) ϖ e * (g₁⁻¹ * (1 * torusElt k (Fin N) ϖ (indic s)))⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hTe]`. Use `group`. Rewrite using `[e1, (hK _ (inv_mem hg₁K) _).2]`. Assume the negation of the conclusion as `hx`. Establish `hite : ∀ g ∈ R, h (torusElt k (Fin N) ϖ μ * g) = if h (torusElt k (Fin N) ϖ μ * g) = h (torusElt k (Fin N) ϖ e) then h (torusElt k (Fin N) ϖ e) else 0`.
-
-Introduce `g hg`. Break down `hterm g hg with h0 | h0` into its components or cases. Rewrite using `[h0, if_neg (Ne.symm hx)]`. Rewrite using `[if_pos h0]`. Conclude with `h0`.
-
-Rewrite `hsum` using `[Finset.sum_congr rfl hite, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`. Establish `hcard : (R.filter fun g => h (torusElt k (Fin N) ϖ μ * g) = h (torusElt k (Fin N) ϖ e)).card ≠ 0` using `Finset.card_ne_zero.2 ⟨g₁, Finset.mem_filter.2 ⟨hg₁R, hg₁⟩⟩`. Break down `mul_eq_zero.1 hsum with hc0 | hc0` into its components or cases. Conclude with `hcard (by exact_mod_cast hc0)`. Conclude with `hx hc0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem vanish_dominant {N : ℕ} {ϖ : kˣ} {c : ℕ → ℂ} {h : GL (Fin N) k → ℂ}
     (hcart : ∀ x : GL (Fin N) k, ∃ ν : Fin N → ℤ, Antitone ν ∧ ∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N),
@@ -297,13 +291,13 @@ theorem vanish_dominant {N : ℕ} {ϖ : kˣ} {c : ℕ → ℂ} {h : GL (Fin N) k
   · exact hx hc0
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N ϖ c hc hcart hdom hex h hK hT h1 m`. Take `⟨ν, hν, κ, hκ, κ', hκ', rfl⟩` from `hcart m`. Rewrite using `[mul_assoc, (hK κ hκ _).1, (hK κ' hκ' _).2]`. Use `set j : ℕ := (∑ i, |ν i|).toNat with hj`. Apply `vanish_of_shift hc hK hT hex j` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← torusElt_add']`. Use `vanish_dominant hcart hdom hex hK hT h1 (pot (ν + fun _ => (j : ℤ))).toNat (ν + fun _ => (j : ℤ)) ?_ ?_ (Int.self_le_toNat _)` and prove the remaining obligations. Introduce `a b hab`. Simplify using `only [Pi.add_apply]`. Combine the linear relations using `[hν hab]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Simplify using `only [Pi.add_apply]`. Establish `h1' : |ν i| ≤ ∑ i, |ν i|` using `Finset.single_le_sum (f := fun i => |ν i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)`. Establish `h2` using `neg_abs_le (ν i)`. Establish `h3` using `Int.self_le_toNat (∑ i, |ν i|)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem zonal_vanish : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (ϖ : kˣ) (c : ℕ → ℂ), c N ≠ 0 → (∀ x : GL (Fin N) k, ∃ ν : Fin N → ℤ, Antitone ν ∧ ∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N), x = κ * torusElt k (Fin N) ϖ ν * κ') → (∀ (μ ν : Fin N → ℤ), Antitone μ → Antitone ν → ∀ n : ℕ, n ≤ N → ∀ g : GL (Fin N) k, (∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N), g = κ * torusElt k (Fin N) ϖ (indic (Finset.univ.filter fun i : Fin N => (i : ℕ) < n)) * κ') → (∃ κ ∈ KO k (Fin N), ∃ κ' ∈ KO k (Fin N), torusElt k (Fin N) ϖ μ * g = κ * torusElt k (Fin N) ϖ ν * κ') → ∑ i, ν i = ∑ i, μ i + n ∧ ∀ j : ℕ, ∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), ν i ≤ ∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), (μ i + indic (Finset.univ.filter fun i : Fin N => (i : ℕ) < n) i)) → (∀ g : GL (Fin N) k, ∃ R, IsRepsK g R) → ∀ h : GL (Fin N) k → ℂ, (∀ κ ∈ KO k (Fin N), ∀ m, h (κ * m) = h m ∧ h (m * κ) = h m) → (∀ (s : Finset (Fin N)) R, IsRepsK (torusElt k (Fin N) ϖ (indic s)) R → ∀ m, ∑ g ∈ R, h (m * g) = c s.card * h m) → h 1 = 0 → ∀ m, h m = 0 := by
   intro k _ _ _ _ N ϖ c hc hcart hdom hex h hK hT h1 m

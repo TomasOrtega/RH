@@ -12,7 +12,7 @@ namespace PositivityTheory.PrwZar.Qi
 variable {K H : Type} [Field K] [CommRing H] [Algebra K H]
 
 /- English proof (translation)
-Use `haveI : IsArtinianRing H := IsArtinianRing.of_finite K H`. Set `f : ℕ →o (Ideal H)ᵒᵈ` to `⟨fun n => OrderDual.toDual (I ^ n), fun _ _ hab => Ideal.pow_le_pow_right hab⟩`. Take `⟨n, hn⟩` from `IsArtinian.monotone_stabilizes f`. Conclude with `⟨n, fun j hj => congrArg OrderDual.ofDual (hn j hj).symm⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem qc_stable [FiniteDimensional K H] (I : Ideal H) : ∃ k : ℕ, ∀ j, k ≤ j → I ^ j = I ^ k := by
   haveI : IsArtinianRing H := IsArtinianRing.of_finite K H
@@ -21,17 +21,17 @@ theorem qc_stable [FiniteDimensional K H] (I : Ideal H) : ∃ k : ℕ, ∀ j, k 
   exact ⟨n, fun j hj => congrArg OrderDual.ofDual (hn j hj).symm⟩
 
 /- English proof (translation)
-Set `W : Submodule K H` to `Submodule.span K {(1 : H)} ⊔ (RingHom.ker ε ^ 2).restrictScalars K`. Establish `hxW : x ∉ W`. Introduce `h`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 h`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz2 : z ∈ RingHom.ker ε ^ 2` using `hz`. Establish `hz' : z ∈ RingHom.ker ε` using `Ideal.pow_le_self two_ne_zero hz2`. Establish `hc : c = 0`. Establish `h1 : ε x = 0` using `hx`. Establish `h2 : ε z = 0` using `hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hyz, map_add, map_smul, map_one, h2]`. Simplify using `using h1`. Substitute `hc` using the available equality. Apply `hx2` to reduce the goal to its premises. Rewrite using `[← hyz, zero_smul, zero_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz2`. Take `⟨f, hf, hfW⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem hxW inferInstance`. Establish `hW : ∀ w ∈ W, f w = 0` using `fun w hw => by`. Establish `: f w ∈ W.map f` using `Submodule.mem_map_of_mem hw`. Rewrite `this` using `[hfW]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `⟨(f x)⁻¹ • f, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hW 1 (Submodule.mem_sup_left (Submodule.mem_span_singleton_self _))]`. Introduce `y hy`. Simplify using `[hW y (Submodule.mem_sup_right hy)]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hf]`.
+A detailed English derivation is pending.
 -/
 theorem qc_functional (ε : H →ₐ[K] K) {x : H} (hx : x ∈ RingHom.ker ε) (hx2 : x ∉ RingHom.ker ε ^ 2) :
     ∃ l : H →ₗ[K] K, l 1 = 0 ∧ (∀ y ∈ RingHom.ker ε ^ 2, l y = 0) ∧ l x = 1 := by
@@ -63,9 +63,9 @@ theorem qc_functional (ε : H →ₐ[K] K) {x : H} (hx : x ∈ RingHom.ker ε) (
   · simp [hf]
 
 /- English proof (translation)
-Establish `ha : a - algebraMap K H (ε a) ∈ RingHom.ker ε` using `by simp [RingHom.mem_ker]`. Establish `hb : b - algebraMap K H (ε b) ∈ RingHom.ker ε` using `by simp [RingHom.mem_ker]`. Establish `hab : l ((a - algebraMap K H (ε a)) * (b - algebraMap K H (ε b))) = 0` using `h2 _ (by rw [pow_two]; exact Ideal.mul_mem_mul ha hb)`. Establish `e : a * b = (a - algebraMap K H (ε a)) * (b - algebraMap K H (ε b)) + ε a • b + ε b • a - (ε a * ε b) • (1 : H)`. Simplify using `only [Algebra.smul_def, map_mul, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, map_add, map_add, hab, map_smul, map_smul, map_smul, h1]`. Simplify using `only [smul_eq_mul, mul_zero, sub_zero, zero_add]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem qc_leib (ε : H →ₐ[K] K) (l : H →ₗ[K] K) (h1 : l 1 = 0) (h2 : ∀ y ∈ RingHom.ker ε ^ 2, l y = 0)
     (a b : H) : l (a * b) = ε a * l b + l a * ε b := by
@@ -82,41 +82,41 @@ theorem qc_leib (ε : H →ₐ[K] K) (l : H →ₗ[K] K) (h1 : l 1 = 0) (h2 : �
   ring
 
 /- English proof (translation)
-Introduce `x hx`. Assume the negation of the conclusion as `hx2`. Take `⟨l, hl1, hl2, hlx⟩` from `qc_functional ε hx hx2`. Set `Φ : H ⊗[K] H →ₗ[K] H` to `(TensorProduct.rid K H).toLinearMap ∘ₗ LinearMap.lTensor H l`. Set `mR : H ⊗[K] H →ₐ[K] H` to `(Algebra.TensorProduct.lmul' K).comp (Algebra.TensorProduct.map (AlgHom.id K H) ((Algebra.ofId K H).comp ε))`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `mL : H ⊗[K] H →ₐ[K] H` to `(Algebra.TensorProduct.lmul' K).comp (Algebra.TensorProduct.map ((Algebra.ofId K H).comp ε) (AlgHom.id K H))`. Establish `hΦ : ∀ s t : H ⊗[K] H, Φ (s * t) = mR s * Φ t + Φ s * mR t`. Introduce `s t`. Proceed by induction on `s using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul a₁ a₂`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul b₁ b₂`. Simplify using `only [Φ, mR, Algebra.TensorProduct.tmul_mul_tmul, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, Algebra.TensorProduct.lmul'_apply_tmul, Algebra.ofId_apply, qc_lei …`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add t₁ t₂ h₁ h₂ => simp only [mul_add, map_add, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add s₁ s₂ h₁ h₂ => simp only [add_mul, map_add, h₁, h₂]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hεΦ : ∀ t : H ⊗[K] H, ε (Φ t) = l (mL t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Φ, mL, LinearMap.comp_apply, LinearMap.lTensor_tmul, LinearEquiv.coe_coe, TensorProduct.rid_tmul, AlgHom.comp_apply, Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, Algebra.TensorProduct.lmul'_apply_tmul, Algebra.ofId_apply, map_smul, smul_eq_mul]`. Rewrite using `[← Algebra.smul_def, map_smul, smul_eq_mul, mul_comm]`. Consider the case `add s t h₁ h₂ => simp only [map_add, h₁, h₂]`. Establish `hRa : ∀ a, mR (Δ a) = a` using `fun a => DFunLike.congr_fun hR a`. Establish `hLa : ∀ a, mL (Δ a) = a` using `fun a => DFunLike.congr_fun hL a`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `D : H →ₗ[K] H` to `Φ ∘ₗ Δ.toLinearMap`. Establish `hD : ∀ a b, D (a * b) = a * D b + D a * b`. Introduce `a b`. Simplify using `only [D, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, hΦ, hRa]`. Establish `hεD : ∀ a, ε (D a) = l a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [D, LinearMap.comp_apply, AlgHom.toLinearMap_apply, hεΦ, hLa]`. Establish `hDpow : ∀ n : ℕ, D (x ^ (n + 1)) = ((n : H) + 1) * x ^ n * D x`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ, hD, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨k, hk⟩` from `qc_stable (K := K) (RingHom.ker ε)`. Establish `hJJ : RingHom.ker ε ^ (k + 2) * RingHom.ker ε ^ (k + 2) = RingHom.ker ε ^ (k + 2)`. Rewrite using `[← pow_add, hk (k + 2 + (k + 2)) (by omega), hk (k + 2) (by omega)]`. Establish `hDJ : ∀ y ∈ RingHom.ker ε ^ (k + 2), D y ∈ RingHom.ker ε ^ (k + 2)`. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hy` using `[← hJJ]`. Use `Submodule.mul_induction_on hy (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[hD]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_right _ _ ha) (Ideal.mul_mem_left _ _ hb)`. Rewrite using `[map_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.add_mem _ ha hb`. Establish `hJ2 : RingHom.ker ε ^ (k + 2) ≤ RingHom.ker ε ^ 2` using `Ideal.pow_le_pow_right (by omega)`. Establish `hJ1 : RingHom.ker ε ^ (k + 2) ≤ RingHom.ker ε` using `Ideal.pow_le_self (by omega)`. Establish `hex : ∃ n, x ^ n ∈ RingHom.ker ε ^ (k + 2)` using `⟨k + 2, Ideal.pow_mem_pow hx _⟩`. Establish `hN : x ^ Nat.find hex ∈ RingHom.ker ε ^ (k + 2)` using `Nat.find_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmin : ∀ m < Nat.find hex, x ^ m ∉ RingHom.ker ε ^ (k + 2)` using `fun m hm => Nat.find_min hex hm`. Establish `hN0 : Nat.find hex ≠ 0`. Introduce `h0`. Rewrite `hN` using `[h0, pow_zero]`. Establish `: ε 1 = 0` using `hJ1 hN`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `hN1 : Nat.find hex ≠ 1`. Introduce `h1`. Rewrite `hN` using `[h1, pow_one]`. Conclude with `hx2 (hJ2 hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨M, hM⟩ : ∃ M, Nat.find hex = M + 2` from `⟨Nat.find hex - 2, by omega⟩`. Establish `h1 : D (x ^ (M + 2)) ∈ RingHom.ker ε ^ (k + 2)` using `hDJ _ (hM ▸ hN)`. Rewrite `h1` using `[hDpow (M + 1)]`. Set `π` to `Ideal.Quotient.mk (RingHom.ker ε ^ (k + 2))`. Establish `hu1 : IsUnit (π ((((M + 1 : ℕ) : H)) + 1))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `e : π ((((M + 1 : ℕ) : H)) + 1) = algebraMap K (H ⧸ RingHom.ker ε ^ (k + 2)) ((M + 2 : ℕ) : K)`. Simplify using `only [map_add, map_natCast, map_one]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ (Nat.cast_ne_zero.2 (by omega))).map _`. Establish `hu2 : IsUnit (π (D x))`. Establish `hm : D x - 1 ∈ RingHom.ker ε`. Rewrite using `[RingHom.mem_ker, map_sub, hεD, hlx, map_one, sub_self]`. Establish `hnil : IsNilpotent (π (D x - 1))` using `⟨k + 2, by rw [← map_pow, Ideal.Quotient.eq_zero_iff_mem]; exact Ideal.pow_mem_pow hm _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hnil.isUnit_one_add` as an intermediate fact. Rewrite `this` using `[map_sub, map_one, add_sub_cancel]`. Then use the resulting hypothesis. Establish `h0 : π ((((M + 1 : ℕ) : H) + 1) * x ^ (M + 1) * D x) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 h1`. Rewrite `h0` using `[map_mul, map_mul, hu2.mul_left_eq_zero, hu1.mul_right_eq_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hmin (M + 1) (by omega) h0`.
+A detailed English derivation is pending.
 -/
 theorem aug_le_sq {K H : Type} [Field K] [CharZero K] [CommRing H] [Algebra K H] [FiniteDimensional K H]
     (Δ : H →ₐ[K] H ⊗[K] H) (ε : H →ₐ[K] K) (hL : CounitL Δ ε) (hR : CounitR Δ ε) :

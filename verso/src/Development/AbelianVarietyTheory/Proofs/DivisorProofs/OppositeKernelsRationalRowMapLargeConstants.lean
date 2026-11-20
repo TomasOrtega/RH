@@ -13,13 +13,13 @@ open Formalism.MainNotions.TaylorLogMetric Formalism.MainNotions.StandardLattice
 namespace GlobalTheory.KerConjMean
 
 /- English proof (translation)
-Use `⟨0, fun _ _ => ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D _ _ _ Γ _ _ Pl0 T A Ks _ _ _ R _ _ ch _ _ hK`. Introduce `Φ β d hd c i`. Take `⟨hβ, τ, hτ, hdτ⟩` from `hd`. Establish `hr` using `(hK.isRatAt hβ hτ hdτ c).2 i`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `GlobalTheory.RatTop.exists_linearMap_of_repr_mem_range D.what₂.embLL (GlobalTheory.CoefModel.mapVV D.what₂.embLL _) (GlobalTheory.CoefModel.mapVV D.what₂.embLL _) (bVV D.what₂.LL _) (bVV ℂ _) (bVV ℂ _) (fun k => ⟨_, (GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ …` and prove the remaining obligations. Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CoefModel.mapVV_coe, bVV_coe]`. Conclude with `((GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ k).choose_spec.2).symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CoefModel.mapVV_coe, bVV_coe]`. Conclude with `((GlobalTheory.Proof.TensorMapDescent.bVVfun_desc D.what₂.embLL _ k).choose_spec.2).symm`. Introduce `k l`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hr k l`. Rewrite `h` using `[Normal.kkIn, LinearMap.toMatrix_apply]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem ratRowAt_big : BigC fun _ ch _ _ => RatRowAt ch := by
   refine ⟨0, fun _ _ => ⟨0, fun _ _ _ => ⟨0, ?_⟩⟩⟩

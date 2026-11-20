@@ -15,7 +15,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨p, hp, ha, k, y, h⟩` from `(GlobalTheory.CompHt.exists_isHTFrameCp_and_nonempty E H Dw l Xo c).1 T io y₀ hy`. Conclude with `⟨_, p, hp, ha, k, y, h, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem htValAt_nonempty (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io)
     (hy : y₀.IsAlg) : (htValAt la y₀).Nonempty := by
@@ -23,7 +23,7 @@ theorem htValAt_nonempty (la : HeightOneSpectrum (𝓞 c.F)) {T : CDVR} {io : c.
   exact ⟨_, p, hp, ha, k, y, h, rfl⟩
 
 /- English proof (translation)
-Introduce `Z τ s la` and use `by obtain ⟨ρ, hρ⟩ := h₁ Z τ s la obtain ⟨κ, hκ⟩ := h₂ τ la refine ⟨ρ - κ, ?_⟩ rintro _ ⟨⟨q, T, io, e, ho, y, hy, η, hη, rfl⟩, rfl⟩ obtain ⟨w, hw⟩ := htValAt_nonempty la y hy.1 have h3 := (hρ w ⟨T, io, e, y, ho, hy, hw⟩).symm.trans (hκ T io e y ho hy.1 w hw _ s.sig_mem) show nval …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finConst_of {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (h₁ : HTConst U x) (h₂ : HTShift Xo c) :
     FinConst U x := fun Z τ s la => by
@@ -42,7 +42,7 @@ theorem finConst_of {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {x : ℝ} (h₁ 
     rw [EReal.coe_eq_coe_iff, h3]; ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x _ h₂ h₁`. Conclude with `finConst_of h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finConst_main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ),

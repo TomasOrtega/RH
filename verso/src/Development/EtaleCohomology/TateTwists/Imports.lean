@@ -2,7 +2,7 @@ import Development.EtaleCohomology.TateTwists.EtaleSemilinearCohomologyOperation
 import Development.EtaleCohomology.TateTwists.EtaleCohomologyEvaluationConnectingHom
 
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.etale_cohomology_operation_comp_of_image_spec (LateralTheory.EtaleFoundations.etale_semilinear_cohomology_operation_image_spec_of_hyp (by have h := LateralTheory.Fin.EtaleCochainSemilinearMapOnClasses.intersectionNumber_baseChange unfold LateralTheo …`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.Fix.EtaleCochainSemilinearMapCompCompatible.intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleCochainSemilinearMapCompCompatible :=
   LateralTheory.EtaleFoundations.etale_cohomology_operation_comp_of_image_spec

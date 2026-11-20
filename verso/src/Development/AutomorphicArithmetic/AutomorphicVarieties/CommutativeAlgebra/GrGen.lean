@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Establish `hfin : {m : σ →₀ ℕ | Minimal P m}.Finite` using `WellQuasiOrderedLE.finite_of_isAntichain (setOf_minimal_antichain _)`. Use `⟨hfin.toFinset, fun m hm => ((Set.Finite.mem_toFinset hfin).1 hm).1, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Take `⟨b, hb, hmin⟩` from `(Set.isPWO_of_wellQuasiOrderedLE {x | P x}).exists_le_minimal hn`. Conclude with `⟨b, (Set.Finite.mem_toFinset hfin).2 hmin, hb⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_fin_min {σ : Type} [Fintype σ] (P : (σ →₀ ℕ) → Prop) :
     ∃ T : Finset (σ →₀ ℕ), (∀ m ∈ T, P m) ∧ ∀ n, P n → ∃ m ∈ T, m ≤ n := by
@@ -16,19 +16,19 @@ private theorem exists_fin_min {σ : Type} [Fintype σ] (P : (σ →₀ ℕ) →
   exact ⟨b, (Set.Finite.mem_toFinset hfin).2 hmin, hb⟩
 
 /- English proof (translation)
-Take `⟨T, hTP, hT⟩` from `exists_fin_min (fun n => coeff n f ≠ 0)`. Use `choose! c hcT hcle using hT`. Take `⟨g, hg⟩ : ∃ g : (σ →₀ ℕ) → MvPowerSeries σ O, ∀ m k, coeff k (g m) = if coeff (k + m) f ≠ 0 ∧ c (k + m) = m then coeff (k + m) f else 0` from `⟨fun m k => if coeff (k + m) f ≠ 0 ∧ c (k + m) = m then coeff (k + m) f else 0, fun _ _ => rfl⟩`. Establish `hwt : ∀ n, coeff n f ≠ 0 → Finsupp.weight wt n = j`. Introduce `n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hn (hf n h)`. Use `⟨T, g, ?_, ?_⟩` and prove the remaining obligations. Introduce `m hmT k hk`. Rewrite using `[hg, if_neg]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨h1, h2⟩`. Apply `hk` to reduce the goal to its premises. Establish `hm : Finsupp.weight wt m = j` using `hwt m (hTP m hmT)`. Establish `hkm` using `hwt _ h1`. Rewrite `hkm` using `[map_add, hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components.
 
-Simplify using `using hkm`. Use extensionality with `n`. Rewrite using `[map_sum, Finset.sum_congr rfl (g := fun m => if c n = m then (if coeff n f ≠ 0 then coeff n f else 0) else 0), Finset.sum_ite_eq]`. Distinguish the cases in `hn : coeff n f ≠ 0`. Rewrite using `[if_pos (hcT n hn), if_pos hn]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_neg at hn`. Rewrite using `[hn]`. Simplify using the standard rewrite rules. Introduce `m _`. Rewrite using `[MvPowerSeries.coeff_monomial_mul, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Distinguish the cases in `hmn : m ≤ n`. Rewrite using `[if_pos hmn, hg, tsub_add_cancel_of_le hmn]`. Apply the tactic sequence `by_cases h1 : coeff n f ≠ 0 <;> by_cases h2 : c n = m <;> simp [h1, h2]`. Rewrite using `[if_neg hmn]`. Distinguish the cases in `h1 : coeff n f ≠ 0`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3 : c n ≠ m` using `fun h => hmn (h ▸ hcle n h1)`. Simplify using `[h3]`. Use `push_neg at h1`. Simplify using `[h1]`.
+A detailed English derivation is pending.
 -/
 private theorem exists_decomp {O σ X : Type} [CommRing O] [Fintype σ] [AddCommGroup X] (wt : σ → X) (j : X)
     (f : MvPowerSeries σ O) (hf : f ∈ wtPart O wt j) :
@@ -75,9 +75,9 @@ private theorem exists_decomp {O σ X : Type} [CommRing O] [Fintype σ] [AddComm
           simp [h1]
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset σ, ∏ i ∈ s, (MvPowerSeries.X i : MvPowerSeries σ O) ^ (m i) = monomial (∑ i ∈ s, Finsupp.single i (m i)) 1`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [MvPowerSeries.monomial_zero_one]`. Consider the case `insert a s ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, ih, MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]`. Rewrite using `[key, Finsupp.univ_sum_single]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem monomial_eq_prod {O σ : Type} [CommRing O] [Fintype σ] (m : σ →₀ ℕ) :
     (monomial m (1 : O) : MvPowerSeries σ O) = ∏ i, (MvPowerSeries.X i) ^ (m i) := by
@@ -93,17 +93,15 @@ private theorem monomial_eq_prod {O σ : Type} [CommRing O] [Fintype σ] (m : σ
   rw [key, Finsupp.univ_sum_single]
 
 /- English proof (translation)
-Introduce `O R _ _ _ X _ _ _ W`. Use `haveI := W.fin`. Rewrite using `[Algebra.eq_top_iff]`. Introduce and unpack `⟨x, hx⟩`. Use `Submodule.iSup_induction' (p := W.part) (motive := fun x h => (⟨x, h⟩ : W.A) ∈ Algebra.adjoin O ((W.gr 0 : Set W.A) ∪ Set.range W.zA)) ?_ ?_ ?_ hx` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j y hy`. Take `⟨f, hf, rfl⟩` from `Submodule.mem_map.1 hy`. Take `⟨T, g, hg, hfe⟩` from `exists_decomp W.wt j f hf`. Establish `hg' : ∀ m, (if m ∈ T then g m else 0) ∈ wtPart O W.wt 0`. Introduce `m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `split_ifs with h`. Conclude with `hg m h`. Conclude with `zero_mem _`. Set `e : (W.σ →₀ ℕ) → W.A` to `fun m => ⟨W.π (if m ∈ T then g m else 0), W.part_le_A (Submodule.mem_map_of_mem (hg' m))⟩`. Establish `he : ∀ m, e m ∈ W.gr 0` using `fun m => Submodule.mem_map_of_mem (hg' m)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hmem : (∑ m ∈ T, (∏ i, W.zA i ^ m i) * e m) ∈ Algebra.adjoin O ((W.gr 0 : Set W.A) ∪ Set.range W.zA)`. Use `Subalgebra.sum_mem _ fun m _ => Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Use `Subalgebra.prod_mem _ fun i _ => pow_mem ?_ _` and prove the remaining obligations. Conclude with `Algebra.subset_adjoin (Set.mem_union_right _ ⟨i, rfl⟩)`. Conclude with `Algebra.subset_adjoin (Set.mem_union_left _ (he m))`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hmem using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, SubmonoidClass.coe_finset_prod, SubmonoidClass.coe_pow, e, WPres.zA, WPres.z]`. Rewrite using `[AlgHom.toLinearMap_apply, hfe, map_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations.
-
-Rewrite using `[if_pos hm, map_mul, monomial_eq_prod, map_prod]`. Simplify using `only [map_pow]`. Conclude with `Subalgebra.zero_mem _`. Introduce `x y _ _ ihx ihy`. Conclude with `Subalgebra.add_mem _ ihx ihy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.gr_gen :
     ∀ (O R : Type) [CommRing O] [CommRing R] [Algebra O R] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (W : WPres O X R), Algebra.adjoin O ((W.gr 0 : Set W.A) ∪ Set.range W.zA) = ⊤ := by

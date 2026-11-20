@@ -11,21 +11,19 @@ def vcY {R : Type*} [CommRing R] (C : WeierstrassCurve.VariableChange R) (x y : 
   ↑C.u⁻¹ ^ 3 * (y - C.s * (x - C.r) - C.t)
 
 /- English proof (translation)
-Establish `hv : (↑C.u⁻¹ : F) ≠ 0` using `Units.ne_zero _`. Distinguish the cases in `hx : x₁ = x₂`. Substitute `hx` using the available equality. Establish `hy : y₁ ≠ W.toAffine.negY x₁ y₂` using `fun h => hxy ⟨rfl, h⟩`. Establish `hyy : y₁ = y₂` using `Affine.Y_eq_of_Y_ne h₁ h₂ rfl hy`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hyy` using the available equality. Establish `key : vcY C x₁ y₁ - (C • W).toAffine.negY (vcX C x₁) (vcY C x₁ y₁) = (↑C.u⁻¹ : F) ^ 3 * (y₁ - W.toAffine.negY x₁ y₁)`. Simplify using `only [vcX, vcY, Affine.negY, variableChange_a₁, variableChange_a₃]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd : y₁ - W.toAffine.negY x₁ y₁ ≠ 0` using `sub_ne_zero.mpr hy`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hd' : vcY C x₁ y₁ - (C • W).toAffine.negY (vcX C x₁) (vcY C x₁ y₁) ≠ 0`. Rewrite using `[key]`. Conclude with `mul_ne_zero (pow_ne_zero _ hv) hd`. Establish `hy' : vcY C x₁ y₁ ≠ (C • W).toAffine.negY (vcX C x₁) (vcY C x₁ y₁)` using `sub_ne_zero.mp hd'`. Rewrite using `[Affine.slope_of_Y_ne rfl hy, Affine.slope_of_Y_ne rfl hy', key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `num : 3 * vcX C x₁ ^ 2 + 2 * (C • W).toAffine.a₂ * vcX C x₁ + (C • W).toAffine.a₄ - (C • W).toAffine.a₁ * vcY C x₁ y₁ = (↑C.u⁻¹ : F) ^ 4 * ((3 * x₁ ^ 2 + 2 * W.toAffine.a₂ * x₁ + W.toAffine.a₄ - W.toAffine.a₁ * y₁) - C.s * (y₁ - W.toAffine.negY x₁ y₁))`. Simplify using `only [vcX, vcY, Affine.negY, variableChange_a₁, variableChange_a₂, variableChange_a₄]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[num]`. Use `set D := y₁ - W.toAffine.negY x₁ y₁`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `set N := 3 * x₁ ^ 2 + 2 * W.toAffine.a₂ * x₁ + W.toAffine.a₄ - W.toAffine.a₁ * y₁`. Clear the denominators using the available nonvanishing facts. Establish `hX : vcX C x₁ ≠ vcX C x₂`. Introduce `h`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [vcX] at h`. Use `mul_left_cancel₀ (pow_ne_zero 2 hv) h` as an intermediate fact. Conclude with `sub_left_injective this`. Rewrite using `[Affine.slope_of_X_ne hx, Affine.slope_of_X_ne hX]`. Establish `hd : x₁ - x₂ ≠ 0` using `sub_ne_zero.mpr hx`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hXd : vcX C x₁ - vcX C x₂ = (↑C.u⁻¹ : F) ^ 2 * (x₁ - x₂)`. Simplify using `only [vcX]`. Expand and normalize the polynomial expressions, which then agree. Establish `hYd : vcY C x₁ y₁ - vcY C x₂ y₂ = (↑C.u⁻¹ : F) ^ 3 * ((y₁ - y₂) - C.s * (x₁ - x₂))`. Simplify using `only [vcY]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hXd, hYd]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem slope_variableChange {F : Type*} [Field F] (C : WeierstrassCurve.VariableChange F)
     (W : WeierstrassCurve F) [DecidableEq F] {x₁ x₂ y₁ y₂ : F}

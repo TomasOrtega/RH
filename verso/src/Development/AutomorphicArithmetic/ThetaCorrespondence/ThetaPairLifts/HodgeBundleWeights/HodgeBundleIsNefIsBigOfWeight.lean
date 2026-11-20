@@ -16,37 +16,33 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 namespace GlobalTheory.HSApp
 /- English proof (translation)
-Introduce `hP hN hS hC hL E _ _ _ H Dw l Xo c TF Z r U P R ω x D V dict h f₁ f₂ th k hF hW`. Take `⟨hsm, hpr, hgc⟩` from `GlobalTheory.VarFlag.isVariety₀_flag E H Dw l Xo c TF Z hF`. Establish `hsm' : Smooth (str₀ TF.X Z)` using `SmoothOfRelativeDimension.smooth (dimFlag Dw) (str₀ TF.X Z)`. Use `haveI : IsIntegral (Y₀ TF.X Z) := isIntegral_of_smooth_of_geometricallyConnected (str₀ TF.X Z)`. Use `set la : AllWt.Weight Dw := P.u₂ + dimFlag Dw • P.u₁ with hla`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg₁` using `(GlobalTheory.HSApp.gaps_of_wtBig E H Dw P hW P.u₁ (by simp)).1`. Establish `hg₂` using `(GlobalTheory.HSApp.gaps_of_wtBig E H Dw P hW P.u₂ (by simp)).1`. Establish `hgla : GapGe 1 la`. Introduce `τ k hk`. Establish `a₁` using `hg₁ τ k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `a₂` using `hg₂ τ k hk`. Simplify using `only [hla, Pi.add_apply, Pi.smul_apply, gap_add, gap_nsmul]`. Use the polynomial consequences of the given equalities and inequalities. Use `letI := algebraΓOfHom (str₀ TF.X Z)`. Establish `hf₀ : ∀ r : c.F, algebraMap c.F Γ(Y₀ TF.X Z, ⊤) r = (str₀ TF.X Z).appTop ((Scheme.ΓSpecIso (.of c.F)).inv r)` using `fun _ => rfl`.
+Use the polynomial consequences of the given equalities and inequalities. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs₀ : strHom c.F (Y₀ TF.X Z) = str₀ TF.X Z` using `strHom_eq hf₀`. Establish `hp₀ : IsProjOver (strHom c.F (Y₀ TF.X Z))` using `hs₀ ▸ hpr`. Take `⟨hprop₀, H₀, hH₀⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hpr`. Establish `nef : ∀ w : AllWt.Weight Dw, GapGe 0 w → IsNef c.F (L₀ TF.X Z w)` using `fun w hw => _root_.GlobalTheory.T.base_weight_line_bundle_is_nef hP hN hL E H Dw l Xo c TF Z hF w hw`. Establish `nef₀ : IsNef c.F (L₀ TF.X Z la)` using `nef la (hgla.mono (by norm_num))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `big₀ : IsBig c.F (L₀ TF.X Z la)`. Choose the witnesses or unpack the hypotheses as in `⟨y₀⟩ : Nonempty (Y₀ TF.X Z) := by`. Take `⟨z⟩ : Nonempty (Sp c.F)` from `inferInstance`. Take `⟨y, -⟩` from `(str₀ TF.X Z).surjective z`. Conclude with `⟨y⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : (U₀ TF.X Z : Set (Y₀ TF.X Z)).Nonempty` using `(dense_U₀ TF.X Z).nonempty`. Take `⟨y, hy⟩` from `hne`. Take `⟨mu, hmu0, m, hm, hA⟩` from `_root_.GlobalTheory.T.hodge_bundle_ample_on_regular_locus hP hN hS hC E H Dw l Xo c TF Z hF la hgla y hy`. Take `⟨m', Aa, s, hm', hAa, hAamp, hys⟩` from `hA`. Establish `hNn` using `isLB_L₀ TF.X Z (m • la - mu)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdiv : (LB.div (lbPow (L₀ TF.X Z (m • la - mu)) m') Aa).IsLB` using `Semi.LB.isLB_div (isLB_lbPow hNn m') hAa`. Establish `nefmu` using `nef mu hmu0`. Establish `hB` using `(nefmu.pow hAamp m').isBig_tens_ample hN hp₀ hAamp`. Establish `hcls0 : cls (L₀ TF.X Z 0) (isLB_L₀ TF.X Z 0) = 0`. Establish `h` using `cls_common_add (common₀ TF.X Z) 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [add_zero] at h`. Conclude with `left_eq_add.1 h`. Establish `hnsmul : ∀ n : ℕ, cls (L₀ TF.X Z (n • la)) (isLB_L₀ TF.X Z _) = n • cls (L₀ TF.X Z la) (isLB_L₀ TF.X Z la)`. Introduce `n`. Proceed by induction on `n with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simpa only [zero_nsmul] using hcls0`. Consider the case `succ n ih => rw [succ_nsmul, cls_common_add (common₀ TF.X Z), ih, succ_nsmul]`. Establish `h1` using `cls_common_add (common₀ TF.X Z) (m • la - mu) mu`. Rewrite `h1` using `[sub_add_cancel]`. Establish `hP'` using `isLB_lbPow (isLB_L₀ TF.X Z la) (m * m')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e : cls (lbPow (L₀ TF.X Z la) (m * m')) hP' = cls _ hB.isLB + cls _ hdiv`. Rewrite using `[cls_lbPow (isLB_L₀ TF.X Z la), cls_tens (isLB_lbPow nefmu.isLB m') hAa, cls_div (isLB_lbPow hNn m') hAa, cls_lbPow nefmu.isLB, cls_lbPow hNn, mul_nsmul, ← hnsmul m, h1, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hbigP : IsBig c.F (lbPow (L₀ TF.X Z la) (m * m'))` using `hB.of_cls_eq_add hf₀ hpr hdiv ⟨s, sec_ne_zero_of_mem hys⟩ hP' e`. Conclude with `hbigP.of_pow (isLB_L₀ TF.X Z la) (Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero hm.ne' hm'.ne')) (fun j => finite_coh_zero_twist_of_isProjOver hf₀ hpr (isLB_lbPow (isLB_L₀ TF.X Z la) j))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `bigpull : ∀ (k : Type) [Field k] (X Y : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (g : Y ⟶ X), IsProjOver (g ≫ p) → topologicalKrullDim Y = topologicalKrullDim X → Dense (Set.range g) → ∀ N : LB X, (letI` using `algebraΓOfHom p; IsBig k N) → (letI := algebraΓOfHom (g ≫ p); IsBig k (N.pull g)) := fun k _ X Y _ p g hp hd hg N hN => GlobalTheory.BigPull.isBig_pull k X Y p g hp hd hg N hN`. Take `⟨hprop₁, H₁, hH₁⟩` from `(isProjOver_iff_isProper_and_exists_isAmpleLB _).1 R.proj`. Use `haveI : IsProper (strHom c.F (Y₀ TF.X Z)) := hs₀ ▸ hprop₀`. Use `haveI : IsProper (R.σ ≫ str₀ TF.X Z) := hprop₁`. Use `haveI : IsProper R.σ := IsProper.of_comp R.σ (str₀ TF.X Z)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcl : IsClosedMap R.σ` using `Scheme.Hom.isClosedMap R.σ`. Use `haveI : Nonempty R.X := by`. Take `⟨z⟩ : Nonempty (Sp c.F)` from `inferInstance`. Use `haveI : GeometricallyConnected R.str := h.conn`. Take `⟨y, -⟩` from `R.str.surjective z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨y⟩`. Use `haveI : Nonempty (Y₀ TF.X Z) := ⟨R.σ (Classical.arbitrary R.X)⟩`. Establish `hdim : topologicalKrullDim R.X = topologicalKrullDim (Y₀ TF.X Z)`. Rewrite using `[GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth R.str (dimFlag Dw) R.smooth, GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth (str₀ TF.X Z) (dimFlag Dw) hsm]`. Establish `hdense : Dense (Set.range R.σ)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(dense_U₀ TF.X Z).mono fun y hy => ?_` and prove the remaining obligations. Use `R.iso` as an intermediate fact. Take `⟨x, hx⟩` from `(R.σ ∣_ U₀ TF.X Z).surjective ⟨y, hy⟩`. Use `⟨(R.σ ⁻¹ᵁ U₀ TF.X Z).ι x, ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun q => q x) (morphismRestrict_ι R.σ (U₀ TF.X Z))`.
-
-Simplify using `only [Scheme.Hom.comp_apply] at e`. Rewrite using `[← e, hx]`. Both sides reduce to the same expression. Use `letI := algebraΓOfHom R.str`. Express the relevant statement in the definitionally equal form `IsNef c.F ((L₀ TF.X Z la).pull R.σ) ∧ IsBig c.F ((L₀ TF.X Z la).pull R.σ)`.
-
-Conclude with `⟨GlobalTheory.PosBaseChange.isNef_pull nef₀ hH₀ hH₁ R.σ hcl, bigpull c.F (Y₀ TF.X Z) R.X (str₀ TF.X Z) R.σ R.proj hdim hdense _ big₀⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hodge_bundle_nef_and_big : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice TF.X Z U P) (ω : CanId R.toModif) (x : ℝ) (D : D7) (V : (c.F →+* ℂ) → TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : Ready R ω x V dict) (f₁ : CuspFrame Z U x V dict P.u₁) (f₂ : CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : Consts), FnAlgClosed Xo c → WtBig P → IsNef c.F (h.geo f₁ f₂ th k).LA ∧ IsBig c.F (h.geo f₁ f₂ th k).LA := by
   intro hP hN hS hC hL E _ _ _ H Dw l Xo c TF Z r U P R ω x D V dict h f₁ f₂ th k hF hW
@@ -146,7 +142,7 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big | exact _root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big | (intros; apply _root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hodge_bundle_isNef_isBig_of_weight : _root_.GlobalTheory.CovTop.Hypotheses'' → GlobalTheory.Published.NefNumerics → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalChartsForFan → GlobalTheory.Published.SemiAbelianLieSeminegative → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c) (Z : Comp Xo c) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (P : WtPar Dw) (R : Choice TF.X Z U P) (ω : CanId R.toModif) (x : ℝ) (D : D7) (V : (c.F →+* ℂ) → TH.HSp D) (dict : ∀ σ, Formalism.L2.Theta.GA D (V σ) → Σ k, FD.Frame ((U σ).X k).Ψ r) (h : Ready R ω x V dict) (f₁ : CuspFrame Z U x V dict P.u₁) (f₂ : CuspFrame Z U x V dict P.u₂) (th : R.L.Sec) (k : Consts), FnAlgClosed Xo c → WtBig P → IsNef c.F (h.geo f₁ f₂ th k).LA ∧ IsBig c.F (h.geo f₁ f₂ th k).LA := by
   first | exact @_root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big | exact _root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big | (intros; apply _root_.GlobalTheory.HSApp.hodge_bundle_nef_and_big <;> assumption)

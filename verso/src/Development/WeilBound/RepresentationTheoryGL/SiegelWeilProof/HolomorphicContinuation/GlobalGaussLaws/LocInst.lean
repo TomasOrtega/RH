@@ -23,13 +23,13 @@ def ofRe (m n : ℕ) : PX m n →ₐ[ℂ] PX m n :=
     else C (1 / 2) * (X (k.1, k.2.1, false) + X (k.1, k.2.1, true))
 
 /- English proof (translation)
-Establish `hI : (Complex.I : ℂ) ≠ 0` using `Complex.I_ne_zero`. Establish `hC : (C Complex.I : PX m n) * C (1 / (2 * Complex.I)) = C (1 / 2)`. Rewrite using `[← C_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts.
 
-Establish `hC2 : (C (1 / 2) : PX m n) + C (1 / 2) = 1`. Rewrite using `[← C_add, ← C_1]`. Use `congr 1`. Evaluate the numerical expressions. Establish `: (ofRe m n).comp (toRe m n) = AlgHom.id ℂ (PX m n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Take `⟨a, i, b⟩` from `k`. Consider the cases of `b`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, toRe, ofRe, aeval_X, map_add, map_mul, aeval_C, algebraMap_eq, Bool.false_eq_true, if_false, if_true]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules.
 
-Take the linear combination `(X (a, i, false) - X (a, i, true)) * hC + X (a, i, false) * hC2`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply, toRe, ofRe, aeval_X, map_sub, map_mul, aeval_C, algebraMap_eq, Bool.false_eq_true, if_false, if_true]`. Take the linear combination `-(X (a, i, false) - X (a, i, true)) * hC + X (a, i, true) * hC2`. Conclude with `congrArg (fun f => f P) this`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ofRe_toRe {m n : ℕ} (P : PX m n) : ofRe m n (toRe m n P) = P := by
   have hI : (Complex.I : ℂ) ≠ 0 := Complex.I_ne_zero
@@ -51,9 +51,9 @@ theorem ofRe_toRe {m n : ℕ} (P : PX m n) : ofRe m n (toRe m n P) = P := by
   exact congrArg (fun f => f P) this
 
 /- English proof (translation)
-Establish `key : (aeval fun k : Fin m × Fin n × Bool => if k.2.2 then star ((y (k.1, k.2.1, false) : ℂ) + Complex.I * (y (k.1, k.2.1, true) : ℂ)) else (y (k.1, k.2.1, false) : ℂ) + Complex.I * (y (k.1, k.2.1, true) : ℂ)) = (aeval fun k => (y k : ℂ)).comp (toRe m n)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `k`. Take `⟨a, i, b⟩` from `k`. Consider the cases of `b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Simplify using `[toRe]`. Simplify using `[toRe, Complex.conj_ofReal, sub_eq_add_neg]`. Unfold `evX`. Rewrite using `[← coe_aeval_eq_eval, ← coe_aeval_eq_eval]`. Conclude with `congrArg (fun f => f P) key`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evX_eq_eval_toRe {m n : ℕ} (P : PX m n) (y : Fin m × Fin n × Bool → ℝ) :
     evX P (fun a i => (y (a, i, false) : ℂ) + Complex.I * (y (a, i, true) : ℂ)) =
@@ -71,9 +71,9 @@ theorem evX_eq_eval_toRe {m n : ℕ} (P : PX m n) (y : Fin m × Fin n × Bool �
   exact congrArg (fun f => f P) key
 
 /- English proof (translation)
-Establish `h0 : toRe m n (P - Q) = 0`. Apply `eq_zero_of_eval_real` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← evX_eq_eval_toRe]`. Use `h (fun a i => (y (a, i, false) : ℂ) + Complex.I * (y (a, i, true) : ℂ))` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `evX at this ⊢`. Rewrite using `[map_sub, this, sub_self]`. Rewrite using `[← sub_eq_zero, ← ofRe_toRe (P - Q), h0, map_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evX_injective {m n : ℕ} {P Q : PX m n} (h : ∀ u, evX P u = evX Q u) : P = Q := by
   have h0 : toRe m n (P - Q) = 0 := by
@@ -86,9 +86,9 @@ theorem evX_injective {m n : ℕ} {P Q : PX m n} (h : ∀ u, evX P u = evX Q u) 
   rw [← sub_eq_zero, ← ofRe_toRe (P - Q), h0, map_zero]
 
 /- English proof (translation)
-Apply `evX_injective` to reduce the goal to its premises. Introduce `u`. Use `congrFun h u` as an intermediate fact. Simplify using `only [fP] at this`. Establish `hg : gs c u ≠ 0` using `Complex.exp_ne_zero _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_right_cancel₀ hg this`.
+A detailed English derivation is pending.
 -/
 theorem fP_injective {m n : ℕ} {c : ℝ} {P Q : PX m n} (h : fP c P = fP c Q) : P = Q := by
   apply evX_injective
@@ -99,7 +99,7 @@ theorem fP_injective {m n : ℕ} {c : ℝ} {P Q : PX m n} (h : fP c P = fP c Q) 
   exact mul_right_cancel₀ hg this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Simplify using `only [fP, evX, map_add, smul_eq_C_mul, map_mul, eval_C, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fP_smul_add {m n : ℕ} (c : ℝ) (a : ℂ) (P Q : PX m n) : fP c (a • P + Q) = a • fP c P + fP c Q := by
   funext u
@@ -113,25 +113,25 @@ namespace PositivityTheory.Rg.Sw.Glob
 open LocInstH
 
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC L hL`. Establish `hl0` using `hl D n V ψ χ θ μ ω H l s ν τ ε fr ι hC`. Take `⟨hlinL, hid⟩` from `hlin D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Take `⟨e, he⟩` from `hlaw D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Take `⟨C0, hC0, hCc⟩` from `hcell D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, hfin⟩` from `hrho D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL`. Establish `hzero : ∀ y : GR n, L y (fP (cLoc l τ) (0 : PX V.rank n)) = 0`. Introduce `y`. Establish `h2` using `hlinL y 1 0 0`. Simplify using `only [one_smul, add_zero] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: L y (fP (cLoc l τ) (0 : PX V.rank n)) + L y (fP (cLoc l τ) (0 : PX V.rank n)) = L y (fP (cLoc l τ) (0 : PX V.rank n)) + 0` using `by rw [add_zero]; exact h2.symm`. Conclude with `add_left_cancel this`. Set `sL : PX V.rank n →ₗ[ℂ] (GR n → ℂ)` to `{ toFun := fun P => sLd L (cLoc l τ) P map_add' := fun P Q => by`. Use function extensionality and compare the values at `y`. Establish `h2` using `hlinL y 1 P Q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[one_smul, one_smul]`. Simplify using `only [sLd, Pi.add_apply, h2]`. Use the proof step `map_smul' := fun a P => by`. Use function extensionality and compare the values at `y`. Establish `h2` using `hlinL y a P 0`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[add_zero, hzero y, add_zero]`. Simplify using `only [sLd, Pi.smul_apply, RingHom.id_apply, h2, smul_eq_mul] }`. Establish `hsign : ((tLoc l τ = cLoc l τ ∧ (pqOf ε l τ).1 = cnt ε true ∧ (pqOf ε l τ).2 = cnt ε false) ∨ (tLoc l τ = -cLoc l τ ∧ (pqOf ε l τ).1 = cnt ε false ∧ (pqOf ε l τ).2 = cnt ε true))`. Unfold `tLoc cLoc pqOf`. Use `split_ifs with h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Prove the first alternative. Establish an intermediate fact. Prove the second alternative.
 
-Conclude with `Or.inl ⟨by rw [abs_of_pos h], rfl, rfl⟩`. Establish `hneg : l τ < 0` using `lt_of_le_of_ne (not_lt.mp h) hl0`. Conclude with `Or.inr ⟨by rw [abs_of_neg hneg]; ring, rfl, rfl⟩`. Establish `hcpos : 0 < cLoc l τ`. Unfold `cLoc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Use `abs_pos.mpr hl0` as an intermediate fact. Check the signs of the components of the expression. Establish `h11 : sLd L (cLoc l τ) 1 1 = 1`. Simplify using `[sLd, hid, fP, evX, gs]`. Establish `hvac' : ∀ g, sLd L (cLoc l τ) 1 g = F0 (pqOf ε l τ).1 (pqOf ε l τ).2 e g` using `hvac V.rank n ε (cLoc l τ) (tLoc l τ) (pqOf ε l τ).1 (pqOf ε l τ).2 e hcpos hsign (sLd L (cLoc l τ) 1) C0 (hcont D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL 1) h11 (fun y g hy => he 1 y g hy) (fun g b hb hg => hCc 1 g b hb hg)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `⟨sL, ρ, (pqOf ε l τ).1, (pqOf ε l τ).2, e, ?_, ?_, fun P y => rfl, hρ⟩` and prove the remaining obligations. Establish `hs` using `hC.hsig`. Unfold `pqOf GoodSig at *`. Apply the tactic sequence `split_ifs <;> omega`. Use `⟨hcpos, hsign, fun P => hcont D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL P, hvac', fun P y g hy => he P y g hy, ⟨C0, hC0, fun P g b hb hg => hCc P g b hb hg⟩, fun P g k hk' => hk D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL ρ hρ P g k hk', ?_, hfin⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `k hkK`. Establish `h1` using `hkv D n V ψ χ θ μ ω H l s ν τ ε fr ι hC hT L hL e hvac' k hkK`. Rewrite `h1` using `[hρ k 1 hkK]`. Apply `fP_injective (c := cLoc l τ)` to reduce the goal to its premises. Rewrite using `[h1]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `fP_smul_add (cLoc l τ) (F0 (pqOf ε l τ).1 (pqOf ε l τ).2 e k) (1 : PX V.rank n) 0` as an intermediate fact. Simplify using `only [add_zero] at this`. Rewrite using `[this]`. Use function extensionality and compare the values at `u`. Simplify using `[fP, evX]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locInst_of (hT : TensMem) (hl : LIl) (hlin : LIlin) (hlaw : LIlaw) (hcell : LIcell) (hcont : LIcont)
     (hrho : LIrho) (hk : LIkact) (hvac : LIvac) (hkv : LIkvac) : LocInst := by

@@ -6,25 +6,23 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨⟨a, m₁⟩, ha⟩` from `IsLocalization.mk'_surjective M (u : Localization M)`. Take `⟨⟨b, m₂⟩, hb⟩` from `IsLocalization.mk'_surjective M ((u⁻¹ : (Localization M)ˣ) : Localization M)`. Simplify using `only at ha hb`. Establish `hprod : IsLocalization.mk' (Localization M) (a * b) (m₁ * m₂) = 1`. Rewrite using `[IsLocalization.mk'_mul, ha, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : algebraMap A (Localization M) (a * b) = algebraMap A (Localization M) ((m₁ * m₂ : M) : A)`. Use `IsLocalization.mk'_spec (Localization M) (a * b) (m₁ * m₂)` as an intermediate fact. Rewrite `this` using `[hprod, one_mul]`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists M (Localization M)).1 h1`. Use `set m : A := (m₁ : A) * m₂ * c with hm`. Establish `hmM : m ∈ M` using `M.mul_mem (M.mul_mem m₁.2 m₂.2) c.2`. Establish `hc' : (c : A) * (a * b) = (c : A) * ((m₁ : A) * m₂)`. Simplify `hc` using `[Submonoid.coe_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s` to `IsLocalization.Away.invSelf (S := Localization.Away m) m`. Establish `hs : algebraMap A (Localization.Away m) m * s = 1` using `IsLocalization.Away.mul_invSelf m`. Set `x : Localization.Away m` to `algebraMap A _ (a * (m₂ * c)) * s`. Set `y : Localization.Away m` to `algebraMap A _ (b * (m₁ * c)) * s`. Establish `hxy : x * y = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : a * (m₂ * c) * (b * (m₁ * c)) = m * m`. Rewrite using `[hm]`. Take the linear combination `((m₁ : A) * m₂ * c) * hc'`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [x, y, map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = (algebraMap A (Localization.Away m) m * s) * (algebraMap A (Localization.Away m) m * s) := by`. Rewrite using `[e, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hs, one_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨m, hmM, ⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, ?_⟩` and prove the remaining obligations. Introduce `φ hφ`. Establish `hφa : ∀ r : A, φ (algebraMap A _ r) = algebraMap A (Localization M) r` using `fun r => congrArg (fun f : A →+* Localization M => f r) hφ`. Apply `Units.ext` to reduce the goal to its premises. Use `show φ x = (u : Localization M)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (u : Localization M) * algebraMap A _ (m₁ : A) = algebraMap A _ a`. Rewrite using `[← ha]`. Conclude with `IsLocalization.mk'_spec _ _ _`. Establish `hφs : algebraMap A (Localization M) m * φ s = 1`. Rewrite using `[← hφa, ← map_mul, hs, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : φ x * algebraMap A (Localization M) (m₁ : A) = algebraMap A _ a`. Establish `: φ x * algebraMap A (Localization M) (m₁ : A) = algebraMap A (Localization M) a * (algebraMap A (Localization M) m * φ s)`. Simplify using `only [x, map_mul, hφa, hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hφs, mul_one]`.
-
-Establish `hunit : IsUnit (algebraMap A (Localization M) (m₁ : A))` using `IsLocalization.map_units _ m₁`. Conclude with `hunit.mul_left_inj.1 (hx.trans hu.symm)`.
+A detailed English derivation is pending.
 -/
 theorem units_localization_descend_away (A : Type) [CommRing A] (M : Submonoid A)
     (u : (Localization M)ˣ) :

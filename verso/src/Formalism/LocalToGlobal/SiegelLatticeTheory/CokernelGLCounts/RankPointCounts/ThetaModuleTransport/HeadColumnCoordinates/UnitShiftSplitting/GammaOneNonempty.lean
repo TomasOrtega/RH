@@ -7,7 +7,7 @@ open ValuativeRel Formalism.MainNotions.S.Loc Formalism.L2.SG.LsDatumA Formalism
 namespace Formalism.L2.SG.LocalCountModules.AlgGSplit
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, 0, 0, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem gammaOne_nonempty {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableSpace E]
@@ -16,11 +16,11 @@ theorem gammaOne_nonempty {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
   ⟨_, 0, 0, rfl⟩
 
 /- English proof (translation)
-Introduce `F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hk θ₁ θ₂ _ _`. Establish `e₁ : GR g Zh₁ T T' = asm hs h₁ '' (Gam1 hs Z₁ TT (ZZm g Zh₁ T T') ×ˢ Gam1 hs Zσ₁ TT (ZZm g (Zh₁.map M.L.cj) T T'))` using `Set.Subset.antisymm (hsub F E M g hs r T T' TT Zh₁ Z₁ Zσ₁ h₁) (hsup F E M g hs r T T' TT Zh₁ Z₁ Zσ₁ h₁)`. Establish `e₂ : GR g Zh₂ T T' = asm hs h₂ '' (Gam1 hs Z₂ TT (ZZm g Zh₂ T T') ×ˢ Gam1 hs Zσ₂ TT (ZZm g (Zh₂.map M.L.cj) T T'))` using `Set.Subset.antisymm (hsub F E M g hs r T T' TT Zh₂ Z₂ Zσ₂ h₂) (hsup F E M g hs r T T' TT Zh₂ Z₂ Zσ₂ h₂)`. Express the relevant statement in the definitionally equal form `_ '' GR g Zh₁ T T' = GR g Zh₂ T T' ↔ _`. Rewrite using `[e₁, e₂, Set.image_image]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[asm_compat hs h₁ h₂ hk θ₁ θ₂]`. Rewrite using `[← Set.image_image (asm hs h₂) (Prod.map (mapD θ₁) (mapD θ₂)), (Set.image_injective.mpr (asm_inj hs h₂)).eq_iff]`. Establish `hp : (fun p => (mapD (M` using `M) θ₁ p.1, mapD (M := M) θ₂ p.2)) = Prod.map (mapD (M := M) θ₁) (mapD (M := M) θ₂) := rfl`. Rewrite using `[← hp, ← Set.prod_image_image_eq, Set.prod_eq_prod_iff_of_nonempty]`. Both sides reduce to the same expression.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `(((gammaOne_nonempty hs _ _ _).image _).prod ((gammaOne_nonempty hs _ _ _).image _))`.
+A detailed English derivation is pending.
 -/
 theorem gamSplit_of (hsub : GamSubP) (hsup : GamSupP) : GamSplitP := by
   intro F _ _ _ E _ _ _ _ M g hs r T T' TT Zh₁ Zh₂ Z₁ Z₂ Zσ₁ Zσ₂ h₁ h₂ hk θ₁ θ₂ _ _

@@ -25,7 +25,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a y, W.φD_smul, W.φE_ext, algebraMap_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
     W.φD T (a • y) = W.φA a • W.φD T y := by
@@ -33,17 +33,17 @@ theorem φD_smulA (T : LocLat G Qp LL O) (a : LetA O n) (y : W.DD T) :
   rfl
 
 /- English proof (translation)
-Use `set S := Submodule.span W.EE (Set.range fun j => W.φD T (bN j)) with hS`. Establish `hA : Submodule.span (LetA O n) (W.φD T '' (W.N T : Set (W.DD T))) ≤ S.restrictScalars (LetA O n)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hy' : y = ∑ m, bN.repr ⟨y, hy⟩ m • (bN m : W.DD T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `congrArg Subtype.val (bN.sum_repr ⟨y, hy⟩)`. Rewrite `h0` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at h0`. Conclude with `h0.symm`. Rewrite using `[hy', map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Rewrite using `[φD_smulA, ← algebraMap_smul W.EE, Submodule.restrictScalars_mem]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (Set.mem_range_self m))`. Establish `hb : ∀ j, (bN j : W.DD T) ∈ S`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `W.N_φinv T (bN j) (bN j).2`. Express the relevant statement in the definitionally equal form `W.Q ^ k • (bN j : W.DD T) ∈ _ at hk`. Establish `h1` using `hA hk`. Rewrite `h1` using `[Submodule.restrictScalars_mem]`. Take `⟨u, hu⟩` from `hQ.pow k`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (bN j : W.DD T) = ((u⁻¹ : W.EEˣ) : W.EE) • (W.Q ^ k • (bN j : W.DD T))`. Rewrite using `[← algebraMap_smul W.EE (W.Q ^ k), smul_smul, map_pow, ← hu, Units.inv_mul, one_smul]`. Rewrite using `[h2]`. Conclude with `S.smul_mem _ h1`. Set `bD : Module.Basis (Fin r) W.EE (W.DD T)` to `(W.N_base T hT).basis bN`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hbD : ∀ j, bD j = (bN j : W.DD T)` using `fun j => by simp [bD, IsBaseChange.basis_apply]`. Rewrite using `[eq_top_iff, ← bD.span_eq, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Rewrite using `[hbD]`. Conclude with `hb j`.
+A detailed English derivation is pending.
 -/
 theorem span_φ (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {r : ℕ}
     (bN : Module.Basis (Fin r) (LetA O n) ↥(W.N T)) (hQ : IsUnit (algebraMap (LetA O n) W.EE W.Q)) :
@@ -80,17 +80,15 @@ theorem span_φ (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {r : ℕ}
   exact hb j
 
 /- English proof (translation)
-Establish `hsp` using `span_φ W T hT bN hQ`. Set `c : Module.Basis (Fin r) W.EE (W.DD T)` to `basisOfTopLeSpanOfCardEqFinrank (fun j => W.φD T (bN j)) hsp.ge (by rw [hr, Fintype.card_fin])`. Establish `hli : LinearIndependent W.EE (fun j => W.φD T (bN j))`. Use `c.linearIndependent` as an intermediate fact. Rewrite `this` using `[coe_basisOfTopLeSpanOfCardEqFinrank]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `set a : Fin l → Fin r → LetA O n := fun j m => bN.repr ⟨z j, hz j⟩ m with ha`. Establish `hzj : ∀ j, z j = ∑ m, a j m • (bN m : W.DD T)`. Introduce `j`. Establish `h0` using `congrArg Subtype.val (bN.sum_repr ⟨z j, hz j⟩)`. Rewrite `h0` using `[Submodule.coe_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul] at h0`. Conclude with `h0.symm`. Use `set e : Fin l → LetA O n := fun j => fun _ => ((1 : PowerSeries O) + PowerSeries.X) ^ (j : ℕ) with he`. Establish `hexp : ∑ m, algebraMap (LetA O n) W.EE (∑ j, e j * W.φA (a j m)) • W.φD T (bN m) = 0`. Rewrite using `[← hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Repeatedly rewrite using `[algebraMap_smul, hzj, map_sum, φD_smulA, Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Establish `hc : ∀ m, ∑ j, e j * W.φA (a j m) = 0`. Introduce `m`. Use `Fintype.linearIndependent_iff.1 hli _ hexp m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Conclude with `W.EE_inj (by rw [this, map_zero])`. Establish `hzero : ∀ j m, a j m = 0`. Introduce `j m`. Use function extensionality and compare the values at `k`. Establish `h1` using `congrFun (hc m) (k + 1)`.
-
-Simplify using `only [Finset.sum_apply, Pi.mul_apply, he, LocWach.φA, letφ, AlgHom.pi_apply, AlgHom.comp_apply, Pi.evalAlgHom_apply, add_sub_cancel_right, Pi.zero_apply] at h1`. Conclude with `congrFun (hφ₀ (fun j => a j m k) h1) j`. Introduce `j`. Rewrite using `[hzj j]`. Simplify using `[hzero]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_flat (T : LocLat G Qp LL O) (hT : IsCrys PD T.ρ) {r : ℕ}
     (bN : Module.Basis (Fin r) (LetA O n) ↥(W.N T)) (hQ : IsUnit (algebraMap (LetA O n) W.EE W.Q))
@@ -141,13 +139,13 @@ namespace GlobalTheory.NL.PhiFlat
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h W T hT z hz hsum`. Take `⟨bN⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`. Establish `hQ : IsUnit (algebraMap (AA K LL) W.EE W.Q)`. Use `((GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.2.2.2.2.2 0).2` as an intermediate fact. Rewrite `this` using `[pow_zero, AlgHom.one_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Take `⟨χ, -, hφ, -⟩` from `GlobalTheory.NL.CycRing.rings_cyclotomic D HW l K s LL h`. Take `⟨hdvr, hcpl, hnu⟩` from `GlobalTheory.FinExtIntegers.dvr_complete LL`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h0` as an intermediate fact. Simplify using `[(Fact.out : l.Prime).ne_zero] at this`. Use `haveI : Nontrivial W.EE := ⟨⟨algebraMap (AA K LL) W.EE 0, algebraMap (AA K LL) W.EE 1, fun h0 => zero_ne_one (W.EE_inj h0)⟩⟩`. Use `GlobalTheory.NL.PhiFlat.phi_flat W T hT bN hQ (W.DD_free T).2 l ?_ z hz hsum` and prove the remaining obligations. Introduce `w hw`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, -, huniq⟩` from `GlobalTheory.Cyc.phi_free l (↥(OL LL)) hl0 hnu 0`. Rewrite `hw` using `[hφ]`. Establish `e1` using `huniq w hw.symm`. Establish `e2` using `huniq 0 (by simp)`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ z : Fin l → W.DD T, (∀ j, z j ∈ W.N T) → ∑ j : Fin l, (fun _ => ((1 : PowerSeries ↥(OL LL)) + PowerSeries.X) ^ (j : ℕ) : AA K LL) • W.φD T (z j) = 0 → ∀ j, z j = 0 := by
   intro D HW F l _ K s LL h W T hT z hz hsum

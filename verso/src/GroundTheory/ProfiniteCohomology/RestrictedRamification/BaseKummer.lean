@@ -21,9 +21,7 @@ section RootsMap
 variable {M N : Type*} [Field M] [Field N] (n : ℕ) [NeZero n]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (restrictRootsOfUnity f n)` using `fun a b h => by`. Establish `e : f ((a : Mˣ) : M) = f ((b : Mˣ) : M)` using `congrArg (fun x : rootsOfUnity n N => ((x : Nˣ) : N)) h`. Conclude with `Subtype.ext (Units.ext (f.injective e))`. Use `hinj.bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[hz.card_rootsOfUnity]`.
-
-Conclude with `card_rootsOfUnity N n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_restrictRootsOfUnity_of_isPrimitiveRoot (f : M →+* N) {z : M} (hz : IsPrimitiveRoot z n) :
     Function.Bijective (restrictRootsOfUnity f n) := by
@@ -52,7 +50,7 @@ def repInvOfBijective {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijectiv
     rw [e.apply_symm_apply]⟩
 
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun a => (LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a))`.
+A detailed English derivation is pending.
 -/
 theorem comp_repInvOfBijective {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijective f.hom) :
     f ≫ repInvOfBijective f hf = 𝟙 A :=
@@ -60,7 +58,7 @@ theorem comp_repInvOfBijective {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function
     (LinearEquiv.ofBijective f.hom.toLinearMap hf).symm_apply_apply a))
 
 /- English proof (translation)
-The claim follows from `Rep.hom_ext (Representation.IntertwiningMap.ext (LinearMap.ext fun b => (LinearEquiv.ofBijective f.hom.toLinearMap hf).apply_symm_apply b))`.
+A detailed English derivation is pending.
 -/
 theorem repInvOfBijective_comp {A B : Rep.{u} k Γ} (f : A ⟶ B) (hf : Function.Bijective f.hom) :
     repInvOfBijective f hf ≫ f = 𝟙 B :=
@@ -79,7 +77,7 @@ variable {k G : Type u} [CommRing k] [Group G] [TopologicalSpace G] [IsTopologic
   {a : ∀ v, Rep.res (φ v).toMonoidHom A ⟶ Aᵥ v} {b : ∀ v, Rep.res (φ v).toMonoidHom B ⟶ Bᵥ v}
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyMap_congr {g g' : A ⟶ B} {gᵥ gᵥ' : ∀ v, Aᵥ v ⟶ Bᵥ v}
     (hg : ∀ v, a v ≫ gᵥ v = (Rep.resFunctor (φ v).toMonoidHom).map g ≫ b v)
@@ -91,15 +89,15 @@ theorem compactCohomologyMap_congr {g g' : A ⟶ B} {gᵥ gᵥ' : ∀ v, Aᵥ v 
   rfl
 
 /- English proof (translation)
-Establish `h : compactCochainsMap φ (m • 𝟙 A) (fun v => m • 𝟙 (Aᵥ v)) hg = m • 𝟙 _`. Use extensionality with `n : 1`. Use `ModuleCat.hom_ext (LinearMap.ext fun (p : (cochainsComplex A).X n × shiftNegOneX (piComplex fun v => cochainsComplex (Aᵥ v)) n) => ?_)` and prove the remaining obligations. Establish `hR : ((m • 𝟙 (compactCochains φ A Aᵥ a) : compactCochains φ A Aᵥ a ⟶ _).f n).hom p = m • p`. Simplify using `only [HomologicalComplex.smul_f_apply, HomologicalComplex.id_f, ModuleCat.hom_nsmul, ModuleCat.hom_id]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hR]`. Take `⟨x, y⟩` from `p`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((cochainsMap (m • 𝟙 A)).f n).hom x = m • x`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`. Simplify using `[Module.End.mul_apply, Module.End.natCast_apply]`. Consider the cases of `n with`. Consider the case `zero => rfl`. Consider the case `succ n`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `((piMap fun v => cochainsMap (m • 𝟙 (Aᵥ v))).f n).hom y = m • y`. Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `((cochainsMap (m • 𝟙 (Aᵥ v))).f n).hom (y v) = m • y v`. Rewrite using `[cochainsMap_nsmul, cochainsMap_id]`. Simplify using `[Module.End.mul_apply, Module.End.natCast_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `HomologicalComplex.homologyMap (compactCochainsMap φ (m • 𝟙 A) (fun v => m • 𝟙 (Aᵥ v)) hg) n = _`. Rewrite using `[h]`. Express the relevant statement in the definitionally equal form `(HomologicalComplex.homologyFunctor _ _ n).map (m • 𝟙 _) = _`. Rewrite using `[Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compactCohomologyMap_nsmul_id (m : ℕ)
     (hg : ∀ v, a v ≫ (m • 𝟙 (Aᵥ v)) = (Rep.resFunctor (φ v).toMonoidHom).map (m • 𝟙 A) ≫ a v) (n : ℕ) :
@@ -141,9 +139,9 @@ variable {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Gro
   [IsDiscreteRep (uliftIntToIntRep Aᵥ)]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective A m x`. Rewrite using `[cohomologyMapAlong_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMap_cohomologyπ, cohomologyMap_cohomologyπ, cohomologyULiftIntAddEquiv_cohomologyπ', cohomologyMapAlong_cohomologyπ]`. Use `congr 1`. Apply `cocycles_ext` to reduce the goal to its premises. Rewrite using `[cochainOf_cocycleι_cyclesMap, cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt, cochainOf_cocycleι_cyclesMap]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Conclude with `hf _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem cohomologyMap_uliftInt_cohomologyMapAlong_local (g : A ⟶ B) (f : Rep.res φ A ⟶ Aᵥ)
     (e : uliftIntToIntRep Aᵥ ⟶ C) (f₂ : Rep.res φ (uliftIntToIntRep B) ⟶ C)
@@ -173,7 +171,7 @@ set_option maxHeartbeats 1600000 in
 include hnS in
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n`. Establish `hzS : z ∈ maxUnramifiedOutside K.1 ℚ̄ S` using `mem_maxUnramifiedOutside_of_pow_eq_one S (NeZero.ne n) hnS hz.pow_eq_one`. Establish `hzS' : IsPrimitiveRoot (⟨z, hzS⟩ : maxUnramifiedOutside K.1 ℚ̄ S) n` using `hz.of_map_of_injective (f := (maxUnramifiedOutside K.1 ℚ̄ S).val) Subtype.val_injective`. Establish `hF` using `bijective_restrictRootsOfUnity_of_isPrimitiveRoot n ((ιs v).comp (maxUnramifiedOutside K.1 ℚ̄ S).val).toRingHom hzS'`. Conclude with `Additive.ofMul.bijective.comp (hF.comp Additive.toMul.bijective)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_gsRootsOmegaMor (v : S) : Function.Bijective (gsRootsOmegaMor S ιs n v).hom := by
   obtain ⟨z, hz⟩ := HasEnoughRootsOfUnity.exists_primitiveRoot ℚ̄ n
@@ -200,7 +198,7 @@ def gsRootsComparisonInv (m : ℕ) :
         (bijective_gsRootsOmegaMor S ιs n hnS v)).symm_apply_apply x))) m
 
 /- English proof (translation)
-The claim follows from `(compactCohomologyMap_comp (gsFinFamily S ιs) _ _ _ _ _ _ m).symm.trans ((compactCohomologyMap_congr (gsFinFamily S ιs) _ _ (Category.comp_id _) (funext fun _ => comp_repInvOfBijective _ _) m).trans (compactCohomologyMap_id (gsFinFamily S ιs) m))`.
+A detailed English derivation is pending.
 -/
 theorem gsRootsComparison_comp_inv (m : ℕ) :
     gsRootsComparison S ιs n m ≫ gsRootsComparisonInv S ιs n hnS m = 𝟙 _ :=
@@ -209,7 +207,7 @@ theorem gsRootsComparison_comp_inv (m : ℕ) :
       (funext fun _ => comp_repInvOfBijective _ _) m).trans (compactCohomologyMap_id (gsFinFamily S ιs) m))
 
 /- English proof (translation)
-The claim follows from `(compactCohomologyMap_comp (gsFinFamily S ιs) _ _ _ _ _ _ m).symm.trans ((compactCohomologyMap_congr (gsFinFamily S ιs) _ _ (Category.comp_id _) (funext fun _ => repInvOfBijective_comp _ _) m).trans (compactCohomologyMap_id (gsFinFamily S ιs) m))`.
+A detailed English derivation is pending.
 -/
 theorem gsRootsComparison_inv_comp (m : ℕ) :
     gsRootsComparisonInv S ιs n hnS m ≫ gsRootsComparison S ιs n m = 𝟙 _ :=
@@ -226,7 +224,7 @@ def gsRootsComparisonIso (m : ℕ) :
 
 include hnS in
 /- English proof (translation)
-The claim follows from `ConcreteCategory.bijective_of_isIso (gsRootsComparisonIso S ιs n hnS m).hom`.
+A detailed English derivation is pending.
 -/
 theorem bijective_gsRootsComparison (m : ℕ) : Function.Bijective (gsRootsComparison S ιs n m).hom :=
   ConcreteCategory.bijective_of_isIso (gsRootsComparisonIso S ιs n hnS m).hom
@@ -252,7 +250,7 @@ instance isDiscreteRep_uliftIntToIntRep_galUnits_local (v : S) :
     (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) a⟩
 
 /- English proof (translation)
-The claim follows from `(cohomologyMap_uliftInt_cohomologyMapAlong_local (gsFinFamily S ιs v).toMonoidHom (continuous_toMonoidHom _) (sUnitsToUnits S (maxUnramifiedOutside K.1 ℚ̄ S)) (gsSUnitsLocalMor S ιs v) (uliftUnitsToUnitsZ S v) (embUnitsMorZ S (ιs v)) (fun _ => rfl) 2 z).symm`.
+A detailed English derivation is pending.
 -/
 theorem gsLocalRes_sUnitsToUnits_eq (v : S) (z : cohomology (galSUnitsMax K.1 ℚ̄ S) 2) :
     (gsLocalRes S (ιs v) 2).hom (cohomologyULiftIntAddEquiv _ 2
@@ -271,15 +269,15 @@ set_option maxHeartbeats 4000000 in
 include hℓ hS in
 
 /- English proof (translation)
-Establish `hz : (compactToGlobal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 2).hom y = 0`. Use `eq_zero_of_sUnitsBrauer_eq_zero K S ℓ hℓ hS _ j ((map_nsmul _ _ _).symm.trans ((congrArg _ hy).trans (map_zero _))) ?_` and prove the remaining obligations. Use `eq_zero_of_brauerLocal_apply_eq_zero (gsLocalEmbeddings S ιs) _ fun w => ?_` and prove the remaining obligations. Break down `w with w | w` into its components or cases. Apply `placeInv_injective (K := K) (.inl w)` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(placeInv_inl_eq_zero (ℓ ^ j) (hodd.imp (fun h => h.pow) id) w _ ?_).trans (map_zero _).symm` and prove the remaining obligations. Establish `e : ℓ ^ j • brauerLocal (gsLocalEmbeddings S ιs) (sUnitsBrauer K S ((compactToGlobal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 2).hom y)) = 0`. Rewrite using `[← map_nsmul, ← map_nsmul, ← map_nsmul, hy, map_zero, map_zero, map_zero]`. Conclude with `(map_nsmul (DFinsupp.evalAddMonoidHom (β := fun w => localGaloisCohomology K 2 w) (Sum.inl w : Place K.1)) (ℓ ^ j) _).symm.trans ((congrArg (DFinsupp.evalAddMonoidHom (β := fun w => localGaloisCohomology K 2 w) (Sum.inl w : Place K.1)) e).trans (map_zero _))`. Distinguish the cases in `hw : w ∈ S`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `h0 : (cohomologyMapAlong (gsFinFamily S ιs ⟨w, hw⟩).toMonoidHom (continuous_toMonoidHom _) (gsSUnitsLocalMor S ιs ⟨w, hw⟩) 2).hom ((compactToGlobal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 2).hom y) = 0` using `congrFun (ConcreteCategory.congr_hom (compactToGlobal_globalToLocal (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 2) y) ⟨w, hw⟩`. Use `(congrArg (fun x => brauerLocal (gsLocalEmbeddings S ιs) x (.inr w)) (sUnitsBrauer_apply K S _)).trans ?_` and prove the remaining obligations. Use `(brauerLocal_gsBrauerInfl_inr K S (gsLocalEmbeddings S ιs) w _).trans ?_` and prove the remaining obligations. Establish `hfin : (gsLocalEmbeddings S ιs).fin w = ιs ⟨w, hw⟩` using `gsLocalEmbeddings_fin S ιs ⟨w, hw⟩`. Rewrite using `[hfin]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gsLocalRes_sUnitsToUnits_eq S ιs ⟨w, hw⟩ _).trans ?_` and prove the remaining obligations. Rewrite using `[h0, map_zero, map_zero]`. Both sides reduce to the same expression. Conclude with `brauerLocal_sUnitsBrauer_inr K S _ _ w hw`. Take `⟨ξ, hξ⟩` from `(ShortComplex.moduleCat_exact_iff_ker_sub_range _).1 (compactCohomology_exact_compact (gsFinFamily S ιs) (galSUnitsMax K.1 ℚ̄ S) _ (gsSUnitsLocalMor S ιs) 1) hz`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ v : S, Subsingleton (cohomology (galUnits ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1) (AlgebraicClosure ((v : HeightOneSpectrum (𝓞 K.1)).adicCompletion K.1))) 1)` using `fun v => subsingleton_cohomology_one_galUnits`. Rewrite using `[← hξ, show ξ = 0 from Subsingleton.elim _ _, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_gsUnitsCompact_two (hodd : Odd ℓ ∨ IsTotallyComplex K.1) (y : gsUnitsCompact S ιs 2) (j : ℕ)
     (hy : ℓ ^ j • y = 0) : y = 0 := by

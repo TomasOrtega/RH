@@ -13,59 +13,43 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.QuotP
 open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ L G0 T hT`. Take `⟨Ph, i1, i2, i3, i4, i5, π, ct, hfg, hπ, hcomp⟩` from `sys_cover l L G0 T hT`. Set `U : Ultrafilter ℕ` to `Filter.hyperfilter ℕ`. Establish `hU : (U : Filter ℕ) ≤ atTop`. Rewrite using `[← Nat.cofinite_eq_atTop]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Filter.hyperfilter_le_cofinite`. Use `set K : Subgroup Ph := limKer (U : Filter ℕ) (fun N => (π N).ker) with hK`. Establish `hKs` using `limKer_sup Ph ℕ U (fun N => (π N).ker)`. Use `haveI : TotallyDisconnectedSpace (Ph ⧸ K) := (totallyDisconnected_quot Ph K hKs.1).1`. Establish `sep : ∀ z : G0.Γ, (∀ W : OpenNormalSubgroup G0.Γ, z ∈ (W : Subgroup G0.Γ)) → z = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `z hz`. Establish `h1` using `(totallyDisconnected_quot G0.Γ ⊥ (by simpa using isClosed_singleton)).2 z (fun O => by simpa using hz O)`. Simplify using `using h1`. Establish `swapW : ∀ (W : OpenNormalSubgroup G0.Γ) (a b : G0.Γ), b⁻¹ * a ∈ (W : Subgroup G0.Γ) → a * b⁻¹ ∈ (W : Subgroup G0.Γ)`. Introduce `W a b h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Subgroup.Normal.mem_comm_iff inferInstance).1 h`. Take `⟨F0, hF0c, hF0k, hF0u, hF0s⟩` from `exists_lim_hom_out Ph G0.Γ ℕ hfg U (fun N => (π N).ker) (fun N => (T.h N).p.comp (π N)) (fun N => (T.h N).cont.comp (hπ N).1) (fun N x hx => by simp_all [MonoidHom.mem_ker])`. Set `hp : Ph ⧸ K →* G0.Γ` to `QuotientGroup.lift K F0 hF0k`. Establish `hp_mk : ∀ g, hp (QuotientGroup.mk g) = F0 g` using `fun g => rfl`. Establish `hp_cont : Continuous hp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `(QuotientGroup.isQuotientMap_mk K).continuous_iff.2 ?_` and prove the remaining obligations. Conclude with `hF0c`. Establish `hp_surj : Function.Surjective hp`. Introduce `z`. Take `⟨g, rfl⟩` from `hF0s (fun N => ((T.h N).surj.comp (hπ N).2.1)) z`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, hp_mk g⟩`. Establish `unif : ∀ W : OpenNormalSubgroup G0.Γ, ∀ᶠ N in (U : Filter ℕ), ∀ g : Ph, (T.h N).p (π N g) * (hp (QuotientGroup.mk' K g))⁻¹ ∈ (W : Subgroup G0.Γ)`. Introduce `W`. Use `filter_upwards [hF0u W] with N hN g`. Conclude with `swapW W _ _ (hN g)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hct : hp (QuotientGroup.mk' K ct) = G0.c`. Establish `h1 : ∀ W : OpenNormalSubgroup G0.Γ, (F0 ct)⁻¹ * G0.c ∈ (W : Subgroup G0.Γ)`. Introduce `W`. Take `⟨N, hN⟩` from `(hF0u W).exists`. Establish `h2` using `hN ct`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `[(hπ N).2.2, (T.h N).c]`. Establish `h3` using `sep _ h1`. Conclude with `(inv_mul_eq_one.1 h3)`. Establish `modH : ∀ N (g : Ph), (T.h N).p (π N g) * (hp (QuotientGroup.mk' K g))⁻¹ ∈ (T.H : Subgroup G0.Γ)`. Introduce `N g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨M, hM⟩` from `(unif T.H).exists`. Establish `h1` using `Subgroup.mul_mem _ (hcomp N M g) (hM g)`. Simplify `h1` using `[mul_assoc]`. Establish `lift : ∀ (Y : Type) [Group Y] [TopologicalSpace Y] [IsTopologicalGroup Y] [CompactSpace Y] [TotallyDisconnectedSpace Y], PhiCond Y l → ∀ (f : ∀ N, Y →* (T.GN N).Γ) (f0 : Y →* G0.Γ), (∀ N, Continuous (f N)) → Continuous f0 → (∀ N y, (T.h N).p (f N y) = f0 y) → ∃ F : Y →* Ph ⧸ K, C …`. Introduce `Y _ _ _ _ _ hphi f f0 hfc hf0c hf`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨P, hPn, hPfg, hPker⟩` from `loc_fin l Y (Subgroup.comap f0 (T.H : Subgroup G0.Γ)) (T.H.toOpenSubgroup.isOpen.preimage hf0c) hphi`. Take `⟨F, hFc, hFconv⟩` from `in_lim Ph Y (fun N => (T.GN N).Γ) π U P f (fun N => ⟨(hπ N).1, (hπ N).2.1⟩) hPfg (fun N => ⟨hfc N, hPker _ (f N) (Subgroup.comap (T.h N).p (T.H : Subgroup G0.Γ)) (hfc N) (hT.2 N) (fun y hy => by simpa [Subgroup.mem_comap, hf] using hy)⟩)`. Use `⟨F, hFc, hFconv, fun y => ?_⟩` and prove the remaining obligations. Use `close_map Ph (Ph ⧸ K) G0.Γ (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) (fun N => (T.h N).p) hp U (fun N => f N y) (F y) (f0 y) (hp_cont.comp continuous_quot_mk) unif (fun V => (hFconv V).mono fun N h => h y) (fun W => Filter.Eventually.of_forall fun N => ?_)` and prove the remaining obligations. Simplify using `[hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv` using `fun v => lift (L.Gv v) (T.phiV v) (fun N => (T.GN N).η.ker.subtype.comp ((T.GN N).φ v)) (G0.η.ker.subtype.comp (G0.φ v)) (fun N => continuous_subtype_val.comp ((T.GN N).φ_cont v)) (continuous_subtype_val.comp (G0.φ_cont v)) (fun N y => (T.h N).φ v y)`. Use `choose Fv hFvc hFvconv hFvp using hv`. Establish `hu` using `fun u => lift (L.Gu u) (T.phiU u) (fun N => (T.GN N).η.ker.subtype.comp ((T.GN N).φu u)) (G0.η.ker.subtype.comp (G0.φu u)) (fun N => continuous_subtype_val.comp ((T.GN N).φu_cont u)) (continuous_subtype_val.comp (G0.φu_cont u)) (fun N y => (T.h N).φu u y)`. Use `choose Fu hFuc hFuconv hFup using hu`. Establish `memv : ∀ v y, Fv v y ∈ (G0.η.comp hp).ker`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v y`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hFvp v y]`. Conclude with `(G0.φ v y).2`. Establish `memu : ∀ u y, Fu u y ∈ (G0.η.comp hp).ker`. Introduce `u y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, hFup u y]`. Conclude with `(G0.φu u y).2`. Set `G : Glob l L` to `{ Γ := Ph ⧸ K η := G0.η.comp hp η_open := by`. Rewrite using `[← MonoidHom.comap_ker]`. Conclude with `G0.η_open.preimage hp_cont`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `c := QuotientGroup.mk' K ct`. Use `c_sq := by`. Rewrite using `[← map_mul, QuotientGroup.mk'_apply, QuotientGroup.eq_one_iff]`. Introduce `O`. Use `Filter.Eventually.of_forall fun N => Subgroup.mem_sup_left ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[MonoidHom.mem_ker, (hπ N).2.2, (T.GN N).c_sq]`. Use `η_c := by`. Rewrite using `[MonoidHom.comp_apply, hct, G0.η_c]`. Use `ε := G0.ε.comp hp`. Use `ε_cont := G0.ε_cont.comp hp_cont`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `φ := fun v => (Fv v).codRestrict _ (memv v)`. Use `φ_cont := fun v => (hFvc v).subtype_mk _`. Use `φu := fun u => (Fu u).codRestrict _ (memu u)`. Use `φu_cont := fun u => (hFuc u).subtype_mk _ }`. Set `h : G.Hom G0` to `{ p := hp cont := hp_cont surj := hp_surj η := fun g => rfl c := hct ε := fun g => rfl φ := fun v g => hFvp v g φu := fun u g => hFup u g }`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPL : ∀ (W : OpenNormalSubgroup G0.Γ), PL l (T.H : Subgroup G0.Γ) ≤ (W : Subgroup G0.Γ)`. Introduce `W`. Rewrite using `[hT.1]`. Conclude with `bot_le`. Establish `eph : ∀ j : Fin T.q, ∃ b : Ph ⧸ K, (∀ V : OpenNormalSubgroup Ph, ∀ᶠ N in (U : Filter ℕ), Close (π N) (QuotientGroup.mk' K) (V : Subgroup Ph) ((T.ph N j : (T.GN N).Γ)) b) ∧ hp b = (T.sg j : G0.Γ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `j`. Take `⟨b, hb⟩` from `elt_lim Ph (Ph ⧸ K) (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) U (fun N => (T.ph N j : (T.GN N).Γ)) (fun N => (hπ N).2.1)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Conclude with `close_map Ph (Ph ⧸ K) G0.Γ (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) (fun N => (T.h N).p) hp U (fun N => (T.ph N j : (T.GN N).Γ)) b _ (hp_cont.comp continuous_quot_mk) unif hb (fun W => hU (T.ph_lim W j (hPL W)))`. Establish `eta : ∀ j : Fin T.q, ∃ b : Ph ⧸ K, (∀ V : OpenNormalSubgroup Ph, ∀ᶠ N in (U : Filter ℕ), Close (π N) (QuotientGroup.mk' K) (V : Subgroup Ph) ((T.ta N j : (T.GN N).Γ)) b) ∧ hp b = 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Take `⟨b, hb⟩` from `elt_lim Ph (Ph ⧸ K) (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) U (fun N => (T.ta N j : (T.GN N).Γ)) (fun N => (hπ N).2.1)`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Use `close_map Ph (Ph ⧸ K) G0.Γ (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) (fun N => (T.h N).p) hp U (fun N => (T.ta N j : (T.GN N).Γ)) b _ (hp_cont.comp continuous_quot_mk) unif hb (fun W => Filter.Eventually.of_forall fun N => ?_)` and prove the remaining obligations. Simplify using `[T.ta_ker N j]`.
-
-Use `choose bph hbph hbphp using eph`. Use `choose bta hbta hbtap using eta`. Establish `memph : ∀ j, bph j ∈ G.η.ker`. Introduce `j`. Use `show G0.η (hp (bph j)) = 1`.
-
-Rewrite using `[hbphp j]`. Conclude with `(T.sg j).2`. Establish `memta : ∀ j, bta j ∈ G.η.ker`. Introduce `j`. Use `show G0.η (hp (bta j)) = 1`.
-
-Rewrite using `[hbtap j, map_one]`. Establish `hcomm : ∀ j, bph j * bta j = bta j * bph j`. Introduce `j`. Use `comm_lim l Ph (Ph ⧸ K) (fun N => (T.GN N).Γ) π (QuotientGroup.mk' K) U (fun N => (T.ph N j : (T.GN N).Γ)) (fun N => (T.ta N j : (T.GN N).Γ)) (fun N => T.Nq N j) (bph j) (bta j) hU (fun N => ⟨(hπ N).1, (hπ N).2.1⟩) continuous_quot_mk (fun V => by simpa [QuotientGroup.ker_mk'] usin …` and prove the remaining obligations. Establish `e` using `T.tame N j`.
-
-Rewrite `e` using `[hT.2 N, Subgroup.mem_bot, OneMemClass.coe_eq_one, inv_mul_eq_one]`. Establish `e2` using `congrArg Subtype.val e`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, SubmonoidClass.coe_pow] at e2`. Conclude with `e2.symm`. Establish `hpl` using `(pl_props l (T.GN N).Γ (Subgroup.comap (T.h N).p (T.H : Subgroup G0.Γ)) (T.H.toOpenSubgroup.isOpen.preimage (T.h N).cont)).2.2.2.1 W`.
-
-Use `hpl.1 (by rw [hT.2 N]; exact bot_le) _ ?_` and prove the remaining obligations. Simplify using `[Subgroup.mem_comap, T.ta_ker N j]`. Take `⟨s, hs, hsg⟩` from `hfg`. Conclude with `⟨ { Ph := Ph fg := ⟨hs.toFinset, by simpa [topGen_iff] using hsg⟩ U := U U_le := hU π := π π_cont := fun N => (hπ N).1 π_surj := fun N => (hπ N).2.1 G := G h := h πo := QuotientGroup.mk' K πo_cont := continuous_quot_mk πo_surj := QuotientGroup.mk'_surjective K modH := modH ct := …`. Rewrite using `[QuotientGroup.ker_mk']`.
-
-Conclude with `hKs.2.1 V`. Use `p_lim := unif`. Use `φ_lim := fun V => Filter.eventually_all.2 fun v => hFvconv v V`. Use `φu_lim := fun V => Filter.eventually_all.2 fun u => hFuconv u V`. Use `ph := fun j => ⟨bph j, memph j⟩`.
-
-Use `ta := fun j => ⟨bta j, memta j⟩`. Use `ph_lim := fun V => Filter.eventually_all.2 fun j => hbph j V`. Use `ta_lim := fun V => Filter.eventually_all.2 fun j => hbta j V`. Use `comm := fun j => Subtype.ext (hcomm j)`. Use `p_ph := fun j => Subtype.ext (hbphp j)`.
-
-Use `p_ta := fun j => Subtype.ext (hbtap j) }⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.selmer_cocycles_limit_and_descent_properties :
     S4 := by

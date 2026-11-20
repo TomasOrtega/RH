@@ -42,26 +42,26 @@ import Development.AbelianVarietyTheory.PublishedTheorems.DiscreteSeriesUnitary�
 namespace PositivityTheory.Prw
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.squareIntegrableSegment_of_ess h`.
+A detailed English derivation is pending.
 -/
 theorem squareIntegrableSegment_of (h : GlobalTheory.Published.EssSquareIntegrableSegments) : GlobalTheory.Published.SquareIntegrableSegment :=
   GlobalTheory.Published.squareIntegrableSegment_of_ess h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Published.cuspTraceClass_of_factorisation h`.
+A detailed English derivation is pending.
 -/
 theorem cuspTraceClass_of (h : GlobalTheory.Published.DixmierMalliavinFactorisation) : GlobalTheory.Published.CuspTraceClass :=
   GlobalTheory.Published.cuspTraceClass_of_factorisation h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.zelevinskyGrothendieckPolynomialRing_of_segments h₁ h₂ h₃`.
+A detailed English derivation is pending.
 -/
 theorem zelevinskyPolynomialRing_of (h₁ : GlobalTheory.Published.BernsteinZelevinskyFiniteness) (h₂ : GlobalTheory.Published.SegmentRepresentation)
     (h₃ : GlobalTheory.Published.GrothendieckRingPolynomial) : GlobalTheory.Published.ZelevinskyPolynomialRing :=
   GlobalTheory.T.zelevinskyGrothendieckPolynomialRing_of_segments h₁ h₂ h₃
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.toroidalChartsForFan_of_toroidalForFanKS h`.
+A detailed English derivation is pending.
 -/
 theorem toroidalChartsForFan_of (h : GlobalTheory.Published.ToroidalForFanKS) : GlobalTheory.Published.ToroidalChartsForFan :=
   GlobalTheory.toroidalChartsForFan_of_toroidalForFanKS h

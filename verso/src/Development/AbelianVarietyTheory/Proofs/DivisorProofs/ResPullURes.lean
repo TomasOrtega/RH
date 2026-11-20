@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.LBObs
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma res_res_eq_res_trans {X : Scheme.{0}} {U W Z : X.Opens} (h : W ≤ U) (h' : Z ≤ W) (x : Γ(X, U)ˣ) :
     res h' (res h x) = res (h'.trans h) x := by
@@ -21,7 +21,7 @@ private lemma res_res_eq_res_trans {X : Scheme.{0}} {U W Z : X.Opens} (h : W ≤
   rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `only [pullU, res, Units.coe_map, MonoidHom.coe_coe]`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.naturality, CommRingCat.comp_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma pullU_res_eq_res_pullU {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) (x : Γ(X, U)ˣ) :
     pullU f W (res h x) = res ((TopologicalSpace.Opens.map f.base).monotone h) (pullU f U x) := by
@@ -31,7 +31,7 @@ private lemma pullU_res_eq_res_pullU {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.O
   rfl
 
 /- English proof (translation)
-Rewrite using `[pullU_res_eq_res_pullU, res_res_eq_res_trans]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma res_pullU_res_eq_res_pullU' {X Y : Scheme.{0}} (f : Y ⟶ X) {U W : X.Opens} (h : W ≤ U) {Z : Y.Opens}
     (k : Z ≤ f ⁻¹ᵁ W) (x : Γ(X, U)ˣ) :
@@ -39,11 +39,9 @@ private lemma res_pullU_res_eq_res_pullU' {X Y : Scheme.{0}} (f : Y ⟶ X) {U W 
   rw [pullU_res_eq_res_pullU, res_res_eq_res_trans]
 
 /- English proof (translation)
-Introduce and unpack `⟨τ, hgen, hcomp⟩`. Establish `hle : ∀ (T : C') (j : PUnit → L.ι), V' T ⊓ (L.pull φ).U j ≤ φ ⁻¹ᵁ (V (H.obj T) ⊓ L.U (j PUnit.unit))` using `fun T j x hx ↦ ⟨hH T hx.1, LB.wchart_le L (fun _ ↦ φ) j PUnit.unit hx.2⟩`. Use `⟨fun T j ↦ res (hle T j) (pullU φ _ (τ (H.obj T) (j PUnit.unit))), fun T j j' ↦ ?_, fun T T' a j ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg (fun x ↦ res (fun y hy ↦ ⟨⟨hH T hy.1.1, LB.wchart_le L (fun _ ↦ φ) j PUnit.unit hy.1.2⟩, LB.wchart_le L (fun _ ↦ φ) j' PUnit.unit hy.2⟩ : V' T ⊓ (L.pull φ).U j ⊓ (L.pull φ).U j' ≤ φ ⁻¹ᵁ (V (H.obj T) ⊓ L.U (j PUnit.unit) ⊓ L.U (j' PUnit.unit))) (pullU φ _ x)) (hgen (H.obj …`. Simplify using `only [map_mul] at e`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `erw [res_pullU_res_eq_res_pullU', res_pullU_res_eq_res_pullU', res_pullU_res_eq_res_pullU'] at e`. Simplify using `only [LB.pull, LB.LinComb, Fintype.prod_unique, zpow_one]`. Use `erw [res_res_eq_res_trans, res_res_eq_res_trans, res_res_eq_res_trans]`. Conclude with `e`. Establish `e` using `congrArg (fun x ↦ res (hle T' j) (pullU φ _ x)) (hcomp (H.obj T) (H.obj T') (H.map a) (j PUnit.unit))`.
-
-Simplify using `only [map_mul, res_pullU_res_eq_res_pullU', res_res_eq_res_trans] at e`. Simplify using `only [res_res_eq_res_trans]`. Conclude with `e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFrame_pull (X : Scheme.{0}) (C : Type) [Category.{0} C] (V : C → X.Opens)
     (hV : ∀ ⦃T T' : C⦄, (T ⟶ T') → V T' ≤ V T) (L : LB X) (u : ∀ (T T' : C) (_ : T ⟶ T'), Γ(X, V T')ˣ)

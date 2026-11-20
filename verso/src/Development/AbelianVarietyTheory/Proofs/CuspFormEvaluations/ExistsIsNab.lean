@@ -17,13 +17,13 @@ open MvPolynomial (X)
 namespace GlobalTheory.CanonConn
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo c`. Use `letI : StarRing (𝓞 E) := H.starRing`. Establish `hs : ∀ a : 𝓞 E, star a = H.bar a` using `fun _ => rfl`. Establish `hC` using `GlobalTheory.T.exists_biextension_chart_with_germs_framed_point hL E H Dw l Xo c hs`. Use `choose C _hT hg using hC`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose g hg using hg`. Set `val : ∀ (S : Type) [CommRing S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S) (k : ℤ), LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L k (ptO Xo y.x)) → (Lt1 Dw →₀ ℕ) → S` to `fun S _ _ _ y k => match k with`. Consider the case `Int.ofNat k => fun F α => (C S y).B.nabVal S (C S y).h H.w0 k (g S y k F) (C S y).uvec (MvPolynomial.monomial α 1)`. Consider the case `Int.negSucc _ => fun _ _ => 0`. Set `nab : NabV Xo c` to `fun {S} _ _ y k F α => if h : Nonempty (Algebra ℚ S) then @val S _ _ h.some y k F α else 0`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨inferInstance, nab, hs, ?_⟩` and prove the remaining obligations. Introduce `S _ _ iQ y`. Use `⟨C S y, fun k F => ⟨_, hg S y k F⟩, ?_⟩` and prove the remaining obligations. Introduce `k F f hf α`. Establish `hne : Nonempty (Algebra ℚ S)` using `⟨iQ⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : nab y k F α = @val S _ _ hne.some y k F α` using `dif_pos hne`. Establish `h2 : hne.some = iQ` using `Subsingleton.elim _ _`. Use `h1.trans ?_` and prove the remaining obligations. Rewrite using `[h2, isGermFun_holds E H Dw l Xo c S y _ _ _ _ _ k F f _ hf (hg S y k F)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isNab : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∃ (_ : StarRing (𝓞 E)) (nab : NabV Xo c), IsNab Xo c nab := by
   intro hL E _ _ _ H Dw l Xo c

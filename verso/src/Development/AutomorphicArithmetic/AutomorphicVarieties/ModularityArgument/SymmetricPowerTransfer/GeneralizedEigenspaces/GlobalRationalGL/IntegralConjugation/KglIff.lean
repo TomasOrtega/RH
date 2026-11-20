@@ -9,7 +9,7 @@ open UpperTheory.V.W (Plc Lp)
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨fun i j => GlobalTheory.CptCent.entry_mem_of_mem_GLint' _ h i j, fun i j => GlobalTheory.CptCent.entry_mem_of_mem_GLint' _ (inv_mem h) i j⟩, fun h => GlobalTheory.CptCent.mem_GLint_of_entries' _ x h.1 h.2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem kgl_iff {L : Type} [Field L] [NumberField L] (w : Plc L) (x : GL (Fin 2) (w.adicCompletion L)) :
     x ∈ GlobalTheory.LFun.KGL w 2 ↔ (∀ i j, x.val i j ∈ w.adicCompletionIntegers L) ∧
@@ -19,27 +19,25 @@ private theorem kgl_iff {L : Type} [Field L] [NumberField L] (w : Plc L) (x : GL
     fun h => GlobalTheory.CptCent.mem_GLint_of_entries' _ x h.1 h.2⟩
 
 /- English proof (translation)
-Introduce `L _ _ _ B`. Establish `loc : ∀ (g : SA B.Δ) (w : Plc L) i j, (cLoc w (B.bS g : UA L 2)).val i j = B.ρ _ w rfl (Glob.mt ((g : DA B.Δ).1 (un w)) i j)` using `fun g w i j => by`. Use `B.bS_loc g w` as an intermediate fact. Conclude with `congrFun (congrFun this i) j`. Establish `locI : ∀ (g : SA B.Δ) (w : Plc L) i j, ((cLoc w (B.bS g : UA L 2))⁻¹).val i j = B.ρ _ w rfl (Glob.mt ((g : DA B.Δ).1 (un w))⁻¹ i j)` using `fun g w i j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `loc g⁻¹ w i j`. Rewrite `h` using `[map_inv]`. Simplify using `using h`. Use `⟨fun g v => ?_, fun g v => ?_, fun w S g => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_KD]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ w rfl`. Use `(kgl_iff w _).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[loc]`. Conclude with `(B.ρ_int _ _).1 (h1 i j) w rfl`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[locI]`. Conclude with `(B.ρ_int _ _).1 (h2 i j) w rfl`. Introduce `h`. Use `⟨fun i j => (B.ρ_int _ _).2 fun w hw => ?_, fun i j => (B.ρ_int _ _).2 fun w hw => ?_⟩` and prove the remaining obligations. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Substitute using the available equality.
 
-Use `((kgl_iff w _).1 (h w rfl)).1 i j` as an intermediate fact. Rewrite `this` using `[loc]`. Then use the resulting hypothesis. Substitute `hw` using the available equality. Use `((kgl_iff w _).1 (h w rfl)).2 i j` as an intermediate fact. Rewrite `this` using `[locI]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `h w rfl`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[loc, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `B.ρ _ w rfl ((1 : Matrix (Fin 2) (Fin 2) _) i j) = (1 : Matrix (Fin 2) (Fin 2) _) i j`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Introduce `h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Glob.mt ((g : DA B.Δ).1 v) = 1` using `by ext1 i j`. Rewrite using `[← sub_eq_zero]`. Use `B.ρ_inj v _ fun w hw => ?_` and prove the remaining obligations. Substitute `hw` using the available equality. Establish `h1` using `loc g w i j`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[h w rfl]`. Rewrite using `[map_sub, ← h1]`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin 2) (Fin 2) _) i j - B.ρ _ w rfl ((1 : Matrix (Fin 2) (Fin 2) _) i j) = 0`. Break down `eq_or_ne i j with rfl | hij` into its components or cases. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Matrix.one_apply_ne hij]`. Conclude with `Subtype.ext (Units.ext e)`. Apply `Units.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Rewrite using `[loc]`.
-
-Conclude with `S.ρ_eq _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.okS :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (B : Bridge L), (∀ (g : SA B.Δ) v, (g : DA B.Δ).1 v ∈ KD _ (Ov v) ↔ ∀ w, un w = v → cLoc w (B.bS g : UA L 2) ∈ GlobalTheory.LFun.KGL w 2) ∧ (∀ (g : SA B.Δ) v, (g : DA B.Δ).1 v = 1 ↔ ∀ w, un w = v → cLoc w (B.bS g : UA L 2) = 1) ∧ ∀ w (S : B.toRingBr.Split w) (g : SA B.Δ), cLoc w (B.bS g : UA L 2) = GeneralLinearGroup.map (S.i : Kv (un w) →+* Kw w) (Sig.eD S.hs ((g : DA B.Δ).1 (un w))) := by

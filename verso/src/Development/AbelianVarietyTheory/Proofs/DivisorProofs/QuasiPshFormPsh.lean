@@ -20,7 +20,7 @@ namespace GlobalTheory.QuasiPshTransfer
 open GlobalTheory.Published (IsPshExt)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Establish `hs : {z ∈ U | w z ≠ ⊥} = {z ∈ U | v z ≠ ⊥}` using `Set.ext fun z => and_congr_right fun hz => by rw [e z hz]`. Use `⟨fun z hz => (e z hz) ▸ h1 z hz, fun z hz => ?_, hs ▸ h3, fun κ => ?_⟩` and prove the remaining obligations. Conclude with `UpperSemicontinuousWithinAt.congr_of_eventuallyEq (f := v) (g := w) (h2 z hz) hz (eventually_nhdsWithin_of_forall e)`. Conclude with `GlobalTheory.isPsh_congr_on d U _ _ (h4 κ) fun z hz => by rw [e z hz]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isPshExt_congr {d : ℕ} {U : Set (Fin d → ℂ)} {v w : (Fin d → ℂ) → EReal}
     (h : IsPshExt U v) (e : ∀ z ∈ U, v z = w z) : IsPshExt U w := by
@@ -33,11 +33,9 @@ theorem isPshExt_congr {d : ℕ} {U : Set (Fin d → ℂ)} {v w : (Fin d → ℂ
   · exact GlobalTheory.isPsh_congr_on d U _ _ (h4 κ) fun z hz => by rw [e z hz]
 
 /- English proof (translation)
-Use `⟨fun z hz => ?_, fun z hz => ?_, fun z hz => ?_, fun κ => ?_⟩` and prove the remaining obligations. Take `⟨V, -, hz', -, hV⟩` from `h z hz`. Conclude with `hV.1 z hz'`. Take `⟨V, hVo, hz', -, hV⟩` from `h z hz`. Establish `hat : UpperSemicontinuousAt v z` using `fun y hy => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hV.2.1 z hz' y hy` as an intermediate fact. Rewrite `this` using `[nhdsWithin_eq_nhds.2 (hVo.mem_nhds hz')]`. Then use the resulting hypothesis. Conclude with `hat.upperSemicontinuousWithinAt U`. Take `⟨V, -, hz', hVU, hV⟩` from `h z hz`. Conclude with `closure_mono (s := {z ∈ V | v z ≠ ⊥}) (t := {z ∈ U | v z ≠ ⊥}) (fun y hy => ⟨hVU hy.1, hy.2⟩) (hV.2.2.1 hz')`.
-
-Conclude with `GlobalTheory.PshLocal.isPsh_of_local d U _ hU fun z hz => by`. Take `⟨V, hVo, hz', -, hV⟩` from `h z hz`. Conclude with `⟨V, hVo, hz', hV.2.2.2 κ⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isPshExt_of_local {d : ℕ} {U : Set (Fin d → ℂ)} {v : (Fin d → ℂ) → EReal} (hU : IsOpen U)
     (h : ∀ z ∈ U, ∃ V : Set (Fin d → ℂ), IsOpen V ∧ z ∈ V ∧ V ⊆ U ∧ IsPshExt V v) :
@@ -65,16 +63,16 @@ open GlobalTheory.Published (IsPshExt)
 open ReciprocityTheory.AnForm.A (IsPsh isPsh_iff_isLeviPsh_thm isPsh_sup_thm)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.mono hVU, fun z w hd => h.2 z w fun ζ hζ => hVU (hd ζ hζ)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPsh_mono {d : ℕ} {U V : Set (Fin d → ℂ)} {u : (Fin d → ℂ) → ℝ} (h : IsPsh U u) (hVU : V ⊆ U) :
     IsPsh V u :=
   ⟨h.1.mono hVU, fun z w hd => h.2 z w fun ζ hζ => hVU (hd ζ hζ)⟩
 
 /- English proof (translation)
-Establish `hc : IsPsh U fun _ => c` using `⟨upperSemicontinuousOn_const, fun z w _ => ⟨circleIntegrable_const _ _ _, by rw [Real.circleAverage_const]⟩⟩`. Use `isPsh_sup_thm d Bool U (fun b => if b then u else fun _ => c) hU (by` as an intermediate fact. Introduce and unpack `(_ | _)`. Simplify using `using hc`. Simplify using `using h)`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.isPsh_congr_on d U _ _ this fun z _ => ?_` and prove the remaining obligations. Simplify using `[Finset.sup'_insert, max_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isPsh_max_const {d : ℕ} {U : Set (Fin d → ℂ)} {u : (Fin d → ℂ) → ℝ} (hU : IsOpen U)
     (h : IsPsh U u) (c : ℝ) : IsPsh U fun z => max (u z) c := by
@@ -88,9 +86,9 @@ theorem isPsh_max_const {d : ℕ} {U : Set (Fin d → ℂ)} {u : (Fin d → ℂ)
   simp [Finset.sup'_insert, max_comm]
 
 /- English proof (translation)
-Establish `hg1 : IsPsh V g` using `(isPsh_iff_isLeviPsh_thm d V g hV hg).2 ⟨hg, hl⟩`. Use `⟨ht.1.add hg1.1, fun z w hd => ?_⟩` and prove the remaining obligations. Take `⟨i1, l1⟩` from `ht.2 z w hd`. Take `⟨i2, l2⟩` from `hg1.2 z w hd`. Use `⟨i1.add i2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show (fun ζ : ℂ => t (z + ζ • w) + g (z + ζ • w)) = (fun ζ : ℂ => t (z + ζ • w)) + (fun ζ : ℂ => g (z + ζ • w)) from rfl, Real.circleAverage_add i1 i2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem isPsh_add_of_levi_nonneg {d : ℕ} {V : Set (Fin d → ℂ)} {t g : (Fin d → ℂ) → ℝ}
     (hV : IsOpen V) (ht : IsPsh V t) (hg : ContDiffOn ℝ 2 g V)
@@ -105,15 +103,15 @@ theorem isPsh_add_of_levi_nonneg {d : ℕ} {V : Set (Fin d → ℂ)} {t g : (Fin
   linarith
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hv`. Establish `hg1 : IsPsh V g` using `(isPsh_iff_isLeviPsh_thm d V g hV hg).2 ⟨hg, hl⟩`. Establish `hgc : ContinuousOn g V` using `hg.continuousOn`. Establish `hs : {z ∈ V | (g z : EReal) + v z ≠ ⊥} = {z ∈ V | v z ≠ ⊥}` using `Set.ext fun z => and_congr_right fun _ => by simp [EReal.add_eq_bot_iff]`. Use `⟨fun z hz => (EReal.add_lt_top (EReal.coe_ne_top _) (h1 z hz)).ne, ?_, hs ▸ h3, fun κ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `UpperSemicontinuousOn.add' (continuous_coe_real_ereal.comp_upperSemicontinuousOn hg1.1 EReal.coe_strictMono.monotone) h2 fun z _ => EReal.continuousAt_add (Or.inl (EReal.coe_ne_top _)) (Or.inl (EReal.coe_ne_bot _))`. Use `GlobalTheory.PshLocal.isPsh_of_local d V _ hV fun z hz => ?_` and prove the remaining obligations. Use `set B := V ∩ g ⁻¹' Set.Iio (g z + 1) with hB`. Establish `hBo : IsOpen B` using `hgc.isOpen_inter_preimage hV isOpen_Iio`. Establish `hBV : B ⊆ V` using `Set.inter_subset_left`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set κ' := κ + g z + 1 with hκ'`. Establish `hT` using `isPsh_max_const hBo (isPsh_add_of_levi_nonneg hBo (isPsh_mono (h4 κ') hBV) (hg.mono hBV) fun z' hz' w => hl z' (hBV hz') w) (-κ)`. Use `⟨B, hBo, ⟨hz, by simp⟩, GlobalTheory.isPsh_congr_on d B _ _ hT fun z' hz' => ?_⟩` and prove the remaining obligations. Establish `hlt : g z' < g z + 1` using `hz'.2`. Establish `htop` using `h1 z' (hBV hz')`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Use `show max ((max (v z') ((-κ' : ℝ) : EReal)).toReal + g z') (-κ) = (max ((g z' : EReal) + v z') ((-κ : ℝ) : EReal)).toReal`. Generalize the expression as in `v z' = t at htop ⊢`. Proceed by induction on `t using EReal.rec with`. Consider the case `bot => simp <;> linarith`. Consider the case `coe r`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← EReal.coe_add, ← EReal.coe_strictMono.monotone.map_max, ← EReal.coe_strictMono.monotone.map_max, EReal.toReal_coe, EReal.toReal_coe]`. Break down `le_total (-κ') r with hr | hr` into its components or cases. Rewrite using `[max_eq_left hr, add_comm]`. Rewrite using `[max_eq_right hr, max_eq_right (by linarith), max_eq_right (by linarith)]`. Consider the case `top => exact absurd rfl htop`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isPshExt_add_of_levi_nonneg {d : ℕ} {V : Set (Fin d → ℂ)} {v : (Fin d → ℂ) → EReal}
     {g : (Fin d → ℂ) → ℝ} (hV : IsOpen V) (hv : IsPshExt V v) (hg : ContDiffOn ℝ 2 g V)
@@ -152,9 +150,9 @@ theorem isPshExt_add_of_levi_nonneg {d : ℕ} {V : Set (Fin d → ℂ)} {v : (Fi
   | top => exact absurd rfl htop
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `hv`. Establish `hc : ContinuousOn h V` using `fun x hx => (hh x hx).continuousAt.continuousWithinAt`. Use `⟨fun z hz => h1 _ (hm hz), h2.comp hc hm, fun z hz => ?_, fun κ => GlobalTheory.PshPullback.isPsh_comp D D' U V _ h hU hV (h4 κ) hh hm⟩` and prove the remaining obligations. Rewrite using `[mem_closure_iff]`. Introduce `o hoo hzo`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨_, ⟨z', hz', rfl⟩, -, hne⟩` from `mem_closure_iff.1 (h3 (hm hz)) _ (ho _ Set.inter_subset_right (hoo.inter hV)) ⟨z, ⟨hzo, hz⟩, rfl⟩`. Conclude with `⟨z', hz'.1, hz'.2, hne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isPshExt_comp {D D' : ℕ} {U : Set (Fin D → ℂ)} {V : Set (Fin D' → ℂ)}
     {v : (Fin D → ℂ) → EReal} {h : (Fin D' → ℂ) → (Fin D → ℂ)} (hU : IsOpen U) (hV : IsOpen V)
@@ -176,39 +174,33 @@ namespace GlobalTheory.QuasiPshTransfer
 open GlobalTheory.Published (IsPshExt)
 
 /- English proof (translation)
-Introduce `F _ _ Y e M I he a Θ θ v _ hθ hv`. Substitute `he` using the available equality. Introduce `W φ hφ c`. Use `isPshExt_of_local (c.finChart.isOpen_inter_preimage_symm hφ.1) fun z₀ hz₀ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `(M.A a).cover ((I.pt a).symm (c.finChart.symm z₀))`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `set x := (I.pt a).symm (c.finChart.symm z₀) with hx`. Take `⟨c', hc'⟩` from `I.alg a j`. Establish `hsrc : ((M.A a).chart j).source = I.pt a ⁻¹' c'.finChart.source`. Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_source]`. Establish `htgt : ((M.A a).chart j).target = c'.finChart.target`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_target]`. Establish `hsymm : ∀ ζ, ((M.A a).chart j).symm ζ = (I.pt a).symm (c'.finChart.symm ζ)` using `fun ζ => by`. Rewrite using `[hc', Homeomorph.transOpenPartialHomeomorph_symm_apply]`. Both sides reduce to the same expression. Use `set S := W ∩ I.pt a '' (Θ.U x ∩ ((M.A a).chart j).source) with hS`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSo : IsOpen S` using `hφ.1.inter ((I.pt a).isOpenMap _ ((Θ.isOpen_U x).inter ((M.A a).chart j).open_source))`. Establish `hy₀S : c.finChart.symm z₀ ∈ S` using `⟨hz₀.2, x, ⟨Θ.mem_U x, hj⟩, (I.pt a).apply_symm_apply _⟩`. Use `set V := c.finChart.target ∩ c.finChart.symm ⁻¹' S with hV`. Establish `hVo : IsOpen V` using `c.finChart.isOpen_inter_preimage_symm hSo`. Use `⟨V, hVo, ⟨hz₀.1, hy₀S⟩, fun z hz => ⟨hz.1, hz.2.1⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : ∀ z ∈ V, c.finChart.symm z ∈ c'.finChart.source ∧ (I.pt a).symm (c.finChart.symm z) ∈ Θ.U x ∧ c.finChart.symm z ∈ I.pt a '' Θ.U x`. Introduce and unpack `z ⟨-, -, x', ⟨hx'U, hx's⟩, e⟩`. Rewrite `hx's` using `[hsrc]`. Use `⟨e ▸ hx's, ?_, ⟨x', hx'U, e⟩⟩` and prove the remaining obligations. Rewrite using `[← e, Homeomorph.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hx'U`. Use `set ψ : CxPts Y.str (I.ε a) → ℝ := fun y => 2 * Θ.φ x ((I.pt a).symm y) with hψ`. Establish `hψp` using `hθ x`. Use `set G : CxPts Y.str (I.ε a) → ℝ := fun y => φ y + (-1) * ψ y with hG`. Use `set h := c'.finChart ∘ c.finChart.symm with hh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set U := GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.chartPart (M.A a) j (Θ.U x) with hU`. Establish `hUo : IsOpen U` using `((M.A a).chart j).isOpen_inter_preimage_symm (Θ.isOpen_U x)`. Establish `hsh : ∀ z ∈ V, ((M.A a).chart j).symm (h z) = (I.pt a).symm (c.finChart.symm z)` using `fun z hz => by`. Rewrite using `[hsymm, hh, Function.comp_apply, c'.finChart.left_inv (hmem z hz).1]`. Establish `h1 : IsPshExt V ((fun ζ => ((2 * Θ.φ x (((M.A a).chart j).symm ζ) : ℝ) : EReal) + v (((M.A a).chart j).symm ζ)) ∘ h)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isPshExt_comp (U := U) (V := V) (h := h) hUo hVo (hv x j) ?_ ?_ ?_` and prove the remaining obligations. Conclude with `(c.analyticOnNhd_trans c').mono fun z hz => ⟨hz.1, (hmem z hz).1⟩`. Introduce `z hz`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[htgt]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `c'.finChart.map_source (hmem z hz).1`. Use `show ((M.A a).chart j).symm (h z) ∈ Θ.U x`. Rewrite using `[hsh z hz]`. Conclude with `(hmem z hz).2.1`. Introduce `N hNV hNo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hh, Set.image_comp]`. Use `c'.finChart.isOpen_image_of_subset_source (c.finChart.symm.isOpen_image_of_subset_source hNo fun z hz => (hNV hz).1) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(hmem z (hNV hz)).1`. Establish `hφc : ContDiffOn ℝ 2 (φ ∘ c.finChart.symm) V` using `(((c.contDiffOn_finChart_iff _ W _).2 (hφ.2.1.chart hφ.1 c)).of_le (WithTop.coe_le_coe.2 le_top)).mono fun z hz => ⟨hz.1, hz.2.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψc : ContDiffOn ℝ 2 (ψ ∘ c.finChart.symm) V` using `(((c.contDiffOn_finChart_iff _ _ _).2 (hψp.2.1.chart hψp.1 c)).of_le (WithTop.coe_le_coe.2 le_top)).mono fun z hz => ⟨hz.1, (hmem z hz).2.2⟩`. Establish `hGc : ContDiffOn ℝ 2 (G ∘ c.finChart.symm) V` using `hφc.add (contDiffOn_const.mul hψc)`. Establish `hlevi : ∀ z ∈ V, ∀ w, ReciprocityTheory.AnForm.levi (G ∘ c.finChart.symm) z w = 0`. Introduce `z hz w`. Establish `hy : c.finChart.symm z ∈ c.e.source` using `c.finChart.map_target hz.1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyW : c.finChart.symm z ∈ W` using `hz.2.1`. Establish `hyψ` using `(hmem z hz).2.2`. Establish `e1` using `hφ.2.2 c _ hy hyW w`. Establish `e2` using `hψp.2.2 c _ hy hyψ w`. Establish `hφa` using `hφ.2.1.contDiffAt_two hφ.1 hy hyW`.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hψa` using `hψp.2.1.contDiffAt_two hψp.1 hy hyψ`. Establish `hGa : ContDiffAt ℝ 2 (G ∘ c.e.symm) (c.e (c.finChart.symm z))` using `hφa.add (contDiffAt_const.mul hψa)`. Establish `e3` using `c.leviV_re_eq hGa w`. Rewrite `e3` using `[c.finChart.right_inv hz.1]`. Rewrite using `[← e3]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `c.levi G (c.finChart.symm z) w = 0`. Rewrite using `[hG, AlgChart.levi_add hφa (contDiffAt_const.mul hψa), AlgChart.levi_const_mul _ hψa]`. Rewrite `e1`, `e2` using `[ddcForm]`. Establish `: c.levi φ (c.finChart.symm z) w = c.levi ψ (c.finChart.symm z) w`. Use `e1.symm.trans e2` as an intermediate fact.
-
-Clear denominators, using `at this` for the nonvanishing conditions. Conclude with `this`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `isPshExt_add_of_levi_nonneg hVo h1 hGc fun z hz w => (hlevi z hz w).ge`.
-
-Use `isPshExt_congr h2 fun z hz => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`. Rewrite using `[hsh z hz, ← add_assoc, ← EReal.coe_add]`. Use `congr 2`. Simplify using `only [hG, hψ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isFormPsh_of_isQuasiPsh : ∀ (F : Type) [Field F] [NumberField F] (Y : Var F) (e : ℕ) (M : Man e) (I : ManIs M Y), Y.dim = e → ∀ (a : Fin (M.n + 1)) (Θ : LocPot (M.X a)) (θ : ChartForm Y.str (I.ε a) Y.dim) (v : M.X a → EReal), IsPotential (M.A a) Θ → (∀ x, GlobalTheory.ShFam.IsPotential (AnRead.all Y.str (I.ε a) Y.dim) θ (I.pt a '' Θ.U x) (fun y => 2 * Θ.φ x ((I.pt a).symm y))) → GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic.IsQuasiPsh (M.A a) Θ v → GlobalTheory.Published.IsFormPsh (AnRead.all Y.str (I.ε a) Y.dim) θ (v ∘ (I.pt a).symm) := by
   intro F _ _ Y e M I he a Θ θ v _ hθ hv

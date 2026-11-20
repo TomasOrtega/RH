@@ -27,13 +27,13 @@ Both sides reduce to the same expression.
     ((conjHom U s g : U) : G) = s⁻¹ * g * s := rfl
 
 /- English proof (translation)
-The claim follows from `N.cont.comp (f := fun m : N.V => (s, m)) (continuous_const.prodMk continuous_id)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rho' (N : TRep R G) (s : G) : Continuous (N.rho s) :=
   N.cont.comp (f := fun m : N.V => (s, m)) (continuous_const.prodMk continuous_id)
 
 /- English proof (translation)
-Establish `: s * (s⁻¹ * g * s) = g * s` using `by group`. Rewrite using `[← Module.End.mul_apply, ← map_mul, this, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_conj (N : TRep R G) (s g : G) (m : N.V) :
     N.rho s (N.rho (s⁻¹ * g * s) m) = N.rho g (N.rho s m) := by
@@ -78,7 +78,7 @@ variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [
   {M M' : TRep R G} {U : Subgroup G} [U.Normal] (P : Pair M' (M.resSub U))
 
 /- English proof (translation)
-Rewrite using `[hφ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phi_apply (hφ : P.φ = U.subtype) (g : U) : P.φ g = (g : G) := by rw [hφ]; rfl
 
@@ -95,7 +95,7 @@ noncomputable def PU (hφ : P.φ = U.subtype) : Pair (M'.resSub U) (M.resSub U) 
 noncomputable def eqv (hP : IsHomeomorph P.u) : M'.V ≃ₗ[R] (M.resSub U).V := LinearEquiv.ofBijective P.u hP.bijective
 
 /- English proof (translation)
-The claim follows from `(eqv P hP).apply_symm_apply m`.
+A detailed English derivation is pending.
 -/
 theorem eqv_symm (hP : IsHomeomorph P.u) (m : (M.resSub U).V) : P.u ((eqv P hP).symm m) = m :=
   (eqv P hP).apply_symm_apply m

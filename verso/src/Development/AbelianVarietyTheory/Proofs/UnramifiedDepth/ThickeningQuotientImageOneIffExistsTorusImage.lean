@@ -19,11 +19,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Establish `A : ∀ {X Y : Over S} (a : X ⟶ Y), ((Over.pullback f).map a).left ≫ pullback.fst Y.hom f = pullback.fst X.hom f ≫ a.left` using `fun a => pullback.lift_fst _ _ _`. Set `z : Over.mk t ⟶ (Over.pullback f).obj (𝟙_ (Over S))` to `toUnit _ ≫ Functor.LaxMonoidal.ε (Over.pullback f)`. Establish `h1 : (1 : Over.mk t ⟶ (Over.pullback f).obj G) = z ≫ (Over.pullback f).map η[G]`. Rewrite using `[Hom.one_def, Functor.obj.η_def, ← Category.assoc]`. Establish `h2 : z.left ≫ pullback.fst (𝟙_ (Over S)).hom f = (toUnit (Over.mk r)).left`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1 : pullback.fst (𝟙_ (Over S)).hom f ≫ (𝟙_ (Over S)).hom = pullback.snd _ f ≫ f` using `pullback.condition`. Establish `a2 : z.left ≫ pullback.snd (𝟙_ (Over S)).hom f = t` using `Over.w z`. Establish `a3 : (toUnit (Over.mk r)).left ≫ (𝟙_ (Over S)).hom = r` using `Over.w _`. Establish `: Mono (𝟙_ (Over S)).hom` using `inferInstanceAs (Mono (𝟙 S))`. Rewrite using `[← cancel_mono (𝟙_ (Over S)).hom, a3, Category.assoc, a1, ← Category.assoc, a2, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Over.comp_left, Category.assoc, A, ← Category.assoc, h2, Hom.one_def, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem one_left_fst {S S' Z : Scheme.{0}} (G : Over S) [GrpObj G] (f : S' ⟶ S) {t : Z ⟶ S'} {r : Z ⟶ S}
     (h : t ≫ f = r) :
@@ -44,28 +44,26 @@ private theorem one_left_fst {S S' Z : Scheme.{0}} (G : Over S) [GrpObj G] (f : 
   rw [h1, Over.comp_left, Category.assoc, A, ← Category.assoc, h2, Hom.one_def, Over.comp_left]
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (Out.thick R I k)` using `IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective`. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mono_thick (R : Type) [CommRing R] (I : Ideal R) (k : ℕ) : Mono (Out.thick R I k) := by
   have : IsClosedImmersion (Out.thick R I k) := IsClosedImmersion.spec_of_surjective _ Ideal.Quotient.mk_surjective
   infer_instance
 
 /- English proof (translation)
-Introduce `R _ _ I D k G _ _ c S _ _ hS z`. Establish `hm` using `mono_thick R I k`. Establish `hf : Mono (pullback.fst D.P.A.hom (Out.thick R I k))` using `inferInstance`. Set `t : Spec (CommRingCat.of S) ⟶ Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))` to `Spec.map (CommRingCat.ofHom (Ideal.Quotient.lift (I ^ (k + 1)) (algebraMap R S) hS))`. Establish `ht : t ≫ Out.thick R I k = Spec.map (CommRingCat.ofHom (algebraMap R S))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `hw : ∀ (w : Spec (CommRingCat.of S) ⟶ (Out.thickObj R I k G).left), w ≫ (Out.fstG I k G).left = z.left → w ≫ (Out.thickObj R I k G).hom = t`. Introduce `w h`. Rewrite using `[← cancel_mono (Out.thick R I k), ht]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (Out.thickObj R I k G).hom ≫ Out.thick R I k = (Out.fstG I k G).left ≫ G.hom` using `(pullback.condition (f := G.hom) (g := Out.thick R I k)).symm`. Rewrite using `[Category.assoc, h1, ← Category.assoc, h]`. Conclude with `Over.w z`. Establish `h1 : (1 : Over.mk t ⟶ Out.thickObj R I k D.P.A).left ≫ pullback.fst D.P.A.hom (Out.thick R I k) = (1 : sp (R₀` using `R) S ⟶ D.P.A).left := one_left_fst D.P.A (Out.thick R I k) ht`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, a, b⟩`. Set `x : Over.mk t ⟶ Out.thickObj R I k G` to `Over.homMk w (hw w a)`. Establish `hx : x ≫ c.q = toUnit _ ≫ η[Out.thickObj R I k D.P.A]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `(cancel_mono (pullback.fst D.P.A.hom (Out.thick R I k))).1 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `((Category.assoc _ _ _).trans b).trans h1.symm`. Set `u` to `c.isKernel.lift x (toUnit _) hx`. Establish `hu : u ≫ c.i = x` using `c.isKernel.lift_fst _ _ _`. Use `⟨(Units.map (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom.toMonoidHom).comp (splitTorusPointsEquiv _ D.X (Over.mk t) u), u.left, fun χ => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg (Scheme.ΓSpecIso (CommRingCat.of S)).hom.hom (splitTorusPointsEquiv_val _ D.X (Over.mk t) u χ)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : u.left ≫ c.i.left = w` using `congrArg (·.left) hu`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) e)).trans a`. Introduce and unpack `⟨χ, w, -, a⟩`. Establish `a' : (w ≫ c.i.left) ≫ (Out.fstG I k G).left = z.left` using `(Category.assoc _ _ _).trans a`. Use `⟨w ≫ c.i.left, a', ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Set `u : Over.mk t ⟶ splitTorus (Spec (CommRingCat.of (R ⧸ I ^ (k + 1)))) D.X` to `Over.homMk w (by`. Use `hw _ a'` as an intermediate fact. Rewrite `this` using `[Category.assoc, Over.w c.i]`. Conclude with `this)`. Establish `hu : u ≫ c.i ≫ c.q = 1`.
-
-Rewrite using `[c.isKernel.w, Hom.one_def, ← Category.assoc]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Establish `e : (w ≫ c.i.left) ≫ c.q.left = (1 : Over.mk t ⟶ Out.thickObj R I k D.P.A).left` using `(Category.assoc _ _ _).trans (congrArg (·.left) hu)`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ _) e)).trans h1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qRel_one_iff_exists_iRel : ∀ (R : Type) [CommRing R] [IsDomain R] (I : Ideal R) (D : Out.DegPre R) (k : ℕ) (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (c : Out.GtCoord I D k G) (S : Type) [CommRing S] [Algebra R S], Kills I k S → ∀ z, QRel c S z 1 ↔ ∃ χ, IRel c S χ z := by
   intro R _ _ I D k G _ _ c S _ _ hS z

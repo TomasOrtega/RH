@@ -19,9 +19,9 @@ section Calc
 variable {m n : Type} [Fintype m] [Fintype n]
 
 /- English proof (translation)
-Establish `e : (fun x => (X x * Y x).trace) = fun x => ∑ a, (X x * Y x) a a` using `rfl`. Rewrite using `[e, dbar_sum (fun a _ => ((hX.mul hY).diff a a))]`. Use `mdbar_mul hX hY η` as an intermediate fact. Simplify using `only [ContinuousLinearMap.sum_apply, Matrix.trace, Matrix.diag]`. Rewrite using `[← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `h2` using `congrFun (congrFun this a) a`. Simplify using `only [mdbar_apply, Matrix.add_apply] at h2`. Rewrite using `[h2, add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dbar_trace_mul {X : V → Matrix n m ℂ} {Y : V → Matrix m n ℂ} {z : V}
     (hX : MContDiffAt 1 X z) (hY : MContDiffAt 1 Y z) (η : V) :
@@ -39,9 +39,9 @@ theorem dbar_trace_mul {X : V → Matrix n m ℂ} {Y : V → Matrix m n ℂ} {z 
 variable [DecidableEq m] [DecidableEq n]
 
 /- English proof (translation)
-Establish `e : (fun x => (X x * Y x).trace) = fun x => ∑ a, (X x * Y x) a a` using `rfl`. Rewrite using `[e, del_sum (fun a _ => (hX.mul hY).diff a a)]`. Simplify using `only [ContinuousLinearMap.sum_apply]`. Establish `h1 : ∑ a, del (fun x => (X x * Y x) a a) z ξ = (mdel (fun x => X x * Y x) z ξ).trace` using `rfl`. Rewrite using `[h1, mdel_mul hX hY]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [homDel, Matrix.add_mul, Matrix.sub_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.trace_add, Matrix.trace_sub, Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm (conn B z ξ)]`. Simplify using `only [Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem del_trace_mul {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ} {X : V → Matrix n m ℂ}
     {Y : V → Matrix m n ℂ} {z : V} (hX : MContDiffAt 1 X z) (hY : MContDiffAt 1 Y z) (ξ : V) :
@@ -59,9 +59,9 @@ theorem del_trace_mul {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ} {X :
   ring
 
 /- English proof (translation)
-Establish `hT1 : MContDiffAt 1 T z` using `hT.of_le one_le_two`. Establish `hcA : MContDiffAt 1 (fun x => conn A x ξ) z` using `hA.conn hAu (by norm_num) ξ`. Establish `hcB : MContDiffAt 1 (fun x => conn B x ξ) z` using `hB.conn hBu (by norm_num) ξ`. Establish `hdT : MContDiffAt 1 (fun x => mdel T x ξ) z` using `hT.mdel (by norm_num) ξ`. Use `show mdbar (fun x => mdel T x ξ + conn B x ξ * T x - T x * conn A x ξ) z η = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show (fun x => mdel T x ξ + conn B x ξ * T x - T x * conn A x ξ) = fun x => (mdel T x ξ + conn B x ξ * T x) + -(T x * conn A x ξ) from`. Use function extensionality and compare the values at `fun x => sub_eq_add_neg _ _]`. Rewrite using `[mdbar_add (hdT.add (hcB.mul hT1)) (hT1.mul hcA).neg, mdbar_neg, mdbar_add hdT (hcB.mul hT1), mdbar_mul hcB hT1, mdbar_mul hT1 hcA, mdbar_mdel hT]`. Simplify using `only [homDel, curv, mdel_mdbar hT, Matrix.neg_mul, Matrix.mul_neg]`. Normalize the expressions using the abelian group laws.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mdbar_homDel {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ} {T : V → Matrix n m ℂ} {z : V}
     (hA : MContDiffAt 2 A z) (hAu : IsUnit (A z).det) (hB : MContDiffAt 2 B z)
@@ -82,7 +82,7 @@ theorem mdbar_homDel {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ} {T : 
   abel
 
 /- English proof (translation)
-Establish `hA2 : MContDiffAt 2 A z` using `hA.of_le (by norm_cast)`. Establish `hB2 : MContDiffAt 2 B z` using `hB.of_le (by norm_cast)`. Establish `hT2 : MContDiffAt 2 T z` using `hT.of_le (by norm_cast)`. Conclude with `((hT2.mdel (by norm_num) ξ).add ((hB2.conn hBu (by norm_num) ξ).mul (hT2.of_le one_le_two))).sub ((hT2.of_le one_le_two).mul (hA2.conn hAu (by norm_num) ξ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_homDel {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ} {T : V → Matrix n m ℂ}
     {z : V} (hA : MContDiffAt ∞ A z) (hAu : IsUnit (A z).det) (hB : MContDiffAt ∞ B z)
@@ -97,7 +97,7 @@ theorem mContDiffAt_homDel {A : V → Matrix m m ℂ} {B : V → Matrix n n ℂ}
 end Calc
 
 /- English proof (translation)
-Simplify using `only [chTwo, wedge, Matrix.trace, Matrix.diag, Matrix.mul_apply, Finset.sum_add_distrib, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chTwo_eq_trace {n : Type} [Fintype n] [DecidableEq n] (H : V → Matrix n n ℂ)
     (z ξ₁ η₁ ξ₂ η₂ : V) : chTwo H z ξ₁ η₁ ξ₂ η₂ = kappa ^ 2 / 2 *
@@ -109,7 +109,7 @@ theorem chTwo_eq_trace {n : Type} [Fintype n] [DecidableEq n] (H : V → Matrix 
 variable {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l]
 
 /- English proof (translation)
-Establish `hP` using `incl_mul_orthProj_add (m := m) (l := l) H`. Establish `e : K * K' = K * (incl m l * orthProj H + orthLift H * quotMap m l) * K' * (incl m l * orthProj H + orthLift H * quotMap m l)` using `by rw [hP]; simp`. Rewrite using `[e]`. Simplify using `only [blockSS, blockSQ, blockQS, blockQQ, Matrix.mul_add, Matrix.add_mul, Matrix.trace_add, Matrix.mul_assoc, Matrix.trace_mul_comm (orthProj H), Matrix.trace_mul_comm (quotMap m l)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_mul_eq_blocks (H K K' : Matrix (m ⊕ l) (m ⊕ l) ℂ) :
     (K * K').trace = (blockSS H K * blockSS H K').trace + (blockSQ H K * blockQS K').trace +
@@ -127,15 +127,15 @@ section Deriv
 variable {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V}
 
 /- English proof (translation)
-Establish `hS` using `h.sub hs`. Establish `hQ` using `h.quot hs`. Establish `hSu : ∀ x ∈ U, IsUnit (gramS H x).det` using `hs`. Establish `hQu : ∀ x ∈ U, IsUnit (gramQ H x).det` using `fun x hx => hQ.isUnit x hx`. Establish `sγ : ∀ x ∈ U, MContDiffAt ∞ (fun y => extFormAdj H y ξ') x` using `fun x hx => GlobalTheory.IndefiniteRowSideFullHecke.CovariantSecondFundamentalForm.smooth_extFormAdj h hs hx ξ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sβ : ∀ x ∈ U, MContDiffAt ∞ (fun y => extForm H y η') x` using `fun x hx => GlobalTheory.IndefiniteRowSideFullHecke.CovariantSecondFundamentalForm.smooth_extForm h hs hx η'`. Establish `one : ∀ {p q : Type} {F : V → Matrix p q ℂ} {x : V}, MContDiffAt ∞ F x → MContDiffAt 1 F x` using `fun hF => hF.of_le (by norm_cast)`. Establish `two : ∀ {p q : Type} {F : V → Matrix p q ℂ} {x : V}, MContDiffAt ∞ F x → MContDiffAt 2 F x` using `fun hF => hF.of_le (by norm_cast)`. Establish `htr : ContDiffAt ℝ 2 (fun x => (extFormAdj H x ξ' * extForm H x η').trace) z`. Establish `hM` using `(two (sγ z hz)).mul (two (sβ z hz))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `ContDiffAt.sum fun a _ => hM a a`. Establish `e : (fun x => extTrace H x ξ' η') = fun x => kappa • (extFormAdj H x ξ' * extForm H x η').trace` using `rfl`. Rewrite using `[e, ddbar_const_smul kappa htr, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smul_apply, smul_eq_mul, ddbar_eq_dbar_del htr]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `ev : (fun x => del (fun y => (extFormAdj H y ξ' * extForm H y η').trace) x ξ) =ᶠ[𝓝 z] fun x => (homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ') x ξ * extForm H x η').trace + (extFormAdj H x ξ' * homDel (gramQ H) (gramS H) (fun y => extForm H y η') x ξ).trace` using `by filter_upwards [h.isOpen.mem_nhds hz] with x hx`. Conclude with `del_trace_mul (one (sγ x hx)) (one (sβ x hx)) ξ`. Establish `hD1 : MContDiffAt 1 (fun x => homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ') x ξ) z` using `mContDiffAt_homDel (hS.mContDiffAt hz) (hSu z hz) (hQ.mContDiffAt hz) (hQu z hz) (sγ z hz) ξ`. Establish `hD2 : MContDiffAt 1 (fun x => homDel (gramQ H) (gramS H) (fun y => extForm H y η') x ξ) z` using `mContDiffAt_homDel (hQ.mContDiffAt hz) (hQu z hz) (hS.mContDiffAt hz) (hSu z hz) (sβ z hz) ξ`. Establish `dtr : ∀ {F : V → Matrix l m ℂ} {G : V → Matrix m l ℂ}, MContDiffAt 1 F z → MContDiffAt 1 G z → DifferentiableAt ℝ (fun x => (F x * G x).trace) z` using `fun hF hG => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM` using `hF.mul hG`. Simplify using `only [Matrix.trace, Matrix.diag]`. Conclude with `DifferentiableAt.fun_sum fun a _ => hM.diff a a`. Rewrite using `[dbar_congr ev, dbar_add (dtr hD1 (one (sβ z hz))) (dtr (one (sγ z hz)) hD2), ContinuousLinearMap.add_apply, dbar_trace_mul hD1 (one (sβ z hz)), dbar_trace_mul (one (sγ z hz)) hD2, mdbar_homDel (A := gramQ H) (B := gramS H) (two (hQ.mContDiffAt hz)) (hQu z hz) (two (hS.mContDiffA …`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddbar_extTrace (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram (H x)).det)
     (hz : z ∈ U) (ξ η ξ' η' : V) :
@@ -194,17 +194,17 @@ theorem ddbar_extTrace (h : IsHermFrame U H) (hs : ∀ x ∈ U, IsUnit (subGram 
 end Deriv
 
 /- English proof (translation)
-Introduce `V _ _ _ _ m l _ _ _ _ U H z h hs hz hb ξ₁ η₁ ξ₂ η₂`. Establish `hU : U ∈ 𝓝 z` using `h.isOpen.mem_nhds hz`. Establish `hFD : ∀ η, mdbar (fun x => homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ₂) x ξ₁) z η = mdbar (fun x => homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ₁) x ξ₂) z η`. Introduce `η`. Use `mdbar_congr ?_ η` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hU] with x hx`. Conclude with `sub_eq_zero.1 ((hb x hx).2.2.2.2.2.2.2.2 ξ₁ ξ₂)`. Establish `hG : homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ₂) z ξ₁ = homDel (gramS H) (gramQ H) (fun y => extFormAdj H y ξ₁) z ξ₂` using `sub_eq_zero.1 ((hb z hz).2.2.2.2.2.2.2.2 ξ₁ ξ₂)`. Establish `hBd : mdbar (fun y => extForm H y η₂) z η₁ = mdbar (fun y => extForm H y η₁) z η₂` using `sub_eq_zero.1 ((hb z hz).2.2.2.2.2.2.2.1 η₁ η₂)`. Establish `hHm : ∀ ξ, homDel (gramQ H) (gramS H) (fun x => mdbar (fun y => extForm H y η₂) x η₁) z ξ = homDel (gramQ H) (gramS H) (fun x => mdbar (fun y => extForm H y η₁) x η₂) z ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ξ`. Establish `ev : (fun x => mdbar (fun y => extForm H y η₂) x η₁) =ᶠ[𝓝 z] fun x => mdbar (fun y => extForm H y η₁) x η₂` using `by filter_upwards [hU] with x hx`. Conclude with `sub_eq_zero.1 ((hb x hx).2.2.2.2.2.2.2.1 η₁ η₂)`. Simplify using `only [homDel]`. Rewrite using `[mdel_congr ev ξ, hBd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, -, hSS, hSQ, hQS, hQQ, -, -⟩` from `hb z hz`. Establish `hK : ∀ ξ η ξ' η', (curv H z ξ η * curv H z ξ' η').trace = ((curv (gramS H) z ξ η + extForm H z η * extFormAdj H z ξ) * (curv (gramS H) z ξ' η' + extForm H z η' * extFormAdj H z ξ')).trace + (homDel (gramQ H) (gramS H) (fun y => extForm H y η) z ξ * mdbar (fun y => extFormAdj H y …`. Introduce `ξ η ξ' η'`. Rewrite using `[trace_mul_eq_blocks (H z)]`. Simplify using `only [hSS, hSQ, hQS, hQQ, wedgeAntiHol, wedgeHolAnti, covDelAnti, dbarHol, neg_neg, sub_neg_eq_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `c1 : ∀ (X : Matrix m m ℂ) (P : Matrix m l ℂ) (Q : Matrix l m ℂ), (X * (P * Q)).trace = (Q * (X * P)).trace` using `fun X P Q => by`. Rewrite using `[← Matrix.mul_assoc, Matrix.trace_mul_comm]`. Establish `c3 : ∀ (Y : Matrix l l ℂ) (Q : Matrix l m ℂ) (P : Matrix m l ℂ), (Y * (Q * P)).trace = (Q * (P * Y)).trace` using `fun Y Q P => by`. Rewrite using `[Matrix.trace_mul_comm, Matrix.mul_assoc]`. Establish `c4 : ∀ (P : Matrix m l ℂ) (Q : Matrix l m ℂ), (P * Q).trace = (Q * P).trace` using `fun P Q => Matrix.trace_mul_comm P Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [ddcForm, ddbar_extTrace h hs hz, chTwo_eq_trace, hK]`. Simplify using `only [hFD, hG, hBd, hHm]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_sub, Matrix.sub_mul, Matrix.trace_add, Matrix.trace_sub, Matrix.mul_assoc]`. Simplify using `only [c1, c3, c4, Matrix.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem ddcForm_extTrace_eq : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
     [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m]

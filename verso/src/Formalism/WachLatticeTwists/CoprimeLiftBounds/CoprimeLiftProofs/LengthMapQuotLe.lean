@@ -10,9 +10,9 @@ namespace Formalism.RepresentationBoundsCohomology.BR
 open Formalism.NG Formalism.NG.IdempotentNormalFormsRhoFacts
 
 /- English proof (translation)
-Use `Module.length_le_of_surjective ((S'.comap S.subtype).mapQ ((S'.map f).comap (S.map f).subtype) (f.submoduleMap S) ?_) ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `Submodule.mem_map_of_mem hx`. Introduce `y`. Take `⟨y0, rfl⟩` from `Submodule.mkQ_surjective _ y`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `LinearMap.submoduleMap_surjective f S y0`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma length_map_quot_le {O X Y : Type*} [CommRing O] [AddCommGroup X] [Module O X] [AddCommGroup Y]
     [Module O Y] (f : X →ₗ[O] Y) (S S' : Submodule O X) :
@@ -28,9 +28,9 @@ lemma length_map_quot_le {O X Y : Type*} [CommRing O] [AddCommGroup X] [Module O
     exact ⟨Submodule.Quotient.mk x, rfl⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ Dw _ M _ _ ρM ε T₁ T₂ _ _ _ _ ρ₁ π γ C₁ CP Hc Cs _ _ cls pr Fs Im X hTate hIm hle hX hcup`. Use `⟨(annih pr Im).map Hc.subtype, Submodule.map_mono (annih_anti pr hle), (length_map_quot_le Hc.subtype (annih pr Im) (annih pr Fs)).trans (annColength O Hc Cs pr Fs Im hle), fun b hb => ?_⟩` and prove the remaining obligations. Use `⟨⟨_, hX b hb⟩, ?_, rfl⟩` and prove the remaining obligations. Use `(mem_annih pr Im _).2 fun x hx => ?_` and prove the remaining obligations. Take `⟨a, ha, hC, rfl⟩` from `hIm x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hTate a b (hX b hb) ha hC (hcup b hb a ha hC)`.
+A detailed English derivation is pending.
 -/
 theorem rowRho : StatRowRho := by
   intro O _ _ _ Dw _ M _ _ ρM ε T₁ T₂ _ _ _ _ ρ₁ π γ C₁ CP Hc Cs _ _ cls pr Fs Im X
@@ -55,9 +55,9 @@ def psiY (r : G →* A) (χ : G →* T'ˣ) (E e₁ : A) (δ : T') {ι : Type*} [
 end PsiY
 
 /- English proof (translation)
-Introduce `O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 Dw ℓ c cB deg Hc F hFH hc hH htor hlen`. Use `⟨Hc ⊓ divBy F ((ℓ : O) ^ c), le_inf hFH ?_, ?_, fun φ => ⟨hH φ, ?_⟩⟩` and prove the remaining obligations. Introduce `z hz show ((ℓ : O) ^ c) • z ∈ F`. Conclude with `F.smul_mem _ hz`. Conclude with `hlen.trans (mul_le_mul' (mul_le_mul' le_rfl (by exact_mod_cast hc)) (add_le_add le_rfl one_le_two))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((ℓ : O) ^ c) • (Submodule.mkQ _ (restrictCocycles1 (uRep O (M := M) r χ) Dw (colPsi (O := O) (M := M) r χ E e₁ δ D j Kc k0 φ)) : H1z (resRep (uRep O (M := M) r χ) Dw)) ∈ F`. Use `htor (psiY r χ E e₁ δ D j Kc k0 φ) ?_ _ (fun g => rfl)` and prove the remaining obligations. Introduce `g _ y`. Use `show φ (Submodule.Quotient.mk (uElt r χ g • y, 0)) = uElt r χ g • φ (Submodule.Quotient.mk (y, 0))`. Rewrite using `[← map_smul, ← Submodule.Quotient.mk_smul, Prod.smul_mk, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowTB : StatRowTB := by
   intro O _ _ _ A T' G _ _ _ _ _ M _ _ _ _ _ r χ E e₁ δ ι _ D j Kc k0 Dw ℓ c cB deg Hc F hFH hc hH

@@ -41,21 +41,21 @@ def Onto (ρ : Setup D.ntw) (rdV : RdV D ρ) : Prop :=
     Submodule.span (FractionRing (D.ntw.Ok i k)) {f | rdV i j b k Q ψ f ∈ ρ.mt i j b k Q ψ} = ⊤
 
 /- English proof (translation)
-The claim follows from `dif_pos ⟨j.2, h⟩`.
+A detailed English derivation is pending.
 -/
 theorem latI_eq (rdV : RdV D ρ) {i} (j : Fin D.R.m) {b k Q ψ} (h : TwOK i k Q ψ) :
     latI rdV i ((j : ℕ) + 1) b k Q ψ = (Via.lat (ρ.mt i j b k Q ψ)).comap (rdVLin rdV i j b k Q ψ) :=
   dif_pos ⟨j.2, h⟩
 
 /- English proof (translation)
-Rewrite using `[latI_eq rdV j h]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latI (rdV : RdV D ρ) {i} (j : Fin D.R.m) {b k Q ψ} (h : TwOK i k Q ψ) (f) :
     f ∈ latI rdV i ((j : ℕ) + 1) b k Q ψ ↔ rdV i j b k Q ψ f ∈ ρ.mt i j b k Q ψ := by
   rw [latI_eq rdV j h]; exact Iff.rfl
 
 /- English proof (translation)
-The claim follows from `| 0, b, k, Q, ψ => D.nexp.MtLat_fg i 0 b k Q ψ | n + 1, b, k, Q, ψ => by rw [latI] split_ifs with h · obtain ⟨hinj, hon, -⟩ := hV i ⟨n, h.1⟩ b k Q ψ h.2 refine Submodule.fg_of_fg_map_injective (rdVLin rdV i ⟨n, h.1⟩ b k Q ψ) hinj ?_ rw [Submodule.map_comap_eq_self (f := rdVLin rd …`.
+A detailed English derivation is pending.
 -/
 theorem latI_fg (rdV : RdV D ρ) (hV : Onto ρ rdV) (hL : ρ.LatFG) (i) :
     ∀ n b k Q ψ, (latI rdV i n b k Q ψ).FG
@@ -71,7 +71,7 @@ theorem latI_fg (rdV : RdV D ρ) (hV : Onto ρ rdV) (hL : ρ.LatFG) (i) :
     · exact D.nexp.MtLat_fg i (n + 1) b k Q ψ
 
 /- English proof (translation)
-The claim follows from `| 0, b, k, Q, ψ => D.nexp.MtLat_span i 0 b k Q ψ | n + 1, b, k, Q, ψ => by rw [latI] split_ifs with h · exact (hV i ⟨n, h.1⟩ b k Q ψ h.2).2.2 · exact D.nexp.MtLat_span i (n + 1) b k Q ψ`.
+A detailed English derivation is pending.
 -/
 theorem latI_span (rdV : RdV D ρ) (hV : Onto ρ rdV) (i) :
     ∀ n b k Q ψ, Submodule.span (FractionRing (D.ntw.Ok i k)) (latI rdV i n b k Q ψ : Set (D.nexp.MtV i n b k Q ψ)) = ⊤
@@ -86,7 +86,7 @@ variable (hρ : ρ.Good) (rd : Rds D.nexp ρ) (hF : ∀ i j b, Faithful (rd i j 
 
 include hF in
 /- English proof (translation)
-The claim follows from `exists_lift ((ρ.sum i j b k Q ψ).comp (rdV i j b k Q ψ)) (rdK (rd i j b) hρ k) ((hF i j b).injective_rdK hρ k) (divisible_baseChange D.nexp i _ b k)`.
+A detailed English derivation is pending.
 -/
 theorem exists_thPI (rdV : RdV D ρ) (i) (j : Fin D.R.m) (b k Q ψ) :
     ∃ φ : D.nexp.MtV i ((j : ℕ) + 1) b k Q ψ →ₗ[D.ntw.Ok i k] D.ntw.Ok i k ⊗[D.ntw.O i] D.nexp.Fm i ((j : ℕ) + 1) b,
@@ -101,15 +101,11 @@ def thPI (rdV : RdV D ρ) (i) : ∀ n b k Q ψ,
   | n + 1, b, k, Q, ψ => if h : n < D.R.m then (exists_thPI hρ rd hF rdV i ⟨n, h⟩ b k Q ψ).choose else 0
 
 /- English proof (translation)
-Introduce `D ρ hρ rd hF hU hL rdV hV`. Use `⟨Model.Dat rd, Model.th rd, Model.lev rd, Model.thPsi hρ rd, Model.thPsi_one hρ rd hF, Model.thU rd, thPI hρ rd hF rdV, latI rdV, latI_fg rdV hV hL, latI_span rdV hV, ?_, ?_⟩` and prove the remaining obligations. Introduce `i n hn b`. Consider the cases of `n with`. Consider the case `zero => exact ⟨fun d => d.elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ n`. Use `⟨fun d => hn (Finset.mem_Icc.2 ⟨Nat.succ_pos n, d.1⟩)⟩` and prove the remaining obligations. Use `⟨fun i j b => { supp := fun d => d.2.s cls := fun d => d.2.h coef := fun d => d.2.P rdV := rdV i j b U_eq := hU.U_eq i j b psiU_eq := hU.psiU_eq i j b dat := fun d => d.2.isDatum dat_onto := fun s h P h1 h2 => ⟨⟨j.2, s, h, P, h1, h2⟩, rfl, rfl, rfl⟩ lev_iff := fun _ _ => Set.Fini …` and prove the remaining obligations. Establish `h : InRange D.ntw i Q ∧ ∀ a, ρ.xi i j b D.nexp Q M d.2.h d.2.P a ∈ Set.range (rd i j b)` using `⟨hQ, fun a => ⟨x a, hx a⟩⟩`. Use `(dif_pos h).trans (congrArg (grpSum D.nexp (ρ.ch i) Q M) (funext fun a => (hF i j b).injective ?_))` and prove the remaining obligations.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(h.2 a).choose_spec.trans (hx a).symm`. Use `thU_off := fun _ _ _ h => dif_neg h`. Use `rdV_inj := fun k Q ψ h => (hV i j b k Q ψ h).1`. Use `mtLat_iff := fun k Q ψ h F => by`. Use `⟨fun hF' => ?_, fun ⟨f, hf, e'⟩ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨f, rfl⟩` from `(hV i j b k Q ψ h).2.1 F hF'`. Conclude with `⟨f, (mem_latI rdV j h f).2 hF', rfl⟩`. Conclude with `e' ▸ (mem_latI rdV j h f).1 hf`. Use `thP_eq := fun k Q ψ _ f hf => by`. Establish `e : thPI hρ rd hF rdV i ((j : ℕ) + 1) b k Q ψ = (exists_thPI hρ rd hF rdV i j b k Q ψ).choose` using `dif_pos j.2`.
-
-Conclude with `(congrArg (fun φ => rdK (rd i j b) hρ k (φ f)) e).trans ((exists_thPI hρ rd hF rdV i j b k Q ψ).choose_spec f hf) }, fun _ _ _ => rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_tie_withSeries : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), (∀ i j b, Faithful (rd i j b)) → ρ.LevelOf D.nexp → ρ.LatFG → ∀ rdV : ∀ i (j : Fin D.R.m) b k Q ψ, D.nexp.MtV i ((j : ℕ) + 1) b k Q ψ →ₛₗ[ρ.ek i b k] (Bridge.Gf (Vc D j) → PolF D (Wc D j).rank (Vc D j).rank), (∀ i j b k Q ψ, TwOK i k Q ψ → Function.Injective (rdV i j b k Q ψ) ∧ (∀ F ∈ ρ.mt i j b k Q ψ, F ∈ Set.range (rdV i j b k Q ψ)) ∧ Submodule.span (FractionRing (D.ntw.Ok i k)) {f | rdV i j b k Q ψ f ∈ ρ.mt i j b k Q ψ} = ⊤) → ∃ Dat th lev thPsi h1 thU thP MtLat h2 h3, (∀ i j, j ∉ Finset.Icc 1 D.R.m → ∀ b, IsEmpty (Dat i j b)) ∧ ∃ t : Comparison₂ hρ (Y := { D.nexp with Dat := Dat, th := th, lev := lev, thPsi := thPsi, thPsi_one := h1, thU := thU, thP := thP, MtLat := MtLat, MtLat_fg := h2, MtLat_span := h3 }) rd, ∀ i j b, (t i j b).rdV = rdV i j b := by
   intro D ρ hρ rd hF hU hL rdV hV

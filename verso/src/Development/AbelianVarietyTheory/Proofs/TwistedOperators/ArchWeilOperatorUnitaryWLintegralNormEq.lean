@@ -12,15 +12,13 @@ open MeasureTheory
 namespace GlobalTheory.ArchimedeanLineL2
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hW hex h hh N C f`. Use `haveI := GlobalTheory.ArchimedeanUnitaryL2.opensMeasurable F (Fin n × Fin d)`. Use `set μ : Measure (Fin n × Fin d → mixedEmbedding.mixedSpace F) := Measure.map C.symm volume with hμ`. Use `haveI : μ.IsAddHaarMeasure := C.symm.isAddHaarMeasure_map volume`. Choose the witnesses or unpack the hypotheses as in `⟨g, hg, hg0⟩ : ∃ g : (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) → ℂ, g ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∧ g 0 ≠ 0 := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, GlobalTheory.SchANonzero.indicator_intPts_mem_SB F _, ?_⟩` and prove the remaining obligations. Establish `h0 : (0 : Fin n × Fin d → FiniteAdeleRing (𝓞 F) F) ∈ GlobalTheory.SchANonzero.intPts F (Fin n × Fin d)` using `fun i _ v => zero_mem (v.adicCompletionIntegers F)`. Rewrite using `[Set.indicator_of_mem h0]`. Conclude with `one_ne_zero`. Take `⟨μA, hμA, c, hc0, hct, hc⟩` from `GlobalTheory.ArchimedeanUnitaryL2.exists_haar F _ μ g hg hg0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `r : (Fin n × Fin d → AF F) → ℂ` to `fun x => g fun i => (x i).2`. Establish `hS : ∀ f' : SInf F (Fin n × Fin d), tens (evI F) (⇑f') r ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d)` using `fun f' => Submodule.subset_span ⟨f', g, hg, rfl⟩`. Establish `hr : ∀ x z, At (evI F) z → r (x + z) = r x`. Introduce `x z hz`. Use `congrArg g (funext fun i => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show (x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.ArchimedeanUnitaryL2.snd_eq_zero hz i, add_zero]`. Establish `hU` using `(IsUWeilPair.isUSplitting hW).unit μA hμA (1, h) (tens (evI F) (⇑f) r) (hS f)`. Establish `hAct : om (1, h) (tens (evI F) (⇑f) r) = tens (evI F) (⇑(archOp om h f)) r` using `acts_archOp om h f (hex h hh f) r ⟨hr, hS f⟩`. Rewrite `hU` using `[hAct]`.
-
-Establish `h1` using `((hc (archOp om h f)).symm.trans hU).trans (hc f)`. Establish `h2` using `(ENNReal.mul_right_inj hc0 hct).1 h1`. Rewrite `h2` using `[hμ, lintegral_map ((archOp om h f).continuous.measurable.enorm.pow_const 2) C.symm.continuous.measurable, lintegral_map (f.continuous.measurable.enorm.pow_const 2) C.symm.continuous.measurable]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archOp_lintegral_eq : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
     {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

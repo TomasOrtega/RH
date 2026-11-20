@@ -5,11 +5,11 @@ open scoped ComplexOrder ENNReal Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hω0 : 0 < ω` using `by linarith`. Establish `ht : 0 < t` using `lt_of_lt_of_le (inv_pos.mpr hω0) h1`. Establish `hu : Real.log t ≤ Real.log ω` using `Real.log_le_log ht h2`. Establish `hl : -Real.log ω ≤ Real.log t`. Rewrite using `[← Real.log_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.log_le_log (inv_pos.mpr hω0) h1`. Establish `habs : |Real.log t * (-δ)| ≤ δ * Real.log ω`. Apply the tactic sequence `rw [abs_le]; constructor <;> nlinarith`. Establish `h` using `Real.abs_exp_sub_one_sub_id_le (habs.trans hδL)`. Establish `h'` using `(abs_le.mp h).2`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (Real.log t * (-δ)) ^ 2 ≤ (δ * Real.log ω) ^ 2`. Rewrite using `[← sq_abs (Real.log t * (-δ))]`. Conclude with `pow_le_pow_left₀ (abs_nonneg _) habs 2`. Rewrite using `[Real.rpow_def_of_pos ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rpow_neg_le_one_sub_log_add_sq {ω δ t : ℝ} (hω : 1 ≤ ω) (hδ : 0 < δ)
     (hδL : δ * Real.log ω ≤ 1) (h1 : ω⁻¹ ≤ t) (h2 : t ≤ ω) :
@@ -30,15 +30,15 @@ theorem rpow_neg_le_one_sub_log_add_sq {ω δ t : ℝ} (hω : 1 ≤ ω) (hδ : 0
   linarith
 
 /- English proof (translation)
-Introduce `N ω η hω hη`. Establish `hL : 0 ≤ Real.log ω` using `Real.log_nonneg hω`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ, hδL, hδη⟩ : ∃ δ : ℝ, 0 < δ ∧ δ * Real.log ω ≤ 1 ∧ δ * (N * Real.log ω ^ 2) ≤ η / 2 := by`. Use `⟨min (1 / (Real.log ω + 1)) (η / 2 / (N * Real.log ω ^ 2 + 1)), lt_min (by positivity) (by positivity), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `min_le_left (1 / (Real.log ω + 1)) (η / 2 / (N * Real.log ω ^ 2 + 1))`. Establish `hp : 0 < min (1 / (Real.log ω + 1)) (η / 2 / (N * Real.log ω ^ 2 + 1))` using `lt_min (by positivity) (by positivity)`. Rewrite `h` using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h` using `min_le_right (1 / (Real.log ω + 1)) (η / 2 / (N * Real.log ω ^ 2 + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hp : 0 < min (1 / (Real.log ω + 1)) (η / 2 / (N * Real.log ω ^ 2 + 1))` using `lt_min (by positivity) (by positivity)`. Rewrite `h` using `[le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `he : 0 < δ * η / (2 * (N + 1))` using `by positivity`. Use `⟨δ, max 0 (1 - δ * η / (2 * (N + 1))), hδ, le_max_left _ _, max_lt one_pos (by linarith), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `σ S t hS ht hsum`. Establish `h1 : ∑ s ∈ S, t s ^ (-δ) ≤ ∑ s ∈ S, (1 - δ * Real.log (t s) + (δ * Real.log ω) ^ 2)` using `Finset.sum_le_sum fun s hs => rpow_neg_le_one_sub_log_add_sq hω hδ hδL (ht s hs).1 (ht s hs).2`. Rewrite `h1` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]`. Simplify using `only [Finset.sum_const, hS, nsmul_eq_mul, mul_one] at h1`. Establish `h2 : δ * η ≤ δ * ∑ s ∈ S, Real.log (t s)` using `mul_le_mul_of_nonneg_left hsum hδ.le`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : δ * (δ * (N * Real.log ω ^ 2)) ≤ δ * (η / 2)` using `mul_le_mul_of_nonneg_left hδη hδ.le`. Establish `h4 : (N : ℝ) * (1 - δ * η / (2 * (N + 1))) ≤ N * max 0 (1 - δ * η / (2 * (N + 1)))` using `mul_le_mul_of_nonneg_left (le_max_right _ _) hN`. Establish `h5 : (N + 1 : ℝ) * (δ * η / (2 * (N + 1))) = δ * η / 2` using `by field_simp`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem exists_rpow_neg_sum_le_of_sum_log :
     (∀ (N : ℕ) (ω η : ℝ), 1 ≤ ω → 0 < η → ∃ δ c : ℝ, 0 < δ ∧ 0 ≤ c ∧ c < 1 ∧ ∀ (σ : Type) (S : Finset σ) (t : σ → ℝ), S.card = N → (∀ s ∈ S, ω⁻¹ ≤ t s ∧ t s ≤ ω) → η ≤ ∑ s ∈ S, Real.log (t s) → ∑ s ∈ S, t s ^ (-δ) ≤ N * c) := by

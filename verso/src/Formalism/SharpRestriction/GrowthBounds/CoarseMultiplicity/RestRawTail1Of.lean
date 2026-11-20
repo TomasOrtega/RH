@@ -61,7 +61,7 @@ def AsmRTAt (C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ) : Prop :=
 def RestAsmRT : Prop := TransportedAlt fun C0 CYb Cde Ck CD Cb CE1 CE2 _ Cc => AsmRTAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => h h3 h4) hA`.
+A detailed English derivation is pending.
 -/
 theorem restRawTail1_of (h3 : CoarseMultiplicityBoundAtIdentity) (h4 : LocalBoundAtIdentity) (hA : RestAsmRT) : RestRawTail1 :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => h h3 h4) hA
@@ -79,7 +79,7 @@ structure IsFac (w : O) (f : RHH O X) (o : ℕ) (sg : RHH O X) : Prop where
   sgInt : InA sg
 
 /- English proof (translation)
-Unfold `IsGLW`. Rewrite using `[Matrix.det_one]`. Conclude with `isUnit_one`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGLW_one' (k : ℕ) : IsGLW (1 : Matrix (Fin k) (Fin k) (WF X.p X.n')) := by
   unfold IsGLW
@@ -87,13 +87,11 @@ theorem isGLW_one' (k : ℕ) : IsGLW (1 : Matrix (Fin k) (Fin k) (WF X.p X.n')) 
   exact isUnit_one
 
 /- English proof (translation)
-Use `inWj_mul ((inA_iff_wj w).1 h.inA) ((inA_iff_wj w).1 h'.inA)` as an intermediate fact. Conclude with `(inA_iff_wj w).2 this`. Use `ord := fun g hg => inWjRg_mul (h.ord g hg) (h'.ord g hg)`. Use `sym := by`. Establish `e : liftSubst X.p X.n' O w 1 (hhLetters X.TT) 1 (f * f') - (w ^ (o + o')) • (sg * sg') = (liftSubst X.p X.n' O w 1 (hhLetters X.TT) 1 f - (w ^ o) • sg) * liftSubst X.p X.n' O w 1 (hhLetters X.TT) 1 f' + ((w ^ o) • sg) * (liftSubst X.p X.n' O w 1 (hhLetters X.TT) 1 f' - (w ^ o') • …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, pow_add, mul_smul_mul_comm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Establish `a1` using `inWj_mul h.sym (h'.ord 1 (isGLW_one' _))`. Establish `a2` using `inWj_mul (wj_smul_pow ((inA_iff_wj w).1 h.sgInt) o) h'.sym`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : o + 1 + o' = o + o' + 1` using `by ring`. Establish `e2 : 0 + o + (o' + 1) = o + o' + 1` using `by ring`. Rewrite `a1` using `[e1]`. Rewrite `a2` using `[e2]`. Conclude with `(wjSub w (o + o' + 1)).add_mem a1 a2`.
-
-Use `sgInt := by`. Use `inWj_mul ((inA_iff_wj w).1 h.sgInt) ((inA_iff_wj w).1 h'.sgInt)` as an intermediate fact. Conclude with `(inA_iff_wj w).2 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsFac.mul {w : O} {f f' sg sg' : RHH O X} {o o' : ℕ} (h : IsFac w f o sg) (h' : IsFac w f' o' sg') :
     IsFac w (f * f') (o + o') (sg * sg') where

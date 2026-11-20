@@ -16,21 +16,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨p₁, e₁⟩` from `r₁`. Establish `hFun` using `Formalism.L2.SG.Closed.TermFun_holds D u u' F0 Λ hΛ`. Take `⟨ν, hν, hνF⟩` from `TupOnto.nLamOnto_holds D u F0 Λ hΛ hu U hU hiU`. Take `⟨m, hm, hmF⟩` from `TupOnto.nLamOnto_holds D u' F₁.fl Λ (isRowLat_of_pd hΛ p₁) hu' U' hU' hiU'`. Establish `hm' : m ∈ NLam Λ F₁` using `hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmF' : ∀ b, m (frame F₁ b) = ∑ c, U' c b • frame F₁ c` using `hmF`. Establish `hAut : IsAutLam (VS D) Λ (ν⁻¹ * m)` using `Formalism.L2.SG.Pf.isAutLam_mul (Formalism.L2.SG.Pf.isAutLam_inv hν.1) hm.1`. Set `F2` to `Formalism.L2.SG.Saturated.mapL (ν⁻¹ * m) hAut.1 F₁`. Establish `hf2 : ∀ b, frame F2 b = ν⁻¹ (m (frame F₁ b))` using `fun b => by`. Rewrite using `[Formalism.L2.SG.Saturated.frame_mapL]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hdc : DCRel Λ (lf D F0) F₁ F2` using `⟨ν⁻¹, Formalism.L2.SG.Pf.nlamPf_inv hν, m, hm', hf2, rfl⟩`. Establish `pd2 : PD D Λ (lf D F0) u' F2` using `Formalism.L2.SG.Closed.TermStable_holds D u u' F0 Λ hΛ ⟨F₁, p₁⟩ F2 hdc`. Establish `hT' : ((Tu D u' : ℕ) : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hu'`. Establish `hFΛ : ∀ c, frame (lf D F0) c ∈ Λ`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Use `Fin.lastCases ?_ (fun a => ?_) c` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.frame_last_td]`. Conclude with `hΛ.2.1.2.2.1.1`. Rewrite using `[Formalism.L2.SG.Pf.frame_castSucc_td]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PI.NRL.e_mem_lam D F0 Λ hΛ a`. Establish `hiso : ∀ x y, (VS D).hT (ν x) (ν y) = (VS D).hT x y` using `((Formalism.L2.SG.Pf.isAutLam_iff Λ ν).1 hν.1).1`. Establish `hent : ∀ a b, (VS D).hT (frame (lf D F0) a) (frame F2 b) = (U.conjTranspose * ZhatL (lf D F0) F₁ * U') a b` using `fun a b => by`. Rewrite using `[hf2 b]`. Conclude with `zhat_lift (lf D F0) F₁ hiso hνF hmF' a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ν, hν, m, hm', hνF, hmF', F2, ⟨⟨pd2.1, pd2.2.1, ?_⟩, ?_, ?_, pd2.2.2, ?_⟩, ⟨pd2, (Quot.sound (show TermDef.Rel Λ (lf D F0) (PD D Λ (lf D F0) u') ⟨F₁, p₁⟩ ⟨F2, pd2⟩ from hdc)).symm.trans e₁⟩, hf2⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hdc]`. Conclude with `h₁.1.2.2`. Use `⟨fun a b hab => Matrix.one_apply_ne (ne_of_lt hab).symm, fun a => Matrix.one_apply_eq a, fun b => ?_⟩` and prove the remaining obligations. Rewrite using `[frameAct_one', hf2 b]`.
-
-Conclude with `modG_lift hT' p₁.1 p₁.2.2.1 hFΛ hν.1 hm' hνF hmF' htie (fun c => by have := h₁.2.1.2.2 c; rwa [frameAct_one'] at this) b`. Conclude with `(hFun.2.2.2.1 ⟨F₁, p₁⟩ ⟨F2, pd2⟩ hdc).1 h₁.2.2.1`. Establish `hZZ : ZhatL (lf D F0) F2 = U.conjTranspose * ZhatL (lf D F0) F₁ * U'`. Use function extensionality and compare the values at `a b`. Conclude with `hent a b`.
-
-Rewrite using `[hZZ, h₁.2.2.2.2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_move {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : IsRowLat D F0 Λ) (hu : Tu D u ≠ 0) (hu' : Tu D u' ≠ 0)
@@ -81,19 +77,17 @@ theorem lift_move {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : �
     rw [hZZ, h₁.2.2.2.2]
 
 /- English proof (translation)
-Use `open Formalism.L2.SG.Pf.FibD in`. Use `⟨fun c b hcb x hx => ?_, fun c b hcb x hx => ?_, fun P hP c b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, PI.UnitaryGroupMassFormula.CntFormula.star_eq_conjF]`. Conclude with `mem_aaF hcb hx (ddPow_conj Zd (by have := b.isLt; omega) (hES b c hcb).1)`. Rewrite using `[sg_entry]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `mem_aaF hcb hx (hES b c hcb).2.1`. Break down `lt_trichotomy c b with h | h | h` into its components or cases. Establish `hq` using `(hES b c h).2.2`. Unfold `Formalism.L2.SG.Pf.StabIntSh.qdPow Formalism.L2.SG.Pf.StabIntSh.qq at hq`. Rewrite `hq` using `[FractionalIdeal.coeIdeal_span_singleton, FractionalIdeal.mem_singleton_mul]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨z, hz, hzy⟩` from `hq`. Take `⟨t, ht, htP⟩` from `diff_avoid P hP`. Establish `hk : b.val - c.val ≤ D.R.rS` using `by have := b.isLt; omega`. Establish `hz'` using `ddPow_conj Zd hk hz`. Establish `hprod` using `FractionalIdeal.mul_mem_mul (mem_ddS_pow t ht (b.val - c.val)) hz'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `Formalism.L2.SG.Pf.StabIntSh.ddPow at hprod`. Rewrite `hprod` using `[← zpow_natCast, ← zpow_add₀ (PI.NRCW.ddS_ne_zero D), add_neg_cancel, zpow_zero]`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 hprod`. Use `⟨(algebraMap (𝓞 D.host.F) (𝓞 D.host.E) t) ^ (b.val - c.val), fun hs => htP (P.isPrime.mem_of_pow_mem _ hs), o, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, PI.UnitaryGroupMassFormula.CntFormula.star_eq_conjF, sg_entry]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e1 : D.conjF (A b c) - Formalism.L2.SG.Pf.StabIntSh.bt D B c b = D.conjF (algebraMap (𝓞 D.host.E) D.host.E ((gS D : ℕ) : 𝓞 D.host.E) * z)`. Use `congrArg D.conjF hzy` as an intermediate fact. Simplify `this` using `only [map_sub, Formalism.L2.SG.Pf.LocalDenominators.conjF_invol]`. Rewrite using `[e1, map_mul, map_natCast, map_natCast, mul_left_comm, ← ho]`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, sg_entry]`. Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, hA.1 c, hB.1 c, ← pow_add, ← two_mul, pow_mul]`. Use `⟨1, fun h1 => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1), 0, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, sg_entry]`.
-
-Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, hA.2 b c h, hB.2 b c h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_pair_of_shape (Zd : Formalism.L2.SG.TermLoc.LocDat D) {A B : PairVal.MatR D} (hA : Formalism.L2.SG.Pf.AtPt.IsLo A)
     (hB : Formalism.L2.SG.Pf.AtPt.IsUp B) (hES : Formalism.L2.SG.Pf.StabIntSh.EntryShape D A B) :
@@ -136,9 +130,9 @@ theorem integral_pair_of_shape (Zd : Formalism.L2.SG.TermLoc.LocDat D) {A B : Pa
       simp [Formalism.L2.SG.Pf.StabIntSh.bt, hA.2 b c h, hB.2 b c h]
 
 /- English proof (translation)
-Take `⟨⟨p₁, e₁⟩, hadm₁, -⟩` from `hn`. Establish `hEq` using `Formalism.L2.SG.Closed.TermEqIff_holds D u u' F0 γ.lam hΛ`. Establish `hFun` using `Formalism.L2.SG.Closed.TermFun_holds D u u' F0 γ.lam hΛ`. Take `⟨Fa, ⟨pa, ea⟩, hGa, -⟩` from `hel.2`. Establish `hdca` using `(hEq ⟨Fa, pa⟩ ⟨F', p₁⟩).1 (ea.trans e₁.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Fg, ⟨pg, eg⟩, hgen⟩` from `hel.1.1`. Use `⟨⟨p₁.1, p₁.2.1, ?_⟩, hadm₁, ?_, p₁.2.2, rfl⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.SG.Pf.gval_rel (lf D F0) hdca]`. Conclude with `hGa`. Conclude with `(hFun.2.2.2.1 ⟨Fg, pg⟩ ⟨F', p₁⟩ ((hEq ⟨Fg, pg⟩ ⟨F', p₁⟩).1 (eg.trans e₁.symm))).1 hgen`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ez_of_normRep {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} {γ : TermDef.Term D u u' F0 what₂}
@@ -157,15 +151,15 @@ theorem ez_of_normRep {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u
   · exact (hFun.2.2.2.1 ⟨Fg, pg⟩ ⟨F', p₁⟩ ((hEq ⟨Fg, pg⟩ ⟨F', p₁⟩).1 (eg.trans e₁.symm))).1 hgen
 
 /- English proof (translation)
-Use `set Sg := Formalism.L2.SG.Pf.AtPt.Sg D.host.E D.R.rS with hSg`. Establish `hlo : Formalism.L2.SG.Pf.AtPt.IsLo a'` using `⟨fun i => (ha i i).2 rfl, fun i j h => (ha i j).1 h⟩`. Establish `hup : Formalism.L2.SG.Pf.AtPt.IsUp b` using `⟨fun i => (hb i i).2 rfl, fun i j h => (hb j i).1 h⟩`. Take `⟨hi1, hi2, htie⟩` from `integral_pair_of_shape Zd hlo hup hES`. Establish `hU : IsUpUni a'.conjTranspose` using `fun i j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.conjTranspose_apply, (ha j i).1 h, star_zero]`. Substitute `h` using the available equality. Rewrite using `[Matrix.conjTranspose_apply, (ha i i).2 rfl, star_one]`. Establish `hU' : IsUpUni (Sg * b * Sg)` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Formalism.L2.SG.Pf.FibD.sg_entry]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, (hb i j).1 h]`. Substitute `h` using the available equality. Simplify using `[Formalism.L2.SG.Pf.StabIntSh.bt, (hb i i).2 rfl, ← pow_add, ← two_mul, pow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨ν, hν, m, hm, hνF, hmF, F2, hF2, hr2, hf2⟩` from `lift_move hΛ hu hu' h' r' hU hU' hi1 hi2 htie`. Use `⟨ν, hν, m, hm, hνF, hmF, F2, ?_, hr2, hf2⟩` and prove the remaining obligations. Establish `hZ : a'.conjTranspose.conjTranspose * Z * (Sg * b * Sg) = Z`. Rewrite using `[Matrix.conjTranspose_conjTranspose]`. Establish `hS : ZhatOM Z = Z * Sg` using `Formalism.L2.SG.Pf.AtPt.zhatOM_eq Z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hst` using `[hS]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hF2` using `[hZ]`. Then use the resulting hypothesis.
+Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem moveCZ {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
     {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hΛ : IsRowLat D F0 Λ) (hu : Tu D u ≠ 0) (hu' : Tu D u' ≠ 0)

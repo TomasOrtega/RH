@@ -7,9 +7,9 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ p _ _ f hf`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨D, hD⟩` from `DerivExt.exists_derivation p f hne`. Establish `h` using `D.liftKaehlerDifferential_comp_D f`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (KaehlerDifferential.D ℤ K) f = 0` using `hf`. Rewrite `h` using `[h0, map_zero, hD]`. Conclude with `zero_ne_one h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dK_eq_zero_imp_pow : ∀ (K : Type) [Field K] (p : ℕ) [Fact p.Prime] [CharP K p] (f : K),
     dK f = 0 → ∃ g : K, f = g ^ p := by

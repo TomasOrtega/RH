@@ -15,7 +15,7 @@ def Concl (b : A) (P : Finset (PrimeSpectrum A)) (M : Type) [AddCommGroup M] [Mo
         (LocalizedModule p.asIdeal.primeCompl M) * Module.length A (A ⧸ (p.asIdeal ⊔ Ideal.span {b}))
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact (LocalizedModule.map p.primeCompl f) (LocalizedModule.map p.primeCompl g) (LocalizedModule.map_injective _ f hf) (LocalizedModule.map_surjective _ g hg) (LocalizedModule.map_exact _ f g H)`.
+A detailed English derivation is pending.
 -/
 theorem loc_exact (p : Ideal A) [p.IsPrime] {N M Q : Type} [AddCommGroup N] [Module A N]
     [AddCommGroup M] [Module A M] [AddCommGroup Q] [Module A Q] (f : N →ₗ[A] M) (g : M →ₗ[A] Q)
@@ -28,7 +28,7 @@ theorem loc_exact (p : Ideal A) [p.IsPrime] {N M Q : Type} [AddCommGroup N] [Mod
     (LocalizedModule.map_surjective _ g hg) (LocalizedModule.map_exact _ f g H)
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_zero_iff.2 ((IsLocalizedModule.subsingleton_iff p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl M)).2 fun x => ⟨s, hs, hsM x⟩)`.
+A detailed English derivation is pending.
 -/
 theorem loc_zero_of_ann (p : Ideal A) [p.IsPrime] (M : Type) [AddCommGroup M] [Module A M]
     (s : A) (hs : s ∉ p) (hsM : ∀ x : M, s • x = 0) :
@@ -37,15 +37,15 @@ theorem loc_zero_of_ann (p : Ideal A) [p.IsPrime] (M : Type) [AddCommGroup M] [M
     (LocalizedModule.mkLinearMap p.primeCompl M)).2 fun x => ⟨s, hs, hsM x⟩)
 
 /- English proof (translation)
-Use `Module.length_eq_one_iff.2 (isSimpleModule_iff_toSpanSingleton_surjective.2 ⟨?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[← not_subsingleton_iff_nontrivial, IsLocalizedModule.subsingleton_iff p.primeCompl (LocalizedModule.mkLinearMap p.primeCompl (A ⧸ p))]`. Introduce `h`. Take `⟨r, hr, hr0⟩` from `h 1`. Rewrite `hr0` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_one, Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hr hr0`. Introduce `x hx y`. Proceed by induction on `x using LocalizedModule.induction_on with`. Consider the case `h a s`. Proceed by induction on `y using LocalizedModule.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `h c t`. Take `⟨r, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨r', rfl⟩` from `Ideal.Quotient.mk_surjective c`. Establish `hr : r ∈ p.primeCompl`. Introduce `hrm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hx` to reduce the goal to its premises. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hrm, LocalizedModule.zero_mk]`. Use `⟨Localization.mk (r' * s) (⟨r, hr⟩ * t), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.toSpanSingleton_apply, LocalizedModule.mk_smul_mk, LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submonoid.smul_def, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Submonoid.coe_mul, Submonoid.coe_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem loc_quot_self (p : Ideal A) [hp : p.IsPrime] :
     Module.length (Localization.AtPrime p) (LocalizedModule p.primeCompl (A ⧸ p)) = 1 := by
@@ -77,7 +77,7 @@ theorem loc_quot_self (p : Ideal A) [hp : p.IsPrime] :
     ring
 
 /- English proof (translation)
-Establish `h1` using `Module.length_eq_add_of_exact (LinearMap.ker φ).subtype (LinearMap.ker φ).mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Establish `h2` using `Module.length_eq_add_of_exact (LinearMap.range φ).subtype (LinearMap.range φ).mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Rewrite `h1` using `[φ.quotKerEquivRange.length_eq]`. Establish `hR : Module.length A (LinearMap.range φ) ≠ ⊤` using `ne_top_of_le_ne_top h (le_self_add.trans_eq h2.symm)`. Conclude with `WithTop.add_left_cancel hR (h2.symm.trans (h1.trans (add_comm _ _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_eq_coker {M : Type} [AddCommGroup M] [Module A M] (φ : M →ₗ[A] M)
     (h : Module.length A M ≠ ⊤) :
@@ -92,7 +92,7 @@ theorem ker_eq_coker {M : Type} [AddCommGroup M] [Module A M] (φ : M →ₗ[A] 
   exact WithTop.add_left_cancel hR (h2.symm.trans (h1.trans (add_comm _ _)))
 
 /- English proof (translation)
-Establish `hne : k₁ + k₃ ≠ ⊤` using `WithTop.add_ne_top.2 ⟨h₁, h₃⟩`. Establish `h : c₂ + (k₁ + k₃) = k₂ + (s₁ + s₃) + (k₁ + k₃)`. Rewrite using `[← add_assoc, e]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `WithTop.add_right_cancel hne h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem enat_cancel {c₂ k₁ k₂ k₃ s₁ s₃ : ℕ∞} (h₁ : k₁ ≠ ⊤) (h₃ : k₃ ≠ ⊤)
     (e : c₂ + k₁ + k₃ = k₂ + (k₁ + s₁) + (k₃ + s₃)) : c₂ = k₂ + (s₁ + s₃) := by
@@ -103,11 +103,11 @@ theorem enat_cancel {c₂ k₁ k₂ k₃ s₁ s₃ : ℕ∞} (h₁ : k₁ ≠ �
   exact WithTop.add_right_cancel hne h
 
 /- English proof (translation)
-Take `⟨e, hle⟩` from `GlobalTheory.scalar_snake_length A M₁ M₂ M₃ f g hf hg hfg b`. Take `⟨k1, s1⟩` from `h₁`. Take `⟨k3, s3⟩` from `h₃`. Establish `hne` using `WithTop.add_ne_top.2 ⟨k1, k3⟩`. Use `⟨ne_top_of_le_ne_top hne hle, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsum : ∑ p ∈ P, Module.length (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl M₂) * Module.length A (A ⧸ (p.asIdeal ⊔ Ideal.span {b})) = (∑ p ∈ P, Module.length (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl M₁) * Module.length A (A …`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[loc_exact p.asIdeal f g hf hg hfg, add_mul]`. Rewrite using `[hsum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[s1, s3]`. Conclude with `enat_cancel k1 k3 e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem concl_ext {M₁ M₂ M₃ : Type} [AddCommGroup M₁] [AddCommGroup M₂] [AddCommGroup M₃]
     [Module A M₁] [Module A M₂] [Module A M₃] (b : A) (P : Finset (PrimeSpectrum A))
@@ -133,9 +133,9 @@ theorem concl_ext {M₁ M₂ M₃ : Type} [AddCommGroup M₁] [AddCommGroup M₂
   exact enat_cancel k1 k3 e
 
 /- English proof (translation)
-Establish `hk : Module.length A (LinearMap.ker (LinearMap.lsmul A M b)) = 0` using `Module.length_eq_zero_iff.2 ⟨fun x y => Subtype.ext (Subsingleton.elim _ _)⟩`. Establish `hc : Module.length A (M ⧸ LinearMap.range (LinearMap.lsmul A M b)) = 0` using `Module.length_eq_zero_iff.2 ((Submodule.mkQ_surjective _).subsingleton)`. Use `⟨by rw [hk]; exact ENat.zero_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, hc, zero_add, eq_comm]`. Use `Finset.sum_eq_zero fun p _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[loc_zero_of_ann p.asIdeal M 1 (Ideal.IsPrime.ne_top' ∘ (Ideal.eq_top_of_isUnit_mem _ · isUnit_one)) (fun x => Subsingleton.elim _ _), zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem concl_subsingleton (b : A) (P : Finset (PrimeSpectrum A)) (M : Type) [AddCommGroup M]
     [Module A M] [Subsingleton M] : Concl b P M := by
@@ -150,7 +150,7 @@ theorem concl_subsingleton (b : A) (P : Finset (PrimeSpectrum A)) (M : Type) [Ad
     (fun x => Subsingleton.elim _ _), zero_mul]
 
 /- English proof (translation)
-The claim follows from `concl_ext (M₃ := PUnit) b P e.toLinearMap 0 e.injective (Function.surjective_to_subsingleton _) ((e.exact_zero_iff_surjective _).2 e.surjective) h (concl_subsingleton b P PUnit)`.
+A detailed English derivation is pending.
 -/
 theorem concl_equiv {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] [Module A N]
     (b : A) (P : Finset (PrimeSpectrum A)) (e : M ≃ₗ[A] N) (h : Concl b P M) : Concl b P N :=
@@ -158,7 +158,7 @@ theorem concl_equiv {M N : Type} [AddCommGroup M] [Module A M] [AddCommGroup N] 
     ((e.exact_zero_iff_surjective _).2 e.surjective) h (concl_subsingleton b P PUnit)
 
 /- English proof (translation)
-Introduce `hpm`. Use `letI := Ideal.Quotient.field (maximalIdeal A)`. Establish `h0 : ringKrullDim (A ⧸ maximalIdeal A) = 0` using `ringKrullDim_eq_zero_of_field (A ⧸ maximalIdeal A)`. Rewrite `h0` using `[← hpm, h]`. Conclude with `one_ne_zero h0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_max [IsLocalRing A] (p : PrimeSpectrum A) (h : ringKrullDim (A ⧸ p.asIdeal) = 1) :
     p.asIdeal ≠ maximalIdeal A := by
@@ -169,11 +169,11 @@ theorem ne_max [IsLocalRing A] (p : PrimeSpectrum A) (h : ringKrullDim (A ⧸ p.
   exact one_ne_zero h0
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hlt : p.asIdeal < q.asIdeal` using `lt_of_le_of_ne hle (fun h => hne (PrimeSpectrum.ext h))`. Establish `hqm : q.asIdeal < maximalIdeal A` using `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal q.isPrime.ne_top) (ne_max q hq)`. Set `a : PrimeSpectrum.zeroLocus (R` to `A) p.asIdeal := ⟨p, fun _ h => h⟩`. Set `c : PrimeSpectrum.zeroLocus (R` to `A) p.asIdeal := ⟨q, fun _ h => hle h⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d : PrimeSpectrum.zeroLocus (R` to `A) p.asIdeal := ⟨⟨maximalIdeal A, inferInstance⟩, fun _ h => (hle.trans hqm.le) h⟩`. Establish `hac : a < c` using `Subtype.mk_lt_mk.2 ((PrimeSpectrum.asIdeal_lt_asIdeal _ _).1 hlt)`. Establish `hcd : c < d` using `Subtype.mk_lt_mk.2 ((PrimeSpectrum.asIdeal_lt_asIdeal _ _).1 hqm)`. Apply the tactic sequence `let s : LTSeries (PrimeSpectrum.zeroLocus (R := A) p.asIdeal) := ⟨2, ![a, c, d], fun i => by fin_cases i <;> first | exact hac | exact hcd | simp [hac, hcd]⟩`. Establish `hs` using `Order.LTSeries.length_le_krullDim s`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hs` using `[← ringKrullDim_quotient, hp]`. Establish `h2 : s.length = 2` using `rfl`. Rewrite `hs` using `[h2]`. Conclude with `absurd hs (by decide)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_le [IsLocalRing A] (p q : PrimeSpectrum A) (hp : ringKrullDim (A ⧸ p.asIdeal) = 1)
     (hq : ringKrullDim (A ⧸ q.asIdeal) = 1) (hle : p.asIdeal ≤ q.asIdeal) : p = q := by
@@ -196,17 +196,17 @@ theorem eq_of_le [IsLocalRing A] (p q : PrimeSpectrum A) (hp : ringKrullDim (A �
   exact absurd hs (by decide)
 
 /- English proof (translation)
-Establish `hb : b ∉ p.asIdeal` using `(hP p hpP).2`. Establish `hker : LinearMap.ker (LinearMap.lsmul A (A ⧸ p.asIdeal) b) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `x hx`. Rewrite `hx` using `[LinearMap.lsmul_apply, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.1 hx).resolve_left (fun h => hb (Ideal.Quotient.eq_zero_iff_mem.1 h))`. Establish `hrange : LinearMap.range (LinearMap.lsmul A (A ⧸ p.asIdeal) b) = Submodule.map p.asIdeal.mkQ (Ideal.span {b})`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `Submodule.mkQ_surjective _ y`. Conclude with `⟨b * a, Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self b), by rw [LinearMap.lsmul_apply, ← LinearMap.map_smul, smul_eq_mul]⟩`. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 ha`. Conclude with `⟨p.asIdeal.mkQ c, by rw [LinearMap.lsmul_apply, ← LinearMap.map_smul, smul_eq_mul, mul_comm]⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hcok : Module.length A ((A ⧸ p.asIdeal) ⧸ LinearMap.range (LinearMap.lsmul A (A ⧸ p.asIdeal) b)) = Module.length A (A ⧸ (p.asIdeal ⊔ Ideal.span {b}))` using `((Submodule.quotEquivOfEq _ _ hrange).trans (Submodule.quotientQuotientEquivQuotientSup p.asIdeal (Ideal.span {b}))).length_eq`. Establish `hk0 : Module.length A (LinearMap.ker (LinearMap.lsmul A (A ⧸ p.asIdeal) b)) = 0`. Rewrite using `[hker]`. Conclude with `Module.length_eq_zero_iff.2 inferInstance`. Use `⟨by rw [hk0]; exact ENat.zero_ne_top, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcok, hk0, zero_add, Finset.sum_eq_single p, loc_quot_self, one_mul]`. Introduce `q hq hqp`. Establish `hnle : ¬ p.asIdeal ≤ q.asIdeal` using `fun h => hqp (eq_of_le p q (hP p hpP).1 (hP q hq).1 h).symm`. Take `⟨s, hsp, hsq⟩` from `SetLike.not_le_iff_exists.1 hnle`. Rewrite using `[loc_zero_of_ann q.asIdeal _ s hsq (fun x => ?_), zero_mul]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.mul_mem_right _ _ hsp`. Introduce `h`. Conclude with `absurd hpP h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem concl_prime [IsLocalRing A] (b : A) (P : Finset (PrimeSpectrum A))
     (hP : ∀ p ∈ P, ringKrullDim (A ⧸ p.asIdeal) = 1 ∧ b ∉ p.asIdeal) (p : PrimeSpectrum A)
@@ -246,11 +246,11 @@ theorem concl_prime [IsLocalRing A] (b : A) (P : Finset (PrimeSpectrum A))
   · intro h; exact absurd hpP h
 
 /- English proof (translation)
-Establish `hlen : Module.length A (A ⧸ maximalIdeal A) = 1` using `Module.length_eq_one_iff.2 (isSimpleModule_iff_isCoatom.2 (inferInstance : (maximalIdeal A).IsMaximal).out)`. Establish `hfin : Module.length A (A ⧸ maximalIdeal A) ≠ ⊤` using `by rw [hlen]; exact ENat.one_ne_top`. Use `⟨ne_top_of_le_ne_top hfin (Module.length_le_of_injective (LinearMap.ker _).subtype (Submodule.injective_subtype _)), ?_⟩` and prove the remaining obligations. Rewrite using `[ker_eq_coker _ hfin, Finset.sum_eq_zero, add_zero]`. Introduce `p hp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnle : ¬ maximalIdeal A ≤ p.asIdeal` using `fun h => ne_max p (hP p hp).1 (le_antisymm (IsLocalRing.le_maximalIdeal p.isPrime.ne_top) h)`. Take `⟨s, hsm, hsp⟩` from `SetLike.not_le_iff_exists.1 hnle`. Rewrite using `[loc_zero_of_ann p.asIdeal _ s hsp (fun x => ?_), zero_mul]`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_right _ _ hsm`.
+A detailed English derivation is pending.
 -/
 theorem concl_max [IsLocalRing A] (b : A) (P : Finset (PrimeSpectrum A))
     (hP : ∀ p ∈ P, ringKrullDim (A ⧸ p.asIdeal) = 1 ∧ b ∉ p.asIdeal) :
@@ -276,13 +276,11 @@ end GlobalTheory.HerbrandLength
 open GlobalTheory.HerbrandLength in
 
 /- English proof (translation)
-Introduce `A _ _ _ b P hP M _ _ hfin hM`. Use `revert hM`. Proceed by induction on `hfin using IsNoetherianRing.induction_on_isQuotientEquivQuotientPrime A with`. Consider the case `subsingleton N => intro _`. Conclude with `concl_subsingleton b P N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `quotient N p e`. Introduce `hN`. Establish `hpN : p ∈ Module.support A N`. Rewrite using `[e.support_eq, Module.mem_support_iff_of_finite]`. Introduce `r hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `Module.mem_annihilator.1 hr 1`. Rewrite `h1` using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, mul_one, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis. Break down `hN p hpN with hpP | hpm` into its components or cases. Conclude with `concl_equiv b P e.symm (concl_prime b P hP p hpP)`. Conclude with `concl_equiv b P ((Submodule.quotEquivOfEq _ _ hpm).symm.trans e.symm) (concl_max b P hP)`.
-
-Consider the case `exact N₁ N₂ N₃ f g hf hg hfg h₁ h₃`. Introduce `hN`. Conclude with `concl_ext b P f g hf hg hfg (h₁ fun q hq => hN q (Module.support_subset_of_injective f hf hq)) (h₃ fun q hq => hN q (Module.support_subset_of_surjective g hg hq))`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.length_coker_lsmul_eq_length_ker_add_sum : ∀ (A : Type) [CommRing A] [IsNoetherianRing A] [IsLocalRing A] (b : A) (P : Finset (PrimeSpectrum A)), (∀ p ∈ P, ringKrullDim (A ⧸ p.asIdeal) = 1 ∧ b ∉ p.asIdeal) → ∀ (M : Type) [AddCommGroup M] [Module A M] [Module.Finite A M], (∀ p ∈ Module.support A M, p ∈ P ∨ p.asIdeal = IsLocalRing.maximalIdeal A) → Module.length A (LinearMap.ker (LinearMap.lsmul A M b)) ≠ ⊤ ∧ Module.length A (M ⧸ LinearMap.range (LinearMap.lsmul A M b)) = Module.length A (LinearMap.ker (LinearMap.lsmul A M b)) + ∑ p ∈ P, Module.length (Localization.AtPrime p.asIdeal) (LocalizedModule p.asIdeal.primeCompl M) * Module.length A (A ⧸ (p.asIdeal ⊔ Ideal.span {b})) := by
   intro A _ _ _ b P hP M _ _ hfin hM

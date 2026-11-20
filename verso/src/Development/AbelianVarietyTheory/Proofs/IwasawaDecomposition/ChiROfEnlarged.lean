@@ -25,31 +25,27 @@ open Formalism.IndefR.FWT Formalism.L2.Pj Formalism.IndefR.Mult GlobalTheory.Rea
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' hP`. Take `⟨P'⟩` from `B'`. Simplify using `only at hP`. Substitute `hP` using the available equality. Introduce `Z hX Wt z Z' hX' Wt' core' alg' halg hH hL Xg tr R' hR hmu ι hι`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨⟨⟨H', l', c', Dw', Xo'⟩, U', V', dict', mu', Kf', pb'⟩, cE', chiW', x₀', iota'⟩` from `core'`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩` from `hH`. Simplify using `only at h1 h2 h3 h12`. Substitute `h1` using the available equality. Take `rfl` from `eq_of_heq h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq h3`. Take `rfl` from `eq_of_heq h12`. Establish `hmu'` using `eq_of_heq hmu`. Use `letI := z.alg`. Establish `halg' : ∀ y : z.core.Q.c.F, ι (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL y) = @algebraMap z.core.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg' y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Introduce `y`. Apply `(w'.st Z').toD7.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[hι]`. Conclude with `(z.alg_eq y).trans (halg y).symm`. Establish `hE2 : (w'.st Z').toD7.what₂.embLL.comp (@algebraMap z.core.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg') = (w.st Z).toD7.what₂.embLL.comp (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Conclude with `(halg y).trans (z.alg_eq y).symm`. Establish `hE : (w'.st Z').toD7.embE = ι.comp (w.st Z).toD7.embE`. Use extensionality with `x`. Apply `(w'.st Z').toD7.what₂.embLL.injective` to reduce the goal to its premises.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `congrArg (fun g => g x) (w'.st Z').toD7.embE_φ₀`. Establish `e2` using `congrArg (fun g => g x) (w.st Z).toD7.embE_φ₀`. Use `show _ = (w'.st Z').toD7.what₂.embLL (ι ((w.st Z).toD7.embE x))`. Rewrite using `[hι]`. Conclude with `e1.trans e2.symm`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Introduce `i σ' hg`. Establish `hcomp : σ'.comp (@algebraMap z.core.Q.c.F (w'.st Z').toD7.what₂.LL _ _ alg') = (σ'.comp ι).comp (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL)`. Use extensionality with `y`. Conclude with `congrArg σ' (halg' y).symm`. Establish `hlabE : labE σ' = labE (σ'.comp ι)`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Unfold `labE labLL`. Rewrite using `[hE]`. Both sides reduce to the same expression. Establish `hz` using `z.geo.fw.chiR i (σ'.comp ι) (hcomp ▸ hg)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨a1, a2, a3, a4, a5⟩` from `hz`. Rewrite using `[hcomp]`. Use `⟨a1, a2, fun ρ => ?_, fun x hx => ?_, fun hσ => ?_⟩` and prove the remaining obligations. Establish `: lab σ' ρ = lab (σ'.comp ι) ρ`. Unfold `lab`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hlabE]`. Apply the tactic sequence `try rfl`. Rewrite using `[this]`. Conclude with `a3 ρ`. Take `⟨y, hy1, hy2⟩` from `a4 x hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨y, ?_, hy2.trans (congrArg σ' (halg' y))⟩` and prove the remaining obligations. Establish `hm : ((R'.toRealDat.mu0 ((i : ℕ) + 1) x : Circle) : ℂ) = ((z.R.toRealDat.mu0 ((i : ℕ) + 1) x : Circle) : ℂ)`. Rewrite using `[hmu']`. Both sides reduce to the same expression. Use `hm.trans (hy1.trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[← halg', hι]`. Establish `hσ' : (σ'.comp ι).comp (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL) = (w.st Z).toD7.what₂.embLL.comp (algebraMap z.core.Q.c.F (w.st Z).toD7.what₂.LL)` using `by first`. Consider the case `exact hσ.trans hE2`. Consider the case `exact (hcomp.symm.trans hσ).trans hE2`. Use `(a5 hσ').trans ?_` and prove the remaining obligations.
-
-Rewrite using `[hmu']`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.R3.Rw.chiR_of_enlarged : ∀ (B B' : Base) (f : Fr B.toPre) (f' : Fr B'.toPre) (T : TwDat B) (T' : TwDat B') (w : ColW B f T) (w' : ColW B' f' T'),
     B'.toPre = B.toPre → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z : Dat (w.st Z) w.I hX T Wt) (Z' : w'.Lt) (hX' : B'.fields.Ok)

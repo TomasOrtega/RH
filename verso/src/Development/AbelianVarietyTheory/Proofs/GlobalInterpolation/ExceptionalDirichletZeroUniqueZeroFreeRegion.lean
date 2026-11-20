@@ -11,7 +11,7 @@ open scoped Classical
 namespace GlobalTheory.ExceptionalPair
 
 /- English proof (translation)
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear relations using `[Real.exp_one_lt_d9]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_log {M : ℕ} (hM : 3 ≤ M) : 1 ≤ Real.log M := by
   have hM' : (3 : ℝ) ≤ M := by exact_mod_cast hM
@@ -19,7 +19,7 @@ theorem one_le_log {M : ℕ} (hM : 3 ≤ M) : 1 ≤ Real.log M := by
   linarith [Real.exp_one_lt_d9]
 
 /- English proof (translation)
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Rewrite using `[Real.log_mul ha.ne' hM0.ne']`. Use `Real.log_le_log ha (show a ≤ (M : ℝ) by linarith)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_mul_le {M : ℕ} (hM : 3 ≤ M) {a : ℝ} (ha : 0 < a) (ha3 : a ≤ 3) :
     Real.log (a * M) ≤ 2 * Real.log M := by
@@ -30,7 +30,7 @@ theorem log_mul_le {M : ℕ} (hM : 3 ≤ M) {a : ℝ} (ha : 0 < a) (ha3 : a ≤ 
   linarith
 
 /- English proof (translation)
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hM0 : (0 : ℝ) < M` using `by linarith`. Conclude with `Real.log_le_log hM0 (le_mul_of_one_le_left hM0.le ha)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_log_mul {M : ℕ} (hM : 3 ≤ M) {a : ℝ} (ha : 1 ≤ a) :
     Real.log M ≤ Real.log (a * M) := by
@@ -39,9 +39,9 @@ theorem le_log_mul {M : ℕ} (hM : 3 ≤ M) {a : ℝ} (ha : 1 ≤ a) :
   exact Real.log_le_log hM0 (le_mul_of_one_le_left hM0.le ha)
 
 /- English proof (translation)
-Establish `hl` using `log_mul_le hM (a := 2) (by norm_num) (by norm_num)`. Establish `hpos : 0 < Real.log M` using `lt_of_lt_of_le one_pos (one_le_log hM)`. Establish `hpos2 : 0 < Real.log (2 * M)`. Combine the linear relations using `[le_log_mul hM (a := 2) (by norm_num)]`. Rewrite using `[div_le_div_iff₀ hpos hpos2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 h) hpos2.le, mul_nonneg h0 (sub_nonneg.2 hl)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem div_log_le {M : ℕ} (hM : 3 ≤ M) {c₁ c : ℝ} (h0 : 0 ≤ c) (h : c₁ ≤ c / 2) :
     c₁ / Real.log M ≤ c / Real.log (2 * M) := by
@@ -53,7 +53,7 @@ theorem div_log_le {M : ℕ} (hM : 3 ≤ M) {c₁ c : ℝ} (h0 : 0 ≤ c) (h : c
   nlinarith [mul_nonneg (sub_nonneg.2 h) hpos2.le, mul_nonneg h0 (sub_nonneg.2 hl)]
 
 /- English proof (translation)
-Establish `hy : 0 < y` using `lt_of_lt_of_le hx hxy`. Rewrite using `[div_le_div_iff₀ hy hx]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hab hx.le, mul_le_mul_of_nonneg_left hxy (ha.trans hab)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem exists_ne_zero_smul_mem_of_mem_span' {a b x y : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (hx : 0 < x) (hxy : x ≤ y) :
     a / y ≤ b / x := by
@@ -62,43 +62,41 @@ private theorem exists_ne_zero_smul_mem_of_mem_span' {a b x y : ℝ} (ha : 0 ≤
   nlinarith [mul_le_mul_of_nonneg_right hab hx.le, mul_le_mul_of_nonneg_left hxy (ha.trans hab)]
 
 /- English proof (translation)
-Take `⟨cu, hcu, hU⟩` from `GlobalTheory.RealZeroNearOne.main`. Take `⟨cp, hcp, hP⟩` from `GlobalTheory.ZeroFreePrincipal.zero_free`. Take `⟨cz, hcz, hZ⟩` from `GlobalTheory.ZeroFreeComplex.zero_free_region`. Take `⟨cs, hcs, hS⟩` from `GlobalTheory.T.exists_dirichletLFunction_zero_gap_near_one`. Use `⟨min (1 / 8) (min (cu / 2) (cp / 2)), lt_min (by norm_num) (lt_min (by linarith) (by linarith)), fun c₁ hc₁ hc₁0 => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc18 : c₁ ≤ 1 / 8` using `hc₁0.trans (min_le_left _ _)`. Establish `hcu2 : c₁ ≤ cu / 2` using `hc₁0.trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hcp2 : c₁ ≤ cp / 2` using `hc₁0.trans ((min_le_right _ _).trans (min_le_right _ _))`. Use `set c := min c₁ (min cz (min cp (cs / 2))) with hcdef`. Establish `hcpos : 0 < c` using `lt_min hc₁ (lt_min hcz (lt_min hcp (by linarith)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc₁ : c ≤ c₁` using `min_le_left _ _`. Establish `hccz : c ≤ cz` using `(min_le_right _ _).trans (min_le_left _ _)`. Establish `hccp : c ≤ cp` using `(min_le_right _ _).trans ((min_le_right _ _).trans (min_le_left _ _))`. Establish `hccs : c ≤ cs / 2` using `(min_le_right _ _).trans ((min_le_right _ _).trans (min_le_right _ _))`. Use `⟨c, hcpos, fun M _ hM => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hM' : (3 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlog1 : 1 ≤ Real.log M` using `one_le_log hM`. Establish `hlogpos : 0 < Real.log M` using `lt_of_lt_of_le one_pos hlog1`. Establish `hsmall : c₁ / Real.log M ≤ 1 / 8` using `(div_le_self hc₁.le hlog1).trans hc18`. Establish `hlogT : ∀ t : ℝ, 0 < Real.log (M * (|t| + 2))` using `fun t => Real.log_pos (by nlinarith [abs_nonneg t])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexc : ∀ (χ : DirichletCharacter ℂ M) (β : ℝ), IsExc c₁ χ β → χ ≠ 1 ∧ 7 / 8 ≤ β ∧ LFunction χ β = 0 ∧ 1 - cu / Real.log (2 * M) ≤ β`. Introduce `χ β h`. Take `⟨_, hlt, hlt1, hL⟩` from `h`. Establish `hβ : 7 / 8 ≤ β` using `by linarith`. Establish `hne : (β : ℂ) ≠ 1` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Complex.re h` as an intermediate fact. Simplify using `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLχ : LFunction χ β = 0` using `(GlobalTheory.T.dirichletL_zeros_eq_primitiveCharacter_zeros M χ β (by simp; linarith) (Or.inr hne)).1.mpr hL`. Use `⟨fun hχ => ?_, hβ, hLχ, by linarith [div_log_le hM hcu.le hcu2]⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hLχ` using `[hχ]`. Establish `h1` using `hP M (β : ℂ) hne hLχ`. Establish `e : (M : ℝ) * 2 = 2 * M` using `mul_comm _ _`. Rewrite `h1` using `[Complex.ofReal_re, Complex.ofReal_im, abs_zero, zero_add, e]`. Combine the linear relations using `[div_log_le hM hcp.le hcp2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun χ χ' β β' h h' => ?_, fun χ β h => ?_, fun χ ρ hre hL => ?_⟩` and prove the remaining obligations. Take `⟨n1, -, L1, b1⟩` from `hexc χ β h`. Take `⟨n2, -, L2, b2⟩` from `hexc χ' β' h'`. Take `⟨s1, -⟩` from `h`. Take `⟨s2, -⟩` from `h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, e2, -⟩` from `hU M χ χ' β β' n1 n2 s1 s2 b1 b2 L1 L2`. Conclude with `⟨e1, e2⟩`. Take `⟨n1, h78, L1, b1⟩` from `hexc χ β h`. Take `⟨s1, -⟩` from `h`. Use `⟨n1, h78, L1, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd` using `(hU M χ χ β β n1 n1 s1 s1 b1 b1 L1 L1).2.2`. Establish `h1` using `(GlobalTheory.RealZeroNearOne.analyticAt_L n1 (β : ℂ)).analyticOrderAt_eq_one_of_zero_deriv_ne_zero L1 hd`. Rewrite using `[GlobalTheory.Lin.ord, analyticOrderNatAt, h1]`. Both sides reduce to the same expression. Establish `h1` using `hS M χ β (Or.inl n1) L1 (by simp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Complex.ofReal_re]`. Establish `hl3` using `log_mul_le hM (a := 3) (by norm_num) le_rfl`. Establish `hl3pos : 0 < Real.log (3 * M)` using `Real.log_pos (by linarith)`. Establish `hD : 0 < (M : ℝ) ^ 2 * Real.log M` using `by positivity`. Establish `hE : 0 < (M : ℝ) ^ 2 * Real.log (3 * M)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hreal : χ ^ 2 = 1 ∧ ρ.im = 0`. Take `⟨hsq, him⟩` from `hreal`. Establish `hρ : ρ = (ρ.re : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Distinguish the cases in `hbig : 1 - c₁ / Real.log M < ρ.re`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `left`. Use `⟨him, ?_⟩` and prove the remaining obligations. Establish `hpos : 0 < ρ.re` using `by linarith`. Establish `hne : ρ ≠ 1` using `fun h => by`. Rewrite `hre` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `at hre`. Establish `hL'` using `(GlobalTheory.T.dirichletL_zeros_eq_primitiveCharacter_zeros M χ ρ hpos (Or.inr hne)).1.mp hL`. Unfold `IsExc`. Use `⟨hsq, hbig, hre, ?_⟩` and prove the remaining obligations. Rewrite using `[← hρ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hL'`. Use `right replace hbig := not_lt.mp hbig`. Rewrite using `[him, abs_zero, zero_add]`. Establish `h2 : Real.log M ≤ Real.log (M * 2)`. Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `le_log_mul hM (by norm_num)`. Use `exists_ne_zero_smul_mem_of_mem_span' hcpos.le hcc₁ hlogpos h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `right`. Establish `hne' : χ ^ 2 = 1 → ρ.im ≠ 0` using `fun h h' => hreal ⟨h, h'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hχ : χ = 1`. Establish `him : ρ.im ≠ 0` using `hne' (by rw [hχ]; exact one_pow 2)`. Establish `hne : ρ ≠ 1` using `fun h => him (by rw [h]; simp)`. Rewrite `hL` using `[hχ]`. Establish `h1` using `hP M ρ hne hL`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the first alternative.
 
-Use `exists_ne_zero_smul_mem_of_mem_span' hcpos.le hccp (hlogT ρ.im) le_rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hor : χ ^ 2 ≠ 1 ∨ ρ.im ≠ 0`. Distinguish the cases in `h : χ ^ 2 = 1`. Conclude with `Or.inr (hne' h)`.
-
-Conclude with `Or.inl h`. Establish `h1` using `hZ M χ ρ hχ hL hor`. Use `exists_ne_zero_smul_mem_of_mem_span' hcpos.le hccz (hlogT ρ.im) le_rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ c₁ : ℝ, 0 < c₁ → c₁ ≤ c₀ → ∃ c : ℝ, 0 < c ∧ ∀ (M : ℕ) [NeZero M], 3 ≤ M → (∀ (χ χ' : DirichletCharacter ℂ M) (β β' : ℝ), IsExc c₁ χ β → IsExc c₁ χ' β' → χ = χ' ∧ β = β') ∧ (∀ (χ : DirichletCharacter ℂ M) (β : ℝ), IsExc c₁ χ β → χ ≠ 1 ∧ 7 / 8 ≤ β ∧ LFunction χ β = 0 ∧ ord χ β = 1 ∧ c / ((M : ℝ) ^ 2 * Real.log M) ≤ 1 - β) ∧ ∀ (χ : DirichletCharacter ℂ M) (ρ : ℂ), ρ.re < 1 → LFunction χ ρ = 0 → (ρ.im = 0 ∧ IsExc c₁ χ ρ.re) ∨ ρ.re ≤ 1 - c / Real.log (M * (|ρ.im| + 2)) := by
   obtain ⟨cu, hcu, hU⟩ := GlobalTheory.RealZeroNearOne.main

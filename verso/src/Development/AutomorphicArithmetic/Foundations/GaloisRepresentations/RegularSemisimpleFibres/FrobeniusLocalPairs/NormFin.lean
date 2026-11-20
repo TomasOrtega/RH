@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Regul
 import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.RegularSemisimpleFibres.FrobeniusLocalPairs.FrobeniusTwistedHilbertNinety
 
 /- English proof (translation)
-Apply `Subgroup.eq_of_le_of_card_ge h1` to reduce the goal to its premises. Establish `c1` using `Subgroup.card_mul_index N.ker`. Establish `c2` using `Subgroup.card_mul_index D.ker`. Rewrite `c1` using `[Subgroup.index_ker, h2]`. Rewrite `c2` using `[Subgroup.index_ker]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hp : 0 < Nat.card D.range` using `Nat.card_pos`. Establish `e : Nat.card D.range * Nat.card N.range = Nat.card D.range * Nat.card D.ker`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `(Nat.eq_of_mul_eq_mul_left hp e).ge`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Gal.InertialTypesAlt.L.range_eq_ker_of_exact {U : Type} [CommGroup U] [Finite U]
     (N D : U →* U) (h1 : N.range ≤ D.ker) (h2 : N.ker = D.range) : N.range = D.ker := by
@@ -20,33 +20,33 @@ private theorem UpperTheory.Gal.InertialTypesAlt.L.range_eq_ker_of_exact {U : Ty
   exact (Nat.eq_of_mul_eq_mul_left hp e).ge
 
 /- English proof (translation)
-Introduce `F₀ F₁ _ _ _ _ _ sb hsb A _ _ _ τ hτ hper x hx hfix`. Establish `H` using `UpperTheory.Gal.InertialTypesAlt.L.hilbert_ninety_frobenius_twisted_finite_algebra F₀ F₁ sb hsb A τ hτ hper`. Generalize the expression as in `Module.finrank F₀ F₁ = d at hper H ⊢`. Establish `hit : ∀ i (a b : A), (⇑τ)^[i] (a * b) = (⇑τ)^[i] a * (⇑τ)^[i] b`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i with`. Consider the case `zero => intro a b`. Both sides reduce to the same expression. Consider the case `succ n ih => intro a b`. Simplify using `only [Function.iterate_succ_apply', ih, map_mul]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `hit1 : ∀ i, (⇑τ)^[i] (1 : A) = 1`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => rfl`. Consider the case `succ n ih => rw [Function.iterate_succ_apply', ih, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hmul : ∀ a b : A, UpperTheory.Gal.InertialTypesAlt.L.itN τ d (a * b) = UpperTheory.Gal.InertialTypesAlt.L.itN τ d a * UpperTheory.Gal.InertialTypesAlt.L.itN τ d b`. Introduce `a b`. Simplify using `only [UpperTheory.Gal.InertialTypesAlt.L.itN, hit, Finset.prod_mul_distrib]`. Establish `hone : UpperTheory.Gal.InertialTypesAlt.L.itN τ d 1 = 1`. Simplify using `only [UpperTheory.Gal.InertialTypesAlt.L.itN, hit1, Finset.prod_const_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hinv : ∀ a : A, τ (UpperTheory.Gal.InertialTypesAlt.L.itN τ d a) = UpperTheory.Gal.InertialTypesAlt.L.itN τ d a`. Introduce `a`. Establish `ha` using `hper a`. Simplify using `only [UpperTheory.Gal.InertialTypesAlt.L.itN, map_prod]`. Establish `e : ∀ i, τ ((⇑τ)^[i] a) = (⇑τ)^[i + 1] a` using `fun i => (Function.iterate_succ_apply' _ _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [e]`. Consider the cases of `d with`. Consider the case `zero => simp`. Consider the case `succ k`. Rewrite using `[Finset.prod_range_succ, Finset.prod_range_succ' (fun i => (⇑τ)^[i] a), ha]`.
+Simplify using the standard rewrite rules. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hτN : ∀ a : A, UpperTheory.Gal.InertialTypesAlt.L.itN τ d (τ a) = UpperTheory.Gal.InertialTypesAlt.L.itN τ d a`. Introduce `a`. Rewrite using `[← hinv a]`. Simplify using `only [UpperTheory.Gal.InertialTypesAlt.L.itN, map_prod]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl (fun i _ => by`. Rewrite using `[← Function.iterate_succ_apply, Function.iterate_succ_apply'])`. Take `⟨N, hN⟩ : ∃ N : Aˣ →* Aˣ, ∀ u, (N u : A) = UpperTheory.Gal.InertialTypesAlt.L.itN τ d u` from `⟨Units.map { toFun := UpperTheory.Gal.InertialTypesAlt.L.itN τ d, map_one' := hone, map_mul' := hmul }, fun u => rfl⟩`. Take `⟨T, hT⟩ : ∃ T : Aˣ →* Aˣ, ∀ u, (T u : A) = τ u` from `⟨Units.map (MonoidHomClass.toMonoidHom τ), fun u => rfl⟩`. Take `⟨D, hD⟩ : ∃ D : Aˣ →* Aˣ, ∀ u, D u = u / T u` from `⟨MonoidHom.id _ / T, fun u => rfl⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hr : N.range ≤ D.ker`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, hD, div_eq_one]`. Use `ext`. Rewrite using `[hT, hN, hinv]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk : N.ker = D.range`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion. Introduce `hc`. Rewrite `hc` using `[MonoidHom.mem_ker, Units.ext_iff, hN, Units.val_one]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `H c hc`. Use `⟨y, ?_⟩` and prove the remaining obligations. Rewrite using `[hD, div_eq_iff_eq_mul]`. Use `ext`. Rewrite using `[Units.val_mul, hT]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hy.symm`. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[MonoidHom.mem_ker, hD, map_div, div_eq_one]`. Use `ext`. Rewrite using `[hN, hN, hT, hτN]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `UpperTheory.Gal.InertialTypesAlt.L.range_eq_ker_of_exact N D hr hk`. Establish `hu : hx.unit ∈ D.ker`. Rewrite using `[MonoidHom.mem_ker, hD, div_eq_one]`. Use `ext`. Rewrite using `[hT, IsUnit.unit_spec, hfix]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hu` using `[← heq]`. Take `⟨y, hy⟩` from `hu`. Conclude with `⟨y, by rw [← hN, hy, IsUnit.unit_spec]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.normFin :
     UpperTheory.Gal.InertialTypesAlt.L.NormFin := by

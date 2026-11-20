@@ -20,7 +20,7 @@ def ResidueGen.ratioMon (β : K → ℤ) (c d : ∀ k, ι k) : MRingOver F ι :=
   ∏ k, (X ⟨k, d k⟩ ^ (β k).toNat * X ⟨k, c k⟩ ^ (-β k).toNat)
 
 /- English proof (translation)
-Use `⟨_, fun c d => ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_prod _ _ _ fun k _ => ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_mul (ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_pow (ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_X k (d k) …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ResidueGen.ratioMon_homog (β : K → ℤ) :
     ∃ a : K → ℕ, ∀ c d : ∀ k, ι k, IsMultiHomog (ResidueGen.ratioMon (F := F) β c d) a := by
@@ -32,7 +32,7 @@ theorem ResidueGen.ratioMon_homog (β : K → ℤ) :
 
 omit [∀ k, Fintype (ι k)] in
 /- English proof (translation)
-Simplify using `[ResidueGen.ratioMon, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ResidueGen.aeval_ratioMon {L : Type} [Field L] [Algebra F L] (z : (Σ k, ι k) → L) (β : K → ℤ)
     (c d : ∀ k, ι k) :
@@ -43,9 +43,9 @@ theorem ResidueGen.aeval_ratioMon {L : Type} [Field L] [Algebra F L] (z : (Σ k,
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Rewrite using `[ResidueGen.aeval_ratioMon, ResidueGen.aeval_ratioMon, ← Finset.prod_div_distrib, ← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hck` using `hc k`. Establish `hdk` using `hd k`. Use `conv_rhs => rw [← Int.toNat_sub_toNat_neg (β k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_sub, zpow_sub₀ hck, zpow_sub₀ hdk]`. Simplify using `only [zpow_natCast]`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem ResidueGen.ratio_eval {L : Type} [Field L] [Algebra F L] (z : (Σ k, ι k) → L) (β : K → ℤ)
     (c d : ∀ k, ι k) (hc : ∀ k, z ⟨k, c k⟩ ≠ 0) (hd : ∀ k, z ⟨k, d k⟩ ≠ 0) :
@@ -64,31 +64,29 @@ theorem ResidueGen.ratio_eval {L : Type} [Field L] [Algebra F L] (z : (Σ k, ι 
 end Ratio
 
 /- English proof (translation)
-Introduce `F _ K _ ι _ Ω _ _ y K' _ _ y' _ R σ hσ hchart β hgen d₀ hd₀`. Establish `hne : ∀ p : Σ k, ι k, y' p ≠ 0 → y p ≠ 0`. Introduce and unpack `⟨k, a⟩ hp h0`. Take `⟨hm, he⟩` from `hσ (X ⟨k, a⟩) (X ⟨k, a⟩) _ (ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_X k a) (ReciprocityTheory.ChartRestriction.G.AI.I1.isMultiHomog_X k a) (by simpa [aeval_X] using hp)`. Establish `h0' : (⟨_, hm⟩ : R) = 0` using `Subtype.ext (by simp [aeval_X, h0])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `he` using `[h0', map_zero, aeval_X, div_self hp]`. Conclude with `zero_ne_one he`. Establish `hy0 : ∀ k, y ⟨k, d₀ k⟩ ≠ 0` using `fun k => hne _ (hd₀ k)`. Establish `hG0' : (∏ k, y' ⟨k, d₀ k⟩ ^ (-β k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hd₀ k)`. Establish `hG0 : (∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hy0 k)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ext, ext_eq⟩ : ∃ e : Ω → K', ∀ z (hz : z ∈ R), e z = σ ⟨z, hz⟩` from `⟨fun z => if hz : z ∈ R then σ ⟨z, hz⟩ else 0, fun z hz => dif_pos hz⟩`. Take `⟨a, ha⟩` from `ResidueGen.ratioMon_homog (F := F) (ι := ι) β`. Establish `key : ∀ h ∈ secOver F y β, ∀ c : ∀ k, ι k, (∀ k, y' ⟨k, c k⟩ ≠ 0) → ∃ hh : h * ∏ k, y ⟨k, c k⟩ ^ (-β k) ∈ R, σ ⟨_, hh⟩ = ext (h * ∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) / (∏ k, y' ⟨k, d₀ k⟩ ^ (-β k)) * ∏ k, y' ⟨k, c k⟩ ^ (-β k)`. Introduce `h hH c hc'`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => hne _ (hc' k)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h0R, -⟩` from `hchart d₀ hd₀ _ ((PowRealises.mem_secOver y β h).mp hH d₀ hy0)`. Take `⟨hrR, hr⟩` from `hσ (ResidueGen.ratioMon β c d₀) (ResidueGen.ratioMon β d₀ c) a (ha c d₀) (ha d₀ c) (by`. Rewrite using `[ResidueGen.aeval_ratioMon]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => mul_ne_zero (pow_ne_zero _ (hc' k)) (pow_ne_zero _ (hd₀ k)))`. Establish `eqΩ` using `ResidueGen.ratio_eval (F := F) y β c d₀ hc hy0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eqK` using `ResidueGen.ratio_eval (F := F) y' β c d₀ hc' hd₀`. Establish `hprod : h * ∏ k, y ⟨k, c k⟩ ^ (-β k) = (h * ∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) * (aeval y (ResidueGen.ratioMon (F` using `F) β c d₀) / aeval y (ResidueGen.ratioMon (F := F) β d₀ c)) := by`. Rewrite using `[eqΩ]`. Clear the denominators using the available nonvanishing facts. Establish `hmem : h * ∏ k, y ⟨k, c k⟩ ^ (-β k) ∈ R`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hprod]`. Conclude with `mul_mem h0R hrR`. Use `⟨hmem, ?_⟩` and prove the remaining obligations. Establish `hsplit : (⟨_, hmem⟩ : R) = ⟨_, h0R⟩ * ⟨_, hrR⟩` using `Subtype.ext hprod`. Rewrite using `[hsplit, map_mul, hr, eqK, ext_eq _ h0R]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨fun h => ext (h * ∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) / (∏ k, y' ⟨k, d₀ k⟩ ^ (-β k)), fun h hH => key h hH d₀ hd₀, ?_⟩` and prove the remaining obligations. Introduce `c hc'`. Establish `hc : ∀ k, y ⟨k, c k⟩ ≠ 0` using `fun k => hne _ (hc' k)`. Establish `hGc' : (∏ k, y' ⟨k, c k⟩ ^ (-β k)) ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc' k)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨h, hH, rfl⟩`. Rewrite using `[SetLike.mem_coe, PowRealises.mem_span_inv_iff _ hGc']`. Take `⟨hh, he⟩` from `key h hH c hc'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, hin⟩` from `hchart c hc' _ ((PowRealises.mem_secOver y β h).mp hH c hc)`. Use `beta_reduce`. Rewrite using `[← he]`. Conclude with `hin`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff, SetLike.mem_coe]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Take `⟨m, s, hs, hg⟩` from `hgen`. Take `⟨u, hu, hsum⟩` from `hg c hc`. Use `choose hUR hUc using fun j => hchart c hc' _ (hu j)`. Use `choose hWR hW using fun j => key (s j) (hs j) c hc'`. Establish `hsumR : (∑ j, (⟨u j, hUR j⟩ : R) * ⟨_, hWR j⟩) = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Conclude with `hsum`. Establish `hone` using `congrArg σ hsumR`. Rewrite `hone` using `[map_sum, map_one]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (∑ j, σ ⟨u j, hUR j⟩ * (ext (s j * ∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) / (∏ k, y' ⟨k, d₀ k⟩ ^ (-β k)))) * (∏ k, y' ⟨k, c k⟩ ^ (-β k)) = 1`. Rewrite using `[Finset.sum_mul, ← hone]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, hW j]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← eq_inv_of_mul_eq_one_left h2]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Establish `hj` using `Submodule.smul_mem (Submodule.span (chartRingOver F y' c) ((fun h => ext (h * ∏ k, y ⟨k, d₀ k⟩ ^ (-β k)) / (∏ k, y' ⟨k, d₀ k⟩ ^ (-β k))) '' (secOver F y β : Set Ω))) (⟨_, hUc j⟩ : chartRingOver F y' c) (Submodule.subset_span (Set.mem_image_of_mem _ (hs j)))`. Rewrite `hj` using `[Subalgebra.smul_def, smul_eq_mul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ResidueGen.proof : ResidueGen.Statement := by
   intro F _ K _ ι _ Ω _ _ y K' _ _ y' _ R σ hσ hchart β hgen d₀ hd₀

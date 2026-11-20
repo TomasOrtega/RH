@@ -22,9 +22,9 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
   ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.HeckeEx MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Establish `e1 : s • ∑ j, cf j • bv j - s • bv i = ∑ j, (s * (cf j - if j = i then 1 else 0)) • bv j`. Simplify using `only [mul_sub, sub_smul, Finset.sum_sub_distrib, Finset.smul_sum, smul_smul]`. Use `congr 1`. Simplify using the standard rewrite rules. Rewrite using `[e1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Break down `lt_trichotomy j i with hj | rfl | hj` into its components or cases. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, hj, rfl⟩)`. Simplify using `[h1]`. Simplify using `[h0 j hj, hj.ne']`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_sum_sub_mem_span {V : Type} [AddCommGroup V] [Module ℂ V] {n : ℕ} (cf : Fin n → ℂ) (bv : Fin n → V)
     (s : ℂ) (i : Fin n) (h1 : cf i = 1) (h0 : ∀ j, i < j → cf j = 0) :
@@ -42,17 +42,15 @@ theorem smul_sum_sub_mem_span {V : Type} [AddCommGroup V] [Module ℂ V] {n : �
   · simp [h0 j hj, hj.ne']
 
 /- English proof (translation)
-Substitute `hy hy₁ hy₂` using the available equality. Take `⟨gam, h, h1, h2, -, h4⟩` from `GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog _ H Dw l Xo σ' g ty F i j P P' p C ψ ψp hP hP' hp hC hI`. Take `⟨gam', h', h1', h2', -, h4'⟩` from `GlobalTheory.HeckeLift.exists_linearMap_of_isHkIsog _ H Dw l Xo σ' g ty F i j P P' p C' ψ' ψp' hP hP' hp hC' hI'`. Use `⟨gam, gam', h, h', h1, h2, h1', h2', fun w v hvs hd => ?_, fun hh => ?_⟩` and prove the remaining obligations. Establish `hfst : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ pullback.fst _ _ = (F.ex i P z).left` using `fun z => pullback.lift_fst _ _ _`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `d0 : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsDerivAt0 (fun z => fibPt Xo.univ.t.G (F.ex i P z)) w v`. Use `FibreDeriv.isDerivAt0_of_isPullback (IsPullback.of_hasPullback Xo.univ.t.G.hom (F.u i P)) (fun z => pullback.lift_snd _ _ _) ?_ hvs ?_` and prove the remaining obligations. Use `ExpChain.isHolTo_ex F i P hP using 2 with z` and compare the differences between its conclusion and the goal. Conclude with `hfst z`. Use `hd using 2 with z` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hfst z`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `d1` using `FibreDeriv.isDerivAt0_comp d0 (ψ ≫ pullback.fst _ _)`. Establish `e1 : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ ψ ≫ pullback.fst _ _ = (F.ex j P' (h z)).left` using `fun z => by`. Rewrite using `[← Category.assoc, hI.2.2.1, h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `pullback.lift_fst _ _ _`. Simplify using `only [e1] at d1`. Conclude with `(ExpChain.isDerivAt0_comp_linear _ (ExpChain.isHolTo_ex F j P' hP') h.toLinearMap w _).1 d1`. Establish `d1` using `FibreDeriv.isDerivAt0_comp d0 (ψ' ≫ pullback.fst _ _)`. Establish `e1 : ∀ z, fibPt Xo.univ.t.G (F.ex i P z) ≫ ψ' ≫ pullback.fst _ _ = (F.ex j P' (h' z)).left` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Category.assoc, hI'.2.2.1, h4']`. Conclude with `pullback.lift_fst _ _ _`. Simplify using `only [e1] at d1`. Conclude with `(ExpChain.isDerivAt0_comp_linear _ (ExpChain.isHolTo_ex F j P' hP') h'.toLinearMap w _).1 d1`. Rewrite using `[← hI.2.2.2.2.2.1, ← hI'.2.2.2.2.2.1]`.
-
-Use `congr 1`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `F.ex_onto i P hP x`. Rewrite using `[← h4, ← h4', hh]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_pair {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
@@ -124,7 +122,7 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `inferInstanceAs (IsAlgClosed ℂ) ∀ (C C' : hkKer (Xo := Xo) P p i (CAt σ) (U.un k x)) (z z' w : FrPt Xo c (CAt σ)) (t t' : Ix Dw → (CAt σ)ˣ), hkRelFr P p i (GlobalTheory.ThetaTrace.hkTr Xo c p) (CAt σ) (U.un k x) C z → hkRelFr P p i (GlobalTheory.ThetaTrace.hkTr Xo c p) (CAt σ) (U …`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_hkRelFr_frBor : ∀ {E : Type} [Field E] [NumberField E] [NumberField.IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l)

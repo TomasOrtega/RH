@@ -14,7 +14,7 @@ open GlobalTheory.Member
 namespace GlobalTheory.Member
 
 /- English proof (translation)
-Simplify using `only [Module.Basis.equivFun_symm_apply, map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.mul_sum, RingHom.id_apply]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.transpose_apply, HSpace.gram]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hT_symm_equivFun {D : D7} (V : HSp D) (x y : Fin V.rank → D.host.E) :
     V.hT (V.frame.equivFun.symm x) (V.frame.equivFun.symm y) =
@@ -26,7 +26,7 @@ theorem hT_symm_equivFun {D : D7} (V : HSp D) (x y : Fin V.rank → D.host.E) :
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Simplify using `using hx`. Introduce `h`. Conclude with `⟨_, h, V.frame.equivFun.apply_symm_apply v⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_latC {D : D7} (V : HSp D) (v : Fin V.rank → D.host.E) :
     v ∈ latC V ↔ V.frame.equivFun.symm v ∈ V.L0 := by
@@ -37,11 +37,11 @@ theorem mem_latC {D : D7} (V : HSp D) (v : Fin V.rank → D.host.E) :
     exact ⟨_, h, V.frame.equivFun.apply_symm_apply v⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `h1 : V.frame.equivFun.symm v = 0`. Apply `V.nondeg.2` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Take `⟨x, rfl⟩` from `V.frame.equivFun.symm.surjective x`. Rewrite using `[hT_symm_equivFun, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ a, v a * V.gramᵀ a b = 0` using `congrFun h0 b`. Rewrite using `[this, zero_mul]`. Conclude with `V.frame.equivFun.symm.map_eq_zero_iff.1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_transpose_det_ne_zero {D : D7} (V : HSp D) : V.gramᵀ.det ≠ 0 := by
   intro h
@@ -59,25 +59,23 @@ theorem gram_transpose_det_ne_zero {D : D7} (V : HSp D) : V.gramᵀ.det ≠ 0 :=
   exact V.frame.equivFun.symm.map_eq_zero_iff.1 h1
 
 /- English proof (translation)
-Introduce `D V`. Use `⟨?_, fun v => rfl, ?_, ?_, fun x => star_star x, fun x => rfl, ?_, ?_, gram_transpose_det_ne_zero V, ?_, ?_⟩` and prove the remaining obligations. Unfold `latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`. Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `V.standardTuple_isLattice.fg.map _`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective v`. Establish `hx : x ∈ Submodule.span D.host.E (V.L0 : Set V.V)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[V.standardTuple_isLattice.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.mem_map_of_mem (f := V.frame.equivFun.toLinearMap) hx` as an intermediate fact. Rewrite `this` using `[Submodule.map_span]`. Conclude with `this`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `IsCMField.complexConj_ne_one D.host.E` to reduce the goal to its premises. Use `AlgEquiv.ext fun x => ?_` and prove the remaining obligations. Establish `hx : cF D x = x` using `by rw [h]; rfl`. Conclude with `hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b`. Conclude with `V.herm.eq _ _`. Introduce `x y`. Rewrite using `[hT_symm_equivFun]`. Simplify using `only [herm, Matrix.neg_apply, mul_neg, neg_mul, Finset.sum_neg_distrib, neg_neg]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `v`. Rewrite using `[mem_latC]`. Use `conv_rhs => rw [← V.baseLattice_isUnimodular]`. Establish `key : V.frame.equivFun.symm v ∈ Formalism.HermitianLatticesTheory.dual V.hT V.L0 ↔ ∀ y ∈ V.L0, V.hT y (V.frame.equivFun.symm v) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression. Rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, rfl⟩` from `V.frame.equivFun.symm.surjective y`. Rewrite using `[hT_symm_equivFun, Submodule.mem_one]`. Conclude with `(FractionalIdeal.mem_one_iff _).1 (h y ((mem_latC V y).2 hy))`. Introduce `h y hy`. Use `h _ ((mem_latC V y).1 hy)` as an intermediate fact.
-
-Rewrite `this` using `[hT_symm_equivFun, Submodule.mem_one]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 this`.
+A detailed English derivation is pending.
 -/
 theorem latHat_eq_hat_and_gram :
     ∀ (D : D7) (V : HSp D), latHat V = GlobalTheory.AdLat.hat D.host.F (latC V : Set (Fin V.rank → D.host.E)) ∧ (∀ v, finVec V v = GlobalTheory.AdLat.fv D.host.F v) ∧ (latC V).FG ∧ Submodule.span D.host.E (latC V : Set (Fin V.rank → D.host.E)) = ⊤ ∧ (∀ x, cF D (cF D x) = x) ∧ (∀ x, cF D x = cc x) ∧ cF D ≠ 1 ∧ (∀ a b, cF D (V.gramᵀ a b) = V.gramᵀ b a) ∧ V.gramᵀ.det ≠ 0 ∧ (∀ x y, V.hT (V.frame.equivFun.symm x) (V.frame.equivFun.symm y) = -herm (-V.gramᵀ) y x) ∧ ∀ v : Fin V.rank → D.host.E, (∀ y ∈ latC V, (∑ a, ∑ b, v a * V.gramᵀ a b * cF D (y b)) ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) ↔ v ∈ latC V := by

@@ -55,7 +55,7 @@ Both sides reduce to the same expression.
     ((conjChar g ψ q : ℂˣ) : ℂ) = g (ψ q) := rfl
 
 /- English proof (translation)
-Take `⟨_, S, hS, rfl⟩` from `h`. Take `⟨_, S', hS', rfl⟩` from `h'`. Establish `: S = S'` using `funext fun q => (hS q).unique (hS' q)`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsTwistedSum.unique {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ : HChar E} {ψ : PicO c →* ℂˣ}
     {T T' : ℂ} (h : IsTwistedSum φ s κ c χ ψ T) (h' : IsTwistedSum φ s κ c χ ψ T') : T = T' := by
@@ -65,7 +65,7 @@ theorem IsTwistedSum.unique {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} 
   rw [this]
 
 /- English proof (translation)
-Establish `key : ∀ q : PicO c, ((ψ q : ℂˣ) : ℂ)⁻¹ * (lamF χ s q.out)⁻¹ = ((finPart (χ * ξ) q.out : ℂ) * ((modF q.out ^ s : ℝ) : ℂ))⁻¹` using `fun q => by`. Rewrite using `[finPart_mul, h, QuotientGroup.out_eq', lamF, Units.val_mul]`. Simplify using `only [mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [IsTwistedSum, IsToricSum, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 -/
 theorem isTwistedSum_iff_isToricSum {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ ξ : HChar E}
     {ψ : PicO c →* ℂˣ} (h : ∀ y, finPart ξ y = ψ (QuotientGroup.mk y)) (T : ℂ) :
@@ -78,14 +78,14 @@ theorem isTwistedSum_iff_isToricSum {φ : I → E →+* ℂ} {s : ℕ} {κ : I �
   simp only [IsTwistedSum, IsToricSum, key]
 
 /- English proof (translation)
-Simplify using `[IsTwistedSum, IsToricSum, lamF]`.
+Simplify using the standard rewrite rules.
 -/
 example {φ : I → E →+* ℂ} {s : ℕ} {κ : I → ℕ} {c : Ideal (OF E)} {χ : HChar E} (T : ℂ) :
     IsTwistedSum φ s κ c χ 1 T ↔ IsToricSum φ s κ c χ T := by
   simp [IsTwistedSum, IsToricSum, lamF]
 
 /- English proof (translation)
-Rewrite using `[classOf, QuotientGroup.eq_one_iff]`. Use `Subgroup.mem_sup_left ⟨Units.map (algebraMap K E).toMonoidHom a, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.AdeleBaseChange.adMap_algebraMap (a : K)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example (K : Type) [Field K] [NumberField K] [Algebra K E] (c : Ideal (OF E)) (a : Kˣ) :
     classOf K c (Units.map (algebraMap K (Af K)).toMonoidHom a) = 1 := by
@@ -94,7 +94,7 @@ example (K : Type) [Field K] [NumberField K] [Algebra K E] (c : Ideal (OF E)) (a
   exact (GlobalTheory.AdeleBaseChange.adMap_algebraMap (a : K)).symm
 
 /- English proof (translation)
-Take `⟨σ, hσ, e⟩` from `(h.frob v A hA _).1 ⟨_, Formalism.L2.Host.unif_spec v, rfl⟩`. Use `⟨σ, hσ, ?_⟩` and prove the remaining obligations. Rewrite `e` using `[map_inv, inv_eq_iff_eq_inv]`. Conclude with `e.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example {K Ω : Type} [Field K] [NumberField K] [Field Ω] [Algebra K Ω] {art : Ideles K →* Gab K Ω} (h : IsGlobalArtin art)
     (v : HeightOneSpectrum (𝓞 K)) (A : ValuationSubring Ω) (hA : Formalism.ConjugateSelfDual.IsPlaceOver A v) :

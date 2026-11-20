@@ -14,13 +14,13 @@ def hcStdU (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) (i : ℕ) : �
   else (uL : ℚ) + 1 / 2
 
 /- English proof (translation)
-Simplify using `[hcStdU]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hcStdU_zero (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) :
     hcStdU k Del uF uL c 0 = (uF : ℚ) + 1 / 2 := by simp [hcStdU]
 
 /- English proof (translation)
-Unfold `hcStdU`. Rewrite using `[if_neg (Nat.succ_ne_zero l), dif_pos (by simpa using h)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hcStdU_succ (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) (l : ℕ) (h : l < k - 2) :
     hcStdU k Del uF uL c (l + 1) =
@@ -30,7 +30,7 @@ theorem hcStdU_succ (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) (l : 
   rfl
 
 /- English proof (translation)
-Unfold `hcStdU`. Rewrite using `[if_neg h0, dif_neg h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hcStdU_last (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) (i : ℕ) (h0 : i ≠ 0)
     (h : ¬ i - 1 < k - 2) : hcStdU k Del uF uL c i = (uL : ℚ) + 1 / 2 := by
@@ -38,27 +38,27 @@ theorem hcStdU_last (k Del : ℕ) (uF uL : ℤ) (c : Fin (k - 2) → Bool) (i : 
   rw [if_neg h0, dif_neg h]
 
 /- English proof (translation)
-Introduce `R Del hh uF uL b1 hD hhh hF hL hb c`. Establish `hk` using `R.m_add_three_le_k`. Establish `hm` using `R.two_le_m`. Establish `hDq : (1 : ℚ) ≤ Del` using `by exact_mod_cast hD`. Establish `hhq : (R.t : ℚ) + 3 ≤ 2 * hh` using `by exact_mod_cast hhh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFq : ((R.k - 2 : ℕ) : ℚ) * (4 * (Del : ℚ)) ≤ uF` using `by exact_mod_cast hF`. Establish `hLq : (uL : ℚ) ≤ -1` using `by exact_mod_cast hL`. Establish `hbq : -(b1 : ℚ) ≤ uL` using `by exact_mod_cast hb`. Use `⟨{ u := fun i => hcStdU R.k Del uF uL c i.1 v := fun i => ((R.k - 2 - i.1 : ℕ) : ℚ) * (4 * (Del : ℚ)) b := fun j => (b1 : ℚ) + (j.1 : ℚ) * (2 * hh : ℚ) e := fun j => (b1 : ℚ) + (j.1 : ℚ) * (2 * hh : ℚ) + hh u_gt_v := ?_ v_gt_u := ?_ u_last_gt := ?_ gap_be := ?_ gap_eb := ?_ e_int …` and prove the remaining obligations. Introduce and unpack `⟨i, hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Break down `i with _ | l` into its components or cases. Simplify using `only [hcStdU_zero, Nat.sub_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hl : l < R.k - 2` using `by omega`. Simplify using `only [hcStdU_succ _ _ _ _ _ l hl]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: R.k - 2 - l = (R.k - 2 - (l + 1)) + 1` using `by omega`. Rewrite using `[this]`. Use `push_cast`. Apply the tactic sequence `split_ifs <;> linarith`. Introduce and unpack `⟨i, hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hl : i < R.k - 2`. Apply the tactic sequence `simp only [hcStdU_succ _ _ _ _ _ i hl] split_ifs <;> linarith`. Simplify using `only`. Rewrite using `[hcStdU_last _ _ _ _ _ _ (by omega) (by simpa using hl)]`. Establish `: R.k - 2 - i = 0` using `by omega`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h h'`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcStdU_last _ _ _ _ _ _ (by omega) (by omega)]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `j h`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `j`. Conclude with `⟨b1 + j.1 * (2 * hh) + hh, by push_cast; ring⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨i, hi⟩`. Break down `i with _ | l` into its components or cases. Conclude with `⟨uF, hcStdU_zero _ _ _ _ _⟩`. Distinguish the cases in `hl : l < R.k - 2`. Use `⟨((R.k - 2 - l : ℕ) : ℤ) * (4 * Del) - 1 - (if c ⟨l, hl⟩ then (Del : ℤ) else 0), ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hcStdU_succ _ _ _ _ _ l hl]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Conclude with `⟨uL, hcStdU_last _ _ _ _ _ _ (by simp) (by simpa using hl)⟩`. Introduce `i`. Conclude with `⟨((R.k - 2 - i.1 : ℕ) : ℤ) * (4 * Del), by push_cast; ring⟩`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `j`. Conclude with `⟨b1 + j.1 * (2 * hh), by push_cast; ring⟩`. Conclude with `hcStdU_zero R.k Del uF uL c`. Conclude with `hcStdU_last R.k Del uF uL c (R.k - 1) (by omega) (by omega)`. Conclude with `hcStdU_succ R.k Del uF uL c l h`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_hcParam_std : ∀ (R : Ranks) (Del hh : ℕ) (uF uL b1 : ℤ), 1 ≤ Del → R.t + 3 ≤ 2 * hh → ((R.k - 2 : ℕ) : ℤ) * (4 * Del) ≤ uF → uL ≤ -1 → -b1 ≤ uL → ∀ c : Fin (R.k - 2) → Bool, ∃ P : HCParam R, (∀ i : Fin (R.k - 1), (P).v i = ((R.k - 2 - i.1 : ℕ) : ℚ) * (4 * (Del : ℚ))) ∧ (∀ j : Fin R.m, (P).b j = (b1 : ℚ) + (j.1 : ℚ) * (2 * hh : ℚ) ∧ (P).e j = (P).b j + hh) ∧ (∀ h : 0 < R.k, (P).u ⟨0, h⟩ = (uF : ℚ) + 1 / 2 ∧ (P).u ⟨R.k - 1, by omega⟩ = (uL : ℚ) + 1 / 2) ∧ ∀ (l : ℕ) (h : l < R.k - 2), (P).u ⟨l + 1, by omega⟩ = (P).v ⟨l, by omega⟩ - 1 / 2 - (if c ⟨l, h⟩ then (Del : ℚ) else 0) := by
   intro R Del hh uF uL b1 hD hhh hF hL hb c

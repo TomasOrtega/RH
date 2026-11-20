@@ -86,7 +86,7 @@ def sPrime (i : Fin Z.R.m) (τ : Z.X.Tau) : ℚ := sExp' Z.R ((Z.W.row τ).e i) 
 def sPlain (i : Fin Z.R.m) (τ : Z.X.Tau) : ℚ := sExp Z.R ((Z.W.row τ).e i) (i.1 + 1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P`. Unfold `muAt muAtT`. Distinguish the cases in `hP : P.1 ∈ Z.Pr.vGs`. Simplify using `only [if_pos hP]`. Simplify using `only [if_neg hP, h i hi P hP]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem muAt_eq_muAtT (h : MuqTie Z.Ch sel mu cst) (i : ℕ) (hi : i < Z.R.m) :
     muAt Z.Ch sel mu cst i = muAtT Z.Ch sel mu cst i := by
@@ -158,14 +158,14 @@ def CharValAtT : Prop :=
         PartD Z s χ sel mu cst i.1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ _ => Iff.rfl⟩`.
+Supply the required witnesses or components.
 -/
 example {E : Type} [Field E] [NumberField E] [StarRing E] (n p : ℕ) (SB : Finset (HeightOneSpectrum (𝓞 E))) :
     StdOver p (stdLat E n) ∧ IsFrames (SB := SB) (stdLat E n) (fun _ => 1) :=
   ⟨fun _ _ => rfl, fun _ _ => Iff.rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `[UnitAt] at h`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem UnitAt.ne_zero {K : Type} [Field K] [NumberField K] {w : HeightOneSpectrum (𝓞 K)} {x : K} (h : UnitAt w x) : x ≠ 0 := by
   rintro rfl

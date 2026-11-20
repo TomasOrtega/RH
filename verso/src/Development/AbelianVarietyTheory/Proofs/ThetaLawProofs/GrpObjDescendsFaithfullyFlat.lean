@@ -20,41 +20,37 @@ namespace GlobalTheory.GrpDescent
 variable {S S₀ : Scheme.{0}}
 
 /- English proof (translation)
-Establish `rmul : ∀ {T' : Over S} {T : Over S₀} (p : T'.left ⟶ T.left) {x' y' : T' ⟶ A} {x y : T ⟶ A₀}, x'.left ≫ π = p ≫ x.left → y'.left ≫ π = p ≫ y.left → (x' * y').left ≫ π = p ≫ (lift x y ≫ m₀).left`. Introduce `T' T p x' y' x y hx hy`. Establish `: (lift x' y').left ≫ π₂ = p ≫ (lift x y).left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((lift x' y').left ≫ π₂) ≫ (fst A₀ A₀).left = (p ≫ (lift x y).left) ≫ (fst A₀ A₀).left`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Category.assoc, h1, ← Category.assoc, ← Over.comp_left, lift_fst, Category.assoc, ← Over.comp_left, lift_fst, hx]`. Express the relevant statement in the definitionally equal form `((lift x' y').left ≫ π₂) ≫ (snd A₀ A₀).left = (p ≫ (lift x y).left) ≫ (snd A₀ A₀).left`. Rewrite using `[Category.assoc, h2, ← Category.assoc, ← Over.comp_left, lift_snd, Category.assoc, ← Over.comp_left, lift_snd, hy]`. Rewrite using `[Hom.mul_def, Over.comp_left, Category.assoc, hm, ← Category.assoc, this, Over.comp_left, Category.assoc]`. Establish `rone : ∀ {T' : Over S} {T : Over S₀} (p : T'.left ⟶ T.left), p ≫ T.hom = T'.hom ≫ f → (1 : T' ⟶ A).left ≫ π = p ≫ (toUnit T ≫ e₀).left`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `T' T p hp`. Rewrite using `[Hom.one_def, Over.comp_left, Category.assoc, he, Over.comp_left, Over.toUnit_left, Over.toUnit_left]`. Conclude with `(Category.assoc _ _ _).symm.trans (by rw [← hp]; exact Category.assoc _ _ _)`. Establish `rinv : ∀ {T' : Over S} {T : Over S₀} (p : T'.left ⟶ T.left) {x' : T' ⟶ A} {x : T ⟶ A₀}, x'.left ≫ π = p ≫ x.left → (x'⁻¹).left ≫ π = p ≫ (x ≫ i₀).left`. Introduce `T' T p x' x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Hom.inv_def, Over.comp_left, Category.assoc, hi, ← Category.assoc, hx, Over.comp_left, Category.assoc]`. Establish `cov : ∀ T : Over S₀, ∃ (T' : Over S) (p : T'.left ⟶ T.left), p ≫ T.hom = T'.hom ≫ f ∧ (∀ a b : T ⟶ A₀, p ≫ a.left = p ≫ b.left → a = b) ∧ ∀ x : T ⟶ A₀, ∃ x' : T' ⟶ A, x'.left ≫ π = p ≫ x.left`. Introduce `T`. Use `⟨Over.mk (pullback.snd T.hom f), pullback.fst T.hom f, pullback.condition, fun a b h => ?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: Epi (pullback.fst T.hom f)` using `Flat.epi_of_flat_of_surjective _ ext1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(cancel_epi (pullback.fst T.hom f)).1 h`. Use `⟨Over.homMk (hπ.lift (pullback.fst T.hom f ≫ x.left) (pullback.snd T.hom f) ?_) ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Over.w x, pullback.condition]`. Conclude with `hπ.lift_snd _ _ _`. Conclude with `hπ.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `one_mul' : ∀ {T : Over S₀} (x : T ⟶ A₀), lift (toUnit T ≫ e₀) x ≫ m₀ = x`. Introduce `T x`. Take `⟨T', p, hp, hinj, hl⟩` from `cov T`. Take `⟨x', hx⟩` from `hl x`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← rmul p (rone p hp) hx, _root_.one_mul, hx]`. Establish `mul_one' : ∀ {T : Over S₀} (x : T ⟶ A₀), lift x (toUnit T ≫ e₀) ≫ m₀ = x`. Introduce `T x`. Take `⟨T', p, hp, hinj, hl⟩` from `cov T`. Take `⟨x', hx⟩` from `hl x`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← rmul p hx (rone p hp), _root_.mul_one, hx]`. Establish `assoc' : ∀ {T : Over S₀} (x y z : T ⟶ A₀), lift (lift x y ≫ m₀) z ≫ m₀ = lift x (lift y z ≫ m₀) ≫ m₀`. Introduce `T x y z`. Take `⟨T', p, hp, hinj, hl⟩` from `cov T`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x', hx⟩` from `hl x`. Take `⟨y', hy⟩` from `hl y`. Take `⟨z', hz⟩` from `hl z`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[← rmul p (rmul p hx hy) hz, ← rmul p hx (rmul p hy hz), _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `linv' : ∀ {T : Over S₀} (x : T ⟶ A₀), lift (x ≫ i₀) x ≫ m₀ = toUnit T ≫ e₀`. Introduce `T x`. Take `⟨T', p, hp, hinj, hl⟩` from `cov T`. Take `⟨x', hx⟩` from `hl x`. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← rmul p (rinv p hx) hx, ← rone p hp, inv_mul_cancel]`. Establish `rinv' : ∀ {T : Over S₀} (x : T ⟶ A₀), lift x (x ≫ i₀) ≫ m₀ = toUnit T ≫ e₀`. Introduce `T x`. Take `⟨T', p, hp, hinj, hl⟩` from `cov T`. Take `⟨x', hx⟩` from `hl x`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[← rmul p hx (rinv p hx), ← rone p hp, mul_inv_cancel]`. Set `G : GrpObj A₀` to `{ one := e₀ mul := m₀ one_mul := by`. Rewrite using `[← one_mul' (λ_ A₀).hom]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `mul_one := by`. Rewrite using `[← mul_one' (ρ_ A₀).hom]`. Use `congr 1`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[whiskerLeft_fst, lift_fst, rightUnitor_hom]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[whiskerLeft_snd, lift_snd]`. Use `congr 1`. Conclude with `toUnit_unique _ _`. Use `mul_assoc := by`. Establish `h` using `assoc' (fst (A₀ ⊗ A₀) A₀ ≫ fst A₀ A₀) (fst (A₀ ⊗ A₀) A₀ ≫ snd A₀ A₀) (snd (A₀ ⊗ A₀) A₀)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `a1 : m₀ ▷ A₀ = lift (lift (fst (A₀ ⊗ A₀) A₀ ≫ fst A₀ A₀) (fst (A₀ ⊗ A₀) A₀ ≫ snd A₀ A₀) ≫ m₀) (snd (A₀ ⊗ A₀) A₀)`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[whiskerRight_fst, lift_fst, ← comp_lift, lift_fst_snd, Category.comp_id]`. Rewrite using `[whiskerRight_snd, lift_snd]`. Establish `a2 : (α_ A₀ A₀ A₀).hom ≫ A₀ ◁ m₀ = lift (fst (A₀ ⊗ A₀) A₀ ≫ fst A₀ A₀) (lift (fst (A₀ ⊗ A₀) A₀ ≫ snd A₀ A₀) (snd (A₀ ⊗ A₀) A₀) ≫ m₀)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, whiskerLeft_fst, lift_fst, associator_hom_fst]`. Rewrite using `[Category.assoc, whiskerLeft_snd, lift_snd, ← Category.assoc]`. Use `congr 1`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, lift_fst, associator_hom_snd_fst]`. Rewrite using `[Category.assoc, lift_snd, associator_hom_snd_snd]`. Rewrite using `[← Category.assoc, a2, a1, h]`. Use `inv := i₀`. Use `left_inv := by simpa only [Category.id_comp] using linv' (𝟙 A₀)`.
-
-Use `right_inv := by simpa only [Category.id_comp] using rinv' (𝟙 A₀) }`. Use `⟨G, hπ, fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Use `rmul (T' := T) (T := Over.mk (T.hom ≫ f)) (𝟙 T.left) (x' := x) (y' := y) (x := x₀) (y := y₀) (hx.symm.trans (Category.id_comp _).symm) (hy.symm.trans (Category.id_comp _).symm)` as an intermediate fact. Conclude with `(this.trans (Category.id_comp _)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem grpObj_descends (f : S ⟶ S₀) [Flat f] [Surjective f] (A : Over S) [GrpObj A] (A₀ : Over S₀)
     (π : A.left ⟶ A₀.left) (e₀ : 𝟙_ (Over S₀) ⟶ A₀) (m₀ : A₀ ⊗ A₀ ⟶ A₀) (i₀ : A₀ ⟶ A₀)
@@ -172,7 +168,7 @@ theorem grpObj_descends (f : S ⟶ S₀) [Flat f] [Surjective f] (A : Over S) [G
   exact (this.trans (Category.id_comp _)).symm
 
 /- English proof (translation)
-Introduce `R₀ R _ _ _ _ A _ A₀ _ _ _ π e₀ m₀ i₀ π₂ hπ h1 h2 he hm hi`. Establish `hff : (algebraMap R₀ R).FaithfullyFlat` using `RingHom.faithfullyFlat_algebraMap_iff.2 ‹_›`. Take `⟨_, _⟩` from `(flat_and_surjective_SpecMap_iff (CommRingCat.ofHom (algebraMap R₀ R))).2 hff`. Conclude with `grpObj_descends _ A A₀ π e₀ m₀ i₀ π₂ hπ h1 h2 he hm hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem grpObj_descends_faithfullyFlat : ∀ (R₀ R : Type) [CommRing R₀] [CommRing R] [Algebra R₀ R] [Module.FaithfullyFlat R₀ R] (A : Over (Sp R)) [GrpObj A] (A₀ : Over (Sp R₀)) [Flat A₀.hom] [IsSeparated A₀.hom] [QuasiCompact A₀.hom] (π : A.left ⟶ A₀.left) (e₀ : 𝟙_ (Over (Sp R₀)) ⟶ A₀) (m₀ : A₀ ⊗ A₀ ⟶ A₀) (i₀ : A₀ ⟶ A₀) (π₂ : (A ⊗ A).left ⟶ (A₀ ⊗ A₀).left), IsPullback π A.hom A₀.hom (spMap (algebraMap R₀ R)) → π₂ ≫ (fst A₀ A₀).left = (fst A A).left ≫ π → π₂ ≫ (snd A₀ A₀).left = (snd A A).left ≫ π → η[A].left ≫ π = spMap (algebraMap R₀ R) ≫ e₀.left → μ[A].left ≫ π = π₂ ≫ m₀.left → (GrpObj.inv : A ⟶ A).left ≫ π = π ≫ i₀.left → ∃ _ : GrpObj A₀, IsGrpPullback A A₀ (spMap (algebraMap R₀ R)) π := by
   intro R₀ R _ _ _ _ A _ A₀ _ _ _ π e₀ m₀ i₀ π₂ hπ h1 h2 he hm hi

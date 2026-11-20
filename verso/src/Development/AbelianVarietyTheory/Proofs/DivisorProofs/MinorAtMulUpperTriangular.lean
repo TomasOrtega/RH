@@ -8,17 +8,17 @@ set_option autoImplicit false
 namespace GlobalTheory.WholeFlag.Glue
 
 /- English proof (translation)
-Establish `hmat : (Matrix.of fun r l : Fin k => (R * T) (σ r) (Fin.castLE hk l)) = (Matrix.of fun r l : Fin k => R (σ r) (Fin.castLE hk l)) * (Matrix.of fun j l : Fin k => T (Fin.castLE hk j) (Fin.castLE hk l))`. Use extensionality with `r l`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `symm`. Establish `hm` using `Finset.sum_map Finset.univ (Fin.castLEEmb hk) (fun j : Fin g => R (σ r) j * T j (Fin.castLE hk l))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Establish an intermediate fact.
 
-Use `Eq.trans (Eq.trans ?_ hm.symm) ?_` and prove the remaining obligations. Both sides reduce to the same expression. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `j _ hj`. Establish `hjk : k ≤ (j : ℕ)`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hj (Finset.mem_map.2 ⟨⟨j, h⟩, Finset.mem_univ _, Fin.ext (by simp)⟩)`. Establish `hlt : Fin.castLE hk l < j`. Rewrite using `[Fin.lt_iff_val_lt_val]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish `h0 : T j (Fin.castLE hk l) = 0` using `hT hlt`. Simplify using `only [h0, mul_zero]`. Establish `htri : (Matrix.of fun j l : Fin k => T (Fin.castLE hk j) (Fin.castLE hk l)).BlockTriangular id`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i j hij`. Simplify using `only [Matrix.of_apply]`. Apply `hT` to reduce the goal to its premises. Rewrite `hij`, the goal using `[Fin.lt_iff_val_lt_val]`. Simplify using `using hij`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `minorAt`. Rewrite using `[hmat, Matrix.det_mul, Matrix.det_of_upperTriangular htri]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem minorAt_mul_upperTriangular {K : Type} [Field K] {n g : ℕ} (R : Matrix (Fin n) (Fin g) K)
     (T : Matrix (Fin g) (Fin g) K) (hT : T.BlockTriangular id) (k : ℕ) (hk : k ≤ g) (σ : Fin k → Fin n) :

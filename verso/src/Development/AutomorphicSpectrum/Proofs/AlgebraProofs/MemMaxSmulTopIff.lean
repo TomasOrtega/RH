@@ -6,9 +6,9 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.CommAlg.SatOfInj
 
 /- English proof (translation)
-Rewrite using `[IsDiscreteValuationRing.irreducible_iff_uniformizer π |>.mp hπ, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, -, rfl⟩`. Conclude with `⟨z, rfl⟩`. Introduce and unpack `⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨z, trivial, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_max_smul_top_iff {R M : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup M] [Module R M] {π : R} (hπ : Irreducible π) (x : M) :
@@ -22,18 +22,18 @@ theorem mem_max_smul_top_iff {R M : Type} [CommRing R] [IsDomain R] [IsDiscreteV
     exact ⟨z, trivial, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(smul_eq_zero.mp h).resolve_left ha`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul {R M : Type} [CommRing R] [IsDomain R] [AddCommGroup M] [Module R M]
     [Module.IsTorsionFree R M] {a : R} (ha : a ≠ 0) {z : M} (h : a • z = 0) : z = 0 :=
   (smul_eq_zero.mp h).resolve_left ha
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro y hy`. Simplify using `using hy`. Consider the case `succ n ih`. Introduce `y hy`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hy`. Establish `hmem : f x ∈ IsLocalRing.maximalIdeal R • (⊤ : Submodule R E)`. Rewrite using `[mem_max_smul_top_iff hπ]`. Conclude with `⟨π ^ n • y, by rw [hx, pow_succ', mul_smul]⟩`. Take `⟨x', rfl⟩` from `(mem_max_smul_top_iff hπ x).mp (hf x hmem)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `ih y ⟨x', ?_⟩` and prove the remaining obligations. Establish `h0 : π • (f x' - π ^ n • y) = 0`. Rewrite using `[smul_sub, ← map_smul, hx, pow_succ', mul_smul, sub_self]`. Conclude with `sub_eq_zero.mp (eq_zero_of_smul hπ.ne_zero h0)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_step {R P E : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup P] [Module R P] [AddCommGroup E] [Module R E] [Module.IsTorsionFree R E]
@@ -56,15 +56,13 @@ theorem pow_step {R P E : Type} [CommRing R] [IsDomain R] [IsDiscreteValuationRi
     exact sub_eq_zero.mp (eq_zero_of_smul hπ.ne_zero h0)
 
 /- English proof (translation)
-Introduce `R P E _ _ _ _ _ _ _ _ _ _ f hf`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible R`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.ker_eq_bot]`. Use `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot (IsLocalRing.maximalIdeal R) _ (IsNoetherian.noetherian _) ?_ (IsLocalRing.maximalIdeal_le_jacobson _)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Establish `hx0 : f x = 0` using `hx`. Establish `hmem : f x ∈ IsLocalRing.maximalIdeal R • (⊤ : Submodule R E)`. Rewrite using `[hx0]`. Conclude with `Submodule.zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x', rfl⟩` from `(mem_max_smul_top_iff hπ x).mp (hf x hmem)`. Establish `hx' : f x' = 0`. Rewrite `hx0` using `[map_smul]`. Conclude with `eq_zero_of_smul hπ.ne_zero hx0`. Conclude with `Submodule.smul_mem_smul ((IsDiscreteValuationRing.irreducible_iff_uniformizer π).mp hπ ▸ Ideal.mem_span_singleton_self π) (LinearMap.mem_ker.mpr hx')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a y ha hy`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible ha hπ`. Establish `h1 : π ^ n • ((u : R) • y) ∈ LinearMap.range f`. Rewrite using `[smul_smul, mul_comm]`. Conclude with `hy`.
-
-Establish `h2` using `pow_step f hπ hf n _ h1`. Establish `h3` using `Submodule.smul_mem _ ((u⁻¹ : Rˣ) : R) h2`. Rewrite `h3` using `[smul_smul, Units.inv_mul, one_smul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sat_of_inj_mod : ∀ (R P E : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [AddCommGroup P] [Module R P] [Module.Finite R P] [AddCommGroup E] [Module R E]

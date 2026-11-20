@@ -21,9 +21,9 @@ namespace HBx
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `C2.uMap herm`. Use `continuous_pi fun a => continuous_pi fun b => ?_` and prove the remaining obligations. Distinguish the cases in `h : a.val < r`. Simplify using `only [dif_pos h]`. Conclude with `continuous_const.dotProduct (continuous_const.matrix_mulVec (continuous_id.matrix_mulVec continuous_const))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dif_neg h]`. Conclude with `(continuous_const.dotProduct (continuous_const.matrix_mulVec (continuous_id.matrix_mulVec continuous_const))).div_const _`.
+A detailed English derivation is pending.
 -/
 lemma uMap_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous fun s : B.Mat k r => C2.uMap k r z s := by
   unfold C2.uMap herm
@@ -37,15 +37,13 @@ lemma uMap_cont (z : Fin (2 * r + k + 1) → ℂ) : Continuous fun s : B.Mat k r
       (continuous_id.matrix_mulVec continuous_const))).div_const _
 
 /- English proof (translation)
-Establish `hU : IsClosed (UH (Hpk k r))` using `by show IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | gᴴ * Hpk k r * g = Hpk k r}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`. Establish `hA : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → g i (eI k r a) = if i = eI k r a then 1 else 0}`. Establish `e : {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → g i (eI k r a) = if i = eI k r a then 1 else 0} = ⋂ (a : Fin r) (i : Fin (2 * r + k + 1)) (_ : a.val ≤ i.val), {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + …`. Use extensionality with `g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem _ _) continuous_const`. Establish `hB : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → r ≤ i.val → g i j = if i = j then 1 else 0}`. Establish `e : {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j : Fin (2 * r + k + 1), r ≤ j.val → j.val ≤ r + k → r ≤ i.val → g i j = if i = j then 1 else 0} = ⋂ (i : Fin (2 * r + k + 1)) (j : Fin (2 * r + k + 1)) (_ : r ≤ j.val) (_ : j.val ≤ r + k) (_ : r ≤ i.val), {g : M …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, Set.mem_iInter]`. Rewrite using `[e]`. Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem _ _) continuous_const`. Establish `hu : IsClosed {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | C2.uMap k r z g = 1}` using `isClosed_eq (uMap_cont z) continuous_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Replace the relevant objects with their definitions.
 
-Establish `e : C2.N0set k r z = ((UH (Hpk k r) ∩ {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ (a : Fin r) (i : Fin (2 * r + k + 1)), a.val ≤ i.val → g i (eI k r a) = if i = eI k r a then 1 else 0}) ∩ {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ | ∀ i j : Fin (2 …`. Use extensionality with `g`. Unfold `C2.N0set Formalism.QuantumDeterminants.Nset`. Simplify using `only [Set.mem_setOf_eq, Set.mem_inter_iff]`. The claim follows by propositional logic.
-
-Rewrite using `[e]`. Conclude with `((hU.inter hA).inter hB).inter hu`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma isClosed_N0set (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (C2.N0set k r z) := by
   have hU : IsClosed (UH (Hpk k r)) := by
@@ -88,18 +86,18 @@ lemma isClosed_N0set (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (C2.N0set k r 
   exact ((hU.inter hA).inter hB).inter hu
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[unipotentBlockMatrix, cmOf, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma blk_zero : unipotentBlockMatrix k r 0 0 = 1 := by
   ext i j
   simp [unipotentBlockMatrix, cmOf, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hD : (Matrix.diagonal (hW k))ᴴ = Matrix.diagonal (hW k)`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Unfold `hW`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs with hj <;> simp [hj]`. Establish `hX : (B * Matrix.diagonal (hW k) * Baᴴ)ᴴ = Ba * Matrix.diagonal (hW k) * Bᴴ`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hD, Matrix.mul_assoc]`. Establish `hY : (Ba * Matrix.diagonal (hW k) * Bᴴ)ᴴ = B * Matrix.diagonal (hW k) * Baᴴ`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hD, Matrix.mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[Matrix.conjTranspose_add, Matrix.conjTranspose_add, Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, hX, hY, hSa, hS, hc, ← neg_sub (B * Matrix.diagonal (hW k) * Baᴴ) (Ba * Matrix.diagonal (hW k) * Bᴴ), smul_neg]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma skew_mul (Ba B : Matrix (Fin r) (Fin (k + 1)) ℂ) (Sa S : Matrix (Fin r) (Fin r) ℂ) (hSa : Saᴴ = -Sa)
     (hS : Sᴴ = -S) :
@@ -124,15 +122,13 @@ lemma skew_mul (Ba B : Matrix (Fin r) (Fin (k + 1)) ℂ) (Sa S : Matrix (Fin r) 
 end HBx
 
 /- English proof (translation)
-Introduce `k r z hz`. Establish `key : ∀ (Bm : Matrix (Fin r) (Fin (k + 1)) ℂ) (S : Matrix (Fin r) (Fin r) ℂ), unipotentBlockMatrix k r Bm S * unipotentBlockMatrix k r (-Bm) (-S) = 1`. Introduce `Bm S`. Rewrite using `[NBk.nbm_mul]`. Establish `e1 : Bm + -Bm = 0` using `add_neg_cancel Bm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : S + -S + (1 / 2 : ℂ) • (-Bm * Matrix.diagonal (hW k) * Bmᴴ - Bm * Matrix.diagonal (hW k) * (-Bm)ᴴ) = 0`. Simplify using `[Matrix.conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg]`. Rewrite using `[e1, e2, HBx.blk_zero]`. Use `⟨?_, ?_, ?_, ?_, HBx.isClosed_N0set z⟩` and prove the remaining obligations. Rewrite using `[← HBx.blk_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NBk.nb_mem _ _ hz (Matrix.zero_mulVec _) (by simp)`. Introduce `a ha b hb`. Take `⟨Ba, Sa, hBa, hSa, rfl⟩` from `unipotent_eq_block k r z hz a ha`. Take `⟨B, S, hB, hS, rfl⟩` from `unipotent_eq_block k r z hz b hb`. Rewrite using `[NBk.nbm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `NBk.nb_mem _ _ hz (by rw [Matrix.add_mulVec, hBa, hB, add_zero]) (HBx.skew_mul Ba B Sa S hSa hS)`. Introduce `a ha`. Take `⟨Ba, Sa, hBa, hSa, rfl⟩` from `unipotent_eq_block k r z hz a ha`. Rewrite using `[Matrix.inv_eq_right_inv (key Ba Sa)]`. Conclude with `NBk.nb_mem _ _ hz (by rw [Matrix.neg_mulVec, hBa, neg_zero]) (by rw [Matrix.conjTranspose_neg, hSa])`.
-
-Introduce `a ha`. Take `⟨Ba, Sa, hBa, hSa, rfl⟩` from `unipotent_eq_block k r z hz a ha`. Conclude with `Matrix.isUnit_det_of_right_inverse (key Ba Sa)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem unipotent_integral_closed : UnipotentSetIsClosedSubgroup := by
   intro k r z hz

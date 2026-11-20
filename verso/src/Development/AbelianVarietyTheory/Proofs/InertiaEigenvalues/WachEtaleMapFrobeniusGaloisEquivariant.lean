@@ -22,11 +22,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [Algebra O RW] {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
 
 /- English proof (translation)
-Establish `hb : Function.Bijective (LinearMap.toSpanSingleton O M e₀)`. Use `⟨(injective_iff_map_eq_zero _).2 fun c hc => hi c (by simpa using hc), fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span O {e₀}` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hx`. Conclude with `⟨c, by simpa using hc⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `f` to `LinearEquiv.ofBijective _ hb`. Establish `h1 : f.symm e₀ = 1`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `[f]`. Use `congrArg (fun z => TensorProduct.rid O R (LinearMap.lTensor R f.symm.toLinearMap z)) h` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `this` using `[h1]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tmul_basis_inj {O R M : Type} [CommRing O] [AddCommGroup R] [Module O R] [AddCommGroup M]
     [Module O M] (e₀ : M) (hs : Submodule.span O {e₀} = ⊤) (hi : ∀ c : O, c • e₀ = 0 → c = 0)
@@ -44,21 +44,21 @@ theorem tmul_basis_inj {O R M : Type} [CommRing O] [AddCommGroup R] [Module O R]
   simpa [h1] using this
 
 /- English proof (translation)
-Take `⟨e, e₀, hs, hj, -⟩` from `E.one_e`. Establish `h0 : (e₀ : W.one.V) ≠ 0`. Introduce `h0`. Take `⟨u, hu, hT⟩` from `W.one_line`. Establish `hm : u ∈ W.one.L.T` using `hT ▸ Submodule.mem_span_singleton_self u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : (⟨u, hm⟩ : ↥W.one.L.T) ∈ Submodule.span O {e₀}` using `hs ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 hx`. Use `congrArg Subtype.val hc` as an intermediate fact. Simplify using `only [Submodule.coe_smul, h0, smul_zero] at this`. Conclude with `hu this.symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hi : ∀ c : O, c • e₀ = 0 → c = 0`. Introduce `c hc`. Establish `h1 : algebraMap O LL c • (e₀ : W.one.V) = 0`. Rewrite using `[algebraMap_smul]`. Conclude with `congrArg Subtype.val hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `smul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `hO (by rw [h2, map_zero])`. Conclude with `absurd h2 h0`. Establish `hx : ∀ x : W.EE, E.jD W.one (x • e) = E.ioE x ⊗ₜ[O] e₀`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[E.jD_smul, hj, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `hact : ∀ g : G, W.one.actT g e₀ = e₀` using `fun g => Subtype.ext (W.one_triv g _)`. Establish `hφ : W.φD W.one e = e`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_φ, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[TWmap]`. Establish `hγ : ∀ g : G, W.γD W.one (W.resΓ g) e = e`. Introduce `g`. Apply `E.jD_inj` to reduce the goal to its premises. Rewrite using `[E.jD_act, hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `[TWact, hact]`. Use `⟨fun x => ?_, fun g x => ?_⟩` and prove the remaining obligations. Apply `tmul_basis_inj e₀ hs hi` to reduce the goal to its premises. Use `E.jD_φ W.one (x • e)` as an intermediate fact. Rewrite `this` using `[W.φD_smul, hφ, hx, hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `[TWmap]`. Apply `tmul_basis_inj e₀ hs hi` to reduce the goal to its premises. Use `E.jD_act W.one g (x • e)` as an intermediate fact. Rewrite `this` using `[W.γD_smul, hγ, hx, hx]`. Simplify `this` using `[TWact, hact]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ioLaws_of_injective (E : EtTie W RA RW inclR φR gR πA)
     (hO : Function.Injective (algebraMap O LL)) : IoLaws E := by
@@ -106,7 +106,7 @@ theorem ioLaws_of_injective (E : EtTie W RA RW inclR φR gR πA)
 end Generic
 
 /- English proof (translation)
-Introduce `D HW F l _ K s LL h`. Conclude with `ioLaws_of_injective _ Subtype.val_injective`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ioLaws : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let E := ((F l).E K s LL h).tie; IoLaws E := by
   intro D HW F l _ K s LL h

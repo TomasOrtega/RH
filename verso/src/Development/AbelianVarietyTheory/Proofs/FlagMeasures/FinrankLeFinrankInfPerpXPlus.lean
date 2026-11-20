@@ -5,11 +5,11 @@ open Formalism.HermitianLatticeCounting.S6 GlobalTheory.HermLat GlobalTheory.SA
 namespace GlobalTheory.SA
 
 /- English proof (translation)
-Set `f : S →ₗ[K] (Fin (r + 1) → K)` to `(LinearMap.pi fun i => H.B.flip (F.e i)).comp S.subtype`. Establish `h1` using `LinearMap.finrank_range_add_finrank_ker f`. Establish `h2 : Module.finrank K (LinearMap.range f) ≤ r + 1` using `(Submodule.finrank_le _).trans (by simp)`. Establish `h3 : (LinearMap.ker f).map S.subtype = S ⊓ perp H (xPlus F)`. Use extensionality with `y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Submodule.mem_inf, xPlus_eq_span, mem_perp_span, Set.forall_mem_range, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨x.2, fun i => congrFun (LinearMap.mem_ker.1 hx) i⟩`. Introduce and unpack `⟨hy, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨y, hy⟩, LinearMap.mem_ker.2 (funext h), rfl⟩`. Rewrite using `[← h3, Submodule.finrank_map_subtype_eq]`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_le_finrank_inf_perp_xPlus {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] {H : HermSpace K V} {r : ℕ} (S : Submodule K V) (F : FlagD H r) :
@@ -30,13 +30,13 @@ theorem finrank_le_finrank_inf_perp_xPlus {K V : Type} [Field K] [StarRing K] [A
   omega
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ H r F F' h`. Establish `a1 : 2 * r + 2 ≤ Module.finrank K (norLift F F') + (r + 1)` using `h.1.ge.trans (finrank_le_finrank_inf_perp_xPlus (V0 F F') F)`. Establish `a2 : 2 * r + 2 ≤ Module.finrank K (norLift F' F) + (r + 1)` using `h.symm.1.ge.trans (finrank_le_finrank_inf_perp_xPlus (V0 F' F) F')`. Establish `hle : norLift F F' ⊔ norLift F' F ≤ V0 F F'` using `sup_le inf_le_left (inf_le_left.trans (jointSpan_comm F F').le)`. Establish `a3` using `Submodule.finrank_sup_add_finrank_inf_eq (norLift F F') (norLift F' F)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a3` using `[h.disjoint_norLift.eq_bot, finrank_bot]`. Establish `a4` using `Submodule.finrank_mono hle`. Establish `a5` using `h.1`. Establish `hc : IsCompl (V0 F F') (wSp F F')`. Establish `b1` using `finrank_le_finrank_inf_perp_xPlus (⊤ : Submodule K V) F`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2` using `finrank_le_finrank_inf_perp_xPlus (perp H (xPlus F)) F'`. Rewrite `b1` using `[top_inf_eq, finrank_top]`. Rewrite `b2` using `[← wSp_eq]`. Establish `b3` using `Submodule.finrank_sup_add_finrank_inf_eq (V0 F F') (wSp F F')`. Rewrite `b3` using `[h.2.eq_bot, finrank_bot]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨h.2, codisjoint_iff.2 (Submodule.eq_top_of_finrank_eq (le_antisymm (Submodule.finrank_le _) ?_))⟩` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Use `⟨by omega, Submodule.eq_of_le_of_finrank_le hle (by omega), ?_, h.2.symm.mono_right inf_le_left, hc⟩` and prove the remaining obligations. Establish `hw : wSp F F' ≤ perp H (xPlus F)` using `by rw [wSp_eq]; exact inf_le_left`. Rewrite using `[norLift, ← sup_inf_assoc_of_le _ hw, hc.symm.sup_eq_top, top_inf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norLift_decomp : ∀ (K V : Type) [Field K] [StarRing K] [AddCommGroup V] [Module K V]
     [FiniteDimensional K V] (H : HermSpace K V) (r : ℕ) (F F' : FlagD H r), IsTransv F F' →

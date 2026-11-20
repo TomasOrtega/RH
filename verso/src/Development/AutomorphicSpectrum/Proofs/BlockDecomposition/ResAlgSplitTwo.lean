@@ -29,15 +29,15 @@ structure ResAlg (E : Type) [CommRing E] (τ : E →+* E) (q : ℕ) (ε : ℤ) :
   eps : (ε = -1 ∧ IsField E) ∨ (ε = 1 ∧ ¬ IsField E)
 
 /- English proof (translation)
-Use `⟨fun a => ?_, ?_, ?_, by norm_num, ?_, ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `rfl`. Consider the case `simp`. Consider the case `(ext <;> rfl)`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rintro ⟨x, y⟩ h hne fin_cases x <;> fin_cases y all_goals first`. Consider the case `exact (hne rfl).elim`. Consider the case `exact absurd h (by decide)`. Consider the case `exact isUnit_one`. Consider the case `(convert isUnit_one using 1; decide)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(1, 0), ?_, ?_⟩` and prove the remaining obligations. Use `isUnit_one using 1` and compare the differences between its conclusion and the goal. Evaluate the decidable proposition. Introduce and unpack `⟨p, r⟩`. Use `⟨(r, r), (p - r, p - r), rfl, rfl, ?_⟩` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Evaluate the decidable proposition. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> first | simp | (simp; ring) | ring`. Use `first`. Consider the case `simp`. Consider the case `(rw [Nat.card_eq_fintype_card]; rfl)`. Consider the case `decide`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `right`. Use `⟨rfl, fun hF => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hF.mul_inv_cancel (a := ((1, 0) : ZMod 2 × ZMod 2)) (by decide)`. Establish `h2` using `congrArg Prod.snd hb`. Simplify using `at h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resAlg_split_two :
     ResAlg (ZMod 2 × ZMod 2) (RingEquiv.prodComm : ZMod 2 × ZMod 2 ≃+* ZMod 2 × ZMod 2).toRingHom 2 1 := by
@@ -85,32 +85,32 @@ namespace HermSp
 variable (B : HermSp E τ V)
 
 /- English proof (translation)
-Establish `h0` using `B.smul_left 0 0 w`. Rewrite `h0` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem zero_left (w : V) : B.h 0 w = 0 := by
   have h0 := B.smul_left 0 0 w
   rwa [zero_smul, zero_mul] at h0
 
 /- English proof (translation)
-Rewrite using `[B.symm 0 v, B.zero_left, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zero_right (v : V) : B.h v 0 = 0 := by
   rw [B.symm 0 v, B.zero_left, map_zero]
 
 /- English proof (translation)
-Rewrite using `[B.symm (u + w) v, B.add_left, map_add, ← B.symm, ← B.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem add_right (v u w : V) : B.h v (u + w) = B.h v u + B.h v w := by
   rw [B.symm (u + w) v, B.add_left, map_add, ← B.symm, ← B.symm]
 
 /- English proof (translation)
-Rewrite using `[B.symm (a • w) v, B.smul_left, map_mul, ← B.symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_right (a : E) (v w : V) : B.h v (a • w) = τ a * B.h v w := by
   rw [B.symm (a • w) v, B.smul_left, map_mul, ← B.symm]
 
 /- English proof (translation)
-Conclude with `(B.symm v v).symm`.
+A detailed English derivation is pending.
 -/
 theorem self_fixed (hτ : ∀ a, τ (τ a) = a) (v : V) : τ (B.h v v) = B.h v v := by
   exact (B.symm v v).symm
@@ -128,7 +128,7 @@ def perp (w : V) : Submodule E V where
     rw [B.smul_left, hx, mul_zero]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_perp {w v : V} : v ∈ B.perp w ↔ B.h v w = 0 := by
   exact Iff.rfl
@@ -136,9 +136,9 @@ theorem mem_perp {w v : V} : v ∈ B.perp w ↔ B.h v w = 0 := by
 noncomputable def coef {w : V} (hw : IsUnit (B.h w w)) (z : V) : E := B.h z w * (hw.unit⁻¹ : Eˣ)
 
 /- English proof (translation)
-Establish `hu : ((hw.unit⁻¹ : Eˣ) : E) * B.h w w = 1`. Establish `h1` using `hw.unit.inv_mul`. Simplify using `using h1`. Establish `hc : B.coef hw z * B.h w w = B.h z w`. Unfold `coef`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_assoc, hu, mul_one]`. Establish `e : B.h z w = B.h (z - B.coef hw z • w) w + B.h (B.coef hw z • w) w`. Rewrite using `[← B.add_left, sub_add_cancel]`. Rewrite `e` using `[B.smul_left, hc]`. Take the linear combination `-e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem coef_spec {w : V} (hw : IsUnit (B.h w w)) (z : V) : B.h (z - B.coef hw z • w) w = 0 := by
   have hu : ((hw.unit⁻¹ : Eˣ) : E) * B.h w w = 1 := by
@@ -201,7 +201,7 @@ theorem perpEquiv_apply {w : V} (hw : IsUnit (B.h w w)) (p : E × B.perp w) :
     B.perpEquiv hw p = p.1 • w + (p.2 : V) := rfl
 
 /- English proof (translation)
-Establish `hwv : B.h w v = 0` using `by rw [B.symm v w, hv, map_zero]`. Simplify using `only [B.add_left, B.smul_left, B.add_right, B.smul_right, hv, hwv, mul_zero, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_perp {w v : V} (hv : B.h v w = 0) (a : E) :
     B.h (a • w + v) (a • w + v) = a * τ a * B.h w w + B.h v v := by
@@ -242,7 +242,7 @@ def HermSp.ofMatrix (hτ : ∀ a, τ (τ a) = a) {m : ℕ} (S : Matrix (Fin m) (
     simpa [Matrix.mulVec_mulVec, hu] using this
 
 /- English proof (translation)
-Use `show (cT τ x * S * x) i j = dotProduct (fun a => τ (x a i)) (S.mulVec (fun a => x a j))`. Simplify using `only [Matrix.mul_apply, cT, Matrix.transpose_apply, Matrix.map_apply, dotProduct, Matrix.mulVec, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram_apply (hτ : ∀ a, τ (τ a) = a) {m n : ℕ} (S : Matrix (Fin m) (Fin m) E)
     (hS : cT τ S = S) (hd : IsUnit S.det) (x : Matrix (Fin m) (Fin n) E) (i j : Fin n) :

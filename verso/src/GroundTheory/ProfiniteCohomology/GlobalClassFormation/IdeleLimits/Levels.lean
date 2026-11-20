@@ -27,14 +27,14 @@ def levelRestrict : (E.1 ≃ₐ[K.1] E.1) →* (F.1 ≃ₐ[K.1] F.1) :=
   AlgEquiv.restrictNormalHom (F := K.1) (K₁ := E.1) F.1
 
 /- English proof (translation)
-The claim follows from `AlgEquiv.restrictNormal_commutes τ F.1 x`.
+A detailed English derivation is pending.
 -/
 theorem coe_levelRestrict_apply (τ : E.1 ≃ₐ[K.1] E.1) (x : F.1) :
     algebraMap F.1 E.1 (levelRestrict K F E τ x) = τ (algebraMap F.1 E.1 x) :=
   AlgEquiv.restrictNormal_commutes τ F.1 x
 
 /- English proof (translation)
-Use extensionality with `x`. Use `coe_levelRestrict_apply (K := K) (F := F) (E := E) (restrictHom (E := E) g) x` as an intermediate fact. Establish `h2` using `congrArg Subtype.val this`. Conclude with `h2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levelRestrict_restrictHom (g : K.1.fixingSubgroup) :
     levelRestrict K F E (restrictHom (E := E) g) = restrictHom (E := F) g := by
@@ -44,13 +44,13 @@ theorem levelRestrict_restrictHom (g : K.1.fixingSubgroup) :
   exact h2
 
 /- English proof (translation)
-The claim follows from `continuous_of_discreteTopology`.
+A detailed English derivation is pending.
 -/
 theorem continuous_levelRestrict : Continuous (levelRestrict K F E) :=
   continuous_of_discreteTopology
 
 /- English proof (translation)
-Rewrite using `[smul_idele_eq_ideleEquiv, smul_idele_eq_ideleEquiv]`. Conclude with `(ideleEquiv_ideleEmbedding_of_comm ((levelRestrict K F E τ : F.1 ≃ₐ[K.1] F.1) : F.1 ≃+* F.1) (τ : E.1 ≃+* E.1) (fun y ↦ (coe_levelRestrict_apply τ y).symm) x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleMap_smul (τ : E.1 ≃ₐ[K.1] E.1) (x : IdeleGroup F.1) :
     ideleMap (Fact.out : F ≤ E) (levelRestrict K F E τ • x) = τ • ideleMap (Fact.out : F ≤ E) x := by
@@ -78,9 +78,9 @@ def levelTransition (n : ℕ) : cohomology (ideleRep K.1 F.1) n ⟶ cohomology (
   cohomologyMapAlong (levelRestrict K F E) continuous_levelRestrict (levelMap K F E) n
 
 /- English proof (translation)
-Rewrite using `[← cochainsMapAlong_comp]`. Use extensionality with `m x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Express the relevant statement in the definitionally equal form `Additive.ofMul (of E (ideleMap (Fact.out : F ≤ E) ((x.1 fun i => levelRestrict K F E (restrictHom (E := E) (g i))).toMul))) = Additive.ofMul (of F ((x.1 fun i => restrictHom (E := F) (g i)).toMul))`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hfun : (fun i => levelRestrict K F E (restrictHom (E` using `E) (g i))) = fun i => restrictHom (E := F) (g i) := funext fun i => levelRestrict_restrictHom (g i)`. Use `(congrArg Additive.ofMul (of_ideleMap (Fact.out : F ≤ E) _)).trans ?_` and prove the remaining obligations. Rewrite using `[hfun]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelCochains_comp :
     cochainsMapAlong (levelRestrict K F E) continuous_levelRestrict (levelMap K F E) ≫
@@ -99,7 +99,7 @@ theorem levelCochains_comp :
   rw [hfun]
 
 /- English proof (translation)
-Rewrite using `[levelTransition, levelInfl, levelInfl]`. Unfold `cohomologyMapAlong`. Use `(HomologicalComplex.homologyMap_comp _ _ n).symm.trans ?_` and prove the remaining obligations. Rewrite using `[levelCochains_comp]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem levelTransition_comp_levelInfl (n : ℕ) :
     levelTransition K F E n ≫ levelInfl K E n = levelInfl K F n := by

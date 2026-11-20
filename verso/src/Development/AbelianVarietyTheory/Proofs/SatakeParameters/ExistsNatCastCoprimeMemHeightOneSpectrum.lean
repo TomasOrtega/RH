@@ -7,13 +7,11 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ p hp P hpP`. Establish `hN : Ideal.absNorm P.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `P.ne_bot`. Use `haveI : P.asIdeal.IsPrime := P.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ n : ℕ, ((n : 𝓞 E) ∈ P.asIdeal ↔ ringChar (𝓞 E ⧸ P.asIdeal) ∣ n)`. Introduce `n`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Conclude with `ringChar.spec _ n`. Establish `hq0 : ringChar (𝓞 E ⧸ P.asIdeal) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h0`. Use `(hmem _).1 (Ideal.absNorm_mem P.asIdeal)` as an intermediate fact. Rewrite `this` using `[h0, zero_dvd_iff]`. Conclude with `hN this`. Establish `hqp : (ringChar (𝓞 E ⧸ P.asIdeal)).Prime` using `(CharP.char_is_prime_or_zero (𝓞 E ⧸ P.asIdeal) _).resolve_right hq0`.
-
-Use `⟨ringChar (𝓞 E ⧸ P.asIdeal), hqp.pos, (hmem _).2 dvd_rfl, ?_⟩` and prove the remaining obligations. Use `(Nat.coprime_primes hqp hp).2 ?_` and prove the remaining obligations. Introduce `hq`. Conclude with `hpP ((hmem p).2 (hq ▸ dvd_rfl))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_mem_heightOneSpectrum_coprime :
     ∀ {E : Type} [Field E] [NumberField E] (p : ℕ), p.Prime → ∀ (P : HeightOneSpectrum (𝓞 E)), ((p : ℕ) : 𝓞 E) ∉ P.asIdeal → ∃ ℓ : ℕ, 0 < ℓ ∧ ((ℓ : ℕ) : 𝓞 E) ∈ P.asIdeal ∧ Nat.Coprime ℓ p := by

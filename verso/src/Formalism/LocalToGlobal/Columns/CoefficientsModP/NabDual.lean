@@ -18,7 +18,7 @@ section
 variable {K : Type} [Field K] [NumberField K] [StarRing K] {ι : Type} [Fintype ι] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.map_map]`. Establish `e : (starRingEnd K).comp (starRingEnd K) = RingHom.id K` using `RingHom.ext fun a => star_star a`. Rewrite using `[e, MvPolynomial.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nd_map_star_star {σ : Type} (F : MvPolynomial σ K) :
     MvPolynomial.map (starRingEnd K) (MvPolynomial.map (starRingEnd K) F) = F := by
@@ -27,7 +27,7 @@ theorem nd_map_star_star {σ : Type} (F : MvPolynomial σ K) :
   rw [e, MvPolynomial.map_id]
 
 /- English proof (translation)
-Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem nd_mem_dual {lam : ι → DomWeight n} (h : VV K lam →ₗ⋆[K] VV K lam →ₗ[K] K) (L : Submodule (𝓞 K) (VV K lam)) (x : VV K lam) :
     x ∈ Formalism.HermitianLatticesTheory.dual h L ↔ ∀ y ∈ L, h y x ∈ (1 : Submodule (𝓞 K) K) := by
@@ -35,15 +35,15 @@ theorem nd_mem_dual {lam : ι → DomWeight n} (h : VV K lam →ₗ⋆[K] VV K l
   simp only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]
 
 /- English proof (translation)
-Establish `hsp` using `(baseChangeSpace_holds K K (starRingEnd K) ι n lam).1`. Establish `e1 : (fun τ => hdualFr ((G τ : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) (M τ)) = fun τ => gLat (G⁻¹ τ) (dualFr (bcLat (starRingEnd K) (M τ)))` using `funext fun τ => du_hdualFr_eq (G τ) (M τ)`. Rewrite using `[nd_mem_dual, e1, transLat_gLat]`. Establish `e2 : (x : Pol K ι n) ∈ (transLat lam T' fun τ => dualFr (bcLat (starRingEnd K) (M τ))).map ((actP lam G⁻¹).restrictScalars (𝓞 K)) ↔ actP lam G (x : Pol K ι n) ∈ transLat lam T' fun τ => dualFr (bcLat (starRingEnd K) (M τ))`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, hzx⟩`. Rewrite using `[← hzx, LinearMap.coe_restrictScalars, ← polyAction_mul, mul_inv_cancel, polyAction_one₂]`. Conclude with `hz`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.coe_restrictScalars, ← polyAction_mul, inv_mul_cancel, polyAction_one₂]`. Rewrite using `[e2, hdual _ (polyAction_mem_VV lam G x.2)]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy hyV`. Establish `hy' : MvPolynomial.map (starRingEnd K) y ∈ transLat lam T M`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdesc, nd_map_star_star]`. Conclude with `hy`. Establish `hyV' : MvPolynomial.map (starRingEnd K) y ∈ VV K lam` using `(hsp y).1 hyV`. Use `h ⟨_, hyV'⟩ hy'` as an intermediate fact. Rewrite `this` using `[pairK_apply, pairP_eq_pairB, nd_map_star_star]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pairingBSymm_holds]` and apply the resulting hypothesis. Introduce `h y hy`. Rewrite using `[pairK_apply, pairP_eq_pairB, pairingBSymm_holds]`. Conclude with `h _ ((hdesc _).1 hy) ((hsp _).1 y.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nd_half (lam : ι → DomWeight n) (T T' : Submodule (𝓞 K) (Pol K ι n))
     (G : ι → GL (Fin n) K) (M : ι → Submodule (𝓞 K) (Fin n → K))
@@ -87,17 +87,15 @@ theorem nd_half (lam : ι → DomWeight n) (T T' : Submodule (𝓞 K) (Pol K ι 
 end
 
 /- English proof (translation)
-Introduce `K _ _ _ ι _ n lam G M _ hG hM`. Establish `hMc : ∀ τ, Submodule.IsLattice K (bcLat (starRingEnd K) (M τ))` using `fun τ => bc_bcLat_lattice (j := starRingEnd K) tauLatticeLattice_holds (M τ) (hM τ)`. Set `GG : ι → GL (Fin n) K` to `fun τ => Matrix.GeneralLinearGroup.mkOfDetNeZero (G τ) (hG τ).ne_zero`. Prove the components needed by the constructor for the conclusion. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components.
 
-Establish `h` using `nd_half lam (nabStd K lam) (delStd K lam) GG M (fun F => (hD K K (starRingEnd K) ι n lam M hM F).1) (fun x hx => by`. Establish `h1` using `(hK K ι n lam (fun τ => bcLat (starRingEnd K) (M τ)) hMc ⟨x, hx⟩).1`. Simplify using `only [delK, nabK, delP, nabP, Submodule.mem_comap, LinearMap.coe_restrictScalars, Submodule.coe_subtype] at h1`. Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H y hy hyV`. Conclude with `H ⟨y, hyV⟩ hy`. Introduce `H y hy`. Conclude with `H y hy y.2)`. Use `x`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h`. Use extensionality with `x`. Establish `h` using `nd_half lam (delStd K lam) (nabStd K lam) GG M (fun F => (hD K K (starRingEnd K) ι n lam M hM F).2) (fun x hx => by`. Establish `h1` using `(hK K ι n lam (fun τ => bcLat (starRingEnd K) (M τ)) hMc ⟨x, hx⟩).2`. Simplify using `only [delK, nabK, delP, nabP, Submodule.mem_comap, LinearMap.coe_restrictScalars, Submodule.coe_subtype] at h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h1]`. Prove the components needed by the constructor for the conclusion. Introduce `H y hy hyV`. Conclude with `H ⟨y, hyV⟩ hy`. Introduce `H y hy`.
-
-Conclude with `H y hy y.2)`. Use `x`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem nabDelDual_of (hD : NabDelDescent) (hK : PairBDualK) : NabDelDual := by
   intro K _ _ _ ι _ n lam G M _ hG hM

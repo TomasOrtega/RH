@@ -15,11 +15,11 @@ noncomputable section
 namespace IntNumComponents
 
 /- English proof (translation)
-Establish `hinf : (⨅ W ∈ S, W) = S.inf id` using `by rw [Finset.inf_eq_iInf]; rfl`. Establish `key : ∀ Q : Ideal A, Q.IsPrime → (⨅ W ∈ S, W) ≤ Q → ∃ W ∈ S, W ≤ Q`. Introduce `Q hQ hle`. Rewrite `hle` using `[hinf]`. Conclude with `hQ.inf_le'.mp hle`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hZ`. Take `⟨W, hW, hWZ⟩` from `key Z hZ.1.1 hZ.1.2`. Establish `hZW : Z ≤ W` using `hZ.2 ⟨(hS W hW).1.1, iInf₂_le W hW⟩ hWZ`. Rewrite using `[le_antisymm hZW hWZ]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hZ`. Use `⟨⟨(hS Z hZ).1.1, iInf₂_le Z hZ⟩, fun Q hQ hQZ => ?_⟩` and prove the remaining obligations. Take `⟨W, hW, hWQ⟩` from `key Q hQ.1 hQ.2`. Conclude with `((hS Z hZ).2 (hS W hW).1 (hWQ.trans hQZ)).trans hWQ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_minimalPrimes_iInf_iff {A : Type*} [CommRing A] {J₀ : Ideal A} {S : Finset (Ideal A)}
     (hS : ∀ W ∈ S, W ∈ J₀.minimalPrimes) (Z : Ideal A) :
@@ -40,7 +40,7 @@ theorem mem_minimalPrimes_iInf_iff {A : Type*} [CommRing A] {J₀ : Ideal A} {S 
     exact ((hS Z hZ).2 (hS W hW).1 (hWQ.trans hQZ)).trans hWQ
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨n, hn⟩` from `hx`. Simplify using `only [Submodule.mem_iInf] at hn ⊢`. Conclude with `fun W hW => (hS W hW).mem_of_pow_mem n (hn W hW)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isRadical_iInf {A : Type*} [CommRing A] {S : Finset (Ideal A)} (hS : ∀ W ∈ S, W.IsPrime) :
     (⨅ W ∈ S, W).IsRadical := by
@@ -50,9 +50,9 @@ theorem isRadical_iInf {A : Type*} [CommRing A] {S : Finset (Ideal A)} (hS : ∀
   exact fun W hW => (hS W hW).mem_of_pow_mem n (hn W hW)
 
 /- English proof (translation)
-Establish `h1` using `localMult_eq_one_of_isRadical hJ hW`. Unfold `localMult at h1`. Rewrite `h1` using `[dif_pos ‹W.IsPrime›]`. Unfold `NumbersDVR.multAt`. Rewrite using `[ObjectsChow.VerticalPartMultiplicity.length_localizedModule_quotient]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem multAt_toNat_of_isRadical {K : Type*} {ι : K → Type*} {J W : Ideal (MvPolynomial (Σ k, ι k) ℂ)}
     [W.IsPrime] (hJ : J.IsRadical) (hW : W ∈ J.minimalPrimes) : (NumbersDVR.multAt J W).toNat = 1 := by
@@ -68,17 +68,17 @@ end IntNumComponents
 open IntNumComponents in
 
 /- English proof (translation)
-Introduce `K _ _ ι _ P e a S hP hS`. Establish `hJ₀h : NumbersDVR.IsMultiHomogIdeal (P.map (MvPolynomial.map (Int.castRingHom ℂ)))` using `(Bridge.isMultiHomogIdeal_iff _).mpr (isMultiHomogIdeal_map_coeff _ hP.2.1.2.1)`. Establish `hWh : ∀ W ∈ S, NumbersDVR.IsMultiHomogIdeal W` using `fun W hW => FieldNumbers.PFContracted.isMultiHomogIdeal_of_mem_minimalPrimes hJ₀h (hS W hW)`. Establish `hWdim : ∀ W ∈ S, ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ W) = ((e + Fintype.card K : ℕ) : WithBot ℕ∞)` using `fun W hW => pcEquidim K ι P e hP W (hS W hW)`. Establish `hmin` using `mem_minimalPrimes_iInf_iff hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJh : NumbersDVR.IsMultiHomogIdeal (⨅ W ∈ S, W)`. Introduce `f hf b`. Simplify using `only [Submodule.mem_iInf] at hf ⊢`. Conclude with `fun W hW => hWh W hW f (hf W hW) b`. Establish `hrad` using `isRadical_iInf (fun W hW => (hS W hW).1.1)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Establish `hdim : ringKrullDim (MvPolynomial (Σ k, ι k) ℂ ⧸ (⨅ W ∈ S, W)) < ((e + 1 + Fintype.card K : ℕ) : WithBot ℕ∞)`. Use `lt_of_le_of_lt (Inter.BaseChange.ringKrullDim_quotient_le_of_minimalPrimes _ (N := ((e + Fintype.card K : ℕ) : WithBot ℕ∞)) fun Z hZ => (hWdim Z ((hmin Z).mp hZ)).le) ?_` and prove the remaining obligations. Conclude with `(show e + Fintype.card K < e + 1 + Fintype.card K by omega)` after adjusting the coercions. Rewrite using `[NumbersDVR.IntNumAssoc.full ℂ K ι e _ hJh hdim a]`. Unfold `NumbersDVR.cycEval`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← finsum_mem_coe_finset, finsum_mem_def]`. Use `finsum_congr fun W => ?_` and prove the remaining obligations. Unfold `NumbersDVR.idealCycle`. Distinguish the cases in `hW : W ∈ S`. Rewrite using `[Set.indicator_of_mem (Finset.mem_coe.mpr hW)]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: W.IsPrime` using `(hS W hW).1.1`. Distinguish the cases in `hrel : NumbersDVR.IsRelevant W`. Rewrite using `[dif_pos ⟨(hmin W).mpr hW, hrel⟩, multAt_toNat_of_isRadical hrad ((hmin W).mpr hW)]`. Simplify using the standard rewrite rules. Rewrite using `[dif_neg (fun h => hrel h.2), zero_mul, NumbersDVR.IntNumVanish.full ℂ K ι e W this (hWh W hW) (Or.inl hrel) a]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem (by simpa using hW), dif_neg (fun h => hW ((hmin W).mp h.1)), zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem IntNumComponents.proof : IntNumComponents.Statement := by
   intro K _ _ ι _ P e a S hP hS

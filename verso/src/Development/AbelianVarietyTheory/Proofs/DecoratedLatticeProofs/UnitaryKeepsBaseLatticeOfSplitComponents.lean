@@ -15,27 +15,27 @@ namespace GlobalTheory.SplitStab
 variable {F E : Type} [Field F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Unfold `Formalism.UG.latS at hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨x, hx, rfl⟩` from `hx`. Rewrite `hx` using `[SetLike.mem_coe, hΛ]`. Use `⟨fun j => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨r, hr, -⟩` from `hx j`. Simplify using `only [hr]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `hS r`. Take `⟨r, hr, hd⟩` from `hx j`. Take `⟨c, rfl⟩` from `hd hj`. Use `⟨_, hS c, ?_⟩` and prove the remaining obligations. Simplify using `only [hr]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[map_mul]`. Consider the case `zero => exact ⟨fun j => zero_mem _, fun j _ => ⟨0, zero_mem _, by simp⟩⟩`. Consider the case `add a b _ _ ha hb`. Use `⟨fun j => add_mem (ha.1 j) (hb.1 j), fun j hj => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, hs1, e1⟩` from `ha.2 j hj`. Take `⟨s2, hs2, e2⟩` from `hb.2 j hj`. Conclude with `⟨s1 + s2, add_mem hs1 hs2, by simp [Pi.add_apply, e1, e2, mul_add]⟩`. Consider the case `smul a b _ hb`. Use `⟨fun j => ?_, fun j hj => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul]`. Conclude with `mul_mem a.2 (hb.1 j)`. Take `⟨s, hs, e⟩` from `hb.2 j hj`. Use `⟨(a : E ⊗[F] R) * s, mul_mem a.2 hs, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, Subring.smul_def, smul_eq_mul, e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨h1, h2⟩`. Establish `key : ∀ (j : Fin m) (r : 𝓞 E), (j.1 + 1 = m → t ∣ r) → ∀ s ∈ S, Pi.single j (s * Formalism.UG.inclE (F` using `F) R (r : E)) ∈ Formalism.UG.latS (F := F) R S Λ := by`. Introduce `j r hr s hs`. Establish `hx : (Pi.single j (r : E) : Fin m → E) ∈ Λ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hΛ]`. Introduce `i`. Distinguish the cases in `hij : i = j`. Substitute `hij; exact ⟨r, by simp, hr⟩` using the available equality. Conclude with `⟨0, by simp [hij], fun _ => dvd_zero _⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (Pi.single j (s * Formalism.UG.inclE (F` using `F) R (r : E)) : Fin m → E ⊗[F] R) = (⟨s, hs⟩ : S) • (fun i => Formalism.UG.inclE (F := F) R ((Pi.single j (r : E) : Fin m → E) i)) := by`. Use extensionality with `i`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Subring.smul_def]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hij, Subring.smul_def]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hx, rfl⟩)`. Rewrite using `[← Finset.univ_sum_single y]`. Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hj : j.1 + 1 = m`. Take `⟨s, hs, e⟩` from `h2 j hj`. Rewrite using `[e, mul_comm]`. Conclude with `key j t (fun _ => dvd_refl _) s hs`. Simplify using `using key j 1 (fun h => absurd h hj) (y j) (h1 j)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_latS_iff (R : Type) [CommRing R] [Algebra F R] (S : Subring (E ⊗[F] R))
     (hS : ∀ c : 𝓞 E, Formalism.UG.inclE (F := F) R (c : E) ∈ S)
@@ -98,31 +98,29 @@ theorem mem_latS_iff (R : Type) [CommRing R] [Algebra F R] (S : Subring (E ⊗[F
 end GlobalTheory.SplitStab
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ v k _ _ _ _ φ hS m t Λ hΛ q hq hq' M hM h h' hh hhh' hA hB`. Establish `hSO : ∀ c : 𝓞 E, Formalism.UG.inclE (F` using `F) (v.adicCompletion F) (c : E) ∈ Formalism.UG.tensInt (F := F) (v.adicCompletion F) (Formalism.UG.intOE E) (v.adicCompletionIntegers F).toSubring := fun c => Subring.subset_closure (Or.inl ⟨⟨(c : E), c, rfl⟩, rfl⟩)`. Establish `ht : (t : E) ≠ 0`. Introduce `h0`. Rewrite `hq` using `[h0, map_zero, map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ((q.1 : 𝒪[k]) : k) = 0` using `(valuation k).zero_iff.mp hq.symm`. Conclude with `q.2.ne_zero (by simpa using h1)`. Establish `hint : ∀ x : k, x ∈ 𝒪[k] ↔ valuation k x ≤ 1` using `fun x => Valuation.mem_integer_iff (valuation k) x`. Use `set σ' := Formalism.UG.sigR σ (v.adicCompletion F) with hσ'`. Use `set ι := Formalism.UG.inclE (F := F) (E := E) (v.adicCompletion F) with hι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hchar : ∀ y : Fin m → E ⊗[F] v.adicCompletion F, y ∈ Formalism.UG.latS (F` using `F) (v.adicCompletion F) (Formalism.UG.tensInt (F := F) (v.adicCompletion F) (Formalism.UG.intOE E) (v.adicCompletionIntegers F).toSubring) Λ ↔ (((∀ r, (fun j => φ (y j)) r ∈ 𝒪[k]) ∧ ∀ r0 : Fin m, r0.1 + 1 = m → ∃ s ∈ 𝒪[k], (fun j => φ (y j)) r0 = φ (ι (t : E)) * s) ∧ ∀ r, (fun j …`. Introduce `y`. Rewrite using `[GlobalTheory.SplitStab.mem_latS_iff (F := F) (v.adicCompletion F) _ hSO m t Λ hΛ y]`. Simplify using `only [hS]`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun r => (h1 r).1, fun r0 hr0 => ?_⟩, fun r => (h1 r).2⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h2 r0 hr0`. Conclude with `⟨φ s, hs.1, by rw [e, map_mul]⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun r => ⟨h1 r, h3 r⟩, fun r0 hr0 => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, e⟩` from `h2 r0 hr0`. Establish `hu : ι (t : E) * ι ((t : E)⁻¹) = 1` using `by rw [← map_mul, mul_inv_cancel₀ ht, map_one]`. Use `⟨ι ((t : E)⁻¹) * y r0, ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu' : φ (ι ((t : E)⁻¹)) * φ (ι (t : E)) = 1` using `by rw [← map_mul, mul_comm, hu, map_one]`. Rewrite using `[map_mul, show φ (y r0) = φ (ι (t : E)) * s from e, ← mul_assoc, hu', one_mul]`. Conclude with `hs`. Establish `hu' : φ (σ' (ι ((t : E)⁻¹))) * φ (σ' (ι (t : E))) = 1`. Rewrite using `[← map_mul, ← map_mul, mul_comm, hu, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : valuation k (φ (σ' (ι ((t : E)⁻¹)))) = 1`. Use `congrArg (valuation k) hu'` as an intermediate fact. Rewrite `this` using `[map_mul, hq', mul_one, map_one]`. Conclude with `this`. Rewrite using `[map_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_mem ((hint _).2 hv.le) (h3 r0)`. Rewrite using `[← mul_assoc, hu, one_mul]`. Establish `hU : (M.val.map (φ.comp σ'))ᵀ * h = 1`. Establish `h0 : Formalism.UG.cT σ' (M : Matrix (Fin m) (Fin m) _) * 1 * (M : Matrix (Fin m) (Fin m) _) = 1` using `hM`. Rewrite `h0` using `[Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congrArg (fun X => X.map φ) h0` as an intermediate fact. Simplify using `only [Formalism.UG.cT] at this`. Rewrite `this` using `[Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Rewrite using `[← hh]`. Simplify `this` using `[Matrix.transpose_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hh'h : h' * h = 1` using `mul_eq_one_comm.mp hhh'`. Establish `hσM : M.val.map (φ.comp σ') = h'ᵀ`. Establish `: (M.val.map (φ.comp σ'))ᵀ = h'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← this, Matrix.transpose_transpose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `y`. Rewrite using `[hchar y, hchar]`. Establish `e1 : (fun j => φ (((M : Matrix (Fin m) (Fin m) _) *ᵥ y) j)) = h *ᵥ (fun j => φ (y j))`. Use function extensionality and compare the values at `j`. Rewrite using `[RingHom.map_mulVec, hh]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : (fun j => φ (σ' (((M : Matrix (Fin m) (Fin m) _) *ᵥ y) j))) = h'ᵀ *ᵥ (fun j => φ (σ' (y j)))`. Use function extensionality and compare the values at `j`. Use `RingHom.map_mulVec (φ.comp σ') (M : Matrix (Fin m) (Fin m) _) y j` as an intermediate fact. Rewrite using `[← hσM]`.
-
-Conclude with `this`. Rewrite using `[e1, e2]`. Conclude with `and_congr (hA _) (hB _)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SplitStab.stab_of_split_components : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (v : HeightOneSpectrum (𝓞 F)) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

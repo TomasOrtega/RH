@@ -19,7 +19,7 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1)))
 section Index
 
 /- English proof (translation)
-Rewrite using `[coe_gsOpenSubgroup]`. Express the relevant statement in the definitionally equal form `(gsEmbedding (S := S) hL).fieldRange.fixingSubgroup.index = _`. Rewrite using `[← IntermediateField.finrank_eq_fixingSubgroup_index]`. Conclude with `(gsEmbedding (S := S) hL).equivFieldRange.toLinearEquiv.finrank_eq.symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_gsOpenSubgroup :
     (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).index = Module.finrank K.1 L.1 := by
@@ -29,14 +29,14 @@ theorem index_gsOpenSubgroup :
   exact (gsEmbedding (S := S) hL).equivFieldRange.toLinearEquiv.finrank_eq.symm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [index_gsOpenSubgroup]; exact Module.finrank_pos.ne'⟩`.
+Supply the required witnesses or components.
 -/
 theorem finiteIndex_gsOpenSubgroup :
     (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).FiniteIndex :=
   ⟨by rw [index_gsOpenSubgroup]; exact Module.finrank_pos.ne'⟩
 
 /- English proof (translation)
-Use `finiteIndex_gsOpenSubgroup S hL` as an intermediate fact. Rewrite using `[card_coind_eq, index_gsOpenSubgroup]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_coind_gsOpenSubgroup
     (B : Rep.{0} (ULift.{0} ℤ) (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))) :
@@ -52,11 +52,11 @@ section Count
 variable (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
 
 /- English proof (translation)
-Set `N : Rep.{0} (ULift.{0} ℤ) (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))` to `zmodRep.{0} _ 2`. Establish `h2 : Nat.card N = 2`. Express the relevant statement in the definitionally equal form `Nat.card (ULift.{0} (ZMod 2)) = 2`. Simplify using the standard rewrite rules. Establish `hC` using `card_coind_gsOpenSubgroup S hL N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM` using `Nat.card_congr (mackeyEquiv (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom N).toEquiv`. Rewrite `hM` using `[Nat.card_pi, hC, h2]`. Establish `hs : ∀ d : MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom, Nat.card (mackeySummand (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom N d.out) = 2 ^ (mackeySubgro …` using `fun d => by`. Rewrite using `[card_coind_eq]`. Conclude with `congrArg (· ^ _) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[Finset.prod_congr rfl fun d _ => hs d, Finset.prod_pow_eq_pow_sum]`. Conclude with `Nat.pow_right_injective le_rfl hM`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_sum_index_mackeySubgroup (v : {v : InfinitePlace K.1 // v.IsReal}) :
     Module.finrank K.1 L.1 =
@@ -87,7 +87,7 @@ theorem finrank_eq_sum_index_mackeySubgroup (v : {v : InfinitePlace K.1 // v.IsR
 open scoped Classical in
 
 /- English proof (translation)
-Use `split_ifs with h`. Rewrite using `[h, Subgroup.index_top]`. Rewrite using `[eq_bot_of_ne_top_realGal v _ h, Subgroup.index_bot, Nat.card_eq_fintype_card, card_realGal_eq_two v.1 v.2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_mackeySubgroup_realFamily (v : {v : InfinitePlace K.1 // v.IsReal})
     (d : MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))
@@ -104,7 +104,7 @@ theorem index_mackeySubgroup_realFamily (v : {v : InfinitePlace K.1 // v.IsReal}
 open scoped Classical in
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_sigma, Finset.sum_congr rfl fun v _ => (finrank_eq_sum_index_mackeySubgroup S hL ιr v).symm, Finset.sum_const, Finset.card_univ, smul_eq_mul, Nat.card_eq_fintype_card, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_mul_card_real_eq_sum_index :
     Module.finrank K.1 L.1 * Nat.card {v : InfinitePlace K.1 // v.IsReal} =
@@ -119,7 +119,7 @@ theorem finrank_mul_card_real_eq_sum_index :
 open scoped Classical in
 
 /- English proof (translation)
-Establish `htop : ∀ p : {p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom // mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr …` using `fun p => (index_mackeySubgroup_realFamily S hL ιr p.1.1 p.1.2).trans (if_pos p.2)`. Establish `hlow : ∀ p : {p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom // ¬ mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ι …` using `fun p => (index_mackeySubgroup_realFamily S hL ιr p.1.1 p.1.2).trans (if_neg p.2)`. Establish `h` using `Fintype.sum_subtype_add_sum_subtype (fun p : Σ v : {v : InfinitePlace K.1 // v.IsReal}, MackeyDoubleCoset (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsRealFamily S ιr v).toMonoidHom => mackeySubgroup (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 …`. Simplify using `only [htop, hlow, Finset.sum_const, smul_eq_mul, Finset.card_univ, Fintype.card_eq_nat_card, mul_one] at h`. Conclude with `h.symm.trans (congrArg₂ (· + ·) rfl (Nat.mul_comm _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_index_eq_card_top_add :
     ∑ p : Σ v : {v : InfinitePlace K.1 // v.IsReal},
@@ -161,9 +161,9 @@ theorem sum_index_eq_card_top_add :
   exact h.symm.trans (congrArg₂ (· + ·) rfl (Nat.mul_comm _ _))
 
 /- English proof (translation)
-Substitute `hK hL h₂ h₃` using the available equality. Rewrite `h₁` using `[h₀]`. Establish `e : c₁ + 2 * c₂ = n * a₁ + 2 * (n * a₂)` using `by rw [← h₄]; ring`. Rewrite using `[mul_add]`. Generalize the expression as in `n * a₁ = X at *`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `n * a₂ = Y at *`. Use linear arithmetic over natural numbers and integers.
+Replace the chosen expression with an arbitrary variable. Use linear arithmetic over natural numbers and integers.
 -/
 theorem count_places_arith {n a a₁ a₂ c₁ c₂ b dK dL NK NL : ℕ} (hK : NK = a₁ + a₂) (hL : NL = c₁ + c₂)
     (h₀ : a = c₁) (h₁ : n * a₁ = a + 2 * b) (h₂ : a₁ + 2 * a₂ = dK) (h₃ : c₁ + 2 * c₂ = dL)
@@ -177,7 +177,7 @@ theorem count_places_arith {n a a₁ a₂ c₁ c₂ b dK dL NK NL : ℕ} (hK : N
   omega
 
 /- English proof (translation)
-Establish `h1` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces F.1`. Establish `h2` using `InfinitePlace.card_add_two_mul_card_eq_rank F.1`. Simplify using `only [InfinitePlace.nrRealPlaces, InfinitePlace.nrComplexPlaces, Fintype.card_eq_nat_card] at h1 h2`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem card_infinitePlace_eq_real_add_complex (F : FiniteSubfield) :
     Nat.card (InfinitePlace F.1) =
@@ -190,7 +190,7 @@ theorem card_infinitePlace_eq_real_add_complex (F : FiniteSubfield) :
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `htop : Nat.card (MackeyTopIndex (gsRealFamily S ιr) (gsOpenSubgroup S hL)) = Nat.card {w : InfinitePlace L.1 // w.IsReal}` using `Nat.card_eq_of_bijective (realMemberPlace S ιr hL) ⟨realMemberPlace_injective S ιr hL, realMemberPlace_surjective S ιr hL⟩`. Establish `hsum` using `(finrank_mul_card_real_eq_sum_index S hL ιr).trans (sum_index_eq_card_top_add S hL ιr)`. Conclude with `count_places_arith (card_infinitePlace_eq_real_add_complex K).1 (card_infinitePlace_eq_real_add_complex L).1 htop hsum (card_infinitePlace_eq_real_add_complex K).2 (card_infinitePlace_eq_real_add_complex L).2 (Module.finrank_mul_finrank ℚ K.1 L.1)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_infinitePlace_add_card :
     Nat.card (InfinitePlace L.1) +

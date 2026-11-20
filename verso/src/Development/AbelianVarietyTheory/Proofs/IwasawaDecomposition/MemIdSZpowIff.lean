@@ -14,38 +14,34 @@ section Ring
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `S.sum_mem (t := Finset.univ) fun j _ => mul_mem (hM i j) (hz j)`.
+A detailed English derivation is pending.
 -/
 theorem int_mulVec (S : Subring R) {M : Matrix (Fin n) (Fin n) R} (hM : ∀ i j, M i j ∈ S) {z : Fin n → R}
     (hz : ∀ i, z i ∈ S) (i : Fin n) : (M *ᵥ z) i ∈ S :=
   S.sum_mem (t := Finset.univ) fun j _ => mul_mem (hM i j) (hz j)
 
 /- English proof (translation)
-Take `⟨B, h1, h2, h3, h4⟩` from `hD`. Establish `h1ε : 1 - ε ∈ S` using `sub_mem (one_mem _) hεS`. Use `set M : Matrix (Fin n) (Fin n) R := ε • B + (1 - ε) • (1 : Matrix (Fin n) (Fin n) R) with hM`. Establish `hMv : ∀ z, M *ᵥ z = ε • B *ᵥ z + (1 - ε) • z` using `fun z => by`. Rewrite using `[hM, add_mulVec, smul_mulVec, smul_mulVec, one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsingle : ∀ j i : Fin n, (Pi.single j 1 : Fin n → R) i ∈ S` using `fun j i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mix : ∀ z w : Fin n → R, (∀ i, z i ∈ S) → (∀ i, w i ∈ S) → ∀ i, (ε • z + (1 - ε) • w) i ∈ S` using `fun z w hz hw i => add_mem (mul_mem hεS (hz i)) (mul_mem h1ε (hw i))`. Establish `e1 : ε * (1 - ε) = 0` using `by rw [mul_sub, hε, mul_one, sub_self]`. Establish `e2 : (1 - ε) * ε = 0` using `by rw [mul_comm, e1]`. Establish `e3 : (1 - ε) * (1 - ε) = 1 - ε` using `by linear_combination hε`. Establish `hMmix : ∀ z w : Fin n → R, M *ᵥ (ε • z + (1 - ε) • w) = ε • B *ᵥ z + (1 - ε) • w` using `fun z w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hMv, mulVec_add, mulVec_smul, mulVec_smul]`. Simplify using `only [smul_add, smul_smul, hε, e1, e2, e3, zero_smul, add_zero, zero_add]`. Establish `hMS : ∀ i j, M i j ∈ S` using `fun i j => by`. Use `h1 _ (hsingle j) i` as an intermediate fact. Rewrite `this` using `[mulVec_single_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `add_mem this (mul_mem h1ε (by`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`. Conclude with `one_mem _`. Conclude with `zero_mem _))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose c hc hce using fun j => h2 _ (hsingle j)`. Use `set M' : Matrix (Fin n) (Fin n) R := Matrix.of fun i j => (ε • c j + (1 - ε) • (Pi.single j 1 : Fin n → R)) i with hM'`. Establish `hMM : M * M' = 1`. Use extensionality with `i j`. Use `congrFun (hMmix (c j) (Pi.single j 1)) i` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[← hce, ← add_smul, add_sub_cancel, one_smul]`. Rewrite using `[Matrix.one_apply, ← Pi.single_apply (M := R) j 1 i, ← this]`. Both sides reduce to the same expression. Establish `hMM' : M' * M = 1` using `mul_eq_one_comm.1 hMM`. Establish `hbv : ∀ z, b.1 *ᵥ z = ε • b.1 *ᵥ z + (1 - ε) • z` using `fun z => by`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `congrArg (· *ᵥ z) hb` as an intermediate fact. Simplify using `only [smul_mulVec, sub_mulVec, one_mulVec] at this`. Rewrite `*` using `[sub_smul, one_smul, smul_sub]`. Take the linear combination `(exp := 1) -this`. Establish `hDw : ∀ z w : Fin n → R, ∀ i, (ε * u' i + (1 - ε)) * (ε • (fun i => u i * z i) + (1 - ε) • w) i = (ε • z + (1 - ε) • w) i` using `fun z w i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(ε * ε * z i) * hu i + (z i - u' i * w i - u i * z i + w i) * hε`. Use `⟨⟨M, M', hMM, hMM'⟩, hMS, fun i j => mix _ _ (hc j) (hsingle j) i, fun z => ⟨fun hz i => ?_, fun hz i => ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `h3 _ hz`. Establish `ez : z = M *ᵥ (ε • (fun i => u i * w i) + (1 - ε) • ((b⁻¹).1 *ᵥ z))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hMmix, ← e, ← hbv, mulVec_mulVec, Units.mul_inv, one_mulVec]`. Use `show _ * (M' *ᵥ z) i ∈ S`. Establish `: M' *ᵥ z = ε • (fun i => u i * w i) + (1 - ε) • ((b⁻¹).1 *ᵥ z)` using `by conv_lhs => rw [ez]`. Rewrite using `[mulVec_mulVec, hMM', one_mulVec]`. Rewrite using `[this, hDw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mix _ _ hw hz i`. Use `set w : Fin n → R := fun i => (ε * u' i + (1 - ε)) * (M' *ᵥ z) i with hw`. Establish `hz' : ∀ i, w i ∈ S` using `hz`. Take `⟨y, hy, e⟩` from `h4 w hz'`. Establish `e4 : M' *ᵥ z = ε • (fun i => u i * w i) + (1 - ε) • w`.
-
-Use function extensionality and compare the values at `i`. Simplify using `only [hw, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Take the linear combination `(-(ε * ε * (M' *ᵥ z) i)) * hu i + ((M' *ᵥ z) i * (u i + u' i - 2)) * hε`. Establish `ez : z = b.1 *ᵥ (ε • y + (1 - ε) • w)`. Rewrite using `[hbv, mulVec_add, mulVec_smul, mulVec_smul]`.
-
-Simplify using `only [smul_add, smul_smul, hε, e1, e2, e3, zero_smul, add_zero, zero_add]`. Rewrite using `[e, ← hMmix, ← e4, mulVec_mulVec, hMM, one_mulVec]`. Rewrite using `[ez, mulVec_mulVec, Units.inv_mul, one_mulVec]`. Conclude with `mix _ _ hy hz' i`.
+A detailed English derivation is pending.
 -/
 theorem exists_adapted (S : Subring R) {ε : R} (hε : ε * ε = ε) (hεS : ε ∈ S) {u u' : Fin n → R} (hu : ∀ i, u' i * u i = 1)
     (b : GL (Fin n) R) (hb : ε • (b.1 - 1) = b.1 - 1)
@@ -126,17 +122,17 @@ section Lat
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hxu : (x⁻¹).1 *ᵥ (x.1 *ᵥ u) = u` using `by rw [mulVec_mulVec, Units.inv_mul, one_mulVec]`. Establish `h1 : x.1 *ᵥ u ∈ Submodule.span (Formalism.L2.Herm.intAf F E) ((fun v : Fin n → E => fun i => iA F E (v i)) '' (Formalism.UG.CS.globLat x (stdLat E n) : Set (Fin n → E)))`. Rewrite using `[Formalism.UG.P.span_recovery_of_integral_adelic_approx Formalism.UG.P.integral_adele_approximation_holds F E (Fin n) (stdLat E n) (Module.Finite.iff_fg.2 (stdLat_lattice (E := E) (n := n)).fg) (stdLat_lattice (E := E) (n := n)).span_eq_top x _]`. Rewrite using `[mem_latS_std, hxu]`. Conclude with `hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hxu]`. Use `Submodule.span_induction (p := fun z _ => ∃ v ∈ Formalism.UG.CS.globLat x (stdLat E n), ∀ i, ∃ t ∈ idS F J, ((x⁻¹).1 *ᵥ z) i = pullV x v i + (t : E ⊗[F] Formalism.L2.Herm.Af F)) ?_ ?_ ?_ ?_ h1` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨v, hv, fun i => ⟨0, zero_mem _, (add_zero _).symm⟩⟩`. Use `⟨0, zero_mem _, fun i => ⟨0, zero_mem _, ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_zero, show pullV x 0 = 0 from map_zero (pullVAdd x)]`. Simplify using the standard rewrite rules. Introduce and unpack `a b _ _ ⟨v, hv, h⟩ ⟨w, hw, h'⟩`. Use `⟨v + w, add_mem hv hw, fun i => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `h i`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht', e'⟩` from `h' i`. Use `⟨t + t', add_mem ht ht', ?_⟩` and prove the remaining obligations. Rewrite using `[mulVec_add, Pi.add_apply, e, e', pullV_add, Subring.coe_add]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `c a _ ⟨v, hv, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `Formalism.L2.DIV.cmpS_surj (F := F) J hJ (Ideal.Quotient.mk _ c)`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Establish `hb' : c - oToS F E b ∈ idS F J` using `Ideal.Quotient.eq.1 hb.symm`. Use `⟨b • v, Submodule.smul_mem _ b hv, fun i => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `h i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(c - oToS F E b) * ⟨_, (mem_globLat x v).1 hv i⟩ + c * t, add_mem (Ideal.mul_mem_right _ _ hb') (Ideal.mul_mem_left _ _ ht), ?_⟩` and prove the remaining obligations. Rewrite using `[Subring.smul_def, mulVec_smul, Pi.smul_apply, e, pullV_osmul, iA_coe, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_approx (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥)
     (u : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) (hu : ∀ i, u i ∈ Formalism.L2.Herm.intAf F E) :
@@ -182,7 +178,7 @@ def resI (F : Type) [Field F] [NumberField F] [Algebra F E] (J : Ideal (𝓞 E))
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold `resI`. Rewrite using `[RingHom.comp_apply]`. Use `show (RingEquiv.ofBijective (cmpS F J) _).symm _ = _`. Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem resI_oToS (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) (a : 𝓞 E) : resI F J hJ (oToS F E a) = Ideal.Quotient.mk J a := by
   unfold resI
@@ -193,7 +189,7 @@ theorem resI_oToS (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) (a : 𝓞 E) : resI F J 
 
 omit [StarRing E] in
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Unfold `resI`. Rewrite using `[RingHom.comp_apply]`. Conclude with `map_eq_zero_iff _ (RingEquiv.injective _)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resI_eq_zero (J : Ideal (𝓞 E)) (hJ : J ≠ ⊥) (t : Formalism.L2.Herm.intAf F E) : resI F J hJ t = 0 ↔ t ∈ idS F J := by
   rw [← Ideal.Quotient.eq_zero_iff_mem]
@@ -217,9 +213,9 @@ def coordMod (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (J : Fin n → I
     exact Subtype.ext (pullV_osmul x a v.1 i)
 
 /- English proof (translation)
-Introduce `c`. Use `choose a ha using fun i => Ideal.Quotient.mk_surjective (c i)`. Take `⟨v, hv, h⟩` from `exists_approx x (∏ i, J i) (Finset.prod_ne_zero_iff.2 fun i _ => hJ i) (fun i => iA F E (algebraMap (𝓞 E) E (a i))) fun i => iA_mem (a i)`. Use `⟨⟨v, hv⟩, funext fun i => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `h i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht' : t ∈ idS F (J i)` using `Ideal.map_mono (Ideal.prod_le_inf.trans (Finset.inf_le (Finset.mem_univ i))) ht`. Establish `e' : oToS F E (a i) = ⟨pullV x v i, (mem_globLat x v).1 hv i⟩ + t` using `Subtype.ext e`. Rewrite using `[← ha, ← resI_oToS (F := F) (J i) (hJ i), e', map_add, (resI_eq_zero _ _ t).2 ht', add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coordMod_surj (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (J : Fin n → Ideal (𝓞 E)) (hJ : ∀ i, J i ≠ ⊥) :
     Function.Surjective (coordMod x J hJ) := by
@@ -237,11 +233,9 @@ theorem coordMod_surj (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (J : Fi
 variable {Q : Pl E} {ε : E ⊗[F] Formalism.L2.Herm.Af F}
 
 /- English proof (translation)
-Rewrite using `[add_mul, add_mem_cancel_right (mul_mem h.one_sub_mem a.2)]`. Take `⟨m, rfl | rfl⟩` from `d.eq_nat_or_neg`. Rewrite using `[Int.toNat_natCast, zpow_natCast]`. Conclude with `h.mem_idS_pow_iff h1 h2 m a`. Rewrite using `[Int.toNat_neg_natCast, _root_.zpow_neg, inv_inv, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iff_of_true ?_ (mul_mem (mul_mem h.mem ?_) a.2)` and prove the remaining obligations. Unfold `idS`. Rewrite using `[pow_zero, Ideal.one_eq_top, Ideal.map_top]`. Discharge the goal by the elementary cases of `trivial`. Rewrite using `[map_pow]`.
-
-Conclude with `pow_mem (iA_mem ϖ) m`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IdemOf.mem_idS_zpow_iff (h : IdemOf F Q ε) {ϖ : 𝓞 E} (h1 : ϖ ∈ Q.asIdeal) (h2 : ϖ ∉ Q.asIdeal ^ 2) (d : ℤ)
     (a : Formalism.L2.Herm.intAf F E) :
@@ -257,13 +251,13 @@ theorem IdemOf.mem_idS_zpow_iff (h : IdemOf F Q ε) {ϖ : 𝓞 E} (h1 : ϖ ∈ Q
     · rw [map_pow]; exact pow_mem (iA_mem ϖ) m
 
 /- English proof (translation)
-Take `⟨k, k1, k2, hk⟩` from `exists_adapted _ h.1 h.mem (u' := fun i => iA F E (((ϖ : E) ^ d i)⁻¹)) (fun i => by rw [← map_mul, inv_mul_cancel₀ (zpow_ne_zero _ (IdemOf.unif_ne h2)), map_one]) b hb hD`. Establish `pm : ∀ (g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) v, pullV (y * g) v = (g⁻¹).1 *ᵥ pullV y v` using `fun g v => by`. Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec]`. Establish `hN : Formalism.UG.CS.globLat y (stdLat E n) = Formalism.UG.CS.globLat (y * k) (stdLat E n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `v`. Rewrite using `[mem_globLat, mem_globLat, pm]`. Use `⟨int_mulVec _ k2, fun hv => ?_⟩` and prove the remaining obligations. Use `int_mulVec _ k1 hv` as an intermediate fact. Rewrite `this` using `[mulVec_mulVec, Units.mul_inv, one_mulVec]`. Then use the resulting hypothesis.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hJ : ∀ i, Q.asIdeal ^ (d i).toNat ≠ ⊥` using `fun i => pow_ne_zero _ Q.ne_bot`. Rewrite using `[hN]`. Use `⟨(Submodule.quotEquivOfEq _ _ ?_).trans ((coordMod (y * k) _ hJ).quotKerEquivOfSurjective (coordMod_surj _ _ hJ))⟩` and prove the remaining obligations. Use extensionality with `v`. Rewrite using `[Submodule.mem_comap, Submodule.mem_inf, Submodule.subtype_apply, and_iff_left v.2, mem_globLat, pm, hk, ← pm, LinearMap.mem_ker, funext_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Conclude with `(((resI_eq_zero _ (hJ i) _).trans (h.mem_idS_zpow_iff h1 h2 (d i) ⟨pullV (y * k) v.1 i, (mem_globLat _ v.1).1 v.2 i⟩))).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem quot_equiv (h : IdemOf F Q ε) {ϖ : 𝓞 E} (h1 : ϖ ∈ Q.asIdeal) (h2 : ϖ ∉ Q.asIdeal ^ 2) (d : Fin n → ℤ)
     (y b : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (hb : ε • (b.1 - 1) = b.1 - 1)
@@ -302,9 +296,9 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 def posPart (d : List ℤ) : List ℕ := (d.map Int.toNat).filter fun a => 0 < a
 
 /- English proof (translation)
-Take `⟨e⟩` from `GlobalTheory.InertTypeIso.iso_filter_pos P (d.map Int.toNat)`. Establish `hl : (d.map Int.toNat).length = n` using `by rw [List.length_map, hd]`. It suffices to establish `h : (∀ i : Fin n, 𝓞 E ⧸ P ^ (d.getD i.1 0).toNat) ≃ₗ[𝓞 E] inType P (d.map Int.toNat) from ⟨h.trans e⟩`. Use `(LinearEquiv.piCongrLeft' (𝓞 E) _ (finCongr hl.symm)).trans (LinearEquiv.piCongrRight fun i => ?_)` and prove the remaining obligations. Use `Submodule.quotEquivOfEq _ _ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Establish `hi : i.1 < d.length` using `i.2.trans_eq (List.length_map _)`. Simplify using `[List.getElem?_eq_getElem hi]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem pi_equiv_posPart (P : Ideal (𝓞 E)) {n : ℕ} (d : List ℤ) (hd : d.length = n) :
     Nonempty ((∀ i : Fin n, 𝓞 E ⧸ P ^ (d.getD i.1 0).toNat) ≃ₗ[𝓞 E] inType P (posPart d)) := by
@@ -318,13 +312,13 @@ theorem pi_equiv_posPart (P : Ideal (𝓞 E)) {n : ℕ} (d : List ℤ) (hd : d.l
   simp [List.getElem?_eq_getElem hi]
 
 /- English proof (translation)
-Introduce `a ha` and use `by simpa using (List.mem_filter.1 ha).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posPart_pos (d : List ℤ) : ∀ a ∈ posPart d, 0 < a := fun a ha => by
   simpa using (List.mem_filter.1 ha).2
 
 /- English proof (translation)
-Use `List.Pairwise.filter _ ?_` and prove the remaining obligations. Rewrite using `[List.pairwise_map]`. Conclude with `h.imp fun h => Int.toNat_le_toNat h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posPart_pairwise {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) : (posPart d).Pairwise (· ≥ ·) := by
   refine List.Pairwise.filter _ ?_
@@ -332,7 +326,7 @@ theorem posPart_pairwise {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) : (p
   exact h.imp fun h => Int.toNat_le_toNat h
 
 /- English proof (translation)
-Unfold `posPart`. Rewrite using `[List.count_filter (by simpa using ha), List.count_eq_countP, List.countP_map, List.count_eq_countP]`. Use `List.countP_congr fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, beq_iff_eq]`. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem count_posPart (d : List ℤ) {a : ℤ} (ha : 0 < a) : (posPart d).count a.toNat = d.count a := by
   unfold posPart
@@ -342,7 +336,7 @@ theorem count_posPart (d : List ℤ) {a : ℤ} (ha : 0 < a) : (posPart d).count 
   omega
 
 /- English proof (translation)
-Use `conv_lhs => rw [← h]`. Rewrite using `[List.count_reverse]`. Conclude with `List.count_map_of_injective d _ neg_injective a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_neg {d : List ℤ} (h : (d.map Neg.neg).reverse = d) (a : ℤ) : d.count (-a) = d.count a := by
   conv_lhs => rw [← h]
@@ -350,15 +344,15 @@ theorem count_neg {d : List ℤ} (h : (d.map Neg.neg).reverse = d) (a : ℤ) : d
   exact List.count_map_of_injective d _ neg_injective a
 
 /- English proof (translation)
-Establish `c1 : ∀ a : ℤ, a ≠ 0 → d.count a = d'.count a` using `fun a ha => by`. Break down `lt_or_gt_of_ne ha with ha | ha` into its components or cases. Rewrite using `[← count_neg s, ← count_neg s', ← count_posPart d (neg_pos.2 ha), ← count_posPart d' (neg_pos.2 ha), e]`. Rewrite using `[← count_posPart d ha, ← count_posPart d' ha, e]`. Establish `p1 : (d.filter fun a => ¬ (a == 0)).Perm (d'.filter fun a => ¬ (a == 0))`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[List.perm_iff_count]`. Introduce `a`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Rewrite using `[List.count_eq_zero_of_not_mem (by simp), List.count_eq_zero_of_not_mem (by simp)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.count_filter (by simpa using ha), List.count_filter (by simpa using ha), c1 a ha]`. Establish `c0 : d.count 0 = d'.count 0`. Establish `a1` using `List.length_eq_countP_add_countP (fun a : ℤ => a == 0) (l := d)`. Establish `a2` using `List.length_eq_countP_add_countP (fun a : ℤ => a == 0) (l := d')`. Establish `a3` using `p1.length_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `a3` using `[← List.countP_eq_length_filter, ← List.countP_eq_length_filter]`. Rewrite using `[List.count_eq_countP, List.count_eq_countP]`. Use linear arithmetic over natural numbers and integers. Use `List.Perm.eq_of_pairwise (fun a b _ _ h1 h2 => le_antisymm h2 h1) h h' (List.perm_iff_count.2 fun a => ?_)` and prove the remaining obligations. Distinguish the cases in `ha : a = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[ha, c0]`. Conclude with `c1 a ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_posPart_eq {d d' : List ℤ} (h : d.Pairwise fun a b => b ≤ a) (h' : d'.Pairwise fun a b => b ≤ a)
     (hl : d.length = d'.length) (s : (d.map Neg.neg).reverse = d) (s' : (d'.map Neg.neg).reverse = d')

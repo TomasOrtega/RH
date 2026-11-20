@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Rewrite `hkj` using `[ZMod.intCast_eq_intCast_iff_dvd_sub]`. Take `⟨q, hq⟩` from `hkj`. Establish `hj : j = k + (N : ℤ) * q` using `by linarith`. Rewrite using `[hj, zpow_add₀ h0, zpow_mul, zpow_natCast, h, one_zpow, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zpow_eq_zpow_of_intCast_eq {K : Type} [Field K] {ξ : K} {N : ℕ} (h0 : ξ ≠ 0)
     (h : ξ ^ N = 1) {k j : ℤ} (hkj : (k : ZMod N) = (j : ZMod N)) : ξ ^ k = ξ ^ j := by
@@ -20,9 +20,9 @@ theorem zpow_eq_zpow_of_intCast_eq {K : Type} [Field K] {ξ : K} {N : ℕ} (h0 :
   rw [hj, zpow_add₀ h0, zpow_mul, zpow_natCast, h, one_zpow, mul_one]
 
 /- English proof (translation)
-Use `Finset.sum_nbij' (fun f => f.val) (fun v => (v : ZMod N)) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `f _`. Simplify using `using ZMod.val_lt f`. Introduce `v _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `f _`. Simplify using the standard rewrite rules. Introduce `v hv; exact ZMod.val_cast_of_lt (by simpa using hv)`. Introduce `f _`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 -/
 theorem sum_zmod_val_eq_sum_range {K : Type} [Field K] (N : ℕ) [NeZero N] (G : ℕ → K) :
     ∑ r : ZMod N, G r.val = ∑ k ∈ Finset.range N, G k := by
@@ -34,9 +34,9 @@ theorem sum_zmod_val_eq_sum_range {K : Type} [Field K] (N : ℕ) [NeZero N] (G :
   · intro f _; rfl
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `succ c ih`. Rewrite using `[Nat.mul_succ, Finset.sum_range_add, ih, Finset.sum_range_succ]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[add_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_mul_split {K : Type} [Field K] (G : ℕ → K) (b c : ℕ) :
     ∑ k ∈ Finset.range (b * c), G k = ∑ t ∈ Finset.range c, ∑ a ∈ Finset.range b, G (a + b * t) := by
@@ -53,33 +53,31 @@ end GlobalTheory.EisM
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-Introduce `K _ _ l m n _ _ ζ ψ hl hm hmn hζ hψ X`. Establish `hl0 : 0 < l` using `hl.pos`. Establish `hN : l ^ n = l ^ (n - m) * l ^ m` using `by rw [← pow_add, Nat.sub_add_cancel hmn]`. Establish `hN' : l ^ n = l ^ m * l ^ (n - m)` using `by rw [hN, mul_comm]`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F : ℕ → K := fun k => ψ (k : ZMod (l ^ m)) * ζ ^ ((k : ℤ) * X) with hF`. Establish `h1 : ∑ r : ZMod (l ^ n), ψ ((r.val : ℕ) : ZMod (l ^ m)) * ζ ^ ((r.val : ℤ) * X) = ∑ k ∈ Finset.range (l ^ n), F k` using `sum_zmod_val_eq_sum_range (l ^ n) F`. Use `set y : K := ζ ^ (((l ^ m : ℕ) : ℤ) * X) with hy`. Establish `h3 : ∀ a t : ℕ, F (a + l ^ m * t) = F a * y ^ t`. Introduce `a t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hF, hy]`. Establish `hc : ((a + l ^ m * t : ℕ) : ZMod (l ^ m)) = (a : ZMod (l ^ m))`. Rewrite using `[Nat.cast_add, Nat.cast_mul, ZMod.natCast_self, zero_mul, add_zero]`. Rewrite using `[hc, mul_assoc]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `he : ((a + l ^ m * t : ℕ) : ℤ) * X = (a : ℤ) * X + (((l ^ m : ℕ) : ℤ) * X) * (t : ℤ)` using `by push_cast; ring`. Rewrite using `[he, zpow_add₀ hζ0, zpow_mul ζ (((l ^ m : ℕ) : ℤ) * X) (t : ℤ), zpow_natCast]`. Establish `h2 : ∑ k ∈ Finset.range (l ^ n), F k = (∑ a ∈ Finset.range (l ^ m), F a) * ∑ t ∈ Finset.range (l ^ (n - m)), y ^ t`. Rewrite using `[hN', sum_range_mul_split, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[h3]`. Establish `hω : IsPrimitiveRoot (ζ ^ (l ^ m)) (l ^ (n - m))` using `hζ.pow (by positivity) hN'`. Establish `hyω : y = (ζ ^ (l ^ m)) ^ X`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hy, zpow_mul, zpow_natCast]`. Establish `h4 : ∑ t ∈ Finset.range (l ^ (n - m)), y ^ t = if (l : ℤ) ^ (n - m) ∣ X then ((l : K) ^ (n - m)) else 0` using `by split_ifs with hd`. Establish `: y = 1`. Rewrite using `[hyω]; exact (hω.zpow_eq_one_iff_dvd X).2 (by exact_mod_cast hd)`. Simplify using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy1 : y ≠ 1`. Rewrite using `[hyω]`. Introduce `h`. Conclude with `hd (by exact_mod_cast (hω.zpow_eq_one_iff_dvd X).1 h)`. Rewrite using `[geom_sum_eq hy1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: y ^ (l ^ (n - m)) = 1`. Rewrite using `[hyω, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hω.pow_eq_one, one_zpow]`. Rewrite using `[this, sub_self, zero_div]`. Establish `h5 : ∑ a ∈ Finset.range (l ^ m), F a = ∑ a : ZMod (l ^ m), ψ a * ζ ^ ((a.val : ℤ) * X)`. Rewrite using `[← sum_zmod_val_eq_sum_range (l ^ m) F]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [hF, ZMod.natCast_zmod_val]`. Rewrite using `[h1, h2, h4, h5]`. Use `split_ifs with hd`. Take `⟨Y, rfl⟩` from `hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : (l : ℤ) ^ (n - m) ≠ 0` using `by positivity`. Rewrite using `[Int.mul_ediv_cancel_left _ hL0]`. Establish `hξ : IsPrimitiveRoot (ζ ^ (l ^ (n - m))) (l ^ m)` using `hζ.pow (by positivity) hN`. Establish `hξ0 : ζ ^ (l ^ (n - m)) ≠ 0` using `pow_ne_zero _ hζ0`. Set `e : AddChar (ZMod (l ^ m)) K` to `AddChar.zmodChar (l ^ m) hξ.pow_eq_one`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `gaussSum_mulShift_of_isPrimitive e hψ (Y : ZMod (l ^ m))`. Establish `hG : gaussSum ψ e = ∑ a : ZMod (l ^ m), ψ a * ζ ^ (l ^ (n - m) * a.val)`. Unfold `gaussSum`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.zmodChar_apply, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hS : ∑ a : ZMod (l ^ m), ψ a * ζ ^ ((a.val : ℤ) * ((l : ℤ) ^ (n - m) * Y)) = gaussSum ψ (e.mulShift Y)`. Unfold `gaussSum`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[AddChar.mulShift_apply, AddChar.zmodChar_apply]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Establish `he : (a.val : ℤ) * ((l : ℤ) ^ (n - m) * Y) = ((l ^ (n - m) : ℕ) : ℤ) * ((a.val : ℤ) * Y)` using `by push_cast; ring`. Rewrite using `[he, zpow_mul, zpow_natCast, ← zpow_natCast (ζ ^ l ^ (n - m)) ((Y : ZMod (l ^ m)) * a).val]`. Use `zpow_eq_zpow_of_intCast_eq hξ0 hξ.pow_eq_one ?_` and prove the remaining obligations. Use `push_cast`. Simplify using `[ZMod.natCast_val, ZMod.cast_id', mul_comm]`.
-
-Rewrite using `[hS, key, ← hG]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_primChar_mul_rootPow_mod_pow : ∀ (K : Type) [Field K] [CharZero K] (l m n : ℕ) [NeZero (l ^ n)] [NeZero (l ^ m)] (ζ : K) (ψ : DirichletCharacter K (l ^ m)), l.Prime → 1 ≤ m → m ≤ n → IsPrimitiveRoot ζ (l ^ n) → ψ.IsPrimitive → ∀ X : ℤ, ∑ r : ZMod (l ^ n), ψ ((r.val : ℕ) : ZMod (l ^ m)) * ζ ^ ((r.val : ℤ) * X) = if (l : ℤ) ^ (n - m) ∣ X then (l : K) ^ (n - m) * (∑ a : ZMod (l ^ m), ψ a * ζ ^ (l ^ (n - m) * a.val)) * ψ⁻¹ ((X / (l : ℤ) ^ (n - m) : ℤ) : ZMod (l ^ m)) else 0 := by
   intro K _ _ l m n _ _ ζ ψ hl hm hmn hζ hψ X

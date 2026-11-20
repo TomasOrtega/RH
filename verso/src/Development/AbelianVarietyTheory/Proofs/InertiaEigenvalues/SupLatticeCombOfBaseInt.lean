@@ -25,7 +25,7 @@ variable {D : D7} {Γ : Type} [Group Γ] [Fintype Γ] {Pl0 I0 T0 : Type}
   {Rl : RealDat3 D A3 Ks} {cG : G0 Rl.Pg D.R.r ≃* G0g D.nd} {S : NX.RatDat D.ntw}
 
 /- English proof (translation)
-Simplify using `only [evW, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[LinearEquiv.map_smul, LinearMap.map_smulₛₗ, map_smul]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evW_smul (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (Rl.MW j σ).Vec)
     (j : Fin D.R.m) (a : D.what₂.LL) (x : S.WL ((j : ℕ) + 1)) :
@@ -35,7 +35,7 @@ theorem evW_smul (YS : NX.NExpRealS Rl cG S) (v₀ : ∀ (j : Fin D.R.m) (σ : D
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `[castDict, Finset.sum_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem castDict_sum_smul' {V W : HSp D} (e : V = W) {m : ℕ} (a : Fin m → ℂ) (ψ : Fin m → GA D V → ℂ) (g : GA D W) :
     castDict e (∑ i, a i • ψ i) g = ∑ i, a i * castDict e (ψ i) g := by
@@ -43,7 +43,7 @@ theorem castDict_sum_smul' {V W : HSp D} (e : V = W) {m : ℕ} (a : Fin m → �
   simp [castDict, Finset.sum_apply]
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Substitute `h1` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem castDict_phiJ' {T : CoreJ D} {j : ℕ} {W : HSp D} {σ : T.Q.c.F →+* ℂ} (hσ : σ = T.σ₀) (h1 : T.V j σ = W)
     (h2 : T.V j T.σ₀ = W) (a : (D.host.E →+* ℂ) × ℕ → ℕ) (f : T.R j) (g : GA D W) :
@@ -55,27 +55,25 @@ theorem castDict_phiJ' {T : CoreJ D} {j : ℕ} {W : HSp D} {σ : T.Q.c.F →+* �
 end GlobalTheory.DictionaryCast
 
 /- English proof (translation)
-Introduce `hA hR hI D X E Y hF hP i hi j b hV la hla n o ψ hψ`. Establish `hev : X.geo.fw.Evaluates` using `X.geo.fw.evaluates_of_lUnif X.unif`. Establish `hσ : FWT.res X.core (sg0 D X.A3.A) = X.core.σ₀`. Rewrite using `[show sg0 D X.A3.A = D.what₂.embLL from sgAt_mk _ X.R.hv0]`. Conclude with `FWT.res_embLL X.core X.geo.fw.alg_eq X.geo.fw.laws.pins.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hV' : X.core.V ((j : ℕ) + 1) (FWT.res X.core (sg0 D X.A3.A)) = Wc D j` using `by rw [hσ]; exact hV`. Establish `hlast : (X.geo.κ j).LastPos` using `fun τ k hk => by`. Rewrite using `[(X.geo.fw.kap j τ).1 k]`. Conclude with `GlobalTheory.LiftWeight.kapTop_lastPos D j τ k hk`. Establish `hinR : Formalism.L2.Pj.InR D ((j : ℕ) + 1)` using `⟨Nat.le_add_left _ _, j.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ k, ∃ (o'' : D.ntw.O i) (m : NX.FmK Y.S ((j : ℕ) + 1)), Subtype.val m ∈ (Y.S.A ((j : ℕ) + 1)).MK ∧ FWT.castDict hV (ψ k) = Y.Z.ρ.eO i b o'' • evW Y.YS X.geo.v₀ j (Subtype.val m)`. Introduce `k`. Take `⟨f, ⟨hsec, hhol, hint⟩, hfk⟩` from `hψ k`. Establish `hcu` using `GlobalTheory.CuspAllEmb.mem_cuspA_of_rdU_mem_holSub0 D X.core X.geo.fw.laws _ hinR (X.geo.κ j) hlast f hsec hhol`. Set `fc : FWT.Cu X.core X.geo.κ j` to `⟨f, hcu⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hball : ∀ y : (X.R.FW j).Pt la, (X.R.FW j).nrm la y (X.geo.fw.e j fc) ≤ 1` using `fun y => by`. Rewrite using `[X.geo.fw.nrm_eq]`. Conclude with `(X.core.nrmM_le_one_iff _ la _ _).2 (hint la rfl _ (X.geo.fw.pt j la y).2)`. Take `⟨s, hs, hsM⟩` from `GlobalTheory.supLattice_localisation_of_unitBall _ _ _ _ _ (X.R.FW j) (X.integral j).2.1.2 la _ hball`. Use `set w := X.geo.fw.e j fc with hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx₀ : evW Y.YS X.geo.v₀ j ((Y.YS.fi j).e.symm (w : Fin (X.R.nW j) → D.what₂.LL)) = FWT.phiC X.core hV' (Formalism.L2.Pj.wtA (X.geo.κ j)) f`. Use `Eq.trans ?_ (hev j (sg0 D X.A3.A) (by rw [hσ]; exact X.core.toCore.good_σ₀) hV' fc)` and prove the remaining obligations. Simplify using `only [evW, AddMonoidHom.coe_mk, ZeroHom.coe_mk]`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsm : s • (w : Fin (X.R.nW j) → D.what₂.LL) = algebraMap X.core.Q.c.F D.what₂.LL (s : X.core.Q.c.F) • (w : Fin (X.R.nW j) → D.what₂.LL)`. Rewrite using `[algebraMap_smul]`. Conclude with `(algebraMap_smul X.core.Q.c.F s _).symm`. Set `m : NX.FmK Y.S ((j : ℕ) + 1)` to `⟨(Y.YS.fi j).e.symm (s • (w : Fin (X.R.nW j) → D.what₂.LL)), ((Y.YS.fi j).wk _).2 (by rw [LinearEquiv.apply_symm_apply]; exact hsM.fst)⟩`. Establish `hmK : Subtype.val m ∈ (Y.S.A ((j : ℕ) + 1)).MK` using `((Y.YS.fi j).mkK _).2 (by rw [LinearEquiv.apply_symm_apply]; exact hsM)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsσ : sg0 D X.A3.A (algebraMap X.core.Q.c.F D.what₂.LL (s : X.core.Q.c.F)) = X.core.σ₀ (s : X.core.Q.c.F)` using `congrArg (fun τ : X.core.Q.c.F →+* ℂ => τ (s : X.core.Q.c.F)) hσ`. Establish `hevm : evW Y.YS X.geo.v₀ j (Subtype.val m) = X.core.σ₀ (s : X.core.Q.c.F) • evW Y.YS X.geo.v₀ j ((Y.YS.fi j).e.symm (w : Fin (X.R.nW j) → D.what₂.LL))`. Express the relevant statement in the definitionally equal form `evW Y.YS X.geo.v₀ j ((Y.YS.fi j).e.symm (s • (w : Fin (X.R.nW j) → D.what₂.LL))) = _`. Rewrite using `[hsm, LinearEquiv.map_smul, GlobalTheory.DictionaryCast.evW_smul, hsσ]`. Establish `hs0 : (s : X.core.Q.c.F) ≠ 0` using `fun h => hs (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show s = 0 from RingOfIntegers.coe_eq_zero_iff.1 h]`. Conclude with `la.asIdeal.zero_mem)`. Establish `hinv : FinitePlace.mk la ((s : X.core.Q.c.F)⁻¹) ≤ 1`. Rewrite using `[map_inv₀, FinitePlace.mk_apply, (FinitePlace.norm_eq_one_iff_notMem X.core.Q.c.F la s).mpr hs, inv_one]`. Take `⟨o'', ho''⟩` from `(hla _).1 hinv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨o'', m, hmK, ?_⟩` and prove the remaining obligations. Establish `hc : FWT.castDict hV (ψ k) = FWT.phiC X.core hV' (Formalism.L2.Pj.wtA (X.geo.κ j)) f`. Rewrite using `[← hfk]`. Use function extensionality and compare the values at `g`. Conclude with `(GlobalTheory.DictionaryCast.castDict_phiJ' hσ hV' hV _ _ g).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, ← hx₀, hevm, ho'', smul_smul, map_inv₀, inv_mul_cancel₀ ((map_ne_zero _).2 hs0), one_smul]`. Use `choose o'' m hm he using key`. Use `⟨n, fun k => o k * o'' k, m, hm, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[GlobalTheory.DictionaryCast.castDict_sum_smul', Finset.sum_apply]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[he k]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.XiIntCore.supLattice_comb_of_baseInt : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV) → ∀ i, D.ntw.NonzeroIndexPlace i → ∀ (j : Fin D.R.m) (b : Bool) (hV : X.core.V ((j : ℕ) + 1) X.core.σ₀ = Wc D j) (la : HeightOneSpectrum (𝓞 X.core.Q.c.F)), (∀ x : X.core.Q.c.F, FinitePlace.mk la x ≤ 1 ↔ ∃ o : D.ntw.O i, Y.Z.ρ.eO i b o = X.core.σ₀ x) → ∀ (n : ℕ) (o : Fin n → D.ntw.O i) (ψ : Fin n → (GA D (X.core.V ((j : ℕ) + 1) X.core.σ₀) → ℂ)), (∀ k, ψ k ∈ GlobalTheory.CoverRead.baseInt X.core ((j : ℕ) + 1) X.core.σ₀ (Formalism.L2.Pj.wtA (X.geo.κ j)) (X.geo.κ j).n {la}) → ∃ (n' : ℕ) (o' : Fin n' → D.ntw.O i) (m : Fin n' → NX.FmK Y.S ((j : ℕ) + 1)), (∀ k, Subtype.val (m k) ∈ (Y.S.A ((j : ℕ) + 1)).MK) ∧ FWT.castDict hV (∑ k, Y.Z.ρ.eO i b (o k) • ψ k) = ∑ k, Y.Z.ρ.eO i b (o' k) • evW Y.YS X.geo.v₀ j (Subtype.val (m k)) := by
   intro hA hR hI D X E Y hF hP i hi j b hV la hla n o ψ hψ

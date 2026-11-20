@@ -39,7 +39,7 @@ section Twist
 variable {Γ k : Type} [Group Γ] [Field k] {a : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases h : i = j <;> simp [GeneralLinearGroup.scalar, Matrix.diagonal, Matrix.one_apply, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coe_scalar (u : kˣ) : ((GeneralLinearGroup.scalar (Fin a) u : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) =
     (u : k) • (1 : Matrix (Fin a) (Fin a) k) := by
@@ -58,7 +58,7 @@ def twistBy (c : Γ →* kˣ) (r : Γ →* GL (Fin a) k) : Γ →* GL (Fin a) k 
     rw [← mul_assoc (GeneralLinearGroup.scalar (Fin a) (c h)), e, mul_assoc]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((GeneralLinearGroup.scalar (Fin a) (c g) * r g : GL (Fin a) k) : Matrix (Fin a) (Fin a) k) = _`. Rewrite using `[Units.val_mul, coe_scalar, Matrix.smul_mul, Matrix.one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_twistBy (c : Γ →* kˣ) (r : Γ →* GL (Fin a) k) (g : Γ) :
     (twistBy c r g : Matrix (Fin a) (Fin a) k) = (c g : k) • (r g : Matrix (Fin a) (Fin a) k) := by
@@ -71,7 +71,7 @@ section G
 variable {E Ω : Type} [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] {a : ℕ}
 
 /- English proof (translation)
-Take `⟨ψ, h1, h2⟩` from `GlobalTheory.PolChar.exists_compNorm_eq hν`. Use `⟨_, IsConjDualBy.isPolarized (m := 0) (χ := ψ) ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `GlobalTheory.T.isConjugateDualTwistBy_twist_of_conjSelfDual hc ν`. Simplify using `using h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPolarized_twist {π : CuspSub E a} (hc : π.IsCsd) {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) :
     ∃ ψ, IsPolarized (π.twist ν) ψ := by
@@ -81,7 +81,7 @@ theorem isPolarized_twist {π : CuspSub E a} (hc : π.IsCsd) {ν : HChar E} {s :
   · simpa using h2
 
 /- English proof (translation)
-Establish `h` using `(CG.hasInfChar_ofChar χ τ).twist χ'`. Rewrite `h` using `[CG.twist_ofChar, Multiset.map_singleton]`. Use `h.infChar_eq` as an intermediate fact. Rewrite `this` using `[CG.infChar_ofChar]`. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem expo_mul (χ χ' : HChar E) (τ : E →+* ℂ) : expo (χ * χ') τ = expo χ τ + expo χ' τ := by
   have h := (CG.hasInfChar_ofChar χ τ).twist χ'
@@ -91,7 +91,7 @@ theorem expo_mul (χ χ' : HChar E) (τ : E →+* ℂ) : expo (χ * χ') τ = ex
   simpa using this
 
 /- English proof (translation)
-Use `expo_mul χ χ⁻¹ τ` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, CG.expo_one]`. Take the linear combination `-this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem expo_inv (χ : HChar E) (τ : E →+* ℂ) : expo χ⁻¹ τ = -expo χ τ := by
   have := expo_mul χ χ⁻¹ τ
@@ -99,9 +99,9 @@ theorem expo_inv (χ : HChar E) (τ : E →+* ℂ) : expo χ⁻¹ τ = -expo χ 
   linear_combination -this
 
 /- English proof (translation)
-Take `⟨hu, he⟩` from `CGTrueModel.locPar_unr hL ν h (hν.1 w)`. Take `⟨c1, c2, c3⟩` from `WD.lpUnr_spec (h := h) {1} (by simp)`. Establish `hy : ParLaws.locPar hL (CG.ofChar ν) h = (WD.lpUnr h {1}).lpTw s`. Rewrite using `[WD.unr_eq_lpUnr _ hu, WD.unr_eq_lpUnr ((WD.lpUnr h {1}).lpTw s) ((WD.unr_tw _ _).2 c1), WD.frobEig_tw _ _ c1, he, c2]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Multiset.map_singleton, one_mul]`. Use `congr 1`. Rewrite using `[Units.val_inv_eq_inv_val, hν.2.1 w, Complex.cpow_neg, inv_inv]`. Both sides reduce to the same expression. Rewrite using `[ParLaws.locPar_twist hL hF, hy, (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.1, (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.2.2.2 c1 (by simpa using c3) c2]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem locPar_twist_abs (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (π : CG E a)
     {ν : HChar E} {s : ℝ} (hν : ν.IsAbsPow s) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) :
@@ -119,7 +119,7 @@ theorem locPar_twist_abs (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Gl
     (WD.lpChar_laws (ParLaws.locPar hL π h) (ParLaws.locPar hL π h) (WD.lpUnr h {1}) s).2.2.2.2.2 c1 (by simpa using c3) c2]
 
 /- English proof (translation)
-Establish `key : ∀ W, IsInv (twistBy c ρ) W ↔ IsInv ρ W` using `fun W => forall_congr' fun g => forall₂_congr fun v _ => by`. Rewrite using `[coe_twistBy, Matrix.smul_mulVec, W.smul_mem_iff (c g).ne_zero]`. Conclude with `fun W hW => (hs W ((key W).1 hW)).imp fun W' h' => ⟨(key W').2 h'.1, h'.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isSSRep_twistBy {Γ K : Type} [Group Γ] [Field K] {n : ℕ} (c : Γ →* Kˣ) {ρ : Γ →* GL (Fin n) K} (hs : IsSSRep ρ) :
     IsSSRep (twistBy c ρ) := by
@@ -128,7 +128,7 @@ theorem isSSRep_twistBy {Γ K : Type} [Group Γ] [Field K] {n : ℕ} (c : Γ →
   exact fun W hW => (hs W ((key W).1 hW)).imp fun W' h' => ⟨(key W').2 h'.1, h'.2⟩
 
 /- English proof (translation)
-Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E a π w`. Rewrite using `[H.wdOf_eq hl (ParLaws.isRec_locRec hL h) hσ]`. Conclude with `congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) {π : CuspSub E a}
     {χ : HChar (maximalRealSubfield E)} {ι : Qbar l ≃+* ℂ} {r : G E Ω →* GL (Fin a) (Qbar l)} {wt : ℤ}
@@ -140,11 +140,9 @@ theorem wdOf_eq_locPar (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : Glob
   exact congrArg (fun x : WD h => x.lpTw _) (ParLaws.locPar_mk hL hσ h).symm
 
 /- English proof (translation)
-Establish `htr : ∀ g, ((r g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace = ((r' g : GL (Fin a) (Qbar l)) : Matrix (Fin a) (Fin a) (Qbar l)).trace`. Introduce `g`. Use `congrFun (Continuous.ext_on (hD _ (Filter.eventually_cofinite.1 h)) (hc.matrix_trace) (hc'.matrix_trace) ?_) g` and prove the remaining obligations. Introduce and unpack `σ ⟨w, hw, B, hB, hσ⟩`. Establish `e` using `not_not.1 hw B σ hB hσ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show Matrix.trace _ = Matrix.trace _`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Simplify using `[Matrix.trace]`. Use `haveI : Nonempty (Fin a) := ⟨⟨0, ha⟩⟩`.
-
-Rewrite using `[Matrix.trace_eq_neg_charpoly_coeff, Matrix.trace_eq_neg_charpoly_coeff, e]`. Conclude with `GlobalTheory.TraceConj.conj_of_trace_eq _ _ a r r' hs hs' htr`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_of_frob (hD : ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite → Dense {g : G E Ω | ∃ w ∉ S, ∃ B : ValuationSubring Ω,
       IsPlaceOver (F := E) B w ∧ IsFrob (F := E) B (normV w) g})
@@ -170,21 +168,21 @@ theorem conj_of_frob (hD : ∀ S : Set (HeightOneSpectrum (𝓞 E)), S.Finite �
   exact GlobalTheory.TraceConj.conj_of_trace_eq _ _ a r r' hs hs' htr
 
 /- English proof (translation)
-Take `⟨L₁, r₁, m₁, hp₁⟩` from `hr`. Take `⟨L₂, c₂, m₂, hc₂⟩` from `hc`. Establish `l₁ : L₁.1 ≤ (supExt L₁ L₂).1` using `le_sup_left`. Establish `l₂ : L₂.1 ≤ (supExt L₁ L₂).1` using `le_sup_right`. Establish `m₁'` using `m₁.enlarge l₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m₂'` using `m₂.enlarge l₂`. Take `⟨K', hK, hcr⟩` from `(local_ext P Bw l₁ r₁).2.2.1.2 hp₁`. Establish `hq` using `(local_ext P Bw l₂ c₂).1.2 hc₂`. Use `set L := supExt L₁ L₂ with hL`. Use `set r₁' := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₁).toRingHom r₁ with hr₁'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set c₂' := Formalism.MainNotions.N.mapRep (IntermediateField.inclusion l₂).toRingHom c₂ with hc₂'`. Set `d : ↥Gw →* (↥L.1)ˣ` to `Matrix.GeneralLinearGroup.det.comp c₂'`. Establish `hd : ∀ g, ((c₂' g : GL (Fin 1) ↥L.1) : Matrix (Fin 1) (Fin 1) ↥L.1) 0 0 = (d g : ↥L.1)` using `fun g => by`. Express the relevant statement in the definitionally equal form `_ = Matrix.det _`. Rewrite using `[Matrix.det_fin_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcd : ∀ g, ((d g : ↥L.1) : Om l) = (c g : Om l)` using `fun g => by`. Establish `e` using `congrArg (fun f : ↥Gw →* GL (Fin 1) (Om l) => ((f g : GL (Fin 1) (Om l)) : Matrix (Fin 1) (Fin 1) (Om l)) 0 0) m₂'.2`. Rewrite using `[← hd]`. Use `e.trans ?_` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, coe_scalar]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Establish `hM : IsModel Bw (twistBy c r) L (twistBy d r₁')`. Use `⟨m₁'.1, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Establish `e : algebraMap ↥L.1 (Om l) (((r₁' g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) i j) = (r g : Matrix (Fin a) (Fin a) (Om l)) i j` using `congrArg (fun f : ↥Gw →* GL (Fin a) (Om l) => ((f g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j) m₁'.2`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `algebraMap ↥L.1 (Om l) (((twistBy d r₁' g : GL (Fin a) ↥L.1) : Matrix (Fin a) (Fin a) ↥L.1) i j) = ((twistBy c r g : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i j`. Rewrite using `[coe_twistBy, coe_twistBy, Matrix.smul_apply, Matrix.smul_apply, smul_eq_mul, smul_eq_mul, map_mul, e]`. Conclude with `congrArg₂ (· * ·) (hcd g) rfl`. Use `⟨L, _, hM, K', hK, ?_⟩` and prove the remaining obligations. Set `θ : ↥(GK K') →* (↥L.1)ˣ` to `(d.comp Bw.e.symm.toMonoidHom).comp (Subgroup.inclusion (GK_le hK))`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(GlobalTheory.TopSteps.CrysRules.isCrys_iff T K' L _ _ θ (fun g x => ?_) ?_).1 hcr` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Bw.repE L (twistBy d r₁') _ x = _ • Bw.repE L r₁' _ x`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply, GlobalTheory.ConjLocal.repE_apply, coe_twistBy, Matrix.smul_mulVec]`. Both sides reduce to the same expression. Establish `h1` using `GlobalTheory.Per.TiedRestrict.isCrys_restrict hK (Bw.repE L c₂') T hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.Cmp.WachMonoidal.isCrys_of_equiv (P.PD K') (LinearEquiv.funUnique (Fin 1) ↥L.1 ↥L.1) (fun g x => ?_) h1` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Bw.repE L c₂' _ x) 0 = ((θ g : (↥L.1)ˣ) : ↥L.1) * x 0`. Rewrite using `[GlobalTheory.ConjLocal.repE_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.univ_unique, Finset.sum_singleton]`. Conclude with `congrArg (· * x 0) (hd (Bw.e.symm (Subgroup.inclusion (GK_le hK) g)))`.
+A detailed English derivation is pending.
 -/
 theorem potCrys_twistBy {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI) {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O]
     [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l E Ω Gw O) (c : ↥Gw →* (Om l)ˣ) (r : ↥Gw →* GL (Fin a) (Om l))
@@ -235,19 +233,19 @@ theorem potCrys_twistBy {P : LocPrime l} {AI : LocAinf l P} (T : LocTied l P AI)
     exact congrArg (· * x 0) (hd (Bw.e.symm (Subgroup.inclusion (GK_le hK) g)))
 
 /- English proof (translation)
-Take `⟨χ, hχ⟩` from `hp`. Establish `hreg : (CG.mk ((CuspSub.triv E (le_refl 1)).twist ψ)).IsRegAlg` using `(CG.isRegAlg_ofChar ψ).2 hr`. Take `⟨r, wt, HT, H⟩` from `hG E Ω l ι 1 le_rfl _ χ hreg hχ`. Establish `hcr : Continuous fun g => (r g : Matrix (Fin 1) (Fin 1) (Qbar l))` using `Units.continuous_val.comp H.cont`. Establish `hsc : (GeneralLinearGroup.scalar (Fin 1)).comp (Matrix.GeneralLinearGroup.det.comp r) = r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g i j`. Rewrite using `[MonoidHom.comp_apply, coe_scalar, Subsingleton.elim i 0, Subsingleton.elim j 0]`. Rewrite using `[Matrix.smul_apply, Matrix.one_apply_eq, smul_eq_mul, mul_one]`. Express the relevant statement in the definitionally equal form `Matrix.det (r g : Matrix (Fin 1) (Fin 1) (Qbar l)) = _`. Rewrite using `[Matrix.det_fin_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : Continuous fun x : GL (Fin 1) (Qbar l) => Matrix.GeneralLinearGroup.det x` using `GeneralLinearGroup.continuous_det`. Use `⟨MonoidHom.comp Matrix.GeneralLinearGroup.det r, hdet.comp H.cont, fun w hl B g hB hg => ?_, fun P AI hT w A h O _ _ _ Bw hj => ?_⟩` and prove the remaining obligations. Take `⟨y1, y2⟩` from `CGTrueModel.locPar_unr hL ψ hB (hu w)`. Establish `e1 : wdOf hB hl ι r = ParLaws.locPar hL (CG.ofChar ψ) hB`. Rewrite using `[wdOf_eq_locPar hL hF H hl hB, show (1 - ((1 : ℕ) : ℝ)) / 2 = 0 by norm_num, WD.lpTw_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `f` using `frobEig_wdOf hl ι hcr (e1 ▸ y1) hB hg`. Rewrite `f` using `[e1, y2]`. Establish `h1 : (r g : Matrix (Fin 1) (Fin 1) (Qbar l)).charpoly = X - C ((r g : Matrix (Fin 1) (Fin 1) (Qbar l)) 0 0)`. Simplify using `[Matrix.charpoly, Matrix.det_fin_one, Matrix.charmatrix_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `f` using `[h1]`. Establish `f2` using `congrArg (fun p => p.coeff 0) f`. Simplify using `at f2`. Express the relevant statement in the definitionally equal form `ι (Matrix.det _) = _`. Rewrite using `[Matrix.det_fin_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f2.trans (Units.val_inv_eq_inv_val _).symm`. Take `⟨σ, hσ, -⟩` from `LocEx.exists_isLocComp hF E 1 ((CuspSub.triv E (le_refl 1)).twist ψ) w`. Establish `hc` using `(H.above P AI hT w A h O Bw hj).crys σ hσ ((ParLaws.unr_iff (ParLaws.isRec_locRec hL h) (ParLaws.toRep σ)).1 (by`. Rewrite using `[← ParLaws.locPar_mk hL hσ h]`. Conclude with `(CGTrueModel.locPar_unr hL ψ h (hu w)).1))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (GeneralLinearGroup.scalar (Fin 1)).comp ((Matrix.GeneralLinearGroup.det.comp r).comp (Dec (F` using `E) A).subtype) = r.comp (Dec (F := E) A).subtype := by`. Rewrite using `[← MonoidHom.comp_assoc, hsc]`. Rewrite using `[e]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalTheory.Published.AutomorphicFormsFiniteGL) (hG : GlobalTheory.Published.GaloisRepOfPolarizedCuspidal)
     (ι : Qbar l ≃+* ℂ) (ψ : HChar E) (hu : ∀ v, ψ.UnrAt v) (hr : ∀ τ, ∃ n : ℤ, expo ψ τ = n)
@@ -299,7 +297,7 @@ theorem exists_char (hL : GlobalTheory.Published.LocalLanglandsGL) (hF : GlobalT
 end G
 
 /- English proof (translation)
-The claim follows from `host_isCMField D.host; ∃ ξ : HChar D.host.E, (∀ v, ξ.UnrAt v) ∧ (CG.ofChar ξ).IsCsd ∧ (CG.ofChar ξ⁻¹).IsCsd ∧ ∀ τ, ∃ n : ℤ, expo ξ τ = n + 1 / 2 := by have := host_isCMField D.host obtain ⟨ξ, h⟩ := GlobalTheory.Mem.EtaT.etaT_exists D.R D.host have hneg : (-1 : ℂˣ)⁻¹ = -1 := inv_e …`.
+A detailed English derivation is pending.
 -/
 theorem exists_halfChar (D : D7) : haveI := host_isCMField D.host; ∃ ξ : HChar D.host.E, (∀ v, ξ.UnrAt v) ∧
     (CG.ofChar ξ).IsCsd ∧ (CG.ofChar ξ⁻¹).IsCsd ∧ ∀ τ, ∃ n : ℤ, expo ξ τ = n + 1 / 2 := by

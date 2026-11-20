@@ -11,21 +11,19 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.HL.Glue
 
 /- English proof (translation)
-Use `set Y : ∀ q, (A.loc q).Ep := Pi.single (M := fun q => (A.loc q).Ep) p y with hY`. Establish `hfin : {q | Y q ∉ (A.L q).O}.Finite`. Use `(Set.finite_singleton p).subset fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Apply `hq` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hY]`. Rewrite using `[Pi.single_eq_of_ne (Set.mem_singleton_iff.not.1 hne)]`. Conclude with `(A.L q).O.zero_mem`. Take `⟨x, hx⟩` from `happ Y hfin`. Take `⟨o, ho, hxo⟩` from `hx p`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hYp : Y p = y` using `by simp [hY]`. Rewrite `hxo` using `[hYp]`. Establish `halg : IsAlgebraic ℤ x` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Take `⟨d, hd0, hd⟩` from `halg.exists_integral_multiple`. Use `⟨d.natAbs, Int.natAbs_ne_zero.2 hd0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hint : IsIntegral ℤ ((d.natAbs : E) * x)`. Break down `Int.natAbs_eq d with h | h` into its components or cases. Establish `: ((d.natAbs : E) * x) = d • x`. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Int.cast_natCast (R := E) d.natAbs).symm.trans (congrArg _ h.symm)`. Rewrite using `[this]`. Conclude with `hd`. Establish `: ((d.natAbs : E) * x) = -(d • x)`. Rewrite using `[zsmul_eq_mul, ← neg_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h'` using `congrArg (Int.cast (R := E)) h`. Rewrite using `[h', Int.cast_neg, Int.cast_natCast, neg_neg]`. Rewrite using `[this]`. Conclude with `hd.neg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ιE_mem A p _ hint`. Establish `hy : (d.natAbs : (A.loc p).Ep) * y = (A.loc p).ιE ((d.natAbs : E) * x) - (d.natAbs : (A.loc p).Ep) * o`. Rewrite using `[map_mul, map_natCast, ← hxo]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hy]`.
-
-Conclude with `(A.L p).O.sub_mem h1 ((A.L p).O.mul_mem (natCast_mem (A.L p).O _) ho)`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {sig : E →ₐ[F] E} (A : Places F E sig)

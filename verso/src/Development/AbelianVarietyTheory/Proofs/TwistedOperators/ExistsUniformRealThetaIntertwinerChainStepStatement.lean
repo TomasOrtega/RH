@@ -7,7 +7,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Chain.ItPairObj.itPair_holds | exact GlobalTheory.Chain.ItPairObj.itPair_holds | (intros; apply GlobalTheory.Chain.ItPairObj.itPair_holds <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_uniformRealThetaIntertwiner_chainStep : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → ∀ D : D7, GlobalTheory.Chain.ItPair D := by
   first | exact @GlobalTheory.Chain.ItPairObj.itPair_holds | exact GlobalTheory.Chain.ItPairObj.itPair_holds | (intros; apply GlobalTheory.Chain.ItPairObj.itPair_holds <;> assumption)

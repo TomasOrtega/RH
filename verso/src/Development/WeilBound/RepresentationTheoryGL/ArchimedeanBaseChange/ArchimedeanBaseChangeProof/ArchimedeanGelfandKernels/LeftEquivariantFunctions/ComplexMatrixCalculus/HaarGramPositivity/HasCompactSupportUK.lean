@@ -24,12 +24,12 @@ Both sides reduce to the same expression.
 theorem gramQ_def (lam : Fin n → ℤ) : gramQ lam = ∫ k, Fk lam k ∂(Measure.haar : Measure (UK n)) := rfl
 
 /- English proof (translation)
-The claim follows from `(isUnit_det_unitary k).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem mem_GLs (k : UK n) : k.1 ∈ GLs n := (isUnit_det_unitary k).ne_zero
 
 /- English proof (translation)
-Unfold `Ak`. Rewrite using `[Submonoid.coe_mul, (hF n lam).2.1 _ _ (isUnit_det_unitary k) (isUnit_det_unitary k')]`. Conclude with `map_mul toEuclideanCLM _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ak_mul (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) (k k' : UK n) : Ak lam (k * k') = Ak lam k * Ak lam k' := by
   unfold Ak
@@ -37,7 +37,7 @@ theorem Ak_mul (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) (k
   exact map_mul toEuclideanCLM _ _
 
 /- English proof (translation)
-Unfold `Ak`. Rewrite using `[OneMemClass.coe_one, (hF n lam).1]`. Conclude with `map_one toEuclideanCLM`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Ak_one (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : Ak lam (1 : UK n) = 1 := by
   unfold Ak
@@ -45,7 +45,7 @@ theorem Ak_one (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : 
   exact map_one toEuclideanCLM
 
 /- English proof (translation)
-Establish `h` using `LinearMap.continuous_of_finiteDimensional (toEuclideanCLM (n := Ix n lam) (𝕜 := ℂ)).toAlgEquiv.toLinearMap`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem clm_continuous (lam : Fin n → ℤ) : Continuous (clm (n := n) lam) := by
   have h := LinearMap.continuous_of_finiteDimensional
@@ -53,7 +53,7 @@ theorem clm_continuous (lam : Fin n → ℤ) : Continuous (clm (n := n) lam) := 
   exact h
 
 /- English proof (translation)
-Establish `hc : ContinuousOn (fr0 (n` using `n) lam) (GLs n) := (hF n lam).2.2.continuousOn`. Conclude with `(clm_continuous lam).comp (hc.comp_continuous continuous_subtype_val (fun k => mem_GLs k))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ak_cont (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : Continuous (Ak (n := n) lam) := by
   have hc : ContinuousOn (fr0 (n := n) lam) (GLs n) := (hF n lam).2.2.continuousOn
@@ -61,28 +61,28 @@ theorem Ak_cont (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) :
     (hc.comp_continuous continuous_subtype_val (fun k => mem_GLs k))
 
 /- English proof (translation)
-Establish `h` using `Ak_cont hF lam`. Conclude with `((ContinuousLinearMap.adjoint : (EV n lam →L[ℂ] EV n lam) ≃ₗᵢ⋆[ℂ] _).continuous.comp h).mul h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Fk_cont (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : Continuous (Fk (n := n) lam) := by
   have h := Ak_cont hF lam
   exact ((ContinuousLinearMap.adjoint : (EV n lam →L[ℂ] EV n lam) ≃ₗᵢ⋆[ℂ] _).continuous.comp h).mul h
 
 /- English proof (translation)
-The claim follows from `isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _)`.
+A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_UK {E : Type} [Zero E] [TopologicalSpace E] (f : UK n → E) : HasCompactSupport f :=
   isCompact_univ.of_isClosed_subset (isClosed_tsupport _) (Set.subset_univ _)
 
 /- English proof (translation)
-The claim follows from `(Fk_cont hF lam).integrable_of_hasCompactSupport (hasCompactSupport_UK _)`.
+A detailed English derivation is pending.
 -/
 theorem Fk_int (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : Integrable (Fk (n := n) lam) (Measure.haar : Measure (UK n)) :=
   (Fk_cont hF lam).integrable_of_hasCompactSupport (hasCompactSupport_UK _)
 
 /- English proof (translation)
-Set `L : (EV n lam →L[ℂ] EV n lam) →L[ℂ] (EV n lam →L[ℂ] EV n lam)` to `(ContinuousLinearMap.mul ℂ _ (ContinuousLinearMap.adjoint (Ak lam k))).comp ((ContinuousLinearMap.mul ℂ _).flip (Ak lam k))`. Establish `hL : ∀ X, L X = ContinuousLinearMap.adjoint (Ak lam k) * (X * Ak lam k)` using `fun X => rfl`. Establish `hF' : ∀ k', ContinuousLinearMap.adjoint (Ak lam k) * (Fk lam k' * Ak lam k) = Fk lam (k' * k)`. Introduce `k'`. Simplify using `only [Fk, Ak_mul hF, ← ContinuousLinearMap.star_eq_adjoint, star_mul, mul_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[gramQ_def, mul_assoc, ← hL, ← L.integral_comp_comm (Fk_int hF lam)]`. Simplify using `only [hL, hF']`. Conclude with `integral_mul_right_haar (Fk lam) k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_inv (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) (k : UK n) :
     ContinuousLinearMap.adjoint (Ak lam k) * gramQ lam * Ak lam k = gramQ lam := by
@@ -99,7 +99,7 @@ theorem gram_inv (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) 
   exact integral_mul_right_haar (Fk lam) k
 
 /- English proof (translation)
-Rewrite using `[gramQ_def, ContinuousLinearMap.integral_apply (Fk_int hF lam), ← integral_inner ((Fk_int hF lam).apply_continuousLinearMap v), ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[Fk, ContinuousLinearMap.mul_apply, ContinuousLinearMap.adjoint_inner_right, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/
@@ -115,7 +115,7 @@ theorem inner_gram (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ
   rfl
 
 /- English proof (translation)
-Establish `hc : Continuous fun k : UK n => ‖Ak lam k v‖ ^ 2` using `(((Ak_cont hF lam).clm_apply continuous_const).norm).pow 2`. Use `hc.integral_pos_of_hasCompactSupport_nonneg_nonzero (x := 1) (hasCompactSupport_UK _) (fun _ => sq_nonneg _) ?_` and prove the remaining obligations. Simplify using `[Ak_one hF, hv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gram_pos (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) (v : EV n lam) (hv : v ≠ 0) :
     0 < ∫ k, ‖Ak lam k v‖ ^ 2 ∂(Measure.haar : Measure (UK n)) := by
@@ -126,9 +126,9 @@ theorem gram_pos (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) 
   simp [Ak_one hF, hv]
 
 /- English proof (translation)
-Rewrite using `[← ContinuousLinearMap.isPositive_toLinearMap_iff, LinearMap.isPositive_iff_complex]`. Introduce `x`. Establish `h : ⟪gramQ lam x, x⟫_ℂ = ((∫ k, ‖Ak lam k x‖ ^ 2 ∂(Measure.haar : Measure (UK n)) : ℝ) : ℂ)`. Rewrite using `[← inner_conj_symm, inner_gram hF, Complex.conj_ofReal]`. Establish `h0 : 0 ≤ ∫ k, ‖Ak lam k x‖ ^ 2 ∂(Measure.haar : Measure (UK n))` using `integral_nonneg (fun _ => sq_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `((RCLike.re ⟪gramQ lam x, x⟫_ℂ : ℝ) : ℂ) = ⟪gramQ lam x, x⟫_ℂ ∧ 0 ≤ RCLike.re ⟪gramQ lam x, x⟫_ℂ`. Rewrite using `[h]`. Simplify using `[h0]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_isPositive (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : (gramQ (n := n) lam).IsPositive := by
   rw [← ContinuousLinearMap.isPositive_toLinearMap_iff, LinearMap.isPositive_iff_complex]
@@ -142,11 +142,11 @@ theorem gram_isPositive (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n �
   simp [h0]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (gramQ (n` using `n) lam) := by`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Assume the negation of the conclusion as `hne`. Establish `h1` using `inner_gram hF lam v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[hv, inner_zero_right]`. Establish `h3` using `gram_pos hF lam v hne`. Establish `h4 : (∫ k, ‖Ak lam k v‖ ^ 2 ∂(Measure.haar : Measure (UK n))) = 0` using `by exact_mod_cast h1.symm`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsurj : Function.Surjective (gramQ (n` using `n) lam) := LinearMap.injective_iff_surjective.mp hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Set `e` to `ContinuousLinearEquiv.ofBijective (gramQ (n := n) lam) (LinearMap.ker_eq_bot.mpr hinj) (LinearMap.range_eq_top.mpr hsurj)`. Conclude with `⟨e.toUnit, ContinuousLinearMap.ext fun _ => rfl⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem gram_isUnit (hF : MatrixFrechetDerivativeAtZeroLaws) (lam : Fin n → ℤ) : IsUnit (gramQ (n := n) lam) := by
   have hinj : Function.Injective (gramQ (n := n) lam) := by

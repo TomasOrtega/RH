@@ -17,19 +17,19 @@ variable {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finit
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp [toReal]`.
+A detailed English derivation is pending.
 -/
 theorem toReal_add (β β' : LinearMap.BilinForm ℤ X) : toReal (β + β') = toReal β + toReal β' :=
   LinearMap.ext₂ fun a b => by simp [toReal]
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp [toReal]`.
+A detailed English derivation is pending.
 -/
 theorem toReal_nsmul (k : ℕ) (β : LinearMap.BilinForm ℤ X) : toReal (k • β) = (k : ℝ) • toReal β :=
   LinearMap.ext₂ fun a b => by simp [toReal]
 
 /- English proof (translation)
-Use `ConeSub.sum_smul_toReal_mem_psdCone O bar X 1 ![β] ![1] (fun i => by fin_cases i; simpa using hβ) (fun i y => by fin_cases i; simpa using hp y) (fun i => by fin_cases i; simp)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toReal_mem_psdCone {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X) (hp : ∀ y, 0 ≤ β y y) :
     toReal β ∈ psdCone bar X := by
@@ -43,7 +43,7 @@ Both sides reduce to the same expression.
 theorem evalZ_eq (β : LinearMap.BilinForm ℤ X) : φ.evalZ β = evalR φ (toReal β) := rfl
 
 /- English proof (translation)
-Rewrite using `[evalZ_eq, evalZ_eq, toReal_nsmul]`. Conclude with `hP.homog _ (toReal_mem_psdCone hβ hp) _ (Nat.cast_nonneg k)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZ_nsmul (hP : IsPolyFanOn bar φ X) {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X)
     (hp : ∀ y, 0 ≤ β y y) (k : ℕ) : φ.evalZ (k • β) = k * φ.evalZ β := by
@@ -51,7 +51,7 @@ theorem evalZ_nsmul (hP : IsPolyFanOn bar φ X) {β : LinearMap.BilinForm ℤ X}
   exact hP.homog _ (toReal_mem_psdCone hβ hp) _ (Nat.cast_nonneg k)
 
 /- English proof (translation)
-Rewrite using `[evalZ_eq, evalZ_eq, evalZ_eq, toReal_add]`. Conclude with `hP.superadd _ (toReal_mem_psdCone hβ hp) _ (toReal_mem_psdCone hβ' hp')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZ_add_ge (hP : IsPolyFanOn bar φ X) {β β' : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X)
     (hp : ∀ y, 0 ≤ β y y) (hβ' : β' ∈ balForms bar X) (hp' : ∀ y, 0 ≤ β' y y) :
@@ -60,14 +60,14 @@ theorem evalZ_add_ge (hP : IsPolyFanOn bar φ X) {β β' : LinearMap.BilinForm �
   exact hP.superadd _ (toReal_mem_psdCone hβ hp) _ (toReal_mem_psdCone hβ' hp')
 
 /- English proof (translation)
-Use `evalZ_nsmul hP (zero_mem (balForms bar X)) (fun y => by simp) 0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem evalZ_zero (hP : IsPolyFanOn bar φ X) : φ.evalZ (0 : LinearMap.BilinForm ℤ X) = 0 := by
   have := evalZ_nsmul hP (zero_mem (balForms bar X)) (fun y => by simp) 0
   simpa using this
 
 /- English proof (translation)
-Distinguish the cases in `h0 : β = 0`. Substitute `h0` using the available equality. Rewrite using `[evalZ_zero hP]`. Conclude with `(hP.pos β hβ hp h0).le`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalZ_nonneg (hP : IsPolyFanOn bar φ X) {β : LinearMap.BilinForm ℤ X} (hβ : β ∈ balForms bar X)
     (hp : ∀ y, 0 ≤ β y y) : 0 ≤ φ.evalZ β := by
@@ -87,13 +87,13 @@ def ratCone {m : ℕ} (u : Fin m → LinearMap.BilinForm ℤ X) : AddSubmonoid (
   zero_mem' := ⟨1, one_pos, by rw [smul_zero]; exact zero_mem _⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ratCone {m : ℕ} {u : Fin m → LinearMap.BilinForm ℤ X} {β : LinearMap.BilinForm ℤ X} :
     β ∈ ratCone u ↔ ∃ k : ℕ, 0 < k ∧ k • β ∈ AddSubmonoid.closure (Set.range u) := Iff.rfl
 
 /- English proof (translation)
-Introduce `β hβ`. Take `⟨k, hk, hβ⟩` from `mem_ratCone.1 hβ`. Establish `hc : AddSubmonoid.closure (Set.range u) ≤ ratCone v` using `AddSubmonoid.closure_le.2 (by rintro _ ⟨j, rfl⟩; exact h j)`. Take `⟨k', hk', h'⟩` from `mem_ratCone.1 (hc hβ)`. Conclude with `mem_ratCone.2 ⟨k' * k, Nat.mul_pos hk' hk, by rwa [mul_smul]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ratCone_le {m n : ℕ} {u : Fin m → LinearMap.BilinForm ℤ X} {v : Fin n → LinearMap.BilinForm ℤ X}
     (h : ∀ j, u j ∈ ratCone v) : ratCone u ≤ ratCone v := by
@@ -105,7 +105,7 @@ theorem ratCone_le {m n : ℕ} {u : Fin m → LinearMap.BilinForm ℤ X} {v : Fi
   exact mem_ratCone.2 ⟨k' * k, Nat.mul_pos hk' hk, by rwa [mul_smul]⟩
 
 /- English proof (translation)
-The claim follows from `mem_ratCone.2 ⟨k, hk, by rw [h]; exact AddSubmonoid.sum_mem _ fun i _ => AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (Set.mem_range_self i)) _⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_ratCone_of_eq_sum {m : ℕ} {u : Fin m → LinearMap.BilinForm ℤ X} {β : LinearMap.BilinForm ℤ X} {k : ℕ}
     (hk : 0 < k) (c : Fin m → ℕ) (h : k • β = ∑ i, c i • u i) : β ∈ ratCone u :=
@@ -113,11 +113,11 @@ theorem mem_ratCone_of_eq_sum {m : ℕ} {u : Fin m → LinearMap.BilinForm ℤ X
     rw [h]; exact AddSubmonoid.sum_mem _ fun i _ => AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (Set.mem_range_self i)) _⟩
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubmonoid.closure_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Conclude with `⟨hub j, hup j, (hu.1 j).le⟩`. Consider the case `zero => exact ⟨zero_mem _, fun y => by simp, by simp [evalZ_zero hP]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Use `⟨add_mem hx.1 hy.1, fun z => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.add_apply]`. Conclude with `add_nonneg (hx.2.1 z) (hy.2.1 z)`. Establish `h1` using `evalZ_add_ge hP hx.1 hx.2.1 hy.1 hy.2.1`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `mul_le_mul_of_nonneg_left h1 (Nat.cast_nonneg (α := ℝ) N)`. Rewrite `h2` using `[mul_add]`. Rewrite using `[map_add, Int.cast_add]`. Combine the linear relations using `[hx.2.2, hy.2.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_of_mem_closure (hP : IsPolyFanOn bar φ X) {m N : ℕ} {ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
     {u : Fin m → LinearMap.BilinForm ℤ X} (hu : StrictWith bar φ N ℓ u) (hub : ∀ j, u j ∈ balForms bar X)
@@ -138,13 +138,13 @@ theorem le_of_mem_closure (hP : IsPolyFanOn bar φ X) {m N : ℕ} {ℓ : LinearM
       linarith [hx.2.2, hy.2.2]
 
 /- English proof (translation)
-Use `⟨fun i => ?_, hu.2.1, fun β hβ hp he => ?_⟩` and prove the remaining obligations. Take `⟨k, hk, hkv⟩` from `mem_ratCone.1 (hvu i)`. Establish `h1` using `(le_of_mem_closure hP hu hub hup hkv).2.2`. Rewrite `h1` using `[map_nsmul, evalZ_nsmul hP (hvb i) (hvp i)]`. Establish `h2` using `hu.2.1 (v i) (hvb i) (hvp i)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Establish `h1' : (k : ℝ) * ℓ (v i) ≤ k * (N * φ.evalZ (v i))`. Establish `: ((k • ℓ (v i) : ℤ) : ℝ) = (k : ℝ) * ℓ (v i)` using `by push_cast [nsmul_eq_mul]; ring`. Rewrite `h1` using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : (ℓ (v i) : ℝ) ≤ N * φ.evalZ (v i)` using `le_of_mul_le_mul_left h1' hk'`. Conclude with `le_antisymm h3 h2`. Take `⟨k, c, hk, hkc⟩` from `hu.2.2 β hβ hp he`. Take `⟨k', hk', hmem⟩` from `mem_ratCone.1 (ratCone_le huv (mem_ratCone_of_eq_sum hk c hkc))`. Take `⟨c', hc'⟩` from `AddSubmonoid.mem_closure_range_iff_of_fintype.1 hmem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k', c', hk', hc'⟩`.
+A detailed English derivation is pending.
 -/
 theorem strictWith_of_ratCone (hP : IsPolyFanOn bar φ X) {m n N : ℕ} {ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
     {u : Fin m → LinearMap.BilinForm ℤ X} {v : Fin n → LinearMap.BilinForm ℤ X} (hu : StrictWith bar φ N ℓ u)
@@ -170,7 +170,7 @@ theorem strictWith_of_ratCone (hP : IsPolyFanOn bar φ X) {m n N : ℕ} {ℓ : L
 end Gen
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext₂ fun a b => by simp [pull]`.
+A detailed English derivation is pending.
 -/
 theorem pull_pull_symm {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] (e : X ≃ₗ[O] X)
     (β : LinearMap.BilinForm ℤ X) : pull e.toLinearMap (pull e.symm.toLinearMap β) = β :=
@@ -182,33 +182,29 @@ variable {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finit
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-Take `⟨S, hS, hcov⟩` from `hP.finite`. Set `uT : (T : Finset (LinearMap.BilinForm ℤ X)) → Fin T.card → LinearMap.BilinForm ℤ X` to `fun T i => (T.equivFin.symm i : LinearMap.BilinForm ℤ X)`. Set `D : Finset (LinearMap.BilinForm ℤ X) → ℕ` to `fun T => if h : ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ StrictWith bar φ N ℓ (uT T) then h.choose else 0`. Use `⟨hS.toFinset.powerset.sup D, fun m δ hδ => ?_⟩` and prove the remaining obligations. Establish `hB : ∑ i, (1 : ℝ) • toReal (δ i) ∈ psdCone bar X` using `ConeSub.sum_smul_toReal_mem_psdCone O bar X m δ (fun _ => 1) hδ.mem hδ.nonneg (fun _ => zero_le_one)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨e, m', γ, c, hγ, hγS, hc, hsum⟩` from `hcov _ hB`. Use `set γ' : Fin m' → LinearMap.BilinForm ℤ X := fun j => pull e.symm.toLinearMap (γ j) with hγ'def`. Establish `hγ' : IsCell bar φ γ'` using `CellClass.isCell_pull_equiv hγ e.symm`. Establish `hsum' : ∑ i, toReal (δ i) = ∑ j, c j • toReal (γ' j)`. Use `LinearMap.ext₂ fun y z => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun₂ hsum (e.symm y) (e.symm z)` as an intermediate fact. Simplify `this` using `[LinearMap.sum_apply, γ']`. Use `choose k a hk hka using fun i => GlobalTheory.T.cell_generators_smul_mem_other_cellCone bar φ δ γ' c hδ hγ' hc hsum' i`. Set `J` to `Finset.univ.filter fun j => ∃ i, 0 < a i j`. Set `T` to `J.image γ`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hTS : T ∈ hS.toFinset.powerset`. Rewrite using `[Finset.mem_powerset]`. Introduce `t ht`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 ht`. Conclude with `hS.mem_toFinset.2 (hγS j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `w : Fin T.card → LinearMap.BilinForm ℤ X` to `fun t => pull e.symm.toLinearMap (uT T t)`. Establish `hwj : ∀ t, ∃ j, (∃ i, 0 < a i j) ∧ w t = γ' j`. Introduce `t`. Take `⟨j, hj, hjt⟩` from `Finset.mem_image.1 (T.equivFin.symm t).2`. Use `⟨j, (Finset.mem_filter.1 hj).2, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show pull _ ((T.equivFin.symm t : LinearMap.BilinForm ℤ X)) = pull _ (γ j)`. Rewrite using `[hjt]`. Establish `hδw : ∀ i, δ i ∈ ratCone w`. Introduce `i`. Use `mem_ratCone.2 ⟨k i, hk i, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hka i]`. Use `AddSubmonoid.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : 0 < a i j`. Use `AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure ?_) _` and prove the remaining obligations. Establish `hmem : γ j ∈ T` using `Finset.mem_image.2 ⟨j, Finset.mem_filter.2 ⟨Finset.mem_univ _, i, hj⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨T.equivFin ⟨γ j, hmem⟩, ?_⟩` and prove the remaining obligations. Simplify using `[w, uT, γ']`. Rewrite using `[Nat.eq_zero_of_not_pos hj, zero_smul]`. Conclude with `zero_mem _`. Establish `hwδ : ∀ t, w t ∈ ratCone δ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Take `⟨j, ⟨i, hij⟩, hj⟩` from `hwj t`. Take `⟨k', b, hk', hb⟩` from `GlobalTheory.T.cell_generator_mem_cone_of_smul_combination bar φ δ γ' i (k i) (a i) hδ hγ' (hk i) (hka i) j hij`. Rewrite using `[hj]`. Conclude with `mem_ratCone_of_eq_sum hk' b hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hwb : ∀ t, w t ∈ balForms bar X` using `fun t => by`. Take `⟨j, -, hj⟩` from `hwj t`. Rewrite using `[hj]`. Conclude with `hγ'.mem j`. Establish `hwp : ∀ t y, 0 ≤ w t y y` using `fun t y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, -, hj⟩` from `hwj t`. Rewrite using `[hj]`. Conclude with `hγ'.nonneg j y`. Take `⟨N, ℓ, hN, hℓ⟩` from `isStrict_iff.1 hδ.strict`. Establish `hw : StrictWith bar φ N ℓ w` using `strictWith_of_ratCone hP hℓ hδ.mem hδ.nonneg hwb hwp hwδ hδw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ StrictWith bar φ N ℓ (uT T)` using `⟨N, _, hN, StrictWith.of_pull e.symm.surjective hw⟩`. Establish `hD : D T = hex.choose` using `dif_pos hex`. Take `⟨ℓT, hNT, hT⟩` from `hex.choose_spec`. Establish `hT' : StrictWith bar φ hex.choose ℓT (fun t => pull e.toLinearMap (w t))`. Establish `: (fun t => pull e.toLinearMap (w t)) = uT T` using `funext fun t => pull_pull_symm e _`.
-
-Rewrite using `[this]`. Conclude with `hT`. Establish `hTw` using `StrictWith.of_pull e.surjective hT'`. Use `⟨hex.choose, _, hNT, ?_, strictWith_of_ratCone hP hTw hwb hwp hδ.mem hδ.nonneg hδw hwδ⟩` and prove the remaining obligations. Rewrite using `[← hD]`.
-
-Conclude with `Finset.le_sup hTS`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perModule_bound (hP : IsPolyFanOn bar φ X) : ∃ N₀ : ℕ, ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ X),
     IsCell bar φ δ → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ N₀ ∧ StrictWith bar φ N ℓ δ := by
@@ -281,11 +277,9 @@ theorem perModule_bound (hP : IsPolyFanOn bar φ X) : ∃ N₀ : ℕ, ∀ (m : �
 end Mod
 
 /- English proof (translation)
-Take `⟨n, R, hR, hcls⟩` from `GlobalTheory.T.exists_fin_reps_projective_finrank_le_numberField E q`. Establish `key : ∀ k, letI` using `(hR k).1; ∃ N₀ : ℕ, ∀ (m : ℕ) (δ : Fin m → LinearMap.BilinForm ℤ (R k)), IsCell H.bar ψ δ → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ (R k) →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ N₀ ∧ StrictWith H.bar ψ N ℓ δ := fun k => by`. Use `letI := (hR k).1`. Use `haveI := (hR k).2.1`. Conclude with `perModule_bound (hψ (R k) (hR k).2.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose N₀ hN₀ using key`. Use `⟨Finset.univ.sup N₀, fun X _ _ _ _ hX m γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨k, ⟨f⟩⟩` from `hcls X hX`. Use `letI := (hR k).1`. Take `⟨N, ℓ, hN, hNle, hℓ⟩` from `hN₀ k m (fun i => pull f.symm.toLinearMap (γ i)) (CellClass.isCell_pull_equiv hγ f.symm)`.
-
-Conclude with `⟨N, _, hN, hNle.trans (Finset.le_sup (Finset.mem_univ k)), StrictWith.of_pull f.symm.surjective hℓ⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem uniform_bound (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ : InvFun (𝓞 E))
     (hψ : IsPolyFan H.bar q ψ) : ∃ N₀ : ℕ, ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X]
@@ -313,7 +307,7 @@ variable {O : Type} [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finit
   {X : Type} [AddCommGroup X] [Module O X] [Module.Finite O X]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `exists_linW_eq X g`. Rewrite using `[← evalW_toReal, hβc, evalW_sum]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem apply_eq_sum_of_inRCone [Module.Finite ℤ X] {m : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     {β : LinearMap.BilinForm ℤ X} {c : Fin m → ℝ} (hβc : toReal β = ∑ i, c i • toReal (γ i))
@@ -322,31 +316,27 @@ theorem apply_eq_sum_of_inRCone [Module.Finite ℤ X] {m : ℕ} {γ : Fin m → 
   rw [← evalW_toReal, hβc, evalW_sum]
 
 /- English proof (translation)
-Use `set h' := (N : ℤ) • ℓF - (NF : ℤ) • ℓ with hh'`. Establish `happ : ∀ β, h' β = N * ℓF β - NF * ℓ β` using `fun β => by simp [h']`. Establish `hreal : ∀ j, ((h' (γ j) : ℤ) : ℝ) = N * ((ℓF (γ j) : ℝ) - NF * φ.evalZ (γ j))` using `fun j => by`. Rewrite using `[happ]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hℓ.1 j]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnn : ∀ j, 0 ≤ h' (γ j)` using `fun j => by`. Establish `h1` using `hF.2.1 (γ j) (hγ.mem j) (hγ.nonneg j)`. Establish `: (0 : ℝ) ≤ h' (γ j)` using `by rw [hreal]; exact mul_nonneg (Nat.cast_nonneg _) (by linarith)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `hzero : ∀ j, h' (γ j) = 0 ↔ j ∈ Set.range s`. Introduce `j`. Prove the components needed by the constructor for the conclusion. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0' : ((h' (γ j) : ℤ) : ℝ) = 0` using `by rw [h0]; simp`. Rewrite `h0'` using `[hreal]`. Establish `hN' : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `he : (NF : ℝ) * φ.evalZ (γ j) = ℓF (γ j)`. Break down `mul_eq_zero.1 h0' with hz | hz` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd hz hN'`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨k, c, hk, hkc⟩` from `hF.2.2 (γ j) (hγ.mem j) (hγ.nonneg j) he`. Establish `hk0 : h (k • γ j) = 0`. Rewrite using `[hkc, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_nsmul, (hh.2 (s i)).2 ⟨i, rfl⟩, smul_zero]`. Rewrite `hk0` using `[map_nsmul]`. Conclude with `(hh.2 j).1 ((smul_eq_zero.1 hk0).resolve_left hk.ne')`. Introduce and unpack `⟨i, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `hF.1 i`. Establish `: ((h' (γ (s i)) : ℤ) : ℝ) = 0` using `by rw [hreal, ← h1]; ring`. Conclude with `this` after adjusting the coercions. Use `⟨⟨hnn, hzero⟩, fun β hβ hpos => ?_, fun β hβ hp => ?_⟩` and prove the remaining obligations. Take `⟨c, hc, hβc⟩` from `hβ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hsum : (0 : ℝ) < ∑ i, c i * h (γ i)`. Rewrite using `[← apply_eq_sum_of_inRCone hβc h]`. Conclude with `hpos` after adjusting the coercions. Choose the witnesses or unpack the hypotheses as in `⟨i, -, hi⟩ : ∃ i ∈ Finset.univ, 0 < c i * h (γ i) := by`. Assume the negation of the conclusion as `hcon`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hcon`. Conclude with `absurd hsum (not_lt.2 (Finset.sum_nonpos hcon))`. Establish `hci : 0 < c i`. Break down `(hc i).lt_or_eq with hz | hz` into its components or cases. Conclude with `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hi` using `[← hz, zero_mul]`. Conclude with `absurd hi (lt_irrefl 0)`. Establish `hhi : h (γ i) ≠ 0` using `fun h0 => by rw [h0] at hi; simp at hi`. Establish `h'i : 0 < h' (γ i)` using `lt_of_le_of_ne (hnn i) (fun e => hhi ((hh.2 i).2 ((hzero i).1 e.symm)))`. Establish `: (0 : ℝ) < h' β`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[apply_eq_sum_of_inRCone hβc h']`. Establish `hterm : ∀ j ∈ Finset.univ, 0 ≤ c j * (h' (γ j) : ℝ)` using `fun j _ => mul_nonneg (hc j) (by exact_mod_cast hnn j)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `this` after adjusting the coercions. Establish `h1` using `hF.2.1 β hβ hp`.
-
-Establish `h2` using `evalZ_nonneg hP hβ hp`. Establish `h3 : (0 : ℝ) ≤ ℓF β` using `le_trans (mul_nonneg (Nat.cast_nonneg _) h2) h1`. Establish `h4 : (0 : ℤ) ≤ ℓF β` using `by exact_mod_cast h3`. Establish `h5` using `mul_nonneg (Int.natCast_nonneg N) h4`. Rewrite using `[happ]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem faceCut_data (hP : IsPolyFanOn bar φ X) [Module.Finite ℤ X] {m m' : ℕ} {γ : Fin m → LinearMap.BilinForm ℤ X}
     (hγ : IsCell bar φ γ) {N NF : ℕ} (hN : 0 < N) {ℓ ℓF : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ}
@@ -416,11 +406,11 @@ theorem faceCut_data (hP : IsPolyFanOn bar φ X) [Module.Finite ℤ X] {m m' : �
 end Face
 
 /- English proof (translation)
-Introduce `E _ _ _ H q ψ hDom hψ`. Take `⟨N₀, hN₀⟩` from `uniform_bound E H q ψ hψ`. Use `⟨N₀, N₀, fun X _ _ _ _ hX m γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨N, ℓ, hN, hNle, hℓ⟩` from `hN₀ X hX m γ hγ`. Use `⟨N, ℓ, hN, hNle, hℓ, fun m' s h hh => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : Module.Finite ℤ X := Module.Finite.trans (𝓞 E) X`. Establish `hF` using `isCell_face_of_isFaceCut E H q ψ hψ X hX (hDom X) m γ hγ m' s h hh`. Take `⟨NF, ℓF, -, hNFle, hℓF⟩` from `hN₀ X hX m' _ hF`. Take `⟨h1, h2, h3⟩` from `faceCut_data (hψ X hX) hγ hN hℓ hh hℓF`. Use `⟨_, h1, h2, fun β hβ hp => (h3 β hβ hp).trans ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hℓβ : (0 : ℤ) ≤ ℓ β`. Use `le_trans (mul_nonneg (Nat.cast_nonneg _) (evalZ_nonneg (hψ X hX) hβ hp)) (hℓ.2.1 β hβ hp)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Conclude with `mul_le_mul_of_nonneg_right (by exact_mod_cast hNFle) hℓβ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_strict_data : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (q : ℕ) (ψ : InvFun (𝓞 E)), (∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Dominates H.bar X) → IsPolyFan H.bar q ψ → ∃ N₀ C₀ : ℕ, ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X] [Module.Projective (𝓞 E) X], Module.finrank (𝓞 E) X ≤ q → ∀ (m : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X), IsCell H.bar ψ γ → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ N₀ ∧ StrictWith H.bar ψ N ℓ γ ∧ ∀ (m' : ℕ) (s : Fin m' ↪ Fin m) (h : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), IsFaceCut γ s h → ∃ h' : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, IsFaceCut γ s h' ∧ (∀ β, InRCone γ β → 0 < h β → 0 < h' β) ∧ ∀ β ∈ balForms H.bar X, (∀ y, 0 ≤ β y y) → -(h' β) ≤ C₀ * ℓ β := by
   intro E _ _ _ H q ψ hDom hψ

@@ -14,13 +14,13 @@ open GlobalTheory.FlagCell GlobalTheory.FlagConnect
 namespace GlobalTheory.FlagCell
 
 /- English proof (translation)
-Establish `hsplit : (uniR n * M).submatrix e e = (uniR n).submatrix e e * M.submatrix e e`. Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective e hmono.injective _ _ ?_ (fun _ => rfl)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Establish `h0 : M k (e j) = 0` using `hM (hout k hk j)`. Rewrite using `[h0, mul_zero]`. Establish `hU : ((uniR n).submatrix e e).det = 1`. Rewrite using `[Matrix.det_of_lowerTriangular]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.submatrix_apply, uniR_apply, dif_neg (lt_irrefl _), if_pos rfl]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Establish `h2 : e i < e j` using `hmono hij'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.submatrix_apply, uniR_apply, dif_neg (not_lt.mpr h2.le), if_neg h2.ne]`. Rewrite using `[hsplit, Matrix.det_mul, hU, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lu_minor_gen {R : Type} [CommRing R] {m l : ℕ} (n : Low m → R) (M : Matrix (Fin m) (Fin m) R)
     (hM : M.BlockTriangular id) (e : Fin l → Fin m) (hmono : StrictMono e)
@@ -45,9 +45,9 @@ theorem lu_minor_gen {R : Type} [CommRing R] {m l : ℕ} (n : Low m → R) (M : 
   rw [hsplit, Matrix.det_mul, hU, one_mul]
 
 /- English proof (translation)
-Introduce `R _ m n M hM l`. Use `lu_minor_gen n M hM _ (Fin.strictMono_castLE _) ?_` and prove the remaining obligations. Introduce `k hk j`. Establish `hkl : l.1 ≤ k.1`. Assume the negation of the conclusion as `hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hk ⟨⟨k.1, lt_of_not_ge hc⟩, Fin.ext rfl⟩`. Rewrite using `[Fin.lt_def]`. Conclude with `lt_of_lt_of_le j.2 hkl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_leading_uniR_mul : ∀ (R : Type) [CommRing R] (m : ℕ) (n : Low m → R) (M : Matrix (Fin m) (Fin m) R), M.BlockTriangular id → ∀ l : Fin (m + 1), ((uniR n * M).submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det = (M.submatrix (Fin.castLE l.is_le) (Fin.castLE l.is_le)).det := by
   intro R _ m n M hM l

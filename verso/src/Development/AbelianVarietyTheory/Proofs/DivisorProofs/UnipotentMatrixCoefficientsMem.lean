@@ -12,21 +12,19 @@ def BlockHyp : Prop :=
     (∀ i j, Continuous fun s => ρ s i j) → ∀ i j, (fun s => ρ s i j) ∈ S
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℂ V`. Set `e` to `LinearMap.toMatrixAlgEquiv b`. Set `ρ : G →* Matrix (Fin (finrank ℂ V)) (Fin (finrank ℂ V)) ℂ` to `(e.toRingEquiv.toMonoidHom).comp T`. Establish `hρ : ∀ s, ρ s = LinearMap.toMatrix b b (T s)` using `fun s => by`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ρ, e, LinearMap.toMatrixAlgEquiv_apply, LinearMap.toMatrix_apply]`. Establish `hmem : ∀ i j, (fun s => ρ s i j) ∈ S`. Apply `hS _ ρ χ` to reduce the goal to its premises. Introduce `s`. Establish `h` using `(hnil s).map e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, AlgEquiv.commutes, Algebra.algebraMap_eq_smul_one]`. Conclude with `h`. Introduce `γ hγ`. Simplify using `[ρ, hH γ hγ]`. Introduce `i j`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: (fun s => ρ s i j) = fun s => b.coord i (T s (b j))`. Use function extensionality and compare the values at `s`. Rewrite using `[hρ, LinearMap.toMatrix_apply]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc _ _`. Establish `key : (fun s => φ (T s v)) = ∑ i, ∑ j, (φ (b i) * b.repr v j) • (fun s => ρ s i j)`. Use function extensionality and compare the values at `s`. Establish `h1 : ∀ i, b.repr (T s v) i = ∑ j, ρ s i j * b.repr v j` using `fun i => by`. Rewrite using `[← LinearMap.toMatrix_mulVec_repr b b (T s) v, hρ]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation.
 
-Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `congrArg φ (b.sum_repr (T s v))`. Rewrite `h2` using `[map_sum]`. Simplify using `only [map_smul, smul_eq_mul] at h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2.symm`. Use `_ = _ := by`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, h1]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[key]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hmem i j)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_scalar_add_nilpotent (hS : BlockHyp H S) {V : Type} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (T : G →* Module.End ℂ V) (χ : G → ℂ)
@@ -71,25 +69,23 @@ theorem coeff_mem_of_scalar_add_nilpotent (hS : BlockHyp H S) {V : Type} [AddCom
   exact Submodule.sum_mem _ fun i _ => Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hmem i j)
 
 /- English proof (translation)
-Establish `hcomm' : ∀ s t, Commute (T s) (T t)` using `fun s t => by show T s * T t = T t * T s`. Rewrite using `[← map_mul, ← map_mul, mul_comm]`. Establish `hcomm : Pairwise fun s t => Commute (T s) (T t)` using `fun s t _ => hcomm' s t`. Establish `htop` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute (fun s => T s) hcomm (fun s => Module.End.iSup_maxGenEigenspace_eq_top _)`. Establish `hv : v ∈ ⨆ χ : G → ℂ, ⨅ s, (T s).maxGenEigenspace (χ s)` using `by rw [htop]; trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.iSup_induction _ (motive := fun v => ∀ φ : Module.Dual ℂ V, (fun s => φ (T s v)) ∈ S) hv ?_ ?_ ?_ φ` and prove the remaining obligations. Introduce `χ w hw φ`. Set `W` to `⨅ s, (T s).maxGenEigenspace (χ s)`. Establish `hmaps : ∀ s, Set.MapsTo (T s) W W` using `fun s x hx => by`. Simplify using `only [W, SetLike.mem_coe, Submodule.mem_iInf] at hx ⊢`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `t`. Conclude with `Module.End.mapsTo_maxGenEigenspace_of_comm (hcomm' t s) (χ t) (hx t)`. Set `T' : G →* Module.End ℂ W` to `{ toFun := fun s => (T s).restrict (hmaps s) map_one' := by ext x; simp map_mul' := by intro s t; ext x; simp only [map_mul, Module.End.mul_apply]; rfl }`. Establish `hT' : ∀ s (x : W), ((T' s x : W) : V) = T s x` using `fun s x => rfl`. Establish `hnil : ∀ s, IsNilpotent (T' s - algebraMap ℂ (Module.End ℂ W) (χ s))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Establish `hle : W ≤ (T s).maxGenEigenspace (χ s)` using `iInf_le _ s`. Establish `h0` using `(T s).isNilpotent_restrict_maxGenEigenspace_sub_algebraMap (χ s)`. Establish `hm : Set.MapsTo (T s - algebraMap ℂ (Module.End ℂ V) (χ s)) W W` using `fun x hx => by`. Use `hmaps s hx` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe] at this hx ⊢`. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply]`. Conclude with `W.sub_mem this (W.smul_mem _ hx)`. Establish `h1` using `Module.End.isNilpotent_restrict_of_le (hp := hm) hle h0`. Use `h1 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [LinearMap.sub_apply, Module.algebraMap_end_apply, Submodule.coe_sub, Submodule.coe_smul, hT']`. Use `show _ = (T s - algebraMap ℂ (Module.End ℂ V) (χ s)) x`. Simplify using the standard rewrite rules. Establish `hwS` using `coeff_mem_of_scalar_add_nilpotent H S hS T' χ hnil (fun γ hγ => by ext x; simp [hT', hH γ hγ]) (fun φ' x => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨ψ, hψ⟩` from `LinearMap.exists_extend φ'`. Establish `: (fun s => φ' (T' s x)) = fun s => ψ (T s x)`. Use function extensionality and compare the values at `s`. Rewrite using `[← hψ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `hc ψ x)`. Use the proof step `(φ.comp W.subtype) ⟨w, hw⟩`. Conclude with `hwS`. Introduce `φ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun s => φ (T s 0)) = 0` using `by funext s; simp`. Rewrite using `[this]`. Conclude with `S.zero_mem`. Introduce `x y hx hy φ`. Establish `: (fun s => φ (T s (x + y))) = (fun s => φ (T s x)) + fun s => φ (T s y)`.
-
-Use function extensionality and compare the values at `s`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `S.add_mem (hx φ) (hy φ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_general (hS : BlockHyp H S) {V : Type} [AddCommGroup V]
     [Module ℂ V] [FiniteDimensional ℂ V] (T : G →* Module.End ℂ V)
@@ -149,11 +145,11 @@ theorem coeff_mem_general (hS : BlockHyp H S) {V : Type} [AddCommGroup V]
     rw [this]; exact S.add_mem (hx φ) (hy φ)
 
 /- English proof (translation)
-Introduce `G _ _ H S hS d ρ hH hρc i j`. Set `T : G →* Module.End ℂ (Fin d → ℂ)` to `((Matrix.toLinAlgEquiv' : Matrix (Fin d) (Fin d) ℂ ≃ₐ[ℂ] _).toRingEquiv.toMonoidHom).comp ρ`. Establish `hT : ∀ s v, T s v = ρ s *ᵥ v` using `fun s v => rfl`. Establish `hmain` using `coeff_mem_general H S hS T (fun γ hγ => LinearMap.ext fun v => by simp [hT, hH γ hγ]) (fun φ v => by`. Establish `hcv : Continuous fun s => ρ s *ᵥ v` using `continuous_pi fun k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `continuous_finset_sum _ fun l _ => (hρc k l).mul continuous_const`. Simplify using `only [hT]`. Conclude with `(LinearMap.continuous_of_finiteDimensional φ).comp hcv)`. Use the proof step `(LinearMap.proj i) (Pi.single j 1)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `: (fun s => ρ s i j) = fun s => (LinearMap.proj i : (Fin d → ℂ) →ₗ[ℂ] ℂ) (T s (Pi.single j 1))`. Use function extensionality and compare the values at `s`. Simplify using `[hT, Matrix.mulVec_single_one]`. Rewrite using `[this]`. Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_blocks : ∀ (G : Type) [CommGroup G] [TopologicalSpace G] (H : Set G)
     (S : Submodule ℂ (G → ℂ)), (∀ (d : ℕ) (ρ : G →* Matrix (Fin d) (Fin d) ℂ) (χ : G → ℂ),

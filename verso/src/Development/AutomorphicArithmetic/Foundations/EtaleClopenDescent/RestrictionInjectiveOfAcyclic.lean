@@ -9,7 +9,7 @@ namespace UpperTheory.Cb
 open LateralTheory.EWeil.AcycPf
 
 /- English proof (translation)
-Set `e : J ≌ ULiftHom.{1} J` to `ULiftHom.equiv`. Use `haveI : IsFiltered (ULiftHom.{1} J) := IsFiltered.of_equivalence e`. Conclude with `HasExactColimitsOfShape.of_domain_equivalence (ModuleCat.{1} (ULift.{1} R)) e.symm`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 private lemma exact_filtered (R : Type) [CommRing R] (J : Type 1) [Category.{0} J] [IsFiltered J] :
     HasExactColimitsOfShape J (ModuleCat.{1} (ULift.{1} R)) := by
@@ -18,9 +18,9 @@ private lemma exact_filtered (R : Type) [CommRing R] (J : Type 1) [Category.{0} 
   exact HasExactColimitsOfShape.of_domain_equivalence (ModuleCat.{1} (ULift.{1} R)) e.symm
 
 /- English proof (translation)
-Establish `key : m = (hc.coconePointUniqueUpToIso (colimit.isColimit K)).hom ≫ colimMap τ ≫ (hd.coconePointUniqueUpToIso (colimit.isColimit L)).inv`. Use `hc.hom_ext fun j => ?_` and prove the remaining obligations. Simplify using `[hm]`. Establish `hτ : Mono (colim.map τ)` using `inferInstance`. Establish `hτ' : Mono (colimMap τ)` using `hτ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[key]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mono_of_isColimit {J : Type 1} [Category.{0} J] {A : Type 2} [Category.{1} A] [Abelian A]
     [HasColimitsOfShape J A] [HasExactColimitsOfShape J A] {K L : J ⥤ A} (τ : K ⟶ L) [Mono τ]
@@ -36,13 +36,11 @@ private lemma mono_of_isColimit {J : Type 1} [Category.{0} J] {A : Type 2} [Cate
   infer_instance
 
 /- English proof (translation)
-Establish `hφ : ∀ c, Mono (φ.app c)` using `fun c => inferInstance`. Establish `key : ∀ X, Mono (((G.op.lan : _ ⥤ Dᵒᵖ ⥤ A).map φ).app X)`. Introduce `X`. Use `haveI : IsFiltered (CostructuredArrow G.op X) := IsFiltered.of_equivalence (structuredArrowOpEquivalence G (unop X))`. Use `haveI := hA (CostructuredArrow G.op X)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : ∀ j, Mono ((Functor.whiskerLeft (CostructuredArrow.proj G.op X) φ).app j) := fun j => hφ _`. Use `haveI : Mono (Functor.whiskerLeft (CostructuredArrow.proj G.op X) φ) := NatTrans.mono_of_mono_app _`. Use `mono_of_isColimit (Functor.whiskerLeft (CostructuredArrow.proj G.op X) φ) (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit G.op P X) (Functor.isPointwiseLeftKanExtensionLeftKanExtensionUnit G.op Q X) _ ?_` and prove the remaining obligations. Introduce `j`. Establish `h₂ : (G.op.lanUnit.app P).app j.left ≫ ((G.op.lan : _ ⥤ Dᵒᵖ ⥤ A).map φ).app (G.op.obj j.left) = φ.app j.left ≫ (G.op.lanUnit.app Q).app j.left` using `(congr_app (G.op.lanUnit.naturality φ) j.left).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `h₃ : (G.op.lanUnit.app P).app j.left ≫ ((G.op.lan : _ ⥤ Dᵒᵖ ⥤ A).obj P).map j.hom ≫ ((G.op.lan : _ ⥤ Dᵒᵖ ⥤ A).map φ).app X = φ.app j.left ≫ (G.op.lanUnit.app Q).app j.left ≫ ((G.op.lan : _ ⥤ Dᵒᵖ ⥤ A).obj Q).map j.hom`. Rewrite using `[NatTrans.naturality, reassoc_of% h₂]`. Use `first`. Consider the case `exact (Category.assoc _ _ _).trans h₃`. Consider the case `(dsimp only [Functor.LeftExtension.coconeAt_ι_app, Functor.whiskerLeft_app]`.
-
-Simplify `h₃)` using `only [Category.assoc]`. Conclude with `NatTrans.mono_of_mono_app _`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private lemma lan_mono {C D : Type 1} [Category.{0} C] [Category.{0} D] (G : C ⥤ D) [RepresentablyFlat G]
     {A : Type 2} [Category.{1} A] [Abelian A]
@@ -78,7 +76,7 @@ private lemma lan_mono {C D : Type 1} [Category.{0} C] [Category.{0} D] (G : C �
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Establish `: PreservesFiniteLimits (incl S)` using `inferInstanceAs (PreservesFiniteLimits (Scheme.Etale.forget S))`. Conclude with `flat_of_preservesFiniteLimits _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma incl_flat (S : Scheme.{0}) : RepresentablyFlat (incl S) := by
   have : PreservesFiniteLimits (incl S) :=
@@ -87,9 +85,7 @@ private lemma incl_flat (S : Scheme.{0}) : RepresentablyFlat (incl S) := by
 
 set_option backward.isDefEq.respectTransparency false in
 /- English proof (translation)
-Use `incl_flat S` as an intermediate fact. Use `haveI : (incl S).Full := inferInstanceAs (Scheme.Etale.forget S).Full`. Use `haveI : (incl S).Faithful := inferInstanceAs (Scheme.Etale.forget S).Faithful`. Use `haveI : (incl S).LocallyCoverDense (Scheme.etaleTopology.over S) := Scheme.locallyCoverDense_of_le (P := @Etale) S le_rfl`. Rewrite using `[Functor.isContinuous_iff_coverPreserving]`.
-
-Conclude with `Functor.coverPreserving_restrictedTopology (incl S) (Scheme.etaleTopology.over S)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma incl_cont (S : Scheme.{0}) :
     (incl S).IsContinuous S.smallEtaleTopology (Scheme.etaleTopology.over S) := by
@@ -102,11 +98,9 @@ private lemma incl_cont (S : Scheme.{0}) :
   exact Functor.coverPreserving_restrictedTopology (incl S) (Scheme.etaleTopology.over S)
 
 /- English proof (translation)
-Introduce `R _ S G _`. Use `haveI := incl_cont S`. Set `adj` to `Functor.sheafPullbackConstruction.sheafAdjunctionContinuous (incl S) (ModuleCat.{1} (ULift.{1} R)) S.smallEtaleTopology (Scheme.etaleTopology.over S)`. Use `haveI : (Functor.sheafPullbackConstruction.sheafPullback (incl S) (ModuleCat.{1} (ULift.{1} R)) S.smallEtaleTopology (Scheme.etaleTopology.over S)).PreservesMonomorphisms := by`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `X Y f hf`. Use `haveI := incl_flat S`. Use `haveI : Mono ((sheafToPresheaf S.smallEtaleTopology (ModuleCat.{1} (ULift.{1} R))).map f) := inferInstance`. Use `haveI : Mono (((incl S).op.lan : _ ⥤ (Over S)ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)).map ((sheafToPresheaf S.smallEtaleTopology (ModuleCat.{1} (ULift.{1} R))).map f)) := lan_mono (incl S) (fun J _ _ _ => exact_filtered R J) _`. Conclude with `(presheafToSheaf (Scheme.etaleTopology.over S) (ModuleCat.{1} (ULift.{1} R))).map_mono _`.
-
-Conclude with `⟨(((incl S).sheafPushforwardContinuous (ModuleCat.{1} (ULift.{1} R)) S.smallEtaleTopology (Scheme.etaleTopology.over S)).obj G).property, adj.map_injective G inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 private lemma restr_inj : RestrInj := by
   intro R _ S G _
@@ -130,6 +124,6 @@ private lemma restr_inj : RestrInj := by
 end UpperTheory.Cb
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Cb.restr_inj`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.restrInj : LateralTheory.EWeil.AcycPf.RestrInj := UpperTheory.Cb.restr_inj

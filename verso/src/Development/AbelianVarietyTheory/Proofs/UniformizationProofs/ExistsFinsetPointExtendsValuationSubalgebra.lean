@@ -15,9 +15,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AffineFactorExists.exists_finset_extends`. Consider the case `exact _root_.GlobalTheory.AffineFactorExists.exists_finset_extends`. Consider the case `(apply _root_.GlobalTheory.AffineFactorExists.exists_finset_extends <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AffineFactorExists.exists_finset_extends <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AffineFactorExists.exists_finset_extends <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AffineFactorExists.exists_finset_extends ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_finset_point_extends_valuationSubalgebra (V F : Type) [CommRing V] [Field F]
     [Algebra V F] {X : Scheme.{0}} (f : X ⟶ Spec (CommRingCat.of V)) [IsProper f]
@@ -37,7 +37,7 @@ theorem exists_finset_point_extends_valuationSubalgebra (V F : Type) [CommRing V
   | (intros; exact _root_.GlobalTheory.AffineFactorExists.exists_finset_extends ..)
 
 /- English proof (translation)
-Introduce `V F _ _ _ B _ s hs hx`. Use `choose t ht using fun x : s => exists_finset_point_extends_valuationSubalgebra V F B.hom x.1 (hx x.1 x.2)`. Use `haveI := hs.fintype`. Use `⟨Finset.univ.biUnion t, fun W hW h x hxs => ht ⟨x, hxs⟩ W hW fun a ha => h a ?_⟩` and prove the remaining obligations. Conclude with `Finset.mem_biUnion.2 ⟨_, Finset.mem_univ _, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_finset_points_extend_valuationSubalgebra : ∀ (V F : Type) [CommRing V] [Field F] [Algebra V F] (B : Over (Spec (CommRingCat.of V))) [IsProper B.hom] (s : Set (Spec (CommRingCat.of F) ⟶ B.left)), s.Finite → (∀ x ∈ s, x ≫ B.hom = (Spec.map (CommRingCat.ofHom (algebraMap V F)))) → ∃ t : Finset F, ∀ W : Subalgebra V F, ValuationRing W → (∀ x ∈ t, ∃ a ∈ W, ∃ b ∈ W, b ≠ 0 ∧ x * b = a) → ∀ x ∈ s, ∃ y : Spec (CommRingCat.of W) ⟶ B.left, y ≫ B.hom = (Spec.map (CommRingCat.ofHom (algebraMap V W))) ∧ (Spec.map (CommRingCat.ofHom (algebraMap W F))) ≫ y = x := by
   intro V F _ _ _ B _ s hs hx

@@ -11,22 +11,22 @@ open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 namespace GlobalTheory.EsymmVirt
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem esymm_zero' (s : Multiset ℂ) : s.esymm 0 = 1 := by
   simp [Multiset.esymm]
 
 /- English proof (translation)
-Simplify using `[Multiset.esymm, Multiset.powersetCard_cons, Multiset.map_map, Multiset.sum_map_mul_left]`.
+Simplify using the standard rewrite rules.
 -/
 theorem esymm_cons_succ (a : ℂ) (s : Multiset ℂ) (n : ℕ) :
     (a ::ₘ s).esymm (n + 1) = s.esymm (n + 1) + a * s.esymm n := by
   simp [Multiset.esymm, Multiset.powersetCard_cons, Multiset.map_map, Multiset.sum_map_mul_left]
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on generalizing n with`. Consider the case `empty`. Consider the cases of `n with`. Consider the case `zero => simp [Multiset.esymm]`. Consider the case `succ n => simp [Multiset.esymm, Polynomial.coeff_one, Multiset.powersetCard_zero_right]`.
+Proceed by induction. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Consider the case `cons a s ih`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, add_mul, one_mul, mul_assoc, coeff_add, coeff_C_mul]`. Consider the cases of `n with`. Consider the case `zero => simp [ih, esymm_zero']`. Consider the case `succ n => rw [coeff_X_mul, ih, ih, esymm_cons_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem coeff_prod_one_add (s : Multiset ℂ) (n : ℕ) :
     ((s.map fun a => (1 + C a * X : ℂ[X])).prod).coeff n = s.esymm n := by
@@ -42,7 +42,7 @@ theorem coeff_prod_one_add (s : Multiset ℂ) (n : ℕ) :
     | succ n => rw [coeff_X_mul, ih, ih, esymm_cons_succ]
 
 /- English proof (translation)
-Rewrite using `[← coeff_prod_one_add, Multiset.map_add, Multiset.prod_add, coeff_mul, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]`. Simplify using `only [coeff_prod_one_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem esymm_add (s t : Multiset ℂ) (n : ℕ) :
     (s + t).esymm n = ∑ i ∈ Finset.range (n + 1), s.esymm i * t.esymm (n - i) := by
@@ -51,11 +51,11 @@ theorem esymm_add (s t : Multiset ℂ) (n : ℕ) :
   simp only [coeff_prod_one_add]
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[esymm_zero', esymm_zero']`. Establish `h1` using `GlobalTheory.multiset_newton_psum s n hn`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.multiset_newton_psum t n hn`. Establish `h3 : ∑ i ∈ Finset.Ioo 0 n, (-1) ^ i * s.esymm i * (s.map (· ^ (n - i))).sum = ∑ i ∈ Finset.Ioo 0 n, (-1) ^ i * t.esymm i * (t.map (· ^ (n - i))).sum`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_Ioo]`. Rewrite using `[ih i hi.2, h (n - i) (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ((-1) ^ (n + 1) * (n : ℂ)) ≠ 0` using `mul_ne_zero (pow_ne_zero _ (by norm_num)) (by exact_mod_cast hn.ne')`. Apply `mul_left_cancel₀ h4` to reduce the goal to its premises. Take the linear combination `h2 - h1 + h n hn + h3`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem esymm_eq_of_psum_eq (s t : Multiset ℂ)
     (h : ∀ j : ℕ, 0 < j → (s.map (· ^ j)).sum = (t.map (· ^ j)).sum) (n : ℕ) :
@@ -79,13 +79,13 @@ theorem esymm_eq_of_psum_eq (s t : Multiset ℂ)
 variable {G : Type} [Group G] [Finite G]
 
 /- English proof (translation)
-Simplify using `using (virt_mul_comap_conj_ind_linear G).2.2.2.2 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem one_mem_virt : (fun _ : G => (1 : ℂ)) ∈ Virt ℂ ℂ G := by
   simpa using (virt_mul_comap_conj_ind_linear G).2.2.2.2 1
 
 /- English proof (translation)
-Establish `: (fun g => (A g + B g).esymm s) = ∑ i ∈ Finset.range (s + 1), (fun g => (A g).esymm i) * (fun g => (B g).esymm (s - i))`. Use function extensionality and compare the values at `g`. Simplify using `[esymm_add, Finset.sum_apply]`. Rewrite using `[this]`. Conclude with `sum_mem fun i _ => (virt_mul_comap_conj_ind_linear G).1 _ (hA _) _ (hB _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esymm_add_mem_virt {A B : G → Multiset ℂ}
     (hA : ∀ s, (fun g => (A g).esymm s) ∈ Virt ℂ ℂ G)
@@ -99,17 +99,17 @@ theorem esymm_add_mem_virt {A B : G → Multiset ℂ}
   exact sum_mem fun i _ => (virt_mul_comap_conj_ind_linear G).1 _ (hA _) _ (hB _)
 
 /- English proof (translation)
-Establish `h0 : ∀ s, (fun _ : G => (0 : Multiset ℂ).esymm s) ∈ Virt ℂ ℂ G`. Introduce `s`. Consider the cases of `s with`. Consider the case `zero => simpa only [esymm_zero'] using one_mem_virt`. Consider the case `succ s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Establish `: (fun _ : G => (0 : Multiset ℂ).esymm (s + 1)) = 0`. Use function extensionality and compare the values at `g`. Simplify using `[Multiset.esymm, Multiset.powersetCard_zero_right]`. Rewrite using `[this]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `hφ using AddSubgroup.closure_induction with`. Consider the case `mem a ha`. Take `⟨n, ρ, hρ⟩` from `(matrixChar_iff_isChar G a).2 ha`. Use `⟨fun g => (Matrix.charpoly (ρ g : Matrix (Fin n) (Fin n) ℂ)).roots, fun _ => 0, fun s => isChar_mem_virt_complex (isChar_esymm_roots_charpoly G n s ρ), h0, fun g j _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hρ, map_pow, Units.val_pow_eq_pow_val, Matrix.trace_eq_sum_roots_charpoly, GlobalTheory.CharpolyPow.roots_charpoly_pow]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨fun _ => 0, fun _ => 0, h0, h0, fun g j _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨A, B, hA, hB, h⟩` from `hx`. Take `⟨A', B', hA', hB', h'⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun g => A g + A' g, fun g => B g + B' g, esymm_add_mem_virt hA hA', esymm_add_mem_virt hB hB', fun g j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Multiset.map_add, Multiset.sum_add]`. Take the linear combination `h g j hj + h' g j hj`. Consider the case `neg x _ hx`. Take `⟨A, B, hA, hB, h⟩` from `hx`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, A, hB, hA, fun g j hj => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.neg_apply]`. Take the linear combination `- h g j hj`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_multisets {φ : G → ℂ} (hφ : φ ∈ Virt ℂ ℂ G) :
     ∃ A B : G → Multiset ℂ, (∀ s, (fun g => (A g).esymm s) ∈ Virt ℂ ℂ G) ∧
@@ -148,11 +148,11 @@ theorem exists_multisets {φ : G → ℂ} (hφ : φ ∈ Virt ℂ ℂ G) :
     linear_combination - h g j hj
 
 /- English proof (translation)
-Introduce `G _ _ φ x hφ hx s`. Take `⟨A, B, hA, hB, h⟩` from `exists_multisets hφ`. Establish `he : ∀ g n, (x g + B g).esymm n = (A g).esymm n` using `fun g n => esymm_eq_of_psum_eq _ _ (fun j hj => by`. Rewrite using `[Multiset.map_add, Multiset.sum_add, ← hx g j hj, h g j hj]) n`. Proceed by induction on `s using Nat.strong_induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `_ s ih`. Establish `: (fun g => (x g).esymm s) = (fun g => (A g).esymm s) - ∑ i ∈ Finset.range s, (fun g => (x g).esymm i) * (fun g => (B g).esymm (s - i))`. Use function extensionality and compare the values at `g`. Use `he g s` as an intermediate fact. Rewrite `this` using `[esymm_add, Finset.sum_range_succ, Nat.sub_self, esymm_zero', mul_one]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.mul_apply]`. Take the linear combination `this`. Rewrite using `[this]`. Conclude with `sub_mem (hA s) (sum_mem fun i hi => (virt_mul_comap_conj_ind_linear G).1 _ (ih i (Finset.mem_range.1 hi)) _ (hB _))`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem esymm_mem_virt : ∀ (G : Type) [Group G] [Finite G] (φ : G → ℂ) (x : G → Multiset ℂ),
     φ ∈ Virt ℂ ℂ G → (∀ (g : G) (j : ℕ), 0 < j → φ (g ^ j) = ((x g).map (· ^ j)).sum) →

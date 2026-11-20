@@ -1,7 +1,7 @@
 import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.GreenbergWilesOfPoitouTate
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.GreenbergWiles.Assembly.greenbergWiles_of_poitouTate hPT hGE hLT hLE hLF`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.greenbergWiles (hPT : GlobalTheory.Published.PoitouTateNormalised) (hGE : ReciprocityTheory.Gal.GlobalEulerChar)
     (hLT : ReciprocityTheory.Gal.LocalTateDuality) (hLE : ReciprocityTheory.Gal.LocalEulerChar) (hLF : ReciprocityTheory.Gal.LocalFiniteness) :

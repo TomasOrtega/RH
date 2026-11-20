@@ -20,7 +20,7 @@ def varFlat (ι : Type) [Fintype ι] (d a : ℕ) : Var ι d a → Fin (Fintype.c
   fun y => (rowEquiv ι d (y.2.1, y.1), y.2.2)
 
 /- English proof (translation)
-Introduce `y z h`. Simplify using `only [varFlat, Prod.mk.injEq] at h`. Establish `h1` using `(rowEquiv ι d).injective h.1`. Simplify using `only [Prod.mk.injEq] at h1`. Conclude with `Prod.ext h1.2 (Prod.ext h1.1 h.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem varFlat_injective : Function.Injective (varFlat ι d a) := by
   intro y z h
@@ -34,11 +34,11 @@ def bigMat (κ : ι → Matrix (Fin d) (Fin d) ℂ) :
   (blockDiagonal κ).submatrix (rowEquiv ι d).symm (rowEquiv ι d).symm
 
 /- English proof (translation)
-Establish `key : (rename (varFlat ι d a)).comp (rowSub κ) = (ReciprocityTheory.PGsh.rowSubst (bigMat κ)).comp (rename (varFlat ι d a))`. Use `MvPolynomial.algHom_ext fun y => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.comp_apply, rowSub, aeval_X, rename_X, ReciprocityTheory.PGsh.rowSubst_X, ← (rowEquiv ι d).sum_comp, Fintype.sum_prod_type, Finset.sum_comm, Finset.sum_eq_single y.1]`. Simplify using `only [map_sum, map_mul, rename_C, rename_X, bigMat, submatrix_apply, varFlat, Equiv.symm_apply_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[blockDiagonal_apply_eq]`. Introduce `τ _ hτ`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `[bigMat, varFlat, blockDiagonal_apply_ne _ _ _ hτ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg (fun f => f P) key`.
+A detailed English derivation is pending.
 -/
 theorem rename_rowSub (κ : ι → Matrix (Fin d) (Fin d) ℂ) (P : Pol ι d a) :
     rename (varFlat ι d a) (rowSub κ P) = ReciprocityTheory.PGsh.rowSubst (bigMat κ) (rename (varFlat ι d a) P) := by
@@ -57,9 +57,9 @@ theorem rename_rowSub (κ : ι → Matrix (Fin d) (Fin d) ℂ) (P : Pol ι d a) 
   exact congrArg (fun f => f P) key
 
 /- English proof (translation)
-Rewrite using `[bigMat, conjTranspose_submatrix, submatrix_mul_equiv, blockDiagonal_conjTranspose, ← blockDiagonal_mul]`. Establish `h : ∀ τ, (κ τ : Matrix (Fin d) (Fin d) ℂ)ᴴ * (κ τ : Matrix (Fin d) (Fin d) ℂ) = 1` using `fun τ => by`. Use `(κ τ).2` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff']`. Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [h]`. Rewrite using `[show (fun _ => (1 : Matrix (Fin d) (Fin d) ℂ)) = (1 : ι → Matrix (Fin d) (Fin d) ℂ) from rfl, blockDiagonal_one, submatrix_one_equiv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bigMat_conjTranspose_mul (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) :
     (bigMat fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ))ᴴ * bigMat (fun τ => (κ τ : Matrix (Fin d) (Fin d) ℂ)) = 1 := by
@@ -73,7 +73,7 @@ theorem bigMat_conjTranspose_mul (κ : ι → Matrix.unitaryGroup (Fin d) ℂ) :
     blockDiagonal_one, submatrix_one_equiv]
 
 /- English proof (translation)
-Rewrite using `[Formalism.L2.DIV.fockS_eq_sum f g (g.support ∪ f.support) Finset.subset_union_right, ReciprocityTheory.PGsh.fischer]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.L2.DIV.mfact, Finsupp.prod, RCLike.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fockS_eq_fischer {ν : ℕ} {κ : Type} (f g : MvPolynomial (Fin ν × κ) ℂ) :
     Formalism.L2.DIV.fockS f g = ReciprocityTheory.PGsh.fischer g f := by
@@ -89,7 +89,7 @@ namespace GlobalTheory.MinorFrame
 open FockRowSub
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.Proof.ColumnInclusionRenaming.fockS_rename varFlat_injective, rename_rowSub, rename_rowSub, fockS_eq_fischer, ReciprocityTheory.PGsh.fischer_rowSubst, ReciprocityTheory.PGsh.rowSubst_mul, bigMat_conjTranspose_mul, ReciprocityTheory.PGsh.rowSubst_one, ← fockS_eq_fi …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fockS_rowSub_unitary {ι : Type} [Fintype ι] (a d : ℕ) (κ : ι → Matrix.unitaryGroup (Fin d) ℂ)
     (P Q : Pol ι d a) :

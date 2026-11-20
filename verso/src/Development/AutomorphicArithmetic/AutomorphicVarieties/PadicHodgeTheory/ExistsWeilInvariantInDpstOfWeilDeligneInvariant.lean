@@ -9,27 +9,27 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hno`. Set `` to `Fintype.ofFinite (I ⧸ (a.comp j).ker)`. Set `a' : I ⧸ (a.comp j).ker →* Module.End K D` to `QuotientGroup.lift _ (a.comp j) le_rfl`. Establish `ha : ∀ q : I ⧸ (a.comp j).ker, a (j q.out) = a' q` using `fun q => by conv_rhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Set `n : ℕ` to `Fintype.card (I ⧸ (a.comp j).ker)`. Establish `hn0 : (n : K) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`. Set `E : Module.End K D` to `∑ q : I ⧸ (a.comp j).ker, a (j q.out)`. Set `E' : Module.End ℂ W` to `∑ q : I ⧸ (a.comp j).ker, b (j q.out)`. Establish `hE : ∀ x s, a (j s) (E x) = E x` using `fun x s => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [E, LinearMap.sum_apply, map_sum, ha]`. Use `Fintype.sum_equiv (Equiv.mulLeft (s : I ⧸ (a.comp j).ker)) _ _ fun q => ?_` and prove the remaining obligations. Rewrite using `[Equiv.coe_mulLeft, map_mul, Module.End.mul_apply]`. Both sides reduce to the same expression. Establish `hE1 : ∀ z, (∀ s, a (j s) z = z) → E z = n • z` using `fun z hz => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [E, LinearMap.sum_apply, hz, Finset.sum_const, Finset.card_univ, n]`. Establish `hE2 : E' y = n • y`. Simplify using `only [E', LinearMap.sum_apply, hi, Finset.sum_const, Finset.card_univ, n]`. Establish `hEE : ∀ x, E' (mk x) = mk (E x)` using `fun x => by`. Simplify using `only [E, E', LinearMap.sum_apply, hc, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcan : ∀ z : D, n • z = 0 → z = 0` using `fun z hz => by`. Rewrite `hz` using `[← Nat.cast_smul_eq_nsmul K]`. Conclude with `(smul_eq_zero.mp hz).resolve_left hn0`. Set `S : Module.End K D` to `a φ * E - E + n • 1 - E`. Set `S' : Module.End ℂ W` to `b φ * E' - E' + n • 1 - E'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS : ∀ x, S x = a φ (E x) - E x + n • x - E x` using `fun x => rfl`. Establish `hS' : ∀ x, S' x = b φ (E' x) - E' x + n • x - E' x` using `fun x => rfl`. Establish `hinj : Function.Injective S`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ s, a (j s) (a φ (E x)) = a φ (E x)` using `fun s => by`. Take `⟨t, ht⟩` from `hn s`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ht, map_mul, Module.End.mul_apply, hE]`. Establish `h2` using `congrArg E hx`. Rewrite `h2` using `[hS, map_sub, map_add, map_sub, map_nsmul, hE1 _ h1, hE1 _ (hE x), map_zero, add_sub_cancel_right, ← smul_sub]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : a φ (E x) = E x` using `sub_eq_zero.mp (hcan _ h2)`. Establish `h4 : E x = 0`. Assume the negation of the conclusion as `h0`. Use `hno ⟨_, h0, fun g => ?_⟩` and prove the remaining obligations. Take `⟨m, t, rfl⟩` from `hg g`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, Module.End.mul_apply, hE]`. Conclude with `(GlobalTheory.PstLaws.vecStab a (E x)).zpow_mem h3 m`. Rewrite `hx` using `[hS, h4, map_zero, sub_zero, sub_zero, zero_add]`. Conclude with `hcan _ hx`. Establish `hsur` using `LinearMap.injective_iff_surjective.mp hinj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hsur' : Function.Surjective S'`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hs, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨z, rfl⟩` from `hsur x`. Use `⟨mk z, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, hS', hEE, hc, map_sub, map_add, map_sub, map_nsmul]`. Use `hy (LinearMap.injective_iff_surjective.mpr hsur' ?_)` and prove the remaining obligations. Rewrite using `[hS', hE2, map_nsmul, hi, map_zero, sub_self, zero_add, sub_self]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.fixed_vector_descends_weil_group {Γ I K D W : Type} [Group Γ] [Group I] [Field K] [CharZero K]
     [AddCommGroup D] [Module K D] [FiniteDimensional K D]
@@ -97,11 +97,11 @@ private theorem UpperTheory.fixed_vector_descends_weil_group {Γ I K D W : Type}
   rw [hS', hE2, map_nsmul, hi, map_zero, sub_self, zero_add, sub_self]
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ ι A w h O _ _ _ Bw hj P L V _ _ _ _ _ ρ _ h1`. Take `⟨y, hy, hi⟩` from `h1`. Set `a : ↥(Weil h) →* Module.End ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)` to `{ toFun := fun σ => urEnd P ρ (weilD Bw h P ρ σ) (weilD_mulD Bw h P ρ hj σ) map_one' := LinearMap.ext fun x => LinearMap.congr_fun (map_one (weilD Bw h P ρ)) ((toUr P ρ).symm x) map_mul' := fun σ τ => LinearMap.ext fun x => LinearMap.congr_fun (map_mul (weilD Bw h P ρ) σ τ) ((toU …`. Use `compactSpace_Ine (E := F) A` as an intermediate fact. Establish `hle : (MonoidHom.comp (weilD Bw h P ρ) (ineIncl h)).ker ≤ (a.comp (ineIncl h)).ker` using `fun s hs => LinearMap.ext fun x => LinearMap.congr_fun (MonoidHom.mem_ker.mp hs) ((toUr P ρ).symm x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (Ine (F` using `F) A ⧸ (a.comp (ineIncl h)).ker) := Subgroup.quotient_finite_of_isOpen _ (Subgroup.isOpen_mono hle (isSmooth_weilD Bw h P ρ hj))`. Establish `hn : ∀ s, ∃ t, ineIncl h s * frob h = frob h * ineIncl h t` using `fun s => by`. Take `⟨t, ht⟩` from `exists_eq_zpow_mul (deg_frob (h := h)) (ineIncl h s * frob h)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[deg_mul, deg_ineIncl, deg_frob, zero_add, zpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ht`. Take `⟨x, hx, hf⟩` from `UpperTheory.fixed_vector_descends_weil_group (ineIncl h) (frob h) hn (fun σ => ⟨deg σ, exists_eq_zpow_mul (deg_frob (h := h)) σ⟩) a (wdRho P ι Bw h hj ρ) ((AddMonoidHom.mk' (wdMk P ι ρ) (wdMk_add P ι ρ)).comp (toUr P ρ).symm.toAddMonoidHom) (span_wdMk P ι ρ) (fun g x => wdRho_mk …`. Conclude with `⟨(toUr P ρ).symm x, hx, hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_weil_invariant_in_Dpst_of_weilDeligne_invariant :
     ∀ {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ} [Fact l.Prime] (ι : Qbar l ≃+* ℂ) {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 F)} (h : IsPlaceOver A w) {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : GlobalTheory.Pst.Induces Bw) (P : LocPrime l) {L : FinExt l} {V : Type} [AddCommGroup V] [Module ↥L.1 V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] ↥L.1 V] [FiniteDimensional ↥L.1 V] (ρ : Representation ↥L.1 ↥(GK Bw.Kw) V) [FiniteDimensional ↥(MaximalUnramifiedExtension l) (DpstUr P ρ)], (∃ y : WDSpace P ι ρ, y ≠ 0 ∧ ∀ σ, wdRho P ι Bw h hj ρ σ y = y) → ∃ x : ↥(Dpst P ρ), x ≠ 0 ∧ ∀ σ, weilD Bw h P ρ σ x = x := by

@@ -8,15 +8,15 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open scoped Classical
 
 /- English proof (translation)
-Introduce `G _ _ _ K _ hK V _ _ ρ f K₁ K₂ h₂ hle h₁K hf hfd`. Establish `h₁ : IsOpen (K₁ : Set G)` using `Subgroup.isOpen_mono hle h₂`. Use `haveI : Finite (K₁ ⧸ K₂.subgroupOf K₁) := GlobalTheory.TwTrLevel.finite_quot K K₁ K₂ hK h₁ h₂ h₁K`. Establish `hf₂ : IsHecke K₂ f` using `⟨hf.1, fun k hk x => hf.2 k (hle hk) x⟩`. Establish `stable : ∀ (H : Subgroup G), IsOpen (H : Set G) → IsHecke H f → ∀ v ∈ fixed ρ H, levOp ρ K H f LinearMap.id v ∈ fixed ρ H` using `fun H hH hfH v hv => GlobalTheory.TwTrLevel.levOp_mem_fixed ρ (MonoidHom.id G) (fun _ => rfl) LinearMap.id (fun _ => rfl) K H hH (fun _ hk => hk) f hfH v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `stable K₁ h₁ hf`. Establish `c₂` using `stable K₂ h₂ hf₂`. Establish `hW : fixed ρ K₁ ≤ fixed ρ K₂` using `fun v hv => by`. Rewrite `hv`, the goal using `[GlobalTheory.TwTrLevel.mem_fixed_iff]`. Conclude with `fun k hk => hv k (hle hk)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression.
 
-Use `haveI : FiniteDimensional ℂ (fixed ρ K₂) := hfd`. Use `haveI : FiniteDimensional ℂ (fixed ρ K₁) := Submodule.finiteDimensional_of_le hW`. Set `incl : fixed ρ K₁ →ₗ[ℂ] fixed ρ K₂` to `Submodule.inclusion hW`. Set `T : fixed ρ K₂ →ₗ[ℂ] fixed ρ K₁` to `((levOp ρ K K₁ f LinearMap.id).restrict c₁) ∘ₗ ((GlobalTheory.TwTrLevel.avgOp ρ K₁ K₂).restrict fun u hu => GlobalTheory.TwTrLevel.avgOp_mem ρ K₁ K₂ u hu)`. Establish `e₂ : (levOp ρ K K₂ f LinearMap.id).restrict c₂ = incl ∘ₗ T`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `only [LinearMap.restrict_coe_apply, LinearMap.coe_comp, Function.comp_apply, incl, T, Submodule.coe_inclusion]`. Conclude with `GlobalTheory.TwTrLevel.levOp_le ρ K K₁ K₂ hle h₁K h₁ h₂ f hf _ v.2`. Establish `e₁ : (levOp ρ K K₁ f LinearMap.id).restrict c₁ = T ∘ₗ incl`. Use extensionality with `w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.restrict_coe_apply, LinearMap.coe_comp, Function.comp_apply, incl, T, Submodule.coe_inclusion]`. Rewrite using `[GlobalTheory.TwTrLevel.avgOp_fix ρ K₁ K₂ _ w.2]`. Unfold `twTr`. Rewrite using `[dif_pos c₂, dif_pos c₁, e₂, e₁, LinearMap.trace_comp_comm']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.trLevel :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.TrLevel := by

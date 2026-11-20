@@ -6,24 +6,22 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.SmallSecondRoot
 
 /- English proof (translation)
-The claim follows from `charP_of_injective_algebraMap (algebraMap k (MvPowerSeries σ k)).injective p`.
+A detailed English derivation is pending.
 -/
 theorem charP_mvPowerSeries (σ k : Type) [Field k] (p : ℕ) [CharP k p] :
     CharP (MvPowerSeries σ k) p :=
   charP_of_injective_algebraMap (algebraMap k (MvPowerSeries σ k)).injective p
 
 /- English proof (translation)
-Use `haveI := charP_mvPowerSeries σ k p`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Use `set P : MvPowerSeries σ k := ∑ m ∈ Finset.Iic α, monomial m (coeff m f)`. Use `set g := f - P`. Establish `hg : ∀ m ≤ α, coeff m g = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Simplify using `only [g, P, map_sub, map_sum, coeff_monomial]`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Ne.symm hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_Iic.2 hm) h`. Establish `hmul : ∀ h : MvPowerSeries σ k, coeff α (h * g) = 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_mul]`. Use `Finset.sum_eq_zero fun q hq => ?_` and prove the remaining obligations. Establish `hq'` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hq`. Rewrite using `[hg q.2 (hq' ▸ le_add_self), mul_zero]`. Establish `hf : f = P + g` using `by simp [g]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hgp : coeff α (g ^ p) = 0`. Take `⟨n, hn⟩` from `Nat.exists_eq_succ_of_ne_zero hp0`. Rewrite using `[hn, pow_succ]`. Conclude with `hmul _`. Rewrite using `[show f ^ p = (P + g) ^ p from congrArg (· ^ p) hf, add_pow_char, map_add, hgp, add_zero]`.
-
-Simplify using `only [P]`. Rewrite using `[sum_pow_char, map_sum]`. Simplify using `only [monomial_pow, coeff_monomial]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_pow_char_sum {σ k : Type} [DecidableEq σ] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
     (f : MvPowerSeries σ k) (α : σ →₀ ℕ) :
@@ -56,9 +54,9 @@ theorem coeff_pow_char_sum {σ k : Type} [DecidableEq σ] [Field k] (p : ℕ) [F
   simp only [monomial_pow, coeff_monomial]
 
 /- English proof (translation)
-Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Rewrite using `[coeff_pow_char_sum, Finset.sum_eq_single β]`. Rewrite using `[if_pos rfl]`. Introduce `b _ hb`. Rewrite using `[if_neg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `hα`. Conclude with `hb (smul_right_injective _ hp0 hα).symm`. Introduce `hn`. Conclude with `absurd (Finset.mem_Iic.2 (le_smul_of_one_le_left zero_le (Nat.one_le_iff_ne_zero.2 hp0))) hn`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_smul_pow_char {σ k : Type} [DecidableEq σ] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
     (f : MvPowerSeries σ k) (β : σ →₀ ℕ) : coeff (p • β) (f ^ p) = coeff β f ^ p := by
@@ -74,7 +72,7 @@ theorem coeff_smul_pow_char {σ k : Type} [DecidableEq σ] [Field k] (p : ℕ) [
     exact absurd (Finset.mem_Iic.2 (le_smul_of_one_le_left zero_le (Nat.one_le_iff_ne_zero.2 hp0))) hn
 
 /- English proof (translation)
-Rewrite using `[coeff_pow_char_sum]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `hα`. Conclude with `h ⟨b, hα.symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeff_pow_char_of_not {σ k : Type} [DecidableEq σ] [Field k] (p : ℕ) [Fact p.Prime] [CharP k p]
     (f : MvPowerSeries σ k) (α : σ →₀ ℕ) (h : ¬∃ β, p • β = α) : coeff α (f ^ p) = 0 := by
@@ -89,23 +87,21 @@ end GlobalTheory.SmallSecondRoot
 namespace GlobalTheory.SmallSecondRoot
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv d μ hμ c t ht hct`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Establish `hp0 : p ≠ 0` using `(Fact.out : p.Prime).ne_zero`. Establish `hroot : ∀ a : O, ∃ r : O, r ^ p = a`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (algebraMap O C a) (Nat.pos_of_ne_zero hp0)`. Establish `h1 : v z ≤ 1`. Establish `: v z ^ p ≤ 1` using `by rw [← map_pow, hz]; exact hv.map_le_one a`. Conclude with `(pow_le_one_iff_of_nonneg zero_le hp0).1 this`. Take `⟨r, hr⟩` from `hv.exists_of_le_one h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨r, hv.hom_inj (by rw [map_pow, hr, hz])⟩`. Use `choose rt hrt using hroot`. Set `u : MvPowerSeries (Fin d) O` to `fun β => rt (coeff (p • β) t)`. Establish `hu : ∀ β, coeff β u = rt (coeff (p • β) t)` using `fun β => rfl`. Use `⟨u, fun α => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `res` to `IsLocalRing.residue O`. Establish `hres : ∀ x : O, ¬ IsUnit x ↔ res x = 0` using `fun x => by`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Use `haveI : CharP (IsLocalRing.ResidueField O) p := (CharP.charP_iff_prime_eq_zero Fact.out).2 (by rw [← map_natCast res, ← hres]; exact Fact.out)`. Establish `hμb : ∀ i, constantCoeff (map res (μ i)) = 0` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ.const i, map_zero]`. Establish `ht' : map res t = (map res u) ^ p`. Use extensionality with `γ`. Rewrite using `[coeff_map]`. Distinguish the cases in `h : ∃ β, p • β = γ`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨β, rfl⟩` from `h`. Rewrite using `[coeff_smul_pow_char, coeff_map, hu, ← map_pow, hrt]`. Rewrite using `[coeff_pow_char_of_not _ _ _ h, ← hres]`. Apply `ht` to reduce the goal to its premises. Assume the negation of the conclusion as `hall`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `push_neg at hall`. Use `h ⟨Finsupp.mapRange (· / p) (Nat.zero_div p) γ, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using `[Nat.mul_div_cancel' (hall i)]`. Establish `hcob : map res (cob1 μ t) = (cob1 (fun i => map res (μ i)) (map res u)) ^ p` using `by haveI := charP_mvPowerSeries (Fin d ⊕ Fin d) (IsLocalRing.ResidueField O) p`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[SmallSecond.map_formalGroupLawCoboundaryOne_eq res μ hμ.const, ht']`. Unfold `cob1 inL inR`. Rewrite using `[subst_pow (hasSubst_of_constantCoeff_zero hμb), subst_pow (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _), subst_pow (hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _), sub_pow_char, sub_pow_char]`. Establish `h1` using `(hres _).1 (hct α)`. Rewrite `h1` using `[map_sub, sub_eq_zero, ← coeff_map, hcob, coeff_smul_pow_char, map_pow]`.
-
-Establish `h3 : coeff α (cob1 (fun i => map res (μ i)) (map res u)) = res (coeff α c)` using `frobenius_inj _ p h1`. Rewrite using `[hres, map_sub, sub_eq_zero, ← h3, ← SmallSecond.map_formalGroupLawCoboundaryOne_eq res μ hμ.const, coeff_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_cob1_congr_of_frobenius_congr : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O), IsLaw μ → ∀ (c : MvPowerSeries (Fin d ⊕ Fin d) O) (t : MvPowerSeries (Fin d) O), (∀ α : Fin d →₀ ℕ, (∃ i, ¬ p ∣ α i) → ¬IsUnit (coeff α t)) → (∀ β : Fin d ⊕ Fin d →₀ ℕ, ¬IsUnit (coeff (p • β) (cob1 μ t) - coeff β c ^ p)) → ∃ u : MvPowerSeries (Fin d) O, ∀ α, ¬IsUnit (coeff α c - coeff α (cob1 μ u)) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv d μ hμ c t ht hct

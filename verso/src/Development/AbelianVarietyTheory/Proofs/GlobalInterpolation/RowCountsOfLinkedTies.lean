@@ -12,9 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 namespace GlobalTheory.CountRow
 
 /- English proof (translation)
-Introduce `hSW Q Lk hrow`. Take `⟨c30, -, h1, -, -, h4⟩` from `GlobalTheory.CountConstants.count_constants_of_siegelWeil hSW`. Take `⟨cIc, hc, H⟩` from `GlobalTheory.T.irreducibilityRow_of_concreteAutomorphicData hSW GlobalTheory.rowsFinDim_link`. Use `⟨c30, cIc, h1, hc, hrow.imp fun 𝒜 σ _ hA => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `Formalism.MainNotions.Pk.Closed.of_class fun Fm _ _ => h4 _ Fm`.
-
-Conclude with `H (D3 3 𝒜) (fun Fm hw => hw.2.2.1) (Formalism.MainNotions.Pk.Closed.of_class fun Fm _ hw _ => ⟨0, fun x hx _ i => hA Fm (d3_a hw) x hx i⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem row_counts_of_ties : HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → ∀ (Q : V4.Slot) (Lk : LkT Bundle),
     Row Q Lk (AtAll fun D _ _ _ => ∃ (X : HidaSetting D) (G : GoodOp X) (ι : D.s.HH ≃ₗᵢ[ℂ] HHX X),

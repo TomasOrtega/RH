@@ -6,13 +6,13 @@ open scoped TensorProduct
 
 open ProfiniteGrp ProfiniteGrp.ProfiniteCompletion CategoryTheory in
 /- English proof (translation)
-Introduce `r`. Set `F : GrpCat.{0}` to `GrpCat.of (FreeGroup (Fin r))`. Set `P : ProfiniteGrp.{0}` to `completion F`. Set `η : FreeGroup (Fin r) →* P` to `(eta F).hom`. Use `⟨P, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, fun i => η (FreeGroup.of i), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `TopGen`. Establish `hr : Set.range (fun i => η (FreeGroup.of i)) = η '' Set.range FreeGroup.of`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hr, ← MonoidHom.map_closure, FreeGroup.closure_range_of, ← MonoidHom.range_eq_map, MonoidHom.coe_range]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `denseRange (G := F)`. Introduce `G _ _ _ _ _ y`. Set `Q : ProfiniteGrp.{0}` to `ProfiniteGrp.of G`. Set `f0 : F ⟶ GrpCat.of Q` to `GrpCat.ofHom (FreeGroup.lift y)`. Set `L : P ⟶ Q` to `lift f0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨L.hom.toMonoidHom, L.hom.continuous, ?_⟩` and prove the remaining obligations. Introduce `i`. Establish `h : ((eta F) ≫ (forget₂ ProfiniteGrp GrpCat).map L).hom (FreeGroup.of i) = f0.hom (FreeGroup.of i)`. Rewrite using `[lift_eta]`. Conclude with `h.trans FreeGroup.lift_apply_of`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.exists_free_profinite :
     ∀ r : ℕ, ∃ (P : Type) (_ : Group P) (_ : TopologicalSpace P) (_ : IsTopologicalGroup P) (_ : CompactSpace P)

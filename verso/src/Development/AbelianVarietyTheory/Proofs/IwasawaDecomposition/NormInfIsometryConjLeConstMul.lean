@@ -11,15 +11,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Isom
 
 /- English proof (translation)
-Use `set cP := ∑ i, ∑ k, ‖P i k‖`. Use `set cQ := ∑ l, ∑ j, ‖Q l j‖`. Use `set S := ∑ k, ∑ l, ‖A k l‖`. Establish `hP : ∀ i k, ‖P i k‖ ≤ cP` using `fun i k => (Finset.single_le_sum (f := fun k => ‖P i k‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ k)).trans (Finset.single_le_sum (f := fun i => ∑ k, ‖P i k‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ i))`. Establish `hQ : ∀ l j, ‖Q l j‖ ≤ cQ` using `fun l j => (Finset.single_le_sum (f := fun j => ‖Q l j‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun l => ∑ j, ‖Q l j‖) (fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _) (Finset.mem_univ l))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcP : 0 ≤ cP` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hcQ : 0 ≤ cQ` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hent : ∀ i j, ‖(P * A * Q) i j‖ ≤ cP * cQ * S`. Introduce `i j`. Establish `e : (P * A * Q) i j = ∑ l, ∑ k, P i k * A k l * Q l j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_apply, Finset.sum_mul]`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => (norm_sum_le _ _).trans (le_of_eq ?_))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, norm_mul]`. Use `_ ≤ ∑ l, ∑ k, cP * ‖A k l‖ * cQ := by`. Use `Finset.sum_le_sum fun l _ => Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_right (hP i k) (norm_nonneg _)) (hQ l j) (norm_nonneg _) (mul_nonneg hcP (norm_nonneg _))`. Use `_ = cP * cQ * S := by`.
-
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [S, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_norm_conj_le {m n : ℕ} (P : Matrix (Fin m) (Fin n) ℂ) (A : Matrix (Fin n) (Fin n) ℂ)
     (Q : Matrix (Fin n) (Fin m) ℂ) :
@@ -61,11 +59,11 @@ theorem sum_norm_conj_le {m n : ℕ} (P : Matrix (Fin m) (Fin n) ℂ) (A : Matri
     _ = _ := by simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
 
 /- English proof (translation)
-Introduce `D V V' I θ hθ`. Set `K : D.what₂.Tau → ℝ` to `fun τ => (V'.rank : ℝ) * V'.rank * (∑ i, ∑ k, ‖I.pT τ i k‖) * (∑ l, ∑ j, ‖I.qT τ l j‖)`. Establish `hK : ∀ τ, 0 ≤ K τ` using `fun τ => by positivity`. Use `⟨∑ τ, K τ, Finset.sum_nonneg fun τ _ => hK τ, fun g => ?_⟩` and prove the remaining obligations. Unfold `normInf`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Establish `key : ∀ τ, (∑ i, ∑ j, (‖infMat D.sp.cm.sig V'.gram (θ τ) (I.kap g) i j‖ + ‖infMat D.sp.cm.sig V'.gram (θ τ) (I.kap g)⁻¹ i j‖)) ≤ K τ * ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)`. Introduce `τ`. Rewrite using `[← map_inv I.kap g, I.infMat_kap hθ, I.infMat_kap hθ]`. Simplify using `only [Finset.sum_add_distrib, mul_add]`. Conclude with `add_le_add (sum_norm_conj_le _ _ _) (sum_norm_conj_le _ _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hS : ∀ τ, 0 ≤ ∑ i, ∑ j, (‖infMat D.sp.cm.sig V.gram (θ τ) g i j‖ + ‖infMat D.sp.cm.sig V.gram (θ τ) g⁻¹ i j‖)` using `fun τ => by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem normInf_kap_le : ∀ (D : D7) (V V' : HSp D) (I : GlobalTheory.Mem.Isom.IsoMat V V') (θ : InfF D), IsInfFam θ →
     ∃ C : ℝ, 0 ≤ C ∧ ∀ g : GA D V, normInf θ V' (I.kap g) ≤ C * normInf θ V g := by

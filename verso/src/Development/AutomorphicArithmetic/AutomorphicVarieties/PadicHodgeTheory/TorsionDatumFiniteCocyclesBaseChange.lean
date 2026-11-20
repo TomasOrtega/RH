@@ -7,29 +7,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.F
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
 /- English proof (translation)
-Use `haveI : ContinuousConstSMul E B := contConstSMul_alg E`. Use `haveI : Module.Finite E B := Module.Finite.of_restrictScalars_finite ℚ_[l] E B`. Establish `hc : ContAction (resCoef E T.M1)` using `T.contAction_torus_module hD.ηlc hT.cont hT.cont_inv`. Establish `w0 : wt1 (0 : Fin 3) = 1` using `by decide`. Establish `w1 : wt1 (1 : Fin 3) = 0` using `by decide`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w2 : wt1 (2 : Fin 3) = -1` using `by decide`. Establish `hid : IsOpenEmbedding (MonoidHom.id (GQ l))` using `IsOpenEmbedding.id`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hφ : IsOpenEmbedding ((MonoidHom.id (GQ l)).comp H.subtype)` using `hD.isOpen.isOpenEmbedding_subtypeVal`. Establish `hcH : ContAction ((resCoef E T.M1).comp H.subtype : Representation E H (B × B))` using `Continuous.comp (g := fun p : GQ l × B × B => resCoef E T.M1 p.1 p.2) (f := fun p : H × B × B => ((p.1 : GQ l), p.2)) hc (by fun_prop)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[((isCrys_isDR_restrict_openSubgroup _ hid _ hc).2 H hD.isOpen).2]`. Use `(isCrys_isDR_restrict_openSubgroup _ hφ _ hcH).1 (crUnr _ hφ _ hcH e fun g hg x => ?_)` and prove the remaining obligations. Establish `hg' : (g : GQ l) ∈ Iq l` using `hg`. Establish `hu : ∀ i, T.t g i = Units.map (algebraMap E B : E →* B) (Ψ g ^ wt1 i)` using `fun i => Units.ext (hT.ine g hg' i)`. Express the relevant statement in the definitionally equal form `T.M1 g x = ((cycA l l E g ^ (e : ℤ) : Eˣ) : E) • x`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_natCast, ← hD.ΨH g g.2 hg', Tor.adjointSuperdiagRep_apply, if_pos (hD.ηH g g.2)]`. Simplify using `only [hu, w0, w1, w2, ← map_div]`. Apply the tactic sequence `ext <;> simp [Algebra.smul_def]`. Set `ε : GQ l →* Eˣ` to `(Units.map (Int.castRingHom E : ℤ →* E)).comp η`. Establish `h2 : (2 : B) * algebraMap ℚ_[l] B (1 / 2) = 1`.
+Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← map_ofNat (algebraMap ℚ_[l] B) 2, ← map_mul]`. Evaluate the numerical expressions. Use `UpperTheory.filtBy_restrictScalars_of_residual_characters π hπ T.M1 _ ![((1 : B), (1 : B)), (1, -1)] ![ε * Ψ, Ψ] ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨a, b⟩ -`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (a, b) = (algebraMap ℚ_[l] B (1 / 2) * (a + b)) • ((1 : B), (1 : B)) + (algebraMap ℚ_[l] B (1 / 2) * (a - b)) • ((1 : B), (-1 : B))`. Use `ext`. Simplify using `only [Prod.fst_add, Prod.smul_fst, smul_eq_mul]`. Take the linear combination `(-a) * h2`. Simplify using `only [Prod.snd_add, Prod.smul_snd, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-b) * h2`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨0, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨1, rfl⟩))`. Establish `he : (1 : ℤ) ≤ e` using `by exact_mod_cast hD.e_pos`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨e, he, H, hD.isOpen, fun g hg hI => ?_⟩` and prove the remaining obligations. Establish `h1` using `hD.ΨH g hg hI`. Use `fin_cases j`. Simplify using `[ε, hD.ηH g hg, h1]`. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ v : B × B, π v.1 = 0 → π v.2 = 0 → v ∈ (RingHom.ker (π : B →+* E)) • (⊤ : Submodule B (B × B))`. Introduce and unpack `⟨a, b⟩ ha hb`. Establish `: (a, b) = a • ((1 : B), (0 : B)) + b • ((0 : B), (1 : B))` using `by simp`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem_smul ha trivial) (Submodule.smul_mem_smul hb trivial)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g j`. Establish `hu : ∀ i, Units.map (π : B →* E) (T.t g i) = Ψ g ^ wt1 i` using `fun i => Units.ext (hT.red g i)`. Establish `ha : π ((T.t g 0 / T.t g 1 : Bˣ) : B) = Ψ g`. Establish `: Units.map (π : B →* E) (T.t g 0 / T.t g 1) = Ψ g` using `by simp [map_div, hu, w0, w1]`. Conclude with `congrArg Units.val this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `hb : π ((T.t g 1 / T.t g 2 : Bˣ) : B) = Ψ g`. Establish `: Units.map (π : B →* E) (T.t g 1 / T.t g 2) = Ψ g` using `by simp [map_div, hu, w1, w2]`. Conclude with `congrArg Units.val this`. Establish `hn : ((-1 : ℤˣ) = 1) = False` using `by decide`. Rewrite using `[Tor.adjointSuperdiagRep_apply]`.
-
-Generalize the expression as in `((T.t g 0 / T.t g 1 : Bˣ) : B) = a at ha ⊢`. Generalize the expression as in `((T.t g 1 / T.t g 2 : Bˣ) : B) = b at hb ⊢`. Apply the tactic sequence `apply key <;> rcases Int.units_eq_one_or (η g) with hg | hg <;> fin_cases j <;>`. Simplify using `[ε, hg, hn, ha, hb, Algebra.smul_def]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem multiplicity_one_positive {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E]
     [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {η : GQ l →* ℤˣ} {Ψ : GQ l →* Eˣ} {H : Subgroup (GQ l)} {e : ℕ}
@@ -104,13 +102,11 @@ private theorem multiplicity_one_positive {l : ℕ} [Fact l.Prime] {E : Type} [F
         simp [ε, hg, hn, ha, hb, Algebra.smul_def]
 
 /- English proof (translation)
-Introduce `hP l _ E _ _ _ _ _ η Ψ H e hD B _ _ _ _ _ _ _ _ _ _ π hπ B' _ _ _ _ _ _ _ _ _ _ π' _ p hp T T' hT hT' ht β' hβ'`. Use `haveI : ContinuousConstSMul E B := contConstSMul_alg E`. Use `haveI : ContinuousConstSMul E B' := contConstSMul_alg E`. Establish `hc : ContAction (resCoef E T.M1)` using `T.contAction_torus_module hD.ηlc hT.cont hT.cont_inv`. Establish `hc' : ContAction (resCoef E T'.M1)` using `T'.contAction_torus_module hD.ηlc hT'.cont hT'.cont_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : ∀ g i j, p ((T.t g i / T.t g j : Bˣ) : B) = ((T'.t g i / T'.t g j : B'ˣ) : B')` using `fun g i j => by`. Establish `h : ∀ i, Units.map (p : B →* B') (T.t g i) = T'.t g i` using `fun i => Units.ext (ht g i)`. Rewrite using `[← h, ← h, ← map_div]`. Both sides reduce to the same expression. Take `⟨β, hβ, hpβ⟩` from `(posExact hP (MonoidHom.id (GQ l)) IsOpenEmbedding.id (resCoef E T.M1) (resCoef E T'.M1) hc hc' (multiplicity_one_positive hD π hπ T hT) (p.toLinearMap.prodMap p.toLinearMap) (fun g x => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `Prod.map p p (T.M1 g x) = T'.M1 g (Prod.map p p x)`. Simplify using `only [Tor.adjointSuperdiagRep_apply]`. Apply the tactic sequence `split_ifs <;> simp only [Prod.map, map_mul, map_neg, hu])).1 (hp.prodMap hp) β'`. Use the proof step `((z1fMap (MonoidHom.id (GQ l)) T'.M1 (resCoef E T'.M1)).2 LinearMap.id (fun _ _ => rfl) β' hβ')`. Use `⟨β, (z1fMap (MonoidHom.id (GQ l)) (resCoef E T.M1) T.M1).2 LinearMap.id (fun _ _ => rfl) β hβ, fun g => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hpβ]`. Conclude with `⟨rfl, rfl⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.torsionDatum_finiteCocycles_baseChange :
     LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] ℚ_[l] E] {η : GQ l →* ℤˣ} {Ψ : GQ l →* Eˣ} {H : Subgroup (GQ l)} {e : ℕ} (hD : TriDat η Ψ H e) {B : Type} [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [TopologicalSpace B] [IsModuleTopology ℚ_[l] B] [IsTopologicalRing B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) {B' : Type} [CommRing B'] [Algebra ℚ_[l] B'] [Module.Finite ℚ_[l] B'] [TopologicalSpace B'] [IsModuleTopology ℚ_[l] B'] [IsTopologicalRing B'] [Algebra ℤ_[l] B'] [IsScalarTower ℤ_[l] ℚ_[l] B'] [Algebra E B'] [IsScalarTower ℚ_[l] E B'] (π' : B' →ₐ[E] E) (hπ' : ∀ a, π' a = 0 → IsNilpotent a) (p : B →ₐ[E] B'), Function.Surjective p → ∀ (T : Tor η B) (T' : Tor η B'), T.Good π Ψ → T'.Good π' Ψ → (∀ g i, p (T.t g i : B) = (T'.t g i : B')) → ∀ β' ∈ UpperTheory.V.Loc.finiteCocycles (MonoidHom.id (GQ l)) T'.M1, ∃ β ∈ UpperTheory.V.Loc.finiteCocycles (MonoidHom.id (GQ l)) T.M1, ∀ g, p (β g).1 = (β' g).1 ∧ p (β g).2 = (β' g).2 := by

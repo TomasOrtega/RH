@@ -11,9 +11,9 @@ section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {σ : R ≃ₐ[k] R} {q : ℕ}
 
 /- English proof (translation)
-Establish `h1` using `Finset.sum_range_succ (fun j => (σ ^ j) r) q`. Establish `h2` using `Finset.sum_range_succ' (fun j => (σ ^ j) r) q`. Rewrite `h2` using `[h1, h.pow, pow_zero]`. Rewrite using `[map_sum, add_right_cancel h2]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ', AlgEquiv.mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_fixed (h : IsGal σ q) (r : R) :
     σ (∑ j ∈ Finset.range q, (σ ^ j) r) = ∑ j ∈ Finset.range q, (σ ^ j) r := by
@@ -25,9 +25,9 @@ private theorem sum_fixed (h : IsGal σ q) (r : R) :
   rw [pow_succ', AlgEquiv.mul_apply]
 
 /- English proof (translation)
-Use `choose t ht using fun r => h.fix _ (sum_fixed h r)`. Use `⟨⟨⟨t, fun a b => h.inj ?_⟩, fun c a => h.inj ?_⟩, ht⟩` and prove the remaining obligations. Rewrite using `[map_add, ht, ht, ht, ← Finset.sum_add_distrib]`. Simplify using `only [map_add]`. Simplify using `only [RingHom.id_apply, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ht, ht, Finset.mul_sum]`. Simplify using `only [Algebra.smul_def, map_mul, AlgEquiv.commutes]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_tr (h : IsGal σ q) :
     ∃ t : R →ₗ[k] k, ∀ r, algebraMap k R (t r) = ∑ j ∈ Finset.range q, (σ ^ j) r := by
@@ -40,11 +40,11 @@ private theorem exists_tr (h : IsGal σ q) :
     simp only [Algebra.smul_def, map_mul, AlgEquiv.commutes]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, ht, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ∑ j ∈ Finset.range q, (if j = 0 then 1 else 0) * (σ ^ j) r := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul, hxy j (Finset.mem_range.1 hj)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = r := by`. Simplify using `[h.pos]`.
+A detailed English derivation is pending.
 -/
 private theorem dual (h : IsGal σ q) {s : ℕ} {x y : Fin s → R}
     (hxy : ∀ j < q, ∑ i, x i * (σ ^ j) (y i) = if j = 0 then 1 else 0) {t : R →ₗ[k] k}
@@ -64,7 +64,7 @@ private theorem dual (h : IsGal σ q) {s : ℕ} {x y : Fin s → R}
         simp [h.pos]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ', pow_succ', AlgEquiv.mul_apply, AlgEquiv.mul_apply, ih]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem pow_tmul (A : Type) [CommRing A] [Algebra k A] (σ : R ≃ₐ[k] R) (j : ℕ) (a : A) (r : R) :
     ((Algebra.TensorProduct.congr AlgEquiv.refl σ : A ⊗[k] R ≃ₐ[A] A ⊗[k] R) ^ j) (a ⊗ₜ r) =
@@ -78,33 +78,31 @@ private theorem pow_tmul (A : Type) [CommRing A] [Algebra k A] (σ : R ≃ₐ[k]
 end
 
 /- English proof (translation)
-Introduce `k R _ _ _ A _ _ σ q h`. Take `⟨t, ht⟩` from `exists_tr h`. Take `⟨s, x, y, hxy⟩` from `h.sep`. Establish `hd` using `dual h hxy ht`. Establish `hsplit : (Fintype.linearCombination k x).comp (LinearMap.pi fun i => t.comp (LinearMap.mulLeft k (y i))) = LinearMap.id`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `r`. Simplify `hd r` using `[Fintype.linearCombination_apply]`. Establish `hfin : Module.Finite k R` using `Module.Finite.of_surjective (Fintype.linearCombination k x) fun r => ⟨_, LinearMap.congr_fun hsplit r⟩`. Establish `hproj : Module.Projective k R` using `Module.Projective.of_split _ _ hsplit`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, t c = 1 := by`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, hr0⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul (LinearMap.range t) (⊤ : Submodule k R) Module.Finite.fg_top (by`. Introduce `r _`. Rewrite using `[← hd r]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem_smul (LinearMap.mem_range_self _ _) Submodule.mem_top)`. Establish `h0 : r = 0` using `h.inj (by`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zero, Algebra.algebraMap_eq_smul_one]`. Conclude with `hr0 1 Submodule.mem_top)`. Take `⟨c, hc⟩` from `hr`. Conclude with `⟨-c, by rw [map_neg, hc, h0]; ring⟩`. Use `⟨hfin, hproj, ⟨fun m hm hm' => hm.ne_top ?_⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ r ∈ m • (⊤ : Submodule k R), t r ∈ m`. Introduce `r hr`. Use `Submodule.smul_induction_on hr (fun a ha n _ => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `m.mul_mem_right _ ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_add]`. Conclude with `m.add_mem ha hb`. Rewrite using `[Ideal.eq_top_iff_one, ← hc]`. Conclude with `key c (by rw [hm']; exact Submodule.mem_top)`. Use `set τ : A ⊗[k] R ≃ₐ[A] A ⊗[k] R := Algebra.TensorProduct.congr AlgEquiv.refl σ with hτ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Establish `hp : ∀ j a r, (τ ^ j) (a ⊗ₜ r) = a ⊗ₜ (σ ^ j) r` using `pow_tmul A σ`. Set `p : A ⊗[k] R →ₗ[k] A` to `(TensorProduct.rid k A).toLinearMap.comp ((t.comp (LinearMap.mulLeft k c)).lTensor A)`. Establish `hpp : ∀ a r, p (a ⊗ₜ r) = t (c * r) • a` using `fun a r => by simp [p]`. Use `⟨h.pos, ?_, ?_, ?_, s, fun i => 1 ⊗ₜ x i, fun i => 1 ⊗ₜ y i, fun j hj => ?_⟩` and prove the remaining obligations. Use `AlgEquiv.ext fun z => ?_` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r => rw [hp, h.pow]`. Both sides reduce to the same expression. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Function.LeftInverse.injective (g := p) fun a => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, hpp, mul_one, hc, one_smul]`. Both sides reduce to the same expression. Introduce `z hz`. Establish `h1 : ∀ z, algebraMap A (A ⊗[k] R) (p z) = ∑ j ∈ Finset.range q, (τ ^ j) ((1 ⊗ₜ c) * z)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, one_mul, hp]`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← TensorProduct.tmul_sum, ← ht, hpp, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_eq_smul_one (t (c * r)), ← TensorProduct.smul_tmul]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Simplify using `only [map_add, mul_add, ha, hb, Finset.sum_add_distrib]`. Establish `h2 : ∀ j : ℕ, (τ ^ j) z = z`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => rfl`. Consider the case `succ j ih => rw [pow_succ, AlgEquiv.mul_apply, hz, ih]`. Use `⟨p z, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Simplify using `only [map_mul, h2, hp]`. Rewrite using `[← Finset.sum_mul, ← TensorProduct.tmul_sum, ← ht, hc, map_one, ← Algebra.TensorProduct.one_def, one_mul]`. Simplify using `only [hp, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Rewrite using `[← TensorProduct.tmul_sum, hxy j hj]`.
-
-Use `split_ifs`. Both sides reduce to the same expression. Conclude with `TensorProduct.tmul_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem galBase : GalBase := by
   intro k R _ _ _ A _ _ σ q h

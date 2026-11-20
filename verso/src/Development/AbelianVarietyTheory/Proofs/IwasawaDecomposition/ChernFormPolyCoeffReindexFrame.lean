@@ -11,7 +11,7 @@ namespace GlobalTheory.ChernReindex
 variable {n a b : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem mdel_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (z ξ : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -19,7 +19,7 @@ theorem mdel_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimate
   ext i j; rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HermFrame.conn, GlobalTheory.HermFrame.conn, mdel_reindex, Matrix.transpose_reindex, Matrix.transpose_reindex, Matrix.inv_reindex, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.reindex_apply, Matrix.submatrix_mul_equiv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conn_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (z ξ : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -29,7 +29,7 @@ theorem conn_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimate
     Matrix.submatrix_mul_equiv]
 
 /- English proof (translation)
-Unfold `GlobalTheory.HermFrame.curv`. Repeatedly rewrite using `[conn_reindex]`. Use extensionality with `i j`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem curv_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (z ξ η : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -39,7 +39,7 @@ theorem curv_reindex (e : Fin a ≃ Fin b) (H : ReciprocityTheory.L2DbarEstimate
   ext i j; rfl
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.GoodMetric.curvPoly, curv_reindex]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem curvPoly_reindex (e : Fin a ≃ Fin b) (F : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) :
@@ -49,14 +49,14 @@ theorem curvPoly_reindex (e : Fin a ≃ Fin b) (F : ReciprocityTheory.L2DbarEsti
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Matrix.reverse_charpoly, ← Matrix.reverse_charpoly, Matrix.charpoly_reindex]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpolyRev_reindex {R : Type} [CommRing R] (e : Fin a ≃ Fin b) (M : Matrix (Fin a) (Fin a) R) :
     (Matrix.reindex e e M).charpolyRev = M.charpolyRev := by
   rw [← Matrix.reverse_charpoly, ← Matrix.reverse_charpoly, Matrix.charpoly_reindex]
 
 /- English proof (translation)
-Introduce `n a b e F v k`. Rewrite using `[GlobalTheory.GoodMetric.chernPoly, GlobalTheory.GoodMetric.chernPoly, curvPoly_reindex, show -(Matrix.reindex e e (GlobalTheory.GoodMetric.curvPoly F v)) = Matrix.reindex e e (-GlobalTheory.GoodMetric.curvPoly F v) from by`. Use extensionality with `i j`. Use the proof step `rfl, charpolyRev_reindex]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem chernPoly_reindex : ∀ {n a b : ℕ} (e : Fin a ≃ Fin b) (F : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ)
     (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ), chernPoly (fun u => Matrix.reindex e e (F u)) v k = chernPoly F v k := by

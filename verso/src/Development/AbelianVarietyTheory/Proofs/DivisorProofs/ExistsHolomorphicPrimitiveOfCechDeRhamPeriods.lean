@@ -9,23 +9,21 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CechPer
 
 /- English proof (translation)
-Introduce `A _ g L u x q hx c hc`. Take `⟨hOpen, hDiff, -, hPer, -, -, -, -, hRes, hHom, -, -⟩` from `GlobalTheory.CechPer.pre_val_rules A g L u`. Take `⟨c₀, h₀, hc₀, ⟨p1, p2, p3⟩, hp⟩` from `hx`. Take `⟨b, hb⟩` from `Hyp1.mk_eq_mk.1 (hc.trans hc₀.symm)`. Establish `hval_add : ∀ (U : A.left.Opens) (s t : Sec (str A) U), ∀ z ∈ pre u.ex U, val u.ex U (s + t) z = val u.ex U s z + val u.ex U t z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `U s t z hz`. Take `⟨e, he⟩` from `hHom U z hz`. Use `erw [he, he, he, map_add]`. Establish `hval_sub : ∀ (U : A.left.Opens) (s t : Sec (str A) U), ∀ z ∈ pre u.ex U, val u.ex U (s - t) z = val u.ex U s z - val u.ex U t z`. Introduce `U s t z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hHom U z hz`. Use `erw [he, he, he, map_sub]`. Establish `hcf : ∀ (U V : A.left.affineOpens) (a : Opposite.op U ⟶ Opposite.op V), c.1.1 (Opposite.op U) (Opposite.op V) a = c₀.1.1 (Opposite.op U) (Opposite.op V) a + (b (Opposite.op V) - Sec.res (str A) (leOfHom a.unop) (b (Opposite.op U)))`. Introduce `U V a`. Use `congrArg (fun y : Tot1 (OAff (str A)) ↦ y.1 (Opposite.op U) (Opposite.op V) a) hb` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [dTot0_f] at this`. Conclude with `(eq_add_of_sub_eq' this.symm :)`. Establish `hcω : ∀ U : A.left.affineOpens, c.1.2 (Opposite.op U) = c₀.1.2 (Opposite.op U) + KaehlerDifferential.D ℂ _ (b (Opposite.op U))`. Introduce `U`. Use `congrArg (fun y : Tot1 (OAff (str A)) ↦ y.2 (Opposite.op U)) hb` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dTot0_ω] at this`. Express the relevant statement in the definitionally equal form `_ = (c.1 - c₀.1).2 _ at this`. Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `c.1.2 _ = c₀.1.2 _ + (c.1.2 _ - c₀.1.2 _)`. Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun U z ↦ h₀ U z + val u.ex U.1 (b (Opposite.op U)) z, ⟨fun U ↦ ?_, fun U V a z hz ↦ ?_, fun U z hz ↦ ?_⟩, fun U l z hz ↦ ?_⟩` and prove the remaining obligations. Conclude with `(p1 U).add (hDiff U.1 _)`. Establish `hle : V.1 ≤ U.1` using `leOfHom a.unop`. Establish `hr : val u.ex V.1 (Sec.res (str A) hle (b (Opposite.op U))) z = val u.ex U.1 (b (Opposite.op U)) z` using `hRes U.1 V.1 hle _ z hz`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[p2 U V a z hz, hcf U V a, hval_add _ _ _ z hz, hval_sub _ _ _ z hz, hr]`. Expand and normalize the polynomial expressions, which then agree. Establish `hd₀ : DifferentiableAt ℂ (h₀ U) z` using `((p1 U) z hz).differentiableAt ((hOpen U.1).mem_nhds hz)`. Establish `hd₁ : DifferentiableAt ℂ (val u.ex U.1 (b (Opposite.op U))) z` using `((hDiff U.1 _) z hz).differentiableAt ((hOpen U.1).mem_nhds hz)`. Take `⟨-, -, hD⟩` from `GlobalTheory.T.uniformisedOneFormEvaluation_rules A g L u U.1 z hz`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `fderiv ℂ (h₀ U + val u.ex U.1 (b (Opposite.op U))) z = _`. Rewrite using `[fderiv_add hd₀ hd₁, p3 U z hz, hcω U, map_add, hD]`. Simplify using `only`. Rewrite using `[hp U l z hz]`. Use `erw [hPer]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_prim_of_isPer : ∀ (A : Over (Sp ℂ)) [GrpObj A] (g : ℕ) (L : LB A.left) (u : HolUnif A L g), ∀ x q,
     IsPer u.ex u.Λ x q → ∀ c, Hyp1.mk _ c = x → ∃ h, IsPrim u.ex c h ∧

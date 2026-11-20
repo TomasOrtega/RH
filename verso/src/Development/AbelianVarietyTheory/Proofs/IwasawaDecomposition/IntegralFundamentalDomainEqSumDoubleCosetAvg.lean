@@ -7,11 +7,11 @@ namespace GlobalTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Establish `h2 : IsFundamentalDomain Γ (MulOpposite.op g • 𝓕) μ` using `h𝓕.smul_of_comm (MulOpposite.op g)`. Establish `himg : MulOpposite.op g • 𝓕 = (fun x => x * g) '' 𝓕`. Use extensionality with `y`. Simplify using `[Set.mem_smul_set, MulOpposite.smul_eq_mul_unop]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Simplify using `using hz`. Introduce `hy; exact ⟨_, hy, by simp⟩`. Rewrite using `[← (measurePreserving_mul_right μ g).setIntegral_image_emb (measurableEmbedding_mulRight g) f 𝓕, ← himg]`. Use `h2.setIntegral_eq h𝓕 ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf γ γ.2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_isFundamentalDomain_comp_mul_right {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
@@ -32,23 +32,21 @@ theorem setIntegral_isFundamentalDomain_comp_mul_right {G : Type} [Group G] [Top
   exact hf γ γ.2 x
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ Γ K Kf _ 𝓕 h𝓕 hK hKfin U _ _ _ _ _ _ ν _ _ j hj hdec hcomm ι _ h huniq hfin f hf hfl hfr`. Establish `key : ∀ x, ∀ k' ∈ Kf, ∀ w, f (x * (k' * j w)) = f (x * j w)`. Introduce `x k' hk' w`. Rewrite using `[hcomm k' hk' w, ← mul_assoc, hfr k' hk']`. Establish `hbd : ∃ C, ∀ x, ‖f x‖ ≤ C`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hi : ∀ i, ∃ C, ∀ v, ‖f (h i * j v)‖ ≤ C` using `fun i => (isCompact_range ((hf.comp (continuous_const.mul hj)).norm)).bddAbove.imp fun C hC v => hC ⟨v, rfl⟩`. Use `choose B hB using hi`. Use `⟨∑ i, |B i|, fun x => ?_⟩` and prove the remaining obligations. Take `⟨i, ⟨γ, hγ, k, hk, rfl⟩, -⟩` from `huniq x`. Take `⟨k', hk', w, rfl⟩` from `hdec k hk`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, hfl γ hγ, key _ k' hk' w]`. Conclude with `(hB i w).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |B i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)))`. Take `⟨C, hC⟩` from `hbd`. Establish `hFl : ∀ γ ∈ Γ, ∀ x, ∫ v, f (γ * x * j v) ∂ν = ∫ v, f (x * j v) ∂ν`. Introduce `γ hγ x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `v`. Rewrite using `[mul_assoc, hfl γ hγ]`. Establish `hFr : ∀ k ∈ K, ∀ x, ∫ v, f (x * k * j v) ∂ν = ∫ v, f (x * j v) ∂ν`. Introduce `k hk x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k', hk', w, rfl⟩` from `hdec k hk`. Establish `e : ∀ v, f (x * (k' * j w) * j v) = f (x * j (w * v))`. Introduce `v`. Establish `: x * (k' * j w) * j v = x * j (w * v) * k'`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcomm k' hk' w]`. Simplify using `only [mul_assoc]`. Use `_ = x * j w * (j v * k') := by rw [hcomm k' hk' v]`. Use `_ = x * j (w * v) * k' := by rw [map_mul]; simp only [mul_assoc]`. Rewrite using `[this, hfr k' hk']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[e]`. Conclude with `integral_mul_left_eq_self (fun v => f (x * j v)) w`. Take `⟨hfin𝓕, -, hFeq⟩` from `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset G μ Γ K 𝓕 h𝓕 hK hKfin ι h huniq hfin (fun x => ∫ v, f (x * j v) ∂ν) hFl hFr`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin𝓕`. Establish `hint : IntegrableOn f 𝓕 μ` using `Integrable.of_bound hf.aestronglyMeasurable C (Filter.Eventually.of_forall hC)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨hint, ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun p : G × U => f (p.1 * j p.2)` using `hf.comp (continuous_fst.mul (hj.comp continuous_snd))`. Establish `hI : Integrable (Function.uncurry fun x v => f (x * j v)) ((μ.restrict 𝓕).prod ν)` using `Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun p => hC _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_integral_swap hI]`.
-
-Simplify using `only [setIntegral_isFundamentalDomain_comp_mul_right μ Γ 𝓕 h𝓕 f hfl]`. Simplify using the standard rewrite rules. Use `_ = _ := hFeq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_fundamentalDomain_eq_sum_doubleCoset_avg : ∀ (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] (Γ K Kf : Subgroup G) [Countable Γ] (𝓕 : Set G), IsFundamentalDomain Γ 𝓕 μ → IsOpen (K : Set G) → μ K ≠ ⊤ → ∀ (U : Type) [Group U] [TopologicalSpace U] [IsTopologicalGroup U] [CompactSpace U] [MeasurableSpace U] [BorelSpace U] (ν : Measure U) [ν.IsMulLeftInvariant] [IsProbabilityMeasure ν] (j : U →* G), Continuous j → (∀ k ∈ K, ∃ k' ∈ Kf, ∃ w, k = k' * j w) → (∀ k ∈ Kf, ∀ w, k * j w = j w * k) → ∀ (ι : Type) [Fintype ι] (h : ι → G), (∀ x : G, ∃! i, ∃ γ ∈ Γ, ∃ k ∈ K, x = γ * h i * k) → (∀ i, {γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ K}.Finite) → ∀ f : G → ℂ, Continuous f → (∀ γ ∈ Γ, ∀ x, f (γ * x) = f x) → (∀ k ∈ Kf, ∀ x, f (x * k) = f x) → IntegrableOn f 𝓕 μ ∧ ∫ x in 𝓕, f x ∂μ = ((μ K).toReal : ℂ) * ∑ i, (({γ : G | γ ∈ Γ ∧ (h i)⁻¹ * γ * h i ∈ K}.ncard : ℕ) : ℂ)⁻¹ * ∫ v, f (h i * j v) ∂ν := by
   intro G _ _ _ _ _ _ μ _ _ Γ K Kf _ 𝓕 h𝓕 hK hKfin U _ _ _ _ _ _ ν _ _ j hj hdec hcomm ι _ h huniq

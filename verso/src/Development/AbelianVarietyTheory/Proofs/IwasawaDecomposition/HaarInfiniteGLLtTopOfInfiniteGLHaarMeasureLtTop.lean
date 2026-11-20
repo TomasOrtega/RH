@@ -33,7 +33,7 @@ def swapH : Matrix (Fin j) (Fin j) (Cinf E) ≃ₜ (InfinitePlace E → Fin j �
     (continuous_apply b).comp ((continuous_apply a).comp (continuous_apply w))
 
 /- English proof (translation)
-Set `_` to `Matrix.linftyOpNormedRing (n := Fin j) (α := Cinf E)`. Set `_` to `Matrix.linftyOpNormedAlgebra (n := Fin j) (R := ℂ) (α := Cinf E)`. Establish `: CompleteSpace (Matrix (Fin j) (Fin j) (Cinf E))` using `FiniteDimensional.complete ℂ _`. Conclude with `Units.isOpenEmbedding_val`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_val :
     IsOpenEmbedding (Units.val : GL (Fin j) (Cinf E) → Matrix (Fin j) (Fin j) (Cinf E)) := by
@@ -43,13 +43,13 @@ theorem isOpenEmbedding_val :
   exact Units.isOpenEmbedding_val
 
 /- English proof (translation)
-The claim follows from `(swapH E j).isOpenEmbedding.comp (isOpenEmbedding_val E j)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenEmbedding_entP : IsOpenEmbedding (entP E j) :=
   (swapH E j).isOpenEmbedding.comp (isOpenEmbedding_val E j)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w a b`. Express the relevant statement in the definitionally equal form `(((x * y : GL (Fin j) (Cinf E)) : Matrix (Fin j) (Fin j) (Cinf E)) a b w) = (Matrix.of (ent E j x w) * Matrix.of (ent E j y w)) a b`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Matrix.mul_apply, Finset.sum_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ent_mul (x y : GL (Fin j) (Cinf E)) : ent E j (x * y) = ent E j x * ent E j y := by
   funext w a b
@@ -59,11 +59,11 @@ theorem ent_mul (x y : GL (Fin j) (Cinf E)) : ent E j (x * y) = ent E j x * ent 
   rfl
 
 /- English proof (translation)
-Unfold `detNorm`. Use `Finset.prod_pos fun w _ => ?_` and prove the remaining obligations. Establish `h1 : Matrix.of (ent E j y w) = (y : Matrix (Fin j) (Fin j) (Cinf E)).map (Pi.evalRingHom (fun _ => ℂ) w)`. Use extensionality with `a b`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `h2 : (Matrix.of (ent E j y w)).det = (y : Matrix (Fin j) (Fin j) (Cinf E)).det w`. Rewrite using `[h1, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Both sides reduce to the same expression. Establish `hu : IsUnit (y : Matrix (Fin j) (Fin j) (Cinf E)).det`. Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.isUnit _`. Establish `h3 : (y : Matrix (Fin j) (Fin j) (Cinf E)).det w ≠ 0` using `(hu.map (Pi.evalRingHom (fun _ => ℂ) w)).ne_zero`. Rewrite using `[h2]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem detNorm_ent_pos (y : GL (Fin j) (Cinf E)) : 0 < detNorm E j (ent E j y) := by
   unfold detNorm
@@ -81,11 +81,9 @@ theorem detNorm_ent_pos (y : GL (Fin j) (Cinf E)) : 0 < detNorm E j (ent E j y) 
   positivity
 
 /- English proof (translation)
-Establish `hd : Continuous fun x : InfinitePlace E → Fin j → Fin j → ℂ => detNorm E j x` using `GlobalTheory.HaarLeftInv.continuous_detNorm E j`. Use `haveI := GlobalTheory.HaarLeftInv.isAddHaar_volume E j`. Break down `S.eq_empty_or_nonempty with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `(measure_empty (μ := haarGL E j)).trans_lt ENNReal.zero_lt_top`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x0, hx0, hmin⟩` from `hS.exists_isMinOn h hd.continuousOn`. Establish `hm` using `hpos x0 hx0`. Use `show Measure.withDensity (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) (fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)) S < ⊤`. Rewrite using `[withDensity_apply _ hS.isClosed.measurableSet]`. Use `(setLIntegral_mono' hS.isClosed.measurableSet (g := fun _ => ENNReal.ofReal ((detNorm E j x0)⁻¹ ^ j)) fun x hx => ?_).trans_lt ?_` and prove the remaining obligations.
-
-Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ (inv_nonneg.2 (hpos x hx).le) (inv_anti₀ hm (hmin hx)) j)`. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hS.measure_lt_top`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarGL_lt_top_of_isCompact (S : Set (InfinitePlace E → Fin j → Fin j → ℂ)) (hS : IsCompact S)
     (hpos : ∀ x ∈ S, 0 < detNorm E j x) : haarGL E j S < ⊤ := by
@@ -107,9 +105,9 @@ theorem haarGL_lt_top_of_isCompact (S : Set (InfinitePlace E → Fin j → Fin j
     exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hS.measure_lt_top
 
 /- English proof (translation)
-Establish `hd : Continuous fun x : InfinitePlace E → Fin j → Fin j → ℂ => detNorm E j x` using `GlobalTheory.HaarLeftInv.continuous_detNorm E j`. Use `haveI := GlobalTheory.HaarLeftInv.isAddHaar_volume E j`. Use `show Measure.withDensity (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) (fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)) S ≠ 0`. Establish `hf : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `((hd.measurable.inv).pow_const j).ennreal_ofReal`. Rewrite using `[Ne, withDensity_apply_eq_zero' hf.aemeasurable]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: {x : InfinitePlace E → Fin j → Fin j → ℂ | ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j) ≠ 0} ∩ S = S` using `Set.inter_eq_right.2 fun x hx => (ENNReal.ofReal_pos.2 (pow_pos (inv_pos.2 (hpos x hx)) j)).ne'`. Rewrite using `[this]`. Conclude with `hS.measure_ne_zero volume hne`.
+A detailed English derivation is pending.
 -/
 theorem haarGL_ne_zero_of_isOpen (S : Set (InfinitePlace E → Fin j → Fin j → ℂ)) (hS : IsOpen S)
     (hne : S.Nonempty) (hpos : ∀ x ∈ S, 0 < detNorm E j x) : haarGL E j S ≠ 0 := by
@@ -127,7 +125,7 @@ theorem haarGL_ne_zero_of_isOpen (S : Set (InfinitePlace E → Fin j → Fin j �
   exact hS.measure_ne_zero volume hne
 
 /- English proof (translation)
-Take `⟨hemb, hmp⟩` from `GlobalTheory.HaarLeftInv.measurePreserving_mul_left E j a ha`. Use `hemb.map_apply (haarGL E j) ((fun g => a * g) '' T)` as an intermediate fact. Rewrite `this` using `[hmp.map_eq, Set.preimage_image_eq T hemb.injective]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haarGL_image_mul (a : MatInf E j) (ha : 0 < detNorm E j a) (T : Set (MatInf E j)) :
     haarGL E j ((fun g => a * g) '' T) = haarGL E j T := by
@@ -139,7 +137,7 @@ theorem haarGL_image_mul (a : MatInf E j) (ha : 0 < detNorm E j a) (T : Set (Mat
 variable [MeasurableSpace (GL (Fin j) (Cinf E))] [BorelSpace (GL (Fin j) (Cinf E))]
 
 /- English proof (translation)
-The claim follows from `(isOpenEmbedding_entP E j).measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_ent : MeasurableEmbedding (ent E j) :=
   (isOpenEmbedding_entP E j).measurableEmbedding
@@ -147,21 +145,19 @@ theorem measurableEmbedding_ent : MeasurableEmbedding (ent E j) :=
 def nuGL : Measure (GL (Fin j) (Cinf E)) := (haarGL E j).comap (ent E j)
 
 /- English proof (translation)
-The claim follows from `(measurableEmbedding_ent E j).comap_apply _ s`.
+A detailed English derivation is pending.
 -/
 theorem nuGL_apply (s : Set (GL (Fin j) (Cinf E))) : nuGL E j s = haarGL E j (ent E j '' s) :=
   (measurableEmbedding_ent E j).comap_apply _ s
 
 /- English proof (translation)
-Establish `he` using `isOpenEmbedding_entP E j`. Use `{ lt_top_of_isCompact := ?_, map_mul_left_eq_self := ?_, open_pos := ?_ }` and prove the remaining obligations. Introduce `K hK`. Rewrite using `[nuGL_apply]`. Use `haarGL_lt_top_of_isCompact E j (entP E j '' K) (hK.image he.continuous) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `detNorm_ent_pos E j y`. Introduce `g`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul g) hs, nuGL_apply, nuGL_apply]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (fun h => g * h) ⁻¹' s = (fun h => g⁻¹ * h) '' s`. Use extensionality with `y`. Simplify using `[Set.mem_image, eq_inv_mul_iff_mul_eq]`. Establish `e2 : ent E j '' ((fun h => g⁻¹ * h) '' s) = (fun x : MatInf E j => ent E j g⁻¹ * x) '' (ent E j '' s)`. Rewrite using `[Set.image_image, Set.image_image]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.image_congr fun y _ => ent_mul E j g⁻¹ y`. Rewrite using `[e1, e2, haarGL_image_mul E j _ (detNorm_ent_pos E j g⁻¹)]`. Introduce `U hU hne`. Rewrite using `[nuGL_apply]`. Use `haarGL_ne_zero_of_isOpen E j (entP E j '' U) (he.isOpenMap U hU) (hne.image _) ?_` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `detNorm_ent_pos E j y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isHaarMeasure_nuGL : (nuGL E j).IsHaarMeasure := by
   have he := isOpenEmbedding_entP E j
@@ -190,9 +186,7 @@ theorem isHaarMeasure_nuGL : (nuGL E j).IsHaarMeasure := by
 end GlobalTheory.HaarFinVol
 
 /- English proof (translation)
-Introduce `E _ _ j _ _ ν _ D _ hD`. Use `haveI := GlobalTheory.HaarFinVol.isHaarMeasure_nuGL E j`. Establish `he` using `GlobalTheory.HaarFinVol.isOpenEmbedding_entP E j`. Use `haveI : LocallyCompactSpace (GL (Fin j) (Cinf E)) := he.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GL (Fin j) (Cinf E)) := he.isEmbedding.secondCountableTopology`.
-
-Establish `h2 : GlobalTheory.HaarFinVol.nuGL E j {y | (fun w a b => (y : Matrix (Fin j) (Fin j) (Cinf E)) a b w : GlobalTheory.FlagMeas.MatInf E j) ∈ D} ≤ GlobalTheory.FlagMeas.haarGL E j D` using `(GlobalTheory.HaarFinVol.nuGL_apply E j _).trans_le (measure_mono fun _ ⟨_, hy, e⟩ => e ▸ hy)`. Rewrite using `[Measure.isMulLeftInvariant_eq_smul ν (GlobalTheory.HaarFinVol.nuGL E j), Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`. Conclude with `ENNReal.mul_lt_top ENNReal.coe_lt_top (h2.trans_lt hD)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.haarGL_finite_pullback : ∀ (E : Type) [Field E] [NumberField E] (j : ℕ) [MeasurableSpace (GL (Fin j) (Cinf E))] [BorelSpace (GL (Fin j) (Cinf E))] (ν : Measure (GL (Fin j) (Cinf E))) [ν.IsHaarMeasure] (D : Set (GlobalTheory.FlagMeas.MatInf E j)), MeasurableSet D → GlobalTheory.FlagMeas.haarGL E j D < ⊤ → ν {y | (fun w a b => (y : Matrix (Fin j) (Fin j) (Cinf E)) a b w : GlobalTheory.FlagMeas.MatInf E j) ∈ D} < ⊤ := by
   intro E _ _ j _ _ ν _ D _ hD

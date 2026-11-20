@@ -10,7 +10,7 @@ def splitRT (Kf : Type) [Field Kf] (r t : ℕ) : (Fin (r + t) → Kf) ≃ₗ[Kf]
   (LinearEquiv.funCongrLeft Kf Kf finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow (Fin r) (Fin t) Kf Kf)
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [splitRT])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sumSplitEquiv_apply_lemma (Kf : Type) [Field Kf] (r t : ℕ) (z : Fin (r + t) → Kf) :
     splitRT Kf r t z = (fun i => z (Fin.castAdd t i), fun j => z (Fin.natAdd r j)) := by
@@ -19,7 +19,7 @@ private theorem sumSplitEquiv_apply_lemma (Kf : Type) [Field Kf] (r t : ℕ) (z 
   | (refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [splitRT])
 
 /- English proof (translation)
-Simplify using `only [sumSplitEquiv_apply_lemma]`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Simplify using `[Matrix.mulVec_diagonal]`. Simplify using `[Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem splitRT_diag (Kf : Type) [Field Kf] (r t : ℕ) (c : Kf) (z : Fin (r + t) → Kf) :
     splitRT Kf r t ((Matrix.diagonal (fun k : Fin (r + t) => if (k : ℕ) < r then 1 else c)).mulVec z) =
@@ -42,9 +42,9 @@ def blockHom (k : Type) [Field k] (a b : ℕ) :
           (Matrix.toLinAlgEquiv' : Matrix (Fin b) (Fin b) k ≃ₐ[k] _).toAlgHom.toRingHom.toMonoidHom)))
 
 /- English proof (translation)
-Establish `h1 : blockHom k a b (A, B) = LinearMap.toMatrix' ((splitRT k a b).symm.conjRingEquiv ((Matrix.toLin' A).prodMap (Matrix.toLin' B)))` using `rfl`. Rewrite using `[h1, LinearMap.toMatrix'_mulVec]`. Use `first`. Consider the case `(change splitRT k a b ((splitRT k a b).symm (((Matrix.toLin' A).prodMap (Matrix.toLin' B)) (splitRT k a b u))) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.toLin'_apply])`. Consider the case `(simp [LinearEquiv.conjRingEquiv_apply, LinearEquiv.conj_apply, Matrix.toLin'_apply]; done)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem blockHom_mulVec (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) (u : Fin (a + b) → k) :
     splitRT k a b ((blockHom k a b (A, B)).mulVec u) =
@@ -60,11 +60,11 @@ theorem blockHom_mulVec (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin 
   | (simp [LinearEquiv.conjRingEquiv_apply, LinearEquiv.conj_apply, Matrix.toLin'_apply]; done)
 
 /- English proof (translation)
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Use `LinearMap.ext fun u => ?_` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply]`. Apply `(splitRT k a b).injective` to reduce the goal to its premises. Rewrite using `[blockHom_mulVec]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sumSplitEquiv_apply_lemma]`. Use `Prod.ext (funext fun i => ?_) (funext fun j => ?_)` and prove the remaining obligations. Use `first`. Consider the case `(simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add]; done)`. Consider the case `(simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `(simp [Matrix.mulVec, dotProduct, Fin.sum_univ_add]; done)`. Consider the case `(simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem blockHom_eq_reindex_lemma_2 (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) :
     blockHom k a b (A, B) =
@@ -84,7 +84,7 @@ private theorem blockHom_eq_reindex_lemma_2 (A : Matrix (Fin a) (Fin a) k) (B : 
     | (simp [Matrix.mulVec, Matrix.dotProduct, Fin.sum_univ_add]; done)
 
 /- English proof (translation)
-Rewrite using `[blockHom_eq_reindex_lemma_2, Matrix.charpoly_reindex, Matrix.charpoly_fromBlocks_zero₁₂]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem blockHom_charpoly (A : Matrix (Fin a) (Fin a) k) (B : Matrix (Fin b) (Fin b) k) :
     (blockHom k a b (A, B)).charpoly = A.charpoly * B.charpoly := by

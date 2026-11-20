@@ -26,7 +26,7 @@ def termMap (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')
   secTermBaseChange M D w (p + 1)
 
 /- English proof (translation)
-Rewrite using `[cechLB_d, cechLB_d]`. Conclude with `d_secTermBaseChange M D w (p + 1) x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_termMap (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom (algebraMap R R'))) (p : ℕ)
     (x : R' ⊗[R] (cechLB f M D).X p) :
@@ -38,7 +38,7 @@ theorem d_termMap (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom (algebraMap
 variable {M D}
 
 /- English proof (translation)
-The claim follows from `secTermBaseChange_bijective hM H (p + 1) fun s hs => hD s (Finset.card_pos.1 (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem termMap_bijective [Finite κ] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
@@ -47,9 +47,9 @@ theorem termMap_bijective [Finite κ] (hM : M.IsLB)
   secTermBaseChange_bijective hM H (p + 1) fun s hs => hD s (Finset.card_pos.1 (by omega))
 
 /- English proof (translation)
-Establish `key (x : R' ⊗[R] (cechLB f M D).X 0) : termMap M D H.w 0 x ∈ LinearMap.ker ((cechLB f' (M.pull π) fun i => π ⁻¹ᵁ D i).d 0 1).hom ↔ x ∈ LinearMap.ker (((cechLB f M D).d 0 1).hom.baseChange R')`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_ker]`. Conclude with `(d_termMap M D H.w 0 x).congr_left.trans (map_eq_zero_iff _ (termMap_bijective hM H hD 1).1)`. Use `⟨fun x hx => (key x).2 hx, (termMap_bijective hM H hD 0).1.injOn, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(termMap_bijective hM H hD 0).2 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, (key x).1 hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem termMap_bijOn [Finite κ] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
@@ -67,9 +67,9 @@ theorem termMap_bijOn [Finite κ] (hM : M.IsLB)
   exact ⟨x, (key x).1 hy, rfl⟩
 
 /- English proof (translation)
-Introduce `x`. Establish `e₁` using `d_termMap M D H.w 1 x`. Use `(map_eq_zero_iff _ (termMap_bijective hM H hD 2).1).symm.trans (e₁.congr_left.symm.trans ((h _).trans ⟨?_, ?_⟩))` and prove the remaining obligations. Introduce and unpack `⟨y, hy⟩`. Take `⟨z, rfl⟩` from `(termMap_bijective hM H hD 0).2 y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, (termMap_bijective hM H hD 1).1 ((d_termMap M D H.w 0 z).symm.trans hy)⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨_, d_termMap M D H.w 0 z⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exact_baseChange [Finite κ] (hM : M.IsLB)
     (H : IsPullback π f' f (Spec.map (CommRingCat.ofHom (algebraMap R R'))))
@@ -89,16 +89,16 @@ theorem exact_baseChange [Finite κ] (hM : M.IsLB)
     exact ⟨_, d_termMap M D H.w 0 z⟩
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.preimage_iSup, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iSup_preimage (π : Y' ⟶ Y) (hc : ⨆ i, D i = ⊤) : ⨆ i, π ⁻¹ᵁ D i = ⊤ := by
   rw [← Scheme.Hom.preimage_iSup, hc]
   rfl
 
 /- English proof (translation)
-Set `F : (cechLB f' (M.pull π) fun i => π ⁻¹ᵁ D i).X 0 →+ Γ(Y', π ⁻¹ᵁ ((⨅ i ∈ s.1, D i) ⊓ M.U j))` to `AddMonoidHom.mk' (fun y => rs Y' h (SecOnR.coord (f := f') (y s) fun _ => j)) fun y z => map_add (rs Y' h) _ _`. Express the relevant statement in the definitionally equal form `F (termMap M D w 0 _) = _`. Rewrite using `[map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `rs Y' h (SecOnR.coord (f := f') (v k • SecOnR.pull M w _ _ (preimage_biInf D π s.1).ge (x k s)) fun _ => j) = _`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(congrArg (rs Y' h) (SecOnR.coord_base_smul _ _ _)).trans ((map_mul (rs Y' h) _ _).trans (congrArg₂ (· * ·) (rs_cst f' h _) ?_))` and prove the remaining obligations. Use `(congrArg (rs Y' h) (SecOn.coord_pullLE π (preimage_biInf D π s.1).ge (x k s) _)).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `GlobalTheory.LB.resG_appLE π _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_termMap_sum (w : π ≫ f = f' ≫ Spec.map (CommRingCat.ofHom (algebraMap R R')))
     {a : ℕ} (v : Fin a → R') (x : Fin a → (cechLB f M D).X 0)
@@ -128,19 +128,17 @@ namespace GlobalTheory.AbLaw
 open PerfOfModel
 
 /- English proof (translation)
-Introduce `R _ Y f M κ _ _ D K φ hM hc hD ⟨hK, hq⟩`. Use `haveI := fun p => (hK p).1`. Use `haveI := fun p => (hK p).2`. Take `⟨a, b, c, D₀, D₁, u, hcomp, hmat⟩` from `exists_matrices_of_projective_complex R (K.X 0) (K.X 1) (K.X 2) (K.d 0 1).hom (K.d 1 2).hom (LinearMap.ext fun x => cochain_d_d_apply K 0 1 2 x)`. Use `⟨{ a := a, b := b, c := c, D₀ := D₀, D₁ := D₁, comp := hcomp I := κ × M.ι W := fun p => (⨅ i ∈ ({p.1} : Finset κ), D i) ⊓ M.U p.2 ch := fun p => p.2 le := fun _ => inf_le_right cover := ?_ u := fun k p => SecOnR.coord (f := f) ((φ.f 0).hom (u k) ⟨{p.1}, Finset.card_singleton _⟩) …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `:= ?_ }⟩`. Simplify using `only [Finset.iInf_singleton]`. Rewrite using `[iSup_prod]`. Use `top_unique fun y _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hc.ge (Set.mem_univ y))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure.
 
-Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hM.cover.ge (Set.mem_univ y))`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, TopologicalSpace.Opens.mem_iSup.2 ⟨j, hi, hj⟩⟩`. Introduce `R' _ g Y' π f' H`. Use `letI := g.toAlgebra`. Establish `B` using `((termMap_bijOn hM H hD).comp (bijOn_ker_and_exact_of_quasiIso_baseChange R R' K _ φ (hq R')).1).comp (hmat R').1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `S` to `CechOne.secKerEquiv (M.pull π) f' (iSup_preimage π hc)`. Use `⟨(B.equiv _).trans S.symm.toEquiv, fun v p => ?_⟩` and prove the remaining obligations. Establish `hv : (S (S.symm (B.equiv _ v))).1 = termMap M D H.w 0 (∑ k, v.1 k ⊗ₜ[R] (φ.f 0).hom (u k))`. Rewrite using `[S.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `termMap M D H.w 0 ((φ.f 0).hom.baseChange R' (∑ k, v.1 k ⊗ₜ[R] u k)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sum ((φ.f 0).hom.baseChange R')]`. Both sides reduce to the same expression. Establish `hle : π ⁻¹ᵁ ((⨅ i ∈ ({p.1} : Finset κ), D i) ⊓ M.U p.2) ≤ (⨅ i ∈ ({p.1} : Finset κ), π ⁻¹ᵁ D i) ⊓ (M.pull π).U fun _ => p.2` using `le_inf ((π.preimage_mono inf_le_left).trans (preimage_biInf D π _).le) (le_pull M π inf_le_right)`. Use `Eq.trans ?_ (coord_termMap_sum H.w v.1 (fun k => (φ.f 0).hom (u k)) ⟨{p.1}, Finset.card_singleton _⟩ p.2 hle)` and prove the remaining obligations. Rewrite using `[← hv, CechOne.secKerEquiv_val]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(rs_rs inf_le_right hle _).symm`. Introduce `R' _ g Y' π f' H h1`. Use `letI := g.toAlgebra`. Use `(hmat R').2 ((bijOn_ker_and_exact_of_quasiIso_baseChange R R' K _ φ (hq R')).2 (exact_baseChange hM H hD ?_))` and prove the remaining obligations. Rewrite using `[cechLB_d f' _ _ 0, cechLB_d f' _ _ 1]`.
-
-Conclude with `GlobalTheory.Cohom.exact_cech_one_of_h1Zero R' Y' f' _ κ _ (LB.isLB_pull hM π) (iSup_preimage π hc) h1`.
+A detailed English derivation is pending.
 -/
 theorem perf_of_projective_model :
     ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens) (K : CochainComplex (ModuleCat.{0} R) ℕ) (φ : K ⟶ cechLB f M D), M.IsLB → ⨆ i, D i = ⊤ → (∀ I : Finset κ, I.Nonempty → IsAffineOpen (⨅ i ∈ I, D i)) → ((∀ p, Module.Finite R (K.X p) ∧ Module.Projective R (K.X p)) ∧ ∀ (R' : Type) [CommRing R'] [Algebra R R'], QuasiIso (((ModuleCat.extendScalars.{0, 0, 0} (algebraMap R R')).mapHomologicalComplex _).map φ)) → Nonempty (Perf f M) := by

@@ -25,7 +25,7 @@ def finPart (x : Fin 2 → 𝔸[K]) : Fin 2 → 𝔸ᶠ[K] :=
   fun i ↦ (x i).2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPart, Pi.neg_apply, homeomorphMixedSpace_apply]`. Conclude with `map_neg (InfiniteAdeleRing.ringEquiv_mixedSpace K) (x i).1`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem infPart_neg (x : Fin 2 → 𝔸[K]) : infPart (-x) = -infPart x := by
   funext i
@@ -38,7 +38,7 @@ Both sides reduce to the same expression.
 theorem finPart_neg (x : Fin 2 → 𝔸[K]) : finPart (-x) = -finPart x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [infPart, emb2, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem infPart_algebraMap (ξ : Fin 2 → K) :
     infPart (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = emb2 K ξ := by
@@ -46,7 +46,7 @@ theorem infPart_algebraMap (ξ : Fin 2 → K) :
   simp only [infPart, emb2, adeleRing_algebraMap_fst, homeomorphMixedSpace_algebraMap]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [finPart, adeleRing_algebraMap_snd]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem finPart_algebraMap (ξ : Fin 2 → K) :
     finPart (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = fun i ↦ algebraMap K 𝔸ᶠ[K] (ξ i) := by
@@ -66,7 +66,7 @@ Both sides reduce to the same expression.
 theorem splitEquiv_apply (x : Fin 2 → 𝔸[K]) : splitEquiv K x = (infPart x, finPart x) := rfl
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_arrowProdEquivProdArrow _ _ _ (fun _ ↦ infiniteAdeleMeasure K) (fun _ ↦ finiteAdeleMeasure K)).trans ((measurePreserving_pi _ _ fun _ ↦ measurePreserving_measurableEquivMixedSpace K).prod (MeasurePreserving.id _))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_splitEquiv :
     MeasurePreserving (splitEquiv K) (adeleMeasure2 K) ((mixedMeasure2 K).prod (finiteMeasure2 K)) :=
@@ -76,7 +76,7 @@ theorem measurePreserving_splitEquiv :
       (MeasurePreserving.id _))
 
 /- English proof (translation)
-Simplify using `only [Fin.sum_univ_two, AddChar.map_add_eq_mul, Circle.coe_mul, adelicChar_mul_eq, mixedPairing2, neg_add, infPart, finPart]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicChar_sum_mul_eq (x y : Fin 2 → 𝔸[K]) :
     (adelicChar K (∑ i, x i * y i) : ℂ) =
@@ -97,7 +97,7 @@ def schwartzBruhat2 : Submodule ℂ ((Fin 2 → 𝔸[K]) → ℂ) :=
     F = schwartzBruhatTensor2 φ g}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨φ, g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem schwartzBruhatTensor2_mem (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) {g : (Fin 2 → 𝔸ᶠ[K]) → ℂ}
     (hg : g ∈ finiteSchwartzBruhat2 K) : schwartzBruhatTensor2 φ g ∈ schwartzBruhat2 K :=
@@ -110,7 +110,7 @@ theorem schwartzBruhatTensor2_eq (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (g : (
     schwartzBruhatTensor2 φ g = (fun p ↦ φ p.1 * g p.2) ∘ splitEquiv K := rfl
 
 /- English proof (translation)
-Rewrite using `[schwartzBruhatTensor2_eq, measurePreserving_splitEquiv.integrable_comp_emb (splitEquiv K).measurableEmbedding]`. Conclude with `(φ.integrable (μ := mixedMeasure2 K)).mul_prod (integrable_of_mem_finiteSchwartzBruhat2 hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_schwartzBruhatTensor2 (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     {g : (Fin 2 → 𝔸ᶠ[K]) → ℂ} (hg : g ∈ finiteSchwartzBruhat2 K) :
@@ -120,9 +120,9 @@ theorem integrable_schwartzBruhatTensor2 (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)
   exact (φ.integrable (μ := mixedMeasure2 K)).mul_prod (integrable_of_mem_finiteSchwartzBruhat2 hg)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Conclude with `integrable_schwartzBruhatTensor2 φ hg`. Consider the case `zero => exact integrable_zero _ _ _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem integrable_of_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
     Integrable F (adeleMeasure2 K) := by
@@ -140,7 +140,7 @@ def adelicFourier2 (F : (Fin 2 → 𝔸[K]) → ℂ) (y : Fin 2 → 𝔸[K]) : �
   ∫ x, F x * (adelicChar K (∑ i, x i * y i) : ℂ) ∂adeleMeasure2 K
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp ((continuous_adelicChar (K := K)).comp (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_adelicChar_sum_mul (y : Fin 2 → 𝔸[K]) :
     Continuous fun x : Fin 2 → 𝔸[K] ↦ (adelicChar K (∑ i, x i * y i) : ℂ) :=
@@ -148,7 +148,7 @@ theorem continuous_adelicChar_sum_mul (y : Fin 2 → 𝔸[K]) :
     (continuous_finsetSum _ fun i _ ↦ (continuous_apply i).mul continuous_const))
 
 /- English proof (translation)
-The claim follows from `hF.mono (hF.1.mul (continuous_adelicChar_sum_mul y).aestronglyMeasurable) (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_adelicChar2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : Integrable F (adeleMeasure2 K))
     (y : Fin 2 → 𝔸[K]) :
@@ -157,7 +157,7 @@ theorem integrable_mul_adelicChar2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : Integ
     (Eventually.of_forall fun x ↦ by rw [norm_mul, Circle.norm_coe, mul_one])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [adelicFourier2, Pi.add_apply, add_mul]`. Conclude with `integral_add (integrable_mul_adelicChar2 hF y) (integrable_mul_adelicChar2 hG y)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adelicFourier2_add {F G : (Fin 2 → 𝔸[K]) → ℂ} (hF : Integrable F (adeleMeasure2 K))
     (hG : Integrable G (adeleMeasure2 K)) :
@@ -167,7 +167,7 @@ theorem adelicFourier2_add {F G : (Fin 2 → 𝔸[K]) → ℂ} (hF : Integrable 
   exact integral_add (integrable_mul_adelicChar2 hF y) (integrable_mul_adelicChar2 hG y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [adelicFourier2, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adelicFourier2_smul (c : ℂ) (F : (Fin 2 → 𝔸[K]) → ℂ) :
     adelicFourier2 K (c • F) = c • adelicFourier2 K F := by
@@ -176,16 +176,16 @@ theorem adelicFourier2_smul (c : ℂ) (F : (Fin 2 → 𝔸[K]) → ℂ) :
   exact integral_const_mul c _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[adelicFourier2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem adelicFourier2_zero : adelicFourier2 K (0 : (Fin 2 → 𝔸[K]) → ℂ) = 0 := by
   funext y
   simp [adelicFourier2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `h` using `integral_prod_mul (μ := mixedMeasure2 K) (ν := finiteMeasure2 K) (fun u ↦ 𝐞 (-mixedPairing2 K u (infPart y)) • φ u) (fun v ↦ g v * (finiteAdelicChar K (∑ i, v i * finPart y i) : ℂ))`. Establish `e` using `measurePreserving_splitEquiv.integral_comp' (μ := adeleMeasure2 K) (f := splitEquiv K) (fun p : (Fin 2 → mixedSpace K) × (Fin 2 → 𝔸ᶠ[K]) ↦ (𝐞 (-mixedPairing2 K p.1 (infPart y)) • φ p.1) * (g p.2 * (finiteAdelicChar K (∑ i, p.2 i * finPart y i) : ℂ)))`. Rewrite using `[schwartzBruhatTensor2, mixedFourier2Schwartz_apply, mixedFourier2, finiteFourier2, ← h, ← e, adelicFourier2]`. Use `integral_congr_ae (Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [schwartzBruhatTensor2, splitEquiv_apply, adelicChar_sum_mul_eq, Circle.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicFourier2_schwartzBruhatTensor2 (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (g : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
@@ -207,11 +207,9 @@ theorem adelicFourier2_schwartzBruhatTensor2 (φ : 𝓢(Fin 2 → mixedSpace K, 
   ring
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[adelicFourier2_schwartzBruhatTensor2]`. Conclude with `schwartzBruhatTensor2_mem _ (finiteFourier2_mem hg)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => rw [adelicFourier2_zero]`. Conclude with `zero_mem _`. Consider the case `add G H hG hH ihG ihH`. Rewrite using `[adelicFourier2_add (integrable_of_mem_schwartzBruhat2 hG) (integrable_of_mem_schwartzBruhat2 hH)]`. Conclude with `add_mem ihG ihH`.
-
-Consider the case `smul c G _ ih`. Rewrite using `[adelicFourier2_smul]`. Conclude with `Submodule.smul_mem _ c ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelicFourier2_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhat2 K) : adelicFourier2 K F ∈ schwartzBruhat2 K := by
@@ -230,11 +228,11 @@ theorem adelicFourier2_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ}
     exact Submodule.smul_mem _ c ih
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Rewrite using `[adelicFourier2_schwartzBruhatTensor2, adelicFourier2_schwartzBruhatTensor2, finiteFourier2_finiteFourier2 hg]`. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [schwartzBruhatTensor2, mixedFourier2Schwartz_apply]`. Rewrite using `[mixedFourier2_mixedFourier2, infPart_neg, finPart_neg]`. Consider the case `zero => funext x`. Simplify using `[adelicFourier2_zero]`. Consider the case `add G H hG hH ihG ihH`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[adelicFourier2_add (integrable_of_mem_schwartzBruhat2 hG) (integrable_of_mem_schwartzBruhat2 hH), adelicFourier2_add (integrable_of_mem_schwartzBruhat2 (adelicFourier2_mem_schwartzBruhat2 hG)) (integrable_of_mem_schwartzBruhat2 (adelicFourier2_mem_schwartzBruhat2 hH)), ihG, ihH]`. Both sides reduce to the same expression. Consider the case `smul c G _ ih`. Rewrite using `[adelicFourier2_smul, adelicFourier2_smul, ih]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adelicFourier2_adelicFourier2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
     adelicFourier2 K (adelicFourier2 K F) = fun x ↦ F (-x) := by
@@ -258,7 +256,7 @@ theorem adelicFourier2_adelicFourier2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F 
     rfl
 
 /- English proof (translation)
-Rewrite using `[schwartzBruhatTensor2, infPart_algebraMap, finPart_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schwartzBruhatTensor2_algebraMap (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (g : (Fin 2 → 𝔸ᶠ[K]) → ℂ) (ξ : Fin 2 → K) :
@@ -267,7 +265,7 @@ theorem schwartzBruhatTensor2_algebraMap (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)
   rw [schwartzBruhatTensor2, infPart_algebraMap, finPart_algebraMap]
 
 /- English proof (translation)
-Simplify using `only [finiteTensor2, Fin.prod_univ_two, cosetIndicator_apply, algebraMap_sub_mem_idealFiniteAdeles_iff (hc 0), algebraMap_sub_mem_idealFiniteAdeles_iff (hc 1), Set.indicator_apply, coset2, Set.mem_ofPred_eq, Fin.forall_fin_two, Pi.one_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem finiteTensor2_cosetIndicator_algebraMap {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ}
     {b : Fin 2 → 𝔸ᶠ[K]} {c : Fin 2 → K}
@@ -280,9 +278,9 @@ theorem finiteTensor2_cosetIndicator_algebraMap {I : (FractionalIdeal (𝓞 K)�
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Rewrite using `[finiteFourier_cosetIndicator]`. Distinguish the cases in `hη : η ∈ (traceDualIdeal K I : FractionalIdeal (𝓞 K)⁰ K)`. Establish `hη' : algebraMap K 𝔸ᶠ[K] η ∈ idealFiniteAdeles (traceDualIdeal K I)` using `(algebraMap_mem_idealFiniteAdeles_iff _ η).mpr hη`. Rewrite using `[if_pos hη, Set.indicator_of_mem (SetLike.mem_coe.mpr hη'), Pi.one_apply, mul_one]`. Establish `hb : b * algebraMap K 𝔸ᶠ[K] η = algebraMap K 𝔸ᶠ[K] c * algebraMap K 𝔸ᶠ[K] η + (b - algebraMap K 𝔸ᶠ[K] c) * algebraMap K 𝔸ᶠ[K] η` using `by ring`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb, AddChar.map_add_eq_mul, (forall_finiteAdelicChar_mul_eq_one_iff I _).mpr hη' _ hc, mul_one, finiteAdelicChar_algebraMap_mul, mixedTraceForm_comm K (mixedEmbedding K c)]`. Establish `hη' : algebraMap K 𝔸ᶠ[K] η ∉ idealFiniteAdeles (traceDualIdeal K I)` using `fun h ↦ hη ((algebraMap_mem_idealFiniteAdeles_iff _ η).mp h)`. Rewrite using `[if_neg hη, Set.indicator_of_notMem (by simpa using hη'), mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finiteFourier_cosetIndicator_algebraMap {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {b : 𝔸ᶠ[K]}
     {c : K} (hc : b - algebraMap K 𝔸ᶠ[K] c ∈ idealFiniteAdeles I) (η : K) :
@@ -304,7 +302,7 @@ theorem finiteFourier_cosetIndicator_algebraMap {I : (FractionalIdeal (𝓞 K)�
     rw [if_neg hη, Set.indicator_of_notMem (by simpa using hη'), mul_zero, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[adelicFourier2_schwartzBruhatTensor2, schwartzBruhatTensor2_algebraMap, mixedFourier2Schwartz_apply, finiteFourier2_finiteTensor2]`. Simplify using `only [finiteTensor2, Fin.prod_univ_two, finiteFourier_cosetIndicator_algebraMap (hc _), Set.indicator_apply, coset2, Set.mem_ofPred_eq, Fin.forall_fin_two]`. Apply the tactic sequence `split_ifs <;> simp_all [mixedPairing2, emb2, Fin.sum_univ_two, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem adelicFourier2_tensor_cosetIndicator_algebraMap (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     {I : (FractionalIdeal (𝓞 K)⁰ K)ˣ} {b : Fin 2 → 𝔸ᶠ[K]} {c : Fin 2 → K}
@@ -323,7 +321,7 @@ theorem adelicFourier2_tensor_cosetIndicator_algebraMap (φ : 𝓢(Fin 2 → mix
   ring
 
 /- English proof (translation)
-Rewrite using `[finiteAdeleMeasure_idealFiniteAdeles_toReal, Fin.prod_univ_two, Real.coe_sqrt, coe_nnnorm, Int.norm_eq_abs]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finiteAdeleMeasure_idealFiniteAdeles_sq (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) :
     ((finiteAdeleMeasure K (idealFiniteAdeles I)).toReal : ℂ) ^ 2 =
@@ -335,9 +333,9 @@ theorem finiteAdeleMeasure_idealFiniteAdeles_sq (I : (FractionalIdeal (𝓞 K)�
   ring
 
 /- English proof (translation)
-Use `choose c hc using fun i ↦ exists_sub_mem_idealFiniteAdeles I (b i)`. Establish `hF : ∀ ξ : Fin 2 → K, schwartzBruhatTensor2 φ (finiteTensor2 fun i ↦ cosetIndicator I (b i)) (fun i ↦ algebraMap K 𝔸[K] (ξ i)) = (coset2 K (fun _ ↦ I) c).indicator (fun ξ ↦ φ (emb2 K ξ)) ξ`. Introduce `ξ`. Rewrite using `[schwartzBruhatTensor2_algebraMap, finiteTensor2_cosetIndicator_algebraMap hc, Set.indicator_apply, Set.indicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, h3⟩` from `poisson2_coset (fun _ ↦ I) c φ`. Simplify using `only [hF, adelicFourier2_tensor_cosetIndicator_algebraMap φ hc, norm_mul]`. Use `⟨h1, h2.mul_left _, ?_⟩` and prove the remaining obligations. Rewrite using `[tsum_mul_left, h3, finiteAdeleMeasure_idealFiniteAdeles_sq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poisson_tensor_cosetIndicator (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
     (I : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (b : Fin 2 → 𝔸ᶠ[K]) :
@@ -363,7 +361,7 @@ theorem poisson_tensor_cosetIndicator (φ : 𝓢(Fin 2 → mixedSpace K, ℂ))
   rw [tsum_mul_left, h3, finiteAdeleMeasure_idealFiniteAdeles_sq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensor2, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schwartzBruhatTensor2_add (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (g h : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
     schwartzBruhatTensor2 φ (g + h) = schwartzBruhatTensor2 φ g + schwartzBruhatTensor2 φ h := by
@@ -371,7 +369,7 @@ theorem schwartzBruhatTensor2_add (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (g h 
   simp only [schwartzBruhatTensor2, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [schwartzBruhatTensor2, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem schwartzBruhatTensor2_smul (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (a : ℂ)
     (g : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
@@ -381,7 +379,7 @@ theorem schwartzBruhatTensor2_smul (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (a :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[schwartzBruhatTensor2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem schwartzBruhatTensor2_zero (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) :
     schwartzBruhatTensor2 φ (0 : (Fin 2 → 𝔸ᶠ[K]) → ℂ) = 0 := by
@@ -393,11 +391,11 @@ def cosetSpan2 : Submodule ℂ ((Fin 2 → 𝔸[K]) → ℂ) :=
     (b : Fin 2 → 𝔸ᶠ[K]), F = schwartzBruhatTensor2 φ (finiteTensor2 fun i ↦ cosetIndicator I (b i))}
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, g, hg, rfl⟩`. Rewrite `hg` using `[finiteSchwartzBruhat2_eq_span]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem h hh`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨⟨I, b⟩, rfl⟩` from `hh`. Conclude with `Submodule.subset_span ⟨φ, I, b, rfl⟩`. Consider the case `zero => rw [schwartzBruhatTensor2_zero]`. Conclude with `zero_mem _`. Consider the case `add g h _ _ ihg ihh => rw [schwartzBruhatTensor2_add]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Assume the hypotheses and unpack their components.
 
-Conclude with `add_mem ihg ihh`. Consider the case `smul a g _ ih => rw [schwartzBruhatTensor2_smul]`. Conclude with `Submodule.smul_mem _ a ih`. Introduce and unpack `_ ⟨φ, I, b, rfl⟩`. Conclude with `schwartzBruhatTensor2_mem φ (finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat I (b i))`.
+A detailed English derivation is pending.
 -/
 theorem schwartzBruhat2_eq_cosetSpan2 : schwartzBruhat2 K = cosetSpan2 (K := K) := by
   refine le_antisymm (Submodule.span_le.mpr ?_) (Submodule.span_le.mpr ?_)
@@ -414,13 +412,13 @@ theorem schwartzBruhat2_eq_cosetSpan2 : schwartzBruhat2 K = cosetSpan2 (K := K) 
     exact schwartzBruhatTensor2_mem φ (finiteTensor2_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat I (b i))
 
 /- English proof (translation)
-Establish `hsub : cosetSpan2 (K` using `K) ≤ schwartzBruhat2 K := (schwartzBruhat2_eq_cosetSpan2).ge`. Rewrite `hF` using `[schwartzBruhat2_eq_cosetSpan2]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, I, b, rfl⟩` from `hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `poisson_tensor_cosetIndicator φ I b`. Consider the case `zero => simp [adelicFourier2_zero]`. Consider the case `add G H hG hH ihG ihH`. Rewrite using `[adelicFourier2_add (integrable_of_mem_schwartzBruhat2 (hsub hG)) (integrable_of_mem_schwartzBruhat2 (hsub hH))]`. Use `⟨(ihG.1.add ihH.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, (ihG.2.1.add ihH.2.1).of_nonneg_of_le (fun _ ↦ norm_nonneg _) fun ξ ↦ norm_add_le _ _, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply]`. Rewrite using `[ihG.1.of_norm.tsum_add ihH.1.of_norm, ihG.2.1.of_norm.tsum_add ihH.2.1.of_norm, ihG.2.2, ihH.2.2]`. Consider the case `smul a G hG ih`. Rewrite using `[adelicFourier2_smul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨ih.1.mul_left _, ih.2.1.mul_left _, by rw [tsum_mul_left, tsum_mul_left, ih.2.2]⟩`.
+A detailed English derivation is pending.
 -/
 theorem poisson_of_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
     Summable (fun ξ : Fin 2 → K ↦ ‖F (fun i ↦ algebraMap K 𝔸[K] (ξ i))‖) ∧
@@ -453,7 +451,7 @@ def infRingHom : 𝔸[K] →+* mixedSpace K :=
 def finRingHom : 𝔸[K] →+* 𝔸ᶠ[K] := RingHom.snd _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_vecMul infRingHom g x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem infPart_vecMul (x : Fin 2 → 𝔸[K]) (g : Matrix (Fin 2) (Fin 2) 𝔸[K]) :
     infPart (x ᵥ* g) = infPart x ᵥ* g.map infRingHom := by
@@ -461,7 +459,7 @@ theorem infPart_vecMul (x : Fin 2 → 𝔸[K]) (g : Matrix (Fin 2) (Fin 2) 𝔸[
   exact RingHom.map_vecMul infRingHom g x i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_vecMul finRingHom g x i`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem finPart_vecMul (x : Fin 2 → 𝔸[K]) (g : Matrix (Fin 2) (Fin 2) 𝔸[K]) :
     finPart (x ᵥ* g) = finPart x ᵥ* g.map finRingHom := by
@@ -508,9 +506,9 @@ theorem rightTranslate_smul (g : GL (Fin 2) 𝔸[K]) (a : ℂ) (F : (Fin 2 → �
     rightTranslate g (a • F) = a • rightTranslate g F := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `h1 : ((Matrix.GeneralLinearGroup.map infRingHom g : GL (Fin 2) (mixedSpace K)) : Matrix (Fin 2) (Fin 2) (mixedSpace K)) = (g : Matrix (Fin 2) (Fin 2) 𝔸[K]).map infRingHom`. Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Establish `h2 : ((Matrix.GeneralLinearGroup.map finRingHom g : GL (Fin 2) 𝔸ᶠ[K]) : Matrix (Fin 2) (Fin 2) 𝔸ᶠ[K]) = (g : Matrix (Fin 2) (Fin 2) 𝔸[K]).map finRingHom`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Matrix.ext fun i j ↦ ?_` and prove the remaining obligations. Rewrite using `[Matrix.GeneralLinearGroup.map_apply, Matrix.map_apply]`. Simplify using `only [rightTranslate, schwartzBruhatTensor2, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, vecMulCLE_apply, h1, h2, infPart_vecMul, finPart_vecMul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rightTranslate_schwartzBruhatTensor2 (g : GL (Fin 2) 𝔸[K])
     (φ : 𝓢(Fin 2 → mixedSpace K, ℂ)) (h : (Fin 2 → 𝔸ᶠ[K]) → ℂ) :
@@ -533,9 +531,9 @@ theorem rightTranslate_schwartzBruhatTensor2 (g : GL (Fin 2) 𝔸[K])
     Function.comp_apply, vecMulCLE_apply, h1, h2, infPart_vecMul, finPart_vecMul]
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, h, hh, rfl⟩` from `hG`. Rewrite using `[rightTranslate_schwartzBruhatTensor2]`. Conclude with `schwartzBruhatTensor2_mem _ (comp_vecMul_mem_finiteSchwartzBruhat2 _ hh)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ ihG ihH => rw [rightTranslate_add]`. Conclude with `add_mem ihG ihH`. Consider the case `smul a G _ ih => rw [rightTranslate_smul]`. Conclude with `Submodule.smul_mem _ a ih`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rightTranslate_mem_schwartzBruhat2 (g : GL (Fin 2) 𝔸[K]) {F : (Fin 2 → 𝔸[K]) → ℂ}
     (hF : F ∈ schwartzBruhat2 K) : rightTranslate g F ∈ schwartzBruhat2 K := by
@@ -549,7 +547,7 @@ theorem rightTranslate_mem_schwartzBruhat2 (g : GL (Fin 2) 𝔸[K]) {F : (Fin 2 
   | smul a G _ ih => rw [rightTranslate_smul]; exact Submodule.smul_mem _ a ih
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(x ᵥ* A) ⬝ᵥ y = x ⬝ᵥ (y ᵥ* Aᵀ)`. Rewrite using `[vecMul_transpose, dotProduct_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_vecMul_mul (x y : Fin 2 → 𝔸[K]) (A : Matrix (Fin 2) (Fin 2) 𝔸[K]) :
     ∑ i, (x ᵥ* A) i * y i = ∑ i, x i * (y ᵥ* Aᵀ) i := by
@@ -557,9 +555,9 @@ theorem sum_vecMul_mul (x y : Fin 2 → 𝔸[K]) (A : Matrix (Fin 2) (Fin 2) �
   rw [vecMul_transpose, dotProduct_mulVec]
 
 /- English proof (translation)
-Use `set A : Matrix (Fin 2) (Fin 2) 𝔸[K] := ((g⁻¹ : GL (Fin 2) 𝔸[K]) : Matrix (Fin 2) (Fin 2) 𝔸[K])`. Establish `h` using `integral_comp_vecMul g (fun z ↦ F z * (adelicChar K (∑ i, (z ᵥ* A) i * y i) : ℂ))`. Establish `hgA : (g : Matrix (Fin 2) (Fin 2) 𝔸[K]) * A = 1`. Simplify using `only [A, Units.mul_inv]`. Simplify using `only [vecMul_vecMul, hgA, vecMul_one, sum_vecMul_mul] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adelicFourier2, adelicFourier2]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem adelicFourier2_rightTranslate (g : GL (Fin 2) 𝔸[K]) (F : (Fin 2 → 𝔸[K]) → ℂ)
     (y : Fin 2 → 𝔸[K]) :
@@ -575,9 +573,9 @@ theorem adelicFourier2_rightTranslate (g : GL (Fin 2) 𝔸[K]) (F : (Fin 2 → �
   exact h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `poisson_of_mem_schwartzBruhat2 (rightTranslate_mem_schwartzBruhat2 g hF)`. Simplify using `only [adelicFourier2_rightTranslate, norm_mul, rightTranslate_apply] at h1 h2 h3`. Establish `hc : ‖(((IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det g) : ℝ))⁻¹ : ℂ)‖ ≠ 0`. Rewrite using `[norm_ne_zero_iff]`. Conclude with `inv_ne_zero (Complex.ofReal_ne_zero.mpr (IdeleGroup.ideleModule K (Matrix.GeneralLinearGroup.det g)).2.ne')`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, (summable_mul_left_iff hc).mp h2, ?_⟩` and prove the remaining obligations. Rewrite using `[h3, tsum_mul_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poisson_rightTranslate {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K)
     (g : GL (Fin 2) 𝔸[K]) :
@@ -600,7 +598,7 @@ theorem poisson_rightTranslate {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ sch
   rw [h3, tsum_mul_left]
 
 /- English proof (translation)
-The claim follows from `(poisson_rightTranslate hF g).2.2`.
+A detailed English derivation is pending.
 -/
 theorem tsum_rightTranslate_eq {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K)
     (g : GL (Fin 2) 𝔸[K]) :
@@ -611,22 +609,22 @@ theorem tsum_rightTranslate_eq {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ sch
   (poisson_rightTranslate hF g).2.2
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i ↦ (homeomorphMixedSpace K).continuous.comp (continuous_fst.comp (continuous_apply i))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_infPart : Continuous (infPart (K := K)) :=
   continuous_pi fun i ↦ (homeomorphMixedSpace K).continuous.comp
     (continuous_fst.comp (continuous_apply i))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i ↦ continuous_snd.comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finPart : Continuous (finPart (K := K)) :=
   continuous_pi fun i ↦ continuous_snd.comp (continuous_apply i)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Conclude with `(φ.continuous.comp continuous_infPart).mul (((mem_finiteSchwartzBruhat2 K).mp hg).1.continuous.comp continuous_finPart)`. Consider the case `zero => exact continuous_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add G H _ _ hG hH => exact hG.add hH`. Consider the case `smul c G _ hG => exact hG.const_smul c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_of_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
     Continuous F := by
@@ -640,15 +638,15 @@ theorem continuous_of_mem_schwartzBruhat2 {F : (Fin 2 → 𝔸[K]) → ℂ} (hF 
   | smul c G _ hG => exact hG.const_smul c
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Use `set L : mixedSpace K →L[ℝ] (Fin 2 → mixedSpace K) := ContinuousLinearMap.single ℝ (fun _ : Fin 2 ↦ mixedSpace K) 1`. Establish `hL : ∀ u, L u = Pi.single 1 u` using `fun u ↦ rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ' : 𝓢(mixedSpace K, ℂ) := SchwartzMap.compCLM ℂ L.hasTemperateGrowth ⟨1, 1, fun u ↦ by rw [hL, Pi.norm_single, one_mul, pow_one]; linarith⟩ φ`. Establish `hφ' : ∀ u, φ' u = φ (Pi.single 1 u)` using `fun u ↦ rfl`. Establish `hcl : Topology.IsClosedEmbedding (fun v : 𝔸ᶠ[K] ↦ ![0, v])` using `Function.LeftInverse.isClosedEmbedding (f := fun x : Fin 2 → 𝔸ᶠ[K] ↦ x 1) (fun v ↦ rfl) (continuous_apply 1) (continuous_pi (Fin.forall_fin_two.mpr ⟨continuous_const, continuous_id⟩))`. Establish `hg' : (fun v : 𝔸ᶠ[K] ↦ g ![0, v]) ∈ finiteSchwartzBruhat K`. Take `⟨hlc, hcs⟩` from `(mem_finiteSchwartzBruhat2 K).mp hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `⟨hlc.comp_continuous hcl.continuous, hcs.comp_isClosedEmbedding hcl⟩`. Use `schwartzBruhatTensor_mem φ' hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [schwartzBruhatTensor2, schwartzBruhatTensor, hφ']`. Use `congr 2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i fin_cases i`. Simplify using `only [infPart, Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[Pi.single_eq_of_ne (by decide)]`. Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace K)`. Simplify using `[infPart]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Apply the tactic sequence `funext i fin_cases i <;> rfl`. Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul c G _ hG => exact Submodule.smul_mem _ c hG`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem slice_mem_schwartzBruhat {F : (Fin 2 → 𝔸[K]) → ℂ} (hF : F ∈ schwartzBruhat2 K) :
     (fun t : 𝔸[K] ↦ F ![0, t]) ∈ schwartzBruhat K := by

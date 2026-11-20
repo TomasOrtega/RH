@@ -15,9 +15,9 @@ open Formalism.DivisionValues (vw lw)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single i]`. Conclude with `Finsupp.mapDomain_apply (fun a b h => (Prod.mk.inj h).2) _ _`. Introduce `j _ hj`. Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨y, hy⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hj (Prod.mk.inj hy).1`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 private theorem sum_map_apply {ι σ : Type} [Fintype ι] (m : ι → σ →₀ ℕ) (i : ι) (x : σ) :
     (∑ j, Finsupp.mapDomain (fun v : σ => (j, v)) (m j)) (i, x) = m i x := by
@@ -32,7 +32,7 @@ private theorem sum_map_apply {ι σ : Type} [Fintype ι] (m : ι → σ →₀ 
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Establish `h` using `MvPowerSeries.coeff_prod (fun j => (f j : MvPowerSeries σ C)) d s`. Establish `hp : ((∏ j ∈ s, f j : MvPolynomial σ C) : MvPowerSeries σ C) = ∏ j ∈ s, (f j : MvPowerSeries σ C)` using `map_prod (MvPolynomial.coeToMvPowerSeries.ringHom (σ := σ) (R := C)) f s`. Rewrite `h` using `[← hp]`. Simplify `h` using `only [MvPolynomial.coeff_coe]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coeff_prod' {ι σ C : Type} [DecidableEq ι] [DecidableEq σ] [CommRing C] (f : ι → MvPolynomial σ C)
     (d : σ →₀ ℕ) (s : Finset ι) :
@@ -44,21 +44,17 @@ private theorem coeff_prod' {ι σ C : Type} [DecidableEq ι] [DecidableEq σ] [
   simpa only [MvPolynomial.coeff_coe] using h
 
 /- English proof (translation)
-Use `set D := ∑ j, Finsupp.mapDomain (fun v : σ => (j, v)) (m j) with hD`. Establish `inj : ∀ j : ι, Function.Injective (fun v : σ => (j, v))` using `fun j a b h => (Prod.mk.inj h).2`. Rewrite using `[coeff_prod', Finset.sum_eq_single (Finsupp.equivFunOnFinite.symm fun j => Finsupp.mapDomain (fun v : σ => (j, v)) (m j))]`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `MvPolynomial.coeff_rename_mapDomain _ (inj j) _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `l hl hne`. Assume the negation of the conclusion as `hprod`. Apply `hne` to reduce the goal to its premises. Establish `hu : ∀ k, ∃ u : σ →₀ ℕ, Finsupp.mapDomain (fun v : σ => (k, v)) u = l k`. Introduce `k`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hk`. Use `push_neg at hk`. Apply `hprod` to reduce the goal to its premises. Apply `Finset.prod_eq_zero (Finset.mem_univ k)` to reduce the goal to its premises. Apply `MvPolynomial.coeff_rename_eq_zero` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `u hu'`. Conclude with `absurd hu' (hk u)`. Use `choose u hu using hu`. Establish `hsum : ∑ k, Finsupp.mapDomain (fun v : σ => (k, v)) (u k) = D`. Rewrite `hl` using `[Finset.mem_finsuppAntidiag]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [hu]`. Conclude with `hl.1`. Establish `hum : u = m`. Use function extensionality and compare the values at `k`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hx` using `congrArg (fun F => F (k, x)) hsum`. Simplify using `only [hD, sum_map_apply] at hx`. Conclude with `hx`. Use `ext1 k`. Use `show l k = Finsupp.mapDomain (fun v : σ => (k, v)) (m k)`.
-
-Rewrite using `[← hu k, hum]`. Introduce `h`. It suffices to derive a contradiction. Apply `h` to reduce the goal to its premises. Rewrite using `[Finset.mem_finsuppAntidiag]`.
-
-Use `⟨?_, Finset.subset_univ _⟩` and prove the remaining obligations. Use `show ∑ k ∈ Finset.univ, Finsupp.mapDomain (fun v : σ => (k, v)) (m k) = D`. Rewrite using `[hD]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_prod_ren {ι σ C : Type} [Fintype ι] [CommRing C] (m : ι → σ →₀ ℕ)
     (G : ι → MvPolynomial σ C) :
@@ -107,15 +103,15 @@ private theorem coeff_prod_ren {ι σ C : Type} [Fintype ι] [CommRing C] (m : �
     rw [hD]
 
 /- English proof (translation)
-It suffices to establish `key : ∀ n, ∀ j, (Finset.univ.filter fun i => e j < e i).card = n → c j ∈ S from key _ j rfl`. Introduce `n`. Use `Nat.strong_induction_on n fun n ih => ?_` and prove the remaining obligations. Introduce `j hj`. Establish `hrest : ∀ i ∈ Finset.univ.erase j, c i * A i j ∈ S`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i hi`. Distinguish the cases in `h0 : A i j = 0`. Rewrite using `[h0, mul_zero]`. Conclude with `S.zero_mem`. Establish `hlt : e j < e i` using `lt_of_le_of_ne (hle i j h0) (fun h => (Finset.ne_of_mem_erase hi) (he h).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `S.mul_mem ?_ (hA i j)` and prove the remaining obligations. Use `ih _ ?_ i rfl` and prove the remaining obligations. Rewrite using `[← hj]`. Apply `Finset.card_lt_card` to reduce the goal to its premises. Use `(Finset.ssubset_iff_of_subset ?_).mpr ⟨i, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hk ⊢`. Conclude with `lt_trans hlt hk`. Simplify using `[hlt]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum` using `hc j`. Rewrite `hsum` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ j), h1, mul_one]`. Establish `hfin` using `S.sub_mem hsum (sum_mem hrest)`. Simplify using `using hfin`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem unitri {I P C : Type} [Fintype I] [PartialOrder P] [CommRing C] (S : Subring C) (e : I → P)
     (he : Function.Injective e) (A : I → I → C) (c : I → C) (hA : ∀ i j, A i j ∈ S) (h1 : ∀ i, A i i = 1)
@@ -148,31 +144,27 @@ private theorem unitri {I P C : Type} [Fintype I] [PartialOrder P] [CommRing C] 
   simpa using hfin
 
 /- English proof (translation)
-Introduce `ι _ b lam v hv i`. Set `L : VVIdx lam → (ι × Fin b × Fin b →₀ ℕ)` to `fun j => ∑ τ, Finsupp.mapDomain (fun x : Fin b × Fin b => (τ, x)) ((j τ : Fin b × Fin b →₀ ℕ))`. Set `A : VVIdx lam → VVIdx lam → ℂ` to `fun i j => MvPolynomial.coeff (L j) (bVVfun ℂ lam i)`. Set `e : VVIdx lam → (ι → (Formalism.GradedWeylDivisibility.colLex b b).syn)` to `fun i τ => (Formalism.GradedWeylDivisibility.colLex b b).toSyn ((i τ : Fin b × Fin b →₀ ℕ))`. Establish `hspec : ∀ {n : ℕ} (ν : Fin n → ℕ) (m : Formalism.GradedWeylDivisibility.ssIdx n n ν), (Formalism.GradedWeylDivisibility.colLex n n).degree (ssB ℂ ν m) = m ∧ (Formalism.GradedWeylDivisibility.colLex n n).leadingCoeff (ssB ℂ ν m) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `n ν m`. Establish `h` using `(Formalism.L2.DIV.ssB._proof_1 ℂ ν).choose_spec.2 m`. Conclude with `⟨h.1, h.2.1⟩`. Establish `hAprod : ∀ i j, A i j = ∏ τ, MvPolynomial.coeff (j τ : Fin b × Fin b →₀ ℕ) (ssB ℂ (lam τ).natW (i τ))`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `coeff_prod_ren (fun τ => (j τ : Fin b × Fin b →₀ ℕ)) (fun τ => ssB ℂ (lam τ).natW (i τ))`. Establish `hdiag : ∀ i, A i i = 1`. Introduce `i`. Rewrite using `[hAprod]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ _`. Establish `h` using `hspec (lam τ).natW (i τ)`. Simplify `h.2` using `[MonomialOrder.leadingCoeff, h.1]`. Establish `hexp : (v : Pol ℂ ι b) = ∑ k ∈ ((bVV ℂ lam).repr v).support, ((bVV ℂ lam).repr v k) • bVVfun ℂ lam k`. Establish `h0` using `(bVV ℂ lam).linearCombination_repr v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Finsupp.linearCombination_apply, Finsupp.sum]`. Use `conv_lhs => rw [← h0]`. Rewrite using `[Submodule.coe_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, bVV_coe]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hi : i ∈ ((bVV ℂ lam).repr v).support`. Use `swap`. Simplify using `only [Finsupp.mem_support_iff, not_not] at hi`. Conclude with `⟨0, by simp [hi]⟩`. Establish `key : (bVV ℂ lam).repr v i ∈ (Int.castRingHom ℂ).range`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `unitri (I := {x // x ∈ ((bVV ℂ lam).repr v).support}) (Int.castRingHom ℂ).range (fun x => e x.1) ?_ (fun x y => A x.1 y.1) (fun x => (bVV ℂ lam).repr v x.1) ?_ ?_ ?_ ?_ ⟨i, hi⟩` and prove the remaining obligations. Introduce `x y hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Formalism.GradedWeylDivisibility.colLex b b).toSyn.injective (congrFun hxy τ)`. Introduce `x y`. Take `⟨P, hP⟩` from `bVVfun_int ℂ lam x.1`. Use `RingHom.mem_range.mpr ⟨MvPolynomial.coeff (L y.1) P, ?_⟩` and prove the remaining obligations. Use `show _ = MvPolynomial.coeff (L y.1) (bVVfun ℂ lam x.1)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP, MvPolynomial.coeff_map]`. Introduce `x`. Conclude with `hdiag x.1`. Introduce `x y hxy τ`. Establish `hne : ∀ τ ∈ Finset.univ, MvPolynomial.coeff (y.1 τ : Fin b × Fin b →₀ ℕ) (ssB ℂ (lam τ).natW (x.1 τ)) ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.prod_ne_zero_iff, ← hAprod]`. Conclude with `hxy`. Establish `hd` using `(Formalism.GradedWeylDivisibility.colLex b b).le_degree (MvPolynomial.mem_support_iff.mpr (hne τ (Finset.mem_univ τ)))`. Rewrite `hd` using `[(hspec (lam τ).natW (x.1 τ)).1]`. Conclude with `hd`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Establish `hcoef : MvPolynomial.coeff (L j.1) (v : Pol ℂ ι b) = ∑ x : {x // x ∈ ((bVV ℂ lam).repr v).support}, (bVV ℂ lam).repr v x.1 * A x.1 j.1`. Rewrite using `[hexp, MvPolynomial.coeff_sum, ← Finset.sum_coe_sort]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rw [MvPolynomial.coeff_smul, smul_eq_mul] <;> rfl`.
-
-Use `show ∑ x : {x // x ∈ ((bVV ℂ lam).repr v).support}, (bVV ℂ lam).repr v x.1 * A x.1 j.1 ∈ _`. Rewrite using `[← hcoef]`. Take `⟨z, hz⟩` from `hv (L j.1)`. Conclude with `RingHom.mem_range.mpr ⟨z, by simp [hz]⟩`. Take `⟨z, hz⟩` from `RingHom.mem_range.mp key`.
-
-Conclude with `⟨z, by simpa using hz.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.WildA.bvvInt :
     ∀ {ι : Type} [Fintype ι] {b : ℕ} (lam : ι → DomWeight b) (v : VV ℂ lam),

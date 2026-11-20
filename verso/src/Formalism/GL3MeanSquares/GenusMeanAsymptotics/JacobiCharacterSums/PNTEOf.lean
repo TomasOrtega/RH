@@ -9,19 +9,19 @@ namespace Formalism.HermitianLattices.Ext.PrimesInProgressions
 open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-The claim follows from `lt_min (Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).1 (by norm_num)`.
+A detailed English derivation is pending.
 -/
 theorem cZ_pos : 0 < cZ :=
   lt_min (Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet).1 (by norm_num)
 
 /- English proof (translation)
-The claim follows from `min_le_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem cZ_le : cZ ≤ 1 / 20 :=
   min_le_right _ _
 
 /- English proof (translation)
-Unfold `InRegion at hs ⊢`. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hlog : 0 < Real.log ((q : ℝ) * (|s.im| + 2))` using `Real.log_pos (by nlinarith [abs_nonneg s.im])`. Establish `h1 : c / Real.log ((q : ℝ) * (|s.im| + 2)) ≤ c' / Real.log ((q : ℝ) * (|s.im| + 2))` using `div_le_div_of_nonneg_right hc hlog.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem inRegion_mono {c c' : ℝ} (hc : c ≤ c') (q : ℕ) [NeZero q] (s : ℂ) (hs : InRegion c q s) :
     InRegion c' q s := by
@@ -34,7 +34,7 @@ theorem inRegion_mono {c c' : ℝ} (hc : c ≤ c') (q : ℕ) [NeZero q] (s : ℂ
   linarith
 
 /- English proof (translation)
-Establish `hZ` using `Classical.choose_spec Formalism.ZeroFreeDirichlet.zFRDirichlet`. Establish `hle : cZ ≤ Classical.choose Formalism.ZeroFreeDirichlet.zFRDirichlet` using `min_le_left _ _`. Take `⟨h1, h2, h3, h4, h5⟩` from `hZ.2 q χ s (inRegion_mono hle q s hs) hz`. Conclude with `⟨h1, h2, h3, h4, fun χ' s' hs' hz' => h5 χ' s' (inRegion_mono hle q s' hs') hz'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zfr_cZ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) (hs : InRegion cZ q s)
     (hz : IsLZero χ s) :
@@ -46,7 +46,7 @@ theorem zfr_cZ (q : ℕ) [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) (h
   exact ⟨h1, h2, h3, h4, fun χ' s' hs' hz' => h5 χ' s' (inRegion_mono hle q s' hs') hz'⟩
 
 /- English proof (translation)
-Unfold `eOf`. Use `split_ifs with h h'`. Conclude with `Or.inl ⟨h.choose, rfl, h.choose_spec.1, h.choose_spec.2⟩`. Conclude with `Or.inr (Or.inl ⟨h'.choose, rfl, h'.choose_spec, fun p' hp' hr => h ⟨p', hp', hr⟩⟩)`. Conclude with `Or.inr (Or.inr ⟨rfl, fun p' hp' => h' ⟨p', hp'⟩⟩)`.
+Replace the relevant objects with their definitions. Prove the first alternative. Prove the second alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem eOf_cases (M : ℕ) [NeZero M] :
     (∃ p : DirichletCharacter ℂ M × ℝ, eOf M = some p ∧ IsExcPair p.1 p.2 ∧ InRegion cZ M (p.2 : ℂ)) ∨
@@ -60,9 +60,9 @@ theorem eOf_cases (M : ℕ) [NeZero M] :
   · exact Or.inr (Or.inr ⟨rfl, fun p' hp' => h' ⟨p', hp'⟩⟩)
 
 /- English proof (translation)
-Break down `eOf_cases M with ⟨q, hq, hex, _⟩ | ⟨q, hq, hex, _⟩ | ⟨hn, _⟩` into its components or cases. Rewrite `hq` using `[h]`. Consider the cases of `hq`. Conclude with `hex`. Rewrite `hq` using `[h]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hq`. Conclude with `hex`. Rewrite `hn` using `[h]`. Consider the cases of `hn`.
+Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem eOf_exc (M : ℕ) [NeZero M] (p : DirichletCharacter ℂ M × ℝ) (h : eOf M = some p) :
     IsExcPair p.1 p.2 := by
@@ -77,9 +77,9 @@ theorem eOf_exc (M : ℕ) [NeZero M] (p : DirichletCharacter ℂ M × ℝ) (h : 
     cases hn
 
 /- English proof (translation)
-Break down `eOf_cases M with ⟨q, hq, _, _⟩ | ⟨q, hq, _, _⟩ | ⟨_, hno⟩` into its components or cases. Rewrite `hq` using `[h]`. Consider the cases of `hq`. Rewrite `hq` using `[h]`. Consider the cases of `hq`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Conclude with `hno (χ₁, β₁)`.
+A detailed English derivation is pending.
 -/
 theorem eOf_none (M : ℕ) [NeZero M] (h : eOf M = none) (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) :
     ¬ IsExcPair χ₁ β₁ := by
@@ -91,7 +91,7 @@ theorem eOf_none (M : ℕ) [NeZero M] (h : eOf M = none) (χ₁ : DirichletChara
   · exact hno (χ₁, β₁)
 
 /- English proof (translation)
-Unfold `InRegion`. Rewrite using `[Complex.ofReal_im, Complex.ofReal_re, abs_zero, zero_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inRegion_ofReal (c : ℝ) (q : ℕ) (β : ℝ) :
     InRegion c q (β : ℂ) ↔ 1 - c / Real.log ((q : ℝ) * 2) ≤ β := by
@@ -99,7 +99,7 @@ theorem inRegion_ofReal (c : ℝ) (q : ℕ) (β : ℝ) :
   rw [Complex.ofReal_im, Complex.ofReal_re, abs_zero, zero_add]
 
 /- English proof (translation)
-Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Rewrite using `[Real.log_mul (by positivity) (by norm_num)]`. Establish `h1 : Real.log 2 ≤ Real.log M` using `Real.log_le_log (by norm_num) hM'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_two_mul_le (M : ℕ) (hM : 2 ≤ M) : Real.log ((M : ℝ) * 2) ≤ 2 * Real.log M := by
   have hM' : (2 : ℝ) ≤ M := by exact_mod_cast hM
@@ -108,18 +108,18 @@ theorem log_two_mul_le (M : ℕ) (hM : 2 ≤ M) : Real.log ((M : ℝ) * 2) ≤ 2
   linarith
 
 /- English proof (translation)
-Apply `Real.log_pos` to reduce the goal to its premises. Conclude with `(show 1 < M by omega)` after adjusting the coercions.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem log_pos_of_two_le (M : ℕ) (hM : 2 ≤ M) : 0 < Real.log M := by
   apply Real.log_pos
   exact_mod_cast (show 1 < M by omega)
 
 /- English proof (translation)
-Use `⟨h2, h1, hz, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[inRegion_ofReal]`. Establish `hlogM` using `log_pos_of_two_le M hM`. Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlogge : Real.log M ≤ Real.log ((M : ℝ) * 2)` using `Real.log_le_log (by positivity) (by nlinarith)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcz` using `cZ_le`. Establish `hcz0` using `cZ_pos`. Establish `hlog2pos : 0 < Real.log ((M : ℝ) * 2)` using `lt_of_lt_of_le hlogM hlogge`. Establish `h3 : cZ / Real.log ((M : ℝ) * 2) < 1 / (8 * Real.log M)`. Rewrite using `[div_lt_div_iff₀ hlog2pos (by positivity)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcz hlogM.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion as `hge push_neg at hge`. Conclude with `DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl h1) (by simpa using hge) hz`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isExcPair_of_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharacter ℂ M) (β : ℝ)
     (h2 : χ ^ 2 = 1) (h1 : χ ≠ 1) (hz : DirichletCharacter.LFunction χ (β : ℂ) = 0)
@@ -141,11 +141,11 @@ theorem isExcPair_of_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletC
     exact DirichletCharacter.LFunction_ne_zero_of_one_le_re χ (Or.inl h1) (by simpa using hge) hz
 
 /- English proof (translation)
-Take `⟨h2, h1, him, hder, huniq⟩` from `zfr_cZ M χ s hs hz`. Establish `hs' : s = ((s.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [him])`. Establish `hzr : DirichletCharacter.LFunction χ ((s.re : ℝ) : ℂ) = 0` using `by rw [← hs']; exact hz.2`. Establish `hrr : InRegion cZ M ((s.re : ℝ) : ℂ)` using `by rw [← hs']; exact hs`. Establish `hex : IsExcPair χ s.re` using `isExcPair_of_region M hM χ s.re h2 h1 hzr hrr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `eOf_cases M with ⟨p, hp, hpex, hpr⟩ | ⟨p, hp, hpex, hno⟩ | ⟨hn, hno⟩` into its components or cases. Establish `hz' : IsLZero p.1 (p.2 : ℂ)` using `⟨Or.inl hpex.2.1, hpex.2.2.1⟩`. Take `⟨e1, e2⟩` from `huniq p.1 (p.2 : ℂ) hpr hz'`. Use `⟨p.2, ?_, e2.symm, hder⟩` and prove the remaining obligations. Rewrite using `[hp, ← e1]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hrr (hno (χ, s.re) hex)`. Conclude with `absurd hex (hno (χ, s.re))`.
+A detailed English derivation is pending.
 -/
 theorem zero_in_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharacter ℂ M) (s : ℂ)
     (hs : InRegion cZ M s) (hz : IsLZero χ s) :
@@ -164,7 +164,7 @@ theorem zero_in_region (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ : DirichletCharac
   · exact absurd hex (hno (χ, s.re))
 
 /- English proof (translation)
-Unfold `etaOf`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaOf_some (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) (h : eOf M = some (χ₁, β₁)) :
     etaOf M = min 1 ((1 - β₁) * Real.log M) := by
@@ -172,16 +172,14 @@ theorem etaOf_some (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β�
   rw [h]
 
 /- English proof (translation)
-Unfold `etaOf`. Rewrite using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem etaOf_none (M : ℕ) [NeZero M] (h : eOf M = none) : etaOf M = 1 := by
   unfold etaOf
   rw [h]
 
 /- English proof (translation)
-Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Conclude with `one_pos`. Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Establish `hex` using `eOf_exc M (χ₁, β₁) hE`.
-
-Conclude with `lt_min one_pos (mul_pos (by linarith [hex.2.2.2.2]) (log_pos_of_two_le M hM))`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etaOf_pos (M : ℕ) [NeZero M] (hM : 2 ≤ M) : 0 < etaOf M := by
   rcases hE : eOf M with _ | ⟨χ₁, β₁⟩
@@ -192,7 +190,7 @@ theorem etaOf_pos (M : ℕ) [NeZero M] (hM : 2 ≤ M) : 0 < etaOf M := by
     exact lt_min one_pos (mul_pos (by linarith [hex.2.2.2.2]) (log_pos_of_two_le M hM))
 
 /- English proof (translation)
-Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Conclude with `min_le_left _ _`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaOf_le_one (M : ℕ) [NeZero M] : etaOf M ≤ 1 := by
   rcases hE : eOf M with _ | ⟨χ₁, β₁⟩
@@ -201,13 +199,13 @@ theorem etaOf_le_one (M : ℕ) [NeZero M] : etaOf M ≤ 1 := by
     exact min_le_left _ _
 
 /- English proof (translation)
-Take `⟨c, hc, hb⟩` from `Formalism.ZeroFreeDirichlet.excBound ε hε`. Use `⟨min 1 (c * Real.log 3), lt_min one_pos (mul_pos hc (Real.log_pos (by norm_num))), fun M _ hM => ?_⟩` and prove the remaining obligations. Establish `hM1 : (1 : ℝ) ≤ M` using `by exact_mod_cast (show 1 ≤ M by omega)`. Establish `hpow : (M : ℝ) ^ (-ε) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos hM1 (by linarith)`. Establish `hpow0 : 0 < (M : ℝ) ^ (-ε)` using `Real.rpow_pos_of_pos (by linarith) _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle1 : min 1 (c * Real.log 3) * (M : ℝ) ^ (-ε) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Break down `hE : eOf M with _ | ⟨χ₁, β₁⟩` into its components or cases. Rewrite using `[etaOf_none M hE]`. Conclude with `hle1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[etaOf_some M χ₁ β₁ hE]`. Establish `hex` using `eOf_exc M (χ₁, β₁) hE`. Establish `hβ` using `hb M χ₁ β₁ hex.1 hex.2.1 hex.2.2.1`. Establish `hlog3 : Real.log 3 ≤ Real.log M` using `Real.log_le_log (by norm_num) (by exact_mod_cast hM)`. Establish `hlogM : 0 ≤ Real.log M` using `le_trans (Real.log_nonneg (by norm_num)) hlog3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : c * (M : ℝ) ^ (-ε) ≤ 1 - β₁` using `by linarith`. Apply `le_min hle1` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem etaOf_lower (ε : ℝ) (hε : 0 < ε) :
     ∃ c : ℝ, 0 < c ∧ ∀ (M : ℕ) [NeZero M], 3 ≤ M → c * (M : ℝ) ^ (-ε) ≤ etaOf M := by
@@ -238,13 +236,11 @@ theorem etaOf_lower (ε : ℝ) (hε : 0 < ε) :
       _ ≤ (1 - β₁) * Real.log M := mul_le_mul_of_nonneg_right h1 hlogM
 
 /- English proof (translation)
-Rewrite using `[etaOf_some M χ₁ β₁ h]`. Rewrite `hr` using `[inRegion_ofReal]`. Use `push_neg at hr`. Establish `hlogM` using `log_pos_of_two_le M hM`. Establish `hlog2` using `log_two_mul_le M hM`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM' : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`. Establish `hlogge : Real.log M ≤ Real.log ((M : ℝ) * 2)` using `Real.log_le_log (by positivity) (by nlinarith)`. Establish `hlog2pos : 0 < Real.log ((M : ℝ) * 2)` using `lt_of_lt_of_le hlogM hlogge`. Establish `hcz` using `cZ_le`. Establish `hcz0` using `cZ_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : cZ / Real.log ((M : ℝ) * 2) < 1 - β₁` using `by linarith`. Establish `hb : 0 < 1 - β₁` using `lt_trans (div_pos hcz0 hlog2pos) h1`. Rewrite `h1` using `[div_lt_iff₀ hlog2pos]`. Establish `h2 : cZ / 2 ≤ (1 - β₁) * Real.log M`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hlog2 hb.le]`.
-
-Conclude with `le_min (by linarith) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem etaOf_far (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ)
     (h : eOf M = some (χ₁, β₁)) (hr : ¬ InRegion cZ M (β₁ : ℂ)) : cZ / 2 ≤ etaOf M := by
@@ -266,9 +262,7 @@ theorem etaOf_far (M : ℕ) [NeZero M] (hM : 2 ≤ M) (χ₁ : DirichletCharacte
   exact le_min (by linarith) h2
 
 /- English proof (translation)
-Establish `hex` using `eOf_exc M (χ₁, β₁) h`. Establish `h2 : (χ₁ ^ 2) b = 1`. Rewrite using `[hex.1]`. Conclude with `MulChar.one_apply hb`. Rewrite `h2` using `[MulChar.pow_apply' χ₁ (by norm_num)]`.
-
-Conclude with `mul_self_eq_one_iff.mp (by rw [← sq]; exact h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eOf_char_sq (M : ℕ) [NeZero M] (χ₁ : DirichletCharacter ℂ M) (β₁ : ℝ) (h : eOf M = some (χ₁, β₁))
     (b : ZMod M) (hb : IsUnit b) : χ₁ b = 1 ∨ χ₁ b = -1 := by

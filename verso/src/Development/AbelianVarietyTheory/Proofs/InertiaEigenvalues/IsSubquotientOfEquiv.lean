@@ -28,7 +28,7 @@ theorem relEmbD_apply (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i
     relEmbD k f g i = leviEmb k (f i) (g i) := rfl
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_normalizer_iff.2 fun u => forall₂_congr fun i _ => Subgroup.mem_normalizer_iff.1 (leviEmb_mem_normalizer k (f i) (g i)) (u i)`.
+A detailed English derivation is pending.
 -/
 theorem relEmbD_mem_normalizer (f : ∀ i, (Σ j, c i j) ≃ m i) (g : ∀ i, Levi k (c i)) :
     relEmbD k f g ∈ Subgroup.normalizer (relUnipD k f : Set (Levi k m)) :=
@@ -40,7 +40,7 @@ def relDeltaHalfD (c : ∀ i, β i → Type) [∀ i j, Fintype (c i j)] [∀ i j
   ∏ i, (deltaHalf k (c i)).comp (Pi.evalMonoidHom (fun i => Levi k (c i)) i)
 
 /- English proof (translation)
-Simplify using `[relDeltaHalfD, MonoidHom.finsetProd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem relDeltaHalfD_apply (g : ∀ i, Levi k (c i)) :
     relDeltaHalfD k c g = ∏ i, deltaHalf k (c i) (g i) := by
@@ -95,7 +95,7 @@ theorem flatHom_apply (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)]
     flatHom Γ g c = g (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2 := rfl
 
 /- English proof (translation)
-Establish `h : ⇑(flatHom Γ) = (Equiv.piCongrLeft' (fun p : Σ a, Fin (t a) => Γ p.1 p.2) finSigmaFinEquiv) ∘ (Equiv.piCurry fun a b => Γ a b).symm` using `rfl`. Rewrite using `[h]`. Conclude with `(Equiv.surjective _).comp (Equiv.surjective _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flatHom_surjective (Γ : ∀ a, Fin (t a) → Type) [∀ a b, Group (Γ a b)] :
     Function.Surjective (flatHom Γ) := by
@@ -111,9 +111,7 @@ section Pull
 variable {G G' V W : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Use `⟨⟨S.toSubmodule, fun g v hv => ?_⟩, ⟨f.toLinearMap, fun g => ?_⟩, hf⟩` and prove the remaining obligations. Take `⟨g', rfl⟩` from `hψ g`. Conclude with `S.apply_mem_toSubmodule g' hv`. Take `⟨g', rfl⟩` from `hψ g`.
-
-Conclude with `f.isIntertwining' g'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_comp {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (ψ : G' →* G)
     (hψ : Function.Surjective ψ) (h : IsSubquotient (σ.comp ψ) (ρ.comp ψ)) : IsSubquotient σ ρ := by
@@ -125,7 +123,7 @@ theorem isSubquotient_of_comp {σ : Representation ℂ G W} {ρ : Representation
     exact f.isIntertwining' g'
 
 /- English proof (translation)
-The claim follows from `.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective`.
+A detailed English derivation is pending.
 -/
 theorem isSubquotient_of_equiv {σ : Representation ℂ G W} {ρ : Representation ℂ G V} (φ : σ.Equiv ρ) :
     IsSubquotient σ ρ :=

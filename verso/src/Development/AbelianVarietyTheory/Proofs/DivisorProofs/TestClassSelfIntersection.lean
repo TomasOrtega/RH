@@ -19,7 +19,7 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {N : ℕ}
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[pLow, map_sum, map_pow, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_pLow (σ : Equiv.Perm ι) (j : ℕ) (τ : ι) (k : ℕ) :
     rename (Prod.map σ id) (pLow (N := N) j τ k) = pLow j (σ τ) k := by
@@ -27,7 +27,7 @@ theorem rename_pLow (σ : Equiv.Perm ι) (j : ℕ) (τ : ι) (k : ℕ) :
 
 omit [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `[pHigh, map_sum, map_pow, rename_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rename_pHigh (σ : Equiv.Perm ι) (j : ℕ) (τ : ι) (k : ℕ) :
     rename (Prod.map σ id) (pHigh (N := N) j τ k) = pHigh j (σ τ) k := by
@@ -35,7 +35,7 @@ theorem rename_pHigh (σ : Equiv.Perm ι) (j : ℕ) (τ : ι) (k : ℕ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `lamA`. Rewrite using `[map_sum]`. Simplify using `only [map_sub, rename_pLow, rename_pHigh]`. Conclude with `Equiv.sum_comp σ (fun τ => (pHigh j τ 1 - pLow j τ 1 : Pol ι N))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_lamA (σ : Equiv.Perm ι) (j : ℕ) :
     rename (Prod.map σ id) (lamA ι N j) = lamA ι N j := by
@@ -46,7 +46,7 @@ theorem rename_lamA (σ : Equiv.Perm ι) (j : ℕ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `fibPt`. Rewrite using `[map_prod]`. Simplify using `only [map_pow, map_neg, rename_X]`. Conclude with `Equiv.prod_comp (Equiv.prodCongr σ (Equiv.refl (Fin N))) (fun x : ι × Fin N => (-X x : Pol ι N) ^ (if (x.2 : ℕ) < j then j - 1 - (x.2 : ℕ) else N - 1 - (x.2 : ℕ)))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rename_fibPt (σ : Equiv.Perm ι) (j : ℕ) :
     rename (Prod.map σ id) (fibPt ι N j) = fibPt ι N j := by
@@ -58,7 +58,7 @@ theorem rename_fibPt (σ : Equiv.Perm ι) (j : ℕ) :
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Unfold `curveCl`. Rewrite using `[map_mul, map_pow, rename_lamA, rename_fibPt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_curveCl (σ : Equiv.Perm ι) (j : ℕ) :
     rename (Prod.map σ id) (curveCl ι N j) = curveCl ι N j := by
@@ -66,7 +66,7 @@ theorem rename_curveCl (σ : Equiv.Perm ι) (j : ℕ) :
   rw [map_mul, map_pow, rename_lamA, rename_fibPt]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.T.flag_degree_rename_invariant ι N (Equiv.swap τ τ') (pLow j τ 1 * curveCl ι N j), map_mul, rename_curveCl, rename_pLow, Equiv.swap_apply_left]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem degFl_pLow_curve (j : ℕ) (τ τ' : ι) :
     degFl ι N (pLow j τ 1 * curveCl ι N j) = degFl ι N (pLow j τ' 1 * curveCl ι N j) := by
@@ -74,9 +74,9 @@ theorem degFl_pLow_curve (j : ℕ) (τ τ' : ι) :
     Equiv.swap_apply_left]
 
 /- English proof (translation)
-Establish `h0` using `degreePowerSumMulEqZero ι N τ 1 P le_rfl`. Establish `h1 : pLow j τ 1 * P = (∑ i : Fin N, X (τ, i) ^ 1) * P + -pHigh j τ 1 * P`. Establish `: (∑ i : Fin N, (X (τ, i) : Pol ι N) ^ 1) = pLow j τ 1 + pHigh j τ 1`. Unfold `pLow pHigh`. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [not_lt]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, PPowSum.degFl_add, h0, zero_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem degFl_neg_pHigh (j : ℕ) (τ : ι) (P : Pol ι N) :
     degFl ι N (-pHigh j τ 1 * P) = degFl ι N (pLow j τ 1 * P) := by
@@ -92,9 +92,9 @@ theorem degFl_neg_pHigh (j : ℕ) (τ : ι) (P : Pol ι N) :
 end Poly
 
 /- English proof (translation)
-Consider the cases of `σ with`. Consider the case `inl t`. Rewrite using `[← degFl_pLow_curve j t τ]`. Simplify using `[chLie, pLow]`. Consider the case `inr t`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[← degFl_pLow_curve j t τ, ← degFl_neg_pHigh]`. Simplify using `[chLie, pHigh]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem degFl_chLie {D : D7} {N : ℕ} (j : ℕ) (σ : EmbC D) (τ : D.what₂.Tau) :
     degFl D.what₂.Tau N (chLie j 1 σ * curveCl D.what₂.Tau N j) =
@@ -108,9 +108,9 @@ theorem degFl_chLie {D : D7} {N : ℕ} (j : ℕ) (σ : EmbC D) (τ : D.what₂.T
     simp [chLie, pHigh]
 
 /- English proof (translation)
-Establish `h2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp`. Establish `h4 : (1 : ℝ) < (p : ℝ) ^ 2` using `by nlinarith`. Establish `hpos : (0 : ℝ) < (p : ℝ) ^ 2` using `by linarith`. Establish `hlt : ((p : ℝ) ^ 2)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ h4`. Rewrite using `[tsum_mul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pow_succ _ (_ : ℕ)] at *`. Rewrite using `[tsum_mul_right, tsum_geometric_of_lt_one (by positivity) hlt]`. Establish `: (p : ℝ) ^ 0 * p * p - 1 ≠ 0` using `by linarith`. Establish `hp0 : (p : ℝ) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem tsum_geom (p : ℕ) (hp : 2 ≤ p) (c : ℝ) :
     ∑' n : ℕ, ((p : ℝ) ^ 2)⁻¹ ^ (n + 1) * c = c / ((p : ℝ) ^ 2 - 1) := by
@@ -126,23 +126,21 @@ theorem tsum_geom (p : ℕ) (hp : 2 ≤ p) (c : ℝ) :
   field_simp
 
 /- English proof (translation)
-Introduce `D Y hP Q`. Use `haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm 1⟩`. Take `⟨h1, h2, h3, -, h5⟩` from `GlobalTheory.T.curve_class_degree_computations D.what₂.Tau Y.N Y.j Y.j_pos Y.j_lt`. Establish `hpos` using `GlobalTheory.HodgeDegPos.degFl_lamA_pow_pos D.what₂.Tau Y.N Y.j Y.j_pos Y.j_lt`. Establish `hN : 2 ≤ Y.N` using `by have := Y.j_pos; have := Y.j_lt; omega`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_, h1, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ k _ _`. Distinguish the cases in `hk : k = 2`. Substitute `hk` using the available equality. Simplify using `only [Q, if_true]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h5`. Simplify using `only [Q, if_neg hk]`. Conclude with `isHomogeneous_zero _ _ _`. Unfold `comb testF`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single 2]`. Simplify using `[Q]`. Introduce `k _ hk`. Simplify using `[Q, hk]`. Introduce `h; exact absurd (Finset.mem_Icc.mpr ⟨by norm_num, hN⟩) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hpos` using `[h3]`. Unfold `testI`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `Finset.sum_eq_zero fun σ _ => h2 σ`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `restTerm testI`. Establish `key : ∀ τ : D.what₂.Tau, ∑ k ∈ Finset.Icc 2 Y.N, (Nat.factorial k : ℝ) * ∑' n : ℕ, ((p : ℝ) ^ k)⁻¹ ^ (n + 1) * Y.chern (chLie Y.j (k - 1) (frobEmb D p (n + 1) (Sum.inl τ)) * Q τ k) = 2 * (Y.vol * degFl D.what₂.Tau Y.N (pLow Y.j τ 1 * curveCl D.what₂.Tau Y.N Y.j) / ((p : ℝ) ^ 2 - …`. Introduce `τ`. Rewrite using `[Finset.sum_eq_single 2]`. Establish `: ∀ n : ℕ, Y.chern (chLie Y.j (2 - 1) (frobEmb D p (n + 1) (Sum.inl τ)) * Q τ 2) = Y.vol * degFl D.what₂.Tau Y.N (pLow Y.j τ 1 * curveCl D.what₂.Tau Y.N Y.j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `n`. Rewrite using `[hP, ← degFl_chLie Y.j (frobEmb D p (n + 1) (Sum.inl τ)) τ]`. Simplify using `[Q]`. Simplify using `only [this]`. Rewrite using `[tsum_geom p hp]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Evaluate the numerical expressions using `[Nat.factorial]`. Introduce `k _ hk`. Simplify using `[Q, hk]`. Introduce `h`. Conclude with `absurd (Finset.mem_Icc.mpr ⟨le_rfl, hN⟩) h`.
-
-Simplify using `only [key]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem restTerm_testClass : ∀ (D : D7) (Y : ShimX D.what₂.Tau), Propor Y →
     let Q : D.what₂.Tau → ℕ → Pol D.what₂.Tau Y.N := fun _ k => if k = 2 then curveCl D.what₂.Tau Y.N Y.j else 0

@@ -33,35 +33,33 @@ def NmlInvG : Prop :=
             ((Tu D u : ℕ) : ℝ) ^ (2 * D.R.f) * PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ^ 2
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨a₀, b₀, hA2⟩` from `hA Cg cb Cw cT CT C0`. Take `⟨o₀, p₀, hO2⟩` from `hO Cg cb Cw cT CT C0`. Use `⟨max a₀ o₀, max b₀ p₀, fun C' Cl h1 h2 D large₂ X Y u hc νL νB ng => ?_⟩` and prove the remaining obligations. Introduce `cl γ S hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hrd` using `rd_one_le D`. Establish `hv : 2 * D.host.v = D.host.rdE` using `by unfold Host.v; ring`. Establish `hstand` using `hc.2.1`. Use `show (S.card : ℝ) ≤ ((2 * D.host.v) ^ (12 * D.R.rS * (D.R.rS + 1) * D.R.f) * (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) ^ (6 * D.R.f)) * NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ^ 6`. Establish `eR : (D.host.rdE ^ (12 * D.R.rS * (D.R.rS + 1) * D.R.f) * (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) ^ (6 * D.R.f)) * ((((D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f)⁻¹) * PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ) ^ 6 = (((Tu D u : ℕ) : ℝ) * ((Tu D u : ℕ) : ℝ)) ^ (6 * D.R.f) * PG …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR` using `rd_cancel D`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [hR, one_mul]`. Rewrite using `[hv, ngPt_eq, eR]`.
+Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT1 : (3 : ℝ) ≤ ((Tu D u : ℕ) : ℝ)` using `by exact_mod_cast hstand.2.2.2.1`. Establish `hT2 : (3 : ℝ) ≤ ((Tu D u : ℕ) : ℝ)` using `by exact_mod_cast hstand.2.2.2.2.1`. Break down `S.eq_empty_or_nonempty with hSe | ⟨ν0, hν0⟩` into its components or cases. Rewrite using `[hSe]`. Simplify using `only [Finset.card_empty, Nat.cast_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `mul_nonneg (pow_nonneg (by nlinarith) _) ?_` and prove the remaining obligations. Rewrite using `[show PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ^ 6 = (PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ ^ 3) ^ 2 by ring]`. Conclude with `sq_nonneg _`. Establish `hocc : ∃ ν, PN.Occ (genT (Y.tO u u)) (NOfG Y u νL νB ng) cl γ ν` using `⟨ν0, hS ν0 hν0⟩`. Establish `hIsPt : PN.IsPt (genT (Y.tO u u)) (NOfG Y u νL νB ng) γ` using `⟨cl, ν0, hS ν0 hν0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hNG0` using `(hO2 C' Cl (le_trans (le_max_right _ _) h1) (le_trans (le_max_right _ _) h2) D large₂ X Y u hc νL νB ng γ hIsPt).1`. Take `⟨J, J', m, m', κ, hJ, hJ', hm, hm', hmem, hinj, hN, hN'⟩` from `hA2 C' Cl (le_trans (le_max_left _ _) h1) (le_trans (le_max_left _ _) h2) D large₂ X Y u hc νL νB ng cl γ hocc hNG0`. Establish `hNG` using `hNG0`. Rewrite `hNG` using `[ngPt_eq]`. Establish `hP1 : 1 ≤ PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hX : 1 ≤ (D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f` using `one_le_pow₀ (one_le_pow₀ hrd)`. Establish `hpos : 0 < (D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f` using `lt_of_lt_of_le one_pos hX`. Rewrite `hNG` using `[inv_mul_eq_div, le_div_iff₀ hpos, one_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `T1` to `S.image (fun ν => (κ ν).1)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Set `T2` to `S.image (fun ν => (κ ν).2)`. Establish `hcard : S.card ≤ T1.card * T2.card`. Combine the equalities or inequalities in the displayed calculation. Introduce `p hp`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_product.2 ⟨Finset.mem_image_of_mem _ hν, Finset.mem_image_of_mem _ hν⟩)`. Use `_ = T1.card * T2.card := Finset.card_product _ _`. Establish `hB1` using `hB D J m hJ hm T1 (by`. Introduce `x hx`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hx`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨(hmem ν (hS ν hν)).1, (hmem ν (hS ν hν)).2.1⟩)`. Establish `hB2` using `hB D J' m' hJ' hm' T2 (by`. Introduce `x hx`. Take `⟨ν, hν, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨(hmem ν (hS ν hν)).2.2.1, (hmem ν (hS ν hν)).2.2.2⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJp : 0 < ((FractionalIdeal.absNorm J : ℚ) : ℝ)`. Establish `h0 : FractionalIdeal.absNorm J ≠ 0` using `by rwa [Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Use `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg J) (Ne.symm h0)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hJp' : 0 < ((FractionalIdeal.absNorm J' : ℚ) : ℝ)`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Establish `h0 : FractionalIdeal.absNorm J' ≠ 0` using `by rwa [Ne, FractionalIdeal.absNorm_eq_zero_iff]`. Use `lt_of_le_of_ne (FractionalIdeal.absNorm_nonneg J') (Ne.symm h0)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Generalize the expression as in `PG ((Tu D u : ℕ) * (Tu D u : ℕ)) γ = P at hN hN' hP1 ⊢`. Generalize the expression as in `((Tu D u : ℕ) : ℝ) = T at hN hN' hT1 hT2 ⊢`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `((FractionalIdeal.absNorm J : ℚ) : ℝ) = nJ at hB1 hN hJp`. Generalize the expression as in `((FractionalIdeal.absNorm J' : ℚ) : ℝ) = nJ' at hB2 hN' hJp'`. Generalize the expression as in `|((Algebra.norm ℚ m : ℚ) : ℝ)| = nm at hB1 hN`. Generalize the expression as in `|((Algebra.norm ℚ m' : ℚ) : ℝ)| = nm' at hB2 hN'`. Establish `hc1 : (T1.card : ℝ) ≤ 8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `h` using `hB1.trans (mul_le_mul_of_nonneg_left hN (by positivity))`. Establish `h' : (T1.card : ℝ) * nJ ^ 2 ≤ (8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)) * nJ ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h' (by positivity)`. Establish `hc2 : (T2.card : ℝ) ≤ 8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)`.
-
-Establish `h` using `hB2.trans (mul_le_mul_of_nonneg_left hN' (by positivity))`. Establish `h' : (T2.card : ℝ) * nJ' ^ 2 ≤ (8 * (D.R.f : ℝ) ^ 2 * (T ^ (2 * D.R.f) * P ^ 2)) * nJ' ^ 2`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_right h' (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stepNormalsG_of (hA : NmlInvG) (hB : NormCount) (hO : StepNormOneG) : StepNormalsG := by
   intro Cg cb Cw cT CT C0

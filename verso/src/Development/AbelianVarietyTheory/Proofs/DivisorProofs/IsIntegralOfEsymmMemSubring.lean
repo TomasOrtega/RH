@@ -7,13 +7,13 @@ open Polynomial
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Use `set Q : ℂ[X] := ∏ j, (X + C (x j)) with hQ`. Establish `hmon : Q.Monic` using `monic_prod_of_monic _ _ (fun j _ => monic_X_add_C (x j))`. Establish `hdeg : Q.natDegree = (Finset.univ : Finset ι).card`. Rewrite using `[hQ, natDegree_prod_of_monic _ _ (fun j _ => monic_X_add_C (x j))]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hl : Q ∈ Polynomial.lifts (algebraMap R ℂ)`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Distinguish the cases in `hn : n ≤ (Finset.univ : Finset ι).card`. Rewrite using `[hQ, Finset.prod_X_add_C_coeff _ _ hn]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨_, h _⟩, rfl⟩`. Rewrite using `[coeff_eq_zero_of_natDegree_lt (by omega)]`. Conclude with `⟨0, rfl⟩`. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl hmon`. Establish `hneg : IsIntegral R (-x i)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨q, hqm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, hq, hQ, eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Simplify using `using hneg.neg`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_esymm_mem (ι : Type) [Fintype ι] (R : Subring ℂ) (x : ι → ℂ)
     (h : ∀ k : ℕ, (∑ t ∈ Finset.powersetCard k Finset.univ, ∏ i ∈ t, x i) ∈ R) (i : ι) :

@@ -18,23 +18,23 @@ open scoped Classical
 open UpperTheory.Gal.InertialTypesAlt.G
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp n hn π P hP hW v w hv _ _ _ _ mF mE hmF hmE τ τ' hτ hτ' s I hs hI`. Set `μE : Measure (normOneGL E n)` to `Measure.haar`. Take `⟨χ', ⟨z₀, hz'⟩, V, hV⟩` from `Dp.exTwist E n μE P hn`. Take `⟨hex, htw⟩` from `T.powTwist F E`. Take `⟨χ, hz⟩` from `(hex z₀).1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hi, hi', h1⟩` from `htw z₀ χ χ' hz hz'`. Take `⟨-, -, -, hconj, -⟩` from `h1 n hn`. Establish `hone : ∀ u : PlacesOver E v, u = w` using `fun u => ((T.places F E hp).2.2.2.1 v hv) w u`. Establish `hW'` using `weakPow F E σ hσ hp n hn z₀ χ χ' hz hz' π P hW`. Take `⟨⟨τ₁, hτ₁⟩, he⟩` from `locTw F n hn π χ v τ hτ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨τ₁', hτ₁'⟩, he'⟩` from `locTw E n hn P χ' w.1 τ' hτ'`. Take `⟨e, heT⟩` from `he τ₁ hτ₁`. Take `⟨e', heT'⟩` from `he' τ₁' hτ₁'`. Take `⟨hfix, -⟩` from `matchPow F E σ hσ hp n hn z₀ χ χ' hz hz' v w hone`. Take `⟨-, hmatch⟩` from `matchPow F E σ hσ hp n hn (-z₀) χ⁻¹ χ'⁻¹ hi hi' v w hone`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hI₁ : ∀ g x, (e'.symm.trans (I.trans e')) (τ₁'.ρ g x) = τ₁'.ρ (s g) ((e'.symm.trans (I.trans e')) x)`. Introduce `g x`. Take `⟨y, rfl⟩` from `e'.surjective x`. Establish `a` using `heT' g y`. Establish `b` using `heT' (s g) (I y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b` using `[hfix s hs g]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Rewrite using `[← a, ← b, LinearEquiv.symm_apply_apply, map_smul, hI]`. Take `⟨c, hc, H⟩` from `core F E σ hσ hp n hn μE (π.twist χ) (P.twist χ') V hV (fun g => hconj P _ (hP g)) hW' v w hv mF mE hmF hmE τ₁ τ₁' hτ₁ hτ₁' s _ hs hI₁`. Use `⟨c, hc, fun φ f c₁ z hφ hf hM hsupp htr => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcE : ∀ g, chiAt n χ'⁻¹ w.1 g * chiAt n χ' w.1 g = 1` using `fun g => by`. Rewrite using `[mul_comm]`. Conclude with `(chiBasic E n χ' w.1).2.1 g`. Establish `hcF : ∀ g, chiAt n χ⁻¹ v g * chiAt n χ v g = 1` using `fun g => by`. Rewrite using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(chiBasic F n χ v).2.1 g`. Establish `eφ : (fun g => (φ g * chiAt n χ'⁻¹ w.1 g) * chiAt n χ' w.1 g) = φ`. Use function extensionality and compare the values at `g`. Rewrite using `[mul_assoc, hcE, mul_one]`. Establish `ef : (fun g => (f g * chiAt n χ⁻¹ v g) * chiAt n χ v g) = f`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[mul_assoc, hcF, mul_one]`. Establish `htr₁ : HasTrace mF τ₁.ρ (fun g => f g * chiAt n χ⁻¹ v g) z`. Use `((trTw _ mF _ τ τ₁ e heT _ z).1).1 ?_` and prove the remaining obligations. Rewrite using `[ef]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `htr`. Establish `hsupp₁ : ∀ g, f g * chiAt n χ⁻¹ v g ≠ 0 → g ∈ normSet E n v` using `fun g hg => hsupp g (left_ne_zero_of_mul hg)`. Establish `key` using `H (fun g => φ g * chiAt n χ'⁻¹ w.1 g) (fun g => f g * chiAt n χ⁻¹ v g) c₁ z ((chiBasic E n χ'⁻¹ w.1).2.2 φ hφ) ((chiBasic F n χ⁻¹ v).2.2 f hf) (hmatch c₁ φ f hM) hsupp₁ htr₁`. Use `(((trTw _ mE _ τ' τ₁' e' heT' _ _).2 I).2 key)` as an intermediate fact. Rewrite `this` using `[eφ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.varTrace :
     UpperTheory.Gal.InertialTypesAlt.G.VarTrace := by

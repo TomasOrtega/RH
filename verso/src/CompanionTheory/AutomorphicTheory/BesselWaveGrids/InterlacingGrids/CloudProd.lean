@@ -5,9 +5,9 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[prod_range_succ, ih, if_neg (Nat.succ_ne_zero n)]`. Establish `hn : ((n : ℝ) + 1) ≠ 0` using `by positivity`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cloud_weight_prod (c : ℝ) (n : ℕ) :
     ∏ j ∈ range (n + 1), (if j = 0 then 2 + c else 1 + 1 / (j : ℝ)) = (2 + c) * (n + 1) := by
@@ -20,11 +20,11 @@ theorem cloud_weight_prod (c : ℝ) (n : ℕ) :
     field_simp
 
 /- English proof (translation)
-Use `split_ifs with hj`. Establish `: (1 + c) / max d 1 ≤ 1 + c` using `div_le_self (by linarith) (le_max_right _ _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj1 : (1 : ℝ) ≤ j` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hj`. Establish `hpos : 0 < (j : ℝ) * (1 + c)` using `by positivity`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (j : ℝ) * (1 + c) ≤ (j : ℝ) * g` using `mul_le_mul_of_nonneg_left hg (by positivity)`. Establish `h2 : (j : ℝ) * (1 + c) ≤ max d 1` using `le_trans (h1.trans hd) (le_max_left _ _)`. Establish `h3 : (1 + c) / max d 1 ≤ (1 + c) / ((j : ℝ) * (1 + c))` using `div_le_div_of_nonneg_left (by linarith) hpos h2`. Establish `h4 : (1 + c) / ((j : ℝ) * (1 + c)) = 1 / j`. Establish `: (1 + c) ≠ 0` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (j : ℝ) ≠ 0` using `by linarith`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cloud_factor_le (c g d : ℝ) (j : ℕ) (hc : 0 ≤ c) (hg : 1 + c ≤ g) (hd : (j : ℝ) * g ≤ d) :
     1 + (1 + c) / max d 1 ≤ (if j = 0 then 2 + c else 1 + 1 / (j : ℝ)) := by
@@ -44,9 +44,9 @@ theorem cloud_factor_le (c g d : ℝ) (j : ℕ) (hc : 0 ≤ c) (hg : 1 + c ≤ g
     linarith
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `prod_le_prod_of_subset_of_one_le` to reduce the goal to its premises. Introduce `j hj`. Take `⟨s, hs, rfl⟩` from `mem_image.mp hj`. Conclude with `mem_range.mpr (hmap s hs)`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Conclude with `le_trans zero_le_one (hw j)`. Introduce `j _ _`. Conclude with `hw j`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prod_le_prod_range_of_rank (A : Finset ℕ) (F : ℕ → ℝ) (φ : ℕ → ℕ) (w : ℕ → ℝ) (k : ℕ)
     (hF0 : ∀ s ∈ A, 0 ≤ F s) (hF : ∀ s ∈ A, F s ≤ w (φ s)) (hinj : Set.InjOn φ A)
@@ -66,9 +66,9 @@ theorem prod_le_prod_range_of_rank (A : Finset ℕ) (F : ℕ → ℝ) (φ : ℕ 
         exact hw j
 
 /- English proof (translation)
-Introduce `s' hss'`. Proceed by induction on `s', hss' using Nat.le_induction with`. Consider the case `base => intro _`. Simplify using the standard rewrite rules. Consider the case `succ n hn ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hn1`. Establish `h1` using `hgap n (by omega) hn1`. Establish `h2` using `ih (by omega)`. Establish `h3 : (((n + 1 : ℕ) : ℝ) - s) * g = ((n : ℝ) - s) * g + g` using `by push_cast; ring`. Rewrite using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -87,33 +87,31 @@ theorem cloud_gap_sum (k : ℕ) (lam : ℕ → ℝ) (g : ℝ)
     linarith
 
 /- English proof (translation)
-Establish `hF0 : ∀ s, 0 ≤ 1 + (1 + c) / max |Y + lam s| 1` using `fun s => by`. Establish `: 0 ≤ (1 + c) / max |Y + lam s| 1` using `div_nonneg (by linarith) (le_trans zero_le_one (le_max_right _ _))`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw : ∀ j : ℕ, 1 ≤ (if j = 0 then 2 + c else 1 + 1 / (j : ℝ))` using `fun j => by split_ifs`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (0 : ℝ) ≤ 1 / (j : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hkR : (1 : ℝ) ≤ k` using `by exact_mod_cast hk`. Establish `hW : ∏ j ∈ range k, (if j = 0 then 2 + c else 1 + 1 / (j : ℝ)) = (2 + c) * k`. Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[cloud_weight_prod]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hone : (1 : ℝ) ≤ (2 + c) * k` using `by nlinarith`. Rewrite using `[← prod_filter_mul_prod_filter_not (Icc 1 (k - 1)) (fun s => 0 < Y + lam s)]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : ∏ s ∈ (Icc 1 (k - 1)).filter (fun s => 0 < Y + lam s), (1 + (1 + c) / max |Y + lam s| 1) ≤ (2 + c) * k`. Distinguish the cases in `hne : ((Icc 1 (k - 1)).filter (fun s => 0 < Y + lam s)).Nonempty`. Establish `ht` using `max'_mem _ hne set t := ((Icc 1 (k - 1)).filter (fun s => 0 < Y + lam s)).max' hne with ht_def`. Rewrite `ht` using `[mem_filter, mem_Icc]`. Rewrite using `[← hW]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `prod_le_prod_range_of_rank _ _ (fun s => t - s) _ k (fun s _ => hF0 s) _ _ _ hw` to reduce the goal to its premises. Introduce `s hs`. Establish `hst : s ≤ t` using `le_max' _ _ hs`. Rewrite `hs` using `[mem_filter, mem_Icc]`. Apply `cloud_factor_le c g _ _ hc hg` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1` using `cloud_gap_sum k lam g hgap s hs.1.1 t hst ht.1.2`. Establish `h2` using `le_abs_self (Y + lam s)`. Use `show (((t - s : ℕ) : ℝ)) * g ≤ |Y + lam s|`. Rewrite using `[Nat.cast_sub hst]`. Combine the linear relations using `[ht.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Establish `ha' : a ≤ t` using `le_max' _ _ (mem_coe.mp ha)`. Establish `hb' : b ≤ t` using `le_max' _ _ (mem_coe.mp hb)`. Simplify using `only at hab`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Establish `hst : s ≤ t` using `le_max' _ _ hs`. Use `show t - s < k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[not_nonempty_iff_eq_empty.mp hne, prod_empty]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `hone`. Establish `hR : ∏ s ∈ (Icc 1 (k - 1)).filter (fun s => ¬ 0 < Y + lam s), (1 + (1 + c) / max |Y + lam s| 1) ≤ (2 + c) * k`. Distinguish the cases in `hne : ((Icc 1 (k - 1)).filter (fun s => ¬ 0 < Y + lam s)).Nonempty`. Establish `hu` using `min'_mem _ hne set u := ((Icc 1 (k - 1)).filter (fun s => ¬ 0 < Y + lam s)).min' hne with hu_def`. Rewrite `hu` using `[mem_filter, mem_Icc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hW]`. Apply `prod_le_prod_range_of_rank _ _ (fun s => s - u) _ k (fun s _ => hF0 s) _ _ _ hw` to reduce the goal to its premises. Introduce `s hs`. Establish `hus : u ≤ s` using `min'_le _ _ hs`. Rewrite `hs` using `[mem_filter, mem_Icc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `cloud_factor_le c g _ _ hc hg` to reduce the goal to its premises. Establish `h1` using `cloud_gap_sum k lam g hgap u hu.1.1 s hus hs.1.2`. Establish `h2` using `neg_le_abs (Y + lam s)`. Use `show (((s - u : ℕ) : ℝ)) * g ≤ |Y + lam s|`. Rewrite using `[Nat.cast_sub hus]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `not_lt.mp hu.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a ha b hb hab`. Establish `ha' : u ≤ a` using `min'_le _ _ (mem_coe.mp ha)`. Establish `hb' : u ≤ b` using `min'_le _ _ (mem_coe.mp hb)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at hab`. Use linear arithmetic over natural numbers and integers. Introduce `s hs`. Establish `hus : u ≤ s` using `min'_le _ _ hs`. Rewrite `hs` using `[mem_filter, mem_Icc]`.
-
-Use `show s - u < k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[not_nonempty_iff_eq_empty.mp hne, prod_empty]`. Conclude with `hone`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem cloud_prod_le (k : ℕ) (lam : ℕ → ℝ) (c g Y : ℝ) (hk : 1 ≤ k) (hc : 0 ≤ c) (hg : 1 + c ≤ g)
     (hgap : ∀ s, 1 ≤ s → s + 1 ≤ k - 1 → lam (s + 1) + g ≤ lam s) :

@@ -14,14 +14,14 @@ namespace GlobalTheory.ThetaGeom
 open GlobalTheory.ThetaPtMove GlobalTheory.CommPairing GlobalTheory.ConstFam GlobalTheory.GlobalLift
 
 /- English proof (translation)
-The claim follows from `map_zpow _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem val_powFrame {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} (x : T ⟶ A) (e) (k : ℤ)
     {Z : Scheme.{0}} (r : Z ⟶ T.left) (z : Z) (J) : val (powFrame A L x e k) r z J = val e r z J ^ k :=
   map_zpow _ _ _
 
 /- English proof (translation)
-Establish `hy` using `hJ.mem (fun _ : Fin 1 => T.hom ≫ eSec A) r`. Use `(map_zpow _ _ _).trans (congrArg (· ^ k) ((gm_res _ y _ hy _).trans ?_))` and prove the remaining obligations. Rewrite using `[val_of (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) rig (r ≫ T.hom) y J (fun _ => J (r ≫ T.hom ≫ eSec A)) (fun _ => by rw [Category.assoc])]`. Conclude with `gm_pull r T.hom y (LB.wchart L (fun _ : PUnit => eSec A) (fun _ => J (r ≫ T.hom ≫ eSec A))) (rigT_le A L _ hy) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_rigT {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S}
     (rig : LB.Gen (L.pull (eSec A))) (k : ℤ) {Z : Scheme.{0}} (r : Z ⟶ T.left) {y : Z} {J} (hJ : Good L y J) :
@@ -35,7 +35,7 @@ theorem val_rigT {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : O
     (rigT_le A L _ hy) _
 
 /- English proof (translation)
-Set `F : SecM A L k T →+ Z.presheaf.stalk z` to `AddMonoidHom.mk' (fun v => ThetaAct.sv v r z J) fun a b => ThetaAct.sv_add a b r z hJ`. Conclude with `(map_sum F _ _).trans (Finset.sum_congr rfl fun i _ => ThetaAct.sv_smul _ _ _ _ hJ)`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem sv_sum {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} {k : ℤ} {I : Type} [Fintype I]
     (c : I → Γ(T.left, ⊤)) (v : I → SecM A L k T) {Z : Scheme.{0}} (r : Z ⟶ (T ⊗ A).left) (z : Z) {J}
@@ -46,7 +46,7 @@ theorem sv_sum {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Ove
   exact (map_sum F _ _).trans (Finset.sum_congr rfl fun i _ => ThetaAct.sv_smul _ _ _ _ hJ)
 
 /- English proof (translation)
-Establish `e : ∀ j, (∑ l, c l • SecM.ofSec A (t l)).1 j = ∑ l, liftFun A _ (c l) * (t l).f j` using `fun j => by`. Rewrite using `[AddSubmonoidClass.coe_finset_sum, Finset.sum_apply]`. Both sides reduce to the same expression. Conclude with `⟨fun h => Subtype.ext (funext fun j => (h j).trans (e j).symm), fun h j => (congrArg (fun q => q.1 j) h).trans (e j)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components.
 -/
 theorem comb_iff {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} {T : Over S} {k : ℤ} {I : Type} [Fintype I]
     (c : I → Γ(T.left, ⊤)) (t : I → LB.Sec (LPow A L k T)) (σ : LB.Sec (LPow A L k T)) :
@@ -63,7 +63,7 @@ variable {S S' : Scheme.{0}} {G : Over S} [GrpObj G] {A : Over S'} [GrpObj A]
   {L₀ : LB G.left} {L₁ : LB A.left} {w : LB.Iso L₁ (L₀.pull φ)}
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'` and use `by rw [val_powFrame, val_powFrame, H Z r z J J' hJ hJ', Fin.prod_univ_one, Fin.prod_univ_one, zpow_one, mul_zpow]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genThrough_pow {x : T ⟶ A} {x₀ : T₀ ⟶ G} {e e₀}
     (H : GenThrough w (fun _ : Fin 1 => x.left) (fun _ : Fin 1 => x₀.left) (fun _ => 1) e e₀ τ) (k : ℤ) :
@@ -72,7 +72,7 @@ theorem genThrough_pow {x : T ⟶ A} {x₀ : T₀ ⟶ G} {e e₀}
   rw [val_powFrame, val_powFrame, H Z r z J J' hJ hJ', Fin.prod_univ_one, Fin.prod_univ_one, zpow_one, mul_zpow]
 
 /- English proof (translation)
-Introduce `Z r z J J' hJ hJ'` and use `by have a := (congrArg (fun q => ThetaAct.sv q r z J') e).trans (sv_sum _ _ r z hJ') have a₀ := (congrArg (fun q => ThetaAct.sv q (r ≫ psi hp τ hτ) z J) e₀).trans (sv_sum _ _ _ z hJ) refine a₀.trans (Eq.trans ?_ (congrArg (_ * ·) a).symm) rw [Finset.mul_sum] refine Finset.sum_con …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem secRel_comb {k : ℤ} {I : Type} [Fintype I] (c : I → Γ(T₀.left, ⊤)) {t : I → LB.Sec (LPow A L₁ k T)}
     {t₀ : I → LB.Sec (LPow G L₀ k T₀)} (h : ∀ l, SecRel hp τ hτ w (t l) (t₀ l)) {σ σ₀}
@@ -88,13 +88,13 @@ theorem secRel_comb {k : ℤ} {I : Type} [Fintype I] (c : I → Γ(T₀.left, �
 
 include hτ in
 /- English proof (translation)
-Use `corr_of_val hL₁ fun y J' hJ' => ?_` and prove the remaining obligations. Take `⟨J, hJ⟩` from `exists_good' hL₀ y`. Establish `q` using `val_corr hJ H₀ (𝟙 _ ≫ τ)`. Establish `e₁ : (𝟙 _ ≫ (ptSecT A (1 : T ⟶ A)).left) ≫ (snd T A).left = (𝟙 _ ≫ T.hom) ≫ eSec A`. Rewrite using `[Category.assoc, Category.assoc, ptSecT_snd]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e₂ : (𝟙 _ ≫ (ptSecT A (1 : T ⟶ A)).left) ≫ (snd T A ^ n).left = (𝟙 _ ≫ T.hom) ≫ eSec A`. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, MonObj.comp_pow, ptSecT, lift_snd, one_pow]`. Both sides reduce to the same expression. Rewrite `q` using `[val_pull hJ, val_mul hJ, val_rigT _ _ _ hJ, val_rigT _ _ _ hJ, Category.assoc, ← psi_ptSec hp τ hτ (over_one hp τ hτ), ← Category.assoc, H _ _ _ _ _ hJ hJ', e₁, e₂, Category.assoc (𝟙 _) τ, hτ, ← Category.assoc (𝟙 _) T.hom f]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q₂` using `hr _ (𝟙 _ ≫ T.hom) y J J' hJ hJ'`. Rewrite `q₂` using `[Fintype.prod_unique, zpow_one]`. Rewrite using `[val_pull hJ', val_rigT _ _ _ hJ']`. Use `erw [q₂] at q`. Apply `Additive.ofMul.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `replace q := congrArg Additive.ofMul q`. Simplify using `only [ofMul_mul, ofMul_zpow] at q ⊢`. Take the linear combination `(norm := module) q`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_move (hL₀ : L₀.IsLB) (hL₁ : L₁.IsLB) {a : ℤ} {n : ℕ} {rig rig₀}
     (hr : GenThrough w (fun _ : PUnit => eSec A) (fun _ : PUnit => eSec G) (fun _ => 1) rig rig₀ f)
@@ -130,14 +130,14 @@ namespace GlobalTheory.ZH
 open GlobalTheory.ThetaPtMove GlobalTheory.ThetaGeom
 
 /- English proof (translation)
-The claim follows from `(congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm`.
+A detailed English derivation is pending.
 -/
 theorem spMap_appTop_fn {R F : Type} [CommRing R] [CommRing F] (y : R →+* F) (a : R) :
     (spMap y).appTop.hom (fn a) = (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (y a) :=
   (congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom y))).symm
 
 /- English proof (translation)
-Introduce `z J hJ` and use `by have q := sv_of_isValueAt h (𝟙 _) z hJ rw [Category.id_comp] at q exact q`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valAt_of_isValueAt {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec (CommRingCat.of (FractionRing R)))}
     {F : Type} [Field F] [Algebra (FractionRing R) F] {k : ℕ} {t : SecA A F k} {x : TFK (R := R) F ⟶ A.A} {e : FrAt x}
@@ -148,25 +148,23 @@ theorem valAt_of_isValueAt {R : Type} [CommRing R] [IsDomain R] {A : PolAV (Spec
   exact q
 
 /- English proof (translation)
-Introduce `hL o Ω _ _ _ _ S ρ p _ y₀ u`. Take `⟨x, hx, hadd, hinj, hsurj⟩` from `utest_torsion_points o Ω S ρ p y₀ u`. Take `⟨w, hw⟩` from `u.lb`. Take `⟨rig, fr, hrig, vrig, hfr⟩` from `GlobalTheory.T.exists_frames_on_uniformised_fibre_through_iso o Ω S ρ p y₀ u x hx w hw`. Establish `hp` using `u.cart`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL₀` using `ρ.P.isLB`. Establish `hL₁` using `u.A.isLB`. Use `u.A.isAb.comm` as an intermediate fact. Set `τ : (TFK (R` to `u.V) (PadicAlgCl p)).left ⟶ (baseOver (Sp S.R)).left := spMap y₀`. Establish `hτ : τ ≫ (baseOver (Sp S.R)).hom = (TFK (R` using `u.V) (PadicAlgCl p)).hom ≫ spMap u.yK := by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Category.comp_id _).trans (Eq.trans (congrArg spMap u.fac.symm) ?_)` and prove the remaining obligations. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨th, hth⟩` from `exists_secRel hp τ hτ hw hL₀ hL₁ ρ.th₁`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose s hs using fun i => exists_secRel hp τ hτ hw hL₀ hL₁ (ρ.s i)`. Take `⟨α, hα, vα⟩` from `exists_genThrough₂ hp τ hτ hw hL₀ hL₁ (psi_pow hp τ hτ (ρ.n ^ ρ.k)) ρ.α ρ.α_gen`. Establish `hpow : ∀ (n : ℕ) a, x (n • a) = x a ^ n` using `fun n a => by`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hadd 0 0`. Rewrite `h` using `[add_zero]`. Rewrite using `[zero_smul, pow_zero]`. Conclude with `left_eq_mul.1 h`. Consider the case `succ n ih => rw [succ_nsmul, hadd, ih, pow_succ]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hN : ∀ a, x (S.r • a) ^ S.N = 1` using `fun a => by`. Rewrite using `[hpow, ← pow_mul]`. Conclude with `(hfr a).1.1`. Use `choose U hU hU' using fun a => symLift_move hp τ hτ hw hL₀ hL₁ (hx (S.r • a)).symm (hN a) (ρ.U_sym a)`. Take `⟨r₀, hr₀, -⟩` from `thetaGrp_acts_linearly hL.globalFns _ ρ.P S.N (baseOver (Sp S.R))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨r₁, hr₁, -⟩` from `thetaGrp_acts_linearly hL.globalFns _ u.A S.N (TFK (R := u.V) (PadicAlgCl p))`. Use `⟨⟨x, hx, hadd, fun z hz => ?_, GlobalTheory.T.weilPairing_labelledTorsion_uniformTest hL o Ω S ρ p y₀ u x hx, rig, hrig, fr, fun a => (hfr a).1, th, fun a z J hJ => ?_, s, fun a i => valAt_of_isValueAt ?_, α, hα, norm_move hp τ hτ hL₀ hL₁ vrig vα ρ.α_norm, isTwistPull_move hp τ h …` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hsurj z hz`. Conclude with `⟨a, rfl, fun b hb => hinj hb⟩`. Establish `h` using `isValueAt_move hp τ hτ hL₀ hL₁ (hx a).symm (hfr a).2 hth (ρ.th_val a)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `q` using `sv_of_isValueAt h (𝟙 _) z hJ`. Rewrite `q` using `[Category.id_comp, spMap_appTop_fn]`. Rewrite using `[val_powFrame, Nat.cast_one, zpow_one]`. Conclude with `q`. Establish `h` using `isValueAt_move hp τ hτ hL₀ hL₁ (hx a).symm (genThrough_pow τ (hfr a).2 S.N) (hs i) (ρ.ev_val i a)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[spMap_appTop_fn]`. Conclude with `h`. Establish `a₀ : IsActOf ρ.P.A ρ.P.L S.N (ρ.U a) (ρ.s i) (SecM.toSec _ (r₀ (ρ.U a) (SecM.ofSec _ (ρ.s i))))` using `(hr₀ _ _ _).2 rfl`. Set `c : S.J → Γ((baseOver (Sp S.R)).left, ⊤)` to `fun l => fn (algebraMap o S.R (S.ρ a l i))`. Establish `hc : (fun l => τ.appTop.hom (c l)) = fun l => (Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl p))).inv.hom (y₀ (algebraMap o S.R (S.ρ a l i)))` using `funext fun l => spMap_appTop_fn y₀ _`.
-
-Establish `a₁` using `hU' a _ _ _ (SecM.toSec _ (∑ l, τ.appTop.hom (c l) • SecM.ofSec _ (s l))) (hs i) (secRel_comb hp τ hτ c hs rfl ((comb_iff _ _ _).1 (ρ.U_act a i _ a₀))) a₀`. Establish `a₂` using `(hr₁ _ _ _).1 a₁`. Establish `a₃` using `comb_iff (fun l => τ.appTop.hom (c l)) s σ`. Use `(hr₁ _ _ _).trans (Iff.trans ⟨fun h => a₃.2 (h.symm.trans a₂), fun h => a₂.trans (a₃.1 h).symm⟩ ?_)` and prove the remaining obligations. Conclude with `forall_congr' fun j => Eq.congr_right (Finset.sum_congr rfl fun l _ => by rw [congrFun hc l])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem utest_geom_nonempty : Laws → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (p : ℕ) [Fact p.Prime] (y₀ : S.R →+* PadicAlgCl p) (u : ρ.UTest p y₀), Nonempty u.Geom := by
   intro hL o Ω _ _ _ _ S ρ p _ y₀ u

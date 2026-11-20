@@ -22,7 +22,7 @@ def repl (a : n → ℂ) (s : Finset (Fin N' × Fin N)) (z : n → Fin N' → Fi
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Apply the tactic sequence `by_cases h : p = k <;> simp [ent, putL, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ent_putL (k p : Fin N' × Fin N) (x : n → ℂ) : ent p (putL n N N' k x) = if p = k then x else 0 := by
   funext τ
@@ -30,7 +30,7 @@ theorem ent_putL (k p : Fin N' × Fin N) (x : n → ℂ) : ent p (putL n N N' k 
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[ent, setE]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ent_setE (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) (w : n → ℂ) : ent k (setE z k w) = w := by
   funext τ
@@ -38,7 +38,7 @@ theorem ent_setE (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) (w :
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Distinguish the cases in `h : (i, j) = k`. Substitute `h` using the available equality. Simplify using `[ent, setE]`. Simplify using `[setE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem setE_ent (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) : setE z k (ent k z) = z := by
   funext τ i j
@@ -48,7 +48,7 @@ theorem setE_ent (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) : se
 
 omit [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i j`. Apply the tactic sequence `by_cases h : (i, j) = k <;> simp [setE, putL, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem setE_add (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) (w x : n → ℂ) :
     setE z k w + putL n N N' k x = setE z k (w + x) := by
@@ -56,13 +56,11 @@ theorem setE_add (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) (w x
   by_cases h : (i, j) = k <;> simp [setE, putL, h]
 
 /- English proof (translation)
-Rewrite using `[formV_sum, ← Fintype.sum_prod_type' (f := fun i j => matH (hOne L n) (fun τ => y τ i j) (fun τ => putL n N N' k x τ i j))]`. Rewrite using `[Finset.sum_eq_single k]`. Establish `: (fun τ => putL n N N' k x τ k.1 k.2) = x`. Use `ent_putL k k x` as an intermediate fact. Rewrite `this` using `[if_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[this]`. Both sides reduce to the same expression. Introduce `p _ hp`. Establish `: (fun τ => putL n N N' k x τ p.1 p.2) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ent_putL k p x` as an intermediate fact. Rewrite `this` using `[if_neg hp]`. Conclude with `this`. Rewrite using `[this, map_zero]`. Introduce `h`.
-
-Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem form_put (L : PeriodPair) (y : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N) (x : n → ℂ) :
     formV (Formalism.L2.Th1.F.area L) n N N' y (putL n N N' k x) = matH (hOne L n) (ent k y) x := by
@@ -85,7 +83,7 @@ theorem form_put (L : PeriodPair) (y : n → Fin N' → Fin N → ℂ) (k : Fin 
     exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Unfold `alphaQ qOf`. Rewrite using `[form_put, ent_putL, if_pos rfl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem alphaQ_put (c : ℝ) (L : PeriodPair) (k : Fin N' × Fin N) (x : n → ℂ) :
     alphaQ c (formV (Formalism.L2.Th1.F.area L) n N N') (putL n N N' k x) = alphaQ c (matH (hOne L n)) x := by
@@ -93,11 +91,11 @@ theorem alphaQ_put (c : ℝ) (L : PeriodPair) (k : Fin N' × Fin N) (x : n → �
   rw [form_put, ent_putL, if_pos rfl]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w _`. Establish `e : (fun w => F (setE z k w)) = F ∘ (fun w => setE z k 0 + (LinearMap.toContinuousLinearMap (putL n N N' k)) w)`. Use function extensionality and compare the values at `w`. Use `show F (setE z k w) = F (setE z k 0 + putL n N N' k w)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setE_add, zero_add]`. Rewrite using `[e]`. Conclude with `(hF.1 _ (Set.mem_univ _)).comp (analyticAt_const.add ((LinearMap.toContinuousLinearMap (putL n N N' k)).analyticAt w))`. Introduce `x hx w`. Establish `h` using `hF.2 (putL n N N' k x) (putL_mem ΛM N N' k hx) (setE z k w)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[alphaQ_put]`. Simplify using `only [opU] at h ⊢`. Rewrite `h` using `[setE_add, form_put, form_put, ent_setE, ent_putL, if_pos rfl]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneEntry_mem (c : ℝ) (L : PeriodPair) (ΛM : AddSubgroup (n → ℂ)) {F : (n → Fin N' → Fin N → ℂ) → ℂ}
     (hF : F ∈ Formalism.L2.Th1.H.Th (formV (Formalism.L2.Th1.F.area L) n N N') (alphaQ c (formV (Formalism.L2.Th1.F.area L) n N N'))
@@ -121,25 +119,23 @@ theorem oneEntry_mem (c : ℝ) (L : PeriodPair) (ΛM : AddSubgroup (n → ℂ)) 
     exact h
 
 /- English proof (translation)
-Introduce `F hF`. Choose the witnesses or unpack the hypotheses as in `⟨a₀, ha₀⟩ : ∃ a₀, θ a₀ ≠ 0 := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Conclude with `hθ0 (funext hno)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `step : ∀ (z : n → Fin N' → Fin N → ℂ) (k : Fin N' × Fin N), F z * θ a₀ = F (setE z k a₀) * θ (ent k z)`. Introduce `z k`. Take `⟨a, ha⟩` from `hline _ (oneEntry_mem c L ΛM hF z k)`. Establish `h1 : F (setE z k (ent k z)) = a * θ (ent k z)` using `congrFun ha (ent k z)`. Establish `h2 : F (setE z k a₀) = a * θ a₀` using `congrFun ha a₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[setE_ent]`. Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `ind : ∀ (s : Finset (Fin N' × Fin N)) (z : n → Fin N' → Fin N → ℂ), F z * θ a₀ ^ s.card = F (repl a₀ s z) * ∏ p ∈ s, θ (ent p z)`. Introduce `s`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `z`. Establish `: repl a₀ (∅ : Finset (Fin N' × Fin N)) z = z`. Use function extensionality and compare the values at `τ i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[repl]`. Simplify using `[this]`. Consider the case `insert k s hk ih`. Introduce `z`. Establish `key` using `step (repl a₀ s z) k`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e1 : setE (repl a₀ s z) k a₀ = repl a₀ (insert k s) z`. Use function extensionality and compare the values at `τ i j`. Apply the tactic sequence `by_cases h : (i, j) = k <;> simp [setE, repl, Finset.mem_insert, h]`. Establish `e2 : ent k (repl a₀ s z) = ent k z`. Use function extensionality and compare the values at `τ`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[ent, repl, hk]`. Rewrite `key` using `[e1, e2]`. Rewrite using `[Finset.card_insert_of_notMem hk, pow_succ, ← mul_assoc, ih z, Finset.prod_insert hk]`. Take the linear combination `(∏ p ∈ s, θ (ent p z)) * key`. Use `⟨F (fun τ _ _ => a₀ τ) / θ a₀ ^ (Finset.univ : Finset (Fin N' × Fin N)).card, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Establish `h` using `ind Finset.univ z`. Establish `e1 : repl a₀ (Finset.univ : Finset (Fin N' × Fin N)) z = fun τ _ _ => a₀ τ`. Use function extensionality and compare the values at `τ i j`. Simplify using `[repl]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2 : tensPow θ N N' z = ∏ p : Fin N' × Fin N, θ (ent p z)`. Unfold `tensPow`. Conclude with `(Fintype.prod_prod_type' (f := fun i j => θ fun τ => z τ i j)).symm`. Rewrite `h` using `[e1]`. Use `show F z = _ * tensPow θ N N' z`.
-
-Rewrite using `[e2, div_mul_eq_mul_div, eq_div_iff (pow_ne_zero _ ha₀)]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_spans (c : ℝ) (L : PeriodPair) (ΛM : AddSubgroup (n → ℂ)) {θ : (n → ℂ) → ℂ} (hθ0 : θ ≠ 0)
     (hline : ∀ G ∈ Formalism.L2.Th1.H.Th (matH (hOne L n)) (alphaQ c (matH (hOne L n))) ΛM, ∃ a : ℂ, G = a • θ)
@@ -201,9 +197,9 @@ end Gen
 variable {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {B : Ker.Base D cc δ}
 
 /- English proof (translation)
-Introduce `F hF`. Establish `e : TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ) = Formalism.L2.Th1.F.area B.L` using `B.areaOK`. Establish `h0' : TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesGL3.stdL D N') = powLat B.lamM N N'` using `B.lat0OK N N'`. Establish `h1 : F ∈ Formalism.L2.Th1.H.Th (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N') (alphaQ B.cq (formV (TaylorLogMetric.area (TaylorLogMetric.lamOf D cc δ)) D.what₂.Tau N N')) (TaylorLogMetric.La D B.tor (StandardLatticesGL3.stdL D N) (StandardLatticesG …`. Use `Th_congr _ _ _ _ (fun x hx => ?_) hF` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `B.qInt0 hS N N' x hx`. Conclude with `al_eq D B.tor x m hm`. Rewrite `h1` using `[e, h0']`. Conclude with `tens_spans B.cq B.L B.lamM (B.thMM_ne_zero hS) (isThM_spans _ _ _ _ _ _ hS B.kappa_ne_zero (B.thMM_spec hS)) N N' F h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thZeroSpans (hS : B.StdOK) (N N' : ℕ) : B.ThZeroSpans N N' := by
   intro F hF

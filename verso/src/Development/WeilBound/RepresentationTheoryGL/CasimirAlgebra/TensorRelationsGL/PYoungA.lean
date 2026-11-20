@@ -16,21 +16,21 @@ variable {n : ℕ} {M : Type} [AddCommGroup M] [Module ℂ M] {X : Type} [Fintyp
 def ColInj (col : X → C) (J : X → Fin n) : Prop := ∀ p q, col p = col q → J p = J q → p = q
 
 /- English proof (translation)
-Simplify using `[colG]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_colG (col : X → C) (π : Equiv.Perm X) : π ∈ colG col ↔ ∀ p, col (π p) = col p := by
   simp [colG]
 
 /- English proof (translation)
-Establish `hπ'` using `(mem_colG col π).1 hπ`. Rewrite using `[alt_apply, alt_apply, Finset.smul_sum]`. Use `Finset.sum_nbij' (fun σ => π * σ) (fun τ => π⁻¹ * τ) ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `σ hσ`. Rewrite `hσ`, the goal using `[mem_colG]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `p`. Simplify using `only [Equiv.Perm.mul_apply]`. Rewrite using `[hπ', hσ]`. Introduce `τ hτ`. Rewrite `hτ`, the goal using `[mem_colG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `p`. Establish `h` using `hπ' (π⁻¹ (τ p))`. Rewrite using `[Equiv.Perm.mul_apply, ← h]`. Simplify using `[hτ]`. Introduce `σ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `τ _`. Simplify using the standard rewrite rules. Introduce `σ _`. Simplify using `only [Equiv.Perm.coe_mul, Function.comp_assoc, Equiv.Perm.sign_mul, Units.val_mul, Int.cast_mul, smul_smul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Rewrite using `[← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem alt_perm (col : X → C) (ξ : TV n M X) (J : X → Fin n) (π : Equiv.Perm X) (hπ : π ∈ colG col) :
     alt (colG col) ξ (J ∘ π) = ((Equiv.Perm.sign π : ℤ) : ℂ) • alt (colG col) ξ J := by
@@ -58,15 +58,15 @@ theorem alt_perm (col : X → C) (ξ : TV n M X) (J : X → Fin n) (π : Equiv.P
     rw [← mul_assoc, ← Int.cast_mul, ← Units.val_mul, Int.units_mul_self, Units.val_one, Int.cast_one, one_mul]
 
 /- English proof (translation)
-Establish `ht : Equiv.swap p q ∈ colG col`. Rewrite using `[mem_colG]`. Introduce `r`. Break down `eq_or_ne r p with rfl | hrp` into its components or cases. Simplify using `[hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Break down `eq_or_ne r q with rfl | hrq` into its components or cases. Simplify using `[hc]`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hrp hrq]`. Establish `hJt : J ∘ Equiv.swap p q = J`. Use function extensionality and compare the values at `r`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp_apply]`. Break down `eq_or_ne r p with rfl | hrp` into its components or cases. Simplify using `[hJ]`. Break down `eq_or_ne r q with rfl | hrq` into its components or cases. Simplify using `[hJ]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.swap_apply_of_ne_of_ne hrp hrq]`. Establish `h` using `alt_perm col ξ J _ ht`. Rewrite `h` using `[hJt, Equiv.Perm.sign_swap hpq]`. Establish `h2 : (2 : ℂ) • alt (colG col) ξ J = 0`. Rewrite using `[two_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `nth_rewrite 1 [h]`. Simplify using the standard rewrite rules. Conclude with `(smul_eq_zero.mp h2).resolve_left two_ne_zero`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alt_dup (col : X → C) (ξ : TV n M X) (J : X → Fin n) (p q : X) (hpq : p ≠ q) (hc : col p = col q)
     (hJ : J p = J q) : alt (colG col) ξ J = 0 := by
@@ -95,7 +95,7 @@ theorem alt_dup (col : X → C) (ξ : TV n M X) (J : X → Fin n) (p q : X) (hpq
   exact (smul_eq_zero.mp h2).resolve_left two_ne_zero
 
 /- English proof (translation)
-Unfold `IsTab at hT`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx hy`. Conclude with `hT.1 x y (hx.trans hy.symm) hxy`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem injOn_col_fiber_of_isTab (col : X → C) (b : X → Fin n) (hT : IsTab col b) (c : C) :
     Set.InjOn b ↑(Finset.univ.filter (fun x => col x = c)) := by
@@ -105,11 +105,11 @@ private theorem injOn_col_fiber_of_isTab (col : X → C) (b : X → Fin n) (hT :
   exact hT.1 x y (hx.trans hy.symm) hxy
 
 /- English proof (translation)
-Establish `hinj` using `injOn_col_fiber_of_isTab col b hT (col x)`. Unfold `IsTab at hT`. Establish `hsub : Finset.Ici (b x) ⊆ (Finset.univ.filter (fun y => col y = col x)).image b`. Introduce `i hi`. Rewrite `hi` using `[Finset.mem_Ici]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hi.lt_or_eq with hlt | heq` into its components or cases. Take `⟨q, hq, hbq⟩` from `hT.2 x i hlt`. Conclude with `Finset.mem_image.mpr ⟨q, by simp [hq], hbq⟩`. Conclude with `Finset.mem_image.mpr ⟨x, by simp, heq⟩`. Establish `h` using `Finset.card_le_card hsub`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[Fin.card_Ici, Finset.card_image_of_injOn hinj]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 private theorem card_col_fiber_sub_le_of_isTab (col : X → C) (b : X → Fin n) (hT : IsTab col b) (x : X) :
     n - (Finset.univ.filter (fun y => col y = col x)).card ≤ (b x : ℕ) := by
@@ -127,13 +127,11 @@ private theorem card_col_fiber_sub_le_of_isTab (col : X → C) (b : X → Fin n)
   omega
 
 /- English proof (translation)
-Establish `hinj` using `injOn_col_fiber_of_isTab col b hT c`. Unfold `IsTab at hT`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hsub : (Finset.univ.filter (fun y => col y = c)).image b ⊆ Finset.Ioi j`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Take `⟨x, hx, rfl⟩` from `Finset.mem_image.mp hi`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx`. Rewrite using `[Finset.mem_Ioi]`. Break down `lt_trichotomy (b x) j with hlt | heq | hgt` into its components or cases.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, hbq⟩` from `hT.2 x j hlt`. Conclude with `absurd hbq (hne q (hq.trans hx))`. Conclude with `absurd heq (hne x hx)`. Conclude with `hgt`. Establish `h` using `Finset.card_le_card hsub`.
-
-Rewrite `h` using `[Fin.card_Ioi, Finset.card_image_of_injOn hinj]`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem exists_mem_col_fiber_eq_of_isTab_of_le (col : X → C) (b : X → Fin n) (hT : IsTab col b) (c : C) (j : Fin n)
     (hj : n - (Finset.univ.filter (fun y => col y = c)).card ≤ (j : ℕ)) :
@@ -158,43 +156,35 @@ private theorem exists_mem_col_fiber_eq_of_isTab_of_le (col : X → C) (b : X �
   omega
 
 /- English proof (translation)
-Unfold `ColInj at hJ`. Establish `key : ∀ p, ∃ q, col q = col p ∧ b q = b (ζ p)`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Take `⟨p0, hp0⟩` from `hne`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsmall : (Finset.univ.filter (fun y => col y = col p0)).card < n - (b (ζ p0) : ℕ)`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨q, hq, hbq⟩` from `exists_mem_col_fiber_eq_of_isTab_of_le col b hT (col p0) (b (ζ p0)) (by omega)`. Conclude with `hp0 q hq hbq`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfib : ∀ s : Finset X, s.card = ∑ c ∈ Finset.univ.image col, (s.filter (fun a => col a = c)).card`. Introduce `s`. Apply `Finset.card_eq_sum_card_fiberwise` to reduce the goal to its premises. Introduce `x _`. Conclude with `Finset.mem_coe.mpr (Finset.mem_image_of_mem col (Finset.mem_univ x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `heq : (Finset.univ.filter (fun x => b (ζ p0) < b (ζ x))).card = (Finset.univ.filter (fun x => b (ζ p0) < b x)).card`. Apply `Finset.card_nbij' ζ ζ.symm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Conclude with `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and, Equiv.apply_symm_apply] at hx ⊢`. Conclude with `hx`. Introduce `x _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Simplify using the standard rewrite rules. Establish `hsubR : ∀ c, (Finset.univ.filter (fun y => col y = c)).card < n - (b (ζ p0) : ℕ) → (Finset.univ.filter (fun y => col y = c)).card ≤ ((Finset.univ.filter (fun x => b (ζ p0) < b x)).filter (fun a => col a = c)).card`. Introduce `c hA`. Apply `Finset.card_le_card` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Use `⟨?_, hx⟩` and prove the remaining obligations. Establish `h2` using `card_col_fiber_sub_le_of_isTab col b hT x`. Rewrite `h2` using `[hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show (b (ζ p0) : ℕ) < b x`. Use linear arithmetic over natural numbers and integers. Establish `hle : ∀ c ∈ Finset.univ.image col, ((Finset.univ.filter (fun x => b (ζ p0) < b (ζ x))).filter (fun a => col a = c)).card ≤ ((Finset.univ.filter (fun x => b (ζ p0) < b x)).filter (fun a => col a = c)).card`. Introduce `c _`. Distinguish the cases in `hA : (Finset.univ.filter (fun y => col y = c)).card < n - (b (ζ p0) : ℕ)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢`. Conclude with `hx.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ _ := hsubR c hA`. Use `push_neg at hA`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card_of_injOn (fun x => b (ζ x))` to reduce the goal to its premises. Introduce `x hx`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_Ioi] at hx ⊢`. Conclude with `hx.1`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.mem_coe, Finset.mem_filter, Finset.mem_univ, true_and] at hx hy`. Conclude with `hJ x y (hx.2.trans hy.2.symm) hxy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ (((Finset.univ.filter (fun x => b (ζ p0) < b x)).filter (fun a => col a = c)).image b).card := by`. Apply `Finset.card_le_card` to reduce the goal to its premises. Introduce `j hj`. Rewrite `hj` using `[Finset.mem_Ioi]`. Establish `hj' : (b (ζ p0) : ℕ) < j` using `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨x, hx, hbx⟩` from `exists_mem_col_fiber_eq_of_isTab_of_le col b hT c j (by omega)`. Use `Finset.mem_image.mpr ⟨x, ?_, hbx⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `⟨?_, hx⟩` and prove the remaining obligations. Rewrite using `[hbx]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hj`. Use `_ ≤ _ := Finset.card_image_le`. Establish `hlt : ((Finset.univ.filter (fun x => b (ζ p0) < b (ζ x))).filter (fun a => col a = col p0)).card < ((Finset.univ.filter (fun x => b (ζ p0) < b x)).filter (fun a => col a = col p0)).card`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.card_le_card` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `x hx`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_erase] at hx ⊢`. Use `⟨?_, hx.2⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hx.1`.
-
-Use `_ < (Finset.univ.filter (fun y => col y = col p0)).card := Finset.card_erase_lt_of_mem (by simp)`. Use `_ ≤ _ := hsubR (col p0) hsmall`. Establish `hsum` using `Finset.sum_lt_sum hle ⟨col p0, Finset.mem_image_of_mem col (Finset.mem_univ p0), hlt⟩`. Rewrite `hsum` using `[← hfib, ← hfib, heq]`. Conclude with `lt_irrefl _ hsum`.
-
-Use `choose f hf1 hf2 using key`. Establish `hinj : Function.Injective f`. Introduce `p p' h`. Apply `hJ p p'` to reduce the goal to its premises. Rewrite using `[← hf1 p, ← hf1 p', h]`.
-
-Use `show b (ζ p) = b (ζ p')`. Rewrite using `[← hf2 p, ← hf2 p', h]`. Use `⟨Equiv.ofBijective f hinj.bijective_of_finite, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_colG]`. Introduce `p`.
-
-Conclude with `hf1 p`. Use function extensionality and compare the values at `p`. Conclude with `hf2 p`.
+A detailed English derivation is pending.
 -/
 theorem exists_perm (col : X → C) (b : X → Fin n) (hT : IsTab col b) (ζ : Equiv.Perm X)
     (hJ : ColInj col (b ∘ ζ)) : ∃ π ∈ colG col, b ∘ π = b ∘ ζ := by
@@ -304,11 +294,11 @@ def sg (col : X → C) (b : X → Fin n) (v : X → Fin n) : ℤ :=
   ∑ π ∈ colG col, if b ∘ π = v then (Equiv.Perm.sign π : ℤ) else 0
 
 /- English proof (translation)
-Unfold `sg`. Rewrite using `[Finset.sum_eq_single π]`. Simplify using the standard rewrite rules. Introduce `σ hσ hne`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hne` to reduce the goal to its premises. Use extensionality with `p`. Establish `hσ'` using `(mem_colG col σ).1 hσ p`. Establish `hπ'` using `(mem_colG col π).1 hπ p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hI _ _ (hσ'.trans hπ'.symm) (congrFun h p)`. Introduce `h`. Conclude with `absurd hπ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sg_perm (col : X → C) (b : X → Fin n) (hI : ColInj col b) (π : Equiv.Perm X) (hπ : π ∈ colG col) :
     sg col b (b ∘ π) = Equiv.Perm.sign π := by
@@ -327,7 +317,7 @@ theorem sg_perm (col : X → C) (b : X → Fin n) (hI : ColInj col b) (π : Equi
     exact absurd hπ h
 
 /- English proof (translation)
-Unfold `sg`. Use `Finset.sum_eq_zero fun π hπ => ?_` and prove the remaining obligations. Rewrite using `[if_neg]`. Conclude with `fun h' => h ⟨π, hπ, h'⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sg_zero (col : X → C) (b : X → Fin n) (v : X → Fin n) (h : ¬ ∃ π ∈ colG col, b ∘ π = v) :
     sg col b v = 0 := by
@@ -337,9 +327,9 @@ theorem sg_zero (col : X → C) (b : X → Fin n) (v : X → Fin n) (h : ¬ ∃ 
   exact fun h' => h ⟨π, hπ, h'⟩
 
 /- English proof (translation)
-Unfold `IsTab at hT ⊢`. Take `⟨h1, h2⟩` from `hT`. Use `⟨fun p q hc hb => he (h1 _ _ hc hb), fun p i hi => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, hbq⟩` from `h2 (e p) i hi`. Take `⟨y', rfl⟩` from `hcl q p hq`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨y', hq, hbq⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTab_comp {Y : Type} (col : X → C) (b : X → Fin n) (hT : IsTab col b) (e : Y → X)
     (he : Function.Injective e) (hcl : ∀ q y, col q = col (e y) → ∃ y', q = e y') : IsTab (col ∘ e) (b ∘ e) := by

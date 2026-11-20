@@ -9,7 +9,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SemidirectVolume.ProdHa
 namespace PI.VolSemiDirect.W
 
 /- English proof (translation)
-The claim follows from `volume_unipotent_of_steps subgroup_locally_compact_holds fundamental_domain_exists product_haar_measure_holds volume_quotient_holds hLC hD hCl hSe hCo`.
+A detailed English derivation is pending.
 -/
 theorem volume_unipotent_of_adelic (hLC : LcscHA) (hD : DiscHA) (hCl : ClosedStep) (hSe : SemiStep)
     (hCo : ConjStep) : PI.VolSemiDirect.VolumeUnipotentAllCM :=

@@ -9,17 +9,15 @@ def LCompInt : Prop := ∀ (k : Type) [Field k] [IsAlgClosed k] (d : ℕ) {X : S
   ConnectedSpace X → IsIntegral X
 
 /- English proof (translation)
-Take `⟨S, hSf, hSc, hSi, hSu⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible (isClosed_univ (X := α))`. Establish `hin : ∀ x : α, ∃ t ∈ S, x ∈ t` using `fun x => by`. Establish `: x ∈ ⋃₀ S` using `hSu ▸ Set.mem_univ x`. Simplify using `using this`. Establish `hsub : ∀ t ∈ S, ∀ z ∈ t, t ⊆ connectedComponent z` using `fun t ht z hz => (IsIrreducible.isConnected (hSi t ht)).isPreconnected.subset_connectedComponent hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `: Finite S` using `hSf.to_subtype`. Use `Finite.of_surjective (fun t : S => (((IsIrreducible.nonempty (hSi t.1 t.2)).some : α) : _root_.ConnectedComponents α)) ?_` and prove the remaining obligations. Introduce `c`. Take `⟨x, rfl⟩` from `ConnectedComponents.surjective_coe c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, hxt⟩` from `hin x`. Use `⟨⟨t, ht⟩, ConnectedComponents.coe_eq_coe.mpr ?_⟩` and prove the remaining obligations. Conclude with `connectedComponent_eq (hsub t ht _ (IsIrreducible.nonempty (hSi t ht)).some_mem hxt)`. Establish `hc : (connectedComponent x)ᶜ = ⋃₀ {t ∈ S | Disjoint t (connectedComponent x)}`. Use extensionality with `z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_sUnion, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Take `⟨t, ht, hzt⟩` from `hin z`. Use `⟨t, ⟨ht, Set.disjoint_left.mpr fun w hwt hwx => hz ?_⟩, hzt⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[connectedComponent_eq hwx]`. Conclude with `hsub t ht w hwt hzt`. Introduce and unpack `⟨t, ⟨_, hd⟩, hzt⟩ hzx`. Conclude with `Set.disjoint_left.mp hd hzt hzx`. Rewrite using `[← isClosed_compl_iff, hc]`.
-
-Establish `hfin : ({t ∈ S | Disjoint t (connectedComponent x)}).Finite` using `hSf.subset (Set.sep_subset _ _)`. Rewrite using `[Set.sUnion_eq_biUnion]`. Conclude with `hfin.isClosed_biUnion fun t ht => hSc t ht.1`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem noeth_components {α : Type*} [TopologicalSpace α] [TopologicalSpace.NoetherianSpace α] :
     Finite (_root_.ConnectedComponents α) ∧ ∀ x : α, IsOpen (connectedComponent x) := by
@@ -55,9 +53,9 @@ theorem noeth_components {α : Type*} [TopologicalSpace α] [TopologicalSpace.No
     exact hfin.isClosed_biUnion fun t ht => hSc t ht.1
 
 /- English proof (translation)
-Use `hp.1` as an intermediate fact. Use `hp.2` as an intermediate fact. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth d p`. Establish `: CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace p`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsNoetherian X` using `{}`. Conclude with `noeth_components`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem comp_fin {k : Type} [Field k] (d : ℕ) {X : Scheme.{0}} (p : X ⟶ S k) (hp : SP d p) :
     Finite (_root_.ConnectedComponents X) ∧ ∀ x : X, IsOpen (connectedComponent x) := by
@@ -69,9 +67,9 @@ theorem comp_fin {k : Type} [Field k] (d : ℕ) {X : Scheme.{0}} (p : X ⟶ S k)
   exact noeth_components
 
 /- English proof (translation)
-Establish `: IsClosedImmersion U.ι` using `.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hU)`. Use `hp.1` as an intermediate fact. Use `hp.2` as an intermediate fact. Establish `hs` using `smoothOfRelativeDimension_comp (n := 0) (m := d) U.ι p`. Rewrite `hs` using `[Nat.zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨inferInstance, hs⟩, ?_⟩` and prove the remaining obligations. Take `⟨N, ι, hι, hιp⟩` from `hX`. Conclude with `⟨N, U.ι ≫ ι, inferInstance, by rw [Category.assoc, hιp]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem clopen_smoothProper_projective {k : Type} [Field k] (d : ℕ) {X : Scheme.{0}} (p : X ⟶ S k) (hp : SP d p) (hX : IsProj p)
     (U : X.Opens) (hU : IsClosed (U : Set X)) : SP d (U.ι ≫ p) ∧ IsProj (U.ι ≫ p) := by

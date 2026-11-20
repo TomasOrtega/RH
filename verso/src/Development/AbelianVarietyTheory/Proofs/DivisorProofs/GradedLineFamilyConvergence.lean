@@ -20,9 +20,9 @@ section
 variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {t : ℝ → ℝ}
 
 /- English proof (translation)
-Establish `h₁ : VInfAt (F` using `m → n → ℂ) A y := vInfAt_pi fun a => vInfAt_pi fun b => h a b`. Establish `h₂ : FamAt (F` using `m → m → ℂ) t H H₀ y := famAt_pi fun a => famAt_pi fun b => hH a b`. Use `((famAt_const h₁ t).prodMk h₂).comp_contDiff (Ψ := fun x => HermFrame.chg (of x.1) (of x.2) a b) (contDiff_iff_contDiffAt.2 fun x => ?_)` and prove the remaining obligations. Establish `e₁ : MContDiffAt ∞ (fun x : (m → n → ℂ) × (m → m → ℂ) => of x.1) x` using `fun a b => (mContDiffAt_id x.1 a b).comp x contDiffAt_fst`. Establish `e₂ : MContDiffAt ∞ (fun x : (m → n → ℂ) × (m → m → ℂ) => of x.2) x` using `fun a b => (mContDiffAt_id x.2 a b).comp x contDiffAt_snd`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(e₁.transpose.mul e₂).mul e₁.conjTranspose.transpose a b`.
+A detailed English derivation is pending.
 -/
 theorem famAt_chg {m n : Type} [Fintype m] [Fintype n] {y : CxPts p σ} {A : CxPts p σ → Matrix m n ℂ}
     (h : MInfAt A y) {H : ℝ → CxPts p σ → Matrix m m ℂ} {H₀ : CxPts p σ → Matrix m m ℂ}
@@ -41,7 +41,7 @@ theorem famAt_chg {m n : Type} [Fintype m] [Fintype n] {y : CxPts p σ} {A : CxP
 variable {E F : X.Modules} {r s : ℕ}
 
 /- English proof (translation)
-Take `⟨c, hc, hf⟩` from `H σ y`. Establish `hn : ∀ᶠ z in 𝓝 y, z ∈ ptsIn p σ c.U ∧ z ∈ ptsIn p σ U` using `Filter.Eventually.and ((isOpen_ptsIn _).mem_nhds hc) ((isOpen_ptsIn _).mem_nhds hy)`. Use `(famAt_chg (A := fun z => Matrix.of fun a b => c.crd p σ (e b) z a) (fun a b => c.vInfAt_crd _ hy hc a) hf a b).congr ((tendsto_snd.eventually hn).mono fun x hx => ?_) (hn.mono fun z hz => ?_)` and prove the remaining obligations. Conclude with `congrFun (congrFun (((h x.1).met σ).gram_eq c hx.1 e hx.2) a) b`. Conclude with `congrFun (congrFun ((h₀.met σ).gram_eq c hz.1 e hz.2) a) b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem VFam.famAt_gram {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : VFam t h h₀) {ι : Type} [Fintype ι]
     {U : X.Opens} (e : ι → Γ(E, U)) {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) (a b : ι) :
@@ -56,14 +56,14 @@ theorem VFam.famAt_gram {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : 
   · exact congrFun (congrFun ((h₀.met σ).gram_eq c hz.1 e hz.2) a) b
 
 /- English proof (translation)
-Introduce `_ y` and use `⟨_, hF.mem_pick y, fun a b => H.famAt_gram _ (hF.mem_pick y) a b⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem VFam.restrict {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : VFam t h h₀) {i : F ⟶ E}
     (hi : IsSubbundle i) (hF : IsVB F s) : VFam t (fun R => (h R).restrict hi hF) (h₀.restrict hi hF) :=
   fun _ y => ⟨_, hF.mem_pick y, fun a b => H.famAt_gram _ (hF.mem_pick y) a b⟩
 
 /- English proof (translation)
-Introduce `σ y` and use `by obtain ⟨a, hy⟩ := Met.exists_adapted hS h₁ h₃ y have hn : ∀ᶠ z in 𝓝 y, z ∈ ptsIn p σ a.U := (isOpen_ptsIn _).mem_nhds hy have hg : FamAt (F := (Fin r ⊕ Fin s) → (Fin r ⊕ Fin s) → ℂ) t (fun R z => ((h R).met σ).gram a.frame z) (fun z => (h₀.met σ).gram a.frame z) y := famAt_pi …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VFam.quot {S : ShortComplex X.Modules} {h : ℝ → VMetric p S.X₂ (r + s)} {h₀ : VMetric p S.X₂ (r + s)}
     (H : VFam t h h₀) (hS : S.ShortExact) (h₁ : IsVB S.X₁ r) (h₃ : IsVB S.X₃ s) :
@@ -82,22 +82,22 @@ theorem VFam.quot {S : ShortComplex X.Modules} {h : ℝ → VMetric p S.X₂ (r 
   · exact congrFun (congrFun ((h₀.met σ).quot_G hS h₁ h₃ a hz) i) j
 
 /- English proof (translation)
-Rewrite using `[φ.trans i j y hi hj, ψ.trans i j y hi hj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem weight_sub_eq {B : LB X} (φ ψ : Weight p σ B) {i j : B.ι} {y : CxPts p σ} (hi : y ∈ ptsIn p σ (B.U i))
     (hj : y ∈ ptsIn p σ (B.U j)) : φ.φ j y - ψ.φ j y = φ.φ i y - ψ.φ i y := by
   rw [φ.trans i j y hi hj, ψ.trans i j y hi hj]; ring
 
 /- English proof (translation)
-Set `u : ℝ → ∀ σ : k →+* ℂ, CxPts p σ → ℝ` to `fun R σ y => ((h R).met σ).detWeight.φ (h₀.isVB.pick y) y - (h₀.met σ).detWeight.φ (h₀.isVB.pick y) y`. Establish `hu (R) (σ) (c : Chart E r) (y : CxPts p σ) (hy : y ∈ ptsIn p σ c.U) : u R σ y = ((h R).met σ).detWeight.φ c y - (h₀.met σ).detWeight.φ c y` using `weight_sub_eq _ _ hy (h₀.isVB.mem_pick y)`. Use `⟨u, fun R σ y => ?_, fun R σ σ' _ y y' e _ => ?_, fun R => ?_, fun σ y => ?_⟩` and prove the remaining obligations. Establish `hc` using `h₀.isVB.mem_pick y`. Use `(((hs R σ).detWeight _ y hc).add ((hs₀ σ).detWeight _ y hc).neg).congr ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [(isOpen_ptsIn _).mem_nhds hc] with z hz`. Rewrite using `[hu R σ _ z hz, sub_eq_add_neg]`. Establish `hc` using `h₀.isVB.mem_pick y`. Express the relevant statement in the definitionally equal form `u R σ' y' = u R σ y`. Rewrite using `[hu R σ _ y hc, hu R σ' _ y' ((mem_ptsIn_iff_of_conj e).2 hc), ((h R).conj σ σ').detWeight _ y y' e hc, (h₀.conj σ σ').detWeight _ y y' e hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `HermLB.isometric_of_eqOn fun σ c y hy => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((h R).met σ).detWeight.φ c y = (h₀.met σ).detWeight.φ c y + u R σ y`. Rewrite using `[hu R σ c y hy]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, hf⟩` from `H σ y`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : ∀ᶠ z in 𝓝 y, z ∈ ptsIn p σ c.U` using `(isOpen_ptsIn _).mem_nhds hc`. Establish `hg : FamAt (F` using `Fin r → Fin r → ℂ) t (fun R z => ((h R).met σ).G c z) (fun z => (h₀.met σ).G c z) y := famAt_pi fun i => famAt_pi fun j => hf i j`. Establish `hd (M : Fin r → Fin r → ℂ) : ContDiffAt ℝ ∞ (fun N : Fin r → Fin r → ℂ => (of N).det.re) M` using `Complex.reCLM.contDiff.contDiffAt.comp M (mContDiffAt_id M).det`. Establish `h₁` using `hg.comp (Ψ := fun M => -Real.log (of M).det.re) (T := {M | (of M).det.re ≠ 0}) (isOpen_ne_fun (contDiff_iff_contDiffAt.2 hd).continuous continuous_const) (det_re_pos ((h₀.met σ).posDef c y hc)).ne' fun M hM => ((hd M).log hM).neg.contDiffWithinAt`. Establish `h₂` using `famAt_const (vInfAt_iff_cInfAt.2 ((hs₀ σ).detWeight c y hc)) t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `((h₁.prodMk h₂).comp_contDiff (Ψ := fun x => x.1 - x.2) (contDiff_fst.sub contDiff_snd)).congr ((tendsto_snd.eventually hn).mono fun x hx => hu x.1 σ c x.2 hx) (.of_forall fun z => (sub_self _).symm)` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem VFam.lFam_det {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : VFam t h h₀) (hs : ∀ R, (h R).IsCInf)
     (hs₀ : h₀.IsCInf) : LFam t (fun R => VMetric.det (hs R)) (VMetric.det hs₀) := by
@@ -134,7 +134,7 @@ theorem VFam.lFam_det {h : ℝ → VMetric p E r} {h₀ : VMetric p E r} (H : VF
 end
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ h h₀ H H₀ hf fl i` and use `VFam.lFam_det (h := fun R => (h R).grMet fl i) (h₀ := h₀.grMet fl i) (VFam.quot (h := fun R => (h R).stepMet fl i) (h₀ := h₀.stepMet fl i) (hf.restrict _ _) _ _ _) (fun R => (H R).grMet fl i) (H₀.grMet fl i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lFam_grLB : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (E : X.Modules) (r : ℕ) (t : ℝ → ℝ) (h : ℝ → VMetric p E r) (h₀ : VMetric p E r) (H : ∀ R, (h R).IsCInf) (H₀ : h₀.IsCInf), VFam t h h₀ → ∀ (fl : Vert.Flag E r) (i : Fin r), LFam t (fun R => VMetric.grLB fl i (H R)) (VMetric.grLB fl i H₀) :=
   fun _ _ _ _ _ _ _ h h₀ H H₀ hf fl i =>

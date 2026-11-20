@@ -9,13 +9,13 @@ namespace GlobalTheory.EtaleHensel
 variable {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
 
 /- English proof (translation)
-Take `⟨t, ht, ht1⟩` from `(Algebra.FormallyUnramified.iff_exists_tensorProduct (R := R) (S := A)).mp inferInstance`. Set `ψ : TensorProduct R A A →ₐ[R] B` to `Algebra.TensorProduct.productMap φ₁ φ₂`. Set `ρ : B →ₐ[R] ResidueField B` to `IsScalarTower.toAlgHom R B (ResidueField B)`. Establish `hρ : ∀ b, ρ b = residue B b` using `fun _ => rfl`. Establish `key : ρ.comp ψ = (ρ.comp φ₁).comp (Algebra.TensorProduct.lmul' R)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Simplify using `only [AlgHom.comp_apply, ψ, Algebra.TensorProduct.productMap_apply_tmul, Algebra.TensorProduct.lmul'_apply_tmul, map_mul, hρ, h b]`. Establish `hres : residue B (ψ t) = 1`. Use `congrArg (fun f : TensorProduct R A A →ₐ[R] ResidueField B => f t) key` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [AlgHom.comp_apply, ht1, map_one, hρ]`. Establish `hu : IsUnit (ψ t)`. Assume the negation of the conclusion as `hn`. Establish `h0 : residue B (ψ t) = 0` using `(residue_eq_zero_iff _).mpr ((mem_maximalIdeal _).mpr hn)`. Conclude with `one_ne_zero (hres.symm.trans h0)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Establish `hz` using `congrArg ψ (ht a)`. Simplify using `only [map_mul, map_sub, map_zero, ψ, Algebra.TensorProduct.productMap_apply_tmul, map_one, one_mul, mul_one] at hz`. Conclude with `(sub_eq_zero.mp (hu.mul_left_eq_zero.mp hz)).symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algHom_eq_of_residue_eq [Algebra.Etale R A] [IsLocalRing B] {φ₁ φ₂ : A →ₐ[R] B}
     (h : ∀ a, residue B (φ₁ a) = residue B (φ₂ a)) : φ₁ = φ₂ := by
@@ -44,7 +44,7 @@ theorem algHom_eq_of_residue_eq [Algebra.Etale R A] [IsLocalRing B] {φ₁ φ₂
   exact (sub_eq_zero.mp (hu.mul_left_eq_zero.mp hz)).symm
 
 /- English proof (translation)
-Introduce `R A B _ _ _ _ _ _ _`. Use `⟨fun φ₁ φ₂ he => algHom_eq_of_residue_eq fun a => ?_, fun φ => ?_⟩` and prove the remaining obligations. Conclude with `DFunLike.congr_fun he a`. Take `⟨ψ, hψ⟩` from `GlobalTheory.exists_algHom_lift_of_smooth (maximalIdeal B) (IsScalarTower.toAlgHom R B (ResidueField B)) residue_surjective (fun b => (residue_eq_zero_iff b).symm) φ`. Conclude with `⟨ψ, hψ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bijective_residue_comp : ∀ (R A B : Type) [CommRing R] [CommRing A] [CommRing B]
     [Algebra R A] [Algebra R B] [Algebra.Etale R A] [HenselianLocalRing B],

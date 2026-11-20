@@ -6,7 +6,7 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hc`. Conclude with `⟨⟨k, χ⟩, hχ, rfl, fun _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem stage1_succ (c : ℕ) (hc : c ≠ 0) (χ : DirichletCharacter ℂ c) (hχ : χ.IsPrimitive) :
     ∃ ξ' : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), ξ'.2.IsPrimitive ∧ ξ'.1 + 1 = c ∧
@@ -15,9 +15,9 @@ private theorem stage1_succ (c : ℕ) (hc : c ≠ 0) (χ : DirichletCharacter �
   exact ⟨⟨k, χ⟩, hχ, rfl, fun _ => rfl⟩
 
 /- English proof (translation)
-Use `haveI : NeZero N₀ := ⟨hN.ne'⟩`. Take `⟨ξ', h1, h2, h3⟩` from `stage1_succ ξ.conductor (DirichletCharacter.conductor_ne_zero ξ) ξ.primitiveCharacter ξ.primitiveCharacter_isPrimitive`. Use `⟨ξ', h1, h2 ▸ Nat.le_of_dvd hN ξ.conductor_dvd_level, fun n hn => ?_⟩` and prove the remaining obligations. Establish `h` using `DirichletCharacter.changeLevel_eq_cast_of_dvd ξ.primitiveCharacter ξ.conductor_dvd_level (ZMod.unitOfCoprime n hn)`. Rewrite `h` using `[DirichletCharacter.changeLevel_primitiveCharacter, ZMod.coe_unitOfCoprime, ZMod.cast_natCast ξ.conductor_dvd_level]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, h]`.
+A detailed English derivation is pending.
 -/
 private theorem stage1_prim (N₀ : ℕ) (hN : 0 < N₀) (ξ : DirichletCharacter ℂ N₀) :
     ∃ ξ' : (Σ N : ℕ, DirichletCharacter ℂ (N + 1)), ξ'.2.IsPrimitive ∧ ξ'.1 + 1 ≤ N₀ ∧
@@ -33,7 +33,7 @@ private theorem stage1_prim (N₀ : ℕ) (hN : 0 < N₀) (ξ : DirichletCharacte
   rw [h3, h]
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_rpow_atTop (2 : ℝ) (show 0 < ε / 5 by positivity)).bound (show (0 : ℝ) < 1 / 2 by norm_num)`. Use `filter_upwards [h, Filter.eventually_gt_atTop (0 : ℝ)] with Y hY hY0`. Rewrite `hY` using `[Real.rpow_two, Real.norm_of_nonneg (sq_nonneg _), Real.norm_of_nonneg (Real.rpow_nonneg hY0.le _)]`. Conclude with `hY`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stage1_log {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ Y : ℝ in Filter.atTop, Real.log Y ^ 2 ≤ 1 / 2 * Y ^ (ε / 5) := by
@@ -45,27 +45,25 @@ private theorem stage1_log {ε : ℝ} (hε : 0 < ε) :
   exact hY
 
 /- English proof (translation)
-Take `⟨C, hC, hst⟩` from `stage`. Use `⟨C, hC, fun ε τ K η N₀ hε hε' hτ hK hη hN => ?_⟩` and prove the remaining obligations. Use `haveI : NeZero N₀ := ⟨hN.ne'⟩`. Use `haveI : Fintype (DirichletCharacter ℂ N₀) := Fintype.ofFinite _`. Use `choose g hg1 hg2 hg3 using stage1_prim N₀ hN`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Y₁, hY₁⟩` from `hst ε τ K η (Fintype.card (DirichletCharacter ℂ N₀)) hε (by linarith) hτ hK hη`. Take `⟨Y₂, hY₂⟩` from `Filter.eventually_atTop.1 ((stage1_log hε).and (((tendsto_rpow_atTop (show 0 < ε / 5 by positivity)).eventually_ge_atTop (2 * N₀ : ℝ)).and ((Real.tendsto_log_atTop.eventually_ge_atTop (1 : ℝ)).and (Filter.eventually_ge_atTop (1 : ℝ)))))`. Use `⟨max Y₁ Y₂, fun Y hY => ?_⟩` and prove the remaining obligations. Simplify using `only [ge_iff_le, max_le_iff] at hY`. Take `⟨hlog, hz, hl1, hY1⟩` from `hY₂ Y hY.2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN1 : (1 : ℝ) ≤ N₀` using `by exact_mod_cast hN`. Establish `hz0 : 0 ≤ Y ^ (ε / 5)` using `by linarith`. Establish `hA : admitted ε Y (Real.exp (Y ^ (ε / 5))) 8 3`. Use `⟨by norm_num, dvd_rfl, by norm_num, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_exp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h8 : Real.log ((8 : ℕ) : ℝ) ≤ 8`. Use `Real.log_le_sub_one_of_pos (show (0 : ℝ) < ((8 : ℕ) : ℝ) by norm_num)` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Use `mul_le_mul_of_nonneg_left h8 (sq_nonneg (Real.log Y))` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Real.log ((8 : ℕ) : ℝ) = l at this ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Real.log_exp]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hY1 (by linarith)`. Rewrite using `[Real.log_exp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_mul_of_one_le_right hz0 (one_le_pow₀ hl1)`. Establish `hp : ∀ p : ℕ, p.Prime → p ∣ 8 → (p : ℝ) ≤ Y ^ (ε / 5) ∨ (Y ^ K) ^ 400 < (p : ℝ)`. Introduce `p hp hd`. Establish `h2 : p ∣ 2` using `hp.dvd_of_dvd_pow (n := 3) (by simpa using hd)`. Establish `: (p : ℝ) ≤ 2` using `by exact_mod_cast Nat.le_of_dvd two_pos h2`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `left`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hFU : (N₀ : ℝ) ≤ Real.exp (Y ^ (ε / 5)) ^ (1 / 2 : ℝ)`. Rewrite using `[← Real.exp_mul]`. Use `Real.add_one_le_exp (Y ^ (ε / 5) * (1 / 2))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hne, hB⟩` from `hY₁ Y hY.1 (Real.exp (Y ^ (ε / 5))) N₀ 8 3 (Finset.univ.image g) hA hp hN1 hFU (Finset.card_image_le.trans Finset.card_univ.le) (by`. Introduce `ξ hξ`. Take `⟨χ, -, rfl⟩` from `Finset.mem_image.1 hξ`. Conclude with `⟨hg1 χ, by exact_mod_cast hg2 χ⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hne, fun B hBs hbad => hB B hBs fun q hq => ?_⟩` and prove the remaining obligations. Establish `hqp : q.Prime` using `(Finset.mem_filter.1 (hBs hq)).2.1`. Establish `hb` using `hbad q hq`. Unfold `GoodQ at hb`. Take `⟨χ, hχ⟩` from `not_forall.1 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g χ, Finset.mem_image_of_mem _ (Finset.mem_univ _), N₀ * q, mul_ne_zero hN.ne' hqp.ne_zero, fun h => hχ ?_⟩` and prove the remaining obligations. Introduce `N _ ψ hI`. Use `h N ψ ⟨hI.1, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hI.2 n hn]`. Simplify using `only`.
-
-Rewrite using `[hg3 χ n (Nat.Coprime.coprime_mul_right_right hn)]`.
+A detailed English derivation is pending.
 -/
 theorem stage1 :
     ∃ C : ℝ, 0 < C ∧ ∀ (ε τ K η : ℝ) (N₀ : ℕ), 0 < ε → ε < 1 / 52 → 0 < τ → 1 ≤ K → 0 < η → 0 < N₀ → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀,

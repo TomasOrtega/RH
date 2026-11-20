@@ -24,7 +24,7 @@ def frameOfY {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (d : DecoSet X.E n (Pr
   Classical.choose (exists_frameD P d.2.lat)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_frameD P d.2.lat)`.
+A detailed English derivation is pending.
 -/
 theorem frameOfY_spec {n : ℕ} (P : HeightOneSpectrum (𝓞 X.E)) (d : DecoSet X.E n (Pr.vT u) Pr.vGs) :
     ∀ x, frameOfY u P d x ∈ localization₂ P.asIdeal d.1.N ↔ x ∈ stdAt X.E n P :=
@@ -57,11 +57,11 @@ def TopLevQ : Prop :=
 variable {W cst L₀ u m2 Λt Θt hSG ΛM hm}
 
 /- English proof (translation)
-Establish `hsd : Deco.act s.1.1 s.2.1 d.1 = d.1`. Establish `h0` using `congrArg Subtype.val hs`. Conclude with `h0`. Establish `key : ∀ {N : ℕ} (hN : N = R.N R.m - 1 + 1), Deco.act (extUH hN s.1).1 (extGH hN s.2.1) (DecoSet.tilH (ST` using `Pr.vT u) hN (Pr.piT u) d).1 = (DecoSet.tilH (ST := Pr.vT u) hN (Pr.piT u) d).1 := by`. Introduce `N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hN` using the available equality. Establish `hok : (d.1.til (ST` using `Pr.vT u) (Pr.piT u)).Ok := d.2.til (conj_piT_notMem hPr u) hpi`. Establish `e : (DecoSet.tilH (ST` using `Pr.vT u) (rfl : R.N R.m - 1 + 1 = R.N R.m - 1 + 1) (Pr.piT u) d).1 = d.1.til (ST := Pr.vT u) (Pr.piT u) := by show (DecoSet.til (ST := Pr.vT u) (Pr.piT u) d).1 = _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hok]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `show Deco.act (extE s.1.1) (extG s.2.1) _ = _`. Rewrite using `[← Deco.til_act, hsd]`. Establish `hN : gmap (extR R hSG (s.1, s.2.1)).1.1 (tilR hSG u d).1.N = (tilR hSG u d).1.N` using `congrArg Deco.N (key (N_m_succ R))`. Rewrite using `[hN]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localization_tilR_fixed (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) {d : DecoSet X.E (R.N R.m - 1) ∅ SG'} {s : (ptGSD W ΛM).G}
     (hs : s • d = d) (P : HeightOneSpectrum (𝓞 X.E)) :
@@ -103,15 +103,15 @@ theorem extYg_fst (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (h
     (extYg (W := W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ d s hs).1 = (extR R hSG (s.1, s.2.1)).1 := rfl
 
 /- English proof (translation)
-Establish `hsd : Deco.act s.1.1 s.2.1 d.1 = d.1`. Establish `h0` using `congrArg Subtype.val hs`. Conclude with `h0`. Establish `key : ∀ {N : ℕ} (hN : N = R.N R.m - 1 + 1), Deco.act (extUH hN s.1).1 (extGH hN s.2.1) (DecoSet.tilH (ST` using `Pr.vT u) hN (Pr.piT u) d).1 = (DecoSet.tilH (ST := Pr.vT u) hN (Pr.piT u) d).1 := by`. Introduce `N hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Substitute `hN` using the available equality. Establish `hok : (d.1.til (ST` using `Pr.vT u) (Pr.piT u)).Ok := d.2.til (conj_piT_notMem hPr u) hpi`. Establish `e : (DecoSet.tilH (ST` using `Pr.vT u) (rfl : R.N R.m - 1 + 1 = R.N R.m - 1 + 1) (Pr.piT u) d).1 = d.1.til (ST := Pr.vT u) (Pr.piT u) := by show (DecoSet.til (ST := Pr.vT u) (Pr.piT u) d).1 = _`. Unfold `DecoSet.til`. Rewrite using `[dif_pos hok]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `show Deco.act (extE s.1.1) (extG s.2.1) _ = _`. Rewrite using `[← Deco.til_act, hsd]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Apply `Subtype.ext show (Deco.act (extUH (N_m_succ R) s.1).1 (extGH (N_m_succ R) s.2.1) (DecoSet.tilH (ST := Pr.vT u) (N_m_succ R) (Pr.piT u) d).1).res hSG = ((DecoSet.tilH (ST := Pr.vT u) (N_m_succ R) (Pr.piT u) d).1).res hSG` to reduce the goal to its premises. Rewrite using `[key]`. Use function extensionality and compare the values at `P show (extR R hSG (s.1, s.2.1)).1.1 * frameOfY u P.1 (tilR hSG u d) * ((frameOfY u P.1 (tilR hSG u d))⁻¹ * (extR R hSG (s.1, s.2.1)).1.1 * frameOfY u P.1 (tilR hSG u d))⁻¹ = frameOfY u P.1 (tilR hSG u d) group`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hmem` using `(extYg (W := W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ d s hs • tilPtY W cst L₀ u m2 Λt Θt hSG hm d).2 classical`. Express the relevant statement in the definitionally equal form `_ ∈ (if R.m = m2 + 1 then ybSet sel mu cst _ else {Set.univ}) at hmem`. Rewrite `hmem` using `[if_neg (by omega)]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extYg_smul (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtL (Λt R.m) hSG ΛM) (hQ : TopLevQ W u Θt hSG ΛM)
     (d : DecoSet X.E (R.N R.m - 1) ∅ SG') (s : (ptGSD W ΛM).G) (hs : s • d = d) :
@@ -234,17 +234,15 @@ def stabMapY (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : L
   stabilizerMapMaximalIndex (W := W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ c
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `congrArg Subtype.val hab`. Establish `h2 : extYg (W` using `W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ ((ptGSD W ΛM).outSec.rep c) a.1 (MulAction.mem_stabilizer_iff.1 a.2) = extYg (W := W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ ((ptGSD W ΛM).outSec.rep c) b.1 (MulAction.mem_stabilizer_iff.1 b.2) := …`. Establish `h3 : extUH (N_m_succ R) a.1.1 = extUH (N_m_succ R) b.1.1` using `congrArg (fun g => g.1) h2`. Establish `h4 : a.1.1 = b.1.1` using `rec_extUH_injective (N_m_succ R) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : Deco.act a.1.1.1 a.1.2.1 ((ptGSD W ΛM).outSec.rep c).1 = ((ptGSD W ΛM).outSec.rep c).1`. Establish `h0` using `congrArg Subtype.val (MulAction.mem_stabilizer_iff.1 a.2)`. Conclude with `h0`. Establish `hb : Deco.act b.1.1.1 b.1.2.1 ((ptGSD W ΛM).outSec.rep c).1 = ((ptGSD W ΛM).outSec.rep c).1`. Establish `h0` using `congrArg Subtype.val (MulAction.mem_stabilizer_iff.1 b.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h0`. Establish `hbe : ∀ w : SG', a.1.2.1 w = b.1.2.1 w`. Introduce `w`. Apply `Units.ext` to reduce the goal to its premises. Apply `Matrix.ext_of_mulVec_single` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `i`. Take `⟨y, -, hy⟩` from `((ptGSD W ΛM).outSec.rep c).2.be_surj w (Pi.single i 1)`. Establish `ea : (a.1.2.1 w).1.mulVec (((ptGSD W ΛM).outSec.rep c).1.be w (a.1.1.1.symm (a.1.1.1 y))) = ((ptGSD W ΛM).outSec.rep c).1.be w (a.1.1.1 y)` using `congrFun (congrFun (congrArg Deco.be ha) w) _`. Establish `eb : (b.1.2.1 w).1.mulVec (((ptGSD W ΛM).outSec.rep c).1.be w (b.1.1.1.symm (b.1.1.1 y))) = ((ptGSD W ΛM).outSec.rep c).1.be w (b.1.1.1 y)` using `congrFun (congrFun (congrArg Deco.be hb) w) _`. Rewrite `ea`, `eb` using `[LinearEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `ea` using `[h4]`. Rewrite using `[← hy, ea, eb]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `h4`.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Conclude with `hbe w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem stabMapY_injective (hPr : Pr.Ok) (hpi : ∀ w : SG', Pr.piT u ∉ w.1.asIdeal) (hL : LevExtL (Λt R.m) hSG ΛM) (hQ : TopLevQ W u Θt hSG ΛM)
     (c : (ptGSD W ΛM).Cl) : Function.Injective (stabMapY (W := W) (cst := cst) (L₀ := L₀) (m2 := m2) (hm := hm) hPr hpi hL hQ c) := by

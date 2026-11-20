@@ -9,9 +9,7 @@ namespace GlobalTheory.CompanionTheory.ExpandN
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `letI : (Valued.v (R := k)).RankOne :=`. Use the proof step `{ hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`. Use `open scoped Valued in`.
-
-Conclude with `NormedField.nhdsNE_neBot (0 : k)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem nhdsNE_zero_neBot : (𝓝[≠] (0 : k)).NeBot := by
   letI := IsTopologicalAddGroup.rightUniformSpace k
@@ -24,19 +22,19 @@ theorem nhdsNE_zero_neBot : (𝓝[≠] (0 : k)).NeBot := by
   exact NormedField.nhdsNE_neBot (0 : k)
 
 /- English proof (translation)
-Take `⟨hP, hD⟩` from `mem_unipRad.1 hu`. Establish `hsame : ∀ i j, blk e i = blk e j → (u : Matrix n n k) i j = (1 : Matrix n n k) i j`. Introduce `i j hij`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `e.surjective j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : a = b` from `by simpa using hij`. Rewrite using `[hD a i j, Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Use `set M : Matrix n n k := 1 + c • ((u : Matrix n n k) - 1) with hM`. Establish `hMsame : ∀ i j, blk e i = blk e j → M i j = (1 : Matrix n n k) i j`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Simplify using `[hM, hsame i j hij]`. Establish `hT : M.BlockTriangular (blk e)`. Introduce `i j hij`. Establish `hne : i ≠ j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `lt_irrefl _ hij`. Establish `h0 : (u : Matrix n n k) i j = 0` using `mem_parab.1 hP i j hij`. Simplify using `[hM, h0, Matrix.one_apply_ne hne]`. Establish `hdet : M.det = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hT.det_fintype]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Establish `: M.toSquareBlock (blk e) a = 1`. Use extensionality with `⟨i, hi⟩ ⟨j, hj⟩`. Rewrite using `[Matrix.toSquareBlock_def]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.of_apply]`. Rewrite using `[hMsame i j (hi.trans hj.symm), Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules. Rewrite using `[this, Matrix.det_one]`. Take `⟨v, hv⟩ : IsUnit M` from `(Matrix.isUnit_iff_isUnit_det M).2 (by simp [hdet])`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v, hv, mem_unipRad.2 ⟨mem_parab.2 fun i j hij => ?_, fun a i j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hv]`. Conclude with `hT hij`. Rewrite using `[hv, hMsame _ _ (by simp), Matrix.one_apply, Matrix.one_apply]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_one_add_smul_mem_unipRad {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α]
     [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n]
@@ -78,7 +76,7 @@ theorem exists_one_add_smul_mem_unipRad {α n : Type} {m : α → Type} [Fintype
     simp
 
 /- English proof (translation)
-Establish `h1 : (G : Matrix n n k) * ((G⁻¹ : GL n k) : Matrix n n k) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Simplify using `only [Units.val_mul, hv, mul_add, add_mul, mul_sub, sub_mul, mul_one, Matrix.mul_smul, Matrix.smul_mul, h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_conj_one_add_smul {n : Type} [Fintype n] [DecidableEq n] (G u v : GL n k) (c : k)
     (hv : (v : Matrix n n k) = 1 + c • ((u : Matrix n n k) - 1)) :
@@ -90,19 +88,17 @@ theorem val_conj_one_add_smul {n : Type} [Fintype n] [DecidableEq n] (G u v : GL
     Matrix.mul_smul, Matrix.smul_mul, h1]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N h d hd J hJo _ _ _ t ht n hn`. Take `⟨O, hO, hOJ⟩` from `(GlobalTheory.SplitFlip.isEmbedding_val_GL (k := k) (n := Fin N)).isInducing.isOpen_iff.1 hJo`. Establish `memJ : ∀ x : GL (Fin N) k, x ∈ J ↔ (x : Matrix (Fin N) (Fin N) k) ∈ O`. Introduce `x`. Establish `: x ∈ (J : Set (GL (Fin N) k)) ↔ x ∈ (fun g : GL (Fin N) k => g.val) ⁻¹' O` using `by rw [hOJ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1O : (1 : Matrix (Fin N) (Fin N) k) ∈ O`. Simplify using `using (memJ 1).1 J.one_mem`. Use `set X : Matrix (Fin N) (Fin N) k := (n : Matrix (Fin N) (Fin N) k) - 1 with hX`. Use `haveI := nhdsNE_zero_neBot (k := k)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : Continuous fun c : k => (1 : Matrix (Fin N) (Fin N) k) + c • X` using `continuous_const.add (continuous_id.smul continuous_const)`. Establish `hev : ∀ᶠ c in 𝓝[≠] (0 : k), (1 : Matrix (Fin N) (Fin N) k) + c • X ∈ O`. Establish `: ∀ᶠ c in 𝓝 (0 : k), (1 : Matrix (Fin N) (Fin N) k) + c • X ∈ O` using `hcont.continuousAt.eventually_mem (hO.mem_nhds (by simpa using h1O))`. Conclude with `this.filter_mono nhdsWithin_le_nhds`. Take `⟨c, hcO, hc0⟩` from `(hev.and self_mem_nhdsWithin).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc0' : c ≠ 0` using `hc0`. Take `⟨v, hv, hvN⟩` from `exists_one_add_smul_mem_unipRad (stdBlocks d hd) hn c`. Establish `hvJ : v ∈ J` using `(memJ v).2 (by rw [hv]; exact hcO)`. Set `U : Set (GL (Fin N) k)` to `(fun g : GL (Fin N) k => (1 : Matrix (Fin N) (Fin N) k) + c⁻¹ • ((g : Matrix (Fin N) (Fin N) k) - 1)) ⁻¹' O`. Establish `hU : IsOpen U`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hO.preimage ?_` and prove the remaining obligations. Establish `hs : Continuous fun g : GL (Fin N) k => (g : Matrix (Fin N) (Fin N) k) - 1` using `Units.continuous_val.sub continuous_const`. Conclude with `continuous_const.add (hs.const_smul c⁻¹)`. Establish `h1U : (1 : GL (Fin N) k) ∈ U` using `by show (1 : Matrix (Fin N) (Fin N) k) + c⁻¹ • (((1 : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) - 1) ∈ O`. Simplify using `using h1O`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, hj⟩` from `ht.2 U hU h1U`. Use `⟨j, ?_⟩` and prove the remaining obligations. Use `set G := leviEmb k (stdBlocks d hd) t ^ j with hG`. Establish `hGn : G ∈ Subgroup.normalizer (unipRad k (stdBlocks d hd) : Set (GL (Fin N) k))` using `pow_mem (leviEmb_mem_normalizer k (stdBlocks d hd) t) j`. Establish `hmem` using `hj v (Subgroup.mem_inf.2 ⟨hvJ, hvN⟩)`.
-
-Establish `hval` using `val_conj_one_add_smul G n v c hv`. Use `Subgroup.mem_inf.2 ⟨(memJ _).2 ?_, (Subgroup.mem_normalizer_iff.1 hGn n).1 hn⟩` and prove the remaining obligations. Establish `hmem' : (1 : Matrix (Fin N) (Fin N) k) + c⁻¹ • (((G * v * G⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) - 1) ∈ O` using `hmem`. Rewrite `hmem'` using `[hval]`. Simplify `hmem'` using `[smul_smul, inv_mul_cancel₀ hc0']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_pow_conj_mem_KN : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (N h : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N)

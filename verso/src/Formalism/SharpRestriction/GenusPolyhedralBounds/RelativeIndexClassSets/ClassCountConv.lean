@@ -29,7 +29,7 @@ local notation "Sv[" v "]" => tensInt (F := F) (adicCompletion F v) (intOE E)
 local notation "ιv[" v "]" => inclE (F := F) (E := E) (adicCompletion F v)
 
 /- English proof (translation)
-Rewrite using `[afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Use `show ((1 : E) ⊗ₜ[F] afsplitI v (1 : v.adicCompletion F)) * (e ⊗ₜ[F] (1 : 𝔸)) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_eps_tmul (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     afsplitEps E v * ιA e = e ⊗ₜ[F] afsplitI v (1 : v.adicCompletion F) := by
@@ -38,7 +38,7 @@ theorem conv_eps_tmul (v : HeightOneSpectrum (𝓞 F)) (e : E) :
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]
 
 /- English proof (translation)
-Use `show _ = ((1 : E) ⊗ₜ[F] c) * ((algebraMap F E a * e) ⊗ₜ[F] (1 : 𝔸))`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_tmul_smul (a : F) (e : E) (c : 𝔸) :
     e ⊗ₜ[F] (a • c) = ((1 : E) ⊗ₜ[F] c) * ιA (algebraMap F E a * e) := by
@@ -47,15 +47,15 @@ theorem conv_tmul_smul (a : F) (e : E) (c : 𝔸) :
     TensorProduct.smul_tmul', Algebra.smul_def]
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure (Or.inr ⟨⟨c, hc⟩, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem conv_one_tmul_mem {c : 𝔸} (hc : c ∈ intAd F) : (1 : E) ⊗ₜ[F] c ∈ 𝒮 :=
   Subring.subset_closure (Or.inr ⟨⟨c, hc⟩, rfl⟩)
 
 /- English proof (translation)
-Establish `: (fun i => y i ⊗ₜ[F] (a • c)) = (⟨_, conv_one_tmul_mem (E` using `E) hc⟩ : 𝒮) • (fun i => ιA (((algebraMap F E a) • y) i)) := by`. Use function extensionality and compare the values at `i`. Rewrite using `[conv_tmul_smul]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hy, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem conv_tmul_mem (Λ : Submodule (𝓞 E) (n → E)) (y : n → E) (a : F) {c : 𝔸}
     (hc : c ∈ intAd F) (hy : (algebraMap F E a) • y ∈ Λ) :
@@ -69,11 +69,11 @@ theorem conv_tmul_mem (Λ : Submodule (𝓞 E) (n → E)) (y : n → E) (a : F) 
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hy, rfl⟩)
 
 /- English proof (translation)
-Establish `hval : Valued.v (algebraMap F (v.adicCompletion F) (d : F)) = 1`. Rewrite using `[levelaf_valued_algebraMap]`. Conclude with `(valuation_eq_one_iff_notMem (K := F) (v := v)).2 hd`. Establish `hdv0 : algebraMap F (v.adicCompletion F) (d : F) ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hval` using `[h0, map_zero]`. Conclude with `zero_ne_one hval`. Establish `hc : (algebraMap F (v.adicCompletion F) (d : F))⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`. Establish `h1 : afsplitI v (1 : v.adicCompletion F) = (d : F) • afsplitI v (algebraMap F (v.adicCompletion F) (d : F))⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_smul, Algebra.smul_def, mul_inv_cancel₀ hdv0]`. Use `conv_tmul_mem Λ y (d : F) (afsplitI_mem_intAd v _ hc) hy` as an intermediate fact. Rewrite `this` using `[← h1]`. Simplify `this` using `only [conv_eps_tmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conv_eps_mem (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E)) (y : n → E)
     (d : 𝓞 F) (hd : d ∉ v.asIdeal) (hy : (algebraMap F E (d : F)) • y ∈ Λ) :
@@ -95,11 +95,11 @@ theorem conv_eps_mem (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (
   simpa only [conv_eps_tmul] using this
 
 /- English proof (translation)
-Take `⟨m, hm0, hm⟩` from `csGlob_single Λ hspan`. Take `⟨m', hm'0, hm'⟩` from `adelstabL_den y`. Use `⟨((m' * m : ℤ) : 𝓞 F), Int.cast_ne_zero.2 (mul_ne_zero hm'0 hm0), ?_⟩` and prove the remaining obligations. Establish `: (algebraMap F E (((m' * m : ℤ) : 𝓞 F) : F)) • y = ∑ k, (⟨(m' : E) * y k, hm' k⟩ : 𝓞 E) • (Pi.single k (m : E) : n → E)`. Use extensionality with `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.single_eq_same, Algebra.smul_def] show _ = (m' : E) * y j * (m : E)`. Simplify using `only [Int.cast_mul, map_mul, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Introduce `k _ hkj`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.smul_apply, Pi.single_eq_of_ne (Ne.symm hkj), smul_zero]`. Conclude with `fun h => absurd (Finset.mem_univ j) h`. Rewrite using `[this]`. Conclude with `sum_mem fun k _ => Λ.smul_mem _ (hm k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_exists_den (Λ : Submodule (𝓞 E) (n → E))
     (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) (y : n → E) :
@@ -123,7 +123,7 @@ theorem conv_exists_den (Λ : Submodule (𝓞 E) (n → E))
   exact sum_mem fun k _ => Λ.smul_mem _ (hm k)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← global_lattice_one_holds F E n Λ hfin hspan]`. Use `show _ ↔ ((1⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => ιA (x i)) ∈ latS (F := F) 𝔸 𝒮 Λ`. Rewrite using `[inv_one, Units.val_one, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_incl_mem_iff (Λ : Submodule (𝓞 E) (n → E)) (hfin : Module.Finite (𝓞 E) Λ)
     (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) (x : n → E) :
@@ -133,23 +133,23 @@ theorem conv_incl_mem_iff (Λ : Submodule (𝓞 E) (n → E)) (hfin : Module.Fin
   rw [inv_one, Units.val_one, one_mulVec]
 
 /- English proof (translation)
-Take `⟨D0, hD0, hD0y⟩` from `conv_exists_den (F := F) Λ hspan y`. Take `⟨π, hπv, hπ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot v.ne_bot`. Establish `hD : π * D0 ≠ 0` using `mul_ne_zero hπ0 hD0`. Establish `hDv : π * D0 ∈ v.asIdeal` using `Ideal.mul_mem_right _ _ hπv`. Establish `hDy : (algebraMap F E ((π * D0 : 𝓞 F) : F)) • y ∈ Λ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (algebraMap F E ((π * D0 : 𝓞 F) : F)) • y = (algebraMap (𝓞 F) (𝓞 E) π) • ((algebraMap F E (D0 : F)) • y)`. Use extensionality with `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Algebra.smul_def, map_mul]`. Rewrite using `[mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[this]`. Conclude with `Λ.smul_mem _ hD0y`. Establish `ha : (1 - afsplitI v (1 : v.adicCompletion F) : 𝔸) ∈ intAd F` using `sub_mem (one_mem _) (afsplitI_mem_intAd v 1 (one_mem _))`. Take `⟨r, z, hz, hr⟩` from `csGlob_intAdApprox F (π * D0) hD _ ha`. Establish `hrv : r ∈ v.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `congrArg (fun a : 𝔸 => a v) hr`. Simplify using `only [afsplit_sub_apply, afsplit_one_apply, afsplitI_self, sub_self, afsplit_add_apply, afsplit_mul_apply] at hv`. Establish `e1 : (algebraMap (𝓞 F) 𝔸 r) v = algebraMap F (v.adicCompletion F) (r : F)` using `rfl`. Establish `e2 : (algebraMap (𝓞 F) 𝔸 (π * D0)) v = algebraMap F (v.adicCompletion F) ((π * D0 : 𝓞 F) : F)` using `rfl`. Rewrite `hv` using `[e1, e2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : algebraMap F (v.adicCompletion F) (r : F) = -(algebraMap F (v.adicCompletion F) ((π * D0 : 𝓞 F) : F) * z v)`. Take the linear combination `-hv`. Rewrite using `[← valuation_lt_one_iff_mem (K := F), ← levelaf_valued_algebraMap, e3, Valuation.map_neg, map_mul, levelaf_valued_algebraMap]`. Establish `h1 : v.valuation F ((π * D0 : 𝓞 F) : F) < 1` using `(valuation_lt_one_iff_mem (K := F) v _).2 hDv`. Establish `h2 : Valued.v (z v) ≤ 1` using `hz v`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `⟨1 - r, fun hmem => ?_, ?_⟩` and prove the remaining obligations. Establish `: (1 : 𝓞 F) ∈ v.asIdeal`. Use `v.asIdeal.add_mem hmem hrv` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Rewrite using `[← conv_incl_mem_iff (F := F) Λ hfin hspan]`. Establish `hz'` using `conv_tmul_mem Λ y ((π * D0 : 𝓞 F) : F) hz hDy`. Establish `hsum` using `add_mem h hz'`. Use `hsum using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, conv_eps_tmul, ← TensorProduct.tmul_add]`. Establish `e4 : afsplitI v (1 : v.adicCompletion F) + ((π * D0 : 𝓞 F) : F) • z = algebraMap (𝓞 F) 𝔸 (1 - r)`. Rewrite using `[map_sub, map_one (algebraMap (𝓞 F) 𝔸), Algebra.smul_def, ← IsScalarTower.algebraMap_apply (𝓞 F) F 𝔸]`. Take the linear combination `-hr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e4, csGlob_tmul_int]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem conv_eps_mem_conv (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E))
     (hfin : Module.Finite (𝓞 E) Λ) (hspan : Submodule.span E (Λ : Set (n → E)) = ⊤) (y : n → E)
@@ -207,15 +207,13 @@ theorem conv_eps_mem_conv (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞
     rfl
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`. Conclude with `Submodule.subset_span ⟨x, hx, by funext i; exact (afsplit_prV_inclE v (x i)).symm⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Use `zero_mem (latS (F := F) (v.adicCompletion F) Sv[v] Λ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add u w _ _ hu hw`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use `add_mem hu hw` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul a u _ hu`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Use `Submodule.smul_mem _ (⟨_, afsplit_prV_int v (a : 𝒜) a.2⟩ : Sv[v]) hu` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `show prV (E := E) v ((a : 𝒜) * u i) = _`. Rewrite using `[map_mul]`.
-
-Both sides reduce to the same expression.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conv_prV_latS (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E)) (u : n → 𝒜)
     (hu : u ∈ latS (F := F) 𝔸 𝒮 Λ) :
@@ -243,15 +241,15 @@ theorem conv_prV_latS (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) 
     rfl
 
 /- English proof (translation)
-Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem u hu`. Take `⟨x, hx, rfl⟩` from `hu`. Use `Submodule.smul_mem (latS (F := F) 𝔸 𝒮 Λ) (⟨_, afsplit_eps_int (E := E) v⟩ : 𝒮) (Submodule.subset_span ⟨x, hx, rfl⟩)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `i`. Use `show afsplitIE v (ιv[v] (x i)) = afsplitEps E v * ιA (x i)`. Rewrite using `[← afsplit_decomp, afsplit_prV_inclE]`. Consider the case `zero`. Use `zero_mem (latS (F := F) 𝔸 𝒮 Λ)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `add u w _ _ hu hw`. Use `add_mem hu hw` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Consider the case `smul a u _ hu`. Use `Submodule.smul_mem _ (⟨_, afsplit_IE_int v (a : E ⊗[F] v.adicCompletion F) a.2⟩ : 𝒮) hu` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Use `show afsplitIE v ((a : E ⊗[F] v.adicCompletion F) * u i) = _`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem conv_IE_latS (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E))
     (u : n → E ⊗[F] v.adicCompletion F)
@@ -285,7 +283,7 @@ theorem conv_IE_latS (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (
     rfl
 
 /- English proof (translation)
-Use `⟨fun h => ?_, conv_IE_latS v Λ u⟩` and prove the remaining obligations. Use `conv_prV_latS v Λ _ h` as an intermediate fact. Simplify `this` using `only [afsplit_prV_IE]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conv_IE_latS_iff (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 E) (n → E))
     (u : n → E ⊗[F] v.adicCompletion F) :
@@ -296,7 +294,7 @@ theorem conv_IE_latS_iff (v : HeightOneSpectrum (𝓞 F)) (Λ : Submodule (𝓞 
   simpa only [afsplit_prV_IE] using this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[RingHom.map_mulVec]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conv_bc_mulVec {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (γ : GL n A)
     (x : n → A) :
@@ -307,13 +305,13 @@ theorem conv_bc_mulVec {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (
   rfl
 
 /- English proof (translation)
-Establish `hlat` using `global_lattice_isLattice_holds F E n Λ hfin hspan g`. Establish `hfinM : Module.Finite (𝓞 E) (globLat g Λ)` using `Module.Finite.iff_fg.2 hlat.fg`. Establish `hspanM` using `hlat.span_eq_top`. Rewrite using `[mem_loc_iff σ hσ hfix p v.asIdeal hv]`. Establish `step1 : (∃ d : 𝓞 F, d ∉ v.asIdeal ∧ (algebraMap F E (d : F)) • x ∈ globLat g Λ) ↔ (fun i => afsplitEps E v * ιA (x i)) ∈ latS (F` using `F) 𝔸 𝒮 (globLat g Λ) := ⟨fun ⟨d, hd, hx⟩ => conv_eps_mem v _ x d hd hx, conv_eps_mem_conv v _ hfinM hspanM x⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[step1, ← conv_IE_latS_iff]`. Use `Iff.trans (span_recovery_of_integral_adelic_approx csGlob_intAdApprox F E n Λ hfin hspan g (fun i => afsplitEps E v * ιA (x i))) ?_` and prove the remaining obligations. Establish `h1 : (((bc (prV (E` using `E) v) g)⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ (fun i => ιv[v] (x i)) = fun i => prV (E := E) v ((((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ fun i => ιA (x i)) i) := by`. Rewrite using `[← map_inv, ← conv_bc_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : ((g⁻¹ : GL n 𝒜) : Matrix n n 𝒜) *ᵥ (fun i => afsplitEps E v * ιA (x i)) = fun i => afsplitIE v (((((bc (prV (E` using `E) v) g)⁻¹ : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F)) *ᵥ (fun i => ιv[v] (x i))) i) := by`. Rewrite using `[h1]`. Use function extensionality and compare the values at `i`. Rewrite using `[afsplit_decomp]`. Establish `: (fun i => afsplitEps E v * ιA (x i)) = afsplitEps E v • (fun i => ιA (x i))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, mulVec_smul]`. Both sides reduce to the same expression. Rewrite using `[h2]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem conv_locIff [StarRing E] (σ : E →ₐ[F] E) (hσ : (σ : E →+* E) = starRingEnd E)
     (hfix : ∀ e, σ e = e → ∃ a : F, algebraMap F E a = e)
@@ -359,9 +357,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ show ((γ⁻¹ : GL n E) : Matrix n n E) *ᵥ (glEquiv γ y) ∈ L`. Rewrite using `[glEquiv_apply', mulVec_mulVec, Units.inv_mul, one_mulVec]`. Conclude with `hy`. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hy, ?_⟩` and prove the remaining obligations. Use `show glEquiv γ _ = x`. Rewrite using `[glEquiv_apply', mulVec_mulVec, Units.mul_inv, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_mem_gmap {R : Type} [CommRing R] [Algebra R E] (γ : GL n E)
     (L : Submodule R (n → E)) (x : n → E) :
@@ -377,13 +375,13 @@ theorem conv_mem_gmap {R : Type} [CommRing R] [Algebra R E] (γ : GL n E)
     rw [glEquiv_apply', mulVec_mulVec, Units.mul_inv, one_mulVec]
 
 /- English proof (translation)
-Use `⟨global_lattice_isLattice_holds F E n Λ hfin hspan g, fun p hp => ?_⟩` and prove the remaining obligations. Use `hp.isPrime` as an intermediate fact. Establish `hpne : p ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hp (RingOfIntegers.not_isField E)`. Take `⟨a, hap, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hpne`. Establish `hne : p.comap (algebraMap (𝓞 F) (𝓞 E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha0 hap (Algebra.IsIntegral.isIntegral a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `v : HeightOneSpectrum (𝓞 F)` to `⟨p.comap (algebraMap (𝓞 F) (𝓞 E)), Ideal.comap_isPrime _ _, hne⟩`. Establish `hstar : ∀ e, σ e = star e` using `fun e => congrArg (fun f : E →+* E => f e) hσ`. Establish `hinv : ∀ e, σ (σ e) = e` using `fun e => by rw [hstar, hstar, star_star]`. Take `⟨γ, hγ, hk⟩` from `hWA F E n σ J hinv hθ hherm hdet Λ hfin hspan v _ (afsplit_bc_mem σ J v g hg)`. Use `⟨glEquiv γ, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hermitian_lattice_correspondence_holds E n h γ, ← hJ, ← hσ]`. Conclude with `hγ`. Use extensionality with `x`. Rewrite using `[conv_locIff σ hσ hfix Λ hfin hspan g p v rfl x, conv_mem_gmap]`. Establish `h1` using `conv_locIff σ hσ hfix Λ hfin hspan 1 p v rfl (((γ⁻¹ : GL n E) : Matrix n n E) *ᵥ x)`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[global_lattice_one_holds F E n Λ hfin hspan, map_one, inv_one, Units.val_one, one_mulVec]`. Rewrite using `[h1, (inv_mem hk) _, _root_.mul_inv_rev, inv_inv, Units.val_mul, ← mulVec_mulVec, conv_bc_mulVec, mulVec_mulVec, Units.mul_inv, one_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conv_genus (hWA : WeakApprox1) [StarRing E] (σ : E →ₐ[F] E)
     (hσ : (σ : E →+* E) = starRingEnd E)
@@ -423,7 +421,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {k : ℕ}
 
 /- English proof (translation)
-Introduce `g hg` and use `conv_genus (wal_main hc) σ (sig_eq_star σ hσ) hfix hθ (Formalism.MainNotions.StandardLattice.stdForm E k) 1 gram_stdForm.symm (cT_one _) (by simp) (Formalism.MainNotions.StandardLattice.stdLat E k) stdLat_finite stdLat_span g hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genusIn_of_core (hc : WACore) (σ : E →ₐ[F] E) (hσ : ∀ e, σ e = star e)
     (hfix : ∀ e, σ e = e → ∃ a : F, algebraMap F E a = e) (hθ : ∃ θ, σ θ ≠ θ) :

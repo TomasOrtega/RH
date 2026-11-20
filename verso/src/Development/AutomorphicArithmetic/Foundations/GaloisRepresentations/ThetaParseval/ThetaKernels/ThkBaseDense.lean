@@ -18,7 +18,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {n d : ℕ} {X : Spc F E n} {W : Spc F E d}
 end Dense
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, -, φ, h1, h2, rfl⟩`. Conclude with `Dense.pure_mem f ⟨h1, (h2.and hp.good.std).mono fun v hv => hv.1.trans hv.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem polSch_k : _root_.GlobalTheory.ThK.Dbl.PolSch_k := by
   intro F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp

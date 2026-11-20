@@ -14,9 +14,9 @@ namespace GlobalTheory.GoodTop
 open GlobalTheory.GoodMetric.LinSubst
 
 /- English proof (translation)
-Use `symm`. Use `Finset.sum_of_injOn (fun u : Equiv.Perm (Fin n) => (u : Fin n → Fin n)) (fun u _ v _ h => DFunLike.coe_injective h) (fun _ _ => Finset.mem_univ _) ?_ ?_` and prove the remaining obligations. Introduce `c _ hc`. Rewrite using `[det_rowSel_of_not_injective, zero_mul]`. Introduce `hinj`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hc ⟨Equiv.ofBijective c (Finite.injective_iff_bijective.mp hinj), Finset.mem_coe.mpr (Finset.mem_univ _), rfl⟩`. Introduce `u _`. Rewrite using `[det_rowSel_perm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_det_rowSel_mul {n : ℕ} (F : (Fin n → Fin n) → ℂ) :
     ∑ c : Fin n → Fin n, (rowSel c).det * F c =
@@ -33,9 +33,9 @@ theorem sum_det_rowSel_mul {n : ℕ} (F : (Fin n → Fin n) → ℂ) :
     rw [det_rowSel_perm]
 
 /- English proof (translation)
-Rewrite using `[← sum_det_rowSel_mul (fun c => (Matrix.of fun i b => k i (c i) b).det)]`. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, topCoeff_sum, ← sum_prod_mul_det_rowSel (Matrix.of fun i b => k i (c i) b), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.prod_mul_distrib, ← map_prod, topCoeff_C_mul, topCoeff_prod_X_pair]`. Simplify using `only [Matrix.of_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem topCoeff_prod_forms {n : ℕ} (k : Fin n → Fin n → Fin n → ℂ) :
     topCoeff (∏ i, ∑ a, ∑ b, MvPolynomial.C (k i a b) * MvPolynomial.X (a, b)) =

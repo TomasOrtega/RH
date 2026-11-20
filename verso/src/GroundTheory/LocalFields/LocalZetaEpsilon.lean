@@ -14,7 +14,7 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
 section Powers
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero residueCard_ne_zero_complex, Complex.cpow_def_of_ne_zero residueCard_ne_zero_complex, ← Complex.exp_int_mul]`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem qcpow_zpow (z : ℂ) (n : ℤ) :
     ((residueCard K : ℂ) ^ z) ^ n = (residueCard K : ℂ) ^ ((n : ℂ) * z) := by
@@ -23,14 +23,14 @@ theorem qcpow_zpow (z : ℂ) (n : ℤ) :
   ring_nf
 
 /- English proof (translation)
-The claim follows from `(Complex.cpow_add _ _ residueCard_ne_zero_complex).symm`.
+A detailed English derivation is pending.
 -/
 theorem qcpow_mul_qcpow (a b : ℂ) :
     (residueCard K : ℂ) ^ a * (residueCard K : ℂ) ^ b = (residueCard K : ℂ) ^ (a + b) :=
   (Complex.cpow_add _ _ residueCard_ne_zero_complex).symm
 
 /- English proof (translation)
-Use `modulus_cpow_eq_zpow (Units.mk0 x hx) z` as an intermediate fact. Rewrite `this` using `[Units.val_mk0]`. Rewrite using `[this, qcpow_zpow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem modulus_cpow_eq_qcpow {x : K} (hx : x ≠ 0) (z : ℂ) :
     ((modulus x : ℝ) : ℂ) ^ z = (residueCard K : ℂ) ^ (-(ord x : ℂ) * z) := by
@@ -41,14 +41,14 @@ theorem modulus_cpow_eq_qcpow {x : K} (hx : x ≠ 0) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.ofReal_cpow residueCard_pos_real.le, Complex.ofReal_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_qrpow (r : ℝ) :
     (((residueCard K : ℝ) ^ r : ℝ) : ℂ) = (residueCard K : ℂ) ^ (r : ℂ) := by
   rw [Complex.ofReal_cpow residueCard_pos_real.le, Complex.ofReal_natCast]
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_intCast, ofReal_qrpow]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem ofReal_qzpow (n : ℤ) :
     (((residueCard K : ℝ) ^ n : ℝ) : ℂ) = (residueCard K : ℂ) ^ (n : ℂ) := by
@@ -63,13 +63,13 @@ section Characters
 variable {χ : Kˣ →* ℂˣ}
 
 /- English proof (translation)
-Simplify using `only [isUnramifiedChar_iff, MonoidHom.inv_apply, inv_eq_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnramifiedChar_inv_iff : IsUnramifiedChar χ⁻¹ ↔ IsUnramifiedChar χ := by
   simp only [isUnramifiedChar_iff, MonoidHom.inv_apply, inv_eq_one]
 
 /- English proof (translation)
-Establish `: (χ⁻¹).ker = χ.ker`. Use extensionality with `u`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.inv_apply, inv_eq_one]`. Simplify using `only [quasiCharConductor, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem quasiCharConductor_inv : quasiCharConductor χ⁻¹ = quasiCharConductor χ := by
   have : (χ⁻¹).ker = χ.ker := by
@@ -78,9 +78,9 @@ theorem quasiCharConductor_inv : quasiCharConductor χ⁻¹ = quasiCharConductor
   simp only [quasiCharConductor, this]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos j with rfl | hj` into its components or cases. Establish `h0 : (v : K) ∈ valBall K 0`. Rewrite using `[mem_valBall_iff_le_ord v.ne_zero, mem_unitFiltrationUnits_zero_iff_ord.mp hv]`. Establish `h1 : (1 : K) ∈ valBall K 0`. Rewrite using `[mem_valBall_iff_le_ord one_ne_zero, ord_one]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using sub_mem h0 h1`. Conclude with `(mem_unitFiltrationUnits_iff_valBall hj).mp hv`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem unitFiltration_sub_one_mem_valBall {j : ℕ} {v : Kˣ} (hv : v ∈ unitFiltrationUnits K j) :
     (v : K) - 1 ∈ valBall K j := by
@@ -99,7 +99,7 @@ def quasiCharExt (x : K) : ℂ := if h : x = 0 then 0 else ((χ (Units.mk0 x h) 
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Simplify using `[quasiCharExt, u.ne_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quasiCharExt_units (u : Kˣ) : quasiCharExt χ (u : K) = ((χ u : ℂˣ) : ℂ) := by
   simp [quasiCharExt, u.ne_zero]
@@ -109,9 +109,9 @@ end Characters
 section SchwartzBruhat
 
 /- English proof (translation)
-Use `⟨isLocallyConstant_of_add_valBall (N := k) fun x h hh => ?_, ?_⟩` and prove the remaining obligations. Establish `hiff : x + h ∈ valBall K k ↔ x ∈ valBall K k` using `⟨fun h' => by simpa using sub_mem h' hh, fun h' => add_mem h' hh⟩`. Distinguish the cases in `hx : x ∈ valBall K k`. Rewrite using `[Set.indicator_of_mem (show x + h ∈ (valBall K k : Set K) from hiff.mpr hx), Set.indicator_of_mem (show x ∈ (valBall K k : Set K) from hx)]`. Rewrite using `[Set.indicator_of_notMem (show x + h ∉ (valBall K k : Set K) from mt hiff.mp hx), Set.indicator_of_notMem (show x ∉ (valBall K k : Set K) from hx)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `HasCompactSupport.intro (isCompact_valBall k) fun x hx => Set.indicator_of_notMem hx _`.
+A detailed English derivation is pending.
 -/
 theorem indicator_valBall_mem_schwartzBruhat (k : ℤ) :
     (valBall K k : Set K).indicator (fun _ => (1 : ℂ)) ∈ schwartzBruhat K := by
@@ -145,7 +145,7 @@ def localEpsilon (χ : Kˣ →* ℂˣ) (ψ : AddChar K Circle) (s : ℂ) : ℂ :
 variable {χ : Kˣ →* ℂˣ} {ψ : AddChar K Circle}
 
 /- English proof (translation)
-Rewrite using `[localEpsilon, if_pos h, map_zpow, Units.val_zpow_eq_zpow_val, ← zpow_neg, modulus_cpow_eq_qcpow (unifUnit K ^ addCharConductor ψ).ne_zero, ord_unifUnit_zpow]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem localEpsilon_of_isUnramified (h : IsUnramifiedChar χ) (s : ℂ) :
     localEpsilon χ ψ s = ((χ (unifUnit K) : ℂˣ) : ℂ) ^ (-addCharConductor ψ) *
@@ -156,7 +156,7 @@ theorem localEpsilon_of_isUnramified (h : IsUnramifiedChar χ) (s : ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[localEpsilon, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localEpsilon_of_not_isUnramified (h : ¬ IsUnramifiedChar χ) (s : ℂ) :
     localEpsilon χ ψ s =
@@ -172,7 +172,7 @@ section ZetaBasics
 variable {χ : Kˣ →* ℂˣ}
 
 /- English proof (translation)
-Unfold `localZeta`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `u`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem localZeta_const_mul (c : ℂ) (f : K → ℂ) (s : ℂ) :
     localZeta (fun x => c * f x) χ s = c * localZeta f χ s := by
@@ -183,7 +183,7 @@ theorem localZeta_const_mul (c : ℂ) (f : K → ℂ) (s : ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[localZeta_eq_sum (indicator_valBall_mem_schwartzBruhat k) hχ le_rfl (fun x hx => by by_contra h; exact hx (Set.indicator_of_notMem h _)) (fun x hx => by rw [Set.indicator_of_mem hx, Set.indicator_of_mem (zero_mem _)]) hs, if_pos hu, Finset.Ico_self, Finset.sum_empty, zero_add, S …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localZeta_indicator_valBall_of_isUnramified (hχ : Continuous χ) (hu : IsUnramifiedChar χ)
     (k : ℤ) {s : ℂ} (hs : -quasiCharExponent χ < s.re) :
@@ -197,9 +197,9 @@ theorem localZeta_indicator_valBall_of_isUnramified (hχ : Continuous χ) (hu : 
     localLFactor_of_isUnramified hu]
 
 /- English proof (translation)
-Establish `e : (fun x => (valBall K k : Set K).indicator (fun _ => (1 : ℂ)) x * (ψ (x * y) : ℂ)) = (valBall K k : Set K).indicator fun x => ((ψ.mulShift y) x : ℂ)`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ (valBall K k : Set K)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem hx, one_mul, AddChar.mulShift_apply, mul_comm]`. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem hx, zero_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `localFourier`. Rewrite using `[e, integral_indicator (measurableSet_valBall k), integral_valBall_char]`. Distinguish the cases in `hy : y ∈ valBall K (addCharConductor ψ - k)`. Rewrite using `[if_pos ((isTrivialOn_mulShift_iff_mem hψ hψ1 y k).mpr hy), Set.indicator_of_mem (show y ∈ (valBall K (addCharConductor ψ - k) : Set K) from hy), mul_one]`. Rewrite using `[if_neg (mt (isTrivialOn_mulShift_iff_mem hψ hψ1 y k).mp hy), Set.indicator_of_notMem (show y ∉ (valBall K (addCharConductor ψ - k) : Set K) from hy), mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem localFourier_indicator_valBall (μ : Measure K) [μ.IsAddHaarMeasure] {ψ : AddChar K Circle}
     (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (k : ℤ) (y : K) :
@@ -232,9 +232,9 @@ variable {χ : Kˣ →* ℂˣ} {ψ : AddChar K Circle} (hψ : Continuous ψ) (h�
 include hψ hψ1 hχ
 
 /- English proof (translation)
-Establish `hs' : -quasiCharExponent χ⁻¹ < (1 - s).re`. Rewrite using `[quasiCharExponent_inv, Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : localFourier (selfDualMeasure ψ) ψ ((valBall K 0 : Set K).indicator fun _ => 1) = fun y => ((selfDualMeasure ψ).real (valBall K 0) : ℂ) * (valBall K (addCharConductor ψ) : Set K).indicator (fun _ => 1) y`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[localFourier_indicator_valBall _ hψ hψ1 0 y, sub_zero]`. Rewrite using `[e, localZeta_const_mul, localZeta_indicator_valBall_of_isUnramified (continuous_quasiChar_inv hχ) (isUnramifiedChar_inv_iff.mpr hu) _ hs', localEpsilon_of_isUnramified hu, selfDualMeasure_real_valBall_zero, ofReal_qrpow, MonoidHom.inv_apply, Units.val_inv_eq_inv_val, mul_zpow, i …`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[qcpow_mul_qcpow, show ((((addCharConductor ψ : ℝ) / 2 : ℝ) : ℂ) + (addCharConductor ψ : ℂ) * -(1 - s)) = (addCharConductor ψ : ℂ) * (s - 1 / 2) by push_cast; ring]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem localZeta_fourier_indicator_integers (hu : IsUnramifiedChar χ) {s : ℂ}
     (hs2 : s.re < 1 - quasiCharExponent χ) :
@@ -272,7 +272,7 @@ def oneAddValBallIndicator (c : ℤ) : K → ℂ :=
 omit [MeasurableSpace K] [BorelSpace K] in
 open Classical in
 /- English proof (translation)
-Unfold `oneAddValBallIndicator`. Distinguish the cases in `hx : x - 1 ∈ valBall K c`. Rewrite using `[Set.indicator_of_mem (show x ∈ {x : K | x - 1 ∈ valBall K c} from hx), if_pos hx]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ {x : K | x - 1 ∈ valBall K c} from hx), if_neg hx]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneAddValBallIndicator_apply (c : ℤ) (x : K) :
     oneAddValBallIndicator c x = if x - 1 ∈ valBall K c then 1 else 0 := by
@@ -283,7 +283,7 @@ theorem oneAddValBallIndicator_apply (c : ℤ) (x : K) :
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-Rewrite using `[oneAddValBallIndicator_apply, add_sub_cancel_left, Set.indicator_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oneAddValBallIndicator_add_one (c : ℤ) (h : K) :
     oneAddValBallIndicator c (1 + h) = (valBall K c : Set K).indicator (fun _ => 1) h := by
@@ -293,11 +293,9 @@ theorem oneAddValBallIndicator_add_one (c : ℤ) (h : K) :
 
 omit [MeasurableSpace K] [BorelSpace K] in
 /- English proof (translation)
-Use `⟨isLocallyConstant_of_add_valBall (N := c) fun x h hh => ?_, ?_⟩` and prove the remaining obligations. Establish `hiff : x + h - 1 ∈ valBall K c ↔ x - 1 ∈ valBall K c`. Rewrite using `[show x + h - 1 = (x - 1) + h by ring]`. Conclude with `⟨fun h' => by simpa using sub_mem h' hh, fun h' => add_mem h' hh⟩`. Rewrite using `[oneAddValBallIndicator_apply, oneAddValBallIndicator_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `if_congr hiff rfl rfl`. Use `HasCompactSupport.intro (isCompact_valBall 0) fun x hx => ?_ classical` and prove the remaining obligations. Rewrite using `[oneAddValBallIndicator_apply, if_neg]`. Introduce `h1`. Establish `h0 : (1 : K) ∈ valBall K 0` using `by rw [mem_valBall_iff_le_ord one_ne_zero, ord_one]`.
-
-Conclude with `hx (by simpa using add_mem (valBall_antitone hc h1) h0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oneAddValBallIndicator_mem_schwartzBruhat {c : ℤ} (hc : 0 ≤ c) :
     oneAddValBallIndicator c ∈ schwartzBruhat K := by
@@ -316,9 +314,9 @@ theorem oneAddValBallIndicator_mem_schwartzBruhat {c : ℤ} (hc : 0 ≤ c) :
     exact hx (by simpa using add_mem (valBall_antitone hc h1) h0)
 
 /- English proof (translation)
-Rewrite using `[← localFourier_indicator_valBall μ hψ hψ1 c y]`. Unfold `localFourier`. Rewrite using `[← integral_add_left_eq_self (fun x => oneAddValBallIndicator c x * (ψ (x * y) : ℂ)) 1, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[oneAddValBallIndicator_add_one, add_mul, one_mul, AddChar.map_add_eq_mul, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem localFourier_oneAddValBallIndicator (μ : Measure K) [μ.IsAddHaarMeasure]
     {ψ : AddChar K Circle} (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (c : ℤ) (y : K) :
@@ -335,13 +333,13 @@ theorem localFourier_oneAddValBallIndicator (μ : Measure K) [μ.IsAddHaarMeasur
   ring
 
 /- English proof (translation)
-Use `set S : Set K := (valBall K m : Set K) \ valBall K (m + 1) with hSdef`. Establish `hS : MeasurableSet S` using `(measurableSet_valBall m).diff (measurableSet_valBall (m + 1))`. Establish `hmem : ∀ u : Kˣ, u ∈ ordShell K m ↔ (u : K) ∈ S` using `fun u => by`. Simplify using `only [S, mem_ordShell, Set.mem_sdiff, SetLike.mem_coe, mem_valBall_iff_le_ord u.ne_zero]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hq : (residueCard K : ℂ) ≠ 0` using `residueCard_ne_zero_complex`. Set `h : K → ℂ` to `S.indicator fun x => F x * (residueCard K : ℂ) ^ m`. Establish `hpt : ∀ u : Kˣ, (ordShell K m).indicator (fun u : Kˣ => F u) u = h u * ((modulus (u : K) : ℝ) : ℂ)`. Introduce `u`. Simplify using `only [h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hu : u ∈ ordShell K m`. Rewrite using `[Set.indicator_of_mem hu, Set.indicator_of_mem ((hmem u).mp hu), modulus_of_ne_zero u.ne_zero, mem_ordShell.mp hu]`. Use `push_cast`. Rewrite using `[mul_assoc, ← zpow_add₀ hq, add_neg_cancel, zpow_zero, mul_one]`. Rewrite using `[Set.indicator_of_notMem hu, Set.indicator_of_notMem (mt (hmem u).mpr hu), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_indicator (measurableSet_ordShell m)]`. Rewrite using `[show (fun u : Kˣ => (ordShell K m).indicator (fun u : Kˣ => F u) u) = fun u : Kˣ => h u * ((modulus (u : K) : ℝ) : ℂ) from funext hpt]`. Rewrite using `[integral_multHaar_mul_modulus h, integral_indicator hS, integral_mul_const]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem setIntegral_ordShell_eq_haarIntegers (F : K → ℂ) (m : ℤ) :
     ∫ u in ordShell K m, F u ∂multHaar K =
@@ -374,11 +372,11 @@ theorem setIntegral_ordShell_eq_haarIntegers (F : K → ℂ) (m : ℤ) :
 variable {χ : Kˣ →* ℂˣ} {ψ : AddChar K Circle}
 
 /- English proof (translation)
-Establish `hpt : ∀ u : Kˣ, oneAddValBallIndicator (c : ℤ) (u : K) * ((χ u : ℂˣ) : ℂ) * ((modulus (u : K) : ℝ) : ℂ) ^ s = oneAddValBallIndicator (c : ℤ) (u : K) * ((modulus (u : K) : ℝ) : ℂ)`. Introduce `u`. Distinguish the cases in `hu : (u : K) - 1 ∈ valBall K c`. Establish `hU : u ∈ unitFiltrationUnits K c` using `(mem_unitFiltrationUnits_iff_valBall hc).mpr hu`. Establish `hord : ord (u : K) = 0` using `mem_unitFiltrationUnits_zero_iff_ord.mp (unitFiltrationUnits_antitone (Nat.zero_le c) hU)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmod : modulus (u : K) = 1` using `modulus_eq_one_iff.mpr ⟨u.ne_zero, hord⟩`. Rewrite using `[MonoidHom.mem_ker.mp (hker hU), hmod]`. Simplify using the standard rewrite rules. Rewrite using `[oneAddValBallIndicator_apply, if_neg hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `localZeta`. Rewrite using `[show (fun u : Kˣ => oneAddValBallIndicator (c : ℤ) (u : K) * ((χ u : ℂˣ) : ℂ) * ((modulus (u : K) : ℝ) : ℂ) ^ s) = fun u : Kˣ => oneAddValBallIndicator (c : ℤ) (u : K) * ((modulus (u : K) : ℝ) : ℂ) from funext hpt, integral_multHaar_mul_modulus, ← integral_add_left_eq_self _ 1]`. Simplify using `only [oneAddValBallIndicator_add_one]`. Rewrite using `[integral_indicator (measurableSet_valBall _), setIntegral_const, Complex.real_smul, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem localZeta_oneAddValBallIndicator {c : ℕ} (hc : 1 ≤ c)
     (hker : unitFiltrationUnits K c ≤ χ.ker) (s : ℂ) :
@@ -407,9 +405,7 @@ theorem localZeta_oneAddValBallIndicator {c : ℕ} (hc : 1 ≤ c)
   rw [integral_indicator (measurableSet_valBall _), setIntegral_const, Complex.real_smul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[localZeta_oneAddValBallIndicator hc hker]`. Establish `h1 : (multHaarConst K).toReal ≠ 0` using `ENNReal.toReal_ne_zero.mpr ⟨multHaarConst_ne_zero, multHaarConst_ne_top⟩`. Establish `h2 : (haarIntegers K).real (valBall K c) ≠ 0`. Rewrite using `[measureReal_def, haarIntegers_valBall, ENNReal.coe_toReal]`. Conclude with `(zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _).ne'` after adjusting the coercions.
-
-Conclude with `mul_ne_zero h1 h2` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localZeta_oneAddValBallIndicator_ne_zero {c : ℕ} (hc : 1 ≤ c)
     (hker : unitFiltrationUnits K c ≤ χ.ker) (s : ℂ) :
@@ -423,11 +419,11 @@ theorem localZeta_oneAddValBallIndicator_ne_zero {c : ℕ} (hc : 1 ≤ c)
   exact_mod_cast mul_ne_zero h1 h2
 
 /- English proof (translation)
-Use `set m : ℤ := addCharConductor ψ - quasiCharConductor χ`. Establish `hS : MeasurableSet ((valBall K m : Set K) \ valBall K (m + 1))` using `(measurableSet_valBall m).diff (measurableSet_valBall (m + 1))`. Rewrite using `[localEpsilon_of_not_isUnramified hr]`. Rewrite using `[setIntegral_congr_fun hS (g := fun x => (residueCard K : ℂ) ^ ((m : ℂ) * s) * (quasiCharExt χ⁻¹ x * (ψ x : ℂ))) fun x hx => by`. Establish `hx0 : x ≠ 0` using `fun h => hx.2 (h ▸ zero_mem _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hord : ord x = m`. Establish `a` using `(mem_valBall_iff_le_ord hx0).mp hx.1`. Establish `b` using `mt (mem_valBall_iff_le_ord hx0).mpr hx.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[modulus_cpow_eq_qcpow hx0, hord]`. Use the proof step `ring_nf]`. Rewrite using `[integral_const_mul, selfDualMeasure, Measure.restrict_smul, integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul, NNReal.coe_rpow, NNReal.coe_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem localEpsilon_of_not_isUnramified_eq (hr : ¬ IsUnramifiedChar χ) (s : ℂ) :
     localEpsilon χ ψ s =
@@ -463,33 +459,29 @@ variable {χ : Kˣ →* ℂˣ} {ψ : AddChar K Circle} (hψ : Continuous ψ) (h�
 include hψ hψ1 hχ
 
 /- English proof (translation)
-Use `set c := quasiCharConductor χ with hcdef`. Use `set n := addCharConductor ψ with hndef`. Use `set m : ℤ := n - c with hmdef`. Use `set μ := selfDualMeasure ψ`. Establish `hc : 1 ≤ c` using `quasiCharConductor_pos hχ hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hs' : -quasiCharExponent χ⁻¹ < (1 - s).re`. Rewrite using `[quasiCharExponent_inv, Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr' : ¬ IsUnramifiedChar χ⁻¹` using `mt isUnramifiedChar_inv_iff.mp hr`. Use `set g := localFourier μ ψ (oneAddValBallIndicator c) with hgdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hg : ∀ y, g y = (ψ y : ℂ) * ((μ.real (valBall K c) : ℂ) * (valBall K m : Set K).indicator (fun _ => 1) y)` using `fun y => localFourier_oneAddValBallIndicator μ hψ hψ1 c y`. Establish `hgSB : g ∈ schwartzBruhat K` using `localFourier_mem_schwartzBruhat μ hψ hψ1 (oneAddValBallIndicator_mem_schwartzBruhat (by omega))`. Establish `hmn : m ≤ n` using `by omega`. Establish `hM : ∀ y, g y ≠ 0 → y ∈ valBall K m` using `fun y hy => by`. Assume the negation of the conclusion as `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy` using `[hg y, Set.indicator_of_notMem (show y ∉ (valBall K m : Set K) from h)]`. Simplify using `at hy`. Establish `hN : ∀ y ∈ valBall K n, g y = g 0` using `fun y hy => by`. Rewrite using `[hg y, hg 0, isTrivialOn_addCharConductor hψ hψ1 y hy, AddChar.map_zero_eq_one, Set.indicator_of_mem (show y ∈ (valBall K m : Set K) from valBall_antitone hmn hy), Set.indicator_of_mem (show (0 : K) ∈ (valBall K m : Set K) from zero_mem _)]`. Take `⟨v, hv, hv1⟩` from `exists_apply_ne_one_of_not_isUnramified hχ hr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvord : ord (v : K) = 0` using `mem_unitFiltrationUnits_zero_iff_ord.mp (unitFiltrationUnits_antitone (Nat.zero_le _) hv)`. Establish `hvm : (v : K) - 1 ∈ valBall K ((c - 1 : ℕ) : ℤ)` using `unitFiltration_sub_one_mem_valBall hv`. Establish `hvanish : ∀ k ∈ Finset.Ico m n, k ≠ m → (∫ u in ordShell K k, g u * (((χ⁻¹) u : ℂˣ) : ℂ) ∂multHaar K) * ((residueCard K : ℂ) ^ (-(1 - s))) ^ k = 0`. Introduce `k hk hkm`. Establish `hk1 : m + 1 ≤ k`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Finset.mem_Ico.mp hk).1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[setIntegral_ordShell_eq_zero (fun u => g u * (((χ⁻¹) u : ℂˣ) : ℂ)) hvord (a := ((χ v : ℂˣ) : ℂ)⁻¹) (fun h => hv1 (by`. Establish `: ((χ v : ℂˣ) : ℂ) = 1` using `inv_eq_one.mp h`. Conclude with `Units.val_eq_one.mp this)) k (fun u hu => ?_), zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu0` using `u.ne_zero`. Establish `huk : ord (u : K) = k` using `mem_ordShell.mp hu`. Establish `hvu : ((v * u : Kˣ) : K) - (u : K) ∈ valBall K n`. Rewrite using `[Units.val_mul, show (v : K) * u - u = ((v : K) - 1) * u by ring]`. Use `mul_mem_valBall hvm ((mem_valBall_iff_le_ord hu0).mpr le_rfl)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `valBall_antitone ?_ this` and prove the remaining obligations. Rewrite using `[huk]`. Use linear arithmetic over natural numbers and integers. Establish `hψvu : (ψ ((v * u : Kˣ) : K) : ℂ) = (ψ (u : K) : ℂ)`. Use `isTrivialOn_addCharConductor hψ hψ1 _ hvu` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show ((v * u : Kˣ) : K) = (u : K) + (((v * u : Kˣ) : K) - u) by ring, AddChar.map_add_eq_mul, this, mul_one]`. Establish `hmemu : (u : K) ∈ valBall K m` using `(mem_valBall_iff_le_ord hu0).mpr (by omega)`. Establish `hmemvu : ((v * u : Kˣ) : K) ∈ valBall K m` using `(mem_valBall_iff_le_ord (v * u).ne_zero).mpr (by rw [ord_units_mul, hvord]; omega)`. Rewrite using `[hg, hg, hψvu, Set.indicator_of_mem (show ((v * u : Kˣ) : K) ∈ (valBall K m : Set K) from hmemvu), Set.indicator_of_mem (show (u : K) ∈ (valBall K m : Set K) from hmemu), map_mul, Units.val_mul, MonoidHom.inv_apply, MonoidHom.inv_apply]`. Simplify using `only [Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hZg : localZeta g χ⁻¹ (1 - s) = (∫ u in ordShell K m, g u * (((χ⁻¹) u : ℂˣ) : ℂ) ∂multHaar K) * ((residueCard K : ℂ) ^ (-(1 - s))) ^ m`. Rewrite using `[localZeta_eq_sum hgSB (continuous_quasiChar_inv hχ) hmn hM hN hs', if_neg hr', add_zero, Finset.sum_eq_single_of_mem m (Finset.mem_Ico.mpr ⟨le_rfl, by omega⟩) hvanish]`. Establish `hshell : ∫ u in ordShell K m, g u * (((χ⁻¹) u : ℂˣ) : ℂ) ∂multHaar K = (μ.real (valBall K c) : ℂ) * ∫ u in ordShell K m, quasiCharExt χ⁻¹ (u : K) * (ψ (u : K) : ℂ) ∂multHaar K`. Rewrite using `[← integral_const_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `setIntegral_congr_fun (measurableSet_ordShell m) fun u hu => ?_` and prove the remaining obligations. Establish `hmemu : (u : K) ∈ valBall K m` using `(mem_valBall_iff_le_ord u.ne_zero).mpr (by rw [mem_ordShell.mp hu])`. Rewrite using `[hg, Set.indicator_of_mem (show (u : K) ∈ (valBall K m : Set K) from hmemu), quasiCharExt_units]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hZg, hshell, setIntegral_ordShell_eq_haarIntegers (fun x => quasiCharExt χ⁻¹ x * (ψ x : ℂ)), localEpsilon_of_not_isUnramified_eq hr, localZeta_oneAddValBallIndicator hc (unitFiltrationUnits_quasiCharConductor_le_ker hχ)]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hμc : μ.real (valBall K c) = (residueCard K : ℝ) ^ ((n : ℝ) / 2) * (haarIntegers K).real (valBall K c)`. Simplify using `only [μ, selfDualMeasure, measureReal_def, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul, ENNReal.toReal_mul, ENNReal.coe_toReal, NNReal.coe_rpow, NNReal.coe_natCast]`. Both sides reduce to the same expression. Rewrite using `[hμc, qcpow_zpow, ← hndef, ← hcdef, ← hmdef]`. Use `set A := ∫ x in (valBall K m : Set K) \ valBall K (m + 1), quasiCharExt χ⁻¹ x * (ψ x : ℂ) ∂haarIntegers K`.
-
-Use `set B := (haarIntegers K).real (valBall K c)`. Use `set C := (multHaarConst K).toReal`. Use `set r := (residueCard K : ℝ) ^ ((n : ℝ) / 2)`. Establish `hpow : (residueCard K : ℂ) ^ m * (residueCard K : ℂ) ^ ((m : ℂ) * -(1 - s)) = (residueCard K : ℂ) ^ ((m : ℂ) * s)`. Rewrite using `[← Complex.cpow_intCast, qcpow_mul_qcpow]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `push_cast`. Take the linear combination `((r : ℂ) * (B : ℂ) * (C : ℂ) * A) * hpow`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem localZeta_fourier_oneAddValBallIndicator (hr : ¬ IsUnramifiedChar χ) {s : ℂ}
     (hs2 : s.re < 1 - quasiCharExponent χ) :
@@ -603,9 +595,9 @@ variable {χ : Kˣ →* ℂˣ} {ψ : AddChar K Circle} (hψ : Continuous ψ) (h�
 include hψ hψ1 hχ
 
 /- English proof (translation)
-Distinguish the cases in `hu : IsUnramifiedChar χ`. Use `⟨_, indicator_valBall_mem_schwartzBruhat 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[localZeta_indicator_valBall_of_isUnramified hχ hu 0 hs1, zpow_zero, one_mul]`. Conclude with `localLFactor_ne_zero hχ hs1`. Rewrite using `[localZeta_fourier_indicator_integers hψ hψ1 hχ hu hs2, localZeta_indicator_valBall_of_isUnramified hχ hu 0 hs1, zpow_zero, one_mul]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨_, oneAddValBallIndicator_mem_schwartzBruhat (Nat.cast_nonneg _), localZeta_oneAddValBallIndicator_ne_zero (quasiCharConductor_pos hχ hu) (unitFiltrationUnits_quasiCharConductor_le_ker hχ) s, ?_⟩` and prove the remaining obligations. Rewrite using `[localZeta_fourier_oneAddValBallIndicator hψ hψ1 hχ hu hs2, localLFactor_of_not_isUnramified hu, localLFactor_of_not_isUnramified (mt isUnramifiedChar_inv_iff.mp hu)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_localZeta_test {s : ℂ} (hs1 : -quasiCharExponent χ < s.re)
     (hs2 : s.re < 1 - quasiCharExponent χ) :
@@ -627,11 +619,11 @@ theorem exists_localZeta_test {s : ℂ} (hs1 : -quasiCharExponent χ < s.re)
       localLFactor_of_not_isUnramified (mt isUnramifiedChar_inv_iff.mp hu)]
 
 /- English proof (translation)
-Establish `hs' : -quasiCharExponent χ⁻¹ < (1 - s).re`. Rewrite using `[quasiCharExponent_inv, Complex.sub_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hL1` using `localLFactor_ne_zero hχ hs1`. Establish `hL2` using `localLFactor_ne_zero (continuous_quasiChar_inv hχ) hs'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, hZg, hkey⟩` from `exists_localZeta_test hψ hψ1 hχ hs1 hs2`. Establish `hT` using `localZeta_mul_localZeta_fourier_comm (selfDualMeasure ψ) hψ hψ1 hχ hf hg hs1 hs2`. Establish `hmain : localZeta (localFourier (selfDualMeasure ψ) ψ f) χ⁻¹ (1 - s) * localLFactor χ s = localEpsilon χ ψ s * localZeta f χ s * localLFactor χ⁻¹ (1 - s)`. Use `mul_left_cancel₀ hZg ?_` and prove the remaining obligations. Take the linear combination `(-localLFactor χ s) * hT + localZeta f χ s * hkey`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[eq_comm, ← mul_div_assoc, div_eq_div_iff hL1 hL2]`. Take the linear combination `-hmain`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem localZeta_functionalEquation {f : K → ℂ} (hf : f ∈ schwartzBruhat K) {s : ℂ}
     (hs1 : -quasiCharExponent χ < s.re) (hs2 : s.re < 1 - quasiCharExponent χ) :

@@ -22,7 +22,7 @@ namespace GlobalTheory.ZM.NearCut
 open MvPolynomial in
 
 /- English proof (translation)
-Use `letI := (MvPolynomial.gradedAlgebra : GradedAlgebra (homogeneousSubmodule σ R))`. Establish `h : (vanIdeal d p).IsHomogeneous (homogeneousSubmodule σ R)` using `Ideal.homogeneous_span _ _ fun x hx => ⟨d, hx.1⟩`. Use `h e hF` as an intermediate fact. Rewrite `this` using `[show ((DirectSum.decompose (homogeneousSubmodule σ R) F e : homogeneousSubmodule σ R e) : MvPolynomial σ R) = homogeneousComponent e F from MvPolynomial.decomposition.decompose'_apply F e]`. Then use the resulting hypothesis.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem homogeneousComponent_mem_vanIdeal {R σ Hh : Type} [CommRing R] (d : ℕ) (p : Hh → σ → R)
     (F : MvPolynomial σ R) (hF : F ∈ vanIdeal d p) (e : ℕ) : homogeneousComponent e F ∈ vanIdeal d p := by
@@ -37,13 +37,11 @@ theorem homogeneousComponent_mem_vanIdeal {R σ Hh : Type} [CommRing R] (d : ℕ
 open MvPolynomial in
 
 /- English proof (translation)
-Introduce `F hF`. Establish `key : ∀ e, eval₂ β v (homogeneousComponent e F) = 0`. Introduce `e`. Establish `h1 : ∀ i, v i ^ d * eval₂ β v (homogeneousComponent e F) = 0`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hJ _ (hle (d + e) (by omega) (X i ^ d * homogeneousComponent e F) ((isHomogeneous_X_pow i d).mul (homogeneousComponent_isHomogeneous e F)) (I.mul_mem_left _ (hI F hF e)))` as an intermediate fact. Rewrite `this` using `[eval₂_mul, eval₂_pow, eval₂_X]`. Then use the resulting hypothesis. Establish `h2` using `Ideal.span_pow_eq_top _ hv d`. Establish `h3 : Ideal.span ((fun x => x ^ d) '' Set.range v) ≤ LinearMap.ker (LinearMap.toSpanSingleton T T (eval₂ β v (homogeneousComponent e F)))`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨i, rfl⟩, rfl⟩`. Conclude with `h1 i`. Rewrite `h3` using `[h2]`. Simplify using `using h3 (Submodule.mem_top (x := (1 : T)))`. Rewrite using `[← sum_homogeneousComponent F, eval₂_sum]`.
-
-Conclude with `Finset.sum_eq_zero fun e _ => key e`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval₂_eq_zero_of_forms_le {K σ : Type} [CommRing K] {I J : Ideal (MvPolynomial σ K)} {d : ℕ}
     (hI : ∀ F ∈ I, ∀ e, homogeneousComponent e F ∈ I)
@@ -70,11 +68,11 @@ theorem eval₂_eq_zero_of_forms_le {K σ : Type} [CommRing K] {I J : Ideal (MvP
   exact Finset.sum_eq_zero fun e _ => key e
 
 /- English proof (translation)
-Introduce `R σ Hh _ _ _ _ _ p Q d P hP hcutP q₀ hq₀`. Take `⟨f, hf, hproj, hmap⟩` from `GlobalTheory.T.exists_away_projective_forms_through_points R σ Hh p Q d P hP hcutP q₀ hq₀`. Take `⟨Z, s, M, th, -, hrep, -, hflat⟩` from `GlobalTheory.T.exists_projCoordRepresentation_homogeneousIdeal_flat (Localization.Away f) σ (vanIdeal d (fun h i => loc f (p h i))) d (homogeneousComponent_mem_vanIdeal d _)`. Use `⟨f, hf, Over.mk s, M, th, hrep, hflat fun e he => by have := hproj e he; infer_instance, ?_⟩` and prove the remaining obligations. Introduce `K _ x I X s' M' th' hI hcut hrep'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpb` using `IsPullback.of_hasPullback s (spMap x)`. Take `⟨th₁, hrep₁, hc₁⟩` from `GlobalTheory.T.projective_representation_pullback_coordinates _ K σ x _ Z _ s _ _ M th hrep hpb`. Rewrite `hrep₁` using `[hmap K x]`. Take `⟨e, he, hiso, hc⟩` from `GlobalTheory.T.exists_iso_of_projectiveCoordinateRepresentation K σ I _ X _ s' _ M' _ th' th₁ hrep' hrep₁ fun T _ β v hv => ⟨eval₂_eq_zero_of_forms_le (homogeneousComponent_mem_vanIdeal d _) (fun e he F hF h => ((hcut e he).2 F hF).2 h) β v hv, eval₂_eq_zero_of_forms_le hI (fun e …`. Use `⟨e.hom ≫ pullback.fst s (spMap x), ?_, ?_, fun T _ y w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : IsPullback e.hom s' (pullback.snd s (spMap x)) (𝟙 _)` using `IsPullback.of_horiz_isIso ⟨by rw [he, Category.comp_id]⟩`. Simplify using `using h0.paste_horiz hpb`. Conclude with `LBIso.trans hrep'.1 (pull_isLB hrep₁.1 _) (pull_isLB hrep.1 _) hiso (LBIso.chartPull (chartPullPull _ e.hom e.hom rfl) (chartPullSame M _ _ _ e.hom fun _ => rfl) ⟨_, idIso_isGen hrep₁.1⟩)`. Rewrite using `[hc T y w, hc₁ T _ w, Category.assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_away_flat_projRep : ∀ (R σ Hh : Type) [CommRing R] [IsNoetherianRing R] [IsReduced R] [Finite σ] [Finite Hh] (p : Hh → σ → R) (Q : Polynomial ℚ) (d : ℕ) (P : Set (Ideal R)), DenseP P → (∀ q ∈ P, ∃ (K : Type) (_ : Field K) (x : R →+* K) (I : Ideal (MvPolynomial σ K)), RingHom.ker x = q ∧ CutBy I Q d (fun h i => x (p h i))) → ∀ q₀ ∈ P, ∃ f : R, f ∉ q₀ ∧ ∃ (Z : Over (Sp (Localization.Away f))) (M : LB Z.left) (th : σ → M.Sec), ProjRep (vanIdeal d (fun h i => loc f (p h i))) Z.hom M th ∧ Flat Z.hom ∧ ∀ (K : Type) [Field K] (x : Localization.Away f →+* K) (I : Ideal (MvPolynomial σ K)) (X : Scheme.{0}) (s : X ⟶ Sp K) (M' : LB X) (th' : σ → M'.Sec), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → CutBy I Q d (fun h i => x (loc f (p h i))) → ProjRep I s M' th' → ∃ φ : X ⟶ Z.left, IsPullback φ s Z.hom (spMap x) ∧ LBIso M' (M.pull φ) ∧ ∀ (T : Type) [CommRing T] (y : Sp T ⟶ X) (w : σ → T), SecCoord M' th' y w ↔ SecCoord M th (y ≫ φ) w := by
   intro R σ Hh _ _ _ _ _ p Q d P hP hcutP q₀ hq₀

@@ -18,7 +18,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeckeSignEta
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use `show algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) (a : D.host.F)) = incA D (algebraMap D.host.F D.host.E (a : D.host.F))`. Use `show _ = Algebra.TensorProduct.includeRight (algebraMap D.host.F D.host.E (a : D.host.F))`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply D.host.F (AF D.host.F) (AE D)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idF_ratF (D : D7) (a : D.host.Fˣ) :
     idF D (Units.map (algebraMap D.host.F (AF D.host.F)).toMonoidHom a) =
@@ -30,33 +30,31 @@ theorem idF_ratF (D : D7) (a : D.host.Fˣ) :
   rw [AlgHom.commutes, IsScalarTower.algebraMap_apply D.host.F (AF D.host.F) (AE D)]
 
 /- English proof (translation)
-Introduce `D χ N hχ hnorm θ hθ hsign`. Use `⟨GlobalTheory.VolHeckeCompare.exists_isEta D, fun ε hε => ?_⟩` and prove the remaining obligations. Use `set ψ : (AF D.host.F)ˣ →* Circle := χ.comp (idF D) * (ε ^ N)⁻¹ with hψ`. Establish `hψa : ∀ a, ψ a = χ (idF D a) * (ε a ^ N)⁻¹` using `fun a => rfl`. Establish `hker : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryVolumePairs.normGroup D ≤ ψ.ker`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.VolHeckeCompare.normGroup_eq]`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩ show ψ (Units.map (algebraMap D.host.F (AF D.host.F)).toMonoidHom a) = 1`. Rewrite using `[hψa, idF_ratF, hχ.2, hε.2.1 a, one_pow, inv_one, mul_one]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, hN, -⟩` from `GlobalTheory.VolHeckeCompare.exists_form D`. Establish `e : (idF D (GlobalTheory.VolHeckeCompare.normU D x) : AE D) = (x : AE D) * cA D (x : AE D)`. Establish `e0 : idF D (GlobalTheory.VolHeckeCompare.normU D x) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryVolumePairs.normId D x` using `hN x`. Rewrite using `[e0]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show ψ (GlobalTheory.VolHeckeCompare.normU D x) = 1`. Rewrite using `[hψa, hnorm x _ e, hε.2.2.1 x, one_pow, inv_one, mul_one]`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm (Classical.arbitrary _)⟩`. Take `⟨η, -, -, hη1, hη2⟩` from `GlobalTheory.WeilParts.exists_isEtaTilde_unramified D`. Take `⟨N1, hN1, -, hηx⟩` from `hη2 τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨e, -, e1, e2⟩` from `GlobalTheory.SplitCharExp.exists_real_hom h`. Use `set w : D.what₂.Tau → ℂ := Pi.mulSingle τ (-1) with hw`. Establish `wτ : w τ = -1` using `by simp [w]`. Establish `wo : ∀ τ', τ' ≠ τ → w τ' = 1` using `fun τ' ht => by simp [w, Pi.mulSingle_eq_of_ne ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `ww : w * w = 1`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `ht : τ' = τ`. Substitute `ht` using the available equality. Simplify using `[wτ]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[wo τ' ht]`. Set `x : (AE D)ˣ` to `⟨e w, e w, by rw [← map_mul, ww, map_one], by rw [← map_mul, ww, map_one]⟩`. Establish `x1 : finPart D (x : AE D) = 1` using `e1 w`. Establish `x2 : ∀ τ', θ τ' (infPart D (x : AE D)) = w τ'` using `e2 w`. Establish `xτ : θ τ (infPart D (x : AE D)) = -1` using `by rw [x2, wτ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `xo : ∀ τ', τ' ≠ τ → θ τ' (infPart D (x : AE D)) = 1` using `fun τ' ht => by rw [x2, wo τ' ht]`. Establish `hcx : ((χ x : Circle) : ℂ) = (-1 : ℂ) ^ N` using `hsign τ x x1 xτ xo`. Establish `hN1' : N1 = 1`. Establish `: (N1 : ℚ) = 1` using `by rw [hN1]; norm_num`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hηc : ((η x : Circle) : ℂ) = -1` using `by rw [hηx θ hθ x x1 xo, xτ, hN1']; simp`. Establish `hfix : cA D (x : AE D) = x`. Use `GlobalTheory.SplitCharExp.ext_of_chart h ?_ fun τ' => ?_` and prove the remaining obligations. Establish `e3 : finPart D (cA D (x : AE D)) = sigR (Af D.host.F) D.sp.cm.sig (finPart D (x : AE D))` using `GlobalTheory.FockCompare.LiftUnitary.snd_sigR D.sp.cm.sig (x : AE D)`. Rewrite using `[e3, x1, RingHom.map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.FockCompare.comp_cA hθ, x2]`. Distinguish the cases in `ht : τ' = τ`. Rewrite using `[ht, wτ]`. Simplify using the standard rewrite rules. Rewrite using `[wo τ' ht]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Take `⟨y, hy⟩` from `GlobalTheory.SplitParity.exists_idF_of_fixed D x hfix`. Establish `hneg : ∀ ε', IsEta D ε' → ((ε' y : Circle) : ℂ) = -1` using `fun ε' hε' => by`. Establish `c2` using `hη1.2 ε' hε' y`. Rewrite `c2` using `[hy, pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c2, hηc]`. Establish `hψy : ψ y = 1`. Use `Circle.ext ?_` and prove the remaining obligations. Rewrite using `[hψa, hy, Circle.coe_mul, Circle.coe_inv, Circle.coe_pow, hcx, hneg ε hε, Circle.coe_one]`. Conclude with `mul_inv_cancel₀ (pow_ne_zero _ (by norm_num))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hψ1 : ψ = 1`. Assume the negation of the conclusion as `hne`. Establish `hψE : IsEta D ψ` using `(GlobalTheory.VolHeckeCompare.isEta_iff_normGroup D ψ).2 ⟨hker, hne⟩`. Use `hneg ψ hψE` as an intermediate fact. Rewrite `this` using `[hψy, Circle.coe_one]`.
-
-Evaluate the numerical expressions using `at this`. Introduce `a`. Establish `ha : ψ a = 1` using `by rw [hψ1]; rfl`. Rewrite `ha` using `[hψa, mul_inv_eq_one]`. Conclude with `ha`.
+Evaluate the numerical expressions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEta_of_sign : ∀ (D : D7) (χ : (AE D)ˣ →* Circle) (N : ℕ), IsHeckeChar D χ →
     (∀ x y : (AE D)ˣ, (y : AE D) = x * cA D x → χ y = 1) →

@@ -76,7 +76,7 @@ structure BTerm (h : IsPlaceOver A v) (ψ : AddChar (v.adicCompletion K) Circle)
 variable {h : IsPlaceOver A v} {ψ : AddChar (v.adicCompletion K) Circle}
 
 /- English proof (translation)
-The claim follows from `.of_trivial fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_one {L : Type} [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] {w : HeightOneSpectrum (𝓞 L)}
     (h : IsPlaceOver A w) : GlobalTheory.WeilDeligne.IsSmooth (1 : Weil h →* ℂˣ) :=
@@ -92,13 +92,11 @@ def IsExpr (x : WD h) (l : List (BTerm h ψ)) : Prop :=
 def val (l : List (BTerm h ψ)) : ℂ := (l.map fun t => (tateEps t.ψ' t.χ / tateEps t.ψ' 1) ^ t.n).prod
 
 /- English proof (translation)
-Set `H : Subgroup (Weil h)` to `(Subgroup.zpowers (Multiplicative.ofAdd (d : ℤ))).comap (degHom h)`. Establish `hs : Function.Surjective (degHom h)` using `fun n => by`. Take `⟨σ, hσ⟩` from `deg_surjective (h := h) n.toAdd`. Conclude with `⟨σ, by simp [hσ]⟩`. Establish `hi : H.index = d`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.index_comap_of_surjective _ hs]`. Conclude with `(Int.index_zmultiples (d : ℤ)).trans (Int.natAbs_natCast d)`. Establish `ho : IsOpen {σ : Ine (F` using `K) A | ineIncl h σ ∈ H} := by`. Use `isOpen_univ` and compare the differences between its conclusion and the goal. Use extensionality with `σ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[H]`. Take `⟨L, hf, hL, hH⟩` from `GlobalTheory.LocalExtField.exists_localExt_of_finiteIndex K Ω A v h H ⟨by omega⟩ ho`. Use `haveI : NumberField L := NumberField.of_module_finite K L`. Use `haveI : IsAlgClosure L Ω := ⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.tower_top (K := K) L⟩`. Take `⟨v', h'⟩` from `EpsUnique.exists_place h L`.
-
-Conclude with `⟨{ L := L, v' := v', h' := h', loc := hL }, (EpsUnique.index_eq_finrank K L Ω A v h hL H hH).symm.trans hi⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_locExt_finrank_eq (h : IsPlaceOver A v) (d : ℕ) (hd : 0 < d) :
     ∃ E : LocExt h, Module.finrank K E.L = d := by
@@ -121,7 +119,7 @@ theorem exists_locExt_finrank_eq (h : IsPlaceOver A v) (d : ℕ) (hd : 0 < d) :
     (EpsUnique.index_eq_finrank K L Ω A v h hL H hH).symm.trans hi⟩
 
 /- English proof (translation)
-Take `⟨ψ', c, n1, tr⟩` from `EpsUnique.exists_addChar E.L E.h' E.loc hc h1`. Take `⟨a, ha⟩` from `GlobalTheory.localArtinExists_holds E.L Ω A E.v' E.h'`. Conclude with `⟨⟨E, ψ', c, tr, a, ha, χ, hχ, n⟩, rfl, HEq.rfl, rfl, n1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BTerm.exists_of_data (hc : Continuous ψ) (h1 : ψ ≠ 1) (E : LocExt h)
     (χ : (E.v'.adicCompletion E.L)ˣ →* ℂˣ) (hχ : IsSmoothChar χ) (n : ℤ) :
@@ -131,9 +129,9 @@ theorem BTerm.exists_of_data (hc : Continuous ψ) (h1 : ψ ≠ 1) (E : LocExt h)
   exact ⟨⟨E, ψ', c, tr, a, ha, χ, hχ, n⟩, rfl, HEq.rfl, rfl, n1⟩
 
 /- English proof (translation)
-Take `⟨e, he, -⟩` from `WD.mk_eq_mk.1 (Classical.choose_spec (Classical.choose_spec (WD.mk a).exists_rep))`. Unfold `trW`. Rewrite using `[← LinearMap.trace_conj' _ e]`. Use `congr 1`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `[LinearEquiv.conj_apply, he]`.
+Simplify using the standard rewrite rules.
 -/
 example {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a : WDRep h V) (σ : Weil h) :
     trW (WD.mk a) σ = LinearMap.trace ℂ V (a.ρ σ) := by
@@ -145,7 +143,7 @@ example {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (a 
   simp [LinearEquiv.conj_apply, he]
 
 /- English proof (translation)
-Establish `hx : ∃ e, IsTateEps ψ χ e` using `⟨_, isTateEps_of_isUnram hψ hχ⟩`. Rewrite using `[tateEps, dif_pos hx]`. Conclude with `hx.choose_spec.unique (isTateEps_of_isUnram hψ hχ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ψ : AddChar k Circle} {c : kˣ} (hψ : HasConductor ψ c) {χ : kˣ →* ℂˣ} (hχ : IsUnram χ) :
@@ -155,7 +153,7 @@ example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchime
   exact hx.choose_spec.unique (isTateEps_of_isUnram hψ hχ)
 
 /- English proof (translation)
-Simplify using `[val]`.
+Simplify using the standard rewrite rules.
 -/
 example (l l' : List (BTerm h ψ)) : val (l ++ l') = val l * val l' := by simp [val]
 

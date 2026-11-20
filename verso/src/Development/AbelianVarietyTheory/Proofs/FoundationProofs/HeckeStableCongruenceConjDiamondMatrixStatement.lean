@@ -7,7 +7,7 @@ open scoped MatrixGroups TensorProduct
 open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.KZ.StabHecke.congruenceCondition_conj_diamond` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FHeckeStableCongruenceConjDiamondMatrix.lean&line=9#L9)
 -/

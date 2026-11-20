@@ -8,13 +8,13 @@ namespace UpperTheory
 open UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `A _ _ _ 𝔞 N hN`. Establish `hN0 : (N : A) ≠ 0` using `Nat.cast_ne_zero.mpr hN.ne'`. Use `⟨fun hmem => ?_, fun a t h => ?_⟩` and prove the remaining obligations. Establish `hdvd : 𝔞 ∣ Ideal.span {(N : A)}` using `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hmem)`. Take `⟨𝔟, h𝔟⟩` from `hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hle : Ideal.span {(N : A)} ≤ 𝔟`. Rewrite using `[h𝔟]`. Conclude with `Ideal.mul_le_right`. Establish `hne : Ideal.span {(N : A)} ≠ ⊥`. Simplify `hN0` using `[Ideal.span_singleton_eq_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `IsDedekindDomain.exists_sup_span_eq hle hne`. Use `⟨a, ?_⟩` and prove the remaining obligations. Unfold `IsGen`. Rewrite using `[sup_comm, ha, mul_comm, ← h𝔟]`. Unfold `IsGen at h ⊢`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hs : Ideal.span {(t : A) * a} ⊔ Ideal.span {((N * t : ℕ) : A)} = Ideal.span {(t : A)} * (Ideal.span {a} ⊔ Ideal.span {(N : A)})`. Rewrite using `[Ideal.mul_sup, Ideal.span_singleton_mul_span_singleton, Ideal.span_singleton_mul_span_singleton, Nat.cast_mul, mul_comm (N : A)]`. Rewrite using `[hs, mul_assoc, h, Ideal.span_singleton_mul_span_singleton, Nat.cast_mul, mul_comm (N : A)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_moduli_point : GenEx := by
   intro A _ _ _ 𝔞 N hN

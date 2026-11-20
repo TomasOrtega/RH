@@ -22,13 +22,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Introduce `E _ _ _ r X x hx`. Establish `hb` using `FD.FrameDegreeData.bOf_mem X hx`. Establish `ho` using `FD.FrameDegreeData.ortho_bOf X hx`. Establish `hd : ∀ τ i, ‖FD.dmin X.Gm (FD.rmul x (FD.FrameDegreeData.bOf X x)) τ i‖ = 1`. Introduce `τ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `FD.dmin`. Rewrite using `[ho τ, FD.FrameDegreeData.lminor_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_real]`. Apply the tactic sequence `rcases FD.FrameDegreeData.sgn_sq X.p0 (Fin.castLE (Nat.le_of_lt_succ i.isLt) j : Fin r) with h | h <;>`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [h] <;> simp`. Establish `hl : X.la1 (FD.rmul x (FD.FrameDegreeData.bOf X x)) = X.la1 x`. Unfold `FD.Data.la1`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.AR.Inst.firstMinimumSq_rightBorel X hx hb]`. Use `⟨_, hb, FD.OrthogonalFrameDomain.rmul_mem_dom X hx hb, ho, hd, fun th => ?_, fun la P hP => ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `I2.phiFD`. Rewrite using `[hl]`. Rewrite using `[← FD.FrameDegreeData.pnorm_rmul X la P hP.2.1 x hx _ hb]`. Unfold `FD.Data.pnorm`. Simplify using `only [norm_div, hd, div_one, Real.one_rpow, Finset.prod_const_one, _root_.mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem exists_ortho_frame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : FD.Data E r), ∀ x ∈ X.dom, ∃ b ∈ FD.Bor X.Ψ r, FD.rmul x b ∈ X.dom ∧ X.IsOrtho (FD.rmul x b) ∧ (∀ τ i, ‖FD.dmin X.Gm (FD.rmul x b) τ i‖ = 1) ∧ (∀ th, I2.phiFD X th (FD.rmul x b) = I2.phiFD X th x) ∧ ∀ (la : FD.Wt X.Ψ r) (P : FD.Frame X.Ψ r → ℂ), X.IsSec la P → X.pnorm la P x = ‖P (FD.rmul x b)‖ := by
   intro E _ _ _ r X x hx

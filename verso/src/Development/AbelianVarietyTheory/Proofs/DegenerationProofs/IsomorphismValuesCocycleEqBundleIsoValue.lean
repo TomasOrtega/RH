@@ -16,9 +16,9 @@ namespace GlobalTheory.IsoValCocycle
 open GlobalTheory.TorusExt GlobalTheory.IsoValConst
 
 /- English proof (translation)
-Set `y : (TF (R` to `R) F).left := IsLocalRing.closedPoint F`. Take `⟨th, ρ, hth, hv⟩` from `ThetaInValues.exists_th ν y`. Take `⟨x, hx, hu⟩` from `UT.ExactTerm.exists_good_point hL.goodPt hL.polBaseChange D.P (jFK (R := R) F ≫ jK R) hn hF th (ThetaCoset.ne_zero_of_isGenSec hL₂.secBaseChangeAny D.P _ hth) (ν.eA a)`. Take `⟨t, rfl⟩` from `ν.eA.surjective x`. Use `⟨t, ν.eA.injective (by rw [map_pow, map_one]; exact hx), fun h => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `q` using `hu y ν.J (ThetaInValues.good ν y)`. Establish `e` using `hv (a * t)`. Rewrite `e` using `[h, MulZeroClass.zero_mul, map_zero, map_mul]`. Conclude with `not_isUnit_zero ((congrArg IsUnit e).mp q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_th_ne_zero (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {F : Type}
     [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F] {N : NumD F} (ν : NumOf D F N) {n : ℕ} (hn : 2 ≤ n)
@@ -35,25 +35,23 @@ theorem exists_th_ne_zero (hL : Laws) (hL₂ : Laws2) {R : Type} [CommRing R] [I
   exact not_isUnit_zero ((congrArg IsUnit e).mp q)
 
 /- English proof (translation)
-Introduce `hL hL₂ R O' _ _ _ _ _ _ f P D₀ C _ _ _ _ _ hf N' N ν' ν ψ w I gp hw he`. Set `z : Sp C` to `IsLocalRing.closedPoint C`. Establish `hJ` using `good ν z`. Establish `hJ'` using `good ν' z`. Establish `hT : (TF (R` using `R) C).hom ≫ spMap f = (TF (R := O') C).hom := ArcTransport.base_comm fun r => (hf r).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ x : N.A, ArcTransport.pushF gp hT (ν'.eA (I.φ x)) = ν.eA x` using `fun x => Over.OverMorphism.ext (he x)`. Establish `hW : ∀ x : N'.A, stalkConst z (wVal ν' ν w x) = (ArcTransport.wVal w z ν.J ν'.J (ν'.eA x)).val` using `fun x => toStk_valF (ν'.eA x).left ((D₀.P.L.pull ψ).U (fun _ => ν.J ((ν'.eA x).left ≫ ψ)) ⊓ P.P.L.U (ν'.J (ν'.eA x).left)) z ⟨mem_pull.2 (hJ ((ν'.eA x).left ≫ ψ)), hJ' _⟩ _`. Use `⟨fun x h => ?_, ?_⟩` and prove the remaining obligations. Use `hW x` as an intermediate fact. Rewrite `this` using `[h, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Units.ne_zero _ this.symm`. Set `Ω : N.A → ((Sp C).presheaf.stalk z)ˣ` to `fun x => ArcTransport.wVal w z ν.J ν'.J (ν'.eA (I.φ x))`. Establish `hΩ : ∀ x, stalkUnits z (I.h x) * Ω x = stalkUnits z (I.h 1) * Ω 1`. Use `const_of_cube (fun x => stalkUnits z (I.h x) * Ω x) (fun a b c => ?_) (fun a => N.th a ≠ 0) ?_ 2 (fun x => ?_) (exists_th_ne_zero hL hL₂ ν le_rfl (Nat.cast_ne_zero.2 two_ne_zero))` and prove the remaining obligations. Establish `e` using `ArcTransport.thS_push gp hT ((isGen_iff _).1 hw) hL.globalFns hJ hJ' (ν'.eA (I.φ a)) (ν'.eA (I.φ b)) (ν'.eA (I.φ c))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hp, hp, hp, ← map_one ν'.eA, ← map_one I.φ, ← stalk_θ, ← stalk_θ]`. Simplify using `only [← map_mul ν'.eA, ← map_mul I.φ] at e`. Establish `e₁ : stalkUnits z (N.θ a b c) = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b * Ω c * (Ω 1)⁻¹ * stalkUnits z (N'.θ (I.φ a) (I.φ b) (I.φ c))` using `e`. Establish `e₂` using `congrArg (stalkUnits z) (I.θ_eq a b c)`. Rewrite using `[I.h_one, map_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `clear_value Ω`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Use `replace e₁ := congrArg Additive.ofMul e₁`. Use `replace e₂ := congrArg Additive.ofMul e₂`. Simplify using `only [map_mul, ofMul_mul, ofMul_inv, ofMul_one] at e₁ e₂ ⊢`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take the linear combination `(norm := abel) -e₁ - e₂`. Take `⟨s, hs⟩` from `ConstFam.exists_secThrough (φ' := fun _ : Fin 1 => 𝟙 P.P.A.left) (φ := fun _ : Fin 1 => 𝟙 D₀.P.A.left) (h := ψ) hw D₀.P.isLB P.P.isLB (fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) ν.th`. Take `⟨κ, hκ⟩` from `sval_eq ν' z s`. Take `⟨ρ, hρ⟩` from `stalk_th ν z`. Take `⟨ρ', hρ'⟩` from `stalk_th ν' z`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ a : N.A, N.th a ≠ 0 → ρ.val = (stalkUnits z (I.h a) * Ω a).val * (κ * stalkConst z I.lam * ρ'.val)` using `fun a ha => by`. Establish `e` using `hs.sval (fun _ => (Category.id_comp _).trans (Category.comp_id _).symm) (show Sp C ⟶ _ from (ν'.eA (I.φ a)).left) hJ hJ'`. Rewrite `e` using `[Fin.prod_univ_one, Category.comp_id]`. Use `replace e := e.trans (congrArg (fun q : ((Sp C).presheaf.stalk z)ˣ => q.val * _) (zpow_one _))`. Establish `e' : stalkConst z (N.th a) * ρ.val = (Ω a).val * (κ * (stalkConst z (N'.th (I.φ a)) * ρ'.val))` using `(hρ a).trans ((congrArg (fun q => sval (Z := Sp C) ν.th q z ν.J) (he a).symm).trans (e.trans (congrArg _ ((hκ _).trans (congrArg _ (hρ' _).symm)))))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `((IsUnit.mk0 _ ha).map (stalkConst z)).mul_left_cancel (e'.trans ?_)` and prove the remaining obligations. Rewrite using `[I.th_eq, Units.val_mul, Units.val_mul, stalkUnits_val, map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b ha hb`. Establish `hu : IsUnit (κ * stalkConst z I.lam * ρ'.val)` using `isUnit_of_mul_isUnit_right (key a ha ▸ ρ.isUnit)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `Units.ext (hu.mul_right_cancel ((key a ha).symm.trans (key b hb)))`. Take `⟨y, hy⟩` from `ValuesTorsion.exists_pow_eq hL D₀.P (jFK (R := O') C ≫ jK O') (ν.eA x) one_le_two`. Conclude with `⟨ν.eA.symm y, by rw [← map_pow, hy, MulEquiv.symm_apply_apply]⟩`. Introduce `x`. Apply `(stalkConst z).injective` to reduce the goal to its premises.
-
-Establish `e` using `congrArg Units.val (hΩ x)`. Rewrite `e` using `[I.h_one, map_one, _root_.one_mul, Units.val_mul, stalkUnits_val]`. Rewrite using `[map_mul, hW, hW, ← map_one I.φ]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_eq_val : Laws → Laws2 → ∀ (R O' : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [CommRing O'] [IsDomain O'] [IsNoetherianRing O'] (f : O' →+* R) (P : DegPre R) (D₀ : DegPre O') (C : Type) [Field C] [IsAlgClosed C] [CharZero C] [Algebra (FractionRing R) C] [Algebra (FractionRing O') C], Along f C → ∀ (N' N : NumD C) (ν' : NumOf P C N') (ν : NumOf D₀ C N) (ψ : P.P.A.left ⟶ D₀.P.A.left) (w : LB.Iso P.P.L (D₀.P.L.pull ψ)) (I : NumB.Iso N.toNumB N'.toNumB), IsGrpPullback P.P.A D₀.P.A (spMap f) ψ → w.IsGen → (∀ x : N.A, (ν'.eA (I.φ x)).left ≫ ψ = (ν.eA x).left) → (∀ x, wVal ν' ν w x ≠ 0) ∧ ∀ x : N.A, (I.h x : C) * wVal ν' ν w (I.φ x) = wVal ν' ν w 1 := by
   intro hL hL₂ R O' _ _ _ _ _ _ f P D₀ C _ _ _ _ _ hf N' N ν' ν ψ w I gp hw he

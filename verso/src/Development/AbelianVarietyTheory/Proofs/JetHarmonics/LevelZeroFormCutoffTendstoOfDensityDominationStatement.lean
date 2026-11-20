@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.BesselIntegrals.Bessel
 open Formalism.FourierDecayAlt Formalism.REAL Formalism.QuantumDeterminants Filter Topology MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.levelZeroForm_cutoff_tendsto_of_domination` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FLevelZeroFormCutoffTendstoOfDensityDomination.lean&line=12#L12)
 -/

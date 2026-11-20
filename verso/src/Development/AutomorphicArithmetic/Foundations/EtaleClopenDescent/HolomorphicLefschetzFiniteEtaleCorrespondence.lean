@@ -13,7 +13,7 @@ import Development.AutomorphicArithmetic.CommutativeAlgebra.FiniteDimensionalHod
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory GlobalTheory.HodgeCoh GlobalTheory.CechDR KaehlerDifferential GlobalTheory.W1
 
 /- English proof (translation)
-Establish `h'` using `h.preimage (inv e)`. Establish `e' : (inv e) ⁻¹ᵁ (e ⁻¹ᵁ U) = U`. Rewrite using `[← Scheme.Hom.comp_preimage, IsIso.inv_hom_id, Scheme.Hom.id_preimage]`. Rewrite `h'` using `[e']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem isAffine_of_iso {Z Z' : Scheme.{0}} (e : Z' ⟶ Z) [IsIso e] {U : Z.Opens}
     (h : IsAffineOpen (e ⁻¹ᵁ U)) : IsAffineOpen U := by
@@ -23,11 +23,11 @@ private theorem isAffine_of_iso {Z Z' : Scheme.{0}} (e : Z' ⟶ Z) [IsIso e] {U 
   rwa [e'] at h'
 
 /- English proof (translation)
-Substitute `e1 e2` using the available equality. Take `⟨U', V, hV1, hV2, t, hy, hU', hV, φ, p1, p2, p3, p4⟩` from `hT`. Take `⟨U, rfl⟩ : ∃ U : Z.Opens, U' = e ⁻¹ᵁ U` from `⟨e ''ᵁ U', (e.preimage_image_eq U').symm⟩`. Establish `hs : ∀ x : Sec (e ≫ s) (e ⁻¹ᵁ U), ∃ x' : Sec s U, appSec s (e ≫ s) e U x' = x` using `fun x => (ConcreteCategory.bijective_of_isIso (e.app U)).2 x`. Use `choose r hr using hs`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ∀ (c : Y ⟶ Z') (x : Sec (e ≫ s) (e ⁻¹ᵁ U)), appSec s s' (c ≫ e) U (r x) = appSec (e ≫ s) s' c (e ⁻¹ᵁ U) x`. Introduce `c x`. Use `conv_rhs => rw [← hr x]`. Simplify using `only [appSec, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨U, V, hV1, hV2, fun l => r (t l), hy, isAffine_of_iso e hU', hV, φ, p1, fun l => ?_, fun j => ?_, p4⟩` and prove the remaining obligations. Rewrite using `[hc]`. Conclude with `p2 l`. Rewrite using `[hc]`. Conclude with `p3 j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isTan_of_iso {Z Z' Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} (e : Z' ⟶ Z) [IsIso e]
     (d : ℕ) (c1 c2 : Y ⟶ Z') (a1 a2 : Y ⟶ Z) (e1 : c1 ≫ e = a1) (e2 : c2 ≫ e = a2)
@@ -51,43 +51,35 @@ private theorem isTan_of_iso {Z Z' Y : Scheme.{0}} {s : Z ⟶ Sp ℂ} {s' : Y �
   · rw [hc]; exact p3 j
 
 /- English proof (translation)
-Introduce `Z _ s d _ hP Y s' c1 c2 h1 h2 _ _ hf2 he2 F hF A hA a`. Use `haveI := hf2`. Use `haveI := he2`. Use `haveI cZ : CompactSpace Z := UpperTheory.Cb.compactSpace_of_projective_and_of_finite.1 Z s hP`. Use `haveI cY : CompactSpace Y := UpperTheory.Cb.compactSpace_of_projective_and_of_finite.2 Y Z c1 inferInstance cZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI sm : SmoothOfRelativeDimension d s' := UpperTheory.Cb.smoothOfRelativeDimension_comp_etale Z Y s s' c1 h1 d inferInstance`. Take `⟨J, _, W, hdis, hsup, hint⟩` from `UpperTheory.Cb.exists_integral_clopen_decomposition_of_smooth Y s' d`. Establish `hcov : ∀ y : Y, ∃ i, y ∈ W i` using `fun y => by`. Establish `: y ∈ iSup W` using `by rw [hsup]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ∀ {i j : J} {y : Y}, y ∈ W i → y ∈ W j → i = j`. Introduce `i j y hi hj`. Assume the negation of the conclusion as `hij`. Establish `: y ∈ W i ⊓ W j` using `⟨hi, hj⟩`. Rewrite `this` using `[hdis i j hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `this`. Establish `hcl : ∀ m, IsClosed (W m : Set Y)`. Introduce `m`. Establish `e : ((W m : Set Y))ᶜ = ⋃ i ∈ {i | i ≠ m}, (W i : Set Y)`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_setOf_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Take `⟨i, hi⟩` from `hcov y`. Conclude with `⟨i, fun e => hy (e ▸ hi), hi⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨i, him, hi⟩ hy`. Conclude with `him (hne hi hy)`. Rewrite using `[← isOpen_compl_iff, e]`. Conclude with `isOpen_biUnion fun i _ => (W i).isOpen`. Use `haveI instI : ∀ m, IsClosedImmersion (W m).ι := fun m => IsClosedImmersion.of_isPreimmersion _ (by rw [Scheme.Opens.range_ι]; exact hcl m)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `haveI instF1 : ∀ m, IsFinite ((W m).ι ≫ c1) := fun m => inferInstance`. Use `haveI instF2 : ∀ m, IsFinite ((W m).ι ≫ c2) := fun m => inferInstance`. Use `haveI instE1 : ∀ m, Etale ((W m).ι ≫ c1) := fun m => inferInstance`. Use `haveI instE2 : ∀ m, Etale ((W m).ι ≫ c2) := fun m => inferInstance`. Establish `hm1 : ∀ m, ((W m).ι ≫ c1) ≫ s = (W m).ι ≫ s'` using `fun m => by rw [Category.assoc, h1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm2 : ∀ m, ((W m).ι ≫ c2) ≫ s = (W m).ι ≫ s'` using `fun m => by rw [Category.assoc, h2]`. Set `φ : ∀ m, CxPts ((W m).ι ≫ s') (RingHom.id ℂ) → CxPts s' (RingHom.id ℂ)` to `fun m y' => ⟨y'.1 ≫ (W m).ι, by simpa [Category.assoc] using y'.2⟩`. Establish `φinj : ∀ m, Function.Injective (φ m)`. Introduce `m y y' e`. Establish `e' : y.1 ≫ (W m).ι = y'.1 ≫ (W m).ι` using `congrArg Subtype.val e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((cancel_mono _).1 e')`. Set `Fm : ∀ m, Finset (CxPts ((W m).ι ≫ s') (RingHom.id ℂ))` to `fun m => F.preimage (φ m) (φinj m).injOn`. Establish `hFm : ∀ m y', y' ∈ Fm m ↔ y'.1 ≫ (W m).ι ≫ c1 = y'.1 ≫ (W m).ι ≫ c2`. Introduce `m y'`. Rewrite using `[Finset.mem_preimage, hF]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [φ, Category.assoc]`. Establish `hAm : ∀ m, ∀ y' ∈ Fm m, GlobalTheory.W1.IsTan d ((W m).ι ≫ c1) ((W m).ι ≫ c2) (hm1 m) (hm2 m) y' (A (φ m y')) ∧ (1 - A (φ m y')).det ≠ 0`. Introduce `m y' hy'`. Take `⟨hT, hD⟩` from `hA (φ m y') (Finset.mem_preimage.1 hy')`. Use `⟨?_, hD⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsIso (⊤ : Z.Opens).ι := by rw [← Scheme.topIso_hom]; infer_instance`. Establish `e1 : (((W m).ι ≫ c1) ≫ inv (⊤ : Z.Opens).ι) ≫ (⊤ : Z.Opens).ι = (W m).ι ≫ c1` using `by simp`. Establish `e2 : (((W m).ι ≫ c2) ≫ inv (⊤ : Z.Opens).ι) ≫ (⊤ : Z.Opens).ι = (W m).ι ≫ c2` using `by simp`. Establish `hT'` using `(UpperTheory.Cb.isTangentMatrix_iff_restrict_open Z Y s s' d c1 c2 h1 h2 ⊤ (W m) _ _ e1 e2 (φ m y') y' rfl (A (φ m y'))).1 hT`. Conclude with `isTan_of_iso (⊤ : Z.Opens).ι d _ _ _ _ e1 e2 _ _ _ _ y' _ hT'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `g : CxPts s' (RingHom.id ℂ) → ℂ` to `fun y => (Matrix.det (1 + (Polynomial.X : Polynomial ℂ) • (A y).map Polynomial.C)).coeff a / (1 - A y).det`. Establish `key : ∀ m, (∀ b, FiniteDimensional ℂ (hodgeH s a b)) ∧ ∑ b ∈ Finset.range (d + 1), (-1 : ℂ) ^ b * LinearMap.trace ℂ _ (hodgeTrace (hm1 m) a b ∘ₗ hodgePull (hm2 m) a b) = ∑ y ∈ Fm m, g (φ m y)` using `fun m => by haveI := hint m`. Conclude with `UpperTheory.Cb.holomorphic_lefschetz_finiteEtale_integral Z s d hP (W m).toScheme ((W m).ι ≫ s') ((W m).ι ≫ c1) ((W m).ι ≫ c2) (hm1 m) (hm2 m) inferInstance inferInstance (Fm m) (hFm m) (fun y' => A (φ m y')) (hAm m) a`. Establish `hFD : ∀ b, FiniteDimensional ℂ (hodgeH s a b)`. Break down `isEmpty_or_nonempty J with hJ | ⟨⟨m⟩⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun b => UpperTheory.finiteDimensional_hodgeCohomology_of_smooth_proj Z s d hP a b`. Conclude with `(key m).1`. Use `⟨hFD, ?_⟩` and prove the remaining obligations. Establish `hu : ∀ b, hodgeTrace h1 a b ∘ₗ hodgePull h2 a b = ∑ m, hodgeTrace (hm1 m) a b ∘ₗ hodgePull (hm2 m) a b`. Introduce `b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, UpperTheory.Cb.hodgeTrace_eq_sum_clopen_decomposition Z Y s s' c1 h1 J W hdis hsup instF1 instE1 a b (hodgePull h2 a b x), LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hodgePull_comp h2 rfl (hm2 m) a b x]`. Establish `hsum : ∑ m, ∑ y ∈ Fm m, g (φ m y) = ∑ y ∈ F, g y`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP9 : ∀ y : CxPts s' (RingHom.id ℂ), ∃ m, ∃ y', φ m y' = y` using `fun y => by`. Take `⟨m, ⟨y', hy', -⟩, -⟩` from `UpperTheory.Cb.existsUnique_complexPoint_lift_clopen_cover Y s' J W hdis hsup y`. Conclude with `⟨m, y', Subtype.ext hy'⟩`. Establish `hU9 : ∀ {m m' y' y''}, φ m y' = φ m' y'' → m = m'`. Introduce `m m' y' y'' e`.
-
-Take `⟨m0, -, hu0⟩` from `UpperTheory.Cb.existsUnique_complexPoint_lift_clopen_cover Y s' J W hdis hsup (φ m y')`. Establish `a1` using `hu0 m ⟨y', rfl, fun z hz => φinj m (Subtype.ext hz)⟩`. Establish `a2` using `hu0 m' ⟨y'', (congrArg Subtype.val e).symm, fun z hz => φinj m' (Subtype.ext (hz.trans (congrArg Subtype.val e)))⟩`. Conclude with `a1.trans a2.symm`. Use `choose μ y0 hy0 using hP9`.
-
-Rewrite using `[← Finset.sum_fiberwise F μ g]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `Finset.sum_nbij (φ m) ?_ (φinj m).injOn ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `y' hy'`. Use `Finset.mem_filter.2 ⟨Finset.mem_preimage.1 hy', ?_⟩` and prove the remaining obligations.
-
-Conclude with `hU9 (hy0 (φ m y'))`. Introduce `y hy`. Take `⟨hyF, rfl⟩` from `Finset.mem_filter.1 (Finset.mem_coe.1 hy)`. Conclude with `⟨y0 y, Finset.mem_coe.2 (Finset.mem_preimage.2 (by rw [hy0]; exact hyF)), hy0 y⟩`. Express the relevant statement in the definitionally equal form `_ = ∑ y ∈ F, g y`.
-
-Rewrite using `[← hsum, ← Finset.sum_congr rfl (fun m _ => (key m).2), Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hu b, map_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.holomorphic_lefschetz_finiteEtale_correspondence :
     ∀ (Z : Scheme.{0}) [IsIntegral Z] (s : Z ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d s], IsProjOver s →

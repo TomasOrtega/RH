@@ -10,25 +10,25 @@ namespace ReciprocityTheory.ChartRestriction.L1
 variable {K : Type} [Field K] (U : PowerSeries K)
 
 /- English proof (translation)
-Simplify using `only [homS, coeff_add, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homS_add (m : ℕ) (P Q : K[X]) : homS U m (P + Q) = homS U m P + homS U m Q := by
   simp only [homS, coeff_add, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [homS, coeff_sub, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homS_sub (m : ℕ) (P Q : K[X]) : homS U m (P - Q) = homS U m P - homS U m Q := by
   simp only [homS, coeff_sub, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[homS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem homS_zero (m : ℕ) : homS U m (0 : K[X]) = 0 := by
   simp [homS]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [homS_zero]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, homS_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem homS_sum {ι : Type} (s : Finset ι) (m : ℕ) (f : ι → K[X]) :
     homS U m (∑ i ∈ s, f i) = ∑ i ∈ s, homS U m (f i) := by
@@ -37,9 +37,9 @@ theorem homS_sum {ι : Type} (s : Finset ι) (m : ℕ) (f : ι → K[X]) :
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, homS_add, ih]
 
 /- English proof (translation)
-Unfold `homS`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[coeff_monomial, if_neg (Ne.symm hb)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hi)) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem homS_monomial (m i : ℕ) (hi : i ≤ m) (a : K) :
     homS U m (monomial i a) = PowerSeries.C a * U ^ i * PowerSeries.X ^ (2 * (m - i)) := by
@@ -53,13 +53,13 @@ theorem homS_monomial (m i : ℕ) (hi : i ≤ m) (a : K) :
     exact absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hi)) h
 
 /- English proof (translation)
-Establish `eP : P = ∑ i ∈ Finset.range (m + 1), monomial i (P.coeff i)` using `P.as_sum_range' (m + 1) (Nat.lt_succ_of_le hP)`. Establish `eQ : Q = ∑ j ∈ Finset.range (n + 1), monomial j (Q.coeff j)` using `Q.as_sum_range' (n + 1) (Nat.lt_succ_of_le hQ)`. Establish `e : P * Q = ∑ i ∈ Finset.range (m + 1), ∑ j ∈ Finset.range (n + 1), monomial (i + j) (P.coeff i * Q.coeff j)` using `by conv_lhs => rw [eP, eQ]`. Rewrite using `[Finset.sum_mul_sum]`. Simplify using `only [monomial_mul_monomial]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, homS_sum]`. Simplify using `only [homS_sum]`. Unfold `homS`. Rewrite using `[Finset.sum_mul_sum]`. Use `Finset.sum_congr rfl fun i hi => Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi' : i ≤ m` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Establish `hj' : j ≤ n` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hj)`. Use `homS_monomial U (m + n) (i + j) (by omega) (P.coeff i * Q.coeff j)` as an intermediate fact. Unfold `homS at this`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 2 * (m + n - (i + j)) = 2 * (m - i) + 2 * (n - j)` using `by omega`. Rewrite using `[h2, pow_add, pow_add, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem homS_mul (m n : ℕ) (P Q : K[X]) (hP : P.natDegree ≤ m) (hQ : Q.natDegree ≤ n) :
     homS U (m + n) (P * Q) = homS U m P * homS U n Q := by
@@ -87,11 +87,11 @@ theorem homS_mul (m n : ℕ) (P Q : K[X]) (hP : P.natDegree ≤ m) (hQ : Q.natDe
   ring
 
 /- English proof (translation)
-Establish `h1 : PowerSeries.coeff (2 * (m - P.natDegree)) (homS U m P) = P.leadingCoeff`. Unfold `homS`. Rewrite using `[map_sum, Finset.sum_eq_single P.natDegree]`. Rewrite using `[PowerSeries.coeff_mul_X_pow', if_pos le_rfl, Nat.sub_self, PowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, map_pow, hU]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `b hb hne`. Establish `hb' : b ≤ m` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hb)`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Rewrite using `[PowerSeries.coeff_mul_X_pow', if_neg (by omega)]`. Rewrite using `[coeff_eq_zero_of_natDegree_lt hgt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `hh`. Conclude with `absurd (Finset.mem_range.2 (Nat.lt_succ_of_le hP)) hh`. Rewrite `h1` using `[h, map_zero]`. Conclude with `leadingCoeff_eq_zero.1 h1.symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homS_eq_zero (hU : PowerSeries.constantCoeff U = 1) (m : ℕ) (P : K[X]) (hP : P.natDegree ≤ m)
     (h : homS U m P = 0) : P = 0 := by

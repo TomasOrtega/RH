@@ -7,9 +7,9 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `e X _ A L s n m W hS hSNC`. Use `⟨?_, LeviFormBoundaryTopology.interior_bdry_eq_empty hS hSNC⟩` and prove the remaining obligations. Introduce `x`. Use `⟨L.U x, L.isOpen_U x, L.mem_U x, 1, fun _ => s x, fun _ => hS.1 x, ?_⟩` and prove the remaining obligations. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hz, hzU⟩`. Conclude with `⟨hzU, fun _ => (LeviFormBoundaryTopology.bdry_iff hS hzU).1 hz⟩`. Introduce and unpack `⟨hzU, hz⟩`. Conclude with `⟨(LeviFormBoundaryTopology.bdry_iff hS hzU).2 (hz 0), hzU⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem bdry_isAnalyticSubset_interior_empty : ∀ {e : ℕ} {X : Type} [TopologicalSpace X] (A : FinHolAtlas e X) (L : LocPot X) (s : X → X → ℂ) {n : ℕ} (m : Fin n → ℕ) (W : Fin n → Set X), IsSection A L s → IsSNC A L s m W → A.IsAnalyticSubset (bdry s) ∧ interior (bdry s) = ∅ := by
   intro e X _ A L s n m W hS hSNC

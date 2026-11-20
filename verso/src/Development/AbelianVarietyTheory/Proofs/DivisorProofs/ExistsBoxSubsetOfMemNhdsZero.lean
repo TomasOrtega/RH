@@ -8,7 +8,7 @@ namespace GlobalTheory.GamMul.NearOne
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `h0 : {x : k | valuation k x < 1} ∈ nhds (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mpr ⟨1, one_ne_zero, subset_rfl⟩`. Establish `hc : Filter.Tendsto (fun x : k => x - a) (nhds a) (nhds 0)`. Establish `: Continuous (fun x : k => x - a)` using `by fun_prop`. Simplify using `using this.tendsto a`. Conclude with `hc h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eventually_valuation_sub_lt_one (a : k) : ∀ᶠ x in nhds a, valuation k (x - a) < 1 := by
   have h0 : {x : k | valuation k x < 1} ∈ nhds (0 : k) :=
@@ -19,19 +19,17 @@ theorem eventually_valuation_sub_lt_one (a : k) : ∀ᶠ x in nhds a, valuation 
   exact hc h0
 
 /- English proof (translation)
-Establish `hk : ∀ s ∈ nhds (0 : k), ∀ᶠ d in nhds (0 : k), {x : k | valuation k x ≤ valuation k d} ⊆ s`. Introduce `s hs`. Take `⟨r, hr, hrs⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp hs`. Establish `h0 : {x : k | valuation k x < r} ∈ nhds (0 : k)` using `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mpr ⟨r, hr, subset_rfl⟩`. Use `filter_upwards [h0] with d hd x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hrs (lt_of_le_of_lt hx hd)`. Establish `hS' : {x : Fin p → Fin q → k | Matrix.of x ∈ S} ∈ nhds (0 : Fin p → Fin q → k)` using `hS`. Rewrite `hS'` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, t, ht, hI⟩` from `hS'`. Establish `ht' : ∀ i, ∃ u : Fin q → Set k, (∀ j, u j ∈ nhds (0 : k)) ∧ Set.univ.pi u ⊆ t i`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `h` using `ht i`. Rewrite `h` using `[nhds_pi, Filter.mem_pi']`. Take `⟨J, u, hu, hJ⟩` from `h`. Conclude with `⟨u, hu, fun x hx => hJ fun j _ => hx j trivial⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose u hu hut using ht'`. Establish `hev : ∀ᶠ d in nhds (0 : k), valuation k (d - 0) < 1 ∧ ∀ i j, {x : k | valuation k x ≤ valuation k d} ⊆ u i j` using `(eventually_valuation_sub_lt_one 0).and (Filter.eventually_all.mpr fun i => Filter.eventually_all.mpr fun j => hk _ (hu i j))`. Establish `hne : ∃ d : k, d ≠ 0 ∧ valuation k (d - 0) < 1 ∧ ∀ i j, {x : k | valuation k x ≤ valuation k d} ⊆ u i j`. Establish `hd : (nhdsWithin (0 : k) {0}ᶜ).NeBot`. Rewrite using `[← mem_closure_iff_nhdsWithin_neBot, mem_closure_iff_nhds]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `s hs`. Take `⟨r, hr, hrs⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' k).mem_iff.mp hs`. Take `⟨r', hr', hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Take `⟨y, rfl⟩` from `ValuativeRel.valuation_surjective r`. Establish `hy : y ≠ 0` using `by simpa using hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨r' * y, hrs ?_, mul_ne_zero (by simpa using hr') hy⟩` and prove the remaining obligations. Use `show valuation k (r' * y) < valuation k y`. Rewrite using `[map_mul]`. Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.mpr hr) hr1`. Conclude with `(eventually_mem_nhdsWithin.and (hev.filter_mono (nhdsWithin_le_nhds (s := {0}ᶜ)))).exists`.
-
-Take `⟨d, hd0, hd1, hdu⟩` from `hne`. Use `⟨Units.mk0 d hd0, by simpa using hd1.le, fun X hX => hI fun i _ => hut i fun j _ => hdu i j (hX i j)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_box_subset_of_mem_nhds_zero {p q : ℕ} {S : Set (Matrix (Fin p) (Fin q) k)} (hS : S ∈ nhds 0) :
     ∃ d : kˣ, valuation k (d : k) ≤ 1 ∧ box p q d ⊆ S := by
@@ -74,27 +72,27 @@ theorem exists_box_subset_of_mem_nhds_zero {p q : ℕ} {S : Set (Matrix (Fin p) 
   refine ⟨Units.mk0 d hd0, by simpa using hd1.le, fun X hX => hI fun i _ => hut i fun j _ => hdu i j (hX i j)⟩
 
 /- English proof (translation)
-Establish `hadd : Filter.Tendsto (fun N : Matrix (Fin n) (Fin n) k => 1 + N) (nhds 0) (nhds 1)`. Establish `: Continuous (fun N : Matrix (Fin n) (Fin n) k => 1 + N)` using `by fun_prop`. Simplify using `using this.tendsto 0`. Establish `hdet : Filter.Tendsto (fun N : Matrix (Fin n) (Fin n) k => (1 + N).det) (nhds 0) (nhds 1)`. Establish `: Continuous (fun M : Matrix (Fin n) (Fin n) k => M.det)` using `continuous_id.matrix_det`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(this.tendsto 1).comp hadd`. Rewrite `h2` using `[det_one]`. Conclude with `h2`. Establish `hinv : Filter.Tendsto (fun N : Matrix (Fin n) (Fin n) k => (1 + N)⁻¹) (nhds 0) (nhds 1)`. Establish `: ContinuousAt Inv.inv (1 : Matrix (Fin n) (Fin n) k)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[det_one, Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ one_ne_zero`. Establish `h2` using `this.tendsto.comp hadd`. Rewrite `h2` using `[inv_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `hv : ∀ᶠ N : Matrix (Fin n) (Fin n) k in nhds 0, valuation k (1 + N).det = 1` using `by filter_upwards [hdet (eventually_valuation_sub_lt_one 1)] with N hN`. Establish `hN' : valuation k ((1 + N).det - 1) < 1` using `hN`. Use `Valuation.map_one_add_of_lt (valuation k) hN'` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb : ∀ᶠ N : Matrix (Fin n) (Fin n) k in nhds 0, ∀ i j, valuation k ((1 + N)⁻¹ i j) ≤ 1`. Use `Filter.eventually_all.mpr fun i => Filter.eventually_all.mpr fun j => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun M : Matrix (Fin n) (Fin n) k => M i j)` using `continuous_id.matrix_elem i j`. Use `filter_upwards [((hc.tendsto 1).comp hinv) (eventually_valuation_sub_lt_one _)] with N hN`. Establish `hN' : valuation k ((1 + N)⁻¹ i j - (1 : Matrix (Fin n) (Fin n) k) i j) < 1` using `hN`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h1 : valuation k ((1 : Matrix (Fin n) (Fin n) k) i j) ≤ 1`. Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `Valuation.map_add_le (valuation k) hN'.le h1` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hval : ∀ N : Matrix (Fin n) (Fin n) k, valuation k (1 + N).det = 1 → (toGL (1 + N)).val = 1 + N`. Introduce `N hN`. Establish `hu : IsUnit (1 + N)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hN` using `[h]`. Simplify using `at hN`. Unfold `toGL`. Rewrite using `[dif_pos hu]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGL : Filter.Tendsto (fun N : Matrix (Fin n) (Fin n) k => toGL (1 + N)) (nhds 0) (nhds 1)`. Rewrite using `[Units.isInducing_embedProduct.tendsto_nhds_iff]`. Establish `h3` using `hadd.prodMk_nhds ((MulOpposite.continuous_op.tendsto 1).comp hinv)`. Establish `e : (Units.embedProduct _ (1 : GL (Fin n) k)) = (1, MulOpposite.op 1)` using `by simp`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Tendsto.congr' ?_ h3` and prove the remaining obligations. Use `filter_upwards [hv] with N hN`. Simplify using `only [Function.comp, Units.embedProduct_apply, Matrix.coe_units_inv, hval N hN]`. Take `⟨d, hd, hS⟩` from `exists_box_subset_of_mem_nhds_zero (hv.and (hb.and (hGL hU)))`. Use `⟨d, hd, fun N hN => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨h1, h2, h3⟩` from `hS hN`. Use `⟨toGL (1 + N), hval N h1, h3, ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[GeneralLinearGroup.val_det_apply, hval N h1, h1]`. Rewrite using `[Matrix.coe_units_inv, hval N h1]`. Simplify using `using h2 i j`.
+A detailed English derivation is pending.
 -/
 theorem one_add_small_near_one (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (U : Set (GL (Fin n) k)) (hU : U ∈ nhds (1 : GL (Fin n) k)) :

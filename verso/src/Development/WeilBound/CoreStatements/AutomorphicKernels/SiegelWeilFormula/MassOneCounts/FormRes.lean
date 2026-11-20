@@ -11,7 +11,7 @@ open scoped TensorProduct Matrix
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.SiegelWeilFormula.Densx.form_res σ hCM J hJ d b B hBt v hfix htr hR1 hRmul hRsig h2 hj ϖ hϖ0 hϖ1 hϖd w s`.
+A detailed English derivation is pending.
 -/
 theorem form_res (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (J : Matrix (Fin 1) (Fin 1) E) (hJ : IsHermND σ J) (d : ℕ)
     (b : Module.Basis (Fin d) F E) (B : Matrix (Fin 1 × Fin d) (Fin 1 × Fin d) F)

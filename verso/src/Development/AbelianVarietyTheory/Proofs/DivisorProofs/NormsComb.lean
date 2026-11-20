@@ -17,11 +17,11 @@ namespace GlobalTheory.CoverNorm
 variable {F : Type} [Field F] [NumberField F] {Y : Var F} {V : Cover Y}
 
 /- English proof (translation)
-Establish `h₁` using `GlobalTheory.T.norms_tensor_power F Y V L f a l m.toNat h`. Establish `h₂` using `GlobalTheory.T.norms_dual_bundle F Y V _ _ _ _ (GlobalTheory.T.norms_tensor_power F Y V L f a l (-m).toNat h)`. Use `(GlobalTheory.T.norms_tensor_product F Y V _ _ _ _ _ _ _ _ h₁ h₂).congr (fun x => ?_) (fun σ y => ?_) (fun v e y => ?_)` and prove the remaining obligations. Break down `m with n | n` into its components or cases. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[zpow_negSucc]`. Establish `: (Int.negSucc n).toNat = 0` using `rfl`. Establish `h' : (-Int.negSucc n).toNat = n + 1` using `rfl`. Rewrite using `[this, h', pow_zero, one_mul]`. Use `Int.toNat_sub_toNat_neg m` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE : ((m.toNat : ℕ) : ℝ) - (((-m).toNat : ℕ) : ℝ) = m` using `by exact_mod_cast this`. Take the linear combination `a σ y * hE`. Use `Int.toNat_sub_toNat_neg m` as an intermediate fact. Establish `hE : ((m.toNat : ℕ) : ℝ) - (((-m).toNat : ℕ) : ℝ) = m` using `by exact_mod_cast this`. Take the linear combination `l v e y * hE`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem norms_zp {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : Norms V L f a l) (m : ℤ) :
@@ -43,11 +43,9 @@ theorem norms_zp {L : HermLB V.p} {f : Y.X → Y.Fn} {a : ∀ σ : F →+* ℂ, 
     linear_combination l v e y * hE
 
 /- English proof (translation)
-Establish `key : ∀ s : List ι, Norms V (s.foldr (fun i M => (ArInt.zp (L i) (n i)).tens M) (HermLB.triv V.p)) (fun x => (s.map fun i => f i x ^ n i).prod) (fun σ y => (s.map fun i => (n i : ℝ) * a i σ y).sum) (fun v e y => (s.map fun i => (n i : ℝ) * l i v e y).sum)`. Introduce `s`. Proceed by induction on `s with`. Consider the case `nil => exact (GlobalTheory.T.conjugate_weight_smooth_normalization F Y V).1`. Consider the case `cons i s ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [List.foldr_cons, List.map_cons, List.prod_cons, List.sum_cons]`. Conclude with `GlobalTheory.T.norms_tensor_product F Y V _ _ _ _ _ _ _ _ (norms_zp (h i) (n i)) ih`. Use `(key Finset.univ.toList).congr (fun x => ?_) (fun σ y => ?_) (fun v e y => ?_)` and prove the remaining obligations. Conclude with `Finset.prod_map_toList _ _`. Conclude with `Finset.sum_map_toList _ _`.
-
-Conclude with `Finset.sum_map_toList _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norms_comb {ι : Type} [Fintype ι] {L : ι → HermLB V.p} {f : ι → Y.X → Y.Fn} {a : ι → ∀ σ : F →+* ℂ, Pts Y σ → ℝ}
     {l : ι → ∀ v : HeightOneSpectrum (𝓞 F), Ext v → AlgPt Y → ℝ} (h : ∀ i, Norms V (L i) (f i) (a i) (l i)) (n : ι → ℤ) :

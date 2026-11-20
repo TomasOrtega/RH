@@ -39,15 +39,15 @@ def frameLat (V : HSpace E) : Submodule (𝓞 E) (Fin V.rank → E) :=
   V.L0.map (V.frame.equivFun.toLinearMap.restrictScalars (𝓞 E))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_frameLat (V : HSpace E) (v : Fin V.rank → E) :
     v ∈ frameLat V ↔ ∃ x ∈ V.L0, (fun i => V.frame.repr x i) = v := Iff.rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [← V.frame.sum_repr x, ← V.frame.sum_repr y]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, smul_eq_mul, starRingEnd_apply, HSpace.gram]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hT_eq (V : HSpace E) (x y : V.V) :
     V.hT x y = ∑ a, ∑ b, V.frame.repr y a * V.gram b a * star (V.frame.repr x b) := by
@@ -61,31 +61,31 @@ theorem hT_eq (V : HSpace E) (x y : V.V) :
   ring
 
 /- English proof (translation)
-The claim follows from `V.standardTuple_isLattice.fg.map _`.
+A detailed English derivation is pending.
 -/
 theorem frameLat_fg (V : HSpace E) : (frameLat V).FG := V.standardTuple_isLattice.fg.map _
 
 /- English proof (translation)
-Establish `h : (frameLat V : Set (Fin V.rank → E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V)` using `rfl`. Rewrite using `[h, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem frameLat_span (V : HSpace E) : Submodule.span E (frameLat V : Set (Fin V.rank → E)) = ⊤ := by
   have h : (frameLat V : Set (Fin V.rank → E)) = V.frame.equivFun.toLinearMap '' (V.L0 : Set V.V) := rfl
   rw [h, ← Submodule.map_span, V.standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-The claim follows from `LinearMap.isSymm_def.1 V.herm _ _`.
+A detailed English derivation is pending.
 -/
 theorem gram_herm (V : HSpace E) (a b : Fin V.rank) : star (V.gram b a) = V.gram a b :=
   LinearMap.isSymm_def.1 V.herm _ _
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_transpose]`. Introduce `h`. Take `⟨v, hv, h0⟩` from `Matrix.exists_mulVec_eq_zero_iff.2 h`. Apply `hv` to reduce the goal to its premises. Establish `: V.frame.equivFun.symm v = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `V.nondeg.2 _ fun x => ?_` and prove the remaining obligations. Rewrite using `[hT_eq, Finset.sum_comm]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_mul]`. Establish `hb` using `congrFun h0 b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Pi.zero_apply] at hb`. Establish `e : ∑ a, V.frame.repr (V.frame.equivFun.symm v) a * V.gram b a = 0`. Rewrite using `[← hb]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← V.frame.equivFun_apply, LinearEquiv.apply_symm_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, zero_mul]`. Conclude with `V.frame.equivFun.symm.map_eq_zero_iff.1 this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_ne (V : HSpace E) : V.gramᵀ.det ≠ 0 := by
   rw [Matrix.det_transpose]
@@ -107,15 +107,13 @@ theorem gram_det_ne (V : HSpace E) : V.gramᵀ.det ≠ 0 := by
   exact V.frame.equivFun.symm.map_eq_zero_iff.1 this
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `V.frame.equivFun.surjective v`. Establish `h1 : V.frame.equivFun x ∈ frameLat V ↔ x ∈ V.L0`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x', hx', e⟩`. Establish `: x' = x` using `V.frame.equivFun.injective e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `this ▸ hx'`. Introduce `hx`. Conclude with `⟨x, hx, rfl⟩`. Establish `h2 : x ∈ V.L0 ↔ ∀ y ∈ V.L0, V.hT y x ∈ (1 : Submodule (𝓞 E) E)` using `by conv_lhs => rw [← V.baseLattice_isUnimodular]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, h2]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Use `h _ ⟨y, hy, rfl⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT_eq]`. Conclude with `Submodule.mem_one.2 ((FractionalIdeal.mem_one_iff _).1 this)`. Introduce and unpack `h _ ⟨y, hy, rfl⟩`. Use `h y hy` as an intermediate fact. Rewrite `this` using `[hT_eq]`.
-
-Conclude with `(FractionalIdeal.mem_one_iff _).2 (Submodule.mem_one.1 this)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frameLat_dual (cm : CMData F E) (V : HSpace E) (v : Fin V.rank → E) :
     (∀ y ∈ frameLat V, (∑ a, ∑ b, v a * V.gramᵀ a b * conjEquiv cm (y b)) ∈
@@ -144,7 +142,7 @@ theorem frameLat_dual (cm : CMData F E) (V : HSpace E) (v : Fin V.rank → E) :
     exact (FractionalIdeal.mem_one_iff _).2 (Submodule.mem_one.1 this)
 
 /- English proof (translation)
-Unfold `GlobalTheory.AdLat.hermA`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [dotProduct, Matrix.mulVec, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x a * ((1 : Af F) ⊗ₜ J b a) * sigR (Af F) cm.sig (y b) = sigR (Af F) cm.sig (y b) * (((1 : Af F) ⊗ₜ J b a) * x a)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -158,9 +156,9 @@ theorem hermA_eq (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y
   ring
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (sigR (Af F) cm.sig) (g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) * JR (Af F) J * (g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) = JR (Af F) J` using `hg`. Rewrite using `[hermA_eq, hermA_eq]`. Establish `e : sigR (Af F) cm.sig ∘ ((g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)) *ᵥ y) = ((g : Matrix (Fin n) (Fin n) (GlobalTheory.AdLat.RA F E)).map (sigR (Af F) cm.sig)) *ᵥ (sigR (Af F) cm.sig ∘ y)`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec _ _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `conv_rhs => rw [← h]`. Rewrite using `[Formalism.UG.cT, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Matrix.mulVec_transpose, dotProduct_comm, dotProduct_comm (_ ∘ y), Matrix.dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermA_unitary (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     (g : GL (Fin n) (GlobalTheory.AdLat.RA F E)) (hg : g ∈ HR (Af F) cm.sig J) (x y : Fin n → GlobalTheory.AdLat.RA F E) :
@@ -179,13 +177,13 @@ theorem hermA_unitary (cm : CMData F E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
     dotProduct_comm, dotProduct_comm (_ ∘ y), Matrix.dotProduct_mulVec]
 
 /- English proof (translation)
-Use `set ψ : R ⊗[F] E →+* R' ⊗[F] E := (Algebra.TensorProduct.map φ (AlgHom.id F E)).toRingHom with hψ`. Establish `h : Formalism.UG.cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = JR R J` using `hg`. Establish `h1 : ∀ t, ψ (sigR R σ t) = sigR R' σ (ψ t)`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [hψ, sigR]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Establish `h2 : (JR R J).map ψ = JR R' J`. Use extensionality with `i j`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[hψ, JR, inclR]`. Establish `h3 : (Formalism.UG.cT (sigR R σ) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E))).map ψ = Formalism.UG.cT (sigR R' σ) ((g : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map ψ)`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, h1]`. Establish `h4` using `congrArg (fun m => m.map ψ) h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.map_mul, h2, h3] at h4`. Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 theorem bc_mem_HR (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {R R' : Type} [CommRing R] [Algebra F R]
     [CommRing R'] [Algebra F R'] (φ : R →ₐ[F] R') (g : GL (Fin n) (R ⊗[F] E)) (hg : g ∈ HR R σ J) :
@@ -217,9 +215,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.latHat GlobalTheory.AdLat.hat`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, hx, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, hx, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, hx, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latHat_eq (V : HSp D) :
     Formalism.L2.Pj.latHat V = GlobalTheory.AdLat.hat D.host.F (frameLat V : Set (Fin V.rank → D.host.E)) := by
@@ -233,13 +231,13 @@ theorem latHat_eq (V : HSp D) :
     exact ⟨a, ha, x, hx, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨a, ha, x, hx, rfl⟩` from `hw`. Use `AddSubgroup.subset_closure ⟨a, ha, b • x, V.L0.smul_mem b hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← algebraMap_smul D.host.E b x, map_smul]`. Simplify using `[halfVec, Algebra.TensorProduct.tmul_mul_tmul, Algebra.smul_def]`. Consider the case `zero`. Establish `: halfVec V b 0 = 0` using `by funext i; simp [halfVec]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add w w' _ _ h h'`. Establish `: halfVec V b (w + w') = halfVec V b w + halfVec V b w'` using `by funext i; simp [halfVec, mul_add]`. Rewrite using `[this]`. Conclude with `add_mem h h'`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `neg w _ h`. Establish `: halfVec V b (-w) = - halfVec V b w` using `by funext i; simp [halfVec]`. Rewrite using `[this]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem halfVec_mem (V : HSp D) (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.host.F ⊗[D.host.F] D.host.E)
     (hz : z ∈ Formalism.L2.Pj.latHat V) : halfVec V b z ∈ Formalism.L2.Pj.latHat V := by
@@ -261,13 +259,13 @@ theorem halfVec_mem (V : HSp D) (b : 𝓞 D.host.E) (z : Fin V.rank → Af D.hos
     rw [this]; exact neg_mem h
 
 /- English proof (translation)
-The claim follows from `bc_mem_HR _ _ (sndA D.host.F) _ (show HR (AF D.host.F) D.sp.cm.sig V.gram from k).2`.
+A detailed English derivation is pending.
 -/
 theorem finHom_mem (V : HSp D) (k : GA D V) : finHom V k ∈ HR (Af D.host.F) D.sp.cm.sig V.gram :=
   bc_mem_HR _ _ (sndA D.host.F) _ (show HR (AF D.host.F) D.sp.cm.sig V.gram from k).2
 
 /- English proof (translation)
-Introduce `k`. Rewrite using `[hK k]`. Use `and_congr_right fun _ => ⟨fun h b _ z hz => h _ (halfVec_mem V b z hz), fun h => ?_⟩` and prove the remaining obligations. Rewrite `h`, the goal using `[latHat_eq]`. Use `GlobalTheory.AdLat.trivial_level_of_half D.host.F D.host.E V.rank (frameLat V) (conjEquiv D.sp.cm) V.gramᵀ 1 (finHom V k) l.M (l.Mb.map (H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) l.Mb (frameLat_fg V) (frameLat_span V) (fun x => star_star x) (fun a b => gram_herm V a b) (gram_det_ne V) …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem kfHalf_of_level (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (l : Level H)
     (Kf : Subgroup (GA D V)) (hK : IsLevelK V l.M Kf) :
@@ -284,7 +282,7 @@ theorem kfHalf_of_level (V : HSp D) {H : ReciprocityTheory.ChartRestriction.G.Ge
     (fun b hb => ⟨H.bar b, Ideal.mem_map_of_mem _ hb, H.bar_eq b⟩) h
 
 /- English proof (translation)
-Introduce `D Q hQ j Kf hK`. Use `kfHalf_of_level _ Q.l Kf ?_` and prove the remaining obligations. Rewrite using `[hQ.2.1.1]`. Conclude with `hK`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kfHalf_record : ∀ (D : D7) (Q : Par D), Q.Pins → ∀ j, ∀ Kf : Subgroup (GA D (D.sp.W j)), IsLevelK (D.sp.W j) (D.host.g 0 * D.host.g 1) Kf → KfHalf (D.sp.W j) Kf Q.l.M (Q.l.Mb.map (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E)) := by
   intro D Q hQ j Kf hK

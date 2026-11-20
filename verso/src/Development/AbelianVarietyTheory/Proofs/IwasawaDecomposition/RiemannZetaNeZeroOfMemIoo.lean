@@ -5,11 +5,11 @@ open Complex Filter Topology
 namespace GlobalTheory.RealZeros
 
 /- English proof (translation)
-Establish `hs0 : -s ≠ 0`. Introduce `h`. Establish `: s = 0` using `neg_eq_zero.mp h`. Simplify using `[this] at hs`. Establish `key` using `norm_image_sub_le_of_norm_deriv_le_segment' (f := fun x : ℝ => (x : ℂ) ^ (-s)) (f' := fun x : ℝ => (-s) * (x : ℂ) ^ (-s - 1)) (a := a) (b := b) (C := ‖s‖ * a ^ (-s.re - 1)) (fun x hx => (hasDerivAt_ofReal_cpow_const (ne_of_gt (lt_of_lt_of_le ha hx.1)) hs0).hasDerivWithinAt) (fun …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hx0 : 0 < x` using `lt_of_lt_of_le ha hx.1`. Rewrite using `[norm_mul, norm_neg, norm_cpow_eq_rpow_re_of_pos hx0]`. Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `: (-s - 1).re = -s.re - 1` using `by simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.rpow_le_rpow_of_nonpos ha hx.1 (by linarith))`. Use `b ⟨hab, le_rfl⟩`. Rewrite `key` using `[norm_sub_rev]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem norm_cpow_sub_le {s : ℂ} (hs : 0 < s.re) {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) :
     ‖(a : ℂ) ^ (-s) - (b : ℂ) ^ (-s)‖ ≤ ‖s‖ * a ^ (-s.re - 1) * (b - a) := by
@@ -35,13 +35,13 @@ noncomputable def br (N c d k : ℕ) (s : ℂ) : ℂ :=
   ((N * k + c : ℕ) : ℂ) ^ (-s) - ((N * k + d : ℕ) : ℂ) ^ (-s)
 
 /- English proof (translation)
-Establish `h1 : k + 1 ≤ N * k + c` using `by nlinarith`. Establish `h1' : ((k + 1 : ℕ) : ℝ) ≤ ((N * k + c : ℕ) : ℝ)` using `by exact_mod_cast h1`. Establish `h0 : (1 : ℝ) ≤ ((k + 1 : ℕ) : ℝ)` using `by exact_mod_cast Nat.le_add_left 1 k`. Establish `key` using `norm_cpow_sub_le (s := s) (by linarith) (a := ((N * k + c : ℕ) : ℝ)) (b := ((N * k + d : ℕ) : ℝ)) (by linarith) (by exact_mod_cast Nat.add_le_add_left hcd _)`. Simplify using `only [ofReal_natCast] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `key.trans ?_` and prove the remaining obligations. Establish `h2 : ((N * k + c : ℕ) : ℝ) ^ (-s.re - 1) ≤ ((k + 1 : ℕ) : ℝ) ^ (-ε - 1)` using `(Real.rpow_le_rpow_of_nonpos (by linarith) h1' (by linarith)).trans (Real.rpow_le_rpow_of_exponent_le h0 (by linarith))`. Establish `h3 : ((N * k + d : ℕ) : ℝ) - ((N * k + c : ℕ) : ℝ) ≤ d`. Use `push_cast`. Establish `: (0 : ℝ) ≤ c` using `Nat.cast_nonneg c`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : (0 : ℝ) ≤ ((N * k + d : ℕ) : ℝ) - ((N * k + c : ℕ) : ℝ)`. Establish `: ((N * k + c : ℕ) : ℝ) ≤ ((N * k + d : ℕ) : ℝ)`. Conclude with `Nat.add_le_add_left hcd _` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hR0 : 0 ≤ R` using `(norm_nonneg _).trans hR.le`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_br_le {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hcd : c ≤ d) (k : ℕ) {s : ℂ} {ε R : ℝ}
     (hε : 0 < ε) (hs : ε < s.re) (hR : ‖s‖ < R) :
@@ -69,7 +69,7 @@ theorem norm_br_le {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hcd : c ≤ d) (
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `((summable_nat_add_iff (f := fun n : ℕ => (n : ℝ) ^ (-ε - 1)) 1).mpr (Real.summable_nat_rpow.mpr (by linarith))).mul_left C`.
+A detailed English derivation is pending.
 -/
 theorem summable_bound {ε : ℝ} (hε : 0 < ε) (C : ℝ) :
     Summable fun k : ℕ => C * ((k + 1 : ℕ) : ℝ) ^ (-ε - 1) :=
@@ -77,7 +77,7 @@ theorem summable_bound {ε : ℝ} (hε : 0 < ε) (C : ℝ) :
     (Real.summable_nat_rpow.mpr (by linarith))).mul_left C
 
 /- English proof (translation)
-The claim follows from `Summable.of_norm_bounded (summable_bound (half_pos hs) ((‖s‖ + 1) * d)) (fun k => norm_br_le hN hc hcd k (half_pos hs) (half_lt_self hs) (lt_add_one _))`.
+A detailed English derivation is pending.
 -/
 theorem summable_br {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hcd : c ≤ d) {s : ℂ}
     (hs : 0 < s.re) : Summable fun k => br N c d k s :=
@@ -85,9 +85,9 @@ theorem summable_br {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hcd : c ≤ d) 
     (fun k => norm_br_le hN hc hcd k (half_pos hs) (half_lt_self hs) (lt_add_one _))
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hs' : 0 < s.re` using `hs`. Establish `hU : IsOpen {z : ℂ | s.re / 2 < z.re ∧ ‖z‖ < ‖s‖ + 1}` using `(isOpen_lt continuous_const continuous_re).inter (isOpen_lt continuous_norm continuous_const)`. Establish `hd : DifferentiableOn ℂ (fun z => ∑' k, br N c d k z) {z : ℂ | s.re / 2 < z.re ∧ ‖z‖ < ‖s‖ + 1}`. Use `differentiableOn_tsum_of_summable_norm (summable_bound (half_pos hs') ((‖s‖ + 1) * d)) (fun k => ?_) hU (fun k z hz => norm_br_le hN hc hcd k (half_pos hs') hz.1 hz.2)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z _`. Establish `h1 : ((N * k + c : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Establish `h2 : ((N * k + d : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (by omega)`. Conclude with `((differentiableAt_id.neg.const_cpow (Or.inl h1)).sub (differentiableAt_id.neg.const_cpow (Or.inl h2))).differentiableWithinAt`. Conclude with `(hd.differentiableAt (hU.mem_nhds ⟨half_lt_self hs', lt_add_one _⟩)).differentiableWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableOn_tsum_br {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hcd : c ≤ d) :
     DifferentiableOn ℂ (fun s => ∑' k, br N c d k s) {s | 0 < s.re} := by
@@ -108,7 +108,7 @@ theorem differentiableOn_tsum_br {N c d : ℕ} (hN : 1 ≤ N) (hc : 1 ≤ c) (hc
   exact (hd.differentiableAt (hU.mem_nhds ⟨half_lt_self hs', lt_add_one _⟩)).differentiableWithinAt
 
 /- English proof (translation)
-Establish `h1` using `(Nat.divModEquiv N).symm.hasSum_iff.mpr h`. Use `h1.prod_fiberwise (fun k => ?_)` and prove the remaining obligations. Use `hasSum_fintype (fun j : Fin N => f (N * k + j))` as an intermediate fact. Simplify `this` using `[mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hasSum_group {f : ℕ → ℂ} {a : ℂ} (N : ℕ) [NeZero N] (h : HasSum f a) :
     HasSum (fun k => ∑ j : Fin N, f (N * k + j)) a := by
@@ -118,7 +118,7 @@ theorem hasSum_group {f : ℕ → ℂ} {a : ℂ} (N : ℕ) [NeZero N] (h : HasSu
   simpa [mul_comm] using this
 
 /- English proof (translation)
-Rewrite using `[br, ofReal_sub, ofReal_cpow (Nat.cast_nonneg _), ofReal_cpow (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem br_ofReal (N c d k : ℕ) (σ : ℝ) :
     br N c d k σ = ((((N * k + c : ℕ) : ℝ) ^ (-σ) - ((N * k + d : ℕ) : ℝ) ^ (-σ) : ℝ) : ℂ) := by
@@ -126,18 +126,18 @@ theorem br_ofReal (N c d k : ℕ) (σ : ℝ) :
   simp
 
 /- English proof (translation)
-The claim follows from `convex_halfSpace_re_gt 0`.
+A detailed English derivation is pending.
 -/
 theorem convex_re_pos : Convex ℝ {s : ℂ | 0 < s.re} := convex_halfSpace_re_gt 0
 
 /- English proof (translation)
-Establish `h0 : HasSum (fun n : ℕ => ((n + 1 : ℕ) : ℂ) ^ (-s)) (riemannZeta s)`. Establish `hsum : Summable (fun n : ℕ => 1 / ((n : ℂ) + 1) ^ s)`. Use `(summable_nat_add_iff (f := fun n : ℕ => 1 / (n : ℂ) ^ s) 1).mpr (Complex.summable_one_div_nat_cpow.mpr hs)` as an intermediate fact. Simplify using `using this`. Rewrite using `[zeta_eq_tsum_one_div_nat_add_one_cpow hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `hsum.hasSum` using `[cpow_neg]`. Establish `h1` using `hasSum_group 2 h0`. Establish `h2` using `h0.mul_left (2 * (2 : ℂ) ^ (-s))`. Establish `h3` using `h1.sub h2`. Rewrite using `[sub_mul, one_mul, ← h3.tsum_eq]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun k => ?_` and prove the remaining obligations. Establish `: ((2 * k + 2 : ℕ) : ℂ) ^ (-s) = (2 : ℂ) ^ (-s) * ((k + 1 : ℕ) : ℂ) ^ (-s)`. Use `natCast_mul_natCast_cpow 2 (k + 1) (-s)` as an intermediate fact. Rewrite using `[show 2 * k + 2 = 2 * (k + 1) by ring, Nat.cast_mul, this]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_two, br, Fin.val_zero, Fin.val_one, add_zero, add_assoc]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eta_eq_of_one_lt {s : ℂ} (hs : 1 < s.re) :
     (1 - 2 * (2 : ℂ) ^ (-s)) * riemannZeta s = ∑' k, br 2 1 2 k s := by
@@ -162,11 +162,9 @@ theorem eta_eq_of_one_lt {s : ℂ} (hs : 1 < s.re) :
   ring
 
 /- English proof (translation)
-Establish `hF : ∀ U : Set ℂ, IsOpen U → (1 : ℂ) ∉ U → AnalyticOnNhd ℂ (fun s => (1 - 2 * (2 : ℂ) ^ (-s)) * riemannZeta s) U`. Introduce `U hU h1`. Use `DifferentiableOn.analyticOnNhd (fun z hz => ?_) hU` and prove the remaining obligations. Establish `hz1 : z ≠ 1` using `fun h => h1 (h ▸ hz)`. Conclude with `(((differentiableAt_const _).sub ((differentiableAt_id.neg.const_cpow (Or.inl two_ne_zero)).const_mul _)).mul (differentiableAt_riemannZeta hz1)).differentiableWithinAt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : AnalyticOnNhd ℂ (fun s => ∑' k, br 2 1 2 k s) {s | 0 < s.re}` using `(differentiableOn_tsum_br (by norm_num) le_rfl (by norm_num)).analyticOnNhd (isOpen_lt continuous_const continuous_re)`. Establish `hAo : IsOpen ({s : ℂ | 0 < s.re} ∩ {s : ℂ | 0 < s.im})` using `(isOpen_lt continuous_const continuous_re).inter (isOpen_lt continuous_const continuous_im)`. Establish `hBo : IsOpen ({s : ℂ | 0 < s.re} ∩ {s : ℂ | s.re < 1})` using `(isOpen_lt continuous_const continuous_re).inter (isOpen_lt continuous_re continuous_const)`. Establish `hA` using `(hF _ hAo (by simp)).eqOn_of_preconnected_of_eventuallyEq (hG.mono Set.inter_subset_left) (convex_re_pos.inter (convex_halfSpace_im_gt 0)).isPreconnected (z₀ := 2 + I) (by simp) (by filter_upwards [(isOpen_lt continuous_const continuous_re).mem_nhds (show (1 : ℝ) < (2 + I : ℂ).re …`. Establish `hB` using `(hF _ hBo (by simp)).eqOn_of_preconnected_of_eventuallyEq (hG.mono Set.inter_subset_left) (convex_re_pos.inter (convex_halfSpace_re_lt 1)).isPreconnected (z₀ := 2⁻¹ + I) (by norm_num) (by filter_upwards [hAo.mem_nhds (show (2⁻¹ + I : ℂ) ∈ _ by norm_num)] with z hz using hA hz)`.
-
-Conclude with `hB ⟨hs, hs1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eta_eq_of_strip {s : ℂ} (hs : 0 < s.re) (hs1 : s.re < 1) :
     (1 - 2 * (2 : ℂ) ^ (-s)) * riemannZeta s = ∑' k, br 2 1 2 k s := by
@@ -200,9 +198,9 @@ theorem eta_eq_of_strip {s : ℂ} (hs : 0 < s.re) (hs1 : s.re < 1) :
   exact hB ⟨hs, hs1⟩
 
 /- English proof (translation)
-Introduce `h`. Establish `key` using `eta_eq_of_strip (s := σ) (by simpa using h0) (by simpa using h1)`. Establish `hsum` using `summable_br (N := 2) (c := 1) (d := 2) (by norm_num) le_rfl (by norm_num) (s := σ) (by simpa using h0)`. Simplify using `only [br_ofReal] at key hsum`. Rewrite `key` using `[h, mul_zero, ← ofReal_tsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsum` using `[summable_ofReal]`. Establish `hpos : ∀ k : ℕ, 0 < ((2 * k + 1 : ℕ) : ℝ) ^ (-σ) - ((2 * k + 2 : ℕ) : ℝ) ^ (-σ)` using `fun k => sub_pos.mpr (Real.rpow_lt_rpow_of_neg (by positivity) (by exact_mod_cast Nat.lt_succ_self _) (by linarith))`. Use `hsum.tsum_pos (fun k => (hpos k).le) 0 (hpos 0)` as an intermediate fact. Conclude with `this.ne (by exact_mod_cast key)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem riemannZeta_ne_zero_of_mem_Ioo (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
     riemannZeta σ ≠ 0 := by
@@ -220,9 +218,9 @@ theorem riemannZeta_ne_zero_of_mem_Ioo (σ : ℝ) (h0 : 0 < σ) (h1 : σ < 1) :
   exact this.ne (by exact_mod_cast key)
 
 /- English proof (translation)
-Establish `hd : ∀ x : ℝ, 0 < x → HasDerivAt (fun x : ℝ => x ^ (-σ) - (x + 2) ^ (-σ)) (-σ * x ^ (-σ - 1) - 1 * -σ * (x + 2) ^ (-σ - 1)) x` using `fun x hx => (Real.hasDerivAt_rpow_const (Or.inl hx.ne')).sub (((hasDerivAt_id x).add_const 2).rpow_const (Or.inl (by simp only [id]; linarith)))`. Use `strictAntiOn_of_deriv_neg (convex_Ioi 0) (fun x hx => (hd x hx).continuousAt.continuousWithinAt) (fun x hx => ?_)` and prove the remaining obligations. Rewrite `hx` using `[interior_Ioi]`. Establish `hx' : 0 < x` using `hx`. Rewrite using `[(hd x hx').deriv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (x + 2) ^ (-σ - 1) < x ^ (-σ - 1)` using `Real.rpow_lt_rpow_of_neg hx' (by linarith) (by linarith)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem strictAntiOn_diff {σ : ℝ} (h0 : 0 < σ) :
     StrictAntiOn (fun x : ℝ => x ^ (-σ) - (x + 2) ^ (-σ)) (Set.Ioi 0) := by
@@ -240,17 +238,17 @@ theorem strictAntiOn_diff {σ : ℝ} (h0 : 0 < σ) :
   nlinarith
 
 /- English proof (translation)
-Establish `hs0 : 0 < s.re` using `by linarith`. Rewrite using `[DirichletCharacter.LFunction_eq_LSeries χ hs, ← (summable_br (by norm_num) le_rfl (by norm_num) hs0).tsum_sub (summable_br (by norm_num) (by norm_num) (by norm_num) hs0)]`. Establish `h0 : HasSum (LSeries.term (fun n : ℕ => χ n) s) (LSeries (fun n : ℕ => χ n) s)` using `(DirichletCharacter.LSeriesSummable_of_one_lt_re χ hs).hasSum`. Rewrite using `[← (hasSum_group 8 h0).tsum_eq]`. Use `tsum_congr fun k => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : ∀ j : ℕ, LSeries.term (fun n : ℕ => χ n) s (8 * k + j) = ((ZMod.χ₈ (j : ZMod 8) : ℤ) : ℂ) * ((8 * k + j : ℕ) : ℂ) ^ (-s)`. Introduce `j`. Establish `hc : ((8 * k + j : ℕ) : ZMod 8) = (j : ZMod 8)`. Rewrite using `[Nat.cast_add, Nat.cast_mul, ZMod.natCast_self, zero_mul, zero_add]`. Rewrite using `[LSeries.term_def₀ (by rw [Nat.cast_zero, hχ]; simp), hc, hχ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ht, Fin.sum_univ_eight, br]`. Establish `e0 : ZMod.χ₈ (((0 : Fin 8) : ℕ) : ZMod 8) = 0` using `by decide`. Establish `e1 : ZMod.χ₈ (((1 : Fin 8) : ℕ) : ZMod 8) = 1` using `by decide`. Establish `e2 : ZMod.χ₈ (((2 : Fin 8) : ℕ) : ZMod 8) = 0` using `by decide`. Establish `e3 : ZMod.χ₈ (((3 : Fin 8) : ℕ) : ZMod 8) = -1` using `by decide`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : ZMod.χ₈ (((4 : Fin 8) : ℕ) : ZMod 8) = 0` using `by decide`. Establish `e5 : ZMod.χ₈ (((5 : Fin 8) : ℕ) : ZMod 8) = -1` using `by decide`. Establish `e6 : ZMod.χ₈ (((6 : Fin 8) : ℕ) : ZMod 8) = 0` using `by decide`. Establish `e7 : ZMod.χ₈ (((7 : Fin 8) : ℕ) : ZMod 8) = 1` using `by decide`. Rewrite using `[e0, e1, e2, e3, e4, e5, e6, e7]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `f1 : ((1 : Fin 8) : ℕ) = 1` using `rfl`. Establish `f3 : ((3 : Fin 8) : ℕ) = 3` using `rfl`. Establish `f5 : ((5 : Fin 8) : ℕ) = 5` using `rfl`. Establish `f7 : ((7 : Fin 8) : ℕ) = 7` using `rfl`. Rewrite using `[f1, f3, f5, f7]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Int.cast_zero, Int.cast_one, Int.cast_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem LFunction_eq_of_one_lt (χ : DirichletCharacter ℂ 8)
     (hχ : ∀ a : ZMod 8, χ a = ((ZMod.χ₈ a : ℤ) : ℂ)) {s : ℂ} (hs : 1 < s.re) :
@@ -288,17 +286,17 @@ theorem LFunction_eq_of_one_lt (χ : DirichletCharacter ℂ 8)
   ring
 
 /- English proof (translation)
-Establish `hne : χ ≠ 1`. Introduce `h`. Establish `h3` using `hχ 3`. Establish `hu : IsUnit (3 : ZMod 8)` using `by decide`. Establish `e3 : ZMod.χ₈ (3 : ZMod 8) = -1` using `by decide`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[h, MulChar.one_apply hu, e3]`. Evaluate the numerical expressions using `at h3`. Establish `ho : IsOpen {s : ℂ | 0 < s.re}` using `isOpen_lt continuous_const continuous_re`. Establish `hF : AnalyticOnNhd ℂ (DirichletCharacter.LFunction χ) {s | 0 < s.re}` using `(DirichletCharacter.differentiable_LFunction hne).differentiableOn.analyticOnNhd ho`. Establish `hG : AnalyticOnNhd ℂ (fun s => ∑' k, br 8 1 3 k s - ∑' k, br 8 5 7 k s) {s | 0 < s.re}` using `((differentiableOn_tsum_br (by norm_num) le_rfl (by norm_num)).sub (differentiableOn_tsum_br (by norm_num) (by norm_num) (by norm_num))).analyticOnNhd ho`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hF.eqOn_of_preconnected_of_eventuallyEq hG convex_re_pos.isPreconnected (z₀ := 2) (by simp) (by filter_upwards [(isOpen_lt continuous_const continuous_re).mem_nhds (show (1 : ℝ) < (2 : ℂ).re by simp)] with z hz using LFunction_eq_of_one_lt χ hχ hz)`. Establish `hs0 : 0 < (σ : ℂ).re` using `by simpa using h0`. Establish `key : DirichletCharacter.LFunction χ σ = ∑' k, br 8 1 3 k σ - ∑' k, br 8 5 7 k σ` using `hA hs0`. Establish `s1` using `summable_br (N := 8) (c := 1) (d := 3) (by norm_num) le_rfl (by norm_num) hs0`. Establish `s2` using `summable_br (N := 8) (c := 5) (d := 7) (by norm_num) (by norm_num) (by norm_num) hs0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [br_ofReal] at key s1 s2`. Rewrite `s1`, `s2` using `[summable_ofReal]`. Rewrite `key` using `[← ofReal_tsum, ← ofReal_tsum, ← ofReal_sub]`. Rewrite using `[key, ofReal_ne_zero]`. Establish `hlt : ∀ k : ℕ, ((8 * k + 5 : ℕ) : ℝ) ^ (-σ) - ((8 * k + 7 : ℕ) : ℝ) ^ (-σ) < ((8 * k + 1 : ℕ) : ℝ) ^ (-σ) - ((8 * k + 3 : ℕ) : ℝ) ^ (-σ)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Establish `hk : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Use `strictAntiOn_diff h0 (a := 8 * k + 1) (b := 8 * k + 5) (by rw [Set.mem_Ioi]; linarith) (by rw [Set.mem_Ioi]; linarith) (by linarith)` as an intermediate fact. Simplify using `only at this`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[show (8 * k + 7 : ℝ) = 8 * k + 5 + 2 by ring, show (8 * k + 3 : ℝ) = 8 * k + 1 + 2 by ring]`. Conclude with `this`. Conclude with `(sub_pos.mpr (s2.tsum_lt_tsum (i := 0) (fun k => (hlt k).le) (hlt 0) s1)).ne'`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LFunction_chi8_ne_zero (χ : DirichletCharacter ℂ 8)
     (hχ : ∀ a : ZMod 8, χ a = ((ZMod.χ₈ a : ℤ) : ℂ)) (σ : ℝ) (h0 : 0 < σ) :
@@ -342,7 +340,7 @@ theorem LFunction_chi8_ne_zero (χ : DirichletCharacter ℂ 8)
   exact (sub_pos.mpr (s2.tsum_lt_tsum (i := 0) (fun k => (hlt k).le) (hlt 0) s1)).ne'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨riemannZeta_ne_zero_of_mem_Ioo, LFunction_chi8_ne_zero⟩`.
+Supply the required witnesses or components.
 -/
 theorem no_real_zero :
     (∀ σ : ℝ, 0 < σ → σ < 1 → riemannZeta σ ≠ 0) ∧

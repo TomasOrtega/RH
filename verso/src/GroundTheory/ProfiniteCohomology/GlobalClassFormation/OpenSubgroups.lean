@@ -33,14 +33,14 @@ def fieldOf (U : OpenSubgroup K.1.fixingSubgroup) : FiniteSubfield :=
   ofOpenSubgroup (openSubgroupMap U)
 
 /- English proof (translation)
-The claim follows from `fixingSubgroup_ofOpenSubgroup (openSubgroupMap U)`.
+A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_fieldOf (U : OpenSubgroup K.1.fixingSubgroup) :
     (fieldOf U).1.fixingSubgroup = (U : Subgroup K.1.fixingSubgroup).map K.1.fixingSubgroup.subtype :=
   fixingSubgroup_ofOpenSubgroup (openSubgroupMap U)
 
 /- English proof (translation)
-Rewrite using `[fixingSubgroup_fieldOf]`. Introduce and unpack `_ ⟨g, _, rfl⟩`. Conclude with `g.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem fixingSubgroup_fieldOf_le (U : OpenSubgroup K.1.fixingSubgroup) :
     (fieldOf U).1.fixingSubgroup ≤ K.1.fixingSubgroup := by
@@ -54,7 +54,7 @@ instance fact_le_fieldOf (U : OpenSubgroup K.1.fixingSubgroup) : Fact (K ≤ fie
     rwa [InfiniteGalois.fixedField_fixingSubgroup, InfiniteGalois.fixedField_fixingSubgroup] at h⟩
 
 /- English proof (translation)
-Rewrite using `[fixingSubgroup_fieldOf, Subgroup.subgroupOf]`. Conclude with `Subgroup.comap_map_eq_self_of_injective Subtype.val_injective _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subgroupOf_fieldOf (U : OpenSubgroup K.1.fixingSubgroup) :
     (fieldOf U).1.fixingSubgroup.subgroupOf K.1.fixingSubgroup = U := by
@@ -62,7 +62,7 @@ theorem subgroupOf_fieldOf (U : OpenSubgroup K.1.fixingSubgroup) :
   exact Subgroup.comap_map_eq_self_of_injective Subtype.val_injective _
 
 /- English proof (translation)
-Establish `hle : (fieldOf V).1.fixingSubgroup ≤ (fieldOf U).1.fixingSubgroup`. Rewrite using `[fixingSubgroup_fieldOf, fixingSubgroup_fieldOf]`. Conclude with `Subgroup.map_mono h`. Establish `h'` using `IntermediateField.fixedField_antitone hle`. Rewrite `h'` using `[InfiniteGalois.fixedField_fixingSubgroup, InfiniteGalois.fixedField_fixingSubgroup]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fieldOf_le_fieldOf {U V : OpenSubgroup K.1.fixingSubgroup} (h : V ≤ U) : fieldOf U ≤ fieldOf V := by
   have hle : (fieldOf V).1.fixingSubgroup ≤ (fieldOf U).1.fixingSubgroup := by
@@ -84,13 +84,13 @@ theorem coe_openEquiv_apply (U : OpenSubgroup K.1.fixingSubgroup) (g : (U : Subg
   rfl
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_openEquiv (U : OpenSubgroup K.1.fixingSubgroup) : Continuous (openEquiv U).toMonoidHom :=
   (continuous_subtype_val.comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-The claim follows from `(continuous_subtype_val.subtype_mk _).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_openEquiv_symm (U : OpenSubgroup K.1.fixingSubgroup) :
     Continuous (openEquiv U).symm.toMonoidHom :=
@@ -109,7 +109,7 @@ def classOpenIso (U : OpenSubgroup K.1.fixingSubgroup) (n : ℕ) :
   asIso (cohomologyMapAlong (openEquiv U).symm.toMonoidHom (continuous_openEquiv_symm U) (classOpenMor U) n)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fieldOf_le_fieldOf h⟩ cohomologyResLE (classLimitRep K) (show (V : Subgroup K.1.fixingSubgroup) ≤ U from h) n ≫ (classOpenIso V n).hom = (classOpenIso U n).hom ≫ classResField (fieldOf U) (fieldOf V) n := by have : Fact (fieldOf U ≤ fieldOf V) := ⟨fieldOf_le_fieldOf h⟩ rw [class …`.
+Supply the required witnesses or components.
 -/
 theorem cohomologyResLE_classOpenIso {U V : OpenSubgroup K.1.fixingSubgroup} (h : V ≤ U) (n : ℕ) :
     haveI : Fact (fieldOf U ≤ fieldOf V) := ⟨fieldOf_le_fieldOf h⟩
@@ -122,7 +122,7 @@ theorem cohomologyResLE_classOpenIso {U V : OpenSubgroup K.1.fixingSubgroup} (h 
   exact cohomologyMapAlong_congr _ _ _ _ (MonoidHom.ext fun g => Subtype.ext (Subtype.ext rfl)) (fun _ => rfl) n
 
 /- English proof (translation)
-Use `relIndex_fixingSubgroup (fieldOf_le_fieldOf h)` as an intermediate fact. Rewrite `this` using `[fixingSubgroup_fieldOf, fixingSubgroup_fieldOf, Subgroup.relIndex_map_map_of_injective _ _ Subtype.val_injective]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_finrank_fieldOf {U V : OpenSubgroup K.1.fixingSubgroup} (h : V ≤ U) :
     letI := algebraOfLE (fieldOf_le_fieldOf h)

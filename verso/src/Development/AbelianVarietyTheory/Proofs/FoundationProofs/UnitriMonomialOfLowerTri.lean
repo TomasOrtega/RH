@@ -18,11 +18,11 @@ def single (R : Type) [CommRing R] (p : Fin r × Fin n) :
   aeval fun v => if v = p then Polynomial.X else Polynomial.C (X v)
 
 /- English proof (translation)
-Establish `h1 : (monomial m c : MvPolynomial (Fin r × Fin n) R) = monomial (m.erase p) c * X p ^ (m p)`. Rewrite using `[X_pow_eq_monomial, monomial_mul, mul_one, Finsupp.erase_add_single]`. Establish `h2 : single R p (monomial (m.erase p) c) = Polynomial.C (monomial (m.erase p) c)`. Rewrite using `[single, aeval_monomial, monomial_eq, map_mul, map_finsuppProd]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finsupp.prod_congr fun v hv => ?_` and prove the remaining obligations. Establish `: v ≠ p`. Introduce and unpack `rfl`. Simplify using `at hv`. Simplify using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h3 : single R p (X p) = Polynomial.X` using `by simp [single]`. Rewrite using `[h1, map_mul, map_pow, h2, h3, Polynomial.C_mul_X_pow_eq_monomial]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem single_monomial (p : Fin r × Fin n) (m : Fin r × Fin n →₀ ℕ) (c : R) :
     single R p (monomial m c) = Polynomial.monomial (m p) (monomial (m.erase p) c) := by
@@ -41,13 +41,13 @@ theorem single_monomial (p : Fin r × Fin n) (m : Fin r × Fin n →₀ ℕ) (c 
   rw [h1, map_mul, map_pow, h2, h3, Polynomial.C_mul_X_pow_eq_monomial]
 
 /- English proof (translation)
-Proceed by induction on `G using MvPolynomial.induction_on' with`. Consider the case `add G H hG hH => simp [hG, hH]`. Consider the case `monomial m c`. Rewrite using `[single_monomial, Polynomial.coeff_monomial, coeff_monomial]`. Distinguish the cases in `h : m = e + Finsupp.single p k`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : m p = k` using `by simp [h, he]`. Establish `h2 : m.erase p = e`. Use extensionality with `v`. Distinguish the cases in `hv : v = p`. Simplify using `[hv, he]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h, Finsupp.erase_ne hv, Finsupp.single_apply, Ne.symm hv]`. Simplify using `[h1, h2, ← h]`. Rewrite using `[if_neg h] split_ifs with h1`. Rewrite using `[coeff_monomial, if_neg]`. Introduce `h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `h` to reduce the goal to its premises. Rewrite using `[← h2, ← h1, Finsupp.erase_add_single]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_single (p : Fin r × Fin n) (e : Fin r × Fin n →₀ ℕ) (he : e p = 0) (k : ℕ)
     (G : MvPolynomial (Fin r × Fin n) R) :
@@ -74,15 +74,15 @@ theorem coeff_single (p : Fin r × Fin n) (e : Fin r × Fin n →₀ ℕ) (he : 
       · simp
 
 /- English proof (translation)
-Establish `: (Polynomial.mapRingHom (unitri R L).toRingHom).comp (rowGen R s p.1).toRingHom = (single R p).toRingHom.comp (unitri R (L ++ [p])).toRingHom`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[rowGen, single, unitri]`. Distinguish the cases in `hv : v = p`. Substitute `hv` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[rowGen, single, unitri, hs, hp.ne', hpL]`. Establish `h0 : v.1 = p.1 → unitri R L (X (s, v.2)) = 0`. Introduce `h1`. Establish `h2 : v.2.val ≠ p.2.val` using `fun h => hv (Prod.ext h1 (Fin.ext h))`. Establish `h3 : (s, v.2) ∉ L` using `fun h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hL _ h` as an intermediate fact. Simplify using `only at this`. Use linear arithmetic over natural numbers and integers. Establish `h4 : s.val ≠ v.2.val` using `by omega`. Simplify using `[unitri, h3, h4]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5 : single R p (unitri R (L ++ [p]) (X v)) = Polynomial.C (unitri R L (X v))`. Simplify using `only [unitri, aeval_X, List.mem_append, List.mem_singleton, hv, or_false]`. Apply the tactic sequence `split_ifs <;> simp [single, hv]`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, h5, rowGen, aeval_X, Polynomial.coe_mapRingHom, Polynomial.map_add, Polynomial.map_C]`. Use `split_ifs with h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h0 h1]`. Simplify using the standard rewrite rules. Conclude with `RingHom.congr_fun this F`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_rowGen (L : List (Fin r × Fin n)) (p : Fin r × Fin n) (s : Fin r) (hs : s.val = p.2.val)
     (hp : p.2.val < p.1.val) (hpL : p ∉ L) (hL : ∀ q ∈ L, q.2.val < q.1.val ∧ p.2.val ≤ q.2.val)
@@ -118,19 +118,19 @@ def letter (e : Fin r × Fin n →₀ ℕ) (p : Fin r × Fin n) : Fin r × Fin r
   (if h : p.2.val < r then ⟨p.2.val, h⟩ else p.1, p.1, e p)
 
 /- English proof (translation)
-Proceed by induction on `L using List.reverseRecOn generalizing F with`. Consider the case `nil`. Establish `h : (eval (idFrame R r n)) = constantCoeff.comp (unitri R ([] : List (Fin r × Fin n))).toRingHom`. Use `MvPolynomial.ringHom_ext (fun c => ?_) (fun v => ?_)` and prove the remaining obligations. Simplify using `[unitri]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp only [unitri, idFrame, eval_X, RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X] split_ifs <;> simp_all`. Establish `h' : e.filter (· ∈ ([] : List (Fin r × Fin n))) = 0`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[h', h]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `append_singleton L p ih`. Rewrite `h2` using `[List.pairwise_append]`. Take `⟨h2, -, h3⟩` from `h2`. Establish `hp` using `h1 p (by simp)`.
+Both sides reduce to the same expression. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpr : p.2.val < r` using `lt_trans hp p.1.2`. Establish `hL1 : ∀ q ∈ L, q.2.val < q.1.val` using `fun q hq => h1 q (by simp [hq])`. Establish `hpL : p ∉ L` using `fun h => (h3 p h p (by simp)).1 rfl`. Establish `hw : applyWord R ((L ++ [p]).map (letter e)) F = applyWord R (L.map (letter e)) (rowDiv R ⟨p.2.val, hpr⟩ p.1 (e p) F)`. Simplify using `[applyWord, letter, hpr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw, ih hL1 h2]`. Establish `hm` using `map_rowGen (R := R) L p ⟨p.2.val, hpr⟩ rfl hp hpL (fun q hq => ⟨hL1 q hq, (h3 q hq p (by simp)).2⟩) F`. Establish `hc` using `congrArg (fun P => Polynomial.coeff P (e p)) hm`. Simplify using `only [Polynomial.coeff_map] at hc`. Establish `hc' : unitri R L (rowDiv R ⟨p.2.val, hpr⟩ p.1 (e p) F) = (single R p (unitri R (L ++ [p]) F)).coeff (e p)` using `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hc', coeff_single _ _ (by simp [Finsupp.filter_apply, hpL])]`. Use `congr 1`. Use extensionality with `v`. Distinguish the cases in `hv : v = p`. Substitute `hv` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[Finsupp.filter_apply, hpL]`. Simplify using `[Finsupp.filter_apply, hv, Finsupp.single_apply, Ne.symm hv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eval_applyWord (e : Fin r × Fin n →₀ ℕ) (L : List (Fin r × Fin n))
     (h1 : ∀ q ∈ L, q.2.val < q.1.val) (h2 : L.Pairwise fun q p => q ≠ p ∧ p.2.val ≤ q.2.val)
@@ -177,18 +177,18 @@ def positions (r n : ℕ) : List (Fin r × Fin n) :=
     ((List.finRange r).filter fun a => s.val < a.val).map fun a => (a, s)
 
 /- English proof (translation)
-Take `⟨a, s⟩` from `v`. Simplify using `[positions]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem mem_positions (v : Fin r × Fin n) : v ∈ positions r n ↔ v.2.val < v.1.val := by
   obtain ⟨a, s⟩ := v
   simp [positions]
 
 /- English proof (translation)
-Rewrite using `[wordOf, positions, List.map_flatMap]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[List.map_map]`. Generalize the expression as in `List.finRange r = l`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons a l ih`. Distinguish the cases in `h : s.val < a.val`. Establish `hr : s.val < r` using `lt_trans h a.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[List.filterMap_cons, dif_pos ⟨h, hr⟩, List.filter_cons_of_pos (by simpa using h)]`. Simplify using `only [List.map_cons, ih]`. Simplify using `[letter, hr]`. Rewrite using `[List.filterMap_cons, dif_neg (fun h' => h h'.1), List.filter_cons_of_neg (by simpa using h)]`. Conclude with `ih`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wordOf_eq (e : Fin r × Fin n →₀ ℕ) : wordOf e = (positions r n).map (letter e) := by
   rw [wordOf, positions, List.map_flatMap]
@@ -208,11 +208,11 @@ theorem wordOf_eq (e : Fin r × Fin n →₀ ℕ) : wordOf e = (positions r n).m
       exact ih
 
 /- English proof (translation)
-Rewrite using `[positions, List.pairwise_flatMap]`. Prove the components needed by the constructor for the conclusion. Introduce `s _`. Rewrite using `[List.pairwise_map]`. Use `List.Pairwise.imp ?_ ((List.nodup_finRange r).filter _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b hab`. Conclude with `⟨fun h => hab (congrArg Prod.fst h), le_rfl⟩`. Rewrite using `[List.pairwise_reverse]`. Use `List.Pairwise.imp ?_ (List.pairwise_lt_finRange n)` and prove the remaining obligations. Introduce `s t hst x hx y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [List.mem_map] at hx hy`. Take `⟨a, -, rfl⟩` from `hx`. Take `⟨b, -, rfl⟩` from `hy`. Conclude with `⟨fun h => hst.ne' (congrArg Prod.snd h), hst.le⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pairwise_positions :
     (positions r n).Pairwise fun q p => q ≠ p ∧ p.2.val ≤ q.2.val := by
@@ -232,11 +232,9 @@ theorem pairwise_positions :
     exact ⟨fun h => hst.ne' (congrArg Prod.snd h), hst.le⟩
 
 /- English proof (translation)
-Establish `key : ∀ (a : Fin r) (s : Fin n), a.val ≠ s.val → m (a, s) = e (a, s)`. Introduce `a s hne`. Break down `lt_or_gt_of_ne hne with h1 | h1` into its components or cases. Rewrite using `[hm a s h1, he a s h1]`. Conclude with `h (a, s) h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨a, s⟩`. Distinguish the cases in `ha : a.val = s.val`. Establish `h1` using `hs s`. Rewrite `h1` using `[← Finset.add_sum_erase _ _ (Finset.mem_univ a), ← Finset.add_sum_erase _ _ (Finset.mem_univ a), Finset.sum_congr rfl (fun b hb => key b s (fun hb' => (Finset.ne_of_mem_erase hb) (Fin.ext (hb'.trans ha.symm))))]`. Conclude with `Nat.add_right_cancel h1`.
-
-Conclude with `key a s ha`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_filter_eq (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he : LowerTri e)
     (hs : ∀ s : Fin n, ∑ a : Fin r, m (a, s) = ∑ a : Fin r, e (a, s))
@@ -256,9 +254,9 @@ theorem eq_of_filter_eq (m e : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (he 
   · exact key a s ha
 
 /- English proof (translation)
-Rewrite using `[unitri, aeval_monomial, monomial_eq, Finsupp.prod_filter_index, Finsupp.support_filter, Finset.prod_filter]`. Use `congr 1`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : m v ≠ 0` using `Finsupp.mem_support_iff.1 hv`. Establish `h1 : ¬ v.1.val < v.2.val` using `fun h => hv' (hm v.1 v.2 h)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : v.1.val = v.2.val`. Simplify using `[mem_positions, h2]`. Establish `h3 : v.2.val < v.1.val` using `by omega`. Simplify using `[mem_positions, h2, h3]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem unitri_monomial_of_lowerTri (m : Fin r × Fin n →₀ ℕ) (hm : LowerTri m) (c : R) :
     unitri R (positions r n) (monomial m c) = monomial (m.filter (· ∈ positions r n)) c := by
@@ -275,7 +273,7 @@ theorem unitri_monomial_of_lowerTri (m : Fin r × Fin n →₀ ℕ) (hm : LowerT
     simp [mem_positions, h2, h3]
 
 /- English proof (translation)
-Simplify using `only [LowerTri, not_forall] at hm`. Take `⟨a, s, h, h0⟩` from `hm`. Rewrite using `[unitri, aeval_monomial, Finsupp.prod, Finset.prod_eq_zero (i := (a, s)) (Finsupp.mem_support_iff.2 h0), mul_zero]`. Establish `h1 : ¬ s.val < a.val` using `by omega`. Simplify using `[mem_positions, h.ne, h1, h0]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem unitri_monomial_of_not (m : Fin r × Fin n →₀ ℕ) (hm : ¬ LowerTri m) (c : R) :
     unitri R (positions r n) (monomial m c) = 0 := by
@@ -287,7 +285,7 @@ theorem unitri_monomial_of_not (m : Fin r × Fin n →₀ ℕ) (hm : ¬ LowerTri
   simp [mem_positions, h.ne, h1, h0]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finset.sum_apply, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `[colW, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_colW (m : Fin r × Fin n →₀ ℕ) (s : Fin n) :
     Finsupp.weight (colW r n) m s = ∑ a : Fin r, m (a, s) := by
@@ -296,11 +294,11 @@ theorem weight_colW (m : Fin r × Fin n →₀ ℕ) (s : Fin n) :
   simp [colW, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `R _ r n ν F e hF he hν`. Rewrite using `[wordOf_eq, eval_applyWord e _ (fun q hq => (mem_positions q).1 hq) pairwise_positions]`. Use `conv_lhs => rw [F.as_sum]`. Use `conv_rhs => rw [F.as_sum]`. Rewrite using `[map_sum, coeff_sum, coeff_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hw : Finsupp.weight (colW r n) m = ν` using `hF (mem_support_iff.1 hm)`. Distinguish the cases in `hl : LowerTri m`. Rewrite using `[unitri_monomial_of_lowerTri m hl, coeff_monomial, coeff_monomial]`. Use `if_congr ⟨fun h => by rw [h], fun h => ?_⟩ rfl rfl` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `eq_of_filter_eq m e hl he (fun s => by rw [← weight_colW, hw, hν]) fun v hv => ?_` and prove the remaining obligations. Use `DFunLike.congr_fun h v` as an intermediate fact. Simplify `this` using `[Finsupp.filter_apply, mem_positions, hv]`. Rewrite using `[unitri_monomial_of_not m hl, coeff_monomial, if_neg (fun h : m = e => hl (h ▸ he)), coeff_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffWord : Formalism.GradedWeylDivisibility.CoeffWord := by
   classical

@@ -16,19 +16,19 @@ open NumberField Formalism.L2.Pj GlobalTheory.BetaEx
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ s : Finset (Fin n → E), (∀ x ∈ s, x ∈ A) → ∃ 𝔞 : Ideal (𝓞 E), 𝔞 ≠ ⊥ ∧ detSpan (A ⊓ B) = 𝔞 • detSpan (A ⊓ B ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E))) ∧ detSpan B = 𝔞 • detSpan (B ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E))) ∧ Ideal.absNorm 𝔞 = (A ⊓ B).toAddSubgroup.re …`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro _; exact ⟨⊤, by simp, by simp, by simp, by simp⟩`. Consider the case `insert m s _ ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hs`. Take `⟨𝔞, h0, h1, h1', h2⟩` from `ih fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Establish `hsA : Submodule.span (𝓞 E) (s : Set (Fin n → E)) ≤ A` using `Submodule.span_le.2 fun x hx => hs x (Finset.mem_insert_of_mem hx)`. Establish `hm : m ∈ A` using `hs m (Finset.mem_insert_self _ _)`. Establish `hmA : Submodule.span (𝓞 E) {m} ≤ A` using `(Submodule.span_singleton_le_iff_mem _ _).2 hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∀ X : Submodule (𝓞 E) (Fin n → E), X ⊔ Submodule.span (𝓞 E) ((insert m s : Finset (Fin n → E)) : Set (Fin n → E)) = (X ⊔ Submodule.span (𝓞 E) (s : Set (Fin n → E))) ⊔ Submodule.span (𝓞 E) {m}` using `fun X => by`. Rewrite using `[Finset.coe_insert, Submodule.span_insert, sup_assoc, sup_comm (Submodule.span _ {m})]`. Rewrite using `[e, e]`. Generalize the expression as in `Submodule.span (𝓞 E) (s : Set (Fin n → E)) = T at *`. Establish `hmod : A ⊓ B ⊔ T = A ⊓ (B ⊔ T)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[sup_comm B T, inf_comm A (T ⊔ B), sup_inf_assoc_of_le B hsA, sup_comm, inf_comm]`. Establish `hc : ((B ⊔ T).comap (LinearMap.toSpanSingleton (𝓞 E) _ m) : Ideal (𝓞 E)) = (A ⊓ B ⊔ T).comap (LinearMap.toSpanSingleton (𝓞 E) _ m)`. Rewrite using `[hmod]`. Use extensionality with `a`. Conclude with `⟨fun h => ⟨A.smul_mem a hm, h⟩, fun h => h.2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Take `⟨k, hk, h⟩` from `hb`. Establish `hb1 : Bdd ((A ⊓ B ⊔ T) ⊔ Submodule.span (𝓞 E) {m})` using `⟨k, hk, fun v hv => h v (((sup_le (sup_le inf_le_left hsA) hmA).trans le_sup_right) hv)⟩`. Establish `hb2 : Bdd ((B ⊔ T) ⊔ Submodule.span (𝓞 E) {m})` using `⟨k, hk, fun v hv => h v ((sup_le (sup_le_sup_left hsA B) (hmA.trans le_sup_right)) hv)⟩`. Use `⟨𝔞 * ((A ⊓ B ⊔ T).comap (LinearMap.toSpanSingleton (𝓞 E) _ m) : Ideal (𝓞 E)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `mul_ne_zero h0 ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, ham⟩` from `ht m hm`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨a, (le_sup_left : A ⊓ B ≤ A ⊓ B ⊔ T) ⟨A.smul_mem a hm, ham⟩, ha⟩`. Rewrite using `[h1, Submodule.mul_smul, ← detSpan_cyclic _ m hb1]`. Rewrite using `[h1', Submodule.mul_smul, ← hc, ← detSpan_cyclic _ m hb2]`. Rewrite using `[map_mul, h2, index_cyclic]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `AddSubgroup.relIndex_mul_relIndex _ _ _ (Submodule.toAddSubgroup_mono le_sup_left) (Submodule.toAddSubgroup_mono le_sup_left)`. Take `⟨s, rfl⟩` from `hA`. Use `key s fun x hx => Submodule.subset_span hx` as an intermediate fact. Rewrite `this` using `[sup_eq_right.2 inf_le_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_index_ideal_pair (A B : Submodule (𝓞 E) (Fin n → E)) (hA : A.FG) (hb : Bdd (B ⊔ A))
     (ht : ∀ m ∈ A, ∃ a : 𝓞 E, a ≠ 0 ∧ a • m ∈ B) :
@@ -83,9 +83,7 @@ theorem exists_index_ideal_pair (A B : Submodule (𝓞 E) (Fin n → E)) (hA : A
   rwa [sup_eq_right.2 inf_le_left] at this
 
 /- English proof (translation)
-Take `⟨k, hk, h⟩` from `hb`. Establish `hs : (stdLat E n).FG` using `Submodule.fg_pi fun _ => by`. Rewrite using `[Submodule.one_eq_span]`. Conclude with `Submodule.fg_span_singleton _`. Apply `Submodule.fg_of_fg_map_injective (LinearMap.lsmul (𝓞 E) (Fin n → E) k) (fun x y hxy => smul_right_injective _ hk hxy)` to reduce the goal to its premises.
-
-Conclude with `hs.of_le (by rintro _ ⟨v, hv, rfl⟩; exact h v hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem fg_of_bdd {M : Submodule (𝓞 E) (Fin n → E)} (hb : Bdd M) : M.FG := by
   obtain ⟨k, hk, h⟩ := hb
@@ -97,9 +95,7 @@ theorem fg_of_bdd {M : Submodule (𝓞 E) (Fin n → E)} (hb : Bdd M) : M.FG := 
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `choose b hb using fun i j => Submodule.mem_one.1 (hv i j)`. Use `Submodule.mem_one.2 ⟨(Matrix.of b).det, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`.
-
-Conclude with `hb i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem det_mem_one (v : Matrix (Fin n) (Fin n) E) (hv : ∀ i j, v i j ∈ (1 : Submodule (𝓞 E) E)) :
     v.det ∈ (1 : Submodule (𝓞 E) E) := by
@@ -112,7 +108,7 @@ theorem det_mem_one (v : Matrix (Fin n) (Fin n) E) (hv : ∀ i j, v i j ∈ (1 :
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `(mem_std _).2 fun j => by by_cases h : j = i · exact ⟨1, by simp [h]⟩ · exact ⟨0, by simp [h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_std (i : Fin n) : (Pi.single i 1 : Fin n → E) ∈ stdLat E n := (mem_std _).2 fun j => by
   by_cases h : j = i
@@ -121,9 +117,9 @@ theorem single_mem_std (i : Fin n) : (Pi.single i 1 : Fin n → E) ∈ stdLat E 
 
 omit [NumberField E] in
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Submodule.span_le.2 fun d hd => ?_` and prove the remaining obligations. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ d).1 hd`. Conclude with `det_mem_one v fun i j => hv i j trivial`. Rewrite using `[Submodule.one_le, ← Matrix.det_one (n := Fin n)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `det_mem _ fun i => ?_` and prove the remaining obligations. Use `single_mem_std (E := E) i using 1` and compare the differences between its conclusion and the goal. Use extensionality with `j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem detSpan_std : detSpan (stdLat E n) = 1 := by
   apply le_antisymm
@@ -144,9 +140,9 @@ def bdual (S : Submodule (𝓞 E) (Fin n → E)) : Submodule (𝓞 E) (Fin n →
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[detSpan, detSpan, Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Take `⟨w, hw, rfl⟩` from `(mem_detSet _ _).1 hx`. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ _).1 hy`. Express the relevant statement in the definitionally equal form `w.det * v.det ∈ (1 : Submodule (𝓞 E) E)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← Matrix.det_transpose v, ← Matrix.det_mul]`. Conclude with `det_mem_one _ fun i j => hw i _ (hv j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detSpan_bdual_mul_le (S : Submodule (𝓞 E) (Fin n → E)) : detSpan (bdual S) * detSpan S ≤ 1 := by
   rw [detSpan, detSpan, Submodule.span_mul_span, Submodule.span_le]
@@ -160,27 +156,25 @@ theorem detSpan_bdual_mul_le (S : Submodule (𝓞 E) (Fin n → E)) : detSpan (b
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `h1 : (1 : E) ∈ J • detSpan S` using `by rw [hJ]; exact Submodule.one_le.1 le_rfl`. Establish `hint : ∀ y ∈ J, ∀ d ∈ detSpan S, y • d ∈ (1 : Submodule (𝓞 E) E)` using `fun y hy d hd => hJ ▸ Submodule.smul_mem_smul hy hd`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `: ∀ z ∈ J • detSpan S, x * z ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) J`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz`. Use `Submodule.smul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `y hy d hd`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (detSpan_bdual_mul_le S (Submodule.mul_mem_mul hx hd))`. Use `⟨y * b, J.mul_mem_right b hy, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.linearMap_apply, map_mul, hb, mul_smul_comm, Algebra.smul_def]`. Introduce `a b ha hb`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`. Simplify using `using this 1 h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `K : Ideal (𝓞 E)` to `(detSpan S * detSpan (bdual S)).comap (Algebra.linearMap (𝓞 E) E)`. Establish `h2 : J • detSpan S ≤ Submodule.map (Algebra.linearMap (𝓞 E) E) K.radical`. Use `Submodule.smul_le.2 fun y hy d hd => ?_` and prove the remaining obligations. Establish `: detSpan S ≤ (Submodule.map (Algebra.linearMap (𝓞 E) E) K.radical).comap (LinearMap.lsmul (𝓞 E) E y)`. Use `Submodule.span_le.2 fun d hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv, rfl⟩` from `(mem_detSet _ d).1 hd`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hint y hy _ (det_mem v hv))`. Use `⟨b, ⟨n, ?_⟩, hb⟩` and prove the remaining obligations. Establish `hw : ∀ i, ((y : E) • v.adjugate.transpose) i ∈ bdual S`. Introduce `i m hm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ((y : E) • v.adjugate.transpose) i ⬝ᵥ m = y • (v.updateRow i m).det`. Rewrite using `[← Matrix.cramer_transpose_apply, Matrix.cramer_eq_adjugate_mulVec, ← Matrix.adjugate_transpose]`. Express the relevant statement in the definitionally equal form `((y : E) • v.adjugate.transpose i) ⬝ᵥ m = _`. Rewrite using `[smul_dotProduct]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `hint y hy _ (det_mem _ (row_update_mem v hv i m hm))`. Establish `h3` using `Submodule.mul_mem_mul (det_mem v hv) (det_mem _ hw)`. Express the relevant statement in the definitionally equal form `algebraMap (𝓞 E) E (b ^ n) ∈ detSpan S * detSpan (bdual S)`. Use `h3 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[map_pow, hb, Matrix.det_smul, Matrix.det_transpose, mul_left_comm, ← Matrix.det_mul, Matrix.mul_adjugate, Matrix.det_smul, Matrix.det_one, mul_one, Fintype.card_fin, ← mul_pow]`. Both sides reduce to the same expression. Conclude with `this hd`. Take `⟨b, hb, hb1⟩` from `h2 h1`. Take `rfl : b = 1` from `RingOfIntegers.ext (by simpa using hb1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨k, hk⟩` from `hb`. Establish `h4 : (1 : E) ∈ detSpan S * detSpan (bdual S)` using `by simpa [K] using hk`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `: ∀ z ∈ detSpan S * detSpan (bdual S), y • z ∈ detSpan (bdual S)`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `d hd c hc`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hint y hy d hd)`. Rewrite using `[← smul_mul_assoc, ← hb, ← Algebra.smul_def]`. Conclude with `Submodule.smul_mem _ b hc`.
-
-Introduce `a b ha hb`. Rewrite using `[smul_add]`. Conclude with `add_mem ha hb`. Simplify `this 1 h4` using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem detSpan_bdual (S : Submodule (𝓞 E) (Fin n → E)) (J : Ideal (𝓞 E)) (hJ : J • detSpan S = 1) :
     detSpan (bdual S) = Submodule.map (Algebra.linearMap (𝓞 E) E) J := by
@@ -243,15 +237,13 @@ theorem detSpan_bdual (S : Submodule (𝓞 E) (Fin n → E)) (J : Ideal (𝓞 E)
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `e : ∀ v : Matrix (Fin n) (Fin n) E, (Matrix.of fun i => h.mulVec (v i)).det = h.det * v.det` using `fun v => by`. Establish `: (Matrix.of fun i => h.mulVec (v i)) = v * h.transpose`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[this, Matrix.det_mul, Matrix.det_transpose, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[detSpan, detSpan, Submodule.map_span]`. Use `congr 1`. Use extensionality with `d`. Prove the components needed by the constructor for the conclusion. Introduce `hd`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, rfl⟩` from `(mem_detSet _ d).1 hd`. Use `choose v hv hvw using hw`. Use `⟨(Matrix.of v).det, (mem_detSet _ _).2 ⟨_, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `h.det * _ = _`. Rewrite using `[← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Conclude with `congrFun (hvw i) j`. Introduce and unpack `⟨_, hd, rfl⟩`. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ _).1 hd`.
-
-Conclude with `(mem_detSet _ _).2 ⟨Matrix.of fun i => h.mulVec (v i), fun i => ⟨v i, hv i, rfl⟩, (e v).symm⟩`.
+By extensionality, compare the relevant components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem detSpan_map (h : Matrix (Fin n) (Fin n) E) (M : Submodule (𝓞 E) (Fin n → E)) :
     detSpan (M.map ((Matrix.mulVecLin h).restrictScalars (𝓞 E))) =
@@ -281,11 +273,11 @@ theorem detSpan_map (h : Matrix (Fin n) (Fin n) E) (M : Submodule (𝓞 E) (Fin 
 variable [IsCMField E]
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem d hd`. Take `⟨v, hv, rfl⟩` from `(mem_detSet _ d).1 hd`. Rewrite using `[AlgEquiv.map_det]`. Conclude with `det_mem _ fun i => h _ (hv i)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul b x _ hx`. Establish `: IsCMField.complexConj E (b • x) = IsCMField.ringOfIntegersComplexConj E b • IsCMField.complexConj E x`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsCMField.complexConj E ((b : E) * x) = (IsCMField.ringOfIntegersComplexConj E b : E) * _`. Rewrite using `[map_mul, IsCMField.coe_ringOfIntegersComplexConj]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_detSpan {M M' : Submodule (𝓞 E) (Fin n → E)}
     (h : ∀ v ∈ M, (fun j => IsCMField.complexConj E (v j)) ∈ M') {x : E} (hx : x ∈ detSpan M) :
@@ -304,13 +296,13 @@ theorem conj_mem_detSpan {M M' : Submodule (𝓞 E) (Fin n → E)}
     rw [this]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ w hw`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hw`. Rewrite using `[dotProduct_add]`. Use `add_mem (Submodule.sum_mem _ fun j _ => ?_) (Submodule.mem_one.2 ((hΛ v).1 h1 b hb))` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `(mem_std _).1 h2 j`. Take `⟨y, hy⟩` from `(mem_std _).1 ha j`. Use `Submodule.mem_one.2 ⟨IsCMField.ringOfIntegersComplexConj E x * y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = IsCMField.complexConj E (v j) * a j`. Rewrite using `[← hx, ← hy, ← IsCMField.coe_ringOfIntegersComplexConj, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `⟨(hΛ v).2 fun w hw => Submodule.mem_one.1 (h w (Submodule.mem_sup_right hw)), (mem_std _).2 fun j => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (h _ (Submodule.mem_sup_left (single_mem_std j)))`. Rewrite `hb` using `[dotProduct_single, mul_one]`. Use `⟨IsCMField.ringOfIntegersComplexConj E b, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E (algebraMap (𝓞 E) E b) = _`. Rewrite using `[hb, IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_Ln_iff (Λ : GenLat E n) (hΛ : Λ.Unimod) (v : Fin n → E) :
     v ∈ Λ.Ln ↔ (fun j => IsCMField.complexConj E (v j)) ∈ bdual (stdLat E n ⊔ Λ.La) := by
@@ -334,17 +326,15 @@ theorem mem_Ln_iff (Λ : GenLat E n) (hΛ : Λ.Unimod) (v : Fin n → E) :
     rw [hb, IsCMField.complexConj_apply_apply]
 
 /- English proof (translation)
-Establish `hc : ∀ a : 𝓞 E, a ∈ GlobalTheory.SW.conjI J ↔ IsCMField.ringOfIntegersComplexConj E a ∈ J`. Introduce `a`. Prove the components needed by the constructor for the conclusion. Introduce `ha`. Establish `: GlobalTheory.SW.conjI J ≤ J.comap (IsCMField.ringOfIntegersComplexConj E)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `a ⟨b, hb, e⟩`. Establish `: IsCMField.ringOfIntegersComplexConj E a = b` using `RingOfIntegers.ext (by`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj, e]`. Conclude with `IsCMField.complexConj_apply_apply E _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsCMField.ringOfIntegersComplexConj E a ∈ J`. Rewrite using `[this]` and apply the resulting hypothesis. Conclude with `this ha`. Introduce `ha`. Use `Ideal.subset_span ⟨_, ha, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Conclude with `(IsCMField.complexConj_apply_apply E _).symm`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨_, (hc a).1 ha, IsCMField.coe_ringOfIntegersComplexConj E a⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨b, hb, e⟩`. Establish `e' : ((IsCMField.ringOfIntegersComplexConj E b : 𝓞 E) : E) = x`. Rewrite using `[IsCMField.coe_ringOfIntegersComplexConj]`. Express the relevant statement in the definitionally equal form `IsCMField.complexConj E (Algebra.linearMap (𝓞 E) E b) = _`. Rewrite using `[e, IsCMField.complexConj_apply_apply]`.
-
-Use `⟨IsCMField.ringOfIntegersComplexConj E b, Ideal.subset_span ⟨b, hb, ?_⟩, e'⟩` and prove the remaining obligations. Conclude with `IsCMField.coe_ringOfIntegersComplexConj E b`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_map_conjI (J : Ideal (𝓞 E)) (x : E) :
     x ∈ Submodule.map (Algebra.linearMap (𝓞 E) E) (GlobalTheory.SW.conjI J) ↔
@@ -378,13 +368,13 @@ theorem mem_map_conjI (J : Ideal (𝓞 E)) (x : E) :
     exact IsCMField.coe_ringOfIntegersComplexConj E b
 
 /- English proof (translation)
-Establish `hb` using `bdd_of_unimod Λ hΛ`. Establish `hb' : Bdd (stdLat E n ⊔ Λ.La)`. Take `⟨k, hk, h⟩` from `hb`. Use `⟨k, hk, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[smul_add]`. Conclude with `add_mem (Submodule.smul_mem _ k ha) (h b hb)`. Take `⟨J, h0, h1, h2, h3⟩` from `exists_index_ideal_pair Λ.La (stdLat E n) (fg_of_bdd hb) hb' fun m _ => exists_smul_std m`. Use `⟨J, h0, h3, h1, ?_⟩` and prove the remaining obligations. Establish `h4` using `detSpan_bdual _ J (h2.symm.trans detSpan_std)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[mem_map_conjI, ← h4]`. Use `⟨conj_mem_detSpan fun v hv => (mem_Ln_iff Λ hΛ v).1 hv, fun hx => ?_⟩` and prove the remaining obligations. Rewrite using `[← IsCMField.complexConj_apply_apply E x]`. Use `conj_mem_detSpan (fun v hv => (mem_Ln_iff Λ hΛ _).2 ?_) hx` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hv` using `only [IsCMField.complexConj_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_detIdeal (Λ : GenLat E n) (hΛ : Λ.Unimod) :
     ∃ J : Ideal (𝓞 E), J ≠ ⊥ ∧
@@ -423,7 +413,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Dict GlobalTheory.Phase GlobalTheory.IndefiniteRowSideFullHecke.UnitaryAdjointCongruence
 
 /- English proof (translation)
-Introduce `E _ _ _ n Λ hΛ`. Take `⟨J, h0, h1, h2, h3⟩` from `GlobalTheory.DetIdeal.exists_detIdeal Λ hΛ`. Conclude with `⟨J, h0, h1, h2, h3, fun h => GlobalTheory.DetIdeal.detSpan_map h Λ.La⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.DetIdeal.detIdeal_selfDual : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (Λ : GenLat E n), Λ.Unimod → ∃ J : Ideal (𝓞 E), J ≠ ⊥ ∧ Ideal.absNorm J = (Λ.Ln.toAddSubgroup.addSubgroupOf Λ.La.toAddSubgroup).index ∧ Submodule.span (𝓞 E) (detSet Λ.Ln) = J • Submodule.span (𝓞 E) (detSet Λ.La) ∧ Submodule.span (𝓞 E) (detSet Λ.Ln) = Submodule.map (Algebra.linearMap (𝓞 E) E) (conjI J) ∧ ∀ h : Matrix (Fin n) (Fin n) E, Submodule.span (𝓞 E) (detSet (actLat h Λ).La) = Submodule.map (LinearMap.mulLeft (𝓞 E) h.det) (Submodule.span (𝓞 E) (detSet Λ.La)) := by
   intro E _ _ _ n Λ hΛ

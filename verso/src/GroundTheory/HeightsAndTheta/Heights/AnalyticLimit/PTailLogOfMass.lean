@@ -14,7 +14,7 @@ noncomputable section
 namespace TailLogOfMass
 
 /- English proof (translation)
-Establish `hs` using `summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) (D + 1) (r := 1 / 2) (by norm_num)`. Establish `h2` using `((summable_nat_add_iff 2).2 hs).mul_left 4`. Use `h2.congr fun n => ?_` and prove the remaining obligations. Use `push_cast`. Rewrite using `[one_div, inv_pow, pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,11 +28,11 @@ theorem summable_shell (D : ℕ) : Summable fun k : ℕ => ((k : ℝ) + 2) ^ (D 
   ring
 
 /- English proof (translation)
-Establish `hRpos : 0 < R` using `lt_of_lt_of_le (Real.exp_pos 1) hR`. Establish `hL : 1 ≤ Real.log R`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) hR`. Take `⟨k, hk1, hk2⟩` from `exists_nat_pow_near (x := s / R) (y := (2 : ℝ)) ((one_le_div hRpos).2 hs) one_lt_two`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, (le_div_iff₀ hRpos).1 hk1, ?_⟩` and prove the remaining obligations. Establish `hspos : 0 < s` using `lt_of_lt_of_le hRpos hs`. Establish `h1 : s < 2 ^ (k + 1) * R` using `(div_lt_iff₀ hRpos).1 hk2`. Establish `h2 : Real.log s ≤ Real.log (2 ^ (k + 1) * R)` using `Real.log_le_log hspos h1.le`. Rewrite `h2` using `[Real.log_mul (by positivity) hRpos.ne', Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Move the coercions through the operations in `at h2`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl2 (by positivity : (0 : ℝ) ≤ (k : ℝ) + 1), mul_le_mul_of_nonneg_left hL (by positivity : (0 : ℝ) ≤ (k : ℝ) + 1)]`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem shell_exists {R s : ℝ} (hR : Real.exp 1 ≤ R) (hs : R ≤ s) :
     ∃ k : ℕ, 2 ^ k * R ≤ s ∧ Real.log s ≤ ((k : ℝ) + 2) * Real.log R := by
@@ -55,15 +55,13 @@ variable {D : ℕ} {X : Type} [TopologicalSpace X] {A : FinHolAtlas D X} {Yo : S
   {th : LocPot X} {u : Fin D → X → ℝ}
 
 /- English proof (translation)
-Use `set U := (A.chart k).target ∩ (A.chart k).symm ⁻¹' Yo with hUdef`. Establish `hU : IsOpen U` using `(A.chart k).isOpen_inter_preimage_symm hYo`. Establish `hF : ContinuousOn (fun y => r ((A.chart k).symm y)) U` using `hr.comp ((A.chart k).continuousOn_symm.mono inter_subset_left) fun y hy => hy.2`. Use `set Ms := U ∩ (fun y => r ((A.chart k).symm y)) ⁻¹' Ici R with hMs`. Establish `hM : MeasurableSet Ms`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho` using `hF.isOpen_inter_preimage hU (isOpen_Iio (a := R))`. Establish `e : Ms = U \ (U ∩ (fun y => r ((A.chart k).symm y)) ⁻¹' Iio R)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, hge⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hu, fun hm => (not_le.2 (show r ((A.chart k).symm y) < R from hm.2)) (show R ≤ r ((A.chart k).symm y) from hge)⟩`. Introduce and unpack `⟨hu, hn⟩`. Conclude with `⟨hu, show R ≤ r ((A.chart k).symm y) from not_lt.1 fun hlt => hn ⟨hu, hlt⟩⟩`. Rewrite using `[e]`. Conclude with `hU.measurableSet.diff ho.measurableSet`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : ContinuousOn (fun y => Real.log (r ((A.chart k).symm y))) Ms` using `(hF.mono inter_subset_left).log fun y hy => by`. Establish `: R ≤ r ((A.chart k).symm y)` using `hy.2`. Conclude with `(by linarith : (0 : ℝ) < _).ne'`. Establish `hcongr : (fun y => (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart k).symm y)) =ᵐ[volume.restrict (A.chart k).target] Ms.indicator fun y => Real.log (r ((A.chart k).symm y))`. Use `ae_restrict_of_forall_mem (A.chart k).open_target.measurableSet fun y hyt => ?_` and prove the remaining obligations.
-
-Use `show (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart k).symm y) = _`. Distinguish the cases in `hc : (A.chart k).symm y ∈ tail Yo r R`. Rewrite using `[indicator_of_mem hc, indicator_of_mem (show y ∈ Ms from ⟨⟨hyt, hc.1⟩, hc.2⟩)]`. Rewrite using `[indicator_of_notMem hc, indicator_of_notMem (show y ∉ Ms from fun hm => hc ⟨hm.1.2, hm.2⟩)]`. Conclude with `((aestronglyMeasurable_indicator_iff hM).2 (hlog.aestronglyMeasurable hM)).congr hcongr.symm`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logTail_aesm (hYo : IsOpen Yo) (hr : ContinuousOn r Yo) (R : ℝ) (hR : 0 < R)
     (k : Fin A.n) :
@@ -104,9 +102,9 @@ theorem logTail_aesm (hYo : IsOpen Yo) (hr : ContinuousOn r Yo) (R : ℝ) (hR : 
     hcongr.symm
 
 /- English proof (translation)
-Establish `hd : AEStronglyMeasurable (fun y => (tail Yo r (Real.exp 1)).indicator 1 ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y) (volume.restrict (A.chart j).target)` using `((locallyIntegrableOn_iff (A.chart j).open_target.isLocallyClosed).2 fun K hK hKc => hT0 j K hK hKc).aestronglyMeasurable`. Use `((logTail_aesm hYo hr R hR j).mul hd).congr (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Use `show (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart j).symm y) * ((tail Yo r (Real.exp 1)).indicator 1 ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y) = (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart j).symm y) * locDens A (fun i => pot …`. Distinguish the cases in `hy : (A.chart j).symm y ∈ Yo`. Rewrite using `[indicator_of_mem (show (A.chart j).symm y ∈ tail Yo r (Real.exp 1) from ⟨hy, hre _ hy⟩)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[indicator_of_notMem (show (A.chart j).symm y ∉ tail Yo r R from fun h => hy h.1)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem logTail_dens_aesm (hYo : IsOpen Yo) (hr : ContinuousOn r Yo)
     (hre : ∀ x ∈ Yo, Real.exp 1 ≤ r x)
@@ -129,29 +127,27 @@ theorem logTail_dens_aesm (hYo : IsOpen Yo) (hr : ContinuousOn r Yo)
     simp
 
 /- English proof (translation)
-Establish `hRpos : 0 < R` using `lt_of_lt_of_le (Real.exp_pos 1) hR`. Establish `hL : 1 ≤ Real.log R`. Rewrite using `[← Real.log_exp 1]`. Conclude with `Real.log_le_log (Real.exp_pos 1) hR`. Establish `hk2 : ∀ k : ℕ, Real.exp 1 ≤ 2 ^ k * R` using `fun k => hR.trans (le_mul_of_one_le_left hRpos.le (one_le_pow₀ one_le_two))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ k : ℕ, ∑ i, ∫⁻ z in (A.chart i).target, ENNReal.ofReal ((ReciprocityTheory.AnForm.M.existsPartition A).some.χ i ((A.chart i).symm z) * (tail Yo r (2 ^ k * R)).indicator 1 ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) = ENNReal.ofReal (mInt A (fun i => p …` using `fun k => sum_lintegral_eq_mInt hYo hth hu hnn _ (fun x => Set.indicator_nonneg (fun _ _ => zero_le_one) x) (fun x hx => indicator_of_notMem (fun h => hx h.1) _) (hT _ (hk2 k)).1`. Establish `hW : ∀ (k : ℕ) (i : Fin A.n), IntegrableOn (fun z => (ReciprocityTheory.AnForm.M.existsPartition A).some.χ i ((A.chart i).symm z) * (tail Yo r (2 ^ k * R)).indicator 1 ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) (A.chart i).target` using `fun k i => ReciprocityTheory.AnForm.M.integrableOn_weight A _ _ _ (hT _ (hk2 k)).1 i`. Generalize the expression as in `(ReciprocityTheory.AnForm.M.existsPartition A).some = P at hS hW ⊢`. Establish `hpt : ∀ i, ∀ z ∈ (A.chart i).target, ENNReal.ofReal (P.χ i ((A.chart i).symm z) * (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) ≤ ∑' k : ℕ, ENNReal.ofReal (((k : ℝ) + 2) * Real.log R) * ENNReal.ofReal (P.χ i (( …`. Introduce `i z hz`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : (A.chart i).symm z ∈ tail Yo r R`. Take `⟨k, hk1, hk2'⟩` from `shell_exists hR hx.2`. Establish `hw : 0 ≤ P.χ i ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z` using `mul_nonneg (P.nonneg i _) (locDens_nonneg_on hYo hth hu hnn i hz hx.1)`. Use `le_trans ?_ (ENNReal.le_tsum k)` and prove the remaining obligations. Rewrite using `[indicator_of_mem hx, indicator_of_mem (show (A.chart i).symm z ∈ tail Yo r (2 ^ k * R) from ⟨hx.1, hk1⟩), ← ENNReal.ofReal_mul (by positivity)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Simplify using `only [Pi.one_apply, mul_one]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ ((k : ℝ) + 2) * Real.log R * (P.χ i ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) := mul_le_mul_of_nonneg_right hk2' hw`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = _ := by ring`. Rewrite using `[indicator_of_notMem hx]`. Simplify using the standard rewrite rules. Establish `hchart : ∀ i, ∫⁻ z in (A.chart i).target, ENNReal.ofReal (P.χ i ((A.chart i).symm z) * (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart i).symm z) * locDens A (fun i => potForm th (u i)) i z) ≤ ∑' k : ℕ, ENNReal.ofReal (((k : ℝ) + 2) * Real.log R) * ∫⁻ z in (A.chart i) …`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`. Conclude with `lintegral_const_mul' _ _ ENNReal.ofReal_ne_top`. Establish `hshell : ∀ k : ℕ, ENNReal.ofReal (((k : ℝ) + 2) * Real.log R) * ENNReal.ofReal (mInt A (fun i => potForm th (u i)) ((tail Yo r (2 ^ k * R)).indicator 1)) ≤ ENNReal.ofReal (CE * Real.log R ^ (D + 1) / R * (((k : ℝ) + 2) ^ (D + 1) / 2 ^ k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Establish `hc : 0 ≤ ((k : ℝ) + 2) * Real.log R` using `by positivity`. Rewrite using `[← ENNReal.ofReal_mul hc]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hm` using `(hT _ (hk2 k)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hlog0 : 0 ≤ Real.log (2 ^ k * R)` using `Real.log_nonneg (by`. Use `hk2 k` as an intermediate fact. Combine the linear relations using `[Real.add_one_le_exp (1 : ℝ)])`. Establish `hlogk : Real.log (2 ^ k * R) ≤ ((k : ℝ) + 2) * Real.log R`. Rewrite using `[Real.log_mul (by positivity) hRpos.ne', Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : Real.log 2 ≤ 1` using `by have := Real.log_two_lt_d9; linarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hl2 (Nat.cast_nonneg k : (0 : ℝ) ≤ k)]`. Establish `hpow` using `pow_le_pow_left₀ hlog0 hlogk D`. Establish `h2kR : 0 < 2 ^ k * R` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Summable.tsum_finsetSum (fun _ _ => ENNReal.summable)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k`. Rewrite using `[← Finset.mul_sum, hS k]`. Use `_ ≤ ∑' k : ℕ, ENNReal.ofReal (CE * Real.log R ^ (D + 1) / R * (((k : ℝ) + 2) ^ (D + 1) / 2 ^ k)) := ENNReal.tsum_le_tsum hshell`. Use `_ = ENNReal.ofReal (shellConst D * CE * Real.log R ^ (D + 1) / R) := by`.
-
-Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun k => by positivity) ((summable_shell D).mul_left _), tsum_mul_left, shellConst]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_lintegral_logTail_le [CompactSpace X] [T2Space X] (hYo : IsOpen Yo)
     (hth : IsPotential A th)
@@ -271,21 +267,19 @@ end TailLogOfMass
 open TailLogOfMass in
 
 /- English proof (translation)
-Introduce `X _ _ _ D A Yo r th u hYo hr hre hth hu hnn CE hT`. Establish `he` using `Real.exp_pos 1`. Establish `hoffT : ∀ R : ℝ, ∀ x, x ∉ Yo → (tail Yo r R).indicator (fun x => Real.log (r x)) x = 0` using `fun R x hx => indicator_of_notMem (fun h => hx h.1) _`. Establish `hCE : 0 ≤ CE`. Establish `h1` using `(hT _ le_rfl).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `mInt_nonneg_of hYo hth hu hnn ((tail Yo r (Real.exp 1)).indicator 1) (fun x => Set.indicator_nonneg (fun _ _ => zero_le_one) x) (fun x hx => indicator_of_notMem (fun h => hx h.1) _)`. Rewrite `h1` using `[Real.log_exp, one_pow, mul_one]`. Assume the negation of the conclusion as `hneg`. Establish `: CE / Real.exp 1 < 0` using `div_neg_of_neg_of_pos (lt_of_not_ge hneg) he`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `R hR`. Establish `hRpos : 0 < R` using `lt_of_lt_of_le he hR`. Establish `hL : 0 ≤ Real.log R` using `Real.log_nonneg (by linarith [Real.add_one_le_exp (1 : ℝ)])`. Establish `h0 : ∀ x, 0 ≤ (tail Yo r R).indicator (fun x => Real.log (r x)) x`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hx : x ∈ tail Yo r R`. Rewrite using `[indicator_of_mem hx]`. Conclude with `Real.log_nonneg (by linarith [hx.2, Real.add_one_le_exp (1 : ℝ)])`. Rewrite using `[indicator_of_notMem hx]`. Establish `hmeas` using `logTail_dens_aesm (A := A) (th := th) (u := u) hYo hr hre (hT _ le_rfl).1 R hRpos`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `sum_lintegral_logTail_le hYo hth hu hnn hCE hT R hR`. Establish `hb : 0 ≤ shellConst D * CE * Real.log R ^ (D + 1) / R` using `div_nonneg (mul_nonneg (mul_nonneg (tsum_nonneg fun k => by positivity) hCE) (pow_nonneg hL _)) hRpos.le`. Establish `hI : MIntegrable A (fun i => potForm th (u i)) ((tail Yo r R).indicator fun x => Real.log (r x))`. Introduce `j K hK hKc`. Establish `hnnK : 0 ≤ᵐ[volume.restrict K] fun y => (tail Yo r R).indicator (fun x => Real.log (r x)) ((A.chart j).symm y) * locDens A (fun i => potForm th (u i)) j y` using `ae_restrict_of_forall_mem hKc.measurableSet fun y hy => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : (A.chart j).symm y ∈ Yo`. Conclude with `mul_nonneg (h0 _) (locDens_nonneg_on hYo hth hu hnn j (hK hy) hx)`. Use `beta_reduce`. Rewrite using `[hoffT R _ hx, zero_mul]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨(hmeas j).mono_set hK, (hasFiniteIntegral_iff_ofReal hnnK).2 ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt ((lintegral_mono_set hK).trans ((lintegral_target_le hYo hth hu hnn (ReciprocityTheory.AnForm.M.existsPartition A).some _ h0 (hoffT R) j (hmeas j).aemeasurable).trans hfin)) ENNReal.ofReal_lt_top`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Establish `hS` using `sum_lintegral_eq_mInt hYo hth hu hnn _ h0 (hoffT R) hI`. Rewrite `hfin` using `[hS]`.
-
-Conclude with `(ENNReal.ofReal_le_ofReal_iff hb).1 hfin`.
+A detailed English derivation is pending.
 -/
 theorem TailLogOfMass.proof : TailLogOfMass.Statement := by
   intro X _ _ _ D A Yo r th u hYo hr hre hth hu hnn CE hT

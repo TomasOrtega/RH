@@ -13,7 +13,7 @@ namespace GlobalTheory.LocTateInt
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem finite_FE : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E
 
@@ -23,7 +23,7 @@ def basisEv : Module.Basis (Fin (Module.finrank F E)) (Fv F v) (Fv F v ⊗[F] E)
   Algebra.TensorProduct.basis (Fv F v) (Module.finBasis F E)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isModuleTopology_Ev : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
 
@@ -34,31 +34,31 @@ def coordEv : (Fv F v ⊗[F] E) ≃ₜ+ (Fin (Module.finrank F E) → Fv F v) :=
     continuous_invFun := IsModuleTopology.continuous_of_linearMap (basisEv (E := E) v).equivFun.symm.toLinearMap }
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Doubling.isTopologicalRing_tens`.
+A detailed English derivation is pending.
 -/
 theorem isTopologicalRing_Ev : IsTopologicalRing (Fv F v ⊗[F] E) := GlobalTheory.Doubling.isTopologicalRing_tens
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension`.
+A detailed English derivation is pending.
 -/
 theorem t2Space_Fv_tensor : T2Space (Fv F v ⊗[F] E) := GlobalTheory.Doubling.t2Space_tensorProduct_finiteExtension
 
 /- English proof (translation)
-The claim follows from `haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v (coordEv (E := E) v).toHomeomorph.isClosedEmbedding.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompactSpace_Ev : LocallyCompactSpace (Fv F v ⊗[F] E) :=
   haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v
   (coordEv (E := E) v).toHomeomorph.isClosedEmbedding.locallyCompactSpace
 
 /- English proof (translation)
-The claim follows from `haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v (coordEv (E := E) v).toHomeomorph.isEmbedding.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_Ev : SecondCountableTopology (Fv F v ⊗[F] E) :=
   haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v
   (coordEv (E := E) v).toHomeomorph.isEmbedding.secondCountableTopology
 
 /- English proof (translation)
-The claim follows from `haveI := isModuleTopology_Ev (E := E) v haveI := isTopologicalRing_Ev (E := E) v GlobalTheory.GaugeEx.isOpenUnits_of_basis (basisEv v)`.
+A detailed English derivation is pending.
 -/
 theorem isOpenUnits_Ev : IsOpenUnits (Fv F v ⊗[F] E) :=
   haveI := isModuleTopology_Ev (E := E) v
@@ -68,13 +68,11 @@ theorem isOpenUnits_Ev : IsOpenUnits (Fv F v ⊗[F] E) :=
 attribute [local instance] isTopologicalRing_Ev t2Space_Fv_tensor locallyCompactSpace_Ev secondCountable_Ev isOpenUnits_Ev
 
 /- English proof (translation)
-Use `borelize (Fv F v ⊗[F] E)`. Use `haveI := PI.UnitaryGroupMassFormula.LocJacTyp.BM.secondCountable_Fv v`. Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Use `set b := basisEv (E := E) v`. Use `set M := Algebra.leftMulMatrix b (u : Fv F v ⊗[F] E) with hMdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdet : M.det = Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E)` using `(Algebra.norm_eq_matrix_det b _).symm`. Establish `hM : IsUnit M.det` using `hdet ▸ u.isUnit.map (Algebra.norm (Fv F v))`. Establish `hN0 : Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E) ≠ 0` using `(hdet ▸ hM).ne_zero`. Rewrite using `[GlobalTheory.ModuNorm.distribHaarChar_eq_addEquivAddHaarChar]`. Establish `ht` using `GlobalTheory.ModuLR.addEquivAddHaarChar_transport (coordEv (E := E) v).symm (GlobalTheory.ModuLR.mulVecCE M hM)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hext : (((coordEv (E` using `E) v).symm.symm.trans (GlobalTheory.ModuLR.mulVecCE M hM)).trans (coordEv (E := E) v).symm) = GlobalTheory.ModuNorm.mulUnitCE u := by`. Use extensionality with `x`. Use `show b.equivFun.symm (Matrix.mulVec M (b.equivFun x)) = (u : Fv F v ⊗[F] E) * x`. Rewrite using `[show Matrix.mulVec M (b.equivFun x) = b.equivFun ((u : Fv F v ⊗[F] E) * x) from Algebra.leftMulMatrix_mulVec_repr b _ x, LinearEquiv.symm_apply_apply]`. Rewrite `ht` using `[hext]`.
-
-Rewrite using `[ht, GlobalTheory.ModuArtin.addEquivAddHaarChar_mulVecCE _ inferInstance inferInstance, hdet, GlobalTheory.GaugeEx.modu, dif_pos (hdet ▸ hM)]`. Use `GlobalTheory.CompanionTheory.SW.ProdFormula.distribHaarChar_eq_nnnorm v _ hN0 using 2` and compare the differences between its conclusion and the goal. Conclude with `Units.ext rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_Ev (u : (Fv F v ⊗[F] E)ˣ) :
     distribHaarChar (Fv F v ⊗[F] E) u = ‖Algebra.norm (Fv F v) (u : Fv F v ⊗[F] E)‖₊ := by
@@ -109,47 +107,39 @@ open scoped Pointwise
 attribute [local instance] finite_FE isTopologicalRing_Ev t2Space_Fv_tensor locallyCompactSpace_Ev secondCountable_Ev isOpenUnits_Ev
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v μ hμ C hC z hz`. Take `⟨_, _, _, _, _⟩` from `idelesAt_facts E (evFin F v)`. Use `haveI := hμ.1`. Use `borelize (Fv F v ⊗[F] E)`. Use `set φ := idelesAtEquiv E v with hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j : idelesAt E (evFin F v) → Fv F v ⊗[F] E` to `fun l => ((φ l : (Fv F v ⊗[F] E)ˣ) : Fv F v ⊗[F] E)`. Establish `hoe : Topology.IsOpenEmbedding j` using `(IsOpenUnits.isOpenEmbedding_unitsVal (M := Fv F v ⊗[F] E)).comp φ.toHomeomorph.isOpenEmbedding`. Establish `hme : MeasurableEmbedding j` using `hoe.measurableEmbedding`. Use `set lam : Measure (Fv F v ⊗[F] E) := Measure.addHaar with hlam`. Use `set ν : Measure (idelesAt E (evFin F v)) := lam.comap j with hν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hνa : ∀ s, ν s = lam (j '' s)` using `fun s => hme.comap_apply lam s`. Establish `hne : ∀ x : (Fv F v ⊗[F] E)ˣ, GlobalTheory.Doubling.absEv F E v x ≠ 0` using `fun x h => by`. Establish `e` using `congrArg (GlobalTheory.Doubling.absEv F E v) (mul_inv_cancel x)`. Rewrite `e` using `[map_mul, map_one, h, zero_mul]`. Conclude with `zero_ne_one e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `set f : idelesAt E (evFin F v) → ℝ≥0 := fun l => (GlobalTheory.Doubling.absEv F E v (φ l))⁻¹ with hf`. Establish `hfc : Continuous f` using `((GlobalTheory.Doubling.continuous_absEv v).comp φ.continuous).inv₀ fun l => hne _`. Establish `hfm : ∀ x y, f (x * y) = f x * f y` using `fun x y => by`. Simplify using `only [hf, map_mul, mul_inv]`. Establish `hf1 : ∀ a, f a⁻¹ * f a = 1` using `fun a => by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hfm, inv_mul_cancel]`. Simplify using `[hf]`. Use `haveI : IsLocallyFiniteMeasure ν := by`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, hs, hs'⟩` from `lam.finiteAt_nhds (j x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨j ⁻¹' s, hoe.continuous.continuousAt.preimage_mem_nhds hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hνa]`. Conclude with `(measure_mono (Set.image_preimage_subset _ _)).trans_lt hs'`. Use `haveI : ν.IsOpenPosMeasure := by`. Use `⟨fun U hU hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hνa]`. Conclude with `(hoe.isOpenMap U hU).measure_ne_zero lam (hn.image _)`. Use `haveI := IsLocallyFiniteMeasure.withDensity_coe (μ := ν) hfc`. Establish `hpos : (ν.withDensity fun x => (f x : ℝ≥0∞)).IsOpenPosMeasure`. Use `(withDensity_absolutelyContinuous' (μ := ν) (hfc.measurable.coe_nnreal_ennreal.aemeasurable) ?_).isOpenPosMeasure` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `Eventually.of_forall fun x => ENNReal.coe_ne_zero.2 (inv_ne_zero (hne _))`. Establish `hinv : (ν.withDensity fun x => (f x : ℝ≥0∞)).IsMulLeftInvariant`. Use `⟨fun a => ?_⟩` and prove the remaining obligations. Establish `hma : MeasurableEmbedding (fun x : idelesAt E (evFin F v) => a * x)` using `(Homeomorph.mulLeft a).measurableEmbedding`. Establish `hmap : Measure.map (fun x : idelesAt E (evFin F v) => a * x) ν = (f a : ℝ≥0∞) • ν`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `s hs`. Rewrite using `[hma.map_apply, Measure.smul_apply, hνa, hνa, smul_eq_mul]`. Establish `e : j '' ((fun x => a * x) ⁻¹' s) = (φ a)⁻¹ • (j '' s)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Use `⟨j (a * x), ⟨a * x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[j, Units.smul_def, map_mul]`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Use `⟨a⁻¹ * x, by simpa using hx, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[j, Units.smul_def, map_mul, map_inv]`. Rewrite using `[e, ← distribHaarChar_mul lam (φ a)⁻¹ (j '' s), map_inv, distribHaarChar_Ev]`. Both sides reduce to the same expression. Use extensionality with `s hs`. Rewrite using `[hma.map_apply, withDensity_apply _ (hma.measurable hs), withDensity_apply _ hs]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Establish `h1 : ∀ x, (f x : ℝ≥0∞) = (f a⁻¹ : ℝ≥0∞) * (f (a * x) : ℝ≥0∞)` using `fun x => by`. Rewrite using `[← ENNReal.coe_mul, hfm, ← mul_assoc, hf1, one_mul]`. Establish `h2 : (f a⁻¹ : ℝ≥0∞) * (f a : ℝ≥0∞) = 1`. Rewrite using `[← ENNReal.coe_mul, hf1, ENNReal.coe_one]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hma.restrict_map, hma.lintegral_map]`. Use `_ = _ := by`. Rewrite using `[hmap, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, h2, one_mul]`. Use `set ρ := ν.withDensity fun x => (f x : ℝ≥0∞) with hρ`. Use `haveI : ρ.IsHaarMeasure := ⟨⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, -, hc⟩` from `haar_idelesAt_eq_smul μ ρ`. Rewrite using `[hc]`. Use `Integrable.smul_measure ?_ ENNReal.coe_ne_top` and prove the remaining obligations. Use `set g : idelesAt E (evFin F v) → ℝ := fun l => ((GlobalTheory.Doubling.absEv F E v (φ l) : ℝ)) ^ z with hg`. Establish `hfun : (fun l : idelesAt E (evFin F v) => C.indicator (fun _ => ((GlobalTheory.Doubling.absE F E l.1 : ℝ)) ^ z) (compFin F E v l.1)) = (j ⁻¹' C).indicator g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `l`. Distinguish the cases in `h : j l ∈ C`. Rewrite using `[Set.indicator_of_mem (show compFin F E v l.1 ∈ C from h), Set.indicator_of_mem (show l ∈ j ⁻¹' C from h), absE_of_mem l.2]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show compFin F E v l.1 ∉ C from h), Set.indicator_of_notMem (show l ∉ j ⁻¹' C from h)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfun]`. Establish `hCm : MeasurableSet (j ⁻¹' C)` using `hme.measurable hC.isClosed.measurableSet`. Establish `hgc : Continuous g` using `(NNReal.continuous_coe.comp ((GlobalTheory.Doubling.continuous_absEv v).comp φ.continuous)).pow z`. Establish `hhm : Measurable ((j ⁻¹' C).indicator g)` using `hgc.measurable.indicator hCm`. Use `⟨hhm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hNc : Continuous fun x : Fv F v ⊗[F] E => ‖Algebra.norm (Fv F v) x‖₊` using `(GlobalTheory.Doubling.continuous_norm_tens (F := F) (E := E) (R := Fv F v)).nnnorm`. Take `⟨M, hM⟩` from `(hC.image hNc).bddAbove`. Establish `hb : ∀ l, (f l : ℝ≥0∞) * ‖(j ⁻¹' C).indicator g l‖ₑ ≤ (j ⁻¹' C).indicator (fun _ => ((M ^ (z - 1) : ℝ≥0) : ℝ≥0∞)) l`. Introduce `l`. Distinguish the cases in `h : l ∈ j ⁻¹' C`.
-
-Rewrite using `[Set.indicator_of_mem h, Set.indicator_of_mem h] set a := GlobalTheory.Doubling.absEv F E v (φ l) with ha`. Establish `ha0 : a ≠ 0` using `hne _`. Establish `haM : a ≤ M` using `hM ⟨j l, h, rfl⟩`. Establish `e1 : ‖g l‖ₑ = ((a ^ z : ℝ≥0) : ℝ≥0∞)` using `by simp [hg, ← ha]`. Rewrite using `[e1, ← ENNReal.coe_mul, ENNReal.coe_le_coe]`.
-
-Establish `e2 : f l * a ^ z = a ^ (z - 1)`. Rewrite using `[show f l = a⁻¹ from rfl, ← mul_pow_sub_one (show z ≠ 0 by omega) a, inv_mul_cancel_left₀ ha0]`. Rewrite using `[e2]`. Conclude with `pow_le_pow_left₀ zero_le haM _`. Rewrite using `[Set.indicator_of_notMem h, Set.indicator_of_notMem h]`.
-
-Simplify using the standard rewrite rules. Use `show ∫⁻ l, ‖(j ⁻¹' C).indicator g l‖ₑ ∂ρ < ⊤`. Rewrite using `[hρ, lintegral_withDensity_eq_lintegral_mul _ hfc.measurable.coe_nnreal_ennreal hhm.enorm]`. Combine the equalities or inequalities in the displayed calculation. Use `ENNReal.mul_lt_top ENNReal.coe_lt_top ?_` and prove the remaining obligations.
-
-Rewrite using `[hνa]`. Conclude with `(measure_mono (Set.image_preimage_subset _ _)).trans_lt hC.measure_lt_top`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_indicator_absE_pow : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (μ : Measure (idelesAt E (evFin F v))), IsNormE E v μ → ∀ (C : Set (Fv F v ⊗[F] E)), IsCompact C → ∀ z : ℕ, 1 ≤ z →

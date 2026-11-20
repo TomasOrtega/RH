@@ -7,14 +7,14 @@ open Finset Polynomial Formalism.FourierDecayAlt.FormPairingAction Formalism.Fou
 open scoped Matrix
 
 /- English proof (translation)
-Unfold `normW`. Rewrite using `[List.map_append, List.prod_append]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem normW_append {S : Type} (nn : ℝ → ℝ) (L w : List (Letter ℂ S)) :
     normW nn (L ++ w) = normW nn L * normW nn w := by
   unfold normW; rw [List.map_append, List.prod_append]
 
 /- English proof (translation)
-Unfold `normW Lp`. Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Simplify using `[Function.comp_def]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normW_Lp {S : Type} {K : ℕ} (nn : ℝ → ℝ) (sl : Fin K → S) (y : Fin K → ℝ) :
     normW nn (Lp sl y) = ∏ a, nn (y a) := by
@@ -23,7 +23,7 @@ theorem normW_Lp {S : Type} {K : ℕ} (nn : ℝ → ℝ) (sl : Fin K → S) (y :
   simp [Function.comp_def]
 
 /- English proof (translation)
-Unfold `normW Lp`. Rewrite using `[List.map_ofFn, List.map_ofFn, List.prod_ofFn]`. Simplify using `[Function.comp_def, dl]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normW_Lp_dl {S : Type} {K : ℕ} (nn : ℝ → ℝ) (sl : Fin K → S) (y : Fin K → ℝ) :
     normW nn ((Lp sl y).map dl) = ∏ a, nn (y a + 1) := by
@@ -32,11 +32,11 @@ theorem normW_Lp_dl {S : Type} {K : ℕ} (nn : ℝ → ℝ) (sl : Fin K → S) (
   simp [Function.comp_def, dl]
 
 /- English proof (translation)
-Establish `hA : 0 ≤ a / (N * W)` using `by positivity`. Establish `hB : 0 ≤ b / (N' * W)` using `by positivity`. Establish `e : a * b / Q = W ^ 2 * ((a / (N * W)) * (b / (N' * W))) * (N * N' / Q)`. Clear the denominators using the available nonvanishing facts. Establish `hAB : (a / (N * W)) * (b / (N' * W)) ≤ ((a / (N * W) + b / (N' * W)) / 2) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (a / (N * W) - b / (N' * W))]`. Establish `h1 : a * b / Q ≤ (W * T * ((a / (N * W) + b / (N' * W)) / 2)) ^ 2`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Real.sqrt (a * b / Q) ≤ W * T * ((a / (N * W) + b / (N' * W)) / 2)` using `(Real.sqrt_le_left (by positivity)).mpr h1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem key (a b Q W N N' T c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hQ : 0 < Q) (hW : 0 < W)
     (hN : 0 < N) (hN' : 0 < N') (hT : 0 ≤ T) (hc : 0 ≤ c) (hNT : N * N' / Q ≤ T ^ 2) :
@@ -61,7 +61,7 @@ theorem key (a b Q W N N' T c : ℝ) (ha : 0 ≤ a) (hb : 0 ≤ b) (hQ : 0 < Q) 
     _ = c * T * ((a / (N * W) + b / (N' * W)) / 2) := by field_simp
 
 /- English proof (translation)
-Unfold `F7.lagCo`. Use `Finset.prod_ne_zero_iff.mpr fun i hi => inv_ne_zero (sub_ne_zero.mpr fun h => ?_)` and prove the remaining obligations. Conclude with `(Finset.ne_of_mem_erase hi) (hy h).symm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lagCo_ne {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) (j : Fin (d + 1)) :
     F7.lagCo y j ≠ 0 := by
@@ -70,7 +70,7 @@ theorem lagCo_ne {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y)
   exact (Finset.ne_of_mem_erase hi) (hy h).symm
 
 /- English proof (translation)
-Unfold `cg`. Establish `h0 : 0 < |F7.lagCo y 0|` using `abs_pos.mpr (lagCo_ne y hy 0)`. Conclude with `lt_of_lt_of_le h0 (Finset.single_le_sum (f := fun k => |F7.lagCo y k|) (fun k _ => abs_nonneg _) (Finset.mem_univ 0))`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cg_pos {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) : 0 < cg y := by
   unfold cg
@@ -79,29 +79,27 @@ theorem cg_pos {d : ℕ} (y : Fin (d + 1) → ℝ) (hy : Function.Injective y) :
     (fun k _ => abs_nonneg _) (Finset.mem_univ 0))
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid nn Qw BBs hData hG0 hImp hinj hadm hnn hQw hBB`. Establish `hu` using `u72 A S V ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid hData hG0 hImp hinj hadm`. Take `⟨-, -, -, hK, -, -, -, -, -, -, -⟩` from `id hData`. Set `a0 : Fin K` to `⟨0, by omega⟩`. Set `j0 : Fin K → Fin (2 * n + 1)` to `fun _ => ⟨0, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hlet : ∀ (j : Fin K → Fin (2 * n + 1)) (a : Fin K), grid a (j a) ∈ Set.Ioo α β ∧ grid a (j a) + 1 ∈ Set.Ioo α β ∧ 0 < (q (grid a (j a))).re ∧ 0 < (qw q w (grid a (j a))).re`. Introduce `j a`. Establish `hm` using `mem_Lp sl (fun a => grid a (j a)) a`. Take `⟨-, h2, h3⟩` from `(hadm j).1.2.1 _ (List.mem_append_left _ hm)`. Simplify using `only [Complex.ofReal_re, if_true] at h2 h3`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Use `⟨h2, h3, (hG0 _ h2).2, ?_⟩` and prove the remaining obligations. Conclude with `((admissible_dual_kernel_identity S α β q w _ (plus_Lp sl _) hG0 (hadm j).1 (hadm j).2).2 _ hm).2`. Establish `hWpos : 0 < normW nn w`. Use `normW_pos nn w fun l hl => hnn _ ?_` and prove the remaining obligations. Conclude with `((hadm j0).1.2.1 l (List.mem_append_right _ hl)).2.1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQw0 : 0 ≤ Qw`. Establish `h` using `hQw a0 (j0 a0)`. Take `⟨-, -, hq, hqw⟩` from `hlet j0 a0`. Conclude with `le_trans (div_pos hq hqw).le h`. Establish `hBB0 : 0 ≤ BBs` using `le_trans (Real.sqrt_nonneg _) (hBB a0 (j0 a0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set T := (Real.sqrt Qw * BBs) ^ K with hT`. Establish `hT0 : 0 ≤ T` using `by positivity`. Establish `hpowK : ∀ c : ℝ, c ^ K = ∏ _a : Fin K, c` using `fun c => by simp`. Establish `hcg : ∀ a, 0 < cg (grid a)` using `fun a => cg_pos (grid a) (hinj a)`. Establish `hid : ∀ j : Fin K → Fin (2 * n + 1), (∏ a, cg (grid a) * Real.sqrt Qw * BBs) * F7.thGrid grid j = (∏ a, |F7.lagCo (grid a) (j a)|) * T`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Unfold `F7.thGrid`. Rewrite using `[← Finset.prod_mul_distrib, hT, hpowK (Real.sqrt Qw * BBs), ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `(hcg a).ne'` as an intermediate fact.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `cg at this ⊢`. Clear the denominators using the available nonvanishing facts. Establish `hterm : ∀ j : Fin K → Fin (2 * n + 1), (∏ a, |F7.lagCo (grid a) (j a)|) * Real.sqrt ((frm ρ (RRw QQ (Lp sl (fun a => grid a (j a)) ++ w)) (letters vA vB (Lp sl (fun a => grid a (j a))) x) (letters vA vB (Lp sl (fun a => grid a (j a))) x)).re * (frm ρ (RRw QQ ((Lp sl (fun a => gri …`. Introduce `j`. Establish `e : (∏ a, cg (grid a) * Real.sqrt Qw * BBs) * (F7.thGrid grid j * (N0 ρ QQ nn (Lp sl (fun a => grid a (j a)) ++ w) (letters vA vB (Lp sl (fun a => grid a (j a))) x) + N0 ρ QQ nn ((Lp sl (fun a => grid a (j a))).map dl ++ w) (letters vAv vBv ((Lp sl (fun a => grid a (j a))).map dl …` using `by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e, hid j]`. Unfold `N0`. Rewrite using `[normW_append, normW_append, normW_Lp, normW_Lp_dl]`. Use `key _ _ _ _ _ _ _ _ (hImp _ (hadm j).1 _).1 (hImp _ (hadm j).2 _).1 (Finset.prod_pos fun a _ => (hlet j a).2.2.2) hWpos (Finset.prod_pos fun a _ => hnn _ (hlet j a).1) (Finset.prod_pos fun a _ => hnn _ (hlet j a).2.1) hT0 (Finset.prod_nonneg fun a _ => abs_nonneg _) ?_` and prove the remaining obligations. Establish `hsq : ((Real.sqrt Qw * BBs) ^ K) ^ 2 = ∏ _a : Fin K, (Real.sqrt Qw * BBs) ^ 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pow_mul, mul_comm K 2, pow_mul, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_div_distrib, hT, hsq]`. Use `Finset.prod_le_prod (fun a _ => ?_) fun a _ => ?_` and prove the remaining obligations. Take `⟨h1, h2, -, hqw⟩` from `hlet j a`. Use `hnn _ h1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hnn _ h2` as an intermediate fact. Check the signs of the components of the expression. Take `⟨h1, h2, hq, hqw⟩` from `hlet j a`. Establish `hn1` using `hnn _ h1`. Establish `hn2` using `hnn _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hb` using `(Real.sqrt_le_left hBB0).mp (hBB a (j a))`. Establish `hqq` using `hQw a (j a)`. Establish `e2 : nn (grid a (j a)) * nn (grid a (j a) + 1) / (qw q w (grid a (j a))).re = (nn (grid a (j a)) * nn (grid a (j a) + 1) / (q (grid a (j a))).re) * ((q (grid a (j a))).re / (qw q w (grid a (j a))).re)`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e2, mul_pow, Real.sq_sqrt hQw0, mul_comm Qw]`.
-
-Conclude with `mul_le_mul hb hqq (by positivity) (by positivity)`. Establish `hW` using `hWpos`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_le_sum fun j _ => hterm j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p1c : NormaliserLowerBound := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid nn Qw BBs hData
@@ -220,19 +218,17 @@ theorem p1c : NormaliserLowerBound := by
       exact Finset.sum_le_sum fun j _ => hterm j
 
 /- English proof (translation)
-Introduce `A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid nn Qw BBs X hData hG0 hImp hinj hAw hadm hnn hQw hBB hX`. Take `⟨-, hW, hWQ, hK, -, -, hnd, -, -, -, -⟩` from `id hData`. Establish `hWpos : 0 < normW nn w` using `normW_pos nn w fun l hl => hnn _ (hAw.2.1 l hl).2.1`. Use `⟨fun _ => ?_, fun hXs => ?_⟩` and prove the remaining obligations. Conclude with `p1a A S V ρ QQ f fi s nn w x hW hWQ hnd (hImp w hAw) fun l hl => hnn _ (hAw.2.1 l hl).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `p1c A S V ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid nn Qw BBs hData hG0 hImp hinj hadm hnn hQw hBB`. Set `a0 : Fin K` to `⟨0, by omega⟩`. Set `j0 : Fin K → Fin (2 * n + 1)` to `fun _ => ⟨0, by omega⟩`. Establish `hBB0 : 0 ≤ BBs` using `le_trans (Real.sqrt_nonneg _) (hBB a0 (j0 a0))`. Establish `hfac0 : ∀ a, 0 ≤ cg (grid a) * Real.sqrt Qw * BBs` using `fun a => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ cg (grid a)` using `Finset.sum_nonneg fun k _ => abs_nonneg _`. Check the signs of the components of the expression. Establish `hX0 : 0 ≤ X` using `le_trans (hfac0 a0) (hX a0)`. Establish `hs : 0 < ‖s‖` using `lt_of_le_of_lt hX0 hXs`. Establish `hprod : ∏ a, cg (grid a) * Real.sqrt Qw * BBs ≤ X ^ K`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hsum : 0 ≤ ∑ j : Fin K → Fin (2 * n + 1), F7.thGrid grid j * (N0 ρ QQ nn (Lp sl (fun a => grid a (j a)) ++ w) (letters vA vB (Lp sl (fun a => grid a (j a))) x) + N0 ρ QQ nn ((Lp sl (fun a => grid a (j a))).map dl ++ w) (letters vAv vBv ((Lp sl (fun a => grid a (j a))).map dl) x)) …`. Use `Finset.sum_nonneg fun j _ => ?_` and prove the remaining obligations. Establish `ht : 0 ≤ F7.thGrid grid j`. Unfold `F7.thGrid`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Finset.prod_nonneg fun a _ => div_nonneg (abs_nonneg _) (Finset.sum_nonneg fun k _ => abs_nonneg _)`. Establish `hn1 : 0 ≤ N0 ρ QQ nn (Lp sl (fun a => grid a (j a)) ++ w) (letters vA vB (Lp sl (fun a => grid a (j a))) x)`. Unfold `N0`. Conclude with `div_nonneg (hImp _ (hadm j).1 _).1 (normW_pos nn _ fun l hl => hnn _ ((hadm j).1.2.1 l hl).2.1).le`. Establish `hn2 : 0 ≤ N0 ρ QQ nn ((Lp sl (fun a => grid a (j a))).map dl ++ w) (letters vAv vBv ((Lp sl (fun a => grid a (j a))).map dl) x)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Unfold `N0`. Conclude with `div_nonneg (hImp _ (hadm j).2 _).1 (normW_pos nn _ fun l hl => hnn _ ((hadm j).2.2.1 l hl).2.1).le`. Check the signs of the components of the expression. Establish `h1` using `le_trans hc (mul_le_mul_of_nonneg_right hprod hsum)`. Rewrite using `[div_pow, div_mul_eq_mul_div, le_div_iff₀ (pow_pos hs K)]`.
-
-Combine the linear relations using `[h1, mul_comm (‖s‖ ^ K) (‖frm ρ (RRw QQ w) (act (Vw f s w) x) x‖ / normW nn w)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem first_polynomial_corollary_identity : SmallParameterNormBound := by
   intro A S V _ _ _ _ _ _ _ _ _ _ ρ QQ q f fi s w n vA vB vAv vBv K sl x α β grid nn Qw BBs X hData
@@ -282,49 +278,49 @@ theorem first_polynomial_corollary_identity : SmallParameterNormBound := by
       (‖frm ρ (RRw QQ w) (act (Vw f s w) x) x‖ / normW nn w)]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨p1a, first_polynomial_degree, u72, p1c, first_polynomial_corollary_identity⟩`.
+Supply the required witnesses or components.
 -/
 theorem first_polynomial_theorem_alt : PlaneWaveBoundAllPlaces := ⟨p1a, first_polynomial_degree, u72, p1c, first_polynomial_corollary_identity⟩
 
 /- English proof (translation)
-Introduce `_ _` and use `p1c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem p1cOfParts : NormaliserBoundOfParts := fun _ _ => p1c
 
 /- English proof (translation)
-Introduce `_ _` and use `first_polynomial_corollary_identity`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem first_polynomial_corollary_of_parts : SmallParameterBoundOfParts := fun _ _ => first_polynomial_corollary_identity
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _` and use `first_polynomial_theorem_alt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem first_polynomial_theorem_of_parts : PlaneWaveTheoremOfParts := fun _ _ _ _ _ _ _ _ => first_polynomial_theorem_alt
 
 end Formalism.FourierDecayAlt.P.WordNormLpLemmas
 
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.p1c`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_third_clause : Formalism.FourierDecayAlt.FormPairingAction.NormaliserLowerBound := Formalism.FourierDecayAlt.P.WordNormLpLemmas.p1c
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_corollary_identity`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_corollary : Formalism.FourierDecayAlt.FormPairingAction.SmallParameterNormBound := Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_corollary_identity
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_theorem_alt`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_theorem : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveBoundAllPlaces := Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_theorem_alt
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.p1cOfParts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.third_clause_of_parts : Formalism.FourierDecayAlt.FormPairingAction.NormaliserBoundOfParts := Formalism.FourierDecayAlt.P.WordNormLpLemmas.p1cOfParts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_corollary_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.corollary_of_parts : Formalism.FourierDecayAlt.FormPairingAction.SmallParameterBoundOfParts := Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_corollary_of_parts
 /- English proof (translation)
-The claim follows from `Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_theorem_of_parts`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.first_polynomial_theorem_of_components : Formalism.FourierDecayAlt.FormPairingAction.PlaneWaveTheoremOfParts :=
   Formalism.FourierDecayAlt.P.WordNormLpLemmas.first_polynomial_theorem_of_parts

@@ -13,15 +13,13 @@ namespace GroundTheory.Heights₂.Heights
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `hinj`. Choose the witnesses or unpack the hypotheses as in `⟨R, hR, hRfin, hlt⟩ : ∃ R : Ideal (MvPolynomial (Fin n) ℂ), R.IsPrime ∧ (∀ y, (ComplexSets.fibre R A y).Finite) ∧ R < P := by`. Distinguish the cases in `h : Q = P`. Use `⟨Q', hQ', hfin', lt_of_le_of_ne (le_sup_right.trans hle) ?_⟩` and prove the remaining obligations. Introduce `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hne (h.trans h'.symm)`. Conclude with `⟨Q, hQ, hfin, lt_of_le_of_ne (le_sup_left.trans hle) h⟩`. Establish `hlow : ((d : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ P)`. Establish `h` using `ImageDimLe.proof n d P (ComplexSets.linPoly A) hP`. Establish `hker : RingHom.ker ((Ideal.Quotient.mkₐ ℂ P).comp (aeval (ComplexSets.linPoly A))) = ⊥` using `(RingHom.injective_iff_ker_eq_bot _).1 hinj`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hker, ringKrullDim_eq_of_ringEquiv (RingEquiv.quotientBot _), MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using `using h`. Establish `hup` using `hF n d R A hR hRfin`. Establish `hdrop` using `Order.coheight_add_one_le (a := (⟨P, hP⟩ : PrimeSpectrum (MvPolynomial (Fin n) ℂ))) (b := ⟨R, hR⟩) hlt`. Rewrite `hlow`, `hup` using `[ringKrullDim_quotient_eq_coheight]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ((d : ℕ) : ℕ∞) ≤ Order.coheight (⟨P, hP⟩ : PrimeSpectrum (MvPolynomial (Fin n) ℂ))`. Conclude with `hlow` after adjusting the coercions. Establish `h2 : Order.coheight (⟨R, hR⟩ : PrimeSpectrum (MvPolynomial (Fin n) ℂ)) ≤ ((d : ℕ) : ℕ∞)`. Conclude with `hup` after adjusting the coercions. Establish `h3` using `(add_le_add h1 (le_refl (1 : ℕ∞))).trans (hdrop.trans h2)`.
-
-Conclude with `lt_irrefl _ ((ENat.add_one_le_iff (ENat.natCast_ne_top d)).1 h3)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem PrimePairMeetImage.projHom_not_injective (hF : FiniteFibresDimLe.Statement) {n d : ℕ}
     {Q Q' P : Ideal (MvPolynomial (Fin n) ℂ)} (A : Matrix (Fin d) (Fin n) ℂ) (hQ : Q.IsPrime)
@@ -57,15 +55,13 @@ theorem PrimePairMeetImage.projHom_not_injective (hF : FiniteFibresDimLe.Stateme
   exact lt_irrefl _ ((ENat.add_one_le_iff (ENat.natCast_ne_top d)).1 h3)
 
 /- English proof (translation)
-Introduce `n d Q Q' A hQ hQ' hne hfin hfin'`. Establish `hker : ∀ P ∈ (Q ⊔ Q').minimalPrimes, ∃ e : MvPolynomial (Fin d) ℂ, e ≠ 0 ∧ ComplexSets.pullback A e ∈ P`. Introduce `P hPm`. Establish `hni` using `PrimePairMeetImage.projHom_not_injective hF A hQ hQ' hne hfin hfin' hPm.1.1 hPm.1.2`. Rewrite `hni` using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨e, he0, hne0⟩ : ∃ e, ComplexSets.projHom P A e = 0 ∧ e ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Conclude with `hni fun e he => by_contra fun h => hc ⟨e, he, h⟩`. Conclude with `⟨e, hne0, Ideal.Quotient.eq_zero_iff_mem.1 he0⟩`. Use `choose! f hf0 hfP using hker`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfs` using `Ideal.finite_minimalPrimes_of_isNoetherianRing (MvPolynomial (Fin n) ℂ) (Q ⊔ Q')`. Use `⟨∏ P ∈ hfs.toFinset, f P, Finset.prod_ne_zero_iff.2 fun P hP => hf0 P (hfs.mem_toFinset.1 hP), ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨hx, hx'⟩`. Establish `hmx : Q ⊔ Q' ≤ RingHom.ker (eval x)` using `sup_le (fun q hq => RingHom.mem_ker.2 (hx q hq)) (fun q hq => RingHom.mem_ker.2 (hx' q hq))`. Establish `: (RingHom.ker (eval x : MvPolynomial (Fin n) ℂ →+* ℂ)).IsPrime` using `RingHom.ker_isPrime _`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨P, hP, hPle⟩` from `Ideal.exists_minimalPrimes_le hmx`. Establish `hPs : P ∈ hfs.toFinset` using `hfs.mem_toFinset.2 hP`. Establish `hmem : ComplexSets.pullback A (∏ P ∈ hfs.toFinset, f P) ∈ P`. Rewrite using `[← Finset.prod_erase_mul _ _ hPs, map_mul]`. Conclude with `P.mul_mem_left _ (hfP P hP)`.
-
-Rewrite using `[← ComplexSets.eval_pullback]`. Conclude with `RingHom.mem_ker.1 (hPle hmem)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PrimePairMeetImage.proof (hF : FiniteFibresDimLe.Statement) : PrimePairMeetImage.Statement := by
   classical

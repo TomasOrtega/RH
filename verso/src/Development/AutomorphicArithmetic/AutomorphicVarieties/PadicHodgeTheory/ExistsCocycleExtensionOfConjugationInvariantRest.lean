@@ -2,7 +2,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.T
 open Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal Module Topology UpperTheory.V.Loc UpperTheory.V.U3
 
 /- English proof (translation)
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem zm_mem {G : Type} [Group G] (H : Subgroup G) (g : G) (q : G ⧸ H) :
     (g • q).out⁻¹ * (g * q.out) ∈ H := by
@@ -14,7 +14,7 @@ private noncomputable def zm_h {G : Type} [Group G] (H : Subgroup G) (g : G) (q 
   ⟨(g • q).out⁻¹ * (g * q.out), zm_mem H g q⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [zm_h, Subgroup.coe_mul, mul_smul]`. Use `group`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem zm_h_mul {G : Type} [Group G] (H : Subgroup G) (g g' : G) (q : G ⧸ H) :
     zm_h H (g * g') q = zm_h H g (g' • q) * zm_h H g' q := by
@@ -23,7 +23,7 @@ private theorem zm_h_mul {G : Type} [Group G] (H : Subgroup G) (g g' : G) (q : G
   group
 
 /- English proof (translation)
-Simplify using `only [zm_h]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem zm_out {G : Type} [Group G] (H : Subgroup G) (g : G) (q : G ⧸ H) :
     (g • q).out * (zm_h H g q : G) = g * q.out := by
@@ -31,7 +31,7 @@ private theorem zm_out {G : Type} [Group G] (H : Subgroup G) (g : G) (q : G ⧸ 
   group
 
 /- English proof (translation)
-Proceed by induction on `q using QuotientGroup.induction_on with`. Consider the case `H x`. Rewrite using `[MulAction.Quotient.smul_mk, smul_eq_mul, eq_comm, QuotientGroup.eq]`. Use `hN.conj_mem _ h.2 x⁻¹` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem zm_fix {G : Type} [Group G] (H : Subgroup G) [hN : H.Normal] (h : H) (q : G ⧸ H) :
     (h : G) • q = q := by
@@ -42,14 +42,14 @@ private theorem zm_fix {G : Type} [Group G] (H : Subgroup G) [hN : H.Normal] (h 
     simpa [mul_assoc] using this
 
 /- English proof (translation)
-The claim follows from `Equiv.sum_comp (MulAction.toPerm g) f`.
+A detailed English derivation is pending.
 -/
 private theorem zm_sum {G : Type} [Group G] (H : Subgroup G) [Fintype (G ⧸ H)] {V : Type} [AddCommGroup V]
     (g : G) (f : G ⧸ H → V) : ∑ q, f (g • q) = ∑ q, f q :=
   Equiv.sum_comp (MulAction.toPerm g) f
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (G ⧸ H) := QuotientGroup.discreteTopology hH`. Establish `h1 : Continuous fun g : G => g • q` using `by fun_prop`. Conclude with `(continuous_of_discreteTopology (f := fun x : G ⧸ H => x.out)).comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem zm_cont {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G)
     (hH : IsOpen (H : Set G)) (q : G ⧸ H) : Continuous fun g : G => (g • q).out := by
@@ -58,19 +58,19 @@ private theorem zm_cont {G : Type} [Group G] [TopologicalSpace G] [IsTopological
   exact (continuous_of_discreteTopology (f := fun x : G ⧸ H => x.out)).comp h1
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ A _ _ V _ _ _ _ _ _ _ _ _ ρ hρ H hHN _ hH N c hc hs`. Use `haveI : Fintype (G ⧸ H) := Fintype.ofFinite _`. Use `set n : ℕ := Fintype.card (G ⧸ H) with hn`. Establish `hn0 : (n : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Take `⟨a, ha⟩ : ∃ a : A, ∀ x : V, a • (n • x) = x` from `⟨algebraMap ℚ_[l] A (n : ℚ_[l])⁻¹, fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[algebraMap_smul, ← Nat.cast_smul_eq_nsmul ℚ_[l], smul_smul, inv_mul_cancel₀ hn0, one_smul]⟩`. Establish `hmul : ∀ g g' x, ρ g (ρ g' x) = ρ (g * g') x` using `fun g g' x => by`. Rewrite using `[map_mul, Module.End.mul_apply]`. Rewrite `hc` using `[mem_Z1_iff_cocycle]`. Establish `hc2 : ∀ h h' : H, c (h * h') = c h + ρ h (c h')` using `hc.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `cor : G → V` to `fun g => ∑ q : G ⧸ H, ρ (g • q).out (c (zm_h H g q))`. Establish `hcor : cor ∈ Z1 ρ`. Use `⟨continuous_finset_sum _ fun q _ => ?_, fun g g' => ?_⟩` and prove the remaining obligations. Establish `h1` using `zm_cont H hH q`. Establish `h2 : Continuous fun g : G => zm_h H g q` using `Continuous.subtype_mk (h1.inv.mul (continuous_id.mul continuous_const)) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ.comp (h1.prodMk (hc.1.comp h2))`. Simplify using `only [cor]`. Rewrite using `[← zm_sum H g' (fun q => ρ (g • q).out (c (zm_h H g q))), map_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[zm_h_mul, hc2, map_add, hmul, hmul, mul_smul, zm_out]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c' : G ⧸ H → H → V` to `fun q h => ρ q.out (c (zm_h H h q))`. Establish `hc' : ∀ q, c' q - c ∈ N` using `fun q => hs q.out (c' q) fun g g' hg => by`. Establish `: zm_h H g q = g'`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [zm_h, zm_fix, hg, mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [c', this]`. Use `⟨a • cor, (Z1 ρ).smul_mem a hcor, ?_⟩` and prove the remaining obligations. Establish `e : (fun g : H => (a • cor) g) - c = a • ∑ q : G ⧸ H, (c' q - c)`. Use function extensionality and compare the values at `h`. Establish `e1 : cor h = ∑ q : G ⧸ H, c' q h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [cor, c', zm_fix]`. Simplify using `only [Pi.smul_apply, Pi.sub_apply, Finset.sum_apply, e1, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, ← hn, smul_sub, ha]`. Rewrite using `[e]`. Conclude with `N.smul_mem a (N.sum_mem fun q _ => hc' q)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_cocycle_extension_of_conjugation_invariant_restriction :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] [FiniteDimensional ℚ_[l] V] [TopologicalSpace V] [IsModuleTopology ℚ_[l] V] [IsTopologicalAddGroup V] [ContinuousConstSMul A V] (ρ : Representation A G V), ContAction ρ → ∀ (H : Subgroup G) [H.Normal] [H.FiniteIndex], IsOpen (H : Set G) → ∀ (N : Submodule A (H → V)), ∀ c ∈ Z1 (ρ.comp H.subtype : Representation A H V), (∀ (s : G) (c' : H → V), (∀ g g' : H, (g' : G) = s⁻¹ * g * s → c' g = ρ s (c g')) → c' - c ∈ N) → ∃ b ∈ Z1 ρ, (fun g : H => b g) - c ∈ N := by

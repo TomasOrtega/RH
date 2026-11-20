@@ -8,7 +8,7 @@ open scoped CategoryTheory.Obj
 open GlobalTheory GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.CM GlobalTheory.FlatDegreeCompare
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.count_map_comp_ideal_eq_mul_of_valuation_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FIdealCountUnderExtension.lean&line=84#L84)
 -/

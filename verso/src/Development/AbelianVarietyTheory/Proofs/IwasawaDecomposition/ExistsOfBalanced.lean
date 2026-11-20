@@ -29,9 +29,9 @@ section General
 variable {L : Type} [Field L] [NumberField L] {F : Type} [Field F] [NumberField F] [Algebra F L]
 
 /- English proof (translation)
-Unfold `locF`. Rewrite using `[map_prod]`. Use `Finset.prod_eq_one fun Q hQ => Units.ext (ev_local_ne (fun e : w = Q => h ?_) _)` and prove the remaining obligations. Substitute `e` using the available equality. Establish `: w.under (𝓞 F) = v` using `by simpa [aboveF] using hQ`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem ev_locF_ne {w : HeightOneSpectrum (𝓞 L)} {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w.under (𝓞 F)) (k : Fˣ) :
     Units.map (ev w) (locF (L := L) F v k) = 1 := by
@@ -43,17 +43,17 @@ theorem ev_locF_ne {w : HeightOneSpectrum (𝓞 L)} {v : HeightOneSpectrum (𝓞
   exact this.symm
 
 /- English proof (translation)
-Set `T : Finset (HeightOneSpectrum (𝓞 F))` to `(finite_valAt_ne_one a).toFinset.image fun w => w.under (𝓞 F)`. Set `m : HeightOneSpectrum (𝓞 F) → ℤ` to `fun v => if h : ∃ w : HeightOneSpectrum (𝓞 L), w.under (𝓞 F) = v then -WithZero.log (valAt h.choose a) else 0`. Set `b : Ideles L` to `∏ v ∈ T, locF (L := L) F v (unif v) ^ m v`. Establish `hb : b ∈ G` using `prod_mem fun v _ => zpow_mem (hG _ _) _`. Establish `hm : ∀ w : HeightOneSpectrum (𝓞 L), m (w.under (𝓞 F)) = -WithZero.log (valAt w a)` using `fun w => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ w' : HeightOneSpectrum (𝓞 L), w'.under (𝓞 F) = w.under (𝓞 F)` using `⟨w, rfl⟩`. Simplify using `only [m]`. Rewrite using `[dif_pos hex, ha w hex.choose hex.choose_spec]`. Establish `hval : ∀ w, valAt w b = valAt w a` using `fun w => by`. Establish `h1 : ∀ v, v ≠ w.under (𝓞 F) → valAt w (locF (L` using `L) F v (unif v) ^ m v) = 1 := fun v hv => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_zpow, valAt_locF, if_neg hv.symm, one_zpow]`. Simplify using `only [b]`. Rewrite using `[map_prod]`. Distinguish the cases in `hw : w.under (𝓞 F) ∈ T`. Rewrite using `[Finset.prod_eq_single_of_mem _ hw (fun v _ hv => h1 v hv), map_zpow, valAt_locF, if_pos rfl, hu, ordF_unif_self, ← WithZero.exp_zsmul, hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_eq_mul, mul_neg, neg_neg, mul_one]`. Conclude with `WithZero.exp_log (valAt_ne_zero w a)`. Rewrite using `[Finset.prod_eq_one (fun v hv => h1 v (fun e => hw (e ▸ hv)))]`. Assume the negation of the conclusion as `hne`. Conclude with `hw (Finset.mem_image_of_mem _ (by simpa using fun e => hne e.symm))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨b, hb, fun w => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[← valAt_apply, map_mul, map_inv, hval]`. Conclude with `inv_mul_cancel₀ (valAt_ne_zero w a)`. Simplify using `only [b]`. Rewrite using `[map_prod]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun v _ => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v = w.under (𝓞 F)`. Rewrite using `[hv, hm, hw, WithZero.log_one, neg_zero, zpow_zero, map_one]`. Rewrite using `[map_zpow, ev_locF_ne hv, one_zpow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_balanced
     (hu : ∀ (P : HeightOneSpectrum (𝓞 L)) (k : Fˣ), ordF P (upF F k) = ordF (P.under (𝓞 F)) k)
@@ -94,9 +94,9 @@ theorem exists_of_balanced
     · rw [map_zpow, ev_locF_ne hv, one_zpow]
 
 /- English proof (translation)
-Establish `h1 : w.valuation L ((Ideal.absNorm w.asIdeal : ℕ) : L) < 1`. Use `(w.valuation_lt_one_iff_mem (K := L) ((Ideal.absNorm w.asIdeal : ℕ) : 𝓞 L)).2 (Ideal.absNorm_mem _)` as an intermediate fact. Rewrite using `[← map_natCast (algebraMap (𝓞 L) L)]`. Conclude with `this`. Take `⟨k, hk⟩` from `exists_pow_lt₀ h1 (Units.mk0 γ h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ideal.absNorm w.asIdeal ^ k, pow_pos (Nat.pos_of_ne_zero ?_) k, ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `w.ne_bot`. Rewrite using `[Nat.cast_pow, map_pow]`. Conclude with `hk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_val_lt (w : HeightOneSpectrum (𝓞 L)) {γ : WithZero (Multiplicative ℤ)} (h : γ ≠ 0) :
     ∃ n : ℕ, 0 < n ∧ w.valuation L (n : L) < γ := by
@@ -114,11 +114,9 @@ theorem exists_nat_val_lt (w : HeightOneSpectrum (𝓞 L)) {γ : WithZero (Multi
 end General
 
 /- English proof (translation)
-Take `⟨c, -, -, hu, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Take `⟨b, hb, hun, hc⟩` from `exists_of_balanced hu (KD H) (locF_mem_KD H) a ha`. Rewrite using `[← mul_inv_cancel_left b a]`. Use `mul_mem hb (mem_KD_of_congG H ⟨hun, fun k v hv => ?_⟩)` and prove the remaining obligations. Establish `h2 : valAt v a = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[valAt_apply, ← sub_add_cancel ((a : AdeleRing (𝓞 H.E) H.E).2 v) 1, add_comm]`. Conclude with `Valuation.map_one_add_of_lt _ (h1 k v hv)`. Establish `h3 : Units.map (ev v) (b⁻¹ * a) = Units.map (ev v) a` using `by rw [map_mul, map_inv, hc v h2, inv_one, one_mul]`. Establish `h4 : ((b⁻¹ * a : Ideles H.E) : AdeleRing (𝓞 H.E) H.E).2 v = (a : AdeleRing (𝓞 H.E) H.E).2 v` using `congrArg Units.val h3`. Rewrite using `[h4]`.
-
-Conclude with `h1 k v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KD_of_balanced {R : Ranks} (H : Formalism.BasicNotions.Host R) (a : Ideles H.E) (ha : a ∈ balanced (L := H.E) H.F)
     (h1 : ∀ k v, OverP H (H.g k) v → Valued.v ((a : AdeleRing (𝓞 H.E) H.E).2 v - 1) < 1) : a ∈ KD H := by
@@ -138,7 +136,7 @@ theorem mem_KD_of_balanced {R : Ranks} (H : Formalism.BasicNotions.Host R) (a : 
 variable (D : D7)
 
 /- English proof (translation)
-Take `⟨ι, h1, h2, -⟩` from `GlobalTheory.AdeleBaseChange.exists_finiteAdele_baseChange_equiv ℚ D.host.E`. Conclude with `⟨ι, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_adEquiv : ∃ ι : AE D ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E,
     (∀ x, ι (inc D x) = algebraMap D.host.E _ x) ∧ ∀ y, y ∈ OhE D ↔ ∀ P, Valued.v (ι y P) ≤ 1 := by
@@ -148,12 +146,12 @@ theorem exists_adEquiv : ∃ ι : AE D ≃+* FiniteAdeleRing (𝓞 D.host.E) D.h
 def adEquiv : AE D ≃+* FiniteAdeleRing (𝓞 D.host.E) D.host.E := (exists_adEquiv D).choose
 
 /- English proof (translation)
-The claim follows from `(exists_adEquiv D).choose_spec.1 x`.
+A detailed English derivation is pending.
 -/
 theorem adEquiv_inc (x : D.host.E) : adEquiv D (inc D x) = algebraMap D.host.E _ x := (exists_adEquiv D).choose_spec.1 x
 
 /- English proof (translation)
-The claim follows from `(exists_adEquiv D).choose_spec.2 y`.
+A detailed English derivation is pending.
 -/
 theorem mem_OhE_iff (y : AE D) : y ∈ OhE D ↔ ∀ P, Valued.v (adEquiv D y P) ≤ 1 := (exists_adEquiv D).choose_spec.2 y
 
@@ -172,12 +170,12 @@ Both sides reduce to the same expression.
 theorem finIdl_snd (x : (AE D)ˣ) : (finIdl D x : AdeleRing (𝓞 D.host.E) D.host.E).2 = adEquiv D x := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem finPartI_finIdl (x : (AE D)ˣ) : finPartI D.host.E (finIdl D x) = finIdl D x := Units.ext rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Prod.ext rfl (adEquiv_inc D a))`.
+A detailed English derivation is pending.
 -/
 theorem finIdl_incU (a : D.host.Eˣ) : finIdl D (incU D a) = finPartI D.host.E (diagUnits D.host.E a) :=
   Units.ext (Prod.ext rfl (adEquiv_inc D a))
@@ -194,26 +192,26 @@ Both sides reduce to the same expression.
 theorem vl_apply (w : HeightOneSpectrum (𝓞 D.host.E)) (x : AE D) : vl D w x = Valued.v (adEquiv D x w) := rfl
 
 /- English proof (translation)
-Rewrite using `[vl_apply, adEquiv_inc]`. Conclude with `HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vl_inc (w : HeightOneSpectrum (𝓞 D.host.E)) (a : D.host.E) : vl D w (inc D a) = w.valuation D.host.E a := by
   rw [vl_apply, adEquiv_inc]
   exact HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w a
 
 /- English proof (translation)
-Rewrite using `[← vl_inc, map_natCast (inc D)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vl_nat (w : HeightOneSpectrum (𝓞 D.host.E)) (n : ℕ) : vl D w (n : AE D) = w.valuation D.host.E (n : D.host.E) := by
   rw [← vl_inc, map_natCast (inc D)]
 
 /- English proof (translation)
-The claim follows from `(mem_OhE_iff D x).1 hx w`.
+A detailed English derivation is pending.
 -/
 theorem vl_le {x : AE D} (hx : x ∈ OhE D) (w : HeightOneSpectrum (𝓞 D.host.E)) : vl D w x ≤ 1 :=
   (mem_OhE_iff D x).1 hx w
 
 /- English proof (translation)
-Rewrite using `[vl_apply, map_sub (adEquiv D), map_one (adEquiv D)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem vl_sub_one (w : HeightOneSpectrum (𝓞 D.host.E)) (x : (AE D)ˣ) :
     Valued.v ((finIdl D x : AdeleRing (𝓞 D.host.E) D.host.E).2 w - 1) = vl D w ((x : AE D) - 1) := by
@@ -221,14 +219,14 @@ theorem vl_sub_one (w : HeightOneSpectrum (𝓞 D.host.E)) (x : (AE D)ˣ) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Formalism.UG.P.csDual_sig_incl _ _`.
+A detailed English derivation is pending.
 -/
 theorem sgA_inc (a : D.host.E) : sgA D (inc D a) = inc D (D.host.conj a) := Formalism.UG.P.csDual_sig_incl _ _
 
 /- English proof (translation)
-Take `⟨a, r, hr, e⟩` from `GlobalTheory.AdeleBaseChange.exists_approx (F := ℚ) (E := D.host.E) (inc D (n : D.host.E)⁻¹ * x)`. Use `⟨n * a, r, hr, ?_⟩` and prove the remaining obligations. Establish `h3 : (n : AE D) * inc D ((n : D.host.E)⁻¹) = 1`. Rewrite using `[← map_natCast (inc D) n, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hn.ne'), map_one]`. Establish `e' : inc D (n : D.host.E)⁻¹ * x = inc D a + r` using `e`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, map_natCast, ← mul_add, ← e', ← mul_assoc, h3, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_approx (x : AE D) {n : ℕ} (hn : 0 < n) : ∃ a : D.host.E, ∃ r ∈ OhE D, x = inc D a + n * r := by
   obtain ⟨a, r, hr, e⟩ := GlobalTheory.AdeleBaseChange.exists_approx (F := ℚ) (E := D.host.E) (inc D (n : D.host.E)⁻¹ * x)
@@ -239,15 +237,13 @@ theorem exists_approx (x : AE D) {n : ℕ} (hn : 0 < n) : ∃ a : D.host.E, ∃ 
   rw [map_mul, map_natCast, ← mul_add, ← e', ← mul_assoc, h3, one_mul]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨n, hn, hv⟩` from `exists_nat_val_lt w (ne_zero_of_lt hlt)`. Take `⟨a, r, hr, e⟩` from `exists_approx x hn`. Establish `hn' : w'.valuation D.host.E (n : D.host.E) = w.valuation D.host.E (n : D.host.E)`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← h, map_natCast D.host.conj.toRingEquiv]`. Establish `h1 : vl D w (n * r) < vl D w' (sgA D x)`. Rewrite using `[map_mul, vl_nat]`. Conclude with `(mul_le_of_le_one_right' (vl_le hr w)).trans_lt hv`. Establish `h2 : vl D w' (n * sgA D r) < vl D w' (sgA D x)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, vl_nat, hn']`. Conclude with `(mul_le_of_le_one_right' (vl_le (sgA_mem D hr) w')).trans_lt hv`. Establish `h3 : vl D w (inc D a) < vl D w' (sgA D x)`. Rewrite using `[eq_sub_of_add_eq e.symm]`. Conclude with `Valuation.map_sub_lt _ hlt h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : vl D w' (sgA D (inc D a)) = vl D w (inc D a)`. Rewrite using `[sgA_inc, vl_inc, vl_inc]`. Conclude with `h a`. Establish `h5 : sgA D x = sgA D (inc D a) + n * sgA D r` using `by rw [e, map_add, map_mul, map_natCast]`. Establish `h6` using `Valuation.map_add_lt (vl D w') (h4 ▸ h3) h2`.
-
-Rewrite `h6` using `[← h5]`. Conclude with `lt_irrefl _ h6`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vl_sgA_le {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.host.conj.toRingEquiv w w') (x : AE D) :
     vl D w' (sgA D x) ≤ vl D w x := by
@@ -275,7 +271,7 @@ theorem vl_sgA_le {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.host.
   exact lt_irrefl _ h6
 
 /- English proof (translation)
-Introduce `x` and use `by rw [← h] exact congrArg _ (conj_conj D x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjPl_symm {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.host.conj.toRingEquiv w w') :
     ConjPl D.host.conj.toRingEquiv w' w := fun x => by
@@ -283,7 +279,7 @@ theorem conjPl_symm {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.hos
   exact congrArg _ (conj_conj D x)
 
 /- English proof (translation)
-Use `le_antisymm (vl_sgA_le h x) ?_` and prove the remaining obligations. Use `vl_sgA_le (conjPl_symm h) (sgA D x)` as an intermediate fact. Rewrite `this` using `[sgA_sgA]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vl_sgA {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.host.conj.toRingEquiv w w') (x : AE D) :
     vl D w' (sgA D x) = vl D w x := by
@@ -292,9 +288,9 @@ theorem vl_sgA {w w' : HeightOneSpectrum (𝓞 D.host.E)} (h : ConjPl D.host.con
   rwa [sgA_sgA] at this
 
 /- English proof (translation)
-Take `⟨c, hc, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm D.R D.host`. Introduce `w w' hw`. Break down `(under_eq_iff_conjPl c hcm.rank hcm.ne w w').1 hw with rfl | h` into its components or cases. Both sides reduce to the same expression. Establish `e : c.toRingEquiv = D.host.conj.toRingEquiv` using `RingEquiv.ext hc`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Express the relevant statement in the definitionally equal form `vl D w ((x : AE D) * sgA D x) = vl D w' ((x : AE D) * sgA D x)`. Rewrite using `[map_mul, map_mul, vl_sgA h, vl_sgA (conjPl_symm h), mul_comm]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_balanced (x : (AE D)ˣ) : finIdl D (x * sgU D x) ∈ balanced (L := D.host.E) D.host.F := by
   obtain ⟨c, hc, hcm, -⟩ := GlobalTheory.Mem.HostCM.host_cm D.R D.host
@@ -307,14 +303,14 @@ theorem norm_balanced (x : (AE D)ˣ) : finIdl D (x * sgU D x) ∈ balanced (L :=
     rw [map_mul, map_mul, vl_sgA h, vl_sgA (conjPl_symm h), mul_comm]
 
 /- English proof (translation)
-Rewrite using `[vl_nat, ← map_natCast (algebraMap (𝓞 D.host.E) D.host.E)]`. Conclude with `(v.valuation_lt_one_iff_mem (K := D.host.E) _).2 hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_nat_lt {p : ℕ} {v : HeightOneSpectrum (𝓞 D.host.E)} (hv : OverP D.host p v) : vl D v (p : AE D) < 1 := by
   rw [vl_nat, ← map_natCast (algebraMap (𝓞 D.host.E) D.host.E)]
   exact (v.valuation_lt_one_iff_mem (K := D.host.E) _).2 hv
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem D.host.g (Finset.mem_univ k)`. Rewrite using `[hc, Nat.cast_mul, mul_assoc, map_mul]`. Conclude with `(mul_le_of_le_one_right' (vl_le (mul_mem (natCast_mem _ _) hs) v)).trans_lt (val_nat_lt hv)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vl_cong {s : AE D} (hs : s ∈ OhE D) (k : Fin 2) (v : HeightOneSpectrum (𝓞 D.host.E))
     (hv : OverP D.host (D.host.g k) v) : vl D v (((∏ i, D.host.g i : ℕ) : AE D) * s) < 1 := by
@@ -323,12 +319,12 @@ theorem vl_cong {s : AE D} (hs : s ∈ OhE D) (k : Fin 2) (v : HeightOneSpectrum
   exact (mul_le_of_le_one_right' (vl_le (mul_mem (natCast_mem _ _) hs) v)).trans_lt (val_nat_lt hv)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun i _ => (D.host.g_prime i).pos`.
+A detailed English derivation is pending.
 -/
 theorem prod_g_pos : 0 < ∏ i, D.host.g i := Finset.prod_pos fun i _ => (D.host.g_prime i).pos
 
 /- English proof (translation)
-Introduce `v` and use `by change vl D v (u : AE D) = 1 refine le_antisymm (vl_le hu.1 v) ?_ calc 1 = vl D v (u : AE D) * vl D v ((u⁻¹ : (AE D)ˣ) : AE D) := by rw [← map_mul, u.mul_inv, map_one] _ ≤ _ := mul_le_of_le_one_right' (vl_le hu.2 v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finIdl_unit {u : (AE D)ˣ} (hu : IntU D u) : finIdl D u ∈ unitIdl D.host.E := fun v => by
   change vl D v (u : AE D) = 1
@@ -337,16 +333,16 @@ theorem finIdl_unit {u : (AE D)ˣ} (hu : IntU D u) : finIdl D u ∈ unitIdl D.ho
     _ ≤ _ := mul_le_of_le_one_right' (vl_le hu.2 v)
 
 /- English proof (translation)
-The claim follows from `mem_KD_of_congG _ ⟨finIdl_unit hu, fun k v hv => by rw [vl_sub_one]; exact h k v hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem unit_mem_KD {u : (AE D)ˣ} (hu : IntU D u)
     (h : ∀ k v, OverP D.host (D.host.g k) v → vl D v ((u : AE D) - 1) < 1) : finIdl D u ∈ KD D.host :=
   mem_KD_of_congG _ ⟨finIdl_unit hu, fun k v hv => by rw [vl_sub_one]; exact h k v hv⟩
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.E (D.host.g_prime k)`. Take `⟨x, hx, hn⟩` from `(splitsC_main D.R D.host _ (D.host.g_prime k) (D.nd.g_split k) v hv).2.2.1`. Use `hn (D.host.conj • x) rfl ?_` and prove the remaining obligations. Rewrite using `[← h v.asIdeal v.isPrime v.ne_bot hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.smul_mem_pointwise_smul _ _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem not_inertQ_g (k : Fin 2) : ¬ InertQ D (D.host.g k) := by
   intro h
@@ -357,13 +353,11 @@ theorem not_inertQ_g (k : Fin 2) : ¬ InertQ D (D.host.g k) := by
   exact Ideal.smul_mem_pointwise_smul _ _ _ hx
 
 /- English proof (translation)
-Take `⟨m, -, hm, s, hs, e⟩` from `h 1`. Establish `h1 : vl D v (m : AE D) = 1`. Use `le_antisymm (vl_le (natCast_mem _ _) v) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hm`. Establish `hab'` using `congrArg (Int.cast : ℤ → AE D) hab`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Move the coercions through the operations in `at hab'`. Establish `h2 : vl D v ((a : AE D) * m) < 1`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (vl_le (intCast_mem _ _) v)).trans_lt hlt`. Establish `h3 : vl D v ((b : AE D) * q) < 1`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' (vl_le (intCast_mem _ _) v)).trans_lt (val_nat_lt hv)`. Establish `h4` using `Valuation.map_add_lt _ h2 h3`. Rewrite `h4` using `[hab', map_one]`. Conclude with `lt_irrefl _ h4`.
-
-Rewrite using `[← one_mul (vl D v x), ← h1, ← map_mul, e, pow_one, map_mul, h1]`. Conclude with `(mul_le_of_le_one_right' (vl_le hs v)).trans_lt (val_nat_lt hv)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vl_lt_of_zeroAt {q : ℕ} {x : AE D} (h : ZeroAt D q x) {v : HeightOneSpectrum (𝓞 D.host.E)}
     (hv : OverP D.host q v) : vl D v x < 1 := by
@@ -386,11 +380,11 @@ theorem vl_lt_of_zeroAt {q : ℕ} {x : AE D} (h : ZeroAt D q x) {v : HeightOneSp
   exact (mul_le_of_le_one_right' (vl_le hs v)).trans_lt (val_nat_lt hv)
 
 /- English proof (translation)
-Take `⟨n, hn, hx⟩` from `GlobalTheory.HeckeVal.exists_denom D ((x⁻¹ : (AE D)ˣ) : AE D)`. Take `⟨a, r, hr, e⟩` from `exists_approx (x : AE D) (Nat.mul_pos prod_g_pos hn)`. Establish `h1 : inc D a * ((x⁻¹ : (AE D)ˣ) : AE D) - 1 = ((∏ i, D.host.g i : ℕ) : AE D) * (-(r * ((n : AE D) * ((x⁻¹ : (AE D)ˣ) : AE D))))`. Rewrite `e` using `[Nat.cast_mul]`. Take the linear combination `x.mul_inv - ((x⁻¹ : (AE D)ˣ) : AE D) * e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h2 : ∀ k v, OverP D.host (D.host.g k) v → vl D v (inc D a * ((x⁻¹ : (AE D)ˣ) : AE D) - 1) < 1` using `fun k v hv => by`. Rewrite using `[h1]`. Conclude with `vl_cong (neg_mem (mul_mem hr hx)) k v hv`. Establish `ha : a ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `GlobalTheory.exists_heightOneSpectrum_natCast_mem D.host.E (D.host.g_prime 0)`. Use `h2 0 v hv` as an intermediate fact. Rewrite `this` using `[map_zero, zero_mul, zero_sub, Valuation.map_neg, map_one]`. Conclude with `lt_irrefl _ this`. Conclude with `⟨Units.mk0 a ha, h2⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_global_cong (x : (AE D)ˣ) : ∃ a : D.host.Eˣ, ∀ k v, OverP D.host (D.host.g k) v →
     vl D v (((incU D a * x⁻¹ : (AE D)ˣ) : AE D) - 1) < 1 := by
@@ -413,11 +407,11 @@ theorem exists_global_cong (x : (AE D)ˣ) : ∃ a : D.host.Eˣ, ∀ k v, OverP D
   exact ⟨Units.mk0 a ha, h2⟩
 
 /- English proof (translation)
-Use `mem_KD_of_balanced _ _ (norm_balanced z) fun k v hv => ?_` and prove the remaining obligations. Take `⟨v', hv', -⟩` from `existsUnique_conjPl D.host.conj.toRingEquiv v`. Establish `ho : OverP D.host (D.host.g k) v'` using `((conjPl_iff_mem _ v v').1 hv' _ _ (by simp)).1 hv`. Establish `h1` using `hz k v hv`. Establish `h2 : vl D v (sgA D z - 1) < 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_one (sgA D), ← map_sub, vl_sgA (conjPl_symm hv')]`. Conclude with `hz k v' ho`. Rewrite using `[vl_sub_one]`. Establish `e : ((z * sgU D z : (AE D)ˣ) : AE D) - 1 = ((z : AE D) - 1) * (sgA D z - 1) + (((z : AE D) - 1) + (sgA D z - 1))`. Express the relevant statement in the definitionally equal form `(z : AE D) * sgA D z - 1 = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ (Valuation.map_add_lt _ h1 h2)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_right' h2.le).trans_lt h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_cong_mem_KD {z : (AE D)ˣ} (hz : ∀ k v, OverP D.host (D.host.g k) v → vl D v ((z : AE D) - 1) < 1) :
     finIdl D (z * sgU D z) ∈ KD D.host := by
@@ -439,9 +433,9 @@ theorem norm_cong_mem_KD {z : (AE D)ˣ} (hz : ∀ k v, OverP D.host (D.host.g k)
   exact (mul_le_of_le_one_right' h2.le).trans_lt h1
 
 /- English proof (translation)
-Establish `hm : (a : D.host.E) * D.host.conj a ∈ D.host.F`. Use `(mem_maximalRealSubfield_iff _).2 fun φ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `starRingEnd ℂ _ = _`. Rewrite using `[← emb_conj, map_mul D.host.conj, conj_conj, mul_comm]`. Establish `h0 : (⟨_, hm⟩ : D.host.F) ≠ 0` using `fun h => mul_ne_zero a.ne_zero ((map_ne_zero D.host.conj).2 a.ne_zero) (congrArg Subtype.val h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨Units.mk0 _ h0, Units.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `inc D a * sgA D (inc D a) = inc D ((a : D.host.E) * D.host.conj a)`. Rewrite using `[sgA_inc, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_real_norm (a : D.host.Eˣ) : ∃ k : (D.host.F)ˣ, incU D a * sgU D (incU D a) = incU D (upF D.host.F k) := by
   have hm : (a : D.host.E) * D.host.conj a ∈ D.host.F := by
@@ -501,9 +495,9 @@ def trivial (D : D7) {N : ℕ} (hN : Even N) : HeckeU D N where
   unr _ _ _ := rfl
 
 /- English proof (translation)
-Take `⟨n, hn, hi⟩` from `h.inf`. Use `⟨ofHChar N μ n h.unitary h.triv hi h.unr h.tame fun g => ?_, rfl, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `he g`. Establish `h1 : n g = -z + -z`. Establish `: (n g : ℚ) = 2 * -e g` using `hn g`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hz]`. Conclude with `(by rw [this]; ring : (n g : ℚ) = -z + -z)` after adjusting the coercions. Conclude with `Even.sub ⟨_, h1⟩ ((Int.even_coe_nat N).2 hN)`. Conclude with `(hn _).trans (by ring)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_isMu0 {N : ℕ} (hN : Even N) {P : PiBar D.host} {W : Omg D.host} {e : D.R.Psi → ℚ} {j : ℕ}
     {μ : HChar D.host.E} (h : IsMu0 P W e j μ) (he : ∀ g, ∃ z : ℤ, e g = z) :

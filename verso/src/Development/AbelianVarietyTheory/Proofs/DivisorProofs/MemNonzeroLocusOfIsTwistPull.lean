@@ -22,9 +22,9 @@ noncomputable section
 namespace GlobalTheory.MBLow.TranslateSection
 
 /- English proof (translation)
-Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Simplify using `[translT]`. Simplify using `only [translT, translPt, Category.assoc, lift_snd, lift_fst, Category.id_comp, comp_lift_assoc, lift_fst_assoc]`. Express the relevant statement in the definitionally equal form `(fst T A ≫ z) * ((fst T A ≫ z⁻¹) * snd T A) = snd T A`. Establish `e : fst T A ≫ z⁻¹ = (fst T A ≫ z)⁻¹` using `eq_inv_of_mul_eq_one_left (by rw [← MonObj.comp_mul, inv_mul_cancel, MonObj.comp_one])`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[e, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem translT_inv_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} (z : T ⟶ A) :
     translT A z⁻¹ ≫ translT A z = 𝟙 _ := by
@@ -37,7 +37,7 @@ theorem translT_inv_comp {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} (
     rw [e, mul_inv_cancel_left]
 
 /- English proof (translation)
-Introduce `S A _ T z y`. Use `⟨(translT A z⁻¹).left.base y, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f : T ⊗ A ⟶ T ⊗ A => f.left y) (translT_inv_comp A z)`. Simplify `h` using `[Scheme.Hom.comp_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem translT_surjective : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : Over S} (z : T ⟶ A), Function.Surjective (translT A z).left.base := by
   intro S A _ T z y
@@ -46,7 +46,7 @@ theorem translT_surjective : ∀ {S : Scheme.{0}} (A : Over S) [GrpObj A] {T : O
   simpa [Scheme.Hom.comp_apply] using h
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, Iso.eq_comp_inv, CartesianMonoidalCategory.leftUnitor_hom, mulT]`. Use `(lift_snd _ _).trans ?_` and prove the remaining obligations. Rewrite using `[mulA, MonObj.comp_pow, Category.comp_id]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mulT_eq {S : Scheme.{0}} (A : Over S) [GrpObj A] (m : ℕ) :
     mulT A (baseOver S) m = (λ_ A).hom ≫ mulA A m ≫ (λ_ A).inv := by
@@ -56,11 +56,11 @@ theorem mulT_eq {S : Scheme.{0}} (A : Over S) [GrpObj A] (m : ℕ) :
   rfl
 
 /- English proof (translation)
-Introduce `S _ P m hm y`. Establish `hLaw : Laws` using `GlobalTheory.firstFiveLaws.1`. Take `⟨-, -, hs, -⟩` from `hLaw.mulN S P m hm`. Take `⟨b, hb⟩` from `hs.surj ((λ_ P.A).hom.left y)`. Use `⟨(λ_ P.A).inv.left b, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrArg (fun f : baseOver S ⊗ P.A ⟶ baseOver S ⊗ P.A => f.left ((λ_ P.A).inv.left b)) (mulT_eq P.A m)`. Establish `h2` using `congrArg (fun f : baseOver S ⊗ P.A ⟶ baseOver S ⊗ P.A => f.left y) (λ_ P.A).hom_inv_id`. Establish `h3` using `congrArg (fun f : P.A ⟶ P.A => f.left b) (λ_ P.A).inv_hom_id`. Simplify using `only [Over.comp_left, Scheme.Hom.comp_apply, Over.id_left] at h1 h2 h3`. Establish `h2' : (λ_ P.A).inv.left ((λ_ P.A).hom.left y) = y` using `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3' : (λ_ P.A).hom.left ((λ_ P.A).inv.left b) = b` using `h3`. Rewrite using `[h1, h3', hb, h2']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulT_surjective : ∀ {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolAV S) (m : ℕ), 1 ≤ m → Function.Surjective (mulT P.A (baseOver S) m).left.base := by
   intro S _ P m hm y
@@ -77,7 +77,7 @@ theorem mulT_surjective : ∀ {S : Scheme.{0}} [IsLocallyNoetherian S] (P : PolA
   rw [h1, h3', hb, h2']
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twistedPullback_nonvanishing_of_pulledSection`.
+A detailed English derivation is pending.
 -/
 theorem mem_nonzeroLocus_of_isTwistPull : ∀ {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left}, L.IsLB → ∀ {T : Over S} (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶ A) (hm : ψ ≫ snd T A = m) (a b : ℤ) (α : LB.Gen (LB.LinComb L (K := Fin 2) ![(snd T A).left, m.left] ![a, -b])) (s : LB.Sec (LPow A L b T)) (s' : LB.Sec (LPow A L a T)), IsTwistPull A L ψ m hm a b α s s' → ∀ p : (T ⊗ A).left, ψ.left.base p ∈ nonzeroLocus s → p ∈ nonzeroLocus s' := GlobalTheory.T.twistedPullback_nonvanishing_of_pulledSection
 

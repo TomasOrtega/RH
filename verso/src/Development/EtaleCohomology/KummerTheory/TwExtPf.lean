@@ -6,7 +6,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 namespace LateralTheory.KummerTheory.TwExtPf
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `Sheaf.isSeparated M U S hS x y (fun V g hg => hP _ g hg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sep {M : Shv ℤ} {U : Scheme.{0}} (x y : Sec M U)
     (h : Loc U fun V g => Sec.res g x = Sec.res g y) : x = y := by
@@ -14,13 +14,13 @@ theorem sep {M : Shv ℤ} {U : Scheme.{0}} (x y : Sec M U)
   exact Sheaf.isSeparated M U S hS x y (fun V g hg => hP _ g hg)
 
 /- English proof (translation)
-Introduce `Q _ i M φ ψ h`. Use `(hM ℤ φ).2.2.2 ψ fun U a => ?_` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `(hT Q i).1 U a`. Use `sep _ _ ⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Establish `nφ : Sec.res g (Sec.map φ a) = Sec.map φ (Sec.res g a)` using `congrArg (fun f => (ModuleCat.Hom.hom f) a) (φ.hom.naturality g.op).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `nψ : Sec.res g (Sec.map ψ a) = Sec.map ψ (Sec.res g a)` using `congrArg (fun f => (ModuleCat.Hom.hom f) a) (ψ.hom.naturality g.op).symm`. Use `show Sec.res g (Sec.map φ a) = Sec.res g (Sec.map ψ a)`. Rewrite using `[nφ, nψ]`. Establish `ha : Sec.res g a = 0 ∨ ∃ (ζ : Prim Q Γ(V, ⊤)) (c : ℕ), (Sec.res g a : Sec (LateralTheory.KummerTheory.BockCut.TZ Q i) V) = c • LateralTheory.KummerTheory.BockCut.genZ i ζ` using `hP V g hg`. Break down `ha with h0 | ⟨ζ, c, hc⟩` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : (Sec.res g a : Sec (LateralTheory.KummerTheory.BockCut.TZ Q i) V) = 0` using `h0`. Rewrite using `[e]`. Simplify using `only [Sec.map, map_zero]`. Rewrite using `[hc]`. Establish `hh` using `h V ζ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Sec.map] at hh ⊢`. Rewrite using `[map_nsmul, map_nsmul, hh]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TwExt_of (hT : LateralTheory.EtaleFoundations.EtaleTateTwistSectionsLocallyGenerated) (hM : LateralTheory.EtaleFoundations.EtaleSheafMonoEpiSectionCriteria) :
     LateralTheory.KummerTheory.BockCut.TwExt := by

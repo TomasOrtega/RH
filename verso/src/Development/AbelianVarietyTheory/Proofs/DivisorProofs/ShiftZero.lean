@@ -21,7 +21,7 @@ variable {n : ℕ} {V : Scheme.{0}}
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Simplify using `[shift]`. Use the proof step `@[reassoc (attr := simp)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ι_shift (k h : ZMod n) :
     Sigma.ι (fun _ : ZMod n => V) h ≫ shift n V k = Sigma.ι (fun _ : ZMod n => V) (h + k) := by
@@ -29,7 +29,7 @@ theorem ι_shift (k h : ZMod n) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use extensionality with `h`. Simplify using `[shift]`. Use the proof step `@[simp]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_proj (k : ZMod n) : shift n V k ≫ proj n V = proj n V := by
   ext h
@@ -37,7 +37,7 @@ theorem shift_proj (k : ZMod n) : shift n V k ≫ proj n V = proj n V := by
 
 @[simp]
 /- English proof (translation)
-Establish `e` using `sigmaMk_mk (fun _ : ZMod n => V) h x`. Express the relevant statement in the definitionally equal form `((sigmaMk (fun _ : ZMod n => V)).symm ((Sigma.ι (fun _ : ZMod n => V) h).base x)).1 = h`. Establish `e' : (sigmaMk (fun _ : ZMod n => V)).symm ((Sigma.ι (fun _ : ZMod n => V) h).base x) = ⟨h, x⟩` using `(sigmaMk (fun _ : ZMod n => V)).symm_apply_eq.mpr e.symm`. Rewrite using `[e']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem idx_ι (h : ZMod n) (x : V) : idx n V ((Sigma.ι (fun _ : ZMod n => V) h).base x) = h := by
   have e := sigmaMk_mk (fun _ : ZMod n => V) h x

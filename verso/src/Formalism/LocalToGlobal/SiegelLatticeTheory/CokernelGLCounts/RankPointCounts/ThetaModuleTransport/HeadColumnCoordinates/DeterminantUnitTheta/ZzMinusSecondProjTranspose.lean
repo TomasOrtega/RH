@@ -24,14 +24,14 @@ Both sides reduce to the same expression.
 theorem secondProj_apply (x : E) : ph2 g x = (g.e x).2 := rfl
 
 /- English proof (translation)
-Rewrite using `[← MulEquiv.isUnit_map g.e.toMulEquiv, Prod.isUnit_iff, isUnit_iff_ne_zero, isUnit_iff_ne_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_iff_ph (x : E) : IsUnit x ↔ ph1 g x ≠ 0 ∧ ph2 g x ≠ 0 := by
   rw [← MulEquiv.isUnit_map g.e.toMulEquiv, Prod.isUnit_iff, isUnit_iff_ne_zero, isUnit_iff_ne_zero]
   rfl
 
 /- English proof (translation)
-Rewrite using `[← g.e.injective.eq_iff, Prod.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_iff_ph (x y : E) : x = y ↔ ph1 g x = ph1 g y ∧ ph2 g x = ph2 g y := by
   rw [← g.e.injective.eq_iff, Prod.ext_iff]
@@ -40,7 +40,7 @@ theorem eq_iff_ph (x y : E) : x = y ↔ ph1 g x = ph1 g y ∧ ph2 g x = ph2 g y 
 abbrev tau0 (g : SplitG M.L) (T T' : F) : E := g.e.symm (-T / (g.q : F), T' / (g.q : F))
 
 /- English proof (translation)
-Unfold `ZZm HermSp.ZZplusOf`. Rewrite using `[hs]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, Matrix.smul_apply, firstProj_apply, cor]`. Apply the tactic sequence `split_ifs <;> simp [div_eq_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzMinus_firstProj_smul (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (ZZm g Zh T T').map (ph1 g) = (g.q : F)⁻¹ • Zh.map (ph1 g) := by
@@ -51,7 +51,7 @@ theorem zzMinus_firstProj_smul (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)
   split_ifs <;> simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Unfold `ZZm HermSp.ZZplusOf`. Rewrite using `[hs]`. Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, Matrix.smul_apply, secondProj_apply, cor, Matrix.transpose_apply]`. Apply the tactic sequence `split_ifs <;> simp [div_eq_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzMinus_secondProj_transpose (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (ZZm g Zh T T').map (ph2 g) = (-(g.q : F)⁻¹) • (Zh.map (ph2 g)).transpose := by
@@ -63,16 +63,16 @@ theorem zzMinus_secondProj_transpose (hs : M.split = some g) (Zh : Matrix (Fin (
   split_ifs <;> simp [div_eq_inv_mul]
 
 /- English proof (translation)
-Conclude with `RingHom.map_det φ A`.
+A detailed English derivation is pending.
 -/
 theorem det_ph {n : Type} [Fintype n] [DecidableEq n] (φ : E →+* F) (A : Matrix n n E) :
     φ A.det = (A.map φ).det := by
   exact RingHom.map_det φ A
 
 /- English proof (translation)
-Establish `hq : (g.q : F) ≠ 0` using `by exact_mod_cast g.q_irr.ne_zero`. Rewrite `hu`, the goal using `[isUnit_iff_ph (g := g)]`. Take `⟨h1, h2⟩` from `hu`. Prove the components needed by the constructor for the conclusion. Rewrite using `[det_ph, zzMinus_firstProj_smul hs, Matrix.det_smul, ← det_ph]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero hq)) h1`. Rewrite using `[det_ph, zzMinus_secondProj_transpose hs, Matrix.det_smul, Matrix.det_transpose, ← det_ph]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr (inv_ne_zero hq))) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_zzm (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
     (hu : IsUnit Zh.det) : IsUnit (ZZm g Zh T T').det := by
@@ -86,7 +86,7 @@ theorem unit_zzm (hs : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)
     exact mul_ne_zero (pow_ne_zero _ (neg_ne_zero.mpr (inv_ne_zero hq))) h2
 
 /- English proof (translation)
-Unfold `ZZm`. Rewrite using `[← hZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem zzm_eq (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') :
@@ -97,11 +97,11 @@ theorem zzm_eq (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat
 abbrev kapR (Zm : Matrix (Fin (r + 1)) (Fin (r + 1)) E) : E := Zm⁻¹ (Fin.last r) (Fin.last r)
 
 /- English proof (translation)
-Unfold `laG`. Establish `hcoe : (fun i => ((Z.Z.mulVec m i : M.R) : E)) = (Z.Z.map M.R.subtype).mulVec (fun j => (m j : E))`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[hcoe]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ' : Z.Z.map M.R.subtype = ZZm g Zh T T' - Matrix.of fun a b => cor r a b (tau0 g T T')`. Rewrite using `[zzm_eq (g := g) Zh T T' Z hZ, add_sub_cancel_right]`. Establish `hC : (Matrix.of fun a b => cor r a b (tau0 g T T')).mulVec (fun j => (m j : E)) = Pi.single (Fin.last r) (tau0 g T T' * (m (Fin.last r) : E))`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = Fin.last r <;> simp [Matrix.mulVec, dotProduct, cor, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hZ', Matrix.sub_mulVec, hC, Matrix.mulVec_sub, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec, Matrix.mulVec_single]`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, Matrix.col_apply, op_smul_eq_mul]`. Unfold `kapR`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem laG_mulVec (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M.Mat (r + 1))
     (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (hu : IsUnit (ZZm g Zh T T').det)
@@ -126,9 +126,9 @@ theorem laG_mulVec (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) (Z : M
   ring
 
 /- English proof (translation)
-Unfold `laG eV`. Establish `e : (fun i => (((Pi.single (Fin.last r) (1 : M.R) : Fin (r + 1) → M.R) i : M.R) : E)) = (Pi.single (Fin.last r) (1 : E) : Fin (r + 1) → E)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i = Fin.last r <;> simp [h]`. Rewrite using `[e, Matrix.mulVec_single]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[kapR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem laG_e (Zm : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     laG Zm (eV (M := M) r) = kapR Zm := by

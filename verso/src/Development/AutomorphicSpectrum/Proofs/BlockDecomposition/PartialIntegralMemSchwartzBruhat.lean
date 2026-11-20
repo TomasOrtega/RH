@@ -6,13 +6,11 @@ open MeasureTheory MeasureTheory.Measure GlobalTheory.SplitWeil PositivityTheory
 namespace GlobalTheory.CompanionTheory.TestFunctionFibreIntegral
 
 /- English proof (translation)
-Take `⟨hF, hc⟩` from `mem_SB_iff.1 F.2`. Establish `hK : IsCompact (Prod.snd '' tsupport (F : A × B → ℂ))` using `hc.isCompact.image continuous_snd`. Establish `hopen : IsOpen {p : A × B | (F : A × B → ℂ) p = (F : A × B → ℂ) (a₀, p.2)}`. Establish `h2 : IsLocallyConstant (fun p : A × B => (F : A × B → ℂ) p - (F : A × B → ℂ) (a₀, p.2))` using `hF.sub (hF.comp_continuous (by fun_prop))`. Establish `h3` using `h2.isOpen_fiber 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h3` using `[Set.preimage, sub_eq_zero]`. Take `⟨U, V, hU, -, haU, hKV, hUV⟩` from `generalized_tube_lemma (isCompact_singleton (x := a₀)) hK hopen (by`. Introduce and unpack `⟨a, b⟩ ⟨ha, -⟩`. Establish `ha' : a = a₀` using `ha`. Substitute `ha'` using the available equality.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Substitute using the available equality.
 
-Use the proof step `rfl)`. Use `filter_upwards [hU.mem_nhds (haU rfl)] with a ha b`. Distinguish the cases in `hb : b ∈ Prod.snd '' tsupport (F : A × B → ℂ)`. Conclude with `hUV (Set.mk_mem_prod ha (hKV hb))`. Establish `h1 : (a, b) ∉ tsupport (F : A × B → ℂ)` using `fun h => hb ⟨_, h, rfl⟩`.
-
-Establish `h2 : (a₀, b) ∉ tsupport (F : A × B → ℂ)` using `fun h => hb ⟨_, h, rfl⟩`. Rewrite using `[image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_slice_eq {A B : Type} [TopologicalSpace A] [TopologicalSpace B]
     (F : SB (A × B)) (a₀ : A) :
@@ -39,11 +37,11 @@ theorem eventually_slice_eq {A B : Type} [TopologicalSpace A] [TopologicalSpace 
     rw [image_eq_zero_of_notMem_tsupport h1, image_eq_zero_of_notMem_tsupport h2]
 
 /- English proof (translation)
-Introduce `A B _ _ _ _ _ _ _ _ _ _ μ _ w _ F`. Take `⟨-, hc⟩` from `mem_SB_iff.1 F.2`. Use `mem_SB_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `a₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filter_upwards [eventually_slice_eq F a₀] with a ha`. Simplify using `only [ha]`. Use `HasCompactSupport.intro (hc.isCompact.image continuous_fst) ?_` and prove the remaining obligations. Introduce `a ha`. Establish `h0 : ∀ b, (F : A × B → ℂ) (a, b) = 0` using `fun b => image_eq_zero_of_notMem_tsupport fun h => ha ⟨_, h, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, zero_mul, integral_zero]`.
+A detailed English derivation is pending.
 -/
 theorem integral_mem_SB : ∀ (A B : Type) [TopologicalSpace A] [T2Space A] [LocallyCompactSpace A]
     [TotallyDisconnectedSpace A] [TopologicalSpace B] [T2Space B] [LocallyCompactSpace B]

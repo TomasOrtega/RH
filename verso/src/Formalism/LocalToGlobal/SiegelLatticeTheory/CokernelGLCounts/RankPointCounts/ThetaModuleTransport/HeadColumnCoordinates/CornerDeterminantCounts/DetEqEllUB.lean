@@ -13,7 +13,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[hY]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem head_map {Z : M.Mat (r + 1)} {Y : M.Mat r} (hY : ∀ a b : Fin r, Y.Z a b = Z.Z a.castSucc b.castSucc) :
     (Z.Z.map M.R.subtype).submatrix Fin.castSucc Fin.castSucc = Y.Z.map M.R.subtype := by
@@ -21,7 +21,7 @@ theorem head_map {Z : M.Mat (r + 1)} {Y : M.Mat r} (hY : ∀ a b : Fin r, Y.Z a 
   simp [hY]
 
 /- English proof (translation)
-Rewrite using `[det_schur _ (by rw [head_map hY]; exact Y.unit), head_map hY, bCls, ellU_mk, lamE_apply]`. Use `congr 1`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.map_apply, hal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -37,13 +37,13 @@ theorem det_eq_ellU_b {Z : M.Mat (r + 1)} {Y : M.Mat r} {al : Fin r → M.R}
   rfl
 
 /- English proof (translation)
-Introduce `Z₁ Z₂ Y₁ Y₂ be₁ be₂ al₁ al₂ hY hb hdet`. Establish `hY₁ : ∀ a b : Fin r, Y₁.Z a b = Z₁.Z a.castSucc b.castSucc` using `fun a b => (hY a b).1`. Establish `hY₂ : ∀ a b : Fin r, Y₂.Z a b = Z₂.Z a.castSucc b.castSucc` using `fun a b => (hY a b).2`. Establish `hbe₁ : ∀ a : Fin r, be₁ a = Z₁.Z a.castSucc (Fin.last r)` using `fun a => (hb a).1`. Establish `hbe₂ : ∀ a : Fin r, be₂ a = Z₂.Z a.castSucc (Fin.last r)` using `fun a => (hb a).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hal₁ : ∀ a : Fin r, al₁ a = Z₁.Z (Fin.last r) a.castSucc` using `fun a => (hb a).2.2.1`. Establish `hal₂ : ∀ a : Fin r, al₂ a = Z₂.Z (Fin.last r) a.castSucc` using `fun a => (hb a).2.2.2`. Establish `hζ : ellU hY₁ hal₁ (bCls Z₁.Z) = ellU hY₂ hal₂ (bCls Z₂.Z)`. Establish `h` using `hdet`. Rewrite `h` using `[headDet, headDet, head_map hY₁, head_map hY₂, det_eq_ellU_b hY₁ hal₁, det_eq_ellU_b hY₂ hal₂]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `u₁` using `Y₁.unit`. Establish `u₂` using `Y₂.unit`. Establish `h' : ((Y₁.Z.map M.R.subtype).det * (Y₂.Z.map M.R.subtype).det) * ellU hY₂ hal₂ (bCls Z₂.Z) = ((Y₁.Z.map M.R.subtype).det * (Y₂.Z.map M.R.subtype).det) * ellU hY₁ hal₁ (bCls Z₁.Z)`. Take the linear combination `h`. Conclude with `((u₁.mul u₂).mul_left_cancel h').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Model.nIsoBA]`. Conclude with `Nat.card_congr (isoEquivU hY₁ hal₁ hY₂ hal₂ hbe₁ hbe₂ hζ)`.
+A detailed English derivation is pending.
 -/
 theorem mbeU_holds (M : Model F E) (r : ℕ) : MbeU M r := by
   intro Z₁ Z₂ Y₁ Y₂ be₁ be₂ al₁ al₂ hY hb hdet

@@ -6,19 +6,15 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `split_ifs with hm`. Substitute `hm` using the available equality. Simplify using `only [Matrix.mul_zero, trace_zero, AddChar.map_zero_eq_one, sum_const, card_univ, nsmul_eq_mul, mul_one]`. Rewrite using `[show Fintype.card (Matrix (Fin r) (Fin r) k) = Fintype.card (Fin r → Fin r → k) from rfl]`. Simplify using `[Fintype.card_fun, ← pow_mul, sq]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, m i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hm (Matrix.ext h)`. Establish `h1` using `hψ hij`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, ψ (m i j * c) ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `h1` to reduce the goal to its premises. Use extensionality with `c`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[AddChar.mulShift_apply, h]`. Use `set a₀ : Matrix (Fin r) (Fin r) k := Matrix.single j i c`. Establish `ha₀ : trace (a₀ * m) = m i j * c`. Simplify using `[a₀, Matrix.trace_single_mul, mul_comm]`. Use `set S := ∑ a : Matrix (Fin r) (Fin r) k, ψ (trace (a * m))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hS : S = ψ (trace (a₀ * m)) * S`. Rewrite using `[Finset.mul_sum]`. Use `Fintype.sum_equiv (Equiv.subRight a₀) _ _ (fun a => ?_)` and prove the remaining obligations. Simplify using `only [Equiv.subRight_apply, ← AddChar.map_add_eq_mul, Matrix.sub_mul, trace_sub]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hS` using `[ha₀]`. Establish `: (1 - ψ (m i j * c)) * S = 0` using `by rw [sub_mul, one_mul, ← hS, sub_self]`. Break down `mul_eq_zero.mp this with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.mp h).symm hc`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sum_addChar_trace_mul_eq {k : Type} [Field k] [Fintype k] [DecidableEq k] {R : Type}
     [CommRing R] [IsDomain R] (ψ : AddChar k R) (hψ : ψ.IsPrimitive) {r : ℕ}
@@ -56,21 +52,21 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ _ _ R _ _ ψ ξ r hψ hξ`. Take `⟨hsing, hinv⟩` from `GlobalTheory.matrixGaussSum_singular_and_invertible k R ψ ξ r hψ hξ`. Set `S : Matrix (Fin r) (Fin r) k → R` to `fun a => ∑ x : GL (Fin r) k, (((ξ (Matrix.GeneralLinearGroup.det x))⁻¹ : Rˣ) : R) * ψ (trace (a * (x : Matrix (Fin r) (Fin r) k)))`. Establish `key1 : ∑ a, S a * ψ (-trace a) = (Fintype.card k : R) ^ (r ^ 2)`. Simplify using `only [S, Finset.sum_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Establish `hx : ∀ x : GL (Fin r) k, ∑ a : Matrix (Fin r) (Fin r) k, (((ξ (Matrix.GeneralLinearGroup.det x))⁻¹ : Rˣ) : R) * ψ (trace (a * (x : Matrix (Fin r) (Fin r) k))) * ψ (-trace a) = (((ξ (Matrix.GeneralLinearGroup.det x))⁻¹ : Rˣ) : R) * ∑ a : Matrix (Fin r) (Fin r) k, ψ (trace (a * ((x …`. Introduce `x`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, ← AddChar.map_add_eq_mul, Matrix.mul_sub, Matrix.mul_one, trace_sub, sub_eq_add_neg]`. Repeatedly rewrite using `[hx, sum_addChar_trace_mul_eq ψ hψ]`. Rewrite using `[Finset.sum_eq_single 1]`. Simplify using the standard rewrite rules. Introduce `x _ hx1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg, mul_zero]`. Introduce `h`. Apply `hx1` to reduce the goal to its premises. Use `ext1`. Simplify using `using sub_eq_zero.mp h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `key2 : ∑ a, S a * ψ (-trace a) = ∑ g : GL (Fin r) k, S (g : Matrix (Fin r) (Fin r) k) * ψ (-trace (g : Matrix (Fin r) (Fin r) k))`. Use `symm`. Use `Fintype.sum_of_injective (fun g : GL (Fin r) k => (g : Matrix (Fin r) (Fin r) k)) (fun g h e => Units.ext e) _ _ ?_ (fun g => rfl)` and prove the remaining obligations. Introduce `a ha`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdet : a.det = 0`. Assume the negation of the conclusion as `h`. Conclude with `ha ⟨Matrix.GeneralLinearGroup.mkOfDetNeZero a h, rfl⟩`. Simplify using `only [S]`. Rewrite using `[hsing a hdet, zero_mul]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← key1, key2]`. Simplify using `only [S]`. Repeatedly rewrite using `[hinv]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[MonoidHom.inv_apply, AddChar.inv_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem matrixGaussSum_mul_dual_eq_card_pow : ∀ (k : Type) [Field k] [Fintype k] [DecidableEq k] (R : Type) [CommRing R] [IsDomain R] (ψ : AddChar k R) (ξ : kˣ →* Rˣ) (r : ℕ), ψ.IsPrimitive → ξ ≠ 1 → (∑ x : GL (Fin r) k, (((ξ (Matrix.GeneralLinearGroup.det x))⁻¹ : Rˣ) : R) * ψ (Matrix.trace (1 * (x : Matrix (Fin r) (Fin r) k)))) * (∑ x : GL (Fin r) k, (((ξ⁻¹ (Matrix.GeneralLinearGroup.det x))⁻¹ : Rˣ) : R) * ψ⁻¹ (Matrix.trace (1 * (x : Matrix (Fin r) (Fin r) k)))) = (Fintype.card k : R) ^ (r ^ 2) := by
   intro k _ _ _ R _ _ ψ ξ r hψ hξ

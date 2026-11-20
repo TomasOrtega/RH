@@ -13,7 +13,7 @@ noncomputable section
 namespace GermCompletionEquiv
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `AdicCompletion.mk_surjective J R x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk, Ideal.Quotient.factor_mk, AdicCompletion.Ideal.mk_eq_mk J h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem factorPow_evalₐ {R : Type} [CommRing R] (J : Ideal R) {k l : ℕ} (h : k ≤ l) (x : AdicCompletion J R) :
     Ideal.Quotient.factorPow J h (AdicCompletion.evalₐ J l x) = AdicCompletion.evalₐ J k x := by
@@ -24,28 +24,28 @@ theorem factorPow_evalₐ {R : Type} [CommRing R] (J : Ideal R) {k l : ℕ} (h :
 variable {σ : Type} [Fintype σ] (w : σ → ℂ)
 
 /- English proof (translation)
-Rewrite using `[holGermPointIdeal, RingHom.mem_ker, map_sub, holGermValue_polyGerm, eval_C, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_polyGerm_C_mem (f : holGerms w) :
     f - polyGerm w (C (holGermValue w f)) ∈ holGermPointIdeal w := by
   rw [holGermPointIdeal, RingHom.mem_ker, map_sub, holGermValue_polyGerm, eval_C, sub_self]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing f with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ k ih`. Take `⟨q, hq⟩` from `ih f`. Establish `hkey : holGermPointIdeal w ^ k = Ideal.span (polyGerm w '' ↑(Ideal.span (Set.range fun i : σ => (X i - C (w i) : MvPolynomial σ ℂ)) ^ k))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : Ideal.span (Set.range fun i : σ => polyGerm w (X i - C (w i))) = (Ideal.span (Set.range fun i : σ => (X i - C (w i) : MvPolynomial σ ℂ))).map (polyGerm w)`. Rewrite using `[Ideal.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[hH σ w, e, ← Ideal.map_pow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `step : ∀ g ∈ holGermPointIdeal w ^ k, ∃ q' : MvPolynomial σ ℂ, g - polyGerm w q' ∈ holGermPointIdeal w ^ (k + 1)`. Introduce `g hg`. Rewrite `hg` using `[hkey]`. Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Take `⟨p, -, rfl⟩` from `hx`. Conclude with `⟨p, by simp⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ h1 h2`. Take `⟨q1, h1⟩` from `h1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨q2, h2⟩` from `h2`. Use `⟨q1 + q2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `smul a x hx h`. Take `⟨q1, h1⟩` from `h`. Establish `hx' : x ∈ holGermPointIdeal w ^ k` using `hkey ▸ hx`. Use `⟨C (holGermValue w a) * q1, ?_⟩` and prove the remaining obligations. Establish `e : a • x - polyGerm w (C (holGermValue w a) * q1) = polyGerm w (C (holGermValue w a)) * (x - polyGerm w q1) + (a - polyGerm w (C (holGermValue w a))) * x`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `add_mem (Ideal.mul_mem_left _ _ h1) ?_` and prove the remaining obligations. Rewrite using `[pow_succ']`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_mul (sub_polyGerm_C_mem w a) hx'`. Take `⟨q', hq'⟩` from `step _ hq`. Conclude with `⟨q + q', by rw [map_add, ← sub_sub]; exact hq'⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_sub_polyGerm_mem (hH : HolGermPointIdealSpan.Statement) (k : ℕ) (f : holGerms w) :
     ∃ q : MvPolynomial σ ℂ, f - polyGerm w q ∈ holGermPointIdeal w ^ k := by
@@ -93,15 +93,15 @@ theorem exists_sub_polyGerm_mem (hH : HolGermPointIdealSpan.Statement) (k : ℕ)
 variable (I : Ideal (MvPolynomial σ ℂ))
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, hi, rfl⟩` from `hx`. Conclude with `⟨i, hi, by simp⟩`. Consider the case `zero => exact ⟨0, I.zero_mem, by simp⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ h1 h2`. Take `⟨i1, hi1, h1⟩` from `h1`. Take `⟨i2, hi2, h2⟩` from `h2`. Use `⟨i1 + i2, I.add_mem hi1 hi2, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem h1 h2 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a x _ h`. Take `⟨i, hi, h⟩` from `h`. Take `⟨q0, hq0⟩` from `exists_sub_polyGerm_mem w hH k a`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨q0 * i, I.mul_mem_left _ hi, ?_⟩` and prove the remaining obligations. Establish `e : a • x - polyGerm w (q0 * i) = (a - polyGerm w q0) * x + polyGerm w q0 * (x - polyGerm w i)`. Rewrite using `[smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem (Ideal.mul_mem_right _ _ hq0) (Ideal.mul_mem_left _ _ h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_sub_polyGerm_mem_of_mem_map (hH : HolGermPointIdealSpan.Statement) (k : ℕ) {x : holGerms w}
     (hx : x ∈ I.map (polyGerm w)) :
@@ -132,14 +132,14 @@ def phi : MvPolynomial σ ℂ ⧸ I →+* holGerms w ⧸ I.map (polyGerm w) :=
   Ideal.quotientMap _ (polyGerm w) Ideal.le_comap_map
 
 /- English proof (translation)
-The claim follows from `Ideal.quotientMap_mk`.
+A detailed English derivation is pending.
 -/
 theorem phi_mk (q : MvPolynomial σ ℂ) :
     phi w I (Ideal.Quotient.mk I q) = Ideal.Quotient.mk _ (polyGerm w q) :=
   Ideal.quotientMap_mk
 
 /- English proof (translation)
-Use `(Ideal.pow_right_mono ?_ k).trans (Ideal.le_comap_pow _ k)` and prove the remaining obligations. Rewrite using `[polyPointIdeal, Ideal.map_le_iff_le_comap, Ideal.comap_comap]`. Introduce `q hq`. Rewrite using `[Ideal.mem_comap, RingHom.comp_apply, phi_mk, germQuotPointIdeal]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [holGermPointIdeal, RingHom.mem_ker, holGermValue_polyGerm]; exact hq)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_le_comap (k : ℕ) :
     polyPointIdeal I w ^ k ≤ (germQuotPointIdeal I w ^ k).comap (phi w I) := by
@@ -154,7 +154,7 @@ def psi (k : ℕ) : (MvPolynomial σ ℂ ⧸ I) ⧸ polyPointIdeal I w ^ k →+*
   Ideal.quotientMap _ (phi w I) (pow_le_comap w I k)
 
 /- English proof (translation)
-Rewrite using `[psi, Ideal.quotientMap_mk, phi_mk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_mk (k : ℕ) (q : MvPolynomial σ ℂ) :
     psi w I k (Ideal.Quotient.mk _ (Ideal.Quotient.mk I q)) =
@@ -162,9 +162,9 @@ theorem psi_mk (k : ℕ) (q : MvPolynomial σ ℂ) :
   rw [psi, Ideal.quotientMap_mk, phi_mk]
 
 /- English proof (translation)
-Introduce `y`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective b`. Take `⟨q, hq⟩` from `exists_sub_polyGerm_mem w hH k f`. Use `⟨Ideal.Quotient.mk _ (Ideal.Quotient.mk I q), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[psi_mk, Ideal.Quotient.eq, germQuotPointIdeal, ← Ideal.map_pow, ← map_sub]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [← neg_sub]; exact neg_mem hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_surjective (hH : HolGermPointIdealSpan.Statement) (k : ℕ) : Function.Surjective (psi w I k) := by
   intro y
@@ -176,11 +176,11 @@ theorem psi_surjective (hH : HolGermPointIdealSpan.Statement) (k : ℕ) : Functi
   exact Ideal.mem_map_of_mem _ (by rw [← neg_sub]; exact neg_mem hq)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `hy` using `[psi_mk, Ideal.Quotient.eq_zero_iff_mem, germQuotPointIdeal, ← Ideal.map_pow, Ideal.mem_quotient_iff_mem_sup, Submodule.mem_sup]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨μ, hμ, ι, hι, he⟩` from `hy`. Take `⟨i, hi, hi'⟩` from `exists_sub_polyGerm_mem_of_mem_map w I hH k hι`. Establish `hqi : polyGerm w (q - i) ∈ holGermPointIdeal w ^ k`. Rewrite using `[map_sub, ← he]`. Use `add_mem hμ hi' using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hq` using `hP σ w k (q - i) hqi`. Establish `e : q = (q - i) + i` using `by ring`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, polyPointIdeal, ← Ideal.map_pow, e, map_add, Ideal.Quotient.eq_zero_iff_mem.2 hi, add_zero]`. Conclude with `Ideal.mem_map_of_mem _ hq`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_injective (hH : HolGermPointIdealSpan.Statement) (hP : PolyGermPointPow.Statement) (k : ℕ) :
     Function.Injective (psi w I k) := by
@@ -203,7 +203,7 @@ theorem psi_injective (hH : HolGermPointIdealSpan.Statement) (hP : PolyGermPoint
   exact Ideal.mem_map_of_mem _ hq
 
 /- English proof (translation)
-Use `RingHom.ext fun y => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨q, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Simplify using `only [RingHom.comp_apply, psi_mk, Ideal.Quotient.factor_mk]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem psi_factorPow {k l : ℕ} (h : k ≤ l) :
     (Ideal.Quotient.factorPow (germQuotPointIdeal I w) h).comp (psi w I l) =
@@ -221,7 +221,7 @@ def psiEquiv (hH : HolGermPointIdealSpan.Statement) (hP : PolyGermPointPow.State
 variable (hH : HolGermPointIdealSpan.Statement) (hP : PolyGermPointPow.Statement)
 
 /- English proof (translation)
-Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorPow (germQuotPointIdeal I w) h (psi w I l (AdicCompletion.evalₐ (polyPointIdeal I w) l x)) = psi w I k (AdicCompletion.evalₐ (polyPointIdeal I w) k x)`. Rewrite using `[← RingHom.comp_apply (Ideal.Quotient.factorPow (germQuotPointIdeal I w) h), psi_factorPow, RingHom.comp_apply, factorPow_evalₐ]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toCompl_compat {k l : ℕ} (h : k ≤ l) :
     (Ideal.Quotient.factorPow (germQuotPointIdeal I w) h).comp
@@ -241,7 +241,7 @@ def toCompl : AdicCompletion (polyPointIdeal I w) (MvPolynomial σ ℂ ⧸ I) �
     (fun h => toCompl_compat w I h)
 
 /- English proof (translation)
-Rewrite using `[toCompl, AdicCompletion.evalₐ_liftRingHom _ _ (fun h => toCompl_compat w I h)]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalₐ_toCompl (k : ℕ) (x : AdicCompletion (polyPointIdeal I w) (MvPolynomial σ ℂ ⧸ I)) :
     AdicCompletion.evalₐ (germQuotPointIdeal I w) k (toCompl w I x) =
@@ -250,9 +250,9 @@ theorem evalₐ_toCompl (k : ℕ) (x : AdicCompletion (polyPointIdeal I w) (MvPo
   try rfl
 
 /- English proof (translation)
-Apply `(psiEquiv w I hH hP k).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `psi w I k _ = _`. Rewrite using `[← RingHom.comp_apply (psi w I k), ← psi_factorPow w I h, RingHom.comp_apply]`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.factorPow (germQuotPointIdeal I w) h ((psiEquiv w I hH hP l) ((psiEquiv w I hH hP l).symm _)) = _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[RingEquiv.apply_symm_apply, factorPow_evalₐ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fromCompl_compat {k l : ℕ} (h : k ≤ l)
     (x : AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (polyGerm w))) :
@@ -275,7 +275,7 @@ def fromCompl : AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (p
     (fun h => RingHom.ext fun x => fromCompl_compat w I hH hP h x)
 
 /- English proof (translation)
-Rewrite using `[fromCompl, AdicCompletion.evalₐ_liftRingHom _ _ (fun h => RingHom.ext fun x => fromCompl_compat w I hH hP h x)]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalₐ_fromCompl (k : ℕ) (x : AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (polyGerm w))) :
     AdicCompletion.evalₐ (polyPointIdeal I w) k (fromCompl w I hH hP x) =
@@ -285,7 +285,7 @@ theorem evalₐ_fromCompl (k : ℕ) (x : AdicCompletion (germQuotPointIdeal I w)
   try rfl
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.ext_evalₐ fun k => by rw [evalₐ_fromCompl, evalₐ_toCompl] exact (psiEquiv w I hH hP k).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 theorem fromCompl_toCompl (x : AdicCompletion (polyPointIdeal I w) (MvPolynomial σ ℂ ⧸ I)) :
     fromCompl w I hH hP (toCompl w I x) = x :=
@@ -294,7 +294,7 @@ theorem fromCompl_toCompl (x : AdicCompletion (polyPointIdeal I w) (MvPolynomial
     exact (psiEquiv w I hH hP k).symm_apply_apply _
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.ext_evalₐ fun k => by rw [evalₐ_toCompl, evalₐ_fromCompl] exact (psiEquiv w I hH hP k).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem toCompl_fromCompl (x : AdicCompletion (germQuotPointIdeal I w) (holGerms w ⧸ I.map (polyGerm w))) :
     toCompl w I (fromCompl w I hH hP x) = x :=
@@ -307,9 +307,9 @@ end GermCompletionEquiv
 open GermCompletionEquiv in
 
 /- English proof (translation)
-Introduce `σ _ I w`. Use `⟨RingEquiv.ofRingHom (fromCompl w I hH hP) (toCompl w I) (RingHom.ext fun x => fromCompl_toCompl w I hH hP x) (RingHom.ext fun x => toCompl_fromCompl w I hH hP x), fun q => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fromCompl w I hH hP _ = _`. Use `AdicCompletion.ext_evalₐ fun k => ?_` and prove the remaining obligations. Rewrite using `[evalₐ_fromCompl, AdicCompletion.evalₐ_of, AdicCompletion.evalₐ_of, RingEquiv.symm_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(psi_mk w I k q).symm`.
+A detailed English derivation is pending.
 -/
 theorem GermCompletionEquiv.proof (hH : HolGermPointIdealSpan.Statement) (hP : PolyGermPointPow.Statement) :
     GermCompletionEquiv.Statement := by

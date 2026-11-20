@@ -19,7 +19,7 @@ open GlobalTheory.FlagChain (Le)
 namespace GlobalTheory.FlagPairCommon
 
 /- English proof (translation)
-Establish `: (Scheme.Modules.restrictFunctor j).PreservesMonomorphisms` using `⟨fun {F G} φ _ => mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, app_injective_of_mono φ (j ''ᵁ W)⟩⟩`. Conclude with `Functor.preservesMonomorphisms.of_iso (Scheme.Modules.restrictFunctorIsoPullback j)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem preservesMonomorphisms_pullback {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenImmersion j] :
     (Scheme.Modules.pullback j).PreservesMonomorphisms := by
@@ -28,7 +28,7 @@ theorem preservesMonomorphisms_pullback {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpen
   exact Functor.preservesMonomorphisms.of_iso (Scheme.Modules.restrictFunctorIsoPullback j)
 
 /- English proof (translation)
-Use `preservesMonomorphisms_pullback j` as an intermediate fact. Use `(Scheme.Modules.pullback j).preservesHomology_of_preservesMonos_and_cokernels` as an intermediate fact. Conclude with `(Scheme.Modules.pullback j).preservesFiniteLimits_of_preservesHomology`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem preservesFiniteLimits_pullback {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenImmersion j] :
     PreservesFiniteLimits (Scheme.Modules.pullback j) := by
@@ -37,7 +37,7 @@ theorem preservesFiniteLimits_pullback {X Y : Scheme.{0}} (j : X ⟶ Y) [IsOpenI
   exact (Scheme.Modules.pullback j).preservesFiniteLimits_of_preservesHomology
 
 /- English proof (translation)
-Take `⟨D, rfl⟩` from `EffCartierData.exists_idealSheaf_eq hI`. Conclude with `(D.keepsRegular_iff_effCartier g).1 (D.keepsRegular_of_notMem_support g hy)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem effCartier_comap {X Y : Scheme.{0}} [IsIntegral Y] (g : Y ⟶ X) {I : X.IdealSheafData}
     (hI : ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier I) {y : Y} (hy : g y ∉ I.support) :
@@ -48,7 +48,7 @@ theorem effCartier_comap {X Y : Scheme.{0}} [IsIntegral Y] (g : Y ⟶ X) {I : X.
 variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Use `charZero_of_injective_ringHom (R := O) (f := (B.X.evaluation ⊤ y trivial).hom.comp (algebraMap O Γ(B.X, ⊤))) ?_` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `g hg`. Assume the negation of the conclusion as `h0`. Conclude with `(B.X.evaluation_ne_zero_iff_mem_basicOpen (U := ⊤) y trivial (B.const g)).2 (B.gen_le_basicOpen h0 hy) hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem charZero_residueField [CharZero O] (B : Model O) {y : B.X} (hy : y ∈ B.gen) :
     CharZero (B.X.residueField y) := by
@@ -61,27 +61,25 @@ theorem charZero_residueField [CharZero O] (B : Model O) {y : B.X} (hy : y ∈ B
     (B.gen_le_basicOpen h0 hy) hg
 
 /- English proof (translation)
-Set `U : B.X.Opens` to `J.support.compl ⊓ B.gen`. Establish `hηU : genericPoint B.X ∈ U` using `⟨hJ, B.genericPoint_mem_gen⟩`. Take `⟨X'', b, hb, hbs, hiso⟩` from `GlobalTheory.ProjBlowup.exists_blowup B.str B.isProjOver J`. Establish `hbU : IsIso (b ∣_ U)` using `hiso U fun x hx => hx.1`. Establish `e₀ : (b ⁻¹ᵁ U).ι ≫ b = b ∣_ U ≫ U.ι` using `(morphismRestrict_ι b U).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsOpenImmersion ((b ⁻¹ᵁ U).ι ≫ b)` using `by rw [e₀]; infer_instance`. Establish `: Flat ((b ⁻¹ᵁ U).ι ≫ b ≫ B.str)` using `by rw [← Category.assoc]; infer_instance`. Establish `hV : GlobalTheory.IsNormalScheme (b ⁻¹ᵁ U).toScheme` using `.of_isOpenImmersion ((b ⁻¹ᵁ U).ι ≫ b)`. Take `⟨N, ν, hfin, hN, hpr, hfl, hν, hd⟩` from `GlobalTheory.ProjBlowup.exists_normal_model (b ≫ B.str) (b ⁻¹ᵁ U) hbs hV.pred fun x => by`. Establish `hy : ((b ⁻¹ᵁ U).ι ≫ b) x ∈ U` using `x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `charZero_residueField B hy.2` as an intermediate fact. Conclude with `charZero_of_injective_ringHom (((b ⁻¹ᵁ U).ι ≫ b).residueFieldMap x).hom.injective`. Establish `hνb : IsIso ((ν ≫ b) ∣_ U)`. Rewrite using `[morphismRestrict_comp]`. Conclude with `IsIso.comp_isIso' hν hbU`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty U` using `⟨⟨_, hηU⟩⟩`. Establish `: IsIntegral U.toScheme` using `isIntegral_of_isOpenImmersion U.ι`. Take `⟨c, hpb, hjr⟩` from `GlobalTheory.ProjBlowup.exists_section_of_isIso_restrict (ν ≫ b) U`. Establish `hjd : Dense (Set.range c)` using `hd.mono hjr`. Establish `hirr : IsIrreducible (Set.range c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ _).image c c.continuous.continuousOn`. Establish `: IrreducibleSpace N` using `(irreducibleSpace_def N).2 (by simpa [hjd.closure_eq] using hirr.closure)`. Establish `hN' : GlobalTheory.IsNormalScheme N` using `.of_pred hN`. Establish `: IsReduced N` using `isReduced_of_isReduced_stalk N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral N` using `isIntegral_of_irreducibleSpace_of_isReduced N`. Establish `: IsOpenImmersion c` using `MorphismProperty.of_isPullback hpb.flip (inferInstance : IsOpenImmersion U.ι)`. Establish `hc₁ : c ≫ ν ≫ b = U.ι` using `by simpa using hpb.w`. Set `B' : Model O` to `{ X := N, str := ν ≫ b ≫ B.str, isProjOver := hpr }`. Establish `hstr : (ν ≫ b) ≫ B.str = B'.str` using `Category.assoc ..`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsProper (ν ≫ b)` using `Model.isProper_of_comp_str (Z := B) (Z₁ := B') hstr`. Establish `hcη : c (genericPoint U) = genericPoint N` using `genericPoint_eq_of_isOpenImmersion c`. Establish `hη : (ν ≫ b) (genericPoint N) = genericPoint B.X`. Rewrite using `[← hcη, ← Scheme.Hom.comp_apply, hc₁]`. Conclude with `genericPoint_eq_of_isOpenImmersion U.ι`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsDominant (ν ≫ b)` using `⟨(dense_iff_closure_eq.2 (genericPoint_spec B.X)).mono (Set.singleton_subset_iff.2 ⟨_, hη⟩)⟩`. Establish `: Surjective (ν ≫ b)` using `surjective_of_isDominant_of_isClosed_range _ (ν ≫ b).isClosedMap.isClosed_range`. Set `f : Model.Hom B' B` to `⟨ν ≫ b, hstr⟩`. Establish `hdeg : (ν ≫ b).residueDegree (genericPoint N) ≠ 0`. Establish `e` using `CurveDegreesCompare.residueDegree_comp c (ν ≫ b) (genericPoint U)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hc₁, CurveDegreesCompare.residueDegree_of_isOpenImmersion, hcη]`. Conclude with `left_ne_zero_of_mul_eq_one e.symm`. Establish `hdim : B'.relDim ≤ B.relDim`. Establish `h` using `GlobalTheory.ProperCover.dim_le_of_residueDegree_pos (Z' := B'.X) (Z := B.X) (ν ≫ b) hη (Nat.pos_of_ne_zero hdeg)`. Rewrite `h` using `[B'.dim_eq, B.dim_eq]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : B'.relDim + 1 ≤ B.relDim + 1` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Use `⟨B', f, hη, hN', Nat.sub_eq_zero_of_le hdim, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap (ν ≫ b))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
-
-Use `effCartier_comap ν hb.1 (y := genericPoint N) fun h => hJ ?_` and prove the remaining obligations. Rewrite using `[← hη]`. Conclude with `(ProjBlowup.mem_support_comap J b _).1 h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_effCartier [CharZero O] (B : Model O) (hn : GlobalTheory.IsNormalScheme B.X) (J : B.X.IdealSheafData)
     (hJ : genericPoint B.X ∉ J.support) :
@@ -145,11 +143,9 @@ theorem exists_effCartier [CharZero O] (B : Model O) (hn : GlobalTheory.IsNormal
   exact (ProjBlowup.mem_support_comap J b _).1 h
 
 /- English proof (translation)
-Take `⟨B₁, f₁, h₁, n₁, d₁, c₁⟩` from `exists_effCartier B hn J hJ`. Take `⟨B₂, f₂, h₂, n₂, d₂, c₂⟩` from `exists_effCartier B₁ n₁ (J'.comap f₁.f) fun h => hJ' (h₁ ▸ (ProjBlowup.mem_support_comap J' f₁.f _).1 h)`. Use `⟨B₂, f₂.comp f₁, n₂, FlagPairExists.relDim_comp f₁ f₂ d₁ d₂, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J.comap (f₂.f ≫ f₁.f))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `effCartier_comap f₂.f c₁ (y := genericPoint B₂.X) fun h => hJ ?_` and prove the remaining obligations. Rewrite using `[← h₁, ← h₂]`. Conclude with `(ProjBlowup.mem_support_comap J f₁.f _).1 h`. Express the relevant statement in the definitionally equal form `ReciprocityTheory.AnForm.R.FinalTheorems.EffCartier (J'.comap (f₂.f ≫ f₁.f))`. Rewrite using `[Scheme.IdealSheafData.comap_comp]`.
-
-Conclude with `c₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_effCartier₂ [CharZero O] (B : Model O) (hn : GlobalTheory.IsNormalScheme B.X) (J J' : B.X.IdealSheafData)
     (hJ : genericPoint B.X ∉ J.support) (hJ' : genericPoint B.X ∉ J'.support) :
@@ -169,7 +165,7 @@ theorem exists_effCartier₂ [CharZero O] (B : Model O) (hn : GlobalTheory.IsNor
     exact c₂
 
 /- English proof (translation)
-The claim follows from `VB.isSubbundle_kernel_of_locally_principal Y _ _ _ n (hE.pullback ρ) (hL.pullback ρ) (VB.exists_image_principal_of_effCartier X Y ρ E L a _ hE hL h)`.
+A detailed English derivation is pending.
 -/
 theorem kernel_subbundle {X Y : Scheme.{0}} [IsIntegral Y] (ρ : Y ⟶ X) {E L : X.Modules} (a : E ⟶ L) {n : ℕ}
     (hE : IsVB E (n + 1)) (hL : IsVB L 1) [IsFiniteQC (cokernel a)]
@@ -180,7 +176,7 @@ theorem kernel_subbundle {X Y : Scheme.{0}} [IsIntegral Y] (ρ : Y ⟶ X) {E L :
     (VB.exists_image_principal_of_effCartier X Y ρ E L a _ hE hL h)
 
 /- English proof (translation)
-Establish `h₃ : (kernel.ι ((Scheme.Modules.pullback ρ).map (s ≫ cokernel.π u)) ≫ (Scheme.Modules.pullback ρ).map s) ≫ cokernel.π ((Scheme.Modules.pullback ρ).map u) = 0`. Rewrite using `[← cancel_mono (cokernelComparison u (Scheme.Modules.pullback ρ)), Category.assoc, π_comp_cokernelComparison, Category.assoc, ← Functor.map_comp, kernel.condition, zero_comp]`. Use `⟨Abelian.monoLift _ _ h₃, ?_⟩` and prove the remaining obligations. Rewrite using `[Functor.map_comp _ u, Abelian.monoLift_comp_assoc, Category.assoc, ← Functor.map_comp, hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem le_kernel {X Y : Scheme.{0}} (ρ : Y ⟶ X) {F G H E : X.Modules} (s : F ⟶ G) (u : H ⟶ G) (t : G ⟶ E)
     {i : F ⟶ E} (hi : s ≫ t = i) [Mono ((Scheme.Modules.pullback ρ).map u)] :
@@ -194,7 +190,7 @@ theorem le_kernel {X Y : Scheme.{0}} (ρ : Y ⟶ X) {F G H E : X.Modules} (s : F
   rw [Functor.map_comp _ u, Abelian.monoLift_comp_assoc, Category.assoc, ← Functor.map_comp, hi]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨PreservesCokernel.iso B.genRes u ≪≫ cokernel.mapIso _ _ ψ γ h ≪≫ (PreservesCokernel.iso B.genRes u').symm, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_genIso_cokernel {B : Model O} {H G H' G' : B.X.Modules} (u : H ⟶ G) (u' : H' ⟶ G')
     (ψ : B.GenIso H H') (γ : B.GenIso G G') (h : B.genRes.map u ≫ γ.hom = ψ.hom ≫ B.genRes.map u') :
@@ -204,7 +200,7 @@ theorem exists_genIso_cokernel {B : Model O} {H G H' G' : B.X.Modules} (u : H �
     by simp⟩
 
 /- English proof (translation)
-Use `preservesFiniteLimits_pullback B.gen.ι` as an intermediate fact. Conclude with `⟨PreservesKernel.iso B.genRes a ≪≫ kernel.mapIso _ _ γ l h.symm ≪≫ (PreservesKernel.iso B.genRes a').symm, by simp⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_genIso_kernel {B : Model O} {F L F' L' : B.X.Modules} (a : F ⟶ L) (a' : F' ⟶ L')
     (γ : B.GenIso F F') (l : B.GenIso L L') (h : γ.hom ≫ B.genRes.map a' = B.genRes.map a ≫ l.hom) :
@@ -215,27 +211,27 @@ theorem exists_genIso_kernel {B : Model O} {F L F' L' : B.X.Modules} (a : F ⟶ 
     by simp⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB E E' φ r P n hn H H' κ κ' ψ hs hs' hv hv' hψ hle hle'`. Take `⟨u, rfl⟩` from `hle`. Take `⟨u', rfl⟩` from `hle'`. Use `hs.mono` as an intermediate fact. Use `hs'.mono` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono u` using `mono_of_mono u (P.fl.ι _)`. Establish `: Mono u'` using `mono_of_mono u' (P.fl'.ι _)`. Establish `hL` using `FlagChain.isVB_cokernel_one hs (P.fl.isSubbundle _) hv (P.fl.isVB _) P.fl.isVB_self`. Establish `hL'` using `FlagChain.isVB_cokernel_one hs' (P.fl'.isSubbundle _) hv' (P.fl'.isVB _) P.fl'.isVB_self`. Set `s : P.fl.F ⟨n + 1, by omega⟩ ⟶ P.fl.F ⟨n + 2, by omega⟩` to `P.fl.step ⟨n + 1, hn⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `s' : P.fl'.F ⟨n + 1, by omega⟩ ⟶ P.fl'.F ⟨n + 2, by omega⟩` to `P.fl'.step ⟨n + 1, hn⟩`. Establish `hsι : s ≫ P.fl.ι _ = P.fl.ι _` using `P.fl.step_ι ⟨n + 1, hn⟩`. Establish `hsι' : s' ≫ P.fl'.ι _ = P.fl'.ι _` using `P.fl'.step_ι ⟨n + 1, hn⟩`. Establish `hγ : B.genRes.map s ≫ (P.gen ⟨n + 2, by omega⟩).hom = (P.gen ⟨n + 1, by omega⟩).hom ≫ B.genRes.map s'` using `P.gen_step ⟨n + 1, hn⟩`. Establish `hu : B.genRes.map u ≫ (P.gen ⟨n + 2, by omega⟩).hom = ψ.hom ≫ B.genRes.map u'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← cancel_mono (B.genRes.map (P.fl'.ι ⟨n + 2, by omega⟩)), Category.assoc, Category.assoc, P.gen_ι, ← Functor.map_comp, hψ, Functor.map_comp, Category.assoc]`. Take `⟨l, hl⟩` from `exists_genIso_cokernel u u' ψ _ hu`. Establish `ha : (P.gen ⟨n + 1, by omega⟩).hom ≫ B.genRes.map (s' ≫ cokernel.π u') = B.genRes.map (s ≫ cokernel.π u) ≫ l.hom`. Rewrite using `[Functor.map_comp, Functor.map_comp, ← reassoc_of% hγ, hl, Category.assoc]`. Establish `hiff : s ≫ cokernel.π u = 0 ↔ s' ≫ cokernel.π u' = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `GlobalTheory.MixedLocalChains.hom_ext_of_genRes O B _ _ 1 _ _ hL' ?_` and prove the remaining obligations. Rewrite using `[← cancel_epi (P.gen ⟨n + 1, by omega⟩).hom, ha, h]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `GlobalTheory.MixedLocalChains.hom_ext_of_genRes O B _ _ 1 _ _ hL ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono l.hom, ← ha, h]`. Simplify using the standard rewrite rules. Distinguish the cases in `h0 : s ≫ cokernel.π u = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `h0'` using `hiff.1 h0`. Establish `h₀ : Le (P.fl.ι ⟨n, by omega⟩) (P.fl.ι ⟨n + 1, by omega⟩)` using `⟨P.fl.step ⟨n, by omega⟩, P.fl.step_ι ⟨n, by omega⟩⟩`. Establish `h₀' : Le (P.fl'.ι ⟨n, by omega⟩) (P.fl'.ι ⟨n + 1, by omega⟩)` using `⟨P.fl'.step ⟨n, by omega⟩, P.fl'.step_ι ⟨n, by omega⟩⟩`. Establish `h₁ : Le (P.fl.ι ⟨n + 1, by omega⟩) (u ≫ P.fl.ι _)` using `⟨Abelian.monoLift u s h0, by rw [Abelian.monoLift_comp_assoc, hsι]⟩`. Establish `h₁' : Le (P.fl'.ι ⟨n + 1, by omega⟩) (u' ≫ P.fl'.ι _)` using `⟨Abelian.monoLift u' s' h0', by rw [Abelian.monoLift_comp_assoc, hsι']⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Q` to `FlagPairExists.pairPull (Model.Hom.id B).comp_str P`. Conclude with `⟨B, Model.Hom.id B, _, _, Q.fl.ι ⟨n, by omega⟩, Q.fl'.ι ⟨n, by omega⟩, Q.gen _, hB, Nat.sub_self _, Q.fl.isSubbundle _, Q.fl'.isSubbundle _, Q.fl.isVB _, Q.fl'.isVB _, Q.gen_ι _, h₀.map _, h₀'.map _, (h₀.trans h₁).map _, (h₀'.trans h₁').map _⟩`. Establish `h0'` using `mt hiff.2 h0`. Establish `hF` using `P.fl.isVB ⟨n + 1, by omega⟩`. Establish `hF'` using `P.fl'.isVB ⟨n + 1, by omega⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hF.isFiniteQC` as an intermediate fact. Use `hF'.isFiniteQC` as an intermediate fact. Use `hL.isFiniteQC` as an intermediate fact. Use `hL'.isFiniteQC` as an intermediate fact. Take `⟨B₁, f, hB₁, hf, c, c'⟩` from `exists_effCartier₂ B hB (annihilatorSheaf (cokernel (s ≫ cokernel.π u))) (annihilatorSheaf (cokernel (s' ≫ cokernel.π u'))) (fun h => VB.genericPoint_notMem_support_cokernel_of_ne_zero _ _ _ _ hL h0 ((coe_support_annihilatorSheaf _).le h)) (fun h => VB.genericPoint_notMem_support …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k₁, k₂⟩` from `kernel_subbundle f.f _ hF hL c`. Take `⟨k₁', k₂'⟩` from `kernel_subbundle f.f _ hF' hL' c'`. Take `⟨χ, hχ⟩` from `exists_genIso_kernel _ _ _ _ (FlagPairExists.pull_comm f.comp_str l _ _ _ ha)`. Establish `: Mono ((Scheme.Modules.pullback f.f).map u)` using `(SubPull.isSubbundle_pullback _ _ f.f _ _ u _ hv ⟨inferInstance, 1, hL⟩).mono`. Establish `: Mono ((Scheme.Modules.pullback f.f).map u')` using `(SubPull.isSubbundle_pullback _ _ f.f _ _ u' _ hv' ⟨inferInstance, 1, hL'⟩).mono`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨B₁, f, _, _, kernel.ι _ ≫ (Scheme.Modules.pullback f.f).map (P.fl.ι ⟨n + 1, by omega⟩), kernel.ι _ ≫ (Scheme.Modules.pullback f.f).map (P.fl'.ι ⟨n + 1, by omega⟩), χ, hB₁, hf, FlagChain.isSubbundle_comp k₁ (SubPull.isSubbundle_pullback _ _ f.f _ _ _ _ hF (P.fl.isSubbundle _)), F …` and prove the remaining obligations. Rewrite using `[B₁.genRes.map_comp, B₁.genRes.map_comp, reassoc_of% hχ, FlagPairExists.pull_comm f.comp_str φ _ _ _ (P.gen_ι _), Category.assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_common_pair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P : GlobalTheory.Vert.Model.FlagPair φ r) (n : ℕ) (hn : n + 1 < r) (H H' : B.X.Modules) (κ : H ⟶ E) (κ' : H' ⟶ E') (ψ : B.GenIso H H'), GlobalTheory.VB.IsSubbundle κ → GlobalTheory.VB.IsSubbundle κ' → GlobalTheory.VB.IsVB H (n + 1) → GlobalTheory.VB.IsVB H' (n + 1) → ψ.hom ≫ B.genRes.map κ' = B.genRes.map κ ≫ φ.hom → GlobalTheory.FlagChain.Le κ (P.fl.ι ⟨n + 2, by omega⟩) → GlobalTheory.FlagChain.Le κ' (P.fl'.ι ⟨n + 2, by omega⟩) → ∃ (B₁ : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B₁ B) (K K' : B₁.X.Modules) (μ : K ⟶ (Scheme.Modules.pullback f.f).obj E) (μ' : K' ⟶ (Scheme.Modules.pullback f.f).obj E') (χ : B₁.GenIso K K'), GlobalTheory.IsNormalScheme B₁.X ∧ f.relDim = 0 ∧ GlobalTheory.VB.IsSubbundle μ ∧ GlobalTheory.VB.IsSubbundle μ' ∧ GlobalTheory.VB.IsVB K n ∧ GlobalTheory.VB.IsVB K' n ∧ χ.hom ≫ B₁.genRes.map μ' = B₁.genRes.map μ ≫ (φ.pull f.comp_str).hom ∧ GlobalTheory.FlagChain.Le μ ((Scheme.Modules.pullback f.f).map (P.fl.ι ⟨n + 1, by omega⟩)) ∧ GlobalTheory.FlagChain.Le μ' ((Scheme.Modules.pullback f.f).map (P.fl'.ι ⟨n + 1, by omega⟩)) ∧ GlobalTheory.FlagChain.Le μ ((Scheme.Modules.pullback f.f).map κ) ∧ GlobalTheory.FlagChain.Le μ' ((Scheme.Modules.pullback f.f).map κ') := by
   intro O _ _ _ p _ _ _ B hB E E' φ r P n hn H H' κ κ' ψ hs hs' hv hv' hψ hle hle'

@@ -6,26 +6,26 @@ section aux
 variable {K : Type} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-The claim follows from `(IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 lemma add_le {a b : K} {r : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ r) : ‖a + b‖ ≤ r :=
   (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `add_le ha (by rwa [norm_neg])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sub_le {a b : K} {r : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ r) : ‖a - b‖ ≤ r := by
   rw [sub_eq_add_neg]
   exact add_le ha (by rwa [norm_neg])
 
 /- English proof (translation)
-Rewrite using `[IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_add_of_lt {a b : K} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h.ne', max_eq_left h.le]
 
 /- English proof (translation)
-Use `norm_add_of_lt (a := (1 : K)) (b := b) (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma norm_one_add {b : K} (h : ‖b‖ < 1) : ‖1 + b‖ = 1 := by
   have := norm_add_of_lt (a := (1 : K)) (b := b) (by simpa using h)
@@ -33,7 +33,7 @@ lemma norm_one_add {b : K} (h : ‖b‖ < 1) : ‖1 + b‖ = 1 := by
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul ha hb (norm_nonneg _) ((norm_nonneg _).trans ha)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mul_le {a b : K} {r s : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ s) : ‖a * b‖ ≤ r * s := by
   rw [norm_mul]
@@ -41,27 +41,27 @@ lemma mul_le {a b : K} {r s : ℝ} (ha : ‖a‖ ≤ r) (hb : ‖b‖ ≤ s) : �
 
 omit [IsUltrametricDist K] in
 /- English proof (translation)
-Simplify using `using mul_le ha hb`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma one_mul_le {a b : K} {s : ℝ} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ s) : ‖a * b‖ ≤ s := by
   simpa using mul_le ha hb
 
 /- English proof (translation)
-Simplify using `using IsUltrametricDist.norm_natCast_le_one K 2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma norm_two_le : ‖(2 : K)‖ ≤ 1 := by
   simpa using IsUltrametricDist.norm_natCast_le_one K 2
 
 /- English proof (translation)
-Simplify using `using IsUltrametricDist.norm_natCast_le_one K 3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma norm_three_le : ‖(3 : K)‖ ≤ 1 := by
   simpa using IsUltrametricDist.norm_natCast_le_one K 3
 
 /- English proof (translation)
-Establish `h1 : ‖A * x + B‖ ≤ ‖x‖` using `add_le (one_mul_le hA le_rfl) (hB.trans hx.le)`. Establish `h2 : ‖x‖ < ‖x ^ 3‖`. Rewrite using `[norm_pow]`. Establish `: 0 < ‖x‖` using `by linarith`. Use polynomial arithmetic with `[mul_pos this this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← norm_pow, h, add_assoc, norm_add_of_lt (h1.trans_lt h2), norm_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma norm_y_sq {A B x y : K} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) (hx : 1 < ‖x‖)
     (h : y ^ 2 = x ^ 3 + A * x + B) : ‖y‖ ^ 2 = ‖x‖ ^ 3 := by
@@ -73,13 +73,13 @@ lemma norm_y_sq {A B x y : K} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) (hx : 1 
   rw [← norm_pow, h, add_assoc, norm_add_of_lt (h1.trans_lt h2), norm_pow]
 
 /- English proof (translation)
-Establish `hx1 : 1 < ‖x‖` using `hM.trans_le hx`. Establish `hx0 : 0 < ‖x‖` using `by linarith`. Establish `hM0 : 0 < M` using `by linarith`. Establish `hy` using `norm_y_sq hA hB hx1 h`. Establish `hy0 : y ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `: 0 < ‖x‖ ^ 3` using `by positivity`. Simplify using `at hy`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : ‖x‖⁻¹ ≤ M⁻¹` using `inv_anti₀ hM0 hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨hy0, Real.le_sqrt_of_sq_le ?_, Real.le_sqrt_of_sq_le ?_⟩` and prove the remaining obligations. Rewrite using `[norm_div, div_pow, hy]`. Use `le_trans (le_of_eq ?_) hinv` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Rewrite using `[norm_div, div_pow, hy, norm_one, one_pow, one_div]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `le_trans (inv_anti₀ hx0 ?_) hinv` and prove the remaining obligations. Use polynomial arithmetic with `[mul_pos hx0 hx0]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 lemma coord_bounds {A B x y : K} {M : ℝ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) (hM : 1 < M)
     (hx : M ≤ ‖x‖) (h : y ^ 2 = x ^ 3 + A * x + B) :
@@ -103,13 +103,13 @@ lemma coord_bounds {A B x y : K} {M : ℝ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ �
     nlinarith [mul_pos hx0 hx0]
 
 /- English proof (translation)
-Establish `hs0 : 0 ≤ s` using `(norm_nonneg _).trans hz₁`. Establish `hss : s * s < 1` using `by nlinarith`. Establish `hD : ‖1 - A * (z₁ * (w₁ + w₂)) - B * (w₁ * w₁ + w₁ * w₂ + w₂ * w₂)‖ = 1`. Establish `h : ‖-(A * (z₁ * (w₁ + w₂)) + B * (w₁ * w₁ + w₁ * w₂ + w₂ * w₂))‖ < 1`. Rewrite using `[norm_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(add_le (one_mul_le hA (mul_le hz₁ (add_le hw₁ hw₂))) (one_mul_le hB (add_le (add_le (mul_le hw₁ hw₁) (mul_le hw₁ hw₂)) (mul_le hw₂ hw₂)))).trans_lt hss`. Rewrite using `[← norm_one_add h]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hD0 : 1 - A * (z₁ * (w₁ + w₂)) - B * (w₁ * w₁ + w₁ * w₂ + w₂ * w₂) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hD` using `[h]`. Simplify using `at hD`. Establish `hN : ‖z₁ * z₁ + z₁ * z₂ + z₂ * z₂ + A * (w₂ * w₂)‖ ≤ s * s` using `add_le (add_le (add_le (mul_le hz₁ hz₁) (mul_le hz₁ hz₂)) (mul_le hz₂ hz₂)) (one_mul_le hA (mul_le hw₂ hw₂))`. Establish `hn : ‖(z₁ * z₁ + z₁ * z₂ + z₂ * z₂ + A * (w₂ * w₂)) / (1 - A * (z₁ * (w₁ + w₂)) - B * (w₁ * w₁ + w₁ * w₂ + w₂ * w₂))‖ ≤ s * s`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div, hD, div_one]`. Conclude with `hN`. Conclude with `⟨_, hD0, div_mul_cancel₀ _ hD0, hn, sub_le hw₁ (one_mul_le (hn.trans hss.le) hz₁)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma line_bounds {A B z₁ z₂ w₁ w₂ : K} {s : ℝ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1) (hs : s < 1)
     (hz₁ : ‖z₁‖ ≤ s) (hz₂ : ‖z₂‖ ≤ s) (hw₁ : ‖w₁‖ ≤ s) (hw₂ : ‖w₂‖ ≤ s) :
@@ -142,35 +142,33 @@ lemma line_bounds {A B z₁ z₂ w₁ w₂ : K} {s : ℝ} (hA : ‖A‖ ≤ 1) (
   exact ⟨_, hD0, div_mul_cancel₀ _ hD0, hn, sub_le hw₁ (one_mul_le (hn.trans hss.le) hz₁)⟩
 
 /- English proof (translation)
-Establish `hM0 : 0 < M` using `by linarith`. Establish `hMi : M⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hM`. Establish `hm1 : ‖m‖ ≤ 1`. Use `hm.trans hMi.le` as an intermediate fact. Rewrite `this` using `[norm_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg m]`. Establish `hn1 : ‖n‖ ≤ 1` using `hn.trans hMi.le`. Establish `hx₁0 : x₁ ≠ 0` using `norm_pos_iff.mp (hM0.trans_le hx₁)`. Establish `hx₂0 : x₂ ≠ 0` using `norm_pos_iff.mp (hM0.trans_le hx₂)`. Establish `hE : ‖1 - B * (m * m)‖ = 1`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg]`. Conclude with `norm_one_add (by rw [norm_neg]; exact (one_mul_le hB hm).trans_lt hMi)`. Establish `hE0 : 1 - B * (m * m) ≠ 0`. Introduce `h`. Rewrite `hE` using `[h]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hE`. Establish `hx₃0 : x₃ ≠ 0`. Introduce and unpack `rfl`. Apply `hE0` to reduce the goal to its premises. Rewrite using `[← e₃]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hD : ‖1 + (A * (n * n) + B * (n * (n * n)))‖ = 1` using `norm_one_add ((add_le (one_mul_le hA (one_mul_le hn1 hn)) (one_mul_le hB (one_mul_le hn1 (one_mul_le hn1 hn)))).trans_lt hMi)`. Establish `hD0 : 1 + (A * (n * n) + B * (n * (n * n))) ≠ 0`. Introduce `h`. Rewrite `hD` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at hD`. Establish `hm2 : m ^ 2 ≠ 0` using `pow_ne_zero 2 hm0`. Establish `u₁ : m * y₁ = 1 - n * x₁` using `by linear_combination l₁`. Establish `u₂ : m * y₂ = 1 - n * x₂` using `by linear_combination l₂`. Establish `u₃ : m * y₃ = 1 - n * x₃` using `by linear_combination l₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (m * y₁) * (m * y₂) * (m * y₃) = 1 + (A * (n * n) + B * (n * (n * n)))`. Rewrite using `[u₁, u₂, u₃]`. Apply `mul_right_cancel₀ hm2` to reduce the goal to its premises. Take the linear combination `(-n) * e₁ + n ^ 2 * e₂ - n ^ 3 * e₃`. Establish `hsum : x₁ * ((m * y₂) * (m * y₃)) + x₂ * ((m * y₁) * (m * y₃)) + x₃ * ((m * y₁) * (m * y₂)) = -(n * (2 * A + 3 * (B * n)))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[u₁, u₂, u₃]`. Apply `mul_right_cancel₀ hm2` to reduce the goal to its premises. Take the linear combination `e₁ - 2 * n * e₂ + 3 * n ^ 2 * e₃`. Establish `hy₁ : y₁ ≠ 0`. Introduce and unpack `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hD0` to reduce the goal to its premises. Rewrite using `[← hprod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy₂ : y₂ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hD0` to reduce the goal to its premises. Rewrite using `[← hprod]`. Expand and normalize the polynomial expressions, which then agree. Establish `hy₃ : y₃ ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hD0` to reduce the goal to its premises. Rewrite using `[← hprod]`. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Establish `hinv : x₃⁻¹ = (A * (m * m) + 2 * n) / (1 - B * (m * m)) - x₁⁻¹ - x₂⁻¹`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₂, ← e₃]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ‖x₃⁻¹‖ ≤ M⁻¹`. Rewrite using `[hinv]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `sub_le (sub_le ?_ ?_) ?_` and prove the remaining obligations. Rewrite using `[norm_div, hE, div_one]`. Conclude with `add_le (one_mul_le hA hm) (one_mul_le norm_two_le hn)`. Rewrite using `[norm_inv]`. Conclude with `inv_anti₀ hM0 hx₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[norm_inv]`. Conclude with `inv_anti₀ hM0 hx₂`. Rewrite `hle` using `[norm_inv]`. Conclude with `(inv_le_inv₀ (norm_pos_iff.mpr hx₃0) hM0).mp hle`. Establish `key : x₃ / (-y₃) - x₁ / y₁ - x₂ / y₂ = m * (n * (2 * A + 3 * (B * n))) / (1 + (A * (n * n) + B * (n * (n * n))))`.
-
-Rewrite using `[← hprod, ← neg_neg (n * (2 * A + 3 * (B * n))), ← hsum]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, norm_div, hD, div_one, mul_comm n]`. Conclude with `one_mul_le hm1 (one_mul_le (add_le (one_mul_le norm_two_le hA) (one_mul_le norm_three_le (one_mul_le hB hn1))) hn)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma third_point {A B x₁ x₂ x₃ y₁ y₂ y₃ m n : K} {M : ℝ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1)
     (hM : 1 < M) (hx₁ : M ≤ ‖x₁‖) (hx₂ : M ≤ ‖x₂‖) (hm0 : m ≠ 0)
@@ -262,37 +260,37 @@ lemma third_point {A B x₁ x₂ x₃ y₁ y₂ y₃ m n : K} {M : ℝ} (hA : �
       (one_mul_le norm_three_le (one_mul_le hB hn1))) hn)
 
 /- English proof (translation)
-Establish `hM0 : 0 < M` using `by linarith`. Establish `hMi : M⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hM`. Establish `hMi0 : 0 ≤ M⁻¹` using `by positivity`. Establish `hs : √(M⁻¹) < 1`. Rewrite using `[Real.sqrt_lt' one_pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hMi`. Establish `hss : √(M⁻¹) * √(M⁻¹) = M⁻¹` using `Real.mul_self_sqrt hMi0`. Take `⟨hy₁, hz₁, hw₁⟩` from `coord_bounds hA hB hM hx₁ c₁`. Take `⟨hy₂, hz₂, hw₂⟩` from `coord_bounds hA hB hM hx₂ c₂`. Take `⟨n, hD0, hnD, hn, hm⟩` from `line_bounds hA hB hs hz₁ hz₂ hw₁ hw₂`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `hn` using `[hss]`. Establish `hmm` using `mul_le hm hm`. Rewrite `hmm` using `[hss]`. Establish `d₁ : 1 / y₁ = (x₁ / y₁) ^ 3 + A * (x₁ / y₁) * (1 / y₁) ^ 2 + B * (1 / y₁) ^ 3`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `c₁`. Establish `d₂ : 1 / y₂ = (x₂ / y₂) ^ 3 + A * (x₂ / y₂) * (1 / y₂) ^ 2 + B * (1 / y₂) ^ 3`. Clear the denominators using the available nonvanishing facts. Take the linear combination `c₂`. Establish `p₁ : x₁ / y₁ * y₁ = x₁` using `div_mul_cancel₀ _ hy₁`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `p₂ : x₂ / y₂ * y₂ = x₂` using `div_mul_cancel₀ _ hy₂`. Establish `q₁ : 1 / y₁ * y₁ = 1` using `div_mul_cancel₀ _ hy₁`. Establish `q₂ : 1 / y₂ * y₂ = 1` using `div_mul_cancel₀ _ hy₂`. Establish `hslope : 1 / y₂ - 1 / y₁ = n * (x₂ / y₂ - x₁ / y₁)`. Apply `mul_right_cancel₀ hD0` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `d₂ - d₁ - (x₂ / y₂ - x₁ / y₁) * hnD`. Take `⟨m, hmdef⟩ : ∃ m, m = 1 / y₁ - n * (x₁ / y₁)` from `⟨_, rfl⟩`. Rewrite `hmm` using `[← hmdef]`. Establish `l₁ : m * y₁ + n * x₁ = 1`. Take the linear combination `y₁ * hmdef + q₁ - n * p₁`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `l₂ : m * y₂ + n * x₂ = 1`. Take the linear combination `y₂ * hmdef - y₂ * hslope + q₂ - n * p₂`. Establish `hline : y₂ = l * (x₂ - x₁) + y₁`. Break down `hl with ⟨_, h⟩ | ⟨h, h', _⟩` into its components or cases. Take the linear combination `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h, h']`. Expand and normalize the polynomial expressions, which then agree. Establish `hml : m ≠ 0 ∧ l * m = -n`. Break down `hl with ⟨hne, h⟩ | ⟨h, h', h2, hl⟩` into its components or cases. Establish `hsub : x₁ - x₂ ≠ 0` using `sub_ne_zero.mpr hne`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Apply `hsub` to reduce the goal to its premises. Take the linear combination `x₁ * l₂ * (-1) + x₂ * l₁`. Apply `mul_right_cancel₀ hsub` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `m * h + l₁ - l₂`. Substitute `h h'` using the available equality. Establish `hmD : m * (1 - A * (x₁ / y₁ * (1 / y₁ + 1 / y₁)) - B * (1 / y₁ * (1 / y₁) + 1 / y₁ * (1 / y₁) + 1 / y₁ * (1 / y₁))) = -2 * (1 / y₁)`. Rewrite using `[hmdef]`. Take the linear combination `3 * d₁ - (x₁ / y₁) * hnD`.
+Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hlw : l * 2 = (3 * x₁ ^ 2 + A) / y₁`. Rewrite using `[eq_div_iff hy₁]`. Take the linear combination `hl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Apply `h2` to reduce the goal to its premises. Take the linear combination `y₁ ^ 2 * hmD - 2 * y₁ * q₁`. Apply `mul_right_cancel₀ hD0` to reduce the goal to its premises. Take the linear combination `l * hmD + hnD - (1 / y₁) * hlw`. Take `⟨hm0, hlm⟩` from `hml`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hα : A - 2 * l * (y₁ - l * x₁) = x₁ * x₂ + x₁ * (l ^ 2 - x₁ - x₂) + x₂ * (l ^ 2 - x₁ - x₂)`. Break down `hl with ⟨hne, h⟩ | ⟨h, h', h2, hl⟩` into its components or cases. Apply `mul_right_cancel₀ (sub_ne_zero.mpr hne)` to reduce the goal to its premises. Rewrite `c₂` using `[hline]`. Take the linear combination `c₂ - c₁`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Substitute `h h'` using the available equality. Take the linear combination `(-1) * hl`. Establish `hβ : x₁ * x₂ * (l ^ 2 - x₁ - x₂) = (y₁ - l * x₁) ^ 2 - B`. Take the linear combination `x₁ * hα * (-1) - c₁`. Establish `hc : (y₁ - l * x₁) * m = 1`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `l₁ - x₁ * hlm`. Establish `hn' : n = -(l * m)` using `by linear_combination hlm`. Use `third_point hA hB hM hx₁ hx₂ hm0 l₁ l₂ ?_ ?_ ?_ ?_ hn hmm` and prove the remaining obligations. Take the linear combination `hc + (l ^ 2 - x₁ - x₂) * hlm`. Rewrite using `[hn']`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hα, hn']`. Take the linear combination `(-2 * l * m) * hc`. Rewrite using `[hβ]`. Take the linear combination `((y₁ - l * x₁) * m + 1) * hc`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma chord {A B x₁ x₂ y₁ y₂ l : K} {M : ℝ} (hA : ‖A‖ ≤ 1) (hB : ‖B‖ ≤ 1)
     (hM : 1 < M) (hx₁ : M ≤ ‖x₁‖) (hx₂ : M ≤ ‖x₂‖)
@@ -387,25 +385,23 @@ lemma chord {A B x₁ x₂ y₁ y₂ l : K} {M : ℝ} (hA : ‖A‖ ≤ 1) (hB :
 end aux
 
 /- English proof (translation)
-Introduce `d1 d2 K _ _ _ A B M hA hB hM P Q hP hQ`. Establish `hMi0 : 0 ≤ M⁻¹` using `inv_nonneg.mpr (by linarith)`. Establish `z2 : d2 (0 : WeierstrassCurve.Affine.Point (WeierstrassCurve.toAffine { a₁` using `(0 : K), a₂ := (0 : K), a₃ := (0 : K), a₄ := A, a₆ := B : WeierstrassCurve K })) = 0 :=`. Both sides reduce to the same expression. Break down `P with _ | ⟨x₁, y₁, h₁⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis.
 
-Express the relevant statement in the definitionally equal form `d1 M (0 + Q) ∧ ‖d2 (0 + Q) - 0 - d2 Q‖ ≤ M⁻¹`. Rewrite using `[zero_add]`. Conclude with `⟨hQ, by simpa using hMi0⟩`. Break down `Q with _ | ⟨x₂, y₂, h₂⟩` into its components or cases. Express the relevant statement in the definitionally equal form `d1 M (WeierstrassCurve.Affine.Point.some x₁ y₁ h₁ + 0) ∧ ‖d2 (WeierstrassCurve.Affine.Point.some x₁ y₁ h₁ + 0) - d2 (WeierstrassCurve.Affine.Point.some x₁ y₁ h₁) - 0‖ ≤ M⁻¹`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[add_zero]`. Conclude with `⟨hP, by simpa using hMi0⟩`. Establish `hx₁ : M ≤ ‖x₁‖` using `hP`. Establish `hx₂ : M ≤ ‖x₂‖` using `hQ`. Establish `c₁ : y₁ ^ 2 = x₁ ^ 3 + A * x₁ + B`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(WeierstrassCurve.Affine.equation_iff _ _).mp h₁.1` as an intermediate fact. Simplify using `using this`. Establish `c₂ : y₂ ^ 2 = x₂ ^ 3 + A * x₂ + B`. Use `(WeierstrassCurve.Affine.equation_iff _ _).mp h₂.1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `hxy : x₁ = x₂ ∧ y₁ = (WeierstrassCurve.toAffine { a₁ := (0 : K), a₂ := (0 : K), a₃ := (0 : K), a₄ := A, a₆ := B : WeierstrassCurve K }).negY x₂ y₂`. Rewrite using `[WeierstrassCurve.Affine.Point.add_of_Y_eq hxy.1 hxy.2, z2]`. Use `⟨trivial, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `‖0 - x₁ / y₁ - x₂ / y₂‖ ≤ M⁻¹`. Establish `hy : y₁ = -y₂` using `by simpa using hxy.2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hxy.1, hy, div_neg]`. Simplify using `using hMi0`. Rewrite using `[WeierstrassCurve.Affine.Point.add_some hxy]`. Establish `key` using `chord (l := (WeierstrassCurve.toAffine { a₁ := (0 : K), a₂ := (0 : K), a₃ := (0 : K), a₄ := A, a₆ := B : WeierstrassCurve K }).slope x₁ x₂ y₁ y₂) hA hB hM hx₁ hx₂ c₁ c₂ (by`. Distinguish the cases in `hx : x₁ = x₂`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `right`. Establish `hy` using `fun h => hxy ⟨hx, h⟩`. Establish `hyy` using `WeierstrassCurve.Affine.Y_eq_of_Y_ne h₁.1 h₂.1 hx hy`. Establish `h2 : 2 * y₁ ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hy` to reduce the goal to its premises. Simplify using `only [WeierstrassCurve.Affine.negY, zero_mul, sub_zero]`. Take the linear combination `h - hyy`. Use `⟨hx, hyy, h2, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.slope_of_Y_ne hx hy]`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [WeierstrassCurve.Affine.negY, zero_mul, mul_zero, sub_zero, add_zero]`. Rewrite using `[show y₁ - -y₁ = 2 * y₁ by ring, div_mul_cancel₀ _ h2]`. Use `left`. Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Affine.slope_of_X_ne hx, div_mul_cancel₀ _ (sub_ne_zero.mpr hx)])`.
-
-Simplify using `only [d1, d2, WeierstrassCurve.Affine.addY, WeierstrassCurve.Affine.negY, WeierstrassCurve.Affine.negAddY, WeierstrassCurve.Affine.addX, zero_mul, sub_zero, add_zero]`. Conclude with `key`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem large_add : (let d1 : {K : Type} → [inst : NormedField K] → {W : WeierstrassCurve.Affine K} → ℝ → WeierstrassCurve.Affine.Point W → Prop := @(fun {K : Type} [NormedField K] {W : WeierstrassCurve.Affine K} (M : ℝ) (x : WeierstrassCurve.Affine.Point W) ↦ match x with | WeierstrassCurve.Affine.Point.zero => True | WeierstrassCurve.Affine.Point.some x y h => M ≤ ‖x‖); let d2 : {K : Type} → [inst : NormedField K] → {W : WeierstrassCurve.Affine K} → WeierstrassCurve.Affine.Point W → K := @(fun {K : Type} [NormedField K] {W : WeierstrassCurve.Affine K} (x : WeierstrassCurve.Affine.Point W) ↦ match x with | WeierstrassCurve.Affine.Point.zero => (0 : K) | WeierstrassCurve.Affine.Point.some x y h => x / y); ∀ {K : Type} [inst : NormedField K] [IsUltrametricDist K] [inst_2 : DecidableEq K] {A B : K} {M : ℝ}, ‖A‖ ≤ (1 : ℝ) → ‖B‖ ≤ (1 : ℝ) → (1 : ℝ) < M → ∀ (P Q : WeierstrassCurve.Affine.Point (WeierstrassCurve.toAffine { a₁ := (0 : K), a₂ := (0 : K), a₃ := (0 : K), a₄ := A, a₆ := B : WeierstrassCurve K })), d1 M P → d1 M Q → d1 M (P + Q) ∧ ‖d2 (P + Q) - d2 P - d2 Q‖ ≤ M⁻¹) := by
   intro d1 d2 K _ _ _ A B M hA hB hM P Q hP hQ

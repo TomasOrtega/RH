@@ -16,9 +16,9 @@ open scoped nonZeroDivisors IntermediateField
 namespace GlobalTheory.Mem.HD
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_isRayFieldIn B.host.φ₀ hR (𝔮 := ⊤) top_ne_bot`. Use `⟨M, hM, fun z hz hI => ?_⟩` and prove the remaining obligations. Establish `hle : M ≤ δ.ray` using `RayMono.le_of_isRayFieldIn_of_dvd _ _ _ _ _ _ (natIdeal_ne_bot (modulus_ne_zero B.toPre)) (Ideal.dvd_iff_le.2 le_top) hM δ.isRay`. Take `⟨x, hx, rfl⟩` from `B.mem_KsC.1 (hδ (hle hz))`. Establish `hx' : IsIntegral ℤ x` using `(isIntegral_algHom_iff B.embLL.toIntAlgHom B.embLL.injective).1 hI`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `B.O_full x hx hx'`. Conclude with `⟨y, by rw [hy]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_hilbert_le_O (hR : RayField) (B : Base) (δ : FieldDat B.toPre) (hδ : δ.ray ≤ B.KsC) :
     ∃ M : IntermediateField ℚ ℂ, IsRayFieldIn B.host.φ₀ ⊤ M ∧
@@ -34,7 +34,7 @@ theorem exists_hilbert_le_O (hR : RayField) (B : Base) (δ : FieldDat B.toPre) (
   exact ⟨y, by rw [hy]⟩
 
 /- English proof (translation)
-Introduce `ho`. Take `⟨-, h1, -, h2⟩` from `(T.psi_tw w).2.2.2 v fun h => ((T.psi_is w).ram v).1 h hv`. Use `Examples₂.PlacesToy.prime_mem_unique v h1 hp (Ideal.absNorm_mem _) ho` as an intermediate fact. Conclude with `h2 (this ▸ .inr (.inr (.inr (.inr (.inl ⟨u, rfl⟩)))))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistConductor_not_over_levelPrimes (B : Base) (T : TwDat B) (w : B.places.Pl) {v : HeightOneSpectrum (𝓞 B.host.E)} (hv : v ∈ T.Q w)
     (u : B.Word) (hp : (B.T u).Prime) : ¬ OverP B.host (B.T u) v := by

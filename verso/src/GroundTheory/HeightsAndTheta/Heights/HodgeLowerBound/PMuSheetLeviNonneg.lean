@@ -16,7 +16,7 @@ open ReciprocityTheory.AnForm.A (coordDiv)
 open ReciprocityTheory.AnForm.M (FinHolAtlas)
 
 /- English proof (translation)
-Take `⟨U, hU, hUo, hyU⟩` from `eventually_nhds_iff.1 h`. Use `AnalyticAt.pi fun i => ReciprocityTheory.AnForm.Osgood.osgood d U (fun w => f w i) hUo (fun z hz => ?_) y hyU` and prove the remaining obligations. Conclude with `(differentiableAt_pi.mp (hU z hz) i).differentiableWithinAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_pi_of_eventually_differentiableAt {d m : ℕ} {f : (Fin d → ℂ) → Fin m → ℂ} {y : Fin d → ℂ}
     (h : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ f y') : AnalyticAt ℂ f y := by
@@ -25,13 +25,13 @@ theorem analyticAt_pi_of_eventually_differentiableAt {d m : ℕ} {f : (Fin d →
   exact (differentiableAt_pi.mp (hU z hz) i).differentiableWithinAt
 
 /- English proof (translation)
-Establish `hp : (R.chart j).symm ξ ∈ (R.chart j).source` using `(R.chart j).map_target hξ.1`. Establish `hYo : R.Yo ∈ 𝓝 ((R.chart j).symm ξ)`. Use `Filter.mem_of_superset (((R.chart j).isOpen_inter_preimage (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed (R.S j)).isOpen_compl).mem_nhds ⟨hp, ?_⟩) fun x hx => (R.mem_Yo j x hx.1).2 hx.2` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(R.chart j) ((R.chart j).symm ξ) ∉ coordDiv (R.S j)`. Rewrite using `[(R.chart j).right_inv hξ.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hξ.2`. Take `⟨i, hi⟩` from `A.cover ((R.chart j).symm ξ)`. Establish `hti : (A.chart i) ((R.chart j).symm ξ) ∈ (A.chart i).target` using `(A.chart i).map_source hi`. Establish `h1 : ContDiffAt ℝ 2 (R.ph ∘ (A.chart i).symm) ((A.chart i) ((R.chart j).symm ξ))`. Apply the tactic sequence `refine ((R.ph_smooth i).contDiffAt (Filter.inter_mem ((A.chart i).open_target.mem_nhds hti) ?_)).of_le (by first | simp | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤) | exact WithTop.coe_le_coe.mpr le_top)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(A.chart i).continuousAt_symm hti |>.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[(A.chart i).left_inv hi]`. Conclude with `hYo`. Establish `hτ : AnalyticAt ℂ ((A.chart i) ∘ (R.chart j).symm) ξ` using `((R.compat j i).2) ξ ⟨hξ.1, hi⟩`. Establish `h2 : ContDiffAt ℝ 2 (fun ξ' => R.ph ((R.chart j).symm ξ')) ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(h1.comp ξ hτ.restrictScalars.contDiffAt).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [(R.chart j).continuousAt_symm hξ.1 |>.preimage_mem_nhds ((A.chart i).open_source.mem_nhds hi)] with ξ' h`. Simplify using `only [Function.comp_apply, (A.chart i).left_inv h]`. Apply the tactic sequence `have hq : ContDiffAt ℝ 2 (R.q j) ξ := ((R.q_smooth j).contDiffAt ((R.chart j).open_target.mem_nhds hξ.1)).of_le (by first | simp | exact_mod_cast (le_top : ((2 : ℕ) : ℕ∞) ≤ ⊤) | exact WithTop.coe_le_coe.mpr le_top)`. Conclude with `hq.add h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem RegChartData.contDiffAt_u {n : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas n X}
     (R : RegChartData A) (j : Fin R.N) {ξ : Fin n → ℂ} (hξ : ξ ∈ (R.chart j).target \ coordDiv (R.S j)) :
@@ -63,9 +63,9 @@ theorem RegChartData.contDiffAt_u {n : ℕ} {X : Type*} [TopologicalSpace X] {A 
   exact hq.add h2
 
 /- English proof (translation)
-Take `⟨z', ⟨hz'o, hz'⟩, hp⟩` from `S.Yo_sub _ hY`. Take `⟨c, hc, rfl⟩` from `(M.fibre z' hz' _ hz).1 hp`. Establish `hph` using `S.ph_eq z' ⟨hz'o, hz'⟩ (by rw [hp]; exact hY)`. Establish `hA : A.h (torusSmul c z') = (∏ k, ‖c k‖ ^ A.a k) * A.h z'` using `A.smul c z' hc`. Establish `hR : S.ref.h (torusSmul c z') = (∏ k, ‖c k‖ ^ A.a k) * S.ref.h z'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← S.ref_deg]`. Conclude with `S.ref.smul c z' hc`. Establish `hpos : 0 < ∏ k, ‖c k‖ ^ A.a k` using `Finset.prod_pos fun k _ => zpow_pos (norm_pos_iff.2 (hc k)) _`. Rewrite using `[hA, hR, Real.log_mul hpos.ne' (A.pos z' hz'.1).ne', Real.log_mul hpos.ne' (S.ref.pos z' hz'.1).ne', ← hp, hph]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem LogLogRegularisationSetting.log_h_eq {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {P : Ideal (MRing ι)}
     {n : ℕ} {M : CxModel P n} {Xo : Set ((Σ k, ι k) → ℂ)} {A : HermLine ι} (S : LogLogRegularisationSetting M Xo A)
@@ -83,17 +83,15 @@ theorem LogLogRegularisationSetting.log_h_eq {K : Type} [Fintype K] {ι : K → 
   ring
 
 /- English proof (translation)
-Introduce `II Ψ _ _ K _ ι _ Ω _ _ E _ _ D O Lt _ _ _ X Q _`. Use `filter_upwards [hH K ι (mCoordIdeal D.y) D.n X.M X.S.R Q] with y hy w γ hγ`. Take `⟨j, hsrc, hYo, hev⟩` from `hy w γ hγ`. Establish `hγev : ∀ᶠ y' in 𝓝 y, DifferentiableAt ℂ γ y' ∧ γ y' ∈ mcPts (mCoordIdeal D.y)` using `hγ.2.mono fun _ h => ⟨h.1, h.2.1⟩`. Take `⟨G, hG, hGeq⟩` from `hR K ι _ D.n X.M D.Xo (muLine X.H) X.S γ y j hγev hsrc hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set g : (Fin D.n → ℂ) → Fin D.n → ℂ := fun y'' => X.S.R.chart j (X.M.proj (γ y'')) with hgdef`. Establish `hg : AnalyticAt ℂ g y` using `analyticAt_pi_of_eventually_differentiableAt (hev.mono fun _ h => h.2)`. Establish `hgy : g y ∈ (X.S.R.chart j).target \ coordDiv (X.S.R.S j)` using `⟨(X.S.R.chart j).map_source hsrc, (X.S.R.mem_Yo j _ hsrc).1 hYo⟩`. Establish `hUo : IsOpen ((X.S.R.chart j).target \ coordDiv (X.S.R.S j))` using `(X.S.R.chart j).open_target.sdiff (ReciprocityTheory.AnForm.A.PlurisubharmonicExtension.coordDiv_closed _)`. Establish `hC2 : ContDiffOn ℝ 2 (X.S.R.u j) ((X.S.R.chart j).target \ coordDiv (X.S.R.S j))` using `fun ξ hξ => (RegChartData.contDiffAt_u X.S.R j hξ).contDiffWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `((ReciprocityTheory.AnForm.A.isPsh_iff_isLeviPsh_thm _ _ _ hUo hC2).1 (X.S.R.u_psh j)).2`. Establish `hgU : ∀ᶠ y' in 𝓝 y, g y' ∈ (X.S.R.chart j).target \ coordDiv (X.S.R.S j)` using `hg.continuousAt.preimage_mem_nhds (hUo.mem_nhds hgy)`. Establish `heq : (fun y' => phMu X.H (γ y')) =ᶠ[𝓝 y] fun y' => (X.S.R.u j ∘ g) y' + 1 * (G y').re` using `by filter_upwards [hγev, hev, hgU, hGeq] with y' h1 h2 h3 h4`. Establish `hY' : X.M.proj (γ y') ∈ X.S.R.Yo` using `(X.S.R.mem_Yo j _ h2.1).2 h3.2`. Establish `hl` using `X.S.log_h_eq h1.2 hY'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show Real.log ((muLine X.H).h (γ y')) = X.S.R.q j (g y') + X.S.R.ph ((X.S.R.chart j).symm (g y')) + 1 * (G y').re`. Rewrite using `[hl, h4, hgdef]`. Simplify using `only [(X.S.R.chart j).left_inv h2.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hu2 : ContDiffAt ℝ 2 (X.S.R.u j) (g y)` using `RegChartData.contDiffAt_u X.S.R j hgy`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcomp : ContDiffAt ℝ 2 (X.S.R.u j ∘ g) y` using `hu2.comp y hg.restrictScalars.contDiffAt`. Establish `hre : ContDiffAt ℝ 2 (fun y' => (G y').re) y` using `Complex.reCLM.contDiff.contDiffAt.comp y hG.restrictScalars.contDiffAt`. Use `⟨(hcomp.add (contDiffAt_const.mul hre)).congr_of_eventuallyEq heq, fun v => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 ≤ levi (fun y' => phMu X.H (γ y')) y v`. Rewrite using `[ReciprocityTheory.AnForm.levi_congr heq, ReciprocityTheory.AnForm.levi_add_smul 1 hcomp hre, ReciprocityTheory.AnForm.levi_re_analytic hG, ReciprocityTheory.AnForm.levi_comp v hg hu2]`.
-
-Simplify using `using hL _ hgy _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem MuSheetLeviNonneg.proof (hH : SheetChartHolo.Statement) (hR : RefAlongSheet.Statement) :
     MuSheetLeviNonneg.Statement := by

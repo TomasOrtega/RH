@@ -45,7 +45,7 @@ def pullSecLP (s : LB.Sec (LPow A L a T)) : LB.Sec (LPow A L a T') where
     simp only [trF, Category.assoc, ← Over.comp_left, hh]
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem isPullSec_pullSecLP (s : LB.Sec (LPow A L a T)) : IsPullSec A L a h hh s (pullSecLP A L a h hh s) := fun _ => rfl
 

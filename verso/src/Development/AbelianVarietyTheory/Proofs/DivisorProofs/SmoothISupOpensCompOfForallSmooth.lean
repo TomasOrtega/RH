@@ -7,13 +7,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `hloc : IsZariskiLocalAtSource @Smooth.{0}` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `set U := ⨆ i, V i with hUdef`. Establish `hle : ∀ i, V i ≤ U` using `fun i => le_iSup V i`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @Smooth.{0}) (fun i => U.ι ⁻¹ᵁ V i) ?_ ?_` and prove the remaining obligations. Apply `top_unique` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Establish `hx : (U.ι x : P') ∈ (⨆ i, V i : P'.Opens)` using `x.2`. Rewrite `hx` using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨i, hi⟩` from `hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨i, hi⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `hrange : Set.range ((U.ι ⁻¹ᵁ V i).ι ≫ U.ι) = Set.range (V i).ι`. Rewrite using `[Scheme.Hom.comp_base, TopCat.coe_comp, Set.range_comp, Scheme.Opens.range_ι, Scheme.Opens.range_ι]`. Use extensionality with `y`. Simplify using `only [Set.mem_image, SetLike.mem_coe, Scheme.Hom.mem_preimage]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨by rintro ⟨x, hx, rfl⟩; exact hx, fun hy => ⟨⟨y, hle i hy⟩, hy, rfl⟩⟩`. Rewrite using `[← Category.assoc, ← IsOpenImmersion.isoOfRangeEq_hom_fac ((U.ι ⁻¹ᵁ V i).ι ≫ U.ι) (V i).ι hrange, Category.assoc]`. Use `haveI := h i`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.smooth_iSup_comp (P' T : Scheme.{0}) (q : P' ⟶ T) (I : Type) (V : I → P'.Opens)
     (h : ∀ i, Smooth ((V i).ι ≫ q)) : Smooth ((⨆ i, V i).ι ≫ q) := by

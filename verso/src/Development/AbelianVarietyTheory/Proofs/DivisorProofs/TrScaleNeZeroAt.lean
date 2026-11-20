@@ -14,13 +14,13 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   {m : ℕ} (A : FamIn K G Pl0 T m)
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (Units.ne_zero _) (pow_ne_zero _ (Nat.cast_ne_zero.2 hq))`.
+A detailed English derivation is pending.
 -/
 theorem trScale_ne_zero_at {P : Pl0} (hq : A.q P ≠ 0) : trScale A.r m A.t A.q A.etaVal P ≠ 0 :=
   mul_ne_zero (Units.ne_zero _) (pow_ne_zero _ (Nat.cast_ne_zero.2 hq))
 
 /- English proof (translation)
-Introduce `Sg hSg Sg' hSg' hne j`. Take `⟨P, hP⟩` from `(A.fam.R A.fam.μ0).sep_of_mem_ixFin hSg hSg' hne`. Conclude with `⟨P, fun h => hP (dualPoly_inj (trScale_ne_zero_at A (hq P)) (A.const_of h0 Sg hSg _) (A.const_of h0 Sg' hSg' _) h)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem typesSep_of_local (hq : ∀ P : (A.fam.R A.fam.μ0).Pl, A.q ((A.fam.R A.fam.μ0).pl P) ≠ 0)
     (h0 : ∀ P, A.heckeR A.μ0 (P, 0) = 1) : A.fam.TypesSep := by
@@ -29,7 +29,7 @@ theorem typesSep_of_local (hq : ∀ P : (A.fam.R A.fam.μ0).Pl, A.q ((A.fam.R A.
   exact ⟨P, fun h => hP (dualPoly_inj (trScale_ne_zero_at A (hq P)) (A.const_of h0 Sg hSg _) (A.const_of h0 Sg' hSg' _) h)⟩
 
 /- English proof (translation)
-The claim follows from `typesSep_of_local A (fun P => ((hOk.what₂ A.fam.μ0).q_pos P).ne') h0`.
+A detailed English derivation is pending.
 -/
 theorem typesSep_of_ok {s : ℕ} (hOk : A.fam.Ok s) (h0 : ∀ P, A.heckeR A.μ0 (P, 0) = 1) : A.fam.TypesSep :=
   typesSep_of_local A (fun P => ((hOk.what₂ A.fam.μ0).q_pos P).ne') h0

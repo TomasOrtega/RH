@@ -41,7 +41,7 @@ private def Lev (k : ℕ) (S : Type) [CommRing S] [Algebra R S] (a : Fin n → F
 variable {I}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t ht => ha.1 t (Ideal.pow_le_pow_right (by omega) ht), le_bot_iff.1 ((Ideal.pow_le_pow_right (by omega)).trans ha.2.le)⟩`.
+Supply the required witnesses or components.
 -/
 private theorem Lev.mono {k k' : ℕ} (h : k ≤ k') {S : Type} [CommRing S] [Algebra R S]
     {a : Fin n → Fin d → S} (ha : Lev I k S a) : Lev I k' S a :=
@@ -49,7 +49,7 @@ private theorem Lev.mono {k k' : ℕ} (h : k ≤ k') {S : Type} [CommRing S] [Al
     le_bot_iff.1 ((Ideal.pow_le_pow_right (by omega)).trans ha.2.le)⟩
 
 /- English proof (translation)
-Use `⟨k + 1, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_bot, ← ha.2]`. Conclude with `Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self (f := fun q : Fin n × Fin d => a q.1 q.2) (i, j))) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Lev.nil {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
     {a : Fin n → Fin d → S} (ha : Lev I k S a) (i : Fin n) (j : Fin d) : IsNilpotent (a i j) := by
@@ -58,7 +58,7 @@ private theorem Lev.nil {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
   exact Ideal.pow_mem_pow (Ideal.subset_span (Set.mem_range_self (f := fun q : Fin n × Fin d => a q.1 q.2) (i, j))) _
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `hk`. Take `⟨m, hm⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg (I := Ideal.span (Set.range fun q : Fin n × Fin d => a q.1 q.2)) (J := ⊥) (Ideal.span_le.2 (by rintro _ ⟨q, rfl⟩; exact ha q.1 q.2)) (Submodule.fg_span (Set.finite_range _))`. Conclude with `⟨k + m, fun t ht => hk t (Ideal.pow_le_pow_right (by omega) ht), le_bot_iff.1 ((Ideal.pow_le_pow_right (by omega)).trans hm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_lev {S : Type} [CommRing S] [Algebra R S] {a : Fin n → Fin d → S}
     (hk : ∃ k, Kills I k S) (ha : ∀ i j, IsNilpotent (a i j)) : ∃ k, Lev I k S a := by
@@ -71,9 +71,9 @@ private theorem exists_lev {S : Type} [CommRing S] [Algebra R S] {a : Fin n → 
     le_bot_iff.1 ((Ideal.pow_le_pow_right (by omega)).trans hm)⟩
 
 /- English proof (translation)
-Set `φ₀ : Geo.Tor.JetR R (Fin n × Fin d) k →ₐ[R] S` to `Ideal.Quotient.liftₐ _ (MvPolynomial.aeval fun q : Fin n × Fin d => a q.1 q.2) (aeval_kill k _ _ (fun q => Ideal.subset_span (Set.mem_range_self q)) ha.2)`. Use `⟨Ideal.Quotient.liftₐ _ φ₀ fun y hy => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `: (I ^ (k + 1)).map (algebraMap R (Geo.Tor.JetR R (Fin n × Fin d) k)) ≤ RingHom.ker φ₀.toRingHom`. Use `Ideal.map_le_iff_le_comap.2 fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(φ₀.commutes t).trans (ha.1 t ht)`. Conclude with `this hy`. Conclude with `MvPolynomial.aeval_X (fun q : Fin n × Fin d => a q.1 q.2) (i, j)`.
+A detailed English derivation is pending.
 -/
 private theorem exists_lift {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
     {a : Fin n → Fin d → S} (ha : Lev I k S a) :
@@ -91,7 +91,7 @@ private theorem exists_lift {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
   · exact MvPolynomial.aeval_X (fun q : Fin n × Fin d => a q.1 q.2) (i, j)
 
 /- English proof (translation)
-Use `⟨fun t ht => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ht), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (Ideal.map (Ideal.Quotient.mk ((I ^ (k + 1)).map (algebraMap R (Geo.Tor.JetR R (Fin n × Fin d) k))))) (jet_aug_pow (T := R) (Fin n × Fin d) k)`. Rewrite `h` using `[Ideal.map_pow _ (Ideal.map _ (Ideal.span _)), Ideal.map_bot, Ideal.map_span, Ideal.map_span, ← Set.range_comp, ← Set.range_comp]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lev_xK (k : ℕ) : Lev I k (MainNotions I n d k) (xK I n d k) := by
   refine ⟨fun t ht => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ht), ?_⟩
@@ -103,7 +103,7 @@ private theorem lev_xK (k : ℕ) : Lev I k (MainNotions I n d k) (xK I n d k) :=
   exact h
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => rw [MvPolynomial.coe_C, MvPolynomial.aeval_C]`. Conclude with `hC c`. Consider the case `add p q hp hq => rw [MvPolynomial.coe_add, map_add, map_add, hp, hq]`. Consider the case `mul_X p q hp => rw [MvPolynomial.coe_mul, map_mul, map_mul, hp, MvPolynomial.coe_X, MvPolynomial.aeval_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem hom_coe {S : Type} [CommRing S] [Algebra R S] (ψ : PS R n d →+* S)
     (hC : ∀ c, ψ (MvPowerSeries.C c) = algebraMap R S c) (p : MvPolynomial (Fin n × Fin d) R) :
@@ -115,9 +115,9 @@ private theorem hom_coe {S : Type} [CommRing S] [Algebra R S] (ψ : PS R n d →
   | mul_X p q hp => rw [MvPolynomial.coe_mul, map_mul, map_mul, hp, MvPolynomial.coe_X, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Establish `h1 : JJ I n d ^ (k + 1 + (k + 1)) ≤ RingHom.ker ψ`. Use `Ideal.sup_pow_add_le_pow_sup_pow.trans (sup_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Use `Ideal.map_le_iff_le_comap.2 fun t ht => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hC t).trans (ha.1 t ht)`. Rewrite using `[RingHom.ker, ← Ideal.map_le_iff_le_comap, Ideal.map_pow, Ideal.map_span, ← Set.range_comp, ← ha.2]`. Conclude with `le_of_eq (by congr 3; exact funext hX)`. Conclude with `h1 hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hom_kill {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
     {a : Fin n → Fin d → S} (ha : Lev I k S a) (ψ : PS R n d →+* S)
@@ -136,9 +136,9 @@ private theorem hom_kill {k : ℕ} {S : Type} [CommRing S] [Algebra R S]
   exact h1 hg
 
 /- English proof (translation)
-Use `⟨MvPowerSeries.truncTotal N g, ((mem_sup_span_X_pow_iff_and_isAdicComplete R I (Fin n × Fin d)).1 N _).2 fun e => ?_⟩` and prove the remaining obligations. Distinguish the cases in `he : e.degree < N`. Rewrite using `[map_sub, MvPolynomial.coeff_coe, MvPowerSeries.coeff_truncTotal _ he, sub_self]`. Conclude with `Ideal.zero_mem _`. Rewrite using `[show N - e.degree = 0 by omega]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem exists_poly (N : ℕ) (g : PS R n d) :
     ∃ p : MvPolynomial (Fin n × Fin d) R, g - (p : MvPowerSeries (Fin n × Fin d) R) ∈ JJ I n d ^ N := by
@@ -151,7 +151,7 @@ private theorem exists_poly (N : ℕ) (g : PS R n d) :
     simp
 
 /- English proof (translation)
-Establish `h` using `(nv_calculus R S (algebraMap R S) n d a ha).2.2.2.2.1 S' φ.toRingHom g`. Rewrite `h` using `[show φ.toRingHom.comp (algebraMap R S) = algebraMap R S' from RingHom.ext φ.commutes]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nv_lift {S S' : Type} [CommRing S] [Algebra R S] [CommRing S'] [Algebra R S']
     (φ : S →ₐ[R] S') {a : Fin n → Fin d → S} (ha : ∀ i j, IsNilpotent (a i j)) (g : PS R n d) :
@@ -161,17 +161,15 @@ private theorem nv_lift {S S' : Type} [CommRing S] [Algebra R S] [CommRing S'] [
   exact h
 
 /- English proof (translation)
-Set `π : PS R n d →+* PS R n d ⧸ JJ I n d ^ (k + 1)` to `Ideal.Quotient.mk _`. Establish `hπC : ∀ c, π (MvPowerSeries.C c) = algebraMap R _ c` using `fun c => rfl`. Establish `hl : Lev I k (PS R n d ⧸ JJ I n d ^ (k + 1)) (fun i j => π (MvPowerSeries.X (i, j)))`. Use `⟨fun t ht => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hπC]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.pow_right_mono le_sup_left _ ?_)` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow]`. Conclude with `Ideal.mem_map_of_mem _ ht`. Rewrite using `[← le_bot_iff, ← Ideal.map_quotient_self (JJ I n d ^ (k + 1)), Ideal.map_pow]`. Use `Ideal.pow_right_mono (Ideal.span_le.2 ?_) _` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `Ideal.mem_map_of_mem _ (Ideal.mem_sup_right (Ideal.subset_span ⟨q, rfl⟩))`. Take `⟨φ, hφ⟩` from `exists_lift hl`. Take `⟨ψ, hψ, hC, hX⟩` from `(nv_calculus R _ (algebraMap R _) n d _ hl.nil).1`. Establish `hψπ : ∀ u, ψ u = π u` using `fun u => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `exists_poly (I := I) (k + 1 + (k + 1)) u`. Establish `h1` using `hom_kill hl ψ hC hX _ hp`. Establish `h2` using `hom_kill hl π hπC (fun _ => rfl) _ hp`. Rewrite `h1`, `h2` using `[map_sub, sub_eq_zero]`. Rewrite using `[h1, h2, hom_coe ψ hC, hom_coe π hπC]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hX]`. Establish `h3` using `congrArg φ h`. Rewrite `h3` using `[nv_lift φ (lev_xK k).nil, nv_lift φ (lev_xK k).nil]`. Simplify using `only [hφ] at h3`. Rewrite `h3` using `[← hψ, ← hψ, hψπ, hψπ]`.
-
-Conclude with `Ideal.Quotient.eq.1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_nv_eq (k : ℕ) (g g' : PS R n d)
     (h : nv (algebraMap R _) g (xK I n d k) = nv (algebraMap R _) g' (xK I n d k)) :
@@ -204,9 +202,9 @@ private theorem mem_of_nv_eq (k : ℕ) (g g' : PS R n d)
   exact Ideal.Quotient.eq.1 h3
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hC, hX⟩` from `(nv_calculus R _ (algebraMap R _) n d _ (lev_xK (I := I) k).nil).1`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨(p : MvPowerSeries (Fin n × Fin d) R), ?_⟩` and prove the remaining obligations. Rewrite using `[← hψ, hom_coe ψ hC]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: MvPolynomial.aeval (fun q => ψ (MvPowerSeries.X q)) = (Ideal.Quotient.mkₐ R _).comp (Ideal.Quotient.mkₐ R _)`. Use `MvPolynomial.algHom_ext fun q => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.aeval_X, hX]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -226,7 +224,7 @@ private theorem nv_surj (k : ℕ) (y : MainNotions I n d k) :
   rfl
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `nv_surj k y`. Take `⟨⟨ψ, hψ, hC, -⟩, h0, -⟩` from `nv_calculus R _ (algebraMap R _) n d _ (lev_xK (I := I) k).nil`. Use `⟨MvPowerSeries.constantCoeff g, ?_⟩` and prove the remaining obligations. Use `(h0 (g - MvPowerSeries.C (MvPowerSeries.constantCoeff g)) (by simp)).1` as an intermediate fact. Rewrite `this` using `[← hψ, map_sub, hC, hψ]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem const_add_nil (k : ℕ) (y : MainNotions I n d k) :
     ∃ r : R, IsNilpotent (y - algebraMap R _ r) := by
@@ -239,15 +237,15 @@ private theorem const_add_nil (k : ℕ) (y : MainNotions I n d k) :
 end
 
 /- English proof (translation)
-Introduce `R _ I hI n d L hL c hc`. Use `choose g hg using fun k => nv_surj k (c (MainNotions I n d k) (xK I n d k))`. Establish `key : ∀ (k : ℕ) (S : Type) [CommRing S] [Algebra R S] (a : Fin n → Fin d → S), L S → Lev I k S a → c S a = nv (algebraMap R S) (g k) a`. Introduce `k S _ _ a hS ha`. Take `⟨φ, hφ⟩` from `exists_lift ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hc _ S φ (xK I n d k) (hL k k) hS (const_add_nil k) ⟨k, (lev_xK k).1⟩ (lev_xK k).nil`. Rewrite `h1` using `[← hg, nv_lift φ (lev_xK k).nil]`. Simplify using `only [hφ] at h1`. Conclude with `h1.symm`. Establish `hcomp : IsAdicComplete (JJ I n d) (PS R n d)` using `(mem_sup_span_X_pow_iff_and_isAdicComplete R I (Fin n × Fin d)).2 hI`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf⟩` from `hcomp.toIsPrecomplete.prec (f := g) fun {k k'} h => by`. Rewrite using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Use `Ideal.pow_le_pow_right (Nat.le_succ k) (mem_of_nv_eq k _ _ ?_)` and prove the remaining obligations. Rewrite using `[← key k _ _ (hL k k) (lev_xK k), ← key k' _ _ (hL k k) ((lev_xK k).mono h)]`. Use `⟨f, fun S _ _ a hS hk ha => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_lev hk ha`. Take `⟨ψ, hψ, hC, hX⟩` from `(nv_calculus R _ (algebraMap R S) n d _ ha).1`. Establish `h1` using `hf (k + 1 + (k + 1))`. Rewrite `h1` using `[SModEq.sub_mem, smul_eq_mul, Ideal.mul_top]`. Establish `h2` using `hom_kill hk ψ hC hX _ h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[map_sub, sub_eq_zero, hψ, hψ]`. Rewrite using `[key (k + 1 + (k + 1)) S a hS (hk.mono (by omega)), h2]`.
+A detailed English derivation is pending.
 -/
 theorem exists_series_of_natural : ∀ (R : Type) [CommRing R] (I : Ideal R), IsAdicComplete I R → ∀ (n d : ℕ) (L : ∀ (S : Type) [CommRing S] [Algebra R S], Prop), (∀ (k m : ℕ), L (Geo.Tor.JetR R (Fin n × Fin d) m ⧸ (I ^ (k + 1)).map (algebraMap R (Geo.Tor.JetR R (Fin n × Fin d) m)))) → ∀ (c : ∀ (S : Type) [CommRing S] [Algebra R S], (Fin n → Fin d → S) → S), (∀ (S : Type) [CommRing S] [Algebra R S] (S' : Type) [CommRing S'] [Algebra R S'] (φ : S →ₐ[R] S') (a : Fin n → Fin d → S), L S → L S' → (∀ y : S, ∃ r : R, IsNilpotent (y - algebraMap R S r)) → (∃ k, Kills I k S) → (∀ i j, IsNilpotent (a i j)) → φ (c S a) = c S' (fun i j => φ (a i j))) → ∃ f : PS R n d, ∀ (S : Type) [CommRing S] [Algebra R S] (a : Fin n → Fin d → S), L S → (∃ k, Kills I k S) → (∀ i j, IsNilpotent (a i j)) → c S a = nv (algebraMap R S) f a := by
   intro R _ I hI n d L hL c hc

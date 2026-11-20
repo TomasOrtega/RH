@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial Matrix UpperTheory.V UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws UpperTheory.V.Ws.Eb GlobalTheory.GalOfCusp
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[W.GDet.repAlg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem UpperTheory.V.Ws.Eb.relKill_single {A G : Type} [CommRing A] [Group G] {n : ℕ} (ρ : G →* GL (Fin n) A)
     (g : G) (a : A) : W.GDet.repAlg (W.mat ρ) A (MonoidAlgebra.single g a) = a • W.mat ρ g := by
@@ -14,9 +14,9 @@ private theorem UpperTheory.V.Ws.Eb.relKill_single {A G : Type} [CommRing A] [Gr
   simp [W.GDet.repAlg]
 
 /- English proof (translation)
-Use `(trPlus ρ hρ).1 (MonoidAlgebra.mapRingHom G f z) (fun g' => ?_)` and prove the remaining obligations. Rewrite using `[← hD]`. Establish `e : MonoidAlgebra.single g' (1 : A) * MonoidAlgebra.mapRingHom G f z = MonoidAlgebra.mapRingHom G f (MonoidAlgebra.single g' 1 * z)`. Rewrite using `[map_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[MonoidAlgebra.mapRingHom]`. Rewrite using `[e, W.GDet.tr.eq_1, (AlgebraTools.Det.mapApi D f).2.1 1, ← W.GDet.tr.eq_1, hz g', map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.Ws.Eb.relKill_push {R A G : Type} [CommRing R] [CommRing A] [Group G] {n : ℕ}
     (D : W.GDet n R G) (f : R →+* A) (ρ : G →* GL (Fin n) A) (hρ : Full ρ) (hD : D.map f = W.GDet.ofRep (W.mat ρ))
@@ -32,11 +32,11 @@ private theorem UpperTheory.V.Ws.Eb.relKill_push {R A G : Type} [CommRing R] [Co
   rw [e, W.GDet.tr.eq_1, (AlgebraTools.Det.mapApi D f).2.1 1, ← W.GDet.tr.eq_1, hz g', map_zero]
 
 /- English proof (translation)
-Introduce `l _ F c n r B A _ _ f ρ hρ hD`. Establish `key : ∀ z : MonoidAlgebra B.B F.G₀, (∀ h : F.G₀, B.u.D.tr (MonoidAlgebra.single h 1 * z) = 0) → W.GDet.repAlg (W.mat ρ) A (MonoidAlgebra.mapRingHom F.G₀ (f : B.B →+* A) z) = 0` using `fun z hz => relKill_push B.u.D (f : B.B →+* A) ρ hρ hD z hz`. Establish `hsing : ∀ (x : F.G₀) (b : B.B), W.GDet.repAlg (W.mat ρ) A (MonoidAlgebra.mapRingHom F.G₀ (f : B.B →+* A) (MonoidAlgebra.single x b)) = (f b) • W.mat ρ x`. Introduce `x b`. Rewrite using `[← relKill_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[MonoidAlgebra.mapRingHom]`. Use `⟨fun v g => ?_, fun u g hg => ?_⟩` and prove the remaining obligations. Establish `h0` using `key _ (B.u.Ord v g)`. Rewrite `h0` using `[W.GFrame.oEl.eq_1, map_list_prod, map_list_prod, List.map_map, List.map_ofFn]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `h0` using `only [Function.comp_def, map_sub, hsing, map_one, one_smul, Algebra.algebraMap_eq_smul_one]`. Establish `h0` using `key _ (fun h => B.u.I u g hg h)`. Simplify using `only [map_sub, hsing, map_one, one_smul, sub_eq_zero] at h0`. Conclude with `Units.ext h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Eb.relKill :
     ∀ {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n} (B : W.UniversalOrdinaryDeterminantRing r) {A : Type} [CommRing A] [Algebra c.O A] (f : B.B →ₐ[c.O] A) (ρ : F.G₀ →* GL (Fin n) A), Full ρ → B.u.D.map (f : B.B →+* A) = W.GDet.ofRep (W.mat ρ) →

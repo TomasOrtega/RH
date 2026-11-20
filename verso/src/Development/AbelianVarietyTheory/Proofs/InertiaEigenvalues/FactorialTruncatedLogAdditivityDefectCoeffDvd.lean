@@ -6,9 +6,9 @@ open GlobalTheory.LogU MvPolynomial Finset
 namespace GlobalTheory.LogUIntg
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0` using `congrArg (fun f => f 0) h`. Establish `h1` using `congrArg (fun f => f 1) h`. Simplify using `at h0 h1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h0, h1⟩`. Introduce and unpack `⟨rfl, rfl⟩`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 lemma single_add_single_eq_iff {i j i' j' : ℕ} :
     (Finsupp.single (0 : Fin 2) i + Finsupp.single 1 j = Finsupp.single 0 i' + Finsupp.single 1 j') ↔
@@ -22,7 +22,7 @@ lemma single_add_single_eq_iff {i j i' j' : ℕ} :
   · rintro ⟨rfl, rfl⟩; rfl
 
 /- English proof (translation)
-Rewrite using `[coeff_monomial]`. Simplify using `only [single_add_single_eq_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma coeff_monomial_two (i j p q : ℕ) (c : ℤ) :
     coeff (Finsupp.single 0 i + Finsupp.single 1 j)
@@ -32,7 +32,7 @@ lemma coeff_monomial_two (i j p q : ℕ) (c : ℤ) :
   simp only [single_add_single_eq_iff]
 
 /- English proof (translation)
-Rewrite using `[X_pow_eq_monomial, X_pow_eq_monomial, C_mul_monomial, monomial_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma monomial_two_eq (p q : ℕ) (c : ℤ) :
     monomial (Finsupp.single (0 : Fin 2) p + Finsupp.single 1 q) c = C c * X 0 ^ p * X 1 ^ q := by
@@ -40,11 +40,11 @@ lemma monomial_two_eq (p q : ℕ) (c : ℤ) :
   simp
 
 /- English proof (translation)
-Establish `e1` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right s a)`. Rewrite `e1` using `[Nat.add_sub_cancel_left]`. Establish `e2` using `Nat.choose_mul_factorial_mul_factorial (Nat.le_add_right s (K - s - a))`. Rewrite `e2` using `[Nat.add_sub_cancel_left]`. Establish `e3` using `Nat.choose_mul_factorial_mul_factorial ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e4` using `Nat.choose_mul_factorial_mul_factorial hs`. Establish `e5 : n.factorial / K * K.factorial = n.factorial * (K - 1).factorial`. Rewrite using `[← Nat.mul_factorial_pred (by omega : K ≠ 0), ← mul_assoc, Nat.div_mul_cancel (Nat.dvd_factorial (by omega) hKn)]`. Rewrite using `[← e1, ← e2]`. Establish `key : (s + a).choose s * s.factorial * a.factorial * ((s + (K - s - a)).choose s * s.factorial * (K - s - a).factorial) * (n.factorial / K * (K.choose s * (K - s).choose a)) = n.factorial * ((K - 1).factorial * ((s + a).choose s * (s + (K - s - a)).choose s * s.factorial))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[key]`. Conclude with `mul_dvd_mul (dvd_refl _) (dvd_mul_of_dvd_left (Nat.factorial_dvd_factorial (by omega)) _)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma factorial_dvd_term (n K s a : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) (hs : s ≤ K) (ha : a ≤ K - s)
     (hn : n ≤ (s + a) + (s + (K - s - a))) :
@@ -80,7 +80,7 @@ def Good (n : ℕ) (f : MvPolynomial (Fin 2) ℤ) : Prop :=
     ((i.factorial * j.factorial : ℕ) : ℤ) * coeff (Finsupp.single 0 i + Finsupp.single 1 j) f
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[coeff_sub, mul_sub]`. Conclude with `dvd_sub (hf i j h) (hg i j h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_sub {n : ℕ} {f g : MvPolynomial (Fin 2) ℤ} (hf : Good n f) (hg : Good n g) :
     Good n (f - g) := by
@@ -89,7 +89,7 @@ lemma good_sub {n : ℕ} {f g : MvPolynomial (Fin 2) ℤ} (hf : Good n f) (hg : 
   exact dvd_sub (hf i j h) (hg i j h)
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[coeff_sum, Finset.mul_sum]`. Conclude with `Finset.dvd_sum fun x hx => hf x hx i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_sum {n : ℕ} {ι : Type} (t : Finset ι) (f : ι → MvPolynomial (Fin 2) ℤ)
     (hf : ∀ x ∈ t, Good n (f x)) : Good n (∑ x ∈ t, f x) := by
@@ -98,7 +98,7 @@ lemma good_sum {n : ℕ} {ι : Type} (t : Finset ι) (f : ι → MvPolynomial (F
   exact Finset.dvd_sum fun x hx => hf x hx i j h
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[coeff_C_mul, mul_left_comm]`. Conclude with `Dvd.dvd.mul_left (hf i j h) c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_C_mul {n : ℕ} (c : ℤ) {f : MvPolynomial (Fin 2) ℤ} (hf : Good n f) :
     Good n (C c * f) := by
@@ -107,9 +107,9 @@ lemma good_C_mul {n : ℕ} (c : ℤ) {f : MvPolynomial (Fin 2) ℤ} (hf : Good n
   exact Dvd.dvd.mul_left (hf i j h) c
 
 /- English proof (translation)
-Introduce `i j h`. Rewrite using `[coeff_monomial_two]`. Use `split_ifs with hij`. Take `⟨rfl, rfl⟩` from `hij`. Rewrite using `[← Nat.cast_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Int.natCast_dvd_natCast.mpr (factorial_dvd_term n K s a hK1 hKn hs ha h)`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma good_atom (n K s a : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) (hs : s ≤ K) (ha : a ≤ K - s) :
     Good n (monomial (Finsupp.single (0 : Fin 2) (s + a) + Finsupp.single 1 (s + (K - s - a)))
@@ -123,9 +123,9 @@ lemma good_atom (n K s a : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) (hs : s ≤ K) (
   · simp
 
 /- English proof (translation)
-Rewrite using `[show (X 0 + X 1 + X 0 * X 1 : MvPolynomial (Fin 2) ℤ) = X 0 * X 1 + (X 0 + X 1) by ring, add_pow, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[add_pow]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[monomial_two_eq]`. Simplify using `only [Nat.cast_mul, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma C_mul_pow_u (m K : ℕ) :
     C (m : ℤ) * (X 0 + X 1 + X 0 * X 1 : MvPolynomial (Fin 2) ℤ) ^ K =
@@ -143,7 +143,7 @@ lemma C_mul_pow_u (m K : ℕ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[C_mul_pow_u]`. Use `good_sum _ _ fun s hs => good_sum _ _ fun a ha => ?_` and prove the remaining obligations. Rewrite `hs`, `ha` using `[Finset.mem_range]`. Conclude with `good_atom n K s a hK1 hKn (by omega) (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_C_mul_pow_u (n K : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) :
     Good n (C ((n.factorial / K : ℕ) : ℤ) * (X 0 + X 1 + X 0 * X 1 : MvPolynomial (Fin 2) ℤ) ^ K) := by
@@ -153,7 +153,7 @@ lemma good_C_mul_pow_u (n K : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) :
   exact good_atom n K s a hK1 hKn (by omega) (by omega)
 
 /- English proof (translation)
-Establish `h` using `good_atom n K 0 K hK1 hKn (by omega) (by omega)`. Rewrite `h` using `[monomial_two_eq]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma logPolynomialDefectDivisible_C_mul_X_zero_pow (n K : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) :
     Good n (C ((n.factorial / K : ℕ) : ℤ) * (X 0 : MvPolynomial (Fin 2) ℤ) ^ K) := by
@@ -162,7 +162,7 @@ lemma logPolynomialDefectDivisible_C_mul_X_zero_pow (n K : ℕ) (hK1 : 1 ≤ K) 
   simpa using h
 
 /- English proof (translation)
-Establish `h` using `good_atom n K 0 0 hK1 hKn (by omega) (by omega)`. Rewrite `h` using `[monomial_two_eq]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma logPolynomialDefectDivisible_C_mul_X_one_pow (n K : ℕ) (hK1 : 1 ≤ K) (hKn : K ≤ n) :
     Good n (C ((n.factorial / K : ℕ) : ℤ) * (X 1 : MvPolynomial (Fin 2) ℤ) ^ K) := by
@@ -171,9 +171,9 @@ lemma logPolynomialDefectDivisible_C_mul_X_one_pow (n K : ℕ) (hK1 : 1 ≤ K) (
   simpa using h
 
 /- English proof (translation)
-Unfold `truncLogF`. Use `good_sum _ _ fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[Finset.mem_range]`. Establish `e : ((-1 : MvPolynomial (Fin 2) ℤ) ^ k * ((n.factorial / (k + 1) : ℕ) : MvPolynomial (Fin 2) ℤ) * u ^ (k + 1)) = C ((-1) ^ k) * (C ((n.factorial / (k + 1) : ℕ) : ℤ) * u ^ (k + 1))`. Simplify using `only [map_pow, map_neg, map_one, map_natCast]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `good_C_mul _ (hu (k + 1) (by omega) (by omega))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma good_truncLogF (n : ℕ) (u : MvPolynomial (Fin 2) ℤ)
     (hu : ∀ K, 1 ≤ K → K ≤ n → Good n (C ((n.factorial / K : ℕ) : ℤ) * u ^ K)) :
@@ -188,7 +188,7 @@ lemma good_truncLogF (n : ℕ) (u : MvPolynomial (Fin 2) ℤ)
   exact good_C_mul _ (hu (k + 1) (by omega) (by omega))
 
 /- English proof (translation)
-Unfold `logDefect`. Use `good_sub (good_sub ?_ ?_) ?_` and prove the remaining obligations. Conclude with `good_truncLogF n _ fun K h1 h2 => good_C_mul_pow_u n K h1 h2`. Conclude with `good_truncLogF n _ fun K h1 h2 => logPolynomialDefectDivisible_C_mul_X_zero_pow n K h1 h2`. Conclude with `good_truncLogF n _ fun K h1 h2 => logPolynomialDefectDivisible_C_mul_X_one_pow n K h1 h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem good_logDefect (n : ℕ) : Good n (logDefect n) := by
   unfold logDefect
@@ -198,7 +198,7 @@ theorem good_logDefect (n : ℕ) : Good n (logDefect n) := by
   · exact good_truncLogF n _ fun K h1 h2 => logPolynomialDefectDivisible_C_mul_X_one_pow n K h1 h2
 
 /- English proof (translation)
-Introduce `n i j h`. Conclude with `good_logDefect n i j h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem logDefect_coeff_dvd : ∀ (n i j : ℕ), n ≤ i + j → ∃ d : ℤ,
     ((i.factorial * j.factorial : ℕ) : ℤ) *

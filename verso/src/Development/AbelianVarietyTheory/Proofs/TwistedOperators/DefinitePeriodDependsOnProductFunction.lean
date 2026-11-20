@@ -19,7 +19,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.RowTens
 
 /- English proof (translation)
-Establish `e : ∑ i ∈ S, a i • f i = 0`. Use function extensionality and compare the values at `u`. Simplify `h u` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`. Establish `e2` using `congrFun (congrArg A e) x`. Simplify `e2` using `only [map_sum, map_smul, map_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lin_van {X I : Type} (A : Module.End ℂ (X → ℂ)) (S : Finset I) (a : I → ℂ) (f : I → X → ℂ)
     (h : ∀ u, ∑ i ∈ S, a i * f i u = 0) (x : X) : ∑ i ∈ S, a i * A (f i) x = 0 := by
@@ -30,7 +30,7 @@ theorem lin_van {X I : Type} (A : Module.End ℂ (X → ℂ)) (S : Finset I) (a 
   simpa only [map_sum, map_smul, map_zero, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] using e2
 
 /- English proof (translation)
-Repeatedly rewrite using `[← integral_const_mul]`. Rewrite using `[← integral_finset_sum _ fun i hi => (hf i hi).const_mul _]`. Simplify using `only [h, integral_zero]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem int_van {X I : Type} [MeasurableSpace X] (μ : Measure X) (S : Finset I) (a : I → ℂ) (f : I → X → ℂ)
     (hf : ∀ i ∈ S, Integrable (f i) μ) (h : ∀ u, ∑ i ∈ S, a i * f i u = 0) : ∑ i ∈ S, a i * ∫ x, f i x ∂μ = 0 := by
@@ -44,7 +44,7 @@ def Nice (M : Vol G) (X : Node) : Prop :=
   (∀ τ, (gramAt D (G.V X) τ).PosDef) ∧ (M.ν X).IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.V X)) (M.fd X) (M.ν X)
 
 /- English proof (translation)
-Take `⟨hpos, hH, hfd⟩` from `h`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact _ hpos`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)`. Conclude with `GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact _ _ _ C hfd hC hcov _ hc hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Nice.intOn {M : Vol G} {X : Node} (h : Nice M X) (f : GA D (G.V X) → ℂ) (hc : Continuous f)
     (hi : ∀ γ ∈ GQ (G.V X), ∀ g, f (γ * g) = f g) : IntegrableOn f (M.fd X) (M.ν X) := by
@@ -54,7 +54,7 @@ theorem Nice.intOn {M : Vol G} {X : Node} (h : Nice M X) (f : GA D (G.V X) → �
   exact GlobalTheory.CocompactIntegrable.integrableOn_of_cocompact _ _ _ C hfd hC hcov _ hc hi
 
 /- English proof (translation)
-Take `⟨hpos, hH, hfd⟩` from `h`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.definite_unitary_cocompact _ hpos`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V X)`. Conclude with `GlobalTheory.DefLiftCont.continuous_integral_of_cocompact _ _ _ C hfd hC hcov K hc hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Nice.contInt {M : Vol G} {X : Node} (h : Nice M X) {Y : Type} [TopologicalSpace Y] [LocallyCompactSpace Y]
     [FirstCountableTopology Y] (K : Y → GA D (G.V X) → ℂ) (hc : Continuous fun p : Y × GA D (G.V X) => K p.1 p.2)
@@ -77,7 +77,7 @@ variable {j : ℕ} (hj : j + 2 ≤ D.R.m)
 include hj hC
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.SeeSaw.biAct_all D W.ψ _ _ _ _ _ _ _ (W.om (.top t j)) (W.om (.top t (j + 1))) (W.om_is (.top t j) (show j + 1 ≤ D.R.m by omega)) (W.om_is (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega)) C hC).2.2.2`. Conclude with `h.comp (f := fun p : GA D (G.V (.top j)) × GA D (G.V (.top (j + 1))) × GA D (G.V (.top (j + 1 + 1))) => ((p.1, p.2.1), (p.2.1, p.2.2), 0, 0)) (by fun_prop)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bker_cont : Continuous fun p : GA D (G.V (.top j)) × GA D (G.V (.top (j + 1))) × GA D (G.V (.top (j + 1 + 1))) =>
     bker W t j C p.1 p.2.1 p.2.2 := by
@@ -87,7 +87,7 @@ theorem bker_cont : Continuous fun p : GA D (G.V (.top j)) × GA D (G.V (.top (j
     ((p.1, p.2.1), (p.2.1, p.2.2), 0, 0)) (by fun_prop)
 
 /- English proof (translation)
-Establish `e : (fun v => W.om (.top t j) (γ * h₀, h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0`. Use function extensionality and compare the values at `fun v => om_fix_left W (.top t j) (show j + 1 ≤ D.R.m by omega) _ (biTheta_slice1 hC v) h₀ h₁ γ hγ`. Unfold `bker`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem biThetaKernel_invariant_left (γ) (hγ : γ ∈ GQ (G.V (.top j))) (h₀ h₁ h₂) : bker W t j C (γ * h₀) h₁ h₂ = bker W t j C h₀ h₁ h₂ := by
   have e : (fun v => W.om (.top t j) (γ * h₀, h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0 :=
@@ -96,7 +96,7 @@ theorem biThetaKernel_invariant_left (γ) (hγ : γ ∈ GQ (G.V (.top j))) (h₀
   rw [e]
 
 /- English proof (translation)
-Establish `e : (fun v => W.om (.top t j) (h₀, γ * h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0`. Use function extensionality and compare the values at `fun v => om_fix_right W (.top t j) (show j + 1 ≤ D.R.m by omega) _ (biTheta_slice1 hC v) h₀ h₁ γ hγ`. Unfold `bker`. Rewrite using `[e]`. Conclude with `om_fix_left W (.top t (j + 1)) (show j + 1 + 1 ≤ D.R.m by omega) _ (mid_theta W t j hj C hC h₀ h₁) h₁ h₂ γ hγ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biThetaKernel_invariant_right (γ) (hγ : γ ∈ GQ (G.V (.top (j + 1)))) (h₀ h₁ h₂) : bker W t j C h₀ (γ * h₁) h₂ = bker W t j C h₀ h₁ h₂ := by
   have e : (fun v => W.om (.top t j) (h₀, γ * h₁) (fun u => C u v) 0) = fun v => W.om (.top t j) (h₀, h₁) (fun u => C u v) 0 :=
@@ -109,14 +109,14 @@ variable {M : Vol G} (h0 : Nice M (.top j)) {φ : Fn G (.top j)} (hφ : GlobalTh
 include h0 hφ
 
 /- English proof (translation)
-The claim follows from `h0.intOn _ (hφ.2.mul ((bker_cont W t hj hC).comp (f := fun h₀ => (h₀, h₁, h₂)) (continuous_id.prodMk continuous_const))) fun γ hγ g => by rw [hφ.1 γ hγ, biThetaKernel_invariant_left W t hj hC γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem inner_int (h₁ h₂) : IntegrableOn (fun h₀ => φ h₀ * bker W t j C h₀ h₁ h₂) (M.fd (.top j)) (M.ν (.top j)) :=
   h0.intOn _ (hφ.2.mul ((bker_cont W t hj hC).comp (f := fun h₀ => (h₀, h₁, h₂)) (continuous_id.prodMk continuous_const)))
     fun γ hγ g => by rw [hφ.1 γ hγ, biThetaKernel_invariant_left W t hj hC γ hγ]
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top (j + 1)))`. Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top (j + 1 + 1)))`. Conclude with `h0.contInt (fun (p : GA D (G.V (.top (j + 1))) × GA D (G.V (.top (j + 1 + 1)))) h₀ => φ h₀ * bker W t j C h₀ p.1 p.2) ((hφ.2.comp continuous_snd).mul ((bker_cont W t hj hC).comp continuous_swap)) fun γ hγ y g => by rw [hφ.1 γ hγ, biThetaKernel_invariant_left W t hj hC γ hγ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem inner_cont : Continuous fun p : GA D (G.V (.top (j + 1))) × GA D (G.V (.top (j + 1 + 1))) =>
     ∫ h₀ in M.fd (.top j), φ h₀ * bker W t j C h₀ p.1 p.2 ∂M.ν (.top j) := by
@@ -130,7 +130,7 @@ variable (h1 : Nice M (.top (j + 1)))
 include h1
 
 /- English proof (translation)
-The claim follows from `h1.intOn _ ((inner_cont W t hj hC h0 hφ).comp (continuous_id.prodMk continuous_const)) fun γ hγ g => by simp only [biThetaKernel_invariant_right W t hj hC γ hγ]`.
+A detailed English derivation is pending.
 -/
 theorem outer_int (h₂) : IntegrableOn (fun h₁ => ∫ h₀ in M.fd (.top j), φ h₀ * bker W t j C h₀ h₁ h₂ ∂M.ν (.top j))
     (M.fd (.top (j + 1))) (M.ν (.top (j + 1))) :=
@@ -138,7 +138,7 @@ theorem outer_int (h₂) : IntegrableOn (fun h₁ => ∫ h₀ in M.fd (.top j), 
     fun γ hγ g => by simp only [biThetaKernel_invariant_right W t hj hC γ hγ]
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, _, _⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top (j + 1 + 1)))`. Conclude with `⟨biL_inv W M t j hj φ C hC, h1.contInt (fun h₂ h₁ => ∫ h₀ in M.fd (.top j), φ h₀ * bker W t j C h₀ h₁ h₂ ∂M.ν (.top j)) ((inner_cont W t hj hC h0 hφ).comp continuous_swap) fun γ hγ y g => by simp only [biThetaKernel_invariant_right W t hj hC γ hγ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem biL_contAut : GlobalTheory.Unf.IsContAut _ (biL W M t j φ C) := by
   obtain ⟨_, _, _, _, _, _, _⟩ := GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D (G.V (.top (j + 1 + 1)))
@@ -149,7 +149,7 @@ theorem biL_contAut : GlobalTheory.Unf.IsContAut _ (biL W M t j φ C) := by
 end Ker
 
 /- English proof (translation)
-Use `int_van _ S a (fun i h₁ => ∫ h₀ in M.fd (.top j), φ i h₀ * bker W t j (C i) h₀ h₁ h₂ ∂M.ν (.top j)) (fun i hi => outer_int W t hj (hC i hi) h0 (hφ i hi) h1 h₂) fun h₁ => ?_` and prove the remaining obligations. Use `int_van _ S a (fun i h₀ => φ i h₀ * bker W t j (C i) h₀ h₁ h₂) (fun i hi => inner_int W t hj (hC i hi) h0 (hφ i hi) h₁ h₂) fun h₀ => ?_` and prove the remaining obligations. Simplify using `only [← mul_assoc]`. Conclude with `lin_van _ S (fun i => a i * φ i h₀) _ (fun v => lin_van _ S (fun i => a i * φ i h₀) _ (fun u => h h₀ u v) 0) 0`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem biL_van {j : ℕ} (hj : j + 2 ≤ D.R.m) {M : Vol G} (h0 : Nice M (.top j)) (h1 : Nice M (.top (j + 1)))
     {I : Type} (S : Finset I) (a : I → ℂ) (φ : I → Fn G (.top j))
@@ -164,7 +164,7 @@ theorem biL_van {j : ℕ} (hj : j + 2 ≤ D.R.m) {M : Vol G} (h0 : Nice M (.top 
   exact lin_van _ S (fun i => a i * φ i h₀) _ (fun v => lin_van _ S (fun i => a i * φ i h₀) _ (fun u => h h₀ u v) 0) 0
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `GlobalTheory.UnitaryEmbeddingProperties.continuous_unitaryEmbedding _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem topEmb_cont {n : ℕ} (h : D.R.m = n) : Continuous (GlobalTheory.RowChain.topEmb G h) := by
   subst h
@@ -175,19 +175,19 @@ def setPair (u : ColPt G) (j : ℕ) (a : WO (G.V (.top j)) (G.V (.top (j + 1))))
   Function.update (Function.update u j a) (j + 1) b
 
 /- English proof (translation)
-Rewrite using `[setPair, Function.update_of_ne (Nat.ne_of_lt (Nat.lt_succ_self j)), Function.update_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setPair_fst (u : ColPt G) (j a b) : setPair u j a b j = a := by
   rw [setPair, Function.update_of_ne (Nat.ne_of_lt (Nat.lt_succ_self j)), Function.update_self]
 
 /- English proof (translation)
-Rewrite using `[setPair, Function.update_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setPair_snd (u : ColPt G) (j a b) : setPair u j a b (j + 1) = b := by
   rw [setPair, Function.update_self]
 
 /- English proof (translation)
-Rewrite using `[setPair, Function.update_of_ne (by omega), Function.update_of_ne (by omega)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem setPair_of_lt (u : ColPt G) (j a b) {k : ℕ} (hk : j + 1 < k) : setPair u j a b k = u k := by
   rw [setPair, Function.update_of_ne (by omega), Function.update_of_ne (by omega)]
@@ -195,7 +195,7 @@ theorem setPair_of_lt (u : ColPt G) (j a b) {k : ℕ} (hk : j + 1 < k) : setPair
 def cv (C : BiFam G) (u : ColPt G) (k : ℕ) : ℂ := C k (u k) (u (k + 1))
 
 /- English proof (translation)
-The claim follows from `| 0, j, hj, hev, φ, hφ, h => by have h0 := hN (.top j) (show j ≤ D.R.m by omega) (fun e => by injection e; omega) have h1 := hN (.top (j + 1)) (show j + 1 ≤ D.R.m by omega) (fun e => by injection e; omega) have h2 := hN (.grid D.R.m D.R.m) ⟨le_rfl, rfl⟩ (by simp) have hm : D.R.m …`.
+A detailed English derivation is pending.
 -/
 theorem jPer_van {M : Vol G} (hN : ∀ X, DefNode D.R.m X → X ≠ .top D.R.m → Nice M X) {I : Type} (S : Finset I) (a : I → ℂ)
     (C : I → BiFam G) (hC : ∀ i ∈ S, ∀ k, Even k → k < D.R.m → IsBiTheta W.ψ _ _ _ (C i k))
@@ -245,16 +245,16 @@ theorem jPer_van {M : Vol G} (hN : ∀ X, DefNode D.R.m X → X ≠ .top D.R.m �
       ring
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hf P`.
+A detailed English derivation is pending.
 -/
 theorem fock_theta (p : Pair T) {f : WO (G.pS p) (G.pT p) → ℂ} (hf : IsThetaFunO W.ψ _ _ f) (P) :
     IsThetaFunO W.ψ _ _ (W.fock p f P) :=
   GlobalTheory.GalLift.Vec.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ hf P
 
 /- English proof (translation)
-Establish `e : ∑ i ∈ S, a i • f i = (0 : ℂ) • (0 : WO (G.pS p) (G.pT p) → ℂ)`. Use function extensionality and compare the values at `u`. Simplify `h u` using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, mul_zero]`. Establish `e1` using `GlobalTheory.SpecFac.pureTensorO_sum W.ψ_std W.θ_is (G.cartS W.cart p) (G.onS W.onb p) (G.onT W.cart p) (G.onT W.onb p) S a f hf P`. Rewrite `e1` using `[e, GlobalTheory.FiniteFock.pureTensorO_smul, zero_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `congrFun e1 u`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at e2`. Conclude with `e2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fock_van (p : Pair T) {I : Type} (S : Finset I) (a : I → ℂ) (f : I → WO (G.pS p) (G.pT p) → ℂ)
     (hf : ∀ i ∈ S, IsThetaFunO W.ψ _ _ (f i)) (h : ∀ u, ∑ i ∈ S, a i * f i u = 0) (P) (u) :
@@ -269,7 +269,7 @@ theorem fock_van (p : Pair T) {I : Type} (S : Finset I) (a : I → ℂ) (f : I �
   exact e2.symm
 
 /- English proof (translation)
-Establish `hr : (Pair.chi i D.R.m : Pair T).InRange D.R.m` using `by show i + 1 ≤ D.R.m ∧ D.R.m ≤ D.R.m; omega`. Take `⟨hc, -⟩` from `GlobalTheory.thetaKO_continuous_and_rat_invariant W.ψ _ _ _ _ _ (W.om_is _ hr) f hf`. Use `⟨?_, fun γ hγ γ' hγ' g h => ker_rat_left W _ hr f hf γ hγ γ' hγ' g h, hN.1, hN.2.1, hN.2.2⟩` and prove the remaining obligations. Conclude with `hc.comp (((continuous_negGA _).comp continuous_snd).prodMk continuous_fst)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem good_row {M : Vol G} {i : ℕ} (hi : i < D.R.m) (hN : Nice M (.grid i D.R.m)) (f : Sch G (.right i D.R.m))
     (hf : IsThetaFunO W.ψ (G.pS (.chi i D.R.m)) (G.pT (.chi i D.R.m)) f) : GlobalTheory.DefConv.Good W M (.right i D.R.m) f := by
@@ -283,7 +283,7 @@ variable {M : Vol G} (hN : ∀ X, DefNode D.R.m X → X ≠ .top D.R.m → Nice 
 include hN hF
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DefConv.path W M (X := .grid 0 D.R.m) ⟨hF.2, hF.1⟩ _ _ (GlobalTheory.DefConv.all_rowFam D.R.m n g fun i => good_row W (by omega) (hN _ ⟨by omega, rfl⟩ (by simp)) _ (hg i))).2`.
+A detailed English derivation is pending.
 -/
 theorem row_invCont (n : ℕ) (hn : n ≤ D.R.m) (g : ∀ i : Fin n, Sch G (.right i D.R.m))
     (hg : ∀ i : Fin n, IsThetaFunO W.ψ (G.pS (.chi i D.R.m)) (G.pT (.chi i D.R.m)) (g i)) :
@@ -292,7 +292,7 @@ theorem row_invCont (n : ℕ) (hn : n ≤ D.R.m) (g : ∀ i : Fin n, Sch G (.rig
     good_row W (by omega) (hN _ ⟨by omega, rfl⟩ (by simp)) _ (hg i))).2
 
 /- English proof (translation)
-The claim follows from `| 0, _, a, f, P, _, hs, h => by have e := hs fun k => k.elim0 simp only [Finset.univ_eq_empty, Finset.prod_empty, mul_one] at e show ∑ i ∈ S, a i * F h = 0 rw [← Finset.sum_mul, e, zero_mul] | n + 1, hn, a, f, P, hf, hs, h => by refine int_van _ S a (fun i g => W.kerA (.right n D …`.
+A detailed English derivation is pending.
 -/
 theorem row_van {I : Type} (S : Finset I) : ∀ (n : ℕ) (_ : n ≤ D.R.m) (a : I → ℂ) (f : I → ∀ k : Fin n, Sch G (.right k D.R.m))
     (P : ∀ k : Fin n, PolF D (G.pT (.chi k D.R.m : Pair T)).rank (G.pS (.chi k D.R.m : Pair T)).rank),
@@ -331,11 +331,11 @@ theorem row_van {I : Type} (S : Finset I) : ∀ (n : ℕ) (_ : n ≤ D.R.m) (a :
           ring
 
 /- English proof (translation)
-Establish `hm` using `@top_idx D`. Use `jPer_van W t hN S x C (fun i hi => (hg i hi).1) _ (fun i hi => ?_) _ 0 top_idx ⟨0, rfl⟩ (fun _ => φ) (fun _ _ => hφ) fun g u h' => ?_` and prove the remaining obligations. Use `row_invCont W hN hF D.R.m le_rfl _ fun k : Fin D.R.m => fock_theta W _ ((hg i hi).2 k) (P k)` as an intermediate fact. Conclude with `⟨this.2, this.1⟩`. Establish `key` using `row_van W hN hF S D.R.m le_rfl (fun i => x i * ∏ k ∈ Finset.range (D.R.m / 2), cv (C i) u (2 * k)) f P (fun i hi => (hg i hi).2) (fun y => ?_) h'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[← mul_zero (φ g), ← key, Finset.mul_sum, show (D.R.m - 2) / 2 + 1 = D.R.m / 2 by omega]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [zero_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h u y]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => mul_assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem per_van {φ : Fn G (.top 0)} (hφ : GlobalTheory.Unf.IsContAut _ φ) {I : Type} (S : Finset I) (x : I → ℂ) (C : I → BiFam G)
     (f : I → SchRow G) (hg : ∀ i ∈ S, Good W (C i) (f i)) (h : ∀ u y, ∑ i ∈ S, x i * evT (C i) (f i) u y = 0) (P : PolRow G) :
@@ -357,9 +357,9 @@ theorem per_van {φ : Fn G (.top 0)} (hφ : GlobalTheory.Unf.IsContAut _ φ) {I 
 end GlobalTheory.RowTens
 
 /- English proof (translation)
-Use `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t M hM φ F' hφ hF I S x C f hg h P`. Use `GlobalTheory.RowTens.per_van ch.W t (fun X hX hX' => ⟨?_, hM X hX hX'⟩) hF hφ S x C f hg h P` and prove the remaining obligations. Break down `X with ⟨i, j⟩ | i | j` into its components or cases. Apply the tactic sequence `all_goals first`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Treat this case separately.
 
-Consider the case `exact hX.elim`. Consider the case `exact GlobalTheory.DefConv.posDef_of_node ch.G s.core.lev hX rfl`. Consider the case `(obtain ⟨h1, rfl⟩ := hX`. Conclude with `GlobalTheory.DefConv.posDef_of_node ch.G s.core.lev ⟨h1, le_rfl⟩ (by simp [Node.neg]))`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RowVal.tensAt_big : Big fun ch => TensAt ch := by
   refine ⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ => ?_⟩⟩

@@ -12,11 +12,11 @@ open Finset
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ d : ℕ, ∀ a b : Fin n, (b : ℕ) = a + d → f b ≤ f a`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show b = a from Fin.ext (by omega)]`. Consider the case `succ d ih`. Introduce `a b hab`. Establish `hc : (a : ℕ) + d < n` using `by omega`. Conclude with `(h ⟨a + d, hc⟩ b (by simp only; omega)).trans (ih a ⟨a + d, hc⟩ rfl)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `key (b - a) a b (by have := Fin.le_def.1 hab; omega)`.
+A detailed English derivation is pending.
 -/
 theorem antitone_of_forall_succ_le {f : Fin n → ℤ}
     (h : ∀ i j : Fin n, (j : ℕ) = i + 1 → f j ≤ f i) : Antitone f := by
@@ -39,11 +39,11 @@ Both sides reduce to the same expression.
 theorem lamS_apply (S : Finset (Fin n)) (i : Fin n) : lamS S i = if i ∈ S then 1 else 0 := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Apply `h` to reduce the goal to its premises. Use `antitone_of_forall_succ_le fun i j hij => ?_` and prove the remaining obligations. Establish `hle : l j ≤ l i` using `hl (Fin.le_def.2 (by omega))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, lamS_apply]`. Apply the tactic sequence `by_cases hi : i ∈ S <;> by_cases hj : j ∈ S <;> simp only [hi, hj, if_true, if_false]`. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases.
+Apply the first step, then apply the next step to every resulting obligation. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `absurd hj (hne i j hij heq.symm hi)`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_ascent {l : Fin n → ℤ} (hl : Antitone l) {S : Finset (Fin n)}
     (h : ¬ Antitone (l + lamS S)) :
@@ -63,9 +63,9 @@ theorem exists_ascent {l : Fin n → ℤ} (hl : Antitone l) {S : Finset (Fin n)}
   · omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Pi.add_apply, lamS_apply, Finset.mem_map_equiv, Equiv.symm_swap]`. Use `congr 1`. Rewrite using `[Equiv.swap_apply_def]`. Use `split_ifs with h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hlij]`. Rewrite using `[h2, hlij]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem add_lamS_comp_swap {l : Fin n → ℤ} {i j : Fin n} (hlij : l i = l j) (S : Finset (Fin n)) :
     (l + lamS S) ∘ Equiv.swap i j = l + lamS (S.map (Equiv.swap i j).toEmbedding) := by
@@ -80,9 +80,9 @@ theorem add_lamS_comp_swap {l : Fin n → ℤ} {i j : Fin n} (hlij : l i = l j) 
   · rfl
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_map]`. Rewrite using `[← Finset.insert_erase hj, Finset.sum_insert (Finset.notMem_erase j S), Finset.sum_insert (Finset.notMem_erase j S)]`. Establish `hrest : ∑ x ∈ S.erase j, ((Equiv.swap i j).toEmbedding x : ℕ) = ∑ x ∈ S.erase j, (x : ℕ)`. Use `Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Establish `hxj : x ≠ j` using `Finset.ne_of_mem_erase hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hxi : x ≠ i` using `fun h => hi (h ▸ Finset.mem_of_mem_erase hx)`. Simplify using `[Equiv.swap_apply_of_ne_of_ne hxi hxj]`. Rewrite using `[hrest]`. Simplify using `only [Equiv.coe_toEmbedding, Equiv.swap_apply_right]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sum_val_map_swap {S : Finset (Fin n)} {i j : Fin n} (hij : (j : ℕ) = i + 1) (hi : i ∉ S)
     (hj : j ∈ S) :
@@ -100,13 +100,13 @@ theorem sum_val_map_swap {S : Finset (Fin n)} {i j : Fin n} (hij : (j : ℕ) = i
   omega
 
 /- English proof (translation)
-It suffices to establish `key : ∀ k, ∀ S : Finset (Fin n), ∑ x ∈ S, (x : ℕ) = k → ∃ σ : Equiv.Perm (Fin n), Antitone ((l + lamS S) ∘ σ) ∧ H ((l + lamS S) ∘ σ) = H (l + lamS S) from key _ S rfl`. Introduce `k`. Proceed by induction on `k using Nat.strong_induction_on with`. Consider the case `_ k ih`. Introduce `S hk`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : Antitone (l + lamS S)`. Conclude with `⟨1, by simpa using ha, by simp⟩`. Take `⟨i, j, hij, hlij, hiS, hjS⟩` from `exists_ascent hl ha`. Establish `hcomp` using `add_lamS_comp_swap hlij S`. Establish `hsum` using `sum_val_map_swap hij hiS hjS`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨σ, hσ, hHσ⟩` from `ih _ (by omega) (S.map (Equiv.swap i j).toEmbedding) rfl`. Use `⟨Equiv.swap i j * σ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hcomp]`. Conclude with `hσ`. Rewrite using `[Equiv.Perm.coe_mul, ← Function.comp_assoc, hcomp, hHσ, ← hcomp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hH _ i j hij ?_` and prove the remaining obligations. Simplify using `only [Pi.add_apply, lamS_apply, hiS, hjS, if_true, if_false, hlij]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_perm_antitone {V : Type*} (H : (Fin n → ℤ) → V)
     (hH : ∀ (μ : Fin n → ℤ) (i j : Fin n), (j : ℕ) = i + 1 → μ j = μ i + 1 →
@@ -138,9 +138,9 @@ theorem exists_perm_antitone {V : Type*} (H : (Fin n → ℤ) → V)
 def initSeg {r : ℕ} (hr : r ≤ n) : Finset (Fin n) := Finset.univ.map (Fin.castLEEmb hr)
 
 /- English proof (translation)
-Simplify using `only [initSeg, Finset.mem_map, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Simplify using the standard rewrite rules. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨i, h⟩, Fin.ext (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_initSeg {r : ℕ} (hr : r ≤ n) {i : Fin n} : i ∈ initSeg hr ↔ (i : ℕ) < r := by
   simp only [initSeg, Finset.mem_map, Finset.mem_univ, true_and]
@@ -151,7 +151,7 @@ theorem mem_initSeg {r : ℕ} (hr : r ≤ n) {i : Fin n} : i ∈ initSeg hr ↔ 
     exact ⟨⟨i, h⟩, Fin.ext (by simp)⟩
 
 /- English proof (translation)
-Simplify using `[initSeg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_initSeg {r : ℕ} (hr : r ≤ n) : (initSeg hr).card = r := by
   simp [initSeg]
@@ -160,15 +160,15 @@ def tailSet {m : ℕ} (hm : m ≤ n) : Finset (Fin n) :=
   Finset.univ.map ⟨tailEmb hm, tailEmb_injective hm⟩
 
 /- English proof (translation)
-Simplify using `[tailSet]`.
+Simplify using the standard rewrite rules.
 -/
 theorem card_tailSet {m : ℕ} (hm : m ≤ n) : (tailSet hm).card = m := by
   simp [tailSet]
 
 /- English proof (translation)
-Simplify using `only [tailSet, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, rfl⟩`. Simplify using `[tailEmb]`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨i - (n - m), by omega⟩, Fin.ext (by simp [tailEmb]; omega)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_tailSet {m : ℕ} (hm : m ≤ n) {i : Fin n} : i ∈ tailSet hm ↔ n - m ≤ (i : ℕ) := by
   simp only [tailSet, Finset.mem_map, Finset.mem_univ, true_and, Function.Embedding.coeFn_mk]
@@ -179,7 +179,7 @@ theorem mem_tailSet {m : ℕ} (hm : m ≤ n) {i : Fin n} : i ∈ tailSet hm ↔ 
     exact ⟨⟨i - (n - m), by omega⟩, Fin.ext (by simp [tailEmb]; omega)⟩
 
 /- English proof (translation)
-Rewrite using `[tailSet, Finset.sum_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tailSum_eq_sum_tailSet (f : Fin n → ℤ) {m : ℕ} (hm : m ≤ n) :
     tailSum f hm = ∑ i ∈ tailSet hm, f i := by
@@ -187,14 +187,14 @@ theorem tailSum_eq_sum_tailSet (f : Fin n → ℤ) {m : ℕ} (hm : m ≤ n) :
   rfl
 
 /- English proof (translation)
-Simplify using `only [tailSum, Pi.add_apply, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tailSum_add (f g : Fin n → ℤ) {m : ℕ} (hm : m ≤ n) :
     tailSum (f + g) hm = tailSum f hm + tailSum g hm := by
   simp only [tailSum, Pi.add_apply, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [lamS_apply]`. Rewrite using `[Finset.sum_boole]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_lamS_eq_card (S A : Finset (Fin n)) :
     ∑ i ∈ A, lamS S i = ((A.filter (· ∈ S)).card : ℤ) := by
@@ -202,13 +202,13 @@ theorem sum_lamS_eq_card (S A : Finset (Fin n)) :
   rw [Finset.sum_boole]
 
 /- English proof (translation)
-Establish `hAS : A.filter (· ∈ S) = A ∩ S` using `Finset.filter_mem_eq_inter`. Establish `hBT : (tailSet hm).filter (· ∈ initSeg hr) = tailSet hm ∩ initSeg hr` using `Finset.filter_mem_eq_inter`. Rewrite using `[hAS, hBT]`. Establish `h1` using `Finset.card_union_add_card_inter A S`. Establish `h2 : (A ∪ S).card ≤ n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Finset.card_le_univ (A ∪ S)`. Distinguish the cases in `hmr : r + m ≤ n`. Establish `: tailSet hm ∩ initSeg hr = ∅`. Use extensionality with `i`. Simplify using `only [Finset.mem_inter, mem_tailSet, mem_initSeg, Finset.notMem_empty, iff_false, not_and]`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[this, Finset.card_empty]`. Conclude with `Nat.zero_le _`. Establish `h3` using `Finset.card_union_add_card_inter (tailSet hm) (initSeg hr)`. Establish `h4 : tailSet hm ∪ initSeg hr = Finset.univ`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_union, mem_tailSet, mem_initSeg, Finset.mem_univ, iff_true]`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[h4, Finset.card_univ, Fintype.card_fin, card_tailSet, card_initSeg]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_tailSet_inter_initSeg_le {m r : ℕ} (hm : m ≤ n) (hr : r ≤ n) {A S : Finset (Fin n)}
     (hA : A.card = m) (hS : S.card = r) :
@@ -237,13 +237,13 @@ theorem card_tailSet_inter_initSeg_le {m r : ℕ} (hm : m ≤ n) (hr : r ≤ n) 
     omega
 
 /- English proof (translation)
-Use `⟨fun m hm => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[tailSum_add, tailSum_eq_sum_tailSet (lamS _), sum_lamS_eq_card, tailSum_eq_sum_tailSet ((l + lamS S) ∘ σ)]`. Establish `hA : ((tailSet hm).map σ.toEmbedding).card = m`. Rewrite using `[Finset.card_map, card_tailSet]`. Establish `hsum : ∑ i ∈ tailSet hm, ((l + lamS S) ∘ σ) i = ∑ i ∈ (tailSet hm).map σ.toEmbedding, (l + lamS S) i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_map]`. Both sides reduce to the same expression. Rewrite using `[hsum]`. Simplify using `only [Pi.add_apply]`. Rewrite using `[Finset.sum_add_distrib, sum_lamS_eq_card]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `tailSum_le_sum hl hm _ hA`. Establish `h2` using `card_tailSet_inter_initSeg_le hm hr hA hS`. Establish `h2' : (((tailSet hm).filter (· ∈ initSeg hr)).card : ℤ) ≤ ((((tailSet hm).map σ.toEmbedding).filter (· ∈ S)).card : ℤ)` using `by exact_mod_cast h2`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ∑ i, (l + lamS S) (σ i) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.sum_comp σ (l + lamS S)]`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Rewrite using `[sum_lamS_eq_card, sum_lamS_eq_card, Finset.filter_mem_eq_inter, Finset.univ_inter, Finset.filter_mem_eq_inter, Finset.univ_inter, hS, card_initSeg]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem domLE_rearrangement {l : Fin n → ℤ} (hl : Antitone l) {r : ℕ} (hr : r ≤ n)
     {S : Finset (Fin n)} (hS : S.card = r) (σ : Equiv.Perm (Fin n)) :
@@ -272,7 +272,7 @@ theorem domLE_rearrangement {l : Fin n → ℤ} (hl : Antitone l) {r : ℕ} (hr 
       Finset.filter_mem_eq_inter, Finset.univ_inter, hS, card_initSeg]
 
 /- English proof (translation)
-Rewrite using `[defect, defect, defect, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[tailSum_add]`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem defect_add (a b : Fin n → ℤ) : defect (a + b) = defect a + defect b := by
   rw [defect, defect, defect, ← Finset.sum_add_distrib]
@@ -282,7 +282,7 @@ theorem defect_add (a b : Fin n → ℤ) : defect (a + b) = defect a + defect b 
   ring
 
 /- English proof (translation)
-Introduce `i j hij`. Use `Fin.le_def.1 hij` as an intermediate fact. Simplify using `only [lamS_apply, mem_initSeg]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem antitone_lamS_initSeg {r : ℕ} (hr : r ≤ n) : Antitone (lamS (initSeg hr)) := by
   intro i j hij
@@ -291,13 +291,13 @@ theorem antitone_lamS_initSeg {r : ℕ} (hr : r ≤ n) : Antitone (lamS (initSeg
   split_ifs <;> omega
 
 /- English proof (translation)
-Use `Finset.sum_pos' (fun m _ => ?_) ⟨⟨1, by omega⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `mul_tailSum_le (antitone_lamS_initSeg hr.le) (Nat.lt_succ_iff.1 m.2)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum : ∑ i, lamS (initSeg hr.le) i = r`. Rewrite using `[sum_lamS_eq_card, Finset.filter_mem_eq_inter, Finset.univ_inter, card_initSeg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htail : tailSum (lamS (initSeg hr.le)) (Nat.lt_succ_iff.1 (⟨1, by omega⟩ : Fin (n + 1)).2) = 0`. Rewrite using `[tailSum_eq_sum_tailSet, sum_lamS_eq_card]`. Use `norm_cast`. Rewrite using `[Finset.card_eq_zero, Finset.filter_eq_empty_iff]`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hi` using `[mem_tailSet]`. Rewrite using `[mem_initSeg]`. Simplify using `only at hi`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hsum, htail]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Nat.cast_one, one_mul, mul_zero, sub_zero]`. Conclude with `hr0` after adjusting the coercions.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem defect_lamS_initSeg_pos {r : ℕ} (hr : r < n) (hr0 : 0 < r) :
     0 < defect (lamS (initSeg hr.le)) := by
@@ -321,51 +321,45 @@ theorem defect_lamS_initSeg_pos {r : ℕ} (hr : r < n) (hr0 : 0 < r) :
     exact_mod_cast hr0
 
 /- English proof (translation)
-Establish `hconst : ∀ c : ℤ, f (fun _ => c) = 0`. Establish `hstep : ∀ c : ℤ, E n * f (fun _ => c) = (κ Finset.univ : ℂ) * f (fun _ => c + 1)`. Introduce `c`. Use `hrec (fun _ => c) (fun _ _ _ => le_rfl) n le_rfl` as an intermediate fact. Establish `hp : (Finset.univ : Finset (Fin n)).powersetCard n = {Finset.univ}`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using Finset.powersetCard_self (Finset.univ : Finset (Fin n))`. Rewrite using `[this, hp, Finset.sum_singleton]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[lamS_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hκu : (κ Finset.univ : ℂ) ≠ 0` using `by exact_mod_cast (hκ _).ne'`. Introduce `c`. Proceed by induction on `c using Int.induction_on with`. Consider the case `zero => exact h0`. Consider the case `succ c ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `hstep c` as an intermediate fact. Rewrite `this` using `[ih, mul_zero]`. Conclude with `(mul_eq_zero.1 this.symm).resolve_left hκu`. Consider the case `pred c ih`. Use `hstep (-(c : ℤ) - 1)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[show -(c : ℤ) - 1 + 1 = -c by ring, ih, mul_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hE`. It suffices to establish `key : ∀ d : ℕ, ∀ ν : Fin n → ℤ, Antitone ν → (defect ν).toNat = d → f ν = 0 from fun ν hν => key _ ν hν rfl`. Introduce `d`. Proceed by induction on `d using Nat.strong_induction_on with`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `_ d ih`. Introduce `ν hν hd`. Distinguish the cases in `hc : ∀ i j, ν i = ν j`. Break down `n.eq_zero_or_pos with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show ν = 0 from funext fun i => i.elim0]`. Conclude with `h0`. Establish `: ν = fun _ => ν ⟨0, hn⟩` using `funext fun i => hc i _`. Rewrite using `[this]`. Conclude with `hconst _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `push Not at hc`. Establish `hn : 0 < n`. Take `⟨i, -, -⟩` from `hc`. Conclude with `Fin.pos i`. Use `set i0 : Fin n := ⟨0, hn⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ k, ∃ hk : k < n, ν ⟨k, hk⟩ ≠ ν i0`. Take `⟨i, j, hij⟩` from `hc`. Distinguish the cases in `hi : ν i = ν i0`. Conclude with `⟨j, j.2, fun h => hij (hi.trans h.symm)⟩`. Conclude with `⟨i, i.2, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨r, hrn, hr0, hbefore, hrν⟩ : ∃ r, ∃ hrn : r < n, 0 < r ∧ (∀ i : Fin n, (i : ℕ) < r → ν i = ν i0) ∧ ν ⟨r, hrn⟩ ≠ ν i0 := by`. Take `⟨hrn, hrν⟩` from `Nat.find_spec hex`. Use `⟨Nat.find hex, hrn, ?_, fun i hi => ?_, hrν⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Apply `hrν` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Conclude with `Fin.ext (by simp only [i0]; omega)`. Use `Nat.find_min hex hi push Not at this` as an intermediate fact. Conclude with `this i.2`. Take `⟨T, hT⟩ : ∃ T, T = initSeg hrn.le` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨l, hl_def⟩ : ∃ l, l = ν - lamS T` from `⟨_, rfl⟩`. Establish `hνl : ν = l + lamS T` using `by rw [hl_def]; abel`. Establish `hνr : ν ⟨r, hrn⟩ < ν i0` using `lt_of_le_of_ne (hν (Fin.le_def.2 (Nat.zero_le _))) hrν`. Establish `hl : Antitone l`. Introduce `i j hij`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hij'` using `Fin.le_def.1 hij`. Rewrite using `[hl_def]`. Simplify using `only [Pi.sub_apply, lamS_apply, hT, mem_initSeg]`. Use `hν hij` as an intermediate fact. Apply the tactic sequence `by_cases hi : (i : ℕ) < r <;> by_cases hj : (j : ℕ) < r <;> simp only [hi, hj, if_true, if_false]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hbefore i hi` as an intermediate fact. Use `hbefore j hj` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hi'` using `hbefore i hi`. Establish `hj' : ν j ≤ ν ⟨r, hrn⟩` using `hν (Fin.le_def.2 (by simp only; omega))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use linear arithmetic over natural numbers and integers. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdef : defect ν = defect l + defect (lamS T)` using `by rw [hνl, defect_add]`. Establish `hpos` using `defect_lamS_initSeg_pos hrn hr0`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hpos` using `[← hT]`. Establish `hl0 : f l = 0`. Use `ih (defect l).toNat ?_ l hl rfl` and prove the remaining obligations. Use `defect_nonneg hl` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Establish `hterm : ∀ S ∈ Finset.univ.powersetCard r, f (l + lamS S) = 0 ∨ f (l + lamS S) = f ν`. Introduce `S hS`. Establish `hSr` using `(Finset.mem_powersetCard.1 hS).2`. Break down `hsort l hl S with h | ⟨σ, hσ, hfσ⟩` into its components or cases. Conclude with `Or.inl h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hdom : DomLE ((l + lamS S) ∘ σ) ν`. Rewrite using `[hνl, hT]`. Conclude with `domLE_rearrangement hl hrn.le hSr σ`. Distinguish the cases in `heq : (l + lamS S) ∘ σ = ν`. Conclude with `Or.inr (hfσ.trans (by rw [heq]))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `left`. Rewrite using `[hfσ]`. Establish `hlt` using `defect_lt hdom heq`. Establish `hnn` using `defect_nonneg hσ`. Conclude with `ih _ (by omega) _ hσ rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hfν`. Establish `hsum` using `hrec l hl r hrn.le`. Rewrite `hsum` using `[hl0, mul_zero]`. Establish `hsplit : ∑ S ∈ Finset.univ.powersetCard r, (κ S : ℂ) * f (l + lamS S) = (∑ S ∈ (Finset.univ.powersetCard r).filter (fun S => f (l + lamS S) = f ν), (κ S : ℂ)) * f ν`. Rewrite using `[Finset.sum_mul, Finset.sum_filter]`.
-
-Use `Finset.sum_congr rfl fun S hS => ?_` and prove the remaining obligations. Use `split_ifs with h`. Rewrite using `[h]`. Rewrite using `[(hterm S hS).resolve_right h, mul_zero]`. Establish `hTmem : T ∈ (Finset.univ.powersetCard r).filter (fun S => f (l + lamS S) = f ν)`.
-
-Rewrite using `[Finset.mem_filter, Finset.mem_powersetCard]`. Conclude with `⟨⟨Finset.subset_univ _, by rw [hT, card_initSeg]⟩, by rw [← hνl]⟩`. Establish `hκsum : (0 : ℝ) < ∑ S ∈ (Finset.univ.powersetCard r).filter (fun S => f (l + lamS S) = f ν), κ S` using `Finset.sum_pos (fun S _ => hκ S) ⟨T, hTmem⟩`. Rewrite `hsum` using `[hsplit]`. Establish `hne : (∑ S ∈ (Finset.univ.powersetCard r).filter (fun S => f (l + lamS S) = f ν), (κ S : ℂ)) ≠ 0`.
-
-Rewrite using `[← Complex.ofReal_sum]`. Conclude with `hκsum.ne'` after adjusting the coercions. Conclude with `hfν ((mul_eq_zero.1 hsum.symm).resolve_left hne)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_recursion (κ : Finset (Fin n) → ℝ) (hκ : ∀ S, 0 < κ S) (E : ℕ → ℂ)
     (hE : E n ≠ 0) (f : (Fin n → ℤ) → ℂ)

@@ -7,7 +7,7 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 universe u v
 
 /- English proof (translation)
-Introduce `d` and use `hMP d fun e _ => hHP e`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HilbertModule.proof (hMP : ModulesFromPrimes.Statement.{u, v})
     (hHP : HilbertPrime.Statement.{u}) : HilbertModule.Statement.{u, v} :=

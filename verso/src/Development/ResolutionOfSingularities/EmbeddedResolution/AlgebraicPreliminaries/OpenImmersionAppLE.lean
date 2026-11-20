@@ -9,11 +9,11 @@ universe u
 namespace IsOpenImmersion
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `: IsIso (Scheme.Hom.appLE f (f ''ᵁ S) S e)`. Rewrite using `[← Scheme.Hom.appIso_hom' f S]`. Use `infer_instance`. Prove the components needed by the constructor for the conclusion.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Establish `h1 : (CommRingCat.Hom.hom (Scheme.Hom.appLE f (f ''ᵁ S) S e ≫ inv (Scheme.Hom.appLE f (f ''ᵁ S) S e))) a = (CommRingCat.Hom.hom (Scheme.Hom.appLE f (f ''ᵁ S) S e ≫ inv (Scheme.Hom.appLE f (f ''ᵁ S) S e))) b`. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, hab]`. Rewrite `h1` using `[IsIso.hom_inv_id]`. Simplify `h1` using `only [CommRingCat.hom_id, RingHom.id_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Use `⟨(CommRingCat.Hom.hom (inv (Scheme.Hom.appLE f (f ''ᵁ S) S e))) y, ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun mm => (CommRingCat.Hom.hom mm) y) (IsIso.inv_hom_id (Scheme.Hom.appLE f (f ''ᵁ S) S e))`. Simplify `h3` using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_id, RingHom.id_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem bijective_appLE_of_image_eq {A B : Scheme.{u}} (f : A ⟶ B) [IsOpenImmersion f]
     (O : B.Opens) (S : A.Opens) (e : S ≤ f ⁻¹ᵁ O) (h : f ''ᵁ S = O) :

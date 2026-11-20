@@ -10,7 +10,7 @@ section
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
 
 /- English proof (translation)
-Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hausdorff_local_field : T2Space K := by
   let := IsTopologicalAddGroup.rightUniformSpace K
@@ -20,11 +20,11 @@ theorem hausdorff_local_field : T2Space K := by
 variable {K}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Rewrite using `[(IsValuativeTopology.hasBasis_nhds_zero K).tendsto_right_iff]`. Introduce `γ _`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hx γ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [eventually_ge_atTop n] with m hm`. Rewrite using `[map_pow]`. Conclude with `lt_of_le_of_lt (pow_le_pow_right_of_le_one' hx.le hm) hn`. Introduce `h`. Establish `h1` using `(IsValuativeTopology.hasBasis_nhds_zero K).tendsto_right_iff.1 h 1 trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `(h1.and (eventually_ge_atTop 1)).exists`. Take `⟨hn1, hn2⟩` from `hn`. Rewrite `hn1` using `[Set.mem_ofPred_eq, map_pow, Units.val_one]`. Assume the negation of the conclusion as `hc`. Conclude with `absurd hn1 (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_iff_topologically_nilpotent (x : K) :
     valuation K x < 1 ↔ Tendsto (fun n : ℕ => x ^ n) atTop (𝓝 0) := by
@@ -45,7 +45,7 @@ theorem valuation_lt_one_iff_topologically_nilpotent (x : K) :
     exact absurd hn1 (not_lt.2 (one_le_pow₀ (not_lt.1 hc)))
 
 /- English proof (translation)
-Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Conclude with `Valued.isClosed_integer K`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_valuation_integers : IsClosed (𝒪[K] : Set K) := by
   let := IsTopologicalAddGroup.rightUniformSpace K
@@ -59,11 +59,11 @@ section
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [CharZero K]
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `CharP.exists 𝓀[K]`. Establish `hpp : p.Prime`. Break down `CharP.char_is_prime_or_zero 𝓀[K] p with h | h` into its components or cases. Conclude with `h`. Substitute `h` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Use `CharP.charP_to_charZero 𝓀[K]` as an intermediate fact. Conclude with `absurd (inferInstance : Finite 𝓀[K]) (not_finite_iff_infinite.2 inferInstance)`. Use `⟨p, hpp, ?_⟩` and prove the remaining obligations. Establish `h0 : IsLocalRing.residue 𝒪[K] (p : 𝒪[K]) = 0`. Rewrite using `[map_natCast]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `CharP.cast_eq_zero _ p`. Rewrite `h0` using `[IsLocalRing.residue_eq_zero_iff]`. Use `(Valuation.Integer.not_isUnit_iff_valuation_lt_one (v := valuation K) (x := (p : 𝒪[K]))).1 h0` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_residue_char : ∃ p : ℕ, p.Prime ∧ valuation K (p : K) < 1 := by
   obtain ⟨p, hp⟩ := CharP.exists 𝓀[K]
@@ -81,7 +81,7 @@ theorem exists_residue_char : ∃ p : ℕ, p.Prime ∧ valuation K (p : K) < 1 :
   simpa using this
 
 /- English proof (translation)
-Set `` to `f.toAlgebra`. Use `hausdorff_local_field K` as an intermediate fact. Establish `: ContinuousSMul ℚ_[p] K` using `continuousSMul_of_algebraMap _ _ hf`. Conclude with `FiniteDimensional.of_locallyCompactSpace ℚ_[p]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_over_padic (p : ℕ) [Fact p.Prime] (f : ℚ_[p] →+* K) (hf : Continuous f) :
     letI := f.toAlgebra
@@ -99,21 +99,19 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   (p : ℕ) [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `(Valuation.mem_integer_iff _ _).1 (intCast_mem 𝒪[K] n)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_intCast_le_one_local_class_field (n : ℤ) : valuation K (n : K) ≤ 1 :=
   (Valuation.mem_integer_iff _ _).1 (intCast_mem 𝒪[K] n)
 
 /- English proof (translation)
-Rewrite `hq` using `[Rat.padicValuation_le_one_iff]`. Establish `hc : IsCoprime (p : ℤ) (q.den : ℤ)` using `Int.isCoprime_iff_gcd_eq_one.2 (by`. Rewrite using `[Int.gcd_natCast_natCast]`. Conclude with `(Nat.Prime.coprime_iff_not_dvd Fact.out).2 hq)`. Take `⟨a, b, hab⟩` from `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hden : 1 ≤ valuation K (q.den : K)`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `e : ((a : K) * (p : K) + (b : K) * (q.den : K)) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → K) hab`. Establish `h1 : valuation K ((a : K) * (p : K)) < 1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (valuation_intCast_le_one_local_class_field a)) hp`. Establish `h2 : valuation K ((b : K) * (q.den : K)) < 1`. Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' (valuation_intCast_le_one_local_class_field b)) hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(valuation K).map_add_lt h1 h2` as an intermediate fact. Rewrite `this` using `[e, map_one]`. Conclude with `lt_irrefl _ this`. Rewrite using `[Rat.cast_def, map_div₀]`. Establish `hpos : 0 < valuation K (q.den : K)` using `lt_of_lt_of_le zero_lt_one hden`.
-
-Rewrite using `[div_le_one₀ hpos]`. Conclude with `(valuation_intCast_le_one_local_class_field q.num).trans hden`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rational_valuation_le_one (hp : valuation K (p : K) < 1) (q : ℚ) (hq : Rat.padicValuation p q ≤ 1) :
     valuation K (q : K) ≤ 1 := by
@@ -149,11 +147,11 @@ theorem transportRatHom_apply (x : WithVal (Rat.padicValuation p)) :
     transportRatHom p K x = ((WithVal.equiv (Rat.padicValuation p) x : ℚ) : K) := rfl
 
 /- English proof (translation)
-Establish `hp0 : ((p : ℚ) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hpv : Rat.padicValuation p ((p : ℚ) ^ n) ≠ 0`. Rewrite using `[ne_eq, map_eq_zero]`. Conclude with `hp0`. Establish `h1 : Rat.padicValuation p (q / (p : ℚ) ^ n) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `(div_lt_one₀ (zero_lt_iff.2 hpv)).2 hq |>.le`. Establish `h2` using `rational_valuation_le_one (K := K) p hp _ h1`. Establish `hpF : ((p : K) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero)`. Establish `hvF : valuation K ((p : K) ^ n) ≠ 0` using `by rw [ne_eq, map_eq_zero]; exact hpF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities.
 
-Move the coercions through the operations in `at h2`. Rewrite `h2` using `[map_div₀, div_le_one₀ (zero_lt_iff.2 hvF), map_pow]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem rational_valuation_le_pow (hp : valuation K (p : K) < 1) (q : ℚ) (n : ℕ)
     (hq : Rat.padicValuation p q < Rat.padicValuation p ((p : ℚ) ^ n)) :
@@ -172,13 +170,13 @@ theorem rational_valuation_le_pow (hp : valuation K (p : K) < 1) (q : ℚ) (n : 
   exact h2
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_zero (transportRatHom p K) ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_zero]`. Introduce `s hs`. Take `⟨γ, hγ⟩` from `(IsValuativeTopology.mem_nhds_zero_iff s).1 hs`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hp γ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `y : WithVal (Rat.padicValuation p)` to `WithVal.toVal _ ((p : ℚ) ^ n)`. Establish `hy0 : y ≠ 0`. Simplify using `only [y, ne_eq, WithVal.toVal_eq_zero]`. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero)`. Establish `hU` using `Valued.isOpen_ball (WithVal (Rat.padicValuation p)) (Valued.v.restrict y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : WithVal (Rat.padicValuation p)) ∈ {x | Valued.v.restrict x < Valued.v.restrict y}`. Simplify using `only [Set.mem_ofPred_eq, Valuation.restrict_lt_iff, map_zero]`. Conclude with `zero_lt_iff.mpr ((Valuation.ne_zero_iff _).mpr hy0)`. Rewrite using `[Filter.mem_map]`. Use `filter_upwards [hU.mem_nhds h0] with x hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show transportRatHom p K x ∈ s`. Simplify using `only [Valuation.restrict_lt_iff] at hx`. Apply `hγ` to reduce the goal to its premises. Rewrite using `[Set.mem_ofPred_eq, transportRatHom_apply]`. Conclude with `lt_of_le_of_lt (rational_valuation_le_pow p hp _ n hx) hn`.
+A detailed English derivation is pending.
 -/
 theorem continuous_rational_hom_of_valuation (hp : valuation K (p : K) < 1) : Continuous (transportRatHom p K) := by
   refine continuous_of_continuousAt_zero (transportRatHom p K) ?_
@@ -203,7 +201,7 @@ theorem continuous_rational_hom_of_valuation (hp : valuation K (p : K) < 1) : Co
   exact lt_of_le_of_lt (rational_valuation_le_pow p hp _ n hx) hn
 
 /- English proof (translation)
-Set `` to `IsTopologicalAddGroup.rightUniformSpace K`. Use `isUniformAddGroup_of_addCommGroup (G := K)` as an intermediate fact. Use `⟨(UniformSpace.Completion.extensionHom (transportRatHom p K) (continuous_rational_hom_of_valuation p hp)).comp (Padic.withValRingEquiv (p := p)).symm.toRingHom, ?_⟩` and prove the remaining obligations. Conclude with `UniformSpace.Completion.continuous_extension.comp (Padic.withValUniformEquiv (p := p)).symm.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_continuous_padic_hom (hp : valuation K (p : K) < 1) : ∃ f : ℚ_[p] →+* K, Continuous f := by
   let := IsTopologicalAddGroup.rightUniformSpace K
@@ -220,7 +218,7 @@ variable {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchim
   {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff_topologically_nilpotent]`. Establish `h` using `(tendsto_pow_atTop_nhds_zero_iff_norm_lt_one (x := x)).2 hx`. Establish `h2` using `(hf.tendsto 0).comp h`. Rewrite `h2` using `[map_zero]`. Use `h2.congr fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Simplify using the standard rewrite rules.
 -/
@@ -234,15 +232,13 @@ theorem padic_hom_valuation_lt_one (f : ℚ_[p] →+* K) (hf : Continuous f) (x 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Rewrite `hc` using `[not_le]`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hc; linarith`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ‖x⁻¹‖ < 1` using `by rw [norm_inv]; exact inv_lt_one_of_one_lt₀ hc`. Establish `h2` using `padic_hom_valuation_lt_one f hf _ h1`. Rewrite `h` using `[Valuation.mem_integer_iff]`. Establish `h3 : valuation K (f x * f x⁻¹) < 1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' h) h2`. Rewrite `h3` using `[← map_mul, mul_inv_cancel₀ hx0, map_one, map_one]`. Conclude with `lt_irrefl _ h3`. Introduce `h`. Establish `hcl : IsClosed {z : ℤ_[p] | f (z : ℚ_[p]) ∈ (𝒪[K] : Set K)}` using `isClosed_valuation_integers.preimage (hf.comp continuous_subtype_val)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ z : ℤ_[p], f (z : ℚ_[p]) ∈ (𝒪[K] : Set K)`. Introduce `z`. Use `PadicInt.denseRange_intCast.induction_on (p := fun z : ℤ_[p] => f (z : ℚ_[p]) ∈ (𝒪[K] : Set K)) z hcl ?_` and prove the remaining obligations. Introduce `n`. Simplify using `only [PadicInt.coe_intCast, map_intCast, SetLike.mem_coe]`.
-
-Conclude with `intCast_mem 𝒪[K] n`. Conclude with `hall ⟨x, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem padic_hom_mem_integers_iff (f : ℚ_[p] →+* K) (hf : Continuous f) (x : ℚ_[p]) :
     f x ∈ 𝒪[K] ↔ ‖x‖ ≤ 1 := by
@@ -272,13 +268,13 @@ theorem padic_hom_mem_integers_iff (f : ℚ_[p] →+* K) (hf : Continuous f) (x 
 end
 
 /- English proof (translation)
-Establish `key : ∀ y : K, valuation K y < 1 ↔ ‖e y‖ < 1`. Introduce `y`. Rewrite using `[valuation_lt_one_iff_topologically_nilpotent, ← tendsto_pow_atTop_nhds_zero_iff_norm_lt_one]`. Establish `h0 : 𝓝 (0 : K) = comap e (𝓝 0)`. Rewrite using `[← map_zero e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he.isInducing.nhds_eq_comap 0`. Rewrite using `[h0, tendsto_comap_iff]`. Use `tendsto_congr fun n => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[Valuation.mem_integer_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `h` using `key x⁻¹`. Rewrite `h` using `[map_inv₀, map_inv₀, norm_inv]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : 0 < valuation K x` using `zero_lt_iff.2 (by simpa using hx)`. Establish `hn : 0 < ‖e x‖` using `by rw [norm_pos_iff]; simpa using hx`. Rewrite `h` using `[inv_lt_one₀ hv, inv_lt_one₀ hn]`. Rewrite using `[← not_lt, ← not_lt, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_integers_iff_norm_of_homeomorph {K : Type} [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] {L : Type} [NormedField L] (e : K ≃+* L) (he : IsHomeomorph e) (x : K) :
@@ -302,13 +298,11 @@ theorem mem_integers_iff_norm_of_homeomorph {K : Type} [Field K] [ValuativeRel K
   rw [← not_lt, ← not_lt, h]
 
 /- English proof (translation)
-Use `hausdorff_local_field K` as an intermediate fact. Set `φ : K →ₐ[ℚ_[p]] PadicAlgCl p` to `IsAlgClosed.lift`. Set `e : K ≃ₐ[ℚ_[p]] φ.fieldRange` to `AlgEquiv.ofInjectiveField φ`. Establish `hfin : FiniteDimensional ℚ_[p] φ.fieldRange` using `Module.Finite.equiv e.toLinearEquiv`. Set `_ : Algebra K (PadicAlgCl p)` to `φ.toRingHom.toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower ℚ_[p] K (PadicAlgCl p)` using `IsScalarTower.of_algebraMap_eq fun x => (φ.commutes x).symm`. Establish `: Algebra.IsAlgebraic K (PadicAlgCl p)` using `Algebra.IsAlgebraic.tower_top (K := ℚ_[p]) K`. Establish `: IsAlgClosure K (PadicAlgCl p)` using `⟨inferInstance, inferInstance⟩`. Set `E : AlgebraicClosure K ≃ₐ[K] PadicAlgCl p` to `IsAlgClosure.equiv K _ _`. Establish `hhomeo : IsHomeomorph e.toRingEquiv` using `(e.toLinearEquiv.toContinuousLinearEquiv.toHomeomorph).isHomeomorph`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨{ K' := φ.fieldRange, fin := hfin, e := e.toRingEquiv, E := E.toRingEquiv, comm := ?_, homeo := hhomeo, int := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `E.commutes x`. Introduce `x`. Conclude with `mem_integers_iff_norm_of_homeomorph e.toRingEquiv hhomeo x`.
-
-Introduce `x`. Conclude with `φ.commutes x`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_model_of_algebra (p : ℕ) [Fact p.Prime] (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [Algebra ℚ_[p] K] [FiniteDimensional ℚ_[p] K] [ContinuousSMul ℚ_[p] K] :
@@ -337,7 +331,7 @@ section
 variable (K : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] [CharZero K]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_continuous_padic_hom (K := K) p hp`. Conclude with `⟨f, hf, padic_hom_mem_integers_iff f hf⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_padic_hom (p : ℕ) [Fact p.Prime] (hp : valuation K (p : K) < 1) :
     ∃ f : ℚ_[p] →+* K, Continuous f ∧ ∀ x, f x ∈ 𝒪[K] ↔ ‖x‖ ≤ 1 := by
@@ -345,9 +339,9 @@ theorem exists_padic_hom (p : ℕ) [Fact p.Prime] (hp : valuation K (p : K) < 1)
   exact ⟨f, hf, padic_hom_mem_integers_iff f hf⟩
 
 /- English proof (translation)
-Take `⟨p, hpp, hp⟩` from `exists_residue_char K`. Establish `: Fact p.Prime` using `⟨hpp⟩`. Take `⟨f, hf, -⟩` from `exists_padic_hom K p hp`. Set `_` to `f.toAlgebra`. Establish `: FiniteDimensional ℚ_[p] K` using `finite_over_padic K p f hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ContinuousSMul ℚ_[p] K` using `continuousSMul_of_algebraMap _ _ hf`. Take `⟨m, -⟩` from `exists_model_of_algebra p K`. Conclude with `⟨p, inferInstance, ⟨m⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_model : ∃ (p : ℕ) (_ : Fact p.Prime), Nonempty (Model K p) := by
   obtain ⟨p, hpp, hp⟩ := exists_residue_char K

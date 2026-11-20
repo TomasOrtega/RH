@@ -21,15 +21,15 @@ def asm {n : ℕ} (x : ∀ r, Cn (Φ.S r).fn n) : Cn Φ.rees n :=
   fun s => (show Φ.Pr (s.obj (Fin.last n)) from fun r => x r s)
 
 /- English proof (translation)
-The claim follows from `funext fun s => funext fun r => congrFun (h r) s`.
+A detailed English derivation is pending.
 -/
 theorem ext_comp {n : ℕ} {a b : Cn Φ.rees n} (h : ∀ r, comp Φ r a = comp Φ r b) : a = b :=
   funext fun s => funext fun r => congrFun (h r) s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Set `e : Φ.rees.obj (s.obj (Fin.last (n + 1))) →+ (Φ.S r).fn.obj (s.obj (Fin.last (n + 1)))` to `Pi.evalAddMonoidHom (fun r => (Φ.S r).S (s.obj (Fin.last (n + 1)))) r`. Express the relevant statement in the definitionally equal form `e (∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (Φ.rees.map (toLast i s)).hom (c (face i s))) = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • ((Φ.S r).fn.map (toLast i s)).hom (comp Φ r c (face i s))`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem comp_d (r n : ℕ) (c : Cn Φ.rees n) :
     comp Φ r (d Φ.rees n c) = d (Φ.S r).fn n (comp Φ r c) := by
@@ -44,9 +44,9 @@ theorem comp_d (r n : ℕ) (c : Cn Φ.rees n) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h r`. Rewrite using `[← comp_d, h]`. Both sides reduce to the same expression. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ext_comp Φ fun r => by rw [comp_d, h r]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem d_eq_zero_iff (n : ℕ) (c : Cn Φ.rees n) :
     d Φ.rees n c = 0 ↔ ∀ r, d (Φ.S r).fn n (comp Φ r c) = 0 := by
@@ -57,15 +57,13 @@ theorem d_eq_zero_iff (n : ℕ) (c : Cn Φ.rees n) :
     exact ext_comp Φ fun r => by rw [comp_d, h r]; rfl
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `h r`. Establish `h0 : a = 0` using `h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Introduce `h`. Establish `: a = 0` using `ext_comp Φ fun r => h r`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ j`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩ r`. Conclude with `⟨comp Φ r b, (comp_d Φ r j b).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Establish `h' : ∀ r, ∃ b, d (Φ.S r).fn j b = comp Φ r a` using `h`. Use `choose b hb using h'`. Conclude with `⟨asm Φ b, ext_comp Φ fun r => by`. Express the relevant statement in the definitionally equal form `comp Φ r (d Φ.rees j (asm Φ b)) = _`.
-
-Rewrite using `[comp_d]`. Conclude with `hb r⟩`.
+Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_B_iff (j : ℕ) (a : Cn Φ.rees j) :
     a ∈ (cx Φ.rees).B j ↔ ∀ r, comp Φ r a ∈ (cx (Φ.S r).fn).B j := by
@@ -100,7 +98,7 @@ theorem pull_cls (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) (a : Cn F 
     (Mor.restrict F G).pull j ((cx F).cls a ha) = (cx (G ⋙ F)).cls ((Mor.restrict F G).pullC j a) hb := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `d (G ⋙ F) j _ = 0`. Rewrite using `[(Mor.restrict F G).d_pullC j a, ha, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_cocycle (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) (a : Cn F j) (ha : d F j a = 0) :
     (cx (G ⋙ F)).d j ((Mor.restrict F G).pullC j a) = 0 := by
@@ -108,11 +106,9 @@ theorem pull_cocycle (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) (a : C
   rw [(Mor.restrict F G).d_pullC j a, ha, map_zero]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha hb`. Use `h ((cx F).cls a ha) (by` as an intermediate fact. Rewrite using `[pull_cls F G j a ha (pull_cocycle F G j a ha)]`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).2 hb)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[one_smul]`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).1 this`. Introduce `h x hx`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 x`. Rewrite using `[one_smul]`.
-
-Rewrite `hx` using `[pull_cls F G j a ha (pull_cocycle F G j a ha)]`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).2 (h a ha (((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).1 hx))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inj_iff (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) :
     InjUpTo (1 : R) ((Mor.restrict F G).pull j) ↔
@@ -131,11 +127,11 @@ theorem inj_iff (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) :
     exact ((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).2 (h a ha (((CrystallineSemistableComparison.P.cls_surj _ j).2.1 _ _).1 hx))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h b hb`. Take `⟨x, hx⟩` from `h ((cx (G ⋙ F)).cls b hb)`. Take `⟨a, ha, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 x`. Rewrite `hx` using `[one_smul, pull_cls F G j a ha (pull_cocycle F G j a ha)]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨a, ha, ((CrystallineSemistableComparison.P.cls_surj _ j).2.2.1 _ _ _ _).1 hx⟩`. Introduce `h y`. Take `⟨b, hb, rfl⟩` from `(CrystallineSemistableComparison.P.cls_surj _ j).1 y`. Take `⟨a, ha, hm⟩` from `h b hb`. Use `⟨(cx F).cls a ha, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[one_smul, pull_cls F G j a ha (pull_cocycle F G j a ha)]`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ j).2.2.1 _ _ _ _).2 hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surj_iff (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) :
     SurjUpTo (1 : R) ((Mor.restrict F G).pull j) ↔
@@ -154,9 +150,9 @@ theorem surj_iff (F : C ⥤ ModuleCat.{w} R) (G : C' ⥤ C) (j : ℕ) :
     exact ((CrystallineSemistableComparison.P.cls_surj _ j).2.2.1 _ _ _ _).2 hm
 
 /- English proof (translation)
-Introduce `j hj`. Use `⟨(inj_iff _ _ _).2 fun a ha hb => ?_, (surj_iff _ _ _).2 fun b hb => ?_⟩` and prove the remaining obligations. Use `(mem_B_iff Φ j a).2 fun r => ?_` and prove the remaining obligations. Conclude with `(inj_iff _ _ _).1 (h r j hj).1 _ ((d_eq_zero_iff Φ j a).1 ha r) ((mem_B_iff (Φ.comap G) j _).1 hb r)`. Establish `hb'` using `(d_eq_zero_iff (Φ.comap G) j b).1 hb`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fun r => (surj_iff _ G j).1 (h r j hj).2 _ (hb' r)` as an intermediate fact. Use `choose a ha hm using this`. Conclude with `⟨asm Φ a, (d_eq_zero_iff Φ j _).2 ha, (mem_B_iff (Φ.comap G) j _).2 fun r => hm r⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ri_one (G : C' ⥤ C) (n : ℕ) (h : ∀ r, RI 1 n (Φ.S r).fn G) : RI 1 n Φ.rees G := by
   intro j hj
@@ -172,7 +168,7 @@ theorem ri_one (G : C' ⥤ C) (n : ℕ) (h : ∀ r, RI 1 n (Φ.S r).fn G) : RI 1
 def cv {T : C} (x : Φ.rees.obj T) (r : ℕ) : (Φ.S r).fn.obj T := (show Φ.Pr T from x) r
 
 /- English proof (translation)
-The claim follows from `funext fun r => Subtype.ext (h r)`.
+A detailed English derivation is pending.
 -/
 theorem rees_ext {T : C} {x y : Φ.rees.obj T} (h : ∀ r, (cv Φ x r).1 = (cv Φ y r).1) : x = y :=
   funext fun r => Subtype.ext (h r)
@@ -190,13 +186,13 @@ theorem cv_sub {T : C} (x y : Φ.rees.obj T) (r : ℕ) :
     (cv Φ (x - y) r).1 = (cv Φ x r).1 - (cv Φ y r).1 := rfl
 
 /- English proof (translation)
-The claim follows from `congrArg Subtype.val (Flt.X_smul_zero Φ T x)`.
+A detailed English derivation is pending.
 -/
 theorem cv_X_zero {T : C} (x : Φ.rees.obj T) : (cv Φ ((X : ℤ[X]) • x) 0).1 = 0 :=
   congrArg Subtype.val (Flt.X_smul_zero Φ T x)
 
 /- English proof (translation)
-The claim follows from `Flt.X_smul_succ Φ T x r`.
+A detailed English derivation is pending.
 -/
 theorem cv_X_succ {T : C} (x : Φ.rees.obj T) (r : ℕ) :
     (cv Φ ((X : ℤ[X]) • x) (r + 1)).1 = Φ.μ • (cv Φ x r).1 := Flt.X_smul_succ Φ T x r
@@ -232,13 +228,13 @@ theorem comp_shift_succ {n : ℕ} (m : ∀ r, Cn (Φ.S (r + 1)).fn n) (r : ℕ) 
     comp Φ (r + 1) (shiftC Φ m) = m r := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun s => Flt.X_smul_zero Φ _ (y s)`.
+A detailed English derivation is pending.
 -/
 theorem comp_X_zero {n : ℕ} (y : Cn Φ.rees n) : comp Φ 0 ((X : ℤ[X]) • y) = 0 :=
   funext fun s => Flt.X_smul_zero Φ _ (y s)
 
 /- English proof (translation)
-The claim follows from `Flt.X_smul_succ Φ _ (y s) r`.
+A detailed English derivation is pending.
 -/
 theorem comp_X_succ {n : ℕ} (y : Cn Φ.rees n) (r : ℕ) (s : ComposableArrows C n) :
     (comp Φ (r + 1) ((X : ℤ[X]) • y) s).1 = Φ.μ • (comp Φ r y s).1 :=
@@ -252,11 +248,11 @@ def up (ξ : R) (hξ : ∀ r T x, x ∈ (Φ.S r).S T → ξ • x ∈ (Φ.S (r +
     exact Subtype.ext (map_smul (F.map φ).hom ξ x.1).symm
 
 /- English proof (translation)
-Use `ext_comp Φ fun r => ?_` and prove the remaining obligations. Rewrite using `[comp_d]`. Consider the cases of `r with`. Consider the case `zero`. Rewrite using `[comp_X_zero, comp_shift_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Consider the case `succ r`. Rewrite using `[comp_shift_succ, (Mor.ofNatTrans (up Φ ξ hξ r)).d_pullC n (x r), hx r]`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_X_succ]`. Express the relevant statement in the definitionally equal form `ξ • (μ' • (comp Φ r y s).1) = _`. Rewrite using `[hμ, mul_comm μ' ξ, mul_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_shift {μ' ξ : R} (hμ : Φ.μ = μ' * ξ)
     (hξ : ∀ r T x, x ∈ (Φ.S r).S T → ξ • x ∈ (Φ.S (r + 1)).S T) {n : ℕ} (y : Cn Φ.rees (n + 1))
@@ -284,7 +280,7 @@ theorem comp_unAug (G : C' ⥤ C) (T : C) (x : Φ.rees.obj T) (r : ℕ) :
       unAug (Φ.S r).fn G T (cv Φ x r) := rfl
 
 /- English proof (translation)
-The claim follows from `rees_ext Φ fun r => by cases r with | zero => exact cv_X_zero Φ x | succ r => exact (cv_X_succ Φ x r).trans (h r)`.
+A detailed English derivation is pending.
 -/
 theorem X_smul_eq_zero {T : C} (x : Φ.rees.obj T) (h : ∀ r, Φ.μ • (cv Φ x r).1 = 0) :
     (X : ℤ[X]) • x = 0 :=
@@ -294,19 +290,17 @@ theorem X_smul_eq_zero {T : C} (x : Φ.rees.obj T) (h : ∀ r, Φ.μ • (cv Φ 
     | succ r => exact (cv_X_succ Φ x r).trans (h r)
 
 /- English proof (translation)
-Introduce `T`. Set `Ψ` to `(Φ.comap G).comap (StructuredArrow.proj T G)`. Establish `hξ' : ∀ r T x, x ∈ (Ψ.S r).S T → ξ • x ∈ (Ψ.S (r + 1)).S T` using `fun r T' x hx => hξ r _ x hx`. Establish `hμ' : Ψ.μ = μ' * ξ` using `hμ`. Use `⟨fun x => ?_, fun x hx => ?_, fun y hy => ?_, fun n y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(d_eq_zero_iff Ψ 0 _).2 fun r => (h r T).1 (cv Φ x r)`. Use `X_smul_eq_zero Φ x fun r => ?_` and prove the remaining obligations. Establish `h0 : μ' • cv Φ x r = 0` using `(h r T).2.1 (cv Φ x r) (by`. Rewrite using `[← comp_unAug Φ G T x r, hx]`. Use the proof step `rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : μ' • (cv Φ x r).1 = 0` using `congrArg Subtype.val h0`. Rewrite using `[hμ, mul_comm μ' ξ, mul_smul, h1, smul_zero]`. Establish `hy'` using `(d_eq_zero_iff Ψ 0 y).1 hy`. Use `fun r => (h r T).2.2.1 (comp Ψ r y) (hy' r)` as an intermediate fact. Use `choose z hz using this`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Use `⟨shiftV Φ fun r => ⟨ξ • (z r).1, hξ r T _ (z r).2⟩, ext_comp Ψ fun r => ?_⟩` and prove the remaining obligations. Consider the cases of `r with`. Consider the case `zero`. Rewrite using `[comp_X_zero Ψ]`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Subtype.ext (map_zero (F.map (s.obj (Fin.last 0)).hom).hom)`. Consider the case `succ r`. Use function extensionality and compare the values at `s`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[comp_X_succ Ψ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `v : (F.map (s.obj (Fin.last 0)).hom).hom (z r).1 = μ' • (comp Ψ r y s).1` using `congrArg Subtype.val (congrFun (hz r) s)`. Express the relevant statement in the definitionally equal form `(F.map (s.obj (Fin.last 0)).hom).hom (ξ • (z r).1) = _`. Rewrite using `[map_smul, v, hμ', mul_comm μ' ξ, mul_smul]`. Establish `hy'` using `(d_eq_zero_iff Ψ (n + 1) y).1 hy`. Use `fun r => (h r T).2.2.2 n (comp Ψ r y) (hy' r)` as an intermediate fact.
-
-Use `choose x hx using this`. Conclude with `⟨_, d_shift Ψ hμ' hξ' y x hx⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem desc_rees (G : C' ⥤ C) (μ' ξ : R) (hμ : Φ.μ = μ' * ξ)
     (hξ : ∀ r T x, x ∈ (Φ.S r).S T → ξ • x ∈ (Φ.S (r + 1)).S T)
@@ -345,17 +339,17 @@ theorem desc_rees (G : C' ⥤ C) (μ' ξ : R) (hμ : Φ.μ = μ' * ξ)
     exact ⟨_, d_shift Ψ hμ' hξ' y x hx⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `⟨fun x hx => ?_, fun x hx => ?_, fun x => ?_⟩` and prove the remaining obligations. Use `X_smul_eq_zero Φ x fun r => ?_` and prove the remaining obligations. Establish `: (cv Φ x r).1 = 0` using `h1 (by`. Establish `e : (cv Φ ((Φ.rees.map i).hom x) r).1 = (cv Φ (0 : Φ.rees.obj T') r).1` using `by rw [hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[cv_map]`. Conclude with `e.trans (map_zero (F.map i).hom).symm)`. Rewrite using `[this, smul_zero]`. Use `fun r => h2 r (cv Φ x r).1 (cv Φ x r).2 (by` as an intermediate fact. Establish `e : (cv Φ ((Φ.rees.map g).hom x) r).1 = (cv Φ x r).1` using `by rw [hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[cv_map] at e)` and apply the resulting hypothesis. Use `choose m hm hm' using this`. Use `⟨shiftV Φ fun r => ⟨m r, hm r⟩, rees_ext Φ fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[cv_map]`. Consider the cases of `r with`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[cv_X_zero, cv_shift_zero]`. Conclude with `map_zero _`. Consider the case `succ r`. Rewrite using `[cv_X_succ, cv_shift_succ]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm' r`. Use `fun r => h3 r (cv Φ x r).1 (cv Φ x r).2 choose y hy hy' using this` as an intermediate fact. Use `⟨shiftV Φ fun r => ⟨y r, hy r⟩, rees_ext Φ fun r => ?_⟩` and prove the remaining obligations. Rewrite using `[cv_sub, cv_map]`. Consider the cases of `r with`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero`. Rewrite using `[cv_X_zero, cv_shift_zero, map_zero, sub_zero]`. Consider the case `succ r`. Rewrite using `[cv_X_succ, cv_shift_succ]`. Conclude with `hy' r`.
+A detailed English derivation is pending.
 -/
 theorem acyc_rees {T T' : C} (i : T ⟶ T') (g : T' ⟶ T') (h : Φ.FAcyc i g) :
     Acyc1 (X : ℤ[X]) (Φ.rees.map i).hom (Φ.rees.map g).hom := by
@@ -392,7 +386,7 @@ theorem acyc_rees {T T' : C} (i : T ⟶ T') (g : T' ⟶ T') (h : Φ.FAcyc i g) :
       exact hy' r
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ri_one Φ G n, fun μ' ξ hμ hξ h => desc_rees Φ G μ' ξ hμ hξ h, fun i g h => acyc_rees Φ i g h⟩`.
+Supply the required witnesses or components.
 -/
 theorem main {R : Type} [CommRing R] {C : Type u} [Category.{v} C] {C' : Type u'} [Category.{v'} C']
     {F : C ⥤ ModuleCat.{w} R} (Φ : Flt F) (G : C' ⥤ C) (n : ℕ) :

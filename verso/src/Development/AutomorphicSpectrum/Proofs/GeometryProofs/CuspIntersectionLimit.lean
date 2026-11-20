@@ -23,11 +23,9 @@ open LevelTowerAlt (lower_centre)
 open GroundTheory.Heights₂.Heights.Regular (logCover expCover)
 
 /- English proof (translation)
-Establish `h1 : ∀ k, ‖z k‖ < 1` using `(pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 hz.1)`. Use `⟨fun k => if k.val < a then Complex.log (z k) else z k, ⟨fun i => ?_, fun k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `hi : (Fin.castLE h i).val < a` using `i.isLt`. Simplify using `only [if_pos hi, Complex.log_re]`. Conclude with `Real.log_neg (norm_pos_iff.mpr (hz.2 _ hi)) (h1 _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg (not_lt.mpr hk)]`. Conclude with `h1 k`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k.val < a`. Simplify using `only [expCover, if_pos hk, Complex.exp_log (hz.2 k hk)]`.
-
-Simplify using `only [expCover, if_neg hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_lift {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ} (hz : z ∈ Flat.punct n a 1) :
     ∃ w ∈ logCover h, expCover a w = z := by
@@ -44,11 +42,9 @@ theorem exists_lift {n a : ℕ} (h : a ≤ n) {z : Fin n → ℂ} (hz : z ∈ Fl
     · simp only [expCover, if_neg hk]
 
 /- English proof (translation)
-Establish `hc : Continuous (aff t₀ ρ π)`. Unfold `aff`. Use `fun_prop`. Establish `ha : ∀ (z w : Fin n → ℂ) (ζ : ℂ), aff t₀ ρ π (z + ζ • w) = aff t₀ ρ π z + ζ • ((ρ : ℂ) • (w ∘ π))`. Introduce `z w ζ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[aff]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨h.1.comp (g := aff t₀ ρ π) hc.continuousOn hUV, fun z w hd => ?_⟩` and prove the remaining obligations. Simplify using `only [ha]`.
-
-Conclude with `h.2 _ _ fun ζ hζ => by rw [← ha]; exact hUV _ (hd ζ hζ)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPsh_comp_aff {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.Perm (Fin n)) {U V : Set (Fin n → ℂ)}
     {f : (Fin n → ℂ) → ℝ} (h : IsPsh V f) (hUV : ∀ u ∈ U, aff t₀ ρ π u ∈ V) :
@@ -66,35 +62,33 @@ theorem isPsh_comp_aff {n : ℕ} (t₀ : Fin n → ℂ) (ρ : ℝ) (π : Equiv.P
   exact h.2 _ _ fun ζ hζ => by rw [← ha]; exact hUV _ (hd ζ hζ)
 
 /- English proof (translation)
-The claim follows from `le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_logSize {n : ℕ} (a : ℕ) (u : Fin n → ℂ) : 1 ≤ Flat.logSize a u :=
   le_add_of_nonneg_right (Finset.sum_nonneg fun _ _ => abs_nonneg _)
 
 /- English proof (translation)
-Establish `hρ' : (ρ : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hρ.ne'`. Establish `hbr : ∀ i : Fin n, i.val < a₀ → (π.symm i).val < χ.a ∧ t₀ (π.symm i) = 0`. Introduce `i hi`. Set `u : Fin n → ℂ` to `fun k => if k = i then 0 else if t₀ (π.symm k) = 0 then 1 / 2 else 0`. Establish `hu1 : u ∈ ball (0 : Fin n → ℂ) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `k`. Simplify using `only [u]`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hb : χ.γ (aff t₀ ρ π u) ∈ Bd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Conclude with `((hu u hu1).2 hn).2 i hi (by simp [u])`. Take `⟨j, hj, h0⟩` from `(χ.boundary _ (hu u hu1).1).1 hb`. Distinguish the cases in `hji : π j = i`. Substitute `hji` using the available equality.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Conclude with `⟨hj, by simpa [aff, u] using h0⟩`. It suffices to derive a contradiction. Apply the tactic sequence `by_cases ht : t₀ j = 0 <;> simp [aff, u, hji, ht, hρ'] at h0`. Use `set A₀ : ℝ := 1 + n * (1 + |Real.log ρ|) with hA₀`.
+Supply the required witnesses or components. It suffices to derive a contradiction. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA1 : 1 ≤ A₀` using `le_add_of_nonneg_right (by positivity)`. Use `⟨2 + Real.log A₀, by linarith [Real.log_nonneg hA1], fun u hu' => ?_⟩` and prove the remaining obligations. Use `set t := aff t₀ ρ π u with ht`. Establish `ht1 : ∀ k, ‖t k‖ < 1` using `(pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 (hu u hu'.1).1)`. Establish `hu1 : ∀ k, ‖u k‖ < 1` using `(pi_norm_lt_iff one_pos).1 (mem_ball_zero_iff.1 hu'.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ∀ i : Fin n, 0 ≤ if (i : ℕ) < χ.a then Real.log (1 / ‖t i‖ ^ 2) else 0`. Introduce `i`. Use `split_ifs`. Rewrite using `[one_div, Real.log_inv, neg_nonneg]`. Conclude with `Real.log_nonpos (by positivity) (pow_le_one₀ (norm_nonneg _) (ht1 i).le)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `he : Real.exp 1 ≤ χ.logR t` using `le_add_of_nonneg_right (Finset.sum_nonneg fun i _ => hterm i)`. Establish `he1 : 1 ≤ χ.logR t` using `(Real.one_le_exp zero_le_one).trans he`. Establish `hl1 : 1 ≤ Real.log (χ.logR t)`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `he`. Establish `hone : ∀ i : Fin n, i.val < a₀ → |Real.log ‖u i‖| ≤ (1 + |Real.log ρ|) * χ.logR t`. Introduce `i hi`. Take `⟨h1, h2⟩` from `hbr i hi`. Establish `h3 : t (π.symm i) = ρ * u i` using `by simp [ht, aff, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h4 : Real.log (1 / ‖t (π.symm i)‖ ^ 2) ≤ χ.logR t`. Use `Finset.single_le_sum (fun i _ => hterm i) (Finset.mem_univ (π.symm i))` as an intermediate fact. Rewrite `this` using `[if_pos h1]`. Conclude with `this.trans (le_add_of_nonneg_left (Real.exp_pos 1).le)`. Establish `h5 : 0 < ‖u i‖` using `norm_pos_iff.2 (hu'.2 i hi)`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[h3, one_div, Real.log_inv, Real.log_pow, norm_mul, Complex.norm_real, Real.norm_of_nonneg hρ.le, Real.log_mul hρ.ne' h5.ne']`. Rewrite using `[abs_of_neg (Real.log_neg h5 (hu1 i))]`. Move the coercions through the operations in `at h4`. Use polynomial arithmetic with `[le_abs_self (Real.log ρ), abs_nonneg (Real.log ρ)]`. Establish `hsz : Flat.logSize a₀ u ≤ A₀ * χ.logR t`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Finset.sum_le_card_nsmul (Finset.univ.filter fun i : Fin n => i.val < a₀) (fun i => |Real.log ‖u i‖|) _ fun i hi => hone i (Finset.mem_filter.1 hi).2`. Establish `h2 : ((Finset.univ.filter fun i : Fin n => i.val < a₀).card : ℝ) ≤ n`. Conclude with `(Finset.card_le_univ _).trans (Fintype.card_fin n).le` after adjusting the coercions. Establish `h3 : 0 ≤ (1 + |Real.log ρ|) * χ.logR t` using `by positivity`. Rewrite `h1` using `[nsmul_eq_mul]`.
-
-Unfold `Flat.logSize`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h2 h3]`. Establish `h6` using `Real.log_le_log (by linarith [one_le_logSize a₀ u]) hsz`. Rewrite `h6` using `[Real.log_mul (by linarith) (by linarith)]`. Conclude with `⟨hl1, by nlinarith [Real.log_nonneg hA1]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem logSize_le {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)} {n a₀ : ℕ}
     {Bd : Set ((Σ k, J k) → ℂ)} (χ : SncChart P n Bd) (t₀ : Fin n → ℂ) {ρ : ℝ} (hρ : 0 < ρ)
@@ -175,7 +169,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Dc : ComponentData II (CMType H) K J Ω W} {Hd : HodgeData Dc} {S₀ : Finset ℕ}
 
 /- English proof (translation)
-The claim follows from `|phMu Hd ((Dc.chart a).γ t)| ≤ C * Real.log ((Dc.chart a).logR t) := by classical obtain ⟨a₀, g, Λ, i₁, i₂, L, π, ρ, r, σ, b, G, hρ, hr, hr1, hσ, hb, hGd, hu, hw⟩ := chart_formula hG Or hU a t₀ ht₀ have hm : 1 ≤ Dc.N - Dc.j := by have := Dc.j_le have := Dc.two_le_N omega obtain ⟨ …`.
+A detailed English derivation is pending.
 -/
 theorem near_bdd (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k) → ℂ) → ℝ}
     (hU : Or.𝔐.IsCuspWeight Or.sm U) (hP : ChartPsh Dc (corrW Hd U)) (a : Fin Dc.nCharts)
@@ -263,9 +257,9 @@ theorem near_bdd (hG : Top.Given) (Or : CptOrigin Y S₀ Dc Hd) {U : ((Σ k, J k
     · linarith [(abs_le.1 b4).2, (abs_le.1 b2).2]
 
 /- English proof (translation)
-Introduce `hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U hU`. Establish `hP` using `(GlobalTheory.T.cusp_intersection_positive hG E H D Xo l c Y II K J Ω W Dc Hd S₀ Or U hU).2.2.1`. Use `⟨fun a t₀ ht₀ => ?_, fun a t₀ ht₀ => ?_⟩` and prove the remaining obligations. Take `⟨ε, hε, C, h⟩` from `near_bdd hG Or hU hP a t₀ ht₀`. Conclude with `⟨ε, hε, C, fun t ht h' => (h t ht h').1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨ε, hε, C, h⟩` from `near_bdd hG Or hU hP a t₀ ht₀`. Conclude with `⟨ε, hε, C, fun t ht h' => (h t ht h').2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem corr_bdd : Top.Given → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [IsAbelianGalois ℚ E] (H : Host E) (D : Datum H) (Xo : ∀ l : Tor.Level H, Moduli D l) (l : Tor.Level H) (c : Coeff l) (Y : Model (Xo l) c (algebraMap (𝓞 c.F) c.F)) (II : IntersectionSystem) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (Ω : Type) [Field Ω] [Algebra ℚ Ω] (W : CMType H → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module Ω (W τ)] (Dc : ComponentData II (CMType H) K J Ω W) (Hd : HodgeData Dc) (S₀ : Finset ℕ) (Or : CptOrigin Y S₀ Dc Hd) (U : ((Σ k, J k) → ℂ) → ℝ), Or.𝔐.IsCuspWeight Or.sm U → ChartBdd Dc (corrW Hd U) ∧ ∀ a, ∀ t₀ ∈ Metric.ball (0 : Fin (Fintype.card (CMType H) * Dc.j * (Dc.N - Dc.j)) → ℂ) 1, ∃ ε > (0 : ℝ), ∃ C : ℝ, ∀ t ∈ offBd Dc a, ‖t - t₀‖ < ε → U ((Dc.chart a).γ t) ≤ C * Real.log ((Dc.chart a).logR t) ∧ |phMu Hd ((Dc.chart a).γ t)| ≤ C * Real.log ((Dc.chart a).logR t) := by
   intro hG E _ _ _ _ H D Xo l c Y II K _ J _ Ω _ _ W _ _ Dc Hd S₀ Or U hU

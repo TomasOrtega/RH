@@ -16,11 +16,13 @@ end GlobalTheory.BigTop.Fun.RamSum
 namespace GlobalTheory.BigTop.Fun
 open RamSum
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Use `⟨42, fun C hC => _root_.GlobalTheory.BigTop.EventuallyAtPoints.of_forall fun x hx i p _ d _ => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hg, h1, h2, -⟩` from `hF.1.2.2.2.2.2.2.2.2 x hx i`. Establish `h3` using `hF.2.2.1 x hx i`. Establish `hb : 1 ≤ (Fm.L x i).sc.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [(Fm.L x i).sc.one_lt_alt]) _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `leaves_of_sum d.O C p.Z.b (Real.log_nonneg hb) (d.G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl)) (fun v _ => isPrimePow_absNorm v) (ramifiedPlaces_sum_log_absNorm_le d.G.pl (Fm.L x i).sc hg h1 h2 h3) (fun v _ => ?_) (le_PPF d.O hC hb ?_ ?_ ((Fm.D x i).host.g_prime 0).pos ((Fm.D x i).host. …` and prove the remaining obligations. Apply the tactic sequence `unfold FunIn.O FunIn.data dsimp only split_ifs <;> omega`. Use `(Fm.D x i).R.m_le_f` as an intermediate fact. Use `(Fm.D x i).R.two_le_m` as an intermediate fact. Use `show 1 ≤ (Fm.D x i).R.f`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `Ranks.f Ranks.n`. Use linear arithmetic over natural numbers and integers. Use `(Fm.D x i).R.two_le_m show 1 ≤ (Fm.D x i).R.k + (Fm.D x i).R.m` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
+
+A detailed English derivation is pending.
 -/
 theorem ramified_sums_seventh_bound_alt : _root_.GlobalTheory.BigTop.Fun.RamifiedSumBound' := by
   refine ⟨0, fun CF _ => ⟨1, one_pos, fun eps _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm CH hF _ _ => ?_⟩⟩⟩

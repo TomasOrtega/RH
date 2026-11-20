@@ -13,17 +13,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ}
 
 /- English proof (translation)
-Set `J : Ideal (𝓞 E)` to `{ carrier := {o | ∃ y ∈ Λ, (∀ i, i ≠ c → S.hT y (e i) = 0) ∧ S.hT y (e c) = (o : E)} zero_mem' := ⟨0, Λ.zero_mem, fun i _ => by simp, by simp⟩ add_mem' := by`. Introduce and unpack `o o' ⟨y, hy, h0, ho⟩ ⟨y', hy', h0', ho'⟩`. Use `⟨y + y', Λ.add_mem hy hy', fun i hi => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[h0 i hi, h0' i hi]`. Simplify using `[ho, ho']`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `κ o ⟨y, hy, h0, ho⟩`. Use `⟨cj κ • y, Λ.smul_mem _ hy, fun i hi => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT_cj_left, h0 i hi, mul_zero]`. Rewrite using `[hT_cj_left, ho, smul_eq_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use `rfl }`. Establish `htop : J ⊔ Ideal.span {g} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨M, hM, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Both sides reduce to the same expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hMbot : M ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField E)`. Set `P : HeightOneSpectrum (𝓞 E)` to `⟨M, hM.isPrime, hMbot⟩`. Establish `hg : g ∈ M` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self g))`. Take `⟨y, hy, h0, o, ho, hoP⟩` from `exact_dual Λ hU hint e hind he P (hlocg P hg) c`. Conclude with `hoP (hle (Ideal.mem_sup_left ⟨y, hy, h0, ho⟩))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (1 : 𝓞 E) ∈ J ⊔ Ideal.span {g}` using `by rw [htop]; trivial`. Take `⟨j, hj, x, hx, hjx⟩` from `Submodule.mem_sup.mp h1`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hx`. Take `⟨y, hy, h0, ho⟩` from `hj`. Use `⟨y, hy, h0, -a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ho]`. Establish `: j = 1 + g * -a` using `by rw [← hjx]; ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem global_dual (Λ : Submodule (𝓞 E) S.V) (hU : Formalism.HermitianLatticesTheory.IsUnimodular S.hT Λ) (hint : IntLat Λ)
     (e : Fin r → S.V) (hind : LinearIndependent E e) (he : ∀ i, e i ∈ Λ) (g : 𝓞 E)

@@ -28,7 +28,7 @@ section Group
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-The claim follows from `congrFun (GlobalTheory.HkB.dcOp_eq_and_level J ⊤ 1 x x' A A' F (fun k hk => ⟨k, hk, 1, J.one_mem, trivial, (mul_one k).symm, fun l _ => Commute.one_left l⟩) (fun _ _ => rfl) (fun _ _ => trivial) (fun _ _ => trivial) hA hA' hx (fun k h => by simpa using hF k k.2 h)).1 h`.
+A detailed English derivation is pending.
 -/
 theorem sum_eq_of_isDC {J : Subgroup G} {x x' : G} {A A' : Finset G} {F : G → ℂ} (hA : IsDC J x A) (hA' : IsDC J x' A')
     (hx : ∃ k₁ k₂ : J, x' = (k₁ : G) * x * k₂) (hF : ∀ k ∈ J, ∀ h, F (h * k) = F h) (h : G) :
@@ -39,7 +39,7 @@ theorem sum_eq_of_isDC {J : Subgroup G} {x x' : G} {A A' : Finset G} {F : G → 
     (fun k h => by simpa using hF k k.2 h)).1 h
 
 /- English proof (translation)
-Use `(GlobalTheory.HkB.dcOp_eq_and_level J ⊤ 1 x x A A F (fun k hk => ⟨k, hk, 1, J.one_mem, trivial, (mul_one k).symm, fun l _ => Commute.one_left l⟩) (fun _ _ => rfl) (fun _ _ => trivial) (fun _ _ => trivial) hA hA ⟨1, 1, by simp⟩ (fun k h => by simpa using hF k k.2 h)).2 ⟨k, hk⟩ h` as an intermediate fact. Simplify `this` using `[dcOp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_inv_of_isDC {J : Subgroup G} {x : G} {A : Finset G} {F : G → ℂ} (hA : IsDC J x A)
     (hF : ∀ k ∈ J, ∀ h, F (h * k) = F h) (k : G) (hk : k ∈ J) (h : G) :
@@ -51,7 +51,7 @@ theorem sum_inv_of_isDC {J : Subgroup G} {x : G} {A : Finset G} {F : G → ℂ} 
   simpa [dcOp] using this
 
 /- English proof (translation)
-Introduce `a ha`. Take `⟨k₁, k₂, rfl⟩` from `hA.1 a ha`. Conclude with `L.mul_mem (L.mul_mem (hKL k₁.2) hx) (hKL k₂.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_isDC {K L : Subgroup G} (hKL : K ≤ L) {x : G} (hx : x ∈ L) {A : Finset G} (hA : IsDC K x A) :
     ∀ a ∈ A, a ∈ L := by
@@ -65,20 +65,18 @@ structure Splits (J K L : Subgroup G) : Prop where
   dec : ∀ k ∈ J, ∃ k₁ ∈ K, ∃ k₂ ∈ J, k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l
 
 /- English proof (translation)
-Introduce `g hg` and use `(hs.mem g (hs.le hg)).2 hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Splits.le' {J K L : Subgroup G} (hs : Splits J K L) : K ≤ J := fun g hg => (hs.mem g (hs.le hg)).2 hg
 
 /- English proof (translation)
-Establish `hAL` using `mem_of_isDC hs.le hx hA`. Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k₁, k₂, rfl⟩` from `hA.1 a ha`. Conclude with `⟨⟨k₁, hs.le' k₁.2⟩, ⟨k₂, hs.le' k₂.2⟩, rfl⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a₁, ha₁, b₁, hb₁, e₁, c₁⟩` from `hs.dec k₁ k₁.2`. Take `⟨a, ⟨ha, hak⟩, -⟩` from `hA.2 (a₁ * x) ⟨⟨a₁, ha₁⟩, 1, by simp⟩`. Establish `hmem : a⁻¹ * (k₁ * x * k₂) ∈ J`. Establish `: a⁻¹ * ((k₁ : G) * x * k₂) = a⁻¹ * (a₁ * x) * (b₁ * k₂)`. Rewrite using `[e₁, mul_assoc a₁ b₁ x, (c₁ x hx).eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[this]`. Conclude with `J.mul_mem (hs.le' hak) (J.mul_mem hb₁ k₂.2)`. Use `⟨a, ⟨ha, hmem⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `a' ⟨ha', hmem'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : a⁻¹ * a' ∈ J`. Establish `: a⁻¹ * a' = (a⁻¹ * ((k₁ : G) * x * k₂)) * (a'⁻¹ * (k₁ * x * k₂))⁻¹` using `by group`. Rewrite using `[this]`. Conclude with `J.mul_mem hmem (J.inv_mem hmem')`. Establish `h2 : a⁻¹ * a' ∈ K` using `(hs.mem _ (L.mul_mem (L.inv_mem (hAL a ha)) (hAL a' ha'))).1 h1`.
-
-Conclude with `(hA.2 a' (hA.1 a' ha')).unique ⟨ha', by simp [K.one_mem]⟩ ⟨ha, h2⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Splits.isDC {J K L : Subgroup G} (hs : Splits J K L) {x : G} (hx : x ∈ L) {A : Finset G} (hA : IsDC K x A) :
     IsDC J x A := by
@@ -103,9 +101,9 @@ theorem Splits.isDC {J K L : Subgroup G} (hs : Splits J K L) {x : G} (hx : x ∈
     exact (hA.2 a' (hA.1 a' ha')).unique ⟨ha', by simp [K.one_mem]⟩ ⟨ha, h2⟩
 
 /- English proof (translation)
-Establish `hAL` using `mem_of_isDC hs.le hx hA`. Take `⟨a₁, ha₁, b₁, -, rfl, c₁⟩` from `hs.dec κ hκ`. Establish `e1 : a₁ * b₁ = b₁ * a₁` using `(c₁ a₁ (hs.le ha₁)).eq.symm`. Rewrite using `[e1, ← mul_assoc, sum_inv_of_isDC hA hF a₁ ha₁]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_assoc, hF a₁ ha₁, mul_assoc, (c₁ a (hAL a ha)).eq, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Splits.sum_transl {J K L : Subgroup G} (hs : Splits J K L) {x : G} (hx : x ∈ L) {A : Finset G}
     (hA : IsDC K x A) {F : G → ℂ} (hF : ∀ k ∈ K, ∀ h, F (h * k) = F h) {κ : G} (hκ : κ ∈ J) (h : G) :
@@ -126,7 +124,7 @@ structure OffAt (β : GL (Fin V.rank) (Lev.EAf D)) (L : Formalism.L2.DIV.LevDat 
   chi : ∀ k ∈ K, levChi V β L k = 1
 
 /- English proof (translation)
-Introduce `k hk h`. Rewrite using `[((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT).lev v k (hL.splits.le' hk) h, hL.chi k hk, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_of_mem_mult {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank) (Lev.EAf D)}
     {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} {K large₂ : Subgroup (GA D V)} (hL : OffAt β L K large₂) {T : MMap M}
@@ -135,15 +133,13 @@ theorem inv_of_mem_mult {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank) 
   rw [((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT).lev v k (hL.splits.le' hk) h, hL.chi k hk, one_mul]
 
 /- English proof (translation)
-Establish `hAL` using `mem_of_isDC hL.splits.le hx hA`. Establish `hT'` using `(GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ T).1 hT`. Establish `h0 : IsMultMap θ M ∅ (levChi V β L) T` using `⟨hT'.aut, hT'.cusp, fun _ _ hk => absurd hk (Set.notMem_empty _), hT'.equiv, hT'.cont⟩`. Establish `hex : ∀ a : GA D V, ∃ T' : MMap M, a ∈ A → IsMultMap θ M ∅ (levChi V β L) T' ∧ ∀ v, T' v = rTr V a (T v)`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `ha : a ∈ A`. Take `⟨T', h⟩` from `GlobalTheory.T.isMultMap_rightTranslate_finiteAdelic_normalizer θ M ∅ (levChi V β L) a (hf (hAL a ha)) (fun k hk => absurd hk (Set.notMem_empty _)) T h0`. Conclude with `⟨T', fun _ => h⟩`. Conclude with `⟨0, fun h => absurd h ha⟩`. Use `choose Ta hTa using hex`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : heckeOn M A T = ∑ a ∈ A, Ta a`. Use extensionality with `v g`. Rewrite using `[MultilinearMap.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun a ha => (congrFun ((hTa a ha).2 v) g).symm`. Establish `h1 : IsMultMap θ M ∅ (levChi V β L) (heckeOn M A T)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← GlobalTheory.MultMem.mem_mult_iff, e]`. Conclude with `Submodule.sum_mem _ fun a ha => Submodule.subset_span (hTa a ha).1`. Use `Submodule.subset_span ⟨h1.aut, h1.cusp, fun v k hk g => ?_, h1.equiv, h1.cont⟩` and prove the remaining obligations. Use `show ∑ a ∈ A, T v (g * k * a) = levChi V β L k * ∑ a ∈ A, T v (g * a)`. Rewrite using `[hL.splits.sum_transl hx hA (inv_of_mem_mult hL hT v) hk, Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => hT'.lev v k hk _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeOn_mem_mult {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank) (Lev.EAf D)}
     {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} {K large₂ : Subgroup (GA D V)} (hL : OffAt β L K large₂) (hf : large₂ ≤ GfC V)
@@ -174,9 +170,9 @@ theorem heckeOn_mem_mult {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank)
   exact Finset.sum_congr rfl fun a _ => hT'.lev v k hk _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Use `show actG0 V β L g0 (heckeLin V A F) h = ∑ a ∈ A, actG0 V β L g0 F (h * a)`. Unfold `actG0`. Distinguish the cases in `hk : ∃ κ, IsLevelLift V β L g0 κ`. Simplify using `only [dif_pos hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hκ : hk.choose ∈ levG V β (flagL L)` using `⟨hk.choose_spec.1, hk.choose_spec.2.1, Subgroup.mem_top _⟩`. Rewrite using `[heckeLin_apply, hL.splits.sum_transl hx hA hF hκ, Finset.mul_sum]`. Simplify using `[dif_neg hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeLin_actL {β : GL (Fin V.rank) (Lev.EAf D)} {L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} {K large₂ : Subgroup (GA D V)}
     (hL : OffAt β (flagL L) K large₂) {x : GA D V} (hx : x ∈ large₂) {A : Finset (GA D V)} (hA : IsDC K x A)
@@ -192,9 +188,7 @@ theorem heckeLin_actL {β : GL (Fin V.rank) (Lev.EAf D)} {L : Formalism.L2.DIV.L
   · simp [dif_neg hk]
 
 /- English proof (translation)
-Rewrite `hT`, the goal using `[mem_goodPart]`. Use `⟨heckeOn_mem_mult hL' hf hx hA hT.1, fun v => ?_⟩` and prove the remaining obligations. Use `show gaL V β L eG c (heckeLin V A (T v)) = heckeLin V A (T v)`. Use `conv_rhs => rw [← hT.2 v]`. Simplify using `only [gaL, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`.
-
-Conclude with `Finset.sum_congr rfl fun g _ => by rw [heckeLin_actL hL hx hA (inv_of_mem_mult hL' hT.1 v)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem heckeOn_mem_goodPart {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank) (Lev.EAf D)}
     {L L' : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank} {K large₂ : Subgroup (GA D V)} (hL : OffAt β (flagL L) K large₂)
@@ -210,11 +204,11 @@ theorem heckeOn_mem_goodPart {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.r
   exact Finset.sum_congr rfl fun g _ => by rw [heckeLin_actL hL hx hA (inv_of_mem_mult hL' hT.1 v)]
 
 /- English proof (translation)
-Establish `hp : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨h1, h2, h3⟩` from `(GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ N L hβ).2 P e _ hp hN hL`. Take `⟨hf, hcf, -⟩` from `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e _ hp`. Establish `hc` using `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ hf hcf).2.2`. Use `⟨⟨fun g hg => (hLg g).2 ((hK g).1 hg).2, fun g hg => ?_, fun k hk => ?_⟩, fun k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1 g ((hLg g).1 hg), hK]`. Conclude with `⟨fun h => ⟨h, (hLg g).1 hg⟩, fun h => h.1⟩`. Take `⟨k₁, hk₁, k₂, hk₂, s₁, s₂, rfl⟩` from `h3 k hk`. Use `⟨k₁, (hK _).2 ⟨(h1 _ s₁).1 hk₁, s₁⟩, k₂, hk₂, rfl, fun l hl => ?_⟩` and prove the remaining obligations. Conclude with `(hc (1 - (e + cA D e)) l k₂ (by rw [mul_sub, mul_one, hf, sub_self]) ((hLg l).1 hl) s₂).symm`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hK k).1 hk` as an intermediate fact. Conclude with `h2 k ((h1 k this.2).2 this.1) this.2`.
+A detailed English derivation is pending.
 -/
 theorem offAt_of_place {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {N : ℕ}
     (hβ : IsBaseFrame V β Λ N) {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D} (he : IsIdemAt e P)
@@ -235,9 +229,9 @@ theorem offAt_of_place {β : GL (Fin V.rank) (Lev.EAf D)} {Λ : Submodule (𝓞 
     exact h2 k ((h1 k this.2).2 this.1) this.2
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Take `⟨-, k₁, h₁, k₂, h₂, rfl⟩` from `hA.1 a ha`. Conclude with `⟨⟨k₁, (hK _).2 h₁⟩, ⟨k₂, (hK _).2 h₂⟩, rfl⟩`. Introduce and unpack `g ⟨k₁, k₂, rfl⟩`. Use `hA.2 _ ⟨k₁, (hK _).1 k₁.2, k₂, (hK _).1 k₂.2, rfl⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify `this` using `only [hK]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDC_of_isCosetRep {K : Subgroup (GA D V)} {K' : Set (GA D V)} (hK : ∀ g, g ∈ K ↔ g ∈ K') {x : GA D V}
     {A : Finset (GA D V)} (hA : IsCosetRep V K' x A) : IsDC K x A := by
@@ -249,7 +243,7 @@ theorem isDC_of_isCosetRep {K : Subgroup (GA D V)} {K' : Set (GA D V)} (hK : ∀
     simpa only [hK] using this
 
 /- English proof (translation)
-Establish `hle : K ≤ large₂` using `fun g hg => (hLg g).2 ((hK g).1 hg).2`. Take `⟨τ, t1, t2, t3, t4, t5⟩` from `(GlobalTheory.T.involution_spherical_hecke_anti V P e he).1`. Use `GlobalTheory.T.exists_anti_involution_of_chars K large₂ 1 x y A B A' F (fun k hk => ⟨k, hk, 1, K.one_mem, hle hk, (mul_one k).symm, fun l _ => Commute.one_left l⟩) (fun _ _ => rfl) ⟨τ, fun g hg => (hLg _).2 (t1 g ((hLg g).1 hg)), fun a ha b hb => t2 a b ((hLg _).1 ha) ((hLg _).1 …` and prove the remaining obligations. Take `⟨a, ha, b, hb, h⟩` from `t5 g ((hLg g).1 hg)`. Conclude with `⟨a, ⟨(hK a).2 ha, (hLg a).2 ha.2⟩, b, ⟨(hK b).2 hb, (hLg b).2 hb.2⟩, h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem comm_card_of_place {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalism.L2.Theta.AE D} (he : IsIdemAt e P)
     {K large₂ : Subgroup (GA D V)} (hLg : ∀ g, g ∈ large₂ ↔ SuppAt e V g) (hK : ∀ g, g ∈ K ↔ g ∈ locPart V (KsphC V ∅) e)
@@ -268,7 +262,7 @@ theorem comm_card_of_place {P : HeightOneSpectrum (𝓞 D.host.E)} {e : Formalis
   exact ⟨a, ⟨(hK a).2 ha, (hLg a).2 ha.2⟩, b, ⟨(hK b).2 hb, (hLg b).2 hb.2⟩, h⟩
 
 /- English proof (translation)
-Use `⟨(LinearEquiv.ofInjective HM.e hinj).symm.toLinearMap ∘ₗ (T ∘ₗ HM.e).codRestrict _ hT, fun x => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val ((LinearEquiv.ofInjective HM.e hinj).apply_symm_apply ((T ∘ₗ HM.e).codRestrict _ hT x))` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lift {X : Type} [AddCommGroup X] [Module ℂ X] (HM : HMod X) (hinj : Function.Injective HM.e)
     (T : X →ₗ[ℂ] X) (hT : ∀ x, T (HM.e x) ∈ LinearMap.range HM.e) :
@@ -278,19 +272,19 @@ theorem exists_lift {X : Type} [AddCommGroup X] [Module ℂ X] (HM : HMod X) (hi
   exact this
 
 /- English proof (translation)
-Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: Countable (GQ V)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Use `(GlobalTheory.T.adelicUnitary_unimodular_exists_fundamentalDomain D V μ hμ).1` as an intermediate fact. Establish `hmem : ∀ z, HM.e z ∈ U` using `fun z => hM.2.1 ▸ LinearMap.mem_range_self _ z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `GlobalTheory.T.multiplicative_inner_product_model M μ 𝓕 HM U hM`. Use `symm`. Rewrite using `[LinearMap.eq_adjoint_iff]`. Introduce `y z`. Rewrite using `[← inner_conj_symm, ← inner_conj_symm y]`.
+Establish an intermediate fact. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Distinguish the cases in `hsm : ∀ τ, M.sm τ ≠ ⊥`. Take `⟨v, hv⟩` from `GlobalTheory.SchurConst.exists_vec M hsm`. Apply `mul_right_cancel₀ hv` to reduce the goal to its premises. Rewrite using `[← (hS z (φ' y) v v).2, ← (hS (φ z) y v v).2, hφ, hφ']`.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `GlobalTheory.SchurConst.left_cont_of_mem θ M J χ _ (hU (hmem z)) v`. Establish `hy` using `GlobalTheory.SchurConst.left_cont_of_mem θ M J χ _ (hU (hmem y)) v`. Use `(GlobalTheory.T.double_coset_sum_fundamental_domain μ (GQ V) K 𝓕 x A A' (HM.e z v) (HM.e y v) hF (fun a ha => ?_) (fun a ha => ?_) hc hz.1 hy.1 hz.2 hy.2 (hinv _ (hmem z) v) (hinv _ (hmem y) v) (hS z z v v).1 (hS y y v v).1).symm` and prove the remaining obligations. Take `⟨k₁, k₂, h⟩` from `hA.1 a ha`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, h⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k₁, k₂, h⟩` from `hA'.1 a ha`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, h⟩`. Use `push Not at hsm`. Take `⟨τ, hτ⟩` from `hsm`. Establish `h0 : y = 0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hM.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Use extensionality with `v g`. Establish `: v τ = 0` using `Subtype.ext ((Submodule.eq_bot_iff _).1 hτ _ (v τ).2)`. Rewrite using `[(HM.e y).map_coord_zero τ this]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using `[h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem adjoint_eq_of_isDC {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ} {μ : Measure (GA D V)}
     {𝓕 : Set (GA D V)} (hμ : μ.IsHaarMeasure) (hF : IsFundamentalDomain (GQ V) 𝓕 μ) {HM : HMod (MMap M)}
@@ -334,35 +328,31 @@ theorem adjoint_eq_of_isDC {θ : InfFam D} {M : DSModel V S} {J : Set (GA D V)} 
     simp [h0]
 
 /- English proof (translation)
-Use `choose e he using hs`. Establish `hp : ∀ i, IsPrimeIdem (pl i) (e i) (e i + cA D (e i))` using `fun i => Or.inl ⟨he i, rfl⟩`. Establish `hq` using `fun i => (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 (pl i) (e i) _ (hp i)`. Establish `hLg : ∀ i, ∃ large₂ : Subgroup (GA D V), ∀ g, g ∈ large₂ ↔ SuppAt (e i) V g` using `fun i => ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ (hq i).1 (hq i).2.1).1`. Use `choose large₂ hLg using hLg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfin : ∀ i, large₂ i ≤ GfC V` using `fun i g hg => (hq i).2.2.1 g ((hLg i g).1 hg)`. Set `K : I → Subgroup (GA D V)` to `fun i => levG V β L ⊓ large₂ i`. Establish `hK : ∀ i g, g ∈ K i ↔ g ∈ locPart V (KsphC V ∅) (e i)`. Introduce `i g`. Establish `h1` using `((GlobalTheory.T.level_hyperspecial_trivialCharacter_splits_off_places V β Λ N L hβ).2 (pl i) (e i) _ (hp i) (hN i) (hoff i)).1 g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨fun h => ⟨(h1 ((hLg i g).1 h.2)).1 h.1, (hLg i g).1 h.2⟩, fun h => ⟨(h1 h.2).2 h.1, (hLg i g).2 h.2⟩⟩`. Establish `hoL : ∀ i, OffAt β L (K i) (large₂ i)` using `fun i => offAt_of_place hβ (he i) (hN i) (hoff i) (hLg i) (hK i)`. Establish `hoP : ∀ i P, OffAt β (withP L P) (K i) (large₂ i)` using `fun i P => offAt_of_place (L := withP L P) hβ (he i) (hN i) (hoff i) (hLg i) (hK i)`. Establish `hrep : ∀ i, ∀ x ∈ large₂ i, ∃ A, IsDC (K i) x A`. Introduce `i x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨A, -, hA⟩` from `(GlobalTheory.T.involution_spherical_hecke_anti V (pl i) (e i) (he i)).2.1 x ((hLg i x).1 hx)`. Conclude with `⟨A, isDC_of_isCosetRep (hK i) hA⟩`. Establish `hα : ∀ a : I × ℕ, ∃ α ∈ large₂ a.1, a.2 ≤ V.rank → ∃ ϖ : 𝓞 D.host.E, ϖ ∈ (pl a.1).asIdeal ∧ ϖ ∉ (pl a.1).asIdeal ^ 2 ∧ IsHeckeElt V (e a.1) (ϖ : D.host.E) a.2 α`. Introduce and unpack `⟨i, k⟩`. Distinguish the cases in `hk : k ≤ V.rank`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨ϖ, h1, h2⟩` from `Ideal.exists_mem_pow_notMem_pow_succ (pl i).asIdeal (pl i).ne_bot (pl i).isPrime.ne_top 1`. Rewrite `h1` using `[pow_one]`. Take `⟨α, hα⟩` from `((GlobalTheory.T.involution_spherical_hecke_anti V (pl i) (e i) (he i)).2.2 ϖ h1 h2).1 k hk`. Conclude with `⟨α, (hLg i α).2 hα.2.1, fun _ => ⟨ϖ, h1, h2, hα⟩⟩`. Conclude with `⟨1, (large₂ i).one_mem, fun h => absurd h hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose α hαL hα using hα`. Use `choose A hA using fun a : I × ℕ => hrep a.1 (α a)⁻¹ ((large₂ a.1).inv_mem (hαL a))`. Use `choose A' hA' using fun a : I × ℕ => hrep a.1 (α a)⁻¹⁻¹ ((large₂ a.1).inv_mem ((large₂ a.1).inv_mem (hαL a)))`. Establish `hmem : ∀ z, HM.e z ∈ goodPart θ M (levS V β L) (levChi V β L) (gaL V β L eG c)` using `fun z => hM.2.1 ▸ LinearMap.mem_range_self _ z`. Establish `hinv : ∀ i, ∀ T ∈ goodPart θ M (levS V β L) (levChi V β L) (gaL V β L eG c), ∀ v, ∀ k ∈ K i, ∀ h, T v (h * k) = T v h` using `fun i T hT v => inv_of_mem_mult (hoL i) (goodPart_le _ _ _ _ _ hT) v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hlift : ∀ i, ∀ x ∈ large₂ i, ∀ B, IsDC (K i) x B → ∃ φ : Module.End ℂ HM.H, ∀ z, HM.e (φ z) = heckeOn M B (HM.e z)` using `fun i x hx B hB => exists_lift HM hM.1 _ fun z => by`. Rewrite using `[hM.2.1]`. Conclude with `heckeOn_mem_goodPart (hoP i _) (hoL i) (hfin i) eG c hx hB (hmem z)`. Use `choose φ hφ using fun a : I × ℕ => hlift a.1 _ ((large₂ a.1).inv_mem (hαL a)) _ (hA a)`. Use `choose φ' hφ' using fun a : I × ℕ => hlift a.1 _ ((large₂ a.1).inv_mem ((large₂ a.1).inv_mem (hαL a))) _ (hA' a)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hcomm : ∀ (ψ ψ' : Module.End ℂ HM.H) (B B' : Finset (GA D V)), (∀ z, HM.e (ψ z) = heckeOn M B (HM.e z)) → (∀ z, HM.e (ψ' z) = heckeOn M B' (HM.e z)) → (∀ z v, heckeLin V B (heckeLin V B' (HM.e z v)) = heckeLin V B' (heckeLin V B (HM.e z v))) → Commute ψ ψ'`. Introduce `ψ ψ' B B' h h' hc`. Use extensionality with `z`. Apply `hM.1` to reduce the goal to its premises. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, h, h', h', h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `v : 1`. Conclude with `hc z v`. Use `⟨φ, fun a b => hcomm _ _ _ _ (hφ a) (hφ b) fun z v => ?_, fun a => ?_, fun P a => ?_, fun i k hk => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Break down `(hq a.1).2.2.2.2 (pl b.1) (e b.1) _ (hp b.1) with h0 | ⟨h1, -⟩` into its components or cases. Establish `hc` using `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 _ (hq a.1).1 (hq a.1).2.1).2.2 (e b.1 + cA D (e b.1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h`. Simplify using `only [heckeLin_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y hy => Finset.sum_congr rfl fun x hx => ?_` and prove the remaining obligations. Use `hc x y h0 ((hLg _ x).1 (mem_of_isDC (hoL a.1).splits.le ((large₂ a.1).inv_mem (hαL a)) (hA a) x hx)) ((hLg _ y).1 (mem_of_isDC (hoL b.1).splits.le ((large₂ b.1).inv_mem (hαL b)) (hA b) y hy))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, this.eq, mul_assoc]`. Establish `hLL : large₂ b.1 = large₂ a.1`. Use extensionality with `g`. Rewrite using `[hLg, hLg, SuppAt, SuppAt, h1]`. Establish `hKK : K b.1 = K a.1` using `by simp only [K, hLL]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(comm_card_of_place (he a.1) (hLg a.1) (hK a.1) ((large₂ a.1).inv_mem (hαL a)) ((large₂ a.1).inv_mem (hLL ▸ hαL b)) (hA a) (hKK ▸ hA b) (hA' a) (hinv a.1 _ (hmem z) v)).1`. Establish `hc` using `(comm_card_of_place (F := 0) (he a.1) (hLg a.1) (hK a.1) ((large₂ a.1).inv_mem (hαL a)) ((large₂ a.1).inv_mem (hαL a)) (hA a) (hA a) (hA' a) (fun _ _ _ => rfl)).2`. Rewrite using `[adjoint_eq_of_isDC hμ hF hM (goodPart_le _ _ _ _ _) (hinv a.1) (hA a) (hA' a) hc (hφ a) (hφ' a)]`. Conclude with `hcomm _ _ _ _ (hφ a) (hφ' a) fun z v => (comm_card_of_place (he a.1) (hLg a.1) (hK a.1) ((large₂ a.1).inv_mem (hαL a)) ((large₂ a.1).inv_mem ((large₂ a.1).inv_mem (hαL a))) (hA a) (hA' a) (hA' a) (hinv a.1 _ (hmem z) v)).1`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_comap, hφ]`. Conclude with `heckeOn_mem_goodPart (hoP a.1 _) (hoP a.1 P) (hfin a.1) eG c ((large₂ a.1).inv_mem (hαL a)) (hA a) hz`. Take `⟨ϖ, h1, h2, h3⟩` from `hα (i, k) hk`. Conclude with `⟨α (i, k), A (i, k), ⟨e i, ϖ, he i, h1, h2, h3⟩, (hoL i).splits.isDC ((large₂ i).inv_mem (hαL (i, k))) (hA (i, k))⟩`. Introduce and unpack `α' B ⟨e', ϖ', he', h1', h2', h3'⟩ hB z`.
-
-Take `⟨ϖ, h1, h2, h3⟩` from `hα (i, k) hk`. Take `⟨rfl, -⟩` from `(hq i).2.2.2.1 e' _ (Or.inl ⟨he', rfl⟩)`. Take `⟨a, ha, b, hb, rfl⟩` from `(((GlobalTheory.T.involution_spherical_hecke_anti V (pl i) (e i) (he i)).2.2 ϖ h1 h2).2 k _ h3).2 ϖ' α' h1' h2' h3'`. Rewrite using `[hφ]`. Use extensionality with `v h`.
-
-Use `sum_eq_of_isDC ((hoL i).splits.isDC ((large₂ i).inv_mem (hαL (i, k))) (hA (i, k))) hB ⟨⟨b, ((hK i b).2 hb).1⟩⁻¹, ⟨a, ((hK i a).2 ha).1⟩⁻¹, by simp [mul_assoc]⟩ (fun k hk h => ?_) h` and prove the remaining obligations. Rewrite using `[((GlobalTheory.MultMem.mem_mult_iff D θ V S M _ _ _).1 (goodPart_le _ _ _ _ _ (hmem z))).lev v k hk h, hχ k hk, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_heckeOps {θ : InfFam D} {M : DSModel V S} {β : GL (Fin V.rank) (Lev.EAf D)}
     {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} {N : ℕ} (hβ : IsBaseFrame V β Λ N)

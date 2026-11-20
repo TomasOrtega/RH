@@ -37,9 +37,9 @@ def SeriesUnitLAlt : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions fun F
       rdAt p w j hρ' ν' f' = ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P →
       ∃ u : FractionRing ((Fm.D x i).ntw.O ((Fm.ex x hx i).nch.twI w)), (∃ n : ℕ, n ≠ 0 ∧ u ^ n = 1) ∧ f' = u • f
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.BigOn.Exp.ConjugateBase _root_.GlobalTheory.BigOn.Exp.ReadInjAlt _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators _root_.GlobalTheory.BigOn.Exp.SeriesUnitLAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *`. Use `((Formalism.MainNotions.Closed.and hI hG).and hU).imp fun Fm CH _ h => ?_` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `(h.1.1.and h.1.2).and h.2`. Use `⟨x0, fun x hx hle i p hp hm w hw j ρ ρ' hρ hρ' ν ν' hpin hS hN hR hF => ?_⟩` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3⟩` from `hx0 x hx hle i p hp`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hL : ρ.LevelOf (Fm.D x i).nexp` using `levelOf_of_sameBut hm.2.2 hρ' hρ hF.1.1 hpin hS.symm hF.2.2.2`. Conclude with `le_antisymm (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ ρ' hρ hρ' ν ν' hpin hL hF.1.1 hS hN hF.2.1 hR.1 hF.2.2.1.1) (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ' ρ hρ' hρ ν' ν hF.1.1 hF.2.2.2 hpin hS.symm hF.2.1 hN hF.2.2.1.1 hR.1)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conjBase_of_readInj_latSmallGen_seriesUnit (hI : _root_.GlobalTheory.BigOn.Exp.ReadInjAlt) (hG : _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators) (hU : _root_.GlobalTheory.BigOn.Exp.SeriesUnitLAlt) : _root_.GlobalTheory.BigOn.Exp.ConjugateBase := by
   unfold _root_.GlobalTheory.BigOn.Exp.ConjugateBase _root_.GlobalTheory.BigOn.Exp.ReadInjAlt _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators _root_.GlobalTheory.BigOn.Exp.SeriesUnitLAlt _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at *
@@ -52,7 +52,7 @@ theorem conjBase_of_readInj_latSmallGen_seriesUnit (hI : _root_.GlobalTheory.Big
     (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ ρ' hρ hρ' ν ν' hpin hL hF.1.1 hS hN hF.2.1 hR.1 hF.2.2.1.1)
     (baseLat_le p w j (a1 hm w hw j) (a2 hm w hw j) (a3 hm w hw j) ρ' ρ hρ' hρ ν' ν hF.1.1 hF.2.2.2 hpin hS.symm hF.2.1 hN hF.2.2.1.1 hR.1)
 /- English proof (translation)
-Introduce `h1 h2 h3 h4` and use `_root_.GlobalTheory.BigOn.Exp.conjBase_of_readInj_latSmallGen_seriesUnit _root_.GlobalTheory.BigOn.Exp.readInj_alt _root_.GlobalTheory.T.latSmallGen' (_root_.GlobalTheory.T.norm_ratio_realization_same_alt h1 h2 h3 h4)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjBase_of_cusp_decay_and_reciprocity : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.ConjugateBase := fun h1 h2 h3 h4 =>

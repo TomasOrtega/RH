@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.VBGlue
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ X.presheaf.map (homOfLE h').op).hom a = _`. Rewrite using `[← X.presheaf.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {A B C : X.Opens} (h : B ≤ A) (h' : C ≤ B) (h'' : C ≤ A) (a : Γ(X, A)) :
     rs h' (rs h a) = rs h'' a := by
@@ -27,7 +27,7 @@ theorem rs_rs {A B C : X.Opens} (h : B ≤ A) (h' : C ≤ B) (h'' : C ≤ A) (a 
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op).hom a = a`. Rewrite using `[show (homOfLE h).op = 𝟙 (op A) from rfl, X.presheaf.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_self {A : X.Opens} (h : A ≤ A) (a : Γ(X, A)) : rs h a = a := by
   change (X.presheaf.map (homOfLE h).op).hom a = a
@@ -50,7 +50,7 @@ def secGroup (W : X.Opens) : AddSubgroup (∀ α, κ α → Γ(X, W ⊓ U α)) w
 variable {g} in
 
 /- English proof (translation)
-Establish `hV : V ≤ W ⊓ U α ⊓ U β` using `le_inf h₁ (h₂.trans inf_le_right)`. Use `congrArg (rs hV) (hs α β k)` as an intermediate fact. Simplify using `only [map_sum, map_mul, rs_rs _ _ h₁, rs_rs _ _ h₂, rs_rs _ _ h₃] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sec_rel {W : X.Opens} {s : ∀ α, κ α → Γ(X, W ⊓ U α)} (hs : s ∈ secGroup g W) (α β : ι) (k : κ α)
     {V : X.Opens} (h₁ : V ≤ W ⊓ U α) (h₂ : V ≤ W ⊓ U β) (h₃ : V ≤ U α ⊓ U β) :
@@ -92,7 +92,7 @@ def secRes {V W : X.Opens} (h : W ≤ V) : secGroup g V →+ secGroup g W where
   map_add' s t := Subtype.ext <| funext fun α => funext fun k => map_add _ _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun α => funext fun k => by change rs _ (rs _ r * m.1 α k) = rs _ (rs h r) * rs _ (m.1 α k) rw [map_mul, rs_rs _ _ (inf_le_left.trans h), rs_rs _ _ (inf_le_left.trans h)]`.
+A detailed English derivation is pending.
 -/
 theorem secRes_smul {V W : X.Opens} (h : W ≤ V) (r : Γ(X, V)) (m : secGroup g V) :
     secRes g h (r • m) = rs h r • secRes g h m :=
@@ -111,15 +111,15 @@ def secPresheaf : TopCat.Presheaf Ab.{0} X where
     exact (rs_rs _ _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `I W sf hsf`. Establish `hc (α : ι) : iSup W ⊓ U α ≤ ⨆ j, W j ⊓ U α` using `by rw [iSup_inf_eq]`. Establish `hW (α : ι) (j : I) : W j ⊓ U α ≤ iSup W ⊓ U α` using `inf_le_inf_right _ (le_iSup W j)`. Establish `H (α : ι) (k : κ α) : ∃ b : Γ(X, iSup W ⊓ U α), ∀ j, rs (hW α j) b = (sf j).1 α k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.LB.exists_fun_of_cover (fun j => W j ⊓ U α) (hW α) (hc α) (fun j => (sf j).1 α k) fun j l => ?_` and prove the remaining obligations. Establish `e : rs (inf_le_inf_right (U α) (inf_le_left : W j ⊓ W l ≤ W j)) ((sf j).1 α k) = rs (inf_le_inf_right (U α) (inf_le_right : W j ⊓ W l ≤ W l)) ((sf l).1 α k)` using `congrFun (congrFun (congrArg Subtype.val (hsf j l)) α) k`. Use `congrArg (rs (le_inf (inf_le_inf inf_le_left inf_le_left) (inf_le_left.trans inf_le_right) : (W j ⊓ U α) ⊓ (W l ⊓ U α) ≤ W j ⊓ W l ⊓ U α)) e` as an intermediate fact. Rewrite `this` using `[rs_rs _ _ (inf_le_left), rs_rs _ _ (inf_le_right)]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose b hb using H`. Use `⟨⟨b, fun α β k => ?_⟩, fun j => Subtype.ext (funext fun α => funext fun k => hb α k j), fun t ht => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LB.fun_ext_of_cover (fun j => W j ⊓ U α ⊓ U β) (fun j => inf_le_inf_right _ (hW α j)) (by rw [iSup_inf_eq, iSup_inf_eq]) fun j => ?_` and prove the remaining obligations. Establish `e1 : ∀ (γ : ι) (c : κ γ) (h : W j ⊓ U α ⊓ U β ≤ W j ⊓ U γ) (h' : W j ⊓ U α ⊓ U β ≤ iSup W ⊓ U γ), rs h' (b γ c) = rs h ((sf j).1 γ c)` using `fun γ c h h' => by`. Rewrite using `[← hb γ c j, rs_rs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : W j ⊓ U α ⊓ U β ≤ W j ⊓ U α` using `inf_le_left`. Establish `hB : W j ⊓ U α ⊓ U β ≤ W j ⊓ U β` using `inf_le_inf_right _ inf_le_left`. Establish `hC : W j ⊓ U α ⊓ U β ≤ U α ⊓ U β` using `le_inf (inf_le_left.trans inf_le_right) inf_le_right`. Express the relevant statement in the definitionally equal form `rs _ (rs _ (b α k)) = rs _ (∑ k', rs _ (g α β k k') * rs _ (b β k'))`. Rewrite using `[rs_rs _ _ (hA.trans (hW α j)), e1 α k hA, sec_rel (sf j).2 α β k hA hB hC, map_sum]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, rs_rs _ _ hC, rs_rs _ _ (hB.trans (hW β j)), e1 β k' hB]`. Use `Subtype.ext (funext fun α => funext fun k => GlobalTheory.LB.fun_ext_of_cover _ (hW α) (hc α) fun j => ?_)` and prove the remaining obligations. Conclude with `(congrFun (congrFun (congrArg Subtype.val (ht j)) α) k).trans (hb α k j).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSheaf_secPresheaf : (secPresheaf g).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -162,7 +162,7 @@ def toMod : X.Modules :=
     isSheaf := isSheaf_secPresheaf g }
 
 /- English proof (translation)
-The claim follows from `rs_rs h h' _ a`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rs_trans {A B C : X.Opens} (h : B ≤ A) (h' : C ≤ B) (a : Γ(X, A)) :
     rs h' (rs h a) = rs (h'.trans h) a := rs_rs h h' _ a
@@ -178,7 +178,7 @@ def coord {W : X.Opens} (α : ι) (h : W ≤ U α) (s : secGroup g W) (k : κ α
   rs (le_inf le_rfl h) (s.1 α k)
 
 /- English proof (translation)
-The claim follows from `sec_rel s.2 α β k _ _ hαβ`.
+A detailed English derivation is pending.
 -/
 theorem coord_change {W : X.Opens} (α β : ι) (hα : W ≤ U α) (hβ : W ≤ U β) (hαβ : W ≤ U α ⊓ U β)
     (s : secGroup g W) (k : κ α) :
@@ -186,7 +186,7 @@ theorem coord_change {W : X.Opens} (α β : ι) (hα : W ≤ U α) (hβ : W ≤ 
   sec_rel s.2 α β k _ _ hαβ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `rs _ (rs _ (s.1 α k)) = rs _ (rs _ (s.1 α k))`. Simplify using `only [rs_trans]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem coord_res {V W : X.Opens} (h : W ≤ V) (α : ι) (hV : V ≤ U α) (hW : W ≤ U α)
     (s : secGroup g V) (k : κ α) :
@@ -234,13 +234,13 @@ def coordEquiv (hc : Coc g) {W : X.Opens} (α : ι) (h : W ≤ U α) :
 variable {g}
 
 /- English proof (translation)
-The claim follows from `(coordEquiv hc α h).apply_symm_apply t`.
+A detailed English derivation is pending.
 -/
 theorem coord_ofCoord (hc : Coc g) {W : X.Opens} (α : ι) (h : W ≤ U α) (t : κ α → Γ(X, W)) :
     coord g α h (ofCoord hc α h t) = t := (coordEquiv hc α h).apply_symm_apply t
 
 /- English proof (translation)
-The claim follows from `(coordEquiv hc α h).injective e`.
+A detailed English derivation is pending.
 -/
 theorem sec_ext_coord (hc : Coc g) {W : X.Opens} (α : ι) (h : W ≤ U α) {s t : secGroup g W}
     (e : coord g α h s = coord g α h t) : s = t := (coordEquiv hc α h).injective e

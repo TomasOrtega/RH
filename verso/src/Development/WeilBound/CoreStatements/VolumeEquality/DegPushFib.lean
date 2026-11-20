@@ -20,25 +20,25 @@ def entPair : Ent (rk Ψ p q) → PairIx Ψ p q
         (show ¬ p + (l : ℕ) < p by omega)⟩⟩)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, ⟨l, m⟩, h⟩ ⟨s', ⟨l', m'⟩, h'⟩ he`. Apply the tactic sequence `rcases s with τ | τ <;> rcases s' with τ' | τ'`. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e1'` using `congrArg Fin.val h1`. Establish `e2'` using `congrArg Fin.val h2`. Express the relevant statement in the definitionally equal form `(m : ℕ) = (m' : ℕ) at e1'`. Express the relevant statement in the definitionally equal form `(l : ℕ) = (l' : ℕ) at e2'`. Establish `e1 : m = m'` using `Fin.ext e1'`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `e2 : l = l'` using `Fin.ext e2'`. Substitute `e1 e2` using the available equality. Both sides reduce to the same expression. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e : (m : ℕ) = p + (m' : ℕ)` using `congrArg Fin.val h1`. Establish `hm : (m : ℕ) < p` using `m.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e : p + (m : ℕ) = (m' : ℕ)` using `congrArg Fin.val h1`. Establish `hm : (m' : ℕ) < p` using `m'.2`. Use linear arithmetic over natural numbers and integers. Simplify using `only [entPair, Prod.mk.injEq, Subtype.mk.injEq] at he`. Take `⟨rfl, h1, h2⟩` from `he`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e1' : p + (m : ℕ) = p + (m' : ℕ)` using `congrArg Fin.val h1`. Establish `e2' : p + (l : ℕ) = p + (l' : ℕ)` using `congrArg Fin.val h2`. Establish `e1 : m = m'` using `Fin.ext (by omega)`. Establish `e2 : l = l'` using `Fin.ext (by omega)`. Substitute `e1 e2` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨τ, ⟨a, b⟩, hab, hiff⟩`. Distinguish the cases in `hb : (b : ℕ) < p`. Establish `ha : (a : ℕ) < p` using `hiff.2 hb`. Use `⟨⟨Sum.inl τ, ⟨(⟨b, hb⟩, ⟨a, ha⟩), hab⟩⟩, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [entPair]`. Use `congr 1`. Establish `ha : ¬ (a : ℕ) < p` using `fun h => hb (hiff.1 h)`. Establish `hlt : (a : ℕ) < b` using `hab`. Establish `hb' : (b : ℕ) - p < q` using `by omega`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : ℕ) - p < q` using `by omega`. Use `⟨⟨Sum.inr τ, ⟨(⟨b - p, hb'⟩, ⟨a - p, ha'⟩), show (a : ℕ) - p < b - p by omega⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [entPair]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [Prod.mk.injEq, Fin.ext_iff, Fin.natAdd]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem entPair_bij : Function.Bijective (entPair : Ent (rk Ψ p q) → PairIx Ψ p q) := by
   constructor
@@ -93,13 +93,11 @@ def dif {n : ℕ} (st : Fin n → K → ℤ) (m : Fin n) : K → ℤ :=
   st m - if h : 0 < (m : ℕ) then st ⟨m - 1, by omega⟩ else 0
 
 /- English proof (translation)
-Unfold `dif`. Use `beta_reduce`. Rewrite using `[Finset.Iic_eq_cons_Iio m, Finset.sum_cons]`. Use `split_ifs with h`. Establish `e : Finset.Iio m = Finset.Iic (⟨(m : ℕ) - 1, by omega⟩ : Fin n)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_Iio, Finset.mem_Iic, Fin.lt_iff_val_lt_val, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Normalize the expressions using the abelian group laws.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e : Finset.Iio m = ∅`. Use extensionality with `x`. Simplify using `only [Finset.mem_Iio, Finset.notMem_empty, iff_false, not_lt, Fin.le_iff_val_le_val]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e, Finset.sum_empty]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dif_sum {n : ℕ} (g : Fin n → K → ℤ) (m : Fin n) : dif (fun m => ∑ m' ∈ Finset.Iic m, g m') m = g m := by
   unfold dif
@@ -124,13 +122,13 @@ def rootOf (st : ∀ s, Fin (rk Ψ p q s) → K → ℤ) (t : Ψ × Fin (p + q))
   else -dif (st (.inr t.1)) ⟨p + q - 1 - t.2, by have := t.2.2; show _ < q; omega⟩
 
 /- English proof (translation)
-Take `⟨τ, j⟩` from `t`. Unfold `rootOf`. Use `split_ifs with h`. Establish `e` using `dif_sum (grDeg x (Sum.inl τ)) ⟨(j : ℕ), h⟩`. Express the relevant statement in the definitionally equal form `dif (fun m => ∑ m' ∈ Finset.Iic m, grDeg x (Sum.inl τ) m') ⟨(j : ℕ), h⟩ = x (τ, j)`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression. Establish `hj` using `j.2`. Establish `h' : ¬ (j : ℕ) < p` using `h`. Establish `e` using `dif_sum (grDeg x (Sum.inr τ)) ⟨p + q - 1 - (j : ℕ), by show _ < q; omega⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `-dif (fun m => ∑ m' ∈ Finset.Iic m, grDeg x (Sum.inr τ) m') ⟨p + q - 1 - (j : ℕ), _⟩ = x (τ, j)`. Rewrite using `[e]`. Simplify using `only [grDeg, neg_neg]`. Use `congr 2`. Apply `Fin.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem rootOf_step (x : Ψ × Fin (p + q) → K → ℤ) (t : Ψ × Fin (p + q)) : rootOf (stepDeg x) t = x t := by
   obtain ⟨τ, j⟩ := t
@@ -157,9 +155,9 @@ variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] [Fintype K] 
   {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ b, Fintype (ι' b)] {y : (Σ b, ι b) → Ω} {y' : (Σ b, ι' b) → Ω}
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz b`. Establish `hv : O.valuation (z ⟨b, i⟩) ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hi`. Introduce `h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : O.valuation (z ⟨b, i⟩) ≤ Finset.univ.sup fun i : κ b => O.valuation (z ⟨b, i⟩)` using `Finset.le_sup (f := fun i : κ b => O.valuation (z ⟨b, i⟩)) (Finset.mem_univ i)`. Rewrite `hle` using `[h0]`. Conclude with `hv (le_antisymm hle zero_le')`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sup_valuation_ne_zero_of_exists_ne_zero {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (b : J) :
@@ -175,7 +173,7 @@ private theorem sup_valuation_ne_zero_of_exists_ne_zero {L : Type} [Field L] {J 
   exact hv (le_antisymm hle zero_le')
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.sub_apply, zpow_sub₀ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vdeg_sub' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (a c : J → ℤ) :
@@ -186,7 +184,7 @@ private theorem vdeg_sub' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J �
   rw [Pi.sub_apply, zpow_sub₀ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)]
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[Finset.prod_ne_zero_iff]`. Introduce `b _`. Conclude with `zpow_ne_zero _ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem vdeg_ne_zero' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (hz : ∀ b, ∃ i, z ⟨b, i⟩ ≠ 0) (a : J → ℤ) :
@@ -197,11 +195,11 @@ private theorem vdeg_ne_zero' {L : Type} [Field L] {J : Type} [Fintype J] {κ : 
   exact zpow_ne_zero _ (sup_valuation_ne_zero_of_exists_ne_zero O z hz b)
 
 /- English proof (translation)
-Unfold `dif`. Use `split_ifs with hm`. Take `⟨ρ₁, hρ₁, h₁⟩` from `h m`. Take `⟨ρ₂, hρ₂, h₂⟩` from `h ⟨(m : ℕ) - 1, by omega⟩`. Use `⟨ρ₁ / ρ₂, div_ne_zero hρ₁ hρ₂, fun O hO => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[vdeg_sub' O y hy, vdeg_sub' O y' hy', h₁ O hO, h₂ O hO, map_div₀]`. Establish `hv : O.valuation ρ₂ ≠ 0`. Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hρ₂`. Establish `hw` using `vdeg_ne_zero' O y' hy' (st' ⟨(m : ℕ) - 1, by omega⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Simplify to obtain the desired conclusion from the available facts.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `using h m`.
+A detailed English derivation is pending.
 -/
 theorem valEq_dif (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {n : ℕ} {st : Fin n → K → ℤ}
     {st' : Fin n → K' → ℤ} (h : ∀ m, ValEq k y (st m) y' (st' m)) (m : Fin n) : ValEq k y (dif st m) y' (dif st' m) := by
@@ -219,7 +217,7 @@ theorem valEq_dif (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y
   · simpa using h m
 
 /- English proof (translation)
-Unfold `vdeg`. Rewrite using `[← Finset.prod_inv_distrib]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.neg_apply, zpow_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem vdeg_neg' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J → Type} [∀ b, Fintype (κ b)]
     (O : ValuationSubring L) (z : (Σ b, κ b) → L) (a : J → ℤ) :
@@ -230,9 +228,7 @@ private theorem vdeg_neg' {L : Type} [Field L] {J : Type} [Fintype J] {κ : J �
   rw [Pi.neg_apply, zpow_neg]
 
 /- English proof (translation)
-Unfold `rootOf`. Use `split_ifs with ht`. Conclude with `valEq_dif hy hy' (h _) _`. Take `⟨ρ, hρ, hh⟩` from `valEq_dif hy hy' (h (Sum.inr t.1)) ⟨p + q - 1 - (t.2 : ℕ), by have := t.2.2; show _ < q; omega⟩`. Use `⟨ρ⁻¹, inv_ne_zero hρ, fun O hO => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[vdeg_neg', vdeg_neg', hh O hO, map_inv₀, mul_inv]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valEq_root (hy : ∀ b, ∃ i, y ⟨b, i⟩ ≠ 0) (hy' : ∀ b, ∃ i, y' ⟨b, i⟩ ≠ 0) {st : ∀ s, Fin (rk Ψ p q s) → K → ℤ}
     {st' : ∀ s, Fin (rk Ψ p q s) → K' → ℤ} (h : ∀ s m, ValEq k y (st s m) y' (st' s m)) (t : Ψ × Fin (p + q)) :
@@ -250,9 +246,9 @@ def uConst (Ψ : Type) [Fintype Ψ] (p q : ℕ) : ℤ :=
   uNum (rk Ψ p q) fun j => fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) ((Finite.equivFin (PairIx Ψ p q)).symm j)
 
 /- English proof (translation)
-Take `⟨ρ₁, hρ₁, h₁⟩` from `ha`. Take `⟨ρ₂, hρ₂, h₂⟩` from `hc`. Use `⟨ρ₁ / ρ₂, div_ne_zero hρ₁ hρ₂, fun O hO => ?_⟩` and prove the remaining obligations. Rewrite using `[vdeg_sub' O y hy, vdeg_sub' O y' hy', h₁ O hO, h₂ O hO, map_div₀]`. Establish `hv : O.valuation ρ₂ ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Valuation.ne_zero_iff]`. Conclude with `hρ₂`. Establish `hw` using `vdeg_ne_zero' O y' hy' c'`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem valEq_sub {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K : Type} [Fintype K]
     {ι : K → Type} [∀ b, Fintype (ι b)] {K' : Type} [Fintype K'] {ι' : K' → Type} [∀ b, Fintype (ι' b)]
@@ -270,19 +266,17 @@ private theorem valEq_sub {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k
   field_simp
 
 /- English proof (translation)
-Establish `hne` using `plPt_ne u hu.1 hu.2.1`. Establish `hfd : FiniteDimensional (fnField k (plPt u)) Ω`. Rewrite using `[fnField_plPt u hu.1 hu.2.1]`. Conclude with `Module.finite_of_finrank_pos (by rw [hu.2.2.2.2]; exact hu.2.2.2.1)`. Establish `hcard : Nat.card (Ent (rk Ψ p q)) = r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_of_bijective _ entPair_bij, Nat.card_congr e.symm, Nat.card_eq_fintype_card, Fintype.card_fin]`. Establish `hpt' : IsPt k (plPt u) r` using `⟨hne, hfd, by rw [trdeg_eq u hu, hcard]⟩`. Establish `hval : ∀ j, ValEq k y (fibDeg x (e j)) (plPt u) (fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) (e j))`. Introduce `j`. Unfold `fibDeg`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `valEq_sub hy.1 hne` to reduce the goal to its premises. Rewrite using `[← rootOf_step x]`. Conclude with `valEq_root hy.1 hne hv _`. Rewrite using `[← rootOf_step x]`. Conclude with `valEq_root hy.1 hne hv _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN k Ω K ι _ _ y (plPt u) r _ _ hy hpt' hval]`. Unfold `num`. Rewrite using `[fnField_plPt u hu.1 hu.2.1, hu.2.2.2.2, inum_plPt u hu]`. Unfold `uConst`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hN' : Nat.card (PairIx Ψ p q) = r`. Rewrite using `[Nat.card_congr e.symm, Nat.card_eq_fintype_card, Fintype.card_fin]`. Unfold `uNum`. Use `set g : PairIx Ψ p q → (Σ s, Fin (rk Ψ p q s)) → ℤ := fibDeg (rootOf fun s m => plDeg ⟨s, m⟩) with hg`. Use `clear_value g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `revert e`. Rewrite using `[← hN']`. Introduce `e hval`. Use `GroundTheory.Heights₂.Heights.FieldNumbers.IntNumSymm.proof ℚ (Σ s, Fin (rk Ψ p q s)) (PlIx (rk Ψ p q)) (RingHom.ker (MvPolynomial.aeval (genCone (rk Ψ p q)))) _ (fun j => g ((Finite.equivFin (PairIx Ψ p q)).symm j)) (e.trans (Finite.equivFin (PairIx Ψ p q)))` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal.
-
-Use function extensionality and compare the values at `j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem num_eq (hN : NumEq) [Fintype Ψ] (k : Type) [Field k] [CharZero k] (Ω : Type) [Field Ω] [Algebra k Ω] [Fintype K]
     (ι : K → Type) [∀ b, Fintype (ι b)] (y : (Σ b, ι b) → Ω) (u : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω)
@@ -337,23 +331,21 @@ def reEnt (ε : Ψ' → Ψ) : Ent (rk Ψ' p q) → Ent (rk Ψ p q)
   | ⟨.inr τ, x⟩ => ⟨.inr (ε τ), x⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `h`. Use `⟨?_, ?_, ?_, h4, ?_⟩` and prove the remaining obligations. Introduce and unpack `(τ | τ) m`. Conclude with `h1 (Sum.inl (ε τ)) m`. Conclude with `h1 (Sum.inr (ε τ)) m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `(τ | τ) l m hlm`. Conclude with `h2 (Sum.inl (ε τ)) l m hlm`. Conclude with `h2 (Sum.inr (ε τ)) l m hlm`. Establish `e : (fun q : Ent (rk Ψ' p q) => reU ε u q.1 q.2.1.1 q.2.1.2) = (fun q : Ent (rk Ψ p q) => u q.1 q.2.1.1 q.2.1.2) ∘ reEnt ε`. Use function extensionality and compare the values at `⟨s, x⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rcases s with τ | τ <;> rfl`. Rewrite using `[e]`. Use `h3.comp _ ?_` and prove the remaining obligations. Introduce and unpack `⟨s, x⟩ ⟨s', x'⟩ he`. Apply the tactic sequence `rcases s with τ | τ <;> rcases s' with τ' | τ'`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Take `⟨hs, hx⟩` from `Sigma.mk.inj_iff.1 he`. Establish `ht : τ = τ'` using `ε.injective (Sum.inl.inj hs)`. Substitute `ht` using the available equality. Establish `hx' : x = x'` using `eq_of_heq hx`. Substitute `hx'` using the available equality.
+Substitute using the available equality. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Both sides reduce to the same expression. Take `⟨hs, _⟩` from `Sigma.mk.inj_iff.1 he`. Conclude with `absurd hs Sum.inl_ne_inr`. Take `⟨hs, _⟩` from `Sigma.mk.inj_iff.1 he`. Conclude with `absurd hs Sum.inr_ne_inl`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 
-Take `⟨hs, hx⟩` from `Sigma.mk.inj_iff.1 he`. Establish `ht : τ = τ'` using `ε.injective (Sum.inr.inj hs)`. Substitute `ht` using the available equality. Establish `hx' : x = x'` using `eq_of_heq hx`. Substitute `hx'` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Both sides reduce to the same expression. Establish `e : (Set.range fun q : (s : Ψ' ⊕ Ψ') × Fin (rk Ψ' p q s) × Fin (rk Ψ' p q s) => reU ε u q.1 q.2.1 q.2.2) = Set.range fun q : (s : Ψ ⊕ Ψ) × Fin (rk Ψ p q s) × Fin (rk Ψ p q s) => u q.1 q.2.1 q.2.2`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨s, l, m⟩, rfl⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `s with τ | τ` into its components or cases. Conclude with `⟨⟨Sum.inl (ε τ), l, m⟩, rfl⟩`. Conclude with `⟨⟨Sum.inr (ε τ), l, m⟩, rfl⟩`. Introduce and unpack `⟨⟨s, l, m⟩, rfl⟩`. Break down `s with τ | τ` into its components or cases.
-
-Conclude with `⟨⟨Sum.inl (ε.symm τ), l, m⟩, congrArg (fun X => u (Sum.inl X) l m) (ε.apply_symm_apply τ)⟩`. Conclude with `⟨⟨Sum.inr (ε.symm τ), l, m⟩, congrArg (fun X => u (Sum.inr X) l m) (ε.apply_symm_apply τ)⟩`. Rewrite using `[e]`. Conclude with `h5`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isGenU_reU {k : Type} [Field k] [Field Ω] [Algebra k Ω] (ε : Ψ' ≃ Ψ)
     (u : ∀ s, Matrix (Fin (rk Ψ p q s)) (Fin (rk Ψ p q s)) Ω) {d : ℕ} (h : IsGenU k u d) : IsGenU k (reU ε u) d := by
@@ -409,22 +401,22 @@ end Fib
 open Fib
 
 /- English proof (translation)
-Introduce `Ψ _ p q k _ Ω _ _ u d h`. Rewrite using `[trdeg_eq u h, Nat.card_eq_of_bijective _ entPair_bij, Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem trdegU : TrdegU := by
   intro Ψ _ p q k _ Ω _ _ u d h
   rw [trdeg_eq u h, Nat.card_eq_of_bijective _ entPair_bij, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-Introduce `hN`. Use `⟨fun n p q => uConst (Fin n) p q, ?_⟩` and prove the remaining obligations. Introduce `Ψ _ p q k _ _ Ω _ _ K _ ι _ y u d r x e hu hy hv`. Use `show _ = (d : ℤ) * uConst (Fin (Fintype.card Ψ)) p q`. Set `ε : Fin (Fintype.card Ψ) ≃ Ψ` to `(Fintype.equivFin Ψ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `x' : Fin (Fintype.card Ψ) × Fin (p + q) → K → ℤ` to `fun t => x (ε t.1, t.2)`. Set `e' : Fin r ≃ PairIx (Fin (Fintype.card Ψ)) p q` to `e.trans (Equiv.prodCongr ε (Equiv.refl _)).symm`. Establish `hu'` using `isGenU_reU ε u hu`. Establish `hv' : ∀ s m, ValEq k y (stepDeg x' s m) (plPt (reU ε u)) (plDeg ⟨s, m⟩)`. Introduce and unpack `(τ | τ) m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, hρ, h⟩` from `hv (Sum.inl (ε τ)) m`. Use `⟨ρ, hρ, fun O hO => ?_⟩` and prove the remaining obligations. Use `h O hO` as an intermediate fact. Rewrite `this`, the goal using `[vdeg_plDeg]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ρ, hρ, h⟩` from `hv (Sum.inr (ε τ)) m`. Use `⟨ρ, hρ, fun O hO => ?_⟩` and prove the remaining obligations. Use `h O hO` as an intermediate fact. Rewrite `this`, the goal using `[vdeg_plDeg]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `num_eq hN k Ω ι y (reU ε u) d r x' e' hu' hy hv'`. Rewrite using `[← h1]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `[e', x', fibDeg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibNum : NumEq → FibNum := by
   intro hN

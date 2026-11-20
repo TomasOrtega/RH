@@ -70,16 +70,16 @@ structure HasSpehComp (V : Submodule ℂ (Sm E N)) (π : CuspSub E a) (d : ℕ) 
   inf : ∀ τ, ∃ m, π.HasInfChar τ m ∧ HasInfCharGL V τ (GlobalTheory.SphGal.spehInf d m)
 
 /- English proof (translation)
-Take `⟨h, -⟩` from `h`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsSpehOf.mul_eq {V : Submodule ℂ (Sm E N)} {π : CuspSub E a} (h : IsSpehOf V π d) : d * a = N := by
   obtain ⟨h, -⟩ := h
   simpa using h
 
 /- English proof (translation)
-Establish `h1 : Finset.univ.filter (fun b => i < b) = Finset.Ioi i` using `by ext; simp`. Establish `h2 : Finset.univ.filter (fun b => b < i) = Finset.Iio i` using `by ext; simp`. Establish `h3 : ((d - 1 - i : ℕ) : ℝ) = d - 1 - (i : ℕ)`. Use `i.2` as an intermediate fact. Rewrite using `[Nat.cast_sub (by omega), Nat.cast_sub (by omega), Nat.cast_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [modExp, h1, h2, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, nsmul_eq_mul, Fintype.card_fin, spehExp]`. Use `push_cast`. Rewrite using `[h3]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mul_spehExp (a d : ℕ) (i : Fin d) : a * spehExp d i = (modExp (fun _ : Fin d => Fin a) i : ℝ) / 2 := by
   have h1 : Finset.univ.filter (fun b => i < b) = Finset.Ioi i := by ext; simp
@@ -93,11 +93,11 @@ theorem mul_spehExp (a d : ℕ) (i : Fin d) : a * spehExp d i = (modExp (fun _ :
   ring
 
 /- English proof (translation)
-Use `⟨fun u hu g => ?_, GlobalTheory.PRep.smoothPart_stable _ x φ hφ.2.1, ?_, fun k g => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (u * g * _) = φ.1 (g * _)`. Rewrite using `[mul_assoc, hφ.1 u hu]`. Establish `: FiniteDimensional _ _` using `hφ.2.2.1`. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k => cptRep E N k φ)).map (finRep E N x)) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨_, Submodule.subset_span ⟨k, rfl⟩, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.1 (g * finGL E N x * infGL E N _) = φ.1 (g * infGL E N _ * finGL E N x)`. Rewrite using `[mul_assoc, mul_assoc, infGL_comm]`. Use `hφ.2.2.2 k (g * x)` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul]`. Use `this using 2 with m` and compare the differences between its conclusion and the goal. Express the relevant statement in the definitionally equal form `φ.1 (_ * finGL E N x) = _`. Simplify using `only [mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem fin_mem_indForms {h : ∑ i, n i = N} {π : ∀ i, CuspSub E (n i)} {φ : Sm E N} (hφ : φ ∈ indForms h π)
     (x : GL (Fin N) (Af E)) : act (.fin x) φ ∈ indForms h π := by
@@ -118,17 +118,17 @@ theorem fin_mem_indForms {h : ∑ i, n i = N} {π : ∀ i, CuspSub E (n i)} {φ 
     simp only [mul_assoc]
 
 /- English proof (translation)
-Establish `he : ∀ b i, stdBlocks (fun _ : Fin 1 => a) h ⟨b, i⟩ = i` using `fun b i => Fin.ext (by`. Rewrite using `[stdBlocks_val, Subsingleton.elim b 0]`. Use the proof step `simp)`. Establish `hl : ∀ m, leviEmb (Ad E) (stdBlocks (fun _ : Fin 1 => a) h) m = m 0` using `fun m => by`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `leviEmb_apply_same (Ad E) (stdBlocks (fun _ : Fin 1 => a) h) m 0 i j` as an intermediate fact. Rewrite `this` using `[he, he]`. Then use the resulting hypothesis. Use `le_antisymm (fun φ hφ => ?_) fun φ hφ => ⟨fun u hu g => ?_, (π.cusp φ hφ).1.level, (π.cusp φ hφ).1.kfin, fun k g => Submodule.subset_span ⟨fun _ => ⟨_, π.stable (.cpt k) _ (π.stable (.fin g) φ hφ)⟩, funext fun m => ?_⟩⟩` and prove the remaining obligations. Establish `key : ∀ F ∈ tensorForms fun _ : Fin 1 => π, ∃ ψ ∈ π.V, ∀ g, F (fun _ => g) = ψ.1 g` using `fun F hF => by`. Proceed by induction on `hF using Submodule.span_induction with`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem F hF`. Take `⟨ψ, rfl⟩` from `hF`. Conclude with `⟨ψ 0, (ψ 0).2, fun g => by simp⟩`. Consider the case `zero => exact ⟨0, zero_mem _, fun _ => rfl⟩`. Consider the case `add F G _ _ hF hG`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, e⟩` from `hF`. Take `⟨y, hy, e'⟩` from `hG`. Conclude with `⟨x + y, add_mem hx hy, fun g => congrArg₂ (· + ·) (e g) (e' g)⟩`. Consider the case `smul z F _ hF`. Take `⟨x, hx, e⟩` from `hF`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z • x, Submodule.smul_mem _ _ hx, fun g => congrArg (z • ·) (e g)⟩`. Take `⟨ψ, h1, h2⟩` from `key _ (hφ.2.2.2 1 1)`. Rewrite using `[show φ = ψ from Subtype.ext (funext fun g => by simpa [hl] using h2 g)]` and apply the resulting hypothesis. Rewrite using `[show u = 1 from Units.ext (Matrix.ext fun i j => by`. Use `(mem_unipRad.1 hu).2 0 i j` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[he, he] at this), one_mul]` and apply the resulting hypothesis. Rewrite using `[hl, Fin.prod_univ_one, ← mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indForms_one (h : ∑ _ : Fin 1, a = a) (π : CuspSub E a) : indForms h (fun _ => π) = π.V := by
   have he : ∀ b i, stdBlocks (fun _ : Fin 1 => a) h ⟨b, i⟩ = i := fun b i => Fin.ext (by
@@ -161,9 +161,9 @@ theorem indForms_one (h : ∑ _ : Fin 1, a = a) (π : CuspSub E a) : indForms h 
     rfl
 
 /- English proof (translation)
-Use `⟨by simp, fun _ => 1, fun i => ?_, LinearMap.id, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `: spehExp 1 i + a * spehExp 1 i = 0` using `by simp [spehExp]`. Rewrite using `[this]`. Conclude with `⟨fun _ _ _ => rfl, fun _ => by simp [HChar.val, HChar.locK], fun _ => by simp [HChar.inf]⟩`. Simplify using `only [Submodule.map_id, CuspSub.twist_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `indForms_one _ π`.
+A detailed English derivation is pending.
 -/
 theorem isSpehOf_one (π : CuspSub E a) : IsSpehOf π.V π 1 := by
   refine ⟨by simp, fun _ => 1, fun i => ?_, LinearMap.id, ?_, fun _ _ _ => rfl⟩
@@ -174,20 +174,20 @@ theorem isSpehOf_one (π : CuspSub E a) : IsSpehOf π.V π 1 := by
     exact indForms_one _ π
 
 /- English proof (translation)
-Introduce `φ hφ _ _` and use `by obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hφ rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormalised_triv (ha : a ≤ 1) : IsNormalised (CuspSub.triv E ha) := fun φ hφ _ _ => by
   obtain ⟨z, rfl⟩ := Submodule.mem_span_singleton.1 hφ
   rfl
 
 /- English proof (translation)
-Introduce `φ hφ` and use `(h.sqInt φ hφ).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormalised_of_isDiscrete {π : CuspSub E a} (h : IsDiscrete π.V) : IsNormalised π :=
   fun φ hφ => (h.sqInt φ hφ).1
 
 /- English proof (translation)
-Use `exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩` and prove the remaining obligations. Rewrite using `[show ψ = π.op o φ from Subtype.ext e, h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isIsoGL_iff (π π' : CuspSub E a) : IsIsoGL π.V π'.V ↔ π.Iso π' := by
   refine exists_congr fun T => ⟨fun h o φ => Subtype.ext (h o φ _ rfl), fun h o φ ψ e => ?_⟩
@@ -214,7 +214,7 @@ def DiscreteSpectrumGL : Prop :=
       IsNormalised π → IsSpehOf V π d → HasSpehComp V π d
 
 /- English proof (translation)
-The claim follows from `Quotient.exact (eq_of_heq (Sigma.mk.inj ((H E N hN).2.2.1 V hV a d a d π π' h h' e e').2).2)`.
+A detailed English derivation is pending.
 -/
 theorem DiscreteSpectrumGL.iso (H : DiscreteSpectrumGL) {E : Type} [Field E] [NumberField E] [IsTotallyComplex E]
     {N a d : ℕ} (hN : 1 ≤ N) {V : Submodule ℂ (Sm E N)} (hV : IsDiscrete V) {π π' : CuspSub E a} (h : IsNormalised π)

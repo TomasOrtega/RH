@@ -10,17 +10,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S Formal
 namespace GlobalTheory.Core.Rk
 
 /- English proof (translation)
-Introduce `D u Γ c hΓ hc h hD`. Unfold `SDiagAt at h`. Unfold `GlobalTheory.Core.Rk.DiagS`. Rewrite using `[GlobalTheory.Core.Rk.d0_eq]`. Use `set d : ℝ := (D.duS u : ℝ) with hd`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set E : ℝ := Real.exp (-(c * D.R.k * D.R.f * Real.log D.R.k)) with hE`. Use `set E1 : ℝ := Real.exp (-((D.R.k : ℝ) * D.R.f * Real.log D.R.k)) with hE1`. Establish `hd0 : 0 ≤ d` using `Nat.cast_nonneg _`. Establish `hΓ0 : 0 < Γ` using `lt_of_lt_of_le one_pos hΓ`. Establish `hX : 0 ≤ (D.R.k : ℝ) * D.R.f * Real.log D.R.k` using `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Real.log_natCast_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hEE : E1 ≤ E`. Rewrite using `[hE, hE1]`. Apply `Real.exp_le_exp.mpr` to reduce the goal to its premises. Establish `: c * ((D.R.k : ℝ) * D.R.f * Real.log D.R.k) ≤ 1 * ((D.R.k : ℝ) * D.R.f * Real.log D.R.k)` using `mul_le_mul_of_nonneg_right hc hX`. Establish `e : c * (D.R.k : ℝ) * D.R.f * Real.log D.R.k = c * ((D.R.k : ℝ) * D.R.f * Real.log D.R.k)` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[e]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1 : (Γ + 1) * d ^ 2 / D.what₂.Dstar ≤ 2 * d / Γ`. Break down `hd0.eq_or_lt with h0 | h0` into its components or cases. Rewrite using `[← h0]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hDp : 0 < D.what₂.Dstar` using `lt_of_lt_of_le (by positivity) hD`. Rewrite using `[div_le_div_iff₀ hDp hΓ0]`. Establish `: (Γ + 1) * d ^ 2 * Γ ≤ 2 * d * (d * Γ ^ 2)` using `by nlinarith [mul_pos h0 h0, mul_pos (mul_pos h0 h0) hΓ0]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : 2 * d * E1 ≤ 2 * d * E` using `by apply mul_le_mul_of_nonneg_left hEE; positivity`. Establish `e3 : (8 / Γ + 6 * E) * d = 4 * (2 * d / Γ + d * E) + 2 * d * E` using `by field_simp; ring`. Rewrite using `[e3]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem diagS_of_sDiagAt : ∀ (D : D7) (u : D.what₂.Word) (Γ c : ℝ), 1 ≤ Γ → c ≤ 1 → SDiagAt D u Γ c →
     (D.duS u : ℝ) * Γ ^ 2 ≤ D.what₂.Dstar →

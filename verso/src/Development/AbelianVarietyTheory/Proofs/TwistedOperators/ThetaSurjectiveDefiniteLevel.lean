@@ -32,7 +32,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Twist.CoreOntoAssembly
 
 /- English proof (translation)
-Introduce `hP hHCF hCRD hDSC hHCM hCW hHowe hWeil hWSF hSWC hDbl hUDG`. Conclude with `GlobalTheory.T.coreChain_lifts_surjective_of_evenRank (GlobalTheory.T.theta_surjective_all_data hHCF hCRD hDSC hHCM hCW hHowe hWeil hWSF hSWC hDbl hUDG) GlobalTheory.T.testGridCommonData_properties_hold GlobalTheory.T.testGridStageLatticesProperties_proof (GlobalTheory.T.core_cha …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coreOnto_of_hypotheses : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Hk3.HoweUnram → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitaryConvergent → GlobalTheory.Published.DoublingMethod → GlobalTheory.Published.UnramifiedDoublingGL → CoreOnto := by
   intro hP hHCF hCRD hDSC hHCM hCW hHowe hWeil hWSF hSWC hDbl hUDG

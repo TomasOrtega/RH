@@ -56,7 +56,7 @@ def IsGalTied : Prop :=
 variable {X}
 
 /- English proof (translation)
-Introduce `i hi` and use `let ⟨ι, h1, h2⟩ := h i hi ⟨ι, h1, fun lam s hs => let ⟨I, j, φ, κ, 𝔣, χ, _, a, b, c, _⟩ := h2 lam s hs ⟨I, j, φ, κ, 𝔣, χ, a, b, c⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isValueTied_of_isToricElt (h : IsToricElt X) : IsValueTied X := fun i hi =>
   let ⟨ι, h1, h2⟩ := h i hi
@@ -65,7 +65,7 @@ theorem isValueTied_of_isToricElt (h : IsToricElt X) : IsValueTied X := fun i hi
     ⟨I, j, φ, κ, 𝔣, χ, a, b, c⟩⟩
 
 /- English proof (translation)
-Rewrite using `[toBar, RingHom.comp_apply, IsFractionRing.lift_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toBar_algebraMap (i : X.Tw) (a : X.O0 i) :
     toBar X i (algebraMap (X.O0 i) _ a) = algebraMap (X.O i) (Kbar X i) (algebraMap (X.O0 i) (X.O i) a) := by
@@ -73,19 +73,17 @@ theorem toBar_algebraMap (i : X.Tw) (a : X.O0 i) :
   rfl
 
 /- English proof (translation)
-Introduce `i hi`. Take `⟨e, ι, art, ha, he, hι, hl⟩` from `h i hi`. Set `_ : Algebra (FractionRing (X.O0 i)) (Qbar (X.l i))` to `e.toAlgebra`. Set `_ : Algebra (FractionRing (X.O0 i)) (Kbar X i)` to `(toBar X i).toAlgebra`. Establish `: Algebra.IsAlgebraic (FractionRing (X.O0 i)) (Qbar (X.l i))` using `⟨fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : IsAlgebraic ℤ_[X.l i] x` using `(IsFractionRing.isAlgebraic_iff ℤ_[X.l i] ℚ_[X.l i] _).2 (Algebra.IsAlgebraic.isAlgebraic x)`. Use `h1.ringHom_of_comp_eq ((algebraMap (X.O0 i) _).comp (algebraMap ℤ_[X.l i] (X.O0 i))) (RingHom.id _) (fun a b hab => ?_) (RingHom.ext he)` and prove the remaining obligations. Use `congrArg e hab` as an intermediate fact. Rewrite `this` using `[RingHom.comp_apply, RingHom.comp_apply, he, he]`. Conclude with `Subtype.ext ((algebraMap ℚ_[X.l i] (Qbar (X.l i))).injective this)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `J : Qbar (X.l i) →ₐ[FractionRing (X.O0 i)] Kbar X i` to `IsAlgClosed.lift`. Establish `hJ : ∀ x, J (e x) = toBar X i x` using `J.commutes`. Use `⟨J.toRingHom.comp ι.symm.toRingHom, fun x => ?_, fun lam s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[← hι, ← hJ]`. Conclude with `congrArg J (ι.symm_apply_apply _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨I, _, φ, κ, 𝔣, χ, n, r, hD, h𝔣, hr, hG⟩` from `hl lam s hs`. Use `⟨I, inferInstance, φ, κ, 𝔣, χ, hD, h𝔣, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `exists_isFrob (N.plOm.2 P)`. Establish `hu : χ.UnrAt P`. Establish `e` using `(hD.2.2.2.2.2.2.2.2 _ P (over_below P)).2 (Finset.notMem_empty _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `e` using `[expIn, multiplicity_eq_zero.2 fun h => hP (h𝔣 P h), expAt_zero_iff]`. Then use the resulting hypothesis. Establish `h1` using `hr.frob ha (Or.inl fun h => hP (X.twistExcludedPlaces_contains_residueChar i h)) hu (N.plOm.2 P) hσ`. Establish `h2 : ∀ b x, atSide X b (J.toRingHom.comp ι.symm.toRingHom) (GlobalTheory.GalChar.sideIso ι b x) = J x` using `fun b x => by`. Consider the cases of `b`. Use `show J (ι.symm (starRingEnd ℂ (starRingEnd ℂ (ι x)))) = _`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Complex.conj_conj, ι.symm_apply_apply]`. Conclude with `congrArg J (ι.symm_apply_apply x)`. Establish `h3` using `congrArg (atSide X (X.sideL i lam) (J.toRingHom.comp ι.symm.toRingHom)) h1`. Rewrite `h3` using `[h2, map_inv₀, GlobalTheory.GalChar.toQ, RingHom.comp_apply, hJ, toBar_algebraMap]`. Rewrite using `[X.Xv_def i lam P hP σ hσ, hG]`.
-
-Conclude with `(congrArg (· * _) h3).trans (inv_mul_cancel₀ ((map_ne_zero _).2 (Units.ne_zero _)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsGalTied.isValueTied (h : IsGalTied X) : IsValueTied X := by
   intro i hi

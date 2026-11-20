@@ -36,11 +36,9 @@ def zeroOnF (C : Submodule ℂ (α → ℂ)) (P : Finset α) : Submodule ℂ C w
     simp [ha y hy]
 
 /- English proof (translation)
-Take `⟨P, -, hmin⟩` from `(measure fun P : Finset α => Module.finrank ℂ (zeroOnF C P)).wf.has_min Set.univ ⟨∅, trivial⟩`. Use `⟨P, fun s hs h0 => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, s y ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hne (funext h)`. Establish `hlt : zeroOnF C (insert y P) < zeroOnF C P`. Use `lt_of_le_of_ne (fun a ha z hz => ha z (Finset.mem_insert_of_mem hz)) fun heq => ?_` and prove the remaining obligations. Establish `hmem : (⟨s, hs⟩ : C) ∈ zeroOnF C P` using `h0`.
-
-Rewrite `hmem` using `[← heq]`. Conclude with `hy (hmem y (Finset.mem_insert_self y P))`. Conclude with `hmin (insert y P) trivial (Submodule.finrank_lt_finrank_of_lt hlt)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_sep (C : Submodule ℂ (α → ℂ)) [FiniteDimensional ℂ C] :
     ∃ P : Finset α, ∀ s ∈ C, (∀ y ∈ P, s y = 0) → s = 0 := by
@@ -61,15 +59,15 @@ theorem exists_finset_sep (C : Submodule ℂ (α → ℂ)) [FiniteDimensional �
   exact hmin (insert y P) trivial (Submodule.finrank_lt_finrank_of_lt hlt)
 
 /- English proof (translation)
-Take `⟨Z', hc⟩` from `Submodule.exists_isCompl Z`. Set `q : (ι → ℂ) →ₗ[ℂ] (ι → ℂ)` to `Z'.projection Z hc.symm`. Establish `hq0 : ∀ z, q z = 0 ↔ z ∈ Z` using `fun z => Submodule.projection_apply_eq_zero_iff hc.symm`. Establish `hqq : ∀ z, q (q z) = q z` using `fun z => Submodule.projection_apply_of_mem_left hc.symm (Submodule.projection_apply_mem hc.symm z)`. Establish `hkill : ∀ z, q (A z) = q (A (q z))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Establish `hz : z - q z ∈ Z` using `(hq0 _).1 (by rw [map_sub, hqq, sub_self])`. Establish `h2` using `(hq0 _).2 (hA _ hz)`. Rewrite `h2` using `[map_sub, map_sub, sub_eq_zero]`. Conclude with `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `Bc : (ι → ℂ) →L[ℝ] (ι → ℂ)` to `((q ∘ₗ A).restrictScalars ℝ).toContinuousLinearMap`. Set `qc : (ι → ℂ) →L[ℝ] (ι → ℂ)` to `(q.restrictScalars ℝ).toContinuousLinearMap`. Establish `hu : ∀ t, HasDerivAt (fun s => q (y s)) (Bc (q (y t))) t`. Introduce `t`. Establish `h` using `qc.hasFDerivAt.comp_hasDerivAt t (hy t)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Bc (q (y t)) = qc (A (y t))` using `(hkill (y t)).symm`. Rewrite using `[e]`. Conclude with `h`. Establish `hv : ∀ t : ℝ, HasDerivAt (fun _ : ℝ => (0 : ι → ℂ)) (Bc 0) t`. Introduce `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `hasDerivAt_const t 0`. Establish `heq` using `ODE_solution_unique_univ (v := fun _ => Bc) (s := fun _ => Set.univ) (K := ‖Bc‖₊) (t₀ := 0) (fun _ => Bc.lipschitz.lipschitzOnWith) (fun t => ⟨hu t, trivial⟩) (fun t => ⟨hv t, trivial⟩) ((hq0 _).2 h0)`. Conclude with `(hq0 _).1 (congrFun heq t)`.
+A detailed English derivation is pending.
 -/
 theorem ode_mem {ι : Type} [Fintype ι] (A : (ι → ℂ) →ₗ[ℂ] (ι → ℂ)) (Z : Submodule ℂ (ι → ℂ))
     (hA : ∀ z ∈ Z, A z ∈ Z) (y : ℝ → ι → ℂ) (hy : ∀ t, HasDerivAt y (A (y t)) t) (h0 : y 0 ∈ Z) (t : ℝ) :
@@ -113,55 +111,45 @@ section Orbit
 variable {α : Type}
 
 /- English proof (translation)
-Set `c : ℝ → α → ℂ` to `fun t => U (Multiplicative.ofAdd t) Φ`. Establish `hcadd : ∀ s t, U (Multiplicative.ofAdd s) (c t) = c (s + t)`. Introduce `s t`. Use `show U _ (U _ Φ) = U _ Φ`. Rewrite using `[ofAdd_add, map_mul, Module.End.mul_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `C' : Submodule ℂ (α → ℂ)` to `Submodule.span ℂ (Set.range c)`. Establish `hC'C : C' ≤ C` using `Submodule.span_le.2 (by rintro _ ⟨t, rfl⟩; exact hC t)`. Use `haveI : FiniteDimensional ℂ C' := Submodule.finiteDimensional_of_le hC'C`. Establish `hcC' : ∀ t, c t ∈ C'` using `fun t => Submodule.subset_span ⟨t, rfl⟩`. Establish `hUC : ∀ s, ∀ Ψ ∈ C', U (Multiplicative.ofAdd s) Ψ ∈ C'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, rfl⟩` from `hx`. Rewrite using `[hcadd]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `hcC' _`. Consider the case `zero => rw [map_zero]`. Conclude with `C'.zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `C'.add_mem hx hy`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `C'.smul_mem a hx`. Establish `hdiff : ∀ Ψ ∈ C', ∀ x, ∀ t : ℝ, DifferentiableAt ℝ (fun s : ℝ => U (Multiplicative.ofAdd s) Ψ x) t`. Introduce `Ψ hΨ x`. Proceed by induction on `hΨ using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Consider the case `mem y hy`. Take `⟨t', rfl⟩` from `hy`. Introduce `t`. Establish `e : (fun s : ℝ => U (Multiplicative.ofAdd s) (c t') x) = fun s => c (s + t') x`. Use function extensionality and compare the values at `s`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hcadd]`. Rewrite using `[e]`. Conclude with `(hd x (t + t')).comp t (differentiableAt_id.add_const t')`. Consider the case `zero`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero, Pi.zero_apply]`. Conclude with `differentiableAt_const _`. Consider the case `add y z _ _ hy hz`. Introduce `t`. Simplify using `only [map_add, Pi.add_apply]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hy t).add (hz t)`. Consider the case `smul a y _ hy`. Introduce `t`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hy t).const_mul a`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `D : C' →ₗ[ℂ] (α → ℂ)` to `{ toFun := fun Ψ x => deriv (fun s : ℝ => U (Multiplicative.ofAdd s) (Ψ : α → ℂ) x) 0 map_add' := by`. Introduce `a b`. Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_add, map_add, Pi.add_apply]`. Conclude with `deriv_add (hdiff a a.2 x 0) (hdiff b b.2 x 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use the proof step `map_smul' := by`. Introduce `a b`. Use function extensionality and compare the values at `x`. Simplify using `only [Submodule.coe_smul, map_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Conclude with `deriv_const_mul a (hdiff b b.2 x 0) }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : ∀ Ψ : C', ∀ x, HasDerivAt (fun s : ℝ => U (Multiplicative.ofAdd s) (Ψ : α → ℂ) x) (D Ψ x) 0` using `fun Ψ x => (hdiff _ Ψ.2 x 0).hasDerivAt`. Take `⟨P0, hP0⟩` from `exists_finset_sep C'`. Set `Ev : C' →ₗ[ℂ] (P0 → ℂ)` to `{ toFun := fun s p => (s : α → ℂ) p map_add' := by intro a b; funext p; simp map_smul' := by intro a b; funext p; simp }`. Establish `hEv : LinearMap.ker Ev = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s hs`. Conclude with `Subtype.ext (hP0 s s.2 fun y hy => congrFun hs ⟨y, hy⟩)`. Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective Ev hEv`. Establish `hLE : ∀ w : C', L (Ev w) = w` using `fun w => LinearMap.congr_fun hL w`. Establish `hDC : ∀ Ψ : C', D Ψ ∈ C'`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ψ`. Set `z : ℝ → P0 → ℂ` to `fun s => Ev ⟨U (Multiplicative.ofAdd s) (Ψ : α → ℂ), hUC s _ Ψ.2⟩`. Establish `hz : HasDerivAt z (fun p => D Ψ p) 0` using `hasDerivAt_pi.2 fun p => hD Ψ p`. Establish `key : D Ψ = ((L (fun p => D Ψ p) : C') : α → ℂ)`. Use function extensionality and compare the values at `x`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `evx : C' →ₗ[ℂ] ℂ` to `{ toFun := fun s => (s : α → ℂ) x map_add' := by intro a b; simp map_smul' := by intro a b; simp }`. Set `g : (P0 → ℂ) →L[ℝ] ℂ` to `((evx ∘ₗ L).restrictScalars ℝ).toContinuousLinearMap`. Establish `h1` using `g.hasFDerivAt.comp_hasDerivAt (0 : ℝ) hz`. Establish `e : (g ∘ z) = fun s : ℝ => U (Multiplicative.ofAdd s) (Ψ : α → ℂ) x`. Use function extensionality and compare the values at `s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show evx (L (Ev _)) = _`. Rewrite using `[hLE]`. Both sides reduce to the same expression. Rewrite `h1` using `[e]`. Conclude with `(hD Ψ x).unique h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[key]`. Conclude with `(L _).2`. Set `D' : C' →ₗ[ℂ] C'` to `LinearMap.codRestrict C' D hDC`. Set `A : (P0 → ℂ) →ₗ[ℂ] (P0 → ℂ)` to `Ev ∘ₗ D' ∘ₗ L`. Set `Z : Submodule ℂ (P0 → ℂ)` to `(N.comap C'.subtype).map Ev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `y : ℝ → P0 → ℂ` to `fun s => Ev ⟨c s, hcC' s⟩`. Establish `hct : ∀ t x, HasDerivAt (fun s => c s x) (D ⟨c t, hcC' t⟩ x) t`. Introduce `t x`. Establish `h0` using `hD ⟨c t, hcC' t⟩ x`. Establish `e1 : (fun s : ℝ => U (Multiplicative.ofAdd s) ((⟨c t, hcC' t⟩ : C') : α → ℂ) x) = fun s => c (s + t) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Conclude with `congrFun (hcadd s t) x`. Rewrite `h0` using `[e1]`. Establish `h2 : HasDerivAt (fun s => c (s - t + t) x) (D ⟨c t, hcC' t⟩ x) t`. Rewrite `h0` using `[show (0 : ℝ) = t - t from (sub_self t).symm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `h0.comp_sub_const t t`. Simplify `h2` using `only [sub_add_cancel]`. Establish `hy : ∀ t, HasDerivAt y (A (y t)) t`. Introduce `t`. Establish `e : A (y t) = Ev (D' ⟨c t, hcC' t⟩)` using `by show Ev (D' (L (Ev _))) = _`.
-
-Rewrite using `[hLE]`. Rewrite using `[e]`. Conclude with `hasDerivAt_pi.2 fun p => hct t p`. Establish `hA : ∀ z ∈ Z, A z ∈ Z`. Introduce and unpack `_ ⟨w, hw, rfl⟩`.
-
-Use `⟨D' w, ?_, ?_⟩` and prove the remaining obligations. Use `show D w ∈ N`. Conclude with `hN _ hw _ (hCP (hC'C (hDC w))) (hD w)`. Use `show Ev (D' w) = Ev (D' (L (Ev w)))`. Rewrite using `[hLE]`.
-
-Establish `h0 : y 0 ∈ Z`. Use `⟨⟨c 0, hcC' 0⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show c 0 ∈ N`. Use `show U (Multiplicative.ofAdd (0 : ℝ)) Φ ∈ N`. Rewrite using `[ofAdd_zero, map_one]`.
-
-Conclude with `hΦ`. Take `⟨w, hw, hwe⟩` from `ode_mem A Z hA y hy h0 t`. Establish `: w = ⟨c t, hcC' t⟩`. Use `congrArg L hwe` as an intermediate fact. Rewrite `this` using `[hLE, hLE]`. Then use the resulting hypothesis.
-
-Establish `hw' : (w : α → ℂ) ∈ N` using `hw`. Rewrite `hw'` using `[this]`. Conclude with `hw'`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orbit_mem (U : Multiplicative ℝ →* Module.End ℂ (α → ℂ)) (P N C : Submodule ℂ (α → ℂ))
     [FiniteDimensional ℂ C] (hCP : C ≤ P)
@@ -310,7 +298,7 @@ namespace GlobalTheory.KExpLineW
 open MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-The claim follows from `hA _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hφ ((hvac.and hM.std).mono fun _ h => h.1.trans h.2))`.
+A detailed English derivation is pending.
 -/
 theorem map_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (hM : M.IsGood ψ)
@@ -320,35 +308,31 @@ theorem map_pure {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   hA _ (GlobalTheory.ThK.EvUniqInf.rest_pure f φ hφ ((hvac.and hM.std).mono fun _ h => h.1.trans h.2))
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP Φ hΦ`. Establish `hψ : IsStd B.ψ` using `hP.base.std`. Establish `hfin : ∀ m, FiniteDimensional ℂ (GlobalTheory.FockKFin.polLe M B.emb m)`. Introduce `m`. Proceed by induction on `m with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => exact GlobalTheory.T.fockVacua_span_finiteDimensional_dualPair F E σ B n d X W M χX χW om r s r' s' hP`. Consider the case `succ m ih`. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `haveI := ih`. Use `haveI := GlobalTheory.T.finiteDimensional_archimedeanSchwartzFockOperatorSpan F _ _ ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `infer_instance`. Establish `hle : ∀ m, GlobalTheory.FockKFin.polLe M B.emb m ≤ M.Pol B.ψ B.emb`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => exact Submodule.span_le.2 fun g hg => GlobalTheory.ThK.EvAt0.PolEv.gauss_mem hψ M B.emb hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `succ m ih`. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Use `sup_le ih (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, f, hf, rfl⟩`. Conclude with `GlobalTheory.ThK.EvAt0.PolEv.dOp_mem hψ M B.emb a b (ih hf)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdir : Directed (· ≤ ·) (GlobalTheory.FockKFin.polLe M B.emb)` using `(GlobalTheory.FockKFin.polLe_mono M B.emb).directed_le`. Establish `hcov : ∀ f ∈ M.Pol B.ψ B.emb, ∃ m, f ∈ GlobalTheory.FockKFin.polLe M B.emb m`. Introduce `f hf`. Establish `hsub : M.Pol B.ψ B.emb ≤ ⨆ m, GlobalTheory.FockKFin.polLe M B.emb m`. Rewrite using `[GlobalTheory.ThK.EvAt0.PolEv.pol_eq hψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `sInf_le ⟨fun g hg => Submodule.mem_iSup_of_mem 0 (Submodule.subset_span hg), fun a b g hg => ?_⟩` and prove the remaining obligations. Take `⟨m, hm⟩` from `(Submodule.mem_iSup_of_directed _ hdir).1 hg`. Use `Submodule.mem_iSup_of_mem (m + 1) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockKFin.polLe_succ]`. Conclude with `Submodule.mem_sup_right (GlobalTheory.FockKFin.dOp_mem_dStep _ a b hm)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Submodule.mem_iSup_of_directed _ hdir).1 (hsub hf)`. Establish `hst : ∀ k ∈ KInf σ W B.emb, ∀ A : SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d), (∀ f : SInf F (Fin n × Fin d), Acts (evI F) (om (1, k)) ⇑f ⇑(A f)) → ∀ m, ∀ f ∈ GlobalTheory.FockKFin.polLe M B.emb m, A f ∈ GlobalTheory.FockKFin.polLe M B.emb m`. Introduce `k hk A hA m`. Proceed by induction on `m with`. Consider the case `zero`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `f hf`. Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_zero]`. Use `Submodule.span_induction (fun g hg => Submodule.subset_span (GlobalTheory.T.maximalCompact_archOperator_preserves_fockVacua F E σ B n d X W M χX χW om r s r' s' hP k hk A hA g hg)) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodu …` and prove the remaining obligations. Consider the case `succ m ih`. Introduce `f hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite `hf`, the goal using `[GlobalTheory.FockKFin.polLe_succ]`. Take `⟨y, hy, z, hz, rfl⟩` from `Submodule.mem_sup.1 hf`. Rewrite using `[map_add]`. Use `Submodule.add_mem _ (Submodule.mem_sup_left (ih y hy)) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Use `Submodule.span_induction (fun g hg => ?_) (by rw [map_zero]; exact Submodule.zero_mem _) (fun x y _ _ hx hy => by rw [map_add]; exact Submodule.add_mem _ hx hy) (fun c x _ hx => by rw [map_smul]; exact Submodule.smul_mem _ c hx) hz` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, g₀, hg₀, rfl⟩` from `hg`. Take `⟨a', b', hab⟩` from `GlobalTheory.T.archimedeanMaximalCompact_intertwines_fockDerivativeOps F E σ B n d X W M χX χW om r s r' s' hP k hk A hA a b`. Rewrite using `[hab]`. Conclude with `GlobalTheory.FockKFin.dOp_mem_dStep _ a' b' (ih g₀ hg₀)`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hx`. Take `⟨m, hm⟩` from `hcov f hf`. Use `haveI := hfin m`. Use `⟨(GlobalTheory.FockKFin.polLe M B.emb m).map (GlobalTheory.FockKFin.pureL φ), inferInstance, ?_, fun k hk => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `g hg`. Conclude with `Submodule.subset_span ⟨g, hle m hg, φ, hφ, hvac, rfl⟩`. Take `⟨A, hA⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_KInf F E σ B n d X W M om χX χW hP.base hP.good hP.weil k hk`. Rewrite using `[map_pure M B.ψ hP.good _ f (A f) (hA f) φ hφ hvac]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_map_of_mem (hst k hk A hA m f hm)`. Consider the case `zero`. Conclude with `⟨⊥, inferInstance, bot_le, fun k _ => by rw [map_zero]; exact Submodule.zero_mem _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h₁, l₁, k₁⟩` from `hx`.
-
-Take `⟨S₂, h₂, l₂, k₂⟩` from `hy`. Conclude with `⟨S₁ ⊔ S₂, inferInstance, sup_le l₁ l₂, fun k hk => by`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (k₁ k hk) (k₂ k hk)⟩`. Consider the case `smul c x _ hx`.
-
-Take `⟨S, h, l, k₁⟩` from `hx`. Conclude with `⟨S, h, l, fun k hk => by rw [map_smul]; exact Submodule.smul_mem _ c (k₁ k hk)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem polData_kfin : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)
@@ -440,23 +424,19 @@ namespace GlobalTheory.KExpLineW
 open MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP γ hγL hγK N hN Φ hΦN hΦ`. Take `⟨-, -, hDer, hOp⟩` from `GlobalTheory.T.polynomial_datum_action_of_pair hPr F E σ B n d X W M χX χW om r s r' s' hP`. Take `⟨Dg, hDgP, hDg⟩` from `hDer γ hγL`. Use `choose D hDP hD using fun t : ℝ => hOp (γ (Multiplicative.ofAdd t)) (hγK _)`. Set `U : Multiplicative ℝ →* Module.End ℂ (Fn F n d)` to `om.comp ((MonoidHom.inr (UA σ X.J) (UA σ W.J)).comp γ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hdiff : ∀ Ψ ∈ PolData B M, ∀ x (t : ℝ), DifferentiableAt ℝ (fun s : ℝ => U (Multiplicative.ofAdd s) Ψ x) t`. Introduce `Ψ hΨ x`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, φ, hφ, hvac, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `hstd : ∀ᶠ v in Filter.cofinite, φ v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1` using `(hvac.and hP.good.std).mono fun _ h => h.1.trans h.2`. Establish `hpt : ∀ u : ℝ, U (Multiplicative.ofAdd u) (pure f φ) = pure (D u f) φ` using `fun u => map_pure M B.ψ hP.good _ f (D u f) ((hD u f hf (D u f)).2 rfl) φ hφ hvac`. Establish `hshift : ∀ s', U (Multiplicative.ofAdd (s' + t)) (pure f φ) = U (Multiplicative.ofAdd s') (pure (D t f) φ)`. Introduce `s'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofAdd_add, map_mul, Module.End.mul_apply, hpt t]`. Establish `h0` using `(hDg (D t f) (hDP t f hf) (Dg (D t f))).2 rfl _ (GlobalTheory.ThK.EvUniqInf.rest_pure (D t f) φ hφ hstd) x`. Establish `h0' : DifferentiableAt ℝ (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) 0` using `h0.differentiableAt`. Establish `e : (fun s : ℝ => U (Multiplicative.ofAdd s) (pure f φ) x) = (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) ∘ fun s => s - t`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = U (Multiplicative.ofAdd (s - t)) (pure (D t f) φ) x`. Rewrite using `[← hshift, sub_add_cancel]`. Establish `h4 : DifferentiableAt ℝ (fun s' : ℝ => U (Multiplicative.ofAdd s') (pure (D t f) φ) x) ((fun s : ℝ => s - t) t)`. Simplify using `only [sub_self]`. Conclude with `h0'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e]`. Conclude with `DifferentiableAt.comp (f := fun s : ℝ => s - t) t h4 (differentiableAt_id.sub_const t)`. Consider the case `zero`. Introduce `t`. Simplify using `only [map_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `differentiableAt_const _`. Consider the case `add y z _ _ hy hz`. Introduce `t`. Simplify using `only [map_add, Pi.add_apply]`. Conclude with `(hy t).add (hz t)`.
-
-Consider the case `smul a y _ hy`. Introduce `t`. Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(hy t).const_mul a`. Take `⟨C, hCfin, hCP, hCk⟩` from `polData_kfin F E σ B n d X W M χX χW om r s r' s' hP Φ hΦ`.
-
-Use `haveI := hCfin`. Conclude with `orbit_mem U (PolData B M) N C hCP (fun Ψ h Ψ₁ h₁ hd => hN Ψ h Ψ₁ h₁ hd) Φ hΦN (fun t => hCk _ (hγK _)) (hdiff Φ hΦ) 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem stab_line : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

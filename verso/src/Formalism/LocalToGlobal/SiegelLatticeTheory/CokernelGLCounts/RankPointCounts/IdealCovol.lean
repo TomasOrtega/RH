@@ -9,43 +9,37 @@ open MeasureTheory NumberField NumberField.mixedEmbedding
 namespace Formalism.L2.SG.NGCut.SplitEmbedding
 
 /- English proof (translation)
-Use `set cj : ι → Prop := fun i => φ i ≠ (σ i).1.embedding`. Establish `hψ : MeasurePreserving (phiMap σ cj (K` using `K)) volume volume := phiMap_mp σ cj`. Establish `hψe : ∀ a : K, phiMap σ cj (mixedEmbedding K a) = fun i => φ i a`. Introduce `a`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [phiMap, mixedEmbedding_apply_isComplex]`. Distinguish the cases in `hi : cj i`. Rewrite using `[if_pos hi]`. Break down `hφ i with h | h` into its components or cases. Conclude with `absurd h hi`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[if_neg hi]`. Establish `: φ i = (σ i).1.embedding` using `not_not.1 hi`. Rewrite using `[this]`. Use `set emb : K →+ mixedSpace K := (mixedEmbedding K).toAddMonoidHom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective emb` using `mixedEmbedding_injective K`. Use `set Λm := Λ.map emb`. Use `set G := phiMap σ cj (K := K) ⁻¹' (s⁻¹ • F)`. Establish `hGm : MeasurableSet G` using `hψ.measurable (hF.const_smul₀ (s⁻¹))`. Establish `hmem : ∀ y : ι → ℂ, y ∈ s⁻¹ • F ↔ s • y ∈ F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem₀ (inv_ne_zero hs), inv_inv]`. Establish `hsm : ∀ a : K, ∀ x : mixedSpace K, s • phiMap σ cj (emb a + x) = (fun i => (s : ℂ) * φ i a) + s • phiMap σ cj x`. Introduce `a x`. Rewrite using `[phiMap_add, smul_add, show emb a = mixedEmbedding K a from rfl, hψe]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Complex.real_smul]`. Establish `hdG : ∀ x, ∃! b : Λm, (b : mixedSpace K) + x ∈ G`. Introduce `x`. Take `⟨a, ha, hu⟩` from `hFd (s • phiMap σ cj x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨emb a, AddSubgroup.mem_map_of_mem emb a.2⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show phiMap σ cj (emb a + x) ∈ s⁻¹ • F`. Rewrite using `[hmem, hsm]`. Conclude with `ha`. Introduce and unpack `⟨b, hb⟩ hbG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a', ha', rfl⟩` from `AddSubgroup.mem_map.1 hb`. Establish `h1 : (fun i => (s : ℂ) * φ i (⟨a', ha'⟩ : Λ)) + s • phiMap σ cj x ∈ F`. Establish `: phiMap σ cj (emb a' + x) ∈ s⁻¹ • F` using `hbG`. Rewrite `this` using `[hmem, hsm]`. Conclude with `this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `hu ⟨a', ha'⟩ h1` as an intermediate fact. Apply `Subtype.ext` to reduce the goal to its premises. Use `show emb a' = emb a`. Rewrite using `[show a' = (a : K) from congrArg Subtype.val this]`. Use `set L := (idealLattice K I).toAddSubgroup`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : L = (((I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : Submodule (𝓞 K) K).toAddSubgroup).map emb`. Use extensionality with `x`. Simplify using `only [L, Submodule.mem_toAddSubgroup, mem_idealLattice, AddSubgroup.mem_map]`. Both sides reduce to the same expression. Establish `hle : Λm ≤ L`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hL]`. Conclude with `AddSubgroup.map_mono (fun a ha => hΛ a ha)`. Establish `hk' : Λm.relIndex L = k`. Rewrite using `[hL, AddSubgroup.relIndex_map_map_of_injective _ _ hinj, hk]`. Establish `hcount : Countable L`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `Module.Free.chooseBasis ℤ (idealLattice K I)`. Conclude with `(Module.Free.chooseBasis ℤ (idealLattice K I)).equivFun.injective.countable`. Use `set b := Module.Free.chooseBasis ℤ (idealLattice K I)`. Use `set b' := Module.Basis.ofZLatticeBasis ℝ (idealLattice K I) b`. Use `set FL := ZSpan.fundamentalDomain b'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hFLm : MeasurableSet FL` using `ZSpan.fundamentalDomain_measurableSet b'`. Establish `hspan` using `Module.Basis.ofZLatticeBasis_span ℝ (idealLattice K I) b`. Establish `hdL : ∀ x, ∃! l : L, (l : mixedSpace K) + x ∈ FL`. Introduce `x`. Take `⟨v, hv, hu⟩` from `ZSpan.exist_unique_vadd_mem_fundamentalDomain b' x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hvL : (v : mixedSpace K) ∈ idealLattice K I` using `(congrArg (fun S : Submodule ℤ (mixedSpace K) => (v : mixedSpace K) ∈ S) hspan).mp v.2`. Use `⟨⟨v, hvL⟩, hv, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨l, hl⟩ hlF`. Establish `hl' : l ∈ Submodule.span ℤ (Set.range b')` using `(congrArg (fun S : Submodule ℤ (mixedSpace K) => l ∈ S) hspan).mpr hl`. Establish `h3` using `hu ⟨l, hl'⟩ hlF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : l = (v : mixedSpace K)` using `by rw [← h3]`. Conclude with `Subtype.ext h2`. Establish `hidx` using `fund_index (volume : Measure (mixedSpace K)) L Λm hle k hk' hk0 FL G hFLm hGm hdL hdG`. Establish `hfd` using `ZLattice.isAddFundamentalDomain b (volume : Measure (mixedSpace K))`. Establish `hcov` using `ZLattice.covolume_eq_measure_fundamentalDomain (idealLattice K I) volume hfd`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hcov` using `[covolume_idealLattice]`. Establish `hfin : volume FL ≠ ⊤` using `(ZSpan.fundamentalDomain_isBounded b').measure_lt_top.ne`. Establish `hFLv : volume FL = ENNReal.ofReal ((FractionalIdeal.absNorm (I : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) : ℝ) * 2⁻¹ ^ InfinitePlace.nrComplexPlaces K * √|(discr K : ℝ)|)`. Rewrite using `[hcov, measureReal_def, ENNReal.ofReal_toReal hfin]`. Establish `hr2 : InfinitePlace.nrComplexPlaces K = Fintype.card ι`.
-
-Rewrite using `[InfinitePlace.nrComplexPlaces, Fintype.card_congr σ.symm]`. Establish `hGv : volume G = volume (s⁻¹ • F)` using `hψ.measure_preimage (hF.const_smul₀ (s⁻¹)).nullMeasurableSet`. Establish `hscale : volume F = ENNReal.ofReal |s ^ Module.finrank ℝ (ι → ℂ)| * volume (s⁻¹ • F)` using `by conv_lhs => rw [← smul_inv_smul₀ hs F]`. Conclude with `Measure.addHaar_smul volume s (s⁻¹ • F)`. Establish `hdim : Module.finrank ℝ (ι → ℂ) = 2 * Fintype.card ι`.
-
-Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex, mul_comm]`. Rewrite using `[hscale, ← hGv, hidx, hFLv, hr2, hdim]`. Rewrite using `[← ENNReal.ofReal_natCast k, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `congr 1`.
-
-Rewrite using `[abs_pow]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem idealCovol (K : Type) [Field K] [NumberField K] [IsEmpty {w : InfinitePlace K // w.IsReal}]
     (ι : Type) [Fintype ι] (φ : ι → (K →+* ℂ)) (σ : ι ≃ {w : InfinitePlace K // w.IsComplex})

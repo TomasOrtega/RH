@@ -10,7 +10,7 @@ namespace GlobalTheory.Theta0MeanCompare
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric GlobalTheory.Glob.IntegralWittCoefficients GlobalTheory.IndefiniteRowSideFullHecke
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem setting_iff (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (M : IntermediateField ℚ ℂ)
     (t : (M →ₐ[ℚ] ℂ) → ℂ) : SignedLogMeans.HidaSetting D cc δ M t ↔ AbsoluteLogMeanBounds.HidaSetting D cc δ M t := Iff.rfl
@@ -21,7 +21,7 @@ Both sides reduce to the same expression.
 theorem bound_eq (D : D7) : SignedLogMeans.bound D = AbsoluteLogMeanBounds.kronBound D := rfl
 
 /- English proof (translation)
-Unfold `SignedLogMeans.meanLog AbsoluteLogMeanBounds.meanLog AbsoluteLogMeanBounds.mean SignedLogMeans.conjNormSq AbsoluteLogMeanBounds.th0NormSq`. Use `congr!`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem meanLog_eq (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (Λ : AddSubgroup ℂ)
     (t : (M →ₐ[ℚ] ℂ) → ℂ) : SignedLogMeans.meanLog M Λ t = AbsoluteLogMeanBounds.meanLog Λ M t := by
@@ -29,7 +29,7 @@ theorem meanLog_eq (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (Λ
   congr!
 
 /- English proof (translation)
-Unfold `SignedLogMeans.meanPosLog AbsoluteLogMeanBounds.meanLogPos AbsoluteLogMeanBounds.mean SignedLogMeans.conjNormSq AbsoluteLogMeanBounds.th0NormSq`. Simplify using `only [max_comm (0 : ℝ)]`. Apply the tactic sequence `try congr!`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem meanPosLog_eq (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] (Λ : AddSubgroup ℂ)
     (t : (M →ₐ[ℚ] ℂ) → ℂ) : SignedLogMeans.meanPosLog M Λ t = AbsoluteLogMeanBounds.meanLogPos Λ M t := by
@@ -38,16 +38,16 @@ theorem meanPosLog_eq (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M] 
   try congr!
 
 /- English proof (translation)
-Establish `h` using `D.host.qd_big.2`. Conclude with `(by omega : 1 ≤ D.host.d)` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_d (D : D7) : (1 : ℝ) ≤ D.host.d := by
   have h := D.host.qd_big.2
   exact_mod_cast (by omega : 1 ≤ D.host.d)
 
 /- English proof (translation)
-Use `le_trans ?_ (factRd D.R D.host).1` and prove the remaining obligations. Establish `he : (2 : ℝ) ≤ D.R.e` using `by exact_mod_cast D.host.two_le_e`. Establish `h1 : (2 : ℝ) ^ (-(D.R.e : ℝ)) ≤ 1` using `Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by linarith)`. Establish `h2 : (2 : ℝ) ≤ (2 : ℝ) ^ ((D.R.e : ℝ) + 1 - (2 : ℝ) ^ (-(D.R.e : ℝ)))`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `mul_le_mul_of_nonneg_right h2 (Real.sqrt_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem two_sqrt_le_rd (D : D7) : 2 * Real.sqrt D.host.d ≤ D.host.rdE := by
   refine le_trans ?_ (factRd D.R D.host).1
@@ -60,12 +60,12 @@ theorem two_sqrt_le_rd (D : D7) : 2 * Real.sqrt D.host.d ≤ D.host.rdE := by
   exact mul_le_mul_of_nonneg_right h2 (Real.sqrt_nonneg _)
 
 /- English proof (translation)
-The claim follows from `Real.one_le_sqrt.mpr (one_le_d D)`.
+A detailed English derivation is pending.
 -/
 theorem one_le_sqrt_d (D : D7) : 1 ≤ Real.sqrt D.host.d := Real.one_le_sqrt.mpr (one_le_d D)
 
 /- English proof (translation)
-Apply `Real.log_nonneg` to reduce the goal to its premises. Establish `h1` using `two_sqrt_le_rd D`. Establish `h2` using `one_le_sqrt_d D`. Unfold `Host.v`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_v_nonneg (D : D7) : 0 ≤ Real.log D.host.v := by
   apply Real.log_nonneg
@@ -75,9 +75,9 @@ theorem log_v_nonneg (D : D7) : 0 ≤ Real.log D.host.v := by
   linarith
 
 /- English proof (translation)
-Establish `h1` using `two_sqrt_le_rd D`. Establish `h2` using `one_le_sqrt_d D`. Establish `h3 : Real.log (Real.sqrt D.host.d) ≤ Real.log D.host.rdE` using `Real.log_le_log (by linarith) (by linarith)`. Establish `h4` using `Real.one_half_lt_eulerMascheroniConstant`. Establish `h5` using `le_abs_self (logDerivativeAtOne D)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `AbsoluteLogMeanBounds.kronBound`. Combine the linear equalities and inequalities to obtain the conclusion.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kronBound_le (D : D7) {L : ℝ} (h : Real.log D.host.rdE + |logDerivativeAtOne D| ≤ 2 * L) :
     AbsoluteLogMeanBounds.kronBound D ≤ L := by
@@ -91,9 +91,9 @@ theorem kronBound_le (D : D7) {L : ℝ} (h : Real.log D.host.rdE + |logDerivativ
   linarith
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ D cc δ M _ t hS`. Rewrite using `[← meanLog_eq]`. Conclude with `⟨h1 D cc δ M t hS, fun L hL => ⟨kronBound_le D hL, h2 D cc δ M t hS L hL⟩⟩`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun D cc δ M _ t hS => ?_, fun D cc δ M _ t hS L hL => ?_⟩` and prove the remaining obligations. Rewrite using `[meanLog_eq]`. Conclude with `(h D cc δ M t hS).1`. Rewrite using `[meanLog_eq]`. Conclude with `((h D cc δ M t hS).2 L hL).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signedMean_iff :
     ((∀ D : D7, SignedLogMeans.SignedMean D) ∧ ∀ D : D7, SignedLogMeans.MeanLeL D) ↔ AbsoluteLogMeanBounds.SignedMean := by
@@ -107,13 +107,13 @@ theorem signedMean_iff :
     · rw [meanLog_eq]; exact ((h D cc δ M t hS).2 L hL).2
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨C₁, hC₁, h1⟩, C₂, hC₂, h2⟩`. Use `⟨C₁ + C₂ + 1, by linarith, fun D cc δ M _ t hS L hL => ?_⟩` and prove the remaining obligations. Establish `hL0 : 0 ≤ L`. Use `log_v_nonneg D` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `abs_nonneg (logDerivativeAtOne D)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `a1` using `h1 D cc δ M t hS L hL`. Establish `a2` using `h2 D cc δ M t hS L hL`. Rewrite using `[← meanLog_eq, ← meanPosLog_eq]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_nonneg hC₁ hL0` as an intermediate fact. Use `mul_nonneg hC₂ hL0` as an intermediate fact. Apply the tactic sequence `constructor <;> nlinarith`. Introduce and unpack `⟨C, hC, h⟩`. Use `⟨⟨C, hC.le, fun D cc δ M _ t hS L hL => ?_⟩, C, hC.le, fun D cc δ M _ t hS L hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[meanLog_eq]`. Conclude with `(h D cc δ M t hS L hL).1`. Rewrite using `[meanPosLog_eq]`. Conclude with `(h D cc δ M t hS L hL).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absoluteMean_iff :
     ((∃ C : ℝ, 0 ≤ C ∧ ∀ D : D7, SignedLogMeans.MeanLeC C D) ∧
@@ -143,18 +143,18 @@ def ExplicitPosMean : Prop :=
       AbsoluteLogMeanBounds.kronBound D + (1 / 4) * Real.log (D.host.d : ℝ) + C
 
 /- English proof (translation)
-Take `⟨C, h⟩` from `h`. Conclude with `⟨C, fun D cc δ M _ t hS => (h D cc δ M t hS).2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem explicitPosMean_of_positivePart (h : AbsoluteLogMeanBounds.PositivePart) : ExplicitPosMean := by
   obtain ⟨C, h⟩ := h
   exact ⟨C, fun D cc δ M _ t hS => (h D cc δ M t hS).2⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, -, h⟩`. Use `⟨C, fun D cc δ M _ t hS => ?_⟩` and prove the remaining obligations. Rewrite using `[← meanPosLog_eq]`. Conclude with `h D cc δ M t hS`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨C, h⟩`. Use `⟨max C 0, le_max_right _ _, fun D cc δ M _ t hS => ?_⟩` and prove the remaining obligations. Establish `a` using `h D cc δ M t hS`. Use `le_max_left C 0` as an intermediate fact. Rewrite using `[meanPosLog_eq, bound_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem posMean_iff : (∃ C : ℝ, 0 ≤ C ∧ ∀ D : D7, SignedLogMeans.PosMean C D) ↔ ExplicitPosMean := by
   constructor
@@ -170,7 +170,7 @@ theorem posMean_iff : (∃ C : ℝ, 0 ≤ C ∧ ∀ D : D7, SignedLogMeans.PosMe
     linarith
 
 /- English proof (translation)
-Unfold `SignedLogMeans.Theta0SignedMean AbsoluteLogMeanBounds.ThetaNullMean`. Rewrite using `[← signedMean_iff, ← absoluteMean_iff]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem core_iff :
     (SignedLogMeans.Theta0SignedMean ∧ ∃ C : ℝ, 0 ≤ C ∧ ∀ D : D7, SignedLogMeans.PosMeanLeC C D) ↔ AbsoluteLogMeanBounds.ThetaNullMean := by
@@ -179,7 +179,7 @@ theorem core_iff :
   tauto
 
 /- English proof (translation)
-Unfold `SignedLogMeans.Theta0Mean SignedLogMeans.Theta0PosMean`. Rewrite using `[← core_iff, ← posMean_iff]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem theta0Mean_iff : SignedLogMeans.Theta0Mean ↔ AbsoluteLogMeanBounds.ThetaNullMean ∧ ExplicitPosMean := by
   unfold SignedLogMeans.Theta0Mean SignedLogMeans.Theta0PosMean
@@ -187,12 +187,12 @@ theorem theta0Mean_iff : SignedLogMeans.Theta0Mean ↔ AbsoluteLogMeanBounds.The
   tauto
 
 /- English proof (translation)
-The claim follows from `(theta0Mean_iff.mp h).1`.
+A detailed English derivation is pending.
 -/
 theorem th0Mean_of_theta0Mean (h : SignedLogMeans.Theta0Mean) : AbsoluteLogMeanBounds.ThetaNullMean := (theta0Mean_iff.mp h).1
 
 /- English proof (translation)
-The claim follows from `theta0Mean_iff.mpr ⟨h, explicitPosMean_of_positivePart hp⟩`.
+A detailed English derivation is pending.
 -/
 theorem theta0Mean_of_th0Mean (h : AbsoluteLogMeanBounds.ThetaNullMean) (hp : AbsoluteLogMeanBounds.PositivePart) : SignedLogMeans.Theta0Mean :=
   theta0Mean_iff.mpr ⟨h, explicitPosMean_of_positivePart hp⟩

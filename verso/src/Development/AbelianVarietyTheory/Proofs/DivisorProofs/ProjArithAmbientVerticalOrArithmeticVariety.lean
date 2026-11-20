@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.MixHt
 
 /- English proof (translation)
-Use `⟨fun y => ?_⟩` and prove the remaining obligations. Set `f : ZMod l →+* ℂ` to `(Scheme.ΓSpecIso (.of ℂ)).hom.hom.comp (y.1.appTop.hom.comp (algebraMap (ZMod l) Γ(Y, ⊤)))`. Establish `h` using `map_natCast f l`. Rewrite `h` using `[ZMod.natCast_self, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h.symm`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEmpty_cxPts_of_algebra_zmod {k : Type} [CommRing k] {Y : Scheme.{0}} (q : Y ⟶ Sp k)
     (l : ℕ) [Fact l.Prime] (_ : Algebra (ZMod l) Γ(Y, ⊤)) (σ : k →+* ℂ) : IsEmpty (CxPts q σ) := by
@@ -23,9 +23,9 @@ theorem isEmpty_cxPts_of_algebra_zmod {k : Type} [CommRing k] {Y : Scheme.{0}} (
   exact (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h.symm
 
 /- English proof (translation)
-Introduce `k _ Y _ q hq d hd`. Take `⟨ℓ, _⟩` from `CharP.exists Γ(Y, ⊤)`. Break down `CharP.char_is_prime_or_zero Γ(Y, ⊤) ℓ with hℓ | rfl` into its components or cases. Establish `: Fact ℓ.Prime` using `⟨hℓ⟩`. Conclude with `.inl ⟨ℓ, this, ⟨ZMod.algebra _ ℓ⟩, fun σ => isEmpty_cxPts_of_algebra_zmod q ℓ (ZMod.algebra _ ℓ) σ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `CharP.charP_to_charZero Γ(Y, ⊤)`. Take `_ | e` from `d`. Conclude with `absurd (by simpa using hd) (dim_ne_zero_of_isProjOver q hq.isProjOver hq.finite hc)`. Conclude with `.inr ⟨e, rfl, hq.isDomain, hq.finite, ‹_›, hq.isProjOver, (flat_int_iff_charZero _).2 hc, hd⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem amb_vertical_or_arithVar : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp k), IsAmb q → ∀ d : ℕ, topologicalKrullDim Y = d → (∃ (l : ℕ) (_ : Fact l.Prime), Nonempty (Algebra (ZMod l) Γ(Y, ⊤)) ∧ ∀ σ : k →+* ℂ, IsEmpty (CxPts q σ)) ∨ ∃ e : ℕ, d = e + 1 ∧ IsArithVar q e := by
   intro k _ Y _ q hq d hd

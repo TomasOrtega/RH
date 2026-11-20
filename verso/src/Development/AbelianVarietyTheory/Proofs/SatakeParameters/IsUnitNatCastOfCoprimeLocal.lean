@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.TwV
 
 /- English proof (translation)
-Establish `hc : IsCoprime (s : R) (p : R)` using `Nat.Coprime.cast hs`. Take `⟨a, b, hab⟩` from `hc`. Break down `IsLocalRing.isUnit_or_isUnit_of_isUnit_add (a := a * (s : R)) (b := b * (p : R)) (by rw [hab]; exact isUnit_one) with h | h` into its components or cases. Conclude with `isUnit_of_mul_isUnit_right h`. Conclude with `absurd (isUnit_of_mul_isUnit_right h) hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem isUnit_natCast_of_coprime_local {R : Type*} [CommRing R] [IsLocalRing R] {p s : ℕ} (hp : ¬ IsUnit (p : R))
     (hs : Nat.Coprime s p) : IsUnit (s : R) := by
@@ -24,7 +24,7 @@ theorem isUnit_natCast_of_coprime_local {R : Type*} [CommRing R] [IsLocalRing R]
   · exact absurd (isUnit_of_mul_isUnit_right h) hp
 
 /- English proof (translation)
-Introduce `X v _ hs` and use `isUnit_natCast_of_coprime_local (X.G.P.setting v).p_unif.not_isUnit hs`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem natCast_isUnit_localRing : ∀ {p : ℕ} [Fact p.Prime] (X : Sys p) (v : X.Pl) (s : ℕ), Nat.Coprime s p → IsUnit (s : X.G.P.W v) :=
   fun X v _ hs => isUnit_natCast_of_coprime_local (X.G.P.setting v).p_unif.not_isUnit hs

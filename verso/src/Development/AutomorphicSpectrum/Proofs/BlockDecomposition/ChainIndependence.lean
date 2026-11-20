@@ -12,7 +12,7 @@ def chainUnion (m k t : ℕ) : Fin m ⊕ Fin k → Fin m ⊕ Fin k → Prop
   | .inr _, .inl a => t + 1 ≤ (a : ℕ)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply the tactic sequence `rintro (a | w) <;> simp [chainUnion]`. Apply the tactic sequence `rintro (a | w) (b | v) (c | u) <;> simp only [chainUnion, Fin.lt_def] <;> omega`.
+Prove the components needed by the constructor for the conclusion. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chainUnion_isPat (m k t : ℕ) : IsPat (chainUnion m k t) := by
   constructor
@@ -20,7 +20,7 @@ theorem chainUnion_isPat (m k t : ℕ) : IsPat (chainUnion m k t) := by
   · rintro (a | w) (b | v) (c | u) <;> simp only [chainUnion, Fin.lt_def] <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `rcases i with a | w <;> rcases j with b | v <;>`. Apply the tactic sequence `simp only [chainUnion, chainPat, Fin.lt_def, Sum.isRight_inl, Sum.isRight_inr, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Bool.false_eq_true, false_and, and_false, true_and, and_true, not_false_eq_true, Fin.ext_iff] <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chainUnion_remove_right (m k t : ℕ) (q : Fin m) (hq : (q : ℕ) = t + 1) :
     (fun i j => chainUnion m k t i j ∧ ¬ (Sum.isRight i = true ∧ j = Sum.inl q)) =
@@ -33,7 +33,7 @@ theorem chainUnion_remove_right (m k t : ℕ) (q : Fin m) (hq : (q : ℕ) = t + 
       not_false_eq_true, Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Apply `propext` to reduce the goal to its premises. Apply the tactic sequence `rcases i with a | w <;> rcases j with b | v <;>`. Apply the tactic sequence `simp only [chainUnion, chainPat, Fin.lt_def, Sum.isRight_inl, Sum.isRight_inr, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Bool.false_eq_true, false_and, and_false, true_and, and_true, not_false_eq_true, Fin.ext_iff] <;> omega`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chainUnion_remove_left (m k t : ℕ) (p : Fin m) (hp : (p : ℕ) = t) :
     (fun i j => chainUnion m k t i j ∧ ¬ (i = Sum.inl p ∧ Sum.isRight j = true)) =
@@ -46,29 +46,25 @@ theorem chainUnion_remove_left (m k t : ℕ) (p : Fin m) (hp : (p : ℕ) = t) :
       not_false_eq_true, Fin.ext_iff] <;> omega
 
 /- English proof (translation)
-Establish `hE : ∀ i j, chainE K m k i j ≠ 0 → (∃ a b : Fin m, i = Sum.inl a ∧ j = Sum.inl b ∧ (b : ℕ) = a + 1) ∨ (∃ w v : Fin k, i = Sum.inr w ∧ j = Sum.inr v ∧ (v : ℕ) = w + 1)`. Introduce and unpack `(a | w) (b | v) h`. Use `left`. Distinguish the cases in `hab : (b : ℕ) = a + 1`. Conclude with `⟨a, b, rfl, rfl, hab⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Simplify using `[chainE, hab] at h`. Simplify using `[chainE] at h`. Simplify using `[chainE] at h`. Use `right`. Distinguish the cases in `hab : (v : ℕ) = w + 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨w, v, rfl, rfl, hab⟩`. Simplify using `[chainE, hab] at h`. Establish `h` using `GlobalTheory.T.root_exchange' K (Fin m ⊕ Fin k) (chainUnion m k t) (chainE K m k) ψ₀ (fun x => Sum.isRight x = true) (Sum.inl ⟨t, by omega⟩) (Sum.inl ⟨t + 1, ht⟩) χ (chainUnion_isPat m k t) hψ hχ (by`. Introduce and unpack `(a | w) hw`. Simplify using `at hw`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[chainUnion])`. Use the proof step `(by simp [chainE])`. Use the proof step `(by`. Introduce `i j hij`. Apply the tactic sequence `rcases hE i j hij with ⟨a, b, rfl, rfl, hab⟩ | ⟨w, v, rfl, rfl, hab⟩ <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `simp only [chainUnion, Fin.lt_def] <;> omega)`. Use the proof step `(by`. Introduce and unpack `(a | w) hw`. Simplify using `at hw`. Simplify using `[chainE])`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use the proof step `(by`. Introduce and unpack `(a | w) (b | v) hw h1 h2`. Simplify using `at hw`. Simplify using `at hw`. Simplify using `only [chainUnion, Fin.lt_def] at h1 h2`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use the proof step `rfl)`. Use the proof step `(by`. Introduce and unpack `(a | w) (b | v) hw h1 h2`. Simplify using `at hw`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `at hw`. Simplify using `only [chainUnion, Fin.lt_def] at h1 h2`. Use linear arithmetic over natural numbers and integers. Use the proof step `rfl)`. Use the proof step `(by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i j l hij hjl hil`. Break down `hE i l hil with ⟨a, b, rfl, rfl, hab⟩ | ⟨w, v, rfl, rfl, hab⟩` into its components or cases. Break down `j with c | u` into its components or cases. Simplify using `only [chainUnion, Fin.lt_def] at hij hjl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `only [chainUnion] at hij hjl`. Establish `h1 : (a : ℕ) = t` using `by omega`. Use `⟨?_, ?_, by simp⟩` and prove the remaining obligations. Simplify using `[Fin.ext_iff, h1]`. Simplify using `[Fin.ext_iff]`.
-
-Use linear arithmetic over natural numbers and integers. Break down `j with c | u` into its components or cases. Simplify using `only [chainUnion] at hij hjl`. Use linear arithmetic over natural numbers and integers. Simplify using `only [chainUnion, Fin.lt_def] at hij hjl omega)`.
-
-Rewrite `h` using `[chainUnion_remove_right m k t ⟨t + 1, ht⟩ rfl, chainUnion_remove_left m k t ⟨t, by omega⟩ rfl]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain_step (K : Type) [Field K] [Fintype K] [DecidableEq K] (m k t : ℕ) (ψ₀ : AddChar K ℂ)
     (χ : GL (Fin m ⊕ Fin k) K → ℂ) (hψ : ψ₀ ≠ 1) (hχ : ∀ x g, χ (x * g * x⁻¹) = χ g)
@@ -139,7 +135,7 @@ theorem chain_step (K : Type) [Field K] [Fintype K] [DecidableEq K] (m k t : ℕ
   exact h
 
 /- English proof (translation)
-Introduce `K _ _ _ m k t ψ₀ χ hψ hχ ht`. Proceed by induction on `t with`. Consider the case `zero => rfl`. Consider the case `succ t ih => rw [chain_step K m k t ψ₀ χ hψ hχ ht, ih (by omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem chainIndep : ReciprocityTheory.Ty.Fin.St.ChainIndep := by
   intro K _ _ _ m k t ψ₀ χ hψ hχ ht

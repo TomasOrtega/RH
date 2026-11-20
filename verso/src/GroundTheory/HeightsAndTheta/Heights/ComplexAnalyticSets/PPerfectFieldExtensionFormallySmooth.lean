@@ -12,13 +12,11 @@ section
 variable {F K : Type} [Field F] [Field K] [Algebra F K]
 
 /- English proof (translation)
-Establish `: CharP K p` using `charP_of_injective_algebraMap (algebraMap F K).injective p`. Use `Algebra.FormallySmooth.of_comp_surjective fun B _ _ N hN u => ?_` and prove the remaining obligations. Establish `hpB : (p : B) = 0` using `by rw [← map_natCast (algebraMap F B), CharP.cast_eq_zero, map_zero]`. Use `set P := sqZeroFrobeniusLift N hp.out hpB hN`. Use `set ψ : K →+* B := P.comp u.toRingHom`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hψ : ∀ (z : K) (c : B), Ideal.Quotient.mk N c = u z → ψ z = c ^ p` using `fun z c hc => by show P (u z) = c ^ p`. Rewrite using `[← hc, sqZeroFrobeniusLift_mk]`. Take `⟨σ₀, hσ₀⟩` from `exists_isGoodPartialLift_frobenius (K := K) p hpB hN u`. Establish `: Nonempty {σ : Σ L : IntermediateField F K, L →ₐ[F] B // IsGoodPartialLift p N u ψ σ}` using `⟨⟨σ₀, hσ₀⟩⟩`. Take `⟨⟨⟨L, φ⟩, hgood⟩, hm⟩` from `exists_maximal_of_nonempty_chains_bounded (r := fun a b : {σ : Σ L : IntermediateField F K, L →ₐ[F] B // IsGoodPartialLift p N u ψ σ} => PartialLiftLE a.1 b.1) (exists_isGoodPartialLift_upperBound (p := p) (N := N) (u := u) (ψ := ψ)) (fun hab hbd => hab.trans hbd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : (⊤ : IntermediateField F K) ≤ L`. Introduce `x _`. Assume the negation of the conclusion as `hx`. Take `⟨σ, hσ, hle, hxσ⟩` from `exists_isGoodPartialLift_extend p hψ hgood hx`. Conclude with `hx ((hm ⟨σ, hσ⟩ hle).1 hxσ)`.
-
-Use `⟨φ.comp ((IntermediateField.inclusion htop).comp IntermediateField.topEquiv.symm.toAlgHom), ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `hgood.2 _`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_perfectField_of_charP [PerfectField F] (p : ℕ) [hp : Fact p.Prime] [CharP F p] :
     Algebra.FormallySmooth F K := by
@@ -47,7 +45,7 @@ theorem formallySmooth_of_perfectField_of_charP [PerfectField F] (p : ℕ) [hp :
   exact hgood.2 _
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_isTranscendenceBasis F K`. Use `hs.isAlgebraic_field` as an intermediate fact. Establish `: CharZero (IntermediateField.adjoin F (Set.range ((↑) : s → K)))` using `charZero_of_injective_algebraMap (algebraMap F _).injective`. Conclude with `.of_algebraicIndependent_of_isSeparable hs.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_charZero [CharZero F] : Algebra.FormallySmooth F K := by
   obtain ⟨s, hs⟩ := exists_isTranscendenceBasis F K
@@ -59,9 +57,9 @@ theorem formallySmooth_of_charZero [CharZero F] : Algebra.FormallySmooth F K := 
 end
 
 /- English proof (translation)
-Introduce `F K _ _ _ _`. Take `⟨p, hchar⟩` from `CharP.exists F`. Break down `CharP.char_is_prime_or_zero F p with hp | rfl` into its components or cases. Use `Fact.mk hp` as an intermediate fact. Conclude with `formallySmooth_of_perfectField_of_charP p`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `CharP.charP_to_charZero F` as an intermediate fact. Conclude with `formallySmooth_of_charZero`.
+A detailed English derivation is pending.
 -/
 theorem PerfectFieldExtensionFormallySmooth.proof : PerfectFieldExtensionFormallySmooth.Statement := by
   intro F K _ _ _ _

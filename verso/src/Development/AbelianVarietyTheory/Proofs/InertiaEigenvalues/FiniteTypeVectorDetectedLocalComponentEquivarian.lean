@@ -11,59 +11,49 @@ attribute [local instance] GlobalTheory.TypeRec.factG Formalism.BasicNotions.Hos
 namespace GlobalTheory.LocProj
 
 /- English proof (translation)
-Introduce `L _ _ _ n π s τ i T hi hic hT hTS hTeq f hf hf0`. Take `⟨hdec, hcomm, huniq⟩` from `GlobalTheory.SplitAdelic.main L n s`. Use `choose lift hlift using fun A => (huniq A).exists`. Establish `hlu : ∀ A x, TrivOutside {s.v} x → s.loc n x = A → x = lift A` using `fun A x hx e => (huniq A).unique ⟨hx, e⟩ (hlift A)`. Establish `tmul : ∀ {x y : GAf L n}, TrivOutside {s.v} x → TrivOutside {s.v} y → TrivOutside {s.v} (x * y)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hx hy v hv`. Use `show ((x.1 * y.1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1`. Rewrite using `[Units.val_mul, Matrix.map_mul, hx v hv, hy v hv, mul_one]`. Establish `tone : TrivOutside {s.v} (1 : GAf L n)`. Introduce `v _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show ((1 : GL (Fin n) (AL L)) : Matrix (Fin n) (Fin n) (AL L)).map (compAt L v) = 1`. Rewrite using `[Units.val_one]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Set `lh : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) →* GAf L n` to `{ toFun := lift map_one' := (hlu _ _ tone (map_one _)).symm map_mul' := fun A B => (hlu _ _ (tmul (hlift A).1 (hlift B).1) (by rw [map_mul, (hlift A).2, (hlift B).2])).symm }`. Establish `hlh : ∀ x, TrivOutside {s.v} x → lh (s.loc n x) = x` using `fun x hx => (hlu _ x hx rfl).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Set `ρ : Representation ℂ (GAf L n) π.S` to `{ toFun := fun g => (NG.rt L n g).restrict (fun f hf => π.stable g f hf) map_one' := by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[NG.rt]`. Use the proof step `map_mul' := fun a b => by`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `f`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using `[NG.rt, mul_assoc] }`. Establish `hρ : ∀ g (f : π.S), ((ρ g f : π.S) : GAf L n → ℂ) = NG.rt L n g f` using `fun _ _ => rfl`. Establish `hρirr : ρ.IsIrreducible`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun P => ?_ }` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨g, hg, hg0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot π.ne`. Establish `h1 : (⟨g, hg⟩ : π.S) ∈ (⊤ : Subrepresentation ρ).toSubmodule` using `Submodule.mem_top`. Rewrite `h1` using `[← h]`. Conclude with `hg0 (congrArg Subtype.val ((Submodule.mem_bot ℂ).1 h1))`. Establish `hle : P.toSubmodule.map π.S.subtype ≤ π.S`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨p, -, rfl⟩`. Conclude with `p.2`. Establish `hst : ∀ h, ∀ g ∈ P.toSubmodule.map π.S.subtype, NG.rt L n h g ∈ P.toSubmodule.map π.S.subtype`. Introduce and unpack `h _ ⟨p, hp, rfl⟩`. Conclude with `⟨ρ h p, P.apply_mem_toSubmodule h hp, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `π.irr _ hle hst with h | h` into its components or cases. Use `left`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show P.toSubmodule = ⊥`. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `p hp`. Establish `: (p : GAf L n → ℂ) ∈ P.toSubmodule.map π.S.subtype` using `⟨p, hp, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `(Submodule.mem_bot ℂ).2 (Subtype.ext this)`. Use `right`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subrepresentation.ext` to reduce the goal to its premises. Use `show P.toSubmodule = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `p _`. Establish `: (p : GAf L n → ℂ) ∈ P.toSubmodule.map π.S.subtype` using `by rw [h]; exact p.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq, e'⟩` from `this`. Rewrite `hq` using `[show q = p from Subtype.ext e']`. Then use the resulting hypothesis. Set `mi : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) →* GL (Fin n) (s.w.adicCompletion L)` to `Matrix.GeneralLinearGroup.map i.toRingHom`. Establish `hmi : ∀ B, mi (Matrix.GeneralLinearGroup.map i.symm.toRingHom B) = B` using `fun B => Units.ext (Matrix.ext fun a b => i.apply_symm_apply _)`. Set `σ : Representation ℂ (GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) τ.V` to `τ.ρ.comp mi`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hσirr : σ.IsIrreducible`. Establish `hτ` using `τ.irr`. Use `{ exists_pair_ne := ⟨⊥, ⊤, fun h => ?_⟩, eq_bot_or_eq_top := fun P => ?_ }` and prove the remaining obligations. Take `⟨P1, P2, hne⟩` from `hτ.exists_pair_ne`. Apply `hne` to reduce the goal to its premises.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e1 : P1 = ⊥ ∨ P1 = ⊤` using `hτ.eq_bot_or_eq_top P1`. Establish `e2 : P2 = ⊥ ∨ P2 = ⊤` using `hτ.eq_bot_or_eq_top P2`. Establish `htop : (⊥ : Subrepresentation τ.ρ) = ⊤`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h'`. Apply the tactic sequence `rcases e1 with rfl | rfl <;> rcases e2 with rfl | rfl <;> simp [htop]`. Set `P' : Subrepresentation τ.ρ` to `⟨P.toSubmodule, fun g v hv => by`. Use `P.apply_mem_toSubmodule (Matrix.GeneralLinearGroup.map i.symm.toRingHom g) hv` as an intermediate fact. Express the relevant statement in the definitionally equal form `τ.ρ (mi _) v ∈ P.toSubmodule at this`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmi] at this⟩` and apply the resulting hypothesis. Break down `hτ.eq_bot_or_eq_top P' with h | h` into its components or cases. Use `left`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `h'`. Use `right`. Apply `Subrepresentation.ext` to reduce the goal to its premises. Establish `h'` using `congrArg Subrepresentation.toSubmodule h`. Conclude with `h'`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hV : ∃ a : τ.V, a ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Take `⟨P1, P2, hne⟩` from `τ.irr.exists_pair_ne`. Apply `hne` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subrepresentation.ext` to reduce the goal to its premises. Use extensionality with `a`. Simplify using `[hcon a, P1.toSubmodule.zero_mem, P2.toSubmodule.zero_mem]`. Set `f0 : σ.IntertwiningMap (ρ.comp lh)` to `{ toLinearMap := LinearMap.codRestrict π.S T hTS isIntertwining' := fun A => by`. Apply `LinearMap.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show T (τ.ρ (mi A) a) = NG.rt L n (lh A) (T a)`. Use `hTeq (lh A) (hlift A).1 a` as an intermediate fact. Rewrite using `[show s.loc n (lh A) = A from (hlift A).2] at this }` and apply the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf0' : f0 ≠ 0`. Take `⟨a, ha⟩` from `hV`. Introduce `h`. Apply `ha` to reduce the goal to its premises. Apply `hT` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (f0 a : GAf L n → ℂ) = 0` using `by rw [h]; rfl`. Simplify `this` using `[f0]`. Establish `hc : ∀ g, ∃ u, ∀ y, Commute ((lh u)⁻¹ * g) (lh y)`. Introduce `g`. Take `⟨x, y', hx, hy', rfl⟩` from `hdec g`.
-
-Use `⟨s.loc n x, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hlh x hx, inv_mul_cancel_left]`. Conclude with `(hcomm _ _ (hlift y).1 hy').symm`. Establish `hU : ∀ (W' : Type) [AddCommGroup W'] [Module ℂ W'] (σ' : Representation ℂ _ W'), σ'.IsIrreducible → ∀ f' : σ'.IntertwiningMap (ρ.comp lh), f' ≠ 0 → Nonempty (σ.Equiv σ')`. Introduce `W' _ _ σ' hσ' f' hf'`.
-
-Conclude with `(GlobalTheory.CuspRep.CompUniq.isotypic _ _ _ _ W' ρ lh σ σ' hρirr hσirr hσ' hc f0 hf0').2 f' hf'`. Establish `hsum` using `(GlobalTheory.CuspRep.CompUniq.isotypic _ _ _ _ τ.V ρ lh σ σ hρirr hσirr hσirr hc f0 hf0').1`. Establish `hfne : (⟨f, hf⟩ : π.S) ≠ 0` using `fun h => hf0 (congrArg Subtype.val h)`. Take `⟨p0, hp0⟩` from `GlobalTheory.T.exists_intertwiningMap_ne_zero_of_isotypic_irreducible _ _ _ (ρ.comp lh) σ hσirr hsum hU ⟨f, hf⟩ hfne`. Take `⟨p, hp⟩` from `LinearMap.exists_extend p0.toLinearMap`.
-
-Establish `hpS : ∀ g (hg : g ∈ π.S), p g = p0 ⟨g, hg⟩` using `fun g hg => by`. Use `LinearMap.congr_fun hp ⟨g, hg⟩` as an intermediate fact. Conclude with `this`. Use `⟨p, by rw [hpS f hf]; exact hp0, fun x hx f' hf' => ?_⟩` and prove the remaining obligations. Rewrite using `[hpS _ (π.stable x f' hf'), hpS f' hf']`.
-
-Establish `e1 : (⟨NG.rt L n x f', π.stable x f' hf'⟩ : π.S) = (ρ.comp lh) (s.loc n x) ⟨f', hf'⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show NG.rt L n x f' = NG.rt L n (lh (s.loc n x)) f'`. Rewrite using `[hlh x hx]`. Rewrite using `[e1]`.
-
-Conclude with `LinearMap.congr_fun (p0.isIntertwining' (s.loc n x)) ⟨f', hf'⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π : NG.FinTyp L n) (s : SplitPlace L) (τ : GlobalTheory.SmGL.IrrRep (GL (Fin n) (s.w.adicCompletion L))) (i : s.v.adicCompletion (maximalRealSubfield L) ≃+* s.w.adicCompletion L) (T : τ.V →ₗ[ℂ] (GAf L n → ℂ)), Continuous i → (∀ x : L, i (s.i x) = algebraMap L (s.w.adicCompletion L) x) → Function.Injective T → (∀ a, T a ∈ π.S) → (∀ x : GAf L n, TrivOutside {s.v} (x : GA L n) → ∀ a, T (τ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x)) a) = NG.rt L n x (T a)) → ∀ f ∈ π.S, f ≠ 0 → ∃ p : (GAf L n → ℂ) →ₗ[ℂ] τ.V, p f ≠ 0 ∧ ∀ x : GAf L n, TrivOutside {s.v} (x : GA L n) → ∀ f' ∈ π.S, p (NG.rt L n x f') = τ.ρ (Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n x)) (p f') := by
   intro L _ _ _ n π s τ i T hi hic hT hTS hTeq f hf hf0

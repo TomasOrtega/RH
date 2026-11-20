@@ -158,7 +158,7 @@ def ringPiece (m : K → ℤ) : Submodule F (MRing ι F) :=
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-The claim follows from `(weightedDecomposition F (intWeight (ι := ι))).isInternal smul_mem := by intro v m x hx rw [smul_eq_mul] have hX : IsWeightedHomogeneous (intWeight (ι := ι)) (X v : MRing ι F) (unitDeg v.1) := isWeightedHomogeneous_X F _ v have := hX.mul hx change X v * x ∈ weightedHomogeneousSub …`.
+A detailed English derivation is pending.
 -/
 theorem isMultigrading_ring : IsMultigrading ι (MRing ι F) (ringPiece (F := F) (ι := ι)) where
   internal := (weightedDecomposition F (intWeight (ι := ι))).isInternal

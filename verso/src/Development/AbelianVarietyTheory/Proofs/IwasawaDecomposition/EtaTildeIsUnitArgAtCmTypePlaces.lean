@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.EtaUnitArg
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (fun u : ∀ v : InfinitePlace L, (v.Completion)ˣ => u w)` using `fun z => ⟨Function.update (1 : ∀ v : InfinitePlace L, (v.Completion)ˣ) w z, by simp⟩`. Conclude with `hs.denseRange.comp (GlobalTheory.InfTypeLocal.denseRange_atInf L) (continuous_apply w)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem denseRange_atInf_single {L : Type} [Field L] [NumberField L] (w : InfinitePlace L) :
     DenseRange (atInf w : Lˣ → (w.Completion)ˣ) := by
@@ -22,7 +22,7 @@ theorem denseRange_atInf_single {L : Type} [Field L] [NumberField L] (w : Infini
 
 open Classical in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem locInf_eq {L : Type} [Field L] [NumberField L] (w : InfinitePlace L) (z : (w.Completion)ˣ) :
     Units.map (Formalism.L2.NC.locInf w) z = infIdele L w z := by
@@ -30,13 +30,11 @@ theorem locInf_eq {L : Type} [Field L] [NumberField L] (w : InfinitePlace L) (z 
   rfl
 
 /- English proof (translation)
-Introduce `R H χ hχ h hh g f hf hfE z`. Take `⟨c, -, hcm, -⟩` from `GlobalTheory.Mem.HostCM.host_cm R H`. Establish `hloc` using `(GlobalTheory.InfTypeLocal.infType_iff_local H.E (R.Psi) (embPsi H) hcm.bij χ.1 χ.2.1 (fun _ => 1)).1 (fun k => hχ.inf k) g`. Establish `key : (fun z : ((InfinitePlace.mk (H.emb (g : R.GG))).Completion)ˣ => ((χ.1 (infIdele H.E _ z) : ℂˣ) : ℂ)) = fun z : ((InfinitePlace.mk (H.emb (g : R.GG))).Completion)ˣ => f (z : (InfinitePlace.mk (H.emb (g : R.GG))).Completion) / ((‖f (z : (InfinitePlace.mk (H.emb (g : R.GG))).C …`. Use `(denseRange_atInf_single _).equalizer ?_ ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Units.continuous_val.comp (χ.2.1.comp (GlobalTheory.InfTypeLocal.continuous_infIdele _ _))`. Establish `h1` using `hf.comp Units.continuous_val`. Establish `h2 : ∀ u : ((InfinitePlace.mk (H.emb (g : R.GG))).Completion)ˣ, f (u : (InfinitePlace.mk (H.emb (g : R.GG))).Completion) ≠ 0` using `fun u => (_root_.map_ne_zero _).2 u.ne_zero`. Conclude with `h1.div (Complex.continuous_ofReal.comp h1.norm) fun u => by exact_mod_cast norm_ne_zero_iff.2 (h2 u)`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : f ((atInf _ k : ((InfinitePlace.mk (H.emb (g : R.GG))).Completion)ˣ) : (InfinitePlace.mk (H.emb (g : R.GG))).Completion) = H.emb (g : R.GG) k` using `hfE k`. Simplify using `only [Function.comp_apply]`. Rewrite using `[e]`. Use `hloc k` as an intermediate fact. Conclude with `this.trans (zpow_one _)`.
-
-Rewrite using `[locInf_eq, hh]`. Conclude with `congrFun key z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etaT_isUnitArg : ∀ {R : Ranks} (H : Host R) (χ : HChar H.E), IsEtaT H χ → ∀ (h : Formalism.L2.NC.HC H.E), h.χ = (χ : Ideles H.E →* ℂˣ) → ∀ (g : R.Psi), h.IsUnitArg (H.emb (g : R.GG)) := by
   intro R H χ hχ h hh g f hf hfE z

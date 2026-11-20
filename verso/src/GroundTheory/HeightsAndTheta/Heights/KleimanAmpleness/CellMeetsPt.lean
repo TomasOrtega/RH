@@ -14,9 +14,9 @@ def pt (c : ∀ k, ι k) : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry
   ⟨fun k => {c k}, fun _ => Finset.singleton_nonempty _, by simp⟩
 
 /- English proof (translation)
-Establish `h1 : ∀ k, (c.1 k).card = 1`. Introduce `k`. Establish `hk : (c.1 k).card - 1 = 0` using `(Finset.sum_eq_zero_iff.mp c.2.2) k (Finset.mem_univ _)`. Use `(c.2.1 k).card_pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `choose d hd using fun k => Finset.card_eq_one.mp (h1 k)`. Conclude with `⟨d, Subtype.ext (funext hd)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pt (c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0) : ∃ d : ∀ k, ι k, c = pt d := by
   have h1 : ∀ k, (c.1 k).card = 1 := by
@@ -28,7 +28,7 @@ theorem exists_pt (c : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.
   exact ⟨d, Subtype.ext (funext hd)⟩
 
 /- English proof (translation)
-Simplify using `[CellMeets, pt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cellMeets_pt {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k, ι k) :
     CellMeets y (pt c).1 ↔ ∀ k, y ⟨k, c k⟩ ≠ 0 := by
@@ -37,37 +37,35 @@ theorem cellMeets_pt {Ω : Type} [Field Ω] (y : (Σ k, ι k) → Ω) (c : ∀ k
 variable [LinearOrder K] [∀ k, LinearOrder (ι k)]
 
 /- English proof (translation)
-Establish `hne : i ≠ i'` using `hii.ne`. Take `⟨J, hJk, hJl⟩ : ∃ J : ∀ l, Finset (ι l), J k = {i, i'} ∧ ∀ l, l ≠ k → J l = {d l}` from `⟨Function.update (fun l => {d l}) k {i, i'}, by simp, fun l hl => by simp [hl]⟩`. Establish `hJ1 : (∀ l, (J l).Nonempty) ∧ ∑ l, ((J l).card - 1) = 0 + 1`. Use `⟨fun l => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hl : l = k`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hl` using the available equality. Simplify using `[hJk]`. Simplify using `[hJl l hl]`. Rewrite using `[Finset.sum_eq_single k (fun l _ hl => by simp [hJl l hl]) (by simp)]`. Simplify using `[hJk, Finset.card_pair hne]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm : CellMeets y J`. Introduce `l j hj`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality. Rewrite `hj` using `[hJk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hj`. Apply the tactic sequence `rcases hj with rfl | rfl <;> assumption`. Rewrite `hj` using `[hJl l hl, Finset.mem_singleton]`. Substitute `hj` using the available equality. Conclude with `hd l hl`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hface : ∀ a b : ι k, J k = {a, b} → a ≠ b → Function.update J k ((J k).erase a) = (pt (Function.update d k b)).1`. Introduce `a b hab habn`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = k`. Substitute `hl` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[pt, hab, habn]`. Simplify using `[pt, hl, hJl l hl]`. Establish `hfa` using `hface i i' hJk hne`. Establish `hfb` using `hface i' i (by rw [hJk, Finset.pair_comm]) hne.symm`. Establish `hlow : ∑ l ∈ Finset.univ.filter (· < k), ((J l).card - 1) = 0` using `Finset.sum_eq_zero fun l hl => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJl l (ne_of_lt (Finset.mem_filter.mp hl).2)]`. Simplify using the standard rewrite rules. Establish `hsa : faceSign J k i = 1`. Unfold `faceSign`. Rewrite using `[hlow, hJk]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.filter_insert, Finset.filter_singleton, not_lt_of_gt hii]`. Establish `hsb : faceSign J k i' = -1`. Unfold `faceSign`. Rewrite using `[hlow, hJk]`. Simplify using `[Finset.filter_insert, Finset.filter_singleton, hii]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : cellD S y 0 s ⟨J, hJ1⟩ = 0` using `by rw [hs]; rfl`. Unfold `cellD at h0`. Use `erw [LinearMap.pi_apply] at h0`. Use `erw [if_pos (show CellMeets y J from hm)] at h0`. Rewrite `h0` using `[LinearMap.sum_apply, Finset.sum_eq_single k]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `rotate_left`. Introduce `l _ hl`. Rewrite using `[LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun j hj => ?_` and prove the remaining obligations. Rewrite using `[dif_neg]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨hn, -⟩`. Establish `h2` using `hn l`. Rewrite `h2` using `[Function.update_self]`. Express the relevant statement in the definitionally equal form `j ∈ J l at hj`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[hJl l hl, Finset.mem_singleton]`. Substitute `hj` using the available equality. Express the relevant statement in the definitionally equal form `((J l).erase (d l)).Nonempty at h2`. Rewrite `h2` using `[hJl l hl]`. Simplify using `at h2`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite `h0` using `[LinearMap.sum_apply, Finset.sum_eq_add i i' hne]`. Use `rotate_left`. Introduce `j hj hj2`. Express the relevant statement in the definitionally equal form `j ∈ J k at hj`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[hJk]`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hj`. Break down `hj with rfl | rfl` into its components or cases. Conclude with `absurd rfl hj2.1`. Conclude with `absurd rfl hj2.2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h; exact absurd (show i ∈ J k by rw [hJk]; simp) h`. Introduce `h; exact absurd (show i' ∈ J k by rw [hJk]; simp) h`. Rewrite `h0` using `[dif_pos (hfa ▸ (pt (Function.update d k i')).2), dif_pos (hfb ▸ (pt (Function.update d k i)).2)]`. Simplify using `only [LinearMap.smul_apply] at h0`. Use `erw [LinearMap.proj_apply, LinearMap.proj_apply] at h0`.
-
-Establish `e1 : ∀ h, s ⟨Function.update J k ((J k).erase i), h⟩ = s (pt (Function.update d k i'))` using `fun _ => congrArg s (Subtype.ext hfa)`. Establish `e2 : ∀ h, s ⟨Function.update J k ((J k).erase i'), h⟩ = s (pt (Function.update d k i))` using `fun _ => congrArg s (Subtype.ext hfb)`. Rewrite `h0` using `[hsa, hsb, e1, e2, one_smul, neg_smul, one_smul]`. Take the linear combination `-h0`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem edge (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
     (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0 → Ω) (hs : cellD S y 0 s = 0) (d : ∀ k, ι k) (k : K)
@@ -161,9 +159,9 @@ theorem edge (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y : 
   linear_combination -h0
 
 /- English proof (translation)
-Establish `hdl : ∀ l, l ≠ k → y ⟨l, d l⟩ ≠ 0` using `fun l _ => hd l`. Break down `lt_trichotomy (d k) j with h | h | h` into its components or cases. Use `edge S y s hs d k h hdl (hd k) hj` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Then use the resulting hypothesis. Rewrite using `[← h, Function.update_eq_self]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `edge S y s hs d k h hdl hj (hd k)` as an intermediate fact. Rewrite `this` using `[Function.update_eq_self]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
     (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0 → Ω) (hs : cellD S y 0 s = 0) (d : ∀ k, ι k)
@@ -180,13 +178,13 @@ theorem step (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y : 
     exact this.symm
 
 /- English proof (translation)
-Establish `key : ∀ T : Finset K, s (pt d) = s (pt (fun l => if l ∈ T then d' l else d l))`. Introduce `T`. Use `Finset.induction_on T ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a T ha ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ih]`. Establish `hmeet : ∀ l, y ⟨l, (fun l => if l ∈ T then d' l else d l) l⟩ ≠ 0` using `fun l => by dsimp only split_ifs`. Conclude with `hd' l`. Conclude with `hd l`. Rewrite using `[step S y s hs _ hmeet a (d' a) (hd' a)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use function extensionality and compare the values at `l`. Distinguish the cases in `hl : l = a`. Substitute `hl` using the available equality. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hl]`. Simplify using `using key Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chain (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y : (Σ k, ι k) → Ω)
     (s : ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.KH.Cell K ι 0 → Ω) (hs : cellD S y 0 s = 0) (d d' : ∀ k, ι k)
@@ -216,7 +214,7 @@ theorem chain (S : Type) [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] (y :
 end CellZeroConst
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ _ Ω _ _ y s hs c c' hc hc'`. Take `⟨d, rfl⟩` from `CellZeroConst.exists_pt c`. Take `⟨d', rfl⟩` from `CellZeroConst.exists_pt c'`. Rewrite `hc`, `hc'` using `[CellZeroConst.cellMeets_pt]`. Conclude with `CellZeroConst.chain S y s hs d d' hc hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CellZeroConst.proof : CellZeroConst.Statement := by
   intro S _ K _ _ ι _ _ Ω _ _ y s hs c c' hc hc'

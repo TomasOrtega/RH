@@ -12,7 +12,7 @@ namespace UpperTheory.Ru.crystallineComparison
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Rewrite using `[Functor.map_comp, GlobalTheory.EtC.pullHQ, GlobalTheory.EtC.pullHl_comp, LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private lemma pb_comp (l : ℕ) [Fact l.Prime] {A B C : Scheme.{0}} (f : A ⟶ B) (g : B ⟶ C) (n : ℤ)
     (x : GlobalTheory.EtC.HQ l (GlobalTheory.EtC.sch.obj C) n 0) :
@@ -21,7 +21,7 @@ private lemma pb_comp (l : ℕ) [Fact l.Prime] {A B C : Scheme.{0}} (f : A ⟶ B
   rw [Functor.map_comp, GlobalTheory.EtC.pullHQ, GlobalTheory.EtC.pullHl_comp, LinearMap.baseChange_comp]; rfl
 
 /- English proof (translation)
-Substitute `hu` using the available equality. Use `IsPullback.of_bot (h₁₁ := pullback.fst (u ≫ q) c) (v₂₁ := pullback.snd q c) (v₂₂ := q) (h₃₁ := c) ?_ ?_ (IsPullback.of_hasPullback q c)` and prove the remaining obligations. Rewrite using `[pullback.lift_snd]`. Conclude with `IsPullback.of_hasPullback _ _`. Rewrite using `[pullback.lift_fst]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma pb_lift {A B S S' : Scheme.{0}} (a : A ⟶ S) (q : B ⟶ S) (u : A ⟶ B) (hu : u ≫ q = a)
     (c : S' ⟶ S) (h : (pullback.fst a c ≫ u) ≫ q = pullback.snd a c ≫ c) :
@@ -35,11 +35,11 @@ private lemma pb_lift {A B S S' : Scheme.{0}} (a : A ⟶ S) (q : B ⟶ S) (u : A
   · rw [pullback.lift_fst]
 
 /- English proof (translation)
-Take `⟨h, hI⟩` from `H`. Establish `Q` using `(IsPullback.of_hasPullback p' x).paste_horiz P`. Establish `claim : (Sigma.desc (fun i => pullback.lift (z i) (𝟙 X) (by rw [hz i, Category.id_comp])) : ∐ (fun _ : Fin m => X) ⟶ pullback p' x) ≫ Q.isoPullback.hom = Sigma.desc (fun i => pullback.lift (z i ≫ b) (𝟙 X) (by rw [h i, Category.id_comp]))`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Sigma.ι_desc_assoc, Sigma.ι_desc]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Q.isoPullback_hom_fst, pullback.lift_fst, pullback.lift_fst_assoc]`. Rewrite using `[Category.assoc, Q.isoPullback_hom_snd, pullback.lift_snd, pullback.lift_snd]`. Use `haveI : IsIso ((Sigma.desc (fun i => pullback.lift (z i) (𝟙 X) (by rw [hz i, Category.id_comp])) : ∐ (fun _ : Fin m => X) ⟶ pullback p' x) ≫ Q.isoPullback.hom) := by`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[claim]`. Conclude with `hI`. Conclude with `IsIso.of_isIso_comp_right _ Q.isoPullback.hom`.
+A detailed English derivation is pending.
 -/
 private lemma desc_iso_of_pb {X Y Y' Z Z' : Scheme.{0}} {p : Z ⟶ Y} {p' : Z' ⟶ Y'} {a : Y' ⟶ Y} {b : Z' ⟶ Z}
     (P : IsPullback b p' p a) (x : X ⟶ Y') {m : ℕ} (z : Fin m → (X ⟶ Z')) (hz : ∀ i, z i ≫ p' = x)
@@ -70,14 +70,14 @@ private abbrev G {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : E.
 private abbrev gX (M : Model l K) : E.gb M ⟶ M.X := pullback.fst _ _ ≫ pullback.fst _ _
 
 /- English proof (translation)
-Rewrite using `[G, gX, GlobalTheory.Et.geomMap, pullback.lift_fst_assoc, Category.assoc, Model.genMap, pullback.lift_fst, gX, Category.assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma G_gX {M N : Model l K} (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) : G u hu ≫ gX N = gX M ≫ u := by
   rw [G, gX, GlobalTheory.Et.geomMap, pullback.lift_fst_assoc, Category.assoc, Model.genMap, pullback.lift_fst,
     gX, Category.assoc]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[G, GlobalTheory.Et.geomMap, Model.genMap]`. Simplify using `[G, GlobalTheory.Et.geomMap, Model.genMap]`. Simplify using `[G, GlobalTheory.Et.geomMap]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private lemma G_comp {A B C : Model l K} (u : A.X ⟶ B.X) (hu : u ≫ B.p = A.p) (v : B.X ⟶ C.X)
     (hv : v ≫ C.p = B.p) (h : (u ≫ v) ≫ C.p = A.p) : G u hu ≫ G v hv = G (u ≫ v) h := by
@@ -88,7 +88,7 @@ private lemma G_comp {A B C : Model l K} (u : A.X ⟶ B.X) (hu : u ≫ B.p = A.p
   · simp [G, GlobalTheory.Et.geomMap]
 
 /- English proof (translation)
-Establish `hu : IsUnit ((l : ℕ) : PadicAlgCl l)` using `(Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero).isUnit`. Set `φ : CommRingCat.of (PadicAlgCl l) ⟶ Γ(E.gb W, ⊤)` to `(Scheme.ΓSpecIso (CommRingCat.of (PadicAlgCl l))).inv ≫ (pullback.snd W.q _).appTop`. Use `hu.map φ.hom` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private lemma unit_gb (W : Model l K) : IsUnit (l : Γ(E.gb W, ⊤)) := by
   have hu : IsUnit ((l : ℕ) : PadicAlgCl l) :=
@@ -99,7 +99,7 @@ private lemma unit_gb (W : Model l K) : IsUnit (l : Γ(E.gb W, ⊤)) := by
   rwa [map_natCast] at this
 
 /- English proof (translation)
-Establish `s1` using `pb_lift (corrM M T).p M.p T.p rfl (Spec.map (CommRingCat.ofHom (OK l K).subtype)) (by rw [Category.assoc]; exact pullback.condition)`. Establish `s2` using `pb_lift (corrM M T).q M.q (Model.genMap (M := corrM M T) (N := M) T.p rfl) (Model.genMap_q (M := corrM M T) (N := M) T.p rfl) (Spec.map (CommRingCat.ofHom (algebraMap K (PadicAlgCl l)))) (by rw [Category.assoc, Model.genMap_q]; exact pullback.condition)`. Conclude with `s2.paste_horiz s1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma corr_pb (M : Model l K) (T : Corr l M.X) : IsPullback (gX (corrM M T)) (corrP M T) T.p (gX M) := by
   have s1 := pb_lift (corrM M T).p M.p T.p rfl (Spec.map (CommRingCat.ofHom (OK l K).subtype))
@@ -111,15 +111,15 @@ private lemma corr_pb (M : Model l K) (T : Corr l M.X) : IsPullback (gX (corrM M
   exact s2.paste_horiz s1
 
 /- English proof (translation)
-Introduce `l _ K M T hr j t hP W w hw z hz hsp v`. Establish `hzp : ∀ i, z i ≫ (corrM M T).p = W.p` using `fun i => by show z i ≫ T.p ≫ M.p = W.p`. Rewrite using `[← Category.assoc, hz, hw]`. Establish `hs : ∀ i, G (M` using `W) (N := corrM M T) (z i) (hzp i) ≫ corrP M T = G (M := W) (N := M) w hw := fun i => by`. Establish `e` using `G_comp (A := W) (B := corrM M T) (C := M) (z i) (hzp i) T.p rfl (by rw [hz, hw])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : G (M` using `W) (N := M) (z i ≫ T.p) (by rw [hz, hw] : (z i ≫ T.p) ≫ M.p = W.p) = G (M := W) (N := M) w hw := by`. Use `hz i` as an intermediate fact. Substitute `this` using the available equality. Both sides reduce to the same expression. Conclude with `e.trans e'`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hsplit : SplitOn T.p (G (M` using `W) (N := M) w hw ≫ gX M) fun i => G (M := W) (N := corrM M T) (z i) (hzp i) ≫ gX (corrM M T) := by`. Establish `H` using `hsp (E.gb W) (gX W) (unit_gb W)`. Establish `e1 : G (M` using `W) (N := M) w hw ≫ gX M = gX W ≫ w := G_gX (M := W) (N := M) w hw`. Establish `e2 : (fun i => G (M` using `W) (N := corrM M T) (z i) (hzp i) ≫ gX (corrM M T)) = fun i => gX W ≫ z i :=`. Use function extensionality and compare the values at `fun i => G_gX (M := W) (N := corrM M T) (z i) (hzp i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `H`. Establish `hI` using `desc_iso_of_pb (corr_pb M T) (G (M := W) (N := M) w hw) (fun i => G (M := W) (N := corrM M T) (z i) (hzp i)) hs hsplit`. Establish `key` using `hP (E.gb W) (G (M := W) (N := M) w hw) T.d (fun i => G (M := W) (N := corrM M T) (z i) (hzp i)) hs hI (Model.pullV (M := corrM M T) (N := M) T.r hr j v)`. Use `key.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `G_comp (A := W) (B := corrM M T) (C := M) (z i) (hzp i) T.r hr (by rw [Category.assoc, hr, ← Category.assoc, hz, hw])`. Use `pb_comp l (G (M := W) (N := corrM M T) (z i) (hzp i)) (G (M := corrM M T) (N := M) T.r hr) j v` as an intermediate fact. Rewrite `this` using `[e]`. Conclude with `this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hkOfPush : UpperTheory.Ru.crystallineComparison.HkOfPush := by
   intro l _ K M T hr j t hP W w hw z hz hsp v

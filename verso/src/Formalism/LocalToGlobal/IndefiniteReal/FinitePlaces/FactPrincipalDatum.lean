@@ -8,7 +8,7 @@ open Formalism.BasicNotions NumberField FractionalIdeal
 namespace Formalism.IndefR.Fin
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨β, hβ, heq⟩` from `Formalism.MainNotions.UnusedSlot33.HK.diffK_holds H`. Rewrite using `[heq, coeIdeal_span_singleton]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem diffKPrincipal : Formalism.BasicNotions.DiffKPrincipal := by
   intro R H
@@ -17,7 +17,7 @@ theorem diffKPrincipal : Formalism.BasicNotions.DiffKPrincipal := by
   congr 1
 
 /- English proof (translation)
-Introduce `R H`. Rewrite using `[← coeIdeal_mul]`. Establish `h` using `Formalism.MainNotions.UnusedSlot33.HK.normK_holds H H.ccK H.ccK_ne_bot`. Rewrite using `[show (H.ccE : Ideal (𝓞 H.E)) = Ideal.map (algebraMap (𝓞 H.K) (𝓞 H.E)) H.ccK from rfl, h, coeIdeal_span_singleton, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ccNorm : Formalism.BasicNotions.CcNorm := by
   intro R H
@@ -27,7 +27,7 @@ theorem ccNorm : Formalism.BasicNotions.CcNorm := by
     coeIdeal_span_singleton, map_natCast]
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.factPrincipalDatum_of diffKPrincipal ccNorm`.
+A detailed English derivation is pending.
 -/
 theorem factPrincipalDatum : Formalism.BasicNotions.FactPrincipalDatum :=
   Formalism.BasicNotions.factPrincipalDatum_of diffKPrincipal ccNorm

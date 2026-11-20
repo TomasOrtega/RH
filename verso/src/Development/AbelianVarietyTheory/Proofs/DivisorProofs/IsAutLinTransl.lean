@@ -25,7 +25,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [lineDer]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, (hc t).eq, ← mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem lineDer_transl (f : GAd σ J → ℂ) (γ : ℝ → GAd σ J) (e : GAd σ J) (hc : ∀ t, Commute (γ t) e) :
     lineDer γ (fun y => f (y * e)) = fun y => lineDer γ f (y * e) := by
@@ -36,7 +36,7 @@ theorem lineDer_transl (f : GAd σ J → ℂ) (γ : ℝ → GAd σ J) (e : GAd �
   rw [mul_assoc, (hc t).eq, ← mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | γ :: l, hl => by rw [List.foldr_cons, List.foldr_cons, foldr_transl f e l fun γ' h => hl γ' (List.mem_cons_of_mem _ h)] exact lineDer_transl _ γ e (hl γ List.mem_cons_self)`.
+A detailed English derivation is pending.
 -/
 theorem foldr_transl (f : GAd σ J → ℂ) (e : GAd σ J) :
     ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, ∀ t, Commute (γ t) e) →
@@ -47,7 +47,7 @@ theorem foldr_transl (f : GAd σ J → ℂ) (e : GAd σ J) :
     exact lineDer_transl _ γ e (hl γ List.mem_cons_self)
 
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hy⟩` from `hγ`. Take `⟨y, hy1, -⟩` from `hy t`. Rewrite using `[hy1]`. Conclude with `(commute_emb σ J x (proj_embArch σ J v w y)).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realLine_commute {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v)
     (t : ℝ) : Commute (γ t) (emb σ J v x) := by
@@ -57,27 +57,25 @@ theorem realLine_commute {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) (v :
   exact (commute_emb σ J x (proj_embArch σ J v w y)).symm
 
 /- English proof (translation)
-Establish `s₁ : SmoothLines σ J (a • φ)` using `smoothLines_smul a hφ.mod.smooth`. Establish `s₂ : SmoothLines σ J (b • ψ)` using `smoothLines_smul b hψ.mod.smooth`. Establish `hfold : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → l.foldr lineDer (a • φ + b • ψ) = a • l.foldr lineDer φ + b • l.foldr lineDer ψ`. Introduce `l hl`. Rewrite using `[foldr_add s₁ s₂ l hl, foldr_smul, foldr_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨fun γ hγ g => ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Pi.smul_apply, hφ.mod.left γ hγ g, hψ.mod.left γ hγ g]`. Take `⟨U₁, o₁, e₁⟩` from `hφ.mod.level`. Take `⟨U₂, o₂, e₂⟩` from `hψ.mod.level`. Conclude with `⟨U₁ ⊓ U₂, o₁.inter o₂, fun k hk hf g => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, e₁ k hk.1 hf g, e₂ k hk.2 hf g]⟩`. Conclude with `(continuous_const.smul hφ.mod.cont).add (continuous_const.smul hψ.mod.cont)`. Conclude with `smoothLines_add s₁ s₂`. Take `⟨N₁, g₁⟩` from `hφ.mod.growth`. Take `⟨N₂, g₂⟩` from `hψ.mod.growth`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max N₁ N₂, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨C₁, c₁⟩` from `g₁ l hl`. Take `⟨C₂, c₂⟩` from `g₂ l hl`. Use `⟨‖a‖ * max C₁ 0 + ‖b‖ * max C₂ 0, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hfold l hl]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hh : (1 : ℝ) ≤ (height σ J g : ℝ)` using `by exact_mod_cast one_le_height σ J g`. Establish `p₁ : (height σ J g : ℝ) ^ N₁ ≤ (height σ J g : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hh (le_max_left _ _)`. Establish `p₂ : (height σ J g : ℝ) ^ N₂ ≤ (height σ J g : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ hh (le_max_right _ _)`. Establish `q₁ : (0 : ℝ) ≤ (height σ J g : ℝ) ^ N₁` using `by positivity`. Establish `q₂ : (0 : ℝ) ≤ (height σ J g : ℝ) ^ N₂` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₁ : ‖l.foldr lineDer φ g‖ ≤ max C₁ 0 * (height σ J g : ℝ) ^ max N₁ N₂` using `(c₁ g).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) q₁).trans (mul_le_mul_of_nonneg_left p₁ (le_max_right _ _)))`. Establish `a₂ : ‖l.foldr lineDer ψ g‖ ≤ max C₂ 0 * (height σ J g : ℝ) ^ max N₁ N₂` using `(c₂ g).trans ((mul_le_mul_of_nonneg_right (le_max_left _ _) q₂).trans (mul_le_mul_of_nonneg_left p₂ (le_max_right _ _)))`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `(norm_add_le _ _).trans (by rw [norm_mul, norm_mul])`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ ‖a‖ * (max C₁ 0 * (height σ J g : ℝ) ^ max N₁ N₂) + ‖b‖ * (max C₂ 0 * (height σ J g : ℝ) ^ max N₁ N₂) := add_le_add (mul_le_mul_of_nonneg_left a₁ (norm_nonneg _)) (mul_le_mul_of_nonneg_left a₂ (norm_nonneg _))`. Use `_ = (‖a‖ * max C₁ 0 + ‖b‖ * max C₂ 0) * (height σ J g : ℝ) ^ max N₁ N₂ := by ring`. Use `hφ.kfin` as an intermediate fact. Use `hψ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ (Set.range fun k : K => fun g => φ (g * k)) ⊔ Submodule.span ℂ (Set.range fun k : K => fun g => ψ (g * k))) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Establish `e : (fun g => (a • φ + b • ψ) (g * k)) = a • (fun g => φ (g * k)) + b • fun g => ψ (g * k)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Use `show (fun g => (a • φ + b • ψ) (g * k)) ∈ _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `add_mem (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩))) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)))`. Use `hφ.zfin` as an intermediate fact. Use `hψ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {f | ∃ z', IsCentral σ J z' ∧ f = dop z' φ} ⊔ Submodule.span ℂ {f | ∃ z', IsCentral σ J z' ∧ f = dop z' ψ}) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `_ ⟨z', hz', rfl⟩`. Establish `e : dop z' (a • φ + b • ψ) = a • dop z' φ + b • dop z' ψ`. Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
-
-Rewrite using `[hfold l (hz'.1 l hl)]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `add_mem (Submodule.mem_sup_left (Submodule.smul_mem _ _ (Submodule.subset_span ⟨z', hz', rfl⟩))) (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.subset_span ⟨z', hz', rfl⟩)))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAut_add_smul {K : Subgroup (GAd σ J)} {φ ψ : GAd σ J → ℂ} (hφ : IsAut σ J K φ) (hψ : IsAut σ J K ψ)
     (a b : ℂ) : IsAut σ J K (a • φ + b • ψ) := by
@@ -150,27 +148,23 @@ theorem isAut_add_smul {K : Subgroup (GAd σ J)} {φ ψ : GAd σ J → ℂ} (hφ
       (Submodule.mem_sup_right (Submodule.smul_mem _ _ (Submodule.subset_span ⟨z', hz', rfl⟩)))
 
 /- English proof (translation)
-Use `set e := emb σ J v x with he_def`. Establish `he : e ∈ finPts σ J` using `mem_finPts_iff_forall.2 fun w => projArch_emb σ J w v x`. Establish `hKc : ∀ k ∈ K, Commute e k` using `fun k hk => commute_emb σ J x (mem_infPts_iff_forall.1 (hK.1.1 hk) v)`. Establish `hfold : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → l.foldr lineDer (fun y => φ (y * e)) = fun y => l.foldr lineDer φ (y * e)` using `fun l hl => foldr_transl φ e l fun γ hγ t => realLine_commute (hl γ hγ) v x t`. Set `T : (GAd σ J → ℂ) →ₗ[ℂ] (GAd σ J → ℂ)` to `LinearMap.funLeft ℂ ℂ (· * e)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hT : ∀ f y, T f y = f (y * e)` using `fun _ _ => rfl`. Use `⟨⟨fun γ hγ g => ?_, ?_, ?_, fun k γ hγ g => ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show φ (γ * g * e) = φ (g * e)`. Rewrite using `[mul_assoc]`. Conclude with `hφ.mod.left γ hγ (g * e)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨U, hU, hUe⟩` from `hφ.mod.level`. Use `⟨U.comap (MulAut.conj e⁻¹).toMonoidHom, ?_, fun k hk hkf g => ?_⟩` and prove the remaining obligations. Establish `hc : Continuous fun k : GAd σ J => e⁻¹ * k * e⁻¹⁻¹` using `(continuous_const.mul continuous_id).mul continuous_const`. Conclude with `hU.preimage hc`. Establish `hk' : e⁻¹ * k * e ∈ U` using `by simpa using hk`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hm : e⁻¹ * k * e ∈ finPts σ J` using `mul_mem (mul_mem (inv_mem he) hkf) he`. Use `show φ (g * k * e) = φ (g * e)`. Rewrite using `[← hUe _ hk' hm (g * e)]`. Use `congr 1`. Use `group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hφ.mod.cont.comp (continuous_id.mul continuous_const)`. Establish `hc : ∀ t : Fin k → ℝ, Commute (List.ofFn fun i => γ i (t i)).prod e` using `fun t => Commute.list_prod_left _ _ fun y hy => by`. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 hy`. Conclude with `realLine_commute (hγ i) v x (t i)`. Establish `e1 : (fun t : Fin k → ℝ => φ (g * (List.ofFn fun i => γ i (t i)).prod * e)) = fun t => φ (g * e * (List.ofFn fun i => γ i (t i)).prod)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, (hc t).eq, ← mul_assoc]`. Conclude with `e1 ▸ hφ.mod.smooth k γ hγ (g * e)`. Take `⟨N, gN⟩` from `hφ.mod.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨C, hC⟩` from `gN l hl`. Use `⟨max C 0 * (height σ J e : ℝ) ^ N, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hfold l hl]`. Establish `h1 : (height σ J (g * e) : ℝ) ≤ (height σ J g : ℝ) * (height σ J e : ℝ)`. Conclude with `height_mul_le σ J g e` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h0 : (0 : ℝ) ≤ (height σ J (g * e) : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `hφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun k : K => fun g => φ (g * k))).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun g => φ (g * k), Submodule.subset_span ⟨k, rfl⟩, funext fun g => ?_⟩` and prove the remaining obligations. Use `show φ (g * e * k) = φ (g * k * e)`. Rewrite using `[mul_assoc, (hKc k k.2).eq, ← mul_assoc]`. Use `hφ.zfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ {f | ∃ z', IsCentral σ J z' ∧ f = dop z' φ}).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations.
-
-Introduce and unpack `_ ⟨z', hz', rfl⟩`. Use `⟨dop z' φ, Submodule.subset_span ⟨z', hz', rfl⟩, funext fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Simplify using `only [dop, Finsupp.sum]`. Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations.
-
-Rewrite using `[hfold l (hz'.1 l hl)]`.
+A detailed English derivation is pending.
 -/
 theorem isAut_transl {K : Subgroup (GAd σ J)} (hK : IsMaxCpt σ J K) {φ : GAd σ J → ℂ} (hφ : IsAut σ J K φ)
     (v : HeightOneSpectrum (𝓞 F)) (x : GLoc σ J v) : IsAut σ J K (fun y => φ (y * emb σ J v x)) := by
@@ -238,7 +232,7 @@ theorem isAut_transl {K : Subgroup (GAd σ J)} (hK : IsMaxCpt σ J K) {φ : GAd 
     rw [hfold l (hz'.1 l hl)]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ _ K hK _ _ hφ hψ` and use `⟨isAut_add_smul hφ hψ, isAut_transl hK hφ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isAut_lin_transl : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

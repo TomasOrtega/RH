@@ -12,11 +12,9 @@ section intpol
 variable {p : ℕ} [Fact p.Prime] {σ : Type}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ m`. Simplify using `only [AlgHom.toLinearMap_apply, MvPolynomial.mapAlgHom_apply, MvPolynomial.coeff_map]`. Conclude with `PadicInt.norm_le_one (coeff m y)`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ m ∈ x.support, MvPolynomial.monomial m (⟨coeff m x, h m⟩ : ℤ_[p]), ?_⟩` and prove the remaining obligations. Simplify using `only [AlgHom.toLinearMap_apply, map_sum, MvPolynomial.mapAlgHom_apply, MvPolynomial.map_monomial]`. Use `conv_rhs => rw [x.as_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `erw [MvPolynomial.map_monomial]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem intPol_iff_bnd (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ ∀ m, ‖coeff m x‖ ≤ 1 := by
   constructor
@@ -32,7 +30,7 @@ theorem intPol_iff_bnd (x : MvPolynomial σ ℚ_[p]) : x ∈ IntPol p σ ↔ ∀
     rfl
 
 /- English proof (translation)
-Establish `e : s • v = (show ℤ_[p] from ⟨s, hs⟩) • v`. Rewrite using `[← algebraMap_smul ℚ_[p] (show ℤ_[p] from ⟨s, hs⟩) v]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Λ.smul_mem _ hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_of_norm (Λ : Submodule ℤ_[p] (MvPolynomial σ ℚ_[p])) {s : ℚ_[p]} (hs : ‖s‖ ≤ 1)
     {v : MvPolynomial σ ℚ_[p]} (hv : v ∈ Λ) : s • v ∈ Λ := by
@@ -43,9 +41,9 @@ theorem smul_mem_of_norm (Λ : Submodule ℤ_[p] (MvPolynomial σ ℚ_[p])) {s :
   exact Λ.smul_mem _ hv
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv => exact h v hv`. Consider the case `zero => rw [map_zero]`. Conclude with `Λ.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Λ.add_mem ha hb`. Consider the case `smul c a _ ha`. Rewrite using `[← algebraMap_smul ℚ_[p] c a, map_smul, algebraMap_smul]`. Conclude with `Λ.smul_mem c ha`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_map_mem {τ : Type} (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] MvPolynomial τ ℚ_[p])
     (S : Set (MvPolynomial σ ℚ_[p])) (Λ : Submodule ℤ_[p] (MvPolynomial τ ℚ_[p]))
@@ -60,20 +58,20 @@ theorem span_map_mem {τ : Type} (T : MvPolynomial σ ℚ_[p] →ₗ[ℚ_[p]] Mv
     exact Λ.smul_mem c ha
 
 /- English proof (translation)
-Conclude with `MvPolynomial.pderiv_X_of_ne h`.
+A detailed English derivation is pending.
 -/
 theorem free_X {v u : σ} (h : u ≠ v) : pderiv v (X u : MvPolynomial σ ℚ_[p]) = 0 := by
   exact MvPolynomial.pderiv_X_of_ne h
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, ha, hb, smul_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem free_mul {v : σ} {a b : MvPolynomial σ ℚ_[p]} (ha : pderiv v a = 0) (hb : pderiv v b = 0) :
     pderiv v (a * b) = 0 := by
   rw [Derivation.leibniz, ha, hb, smul_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Derivation.map_one_eq_zero _`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `free_mul ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem free_pow {v : σ} {a : MvPolynomial σ ℚ_[p]} (ha : pderiv v a = 0) (n : ℕ) :
     pderiv v (a ^ n) = 0 := by
@@ -82,7 +80,7 @@ theorem free_pow {v : σ} {a : MvPolynomial σ ℚ_[p]} (ha : pderiv v a = 0) (n
   | succ n ih => rw [pow_succ]; exact free_mul ih ha
 
 /- English proof (translation)
-Unfold `ehP`. Rewrite using `[map_add, map_sum, free_mul (free_X h1) (free_X h2), zero_add]`. Conclude with `Finset.sum_eq_zero fun c _ => free_mul (free_X (h3 c)) (free_X (h4 c))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem free_ehP {r : ℕ} {w e : Fin r → σ} {zv sv v : σ} (h1 : zv ≠ v) (h2 : sv ≠ v) (h3 : ∀ c, w c ≠ v)
     (h4 : ∀ c, e c ≠ v) : pderiv v (ehP w e zv sv : MvPolynomial σ ℚ_[p]) = 0 := by

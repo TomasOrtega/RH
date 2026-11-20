@@ -6,9 +6,9 @@ open scoped ComplexConjugate
 namespace Formalism.FourierDecayAlt.P.A5x1
 
 /- English proof (translation)
-Unfold `lamN lamTil lamLin rowN lastCoord`. Use `congr 2`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `a _`. Establish `: (a.val = j ↔ a.val + 1 = n)` using `by omega`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lamN_last {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (j : ℕ) (hj : j + 1 = n) : lamN R Z j = lamLin R Z := by
@@ -20,13 +20,13 @@ theorem lamN_last {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (Z : Matrix 
   simp [this]
 
 /- English proof (translation)
-Use `Nat.card_congr ⟨fun φ => ⟨φ0.symm.trans φ.1, ?_⟩, fun σ => ⟨φ0.trans σ.1, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, fun c => ?_⟩` and prove the remaining obligations. Establish `: φ0.symm e = eZ R Z` using `by rw [← hφ0.1]; simp`. Simplify using `[this, φ.2.1]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ0.symm c)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `h3 : φ0 (Submodule.Quotient.mk v) = c` using `by rw [hv]; simp`. Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← hv, φ.2.2 v, ← hφ0.2 v, h3]`. Use `⟨?_, fun v => ?_⟩` and prove the remaining obligations. Simplify using `[hφ0.1, σ.2.1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[σ.2.2, hφ0.2]`. Introduce `φ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `σ`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem card_isoSet {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (C : Type) [AddCommGroup C] [Module R C] (e : C) (lam : C →ₗ[R] KR R)
@@ -48,15 +48,15 @@ theorem card_isoSet {K : Type} [CommRing K] (R : Subring K) {n : ℕ} (Z : Matri
   · intro σ; ext x; simp
 
 /- English proof (translation)
-Use `Nat.card_congr ⟨fun ρ => ⟨φ0.trans ρ.1.symm, ?_⟩, fun φ => ⟨φ.1.symm.trans φ0, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `⟨?_, fun v v' hv => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearEquiv.trans_apply, hφ0.1]`. Conclude with `(LinearEquiv.symm_apply_eq _).2 ρ.2.1.symm`. Simplify using `only [LinearEquiv.trans_apply] at hv`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : φ0 (Submodule.Quotient.mk v) = ρ.1 (Submodule.Quotient.mk v')`. Rewrite using `[← hv]`. Simplify using the standard rewrite rules. Rewrite using `[← ρ.2.2 v', ← h4, hφ0.2]`. Use `⟨?_, fun v' => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: φ.1.symm (eZ R Z') = eZ R Z` using `by rw [← φ.2.1]; simp`. Simplify using `[this, hφ0.1]`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ.1.symm (Submodule.Quotient.mk v'))`. Establish `h3 : φ.1 (Submodule.Quotient.mk v) = Submodule.Quotient.mk v'` using `by rw [hv]; simp`. Simplify using `only [LinearEquiv.trans_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, hφ0.2 v, φ.2.2 v v' h3]`. Introduce `ρ`. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_isoZZ {K : Type} [CommRing K] (R : Subring K) {n n' : ℕ} (Z : Matrix (Fin n) (Fin n) K)
     (Z' : Matrix (Fin n') (Fin n') K)
@@ -88,11 +88,11 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.FourierDecayAlt.P.A5x1
 
 /- English proof (translation)
-Introduce `K _ R n n' Z Z' lam' h`. Use extensionality with `φ`. Simplify using `only [isoZZ, isoSet, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, fun v => ?_⟩` and prove the remaining obligations. Take `⟨v', hv'⟩` from `Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk v))`. Rewrite using `[← hv', h]`. Conclude with `h2 v v' hv'.symm`. Introduce and unpack `⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, fun v v' hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← h2 v, hv, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matchingIsoSetEq : Formalism.FourierDecayAlt.A5.IsoZZIsIso := by
   intro K _ R n n' Z Z' lam' h
@@ -108,22 +108,22 @@ theorem matchingIsoSetEq : Formalism.FourierDecayAlt.A5.IsoZZIsIso := by
     rw [← h2 v, hv, h]
 
 /- English proof (translation)
-Introduce `K _ R n Z`. Conclude with `lamN_last R Z n rfl`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invRowFunctionalLast : Formalism.FourierDecayAlt.A5.LamLast := by
   intro K _ R n Z
   exact lamN_last R Z n rfl
 
 /- English proof (translation)
-Introduce `K _ R n n' Z Z' ι _ C _ _ e lam hne hex`. Take `⟨a0, φ0, hφ0⟩` from `hex`. Establish `hzero : ∀ b, b ≠ a0 → IsEmpty (isoSet R Z (C b) (e b) (lam b))`. Introduce `b hb`. Use `⟨fun ⟨φ1, h1⟩ => hne b a0 hb ⟨φ1.symm.trans φ0, ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: φ1.symm (e b) = eZ R Z` using `by rw [← h1.1]; simp`. Simplify using `[this, hφ0.1]`. Introduce `c`. Take `⟨v, hv⟩` from `Submodule.Quotient.mk_surjective _ (φ1.symm c)`. Establish `h3 : φ1 (Submodule.Quotient.mk v) = c` using `by rw [hv]; simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [LinearEquiv.trans_apply]`. Rewrite using `[← hv, hφ0.2 v, ← h1.2 v, h3]`. Rewrite using `[Finset.sum_eq_single a0 (fun b _ hb => by have := hzero b hb; simp) (by simp)]`. Rewrite using `[card_isoSet R Z _ _ _ φ0 hφ0, ← card_isoZZ R Z Z' _ _ _ φ0 hφ0]`. Distinguish the cases in `hN : Nat.card (autSet R (C a0) (e a0) (lam a0)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hM : Nat.card (isoSet R Z' (C a0) (e a0) (lam a0)) = 0`. Distinguish the cases in `hE : (isoSet R Z' (C a0) (e a0) (lam a0)).Nonempty`. Take `⟨ρ, hρ⟩` from `hE`. Rewrite using `[card_isoSet R Z' _ _ _ ρ hρ, hN]`. Rewrite `hE` using `[Set.not_nonempty_iff_eq_empty]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hE]`. Simplify using the standard rewrite rules. Simplify using `[hN, hM]`. Establish `: (Nat.card (autSet R (C a0) (e a0) (lam a0)) : ℂ) ≠ 0` using `by exact_mod_cast hN`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem matchingIsoCount : Formalism.FourierDecayAlt.A5.IsoCount := by
   intro K _ R n n' Z Z' ι _ C _ _ e lam hne hex
@@ -153,15 +153,15 @@ theorem matchingIsoCount : Formalism.FourierDecayAlt.A5.IsoCount := by
     field_simp
 
 /- English proof (translation)
-Introduce `K _ R ψ w w' k hw hw'`. Unfold `Kp intTT pairTerm`. Apply `finsum_congr` to reduce the goal to its premises. Introduce `q`. Use `congr 2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with hI`. Use `congr 1`. Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquivRight ?_` and prove the remaining obligations. Introduce `φ`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hφ`. Use `⟨hφ, ?_⟩` and prove the remaining obligations. Introduce `j hkj hjn`. Establish `hj : j = k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `v v' hv`. Establish `h2` using `hφ.2 v v' hv`. Rewrite using `[lamN_last R _ j hw'.symm, lamN_last R _ j hw.symm, h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `fun h => h.1`. Both sides reduce to the same expression.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem tripleForm : Formalism.FourierDecayAlt.A5.TripleForm := by
   intro K _ R ψ w w' k hw hw'

@@ -13,11 +13,11 @@ open GlobalTheory.RootFrame
 
 open GlobalTheory.LineNorm.Chart in
 /- English proof (translation)
-Take `⟨σ, hσ₀⟩ : ∃ σ : G.presheaf.stalk (below z) →+* K, σ = (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`. Establish `hσ : σ.comp α = O.subtype.comp β` using `ringHom_ext hU (by`. Rewrite using `[← spMap_comp', ← spMap_comp', Category.assoc, Category.assoc, hα, hβ, hyt, ← Category.assoc, hσ₀]`. Conclude with `congrArg (· ≫ j) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z))`. Establish `h1 : spMap (ioO.comp β) ≫ hU.fromSpec = spMap ioO ≫ yt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← spMap_comp', Category.assoc, hβ]`. Establish `h2 : ψ.comp α = (intO C).subtype.comp (ioO.comp β)`. Rewrite using `[hψ, ← hσ₀, RingHom.comp_assoc, hσ, ← RingHom.comp_assoc, ← hio, RingHom.comp_assoc]`. Use `⟨fun r => congrArg (fun φ => φ r) h2, fun l => ?_⟩` and prove the remaining obligations. Use `coord_map α ψ (ha l)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h2, ← spMap_comp', Category.assoc, ← Category.assoc (spMap (ioO.comp β)), h1]`. Simplify `this` using `only [dual_comp]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem chart' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {X : Scheme.{0}}
     {t : SAB H X} {S G : Scheme.{0}} (j : G ⟶ S) (ρ' : S ⟶ X) {K : Type} [Field K] (O : ValuationSubring K)
@@ -48,7 +48,7 @@ private theorem chart' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : R
   simpa only [dual_comp] using this
 
 /- English proof (translation)
-Use `choose c' hc' using hc`. Simplify using `only [← hc', ← map_mul, ← map_sum, Res.valAt_algebraMap]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem val_sum {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry.IsIntegral Z] (z : Sp K ⟶ Z) {M : ℕ}
     (c : Fin M → Z.functionField) (hc : ∀ k, RegAt (below z) (c k)) (b : Fin M → Z.presheaf.stalk (below z)) :
@@ -59,25 +59,23 @@ private theorem val_sum {K : Type} [Field K] {Z : Scheme.{0}} [AlgebraicGeometry
 
 open GlobalTheory.LineNorm.Chart in
 /- English proof (translation)
-Introduce `E _ _ _ H X t F _ _ Y V ρ' ρ hρ W p hp v ε y z yt hT`. Take `⟨hv, -, hz, hyt⟩` from `hT`. Substitute `hv` using the available equality. Take `⟨y, hy⟩` from `y`. Simplify using `only at hz ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `hz` using the available equality. Establish `h1` using `ioOf_le_one_iff (resP v) (residueCharacteristic_mem v) ε`. Unfold `psi`. Simplify using `only`. Generalize the expression as in `ioOf (resP v) ε = io at h1 ⊢`.
+Substitute using the available equality. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Replace the chosen expression with an arbitrary variable.
 
-Set `ioO : ε.O →+* intO ℂ_[resP v]` to `(io.comp ε.O.subtype).codRestrict _ fun b => (h1 b).2 b.2`. Establish `hio : (intO ℂ_[resP v]).subtype.comp ioO = io.comp ε.O.subtype` using `rfl`. Establish `hx : spMap (intO ℂ_[resP v]).subtype ≫ (spMap ioO ≫ yt) ≫ ρ' = spMap io ≫ (z ≫ V.π) ≫ ρ`. Rewrite using `[Category.assoc, ← Category.assoc (spMap (intO ℂ_[resP v]).subtype), spMap_comp', hio, ← spMap_comp', Category.assoc, ← Category.assoc _ yt, hyt, Category.assoc, hρ, Category.assoc]`. Use `⟨spMap ioO ≫ yt, ?_, hx, fun U hU hin => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hx, ← spMap_comp', Category.assoc, ← Category.assoc _ (stalkPt _ _)]`. Conclude with `congrArg (fun q => spMap io ≫ q ≫ ρ) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk (z ≫ V.π)).symm`. Take `⟨β, hβ⟩` from `exists_ringHom hU yt hin`. Use `⟨ioO.comp β, by rw [← spMap_comp', Category.assoc, hβ], fun g e M m h f T P hC => ?_⟩` and prove the remaining obligations. Establish `hmem : V.j (below z) ∈ U`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (spMap ε.O.subtype ≫ yt) (IsLocalRing.closedPoint _) ∈ U` using `hin (Set.mem_univ _)`. Rewrite `this` using `[hyt]`. Then use the resulting hypothesis. Take `⟨α, a, hα, ha, hP⟩` from `hC _ hmem`. Take `⟨ψ, hψ⟩ : ∃ ψ : V.G.presheaf.stalk (below z) →+* ℂ_[resP v], ψ = io.comp (Scheme.stalkClosedPointTo z).hom` from `⟨_, rfl⟩`. Take `⟨hβα, hb⟩` from `chart' V.j ρ' ε.O io ioO hio z yt hyt hU β hβ e α hα a _ ha ψ hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩ : ∃ φ : Y.X.presheaf.stalk (V.π (below z)) →+* ℂ_[resP v], φ = io.comp (Scheme.stalkClosedPointTo (z ≫ V.π)).hom` from `⟨_, rfl⟩`. Establish `hφψ : ψ.comp (V.π.stalkMap (below z)).hom = φ`. Rewrite using `[hφ, hψ, Scheme.stalkClosedPointTo_comp]`. Both sides reduce to the same expression. Simplify using `only [dual_comp _ ψ, hφψ] at hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Substitute `hφ` using the available equality. Use `⟨fun i k => ψ (a i k), hb, fun N S => ?_⟩` and prove the remaining obligations. Use extensionality with `j i`. Establish `e1 : RootFrame.locM V (constM V S * P) T (V.π (below z)) j i = ∑ k, V.φ (algebraMap F Y.Fn (S j k)) * algebraMap (V.G.presheaf.stalk (below z)) V.G.functionField (∑ l, α (h k l) * a i l)`. Simplify using `only [← hP]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [RootFrame.locM, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_apply]`. Both sides reduce to the same expression. Establish `e2 : ∀ c : F, TrueGeo.valAt z (V.φ (algebraMap F Y.Fn c)) = algebraMap F (AlgebraicClosure F) c` using `fun c => by`. Rewrite using `[V.valAt_φ z (Y.regAt_algebraMap _ c)]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Res.valAt_const hy c`. Use `(congrArg (fun r => io (TrueGeo.valAt z r)) e1).trans ?_` and prove the remaining obligations. Rewrite using `[val_sum z _ (fun k => V.regAt_φ (Y.regAt_algebraMap _ _))]`. Simplify using `only [e2, covMat, Matrix.of_apply, map_sum, map_mul, ← hβα]`. Substitute `hψ` using the available equality.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.test_point_lifts_to_cover :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (F : Type) [Field F] [NumberField F] (Y : Var F) (V : Cover Y) (ρ' : V.X ⟶ X) (ρ : Y.X ⟶ X), V.j ≫ ρ' = V.π ≫ ρ → ∀ (W : Y.X.Opens) (p : ℕ) [Fact p.Prime] v e y z yt, Tst V W p v e y z yt → ∃ x : Sp ↥(intO ℂ_[p]) ⟶ V.X, spMap (intO ℂ_[p]).subtype ≫ x ≫ ρ' = spMap (psi p e y) ≫ stalkPt Y (below y.1) ≫ ρ ∧ spMap (intO ℂ_[p]).subtype ≫ x ≫ ρ' = spMap (ioOf p e) ≫ y.1 ≫ ρ ∧ ∀ (U : V.X.Opens) (hU : IsAffineOpen U), ⊤ ≤ yt ⁻¹ᵁ U → ∃ φ : Γ(V.X, U) →+* ↥(intO ℂ_[p]), spMap φ ≫ hU.fromSpec = x ∧ ∀ (g : ℕ) (ε : Fin g → (Sp (DualNumber Γ(V.X, U)) ⟶ t.G.left)) (M m : ℕ) (h : Fin M → Fin g → Γ(V.X, U)) (f : (∀ y : Y.X, Fin m → (Sp (DualNumber (Y.X.presheaf.stalk y)) ⟶ t.G.left))) (T : Y.X → Matrix (Fin m) (Fin m) Y.Fn) (P : Matrix (Fin M) (Fin m) V.G.functionField), ChartCo t V ρ' hU ε h f T P → ∃ A : Fin m → Fin g → ℂ_[p], (∀ i, IsCombAtG t (spMap (intO ℂ_[p]).subtype ≫ x ≫ ρ') (fun k => spMap (dualMap (intO ℂ_[p]).subtype) ≫ spMap (dualMap φ) ≫ ε k) (A i) (spMap (dualMap (psi p e y)) ≫ f (below y.1) i)) ∧ ∀ (N : ℕ) (S : Fin N → Fin M → F), (vals V (constM V S * P) T z (below y.1)).map (ioOf p e) = covMat (fun j k => ioOf p e (algebraMap F (AlgebraicClosure F) (S j k))) (fun j k => (φ (h j k) : ℂ_[p])) A := by

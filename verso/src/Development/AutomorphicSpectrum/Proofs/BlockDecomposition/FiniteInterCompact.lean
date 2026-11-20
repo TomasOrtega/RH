@@ -11,7 +11,7 @@ open scoped GlobalTheory.CuspRep.CuspidalL2GL
 namespace GlobalTheory.CompanionTheory.ReproBessel
 
 /- English proof (translation)
-Establish `hcl : IsClosed (Γ : Set G)` using `Subgroup.isClosed_of_discrete`. Establish `hK : IsCompact ((Γ : Set G) ∩ C)` using `hC.inter_left hcl`. Establish `hΓ : DiscreteTopology (Γ : Set G)` using `inferInstanceAs (DiscreteTopology Γ)`. Conclude with `hK.finite ⟨DiscreteTopology.of_subset hΓ Set.inter_subset_left⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_inter_compact {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     (Γ : Subgroup G) [DiscreteTopology Γ] {C : Set G} (hC : IsCompact C) : ((Γ : Set G) ∩ C).Finite := by

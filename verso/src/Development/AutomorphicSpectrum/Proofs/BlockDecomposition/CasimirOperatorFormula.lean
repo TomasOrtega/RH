@@ -17,20 +17,20 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ} {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `hc : Continuous (fun g : Mat n => g.det)` using `Continuous.matrix_det continuous_id`. Conclude with `(isOpen_compl_singleton (x := (0 : ℂ))).preimage hc`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_GLs : IsOpen (GLs n) := by
   have hc : Continuous (fun g : Mat n => g.det) := Continuous.matrix_det continuous_id
   exact (isOpen_compl_singleton (x := (0 : ℂ))).preimage hc
 
 /- English proof (translation)
-The claim follows from `((LinearMap.mulRight ℝ X).toContinuousLinearMap).contDiff`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_mul_right (X : Mat n) : ContDiff ℝ ∞ (fun g : Mat n => g * X) :=
   ((LinearMap.mulRight ℝ X).toContinuousLinearMap).contDiff
 
 /- English proof (translation)
-Establish `h1` using `hf.fderiv_of_isOpen (m := 1) isOpen_GLs (by norm_cast)`. Establish `h2 : ContDiffOn ℝ 1 (Rd X f) (GLs n)` using `h1.clm_apply ((contDiff_mul_right X).contDiffOn.of_le (by norm_cast))`. Conclude with `(h2.contDiffAt (isOpen_GLs.mem_nhds hg)).differentiableAt (by norm_num)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem differentiableAt_Rd {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (X : Mat n) {g : Mat n}
     (hg : g ∈ GLs n) : DifferentiableAt ℝ (Rd X f) g := by
@@ -40,7 +40,7 @@ theorem differentiableAt_Rd {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)
   exact (h2.contDiffAt (isOpen_GLs.mem_nhds hg)).differentiableAt (by norm_num)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `: fderiv ℝ (0 : Mat n → V) g = 0`. Simplify using `using fderiv_const_apply (𝕜 := ℝ) (x := g) (0 : V)`. Simplify using `[Rd, this]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem Rd_zero (X : Mat n) : Rd X (0 : Mat n → V) = 0 := by
   funext g
@@ -49,13 +49,13 @@ theorem Rd_zero (X : Mat n) : Rd X (0 : Mat n → V) = 0 := by
   simp [Rd, this]
 
 /- English proof (translation)
-Simplify using `[Eu, Rd_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Eu_zero (s : Bool) (a b : Fin n) : Eu s a b (0 : Mat n → V) = 0 := by
   simp [Eu, Rd_zero]
 
 /- English proof (translation)
-Simplify using `only [Epow]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `d _ hd`. Simplify using `[hd, Eu_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -68,9 +68,9 @@ theorem Epow_one (s : Bool) (c a : Fin n) (f : Mat n → V) : Epow s 1 c a f = E
   · simp
 
 /- English proof (translation)
-Establish `hsv : DifferentiableAt ℝ (σ • v) g` using `hv.const_smul σ`. Establish `h1 : fderiv ℝ ((1 / 2 : ℂ) • (u + σ • v)) g = (1 / 2 : ℂ) • fderiv ℝ (u + σ • v) g` using `fderiv_const_smul (hu.add hsv) _`. Establish `h2 : fderiv ℝ (u + σ • v) g = fderiv ℝ u g + fderiv ℝ (σ • v) g` using `fderiv_add hu hsv`. Establish `h3 : fderiv ℝ (σ • v) g = σ • fderiv ℝ v g` using `fderiv_const_smul hv _`. Use `show fderiv ℝ ((1 / 2 : ℂ) • (u + σ • v)) g (g * X) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h2, h3]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem Rd_comb (X : Mat n) (σ : ℂ) {u v : Mat n → V} {g : Mat n} (hu : DifferentiableAt ℝ u g)
     (hv : DifferentiableAt ℝ v g) :
@@ -85,7 +85,7 @@ theorem Rd_comb (X : Mat n) (σ : ℂ) {u v : Mat n → V} {g : Mat n} (hu : Dif
   rfl
 
 /- English proof (translation)
-Apply the tactic sequence `match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem comb_identity (P B C Q : V) :
     (2 : ℂ) • ((1 / 2 : ℂ) • ((1 / 2 : ℂ) • (P + (-Complex.I) • B) +
@@ -95,9 +95,9 @@ theorem comb_identity (P B C Q : V) :
   match_scalars <;> ring_nf <;> simp [Complex.I_sq] <;> ring
 
 /- English proof (translation)
-Establish `hu` using `differentiableAt_Rd hf (Matrix.single c a (1 : ℂ)) hg`. Establish `hv` using `differentiableAt_Rd hf (Matrix.single c a Complex.I) hg`. Establish `e` using `fun X : Mat n => Rd_comb X (if s then -Complex.I else Complex.I) hu hv`. Use `show ((1 / 2 : ℂ) • (Rd (Matrix.single a c 1) (Eu s c a f) + (if s then -Complex.I else Complex.I) • Rd (Matrix.single a c Complex.I) (Eu s c a f))) g = _`. Simplify using `only [Pi.smul_apply, Pi.add_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e' : ∀ X : Mat n, Rd X (Eu s c a f) g = _` using `e`. Rewrite using `[e', e']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Eu_Eu {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (a c : Fin n) {g : Mat n}
     (hg : g ∈ GLs n) :
@@ -119,13 +119,13 @@ theorem Eu_Eu {f : Mat n → V} (hf : ContDiffOn ℝ ∞ f (GLs n)) (s : Bool) (
   rw [e', e']
 
 /- English proof (translation)
-Introduce `n V _ _ f hf g hg`. Establish `hgel : ∀ s : Bool, gel s 2 f g = ∑ a, ∑ c, Eu s a c (Eu s c a f) g`. Introduce `s`. Simplify using `only [gel, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Epow s 2 a a f = ∑ c, Eu s a c (Epow s 1 c a f)` using `rfl`. Simplify using `only [h2, Finset.sum_apply, Epow_one]`. Simplify using `only [Om, Pi.smul_apply, Pi.add_apply, hgel]`. Rewrite using `[← Finset.sum_add_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Finset.sum_add_distrib, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Eu_Eu hf true a c hg, Eu_Eu hf false a c hg]`. Establish `key` using `comb_identity (V := V) (Rd (Matrix.single a c 1) (Rd (Matrix.single c a 1) f) g) (Rd (Matrix.single a c 1) (Rd (Matrix.single c a Complex.I) f) g) (Rd (Matrix.single a c Complex.I) (Rd (Matrix.single c a 1) f) g) (Rd (Matrix.single a c Complex.I) (Rd (Matrix.single c a Complex.I) …`. Simplify using `only [↓reduceIte, Bool.false_eq_true]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem omFormula : OmFormula := by
   intro n V _ _ f hf g hg

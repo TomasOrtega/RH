@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.Exists
 open NumberField IsDedekindDomain Polynomial Formalism.ConjugateSelfDual ReciprocityTheory.Gal GlobalTheory.WeilDeligne
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.WeilDeligne.exists_finset_fix_subset_of_isOpen` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FExistsFinsetFixingSubsetOpenInertiaSubgroup.lean&line=7#L7)
 -/

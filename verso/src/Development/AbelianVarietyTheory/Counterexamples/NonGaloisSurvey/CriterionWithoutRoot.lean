@@ -19,9 +19,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h` using `W.q₀_def`. Establish `h2 : (PowerSeries.X : PowerSeries O) * ∑ k ∈ Finset.range PD.p, (1 + PowerSeries.X) ^ k = (1 + PowerSeries.X) ^ PD.p - 1`. Use `mul_geom_sum (1 + (PowerSeries.X : PowerSeries O)) PD.p` as an intermediate fact. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `PowerSeries.X_mul_cancel (h.trans h2.symm)`. Simplify using `[LocWach.q, h3, letπ, Finset.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem q_eq : W.q = ∑ k ∈ Finset.range PD.p, (1 + (letπ : LetA O n)) ^ k := by
   funext i
@@ -34,7 +34,7 @@ theorem q_eq : W.q = ∑ k ∈ Finset.range PD.p, (1 + (letπ : LetA O n)) ^ k :
   simp [LocWach.q, h3, letπ, Finset.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[map_add, map_one, W.φA_π]`. Use function extensionality and compare the values at `i`. Establish `h` using `W.q₀_def`. Simplify using `only [Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.one_apply, letπ, LocWach.q, h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem φ_one_add : W.φA (1 + letπ) = (1 + (letπ : LetA O n)) ^ PD.p := by
   rw [map_add, map_one, W.φA_π]
@@ -44,7 +44,7 @@ theorem φ_one_add : W.φA (1 + letπ) = (1 + (letπ : LetA O n)) ^ PD.p := by
   ring
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ', AlgHom.mul_apply, ih, map_pow, φ_one_add, ← pow_mul, pow_succ']`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem φpow_one_add (j : ℕ) : (W.φA ^ j) (1 + letπ) = (1 + (letπ : LetA O n)) ^ (PD.p ^ j) := by
   induction j with
@@ -52,16 +52,16 @@ theorem φpow_one_add (j : ℕ) : (W.φA ^ j) (1 + letπ) = (1 + (letπ : LetA O
   | succ j ih => rw [pow_succ', AlgHom.mul_apply, ih, map_pow, φ_one_add, ← pow_mul, pow_succ']
 
 /- English proof (translation)
-Rewrite using `[LocWach.Q, q_eq, map_sum]`. Simplify using `only [map_pow, φpow_one_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Q_eq : W.Q = ∑ k ∈ Finset.range PD.p, ((1 + (letπ : LetA O n)) ^ (PD.p ^ (W.s - 1))) ^ k := by
   rw [LocWach.Q, q_eq, map_sum]
   simp only [map_pow, φpow_one_add]
 
 /- English proof (translation)
-Take `⟨E, hE, -, h⟩` from `W.lev_π i ζ hζ`. Rewrite using `[Q_eq]`. Simplify using `only [map_sum, map_pow, map_add, map_one]`. Establish `: 1 + PowerSeries.constantCoeff (W.lev i ζ letπ) = ζ`. Use `congrArg PowerSeries.constantCoeff h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[hE]`. Rewrite using `[this]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem value_Q (i : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     PowerSeries.constantCoeff (W.lev i ζ W.Q) =
@@ -76,7 +76,7 @@ theorem value_Q (i : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (P
 
 include W in
 /- English proof (translation)
-Introduce `h`. Use `W.v_l` as an intermediate fact. Rewrite `this` using `[h, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_ne_zero : ((PD.p : ℕ) : LL) ≠ 0 := by
   intro h
@@ -85,17 +85,17 @@ theorem p_ne_zero : ((PD.p : ℕ) : LL) ≠ 0 := by
   exact WithTop.top_ne_one this
 
 /- English proof (translation)
-Use `haveI : Fact PD.p.Prime := ⟨PD.hp⟩`. Establish `hs : W.s = W.s - 1 + 1` using `by have := W.s_pos; omega`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hc, ⟨m, hm⟩, h0⟩`. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hprim : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)`. Take `⟨j, -, hj⟩` from `(Nat.dvd_prime_pow PD.hp).1 (orderOf_dvd_of_pow_eq_one hm)`. Conclude with `⟨j, hj ▸ IsPrimitiveRoot.orderOf ζ⟩`. Rewrite `h0` using `[value_Q W i ζ hprim]`. Establish `h1 : ¬ ζ ^ PD.p ^ (W.s - 1) = 1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `h0` using `[h]`. Apply `p_ne_zero W` to reduce the goal to its premises. Simplify using `using h0`. Establish `h2 : ζ ^ PD.p ^ (W.s - 1 + 1) = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `geom_sum_mul (ζ ^ PD.p ^ (W.s - 1)) PD.p` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Rewrite using `[pow_succ, pow_mul]`. Conclude with `(sub_eq_zero.1 this.symm)`. Use `orderOf_eq_prime_pow h1 h2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hs, ← this]`. Conclude with `IsPrimitiveRoot.orderOf ζ`. Introduce and unpack `⟨hc, hp⟩`. Use `⟨hc, ⟨W.s, hp.pow_eq_one⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[value_Q W i ζ ⟨_, hp⟩]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ζ ^ PD.p ^ (W.s - 1) ≠ 1` using `hp.pow_ne_one_of_pos_of_lt (pow_pos PD.hp.pos _).ne' (Nat.pow_lt_pow_right PD.hp.one_lt (by omega))`. Use `geom_sum_mul (ζ ^ PD.p ^ (W.s - 1)) PD.p` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_succ, ← hs, hp.pow_eq_one, sub_self]`. Conclude with `(mul_eq_zero.1 this).resolve_right (sub_ne_zero.2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem qRoot_iff (i : ZMod n) (ζ : LL) :
     QRoot W i ζ ↔ (∃ c : O, algebraMap O LL c = ζ) ∧ IsPrimitiveRoot ζ (PD.p ^ W.s) := by

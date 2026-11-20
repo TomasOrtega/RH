@@ -17,9 +17,9 @@ namespace GlobalTheory.DualKernel
 variable {S : Scheme.{0}} {A B : Over S} [GrpObj A] [GrpObj B]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e` using `congrArg (CechPic.pull (lift (snd B T) (fst B T)).left) h`. Rewrite `e` using `[pull_evc, map_zero, lift_fst_assoc, lift_snd]`. Then use the resulting hypothesis. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e` using `congrArg (CechPic.pull (lift (snd T B) (fst T B)).left) h`. Rewrite `e` using `[pull_evc, map_zero, lift_snd_assoc, lift_fst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evc_ker_iff {P : LB (A ⊗ B).left} (hP : P.IsLB) {T : Over S} (x : T ⟶ A) :
     evc hP (fst T B ≫ x) (snd T B) = 0 ↔ evc hP (snd B T ≫ x) (fst B T) = 0 := by
@@ -32,7 +32,7 @@ theorem evc_ker_iff {P : LB (A ⊗ B).left} (hP : P.IsLB) {T : Over S} (x : T �
     rwa [pull_evc, map_zero, lift_snd_assoc, lift_fst] at e
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_mul, (isAdditive_iff hP).1 hA, hx, hy, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evc_ker_mul {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) {T : Over S} (x y : T ⟶ A)
     (hx : evc hP (fst T B ≫ x) (snd T B) = 0) (hy : evc hP (fst T B ≫ y) (snd T B) = 0) :
@@ -40,7 +40,7 @@ theorem evc_ker_mul {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) {T
   rw [MonObj.comp_mul, (isAdditive_iff hP).1 hA, hx, hy, add_zero]
 
 /- English proof (translation)
-Rewrite using `[MonObj.comp_one]`. Conclude with `hA.evc_one hP _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_ker_one {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) (T : Over S) :
     evc hP (fst T B ≫ (1 : T ⟶ A)) (snd T B) = 0 := by
@@ -48,7 +48,7 @@ theorem evc_ker_one {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) (T
   exact hA.evc_one hP _
 
 /- English proof (translation)
-Establish `e` using `evc_ker_one hP hA T`. Rewrite `e` using `[← mul_inv_cancel x, MonObj.comp_mul, (isAdditive_iff hP).1 hA, hx, zero_add]`. Conclude with `e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evc_ker_inv {P : LB (A ⊗ B).left} (hP : P.IsLB) (hA : IsAdditive P) {T : Over S} (x : T ⟶ A)
     (hx : evc hP (fst T B ≫ x) (snd T B) = 0) : evc hP (fst T B ≫ x⁻¹) (snd T B) = 0 := by
@@ -61,17 +61,15 @@ end GlobalTheory.DualKernel
 namespace GlobalTheory.DualKernel
 
 /- English proof (translation)
-Introduce `K _ _ A B _ _ P hA hB hD`. Establish `hP` using `hD.isLB`. Establish `hs : (swap P).IsLB` using `pull_isLB hP _`. Establish `ht : (LB.triv (B ⊗ A).left).IsLB` using `LB.isLB_triv _`. Establish `h0 : ∀ (Y : Over (Sp K)) (b : Y ⟶ B) (a : Y ⟶ A), evc ht b a = 0` using `fun _ _ _ ↦ map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : Fam B (swap P)` using `⟨hs, isDual_isAdditive_swap _ A B P hB hD⟩`. Establish `hN' : Fam B (LB.triv (B ⊗ A).left)` using `⟨ht, (isAdditive_iff ht).2 fun _ _ _ _ ↦ by simp only [h0, add_zero]⟩`. Use `haveI := hA.smooth`. Use `haveI : IsLocallyNoetherian A.left := LocallyOfFiniteType.isLocallyNoetherian A.hom`. Take `⟨N, i, hi, hG⟩` from `GlobalTheory.DualLocus.exists_closed_same (Sp K) B A hB (swap P) _ hN hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ (T : Over (Sp K)) (x : T ⟶ A), evc hP (fst T B ≫ x) (snd T B) = 0 ↔ ∃ z : T ⟶ N, z ≫ i = x` using `fun T x ↦ by`. Rewrite using `[← hG, same_iff hs ht, h0, evc_swap hP hs, evc_ker_iff]`. Establish `hK : ∀ (T : Over (Sp K)) (z : T ⟶ N), evc hP (fst T B ≫ z ≫ i) (snd T B) = 0` using `fun T z ↦ (key T _).2 ⟨z, rfl⟩`. Use `haveI : Mono i.left := inferInstance`. Use `haveI : Mono i := Over.mono_of_mono_left i`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hl : ∀ {T : Over (Sp K)} (x : T ⟶ A), evc hP (fst T B ≫ x) (snd T B) = 0 → ∃ z : T ⟶ N, z ≫ i = x` using `fun x h ↦ (key _ x).1 h`. Take `⟨o, ho⟩` from `hl (η[A] : 𝟙_ (Over (Sp K)) ⟶ A) (by`. Establish `e` using `evc_ker_one hP hD.additive (𝟙_ (Over (Sp K)))`. Rewrite using `[Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp] at e)` and apply the resulting hypothesis. Take `⟨m, hm⟩` from `hl ((i ⊗ₘ i) ≫ μ[A]) (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `evc_ker_mul hP hD.additive (fst N N ≫ i) (snd N N ≫ i) (hK _ _) (hK _ _)`. Rewrite using `[Hom.mul_def, ← lift_map_assoc, lift_fst_snd, Category.id_comp] at e)` and apply the resulting hypothesis. Take `⟨n, hn⟩` from `hl (i ≫ GrpObj.inv) (by`. Establish `e` using `evc_ker_inv hP hD.additive i (by simpa using hK N (𝟙 N))`. Rewrite using `[Hom.inv_def] at e)` and apply the resulting hypothesis.
-
-Take `⟨g, hg⟩` from `GlobalTheory.exists_grpObj_of_mono i o m n ho hm hn`. Use `⟨N, g, i, hg, hi, (triv_ev_iff hP _ _).2 (by simpa using hK N (𝟙 N)), fun T x hx ↦ ?_⟩` and prove the remaining obligations. Conclude with `(key T x).1 ((triv_ev_iff hP _ _).1 hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_closed_subgroup_ker : ∀ (K : Type) [Field K] [IsAlgClosed K] (A B : Over (Sp K)) [GrpObj A] [GrpObj B]
     (P : LB (A ⊗ B).left), IsAbelianScheme A → IsAbelianScheme B → IsDual A B P →

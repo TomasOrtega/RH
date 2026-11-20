@@ -6,21 +6,19 @@ open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta
 namespace UpperTheory.Lit.Bur.UnipRadConj
 
 /- English proof (translation)
-Introduce `n r J G Q Qi e e' h1 h2 hg he u hu`. Take `⟨hu1, hu2, hu3⟩` from `hu`. Establish `hu1' : uᴴ * G * u = G` using `hu1`. Establish `hw1 : Q * u * Qi - 1 = Q * (u - 1) * Qi`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : ∀ i : Fin r, (fun k => e k i) = Q *ᵥ fun k => e' k i`. Introduce `i`. Rewrite using `[← he]`. Use function extensionality and compare the values at `k`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (Q * u * Qi)ᴴ * J * (Q * u * Qi) = J`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = Qiᴴ * G * Qi := by rw [hg, hu1']`. Use `_ = (Q * Qi)ᴴ * J * (Q * Qi) := by`. Rewrite using `[← hg, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = J := by rw [h1]; simp`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `i`. Take `⟨a, ha0, ha⟩` from `hu2 i`. Use `⟨a, ha0, ?_⟩` and prove the remaining obligations. Establish `hq : Q * (u - 1) * Qi * Q = Q * (u - 1)` using `by rw [Matrix.mul_assoc, h2, Matrix.mul_one]`. Rewrite using `[hw1, hcol i, Matrix.mulVec_mulVec, hq, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, he]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Establish `hy : (e'ᴴ * G) *ᵥ (Qi *ᵥ x) = 0`. Establish `hm : e'ᴴ * (Qᴴ * J * Q) * Qi = eᴴ * J`. Rewrite using `[← he, Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, Matrix.mul_one]`. Rewrite using `[Matrix.mulVec_mulVec, ← hg, hm]`. Conclude with `hx`. Take `⟨a, ha⟩` from `hu3 _ hy`. Use `⟨a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hw1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_mulVec, he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unipRad : ∀ {n r : ℕ} {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} {e e' : Matrix (Fin n) (Fin r) ℂ}
     (h1 : Q * Qi = 1) (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = G) (he : Q * e' = e)
@@ -63,7 +61,7 @@ end UpperTheory.Lit.Bur.UnipRadConj
 open Matrix GlobalTheory.RealBessel GlobalTheory.BesselMapOne Formalism.L2.Theta GlobalTheory.SmVec
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad | exact UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad | (intros; apply UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.UpperTheory.Lit.Bur.isometry_conj_maps_unipotentRadical : ∀ {n r : ℕ} {J G Q Qi : Matrix (Fin n) (Fin n) ℂ} {e e' : Matrix (Fin n) (Fin r) ℂ} (h1 : Q * Qi = 1) (h2 : Qi * Q = 1) (hg : Qᴴ * J * Q = G) (he : Q * e' = e) {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ unipRad G e'), Q * u * Qi ∈ unipRad J e := by
   first | exact @UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad | exact UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad | (intros; apply UpperTheory.Lit.Bur.UnipRadConj.conj_mem_unipRad <;> assumption)

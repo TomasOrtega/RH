@@ -37,15 +37,13 @@ section Deriv
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Set `skL : (UCo N × TriCo N) →L[ℝ] Matrix (Fin N) (Fin N) ℂ` to `LinearMap.toContinuousLinearMap skML`. Set `upL : (UCo N × TriCo N) →L[ℝ] Matrix (Fin N) (Fin N) ℂ` to `LinearMap.toContinuousLinearMap upML`. Set `ofL : Matrix (Fin N) (Fin N) ℂ →L[ℝ] (Fin N → Fin N → ℂ)` to `LinearMap.toContinuousLinearMap (Matrix.ofLinearEquiv ℝ).symm.toLinearMap`. Establish `hsk0 : skL 0 = 0` using `map_zero _`. Establish `hup0 : upL 0 = 0` using `map_zero _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasStrictFDerivAt (fun p : UCo N × TriCo N => NormedSpace.exp (skL p)) ((1 : Matrix (Fin N) (Fin N) ℂ →L[ℝ] Matrix (Fin N) (Fin N) ℂ).comp skL) 0`. Establish `he` using `hasStrictFDerivAt_exp_zero (𝕂 := ℝ) (𝔸 := Matrix (Fin N) (Fin N) ℂ)`. Rewrite `he` using `[← hsk0]`. Conclude with `he.comp 0 skL.hasStrictFDerivAt`. Establish `h2 : HasStrictFDerivAt (fun p : UCo N × TriCo N => 1 + upL p) upL 0` using `upL.hasStrictFDerivAt.const_add 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h1.mul' h2`. Establish `h4` using `ofL.hasStrictFDerivAt.comp 0 h3`. Establish `hF : (fun x => ofL (((fun p => NormedSpace.exp (skL p)) * fun p => 1 + upL p) x)) = chartWR`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hD : ofL.comp (NormedSpace.exp (skL 0) • upL + MulOpposite.op (1 + upL 0) • (1 : Matrix (Fin N) (Fin N) ℂ →L[ℝ] Matrix (Fin N) (Fin N) ℂ).comp skL) = ((lamE : (UCo N × TriCo N) ≃L[ℝ] (Fin N → Fin N → ℂ)) : (UCo N × TriCo N) →L[ℝ] (Fin N → Fin N → ℂ))`. Use `ContinuousLinearMap.ext fun p => ?_` and prove the remaining obligations. Rewrite using `[hsk0, hup0, NormedSpace.exp_zero]`. Simplify using the standard rewrite rules. Conclude with `(add_comm _ _).trans rfl`.
-
-Rewrite `h4` using `[hF]`. Conclude with `h4.congr_fderiv hD`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartWR_strict :
     HasStrictFDerivAt (chartWR (N := N))

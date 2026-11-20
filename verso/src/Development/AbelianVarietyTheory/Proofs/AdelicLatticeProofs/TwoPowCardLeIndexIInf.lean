@@ -7,17 +7,15 @@ open scoped WithZero
 namespace GlobalTheory.QNorm
 
 /- English proof (translation)
-Introduce `G ι _ _ K h hidx`. Use `choose x hx hx' using h`. Establish `key : ∀ (A : Finset ι) (j : ι), (∏ i ∈ A, x i) ∈ K j ↔ j ∉ A`. Introduce `A j`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm hj`. Rewrite `hm` using `[← Finset.mul_prod_erase A x hj]`. Establish `h2 : (∏ i ∈ A.erase j, x i) ∈ K j` using `Subgroup.prod_mem _ fun i hi => hx' i j (Finset.ne_of_mem_erase hi).symm`. Conclude with `hx j ((Subgroup.mul_mem_cancel_right _ h2).1 hm)`. Introduce `hj`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subgroup.prod_mem _ fun i hi => hx' i j (fun e => hj (e ▸ hi))`. Use `haveI : Finite (G ⧸ ⨅ i, K i) := Nat.finite_of_card_ne_zero hidx`. Establish `inj : Function.Injective (fun A : Finset ι => ((∏ i ∈ A, x i : G) : G ⧸ ⨅ i, K i))`. Introduce `A B hAB`. Establish `hm : (∏ i ∈ A, x i)⁻¹ * (∏ i ∈ B, x i) ∈ ⨅ i, K i` using `QuotientGroup.eq.1 hAB`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `j`. Establish `hj : (∏ i ∈ A, x i)⁻¹ * (∏ i ∈ B, x i) ∈ K j` using `(Subgroup.mem_iInf.1 hm) j`. Establish `hiff : (∏ i ∈ A, x i) ∈ K j ↔ (∏ i ∈ B, x i) ∈ K j`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `(Subgroup.mul_mem_cancel_left _ (inv_mem ha)).1 hj`. Introduce `hb`. Conclude with `inv_mem_iff.1 ((Subgroup.mul_mem_cancel_right _ hb).1 hj)`. Rewrite `hiff` using `[key, key]`. Conclude with `not_iff_not.1 hiff`.
-
-Use `Nat.card_le_card_of_injective _ inj` as an intermediate fact. Rewrite `this` using `[Nat.card_eq_fintype_card, Fintype.card_finset]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem two_pow_card_le_index_iInf :
     ∀ (G ι : Type) [CommGroup G] [Fintype ι] (K : ι → Subgroup G),

@@ -10,9 +10,9 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgQuot
 
 /- English proof (translation)
-Establish `hH : IsUnit (Formalism.QuantumDeterminants.Hpk k r).det`. Establish `h` using `congrArg Matrix.det (Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `⟨⟨_, _, h, (mul_comm _ _).trans h⟩, rfl⟩`. Take `⟨h1, hmul, hinv⟩` from `Formalism.QuantumDeterminants.uHGroup _ _ hH`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, h1, hmul, fun a ha => ⟨(hinv a ha).2, Matrix.mul_nonsing_inv a (hinv a ha).1⟩⟩` and prove the remaining obligations. Use `show IsClosed {g : Mat k r | gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r}`. Conclude with `isClosed_eq ((continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMatGroup_GG (k r : ℕ) : PI.IsMatGroup (GG k r) := by
 
@@ -28,7 +28,7 @@ theorem isMatGroup_GG (k r : ℕ) : PI.IsMatGroup (GG k r) := by
     continuous_id) continuous_const
 
 /- English proof (translation)
-Introduce `k r S μG μS hS hG hSμ hU`. Take `⟨hSG, hcl, h1, hmul, hinv⟩` from `hS`. Establish `hSm : PI.IsMatGroup S` using `⟨hcl, h1, hmul, fun a ha => ⟨hinv a ha, ((isMatGroup_GG k r).2.2.2 a (hSG ha)).2⟩⟩`. Conclude with `GlobalTheory.QuotWeil.exists_isQuotM (2 * r + k + 1) (GG k r) S μG μS (isMatGroup_GG k r) hSm hSG hG hSμ hU.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isQuotMeas : ∀ (k r : ℕ) (S : Set (Mat k r)) (μG μS : Measure (Mt k r)), IsClosedSub k r S →
     IsHaarOn (GG k r) μG → IsHaarOn S μS → IsUnimod S μS → ∃ ν : Measure (Mt k r), IsQuotMeas μG μS ν := by

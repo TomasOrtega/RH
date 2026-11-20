@@ -3,9 +3,9 @@ import Mathlib
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `V X T v p hp hv hf hl`. Establish `hv' : FormallyUnramified v` using `inferInstance`. Establish `hu : FormallyUnramified (v ≫ p)` using `MorphismProperty.comp_mem @FormallyUnramified v p hv' inferInstance`. Establish `he : Etale (v ≫ p)` using `Etale.of_formallyUnramified_of_flat (v ≫ p)`. Establish `hev : Etale v` using `Etale.of_comp v p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `IsOpenImmersion.of_flat_of_mono v`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.isOpenImmersion_of_closedImmersion_flat_etale :
     ∀ {V X T : Scheme.{0}} (v : V ⟶ X) (p : X ⟶ T), Etale p → IsClosedImmersion v → Flat (v ≫ p) → LocallyOfFinitePresentation (v ≫ p) → IsOpenImmersion v := by

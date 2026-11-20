@@ -9,29 +9,25 @@ open scoped Matrix NNReal
 namespace GlobalTheory.RecOne
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ A hA x`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Establish `hl : l.Prime` using `Fact.out`. Use `haveI : NeZero l := ⟨hl.ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI hE : ∀ i, HasEnoughRootsOfUnity Ω (l ^ i) := fun i => inferInstance`. Prove the components needed by the constructor for the conclusion. Introduce `hx s hs`. Take `⟨hsI, hsZ⟩` from `mem_ineCyc.1 hs`. Proceed by induction on `hx using Algebra.adjoin_induction with`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `mem z hz`. Take `⟨n, hn⟩` from `hz`. Use `GlobalTheory.Col.fix_of_cycMod (l := l) (le_refl n) ?_ ?_` and prove the remaining obligations. Simplify using `[cycMod, hsZ]`. Conclude with `congrArg (fun a : A => (a : Ω)) hn` after adjusting the coercions.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `algebraMap r => exact r.2 s hsI`. Consider the case `add a b _ _ ha hb => show s ((a : Ω) + (b : Ω)) = (a : Ω) + (b : Ω)`. Rewrite using `[map_add, ha, hb]`. Consider the case `mul a b _ _ ha hb => show s ((a : Ω) * (b : Ω)) = (a : Ω) * (b : Ω)`. Rewrite using `[map_mul, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx`. Establish `hv : A.valuation (l : Ω) < 1`. Take `⟨v, hv, hl⟩` from `hA`. Establish `h1` using `(hv ((l : ℕ) : 𝓞 ℚ)).2 hl`. Simplify using `using h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `GlobalTheory.fixed_cycMod_of_fixed_cycZ l Ω A hv ∅ (x : Ω) (fun s hs _ hz => hx s (mem_ineCyc.2 ⟨hs, hz⟩))`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ m)`. Establish `hpos : 0 < l ^ m` using `pow_pos hl.pos m`. Use `haveI : NeZero (l ^ m) := ⟨hpos.ne'⟩`. Establish `hfix : ∀ s ∈ Ine (F` using `ℚ) A, s ζ = ζ → s (x : Ω) = x := by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `s hs hsζ`. Use `hm s ⟨hs, by simp, ?_⟩` and prove the remaining obligations. Establish `h1` using `cyclotomicCharacter.spec (L := Ω) l (MulSemiringAction.toRingAut (G ℚ Ω) Ω s) ζ hζ.pow_eq_one`. Establish `h2 : ζ ^ (PadicInt.toZModPow m ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])).val = ζ ^ 1`. Rewrite using `[pow_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm.trans hsζ`. Establish `h3` using `(pow_eq_pow_iff_modEq (G := Ωˣ) (x := (hζ.isUnit hpos.ne').unit) (n := (PadicInt.toZModPow m ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l])).val) (m := 1)).1 (by`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `using h2)`. Establish `h4 : orderOf (hζ.isUnit hpos.ne').unit = l ^ m`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← orderOf_units, IsUnit.unit_spec]`. Conclude with `hζ.eq_orderOf.symm`. Rewrite `h3` using `[h4, ← ZMod.natCast_eq_natCast_iff, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `Units.ext h3`. Take `⟨Q, hQ, hQe⟩` from `GlobalTheory.T.exists_polynomial_in_primitiveRoot_of_inertia_fixed l Ω A hA m ζ hζ (x : Ω) x.2 hfix`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hζA : ζ ∈ A` using `mem_of_pow_mem A hpos.ne' (by rw [hζ.pow_eq_one]; exact A.one_mem)`. Establish `hζc : (⟨ζ, hζA⟩ : A) ∈ cycAlg l A` using `mem_cycAlg_of_pow (n := m) (Subtype.ext (by simpa using hζ.pow_eq_one))`. Establish `e : x = ∑ d ∈ Finset.range (Q.natDegree + 1), (⟨Q.coeff d, (hQ d).1⟩ : A) * (⟨ζ, hζA⟩ : A) ^ d`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hQe, Polynomial.eval_eq_sum_range]`.
-
-Use `Eq.trans ?_ (map_sum A.subtype _ _).symm` and prove the remaining obligations. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `Subalgebra.sum_mem _ fun d _ => Subalgebra.mul_mem _ ?_ (Subalgebra.pow_mem _ hζc d)` and prove the remaining obligations.
-
-Conclude with `(cycAlg l A).algebraMap_mem (⟨⟨Q.coeff d, (hQ d).1⟩, (hQ d).2⟩ : fixA A)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_cycAlg_iff : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (A : ValuationSubring Ω), OverL l A → ∀ x : A, x ∈ cycAlg l A ↔ ∀ s ∈ ineCyc l A, s (x : Ω) = x := by
   intro l _ Ω _ _ _ A hA x

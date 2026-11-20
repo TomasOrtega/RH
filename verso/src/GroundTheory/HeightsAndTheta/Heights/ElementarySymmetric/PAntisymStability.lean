@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-The claim follows from `|coeff m p| ≤ ∑ m' ∈ p.support, |coeff m' p| := by by_cases hm : m ∈ p.support · exact Finset.single_le_sum (f := fun m' => |coeff m' p|) (fun _ _ => abs_nonneg _) hm · rw [notMem_support_iff.1 hm, abs_zero] exact Finset.sum_nonneg (fun _ _ => abs_nonneg _)`.
+A detailed English derivation is pending.
 -/
 lemma abs_coeff_le_sum_abs_coeff {σ : Type*} (p : MvPolynomial σ ℝ) (m : σ →₀ ℕ) :
     |coeff m p| ≤ ∑ m' ∈ p.support, |coeff m' p| := by
@@ -32,11 +32,11 @@ lemma abs_coeff_le_sum_abs_coeff {σ : Type*} (p : MvPolynomial σ ℝ) (m : σ 
     exact Finset.sum_nonneg (fun _ _ => abs_nonneg _)
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ E`. Set `c : Fin (Module.finrank ℝ E) → (E →L[ℝ] ℝ)` to `fun i => LinearMap.toContinuousLinearMap (b.coord i)`. Use `⟨∑ i, ‖c i‖ * ∑ m' ∈ (G (b i)).support, |coeff m' (G (b i))|, Finset.sum_nonneg fun i _ => mul_nonneg (norm_nonneg _) (Finset.sum_nonneg fun _ _ => abs_nonneg _), fun y m => ?_⟩` and prove the remaining obligations. Establish `hy : G y = ∑ i, b.repr y i • G (b i)` using `by conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[map_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul]`. Rewrite using `[hy, coeff_sum, Finset.sum_mul]`. Use `(Finset.abs_sum_le_sum_abs _ _).trans (Finset.sum_le_sum fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[coeff_smul, smul_eq_mul, abs_mul]`. Establish `h1 : |b.repr y i| ≤ ‖c i‖ * ‖y‖`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(c i).le_opNorm y` as an intermediate fact. Simplify `this` using `[c, Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 lemma exists_uniform_coeff_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] {σ : Type*} (G : E →ₗ[ℝ] MvPolynomial σ ℝ) :
@@ -63,21 +63,21 @@ lemma exists_uniform_coeff_bound {E : Type*} [NormedAddCommGroup E] [NormedSpace
     _ = ‖c i‖ * (∑ m' ∈ (G (b i)).support, |coeff m' (G (b i))|) * ‖y‖ := by ring
 
 /- English proof (translation)
-Introduce `T _ _ N j Om hOm`. Use `set Ω : Set (T × Fin N → ℝ) := ⋃ (τ : T) (a : Fin N) (b : Fin N) (_ : a.val < j ∧ j ≤ b.val), Om τ a b with hΩdef`. Establish `hΩc : IsCompact Ω` using `isCompact_iUnion fun τ => isCompact_iUnion fun a => isCompact_iUnion fun b => isCompact_iUnion fun h => (hOm τ a b h.1 h.2).1`. Establish `: CompactSpace Ω` using `isCompact_iff_compactSpace.mp hΩc`. Establish `: FiniteDimensional ℝ (homogeneousSubmodule (T × Fin N) ℝ (antisymDegree T N + 1))` using `Module.Finite.iff_fg.mpr (homogeneousSubmodule_fg _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: FiniteDimensional ℝ (antisymSpace T N j)` using `Submodule.finiteDimensional_of_le (fun P hP => hP.1)`. Set `Φ : antisymSpace T N j →ₗ[ℝ] C(Ω, ℝ)` to `(antisymEvalOn Ω).comp (antisymSpace T N j).subtype`. Take `⟨g, hg⟩` from `Φ.rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict Φ)`. Take `⟨C, hC0, hC⟩` from `exists_uniform_coeff_bound (E := LinearMap.range Φ) ((antisymSpace T N j).subtype.comp g)`. Use `⟨C, fun P hP => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `P' : antisymSpace T N j` to `⟨P, hP⟩`. Set `y` to `Φ.rangeRestrict P'`. Set `Q : antisymSpace T N j` to `g y`. Establish `hQ : Φ Q = Φ P'`. Establish `h1 : Φ.rangeRestrict Q = y` using `LinearMap.congr_fun hg y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val h1`. Establish `hker : Φ (P' - Q) = 0` using `by rw [map_sub, hQ, sub_self]`. Establish `hvan : ∀ x ∈ Ω, eval x ((P' - Q : antisymSpace T N j) : MvPolynomial (T × Fin N) ℝ) = 0`. Introduce `x hx`. Use `congrArg (fun f : C(Ω, ℝ) => f ⟨x, hx⟩) hker` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[Φ]`. Take `⟨l, hl, hPl⟩` from `hB1 T N j _ (P' - Q).2 (fun τ a b ha hb => by`. Take `⟨_, _, O, hO, hne, hOsub⟩` from `hOm τ a b ha hb`. Use `⟨O, hO, hne, fun x hx => hvan x ?_⟩` and prove the remaining obligations. Conclude with `Set.mem_iUnion.2 ⟨τ, Set.mem_iUnion.2 ⟨a, Set.mem_iUnion.2 ⟨b, Set.mem_iUnion.2 ⟨⟨ha, hb⟩, hOsub hx⟩⟩⟩⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨l, hl, fun M hM hbd m => ?_⟩` and prove the remaining obligations. Establish `hPQ : P - antisymDelta T N * l = (Q : MvPolynomial (T × Fin N) ℝ)`. Rewrite using `[← hPl, Submodule.coe_sub]`. Simplify using `[P']`. Rewrite using `[hPQ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : ‖y‖ ≤ M`. Establish `e : ‖y‖ = ‖Φ P'‖` using `rfl`. Rewrite using `[e, ContinuousMap.norm_le _ hM]`. Introduce and unpack `⟨x, hx⟩`. Establish `hx'` using `hx`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [hΩdef, Set.mem_iUnion] at hx'`. Take `⟨τ, a, b, ⟨ha, hb⟩, hxO⟩` from `hx'`. Simplify `hbd τ a b ha hb x hxO` using `[Φ, P', Real.norm_eq_abs]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem AntisymStability.proof (hB1 : AntisymDivisible.Statement) : AntisymStability.Statement := by
   intro T _ _ N j Om hOm

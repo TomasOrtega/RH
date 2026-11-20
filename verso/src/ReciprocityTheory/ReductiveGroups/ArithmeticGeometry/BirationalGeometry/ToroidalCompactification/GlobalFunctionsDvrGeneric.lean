@@ -13,7 +13,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Geo.Tor.GlobalFunctionsDvrGeneric
 open ReciprocityTheory.ChartRestriction.G.Out
 
 /- English proof (translation)
-The claim follows from `| 0 => ⟨by show Smooth (𝟙 S); infer_instance, by show IsSeparated (𝟙 S); infer_instance, by show QuasiCompact (𝟙 S); infer_instance⟩ | n + 1 => by obtain ⟨h1, h2, h3⟩ := powObj_props G n refine ⟨?_, ?_, ?_⟩ · show Smooth (G ⊗ powObj G n).hom rw [Over.tensorObj_hom, pullback.condi …`.
+A detailed English derivation is pending.
 -/
 theorem powObj_props {S : Scheme.{0}} (G : Over S) [Smooth G.hom] [IsSeparated G.hom] [QuasiCompact G.hom] :
     ∀ n : ℕ, Smooth (powObj G n).hom ∧ IsSeparated (powObj G n).hom ∧ QuasiCompact (powObj G n).hom
@@ -35,9 +35,9 @@ theorem powObj_props {S : Scheme.{0}} (G : Over S) [Smooth G.hom] [IsSeparated G
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Establish `h` using `AlgebraicGeometry.Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V)))`. Establish `h2` using `congrArg (fun g => g.hom v) h`. Use `first`. Consider the case `exact h2.symm`. Consider the case `simp`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem appTop_spMap (v : V) :
     (spMap (algebraMap V (FractionRing V))).appTop ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v) =
@@ -50,25 +50,23 @@ theorem appTop_spMap (v : V) :
   | simpa using h2.symm
 
 /- English proof (translation)
-Establish `hψ : Function.Injective (pullback.fst A.hom (spMap (algebraMap V (FractionRing V)))).appTop` using `GlobalFunctionsDvrOpen.appTop_fst_injective A.hom`. Establish `hκ : Function.Bijective (pullback.snd A.hom (spMap (algebraMap V (FractionRing V)))).appTop` using `hK`. Establish `he : (η[A]).left ≫ A.hom = 𝟙 _` using `Over.w (η[A])`. Establish `h1 : A.hom.appTop ≫ (η[A]).left.appTop = 𝟙 _`. Rewrite using `[← Scheme.Hom.comp_appTop, he, Scheme.Hom.id_appTop]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hret : ∀ y, (η[A]).left.appTop (A.hom.appTop y) = y` using `fun y => by`. Use `congrArg (fun φ => φ y) h1` as an intermediate fact. Simplify `this` using `only [CategoryTheory.comp_apply, CategoryTheory.id_apply]`. Establish `hcomm : ∀ y, (pullback.fst A.hom (spMap (algebraMap V (FractionRing V)))).appTop (A.hom.appTop y) = (pullback.snd A.hom (spMap (algebraMap V (FractionRing V)))).appTop ((spMap (algebraMap V (FractionRing V))).appTop y)` using `fun y => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg Scheme.Hom.appTop (pullback.condition (f := A.hom) (g := spMap (algebraMap V (FractionRing V))))`. Rewrite `h` using `[Scheme.Hom.comp_appTop, Scheme.Hom.comp_appTop]`. Use `congrArg (fun φ => φ y) h` as an intermediate fact. Simplify `this` using `only [CategoryTheory.comp_apply]`. Establish `hinj : Function.Injective A.hom.appTop` using `fun a b hab => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hret a, ← hret b, hab]`. Use `⟨hinj, fun a => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hκ.2 ((pullback.fst A.hom (spMap (algebraMap V (FractionRing V)))).appTop a)`. Use `set c' : FractionRing V := (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).hom c with hc'`. Establish `hcc : c = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv c'` using `by rw [hc', Iso.hom_inv_id_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ∃ v : V, algebraMap V (FractionRing V) v = c'`. Take `⟨v, hv⟩` from `h`. Use `⟨(Scheme.ΓSpecIso (CommRingCat.of V)).inv v, hψ ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm, appTop_spMap, hv, ← hcc, hc]`. It suffices to derive a contradiction.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `hc0 : c' ≠ 0` using `fun h0 => h ⟨0, by rw [map_zero, h0]⟩`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v : V, algebraMap V (FractionRing V) v = c'⁻¹ := by`. Break down `ValuationRing.isInteger_or_isInteger V c' with h' | h'` into its components or cases. Conclude with `absurd h' h`. Conclude with `h'`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hvu : ¬ IsUnit v`. Introduce and unpack `⟨u, rfl⟩`. Apply `h` to reduce the goal to its premises. Use `⟨↑u⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← inv_inv c', ← hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(eq_inv_of_mul_eq_one_left ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, Units.inv_mul, map_one]`. Establish `hone : a * A.hom.appTop ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v) = 1`. Apply `hψ` to reduce the goal to its premises. Rewrite using `[map_mul, map_one, hcomm, appTop_spMap, hv, ← hc, hcc, ← map_mul, ← map_mul, mul_inv_cancel₀ hc0, map_one, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (A.hom.appTop ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v))` using `⟨⟨_, a, (mul_comm _ _).trans hone, hone⟩, rfl⟩`. Establish `hu2 : IsUnit ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v)`. Use `hu.map ((η[A]).left.appTop.hom)` as an intermediate fact. Rewrite `this` using `[show (η[A]).left.appTop.hom (A.hom.appTop ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v)) = (Scheme.ΓSpecIso (CommRingCat.of V)).inv v from hret _]`. Then use the resulting hypothesis. Apply `hvu` to reduce the goal to its premises.
-
-Use `hu2.map (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom` as an intermediate fact. Rewrite `this` using `[show (Scheme.ΓSpecIso (CommRingCat.of V)).hom.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv v) = v from Iso.inv_hom_id_apply (Scheme.ΓSpecIso (CommRingCat.of V)) v]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem bij_of_generic (A : Over (Sp V)) [GrpObj A] [Flat A.hom] [QuasiCompact A.hom] [QuasiSeparated A.hom]
     (hK : Function.Bijective ((Over.pullback (spMap (algebraMap V (FractionRing V)))).obj A).hom.appTop.hom) :

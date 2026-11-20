@@ -14,11 +14,9 @@ namespace GlobalTheory.InertScalarUnit
 open GlobalTheory.LatVac
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `hreal : NumberField.ComplexEmbedding.IsReal τ`. Rewrite using `[NumberField.ComplexEmbedding.isReal_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `h1` using `hσ.2.2.2 τ x`. Rewrite `h1` using `[h x]`. Rewrite using `[NumberField.ComplexEmbedding.conjugate_coe_eq, starRingEnd_apply]`. Conclude with `h1.symm`.
-
-Conclude with `(NumberField.InfinitePlace.not_isReal_iff_isComplex.2 (hσ.2.1.isComplex (NumberField.InfinitePlace.mk τ))) ⟨τ, hreal, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) : ∃ x : E, σ x ≠ x := by
@@ -38,7 +36,7 @@ theorem exists_ne_of_cm {F E : Type} [Field F] [NumberField F] [Field E] [Number
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h` using `hu (1 - GlobalTheory.LatVac.liftV v 1) (by rw [map_sub, map_one, evFin_liftV, sub_self])`. Rewrite `h` using `[sub_smul, one_smul]`. Conclude with `(sub_eq_zero.1 h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_smul_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) (u : M)
     (hu : At (evFin F v) u) : GlobalTheory.LatVac.liftV v (1 : Fv F v) • u = u := by
@@ -47,7 +45,7 @@ theorem idem_smul_of_at {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F)
   exact (sub_eq_zero.1 h).symm
 
 /- English proof (translation)
-Establish `h` using `at_liftV v (1 : Fv F v) (x - GlobalTheory.LatVac.liftV v (evFin F v x)) (by rw [map_sub, evFin_liftV, sub_self])`. Establish `h2` using `idem_smul_of_at v _ (at_liftV v (evFin F v x))`. Rewrite `h`, `h2` using `[smul_eq_mul]`. Take the linear combination `h + h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem idem_mul (v : Pl F) (x : AF F) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) * x = GlobalTheory.LatVac.liftV v (evFin F v x) := by
@@ -57,7 +55,7 @@ theorem idem_mul (v : Pl F) (x : AF F) :
   linear_combination h + h2
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[smul_smul, ← smul_eq_mul, at_liftV v 1 u hu, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_idem_smul {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) (z : M) :
     At (evFin F v) (GlobalTheory.LatVac.liftV v (1 : Fv F v) • z) := by
@@ -65,9 +63,9 @@ theorem at_idem_smul {M : Type} [AddCommGroup M] [Module (AF F) M] (v : Pl F) (z
   rw [smul_smul, ← smul_eq_mul, at_liftV v 1 u hu, zero_smul]
 
 /- English proof (translation)
-Establish `key : ∀ a : AE F E, GlobalTheory.LatVac.liftV v (1 : Fv F v) • a = (GlobalTheory.LatVac.liftV v).rTensor E (compFin F E v a)`. Introduce `a`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, idem_mul]`. Simplify using `[compFin]`. Consider the case `add x y hx hy => rw [smul_add, hx, hy, map_add, map_add]`. Rewrite using `[key, ha, map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_smul_eq_zero (v : Pl F) (a : AE F E) (ha : compFin F E v a = 0) :
     GlobalTheory.LatVac.liftV v (1 : Fv F v) • a = 0 := by
@@ -83,7 +81,7 @@ theorem idem_smul_eq_zero (v : Pl F) (a : AE F E) (ha : compFin F E v a = 0) :
   rw [key, ha, map_zero]
 
 /- English proof (translation)
-Proceed by induction on `q using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x e => simp [compFin, evFin_liftV]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem compFin_lift (v : Pl F) (q : Fv F v ⊗[F] E) :
     compFin F E v ((GlobalTheory.LatVac.liftV v).rTensor E q) = q := by
@@ -93,17 +91,15 @@ theorem compFin_lift (v : Pl F) (q : Fv F v ⊗[F] E) :
   | add x y hx hy => rw [map_add, map_add, hx, hy]
 
 /- English proof (translation)
-Use `set Mv := M.map (compFin F E v) with hMv`. Use `set Q : Matrix (Fin n) (Fin n) (AE F E) := Mv⁻¹.map ((GlobalTheory.LatVac.liftV v).rTensor E) with hQdef`. Establish `hQ : Q.map (compFin F E v) = Mv⁻¹`. Use extensionality with `i j`. Simplify using `[hQdef, compFin_lift]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz : ∀ N : Matrix (Fin n) (Fin n) (AE F E), N.map (compFin F E v) = 1 → GlobalTheory.LatVac.liftV v (1 : Fv F v) • N = GlobalTheory.LatVac.liftV v (1 : Fv F v) • (1 : Matrix (Fin n) (Fin n) (AE F E))`. Introduce `N hN`. Establish `h0 : GlobalTheory.LatVac.liftV v (1 : Fv F v) • (N - 1) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.smul_apply, Matrix.zero_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `idem_smul_eq_zero` to reduce the goal to its premises. Use `congrFun (congrFun hN i) j` as an intermediate fact. Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[Matrix.sub_apply, map_sub, this]`. Distinguish the cases in `hij : i = j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Rewrite `h0` using `[smul_sub, sub_eq_zero]`. Then use the resulting hypothesis. Use `⟨GlobalTheory.LatVac.liftV v (1 : Fv F v) • Q, at_idem_smul v Q, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.smul_mul]`. Apply `hz` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hQ, ← hMv, Matrix.nonsing_inv_mul _ h]`. Rewrite using `[Matrix.mul_smul]`. Apply `hz` to reduce the goal to its premises.
-
-Rewrite using `[← RingHom.mapMatrix_apply, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, hQ, ← hMv, Matrix.mul_nonsing_inv _ h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv_at (v : Pl F) {n : ℕ} (M : Matrix (Fin n) (Fin n) (AE F E))
     (h : IsUnit (M.map (compFin F E v)).det) :
@@ -146,51 +142,45 @@ namespace GlobalTheory.InertScalarUnit
 open GlobalTheory.LatVac
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B hB v w hw n J g`. Establish `hK` using `GlobalTheory.InertTensorField.isField_tensor_of_isInertAt F E σ B hB v w hw`. Use `haveI : IsDomain (Fv F v ⊗[F] E) := hK.isDomain`. Establish `hunit : ∀ x : Fv F v ⊗[F] E, x ≠ 0 → IsUnit x` using `fun x hx => by`. Take `⟨y, hy⟩` from `hK.mul_inv_cancel hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨x, y, hy, by rw [mul_comm]; exact hy⟩, rfl⟩`. Establish `hσσ` using `GlobalTheory.AdelicU.cm_conj_conj hB.cm`. Take `⟨x₀, hx₀⟩` from `exists_ne_of_cm σ hB.cm`. Take `⟨ξ, hξ, hξ0⟩ : ∃ ξ : E, σ ξ = -ξ ∧ ξ ≠ 0` from `⟨x₀ - σ x₀, by rw [map_sub, hσσ]; ring, sub_ne_zero.2 (Ne.symm hx₀)⟩`. Set `ι : E →+* Fv F v ⊗[F] E` to `(Algebra.TensorProduct.includeRight : E →ₐ[F] Fv F v ⊗[F] E).toRingHom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : Function.Injective ι` using `ι.injective`. Use `set gv := (mat g).map (compFin F E v) with hgv`. Establish `hp0 : gv.charpoly ≠ 0` using `(Matrix.charpoly_monic gv).ne_zero`. Establish `hfin` using `Polynomial.finite_setOf_isRoot hp0`. Establish `hden : ∀ m : ℕ, (m : E) - ξ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m h`. Establish `h1 : ξ = m` using `(sub_eq_zero.1 h).symm`. Establish `h2 : σ ξ = m` using `by rw [h1, map_natCast]`. Rewrite `h2` using `[hξ, h1]`. Establish `h3 : (m : E) = 0` using `by linear_combination (-1/2 : E) * h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hξ0 (h1.trans h3)`. Establish `hnum : ∀ m : ℕ, (m : E) + ξ ≠ 0`. Introduce `m h`. Establish `h2` using `congrArg σ h`. Rewrite `h2` using `[map_add, map_natCast, hξ, map_zero, ← sub_eq_add_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hden m h2`. Set `lam : ℕ → E` to `fun m => ((m : E) + ξ) / ((m : E) - ξ)`. Establish `hlam : Function.Injective lam`. Introduce `a b hab`. Simplify using `only [lam] at hab`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Rewrite `hab` using `[div_eq_div_iff (hden a) (hden b)]`. Establish `h1 : ((a : E) - b) * (2 * ξ) = 0` using `by linear_combination -hab`. Break down `mul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `sub_eq_zero.1 h` after adjusting the coercions. Conclude with `absurd h (mul_ne_zero two_ne_zero hξ0)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℕ, ¬ gv.charpoly.IsRoot (ι (lam m)) := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `Set.infinite_range_of_injective (hι.comp hlam) (hfin.subset (by rintro _ ⟨m, rfl⟩; exact hcon m))`. Use `set l := lam m with hl`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hl1 : l ≠ 1`. Introduce `h`. Rewrite `h` using `[hl, div_eq_one_iff_eq (hden m)]`. Conclude with `hξ0 (by linear_combination h / 2)`. Establish `hσl : σ l = ((m : E) - ξ) / ((m : E) + ξ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hl, lam, map_div₀, map_add, map_sub, map_natCast, hξ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlσl : l * σ l = 1`. Rewrite using `[hσl, hl]`. Simplify using `only [lam]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_mul_div_comm, mul_comm ((m : E) - ξ), div_self (mul_ne_zero (hnum m) (hden m))]`. Use `set e : AF F := GlobalTheory.LatVac.liftV v (1 : Fv F v) with he`. Establish `hee : e * e = e` using `by rw [he, idem_mul, evFin_liftV]`. Establish `hev : evFin F v e = 1` using `evFin_liftV v 1`. Use `set c : AE F E := (1 - e) ⊗ₜ[F] (1 : E) + e ⊗ₜ[F] l with hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set c' : AE F E := (1 - e) ⊗ₜ[F] (1 : E) + e ⊗ₜ[F] σ l with hc'`. Establish `hcc : c * c' = 1`. Establish `h1 : (1 - e) * (1 - e) = 1 - e` using `by linear_combination hee`. Establish `h2 : (1 - e) * e = 0` using `by linear_combination -hee`. Establish `h3 : e * (1 - e) = 0` using `by linear_combination -hee`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc, hc', add_mul, mul_add, mul_add, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, Algebra.TensorProduct.tmul_mul_tmul, h1, h2, h3, hee, hlσl]`. Simplify using `only [mul_one, TensorProduct.zero_tmul, add_zero, zero_add]`. Rewrite using `[← TensorProduct.add_tmul, sub_add_cancel, Algebra.TensorProduct.one_def]`. Establish `hcA : cA σ c = c'`. Simplify using `[hc, hc', cA, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hcv : compFin F E v c = ι l`. Simplify using `[hc, compFin, Algebra.TensorProduct.map_tmul, hev, ι]`. Establish `hc1 : c - 1 = e • ((1 : AF F) ⊗ₜ[F] (l - 1))`. Rewrite using `[hc, TensorProduct.smul_tmul', smul_eq_mul, mul_one, TensorProduct.tmul_sub, Algebra.TensorProduct.one_def, TensorProduct.sub_tmul]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `kG : GL (Fin n) (AE F E)` to `⟨Matrix.scalar (Fin n) c, Matrix.scalar (Fin n) c', by rw [← map_mul, hcc, map_one], by rw [← map_mul, mul_comm, hcc, map_one]⟩`. Establish `hmem : kG ∈ UG (cA σ) (incM F J)` using `by show (Matrix.scalar (Fin n) c)ᵀ * incM F J * (Matrix.scalar (Fin n) c).map (cA σ) = incM F J`. Establish `hT : (Matrix.scalar (Fin n) c)ᵀ = Matrix.scalar (Fin n) c`. Simplify using `[Matrix.scalar_apply]`. Establish `hM : (Matrix.scalar (Fin n) c).map (cA σ) = Matrix.scalar (Fin n) c'`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, Matrix.diagonal_map (map_zero _), hcA]`. Rewrite using `[hT, hM, (Matrix.scalar_commute c (fun r => Commute.all c r) _).eq, Matrix.mul_assoc, ← map_mul, hcc, map_one, Matrix.mul_one]`. Set `k : UA σ J` to `⟨kG, hmem⟩`. Establish `hk : mat k = Matrix.scalar (Fin n) c` using `rfl`. Establish `hSv : (Matrix.scalar (Fin n) c).map (compFin F E v) = Matrix.scalar (Fin n) (ι l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.scalar_apply, Matrix.scalar_apply, Matrix.diagonal_map (map_zero _), hcv]`. Establish `hAt : At (evFin F v) (mat k - 1)`. Establish `: mat k - 1 = e • Matrix.scalar (Fin n) ((1 : AF F) ⊗ₜ[F] (l - 1))`. Rewrite using `[hk]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Matrix.scalar_apply, hc1]`. Simplify using `[Matrix.scalar_apply, Matrix.diagonal_apply_ne _ hij, Matrix.one_apply_ne hij]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `at_idem_smul v _`. Establish `hdeta : IsUnit ((1 - mat k).map (compFin F E v)).det`. Rewrite using `[← RingHom.mapMatrix_apply, map_sub, map_one, RingHom.mapMatrix_apply, hk, hSv, ← map_one (Matrix.scalar (Fin n) : Fv F v ⊗[F] E →+* _), ← map_sub, Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const]`. Use `IsUnit.pow _ (hunit _ ?_)` and prove the remaining obligations. Rewrite using `[← map_one ι, ← map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `(map_ne_zero_iff ι hι).2 (sub_ne_zero.2 hl1.symm)`. Establish `hgi : mat g⁻¹ * mat g = 1` using `by show ((↑(g⁻¹ * g) : GL (Fin n) (AE F E)) : Matrix (Fin n) (Fin n) (AE F E)) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Use `set hv := (mat g⁻¹).map (compFin F E v) with hhv`.
-
-Establish `hhg : hv * gv = 1`. Rewrite using `[hhv, hgv, ← RingHom.mapMatrix_apply, ← RingHom.mapMatrix_apply, ← map_mul, hgi, map_one]`. Establish `hdetb : IsUnit ((1 - mat (g⁻¹ * k)).map (compFin F E v)).det`. Establish `hmk : mat (g⁻¹ * k) = mat g⁻¹ * mat k` using `rfl`. Rewrite using `[hmk, ← RingHom.mapMatrix_apply, map_sub, map_one, map_mul, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, ← hhv, hk, hSv]`.
-
-Establish `hfac : 1 - hv * Matrix.scalar (Fin n) (ι l) = hv * -(Matrix.scalar (Fin n) (ι l) - gv)`. Rewrite using `[neg_sub, Matrix.mul_sub, hhg]`. Rewrite using `[hfac, Matrix.det_mul, Matrix.det_neg, ← Matrix.eval_charpoly]`. Establish `hd1 : hv.det * gv.det = 1` using `by rw [← Matrix.det_mul, hhg, Matrix.det_one]`. Conclude with `IsUnit.mul ⟨⟨hv.det, gv.det, hd1, by rw [mul_comm]; exact hd1⟩, rfl⟩ (IsUnit.mul (IsUnit.pow _ isUnit_one.neg) (hunit _ hm))`.
-
-Take `⟨a, ha, ha1, ha2⟩` from `exists_inv_at v (1 - mat k) hdeta`. Take `⟨b, hb, hb1, hb2⟩` from `exists_inv_at v (1 - mat (g⁻¹ * k)) hdetb`. Conclude with `⟨k, hAt, a, b, ha, hb, ha1, ha2, hb1, hb2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_scalar_inv_at : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E), B.IsGood σ →
     ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)), Formalism.UG.IsInertAt F E v w → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (g : UA σ J),

@@ -14,15 +14,13 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hpre γ w Z hel hZ hrep`. Take `⟨hAg, -, -, hN, hR, hE⟩` from `hpre`. Set `Zd : LocDat D` to `⟨δ, M, hAg⟩`. Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × Formalism.L2.SG.PairVal.MatR D × Formalism.L2.SG.PairVal.MatR D, Formalism.L2.SG.PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2`. Take `⟨y, hy⟩` from `hN γ w hel.2 (hE γ w hel) hel.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(w, y), hy⟩`. Establish `hzT : zT γ = ZhatL (lf D F0) hex.choose.2.1`. Unfold `zT nrep`. Rewrite using `[dif_pos hex]`. Take `⟨⟨hPD₁, hmk₁⟩, hA₁, -⟩` from `hex.choose_spec`.
+Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨F₂, hF₂, hPD₂, hmk₂⟩` from `hrep`. Establish `hRL : IsRowLat D F0 γ.lam` using `hR.1 γ.lam γ.mem`. Establish `hdc : Formalism.L2.SG.TermDef.DCRel γ.lam (lf D F0) hex.choose.2.1 F₂` using `(Formalism.L2.SG.Pf.double_coset_equivalence γ.lam (lf D F0) (Formalism.L2.SG.TermDef.PD D γ.lam (lf D F0) u') ⟨_, hPD₁⟩ ⟨F₂, hPD₂⟩).1 (hmk₁.trans hmk₂.symm)`. Establish `hZ2 : ZhatL (lf D F0) F₂ = Z` using `hF₂.2.2.2.2`. Use function extensionality and compare the values at `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨l, ρ, hl, hρ, h1⟩` from `one_dir Zd hRL _ F₂ hPD₁ hA₁ hF₂.2.1 hdc p`. Take `⟨l', ρ', hl', hρ', h2⟩` from `one_dir Zd hRL F₂ _ hPD₂ hF₂.2.1 hA₁ (Formalism.L2.SG.Pf.dcrel_symm γ.lam (lf D F0) hdc) p`. Establish `key` using `kkOrb_eq_of hl' hρ' hl hρ h2 h1`. Use `show kkOrb M p (Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p (zT γ) * sgnP p) = kkOrb M p (Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p Z * sgnP p)`. Rewrite using `[hzT, ← hZ2]`.
-
-Conclude with `key`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupFun_holds {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
     (δ : ∀ p : PlF D, (D.s.atP p).Fp) (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u))

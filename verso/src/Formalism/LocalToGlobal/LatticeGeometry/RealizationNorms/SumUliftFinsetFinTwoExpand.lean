@@ -20,12 +20,12 @@ def mkE (c : InfinitePlace K → Fin n → ℂ) : Amb K n :=
   WithLp.toLp 2 (fun p => if p.2.2 = 0 then (c p.1 p.2.1).re else (c p.1 p.2.1).im)
 
 /- English proof (translation)
-The claim follows from `Fin.sum_univ_two g`.
+A detailed English derivation is pending.
 -/
 theorem sum_ulift_finset_fin_two_expand (g : Fin 2 → ℝ) : ∑ k, g k = g 0 + g 1 := Fin.sum_univ_two g
 
 /- English proof (translation)
-Simplify using `only [mkE, PiLp.inner_apply, PiLp.toLp_apply, Fintype.sum_prod_type, sum_ulift_finset_fin_two_expand]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_mkE (a c : InfinitePlace K → Fin n → ℂ) :
     inner ℝ (mkE a) (mkE c) = ∑ v, ∑ i, (star (a v i) * c v i).re := by
@@ -35,7 +35,7 @@ theorem inner_mkE (a c : InfinitePlace K → Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Rewrite using `[← real_inner_self_eq_norm_sq, inner_mkE]`. Use `Finset.sum_congr rfl fun v _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `[Complex.mul_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_sq_mkE (c : InfinitePlace K → Fin n → ℂ) :
     ‖mkE c‖ ^ 2 = ∑ v, ∑ i, ‖c v i‖ ^ 2 := by
@@ -47,9 +47,9 @@ theorem norm_sq_mkE (c : InfinitePlace K → Fin n → ℂ) :
 variable [StarRing K]
 
 /- English proof (translation)
-Use extensionality with `p`. Establish `h : Formalism.HermitianLatticesTheory.vecAt (Pi.basisFun K (Fin n)) p.1 x = fun i => p.1.embedding (x i)`. Use function extensionality and compare the values at `i`. Unfold `Formalism.HermitianLatticesTheory.vecAt`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.HermitianLatticesTheory.realize, Formalism.HermitianLatticesTheory.realizeRaw, Formalism.HermitianLatticesTheory.fcoord, mkE, fc, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem realize_eq (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (x : Fin n → K) :
     Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) Xf x = mkE (fun v => fc Xf v x) := by
@@ -64,11 +64,11 @@ def yv (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (ξ : Fin n → K) 
   mkE (fun v => (2 : ℂ) • ((Xf v)ᴴ *ᵥ (fun i => star (v.embedding (ξ i)))))
 
 /- English proof (translation)
-Establish `hinv : Xf v * (Xf v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ (hXf v)`. Establish `key : star (fc Xf v x) ⬝ᵥ ((Xf v)ᴴ *ᵥ fun i => star (v.embedding (ξ i))) = star (v.embedding (∑ i, ξ i * x i))`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.star_mulVec]`. Unfold `fc`. Rewrite using `[Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[dotProduct, map_sum, star_sum, map_mul, mul_comm]`. Establish `hsum : ∑ i, (star (fc Xf v x i) * ((2 : ℂ) • ((Xf v)ᴴ *ᵥ fun i => star (v.embedding (ξ i)))) i).re = 2 * (star (fc Xf v x) ⬝ᵥ ((Xf v)ᴴ *ᵥ fun i => star (v.embedding (ξ i)))).re`. Simplify using `only [dotProduct, Complex.re_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Complex.mul_re]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum, key, Complex.star_def, Complex.conj_re]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_mkE_fc (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf : ∀ v, IsUnit (Xf v).det)
     (x ξ : Fin n → K) (v : InfinitePlace K) :
@@ -92,17 +92,17 @@ theorem inner_mkE_fc (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf 
 variable [IsTotallyComplex K]
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.trace ℚ K a : ℚ) : ℂ) = ∑ σ : K →+* ℂ, σ a`. Establish `h` using `trace_eq_sum_embeddings (K := ℚ) (L := K) (E := ℂ) (x := a)`. Rewrite using `[Fintype.sum_equiv (RingHom.equivRatAlgHom K ℂ) (fun σ : K →+* ℂ => σ a) (fun τ : K →ₐ[ℚ] ℂ => τ a) (fun σ => rfl)]`. Simplify using `using h`. Establish `h2 : ∑ σ : K →+* ℂ, σ a = ∑ v : InfinitePlace K, (((2 * (v.embedding a).re : ℝ)) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_fiberwise Finset.univ (fun σ => InfinitePlace.mk σ)]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Establish `hne : NumberField.ComplexEmbedding.conjugate v.embedding ≠ v.embedding`. Introduce `h`. Establish `hr : v.IsReal` using `InfinitePlace.isReal_iff.mpr (NumberField.ComplexEmbedding.isReal_iff.mpr h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(InfinitePlace.not_isReal_iff_isComplex.mpr (NumberField.IsTotallyComplex.isComplex v)) hr`. Establish `hset : Finset.univ.filter (fun σ => InfinitePlace.mk σ = v) = {v.embedding, NumberField.ComplexEmbedding.conjugate v.embedding}`. Use extensionality with `σ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `h` using `[← InfinitePlace.mk_embedding v, InfinitePlace.mk_eq_iff]`. Break down `h with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← h]`. Use extensionality with `x`. Simplify using `[NumberField.ComplexEmbedding.conjugate_coe_eq]`. Introduce and unpack `(h | h)`. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `InfinitePlace.mk_embedding v`. Rewrite using `[h, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`. Rewrite using `[hset, Finset.sum_pair hne.symm, NumberField.ComplexEmbedding.conjugate_coe_eq, Complex.add_conj]`. Apply `Complex.ofReal_injective` to reduce the goal to its premises. Rewrite using `[Complex.ofReal_ratCast, h1, h2, Complex.ofReal_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trace_re_lemma (a : K) :
     ((Algebra.trace ℚ K a : ℚ) : ℝ) = ∑ v : InfinitePlace K, 2 * (v.embedding a).re := by
@@ -142,7 +142,7 @@ private theorem trace_re_lemma (a : K) :
   rw [Complex.ofReal_ratCast, h1, h2, Complex.ofReal_sum]
 
 /- English proof (translation)
-Rewrite using `[realize_eq]`. Unfold `yv`. Rewrite using `[inner_mkE, trace_re_lemma]`. Conclude with `Finset.sum_congr rfl fun v _ => inner_mkE_fc Xf hXf x ξ v`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_yv (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf : ∀ v, IsUnit (Xf v).det)
     (x ξ : Fin n → K) :
@@ -164,7 +164,7 @@ namespace Formalism.L2.Geo.Rec.DualLatticeEmbeddings
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[NumberField.IsTotallyComplex.finrank, NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, NumberField.IsTotallyComplex.nrRealPlaces_eq_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nPl_mul_two [IsTotallyComplex K] : Fintype.card (InfinitePlace K) * 2 = finrank ℚ K := by
   rw [NumberField.IsTotallyComplex.finrank, NumberField.InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces,
@@ -172,7 +172,7 @@ theorem nPl_mul_two [IsTotallyComplex K] : Fintype.card (InfinitePlace K) * 2 = 
   ring
 
 /- English proof (translation)
-Rewrite using `[finrank_euclideanSpace, Fintype.card_prod, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin, ← nPl_mul_two]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_amb [IsTotallyComplex K] : finrank ℝ (Amb K n) = finrank ℚ K * n := by
   rw [finrank_euclideanSpace, Fintype.card_prod, Fintype.card_prod, Fintype.card_fin, Fintype.card_fin,
@@ -180,11 +180,11 @@ theorem finrank_amb [IsTotallyComplex K] : finrank ℝ (Amb K n) = finrank ℚ K
   ring
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K (X : Set (Fin n → K))` using `by rw [hX]; trivial`. Take `⟨m, f, g, hg⟩` from `(Submodule.mem_span_set' (R := K)).1 hv`. Take `⟨y, hy, hint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image f)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← hg, Finset.smul_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Establish `hi : IsIntegral ℤ (y • f i)` using `hint _ (Finset.mem_image.2 ⟨i, Finset.mem_univ _, rfl⟩)`. Set `r : 𝓞 K` to `⟨y • f i, hi⟩`. Establish `hr : y • (f i • (g i : Fin n → K)) = r • (g i : Fin n → K)`. Rewrite using `[← algebraMap_smul K r, ← smul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hr]`. Conclude with `X.smul_mem r (g i).2`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_smul_mem (X : Submodule (𝓞 K) (Fin n → K))
     (hX : Submodule.span K (X : Set (Fin n → K)) = ⊤) (v : Fin n → K) :
@@ -211,7 +211,7 @@ def Mz (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (X : Submodule (�
   Formalism.HN.zl (Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) Xf) X
 
 /- English proof (translation)
-Unfold `Mz Formalism.HN.zl`. Use `show z ∈ AddSubgroup.map _ _ ↔ _`. Simplify using `only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Mz (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (X : Submodule (𝓞 K) (Fin n → K))
     (z : Amb K n) : z ∈ Mz Xf X ↔ ∃ x ∈ X, Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) Xf x = z := by
@@ -220,20 +220,20 @@ theorem mem_Mz (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (X : Submod
   simp only [AddSubgroup.mem_map, Submodule.mem_toAddSubgroup]
 
 /- English proof (translation)
-The claim follows from `(Formalism.HN.place_lattice_structure K (Fin n → K) (Fin n) (Pi.basisFun K (Fin n)) Xf hXf X hfg).1.2`.
+A detailed English derivation is pending.
 -/
 theorem discrete_Mz (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf : ∀ v, IsUnit (Xf v).det)
     (X : Submodule (𝓞 K) (Fin n → K)) (hfg : X.FG) : DiscreteTopology (Mz Xf X) :=
   (Formalism.HN.place_lattice_structure K (Fin n → K) (Fin n) (Pi.basisFun K (Fin n)) Xf hXf X hfg).1.2
 
 /- English proof (translation)
-Use `choose N hN0 hNX using fun k : Fin n => exists_int_smul_mem X hX (Pi.basisFun K (Fin n) k)`. Set `c : ℤ` to `∏ k, N k`. Establish `hc0 : c ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => hN0 k`. Establish `hcK : (c : K) ≠ 0` using `Int.cast_ne_zero.2 hc0`. Establish `hli` using `Formalism.HN.PlaceLattice.linIndep_real (Pi.basisFun K (Fin n)) Xf hXf (c : K) hcK`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Free.ChooseBasisIndex ℤ (𝓞 K) × Fin n) = finrank ℝ (Amb K n)`. Rewrite using `[finrank_amb, Fintype.card_prod, ← finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank, Fintype.card_fin]`. Establish `htop` using `hli.span_eq_top_of_card_eq_finrank' hcard`. Rewrite using `[eq_top_iff, ← htop]`. Use `Submodule.span_mono ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨⟨m, k⟩, rfl⟩`. Rewrite using `[SetLike.mem_coe, mem_Mz]`. Use `⟨_, ?_, rfl⟩` and prove the remaining obligations. Establish `h1 : (c : K) • (Pi.basisFun K (Fin n) k) = (∏ j ∈ Finset.univ.erase k, N j) • (N k • Pi.basisFun K (Fin n) k)`. Rewrite using `[smul_smul, Finset.prod_erase_mul _ _ (Finset.mem_univ k), Int.cast_smul_eq_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integralBasis_apply, algebraMap_smul, h1]`. Conclude with `X.smul_mem _ (X.toAddSubgroup.zsmul_mem (hNX k) _)`.
+A detailed English derivation is pending.
 -/
 theorem span_Mz [IsTotallyComplex K] (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)
     (hXf : ∀ v, IsUnit (Xf v).det)
@@ -270,29 +270,27 @@ namespace Formalism.L2.Geo.Rec.DualLatticeEmbeddings
 variable {K : Type} [Field K] [NumberField K] {n : ℕ} [StarRing K] [IsTotallyComplex K]
 
 /- English proof (translation)
-Use `set Rz := Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) Xf with hRz`. Set `φ : (Fin n → K) →+ ℝ` to `AddMonoidHom.mk' (fun x => inner ℝ (Rz x) y) (fun a b => by simp only [map_add, inner_add_left])`. Establish `hφ : ∀ x, φ x = inner ℝ (Rz x) y` using `fun x => rfl`. Establish `hint : ∀ x ∈ X, ∃ k : ℤ, φ x = k` using `fun x hx => hy (Rz x) ((mem_Mz Xf X _).2 ⟨x, hx, rfl⟩)`. Establish `hrat : ∀ v, ∃ q : ℚ, (q : ℝ) = φ v`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Take `⟨N, hN0, hNv⟩` from `exists_int_smul_mem X hX v`. Take `⟨k, hk⟩` from `hint _ hNv`. Rewrite `hk` using `[map_zsmul, zsmul_eq_mul]`. Establish `hN : (N : ℝ) ≠ 0` using `Int.cast_ne_zero.2 hN0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(k : ℚ) / N, ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[← hk]`. Clear the denominators using the available nonvanishing facts. Use `choose ψ0 hψ0 using hrat`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ψa : (Fin n → K) →+ ℚ` to `AddMonoidHom.mk' ψ0 (fun a b => by`. Establish `h` using `hψ0 (a + b)`. Rewrite `h` using `[map_add, ← hψ0 a, ← hψ0 b]`. Conclude with `h)` after adjusting the coercions. Set `ψ : (Fin n → K) →ₗ[ℚ] ℚ` to `ψa.toRatLinearMap`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hψ : ∀ v, (ψ v : ℝ) = φ v` using `fun v => hψ0 v`. Set `B` to `(Algebra.traceForm ℚ K).toDual (traceForm_nondegenerate ℚ K)`. Set `ξ : Fin n → K` to `fun i => B.symm (ψ ∘ₗ LinearMap.single ℚ (fun _ : Fin n => K) i)`. Establish `hξ : ∀ i a, Algebra.trace ℚ K (ξ i * a) = ψ (Pi.single i a)`. Introduce `i a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `LinearMap.BilinForm.toDual_def (traceForm_nondegenerate ℚ K) (m := ξ i) (n := a)`. Rewrite `h` using `[Algebra.traceForm_apply]`. Rewrite using `[← h]`. Use `show (B (B.symm _)) a = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `htr : ∀ x, Algebra.trace ℚ K (∑ i, ξ i * x i) = ψ x`. Introduce `x`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hξ]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← map_sum, Finset.univ_sum_single]`. Use `⟨ξ, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `horth : ∀ x, inner ℝ (Rz x) (y - yv Xf ξ) = 0`. Introduce `x`. Rewrite using `[inner_sub_right, inner_yv Xf hXf, htr, hψ, hφ, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `hspan : ∀ z ∈ Submodule.span ℝ (Mz Xf X : Set (Amb K n)), inner ℝ z (y - yv Xf ξ) = 0`. Introduce `z hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨x, -, rfl⟩` from `(mem_Mz Xf X z).1 hz`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `horth x`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [inner_add_left, ha, hb, add_zero]`. Consider the case `smul r a _ ha => rw [real_inner_smul_left, ha, mul_zero]`. Establish `h0` using `hspan (y - yv Xf ξ) (by rw [span_Mz Xf hXf X hX]; trivial)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[inner_self_eq_zero, sub_eq_zero]`. Conclude with `h0`. Take `⟨k, hk⟩` from `hint x hx`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[htr]`.
-
-Establish `: (ψ x : ℝ) = (k : ℝ)` using `by rw [hψ, hk]`. Conclude with `this.symm` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem zdual_eq_yv (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf : ∀ v, IsUnit (Xf v).det)
     (X : Submodule (𝓞 K) (Fin n → K)) (hX : Submodule.span K (X : Set (Fin n → K)) = ⊤)
@@ -360,20 +358,20 @@ theorem zdual_eq_yv (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (hXf :
     exact_mod_cast this.symm
 
 /- English proof (translation)
-Rewrite using `[realize_eq, norm_sq_mkE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_sq_realize (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ) (x : Fin n → K) :
     ‖Formalism.HermitianLatticesTheory.realize (Pi.basisFun K (Fin n)) Xf x‖ ^ 2 = ∑ v, ∑ i, ‖fc Xf v x i‖ ^ 2 := by
   rw [realize_eq, norm_sq_mkE]
 
 /- English proof (translation)
-Establish `hre : ∀ u : Fin n → ℂ, ∑ i, ‖u i‖ ^ 2 = (star u ⬝ᵥ u).re`. Introduce `u`. Simplify using `only [dotProduct, Complex.re_sum, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.sq_norm, Complex.normSq_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Complex.mul_re]`. Establish `hsm : ∀ (u : Fin n → ℂ) (i : Fin n), ‖((2 : ℂ) • u) i‖ ^ 2 = 4 * ‖u i‖ ^ 2`. Introduce `u i`. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow]`. Evaluate the numerical expressions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Unfold `yv`. Rewrite using `[norm_sq_mkE, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Repeatedly rewrite using `[hsm]`. Rewrite using `[← Finset.mul_sum, hre]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Rewrite using `[Matrix.star_mulVec, Matrix.conjTranspose_conjTranspose, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hfr v]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, hσ, Pi.star_apply, star_star, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_sq_yv (cj : K → K) (hσ : ∀ (v : InfinitePlace K) z, v.embedding (cj z) = star (v.embedding z))
     (A : Matrix (Fin n) (Fin n) K) (Xf : InfinitePlace K → Matrix (Fin n) (Fin n) ℂ)

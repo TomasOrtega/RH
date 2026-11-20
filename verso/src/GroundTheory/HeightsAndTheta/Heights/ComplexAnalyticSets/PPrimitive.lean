@@ -28,7 +28,7 @@ instance (J : Ideal (MvPolynomial (Fin n) ℂ)) [J.IsPrime] :
   inferInstanceAs (IsFractionRing (MvPolynomial (Fin n) ℂ ⧸ J) (FractionRing (MvPolynomial (Fin n) ℂ ⧸ J)))
 
 /- English proof (translation)
-Set `_` to `projAlgebra J A`. Rewrite using `[Polynomial.aeval_def, Polynomial.hom_eval₂]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem aeval_mk_projAlgebra (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix (Fin d) (Fin n) ℂ)
     (G : Polynomial (MvPolynomial (Fin d) ℂ)) (p : MvPolynomial (Fin n) ℂ) :
@@ -42,25 +42,25 @@ theorem aeval_mk_projAlgebra (J : Ideal (MvPolynomial (Fin n) ℂ)) (A : Matrix 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `n d J A hJ _ hA`. Use `hJ` as an intermediate fact. Set `` to `projAlgebra J A`. Establish `: Module.Finite (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J)` using `hA.finite`. Set `iRL : Algebra (MvPolynomial (Fin d) ℂ) (funField J)` to `((algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (funField J)).comp (algebraMap (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J))).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hinj : Function.Injective (algebraMap (MvPolynomial (Fin d) ℂ) (funField J))` using `(IsFractionRing.injective (MvPolynomial (Fin n) ℂ ⧸ J) _).comp (by exact hA.injective)`. Set `iKL : Algebra (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)` to `(IsFractionRing.lift hinj).toAlgebra`. Establish `t1 : IsScalarTower (MvPolynomial (Fin d) ℂ) (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)` using `IsScalarTower.of_algebraMap_eq fun r => (IsFractionRing.lift_algebraMap hinj r).symm`. Establish `t2 : IsScalarTower (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J) (funField J)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Set `iCL : Algebra ℂ (funField J)` to `((algebraMap (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)).comp (algebraMap ℂ (FractionRing (MvPolynomial (Fin d) ℂ)))).toAlgebra`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `t3 : IsScalarTower ℂ (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Take `⟨hfin, hdeg, hgen⟩` from `hF n d J A hJ hA (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)`. Use `hfin` as an intermediate fact. Establish `: CharZero (FractionRing (MvPolynomial (Fin d) ℂ))` using `charZero_of_injective_algebraMap (algebraMap ℂ (FractionRing (MvPolynomial (Fin d) ℂ))).injective`. Establish `: Algebra.IsSeparable (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J)` using `inferInstance`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ a : ℂ, algebraMap ℂ (funField J) a = algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) _ (Ideal.Quotient.mk J (C a))`. Introduce `a`. Express the relevant statement in the definitionally equal form `algebraMap (FractionRing (MvPolynomial (Fin d) ℂ)) _ (algebraMap ℂ _ a) = _`. Rewrite using `[IsScalarTower.algebraMap_apply ℂ (MvPolynomial (Fin d) ℂ) (FractionRing (MvPolynomial (Fin d) ℂ)), ← IsScalarTower.algebraMap_apply, IsScalarTower.algebraMap_apply (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J)]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk J (pullback A (algebraMap ℂ _ a)) = _`. Rewrite using `[AlgHom.commutes]`. Both sides reduce to the same expression. Take `⟨D, hD0, hDc⟩` from `hG ℂ (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J) n _ hgen`. Use `⟨D, hD0, fun c hc => ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hprim` using `hDc c hc`. Establish `hsum : ∑ j, c j • algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (funField J) (Ideal.Quotient.mk J (X j)) = algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) _ (Ideal.Quotient.mk J (sum₂ c))`. Simplify using `only [Algebra.smul_def, hC, ← map_mul, ← map_sum, sum₂]`. Rewrite `hprim` using `[hsum]`. Establish `hℓ : IsIntegral (MvPolynomial (Fin d) ℂ) (Ideal.Quotient.mk J (sum₂ c))` using `Algebra.IsIntegral.isIntegral _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hdeg', hdisc, hmem⟩` from `hD (MvPolynomial (Fin d) ℂ) (FractionRing (MvPolynomial (Fin d) ℂ)) (funField J) _ hℓ.algebraMap hprim`. Establish `hmin : minpoly (MvPolynomial (Fin d) ℂ) (algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (funField J) (Ideal.Quotient.mk J (sum₂ c))) = formMinpoly J A c` using `minpoly.algHom_eq (IsScalarTower.toAlgHom (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J) _) (IsFractionRing.injective _ _) _`. Rewrite `hdeg'`, `hdisc`, `hmem` using `[hmin]`. Use `⟨minpoly.monic hℓ, hdeg'.trans hdeg, ?_, hdisc, fun j => ?_⟩` and prove the remaining obligations. Establish `h0` using `minpoly.aeval (MvPolynomial (Fin d) ℂ) (Ideal.Quotient.mk J (sum₂ c))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h0` using `[aeval_mk_projAlgebra]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 h0`. Establish `hxj : IsIntegral (MvPolynomial (Fin d) ℂ) (algebraMap (MvPolynomial (Fin n) ℂ ⧸ J) (funField J) (Ideal.Quotient.mk J (X j)))` using `(Algebra.IsIntegral.isIntegral _).algebraMap`. Establish `hm` using `hmem _ hxj`. Rewrite `hm` using `[Algebra.adjoin_singleton_eq_range_aeval]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hGe⟩` from `hm`. Use `⟨G, Ideal.Quotient.eq.1 (IsFractionRing.injective (MvPolynomial (Fin n) ℂ ⧸ J) (funField J) ?_)⟩` and prove the remaining obligations. Rewrite using `[← aeval_mk_projAlgebra, ← Polynomial.aeval_algebraMap_apply]`. Use `Eq.trans ?_ hGe.symm` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, IsScalarTower.algebraMap_apply (MvPolynomial (Fin d) ℂ) (MvPolynomial (Fin n) ℂ ⧸ J) (funField J), ← map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveDiscriminant.proof (hG : GenericPrimitive.Statement) (hD : DiscrAdjoin.Statement)
     (hF : FunctionFieldDegree.Statement) : PrimitiveDiscriminant.Statement := by

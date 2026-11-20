@@ -12,17 +12,17 @@ namespace GlobalTheory.CompanionTheory.LocVan.Frame
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hnd : A.charpoly.roots.Nodup` using `Polynomial.nodup_roots hA`. Establish `hcard : A.charpoly.roots.card = n`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Establish `hcs : A.charpoly.roots.toFinset.card = n`. Rewrite using `[Multiset.toFinset_card_of_nodup hnd, hcard]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `e : Fin n ≃ A.charpoly.roots.toFinset` to `(Finset.equivFinOfCardEq hcs).symm`. Set `l : Fin n → ℂ` to `fun i => (e i : ℂ)`. Establish `hl : Function.Injective l` using `fun i j h => e.injective (Subtype.ext h)`. Establish `hroot : ∀ i, Module.End.HasEigenvalue (Matrix.toLin' A) (l i)` using `fun i => by`. Establish `h1 : l i ∈ A.charpoly.roots` using `Multiset.mem_toFinset.1 (e i).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : A.charpoly.IsRoot (l i)` using `Polynomial.isRoot_of_mem_roots h1`. Apply `Module.End.hasEigenvalue_iff_mem_spectrum.2` to reduce the goal to its premises. Rewrite using `[Matrix.spectrum_toLin']`. Conclude with `Matrix.mem_spectrum_iff_isRoot_charpoly.2 h2`. Establish `hv : ∀ i, ∃ v, Module.End.HasEigenvector (Matrix.toLin' A) (l i) v` using `fun i => (hroot i).exists_hasEigenvector`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose v hv using hv`. Establish `hli : LinearIndependent ℂ v` using `Module.End.eigenvectors_linearIndependent' _ l hl v hv`. Establish `hu : IsUnit (Matrix.of v)` using `(Matrix.linearIndependent_rows_iff_isUnit).1 hli`. Establish `hu' : IsUnit (Matrix.of v)ᵀ`. Simplify using `using hu.map (Matrix.transposeRingEquiv (Fin n) ℂ).toRingHom`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨P, hP⟩` from `hu'`. Use `⟨P, l, hl, ?_⟩` and prove the remaining obligations. Rewrite using `[hP]`. Use extensionality with `a i`. Establish `h` using `(hv i).apply_eq_smul`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h'` using `congrFun h a`. Rewrite `h'` using `[Matrix.toLin'_apply]`. Rewrite using `[Matrix.mul_diagonal]`. Simplify `h'` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_frame (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.charpoly.Separable) :
     ∃ (P : GL (Fin n) ℂ) (l : Fin n → ℂ), Function.Injective l ∧
@@ -61,13 +61,13 @@ theorem exists_frame (A : Matrix (Fin n) (Fin n) ℂ) (hA : A.charpoly.Separable
   simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm] using h'
 
 /- English proof (translation)
-Set `ι : (Fin n → ℂ) ≃ₗ[ℂ] EuclideanSpace ℂ (Fin n)` to `(WithLp.linearEquiv 2 ℂ (Fin n → ℂ)).symm`. Establish `key : ∀ U : Submodule ℂ (Fin n → ℂ), (perp (starRingEnd ℂ) U).map ι.toLinearMap = (U.map ι.toLinearMap)ᗮ`. Introduce `U`. Use extensionality with `y`. Rewrite using `[Submodule.mem_orthogonal]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩ _ ⟨x, hx, rfl⟩`. Use `hz x hx` as an intermediate fact. Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct]`. Simplify `this` using `[ι, dotProduct, mul_comm]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Use `⟨ι.symm y, fun x hx => ?_, by simp⟩` and prove the remaining obligations. Use `h (ι x) ⟨x, hx, rfl⟩` as an intermediate fact. Rewrite `this` using `[EuclideanSpace.inner_eq_star_dotProduct]`. Simplify `this` using `[ι, dotProduct, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `Submodule.map_injective_of_injective (f := ι.toLinearMap) ι.injective` to reduce the goal to its premises. Rewrite using `[key, key, Submodule.orthogonal_orthogonal]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem perp_perp' (W : Submodule ℂ (Fin n → ℂ)) :
     perp (starRingEnd ℂ) (perp (starRingEnd ℂ) W) = W := by
@@ -91,14 +91,14 @@ theorem perp_perp' (W : Submodule ℂ (Fin n → ℂ)) :
   rw [key, key, Submodule.orthogonal_orthogonal]
 
 /- English proof (translation)
-Rewrite using `[perpD, perpD, perp_img, perp_perp', img_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem perpD_perpD (d : GL (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ)) :
     perpD (starRingEnd ℂ) d (perpD (starRingEnd ℂ) d W) = img (d * thC n d) W := by
   rw [perpD, perpD, perp_img, perp_perp', img_mul]
 
 /- English proof (translation)
-Use extensionality with `g : 2`. Rewrite using `[pow_two]`. Express the relevant statement in the definitionally equal form `((thC n) ((thC n) g)).val = g.val`. Rewrite using `[thC_val, ← map_inv, thC_val, inv_inv]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thC_sq : (thC n) ^ 2 = 1 := by
   ext g : 2
@@ -108,13 +108,13 @@ theorem thC_sq : (thC n) ^ 2 = 1 := by
   simp
 
 /- English proof (translation)
-Simplify using `[twNorm, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem twNorm_thC (d : GL (Fin n) ℂ) : twNorm (thC n) 2 d = d * thC n d := by
   simp [twNorm, List.range_succ]
 
 /- English proof (translation)
-Use `twCent_commute_twNorm (thC n) thC_sq d ht` as an intermediate fact. Rewrite `this` using `[twNorm_thC]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem commute_of_mem (d t : GL (Fin n) ℂ) (ht : t ∈ twCent (thC n) d) :
     t * (d * thC n d) = (d * thC n d) * t := by
@@ -122,9 +122,9 @@ theorem commute_of_mem (d t : GL (Fin n) ℂ) (ht : t ∈ twCent (thC n) d) :
   rwa [twNorm_thC] at this
 
 /- English proof (translation)
-Establish `hp : ∀ m : ℕ, (A ^ m) *ᵥ v = c ^ m • v`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec, h, Matrix.mulVec_smul, ih, smul_smul, pow_succ, mul_comm]`. Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp' hq' => simp only [map_add, Matrix.add_mulVec, hp', hq', Polynomial.eval_add, add_smul]`. Consider the case `monomial m a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.eval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mulVec, hp, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_eig (A : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (c : ℂ) (h : A *ᵥ v = c • v)
     (q : Polynomial ℂ) : (Polynomial.aeval A q) *ᵥ v = q.eval c • v := by
@@ -141,13 +141,13 @@ theorem aeval_eig (A : Matrix (Fin n) (Fin n) ℂ) (v : Fin n → ℂ) (c : ℂ)
       smul_mul_assoc, one_mul, Matrix.smul_mulVec, hp, smul_smul]
 
 /- English proof (translation)
-Establish `hp : ∀ m : ℕ, ∀ x ∈ W, (A ^ m) *ᵥ x ∈ W`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro x hx`. Simplify using `using hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ m ih`. Introduce `x hx`. Rewrite using `[pow_succ, ← Matrix.mulVec_mulVec]`. Conclude with `ih _ (h x hx)`. Proceed by induction on `q using Polynomial.induction_on' with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `add p q hp' hq'`. Introduce `x hx`. Rewrite using `[map_add, Matrix.add_mulVec]`. Conclude with `W.add_mem (hp' x hx) (hq' x hx)`. Consider the case `monomial m a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Rewrite using `[Polynomial.aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, Matrix.smul_mulVec]`. Conclude with `W.smul_mem _ (hp m x hx)`.
+A detailed English derivation is pending.
 -/
 theorem aeval_stable (A : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n → ℂ))
     (h : ∀ x ∈ W, A *ᵥ x ∈ W) (q : Polynomial ℂ) : ∀ x ∈ W, (Polynomial.aeval A q) *ᵥ x ∈ W := by
@@ -171,7 +171,7 @@ theorem aeval_stable (A : Matrix (Fin n) (Fin n) ℂ) (W : Submodule ℂ (Fin n 
     exact W.smul_mem _ (hp m x hx)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVecLin_apply, map_sum]`. Simplify using `only [map_smul, Matrix.mulVecLin_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_sum_smul (M : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ) (v : Fin n → Fin n → ℂ) :
     M *ᵥ (∑ j, a j • v j) = ∑ j, a j • (M *ᵥ v j) := by
@@ -179,7 +179,7 @@ theorem mulVec_sum_smul (M : Matrix (Fin n) (Fin n) ℂ) (a : Fin n → ℂ) (v 
   simp only [map_smul, Matrix.mulVecLin_apply]
 
 /- English proof (translation)
-Establish `h : ∀ y : Fin n → ℂ, P.val *ᵥ y = ∑ j, y j • (P.val *ᵥ Pi.single j 1)`. Introduce `y`. Use extensionality with `a`. Simplify using `[Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Rewrite using `[← h, Matrix.mulVec_mulVec, ← Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -193,9 +193,9 @@ theorem expand (P : GL (Fin n) ℂ) (x : Fin n → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, hA, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_smul]`. Use `congr 1`. Use extensionality with `a`. Rewrite using `[Matrix.mulVec_diagonal]`. Distinguish the cases in `h : a = j`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eig_col (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fin n → ℂ)
     (hA : A * P.val = P.val * Matrix.diagonal l) (j : Fin n) :
@@ -209,9 +209,9 @@ theorem eig_col (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fin n
   · simp [Pi.single_apply, h]
 
 /- English proof (translation)
-Establish `e1 : (Polynomial.aeval A (Lagrange.basis Finset.univ l i)) *ᵥ x = ((P⁻¹ : GL (Fin n) ℂ).val *ᵥ x) i • (P.val *ᵥ Pi.single i 1)` using `by conv_lhs => rw [expand P x, mulVec_sum_smul]`. Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[aeval_eig A _ _ (eig_col A P l hA i), Lagrange.eval_basis_self hl.injOn (Finset.mem_univ i), one_smul]`. Introduce `j _ hj`. Rewrite using `[aeval_eig A _ _ (eig_col A P l hA j), Lagrange.eval_basis_of_ne hj.symm (Finset.mem_univ j), zero_smul, smul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `h2` using `aeval_stable A W hW (Lagrange.basis Finset.univ l i) x hx`. Rewrite `h2` using `[e1]`. Conclude with `(W.smul_mem_iff hi).1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_mem (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fin n → ℂ)
     (hl : Function.Injective l) (hA : A * P.val = P.val * Matrix.diagonal l)
@@ -233,11 +233,9 @@ theorem coord_mem (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fin
   exact (W.smul_mem_iff hi).1 h2
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Use `congrFun (congrFun h i) j` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Establish `h3 : M i j * (l j - l i) = 0` using `by rw [mul_sub, this]; ring`. Break down `mul_eq_zero.1 h3 with h4 | h4` into its components or cases. Conclude with `h4`.
-
-Conclude with `absurd (hl (sub_eq_zero.1 h4)).symm hij`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem diag_of_commute (M : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℂ) (hl : Function.Injective l)
     (h : M * Matrix.diagonal l = Matrix.diagonal l * M) :
@@ -254,9 +252,9 @@ theorem diag_of_commute (M : Matrix (Fin n) (Fin n) ℂ) (l : Fin n → ℂ) (hl
     · exact absurd (hl (sub_eq_zero.1 h4)).symm hij
 
 /- English proof (translation)
-Rewrite using `[expand P x, mulVec_sum_smul]`. Use `W.sum_mem fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : ((P⁻¹ : GL (Fin n) ℂ).val *ᵥ x) j = 0`. Rewrite using `[hj, zero_smul]`. Conclude with `W.zero_mem`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eig_col B P a hB j]`. Conclude with `W.smul_mem _ (W.smul_mem _ (coord_mem A P l hl hA W hW hx j hj))`.
+A detailed English derivation is pending.
 -/
 theorem stable_of_diag (A B : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l a : Fin n → ℂ)
     (hl : Function.Injective l) (hA : A * P.val = P.val * Matrix.diagonal l)
@@ -271,7 +269,7 @@ theorem stable_of_diag (A B : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (
     exact W.smul_mem _ (W.smul_mem _ (coord_mem A P l hl hA W hW hx j hj))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `hi (coord_mem A P l hl hA W hW hx i h)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem coord_zero (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fin n → ℂ)
     (hl : Function.Injective l) (hA : A * P.val = P.val * Matrix.diagonal l)
@@ -281,7 +279,7 @@ theorem coord_zero (A : Matrix (Fin n) (Fin n) ℂ) (P : GL (Fin n) ℂ) (l : Fi
   exact hi (coord_mem A P l hl hA W hW hx i h)
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_entry (P : GL (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (i : Fin n) :
     ((P⁻¹ : GL (Fin n) ℂ).val * X * P.val) i i =
@@ -290,23 +288,21 @@ theorem conj_entry (P : GL (Fin n) ℂ) (X : Matrix (Fin n) (Fin n) ℂ) (i : Fi
   simp
 
 /- English proof (translation)
-Take `⟨P, l, hl, hA⟩` from `exists_frame _ hs`. Establish `i1 : img (d * thC n d) W₁ = W₁` using `by rw [← perpD_perpD, h1, h2]`. Establish `i2 : img (d * thC n d) W₂ = W₂` using `by rw [← perpD_perpD, h2, h1]`. Establish `stab : ∀ W : Submodule ℂ (Fin n → ℂ), img (d * thC n d) W = W → ∀ x ∈ W, (d * thC n d).val *ᵥ x ∈ W`. Introduce `W hW x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (d * thC n d).val *ᵥ x ∈ img (d * thC n d) W` using `⟨x, hx, by rw [Matrix.toLin'_apply]⟩`. Rewrite `this` using `[hW]`. Then use the resulting hypothesis. Establish `s1` using `stab W₁ i1`. Establish `s2` using `stab W₂ i2`. Establish `hDv : (P⁻¹ * (d * thC n d) * P).val = Matrix.diagonal l`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, Units.val_mul, Units.val_mul (d * thC n d), hA, ← mul_assoc, ← Units.val_mul]`. Simplify using the standard rewrite rules. Establish `hdiag : ∀ t ∈ twCent (thC n) d, (P⁻¹ * t * P).val = Matrix.diagonal fun i => (P⁻¹ * t * P).val i i`. Introduce `t ht`. Apply `diag_of_commute _ l hl` to reduce the goal to its premises.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hDv, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Establish `hc` using `commute_of_mem d t ht`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∀ t ∈ twCent (thC n) d, t.val * P.val = P.val * Matrix.diagonal fun i => (P⁻¹ * t * P).val i i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `t ht`. Rewrite using `[← hdiag t ht, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `hle' : ∀ W : Submodule ℂ (Fin n → ℂ), (∀ x ∈ W, (d * thC n d).val *ᵥ x ∈ W) → ∀ t ∈ twCent (thC n) d, img t W ≤ W`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `W hW t ht _ ⟨x, hx, rfl⟩`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `stable_of_diag _ _ P l _ hl hA (hB t ht) W hW hx`. Establish `heq : ∀ W : Submodule ℂ (Fin n → ℂ), (∀ x ∈ W, (d * thC n d).val *ᵥ x ∈ W) → ∀ t ∈ twCent (thC n) d, img t W = W`. Introduce `W hW t ht`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `le_antisymm (hle' W hW t ht) ?_` and prove the remaining obligations. Establish `h3` using `img_le_img t (hle' W hW t⁻¹ ((twCent (thC n) d).inv_mem ht))`. Rewrite `h3` using `[img_inv_img]`. Then use the resulting hypothesis. Use `⟨P, fun t ht => ⟨_, hdiag t ht⟩, fun X hX i => ?_, fun t ht => ⟨heq W₁ s1 t ht, heq W₂ s2 t ht⟩⟩` and prove the remaining obligations. Rewrite using `[conj_entry]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `c2 : P.val *ᵥ Pi.single i 1 ∈ W₂`. Distinguish the cases in `c1 : P.val *ᵥ Pi.single i 1 ∈ W₁`. Rewrite using `[hX.2.2 _ c1, Matrix.mulVec_zero]`. Both sides reduce to the same expression. Conclude with `coord_zero _ P l hl hA W₁ s1 (hX.2.1 _ c2) i c1`.
-
-Conclude with `coord_zero _ P l hl hA W₂ s2 (hX.1 _) i c2`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eigenframe (n : ℕ) (d : GL (Fin n) ℂ) (W₁ W₂ : Submodule ℂ (Fin n → ℂ))
     (hs : (d * thC n d).val.charpoly.Separable) (hle : W₁ ≤ W₂)

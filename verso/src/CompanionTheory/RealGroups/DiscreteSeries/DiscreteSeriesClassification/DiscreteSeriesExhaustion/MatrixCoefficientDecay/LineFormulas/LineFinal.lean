@@ -6,7 +6,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.LineFor
 namespace CompanionTheory.RgExh.Dec.N.S
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.line_formula_of_fubini_and_parabolic GlobalTheory.T.FubiniParabolicMultiple GlobalTheory.T.rgExh_lineFacts GlobalTheory.T.ParabolicSubgroupEquality`.
+A detailed English derivation is pending.
 -/
 theorem line_formula : CompanionTheory.RgExh.Dec.L.LineFormula := GlobalTheory.T.line_formula_of_fubini_and_parabolic GlobalTheory.T.FubiniParabolicMultiple GlobalTheory.T.rgExh_lineFacts GlobalTheory.T.ParabolicSubgroupEquality
 

@@ -13,7 +13,7 @@ noncomputable def dens (σ : ℝ) (N : ℕ) (y : ℝ) : ℝ :=
   |y|⁻¹ * (|y| ^ (σ - 1) / (1 + |y⁻¹| * 1) ^ N)
 
 /- English proof (translation)
-Unfold `dens`. Establish `h1 : Measurable fun y : ℝ => |y|` using `by fun_prop`. Establish `h2 : Measurable fun y : ℝ => |y| ^ (σ - 1)` using `h1.pow_const _`. Establish `h3 : Measurable fun y : ℝ => (1 + |y⁻¹| * 1) ^ N` using `by fun_prop`. Conclude with `(h1.inv).mul (h2.div h3)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_dens (σ : ℝ) (N : ℕ) : Measurable (dens σ N) := by
   unfold dens
@@ -23,22 +23,22 @@ theorem measurable_dens (σ : ℝ) (N : ℕ) : Measurable (dens σ N) := by
   exact (h1.inv).mul (h2.div h3)
 
 /- English proof (translation)
-Unfold `dens`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem dens_nonneg (σ : ℝ) (N : ℕ) (y : ℝ) : 0 ≤ dens σ N y := by
   unfold dens
   positivity
 
 /- English proof (translation)
-Simplify using `[dens, inv_neg, abs_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dens_neg (σ : ℝ) (N : ℕ) (y : ℝ) : dens σ N (-y) = dens σ N y := by
   simp [dens, inv_neg, abs_neg]
 
 /- English proof (translation)
-Establish `hyi : 0 < y⁻¹` using `inv_pos.2 hy`. Establish `hp : 0 < y ^ (σ - 1)` using `Real.rpow_pos_of_pos hy _`. Establish `hb : y⁻¹ ≤ (1 + y⁻¹) ^ N`. Combine the equalities or inequalities in the displayed calculation. Establish `hD : 0 < (1 + y⁻¹) ^ N` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Simplify using `only [dens, abs_of_pos hy, abs_of_pos hyi, mul_one]`. Rewrite using `[← mul_div_assoc, div_le_iff₀ hD, mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left hb hp.le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_le_small (σ : ℝ) {N : ℕ} (hN : 1 ≤ N) {y : ℝ} (hy : 0 < y) :
     dens σ N y ≤ y ^ (σ - 1) := by
@@ -54,9 +54,9 @@ theorem dens_le_small (σ : ℝ) {N : ℕ} (hN : 1 ≤ N) {y : ℝ} (hy : 0 < y)
   exact mul_le_mul_of_nonneg_left hb hp.le
 
 /- English proof (translation)
-Establish `hyi : 0 < y⁻¹` using `inv_pos.2 hy`. Establish `hp : 0 < y ^ (σ - 1)` using `Real.rpow_pos_of_pos hy _`. Establish `hb : 1 ≤ (1 + y⁻¹) ^ N` using `one_le_pow₀ (by linarith)`. Establish `he : y ^ (σ - 2) = y⁻¹ * y ^ (σ - 1)`. Rewrite using `[show σ - 2 = -1 + (σ - 1) by ring, Real.rpow_add hy, Real.rpow_neg_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [dens, abs_of_pos hy, abs_of_pos hyi, mul_one]`. Rewrite using `[he]`. Conclude with `mul_le_mul_of_nonneg_left (div_le_self hp.le hb) hyi.le`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_le_large (σ : ℝ) (N : ℕ) {y : ℝ} (hy : 0 < y) :
     dens σ N y ≤ y ^ (σ - 2) := by
@@ -70,13 +70,11 @@ theorem dens_le_large (σ : ℝ) (N : ℕ) {y : ℝ} (hy : 0 < y) :
   exact mul_le_mul_of_nonneg_left (div_le_self hp.le hb) hyi.le
 
 /- English proof (translation)
-Establish `hA : IntegrableOn (dens σ N) (Ioc 0 1)`. Establish `hi : IntegrableOn (fun y : ℝ => y ^ (σ - 1)) (Ioc 0 1)`. Use `intervalIntegral.intervalIntegrable_rpow' (a := 0) (b := 1) (r := σ - 1) (by linarith)` as an intermediate fact. Conclude with `(intervalIntegrable_iff_integrableOn_Ioc_of_le zero_le_one).1 this`. Use `Integrable.mono' hi (measurable_dens σ N).aestronglyMeasurable ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(ae_restrict_iff' measurableSet_Ioc).2 (Filter.Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (dens_nonneg σ N y)]`. Conclude with `dens_le_small σ hN hy.1`. Establish `hB : IntegrableOn (dens σ N) (Ioi 1)`. Establish `hi : IntegrableOn (fun y : ℝ => y ^ (σ - 2)) (Ioi 1)` using `integrableOn_Ioi_rpow_of_lt (by linarith) zero_lt_one`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Integrable.mono' hi (measurable_dens σ N).aestronglyMeasurable ?_` and prove the remaining obligations. Use `(ae_restrict_iff' measurableSet_Ioi).2 (Filter.Eventually.of_forall fun y hy => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (dens_nonneg σ N y)]`. Conclude with `dens_le_large σ N (lt_trans zero_lt_one hy)`. Rewrite using `[← Ioc_union_Ioi_eq_Ioi (zero_le_one' ℝ)]`.
-
-Conclude with `hA.union hB`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dens_integrableOn {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN : 1 ≤ N) :
     IntegrableOn (dens σ N) (Ioi 0) := by
@@ -99,11 +97,11 @@ theorem dens_integrableOn {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN :
   exact hA.union hB
 
 /- English proof (translation)
-Establish `hI : Integrable ((Ioi (0 : ℝ)).indicator (dens σ N))` using `(dens_integrableOn h0 h1 hN).integrable_indicator measurableSet_Ioi`. Establish `hJ : Integrable fun x : ℝ => (Ioi (0 : ℝ)).indicator (dens σ N) (-x)` using `hI.comp_neg`. Use `(hI.add hJ).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Break down `lt_trichotomy x 0 with hx | hx | hx` into its components or cases. Establish `h2 : x ∉ Ioi (0 : ℝ)` using `by simp [hx.le]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h3 : -x ∈ Ioi (0 : ℝ)` using `by simpa using hx`. Simplify using `[Set.indicator_of_notMem h2, Set.indicator_of_mem h3, dens_neg]`. Substitute `hx` using the available equality. Simplify using `[dens]`. Establish `h2 : x ∈ Ioi (0 : ℝ)` using `hx`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h3 : -x ∉ Ioi (0 : ℝ)` using `by simp [hx.le]`. Simplify using `[Set.indicator_of_mem h2, Set.indicator_of_notMem h3]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dens_integrable {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN : 1 ≤ N) :
     Integrable (dens σ N) := by
@@ -122,7 +120,7 @@ theorem dens_integrable {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN : 1
     simp [Set.indicator_of_mem h2, Set.indicator_of_notMem h3]
 
 /- English proof (translation)
-Establish `key : Integrable (fun x : ℝ => |x|⁻¹ • (((|x| ^ (σ - 1) / (1 + |x⁻¹| * 1) ^ N : ℝ)) : ℂ)) volume`. Use `((dens_integrable h0 h1 hN).ofReal (𝕜 := ℂ)).congr (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[dens, Complex.real_smul]`. Conclude with `((GlobalTheory.CompanionTheory.RealTateConv.integrable_mulR_iff (fun x : ℝ => (((|x| ^ (σ - 1) / (1 + |x⁻¹| * 1) ^ N : ℝ)) : ℂ))).2 key).re`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kernel_one_integrable {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (hN : 1 ≤ N) :
     Integrable (fun t : ℝˣ => |(t : ℝ)| ^ (σ - 1) / (1 + |(t : ℝ)⁻¹| * 1) ^ N) Ad3.mulR := by
@@ -135,7 +133,7 @@ theorem kernel_one_integrable {σ : ℝ} (h0 : 0 < σ) (h1 : σ < 1) {N : ℕ} (
     (fun x : ℝ => (((|x| ^ (σ - 1) / (1 + |x⁻¹| * 1) ^ N : ℝ)) : ℂ))).2 key).re
 
 /- English proof (translation)
-The claim follows from `|((t * Units.mk0 q hq.ne' : ℝˣ) : ℝ)| ^ (σ - 1) / (1 + |((t * Units.mk0 q hq.ne' : ℝˣ) : ℝ)⁻¹| * q) ^ N = q ^ (σ - 1) * (|(t : ℝ)| ^ (σ - 1) / (1 + |(t : ℝ)⁻¹| * 1) ^ N) := by have h1 : |((t * Units.mk0 q hq.ne' : ℝˣ) : ℝ)| = |(t : ℝ)| * q := by simp [abs_mul, abs_of_pos hq] have …`.
+A detailed English derivation is pending.
 -/
 theorem kernel_scale (σ : ℝ) (N : ℕ) {q : ℝ} (hq : 0 < q) (t : ℝˣ) :
     |((t * Units.mk0 q hq.ne' : ℝˣ) : ℝ)| ^ (σ - 1) /
@@ -150,11 +148,11 @@ theorem kernel_scale (σ : ℝ) (N : ℕ) {q : ℝ} (hq : 0 < q) (t : ℝˣ) :
   ring
 
 /- English proof (translation)
-Introduce `σ h0 h1 N hN`. Use `⟨∫ t : ℝˣ, |(t : ℝ)| ^ (σ - 1) / (1 + |(t : ℝ)⁻¹| * 1) ^ N ∂Ad3.mulR, fun q hq => ?_⟩` and prove the remaining obligations. Use `set u : ℝˣ := Units.mk0 q hq.ne' with hu`. Use `set f : ℝˣ → ℝ := fun t => |(t : ℝ)| ^ (σ - 1) / (1 + |(t : ℝ)⁻¹| * q) ^ N with hf`. Establish `hcomp : (fun t : ℝˣ => f (t * u)) = fun t : ℝˣ => q ^ (σ - 1) * (|(t : ℝ)| ^ (σ - 1) / (1 + |(t : ℝ)⁻¹| * 1) ^ N)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Conclude with `kernel_scale σ N hq t`. Establish `hint : Integrable (fun t : ℝˣ => f (t * u)) Ad3.mulR`. Rewrite using `[hcomp]`. Conclude with `(kernel_one_integrable h0 h1 hN).const_mul _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfi : Integrable f Ad3.mulR`. Use `hint.comp_mul_right u⁻¹` as an intermediate fact. Simplify using `using this`. Use `⟨hfi, le_of_eq ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_mul_right_eq_self f u, hcomp, integral_const_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_integral_le :
     ∀ σ : ℝ, 0 < σ → σ < 1 → ∀ N : ℕ, 1 ≤ N → ∃ K : ℝ, ∀ q : ℝ, 0 < q →

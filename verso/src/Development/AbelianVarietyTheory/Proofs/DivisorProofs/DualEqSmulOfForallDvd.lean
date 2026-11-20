@@ -5,13 +5,13 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O M _ _ _ a ha l hl`. Establish `cancel : ∀ x y : O, a * x = a * y → x = y`. Introduce `x y hxy`. Use `ha (x - y) (by rw [mul_sub, hxy, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.mp this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `c : M → O` to `fun w => Classical.choose (hl w)`. Establish `hc : ∀ w, l w = a * c w` using `fun w => Classical.choose_spec (hl w)`. Use `⟨{ toFun := c, map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations. Introduce `x y`. Apply `cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_add, ← hc, ← hc, ← hc, map_add]`. Introduce `r x`. Apply `cancel` to reduce the goal to its premises. Simplify using `only [RingHom.id_apply, smul_eq_mul]`. Rewrite using `[← hc, map_smul, hc, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use extensionality with `w`. Simplify using `only [LinearMap.smul_apply, LinearMap.coe_mk, AddHom.coe_mk, smul_eq_mul]`. Conclude with `hc w`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_eq_smul_of_forall_dvd :
     ∀ (O M : Type) [CommRing O] [AddCommGroup M] [Module O M] (a : O), (∀ x : O, a * x = 0 → x = 0) →

@@ -27,25 +27,21 @@ namespace GlobalTheory.GoodProjHypH
 attribute [local instance] GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.factPrime
 
 /- English proof (translation)
-Set `P : W →ₗ[ℂ] W` to `∑ g, emb ((Formalism.L2.DIV.idemOf X).coeff g) • τ g`. Establish `hPz : ∀ z, P z = ∑ g, emb ((Formalism.L2.DIV.idemOf X).coeff g) • τ g z` using `fun z => by`. Simplify using `[P, LinearMap.sum_apply]`. Establish `hPx : P x = x` using `(hPz x).trans hx`. Establish `hidem : IsIdempotentElem P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Use `show P (P z) = P z`. Rewrite using `[hPz, hPz z]`. Conclude with `GlobalTheory.AdjBlock.idem_idem emb hX τ z`. Establish `htr : LinearMap.trace ℂ W P ≠ 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `LinearMap.IsIdempotentElem.eq_zero_of_trace_eq_zero hidem h0`. Conclude with `hx0 (by rw [← hPx, h1, LinearMap.zero_apply])`. Establish `htr' : LinearMap.trace ℂ W P = ∑ χ ∈ X, ∑ g, emb (χ 1 / (Fintype.card G : K) * χ g⁻¹) * τ.character g`. Simplify using `only [P, map_sum, map_smul, smul_eq_mul, Formalism.L2.DIV.coeff_idemOf, Finset.sum_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression. Rewrite `htr` using `[htr']`. Take `⟨χ, hχ, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero htr`. Use `⟨χ, hχ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, ρ, hρi, hρ⟩` from `GlobalTheory.GoodTypeGeneric.isIrrChar_of_isAbsIrrChar emb (hX χ hχ)`. Use `beta_reduce at hρ`. Establish `hpair` using `GlobalTheory.BI.pair_character_eq_finrank ℂ ℂ G (Fin n → ℂ) W ρ τ`. Establish `hfin : Module.finrank ℂ (ρ.IntertwiningMap τ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpair` using `[h0, Nat.cast_zero]`. Apply `hne` to reduce the goal to its premises. Unfold `GlobalTheory.BI.pair at hpair`. Rewrite `hpair` using `[finsum_eq_sum_of_fintype]`. Establish `hc : (Nat.card G : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∑ g, τ.character g * ρ.character g⁻¹ = 0`. Simplify `hpair` using `[hc]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_mul, map_div₀, map_natCast, hρ g⁻¹]`. Simplify using `only [Algebra.algebraMap_self, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [hs, mul_zero]`. Use `haveI : ρ.IsIrreducible := hρi`.
-
-Use `haveI : τ.IsIrreducible := hτ`. Use `haveI := Module.nontrivial_of_finrank_pos (Nat.pos_of_ne_zero hfin)`. Take `⟨f, hf⟩` from `exists_ne (0 : ρ.IntertwiningMap τ)`. Break down `Representation.IsIrreducible.bijective_or_eq_zero f with hb | h0` into its components or cases. Introduce `g`.
-
-Rewrite using `[hρ g, ← Representation.char_iso (Representation.IntertwiningMap.ofBijective f hb)]`. Simplify using the standard rewrite rules. Conclude with `absurd h0 hf`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_char_of_fixed {K G W : Type} [Field K] [CharZero K] [Group G] [Fintype G] (emb : K →+* ℂ)
     (X : Finset (G → K)) (hX : ∀ χ ∈ X, Formalism.L2.DIV.IsAbsIrrChar χ) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
@@ -106,27 +102,27 @@ theorem exists_char_of_fixed {K G W : Type} [Field K] [CharZero K] [Group G] [Fi
 open GlobalTheory.BI Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.FiniteGL GlobalTheory.Parabolic GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters GlobalTheory.ParamLabel GlobalTheory.GoodTypeGeneric in
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨(Fact.out : p.Prime).ne_zero⟩`. Set `b₀ : Fin r → ℕ` to `fun i => (s.1 i : ℕ)`. Set `w` to `Tuple.sort b₀`. Set `e` to `(cycEquiv s.1).trans w.symm`. Establish `he : ∀ x y, (b₀ ∘ w) (e x) = (b₀ ∘ w) (e y) ↔ x.1 = y.1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Simplify using `only [e, b₀, Function.comp, Equiv.trans_apply, Equiv.apply_symm_apply, apply_cycEquiv, Fin.val_inj, Subtype.ext_iff]`. Take `⟨n, σ, hσ, hch⟩` from `exists_isCuspDatum (F := ZMod p) (Tuple.monotone_sort b₀) e he (fun c => cuspOn (s.2 c)) (fun c => (irr_and_sum_of_isCusp (isCusp_cuspOn hs c)).1) fun c => (irr_and_sum_of_isCusp (isCusp_cuspOn hs c)).2`. Establish `hchar : ∀ x, typeChar s x = (parInd (b₀ ∘ w) σ).character x`. Introduce `x`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ∀ z : GL (Fin r) (ZMod p), ((permGL (ZMod p) w * z * (permGL (ZMod p) w)⁻¹ : GL (Fin r) (ZMod p)) : Matrix (Fin r) (Fin r) (ZMod p)).BlockTriangular s.1 ↔ z ∈ blockTri (κ` using `ZMod p) (b₀ ∘ w) := fun z => Iff.trans Iff.rfl (conj_mem_blockTri (b := b₀))`. Rewrite using `[character_coind_eq_ind]`. Unfold `typeChar ind`. Use `congr 1`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Equip the data with the indicated structure.
 
-Conclude with `(Nat.card_congr ((MulAut.conj (permGL (ZMod p) w)).toEquiv.subtypeEquiv fun z => (hm z).symm)).symm`. Use `letI := Fintype.ofFinite (GL (Fin r) (ZMod p))`. Rewrite using `[finsum_eq_sum_of_fintype]`. Use `symm`. Use `Fintype.sum_equiv (Equiv.mulRight (permGL (ZMod p) w)⁻¹) _ _ fun y => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1 : (Equiv.mulRight (permGL (ZMod p) w)⁻¹ y)⁻¹ * x * Equiv.mulRight (permGL (ZMod p) w)⁻¹ y = permGL (ZMod p) w * (y⁻¹ * x * y) * (permGL (ZMod p) w)⁻¹`. Simplify using `only [Equiv.coe_mulRight]`. Use `group`. Rewrite using `[h1]`. Unfold `ext0`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hz : y⁻¹ * x * y ∈ blockTri (κ := ZMod p) (b₀ ∘ w)`. Rewrite using `[dif_pos hz, if_pos ((hm _).2 hz), hch]`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `cuspOn`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.submatrix_apply, blocksHom_apply]`. Simplify using `only [e, Equiv.trans_apply, cycEquiv_apply]`. Rewrite using `[← conj_permGL_apply w, Equiv.apply_symm_apply, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[dif_neg hz, if_neg (mt (hm _).1 hz)]`. Establish `hnf : GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.NoFixed (parInd (b₀ ∘ w) σ) (GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical (ZMod p) r a)`. Assume the negation of the conclusion as `hfix`. Take `⟨J, hJ, hJa⟩` from `GlobalTheory.GoodNoFixed.fixedVectorBlocks (ZMod p) r (b₀ ∘ w) _ σ hσ _ (parInd (b₀ ∘ w) σ) ⟨LinearMap.id, Function.injective_id, fun _ => rfl⟩ a h0 ha hfix`. Use `set Af := Finset.univ.filter fun c : Cyc s.1 => (c.1 : ℕ) ∈ J with hAf`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply `hA Af` to reduce the goal to its premises. Establish `hJim : J = Af.image fun c => (c.1 : ℕ)`. Use extensionality with `j`. Simplify using `only [hAf, Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce `hj`. Take `⟨i, -, hi⟩` from `Finset.mem_image.1 (hJ hj)`. Conclude with `⟨⟨s.1 (w i), w i, rfl⟩, by rw [← hi] at hj; exact hj, hi⟩`. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hJa, hJim, Finset.sum_image fun c _ c' _ h => Subtype.ext (Fin.ext h)]`. Use `Finset.sum_congr rfl fun c _ => Fintype.card_congr (w.symm.subtypeEquiv fun i => ?_)` and prove the remaining obligations. Simplify using `only [b₀, Function.comp, Fin.val_inj, Equiv.apply_symm_apply]`. Establish `h1` using `(GlobalTheory.GoodNoFixed.noFixed_iff_sum (parInd (b₀ ∘ w) σ) (MonoidHom.id _)).1 (by rwa [MonoidHom.coe_id, Set.image_id])`. Simplify `h1` using `only [hchar, MonoidHom.id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sum_typeChar_radical {p : ℕ} [Fact p.Prime] {r : ℕ} (s : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.SSParam p ℂ r)
     (hs : GlobalTheory.IndefiniteRowSideFullHecke.LevelCuspCharacters.IsRegularParam s) {a : ℕ} (h0 : 0 < a) (ha : a < r)
@@ -201,43 +197,39 @@ theorem sum_typeChar_radical {p : ℕ} [Fact p.Prime] {r : ℕ} (s : GlobalTheor
 open GlobalTheory.IndefiniteRowSideFullHecke GlobalTheory.DimPartsCompare GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.FiniteGL in
 
 /- English proof (translation)
-Introduce `hG D G _ _ Pl0 T A Ks _ _ _ R F hR W _ _ _ τ hτ hx a h0 ha`. Take `⟨x, hx0, hx⟩` from `hx`. Take `⟨om, hT⟩` from `GlobalTheory.T.exists_tameCharacters_seriesIdempotentsTameLabelled R F hR`. Establish `hI` using `GlobalTheory.GoodIdemTie.idemTie_of_tameTie hG D om hT`. Take `⟨χ, hχ, hτχ⟩` from `exists_char_of_fixed D.what₂.embLL A.X hR.irr (τ.comp R.eG.toMonoidHom) (GlobalTheory.FinGL.Transport.isIrreducible_comp τ _ R.eG.surjective hτ) x hx0 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨eR, plg, iso, h1, -, h2⟩` from `hR.core.grp.record`. Set `π : LevelCuspCharacters.LevelGroup D.host ≃* G0g D.nd` to `MulEquiv.ofBijective (⟨⟨pull, rfl⟩, fun _ _ => rfl⟩ : LevelCuspCharacters.LevelGroup D.host →* G0g D.nd) pull_bijective`. Set `φ : G ≃* LevelCuspCharacters.LevelGroup D.host` to `eR.trans π.symm`. Establish `hφ : ∀ g, pull (φ g) = eR g` using `fun g => π.apply_symm_apply (eR g)`. Establish `hreg : ∀ s : ∀ v : LevelCuspCharacters.Sq D.host, LevelCuspCharacters.SSParam (D.host.g v.1) ℂ D.R.r, LevelCuspCharacters.IsGoodParam om s → ∀ v, CuspidalProductMultiplicity.IsCuspProdChar (LevelCuspCharacters.typeChar (s v))` using `fun s hs v => GlobalTheory.GoodTypeGeneric.isCuspProdChar_typeChar ((hs v.1).1 v.2)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨θ, hθ, hχθ⟩` from `GlobalTheory.GoodTypeGeneric.exists_eq_of_idemOf D.what₂.embLL A.X hR.irr (LevelCuspCharacters.goodTypes_finite (H := D.host) om).toFinset (fun θ g => θ (φ g)) (fun θ hθ => by`. Take `⟨s, hs, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hθ`. Use `letI := Fintype.ofFinite (LevelCuspCharacters.Sq D.host)`. Use `GlobalTheory.GoodTypeGeneric.isChar_prod (χ := fun v g => LevelCuspCharacters.typeChar (s v) (φ g v)) fun v => ?_` and prove the remaining obligations. Take `⟨n, ρ, hρ⟩` from `GlobalTheory.GoodTypeGeneric.isChar_of_isCuspProdChar (hreg s hs v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, ρ.comp ((Pi.evalMonoidHom _ v).comp φ.toMonoidHom), fun g => hρ _⟩) (fun g => by`. Rewrite using `[h1, ← hφ, hI, Nat.card_congr φ.toEquiv]`. Simplify using `only [LevelCuspCharacters.goodIdem, LevelCuspCharacters.centralIdem, MonoidAlgebra.coeff_sum, Finset.sum_apply', map_one, map_inv]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[Finsupp.single_apply]) hχ`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨s, hs, rfl⟩` from `(Set.Finite.mem_toFinset _).1 hθ`. Establish `hchar : ∀ g, τ.character (R.eG g) = LevelCuspCharacters.tupleChar s (φ g)` using `fun g => (hτχ g).trans (hχθ g)`. Establish `htot : ∀ v : LevelCuspCharacters.Sq D.host, ∑ c : LevelCuspCharacters.Cyc (s v).1, LevelCuspCharacters.cycLen (s v).1 c = D.R.r` using `fun v => by`. Use `Fintype.card_congr (GlobalTheory.GoodTypeGeneric.cycEquiv (s v).1)` as an intermediate fact. Simplify `this` using `[Fintype.card_sigma]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : LevelCuspCharacters.PlOver D.host 0, ∀ A : Finset (LevelCuspCharacters.Cyc (s ⟨0, w⟩).1), ∑ c ∈ A, LevelCuspCharacters.cycLen (s ⟨0, w⟩).1 c ≠ a := by`. Establish `hiv` using `(hs 0).2.2.2.1`. Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Distinguish the cases in `h2 : 2 * a ≤ D.R.r`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hiv ⟨a, h0, h2, hne⟩`. Use `hiv ⟨D.R.r - a, by omega, by omega, fun v => ?_⟩` and prove the remaining obligations. Take `⟨A', hA'⟩` from `hne v`. Use `⟨A'ᶜ, ?_⟩` and prove the remaining obligations. Use `Finset.sum_add_sum_compl A' (fun c => LevelCuspCharacters.cycLen (s ⟨0, v⟩).1 c)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[htot]`. Use `beta_reduce at hA' ⊢`. Use linear arithmetic over natural numbers and integers. Take `⟨kv, hkv⟩` from `(sqEquiv D).surjective ⟨0, w⟩`. Rewrite `hw` using `[← hkv]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `⟨plg kv, ?_⟩` and prove the remaining obligations. Use `letI : Field (kP (plg kv).1) := Ideal.Quotient.field _`. Use `haveI : Finite (kP (plg kv).1) := CuspidalProductMultiplicity.finite_kP _`. Use `letI := Fintype.ofFinite (unipRadical (kP (plg kv).1) (blk2 (n := D.R.r) a))`. Set `ι : GL (Fin D.R.r) (kP (plg kv).1) →* G0 R.Pg D.R.r` to `MonoidHom.mulSingle (fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) (plg kv)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hset : {g : G0 R.Pg D.R.r | (∀ PP' : R.Pg, PP' ≠ plg kv → g PP' = 1) ∧ g (plg kv) ∈ GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical (kP (plg kv).1) D.R.r a} = ι '' GlobalTheory.IndefiniteRowSideFullHecke.RadicalNoFixedVectors.radical _ D.R.r a`. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg1, hg2⟩`. Use `⟨g (plg kv), hg2, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `PP'`. Distinguish the cases in `h : PP' = plg kv`. Substitute `h` using the available equality. Conclude with `Pi.mulSingle_eq_same (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) _ _`. Rewrite using `[hg1 PP' h]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Pi.mulSingle_eq_of_ne (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) h _`. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun PP' h => Pi.mulSingle_eq_of_ne (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) h _, ?_⟩` and prove the remaining obligations. Rewrite using `[show ι u (plg kv) = u from Pi.mulSingle_eq_same (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) _ _]`. Conclude with `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hset, GlobalTheory.GoodNoFixed.noFixed_iff_sum τ ι]`. Establish `hbc : ∀ {k k' : Type} [CommRing k] [CommRing k'] (e : k ≃+* k') (y : GL (Fin D.R.r) k), Formalism.UG.bc (e.symm : k' →+* k) (Formalism.UG.bc (e : k →+* k') y) = y`. Introduce `k k' _ _ e y`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.UG.bc]`. Establish `hval : ∀ u : GL (Fin D.R.r) (kP (plg kv).1), τ.character (ι u) = LevelCuspCharacters.typeChar (s (sqEquiv D kv)) (Formalism.UG.bc ((iso kv).symm : kP (plg kv).1 →+* ZMod (D.host.g kv.1)) u) * ∏ PP ∈ Finset.univ.erase (plg kv), LevelCuspCharacters.typeChar (s (sqEquiv D (plg.symm …`. Introduce `u`. Take `⟨g', hg'⟩` from `R.eG.surjective (ι u)`. Establish `key : ∀ kv', φ g' (sqEquiv D kv') = Formalism.UG.bc ((iso kv').symm : kP (plg kv').1 →+* ZMod (D.host.g kv'.1)) (ι u (plg kv'))`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `kv'`. Rewrite using `[← hg', h2 g' kv', hbc]`. Conclude with `congrFun (hφ g') kv'`. Rewrite using `[← hg', hchar, LevelCuspCharacters.tupleChar]`. Use `letI := Fintype.ofFinite (LevelCuspCharacters.Sq D.host)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Fintype.prod_equiv (plg.symm.trans (sqEquiv D)) (fun PP => LevelCuspCharacters.typeChar (s (sqEquiv D (plg.symm PP))) (φ g' (sqEquiv D (plg.symm PP)))) _ (fun _ => rfl), ← Finset.mul_prod_erase _ _ (Finset.mem_univ (plg kv))]`. Use `congrArg₂ (· * ·) ?_ (Finset.prod_congr rfl fun PP hPP => ?_)` and prove the remaining obligations. Rewrite using `[Equiv.symm_apply_apply, key, show ι u (plg kv) = u from Pi.mulSingle_eq_same (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) _ _]`. Rewrite using `[key (plg.symm PP), show ι u (plg (plg.symm PP)) = 1 from Pi.mulSingle_eq_of_ne (M := fun PP : ↥R.Pg => GL (Fin D.R.r) (kP PP.1)) (by rw [Equiv.apply_symm_apply]; exact Finset.ne_of_mem_erase hPP) _, map_one]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hval]`. Rewrite using `[← Finset.sum_mul]`. Use `mul_eq_zero_of_left ?_ _` and prove the remaining obligations. Use `haveI : NeZero (D.host.g kv.1) := ⟨(Fact.out : (D.host.g kv.1).Prime).ne_zero⟩`. Use `letI := Fintype.ofFinite (unipRadical (ZMod (D.host.g kv.1)) (blk2 (n := D.R.r) a))`.
-
-Set `E : unipRadical (ZMod (D.host.g kv.1)) (blk2 (n` to `D.R.r) a) ≃ unipRadical (kP (plg kv).1) (blk2 (n := D.R.r) a) := { toFun := fun u => ⟨Formalism.UG.bc ((iso kv : ZMod (D.host.g kv.1) →+* kP (plg kv).1)) u, GlobalTheory.GoodNoFixed.mem_radical_iff.1 (GlobalTheory.GoodNoFixed.map_mem_radical _ (GlobalTheory.GoodNoFixed.mem_radica …`. Establish `hreg0 : LevelCuspCharacters.IsRegularParam (s (sqEquiv D kv))` using `(hs (sqEquiv D kv).1).1 (sqEquiv D kv).2`. Establish `hB` using `sum_typeChar_radical (p := D.host.g kv.1) (r := D.R.r) (s (sqEquiv D kv)) hreg0 h0 ha hw`. Establish `hS : ∑ u : unipRadical (kP (plg kv).1) (blk2 (n` using `D.R.r) a), LevelCuspCharacters.typeChar (s (sqEquiv D kv)) (Formalism.UG.bc ((iso kv).symm : kP (plg kv).1 →+* ZMod (D.host.g kv.1)) (u : GL (Fin D.R.r) (kP (plg kv).1))) = ∑ u : unipRadical (ZMod (D.host.g kv.1)) (blk2 (n := D.R.r) a), LevelCuspCharacters.typeChar (s (sqEquiv D …`. Use `(Fintype.sum_equiv E _ _ fun u => ?_).symm` and prove the remaining obligations.
-
-Conclude with `congrArg _ (hbc (iso kv) (u : GL (Fin D.R.r) (ZMod (D.host.g kv.1)))).symm`. Conclude with `hS.trans hB`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hypH_of_goodProj : GlobalTheory.Published.GreenCuspidal → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

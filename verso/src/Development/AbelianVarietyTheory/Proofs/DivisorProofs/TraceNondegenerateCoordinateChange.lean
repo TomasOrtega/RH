@@ -18,15 +18,15 @@ namespace GlobalTheory.SubintCoords
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_numberField : FiniteDimensional F E :=
   Module.Finite.of_restrictScalars_finite ℚ F E
 
 /- English proof (translation)
-Use `set b := Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Use `conv_lhs => rw [← b.sum_repr y]`. Rewrite using `[Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, LinearMap.map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hb : b i = inclR (F` using `F) (AF F) (Module.finBasis F E i) := by`. Simplify using `[b, Algebra.TensorProduct.basis_apply]`. Both sides reduce to the same expression. Rewrite using `[hb, ← map_mul, GlobalTheory.VacIndic.trace_inclR]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_inclR_mul [FiniteDimensional F E] (c : E) (y : AE F E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) c * y) =
@@ -60,7 +60,7 @@ def coordMat {n : ℕ} {κ κa κb : Type} (ε : κ ≃ κa ⊕ (κb ⊕ κb)) (
     (fun w => Sum.elim (fun _ => 0) fun b => if Sum.elim id id w = b then 1 else 0) (ε k') x
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, coordMat, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordMat_mulVec_inl {n : ℕ} {κ κa κb : Type} [Fintype κb] (ε : κ ≃ κa ⊕ (κb ⊕ κb))
     (C : Matrix κa (Fin n) E) {R : Type} [CommRing R] [Algebra F R] (z : ((Fin n × Fin (Module.finrank F E)) ⊕ κb) → R)
@@ -71,7 +71,7 @@ theorem coordMat_mulVec_inl {n : ℕ} {κ κa κb : Type} [Fintype κb] (ε : κ
   simp [Matrix.mulVec, dotProduct, coordMat, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, coordMat, Fintype.sum_sum_type]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordMat_mulVec_inr {n : ℕ} {κ κa κb : Type} [Fintype κb] (ε : κ ≃ κa ⊕ (κb ⊕ κb))
     (C : Matrix κa (Fin n) E) {R : Type} [CommRing R] [Algebra F R] (z : ((Fin n × Fin (Module.finrank F E)) ⊕ κb) → R)
@@ -80,19 +80,17 @@ theorem coordMat_mulVec_inr {n : ℕ} {κ κa κb : Type} [Fintype κb] (ε : κ
   simp [Matrix.mulVec, dotProduct, coordMat, Fintype.sum_sum_type]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n κ κa κb _ _ _ ε C hC`. Use `haveI : FiniteDimensional F E := finiteDimensional_of_numberField`. Use `⟨coordMat ε C, coordEquiv n, fun z hz => ?_, fun y u => ?_⟩` and prove the remaining obligations. Establish `hm : (coordMat ε C).map (algebraMap F F) = coordMat ε C` using `by ext; simp`. Rewrite `hz` using `[← hm]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : ∀ b, z (.inr b) = 0` using `fun b => by`. Use `congrFun hz (ε.symm (.inr (.inl b)))` as an intermediate fact. Rewrite `this` using `[coordMat_mulVec_inr]`. Simplify using `using this`. Establish `hl : ∀ k, ∑ p : Fin n × Fin (Module.finrank F E), Algebra.trace F E (C k p.1 * Module.finBasis F E p.2) * z (.inl p) = 0` using `fun k => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun hz (ε.symm (.inl k))` as an intermediate fact. Rewrite `this` using `[coordMat_mulVec_inl]`. Simplify using `using this`. Use `set w : Fin n → E := fun j => ∑ i, z (.inl (j, i)) • Module.finBasis F E i`. Establish `hw : w = 0` using `hC w fun k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hl k, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [w, Finset.mul_sum, map_sum, mul_smul_comm, LinearMap.map_smul, smul_eq_mul, mul_comm]`. Establish `hz' : ∀ j i, z (.inl (j, i)) = 0` using `fun j i => by`. Establish `h0 : ∑ i, z (.inl (j, i)) • Module.finBasis F E i = 0` using `congrFun hw j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Fintype.linearIndependent_iff.mp (Module.finBasis F E).linearIndependent (fun i => z (.inl (j, i))) h0 i`. Use function extensionality and compare the values at `x`. Break down `x with ⟨j, i⟩ | b` into its components or cases. Conclude with `hz' j i`. Conclude with `hr b`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `k'`. Take `⟨k', rfl⟩` from `ε.symm.surjective k'`. Break down `k' with k | w` into its components or cases. Rewrite using `[GlobalTheory.ThK.Adapt.glue_inl, coordMat_mulVec_inl, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[trace_inclR_mul]`. Both sides reduce to the same expression. Rewrite using `[GlobalTheory.ThK.Adapt.glue_inr, coordMat_mulVec_inr]`. Apply the tactic sequence `rcases w with b | b <;> rfl`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)
     (κ κa κb : Type) [Fintype κ] [Fintype κa] [Fintype κb] (ε : κ ≃ κa ⊕ (κb ⊕ κb)) (C : Matrix κa (Fin n) E),

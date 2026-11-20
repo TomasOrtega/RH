@@ -22,11 +22,11 @@ private def placeOut (K : Type) [Field K] [NumberField K] (n : ℕ) :
   right_inv _ := rfl
 
 /- English proof (translation)
-Use `set e := placeOut K n`. Establish `hc : e.toLinearMap ∘ₗ lm y ∘ₗ e.symm.toLinearMap = LinearMap.pi (fun v => ((LinearMap.mulLeft ℂ (e y v)).restrictScalars ℝ) ∘ₗ LinearMap.proj v)`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `x`. Use function extensionality and compare the values at `v i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `show (Matrix.of y * Matrix.of (fun i j v => x v i j)) i j v = ∑ k, y i k v * x v k j`. Rewrite using `[Matrix.mul_apply, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[← LinearMap.det_conj _ e, hc, LinearMap.det_pi, nrm, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[det_restrictScalars_mulLeft, Fintype.card_fin]`. Use `congr 3`. Rewrite using `[show (Matrix.of y).det v = Pi.evalRingHom _ v (Matrix.of y).det from rfl, RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem det_lm (y : Lie K n) : LinearMap.det (lm y) = nrm y ^ n := by
   classical
@@ -46,20 +46,20 @@ private theorem det_lm (y : Lie K n) : LinearMap.det (lm y) = nrm y ^ n := by
   rfl
 
 /- English proof (translation)
-Use `show ∏ w, ‖(Matrix.of y * Matrix.of x).det w‖ ^ 2 = _`. Simplify using `only [nrm, Matrix.det_mul, Pi.mul_apply, norm_mul, mul_pow, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem nrm_lm (y x : Lie K n) : nrm (lm y x) = nrm y * nrm x := by
   show ∏ w, ‖(Matrix.of y * Matrix.of x).det w‖ ^ 2 = _
   simp only [nrm, Matrix.det_mul, Pi.mul_apply, norm_mul, mul_pow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 private theorem nrm_nonneg (x : Lie K n) : 0 ≤ nrm x :=
   Finset.prod_nonneg fun _ _ => by positivity
 
 /- English proof (translation)
-Establish `h : x ∈ invSet K n ↔ IsUnit (Matrix.of x).det` using `Matrix.isUnit_iff_isUnit_det (Matrix.of x)`. Rewrite using `[h, Pi.isUnit_iff, (nrm_nonneg x).lt_iff_ne, ne_comm, nrm, Finset.prod_ne_zero_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem nrm_pos_iff (x : Lie K n) : 0 < nrm x ↔ x ∈ invSet K n := by
   have h : x ∈ invSet K n ↔ IsUnit (Matrix.of x).det := Matrix.isUnit_iff_isUnit_det (Matrix.of x)
@@ -67,7 +67,7 @@ private theorem nrm_pos_iff (x : Lie K n) : 0 < nrm x ↔ x ∈ invSet K n := by
   simp
 
 /- English proof (translation)
-Use `continuous_finset_prod _ fun w _ => (Continuous.norm ?_).pow 2` and prove the remaining obligations. Conclude with `(continuous_apply w).comp (continuous_id (X := Matrix (Fin n) (Fin n) (InfinitePlace K → ℂ))).matrix_det`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem continuous_nrm : Continuous (nrm : Lie K n → ℝ) := by
   refine continuous_finset_prod _ fun w _ => (Continuous.norm ?_).pow 2
@@ -75,11 +75,11 @@ private theorem continuous_nrm : Continuous (nrm : Lie K n → ℝ) := by
     (continuous_id (X := Matrix (Fin n) (Fin n) (InfinitePlace K → ℂ))).matrix_det
 
 /- English proof (translation)
-Use `⟨Units.isEmbedding_val_mk' (f := fun x => Ring.inverse x.det • x.adjugate) ?_ ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hd : IsUnit x.det` using `(Matrix.isUnit_iff_isUnit_det x).1 hx`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Use `ContinuousAt.smul (M := Cinf K) (f := fun x : Matrix (Fin n) (Fin n) (Cinf K) => Ring.inverse x.det) ?_ ((continuous_id (X := Matrix (Fin n) (Fin n) (Cinf K))).matrix_adjugate).continuousAt` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ContinuousAt.comp_of_eq (NormedRing.inverse_continuousAt hd.unit) ((continuous_id (X := Matrix (Fin n) (Fin n) (Cinf K))).matrix_det).continuousAt hd.unit_spec.symm`. Introduce `u`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def]`. Establish `: Set.range (Units.val : GL (Fin n) (Cinf K) → Matrix (Fin n) (Fin n) (Cinf K)) = {x | IsUnit x}`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨u, hu⟩ => hu ▸ u.isUnit, fun h => ⟨h.unit, h.unit_spec⟩⟩`. Rewrite using `[this]`. Conclude with `isOpen_invSet (E := K) (a := n)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isOpenEmbedding_val :
     Topology.IsOpenEmbedding (Units.val : GL (Fin n) (Cinf K) → Matrix (Fin n) (Fin n) (Cinf K)) := by
@@ -99,7 +99,7 @@ private theorem isOpenEmbedding_val :
     exact isOpen_invSet (E := K) (a := n)
 
 /- English proof (translation)
-Use `haveI : (volume : Measure (Cinf K)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Use `haveI : (volume : Measure (Fin n → Cinf K)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+A detailed English derivation is pending.
 -/
 private theorem addHaar_vol : (volume : Measure (Lie K n)).IsAddHaarMeasure := by
   haveI : (volume : Measure (Cinf K)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
@@ -107,15 +107,15 @@ private theorem addHaar_vol : (volume : Measure (Lie K n)).IsAddHaarMeasure := b
   exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-The claim follows from `ENNReal.measurable_ofReal.comp (continuous_nrm.measurable.inv.pow_const _)`.
+A detailed English derivation is pending.
 -/
 private theorem measurable_dens : Measurable fun x : Lie K n => ENNReal.ofReal ((nrm x)⁻¹ ^ n) :=
   ENNReal.measurable_ofReal.comp (continuous_nrm.measurable.inv.pow_const _)
 
 /- English proof (translation)
-Use `haveI := addHaar_vol (K := K) (n := n)`. Establish `hp` using `(nrm_pos_iff y).2 hy`. Establish `hdet : LinearMap.det (lm y) ≠ 0` using `by rw [det_lm]; positivity`. Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (Lie K n)) hdet`. Use `map_withDensity_eq_of_scale (volume : Measure (Lie K n)) measurable_dens (lm y) (ENNReal.ofReal_pos.2 (abs_pos.2 (inv_ne_zero hdet))).ne' ENNReal.ofReal_ne_top hmap fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_lm, nrm_lm, abs_of_pos (by positivity), ← ENNReal.ofReal_mul (by positivity), mul_inv, mul_pow, inv_pow (nrm y)]`.
+A detailed English derivation is pending.
 -/
 private theorem map_lm (y : Lie K n) (hy : y ∈ invSet K n) :
     Measure.map (lm y) ((volume : Measure (Lie K n)).withDensity fun x => ENNReal.ofReal ((nrm x)⁻¹ ^ n)) =
@@ -133,23 +133,21 @@ end UpperTheory.V.Z.Inf
 
 open UpperTheory.V.Z.Inf in
 /- English proof (translation)
-Introduce `K _ _ _ n _ _`. Use `haveI := addHaar_vol (K := K) (n := n)`. Use `set w : Lie K n → ENNReal := fun x => ENNReal.ofReal ((nrm x)⁻¹ ^ n) with hw`. Use `set μL : Measure (Lie K n) := (volume : Measure (Lie K n)).withDensity w with hμL`. Use `set e : GL (Fin n) (Cinf K) → Lie K n := fun g => toL g.val with he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOE : Topology.IsOpenEmbedding e` using `isOpenEmbedding_val`. Establish `hE : MeasurableEmbedding e` using `hOE.measurableEmbedding`. Establish `hwm : Measurable w` using `measurable_dens`. Establish `happ : ∀ s, Measure.comap e μL s = μL (e '' s)` using `fun s => hE.comap_apply _ s`. Establish `hmem : ∀ g, e g ∈ invSet K n` using `fun g => g.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpos : ∀ g, 0 < nrm (e g)` using `fun g => (nrm_pos_iff _).2 (hmem g)`. Use `⟨Measure.comap e μL, ?_, ?_⟩` and prove the remaining obligations. Use `{ lt_top_of_isCompact := ?_, map_mul_left_eq_self := ?_, open_pos := ?_ }` and prove the remaining obligations. Introduce `C hC`. Rewrite using `[happ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hC' : IsCompact (e '' C)` using `hC.image hOE.continuous`. Establish `hmeas : MeasurableSet (e '' C)` using `hC'.isClosed.measurableSet`. Establish `hcont : Continuous (fun g : GL (Fin n) (Cinf K) => (nrm (e g))⁻¹ ^ n)` using `((continuous_nrm.comp hOE.continuous).inv₀ fun g => (hpos g).ne').pow _`. Take `⟨B, hB⟩` from `hC.exists_bound_of_continuousOn hcont.continuousOn`. Rewrite using `[hμL, withDensity_apply _ hmeas]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Use `setLIntegral_mono' hmeas fun x hx => ?_` and prove the remaining obligations. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `ENNReal.ofReal_le_ofReal ((le_abs_self _).trans (hB g hg))`. Use `_ = ENNReal.ofReal B * volume (e '' C) := setLIntegral_const _ _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hC'.measure_lt_top`. Introduce `g`. Use extensionality with `s hs`. Establish `hm : Measurable (fun h : GL (Fin n) (Cinf K) => g * h)` using `(continuous_const.mul continuous_id).measurable`. Rewrite using `[Measure.map_apply hm hs, happ, happ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmeas : MeasurableSet (e '' s)` using `hE.measurableSet_image.2 hs`. Establish `h1 : e '' ((fun h => g * h) ⁻¹' s) = (lm (e g)) ⁻¹' (e '' s)` using `image_val_preimage_mul_left g s`. Rewrite using `[h1, ← Measure.map_apply (lm (e g)).continuous_of_finiteDimensional.measurable hmeas, map_lm _ (hmem g)]`. Introduce `U hU hne`. Rewrite using `[happ, ne_eq, hμL, withDensity_apply_eq_zero' hwm.aemeasurable]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Establish `hsub : {x | w x ≠ 0} ∩ e '' U = e '' U`. Use `Set.inter_eq_right.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, _, rfl⟩`. Conclude with `(ENNReal.ofReal_pos.2 (pow_pos (inv_pos.2 (hpos g)) _)).ne'`. Rewrite using `[hsub]`.
-
-Conclude with `(hOE.isOpenMap U hU).measure_ne_zero volume (hne.image _)`. Establish `hr : Set.range e = invSet K n`. Use extensionality with `x`. Conclude with `⟨fun ⟨g, hg⟩ => hg ▸ hmem g, fun h => ⟨IsUnit.unit h, rfl⟩⟩`. Rewrite using `[hE.map_comap, hr, hμL, restrict_withDensity isOpen_invSet.measurableSet]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Inf.haarL :
     UpperTheory.V.Z.Inf.HaarL := by

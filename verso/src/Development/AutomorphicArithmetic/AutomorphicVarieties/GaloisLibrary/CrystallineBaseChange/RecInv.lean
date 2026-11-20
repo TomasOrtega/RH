@@ -5,13 +5,13 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hL F K Ω _ _ _ _ _ _ _ _ _ A v w h h' j i P n σ σ' rc rc' hrc hrc' hy`. Establish `hc : Continuous (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom) := by`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Units.continuous_val.matrix_map P.cont)`. Conclude with `(Units.continuous_coe_inv.matrix_map P.cont)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : Function.Surjective (Matrix.GeneralLinearGroup.map (n` using `Fin n) i.toRingHom) := by`. Introduce `g`. Use `⟨Matrix.GeneralLinearGroup.map (n := Fin n) i.symm.toRingHom g, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `τ : SmIrr (GL (Fin n) (v.adicCompletion F))` to `{ V := σ'.V ρ := σ'.ρ.comp (Matrix.GeneralLinearGroup.map (n := Fin n) i.toRingHom) smooth := fun x => (σ'.smooth x).preimage hc irred := GlobalTheory.WDTransport.isIrreducible_comp σ'.ρ _ hs σ'.irred }`. Establish `h1 : rc (algNorm σ) = rc (algNorm τ)` using `Cq.recTransport hL F K Ω A v w h h' j i P n τ σ' (LinearEquiv.refl ℂ _) (fun _ _ => rfl) rc rc' hrc hrc' _ hy`. Take `⟨_, _, _, -, HL⟩` from `hrc`. Establish `h2` using `congrArg (fun x => IrrGL.nu x (-(((1 - (n : ℝ)) / 2 : ℝ) : ℂ))) (HL.bij.1 h1)`. Simplify using `only [algNorm, IrrGL.nu_nu, add_neg_cancel, IrrGL.nu_zero] at h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨φ⟩` from `IrrGL.of_eq_of.1 h2`. Use `⟨φ.toLinearEquiv, fun g x => ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (φ.isIntertwining' g) x`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Br.recInv :
     UpperTheory.V.Br.RecInv := by

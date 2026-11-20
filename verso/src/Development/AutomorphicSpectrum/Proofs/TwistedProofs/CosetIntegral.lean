@@ -6,29 +6,27 @@ open MeasureTheory GlobalTheory.InertZeta
 namespace GlobalTheory.CompanionTheory.InertZeta
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ μ _ K hK hμK F Z hF hZ`. Use `set f : G ⧸ K → ℂ := fun x => F x.out with hf_def`. Establish `hFf : ∀ g, F g = f (QuotientGroup.mk g)`. Introduce `g`. Take `⟨h, hh⟩` from `QuotientGroup.mk_out_eq_mul K g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [hf_def, hh, hF g h h.2]`. Use `set C : G ⧸ K → Set G := fun x => (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {x} with hC_def`. Establish `hC_eq : ∀ x, C x = (fun h => x.out⁻¹ * h) ⁻¹' (K : Set G)`. Introduce `x`. Use extensionality with `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hC_def, Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Use `conv_lhs => rw [← QuotientGroup.out_eq' x]`. Rewrite using `[eq_comm, QuotientGroup.eq]`. Establish `hC_open : ∀ x, IsOpen (C x)` using `fun x => by`. Rewrite using `[hC_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK.preimage (continuous_const_mul _)`. Establish `hC_meas : ∀ x, MeasurableSet (C x)` using `fun x => (hC_open x).measurableSet`. Establish `hC_one : ∀ x, μ (C x) = 1` using `fun x => by`. Rewrite using `[hC_eq, measure_preimage_mul, hμK]`. Establish `hF_on : ∀ x, Set.EqOn F (fun _ => f x) (C x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x g hg`. Simplify using `only [hC_def, Set.mem_preimage, Set.mem_singleton_iff] at hg`. Rewrite using `[hFf g, hg]`. Establish `hcount : (Function.support f).Countable` using `hZ.summable.countable_support`. Establish `: Countable (Function.support f)` using `hcount.to_subtype`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `set s : Function.support f → Set G := fun i => C i with hs_def`. Establish `hs_meas : ∀ i, MeasurableSet (s i)` using `fun i => hC_meas _`. Establish `hs_disj : Pairwise (Function.onFun Disjoint s)`. Introduce `i j hij`. Use `Disjoint.preimage _ (Set.disjoint_singleton.2 fun h => hij (Subtype.ext h))` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs_int : ∀ i, IntegrableOn F (s i) μ`. Introduce `i`. Use `(integrableOn_const (by rw [hC_one]; exact ENNReal.one_ne_top)).congr_fun (fun g hg => (hF_on i hg).symm) (hs_meas i)` and prove the remaining obligations. Establish `hs_val : ∀ i, ∫ g in s i, F g ∂μ = f i`. Introduce `i`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[setIntegral_congr_fun (hs_meas i) (hF_on i), setIntegral_const]`. Simplify using `[Measure.real, hs_def, hC_one]`. Establish `hs_norm : ∀ i, ∫ g in s i, ‖F g‖ ∂μ = ‖f i‖`. Introduce `i`. Rewrite using `[setIntegral_congr_fun (hs_meas i) (fun g hg => congrArg norm (hF_on i hg)), setIntegral_const]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Measure.real, hs_def, hC_one]`. Establish `hU : IntegrableOn F (⋃ i, s i) μ`. Use `integrableOn_iUnion_of_summable_integral_norm hs_int ?_` and prove the remaining obligations. Simplify using `only [hs_norm]`. Conclude with `hZ.summable.norm.subtype _`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hout : ∀ g, g ∉ ⋃ i, s i → F g = 0`. Introduce `g hg`. Assume the negation of the conclusion as `hne`. Apply `hg` to reduce the goal to its premises. Establish `hmem : QuotientGroup.mk g ∈ Function.support f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Function.mem_support, ← hFf g]`. Conclude with `hne`. Conclude with `Set.mem_iUnion.2 ⟨⟨_, hmem⟩, rfl⟩`. Establish `hint : Integrable F μ` using `hU.integrable_of_forall_notMem_eq_zero hout`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
-
-Establish `hsum` using `hasSum_integral_iUnion hs_meas hs_disj hU`. Rewrite `hsum` using `[setIntegral_eq_integral_of_forall_compl_eq_zero hout]`. Simplify using `only [hs_val] at hsum`. Conclude with `(hasSum_subtype_support.1 hsum).unique hZ`.
+A detailed English derivation is pending.
 -/
 theorem cosetIntegral : CosetIntegral := by
   intro G _ _ _ _ _ μ _ K hK hμK F Z hF hZ

@@ -393,13 +393,13 @@ def ShareAbsoluteConstant : Prop :=
   ∀ CR CA CB CK C₀ : ℝ, ∃ C : ℝ, ∀ D : D7, ∀ HW : HWOf D.loc, ∀ F : FonOf D.loc D.locA HW, ∀ Cm : CmpOf D.loc D.locA HW F, Stmt D HW F Cm C CR CA CB CK C₀
 
 /- English proof (translation)
-Introduce `l _ K LL hg _ d T₁ T₂ F b S η m hS hm`. Take `⟨e, he, h2, h3⟩` from `h l K LL hg d T₁ T₂ F b S η m hS hm`. Use `⟨e, le_trans he ?_, h2, h3⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.RamifiedCoefficientChains.eBd`. Establish `hlam : 0 ≤ Formalism.MainNotions.RamifiedCoefficientChains.lam ((D.loc l).PD K).p (Formalism.MainNotions.RamifiedCoefficientChains.hpar _ b S + η)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.RamifiedCoefficientChains.lam`. Establish `h11 : 11 ≤ ((D.loc l).PD K).p` using `hS.2.1`. Establish `h1 : (1 : ℝ) < (((D.loc l).PD K).p : ℝ)`. Conclude with `(by omega : 1 < ((D.loc l).PD K).p)` after adjusting the coercions. Break down `Nat.eq_zero_or_pos (Formalism.MainNotions.RamifiedCoefficientChains.hpar _ b S + η) with h0 | h0` into its components or cases.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h2 : (1 : ℝ) ≤ 2 * ((Formalism.MainNotions.RamifiedCoefficientChains.hpar _ b S + η : ℕ) : ℝ)`. Establish `: (1 : ℝ) ≤ ((Formalism.MainNotions.RamifiedCoefficientChains.hpar _ b S + η : ℕ) : ℝ)` using `by exact_mod_cast h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Real.logb_nonneg h1 h2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem theorem_c_mono_constant (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) {C C' : ℝ} (hC : C ≤ C') (h : aux₃ D HW F C) : aux₃ D HW F C' := by
   intro l _ K LL hg _ d T₁ T₂ F b S η m hS hm

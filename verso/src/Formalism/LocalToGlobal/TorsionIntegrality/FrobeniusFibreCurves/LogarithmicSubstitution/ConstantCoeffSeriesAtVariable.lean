@@ -13,7 +13,7 @@ open Formalism.InvariantFactorPaths.G7 (Simeq at1 cob d1 swap2 DivAB)
 open Formalism.G.LogP (hs2 subst2_subst psubst_subst psubst_injective)
 
 /- English proof (translation)
-The claim follows from `psubst_injective h0 h1 hU hV h`.
+A detailed English derivation is pending.
 -/
 theorem log_inj {K : Type} [Field K] {ι : Type} (l : PowerSeries K)
     (h0 : PowerSeries.constantCoeff l = 0) (h1 : PowerSeries.coeff 1 l = 1)
@@ -27,7 +27,7 @@ section Alg
 variable {K : Type} [Field K] {ι : Type}
 
 /- English proof (translation)
-Unfold `at1`. Rewrite using `[psubst_subst f (by simp) hb, MvPowerSeries.subst_X hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_at_variable_eq_subst (f : PowerSeries K) (x : Fin 2) {b : Fin 2 → MvPowerSeries ι K}
     (hb : MvPowerSeries.HasSubst b) :
@@ -36,7 +36,7 @@ theorem subst_at_variable_eq_subst (f : PowerSeries K) (x : Fin 2) {b : Fin 2 �
   rw [psubst_subst f (by simp) hb, MvPowerSeries.subst_X hb]
 
 /- English proof (translation)
-Establish `hb` using `hs2 hU hV`. Unfold `cob`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_sub, map_sub, MvPowerSeries.coe_substAlgHom hb, psubst_subst f hF hb, subst_at_variable_eq_subst f 0 hb, subst_at_variable_eq_subst f 1 hb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem law_cob_subst (F : MvPowerSeries (Fin 2) K) (hF : MvPowerSeries.constantCoeff F = 0)
     (f : PowerSeries K) (U V : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0)
@@ -51,7 +51,7 @@ theorem law_cob_subst (F : MvPowerSeries (Fin 2) K) (hF : MvPowerSeries.constant
   rfl
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.constantCoeff_subst_eq_zero (hs2 hU hV) (fun i => by fin_cases i <;> simpa) hF`.
+A detailed English derivation is pending.
 -/
 theorem law_constantCoeff_subst2 (F : MvPowerSeries (Fin 2) K)
     (hF : MvPowerSeries.constantCoeff F = 0) (U V : MvPowerSeries ι K)
@@ -61,7 +61,7 @@ theorem law_constantCoeff_subst2 (F : MvPowerSeries (Fin 2) K)
     (fun i => by fin_cases i <;> simpa) hF
 
 /- English proof (translation)
-Establish `e : ![(MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K), 0] = (![1, 0] : Fin 2 → K) • MvPowerSeries.X`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp`. Rewrite using `[e, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `[Fin.prod_univ_two, hn]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem law_coeff_axis0 (H : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) (hn : n 1 = 0) :
     MvPowerSeries.coeff n H = MvPowerSeries.coeff n
@@ -75,7 +75,7 @@ theorem law_coeff_axis0 (H : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) (hn
   simp [Fin.prod_univ_two, hn]
 
 /- English proof (translation)
-Establish `e : ![0, (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K)] = (![0, 1] : Fin 2 → K) • MvPowerSeries.X`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `fin_cases s <;> simp`. Rewrite using `[e, ← MvPowerSeries.rescale_eq_subst, MvPowerSeries.coeff_rescale, Finsupp.prod_fintype _ _ (by simp)]`. Simplify using `[Fin.prod_univ_two, hn]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem law_coeff_axis1 (H : MvPowerSeries (Fin 2) K) (n : Fin 2 →₀ ℕ) (hn : n 0 = 0) :
     MvPowerSeries.coeff n H = MvPowerSeries.coeff n
@@ -95,7 +95,7 @@ section Norm
 variable {K : Type} [NormedField K] {ι : Type}
 
 /- English proof (translation)
-Take `⟨hF, -, -, -, hc⟩` from `h`. Establish `e` using `law_cob_subst F hF l U V hU hV`. Rewrite `e` using `[hc, Formalism.G.LogP.subst_zero' (hs2 hU hV)]`. Take the linear combination `-e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem law_subst {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (U V : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0)
@@ -108,7 +108,7 @@ theorem law_subst {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog 
   linear_combination -e
 
 /- English proof (translation)
-The claim follows from `log_inj l h.2.2.1 h.2.2.2.1 _ _ (law_constantCoeff_subst2 F h.1 U V hU hV) hW ((law_subst h U V hU hV).trans e)`.
+A detailed English derivation is pending.
 -/
 theorem law_eq_of_log {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (U V W : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0)
@@ -119,14 +119,14 @@ theorem law_eq_of_log {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : Law
     ((law_subst h U V hU hV).trans e)
 
 /- English proof (translation)
-The claim follows from `PowerSeries.subst_zero_of_constantCoeff_zero h0`.
+A detailed English derivation is pending.
 -/
 theorem law_subst_zero (l : PowerSeries K) (h0 : PowerSeries.constantCoeff l = 0) :
     PowerSeries.subst (0 : MvPowerSeries ι K) l = 0 :=
   PowerSeries.subst_zero_of_constantCoeff_zero h0
 
 /- English proof (translation)
-The claim follows from `law_eq_of_log h U 0 U hU (by simp) hU (by rw [law_subst_zero l h.2.2.1, add_zero])`.
+A detailed English derivation is pending.
 -/
 theorem law_right_zero {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (U : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0) :
@@ -134,7 +134,7 @@ theorem law_right_zero {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : La
   law_eq_of_log h U 0 U hU (by simp) hU (by rw [law_subst_zero l h.2.2.1, add_zero])
 
 /- English proof (translation)
-The claim follows from `law_eq_of_log h 0 V V (by simp) hV hV (by rw [law_subst_zero l h.2.2.1, zero_add])`.
+A detailed English derivation is pending.
 -/
 theorem law_left_zero {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (V : MvPowerSeries ι K) (hV : MvPowerSeries.constantCoeff V = 0) :
@@ -142,7 +142,7 @@ theorem law_left_zero {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : Law
   law_eq_of_log h 0 V V (by simp) hV hV (by rw [law_subst_zero l h.2.2.1, zero_add])
 
 /- English proof (translation)
-The claim follows from `law_eq_of_log h U V _ hU hV (law_constantCoeff_subst2 F h.1 V U hV hU) (by rw [law_subst h V U hV hU, add_comm])`.
+A detailed English derivation is pending.
 -/
 theorem law_comm {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (U V : MvPowerSeries ι K) (hU : MvPowerSeries.constantCoeff U = 0)
@@ -152,7 +152,7 @@ theorem law_comm {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F
     (by rw [law_subst h V U hV hU, add_comm])
 
 /- English proof (translation)
-Use `fin_cases j`. Rewrite using `[law_coeff_axis0 F _ (by simp), law_right_zero h _ (by simp)]`. Simplify using `[MvPowerSeries.coeff_X]`. Rewrite using `[law_coeff_axis1 F _ (by simp), law_left_zero h _ (by simp)]`. Simplify using `[MvPowerSeries.coeff_X]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem law_coeff_single {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : LawLog F l)
     (j : Fin 2) : MvPowerSeries.coeff (Finsupp.single j 1) F = 1 := by
@@ -165,11 +165,11 @@ theorem law_coeff_single {F : MvPowerSeries (Fin 2) K} {l : PowerSeries K} (h : 
 end Norm
 
 /- English proof (translation)
-Introduce `K _ _ _ F l f h hf`. Establish `hX0 : MvPowerSeries.constantCoeff (MvPowerSeries.X 0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `hX1 : MvPowerSeries.constantCoeff (MvPowerSeries.X 1 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Establish `h00 : MvPowerSeries.constantCoeff (0 : MvPowerSeries (Fin 2) K) = 0` using `by simp`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n hn`. Break down `hn with hn | hn` into its components or cases. Rewrite using `[law_coeff_axis1 _ n hn, law_cob_subst F h.1 f _ _ h00 hX1, law_left_zero h _ hX1, law_subst_zero f hf]`. Simplify using the standard rewrite rules. Rewrite using `[law_coeff_axis0 _ n hn, law_cob_subst F h.1 f _ _ hX0 h00, law_right_zero h _ hX0, law_subst_zero f hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `swap2`. Rewrite using `[law_cob_subst F h.1 f _ _ hX1 hX0, law_comm h _ _ hX1 hX0, Formalism.G.LogP.subst_XX]`. Unfold `cob at1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coboundary_rules_hold : CobRules := by
   intro K _ _ _ F l f h hf
@@ -195,7 +195,7 @@ section Ultra
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-Introduce `n`. Rewrite using `[MvPowerSeries.coeff_X]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem law_integral_X {ι : Type} (x : ι) : Integral (MvPowerSeries.X x : MvPowerSeries ι K) := by
   classical
@@ -204,14 +204,14 @@ theorem law_integral_X {ι : Type} (x : ι) : Integral (MvPowerSeries.X x : MvPo
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `: PowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0` using `by simp`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem law_c0X : MvPowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0 := by
   have : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0 := by simp
   exact this
 
 /- English proof (translation)
-Introduce `n`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem law_integral_zero {ι : Type} : Integral (0 : MvPowerSeries ι K) := by
   intro n
@@ -220,25 +220,19 @@ theorem law_integral_zero {ι : Type} : Integral (0 : MvPowerSeries ι K) := by
 end Ultra
 
 /- English proof (translation)
-Introduce `K _ _ _ F l h`. Take `⟨hF, hFi, hl0, hl1, -⟩` from `id h`. Set `T : Fin 2 → MvPowerSeries (Fin 2) K` to `![MvPowerSeries.X 0, F]`. Set `J' : Matrix (Fin 2) (Fin 2) K` to `!![1, 0; -1, 1]`. Apply the tactic sequence `obtain ⟨X', hX0, hXi, hXT, -⟩ := Formalism.HermitianLattices.ExpSeriesBivariate.integralInverse_statement K (Fin 2) T J' (fun i => by fin_cases i <;> simp [T, hF]) (fun i => by fin_cases i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `law_integral_X 0`. Conclude with `hFi)`. Apply the tactic sequence `(fun i j => by fin_cases i <;> fin_cases j <;> simp [J'])`. Use the proof step `(by`. Use extensionality with `i j`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[T, J', Matrix.mul_apply, Fin.sum_univ_two, law_coeff_single h, MvPowerSeries.coeff_X, Finsupp.single_left_inj (one_ne_zero : (1 : ℕ) ≠ 0)])`. Establish `hsX : MvPowerSeries.HasSubst X'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hX0`. Establish `e0 : X' 0 = MvPowerSeries.X 0`. Use `hXT 0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[T, MvPowerSeries.subst_X hsX]`. Establish `e1 : MvPowerSeries.subst X' F = MvPowerSeries.X 1` using `hXT 1`. Establish `hb : MvPowerSeries.HasSubst ![(PowerSeries.X : PowerSeries K), 0]` using `Formalism.G.LogP.hb0`. Set `i : PowerSeries K` to `MvPowerSeries.subst ![(PowerSeries.X : PowerSeries K), 0] (X' 1)`. Establish `hi0 : PowerSeries.constantCoeff i = 0` using `MvPowerSeries.constantCoeff_subst_eq_zero hb (fun k => by fin_cases k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `law_c0X`. Conclude with `map_zero _) (hX0 1)`. Establish `hii : Integral (ι` using `Unit) i := Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (fun k => by fin_cases k`. Conclude with `law_c0X`. Conclude with `map_zero _)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use the proof step `(fun k => by fin_cases k`. Conclude with `law_integral_X ()`. Conclude with `law_integral_zero) (hXi 1)`. Establish `e2 : MvPowerSeries.subst ![(PowerSeries.X : PowerSeries K), i] F = 0`. Use `congrArg (MvPowerSeries.subst ![(PowerSeries.X : PowerSeries K), 0]) e1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[MvPowerSeries.subst_comp_subst_apply hsX hb, MvPowerSeries.subst_X hb]`. Establish `this' : _ = (0 : PowerSeries K)` using `this`. Rewrite using `[← this']`. Use `congr 1`. Use function extensionality and compare the values at `k`.
-
-Use `fin_cases k`. Use `show _ = MvPowerSeries.subst _ (X' 0)`. Rewrite using `[e0, MvPowerSeries.subst_X hb]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
-
-Use `⟨i, hi0, hii, ?_⟩` and prove the remaining obligations. Establish `e3` using `law_subst h (PowerSeries.X : PowerSeries K) i law_c0X hi0`. Rewrite `e3` using `[e2, law_subst_zero l hl0]`. Establish `e4 : PowerSeries.subst (PowerSeries.X : PowerSeries K) l = l` using `PowerSeries.X_subst l`. Rewrite `e3` using `[e4]`.
-
-Take the linear combination `-e3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem formal_inverse_exists : InvExists := by
   intro K _ _ _ F l h
@@ -300,11 +294,11 @@ theorem formal_inverse_exists : InvExists := by
   linear_combination -e3
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst D` using `PowerSeries.HasSubst.of_constantCoeff_zero' hD`. Establish `key : ∀ g : PowerSeries K, PowerSeries.coeff 1 g = PowerSeries.constantCoeff (PowerSeries.derivative K g)`. Introduce `g`. Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_derivative]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ g : PowerSeries K, PowerSeries.constantCoeff (PowerSeries.subst D g : PowerSeries K) = PowerSeries.constantCoeff g`. Introduce `g`. Establish `e : g = PowerSeries.C (PowerSeries.constantCoeff g) + (g - PowerSeries.C (PowerSeries.constantCoeff g))` using `by ring`. Use `conv_lhs => rw [e]`. Rewrite using `[PowerSeries.subst_add hs, map_add, PowerSeries.subst_C]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `PowerSeries.constantCoeff_subst_eq_zero (a := D) hD (g - PowerSeries.C (PowerSeries.constantCoeff g)) (by simp)` as an intermediate fact. Use `erw [this, add_zero]`. Conclude with `MvPowerSeries.constantCoeff_C _`. Rewrite using `[key, PowerSeries.derivative_subst hs, map_mul, hc, ← key, ← key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem law_coeff_one_subst {K : Type} [Field K] (l D : PowerSeries K)
     (hD : PowerSeries.constantCoeff D = 0) :
@@ -330,19 +324,19 @@ theorem law_coeff_one_subst {K : Type} [Field K] (l D : PowerSeries K)
   rw [key, PowerSeries.derivative_subst hs, map_mul, hc, ← key, ← key]
 
 /- English proof (translation)
-Introduce `K _ _ _ F l h h2`. Take `⟨hF, hFi, hl0, hl1, -⟩` from `id h`. Establish `hX : PowerSeries.constantCoeff (PowerSeries.X : PowerSeries K) = 0` using `by simp`. Establish `two0 : (2 : K) ≠ 0` using `two_ne_zero`. Set `D : PowerSeries K` to `MvPowerSeries.subst ![(PowerSeries.X : PowerSeries K), PowerSeries.X] F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hD0 : PowerSeries.constantCoeff D = 0` using `law_constantCoeff_subst2 F hF _ _ hX hX`. Apply the tactic sequence `have hDi : Integral (ι := Unit) D := Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (fun k => by fin_cases k <;> exact law_c0X) (fun k => by fin_cases k <;> exact law_integral_X ()) hFi`. Establish `eX : PowerSeries.subst (PowerSeries.X : PowerSeries K) l = l` using `PowerSeries.X_subst l`. Establish `hD1 : PowerSeries.coeff 1 D = 2`. Establish `e` using `law_subst h (PowerSeries.X : PowerSeries K) PowerSeries.X hX hX`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[eX]`. Establish `e'` using `congrArg (PowerSeries.coeff 1) e`. Rewrite `e'` using `[law_coeff_one_subst l D hD0, map_add, hl1]`. Take the linear combination `e'`. Take `⟨X', hX0, hXi, hXT, -⟩` from `Formalism.HermitianLattices.ExpSeriesBivariate.integralInverse_statement K Unit (fun _ => D) (Matrix.of fun _ _ => (2 : K)⁻¹) (fun _ => hD0) (fun _ => hDi) (fun _ _ => by rw [Matrix.of_apply, norm_inv, h2, inv_one]) (by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Finset.univ_unique, Finset.sum_singleton, Matrix.of_apply, Matrix.one_apply]`. Establish `: MvPowerSeries.coeff (Finsupp.single (default : Unit) 1) D = 2` using `hD1`. Rewrite using `[this, mul_inv_cancel₀ two0, if_pos trivial])`. Establish `hsX : MvPowerSeries.HasSubst X'` using `MvPowerSeries.hasSubst_of_constantCoeff_zero hX0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `g : PowerSeries K` to `X' ()`. Establish `hg0 : PowerSeries.constantCoeff g = 0` using `hX0 ()`. Establish `e1 : MvPowerSeries.subst ![g, g] F = (PowerSeries.X : PowerSeries K)`. Use `hXT ()` as an intermediate fact. Rewrite `this` using `[subst2_subst F hX hX hsX]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `eg : MvPowerSeries.subst X' (PowerSeries.X : PowerSeries K) = g` using `MvPowerSeries.subst_X hsX ()`. Rewrite `this` using `[eg]`. Conclude with `this`. Use `⟨g, hg0, hXi (), ?_⟩` and prove the remaining obligations. Establish `e3` using `law_subst h g g hg0 hg0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[e1, eX]`. Establish `hC : (PowerSeries.C (2 : K)⁻¹ : PowerSeries K) * 2 = 1`. Establish `: (2 : PowerSeries K) = PowerSeries.C (2 : K)` using `(map_ofNat PowerSeries.C 2).symm`. Rewrite using `[this, ← map_mul, inv_mul_cancel₀ two0, map_one]`. Take the linear combination `(-(PowerSeries.C (2 : K)⁻¹ : PowerSeries K)) * e3 + (-(PowerSeries.subst g l : PowerSeries K)) * hC`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem formal_halving_exists : HalfExists := by
   intro K _ _ _ F l h h2
@@ -394,14 +388,14 @@ section Diff
 variable {K : Type} [NormedField K]
 
 /- English proof (translation)
-The claim follows from `PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_series_at_variable {ι : Type} (x : ι) (f : PowerSeries K)
     (hf : PowerSeries.constantCoeff f = 0) : MvPowerSeries.constantCoeff (at1 x f) = 0 :=
   PowerSeries.constantCoeff_subst_eq_zero (by simp) f hf
 
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (φ := fun _ : Unit => (MvPowerSeries.X x : MvPowerSeries ι K)) (fun _ => by simp) (fun _ => law_integral_X x) hf`.
+A detailed English derivation is pending.
 -/
 theorem integral_series_at_variable [IsUltrametricDist K] {ι : Type} (x : ι) (f : PowerSeries K)
     (hf : Integral (ι := Unit) f) : Integral (at1 x f) :=
@@ -409,7 +403,7 @@ theorem integral_series_at_variable [IsUltrametricDist K] {ι : Type} (x : ι) (
     (fun _ => by simp) (fun _ => law_integral_X x) hf
 
 /- English proof (translation)
-Establish `hs : PowerSeries.HasSubst i` using `PowerSeries.HasSubst.of_constantCoeff_zero' hi.1`. Establish `hx : PowerSeries.HasSubst (MvPowerSeries.X x : MvPowerSeries ι K)` using `PowerSeries.HasSubst.X x`. Unfold `at1`. Rewrite using `[← PowerSeries.subst_comp_subst_apply hs hx, hi.2.2, ← PowerSeries.coe_substAlgHom hx, map_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_subst_formal_inverse {ι : Type} {l i : PowerSeries K} (hi : IsInv l i) (x : ι) :
     PowerSeries.subst (at1 x i) l = -at1 x l := by
@@ -420,14 +414,14 @@ theorem log_subst_formal_inverse {ι : Type} {l i : PowerSeries K} (hi : IsInv l
   rw [← PowerSeries.subst_comp_subst_apply hs hx, hi.2.2, ← PowerSeries.coe_substAlgHom hx, map_neg]
 
 /- English proof (translation)
-The claim follows from `law_constantCoeff_subst2 F h.1 _ _ (by simp) (constantCoeff_series_at_variable 1 i hi.1)`.
+A detailed English derivation is pending.
 -/
 theorem law_constantCoeff_FI {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K}
     (h : LawLog F l) (hi : IsInv l i) : MvPowerSeries.constantCoeff (FI F i) = 0 :=
   law_constantCoeff_subst2 F h.1 _ _ (by simp) (constantCoeff_series_at_variable 1 i hi.1)
 
 /- English proof (translation)
-The claim follows from `Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.integral_subst' (fun k => by fin_cases k · exact MvPowerSeries.constantCoeff_X 0 · exact constantCoeff_series_at_variable 1 i hi.1) (fun k => by fin_cases k · exact law_integral_X 0 · exact integral_series_at_variable 1 i hi. …`.
+A detailed English derivation is pending.
 -/
 theorem law_integral_FI [IsUltrametricDist K] {F : MvPowerSeries (Fin 2) K} {l i : PowerSeries K}
     (h : LawLog F l) (hi : IsInv l i) : Integral (FI F i) :=

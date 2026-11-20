@@ -8,7 +8,7 @@ open Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.BasicNo
 namespace PoleLengthBounds
 
 /- English proof (translation)
-The claim follows from `lenBase_of_taylorHasse taylorHasse_holds`.
+A detailed English derivation is pending.
 -/
 theorem lenBase_holds :
     ∀ {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j},

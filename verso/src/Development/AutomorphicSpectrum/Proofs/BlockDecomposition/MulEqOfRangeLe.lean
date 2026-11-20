@@ -33,7 +33,7 @@ section Pol
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `ha`. Take `⟨g, rfl⟩` from `hb`. Rewrite using `[← map_mul, mul_comm, map_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pol_comm (γ a b : Matrix (Fin n) (Fin n) K) (ha : IsPol γ a) (hb : IsPol γ b) : a * b = b * a := by
   obtain ⟨f, rfl⟩ := ha
@@ -41,16 +41,16 @@ theorem pol_comm (γ a b : Matrix (Fin n) (Fin n) K) (ha : IsPol γ a) (hb : IsP
   rw [← map_mul, mul_comm, map_mul]
 
 /- English proof (translation)
-Rewrite using `[Algebra.adjoin_singleton_eq_range_aeval]`. Conclude with `⟨fun ⟨f, h⟩ => ⟨f, h.symm⟩, fun ⟨f, h⟩ => ⟨f, h.symm⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isPol_iff (γ e : Matrix (Fin n) (Fin n) K) : IsPol γ e ↔ e ∈ Algebra.adjoin K {γ} := by
   rw [Algebra.adjoin_singleton_eq_range_aeval]
   exact ⟨fun ⟨f, h⟩ => ⟨f, h.symm⟩, fun ⟨f, h⟩ => ⟨f, h.symm⟩⟩
 
 /- English proof (translation)
-Establish `hc : γ.val * p = p * γ.val` using `pol_comm γ.val _ _ ⟨X, (aeval_X _).symm⟩ hp`. Establish `hs : LinearMap.range (Matrix.toLin' γ.val) = ⊤`. Use `LinearMap.range_eq_top.2 fun y => ⟨(γ⁻¹ : GL (Fin n) K).val *ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Unfold `img`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← LinearMap.range_comp, ← Matrix.toLin'_mul, hc, Matrix.toLin'_mul, LinearMap.range_comp, hs, Submodule.map_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem img_of_pol (γ : GL (Fin n) K) (p : Matrix (Fin n) (Fin n) K) (hp : IsPol γ.val p) :
     img γ (LinearMap.range (Matrix.toLin' p)) = LinearMap.range (Matrix.toLin' p) := by
@@ -62,7 +62,7 @@ theorem img_of_pol (γ : GL (Fin n) K) (p : Matrix (Fin n) (Fin n) K) (hp : IsPo
   rw [← LinearMap.range_comp, ← Matrix.toLin'_mul, hc, Matrix.toLin'_mul, LinearMap.range_comp, hs, Submodule.map_top]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Rewrite using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, ha]`. Introduce `h`. Conclude with `⟨w, by rw [Matrix.toLin'_apply, h]⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_range_idem {a : Matrix (Fin n) (Fin n) K} (ha : a * a = a) (w : Fin n → K) :
     w ∈ LinearMap.range (Matrix.toLin' a) ↔ a *ᵥ w = w := by
@@ -73,7 +73,7 @@ theorem mem_range_idem {a : Matrix (Fin n) (Fin n) K} (ha : a * a = a) (w : Fin 
     exact ⟨w, by rw [Matrix.toLin'_apply, h]⟩
 
 /- English proof (translation)
-Use `Matrix.toLin'.injective (LinearMap.ext fun y => ?_)` and prove the remaining obligations. Establish `h1 : a *ᵥ y ∈ LinearMap.range (Matrix.toLin' b)` using `h ⟨y, by rw [Matrix.toLin'_apply]⟩`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec]`. Conclude with `(mem_range_idem hb _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_of_range_le {a b : Matrix (Fin n) (Fin n) K} (hb : b * b = b)
     (h : LinearMap.range (Matrix.toLin' a) ≤ LinearMap.range (Matrix.toLin' b)) : b * a = a := by
@@ -83,11 +83,11 @@ theorem mul_eq_of_range_le {a b : Matrix (Fin n) (Fin n) K} (hb : b * b = b)
   exact (mem_range_idem hb _).1 h1
 
 /- English proof (translation)
-Establish `hc` using `pol_comm γ a b ha hb`. Use `⟨fun h => by rw [hc]; exact mul_eq_of_range_le hb2 h, fun h => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `mul_eq_of_range_le hb2 h.le`. Establish `h2` using `mul_eq_of_range_le ha2 h.ge`. Rewrite using `[← h1, ← hc, h2]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨y, rfl⟩`. Use `⟨⟨b *ᵥ y, ?_⟩, ⟨a *ᵥ y, ?_⟩⟩` and prove the remaining obligations. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec]`. Simplify using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, hc]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce and unpack `w ⟨h1, h2⟩`. Establish `h1'` using `(mem_range_idem ha2 w).1 h1`. Establish `h2'` using `(mem_range_idem hb2 w).1 h2`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, h2', h1']`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_facts (γ a b : Matrix (Fin n) (Fin n) K) (ha : IsPol γ a) (hb : IsPol γ b)
     (ha2 : a * a = a) (hb2 : b * b = b) :
@@ -116,7 +116,7 @@ end Pol
 section Chi
 
 /- English proof (translation)
-Establish `h1 : (t - 1) * A = A * (t - 1)` using `by rw [sub_mul, mul_sub, ht, one_mul, mul_one]`. Establish `h2 : A * (t - 1) * (A * (t' - 1)) = A * (t - 1) * (t' - 1)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, add_mul, add_mul, h2]`. Use `noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uu_mul {R : Type} [Ring R] (A t t' : R) (hA : A * A = A) (ht : t * A = A * t) :
     (1 + A * (t - 1)) * (1 + A * (t' - 1)) = 1 + A * (t * t' - 1) := by
@@ -129,7 +129,7 @@ theorem uu_mul {R : Type} [Ring R] (A t t' : R) (hA : A * A = A) (ht : t * A = A
   noncomm_ring
 
 /- English proof (translation)
-Establish `h2 : A * x * (B * x) = 0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_add, add_mul, add_mul, h2]`. Use `noncomm_ring`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uu_add {R : Type} [Ring R] (A B x : R) (hAB : A * B = 0) (hx : x * B = B * x) :
     (1 + A * x) * (1 + B * x) = 1 + (A + B) * x := by
@@ -143,26 +143,24 @@ theorem uu_add {R : Type} [Ring R] (A B x : R) (hAB : A * B = 0) (hx : x * B = B
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem rm_mul (a b : Matrix (Fin n) (Fin n) E) : rm (a * b) = rm a * rm b := Matrix.map_mul
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rm_add (a b : Matrix (Fin n) (Fin n) E) : rm (a + b) = rm a + rm b := by
   ext i j; simp [rm]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem rm_zero : rm (0 : Matrix (Fin n) (Fin n) E) = 0 := by
   ext i j; simp [rm]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.mul_inv, mul_one]`. Use `_ = (t⁻¹ : GA E n).val * (t.val * rm e) * (t⁻¹ : GA E n).val := by`. Rewrite using `[ht]`. Simplify using `only [mul_assoc]`.
-
-Use `_ = rm e * (t⁻¹ : GA E n).val := by rw [← mul_assoc, Units.inv_mul, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_inv {e : Matrix (Fin n) (Fin n) E} {t : GA E n} (ht : t.val * rm e = rm e * t.val) :
     (t⁻¹ : GA E n).val * rm e = rm e * (t⁻¹ : GA E n).val := by
@@ -173,7 +171,7 @@ theorem comm_inv {e : Matrix (Fin n) (Fin n) E} {t : GA E n} (ht : t.val * rm e 
     _ = rm e * (t⁻¹ : GA E n).val := by rw [← mul_assoc, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Unfold `chi`. Rewrite using `[← Matrix.det_mul, uu_mul (rm e) t.val t'.val (by rw [← rm_mul, he]) ht, Units.val_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_mul (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t t' : GA E n)
     (ht : t.val * rm e = rm e * t.val) : chi e (t * t') = chi e t * chi e t' := by
@@ -181,20 +179,20 @@ theorem chi_mul (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t t' : GA E n)
   rw [← Matrix.det_mul, uu_mul (rm e) t.val t'.val (by rw [← rm_mul, he]) ht, Units.val_mul]
 
 /- English proof (translation)
-Simplify using `[chi]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_one (e : Matrix (Fin n) (Fin n) E) : chi e (1 : GA E n) = 1 := by
   simp [chi]
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one (chi e t⁻¹) (by rw [← chi_mul e he t _ ht, mul_inv_cancel, chi_one])`.
+A detailed English derivation is pending.
 -/
 theorem chi_isUnit (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t : GA E n)
     (ht : t.val * rm e = rm e * t.val) : IsUnit (chi e t) :=
   IsUnit.of_mul_eq_one (chi e t⁻¹) (by rw [← chi_mul e he t _ ht, mul_inv_cancel, chi_one])
 
 /- English proof (translation)
-Unfold `lam`. Rewrite using `[chi_mul e he t t' ht]`. Conclude with `GlobalTheory.CompanionTheory.LogAbs.logAbs_mul _ _ (chi_isUnit e he t ht) (chi_isUnit e he t' ht')`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_mul (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t t' : GA E n) (ht : t.val * rm e = rm e * t.val)
     (ht' : t'.val * rm e = rm e * t'.val) : lam e (t * t') = lam e t + lam e t' := by
@@ -203,9 +201,9 @@ theorem lam_mul (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t t' : GA E n) 
   exact GlobalTheory.CompanionTheory.LogAbs.logAbs_mul _ _ (chi_isUnit e he t ht) (chi_isUnit e he t' ht')
 
 /- English proof (translation)
-Establish `h` using `lam_mul e he t t⁻¹ ht (comm_inv ht)`. Establish `h0 : lam e (1 : GA E n) = 0`. Rewrite using `[lam, chi_one, ← map_one (algebraMap E (Ad E))]`. Conclude with `GlobalTheory.CompanionTheory.LogAbs.logAbs_algebraMap 1 one_ne_zero`. Rewrite `h` using `[mul_inv_cancel, h0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem lam_inv (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t : GA E n) (ht : t.val * rm e = rm e * t.val) :
     lam e t⁻¹ = - lam e t := by
@@ -217,7 +215,7 @@ theorem lam_inv (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (t : GA E n) (ht
   linarith
 
 /- English proof (translation)
-Establish `h1 : chi (0 : Matrix (Fin n) (Fin n) E) t = algebraMap E (Ad E) 1`. Simplify using `[chi, rm_zero]`. Rewrite using `[lam, h1]`. Conclude with `GlobalTheory.CompanionTheory.LogAbs.logAbs_algebraMap 1 one_ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_zero (t : GA E n) : lam (0 : Matrix (Fin n) (Fin n) E) t = 0 := by
   have h1 : chi (0 : Matrix (Fin n) (Fin n) E) t = algebraMap E (Ad E) 1 := by
@@ -226,7 +224,7 @@ theorem lam_zero (t : GA E n) : lam (0 : Matrix (Fin n) (Fin n) E) t = 0 := by
   exact GlobalTheory.CompanionTheory.LogAbs.logAbs_algebraMap 1 one_ne_zero
 
 /- English proof (translation)
-Unfold `chi`. Establish `h1 : (t.val - 1) * rm b = rm b * (t.val - 1)` using `by rw [sub_mul, mul_sub, hb, one_mul, mul_one]`. Rewrite using `[← Matrix.det_mul, uu_add (rm a) (rm b) _ (by rw [← rm_mul, hab, rm_zero]) h1, rm_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_add (a b : Matrix (Fin n) (Fin n) E) (hab : a * b = 0) (t : GA E n)
     (hb : t.val * rm b = rm b * t.val) : chi (a + b) t = chi a t * chi b t := by
@@ -235,15 +233,13 @@ theorem chi_add (a b : Matrix (Fin n) (Fin n) E) (hab : a * b = 0) (t : GA E n)
   rw [← Matrix.det_mul, uu_add (rm a) (rm b) _ (by rw [← rm_mul, hab, rm_zero]) h1, rm_add]
 
 /- English proof (translation)
-Establish `key : (∑ i ∈ s, f i) * (∑ i ∈ s, f i) = ∑ i ∈ s, f i ∧ t.val * rm (∑ i ∈ s, f i) = rm (∑ i ∈ s, f i) * t.val ∧ lam (∑ i ∈ s, f i) t = ∑ i ∈ s, lam (f i) t`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [rm_zero, lam_zero]`. Consider the case `insert a s ha ih`. Take `⟨h1, h2, h3⟩` from `ih (fun i hi => hf i (Finset.mem_insert_of_mem hi)) (fun i hi j hj => ho i (Finset.mem_insert_of_mem hi) j (Finset.mem_insert_of_mem hj)) (fun i hi => ht i (Finset.mem_insert_of_mem hi))`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `haa` using `hf a (Finset.mem_insert_self _ _)`. Establish `hta` using `ht a (Finset.mem_insert_self _ _)`. Establish `hl : f a * ∑ i ∈ s, f i = 0`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_eq_zero fun i hi => ho a (Finset.mem_insert_self _ _) i (Finset.mem_insert_of_mem hi) (fun h => ha (h ▸ hi))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : (∑ i ∈ s, f i) * f a = 0`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_eq_zero fun i hi => ho i (Finset.mem_insert_of_mem hi) a (Finset.mem_insert_self _ _) (fun h => ha (h ▸ hi))`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[add_mul, mul_add, mul_add, hl, hr, haa, h1]`. Simplify using the standard rewrite rules. Rewrite using `[rm_add, mul_add, add_mul, hta, h2]`. Unfold `lam at h3 ⊢`. Rewrite using `[chi_add _ _ hl t h2, GlobalTheory.CompanionTheory.LogAbs.logAbs_mul _ _ (chi_isUnit _ haa t hta) (chi_isUnit _ h1 t h2), h3]`.
-
-Conclude with `key.2.2`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_sum {ι : Type} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin n) E) (hf : ∀ i ∈ s, f i * f i = f i)
     (ho : ∀ i ∈ s, ∀ j ∈ s, i ≠ j → f i * f j = 0) (t : GA E n) (ht : ∀ i ∈ s, t.val * rm (f i) = rm (f i) * t.val) :
@@ -276,11 +272,11 @@ theorem lam_sum {ι : Type} (s : Finset ι) (f : ι → Matrix (Fin n) (Fin n) E
   exact key.2.2
 
 /- English proof (translation)
-Establish `h1 : chi e (ratGL E n r) = algebraMap E (Ad E) (1 + e * (r.val - 1)).det`. Establish `: 1 + rm e * ((ratGL E n r).val - 1) = (1 + e * (r.val - 1)).map (algebraMap E (Ad E))`. Establish `h2 : (ratGL E n r).val = r.val.map (algebraMap E (Ad E))` using `rfl`. Rewrite using `[h2]`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[rm, Matrix.mul_apply, Matrix.one_apply, Matrix.sub_apply, apply_ite, map_sum]`. Rewrite using `[chi, this]`. Conclude with `(RingHom.map_det _ _).symm`. Establish `h2` using `chi_isUnit e he _ hr`. Rewrite `h2` using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lam, h1]`. Use `GlobalTheory.CompanionTheory.LogAbs.logAbs_algebraMap _ fun h0 => ?_` and prove the remaining obligations. Rewrite `h2` using `[h0, map_zero]`. Take `⟨v⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Conclude with `(h2.map (cV v)).ne_zero (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lam_rat (e : Matrix (Fin n) (Fin n) E) (he : e * e = e) (r : GL (Fin n) E)
     (hr : (ratGL E n r).val * rm e = rm e * (ratGL E n r).val) : lam e (ratGL E n r) = 0 := by

@@ -18,7 +18,7 @@ abbrev prj (x : KeyIn K) (f : K →+* K') : ((Over.pullback (spMap f)).obj x.P.A
   pullback.fst x.P.A.hom (spMap f)
 
 /- English proof (translation)
-The claim follows from `isGrpPullback_pullback x.P.A (spMap f)`.
+A detailed English derivation is pending.
 -/
 theorem isGrpPullback_prj (x : KeyIn K) (f : K →+* K') :
     IsGrpPullback ((Over.pullback (spMap f)).obj x.P.A) x.P.A (spMap f) (prj x f) :=
@@ -40,13 +40,13 @@ def pol (x : KeyIn K) (f : K →+* K') : Out.PolAV (Sp K') :=
       ((isGen_iff _).1 (idIso_isGen (pull_isLB x.P.isLB (prj x f)))) x.P.ktriv }
 
 /- English proof (translation)
-The claim follows from `PolBaseChange.eSec_comm (isGrpPullback_prj x f)`.
+A detailed English derivation is pending.
 -/
 theorem eSec_prj (x : KeyIn K) (f : K →+* K') : eSec (pol x f).A ≫ prj x f = spMap f ≫ eSec x.P.A :=
   PolBaseChange.eSec_comm (isGrpPullback_prj x f)
 
 /- English proof (translation)
-The claim follows from `sec_pull_down ((isGen_iff _).1 (idIso_isGen (pull_isLB x.P.isLB (prj x f)))) x.P.isLB (pull_isLB x.P.isLB (prj x f)) x.th`.
+A detailed English derivation is pending.
 -/
 theorem exists_th (x : KeyIn K) (f : K →+* K') :
     ∃ s' : (pol x f).L.Sec, ∀ (Z : Scheme) (r : Z ⟶ (pol x f).A.left) (z : Z) (j : x.P.L.ι) (k : (pol x f).L.ι),
@@ -57,7 +57,7 @@ theorem exists_th (x : KeyIn K) (f : K →+* K') :
 def th (x : KeyIn K) (f : K →+* K') : (pol x f).L.Sec := Classical.choose (exists_th x f)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_th x f) Z r z j k hj hk`.
+A detailed English derivation is pending.
 -/
 theorem th_spec (x : KeyIn K) (f : K →+* K') (Z : Scheme) (r : Z ⟶ (pol x f).A.left) (z : Z) (j : x.P.L.ι)
     (k : (pol x f).L.ι) (hj : prj x f (r z) ∈ x.P.L.U j) (hk : r z ∈ (pol x f).L.U k) :
@@ -68,14 +68,14 @@ def rig (x : KeyIn K) (f : K →+* K') : ((pol x f).L.pull (eSec (pol x f).A)).G
   rigPullOf (G' := (pol x f).A) (G := x.P.A) (prj x f) (spMap f) (eSec_prj x f) x.P.L x.rig
 
 /- English proof (translation)
-The claim follows from `Out.LBxP.isGen_pullAlong x.P.L (prj x f) (spMap f) (fun _ : PUnit => eSec x.P.A) (fun _ => 1) (fun _ => eSec (pol x f).A) (fun _ => eSec_prj x f) x.rig x.rig_gen`.
+A detailed English derivation is pending.
 -/
 theorem rig_isGen (x : KeyIn K) (f : K →+* K') : (rig x f).IsGen :=
   Out.LBxP.isGen_pullAlong x.P.L (prj x f) (spMap f) (fun _ : PUnit => eSec x.P.A) (fun _ => 1)
     (fun _ => eSec (pol x f).A) (fun _ => eSec_prj x f) x.rig x.rig_gen
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Over.w]`. Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext a <;> simp [Chart.dualMapR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem vec_sq (x : KeyIn K) (f : K →+* K') (i : Fin x.P.g) :
     (spMap (Chart.dualMapR f) ≫ (x.v i).left) ≫ x.P.A.hom = (epsR K').hom ≫ spMap f := by
@@ -89,16 +89,16 @@ def vec (x : KeyIn K) (f : K →+* K') (i : Fin x.P.g) : epsR K' ⟶ (pol x f).A
   Over.homMk ((isGrpPullback_prj x f).1.lift _ _ (vec_sq x f i)) ((isGrpPullback_prj x f).1.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `(isGrpPullback_prj x f).1.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem vec_prj (x : KeyIn K) (f : K →+* K') (i : Fin x.P.g) :
     (vec x f i).left ≫ prj x f = spMap (Chart.dualMapR f) ≫ (x.v i).left :=
   (isGrpPullback_prj x f).1.lift_fst _ _ _
 
 /- English proof (translation)
-Establish `h` using `isGrpPullback_prj x f`. Take `⟨z, hz, hz'⟩` from `x.th_ne (spMap f s)`. Take `⟨y, rfl, hy⟩` from `Scheme.exists_preimage_of_isPullback h.1 z s hz`. Take `⟨k, hk, u⟩` from `(mem_nonzeroLocus _ _).1 hz'`. Use `⟨y, hy, (mem_nonzeroLocus _ _).2 ⟨fun _ => k, mem_pull.2 hk, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `u₁ : IsUnit (gs (prj x f) y _ (x.th.f k))` using `by rw [gs_stalkMap (prj x f) y _ hk]; exact u.map _`. Establish `e` using `th_spec x f _ (𝟙 _) y k (fun _ => k) hk (mem_pull.2 hk)`. Use `erw [Category.id_comp] at e`. Conclude with `isUnit_of_mul_isUnit_right (e ▸ u₁)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem th_ne (x : KeyIn K) (f : K →+* K') (s : Sp K') :
     ∃ y, (pol x f).A.hom y = s ∧ y ∈ nonzeroLocus (th x f) := by
@@ -117,7 +117,7 @@ def key (x : KeyIn K) (f : K →+* K') : KeyIn K' :=
     by have := x.P.isAb.smooth; exact Chart.isLieBasis_baseChange f (isGrpPullback_prj x f) x.basis (vec_prj x f)⟩
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨h1, h2⟩` from `hy`. Establish `a1` using `Set.mem_iInter.1 (Set.mem_iInter.1 h1 PUnit.unit) PUnit.unit`. Establish `a2` using `Set.mem_iInter.1 (Set.mem_iInter.1 h2 PUnit.unit) PUnit.unit`. Conclude with `⟨a1, a2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem powIso_le {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (n : ℕ)
     (p : (LB.div (lbPow (L.pull φ) n) ((lbPow L n).pull φ)).ι) :

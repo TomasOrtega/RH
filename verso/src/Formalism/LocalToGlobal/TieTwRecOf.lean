@@ -53,20 +53,20 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `eq_of_heq hS`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem tw_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df') {S0 : IndefData Df} {S1 : IndefData Df'}
     (hS : HEq S0 S1) : S0.Tw = S1.Tw := by
   subst h; cases eq_of_heq hS; rfl
 
 /- English proof (translation)
-The claim follows from `tw_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0`.
+A detailed English derivation is pending.
 -/
 theorem twPl_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) : Q.Rl.twPl = P.S0.Tw :=
   tw_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[← twPl_eq Q]`. Establish `h` using `(Qr.tw_iff (D.plEq.symm y)).1 (by simpa using hy)`. Conclude with `⟨hs _ h, h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tieTwRec_of {Q : RealT Rc P Dcf Spf Zscf S Ks} (Qr : RealRec Q)
     (hs : ∀ w, D.what₂.muAt w ≠ D.what₂.mu0 → w ∈ L.supp) : TieTwRec L P.S0.Tw := by

@@ -15,13 +15,13 @@ namespace UpperTheory.V.Z.Kato.ReducibleThreeDim
 
 open TensorProduct in
 /- English proof (translation)
-Use `⟨⟨hfc.comp h1.1, fun g h => by simp only [h1.2 g h, map_add, hf]⟩, fun w hw => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨A, hA, x, hx⟩` from `h2.away w hw`. Conclude with `⟨A, hA, f x, fun s hs => by simp only [hx s hs, map_sub, hf]⟩`. Take `⟨j, hj, ⟨hc, hcc⟩, x, hx⟩` from `h2.above τ`. Use `⟨j, hj, ⟨hfc.comp hc, fun g h => ?_⟩, LinearMap.rTensor (Loc.Bcr l) (f.restrictScalars ℚ_[l]) x, fun g => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg f (hcc g h)` as an intermediate fact. Rewrite `this` using `[map_add]`. Conclude with `this.trans (congrArg _ (hf _ _))`. Establish `key : ∀ y : V ⊗[ℚ_[l]] Loc.Bcr l, LinearMap.rTensor (Loc.Bcr l) (f.restrictScalars ℚ_[l]) (Loc.actC ((MonoidHom.snd _ _).comp (Af.decJ F j).subtype) (ρ.comp ((MonoidHom.fst _ _).comp (Af.decJ F j).subtype)) g y) = Loc.actC ((MonoidHom.snd _ _).comp (Af.decJ F j).subtype) (ρ'.comp …`. Introduce `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp [Loc.actC, hf]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Rewrite using `[← key, ← map_sub, ← hx g, LinearMap.rTensor_tmul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem bk_map {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime]
     {C : Type} [CommRing C] [Algebra ℚ_[l] C]
@@ -62,7 +62,7 @@ private def IsBlockSL2Embedding (x : GG 3 R) : Prop :=
   ∃ a b c d : R, a * d - b * c = 1 ∧ x.mat = !![a, 0, b; 0, 1, 0; c, 0, d]
 
 /- English proof (translation)
-Use extensionality with `a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;>`. Simplify using `[thetaLie, Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 private theorem theta_eq (X : Matrix (Fin 3) (Fin 3) R) :
     thetaLie X = !![-X 2 2, -X 1 2, -X 0 2; -X 2 1, -X 1 1, -X 0 1; -X 2 0, -X 1 0, -X 0 0] := by
@@ -71,7 +71,7 @@ private theorem theta_eq (X : Matrix (Fin 3) (Fin 3) R) :
     simp [thetaLie, Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem conj_eq (a b c d : R) (Y : Matrix (Fin 3) (Fin 3) R) :
     !![a, 0, b; 0, 1, 0; c, 0, d] * Y * !![d, 0, -b; 0, 1, 0; -c, 0, a] =
@@ -85,9 +85,9 @@ private theorem conj_eq (a b c d : R) (Y : Matrix (Fin 3) (Fin 3) R) :
   fin_cases i <;> fin_cases j <;> simp <;> ring
 
 /- English proof (translation)
-Establish `: ((x.left⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = !![d, 0, -b; 0, 1, 0; -c, 0, a]`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `x.mat * _ = 1`. Rewrite using `[hx]`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three] <;> first | ring1 | linear_combination h`. Rewrite using `[GG.adFun, this, hx]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ad_eq {x : GG 3 R} {a b c d : R} (h : a * d - b * c = 1)
     (hx : x.mat = !![a, 0, b; 0, 1, 0; c, 0, d]) (X : Matrix (Fin 3) (Fin 3) R) :
@@ -128,9 +128,9 @@ private def pC : Matrix (Fin 3) (Fin 3) R →ₗ[R] Matrix (Fin 3) (Fin 3) R whe
   map_smul' a X := by ext i j; fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sA, pA, sB, pB, pC]`. Take the linear combination `(-X 0 1) * hu`. Take the linear combination `(-X 1 0) * hu`. Take the linear combination `(-X 1 2) * hu`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-X 2 1) * hu`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem decomp (u : R) (hu : 2 * u = 1) (X : Matrix (Fin 3) (Fin 3) R) :
     X = sA (pA X) + u • sB 1 (pB 1 X) + u • sB (-1) (pB (-1) X) + pC (pC X) := by
@@ -142,14 +142,14 @@ private theorem decomp (u : R) (hu : 2 * u = 1) (X : Matrix (Fin 3) (Fin 3) R) :
   · linear_combination (-X 2 1) * hu
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sA, pA]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pA_sA (Y : Matrix (Fin 2) (Fin 2) R) : pA (sA Y) = Y := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [sA, pA]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, theta_eq, conj_eq]`. Use extensionality with `i j`. Apply the tactic sequence `split_ifs <;> fin_cases i <;> fin_cases j <;> simp [sA, pA]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ad_sA {x : GG 3 R} (hx : IsBlockSL2Embedding x) (Y : Matrix (Fin 2) (Fin 2) R) :
     sA (pA (x.adFun (sA Y))) = x.adFun (sA Y) := by
@@ -159,7 +159,7 @@ private theorem ad_sA {x : GG 3 R} (hx : IsBlockSL2Embedding x) (Y : Matrix (Fin
   split_ifs <;> fin_cases i <;> fin_cases j <;> simp [sA, pA]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, ad_eq h hx, theta_eq, theta_eq, conj_eq, conj_eq]`. Use extensionality with `i j`. Apply the tactic sequence `split_ifs <;> fin_cases i <;> fin_cases j <;> simp [sA, pA]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pA_ad {x : GG 3 R} (hx : IsBlockSL2Embedding x) (X : Matrix (Fin 3) (Fin 3) R) :
     pA (x.adFun X) = pA (x.adFun (sA (pA X))) := by
@@ -172,9 +172,9 @@ private def wOf (x : GG 3 R) : Matrix (Fin 2) (Fin 2) R :=
   if x.right = 1 then corner x.mat else corner x.mat * Matrix.diagonal ![-1, 1]
 
 /- English proof (translation)
-Establish `: corner x.mat = !![a, b; c, d]`. Rewrite using `[hx]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`. Rewrite using `[wOf, this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Both sides reduce to the same expression. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`.
+Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem wOf_eq {x : GG 3 R} {a b c d : R} (hx : x.mat = !![a, 0, b; 0, 1, 0; c, 0, d]) :
     wOf x = if x.right = 1 then !![a, b; c, d] else !![-a, b; -c, d] := by
@@ -189,9 +189,9 @@ private theorem wOf_eq {x : GG 3 R} {a b c d : R} (hx : x.mat = !![a, 0, b; 0, 1
     fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, theta_eq, conj_eq, wOf_eq hx]`. Use extensionality with `i`. Apply the tactic sequence `split_ifs <;> fin_cases i <;>`. Apply the tactic sequence `simp [pB, Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;>`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `first | ring1 | linear_combination (a * X 1 2 + b * X 1 0) * ht | linear_combination (c * X 1 2 + d * X 1 0) * ht`.
+A detailed English derivation is pending.
 -/
 private theorem pB_ad {x : GG 3 R} (hx : IsBlockSL2Embedding x) (t : R) (ht : t * t = 1) (X : Matrix (Fin 3) (Fin 3) R) :
     pB t (x.adFun X) = ((if x.right = 1 then 1 else t) • wOf x) *ᵥ pB t X := by
@@ -203,9 +203,9 @@ private theorem pB_ad {x : GG 3 R} (hx : IsBlockSL2Embedding x) (t : R) (ht : t 
     first | ring1 | linear_combination (a * X 1 2 + b * X 1 0) * ht | linear_combination (c * X 1 2 + d * X 1 0) * ht
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, theta_eq, conj_eq, wOf_eq hx]`. Use extensionality with `i j`. Apply the tactic sequence `split_ifs <;> fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [sB, Matrix.mulVec, dotProduct, Fin.sum_univ_two] <;>`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `first | ring1 | linear_combination (c * v 0 - d * v 1) * ht | linear_combination (-a * v 0 + b * v 1) * ht`.
+A detailed English derivation is pending.
 -/
 private theorem ad_sB {x : GG 3 R} (hx : IsBlockSL2Embedding x) (t : R) (ht : t * t = 1) (v : Fin 2 → R) :
     sB t (((if x.right = 1 then 1 else t) • wOf x) *ᵥ v) = x.adFun (sB t v) := by
@@ -217,7 +217,7 @@ private theorem ad_sB {x : GG 3 R} (hx : IsBlockSL2Embedding x) (t : R) (ht : t 
     first | ring1 | linear_combination (c * v 0 - d * v 1) * ht | linear_combination (-a * v 0 + b * v 1) * ht
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, theta_eq, conj_eq]`. Use extensionality with `i j`. Apply the tactic sequence `split_ifs <;> fin_cases i <;> fin_cases j <;> simp [pC]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pC_ad {x : GG 3 R} (hx : IsBlockSL2Embedding x) (X : Matrix (Fin 3) (Fin 3) R) :
     pC (x.adFun X) = (if x.right = 1 then 1 else -1 : R) • pC X := by
@@ -227,7 +227,7 @@ private theorem pC_ad {x : GG 3 R} (hx : IsBlockSL2Embedding x) (X : Matrix (Fin
   split_ifs <;> fin_cases i <;> fin_cases j <;> simp [pC]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite using `[ad_eq h hx, theta_eq, conj_eq]`. Use extensionality with `i j`. Apply the tactic sequence `split_ifs <;> fin_cases i <;> fin_cases j <;> simp [pC]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ad_pC {x : GG 3 R} (hx : IsBlockSL2Embedding x) (X : Matrix (Fin 3) (Fin 3) R) :
     x.adFun (pC X) = (if x.right = 1 then 1 else -1 : R) • pC X := by
@@ -237,11 +237,11 @@ private theorem ad_pC {x : GG 3 R} (hx : IsBlockSL2Embedding x) (X : Matrix (Fin
   split_ifs <;> fin_cases i <;> fin_cases j <;> simp [pC]
 
 /- English proof (translation)
-Take `⟨a, b, c, d, h, hx⟩` from `hx`. Rewrite `hw` using `[wOf_eq hx, if_pos h1]`. Establish `: ((w⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R) = !![d, -b; -c, a]`. Apply `Units.inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[hw]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two] <;> first | ring1 | linear_combination h`. Rewrite using `[ad_eq h hx, if_pos h1, this, hw, conj_eq]`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [sA, pA] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pA_ad_one {x : GG 3 R} (hx : IsBlockSL2Embedding x) (h1 : x.right = 1) (w : GL (Fin 2) R)
     (hw : (w : Matrix (Fin 2) (Fin 2) R) = wOf x) (Y : Matrix (Fin 2) (Fin 2) R) :
@@ -260,9 +260,9 @@ private theorem pA_ad_one {x : GG 3 R} (hx : IsBlockSL2Embedding x) (h1 : x.righ
   fin_cases i <;> fin_cases j <;> simp [sA, pA] <;> ring
 
 /- English proof (translation)
-Establish `hx' : x.mat = !![1, 0, 0; 0, 1, 0; 0, 0, 1]`. Apply the tactic sequence `rw [hx]; ext i j; fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[ad_eq (by ring) hx', if_neg (by rw [h1]; decide), theta_eq]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[sA, pA, Jmat, Fin.rev, Matrix.mul_apply, Fin.sum_univ_three, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem pA_ad_c {x : GG 3 R} (hx : x.mat = 1) (h1 : x.right = -1) (Y : Matrix (Fin 2) (Fin 2) R) :
     pA (x.adFun (sA Y)) = -(Jmat R 2 * Yᵀ * Jmat R 2) := by
@@ -285,7 +285,7 @@ private def repA {Γ : Type} [Group Γ] (r : Γ →* GG 3 R) (hr : ∀ g, IsBloc
     rw [ad_sA (hr h), map_mul, GG.adFun_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem symp_eq (w : Matrix (Fin 2) (Fin 2) R) :
     wᵀ * !![0, 1; -1, 0] * w = w.det • !![0, 1; -1, 0] := by
@@ -294,7 +294,7 @@ private theorem symp_eq (w : Matrix (Fin 2) (Fin 2) R) :
   fin_cases i <;> fin_cases j <;> simp <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.det_fin_two]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Jmat, Fin.rev] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pair_eq (w : Matrix (Fin 2) (Fin 2) R) :
     wᵀ * Jmat R 2 * (!![-1, 0; 0, 1] * w * !![-1, 0; 0, 1]) = w.det • Jmat R 2 := by
@@ -303,7 +303,7 @@ private theorem pair_eq (w : Matrix (Fin 2) (Fin 2) R) :
   fin_cases i <;> fin_cases j <;> simp [Jmat, Fin.rev] <;> ring
 
 /- English proof (translation)
-Use `⟨(Ψ g : R), 0, 0, ((Ψ g)⁻¹ : Rˣ), by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[GG.mat, unitaryThreeReflection_left, tor_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [wt1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem isBlock_reducible_three_dim {Γ : Type} [Group Γ] (η : Γ →* ℤˣ) (Ψ : Γ →* Rˣ) (g : Γ) : IsBlockSL2Embedding (r0 η Ψ g) := by
   refine ⟨(Ψ g : R), 0, 0, ((Ψ g)⁻¹ : Rˣ), by simp, ?_⟩
@@ -312,7 +312,7 @@ private theorem isBlock_reducible_three_dim {Γ : Type} [Group Γ] (η : Γ →*
   fin_cases i <;> fin_cases j <;> simp [wt1]
 
 /- English proof (translation)
-Introduce `a b hab`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> first | rfl | exact absurd (by decide) hab`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pC_mem (X : Matrix (Fin 3) (Fin 3) R) : pC X ∈ gw R 0 := by
   intro a b hab
@@ -322,14 +322,14 @@ variable [TopologicalSpace R] [IsTopologicalRing R]
 
 omit [IsTopologicalRing R] in
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> exact continuous_id.matrix_elem _ _`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cont_pA : Continuous (pA : Matrix (Fin 3) (Fin 3) R → _) := by
   refine continuous_matrix fun i j => ?_
   fin_cases i <;> fin_cases j <;> exact continuous_id.matrix_elem _ _
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(continuous_id.matrix_elem 0 1).add (continuous_const.mul (continuous_id.matrix_elem 1 2))`. Conclude with `(continuous_id.matrix_elem 2 1).sub (continuous_const.mul (continuous_id.matrix_elem 1 0))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_pB (t : R) : Continuous (pB t) := by
   refine continuous_pi fun i => ?_
@@ -339,7 +339,7 @@ private theorem cont_pB (t : R) : Continuous (pB t) := by
 
 omit [IsTopologicalRing R] in
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> first | exact continuous_const | exact continuous_id.matrix_elem 1 1`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem cont_pC : Continuous (pC : Matrix (Fin 3) (Fin 3) R → _) := by
   refine continuous_matrix fun i j => ?_
@@ -351,47 +351,43 @@ end UpperTheory.V.Z.Kato.ReducibleThreeDim
 
 open UpperTheory.V.Z.Kato.ReducibleThreeDim in
 /- English proof (translation)
-Introduce `hC adQ newAut hK Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ hm r h ι hII hmod`. Take `⟨hcc, hηc, -, hlc, -, -, -, hCM, -⟩` from `dat_facts D`. Take `⟨h11, hdet, W, hext, hWc, -, hW, hWd⟩` from `typeII_facts hC D hm h hII`. Establish `hirr` using `typeII_irr_cyc hC D hm h hII W hext`. Take `⟨f, hf⟩` from `hmod W hext`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hW' : ∀ g, (W g : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)) = wOf (r g)` using `hW`. Establish `hblk0 : ∀ g ∈ D.η.ker, IsBlockSL2Embedding (r g)`. Introduce `g hg`. Use `⟨(r g).mat 0 0, (r g).mat 0 2, (r g).mat 2 0, (r g).mat 2 2, ?_, ?_⟩` and prove the remaining obligations. Use `hdet g hg` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`. Apply the tactic sequence `ext i j fin_cases i <;> fin_cases j <;> first`. Consider the case `rfl`. Consider the case `exact h11 g hg`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact hII.1 g hg _ _ (by decide)`. Establish `hblk : ∀ g, IsBlockSL2Embedding (r g)`. Introduce `g`. Break down `Int.units_eq_one_or (D.η g) with hg | hg` into its components or cases. Conclude with `hblk0 g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : D.η (g * D.cc⁻¹) = 1` using `by rw [map_mul, map_inv, hg, hηc, mul_inv_cancel]`. Establish `e1 : r g = r (g * D.cc⁻¹) * r D.cc` using `by rw [← map_mul, inv_mul_cancel_right]`. Establish `hr : (r (g * D.cc⁻¹)).right = 1` using `(h.mult _).trans hk`. Establish `e2 : (r g).mat = (r (g * D.cc⁻¹)).mat`. Establish `hrc` using `h.norm.atc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1]`. Simplify using `only [GG.mat] at hrc ⊢`. Rewrite using `[SemidirectProduct.mul_left, hr, sgnAct_one, Units.val_mul, hrc, Matrix.mul_one]`. Take `⟨a, b, c, d, h1, h2⟩` from `hblk0 _ hk`. Conclude with `⟨a, b, c, d, h1, e2.trans h2⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `θ : G ℚ Ω →* (PadicAlgCl l)ˣ` to `(Units.map (Int.castRingHom (PadicAlgCl l)).toMonoidHom).comp D.η`. Establish `hθ0 : ∀ g, (θ g : PadicAlgCl l) = ((D.η g : ℤˣ) : ℤ)` using `fun g => rfl`. Establish `hθ : ∀ g, (θ g : PadicAlgCl l) = if (r g).right = 1 then 1 else -1`. Introduce `g`. Rewrite using `[hθ0, h.mult g]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `rcases Int.units_eq_one_or (D.η g) with hg | hg <;> simp [hg]`. Take `⟨M, hM, hMk⟩` from `CF.kwAbs Ω D.η.ker (hlc.isOpen_fiber 1) (Abelianization.commutator_subset_ker D.η)`. Establish `hθM : Af.KillsMu M θ`. Introduce `s hs`. Establish `: D.η s = 1` using `hMk s hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [θ, MonoidHom.comp_apply, this, map_one]`. Take `⟨hB1, hB2⟩` from `hK l Ω K e N θ _ W (UpperTheory.V.Z.Kato.used_of hC D hm h hII W hext hWc hW hWd ι ⟨f, hf⟩) ι f hf`. Use `haveI : IsAlgClosure K Ω := by haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Conclude with `⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ) K⟩`. Establish `hker : ∀ s : G K Ω, D.η (s.restrictScalars ℚ) = 1` using `fun s => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: galEmb ℚ K Ω s ∈ D.η.ker` using `D.η_ker ▸ galEmb_mem ℚ K Ω s`. Conclude with `this`. Establish `hrc : (r D.cc).right = -1` using `(h.mult _).trans hηc`. Establish `hWcc : (W D.cc : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)) = !![-1, 0; 0, 1]`. Establish `hx' : (r D.cc).mat = !![1, 0, 0; 0, 1, 0; 0, 0, 1]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rw [h.norm.atc]; ext i j; fin_cases i <;> fin_cases j <;> simp`. Rewrite using `[hW', wOf_eq hx', if_neg (by rw [hrc]; decide), neg_zero]`. Establish `hA : Af.BlochKatoSelmerVanishes l (repA r hblk)`. Establish `he` using `D.gd.e_pos`. Use `adQ K D.gd.quad 2 le_rfl l Ω ι W 0 θ hWc (newAut _ (by omega) f l Ω ι W _ hf) ⟨M, θ, hM, hθM, by simp⟩ ?_ hirr _ ⟨D.cc, Jgl _ 2, D.conj, fun s s' hs => ?_, fun s X => ?_, fun X => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.GeneralLinearGroup.mkOfDetNeZero !![0, 1; -1, 0] (by simp), fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[hθ0, ← hWd s]`. Conclude with `symp_eq _`. Establish `e1 : W (s'.restrictScalars ℚ) = W D.cc * W (s.restrictScalars ℚ) * W D.cc`. Rewrite using `[hs, inv_eq_of_mul_eq_one_right hcc, map_mul, map_mul]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2` using `hWd (s.restrictScalars ℚ)`. Express the relevant statement in the definitionally equal form `(W (s.restrictScalars ℚ) : Matrix (Fin 2) (Fin 2) (PadicAlgCl l))ᵀ * Jmat _ 2 * (W (s'.restrictScalars ℚ) : Matrix (Fin 2) (Fin 2) (PadicAlgCl l)) = (θ (s.restrictScalars ℚ) : PadicAlgCl l) • Jmat _ 2`. Rewrite using `[e1, hθ0, ← e2, Units.val_mul, Units.val_mul, hWcc]`. Conclude with `pair_eq _`. Conclude with `pA_ad_one (hblk _) ((h.mult _).trans (hker s)) _ (hW' _) X`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pA_ad_c h.norm.atc hrc X`. Introduce `γ hγ hbk`. Establish `eA : ∀ g X, pA (adRep r g X) = repA r hblk g (pA X)` using `fun g X => pA_ad (hblk g) X`. Establish `eA' : ∀ g Y, sA (repA r hblk g Y) = adRep r g (sA Y)` using `fun g Y => ad_sA (hblk g) Y`. Establish `t1 : ∀ g v, Loc.colRep (Af.tw W 1) g v = ((if (r g).right = 1 then 1 else 1 : PadicAlgCl l) • wOf (r g)) *ᵥ v` using `fun g v => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hW', ite_self]`. Conclude with `congrArg (· *ᵥ v) (Af.tw_val W 1 g)`. Establish `t2 : ∀ g v, Loc.colRep (Af.tw W θ) g v = ((if (r g).right = 1 then 1 else -1 : PadicAlgCl l) • wOf (r g)) *ᵥ v` using `fun g v => by`. Rewrite using `[← hW', ← hθ]`. Conclude with `congrArg (· *ᵥ v) (Af.tw_val W θ g)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eB1 : ∀ g X, pB 1 (adRep r g X) = Loc.colRep (Af.tw W 1) g (pB 1 X)` using `fun g X => by`. Rewrite using `[t1]; exact pB_ad (hblk g) 1 (by ring) X`. Establish `eB1' : ∀ g v, sB 1 (Loc.colRep (Af.tw W 1) g v) = adRep r g (sB 1 v)` using `fun g v => by`. Rewrite using `[t1]; exact ad_sB (hblk g) 1 (by ring) v`. Establish `eB2 : ∀ g X, pB (-1) (adRep r g X) = Loc.colRep (Af.tw W θ) g (pB (-1) X)` using `fun g X => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[t2]; exact pB_ad (hblk g) (-1) (by ring) X`. Establish `eB2' : ∀ g v, sB (-1) (Loc.colRep (Af.tw W θ) g v) = adRep r g (sB (-1) v)` using `fun g v => by`. Rewrite using `[t2]; exact ad_sB (hblk g) (-1) (by ring) v`. Establish `hblkz : ∀ g, IsBlockSL2Embedding (r0 D.η D.ΨQ g)` using `fun g => isBlock_reducible_three_dim _ _ g`. Establish `eC : ∀ g X, pC (adRep r g X) = adRep (r0 D.η D.ΨQ) g (pC X)` using `fun g X => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(pC_ad (hblk g) X).trans (Eq.trans ?_ (ad_pC (hblkz g) X).symm)` and prove the remaining obligations. Rewrite using `[h.mult g, unitaryThreeReflection_right]`. Establish `eC' : ∀ g X, pC (adRep (r0 D.η D.ΨQ) g X) = adRep r g (pC X)` using `fun g X => by`. Use `(pC_ad (hblkz g) X).trans (Eq.trans ?_ (ad_pC (hblk g) X).symm)` and prove the remaining obligations. Rewrite using `[h.mult g, unitaryThreeReflection_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨zA, bA⟩` from `bk_map (adRep r) (repA r hblk) pA cont_pA eA hγ hbk`. Take `⟨z1, b1⟩` from `bk_map (adRep r) _ (pB 1) (cont_pB 1) eB1 hγ hbk`. Take `⟨z2, b2⟩` from `bk_map (adRep r) _ (pB (-1)) (cont_pB (-1)) eB2 hγ hbk`. Take `⟨zC, bC⟩` from `bk_map (adRep r) _ pC cont_pC eC hγ hbk`. Take `⟨xA, hxA⟩` from `(mem_coboundaries1 _ _).1 (hA _ zA bA)`.
-
-Take `⟨x1, hx1⟩` from `(mem_coboundaries1 _ _).1 (hB1 _ z1 b1)`. Take `⟨x2, hx2⟩` from `(mem_coboundaries1 _ _).1 (hB2 _ z2 b2)`. Take `⟨xC, hxC⟩` from `(mem_coboundaries1 _ _).1 (bloch_kato_nonpositive_weight hC D 0 le_rfl _ zC (fun g => pC_mem (γ g)) bC)`. Use `(mem_coboundaries1 _ _).2 ⟨sA xA + (2⁻¹ : PadicAlgCl l) • sB 1 x1 + (2⁻¹ : PadicAlgCl l) • sB (-1) x2 + pC xC, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[decomp (2⁻¹ : PadicAlgCl l) (by norm_num) (γ g), hxA g, hx1 g, hx2 g, hxC g]`.
-
-Simplify using `only [map_sub, map_add, map_smul, eA', eB1', eB2', eC', smul_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.rigII_of :
     CohInp → Af.AdVanishQ → Af.NewformAut → UpperTheory.V.Z.Kato.KatoTwo → UpperTheory.V.Z.Kato.RigII := by

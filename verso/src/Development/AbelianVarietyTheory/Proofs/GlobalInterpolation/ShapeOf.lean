@@ -4,7 +4,7 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Fc
 
 set_option maxHeartbeats 4000000 in
 /- English proof (authored)
-Apply the shape theorem to the family and selections carried by the hypothesis record. Pass the S-component of each C-selection. Translate the divisibility rows and the service condition using their equivalences in the shape interface. For the rank rows, retain the existing constants and eventual threshold, and keep the listed fields of the first row together with the second row intact. This gives the row condition in the form required by TopShape. The record and the supplied proofs of V and NR give all remaining inputs, so the theorem yields G.
+Apply the shape theorem to the family and selections carried by the hypothesis record. Pass the S-component of each C-selection. Translate the divisibility rows and the service condition using their equivalences in the shape interface. For the rank rows, retain the existing constants and eventual threshold, and keep the listed fields of the first row together with the second row intact. This gives the row condition in the form required by the shape theorem. The record and the supplied proofs of V and NR give all remaining inputs, so the theorem yields G.
 -/
 theorem GlobalTheory.Fc.of_hyps (V NR : Prop) (N : FamClass → Prop) (G : Prop) (t : TopShape V NR N G) (hV : V) (hR : NR) (h : Hyps N DRS) : G :=
   t h.𝒜 h.cT h.hEx (sel h.σ) h.hduty (selS h.σ) (selP h.σ) (selDH h.σ) (fun Fm hc x hx k i => (selC h.σ Fm hc x hx k i).toS) (selB h.σ) h.hRB h.hTw h.hPA h.hLamP

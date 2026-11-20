@@ -80,13 +80,7 @@ local macro "coef_cases" : tactic => `(tactic| (
   ksub c2 ρ₁ c.ρ))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use `ksub hW W' W`. Use `ksub hθ θ' θ`.
-
-Use `ksub hφ φ' φ`. Use `⟨fun h => ⟨⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩, fun h => ⟨⟨?_, ?_, ?_⟩, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact (h.1.1 :))`. Conclude with `(by with_unfolding_all exact (h.1.2 :))`. Conclude with `(by with_unfolding_all exact (h.1.3 :))`.
-
-Conclude with `(by with_unfolding_all exact (h.2 :))`. Conclude with `(by with_unfolding_all exact (h.3 :))`. Conclude with `(by with_unfolding_all exact (h.4 :))`. Conclude with `(by with_unfolding_all exact (h.1.1 :))`. Conclude with `(by with_unfolding_all exact (h.1.2 :))`.
-
-Conclude with `(by with_unfolding_all exact (h.1.3 :))`. Conclude with `(by with_unfolding_all exact (h.2 :))`. Conclude with `(by with_unfolding_all exact (h.3 :))`. Conclude with `(by with_unfolding_all exact (h.4 :))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_iff (hP : B'.toPre = B.toPre) (hW : HEq W' W) {θ : InfFam a.D} {θ' : InfFam a'.D} (hθ : HEq θ' θ)
     {φ : GA a.D W → ℂ} {φ' : GA a'.D W' → ℂ} (hφ : HEq φ' φ) : IsAutFunSm θ' W' φ' ↔ IsAutFunSm θ W φ := by
@@ -111,13 +105,7 @@ theorem isAutFunSm_iff (hP : B'.toPre = B.toPre) (hW : HEq W' W) {θ : InfFam a.
   · exact (by with_unfolding_all exact (h.4 :))
 
 /- English proof (translation)
-Establish `k` using `fun φ φ' => isAutFunSm_iff (φ := φ) (φ' := φ') hP hW hθ`. Use `tie_cases`. Use `ksub hθ θ' θ`. Use `ksub hJ J' J`. Use `ksub hχ χ' χ`.
-
-Use `ksub hT T' T`. Use `⟨fun h => ⟨fun v => ?_, ?_, ?_, ?_, ?_⟩, fun h => ⟨fun v => ?_, ?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(by with_unfolding_all exact ((k (T v) (((T v))) (((HEq.refl (T v))))).1 (((h.1 ((by with_unfolding_all exact (v :)))))) : _))`. Conclude with `(by with_unfolding_all exact (h.2 :))`. Conclude with `(by with_unfolding_all exact (h.3 :))`.
-
-Conclude with `(by with_unfolding_all exact (h.4 :))`. Conclude with `(by with_unfolding_all exact (h.5 :))`. Conclude with `(by with_unfolding_all exact ((k (T ((v))) (((T ((by with_unfolding_all exact (v :)))))) (((HEq.refl (T ((by with_unfolding_all exact (v :)))))))).2 (h.1 ((v))) : _))`. Conclude with `(by with_unfolding_all exact (h.2 :))`. Conclude with `(by with_unfolding_all exact (h.3 :))`.
-
-Conclude with `(by with_unfolding_all exact (h.4 :))`. Conclude with `(by with_unfolding_all exact (h.5 :))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isMultMap_iff (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M) {θ : InfFam a.D} {θ' : InfFam a'.D} (hθ : HEq θ' θ)
     {J : Set (GA a.D W)} {J' : Set (GA a'.D W')} (hJ : HEq J' J) {χ : GA a.D W → ℂ} {χ' : GA a'.D W' → ℂ} (hχ : HEq χ' χ)
@@ -141,11 +129,9 @@ theorem isMultMap_iff (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M)
   · exact (by with_unfolding_all exact (h.5 :))
 
 /- English proof (translation)
-Establish `k` using `fun T T' => isMultMap_iff (T := T) (T' := T') hP hW h hθ hJ hχ`. Unfold `Mult`. Generalize the expression as in `IsMultMap θ' M' J' χ' = p' at k ⊢`. Generalize the expression as in `IsMultMap θ M J χ = p at k ⊢`. Use `clear hθ hJ hχ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `tie_cases`. Establish `hp : @Eq (MMap M → Prop) ((by with_unfolding_all exact (p' :))) p` using `funext fun T => (by with_unfolding_all exact ((propext (k T ((T)) (((HEq.refl T))))) : _))`. Establish `hp' : HEq p' p` using `(by with_unfolding_all exact ((heq_of_eq hp) :))`. Use `clear k hp`. Use `ksub hp' p' p`.
-
-Conclude with `(by with_unfolding_all exact ((HEq.refl (Submodule.span ℂ {T | p T})) :))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mult_heq (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M) {θ : InfFam a.D} {θ' : InfFam a'.D} (hθ : HEq θ' θ)
     {J : Set (GA a.D W)} {J' : Set (GA a'.D W')} (hJ : HEq J' J) {χ : GA a.D W → ℂ} {χ' : GA a'.D W' → ℂ} (hχ : HEq χ' χ) :
@@ -163,11 +149,7 @@ theorem mult_heq (hP : B'.toPre = B.toPre) (hW : HEq W' W) (h : DSTie M' M) {θ 
   exact (by with_unfolding_all exact ((HEq.refl (Submodule.span ℂ {T | p T})) :))
 
 /- English proof (translation)
-Use `tie_cases`. Use `coef_cases`. Use `ksub hWl Wl' Wl`. Use `ksub hθ θ' θ`. Use `ksub hψ ψ' ψ`.
-
-Use `ksub hBV BV' BV`. Use `ksub hio io' io`. Use `ksub hH H' H`. Use `ksub hν ν' ν`. Use `ksub hfd fd' fd`.
-
-Use `ksub hω ω' ω`. Use `ksub hv v' v`. Use `ksub hth th' th`. Conclude with `(by with_unfolding_all exact (h0 :))`.
+A detailed English derivation is pending.
 -/
 theorem thetaLift_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W) (h : DSTie M' M)
     {Wl : Submodule ℂ (MMap M)} {Wl' : Submodule ℂ (MMap M')} (hWl : HEq Wl' Wl) {θ : InfFam a.D} {θ' : InfFam a'.D} (hθ : HEq θ' θ)
@@ -192,9 +174,7 @@ theorem thetaLift_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W) (
   exact (by with_unfolding_all exact (h0 :))
 
 /- English proof (translation)
-Use `tie_cases`. Use `coef_cases`. Use `ksub hY Y' Y`. Use `ksub hX X' X`. Use `ksub hL L' L`.
-
-Use `ksub hth th' th`. Use `ksub hg g' g`. Conclude with `(by with_unfolding_all exact (h0 :))`.
+A detailed English derivation is pending.
 -/
 theorem postLift_of (hP : B'.toPre = B.toPre) (hV : HEq V' V) (hW : HEq W' W) (h : DSTie M' M) {c : CoefA V} {c' : CoefA V'}
     (c1 : HEq c'.W c.W) (c2 : HEq c'.ρ c.ρ) (c3 : HEq c'.nW c.nW) (c4 : HEq c'.iW c.iW)
@@ -226,7 +206,7 @@ local macro "pre_cases" : tactic => `(tactic| (
   subst e))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Conclude with `(by with_unfolding_all exact ((Eq.refl a.D.R.m) :))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem m_eq (hP : B'.toPre = B.toPre) : a'.D.R.m = a.D.R.m := by
   rcases B' with ⟨P'⟩
@@ -235,21 +215,21 @@ theorem m_eq (hP : B'.toPre = B.toPre) : a'.D.R.m = a.D.R.m := by
   exact (by with_unfolding_all exact ((Eq.refl a.D.R.m) :))
 
 /- English proof (translation)
-Use `pre_cases`. Conclude with `(by with_unfolding_all exact ((HEq.refl (Wc a.D i)) :))`.
+A detailed English derivation is pending.
 -/
 theorem wc_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') : HEq (Wc a'.D i') (Wc a.D i) := by
   pre_cases
   exact (by with_unfolding_all exact ((HEq.refl (Wc a.D i)) :))
 
 /- English proof (translation)
-Use `pre_cases`. Conclude with `(by with_unfolding_all exact ((HEq.refl (Vc a.D i)) :))`.
+A detailed English derivation is pending.
 -/
 theorem vc_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') : HEq (Vc a'.D i') (Vc a.D i) := by
   pre_cases
   exact (by with_unfolding_all exact ((HEq.refl (Vc a.D i)) :))
 
 /- English proof (translation)
-Use `pre_cases`. Use `ksub hβ β' β`. Use `ksub hPg Pg' Pg`. Conclude with `(by with_unfolding_all exact ((And.intro (HEq.refl (levS _ (β i) (datW i Pg))) (HEq.refl (levChi _ (β i) (datW i Pg)))) :))`.
+A detailed English derivation is pending.
 -/
 theorem lev_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {β : ∀ i, GL (Fin (Wc a.D i).rank) (Lev.EAf a.D)} {β' : ∀ i, GL (Fin (Wc a'.D i).rank) (Lev.EAf a'.D)} (hβ : HEq β' β)
@@ -261,9 +241,7 @@ theorem lev_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} 
   exact (by with_unfolding_all exact ((And.intro (HEq.refl (levS _ (β i) (datW i Pg))) (HEq.refl (levChi _ (β i) (datW i Pg)))) :))
 
 /- English proof (translation)
-Substitute `hG` using the available equality. Take `rfl` from `eq_of_heq hi`. Take `rfl : fG' = fG` from `Subsingleton.elim _ _`. Take `rfl : c' = c` from `funext fun g => hc g g HEq.rfl`. Use `clear hc`.
-
-Use `pre_cases`. Use `ksub hβ β' β`. Use `ksub hPg Pg' Pg`. Use `ksub he eG' eG`. Conclude with `(by with_unfolding_all exact ((HEq.refl (gaL _ (β i) (datW i Pg) eG c')) :))`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gaL_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i')
     {β : ∀ i, GL (Fin (Wc a.D i).rank) (Lev.EAf a.D)} {β' : ∀ i, GL (Fin (Wc a'.D i).rank) (Lev.EAf a'.D)} (hβ : HEq β' β)
@@ -284,7 +262,7 @@ theorem gaL_heq (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} 
   exact (by with_unfolding_all exact ((HEq.refl (gaL _ (β i) (datW i Pg) eG c')) :))
 
 /- English proof (translation)
-Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at hP`. Substitute `hP` using the available equality. Use `ksub hpx px' px`. Conclude with `(by with_unfolding_all exact ((And.intro (Eq.refl (Gc B px)) (HEq.refl (inferInstance : Group (Gc B px)))) :))`.
+Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem gc_eq (hP : B'.toPre = B.toPre) {px : PreX B.toPre} {px' : PreX B'.toPre} (hpx : HEq px' px) :
     Gc B' px' = Gc B px ∧ HEq (inferInstance : Group (Gc B' px')) (inferInstance : Group (Gc B px)) := by
@@ -300,11 +278,11 @@ variable {G G' : Type} [iG : Group G] [Fintype G] [iG' : Group G'] [Fintype G'] 
   {R : RealDat a.D A Ks} {R' : RealDat a'.D A' Ks'}
 
 /- English proof (translation)
-Establish `s : a.D.what₂.embLL = sg0 a.D A` using `(sgAt_mk _ R.hv0).symm`. Establish `s' : a'.D.what₂.embLL = sg0 a'.D A'` using `(sgAt_mk _ R'.hv0).symm`. Establish `hM0 : DSTie (R'.MW i' (sg0 a'.D A')) (R.MW i (sg0 a.D A))` using `s ▸ s' ▸ hM`. Establish `hHW0 : HEq (R'.HW i' (sg0 a'.D A')) (R.HW i (sg0 a.D A))` using `s ▸ s' ▸ hHW`. Establish `hc0 : ∀ g' g, HEq g' g → RealDat.eC (A` using `A') (sg0 a'.D A') g' = RealDat.eC (A := A) (sg0 a.D A) g := s ▸ s' ▸ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `wc_heq hP h`. Establish `hV` using `vc_heq hP h`. Establish `hl` using `lev_heq hP h hβ hPg`. Establish `f0 : ThetaLift (R.MW i (sg0 a.D A)) (Mult R.θ _ (levS _ (R.βW i) (datW i R.Pg)) (levChi _ (R.βW i) (datW i R.Pg))) R.θ R.ψ (R.cV i) (R.BV i) (R.ioP i) (R.HV i t) (R.νV i t) (R.fdV i t) (R.ωP i t) (R.vP i t) (R.thF i t)` using `(by with_unfolding_all exact (h0.1 :))`. Establish `g0 : PostLift (R.MW i (sg0 a.D A)) (R.cV i) (R.HV i t) (R.HW i (sg0 a.D A)) (gaL _ (R.βW i) (datW i R.Pg) R.eG (RealDat.eC (A` using `A) (sg0 a.D A))) (R.thF i t) (R.thG i t) := (by with_unfolding_all exact (h0.2 :))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f1` using `thetaLift_of hP hV hW hM0 (mult_heq hP hW hM0 hθ hl.1 hl.2) hθ hψ c1 c2 c3 c4 hBV hio hHV hν hfd hω hv hF f0`. Establish `g1` using `postLift_of hP hV hW hM0 c1 c2 c3 c4 hHV hHW0 (gaL_heq hP h hβ hPg hG hi he hc0) hF hg g0`. Conclude with `(by with_unfolding_all exact ((And.intro f1 g1) :))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lift_of (hP : B'.toPre = B.toPre) {i : Fin a.D.R.m} {i' : Fin a'.D.R.m} (h : (i : ℕ) = i') {t : T0} {t' : T0'}
     (hG : G' = G) (hi : HEq iG' iG) (hψ : HEq R'.ψ R.ψ) (hθ : HEq R'.θ R.θ) (hβ : HEq R'.βW R.βW) (hPg : HEq R'.Pg R.Pg)
@@ -337,11 +315,11 @@ end Fields
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Ks _ _ _ Xg tr z Wt' R' hE hpx hEx hS hI i'`. Use `letI := z.alg`. Establish `hP : B'.toPre = B.toPre` using `hE.1`. Establish `hm` using `m_eq (a := Z) (a' := Z') hP`. Set `i : Fin (w.st Z).toD7.R.m` to `Fin.cast hm i'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h : (i : ℕ) = i'` using `rfl`. Use `obt ⟨⟨hψ, hθ, hβ, -, -, -, -, -, -, hPg, he, -, h1, -⟩, h2⟩ := hS`. Use `obt ⟨c1, c2, c3, c4, -, hio, hBV, m1, m2, m3, m4, m5, m6, m7, -, hHW, -⟩ := h1 i i' h`. Use `obt ⟨hω, hv, hHV, hF, hg, hν, hfd⟩ := h2 i i' h`. Establish `hG` using `gc_eq hP hpx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `z.pins.char.base.thP`. Establish `l1` using `(hb.thF i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt)))).1 (hEx.thF i _)`. Establish `l2` using `(hb.thG i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt)))).1 (hEx.thG i _)`. Conclude with `lift_of (a := Z) (a' := Z') (R := z.R.toRealDat) (R' := R'.toRealDat) hP h hG.1 hG.2 hψ hθ hβ hPg he c1 c2 c3 c4 hio hBV ⟨m1, m2, m3, m4, m5, m6, m7⟩ hHW hω hv hHV hF hg hν hfd hI ⟨l1, l2⟩`.
+A detailed English derivation is pending.
 -/
 theorem liftAt_of_rSide : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'}
   {Z : w.Lt} {Z' : w'.Lt} {hX : B.fields.Ok} {hX' : B'.fields.Ok} {Wt : Set B.places.Pl}

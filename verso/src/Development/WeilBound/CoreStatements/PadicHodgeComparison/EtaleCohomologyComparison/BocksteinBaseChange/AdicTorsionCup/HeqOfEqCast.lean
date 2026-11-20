@@ -13,21 +13,21 @@ section Heq
 variable {q : ℕ} {E : Spc}
 
 /- English proof (translation)
-Conclude with `eq_of_heq (h.trans (cast_heq h1 h2 y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_cast_of_heq {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') {x : Ht q E n' i'} {y : Ht q E n i} (h : HEq x y) :
     x = y.cast h1 h2 := by
   exact eq_of_heq (h.trans (cast_heq h1 h2 y).symm)
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Conclude with `eq_of_heq h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem heq_zero {n i n' i' : ℤ} (h1 : n = n') (h2 : i = i') {x : Ht q E n i} (h : HEq x (0 : Ht q E n' i')) : x = 0 := by
   subst h1 h2
   exact eq_of_heq h
 
 /- English proof (translation)
-Substitute `h1 h2 h3 h4` using the available equality. Consider the cases of `ha`. Consider the cases of `hb`. Conclude with `HEq.rfl`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem cup_heq {n m i j n' m' i' j' : ℤ} (h1 : n = n') (h2 : i = i') (h3 : m = m') (h4 : j = j')
     {a : Ht q E n i} {a' : Ht q E n' i'} {b : Ht q E m j} {b' : Ht q E m' j'} (ha : HEq a a') (hb : HEq b b') :
@@ -44,7 +44,7 @@ variable (q : ℕ) [NeZero q] {E : Spc} (hR : GlobalTheory.EtC.DivisorRingCompat
 include hR hinv
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `hR q E`. Rewrite using `[h3 b (one q E), h1 hinv b]`. Simplify using `only [mul_zero, Int.negOnePow_zero, one_smul]`. Conclude with `(cast_heq _ _ _).trans (cast_heq _ _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cup_one_right {n i : ℤ} (b : Ht q E n i) : HEq (cup q b (one q E)) b := by
   obtain ⟨h1, -, h3⟩ := hR q E
@@ -53,7 +53,7 @@ theorem cup_one_right {n i : ℤ} (b : Ht q E n i) : HEq (cup q b (one q E)) b :
   exact (cast_heq _ _ _).trans (cast_heq _ _ _)
 
 /- English proof (translation)
-Take `⟨-, h2, -⟩` from `hR q E`. Rewrite using `[h2 b v u, hvu, cup_cast_right]`. Conclude with `(cast_heq _ _ _).trans ((cast_heq _ _ _).trans (cup_one_right q hR hinv b))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_left (hvu : cup q v u = (one q E).cast (by ring) (by ring)) {n i : ℤ} (b : Ht q E n i) :
     HEq (cup q (cup q b v) u) b := by
@@ -62,7 +62,7 @@ theorem root_left (hvu : cup q v u = (one q E).cast (by ring) (by ring)) {n i : 
   exact (cast_heq _ _ _).trans ((cast_heq _ _ _).trans (cup_one_right q hR hinv b))
 
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `hR q E`. Rewrite using `[h2 b u v, h3 u v, hvu]`. Simplify using `only [mul_zero, Int.negOnePow_zero, one_smul, cast_cast, cup_cast_right]`. Conclude with `(cast_heq _ _ _).trans (cup_one_right q hR hinv b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem root_right (hvu : cup q v u = (one q E).cast (by ring) (by ring)) {n i : ℤ} (b : Ht q E n i) :
     HEq (cup q (cup q b u) v) b := by
@@ -79,7 +79,7 @@ variable {k : Type} [Field k] [IsAlgClosed k] {Y : Scheme.{0}} [IsIntegral Y] (p
 include p hq
 
 /- English proof (translation)
-Take `⟨tr, htr⟩` from `hI.e8 q k hq p d`. Use `haveI : Subsingleton (Ht q (sch.obj Y) (2 * d - n) (d - 0)) := (hI.a9 (ZMod q) (tw q ((d : ℤ) - 0))).1 _ _ (by omega)`. Take `⟨c, -, hc⟩` from `htr n 0 0`. Apply the tactic sequence `refine ⟨fun a b => (hc a fun y => ?_).trans (hc b fun y => ?_).symm⟩ <;>`. Simplify using `[Subsingleton.elim y 0, cast_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vanish (hI : ZIn) (n : ℤ) (hn : 2 * (d : ℤ) < n) : Subsingleton (Ht q (sch.obj Y) n 0) := by
   obtain ⟨tr, htr⟩ := hI.e8 q k hq p d
@@ -90,11 +90,11 @@ theorem vanish (hI : ZIn) (n : ℤ) (hn : 2 * (d : ℤ) < n) : Subsingleton (Ht 
     simp [Subsingleton.elim y 0, cast_zero]
 
 /- English proof (translation)
-Take `⟨tr, htr⟩` from `hI.e8 q k hq p d`. Take `⟨u, v, hvu⟩` from `hI.root q Y hprim (d : ℤ)`. Establish `key : ∀ b' : Ht q (sch.obj Y) (2 * d - i) (d - 0), cup q a b' = 0`. Introduce `b'`. Establish `hc` using `h ((cup q b' v).cast (by omega) (by omega))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `s1 : cup q a (cup q b' v) = 0` using `heq_zero (by omega) (by omega) ((cup_heq rfl rfl (by omega) (by omega) HEq.rfl (cast_heq _ _ _).symm).trans (heq_of_eq hc))`. Establish `s3 : cup q (cup q a (cup q b' v)) u = 0` using `by rw [s1, map_zero, AddMonoidHom.zero_apply]`. Establish `s4 : HEq (cup q a (cup q (cup q b' v) u)) (cup q (cup q a (cup q b' v)) u)`. Rewrite using `[(hI.ring q _).2.1 a (cup q b' v) u]`. Conclude with `(cast_heq _ _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `heq_zero (by omega) (by omega) ((cup_heq rfl rfl (by omega) (by omega) HEq.rfl (root_left q hI.ring hinv u v hvu b').symm).trans (s4.trans (heq_of_eq s3)))`. Take `⟨c, -, hc⟩` from `htr i 0 0`. Establish `ha : a = c` using `hc a (fun b => by simp [key b, cast_zero])`. Establish `h0 : (0 : Ht q (sch.obj Y) i 0) = c` using `hc 0 (fun b => by simp [cast_zero])`. Conclude with `ha.trans h0.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nondeg (hI : ZIn) (hprim : Nonempty (Prim q Γ(Y, ⊤))) (hinv : Inv q (sch.obj Y)) (i j : ℤ) (hij : i + j = 2 * d)
     (a : Ht q (sch.obj Y) i 0) (h : ∀ b : Ht q (sch.obj Y) j 0, cup q a b = 0) : a = 0 := by
@@ -119,11 +119,11 @@ theorem nondeg (hI : ZIn) (hprim : Nonempty (Prim q Γ(Y, ⊤))) (hinv : Inv q (
   exact ha.trans h0.symm
 
 /- English proof (translation)
-Take `⟨tr, -⟩` from `hI.e8 q k hq p d`. Take `⟨u, v, hvu⟩` from `hI.root q Y hprim (d : ℤ)`. Use `⟨(cup q (tr.symm 1) v).cast (by ring) (by ring), fun x => ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨m, hm⟩ : ∃ m : ℤ, ((cup q x u).cast (by ring) (by ring) : Ht q (sch.obj Y) (2 * d) d) = m • tr.symm 1 := by`. Use `⟨((tr ((cup q x u).cast (by ring) (by ring))).val : ℤ), tr.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, AddEquiv.apply_symm_apply, zsmul_one, Int.cast_natCast, ZMod.natCast_zmod_val]`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `hc : cup q (m • tr.symm 1) v = m • cup q (tr.symm 1) v`. Rewrite using `[map_zsmul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← cast_smul]`. Use `eq_cast_of_heq _ _ ?_` and prove the remaining obligations. Use `(root_right q hI.ring hinv u v hvu x).symm.trans ?_` and prove the remaining obligations. Rewrite using `[← hc, ← hm]`. Conclude with `cup_heq (by ring) (by ring) rfl rfl (cast_heq _ _ _).symm HEq.rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_cyclic (hI : ZIn) (hprim : Nonempty (Prim q Γ(Y, ⊤))) (hinv : Inv q (sch.obj Y)) :
     ∃ g : Ht q (sch.obj Y) (2 * d) 0, ∀ x, ∃ n : ℤ, x = n • g := by

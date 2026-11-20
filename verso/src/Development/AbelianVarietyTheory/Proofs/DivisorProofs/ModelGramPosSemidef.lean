@@ -45,9 +45,9 @@ def IsBlockModel {ι : Type} [Fintype ι] {μ : ι → ℕ} (ρ : ℝ) (U : Set 
       ∀ τ τ', τ ≠ τ' → Q τ z * (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram hk τ₀ B (φ z))⁻¹ * (Q τ' z)ᴴ = 0
 
 /- English proof (translation)
-Establish `: punct σ ρ = Metric.ball 0 ρ ∩ ⋂ i, ⋂ k, {z | σ i = some k → z k ≠ 0}`. Use extensionality with `z`. Simplify using `[punct]`. Rewrite using `[this]`. Use `Metric.isOpen_ball.inter (isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : σ i = some k`. Simplify `isOpen_ne_fun (continuous_apply k) continuous_const` using `[h]`. Simplify using `[h]`.
+Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_punct (σ : Fin m → Option (Fin e)) (ρ : ℝ) : IsOpen (punct σ ρ) := by
   have : punct σ ρ = Metric.ball 0 ρ ∩ ⋂ i, ⋂ k, {z | σ i = some k → z k ≠ 0} := by
@@ -59,13 +59,13 @@ theorem isOpen_punct (σ : Fin m → Option (Fin e)) (ρ : ℝ) : IsOpen (punct 
   · simp [h]
 
 /- English proof (translation)
-Introduce `_ hz` and use `⟨Metric.ball_subset_ball h hz.1, hz.2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem punct_mono (σ : Fin m → Option (Fin e)) {ρ ρ' : ℝ} (h : ρ ≤ ρ') : punct σ ρ ⊆ punct σ ρ' :=
   fun _ hz => ⟨Metric.ball_subset_ball h hz.1, hz.2⟩
 
 /- English proof (translation)
-Rewrite using `[modelGram, posSemidef_diagonal_iff]`. Introduce `k`. Rewrite using `[Complex.zero_le_real]`. Apply the tactic sequence `split_ifs <;> positivity`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem modelGram_posSemidef (σ : Fin m → Option (Fin e)) (z : Fin e → ℂ) : (modelGram σ z).PosSemidef := by
   rw [modelGram, posSemidef_diagonal_iff]
@@ -74,11 +74,11 @@ theorem modelGram_posSemidef (σ : Fin m → Option (Fin e)) (z : Fin e → ℂ)
   split_ifs <;> positivity
 
 /- English proof (translation)
-Rewrite using `[form_eq_sum, GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.modelAt, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single k (fun l _ hl => by simp [modelGram, diagonal_apply_ne _ hl.symm, diagonal_apply_ne _ hl]) (by simp)]`. Establish `h : ∀ c : ℝ, (w k * (c : ℂ) * (starRingEnd ℂ) (w k)).re = c * ‖w k‖ ^ 2` using `fun c => by`. Rewrite using `[mul_right_comm, Complex.mul_conj', ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [modelGram, diagonal_apply_eq]`. Use `split_ifs`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem form_modelGram (σ : Fin m → Option (Fin e)) (z w : Fin e → ℂ) :
     (form (modelGram σ z) w w).re = GlobalTheory.IndefiniteRowSideFullHecke.ModelDdcForms.modelAt σ z w := by
@@ -94,13 +94,13 @@ theorem form_modelGram (σ : Fin m → Option (Fin e)) (z w : Fin e → ℂ) :
   · rw [h]; ring
 
 /- English proof (translation)
-Use `⟨1, 1, le_rfl, 1, 1, fun _ => 0, fun _ => 1, id, fun _ _ => 1, fun _ => 1, ?_, differentiableOn_id, rfl, ?_, fun _ _ _ => differentiableOn_const _, by simp, ?_, fun _ => one_pos, fun z hz hU => ⟨⟨?_, fun i => ?_⟩, by simp, by simp⟩⟩` and prove the remaining obligations. Use `⟨le_rfl, fun _ _ => differentiableOn_const _, fun _ _ => isSymm_zero, fun _ => by simpa using PosSemidef.one, fun i j k h => ?_, ?_, fun z _ => ?_⟩` and prove the remaining obligations. Use `j.2` as an intermediate fact. Use `k.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `(PosDef.one : (1 : Matrix {j : Fin 1 // j.val < 1} {j : Fin 1 // j.val < 1} ℝ).PosDef)` and compare the differences between its conclusion and the goal. Use extensionality with `a b`. Rewrite using `[Subsingleton.elim a b]`. Simplify using the standard rewrite rules. Establish `: IsEmpty {j : Fin 1 // 1 ≤ j.val}` using `⟨fun j => by have := j.1.2; have := j.2; omega⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `(PosDef.one : (1 : Matrix {j : Fin 1 // 1 ≤ j.val} {j : Fin 1 // 1 ≤ j.val} ℝ).PosDef)` and compare the differences between its conclusion and the goal. Conclude with `Subsingleton.elim _ _`. Conclude with `fun z hz k => (norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.1 hz)`. Establish `: Subsingleton (Σ _ : Unit, Fin 1)` using `⟨fun ⟨_, a⟩ ⟨_, b⟩ => by rw [Subsingleton.elim a b]⟩`. Use `(linearIndependent_subsingleton_index_iff _).2 ?_` and prove the remaining obligations.
+Apply an available result and prove the equalities needed to match it to the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨_, i⟩ h`. Simplify using `using congrFun h i`. Conclude with `fun k => (norm_le_pi_norm z k).trans_lt (mem_ball_zero_iff.1 hz)`. Rewrite using `[Subsingleton.elim (Fin.castLE _ i) 0]`. Conclude with `hU`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : IsBlockModel (e := 1) (ι := Unit) (μ := fun _ => 1) 1 {z | z 0 ≠ 0}
     (fun _ z => (GlobalTheory.IndefiniteRowSideFullHecke.HodgePeriodGram.hodgeGram (le_refl 1) (fun _ => 0) (fun _ => (1 : Matrix (Fin 1) (Fin 1) ℤ)) z)⁻¹) := by

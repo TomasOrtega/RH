@@ -7,13 +7,13 @@ open NumberField GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 namespace GlobalTheory.EisConstTerm
 
 /- English proof (translation)
-Establish `hcard : Fintype.card (Emb F) = Module.finrank ℚ F`. Rewrite using `[← NumberField.Embeddings.card F ℂ]`. Use `Fintype.card_of_bijective (f := fun τ : Emb F => (Complex.ofRealHom.comp τ : F →+* ℂ)) ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `τ τ' hτ`. Use extensionality with `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `DFunLike.congr_fun hτ y` as an intermediate fact. Simplify using `using this`. Introduce `φ`. Establish `hr : ComplexEmbedding.IsReal φ` using `IsTotallyReal.complexEmbedding_isReal φ`. Conclude with `⟨hr.embedding, by ext y; simp⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hprod : ∏ τ, latPt z (a, 0) τ = (2 * (Real.pi : ℂ) * Complex.I) ^ Module.finrank ℚ F * ((Algebra.norm ℚ a : ℚ) : ℂ)`. Rewrite using `[← prod_emb, ← hcard, ← Finset.card_univ, ← Finset.prod_const, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `[latPt]`. Unfold `eisTerm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hprod, mul_zero, Complex.cpow_zero, mul_one, mul_inv, mul_pow, inv_pow ((2 * (Real.pi : ℂ) * Complex.I) ^ Module.finrank ℚ F), ← pow_mul, mul_comm (Module.finrank ℚ F)]`. Use `congr 1`. Rewrite using `[← Complex.ofReal_ratCast, inv_pow, inv_pow, ← Complex.ofReal_pow, ← Complex.ofReal_pow, (even_two_mul s).pow_abs]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem eisTerm_pair_zero (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (s : ℕ) (z : Emb F → ℂ) (a : F) :
     eisTerm (2 * s) 0 z (a, 0) = ((2 * (Real.pi : ℂ) * Complex.I) ^ (2 * s * Module.finrank ℚ F))⁻¹ *
@@ -38,9 +38,7 @@ theorem eisTerm_pair_zero (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
   rw [← Complex.ofReal_ratCast, inv_pow, inv_pow, ← Complex.ofReal_pow, ← Complex.ofReal_pow, (even_two_mul s).pow_abs]
 
 /- English proof (translation)
-Use `set cD : FractionalIdeal (𝓞 F)⁰ F := ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hcD : cD ≠ 0`. Simplify using `only [cD, ne_eq, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`. Establish `h` using `FractionalIdeal.spanSingleton_le_iff_mem.2 ha`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem spanSingleton_mul_le_one (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) (a : F) (ha : a ∈ latM 𝔞) :
     FractionalIdeal.spanSingleton (𝓞 F)⁰ a * ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) *
@@ -55,9 +53,9 @@ theorem spanSingleton_mul_le_one (F : Type) [Field F] [NumberField F] (𝔞 : Fr
     _ = 1 := by rw [inv_mul_cancel₀ hcD, Units.inv_mul, one_mul]
 
 /- English proof (translation)
-Use `set cD : FractionalIdeal (𝓞 F)⁰ F := ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hcD : cD ≠ 0`. Simplify using `only [cD, ne_eq, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`. Rewrite using `[← FractionalIdeal.spanSingleton_le_iff_mem]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[latM, show ∀ X : FractionalIdeal (𝓞 F)⁰ F, X * cD * (𝔞 : FractionalIdeal (𝓞 F)⁰ F) * (cD⁻¹ * ((𝔞⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F)) = X * (cD * cD⁻¹) * ((𝔞 : FractionalIdeal (𝓞 F)⁰ F) * ((𝔞⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F)) from fun X => by ring, mul_inv_cancel₀ hcD …`. Use `_ ≤ 1 * latM 𝔞 := by gcongr`. Use `_ = latM 𝔞 := one_mul _`.
+A detailed English derivation is pending.
 -/
 theorem mem_latM_of_le_one (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) (a : F)
     (ha : FractionalIdeal.spanSingleton (𝓞 F)⁰ a * ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) *
@@ -76,9 +74,9 @@ theorem mem_latM_of_le_one (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) 
     _ = latM 𝔞 := one_mul _
 
 /- English proof (translation)
-Establish `h` using `congrArg FractionalIdeal.absNorm hJ`. Establish `e1 : FractionalIdeal.absNorm (J : FractionalIdeal (𝓞 F)⁰ F) = Ideal.absNorm J` using `FractionalIdeal.coeIdeal_absNorm J`. Establish `e2 : FractionalIdeal.absNorm ((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = Ideal.absNorm (differentIdeal ℤ (𝓞 F))` using `FractionalIdeal.coeIdeal_absNorm _`. Rewrite `h` using `[e1, map_mul, map_mul, FractionalIdeal.absNorm_span_singleton (𝓞 F), e2, absNorm_differentIdeal F (𝓞 F)]`. Establish `h'` using `congrArg (fun q : ℚ => (q : ℝ)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Rat.cast_natCast, Rat.cast_mul, Rat.cast_abs] at h'`. Rewrite using `[h', dF, nrm, mul_assoc]`. Use `congr 2`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_of_spanSingleton (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) (a : F) (J : Ideal (𝓞 F))
     (hJ : (J : FractionalIdeal (𝓞 F)⁰ F) = FractionalIdeal.spanSingleton (𝓞 F)⁰ a *
@@ -96,9 +94,9 @@ theorem absNorm_of_spanSingleton (F : Type) [Field F] [NumberField F] (𝔞 : Fr
   rw [Nat.cast_natAbs, Int.cast_abs]
 
 /- English proof (translation)
-Establish `hu : FractionalIdeal.mk0 F J = toPrincipalIdeal (𝓞 F) F (Units.mk0 a ha) * FractionalIdeal.mk0 F D * 𝔞`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, coe_toPrincipalIdeal, FractionalIdeal.coe_mk0, Units.val_mk0]`. Conclude with `hJ`. Establish `hp : ClassGroup.mk F (toPrincipalIdeal (𝓞 F) F (Units.mk0 a ha)) = 1` using `ClassGroup.mk_eq_one_iff.2 ⟨⟨a, by rw [coe_toPrincipalIdeal, Units.val_mk0, FractionalIdeal.coe_spanSingleton]⟩⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ClassGroup.mk_mk0 F, hu, map_mul, map_mul, hp, one_mul, ClassGroup.mk_mk0]`.
+A detailed English derivation is pending.
 -/
 theorem mk0_eq_of_spanSingleton (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) (D : (Ideal (𝓞 F))⁰) (a : F) (ha : a ≠ 0)
     (J : (Ideal (𝓞 F))⁰) (hJ : ((J : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) =
@@ -113,13 +111,13 @@ theorem mk0_eq_of_spanSingleton (F : Type) [Field F] [NumberField F] (𝔞 : Fra
   rw [← ClassGroup.mk_mk0 F, hu, map_mul, map_mul, hp, one_mul, ClassGroup.mk_mk0]
 
 /- English proof (translation)
-Use `set u := FractionalIdeal.mk0 F J * (FractionalIdeal.mk0 F D * 𝔞)⁻¹ with hu_def`. Establish `h1 : ClassGroup.mk F u = 1`. Rewrite using `[hu_def, map_mul, map_inv, map_mul, ClassGroup.mk_mk0, ClassGroup.mk_mk0, hJ, mul_inv_cancel]`. Take `⟨⟨x, hx⟩⟩` from `ClassGroup.mk_eq_one_iff.1 h1`. Establish `hu : (u : FractionalIdeal (𝓞 F)⁰ F) = FractionalIdeal.spanSingleton (𝓞 F)⁰ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `FractionalIdeal.coeToSubmodule_injective` to reduce the goal to its premises. Use `show ((u : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F) = ((FractionalIdeal.spanSingleton (𝓞 F)⁰ x : FractionalIdeal (𝓞 F)⁰ F) : Submodule (𝓞 F) F)`. Rewrite using `[FractionalIdeal.coe_spanSingleton]`. Conclude with `hx`. Establish `hx0 : x ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `Units.ne_zero u` to reduce the goal to its premises. Rewrite using `[hu, h, FractionalIdeal.spanSingleton_zero]`. Use `⟨x, hx0, ?_⟩` and prove the remaining obligations. Establish `e : FractionalIdeal.mk0 F J = u * (FractionalIdeal.mk0 F D * 𝔞)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu_def, inv_mul_cancel_right]`. Establish `e'` using `congrArg Units.val e`. Simplify using `only [Units.val_mul, FractionalIdeal.coe_mk0] at e'`. Rewrite using `[e', hu, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_spanSingleton_of_mk0_eq (F : Type) [Field F] [NumberField F] (𝔞 : Frac F) (D : (Ideal (𝓞 F))⁰)
     (J : (Ideal (𝓞 F))⁰) (hJ : ClassGroup.mk0 J = ClassGroup.mk0 D * ClassGroup.mk F 𝔞) :
@@ -144,41 +142,37 @@ theorem exists_spanSingleton_of_mk0_eq (F : Type) [Field F] [NumberField F] (�
   rw [e', hu, mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ _ 𝔞 𝔟 s hs D hD Z hZ z hz`. Use `set C := ClassGroup.mk0 D * ClassGroup.mk F 𝔞 with hC`. Set `S` to `{c : Quotient (latRel 𝔞 𝔟) // c.out.1.2 = 0}`. Set `T` to `{J : (Ideal (𝓞 F))⁰ // ClassGroup.mk0 J = C}`. Set `cD : FractionalIdeal (𝓞 F)⁰ F` to `((differentIdeal ℤ (𝓞 F) : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Jf : F → FractionalIdeal (𝓞 F)⁰ F` to `fun a => FractionalIdeal.spanSingleton (𝓞 F)⁰ a * cD * (𝔞 : FractionalIdeal (𝓞 F)⁰ F)`. Establish `hcD : cD ≠ 0`. Simplify using `only [cD, ne_eq, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `differentIdeal_ne_bot`. Establish `hX : cD * (𝔞 : FractionalIdeal (𝓞 F)⁰ F) ≠ 0` using `mul_ne_zero hcD (Units.ne_zero 𝔞)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ c : S, c.1.out.1.1 ≠ 0` using `fun c h => c.1.out.2.2.2 (Prod.ext h c.2)`. Establish `hle : ∀ c : S, Jf c.1.out.1.1 ≤ 1` using `fun c => spanSingleton_mul_le_one F 𝔞 _ c.1.out.2.1`. Set `Jof : S → Ideal (𝓞 F)` to `fun c => Classical.choose (FractionalIdeal.le_one_iff_exists_coeIdeal.1 (hle c))`. Establish `hJof : ∀ c : S, ((Jof c : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = Jf c.1.out.1.1` using `fun c => Classical.choose_spec (FractionalIdeal.le_one_iff_exists_coeIdeal.1 (hle c))`. Establish `hJnz : ∀ c : S, Jof c ∈ (Ideal (𝓞 F))⁰`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[mem_nonZeroDivisors_iff_ne_zero]`. Introduce `h0`. Use `hJof c` as an intermediate fact. Rewrite `this` using `[h0, Submodule.zero_eq_bot, FractionalIdeal.coeIdeal_bot]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Jf, mul_assoc] at this`. Break down `mul_eq_zero.1 this.symm with h | h` into its components or cases. Conclude with `hne c (FractionalIdeal.spanSingleton_eq_zero_iff.1 h)`. Conclude with `hX h`. Establish `hDc : ((D : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = cD` using `by simp only [cD, hD]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : S → T` to `fun c => ⟨⟨Jof c, hJnz c⟩, mk0_eq_of_spanSingleton F 𝔞 D _ (hne c) _ (by rw [hDc]; exact hJof c)⟩`. Establish `hsp : ∀ (a : F) (ε : (𝓞 F)ˣ), FractionalIdeal.spanSingleton (𝓞 F)⁰ (((ε : 𝓞 F) : F) * a) = FractionalIdeal.spanSingleton (𝓞 F)⁰ a`. Introduce `a ε`. Use `(FractionalIdeal.spanSingleton_eq_spanSingleton.2 ⟨ε, ?_⟩).symm` and prove the remaining obligations. Rewrite using `[Units.smul_def, Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `c c' h`. Establish `h1 : Jof c = Jof c'` using `congrArg (fun J : T => (J.1 : Ideal (𝓞 F))) h`. Establish `h2 : Jf c.1.out.1.1 = Jf c'.1.out.1.1` using `by rw [← hJof, ← hJof, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h3 : FractionalIdeal.spanSingleton (𝓞 F)⁰ c.1.out.1.1 = FractionalIdeal.spanSingleton (𝓞 F)⁰ c'.1.out.1.1`. Simplify using `only [Jf, mul_assoc] at h2`. Conclude with `mul_right_cancel₀ hX h2`. Take `⟨ε, hε⟩` from `FractionalIdeal.spanSingleton_eq_spanSingleton.1 h3`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Quotient.out_eq c.1, ← Quotient.out_eq c'.1]`. Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨ε, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hε, Units.smul_def, Algebra.smul_def]`. Rewrite using `[c.2, c'.2, mul_zero]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `⟨J, hJ⟩`. Take `⟨a, ha, hJa⟩` from `exists_spanSingleton_of_mk0_eq F 𝔞 D J hJ`. Establish `hJle : Jf a ≤ 1`. Establish `h` using `FractionalIdeal.coeIdeal_le_one (I := (J : Ideal (𝓞 F))) (S := (𝓞 F)⁰) (P := F)`. Rewrite `h` using `[hJa, hDc]`. Then use the resulting hypothesis.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `p : LatPair 𝔞 𝔟` to `⟨(a, 0), mem_latM_of_le_one F 𝔞 a hJle, Submodule.zero_mem _, fun h => ha (congrArg Prod.fst h)⟩`. Take `⟨ε, h1, h2⟩ : (latRel 𝔞 𝔟).r p (Quotient.mk (latRel 𝔞 𝔟) p).out` from `Quotient.exact (Quotient.out_eq _).symm`. Establish `h2' : (Quotient.mk (latRel 𝔞 𝔟) p).out.1.2 = 0` using `by rw [h2]; simp [p]`. Use `⟨⟨Quotient.mk _ p, h2'⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Jof _ = (J : Ideal (𝓞 F))`. Use `FractionalIdeal.coeIdeal_injective (K := F) ?_` and prove the remaining obligations. Use `show ((Jof _ : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F) = ((J : Ideal (𝓞 F)) : FractionalIdeal (𝓞 F)⁰ F)`. Rewrite using `[hJof, hJa, hDc]`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `show Jf (Quotient.mk (latRel 𝔞 𝔟) p).out.1.1 = Jf a`. Rewrite using `[h1]`. Simplify using `only [Jf, hsp]`. Both sides reduce to the same expression. Set `e : S ≃ T` to `Equiv.ofBijective f hf`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ2` using `hZ.2 ((2 * s : ℕ) : ℂ) (by simp; norm_cast; omega)`. Rewrite `hZ2` using `[← e.hasSum_iff]`. Establish `key : (fun c : S => eisClass 𝔞 𝔟 (2 * s) 0 z c.1) = fun c => (((2 * (Real.pi : ℂ) * Complex.I) ^ (2 * s * Module.finrank ℚ F))⁻¹ * ((dF F * nrm 𝔞 : ℝ) : ℂ) ^ (2 * s)) * ((fun J : T => ((Ideal.absNorm (J.1 : Ideal (𝓞 F)) : ℕ) : ℂ) ^ (-((2 * s : ℕ) : ℂ))) ∘ e) c`. Use function extensionality and compare the values at `c`. Establish `hN` using `absNorm_of_spanSingleton F 𝔞 c.1.out.1.1 (Jof c) (hJof c)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, e, Equiv.ofBijective_apply, f]`. Unfold `eisClass`. Rewrite using `[← Prod.mk.eta (p := c.1.out.1), c.2, eisTerm_pair_zero, Complex.cpow_neg, Complex.cpow_natCast]`. Establish `hX0 : ((dF F * nrm 𝔞 : ℝ) : ℂ) ≠ 0`. Establish `h1 : dF F ≠ 0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `dF`. Rewrite using `[abs_ne_zero]`. Conclude with `NumberField.discr_ne_zero F` after adjusting the coercions. Establish `h2 : nrm 𝔞 ≠ 0`. Unfold `nrm`.
-
-Rewrite using `[Rat.cast_ne_zero, ne_eq, FractionalIdeal.absNorm_eq_zero_iff]`. Conclude with `Units.ne_zero 𝔞`. Conclude with `mul_ne_zero h1 h2` after adjusting the coercions. Rewrite using `[← Complex.ofReal_natCast, hN, Complex.ofReal_mul (|_|)]`. Establish `gen : ∀ (K y X : ℂ) (n : ℕ), X ≠ 0 → K * y⁻¹ ^ n = K * X ^ n * ((y * X) ^ n)⁻¹`.
-
-Introduce `K y X n hX`. Rewrite using `[mul_pow, mul_inv, inv_pow, mul_assoc K, mul_comm ((y ^ n)⁻¹), ← mul_assoc (X ^ n), mul_inv_cancel₀ (pow_ne_zero _ hX), one_mul]`. Conclude with `gen _ _ _ _ hX0`. Rewrite using `[key]`. Conclude with `hZ2.mul_left _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_constTerm : ∀ (F : Type) [Field F] [NumberField F] [NumberField.IsTotallyReal F] (𝔞 𝔟 : GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.Frac F) (s : ℕ), 1 ≤ s →
   ∀ (D : (Ideal (NumberField.RingOfIntegers F))⁰), (D : Ideal (NumberField.RingOfIntegers F)) = differentIdeal ℤ (NumberField.RingOfIntegers F) →

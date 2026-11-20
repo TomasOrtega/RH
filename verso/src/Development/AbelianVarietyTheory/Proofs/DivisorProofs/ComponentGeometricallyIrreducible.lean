@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.GeomIrrComp
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `s hs`. Apply `eq_zero_of_basicOpen_eq_bot` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxy` using `hgen y (X.basicOpen_le s hy)`. Establish `hxb : x ∈ X.basicOpen s` using `hxy.mem_open (X.basicOpen s).isOpen hy`. Rewrite `hxb` using `[Scheme.mem_basicOpen _ _ _ hx]`. It suffices to derive a contradiction. Use `hxb.map (X.residue x).hom` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hs` using `[CommRingCat.comp_apply]`. Rewrite `this` using `[hs]`. Conclude with `not_isUnit_zero this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_germ_injective {X : Scheme.{0}} [IsReduced X] (V : X.Opens) (x : X) (hx : x ∈ V)
     (hgen : ∀ y ∈ V, x ⤳ y) : Function.Injective (X.presheaf.germ V x hx ≫ X.residue x).hom := by
@@ -40,7 +40,7 @@ theorem residue_germ_injective {X : Scheme.{0}} [IsReduced X] (V : X.Opens) (x :
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_preimage]`. Simplify using `only [Spec.map_comp, Category.assoc]`. Rewrite using `[← Scheme.fromSpecStalk_toSpecΓ, Category.assoc, ← Scheme.toSpecΓ_naturality_assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id, Scheme.fromSpecResidueField, Category.assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_comp_appTop {F : Type} [Field F] {X : Scheme.{0}} (g : X ⟶ Sp F) (x : X) :
     (Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ g.appTop ≫ X.presheaf.germ ⊤ x trivial ≫ X.residue x =
@@ -52,7 +52,7 @@ theorem residue_comp_appTop {F : Type} [Field F] {X : Scheme.{0}} (g : X ⟶ Sp 
     toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id, Scheme.fromSpecResidueField, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.irreducibleSpace_pullback_affine_open_of_isDomain_tensor g V hV k f`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_pullback_of_isDomain {F : Type} [Field F] {X : Scheme.{0}} (g : X ⟶ Sp F)
     (V : X.Opens) (hV : IsAffineOpen V) (k : Type) [Field k] (f : F →+* k) :
@@ -63,7 +63,7 @@ theorem irreducibleSpace_pullback_of_isDomain {F : Type} [Field F] {X : Scheme.{
   GlobalTheory.T.irreducibleSpace_pullback_affine_open_of_isDomain_tensor g V hV k f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.irreducibleSpace_pullback_field_of_irreducible_cover h k f U hU hV`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_pullback_of_cover {F : Type} [Field F] {X : Scheme.{0}} (h : X ⟶ Sp F)
     (k : Type) [Field k] (f : F →+* k) (U : X.Opens) (hU : IsIrreducible (U : Set X))
@@ -72,13 +72,13 @@ theorem irreducibleSpace_pullback_of_cover {F : Type} [Field F] {X : Scheme.{0}}
   GlobalTheory.T.irreducibleSpace_pullback_field_of_irreducible_cover h k f U hU hV
 
 /- English proof (translation)
-Set `φ : CommRingCat.of F ⟶ Γ(X, V)` to `(Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ g.appTop ≫ X.presheaf.map (homOfLE le_top).op`. Use `letI : Algebra F Γ(X, V) := φ.hom.toAlgebra`. Use `letI : Algebra F (X.residueField x) := (Spec.preimage (X.fromSpecResidueField x ≫ g)).hom.toAlgebra`. Use `letI : Algebra F k := f.toAlgebra`. Establish `hft : Algebra.FiniteType F Γ(X, V)`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1 : (g.appLE ⊤ V le_top).hom.FiniteType` using `HasRingHomProperty.appLE @LocallyOfFiniteType g inferInstance ⟨⊤, isAffineOpen_top (Sp F)⟩ ⟨V, hV⟩ le_top`. Establish `h2 : (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of F)).inv).2`. Establish `e : φ = (Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ g.appLE ⊤ V le_top`. Simplify using `[φ, Scheme.Hom.appLE]`. Establish `h3 : φ.hom.FiniteType` using `by rw [e]; exact h1.comp h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h3`. Set `j : Γ(X, V) →ₐ[F] X.residueField x` to `{ toRingHom := (X.presheaf.germ V x hx ≫ X.residue x).hom commutes' := fun c => by`. Establish `e` using `congrArg (fun m => m.hom c) (residue_comp_appTop g x)`. Establish `e2 : φ ≫ X.presheaf.germ V x hx ≫ X.residue x = (Scheme.ΓSpecIso (CommRingCat.of F)).inv ≫ g.appTop ≫ X.presheaf.germ ⊤ x trivial ≫ X.residue x`. Simplify using `[φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(φ ≫ X.presheaf.germ V x hx ≫ X.residue x).hom c = _`. Rewrite using `[e2]`. Conclude with `e }`. Establish `hd` using `GlobalTheory.GeomConn.isDomain_tensor j (residue_germ_injective V x hx hgen) hac k`. Conclude with `irreducibleSpace_pullback_of_isDomain g V hV k f hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_pullback_affine {F : Type} [Field F] [CharZero F] {X : Scheme.{0}} [IsReduced X]
     (g : X ⟶ Sp F) [LocallyOfFiniteType g] (x : X)
@@ -115,11 +115,9 @@ theorem irreducibleSpace_pullback_affine {F : Type} [Field F] [CharZero F] {X : 
   exact irreducibleSpace_pullback_of_isDomain g V hV k f hd
 
 /- English proof (translation)
-Establish `hU : IsIrreducible (U : Set X)`. Establish `hc : closure (U : Set X) = closure {x}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[isClosed_closure.closure_subset_iff]`. Conclude with `fun y hy => specializes_iff_mem_closure.mp (hgen y hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `closure_mono (Set.singleton_subset_iff.mpr hx)`. Rewrite using `[← isIrreducible_iff_closure, hc]`. Conclude with `isIrreducible_singleton.closure`. Use `irreducibleSpace_pullback_of_cover g k f U hU fun y hy => ?_` and prove the remaining obligations. Take `⟨V, hVa, hyV, hVU⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hy`.
-
-Use `⟨V, hVU, hyV, irreducibleSpace_pullback_affine g x hac V hVa ((hgen y hy).mem_open V.isOpen hyV) (fun z hz => hgen z (hVU hz)) k f⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_pullback {F : Type} [Field F] [CharZero F] {X : Scheme.{0}} [IsReduced X]
     (g : X ⟶ Sp F) [LocallyOfFiniteType g] (x : X)
@@ -141,7 +139,7 @@ theorem irreducibleSpace_pullback {F : Type} [Field F] [CharZero F] {X : Scheme.
     (fun z hz => hgen z (hVU hz)) k f⟩
 
 /- English proof (translation)
-Establish `hb : IsAlgebraic c.F (algebraMap (kap Z) (Om Z) a)` using `ha.algebraMap`. Take `⟨b, hb'⟩` from `hac Z _ hb`. Use `⟨b, (algebraMap (kap Z) (Om Z)).injective ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Conclude with `hb'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algClosed_kap {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (hac : FnAlgClosed Xo c) (Z : Comp Xo c)
@@ -157,11 +155,9 @@ end GlobalTheory.GeomIrrComp
 open GlobalTheory.GeomIrrComp in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c hac Z`. Use `haveI := Xo.smooth`. Use `haveI : Smooth Xo.s := SmoothOfRelativeDimension.smooth Dw.dim Xo.s`. Use `haveI : Smooth (strK (Xo := Xo) (c := c)) := inferInstance`. Use `haveI : GlobalTheory.IsNormalScheme (Xo.XF c) := GlobalTheory.isNormalScheme_of_smooth strK`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyOfFiniteType (strK (Xo := Xo) (c := c)) := inferInstance`. Use `haveI : IsLocallyNoetherian (Xo.XF c) := LocallyOfFiniteType.isLocallyNoetherian strK`. Use `haveI : IsReduced (Xo.XF c) := GlobalTheory.IsNormalScheme.isReduced`. Use `⟨GlobalTheory.IsNormalScheme.component Z, rfl, fun k _ f => ?_⟩` and prove the remaining obligations. Establish `hZc : IsClosed (Z : Set (Xo.XF c))` using `isClosed_of_mem_irreducibleComponents _ Z.2`.
-
-Establish `hg : IsGenericPoint (genPt Z) (Z : Set (Xo.XF c))`. Use `(Z.2.1 : IsIrreducible (Z : Set (Xo.XF c))).isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[hZc.closure_eq]`. Then use the resulting hypothesis. Conclude with `irreducibleSpace_pullback strK (genPt Z) (fun a ha => algClosed_kap hac Z a ha) (GlobalTheory.IsNormalScheme.component Z) hg.mem (fun y hy => hg.specializes hy) k f`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.GeomIrrComp.exists_open_irreducibleSpace_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l), FnAlgClosed Xo c → ∀ Z : Comp Xo c,

@@ -13,13 +13,11 @@ open GlobalTheory.CechPic GlobalTheory.AmpleRigid GlobalTheory.SiegRigid
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `hs` using `m.sq`. Establish `e : (lift (𝟙 o'.A) (𝟙 o'.A)).left ≫ m.φ₂ = m.φ ≫ (lift (𝟙 o.A) (𝟙 o.A)).left`. Establish `a₁` using `congrArg (fun q => q.left) (lift_fst (𝟙 o.A) (𝟙 o.A))`. Establish `a₂` using `congrArg (fun q => q.left) (lift_snd (𝟙 o.A) (𝟙 o.A))`. Establish `b₁` using `congrArg (fun q => q.left) (lift_fst (𝟙 o'.A) (𝟙 o'.A))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₂` using `congrArg (fun q => q.left) (lift_snd (𝟙 o'.A) (𝟙 o'.A))`. Simplify using `only [Over.comp_left, Over.id_left] at a₁ a₂ b₁ b₂`. Apply `pullback.hom_ext` to reduce the goal to its premises. Use `show (_ ≫ _) ≫ (fst o.A o.A).left = (_ ≫ _) ≫ (fst o.A o.A).left`. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, b₁, Category.assoc, a₁]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show (_ ≫ _) ≫ (snd o.A o.A).left = (_ ≫ _) ≫ (snd o.A o.A).left`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, b₂, Category.assoc, a₂]`. Simplify using the standard rewrite rules. Establish `h1 : pull m.φ₂ (cls o.P o.isLB) = cls o'.P o'.isLB` using `((cls_eq_iff o'.isLB (pull_isLB o.isLB m.φ₂)).2 m.pol).symm`.
-
-Rewrite using `[cls_pull o.isLB, cls_pull o'.isLB, ← pull_comp, ← e, pull_comp, h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pull_cls_diag {b : Base D R} {N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ Sp R} {s' : S' ⟶ Sp R}
     {o' : Obj b N s'} {o : Obj b N s} {f : S' ⟶ S} (m : ObjMap o' o f) :
@@ -42,13 +40,11 @@ theorem pull_cls_diag {b : Base D R} {N : ℕ} {S S' : Scheme.{0}} {s : S ⟶ Sp
   rw [cls_pull o.isLB, cls_pull o'.isLB, ← pull_comp, ← e, pull_comp, h1]
 
 /- English proof (translation)
-Set `β : R →+* k` to `(Spec.preimage ((x ≫ f) ≫ s)).hom`. Take `⟨I, hI⟩` from `o.geom k (x ≫ f) β (Spec.map_preimage _).symm`. Establish `hy₁ : pushHom hφ (Over.mk x) y ^ N = 1` using `by rw [← map_pow, hy, map_one]`. Take `⟨a, ha⟩` from `(I.onto N hN hNp _).1 hy₁`. Establish `hu : (toUnit (Over.mk (x ≫ f))).left = x ≫ f` using `(Category.comp_id _).symm.trans (Over.w (toUnit _))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (x ≫ f) ≫ (o.eta a).left = y.left ≫ φ`. Rewrite using `[← hu]`. Conclude with `congrArg (fun q => q.left) ((hI a).trans ha)`. Establish `e₁ : y.left = x ≫ (lv a).left`. Apply `hφ.1.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc]`. Conclude with `e.symm.trans ((Category.assoc _ _ _).trans (congrArg (x ≫ ·) (h₁ a).symm))`. Rewrite using `[Over.w, Category.assoc, Over.w]`. Conclude with `(Category.comp_id _).symm`. Rewrite using `[e₁, Category.assoc, Category.assoc]`.
-
-Conclude with `congrArg (x ≫ ·) ((h₁ a).trans (h₂ a).symm)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_on_torsion {b : Base D R} {N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) {S S' : Scheme.{0}}
     {s : S ⟶ Sp R} (o : Obj b N s) {A' : Over S'} [GrpObj A'] {f : S' ⟶ S}
@@ -75,19 +71,17 @@ theorem eq_on_torsion {b : Base D R} {N : ℕ} (hN : 0 < N) (hNp : N.Coprime p) 
   exact congrArg (x ≫ ·) ((h₁ a).trans (h₂ a).symm)
 
 /- English proof (translation)
-Introduce `p _ D R _ b N hN hNp S s o m`. Establish `hψ` using `m.cart`. Establish `e₂ : m.φ ≫ o.A.hom = o.A.hom` using `hψ.1.w.trans (Category.comp_id _)`. Use `haveI : IsIso m.φ := hψ.1.isIso_fst_of_isIso`. Set `σ : o.A ≅ o.A` to `Over.isoMk (asIso m.φ) e₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hσ : IsMonHom σ.hom` using `isMonHom_of_mul_comp σ.hom fun T x y => mul_comp_of_grpPullback_id σ.hom hψ x y`. Establish `key : σ.hom = 𝟙 _`. Use `eq_id_of_forall_geometric_fibre laws_without_cohomology.1 o.A o.ab σ.hom (IsMonHom.one_hom σ.hom) fun t => ?_` and prove the remaining obligations. Set `K : Type` to `AlgebraicClosure (S.residueField t)`. Set `j : Sp K ⟶ S` to `Spec.map (CommRingCat.ofHom (algebraMap (S.residueField t) K)) ≫ S.fromSpecResidueField t`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp` using `isGrpPullback_pullback o.A j`. Use `o.ab.smooth` as an intermediate fact. Use `o.ab.proper` as an intermediate fact. Use `o.ab.geomConnected` as an intermediate fact. Establish `hab : IsAbelianScheme ((Over.pullback j).obj o.A)` using `{ comm := Functor.isCommMonObj_obj smooth := by change Smooth (pullback.snd o.A.hom j); infer_instance proper := by change IsProper (pullback.snd o.A.hom j); infer_instance geomConnected := by change GeometricallyConnected (pullback.snd o.A.hom j); infer_instance }`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNK : (N : K) ≠ 0`. Establish `hu` using `(b.unit N hNp).map (Spec.preimage (j ≫ s)).hom`. Rewrite `hu` using `[map_natCast]`. Conclude with `hu.ne_zero`. Establish `g` using `hp.comp m.cart`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `g` using `[Category.comp_id]`. Establish `e'` using `eq_of_field (pull_isLB o.isLB _) o.ample hab g hp (by rw [pull_comp, pull_cls_diag m]) hN hNK fun Ω _ _ x y hy => by`. Establish `hy₁ : pushHom hp (Over.mk x) y ^ N = 1` using `by rw [← map_pow, hy, map_one]`. Establish `e₁` using `eq_on_torsion (φ' := 𝟙 _) (by omega) hNp o m.cart o.eta m.eta (fun a => by simp) Ω (x ≫ j) _ hy₁`. Rewrite using `[← Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `e₁.trans (Category.comp_id _)`. Use `⟨_, _, j, _, _, (default : PrimeSpectrum K), ?_, hp.1, ?_⟩` and prove the remaining obligations. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans (Scheme.fromSpecResidueField_apply t _)`. Conclude with `e'`. Use `congrArg (fun q => q.left) key` as an intermediate fact.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem eq_id : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ), 3 ≤ N → N.Coprime p → ∀ (S : Scheme.{0}) (s : S ⟶ Sp R) (o : Obj b N s) (m : ObjMap o o (𝟙 S)), m.φ = 𝟙 _ := by
   intro p _ D R _ b N hN hNp S s o m

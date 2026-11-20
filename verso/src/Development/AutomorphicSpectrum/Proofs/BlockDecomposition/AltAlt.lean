@@ -9,13 +9,11 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.WpCoface
 
 /- English proof (translation)
-Establish `hrel : ∀ (j : Fin (n + 2)) (i : Fin (n + 1)), δ (n + 1) (j.succAbove i) (δ n (i.predAbove j) z) = δ (n + 1) j (δ n i z)` using `fun j i => DFunLike.congr_fun (coface_rel A B K ι δ hwp hδ n j i) z`. Establish `hexp : alt (δ (n + 1)) (alt (δ n) z) = ∑ p : Fin (n + 2) × Fin (n + 1), ((-1 : ℤ) ^ (p.1 : ℕ) * (-1 : ℤ) ^ (p.2 : ℕ)) • δ (n + 1) p.1 (δ n p.2 z)`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [alt, LinearMap.sum_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, map_sum, map_zsmul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`. Rewrite using `[hexp]`. Use `Finset.sum_involution (fun p _ => (p.1.succAbove p.2, p.2.predAbove p.1)) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨j, i⟩ _ dsimp only`. Rewrite using `[hrel, GlobalTheory.CatH.DSq.sign_swap, neg_smul, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨j, i⟩ _ _ h`. Conclude with `Fin.succAbove_ne j i (congrArg Prod.fst h)`. Introduce `_ _`. Conclude with `Finset.mem_univ _`. Introduce and unpack `⟨j, i⟩ _`.
-
-Simplify using `only [Fin.succAbove_succAbove_predAbove, Fin.predAbove_predAbove_succAbove]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem alt_alt (A : Type) [CommRing A] (B : Type) [CommRing B] [Algebra A B] (K : ℕ → Type)
     [∀ n, CommRing (K n)] [∀ n, Algebra A (K n)] (ι : ∀ n, Fin n → (B →ₐ[A] K n))

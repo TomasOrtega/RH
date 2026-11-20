@@ -5,17 +5,15 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open scoped Classical
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : Algebra.IsAlgebraic ℚ Ω := IsAlgClosure.isAlgebraic`. Set `jA : Ω →ₐ[ℚ] ℂ` to `j.toRatAlgHom`. Set `iA : Ω →ₐ[ℚ] ℂ` to `i.toRatAlgHom`. Set `K : IntermediateField ℚ ℂ` to `jA.fieldRange`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `r : Ω →+* K` to `{ toFun := fun x => ⟨jA x, jA.mem_fieldRange.2 ⟨x, rfl⟩⟩ map_one' := by ext; simp map_mul' := by intro x y; ext; simp map_zero' := by ext; simp map_add' := by intro x y; ext; simp }`. Establish `hr : Function.Bijective r`. Prove the components needed by the constructor for the conclusion. Introduce `x y hxy`. Establish `: jA x = jA y` using `congrArg Subtype.val hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `jA.toRingHom.injective this`. Introduce and unpack `⟨z, hz⟩`. Take `⟨x, rfl⟩` from `jA.mem_fieldRange.1 hz`. Conclude with `⟨x, rfl⟩`. Use `haveI : IsAlgClosed K := IsAlgClosed.of_ringEquiv Ω K (RingEquiv.ofBijective r hr)`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : ∀ x, ∃ y, j y = i x`. Introduce `x`. Establish `h1 : IsIntegral ℚ (iA x)` using `(Algebra.IsIntegral.isIntegral x).map iA`. Establish `h2 : IsIntegral K (iA x)` using `h1.tower_top`. Establish `h3` using `minpoly.mem_range_of_degree_eq_one K (iA x) (IsAlgClosed.degree_eq_one_of_irreducible K (minpoly.irreducible h2))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `h3`. Take `⟨y, hy⟩` from `jA.mem_fieldRange.1 k.2`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `: jA y = iA x` using `by rw [hy]; exact hk`. Conclude with `this`.
-
-Use `choose φ hφ using hi`. Set `h0 : Ω →+* Ω` to `{ toFun := φ map_one' := j.injective (by rw [hφ, map_one, map_one]) map_mul' := fun x y => j.injective (by rw [hφ, map_mul, map_mul, hφ, hφ]) map_zero' := j.injective (by rw [hφ, map_zero, map_zero]) map_add' := fun x y => j.injective (by rw [hφ, map_add, map_add, hφ, hφ]) }`. Set `hA : Ω →ₐ[ℚ] Ω` to `h0.toRatAlgHom`. Establish `hb : Function.Bijective hA` using `Algebra.IsAlgebraic.algHom_bijective hA`. Conclude with `⟨AlgEquiv.ofBijective hA hb, fun x => hφ x⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem emb_twist {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (i j : Ω →+* ℂ) :
     ∃ g : Ω ≃ₐ[ℚ] Ω, ∀ x, j (g x) = i x := by
@@ -62,11 +60,11 @@ private theorem emb_twist {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ
   exact ⟨AlgEquiv.ofBijective hA hb, fun x => hφ x⟩
 
 /- English proof (translation)
-Introduce `Ω _ _ _ σ τ hσ hτ`. Take `⟨jσ, hjσ⟩` from `hσ`. Take `⟨jτ, hjτ⟩` from `hτ`. Take `⟨g, hg⟩` from `emb_twist jσ jτ`. Rewrite using `[isConj_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, AlgEquiv.ext fun y => jτ.injective ?_⟩` and prove the remaining obligations. Establish `e1 : jσ (g⁻¹ y) = jτ y`. Rewrite using `[← hg]`. Use `congr 1`. Conclude with `AlgEquiv.apply_symm_apply g y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `show jτ (g (σ (g⁻¹ y))) = jτ (τ y)`. Rewrite using `[hg, hjσ, e1, hjτ]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.isConj_of_isComplexConjugation :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (σ τ : G ℚ Ω), IsCC σ → IsCC τ → IsConj σ τ := by

@@ -21,7 +21,7 @@ def pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] (Φ : H × Z → W)
 variable {O : Set H} {OZ : Set Z}
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fderiv ℝ Φ) (O ×ˢ OZ)` using `hΦ.fderiv_of_isOpen (hO.prod hOZ) (by simp)`. Conclude with `h1.clm_comp contDiffOn_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiffOn_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) : ContDiffOn ℝ ∞ (pd Φ) (O ×ˢ OZ) := by
@@ -29,7 +29,7 @@ theorem contDiffOn_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ 
   exact h1.clm_comp contDiffOn_const
 
 /- English proof (translation)
-Establish `hd : DifferentiableAt ℝ Φ (x, z)` using `(hΦ.differentiableOn (by simp)).differentiableAt ((hO.prod hOZ).mem_nhds ⟨hx, hz⟩)`. Conclude with `hd.hasFDerivAt.comp x (hasFDerivAt_prodMk_left x z)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) {x : H} {z : Z} (hx : x ∈ O)
@@ -39,7 +39,7 @@ theorem hasFDerivAt_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ
   exact hd.hasFDerivAt.comp x (hasFDerivAt_prodMk_left x z)
 
 /- English proof (translation)
-Establish `h1` using `hasFDerivAt_pd hO hOZ hΦ (hUO hx) hz`. Establish `h2 : HasFDerivAt (fun x' => Φ (x', z)) (0 : H →L[ℝ] W) x` using `(hasFDerivAt_const (0 : W) x).congr_of_eventuallyEq (eventually_of_mem (hU.mem_nhds hx) fun x' hx' => h0 x' hx')`. Conclude with `h1.unique h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pd_eq_zero {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ)) {U : Set H} (hU : IsOpen U)
@@ -51,7 +51,7 @@ theorem pd_eq_zero {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H
   exact h1.unique h2
 
 /- English proof (translation)
-Introduce `x₀ hx₀`. Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `hS x₀ hx₀`. Conclude with `⟨U, hUo, hxU, hUO, K, hK, fun x hx y hy => pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem locSupp_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H × Z → W} {ι : Γ → Z}
     (hO : IsOpen O) (hOZ : IsOpen OZ) (hι : ∀ y, ι y ∈ OZ) (hΦ : ContDiffOn ℝ ∞ Φ (O ×ˢ OZ))
@@ -62,7 +62,7 @@ theorem locSupp_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] {Φ : H
     pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) hx⟩
 
 /- English proof (translation)
-The claim follows from `hΦ.comp_continuous (continuous_const.prodMk hιc) fun y => ⟨hx, hι y⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_slice {W : Type} [TopologicalSpace W] {Φ : H × Z → W} {ι : Γ → Z} (hιc : Continuous ι)
     (hι : ∀ y, ι y ∈ OZ) (hΦ : ContinuousOn Φ (O ×ˢ OZ)) {x : H} (hx : x ∈ O) :
@@ -74,7 +74,7 @@ section Int
 variable (μ : Measure Γ) [IsFiniteMeasureOnCompacts μ] {ι : Γ → Z}
 
 /- English proof (translation)
-The claim follows from `(continuous_slice hιc hι hΦ hx).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hKz)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_slice {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ) (hΦ : ContinuousOn Φ (O ×ˢ OZ)) {x : H} (hx : x ∈ O)
@@ -83,7 +83,7 @@ theorem integrable_slice {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [
   (continuous_slice hιc hι hΦ hx).integrable_of_hasCompactSupport (HasCompactSupport.intro hK hKz)
 
 /- English proof (translation)
-Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `locSupp_pd hO hOZ hι hΦ hS x hx`. Conclude with `integrable_slice μ hιc hι (contDiffOn_pd hO hOZ hΦ).continuousOn hx hK fun y hy => hKz x hxU y hy`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)
@@ -93,17 +93,13 @@ theorem integrable_pd {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [Fin
   exact integrable_slice μ hιc hι (contDiffOn_pd hO hOZ hΦ).continuousOn hx hK fun y hy => hKz x hxU y hy
 
 /- English proof (translation)
-Use `haveI : CompleteSpace W := FiniteDimensional.complete ℝ W`. Use `haveI : ProperSpace H := FiniteDimensional.proper ℝ H`. Take `⟨U, hUo, hxU, hUO, K, hK, hKz⟩` from `hS x₀ hx₀`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hUo x₀ hxU`. Establish `hcb : closedBall x₀ (r / 2) ⊆ U` using `(closedBall_subset_ball (by linarith)).trans hrU`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpdc : ContinuousOn (pd Φ) (O ×ˢ OZ)` using `(contDiffOn_pd hO hOZ hΦ).continuousOn`. Establish `hcomp : IsCompact (closedBall x₀ (r / 2) ×ˢ K)` using `(isCompact_closedBall x₀ (r / 2)).prod hK`. Establish `hcont : ContinuousOn (fun q : H × Γ => ‖pd Φ (q.1, ι q.2)‖) (closedBall x₀ (r / 2) ×ˢ K)`. Use `(hpdc.comp (continuous_fst.prodMk (hιc.comp continuous_snd)).continuousOn ?_).norm` and prove the remaining obligations. Introduce `q hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨hUO (hcb hq.1), hι q.2⟩`. Take `⟨C, hC⟩` from `hcomp.exists_bound_of_continuousOn hcont`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (𝕜 := ℝ) (F' := fun x y => pd Φ (x, ι y)) (s := ball x₀ (r / 2)) (bound := K.indicator fun _ => C) (ball_mem_nhds x₀ (by linarith)) ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `filter_upwards [hUo.mem_nhds hxU] with x hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(continuous_slice hιc hι hΦ.continuousOn (hUO hx)).aestronglyMeasurable`. Conclude with `integrable_slice μ hιc hι hΦ.continuousOn hx₀ hK fun y hy => hKz x₀ hxU y hy`. Conclude with `(continuous_slice hιc hι hpdc hx₀).aestronglyMeasurable`. Use `Filter.Eventually.of_forall fun y x hx => ?_` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ K`.
-
-Rewrite using `[indicator_of_mem hy]`. Use `hC (x, y) ⟨ball_subset_closedBall hx, hy⟩` as an intermediate fact. Simplify using `using this`. Rewrite using `[indicator_of_notMem hy, pd_eq_zero hO hOZ hΦ hUo hUO (hι y) (fun x' hx' => hKz x' hx' y hy) (hcb (ball_subset_closedBall hx))]`. Simplify using the standard rewrite rules.
-
-Conclude with `(integrable_indicator_iff hKm).2 (integrableOn_const hK.measure_lt_top.ne)`. Conclude with `Filter.Eventually.of_forall fun y x hx => hasFDerivAt_pd hO hOZ hΦ (hUO (hcb (ball_subset_closedBall hx))) (hι y)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)
@@ -141,11 +137,11 @@ theorem hasFDerivAt_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [F
       hasFDerivAt_pd hO hOZ hΦ (hUO (hcb (ball_subset_closedBall hx))) (hι y)
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `W _ _ _ Φ hΦ hS`. Use `contDiffOn_zero.2 fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).continuousAt.continuousWithinAt`. Consider the case `succ m ih`. Introduce `W _ _ _ Φ hΦ hS`. Rewrite using `[show ((m + 1 : ℕ) : WithTop ℕ∞) = (m : WithTop ℕ∞) + 1 by push_cast; rfl, contDiffOn_succ_iff_fderiv_of_isOpen hO]`. Use `⟨fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).differentiableAt.differentiableWithinAt, fun h => absurd h (by simp), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ih (contDiffOn_pd hO hOZ hΦ) (locSupp_pd hO hOZ hι hΦ hS)`. Conclude with `h1.congr fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).fderiv`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_int_nat (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ) :
     ∀ (m : ℕ) {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
@@ -167,7 +163,7 @@ theorem contDiffOn_int_nat (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous 
     exact h1.congr fun x hx => (hasFDerivAt_int μ hO hOZ hιc hι hΦ hS hx).fderiv
 
 /- English proof (translation)
-The claim follows from `contDiffOn_infty.2 fun m => contDiffOn_int_nat μ hO hOZ hιc hι m hΦ hS`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_int {W : Type} [NormedAddCommGroup W] [NormedSpace ℝ W] [FiniteDimensional ℝ W]
     {Φ : H × Z → W} (hO : IsOpen O) (hOZ : IsOpen OZ) (hιc : Continuous ι) (hι : ∀ y, ι y ∈ OZ)

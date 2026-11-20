@@ -17,9 +17,9 @@ section Pairing
 variable (B : BX R₀) {R : LAlg R₀}
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `B.pairing_exists N 0 y (smul_zero N) hy`. Establish `h2` using `B.isPairingValue_add_left N 0 0 y z z hz hz`. Rewrite `h2` using `[add_zero]`. Establish `h3 : z * z = z` using `B.pairing_unique N 0 y _ _ h2 hz`. Establish `h4 : z = 1` using `mul_eq_left.1 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hz` using `[h4]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma pairing_zero_left (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N 0 y 1 := by
   obtain ⟨z, hz⟩ := B.pairing_exists N 0 y (smul_zero N) hy
@@ -30,16 +30,16 @@ lemma pairing_zero_left (N : ℕ) (y : B.G R) (hy : N • y = 0) : B.IsPairing N
   rwa [h4] at hz
 
 /- English proof (translation)
-Establish `h` using `B.pairing_sw N 0 x 1 (pairing_zero_left B N x hx)`. Rewrite `h` using `[inv_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma pairing_zero_right (N : ℕ) (x : B.G R) (hx : N • x = 0) : B.IsPairing N x 0 1 := by
   have h := B.pairing_sw N 0 x 1 (pairing_zero_left B N x hx)
   rwa [inv_one] at h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Conclude with `pairing_zero_left B N y h.2.1`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[succ_nsmul, pow_succ]`. Conclude with `B.isPairingValue_add_left N _ _ _ _ _ ih h`.
+A detailed English derivation is pending.
 -/
 lemma pairing_nsmul_left (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPairing N x y z)
     (n : ℕ) : B.IsPairing N (n • x) y (z ^ n) := by
@@ -52,9 +52,9 @@ lemma pairing_nsmul_left (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPai
     exact B.isPairingValue_add_left N _ _ _ _ _ ih h
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_nsmul, pow_zero]`. Conclude with `pairing_zero_right B N x h.1`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[succ_nsmul, pow_succ]`. Conclude with `B.isPairingValue_add_right N _ _ _ _ _ ih h`.
+A detailed English derivation is pending.
 -/
 lemma pairing_nsmul_right (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPairing N x y z)
     (n : ℕ) : B.IsPairing N x (n • y) (z ^ n) := by
@@ -67,9 +67,9 @@ lemma pairing_nsmul_right (N : ℕ) (x y : B.G R) (z : (R : Type)ˣ) (h : B.IsPa
     exact B.isPairingValue_add_right N _ _ _ _ _ ih h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Conclude with `pairing_zero_left B N y hy`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `B.isPairingValue_add_left N _ _ _ _ _ (h a) ih`.
+A detailed English derivation is pending.
 -/
 lemma pairing_sum_left {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R) (y : B.G R)
     (z : ι → (R : Type)ˣ) (hy : N • y = 0) (h : ∀ i, B.IsPairing N (x i) y (z i)) :
@@ -84,9 +84,9 @@ lemma pairing_sum_left {ι : Type} (s : Finset ι) (N : ℕ) (x : ι → B.G R) 
     exact B.isPairingValue_add_left N _ _ _ _ _ (h a) ih
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.prod_empty]`. Conclude with `pairing_zero_right B N x hx`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert ha, Finset.prod_insert ha]`. Conclude with `B.isPairingValue_add_right N _ _ _ _ _ (h a) ih`.
+A detailed English derivation is pending.
 -/
 lemma pairing_sum_right {ι : Type} (s : Finset ι) (N : ℕ) (x : B.G R) (y : ι → B.G R)
     (z : ι → (R : Type)ˣ) (hx : N • x = 0) (h : ∀ i, B.IsPairing N x (y i) (z i)) :
@@ -107,7 +107,7 @@ variable {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} 
   {cp : (Tw.O : Type)}
 
 /- English proof (translation)
-Establish `h` using `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ t) (D.pt_p t)))`. Conclude with `⟨h.1, h.2.1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 lemma ptMap_spec (D : Dat p g B Tw Dt Oe σ cp) (t : Nb p g) :
     (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = LHom.id Tw.O ∧
@@ -117,9 +117,9 @@ lemma ptMap_spec (D : Dat p g B Tw Dt Oe σ cp) (t : Nb p g) :
   exact ⟨h.1, h.2.1⟩
 
 /- English proof (translation)
-Establish `h1 : ¬ IsUnit (a - k)`. Introduce `hu`. Establish `h2` using `(hu.map (algebraMap ℤ_[p] (Tw.O : Type))).map (Tw.q 0).1`. Rewrite `h2` using `[map_sub, map_sub, h, map_natCast, map_natCast, sub_self]`. Conclude with `not_isUnit_zero h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : a - k ∈ RingHom.ker (PadicInt.toZMod (p` using `p)) := by`. Rewrite using `[PadicInt.ker_toZMod]`. Conclude with `h1`. Rewrite `h3` using `[RingHom.mem_ker, map_sub, map_natCast, sub_eq_zero]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toZMod_eq_of_q (a : ℤ_[p]) (k : ℕ)
     (h : (Tw.q 0).1 (algebraMap ℤ_[p] (Tw.O : Type) a) = k) :
@@ -136,13 +136,13 @@ lemma toZMod_eq_of_q (a : ℤ_[p]) (k : ℕ)
   exact h3
 
 /- English proof (translation)
-Use `choose k hk hpair using fun i j => D.L.E_spec i j 0`. Simplify using `only [zero_add, pow_one] at hpair`. Use `⟨∑ i, (∑ j, k i j * (red p g t j).val) * (red p g s i).val, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [pair, dotProduct, mulVec, map_sum, map_mul, Nat.cast_sum, Nat.cast_mul, ZMod.natCast_zmod_val, red]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[toZMod_eq_of_q _ _ (hk i j)]`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `pairing_sum_left B _ p _ _ _ (D.pt_p _) fun i => ?_` and prove the remaining obligations. Rewrite using `[pow_mul]`. Use `pairing_nsmul_left B p _ _ _ ?_ _` and prove the remaining obligations. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Use `pairing_sum_right B _ p _ _ _ (hpair i i).1 fun j => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_mul]`. Conclude with `pairing_nsmul_right B p _ _ _ (hpair i j) _`.
+A detailed English derivation is pending.
 -/
 lemma pairing_ptOf (D : Dat p g B Tw Dt Oe σ cp) (s t : TT p g) :
     ∃ n : ℕ, (n : ZMod p) = PadicInt.toZMod (pair p g D.H.E s t) ∧
@@ -169,11 +169,11 @@ lemma pairing_ptOf (D : Dat p g B Tw Dt Oe σ cp) (s t : TT p g) :
 end SignChar
 
 /- English proof (translation)
-Introduce `R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D C _ _ _ _ hp s`. Establish `hex : ∀ i, ∃ z, B.IsPairing p (B.map (D.fin.sO i) (ptOf B D.L.τ (red p g s))) (D.fin.y i) z` using `fun i => B.pairing_exists p _ _ (by rw [← map_nsmul, D.pt_p, map_zero]) (D.fin.y_p i)`. Use `choose e he using hex`. Use `⟨D.evAll C fun i => (e i : (D.fin.AAx i : Type)), Submodule.subset_span ⟨_, rfl⟩, fun t => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `SignChar.ptMap_spec D (red p g t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `B.pairing_map (D.ptMap (red p g t)) p _ _ _ (he (D.ptIdx (red p g t)))`. Rewrite `h3` using `[← B.map_comp, h1, B.map_id, h2]`. Take `⟨n, hn, h4⟩` from `SignChar.pairing_ptOf D s t`. Establish `h5` using `congrArg Units.val (B.pairing_unique p _ _ _ _ h3 h4)`. Rewrite `h5` using `[Units.val_pow_eq_pow_val, D.zeta0 hp, Units.coe_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h6 : (D.ptMap (red p g t)).1 (e (D.ptIdx (red p g t)) : (D.fin.AAx _ : Type)) = (-1) ^ n` using `h5`. Establish `h7 : (PadicInt.toZMod (pair p g D.H.E s t)).val % 2 = n % 2`. Rewrite using `[← hn, ZMod.val_natCast, ← hp, Nat.mod_mod]`. Unfold `Dat.evAll`. Rewrite using `[h6, map_pow, map_neg, map_one, neg_one_pow_eq_pow_mod_two n, ← h7, ← neg_one_pow_eq_pow_mod_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signChar_mem_evImg :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp), EvenTwoEvaluationSign D) := by

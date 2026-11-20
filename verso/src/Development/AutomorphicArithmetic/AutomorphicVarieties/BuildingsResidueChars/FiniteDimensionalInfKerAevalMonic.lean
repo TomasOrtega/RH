@@ -5,13 +5,13 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hpow : ∀ n : ℕ, ∀ y ∈ N, (T ^ n) y ∈ N`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `y hy`. Simplify using `using hy`. Consider the case `succ n ih`. Introduce `y hy`. Rewrite using `[pow_succ', Module.End.mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN _ (ih y hy)`. Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `N.add_mem hp hq`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply]`. Conclude with `N.smul_mem a (hpow n x hx)`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_preserves_invariant_submodule {M : Type} [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M)
     (N : Submodule ℂ M) (hN : ∀ x ∈ N, T x ∈ N) (p : Polynomial ℂ) :
@@ -36,17 +36,15 @@ private theorem aeval_preserves_invariant_submodule {M : Type} [AddCommGroup M] 
     exact N.smul_mem a (hpow n x hx)
 
 /- English proof (translation)
-Introduce `M _ _ T N hN hE p hp`. Establish `key : ∀ s : Multiset ℂ, FiniteDimensional ℂ ↥(N ⊓ LinearMap.ker (Polynomial.aeval T (s.map (fun a => Polynomial.X - Polynomial.C a)).prod))`. Introduce `s`. Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Multiset.map_zero, Multiset.prod_zero, map_one]`. Establish `h1 : LinearMap.ker (1 : Module.End ℂ M) = ⊥` using `LinearMap.ker_id`. Rewrite using `[h1, inf_bot_eq]`. Use `infer_instance`. Consider the case `cons a s ih => set q := (s.map (fun a => Polynomial.X - Polynomial.C a)).prod with hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Multiset.map_cons, Multiset.prod_cons]`. Rewrite `ih`, the goal using `[← Submodule.fg_iff_finiteDimensional]`. Apply `Submodule.fg_of_fg_map_of_fg_inf_ker (f := Polynomial.aeval T q)` to reduce the goal to its premises. Establish `hle : (N ⊓ LinearMap.ker (Polynomial.aeval T ((Polynomial.X - Polynomial.C a) * q))).map (Polynomial.aeval T q) ≤ N ⊓ T.eigenspace a`. Introduce and unpack `_ ⟨x, ⟨hxN, hxk⟩, rfl⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨aeval_preserves_invariant_submodule T N hN q x hxN, ?_⟩` and prove the remaining obligations. Use `show _ ∈ T.eigenspace a`. Rewrite using `[Module.End.mem_eigenspace_iff]`. Express the relevant statement in the definitionally equal form `x ∈ LinearMap.ker _ at hxk`. Rewrite `hxk` using `[LinearMap.mem_ker, map_mul, Module.End.mul_apply, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hxk`. Use `haveI := hE a`. Rewrite using `[Submodule.fg_iff_finiteDimensional]`. Conclude with `Submodule.finiteDimensional_of_le hle`. Apply `Submodule.FG.of_le ih` to reduce the goal to its premises.
-
-Introduce and unpack `x ⟨⟨hxN, -⟩, hxq⟩`. Conclude with `⟨hxN, hxq⟩`. Establish `hsplit` using `Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq hp IsAlgClosed.card_roots_eq_natDegree`. Rewrite using `[← hsplit]`. Conclude with `key p.roots`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.finiteDimensional_inf_ker_aeval_monic :
     ∀ (M : Type) [AddCommGroup M] [Module ℂ M] (T : Module.End ℂ M) (N : Submodule ℂ M), (∀ x ∈ N, T x ∈ N) → (∀ c : ℂ, FiniteDimensional ℂ ↥(N ⊓ T.eigenspace c)) → ∀ p : Polynomial ℂ, p.Monic → FiniteDimensional ℂ ↥(N ⊓ LinearMap.ker (Polynomial.aeval T p)) := by

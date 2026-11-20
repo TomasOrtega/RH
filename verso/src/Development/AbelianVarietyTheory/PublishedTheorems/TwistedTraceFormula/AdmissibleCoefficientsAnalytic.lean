@@ -26,7 +26,7 @@ def LeviSubmoduleDense : Prop :=
 def HarishChandraAnalyticity : Prop := AdmissibleCoefficientsAnalytic ∧ LeviSubmoduleDense
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(isIrrAdm_det (ε := ε)).2.1, (det_isURepOn ε).2.2⟩`.
+Supply the required witnesses or components.
 -/
 example {n : ℕ} (ε : Fin n → Bool) : IsAdmRep ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) ∧
     ∀ v, IsKFin ε (fun g => g.det • (1 : ℂ →L[ℂ] ℂ)) v :=

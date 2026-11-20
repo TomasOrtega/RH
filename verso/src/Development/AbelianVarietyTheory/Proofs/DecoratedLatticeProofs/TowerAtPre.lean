@@ -21,11 +21,11 @@ namespace GlobalTheory.ChainOnto.RelInh
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `Com.S`. Rewrite using `[Finset.mem_image]`. Break down `GlobalTheory.ConjOverQuad.div_or_conj_div D W.C.P k P hk with h1 | ⟨P', h1, hc⟩` into its components or cases. Conclude with `⟨P, (h.chars.Pg P).2 ⟨k, h1⟩, rfl⟩`. Use `⟨P', (h.chars.Pg P').2 ⟨k, h1⟩, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `x`. Use `show algebraMap _ _ x ∈ P'.asIdeal ↔ algebraMap _ _ x ∈ P.asIdeal`. Rewrite using `[hc, Formalism.L2.Col.mem_conjIdeal]`. Establish `: Formalism.L2.Col.cO D.host.E (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x) = algebraMap _ _ x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(D.sp.cm.fixed _).2 ⟨x, rfl⟩`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem mem_S (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) (k : Fin 2) (P : Pl D.host.E)
     (hk : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P.asIdeal) : P.under (𝓞 D.host.F) ∈ (comOf W).S := by
@@ -44,9 +44,9 @@ theorem mem_S (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) (k : Fin 2) (P : Pl
     rw [this]
 
 /- English proof (translation)
-Use extensionality with `PP`. Simplify using `only [Finset.notMem_empty, iff_false]`. Introduce `hP`. Use `(h.chars.Q_ram () PP).2 (Or.inl hP)` as an intermediate fact. Rewrite `this` using `[h.chars.xi_base]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this fun x _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem Q_empty (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) : W.Q () = ∅ := by
   ext PP
@@ -57,13 +57,11 @@ theorem Q_empty (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) : W.Q () = ∅ :=
   exact this fun x _ => rfl
 
 /- English proof (translation)
-Establish `hQ` using `Q_empty W h`. Establish `hL` using `h.chars`. Establish `hμ : ∀ j : Fin D.R.m, ChrEq (W.toLevCh.mu () ((j : ℕ) + 1)) (W.C.mu0 j)` using `fun j => by`. Use `GlobalTheory.Mem.TupChar.chrEq_mul (hL.mu0 j) (hL.xi ())` as an intermediate fact. Rewrite `this` using `[hL.xi_base, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Use `⟨h.inf, h.std, ⟨hL.eta.1, GlobalTheory.Mem.TupChar.unramEverywhere hL.eta W.C.isEta.unr, GlobalTheory.HeckeCharacterRestriction.resEta_eta hL, fun τ => ?_, fun j hj => ?_⟩, fun j τ => ?_, fun j w hw => ?_, fun j => ⟨_, hμ j, hL.chi j⟩, ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ hL.eta (GlobalTheory.InnerSteps.hasInfQ_tauE (a := fun _ => 1 / 2) ⟨fun _ => 1, fun _ => by norm_num, W.C.isEta.inf⟩) τ`. Take `⟨h1, h2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨GlobalTheory.HeckeCharacterRestriction.isHecke_mu hL () ⟨i, by omega⟩, GlobalTheory.HeckeCharacterRestriction.resEta_mu hL () ⟨i, by omega⟩⟩`. Establish `h1` using `GlobalTheory.HeckeInfExp.hasInfExp_of_chrEq D _ _ _ (hμ j) (GlobalTheory.InnerSteps.hasInfQ_tauE (W.C.isMu0 j).inf) τ`. Simplify using `only [Formalism.L2.Host.eExp, Equiv.symm_apply_apply] at h1`. Conclude with `h1`. Conclude with `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hμ j) w).2 ((W.C.isMu0 j).unr w fun k hk => hw (mem_S W h k w hk))`.
-
-Take `⟨e, he, -⟩` from `h.vX.2`. Rewrite `he` using `[hQ]`. Conclude with `⟨e, by simp only [Finset.union_empty] at he; exact he⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem com_is (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) : (comOf W).Is := by
   have hQ := Q_empty W h
@@ -88,15 +86,13 @@ theorem com_is (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) : (comOf W).Is := 
     exact ⟨e, by simp only [Finset.union_empty] at he; exact he⟩
 
 /- English proof (translation)
-Establish `hQ` using `Q_empty W h`. Establish `hm : min j D.R.m = j` using `min_eq_left hj.le`. Take `⟨c, hc⟩` from `h.chars.βY j hj`. Establish `hν : (W.νY j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (W.fdY j) (W.νY j)`. Distinguish the cases in `h1 : j + 1 < D.R.m`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨(h.νY j h1).1.1, (h.νY j h1).2⟩`. Establish `: j = D.R.m - 1` using `by omega`. Substitute `this` using the available equality. Conclude with `⟨h.νY'.1.1, h.νY'.2⟩`. Use `⟨?_, D.sp.Y_sig _, fun τ => ?_, ?_, GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ ⟨c, hc⟩, hc.1, ⟨_, hc, fun P hP hN => hP ?_⟩, ⟨r_le_Y j, W.xiR (), ?_⟩, hν.1, hν.2⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (D.sp.Y (min j D.R.m)).rank = _`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _), hm]`. Use `show (D.sp.Y (min j D.R.m)).sig τ = _`. Rewrite using `[D.Y_sigval _ (min_le_right _ _), hm]`. Use `show parB _ (min j D.R.m) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Move the coercions through the operations in `at hN`. Use `P.isPrime.mem_of_pow_mem _ hN` as an intermediate fact. Break down `P.isPrime.mem_or_mem this with h0 | h0` into its components or cases. Conclude with `mem_S W h 0 P h0`.
-
-Conclude with `mem_S W h 1 P h0`. Use `show Lev.datY _ _ _ _ _ _ (W.Q ()) _ _ _ _ = _`. Rewrite using `[hQ]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stageY_is (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) (j : ℕ) (hj : j < D.R.m) : (stageY W j).Is (comOf W) j := by
   have hQ := Q_empty W h
@@ -124,7 +120,7 @@ theorem stageY_is (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre) (j : ℕ) (hj :
     rw [hQ]; rfl
 
 /- English proof (translation)
-Establish `hQ` using `Q_empty W h`. Use `⟨h.ωY k hk, ⟨W.xiR (), W.vac k, ?_⟩, h.ptY k hk, h.ItY k hk, hio k (by omega)⟩` and prove the remaining obligations. Use `h.vY k hk` as an intermediate fact. Rewrite `this` using `[hQ]`. Conclude with `this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stepY_is (W : GlobalTheory.Core.Rk.Tower D) (h : W.Pre)
     (hio : Lift.IsChainIo W.CC (D.R.m - 1) W.νY W.fdY (fun k => thetaKO (W.ωY k)) W.ptY W.ItY W.ioY)

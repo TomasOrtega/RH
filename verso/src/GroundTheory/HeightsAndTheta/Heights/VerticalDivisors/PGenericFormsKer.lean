@@ -9,33 +9,31 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `F L _ _ _ ι _ e r hre u hu b c h j`. Use `set V : Submodule F (ι → F) := Submodule.span F (Set.range b) with hV`. Use `set B := Module.finBasis F V`. Use `set r' := Module.finrank F V`. Establish `hr' : r' ≤ e` using `(finrank_range_le_card b).trans (by simpa using hre)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `v : Fin r' → ι → F` to `fun l => (B l : ι → F)`. Establish `hbm : ∀ m, b m ∈ V` using `fun m => Submodule.subset_span ⟨m, rfl⟩`. Set `c' : Fin r' → L` to `fun l => ∑ m, c m * algebraMap F L (B.repr ⟨b m, hbm m⟩ l)`. Establish `hw : ∀ j, ∑ m, c m * algebraMap F L (b m j) = ∑ l, c' l * algebraMap F L (v l j)`. Introduce `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hexp : ∀ m, b m j = ∑ l, B.repr ⟨b m, hbm m⟩ l * v l j`. Introduce `m`. Use `congrFun (congrArg Subtype.val (B.sum_repr ⟨b m, hbm m⟩)) j` as an intermediate fact. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at this`. Conclude with `this.symm`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Simplify using `only [hexp, map_sum, map_mul, Finset.mul_sum, c', Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => by ring` and prove the remaining obligations. Set `M : Matrix (Fin r') (Fin r') L` to `fun i l => ∑ j, u (Fin.castLE hr' i, j) * algebraMap F L (v l j)`. Establish `hMc : M.mulVec c' = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Establish `hi` using `h (Fin.castLE hr' i)`. Simplify using `only [hw] at hi`. Simplify using `only [Matrix.mulVec, dotProduct, M, Pi.zero_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, ← hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Set `P : Matrix (Fin r') (Fin r') (MvPolynomial (Fin e × ι) F)` to `fun i l => ∑ j, X (Fin.castLE hr' i, j) * C (v l j)`. Establish `hPM : (aeval u : MvPolynomial (Fin e × ι) F →ₐ[F] L).toRingHom.mapMatrix P = M`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use extensionality with `i l`. Express the relevant statement in the definitionally equal form `aeval u (∑ j, X (Fin.castLE hr' i, j) * C (v l j)) = M i l`. Simplify using `only [map_sum, map_mul, aeval_X, aeval_C, M]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective V.subtype V.ker_subtype`. Set `A₀ : Fin r' → ι → F` to `fun l j => B.repr (g (Pi.single j 1)) l`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hA₀ : ∀ i l, ∑ j, A₀ i j * v l j = if i = l then 1 else 0`. Introduce `i l`. Establish `hvl : (∑ j, v l j • (Pi.single j (1 : F) : ι → F)) = V.subtype (B l)`. Use function extensionality and compare the values at `k`. Simplify using `[v, Finset.sum_apply, Pi.single_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `congrArg (fun x => B.repr (g x) i) hvl` as an intermediate fact. Simplify using `only [map_sum, map_smul, Finsupp.coe_finsetSum, Finset.sum_apply, Finsupp.coe_smul, Pi.smul_apply, smul_eq_mul] at this`. Rewrite `this` using `[← LinearMap.comp_apply, hg, LinearMap.id_apply, Module.Basis.repr_self_apply]`. Establish `hil : (if i = l then (1 : F) else 0) = if l = i then 1 else 0`. Distinguish the cases in `hh : i = l`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Simplify using `[hh]`. Simplify using `[hh, Ne.symm hh]`. Rewrite using `[hil, ← this]`. Simplify using `only [A₀]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `x : Fin e × ι → F` to `fun p => if hp : p.1.val < r' then A₀ ⟨p.1.val, hp⟩ p.2 else 0`. Establish `hPx : (eval x).mapMatrix P = 1`. Use extensionality with `i l`. Express the relevant statement in the definitionally equal form `eval x (∑ j, X (Fin.castLE hr' i, j) * C (v l j)) = (1 : Matrix (Fin r') (Fin r') F) i l`. Simplify using `only [map_sum, map_mul, eval_X, eval_C, Matrix.one_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hA₀]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[x, Fin.castLE]`. Establish `hPdet : P.det ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (eval x) h0` as an intermediate fact. Rewrite `this` using `[RingHom.map_det, hPx, Matrix.det_one, map_zero]`. Conclude with `one_ne_zero this`. Establish `hMdet : M.det ≠ 0`. Rewrite using `[← hPM, ← RingHom.map_det]`.
-
-Establish `hinj : Function.Injective (aeval u : MvPolynomial (Fin e × ι) F →ₐ[F] L)` using `algebraicIndependent_iff_injective_aeval.1 hu`. Conclude with `(map_ne_zero_iff _ hinj).2 hPdet`. Establish `hc' : c' = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hMdet hMc`. Rewrite using `[hw]`. Simplify using `[hc']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GenericFormsKer.proof : GenericFormsKer.Statement := by
   intro F L _ _ _ ι _ e r hre u hu b c h j

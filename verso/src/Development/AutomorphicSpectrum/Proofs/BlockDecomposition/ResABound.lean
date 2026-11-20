@@ -17,13 +17,13 @@ open Set GlobalTheory.Eis
 variable {D : D7} {p : ℕ}
 
 /- English proof (translation)
-Establish `hm : (p : ℝ) / 2 ∈ Icc ((p : ℝ) / 2) (p / 2 + 1)` using `⟨le_rfl, by linarith⟩`. Establish `hc0 : Continuous (f ((p : ℝ) / 2))` using `ContinuousOn.comp_continuous (f := fun g : G D p => (((p : ℝ) / 2, g) : ℝ × G D p)) hc (continuous_const.prodMk continuous_id) fun g => ⟨hm, mem_univ _⟩`. Establish `h2` using `hl _ hm`. Establish `e : ((((p : ℝ) / 2 : ℝ)) : ℂ) = (p : ℂ) / 2` using `by push_cast; ring`. Rewrite `h2` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf0 : IsRho (f (p / 2))` using `And.intro hc0 h2`. Use `⟨hf0, ?_⟩` and prove the remaining obligations. Establish `hc' : ContinuousOn (fun u : ℝ × G D p => fam H (f (p / 2)) ((p : ℂ) / 2) (u.1 : ℂ) u.2) (Icc ((p : ℝ) / 2) (p / 2 + 1) ×ˢ univ)` using `(fam_cont hH hf0.1 _).continuousOn`. Establish `h00 : f ((p : ℝ) / 2) = (fun σ : ℝ => fam H (f (p / 2)) ((p : ℂ) / 2) (σ : ℂ)) ((p : ℝ) / 2)` using `(fam_at H (f (p / 2))).symm`. Establish `hd` using `tendsto_diff hS hp hH hC hcov (S := f) (S' := fun σ => fam H (f (p / 2)) ((p : ℂ) / 2) (σ : ℂ)) hc hc' hl (fun σ _ => fam_law_real hH hf0 σ) h00`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(ha.sub hd).mono_left (ufil_le p)`. Rewrite `h1` using `[sub_zero]`. Establish `h3 : Tendsto (fun σ => res H (f (p / 2)) σ 1) ((ufil p : Ultrafilter ℝ) : Filter ℝ) (𝓝 a)`. Use `h1.congr fun σ => ?_` and prove the remaining obligations. Simplify using `only [res]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `tendsto_nhds_unique h3 (res_tendsto hS hp hH hC hcov hf0 1)`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem resA_lim (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) (f : ℝ → G D p → ℂ)
@@ -54,35 +54,35 @@ theorem resA_lim (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : Is
   exact tendsto_nhds_unique h3 (res_tendsto hS hp hH hC hcov hf0 1)
 
 /- English proof (translation)
-Use `⟨hf.1.add hf'.1, fun q hq a ha g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hf.2 q hq a ha g, hf'.2 q hq a ha g]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_add {f f' : G D p → ℂ} (hf : IsRho f) (hf' : IsRho f') : IsRho (f + f') := by
   refine ⟨hf.1.add hf'.1, fun q hq a ha g => ?_⟩
   simp only [Pi.add_apply, hf.2 q hq a ha g, hf'.2 q hq a ha g]; ring
 
 /- English proof (translation)
-Use `⟨continuous_const.smul hf.1, fun q hq a ha g => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hf.2 q hq a ha g]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rho_smul {f : G D p → ℂ} (hf : IsRho f) (c : ℂ) : IsRho (c • f) := by
   refine ⟨continuous_const.smul hf.1, fun q hq a ha g => ?_⟩
   simp only [Pi.smul_apply, smul_eq_mul, hf.2 q hq a ha g]; ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `[fam, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem fam_add (H : G D p → ℝ≥0) (f f' : G D p → ℂ) (s z : ℂ) : fam H (f + f') s z = fam H f s z + fam H f' s z := by
   funext g; simp [fam, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [fam, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fam_smul (H : G D p → ℝ≥0) (f : G D p → ℂ) (c s z : ℂ) : fam H (c • f) s z = c • fam H f s z := by
   funext g; simp only [fam, Pi.smul_apply, smul_eq_mul]; ring
 
 /- English proof (translation)
-Use `tendsto_nhds_unique (res_tendsto hS hp hH hC hcov (rho_add hf hf') h) ?_` and prove the remaining obligations. Use `((res_tendsto hS hp hH hC hcov hf h).add (res_tendsto hS hp hH hC hcov hf' h)).congr' ?_` and prove the remaining obligations. Use `ufil_le p ?_` and prove the remaining obligations. Use `filter_upwards [ev_Ioc p] with σ hσ`. Establish `c1` using `conv_of_section hS hp hH hC hcov hσ (fam_cont_at hH hf.1 _ σ) (fam_law_real hH hf σ) h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `conv_of_section hS hp hH hC hcov hσ (fam_cont_at hH hf'.1 _ σ) (fam_law_real hH hf' σ) h`. Simplify using `only [res, fam_add, eisS]`. Rewrite using `[cosetSum_add c1 c2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem resA_add (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f f' : G D p → ℂ} (hf : IsRho f) (hf' : IsRho f') (h : G D p) :
@@ -97,7 +97,7 @@ theorem resA_add (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : Is
   rw [cosetSum_add c1 c2]; ring
 
 /- English proof (translation)
-Use `tendsto_nhds_unique (res_tendsto hS hp hH hC hcov (rho_smul hf c) h) ?_` and prove the remaining obligations. Use `((res_tendsto hS hp hH hC hcov hf h).const_mul c).congr fun σ => ?_` and prove the remaining obligations. Simplify using `only [res, fam_smul, eisS]`. Rewrite using `[cosetSum_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem resA_smul (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f) (c : ℂ) (h : G D p) :
@@ -108,21 +108,21 @@ theorem resA_smul (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : I
   rw [cosetSum_smul]; ring
 
 /- English proof (translation)
-Rewrite using `[npow, Complex.ofReal_cpow r.coe_nonneg]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem npow_real {r : ℝ≥0} (σ : ℝ) : npow r ((σ : ℂ) - (p : ℂ) / 2) = (((r : ℝ) ^ (σ - p / 2) : ℝ) : ℂ) := by
   rw [npow, Complex.ofReal_cpow r.coe_nonneg]; push_cast; rfl
 
 /- English proof (translation)
-Establish `hT` using `res_tendsto hS hp hH hC hcov hf h`. Establish `hev : ∀ᶠ σ in ((ufil p : Ultrafilter ℝ) : Filter ℝ), 0 ≤ (res H f σ h).re ∧ (res H f σ h).im = 0`. Use `ufil_le p ?_` and prove the remaining obligations. Use `filter_upwards [ev_Ioc p] with σ hσ`. Establish `c1` using `conv_of_section hS hp hH hC hcov hσ (fam_cont_at hH hf.1 _ σ) (fam_law_real hH hf σ) h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Summable (term (P D p) (GF D p) (fam H f ((p : ℂ) / 2) (σ : ℂ)) h)` using `c1.of_norm`. Establish `hterm : ∀ q, 0 ≤ (term (P D p) (GF D p) (fam H f ((p : ℂ) / 2) (σ : ℂ)) h q).re ∧ (term (P D p) (GF D p) (fam H f ((p : ℂ) / 2) (σ : ℂ)) h q).im = 0` using `fun q => by`. Simplify using `only [term, fam]`. Rewrite using `[npow_real, Complex.re_ofReal_mul, Complex.im_ofReal_mul, (hpos _).2, mul_zero]`. Conclude with `⟨mul_nonneg (Real.rpow_nonneg (NNReal.coe_nonneg _) _) (hpos _).1, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e1 : (eisS (fam H f ((p : ℂ) / 2) (σ : ℂ)) h).re ≥ 0`. Simplify using `only [eisS, cosetSum]`. Rewrite using `[Complex.re_tsum hsum]`. Conclude with `tsum_nonneg fun q => (hterm q).1`. Establish `e2 : (eisS (fam H f ((p : ℂ) / 2) (σ : ℂ)) h).im = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [eisS, cosetSum]`. Rewrite using `[Complex.im_tsum hsum]`. Simplify using `only [hterm, tsum_zero]`. Simplify using `only [res]`. Rewrite using `[Complex.re_ofReal_mul, Complex.im_ofReal_mul, e2, mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨mul_nonneg (by linarith [hσ.1]) e1, rfl⟩`. Establish `hre` using `(Complex.continuous_re.tendsto _).comp hT`. Establish `him` using `(Complex.continuous_im.tendsto _).comp hT`. Conclude with `⟨ge_of_tendsto hre (hev.mono fun σ h => h.1), tendsto_nhds_unique him (tendsto_const_nhds.congr' (hev.mono fun σ h => h.2.symm))⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem resA_pos (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) {f : G D p → ℂ} (hf : IsRho f)
@@ -155,15 +155,13 @@ theorem resA_pos (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : Is
     tendsto_nhds_unique him (tendsto_const_nhds.congr' (hev.mono fun σ h => h.2.symm))⟩
 
 /- English proof (translation)
-Establish `hs : IsRho fun g => npow (H' g) (p : ℂ)`. Use `⟨continuous_npow hH'.1 hH'.2.1 _, fun q hq a ha g => ?_⟩` and prove the remaining obligations. Use `show npow (H' (q * g)) (p : ℂ) = _ * npow (absA D _) ((p : ℂ) / 2 + (p : ℂ) / 2) * npow (H' g) (p : ℂ)`. Rewrite using `[hH'.2.2 q hq a ha g, npow_mul, show (p : ℂ) / 2 + (p : ℂ) / 2 = p by ring]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩` from `rho_bound hH hC hcov hs`. Establish `hle : ∀ g, (H' g : ℝ) ^ p ≤ δ * (H g : ℝ) ^ p` using `fun g => by`. Use `hδ g` as an intermediate fact. Rewrite `this` using `[norm_npow (hH'.2.1 g), show ((p : ℂ)).re = (p : ℝ) by simp, Real.rpow_natCast]`. Then use the resulting hypothesis. Take `⟨B₁, -, hB₁⟩` from `res_bound hS hp hH (isCompact_singleton (x := (1 : G D p)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨δ * B₁, fun f hf B hB => ?_⟩` and prove the remaining obligations. Establish `hB0 : 0 ≤ B`. Establish `h1` using `(norm_nonneg _).trans (hB 1)`. Conclude with `nonneg_of_mul_nonneg_left h1 (pow_pos (NNReal.coe_pos.2 (hH'.2.1 1)) p)`. Establish `hf2 : ∀ g, ‖f g‖ ≤ (B * δ) * (H g : ℝ) ^ p` using `fun g => (hB g).trans (by rw [mul_assoc]; exact mul_le_mul_of_nonneg_left (hle g) hB0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlim` using `(res_tendsto hS hp hH hC hcov hf 1).norm`. Use `le_of_tendsto hlim ?_` and prove the remaining obligations. Use `ufil_le p ?_` and prove the remaining obligations. Use `filter_upwards [ev_Ioc p] with σ hσ`. Use `hB₁ f _ hf2 σ hσ 1 rfl` as an intermediate fact.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem resA_bound (hS : SphBound) (hp : 1 ≤ p) {H : G D p → ℝ≥0} (hH : IsHt H) {C : Set (G D p)} (hC : IsCompact C)
     (hcov : ∀ g, ∃ q ∈ P D p, ∃ c ∈ C, g = q * c) (H' : G D p → ℝ≥0) (hH' : IsHt H') :

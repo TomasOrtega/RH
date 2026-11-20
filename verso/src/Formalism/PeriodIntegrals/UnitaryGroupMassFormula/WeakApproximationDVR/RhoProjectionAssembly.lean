@@ -8,7 +8,7 @@ noncomputable section
 namespace PI.WADVR
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using Sm.zero (Q := Q) (ϖ := ϖ) k`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `(h a (Finset.mem_insert_self a s)).add (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Sm.sum {W Q : Type*} [CommRing W] [IsDomain W] [IsDiscreteValuationRing W] [Field Q]
     [Algebra W Q] [IsFractionRing W Q] {ϖ : W} {κ : Type*} (s : Finset κ) (f : κ → Q) (k : ℤ)
@@ -28,27 +28,23 @@ namespace PI.WA
 open PI.WADVR
 
 /- English proof (translation)
-Introduce `E _ ι _ W Q _ _ _ _ _ _ iw p hp0 hpu hden ϖ hϖ hz x N`. Use `choose z hz0 hzi hzj using hz`. Use `choose n hn using fun i => exists_sm_target (hϖ i) (hp0 i) N`. Use `set K : ℕ := ∑ i, n i with hK`. Establish `hnK : ∀ i, n i ≤ K` using `fun i => Finset.single_le_sum (f := n) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose y c hy using fun i => hden i (x i) K`. Establish `hyS : ∀ i, PI.WADVR.Sm (Q i) (ϖ i) K (iw i (y i) - x i)` using `fun i => sm_of_density (hϖ i) (hpu i) (hy i)`. Use `choose k hk using fun i j => sm_exists (hϖ j) (iw j (y i))`. Use `set B : ℕ := ∑ i, ∑ j, (-(k i j)).toNat with hB`. Establish `hkB : ∀ i j, -(k i j) ≤ (B : ℤ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `i j`. Establish `h1 : (-(k i j)).toNat ≤ ∑ j', (-(k i j')).toNat` using `Finset.single_le_sum (f := fun j' => (-(k i j')).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ j)`. Establish `h2 : ∑ j', (-(k i j')).toNat ≤ B` using `Finset.single_le_sum (f := fun i' => ∑ j', (-(k i' j')).toNat) (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)`. Establish `h3` using `Int.self_le_toNat (-(k i j))`. Establish `h4 : ((-(k i j)).toNat : ℤ) ≤ B` using `by exact_mod_cast h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set r : ℕ := 1 + K + B with hr`. Establish `hr1 : 1 ≤ r` using `by omega`. Establish `hrk : ∀ i j, (K : ℤ) ≤ (r : ℤ) + k i j`. Introduce `i j`.
+Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hkB i j` as an intermediate fact. Move the coercions through the operations in `[hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `e : ι → E` to `fun i => z i ^ r * (1 + z i ^ r)⁻¹`. Use `⟨∑ i, e i * y i, fun j => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `he : ∀ i, iw j (e i) = iw j (z i) ^ r * (1 + iw j (z i) ^ r)⁻¹`. Introduce `i`. Simplify using `[e, map_mul, map_pow, map_inv₀, map_add, map_one]`. Establish `hT : ∀ i, PI.WADVR.Sm (Q j) (ϖ j) K ((iw j (e i) - if i = j then 1 else 0) * iw j (y i))`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Take `⟨hne, hsm⟩` from `big_one_add_pow (hϖ i) ((map_ne_zero (iw i)).mpr (hz0 i)) (hzi i) hr1`. Establish `hid : iw i (e i) - (if i = i then 1 else 0) = -(1 + iw i (z i) ^ r)⁻¹`. Rewrite using `[if_pos rfl, he]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_mul, mul_inv_cancel₀ hne]`. Use `_ = -(1 + iw i (z i) ^ r)⁻¹ := by ring`. Rewrite using `[hid]`. Conclude with `(hsm.neg.mul (hϖ i) (hk i i)).mono (hϖ i) (hrk i i)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_neg hij, sub_zero, he]`. Take `⟨_, hsm⟩` from `small_one_add_pow (hϖ j) (hzj i j (Ne.symm hij)) hr1`. Conclude with `(hsm.mul (hϖ j) (hk i j)).mono (hϖ j) (hrk i j)`. Establish `hsum : iw j (∑ i, e i * y i) - x j = (∑ i, (iw j (e i) - if i = j then 1 else 0) * iw j (y i)) + (iw j (y j) - x j)`. Rewrite using `[map_sum]`.
-
-Simplify using `only [map_mul, sub_mul, Finset.sum_sub_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `htot : PI.WADVR.Sm (Q j) (ϖ j) K (iw j (∑ i, e i * y i) - x j)`. Rewrite using `[hsum]`. Conclude with `(PI.WADVR.Sm.sum _ _ _ fun i _ => hT i).add (hyS j)`.
-
-Take `⟨c', hc'⟩` from `hn j _ (htot.mono (hϖ j) (by exact_mod_cast hnK j))`. Conclude with `⟨c', by rw [← hc']; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rho_projection_assembly : Assembly := by
   intro E _ ι _ W Q _ _ _ _ _ _ iw p hp0 hpu hden ϖ hϖ hz x N

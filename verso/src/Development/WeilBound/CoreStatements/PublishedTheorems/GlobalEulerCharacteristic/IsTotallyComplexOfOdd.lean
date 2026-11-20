@@ -5,19 +5,17 @@ open NumberField GroundTheory.Global
 namespace PositivityTheory.Lit1.GEN.TotallyComplexOfOdd
 
 /- English proof (translation)
-Use `⟨fun v => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Establish `hvr : v.IsReal` using `InfinitePlace.not_isComplex_iff_isReal.1 hv`. Establish `hσ : ComplexEmbedding.IsReal v.embedding` using `InfinitePlace.isReal_iff.1 hvr`. Use `letI : Algebra L'.1 ℂ := v.embedding.toAlgebra`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `haveI : FiniteDimensional L'.1 L.1 := Module.Finite.of_restrictScalars_finite ℚ L'.1 L.1`. Establish `hreal : ∀ x : L'.1, starRingEnd ℂ (v.embedding x) = v.embedding x` using `fun x => (ComplexEmbedding.conjugate_coe_eq _ x).symm.trans (RingHom.congr_fun (ComplexEmbedding.isReal_iff.1 hσ) x)`. Set `c : (L.1 →ₐ[L'.1] ℂ) → (L.1 →ₐ[L'.1] ℂ)` to `fun τ => { ((starRingEnd ℂ).comp τ.toRingHom) with commutes' := fun x => by show starRingEnd ℂ (τ (algebraMap L'.1 L.1 x)) = algebraMap L'.1 ℂ x`. Rewrite using `[τ.commutes]`. Conclude with `hreal x }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hinv : Function.Involutive c` using `fun τ => by`. Use extensionality with `x`. Use `show starRingEnd ℂ (starRingEnd ℂ (τ x)) = τ x`. Simplify using the standard rewrite rules. Establish `hcard : Fintype.card (L.1 →ₐ[L'.1] ℂ) = Module.finrank L'.1 L.1` using `AlgHom.card L'.1 L.1 ℂ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, c τ = τ := by`. Assume the negation of the conclusion as `hno`. Use `push Not at hno`. Establish `hev : Even (Fintype.card (L.1 →ₐ[L'.1] ℂ))` using `by classical`. Set `σ : Equiv.Perm (L.1 →ₐ[L'.1] ℂ)` to `Function.Involutive.toPerm c hinv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hσ2 : σ ^ 2 = 1` using `by ext1 τ show c (c τ) = τ`. Conclude with `hinv τ`. Establish `hsupp : σ.support = Finset.univ` using `Finset.eq_univ_iff_forall.2 fun τ => Equiv.Perm.mem_support.2 (hno τ)`. Establish `h2` using `Equiv.Perm.two_dvd_card_support hσ2`. Rewrite `h2` using `[hsupp, Finset.card_univ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `even_iff_two_dvd.2 h2`. Rewrite `hev` using `[hcard]`. Conclude with `(Nat.not_even_iff_odd.2 hodd) hev`. Establish `hτr : ComplexEmbedding.IsReal τ.toRingHom`. Rewrite using `[ComplexEmbedding.isReal_iff]`.
-
-Use extensionality with `x`. Conclude with `congrArg (fun f : L.1 →ₐ[L'.1] ℂ => f x) hτ`. Use `htc.isComplex (InfinitePlace.mk τ.toRingHom)` as an intermediate fact. Conclude with `InfinitePlace.not_isComplex_iff_isReal.2 ⟨τ.toRingHom, hτr, rfl⟩ this`.
+A detailed English derivation is pending.
 -/
 theorem isTotallyComplex_of_odd (L' L : FiniteSubfield) [Fact (L' ≤ L)]
     (hodd : Odd (Module.finrank L'.1 L.1)) (htc : NumberField.IsTotallyComplex L.1) :

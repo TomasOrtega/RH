@@ -12,7 +12,7 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.OmKun
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Distinguish the cases in `h : b = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem piCongrRight_single {K ι : Type} [CommRing K] [DecidableEq ι] {X Y : ι → Type}
     [∀ i, AddCommGroup (X i)] [∀ i, Module K (X i)] [∀ i, AddCommGroup (Y i)] [∀ i, Module K (Y i)]
@@ -24,15 +24,15 @@ theorem piCongrRight_single {K ι : Type} [CommRing K] [DecidableEq ι] {X Y : �
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Take `⟨r, π, h1, h2, h3, h4, h5⟩` from `GlobalTheory.CompanionTheory.KaehlerPushout.kaehler_pushout_split K A B R`. Take `⟨E, hE⟩` from `GlobalTheory.CompanionTheory.TopExtSplit.exteriorPower_split R _ _ _ _ _ r π h1 h2 h3 h4 h5 c`. Use `choose bA hbA using fun a : ℕ => GlobalTheory.CompanionTheory.ExteriorBase.exists_baseChange_equiv A R (Ω[A⁄K]) a`. Use `choose bB hbB using fun a : ℕ => GlobalTheory.CompanionTheory.ExteriorBase.exists_baseChange_equiv B R (Ω[B⁄K]) a`. Use `choose t ht using fun a : Fin (c + 1) => GlobalTheory.CompanionTheory.TensorPushout.tensor_equiv_baseChange_tensor K A B R (Om K A a) (Om K B (c - a))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨LinearEquiv.piCongrRight (fun a => t a ≪≫ₗ (TensorProduct.congr (bA a) (bB (c - a))).restrictScalars K) ≪≫ₗ E.restrictScalars K, ?_⟩` and prove the remaining obligations. Introduce `a g₀ g h₀ h`. Establish `hA : bA a ((1 : R) ⊗ₜ[A] form K g₀ g) = algebraMap A R g₀ • exteriorPower.ιMulti R a (fun k => (1 : R) ⊗ₜ[A] KaehlerDifferential.D K A (g k))`. Unfold `form`. Rewrite using `[← TensorProduct.smul_tmul, hbA, Algebra.smul_def, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : bB (c - a) ((1 : R) ⊗ₜ[B] form K h₀ h) = algebraMap B R h₀ • exteriorPower.ιMulti R (c - a) (fun k => (1 : R) ⊗ₜ[B] KaehlerDifferential.D K B (h k))`. Unfold `form`. Rewrite using `[← TensorProduct.smul_tmul, hbB, Algebra.smul_def, mul_one]`. Establish `hmain : (TensorProduct.congr (bA a) (bB (c - a))) (((1 : R) ⊗ₜ[A] form K g₀ g) ⊗ₜ[R] ((1 : R) ⊗ₜ[B] form K h₀ h)) = (algebraMap A R g₀ * algebraMap B R h₀) • (exteriorPower.ιMulti R a (fun k => (1 : R) ⊗ₜ[A] KaehlerDifferential.D K A (g k)) ⊗ₜ[R] exteriorPower.ιMulti R (c - a) (f …`. Rewrite using `[TensorProduct.congr_tmul, hA, hB, TensorProduct.smul_tmul_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearEquiv.trans_apply, piCongrRight_single, LinearEquiv.restrictScalars_apply, ht, hmain, Pi.single_smul, map_smul, hE]`. Unfold `form`. Use `congr 2`. Use function extensionality and compare the values at `k`. Simplify using `only [Function.comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Generalize the expression as in `Fin.cast _ k = j`. Proceed by induction on `j using Fin.addCases with`. Consider the case `left j => simp [KaehlerDifferential.mapBaseChange_tmul]`. Consider the case `right j => simp [KaehlerDifferential.mapBaseChange_tmul]`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem omKun_pushout (K A B R : Type) [CommRing K] [CommRing A] [CommRing B] [CommRing R]
     [Algebra K A] [Algebra K B] [Algebra K R] [Algebra A R] [Algebra B R]
@@ -75,9 +75,9 @@ theorem omKun_pushout (K A B R : Type) [CommRing K] [CommRing A] [CommRing B] [C
   | right j => simp [KaehlerDifferential.mapBaseChange_tmul]
 
 /- English proof (translation)
-Introduce `K A B _ _ _ _ _ c`. Set `_ : Algebra B (A ⊗[K] B)` to `Algebra.TensorProduct.rightAlgebra`. Establish `: IsScalarTower K B (A ⊗[K] B)` using `Algebra.TensorProduct.right_isScalarTower`. Take `⟨e, he⟩` from `omKun_pushout K A B (A ⊗[K] B) c`. Use `⟨e, fun a g₀ g h₀ h => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `g₀ ⊗ₜ[K] (1 : B) * (1 : A) ⊗ₜ[K] h₀ = _`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem omKun : CrystallineSemistableComparison.Onto.OmKun := by
   intro K A B _ _ _ _ _ c

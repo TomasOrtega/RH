@@ -31,14 +31,14 @@ variable {I : Type} {X₁ : GlobalTheory.GSep.GSet} {z₁ : X₁.M.Z} {act : I �
   [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {Y : Type} [AddCommGroup Y] {t : Y → V} {δ : I → Y → Y}
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (𝔪.cart.1.hom_ext h ((Over.w u).trans (Over.w v).symm))`.
+A detailed English derivation is pending.
 -/
 theorem hom_eq_of_comp (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) {u v : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A}
     (h : u.left ≫ 𝔪.φ = v.left ≫ 𝔪.φ) : u = v :=
   Over.OverMorphism.ext (𝔪.cart.1.hom_ext h ((Over.w u).trans (Over.w v).symm))
 
 /- English proof (translation)
-Introduce `z J' hJ'`. Take `⟨J, hJ⟩` from `exists_good' X₁.ρ.P.isLB z`. Conclude with `mul_left_cancel ((h₂ z J J' hJ hJ').trans (h z J J' hJ hJ').symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frame_val_eq (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) {x : TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A}
     {a : X₁.S.Gam} (fr fr₂ : FrAt x)
@@ -58,9 +58,9 @@ section Gen
 variable {R : Type} [CommRing R] [IsDomain R] {F : Type} [Field F] [Algebra (FractionRing R) F]
 
 /- English proof (translation)
-Introduce `z J hJ`. Rewrite using `[h z J hJ]`. Use `congr 2`. Use `he z J hJ` as an intermediate fact. Simplify using `only [Geo.Tor.val, powFrame] at this ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(map_zpow _ _ _).trans ((congrArg (· ^ (k : ℤ)) this.symm).trans (map_zpow _ _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem valAt_congr {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {k : ℕ} {th : SecA A F k}
     {x : TFK (R := R) F ⟶ A.A} {e e' : FrAt x} {c : F} (h : ValAt th x e c)
@@ -75,7 +75,7 @@ theorem valAt_congr {A : PolAV (Spec (CommRingCat.of (FractionRing R)))} {k : �
 variable {D : DegPre R}
 
 /- English proof (translation)
-Use `coef_eq fun z J hJ => ?_` and prove the remaining obligations. Establish `a` using `isCoef_coef g hw χ s z J hJ`. Establish `e : lift (𝟙 (TF (R` using `R) F)) g₂.b = lift (𝟙 (TF (R := R) F)) g.b := by rw [hb]`. Rewrite using `[hs χ z J hJ, hv z J hJ, e]`. Conclude with `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_congr {k : ℕ} {g g₂ : GtPtF D F} {w : Frm D F k g.b} {w₂ : Frm D F k g₂.b} (hw : w.IsGen)
     (hb : g₂.b = g.b) (hs : ∀ χ z J, Good D.P.L z J → val (g₂.s χ) (𝟙 _) z J = val (g.s χ) (𝟙 _) z J)
@@ -88,9 +88,9 @@ theorem coef_congr {k : ℕ} {g g₂ : GtPtF D F} {w : Frm D F k g.b} {w₂ : Fr
   exact a
 
 /- English proof (translation)
-Establish `hlin` using `((coef_basic R D F k g).2.2 w hw).2.1`. Establish `e0` using `hlin 0 0 1 χ`. Simplify using `only [_root_.one_smul, _root_.add_zero, _root_.one_mul] at e0`. Establish `h0 : coef (0 : Fam D F k) g w χ = 0` using `by linear_combination (-1 : F) * e0`. Establish `e` using `hlin s 0 u χ`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[_root_.add_zero, h0, _root_.add_zero]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coef_smul {k : ℕ} {g : GtPtF D F} {w : Frm D F k g.b} (hw : w.IsGen) (u : F) (s : Fam D F k) (χ : D.X) :
     coef (u • s) g w χ = u * coef s g w χ := by
@@ -108,9 +108,9 @@ variable {I : Type} {X₁ : GlobalTheory.GSep.GSet} {z₁ : X₁.M.Z} {act : I �
   [IsLocalRing V] {ev : X₁.M.Z.presheaf.stalk z₁ →+* V} {Y : Type} [AddCommGroup Y] {t : Y → V} {δ : I → Y → Y}
 
 /- English proof (translation)
-Introduce `k hk wk' hwk' hwk'g th s' v hexp hval`. Take `⟨wk, hwkg, hwk⟩` from `TorsionValue.exists_frm_pow w hw k`. Establish `H` using `hO k hk wk hwk hwkg th (u ^ k • s') v (hD k th s' hexp) (valAt_congr hval fun z J hJ => hfr z J hJ)`. Establish `hcv : ∀ z J, Good 𝔪.D.toPre.P.L z J → (val wk' (𝟙 _) z J).val = cst (FractionRing V) z (u ^ k) * (val wk (𝟙 _) z J).val`. Introduce `z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hwk' z J hJ, hwk z J hJ, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hv z J hJ, mul_pow, cst_eq, cst_eq, map_pow]`. Establish `e : coef (u ^ k • s') g wk = coef s' g wk'` using `funext fun χ => by`. Rewrite using `[coef_smul hwkg, TorsionValue.coef_scale hwkg hcv s' χ]`. Rewrite `H` using `[e]`. Conclude with `H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_transport (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) {w₀ w₀₂ : W0 𝔪.U.toUnifPre}
     {g : GtPtF 𝔪.D.toPre (FractionRing V)} {w w' : Frm 𝔪.D.toPre (FractionRing V) 1 g.b}
@@ -137,11 +137,11 @@ theorem over_transport (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ)
 end Transport
 
 /- English proof (translation)
-Introduce `I X₁ z₁ act V _ _ _ ev Y _ t δ 𝔪 b x x₂ fr fr₂ th th₂ w₀ w₀₂ s s₂ g' g₂ w w₂ hx hfr hth hw₀ hs hg hw hO hx₂ hfr₂ hth₂ hw₀₂ hs₂ hg₂ hw₂ hO₂ χ`. Take `rfl : x = x₂` from `(funext fun a => hom_eq_of_comp 𝔪 ((hx₂ a).trans (hx a).symm)).symm`. Establish `efr : ∀ a z J', Good 𝔪.A.L z J' → val (fr₂ a) (𝟙 _) z J' = val (fr a) (𝟙 _) z J'` using `fun a => frame_val_eq 𝔪 (a := a) (fr a) (fr₂ a) (hfr a).2 (hfr₂ a).2`. Establish `hth₂' : ∀ a, ValAt th₂ (x a) (fr a) (𝔪.yK ⟨X₁.S.th a, X₁.S.th_mem a⟩)` using `fun a => valAt_congr (hth₂ a) fun z J hJ => (efr a z J hJ).symm`. Take `rfl : th = th₂` from `Eq.symm <| GlobalTheory.T.section_eq_of_values_at_label_torsion I X₁ z₁ act V ev Y t δ 𝔪 x fr th th₂ (fun a => (hfr a).1) hth hth₂'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hD⟩` from `GlobalTheory.T.uniformisation_generic_frames_scale_by_constant I X₁ z₁ act V ev Y t δ 𝔪 w₀ w₀₂ hw₀ hw₀₂`. Take `⟨w₂', hw₂'g, hv₂'⟩` from `TorsionValue.exists_frm_scale w₂ hw₂ hu`. Establish `hO₂' : 𝔪.Over' w₀ g₂ w₂' (x b) (fr b)` using `over_transport 𝔪 hO₂ hw₂ hD (efr b) hv₂'`. Take `⟨hb, hsv⟩` from `GlobalTheory.T.thetaMember_torsion_points_eq_same_values I X₁ z₁ act V ev Y t δ 𝔪 w₀ (x b) (fr b) g' g₂ w w₂' hw₀ (hfr b).1 hg hw hO hg₂ hw₂'g hO₂'`. Establish `hwv` using `GlobalTheory.T.thetaMember_torsion_frame_unique I X₁ z₁ act V ev Y t δ 𝔪 w₀ (x b) (fr b) g' g₂ w w₂' hw₀ (hfr b).1 hg hw hO hg₂ hw₂'g hO₂' hb hsv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : coef s g₂ w₂' χ = coef s g' w χ` using `coef_congr hw hb hsv hwv s χ`. Establish `e2 : coef s₂ g₂ w₂ χ = coef (u ^ 1 • s) g₂ w₂ χ` using `GlobalTheory.T.thetaMember_expansion_terms_eq I X₁ z₁ act V ev Y t δ 𝔪 w₀₂ 1 th (u ^ 1 • s) s₂ hw₀₂ le_rfl (hD 1 th s hs) hs₂ g₂ w₂ hw₂ χ`. Rewrite using `[e2, pow_one, coef_smul hw₂, ← TorsionValue.coef_scale hw₂ hv₂' s χ, e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coef_eq : ∀ (I : Type) (X₁ : GlobalTheory.GSep.GSet) (z₁ : X₁.M.Z) (act : I → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (Y : Type) [AddCommGroup Y] (t : Y → V) (δ : I → Y → Y) (𝔪 : GlobalTheory.GSep.GMem X₁ z₁ act V ev Y t δ) (b : X₁.S.Gam)
   (x x₂ : X₁.S.Gam → (TFK (R := V) (FractionRing V) ⟶ 𝔪.A.A)) (fr : ∀ a, FrAt (x a)) (fr₂ : ∀ a, FrAt (x₂ a))

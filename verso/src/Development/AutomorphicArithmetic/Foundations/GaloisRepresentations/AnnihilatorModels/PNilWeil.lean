@@ -10,9 +10,9 @@ section Abstract
 variable {L M : Type} [Field L] [AddCommGroup M] [Module L M]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => exact ⟨fun s hs => hs, fun s hs => rfl⟩`. Consider the case `succ m ih`. Take `⟨ih1, ih2⟩` from `ih`. Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_succ', End.mul_apply]`. Conclude with `hΦ _ (ih1 s hs)`. Rewrite using `[pow_succ', pow_succ', End.mul_apply, End.mul_apply]`. Establish `e : (T ^ m) ⟨s, hSD hs⟩ = ⟨(Φ ^ m) s, hSD (ih1 s hs)⟩` using `Subtype.ext (ih2 s hs)`. Rewrite using `[e, hT _ (ih1 s hs)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_restr (D S : Submodule L M) (hSD : S ≤ D) (T : End L D) (Φ : End L M)
     (hΦ : ∀ s ∈ S, Φ s ∈ S) (hT : ∀ s (hs : s ∈ S), ((T ⟨s, hSD hs⟩ : D) : M) = Φ s) (m : ℕ) :
@@ -29,11 +29,11 @@ private theorem pow_restr (D S : Submodule L M) (hSD : S ≤ D) (T : End L D) (�
       rw [e, hT _ (ih1 s hs)]
 
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (hp.1 s hs) (hq.1 s hs)`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, hp.2 s hs, hq.2 s hs]`. Consider the case `monomial n a`. Take `⟨h1, h2⟩` from `pow_restr D S hSD T Φ hΦ hT n`. Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_monomial, End.mul_apply, Module.algebraMap_end_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.smul_mem a (h1 s hs)`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, End.mul_apply, End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, h2 s hs]`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_restr (D S : Submodule L M) (hSD : S ≤ D) (T : End L D) (Φ : End L M)
     (hΦ : ∀ s ∈ S, Φ s ∈ S) (hT : ∀ s (hs : s ∈ S), ((T ⟨s, hSD hs⟩ : D) : M) = Φ s) (Q : Polynomial L) :
@@ -54,9 +54,7 @@ private theorem aeval_restr (D S : Submodule L M) (hSD : S ≤ D) (T : End L D) 
         Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, h2 s hs]
 
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `hp.add_left hq`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial]`.
-
-Conclude with `Commute.mul_left (show Commute _ m from Algebra.commutes a m) (h.pow_left n)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeval_commute {D : Type} [AddCommGroup D] [Module L D] (T m : End L D) (h : Commute T m)
     (Q : Polynomial L) : Commute (Polynomial.aeval T Q) m := by
@@ -67,19 +65,17 @@ private theorem aeval_commute {D : Type} [AddCommGroup D] [Module L D] (T m : En
     exact Commute.mul_left (show Commute _ m from Algebra.commutes a m) (h.pow_left n)
 
 /- English proof (translation)
-Take `⟨a1, a2⟩` from `aeval_restr D S hSD T Φ hΦ hT Q`. Take `⟨-, b2⟩` from `pow_restr D S hSD _ _ a1 a2 N`. Establish `hkill : ∀ s (hs' : s ∈ S), (Polynomial.aeval T Q ^ N) ⟨s, hSD hs'⟩ = 0`. Introduce `s hs'`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[b2 s hs']`. Conclude with `hN s hs'`. Establish `hcomm : ∀ c, Commute (Polynomial.aeval T Q ^ N) (m c)` using `fun c => Commute.pow_left (aeval_commute _ _ (hc c) Q) N`. Establish `key : ∀ y, y ∈ AddSubgroup.closure {y | ∃ (c : U) (s : M), s ∈ S ∧ y = mV c s} → ∃ hy : y ∈ D, (Polynomial.aeval T Q ^ N) ⟨y, hy⟩ = 0`. Introduce `y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.closure_induction (p := fun y _ => ∃ hy : y ∈ D, (Polynomial.aeval T Q ^ N) ⟨y, hy⟩ = 0) ?_ ⟨zero_mem _, map_zero _⟩ ?_ ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨c, s, hs', rfl⟩`. Establish `e : mV c s = ((m c ⟨s, hSD hs'⟩ : D) : M)` using `(hm c ⟨s, hSD hs'⟩).symm`. Use `⟨e ▸ (m c ⟨s, hSD hs'⟩).2, ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun (hcomm c).eq ⟨s, hSD hs'⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[End.mul_apply, End.mul_apply, hkill s hs', map_zero]`. Establish `h2 : (⟨mV c s, e ▸ (m c ⟨s, hSD hs'⟩).2⟩ : D) = m c ⟨s, hSD hs'⟩` using `Subtype.ext e`. Rewrite using `[h2]`. Conclude with `h1`. Introduce and unpack `a b _ _ ⟨ha, ea⟩ ⟨hb, eb⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨add_mem ha hb, ?_⟩` and prove the remaining obligations. Use `map_add (Polynomial.aeval T Q ^ N) ⟨a, ha⟩ ⟨b, hb⟩` as an intermediate fact. Rewrite `this` using `[ea, eb, add_zero]`. Conclude with `this`. Introduce and unpack `a _ ⟨ha, ea⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨neg_mem ha, ?_⟩` and prove the remaining obligations. Use `map_neg (Polynomial.aeval T Q ^ N) ⟨a, ha⟩` as an intermediate fact. Rewrite `this` using `[ea, neg_zero]`. Conclude with `this`. Use `⟨N, LinearMap.ext fun x => ?_⟩` and prove the remaining obligations.
-
-Take `⟨hy, e⟩` from `key x.1 (hcl x)`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem nil_abs {U : Type} (D S : Submodule L M) (hSD : S ≤ D) (T : End L D) (Φ : End L M)
     (hΦ : ∀ s ∈ S, Φ s ∈ S) (hT : ∀ s (hs : s ∈ S), ((T ⟨s, hSD hs⟩ : D) : M) = Φ s) (Q : Polynomial L) (N : ℕ)
@@ -126,19 +122,19 @@ private theorem nil_abs {U : Type} (D S : Submodule L M) (hSD : S ≤ D) (T : En
 end Abstract
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ _ _ A w h O _ _ _ Bw hj LL V _ _ _ _ _ ρ hV hs Q hN g hg`. Use `haveI := hV.finite`. Take `⟨N, hN⟩` from `hN`. Establish `hSD : Dst P ρ ≤ Dpst P ρ` using `fun s hs => (mem_Dpst P ρ).mpr ⟨Bw.Kw, fun g _ => (mem_Dst P ρ).mp hs g⟩`. Establish `hΦ : onPer (ψSt P (resDeg l w)) ↥LL.1 V = phiV P ↥LL.1 V ^ resDeg l w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `onB P ↥LL.1 V ((phiSt P).toLinearMap ^ resDeg l w) = _`. Rewrite using `[map_pow]`. Both sides reduce to the same expression. Establish `hpow : ∀ (m : ℕ) (x : ↥(Dpst P ρ)), (((phiD P ρ ^ m) x : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = (phiV P ↥LL.1 V ^ m) x`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => intro x`. Both sides reduce to the same expression. Consider the case `succ m ih`. Introduce `x`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ', pow_succ', End.mul_apply, End.mul_apply, coe_phiD, ih]`. Establish `hst : ∀ (m : ℕ), ∀ s ∈ Dst P ρ, (phiV P ↥LL.1 V ^ m) s ∈ Dst P ρ`. Introduce `m s hs'`. Use `(mem_Dst P ρ).mpr fun k => ?_` and prove the remaining obligations. Establish `hc : Commute (phiV P ↥LL.1 V ^ m) (stRep P ρ k)` using `Commute.pow_left (phiV_stRep P ρ k) m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `LinearMap.congr_fun hc.eq s` as an intermediate fact. Rewrite `this` using `[End.mul_apply, End.mul_apply, (mem_Dst P ρ).mp hs' k]`. Conclude with `this.symm`. Establish `hW : ∀ s (hs' : s ∈ Dst P ρ), ((weilD Bw h P ρ g ⟨s, hSD hs'⟩ : ↥(Dpst P ρ)) : V ⊗[ℚ_[l]] Bst P) = onPer (ψSt P (resDeg l w)) ↥LL.1 V s`. Introduce `s hs'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : -alpha l g = ((resDeg l w : ℕ) : ℤ)` using `by rw [alpha, hg]; ring`. Rewrite using `[weilD_apply, e, zpow_natCast, Units.val_pow_eq_pow_val, coe_phiU, End.mul_apply, coe_actD, hpow, hΦ]`. Conclude with `(mem_Dst P ρ).mp (hst _ s hs') _`. Establish `hΦS : ∀ s ∈ Dst P ρ, onPer (ψSt P (resDeg l w)) ↥LL.1 V s ∈ Dst P ρ`. Introduce `s hs'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ]`. Conclude with `hst _ s hs'`. Establish `hcl` using `mem_closure_mulV_of_finrank_eq l P Bw.Kw LL V ρ hV (Dst P ρ) le_rfl (fun c hc x hx => (mem_Dst P ρ).mpr fun k => by`. Rewrite using `[← Module.End.mul_apply, stRep_mulV P ρ k c c (mem_GK.mp k.2 _ hc), Module.End.mul_apply, (mem_Dst P ρ).mp hx k]) hs`. Conclude with `nil_abs (Dpst P ρ) (Dst P ρ) hSD (weilD Bw h P ρ g) (onPer (ψSt P (resDeg l w)) ↥LL.1 V) hΦS hW Q N (fun s hs' => hN s hs') (mulD P ρ) (mulV P ↥LL.1 V) (fun _ _ => rfl) (weilD_mulD Bw h P ρ hj g) (fun x => hcl x.1 x.2)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.nilWeil_of :
     NilWeil := by

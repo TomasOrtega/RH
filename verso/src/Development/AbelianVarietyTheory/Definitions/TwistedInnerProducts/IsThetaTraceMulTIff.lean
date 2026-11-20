@@ -15,11 +15,9 @@ open GlobalTheory.ThetaTrace GlobalTheory.HeckeFrCompare
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_basicOpen_eq_bot _ (eq_bot_iff.2 fun y hy => ?_)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `Ψ.surjective y`. Establish `hU : Ψ w ∈ U` using `Y.basicOpen_le _ hy`. Establish `hw : w ∈ W.basicOpen ((Ψ.app U).hom (a - b))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.preimage_basicOpen]`. Conclude with `hy`. Rewrite `hw` using `[W.mem_basicOpen _ w hU]`. Establish `e` using `h w hU`. Rewrite `e` using `[gs_eq _ _ _ hU, gs_eq _ _ _ hU, ← sub_eq_zero, ← map_sub, ← map_sub]`.
-
-Conclude with `absurd (e ▸ hw) not_isUnit_zero`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fn_ext_of_surjective {W Y : Scheme.{0}} (Ψ : W ⟶ Y) [Surjective Ψ] [IsReduced Y] {U : Y.Opens}
     {a b : Γ(Y, U)} (h : ∀ w, Ψ w ∈ U → gs Ψ w U a = gs Ψ w U b) : a = b := by
@@ -35,7 +33,7 @@ theorem fn_ext_of_surjective {W Y : Scheme.{0}} (Ψ : W ⟶ Y) [Surjective Ψ] [
   exact absurd (e ▸ hw) not_isUnit_zero
 
 /- English proof (translation)
-Use `sec_ext fun j => fn_ext_of_surjective Ψ fun w hw => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `exists_good L.L L.isLB w (fun _ : Fin 1 => Ψ ≫ (snd T A).left) j (fun a b _ => by rw [Subsingleton.elim a b]) (fun k => Set.mem_iInter.1 hw k)`. Conclude with `(sval_of (L := L.L) (φ := fun _ : Fin 1 => (snd T A).left) u Ψ w J j e).symm.trans ((h w J hJ).trans (sval_of (L := L.L) (φ := fun _ : Fin 1 => (snd T A).left) v Ψ w J j e))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sec_eq_of_surjective {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : RigLB A} {T : Over S} {W : Scheme.{0}}
     (Ψ : W ⟶ (T ⊗ A).left) [Surjective Ψ] [IsReduced (T ⊗ A).left] {k : ℤ} {u v : LB.Sec (LPow A L.L k T)}
@@ -50,11 +48,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hL` using `abelianSchemeLaws_all.1`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `Xo.univ.t.semi.smooth` as an intermediate fact. Establish `: Smooth (fst (Over.mk x) Xo.univ.t.G).left` using `by show Smooth (pullback.fst x Xo.univ.t.G.hom) infer_instance`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsReduced (Over.mk x).left` using `inferInstanceAs (IsReduced (Sp Ω))`. Establish `: IsReduced (Over.mk x ⊗ Xo.univ.t.G).left` using `GlobalTheory.isReduced_of_smooth_of_isReduced (fst (Over.mk x) Xo.univ.t.G).left`. Establish `: Surjective (mulT Xo.univ.t.G (Over.mk x) p).left` using `(GlobalTheory.EmbSpan.pt_pow_and_surjective hL (UnivPol.pol Xo) x p hp).2`. Use `sec_eq_of_surjective (L := Xo.univ.t.PP) (mulT Xo.univ.t.G (Over.mk x) p).left fun w J hJ => ?_` and prove the remaining obligations. Establish `e` using `h.sv_eq_of_mulT hL.globalFns (UnivPol.pol Xo).isAb (𝟙 _) w hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.id_comp]`. Then use the resulting hypothesis. Introduce and unpack `rfl`. Take `⟨s₁, h⟩` from `exists_isMulPull p u`. Conclude with `isThetaTrace_mulT h`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isThetaTrace_mulT_iff {p : ℕ} (hp : 1 ≤ p) {Ω : Type} [Field Ω] (x : Sp Ω ⟶ Xo.X)
     (s u : LB.Sec (PPx x)) :
@@ -83,11 +81,9 @@ def scale {Ω : Type} [Field Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω) (u : LB.Sec
   { y with s := u, gen := hu }
 
 /- English proof (translation)
-Establish `e : hkTr Xo c p Ω y (scale y u hu) ((conj y.x y.x).symm (mulT Xo.univ.t.G (Over.mk y.x) p).left) ↔ u = y.s`. Rewrite using `[← isThetaTrace_mulT_iff hp y.x y.s u]`. Use `show IsThetaTrace _ _ (conj y.x y.x ((conj y.x y.x).symm _)) p y.s u ↔ _`. Rewrite using `[Equiv.apply_symm_apply]`. Establish `h1 : ∀ i, y.s.f i = scal y.x 1 i * y.s.f i` using `fun i => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Formalism.L2.Pj.scal, liftFun]`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `(y.gen y.s).unique ha h1`.
-
-Introduce and unpack `rfl`. Conclude with `sec_ext fun i => (ha i).trans (h1 i).symm`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hkTr_scale_iff {p : ℕ} (hp : 1 ≤ p) {Ω : Type} [Field Ω] [IsAlgClosed Ω] [Algebra c.F Ω] (y : FrPt Xo c Ω)
     (u : LB.Sec (PPx y.x)) (hu : ∀ s' : LB.Sec (PPx y.x), ∃! a : Ω, ∀ i, s'.f i = scal y.x a i * u.f i)

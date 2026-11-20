@@ -11,9 +11,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `only [hermC, gram, col, Matrix.of_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Establish `h : ∀ (f : Fin r → Fin r → Fin r → Fin r → ℂ), ∑ k, ∑ l, ∑ j, ∑ i, f k l i j = ∑ i, ∑ j, ∑ k, ∑ l, f k l i j`. Introduce `f`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h (fun k l i j => M k i * a i * τ (G k l) * (conj (M l j) * conj (b j)))]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermC_mulVec {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     (M : Matrix (Fin r) (Fin r) ℂ) (a b : Fin r → ℂ) :
@@ -38,7 +38,7 @@ theorem hermC_mulVec {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hermC_mulVec, h, ← hermC_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit hN), Matrix.one_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isom_of_gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     {M N : Matrix (Fin r) (Fin r) ℂ} (hN : N.det ≠ 0) (h : gram τ G M = gram τ G N)
@@ -49,7 +49,7 @@ theorem isom_of_gram_eq {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r)
     Matrix.one_mulVec, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `[col, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_mul {r : ℕ} (g M : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
     col (g * M) a = g *ᵥ col M a := by
@@ -58,7 +58,7 @@ theorem col_mul {r : ℕ} (g M : Matrix (Fin r) (Fin r) ℂ) (a : Fin r) :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, Matrix.of_apply, col_mul, hg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_isom {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
     {g : Matrix (Fin r) (Fin r) ℂ} (hg : ∀ u v, hermC τ G (g *ᵥ u) (g *ᵥ v) = hermC τ G u v)
@@ -67,7 +67,7 @@ theorem gram_isom {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E)
   simp only [gram, Matrix.of_apply, col_mul, hg]
 
 /- English proof (translation)
-Simplify using `only [Data.maj, Data.posPart, Data.gramPos, hxy, gram_isom τ.1 X.Gm hg, col_mul, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem maj_isom {r : ℕ} (X : Data E r) (τ : X.Ψ) {x y : Frame X.Ψ r}
     {g : Matrix (Fin r) (Fin r) ℂ}
@@ -83,24 +83,24 @@ theorem mat_cpt {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (z : V (nd X)) (τ :
     mat (cpt X x z) τ = mat x τ * mat (nmat X z) τ := rfl
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b => (IW.cpt_entry_cd X x τ a b).continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cpt {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) : Continuous (cpt X x) :=
   continuous_pi fun τ => continuous_pi fun a => continuous_pi fun b =>
     (IW.cpt_entry_cd X x τ a b).continuous
 
 /- English proof (translation)
-Introduce `H r X ε hε`. Establish `ho : IsOrth X (x0F X)` using `fun τ => (X.signature τ).choose_spec.2`. Establish `hd : x0F X ∈ X.dom` using `IW.orth_mem_dom X _ ho`. Establish `ht : Filter.Tendsto (cpt X (x0F X)) (𝓝 0) (𝓝 (x0F X))`. Use `(continuous_cpt X (x0F X)).tendsto 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[IW.cpt_zero]`. Then use the resulting hypothesis. Take `⟨δ, hδ, hb⟩` from `Metric.eventually_nhds_iff.1 (ht.eventually (H r X _ hd ε hε))`. Use `⟨min δ 1, lt_min hδ one_pos, min_le_right _ _, fun x hx z hz => ?_⟩` and prove the remaining obligations. Take `⟨hz0, hm⟩` from `hb (y := z) (by rw [dist_zero_right]; exact hz.trans_le (min_le_left _ _))`. Establish `hxd : x ∈ X.dom` using `IW.orth_mem_dom X _ hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hiso : ∀ τ : X.Ψ, ∀ u v, hermC τ.1 X.Gm ((mat x τ * (mat (x0F X) τ)⁻¹) *ᵥ u) ((mat x τ * (mat (x0F X) τ)⁻¹) *ᵥ v) = hermC τ.1 X.Gm u v` using `fun τ => isom_of_gram_eq τ.1 X.Gm (hd τ).1 ((hx τ).trans (ho τ).symm)`. Establish `h1 : ∀ τ : X.Ψ, mat x τ = (mat x τ * (mat (x0F X) τ)⁻¹) * mat (x0F X) τ` using `fun τ => by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (Ne.isUnit (hd τ).1), Matrix.mul_one]`. Establish `h2 : ∀ τ : X.Ψ, mat (cpt X x z) τ = (mat x τ * (mat (x0F X) τ)⁻¹) * mat (cpt X (x0F X) z) τ` using `fun τ => by`. Rewrite using `[mat_cpt, mat_cpt, ← Matrix.mul_assoc, ← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : ∀ τ : X.Ψ, (mat x τ * (mat (x0F X) τ)⁻¹).det ≠ 0` using `fun τ h0 => by`. Use `(hxd τ).1` as an intermediate fact. Rewrite `this` using `[h1, Matrix.det_mul, h0, zero_mul]`. Conclude with `this rfl`. Use `⟨fun τ => ⟨?_, fun i => ?_⟩, fun τ v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, Matrix.det_mul]`. Conclude with `mul_ne_zero (hdet τ) (hz0 τ).1`. Use `(hz0 τ).2 i` as an intermediate fact. Simplify using `only [dmin] at this ⊢`. Rewrite using `[h2, gram_isom τ.1 X.Gm (hiso τ)]` and apply the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, rfl⟩ : ∃ w, v = (mat x τ * (mat (x0F X) τ)⁻¹) *ᵥ w` from `⟨(mat x τ * (mat (x0F X) τ)⁻¹)⁻¹ *ᵥ v, by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit (hdet τ)), Matrix.one_mulVec]⟩`. Rewrite using `[maj_isom X τ (hiso τ) (h1 τ), maj_isom X τ (hiso τ) (h2 τ)]`. Conclude with `hm τ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_near_orth :
     (∀ (r : ℕ) (X : Data E r), ∀ x ∈ X.dom, ∀ ε : ℝ, 0 < ε → ∀ᶠ y in 𝓝 x, y ∈ X.dom ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj x τ v ≤ (1 + ε) * X.maj y τ v ∧ X.maj y τ v ≤ (1 + ε) * X.maj x τ v) → (∀ (r : ℕ) (X : Data E r) (ε : ℝ), 0 < ε → ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 ∧ ∀ x, IsOrth X x → ∀ z : V (nd X), ‖z‖ < ρ → cpt X x z ∈ X.dom ∧ ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj x τ v ≤ (1 + ε) * X.maj (cpt X x z) τ v ∧ X.maj (cpt X x z) τ v ≤ (1 + ε) * X.maj x τ v) := by

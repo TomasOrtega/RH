@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.X
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l hl c`. Take `⟨⟨w, hw, -⟩, h⟩` from `omT Ω l c`. Establish `hk` using `(h w hw).2.1`. Establish `hs : Function.Surjective (Chr.cls ℚ Ω l)` using `(Chr.clsOnto Ω l).1`. Set `f : (ZMod l)ˣ →* c.Oˣ` to `(Chr.cls ℚ Ω l).liftOfSurjective hs ⟨w, hk.ge⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : f.comp (Chr.cls ℚ Ω l) = w` using `MonoidHom.ext fun σ => MonoidHom.liftOfRightInverse_comp_apply _ _ (Function.rightInverse_surjInv hs) ⟨w, hk.ge⟩ σ`. Use `⟨MulChar.ofUnitHom f, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← ZMod.card_units l]`. Conclude with `MulChar.pow_card_eq_one _`. Establish `e : Chr.dirG ℚ Ω (MulChar.ofUnitHom f : DirichletCharacter c.O l) = w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hf, Chr.dirG]`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `hw`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.omDir :
     ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime] (c : Coef l), ∃ ω : DirichletCharacter c.O l, ω ^ (l - 1) = 1 ∧ IsOmT c (Chr.dirG ℚ Ω ω) := by

@@ -17,7 +17,7 @@ set_option autoImplicit false
 namespace GlobalTheory.Heat
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, Derivation.leibniz, ih, smul_eq_mul, smul_eq_mul]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,7 +32,7 @@ theorem fractionField_derivation_pow_logDeriv {Ω : Type} [CommRing Ω] [IsDomai
     ring
 
 /- English proof (translation)
-Rewrite using `[Derivation.leibniz, fractionField_derivation_pow_logDeriv D hc, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem fractionField_derivation_pow_mul_logDeriv {Ω : Type} [CommRing Ω] [IsDomain Ω] (D : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) {c : FractionRing Ω} (hc : c ≠ 0) (k : ℕ) (g : FractionRing Ω) :
     D (c ^ k * g) = c ^ k * (D g + (k : FractionRing Ω) * (D c / c) * g) := by
@@ -44,23 +44,23 @@ end GlobalTheory.Heat
 open GlobalTheory.Heat in
 
 /- English proof (translation)
-Introduce `Ω _ _ n d δ Θ hΘ h2 u p p' c hc`. Establish `hs : ∀ (s : Finset (Fin n)) (D : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (x : FractionRing Ω), (∑ i ∈ s, D i) x = ∑ i ∈ s, D i x`. Introduce `s D x`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`. Use `⟨d - ∑ a, ∑ b, (Θ a b * (δ a c / c)) • δ b, u, p + d c / c - (1 / 2) * ∑ a, ∑ b, Θ a b * (δ a c / c) * (δ b c / c), p' - (1 / 2) * ∑ a, ∑ b, Θ a b * δ a (δ b c / c) + ∑ a, u a * (δ a c / c), ?_, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[Derivation.sub_apply, hs, Finset.sum_eq_zero, sub_zero]`. Introduce `a _`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hs]`. Use `Finset.sum_eq_zero fun b _ => ?_` and prove the remaining obligations. Rewrite using `[Derivation.smul_apply, hy, smul_zero]`. Introduce `k f`. Establish `e1 : ∀ b, δ b (c ^ k * f) = c ^ k * (δ b f + (k : FractionRing Ω) * (δ b c / c) * f)` using `fun b => fractionField_derivation_pow_mul_logDeriv (δ b) hc k f`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : ∀ a b, δ a (δ b (c ^ k * f)) = c ^ k * (δ a (δ b f) + (k : FractionRing Ω) * (δ a c / c) * δ b f + (k : FractionRing Ω) * (δ b c / c) * δ a f + (k : FractionRing Ω) * δ a (δ b c / c) * f + (k : FractionRing Ω) ^ 2 * (δ a c / c) * (δ b c / c) * f)`. Introduce `a b`. Rewrite using `[e1, fractionField_derivation_pow_mul_logDeriv (δ a) hc]`. Simplify using `only [map_add, Derivation.leibniz, Derivation.map_natCast, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e3 : d (c ^ k * f) = c ^ k * (d f + (k : FractionRing Ω) * (d c / c) * f)` using `fractionField_derivation_pow_mul_logDeriv d hc k f`. Establish `hsym : ∑ a, ∑ b, Θ a b * ((δ b c / c) * δ a f) = ∑ a, ∑ b, Θ a b * ((δ a c / c) * δ b f)`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congrFun (congrFun hΘ a) b` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.transpose_apply]`. Rewrite using `[this]`. Unfold `ringOp`. Simplify using `only [e2, e3]`. Simplify using `only [e1, Derivation.sub_apply, hs, Derivation.smul_apply, smul_eq_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hL : ∑ a, ∑ b, Θ a b * (c ^ k * (δ a (δ b f) + (k : FractionRing Ω) * (δ a c / c) * δ b f + (k : FractionRing Ω) * (δ b c / c) * δ a f + (k : FractionRing Ω) * δ a (δ b c / c) * f + (k : FractionRing Ω) ^ 2 * (δ a c / c) * (δ b c / c) * f)) = c ^ k * (∑ a, ∑ b, Θ a b * δ a (δ b f …`. Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hU : ∑ a, u a * (c ^ k * (δ a f + (k : FractionRing Ω) * (δ a c / c) * f)) = c ^ k * (∑ a, u a * δ a f + (k : FractionRing Ω) * f * ∑ a, u a * (δ a c / c))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∑ a, ∑ b, Θ a b * (δ a c / c) * δ b f = ∑ a, ∑ b, Θ a b * ((δ a c / c) * δ b f)` using `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => mul_assoc _ _ _`. Establish `hh : (2 : FractionRing Ω) * (1 / 2) = 1` using `mul_one_div_cancel h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hL, hU, hD, hsym]`. Take the linear combination `(c ^ k * f * ((k : FractionRing Ω) ^ 2 * ∑ a, ∑ b, Θ a b * (δ a c / c) * (δ b c / c) + (k : FractionRing Ω) * ∑ a, ∑ b, Θ a b * δ a (δ b c / c))) * hh`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem GlobalTheory.Heat.ringOp_conj_pow : ∀ (Ω : Type) [CommRing Ω] [IsDomain Ω] (n : ℕ) (d : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (δ : Fin n → Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (Θ : Matrix (Fin n) (Fin n) (FractionRing Ω)), Θᵀ = Θ → (2 : FractionRing Ω) ≠ 0 → ∀ (u : Fin n → FractionRing Ω) (p p' c : FractionRing Ω), c ≠ 0 → ∃ (d' : Derivation ℤ (FractionRing Ω) (FractionRing Ω)) (u'' : Fin n → FractionRing Ω) (q q' : FractionRing Ω), (∀ y, (∀ a, δ a y = 0) → d' y = d y) ∧ ∀ (k : ℕ) (f : FractionRing Ω), ringOp ⇑d (fun a => ⇑(δ a)) Θ u p p' k (c ^ k * f) = c ^ k * ringOp ⇑d' (fun a => ⇑(δ a)) Θ u'' q q' k f := by
   intro Ω _ _ n d δ Θ hΘ h2 u p p' c hc

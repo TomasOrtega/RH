@@ -17,21 +17,19 @@ private def UpperTheory.V.AlgebraTools.Det.piRep {n : ℕ} {G X : Type} [Group G
     simp [Matrix.mul_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Introduce `n A G _ _ _ _ _ X K _ _ _ _ f ρ S hf hinj hS hρ hp`. Set `ι : A →+* (∀ x, K x)` to `Pi.ringHom f`. Establish `hιc : Continuous ι` using `continuous_pi fun x => hf x`. Establish `hιi : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Conclude with `hinj a fun x => congrFun ha x`. Set `R` to `UpperTheory.V.AlgebraTools.Det.piRep K ρ`. Establish `hR : Continuous R`. Apply `continuous_matrix` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Apply `continuous_pi` to reduce the goal to its premises. Introduce `x`. Conclude with `((hρ x).matrix_elem i j)`. Take `⟨D, hD, hDc⟩` from `UpperTheory.V.AlgebraTools.Det.glue ι (GDet.ofRep R) S hιc hιi hS (fun i _ => UpperTheory.V.AlgebraTools.Det.repCont R hR i) (by`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg i _`. Take `⟨p, hp⟩` from `hp g hg`. Establish `hchar : (R g).charpoly = p.map ι`. Use extensionality with `k x`. Establish `h1` using `congrArg (fun q : (K x)[X] => q.coeff k) (Matrix.charpoly_map (R g) (Pi.evalRingHom K x))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h2 : (R g).map (Pi.evalRingHom K x) = ρ x g`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite `h1` using `[h2, ← hp x, Polynomial.coeff_map, Polynomial.coeff_map]`. Rewrite using `[Polynomial.coeff_map]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1.symm`. Use `⟨(-1) ^ i * p.coeff (n - i), ?_⟩` and prove the remaining obligations. Use `show ι ((-1) ^ i * p.coeff (n - i)) = (-1) ^ i * ((GDet.ofRep R).chi (MonoidAlgebra.single g 1)).coeff (n - i)`. Rewrite using `[(UpperTheory.V.AlgebraTools.Det.repApi R).2.1, hchar, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one])`. Use `⟨D, ?_, hDc⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Introduce `x`. Establish `hfx : f x = (Pi.evalRingHom K x).comp ι`. Use extensionality with `a`. Both sides reduce to the same expression. Rewrite using `[hfx, ← (UpperTheory.V.AlgebraTools.Det.mapApi D ι).2.2.2.2.2.2.1, hD, (UpperTheory.V.AlgebraTools.Det.repApi R).2.2.2.2.2.1]`.
-
-Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.glueRep :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] [TopologicalSpace A] [CompactSpace A] [TopologicalSpace G] {X : Type} (K : X → Type) [∀ x, CommRing (K x)]

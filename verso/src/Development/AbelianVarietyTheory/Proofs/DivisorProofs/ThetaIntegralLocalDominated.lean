@@ -21,7 +21,7 @@ namespace GlobalTheory.ThetaDom
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-The claim follows from `hT.base herm := hT.geo.hV skew := hT.geo.hW good := hT.geo.hM hX := hT.chars.heckeβ hW := by refine ⟨?_, fun x => ?_⟩ · exact hT.chars.heckeβ.1.div' hT.chars.heckeα.1 · rw [MonoidHom.div_apply, hT.chars.heckeβ.2 x, hT.chars.heckeα.2 x, div_one] resX := hT.chars.resβ weil := hT.we …`.
+A detailed English derivation is pending.
 -/
 theorem pairV {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Y : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hT : IsTriple B G Y om om') :
@@ -49,51 +49,43 @@ open GlobalTheory.ThetaDom in
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G Y om om' hT Φ hΦ h₀`. Establish `hP` using `pairV hT`. Establish `hb` using `GlobalTheory.T.theta_basic_properties hKP.base F E σ B a (a + a') G.V G.W G.M Y.β (Y.β / Y.α) om _ _ _ _ hP`. Establish `hcm` using `hP.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ' : IsHermND σ ((1 : E) • G.V.J.map σ)`. Rewrite using `[one_smul]`. Conclude with `GlobalTheory.UnitaryVol.isHermND_map hσ hP.herm`. Set `e : UA σ G.V.J ≃* GAd σ ((1 : E) • G.V.J.map σ)` to `MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := G.V.J) hσ (one_ne_zero : (1 : E) ≠ 0))`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`. Use `haveI : ContinuousMul (UA σ G.V.J) := ⟨by`. Establish `h3 : (fun p : UA σ G.V.J × UA σ G.V.J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`. Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))⟩`. Use `haveI := hP.good.haar`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ G.V.J`. Use `haveI : MeasurableMul (UA σ G.V.J) := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (G.M.μ.map e).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map G.M.μ e he he'`. Take `⟨r₀, Xf, Yf, hW⟩` from `GlobalTheory.SiegelSet.exists_isWittFrame hcm hJ'`. Take `⟨-, hs₀⟩` from `GlobalTheory.T.witt_rank_le_hermitian_signature F E σ B a G.V (a - G.p) G.p hP.base hP.herm r₀ Xf Yf hW`. Take `⟨K, Ω, c, hK, hΩ, -, hc, -, hcl, hcov, ⟨C₀, hC₀, hconj⟩, hmeas, -, -⟩` from `hKP.siegelSetUnitary F E σ hcm a ((1 : E) • G.V.J.map σ) hJ' r₀ Xf Yf hW`. Take `⟨-, C₁, hC₁⟩` from `hmeas _ hH`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hSm : MeasurableSet (GlobalTheory.SiegelSet.siegelSet σ ((1 : E) • G.V.J.map σ) Xf Yf Ω c K)` using `hcl.measurableSet`. Establish `hS' : MeasurableSet (e ⁻¹' GlobalTheory.SiegelSet.siegelSet σ ((1 : E) • G.V.J.map σ) Xf Yf Ω c K)` using `hSm.preimage he.measurable`. Establish `hScov : ∀ g : UA σ G.V.J, ∃ γ ∈ ratU σ G.V.J, γ * g ∈ e ⁻¹' GlobalTheory.SiegelSet.siegelSet σ ((1 : E) • G.V.J.map σ) Xf Yf Ω c K` using `fun g => by`. Take `⟨γ, hγ, s', hs', hgs⟩` from `hcov (e g)`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : e.symm γ ∈ ratU σ G.V.J` using `Subgroup.mem_subgroupOf.2 ⟨u, hu⟩`. Use `⟨(e.symm γ)⁻¹, inv_mem hr, ?_⟩` and prove the remaining obligations. Use `show e ((e.symm γ)⁻¹ * g) ∈ GlobalTheory.SiegelSet.siegelSet σ ((1 : E) • G.V.J.map σ) Xf Yf Ω c K`. Rewrite using `[map_mul, map_inv, MulEquiv.apply_symm_apply, hgs, inv_mul_cancel_left]`. Conclude with `hs'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : ∫⁻ t in GlobalTheory.SiegelSet.cone r₀ c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ F * (a + a'))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus F a t * ∏ i, t i)⁻¹) < ⊤`. Establish `h1` using `hT.geo.eBig`. Conclude with `GlobalTheory.SiegelSet.lintegral_cone_modulus_lt_top F a r₀ (a + a') hc (by omega)`. Use `set I := ∫⁻ t in GlobalTheory.SiegelSet.cone r₀ c, ENNReal.ofReal (∏ i, t i ^ (Module.finrank ℚ F * (a + a'))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus F a t * ∏ i, t i)⁻¹) with hIdef`. Establish `pres : ∀ x, ∀ Φ ∈ schA F (Fin a × Fin (a + a')), om x Φ ∈ schA F (Fin a × Fin (a + a'))` using `fun x Φ hΦ => (IsUWeilPair.isUSplitting hP.weil).pres x Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `thAdd : ∀ Φ ∈ schA F (Fin a × Fin (a + a')), ∀ Ψ ∈ schA F (Fin a × Fin (a + a')), ∀ g h, theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h` using `fun Φ hΦ Ψ hΨ g h => by`. Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (pres _ Φ hΦ) (pres _ Ψ hΨ)`. Establish `thSmul : ∀ (z : ℂ) Φ g h, theta om (z • Φ) g h = z * theta om Φ g h` using `fun z Φ g h => by`. Simplify using `only [theta, map_smul]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `thetaSum_smul F z _`. Establish `hPr : ∀ t ∈ GlobalTheory.SiegelSet.cone r₀ c, 0 ≤ ∏ i, t i ^ (Module.finrank ℚ F * (a + a'))` using `fun t ht => Finset.prod_nonneg fun i _ => pow_nonneg (ht.1 i).le _`. Establish `boundA : ∀ Φ ∈ schA F (Fin a × Fin (a + a')), ∃ (N : ℕ) (C : ℝ), ∀ h, ∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r₀ c, ∀ a₀, GlobalTheory.SiegelSet.IsTorusElt σ ((1 : E) • G.V.J.map σ) Xf Yf t a₀ → ∀ k ∈ K, ‖theta om Φ (e.symm (p * a₀ * k)) h‖ ≤ C * (ht h : ℝ) ^ N * ∏ i, t i ^ (M …`. Introduce `Φ hΦ`. Proceed by induction on `hΦ using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Take `⟨N, C, T, hT⟩` from `GlobalTheory.T.siegel_set_witt_frame_domain F E σ B a (a + a') G.V G.W G.M Y.β (Y.β / Y.α) om _ _ _ _ hP r₀ Xf Yf hW Ω C₀ K c hΩ hC₀ hK hc hconj g hg`. Conclude with `⟨N, C * (T.sup (schwartzSeminormFamily ℂ _ ℂ)) f, fun h p hp t htc a₀ ha k hk => hT f h _ p hp t htc a₀ ha k hk rfl⟩`. Consider the case `zero => exact ⟨0, 0, fun h p _ t _ a₀ _ k _ => by simp [theta, thetaSum]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `add x y hx hy ihx ihy`. Take `⟨N₁, C₁', h₁⟩` from `ihx`. Take `⟨N₂, C₂', h₂⟩` from `ihy`. Use `⟨max N₁ N₂, max C₁' 0 + max C₂' 0, fun h p hp t htc a₀ ha k hk => ?_⟩` and prove the remaining obligations. Establish `e1 : (1 : ℝ) ≤ ht h` using `GlobalTheory.ThKWeil.one_le_ht h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a1 : (ht h : ℝ) ^ N₁ ≤ (ht h : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ e1 (le_max_left _ _)`. Establish `a2 : (ht h : ℝ) ^ N₂ ≤ (ht h : ℝ) ^ max N₁ N₂` using `pow_le_pow_right₀ e1 (le_max_right _ _)`. Establish `b1` using `GlobalTheory.ThKWeil.mul_le_max_mul (C := C₁') (by positivity) a1 (hPr t htc)`. Establish `b2` using `GlobalTheory.ThKWeil.mul_le_max_mul (C := C₂') (by positivity) a2 (hPr t htc)`. Rewrite using `[thAdd x hx y hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Consider the case `smul z x hx ih`. Take `⟨N, C, h₁⟩` from `ih`. Use `⟨N, ‖z‖ * C, fun h p hp t htc a₀ ha k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[thSmul, norm_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨N, C, hC⟩` from `boundA Φ hΦ`. Use `set H : ℝ := (ht h₀ : ℝ) + 1 with hHdef`. Establish `hcht : Continuous fun h : UA σ G.W.J => (ht h : ℝ)` using `NNReal.continuous_coe.comp ((GlobalTheory.Grow.continuous_heightGL F).comp continuous_subtype_val)`. Use `set U : Set (UA σ G.W.J) := {h | (ht h : ℝ) < H} with hUdef`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : U ∈ 𝓝 h₀` using `(isOpen_lt hcht continuous_const).mem_nhds (by simp [hUdef, hHdef])`. Use `set bE : UA σ G.V.J → ℝ≥0∞ := fun g => ⨆ h ∈ U, ‖theta om Φ g h‖ₑ with hbEdef`. Establish `contθ : ∀ h, Continuous fun g => theta om Φ g h` using `fun h => (hb.1 Φ hΦ).1.comp (continuous_id.prodMk continuous_const)`. Establish `hbm : Measurable bE`. Use `LowerSemicontinuous.measurable ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lowerSemicontinuous_iSup fun h => lowerSemicontinuous_iSup fun _ => (contθ h).enorm.lowerSemicontinuous`. Establish `hbi : ∀ γ ∈ ratU σ G.V.J, ∀ g, bE (γ * g) = bE g` using `fun γ hγ g => by`. Simplify using `only [hbEdef]`. Use `iSup_congr fun h => iSup_congr fun _ => ?_` and prove the remaining obligations. Use `(hb.1 Φ hΦ).2.1 γ hγ 1 (one_mem _) g h` as an intermediate fact.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[one_mul]`. Rewrite using `[this]`. Establish `hA : 0 ≤ max C 0 * H ^ N`. Establish `: (0 : ℝ) ≤ H` using `by positivity`. Check the signs of the components of the expression.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hbS : ∀ p ∈ Ω, ∀ t ∈ GlobalTheory.SiegelSet.cone r₀ c, ∀ a₀, GlobalTheory.SiegelSet.IsTorusElt σ ((1 : E) • G.V.J.map σ) Xf Yf t a₀ → ∀ k ∈ K, bE (e.symm (p * a₀ * k)) ≤ ENNReal.ofReal (max C 0 * H ^ N * ∏ i, t i ^ (Module.finrank ℚ F * (a + a')))`. Introduce `p hp t htc a₀ ha k hk`. Use `iSup₂_le fun h hh => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm]`. Use `ENNReal.ofReal_le_ofReal ((hC h p hp t htc a₀ ha k hk).trans ?_)` and prove the remaining obligations.
-
-Establish `h0 : (0 : ℝ) ≤ (ht h : ℝ) ^ N` using `by positivity`. Establish `h1 : (ht h : ℝ) ^ N ≤ H ^ N` using `pow_le_pow_left₀ (by positivity) (le_of_lt hh) N`. Conclude with `GlobalTheory.ThKWeil.mul_le_max_mul h0 h1 (hPr t htc)`. Establish `hle : ∫⁻ g in G.M.dom, bE g ∂G.M.μ ≤ C₁ * (ENNReal.ofReal (max C 0 * H ^ N) * I)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[setLIntegral_map (f := fun x => bE (e.symm x)) hSm (hbm.comp he'.measurable) he.measurable]`. Simplify using `only [MulEquiv.symm_apply_apply]`. Use `_ ≤ C₁ * ∫⁻ t in GlobalTheory.SiegelSet.cone r₀ c, ENNReal.ofReal (max C 0 * H ^ N * ∏ i, t i ^ (Module.finrank ℚ F * (a + a'))) * ENNReal.ofReal ((GlobalTheory.SiegelSet.modulus F a t * ∏ i, t i)⁻¹) := hC₁ (fun x => bE (e.symm x)) _ (by fun_prop) fun q hq t ht a₀ ha k hk => hbS …`. Use `_ = C₁ * (ENNReal.ofReal (max C 0 * H ^ N) * I) := by`. Rewrite using `[hIdef, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`.
-
-Use `congr 1`. Conclude with `lintegral_congr fun t => by rw [ENNReal.ofReal_mul hA, mul_assoc]`. Establish `hfin : ∫⁻ g in G.M.dom, bE g ∂G.M.μ < ⊤` using `hle.trans_lt (ENNReal.mul_lt_top ENNReal.coe_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI))`. Use `⟨U, hU, fun g => (bE g).toReal, ⟨hbm.ennreal_toReal.aestronglyMeasurable, ?_⟩, fun h hh => ?_⟩` and prove the remaining obligations. Use `lt_of_le_of_lt (lintegral_mono fun g => ?_) hfin` and prove the remaining obligations.
-
-Rewrite using `[Real.enorm_eq_ofReal ENNReal.toReal_nonneg]`. Conclude with `ENNReal.ofReal_toReal_le`. Use `filter_upwards [ae_lt_top hbm hfin.ne] with g hg`. Establish `h1 : ‖theta om Φ g h‖ₑ ≤ bE g` using `le_iSup₂ (f := fun h _ => ‖theta om Φ g h‖ₑ) h hh`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaDom.theta_dominated : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

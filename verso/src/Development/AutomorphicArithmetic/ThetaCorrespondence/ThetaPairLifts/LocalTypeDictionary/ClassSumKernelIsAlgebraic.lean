@@ -17,17 +17,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 namespace GlobalTheory.BotAlgI
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX dg`. Take `⟨Ω, hΩ, hjet⟩` from `_root_.GlobalTheory.T.bottom_translate_jets_algebraic hP hI hL hX dg`. Use `⟨Ω, hΩ, fun t x hx h hh k hk => ?_⟩` and prove the remaining obligations. Take `⟨n, c, w, hc, hw, hf⟩` from `_root_.GlobalTheory.T.bottom_fourier_coeff_heisenberg_expansion hP hI hL hX t`. Use `choose n' c' w' hc' hw' hm using fun p => _root_.GlobalTheory.T.twisted_moved_translate_algebraic hP hI hL hX t x hx h hh (w p) (hw p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hψ` using `hX.is.isVac.1`. Establish `hθ : IsInfFam W.θ` using `hX.is.isVac.2.inf`. Establish `hv : IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW X.vac` using `hX.is.isVac.2.theta`. Use `set φ : PolF D WW.rank A.rank := MvPolynomial.monomial k 1 with hφ`. Use `set pt : (WO (GlobalTheory.Grid.neg A) WW → ℂ) → (WO (GlobalTheory.Grid.neg A) WW → ℂ) := fun f => pureTensorO W.ψ W.θ (GlobalTheory.Grid.neg A) WW (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B f φ with hpt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `comb : ∀ (n : ℕ) (a : Fin n → ℂ) (y : Fin n → WO (GlobalTheory.Grid.neg A) WW), (∀ p, (y p).map (infPart D) = 0) → pt (∑ p, a p • heisO W.ψ (GlobalTheory.Grid.neg A) WW (y p) X.vac) = ∑ p, a p • pt (heisO W.ψ (GlobalTheory.Grid.neg A) WW (y p) X.vac)` using `fun n a y hy => by`. Establish `h1` using `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ (GlobalTheory.Grid.neg A) WW hψ hθ (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac hv n a y hy φ).1`. Establish `h2 : ∀ p, heisO W.ψ (GlobalTheory.Grid.neg A) WW (y p) (pt X.vac) = pt (heisO W.ψ (GlobalTheory.Grid.neg A) WW (y p) X.vac)` using `fun p => by`. Use `(GlobalTheory.FockFiniteHeis.heis_comb_pureTensorO D W.ψ W.θ (GlobalTheory.Grid.neg A) WW hψ hθ (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B X.vac hv 1 (fun _ => 1) (fun _ => y p) (fun _ => hy p) φ).1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [← h2]`. Conclude with `h1.symm`. Establish `e1 : ∀ g, ((X.ω t).toSgn true) ((GlobalTheory.Grid.ofSgn true A).symm x, h) g = X.ω t (x, h) g` using `fun g => rfl`. Establish `move : ∀ g, IsThetaFunO W.ψ (GlobalTheory.Grid.neg A) WW g → X.ω t (x, h) (pt g) = pt (X.ω t (x, h) g)` using `fun g hg => by`. Rewrite using `[← e1, ← e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.OrientedHeis.om_fin_pureTensorO _ _ _ _ _ _ (hX.is.weil t) W.θ hθ ((GlobalTheory.Grid.ofSgn true A).symm x) hx h hh (fun τ => -X.rA.s τ) X.rW.s X.rA.B X.rW.B g φ hg`. Establish `hval : X.ker W.ψ W.θ t φ h x / Ω = ∑ p, c p * ∑ q, c' p q * (pt (heisO W.ψ (GlobalTheory.Grid.neg A) WW (w' p q) X.vac) 0 / Ω)`. Establish `e2 : X.ker W.ψ W.θ t φ h x = X.ω t (x, h) (pt (X.f t)) 0` using `rfl`. Establish `e3 : ∀ p, X.ω t (x, h) (pt (heisO W.ψ (GlobalTheory.Grid.neg A) WW (w p) X.vac)) = ∑ q, c' p q • pt (heisO W.ψ (GlobalTheory.Grid.neg A) WW (w' p q) X.vac)` using `fun p => by`. Rewrite using `[move _ (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hv _), hm p, comb _ _ _ (hw' p)]`.
-
-Rewrite using `[e2, hf, comb _ _ _ hw, map_sum]`. Simplify using `only [map_smul, e3, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_div, Finset.mul_sum, mul_div_assoc]`. Rewrite using `[hval, ← mem_algebraicClosure_iff]`. Use `sum_mem fun p _ => mul_mem (mem_algebraicClosure_iff.2 (hc p)) (sum_mem fun q _ => mul_mem (mem_algebraicClosure_iff.2 (hc' p q)) (mem_algebraicClosure_iff.2 (hjet _ (hw' p q) k hk)))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem classSum_kernel_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -74,15 +72,15 @@ theorem classSum_kernel_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : Le
   refine sum_mem fun p _ => mul_mem (mem_algebraicClosure_iff.2 (hc p)) (sum_mem fun q _ => mul_mem
     (mem_algebraicClosure_iff.2 (hc' p q)) (mem_algebraicClosure_iff.2 (hjet _ (hw' p q) k hk)))
 /- English proof (translation)
-Introduce `D T _ L μ₀ sc G W i j A A' WW X hP hI hL hX`. Take `⟨v, N, z, w, κ, hv, hz, hw, hκ1, hκ2, hcls⟩` from `_root_.GlobalTheory.T.bottom_class_sum_integral_neg hP hI hL hX`. Take `⟨dg, hproj⟩` from `_root_.GlobalTheory.T.twisted_real_average_kernel_isAlgebraic hP hI hL hX`. Take `⟨Ω, hΩ, hdict⟩` from `_root_.GlobalTheory.BotAlgI.classSum_kernel_isAlgebraic hP hI hL hX dg`. Establish `hv' : (v : ℂ) ≠ 0` using `by exact_mod_cast hv.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨(v : ℂ) * Ω, mul_ne_zero hv' hΩ, fun t h hh k => ?_⟩` and prove the remaining obligations. Use `choose m r U hr hU heq using fun l => hproj κ hκ1 hκ2 t (z l) (hz l) h hh k`. Establish `hval : X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h / ((v : ℂ) * Ω) = ∑ l, ((w l : ℂ))⁻¹ * ∑ p, r l p * (X.ker W.ψ W.θ t (MvPolynomial.monomial (U l p) 1) h (z l) / Ω)`. Rewrite using `[hcls t _ h hh]`. Simplify using `only [heq, Finset.mul_sum, Finset.sum_div]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `p _`. Clear the denominators using the available nonvanishing facts.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hval, ← mem_algebraicClosure_iff]`. Use `sum_mem fun l _ => mul_mem (inv_mem ?_) (sum_mem fun p _ => mul_mem ?_ ?_)` and prove the remaining obligations. Rewrite using `[mem_algebraicClosure_iff]`. Simplify using `using (isAlgebraic_algebraMap (R := ℚ) (A := ℂ) ((w l : ℚ)))`. Rewrite using `[mem_algebraicClosure_iff]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr l p`. Rewrite using `[mem_algebraicClosure_iff]`. Conclude with `hdict t (z l) (hz l) h hh (U l p) (hU l p)`.
+A detailed English derivation is pending.
 -/
 theorem classSums_isAlgebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
@@ -122,7 +120,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.RowEx MeasureTheory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotAlgI.classSums_isAlgebraic | exact _root_.GlobalTheory.BotAlgI.classSums_isAlgebraic | (intros; apply _root_.GlobalTheory.BotAlgI.classSums_isAlgebraic <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_classSums_algebraic : ∀ {D : D7} {T : Type} [Finite T] {L : LevCh D T} {μ₀ : T} {sc : Consts} {G : GridData L sc} {W : G.Weil}
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →

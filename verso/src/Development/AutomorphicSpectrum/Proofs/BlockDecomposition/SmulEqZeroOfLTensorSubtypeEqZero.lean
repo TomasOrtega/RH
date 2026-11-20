@@ -6,23 +6,21 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.Dblock
 
 /- English proof (translation)
-Introduce `R _ _ _ r N _ _ K _ _ I hI w hw k`. Set `I' : Submodule R K` to `{ carrier := {x | ∃ a : R, a ≠ 0 ∧ a • x ∈ I} zero_mem' := ⟨1, one_ne_zero, by simp⟩ add_mem' := by`. Introduce and unpack `x y ⟨a, ha, hax⟩ ⟨b, hb, hby⟩`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `I.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `I.smul_mem _ hax`. Rewrite using `[mul_smul]`. Conclude with `I.smul_mem _ hby`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨a, ha, hax⟩`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm]`. Conclude with `I.smul_mem _ hax }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : I ≤ I'` using `fun x hx => ⟨1, one_ne_zero, by simpa using hx⟩`. Establish `hflat : Module.Flat R (K ⧸ I')`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce `y hy`. Take `⟨x, rfl⟩` from `I'.mkQ_surjective y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩` from `(Submodule.mem_torsion_iff _).1 hy`. Establish `hax : (a : R) • x ∈ I'`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Simplify `ha` using `[Submonoid.smul_def]`. Take `⟨b, hb, hbx⟩` from `hax`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hx : x ∈ I'` using `⟨b * a, mul_ne_zero hb (nonZeroDivisors.ne_zero a.2), by`. Rewrite using `[mul_smul]`. Conclude with `hbx⟩`. Simplify using `using (Submodule.Quotient.mk_eq_zero I').2 hx`. Establish `hinj : Function.Injective (I'.subtype.lTensor N)` using `LinearMap.lTensor_injective_of_exact_of_flat I'.mkQ I'.mkQ_surjective I'.subtype I'.injective_subtype (LinearMap.exact_subtype_mkQ I') N`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `ι : I →ₗ[R] I'` to `Submodule.inclusion hle`. Set `φ : I' →ₗ[R] I` to `LinearMap.codRestrict I (r k • I'.subtype) (fun x => by`. Take `⟨a, ha, hax⟩` from `x.2`. Conclude with `hI a x ha hax k)`. Establish `h1 : ι.lTensor N w = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, ← LinearMap.comp_apply, ← LinearMap.lTensor_comp]`. Conclude with `hw`. Establish `hcomp : φ ∘ₗ ι = r k • LinearMap.id`. Use extensionality with `x`.
-
-Both sides reduce to the same expression. Establish `h2 : φ.lTensor N (ι.lTensor N w) = r k • w`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, hcomp, LinearMap.lTensor_smul, LinearMap.lTensor_id]`. Both sides reduce to the same expression. Rewrite using `[← h2, h1, map_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_lTensor_subtype_eq_zero :
     ∀ (R : Type) [CommRing R] [IsDomain R] [ValuationRing R] (r : ℕ → R) (N : Type)

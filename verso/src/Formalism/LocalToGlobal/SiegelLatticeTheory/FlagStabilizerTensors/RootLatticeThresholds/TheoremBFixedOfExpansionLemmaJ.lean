@@ -35,9 +35,9 @@ def JFactPK : Prop :=
     ∃ K : ℝ, 0 < K ∧ WinK large₂ C1 K ∧ J2of Y u u' ν (toPts w) * K = localAmplitudeProduct u u' hB w
 
 /- English proof (translation)
-Introduce `w hb hJ`. Take `⟨w', hw', g, hg⟩` from `isPtRep_of_J2of hJ`. Establish `hw'w : w' = w` using `toPts_injective hw'`. Substitute `hw'w` using the available equality. Rewrite using `[Formalism.L2.SG.Pf.OOCore.joint_amplitude_eq_normSq Y u u' ν w' ⟨g, hg⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h w' hb ⟨g, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem jFactPK_of_core (h : OOCorePK Y u u' ν C hB large₂ C1) : JFactPK Y u u' ν C hB large₂ C1 := by
   intro w hb hJ
@@ -48,7 +48,7 @@ theorem jFactPK_of_core (h : OOCorePK Y u u' ν C hB large₂ C1) : JFactPK Y u 
   exact h w' hb ⟨g, hg⟩
 
 /- English proof (translation)
-Introduce `w hb hJ`. Take `⟨K, hK, -, e⟩` from `h w hb hJ`. Rewrite using `[← e]`. Conclude with `mul_pos hJ hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localAmplitudesPositive_of_kernel (h : JFactPK Y u u' ν C hB large₂ C1) : LocalAmplitudesPositive Y u u' ν C hB := by
   intro w hb hJ
@@ -57,9 +57,9 @@ theorem localAmplitudesPositive_of_kernel (h : JFactPK Y u u' ν C hB large₂ C
   exact mul_pos hJ hK
 
 /- English proof (translation)
-Introduce `w hb hJ`. Take `⟨K, hK, hW, e⟩` from `h w hb hJ`. Establish `hP : 0 < localAmplitudeProduct u u' hB w` using `by rw [← e]; exact mul_pos hJ hK`. Establish `e2 : thetaP u u' hB (J2of Y u u' ν (toPts w)) w = K ^ ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau))`. Unfold `thetaP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[if_pos ⟨hJ, hP⟩, ← e, mul_div_cancel_left₀ _ hJ.ne']`. Rewrite using `[e2]`. Conclude with `hW`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaWinP_of_K (h : JFactPK Y u u' ν C hB large₂ C1) : ThetaWinP Y u u' ν C hB large₂ C1 := by
   intro w hb hJ
@@ -80,7 +80,7 @@ def LocNormPK (νl : Point D.host.E (D.R.rS + 1) → ∀ v : InfinitePlace X.B.I
         Jv (νl w v) (X.Wloc u v) (X.Wloc u' v) ((gamW X u u' w) v))) * K = localAmplitudeProduct u u' hB w
 
 /- English proof (translation)
-Introduce `w hb hw`. Rewrite using `[Formalism.L2.SG.Pf.OOCoreHilbertSchmidt.hsNormSq_OOP_quot u u' ν νl hQ w hw (Formalism.L2.SG.Pf.OOCoreHilbertSchmidt.gxPos_holds u u' w hb hw)]`. Conclude with `hN w hb hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ooCorePK_of (νl : Point D.host.E (D.R.rS + 1) → ∀ v : InfinitePlace X.B.I.F, Measure (Formalism.REAL.UJ (X.B.I.ε v)))
     (hQ : Formalism.L2.SG.Pf.Carrier.JointPf.OOQuot X u u' ν νl) (hN : LocNormPK Y u u' C hB large₂ C1 νl) :
@@ -102,7 +102,7 @@ def LocalAmplitudeBounds {D : D7} (large₂ : SizeData₂ D) {X : HidaSetting D}
       ∏ τ, MMv D u u' (AX hB u u' τ) (sec τ) ≤ ENNReal.ofReal (large₂.sc.b ^ (Cn * (D.R.m : ℝ) ^ 2 * D.R.f) * Ire)
 
 /- English proof (translation)
-Take `⟨hIre, θ, C, hB, h0, hw, hl, ⟨νl, hQ, hN⟩, hM⟩` from `h`. Establish `hJ` using `jFactPK_of_core Y u u' ν C hB large₂ C1 (ooCorePK_of Y u u' ν C hB large₂ C1 νl hQ hN)`. Conclude with `⟨hIre, θ, C, hB, h0, hw, hl, localAmplitudesPositive_of_kernel Y u u' ν C hB large₂ C1 hJ, thetaWinP_of_K Y u u' ν C hB large₂ C1 hJ, hM⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem remainingFactsSecond_of_local {D : D7} {large₂ : SizeData₂ D} {X : HidaSetting D} {Y : Full X} {u u' : D.what₂.Word}
     {ν : X.B.I.Ginf → Measure X.B.I.Ginf} {C1 Cn Ire : ℝ} (h : LocalAmplitudeBounds large₂ Y u u' ν C1 Cn Ire) :
@@ -125,7 +125,7 @@ def LocalAmplitudeBoundsUniform : Prop :=
       ∀ ν, Pinned X u u' ν → LocalAmplitudeBounds large₂ Y u u' ν C1 Cn Ire
 
 /- English proof (translation)
-Use `theoremB_fixed_of_expansion_measure hE hA fun Cg cb Cw cT CT C0 => ?_` and prove the remaining obligations. Take `⟨C1, Cn, a, b, h2⟩` from `hR Cg cb Cw cT CT C0`. Conclude with `⟨C1, Cn, a, b, fun C' Cl h1 h3 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp => remainingFactsSecond_of_local (h2 C' Cl h1 h3 D large₂ X Y u u' hc hb X0 ψ hT sd C Th F0 what₂ vR Q i0 i0' νq Irat Ire hO ν hp)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem theoremB_fixed_of_expansion_lemmaJ (hE : Formalism.MainNotions.RotatedPoints.WeightedExpansionRotated) (hA : AmpUnif) (hR : LocalAmplitudeBoundsUniform) :
     StepThmBPinnedC := by

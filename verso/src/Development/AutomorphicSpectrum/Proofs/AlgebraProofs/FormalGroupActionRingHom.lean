@@ -6,7 +6,7 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ GlobalTheor
 namespace GlobalTheory.CompanionTheory.Ar.Conj
 
 /- English proof (translation)
-Introduce `R _ d O _ _ B`. Take `⟨ρ, h⟩` from `GlobalTheory.ChF.linPart_act_ringHom R d B.G O B.A R (RingHom.id R)`. Use `⟨ρ, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[(h a).2]`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
 Both sides reduce to the same expression.
 -/

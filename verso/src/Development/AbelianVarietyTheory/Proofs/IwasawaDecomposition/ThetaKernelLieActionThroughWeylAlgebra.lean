@@ -27,9 +27,9 @@ theorem blk_apply (b : O → Matrix (Fin m) (Fin m) ℂ) (a : O → Matrix (Fin 
     blk b a k l = if k.2 = l.2 then b k.2 k.1.1 l.1.1 * a k.2 l.1.2 k.1.2 else 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single τ _ (by simp)]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[blk_apply, ite_smul]`. Introduce `τ' _ hτ`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases h τ' hτ with e | e <;> simp [blk_apply, e]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sum_blk {A : Type} [AddCommGroup A] [Module ℂ A] (b : O → Matrix (Fin m) (Fin m) ℂ)
     (a : O → Matrix (Fin n) (Fin n) ℂ) (τ : O) (h : ∀ τ', τ' ≠ τ → b τ' = 0 ∨ a τ' = 0)
@@ -47,7 +47,7 @@ theorem sum_blk {A : Type} [AddCommGroup A] [Module ℂ A] (b : O → Matrix (Fi
     rcases h τ' hτ with e | e <;> simp [blk_apply, e]
 
 /- English proof (translation)
-Rewrite using `[sum_blk _ _ τ fun τ' h => Or.inl (Pi.single_eq_of_ne h _)]`. Simplify using `only [Fintype.sum_prod_type, Pi.single_eq_same, Matrix.one_apply, mul_ite, mul_one, mul_zero, ite_smul, zero_smul, Finset.sum_ite_eq', Finset.mem_univ, if_true, Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_comm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_left {A : Type} [AddCommGroup A] [Module ℂ A] (X : Matrix (Fin m) (Fin m) ℂ) (τ : O)
     (y : (Fin m × Fin n) × O → (Fin m × Fin n) × O → A) :
@@ -59,9 +59,9 @@ theorem sum_left {A : Type} [AddCommGroup A] [Module ℂ A] (X : Matrix (Fin m) 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[sum_blk _ _ τ fun τ' h => Or.inr (Pi.single_eq_of_ne h _)]`. Establish `e : ∀ (i : Fin m) (b : Fin n), ∑ q : Fin m × Fin n, ((1 : Matrix (Fin m) (Fin m) ℂ) i q.1 * (-Y) q.2 b) • y ((i, b), τ) (q, τ) = ∑ a, -(Y a b • y ((i, b), τ) ((i, a), τ))`. Introduce `i b`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Simplify using `[Matrix.one_apply, ite_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_same]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [e, smul_neg, Finset.smul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `(Finset.sum_congr rfl fun b _ => Finset.sum_comm).trans Finset.sum_comm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_right {A : Type} [AddCommGroup A] [Module ℂ A] (Y : Matrix (Fin n) (Fin n) ℂ) (τ : O)
     (y : (Fin m × Fin n) × O → (Fin m × Fin n) × O → A) :
@@ -84,9 +84,9 @@ end Mat
 variable {D : D7} {θ : InfF D}
 
 /- English proof (translation)
-Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality. Establish `e : ∀ t : ℝ, compAt θ τ' (Formalism.L2.Theta.mt V (oneP θ V τ' X t)) = NormedSpace.exp (t • X)` using `fun t => (isAtTau_oneP hθ hX t).2.1`. Apply the tactic sequence `have := hasDerivAt_exp_entry X 0 i j`. Rewrite `this` using `[zero_smul, NormedSpace.exp_zero, Matrix.one_mul]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify `this` using `only [e, Pi.single_eq_same]`. Establish `e : ∀ t : ℝ, compAt θ τ' (Formalism.L2.Theta.mt V (oneP θ V τ X t)) = 1` using `fun t => (isAtTau_oneP hθ hX t).2.2 τ' h`. Simplify using `only [e, Pi.single_eq_of_ne h]`. Conclude with `hasDerivAt_const _ _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_comp (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (τ' : D.what₂.Tau) (i j : Fin V.rank) :
@@ -105,9 +105,9 @@ theorem hasDerivAt_comp (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {X 
     exact hasDerivAt_const _ _
 
 /- English proof (translation)
-Establish `: oneP θ V τ (-X) t = oneP θ V τ X (-t)`. Unfold `oneP`. Rewrite using `[smul_neg, neg_smul]`. Rewrite using `[this]`. Use `inv_eq_of_mul_eq_one_right ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← oneP_add hθ hX, add_neg_cancel, oneP_zero hθ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem oneP_inv (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) (t : ℝ) : (oneP θ V τ X t)⁻¹ = oneP θ V τ (-X) t := by
@@ -119,7 +119,7 @@ theorem oneP_inv (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau} {X : Matri
   rw [← oneP_add hθ hX, add_neg_cancel, oneP_zero hθ]
 
 /- English proof (translation)
-Establish `h : Xᴴ * gramAt D V τ + gramAt D V τ * X = 0` using `hX`. Use `show (-X)ᴴ * gramAt D V τ + gramAt D V τ * (-X) = 0`. Rewrite using `[conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem neg_mem_lieAt {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) (Fin V.rank) ℂ}
     (hX : X ∈ lieAt V τ) : -X ∈ lieAt V τ := by
@@ -128,21 +128,17 @@ theorem neg_mem_lieAt {V : HSp D} {τ : D.what₂.Tau} {X : Matrix (Fin V.rank) 
   rw [conjTranspose_neg, Matrix.neg_mul, Matrix.mul_neg, ← neg_add, h, neg_zero]
 
 /- English proof (translation)
-Introduce `D ψ hψ S T om hw hc θ hθ`. Take `⟨σ, h⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨x, d, ⟨c1, c2, c3⟩, hn⟩` from `GlobalTheory.T.exists_ccr_operators_thetaFunctions D θ σ h ψ hψ S T`. Establish `key : ∀ γ : ℝ → GA D S × GA D T, Continuous γ → (∀ s t, γ (s + t) = γ s * γ t) → (∀ t, (γ t).1 ∈ GinfC S ∧ (γ t).2 ∈ GinfC T) → ∀ X : Matrix (Ix S T) (Ix S T) ℂ, (∀ k l, HasDerivAt (fun t => mM θ S T (γ t) k l) (X k l) 0) → ∃ lam : ℂ, ∀ (f : thetaSub ψ S T) p, HasDerivAt (fun t = …`. Introduce `γ h1 h2 h3 X h4`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨lam, hl⟩` from `GlobalTheory.T.hasDerivAt_weilRep_realOneParam_adelicPoint D θ σ h ψ hψ S T om hw hc γ h1 h2 h3 X h4`. Use `⟨lam, fun f p => ?_⟩` and prove the remaining obligations. Establish `e` using `coe_toB hψ f.1 f.2`. Establish `h5` using `hl (toB hψ f.1 f.2) (e.symm ▸ f.2) p 0`. Establish `e2 : ((∑ k, ∑ l, X k l • (x k * d l)) f + lam • f).1 = ((nOp (rhoV hψ σ S T) (HM S T) X (toB hψ f.1 f.2) + lam • toB hψ f.1 f.2).1 : WO S T → ℂ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.coe_add, hn X f _ e]`. Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `h5`. Use `⟨fun τ k => x (k, τ), fun τ k => d (k, τ), fun τ => ⟨⟨fun k l => c1 _ _, fun k l => c2 _ _, fun k l => ?_⟩, fun X hX => ?_, fun Y hY => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[c3]`. Simplify using the standard rewrite rules. Take `⟨lam, hl⟩` from `key (fun t => (1, oneP θ T τ X t)) (continuous_const.prodMk (continuous_oneP hθ hX)) (fun s t => by rw [oneP_add hθ hX, Prod.mk_mul_mk, one_mul]) (fun t => ⟨one_mem _, (isAtTau_oneP hθ hX t).1⟩) (blk (Pi.single τ X) fun _ => 1) (fun k l => by`. Simplify using `only [mM_apply, inv_one, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, blk_apply]`. Use `split_ifs`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hasDerivAt_comp hθ hX _ _ _).mul_const _`. Conclude with `hasDerivAt_const _ _)`. Use `⟨lam, fun f g k => ?_⟩` and prove the remaining obligations. Use `hl f (g, k)` as an intermediate fact. Rewrite `this` using `[sum_left X τ fun k l => x k * d l]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Prod.mk_mul_mk, mul_one] at this`. Conclude with `this`. Take `⟨lam, hl⟩` from `key (fun t => (oneP θ S τ Y t, 1)) ((continuous_oneP hθ hY).prodMk continuous_const) (fun s t => by rw [oneP_add hθ hY, Prod.mk_mul_mk, one_mul]) (fun t => ⟨(isAtTau_oneP hθ hY t).1, one_mem _⟩) (blk (fun _ => 1) (Pi.single τ (-Y))) (fun k l => by`. Simplify using `only [mM_apply, oneP_inv hθ hY, GlobalTheory.WeilVacMove.mt_one, GlobalTheory.WeilVacMove.compAt_one, blk_apply]`. Use `split_ifs`.
-
-Conclude with `(hasDerivAt_comp hθ (neg_mem_lieAt hY) _ _ _).const_mul _`. Conclude with `hasDerivAt_const _ _)`. Use `⟨lam, fun f g k => ?_⟩` and prove the remaining obligations. Use `hl f (g, k)` as an intermediate fact. Rewrite `this` using `[sum_right Y τ fun k l => x k * d l]`.
-
-Simplify using `only [Prod.mk_mul_mk, mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weyl_action : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), GlobalTheory.Ker.IsWeak ψ S T om → OmCont ψ S T om → ∀ θ : InfF D, IsInfFam θ → ∃ x d : D.what₂.Tau → Fin T.rank × Fin S.rank → Module.End ℂ (GlobalTheory.RealWeil.thetaSub ψ S T), ∀ τ, IsCCR (x τ) (d τ) ∧ (∀ X ∈ lieAt T τ, ∃ lam : ℂ, ∀ f g h, HasDerivAt (fun t : ℝ => thKer ψ S T om f g (h * oneP θ T τ X t)) (thKer ψ S T om ((∑ i, ∑ j, X i j • ∑ a, x τ (i, a) * d τ (j, a)) f + lam • f) g h) 0) ∧ ∀ Y ∈ lieAt S τ, ∃ lam : ℂ, ∀ f g h, HasDerivAt (fun t : ℝ => thKer ψ S T om f (g * oneP θ S τ Y t) h) (thKer ψ S T om ((∑ a, ∑ b, Y a b • -∑ i, x τ (i, b) * d τ (i, a)) f + lam • f) g h) 0 := by
   intro D ψ hψ S T om hw hc θ hθ

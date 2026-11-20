@@ -11,7 +11,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Establish `h1 : IsPrimitiveRoot (zeta ε 1) p` using `by simpa using hε 1`. Establish `h2` using `h1.geom_sum_eq_zero (Fact.out : p.Prime).one_lt`. Rewrite using `[xi, map_sum]`. Simplify `h2` using `[map_pow, WittVector.fontaineTheta_teichmuller, zeta]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem theta_xi_eq_zero [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) :
     WittVector.fontaineTheta O p (xi ε) = 0 := by
@@ -21,9 +21,9 @@ theorem theta_xi_eq_zero [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSyste
   simpa [map_pow, WittVector.fontaineTheta_teichmuller, zeta] using h2
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => show WittVector.fontaineTheta O p (Sandwich.mu ε) = 0`. Rewrite using `[Sandwich.mu, map_sub, WittVector.fontaineTheta_teichmuller, map_one, sub_eq_zero]`. Conclude with `hε.zeta_zero`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ghost_frobenius, Dieudonne.frobenius_mu, ghost_mul, ih, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ghost_mu_eq_zero [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (n : ℕ) :
     ghost p O n (Sandwich.mu ε) = 0 := by
@@ -45,7 +45,7 @@ noncomputable def muPair [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSyste
     ring
 
 /- English proof (translation)
-Introduce `n` and use `⟨0, fun t => by show ghost p O n (Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ)) = 0 rw [ghost_mul, ghost_mu_eq_zero hε, zero_mul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem muPair_mem [IsDomain O] {ε : PreTilt O p} (hε : IsPrimitiveSystem ε) (G : PDivGroup p O)
     (χ : G.dual.Tate) : muPair hε G χ ∈ latt G := fun n =>
@@ -58,19 +58,17 @@ end GlobalTheory.PDivLat.HodgeNat
 open GlobalTheory.PDivLat.HodgeNat in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv ε hε G H f hG hH M _ _ r M' _ _ r' u ι ι' hrs hrk hu hι hι' w`. Take `⟨hfree, hfin, -⟩` from `GlobalTheory.T.pDivisibleGroup_lattice_free_rank_height p C v O hv ε hε G hG`. Use `haveI : Nontrivial (Ainf p O) := (ReciprocityTheory.PGsh.Ainf.theta_surj p O hv).nontrivial`. Take `⟨hMfree, -, -⟩` from `Dieudonne.free_of_reduction (ReciprocityTheory.PGsh.Ainf.theta_surj p O hv) (theta_xi_eq_zero hε) r hrs fun m hm => (hrk m).1 hm`. Use `haveI := hMfree`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ χ : H.dual.Tate, u (ι' (dlog H χ)) = ι (omegaMap G H f (dlog H χ))`. Introduce `χ`. Set `Y : latt H` to `⟨muPair hε H χ, muPair_mem hε H χ⟩`. Establish `h1 : ι' (dlog H χ) = r' Y` using `hι' χ Y fun t => rfl`. Establish `h2 : ι (dlog G (tateMap H.dual G.dual O (dualHom G H f) χ)) = r (lattMap f Y)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hι _ _ fun t => ?_` and prove the remaining obligations. Use `show Sandwich.mu ε * ofPadic p O (epsPairing hε H (tateMap G H O f t) χ) = _`. Rewrite using `[epsPairing, epsPairing, pairing_tateMap]`. Rewrite using `[h1, hu, ← h2, dlog_tateMap]`. Take `⟨c, hc, hcw⟩` from `GlobalTheory.T.pDivGroup_exists_smul_mem_span_dlog p C v O hv ε hε H hH`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hspan : ∀ x ∈ Submodule.span O (Set.range (dlog H)), u (ι' x) = ι (omegaMap G H f x)`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨χ, rfl⟩ := hx`. Conclude with `key χ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`. Establish `h` using `hspan _ (hcw w)`. Simplify using `only [map_smul] at h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h' : c • (u (ι' w) - ι (omegaMap G H f w)) = 0` using `by rw [smul_sub, h, sub_self]`. Establish `tf : ∀ x : M, c • x = 0 → x = 0`. Introduce `x hx`. Set `b` to `Module.Free.chooseBasis O M`. Use `b.repr.injective (Finsupp.ext fun i => ?_)` and prove the remaining obligations.
-
-Establish `h3` using `congrArg (fun y => b.repr y i) hx`. Simplify using `only [map_smul, Finsupp.smul_apply, smul_eq_mul, map_zero, Finsupp.coe_zero, Pi.zero_apply] at h3`. Simplify using `using (mul_eq_zero.1 h3).resolve_left hc`. Conclude with `sub_eq_zero.1 (tf _ h')`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivLat.iota_natural : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (ε : PreTilt O p) (hε : IsPrimitiveSystem ε), ∀ (G H : PDivGroup p O) (f : G ⟶ H), HasDatum hε G → HasDatum hε H → ∀ (M : Type) [AddCommGroup M] [Module O M] (r : latt G →ₛₗ[WittVector.fontaineTheta O p] M) (M' : Type) [AddCommGroup M'] [Module O M'] (r' : latt H →ₛₗ[WittVector.fontaineTheta O p] M') (u : M' →ₗ[O] M) (ι : G.omega →ₗ[O] M) (ι' : H.omega →ₗ[O] M'), Function.Surjective r → (∀ m, r m = 0 ↔ ∃ n, m = xi ε • n) → (∀ y, u (r' y) = r (lattMap f y)) → (∀ (χ : G.dual.Tate) (y : latt G), (∀ t, y.1 t = Sandwich.mu ε * ofPadic p O (epsPairing hε G t χ)) → ι (dlog G χ) = r y) → (∀ (χ : H.dual.Tate) (y : latt H), (∀ t, y.1 t = Sandwich.mu ε * ofPadic p O (epsPairing hε H t χ)) → ι' (dlog H χ) = r' y) → ∀ w, u (ι' w) = ι (omegaMap G H f w) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv ε hε G H f hG hH M _ _ r M' _ _ r' u ι ι' hrs hrk hu hι hι' w

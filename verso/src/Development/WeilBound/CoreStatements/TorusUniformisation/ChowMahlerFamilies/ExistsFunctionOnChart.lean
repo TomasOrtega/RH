@@ -31,22 +31,20 @@ def zloc (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] : Subring
     rw [div_add_div _ _ h0 h0']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨z, hz⟩ => hz ▸ z.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem zloc_range (Ω : Type) [Field Ω] [CharZero Ω] (p : ℕ) [Fact p.Prime] (x : Ω) :
     x ∈ (algebraMap (zloc Ω p) Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) :=
   ⟨fun ⟨z, hz⟩ => hz ▸ z.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩
 
 /- English proof (translation)
-Use `choose φ hφ using hle`. Set `f : R₀ →+* R` to `{ toFun := φ map_one' := hinj (by rw [hφ, map_one, map_one]) map_zero' := hinj (by rw [hφ, map_zero, map_zero]) map_mul' := fun a b => hinj (by rw [hφ, map_mul, map_mul, hφ, hφ]) map_add' := fun a b => hinj (by rw [hφ, map_add, map_add, hφ, hφ]) }`. Establish `hf : ∀ x, algebraMap R Ω (f x) = algebraMap R₀ Ω x` using `hφ`. Use `clear_value f`. Establish `hfi : Function.Injective f` using `fun a b h => IsFractionRing.injective R₀ Ω (by rw [← hf, ← hf, h])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `M : Submonoid R₀` to `(IsUnit.submonoid R).comap f`. Establish `hM : M ≤ nonZeroDivisors R₀` using `fun s hs => mem_nonZeroDivisors_of_ne_zero fun h => by`. Establish `hu : IsUnit (f s)` using `hs`. Rewrite `hu` using `[h, map_zero]`. Conclude with `not_isUnit_zero hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI : Algebra R₀ R := f.toAlgebra`. Establish `hloc : IsLocalization M R`. Use `(isLocalization_iff _ _).2 ⟨fun s => s.2, fun z => ?_, fun {x z} h => ⟨1, by rw [hfi h]⟩⟩` and prove the remaining obligations. Take `⟨s, x, u, hu, hx⟩` from `hden z`. Establish `hs : IsUnit (f s)` using `IsUnit.of_mul_eq_one u (hinj (by rw [map_mul, hf, hu, map_one]))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(x, ⟨s, hs⟩), hinj ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R Ω (z * f s) = algebraMap R Ω (f x)`. Rewrite using `[map_mul, hf, hf, hx]`. Use `haveI : FaithfulSMul R Ω := (faithfulSMul_iff_algebraMap_injective R Ω).2 hinj`. Use `⟨isIntegrallyClosed_of_isLocalization R M hM, IsFractionRing.of_field _ _ fun ω => ?_⟩` and prove the remaining obligations.
-
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := R₀) ω`. Conclude with `⟨f a, f b, by rw [hf, hf]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem overring {R₀ R Ω : Type} [CommRing R₀] [IsDomain R₀] [CommRing R] [IsDomain R] [Field Ω]
     [Algebra R₀ Ω] [Algebra R Ω] [IsIntegrallyClosed R₀] [IsFractionRing R₀ Ω]
@@ -91,7 +89,7 @@ variable {Ω : Type} [Field Ω] {A : Type} [CommRing A] [Algebra A Ω] (m : Idea
 
 include O in
 /- English proof (translation)
-Take `⟨u, hu⟩` from `(IsLocalization.map_units O (⟨s, hs⟩ : m.primeCompl)).exists_right_inv`. Establish `h : algebraMap A Ω s * algebraMap O Ω u = 1`. Rewrite using `[IsScalarTower.algebraMap_apply A O Ω, ← map_mul]`. Conclude with `(congrArg _ hu).trans (map_one _)`. Conclude with `⟨left_ne_zero_of_mul_eq_one h, u, eq_inv_of_mul_eq_one_right h⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem_range {s : A} (hs : s ∉ m) :
     algebraMap A Ω s ≠ 0 ∧ ∃ u : O, algebraMap O Ω u = (algebraMap A Ω s)⁻¹ := by
@@ -102,11 +100,9 @@ theorem inv_mem_range {s : A} (hs : s ∉ m) :
   exact ⟨left_ne_zero_of_mul_eq_one h, u, eq_inv_of_mul_eq_one_right h⟩
 
 /- English proof (translation)
-Take `⟨x, a, b, hb, rfl⟩` from `z`. Establish `hbm : (b : A) ∉ m`. Introduce `h`. Establish `hc : IsCoprime (p : ℤ) (b : ℤ)` using `Nat.isCoprime_iff_coprime.2 (((Fact.out : p.Prime).coprime_iff_not_dvd).2 hb)`. Take `⟨u, v, huv⟩` from `hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (u : A) * (p : A) + (v : A) * (b : A) = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → A) huv`. Conclude with `(‹m.IsPrime›).ne_top ((Ideal.eq_top_iff_one m).2 (h1 ▸ m.add_mem (m.mul_mem_left _ hp) (m.mul_mem_left _ h)))`. Take `⟨-, u, hu⟩` from `inv_mem_range (Ω := Ω) m O hbm`. Use `⟨(a : O) * u, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hu, map_intCast, map_natCast]`.
-
-Conclude with `(div_eq_mul_inv _ _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zloc_le [CharZero Ω] (p : ℕ) [Fact p.Prime] (hp : (p : A) ∈ m) (z : zloc Ω p) :
     ∃ u : O, algebraMap O Ω u = (z : Ω) := by
@@ -125,9 +121,9 @@ theorem zloc_le [CharZero Ω] (p : ℕ) [Fact p.Prime] (hp : (p : A) ∈ m) (z :
   exact (div_eq_mul_inv _ _).symm
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem t ht => exact Algebra.subset_adjoin ht`. Consider the case `algebraMap z`. Take `⟨u, hu⟩` from `ho z`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu]`. Conclude with `Subalgebra.algebraMap_mem _ u`. Consider the case `add s t _ _ hs ht => exact add_mem hs ht`. Consider the case `mul s t _ _ hs ht => exact mul_mem hs ht`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem le_adjoin {o : Type} [CommRing o] [Algebra o Ω] (T : Set Ω)
     (ho : ∀ z : o, ∃ u : O, algebraMap O Ω u = algebraMap o Ω z) :
@@ -143,19 +139,17 @@ theorem le_adjoin {o : Type} [CommRing o] [Algebra o Ω] (T : Set Ω)
   | mul s t _ _ hs ht => exact mul_mem hs ht
 
 /- English proof (translation)
-Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem t ht`. Use `⟨1, m.primeCompl.one_mem, ?_⟩` and prove the remaining obligations. Rewrite using `[map_one, _root_.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.subset_adjoin ht`. Consider the case `algebraMap z`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj m.primeCompl z`. Use `⟨s, s.2, ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg (algebraMap O Ω) h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h'` using `[map_mul, ← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[h']`. Conclude with `hA a`. Consider the case `add x z _ _ hx hz`. Take `⟨s, hs, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht, hz⟩` from `hz`. Use `⟨s * t, m.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (x + z) * algebraMap A Ω (s * t) = x * algebraMap A Ω s * algebraMap A Ω t + z * algebraMap A Ω t * algebraMap A Ω s`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `add_mem (mul_mem hx (hA t)) (mul_mem hz (hA s))`. Consider the case `mul x z _ _ hx hz`. Take `⟨s, hs, hx⟩` from `hx`. Take `⟨t, ht, hz⟩` from `hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨s * t, m.primeCompl.mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `e : (x * z) * algebraMap A Ω (s * t) = x * algebraMap A Ω s * (z * algebraMap A Ω t)`. Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `mul_mem hx hz`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_den {o : Type} [CommRing o] [Algebra o Ω] (T : Set Ω)
     (hA : ∀ a : A, algebraMap A Ω a ∈ Algebra.adjoin o T) :
@@ -194,9 +188,9 @@ theorem exists_den {o : Type} [CommRing o] [Algebra o Ω] (T : Set Ω)
 
 include m in
 /- English proof (translation)
-Use `overring (R₀ := Algebra.adjoin o T) (R := Algebra.adjoin O T) Subtype.val_injective (fun x => ⟨⟨x.1, le_adjoin O T ho x.1 x.2⟩, rfl⟩) fun r => ?_` and prove the remaining obligations. Take `⟨s, hs, hz⟩` from `exists_den m O T hA r.1 r.2`. Take `⟨h0, u, hu⟩` from `inv_mem_range (Ω := Ω) m O hs`. Use `⟨⟨_, hA s⟩, ⟨_, hz⟩, ⟨algebraMap O Ω u, Subalgebra.algebraMap_mem _ u⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap A Ω s * algebraMap O Ω u = 1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hu, mul_inv_cancel₀ h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem main {o : Type} [CommRing o] [Algebra o Ω] (T : Set Ω)
     (ho : ∀ z : o, ∃ u : O, algebraMap O Ω u = algebraMap o Ω z)
@@ -216,11 +210,11 @@ end Loc
 end PositivityTheory.Xgn.FunctionOnChart
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hp O _ _ _ _ _ _ _ c' hc'`. Use `haveI : CharZero Ω := GlobalTheory.CompanionTheory.Ar.Num.ConstClosure.charZero_of_isArithVar hV`. Take `⟨-, -, -, hA, -⟩` from `GlobalTheory.T.arith_variety_coord_ideal E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hV A`. Take `⟨-, -, -, -, -, -, hch⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O₀ β Y S Ω K J y 𝔐 p hpS (PositivityTheory.Xgn.FunctionOnChart.zloc Ω p) (PositivityTheory.Xgn.FunctionOnChart.zloc_range Ω p)`. Take `⟨-, h1, h2, -⟩` from `hch c' hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, PositivityTheory.Xgn.FunctionOnChart.main m O (Set.range fun j => mseg y j / mseg y c') (PositivityTheory.Xgn.FunctionOnChart.zloc_le m O p hp) (fun a => ?_) h1 h2⟩` and prove the remaining obligations. Use `haveI : Algebra.FiniteType O (Algebra.adjoin O (Set.range fun j => mseg y j / mseg y c')) := Algebra.FiniteType.adjoin_of_finite (Set.finite_range _)`. Conclude with `Algebra.FiniteType.isNoetherianRing O (Algebra.adjoin O (Set.range fun j => mseg y j / mseg y c'))`. Establish `h : algebraMap A Ω a ∈ Algebra.adjoin ℤ (Set.range fun j => mseg y j / mseg y c')` using `hA c' hc' a`. Generalize the expression as in `algebraMap A Ω a = x at h`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `h using Algebra.adjoin_induction with`. Consider the case `mem t ht => exact Algebra.subset_adjoin ht`. Consider the case `algebraMap n => simpa using intCast_mem _ n`. Consider the case `add s t _ _ hs ht => exact add_mem hs ht`. Consider the case `mul s t _ _ hs ht => exact mul_mem hs ht`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.exists_function_on_chart : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω] (c' : ∀ k, J k), mseg y c' ≠ 0 → IsNoetherianRing (CR O y c') ∧ IsIntegrallyClosed (CR O y c') ∧ IsFractionRing (CR O y c') Ω := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV p _ hpS A _ _ _ m _ hp O _ _ _ _ _ _ _ c' hc'

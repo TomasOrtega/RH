@@ -11,14 +11,14 @@ variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchi
 
 variable (k) in
 /- English proof (translation)
-The claim follows from `Finite.one_lt_card`.
+A detailed English derivation is pending.
 -/
 theorem one_lt_resCard : 1 < resCard k := Finite.one_lt_card
 
 /- English proof (translation)
-Use `borelize k`. Take `⟨ν, hν, h1⟩` from `exists_isUnitVol k`. Establish `hx` using `measureReal_cball ν x`. Establish `hy` using `measureReal_cball ν y`. Establish `h2 : ν.real (𝒪[k] : Set k) = 1` using `by rw [Measure.real, h1]; simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx`, `hy` using `[h2, mul_one]`. Rewrite using `[← hx, ← hy]`. Establish `h3 : cball x ⊆ cball y` using `fun z hz => le_trans (show valuation k z ≤ _ from hz) h`. Conclude with `measureReal_mono h3 (isCompact_cball y).measure_lt_top.ne`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nabs_le_of_valuation_le {x y : kˣ} (h : valuation k (x : k) ≤ valuation k (y : k)) :
     nabs k x ≤ nabs k y := by
@@ -33,13 +33,13 @@ theorem nabs_le_of_valuation_le {x y : kˣ} (h : valuation k (x : k) ≤ valuati
   exact measureReal_mono h3 (isCompact_cball y).measure_lt_top.ne
 
 /- English proof (translation)
-Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[k]`. Establish `h0 : (ϖ : k) ≠ 0` using `by simpa using hϖ.ne_zero`. Establish `hy0 : 0 < valuation k (y : k)` using `by simp [zero_lt_iff]`. Establish `hlt : valuation k ((x : k) * (y : k)⁻¹) < 1`. Rewrite using `[map_mul, map_inv₀, mul_inv_lt_iff₀ hy0, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Set `z : 𝒪[k]` to `⟨(x : k) * (y : k)⁻¹, (Valuation.mem_integer_iff _ _).mpr hlt.le⟩`. Establish `hz : z ∈ 𝓂[k]`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `Valuation.Integer.not_isUnit_iff_valuation_lt_one.mpr hlt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : valuation k ((x : k) * (y : k)⁻¹) ≤ valuation k (ϖ : k)` using `(mem_cball_uniformiser hϖ (x := Units.mk0 _ h0) rfl z).mpr hz`. Establish `h2 : valuation k (x : k) ≤ valuation k ((Units.mk0 _ h0 * y : kˣ) : k)`. Rewrite `h1` using `[map_mul, map_inv₀, mul_inv_le_iff₀ hy0]`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `nabs_le_of_valuation_le h2`. Rewrite `h3` using `[nabs_mul, nabs_uniformiser hϖ (x := Units.mk0 _ h0) rfl]`. Use `h3.trans_lt (mul_lt_of_lt_one_left (nabs_pos k y) (inv_lt_one_of_one_lt₀ ?_))` and prove the remaining obligations. Conclude with `one_lt_resCard k` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem nabs_lt_of_valuation_lt {x y : kˣ} (h : valuation k (x : k) < valuation k (y : k)) :
     nabs k x < nabs k y := by
@@ -64,29 +64,29 @@ theorem nabs_lt_of_valuation_lt {x y : kˣ} (h : valuation k (x : k) < valuation
   exact_mod_cast one_lt_resCard k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => not_lt.mp fun h' => absurd h (not_le.mpr (nabs_lt_of_valuation_lt h')), nabs_le_of_valuation_le⟩`.
+Supply the required witnesses or components.
 -/
 theorem nabs_le_iff (x y : kˣ) : nabs k x ≤ nabs k y ↔ valuation k (x : k) ≤ valuation k (y : k) :=
   ⟨fun h => not_lt.mp fun h' => absurd h (not_le.mpr (nabs_lt_of_valuation_lt h')),
     nabs_le_of_valuation_le⟩
 
 /- English proof (translation)
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, nabs_le_iff, nabs_le_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nabs_eq_iff (x y : kˣ) : nabs k x = nabs k y ↔ valuation k (x : k) = valuation k (y : k) := by
   rw [le_antisymm_iff, le_antisymm_iff, nabs_le_iff, nabs_le_iff]
 
 /- English proof (translation)
-Rewrite using `[← nabs_one k, nabs_eq_iff, Units.val_one, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nabs_eq_one_iff (x : kˣ) : nabs k x = 1 ↔ valuation k (x : k) = 1 := by
   rw [← nabs_one k, nabs_eq_iff, Units.val_one, map_one]
 
 variable (k) in
 /- English proof (translation)
-Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Take `⟨r, hr, hr1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Establish `hr0 : r ≠ 0` using `by simpa using hr`. Establish `h1 : (fun z : kˣ => (z : k) - x) ⁻¹' cball (Units.mk0 r hr0 * x) ∈ 𝓝 x` using `((isOpen_cball _).preimage (Units.continuous_val.sub continuous_const)).mem_nhds (by simp [cball])`. Use `filter_upwards [h1] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[nabs_eq_iff]`. Establish `h2 : valuation k ((z : k) - x) ≤ valuation k (r * x)` using `hz`. Use `Valuation.map_eq_of_sub_lt _ (h2.trans_lt ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_nabs : IsLocallyConstant (nabs k) := by
   refine (IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_
@@ -102,7 +102,7 @@ theorem isLocallyConstant_nabs : IsLocallyConstant (nabs k) := by
   exact mul_lt_of_lt_one_left (by simp [zero_lt_iff]) hr1
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `⟨nabs_mul k, nabs_pos k, nabs_le_iff, nabs_eq_one_iff, fun _ _ h h' => nabs_uniformiser h h', isLocallyConstant_nabs k, one_lt_resCard k⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem nabs_properties : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], (∀ x y : kˣ, nabs k (x * y) = nabs k x * nabs k y) ∧ (∀ x : kˣ, 0 < nabs k x) ∧ (∀ x y : kˣ, nabs k x ≤ nabs k y ↔ valuation k (x : k) ≤ valuation k (y : k)) ∧ (∀ x : kˣ, nabs k x = 1 ↔ valuation k (x : k) = 1) ∧ (∀ (ϖ : 𝒪[k]) (x : kˣ), Irreducible ϖ → (x : k) = (ϖ : k) → nabs k x = (resCard k : ℝ)⁻¹) ∧ IsLocallyConstant (nabs k) ∧ 1 < resCard k :=
   fun k _ _ _ _ => ⟨nabs_mul k, nabs_pos k, nabs_le_iff, nabs_eq_one_iff,

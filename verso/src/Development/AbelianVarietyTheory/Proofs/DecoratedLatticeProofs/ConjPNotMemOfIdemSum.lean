@@ -26,13 +26,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PerLift
 
 /- English proof (translation)
-Introduce `P hP hP'`. Take `⟨⟨es, hes, hsum⟩, hc⟩` from `he`. Establish `horth` using `Formalism.IndefR.Fin.LevelGroupLemmas.idemSum_conj_orth hes hsum hc P hP (Formalism.L2.Col.conjPrime₂ P) hP'`. Establish `h1 : Formalism.L2.NTheta.IsIdemAt (cA D (es (Formalism.L2.Col.conjPrime₂ P))) P`. Use `GlobalTheory.MovedIdem.isIdemAt_conj (hes _ hP') fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show x ∈ P.asIdeal ↔ Formalism.L2.Col.cO D.host.E (Formalism.L2.Col.cO D.host.E x) ∈ P.asIdeal`. Establish `: Formalism.L2.Col.cO D.host.E (Formalism.L2.Col.cO D.host.E x) = x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `[Formalism.L2.Col.cO]`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `heq : cA D (es (Formalism.L2.Col.conjPrime₂ P)) = es P` using `(GlobalTheory.ExportSeries.idemAt_eq h1).symm.trans (GlobalTheory.ExportSeries.idemAt_eq (hes P hP))`. Rewrite `horth` using `[heq, (hes P hP).1.1]`. Establish `hI` using `hes P hP`. Rewrite `hI` using `[horth]`. Take `⟨x, hxP, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot P.ne_bot`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(hI.2 x hx0).1 hxP` as an intermediate fact. Rewrite `this` using `[zero_mul, map_zero]`. Conclude with `this (zero_mem _)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjP_notMem_of_isIdemSum {D : D7} {e : AE D} {SS : Finset (Formalism.L2.DIV.Pl D.host.E)} (he : IsIdemSum e SS) :
     ∀ P ∈ SS, Formalism.L2.Col.conjPrime₂ P ∉ SS := by
@@ -57,7 +57,7 @@ theorem conjP_notMem_of_isIdemSum {D : D7} {e : AE D} {SS : Finset (Formalism.L2
   exact this (zero_mem _)
 
 /- English proof (translation)
-Establish `hc0 : (c : E) ≠ 0` using `by exact_mod_cast hc.ne'`. Rewrite using `[Nat.cast_smul_eq_nsmul (𝓞 E), ← Nat.cast_smul_eq_nsmul E, smul_smul, mul_inv_cancel₀ hc0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_smul_inv_smul {E : Type} [Field E] [NumberField E] {a b : ℕ} (c : ℕ) (hc : 0 < c)
     (y : Formalism.L2.Col.HomE E a b) : ((c : 𝓞 E)) • ((c : E)⁻¹ • y) = y := by
@@ -67,17 +67,17 @@ theorem natCast_smul_inv_smul {E : Type} [Field E] [NumberField E] {a b : ℕ} (
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D ψ θ S T δ sc hP e SS he N N' hN hN' c hc SX hSX px hpx g hg`. Establish `hSS` using `conjP_notMem_of_isIdemSum he`. Establish `hAA : (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) ≠ ⊥` using `fun h => Formalism.L2.GlobalTheoryTheory.IntegralLatticeDensity.B5.leading_constant_ne_zero D (FractionalIdeal.coeToSubmodule_eq_bot.1 h)`. Establish `hspan : ∀ x : Formalism.L2.Col.HomE D.host.E S.rank T.rank, ∃ n : ℕ, 0 < n ∧ (n : D.host.E) • x ∈ perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N'` using `Formalism.L2.Ker.lf_span _ hAA N N' hN.1.fg hN'.1.span_eq_top`. Establish `hneg : ∀ P ∈ SS, (c : D.host.E) • (-g) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')` using `fun P hP' => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_neg]`. Conclude with `neg_mem (hg P hP')`. Establish `hL` using `Formalism.L2.Ker.lift_exists_alt D.host.E S.rank T.rank SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c hc hSS hspan (-g) hneg`. Take `⟨hsA, hsP⟩` from `hL`. Generalize the expression as in `Formalism.L2.Ker.liftS SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c (-g) = s at hsA hsP`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `hmem : embH (tauE D) δ s ∈ AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c` using `⟨s, hsA, rfl⟩`. Take `⟨x, hxS, hxL⟩` from `hSX.2.2 _ hmem`. Take `⟨β, hβ, hβe⟩` from `hxL`. Establish `hne : Nonempty D.what₂.Tau` using `⟨D.eTau.symm 1⟩`. Establish `hβs : β = s - px x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Formalism.L2.Ker.embH_inj (tauE D) hP.ne` to reduce the goal to its premises. Rewrite using `[map_sub, (hpx x hxS).2]`. Conclude with `hβe`. Use `⟨x, hxS, fun P hPS => ?_⟩` and prove the remaining obligations. Establish `h1 : s + g ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hsP P hPS`. Rewrite `h2` using `[sub_neg_eq_add]`. Establish `h3 : ((c : 𝓞 D.host.E)) • ((c : D.host.E)⁻¹ • (s + g)) ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')` using `Submodule.smul_mem _ _ h2`. Establish `e3` using `natCast_smul_inv_smul c hc (s + g)`. Rewrite `h3` using `[e3]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : β ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')` using `⟨1, P.asIdeal.primeCompl.one_mem, by rw [one_smul]; exact hβ⟩`. Establish `e5 : g + px x = (s + g) - β` using `by rw [hβs]; abel`. Rewrite using `[e5]`. Conclude with `sub_mem h1 h4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rep_add_mem : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (δ : ℂ) (sc : ℝ), StdPair θ S T δ sc ψ → ∀ (e : AE D) (SS : Finset (Formalism.L2.DIV.Pl D.host.E)), IsIdemSum e SS → ∀ (N : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (N' : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)), IsSelfDualC S N → IsSelfDualC T N' → ∀ c : ℕ, 0 < c → ∀ (SX : Finset (VV D.what₂.Tau S.rank T.rank)), Formalism.L2.Th1.H.IsReps (LamC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') (AC (tauE D) δ (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) SS N N' c) SX → ∀ (px : VV D.what₂.Tau S.rank T.rank → Formalism.L2.Col.HomE D.host.E S.rank T.rank), (∀ x ∈ SX, px x ∈ halfAO SS (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') c ∧ embH (tauE D) δ (px x) = x) → ∀ g : Formalism.L2.Col.HomE D.host.E S.rank T.rank, (∀ P ∈ SS, (c : D.host.E) • g ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N')) → ∃ x ∈ SX, ∀ P ∈ SS, g + px x ∈ Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (perO (D.host.AA0 : Submodule (𝓞 D.host.E) D.host.E) N N') := by
   intro D ψ θ S T δ sc hP e SS he N N' hN hN' c hc SX hSX px hpx g hg

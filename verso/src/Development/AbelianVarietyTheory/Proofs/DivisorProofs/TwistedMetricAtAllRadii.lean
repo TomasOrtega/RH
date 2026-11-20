@@ -11,21 +11,21 @@ namespace GlobalTheory.ShFam.GalCarry
 open Matrix GlobalTheory.GradedNorm
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem qf_cast {m m' : ℕ} (h : m = m') (M : Matrix (Fin m') (Fin m') ℂ) (v : Fin m' → ℂ) :
     star (v ∘ Fin.cast h) ⬝ᵥ M.submatrix (Fin.cast h) (Fin.cast h) *ᵥ (v ∘ Fin.cast h) = star v ⬝ᵥ M *ᵥ v := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem qf_cast' {m m' : ℕ} (h : m = m') (M : Matrix (Fin m') (Fin m') ℂ) (v : Fin m → ℂ) :
     star v ⬝ᵥ M.submatrix (Fin.cast h) (Fin.cast h) *ᵥ v = star (v ∘ Fin.cast h.symm) ⬝ᵥ M *ᵥ (v ∘ Fin.cast h.symm) := by
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mix_cast {m m' : ℕ} (h : m = m') (s : ℝ) (M₀ M : Matrix (Fin m') (Fin m') ℂ) :
     mix s (M₀.submatrix (Fin.cast h) (Fin.cast h)) (M.submatrix (Fin.cast h) (Fin.cast h)) =
@@ -33,7 +33,7 @@ theorem mix_cast {m m' : ℕ} (h : m = m') (s : ℝ) (M₀ M : Matrix (Fin m') (
   subst h; rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem mixDual_cast {m m' : ℕ} (h : m = m') (s : ℝ) (M₀ M : Matrix (Fin m') (Fin m') ℂ) :
     mixDual s (M₀.submatrix (Fin.cast h) (Fin.cast h)) (M.submatrix (Fin.cast h) (Fin.cast h)) =
@@ -41,29 +41,25 @@ theorem mixDual_cast {m m' : ℕ} (h : m = m') (s : ℝ) (M₀ M : Matrix (Fin m
   subst h; rfl
 
 /- English proof (translation)
-Introduce `D A N j S κ s T x x' hr hmet hhodge`. Establish `hli : ∀ (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ), LiesIn (T.pt y) (genBd s.T.Z) ↔ LiesIn y (genBd s.T.Z)` using `fun σ y => by`. Establish `e : (T.pt y).1 (IsLocalRing.closedPoint ℂ) = T.g.hom (y.1 (IsLocalRing.closedPoint ℂ))` using `Scheme.Hom.comp_apply _ _ _`. Unfold `LiesIn`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `T.mem_genBd _`. Establish `hsurj : ∀ (σ : κ.c.F →+* ℂ) (y : CxPts (genStr s.T.Z) σ), ∃ y₀, T.pt y₀ = y` using `fun σ y => ⟨⟨y.1 ≫ T.g.inv, by rw [Category.assoc, (Iso.inv_comp_eq _).2 T.g_str.symm, y.2]⟩, Subtype.ext (by simp [Tw.pt])⟩`. Establish `hH : ∀ σ y, T.MetAt y (x.hodge σ) (x'.hodge σ)` using `fun σ y => by`. Distinguish the cases in `hy : LiesIn y (genBd s.T.Z)`. Introduce `f f' hp τ`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[x.hodge_gram_of_liesIn ((hli σ y).2 hy), x'.hodge_gram_of_liesIn hy]`. Conclude with `hmet σ y f f' hp τ`. Conclude with `hhodge σ y hy`. Establish `hmu : x'.IsMuExp = x.IsMuExp`. Use function extensionality and compare the values at `C`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `propext ⟨fun ⟨h0, h⟩ => ⟨h0, fun σ y hy g τ v => ?_⟩, fun ⟨h0, h⟩ => ⟨h0, fun σ y hy g τ v => ?_⟩⟩` and prove the remaining obligations. Take `⟨y₀, rfl⟩` from `hsurj σ y`. Take `⟨f, hf⟩` from `T.exists_pull (x := y₀.1 ≫ genι s.T.Z) g rfl (T.pt_ι y₀)`. Establish `hy₀ : ¬ LiesIn y₀ (genBd s.T.Z)` using `by rwa [hli] at hy`. Establish `e1 : x.gram (T.pt y₀) g τ = (x'.gram y₀ f (T.emb τ)).submatrix T.ix T.ix` using `hmet σ y₀ f g hf τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2` using `hhodge σ y₀ hy₀ f g hf τ`. Establish `q1 : star v ⬝ᵥ x.gram (T.pt y₀) g τ *ᵥ v = star (v ∘ Fin.cast (T.mult_emb τ).symm) ⬝ᵥ x'.gram y₀ f (T.emb τ) *ᵥ (v ∘ Fin.cast (T.mult_emb τ).symm)`. Rewrite using `[e1]`. Conclude with `qf_cast' _ _ _`. Establish `q2 : star v ⬝ᵥ (x.hodge σ).gram (T.pt y₀) g τ *ᵥ v = star (v ∘ Fin.cast (T.mult_emb τ).symm) ⬝ᵥ (x'.hodge σ).gram y₀ f (T.emb τ) *ᵥ (v ∘ Fin.cast (T.mult_emb τ).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e2]`. Conclude with `qf_cast' _ _ _`. Use `h σ y₀ hy₀ f (T.emb τ) (v ∘ Fin.cast (T.mult_emb τ).symm)` as an intermediate fact. Rewrite using `[q1, q2, ← hr]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ₀, rfl⟩ : ∃ τ₀, T.emb τ₀ = τ` from `T.embEquiv.surjective τ`. Take `⟨g', hg'⟩` from `T.exists_push (x' := (T.pt y).1 ≫ genι s.T.Z) g rfl (T.pt_ι y)`. Establish `e1 : x.gram (T.pt y) g' τ₀ = (x'.gram y g (T.emb τ₀)).submatrix T.ix T.ix` using `hmet σ y g g' hg' τ₀`. Establish `e2` using `hhodge σ y hy g g' hg' τ₀`. Establish `q1 : star (v ∘ Fin.cast (T.mult_emb τ₀)) ⬝ᵥ x.gram (T.pt y) g' τ₀ *ᵥ (v ∘ Fin.cast (T.mult_emb τ₀)) = star v ⬝ᵥ x'.gram y g (T.emb τ₀) *ᵥ v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `qf_cast _ _ _`. Establish `q2 : star (v ∘ Fin.cast (T.mult_emb τ₀)) ⬝ᵥ (x.hodge σ).gram (T.pt y) g' τ₀ *ᵥ (v ∘ Fin.cast (T.mult_emb τ₀)) = star v ⬝ᵥ (x'.hodge σ).gram y g (T.emb τ₀) *ᵥ v`. Rewrite using `[e2]`. Conclude with `qf_cast _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `h σ (T.pt y) (by rwa [hli]) g' τ₀ (v ∘ Fin.cast (T.mult_emb τ₀))` as an intermediate fact. Rewrite `this` using `[q1, q2, ← hr]`. Conclude with `this`. Establish `hkap : x'.kap = x.kap`. Unfold `ToroidalCompactificationData.kap ToroidalCompactificationData.muExp`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hmu]`. Establish `hwt : ∀ σ (R : ℝ) y, x'.wt σ R y = x.wt σ R (T.pt y)` using `fun σ R y => by`. Unfold `ToroidalCompactificationData.wt`. Rewrite using `[hkap, hr, hli]`. Introduce `σ R y`.
-
-Consider the cases of `R with`. Consider the case `none => exact hH σ y`. Consider the case `some R`. Introduce `f f' hp τ`. Express the relevant statement in the definitionally equal form `(EigMet.interp (x.wt σ R) (x.wt_mem R) (x.eigMet σ) (x.hodge σ)).gram (T.pt y) f' τ = ((EigMet.interp (x'.wt σ R) (x'.wt_mem R) (x'.eigMet σ) (x'.hodge σ)).gram y f (T.emb τ)).submatrix T.ix T.ix`.
-
-Simplify using `only [EigMet.interp]`. Rewrite using `[T.emb_rt, hwt, hmet σ y f f' hp τ, hH σ y f f' hp τ]`. Use `split_ifs`. Conclude with `mix_cast _ _ _ _`. Conclude with `mixDual_cast _ _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem metAt_eigMetAt : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (T : Tw s.T.Z) (x x' : ToroidalCompactificationData s), (∀ σ y, x'.r σ y = x.r σ (T.pt y)) → (∀ σ y, T.MetAt y (x.eigMet σ) (x'.eigMet σ)) → (∀ σ y, ¬ LiesIn y (genBd s.T.Z) → T.MetAt y (x.hodge σ) (x'.hodge σ)) → ∀ σ (R : Option ℝ) y, T.MetAt y (x.eigMetAt σ R) (x'.eigMetAt σ R) := by
   intro D A N j S κ s T x x' hr hmet hhodge

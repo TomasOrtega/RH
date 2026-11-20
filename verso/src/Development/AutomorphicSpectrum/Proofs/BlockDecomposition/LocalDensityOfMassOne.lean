@@ -26,9 +26,9 @@ def mulW (x : R ⊗[F] E) (X : Fin 1 → Fin 1 → R ⊗[F] E) : Fin 1 → Fin 1
   fun a i => x * X a i
 
 /- English proof (translation)
-Establish `e : gramR R σ J X 0 0 = inclR R (J 0 0) * (sigR R σ (X 0 0) * X 0 0)`. Simplify using `[gramR, hR, hform, JR]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, hX, norm_cd σ hσ hD, hj]`. Express the relevant statement in the definitionally equal form `((1 : R) ⊗ₜ[F] (algebraMap F E j₀)) * _ = _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[tmul_algebraMap, Algebra.TensorProduct.tmul_mul_tmul, one_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_rank_one_norm_form (σ : E →ₐ[F] E) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     {J : Matrix (Fin 1) (Fin 1) E} (hj : J 0 0 = algebraMap F E j₀)
@@ -52,9 +52,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {m : HermR (Fv F v) σ 1 → Measure (Fin 1 → Fin 1 → Fv F v ⊗[F] E)}
 
 /- English proof (translation)
-Use `filter_upwards [hfib s] with X hX a c hac`. Establish `e` using `congrFun (congrFun hX 0) 0`. Rewrite `e` using `[gram_rank_one_norm_form σ hσ hD hj hac]`. Establish `e' : (algebraMap F (Fv F v) j₀ * (a * a - algebraMap F (Fv F v) D * (c * c))) ⊗ₜ[F] (1 : E) = s ⊗ₜ[F] (1 : E)` using `e`. Rewrite `e'` using `[tmul_one_eq_cd (δ := δ), tmul_one_eq_cd (δ := δ)]`.
-
-Conclude with `(cd_inj h0 h1 e').1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_fib (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     (hj : J 0 0 = algebraMap F E j₀)
@@ -79,13 +77,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {L : Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)}
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `v.valuation_exists_uniformizer F`. Establish `h1 : Valued.v (algebraMap F (Fv F v) π) = WithZero.exp (-1 : ℤ)`. Rewrite using `[GlobalTheory.CompanionTheory.SW.GoodInt.valued_algebraMap, hπ]`. Establish `hp : ∀ i : ℕ, Valued.v ((algebraMap F (Fv F v) π) ^ i) = WithZero.exp (-(i : ℤ))`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_pow, h1, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules. Use `⟨algebraMap F (Fv F v) π, ?_, ?_, hp⟩` and prove the remaining obligations. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero h1.symm`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, h1]`. Express the relevant statement in the definitionally equal form `WithZero.exp (-1 : ℤ) ≤ WithZero.exp 0`. Rewrite using `[WithZero.exp_le_exp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_pi (v : HeightOneSpectrum (𝓞 F)) : ∃ π : Fv F v, π ≠ 0 ∧ π ∈ v.adicCompletionIntegers F ∧
     ∀ i : ℕ, Valued.v (π ^ i) = WithZero.exp (-(i : ℤ)) := by
@@ -107,11 +105,9 @@ theorem exists_pi (v : HeightOneSpectrum (𝓞 F)) : ∃ π : Fv F v, π ≠ 0 �
     omega
 
 /- English proof (translation)
-Use `measure_mono_null ?_ (ae_iff.1 (ae_fib h0 h1 hσ hD hj hfib s))` and prove the remaining obligations. Introduce `X hX hP`. Take `⟨a, c, ha, hc, hac⟩` from `(hL X).1 hX`. Apply `hs` to reduce the goal to its premises. Rewrite using `[← hP a c hac]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hj' : algebraMap F (Fv F v) j₀ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `vj.le`. Establish `hD' : algebraMap F (Fv F v) D ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
-
-Conclude with `vD.le`. Conclude with `mul_mem hj' (sub_mem (mul_mem ha ha) (mul_mem hD' (mul_mem hc hc)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_nonint (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     (hj : J 0 0 = algebraMap F E j₀)
@@ -131,11 +127,11 @@ theorem mass_nonint (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : �
   exact mul_mem hj' (sub_mem (mul_mem ha ha) (mul_mem hD' (mul_mem hc hc)))
 
 /- English proof (translation)
-Establish `e : max (Valued.v a) (Valued.v c) ^ 2 = WithZero.exp (-(k : ℤ))`. Rewrite using `[← val_norm h2 vD hns, ← hs, ← h, map_mul, vj, one_mul]`. Take `⟨M, hM⟩ : ∃ M, M = max (Valued.v a) (Valued.v c)` from `⟨_, rfl⟩`. Rewrite `e` using `[← hM]`. Establish `hM0 : M ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `e` using `[h0]`. Establish `h3 : WithZero.exp (-(k : ℤ)) = 0` using `by rw [← e]; simp`. Conclude with `WithZero.exp_ne_zero h3`. Rewrite `e` using `[← WithZero.exp_log hM0, ← WithZero.exp_nsmul, WithZero.exp_inj]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `at e`. Conclude with `(Int.even_coe_nat k).1 (by rw [Int.even_iff]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem even_of_norm (h2 : Valued.v (2 : Fv F v) = 1) {D' j' : Fv F v} (vD : Valued.v D' = 1) (vj : Valued.v j' = 1)
     (hns : ¬ IsSquare D') {s a c : Fv F v} {k : ℕ} (hs : Valued.v s = WithZero.exp (-(k : ℤ)))
@@ -154,7 +150,7 @@ theorem even_of_norm (h2 : Valued.v (2 : Fv F v) = 1) {D' j' : Fv F v} (vD : Val
   exact (Int.even_coe_nat k).1 (by rw [Int.even_iff]; omega)
 
 /- English proof (translation)
-Use `measure_mono_null ?_ (ae_iff.1 (ae_fib h0 h1 hσ hD hj hfib s))` and prove the remaining obligations. Introduce `X _ hP`. Take `⟨a, c, hac⟩` from `cd_surj h0 h1 (X 0 0)`. Conclude with `hk (even_of_norm h2 vD vj hns hs (hP a c hac))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mass_odd (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     (hj : J 0 0 = algebraMap F E j₀)
@@ -169,23 +165,21 @@ theorem mass_odd (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ *
   exact hk (even_of_norm h2 vD vj hns hs (hP a c hac))
 
 /- English proof (translation)
-Take `⟨π, hπ0, hπO, hπ⟩` from `exists_pi v`. Establish `hpl : π ^ l ≠ 0` using `pow_ne_zero _ hπ0`. Establish `hxy : cd F δ (π ^ l) (0 : Fv F v) * cd F δ (π ^ l)⁻¹ (0 : Fv F v) = 1`. Rewrite using `[cd_mul hD, one_eq_cd (δ := δ)]`. Simplify using `[hpl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨n, hn⟩ : ∃ n, n = π ^ (2 * l)` from `⟨_, rfl⟩`. Establish `hn0 : n ≠ 0` using `by rw [hn]; exact pow_ne_zero _ hπ0`. Establish `hvn : Valued.v n = WithZero.exp (-((2 * l : ℕ) : ℤ))` using `by rw [hn, hπ]`. Establish `hvn0 : Valued.v n ≠ 0` using `(Valuation.ne_zero_iff _).2 hn0`. Use `⟨s / n, by rw [map_div₀, hs, ← hvn, div_self hvn0], ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `hs` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hs.symm`. Establish `hnorm : n ⊗ₜ[F] (1 : E) = sigR (Fv F v) σ (Units.mkOfMulEqOne _ _ hxy : (Fv F v ⊗[F] E)ˣ) * (Units.mkOfMulEqOne _ _ hxy : (Fv F v ⊗[F] E)ˣ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mkOfMulEqOne, norm_cd σ hσ hD, hn]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key` using `hsc (Units.mkOfMulEqOne _ _ hxy) n (s / n) hnorm (IsUnit.mk0 _ (div_ne_zero hs0 hn0)) L hLm`. Rewrite `key` using `[mul_div_cancel₀ _ hn0, Units.val_mkOfMulEqOne]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Use `measure_congr (eventuallyEq_set.2 ?_)` and prove the remaining obligations. Use `filter_upwards [ae_fib (m := m) h0 h1 hσ hD hj hfib (s / n)] with X hP`. Take `⟨a, c, hac⟩` from `cd_surj h0 h1 (X 0 0)`. Establish `hN` using `hP a c hac`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvu : Valued.v (s / n) = 1` using `by rw [map_div₀, hs, ← hvn, div_self hvn0]`. Establish `e : max (Valued.v a) (Valued.v c) ^ 2 = 1`. Rewrite using `[← val_norm h2 vD hns, ← hvu, ← hN, map_mul, vj, one_mul]`. Establish `hM : max (Valued.v a) (Valued.v c) ≤ 1`. Assume the negation of the conclusion as `hM`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(one_lt_pow₀ (not_le.1 hM) two_ne_zero).ne' e`. Establish `ha : a ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(le_max_left _ _).trans hM`. Establish `hc : c ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `(le_max_right _ _).trans hM`. Establish `hXL : X ∈ L` using `(hL X).2 ⟨a, c, ha, hc, hac⟩`. Establish `hYL : mulW (cd F δ (π ^ l) (0 : Fv F v)) X ∈ L`. Use `(hL _).2 ⟨π ^ l * a, π ^ l * c, mul_mem (pow_mem hπO l) ha, mul_mem (pow_mem hπO l) hc, ?_⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `cd F δ (π ^ l) (0 : Fv F v) * X 0 0 = _`. Rewrite using `[hac, cd_mul hD]`. Simplify using the standard rewrite rules. Conclude with `⟨fun _ => hXL, fun _ => hYL⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mass_even (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     (hj : J 0 0 = algebraMap F E j₀)
@@ -255,7 +249,7 @@ variable (F) in
 def wv (δ : E) (t p q : R) : R ⊗[F] E := cd F δ ((p + q) / 2) ((p - q) / (2 * t))
 
 /- English proof (translation)
-Unfold `wv`. Rewrite using `[cd_mul hD, ht]`. Apply the tactic sequence `congr 1 <;> field_simp <;> ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wv_mul (hD : δ * δ = algebraMap F E D) (ht : algebraMap F R D = t * t) (h2 : (2 : R) ≠ 0) (ht0 : t ≠ 0)
     (p q p' q' : R) : wv F δ t p q * wv F δ t p' q' = wv F δ t (p * p') (q * q') := by
@@ -264,7 +258,7 @@ theorem wv_mul (hD : δ * δ = algebraMap F E D) (ht : algebraMap F R D = t * t)
   congr 1 <;> field_simp <;> ring
 
 /- English proof (translation)
-Rewrite using `[ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wv_N (ht : algebraMap F R D = t * t) (h2 : (2 : R) ≠ 0) (ht0 : t ≠ 0) (p q : R) :
     (p + q) / 2 * ((p + q) / 2) - algebraMap F R D * ((p - q) / (2 * t) * ((p - q) / (2 * t))) = p * q := by
@@ -273,7 +267,7 @@ theorem wv_N (ht : algebraMap F R D = t * t) (h2 : (2 : R) ≠ 0) (ht0 : t ≠ 0
   ring
 
 /- English proof (translation)
-Unfold `wv`. Rewrite using `[norm_cd σ hσ hD, wv_N ht h2 ht0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wv_norm (σ : E →ₐ[F] E) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D) (ht : algebraMap F R D = t * t)
     (h2 : (2 : R) ≠ 0) (ht0 : t ≠ 0) (p q : R) :
@@ -282,7 +276,7 @@ theorem wv_norm (σ : E →ₐ[F] E) (hσ : σ δ = -δ) (hD : δ * δ = algebra
   rw [norm_cd σ hσ hD, wv_N ht h2 ht0]
 
 /- English proof (translation)
-Take `⟨a, c, rfl⟩` from `cd_surj h0 h1 y`. Use `⟨a + c * t, a - c * t, ?_⟩` and prove the remaining obligations. Unfold `wv`. Apply the tactic sequence `congr 1 <;> field_simp <;> ring`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wv_surj (h0 : b2 0 = 1) (h1 : b2 1 = δ) (h2 : (2 : R) ≠ 0) (ht0 : t ≠ 0) (y : R ⊗[F] E) :
     ∃ p q : R, y = wv F δ t p q := by
@@ -302,21 +296,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {L : Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E)}
 
 /- English proof (translation)
-Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, map_zero]`. Conclude with `zero_ne_one h2`. Establish `ht0 : t ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `vt` using `[h, map_zero]`. Conclude with `zero_ne_one vt`. Establish `htO : t ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `vt.le`. Establish `htiO : t⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, vt, inv_one]`. Establish `h2iO : (2 : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, h2, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, c, ha, hc, hac⟩`. Rewrite `hac` using `[hX]`. Take `⟨e1, e2⟩` from `cd_inj h0 h1 hac`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `ep : p = a + c * t`. Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `eq : q = a - c * t`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← e1, ← e2]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ep, eq]`. Conclude with `⟨add_mem ha (mul_mem hc htO), sub_mem ha (mul_mem hc htO)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨hp, hq⟩`. Use `⟨(p + q) / 2, (p - q) / (2 * t), ?_, ?_, hX⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv]`. Conclude with `mul_mem (add_mem hp hq) h2iO`. Rewrite using `[div_eq_mul_inv, mul_inv]`.
-
-Conclude with `mul_mem (sub_mem hp hq) (mul_mem h2iO htiO)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wv_mem_iff (h0 : b2 0 = 1) (h1 : b2 1 = δ) (h2 : Valued.v (2 : Fv F v) = 1) {t : Fv F v}
     (vt : Valued.v t = 1)
@@ -360,15 +352,15 @@ theorem wv_mem_iff (h0 : b2 0 = 1) (h1 : b2 1 = δ) (h2 : Valued.v (2 : Fv F v) 
       exact mul_mem (sub_mem hp hq) (mul_mem h2iO htiO)
 
 /- English proof (translation)
-Establish `hV0 : V ≠ 0`. Introduce `h0`. Rewrite `h` using `[h0, zero_mul]`. Conclude with `WithZero.exp_ne_zero h.symm`. Establish `hW0 : W ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `h` using `[h0, mul_zero]`. Conclude with `WithZero.exp_ne_zero h.symm`. Take `⟨e, rfl⟩ : ∃ e, V = WithZero.exp e` from `⟨_, (WithZero.exp_log hV0).symm⟩`. Take `⟨f, rfl⟩ : ∃ f, W = WithZero.exp f` from `⟨_, (WithZero.exp_log hW0).symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[← WithZero.exp_add, WithZero.exp_inj]`. Establish `he : e ≤ 0`. Establish `: WithZero.exp e ≤ WithZero.exp 0` using `hV`. Conclude with `WithZero.exp_le_exp.1 this`. Establish `hf : f ≤ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: WithZero.exp f ≤ WithZero.exp 0` using `hW`. Conclude with `WithZero.exp_le_exp.1 this`. Use `⟨(-e).toNat, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exp_cover {V W : WithZero (Multiplicative ℤ)} {k : ℕ} (hV : V ≤ 1) (hW : W ≤ 1)
     (h : V * W = WithZero.exp (-(k : ℤ))) :
@@ -399,7 +391,7 @@ theorem exp_cover {V W : WithZero (Multiplicative ℤ)} {k : ℕ} (hV : V ≤ 1)
     omega
 
 /- English proof (translation)
-Establish `h1` using `mul_le_mul' hV hW`. Rewrite `h1` using `[h, ← WithZero.exp_add, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exp_disj {V W : WithZero (Multiplicative ℤ)} {k i j : ℕ} (hij : i < j) (hj : j ≤ k)
     (hV : V ≤ WithZero.exp (-(j : ℤ))) (hW : W ≤ WithZero.exp (-((k - i : ℕ) : ℤ)))
@@ -409,47 +401,43 @@ theorem exp_disj {V W : WithZero (Multiplicative ℤ)} {k i j : ℕ} (hij : i < 
   omega
 
 /- English proof (translation)
-Establish `h20 : (2 : Fv F v) ≠ 0`. Introduce `h`. Rewrite `h2` using `[h, map_zero]`. Conclude with `zero_ne_one h2`. Establish `vt : Valued.v t = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : Valued.v t ^ 2 = 1` using `by rw [sq, ← map_mul, ← ht, vD]`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `(pow_lt_one₀ zero_le h two_ne_zero).ne e`. Conclude with `(one_lt_pow₀ h two_ne_zero).ne' e`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `ht0 : t ≠ 0`. Introduce `h`. Rewrite `vt` using `[h, map_zero]`. Conclude with `zero_ne_one vt`. Take `⟨π, hπ0, hπO, hπ⟩` from `exists_pi v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩ : ∃ n, n = π ^ k` from `⟨_, rfl⟩`. Establish `hn0 : n ≠ 0` using `by rw [hn]; exact pow_ne_zero _ hπ0`. Establish `hvn : Valued.v n = WithZero.exp (-(k : ℤ))` using `by rw [hn, hπ]`. Establish `hvn0 : Valued.v n ≠ 0` using `(Valuation.ne_zero_iff _).2 hn0`. Establish `hs0 : s ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `hs` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hs.symm`. Use `⟨s / n, by rw [map_div₀, hs, ← hvn, div_self hvn0], ?_⟩` and prove the remaining obligations. Establish `hone : wv F δ t (1 : Fv F v) 1 = 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
 
-Rewrite using `[one_eq_cd (δ := δ)]`. Unfold `wv`. Use `congr 1`. Evaluate the numerical expressions. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxy : ∀ i : ℕ, wv F δ t (π ^ i) (π ^ (k - i)) * wv F δ t (π ^ i)⁻¹ (π ^ (k - i))⁻¹ = 1`. Introduce `i`. Rewrite using `[wv_mul hD ht h20 ht0, mul_inv_cancel₀ (pow_ne_zero _ hπ0), mul_inv_cancel₀ (pow_ne_zero _ hπ0), hone]`. Take `⟨S, hS⟩ : ∃ S : ℕ → Set (Fin 1 → Fin 1 → Fv F v ⊗[F] E), S = fun i => mulW (wv F δ t (π ^ i)⁻¹ (π ^ (k - i))⁻¹) ⁻¹' L` from `⟨_, rfl⟩`. Establish `hSm : ∀ i, MeasurableSet (S i)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Rewrite using `[hS]`. Conclude with `hmul _ hLm`. Establish `hmass : ∀ i ∈ Finset.range (k + 1), m (hermScal (Fv F v) σ s) (S i) = m (hermScal (Fv F v) σ (s / n)) L`. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hik : i ≤ k` using `by simpa [Nat.lt_succ_iff] using hi`. Establish `hnorm : n ⊗ₜ[F] (1 : E) = sigR (Fv F v) σ (Units.mkOfMulEqOne _ _ (hxy i) : (Fv F v ⊗[F] E)ˣ) * (Units.mkOfMulEqOne _ _ (hxy i) : (Fv F v ⊗[F] E)ˣ)`. Rewrite using `[Units.val_mkOfMulEqOne, wv_norm σ hσ hD ht h20 ht0, hn, ← pow_add, Nat.add_sub_cancel' hik]`. Establish `key` using `hsc (Units.mkOfMulEqOne _ _ (hxy i)) n (s / n) hnorm (IsUnit.mk0 _ (div_ne_zero hs0 hn0)) (S i) (hSm i)`. Rewrite `key` using `[mul_div_cancel₀ _ hn0, Units.val_mkOfMulEqOne]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[key]`. Use `congr 1`. Use extensionality with `X`. Rewrite using `[hS]`. Establish `e : mulW (wv F δ t (π ^ i)⁻¹ (π ^ (k - i))⁻¹) (mulW (wv F δ t (π ^ i) (π ^ (k - i))) X) = X`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a j`. Express the relevant statement in the definitionally equal form `_ * (_ * X a j) = X a j`. Rewrite using `[← mul_assoc, mul_comm (wv F δ t (π ^ i)⁻¹ (π ^ (k - i))⁻¹), hxy i, one_mul]`. Simplify using `only [Set.mem_preimage, e]`. Establish `hmem : ∀ (i : ℕ) (X : Fin 1 → Fin 1 → Fv F v ⊗[F] E) (p q : Fv F v), X 0 0 = wv F δ t p q → (X ∈ S i ↔ Valued.v p ≤ WithZero.exp (-(i : ℤ)) ∧ Valued.v q ≤ WithZero.exp (-((k - i : ℕ) : ℤ)))`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `i X p q hX`. Establish `e0 : (mulW (wv F δ t (π ^ i)⁻¹ (π ^ (k - i))⁻¹) X) 0 0 = wv F δ t ((π ^ i)⁻¹ * p) ((π ^ (k - i))⁻¹ * q)`. Express the relevant statement in the definitionally equal form `_ * X 0 0 = _`. Rewrite using `[hX, wv_mul hD ht h20 ht0]`. Rewrite using `[hS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `mulW _ X ∈ L ↔ _`. Rewrite using `[wv_mem_iff h0 h1 h2 vt hL e0, HeightOneSpectrum.mem_adicCompletionIntegers, HeightOneSpectrum.mem_adicCompletionIntegers, map_mul, map_mul, map_inv₀, map_inv₀, hπ, hπ, inv_mul_le_one₀ (zero_lt_iff.2 WithZero.exp_ne_zero), inv_mul_le_one₀ (zero_lt_iff.2 WithZero.exp_ne_zero)]`. Establish `hae : ∀ᵐ X ∂(m (hermScal (Fv F v) σ s)), ∃ p q : Fv F v, X 0 0 = wv F δ t p q ∧ Valued.v p * Valued.v q = WithZero.exp (-(k : ℤ))` using `by filter_upwards [ae_fib (m := m) h0 h1 hσ hD hj hfib s] with X hP`. Take `⟨p, q, hpq⟩` from `wv_surj h0 h1 h20 ht0 (X 0 0)`. Use `⟨p, q, hpq, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e` using `hP _ _ hpq`. Rewrite `e` using `[wv_N ht h20 ht0]`. Rewrite using `[← hs, ← e, map_mul, vj, one_mul, map_mul]`. Establish `hU : m (hermScal (Fv F v) σ s) L = m (hermScal (Fv F v) σ s) (⋃ i ∈ Finset.range (k + 1), S i)`. Use `measure_congr (eventuallyEq_set.2 ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hae] with X hX`. Take `⟨p, q, hpq, hv⟩` from `hX`. Prove the components needed by the constructor for the conclusion. Introduce `hXL`. Take `⟨hp, hq⟩` from `(wv_mem_iff h0 h1 h2 vt hL hpq).1 hXL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hp`, `hq` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Take `⟨i, hi, a, b⟩` from `exp_cover hp hq hv`. Conclude with `Set.mem_biUnion hi ((hmem i X p q hpq).2 ⟨a, b⟩)`. Introduce `hXU`. Take `⟨i, -, hi⟩` from `Set.mem_iUnion₂.1 hXU`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b⟩` from `(hmem i X p q hpq).1 hi`. Use `(wv_mem_iff h0 h1 h2 vt hL hpq).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `a.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `WithZero.exp (-(i : ℤ)) ≤ WithZero.exp 0`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Use `b.trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `WithZero.exp (-((k - i : ℕ) : ℤ)) ≤ WithZero.exp 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hU, measure_biUnion_finset₀ ?_ fun i _ => (hSm i).nullMeasurableSet, Finset.sum_congr rfl hmass, Finset.sum_const, Finset.card_range, nsmul_eq_mul]`. Introduce `i hi j hj hij`. Establish `hik : i ≤ k` using `by simpa [Nat.lt_succ_iff] using hi`.
-
-Establish `hjk : j ≤ k` using `by simpa [Nat.lt_succ_iff] using hj`. Use `measure_mono_null ?_ (ae_iff.1 hae)` and prove the remaining obligations. Introduce and unpack `X ⟨hXi, hXj⟩ hP`. Take `⟨p, q, hpq, hv⟩` from `hP`. Take `⟨a, b⟩` from `(hmem i X p q hpq).1 hXi`.
-
-Take `⟨a', b'⟩` from `(hmem j X p q hpq).1 hXj`. Break down `lt_or_gt_of_ne hij with h | h` into its components or cases. Conclude with `exp_disj h hjk a' b hv`. Conclude with `exp_disj h hik a b' hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mass_split (h0 : b2 0 = 1) (h1 : b2 1 = δ) (hσ : σ δ = -δ) (hD : δ * δ = algebraMap F E D)
     (hj : J 0 0 = algebraMap F E j₀)
@@ -585,39 +573,31 @@ section Main
 open PositivityTheory.SiegelWeilFormula.Gen in
 
 /- English proof (translation)
-Introduce `hScal hOne F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ _ hlam _ _ _ hm`. Take `⟨δ, D, j₀, b2, h0, h1, hσ, hD, hj, hev⟩` from `model σ hcm J hJ b`. Use `filter_upwards [hev, hOne F E σ hcm J hJ d b] with v hv hone s hs0`. Take `⟨v2, vD, vj, hlat⟩` from `hv`. Establish `hloc : IsLocR (Fv F v)` using `GlobalTheory.CompanionTheory.SW.LocFv.isLocR_Fv F v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hloc`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : BorelSpace (Fv F v) := ⟨rfl⟩`. Establish `hh` using `GlobalTheory.CompanionTheory.SW.coord_measures_haar F E σ hcm (Fv F v) d b (lam v) (hlam v).1`. Use `haveI hW := hh.2.1 1 1`. Use `haveI hH := hh.2.2 1`. Use `haveI hB := GlobalTheory.CompanionTheory.SW.Fact.borel_tup σ hcm (Fv F v) hloc 1 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfib : ∀ s, ∀ᵐ X ∂(m v (hermScal (Fv F v) σ s)), gramR (Fv F v) σ J X = (hermScal (Fv F v) σ s).1`. Introduce `s`. Use `filter_upwards [mem_ae_iff.2 ((hm v).1 (hermScal (Fv F v) σ s))] with X hX`. Conclude with `hX.1`. Establish `hmul : ∀ x : Fv F v ⊗[F] E, Measurable (mulW x)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Use `haveI : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousAdd (Fv F v) _`. Use `haveI : ContinuousSMul (Fv F v) (Fv F v ⊗[F] E) := IsModuleTopology.toContinuousSMul (Fv F v) _`. Establish `hc : Continuous fun y : Fv F v ⊗[F] E => x * y` using `IsModuleTopology.continuous_of_linearMap (LinearMap.mulLeft (Fv F v) x)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Continuous.measurable ?_` and prove the remaining obligations. Conclude with `continuous_pi fun a => continuous_pi fun i => hc.comp ((continuous_apply i).comp (continuous_apply a))`. Establish `hsc : ∀ (x : (Fv F v ⊗[F] E)ˣ) (n u : Fv F v), n ⊗ₜ[F] (1 : E) = sigR (Fv F v) σ x * x → IsUnit u → ∀ S, MeasurableSet S → m v (hermScal (Fv F v) σ (n * u)) S = m v (hermScal (Fv F v) σ u) (mulW (x : Fv F v ⊗[F] E) ⁻¹' S)`. Introduce `x n u hn hu S hS`. Rewrite using `[← hScal F E σ hcm J hJ (Fv F v) hloc _ _ (m v) hW hH (hm v) x n u hn hu]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Conclude with `Measure.map_apply (hmul x) hS`. Establish `hLm : MeasurableSet (latV (n` using `1) (M := 1) b v) := (GlobalTheory.T.local_lattice_compact_open_unit_volume F E σ hcm d b 1 1 v).2.1.measurableSet`. Establish `hL : ∀ X, X ∈ latV (n` using `1) (M := 1) b v ↔ ∃ a c : Fv F v, a ∈ v.adicCompletionIntegers F ∧ c ∈ v.adicCompletionIntegers F ∧ X 0 0 = cd F δ a c := by`. Introduce `X`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hX`. Take `⟨a, c, ha, hc, e⟩` from `(hlat (X 0 0)).1 (fun k => hX 0 0 k)`. Conclude with `⟨a, c, ha, hc, e⟩`. Introduce and unpack `⟨a, c, ha, hc, e⟩ i j k`. Take `rfl : i = 0` from `Subsingleton.elim _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `rfl : j = 0` from `Subsingleton.elim _ _`. Conclude with `(hlat (X 0 0)).2 ⟨a, c, ha, hc, e⟩ k`. Establish `hfin : ∀ u : Fv F v, Valued.v u = 1 → (cfac E v : ℝ) * (m v (hermScal (Fv F v) σ u) (latV b v)).toReal = 1`. Introduce `u hu`. Establish `e` using `congrArg ENNReal.toReal (hone (lam v) (hlam v) (m v) (hm v) u hu)`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `e` using `[ENNReal.toReal_mul]`. Distinguish the cases in `hsO : s ∈ v.adicCompletionIntegers F`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : ℕ, Valued.v s = WithZero.exp (-(k : ℤ)) := by`. Establish `h0 : Valued.v s ≠ 0` using `(Valuation.ne_zero_iff _).2 hs0`. Establish `h1' : Valued.v s ≤ 1` using `by rwa [HeightOneSpectrum.mem_adicCompletionIntegers] at hsO`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he⟩ : ∃ e, Valued.v s = WithZero.exp e` from `⟨_, (WithZero.exp_log h0).symm⟩`. Establish `h2' : e ≤ 0`. Rewrite `h1'` using `[he]`. Establish `: WithZero.exp e ≤ WithZero.exp 0` using `h1'`. Conclude with `WithZero.exp_le_exp.1 this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(-e).toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite using `[rv_of_val _ s k hk]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hF : IsField (Fv F v ⊗[F] E)`. Establish `hns` using `(isField_iff σ h0 h1 hD).1 hF`. Establish `he : eR E v = -1` using `by simp [eR, eSp, hF]`. Rewrite using `[he, neg_one_geom_sum]`. Distinguish the cases in `hev : Even k`.
-
-Take `⟨l, rfl⟩` from `hev`. Establish `hk' : Valued.v s = WithZero.exp (-((2 * l : ℕ) : ℤ))`. Rewrite using `[hk, two_mul]`. Take `⟨u, hu, e⟩` from `mass_even h0 h1 hσ hD hj hfib hsc v2 vD vj hns hLm hL hk'`. Rewrite using `[e, hfin u hu, if_neg (by simp [Nat.even_add_one])]`.
-
-Rewrite using `[mass_odd (L := latV b v) h0 h1 hσ hD hj hfib v2 vD vj hns hk hev, if_pos (by simpa [Nat.even_add_one] using hev)]`. Simplify using the standard rewrite rules. Establish `hsq : IsSquare (algebraMap F (Fv F v) D)`. Assume the negation of the conclusion as `h`. Conclude with `hF ((isField_iff σ h0 h1 hD).2 h)`.
-
-Take `⟨t, ht⟩` from `hsq`. Establish `he : eR E v = 1` using `by simp [eR, eSp, hF]`. Take `⟨u, hu, e⟩` from `mass_split h0 h1 hσ hD hj hfib hsc hmul v2 vD vj ht hLm hL hk`. Rewrite using `[he, e, ENNReal.toReal_mul, ENNReal.toReal_natCast, mul_left_comm, hfin u hu]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[rv_of_not_int _ s hsO, mass_nonint h0 h1 hσ hD hj hfib vD vj hL hsO]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locR : Scal → MassOne → LocR := by
   intro hScal hOne F E _ _ _ _ _ σ J d b li lam μ 𝓕 mi m hcm hJ _ hlam _ _ _ hm

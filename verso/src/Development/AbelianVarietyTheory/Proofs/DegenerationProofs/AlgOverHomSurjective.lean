@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem algOverHom_left (ψ : A →ₐ[k] B) : (algOverHom ψ).left = spMap (ψ : A →+* B) := rfl
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[Over.comp_left, algOverHom_left, algOverHom_left, algOverHom_left]`. Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem algOverHom_comp (ψ : A →ₐ[k] B) (χ : B →ₐ[k] C) :
     algOverHom (χ.comp ψ) = algOverHom χ ≫ algOverHom ψ := by
@@ -32,7 +32,7 @@ theorem algOverHom_comp (ψ : A →ₐ[k] B) (χ : B →ₐ[k] C) :
   rfl
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[algOverHom_left]`. Conclude with `Spec.map_id _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem algOverHom_id : algOverHom (AlgHom.id k A) = 𝟙 _ := by
   ext1
@@ -40,7 +40,7 @@ theorem algOverHom_id : algOverHom (AlgHom.id k A) = 𝟙 _ := by
   exact Spec.map_id _
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h1 : spMap (a : A →+* B) = spMap (b : A →+* B)` using `congrArg (fun x => x.left) h`. Establish `h2` using `Spec.map_injective h1`. Conclude with `AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algOverHom_injective : Function.Injective (algOverHom : (A →ₐ[k] B) → _) := by
   intro a b h
@@ -49,9 +49,9 @@ theorem algOverHom_injective : Function.Injective (algOverHom : (A →ₐ[k] B) 
   exact AlgHom.coe_ringHom_injective (congrArg CommRingCat.Hom.hom h2)
 
 /- English proof (translation)
-Introduce `φ`. Take `⟨g, hg⟩` from `Spec.map_surjective φ.left`. Establish `hw : φ.left ≫ spMap (algebraMap k A) = spMap (algebraMap k B)` using `Over.w φ`. Rewrite `hw` using `[← hg, ← Spec.map_comp]`. Establish `h2` using `congrArg CommRingCat.Hom.hom (Spec.map_injective hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨⟨g.hom, fun c => congrArg (fun f : k →+* B => f c) h2⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `hg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem algOverHom_surjective : Function.Surjective (algOverHom : (A →ₐ[k] B) → _) := by
   intro φ
@@ -64,7 +64,7 @@ theorem algOverHom_surjective : Function.Surjective (algOverHom : (A →ₐ[k] B
   exact hg
 
 /- English proof (translation)
-Apply `algOverHom_injective` to reduce the goal to its premises. Use `ext1`. Use `congrArg (fun x => x.left) h` as an intermediate fact. Simplify using `only [Over.comp_left] at this`. Conclude with `(cancel_mono j.left).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_of_comp_eq {G : Over (Sp k)} {j : algOver k A ⟶ G} (hj : IsOpenImmersion j.left) {a b : A →ₐ[k] B}
     (h : algOverHom a ≫ j = algOverHom b ≫ j) : a = b := by
@@ -79,9 +79,9 @@ end General
 variable {k : Type} [Field k]
 
 /- English proof (translation)
-Establish `hu : ∀ y : nonZeroDivisors (PowerSeries k), IsUnit (ρ y)`. Introduce and unpack `⟨y, hy⟩`. Establish `h0 : y ≠ 0` using `nonZeroDivisors.ne_zero hy`. Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible h0 (PowerSeries.X_irreducible (R := k))`. Take `⟨u, hu⟩` from `hn.symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `show IsUnit (ρ y)`. Rewrite using `[← hu, map_mul, map_pow]`. Conclude with `(h.pow n).mul (u.isUnit.map ρ)`. Conclude with `⟨IsLocalization.liftAlgHom (S := FractionRing (PowerSeries k)) hu, fun x => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift {F : Type} [CommRing F] [Algebra k F] (ρ : PowerSeries k →ₐ[k] F)
     (h : IsUnit (ρ PowerSeries.X)) :
@@ -111,7 +111,7 @@ def TwoVar {G : Over (Sp k)} [GrpObj G] {A : Type} [CommRing A] [Algebra k A] (j
       algOverHom σ₁ ≫ a = (algOverHom χ ≫ j) * (algOverHom σ₀ ≫ a)
 
 /- English proof (translation)
-The claim follows from `AlgHom.ext_of_adjoin_eq_top hc.2.2.1 (by rintro _ ⟨i, rfl⟩; exact h i)`.
+A detailed English derivation is pending.
 -/
 theorem IsChart.hom_ext {G : Over (Sp k)} [GrpObj G] {A : Type} [CommRing A] [Algebra k A] {j : algOver k A ⟶ G}
     {ε : A →ₐ[k] k} {r : ℕ} {f : Fin r → A} (hc : IsChart G j ε f) {B : Type} [CommRing B] [Algebra k B]

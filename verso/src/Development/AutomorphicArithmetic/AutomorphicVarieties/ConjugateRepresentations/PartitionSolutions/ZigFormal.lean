@@ -3,15 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ConjugateRepresent
 open UpperTheory.V.Cj.A
 
 /- English proof (translation)
-Introduce `Γ V S I _ _ _ _ d G`. Use `⟨fun q k u u' c h hz => ?_, fun ι hι q => ?_⟩` and prove the remaining obligations. Consider the cases of `q with`. Consider the case `zero => exact fun x hx => (h x hx).symm.trans (hz x hx)`. Consider the case `succ q`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Take `⟨b, hb, hdb, hz⟩` from `hz`. Conclude with `⟨b, hb, fun x hx => (hdb x hx).trans (h x hx), hz⟩`. Proceed by induction on `q with`. Consider the case `zero => exact fun k u c hz x hx => hz (x.map ι) (by rw [List.length_map, hx])`. Consider the case `succ q ih`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce and unpack `k u c ⟨b, hb, hdb, hz⟩`. Use `⟨fun x => b (x.map ι), fun γ x hx => ?_, fun x hx => hdb (x.map ι) (by rw [List.length_map, hx]), ?_⟩` and prove the remaining obligations. Establish `h` using `hb γ (x.map ι) (by rw [List.length_map, hx])`. Use `Eq.trans ?_ h` and prove the remaining obligations. Simplify using `only [List.map_map]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Use function extensionality and compare the values at `δ`. Conclude with `hι γ δ`. Establish `h` using `ih (k + 1) _ c hz`. Establish `e : (fun x : List Γ => UpperTheory.V.Lit.Geo.hd b (x.map ι)) = UpperTheory.V.Lit.Geo.hd (fun x : List Γ => b (x.map ι))`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `fun x => (hdFacts.2.2.1 I Γ _ ι b x).symm`. Rewrite `h` using `[e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.zigFormal :
     ZigFormal := by

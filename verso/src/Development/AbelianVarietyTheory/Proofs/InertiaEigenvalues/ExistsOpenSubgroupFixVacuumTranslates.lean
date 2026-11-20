@@ -31,9 +31,9 @@ noncomputable section
 namespace GlobalTheory.VacTransFix
 
 /- English proof (translation)
-Use `set a : AE D := algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) ((M : D.host.F)⁻¹)) with ha_def`. Establish `ha : a * (M : AE D) = 1`. Establish `e : (M : AE D) = algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) (M : D.host.F))`. Simplify using `[map_natCast]`. Rewrite using `[e, ha_def, ← map_mul, ← map_mul, inv_mul_cancel₀ (Nat.cast_ne_zero.2 hM), map_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ z : WO V W, a • (M • z) = z` using `fun z => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (AE D), smul_smul, ha, one_smul]`. Rewrite using `[← key x, h, key]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_cancel {D : D7} {V W : HSp D} {M : ℕ} (hM : M ≠ 0) {x x' : WO V W} (h : M • x = M • x') : x = x' := by
   set a : AE D := algebraMap (AF D.host.F) (AE D) (algebraMap D.host.F (AF D.host.F) ((M : D.host.F)⁻¹)) with ha_def
@@ -46,11 +46,11 @@ theorem nsmul_cancel {D : D7} {V W : HSp D} {M : ℕ} (hM : M ≠ 0) {x x' : WO 
   rw [← key x, h, key]
 
 /- English proof (translation)
-Introduce `D ψ θ V W χV χW om ΛV ΛW sW f₀ hP M hM`. Take `⟨hpair, -, -, -, hsdV, hsdW, -, hcart, hvac⟩` from `hP`. Take `⟨J₁, hJ₁o, hJ₁⟩` from `GlobalTheory.VacFixOpen.exists_open_fix_vacO D ψ θ V W χV χW om hpair.weil hpair.sigV hpair.sigW (fun _ => 1) sW (fun τ => GlobalTheory.SmoothVac.isCartanInv_one V hpair.std τ) hcart ΛV ΛW hsdV hsdW f₀ hvac`. Take `⟨J₂, hJ₂o, hJ₂⟩` from `GlobalTheory.LatFixMod.exists_open_keep_cong D V W ΛV ΛW hsdV hsdW (2 * M * M) (Nat.mul_pos (Nat.mul_pos two_pos (Nat.pos_of_ne_zero hM)) (Nat.pos_of_ne_zero hM))`. Use `⟨J₁ ⊓ J₂, by rw [Subgroup.coe_inf]; exact hJ₁o.inter hJ₂o, fun k hk hkJ y hy => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hθ : IsThetaFunO ψ V W f₀` using `hvac.2.theta`. Rewrite using `[hpair.weil.om_heis k 1 y f₀ hθ, hJ₁ k hk hkJ.1]`. Take `⟨l, hl, e⟩` from `(hJ₂ k hk hkJ.2).2 (M • y) hy`. Establish `hlin : actO V W k 1 (M • y) = M • actO V W k 1 y` using `(AddMonoidHom.mk' (actO V W k 1) (GlobalTheory.LatNhds.actO_add k 1)).map_nsmul M y`. Establish `e2 : M • actO V W k 1 y = M • (y + 2 • (M • l))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hlin, e, smul_add, smul_smul, smul_smul, show 2 * M * M = M * 2 * M by ring]`. Rewrite using `[nsmul_cancel hM e2]`. Use `GlobalTheory.AdForm.SplitGen.heisO_add_two ψ (hvac.2.lat.1 _ (AddSubgroup.nsmul_mem _ hl M)) ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.RatSelfDual.symplO_nsmul]`. Conclude with `GlobalTheory.LatVac.char_sympl_eq_one hvac.1 hsdV hsdW hy hl`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_trans : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (V W : HSp D) (χV χW : (AE D)ˣ →* Circle) (om : GA D V × GA D W →* Module.End ℂ (WO V W → ℂ)) (ΛV : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (ΛW : Submodule (𝓞 D.host.E) (Fin W.rank → D.host.E)) (sW : D.what₂.Tau → Matrix (Fin W.rank) (Fin W.rank) ℂ) (f₀ : WO V W → ℂ), VacPair ψ θ V W χV χW om ΛV ΛW sW f₀ → ∀ M : ℕ, M ≠ 0 → ∃ J : Subgroup (Bridge.Gf V), IsOpen (J : Set (Bridge.Gf V)) ∧ ∀ k ∈ GfC V, fin V k ∈ J → ∀ y : WO V W, M • y ∈ latO V W (ΛV : Set (Fin V.rank → D.host.E)) (ΛW : Set (Fin W.rank → D.host.E)) (fun _ => True) → om (k, 1) (heisO ψ V W y f₀) = heisO ψ V W y f₀ := by
   intro D ψ θ V W χV χW om ΛV ΛW sW f₀ hP M hM

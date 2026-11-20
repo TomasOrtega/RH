@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.PsiFrame
 
 /- English proof (translation)
-Set `F : X →+ Additive G` to `AddMonoidHom.mk' (fun x => Additive.ofMul (f x)) (fun a b => by simp [hf])`. Set `G' : X →+ Additive G` to `AddMonoidHom.mk' (fun x => Additive.ofMul (g x)) (fun a b => by simp [hg])`. Establish `: F.toIntLinearMap = G'.toIntLinearMap` using `bX.ext fun l => by simp [F, G', h]`. Use `LinearMap.congr_fun this χ` as an intermediate fact. Simplify `this` using `[F, G']`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem char_ext {X G : Type} [AddCommGroup X] [CommGroup G] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (f g : X → G)
     (hf : ∀ a b, f (a + b) = f a * f b) (hg : ∀ a b, g (a + b) = g a * g b) (h : ∀ l, f (bX l) = g (bX l)) (χ : X) :
@@ -29,27 +29,27 @@ theorem char_ext {X G : Type} [AddCommGroup X] [CommGroup G] {r : ℕ} (bX : Mod
 def eu (z : ℂ) : ℂˣ := Units.mk0 (Complex.exp z) (Complex.exp_ne_zero z)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[eu, Complex.exp_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eu_add (z w : ℂ) : eu (z + w) = eu z * eu w := by
   ext; simp [eu, Complex.exp_add]
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `[co]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem co_add {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (a b : X) :
     co bX (a + b) = co bX a + co bX b := by
   ext l; simp [co]
 
 /- English proof (translation)
-Use extensionality with `l`. Simplify using `[co]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem co_neg {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (a : X) :
     co bX (-a) = - co bX a := by
   ext l; simp [co]
 
 /- English proof (translation)
-Use extensionality with `l'`. Distinguish the cases in `h : l' = l`. Substitute `h` using the available equality. Simplify using `[co]`. Simplify using `[co, h, Finsupp.single_apply, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem co_basis {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (l : Fin r) :
     co bX (bX l) = Pi.single l 1 := by
@@ -59,29 +59,27 @@ theorem co_basis {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r
   · simp [co, h, Finsupp.single_apply, Ne.symm h]
 
 /- English proof (translation)
-Use `set T : X → X → ℂˣ := fun a b => Ψ (a + b) / Ψ a / Ψ b with hT`. Establish `Ts : ∀ a b, T a b = T b a` using `fun a b => by simp only [hT, add_comm a b, div_right_comm]`. Establish `Tl : ∀ a a' b, T (a + a') b = T a b * T a' b` using `hb`. Establish `Tr : ∀ a b b', T a (b + b') = T a b * T a b'` using `fun a b b' => by rw [Ts, Tl, Ts b, Ts b']`. Establish `hc : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `t : Matrix (Fin r) (Fin r) ℂ` to `Matrix.of fun l l' => Complex.log (T (bX l) (bX l')) / (2 * Real.pi * Complex.I)`. Establish `ts : t.IsSymm`. Use extensionality with `l l'`. Simplify using `[t, Ts (bX l)]`. Establish `hs : ∀ u v : Fin r → ℂ, u ⬝ᵥ t *ᵥ v = v ⬝ᵥ t *ᵥ u` using `fun u v => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, ts.eq, dotProduct_comm]`. Establish `TQ : ∀ a b, T a b = eu (2 * Real.pi * Complex.I * (co bX a ⬝ᵥ t *ᵥ co bX b))`. Introduce `a b`. Use `char_ext bX (fun a => T a b) (fun a => eu (2 * Real.pi * Complex.I * (co bX a ⬝ᵥ t *ᵥ co bX b))) (fun _ _ => Tl _ _ _) (fun _ _ => by rw [co_add, add_dotProduct, mul_add, eu_add]) (fun l => ?_) a` and prove the remaining obligations. Use `char_ext bX (fun b => T (bX l) b) (fun b => eu (2 * Real.pi * Complex.I * (co bX (bX l) ⬝ᵥ t *ᵥ co bX b))) (fun _ _ => Tr _ _ _) (fun _ _ => by rw [co_add, Matrix.mulVec_add, dotProduct_add, mul_add, eu_add]) (fun l' => ?_) b` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `ext`. Establish `: Pi.single l 1 ⬝ᵥ t *ᵥ Pi.single l' 1 = t l l'` using `by simp`. Simplify using `only [co_basis, this, eu, Units.val_mk0, t, Matrix.of_apply]`. Rewrite using `[mul_div_cancel₀ _ hc, Complex.exp_log (Units.ne_zero _)]`. Set `φ : X → ℂˣ` to `fun χ => Ψ χ / eu (Real.pi * Complex.I * (co bX χ ⬝ᵥ t *ᵥ co bX χ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `φadd : ∀ a b, φ (a + b) = φ a * φ b`. Introduce `a b`. Establish `h1 : Ψ (a + b) = T a b * Ψ a * Ψ b`. Simplify using `only [hT]`. Rewrite using `[mul_right_comm, div_mul_cancel, div_mul_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (Real.pi * Complex.I * (co bX (a + b) ⬝ᵥ t *ᵥ co bX (a + b)) : ℂ) = 2 * Real.pi * Complex.I * (co bX a ⬝ᵥ t *ᵥ co bX b) + Real.pi * Complex.I * (co bX a ⬝ᵥ t *ᵥ co bX a) + Real.pi * Complex.I * (co bX b ⬝ᵥ t *ᵥ co bX b)`. Rewrite using `[co_add, Matrix.mulVec_add, add_dotProduct, dotProduct_add, dotProduct_add, hs (co bX b) (co bX a)]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [φ]`. Rewrite using `[h1, h2, eu_add, eu_add, ← TQ, _root_.mul_assoc, _root_.mul_assoc, mul_div_mul_left_eq_div, div_mul_div_comm]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `φev : ∀ a, φ (-a) = φ a` using `fun a => by`. Simplify using `only [φ, hev, co_neg, Matrix.mulVec_neg, neg_dotProduct, dotProduct_neg, neg_neg]`. Establish `φ0 : φ 0 = 1`. Use `φadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_eq_left.1 this.symm`. Establish `φsq : ∀ a, (φ a : ℂ) = 1 ∨ (φ a : ℂ) = -1` using `fun a => by`. Use `φadd a (-a)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel, φ0, φev]`. Establish `h2 : (φ a : ℂ) * φ a = 1` using `by rw [← Units.val_mul, ← this, Units.val_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_self_eq_one_iff.1 h2`. Set `b2 : Fin r → ℂ` to `fun l => if (φ (bX l) : ℂ) = 1 then 0 else 1 / 2`. Use `⟨t, b2, ts, fun l => ?_, fun χ => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [b2]; split_ifs <;> simp`. Establish `: φ χ = eu (2 * Real.pi * Complex.I * (co bX χ ⬝ᵥ b2))`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `char_ext bX φ (fun χ => eu (2 * Real.pi * Complex.I * (co bX χ ⬝ᵥ b2))) φadd (fun _ _ => by rw [co_add, add_dotProduct, mul_add, eu_add]) (fun l => ?_) χ` and prove the remaining obligations. Use `ext`. Simplify using `only [co_basis, single_dotProduct, _root_.one_mul, eu, Units.val_mk0, b2]`. Use `split_ifs with h`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[(φsq _).resolve_left h, show (2 * Real.pi * Complex.I * (1 / 2) : ℂ) = Real.pi * Complex.I by ring, Complex.exp_pi_mul_I]`. Establish `h2 : Ψ χ = eu (Real.pi * Complex.I * (co bX χ ⬝ᵥ t *ᵥ co bX χ) + 2 * Real.pi * Complex.I * (co bX χ ⬝ᵥ b2))`. Rewrite using `[eu_add, ← this]`. Simplify using `only [φ]`. Rewrite using `[mul_div_cancel]`.
-
-Rewrite using `[h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_quad {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fin r) ℤ X) (Ψ : X → ℂˣ)
     (hev : ∀ a, Ψ (-a) = Ψ a)
@@ -150,15 +148,15 @@ theorem exists_quad {X : Type} [AddCommGroup X] {r : ℕ} (bX : Module.Basis (Fi
     rw [h2]; rfl
 
 /- English proof (translation)
-Use `choose z hz using fun l => e.onto (N.c (bX l))`. Set `t12 : Matrix (Fin g') (Fin r) ℂ` to `Matrix.of fun i l => z l i`. Set `w : N.X → Fin g' → ℂ` to `fun χ => t12 *ᵥ co bX χ`. Establish `wadd : ∀ a b, w (a + b) = w a + w b` using `fun a b => by simp only [w, co_add, Matrix.mulVec_add]`. Establish `wneg : ∀ a, w (-a) = - w a` using `fun a => by simp only [w, co_neg, Matrix.mulVec_neg]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ceq : ∀ χ, N.c χ = e.ex (w χ)`. Use `char_ext bX N.c (fun χ => e.ex (w χ)) N.c_add (fun a b => by rw [wadd, e.ex_add]) (fun l => ?_)` and prove the remaining obligations. Rewrite using `[← hz]`. Use `congr 1`. Use extensionality with `i`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[w, co_basis, t12]`. Take `⟨t, b2, ht, hb2, h⟩` from `exists_quad bX (fun χ => N.ψ χ * e.fr (w χ)) (fun a => by`. Establish `h1` using `N.even a`. Establish `h2` using `hs (w a)`. Rewrite using `[wneg, ← h2, ← h1, ceq, _root_.mul_assoc])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun a a' b => by`. Establish `h1` using `congrArg Additive.ofMul (N.bimult a a' b)`. Establish `h2` using `congrArg Additive.ofMul (hc (w a) (w a') (w b))`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ceq, wadd, ofMul_mul, ofMul_div] at h1 h2 ⊢`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Supply the required witnesses or components.
 
-Take the linear combination `(norm := abel) h1 - h2)`. Conclude with `⟨{ toAB := e, cub := hc, sym := hs, t12 := t12, t22 := t, b2 := b2, toricPeriodBlock_isSymm := ht, hb2 := hb2, c_eq := ceq, ψ_eq := fun χ => by simpa using h χ }, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cd (N : NumD ℂ) (g' r : ℕ) (bX : Module.Basis (Fin r) ℤ N.X) (e : AB N.toNumB g') (hc : e.Cub) (hs : e.Sym) :
     ∃ d : CD N g' r bX, d.toAB = e := by

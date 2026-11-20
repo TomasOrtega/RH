@@ -19,28 +19,28 @@ variable (Z : Subalgebra k (Matrix (Fin n) (Fin n) k))
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[qZ, mul_add, trace_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_add (x x' : Matrix (Fin n) (Fin n) k) : qZ Z (x + x') = qZ Z x + qZ Z x' := by
   funext i; simp [qZ, mul_add, trace_add]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[qZ, trace_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_smul (a : k) (x : Matrix (Fin n) (Fin n) k) : qZ Z (a • x) = a • qZ Z x := by
   funext i; simp [qZ, trace_smul]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[qZ, mul_sub, trace_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qZ_sub (x x' : Matrix (Fin n) (Fin n) k) : qZ Z (x - x') = qZ Z x - qZ Z x' := by
   funext i; simp [qZ, mul_sub, trace_sub]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Rewrite using `[← hg a ha, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem_Z {g : GL (Fin n) k} (hg : g ∈ Gz Z) {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Z) :
     g.val * a * g⁻¹.val = a := by
@@ -48,9 +48,9 @@ theorem conj_mem_Z {g : GL (Fin n) k} (hg : g ∈ Gz Z) {a : Matrix (Fin n) (Fin
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [qZ]`. Use `set b : Matrix (Fin n) (Fin n) k := ((Module.finBasis k Z i : Z) : Matrix (Fin n) (Fin n) k)`. Establish `hb : b * g.val = g.val * b` using `hg b (Module.finBasis k Z i).2`. Establish `e : b * (g.val * x * g⁻¹.val) = g.val * (b * x) * g⁻¹.val`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, hb, mul_assoc g.val b x]`. Rewrite using `[e, trace_mul_comm, ← mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qZ_conj {g : GL (Fin n) k} (hg : g ∈ Gz Z) (x : Matrix (Fin n) (Fin n) k) :
     qZ Z (g.val * x * g⁻¹.val) = qZ Z x := by
@@ -64,14 +64,14 @@ theorem qZ_conj {g : GL (Fin n) k} (hg : g ∈ Gz Z) (x : Matrix (Fin n) (Fin n)
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `b hb` and use `hZ.1 b hb a ha`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_Bz_of_mem (hZ : CR Z) {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Z) : a ∈ Bz Z :=
   fun b hb => hZ.1 b hb a ha
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `haveI := hZ.2`. Take `⟨m, hm⟩` from `h`. Establish `h' : IsNilpotent (⟨a, ha⟩ : Z)` using `⟨m, Subtype.ext (by simpa using hm)⟩`. Conclude with `congrArg Subtype.val (IsNilpotent.eq_zero h')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_nilp (hZ : CR Z) {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Z) (h : IsNilpotent a) : a = 0 := by
   haveI := hZ.2
@@ -82,16 +82,16 @@ theorem eq_zero_of_nilp (hZ : CR Z) {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Z
 variable {Z}
 
 /- English proof (translation)
-Take `⟨c, hc, hcy, -⟩` from `h2 n Z hZ y`. Conclude with `⟨c, hc, hcy⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qZ_Z_exists (h2 : FibZN (k := k)) (hZ : CR Z) (y : Fin (Module.finrank k Z) → k) : ∃ c ∈ Z, qZ Z c = y := by
   obtain ⟨c, hc, hcy, -⟩ := h2 n Z hZ y
   exact ⟨c, hc, hcy⟩
 
 /- English proof (translation)
-Take `⟨d, hd, -, hiff⟩` from `h2 n Z hZ (qZ Z c)`. Establish `n1 : IsNilpotent (c - d)` using `(hiff c (mem_Bz_of_mem Z hZ hc)).1 ⟨rfl, c, hc, by simp⟩`. Establish `n2 : IsNilpotent (c' - d)` using `(hiff c' (mem_Bz_of_mem Z hZ hc')).1 ⟨h.symm, c', hc', by simp⟩`. Establish `z1` using `eq_zero_of_nilp Z hZ (Z.sub_mem hc hd) n1`. Establish `z2` using `eq_zero_of_nilp Z hZ (Z.sub_mem hc' hd) n2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `z1`, `z2` using `[sub_eq_zero]`. Rewrite using `[z1, z2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem qZ_Z_inj (h2 : FibZN (k := k)) (hZ : CR Z) {c c' : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (hc' : c' ∈ Z)
     (h : qZ Z c = qZ Z c') : c = c' := by
@@ -104,7 +104,7 @@ theorem qZ_Z_inj (h2 : FibZN (k := k)) (hZ : CR Z) {c c' : Matrix (Fin n) (Fin n
   rw [z1, z2]
 
 /- English proof (translation)
-Establish `h : ∃ c ∈ Z, qZ Z c = qZ Z x` using `qZ_Z_exists h2 hZ (qZ Z x)`. Unfold `piZ`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piZ_spec (h2 : FibZN (k := k)) (hZ : CR Z) (x : Matrix (Fin n) (Fin n) k) :
     piZ Z x ∈ Z ∧ qZ Z (piZ Z x) = qZ Z x := by
@@ -114,28 +114,28 @@ theorem piZ_spec (h2 : FibZN (k := k)) (hZ : CR Z) (x : Matrix (Fin n) (Fin n) k
   exact h.choose_spec
 
 /- English proof (translation)
-The claim follows from `qZ_Z_inj h2 hZ (piZ_spec h2 hZ x).1 hc ((piZ_spec h2 hZ x).2.trans h.symm)`.
+A detailed English derivation is pending.
 -/
 theorem piZ_eq_of (h2 : FibZN (k := k)) (hZ : CR Z) {x c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z)
     (h : qZ Z c = qZ Z x) : piZ Z x = c :=
   qZ_Z_inj h2 hZ (piZ_spec h2 hZ x).1 hc ((piZ_spec h2 hZ x).2.trans h.symm)
 
 /- English proof (translation)
-The claim follows from `piZ_eq_of h2 hZ (piZ_spec h2 hZ x').1 (by rw [(piZ_spec h2 hZ x').2, h])`.
+A detailed English derivation is pending.
 -/
 theorem piZ_qZ (h2 : FibZN (k := k)) (hZ : CR Z) {x x' : Matrix (Fin n) (Fin n) k} (h : qZ Z x = qZ Z x') :
     piZ Z x = piZ Z x' :=
   piZ_eq_of h2 hZ (piZ_spec h2 hZ x').1 (by rw [(piZ_spec h2 hZ x').2, h])
 
 /- English proof (translation)
-Rewrite using `[qZ_add, qZ_smul, qZ_sub, (piZ_spec h2 hZ x).2, sub_self, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qZ_sig (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) (x : Matrix (Fin n) (Fin n) k) :
     qZ Z (piZ Z x + (t : k) • (x - piZ Z x)) = qZ Z x := by
   rw [qZ_add, qZ_smul, qZ_sub, (piZ_spec h2 hZ x).2, sub_self, smul_zero, add_zero]
 
 /- English proof (translation)
-Establish `e` using `piZ_qZ h2 hZ (qZ_sig h2 hZ t p.1)`. Simplify using `only [sig, e]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only [Units.val_inv_eq_inv_val]`. Rewrite using `[add_sub_cancel_left, smul_smul, inv_mul_cancel₀ t.ne_zero, one_smul, add_sub_cancel]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) (p : Sp k n) : sig Z t⁻¹ (sig Z t p) = p := by
   have e := piZ_qZ h2 hZ (qZ_sig h2 hZ t p.1)
@@ -145,9 +145,9 @@ theorem sig_sig (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) (p : Sp k n) : sig Z
   rw [add_sub_cancel_left, smul_smul, inv_mul_cancel₀ t.ne_zero, one_smul, add_sub_cancel]
 
 /- English proof (translation)
-Establish `e : piZ Z (g.val * p.1 * g⁻¹.val) = piZ Z p.1` using `piZ_qZ h2 hZ (qZ_conj Z hg p.1)`. Establish `e2 : g.val * piZ Z p.1 * g⁻¹.val = piZ Z p.1` using `conj_mem_Z Z hg (piZ_spec h2 hZ p.1).1`. Simplify using `only [sig, act, e]`. Use `Prod.ext ?_ rfl` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_add, add_mul, e2, mul_smul_comm, smul_mul_assoc, mul_sub, sub_mul, e2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_act (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {g : GL (Fin n) k} (hg : g ∈ Gz Z) (p : Sp k n) :
     sig Z t (act g p) = act g (sig Z t p) := by
@@ -168,7 +168,7 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun _ => (continuous_const.matrix_mul continuous_id).matrix_trace`.
+A detailed English derivation is pending.
 -/
 theorem continuous_qZ [IsTopologicalRing k] : Continuous (qZ Z) :=
   continuous_pi fun _ => (continuous_const.matrix_mul continuous_id).matrix_trace
@@ -181,7 +181,7 @@ def qLin (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : Z →ₗ[k] (Fin (Modul
   map_smul' a b := by simp [qZ_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a b h => Subtype.ext (qZ_Z_inj h2 hZ a.2 b.2 h), fun y => by obtain ⟨c, hc, hcy⟩ := qZ_Z_exists h2 hZ y exact ⟨⟨c, hc⟩, hcy⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem qLin_bij (h2 : FibZN (k := k)) (hZ : CR Z) : Function.Bijective (qLin Z) :=
   ⟨fun a b h => Subtype.ext (qZ_Z_inj h2 hZ a.2 b.2 h), fun y => by
@@ -192,13 +192,13 @@ def eZ (h2 : FibZN (k := k)) (hZ : CR Z) : (Fin (Module.finrank k Z) → k) →�
   Z.val.toLinearMap ∘ₗ (LinearEquiv.ofBijective (qLin Z) (qLin_bij h2 hZ)).symm.toLinearMap
 
 /- English proof (translation)
-Simplify using `[eZ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eZ_mem (h2 : FibZN (k := k)) (hZ : CR Z) (y) : eZ h2 hZ y ∈ Z := by
   simp [eZ]
 
 /- English proof (translation)
-Use `(LinearEquiv.ofBijective (qLin Z) (qLin_bij h2 hZ)).apply_symm_apply y` as an intermediate fact. Rewrite `this` using `[LinearEquiv.ofBijective_apply]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qZ_eZ (h2 : FibZN (k := k)) (hZ : CR Z) (y) : qZ Z (eZ h2 hZ y) = y := by
   have := (LinearEquiv.ofBijective (qLin Z) (qLin_bij h2 hZ)).apply_symm_apply y
@@ -206,15 +206,15 @@ theorem qZ_eZ (h2 : FibZN (k := k)) (hZ : CR Z) (y) : qZ Z (eZ h2 hZ y) = y := b
   exact this
 
 /- English proof (translation)
-The claim follows from `piZ_eq_of h2 hZ (eZ_mem h2 hZ _) (qZ_eZ h2 hZ _)`.
+A detailed English derivation is pending.
 -/
 theorem piZ_eq_eZ (h2 : FibZN (k := k)) (hZ : CR Z) (x) : piZ Z x = eZ h2 hZ (qZ Z x) :=
   piZ_eq_of h2 hZ (eZ_mem h2 hZ _) (qZ_eZ h2 hZ _)
 
 /- English proof (translation)
-Establish `e : piZ Z = fun x => eZ h2 hZ (qZ Z x)` using `funext (piZ_eq_eZ h2 hZ)`. Rewrite using `[e]`. Establish `hs : ∀ y, eZ h2 hZ y = ∑ i, y i • eZ h2 hZ (fun j => if i = j then 1 else 0)` using `fun y => LinearMap.pi_apply_eq_sum_univ (eZ h2 hZ) y`. Establish `hc : Continuous (eZ h2 hZ)`. Rewrite using `[show (eZ h2 hZ : _ → _) = fun y => ∑ i, y i • eZ h2 hZ (fun j => if i = j then 1 else 0) from funext hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_finsetSum _ fun i _ => (continuous_apply i).smul continuous_const`. Conclude with `hc.comp continuous_qZ`.
+A detailed English derivation is pending.
 -/
 theorem continuous_piZ (h2 : FibZN (k := k)) (hZ : CR Z) : Continuous (piZ Z) := by
   have e : piZ Z = fun x => eZ h2 hZ (qZ Z x) := funext (piZ_eq_eZ h2 hZ)
@@ -227,7 +227,7 @@ theorem continuous_piZ (h2 : FibZN (k := k)) (hZ : CR Z) : Continuous (piZ Z) :=
   exact hc.comp continuous_qZ
 
 /- English proof (translation)
-Establish `hp` using `continuous_piZ h2 hZ`. Establish `hf : Continuous (fun p : Sp k n => p.1)` using `continuous_fst`. Establish `hs : Continuous (fun p : Sp k n => p.2)` using `continuous_snd`. Unfold `sig`. Conclude with `((hp.comp hf).add ((continuous_const : Continuous (fun _ : Sp k n => (t : k))).smul (hf.sub (hp.comp hf)))).prodMk hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_sig (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) : Continuous (sig Z t) := by
   have hp := continuous_piZ h2 hZ
@@ -246,7 +246,7 @@ def sigH (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) : Sp k n ≃ₜ Sp k n wher
   continuous_invFun := continuous_sig h2 hZ t⁻¹
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hf.1.1.comp_continuous h.continuous, hf.1.2.comp_homeomorph h⟩, fun _ hx => hf.2 hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_mem_supportedIn (h : Sp k n ≃ₜ Sp k n) {U : Set (Sp k n)} {f : Sp k n → ℂ} (hf : f ∈ supportedIn U) :
     (fun p => f (h p)) ∈ supportedIn (h ⁻¹' U) :=
@@ -259,9 +259,9 @@ theorem pull_apply (t : kˣ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) (f : Sp k n
     pull Z t ξ f = ξ (fun p => f (sig Z t p)) := rfl
 
 /- English proof (translation)
-Introduce `g hg f hf`. Rewrite using `[pull_apply, pull_apply]`. Establish `e : (fun p => f (act g (sig Z t p))) = fun p => (fun q => f (sig Z t q)) (act g p)`. Use function extensionality and compare the values at `p`. Use `show f (act g (sig Z t p)) = f (sig Z t (act g p))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sig_act h2 hZ t hg]`. Rewrite using `[e]`. Conclude with `hξ g hg _ (by simpa using comp_mem_supportedIn (sigH h2 hZ t) hf)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_pull (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Inv Z ξ) :
     Inv Z (pull Z t ξ) := by
@@ -273,7 +273,7 @@ theorem inv_pull (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {ξ : (Sp k n → �
   exact hξ g hg _ (by simpa using comp_mem_supportedIn (sigH h2 hZ t) hf)
 
 /- English proof (translation)
-Introduce `f hf`. Rewrite using `[pull_apply]`. Use `hξ _ ⟨(comp_mem_supportedIn (sigH h2 hZ t) hf).1, fun p hp => ?_⟩` and prove the remaining obligations. Use `(comp_mem_supportedIn (sigH h2 hZ t) hf).2 hp` as an intermediate fact. Simplify `this` using `[sigH, sig, UU]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem kills_pull (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Kills ξ UU) :
     Kills (pull Z t ξ) UU := by
@@ -284,11 +284,11 @@ theorem kills_pull (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {ξ : (Sp k n →
   simpa [sigH, sig, UU] using this
 
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => intro f hf`. Simplify using `[hp f hf, hq f hf]`. Consider the case `monomial m a`. Introduce `f hf`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ m : ℕ, Kills (((pull Z t) ^ m : Module.End ℂ _) ξ) UU`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simpa using hξ`. Consider the case `succ m ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ', Module.End.mul_apply]`. Conclude with `kills_pull h2 hZ t ih`. Simplify using `[aeval_monomial, key m f hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kills_aeval (h2 : FibZN (k := k)) (hZ : CR Z) (t : kˣ) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hξ : Kills ξ UU)
     (Q : ℂ[X]) : Kills (aeval (pull Z t) Q ξ) UU := by
@@ -315,9 +315,9 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => ⟨n, h⟩⟩` and prove the remaining obligations. Establish `h1` using `Matrix.isNilpotent_charpoly_sub_pow_of_isNilpotent h`. Establish `h2 : M.charpoly = X ^ n`. Use `h1.eq_zero` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h3` using `Matrix.aeval_self_charpoly M`. Rewrite `h3` using `[h2, map_pow, aeval_X]`. Conclude with `h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_iff_pow (M : Matrix (Fin n) (Fin n) k) : IsNilpotent M ↔ M ^ n = 0 := by
   refine ⟨fun h => ?_, fun h => ⟨n, h⟩⟩
@@ -331,9 +331,9 @@ theorem isNilpotent_iff_pow (M : Matrix (Fin n) (Fin n) k) : IsNilpotent M ↔ M
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[← mul_assoc (g⁻¹.val), ← Units.val_mul, inv_mul_cancel, Units.val_one, one_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_pow (g : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) (m : ℕ) :
     (g.val * N * g⁻¹.val) ^ m = g.val * N ^ m * g⁻¹.val := by
@@ -347,7 +347,7 @@ theorem conj_pow (g : GL (Fin n) k) (N : Matrix (Fin n) (Fin n) k) (m : ℕ) :
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Establish `: Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a}`. Use extensionality with `x`. Simplify using `[Bz]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul continuous_id) (continuous_id.matrix_mul continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_Bz [IsTopologicalRing k] [T2Space k] : IsClosed (Bz Z) := by
   have : Bz Z = ⋂ a ∈ Z, {x : Matrix (Fin n) (Fin n) k | a * x = x * a} := by
@@ -360,9 +360,9 @@ def C0 (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (c : Matrix (Fin n) (Fin n)
   {q | q.1 ∈ Bz Z ∧ IsNilpotent (q.1 - c)}
 
 /- English proof (translation)
-Establish `: C0 Z c = (Prod.fst) ⁻¹' (Bz Z ∩ {x | (x - c) ^ n = 0})`. Use extensionality with `q`. Simplify using `[C0, isNilpotent_iff_pow]`. Rewrite using `[this]`. Use `IsClosed.preimage continuous_fst (isClosed_Bz.inter (isClosed_eq ?_ continuous_const))` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_id.sub continuous_const).pow n`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_C0 (c : Matrix (Fin n) (Fin n) k) : IsClosed (C0 Z c) := by
   have : C0 Z c = (Prod.fst) ⁻¹' (Bz Z ∩ {x | (x - c) ^ n = 0}) := by
@@ -373,19 +373,19 @@ theorem isClosed_C0 (c : Matrix (Fin n) (Fin n) k) : IsClosed (C0 Z c) := by
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-The claim follows from `isOpen_ne_fun continuous_snd continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_UU [T2Space k] : IsOpen (UU : Set (Sp k n)) :=
   isOpen_ne_fun continuous_snd continuous_const
 
 /- English proof (translation)
-The claim follows from `(isClosed_Bz.inter (isClosed_singleton.preimage continuous_qZ)).prod isClosed_univ`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Fib (y : Fin (Module.finrank k Z) → k) : IsClosed (Fib Z y) :=
   (isClosed_Bz.inter (isClosed_singleton.preimage continuous_qZ)).prod isClosed_univ
 
 /- English proof (translation)
-Take `⟨c', hc', hc'y, hiff⟩` from `h2 n Z hZ (qZ Z c)`. Establish `e : c' = c` using `qZ_Z_inj h2 hZ hc' hc hc'y`. Substitute `e` using the available equality. Establish `hq` using `((hiff x hx).2 hn).1`. Conclude with `⟨piZ_eq_of h2 hZ hc' hq.symm, hq⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem projection_of_orbit_closure (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) {x : Matrix (Fin n) (Fin n) k}
     (hx : x ∈ Bz Z) (hn : IsNilpotent (x - c)) : piZ Z x = c ∧ qZ Z x = qZ Z c := by
@@ -396,16 +396,16 @@ theorem projection_of_orbit_closure (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matri
   exact ⟨piZ_eq_of h2 hZ hc' hq.symm, hq⟩
 
 /- English proof (translation)
-Simplify using `[sig, (projection_of_orbit_closure h2 hZ hc hq.1 hq.2).1]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scaling_on_orbit_closure (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (t : kˣ) {q : Sp k n}
     (hq : q ∈ C0 Z c) : sig Z t q = (c + (t : k) • (q.1 - c), q.2) := by
   simp [sig, (projection_of_orbit_closure h2 hZ hc hq.1 hq.2).1]
 
 /- English proof (translation)
-Rewrite using `[scaling_on_orbit_closure h2 hZ hc t hq]`. Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hq.1 a ha`. Establish `h2'` using `hZ.1 a ha c hc`. Simplify using `only [mul_add, add_mul, mul_smul_comm, smul_mul_assoc, mul_sub, sub_mul, h1, h2']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using hq.2.smul (t : k)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem scaling_mem_orbit_closure (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) (t : kˣ)
     {q : Sp k n} (hq : q ∈ C0 Z c) : sig Z t q ∈ C0 Z c := by
@@ -418,11 +418,9 @@ theorem scaling_mem_orbit_closure (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix 
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Use `⟨fun a ha => ?_, ?_⟩` and prove the remaining obligations. Use `show a * (g.val * q.1 * g⁻¹.val) = g.val * q.1 * g⁻¹.val * a`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[conj_mem_Z Z hg ha]`. Use `_ = g.val * (a * q.1) * g⁻¹.val := by simp only [mul_assoc, Units.inv_mul_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = g.val * (q.1 * a) * g⁻¹.val := by rw [hq.1 a ha]`. Use `_ = (g.val * q.1 * g⁻¹.val) * (g.val * a * g⁻¹.val) := by simp only [mul_assoc, Units.inv_mul_cancel_left]`. Use `_ = g.val * q.1 * g⁻¹.val * a := by rw [conj_mem_Z Z hg ha]`. Establish `e : g.val * q.1 * g⁻¹.val - c = g.val * (q.1 - c) * g⁻¹.val`. Rewrite using `[mul_sub, sub_mul, conj_mem_Z Z hg hc]`.
-
-Use `show IsNilpotent (g.val * q.1 * g⁻¹.val - c)`. Rewrite using `[e]`. Take `⟨m, hm⟩` from `hq.2`. Conclude with `⟨m, by rw [conj_pow, hm, mul_zero, zero_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem action_mem_orbit_closure (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k} (hc : c ∈ Z) {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     {q : Sp k n} (hq : q ∈ C0 Z c) : act g q ∈ C0 Z c := by
@@ -456,36 +454,34 @@ local instance instSCM : SecondCountableTopology (Matrix (Fin n) (Fin n) k) :=
 variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : LocallyCompactSpace (Sp k n) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : TotallyDisconnectedSpace (Sp k n) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : LocallyCompactSpace (GL (Fin n) k) := inferInstance
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : SecondCountableTopology (Matrix (Fin n) (Fin n) k) := inferInstance
 
 /- English proof (translation)
-Introduce `f hf h0`. Use `set A : Set (Sp k n) := ZN Z ×ˢ Set.univ`. Establish `hA : IsClosed A` using `(h1 n Z hZ).prod isClosed_univ`. Use `set K := Function.support f ∩ A`. Establish `hK : IsCompact K` using `(isCompact_support hf.1).inter_right hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hKF : K ⊆ (Fib Z (qZ Z c))ᶜ`. Introduce and unpack `q ⟨hq, hqA⟩ hqF`. Take `⟨c', hc', hc'y, hiff⟩` from `h2 n Z hZ (qZ Z c)`. Establish `e : c' = c` using `qZ_Z_inj h2 hZ hc' hc hc'y`. Substitute `e` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hq (h0 q ⟨hqF.1.1, (hiff q.1 hqF.1.1).1 ⟨hqF.1.2, hqA.1⟩⟩)`. Take `⟨W, hWc, hWo, hKW, hWF⟩` from `exists_isCompact_isOpen_between hK (isClosed_Fib _).isOpen_compl hKF`. Establish `hWcl : IsClopen W` using `⟨hWc.isClosed, hWo⟩`. Establish `hf1` using `indicator_mul_mem (U := Set.univ) hWcl ⟨hf.1, Set.subset_univ _⟩`. Establish `hf2` using `indicator_mul_mem (U := UU) hWcl.compl hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e : f = (fun q => W.indicator 1 q * f q) + (fun q => Wᶜ.indicator 1 q * f q)`. Use function extensionality and compare the values at `q`. Apply the tactic sequence `by_cases hq : q ∈ W <;> simp [hq]`. Rewrite using `[e, map_add]`. Establish `z1 : ξ (fun q => W.indicator 1 q * f q) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hs _ hf1 fun q hq => ?_` and prove the remaining obligations. Establish `: q ∉ W` using `fun hqW => hWF hqW hq`. Simplify using `[this]`. Establish `z2 : ξ (fun q => Wᶜ.indicator 1 q * f q) = 0`. Use `hk _ ⟨hf2.1, fun q hq => ⟨hf2.2 hq, fun hqZN => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hqW : q ∉ W`. Introduce `hqW`. Simplify using `[hqW] at hq`. Establish `hfq : f q ≠ 0`. Introduce `h`.
-
-Simplify using `[h] at hq`. Conclude with `hqW (hKW ⟨hfq, hqZN, Set.mem_univ _⟩)`. Rewrite using `[z1, z2, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_in_orbit_closure (h1 : ZNClosed (k := k)) (h2 : FibZN (k := k)) (hZ : CR Z) {c : Matrix (Fin n) (Fin n) k}
     (hc : c ∈ Z) {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (hs : Supp ξ (Fib Z (qZ Z c))) (hk : Kills ξ (UU ∩ {p | p.1 ∉ ZN Z})) :
@@ -537,7 +533,7 @@ variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Introduce `h`. Apply `hq` to reduce the goal to its premises. Use `congrArg (fun w => g⁻¹.val *ᵥ w) h` as an intermediate fact. Simplify `this` using `[act, Matrix.mulVec_mulVec, ← Units.val_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem act_snd_ne {g : GL (Fin n) k} {q : Sp k n} (hq : q.2 ≠ 0) : (act g q).2 ≠ 0 := by
   intro h
@@ -551,7 +547,7 @@ def actU (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) : MulAction (GzS Z) (UU :
   mul_smul g h q := Subtype.ext (act_mul g.1 h.1 q.1)
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun x : GL (Fin n) k × Sp k n => (x.1 : Matrix (Fin n) (Fin n) k))` using `Units.continuous_val.comp continuous_fst`. Establish `h2 : Continuous (fun x : GL (Fin n) k × Sp k n => ((x.1⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))` using `Units.continuous_coe_inv.comp continuous_fst`. Establish `h3 : Continuous (fun x : GL (Fin n) k × Sp k n => x.2.1)` using `continuous_fst.comp continuous_snd`. Establish `h4 : Continuous (fun x : GL (Fin n) k × Sp k n => x.2.2)` using `continuous_snd.comp continuous_snd`. Conclude with `((h1.matrix_mul h3).matrix_mul h2).prodMk (h1.matrix_mulVec h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_act [IsTopologicalRing k] : Continuous (fun x : GL (Fin n) k × Sp k n => act x.1 x.2) := by
   have h1 : Continuous (fun x : GL (Fin n) k × Sp k n => (x.1 : Matrix (Fin n) (Fin n) k)) :=
@@ -563,7 +559,7 @@ theorem continuous_act [IsTopologicalRing k] : Continuous (fun x : GL (Fin n) k 
   exact ((h1.matrix_mul h3).matrix_mul h2).prodMk (h1.matrix_mulVec h4)
 
 /- English proof (translation)
-Establish `: ((GzS Z : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) = ⋂ a ∈ Z, {g : GL (Fin n) k | a * g.val = g.val * a}`. Use extensionality with `g`. Simplify using `[GzS, Gz]`. Rewrite using `[this]`. Conclude with `isClosed_biInter fun a _ => isClosed_eq (continuous_const.matrix_mul Units.continuous_val) (Units.continuous_val.matrix_mul continuous_const)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_GzS : IsClosed ((GzS Z : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) := by
   have : ((GzS Z : Subgroup (GL (Fin n) k)) : Set (GL (Fin n) k)) =
@@ -574,15 +570,13 @@ theorem isClosed_GzS : IsClosed ((GzS Z : Subgroup (GL (Fin n) k)) : Set (GL (Fi
     (Units.continuous_val.matrix_mul continuous_const)
 
 /- English proof (translation)
-Take `⟨F, hF, hFeq⟩` from `isClosed_induced_iff.1 h`. Use `isClosed_of_closure_subset fun x hx => ?_` and prove the remaining obligations. Establish `hxD : x ∈ D` using `closure_minimal Set.sdiff_subset hD hx`. Assume the negation of the conclusion as `hxn`. Establish `hxO : x ∈ O`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h'`. Conclude with `hxn ⟨hxD, h'⟩`. Establish `hxU : x ∈ UU` using `hO hxO`. Establish `hsub : D \ O ⊆ F ∪ UUᶜ`. Introduce `q hq`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hqU : q ∈ UU`. Use `left`. Establish `: (⟨q, hqU⟩ : (UU : Set (Sp k n))) ∈ {u : (UU : Set (Sp k n)) | u.1 ∈ D \ O}` using `hq`. Rewrite `this` using `[← hFeq]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `right`. Conclude with `hqU`. Break down `closure_minimal hsub (hF.union isOpen_UU.isClosed_compl) hx with hxF | hxU'` into its components or cases. Establish `: (⟨x, hxU⟩ : (UU : Set (Sp k n))) ∈ Subtype.val ⁻¹' F` using `hxF`. Rewrite `this` using `[hFeq]`.
-
-Conclude with `hxn this`. Conclude with `hxU' hxU`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_diff_of {D O : Set (Sp k n)} (hD : IsClosed D) (hO : O ⊆ UU)
     (h : IsClosed {u : (UU : Set (Sp k n)) | u.1 ∈ D \ O}) : IsClosed (D \ O) := by
@@ -610,30 +604,26 @@ theorem isClosed_diff_of {D O : Set (Sp k n)} (hD : IsClosed D) (hO : O ⊆ UU)
   · exact hxU' hxU
 
 /- English proof (translation)
-Introduce and unpack `q ⟨g, -, rfl⟩`. Conclude with `act_snd_ne hp`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem orb_subset_UU {p : Sp k n} (hp : p.2 ≠ 0) : orb Z p ⊆ UU := by
   rintro q ⟨g, -, rfl⟩
   exact act_snd_ne hp
 
 /- English proof (translation)
-Use `letI := actU Z`. Use `haveI : ContinuousSMul (GzS Z) (UU : Set (Sp k n)) := ⟨Continuous.subtype_mk (continuous_act.comp (Continuous.prodMap (continuous_subtype_val : Continuous (fun g : GzS Z => (g : GL (Fin n) k))) continuous_subtype_val)) _⟩`. Use `haveI : SecondCountableTopology (GL (Fin n) k) := inferInstance`. Use `haveI : SigmaCompactSpace (GL (Fin n) k) := inferInstance`. Use `haveI : SigmaCompactSpace (GzS Z) := isClosed_GzS.sigmaCompactSpace`.
+Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : LocallyCompactSpace (UU : Set (Sp k n)) := isOpen_UU.locallyCompactSpace`. Use `set Z' : Set (UU : Set (Sp k n)) := {u | u.1 ∈ D}`. Establish `hZ' : IsClosed Z'` using `hD.preimage continuous_subtype_val`. Take `⟨q₀, hq₀D, hq₀U⟩` from `hne`. Establish `hZne : Z'.Nonempty` using `⟨⟨q₀, hq₀U⟩, hq₀D⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `hinv : ∀ h : GzS Z, ∀ x ∈ Z', h • x ∈ Z'` using `fun h x hx => hDinv h.1 h.2 x.1 hx`. Use `set s' : Set (UU : Set (Sp k n)) := {u | u.1 ∈ (T : Set (Sp k n))}`. Establish `hs' : s'.Countable` using `(T.finite_toSet.preimage Subtype.val_injective.injOn).countable`. Establish `orbit_eq : ∀ (u : (UU : Set (Sp k n))) (p : Sp k n) (hp : p.2 ≠ 0), u.1 ∈ orb Z p → MulAction.orbit (GzS Z) u = {v : (UU : Set (Sp k n)) | v.1 ∈ orb Z p}`. Introduce and unpack `u p hp ⟨g, hg, hgu⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, rfl⟩`. Conclude with `⟨h.1 * g, (GzS Z).mul_mem h.2 hg, by rw [act_mul, hgu]; rfl⟩`. Introduce and unpack `⟨g', hg', hg'v⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g' * g⁻¹, (GzS Z).mul_mem hg' ((GzS Z).inv_mem hg)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show act (g' * g⁻¹) u.1 = v.1`. Rewrite using `[← hgu, ← act_mul, mul_assoc, inv_mul_cancel, mul_one, hg'v]`. Establish `hcov' : Z' ⊆ ⋃ x ∈ s', MulAction.orbit (GzS Z) x`. Introduce `u hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨p, hpT, hup⟩` from `Set.mem_iUnion₂.1 (hcov ⟨hu, u.2⟩)`. Establish `hpU : p ∈ (UU : Set (Sp k n))` using `hT p hpT`. Use `Set.mem_iUnion₂.2 ⟨⟨p, hpU⟩, hpT, ?_⟩` and prove the remaining obligations. Rewrite using `[orbit_eq ⟨p, hpU⟩ p (hT p hpT) ⟨1, (GzS Z).one_mem, act_one p⟩]`. Conclude with `hup`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x₀, hx₀, hcl⟩` from `GroundTheory.Automorphic.ContragredientTranspose.exists_isClosed_diff_orbit hZ' hZne hinv hs' hcov'`. Take `⟨p₀, hp₀T, hx₀p⟩` from `Set.mem_iUnion₂.1 (hcov ⟨hx₀, x₀.2⟩)`. Establish `hO : orb Z p₀ ⊆ D`. Introduce and unpack `q ⟨g, hg, rfl⟩`. Take `⟨g₀, hg₀, hg₀x⟩` from `hx₀p`.
-
-Establish `: act (g * g₀⁻¹) x₀.1 = act g p₀`. Rewrite using `[← hg₀x, ← act_mul, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[← this]`. Conclude with `hDinv _ ((GzS Z).mul_mem hg ((GzS Z).inv_mem hg₀)) _ hx₀`. Use `⟨p₀, hp₀T, hO, isClosed_diff_of hD (orb_subset_UU (hT p₀ hp₀T)) ?_⟩` and prove the remaining obligations.
-
-Rewrite `hcl` using `[orbit_eq x₀ p₀ (hT p₀ hp₀T) hx₀p]`. Conclude with `hcl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_orbit (T : Finset (Sp k n)) (hT : ∀ p ∈ T, p.2 ≠ 0) (D : Set (Sp k n)) (hD : IsClosed D)
     (hDinv : ∀ h ∈ Gz Z, ∀ q ∈ D, act h q ∈ D) (hcov : D ∩ UU ⊆ ⋃ p ∈ T, orb Z p) (hne : (D ∩ UU).Nonempty) :
@@ -693,9 +683,9 @@ local instance instT2k5 : T2Space k := GlobalTheory.SplitWeil.t2Space k
 variable {Z : Subalgebra k (Matrix (Fin n) (Fin n) k)}
 
 /- English proof (translation)
-Introduce `f hf`. Use `h f hf fun q hq => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hfq`. Establish `: q ∈ D ∩ UU` using `⟨hq, hf.2 hfq⟩`. Rewrite `this` using `[hD]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem kills_of_suppU {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} {D : Set (Sp k n)} (hD : D ∩ UU = ∅) (h : SuppU ξ D) :
     Kills ξ UU := by
@@ -707,49 +697,47 @@ theorem kills_of_suppU {ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ} {D : Set (Sp k n)
   exact this
 
 /- English proof (translation)
-Introduce `g hg f hf`. Simplify using `[h1 g hg f hf, h2 g hg f hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem inv_sub_smul {ξ η : (Sp k n → ℂ) →ₗ[ℂ] ℂ} (h1 : Inv Z ξ) (h2 : Inv Z η) (a : ℂ) : Inv Z (ξ - a • η) := by
   intro g hg f hf
   simp [h1 g hg f hf, h2 g hg f hf]
 
 /- English proof (translation)
-Simplify using `[Algebra.algebraMap_eq_smul_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_X_sub (t : kˣ) (a : ℂ) (ξ : (Sp k n → ℂ) →ₗ[ℂ] ℂ) :
     aeval (pull Z t) (X - Polynomial.C a) ξ = pull Z t ξ - a • ξ := by
   simp [Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `T hT hTs D hD hinv hsig hcov ξ hξ hS Q hQ`. Establish `hT0 : T = ∅` using `Finset.card_eq_zero.1 (Nat.le_zero.1 hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hT0` using the available equality. Establish `hD0 : D ∩ UU = ∅`. Use `Set.eq_empty_of_forall_notMem fun q hq => ?_` and prove the remaining obligations. Simplify using `using hcov hq`. Conclude with `kills_aeval h2 hZ t (kills_of_suppU hD0 hS) Q`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ N ih`. Introduce `T hT hTs D hD hinv hsig hcov ξ hξ hS Q hQ`. Distinguish the cases in `hne : (D ∩ UU).Nonempty`. Use `swap`. Conclude with `kills_aeval h2 hZ t (kills_of_suppU (Set.not_nonempty_iff_eq_empty.1 hne) hS) Q`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p₀, hp₀T, hO, hcl⟩` from `exists_open_orbit T (fun p hp => (hs p (hTs hp)).1) D hD hinv hcov hne`. Take `⟨hp₀2, K, L, g, hg, hgp, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hm⟩` from `hs p₀ (hTs hp₀T)`. Use `set O := orb Z p₀ with hOdef`. Use `set U := (UU : Set (Sp k n)) ∩ (D \ O)ᶜ with hUdef`. Establish `hU : IsOpen U` using `isOpen_UU.inter hcl.isOpen_compl`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hUD : U ∩ D = O`. Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, hqn⟩, hqD⟩`. Assume the negation of the conclusion as `hqO`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hqn ⟨hqD, hqO⟩`. Introduce `hqO`. Conclude with `⟨⟨orb_subset_UU hp₀2 hqO, fun h => h.2 hqO⟩, hO hqO⟩`. Establish `hstep` using `h4 n Z hZ t p₀ g hg hgp hp₀2 K hK hKo hKc L hLo hLKK hLn1 hLn2 D U hD hU hUD hinv hsig ξ hξ hS`. Establish `hDU : D \ U = D \ O`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hqD, hqU⟩`. Use `⟨hqD, fun hqO => hqU ⟨orb_subset_UU hp₀2 hqO, fun h => h.2 hqO⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨hqD, hqO⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hqD, fun h => h.2 ⟨hqD, hqO⟩⟩`. Rewrite `hstep` using `[hDU, hm]`. Establish `hOinv : ∀ h ∈ Gz Z, ∀ q, act h q ∈ O → q ∈ O`. Introduce and unpack `h hh q ⟨g', hg', hg'q⟩`. Use `⟨h⁻¹ * g', (GzS Z).mul_mem ((GzS Z).inv_mem hh) hg', ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[act_mul, hg'q, ← act_mul, inv_mul_cancel, act_one]`. Establish `hsig0 : sig Z t⁻¹ p₀ = act g⁻¹ p₀`. Establish `e1 : sig Z t⁻¹ (act g p₀) = p₀` using `by rw [hgp, sig_sig h2 hZ]`. Rewrite `e1` using `[sig_act h2 hZ t⁻¹ hg]`. Combine the equalities or inequalities in the displayed calculation.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsigO : ∀ q, sig Z t q ∈ O → q ∈ O`. Introduce and unpack `q ⟨g', hg', hg'q⟩`. Use `⟨g' * g⁻¹, (GzS Z).mul_mem hg' ((GzS Z).inv_mem hg), ?_⟩` and prove the remaining obligations. Rewrite using `[act_mul, ← hsig0, ← sig_act h2 hZ t⁻¹ hg', hg'q, sig_sig h2 hZ]`. Use `set T' := T.filter (fun p => orb Z p ≠ O) with hT'def`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hT'sub : T' ⊆ T.erase p₀`. Introduce `p hp`. Rewrite `hp` using `[Finset.mem_filter]`. Conclude with `Finset.mem_erase.2 ⟨fun h => hp.2 (by rw [h]), hp.1⟩`. Establish `hT'card : T'.card ≤ N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `Finset.card_le_card hT'sub` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hp₀T]`. Use linear arithmetic over natural numbers and integers. Take `⟨Q0, hQ0⟩` from `hQ`. Use `set R := (∏ p ∈ T.erase p₀, (X - Polynomial.C (mm p))) * Q0 with hRdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hQR : Q = R * (X - Polynomial.C (mm p₀))`. Rewrite using `[hQ0, ← Finset.mul_prod_erase T _ hp₀T, hRdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hT'R : (∏ p ∈ T', (X - Polynomial.C (mm p))) ∣ R` using `dvd_mul_of_dvd_left (Finset.prod_dvd_prod_of_subset _ _ _ hT'sub) Q0`. Establish `key : aeval (pull Z t) Q ξ = aeval (pull Z t) R (pull Z t ξ - mm p₀ • ξ)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hQR, map_mul, Module.End.mul_apply, aeval_X_sub]`. Rewrite using `[key]`. Use `ih T' hT'card (fun p hp => hTs (Finset.mem_of_mem_filter p hp)) (D \ O) hcl ?_ ?_ ?_ _ (inv_sub_smul (inv_pull h2 hZ t hξ) hξ _) hstep R hT'R` and prove the remaining obligations. Introduce and unpack `h hh q ⟨hqD, hqO⟩`. Conclude with `⟨hinv h hh q hqD, fun h' => hqO (hOinv h hh q h')⟩`.
-
-Introduce and unpack `q ⟨hqD, hqO⟩`. Conclude with `⟨hsig q hqD, fun h' => hqO (hsigO q h')⟩`. Introduce and unpack `q ⟨⟨hqD, hqO⟩, hqU⟩`. Take `⟨p, hpT, hqp⟩` from `Set.mem_iUnion₂.1 (hcov ⟨hqD, hqU⟩)`. Use `Set.mem_iUnion₂.2 ⟨p, Finset.mem_filter.2 ⟨hpT, fun h => hqO (h ▸ hqp)⟩, hqp⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main_ind (h2 : FibZN (k := k)) (h4 : StepMod (k := k)) (hZ : CR Z) (t : kˣ) (mm : Sp k n → ℂ)
     (s : Finset (Sp k n))
@@ -851,21 +839,21 @@ local instance instT2k6 : T2Space k := GlobalTheory.SplitWeil.t2Space k
 variable (k) in
 
 /- English proof (translation)
-Introduce `n Z hZ hd t ht y`. Take `⟨c, hc, hcy, -⟩` from `h2 n Z hZ y`. Take `⟨s, hs, hcov⟩` from `h3 n Z hZ c hc`. Establish `H : ∀ p ∈ s, ∃ a : ℝ, 2 * a < dB0 Z ∧ ∃ (K L : Subgroup (GL (Fin n) k)) (g : GL (Fin n) k), g ∈ Gz Z ∧ act g p = sig Z t p ∧ K ≤ GzS Z ∧ IsOpen (((↑) : GzS Z → GL (Fin n) k) ⁻¹' (K : Set (GL (Fin n) k))) ∧ IsCompact (K : Set (GL (Fin n) k)) ∧ IsOpen (((↑) : GzS Z → GL (Fin n) k) …`. Introduce `p hp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hp1, hpn, hp2, P, w, hgr, hpos⟩` from `hs p hp`. Take `⟨a, ha, hat⟩` from `h5 n Z hZ hd c hc p P w hp1 hpn hp2 hgr hpos`. Take `⟨K, L, g, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hgval, hmod⟩` from `hat t ht`. Establish `hgr'` using `hgr t`. Simplify using `only [← hgval] at hgr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨hgZ, hE, hv⟩` from `hgr'`. Establish `hgG : g ∈ Gz Z` using `fun b hb => hgZ b hb`. Establish `e1 : g.val * (p.1 - c) * g⁻¹.val = (t : k) • (p.1 - c)`. Rewrite using `[hE, smul_mul_assoc, mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, mul_one]`. Establish `e2 : g.val * p.1 * g⁻¹.val = c + (t : k) • (p.1 - c)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hact : act g p = sig Z t p`. Rewrite using `[scaling_on_orbit_closure h2 hZ hc t ⟨hp1, hpn⟩]`. Conclude with `Prod.ext e2 hv`. Conclude with `⟨a, ha, K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hmod⟩`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! a ha hKLg using H`. Use `⟨s.toList.map a, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨p, hp, rfl⟩` from `List.mem_map.1 hx`. Conclude with `ha p (Finset.mem_toList.1 hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ξ hsupp hinv hkill set mm : Sp k n → ℂ := fun p => (((nabs k t)⁻¹ ^ a p : ℝ) : ℂ) with hmm`. Establish `hprod : (((s.toList.map a).map fun x => pull Z t - ((((nabs k t)⁻¹ : ℝ) ^ x : ℝ) : ℂ) • LinearMap.id).prod : Module.End ℂ ((Sp k n → ℂ) →ₗ[ℂ] ℂ)) = aeval (pull Z t) (∏ p ∈ s, (X - Polynomial.C (mm p)))`. Rewrite using `[← Finset.prod_map_toList s (fun p => X - Polynomial.C (mm p)), map_list_prod, List.map_map, List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun p _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mm, Function.comp_apply, map_sub, aeval_X, aeval_C, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression. Rewrite using `[hprod]`. Use `main_ind h2 h4 hZ t mm s ?_ s.card s le_rfl subset_rfl (C0 Z c) (isClosed_C0 c) (fun h hh q hq => action_mem_orbit_closure hZ hc hh hq) (fun q hq => scaling_mem_orbit_closure h2 hZ hc t hq) ?_ ξ hinv (support_in_orbit_closure h1 h2 hZ hc (hcy ▸ hsupp) hkill) _ dvd_rfl` and prove the remaining obligations. Introduce `p hp`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, hmod⟩` from `hKLg p hp`. Conclude with `⟨(hs p hp).2.2.1, K, L, g, hgG, hact, hK, hKo, hKc, hLo, hLKK, hLn1, hLn2, by rw [hmod]⟩`. Introduce and unpack `q ⟨⟨hq1, hqn⟩, hqU⟩`. Take `⟨p, hp, hqp⟩` from `hcov q.1 hq1 hqn q.2 hqU`. Conclude with `Set.mem_iUnion₂.2 ⟨p, hp, hqp⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem orbP_of [CharZero k] (h1 : ZNClosed (k := k)) (h2 : FibZN (k := k)) (h3 : Reps (k := k))
     (h4 : StepMod (k := k)) (h5 : ModBound (k := k)) : OrbP (k := k) := by

@@ -11,9 +11,9 @@ open GlobalTheory.FunObj GlobalTheory.ChiGrid GlobalTheory.AdelicU
 namespace GlobalTheory.LocPlTau
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t v ⟨w, hw, hv⟩`. Substitute `hv` using the available equality. Take `⟨τ⟩` from `GlobalTheory.LocPlSplit.locPl_split hL t w hw`. Establish `hc` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hex : ∃ ρ : D.host.E →ₐ[D.host.F] Fv D.host.F (w.under (𝓞 D.host.F)), splitPrime ρ = w`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `e : w = splitPrime τ`. Conclude with `⟨τ, e.symm⟩`. Conclude with `(existsUnique_splitPrime_eq hc e rfl (splitPrime_under τ)).exists`. Take `⟨ρ, hρ⟩` from `hex`. Conclude with `⟨ρ, fun w' hw' h => hρ.trans (GlobalTheory.FunObj.Good.under_injOn hL G t hw hw' h.symm)⟩`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_splitPrime_locPl : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}
     (_hL : L.Is μ₀) (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)), (∃ w ∈ locPl G t, w.under (𝓞 D.host.F) = v) →

@@ -6,17 +6,17 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.UPel.HT GlobalTheory.UPel.HT.Gen
 
 /- English proof (translation)
-Introduce `G R _ _ b N N' S S₁ s s₁ f o' o'' o₁' o₁'' m' m''`. Establish `ext'' : ∀ {T : Over S₁} (u v : T ⟶ o₁''.A), u.left ≫ m''.φ = v.left ≫ m''.φ → u = v`. Introduce `T u v h`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `m''.cart.1.hom_ext h (by rw [Over.w u, Over.w v])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `p' : ∀ (T : Over S₁) (x : T ⟶ o₁'.A), (pushHom m'.cart T x).left = x.left ≫ m'.φ` using `fun _ _ => rfl`. Establish `p'' : ∀ (T : Over S₁) (x : T ⟶ o₁''.A), (pushHom m''.cart T x).left = x.left ≫ m''.φ` using `fun _ _ => rfl`. Use `⟨?_, fun ψ₁ ψ₂ h => ext'' ψ₁ ψ₂ h, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ haveI := hψ`. Establish `w : (m'.φ ≫ ψ.left) ≫ o''.A.hom = o₁'.A.hom ≫ f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w ψ, m'.cart.1.w]`. Set `ψ₁ : o₁'.A ⟶ o₁''.A` to `Over.homMk (m''.cart.1.lift (m'.φ ≫ ψ.left) o₁'.A.hom w) (m''.cart.1.lift_snd _ _ w)`. Establish `hψ₁ : ψ₁.left ≫ m''.φ = m'.φ ≫ ψ.left` using `m''.cart.1.lift_fst _ _ w`. Use `⟨ψ₁, ?_, hψ₁⟩` and prove the remaining obligations. Apply `isMonHom_of_mul` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T x y`. Apply `ext''` to reduce the goal to its premises. Establish `e : ∀ z : T ⟶ o₁'.A, pushHom m''.cart T (z ≫ ψ₁) = pushHom m'.cart T z ≫ ψ`. Introduce `z`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[p'', Over.comp_left, Over.comp_left, p', Category.assoc, Category.assoc, hψ₁]`. Rewrite using `[← p'', ← p'', map_mul, e, e, e, map_mul, mul_comp]`. Introduce `d`. Set `e : Over.mk (o₁'.A.hom ≫ f) ⟶ o'.A` to `pushHom m'.cart o₁'.A (𝟙 o₁'.A)`. Establish `h1 : (𝟙 o₁'.A ^ d).left ≫ m'.φ = (e ^ d).left`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← p', map_pow]`. Establish `h2 : m'.φ ≫ (𝟙 o'.A ^ d).left = (e ^ d).left`. Establish `: e ≫ 𝟙 o'.A ^ d = e ^ d` using `by rw [comp_pow, Category.comp_id]`. Rewrite using `[← this, Over.comp_left, p', Over.id_left, Category.id_comp]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.homEx_of :
     HomEx := by

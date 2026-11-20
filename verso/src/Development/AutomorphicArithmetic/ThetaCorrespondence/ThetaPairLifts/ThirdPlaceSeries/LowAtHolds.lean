@@ -18,7 +18,7 @@ section
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Use `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩` and prove the remaining obligations. Use `⟨0, fun x hx _ i p hp _ w _ _ P hP => ?_⟩` and prove the remaining obligations. Take `⟨Rc, -⟩` from `hp.ties.real`. Conclude with `GlobalTheory.TwInputs.JoinModel.low_of_tied Rc.T.toTiedDataS.n.tw (GlobalTheory.TwInputs.JoinModel.q_dvd_discr _) _ P hP`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lowAt_holds_alt : _root_.GlobalTheory.BigOn.Exp.LowerBoundAtPlace := by
   refine ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ?_⟩⟩

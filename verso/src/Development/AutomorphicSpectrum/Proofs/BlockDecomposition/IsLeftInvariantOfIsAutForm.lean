@@ -9,14 +9,14 @@ open scoped NumberField.AdeleRing
 namespace GlobalTheory.CompanionTheory.LeftInv
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.ext fun _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem ratGL_eq_diagonal (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (γ : GL (Fin a) E) : ratGL E a γ = AdelicGLn.diagonal E a γ :=
   Units.ext (Matrix.ext fun _ _ => rfl)
 
 /- English proof (translation)
-Introduce `E _ _ _ a φ h γ g`. Rewrite using `[← ratGL_eq_diagonal]`. Conclude with `h.left γ g`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLeftInvariant_of_isAutForm : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     (a : ℕ) (φ : Sm E a), IsAutForm φ → AutomorphicForm.IsLeftInvariant φ.1 := by

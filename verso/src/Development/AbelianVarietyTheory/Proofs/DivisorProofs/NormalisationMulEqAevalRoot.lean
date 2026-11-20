@@ -9,17 +9,17 @@ namespace GlobalTheory
 open Polynomial TensorProduct
 
 /- English proof (translation)
-Use `set gA : integralClosure S L →ₐ[S] TensorProduct S D L := (Algebra.TensorProduct.includeRight (R := S) (A := D) (B := L)).comp (integralClosure S L).val`. Use `set t := φ.symm (AdjoinRoot.root (X ^ e - C π))`. Establish `hg : ∀ s : S, gA.toRingHom (algebraMap S (integralClosure S L) s) = algebraMap S (TensorProduct S D L) s` using `fun s => gA.commutes s`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, 1, one_ne_zero, by simp⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `tmul d l`. Establish `hl : IsAlgebraic S l` using `(IsFractionRing.isAlgebraic_iff S K L).2 (Algebra.IsAlgebraic.isAlgebraic l)`. Take `⟨s, hs, hint⟩` from `hl.exists_integral_multiple`. Take `⟨p, hp⟩` from `AdjoinRoot.mk_surjective (φ d)`. Establish `hd : d = aeval t p`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[aeval_algHom_apply, AdjoinRoot.aeval_eq, hp]`. Simplify using `[t]`. Use `⟨C ⟨s • l, hint⟩ * p.map (algebraMap S (integralClosure S L)), s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[eval₂_mul, eval₂_C, eval₂_map]`. Establish `: (gA.toRingHom.comp (algebraMap S (integralClosure S L))) = algebraMap S (TensorProduct S D L)` using `RingHom.ext hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, ← aeval_def]`. Establish `h2 : aeval (algebraMap D (TensorProduct S D L) t) p = algebraMap D (TensorProduct S D L) d`. Rewrite using `[hd, aeval_algebraMap_apply]`. Rewrite using `[h2]`. Simplify using `only [gA, AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, AlgHom.coe_comp, Function.comp_apply, Subalgebra.coe_val, Algebra.TensorProduct.includeRight_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, Algebra.algebraMap_self, Rin …`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[← Algebra.smul_def, TensorProduct.smul_tmul]`. Consider the case `add x y hx hy`. Take `⟨f₁, s₁, hs₁, h₁⟩` from `hx`. Take `⟨f₂, s₂, hs₂, h₂⟩` from `hy`. Use `⟨C (algebraMap S _ s₂) * f₁ + C (algebraMap S _ s₁) * f₂, s₁ * s₂, mul_ne_zero hs₁ hs₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[eval₂_add, eval₂_mul, eval₂_mul, eval₂_C, eval₂_C, hg, hg, ← h₁, ← h₂, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem tensor_exists_smul_eq_eval₂ (S K L : Type) [CommRing S] [IsDomain S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L]
@@ -68,9 +68,9 @@ theorem tensor_exists_smul_eq_eval₂ (S K L : Type) [CommRing S] [IsDomain S]
     ring
 
 /- English proof (translation)
-Take `⟨f, s, hs, h⟩` from `tensor_exists_smul_eq_eval₂ S K L π e D φ (b : TensorProduct S D L)`. Use `⟨f, s, hs, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_def]`. Establish `hc` using `Polynomial.hom_eval₂ f (algebraMap (integralClosure S L) (integralClosure D (TensorProduct S D L))) (integralClosure D (TensorProduct S D L)).val.toRingHom (algebraMap D (integralClosure D (TensorProduct S D L)) (φ.symm (AdjoinRoot.root (Polynomial.X ^ e - Polynomial.C π))))`. Simplify using `only [AlgHom.toRingHom_eq_coe, AlgHom.coe_toRingHom, Subalgebra.coe_val] at hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc]`. Apply the tactic sequence `convert h using 2 <;> first | rfl | exact RingHom.ext fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem normalisation_mul_eq_aeval_root (S K L : Type) [CommRing S] [IsDomain S] [IsDiscreteValuationRing S]
     [Field K] [Algebra S K] [IsFractionRing S K] [Field L] [Algebra K L] [Algebra S L] [IsScalarTower S K L]

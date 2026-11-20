@@ -9,21 +9,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Core.Mi
 
 /- English proof (translation)
-Introduce `D Pg hT PP hP PP' hP' hc`. Establish `hstar : ∀ z : D.host.E, star z = D.host.conj z` using `Formalism.BasicNotions.bridge_star_holds D.R D.host`. Establish `hFfix : ∀ r : 𝓞 D.host.F, D.host.conj ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r : 𝓞 D.host.E) : D.host.E) = ((algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r : 𝓞 D.host.E) : D.host.E)` using `fun r => (D.host.conjE_mem_hostF_iff _).1 (r : D.host.F).2`. Establish `hle : PP.asIdeal.under (𝓞 D.host.F) ≤ PP'.asIdeal.under (𝓞 D.host.F)`. Introduce `r hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hr`, the goal using `[Ideal.under_def, Ideal.mem_comap]`. Take `⟨c', hc', he⟩` from `hc _ hr`. Establish `: c' = algebraMap (𝓞 D.host.F) (𝓞 D.host.E) r`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[he, hstar, hFfix]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]` and apply the resulting hypothesis. Establish `hmax : (PP.asIdeal.under (𝓞 D.host.F)).IsMaximal`. Rewrite using `[← HeightOneSpectrum.under_asIdeal]`. Conclude with `(HeightOneSpectrum.under (𝓞 D.host.F) PP).isMaximal`. Establish `hne : PP'.asIdeal.under (𝓞 D.host.F) ≠ ⊤`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← HeightOneSpectrum.under_asIdeal]`. Conclude with `(HeightOneSpectrum.under (𝓞 D.host.F) PP').isPrime.ne_top`. Establish `hund : HeightOneSpectrum.under (𝓞 D.host.F) PP' = HeightOneSpectrum.under (𝓞 D.host.F) PP`. Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[HeightOneSpectrum.under_asIdeal, HeightOneSpectrum.under_asIdeal]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hmax.eq_of_le hne hle).symm`. Establish `hgP` using `hT.1 PP hP`. Establish `hgv : ((D.host.g 0 * D.host.g 1 : ℕ) : 𝓞 D.host.F) ∈ (HeightOneSpectrum.under (𝓞 D.host.F) PP).asIdeal`. Rewrite using `[HeightOneSpectrum.under_asIdeal, Ideal.under_def, Ideal.mem_comap, map_natCast]`. Conclude with `hgP`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, _, hW⟩` from `hT.2 _ hgv`. Establish `e1 : PP = W` using `hW PP ⟨hP, rfl⟩`. Establish `e2 : PP' = W` using `hW PP' ⟨hP', hund⟩`. Establish `e : PP' = PP` using `e2.trans e1.symm`. Substitute `e` using the available equality.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k : Fin 2, ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP'.asIdeal := by`. Rewrite `hgP` using `[Nat.cast_mul]`. Break down `PP'.isPrime.mem_or_mem hgP with h | h` into its components or cases. Conclude with `⟨0, h⟩`. Conclude with `⟨1, h⟩`.
-
-Take `⟨x, hx, hxn⟩` from `(GlobalTheory.Mem.Chr.splitsC_main D.R D.host (D.host.g k) (D.host.g_prime k) (D.nd.g_split k) PP' hk).2.2.1`. Take `⟨c', hc', he⟩` from `hc x hx`. Conclude with `hxn c' (he.trans (hstar _)) hc'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem typePlaces_noConj : ∀ (D : D7) (Pg : Finset (Pl D.host.E)), GlobalTheory.Core.Mi.IsTypePlaces Pg →
     ∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP' := by

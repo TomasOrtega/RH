@@ -40,19 +40,17 @@ Both sides reduce to the same expression.
 theorem evIHom_apply (a : AF F) : evIHom a = evI F a := rfl
 
 /- English proof (translation)
-The claim follows from `map_add evIHom a b`.
+A detailed English derivation is pending.
 -/
 theorem evI_add (a b : AF F) : evI F (a + b) = evI F a + evI F b := map_add evIHom a b
 
 /- English proof (translation)
-The claim follows from `map_mul evIHom a b`.
+A detailed English derivation is pending.
 -/
 theorem evI_mul (a b : AF F) : evI F (a * b) = evI F a * evI F b := map_mul evIHom a b
 
 /- English proof (translation)
-Establish `h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F)`. Express the relevant statement in the definitionally equal form `Continuous fun x : InfiniteAdeleRing F => ((fun (v : {w : InfinitePlace F // w.IsReal}) => InfinitePlace.Completion.extensionEmbeddingOfIsReal v.2 (x v)), (fun (v : {w : InfinitePlace F // w.IsComplex}) => InfinitePlace.Completion.extensionEmbedding v.1 (x v)))`. Use `Continuous.prodMk (continuous_pi fun v => ?_) (continuous_pi fun v => ?_)` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal v.2).continuous.comp (continuous_apply _)`. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding v.1).continuous.comp (continuous_apply _)`.
-
-Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_evI : Continuous (evI F) := by
   have h : Continuous (InfiniteAdeleRing.ringEquiv_mixedSpace F) := by
@@ -65,24 +63,24 @@ theorem continuous_evI : Continuous (evI F) := by
   exact h.comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact h)`.
+A detailed English derivation is pending.
 -/
 theorem fst_eq_zero {a : AF F} (h : evI F a = 0) : a.1 = 0 :=
   (InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact h)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by show a.1 * b.1 = 0; rw [fst_eq_zero ha, zero_mul]) (by show a.2 * b.2 = 0; rw [hb, mul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of {a b : AF F} (ha : evI F a = 0) (hb : b.2 = 0) : a * b = 0 :=
   Prod.ext (by show a.1 * b.1 = 0; rw [fst_eq_zero ha, zero_mul]) (by show a.2 * b.2 = 0; rw [hb, mul_zero])
 
 /- English proof (translation)
-Introduce `u hu` and use `mul_eq_zero_of hu h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_of_snd {a : AF F} (h : a.2 = 0) : At (evI F) a := fun u hu => mul_eq_zero_of hu h
 
 /- English proof (translation)
-Establish `h1` using `h (((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) : AF F) (by show InfiniteAdeleRing.ringEquiv_mixedSpace F 0 = 0; exact map_zero _)`. Establish `h2 : (1 : FiniteAdeleRing (𝓞 F) F) * a.2 = 0` using `congrArg Prod.snd h1`. Rewrite `h2` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem snd_of_at {a : AF F} (h : At (evI F) a) : a.2 = 0 := by
   have h1 := h (((0 : InfiniteAdeleRing F), (1 : FiniteAdeleRing (𝓞 F) F)) : AF F)
@@ -91,20 +89,20 @@ theorem snd_of_at {a : AF F} (h : At (evI F) a) : a.2 = 0 := by
   rwa [one_mul] at h2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h i => snd_of_at (fun u hu => congrFun (h u hu) i), fun h u hu => funext fun i => mul_eq_zero_of hu (h i)⟩`.
+Supply the required witnesses or components.
 -/
 theorem at_vec_iff {κ : Type} {z : κ → AF F} : At (evI F) z ↔ ∀ i, (z i).2 = 0 :=
   ⟨fun h i => snd_of_at (fun u hu => congrFun (h u hu) i),
     fun h u hu => funext fun i => mul_eq_zero_of hu (h i)⟩
 
 /- English proof (translation)
-The claim follows from `funext fun i => RingEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem archPart_archLift {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) : archPart (archLift x) = x :=
   funext fun i => RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `RingEquiv.symm_apply_apply _ _`. Conclude with `(at_vec_iff.1 hz i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem archLift_archPart {κ : Type} {z : κ → AF F} (hz : At (evI F) z) : archLift (archPart z) = z := by
   funext i
@@ -113,13 +111,13 @@ theorem archLift_archPart {κ : Type} {z : κ → AF F} (hz : At (evI F) z) : ar
   · exact (at_vec_iff.1 hz i).symm
 
 /- English proof (translation)
-The claim follows from `at_vec_iff.2 fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem at_archLift {κ : Type} (x : κ → mixedEmbedding.mixedSpace F) : At (evI F) (archLift x) :=
   at_vec_iff.2 fun _ => rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i) (y i)`. Conclude with `(add_zero (0 : FiniteAdeleRing (𝓞 F) F)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem archLift_add {κ : Type} (x y : κ → mixedEmbedding.mixedSpace F) :
     archLift (x + y) = archLift x + archLift y := by
@@ -129,15 +127,13 @@ theorem archLift_add {κ : Type} (x y : κ → mixedEmbedding.mixedSpace F) :
   · exact (add_zero (0 : FiniteAdeleRing (𝓞 F) F)).symm
 
 /- English proof (translation)
-The claim follows from `RingEquiv.apply_symm_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem evI_realAd (c : ℝ) : evI F (realAd F c) = algebraMap ℝ (mixedEmbedding.mixedSpace F) c :=
   RingEquiv.apply_symm_apply _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Use `show (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (c • x i) = (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (algebraMap ℝ _ c) * (InfiniteAdeleRing.ringEquiv_mixedSpace F).symm (x i)`. Rewrite using `[Algebra.smul_def, map_mul]`. Use `show (0 : FiniteAdeleRing (𝓞 F) F) = 0 * 0`.
-
-Rewrite using `[mul_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archLift_smul {κ : Type} (c : ℝ) (x : κ → mixedEmbedding.mixedSpace F) :
     archLift (c • x) = realAd F c • archLift x := by
@@ -151,13 +147,13 @@ theorem archLift_smul {κ : Type} (c : ℝ) (x : κ → mixedEmbedding.mixedSpac
     rw [mul_zero]
 
 /- English proof (translation)
-The claim follows from `funext fun i => evI_add (z i) (z' i)`.
+A detailed English derivation is pending.
 -/
 theorem archPart_add {κ : Type} (z z' : κ → AF F) : archPart (z + z') = archPart z + archPart z' :=
   funext fun i => evI_add (z i) (z' i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show evI F (realAd F c * z i) = c • evI F (z i)`. Rewrite using `[evI_mul, evI_realAd, Algebra.smul_def]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archPart_smul {κ : Type} (c : ℝ) (z : κ → AF F) : archPart (realAd F c • z) = c • archPart z := by
   funext i
@@ -165,9 +161,9 @@ theorem archPart_smul {κ : Type} (c : ℝ) (z : κ → AF F) : archPart (realAd
   rw [evI_mul, evI_realAd, Algebra.smul_def]
 
 /- English proof (translation)
-Establish `h : evIHom (⅟(2 : AF F)) * 2 = 1`. Rewrite using `[← map_ofNat (evIHom (F := F)) 2, ← map_mul, invOf_mul_self, map_one]`. Establish `h2 : algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap ℝ (mixedEmbedding.mixedSpace F)) 2, ← map_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[← evIHom_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, mul_one]`. Use `_ = (evIHom (⅟(2 : AF F)) * 2) * algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) := by ring`. Use `_ = _ := by rw [h, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evI_invTwo : evI F (⅟(2 : AF F)) = algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) := by
   have h : evIHom (⅟(2 : AF F)) * 2 = 1 := by
@@ -181,7 +177,7 @@ theorem evI_invTwo : evI F (⅟(2 : AF F)) = algebraMap ℝ (mixedEmbedding.mixe
     _ = _ := by rw [h, one_mul]
 
 /- English proof (translation)
-Establish `h` using `hR 0 (archLift x) (at_archLift x)`. Rewrite `h` using `[zero_add]`. Use `show φ (archPart (archLift x)) * R (archLift x) = φ x * R 0`. Rewrite using `[archPart_archLift, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tens_archLift {κ : Type} (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ) (R : (κ → AF F) → ℂ)
     (hR : ∀ x z, At (evI F) z → R (x + z) = R x) (x : κ → mixedEmbedding.mixedSpace F) :
@@ -231,22 +227,22 @@ theorem archMap_apply (co : GlobalTheory.WeilM.Darboux Bf κ) (L : W →ₗ[AF F
       archPart (co.e (L (co.e.symm (archLift w.1, archLift w.2)))).2) := rfl
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [← map_smul, hu a ha, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_lin (L : W →ₗ[AF F] W) {u : W} (hu : At (evI F) u) : At (evI F) (L u) := fun a ha => by
   rw [← map_smul, hu a ha, map_zero]
 
 /- English proof (translation)
-Introduce `a ha` and use `by rw [← map_smul, Prod.smul_mk, at_archLift x a ha, at_archLift y a ha, Prod.mk_zero_zero, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_symm (co : GlobalTheory.WeilM.Darboux Bf κ) (x y : κ → mixedEmbedding.mixedSpace F) :
     At (evI F) (co.e.symm (archLift x, archLift y)) := fun a ha => by
   rw [← map_smul, Prod.smul_mk, at_archLift x a ha, at_archLift y a ha, Prod.mk_zero_zero, map_zero]
 
 /- English proof (translation)
-Establish `h1 : At (evI F) (co.e u).1` using `fun a ha => by`. Rewrite using `[← Prod.smul_fst, ← map_smul, hu a ha, map_zero]`. Both sides reduce to the same expression. Establish `h2 : At (evI F) (co.e u).2` using `fun a ha => by`. Rewrite using `[← Prod.smul_snd, ← map_smul, hu a ha, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[archLift_archPart h1, archLift_archPart h2]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eq (co : GlobalTheory.WeilM.Darboux Bf κ) {u : W} (hu : At (evI F) u) :
     co.e u = (archLift (archPart (co.e u).1), archLift (archPart (co.e u).2)) := by
@@ -257,7 +253,7 @@ theorem coord_eq (co : GlobalTheory.WeilM.Darboux Bf κ) {u : W} (hu : At (evI F
   rw [archLift_archPart h1, archLift_archPart h2]
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Establish `h` using `coord_eq co (at_lin L₂ (at_symm co w.1 w.2))`. Rewrite using `[LinearMap.comp_apply, archMap_apply co L₁, archMap_apply co L₂, archMap_apply co (L₁.comp L₂)]`. Simplify using `only`. Rewrite using `[← h, LinearEquiv.symm_apply_apply, LinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archMap_comp (co : GlobalTheory.WeilM.Darboux Bf κ) (L₁ L₂ : W →ₗ[AF F] W) :
     (archMap co L₁).comp (archMap co L₂) = archMap co (L₁.comp L₂) := by
@@ -268,7 +264,7 @@ theorem archMap_comp (co : GlobalTheory.WeilM.Darboux Bf κ) (L₁ L₂ : W →�
   rw [← h, LinearEquiv.symm_apply_apply, LinearMap.comp_apply]
 
 /- English proof (translation)
-Use `LinearMap.ext fun w => ?_` and prove the remaining obligations. Rewrite using `[archMap_apply, LinearMap.id_apply, LinearMap.id_apply, LinearEquiv.apply_symm_apply, archPart_archLift, archPart_archLift]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem archMap_id (co : GlobalTheory.WeilM.Darboux Bf κ) : archMap co LinearMap.id = LinearMap.id := by
   refine LinearMap.ext fun w => ?_
@@ -276,15 +272,15 @@ theorem archMap_id (co : GlobalTheory.WeilM.Darboux Bf κ) : archMap co LinearMa
     archPart_archLift]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, hu, GlobalTheory.WeilM.schr, tens, GlobalTheory.GaussLine.heisFun_apply]`. Establish `e1 : R (y + archLift p) = R y` using `hR y _ (at_archLift p)`. Establish `e2 : (fun i => evI F ((y + archLift p) i)) = (fun i => evI F (y i)) + p`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Pi.add_apply, evI_add, Pi.add_apply]`. Conclude with `congrArg _ (congrFun (archPart_archLift p) i)`. Use `set z : AF F := y ⬝ᵥ archLift q + ⅟(2 : AF F) * (archLift p ⬝ᵥ archLift q) with hz`. Establish `hzat : At (evI F) z`. Use `at_of_snd ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show finHom z = 0`. Simplify using `only [hz, dotProduct, map_add, map_mul, map_sum]`. Establish `h0 : ∀ i, finHom (archLift q i) = 0` using `fun _ => rfl`. Simplify using `[h0]`. Establish `hev : evI F z = (∑ i, evI F (y i) * q i) + algebraMap ℝ (mixedEmbedding.mixedSpace F) (1 / 2) * ∑ i, p i * q i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← evIHom_apply, hz]`. Simplify using `only [dotProduct, map_add, map_mul, map_sum, evIHom_apply, evI_invTwo]`. Establish `h1 : ∀ i, evI F (archLift q i) = q i` using `fun i => congrFun (archPart_archLift q) i`. Establish `h2 : ∀ i, evI F (archLift p i) = p i` using `fun i => congrFun (archPart_archLift p) i`. Simplify using `only [h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `htr : Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F z) = GlobalTheory.GaussLine.pairInf F κ (fun i => evI F (y i)) q + GlobalTheory.GaussLine.pairInf F κ p q / 2`. Rewrite using `[hev, GlobalTheory.GaussLine.pairInf_apply, GlobalTheory.GaussLine.pairInf_apply, map_add, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, hψ.2.2 z hzat, htr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rho_tens {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (co : GlobalTheory.WeilM.Darboux Bf κ) (u : W)
     (p q : κ → mixedEmbedding.mixedSpace F) (hu : co.e u = (archLift p, archLift q))
@@ -352,21 +348,19 @@ end Mat
 end GlobalTheory.ArchLineAct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ a a' B G X om om' hT γ hγ T hTact`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.ArchRest.exists_rest_arch (F := F) (Fin a × Fin (a + a'))`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hT.weil`. Establish `hRsh : ∀ x z, At (evI F) z → R (x + z) = R x` using `(hR 0).1`. Set `L : ℝ → Matrix (Fin a) (Fin (a + a')) (AE F E) →ₗ[AF F] Matrix (Fin a) (Fin (a + a')) (AE F E)` to `fun t => GlobalTheory.ArchLineAct.rmulT (mat (γ (Multiplicative.ofAdd t)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmat : ∀ g h : UA σ G.W.J, mat (g * h) = mat g * mat h` using `fun _ _ => rfl`. Establish `hmat1 : mat (1 : UA σ G.W.J) = 1` using `rfl`. Use `⟨fun t => GlobalTheory.ArchLineAct.archMap G.M.co (L t), fun w => ?_, fun s t => ?_, ?_, fun t p q f g hg => ?_⟩` and prove the remaining obligations. Establish `hm : Continuous fun t : ℝ => (mat (γ (Multiplicative.ofAdd t)))ᵀ` using `(Units.continuous_val.comp (continuous_subtype_val.comp (hγ.1.comp continuous_ofAdd))).matrix_transpose set u := G.M.co.e.symm (GlobalTheory.ArchLineAct.archLift w.1, GlobalTheory.ArchLineAct.archLift w.2) with hu`. Set `K` to `G.M.co.e.toLinearMap ∘ₗ (GlobalTheory.ArchLineAct.lmulL (k := a + a') u)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `haveI : IsModuleTopology (AF F) (Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin (a + a') → Fin (a + a') → AE F E))`. Establish `hK : Continuous K` using `IsModuleTopology.continuous_of_linearMap K`. Establish `hc : Continuous fun t : ℝ => G.M.co.e (L t u)` using `hK.comp hm`. Use `show Continuous fun t : ℝ => (GlobalTheory.ArchLineAct.archPart (G.M.co.e (L t u)).1, GlobalTheory.ArchLineAct.archPart (G.M.co.e (L t u)).2)`. Conclude with `Continuous.prodMk (continuous_pi fun i => GlobalTheory.ArchLineAct.continuous_evI.comp ((continuous_apply i).comp (continuous_fst.comp hc))) (continuous_pi fun i => GlobalTheory.ArchLineAct.continuous_evI.comp ((continuous_apply i).comp (continuous_snd.comp hc)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show GlobalTheory.ArchLineAct.archMap G.M.co (L (s + t)) = (GlobalTheory.ArchLineAct.archMap G.M.co (L s)).comp (GlobalTheory.ArchLineAct.archMap G.M.co (L t))`. Rewrite using `[GlobalTheory.ArchLineAct.archMap_comp]`. Use `congr 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show x * (mat (γ (Multiplicative.ofAdd (s + t))))ᵀ = (x * (mat (γ (Multiplicative.ofAdd t)))ᵀ) * (mat (γ (Multiplicative.ofAdd s)))ᵀ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofAdd_add, map_mul, hmat, Matrix.transpose_mul, Matrix.mul_assoc]`. Use `show GlobalTheory.ArchLineAct.archMap G.M.co (L 0) = LinearMap.id`. Establish `hL : L 0 = LinearMap.id`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Use `show x * (mat (γ (Multiplicative.ofAdd 0)))ᵀ = x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ofAdd_zero, map_one, hmat1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[hL, GlobalTheory.ArchLineAct.archMap_id]`. Use `set u := G.M.co.e.symm (GlobalTheory.ArchLineAct.archLift p, GlobalTheory.ArchLineAct.archLift q) with hu`. Establish `hue : G.M.co.e u = (GlobalTheory.ArchLineAct.archLift p, GlobalTheory.ArchLineAct.archLift q)` using `LinearEquiv.apply_symm_apply _ _`. Establish `hu' : At (evI F) (L t u)` using `GlobalTheory.ArchLineAct.at_lin _ (GlobalTheory.ArchLineAct.at_symm _ p q)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hue'` using `GlobalTheory.ArchLineAct.coord_eq G.M.co hu'`. Establish `himpl` using `hW.impl (1, γ (Multiplicative.ofAdd t)) u (tens (evI F) (⇑f) R) (hR f).2`. Establish `hact : GlobalTheory.WeilM.actAB (cA σ) ((1 : UA σ G.V.J), γ (Multiplicative.ofAdd t)) u = L t u` using `by show ((1 : UA σ G.V.J) : GL (Fin a) (AE F E)).1 * u * (mat (γ (Multiplicative.ofAdd t)))ᵀ = u * (mat (γ (Multiplicative.ofAdd t)))ᵀ`. Rewrite using `[show ((1 : UA σ G.V.J) : GL (Fin a) (AE F E)).1 = 1 from rfl, Matrix.one_mul]`. Rewrite `himpl` using `[hact, GlobalTheory.ArchLineAct.rho_tens hT.base.std G.M.co u p q hue (⇑f) R hRsh, ← hg, hTact t g R (hR g), hTact t f R (hR f), GlobalTheory.ArchLineAct.rho_tens hT.base.std G.M.co (L t u) _ _ hue' _ R hRsh]`.
-
-Use function extensionality and compare the values at `x`. Establish `h` using `congrFun himpl (GlobalTheory.ArchLineAct.archLift x)`. Rewrite `h` using `[GlobalTheory.ArchLineAct.tens_archLift _ R hRsh, GlobalTheory.ArchLineAct.tens_archLift _ R hRsh]`. Conclude with `mul_right_cancel₀ hR0 h`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchLineAct.intertwine : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {a a' : ℕ} (B : Base F E) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W),

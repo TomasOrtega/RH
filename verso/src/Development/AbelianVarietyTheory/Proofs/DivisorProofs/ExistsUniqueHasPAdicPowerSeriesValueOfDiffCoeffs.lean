@@ -10,15 +10,15 @@ noncomputable section
 namespace GlobalTheory.QLog.ValEx
 
 /- English proof (translation)
-Use `set T := 2 * N + m + 1 with hT`. Establish `hT2 : T < 2 ^ T` using `Nat.lt_two_pow_self`. Establish `hA : ∀ v, 2 * T ≤ v → N * (m + v) ≤ 2 ^ v`. Introduce `v hv`. Proceed by induction on `v, hv using Nat.le_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `base`. Establish `hNT : N ≤ T` using `by omega`. Establish `h1 : N * (m + 2 * T) ≤ T * T` using `by nlinarith [Nat.mul_le_mul_right m hNT]`. Establish `h2 : T * T ≤ 2 ^ T * 2 ^ T` using `Nat.mul_le_mul hT2.le hT2.le`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately.
 
-Consider the case `succ v hv ih`. Establish `h3 : N ≤ 2 ^ v`. Establish `: 2 ^ T ≤ 2 ^ v` using `Nat.pow_le_pow_right (by norm_num) (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[pow_succ]`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `⟨N * (m + 2 * T) + 1, by omega, fun a v ha hv => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hvK : 2 * T ≤ v`. Combine the equalities or inequalities in the displayed calculation. Establish `: N * (m + v) ≤ N * (m + 2 * T)` using `Nat.mul_le_mul_left _ (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem nat_bound (p N m : ℕ) (hp : 2 ≤ p) :
     ∃ M : ℕ, 1 ≤ M ∧ ∀ a v : ℕ, M ≤ a → p ^ v ≤ a → N * (m + v) ≤ a := by
@@ -65,7 +65,7 @@ def psum (z : σ → B) (f : MvPowerSeries σ Q) (n : ℕ) : Q :=
   MvPolynomial.eval (fun i => algebraMap B Q (z i)) (trunc' Q (box σ n) f)
 
 /- English proof (translation)
-Simplify using `only [psum, trunc', truncFinset_apply, map_sum, MvPolynomial.eval_monomial]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_finsuppProd]`. Simplify using `[map_pow]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem psum_eq (z : σ → B) (f : MvPowerSeries σ Q) (n : ℕ) :
     psum z f n = ∑ α ∈ Finset.Iic (box σ n),
@@ -76,28 +76,28 @@ theorem psum_eq (z : σ → B) (f : MvPowerSeries σ Q) (n : ℕ) :
   simp [map_pow]
 
 /- English proof (translation)
-Simplify `h` using `[box, Finset.mem_Iic, Finsupp.le_def]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_lt_of_not_mem_box {n : ℕ} {α : σ →₀ ℕ} (h : α ∉ Finset.Iic (box σ n)) :
     ∃ i, n < α i := by
   simpa [box, Finset.mem_Iic, Finsupp.le_def] using h
 
 /- English proof (translation)
-The claim follows from `Finset.Iic_subset_Iic.2 (Finsupp.le_def.2 fun i => by simpa [box] using h)`.
+A detailed English derivation is pending.
 -/
 theorem box_mono {n n' : ℕ} (h : n ≤ n') : Finset.Iic (box σ n) ⊆ Finset.Iic (box σ n') :=
   Finset.Iic_subset_Iic.2 (Finsupp.le_def.2 fun i => by simpa [box] using h)
 
 /- English proof (translation)
-Use `choose Nf hNf using hz`. Use `set N := ∑ i, Nf i`. Establish `hN : ∀ i, (p : B) ∣ z i ^ N` using `fun i => (hNf i).trans (pow_dvd_pow _ (Finset.single_le_sum (fun j _ => Nat.zero_le (Nf j)) (Finset.mem_univ i)))`. Take `⟨M, hM1, hM⟩` from `nat_bound p N m hp.out.two_le`. Use `⟨M, fun α i hi => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha0 : α i ≠ 0` using `by omega`. Take `⟨v, u, hu, hau⟩` from `Nat.exists_eq_pow_mul_and_not_dvd ha0 p hp.out.ne_one`. Establish `hcop : Nat.Coprime u p` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hu)`. Take `⟨U, hU⟩` from `hunit u hcop`. Establish `hle : N * (m + v) ≤ α i` using `hM (α i) v hi (Nat.le_of_dvd (Nat.pos_of_ne_zero ha0) ⟨u, hau⟩)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdz : (p : B) ^ (m + v) ∣ z i ^ (α i)` using `(pow_dvd_pow_of_dvd (hN i) (m + v)).trans (by rw [← pow_mul]; exact pow_dvd_pow _ hle)`. Establish `hprod : z i ^ (α i) ∣ α.prod fun j e => z j ^ e`. Establish `hi' : i ∈ α.support` using `Finsupp.mem_support_iff.2 ha0`. Unfold `Finsupp.prod`. Conclude with `Finset.dvd_prod_of_mem (fun j => z j ^ α j) hi'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨r, hr⟩` from `hdz.trans hprod`. Take `⟨b, -, hb⟩` from `hf α i`. Use `⟨b * ↑U⁻¹ * r, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Rewrite `hb` using `[hau]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hUU : (u : Q) * algebraMap B Q (↑U⁻¹ : B) = 1`. Rewrite using `[← map_natCast (algebraMap B Q), ← map_mul, ← hU, Units.mul_inv, map_one]`. Simplify using `only [map_mul, map_pow, map_natCast]`. Move the coercions through the operations in `at hb`. Take the linear combination `((p : Q) ^ m * algebraMap B Q (↑U⁻¹ : B) * algebraMap B Q r) * hb - (coeff α f * (p : Q) ^ (m + v) * algebraMap B Q r) * hUU`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem term_mem (p : ℕ) [hp : Fact p.Prime] (hunit : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B))
     (z : σ → B) (hz : ∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) (f : MvPowerSeries σ Q)
@@ -134,9 +134,9 @@ theorem term_mem (p : ℕ) [hp : Fact p.Prime] (hunit : ∀ n : ℕ, Nat.Coprime
     (coeff α f * (p : Q) ^ (m + v) * algebraMap B Q r) * hUU
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `term_mem p hunit z hz f hf m`. Use `⟨M, fun n n' hn hnn' => ?_⟩` and prove the remaining obligations. Rewrite using `[psum_eq, psum_eq, ← Finset.sum_sdiff (box_mono hnn'), add_sub_cancel_right]`. Use `AddSubgroup.sum_mem _ fun α hα => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `exists_lt_of_not_mem_box (Finset.mem_sdiff.1 hα).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `hM α i (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem cauchy (p : ℕ) [Fact p.Prime] (hunit : ∀ n : ℕ, Nat.Coprime n p → IsUnit (n : B))
     (z : σ → B) (hz : ∀ i, ∃ N : ℕ, (p : B) ∣ z i ^ N) (f : MvPowerSeries σ Q)
@@ -156,25 +156,25 @@ namespace GlobalTheory.QLog
 open ValEx in
 
 /- English proof (translation)
-Introduce `p _ B O Q _ _ _ _ θ hF σ _ _ z hz f hf`. Use `haveI := hF.complete`. Establish `hI : ∀ (k : ℕ) (x : B), x ∈ ((Ideal.span {(p : B)}) ^ k • ⊤ : Submodule B B) ↔ ∃ e, x = (p : B) ^ k * e`. Introduce `k x`. Rewrite using `[Ideal.smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow, Ideal.mem_span_singleton']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩; exact ⟨e, by rw [← he, mul_comm]⟩`. Introduce and unpack `⟨e, he⟩; exact ⟨e, by rw [he, mul_comm]⟩`. Use `choose M hM using cauchy p hF.unit_coprime z hz f hf`. Use `set K : ℕ → ℕ := fun m => ∑ k ∈ Finset.range (m + 1), M k with hK`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMK : ∀ m, M m ≤ K m` using `fun m => Finset.single_le_sum (fun k _ => Nat.zero_le (M k)) (Finset.mem_range.2 (Nat.lt_succ_self m))`. Establish `hKmono : Monotone K` using `fun a b hab => Finset.sum_le_sum_of_subset (Finset.range_mono (Nat.succ_le_succ hab))`. Establish `h0 : ∀ n, psum z f (K n) - psum z f (K 0) ∈ img B p 0` using `fun n => hM 0 (K 0) (K n) (hMK 0) (hKmono (Nat.zero_le n))`. Use `choose b hb using h0`. Establish `hcau : ∀ {k n : ℕ}, k ≤ n → b k ≡ b n [SMOD ((Ideal.span {(p : B)}) ^ k • ⊤ : Submodule B B)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k n hkn`. Rewrite using `[SModEq.sub_mem, hI]`. Take `⟨e, he⟩` from `hM k (K k) (K n) (hMK k) (hKmono hkn)`. Use `⟨-e, hF.inj ?_⟩` and prove the remaining obligations. Establish `hbk` using `hb k`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `hbn` using `hb n`. Simplify using `only [pow_zero, one_mul, map_sub, map_mul, map_neg, map_pow, map_natCast] at hbk hbn he ⊢`. Take the linear combination `hbn - hbk - he`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' b hcau`. Establish `huniq : ∀ q1 q2, HasVal p z f q1 → HasVal p z f q2 → q1 = q2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `q1 q2 h1 h2`. Establish `hd : ∀ m, ∃ e : B, q1 - q2 = algebraMap B Q ((p : B) ^ m * e)`. Introduce `m`. Take `⟨N1, hN1⟩` from `h1 m`. Take `⟨N2, hN2⟩` from `h2 m`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨e1, he1⟩` from `hN1 (max N1 N2) (le_max_left _ _)`. Take `⟨e2, he2⟩` from `hN2 (max N1 N2) (le_max_right _ _)`. Conclude with `⟨e1 - e2, by rw [mul_sub, map_sub, ← he1, ← he2]; ring⟩`. Take `⟨c, hc⟩` from `hd 0`. Establish `hc0 : c = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `IsHausdorff.haus' (I := Ideal.span {(p : B)}) c fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, sub_zero, hI]`. Take `⟨e, he⟩` from `hd n`. Conclude with `⟨e, hF.inj (by rw [← he, hc, pow_zero, one_mul])⟩`. Rewrite using `[← sub_eq_zero, hc, hc0, mul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : HasVal p z f (psum z f (K 0) + algebraMap B Q L)` using `fun m => ⟨K m, fun N' hN' => by`. Take `⟨e1, he1⟩` from `(hI m _).1 (SModEq.sub_mem.1 (hL m))`. Take `⟨e2, he2⟩` from `hM m (K m) N' (hMK m) hN'`. Establish `hbm` using `hb m`. Establish `he1'` using `congrArg (algebraMap B Q) he1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `⟨-e1 - e2, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `psum z f (K 0) + algebraMap B Q L - psum z f N' = _`. Simplify using `only [pow_zero, one_mul, map_sub, map_mul, map_neg, map_pow, map_natCast] at hbm he1' he2 ⊢`. Take the linear combination `-hbm - he1' - he2⟩`. Conclude with `⟨_, hq, fun q' hq' => huniq _ _ hq' hq⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_hasVal_of_dIn : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q]
     [CommRing O] [Algebra B Q] (θ : B →+* O), IsFrame p Q θ → ∀ (σ : Type) [Fintype σ]

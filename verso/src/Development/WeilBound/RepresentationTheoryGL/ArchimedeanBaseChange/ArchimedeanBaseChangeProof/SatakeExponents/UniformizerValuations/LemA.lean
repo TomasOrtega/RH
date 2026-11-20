@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.Inert
 
 /- English proof (translation)
-The claim follows from `satUniq`.
+A detailed English derivation is pending.
 -/
 theorem lem_b : SatUniq := satUniq
 

@@ -14,15 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ D Q hQ F _ _ v hv θ g hg`. Establish `hν : NuGe D Q F v 1 θ 0`. Use `(n1a V ϖ hϖ D Q hQ F v hv 1 le_rfl {0} (fun χ => ⟨0, Finset.mem_singleton_self _, χ, by simp⟩) θ 0).2 ?_` and prove the remaining obligations. Introduce `α hα`. Rewrite `hα` using `[Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hα` using the available equality. Use `⟨1, fun _ => 1, fun _ => g 0, fun _ => θ.s 0, fun _ => hg 0, fun _ => ?_, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[QForm.Q_zero hϖ D hQ]`. Simplify using the standard rewrite rules. Simplify using `[DegPre.constBF]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨hν, fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨n, a₀, τ, τF, hτ, hva, hsum⟩` from `hν χ`. Establish `hb : ∀ i, 0 < v (a₀ i)` using `fun i => by`. Use `lt_of_lt_of_le ?_ (hva i)` and prove the remaining obligations. Establish `h1 : (1 : ℚ) ≤ (Q χ : ℚ)` using `by exact_mod_cast QForm.Q_pos hϖ D hQ hχ`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (0 : ℚ) < 0 + (Q χ : ℚ) / ((1 : ℕ) : ℚ)` using `by simp; exact_mod_cast (by linarith : (0 : ℚ) < (Q χ : ℚ))`. Conclude with `h2` after adjusting the coercions. Establish `vc : ∀ (t : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F χ) (DegPre.famε 1))) (x : F) {Z : Scheme.{0}} (q : Z ⟶ (DegPre.BF D.toPre F).left) (z : Z) (j), q z ∈ LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j → gs q z (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) ( …` using `V) F) D.toPre.P.A).left) z x * gs q z (LB.wchart D.toPre.P.L (DegPre.famφ D.toPre F χ) j) (t.f j) := fun t x Z q z j hz => (gs_mul q z _ hz _ _).trans (congrArg₂ (· * ·) ((gs_res q z le_top hz _).trans (gs_pull q (fst (TF (R := V) F) D.toPre.P.A).left z ⊤ trivial _)) rfl)`. Establish `div₁` using `H1.dvd_of_comb hϖ D.toPre F v hv (g χ) τ a₀ hb (fun Z q z J hJ => (H1.sval_scal (hg χ) q z hJ).symm.trans ((congrArg (gs _ z _) (hsum _)).trans ((H1.gs_sum q z _ (hJ.mem _ q) _).trans (Finset.sum_congr rfl fun i _ => (vc (τF i) (a₀ i) q z _ (hJ.mem _ q)).trans (congrArg₂ (· * ·) …`. Use `D.toPre.P.isAb.smooth` as an intermediate fact.
-
-Conclude with `exists_div_sec D.toPre.P.A.hom hϖ.ne_zero (g χ) div₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integralFamily_levelOne : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (Q : D.toPre.X → ℤ), QForm.IsQ D.toPre ϖ Q → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ (θ : Fam D.toPre F 1) (g : ∀ α : D.toPre.X, D.toPre.SecB 1 α), (∀ α, GeneratorPullback.SecScal D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε 1) (θ.s α) (D.toPre.famφB α) (DegPre.famε 1) (g α) (DegPre.prB D.toPre F).left 1) → NuGe D Q F v 1 θ 0 ∧ ∀ χ, χ ≠ 0 → ∃ g' : D.toPre.SecB 1 χ, SecIsMul D.toPre.P.A.hom ϖ (g χ) g' := by
   intro V _ _ _ ϖ hϖ D Q hQ F _ _ v hv θ g hg

@@ -12,7 +12,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace CompanionTheory.Member.BlockMatrixNorms
 
 /- English proof (translation)
-Establish `h` using `(Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M).le_opNorm (WithLp.toLp 2 x)`. Establish `h2` using `pow_le_pow_left₀ (norm_nonneg _) h 2`. Rewrite `h2` using `[mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq_le {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) (x : n → ℂ) :
     ∑ i, ‖(M *ᵥ x) i‖ ^ 2 ≤ ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) M‖ ^ 2 * ∑ i, ‖x i‖ ^ 2 := by
@@ -22,17 +22,15 @@ theorem sq_le {n : Type} [Fintype n] [DecidableEq n] (M : Matrix n n ℂ) (x : n
   exact h2
 
 /- English proof (translation)
-Rewrite using `[← NNReal.coe_le_coe, NNReal.coe_max, coe_nnnorm, coe_nnnorm, coe_nnnorm]`. Use `set a := ‖Matrix.toEuclideanCLM (n := m) (𝕜 := ℂ) x‖ with ha`. Use `set b := ‖Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) y‖ with hb`. Establish `ha0 : 0 ≤ a` using `norm_nonneg _`. Establish `hb0 : 0 ≤ b` using `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : 0 ≤ max a b` using `le_max_of_le_left ha0`. Use `ContinuousLinearMap.opNorm_le_bound _ hm fun w => ?_` and prove the remaining obligations. Use `(pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hm (norm_nonneg _)) two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[mul_pow, EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq]`. Establish `h1` using `sq_le x (fun i => w.ofLp (e (.inl i)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `sq_le y (fun i => w.ofLp (e (.inr i)))`. Establish `e1 : ∀ i, (Matrix.toEuclideanCLM (n` using `ι) (𝕜 := ℂ) (GlobalTheory.Doubling.blkMat e x y) w).ofLp (e (.inl i)) = (x *ᵥ fun i => w.ofLp (e (.inl i))) i := by`. Introduce `i`. Use `show (GlobalTheory.Doubling.blkMat e x y *ᵥ w.ofLp) (e (.inl i)) = _`. Simplify using `[Matrix.mulVec, dotProduct, ← e.sum_comp, GlobalTheory.Doubling.blkMat]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e2 : ∀ i, (Matrix.toEuclideanCLM (n` using `ι) (𝕜 := ℂ) (GlobalTheory.Doubling.blkMat e x y) w).ofLp (e (.inr i)) = (y *ᵥ fun i => w.ofLp (e (.inr i))) i := by`. Introduce `i`. Use `show (GlobalTheory.Doubling.blkMat e x y *ᵥ w.ofLp) (e (.inr i)) = _`. Simplify using `[Matrix.mulVec, dotProduct, ← e.sum_comp, GlobalTheory.Doubling.blkMat]`. Rewrite using `[← e.sum_comp, ← e.sum_comp (fun i => ‖w.ofLp i‖ ^ 2), Fintype.sum_sum_type, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, e2]`. Establish `s1 : 0 ≤ ∑ i, ‖w.ofLp (e (.inl i))‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `s2 : 0 ≤ ∑ i, ‖w.ofLp (e (.inr i))‖ ^ 2` using `Finset.sum_nonneg fun _ _ => by positivity`. Establish `p1 : a ^ 2 ≤ (max a b) ^ 2` using `pow_le_pow_left₀ ha0 (le_max_left _ _) 2`. Establish `p2 : b ^ 2 ≤ (max a b) ^ 2` using `pow_le_pow_left₀ hb0 (le_max_right _ _) 2`.
-
-Rewrite using `[mul_add]`. Conclude with `add_le_add (h1.trans (mul_le_mul_of_nonneg_right p1 s1)) (h2.trans (mul_le_mul_of_nonneg_right p2 s2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem opNorm_blk {m n ι : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n] [Fintype ι] [DecidableEq ι]
     (e : m ⊕ n ≃ ι) (x : Matrix m m ℂ) (y : Matrix n n ℂ) :
@@ -69,9 +67,9 @@ theorem opNorm_blk {m n ι : Type} [Fintype m] [DecidableEq m] [Fintype n] [Deci
   exact add_le_add (h1.trans (mul_le_mul_of_nonneg_right p1 s1)) (h2.trans (mul_le_mul_of_nonneg_right p2 s2))
 
 /- English proof (translation)
-Establish `hA : 1 ≤ max 1 (max a a')` using `le_max_left _ _`. Establish `hB : 1 ≤ max 1 (max b b')` using `le_max_left _ _`. Establish `l1 : max 1 (max a a') ≤ max 1 (max a a') * max 1 (max b b')` using `le_mul_of_one_le_right' hB`. Establish `l2 : max 1 (max b b') ≤ max 1 (max a a') * max 1 (max b b')` using `le_mul_of_one_le_left' hA`. Use `max_le (hA.trans l1) (max_le (h.trans (max_le ?_ ?_)) (h'.trans (max_le ?_ ?_)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(le_max_of_le_right (le_max_left _ _)).trans l1`. Conclude with `(le_max_of_le_right (le_max_left _ _)).trans l2`. Conclude with `(le_max_of_le_right (le_max_right _ _)).trans l1`. Conclude with `(le_max_of_le_right (le_max_right _ _)).trans l2`.
+A detailed English derivation is pending.
 -/
 theorem key {c c' a a' b b' : NNReal} (h : c ≤ max a b) (h' : c' ≤ max a' b') :
     max 1 (max c c') ≤ max 1 (max a a') * max 1 (max b b') := by
@@ -86,9 +84,9 @@ theorem key {c c' a a' b b' : NNReal} (h : c ≤ max a b) (h' : c' ≤ max a' b'
   · exact (le_max_of_le_right (le_max_right _ _)).trans l2
 
 /- English proof (translation)
-Use `Finset.sup_le ?_` and prove the remaining obligations. Introduce and unpack `⟨i, j, k⟩ -`. Take `⟨i, rfl⟩` from `e.surjective i`. Take `⟨j, rfl⟩` from `e.surjective j`. Simplify using `only [GlobalTheory.Doubling.blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Conclude with `le_max_of_le_left (Finset.le_sup (f := fun p : m × m × κ => φ (x p.1 p.2.1) p.2.2) (Finset.mem_univ (i, j, k)))`. Simplify using `[hφ]`. Simplify using `[hφ]`. Conclude with `le_max_of_le_right (Finset.le_sup (f := fun p : n × n × κ => φ (y p.1 p.2.1) p.2.2) (Finset.mem_univ (i, j, k)))`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sup_blk {A m n ι κ : Type} [CommRing A] [Fintype m] [Fintype n] [Fintype ι] [Fintype κ]
     (e : m ⊕ n ≃ ι) (φ : A → κ → NNReal) (hφ : ∀ k, φ 0 k = 0) (x : Matrix m m A) (y : Matrix n n A) :
@@ -109,7 +107,7 @@ theorem sup_blk {A m n ι κ : Type} [CommRing A] [Fintype m] [Fintype n] [Finty
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `blkMat_map finSumFinEquiv _ (map_zero _) (Formalism.L2.Theta.mt V g) (Formalism.L2.Theta.mt V₁ g₁)`.
+A detailed English derivation is pending.
 -/
 theorem finMat_blk (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
     finMat D.sp.cm.sig (hsum V V₁).gram (blk V V₁ (g, g₁)) =
@@ -117,7 +115,7 @@ theorem finMat_blk (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
   blkMat_map finSumFinEquiv _ (map_zero _) (Formalism.L2.Theta.mt V g) (Formalism.L2.Theta.mt V₁ g₁)
 
 /- English proof (translation)
-Establish `h` using `blkMat_map finSumFinEquiv (fun z => θ (Algebra.TensorProduct.map (fstA D.host.F) (AlgHom.id D.host.F D.host.E) z)) (by simp only [map_zero]) (Formalism.L2.Theta.mt V g) (Formalism.L2.Theta.mt V₁ g₁)`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infMat_blk (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
     infMat D.sp.cm.sig (hsum V V₁).gram θ (blk V V₁ (g, g₁)) =
@@ -128,7 +126,7 @@ theorem infMat_blk (θ : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ) (V V₁
   exact h
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infNorm`. Rewrite using `[infMat_blk]`. Conclude with `opNorm_blk _ _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infNorm_blk (θ : InfFam D) (V V₁ : HSp D) (τ : D.what₂.Tau) (g : GA D V) (g₁ : GA D V₁) :
     GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infNorm θ (hsum V V₁) τ (blk V V₁ (g, g₁)) ≤
@@ -138,9 +136,9 @@ theorem infNorm_blk (θ : InfFam D) (V V₁ : HSp D) (τ : D.what₂.Tau) (g : G
   exact opNorm_blk _ _ _
 
 /- English proof (translation)
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finNorm`. Rewrite using `[finMat_blk]`. Use `sup_blk finSumFinEquiv (fun z k => ‖evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D z k)‖₊) (fun k => ?_) _ _` and prove the remaining obligations. Establish `hz : GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D 0 k = 0`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_zero]`. Both sides reduce to the same expression. Use `show ‖evalV D.host.F v (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finCoord D 0 k)‖₊ = 0`. Rewrite using `[hz, map_zero, nnnorm_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finNorm_blk (V V₁ : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GA D V) (g₁ : GA D V₁) :
     GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finNorm (hsum V V₁) v (blk V V₁ (g, g₁)) ≤
@@ -155,7 +153,7 @@ theorem finNorm_blk (V V₁ : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g 
   rw [hz, map_zero, nnnorm_zero]
 
 /- English proof (translation)
-The claim follows from `(map_inv (blk V V₁) (g, g₁)).symm`.
+A detailed English derivation is pending.
 -/
 theorem blk_inv (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
     (blk V V₁ (g, g₁))⁻¹ = blk V V₁ (g⁻¹, g₁⁻¹) := (map_inv (blk V V₁) (g, g₁)).symm
@@ -163,11 +161,11 @@ theorem blk_inv (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁) :
 end CompanionTheory.Member.BlockMatrixNorms
 
 /- English proof (translation)
-Introduce `D θ V V₁ g g₁`. Establish `f0` using `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt_mulSupport_finite (hsum V V₁) (blk V V₁ (g, g₁))`. Establish `f1` using `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt_mulSupport_finite V g`. Establish `f2` using `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt_mulSupport_finite V₁ g₁`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_mul_mul_comm, ← Finset.prod_mul_distrib, ← finprod_mul_distrib f1 f2]`. Use `mul_le_mul' (Finset.prod_le_prod' fun τ _ => ?_) ?_` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.infHt`. Rewrite using `[CompanionTheory.Member.BlockMatrixNorms.blk_inv]`. Conclude with `CompanionTheory.Member.BlockMatrixNorms.key (CompanionTheory.Member.BlockMatrixNorms.infNorm_blk _ _ _ _ _ _) (CompanionTheory.Member.BlockMatrixNorms.infNorm_blk _ _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finprod_le_finprod' f0 ((f1.union f2).subset (Function.mulSupport_mul _ _)) fun v => ?_ show GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt _ _ _ ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt _ _ _ * GlobalTheory.Indefi …` and prove the remaining obligations. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.finHt`. Rewrite using `[CompanionTheory.Member.BlockMatrixNorms.blk_inv]`. Conclude with `CompanionTheory.Member.BlockMatrixNorms.key (CompanionTheory.Member.BlockMatrixNorms.finNorm_blk _ _ _ _ _) (CompanionTheory.Member.BlockMatrixNorms.finNorm_blk _ _ _ _ _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul : ∀ (D : D7) (θ : InfFam D) (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁), GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ (hsum V V₁) (blk V V₁ (g, g₁)) ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V₁ g₁ := by
   intro D θ V V₁ g g₁
@@ -198,7 +196,7 @@ open GlobalTheory.Grid GlobalTheory.Doubling GlobalTheory.ChainFr GlobalTheory.I
 open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 /- English proof (translation)
-Apply the tactic sequence `first | exact @CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul | exact CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul | (intros; apply CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.unitaryAdelicHeight_orthogonalSum_embedding_le_mul : ∀ (D : D7) (θ : InfFam D) (V V₁ : HSp D) (g : GA D V) (g₁ : GA D V₁), GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ (hsum V V₁) (blk V V₁ (g, g₁)) ≤ GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V g * GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ V₁ g₁ := by
   first | exact @CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul | exact CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul | (intros; apply CompanionTheory.Member.unitaryAdelicHeight_blockDiagonal_le_mul <;> assumption)

@@ -25,11 +25,11 @@ namespace GlobalTheory.Mem.R3.CuspExt
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor in
 
 /- English proof (translation)
-Substitute `hH ha hn` using the available equality. Take `rfl` from `eq_of_heq hl`. Take `rfl` from `eq_of_heq hc`. Take `rfl` from `eq_of_heq hDw`. Take `rfl` from `eq_of_heq hXo`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl` from `eq_of_heq hU`. Use `⟨rfl, fun x x' hx => ?_, fun x x' h h' hx => ?_⟩` and prove the remaining obligations. Take `rfl` from `eq_of_heq hx`. Conclude with `Iff.rfl`. Take `rfl` from `eq_of_heq hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Unfold both sides to obtain the same proposition, which implies itself. Extract witnesses or component facts from the available result.
 
-Conclude with `HEq.rfl`.
+A detailed English derivation is pending.
 -/
 theorem cusp_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     {H H' : Host E} (hH : H' = H) {l : Level H} {l' : Level H'} (hl : HEq l' l)
@@ -56,13 +56,13 @@ theorem cusp_heq {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ hx j j' hj => ?_` and prove the remaining obligations. Establish `hB` using `hE.1`. Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions.
 
-Substitute `hB` using the available equality. Establish `e : j' = j` using `Fin.ext hj.symm`. Substitute `e` using the available equality. Take `⟨h1, h2, h3⟩` from `hx.κ j' j' rfl`. Establish `e1 : (z'.geo.κ j').aP = (z.geo.κ j').aP` using `eq_of_heq h1`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (z'.geo.κ j').aM = (z.geo.κ j').aM` using `eq_of_heq h2`. Establish `hw : Formalism.L2.Pj.wtA (z'.geo.κ j') = Formalism.L2.Pj.wtA (z.geo.κ j')`. Use function extensionality and compare the values at `x`. Unfold `Formalism.L2.Pj.wtA`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hR, hm, hs⟩` from `cusp_heq (r := (w.st Z).toD7.R.r) (eq_of_heq hx.H) hx.l hx.c hx.Dw hx.Xo hx.U hw h3 ((j' : ℕ) + 1)`. Conclude with `⟨hR, hm, hs⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cusp_ext : StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

@@ -12,7 +12,7 @@ open MvPolynomial Formalism.GradedWeylDivisibility GlobalTheory.HighWtEmb
 namespace GlobalTheory.HighWtEmb
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [blockRed, MvPolynomial.algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp => simp only [map_mul, hp, blockRed, aeval_X, map_X, rename_X] at hp ⊢`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem blockRed_eq_rename (O : Type) [CommRing O] (N : ℕ) {ι : Type} (ϖ : O) (τ : ι)
     (g : MvPolynomial (Fin N × Fin N) O) :
@@ -24,7 +24,7 @@ theorem blockRed_eq_rename (O : Type) [CommRing O] (N : ℕ) {ι : Type} (ϖ : O
   | mul_X p v hp => simp only [map_mul, hp, blockRed, aeval_X, map_X, rename_X] at hp ⊢
 
 /- English proof (translation)
-Unfold `redT`. Rewrite using `[PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, AlgHom.toLinearMap_apply]`. Conclude with `blockRed_eq_rename O N ϖ τ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redT_tprod (O : Type) [CommRing O] (N : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι] (mu : ι → ℕ → ℕ) (ϖ : O)
     (x : ∀ τ, dualWeyl O N N (res N (mu τ))) :
@@ -42,13 +42,13 @@ end GlobalTheory.HighWtEmb
 namespace GlobalTheory.HighWtEmb
 
 /- English proof (translation)
-Introduce `O _ _ _ N ι _ _ mu ϖ hϖ hanti hBC P hP`. Unfold `nabK at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨f, hf, rfl⟩` from `hP`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hl : ∀ τ, ∃ g ∈ dualWeyl O N N (res N (mu τ)), MvPolynomial.map (Ideal.Quotient.mk (Ideal.span {ϖ})) g = f τ` using `fun τ => (hBC O ϖ hϖ N (res N (mu τ)) (hanti τ)).1 (f τ) (hf τ)`. Use `choose g hg hgf using hl`. Use `⟨PiTensorProduct.tprod O (fun τ => (⟨g τ, hg τ⟩ : dualWeyl O N N (res N (mu τ)))), ?_⟩` and prove the remaining obligations. Rewrite using `[redT_tprod]`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [hgf τ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨0, map_zero _⟩`. Consider the case `add P Q _ _ hP hQ`. Take `⟨y, rfl⟩` from `hP`. Take `⟨z, rfl⟩` from `hQ`. Conclude with `⟨y + z, map_add _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c P _ hP`. Take `⟨y, rfl⟩` from `hP`. Take `⟨c, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Use `⟨c • y, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smul, ← Ideal.Quotient.algebraMap_eq, algebraMap_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nabK_lift : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (N : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι]
     (mu : ι → ℕ → ℕ) (ϖ : O), Irreducible ϖ → (∀ τ, Antitone (res N (mu τ))) → GlobalTheory.HighWt.BaseChange →

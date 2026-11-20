@@ -44,7 +44,7 @@ def PerEquivStatement : Prop :=
         Formalism.MainNotions.S.psiGen k r z c m • π h (per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π F ξ x)
 
 /- English proof (translation)
-Introduce `k r u z c Vp _ _ _ π μW μN P hB F ξ x h hh m hm`. Conclude with `EvaluationEquivalence.sInt_equiv hB (fun g => F (P * g * P⁻¹)) ξ x hh hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem perEquiv : PerEquivStatement := by
   intro k r u z c Vp _ _ _ π μW μN P hB F ξ x h hh m hm
@@ -84,47 +84,41 @@ def FrameLawStatement : Prop :=
           (∏ j : Fin k, (x + ((u j : ℝ) : ℂ) - ((k : ℂ) - 1) / 2)) • ζ
 
 /- English proof (translation)
-Introduce `k r ε u lam h H _ _ _ σ D E V T μ ι hσ hD _ _ _ hμ hcoef hp hq hgap hHC hGap z c Vp _ _ _ π μW μN P hP hB x₀ w ξ g hx₀ hg`. Take `⟨hq0, hneed⟩` from `gapNeed k r ε h hp hq hgap`. Establish `hdd` using `S0.DecDeriv.decDeriv _ ε lam h T μ hHC hGap hneed hq0 hμ`. Establish `hb` using `CurveContinuity.per_gap hgap`. Establish `hh0 : 0 ≤ h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hgap.1`. Establish `: 0 ≤ 3 * ((2 * r + k + 1 : ℕ) : ℝ) / 2` using `by positivity`. Use `le_max_left (3 * ((2 * r + k + 1 : ℕ) : ℝ) / 2) (1 + ((2 * r + k + 1 : ℕ) : ℝ) * (pOf ε : ℝ) * (qOf ε : ℝ))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha0 : 0 ≤ aExp ε h` using `div_nonneg hh0 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hgood : ∀ m : D, m ∈ genSub E V → TmGood ε σ x₀ ((w : D) : H) (aExp ε h) (m : H)` using `fun m hm => tmC_good_genSub hσ hD hμ hcoef ha0 (fun wd v₁ v₂ => hdd wd v₁ v₂) hx₀ w hm`. Establish `hT` using `hB.2.1`. Take `⟨g₀, hg₀, hρ⟩` from `hB.2.2.2.1`. Take `⟨dρ, hdρ, hcap⟩` from `EvaluationEquivalence.exists_derived _ hρ`. Use `set l : D → Vp := fun m => coefL P μW μN (Formalism.MainNotions.S.psiGen k r z c) π σ x₀ ((w : D) : H) ξ g (m : H) with hl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hact : ∀ X : Mat k r, ∀ m ∈ genSub E V, actM E X m ∈ genSub E V` using `fun X m hm => by`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (Submodule.mem_sInf.mpr fun S hS => hS.2 a b _ (Submodule.mem_sInf.mp hm S hS))`. Set `Λ : Mat k r → Module.End ℂ D` to `fun Z => actM E ((g * P⁻¹)⁻¹ * (g₀ * Z * g₀⁻¹) * (g * P⁻¹))`. Establish `hΛ : ∀ Y1 Y2 : Mat k r, ∀ m ∈ genSub E V, l (Λ (Y1 + Complex.I • Y2) m) = l (Λ Y1 m) + Complex.I • l (Λ Y2 m)` using `fun Y1 Y2 m hm => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : Λ (Y1 + Complex.I • Y2) m = Λ Y1 m + Complex.I • Λ Y2 m`. Simplify using `only [Λ, Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, actM, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, add_smul, Finset.sum_add_distrib, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, Finset.smul_sum, smul_smul]`. Rewrite using `[e]`. Conclude with `EvaluationEquivalence.per_lin hP hB hg hb ξ (hgood _ (hact _ m hm)) (hgood _ (hact _ m hm)) _`. Establish `hfr : ∀ i j, frameE (g₀⁻¹ * g * P⁻¹) E i j = Λ (Matrix.single i j 1)` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (g * P⁻¹)⁻¹ * (g₀ * Matrix.single i j 1 * g₀⁻¹) * (g * P⁻¹) = (g₀⁻¹ * g * P⁻¹)⁻¹ * Matrix.single i j 1 * (g₀⁻¹ * g * P⁻¹)`. Rewrite using `[Matrix.mul_assoc g₀⁻¹, Matrix.mul_inv_rev g₀⁻¹, Matrix.nonsing_inv_nonsing_inv _ (TransportGeo.uh_det hg₀.1)]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [Λ, e, frameE, actM]`. Generalize the expression as in `g₀⁻¹ * g * P⁻¹ = Q`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `[Matrix.mul_apply, Matrix.single_apply, ite_and, Finset.sum_ite_eq]`. Establish `hder : ∀ Y : Mat k r, Yᴴ * Formalism.QuantumDeterminants.Hpk k r + Formalism.QuantumDeterminants.Hpk k r * Y = 0 → ∀ m ∈ genSub E V, HasDerivAt (fun t : ℝ => per P μW μN (Formalism.MainNotions.S.psiGen k r z c) π (coefX σ x₀ ((w : D) : H) (m : H)) ξ (g₀ * NormedSpace.exp ((t : ℂ) …` using `fun Y hY m hm => by`. Use `EvaluationEquivalence.per_deriv hσ hD hx₀ hP hB hg hb ξ (EvaluationEquivalence.conj_lie hg₀.1 hY) m (hgood m hm) (hgood _ (hact _ m hm))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [EvaluationEquivalence.exp_conj_frame hg₀.1] at this`. Conclude with `this`. Establish `h1W : (1 : Mat k r) ∈ Formalism.QuantumDeterminants.UWset k r z` using `(Formalism.FourierDecayAlt.P.weyl_subgroup_closed k r z).one_mem`. Establish `h1N : (1 : Mat k r) ∈ Formalism.QuantumDeterminants.Nset k r` using `(Formalism.FourierDecayAlt.P.unipotent_radical_closed k r).one_mem`. Establish `hπ` using `hcTypeW_uRep k r z u Vp π hB.1 hT hB.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hN : ∀ Y : Mat k r, Y ∈ Base.N.levF (Base.levB k r) 0 → Formalism.QuantumDeterminants.Hpk k r * Yᴴ * Formalism.QuantumDeterminants.Hpk k r = -Y → ∀ m ∈ genSub E V, l (Λ Y m) = (Complex.I * ((EvaluationEquivalence.LF z c Y).re : ℂ)) • l m` using `fun Y h1 h2 m hm => by`. Take `⟨hY, hf⟩` from `EvaluationEquivalence.lieN_facts c hg₀ hT h1 h2`. Use `(hder Y hY m hm).unique ?_` and prove the remaining obligations. Establish `h3 : HasDerivAt (fun t : ℝ => Complex.exp ((t : ℂ) * (Complex.I * ((EvaluationEquivalence.LF z c Y).re : ℂ)))) (Complex.I * ((EvaluationEquivalence.LF z c Y).re : ℂ)) 0`. Simplify using `using (Complex.ofRealCLM.hasDerivAt.mul_const (Complex.I * ((EvaluationEquivalence.LF z c Y).re : ℂ)) (x := (0 : ℝ))).cexp`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(h3.smul_const (l m)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `h4` using `perEquiv k r u z c Vp π μW μN P hB (coefX σ x₀ ((w : D) : H) (m : H)) ξ g 1 h1W _ (hf t).1`. Rewrite `h4` using `[Matrix.one_mul, (hf t).2, hπ.1.1]`. Conclude with `h4`. Establish `hW : ∀ A : Matrix (Fin k) (Fin k) ℂ, Aᴴ = -A → ∀ m ∈ genSub E V, l (Λ (EvaluationEquivalence.emb0 k r A) m) = dρ A (l m)` using `fun A hA m hm => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hder _ (EvaluationEquivalence.block_embedding_skew_hermitian hA) m hm).unique ?_` and prove the remaining obligations. Use `(hdρ A hA (l m)).congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Establish `hu : NormedSpace.exp ((t : ℂ) • A) ∈ Matrix.unitaryGroup (Fin k) ℂ`. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, conjTranspose_smul, hA, Complex.star_def, Complex.conj_ofReal, smul_neg, ← Matrix.exp_add_of_commute _ _ (Commute.refl ((t : ℂ) • A)).neg_left, neg_add_cancel, NormedSpace.exp_zero]`. Establish `h4` using `perEquiv k r u z c Vp π μW μN P hB (coefX σ x₀ ((w : D) : H) (m : H)) ξ g _ (EvaluationEquivalence.frame_mem_UW hg₀ hT hu) 1 h1N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : Formalism.MainNotions.S.psiGen k r z c (1 : Mat k r) = 1`. Establish `h6` using `Mult1.S0.A.psiGen_mul hB.1 c h1N h1N`. Establish `h7 : Formalism.MainNotions.S.psiGen k r z c (1 : Mat k r) ≠ 0` using `Complex.exp_ne_zero _`. Rewrite `h6` using `[Matrix.one_mul]`. Conclude with `(mul_right_eq_self₀.mp h6.symm).resolve_right h7`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h4` using `[Matrix.mul_one, h5, one_smul]`. Simplify using `only []`. Rewrite using `[← map_smul, EvaluationEquivalence.exp_embed]`. Conclude with `h4`. Use `⟨g₀, fun i j => dρ (Matrix.single i j 1), fun a b => EvaluationEquivalence.psiC z c (Matrix.single (capIdx k r a) (capIdx k r b) 1), hg₀, fun a b hab m hm => ?_, fun a b _ hs => EvaluationEquivalence.psiC_zero z c hs, fun _ => ?_, fun i j m hm => ?_, hcap⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set Z : Mat k r := Matrix.single (capIdx k r a) (capIdx k r b) 1 with hZ`. Establish `hZ1 : Z ∈ Base.N.levF (Base.levB k r) 0` using `fun i j hij => by`. Rewrite using `[hZ, Matrix.single_apply, if_neg]`. Introduce and unpack `⟨rfl, rfl⟩`. Establish `h8 : Base.levB k r (capIdx k r a) < Base.levB k r (capIdx k r b)` using `hab`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use linear arithmetic over natural numbers and integers. Establish `hZ2 : Formalism.QuantumDeterminants.Hpk k r * Zᴴ * Formalism.QuantumDeterminants.Hpk k r ∈ Base.N.levF (Base.levB k r) 0` using `EvaluationEquivalence.st_mem hZ1`. Take `⟨p1, p2, p3⟩` from `EvaluationEquivalence.parts Z`. Establish `m1 : ∀ s t : ℂ, s • (Z + t • (Formalism.QuantumDeterminants.Hpk k r * Zᴴ * Formalism.QuantumDeterminants.Hpk k r)) ∈ Base.N.levF (Base.levB k r) 0` using `fun s t i j hij => by`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, hZ1 i j hij, hZ2 i j hij, smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `show l (frameE _ E _ _ m) = _ • l m`. Rewrite using `[hfr, ← hZ]`. Use `conv_lhs => rw [p3]`. Rewrite using `[hΛ _ _ m hm, hN _ (m1 _ _) p1 m hm, hN _ (m1 _ _) p2 m hm, smul_smul, ← add_smul, EvaluationEquivalence.psiC_parts]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_ne_zero_iff.mpr fun a _ => Finset.prod_ne_zero_iff.mpr fun b _ => ?_ split_ifs with hs` and prove the remaining obligations. Conclude with `EvaluationEquivalence.psiC_ne hB.2.2.1 hT hs`. Conclude with `one_ne_zero`. Use `set A : Matrix (Fin k) (Fin k) ℂ := Matrix.single i j 1 with hA`. Establish `e1 : A = (1 / 2 : ℂ) • (A - Aᴴ) + Complex.I • ((-Complex.I / 2) • (A + Aᴴ))`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.sub_apply, smul_eq_mul]`. Take the linear combination `(A a b + Aᴴ a b) / 2 * Complex.I_mul_I`. Establish `s1 : ((1 / 2 : ℂ) • (A - Aᴴ))ᴴ = -((1 / 2 : ℂ) • (A - Aᴴ))`. Rewrite using `[conjTranspose_smul, conjTranspose_sub, conjTranspose_conjTranspose, ← smul_neg, neg_sub]`.
-
-Simplify using the standard rewrite rules. Establish `s2 : ((-Complex.I / 2) • (A + Aᴴ))ᴴ = -((-Complex.I / 2) • (A + Aᴴ))`. Rewrite using `[conjTranspose_smul, conjTranspose_add, conjTranspose_conjTranspose, add_comm, ← neg_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
-
-Expand and normalize the polynomial expressions, which then agree. Use `show l (frameE _ E _ _ m) = dρ A (l m)`. Establish `e2 : (Matrix.single (capIdx k r (Capelli.wIdx k r i)) (capIdx k r (Capelli.wIdx k r j)) 1 : Mat k r) = EvaluationEquivalence.emb0 k r A` using `(EvaluationEquivalence.block_embedding_single i j).symm`. Rewrite using `[hfr, e2]`. Use `conv_lhs => rw [e1, map_add, map_smul _ Complex.I]`.
-
-Rewrite using `[hΛ _ _ m hm, hW _ s1 m hm, hW _ s2 m hm]`. Use `conv_rhs => rw [e1, map_add, map_smul _ Complex.I]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frameLaw : FrameLawStatement := by
   intro k r ε u lam h H _ _ _ σ D E V T μ ι hσ hD _ _ _ hμ hcoef hp hq hgap hHC hGap z c Vp _ _ _ π μW μN

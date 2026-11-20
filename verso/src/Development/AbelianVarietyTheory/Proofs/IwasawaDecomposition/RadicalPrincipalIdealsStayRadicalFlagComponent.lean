@@ -10,9 +10,9 @@ open Classical
 namespace GlobalTheory.FlagCptRad
 
 /- English proof (translation)
-Establish `hx : ∀ w, x ∈ M.O (f (M'.pt w))` using `fun w => by`. Establish `e1 : (M'.pt ≫ f) w = f (M'.pt w)` using `Scheme.Hom.comp_apply _ _ _`. Establish `e2 : (M'.pt ≫ f) w = genericPoint M.Z`. Rewrite using `[hφ, Scheme.Hom.comp_apply, M.pt_apply]`. Rewrite using `[← e1, e2, M.O_genericPoint]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Algebra.mem_top`. Establish `h1` using `hφ.val_comp M'.pt (IsLocalRing.closedPoint Ω') (hx _)`. Establish `h2` using `hψ.val_comp M'.pt (IsLocalRing.closedPoint Ω') (hx _)`. Rewrite `h1`, `h2` using `[GlobalTheory.ZH.RatModel.val_pt]`. Conclude with `h1.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHom_apply_eq {F Ω Ω' : Type} [Field F] [Field Ω] [Algebra F Ω] [Field Ω'] [Algebra F Ω']
     {M : GlobalTheory.ZH.RatModel F Ω} {M' : GlobalTheory.ZH.RatModel F Ω'} {φ ψ : Ω →ₐ[F] Ω'} {f : M'.Z ⟶ M.Z}
@@ -28,13 +28,13 @@ theorem isHom_apply_eq {F Ω Ω' : Type} [Field F] [Field Ω] [Algebra F Ω] [Fi
   exact h1.symm.trans h2
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e C X j hj hjs f hf f₀ Eb A₀ hT hlift φ hφ`. Use `haveI : CharZero F := RingHom.charZero e.toRingHom`. Take `⟨Y', φ', f', S', -, hR⟩` from `tower _ (ratOf X) X.dim Eb (good_ratOf X) (fun _ => Nat.zero_le _) rfl`. Express the relevant statement in the definitionally equal form `Y'.X ⟶ X.X at f'`. Take `⟨h, hh, hbij⟩` from `GlobalTheory.T.flagSpaceComponent_classifyingMap_bijective_geomPoints E H Dw l Xo c O β Z F e C X j hj hjs f hf f₀ Eb A₀ hT hlift Y' φ' f' S' hR`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs' : f' ≫ X.str = Y'.str` using `hR.hom.inducedModelMorphism_comp_structureMap`. Establish `hstr : h ≫ Y'.str = C.Y.str`. Rewrite using `[← hs', ← Category.assoc, hh, ← hjs, ← C.π_str, ← hf, Category.assoc]`. Establish `hiso : IsIso h` using `GlobalTheory.T.isIso_of_bijective_geomPoints_smoothProj_charZero F C.Y Y' h hstr hbij`. Take `⟨ψ, S'', hR2⟩` from `exists_refines_of_iso (ratOf Y') (ratOf C.Y) (@asIso _ _ _ _ h hiso) hstr S'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR2' : Refines S' S'' ψ h` using `hR2`. Substitute `hh` using the available equality. Establish `hR3` using `hR.comp hR2'`. Establish `hrad : KeepsRad (ratOf X) (ratOf C.Y) (ψ.comp φ') (h ≫ f')` using `hR3.rad`. Establish `hhom : (ratOf X).IsHom (ratOf C.Y) (ψ.comp φ') (h ≫ f')` using `hR3.hom`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z' g hg`. Rewrite using `[isHom_apply_eq hφ hhom g]`. Conclude with `hrad z' g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keepsRad_of_flagCpt : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (C : FlagCpt Z e) (X : Var F) (j : X.X ⟶ gen Z), IsOpenImmersion j → j ≫ genStr Z ≫ spMap e.toRingHom = X.str → ∀ (f : C.Y.X ⟶ X.X), f ≫ j = C.π → ∀ (f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn), Tied e X j f₀ Eb A₀ → (∀ (K : Type) [Field K] [IsAlgClosed K] (χ : c.F →+* K) (x : Sp K ⟶ X.X), x ≫ j ≫ genStr Z = spMap χ → ∀ g : EigFrame Z χ (x ≫ j ≫ genι Z), ∃! p : Sp K ⟶ C.Y.X, p ≫ f = x ∧ C.Carries p g) → ∀ (φ : X.Fn →ₐ[F] C.Y.Fn), (ratOf X).IsHom (ratOf C.Y) φ f → KeepsRad (ratOf X) (ratOf C.Y) φ f := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e C X j hj hjs f hf f₀ Eb A₀ hT hlift φ hφ

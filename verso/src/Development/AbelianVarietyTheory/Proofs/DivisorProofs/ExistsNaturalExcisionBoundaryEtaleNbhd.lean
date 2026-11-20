@@ -14,7 +14,7 @@ namespace GlobalTheory.EtC.NatRef
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = CohomologyClass.mk _`. Use `congr 1`. Use `ext1`. Simplify using `[zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : ℤ) (x : CohomologyClass M I n) :
     cpull (f ≫ g) I n x = cpull f I n (cpull g I n x) := by
@@ -23,7 +23,7 @@ theorem cpull_comp {K L M : Cx R} (f : K ⟶ L) (g : L ⟶ M) (I : Cx R) (n : �
   congr 1; ext1; simp [zcomp, Cochain.ofHom_comp, Cochain.comp_assoc_of_first_is_zero_cochain]
 
 /- English proof (translation)
-Rewrite using `[← cpull_comp, ← cpull_comp]`. Use `congr 2`. Simplify using `[mappingCone.map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem cpull_inr_map {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) (a : K₁ ⟶ K₂) (b : L₁ ⟶ L₂)
     (comm : φ₁ ≫ b = a ≫ φ₂) (I : Cx R) (n : ℤ) (x : CohomologyClass (mappingCone φ₂) I n) :
@@ -34,11 +34,11 @@ theorem cpull_inr_map {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ�
   simp [mappingCone.map]
 
 /- English proof (translation)
-Take `⟨x, rfl⟩` from `x.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk _ = CohomologyClass.mk _`. Use `congr 1`. Use `ext1`. Simplify using `only [zcomp, Cocycle.mk_coe, Cocycle.ofHom_coe]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `key : (Cochain.ofHom (mappingCone.map φ₁ φ₂ a b comm)).comp (mappingCone.fst φ₂).1 (zero_add 1) = (mappingCone.fst φ₁).1.comp (Cochain.ofHom a) (add_zero 1)`. Use `(mappingCone.ext_cochain_from_iff φ₁ 0 1 rfl).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Cochain.comp_assoc _ _ _ (show -1 + 0 = -1 by omega) (zero_add 1) (by omega), ← Cochain.comp_assoc _ _ _ (show -1 + 1 = 0 by omega) (add_zero 1) (by omega)]`. Simplify using `[mappingCone.map, Cochain.comp_assoc_of_second_is_zero_cochain]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, ← Cochain.comp_assoc_of_first_is_zero_cochain]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mappingCone.map, Cochain.comp_assoc_of_first_is_zero_cochain]`. Rewrite using `[← Cochain.comp_assoc_of_first_is_zero_cochain, key, Cochain.comp_assoc_of_second_is_zero_cochain]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpull_map_fst {K₁ L₁ K₂ L₂ : Cx R} (φ₁ : K₁ ⟶ L₁) (φ₂ : K₂ ⟶ L₂) (a : K₁ ⟶ K₂) (b : L₁ ⟶ L₂)
     (comm : φ₁ ≫ b = a ≫ φ₂) (I : Cx R) (n : ℤ) (x : CohomologyClass K₂ I n) :
@@ -63,19 +63,19 @@ namespace GlobalTheory.EtC.NatRef
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Use `set m := mappingCone.map φ' φ a b comm`. Set `e` to `AddEquiv.ofBijective _ hbij`. Establish `he : ∀ y, cpull m I (n + 1) (e.symm y) = y` using `e.apply_symm_apply`. Establish `he' : ∀ r, e.symm (cpull m I (n + 1) r) = r` using `e.symm_apply_apply`. Establish `P1` using `(coneSeq_exact R φ I (n + 1)).1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P3` using `(coneSeq_exact R φ' I n).2.2`. Establish `P3φ` using `(coneSeq_exact R φ I n).2.2`. Use `⟨(cpull (mappingCone.inr φ) I (n + 1)).comp (e.symm.toAddMonoidHom.comp (cpre (mappingCone.fst φ') I n (n + 1) (by omega))), ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hx`. Establish `hx1 : cpull φ I (n + 1) x = 0` using `congrArg Prod.fst hx`. Establish `hx2 : cpull b I (n + 1) x = 0` using `congrArg Prod.snd hx`. Take `⟨r, rfl⟩` from `(P1 x).1 hx1`. Establish `h0 : cpull (mappingCone.inr φ') I (n + 1) (cpull m I (n + 1) r) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cpull_inr_map]`. Conclude with `hx2`. Take `⟨w, hw⟩` from `(P3 _).1 h0`. Use `⟨w, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpull (mappingCone.inr φ) I (n + 1) (e.symm (cpre (mappingCone.fst φ') I n (n + 1) _ w)) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hw, he']`. Introduce and unpack `⟨w, rfl⟩`. Use `Prod.ext ((P1 _).2 ⟨_, rfl⟩) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `cpull b I (n + 1) (cpull (mappingCone.inr φ) I (n + 1) (e.symm (cpre (mappingCone.fst φ') I n (n + 1) _ w))) = 0`. Rewrite using `[← cpull_inr_map φ' φ a b comm, he]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Conclude with `(P3 _).2 ⟨w, rfl⟩`. Introduce `K₂ L₂ φ₂ a₂ b₂ comm₂ a₃ b₃ comm₃ ha hb hinj w c hwc`. Substitute `ha hb` using the available equality. Establish `hM : mappingCone.map φ₂ φ (a₂ ≫ a) (b₂ ≫ b) comm₃ = mappingCone.map φ₂ φ' a₂ b₂ comm₂ ≫ m` using `mappingCone.map_comp φ₂ φ' φ a₂ b₂ comm₂ a b comm`. Establish `hr : e.symm (cpre (mappingCone.fst φ') I n (n + 1) (by omega) w) = cpre (mappingCone.fst φ) I n (n + 1) (by omega) c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[cpull_map_fst, ← hwc, hM, cpull_comp, he, cpull_map_fst]`. Express the relevant statement in the definitionally equal form `cpull (mappingCone.inr φ) I (n + 1) (e.symm (cpre (mappingCone.fst φ') I n (n + 1) _ w)) = 0`. Rewrite using `[hr]`. Conclude with `(P3φ _).2 ⟨c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abstract_nat {K L K' L' : Cx R} (φ : K ⟶ L) (φ' : K' ⟶ L') (a : K' ⟶ K) (b : L' ⟶ L)
     (comm : φ' ≫ b = a ≫ φ) (I : Cx R) (n : ℤ)
@@ -131,11 +131,11 @@ namespace GlobalTheory.EtC
 open NatRef in
 
 /- English proof (translation)
-Introduce `q A A' _ _ _ f hN n i`. Establish `hbij : ∀ (B : Type) [CommRing B] [Algebra A B], IsExcisionNbhd A B f → Function.Bijective (cpull (excisionConeMap (ZMod q) A B f) (res (ZMod q) (tw q i)) (n + 1))`. Introduce `B _ _ hB`. Use `haveI := GlobalTheory.T.excisionConeMap_quasiIso' (ZMod q) A B f hB`. Conclude with `quasiIso_hypercohomology_bijective' (ZMod q) (excisionConeMap (ZMod q) A B f) (tw q i) (n + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, hex, hnat⟩` from `abstract_nat _ _ _ _ (excision_square_comm (ZMod q) A A' f) (res (ZMod q) (tw q i)) n (hbij A' hN)`. Use `⟨δ, hex, ?_⟩` and prove the remaining obligations. Introduce `A₂ _ _ _ _ h₂ φ hφ w b hwb`. Use `hnat ((chains (ZMod q)).map (spMap (algebraMap A₂ (Localization.Away (algebraMap A A₂ f))))) ((chains (ZMod q)).map (spMap φ)) ((chains (ZMod q)).map (spMap (algebraMap A' A₂))) ?_ _ _ (excision_square_comm (ZMod q) A A₂ f) ?_ ?_ (hbij A₂ h₂).1 w b hwb` and prove the remaining obligations. Rewrite using `[chains_spMap_comp, chains_spMap_comp, hφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[chains_spMap_comp]`. Use `congr 2`. Apply `IsLocalization.ringHom_ext (Submonoid.powers f)` to reduce the goal to its premises. Rewrite using `[RingHom.comp_assoc, awayMap_comp_algebraMap, awayMap_comp_algebraMap, ← RingHom.comp_assoc, hφ, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq]`. Rewrite using `[chains_spMap_comp, ← IsScalarTower.algebraMap_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem excision_boundary_natural_refine : ∀ (q : ℕ) (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] (f : A), IsExcisionNbhd A A' f → ∀ (n i : ℤ), ∃ δ : Ht q (sp (Localization.Away (algebraMap A A' f))) n i →+ Ht q (sp A) (n + 1) i, Function.Exact δ (fun x : Ht q (sp A) (n + 1) i => (pull _ (spMap (algebraMap A (Localization.Away f))) _ _ x, pull _ (spMap (algebraMap A A')) _ _ x)) ∧ ∀ (A₂ : Type) [CommRing A₂] [Algebra A A₂] [Algebra A' A₂] [IsScalarTower A A' A₂], IsExcisionNbhd A A₂ f → ∀ (φ : Localization.Away (algebraMap A A' f) →+* Localization.Away (algebraMap A A₂ f)), φ.comp (algebraMap A' _) = (algebraMap A₂ _).comp (algebraMap A' A₂) → ∀ (w : Ht q (sp (Localization.Away (algebraMap A A' f))) n i) (b : Ht q (sp (Localization.Away f)) n i), pull _ (spMap φ) _ _ w = pull _ (spMap (Localization.awayMap (algebraMap A A₂) f)) _ _ b → δ w = 0 := by
   intro q A A' _ _ _ f hN n i

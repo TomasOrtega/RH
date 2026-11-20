@@ -17,9 +17,9 @@ namespace GlobalTheory.Unf.LinkPoint
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : adj (zEll T ρ z) = vecMulVec (fun i => cA D (ell D ρ i)) (ratV (star z))`. Use function extensionality and compare the values at `i j`. Express the relevant statement in the definitionally equal form `cA D (incA D (z j) * ell D ρ i) = cA D (ell D ρ i) * incA D (star (z j))`. Rewrite using `[map_mul, GlobalTheory.DualPairCheck.cA_incA, mul_comm]`. Establish `h2 : ratV (star z) ⬝ᵥ ratV (T.gram *ᵥ z) = incA D (star z ⬝ᵥ T.gram *ᵥ z)` using `(RingHom.map_dotProduct (incA D) _ _).symm`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, zEll, Matrix.mul_vecMulVec, gA, ← ratV_mulVec, Matrix.vecMulVec_mul_vecMulVec, h2, Matrix.vecMulVec_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_zEll (T : HSp D) (ρ : ℕ) (z : Fin T.rank → D.host.E) :
     adj (zEll T ρ z) ⬝ (gA T ⬝ zEll T ρ z) =
@@ -35,12 +35,12 @@ theorem gram_zEll (T : HSp D) (ρ : ℕ) (z : Fin T.rank → D.host.E) :
 variable {W W₀ : HSp D} {ρ : ℕ} (d : HypDec W W₀ ρ)
 
 /- English proof (translation)
-Rewrite using `[d.pX_eq, adj_mul, adj_adj, adj_gA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gA_jY : gA W ⬝ d.jY = adj d.pX := by rw [d.pX_eq, adj_mul, adj_adj, adj_gA]
 
 /- English proof (translation)
-Rewrite using `[ptT, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj, d.incAdj_apply, d.incY_apply, mt_inv, d.p0_eq]`. Rewrite using `[adj_mul, adj_mul, adj_mul, ← gA_jY, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[gA_giA_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptT_eq (L : HSp D) (y : Mx D L.rank ρ) (n : GA D W) :
     ptT d L y n = GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.ofAdj L W₀ (y ⬝ (d.pX ⬝ (mt W n ⬝ d.j0))) := by
@@ -50,7 +50,7 @@ theorem ptT_eq (L : HSp D) (y : Mx D L.rank ρ) (n : GA D W) :
   rw [gA_giA_cancel]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, smul_smul, Matrix.mul_assoc G, ← Matrix.mul_assoc G', hG, Matrix.one_mul, Matrix.smul_mul, trace_smul, trace_smul, trace_mul_comm, Matrix.mul_assoc M, trace_mul_comm M, Matrix.mul_assoc y' G]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {m k : ℕ} (s t : R) (G G' : Matrix (Fin m) (Fin m) R) (hG : G' * G = 1)
     (y : Matrix (Fin m) (Fin k) R) (y' : Matrix (Fin k) (Fin m) R) (M : Matrix (Fin k) (Fin k) R) :
@@ -60,7 +60,7 @@ theorem trace_inverseGram_conj_smul_eq {R : Type} [CommRing R] {m k : ℕ} (s t 
     Matrix.mul_assoc M, trace_mul_comm M, Matrix.mul_assoc y' G]
 
 /- English proof (translation)
-Rewrite using `[hO_eq_trace, mt_inv, d.pX_eq, adj_mul, adj_mul, adj_mul, adj_mul, adj_adj, adj_gA, adj_giA]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[giA_gA_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hO_jY (L : HSp D) (n : GA D W) (η : Mx D ρ L.rank) : hO L W (d.jY ⬝ η) (mt W n⁻¹ ⬝ (d.jY ⬝ η)) =
     (giA L ⬝ (adj η ⬝ ((d.pX ⬝ (mt W n ⬝ d.jY)) ⬝ η))).trace := by
@@ -69,7 +69,7 @@ theorem hO_jY (L : HSp D) (n : GA D W) (η : Mx D ρ L.rank) : hO L W (d.jY ⬝ 
   rw [giA_gA_cancel]
 
 /- English proof (translation)
-Establish `hs : cA D (incA D (-D.host.xi0⁻¹)) * incA D (-D.host.xi0⁻¹) = incA D (D.host.xi0 * star D.host.xi0)⁻¹`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, ← map_mul, star_neg, star_inv₀, neg_mul_neg, _root_.mul_inv_rev]`. Rewrite using `[cenT, symplOH_eq, d.incAdj_apply, d.incY_apply, hO_jY, ← hs, adj_smul, adj_mul, adj_adj, adj_gA]`. Conclude with `congrArg _ (trace_inverseGram_conj_smul_eq _ _ _ _ (giA_mul_gA L) _ _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cenT_eq (L : HSp D) (y : Mx D L.rank ρ) (n : GA D W) :
     cenT d L y n = trHalf D ((incA D (D.host.xi0 * star D.host.xi0)⁻¹ •
@@ -80,7 +80,7 @@ theorem cenT_eq (L : HSp D) (y : Mx D L.rank ρ) (n : GA D W) :
   exact congrArg _ (trace_inverseGram_conj_smul_eq _ _ _ _ (giA_mul_gA L) _ _ _)
 
 /- English proof (translation)
-Rewrite using `[cenS, ← symplOH_skew, symplOH_eq, hO_eq_trace, d.extX_apply, adj_mul, ← gA_jY, Matrix.mul_assoc, Matrix.mul_assoc, giA_gA_cancel, trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem neg_cenS_eq (T : HSp D) (x : Mx D T.rank ρ) (n : GA D W) :
     -cenS d T x n = trHalf D (((adj x ⬝ (gA T ⬝ x)) ⬝ (d.pX ⬝ (mt W n ⬝ d.jY))).trace) := by
@@ -89,9 +89,9 @@ theorem neg_cenS_eq (T : HSp D) (x : Mx D T.rank ρ) (n : GA D W) :
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `h : (rat l.τ : Mx D B.L.rank L'.rank) ⬝ zEll L' ρ ζ' = yZero B.L ρ B.ζ`. Establish `h0 : ratV (-B.ζ) = -ratV B.ζ` using `funext fun i => map_neg (incA D) _`. Rewrite using `[yZero, zEll, zEll, Matrix.mul_vecMulVec, ← ratV_mulVec, l.map, h0, Matrix.neg_vecMulVec]`. Rewrite using `[ptT_eq, Link.κ, ptS, d.extX_apply, ← h]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `hN : D.host.xi0 * star D.host.xi0 ≠ 0` using `mul_ne_zero (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D) (star_ne_zero.2 (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D))`. Rewrite using `[cenT_eq, neg_cenS_eq, yZero, adj_neg, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_neg, neg_neg, gram_zEll, gram_zEll, smul_smul, ← map_mul, l.norm, inv_mul_cancel_left₀ hN]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem link_point (D : D7) (ρ σ : ℕ) (B : BesLev D σ) (L' : HSp D) (ζ' : Fin L'.rank → D.host.E) (_ : IsLineVec L' ζ')
     (l : Link B L' ζ') (W W₀ : HSp D) (d : HypDec W W₀ ρ) (n : GA D W) (_ : n ∈ flagN d) :

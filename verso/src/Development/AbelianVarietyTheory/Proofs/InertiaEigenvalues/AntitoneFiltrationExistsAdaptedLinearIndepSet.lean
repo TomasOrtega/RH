@@ -5,23 +5,21 @@ namespace GlobalTheory
 open Submodule
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Use `⟨∅, fun _ => hi, linearIndepOn_empty L id, fun x hx => hx.elim, fun a ha => ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_empty_iff_false, false_and, Set.ofPred_false, Submodule.span_empty]`. Rewrite using `[eq_bot_iff, ← hhi]`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA (by simpa using ha)`. Consider the case `succ n ih`. Take `⟨s, k, hs, hk, hspan⟩` from `ih`. Establish `hsA : s ⊆ A (hi - (n + 1 : ℕ))`. Introduce `x hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : x ∈ A (hi - n)`. Rewrite using `[hspan _ le_rfl]`. Conclude with `Submodule.subset_span ⟨hx, hk x hx⟩`. Conclude with `hA (by push_cast; omega) hx'`. Take `⟨t, htA, hst, hAt, ht⟩` from `exists_linearIndepOn_id_extension hs hsA`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkt : ∀ x ∈ t, hi - ((n + 1 : ℕ) : ℤ) ≤ (if x ∈ s then k x else hi - (n + 1 : ℕ))`. Introduce `x _`. Use `split_ifs with h`. Use `hk x h` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `le_rfl`. Use `⟨t, fun x => if x ∈ s then k x else hi - (n + 1 : ℕ), ht, hkt, fun a ha => ?_⟩` and prove the remaining obligations. Break down `eq_or_lt_of_le ha with h | h` into its components or cases. Substitute `h` using the available equality.
+Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hset : {x | x ∈ t ∧ hi - ((n + 1 : ℕ) : ℤ) ≤ (if x ∈ s then k x else hi - (n + 1 : ℕ))} = t`. Use extensionality with `x`. Conclude with `⟨fun hx => hx.1, fun hx => ⟨hx, hkt x hx⟩⟩`. Rewrite using `[hset]`. Conclude with `le_antisymm (fun x hx => hAt hx) (Submodule.span_le.2 htA)`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `ha' : hi - (n : ℤ) ≤ a`. Move the coercions through the operations in `at h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hspan a ha']`. Use `congr 1`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hkx⟩`. Conclude with `⟨hst hx, by rw [if_pos hx]; exact hkx⟩`.
-
-Introduce and unpack `⟨hx, hkx⟩ split_ifs at hkx with hxs`. Conclude with `⟨hxs, hkx⟩`. Move the coercions through the operations in `at h hkx`. Use linear arithmetic over natural numbers and integers.
+Supply the required witnesses or components. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem antitone_filtration_exists_adapted_linearIndep_set {L M : Type} [Field L] [AddCommGroup M] [Module L M]
     (A : ℤ → Submodule L M) (hA : Antitone A) (hi : ℤ) (hhi : A hi = ⊥) (n : ℕ) :
@@ -76,33 +74,31 @@ theorem antitone_filtration_exists_adapted_linearIndep_set {L M : Type} [Field L
           omega
 
 /- English proof (translation)
-Establish `hle : ∀ a, A a ≤ ⨆ b, A b` using `fun a => le_iSup A a`. Establish `hfa : ∀ a, FiniteDimensional L (A a)` using `fun a => Submodule.finiteDimensional_of_le (hle a)`. Choose the witnesses or unpack the hypotheses as in `⟨a0, ha0⟩ : ∃ a0, ∀ a, Module.finrank L (A a0) ≤ Module.finrank L (A a) := by`. Establish `hex : ∃ m, ∃ a, Module.finrank L (A a) = m` using `⟨_, 0, rfl⟩`. Take `⟨a0, h0⟩` from `Nat.find_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨a0, fun a => ?_⟩` and prove the remaining obligations. Establish `h` using `Nat.find_min' hex ⟨a, rfl⟩`. Rewrite `h` using `[← h0]`. Conclude with `h`. Establish `hbot : A a0 = ⊥`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Apply `hsep` to reduce the goal to its premises. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `le_total a a0 with h | h` into its components or cases. Conclude with `hA h hx`. Rewrite using `[Submodule.eq_of_le_of_finrank_le (hA h) (ha0 a)]`. Conclude with `hx`. Choose the witnesses or unpack the hypotheses as in `⟨a1, ha1⟩ : ∃ a1, ∀ a, Module.finrank L (A a) ≤ Module.finrank L (A a1) := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hex : ∃ m, ∃ a, Module.finrank L ↥(⨆ b, A b) - Module.finrank L (A a) = m` using `⟨_, 0, rfl⟩`. Take `⟨a1, h1⟩` from `Nat.find_spec hex`. Use `⟨a1, fun a => ?_⟩` and prove the remaining obligations. Establish `h2` using `Nat.find_min' hex ⟨a, rfl⟩`. Rewrite `h2` using `[← h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `h3` using `Submodule.finrank_mono (hle a)`. Establish `h4` using `Submodule.finrank_mono (hle a1)`. Use linear arithmetic over natural numbers and integers. Establish `htop : ⨆ b, A b = A a1`. Use `le_antisymm (iSup_le fun a => ?_) (hle a1)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Break down `le_total a1 a with h | h` into its components or cases. Conclude with `hA h`. Conclude with `(Submodule.eq_of_le_of_finrank_le (hA h) (ha1 a)).symm.le`. Take `⟨n, hn⟩ : ∃ n : ℕ, a0 - n ≤ a1` from `⟨(a0 - a1).toNat, by omega⟩`. Take `⟨s, k, hs, hk, hspan⟩` from `antitone_filtration_exists_adapted_linearIndep_set A hA a0 hbot n`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hlow : ∀ a, a ≤ a0 - n → A a = A (a0 - n)`. Introduce `a ha`. Use `le_antisymm ?_ (hA ha)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hsU : ∀ x ∈ s, x ∈ (⨆ b, A b : Submodule L M)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `hx' : x ∈ A (a0 - n)`. Rewrite using `[hspan _ le_rfl]`. Conclude with `Submodule.subset_span ⟨hx, hk x hx⟩`. Conclude with `hle _ hx'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hli : LinearIndependent L (fun x : s => (⟨x, hsU x x.2⟩ : (⨆ b, A b : Submodule L M)))` using `LinearIndependent.of_comp (⨆ b, A b).subtype hs`. Establish `hfin : s.Finite` using `Set.finite_coe_iff.1 hli.finite`. Establish `_` using `hfin.fintype`. Set `e : s ≃ Fin (Fintype.card s)` to `Fintype.equivFin s`. Use `⟨Fintype.card s, fun i => (e.symm i : M), fun i => k (e.symm i), LinearIndependent.comp hs e.symm e.symm.injective, fun a => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `show A a = Submodule.span L ((fun i => (e.symm i : M)) '' {i | a ≤ k (e.symm i)})`. Establish `himg : (fun i => (e.symm i : M)) '' {i | a ≤ k (e.symm i)} = {x | x ∈ s ∧ a ≤ k x}`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, hi, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `⟨(e.symm i).2, hi⟩`. Introduce and unpack `⟨hx, hkx⟩`. Conclude with `⟨e ⟨x, hx⟩, by simpa using hkx, by simp⟩`. Rewrite using `[himg]`. Break down `le_or_gt (a0 - n) a with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `hspan a h`. Rewrite using `[hlow a h.le, hspan _ le_rfl]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_ofPred_eq]`.
-
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, -⟩`. Conclude with `⟨hx, by have := hk x hx; omega⟩`. Introduce and unpack `⟨hx, -⟩`. Conclude with `⟨hx, hk x hx⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem filtration_adapted_basis {L M : Type} [Field L] [AddCommGroup M] [Module L M]
     (A : ℤ → Submodule L M) (hA : Antitone A) (hfd : FiniteDimensional L ↥(⨆ a, A a))

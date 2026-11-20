@@ -21,7 +21,7 @@ def baseEval : MvPolynomial (Fin (N + 1)) A →+* Γ(Spec (.of A), ⊤) :=
   (Scheme.ΓSpecIso (.of A)).inv.hom.comp (MvPolynomial.eval (Pi.single 0 1))
 
 /- English proof (translation)
-Rewrite using `[HomogeneousIdeal.mem_irrelevant_iff, GradedRing.proj_apply, DirectSum.decompose_of_mem_ne _ (ProjSpace.X_mem 0) one_ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma X_zero_mem_irrelevant :
     (MvPolynomial.X 0 : MvPolynomial (Fin (N + 1)) A) ∈ HomogeneousIdeal.irrelevant (ProjSpace.grading A N) := by
@@ -29,7 +29,7 @@ lemma X_zero_mem_irrelevant :
     DirectSum.decompose_of_mem_ne _ (ProjSpace.X_mem 0) one_ne_zero]
 
 /- English proof (translation)
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `: baseEval A N (MvPolynomial.X 0) = 1` using `by simp [baseEval]`. Rewrite using `[← this]`. Conclude with `Ideal.mem_map_of_mem _ (X_zero_mem_irrelevant A N)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma baseEval_irrelevant :
     (HomogeneousIdeal.irrelevant (ProjSpace.grading A N)).toIdeal.map (baseEval A N) = ⊤ := by
@@ -42,9 +42,9 @@ def baseSection : Spec (.of A) ⟶ projectiveSpace A N :=
   Proj.fromOfGlobalSections (ProjSpace.grading A N) (baseEval A N) (baseEval_irrelevant A N)
 
 /- English proof (translation)
-Rewrite using `[ProjSpace.toSpecBase, ← Category.assoc, baseSection, Proj.fromOfGlobalSections_toSpecZero, Category.assoc, ← Spec.map_comp]`. Establish `: CommRingCat.ofHom (algebraMap A (ProjSpace.grading A N 0)) ≫ CommRingCat.ofHom ((baseEval A N).comp (algebraMap _ _)) = (Scheme.ΓSpecIso (.of A)).inv`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (.of A)).inv.hom (MvPolynomial.eval (Pi.single 0 1) (MvPolynomial.C a)) = (Scheme.ΓSpecIso (.of A)).inv.hom a`. Rewrite using `[MvPolynomial.eval_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, toSpecΓ_SpecMap_ΓSpecIso_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma baseSection_toSpecBase : baseSection A N ≫ ProjSpace.toSpecBase A N = 𝟙 _ := by
   rw [ProjSpace.toSpecBase, ← Category.assoc, baseSection, Proj.fromOfGlobalSections_toSpecZero,
@@ -70,9 +70,9 @@ def base : ProjScheme A N where
 variable {A N}
 
 /- English proof (translation)
-Establish `h` using `Proj.fromOfGlobalSections_preimage_basicOpen (ProjSpace.grading A N) (baseEval A N) (baseEval_irrelevant A N) hn hf`. Establish `h' : p ∈ (baseSection A N) ⁻¹ᵁ Proj.basicOpen (ProjSpace.grading A N) f ↔ p ∈ (Spec (.of A)).basicOpen (baseEval A N f)`. Rewrite using `[baseSection, h]`. Rewrite `h'` using `[baseEval, RingHom.comp_apply, basicOpen_eq_of_affine]`. Rewrite using `[← not_iff_not]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'`.
+A detailed English derivation is pending.
 -/
 lemma mem_baseSection_of_pos (p : Spec (.of A)) {f : MvPolynomial (Fin (N + 1)) A} {n : ℕ}
     (hn : 0 < n) (hf : f ∈ ProjSpace.grading A N n) :
@@ -88,11 +88,9 @@ lemma mem_baseSection_of_pos (p : Spec (.of A)) {f : MvPolynomial (Fin (N + 1)) 
   exact h'
 
 /- English proof (translation)
-Establish `h0 : (MvPolynomial.X 0 : MvPolynomial (Fin (N + 1)) A) ∉ ((baseSection A N).base p).asHomogeneousIdeal`. Rewrite using `[mem_baseSection_of_pos p Nat.one_pos (ProjSpace.X_mem 0), eval_X, Pi.single_eq_same]`. Conclude with `(Ideal.ne_top_iff_one _).1 p.isPrime.ne_top`. Establish `hX` using `mem_baseSection_of_pos p (by omega : 0 < 1 + n) (SetLike.mul_mem_graded (ProjSpace.X_mem 0) hf)`. Rewrite `hX` using `[map_mul, eval_X, Pi.single_eq_same, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hp` using `((baseSection A N).base p).isPrime`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `hX.1 (((baseSection A N).base p).asHomogeneousIdeal.toIdeal.mul_mem_left _ h)`. Introduce `h`.
-
-Conclude with `(hp.mem_or_mem (hX.2 h)).resolve_left h0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma mem_baseSection (p : Spec (.of A)) {f : MvPolynomial (Fin (N + 1)) A} {n : ℕ}
     (hf : f ∈ ProjSpace.grading A N n) :
@@ -112,23 +110,21 @@ lemma mem_baseSection (p : Spec (.of A)) {f : MvPolynomial (Fin (N + 1)) A} {n :
     exact (hp.mem_or_mem (hX.2 h)).resolve_left h0
 
 /- English proof (translation)
-Establish `hval : ∀ f : MvPolynomial (Fin (N + 1)) A, evalAt ρ (Pi.single 0 1) f = ρ (MvPolynomial.eval (Pi.single 0 1) f)`. Introduce `f`. Rewrite using `[evalAt, MvPolynomial.eval, coe_eval₂Hom, eval₂_comp_left]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`. Use extensionality with `v`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Proceed by induction on `v using Projectivization.ind with`. Consider the case `h w hw`. Simplify using `only [Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp⟩`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hzero : ∀ j, j ≠ 0 → w j = 0`. Introduce `j hj`. Establish `h1 : (MvPolynomial.X j : MvPolynomial (Fin (N + 1)) A) ∈ ((baseSection A N).base p).asHomogeneousIdeal`. Rewrite using `[mem_baseSection p (ProjSpace.X_mem j), eval_X, Pi.single_eq_of_ne hj]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(baseSection A N).base p = _ at hp`. Rewrite `h1` using `[hp, mem_projPoint ρ w hw (ProjSpace.X_mem j)]`. Simplify using `using h1`. Establish `h0 : w 0 ≠ 0`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact hw (funext fun j => by by_cases hj : j = 0 <;> simp_all)`. Rewrite using `[Projectivization.mk_eq_mk_iff]`. Use `⟨Units.mk0 (w 0) h0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hzero j hj, hj]`. Introduce `hv`. Rewrite using `[hv]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `p : Spec (.of A)` to `(⟨RingHom.ker ρ, RingHom.ker_isPrime ρ⟩ : PrimeSpectrum A)`. Use `⟨p, ?_⟩` and prove the remaining obligations. Use `projPoint_ext fun d f hf => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ∈ ((baseSection A N).base p).asHomogeneousIdeal ↔ _`. Rewrite using `[mem_baseSection _ hf, mem_projPoint ρ _ _ hf, hval]`.
-
-Conclude with `RingHom.mem_ker`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complexPoints_base (ρ : A →+* ℂ) :
     (base A N).complexPoints ρ =

@@ -37,25 +37,23 @@ set_option maxHeartbeats 4000000
 set_option synthInstance.maxHeartbeats 400000
 
 /- English proof (translation)
-Introduce `D n V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω l hl s hs τ Φ hann k hk X`. Set `A : HSp D` to `Formalism.BasicNotions.Examples₂.posSpace (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral n`. Take `⟨ψ₀, μ', lam, κ, omh, hstd, hsk, hlam, hψeq, hchart, hdat, htr⟩` from `GlobalTheory.T.exists_weilDatum_doubled_of_schrodingerFormulas D A V ψ hψ χ hχ hr θ hθ μ 𝓕 hμ ω hω`. Take `⟨lam', hlam', -, l', hl', habs⟩` from `GlobalTheory.StdUnn.shift_char_realPar D ψ₀ hstd θ hθ μ' hsk`. Establish `hll : lam' = lam` using `(algebraMap D.host.F D.host.E).injective (hlam'.trans hlam.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hll` using the available equality. Establish `hl'' : HasRealPar ψ θ l'` using `hψeq ▸ hl'`. Establish `hleq : l = l'` using `GlobalTheory.T.archimedean_parameters_addChar_unique D ψ θ hθ l l' hl hl''`. Substitute `hleq` using the available equality. Take `⟨hschS, hsurj, -⟩` from `GlobalTheory.T.schrodingerTheta_eq_schwartzBruhat D ψ₀ hstd θ hθ A V μ 𝓕 hμ`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hfΦ⟩` from `hsurj Φ.1 Φ.2`. Take `⟨s', hstd', hcomm⟩` from `GlobalTheory.T.exists_standardCartanInvolution_commute_compact D A μ' hsk κ hchart θ hθ`. Establish `hkill1 : ∀ Z : Matrix (Fin V.rank) (Fin A.rank) ℂ, annih (heisO ψ₀ (dblSp A) V) θ τ (cplxO (s' τ) (s τ)) (Z * (dblDec A).qX.map (tauE D τ)) f = 0`. Introduce `Z`. Apply `GlobalTheory.T.doubledPairThetaFunction_eq_zero_of_schrodinger_eq_zero D ψ₀ hstd A V μ 𝓕 hμ _ (GlobalTheory.StdUnn.isThetaFunO_annih_of_std (A := A) (B := V) (ν := μ) (𝓨 := 𝓕) hstd hθ hμ τ _ _ hf)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.T.annihilationOperator_schroedingerFunctions_doubledPair D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs f hf τ Z, hfΦ]`. Conclude with `hann Z`. Establish `hkill : ∀ Y : Matrix (Fin V.rank) (Fin (dblSp A).rank) ℂ, annih (heisO ψ₀ (dblSp A) V) θ τ (cplxO (s' τ) (s τ)) Y f = 0`. Introduce `Y`. Take `⟨Z, Z', c, hdec⟩` from `GlobalTheory.T.annihilationOperator_doubledHermitianSpace_decomp D ψ₀ hstd θ hθ A V μ' hsk s' s hstd' hs τ Y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdec f hf, hkill1, hkill1, smul_zero, add_zero]`. Establish `hkk : κ (κ.symm k) ∈ K D A.rank`. Rewrite using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`. Conclude with `hk`. Establish `hS : ∀ τ', s' τ' * compAt θ τ' (Formalism.L2.Theta.mt (dblSp A) (κ.symm k)) = compAt θ τ' (Formalism.L2.Theta.mt (dblSp A) (κ.symm k)) * s' τ'` using `fun τ' => (hcomm (κ.symm k) hkk τ').symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm1 : ∀ τ', compAt θ τ' (Formalism.L2.Theta.mt V 1) = 1`. Introduce `τ'`. Simplify using `[Formalism.L2.Theta.mt, compAt, Matrix.map_one]`. Establish `hT : ∀ τ', s τ' * compAt θ τ' (Formalism.L2.Theta.mt V 1) = compAt θ τ' (Formalism.L2.Theta.mt V 1) * s τ'`. Introduce `τ'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hm1, Matrix.mul_one, Matrix.one_mul]`. Set `X' : Matrix (Fin V.rank) (Fin A.rank) ℂ` to `X`. Use `set Y0 : Matrix (Fin V.rank) (Fin (dblSp A).rank) ℂ := (X' * (dblDec A).qX.map (tauE D τ)) * compAt θ τ (Formalism.L2.Theta.mt (dblSp A) (κ.symm k)) with hY0`. Establish `hmove` using `(GlobalTheory.FockMove.om_foldr hdat hθ (κ.symm k) 1 hS hT hf [(τ, Y0)]).2`. Simplify using `only [List.foldr_cons, List.foldr_nil, List.map_cons, List.map_nil] at hmove`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmove` using `[hkill Y0, map_zero, hm1, Matrix.one_mul, hY0, Matrix.mul_assoc, GlobalTheory.WeilVacMove.compAt_mt_mul_inv, Matrix.mul_one]`. Establish `htk` using `htr (κ.symm k) f hf Φ hfΦ.symm`. Rewrite `htk` using `[show κ (κ.symm k) = k from κ.apply_symm_apply k]`. Establish `hth' : IsThetaFunO ψ₀ (dblSp A) V (omh (κ.symm k, 1) f)` using `hdat.om_pres _ f hf`. Establish `e` using `GlobalTheory.T.annihilationOperator_schroedingerFunctions_doubledPair D ψ₀ hstd θ hθ A V μ 𝓕 hμ μ' hsk s' s hstd' hs l habs _ hth' τ X'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[← hmove]`. Establish `hs0 : sch ψ₀ A V μ 𝓕 (0 : WO (dblSp A) V → ℂ) = 0`. Use `(GlobalTheory.StdUnn.sch_linear D ψ₀ hstd A V μ 𝓕 hμ f f hf hf 0).2.2.2` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Conclude with `this`.
-
-Rewrite `e` using `[hs0]`. Use `show annS V l s θ τ X ((ω k) Φ).1 = 0`. Rewrite using `[show ((ω k) Φ).1 = sch ψ₀ A V μ 𝓕 (omh (κ.symm k, 1) f) from htk]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem annS_stable : ∀ (D : D7) (n : ℕ) (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ →
     ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → ResEta D χ V.rank → ∀ θ : InfFam D, IsInfFam θ →

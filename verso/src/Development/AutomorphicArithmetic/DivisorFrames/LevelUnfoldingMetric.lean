@@ -10,23 +10,21 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.ConsGeo
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ O _ β Z T F _ e σ N U Φ L hty k _ w c c' q q'`. Introduce and unpack `⟨y, v, φ, g, hw, hq, hv, ⟨a, χ, ha, hF, hS⟩, hc, hg⟩ ⟨y', v', φ', g', hw', hq', hv', ⟨a', χ', ha', hF', hS'⟩, hc', hg'⟩`. Establish `hmono : Mono (Y Z.i).j`. Use `mono_spMap_subtype (Z.i.c.V W)` as an intermediate fact. Use `(Y Z.i).jQ_open` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model.j`. Use `infer_instance`. Take `rfl : y = y'` from `(cancel_mono (Y Z.i).j).1 (hw.symm.trans hw')`. Establish `hqq : q' ≫ (Φ.C c').π = q ≫ (Φ.C c).π` using `hq'.trans hq.symm`. Take `⟨-, hstr, -⟩` from `(UpperTheory.flag_carries_eigenframe (Φ.C c) k q).2 φ _ g hc`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hstr', hiff⟩` from `(UpperTheory.flag_carries_eigenframe (Φ.C c') k q').2 φ' _ g' hc'`. Choose the witnesses or unpack the hypotheses as in `rfl : φ = φ' := by`. Rewrite `hstr'` using `[← Category.assoc, hqq, Category.assoc, hstr]`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective (a₁ := CommRingCat.ofHom _) (a₂ := CommRingCat.ofHom _) hstr')`. Establish `hx : q ≫ (Φ.C c).π ≫ genι T = q' ≫ (Φ.C c').π ≫ genι T`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← hqq, Category.assoc]`. Establish `hx' : (y ≫ L.r) ≫ T.j = q' ≫ (Φ.C c').π ≫ genι T`. Rewrite using `[← Category.assoc q', hq']`. Simplify using `only [Category.assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `tri : ∀ τ, Pull.Tri (Y Z.i).t (w ≫ Z.π) (fun i => v' τ i ≫ (Y Z.i).m.φ) (fun i => v τ i ≫ (Y Z.i).m.φ)` using `fun τ => (((Pull.tri_of_sameFlag hty hS' τ).symm (Pull.frame_ind (Pull.chart_frame Z ha') τ) (Pull.frame_ind hF' τ)).1.trans (Pull.frame_ind hF' τ).1 (Pull.frame_ind (Pull.chart_frame Z ha') τ).1 (Pull.chart_tri Z hty ha' ha τ)).trans (Pull.frame_ind hF' τ).1 (Pull.frame_ind (Pul …`. Establish `key : ∀ τ i, ∃ cf : Fin (Dw.mult τ) → k, cf i ≠ 0 ∧ (∀ j, i < j → cf j = 0) ∧ IsCombAtG T.t (q ≫ (Φ.C c).π ≫ genι T) (g'.v τ) cf (g.v τ i)`. Introduce `τ i`. Take `⟨cf, h0, h1⟩` from `tri τ i`. Use `⟨cf, ((tri τ).diag (Pull.frame_ind hF' τ) (Pull.frame_ind hF τ) h1).1, h0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(Pull.comb_push (Y Z.i).m hw.symm (hv' τ) (hv τ i) cf).1 h1`. Establish `h3` using `(Pull.comb_push L.ν (x := y ≫ L.r) rfl (hv' τ) (hv τ i) cf).2 h2`. Establish `h4` using `(Pull.comb_push T.m hx' (fun j => GlobalTheory.LieMet.isTan_push L.ν y rfl (hv' τ j)) (GlobalTheory.LieMet.isTan_push L.ν y rfl (hv τ i)) cf).2 h3`. Rewrite using `[hg, show g'.v τ = _ from funext (hg' τ), hx]`. Simplify `h4` using `only [Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose cf h0 h1 h2 using key`. Establish `e1 : spMap (dualMap (RingHom.id k)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : spMap (RingHom.id k) = 𝟙 _` using `Spec.map_id _`. Establish `hcg : (Φ.C c').Carries q' g` using `(hiff φ _ g).2 ⟨fun τ i => Units.mk0 _ (h0 τ i), by rw [e2, Category.id_comp, hx], rfl, fun τ i => ⟨cf τ i, rfl, h1 τ i, by`. Simplify using `only [e1, Category.id_comp]`. Conclude with `h2 τ i⟩⟩`. Establish `uniq : ∀ (x₀ : Sp k ⟶ T.X) (g₀ : EigFrame T φ x₀), x₀ = (q ≫ (Φ.C c).π) ≫ genι T → ∃! r : Σ i : U.Comp, (Sp k ⟶ (Φ.C i).Y.X), r.2 ≫ (Φ.C r.1).π = q ≫ (Φ.C c).π ∧ (Φ.C r.1).Carries r.2 g₀`.
-
-Introduce and unpack `_ g₀ rfl`. Conclude with `UpperTheory.flag_torus_generic_point Φ k φ _ ((Category.assoc _ _ _).trans hstr) g₀`. Conclude with `(uniq _ g (Category.assoc _ _ _).symm).unique ⟨rfl, hc⟩ ⟨hqq, hcg⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.level_unfolding_metric :
     ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ} {Y : LocalSystem Xo p W} {i₀ : Idx H p} {O : Type} [CommRing O] {β : O →+* i₀.c.F} {Z : LocM.Mdl Y i₀} {T : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model (Xo i₀.l) i₀.c β} {F : Type} [Field F] {e : F ≃+* i₀.c.F} {σ : i₀.c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf (Xo i₀.l) i₀.c σ N} (Φ : FlagTor T e U) (L : Lev Z T), (∀ τ k, k ≤ Dw.mult τ → k ∈ Z.ty τ) → ∀ {k : Type} [Field k] (w : Sp k ⟶ Z.X) (c c' : U.Comp) (q : Sp k ⟶ (Φ.C c).Y.X) (q' : Sp k ⟶ (Φ.C c').Y.X), Match L (Φ.C c) w q → Match L (Φ.C c') w q' → (⟨c, q⟩ : Σ c : U.Comp, (Sp k ⟶ (Φ.C c).Y.X)) = ⟨c', q'⟩ := by

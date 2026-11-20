@@ -7,7 +7,7 @@ open NumberField GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar
 namespace GlobalTheory.CompanionTheory.Ar.Fl
 
 /- English proof (translation)
-The claim follows from `@PositivityTheory.Xgf.padic_logIdeal_max_element`.
+A detailed English derivation is pending.
 -/
 theorem exists_logIdeal_attained : ∀ (E : Type) [Field E] [NumberField E] (p : Nat.Primes) (j : 𝓞 E →+* ℂ_[p]) (I : Ideal (𝓞 E)), Function.Injective j → I ≠ ⊥ → ∃ a ∈ I, a ≠ 0 ∧ (∀ b ∈ I, ‖j b‖ ≤ ‖j a‖) ∧ logIdeal j I = Real.log ‖j a‖ :=
   @PositivityTheory.Xgf.padic_logIdeal_max_element

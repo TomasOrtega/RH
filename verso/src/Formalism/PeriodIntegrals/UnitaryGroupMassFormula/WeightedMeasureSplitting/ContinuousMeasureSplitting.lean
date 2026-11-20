@@ -10,9 +10,9 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hmat : Continuous (fun g : HA R σ J => (HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)))` using `continuous_subtype_val`. Establish `key : Continuous (fun g : HA R σ J => (Formalism.UG.bc (tensMap (E` using `E) φ) (HA.mat R σ J g) : GL (Fin n) (R' ⊗[F] E))) := by`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Express the relevant statement in the definitionally equal form `Continuous (fun g : HA R σ J => ((HA.mat R σ J g : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map (tensMap (E := E) φ))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(Units.continuous_val.comp hmat).matrix_map hφ`. Express the relevant statement in the definitionally equal form `Continuous (fun g : HA R σ J => (((HA.mat R σ J g)⁻¹ : GL (Fin n) (R ⊗[F] E)) : Matrix (Fin n) (Fin n) (R ⊗[F] E)).map (tensMap (E := E) φ))`. Conclude with `(Units.continuous_coe_inv.comp hmat).matrix_map hφ`. Conclude with `continuous_induced_rng.2 key`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem continuous_haMap {F E : Type} [Field F] [Field E] [Algebra F E]
     {R R' : Type} [CommRing R] [Algebra F R] [TopologicalSpace R] [CommRing R'] [Algebra F R']
@@ -35,7 +35,7 @@ theorem continuous_haMap {F E : Type} [Field F] [Field E] [Algebra F E]
   exact continuous_induced_rng.2 key
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J _`. Establish `: FiniteDimensional F E` using `PI.VolSemiDirect.W.Lc.finite_nf F E`. Conclude with `(continuous_haMap σ J (fstA F) (continuous_tensMap (AF F) (fstA F) continuous_fstA)).prodMk (continuous_haMap σ J (sndA F) (continuous_tensMap (AF F) (sndA F) continuous_sndA))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_measure_splitting : ContSplit := by
   intro F E _ _ _ _ _ σ n J _

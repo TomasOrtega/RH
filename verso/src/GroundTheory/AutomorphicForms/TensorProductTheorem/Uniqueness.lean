@@ -15,11 +15,11 @@ variable {ι : Type*} {G : ι → Type*} [∀ v, Group (G v)] {K : ∀ v, Subgro
   {V : ι → Type*} [∀ v, AddCommGroup (V v)] [∀ v, Module ℂ (V v)]
 
 /- English proof (translation)
-Proceed by induction on `t using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c x`. Rewrite using `[map_smul, map_smul, map_smul, map_smul]`. Use `congr 1`. Establish `h1 : tensorRep K π (singleHom K v g) (tprod ℂ x) = tprod ℂ (Function.update x v (π v g (x v)))` using `tensorRep_mulSingle_tprod v g x`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Distinguish the cases in `hx : IsRestricted ξ x`. Rewrite using `[contract_tprod v (hx.update v _), contract_tprod v hx, map_smul, weight_update_of_mem l x (Finset.mem_singleton_self v), Function.update_self]`. Establish `hx' : ¬ IsRestricted ξ (Function.update x v (π v g (x v)))` using `fun h => hx (isRestricted_update_iff.1 h)`. Rewrite using `[contract, lift.tprod, lift.tprod]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show restrictedIndicator ξ _ • _ = π v g (restrictedIndicator ξ x • _)`. Rewrite using `[restrictedIndicator_of_not hx, restrictedIndicator_of_not hx', zero_smul, zero_smul, map_zero]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem contract_tensorRep_single [DecidableEq ι] (π : ∀ v, Representation ℂ (G v) (V v))
     {ξ : ∀ v, V v} {l : ∀ v, Dual ℂ (V v)} (hl : ∀ᶠ v in cofinite, l v (ξ v) = 1) (v : ι)
@@ -46,21 +46,17 @@ theorem contract_tensorRep_single [DecidableEq ι] (π : ∀ v, Representation �
 variable {V' : ι → Type*} [∀ v, AddCommGroup (V' v)] [∀ v, Module ℂ (V' v)]
 
 /- English proof (translation)
-Use `haveI := hirr v`. Use `haveI := hirr' v`. Establish `hnt : ∀ w, ∃ u : V w, u ≠ 0` using `fun w =>`. Use `nontrivial_of_isIrreducible (hirr w)` as an intermediate fact. Use `exists_ne 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `choose e he using hnt`. Use `set ξ₀ : ∀ w, V w := fun w => if ξ w = 0 then e w else ξ w`. Establish `hξ₀ : IsRestricted ξ ξ₀` using `hξ0.mono fun w h => by simp [ξ₀, h]`. Establish `hξ₀0 : ∀ w, ξ₀ w ≠ 0` using `fun w => by`. Apply the tactic sequence `by_cases h : ξ w = 0 <;> simp [ξ₀, h, he w]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Set `ins : V v →ₗ[ℂ] restrictedTensor ξ` to `LinearMap.codRestrict (restrictedTensor ξ) ((PiTensorProduct.tprod ℂ).toLinearMap ξ₀ v) fun u => tprod_mem_restrictedTensor (hξ₀.update v u)`. Establish `hins : ∀ u, (ins u : ⨂[ℂ] w, V w) = tprod ℂ (Function.update ξ₀ v u)` using `fun u => rfl`. Establish `hinsg : ∀ (g : G v) u, ins (π v g u) = restrictedTensorRep π ξ hξ (singleHom K v g) (ins u)` using `fun g u => Subtype.ext (by`. Rewrite using `[coe_restrictedTensorRep_apply, hins, hins]`. Conclude with `(tensorRep_mulSingle_tprod (K := K) (π := π) v g _).trans (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_idem, Function.update_self]) |>.symm)`. Establish `hy0 : ins (e v) ≠ 0`. Introduce `h`. Use `congrArg Subtype.val h` as an intermediate fact. Rewrite `this` using `[hins]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `tprod_ne_zero (ξ := ξ) (hξ₀.update v (e v)) (fun w => ?_) this` and prove the remaining obligations. Distinguish the cases in `hw : w = v`. Substitute `hw` using the available equality. Simplify using `[he]`. Simplify using `[Function.update_of_ne hw, hξ₀0 w]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hΦy : ((Φ (ins (e v)) : restrictedTensor ξ') : ⨂[ℂ] w, V' w) ≠ 0`. Introduce `h`. Apply `hy0` to reduce the goal to its premises. Establish `: Φ (ins (e v)) = 0` using `Subtype.ext h`. Conclude with `Φ.toLinearEquiv.injective (this.trans (map_zero _).symm)`.
-
-Take `⟨l', hl', hne⟩` from `exists_evalForm_ne_zero hξ'0 (Φ (ins (e v))).2 hΦy`. Set `μ : Dual ℂ (V v)` to `evalForm ξ' l' hl' ∘ₗ (restrictedTensor ξ').subtype ∘ₗ Φ.toLinearEquiv.toLinearMap ∘ₗ ins`. Use `nonempty_equiv_of_matrixCoeff_eq (v := e v) (l := μ) (w := contract ξ' l' hl' v (Φ (ins (e v)))) (m := l' v) (fun g => ?_) ⟨1, ?_⟩` and prove the remaining obligations. Establish `hΦ : ∀ (h : Πʳ w, [G w, K w]) (x : restrictedTensor ξ), Φ (restrictedTensorRep π ξ hξ h x) = restrictedTensorRep π' ξ' hξ' h (Φ x)` using `fun h x => Representation.IntertwiningMap.isIntertwining _ _ Φ.toIntertwiningMap h x show evalForm ξ' l' hl' (Φ (ins (π v g (e v))) : ⨂[ℂ] w, V' w) = _`. Rewrite using `[hinsg, hΦ, coe_restrictedTensorRep_apply, ← apply_contract v, contract_tensorRep_single]`.
-
-Use `show evalForm ξ' l' hl' (Φ (ins (π v 1 (e v))) : ⨂[ℂ] w, V' w) ≠ 0`. Rewrite using `[map_one, Module.End.one_apply]`. Conclude with `hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_equiv_of_restrictedTensorRep_equiv {π : ∀ v, Representation ℂ (G v) (V v)}
     {π' : ∀ v, Representation ℂ (G v) (V' v)} {ξ : ∀ v, V v} {ξ' : ∀ v, V' v}

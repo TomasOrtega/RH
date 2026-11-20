@@ -8,41 +8,35 @@ open scoped TensorProduct ComplexConjugate Matrix
 namespace GlobalTheory.TrEll
 
 /- English proof (translation)
-Introduce `V W _ C _ X Y _ hX o oa hev`. Establish `hfin` using `Filter.eventually_cofinite.1 hev`. Use `set S : Finset V := hfin.toFinset with hSdef`. Establish `hS : ∀ v, v ∉ S → ((1 : C v) ∈ X v ∧ ∀ q : X v, (q.1 = 1 → o v q = 1) ∧ (q.1 ≠ 1 → o v q = 0))`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hv (by simpa [hSdef] using h)`. Use `haveI : ∀ v, Fintype (X v) := fun v => (hX v).fintype`. Use `haveI : ∀ w, Fintype (Y w) := fun w => Fintype.ofFinite _`. Set `Sub` to `{p : (∀ v, X v) × (∀ w, Y w) // ∀ᶠ v in cofinite, (p.1 v).1 = 1}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Set `F : Sub → ℂ` to `fun p => (∏ᶠ v, o v (p.1.1 v)) * ∏ w, oa w (p.1.2 w)`. Set `emb : (∀ v : S, X v) × (∀ w, Y w) → Sub` to `fun t => ⟨(fun v => if h : v ∈ S then t.1 ⟨v, h⟩ else ⟨1, (hS v h).1⟩, t.2), by`. Use `Filter.eventually_cofinite.2 (S.finite_toSet.subset fun v hv => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Simplify using `[dif_neg (show v ∉ S from h)] at hv⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmul : ∀ p : Sub, (Function.mulSupport fun v => o v (p.1.1 v)).Finite`. Introduce `p`. Use `(S.finite_toSet.union (Filter.eventually_cofinite.1 p.2)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_union, Finset.mem_coe, Set.mem_setOf_eq, not_or, not_not] at h`. Conclude with `hv (((hS v h.1).2 _).1 h.2)`. Establish `hsupp : Function.support F ⊆ Set.range emb`. Introduce `p hp`. Establish `h1 : ∀ v, v ∉ S → (p.1.1 v).1 = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv`. Assume the negation of the conclusion as `hne`. Apply `hp` to reduce the goal to its premises. Use `show (∏ᶠ v, o v (p.1.1 v)) * ∏ w, oa w (p.1.2 w) = 0`. Rewrite using `[finprod_eq_zero _ v (((hS v hv).2 _).2 hne) (hmul p), zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `⟨(fun v => p.1.1 v, p.1.2), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v ∈ S`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [emb, dif_pos hv]`. Simplify using `only [emb, dif_neg hv]`. Conclude with `Subtype.ext (h1 v hv).symm`. Both sides reduce to the same expression. Establish `hinj : Function.Injective emb`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `t t' h`. Establish `h'` using `congrArg (fun p : Sub => p.1) h`. Simplify using `only [emb, Prod.mk.injEq] at h'`. Take `⟨h1, h2⟩` from `h'`. Use `Prod.ext (funext fun v => ?_) h2` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h1 v.1` as an intermediate fact. Simplify `this` using `only [dif_pos v.2]`. Establish `hval : ∀ t, F (emb t) = (∏ v : S, o v (t.1 v)) * ∏ w, oa w (t.2 w)`. Introduce `t`. Use `show (∏ᶠ v, o v ((emb t).1.1 v)) * ∏ w, oa w (t.2 w) = _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) ?_]`. Rewrite using `[← Finset.prod_coe_sort S]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Simplify using `only [emb, dif_pos v.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Simplify using `only [emb, dif_neg (show v ∉ S from h)]`. Conclude with `((hS v h).2 _).1 rfl`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Establish `hsupp' : Function.support F ⊆ ↑(Finset.univ.image emb)`. Introduce `p hp`. Take `⟨t, rfl⟩` from `hsupp hp`. Simplify using the standard rewrite rules. Use `⟨(Finset.univ.image emb).finite_toSet.subset hsupp', ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∑ᶠ p, F p = _`. Rewrite using `[finsum_eq_sum_of_support_subset _ hsupp', Finset.sum_image (fun a _ b _ h => hinj h)]`. Simplify using `only [hval]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.sum_mul_sum, ← Fintype.prod_sum, ← Fintype.prod_sum]`. Use `congr 1`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (s := S) ?_]`. Rewrite using `[← Finset.prod_coe_sort S]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[finsum_eq_sum_of_fintype]`. Introduce `v hv`. Assume the negation of the conclusion as `h`. Apply `hv` to reduce the goal to its premises. Use `show ∑ᶠ q : X v, o v q = 1`.
-
-Rewrite using `[finsum_eq_single _ ⟨1, (hS v h).1⟩]`. Conclude with `((hS v h).2 _).1 rfl`. Introduce `q hq`. Conclude with `((hS v h).2 q).2 (fun e => hq (Subtype.ext e))`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[finsum_eq_sum_of_fintype]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_restrictedFamily_eq_prod_finsum : ∀ (V W : Type) [Fintype W] (C : V → Type) [∀ v, One (C v)] (X : ∀ v, Set (C v)) (Y : W → Type) [∀ w, Finite (Y w)], (∀ v, (X v).Finite) → ∀ (o : ∀ v, X v → ℂ) (oa : ∀ w, Y w → ℂ), (∀ᶠ v in cofinite, (1 : C v) ∈ X v ∧ ∀ q : X v, (q.1 = 1 → o v q = 1) ∧ (q.1 ≠ 1 → o v q = 0)) → (Function.support fun p : {p : (∀ v, X v) × (∀ w, Y w) // ∀ᶠ v in cofinite, (p.1 v).1 = 1} => (∏ᶠ v, o v (p.1.1 v)) * ∏ w, oa w (p.1.2 w)).Finite ∧ ∑ᶠ p : {p : (∀ v, X v) × (∀ w, Y w) // ∀ᶠ v in cofinite, (p.1 v).1 = 1}, (∏ᶠ v, o v (p.1.1 v)) * ∏ w, oa w (p.1.2 w) = (∏ᶠ v, ∑ᶠ q : X v, o v q) * ∏ w, ∑ᶠ q : Y w, oa w q := by
   intro V W _ C _ X Y _ hX o oa hev

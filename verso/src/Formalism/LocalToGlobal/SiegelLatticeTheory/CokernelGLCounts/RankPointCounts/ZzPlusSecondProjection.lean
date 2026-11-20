@@ -31,9 +31,9 @@ def ClsSgn : Prop :=
 variable {Zd u u' F0 what₂}
 
 /- English proof (translation)
-Establish `hrel` using `eligRel_holds γ w hγ`. Take `⟨⟨hgen, -⟩, hat⟩` from `hγ`. Take `⟨y, hy⟩` from `hN γ w hat hrel hgen`. Establish `hex : ∃ x : Point D.host.E (D.R.rS + 1) × LFlag (VS D) D.R.rS ((Tu D u' : ℕ) : D.host.E) × PairVal.MatR D × PairVal.MatR D, PairVal.NormRep γ x.1 x.2.1 x.2.2.1 x.2.2.2` using `⟨(w, y), hy⟩`. Establish `hn : nrep γ = some hex.choose` using `dif_pos hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hRep, -, hL, hU, e⟩` from `hex.choose_spec`. Take `⟨F₁, hR₁, -, hc₁⟩` from `hat`. Establish `hw : w = hex.choose.1` using `pt_eq_of_cells cell_point_uniqueness (Formalism.L2.SG.Closed.TermFun_holds D u u') hrows γ hR₁ hRep hc₁ ⟨_, _, hL, hU, e⟩`. Unfold `ptT`. Rewrite using `[hn, hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptT_eq (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowReps D F0 what₂)
     {γ : TermDef.Term D u u' F0 what₂} {w : Point D.host.E (D.R.rS + 1)} (hγ : EligAt γ w) : ptT γ = w := by
@@ -50,9 +50,9 @@ theorem ptT_eq (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowReps
   unfold ptT; rw [hn, hw]
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Establish `hpt` using `ptT_eq hN hrows hγ`. Take `⟨l, ρ, l', ρ', hl, hρ, hl', hρ', e1, e2⟩` from `hZ γ w hγ p`. Unfold `thT thL`. Rewrite using `[hpt]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `show clsOf (Zd.M p) (CntLocal.ZZP (M := Zd.M) Zd.δ u u' p (zT γ) + cornE p (cornerSh Zd.δ (D.mem u).A.T (D.mem u').A.T p w)) = _`. Rewrite using `[← hS p, clsOf_orb hl hρ hl' hρ' e1 e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauOne_of_orbit_and_sign (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowReps D F0 what₂)
     (hZ : ZZOrbT Zd u u' F0 what₂) (hS : ClsSgn Zd) : Tau1 Zd u u' F0 what₂ := by
@@ -66,7 +66,7 @@ theorem tauOne_of_orbit_and_sign (hN : PairVal.NormRepExists D u u' F0 what₂) 
   rw [← hS p, clsOf_orb hl hρ hl' hρ' e1 e2]
 
 /- English proof (translation)
-Introduce `h` and use `tauOne_of_orbit_and_sign (normRepExists_ctx h) h.2.1 (hZ h) hS`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tauOne_of_orbit_sign (hZ : CtxP u u' F0 what₂ → ZZOrbT Zd u u' F0 what₂) (hS : ClsSgn Zd) : TauOneReduction Zd u u' F0 what₂ :=
   fun h => tauOne_of_orbit_and_sign (normRepExists_ctx h) h.2.1 (hZ h) hS
@@ -78,7 +78,7 @@ section SgnCls
 variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Unfold `LsDatumB.sgnP`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem permSign_mul_self₂ (p : PlF D) : LsDatumB.sgnP p * LsDatumB.sgnP p = (1 : MatP D p) := by
   unfold LsDatumB.sgnP
@@ -88,7 +88,7 @@ theorem permSign_mul_self₂ (p : PlF D) : LsDatumB.sgnP p * LsDatumB.sgnP p = (
   rw [← mul_pow, neg_one_mul, neg_neg, one_pow]
 
 /- English proof (translation)
-Unfold `LsDatumB.sgnP`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `pow_mem (neg_mem (one_mem _)) _`. Conclude with `zero_mem _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sgnP_mem (p : PlF D) (a b : Fin (D.R.rS + 1)) : LsDatumB.sgnP p a b ∈ (M p).R := by
   unfold LsDatumB.sgnP
@@ -98,27 +98,25 @@ theorem sgnP_mem (p : PlF D) (a b : Fin (D.R.rS + 1)) : LsDatumB.sgnP p a b ∈ 
   · exact zero_mem _
 
 /- English proof (translation)
-Use `set S := LsDatumB.sgnP (D := D) p with hSdef`. Establish `hSS : S * S = 1` using `permSign_mul_self₂ p`. Establish `hSu : IsUnit S.det` using `Matrix.isUnit_det_of_right_inverse hSS`. Establish `hYS : Y * S * S = Y` using `by rw [Matrix.mul_assoc, hSS, Matrix.mul_one]`. Establish `hSR : ∀ a b, S a b ∈ (M p).R` using `sgnP_mem (M := M) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key0 : ∀ X : MatP D p, (∀ a b, X a b ∈ (M p).R) → ∀ a b, (X * S) a b ∈ (M p).R`. Introduce `X hX a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun c _ => mul_mem (hX a c) (hSR c b)`. Establish `hint : (∀ a b, (Y * S) a b ∈ (M p).R) ↔ (∀ a b, Y a b ∈ (M p).R)` using `⟨fun h => hYS ▸ key0 _ h, key0 Y⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdet : IsUnit (Y * S).det ↔ IsUnit Y.det`. Rewrite using `[Matrix.det_mul, IsUnit.mul_iff]`. Conclude with `⟨And.left, fun h => ⟨h, hSu⟩⟩`. Unfold `clsOf`. Distinguish the cases in `hc : (∀ a b, Y a b ∈ (M p).R) ∧ IsUnit Y.det`.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : (∀ a b, (Y * S) a b ∈ (M p).R) ∧ IsUnit (Y * S).det` using `⟨hint.2 hc.1, hdet.2 hc.2⟩`. Rewrite using `[dif_pos hc, dif_pos hc']`. Use `congr 1`. Apply `Eq.symm` to reduce the goal to its premises. Apply `Quotient.sound` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hSS' : toR (M` using `M) S hSR * toR S hSR = 1 := by`. Apply `Matrix.map_injective (f := ((M p).R.subtype : (M p).R → _)) Subtype.val_injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, toR_map, hSS, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hρu : IsUnit (toR (M` using `M) S hSR).det := Matrix.isUnit_det_of_right_inverse hSS'`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ((toR (M` using `M) S hSR).map (M p).R.subtype)⁻¹ = S := by`. Rewrite using `[toR_map]`. Conclude with `Matrix.inv_eq_left_inv hSS`. Establish `hρe : ∀ b, ((toR (M` using `M) S hSR).map (M p).R.subtype)⁻¹ (Fin.last D.R.rS) b = if b = Fin.last D.R.rS then 1 else 0 := by`. Introduce `b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, hSdef]`. Unfold `LsDatumB.sgnP`. Rewrite using `[Matrix.diagonal_apply]`. Distinguish the cases in `hb : b = Fin.last D.R.rS`. Substitute `hb` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Rewrite using `[if_neg (Ne.symm hb), if_neg hb]`. Use `⟨?_⟩` and prove the remaining obligations. Establish `key` using `isoLR (M p) ⟨Matrix.of fun a b => ⟨Y a b, hc.1 a b⟩, by`. Establish `: (Matrix.of fun a b => (⟨Y a b, hc.1 a b⟩ : (M p).R)).map (M p).R.subtype = Y` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[this]; exact hc.2⟩ 1 (toR S hSR) (by rw [Matrix.det_one]; exact isUnit_one) hρu`. Use the proof step `(Matrix.one_mulVec _) hρe`. Establish `hZ : (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (M p).R) * toR (M` using `M) Y hc.1 * toR S hSR = toR (Y * S) hc'.1 := by`. Apply `Matrix.map_injective (f := ((M p).R.subtype : (M p).R → _)) Subtype.val_injective` to reduce the goal to its premises. Simplify using `only`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, toR_map, toR_map, toR_map, Matrix.map_one _ (map_zero _) (map_one _), Matrix.one_mul]`. Use `cast ?_ key` and prove the remaining obligations. Use `congr 1`. Unfold `matLR`. Use `congr 1`.
-
-Establish `hc' : ¬ ((∀ a b, (Y * S) a b ∈ (M p).R) ∧ IsUnit (Y * S).det)`. Introduce and unpack `⟨h1', h2'⟩`. Conclude with `hc ⟨hint.1 h1', hdet.1 h2'⟩`. Rewrite using `[dif_neg hc, dif_neg hc']`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsOf_mul_sgn (p : PlF D) (Y : MatP D p) :
     clsOf (M p) (Y * LsDatumB.sgnP p) = clsOf (M p) Y := by
@@ -178,11 +176,11 @@ theorem clsOf_mul_sgn (p : PlF D) (Y : MatP D p) :
     rw [dif_neg hc, dif_neg hc']
 
 /- English proof (translation)
-Introduce `p Y s`. Establish `h : Y * LsDatumB.sgnP p + cornE p s = (Y + cornE p s) * LsDatumB.sgnP p`. Rewrite using `[Matrix.add_mul]`. Use `congr 1`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [cornE, LsDatumB.sgnP, Matrix.mul_diagonal, Matrix.of_apply]`. Use `split_ifs with hab`. Take `⟨-, rfl⟩` from `hab`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, clsOf_mul_sgn]`.
+A detailed English derivation is pending.
 -/
 theorem clsSgn_holds (Zd : LocDat D) : ClsSgn Zd := by
   intro p Y s
@@ -199,7 +197,7 @@ theorem clsSgn_holds (Zd : LocDat D) : ClsSgn Zd := by
 end SgnCls
 
 /- English proof (translation)
-The claim follows from `tauOne_of_orbit_sign hZ (clsSgn_holds Zd)`.
+A detailed English derivation is pending.
 -/
 theorem tauOne_of_orbit {D : Formalism.BasicNotions.D7} {Zd : LocDat D} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (hZ : CtxP u u' F0 what₂ → ZZOrbT Zd u u' F0 what₂) :
@@ -212,7 +210,7 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing 
   [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Subring.sum_mem _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`. Conclude with `zsmul_mem (Subring.prod_mem _ fun i _ => h _ _) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_R (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ M.R) : A.det ∈ M.R := by
   rw [Matrix.det_apply]
@@ -221,9 +219,7 @@ theorem det_mem_R (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ M.R) : 
   exact zsmul_mem (Subring.prod_mem _ fun i _ => h _ _) _
 
 /- English proof (translation)
-Rewrite using `[Matrix.adjugate_apply]`. Use `det_mem_R _ fun i j => ?_` and prove the remaining obligations. Rewrite using `[Matrix.updateRow_apply]`. Use `split_ifs`. Rewrite using `[Pi.single_apply] split_ifs`.
-
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Conclude with `h _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adj_mem_R (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ M.R) (a b : Fin n) :
     A.adjugate a b ∈ M.R := by
@@ -238,7 +234,7 @@ theorem adj_mem_R (A : Matrix (Fin n) (Fin n) E) (h : ∀ i j, A i j ∈ M.R) (a
   · exact h _ _
 
 /- English proof (translation)
-Establish `hU : IsUp ρ` using `⟨h.1, fun a b hab => h.2.1 b a hab⟩`. Establish `hi` using `isUp_inv hU`. Use `⟨hi.1, fun a b hab => hi.2 b a hab, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_def, det_up' hU, Ring.inverse_one, one_smul]`. Conclude with `adj_mem_R _ h.2.2 a b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intUp_inv {ρ : Matrix (Fin n) (Fin n) E} (h : TieN.IntUp M ρ) : TieN.IntUp M ρ⁻¹ := by
   have hU : IsUp ρ := ⟨h.1, fun a b hab => h.2.1 b a hab⟩
@@ -248,7 +244,7 @@ theorem intUp_inv {ρ : Matrix (Fin n) (Fin n) E} (h : TieN.IntUp M ρ) : TieN.I
   exact adj_mem_R _ h.2.2 a b
 
 /- English proof (translation)
-Establish `hL : IsLo l` using `⟨h.1, h.2.1⟩`. Establish `hi` using `isLo_inv hL`. Use `⟨hi.1, hi.2, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.inv_def, det_lo' hL, Ring.inverse_one, one_smul]`. Conclude with `adj_mem_R _ h.2.2 a b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intLow_inv {l : Matrix (Fin n) (Fin n) E} (h : TieN.IntLow M l) : TieN.IntLow M l⁻¹ := by
   have hL : IsLo l := ⟨h.1, h.2.1⟩
@@ -265,7 +261,7 @@ variable {F E : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [CommRing 
   [TopologicalSpace E] [MeasurableSpace E] {M : Loc.Model F E} {r : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Loc.HermSp.ZZplusOf, hM, Matrix.map_apply, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, Ecorner, map_sub, fst_proj_symm, apply_ite (p1 g.e)]`. Apply the tactic sequence `split_ifs <;> simp only [fst_proj_symm, map_zero, adeleInfiniteComponent_apply] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzPlus_first_projection {g : Loc.SplitG M.L} (hM : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (Loc.HermSp.ZZplusOf M Zh T T').map (p1 g.e) =
@@ -276,7 +272,7 @@ theorem zzPlus_first_projection {g : Loc.SplitG M.L} (hM : M.split = some g) (Zh
   split_ifs <;> simp only [fst_proj_symm, map_zero, adeleInfiniteComponent_apply] <;> ring
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Loc.HermSp.ZZplusOf, hM, Matrix.map_apply, Matrix.of_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, Ecorner, map_sub, snd_proj_symm, apply_ite (p2 g.e)]`. Apply the tactic sequence `split_ifs <;> simp only [snd_proj_symm, map_zero, adele_ext_components] <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzPlus_second_projection {g : Loc.SplitG M.L} (hM : M.split = some g) (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (Loc.HermSp.ZZplusOf M Zh T T').map (p2 g.e) =
@@ -288,11 +284,11 @@ theorem zzPlus_second_projection {g : Loc.SplitG M.L} (hM : M.split = some g) (Z
   split_ifs <;> simp only [snd_proj_symm, map_zero, adele_ext_components] <;> ring
 
 /- English proof (translation)
-Establish `hV1 : IsUp (V.map (p1 g.e))` using `isUp_map (p1 g.e) hV`. Establish `hV2 : IsLo (V.map (p2 g.e)).transpose` using `isLo_transpose (isUp_map (p2 g.e) hV)`. Establish `h1L : IsLo (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) F)` using `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h)⟩`. Establish `h1U : IsUp (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) F)` using `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h)⟩`. Establish `c1 : (Ecorner r : Matrix (Fin (r + 1)) (Fin (r + 1)) F) * V.map (p1 g.e) = Ecorner r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lo_corner_up h1L hV1` as an intermediate fact. Rewrite `this` using `[Matrix.one_mul]`. Then use the resulting hypothesis. Establish `c2 : (V.map (p2 g.e)).transpose * (Ecorner r : Matrix (Fin (r + 1)) (Fin (r + 1)) F) = Ecorner r`. Use `lo_corner_up hV2 h1U` as an intermediate fact. Rewrite `this` using `[Matrix.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Apply `mat_eq g.e` to reduce the goal to its premises. Rewrite using `[Matrix.map_mul, Matrix.map_mul, glue_map_fst, glue_map_fst, zzPlus_first_projection hM, zzPlus_first_projection hM, Matrix.one_mul, Matrix.map_mul, Matrix.add_mul, Matrix.smul_mul, Matrix.smul_mul, c1]`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, glue_map_snd, glue_map_snd, zzPlus_second_projection hM, zzPlus_second_projection hM, Matrix.mul_one, Matrix.map_mul, Matrix.transpose_mul, Matrix.mul_sub, Matrix.mul_neg, Matrix.mul_smul, Matrix.mul_smul, c2]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem zzplusOf_mul_up {g : Loc.SplitG M.L} (hM : M.split = some g) (Zh V : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (T T' : F) (hV : IsUp V) :
@@ -325,7 +321,7 @@ def cInv (Zd : LocDat D) (p : PlF D) (k : Fin (D.R.rS + 1)) : (D.s.atP p).Ep :=
   TermLoc.sgnP' D p k * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (D.R.rS - k.val))
 
 /- English proof (translation)
-Establish `hs` using `TermLoc.sgnP'_sq (D := D) p k`. Establish `hy : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((yP Zd p)⁻¹ ^ (D.R.rS - k.val)) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (D.R.rS - k.val)) = 1`. Rewrite using `[← map_mul, ← mul_pow, inv_mul_cancel₀ (yP_ne Zd p), one_pow, map_one]`. Rewrite using `[cInv, frFac_eq]`. Take the linear combination `(algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((yP Zd p)⁻¹ ^ (D.R.rS - k.val)) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (D.R.rS - k.val))) * hs + hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem c_cInv (Zd : LocDat D) (p : PlF D) (k : Fin (D.R.rS + 1)) :
     (TermLoc.sgnP' D p k * frFac Zd.δ p k) * cInv Zd p k = 1 := by
@@ -342,9 +338,9 @@ def vc (Zd : LocDat D) (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) : MatP 
     (D.s.atP p).ιE ((((admXi D γ.lam (lf D F0) (repF γ))⁻¹).map (algebraMap (𝓞 D.host.E) D.host.E)) k b)
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [tLoc]`. Rewrite using `[zhat_loc, Matrix.mul_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zhat_locF', vc, Matrix.of_apply, map_mul (D.s.atP p).ιE]`. Take the linear combination `(-((TermLoc.sgnP' D p b * frFac Zd.δ p b) * (D.s.atP p).cj (TermLoc.sgnP D p a * frFac Zd.δ p a) * (D.s.atP p).ιE (ZhatL (lf D F0) (repF γ) a k) * (D.s.atP p).ιE ((((admXi D γ.lam (lf D F0) (repF γ))⁻¹).map (algebraMap (𝓞 D.host.E) D.host.E)) k b))) * c_cInv Zd p k`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem zhat_vc (Zd : LocDat D) (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) :
     (locH Zd p).Zhat (tLoc Zd p γ).f (tLoc Zd p γ).f' =
@@ -361,7 +357,7 @@ theorem zhat_vc (Zd : LocDat D) (p : PlF D) (γ : TermDef.Term D u u' F0 what₂
     c_cInv Zd p k
 
 /- English proof (translation)
-Take `⟨h0, h1⟩` from `inv_unitri _ (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).1 (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).2`. Use `⟨fun k => ?_, fun k b hkb => ?_⟩` and prove the remaining obligations. Simplify using `only [vc, Matrix.of_apply, Matrix.map_apply, h1 k, map_one, mul_one]`. Conclude with `c_cInv Zd p k`. Simplify using `only [vc, Matrix.of_apply, Matrix.map_apply, h0 b k hkb, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vc_up (Zd : LocDat D) (p : PlF D) (γ : TermDef.Term D u u' F0 what₂) : IsUp (vc Zd p γ) := by
   obtain ⟨h0, h1⟩ := inv_unitri _ (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).1 (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).2
@@ -388,29 +384,29 @@ def VolumeConstantAgreement : Prop :=
 variable {Zd u u' F0 what₂}
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Establish `hz : zT γ = ZhatL (lf D F0) (repF γ)` using `(repF_cell hN hrows hγ).1`. Establish `hX : Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat (tLoc Zd p γ).f (locF' Zd p (repF γ))) (tLoc Zd p γ).T (tLoc Zd p γ).T' = CntLocal.ZZP (M` using `Zd.M) Zd.δ u u' p (zT γ) * LsDatumB.sgnP p := by`. Rewrite using `[hz]`. Conclude with `zzplus_locF' Zd u u' p γ.lam (lf D F0) (repF γ) (repF γ) ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hY : (locH Zd p).ZZplus (tLoc Zd p γ) = Loc.HermSp.ZZplusOf (Zd.M p) ((locH Zd p).Zhat (tLoc Zd p γ).f (locF' Zd p (repF γ)) * vc Zd p γ) (tLoc Zd p γ).T (tLoc Zd p γ).T'`. Unfold `Loc.HermSp.ZZplus`. Rewrite using `[zhat_vc]`. Establish `hup` using `vc_up Zd p γ`. Establish `hVp` using `hV γ w hγ p`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hY, ← hX]`. Generalize the expression as in `(locH Zd p).Zhat (tLoc Zd p γ).f (locF' Zd p (repF γ)) = Zh`. Generalize the expression as in `(tLoc Zd p γ).T = T`. Generalize the expression as in `(tLoc Zd p γ).T' = T'`. Generalize the expression as in `vc Zd p γ = V at hup hVp`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hM : (Zd.M p).split with _ | g` into its components or cases. Simplify using `only [hM] at hVp`. Establish `hρ : TieN.IntUp (Zd.M p) V` using `⟨hup.1, fun a b hab => hup.2 b a hab, hVp⟩`. Establish `e : ∀ Y : MatP D p, Loc.HermSp.ZZplusOf (Zd.M p) Y T T' = Y` using `fun Y => by`. Simplify using `only [Loc.HermSp.ZZplusOf, hM]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, e]`. Use `⟨1, V, 1, V⁻¹, intLow_one p, hρ, intLow_one p, intUp_inv hρ, by rw [Matrix.one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.one_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (by rw [det_up' hup]; exact isUnit_one), Matrix.mul_one]`. Simplify using `only [hM] at hVp`. Establish `key` using `zzplusOf_mul_up hM Zh V T T' hup`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV2 : IsLo (V.map (p2 g.e)).transpose` using `isLo_transpose (isUp_map (p2 g.e) hup)`. Establish `h1L : IsLo (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Fp)` using `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_lt h)⟩`. Establish `h1U : IsUp (1 : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) (D.s.atP p).Fp)` using `⟨fun a => Matrix.one_apply_eq a, fun a b h => Matrix.one_apply_ne (ne_of_gt h)⟩`. Establish `hLlo` using `isLo_glue g.e h1L hV2`. Establish `hUup` using `isUp_glue g.e (isUp_map (p1 g.e) hup) h1U`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLi : TieN.IntLow (Zd.M p) (glue g.e 1 (V.map (p2 g.e)).transpose)`. Use `⟨hLlo.1, hLlo.2, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[IntegralGeneration.mem_R_of_split hM]`. Simplify using `only [glue, Matrix.of_apply, AlgEquiv.apply_symm_apply, Matrix.transpose_apply, Matrix.map_apply]`. Distinguish the cases in `hab : a = b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, hup.1 a, map_one]`. Conclude with `⟨one_mem _, one_mem _, 0, zero_mem _, by ring⟩`. Take `⟨x, hx, hxe⟩` from `(hVp b a (Ne.symm hab)).2`. Rewrite using `[Matrix.one_apply_ne hab, hxe]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨zero_mem _, mul_mem g.q.2 hx, -x, neg_mem hx, by ring⟩`. Establish `hUi : TieN.IntUp (Zd.M p) (glue g.e (V.map (p1 g.e)) 1)`. Use `⟨hUup.1, fun a b hab => hUup.2 b a hab, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[IntegralGeneration.mem_R_of_split hM]`. Simplify using `only [glue, Matrix.of_apply, AlgEquiv.apply_symm_apply, Matrix.map_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[Matrix.one_apply_eq, hup.1 a, map_one]`. Conclude with `⟨one_mem _, one_mem _, 0, zero_mem _, by ring⟩`. Take `⟨x, hx, hxe⟩` from `(hVp a b hab).1`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.one_apply_ne hab, hxe]`. Conclude with `⟨mul_mem g.q.2 hx, zero_mem _, x, hx, by ring⟩`. Establish `hLu : IsUnit (glue g.e 1 (V.map (p2 g.e)).transpose).det` using `by rw [det_lo' hLlo]; exact isUnit_one`. Establish `hUu : IsUnit (glue g.e (V.map (p1 g.e)) 1).det` using `by rw [det_up' hUup]; exact isUnit_one`. Use `⟨_, _, _, _, hLi, hUi, intLow_inv hLi, intUp_inv hUi, key, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Simplify using `only [← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hLu, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hUu, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zzOrbT_of (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowReps D F0 what₂)
     (hV : VolumeConstantAgreement Zd u u' F0 what₂) : ZZOrbT Zd u u' F0 what₂ := by
@@ -477,7 +473,7 @@ theorem zzOrbT_of (hN : PairVal.NormRepExists D u u' F0 what₂) (hrows : IsRowR
     rw [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hUu, Matrix.mul_one]
 
 /- English proof (translation)
-The claim follows from `tauOne_of_orbit fun h => zzOrbT_of (normRepExists_ctx h) h.2.1 (hV h)`.
+A detailed English derivation is pending.
 -/
 theorem tauOne_of_vector (hV : CtxP u u' F0 what₂ → VolumeConstantAgreement Zd u u' F0 what₂) : TauOneReduction Zd u u' F0 what₂ :=
   tauOne_of_orbit fun h => zzOrbT_of (normRepExists_ctx h) h.2.1 (hV h)
@@ -504,11 +500,11 @@ def UInt : Prop := ∀ p : PlF D, (D.s.atP p).ιF ((uP p : ℚ) : D.host.F) ∈ 
 variable {Zd u u' F0 what₂}
 
 /- English proof (translation)
-Establish `hy : yP Zd p ∈ 𝒪[(D.s.atP p).Fp]` using `mul_mem (LocModel.LM.delta_mem (Zd.agree p)) (hU p)`. Establish `hsg : ∀ c, TermLoc.sgnP' D p c ∈ (Zd.M p).L.O` using `fun c => Formalism.MainNotions.LocalModelPeriodLattices.mem_O_of_quad (Zd.M p).L _ 0 (-1) (by`. Use `TermLoc.sgnP'_sq (D := D) p c` as an intermediate fact. Simplify using `[this])`. Establish `hexp : D.R.rS - k.val = (D.R.rS - b.val) + (b.val - k.val)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `b.isLt`. Establish `h2 : k.val ≤ b.val` using `hkb`. Use linear arithmetic over natural numbers and integers. Establish `e : (TermLoc.sgnP' D p b * frFac Zd.δ p b) * cInv Zd p k = (TermLoc.sgnP' D p b * TermLoc.sgnP' D p k) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (b.val - k.val))`. Establish `hpow : algebraMap (D.s.atP p).Fp (D.s.atP p).Ep ((yP Zd p)⁻¹ ^ (D.R.rS - b.val)) * algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (D.R.rS - k.val)) = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (yP Zd p ^ (b.val - k.val))`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, hexp, pow_add, ← mul_assoc, inv_pow, inv_mul_cancel₀ (pow_ne_zero _ (yP_ne Zd p)), one_mul]`. Rewrite using `[cInv, frFac_eq]`. Take the linear combination `(TermLoc.sgnP' D p b * TermLoc.sgnP' D p k) * hpow`. Rewrite using `[e]`. Conclude with `mul_mem (mul_mem (hsg b) (hsg k)) (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O (Zd.M p).L ⟨_, pow_mem hy _⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sc_mem (hU : UInt D) (p : PlF D) {k b : Fin (D.R.rS + 1)} (hkb : k ≤ b) :
     (TermLoc.sgnP' D p b * frFac Zd.δ p b) * cInv Zd p k ∈ (Zd.M p).L.O := by
@@ -532,17 +528,17 @@ theorem sc_mem (hU : UInt D) (p : PlF D) {k b : Fin (D.R.rS + 1)} (hkb : k ≤ b
   exact mul_mem (mul_mem (hsg b) (hsg k)) (Formalism.MainNotions.LocalModelPeriodLattices.algebraMap_mem_O (Zd.M p).L ⟨_, pow_mem hy _⟩)
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Establish `hO : (Zd.M p).L.O = (D.s.atP p).O` using `(Zd.agree p).2.2.2.1`. Take `⟨h0, -⟩` from `inv_unitri _ (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).1 (admissibility_witness_unitriangular γ.lam (lf D F0) (repF γ)).2`. Establish `hzero : ∀ k b : Fin (D.R.rS + 1), b < k → vc Zd p γ k b = 0` using `fun k b h => by`. Simplify using `only [vc, Matrix.of_apply, Matrix.map_apply, h0 k b h, map_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : ∀ k b : Fin (D.R.rS + 1), vc Zd p γ k b = ((TermLoc.sgnP' D p b * frFac Zd.δ p b) * cInv Zd p k) * (D.s.atP p).ιE ((((admXi D γ.lam (lf D F0) (repF γ))⁻¹).map (algebraMap (𝓞 D.host.E) D.host.E)) k b)` using `fun k b => rfl`. Establish `hint : ∀ k b : Fin (D.R.rS + 1), (D.s.atP p).ιE ((((admXi D γ.lam (lf D F0) (repF γ))⁻¹).map (algebraMap (𝓞 D.host.E) D.host.E)) k b) ∈ (Zd.M p).L.O` using `fun k b => by`. Rewrite using `[hO, Matrix.map_apply]`. Conclude with `LocModel.LM.ιE_int_mem_O p _`. Break down `hM : (Zd.M p).split with _ | g` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k b`. Establish `hR : (Zd.M p).R = (Zd.M p).L.O` using `by simp only [Loc.Model.R, hM]`. Rewrite using `[hR]`. Break down `le_or_gt k b with hkb | hkb` into its components or cases. Rewrite using `[hsplit]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (sc_mem hU p hkb) (hint k b)`. Rewrite using `[hzero k b hkb]`. Conclude with `zero_mem _`. Introduce `k b hne`. Break down `lt_or_gt_of_ne hne with hkb | hkb` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨x, hx, hxe⟩, ⟨x', hx', hxe'⟩⟩` from `hX γ w hγ p g hM k b hkb`. Establish `hs` using `sc_mem (Zd := Zd) hU p (le_of_lt hkb)`. Use `⟨⟨p1 g.e ((TermLoc.sgnP' D p b * frFac Zd.δ p b) * cInv Zd p k) * x, mul_mem (IntegralGeneration.fst_mem (g := g) hs) hx, ?_⟩, ⟨p2 g.e ((TermLoc.sgnP' D p b * frFac Zd.δ p b) * cInv Zd p k) * x', mul_mem (IntegralGeneration.snd_mem (g := g) hs) hx', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hsplit, map_mul, hxe]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsplit, map_mul, hxe']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hzero k b hkb, map_zero, map_zero]`. Conclude with `⟨⟨0, zero_mem _, by ring⟩, ⟨0, zero_mem _, by ring⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem vcTied_of (hX : XiTyped Zd u u' F0 what₂) (hU : UInt D) : VolumeConstantAgreement Zd u u' F0 what₂ := by
   intro γ w hγ p
@@ -577,7 +573,7 @@ theorem vcTied_of (hX : XiTyped Zd u u' F0 what₂) (hU : UInt D) : VolumeConsta
       exact ⟨⟨0, zero_mem _, by ring⟩, ⟨0, zero_mem _, by ring⟩⟩
 
 /- English proof (translation)
-The claim follows from `tauOne_of_vector fun h => vcTied_of (hX h) hU`.
+A detailed English derivation is pending.
 -/
 theorem tauOne_of_xi (hX : CtxP u u' F0 what₂ → XiTyped Zd u u' F0 what₂) (hU : UInt D) : TauOneReduction Zd u u' F0 what₂ :=
   tauOne_of_vector fun h => vcTied_of (hX h) hU
@@ -589,9 +585,9 @@ section UIntPf
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Introduce `h`. Use `haveI := p.isPrime`. Establish `h0 : ((l : ℕ) : 𝓞 D.host.F ⧸ p.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk p.asIdeal), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hd` using `ringChar.dvd h0`. Break down `hl.eq_one_or_self_of_dvd _ hd with h1 | h1` into its components or cases. Conclude with `CharP.ringChar_ne_one h1`. Conclude with `hne (by unfold Loc.resChar; exact h1.symm)`.
+A detailed English derivation is pending.
 -/
 theorem natPrime_notMem (p : PlF D) {l : ℕ} (hl : l.Prime) (hne : l ≠ Loc.resChar p) :
     ((l : ℤ) : 𝓞 D.host.F) ∉ p.asIdeal := by
@@ -605,17 +601,13 @@ theorem natPrime_notMem (p : PlF D) {l : ℕ} (hl : l.Prime) (hne : l ≠ Loc.re
   · exact hne (by unfold Loc.resChar; exact h1.symm)
 
 /- English proof (translation)
-Introduce `p`. Establish `h0` using `D.host.g_prime 0`. Establish `h1` using `D.host.g_prime 1`. Establish `hne` using `D.host.g_ne`. Establish `h0q : ((D.host.g 0 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast h0.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1q : ((D.host.g 1 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast h1.ne_zero`. Establish `key : ∀ n : ℤ, (n : 𝓞 D.host.F) ∉ p.asIdeal → (D.s.atP p).ιF ((((n : ℚ))⁻¹ : ℚ) : D.host.F) ∈ 𝒪[(D.s.atP p).Fp]`. Introduce `n hn`. Rewrite using `[Rat.cast_inv, map_inv₀, Rat.cast_intCast]`. Conclude with `LocModel.LM.inv_intCast_mem p n hn`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `uP gpart Lat.gS`. Use `split_ifs with ha hb`. Establish `e : (((D.host.g 0 : ℕ) : ℚ)) / (((D.host.g 0 * D.host.g 1 : ℕ)) : ℚ) = ((((D.host.g 1 : ℕ) : ℤ) : ℚ))⁻¹` using `by push_cast; field_simp`. Rewrite using `[e]`. Conclude with `key _ (natPrime_notMem p h1 (by rw [ha]; exact Ne.symm hne))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (((D.host.g 1 : ℕ) : ℚ)) / (((D.host.g 0 * D.host.g 1 : ℕ)) : ℚ) = ((((D.host.g 0 : ℕ) : ℤ) : ℚ))⁻¹` using `by push_cast; field_simp`. Rewrite using `[e]`. Conclude with `key _ (natPrime_notMem p h0 (by rw [hb]; exact hne))`. Establish `e : (((1 : ℕ) : ℚ)) / (((D.host.g 0 * D.host.g 1 : ℕ)) : ℚ) = ((((D.host.g 0 * D.host.g 1 : ℕ) : ℤ) : ℚ))⁻¹` using `by push_cast; field_simp`. Rewrite using `[e]`.
-
-Use `key _ fun hm => ?_` and prove the remaining obligations. Use `haveI := p.isPrime`. Move the coercions through the operations in `at hm`. Break down `p.isPrime.mem_or_mem hm with hm | hm` into its components or cases. Conclude with `natPrime_notMem p h0 (Ne.symm ha) (by exact_mod_cast hm)`.
-
-Conclude with `natPrime_notMem p h1 (Ne.symm hb) (by exact_mod_cast hm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem uInt_holds : UInt D := by
   intro p
@@ -653,7 +645,7 @@ theorem uInt_holds : UInt D := by
     · exact natPrime_notMem p h1 (Ne.symm hb) (by exact_mod_cast hm)
 
 /- English proof (translation)
-The claim follows from `tauOne_of_xi hX uInt_holds`.
+A detailed English derivation is pending.
 -/
 theorem tauOne_of_typed {Zd : LocDat D} {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (hX : CtxP u u' F0 what₂ → XiTyped Zd u u' F0 what₂) :

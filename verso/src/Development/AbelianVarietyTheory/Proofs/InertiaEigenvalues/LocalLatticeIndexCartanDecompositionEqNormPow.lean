@@ -24,7 +24,7 @@ def colHom : (Fin n → K) →+ Matrix (Fin n) (Fin 1) K where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `x y h` and use `funext fun i => congrFun (congrFun h i) 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem colHom_injective : Function.Injective (colHom (K := K) (n := n)) :=
   fun x y h => funext fun i => congrFun (congrFun h i) 0
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 @[simp] theorem colHom_apply (y : Fin n → K) (i : Fin n) (j : Fin 1) : colHom y i j = y i := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [GlobalTheory.SplitIdx.mulL, AddMonoidHom.mk'_apply, colHom_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem colHom_mulVec (P : Matrix (Fin n) (Fin n) K) (y : Fin n → K) :
     colHom (P *ᵥ y) = GlobalTheory.SplitIdx.mulL (n := 1) P (colHom y) := by
@@ -43,7 +43,7 @@ theorem colHom_mulVec (P : Matrix (Fin n) (Fin n) K) (y : Fin n → K) :
   simp only [GlobalTheory.SplitIdx.mulL, AddMonoidHom.mk'_apply, colHom_apply, Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `y : 1`. Simplify using `[GlobalTheory.SplitIdx.mulL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mulL_one : GlobalTheory.SplitIdx.mulL (n := 1) (1 : Matrix (Fin n) (Fin n) K) = AddMonoidHom.id _ := by
   ext y : 1
@@ -54,29 +54,27 @@ end GlobalTheory.LocKerMod.FrameIdx
 open GlobalTheory.LocKerMod.FrameIdx in
 
 /- English proof (translation)
-Introduce `D T v w h a ha ϖ hϖ d t ht k₁ hk₁ k₂ hk₂ g hg`. Use `set k : GL (Fin T.rank) (w.adicCompletion D.host.E) := k₁ * t * k₂ with hk`. Use `set Lw := (GlobalTheory.LFun.latAt w (frameLat T)).toAddSubgroup with hLw`. Use `set M := GlobalTheory.SplitIdx.intMat D.host.E w T.rank 1 with hM`. Set `Φ : (Fin T.rank → w.adicCompletion D.host.E) →+ Matrix (Fin T.rank) (Fin 1) (w.adicCompletion D.host.E)` to `colHom.comp (a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1.mulVecLin.toAddMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hΦ : Function.Injective Φ`. Introduce `x y hxy`. Establish `h1 : (a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ x = (a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ y` using `colHom_injective hxy`. Establish `e` using `congrArg (fun z => a.1 *ᵥ z) h1`. Simplify using `only [Matrix.mulVec_mulVec] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite `e` using `[← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Establish `hA : Lw.map Φ = M`. Use extensionality with `Y`. Rewrite using `[AddSubgroup.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨x, hx, rfl⟩ i j`. Establish `hx' : a.1 *ᵥ ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ x) ∈ GlobalTheory.LFun.latAt w (frameLat T)`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `hx`. Conclude with `(ha _).2 hx' i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce `hY`. Use `⟨a.1 *ᵥ (fun i => Y i 0), (ha _).1 (fun i => hY i 0), ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Establish `hj : j = 0` using `Subsingleton.elim _ _`. Substitute `hj` using the available equality.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show colHom ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ (a.1 *ᵥ fun i => Y i 0)) i 0 = Y i 0`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Both sides reduce to the same expression. Establish `hB : (Lw.map (GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h g).1.mulVecLin.toAddMonoidHom).map Φ = M.map (GlobalTheory.SplitIdx.mulL (n` using `1) k.1) := by`. Rewrite using `[← hA, AddSubgroup.map_map, AddSubgroup.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use `AddMonoidHom.ext fun x => ?_` and prove the remaining obligations. Use `show colHom ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ ((GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h g).1 *ᵥ x)) = GlobalTheory.SplitIdx.mulL (n := 1) k.1 (colHom ((a⁻¹ : GL (Fin T.rank) (w.adicCompletion D.host.E)).1 *ᵥ x))`. Rewrite using `[← colHom_mulVec, hg, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Units.val_mul, ← Units.val_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `group`. Establish `step1 : GlobalTheory.LocKerMod.idxAt T w h g = (M.map (GlobalTheory.SplitIdx.mulL (n` using `1) k.1)).relIndex M := by`. Unfold `GlobalTheory.LocKerMod.idxAt`. Rewrite using `[← AddSubgroup.relIndex_map_map_of_injective _ _ hΦ, hB, hA]`. Establish `hinv : (M.map (GlobalTheory.SplitIdx.mulL (n` using `1) k.1)).map (GlobalTheory.SplitIdx.mulL (n := 1) (k⁻¹).1) = M := by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.map_map, ← GlobalTheory.SplitIdx.LocIndex.mulL_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one, mulL_one, AddSubgroup.map_id]`. Establish `hinj : Function.Injective (GlobalTheory.SplitIdx.mulL (n` using `1) (k⁻¹).1) := by`. Introduce `x y hxy`. Establish `e` using `congrArg (GlobalTheory.SplitIdx.mulL (n := 1) k.1) hxy`. Simplify `e` using `[GlobalTheory.SplitIdx.mulL, ← Matrix.mul_assoc, ← Units.val_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Establish `hv : Valued.v (0 : w.adicCompletion D.host.E) = _` using `hϖ`. Rewrite `hv` using `[map_zero]`. Conclude with `WithZero.coe_ne_zero hv.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : (t⁻¹).1 = Matrix.diagonal (fun i => ϖ ^ (-d i))`. Establish `e1 : t.1 * Matrix.diagonal (fun i => ϖ ^ (-d i)) = 1`. Rewrite using `[ht, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
-
-Rewrite using `[← zpow_add₀ hϖ0, add_neg_cancel, zpow_zero]`. Combine the equalities or inequalities in the displayed calculation. Establish `hkinv : k⁻¹ = k₂⁻¹ * t⁻¹ * k₁⁻¹` using `by rw [hk]; group`. Rewrite using `[step1, ← AddSubgroup.relIndex_map_map_of_injective _ _ hinj, hinv, hkinv, GlobalTheory.SplitIdx.LocIndex.relIndex_intMat w T.rank 1 ϖ hϖ (fun i => -d i) t⁻¹ ht' k₂⁻¹ (inv_mem hk₂) k₁⁻¹ (inv_mem hk₁)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocKerMod.FrameIdx.idxAt_eq_pow : ∀ (D : D7) (T : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (h : w.under (𝓞 D.host.F) = v) (a : GL (Fin T.rank) (w.adicCompletion D.host.E)), GlobalTheory.LFun.IsFrameAt w (frameLat T) a → ∀ ϖ, IsUnifV D.host.E w ϖ → ∀ (d : Fin T.rank → ℤ) (t : GL (Fin T.rank) (w.adicCompletion D.host.E)), t.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∀ k₁ ∈ KGL w T.rank, ∀ k₂ ∈ KGL w T.rank, ∀ g : GlobalTheory.FinZeta.Gv T v, GlobalTheory.LFun.locMat D.sp.cm.sig T.gram h g = a * (k₁ * t * k₂) * a⁻¹ → GlobalTheory.LocKerMod.idxAt T w h g = qV D.host.E w ^ (∑ i, max (d i) 0).toNat := by
   intro D T v w h a ha ϖ hϖ d t ht k₁ hk₁ k₂ hk₂ g hg

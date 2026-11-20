@@ -39,7 +39,7 @@ def multiProjEmb (k : ℕ) (n : Fin (k + 1) → ℕ) :
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `(multiProjEmbOverBase A k n).2`.
+A detailed English derivation is pending.
 -/
 lemma multiProjEmb_toSpecBase (k : ℕ) (n : Fin (k + 1) → ℕ) :
     multiProjEmb A k n ≫ toSpecBase A (multiProjDim k n) = mpStr A k n :=

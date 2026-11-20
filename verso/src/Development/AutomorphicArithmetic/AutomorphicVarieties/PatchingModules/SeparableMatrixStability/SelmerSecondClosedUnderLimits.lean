@@ -5,7 +5,7 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 namespace UpperTheory.V.Pa.SelmerClosedness
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`. Simplify using `only [map_sub, sub_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem q_iff {K : Type} [Field K] (m : ℕ) (a b : PowerSeries K) :
     Ideal.Quotient.mk (Ideal.span {(PowerSeries.X : PowerSeries K) ^ m}) a = Ideal.Quotient.mk _ b ↔
@@ -14,13 +14,11 @@ private theorem q_iff {K : Type} [Field K] (m : ℕ) (a b : PowerSeries K) :
   simp only [map_sub, sub_eq_zero]
 
 /- English proof (translation)
-Establish `hv : ∀ d, ∃ v : K, ∀ᶠ N in (U : Filter ℕ), PowerSeries.coeff d (a N) = v`. Introduce `d`. Take `⟨v, hv⟩` from `Ultrafilter.eq_pure_of_finite (U.map fun N => PowerSeries.coeff d (a N))`. Use `⟨v, ?_⟩` and prove the remaining obligations. Establish `hmem : ({v} : Set K) ∈ (U.map fun N => PowerSeries.coeff d (a N))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hv, Ultrafilter.mem_pure]`. Conclude with `Set.mem_singleton v`. Conclude with `Ultrafilter.mem_map.mp hmem`. Use `choose v hv using hv`. Use `⟨PowerSeries.mk v, fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hall : ∀ᶠ N in (U : Filter ℕ), ∀ d ∈ Finset.range m, PowerSeries.coeff d (a N) = v d` using `(Filter.eventually_all_finset _).mpr (fun d _ => hv d)`. Use `filter_upwards [hall] with N hN`. Rewrite using `[q_iff]`. Introduce `d hd`. Rewrite using `[PowerSeries.coeff_mk]`.
-
-Conclude with `hN d (Finset.mem_range.mpr hd)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ulim_A {K : Type} [Field K] [Finite K] (U : Ultrafilter ℕ) (a : ℕ → PowerSeries K) :
     ∃ b : PowerSeries K, ∀ m, ∀ᶠ N in (U : Filter ℕ),
@@ -47,7 +45,7 @@ private theorem ulim_A {K : Type} [Field K] [Finite K] (U : Ultrafilter ℕ) (a 
 variable {l : ℕ} [Fact l.Prime] {F : GFrame l} {n : ℕ} (x : NP F n)
 
 /- English proof (translation)
-Rewrite `e`, the goal using `[Ideal.Quotient.eq]`. Conclude with `(Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ h)) e`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem q_mono {m N : ℕ} (h : m ≤ N) {a b : x.A}
     (e : Ideal.Quotient.mk (Ideal.span {x.t ^ N}) a = Ideal.Quotient.mk _ b) :
@@ -56,14 +54,14 @@ private theorem q_mono {m N : ℕ} (h : m ≤ N) {a b : x.A}
   exact (Ideal.span_singleton_le_span_singleton.mpr (pow_dvd_pow _ h)) e
 
 /- English proof (translation)
-The claim follows from `PowerSeries.ext fun d => (q_iff (d + 1) a b).1 (e _) d (Nat.lt_succ_self d)`.
+A detailed English derivation is pending.
 -/
 private theorem q_sep {a b : x.A}
     (e : ∀ m, Ideal.Quotient.mk (Ideal.span {x.t ^ m}) a = Ideal.Quotient.mk _ b) : a = b :=
   PowerSeries.ext fun d => (q_iff (d + 1) a b).1 (e _) d (Nat.lt_succ_self d)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Conclude with `⟨congrArg DD.a e, fun j => congrFun (congrArg DD.ep e) j, fun j => congrFun (congrArg DD.ep' e) j, congrArg DD.eta e⟩`. Introduce and unpack `⟨h1, h2, h3, h4⟩`. Conclude with `DD.ext h1 (funext h2) (funext h3) h4`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem red_iff (g m : ℕ) (a b : DD x.A g) : x.redD g m a = x.redD g m b ↔
     Ideal.Quotient.mk (Ideal.span {x.t ^ m}) a.a = Ideal.Quotient.mk _ b.a ∧
@@ -78,7 +76,7 @@ private theorem red_iff (g m : ℕ) (a b : DD x.A g) : x.redD g m a = x.redD g m
     exact DD.ext h1 (funext h2) (funext h3) h4
 
 /- English proof (translation)
-Rewrite `e`, the goal using `[red_iff]`. Take `⟨h1, h2, h3, h4⟩` from `e`. Conclude with `⟨q_mono x h h1, fun j => q_mono x h (h2 j), fun j => q_mono x h (h3 j), q_mono x h h4⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem red_mono {g m N : ℕ} (h : m ≤ N) {a b : DD x.A g} (e : x.redD g N a = x.redD g N b) :
     x.redD g m a = x.redD g m b := by
@@ -87,9 +85,7 @@ private theorem red_mono {g m N : ℕ} (h : m ≤ N) {a b : DD x.A g} (e : x.red
   exact ⟨q_mono x h h1, fun j => q_mono x h (h2 j), fun j => q_mono x h (h3 j), q_mono x h h4⟩
 
 /- English proof (translation)
-Use `DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `q_sep x fun m => ((red_iff x g m a b).mp (e m)).1`. Use function extensionality and compare the values at `j`. Conclude with `q_sep x fun m => ((red_iff x g m a b).mp (e m)).2.1 j`. Use function extensionality and compare the values at `j`.
-
-Conclude with `q_sep x fun m => ((red_iff x g m a b).mp (e m)).2.2.1 j`. Conclude with `q_sep x fun m => ((red_iff x g m a b).mp (e m)).2.2.2`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem red_sep {g : ℕ} {a b : DD x.A g} (e : ∀ m, x.redD g m a = x.redD g m b) : a = b := by
   refine DD.ext ?_ ?_ ?_ ?_
@@ -101,9 +97,7 @@ private theorem red_sep {g : ℕ} {a b : DD x.A g} (e : ∀ m, x.redD g m a = x.
   · exact q_sep x fun m => ((red_iff x g m a b).mp (e m)).2.2.2
 
 /- English proof (translation)
-Introduce `y`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective y.a`. Take `⟨t, ht⟩` from `Ideal.Quotient.mk_surjective y.eta`. Use `choose e1 he1 using fun j => Ideal.Quotient.mk_surjective (y.ep j)`. Use `choose e2 he2 using fun j => Ideal.Quotient.mk_surjective (y.ep' j)`.
-
-Conclude with `⟨⟨a, e1, e2, t⟩, DD.ext ha (funext he1) (funext he2) ht⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem red_surj (g m : ℕ) : Function.Surjective (x.redD g m) := by
   intro y
@@ -114,9 +108,9 @@ private theorem red_surj (g m : ℕ) : Function.Surjective (x.redD g m) := by
   exact ⟨⟨a, e1, e2, t⟩, DD.ext ha (funext he1) (funext he2) ht⟩
 
 /- English proof (translation)
-Use `⟨rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j show c * y.ep j + 0 * y.a = c * y.ep j`. Expand and normalize the polynomial expressions, which then agree. Use function extensionality and compare the values at `j show c * y.ep' j + 0 * y.a = c * y.ep' j`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Use `show c * y.eta + 0 * y.a + ∑ j, (0 * y.ep' j + 0 * y.ep j) = c * y.eta`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dd_components_smul {A : Type} [CommRing A] {g : ℕ} (c : A) (y : DD A g) :
     (c • y).a = c * y.a ∧ (c • y).ep = c • y.ep ∧ (c • y).ep' = c • y.ep' ∧ (c • y).eta = c * y.eta := by
@@ -131,15 +125,13 @@ private theorem dd_components_smul {A : Type} [CommRing A] {g : ℕ} (c : A) (y 
     simp
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, ← map_pow, Ideal.mem_span_singleton']`. Take `⟨h1, h2, h3, h4⟩` from `(red_iff x g m a b).mp e`. Establish `hc : ∀ u v : x.A, Ideal.Quotient.mk (Ideal.span {x.t ^ m}) u = Ideal.Quotient.mk _ v → ∃ w, u - v = x.t ^ m * w`. Introduce `u v huv`. Rewrite `huv` using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `huv`. Take `⟨w1, hw1⟩` from `hc _ _ h1`. Take `⟨w4, hw4⟩` from `hc _ _ h4`. Use `choose w2 hw2 using fun j => hc _ _ (h2 j)`. Use `choose w3 hw3 using fun j => hc _ _ (h3 j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨w1, w2, w3, w4⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_comm, ← Algebra.smul_def]`. Take `⟨s1, s2, s3, s4⟩` from `dd_components_smul (x.t ^ m) (⟨w1, w2, w3, w4⟩ : DD x.A g)`. Use `DD.ext ?_ ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[s1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw1.symm`. Rewrite using `[s2]`. Use function extensionality and compare the values at `j`. Conclude with `(hw2 j).symm`. Rewrite using `[s3]`.
-
-Use function extensionality and compare the values at `j`. Conclude with `(hw3 j).symm`. Rewrite using `[s4]`. Conclude with `hw4.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem red_ker {g m : ℕ} {a b : DD x.A g} (e : x.redD g m a = x.redD g m b) :
     a - b ∈ Ideal.span {algebraMap x.A (DD x.A g) x.t} ^ m := by
@@ -170,7 +162,7 @@ private theorem red_ker {g m : ℕ} {a b : DD x.A g} (e : x.redD g m a = x.redD 
     exact hw4.symm
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow, ← map_pow, Ideal.span_singleton_eq_bot]`. Use `show DD.C (algebraMap x.A (x.Am m) (x.t ^ m)) = 0`. Rewrite using `[Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _), map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pow_bot (g m : ℕ) : Ideal.span {algebraMap x.A (DD (x.Am m) g) x.t} ^ m = ⊥ := by
   rw [Ideal.span_singleton_pow, ← map_pow, Ideal.span_singleton_eq_bot]
@@ -179,9 +171,9 @@ private theorem pow_bot (g m : ℕ) : Ideal.span {algebraMap x.A (DD (x.Am m) g)
     Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_span_singleton_self _), map_zero]
 
 /- English proof (translation)
-Take `⟨ba, hba⟩` from `ulim_A U (fun N => (a N).a)`. Take `⟨bt, hbt⟩` from `ulim_A U (fun N => (a N).eta)`. Use `choose b1 hb1 using fun j => ulim_A U (fun N => (a N).ep j)`. Use `choose b2 hb2 using fun j => ulim_A U (fun N => (a N).ep' j)`. Use `⟨⟨ba, b1, b2, bt⟩, fun m => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `filter_upwards [hba m, hbt m, Filter.eventually_all.mpr (fun j => hb1 j m), Filter.eventually_all.mpr (fun j => hb2 j m)] with N h1 h4 h2 h3`. Rewrite using `[red_iff]`. Conclude with `⟨h1, h2, h3, h4⟩`.
+A detailed English derivation is pending.
 -/
 private theorem ulim_D (g : ℕ) (U : Ultrafilter ℕ) (a : ℕ → DD x.A g) :
     ∃ b : DD x.A g, ∀ m, ∀ᶠ N in (U : Filter ℕ), x.redD g m (a N) = x.redD g m b := by
@@ -196,21 +188,19 @@ private theorem ulim_D (g : ℕ) (U : Ultrafilter ℕ) (a : ℕ → DD x.A g) :
   exact ⟨h1, h2, h3, h4⟩
 
 /- English proof (translation)
-Use `⟨fun hb => ?_, fun hb => ?_, fun hb => ?_, fun hb => ?_⟩` and prove the remaining obligations. Apply `q_sep x` to reduce the goal to its premises. Introduce `m`. Take `⟨N, y', hmN, e, hp⟩` from `h m`. Establish `h1` using `((red_iff x g m y y').mp e).1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : Ideal.Quotient.mk (Ideal.span {x.t ^ N}) y'.a = Ideal.Quotient.mk _ 0`. Rewrite using `[map_zero]`. Conclude with `hp.1 hb`. Rewrite using `[h1]`. Conclude with `q_mono x hmN h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `j show y.ep j = 0`. Apply `q_sep x` to reduce the goal to its premises. Introduce `m`. Take `⟨N, y', hmN, e, hp⟩` from `h m`. Establish `h1` using `((red_iff x g m y y').mp e).2.1 j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Ideal.Quotient.mk (Ideal.span {x.t ^ N}) (y'.ep j) = Ideal.Quotient.mk _ 0`. Rewrite using `[map_zero]`. Conclude with `congrFun (hp.2.1 hb) j`. Rewrite using `[h1]`. Conclude with `q_mono x hmN h2`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `j show y.ep' j = 0`. Apply `q_sep x` to reduce the goal to its premises. Introduce `m`. Take `⟨N, y', hmN, e, hp⟩` from `h m`. Establish `h1` using `((red_iff x g m y y').mp e).2.2.1 j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : Ideal.Quotient.mk (Ideal.span {x.t ^ N}) (y'.ep' j) = Ideal.Quotient.mk _ 0`. Rewrite using `[map_zero]`. Conclude with `congrFun (hp.2.2.1 hb) j`. Rewrite using `[h1]`. Conclude with `q_mono x hmN h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `q_sep x` to reduce the goal to its premises. Introduce `m`. Take `⟨N, y', hmN, e, hp⟩` from `h m`. Establish `h1` using `((red_iff x g m y y').mp e).2.2.2`. Establish `h2 : Ideal.Quotient.mk (Ideal.span {x.t ^ N}) y'.eta = Ideal.Quotient.mk _ 0`.
-
-Rewrite using `[map_zero]`. Conclude with `hp.2.2.2 hb`. Rewrite using `[h1]`. Conclude with `q_mono x hmN h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem part_of (g : ℕ) (b1 b2 b3 b4 : Bool) (y : DD x.A g)
     (h : ∀ m, ∃ N y', m ≤ N ∧ x.redD g m y = x.redD g m y' ∧ x.redD g N y' ∈ ddPart x.A (x.Am N) g b1 b2 b3 b4) :
@@ -258,9 +248,9 @@ private theorem part_of (g : ℕ) (b1 b2 b3 b4 : Bool) (y : DD x.A g)
     exact q_mono x hmN h2
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun e => part_of x g _ _ _ _ _ fun m => ?_, fun e => part_of x g _ _ _ _ _ fun m => ?_⟩` and prove the remaining obligations. Take `⟨N, Y', hN, h1, h2⟩` from `h m`. Conclude with `⟨N, Y' i j, hN, congrFun (congrFun h1 i) j, (h2 i j).1 e⟩`. Take `⟨N, Y', hN, h1, h2⟩` from `h m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨N, Y' i j, hN, congrFun (congrFun h1 i) j, (h2 i j).2 e⟩`.
+Supply the required witnesses or components.
 -/
 private theorem mem_second_order_of_reductions (g : ℕ) (Y : Matrix (Fin n) (Fin n) (DD x.A g))
     (h : ∀ m, ∃ (N : ℕ) (Y' : Matrix (Fin n) (Fin n) (DD x.A g)), m ≤ N ∧ Y.map (x.redD g m) = Y'.map (x.redD g m) ∧
@@ -276,7 +266,7 @@ private theorem mem_second_order_of_reductions (g : ℕ) (Y : Matrix (Fin n) (Fi
 variable {x} (k : Kap x) (m : ℕ)
 
 /- English proof (translation)
-Apply the tactic sequence `ext a b <;> simp [DD.epM, DD.map]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_ep (Z : Fin k.g → Matrix (Fin n) (Fin n) x.A) :
     (x.redD k.g m).mapMatrix (DD.epM fun j => (Z j).map (algebraMap x.A x.A)) =
@@ -284,7 +274,7 @@ private theorem map_ep (Z : Fin k.g → Matrix (Fin n) (Fin n) x.A) :
   ext a b <;> simp [DD.epM, DD.map]
 
 /- English proof (translation)
-Rewrite using `[AlgHom.mapMatrix_apply, Matrix.map_map]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem map_al (Z : Matrix (Fin n) (Fin n) x.A) :
     (x.redD k.g m).mapMatrix (Z.map (algebraMap x.A (DD x.A k.g))) = Z.map (algebraMap x.A (DD (x.Am m) k.g)) := by
@@ -292,28 +282,28 @@ private theorem map_al (Z : Matrix (Fin n) (Fin n) x.A) :
   congr 1
 
 /- English proof (translation)
-Unfold `Kap.ρ1 NP.ρX`. Rewrite using `[map_mul, map_add, map_one, map_ep, map_al]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_ρ1 (g : F.G₀) : (x.redD k.g m).mapMatrix (k.ρ1 x.A g) = k.ρ1 (x.Am m) g := by
   unfold Kap.ρ1 NP.ρX
   rw [map_mul, map_add, map_one, map_ep, map_al]
 
 /- English proof (translation)
-Unfold `Kap.w1 NP.wX`. Rewrite using `[map_mul, map_sub, map_one, map_ep, map_al]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_weyl_lift_reduction (v : F.Vl) : (x.redD k.g m).mapMatrix (k.w1 x.A v) = k.w1 (x.Am m) v := by
   unfold Kap.w1 NP.wX
   rw [map_mul, map_sub, map_one, map_ep, map_al]
 
 /- English proof (translation)
-Unfold `Kap.wi1 NP.wiX`. Rewrite using `[map_mul, map_add, map_one, map_ep, map_al]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_inverse_weyl_lift_reduction (v : F.Vl) : (x.redD k.g m).mapMatrix (k.wi1 x.A v) = k.wi1 (x.Am m) v := by
   unfold Kap.wi1 NP.wiX
   rw [map_mul, map_add, map_one, map_ep, map_al]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Conclude with `red_sep x fun m => congrFun (congrFun (e m) i) j`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 private theorem mat_sep {Y Z : Matrix (Fin n) (Fin n) (DD x.A k.g)}
     (e : ∀ m, (x.redD k.g m).mapMatrix Y = (x.redD k.g m).mapMatrix Z) : Y = Z := by
@@ -324,45 +314,39 @@ end UpperTheory.V.Pa.SelmerClosedness
 
 open UpperTheory.V.Pa.SelmerClosedness in
 /- English proof (translation)
-Introduce `l _ L G G0 h n x k z hyp`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Apply `mem_second_order_of_reductions x k.g (z g)` to reduce the goal to its premises. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hW, -⟩` from `hyp m`. Conclude with `⟨m, z g, le_rfl, rfl, hW g⟩`. Introduce `i j N`. Take `⟨-, hA, -⟩` from `hyp N`. Establish `hl` using `hA i j N`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf : IsLocallyConstant fun g => x.redD k.g N (z g i j)`. Use `IsLocallyConstant.desc _ _ hl (fun a b hab => ?_)` and prove the remaining obligations. Rewrite `hab` using `[Ideal.Quotient.eq, pow_bot, Ideal.mem_bot, sub_eq_zero]`. Conclude with `hab`. Set `s` to `Function.surjInv (red_surj x k.g N)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomp : (fun g => Ideal.Quotient.mk (Ideal.span {algebraMap x.A (DD x.A k.g) x.t} ^ N) (z g i j)) = (fun y => Ideal.Quotient.mk (Ideal.span {algebraMap x.A (DD x.A k.g) x.t} ^ N) (s y)) ∘ (fun g => x.redD k.g N (z g i j))`. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp]`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `red_ker x (Function.surjInv_eq (red_surj x k.g N) _).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hcomp]`. Conclude with `hf.comp _`. Introduce `g g' beta_reduce`. Apply `mat_sep k` to reduce the goal to its premises. Introduce `m`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, hc, -⟩` from `hyp m`. Rewrite using `[map_add, map_mul, map_mul, map_ρ1, map_ρ1]`. Conclude with `hc g g'`. Introduce `g`. Apply `mat_sep k` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `m`. Take `⟨-, -, -, hconj, -⟩` from `hyp m`. Establish `e` using `hconj g`. Use function extensionality and compare the values at `a b`. Establish `e'` using `congrFun (congrFun e a) b`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `at e' ⊢`. Conclude with `e'`. Introduce `u g hg`. Apply `mat_sep k` to reduce the goal to its premises. Introduce `m`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨-, -, -, -, hI, -⟩` from `hyp m`. Rewrite using `[map_zero]`. Conclude with `hI u g hg`. Introduce `v`. Establish `hYm : ∀ m, ∃ Y : Matrix (Fin n) (Fin n) (DD x.A k.g), (x.redD k.g m).mapMatrix Y ∈ W2 n x.A (x.Am m) k.g x.a ∧ LocAt G.frame (fun g => k.ρ1 (x.Am m) (h.p₀ g)) (k.w1 (x.Am m)) (k.wi1 (x.Am m)) (fun g => (z g).map (x.redD k.g m)) v ((x.redD k.g m).mapMatrix Y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m`. Take `⟨-, -, -, -, -, hL⟩` from `hyp m`. Take `⟨Y0, hY0W, hY0L⟩` from `hL v`. Use `choose Yl hYl using fun a b => red_surj x k.g m (Y0 a b)`. Establish `hY0 : (x.redD k.g m).mapMatrix (Matrix.of Yl) = Y0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `a b`. Conclude with `hYl a b`. Use `⟨Matrix.of Yl, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hY0]`. Conclude with `hY0W`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hY0]`. Conclude with `hY0L`. Use `choose Yt hYtW hYtL using hYm`. Set `U : Ultrafilter ℕ` to `Filter.hyperfilter ℕ`. Use `choose Y hY using fun a b => ulim_D x k.g U (fun N => Yt N a b)`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hev : ∀ m, ∃ N, m ≤ N ∧ (x.redD k.g m).mapMatrix (Matrix.of Y) = (x.redD k.g m).mapMatrix (Yt N)`. Introduce `m`. Establish `h1 : ∀ᶠ N in (U : Filter ℕ), ∀ a b, x.redD k.g m (Yt N a b) = x.redD k.g m (Y a b)` using `Filter.eventually_all.mpr fun a => Filter.eventually_all.mpr fun b => hY a b m`. Establish `h2 : ∀ᶠ N in (U : Filter ℕ), m ≤ N`. Apply `Filter.Eventually.filter_mono Filter.hyperfilter_le_cofinite` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Nat.cofinite_eq_atTop]`. Conclude with `Filter.eventually_ge_atTop m`. Take `⟨N, hN1, hN2⟩` from `(h1.and h2).exists`. Use `⟨N, hN2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(hN1 a b).symm`. Use `⟨Matrix.of Y, ?_, ?_⟩` and prove the remaining obligations. Apply `mem_second_order_of_reductions x k.g` to reduce the goal to its premises. Introduce `m`. Take `⟨N, hmN, e⟩` from `hev m`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨N, Yt N, hmN, e, hYtW N⟩`. Introduce `g`. Set `E : Matrix (Fin n) (Fin n) (DD x.A k.g) → Matrix (Fin n) (Fin n) (DD x.A k.g)` to `fun Y1 => k.wi1 x.A v * (z ((G.frame.φ v) g) - dY G.frame (fun g => k.ρ1 x.A (h.p₀ g)) Y1 ((G.frame.φ v) g)) * k.w1 x.A v`. Establish `hE : ∀ m (Y1 : Matrix (Fin n) (Fin n) (DD x.A k.g)), (x.redD k.g m).mapMatrix (E Y1) = k.wi1 (x.Am m) v * ((z ((G.frame.φ v) g)).map (x.redD k.g m) - dY G.frame (fun g => k.ρ1 (x.Am m) (h.p₀ g)) ((x.redD k.g m).mapMatrix Y1) ((G.frame.φ v) g)) * k.w1 (x.Am m) v`. Introduce `m Y1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [E, dY]`. Rewrite using `[map_mul, map_mul, map_sub, map_sub, map_mul, map_mul, map_ρ1, map_ρ1, map_weyl_lift_reduction, map_inverse_weyl_lift_reduction]`. Both sides reduce to the same expression. Establish `hent : ∀ i j, (∀ N, (k.wi1 (x.Am N) v * ((z ((G.frame.φ v) g)).map (x.redD k.g N) - dY G.frame (fun g => k.ρ1 (x.Am N) (h.p₀ g)) ((x.redD k.g N).mapMatrix (Yt N)) ((G.frame.φ v) g)) * k.w1 (x.Am N) v) i j = 0) → E (Matrix.of Y) i j = 0`. Introduce `i j h0`.
-
-Apply `red_sep x` to reduce the goal to its premises. Introduce `m`. Take `⟨N, hmN, e⟩` from `hev m`. Establish `e1` using `congrFun (congrFun (hE m (Matrix.of Y)) i) j`. Establish `e2` using `congrFun (congrFun (hE m (Yt N)) i) j`.
-
-Establish `e3` using `congrFun (congrFun (hE N (Yt N)) i) j`. Rewrite `e1` using `[e]`. Establish `e4 : x.redD k.g m (E (Matrix.of Y) i j) = x.redD k.g m (E (Yt N) i j)` using `e1.trans e2.symm`. Rewrite using `[e4, map_zero]`. Establish `e5 : x.redD k.g N (E (Yt N) i j) = x.redD k.g N 0`.
-
-Rewrite using `[map_zero]`. Conclude with `e3.trans (h0 N)`. Rewrite using `[red_mono x hmN e5, map_zero]`. Conclude with `⟨fun i j hij => hent i j (fun N => (hYtL N g).1 i j hij), fun hg i => hent i i (fun N => (hYtL N g).2 hg i)⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.selmer_second_closed_under_limits :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n) (k : Kap x) (z : G.G₀ → Matrix (Fin n) (Fin n) (DD x.A k.g)), (∀ m, (fun g => (z g).map (x.redD k.g m)) ∈ Sel2 h (x.Am m) k) → z ∈ Sel2 h x.A k := by

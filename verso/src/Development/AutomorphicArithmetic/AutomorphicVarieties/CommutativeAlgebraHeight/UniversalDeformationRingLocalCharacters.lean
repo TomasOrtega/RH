@@ -19,14 +19,14 @@ private noncomputable def ofMat {G R : Type} [Group G] [CommRing R] (ρ : G →*
       map_mul' := fun g h => by simp [Matrix.mul_apply] }
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h`.
+A detailed English derivation is pending.
 -/
 private theorem lc_of_open {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     (f : G →* H) (h : IsOpen (f.ker : Set G)) : IsLocallyConstant f :=
   _root_.UpperTheory.Reformulated.B.LocallyConstantOfKernel.lc_of_ker f h
 
 /- English proof (translation)
-Establish `h2 : (x - 1) ^ l ^ m = 0` using `by rw [sub_pow_char_pow, h]; simp`. Conclude with `sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero m (Fact.out : l.Prime).ne_zero) |>.1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_pow {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [CharP k l] (x : k) (m : ℕ)
     (h : x ^ l ^ m = 1) : x = 1 := by
@@ -34,9 +34,9 @@ private theorem eq_one_of_pow {k : Type} [Field k] (l : ℕ) [Fact l.Prime] [Cha
   exact sub_eq_zero.1 (pow_eq_zero_iff (pow_ne_zero m (Fact.out : l.Prime).ne_zero) |>.1 h2)
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `(CommGroup.primaryComponent.isPGroup (G := TopologicalAbelianization (F.Gv v)) (p := l)) ⟨QuotientGroup.mk' _ (g : F.Gv v), g.2⟩`. Establish `h1 : (QuotientGroup.mk' (commutator (F.Gv v)).topologicalClosure ((g : F.Gv v) ^ l ^ m)) = 1`. Rewrite using `[map_pow]`. Conclude with `congrArg Subtype.val hm`. Establish `h2 : (g : F.Gv v) ^ l ^ m ∈ (commutator (F.Gv v)).topologicalClosure` using `(QuotientGroup.eq_one_iff _).1 h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (commutator (F.Gv v)).topologicalClosure ≤ (r.psib v i).ker` using `Subgroup.topologicalClosure_minimal _ (Abelianization.commutator_subset_ker _) (Subgroup.isClosed_of_isOpen _ (r.psib_open v i))`. Establish `h4 : r.psib v i g ^ l ^ m = 1` using `by rw [← map_pow]; exact h3 h2`. Establish `h5 : r.th v i g ^ l ^ m = 1` using `by rw [← map_pow]; exact r.th_comm v i _ h2`. Rewrite using `[eq_one_of_pow l ((r.psib v i g : (ResidueField O)ˣ) : ResidueField O) m (by rw [← Units.val_pow_eq_pow_val, h4, Units.val_one]), eq_one_of_pow l (residue O (r.th v i g)) m (by rw [← map_pow, ← Units.val_pow_eq_pow_val, h5, Units.val_one, map_one])]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem psib_th {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O]
     [CharP (ResidueField O) l] [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) (v : F.Vl) (i : Fin n) (g : F.mu v) :
@@ -57,17 +57,15 @@ private theorem psib_th {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [Comm
       (by rw [← map_pow, ← Units.val_pow_eq_pow_val, h5, Units.val_one, map_one])]
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ _ _ n r v i hΦ`. Establish `hlc : IsLocallyConstant (r.psib v i)` using `lc_of_open _ (r.psib_open v i)`. Establish `hlc' : IsLocallyConstant (toMat (r.psib v i))` using `hlc.comp fun x => (Matrix.of fun _ _ => (x : ResidueField O) : Matrix Unit Unit (ResidueField O))`. Take `⟨R₀, _, _, _, u, hu⟩` from `univ_lift l O (F.Gv v) Unit (toMat (r.psib v i)) hΦ hlc'`. Set `P : Cond O (toMat (r.psib v i))` to `fun R _ _ _ s => ∀ g : F.mu v, s.hom g () () = algebraMap O R (r.th v i g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hP : P.IsClosed` using `fun R _ _ _ s => by`. Use `⟨Ideal.span (Set.range fun g : F.mu v => s.hom g () () - algebraMap O R (r.th v i g)), fun R' _ _ _ f => ⟨fun h x hx => ?_, fun h g => ?_⟩⟩` and prove the remaining obligations. Establish `: Ideal.span (Set.range fun g : F.mu v => s.hom g () () - algebraMap O R (r.th v i g)) ≤ RingHom.ker f`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `show f _ = 0`. Rewrite using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Conclude with `h g`. Conclude with `this hx`. Use `h _ (Ideal.subset_span ⟨g, rfl⟩)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[map_sub, AlgHom.commutes, sub_eq_zero]`. Then use the resulting hypothesis. Use `haveI := (co_res O).1`. Establish `hres : ∀ x : ResidueField O, res O (ResidueField O) x = x` using `fun x => by`. Take `⟨a, rfl⟩` from `residue_surjective x`. Conclude with `(res O (ResidueField O)).commutes a`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `r₁ : Lift O (toMat (r.psib v i)) (ResidueField O)` to `{ hom := toMat (r.psib v i) cont := fun a b N => hlc.comp fun x => Ideal.Quotient.mk _ (x : ResidueField O) red := fun g a b => hres _ }`. Take `⟨R, _, _, _, p, -, hR⟩` from `univ_cond O (F.Gv v) Unit _ R₀ u _ P hu hP ⟨ResidueField O, inferInstance, inferInstance, inferInstance, r₁, trivial, fun g => psib_th r v i g⟩`. Use `⟨R, inferInstance, inferInstance, inferInstance, ofMat (u.map p).hom, ⟨(u.map p).cont () (), fun g => (u.map p).red g () (), ((hR R).1 (AlgHom.id O R)).2⟩, fun R' _ _ _ ψ' h' => ?_⟩` and prove the remaining obligations. Set `s : Lift O (toMat (r.psib v i)) R'` to `{ hom := toMat ψ' cont := fun a b => h'.cont red := fun g a b => h'.red g }`. Take `⟨f, hf, huniq⟩` from `(hR R').2 s ⟨trivial, h'.mu⟩`.
-
-Use `⟨f, ?_, fun f' hf' => huniq f' ?_⟩` and prove the remaining obligations. Use extensionality with `g`. Conclude with `congrArg (fun t : Lift O (toMat (r.psib v i)) R' => t.hom g () ()) hf`. Use extensionality with `g a b`. Conclude with `congrArg (fun t : F.Gv v →* R'ˣ => ((t g : R'ˣ) : R')) hf'`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.universalDeformationRing_localCharacters :
     ∀ {l : ℕ} [Fact l.Prime] {F : GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] {n : ℕ} (r : Resid F O n) (v : F.Vl) (i : Fin n), PhiCond (F.Gv v) l → ∃ (R : Type) (_ : CommRing R) (_ : Algebra O R) (_ : IsCO O R) (ψ : F.Gv v →* Rˣ), r.IsPsi v i ψ ∧ ∀ (R' : Type) [CommRing R'] [Algebra O R'] [IsCO O R'] (ψ' : F.Gv v →* R'ˣ), r.IsPsi v i ψ' → ∃! f : R →ₐ[O] R', pushCh (f : R →+* R') ψ = ψ' := by

@@ -18,7 +18,7 @@ open GroundTheory.Global.AdeleBaseChange
 open scoped NumberField.AdeleRing TensorProduct ValuativeRel
 
 /- English proof (translation)
-Establish `h1 : (MulSemiringAction.toRingHom (E ≃ₐ[F] E) 𝔸[E] σ) = Formalism.L2.Host.CT.adMap σ.toRingEquiv` using `UpperTheory.ConvolutionTheory.K.adUnique E σ.toRingEquiv _ (continuous_const_smul σ) fun x => GroundTheory.Global.AdeleBaseChange.smul_algebraMap σ x`. Rewrite using `[UpperTheory.ConvolutionTheory.K.galAdEq, ← h1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem galAd_smul {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E ≃ₐ[F] E) (a : 𝔸[E]) : galAd σ a = σ • a := by
@@ -30,7 +30,7 @@ private theorem galAd_smul {F E : Type} [Field F] [NumberField F] [Field E] [Num
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).lt_one_iff_lt_one, Valued.toNormedField.norm_lt_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem v_lt (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) y < 1 ↔ ‖y‖ < 1 := by
@@ -41,7 +41,7 @@ private theorem v_lt (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     Valued.toNormedField.norm_lt_one_iff]
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Rewrite using `[(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))).le_one_iff_le_one, Valued.toNormedField.norm_le_one_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem v_le (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) y ≤ 1 ↔ ‖y‖ ≤ 1 := by
@@ -52,14 +52,14 @@ private theorem v_le (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     Valued.toNormedField.norm_le_one_iff]
 
 /- English proof (translation)
-Rewrite using `[le_antisymm_iff, le_antisymm_iff, v_le, ← not_lt (b := 1) (a := ‖y‖), ← v_lt, not_lt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem v_eq (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) :
     ValuativeRel.valuation (w.adicCompletion E) y = 1 ↔ ‖y‖ = 1 := by
   rw [le_antisymm_iff, le_antisymm_iff, v_le, ← not_lt (b := 1) (a := ‖y‖), ← v_lt, not_lt]
 
 /- English proof (translation)
-Rewrite using `[← v_lt]`. Establish `h` using `GLnLocal.irreducible_uniformizer (w.adicCompletion E)`. Use `lt_of_le_of_ne (GLnLocal.uniformizer (w.adicCompletion E)).2 fun e => h.not_isUnit ?_` and prove the remaining obligations. Conclude with `(Valuation.integer.integers (ValuativeRel.valuation (w.adicCompletion E))).isUnit_of_one' e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem unif_lt (w : HeightOneSpectrum (𝓞 E)) : ‖(GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E)‖ < 1 := by
   rw [← v_lt]
@@ -68,9 +68,9 @@ private theorem unif_lt (w : HeightOneSpectrum (𝓞 E)) : ‖(GLnLocal.uniformi
   exact (Valuation.integer.integers (ValuativeRel.valuation (w.adicCompletion E))).isUnit_of_one' e
 
 /- English proof (translation)
-Establish `h` using `GLnLocal.irreducible_uniformizer (w.adicCompletion E)`. Set `z : 𝒪[w.adicCompletion E]` to `⟨y, ((v_lt w y).2 hy).le⟩`. Establish `hz : z ∈ IsLocalRing.maximalIdeal 𝒪[w.adicCompletion E]` using `fun hu => ((v_lt w y).2 hy).ne ((Valuation.integer.integers (ValuativeRel.valuation (w.adicCompletion E))).one_of_isUnit hu)`. Rewrite `hz` using `[h.maximalIdeal_eq, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `hz`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `e : y = a.1 * (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E)` using `(congrArg Subtype.val ha).symm`. Rewrite using `[e, norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) ((v_le w _).1 a.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem unif_max (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion E) (hy : ‖y‖ < 1) :
     ‖y‖ ≤ ‖(GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E)‖ := by
@@ -87,33 +87,31 @@ private theorem unif_max (w : HeightOneSpectrum (𝓞 E)) (y : w.adicCompletion 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ σ n _ w`. Establish `h' : w = σ⁻¹ • (σ • w)` using `(inv_smul_smul σ w).symm`. Set `t : w.adicCompletion E ≃+* (σ • w).adicCompletion E` to `RingEquiv.ofRingHom (galHom σ w (σ • w) rfl) (galHom σ⁻¹ (σ • w) w h') (galHom_comp_galHom σ⁻¹ σ (mul_inv_cancel σ) _ _ h' rfl) (galHom_comp_galHom σ σ⁻¹ (inv_mul_cancel σ) _ _ rfl h')`. Establish `hc : ∀ a (u : Pl E), (galAd σ a).2 (σ • u) = galHom σ u (σ • u) rfl (a.2 u)` using `fun a u => by`. Rewrite using `[galAd_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AdeleBaseChange.smul_snd_eq_galHom σ a u _ rfl`. Establish `hn : ∀ y, ‖t y‖ = ‖y‖` using `fun y => by`. Use `(HeightOneSpectrum.denseRange_algebraMap E w).induction_on (p := fun y => ‖t y‖ = ‖y‖) y (isClosed_eq (continuous_norm.comp (continuous_galHom σ w _ rfl)) continuous_norm) fun l => ?_` and prove the remaining obligations. Establish `h1` using `(UpperTheory.norm_galois_smul_adele_component_at_smul_place F E σ (algebraMap E _ l)).1 w`. Rewrite `h1` using `[hc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `h1`. Set `s : GL (Fin n) (w.adicCompletion E) ≃* GL (Fin n) ((σ • w).adicCompletion E)` to `Units.mapEquiv t.mapMatrix.toMulEquiv`. Establish `hs : ∀ g i j, s g i j = t (g i j)` using `fun _ _ _ => rfl`. Use `⟨s, fun g => ?_, fun g => ?_, fun ν => ?_⟩` and prove the remaining obligations. Use `Units.ext (Matrix.ext fun i j => Prod.ext ?_ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ∀ (y : AdelicGLn.FiniteAdelicGL E n), (finEmb E n y i j).1 = (1 : Matrix (Fin n) (Fin n) (InfiniteAdeleRing E)) i j` using `fun y => congrArg (fun z => z.1 i j) (prodEquiv_finEmb y)`. Use `Eq.trans ?_ (e1 _).symm` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Express the relevant statement in the definitionally equal form `(galAd σ (finEmb E n (AdelicGLn.localEmbedding w g) i j)).1 v = _`. Rewrite using `[galAd_smul, AdeleBaseChange.smul_fst, e1]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `only [Matrix.one_apply_eq]`. Conclude with `map_one _`. Simplify using `only [Matrix.one_apply_ne hij]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `map_zero _`. Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩ : ∃ u, v = σ • u` from `⟨σ⁻¹ • v, (smul_inv_smul σ v).symm⟩`. Use `(hc (finEmb E n (AdelicGLn.localEmbedding w g) i j) u).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `galHom σ u (σ • u) rfl (finAt u (finEmb E n (AdelicGLn.localEmbedding w g)) i j) = finAt (σ • u) (finEmb E n (AdelicGLn.localEmbedding (σ • w) (s g))) i j`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Distinguish the cases in `hu : u = w`. Substitute `hu` using the available equality. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.locEmb E n u).2.1, (UpperTheory.ConvolutionTheory.Tf.locEmb E n (σ • u)).2.1]`. Both sides reduce to the same expression. Rewrite using `[(UpperTheory.ConvolutionTheory.Tf.locEmb E n w).2.2.1 u hu, (UpperTheory.ConvolutionTheory.Tf.locEmb E n (σ • w)).2.2.1 _ fun e => hu (MulAction.injective σ e)]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij]`. Simplify using `only [GLnLocal.mem_iwahori_iff, v_lt, v_eq, hs, hn]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `and_congr (forall₂_congr fun i j => ?_) Iff.rfl` and prove the remaining obligations. Conclude with `((v_le w _).trans (by rw [hn])).trans (v_le (σ • w) (t (g i j))).symm`. Use `set p := (GLnLocal.uniformizer (w.adicCompletion E) : w.adicCompletion E) with hp set p' := (GLnLocal.uniformizer ((σ • w).adicCompletion E) : (σ • w).adicCompletion E) with hp'`. Establish `h0 : p' ≠ 0` using `Cartan.uniformizer_ne_zero _`. Establish `h1 : ‖t p‖ = ‖p'‖` using `le_antisymm (unif_max _ _ (by rw [hn]; exact unif_lt w)) (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[hn, ← t.apply_symm_apply p', hn]`. Conclude with `unif_max _ _ (by rw [← hn, t.apply_symm_apply]; exact unif_lt _))`. Use `⟨s (Cartan.diagPow _ n ν) * (Cartan.diagPow _ n ν)⁻¹, ?_, 1, one_mem _, by simp⟩` and prove the remaining obligations. Establish `e : ((s (Cartan.diagPow _ n ν) * (Cartan.diagPow _ n ν)⁻¹ : GL (Fin n) ((σ • w).adicCompletion E)) : Matrix (Fin n) (Fin n) ((σ • w).adicCompletion E)) = Matrix.diagonal fun i => t p ^ ν i * p' ^ (-ν i)`. Rewrite using `[← Matrix.diagonal_mul_diagonal, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i j`. Rewrite using `[hs, Cartan.coe_diagPow]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hp]`. Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Establish `h2 : ∀ i, ‖t p ^ ν i * p' ^ (-ν i)‖ = 1` using `fun i => by`. Rewrite using `[norm_mul, norm_zpow, norm_zpow, h1, ← zpow_add₀ (norm_ne_zero_iff.2 h0), add_neg_cancel, zpow_zero]`. Use `(GLnLocal.mem_iwahori_iff _ n).2 ⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(v_le _ _).2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq, h2]`.
-
-Simplify using `[Matrix.diagonal_apply_ne _ hij]`. Rewrite using `[v_lt, e, Matrix.diagonal_apply_ne _ (by rintro rfl; exact lt_irrefl _ hij)]`. Simplify using the standard rewrite rules. Rewrite using `[v_eq, e, Matrix.diagonal_apply_eq, h2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_galois_transport_localGL_preserving_iwahori :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsGalois F E] (σ : E ≃ₐ[F] E) (n : ℕ), 0 < n → ∀ w : Pl E,

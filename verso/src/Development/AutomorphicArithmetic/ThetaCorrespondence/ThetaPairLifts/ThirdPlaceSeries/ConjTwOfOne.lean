@@ -51,11 +51,11 @@ def CoefficientCondition : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions
 def NormCondition : Prop := _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x _ i p _ j => ∀ (B : Base (Vc (Fm.D x i) j) (Wc (Fm.D x i) j)) (ν ν' : ℂ),
   IsNorm p.R p.v₀ B ν → IsNorm p.R p.v₀ B ν' → ∃ n : ℕ, n ≠ 0 ∧ ν' ^ n = ν ^ n
 /- English proof (translation)
-Use `_root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA hG) (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hN hO)) fun Fm x hx i p hr hm w _ j H => ?_` and prove the remaining obligations. Take `⟨⟨a1, a2⟩, a3, a4⟩` from `H`. Introduce `ρ ρ' hρ hρ' ν ν' hp hS hν hR hF`. Take `⟨Z⟩` from `hm.2.2.series`. Establish `hU : p.R.toRealDat.LUnif` using `hr.prim.unif`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : p.R.toRealDat.models_HW` using `p.charW.base.models.HW`. Establish `hK : (p.Sx.A ((j : ℕ) + 1)).IsKsForm` using `GlobalTheory.isKsForm_of_formsIso _ _ (p.nexp.fi j) (p.fw.ks j)`. Establish `hL : ρ.LevelOf (Fm.D x i).nexp` using `levelOf_of_sameBut hm.2.2 hρ' hρ hF.pin hp hS.symm hF.level`. Establish `hν'` using `hF.norm`. Establish `hν''` using `hν'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hν''` using `[hS.2.2.2.1]`. Conclude with `le_antisymm (twLat_le p w j hU hW (Z.vec j) hK a1.1 a2 a4 ρ ρ' hρ hρ' ν ν' hp hS hL (Or.inr hF.adapted) hν hν'.1 (a3 _ _ _ hν hν'') hR hF.rat) (twLat_le p w j hU hW (Z.vec j) hK a1.1 a2 a4 ρ' ρ hρ' hρ ν' ν hF.pin hS.symm hF.level (Or.inl hF.adapted) hν' hν.1 (a3 _ _ _ hν'' hν) hF …`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjTw_of_twAdm_latSmallGen_normAt_twOne (hA : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt) (hG : _root_.GlobalTheory.BigOn.Exp.LatticeHasSmallGenerators) (hN : _root_.GlobalTheory.BigOn.Exp.TwConj.NormCondition) (hO : _root_.GlobalTheory.BigOn.Exp.TwConj.TwistTrivialCondition) : _root_.GlobalTheory.BigOn.Exp.ConjugateTwist := by
   refine _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hA hG) (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and hN hO)) fun Fm x hx i p hr hm w _ j H => ?_

@@ -18,11 +18,11 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 section Local
 open Matrix IsLocalRing
 /- English proof (translation)
-Rewrite using `[totallyDisconnectedSpace_iff_connectedComponent_one]`. Use `Set.eq_singleton_iff_unique_mem.2 ⟨mem_connectedComponent, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective y`. Assume the negation of the conclusion as `hx`. Establish `hx' : x ∉ N` using `fun h => hx ((QuotientGroup.eq_one_iff x).2 h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `ho : IsOpen {g : G | g * x ∉ N}` using `hN.isOpen_compl.preimage (continuous_mul_const x)`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one ho (by simpa using hx')`. Set `V : Subgroup (G ⧸ N)` to `U.toSubgroup.map (QuotientGroup.mk' N)`. Establish `hVo : IsOpen (V : Set (G ⧸ N))` using `QuotientGroup.isOpenMap_coe _ U.isOpen'`. Establish `hV : IsClopen (V : Set (G ⧸ N))` using `⟨V.isClosed_of_isOpen hVo, hVo⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨u, hu, hux⟩` from `hV.connectedComponent_subset V.one_mem hy`. Conclude with `hU (U.toSubgroup.inv_mem hu) (QuotientGroup.eq.1 hux)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (N : Subgroup G) [N.Normal] (hN : IsClosed (N : Set G)) :
@@ -42,7 +42,7 @@ private theorem totDisc_quot {G : Type} [Group G] [TopologicalSpace G] [IsTopolo
 end Local
 
 /- English proof (translation)
-Establish `e : conjBy h r g = GG.ofGL h * r g * GG.ofGL h⁻¹`. Rewrite using `[map_inv]`. Both sides reduce to the same expression. Rewrite using `[e, SemidirectProduct.mul_left, SemidirectProduct.mul_left, SemidirectProduct.left_inl, SemidirectProduct.left_inl, SemidirectProduct.right_inl, sgnAct_one, SemidirectProduct.mul_right, SemidirectProduct.right_inl, hg, mul_one, sgnAct_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 private theorem conj_left {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (h : GL (Fin 3) R) (g : G)
     (hg : (r g).right = 1) : (conjBy h r g).left = h * (r g).left * h⁻¹ := by
@@ -54,7 +54,7 @@ private theorem conj_left {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R
 
 open Matrix in
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.G5.matIrr_conj h e H`.
+A detailed English derivation is pending.
 -/
 private theorem matIrr_conj {G R : Type} [Group G] [CommRing R] {m : ℕ} {U : Subgroup G}
     {a a' : G → Matrix (Fin m) (Fin m) R} (h : GL (Fin m) R)
@@ -63,9 +63,9 @@ private theorem matIrr_conj {G R : Type} [Group G] [CommRing R] {m : ℕ} {U : S
   _root_.UpperTheory.Reformulated.B.G5.matIrr_conj h e H
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hM.two_dvd`. Establish `h2 : B.valuation ((2 : ℕ) : Ω) < 1`. Assume the negation of the conclusion as `h2`. Rewrite `h2` using `[not_lt]`. Rewrite `h` using `[show (4 : ℕ) = 2 * 2 from rfl, Nat.cast_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd h (not_lt.2 (one_le_mul h2 h2))`. Establish `hm : B.valuation (m : Ω) ≤ 1` using `(B.valuation_le_one_iff _).2 (natCast_mem B m)`. Rewrite using `[Nat.cast_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hm) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_of_even {Ω : Type} [Field Ω] (B : ValuationSubring Ω) {M : ℕ} (hM : Even M)
     (h : B.valuation ((4 : ℕ) : Ω) < 1) : B.valuation (M : Ω) < 1 := by
@@ -80,7 +80,7 @@ private theorem val_of_even {Ω : Type} [Field Ω] (B : ValuationSubring Ω) {M 
   exact lt_of_le_of_lt (mul_le_of_le_one_right' hm) h2
 
 /- English proof (translation)
-Introduce `w hw` and use `by obtain ⟨A, hA, κ, ⟨χ, h1, h2, h3⟩, h4⟩ := H w hw exact ⟨A, hA, κ, ⟨χ, h1, h2.of_iso h, h3⟩, h4⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem unl_of_iso {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
     [IsAlgClosure F Ω] {n : ℕ} {M : ℕ} {m : Fin n → ℤ} {r r' : Formalism.ConjugateSelfDual.G F Ω →* GL (Fin n) (Qbar l)}
@@ -89,31 +89,27 @@ private theorem unl_of_iso {l : ℕ} [Fact l.Prime] {F Ω : Type} [Field F] [Num
   exact ⟨A, hA, κ, ⟨χ, h1, h2.of_iso h, h3⟩, h4⟩
 
 /- English proof (translation)
-Introduce `hH hU K _ _ _ hK Ω _ _ _ _ _ l hl c N _ e ψ o₁ hd S A F hF g₁ hg r hr hI ρ hρ`. Establish `hN` using `hH.litN`. Use `haveI : IsGalois ℚ Ω := IsAlgClosure.isGalois ℚ Ω`. Use `haveI hcl := isClosed_NS Ω (S : Set Pl)`. Use `haveI : TotallyDisconnectedSpace (Gam Ω S) := totDisc_quot _ hcl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `ok` using `hostFrame_ok Ω c e ψ o₁ hd S A F hF`. Take `⟨hmu, -, -, -⟩` from `isCharZeroPt_basic F ok g₁ hg r hr`. Use `haveI : IsLocalHom (algebraMap ℤ_[l] c.O) := by open Formalism.GaloisCohomology UpperTheory.V.Base in`. Conclude with `(dvrFacts l c.O).2.2.1`. Use `haveI : CharP (ResidueField c.O) l := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[CharP.charP_iff_prime_eq_zero hl.out, ← map_natCast (residue c.O), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, ← map_natCast (algebraMap ℤ_[l] c.O)]`. Introduce `hu`. Conclude with `PadicInt.prime_p.not_unit (isUnit_of_map_unit _ _ hu)`. Take `⟨σ, hσ, hσc⟩` from `hF.cc`. Establish `hv : (A F.vl).valuation (l : Ω) < 1` using `by simpa using (hF.isOver F.vl (l : 𝓞 ℚ)).2 hF.vl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hfr` using `Fr.host_ex ⟨⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.pt⟩, hN.coh.uo, hN.coh.gw⟩ Ω l c N e ψ o₁ hd σ hσ _ hv`. Establish `hσ' : IsConjOm σ.toRingEquiv` using `hσ`. Establish `hΨ : Chr.Psi l e (Chr.dirG ℚ Ω ψ) σ = 1`. Establish `h1 : cycZ ℚ Ω l σ = -1` using `hσ'.cyc (E := ℚ)`. Establish `h2 : Base.chiO ℚ Ω l c.O σ = -1` using `by show Units.map (algebraMap ℤ_[l] c.O).toMonoidHom (cycZ ℚ Ω l σ) = -1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Establish `h3 : (Chr.dirG ℚ Ω ψ σ : c.O) = (-1) ^ e`. Rewrite using `[Chr.dirG, MonoidHom.comp_apply, (Chr.clsFacts ℚ Ω N).2.2.2.1 σ hσ', MulChar.coe_toUnitHom]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hd.par`. Apply `Units.ext` to reduce the goal to its premises. Use `show ((Base.chiO ℚ Ω l c.O σ ^ (e : ℤ) * Chr.dirG ℚ Ω ψ σ : c.Oˣ) : c.O) = 1`. Rewrite using `[h2, zpow_natCast, Units.val_mul, h3, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one, ← mul_pow]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hram : ∀ B' : ValuationSubring Ω, ¬ Ine (F` using `ℚ) B' ≤ (UnitaryThreeInertia.eta4 Ω).ker → B'.valuation ((l * N : ℕ) : Ω) < 1 := by`. Introduce `B' h`. Use `val_of_even B' (hd.N_even.mul_left l) ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h4`. Use `h fun s hs => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : Chr.cls ℚ Ω 4 s = 1` using `(Chr.clsFacts ℚ Ω 4).2.2.2.2 B' h4 hs`. Rewrite using `[MonoidHom.mem_ker, UnitaryThreeInertia.eta4, Chr.dirG, MonoidHom.comp_apply, h5, map_one]`. Establish `hk : Pr.LinkHyp c N e (UnitaryThreeInertia.eta4 Ω) σ (A F.vl) (l * N)` using `⟨hd.e_pos, dvd_rfl, mul_ne_zero hl.out.ne_zero (NeZero.ne N), hram, hv, hσ⟩`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hlev` using `UnitaryThreeInertia.levelAt_of_pt Ω c e ψ o₁ hd S A F hF K hK g₁ hg r hr ρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hopen` using `UnitaryThreeInertia.matIrr_open Ω c e ψ o₁ hd S A F hF g₁ hg r hr hI`. Take `⟨B, _, _, t, r', hr', ht⟩` from `hr`. Take `⟨g, rfl⟩ : ∃ g, toGS Ω _ g = g₁` from `QuotientGroup.mk_surjective g₁`. Rewrite `hσc` using `[hF.π]`. Establish `ho` using `Pr.ordPt_of_isPt Ω c e ψ o₁ hd S A F hF σ g hσc r' hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `hη : ∀ g, F.η (toGS Ω _ g) = UnitaryThreeInertia.eta4 Ω g` using `fun g => by rw [← hF.η, hF.π]; rfl`. Establish `hm : ∀ s, (r (toGS Ω _ s)).right = UnitaryThreeInertia.eta4 Ω s` using `fun s => (hmu _).trans (hη s)`. Establish `hle : ∀ s ∈ (UnitaryThreeInertia.eta4 Ω).ker, (UnitaryThreeInertia.push B.val (r'.comp (toGS Ω _)) s).left = tor _ t * (r (toGS Ω _ s)).left * (tor _ t)⁻¹` using `fun s hs => by`. Rewrite using `[← conj_left r _ _ ((hm s).trans hs), ← ht]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrg` using `(UnitaryThreeInertia.gaussian_field_range_eq_ker_quartic_char.2 Ω K hK).1`. Establish `hker : ∀ s : G K Ω, Base.galEmb ℚ K Ω s ∈ (UnitaryThreeInertia.eta4 Ω).ker` using `fun s => by`. Rewrite using `[← hrg]`. Conclude with `⟨s, rfl⟩`. Set `j : G K Ω →* (UnitaryThreeInertia.eta4 Ω).ker` to `(Base.galEmb ℚ K Ω).codRestrict _ hker`.
-
-Set `ρ' : G K Ω →* GL (Fin 3) (Qbar l)` to `(glPart (UnitaryThreeInertia.eta4 Ω) (UnitaryThreeInertia.push B.val (r'.comp (toGS Ω _))) ho.red.mult).comp j`. Establish `hiso : Af.RepIso ρ ρ'` using `⟨tor _ t, fun s => by`. Rewrite using `[show ρ s = (r (toGS Ω _ (Base.galEmb ℚ K Ω s))).left from Units.ext (hρ s)]`. Conclude with `hle _ (hker s)⟩`. Establish `key` using `hU Ω l c N e ψ (UnitaryThreeInertia.eta4 Ω) σ g (A F.vl) _ hk hd.N_even hΨ hfr B _ ho (fun V hV hVη => matIrr_conj (tor _ t) (fun s hs => by`.
-
-Rewrite using `[mats, GG.mat, GG.mat, hle s (hVη hs), ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use the proof step `group) (hopen V hV hVη)) K hK.1 (by rw [← Base.range_galEmb]; exact hrg.symm) ρ' (fun s => rfl)`. Use `N NeZero.one_le (hlev.of_iso hiso)`. Conclude with `unl_of_iso key (Af.RepIso.symm' hiso)`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.hostUnlE :
     Af.HypothesesH → UnlEndLogNorm → ∀ (K : Type) [Field K] [NumberField K] [IsCMField K], IsQi K → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] [Algebra K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (c : Coef l) (N : ℕ) [NeZero N] (e : ℕ) (ψ : DirichletCharacter c.O N) (o₁ : ℕ), HostData l e ψ o₁ → ∀ (S : Finset Pl) (A : S → ValuationSubring Ω) (F : Frame c.O (Formalism.ConjugateSelfDual.G ℚ Ω) (Gam Ω S) S), IsHostFrame Ω c e ψ S A F → ∀ (g₁ : Gam Ω S), F.Marked g₁ → ∀ r : Gam Ω S →* GG 3 (PadicAlgCl l), F.IsCharZeroPt g₁ r → U3.TypeI F.η r → ∀ ρ : G K Ω →* GL (Fin 3) (Qbar l), (∀ s : G K Ω, (ρ s).val = (r (toGS Ω _ (s.restrictScalars ℚ))).mat) → Unl l N ![(e : ℤ), 0, -(e : ℤ)] ρ := by

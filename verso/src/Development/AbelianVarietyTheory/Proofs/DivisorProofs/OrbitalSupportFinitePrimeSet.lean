@@ -26,7 +26,7 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.FinClsLoc
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r c => rw [starT_tmul, starT_tmul, G.star_star]`. Consider the case `add x y hx hy => simp only [map_add, MulOpposite.unop_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem starT_invol {p : ℕ} [Fact p.Prime] (G : HTGroup p) (K : Type) [CommRing K] [Algebra ℚ K]
     (x : K ⊗[ℚ] G.C) : (starT G.star K (starT G.star K x).unop).unop = x := by

@@ -17,7 +17,7 @@ variable {k r : ℕ}
 def psiMap (q : Mt k r × (Mt k r × Mt k r)) : Mt k r := fun i j => (sM q.2 * Matrix.of q.1) i j
 
 /- English proof (translation)
-Establish `hc : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (sM q.2 * Matrix.of q.1 : Mx k r)` using `((PI.WUN.continuous_of.comp (continuous_fst.comp continuous_snd)).matrix_mul (PI.WUN.continuous_of.comp (continuous_snd.comp continuous_snd))).matrix_mul (PI.WUN.continuous_of.comp continuous_fst)`. Conclude with `continuous_pi fun i => continuous_pi fun j => hc.matrix_elem i j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_psiMap : Continuous (psiMap (k := k) (r := r)) := by
   have hc : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (sM q.2 * Matrix.of q.1 : Mx k r) :=
@@ -27,12 +27,12 @@ theorem continuous_psiMap : Continuous (psiMap (k := k) (r := r)) := by
   exact continuous_pi fun i => continuous_pi fun j => hc.matrix_elem i j
 
 /- English proof (translation)
-The claim follows from `continuous_psiMap.measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_psiMap : Measurable (psiMap (k := k) (r := r)) := continuous_psiMap.measurable
 
 /- English proof (translation)
-Establish `hc : Continuous fun q : Mt k r × Mt k r => (Matrix.of q.2 * Matrix.of q.1 : Mx k r)` using `(PI.WUN.continuous_of.comp continuous_snd).matrix_mul (PI.WUN.continuous_of.comp continuous_fst)`. Conclude with `continuous_pi fun i => continuous_pi fun j => hc.matrix_elem i j`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_mulT : Continuous fun q : Mt k r × Mt k r => (fun i j => (Matrix.of q.2 * Matrix.of q.1) i j : Mt k r) := by
   have hc : Continuous fun q : Mt k r × Mt k r => (Matrix.of q.2 * Matrix.of q.1 : Mx k r) :=
@@ -40,7 +40,7 @@ theorem continuous_mulT : Continuous fun q : Mt k r × Mt k r => (fun i j => (Ma
   exact continuous_pi fun i => continuous_pi fun j => hc.matrix_elem i j
 
 /- English proof (translation)
-Introduce `h0`. Substitute `h0` using the available equality. Apply `hG0` to reduce the goal to its premises. Establish `h1` using `hq (fun _ => 1) measurable_const`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem muS_ne_zero {μG μS ν : Measure (Mt k r)} (hG0 : μG ≠ 0) (hq : IsQuotMeas μG μS ν) : μS ≠ 0 := by
   intro h0
@@ -50,17 +50,13 @@ theorem muS_ne_zero {μG μS ν : Measure (Mt k r)} (hG0 : μG ≠ 0) (hq : IsQu
   simpa using h1
 
 /- English proof (translation)
-Establish `hS0` using `muS_ne_zero hG0 hq`. Take `⟨f, hfpos, hfm, hfint⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG (ε := 1) one_ne_zero`. Use `set F : Mt k r → ENNReal := fun x => (f x : ENNReal) with hFdef`. Establish `hFm : Measurable F` using `hfm.coe_nnreal_ennreal`. Establish `hmul : ∀ x : Mt k r, Measurable fun s : Mt k r => (fun i j => (Matrix.of s * Matrix.of x) i j : Mt k r)` using `fun x => (continuous_mulT.comp (Continuous.prodMk_right x)).measurable`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set h : Mt k r → ENNReal := fun x => ∫⁻ s, F (fun i j => (Matrix.of s * Matrix.of x) i j) ∂μS with hdef`. Establish `hhm : Measurable h` using `(hFm.comp continuous_mulT.measurable).lintegral_prod_right'`. Establish `hint : ∫⁻ x, h x ∂ν < ⊤`. Rewrite using `[hdef, ← hq F hFm]`. Conclude with `hfint.trans ENNReal.one_lt_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpos : ∀ x, h x ≠ 0`. Introduce `x hx`. Establish `hx'` using `(lintegral_eq_zero_iff (hFm.comp (hmul x))).1 hx`. Establish `hfalse : ∀ᵐ s ∂μS, False` using `hx'.mono fun s hs => by`. Simplify using `only [Function.comp_apply, Pi.zero_apply, hFdef, ENNReal.coe_eq_zero] at hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hfpos _).ne' hs`. Conclude with `hS0 (by simpa using ae_iff.1 hfalse)`. Establish `hfin : IsFiniteMeasure (ν.withDensity h)` using `isFiniteMeasure_withDensity hint.ne`. Establish `heq : ν = (ν.withDensity h).withDensity h⁻¹`. Rewrite using `[← withDensity_mul ν hhm hhm.inv]`.
-
-Use `conv_lhs => rw [← withDensity_one (μ := ν)]`. Use `withDensity_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_lt_top hhm hint.ne] with x hx`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Pi.one_apply]`. Conclude with `(ENNReal.mul_inv_cancel (hpos x) hx.ne).symm`.
-
-Rewrite using `[heq]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sfinite_quot {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite μS] (hG0 : μG ≠ 0)
     (hq : IsQuotMeas μG μS ν) : SFinite ν := by
@@ -94,9 +90,9 @@ theorem sfinite_quot {μG μS ν : Measure (Mt k r)} [SigmaFinite μG] [SFinite 
   infer_instance
 
 /- English proof (translation)
-Use extensionality with `A hA`. Establish `hf : Measurable (A.indicator (1 : Mt k r → ENNReal))` using `measurable_one.indicator hA`. Rewrite using `[← lintegral_indicator_one hA, ← lintegral_indicator_one hA, hq _ hf, lintegral_map hf measurable_psiMap, lintegral_prod (fun w => A.indicator 1 (psiMap w)) (hf.comp measurable_psiMap).aemeasurable]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hf1 : Measurable fun s : Mt k r => A.indicator (1 : Mt k r → ENNReal) (fun i j => (Matrix.of s * Matrix.of x) i j)` using `hf.comp (continuous_mulT.comp (Continuous.prodMk_right x)).measurable`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg1 : Measurable fun p : Mt k r × Mt k r => (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j : Mt k r)` using `(continuous_mulT.comp continuous_swap).measurable`. Rewrite using `[muSof, lintegral_map hf1 hg1]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem quot_map {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN] [SFinite ν]
     (hq : IsQuotMeas μG (muSof μW μN) ν) : μG = (ν.prod (μW.prod μN)).map psiMap := by
@@ -115,9 +111,9 @@ theorem quot_map {μG μW μN ν : Measure (Mt k r)} [SFinite μW] [SFinite μN]
   rfl
 
 /- English proof (translation)
-Take `⟨-, hGh, -, -, ⟨hWh, -⟩, ⟨κ, -, -, hκ⟩, hq⟩` from `hG`. Establish `: SigmaFinite μG` using `hGh.1`. Establish `: SigmaFinite μW` using `hWh.1`. Establish `: SFinite μN` using `by rw [hκ]; infer_instance`. Establish `: SFinite (muSof μW μN)` using `by unfold muSof; infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SFinite ν` using `sfinite_quot hGh.2.1 hq`. Conclude with `⟨inferInstance, inferInstance, inferInstance, quot_map hq⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gHyp_sfinite {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
@@ -133,9 +129,9 @@ theorem gHyp_sfinite {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   exact ⟨inferInstance, inferInstance, inferInstance, quot_map hq⟩
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG F hF`. Take `⟨hWs, hNs, hνs, hmap⟩` from `gHyp_sfinite hG`. Substitute `hmap` using the available equality. Establish `hFm` using `hF.aestronglyMeasurable`. Establish `hI` using `(integrable_map_measure hFm measurable_psiMap.aemeasurable).1 hF`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hI.prod_right_ae, hI.integral_prod_left, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_map measurable_psiMap.aemeasurable hFm, integral_prod (fun w => F (Matrix.of (psiMap w))) hI]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem weilStep : WeilStep := by
   intro k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG F hF
@@ -148,15 +144,13 @@ theorem weilStep : WeilStep := by
   rfl
 
 /- English proof (translation)
-Introduce `k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG`. Take `⟨hWs, hNs, hνs, hmap⟩` from `gHyp_sfinite hG`. Take `⟨-, hGh, -, -, ⟨hWh, -⟩, ⟨κ, -, -, hκ⟩, hq⟩` from `hG`. Establish `hS0 : μW.prod μN ≠ 0` using `fun h0 => muS_ne_zero hGh.2.1 hq (by rw [muSof, h0, Measure.map_zero])`. Establish `hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r)` using `ae_iff.2 hGh.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hGae` using `[hmap]`. Establish `h1` using `Measure.ae_ae_of_ae_prod (ae_of_ae_map measurable_psiMap.aemeasurable hGae)`. Establish `hWae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UH (Hpk k r) ∧ Matrix.of p.2 ∈ UH (Hpk k r)`. Establish `a1 : ∀ᵐ y ∂μW, Matrix.of y ∈ UWset k r z` using `ae_iff.2 hWh.2.2.1`. Establish `a2 : ∀ᵐ y ∂μN, Matrix.of y ∈ Nset k r`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hκ]`. Conclude with `ae_iff.2 (PI.WUN.muN_conc κ)`. Use `filter_upwards [Measure.quasiMeasurePreserving_fst.ae a1, Measure.quasiMeasurePreserving_snd.ae a2] with p hp1 hp2`. Conclude with `⟨hp1.1, hp2.1⟩`. Establish `: (ae (μW.prod μN)).NeBot` using `ae_neBot.2 hS0`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [h1] with x hx`. Take `⟨p, hp, hp'⟩` from `(hx.and hWae).exists`. Establish `hpx : sM p * Matrix.of x ∈ UH (Hpk k r)` using `hp`. Establish `hs : sM p ∈ UH (Hpk k r)` using `PI.WUN.UH_mul hp'.1 hp'.2`. Establish `h2` using `PI.WUN.UH_mul (PI.WUN.UH_inv hs) hpx`.
-
-Rewrite `h2` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (PI.WUN.UH_det hs), Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem nuStep : NuStep := by
   intro k r H _ _ _ Wp _ _ _ _ z π μW μN μG ν σ hG

@@ -15,7 +15,7 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.Tube
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Establish `: (fun x : EuclideanSpace ℝ (Fin m × Fin m × Bool) => unrealify x i j) = fun x => (x (i, j, false) : ℂ) + (x (i, j, true) : ℂ) * Complex.I`. Apply the tactic sequence `funext x; apply Complex.ext <;> simp [unrealify]`. Rewrite using `[this]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unrealify_cont {m : ℕ} : Continuous (unrealify (m := m)) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -25,7 +25,7 @@ theorem unrealify_cont {m : ℕ} : Continuous (unrealify (m := m)) := by
   rw [this]; fun_prop
 
 /- English proof (translation)
-Establish `h1 : unrealify (m` using `k) (0 : EuclideanSpace ℝ _) = 0 := by`. Apply the tactic sequence `ext i j; apply Complex.ext <;> simp [unrealify]`. Establish `h2 : hv (0 : EuclideanSpace ℂ (Fin k)) = 0` using `by funext j; simp [hv]`. Simplify using `[chart, h1, h2, kap_one, sec_zero]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chart_zero (k : ℕ) (η : ℝ) : chart η (0 : Par k) = 1 := by
   have h1 : unrealify (m := k) (0 : EuclideanSpace ℝ _) = 0 := by
@@ -34,17 +34,17 @@ theorem chart_zero (k : ℕ) (η : ℝ) : chart η (0 : Par k) = 1 := by
   simp [chart, h1, h2, kap_one, sec_zero]
 
 /- English proof (translation)
-Introduce `k η hk hη μ μ₀ c c₀ hc hc₀ hμ hd hμ₀ h1 hd₀`. Express the relevant statement in the definitionally equal form `PI.IsHaarOnM (UH (Hd k η)) μ at hμ`. Express the relevant statement in the definitionally equal form `HasDens (UH (Hd k η)) μ _ at hd`. Establish `hexp : ∀ X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ)), NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _)) ∈ UH (1 : Matrix (Fin k) (Fin k) ℂ)` using `fun X => CCRuleCW.exp_mem_UH _ _ ((GlobalTheory.T.mem_lieE_unitaryGroup_iff_of_involutive k 1 X.1 (Matrix.one_mul _)).1 X.2)`. Take `⟨L, hL, hvol⟩` from `GlobalTheory.T.exists_productChart_tangentEquiv_ballVolume k η hk hη`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : ∀ᶠ x in 𝓝 (0 : Par k), chart η x ∈ UH (Hd k η)` using `by filter_upwards [Metric.ball_mem_nhds (0 : Par k) one_pos] with x hx`. Establish `hw : ‖x.2.2‖ < 1` using `((norm_snd_le x.2).trans (norm_snd_le x)).trans_lt (mem_ball_zero_iff.1 hx)`. Use `(comp hη (hexp x.1) (Complex.norm_exp_ofReal_mul_I x.2.1) ?_).1` and prove the remaining obligations. Rewrite using `[nsq_hv]`. Use `norm_nonneg x.2.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hch` using `GlobalTheory.T.tendsto_measure_image_ball_div_volume (k + 1) (UH (Hd k η)) μ _ (GlobalTheory.GramExp.isMatGroup_UH _ (Hd_sq k hη)) hμ hd (Par k) (chart η) L (chart_zero k η) hmem (fun i j => by`. Apply the tactic sequence `obtain ⟨D, h, h'⟩ := GlobalTheory.T.unitaryTubeProductChart_hasStrictFDerivAt_entry k η i j`. Conclude with `⟨D, h, fun v => by rw [h', hL]⟩)`. Use `GlobalTheory.T.thinUnitaryTube_volume_limit_arith k c c₀ (fun t => μ (tubeO k η t)) _ (fun ρ => μ₀ (expSet (UH (1 : Matrix (Fin k) (Fin k) ℂ)) (Metric.ball 0 ρ))) (fun ρ => volume (Metric.ball (0 : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ))) ρ)) hc hc₀ (fun t s ht hs => ⟨?_, ?_⟩) ( …` and prove the remaining obligations.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono fun g hg => ?_` and prove the remaining obligations. Conclude with `(abs_id hη hg.1).le.trans hg.2.le`. Use `measure_mono_ae ?_` and prove the remaining obligations. Establish `: ∀ᵐ g ∂μ, Matrix.of g ∈ UH (Hd k η)` using `hμ.2.2.1`. Use `filter_upwards [this] with g hg h`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨hg, ((abs_id hη hg).ge.trans h).trans_lt hs⟩`. Use `filter_upwards [Ioo_mem_nhdsGT one_pos] with ρ hρ`. Establish `hρ' : ρ ^ 2 / 2 ≤ 1` using `by nlinarith [hρ.1, hρ.2]`. Establish `hA0 : Continuous fun X : lieE (UH (1 : Matrix (Fin k) (Fin k) ℂ)) => (Matrix.of.symm (NormedSpace.exp (unrealify (X : EuclideanSpace ℝ _))) : PI.MtM k)` using `GlobalTheory.GramExp.exp_cont.comp (unrealify_cont.comp continuous_subtype_val)`. Establish `hA : MeasurableSet (expSet (UH (1 : Matrix (Fin k) (Fin k) ℂ)) (Metric.ball 0 ρ))` using `GlobalTheory.GramExp.measurableSet_image_ball hA0 _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : MeasurableSet ((fun θ : ℝ => Complex.exp (θ * Complex.I)) '' Metric.ball 0 ρ)` using `GlobalTheory.GramExp.measurableSet_image_ball (by fun_prop) _ _`. Take `⟨τ, t1, t2, t3, t4⟩` from `phase_law hη hμ hρ'`. Rewrite using `[hvol ρ hρ.1, chart_image hη hexp hρ.1 hρ.2, prod_top hη hμ hμ₀ h1 hρ' hA hB, ← t1 _ hB, GlobalTheory.T.rotationInvariant_measure_unitCircle_arc τ ρ t2 t3 t4 hρ.1 (by linarith [hρ.2, Real.pi_gt_three]), t1 _ MeasurableSet.univ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thin_tube : ∀ (k : ℕ) (η : ℝ), 1 ≤ k → (η = 1 ∨ η = -1) → ∀ (μ : Measure (PI.MtM (k + 1))) (μ₀ : Measure (PI.MtM k)) (c c₀ : ℝ), 0 < c → 0 < c₀ → PI.IsHaarOnM (UH (Matrix.diagonal fun j : Fin (k + 1) => if j = Fin.last k then (η : ℂ) else 1)) μ → HasDens (UH (Matrix.diagonal fun j : Fin (k + 1) => if j = Fin.last k then (η : ℂ) else 1)) μ (ENNReal.ofReal c) → PI.IsHaarOnM (UH (1 : Matrix (Fin k) (Fin k) ℂ)) μ₀ → μ₀ Set.univ = 1 → HasDens (UH (1 : Matrix (Fin k) (Fin k) ℂ)) μ₀ (ENNReal.ofReal c₀) → Tendsto (fun t : ℝ => μ {g | |‖g (Fin.last k) (Fin.last k)‖ ^ 2 - 1| ≤ t} / ENNReal.ofReal (t ^ k)) (𝓝[>] 0) (𝓝 (ENNReal.ofReal (c / c₀ * (2 * Real.pi) ^ (k + 1) / (k.factorial : ℝ)))) := by
   intro k η hk hη μ μ₀ c c₀ hc hc₀ hμ hd hμ₀ h1 hd₀

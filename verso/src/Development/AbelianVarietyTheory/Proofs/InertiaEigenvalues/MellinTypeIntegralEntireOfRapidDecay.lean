@@ -8,12 +8,12 @@ open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.
 namespace GlobalTheory.MellinEntire
 
 /- English proof (translation)
-The claim follows from `lt_min ht (inv_pos.mpr ht)`.
+A detailed English derivation is pending.
 -/
 lemma min_inv_pos {t : ℝ} (ht : 0 < t) : 0 < min t t⁻¹ := lt_min ht (inv_pos.mpr ht)
 
 /- English proof (translation)
-Break down `le_total t 1 with h | h` into its components or cases. Conclude with `(min_le_left _ _).trans h`. Conclude with `(min_le_right _ _).trans (inv_le_one_of_one_le₀ h)`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma min_inv_le_one {t : ℝ} (ht : 0 < t) : min t t⁻¹ ≤ 1 := by
   rcases le_total t 1 with h | h
@@ -21,21 +21,21 @@ lemma min_inv_le_one {t : ℝ} (ht : 0 < t) : min t t⁻¹ ≤ 1 := by
   · exact (min_le_right _ _).trans (inv_le_one_of_one_le₀ h)
 
 /- English proof (translation)
-The claim follows from `h.trans ((one_le_inv₀ ht).mpr h)`.
+A detailed English derivation is pending.
 -/
 lemma le_inv_of_le_one' {t : ℝ} (ht : 0 < t) (h : t ≤ 1) : t ≤ t⁻¹ :=
   h.trans ((one_le_inv₀ ht).mpr h)
 
 /- English proof (translation)
-The claim follows from `(inv_le_one_of_one_le₀ h).trans h`.
+A detailed English derivation is pending.
 -/
 lemma inv_le_of_one_le' {t : ℝ} (h : 1 ≤ t) : t⁻¹ ≤ t :=
   (inv_le_one_of_one_le₀ h).trans h
 
 /- English proof (translation)
-Break down `le_total t 1 with h | h` into its components or cases. Rewrite using `[min_eq_left (le_inv_of_le_one' ht h)]`. Establish `h1 : t ^ σ ≤ t ^ (-(K:ℝ))` using `Real.rpow_le_rpow_of_exponent_ge ht h (by linarith [neg_abs_le σ])`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_neg ht.le, Real.rpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ ht.ne')]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[min_eq_right (inv_le_of_one_le' h)]`. Establish `h1 : t ^ σ ≤ t ^ (K:ℝ)` using `Real.rpow_le_rpow_of_exponent_le h (le_trans (le_abs_self σ) hσ)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma rpow_mul_min_pow_le {t σ : ℝ} {K : ℕ} (ht : 0 < t) (hσ : |σ| ≤ K) :
     t ^ σ * (min t t⁻¹) ^ K ≤ 1 := by
@@ -53,9 +53,9 @@ lemma rpow_mul_min_pow_le {t σ : ℝ} {K : ℕ} (ht : 0 < t) (hσ : |σ| ≤ K)
       _ = 1 := by rw [Real.rpow_natCast, ← mul_pow, mul_inv_cancel₀ ht.ne', one_pow]
 
 /- English proof (translation)
-Break down `le_total t 1 with h | h` into its components or cases. Rewrite using `[min_eq_left (le_inv_of_le_one' ht h)]`. Use `Real.abs_log_mul_self_lt t ht h` as an intermediate fact. Rewrite `this` using `[abs_mul, abs_of_pos ht]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[min_eq_right (inv_le_of_one_le' h)]`. Use `Real.abs_log_mul_self_lt t⁻¹ (inv_pos.mpr ht) (inv_le_one_of_one_le₀ h)` as an intermediate fact. Rewrite `this` using `[Real.log_inv, abs_mul, abs_neg, abs_of_pos (inv_pos.mpr ht)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma min_mul_abs_log_le {t : ℝ} (ht : 0 < t) : min t t⁻¹ * |Real.log t| ≤ 1 := by
   rcases le_total t 1 with h | h
@@ -69,25 +69,21 @@ lemma min_mul_abs_log_le {t : ℝ} (ht : 0 < t) : min t t⁻¹ * |Real.log t| �
     linarith
 
 /- English proof (translation)
-Establish `wpos : ∀ x, 0 < min (T x) (T x)⁻¹` using `fun x => min_inv_pos (hTpos x)`. Establish `wle : ∀ x, min (T x) (T x)⁻¹ ≤ 1` using `fun x => min_inv_le_one (hTpos x)`. Establish `hTc : Measurable fun x => ((T x : ℝ) : ℂ)` using `Complex.measurable_ofReal.comp hT`. Establish `meas : ∀ s : ℂ, AEStronglyMeasurable (fun x => A x * ((T x : ℝ) : ℂ) ^ s) ν` using `fun s => hA.mul (hTc.pow_const s).aestronglyMeasurable`. Establish `bnd : ∀ K : ℕ, ∃ C : ℝ, 0 ≤ C ∧ ∀ x (s : ℂ), |s.re| ≤ K → ‖A x * ((T x : ℝ) : ℂ) ^ s‖ ≤ C * (min (T x) (T x)⁻¹) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `K`. Take `⟨C, hC⟩` from `hdec (K + 2)`. Use `⟨|C|, abs_nonneg _, fun x s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos (hTpos x)]`. Establish `hA' : ‖A x‖ ≤ |C| * (min (T x) (T x)⁻¹) ^ (K + 2)` using `(hC x).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg (wpos x).le _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `rpow_mul_min_pow_le (hTpos x) hs`. Establish `h0 : 0 ≤ T x ^ s.re` using `Real.rpow_nonneg (hTpos x).le _`. Combine the equalities or inequalities in the displayed calculation. Establish `sq_le : ∀ x, (min (T x) (T x)⁻¹) ^ 2 ≤ min (T x) (T x)⁻¹` using `fun x => by`. Use polynomial arithmetic with `[wpos x, wle x]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `⟨fun s => ?_, fun s₀ => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `bnd ⌈|s.re|⌉₊`. Use `Integrable.mono' (hw.const_mul C) (meas s) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Conclude with `(hC x s (Nat.le_ceil _)).trans (mul_le_mul_of_nonneg_left (sq_le x) hC0)`. Take `⟨C, hC0, hC⟩` from `bnd (⌈|s₀.re|⌉₊ + 1)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hre : ∀ s ∈ Metric.ball s₀ 1, |s.re| ≤ ((⌈|s₀.re|⌉₊ + 1 : ℕ) : ℝ)`. Introduce `s hs`. Rewrite `hs` using `[Metric.mem_ball, dist_eq_norm]`. Establish `h1 : |s.re - s₀.re| ≤ ‖s - s₀‖`. Rewrite using `[← Complex.sub_re]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.abs_re_le_norm _`. Establish `h2 : |s.re| ≤ |s₀.re| + |s.re - s₀.re|`. Use `abs_add_le s₀.re (s.re - s₀.re)` as an intermediate fact. Simplify using `using this`. Establish `h3` using `Nat.le_ceil |s₀.re|`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := ν) (F := fun s x => A x * ((T x : ℝ) : ℂ) ^ s) (F' := fun s x => A x * (((T x : ℝ) : ℂ) ^ s * Complex.log ((T x : ℝ) : ℂ))) (x₀ := s₀) (bound := fun x => C * min (T x) (T x)⁻¹) (s := Metric.ball s₀ 1) (Metric.ball_mem_nhds s₀ …`. Conclude with `key.2.differentiableAt`. Take `⟨C', hC0', hC'⟩` from `bnd ⌈|s.re|⌉₊`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Integrable.mono' (hw.const_mul C') (meas s) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Conclude with `(hC' x s (Nat.le_ceil _)).trans (mul_le_mul_of_nonneg_left (sq_le x) hC0')`. Use `show ‖A x * (((T x : ℝ) : ℂ) ^ s * Complex.log ((T x : ℝ) : ℂ))‖ ≤ C * min (T x) (T x)⁻¹`. Rewrite using `[← mul_assoc, norm_mul, ← Complex.ofReal_log (hTpos x).le, Complex.norm_real, Real.norm_eq_abs]`. Establish `h1` using `hC x s (hre s hs)`.
-
-Establish `h2` using `min_mul_abs_log_le (hTpos x)`. Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_nonneg hC0 (wpos x).le`. Use `_ = C * min (T x) (T x)⁻¹ := mul_one _`. Establish `hne : ((T x : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.mpr (hTpos x).ne'`.
-
-Conclude with `(Complex.hasStrictDerivAt_const_cpow (Or.inl hne)).hasDerivAt.const_mul (A x)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_and_differentiable {X : Type} [MeasurableSpace X] (ν : Measure X)
     (A : X → ℂ) (T : X → ℝ)

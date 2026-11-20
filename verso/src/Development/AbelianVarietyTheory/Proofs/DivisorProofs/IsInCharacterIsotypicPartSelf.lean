@@ -7,7 +7,7 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_matrix_trace ℂ (Pi.basisFun ℂ (Fin n)), LinearMap.toMatrix_eq_toMatrix', Matrix.trace]`. Simplify using `[LinearMap.toMatrix'_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_pi_eq_sum (n : ℕ) (A : (Fin n → ℂ) →ₗ[ℂ] (Fin n → ℂ)) :
     LinearMap.trace ℂ (Fin n → ℂ) A = ∑ i, A (Pi.single i 1) i := by
@@ -16,21 +16,19 @@ theorem trace_pi_eq_sum (n : ℕ) (A : (Fin n → ℂ) →ₗ[ℂ] (Fin n → �
   simp [LinearMap.toMatrix'_apply]
 
 /- English proof (translation)
-Introduce `G _ _ Y hY V _ _ _ ρ h`. Establish `: Fintype G` using `Fintype.ofFinite G`. Take `⟨n, σ, hσ⟩` from `hY`. Establish `hYc : ∀ g, Y g = σ.character g` using `fun g => by simpa using hσ g`. Establish `hst : ∀ g, star (Y g) = σ.character g⁻¹` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[star_virt_eq_inv G Y (AddSubgroup.subset_closure ⟨n, σ, hσ⟩) g, hYc]`. Rewrite `h` using `[finsum_eq_sum_of_fintype]`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [hst] at h ⊢`. Establish `hinv : Invertible (Nat.card G : ℂ)` using `invertibleOfNonzero (by`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: 0 < Nat.card G` using `Nat.card_pos`. Conclude with `this.ne')` after adjusting the coercions. Establish `hfr` using `Representation.card_inv_mul_sum_char_eq_finrank (Representation.linHom σ ρ)`. Simplify using `only [Representation.char_linHom] at hfr`. Establish `h' : ∑ g : G, σ.character g⁻¹ * ρ.character g = 0` using `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hfr` using `[h', mul_zero]`. Establish `hbot : (Representation.linHom σ ρ).invariants = ⊥`. Apply `Submodule.finrank_eq_zero.mp` to reduce the goal to its premises. Conclude with `hfr.symm` after adjusting the coercions. Establish `hsum : ∀ f : (Fin n → ℂ) →ₗ[ℂ] V, ∑ g : G, Representation.linHom σ ρ g f = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `f`. Establish `hm : ∑ g : G, Representation.linHom σ ρ g f ∈ (Representation.linHom σ ρ).invariants`. Introduce `h`. Rewrite using `[map_sum]`. Simplify using `only [← Module.End.mul_apply, ← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `Fintype.sum_equiv (Equiv.mulLeft h) _ _ (fun _ => rfl)`. Rewrite `hm` using `[hbot]`. Conclude with `(Submodule.mem_bot ℂ).mp hm`. Use extensionality with `v`. Establish `key : ∀ i : Fin n, ∑ g : G, (σ g⁻¹ (Pi.single i 1)) i • ρ g v = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce `i`. Use `congrArg (fun F : (Fin n → ℂ) →ₗ[ℂ] V => F (Pi.single i 1)) (hsum ((LinearMap.proj i : (Fin n → ℂ) →ₗ[ℂ] ℂ).smulRight v))` as an intermediate fact. Simplify `this` using `[Representation.linHom_apply, LinearMap.sum_apply]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.zero_apply]`. Simplify using `only [Representation.character, trace_pi_eq_sum, Finset.sum_smul]`.
-
-Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_eq_zero (fun i _ => key i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kills_self : ∀ (G : Type) [Group G] [Finite G] (Y : G → ℂ), IsChar ℂ ℂ Y → Kills Y Y := by
   intro G _ _ Y hY V _ _ _ ρ h

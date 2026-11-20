@@ -5,13 +5,13 @@ open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotio
 namespace GlobalTheory.Cut.ResidualSelmer
 
 /- English proof (translation)
-Introduce `D i r ρ π Xs S _ hG _ hN x' hx hZ`. Establish `hrank : ((Eel D.nd S x').map (toK D.nd i)).rank = 1` using `hG.2.2.2.2.2.2.2.2.2.2.1.1 x'`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `h0 : ∀ η : Fin D.R.nV → KK D.nd i, ((Eel D.nd S x').map (toK D.nd i)).mulVec η = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `η`. Apply `hN _ hx hZ` to reduce the goal to its premises. Introduce `g`. Establish `h` using `hcon η g`. Establish `hy : yg D.nd r S g x' = rTwO D.nd i r (S.p x') g * Eel D.nd S x' - Eel D.nd S x'`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `yg`. Rewrite using `[← Matrix.smul_mul]`. Both sides reduce to the same expression. Rewrite `h` using `[hy, Matrix.map_sub _ (map_sub _), Matrix.map_mul, Matrix.sub_mulVec, sub_eq_zero, ← Matrix.mulVec_mulVec]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hz : ((Eel D.nd S x').map (toK D.nd i)).mulVecLin = 0` using `LinearMap.ext h0`. Unfold `Matrix.rank at hrank`. Rewrite `hrank` using `[hz, LinearMap.range_zero, finrank_bot]`. Conclude with `zero_ne_one hrank`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i) (Xs : Set (D.nd.X i)) (S : IdempotentChoiceData D.nd i), GoodR D.nd i r → GoodCongruenceObjects D.nd r ρ π S → π ∈ Xs → NoChiOff i r Xs → ∀ x', S.p x' ∈ Xs → S.p x' ∉ D.nd.Z i → ∃ η : Fin D.R.nV → KK D.nd i, ∃ γ : GE D.nd, ((yg D.nd r S γ x').map (toK D.nd i)).mulVec η ≠ 0 := by
   intro D i r ρ π Xs S _ hG _ hN x' hx hZ

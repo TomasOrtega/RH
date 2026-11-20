@@ -13,17 +13,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteFrame
 
 /- English proof (translation)
-Introduce `D V hs hp`. Take `⟨b, hli, horth⟩` from `GlobalTheory.DefiniteOrthonormal.landherrHasse D V hs hp`. Establish `hsp : Submodule.span D.host.E (Set.range b) = ⊤`. Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hli]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[V.rank_eq]`. Set `B : Module.Basis (Fin V.rank) D.host.E V.V` to `Module.Basis.mk hli (by rw [hsp])`. Establish `hB : ∀ a, B a = b a` using `fun a => by simp [B]`. Set `M : Matrix (Fin V.rank) (Fin V.rank) D.host.E` to `V.frame.toMatrix B`. Set `M' : Matrix (Fin V.rank) (Fin V.rank) D.host.E` to `B.toMatrix V.frame`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fr : GL (Fin V.rank) D.host.E` to `⟨M, M', Module.Basis.toMatrix_mul_toMatrix_flip _ _, Module.Basis.toMatrix_mul_toMatrix_flip _ _⟩`. Use `⟨fr, ?_⟩` and prove the remaining obligations. Use extensionality with `a c`. Establish `key : V.hT (b a) (b c) = ∑ i, ∑ j, star (M i a) * V.gram i j * M j c`. Rewrite using `[← hB a, ← hB c]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← V.frame.sum_repr (B a), ← V.frame.sum_repr (B c)]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, Finset.mul_sum, M, Module.Basis.toMatrix_apply, Formalism.BasicNotions.HSpace.gram]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `lhs : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * V.gram * fr.1) a c = ∑ i, ∑ j, star (M i a) * V.gram i j * M j c`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lhs, ← key, horth, Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitary_frame : ∀ (D : D7) (V : HSp D), V.SigOK → (∀ τ, V.sig τ = (V.rank, 0)) →
     ∃ fr : GL (Fin V.rank) D.host.E, Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) fr.1 * V.gram * fr.1 = 1 := by

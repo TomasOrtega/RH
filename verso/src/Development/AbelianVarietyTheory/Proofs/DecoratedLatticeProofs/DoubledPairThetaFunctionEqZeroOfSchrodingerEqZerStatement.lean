@@ -13,7 +13,7 @@ open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Core.Rk.SchwInj.eq_zero_of_sch_eq_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDecoratedLatticeProofs%2FDoubledPairThetaFunctionEqZeroOfSchrodingerEqZer.lean&line=34#L34)
 -/

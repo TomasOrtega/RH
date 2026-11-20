@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.DualCon
 
 /- English proof (translation)
-Use `⟨⟨fun _ => 1⟩, fun i j => ?_⟩` and prove the remaining obligations. Establish `hU : (LB.div M L).U i ⊓ (LB.div M L).U j = ⊥` using `by ext x; exact (IsEmpty.false x).elim`. Establish `: Subsingleton Γ(X, (LB.div M L).U i ⊓ (LB.div M L).U j)` using `by rw [hU]; infer_instance`. Conclude with `Subsingleton.elim _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lbIso_of_isEmpty {X : Scheme.{0}} [IsEmpty X] (L M : LB X) : LBIso L M := by
   refine ⟨⟨fun _ => 1⟩, fun i j => ?_⟩
@@ -20,11 +20,11 @@ theorem lbIso_of_isEmpty {X : Scheme.{0}} [IsEmpty X] (L M : LB X) : LBIso L M :
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Introduce `S A S' _ g hS`. Establish `emp : ∀ {Y : Over S} (_ : Y ⟶ S'), IsEmpty Y.left` using `fun y => ⟨fun p => hS.false (y.left p)⟩`. Use `⟨S', 𝟙 S', LB.triv _, ⟨⟨LB.isLB_triv _, fun Y a a' t => ?_⟩, fun T t N _ => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `emp t` as an intermediate fact. Conclude with `lbIso_of_isEmpty _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `emp (snd A T ≫ t)` as an intermediate fact. Conclude with `⟨t, ⟨Category.comp_id _, lbIso_of_isEmpty _ _⟩, fun x hx => (Category.comp_id x).symm.trans hx.1⟩`. Rewrite using `[Over.id_left]`. Use `⟨inferInstance, ⟨fun x => isEmptyElim x⟩, ⟨?_⟩⟩` and prove the remaining obligations. Introduce `K _ y Z fst snd h`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isEmptyElim (y (IsLocalRing.closedPoint K))`. Introduce `F`. Conclude with `⟨⊥, isAffineOpen_bot _, fun x _ => isEmptyElim x⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hasRepAF_of_isEmpty : ∀ (S : Scheme.{0}) (A S' : Over S) [GrpObj A] (g : ℕ), IsEmpty S'.left →
     HasRepAF A g S' := by

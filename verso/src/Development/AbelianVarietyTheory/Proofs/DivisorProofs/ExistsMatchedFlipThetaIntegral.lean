@@ -32,7 +32,7 @@ noncomputable section
 namespace GlobalTheory.BigNZ
 
 /- English proof (translation)
-Use `Subtype.ext (Units.ext ?_)` and prove the remaining obligations. Conclude with `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul e _ _ _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem blkU_mul {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (h : J = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.skewGram A B e) (x y : GA D A × GA D B) : blkU A B e h x * blkU A B e h y = blkU A B e h (x * y) := by
@@ -40,25 +40,23 @@ theorem blkU_mul {D : D7} (A B : HSp D) {d : ℕ} (e : Fin A.rank ⊕ Fin B.rank
   exact GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_mul e _ _ _ _
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `exists_vol G hL t`. Take `⟨e, Bs, Γ, X, om, om', h, hT, hti⟩` from `GlobalTheory.T.exists_thetaTripleOfSquareGrid_latticeCompatible hL W t i j hst M hM`. Take `⟨R, Rf, hm⟩` from `hLM _ _ _ Bs _ _ Γ X om om' hT`. Take `⟨dec, hk⟩` from `hK.1 _ _ _ Bs _ _ Γ X om om' hT`. Take `⟨hc, hco⟩` from `hk R Rf hm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hla, hl⟩` from `GlobalTheory.T.exists_adm_eq_thetaIntegral_of_conv Γ.M Bs.ψ _ _ om hT.weil dec.1`. Establish `hw0 : G.pl.w G.pl.v0 ∈ locPl G t` using `Finset.mem_union_left _ (by`. Establish `: G.pl.v0 ∈ G.pl.S0` using `by unfold Places.S0; convert Finset.mem_insert_self _ _`. Unfold `Places.W0`. Use `Finset.mem_image_of_mem _ this)` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hv0` using `(hti.2.2.1 _).2 ⟨_, hw0, rfl⟩`. Establish `hd : 0 < (spW G i j).rank + (spW₁ G i j).rank` using `by have := hT.geo.aBig; omega`. Take `⟨f, hf, h0⟩` from `exists_I_ne_zero_at hm hc hco hla hl (GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ X om om' hT 1 (one_mem _)) hv0 (GlobalTheory.T.weilRepresentationLocality_tensorModelVW Bs Γ X om om' hT _) (GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_u …`. Take `⟨s, g, h1, h2⟩` from `GlobalTheory.T.exists_detOne_mul_blockUnitary_decomposition _ _ e h.JWW hd x`. Conclude with `⟨s, _, ⟨g, rfl⟩, h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨φ, hφ, hP, _, ⟨g, rfl⟩, hne⟩` from `exists_I_ne_zero_kind hm hc hco (H := Set.range (blkU _ _ e h.JWW)) (by rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩; exact ⟨x * y, (blkU_mul _ _ e h.JWW x y).symm⟩) (fun v χ => ∀ w ∈ locPl G t, w.under (𝓞 D.host.F) = v → ∃ n Φ, depthAt G w ≤ n ∧ IsNatDatum (unifAt w) n Φ ∧ IsLocFn W B t e Γ w v …`. Take `⟨w, hw, ew⟩` from `(hti.2.2.1 v).1 hv`. Take `⟨n, Φ, φ₂, k, φ₃, h1, h2, h3, h4, h5, h6⟩` from `GlobalTheory.T.squareFlip_reaches_localQuotient_classes hL W B t i j M hst e Bs Γ X om om' h R Rf hm hti w hw v ew φ₀ hφ₀`. Use `⟨φ₂, h3.1, fun w' hw' ew' => ?_, _, ⟨k, rfl⟩, φ₃, h4, h5, h6⟩` and prove the remaining obligations. Take `rfl : w = w'` from `(hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w hw ew).symm.trans (hti.2.2.2 ⟨v, hT.chars.sub hv⟩ w' hw' ew')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨n, Φ, h1, h2, h3⟩) hf h0`. Establish `H : ∀ w, ∃ n Φ, w ∈ locPl G t → depthAt G w ≤ n ∧ IsNatDatum (unifAt w) n Φ ∧ IsLocFn W B t e Γ w (w.under (𝓞 D.host.F)) (flipAt W t i j w n Φ) (φ (w.under (𝓞 D.host.F)))` using `fun w => by`. Distinguish the cases in `hw : w ∈ locPl G t`. Take `⟨n, Φ, H⟩` from `hP _ ((hti.2.2.1 _).2 ⟨w, hw, rfl⟩) w hw rfl`. Conclude with `⟨n, Φ, fun _ => H⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, fun h => absurd h hw⟩`. Use `choose n Φ H using H`. Establish `hnat : ∀ w ∈ locPl G t, depthAt G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)` using `fun w hw => ⟨(H w hw).1, (H w hw).2.1⟩`. Take `⟨τ, τ', hF, -⟩` from `(LocTensor.local_tensors hL B ρ t i j).2.2.2 (fun w hw hmem => hst.2 w hw (by`. Establish `e : ((D.host.QS * D.host.q * D.host.d * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) = (D.host.d : 𝓞 D.host.E) * ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E)` using `by push_cast; ring`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ hmem)) n Φ hnat`. Take `⟨f₀, h1, h2, h3⟩` from `GlobalTheory.T.exists_gaussianDatum_flippedFiniteTensor_bigRoute hL W B ρ t i j M hst e Bs Γ X om om' h hT hti n Φ τ τ' hnat hF φ hφ fun w hw => (H w hw).2.2`. Take `⟨a, ha⟩` from `GlobalTheory.T.realPolynomialVector_reached_by_realDatum hL W B ρ t i j M e Bs Γ X om om' h hT n Φ τ τ' hF φ hφ f₀ h1 h2 h3 f hf`. Take `⟨b', hb'⟩` from `ρ.onto_big i j (toTens a)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨b, rfl⟩` from `toTens_surjective b'`. Establish `hΘ : IsMatched B t ρ i j (tensT W a τ) (tensT W b τ')` using `⟨a, b, τ, τ', n, Φ, hb', hnat, hF, rfl, rfl⟩`. Take `⟨ξ, hξ, hker⟩` from `GlobalTheory.T.big_route_kernel_eq_const_mul_theta hL W B ρ t i j M _ _ hΘ e Bs Γ X om om' h hT _ ha g.1 g.2`. Use `⟨M, hM, a, τ, τ', n, Φ, hnat, hF, g.1, g.2, ?_⟩` and prove the remaining obligations. Establish `hfd` using `(hM.vtx (.grid (i + 1) (j + 1)) ⟨i.2, j.2⟩).haar_fund`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hker]`. Rewrite using `[integral_const_mul, GlobalTheory.T.setIntegral_conjugate_scaled_unitaryGroup_eq _ 1 one_ne_zero h.JW _ _ hfd.1 hfd.2 Γ.M.dom (h.μW ▸ hT.geo.hM.dom) (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om _ x _) fun γ hγ x => ?_, ← h.μW]`. Conclude with `mul_ne_zero hξ hne`. Establish `e3 : ((γ * x, blkU _ _ e h.JWW (g.1, g.2)) : UB Γ.V.J × UB Γ.W.J) = (γ, 1) * (x, blkU _ _ e h.JWW (g.1, g.2))`. Simplify using the standard rewrite rules.
-
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta]`. Rewrite using `[e3, map_mul, Module.End.mul_apply, GlobalTheory.T.theta_distribution_rational_points_invariant_triple Bs Γ X om om' hT γ hγ 1 (one_mem _) _ (hT.weil.isUSplitting.pres _ _ ha.1)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (hK : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree)
     (hLM : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching) {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}
@@ -128,19 +126,17 @@ theorem exists_integral_ne_zero (hSA : GlobalTheory.Published.StrongApproxSU) (h
 open Formalism.IndefR GlobalTheory.RowTest GlobalTheory.RowClaim
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS _ _ _ => hS.size.2.1.eleven_le⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem splitBound_ge : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ _ => 11 ≤ D.host.splitBound :=
   ⟨0, fun _ _ _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F hS _ _ _ => hS.size.2.1.eleven_le⟩⟩
 
 /- English proof (translation)
-Take `⟨CF0, hH⟩` from `splitBound_ge.and GlobalTheory.PlacesPrime.places_prime_to_level`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hH ε CF hCF`. Use `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc t => ?_⟩` and prove the remaining obligations. Take `⟨h11, hW⟩` from `hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hch hsc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨h11, fun w hw => ?_⟩` and prove the remaining obligations. Unfold `locPl at hw`. Break down `Finset.mem_union.1 hw with hw | hw` into its components or cases. Conclude with `hW w hw`. Introduce `hmem`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `(hS.core.lev.Q_off t w hw).1`. Establish `h2` using `hS.guard.2 t w hw`. Move the coercions through the operations in `at hmem h1 h2`. Break down `w.isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `h1 (Ideal.mul_mem_right _ _ h)`.
-
-Conclude with `h2 (Ideal.mul_mem_left _ _ h)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem standing : Big fun ch => ∀ t, SquareStanding ch.G t := by
   obtain ⟨CF0, hH⟩ := splitBound_ge.and GlobalTheory.PlacesPrime.places_prime_to_level
@@ -162,9 +158,9 @@ theorem standing : Big fun ch => ∀ t, SquareStanding ch.G t := by
     · exact h2 (Ideal.mul_mem_left _ _ h)
 
 /- English proof (translation)
-Introduce `hP hK hLM _ _ _`. Take `⟨CF0, hH⟩` from `standing`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨x₀, hx⟩` from `hH ε CF hCF`. Use `⟨x₀, fun D large₂ he hx0 Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc i j t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exists_integral_ne_zero hP.strongApproxSU hK hLM hS.core.lev ch.W ch.S.B ch.rm t i j (hx D large₂ he hx0 Γ Pl0 T A Ks R F hS ch hch hsc t)`.
+A detailed English derivation is pending.
 -/
 theorem big_nonzero : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t, ∃ M : Vol ch.G, M.Is t ∧ ∃ a τ τ' n Φ,
     (∀ w ∈ locPl ch.G t, depthAt ch.G w ≤ n w ∧ IsNatDatum (unifAt w) (n w) (Φ w)) ∧ HasFlip ch.S.B t ch.rm i j n Φ τ τ' ∧

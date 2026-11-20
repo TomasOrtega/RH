@@ -24,11 +24,11 @@ def rat (H : Subgroup (GL (Fin n) (AE F E))) : Subgroup H :=
   (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range.subgroupOf H
 
 /- English proof (translation)
-Establish `: Nontrivial (AE F E)`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Conclude with `((infEmb τ).comp (compInf F E w)).domain_nontrivial`. Use extensionality with `g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun ⟨δ, _, hδ⟩ => ⟨δ, hδ⟩, fun ⟨δ, hδ⟩ => ⟨δ, ?_, hδ⟩⟩` and prove the remaining obligations. Use `show cT (σ : E →+* E) δ.1 * J * δ.1 = J`. Apply `Matrix.map_injective (inclR (F := F) (E := E) (AF F)).injective` to reduce the goal to its premises. Establish `hg : cT (sigR (AF F) σ) (matHom _ σ J g).1 * JR (AF F) J * (matHom _ σ J g).1 = JR (AF F) J` using `g.2`. Establish `e : δ.1.map (inclR (F` using `F) (AF F)) = (matHom _ σ J g).1 := congrArg Units.val hδ`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hg` using `[← e]`. Simplify using `only [Matrix.map_mul]`. Conclude with `hg`.
+A detailed English derivation is pending.
 -/
 theorem ratPts_eq : ratPts σ J = rat (HR (AF F) σ J) := by
   have : Nontrivial (AE F E) := by
@@ -46,13 +46,13 @@ theorem ratPts_eq : ratPts σ J = rat (HR (AF F) σ J) := by
   exact hg
 
 /- English proof (translation)
-Establish `hσ` using `sigma_sigma h`. Establish `hd : ∀ c : E, c ≠ 0 → (c • J.map σ).det ≠ 0` using `fun c hc => by`. Establish `e : (J.map σ).det = σ J.det` using `((σ : E →+* E).map_det _).symm`. Rewrite using `[det_smul, e]`. Conclude with `mul_ne_zero (pow_ne_zero _ hc) ((map_ne_zero σ).2 hJ.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hJ.1 with h1 | h1` into its components or cases. Conclude with `⟨1, one_ne_zero, fun i j => by simp [h1], hd 1 one_ne_zero⟩`. Take `⟨x, hx⟩ : ∃ x, σ x ≠ x` from `by by_contra! hx`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Use `h.2.1` as an intermediate fact.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsTotallyComplex.complexEmbedding_not_isReal τ ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.isReal_iff]`. Use extensionality with `z`. Use `h.2.2.2 τ z` as an intermediate fact. Rewrite `this` using `[hx]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this.symm`. Use `⟨σ x - x, sub_ne_zero.2 hx, fun i j => ?_, hd _ (sub_ne_zero.2 hx)⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, map_apply, smul_eq_mul, map_mul, map_sub, hσ, h1 j i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_herm (h : IsCMExt F E σ) (hJ : EpsHerm σ J) : ∃ c : E, c ≠ 0 ∧ IsHermND σ (c • J.map σ) := by
   have hσ := sigma_sigma h
@@ -78,7 +78,7 @@ theorem exists_herm (h : IsCMExt F E σ) (hJ : EpsHerm σ J) : ∃ c : E, c ≠ 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [form, mulVec, dotProduct, Matrix.mul_apply, cT, transpose_apply, map_apply, Matrix.smul_apply, smul_eq_mul, map_sum, map_mul, hσ, RingHom.coe_coe, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram (hσ : ∀ x, σ (σ x) = x) (c : E) (Z : Matrix (Fin n) (Fin r) E) (u : Fin n → E) (i : Fin r) :
     ((cT (σ : E →+* E) Z * (c • J.map σ)) *ᵥ u) i = c * σ (form σ J (fun k => Z k i) u) := by
@@ -89,9 +89,9 @@ theorem gram (hσ : ∀ x, σ (σ x) = x) (c : E) (Z : Matrix (Fin n) (Fin r) E)
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Establish `e2` using `congrArg σ e`. Simplify using `only [form, mulVec, dotProduct, map_sum, map_mul, hσ, map_zero, Finset.mul_sum] at e2 ⊢`. Rewrite using `[Finset.sum_comm]`. Break down `hJ.1 with h1 | h1` into its components or cases. Rewrite using `[← e2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by rw [h1]; ring`. Rewrite using `[← neg_zero, ← e2, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun _ _ => by rw [h1]; ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap (hσ : ∀ x, σ (σ x) = x) (hJ : EpsHerm σ J) {x y : Fin n → E} (e : form σ J x y = 0) :
     form σ J y x = 0 := by
@@ -108,9 +108,9 @@ theorem swap (hσ : ∀ x, σ (σ x) = x) (hJ : EpsHerm σ J) {x y : Fin n → E
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero => exact zero_dotProduct _`. Consider the case `add x y _ _ hx hy => rw [form, add_dotProduct]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `(congrArg₂ (· + ·) hx hy).trans (add_zero 0)`. Consider the case `smul a x _ hx => rw [form, smul_dotProduct]`. Conclude with `(congrArg (a • ·) hx).trans (smul_zero a)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem perp_span {S : Set (Fin n → E)} {z : Fin n → E} (h : ∀ u ∈ S, form σ J u z = 0) :
     ∀ u ∈ Submodule.span E S, form σ J u z = 0 := by
@@ -123,11 +123,11 @@ theorem perp_span {S : Set (Fin n → E)} {z : Fin n → E} (h : ∀ u ∈ S, fo
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Establish `e : form σ J (fun k => C k i) z = 0` using `swap hσ hJ (h (Cᵀ i) (Submodule.subset_span ⟨i, rfl⟩))`. Rewrite using `[gram hσ, e, map_zero, mul_zero]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `h u hu`. Use `swap hσ hJ (perp_span ?_ u hu)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Use `(gram (J := J) hσ c C z i).symm.trans (congrFun h i)` as an intermediate fact.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e : form σ J (fun k => C k i) z = 0` using `by simpa [hc] using this`. Conclude with `e`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perp_iff (hσ : ∀ x, σ (σ x) = x) (hJ : EpsHerm σ J) {c : E} (hc : c ≠ 0) (C : Matrix (Fin n) (Fin r) E)
     (z : Fin n → E) : (∀ u ∈ Submodule.span E (Set.range Cᵀ), form σ J z u = 0) ↔
@@ -158,7 +158,7 @@ def lines (H : Subgroup (GL (Fin n) (AE F E))) : Set (Multiplicative ℝ →* H)
 
 omit [NumberField E] in
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec (inclR (F := F) (AF F)) C a i`.
+A detailed English derivation is pending.
 -/
 theorem incV_mulVec (C : Matrix (Fin n) (Fin r) E) (a : Fin r → E) :
     incV F (C *ᵥ a) = adMat F C *ᵥ incV F a := funext fun i =>
@@ -166,7 +166,7 @@ theorem incV_mulVec (C : Matrix (Fin n) (Fin r) E) (a : Fin r → E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `e : LinearMap.range C.mulVecLin = Submodule.span E (Set.range Cᵀ)` using `Matrix.range_mulVecLin C`. Rewrite `hu` using `[← e]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_cols {C : Matrix (Fin n) (Fin r) E} {u : Fin n → E} (hu : u ∈ Submodule.span E (Set.range Cᵀ)) :
     ∃ a, C *ᵥ a = u := by
@@ -176,11 +176,11 @@ theorem mem_cols {C : Matrix (Fin n) (Fin r) E} {u : Fin n → E} (hu : u ∈ Su
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `e : Submodule.span (AE F E) (incV F '' (Submodule.span E (Set.range Cᵀ) : Set (Fin n → E))) = LinearMap.range (adMat F C).mulVecLin`. Use `le_antisymm (Submodule.span_le.2 ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Take `⟨a, rfl⟩` from `mem_cols hu`. Conclude with `⟨incV F a, (incV_mulVec C a).symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Matrix.range_mulVecLin]`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨Cᵀ i, Submodule.subset_span ⟨i, rfl⟩, rfl⟩`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨a, ha⟩ => ⟨a, ha.symm⟩, fun ⟨a, ha⟩ => ⟨a, ha.symm⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem span_eq (C : Matrix (Fin n) (Fin r) E) (x : Fin n → AE F E) :
     x ∈ Submodule.span (AE F E) (incV F '' (Submodule.span E (Set.range Cᵀ) : Set (Fin n → E))) ↔
@@ -200,13 +200,13 @@ theorem span_eq (C : Matrix (Fin n) (Fin r) E) (x : Fin n → AE F E) :
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `congrArg Subgroup.closure (Set.ext fun g => ?_)` and prove the remaining obligations. Take `⟨m, hm⟩ : ∃ m : Matrix (Fin n) (Fin n) (AE F E), m = (matHom _ σ J g).1` from `⟨_, rfl⟩`. Establish `hg : cT (sigR (AF F) σ) m * JR (AF F) J * m = JR (AF F) J` using `hm ▸ g.2`. Establish `key : ((m - 1) * adMat F C = 0 ∧ adMat F (cT (σ : E →+* E) C * J) * (m - 1) = 0 ∧ ∀ x : Fin n → E, (cT (σ : E →+* E) C * J) *ᵥ x = 0 → ∃ a : Fin r → AE F E, (m - 1) *ᵥ incV F x = adMat F C *ᵥ a) ↔ ((∀ u ∈ Submodule.span E (Set.range Cᵀ), m *ᵥ incV F u = incV F u) ∧ ∀ z : Fin n → …`. Simplify using `only [span_eq, sub_mulVec, one_mulVec, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨fun ⟨h1, _, h3⟩ => ⟨fun u hu => ?_, h3⟩, fun ⟨h1, h3⟩ => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `mem_cols hu`. Rewrite using `[incV_mulVec, mulVec_mulVec, h1]`. Establish `h2 : m * adMat F C = adMat F C` using `Matrix.ext fun i j => congrFun (h1 (Cᵀ j) (Submodule.subset_span ⟨j, rfl⟩)) i`. Use `⟨h2, ?_, h3⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : adMat F (cT (σ : E →+* E) C * J) = (cT (sigR (AF F) σ) (adMat F C) * JR (F` using `F) (AF F) J : Matrix (Fin r) (Fin n) (AF F ⊗[F] E)) := by`. Rewrite using `[adMat, Matrix.map_mul]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `conv_lhs => rw [← h2, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT _ m), hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hm` using the available equality. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem unipRad_eq (C : Matrix (Fin n) (Fin r) E) : unipRad σ J C =
     unip (HR (AF F) σ J) (Submodule.span E (Set.range Cᵀ)) fun z => (cT (σ : E →+* E) C * J) *ᵥ z = 0 := by
@@ -236,9 +236,9 @@ theorem unipRad_eq (C : Matrix (Fin n) (Fin r) E) : unipRad σ J C =
 
 omit [NumberField E] in
 /- English proof (translation)
-Establish `: ∀ x : AE F E, e0 F • x = LinearMap.rTensor E (show Af F →ₗ[F] AF F from LinearMap.inr F (Ainf F) (Af F)) (Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) x)` using `fun x => by`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`. Consider the case `tmul a y`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[TensorProduct.smul_tmul', Algebra.TensorProduct.map_tmul, LinearMap.rTensor_tmul]`. Conclude with `congrArg (· ⊗ₜ[F] y) (Prod.ext (zero_mul _) (one_mul _))`. Rewrite using `[this, h, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_smul_eq_zero_of_map (x : AE F E) (h : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) x = 0) : e0 F • x = 0 := by
   have : ∀ x : AE F E, e0 F • x = LinearMap.rTensor E (show Af F →ₗ[F] AF F from LinearMap.inr F (Ainf F) (Af F))
@@ -253,7 +253,7 @@ theorem idempotent_smul_eq_zero_of_map (x : AE F E) (h : Algebra.TensorProduct.m
 
 omit [NumberField E] in
 /- English proof (translation)
-Use `(at_iff _).2 (Matrix.ext fun i j => idempotent_smul_eq_zero_of_map _ ?_)` and prove the remaining obligations. Establish `e : Algebra.TensorProduct.map (sndA F) (AlgHom.id F E) ((matHom _ σ J g).1 i j) = (1 : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)) i j` using `congrArg (fun y : GFin σ J => (matHom _ σ J y).1 i j) h`. Rewrite using `[Matrix.sub_apply, map_sub, e, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem at_of_projFin {g : GAd σ J} (h : GlobalTheory.AdelicU.projFin σ J g = 1) : At (evI F) ((matHom _ σ J g).1 - 1) := by
   refine (at_iff _).2 (Matrix.ext fun i j => idempotent_smul_eq_zero_of_map _ ?_)
@@ -265,13 +265,11 @@ theorem at_of_projFin {g : GAd σ J} (h : GlobalTheory.AdelicU.projFin σ J g = 
 
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 /- English proof (translation)
-Take `⟨w, τ, Z, -, hZ⟩` from `hγ`. Use `choose y e1 e2 using hZ`. Establish `hE` using `isEmbedding_archMat J h τ`. Establish `hi : ∀ a b, archMat σ J τ a = archMat σ J τ b → a = b` using `fun a b e => hE.injective e`. Establish `h0 : y 0 = 1` using `hi _ _ (by rw [e2, zero_smul, NormedSpace.exp_zero, map_one])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ s t, y (s + t) = y s * y t` using `fun s t => hi _ _ (by`. Rewrite using `[map_mul, e2, e2, e2, add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl Z).smul_left s).smul_right t))`. Establish `hc : Continuous y` using `hE.continuous_iff.2 (by`. Establish `: (matCoord (archMat σ J τ) ∘ y) = fun t : ℝ => NormedSpace.exp (t • Z)` using `funext e2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this]`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Establish `hz : Continuous fun t : ℝ => t • Z` using `continuous_id.smul continuous_const`. Conclude with `(NormedSpace.exp_continuous (𝔸 := Matrix (Fin n) (Fin n) ℂ)).comp hz)`. Set `δ : Multiplicative ℝ →* GAd σ J` to `{ toFun := fun t => embArch σ J w (y t.toAdd) map_one' := by rw [toAdd_one, h0, map_one] map_mul' := fun s t => by rw [toAdd_mul, h1, map_mul] }`.
-
-Conclude with `⟨δ, ⟨(continuous_embArch σ J w).comp (hc.comp continuous_toAdd), fun t => at_of_projFin (projFin_embArch σ J w _)⟩, fun t => (e1 t).symm⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem line_of (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     ∃ δ ∈ lines (HR (AF F) σ J), ∀ t, δ (Multiplicative.ofAdd t) = γ t := by
@@ -297,9 +295,9 @@ theorem line_of (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine �
     fun t => at_of_projFin (projFin_embArch σ J w _)⟩, fun t => (e1 t).symm⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.Doubling.nonarchimedeanGroup_GFin σ J`. Take `⟨V, hV⟩` from `NonarchimedeanGroup.is_nonarchimedean (ofFin σ J ⁻¹' U) ((continuous_ofFin σ J).continuousAt.preimage_mem_nhds (by rwa [map_one]))`. Use `⟨V.1.comap (GlobalTheory.AdelicU.projFin σ J), V.isOpen.preimage (continuous_projFin σ J), fun k hk hk' => hf k ?_ fun w => ?_⟩` and prove the remaining obligations. Use `ofInf_projInf_mul_ofFin_projFin σ J k` as an intermediate fact. Rewrite `this` using `[mem_finPts.1 hk', map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `hV hk`. Express the relevant statement in the definitionally equal form `archMat σ J (τ w) (projArch σ J w k) = 1`. Rewrite using `[← projInfArch_projInf, mem_finPts.1 hk', map_one, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level (τ : ∀ w : InfinitePlace F, EmbOver E w) {f : GAd σ J → ℂ} {U : Set (GAd σ J)} (hU : U ∈ 𝓝 1)
     (hf : ∀ u ∈ U, (∀ w, (matHom _ σ J u).1.map (piInf (τ w)) = 1) → ∀ h, f (h * u) = f h) :
@@ -318,7 +316,7 @@ theorem level (τ : ∀ w : InfinitePlace F, EmbOver E w) {f : GAd σ J → ℂ}
 def linesG (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) : Set (Multiplicative ℝ →* GAd σ J) := lines (HR (AF F) σ J)
 
 /- English proof (translation)
-The claim follows from `let ⟨δ, a, b⟩ := line_of h hγ ⟨δ, a, funext fun t => (b t).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem line_ofG (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) :
     ∃ δ ∈ linesG σ J, γ = fun t => δ (Multiplicative.ofAdd t) :=
@@ -326,13 +324,11 @@ theorem line_ofG (h : IsCMExt F E σ) {γ : ℝ → GAd σ J} (hγ : IsRealLine 
   ⟨δ, a, funext fun t => (b t).symm⟩
 
 /- English proof (translation)
-Take `⟨k, S, hf, hSS⟩` from `h2`. Take `⟨U, hU, hU'⟩` from `h4`. Use `⟨h1, level τ hU hU', (hSS f hf).1, fun k γ hγ g => ?_, k, fun l hl => ?_⟩` and prove the remaining obligations. Use `choose δ hδ e using fun i => line_ofG h (hγ i)`. Take `rfl : γ = fun i t => δ i (Multiplicative.ofAdd t)` from `funext e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h3 k δ hδ g`. Establish `: l.foldr lineDer f ∈ S`. Proceed by induction on `l with`. Consider the case `nil => exact hf`. Consider the case `cons γ l ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, e⟩` from `line_ofG h (hl γ List.mem_cons_self)`. Take `⟨f₂, a1, a2⟩` from `(hSS _ (ih fun β hβ => hl β (List.mem_cons_of_mem _ hβ))).2.2 δ hδ`. Establish `e2 : lineDer γ (l.foldr lineDer f) = f₂` using `funext fun g => by`. Rewrite using `[e]`. Conclude with `(a2 g).deriv`.
-
-Rewrite using `[List.foldr_cons, e2]`. Conclude with `a1`. Conclude with `(hSS _ this).2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moderate (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (f : GAd σ J → ℂ)
     (h1 : ∀ γ ∈ ratPts σ J, ∀ g, f (γ * g) = f g)
@@ -364,7 +360,7 @@ theorem moderate (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w
     exact (hSS _ this).2.1
 
 /- English proof (translation)
-Introduce `r C hC` and use `by have := h5 r C hC.1 hC.2.1 hC.2.2 rw [← unipRad_eq, ← ratPts_eq] at this exact this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspidal (f : GAd σ J → ℂ)
     (h5 : ∀ (r : ℕ) (C : Matrix (Fin n) (Fin r) E), 0 < r → LinearIndependent E Cᵀ → cT (σ : E →+* E) C * J * C = 0 →
@@ -376,9 +372,9 @@ theorem cuspidal (f : GAd σ J → ℂ)
   exact this
 
 /- English proof (translation)
-Take `⟨S₀, -, hcov, -, -, hφ⟩` from `exists_cover hS h hJ`. Take `⟨C, hC⟩` from `(hφ f hm hc N).1`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, rfl⟩` from `hcov g`. Use `⟨γ⁻¹, inv_mem hγ, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_mul_cancel_left, hm.left γ hγ]`. Conclude with `hC s hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rapidG (hS : GlobalTheory.Published.SiegelSetUnitary) (h : IsCMExt F E σ) (hJ : IsHermND σ J) (f : GAd σ J → ℂ)
     (hm : IsSmoothModerate σ J f) (hc : IsCuspidal σ J f) (N : ℕ) :
@@ -392,7 +388,7 @@ theorem rapidG (hS : GlobalTheory.Published.SiegelSetUnitary) (h : IsCMExt F E �
   exact hC s hs
 
 /- English proof (translation)
-Substitute `hH` using the available equality. Establish `h6` using `cuspidal f h5`. Rewrite `h1`, the goal using `[← ratPts_eq]`. Conclude with `rapidG hS h hJ f (moderate h τ f h1 h2 h3 h4) h6 N`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core (hS : GlobalTheory.Published.SiegelSetUnitary) (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (τ : ∀ w : InfinitePlace F, EmbOver E w) (H : Subgroup (GL (Fin n) (AE F E))) (hH : H = HR (AF F) σ J) (f : H → ℂ)
@@ -414,11 +410,11 @@ end CuspR
 
 open CuspR in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h τ d W hJ f h1 h2 h4 h5 N`. Establish `hσ` using `sigma_sigma h`. Take `⟨c, hc, hJ'⟩` from `exists_herm h hJ`. Take `⟨C, hC⟩` from `core hS h hJ' τ (UG (cA σ) (incM F W.J)) (ug_eq_hr hσ hc) f h1 h2 (hU F E σ h τ d W hJ f h2) h4 (fun r C hr hl hi => by`. Establish `e : (fun z => (cT (σ : E →+* E) C * (c • W.J.map σ)) *ᵥ z = 0) = fun z => ∀ u ∈ Submodule.span E (Set.range Cᵀ), form σ W.J z u = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun z => propext (perp_iff hσ hJ hc C z).symm`. Rewrite using `[e]`. Use `h5 _ (fun h0 => ?_) fun u hu => (perp_iff hσ hJ hc C u).2 ?_` and prove the remaining obligations. Conclude with `hl.ne_zero ⟨0, hr⟩ ((Submodule.eq_bot_iff _).1 h0 _ (Submodule.subset_span ⟨_, rfl⟩))`. Take `⟨a, rfl⟩` from `mem_cols hu`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_mulVec, hi, zero_mulVec]) N`. Use `⟨C, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, e⟩` from `hC g`. Use `le_trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) ?_ N) (norm_nonneg _)) e` and prove the remaining obligations. Conclude with `NNReal.coe_le_coe.2 (ciInf_le' (fun γ : ratU σ W.J => ht (γ.1 * g)) ⟨γ, hγ⟩)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cuspRapid_of (hS : GlobalTheory.Published.SiegelSetUnitary) (hU : UMGSmooth) : CuspRapid := by
   intro F E _ _ _ _ _ σ h τ d W hJ f h1 h2 h4 h5 N

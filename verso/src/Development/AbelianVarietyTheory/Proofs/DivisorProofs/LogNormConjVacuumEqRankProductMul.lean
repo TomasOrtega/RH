@@ -14,20 +14,20 @@ open Module NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNo
 namespace GlobalTheory.ConjVacuumPower
 
 /- English proof (translation)
-Unfold `Ranks.N`. Conclude with `R.k_even.add ((R.t_odd.add_one).mul_left l)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem even_rank (R : Ranks) (l : ℕ) : Even (R.N l) := by
   unfold Ranks.N
   exact R.k_even.add ((R.t_odd.add_one).mul_left l)
 
 /- English proof (translation)
-Introduce `D dl B χ cD K _ σ₀ R M _ hadm hpsi hcur hdel hχ hV hH ρ`. Establish `hc : StandardLatticesGL3.Crv D D.host.ccK dl` using `⟨hcur, hdel⟩`. Establish `hY` using `GlobalTheory.ExponentsFinite.yFinite D B.γ₀ B.kc`. Establish `hT` using `GlobalTheory.T.normalisedFamily_eq_tensorPower_vacuum D _ dl B χ hadm hpsi hcur hdel hχ hY`. Establish `hD : TaylorLogMetric.DataIn D (TaylorLogMetric.tor0 D D.host.ccK dl) M` using `hH.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨t', ht'⟩` from `(GlobalTheory.TwoTorsionPt.exists_point D _ dl hc).2 M ρ hD.2.1 hD.2.2`. Use `⟨(TaylorLogMetric.fF D : ℝ) * Real.log (StandardLatticesGL3.nrm1Sq (TaylorLogMetric.lamConj M ρ (TaylorLogMetric.lamOf D D.host.ccK dl)) (GL3Theta.th0 (TaylorLogMetric.lamConj M ρ (TaylorLogMetric.lamOf D D.host.ccK dl)) t')), fun i hi => ?_⟩` and prove the remaining obligations. Take `⟨hAdm, hbase⟩` from `GlobalTheory.NatAtStd.eNat_std D _ dl B χ hχ hV _ _ (even_rank R i) (even_rank R (i + 1))`. Establish `hE` using `hT _ B.t0 _ _ _ _ hAdm`. Rewrite `hE` using `[hbase]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : ∀ n, StandardLatticesGL3.SD D (StandardLatticesGL3.stdL D n)` using `fun n => by`. Use `letI := D.host.cmStar`. Conclude with `GlobalTheory.NatAtStd.isSD_pi _ n`. Establish `h` using `(GlobalTheory.ConjNorm.useNorm_all D _ dl hc _ B.t0 _ _ _ _ (hs _) (hs _) ((even_rank R i).mul_right _) _ hE M ρ hD (hH.2.2.2 i hi) t' ht').1`. Unfold `logThAt`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h]`. Rewrite using `[Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem logThAt_eq_mul : ∀ (D : D7) (dl : ℂ) (B : Base D D.host.ccK dl) (χ : TaylorLogMetric.IdE D → ℂ) (cD : D.what₂.Tau → ℂ) (K : Type) [Field K] (σ₀ : K →+* ℂ) (R : Ranks) (M : IntermediateField ℚ ℂ) [FiniteDimensional ℚ M], TaylorLogMetric.adm1 D → GL3Theta.InducedCMType D → TaylorLogMetric.IsCurveIdeal D D.host.ccK → TaylorLogMetric.IsDiscriminantTwelfthRootOfIdealLattice D D.host.ccK dl → TaylorLogMetric.IsChi D χ → B.VecP χ → ThetaFieldData B cD σ₀ R M → ∀ ρ : M →ₐ[ℚ] ℂ, ∃ lt : ℝ, ∀ i < R.m, logThAt B M ρ (R.N i) (R.N (i + 1)) = (R.N i : ℝ) * (R.N (i + 1) : ℝ) * lt := by
   intro D dl B χ cD K _ σ₀ R M _ hadm hpsi hcur hdel hχ hV hH ρ

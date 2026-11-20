@@ -12,11 +12,9 @@ open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolati
 namespace UpperTheory.V.Ws.Ch
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `haveI : Module.Flat A R := hf`. Use `haveI : q.IsPrime := hq.1.1`. Use `haveI : ((maximalIdeal R).comap f).IsPrime := Ideal.comap_isPrime f _`. Use `haveI : (maximalIdeal R).LiesOver ((maximalIdeal R).comap f) := ⟨rfl⟩`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨P, -, hPp, hPq⟩` from `Ideal.exists_ideal_le_liesOver_of_le (maximalIdeal R) hle`. Use `haveI := hPp`. Take `⟨Q, hQ, hQP⟩` from `Ideal.exists_minimalPrimes_le (J := P) bot_le`. Use `⟨Q, hQ, ?_⟩` and prove the remaining obligations. Use `haveI : Q.IsPrime := hQ.1.1`.
-
-Establish `hle2 : Q.comap f ≤ q`. Rewrite using `[hPq.over]`. Conclude with `Ideal.comap_mono hQP`. Conclude with `le_antisymm hle2 (hq.2 ⟨Ideal.comap_isPrime f Q, bot_le⟩ hle2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_min {A R : Type} [CommRing A] [CommRing R] [IsLocalRing R] (f : A →+* R) (hf : f.Flat) {q : Ideal A}
     (hq : q ∈ minimalPrimes A) (hle : q ≤ (maximalIdeal R).comap f) : ∃ Q ∈ minimalPrimes R, Q.comap f = q := by
@@ -39,7 +37,7 @@ def Adj (R : Type) [CommRing R] (D : ℕ) (P Q : Ideal R) : Prop :=
   P ∈ minimalPrimes R ∧ Q ∈ minimalPrimes R ∧ (D : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ (P ⊔ Q))
 
 /- English proof (translation)
-Establish `hs : Function.Surjective ((Ideal.Quotient.mk Q).comp p)` using `Ideal.Quotient.mk_surjective.comp hp`. Establish `hk : RingHom.ker ((Ideal.Quotient.mk Q).comp p) = Q.comap p`. Use extensionality with `a`. Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`. Rewrite using `[ringKrullDim_eq_of_ringEquiv (RingHom.quotientKerEquivOfSurjective hs).symm, ringKrullDim_eq_of_ringEquiv (Ideal.quotEquivOfEq hk)]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem ringKrullDim_quotient_eq_quotient_comap_of_surjective {A B : Type} [CommRing A] [CommRing B] (p : A →+* B)
     (hp : Function.Surjective p) (Q : Ideal B) :
@@ -53,23 +51,19 @@ private theorem ringKrullDim_quotient_eq_quotient_comap_of_surjective {A B : Typ
     ringKrullDim_eq_of_ringEquiv (Ideal.quotEquivOfEq hk)]
 
 /- English proof (translation)
-Use `haveI : IsCO O O := inferInstance`. Use `haveI : IsCO O (MvPowerSeries (Fin a) O) := co_mvps O O (Fin a)`. Use `haveI : IsDomain (MvPowerSeries (Fin a) O) := NoZeroDivisors.to_isDomain _`. Establish `hdim` using `((UpperTheory.V.CA.cl_cm).1 O a).2`. Establish `hcl : UpperTheory.V.CA.IsCL O (MvPowerSeries (Fin a) O)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨inferInstance, IsCO.complete (O := O), IsCO.isLocalHom, ?_⟩` and prove the remaining obligations. Use `Module.Finite.of_surjective (Algebra.linearMap O (ResidueField (MvPowerSeries (Fin a) O))) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨z, rfl⟩` from `IsLocalRing.residue_surjective y`. Take `⟨c, hc⟩` from `IsCO.res_surj (O := O) z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, IsScalarTower.algebraMap_apply O (MvPowerSeries (Fin a) O)]`. Use `Ideal.Quotient.eq.mpr ?_` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `neg_mem hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : RingHom.ker π ≠ ⊤` using `RingHom.ker_ne_top _`. Establish `hara : ReciprocityTheory.CA.AraLE (RingHom.ker π) b`. Use `⟨Finset.univ.image f, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Finset.card_image_le.trans (by simp)`. Rewrite using `[hk, Finset.coe_image, Finset.coe_univ, Set.image_univ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdimle : ((D + b + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (MvPowerSeries (Fin a) O)`. Rewrite using `[hdim]`. Conclude with `(by omega : D + b + 1 ≤ a + 1)` after adjusting the coercions. Establish `hp : Function.Surjective (π : MvPowerSeries (Fin a) O →+* R)` using `hπ`. Establish `hmin : (RingHom.ker π).minimalPrimes = Ideal.comap (π : MvPowerSeries (Fin a) O →+* R) '' (⊥ : Ideal R).minimalPrimes`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Ideal.comap_minimalPrimes_eq_of_surjective hp ⊥` as an intermediate fact. Conclude with `this`. Establish `hc : ∀ Q ∈ (⊥ : Ideal R).minimalPrimes, Q.comap (π : MvPowerSeries (Fin a) O →+* R) ∈ (RingHom.ker π).minimalPrimes` using `fun Q hQ => hmin ▸ ⟨Q, hQ, rfl⟩`. Establish `key` using `UpperTheory.V.AlgebraTools.Conn.clChain hcl (RingHom.ker π) b D hne hara hdimle _ (hc P hP) _ (hc Q hQ)`. Rewrite using `[← Ideal.map_comap_of_surjective (π : MvPowerSeries (Fin a) O →+* R) hp P, ← Ideal.map_comap_of_surjective (π : MvPowerSeries (Fin a) O →+* R) hp Q]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Relation.ReflTransGen.lift (Ideal.map (π : MvPowerSeries (Fin a) O →+* R)) (fun x y hxy => ?_) _ _ key` and prove the remaining obligations. Take `⟨hx, hy, hd⟩` from `hxy`. Rewrite `hx`, `hy` using `[hmin]`. Take `⟨x', hx', rfl⟩` from `hx`. Take `⟨y', hy', rfl⟩` from `hy`.
-
-Use `show Adj R D _ _`. Rewrite using `[Ideal.map_comap_of_surjective _ hp, Ideal.map_comap_of_surjective _ hp]`. Use `⟨hx', hy', ?_⟩` and prove the remaining obligations. Establish `hsup : (x' ⊔ y').comap (π : MvPowerSeries (Fin a) O →+* R) = x'.comap (π : MvPowerSeries (Fin a) O →+* R) ⊔ y'.comap (π : MvPowerSeries (Fin a) O →+* R)` using `by conv_lhs => rw [← Ideal.map_comap_of_surjective _ hp x', ← Ideal.map_comap_of_surjective _ hp y', ← Ideal.map_sup, Ideal.comap_map_of_surjective _ hp]`. Conclude with `sup_eq_left.mpr (le_trans (Ideal.comap_mono bot_le) le_sup_left)`.
-
-Rewrite using `[ringKrullDim_quotient_eq_quotient_comap_of_surjective _ hp, hsup]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chain (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O]
     {R : Type} [CommRing R] [Nontrivial R] [Algebra O R] {a b D : ℕ} (π : MvPowerSeries (Fin a) O →ₐ[O] R)
@@ -128,13 +122,9 @@ theorem chain (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [
   exact hd
 
 /- English proof (translation)
-Set `T` to `Σ k : κ, {q : Ideal R // q ∈ (b k).minimalPrimes ∧ ∀ i, ¬ a i ≤ q}`. Use `haveI : ∀ k : κ, Finite {q : Ideal R // q ∈ (b k).minimalPrimes ∧ ∀ i, ¬ a i ≤ q} := fun k => ((Ideal.finite_minimalPrimes_of_isNoetherianRing R (b k)).subset (fun q hq => hq.1)).to_subtype`. Use `haveI : Finite T := inferInstance`. Set `c : ι ⊕ T → Ideal R` to `Sum.elim a (fun t => t.2.1)`. Establish `hc : ∀ j, UpperTheory.V.Pr.qdim (c j) < N`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `(i | ⟨k, q, hq, hqa⟩)`. Conclude with `ha i`. Conclude with `hb k q hq.1.1 hq.1.2 hqa`. Take `⟨p, hp, hIp, hd, hϖp, hav⟩` from `UpperTheory.V.Pr.nicePrimeEx R ϖ hϖ N hN (ι ⊕ T) c hc I hI`. Use `⟨p, hp, hIp, hd, hϖp, fun i => hav (Sum.inl i), fun k hk => ?_⟩` and prove the remaining obligations.
-
-Take `⟨q, hq, hqp⟩` from `Ideal.exists_minimalPrimes_le hk`. Distinguish the cases in `hqa : ∀ i, ¬ a i ≤ q`. Conclude with `hav (Sum.inr ⟨k, q, hq, hqa⟩) hqp`. Use `push_neg at hqa`. Take `⟨i, hi⟩` from `hqa`.
-
-Conclude with `hav (Sum.inl i) (hi.trans hqp)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem nice {R : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R] (ϖ : R) (hϖ : ϖ ∈ maximalIdeal R) (N : ℕ)
     (hN : 1 ≤ N) {ι κ : Type} [Finite ι] [Finite κ] (a : ι → Ideal R) (b : κ → Ideal R)
@@ -162,13 +152,13 @@ theorem nice {R : Type} [CommRing R] [IsNoetherianRing R] [IsLocalRing R] (ϖ : 
     exact hav (Sum.inl i) (hi.trans hqp)
 
 /- English proof (translation)
-Establish `hc : (PowerSeries.constantCoeff y) ^ (l ^ n) = PowerSeries.constantCoeff y`. Use `congrArg PowerSeries.constantCoeff hy` as an intermediate fact. Rewrite `this` using `[map_pow]`. Then use the resulting hypothesis. Establish `hz : (y - PowerSeries.C (PowerSeries.constantCoeff y)) ^ (l ^ n) = y - PowerSeries.C (PowerSeries.constantCoeff y)`. Rewrite using `[sub_pow_char_pow, hy, ← map_pow, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hz0 : y - PowerSeries.C (PowerSeries.constantCoeff y) ≠ 0` using `sub_ne_zero.mpr hne`. Establish `hcc : PowerSeries.constantCoeff (y - PowerSeries.C (PowerSeries.constantCoeff y)) = 0`. Simplify using the standard rewrite rules. Establish `ho` using `PowerSeries.order_pow (y - PowerSeries.C (PowerSeries.constantCoeff y)) (l ^ n)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `ho` using `[hz]`. Establish `hnt : (y - PowerSeries.C (PowerSeries.constantCoeff y)).order ≠ ⊤` using `fun h => hz0 (PowerSeries.order_eq_top.mp h)`. Take `⟨m, hm⟩` from `ENat.ne_top_iff_exists.mp hnt`. Rewrite `ho` using `[← hm, nsmul_eq_mul]`. Establish `hmm : m = l ^ n * m` using `by exact_mod_cast ho`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hl2 : 2 ≤ l ^ n` using `le_trans (Fact.out : l.Prime).two_le (Nat.le_self_pow (by omega) l)`. Establish `hm0 : m = 0` using `by nlinarith`. Establish `hco` using `PowerSeries.coeff_order hz0`. Rewrite `hco` using `[← hm, ENat.toNat_coe, hm0, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hco hcc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_C_constantCoeff_of_pow_char_pow_eq_self {k : Type} [Field k] (l n : ℕ) [Fact l.Prime] [CharP (PowerSeries k) l]
     (hn : 1 ≤ n) (y : PowerSeries k) (hy : y ^ (l ^ n) = y) :
@@ -198,27 +188,21 @@ private theorem eq_C_constantCoeff_of_pow_char_pow_eq_self {k : Type} [Field k] 
   exact hco hcc
 
 /- English proof (translation)
-Use `haveI := hp`. Use `haveI : Nontrivial (R ⧸ p) := inferInstance`. Use `haveI : IsCO O (R ⧸ p) := co_quot O R (R ⧸ p) (Ideal.Quotient.mkₐ O p) (Ideal.Quotient.mkₐ_surjective O p)`. Use `haveI : IsAdicComplete (maximalIdeal (R ⧸ p)) (R ⧸ p) := IsCO.complete (O := O)`. Use `haveI := Fintype.ofFinite (ResidueField O)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl : ((l : ℕ) : R ⧸ p) = 0`. Establish `h1 : ((l : ℕ) : O) ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_natCast]`. Conclude with `CharP.cast_eq_zero _ l`. Establish `h2` using `hm _ h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[map_natCast]`. Rewrite using `[← map_natCast (Ideal.Quotient.mk p), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h2`. Use `haveI : CharP (R ⧸ p) l := (CharP.charP_iff_prime_eq_zero Fact.out).mpr hl`. Use `haveI : Finite (ResidueField (R ⧸ p)) := by haveI : IsLocalHom (algebraMap O (R ⧸ p)) := IsCO.isLocalHom`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finite.of_surjective (ResidueField.map (algebraMap O (R ⧸ p))) ?_` and prove the remaining obligations. Introduce `y`. Take `⟨x, rfl⟩` from `residue_surjective y`. Take `⟨a, ha⟩` from `IsCO.res_surj (O := O) x`. Use `⟨residue O a, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ResidueField.map_residue, eq_comm, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff]`. Conclude with `ha`. Take `⟨k, _, hk, f, hinj, hloc, -⟩` from `UpperTheory.V.Pr.T.curveNorm (R := R ⧸ p) l hd`. Use `haveI : CharP (PowerSeries k) l := (CharP.charP_iff_prime_eq_zero Fact.out).mpr (by rw [← map_natCast f, hl, map_zero])`. Take `⟨n, -, hcard⟩` from `FiniteField.card (ResidueField O) l`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hconst : ∀ a : O, f (algebraMap O (R ⧸ p) a) = PowerSeries.C (PowerSeries.constantCoeff (f (algebraMap O (R ⧸ p) a)))`. Introduce `a`. Apply `eq_C_constantCoeff_of_pow_char_pow_eq_self l n n.pos` to reduce the goal to its premises. Establish `hq : a ^ (l ^ (n : ℕ)) - a ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow, ← hcard, FiniteField.pow_card, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : algebraMap O (R ⧸ p) (a ^ (l ^ (n : ℕ)) - a) = 0`. Rewrite using `[← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hm _ hq`. Conclude with `sub_eq_zero.mp (by rw [← map_pow, ← map_sub, ← map_pow, ← map_sub, h3, map_zero])`. Use `letI : Algebra O k := ((PowerSeries.constantCoeff).comp (f.comp (algebraMap O (R ⧸ p)))).toAlgebra`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨k, inferInstance, hk, inferInstance, { toRingHom := f.comp (Ideal.Quotient.mk p), commutes' := fun a => ?_ }, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show f (Ideal.Quotient.mk p (algebraMap O R a)) = _`. Rewrite using `[PowerSeries.algebraMap_apply, Ideal.Quotient.mk_algebraMap, hconst a]`. Both sides reduce to the same expression. Use `show f (Ideal.Quotient.mk p x) = 0 ↔ x ∈ p`.
-
-Rewrite using `[map_eq_zero_iff f hinj, Ideal.Quotient.eq_zero_iff_mem]`. Use `show PowerSeries.constantCoeff (f (Ideal.Quotient.mk p x)) = 0`. Establish `hxu : ¬ IsUnit (Ideal.Quotient.mk p x)`. Introduce `hu`. Take `⟨y, hy⟩` from `hu.exists_right_inv`.
-
-Take `⟨y', rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite `hy` using `[← map_mul, ← map_one (Ideal.Quotient.mk p), Ideal.Quotient.eq]`. Establish `h4 : x * y' - 1 ∈ maximalIdeal R` using `IsLocalRing.le_maximalIdeal hp.ne_top hy`. Establish `h5 : (1 : R) ∈ maximalIdeal R`. Use `sub_mem (Ideal.mul_mem_right y' _ hx) h4` as an intermediate fact.
-
-Simplify using `using this`. Conclude with `(maximalIdeal.isMaximal R).ne_top ((Ideal.eq_top_iff_one _).mpr h5)`. Establish `hfu : ¬ IsUnit (f (Ideal.Quotient.mk p x))` using `fun h => hxu (hloc.map_nonunit _ h)`. Rewrite `hfu` using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not]`. Conclude with `hfu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curve (l : ℕ) [Fact l.Prime] (O R : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)]
     [CharP (ResidueField O) l] [CommRing R] [Algebra O R] [IsCO O R] (p : Ideal R) (hp : p.IsPrime)
@@ -288,15 +272,15 @@ theorem curve (l : ℕ) [Fact l.Prime] (O R : Type) [CommRing O] [IsLocalRing O]
     exact hfu
 
 /- English proof (translation)
-Establish `hred` using `hP.red`. Establish `hdiag` using `hc.res.diag`. Establish `key : ∀ i j : Fin 4, i ≠ j → IsUnit (P.r Φ.g0 i i - P.r Φ.g0 j j)`. Introduce `i j hij`. Establish `hu` using `hok.dist i j hij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hu` using `[← hdiag Φ.g0 i, ← hdiag Φ.g0 j, ← hred]`. Assume the negation of the conclusion as `hn`. Establish `hm : P.r Φ.g0 i i - P.r Φ.g0 j j ∈ maximalIdeal R` using `hn`. Establish `h0 : res Λ R (P.r Φ.g0 i i - P.r Φ.g0 j j) = 0`. Simplify using `[res, (IsLocalRing.residue_eq_zero_iff _).2 hm]`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `hu.ne_zero` to reduce the goal to its premises. Simplify `h0` using `[PD.map, mapRep, map_sub]`. Assume the negation of the conclusion as `hn`. Take `⟨S, hS, hsupp⟩` from `(redList (mapRep φ P.r) (fun g => φ (algebraMap Λ R (a ↑(Φ.ν g)))) Φ.g0 (fun g => isGSp_map φ (hP.pair.mult g)) (hP.pair.nrm.map (map_zero φ)) (fun i j hij heq => ((key i j hij).map φ).ne_zero (by`. Rewrite using `[map_sub]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify `sub_eq_zero.mpr heq))).1 hn` using `[mapRep]`. Apply `h S hS` to reduce the goal to its premises. Rewrite using `[redIdeal, Ideal.span_le]`. Introduce and unpack `x ⟨g, i, j, hij, hw, rfl⟩`. Apply `hq` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `hsupp g i j hij hw` as an intermediate fact. Simplify `this` using `[mapRep]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem irr {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ]
     {a : O →+* Λ} (hok : Φ.Ok ((residue Λ).comp a)) {c : PD Φ.ι Γ (ResidueField Λ)} (hc : Φ.IsRes ((residue Λ).comp a) c)

@@ -26,11 +26,9 @@ section SlopeTestRemainingChoices
 variable {F : Type} [Field F] {X : Var F} {σ' : F →+* ℂ}
 
 /- English proof (translation)
-Take `⟨U, B, hU, hB, hS⟩` from `S.loc (under y)`. Establish `hP` using `(hS _ hU A).1 hA`. Establish `hreg : ∀ g : X.Fn, RegAt (under y) g → ∀ᶠ z in 𝓝 y, RegAt (under z) g`. Introduce `g hg`. Take `⟨W, hW, a, rfl⟩` from `hg.exists_fnOf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [(isOpen_ptsIn W).mem_nhds (mem_ptsIn.2 hW)] with z hz`. Conclude with `regAt_fnOf (mem_ptsIn.1 hz) _ a`. Establish `hU' : ∀ᶠ z in 𝓝 y, under z ∈ U` using `by filter_upwards [(isOpen_ptsIn U).mem_nhds (mem_ptsIn.2 hU)] with z hz`. Conclude with `mem_ptsIn.1 hz`. Establish `h1 : ∀ᶠ z in 𝓝 y, ∀ τ, (∀ i j, RegAt (under z) ((A * B⁻¹) τ i j)) ∧ RegAt (under z) ((A * B⁻¹) τ).det⁻¹` using `Filter.eventually_all.2 fun τ => (Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun j => hreg _ (mem_O_ratOf.1 ((hP τ).1 i j))).and (hreg _ (mem_O_ratOf.1 (hP τ).2.2.1))`.
-
-Use `filter_upwards [hU', h1] with z hz hz1`. Conclude with `(hS _ hz A).2 fun τ => ⟨fun i j => mem_O_ratOf.2 ((hz1 τ).1 i j), (hP τ).2.1, mem_O_ratOf.2 (hz1 τ).2, fun i j hi => absurd hi (by simp)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_mem_frames {ι : Type} [Finite ι] {m : ι → ℕ} {S : Fr (ratOf X) m 0} {y : CxPts X.str σ'}
     {A : Mat m X.Fn} (hA : A ∈ S.S (under y)) : ∀ᶠ z in 𝓝 y, A ∈ S.S (under z) := by
@@ -61,11 +59,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {f₀ : EigFrame Z (constF e X) (genericPt X ≫ j ≫ genι Z)} {S : Fr (ratOf X) Dw.mult 0} {A₀ : Mat Dw.mult X.Fn}
 
 /- English proof (translation)
-Take `⟨φ, fz, hc⟩` from `hT.2 (under y) A hA`. Establish `hy : y.1 = spMap (Var.evStalk y) ≫ stalkPt X (under y)` using `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk y.1).symm`. Establish `hφ : σ = (Var.evStalk y).comp φ` using `RingHom.ext fun a => by`. Establish `h3 : φ a = algebraMap F _ (e.symm a)` using `IsFractionRing.injective _ X.X.functionField ((RingHom.congr_fun hc.2.1 a).symm.trans ((X.stalkIncl (under y)).commutes _).symm)`. Use `show σ a = Var.evStalk y (φ a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use `Eq.trans ?_ ((Var.evStalk_germ (U := ⊤) trivial _).trans (ev_algX mem_ptsIn_top _)).symm` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hx : (cxOf e σ hj y).1 ≫ genι Z = spMap (Var.evStalk y) ≫ stalkPt X (under y) ≫ j ≫ genι Z` using `by show (y.1 ≫ j) ≫ genι Z = _`. Rewrite using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Category.assoc _ _ _`. Take `⟨g, hg⟩` from `fz.exists_isMap (Var.evStalk y) hφ hx`. Conclude with `⟨g, φ, fz, Var.evStalk y, hy, hc, hg⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_frame_of_tied (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str) (hT : Tied e X j f₀ S A₀)
     (y : CxPts X.str (σ.comp e.toRingHom)) {A : Mat Dw.mult X.Fn} (hA : A ∈ S.S (under y)) :
@@ -90,21 +88,19 @@ theorem exists_frame_of_tied (hj : j ≫ genStr Z ≫ spMap e.toRingHom = X.str)
 end Frame
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU k X j f₀ Eb A₀ hj hji hT ψ hψ h v hv A hA`. Establish `hp0 : (U.X k).p0 = Dw.p + Dw.q - Dw.p` using `by rw [(hU.2.1 k).1]; omega`. Set `L : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) ≃L[ℂ] (Fin (Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))) → ℂ)` to `(LinearEquiv.funCongrLeft ℂ ℂ (Fintype.equivFin _).symm).toContinuousLinearEquiv`. Establish `ho : IsOpen (DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p))` using `GlobalTheory.HodgeDomain.ActionDeriv.isOpen_domFlat`. Use `set B : Set (Fin (Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))) → ℂ) := L.symm ⁻¹' DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) with hBdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : IsOpen B` using `ho.preimage L.symm.continuous`. Set `x : (Fin (Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p))) → ℂ) → (U.X k).dom` to `fun b => stdFrame (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl _) hp0 (unflat (L.symm b))`. Establish `hd : ∀ τ a c, DifferentiableOn ℂ (fun b => ReciprocityTheory.ChartRestriction.G.FD.mat (x b).1 τ a c) B` using `fun τ a c => ((GlobalTheory.TrueCx.TorHolo.differentiable_stdMat (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl _) τ a c).comp L.symm.differentiable).differentiableOn.congr fun b hb => by show ReciprocityTheory.ChartRestriction.G.FD.mat (stdFrame _ _ _ _ _).1 τ a c = _`. Rewrite using `[stdFrame_val _ _ _ _ hb]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hY` using `GlobalTheory.GramFamily.isHolTo_cxPt T.Z hU k hB x hd`. Establish `key : ∀ v ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), cxOf e σ hj (ψ v) = cxPt T.Z (U.un k (x (L v)))`. Introduce `v hv`. Establish `h1` using `hψ (x (L v))`. Establish `h2 : flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) (x (L v)).1) = v` using `by show flat (domPt _ _ _ (stdFrame _ _ _ hp0 (unflat (L.symm (L v)))).1) = v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[L.symm_apply_apply, domPt_stdFrame _ _ _ hp0 hv]`. Both sides reduce to the same expression. Rewrite `h1` using `[h2]`. Conclude with `h1`. Establish `hcont : ContinuousOn (fun b => cxPt T.Z (U.un k (x b))) B`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `GlobalTheory.CxPts.continuous_iff.2 fun W => ⟨?_, fun g => ?_⟩` and prove the remaining obligations. Use `(hY W 0).1.preimage (continuous_subtype_val (p := (· ∈ B)))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Set.mem_preimage, Set.restrict_apply, Set.mem_setOf_eq]`. Conclude with `⟨fun h => ⟨v.2, h⟩, fun h => h.2⟩`. Introduce `v hv`. Establish `hm : (v : Fin _ → ℂ) ∈ {b ∈ B | ⊤ ≤ (cxPt T.Z (U.un k (x b))).1 ⁻¹ᵁ W}` using `⟨v.2, hv⟩`. Establish `hca` using `(((hY W g).2).differentiableAt (((hY W g).1).mem_nhds hm)).continuousAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(hca.comp continuous_subtype_val.continuousAt).continuousWithinAt`. Establish `hκ` using `isOpenEmbedding_cxOf e σ hj`. Establish `hLB : ∀ v ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p), L v ∈ B` using `fun v hv => by show L.symm (L v) ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p)`. Rewrite using `[L.symm_apply_apply]` and apply the resulting hypothesis. Establish `hψc : ContinuousOn ψ (DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p))`.
-
-Rewrite using `[hκ.isInducing.continuousOn_iff]`. Conclude with `(hcont.comp L.continuous.continuousOn hLB).congr fun v hv => key v hv`. Establish `hc : ContinuousAt (fun u => ψ (GlobalTheory.UnifDens.flatL h u)) v` using `(hψc.continuousAt (ho.mem_nhds hv)).comp (GlobalTheory.UnifDens.flatL h).continuous.continuousAt`. Use `filter_upwards [hc.eventually (eventually_mem_frames hA)] with w hw`. Conclude with `exists_frame_of_tied hj hT _ hw`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_frameAt_unif : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : TorModel Y) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (U : Formalism.L2.PjFree.Unf Xo c σ (Dw.p + Dw.q)), Formalism.L2.PjFree.GoodEmb c σ → Formalism.L2.PjFree.IsUnf U → ∀ (k : U.Comp) (X : Var F) (j : X.X ⟶ gen T.Z) (f₀ : EigFrame T.Z (constF e X) (genericPt X ≫ j ≫ genι T.Z)) (Eb : Fr (ratOf X) Dw.mult 0) (A₀ : Mat Dw.mult X.Fn) (hj : j ≫ genStr T.Z ≫ spMap e.toRingHom = X.str), IsOpenImmersion j → Tied e X j f₀ Eb A₀ → ∀ ψ : ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p) → ℂ) → CxPts X.str (σ.comp e.toRingHom), (∀ x : (U.X k).dom, cxOf e σ hj (ψ (flat (domPt (U.X k) (Nat.le_add_right Dw.p Dw.q) (Equiv.refl (U.X k).Ψ) x.1))) = cxPt T.Z (U.un k x)) → ∀ (h : Fintype.card ((U.X k).Ψ × Fin Dw.p × Fin (Dw.p + Dw.q - Dw.p)) = X.dim) (v : ReciprocityTheory.L2DbarEstimates.V X.dim), GlobalTheory.UnifDens.flatL h v ∈ DomFlat (U.X k).Ψ Dw.p (Dw.p + Dw.q - Dw.p) → ∀ A ∈ Eb.S (under (ψ (GlobalTheory.UnifDens.flatL h v))), ∀ᶠ w in nhds v, ∃ g : EigFrame T.Z σ ((cxOf e σ hj (ψ (GlobalTheory.UnifDens.flatL h w))).1 ≫ genι T.Z), FrameAt e f₀ A₀ A (ψ (GlobalTheory.UnifDens.flatL h w)) g := by
   intro E _ _ _ H Dw l Xo c O _ β Y T F _ e σ U hσ hU k X j f₀ Eb A₀ hj hji hT ψ hψ h v hv A hA

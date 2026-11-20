@@ -4,17 +4,17 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.UpperTr
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m using Nat.strong_induction_on with`. Consider the case `_ m ih`. Introduce `i j hm hji`. Take `⟨g, hg⟩` from `hd i j (ne_of_gt hji)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (T g * Y) i j = T g i i * Y i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Rewrite using `[hT g i k h, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hk' : (i : ℕ) < k` using `h`. Use `k.2` as an intermediate fact. Rewrite using `[ih ((n - (k : ℕ)) + (j : ℕ)) (by omega) k j rfl (hji.trans h), mul_zero]`. Simplify using the standard rewrite rules. Establish `h2 : (Y * T g) i j = Y i j * T g j j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single j]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne hk with h | h` into its components or cases. Establish `hk' : (k : ℕ) < j` using `h`. Rewrite using `[ih ((n - (i : ℕ)) + (k : ℕ)) (by omega) i k rfl (h.trans hji), zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT g k j h, mul_zero]`. Simplify using the standard rewrite rules. Establish `h3` using `hc g i j hji`. Rewrite `h3` using `[h1, h2]`. Establish `h4 : (T g i i - T g j j) * Y i j = 0` using `by linear_combination h3`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 hg)`.
+A detailed English derivation is pending.
 -/
 private theorem lower_entries_zero_of_commuting_triangular {K ι : Type} [Field K] {n : ℕ} (T : ι → Matrix (Fin n) (Fin n) K)
     (Y : Matrix (Fin n) (Fin n) K) (hT : ∀ g i j, j < i → T g i j = 0)
@@ -49,7 +49,7 @@ private theorem lower_entries_zero_of_commuting_triangular {K ι : Type} [Field 
     exact (mul_eq_zero.1 h4).resolve_left (sub_ne_zero.2 hg)
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qe38.upper_triangular_mul U T hU hT`.
+A detailed English derivation is pending.
 -/
 private theorem upper_triangular_mul {K : Type} [Field K] {n : ℕ} (U T : Matrix (Fin n) (Fin n) K)
     (hU : ∀ i j, j < i → U i j = 0) (hT : ∀ i j, j < i → T i j = 0) :
@@ -57,7 +57,7 @@ private theorem upper_triangular_mul {K : Type} [Field K] {n : ℕ} (U T : Matri
   _root_.UpperTheory.Reformulated.B.Qe38.upper_triangular_mul U T hU hT
 
 /- English proof (translation)
-Establish `e1 : ∀ M : Matrix (Fin n) (Fin n) K, w * (wi * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `e2 : ∀ M : Matrix (Fin n) (Fin n) K, r' * (r * M) = M` using `fun M => by`. Rewrite using `[← Matrix.mul_assoc, h2, Matrix.one_mul]`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem conjugate_commutator_identity {K : Type} [Field K] {n : ℕ} (w wi r r' Y : Matrix (Fin n) (Fin n) K)
     (h1 : w * wi = 1) (h2 : r' * r = 1) :
@@ -70,13 +70,13 @@ private theorem conjugate_commutator_identity {K : Type} [Field K] {n : ℕ} (w 
   simp only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_assoc, e1, e2]
 
 /- English proof (translation)
-Introduce `l _ L G G0 h n x v Y H i j hij`. Take `⟨h1, -, -, h4, h5, h6, -, -⟩` from `UpperTheory.V.Pa.oddDiag l L G G0 h n x x.Fr v`. Use `lower_entries_zero_of_commuting_triangular (fun g : L.Gv v => x.wiX x.Fr v * x.ρX x.Fr (G0.φ v g) * x.wX x.Fr v) (x.wiX x.Fr v * Y * x.wX x.Fr v) (fun g => (h4 g).1) ?_ ?_ _ i j rfl hij` and prove the remaining obligations. Introduce `a b hab`. Assume the negation of the conclusion as `hcon`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Use `(x.N1 v).1 a b hab (MonoidHom.ext fun g => Units.ext ?_)` and prove the remaining obligations. Use `hcon g` as an intermediate fact. Rewrite `this` using `[(h4 g).2 a, (h4 g).2 b]`. Conclude with `IsFractionRing.injective x.A x.Fr this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g a b hab`. Establish `hinv : x.ρX x.Fr (G0.φ v g)⁻¹ * x.ρX x.Fr (G0.φ v g) = 1`. Rewrite using `[← h5, inv_mul_cancel, h6]`. Establish `e` using `conjugate_commutator_identity (x.wX x.Fr v) (x.wiX x.Fr v) _ _ Y h1 hinv`. Establish `z` using `upper_triangular_mul _ _ (H g) (h4 g).1 a b hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `dY at z`. Rewrite `z` using `[e, Matrix.sub_apply]`. Conclude with `sub_eq_zero.1 z`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.localInvariants_eq_zero :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G G0 : Glob l L) (h : G.Hom G0) (n : ℕ) (x : NP G0.frame n), ∀ (v : L.Vl) (Y : Matrix (Fin n) (Fin n) x.Fr), (∀ g i j, j < i → (x.wiX x.Fr v * dY G0.frame (x.ρX x.Fr) Y (G0.φ v g) * x.wX x.Fr v) i j = 0) → ∀ i j, j < i → (x.wiX x.Fr v * Y * x.wX x.Fr v) i j = 0 := by

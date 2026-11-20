@@ -12,15 +12,13 @@ open Polynomial GlobalTheory.K5 GlobalTheory.K5.Basic
 variable {p : ℕ} [hp : Fact p.Prime] {Ω : Type*} [Field Ω] [Algebra (O0 p) Ω]
 
 /- English proof (translation)
-Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Use `set S := Algebra.adjoin (O0 p) {xn p L, yn p L}`. Establish `hx : xn p L ∈ S` using `Algebra.subset_adjoin (by simp)`. Establish `hy : yn p L ∈ S` using `Algebra.subset_adjoin (by simp)`. Establish `hb : ∀ b : O0 p, Ideal.Quotient.mk (towerIdeal p L) (C (C b)) ∈ S`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b`. Apply the tactic sequence `have : Ideal.Quotient.mk (towerIdeal p L) (C (C b)) = algebraMap (O0 p) (On p L) b := by first | rfl | simp [Ideal.Quotient.algebraMap_eq, Polynomial.algebraMap_apply]`. Rewrite using `[this]`. Conclude with `S.algebraMap_mem b`. Establish `hC : ∀ a : Polynomial (O0 p), Ideal.Quotient.mk (towerIdeal p L) (C a) ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `a`. Proceed by induction on `a using Polynomial.induction_on with`. Consider the case `C b => exact hb b`. Consider the case `add f g hf hg => rw [C_add, map_add]`. Conclude with `S.add_mem hf hg`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `monomial k b _`. Rewrite using `[C_mul, C_pow, map_mul, map_pow]`. Conclude with `S.mul_mem (hb b) (S.pow_mem hx _)`. Proceed by induction on `f using Polynomial.induction_on with`. Consider the case `C a => exact hC a`.
-
-Consider the case `add f g hf hg => rw [map_add]`. Conclude with `S.add_mem hf hg`. Consider the case `monomial k a _ => rw [map_mul, map_pow]`. Conclude with `S.mul_mem (hC a) (S.pow_mem hy _)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_adjoin (L : ℕ) (x : On p L) : x ∈ Algebra.adjoin (O0 p) {xn p L, yn p L} := by
   obtain ⟨f, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -46,7 +44,7 @@ theorem mem_adjoin (L : ℕ) (x : On p L) : x ∈ Algebra.adjoin (O0 p) {xn p L,
   | monomial k a _ => rw [map_mul, map_pow]; exact S.mul_mem (hC a) (S.pow_mem hy _)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zeta_pow_sub (T : GlobalTheory.K5.Tower p Ω) (m k : ℕ) : T.ζ (m + k) ^ p ^ k = T.ζ m := by
   induction k with
@@ -54,7 +52,7 @@ theorem zeta_pow_sub (T : GlobalTheory.K5.Tower p Ω) (m k : ℕ) : T.ζ (m + k)
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.ζpow, ih]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem qq_pow_sub (T : GlobalTheory.K5.Tower p Ω) (m k : ℕ) : T.qq (m + k) ^ p ^ k = T.qq m := by
   induction k with
@@ -62,17 +60,15 @@ theorem qq_pow_sub (T : GlobalTheory.K5.Tower p Ω) (m k : ℕ) : T.qq (m + k) ^
   | succ k ih => rw [pow_succ', pow_mul, ← add_assoc, T.qpow, ih]
 
 /- English proof (translation)
-Rewrite using `[IsInt, ← map_natCast (algebraMap (O0 p) Ω)]`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_nat (m : ℕ) : IsInt p (m : Ω) := by
   rw [IsInt, ← map_natCast (algebraMap (O0 p) Ω)]; exact isIntegral_algebraMap
 
 /- English proof (translation)
-Establish `h : Algebra.adjoin (O0 p) {xn p L, yn p L} ≤ (integralClosure (O0 p) Ω).comap ι`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `z (rfl | rfl)`. Use `show ι (xn p L) ∈ integralClosure (O0 p) Ω`. Rewrite using `[mem_integralClosure_iff, hι.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsIntegral.of_pow (pow_pos hp.out.pos L) (by rw [(T.prim L).pow_eq_one]; exact isIntegral_one)`. Use `show ι (yn p L) ∈ integralClosure (O0 p) Ω`. Rewrite using `[mem_integralClosure_iff, hι.2]`. Use `IsIntegral.of_pow (pow_pos hp.out.pos L) ?_` and prove the remaining obligations. Rewrite using `[qq_pow]`.
-
-Conclude with `isIntegral_algebraMap`. Conclude with `h (mem_adjoin L x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInt_emb (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ι : On p L →ₐ[O0 p] Ω) (hι : IsEmb T L ι)
     (x : On p L) : IsInt p (ι x) := by
@@ -89,11 +85,9 @@ theorem isInt_emb (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ι : On p L →ₐ
   exact h (mem_adjoin L x)
 
 /- English proof (translation)
-Establish `hg'` using `(mem_gn T L g).1 hg`. Establish `h : Algebra.adjoin (O0 p) {xn p L, yn p L} ≤ AlgHom.equalizer ((g : Ω →ₐ[O0 p] Ω).comp ι) ι`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `z (rfl | rfl)`. Use `show g (ι (xn p L)) = ι (xn p L)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hι.1]`. Conclude with `hg'.1`. Use `show g (ι (yn p L)) = ι (yn p L)`. Rewrite using `[hι.2]`. Conclude with `hg'.2`.
-
-Conclude with `h (mem_adjoin L x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_emb (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ι : On p L →ₐ[O0 p] Ω) (hι : IsEmb T L ι)
     (g : Gal p Ω) (hg : g ∈ Gn T L) (x : On p L) : g (ι x) = ι x := by
@@ -109,7 +103,7 @@ theorem fix_emb (T : GlobalTheory.K5.Tower p Ω) (L : ℕ) (ι : On p L →ₐ[O
   exact h (mem_adjoin L x)
 
 /- English proof (translation)
-Take `⟨z, hz, e⟩` from `hc`. Use `⟨(p : Ω) ^ (m - k) * z, IsIntegral.mul (IsIntegral.pow (isInt_nat p) _) hz, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' h]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cong_mono {k m : ℕ} (h : k ≤ m) {x y : Ω} (hc : Cong p m x y) : Cong p k x y := by
   obtain ⟨z, hz, e⟩ := hc
@@ -117,7 +111,7 @@ theorem cong_mono {k m : ℕ} (h : k ≤ m) {x y : Ω} (hc : Cong p m x y) : Con
   rw [e, ← mul_assoc, ← pow_add, Nat.add_sub_cancel' h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hw.1, fun g => by obtain ⟨S, hS⟩ := hw.2 g exact ⟨S, fun h' hh => cong_mono h (hS h' hh)⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem locallyConstantModPrimePow_of_le {k m : ℕ} (h : k ≤ m) {w : Gal p Ω → Ω} (hw : LocallyConstantOneCochain m w) : LocallyConstantOneCochain k w :=
   ⟨hw.1, fun g => by
@@ -125,7 +119,7 @@ theorem locallyConstantModPrimePow_of_le {k m : ℕ} (h : k ≤ m) {w : Gal p Ω
     exact ⟨S, fun h' hh => cong_mono h (hS h' hh)⟩⟩
 
 /- English proof (translation)
-Take `⟨a, ha, e⟩` from `h`. Take `⟨b, hb, e'⟩` from `h'`. Conclude with `⟨a * x' + y * b, (ha.mul hx').add (hy.mul hb), by linear_combination x' * e + y * e'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cong_mul' {k : ℕ} {x y x' y' : Ω} (h : Cong p k x y) (h' : Cong p k x' y')
     (hx' : IsInt p x') (hy : IsInt p y) : Cong p k (x * x') (y * y') := by
@@ -134,9 +128,9 @@ theorem cong_mul' {k : ℕ} {x y x' y' : Ω} (h : Cong p k x y) (h' : Cong p k x
   exact ⟨a * x' + y * b, (ha.mul hx').add (hy.mul hb), by linear_combination x' * e + y * e'⟩
 
 /- English proof (translation)
-Establish `e1` using `ha g hg`. Rewrite `e1` using `[map_pow, haL g hg, mul_pow, ← pow_mul, mul_comm ((aL g).val), pow_mul]`. Establish `hz : T.ζ L ^ p ^ (L - n) = T.ζ n`. Use `zeta_pow_sub T n (L - n)` as an intermediate fact. Rewrite `this` using `[Nat.add_sub_cancel' hnL]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `e1` using `[hz]`. Establish `e2` using `mul_right_cancel₀ (pow_ne_zero _ hR) e1`. Conclude with `((zeta_pow_eq_iff T n _ _).1 e2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kum_down (T : GlobalTheory.K5.Tower p Ω) {n L : ℕ} (hnL : n ≤ L) {H : Subgroup (Gal p Ω)} {R : Ω}
     (hR : R ≠ 0) {aL : Gal p Ω → ZMod (p ^ L)} (haL : IsKum T L H R aL)
@@ -156,35 +150,31 @@ open scoped MatrixGroups
 open GlobalTheory.KZ GlobalTheory.Glue GlobalTheory.K5 GlobalTheory.KummerEisensteinGalois
 
 /- English proof (translation)
-Introduce `p _ hp2`. Take `⟨c, hc⟩` from `GlobalTheory.T.hodgeTate_cup_kummer_classes_eq_dlog_determinant p hp2`. Use `⟨c, ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ hclo T L n hnL hn ι hι u v α β α' β' hu hv r s hr hs a b lz lq ha hb hlz hlq`. Use `haveI := hclo.clo`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpr : p.Prime` using `Fact.out`. Establish `hL : 1 ≤ L` using `le_trans hn hnL`. Establish `hpos : ∀ k, 0 < p ^ k` using `fun k => pow_pos hpr.pos k`. Establish `hunit : ∀ w : (On p L)ˣ, ι (w : On p L) ≠ 0` using `fun w h => by`. Use `congrArg ι w.mul_inv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_mul, h, zero_mul, map_one]`. Conclude with `zero_ne_one this`. Establish `hroot : ∀ (w : (On p L)ˣ) (x : Ω), x ^ p ^ n = ι (w : On p L) → ∃ X : Ω, X ≠ 0 ∧ X ^ p ^ (L - n) = x ∧ X ^ p ^ L = (T.ζ L - 1) ^ (0 : ℤ) * ι (w : On p L)`. Introduce `w x hx`. Take `⟨X, hX⟩` from `IsAlgClosed.exists_pow_nat_eq x (hpos (L - n))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨X, ?_, hX, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `hX` using `[zero_pow (pow_ne_zero _ hpr.ne_zero)]`. Rewrite `hx` using `[← hX, zero_pow (pow_ne_zero _ hpr.ne_zero)]`. Conclude with `hunit w hx.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[zpow_zero, one_mul, ← hx, ← hX, ← pow_mul, ← pow_add, Nat.sub_add_cancel hnL]`. Take `⟨R, hR0, hR, hRL⟩` from `hroot u r hr`. Take `⟨S, hS0, hS, hSL⟩` from `hroot v s hs`. Establish `hfix` using `LevelDown.fix_emb T L ι hι`. Establish `hgn` using `fun g (hg : g ∈ Gn T L) => (Basic.mem_gn T L g).1 hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨aL, haL⟩` from `Basic.exists_isKum T L (Gn T L) hR0 (fun g hg => by`. Rewrite using `[hRL, zpow_zero, one_mul]`. Conclude with `hfix g hg _)`. Take `⟨bL, hbL⟩` from `Basic.exists_isKum T L (Gn T L) hS0 (fun g hg => by`. Rewrite using `[hSL, zpow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hfix g hg _)`. Establish `hZ0 : T.ζ (2 * L) ≠ 0` using `(T.prim _).ne_zero (pow_ne_zero _ hpr.ne_zero)`. Establish `hZL : T.ζ (2 * L) ^ p ^ L = T.ζ L`. Rewrite using `[two_mul]`. Conclude with `LevelDown.zeta_pow_sub T L L`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hQL : T.qq (2 * L) ^ p ^ L = T.qq L`. Rewrite using `[two_mul]`. Conclude with `LevelDown.qq_pow_sub T L L`. Take `⟨zL, hzL⟩` from `Basic.exists_isKum T L (Gn T L) hZ0 (fun g hg => by`. Rewrite using `[hZL]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hgn g hg).1)`. Take `⟨qL, hqL⟩` from `Basic.exists_isKum T L (Gn T L) (Basic.qq_ne_zero T _) (fun g hg => by`. Rewrite using `[hQL]`. Conclude with `(hgn g hg).2)`. Take `⟨w, hw, hcong⟩` from `hc Ω hclo T L hL ι hι 0 0 u v α β α' β' hu hv R S hRL hSL aL bL zL qL haL hbL hzL hqL`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : L + n + (L - n) = 2 * L` using `by omega`. Establish `hZn : T.ζ (2 * L) ^ p ^ (L - n) = T.ζ (L + n)`. Rewrite using `[← e2]`. Conclude with `LevelDown.zeta_pow_sub T (L + n) (L - n)`. Establish `hQn : T.qq (2 * L) ^ p ^ (L - n) = T.qq (L + n)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← e2]`. Conclude with `LevelDown.qq_pow_sub T (L + n) (L - n)`. Establish `hX : ι (fPi p L 0 0 α β α' β') / (T.ζ L - 1) = ι (α * β' - β * α')`. Establish `hne : T.ζ L - 1 ≠ 0` using `sub_ne_zero.2 ((T.prim L).ne_one (Nat.one_lt_pow (by omega) hpr.one_lt))`. Rewrite using `[div_eq_iff hne]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: fPi p L 0 0 α β α' β' = (xn p L - 1) * (α * β' - β * α')`. Simplify using `only [fPi]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, map_mul, map_sub, hι.1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨w, LevelDown.locallyConstantModPrimePow_of_le hnL hw, fun g hg h hh => ?_⟩` and prove the remaining obligations. Use `Basic.cong_trans ?_ (LevelDown.cong_mono hnL (hcong g hg h hh))` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hX]`.
-
-Establish `hA : Cong p n ((a g).val : Ω) ((aL g).val : Ω)` using `Basic.cong_natCast (LevelDown.kum_down T hnL hR0 haL (by rw [hR]; exact ha) hg)`. Establish `hB : Cong p n ((b h).val : Ω) ((bL h).val : Ω)` using `Basic.cong_natCast (LevelDown.kum_down T hnL hS0 hbL (by rw [hS]; exact hb) hh)`. Establish `hC : Cong p n ((lz g).val : Ω) ((zL g).val : Ω)` using `Basic.cong_natCast (LevelDown.kum_down T hnL hZ0 hzL (by rw [hZn]; exact hlz) hg)`. Establish `hD : Cong p n ((lq h).val : Ω) ((qL h).val : Ω)` using `Basic.cong_natCast (LevelDown.kum_down T hnL (Basic.qq_ne_zero T _) hqL (by rw [hQn]; exact hlq) hh)`. Establish `iN` using `fun m : ℕ => (LevelDown.isInt_nat (p := p) (Ω := Ω) m)`.
-
-Establish `iP : IsInt p ((p : Ω) ^ c)` using `IsIntegral.pow (iN p) c`. Establish `iX : IsInt p (ι (α * β' - β * α'))` using `LevelDown.isInt_emb T L ι hι _`. Use `Basic.cong_add ?_ ?_` and prove the remaining obligations. Conclude with `LevelDown.cong_mul' (Basic.cong_refl _ _) (LevelDown.cong_mul' hA hB (iN _) (iN _)) ((iN _).mul (iN _)) iP`. Conclude with `LevelDown.cong_mul' (Basic.cong_refl _ _) (LevelDown.cong_mul' hC hD (iN _) (iN _)) ((iN _).mul (iN _)) (iP.mul iX)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.K5.LevelDown.cup_kummer_dlog_mod : ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∃ c : ℕ, ∀ (Ω : Type) [Field Ω] [Algebra (O0 p) Ω], IsClo p Ω → ∀ (T : GlobalTheory.K5.Tower p Ω) (L n : ℕ), n ≤ L → 1 ≤ n → ∀ ι : On p L →ₐ[O0 p] Ω, IsEmb T L ι →
   ∀ (u v : (On p L)ˣ) (α β α' β' : On p L), IsDlog p L (u : On p L) α β → IsDlog p L (v : On p L) α' β' →

@@ -8,11 +8,11 @@ open scoped Real
 namespace GlobalTheory.CompanionTheory.TateC
 
 /- English proof (translation)
-Use `⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨B, hB, rfl⟩`. Establish `: Units.val '' (Units.val ⁻¹' B : Set ℂˣ) = B ∩ {0}ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨u, hu, rfl⟩`. Conclude with `⟨hu, by simp⟩`. Introduce and unpack `⟨hx, hx0⟩`. Conclude with `⟨Units.mk0 x hx0, hx, rfl⟩`. Rewrite using `[this]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB.inter (measurableSet_singleton _).compl`.
+A detailed English derivation is pending.
 -/
 theorem val_measurableEmbedding : MeasurableEmbedding (Units.val : ℂˣ → ℂ) := by
   refine ⟨fun _ _ h => Units.ext h, comap_measurable _, ?_⟩
@@ -30,11 +30,11 @@ theorem val_measurableEmbedding : MeasurableEmbedding (Units.val : ℂˣ → ℂ
 def nuC : Measure ℂ := volume.withDensity fun z : ℂ => ENNReal.ofReal (‖z‖ ^ 2)⁻¹
 
 /- English proof (translation)
-Establish `h` using `val_measurableEmbedding.map_comap nuC`. Establish `hr : Set.range (Units.val : ℂˣ → ℂ) = {0}ᶜ`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using the standard rewrite rules. Introduce `hx`. Conclude with `⟨Units.mk0 x hx, rfl⟩`. Establish `hac : nuC ≪ volume` using `withDensity_absolutelyContinuous _ _`. Establish `h0 : nuC {0} = 0` using `hac (by simp)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: nuC.restrict ({0}ᶜ : Set ℂ) = nuC` using `Measure.restrict_eq_self_of_ae_mem (by`. Rewrite using `[ae_iff]`. Simplify using `using h0)`. Rewrite `h` using `[hr, this]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_val_mulC : Measure.map (Units.val : ℂˣ → ℂ) mulC = nuC := by
   have h := val_measurableEmbedding.map_comap nuC
@@ -55,9 +55,9 @@ theorem map_val_mulC : Measure.map (Units.val : ℂˣ → ℂ) mulC = nuC := by
   exact h
 
 /- English proof (translation)
-Establish `h1 : ∫ a : ℂˣ, F a ∂mulC = ∫ x, F x ∂nuC`. Rewrite using `[← map_val_mulC, val_measurableEmbedding.integral_map]`. Rewrite using `[h1, nuC, integral_withDensity_eq_integral_toReal_smul₀ (by fun_prop) (by simp)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `: 0 ≤ (‖x‖ ^ 2)⁻¹` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [ENNReal.toReal_ofReal this, Complex.real_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem integral_mulC (F : ℂ → ℂ) :
     ∫ a : ℂˣ, F a ∂mulC = ∫ x : ℂ, (((‖x‖ ^ 2)⁻¹ : ℝ) : ℂ) * F x := by
@@ -69,9 +69,9 @@ theorem integral_mulC (F : ℂ → ℂ) :
   simp only [ENNReal.toReal_ofReal this, Complex.real_smul]
 
 /- English proof (translation)
-Establish `hE` using `val_measurableEmbedding`. Establish `hd : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ 2)⁻¹` using `by fun_prop`. Establish `h2 : Integrable (fun a : ℂˣ => g a) mulC ↔ Integrable g (Measure.map (Units.val : ℂˣ → ℂ) mulC)` using `(hE.integrable_map_iff (g := g)).symm`. Rewrite using `[h2, map_val_mulC, nuC, integrable_withDensity_iff_integrable_smul' hd (ae_of_all _ fun x => ENNReal.ofReal_lt_top)]`. Use `integrable_congr (ae_of_all _ fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: 0 ≤ (‖x‖ ^ 2)⁻¹` using `by positivity`. Simplify using `only [ENNReal.toReal_ofReal this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem integrable_mulC_iff (g : ℂ → ℂ) :
     Integrable (fun a : ℂˣ => g a) mulC ↔ Integrable (fun x : ℂ => (‖x‖ ^ 2)⁻¹ • g x) volume := by
@@ -92,11 +92,11 @@ instance : SigmaFinite mulC := by
   exact SigmaFinite.withDensity_ofReal _
 
 /- English proof (translation)
-Establish `hd : LinearMap.det (Algebra.lmul ℝ ℂ g) = ‖g‖ ^ 2`. Use `Algebra.norm_complex_apply g` as an intermediate fact. Rewrite `this` using `[Algebra.norm_apply]`. Rewrite `this` using `[Complex.normSq_eq_norm_sq]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : LinearMap.det (Algebra.lmul ℝ ℂ g) ≠ 0`. Rewrite using `[hd]`. Conclude with `pow_ne_zero _ (norm_ne_zero_iff.2 hg)`. Establish `h` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure ℂ) hne`. Establish `hf : (⇑(Algebra.lmul ℝ ℂ g) : ℂ → ℂ) = fun x : ℂ => x * g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[mul_comm]`. Rewrite `h` using `[hf, hd, abs_of_nonneg (by positivity)]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_volume {g : ℂ} (hg : g ≠ 0) :
     Measure.map (fun x : ℂ => x * g) volume = ENNReal.ofReal (‖g‖ ^ 2)⁻¹ • volume := by
@@ -116,15 +116,15 @@ theorem map_mul_volume {g : ℂ} (hg : g ≠ 0) :
   exact h
 
 /- English proof (translation)
-Establish `hw : Measurable fun x : ℂ => ENNReal.ofReal (‖x‖ ^ 2)⁻¹` using `by fun_prop`. Establish `hm : Measurable fun x : ℂ => x * g` using `by fun_prop`. Establish `hgn : ‖g‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.2 hg)`. Establish `hgp : 0 ≤ ‖g‖ ^ 2` using `by positivity`. Use `set w : ℂ → ENNReal := fun x : ℂ => ENNReal.ofReal (‖x‖ ^ 2)⁻¹ with hwdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ x, ((fun x => x * g) ⁻¹' B).indicator w x = ENNReal.ofReal (‖g‖ ^ 2) * (B.indicator w) (x * g)`. Introduce `x`. Distinguish the cases in `hx : x * g ∈ B`. Rewrite using `[Set.indicator_of_mem (show x ∈ (fun x => x * g) ⁻¹' B from hx), Set.indicator_of_mem hx, hwdef]`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_mul hgp]`. Use `congr 1`. Rewrite using `[norm_mul, mul_pow, mul_inv, mul_comm ((‖x‖ ^ 2)⁻¹), ← mul_assoc, mul_inv_cancel₀ hgn, one_mul]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ (fun x => x * g) ⁻¹' B from hx), Set.indicator_of_notMem hx]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmeas : Measurable fun x : ℂ => B.indicator w (x * g)` using `(hw.indicator hB).comp hm`. Rewrite using `[nuC, withDensity_apply _ (hm hB), withDensity_apply _ hB, ← lintegral_indicator (hm hB), ← lintegral_indicator hB, lintegral_congr h1, lintegral_const_mul _ hmeas]`. Establish `h2 : ∫⁻ x, B.indicator w (x * g) = ∫⁻ y, B.indicator w y ∂(Measure.map (fun x => x * g) volume)` using `(lintegral_map (hw.indicator hB) hm).symm`. Rewrite using `[h2, map_mul_volume hg, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ← ENNReal.ofReal_mul hgp, mul_inv_cancel₀ hgn]`. Simplify using `only [ENNReal.ofReal_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nuC_preimage {g : ℂ} (hg : g ≠ 0) {B : Set ℂ} (hB : MeasurableSet B) :
     nuC ((fun x => x * g) ⁻¹' B) = nuC B := by
@@ -176,9 +176,9 @@ instance : mulC.IsMulRightInvariant := by
 def cF (n : ℤ) (s : ℂ) (x : ℂ) : ℂ := (x / (‖x‖ : ℂ)) ^ n * ((‖x‖ ^ 2 : ℝ) : ℂ) ^ s
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat k`. Simplify using `only [Int.ofNat_eq_natCast, zpow_natCast]`. Conclude with `measurable_id.pow_const k`. Consider the case `negSucc k`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [zpow_negSucc]`. Conclude with `(measurable_id.pow_const _).inv`.
+A detailed English derivation is pending.
 -/
 theorem measurable_zpow (n : ℤ) : Measurable fun x : ℂ => x ^ n := by
   cases n with
@@ -190,7 +190,7 @@ theorem measurable_zpow (n : ℤ) : Measurable fun x : ℂ => x ^ n := by
     exact (measurable_id.pow_const _).inv
 
 /- English proof (translation)
-Unfold `cF`. Establish `h1 : Measurable fun x : ℂ => x / (‖x‖ : ℂ)` using `measurable_id.div (Complex.measurable_ofReal.comp measurable_norm)`. Conclude with `((measurable_zpow n).comp h1).mul ((Complex.measurable_ofReal.comp (measurable_norm.pow_const 2)).pow_const s)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_cF (n : ℤ) (s : ℂ) : Measurable (cF n s) := by
   unfold cF
@@ -200,7 +200,7 @@ theorem measurable_cF (n : ℤ) (s : ℂ) : Measurable (cF n s) := by
     ((Complex.measurable_ofReal.comp (measurable_norm.pow_const 2)).pow_const s)
 
 /- English proof (translation)
-Establish `hn : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Establish `hp : 0 < ‖x‖ ^ 2` using `by positivity`. Establish `h1 : ‖x / (‖x‖ : ℂ)‖ = 1`. Rewrite using `[norm_div, Complex.norm_real, norm_norm, div_self hn]`. Rewrite using `[cF, norm_mul, norm_zpow, h1, one_zpow, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_cF {x : ℂ} (hx : x ≠ 0) (n : ℤ) (s : ℂ) : ‖cF n s x‖ = (‖x‖ ^ 2) ^ s.re := by
   have hn : ‖x‖ ≠ 0 := norm_ne_zero_iff.2 hx
@@ -210,11 +210,11 @@ theorem norm_cF {x : ℂ} (hx : x ≠ 0) (n : ℤ) (s : ℂ) : ‖cF n s x‖ = 
   rw [cF, norm_mul, norm_zpow, h1, one_zpow, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos hp]
 
 /- English proof (translation)
-Establish `key : Integrable (fun x : ℂ => (‖x‖ ^ 2)⁻¹ • (F x * cF n s x)) volume`. Establish `hm' : AEStronglyMeasurable (fun x : ℂ => (‖x‖ ^ 2)⁻¹ • (F x * cF n s x)) volume` using `((measurable_norm.pow_const 2).inv).aestronglyMeasurable.smul (hm.mul (measurable_cF n s).aestronglyMeasurable)`. Use `h.mono hm' ?_` and prove the remaining obligations. Use `filter_upwards [compl_mem_ae_iff.2 (measure_singleton (0 : ℂ))] with x hx`. Establish `hx0 : x ≠ 0` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖x‖` using `norm_pos_iff.2 hx0`. Establish `hp2 : 0 < ‖x‖ ^ 2` using `by positivity`. Establish `hw : ‖x‖ ^ (2 * (s.re - 1)) = (‖x‖ ^ 2)⁻¹ * (‖x‖ ^ 2) ^ s.re`. Rewrite using `[Real.rpow_mul hpos.le, Real.rpow_two, Real.rpow_sub_one hp2.ne']`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hnn : 0 ≤ ‖x‖ ^ (2 * (s.re - 1))` using `Real.rpow_nonneg hpos.le _`. Rewrite using `[norm_smul, norm_mul, norm_cF hx0, norm_mul, Complex.norm_real, Real.norm_of_nonneg hnn, Real.norm_of_nonneg (by positivity), hw]`. Conclude with `le_of_eq (by ring)`. Conclude with `(integrable_mulC_iff (fun x => F x * cF n s x)).2 key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_chC (F : ℂ → ℂ) (n : ℤ) (s : ℂ) (hm : AEStronglyMeasurable F volume)
     (h : Integrable (fun x : ℂ => F x * ((‖x‖ ^ (2 * (s.re - 1)) : ℝ) : ℂ))) :
@@ -238,11 +238,11 @@ theorem integrable_chC (F : ℂ → ℂ) (n : ℤ) (s : ℂ) (hm : AEStronglyMea
   exact (integrable_mulC_iff (fun x => F x * cF n s x)).2 key
 
 /- English proof (translation)
-Establish `hbn : ‖(b : ℂ)‖ ≠ 0` using `norm_ne_zero_iff.2 b.ne_zero`. Establish `hb0 : ((‖(b : ℂ)‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (pow_ne_zero _ hbn)`. Establish `hu : (b : ℂ) / (‖(b : ℂ)‖ : ℂ) ≠ 0` using `div_ne_zero b.ne_zero (Complex.ofReal_ne_zero.2 hbn)`. Establish `hang : (((t * b : ℂˣ) : ℂ) / (‖((t * b : ℂˣ) : ℂ)‖ : ℂ)) ^ (-n) * ((b : ℂ) / (‖(b : ℂ)‖ : ℂ)) ^ n = ((t : ℂ) / (‖(t : ℂ)‖ : ℂ)) ^ (-n)`. Establish `h : ((t * b : ℂˣ) : ℂ) / (‖((t * b : ℂˣ) : ℂ)‖ : ℂ) = ((t : ℂ) / (‖(t : ℂ)‖ : ℂ)) * ((b : ℂ) / (‖(b : ℂ)‖ : ℂ))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, norm_mul, Complex.ofReal_mul, mul_div_mul_comm]`. Rewrite using `[h, mul_zpow, mul_assoc, zpow_neg ((b : ℂ) / (‖(b : ℂ)‖ : ℂ)), inv_mul_cancel₀ (zpow_ne_zero n hu), mul_one]`. Establish `hpow : ((‖((t * b : ℂˣ) : ℂ)‖ ^ 2 : ℝ) : ℂ) ^ (1 - s) * ((‖(b : ℂ)‖ ^ 2 : ℝ) : ℂ) ^ s = ((‖(t : ℂ)‖ ^ 2 : ℝ) : ℂ) ^ (1 - s) * ((‖(b : ℂ)‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Units.val_mul, norm_mul, mul_pow, Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg (by positivity) (by positivity), mul_assoc, ← Complex.cpow_add _ _ hb0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [chC]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem chC_mul (n : ℤ) (s : ℂ) (t b : ℂˣ) :
     chC (-n) (1 - s) (t * b) * chC n s b = chC (-n) (1 - s) t * ((‖(b : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
@@ -270,19 +270,17 @@ theorem chC_mul (n : ℤ) (s : ℂ) (t b : ℂˣ) :
     _ = _ := by rw [hang, hpow]; ring
 
 /- English proof (translation)
-Use `set A : ℂˣ → ℂ := fun a => F a * chC (-n) (1 - s) a with hA`. Use `set B : ℂˣ → ℂ := fun a => G a * chC n s a with hB`. Establish `hP : Integrable (fun p : ℂˣ × ℂˣ => A p.1 * B p.2) (mulC.prod mulC)` using `hF.mul_prod hG`. Establish `hT` using `measurePreserving_mul_prod (mulC) (mulC)`. Establish `hP' : Integrable (fun p : ℂˣ × ℂˣ => A (p.1 * p.2) * B p.2) (mulC.prod mulC)` using `hT.integrable_comp_of_integrable hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h1 : z1 F (-n) (1 - s) * z1 G n s = ∫ b, ∫ t, A (t * b) * B b ∂mulC ∂mulC`. Express the relevant statement in the definitionally equal form `(∫ a, A a ∂mulC) * (∫ b, B b ∂mulC) = _`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[integral_mul_const, integral_mul_right_eq_self A b]`. Rewrite using `[h1, ← integral_integral_swap (f := fun t b => A (t * b) * B b) hP']`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Simplify using `only`. Establish `h2 : ∀ b : ℂˣ, A (t * b) * B b = chC (-n) (1 - s) t * (((‖(b : ℂ)‖ ^ 2 : ℝ) : ℂ) * (G b * F (t * b)))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Use `chC_mul n s t b` as an intermediate fact. Simplify using `only [hA, hB, Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by rw [this]; ring`. Simplify using `only [h2]`. Rewrite using `[integral_const_mul]`. Use `congr 1`. Rewrite using `[integral_mulC (fun x : ℂ => ((‖x‖ ^ 2 : ℝ) : ℂ) * (G x * F (t * x)))]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Establish `h0 : ∀ᵐ x : ℂ, x ≠ 0` using `by simp [ae_iff]`. Use `filter_upwards [h0] with x hx`. Establish `: (((‖x‖ ^ 2)⁻¹ : ℝ) : ℂ) * ((‖x‖ ^ 2 : ℝ) : ℂ) = 1`. Rewrite using `[← Complex.ofReal_mul, inv_mul_cancel₀ (pow_ne_zero _ (norm_ne_zero_iff.2 hx))]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[← mul_assoc, this, one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tate_zeta_product (F G : ℂ → ℂ) (n : ℤ) (s : ℂ)
     (hF : Integrable (fun a : ℂˣ => F a * chC (-n) (1 - s) a) mulC)
@@ -325,7 +323,7 @@ theorem tate_zeta_product (F G : ℂ → ℂ) (n : ℤ) (s : ℂ)
   rw [← mul_assoc, this, one_mul]
 
 /- English proof (translation)
-Rewrite using `[Real.fourierChar_apply, psiC]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem psi_coe (x : ℂ) : ((Real.fourierChar (-(2 * x.re)) : Circle) : ℂ) = psiC x := by
   rw [Real.fourierChar_apply, psiC]
@@ -334,7 +332,7 @@ theorem psi_coe (x : ℂ) : ((Real.fourierChar (-(2 * x.re)) : Circle) : ℂ) = 
   ring
 
 /- English proof (translation)
-Rewrite using `[fC, volC, integral_smul_measure]`. Simplify using `only [ENNReal.toReal_ofNat, Complex.real_smul, Complex.ofReal_ofNat]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fC_eq_two_mul (h : ℂ → ℂ) (w : ℂ) : fC h w = 2 * ∫ z, h z * psiC (z * w) := by
   rw [fC, volC, integral_smul_measure]
@@ -359,19 +357,17 @@ Both sides reduce to the same expression.
 theorem bil_apply (t x y : ℂ) : bil t x y = 2 * (t * x * y).re := rfl
 
 /- English proof (translation)
-Establish `hL : Continuous fun p : ℂ × ℂ => bil t p.1 p.2`. Simplify using `only [bil_apply]`. Conclude with `continuous_const.mul (Complex.continuous_re.comp (by fun_prop))`. Establish `key` using `VectorFourier.integral_fourierIntegral_smul_eq_flip (e := Real.fourierChar) (μ := (volume : Measure ℂ)) (ν := (volume : Measure ℂ)) (L := bil t) (f := f) (g := g) Real.continuous_fourierChar hL hf hg`. Establish `hF : ∀ (h : ℂ → ℂ) (y : ℂ), fC h (t * y) = 2 * VectorFourier.fourierIntegral Real.fourierChar volume (bil t) h y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h y`. Rewrite using `[fC_eq_two_mul, VectorFourier.fourierIntegral]`. Use `congr 1`. Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [bil_apply, Circle.smul_def, psi_coe, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, show v * (t * y) = t * v * y by ring]`. Establish `hF' : ∀ (h : ℂ → ℂ) (y : ℂ), fC h (t * y) = 2 * VectorFourier.fourierIntegral Real.fourierChar volume (bil t).flip h y`. Introduce `h y`. Rewrite using `[fC_eq_two_mul, VectorFourier.fourierIntegral]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun v => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.flip_apply, bil_apply, Circle.smul_def, psi_coe, smul_eq_mul]`. Rewrite using `[mul_comm, show v * (t * y) = t * y * v by ring]`. Simplify using `only [hF f, hF' g]`. Simplify using `only [smul_eq_mul] at key`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 2 * ∫ x, f x * VectorFourier.fourierIntegral Real.fourierChar volume (bil t).flip g x := by`. Rewrite using `[key]`. Use `_ = _ := by`. Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fC_scaled_swap (f g : ℂ → ℂ) (hf : Integrable f) (hg : Integrable g) (t : ℂ) :
     ∫ x : ℂ, g x * fC f (t * x) = ∫ x : ℂ, f x * fC g (t * x) := by
@@ -413,7 +409,7 @@ theorem fC_scaled_swap (f g : ℂ → ℂ) (hf : Integrable f) (hg : Integrable 
         ring
 
 /- English proof (translation)
-Rewrite using `[tate_zeta_product _ _ n s A D, tate_zeta_product _ _ n s C B]`. Simplify using `only [fC_scaled_swap f g hf hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tate_zeta_symmetric (f g : ℂ → ℂ) (hf : Integrable f) (hg : Integrable g) (n : ℤ) (s : ℂ)
     (A : Integrable (fun a : ℂˣ => fC f a * chC (-n) (1 - s) a) mulC)
@@ -425,22 +421,20 @@ theorem tate_zeta_symmetric (f g : ℂ → ℂ) (hf : Integrable f) (hg : Integr
   simp only [fC_scaled_swap f g hf hg]
 
 /- English proof (translation)
-Unfold `GroundTheory.Global.complexGaussian`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_gauss (m : ℤ) : Continuous (GroundTheory.Global.complexGaussian m) := by
   unfold GroundTheory.Global.complexGaussian
   split_ifs <;> fun_prop
 
 /- English proof (translation)
-Establish `h : Integrable (fun z : ℂ => (fun y : ℝ => y ^ m.natAbs * Real.exp (-(2 * π) * y ^ 2) * y ^ (2 * (σ - 1))) ‖z‖)`. Use `(integrable_fun_norm_addHaar (volume : Measure ℂ) (f := fun y : ℝ => y ^ m.natAbs * Real.exp (-(2 * π) * y ^ 2) * y ^ (2 * (σ - 1)))).2 ?_` and prove the remaining obligations. Rewrite using `[Complex.finrank_real_complex]`. Establish `h2` using `integrableOn_rpow_mul_exp_neg_mul_sq (b := 2 * π) (by positivity) (s := (m.natAbs : ℝ) + 2 * σ - 1) (by`. Use `Nat.cast_nonneg (α := ℝ) m.natAbs` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `linarith)`. Use `h2.congr_fun (fun y hy => ?_) measurableSet_Ioi` and prove the remaining obligations. Establish `hy0 : 0 < y` using `hy`. Establish `e2 : (m.natAbs : ℝ) + 2 * σ - 1 = 1 + ((m.natAbs : ℝ) + 2 * (σ - 1))` using `by ring`. Use `show y ^ ((m.natAbs : ℝ) + 2 * σ - 1) * Real.exp (-(2 * π) * y ^ 2) = _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, Real.rpow_add hy0, Real.rpow_add hy0, Real.rpow_one, Real.rpow_natCast]`. Simplify using `only [smul_eq_mul, Nat.add_one_sub_one, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Use `h.mono' ?_ ?_` and prove the remaining obligations. Conclude with `(continuous_gauss m).aestronglyMeasurable.mul (Complex.measurable_ofReal.comp (measurable_norm.pow_const _)).aestronglyMeasurable`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.Eventually.of_forall fun z => ?_` and prove the remaining obligations. Establish `hnn : 0 ≤ ‖z‖ ^ (2 * (σ - 1))` using `Real.rpow_nonneg (norm_nonneg _) _`. Establish `hre : (-2 * π * (‖z‖ : ℂ) ^ 2).re = -(2 * π) * ‖z‖ ^ 2`. Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_ofNat, ← Complex.ofReal_neg, ← Complex.ofReal_mul, ← Complex.ofReal_mul, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
-
-Apply the tactic sequence `have hp : ‖(if 0 ≤ m then z ^ m.natAbs else (starRingEnd ℂ) z ^ m.natAbs)‖ = ‖z‖ ^ m.natAbs := by split_ifs <;> simp`. Rewrite using `[norm_mul, GroundTheory.Global.complexGaussian, norm_mul, Complex.norm_exp, Complex.norm_real, Real.norm_of_nonneg hnn, hp, hre]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_gauss (m : ℤ) {σ : ℝ} (hσ : 0 < σ) :
     Integrable (fun x : ℂ => GroundTheory.Global.complexGaussian m x * ((‖x‖ ^ (2 * (σ - 1)) : ℝ) : ℂ)) := by
@@ -475,11 +469,11 @@ theorem integrable_gauss (m : ℤ) {σ : ℝ} (hσ : 0 < σ) :
       Real.norm_of_nonneg hnn, hp, hre]
 
 /- English proof (translation)
-Establish `h` using `GroundTheory.Global.integral_complexGaussian_mul_zpow_mul_cpow m (s := s) (by`. Use `Nat.cast_nonneg (α := ℝ) m.natAbs` as an intermediate fact. Use the proof step `linarith)`. Rewrite `h` using `[GroundTheory.Global.complexPlaceMeasure, integral_smul_measure, ENNReal.toReal_ofNat, Complex.real_smul]`. Establish `e : z1 (GroundTheory.Global.complexGaussian m) (-m) s = ∫ z : ℂ, GroundTheory.Global.complexGaussian m z * (z / (‖z‖ : ℂ)) ^ (-m) * ((‖z‖ ^ 2 : ℝ) : ℂ) ^ s / ((‖z‖ ^ 2 : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(integral_mulC (fun x => GroundTheory.Global.complexGaussian m x * cF (-m) s x)).trans ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [cF, Complex.ofReal_inv]`. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Generalize the expression as in `(∫ z : ℂ, GroundTheory.Global.complexGaussian m z * (z / (‖z‖ : ℂ)) ^ (-m) * ((‖z‖ ^ 2 : ℝ) : ℂ) ^ s / ((‖z‖ ^ 2 : ℝ) : ℂ)) = J at h ⊢`. Move the coercions through the operations in `at h`. Take the linear combination `(1 / 2 : ℂ) * h`.
+Replace the chosen expression with an arbitrary variable. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem tate_zeta_gaussian (m : ℤ) {s : ℂ} (hs : 0 < s.re) :
     z1 (GroundTheory.Global.complexGaussian m) (-m) s = π / 2 * Gammaℂ (s + m.natAbs / 2) := by
@@ -503,7 +497,7 @@ theorem tate_zeta_gaussian (m : ℤ) {s : ℂ} (hs : 0 < s.re) :
   linear_combination (1 / 2 : ℂ) * h
 
 /- English proof (translation)
-Rewrite using `[Complex.Gammaℂ_def]`. Use `mul_ne_zero (mul_ne_zero two_ne_zero ?_) (Complex.Gamma_ne_zero_of_re_pos hs)` and prove the remaining obligations. Rewrite using `[Ne, Complex.cpow_eq_zero_iff]`. Simplify using `[Real.pi_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gammaC_ne {s : ℂ} (hs : 0 < s.re) : Gammaℂ s ≠ 0 := by
   rw [Complex.Gammaℂ_def]
@@ -512,7 +506,7 @@ theorem gammaC_ne {s : ℂ} (hs : 0 < s.re) : Gammaℂ s ≠ 0 := by
   simp [Real.pi_ne_zero]
 
 /- English proof (translation)
-Simplify using `only [z1, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tate_zeta_const_mul (c : ℂ) (G : ℂ → ℂ) (n : ℤ) (s : ℂ) :
     z1 (fun w => c * G w) n s = c * z1 G n s := by
@@ -520,9 +514,9 @@ theorem tate_zeta_const_mul (c : ℂ) (G : ℂ → ℂ) (n : ℤ) (s : ℂ) :
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `hv : volC = GroundTheory.Global.complexPlaceMeasure` using `rfl`. Rewrite using `[fC, GroundTheory.Global.complexFourier, hv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Circle.smul_def, psi_coe, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fC_eq_complexFourier (h : ℂ → ℂ) : fC h = GroundTheory.Global.complexFourier h := by
   funext w
@@ -533,7 +527,7 @@ theorem fC_eq_complexFourier (h : ℂ → ℂ) : fC h = GroundTheory.Global.comp
   rw [mul_comm]
 
 /- English proof (translation)
-Rewrite using `[fC_eq_complexFourier, GroundTheory.Global.complexFourier_complexGaussian]`. Simplify using `only [Int.natAbs_neg, neg_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fC_gauss (n : ℤ) : fC (GroundTheory.Global.complexGaussian (-n))
     = fun w => (-Complex.I) ^ n.natAbs * GroundTheory.Global.complexGaussian n w := by
@@ -541,7 +535,7 @@ theorem fC_gauss (n : ℤ) : fC (GroundTheory.Global.complexGaussian (-n))
   simp only [Int.natAbs_neg, neg_neg]
 
 /- English proof (translation)
-Rewrite using `[fC_eq_complexFourier, GroundTheory.Global.complexFourier_eq_fourierIntegral]`. Conclude with `VectorFourier.fourierIntegral_continuous Real.continuous_fourierChar GroundTheory.Global.traceFormℂ.continuous₂ (hf.smul_measure (by simp))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_fC {f : ℂ → ℂ} (hf : Integrable f) : Continuous (fC f) := by
   rw [fC_eq_complexFourier, GroundTheory.Global.complexFourier_eq_fourierIntegral]
@@ -549,21 +543,21 @@ theorem continuous_fC {f : ℂ → ℂ} (hf : Integrable f) : Continuous (fC f) 
     GroundTheory.Global.traceFormℂ.continuous₂ (hf.smul_measure (by simp))
 
 /- English proof (translation)
-Introduce `f n s h0 h1 hf hw hF`. Establish `h1' : 0 < (1 - s).re` using `by simpa using h1`. Establish `hG : Integrable (GroundTheory.Global.complexGaussian (-n))`. Simplify using `using GroundTheory.Global.integrable_norm_pow_smul_complexGaussian (-n) 0`. Establish `A : Integrable (fun a : ℂˣ => fC f a * chC (-n) (1 - s) a) mulC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `integrable_chC _ _ _ (continuous_fC hf).aestronglyMeasurable ?_` and prove the remaining obligations. Establish `e : 2 * ((1 - s).re - 1) = -2 * s.re`. Simplify using `only [Complex.sub_re, Complex.one_re]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hF`. Establish `B` using `integrable_chC f n s hf.aestronglyMeasurable hw`. Establish `C : Integrable (fun a : ℂˣ => fC (GroundTheory.Global.complexGaussian (-n)) a * chC (-n) (1 - s) a) mulC`. Use `integrable_chC _ _ _ (continuous_fC hG).aestronglyMeasurable ?_` and prove the remaining obligations. Rewrite using `[fC_gauss]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Conclude with `(integrable_gauss n h1').const_mul _`. Establish `D` using `integrable_chC _ n s (continuous_gauss (-n)).aestronglyMeasurable (integrable_gauss (-n) h0)`. Establish `key` using `tate_zeta_symmetric f _ hf hG n s A B C D`. Establish `g0` using `tate_zeta_gaussian (-n) h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `g0` using `[neg_neg, Int.natAbs_neg]`. Rewrite `key` using `[fC_gauss, tate_zeta_const_mul, tate_zeta_gaussian n h1', g0]`. Establish `hne : Gammaℂ (s + n.natAbs / 2) ≠ 0`. Use `gammaC_ne ?_` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ n.natAbs` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Simplify using `only [Complex.add_re, Complex.div_ofNat_re, Complex.natCast_re]`. Check the signs of the components of the expression. Establish `hpi : (π : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 Real.pi_ne_zero`. Simplify using `only [gC]`. Generalize the expression as in `Gammaℂ (s + n.natAbs / 2) = G0 at key hne ⊢`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Gammaℂ (1 - s + n.natAbs / 2) = G1 at key ⊢`. Generalize the expression as in `z1 (fC f) (-n) (1 - s) = Z1 at key ⊢`. Generalize the expression as in `z1 f n s = Z0 at key ⊢`. Generalize the expression as in `(-Complex.I) ^ n.natAbs = c at key ⊢`. Establish `hp2 : (π : ℂ) / 2 * G0 ≠ 0` using `mul_ne_zero (div_ne_zero hpi two_ne_zero) hne`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `mul_right_cancel₀ hp2` to reduce the goal to its premises. Rewrite using `[key]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem main : TateFunctionalEquationComplex := by
   intro f n s h0 h1 hf hw hF

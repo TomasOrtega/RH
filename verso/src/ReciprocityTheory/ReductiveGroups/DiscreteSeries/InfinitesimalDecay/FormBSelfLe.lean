@@ -12,7 +12,7 @@ namespace ReciprocityTheory.ChartRestriction.DS.DecInf
 variable {n : ℕ} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {D : Submodule ℂ H}
 
 /- English proof (translation)
-The claim follows from `| [], p => by simp [wAct] | q :: w, p => by show E q.1 q.2 * wAct E (w ++ [p]) = E q.1 q.2 * wAct E w * E p.1 p.2 rw [wAct_append E w p, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem wAct_append {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) :
     ∀ (w : List (Fin n × Fin n)) (p : Fin n × Fin n), wAct E (w ++ [p]) = wAct E w * E p.1 p.2
@@ -22,13 +22,13 @@ theorem wAct_append {M : Type*} [AddCommGroup M] [Module ℂ M] (E : Fin n → F
     rw [wAct_append E w p, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `sum_nonneg fun _ _ => sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem NE_nonneg (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (x : D) : 0 ≤ NE E j x :=
   sum_nonneg fun _ _ => sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Simplify using `only [NE, ← sum_add_distrib]`. Use `sum_le_sum fun l _ => sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_add, Submodule.coe_add]`. Conclude with `norm_add_le _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NE_add (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (x y : D) :
     NE E j (x + y) ≤ NE E j x + NE E j y := by
@@ -38,26 +38,26 @@ theorem NE_add (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (x y : D) :
   exact norm_add_le _ _
 
 /- English proof (translation)
-Simplify using `only [NE, mul_sum, map_smul, Submodule.coe_smul, norm_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem NE_smul (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (c : ℂ) (x : D) :
     NE E j (c • x) = ‖c‖ * NE E j x := by
   simp only [NE, mul_sum, map_smul, Submodule.coe_smul, norm_smul]
 
 /- English proof (translation)
-Simplify using `using NE_smul E j 0 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem NE_zero (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) : NE E j 0 = 0 := by
   simpa using NE_smul E j 0 0
 
 /- English proof (translation)
-Rewrite using `[← neg_one_smul ℂ x, NE_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem NE_neg (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (x : D) : NE E j (-x) = NE E j x := by
   rw [← neg_one_smul ℂ x, NE_smul]; simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [NE_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[sum_insert ha, sum_insert ha]`. Conclude with `(NE_add E j _ _).trans (add_le_add le_rfl ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem NE_sum (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) {ι : Type*} (s : Finset ι) (x : ι → D) :
     NE E j (∑ i ∈ s, x i) ≤ ∑ i ∈ s, NE E j (x i) := by
@@ -69,7 +69,7 @@ theorem NE_sum (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) {ι : Type*}
     exact (NE_add E j _ _).trans (add_le_add le_rfl ih)
 
 /- English proof (translation)
-The claim follows from `sum_le_sum_of_subset_of_nonneg (fun x hx => by simp only [mem_range] at hx ⊢; omega) fun _ _ _ => sum_nonneg fun _ _ => norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem NE_mono (E : Fin n → Fin n → Module.End ℂ D) {j j' : ℕ} (h : j ≤ j') (x : D) :
     NE E j x ≤ NE E j' x :=
@@ -77,19 +77,19 @@ theorem NE_mono (E : Fin n → Fin n → Module.End ℂ D) {j j' : ℕ} (h : j �
     sum_nonneg fun _ _ => norm_nonneg _
 
 /- English proof (translation)
-Simplify using `[NE, wAct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem NE_zero_eq (E : Fin n → Fin n → Module.End ℂ D) (x : D) : NE E 0 x = ‖((x : D) : H)‖ := by
   simp [NE, wAct]
 
 /- English proof (translation)
-The claim follows from `sum_nonneg fun _ _ => NE_nonneg E j _`.
+A detailed English derivation is pending.
 -/
 theorem NT_nonneg (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f : Fin n → D) : 0 ≤ NT E j f :=
   sum_nonneg fun _ _ => NE_nonneg E j _
 
 /- English proof (translation)
-Simplify using `only [NT, ← sum_add_distrib]`. Conclude with `sum_le_sum fun c _ => NE_add E j _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NT_add (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f g : Fin n → D) :
     NT E j (f + g) ≤ NT E j f + NT E j g := by
@@ -97,27 +97,27 @@ theorem NT_add (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f g : Fin n
   exact sum_le_sum fun c _ => NE_add E j _ _
 
 /- English proof (translation)
-Simplify using `only [NT, mul_sum, Pi.smul_apply, NE_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem NT_smul (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (c : ℂ) (f : Fin n → D) :
     NT E j (c • f) = ‖c‖ * NT E j f := by
   simp only [NT, mul_sum, Pi.smul_apply, NE_smul]
 
 /- English proof (translation)
-The claim follows from `sum_le_sum fun _ _ => NE_mono E h _`.
+A detailed English derivation is pending.
 -/
 theorem NT_mono (E : Fin n → Fin n → Module.End ℂ D) {j j' : ℕ} (h : j ≤ j') (f : Fin n → D) :
     NT E j f ≤ NT E j' f :=
   sum_le_sum fun _ _ => NE_mono E h _
 
 /- English proof (translation)
-Unfold `NE`. Establish `key : ∀ l, ∑ w : Fin l → Fin n × Fin n, ‖((wAct E (List.ofFn w) (E a b x) : D) : H)‖ ≤ ∑ w : Fin (l + 1) → Fin n × Fin n, ‖((wAct E (List.ofFn w) x : D) : H)‖`. Introduce `l`. Establish `e0 : ∀ w : Fin l → Fin n × Fin n, wAct E (List.ofFn (Fin.snoc w (a, b) : Fin (l + 1) → Fin n × Fin n)) = wAct E (List.ofFn w) * E a b`. Introduce `w`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.ofFn_succ', List.concat_eq_append, wAct_append]`. Simplify using `[Fin.snoc_castSucc, Fin.snoc_last]`. Establish `e : ∀ w : Fin l → Fin n × Fin n, ‖((wAct E (List.ofFn w) (E a b x) : D) : H)‖ = ‖((wAct E (List.ofFn (Fin.snoc w (a, b) : Fin (l + 1) → Fin n × Fin n)) x : D) : H)‖`. Introduce `w`. Rewrite using `[e0, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[e]`. Establish `hinj : Function.Injective (fun w : Fin l → Fin n × Fin n => (Fin.snoc w (a, b) : Fin (l + 1) → Fin n × Fin n))` using `fun w w' h => funext fun i => by simpa using congrFun h i.castSucc`. Rewrite using `[← sum_image (f := fun w : Fin (l + 1) → Fin n × Fin n => ‖((wAct E (List.ofFn w) x : D) : H)‖) (fun w _ w' _ h => hinj h)]`. Conclude with `sum_le_univ_sum_of_nonneg fun _ => norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_range_succ' (fun l => ∑ w : Fin l → Fin n × Fin n, ‖((wAct E (List.ofFn w) x : D) : H)‖) (j + 1)]`. Conclude with `le_add_of_nonneg_right (sum_nonneg fun _ _ => norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem NE_apply_le (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (a b : Fin n) (x : D) :
     NE E j (E a b x) ≤ NE E (j + 1) x := by
@@ -148,9 +148,9 @@ theorem NE_apply_le (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (a b : 
         exact le_add_of_nonneg_right (sum_nonneg fun _ _ => norm_nonneg _)
 
 /- English proof (translation)
-Unfold `NT`. Establish `e : ∀ c, tensV E a b f c = E a b (f c) + if c = a then f b else 0` using `fun c => tensV_coord E a b f c`. Combine the equalities or inequalities in the displayed calculation. Use `sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(NE_add E j _ _).trans (add_le_add (NE_apply_le E j a b _) ?_)` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp [NE_zero]`. Use `_ = ∑ c, NE E (j + 1) (f c) + NE E j (f b) := by rw [sum_add_distrib]; simp`. Use `_ ≤ _ := add_le_add le_rfl (single_le_sum (f := fun c => NE E j (f c)) (fun _ _ => NE_nonneg E j _) (mem_univ b))`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem NT_tensV_le (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (a b : Fin n) (f : Fin n → D) :
     NT E j (tensV E a b f) ≤ NT E (j + 1) f + NT E j f := by
@@ -166,11 +166,9 @@ theorem NT_tensV_le (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (a b : 
         (mem_univ b))
 
 /- English proof (translation)
-Unfold `NT`. Establish `e1 : ∀ d, NE E j (eeF dual E f d) ≤ NT E (j + 1) f` using `fun d => by`. Consider the cases of `dual`. Use `show NE E j (eeV E f d) ≤ _`. Rewrite using `[eeV_coord]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(NE_sum E j _ _).trans (sum_le_sum fun c _ => NE_apply_le E j _ _ _)`. Use `show NE E j (eeVd E f d) ≤ _`. Rewrite using `[eeVd_coord, NE_neg]`. Conclude with `(NE_sum E j _ _).trans (sum_le_sum fun c _ => NE_apply_le E j _ _ _)`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `mul_le_mul_of_nonneg_right ?_ (NT_nonneg E _ f)` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Simplify using `[h]`. Conclude with `Nat.le_self_pow two_ne_zero n` after adjusting the coercions.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem NT_eeF_le (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (f : Fin n → D) :
     NT E j (eeF dual E f) ≤ (n : ℝ) ^ 2 * NT E (j + 1) f := by
@@ -192,15 +190,13 @@ theorem NT_eeF_le (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (j : 
         · exact_mod_cast Nat.le_self_pow two_ne_zero n
 
 /- English proof (translation)
-Establish `hpow : ∀ i j, ∀ f : Fin n → D, NT E j (((eeF dual E) ^ i) f) ≤ ((n : ℝ) ^ 2) ^ i * NT E (j + i) f`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro j f`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ i ih`. Introduce `j f`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Use `(NT_eeF_le dual E j _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨∑ i ∈ range (p.natDegree + 1), ‖p.coeff i‖ * ((n : ℝ) ^ 2) ^ i, fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.aeval_eq_sum_range, LinearMap.sum_apply, sum_mul]`. Simplify using `only [NT]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `_ ≤ ∑ i ∈ range (p.natDegree + 1), ‖p.coeff i‖ * ((n : ℝ) ^ 2) ^ i * NT E (j + p.natDegree) f := by`. Use `sum_le_sum fun i hi => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, NT_smul, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ((hpow i j f).trans ?_) (norm_nonneg _)` and prove the remaining obligations.
-
-Conclude with `mul_le_mul_of_nonneg_left (NT_mono E (by have := mem_range.mp hi; omega) f) (by positivity)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem NT_poly_le (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (p : Polynomial ℂ) (j : ℕ) :
     ∃ C : ℝ, ∀ f : Fin n → D, NT E j (Polynomial.aeval (eeF dual E) p f) ≤ C * NT E (j + p.natDegree) f := by
@@ -230,7 +226,7 @@ theorem NT_poly_le (dual : Bool) (E : Fin n → Fin n → Module.End ℂ D) (p :
         exact mul_le_mul_of_nonneg_left (NT_mono E (by have := mem_range.mp hi; omega) f) (by positivity)
 
 /- English proof (translation)
-Unfold `NT`. Rewrite using `[sum_eq_single b (fun c _ hc => by rw [Pi.single_eq_of_ne hc, NE_zero]) (by simp)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem NT_single (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (b : Fin n) (x : D) :
     NT E j (Pi.single b x) = NE E j x := by
@@ -239,11 +235,9 @@ theorem NT_single (E : Fin n → Fin n → Module.End ℂ D) (j : ℕ) (b : Fin 
   simp
 
 /- English proof (translation)
-Unfold `formB NT`. Combine the equalities or inequalities in the displayed calculation. Use `(norm_sum_le _ _).trans (sum_le_sum fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, inner_self_eq_norm_sq_to_K]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `_ ≤ (∑ c, ‖((f c : D) : H)‖) ^ 2 := by`. Rewrite using `[sq, sum_mul]`. Use `sum_le_sum fun c _ => ?_` and prove the remaining obligations. Rewrite using `[sq]`. Conclude with `mul_le_mul_of_nonneg_left (single_le_sum (f := fun c => ‖((f c : D) : H)‖) (fun _ _ => norm_nonneg _) (mem_univ c)) (norm_nonneg _)`.
-
-Use `_ = _ := by simp [NE_zero_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formB_self_le (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (f : Fin n → D) :
     ‖formB ε f f‖ ≤ NT E 0 f ^ 2 := by
@@ -262,35 +256,31 @@ theorem formB_self_le (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End 
     _ = _ := by simp [NE_zero_eq]
 
 /- English proof (translation)
-Take `⟨C0, hC0⟩` from `hP 0`. Use `set C1 := max C0 0 with hC1`. Establish `hk : 0 < |ka|` using `abs_pos.mpr hka`. Use `set C' := C1 / Real.sqrt |ka| with hC'`. Establish `hC'0 : 0 ≤ C'` using `div_nonneg (le_max_right _ _) (Real.sqrt_nonneg _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hq0 : ∀ g ∈ S, ‖((q g : D') : H')‖ ≤ C' * NT E d g`. Introduce `g hg`. Establish `h1` using `congrArg norm (hT3 g hg)`. Rewrite `h1` using `[Complex.norm_real, Real.norm_eq_abs, abs_mul, abs_of_nonneg (sq_nonneg ‖((q g : D') : H')‖)]`. Establish `h2 : |ka| * ‖((q g : D') : H')‖ ^ 2 ≤ (C1 * NT E d g) ^ 2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1]`. Use `(formB_self_le ε E _).trans (pow_le_pow_left₀ (NT_nonneg E 0 _) ?_ 2)` and prove the remaining obligations. Establish `h4 : C0 * NT E (0 + d) g ≤ C1 * NT E d g`. Rewrite using `[zero_add]`. Conclude with `mul_le_mul_of_nonneg_right (le_max_left _ _) (NT_nonneg E d g)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hC0 g hg).trans h4`. Establish `hx : ‖((q g : D') : H')‖ ^ 2 ≤ (C1 * NT E d g) ^ 2 / |ka|`. Rewrite using `[le_div_iff₀ hk, mul_comm]`. Conclude with `h2`. Establish `hy : 0 ≤ C1 * NT E d g` using `mul_nonneg (le_max_right _ _) (NT_nonneg E d g)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_div (sq_nonneg _), Real.sqrt_sq hy, hC']`. Expand and normalize the polynomial expressions, which then agree. Set `T : List (Fin n × Fin n) → Module.End ℂ (Fin n → D)` to `fun w => (w.map fun p => tensV E p.1 p.2).prod`. Establish `hTS : ∀ w f, f ∈ S → T w f ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro f hf`. Conclude with `hf`. Consider the case `cons p w ih => intro f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Conclude with `hS _ _ _ (ih f hf)`. Establish `hTq : ∀ w f, f ∈ S → wAct E' w (q f) = q (T w f)`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Both sides reduce to the same expression. Consider the case `cons p w ih`. Introduce `f hf`. Use `show E' p.1 p.2 (wAct E' w (q f)) = q (tensV E p.1 p.2 (T w f))`. Rewrite using `[ih f hf, hT2 _ _ _ (hTS w f hf)]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hTN : ∀ w j f, NT E j (T w f) ≤ 2 ^ w.length * NT E (j + w.length) f`. Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro j f`. Simplify using `[T]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Consider the case `cons p w ih`. Introduce `j f`. Use `show NT E j (tensV E p.1 p.2 (T w f)) ≤ _`. Use `(NT_tensV_le E j _ _ _).trans ?_` and prove the remaining obligations. Establish `e1` using `ih (j + 1) f`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `ih j f`. Establish `e3 : NT E (j + w.length) f ≤ NT E (j + 1 + w.length) f` using `NT_mono E (by omega) f`. Rewrite using `[List.length_cons, pow_succ, show j + (w.length + 1) = j + 1 + w.length by omega]`. Use polynomial arithmetic with `[NT_nonneg E (j + 1 + w.length) f, pow_pos (two_pos (α := ℝ)) w.length]`. Use `⟨∑ l ∈ range (j + 1), ((n : ℝ) ^ 2) ^ l * (C' * 2 ^ l), fun f hf => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `NE`. Rewrite using `[sum_mul]`. Use `sum_le_sum fun l hl => ?_` and prove the remaining obligations. Establish `hl' : l ≤ j` using `by have := mem_range.mp hl; omega`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `sum_le_sum fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hTq _ f hf]`. Use `(hq0 _ (hTS _ f hf)).trans (mul_le_mul_of_nonneg_left ?_ hC'0)` and prove the remaining obligations. Use `(hTN _ d f).trans ?_` and prove the remaining obligations. Rewrite using `[List.length_ofFn]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (NT_mono E (by omega) f) (by positivity)`. Use `_ = _ := by`. Rewrite using `[sum_const, card_univ, Fintype.card_fun, Fintype.card_prod, Fintype.card_fin, nsmul_eq_mul]`. Simplify using `only [Fintype.card_fin]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem NE_q_le {H' : Type*} [NormedAddCommGroup H'] [InnerProductSpace ℂ H'] {D' : Submodule ℂ H'}
     (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ D) (E' : Fin n → Fin n → Module.End ℂ D')

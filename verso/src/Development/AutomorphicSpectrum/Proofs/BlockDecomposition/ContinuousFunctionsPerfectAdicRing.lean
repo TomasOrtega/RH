@@ -11,7 +11,7 @@ open CategoryTheory GroundTheory.PAdicHodge CrystallineSemistableComparison Crys
 namespace GlobalTheory.CompanionTheory.ContFn
 
 /- English proof (translation)
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow, smul_eq_mul, Ideal.mul_top, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smod_iff {R : Type} [CommRing R] (a : R) (n : ℕ) (x y : R) :
     SModEq ((Ideal.span {a}) ^ n • ⊤ : Submodule R R) x y ↔ a ^ n ∣ x - y := by
@@ -20,12 +20,12 @@ theorem smod_iff {R : Type} [CommRing R] (a : R) (n : ℕ) (x y : R) :
 variable {l : ℕ} [Fact l.Prime] (A : PAlg l) {Γ : Type} [TopologicalSpace Γ]
 
 /- English proof (translation)
-The claim follows from `A.tf`.
+A detailed English derivation is pending.
 -/
 theorem pi_nzd : A.pi ∈ nonZeroDivisors A.A := A.tf
 
 /- English proof (translation)
-Use `forall_congr' fun k => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `IsLocallyConstant (fun γ => Ideal.Quotient.mk (Ideal.span {A.pi ^ k}) (f γ)) ↔ _`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Use `forall_congr' fun γ => Filter.eventually_congr (Filter.Eventually.of_forall fun γ' => ?_)` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_contR_iff (f : Γ → A.A) :
     f ∈ A.contR Γ ↔ ∀ k : ℕ, ∀ γ : Γ, ∀ᶠ γ' in nhds γ, A.pi ^ k ∣ f γ' - f γ := by
@@ -36,7 +36,7 @@ theorem mem_contR_iff (f : Γ → A.A) :
   rw [Ideal.Quotient.eq, Ideal.mem_span_singleton]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hk : A.pi ^ k ∈ nonZeroDivisors A.A` using `pow_mem (pi_nzd A) k`. Use `mem_nonZeroDivisors_iff_left.1 hk (a - A.pi ^ j * c) (by rw [mul_sub, hc, pow_add]; ring)` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pow_cancel {k j : ℕ} {a : A.A} (h : A.pi ^ (k + j) ∣ A.pi ^ k * a) : A.pi ^ j ∣ a := by
   obtain ⟨c, hc⟩ := h
@@ -46,9 +46,9 @@ theorem pow_cancel {k j : ℕ} {a : A.A} (h : A.pi ^ (k + j) ∣ A.pi ^ k * a) :
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Take `⟨c', rfl⟩` from `A.frob_bijective.2 c`. Use `⟨c', A.frob_bijective.1 ?_⟩` and prove the remaining obligations. Rewrite using `[hc, map_mul]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Express the relevant statement in the definitionally equal form `A.pi ^ (l * k) = (A.pi ^ k) ^ l`. Rewrite using `[← pow_mul, mul_comm]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_dvd {k : ℕ} {d : A.A} (h : A.pi ^ (l * k) ∣ A.frob d) : A.pi ^ k ∣ d := by
   obtain ⟨c, hc⟩ := h
@@ -66,11 +66,11 @@ theorem val_pow_apply (f : A.contR Γ) (k : ℕ) (γ : Γ) : (f ^ k).1 γ = f.1 
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, rfl⟩ γ`. Use `⟨g.1 γ, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A.contC Γ A.pi ^ k).1 γ * g.1 γ = _`. Rewrite using `[val_pow_apply]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Introduce `h choose g hg using h`. Establish `hg' : g ∈ A.contR Γ` using `(mem_contR_iff A g).2 fun j γ => by filter_upwards [(mem_contR_iff A f.1).1 f.2 (k + j) γ] with γ' hγ'`. Rewrite `hγ'` using `[hg γ', hg γ, ← mul_sub]`. Conclude with `pow_cancel A hγ'`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨g, hg'⟩, Subtype.ext (funext fun γ => ?_)⟩` and prove the remaining obligations. Use `(hg γ).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = (A.contC Γ A.pi ^ k).1 γ * g γ`. Rewrite using `[val_pow_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dvd_iff (k : ℕ) (f : A.contR Γ) : A.contC Γ A.pi ^ k ∣ f ↔ ∀ γ, A.pi ^ k ∣ f.1 γ := by
   constructor
@@ -92,11 +92,11 @@ theorem dvd_iff (k : ℕ) (f : A.contR Γ) : A.contC Γ A.pi ^ k ∣ f ↔ ∀ �
     rfl
 
 /- English proof (translation)
-Use `⟨⟨fun x y h => ?_, fun f => ?_⟩⟩` and prove the remaining obligations. Use `Subtype.ext (funext fun γ => A.frob_bijective.1 ?_)` and prove the remaining obligations. Establish `e` using `congrFun (congrArg Subtype.val h) γ`. Express the relevant statement in the definitionally equal form `(x ^ l).1 γ = (y ^ l).1 γ at e`. Rewrite `e` using `[val_pow_apply, val_pow_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Use `choose g hg using fun γ => A.frob_bijective.2 (f.1 γ)`. Establish `hg' : g ∈ A.contR Γ` using `(mem_contR_iff A g).2 fun k γ => by filter_upwards [(mem_contR_iff A f.1).1 f.2 (l * k) γ] with γ' hγ'`. Use `frob_dvd A ?_` and prove the remaining obligations. Rewrite using `[map_sub, hg γ', hg γ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hγ'`. Use `⟨⟨g, hg'⟩, Subtype.ext (funext fun γ => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((⟨g, hg'⟩ : A.contR Γ) ^ l).1 γ = _`. Rewrite using `[val_pow_apply]`. Conclude with `hg γ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfect : PerfectRing (A.contR Γ) l := by
   refine ⟨⟨fun x y h => ?_, fun f => ?_⟩⟩
@@ -117,13 +117,11 @@ theorem perfect : PerfectRing (A.contR Γ) l := by
     exact hg γ
 
 /- English proof (translation)
-Establish `hc : IsAdicComplete (Ideal.span {A.pi}) A.A` using `A.compl`. Establish `h1 : IsHausdorff (Ideal.span {A.contC Γ A.pi}) (A.contR Γ)` using `⟨fun x hx => by`. Use `Subtype.ext (funext fun γ => ?_)` and prove the remaining obligations. Use `hc.toIsHausdorff.haus' (x.1 γ) fun n => (smod_iff _ _ _ _).2 ?_` and prove the remaining obligations. Use `(dvd_iff A n x).1 (by simpa using (smod_iff _ _ _ _).1 (hx n)) γ` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `using this⟩`. Establish `h2 : IsPrecomplete (Ideal.span {A.contC Γ A.pi}) (A.contR Γ)` using `⟨fun f hf => by`. Establish `hp : ∀ m n, m ≤ n → ∀ γ, A.pi ^ m ∣ (f m).1 γ - (f n).1 γ` using `fun m n h γ => (dvd_iff A m (f m - f n)).1 ((smod_iff _ _ _ _).1 (hf h)) γ`. Use `choose L hL using fun γ => hc.toIsPrecomplete.prec (f := fun n => (f n).1 γ) fun {m n} h => (smod_iff _ _ _ _).2 (hp m n h γ)`. Establish `hL' : ∀ n γ, A.pi ^ n ∣ (f n).1 γ - L γ` using `fun n γ => (smod_iff _ _ _ _).1 (hL γ n)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLm : L ∈ A.contR Γ` using `(mem_contR_iff A L).2 fun k γ => by filter_upwards [(mem_contR_iff A (f k).1).1 (f k).2 k γ] with γ' h`. Establish `e : L γ' - L γ = ((f k).1 γ' - (f k).1 γ) - ((f k).1 γ' - L γ') + ((f k).1 γ - L γ)` using `by ring`. Rewrite using `[e]`. Conclude with `dvd_add (dvd_sub h (hL' k γ')) (hL' k γ)`. Conclude with `⟨⟨L, hLm⟩, fun n => (smod_iff _ _ _ _).2 ((dvd_iff A n _).2 fun γ => hL' n γ)⟩⟩`.
-
-Conclude with `{ toIsHausdorff := h1, toIsPrecomplete := h2 }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem complete : IsAdicComplete (Ideal.span {A.contC Γ A.pi}) (A.contR Γ) := by
   have hc : IsAdicComplete (Ideal.span {A.pi}) A.A := A.compl
@@ -147,14 +145,14 @@ theorem complete : IsAdicComplete (Ideal.span {A.contC Γ A.pi}) (A.contR Γ) :=
   exact { toIsHausdorff := h1, toIsPrecomplete := h2 }
 
 /- English proof (translation)
-The claim follows from `mem_nonZeroDivisors_iff_left.2 fun x hx => Subtype.ext (funext fun γ => mem_nonZeroDivisors_iff_left.1 (pi_nzd A) (x.1 γ) (congrFun (congrArg Subtype.val hx) γ))`.
+A detailed English derivation is pending.
 -/
 theorem contC_pi_nzd : A.contC Γ A.pi ∈ nonZeroDivisors (A.contR Γ) :=
   mem_nonZeroDivisors_iff_left.2 fun x hx => Subtype.ext (funext fun γ =>
     mem_nonZeroDivisors_iff_left.1 (pi_nzd A) (x.1 γ) (congrFun (congrArg Subtype.val hx) γ))
 
 /- English proof (translation)
-Introduce `A Γ _` and use `⟨perfect A, complete A, contC_pi_nzd A, fun k f => by simp only [Ideal.mem_span_singleton] exact dvd_iff A k f⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ {l : ℕ} [Fact l.Prime] (A : PAlg l) (Γ : Type) [TopologicalSpace Γ],
     PerfectRing (A.contR Γ) l ∧ IsAdicComplete (Ideal.span {A.contC Γ A.pi}) (A.contR Γ) ∧

@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LevZero
 
 /- English proof (translation)
-Introduce `D c v G PP _ x g hx z hz`. Establish `hadd : ∀ a b : D.host.E, (ofSplit G.q).pr (a + b) = (ofSplit G.q).pr a + (ofSplit G.q).pr b`. Introduce `a b`. Simplify using `only [GlobalTheory.LocMod.Place.pr, map_add]`. Establish `hr : D.R.r = D.R.k + (G.s + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `G.hs` as an intermediate fact. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Conclude with `GlobalTheory.ChainChar.char_of_red PP.asIdeal (AddMonoidHom.mk' (fun y : 𝓞 D.host.E => (ofSplit G.q).pr (y : D.host.E)) fun a b => by rw [← hadd]; rfl) hr G.S x g hx z hz`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem lam_eq_of_red : ∀ {D : D7} {c : Comm D} {v : VCom c} (G : GLoc v) (PP : Formalism.L2.DIV.Pl D.host.E), Formalism.L2.NTheta.IsIdemAt G.q.e PP → ∀ (x : G.S.P.J) (g : GL (Fin D.R.r) (kP PP)), GlobalTheory.LevZero.Red G PP x g → ∀ z : 𝓞 D.host.E, Ideal.Quotient.mk PP.asIdeal z = edgeSum (GlobalTheory.chainEdge D.R.k) g → ((G.S.P.lam x : ℂˣ) : ℂ) = (G.S.ψ (((G.S.ϖ⁻¹ : G.kˣ) : G.k) * (ofSplit G.q).pr (z : D.host.E)) : ℂ) := by
   intro D c v G PP _ x g hx z hz

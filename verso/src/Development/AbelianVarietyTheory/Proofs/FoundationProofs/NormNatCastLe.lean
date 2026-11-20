@@ -17,36 +17,36 @@ def yAt (g : GL3Theta.G1 p) (v : ℂ) : ℂ_[p] :=
     (lamC g.lam (wpD g.abelian₂ v) / 2 - g.C.s * (lamC g.lam (wpF g.abelian₂ v) - g.C.r) - g.C.t)
 
 /- English proof (translation)
-The claim follows from `IsUltrametricDist.norm_natCast_le_one ℂ_[p] n`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_le (n : ℕ) : ‖(n : ℂ_[p])‖ ≤ 1 := IsUltrametricDist.norm_natCast_le_one ℂ_[p] n
 
 /- English proof (translation)
-The claim follows from `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max a b) (max_lt ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem sm_add {a b : ℂ_[p]} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a + b‖ < 1 :=
   lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max a b) (max_lt ha hb)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]; exact sm_add ha (by rwa [norm_neg])`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sm_sub {a b : ℂ_[p]} (ha : ‖a‖ < 1) (hb : ‖b‖ < 1) : ‖a - b‖ < 1 := by
   rw [sub_eq_add_neg]; exact sm_add ha (by rwa [norm_neg])
 
 /- English proof (translation)
-The claim follows from `le_trans (IsUltrametricDist.norm_add_le_max a b) (max_le ha hb)`.
+A detailed English derivation is pending.
 -/
 theorem it_add {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a + b‖ ≤ 1 :=
   le_trans (IsUltrametricDist.norm_add_le_max a b) (max_le ha hb)
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ ha (norm_nonneg _) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem it_mul {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ ≤ 1) : ‖a * b‖ ≤ 1 := by
   rw [norm_mul]; exact mul_le_one₀ ha (norm_nonneg _) hb
 
 /- English proof (translation)
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem sm_mul {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ < 1) : ‖a * b‖ < 1 := by
   rw [norm_mul]
@@ -54,29 +54,29 @@ theorem sm_mul {a b : ℂ_[p]} (ha : ‖a‖ ≤ 1) (hb : ‖b‖ < 1) : ‖a * 
     _ < 1 := by rw [one_mul]; exact hb
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `sm_mul hb ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sm_mul' {a b : ℂ_[p]} (ha : ‖a‖ < 1) (hb : ‖b‖ ≤ 1) : ‖a * b‖ < 1 := by
   rw [mul_comm]; exact sm_mul hb ha
 
 /- English proof (translation)
-Set `C : WeierstrassCurve.VariableChange ℂ_[p]` to `⟨1, x, 0, y⟩`. Establish `hΔ : (C • W).Δ = W.Δ`. Rewrite using `[WeierstrassCurve.variableChange_Δ]`. Simplify using `[C]`. Rewrite `he` using `[WeierstrassCurve.Affine.equation_iff]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : (C • W).a₁ = W.a₁` using `by simp [C, WeierstrassCurve.variableChange_a₁]`. Establish `e2 : (C • W).a₂ = W.a₂ + 3 * x` using `by simp [C, WeierstrassCurve.variableChange_a₂]`. Establish `e3 : (C • W).a₃ = 2 * y + W.a₁ * x + W.a₃`. Simplify using `[C, WeierstrassCurve.variableChange_a₃]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e4 : (C • W).a₄ = 3 * x ^ 2 + 2 * W.a₂ * x + W.a₄ - W.a₁ * y`. Simplify using `[C, WeierstrassCurve.variableChange_a₄]`. Expand and normalize the polynomial expressions, which then agree. Establish `e6 : (C • W).a₆ = 0`. Simplify using `[C, WeierstrassCurve.variableChange_a₆]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-he`. Rewrite using `[← hΔ]`. Establish `A1 : ‖(C • W).a₁‖ ≤ 1` using `e1 ▸ h1`. Establish `A2 : ‖(C • W).a₂‖ ≤ 1`. Rewrite using `[e2]; exact it_add h2 (it_mul (by simpa using norm_natCast_le (p := p) 3) hx)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `A3 : ‖(C • W).a₃‖ < 1` using `e3 ▸ hy`. Establish `A4 : ‖(C • W).a₄‖ < 1` using `e4 ▸ hx'`. Use `set V := C • W`. Establish `n4 : ‖(4 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 4`. Establish `n2 : ‖(2 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n8 : ‖(8 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 8`. Establish `n27 : ‖(27 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 27`. Establish `n9 : ‖(9 : ℂ_[p])‖ ≤ 1` using `by simpa using norm_natCast_le (p := p) 9`. Establish `B2 : ‖V.b₂‖ ≤ 1`. Rewrite using `[WeierstrassCurve.b₂]; exact it_add (by rw [sq]; exact it_mul A1 A1) (it_mul n4 A2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `B4 : ‖V.b₄‖ < 1`. Rewrite using `[WeierstrassCurve.b₄]`. Conclude with `sm_add (sm_mul n2 A4) (sm_mul A1 A3)`. Establish `B6 : ‖V.b₆‖ < 1`. Rewrite using `[WeierstrassCurve.b₆, e6, mul_zero, add_zero, sq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sm_mul A3.le A3`. Establish `BetaSesquilinearity : ‖V.b₈‖ < 1`. Rewrite using `[WeierstrassCurve.b₈, e6]`. Simplify using `only [mul_zero, add_zero]`. Use `sm_sub (sm_add (sm_sub (by norm_num) (sm_mul (it_mul A1 A3.le) A4)) (sm_mul A2 (by rw [sq]; exact sm_mul A3.le A3))) (by rw [sq]; exact sm_mul A4.le A4)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WeierstrassCurve.Δ]`. Use `sm_add (sm_sub (sm_sub ?_ (sm_mul n8 (by rw [show V.b₄ ^ 3 = V.b₄ * V.b₄ * V.b₄ by ring]; exact sm_mul (it_mul B4.le B4.le) B4))) (sm_mul n27 (by rw [sq]; exact sm_mul B6.le B6))) (sm_mul (it_mul (it_mul n9 B2) B4.le) B6)` and prove the remaining obligations. Rewrite using `[neg_mul]`. Rewrite using `[norm_neg]; exact sm_mul (by rw [sq]; exact it_mul B2 B2) BetaSesquilinearity`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem disc_small (W : WeierstrassCurve ℂ_[p]) (x y : ℂ_[p]) (h1 : ‖W.a₁‖ ≤ 1) (h2 : ‖W.a₂‖ ≤ 1)
     (hx : ‖x‖ ≤ 1) (he : W.toAffine.Equation x y) (hy : ‖2 * y + W.a₁ * x + W.a₃‖ < 1)

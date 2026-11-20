@@ -7,7 +7,7 @@ open scoped Manifold
 namespace GlobalTheory.HeckeFamilyMatrices.CobDim
 
 /- English proof (translation)
-Simplify using `[slP, LinearMap.sum_apply, eval_finset_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 lemma eval_polySlash (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) (x : ℂ) :
     (slP w g p).eval x = ∑ i ∈ Finset.range (w + 1), p.coeff i *
@@ -15,7 +15,7 @@ lemma eval_polySlash (w : ℕ) (g : Matrix (Fin 2) (Fin 2) ℤ) (p : ℂ[X]) (x 
   simp [slP, LinearMap.sum_apply, eval_finset_sum, mul_assoc]
 
 /- English proof (translation)
-Distinguish the cases in `h : p = 0`. Simplify using `[h]`. Conclude with `(natDegree_lt_iff_degree_lt h).2 (mem_degreeLT.1 hp)`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma natDeg_lt {w : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1)) : p.natDegree < w + 1 := by
   by_cases h : p = 0
@@ -25,7 +25,7 @@ lemma natDeg_lt {w : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1)) : p.nat
 def upU (M : ℕ) : SL(2, ℤ) := ⟨!![1, (M : ℤ); 0, 1], by simp [Matrix.det_fin_two]⟩
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[upU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma upU_mem (M : ℕ) : upU M ∈ CongruenceSubgroup.Gamma M := by
   rw [CongruenceSubgroup.Gamma_mem]
@@ -34,14 +34,14 @@ lemma upU_mem (M : ℕ) : upU M ∈ CongruenceSubgroup.Gamma M := by
 def loU (M : ℕ) : SL(2, ℤ) := ⟨!![1, 0; (M : ℤ), 1], by simp [Matrix.det_fin_two]⟩
 
 /- English proof (translation)
-Rewrite using `[CongruenceSubgroup.Gamma_mem]`. Simplify using `[loU]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma loU_mem (M : ℕ) : loU M ∈ CongruenceSubgroup.Gamma M := by
   rw [CongruenceSubgroup.Gamma_mem]
   simp [loU]
 
 /- English proof (translation)
-Establish `h1` using `eval_polySlash w (mat (upU M)) p x`. Rewrite `h1` using `[h]`. Rewrite using `[h1, eval_eq_sum_range' (natDeg_lt hp)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[upU, mat, add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma eval_shift {w M : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1))
     (h : slP w (mat (upU M)) p = p) (x : ℂ) : p.eval (x + M) = p.eval x := by
@@ -52,11 +52,11 @@ lemma eval_shift {w M : ℕ} {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1))
   simp [upU, mat, add_comm]
 
 /- English proof (translation)
-Establish `hroot : ∀ n : ℕ, (p - C (p.eval 0)).IsRoot ((n : ℂ) * M)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `eval_shift hp h ((n : ℂ) * M)` as an intermediate fact. Simplify using `only [IsRoot, eval_sub, eval_C] at ih ⊢`. Use `push_cast`. Rewrite using `[add_mul, one_mul, this, ih]`. Establish `hinf : {x | (p - C (p.eval 0)).IsRoot x}.Infinite`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => (n : ℂ) * M) ?_ hroot` and prove the remaining obligations. Introduce `a b hab`. Establish `hM' : (M : ℂ) ≠ 0` using `by exact_mod_cast hM.ne'`. Conclude with `mul_right_cancel₀ hM' hab` after adjusting the coercions. Conclude with `sub_eq_zero.1 (eq_zero_of_infinite_isRoot _ hinf)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma eq_const_of_shift {w M : ℕ} (hM : 0 < M) {p : ℂ[X]} (hp : p ∈ degreeLT ℂ (w + 1))
     (h : slP w (mat (upU M)) p = p) : p = C (p.eval 0) := by
@@ -77,13 +77,11 @@ lemma eq_const_of_shift {w M : ℕ} (hM : 0 < M) {p : ℂ[X]} (hp : p ∈ degree
   exact sub_eq_zero.1 (eq_zero_of_infinite_isRoot _ hinf)
 
 /- English proof (translation)
-Establish `h1` using `eval_polySlash w (mat (loU M)) (C c) 1`. Rewrite `h1` using `[h, eval_C, Finset.sum_eq_single 0]`. Simplify using `[loU, mat] at h1`. Establish `hne : ((M : ℂ) + 1) ^ w ≠ 1`. Establish `: (M + 1) ^ w ≠ 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 1 < (M + 1) ^ w` using `Nat.one_lt_pow (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Assume the negation of the conclusion as `hc`. Conclude with `hne (by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `h1.symm` as an intermediate fact. Clear denominators, using `at this` for the nonvanishing conditions. Take the linear combination `this)`. Introduce `i _ hi`. Simplify using `[coeff_C, hi]`.
-
-Simplify using the standard rewrite rules.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma const_eq_zero {w M : ℕ} (hM : 0 < M) (hw : 1 ≤ w) (c : ℂ) (h : slP w (mat (loU M)) (C c) = C c) : c = 0 := by
   have h1 := eval_polySlash w (mat (loU M)) (C c) 1
@@ -107,13 +105,13 @@ end GlobalTheory.HeckeFamilyMatrices.CobDim
 
 open GlobalTheory.HeckeFamilyMatrices.CobDim in
 /- English proof (translation)
-Introduce `M Γ w hM hw hΓ`. Unfold `B1`. Rewrite using `[LinearMap.finrank_range_of_inj, (degreeLTEquiv ℂ (w + 1)).finrank_eq, Module.finrank_fin_fun]`. Introduce `p q hpq`. Rewrite `hpq` using `[← sub_eq_zero, ← map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use `set r := p - q with hr`. Establish `hfix : ∀ γ : Γ, slP w (mat γ) (r : ℂ[X]) = r`. Introduce `γ`. Use `congrFun hpq γ` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[sub_eq_zero]`. Establish `hc` using `eq_const_of_shift hM r.2 (hfix ⟨upU M, hΓ (upU_mem M)⟩)`. Establish `h0 : (r : ℂ[X]).eval 0 = 0`. Apply `const_eq_zero hM hw` to reduce the goal to its premises. Rewrite using `[← hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfix ⟨loU M, hΓ (loU_mem M)⟩`. Use `ext1`. Rewrite using `[hc, h0]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeckeFamilyMatrices.finrank_eichlerShimuraCoboundaries_of_Gamma_le : ∀ (M : ℕ) (Γ : Subgroup SL(2, ℤ)) (w : ℕ), 0 < M → 1 ≤ w →
     CongruenceSubgroup.Gamma M ≤ Γ → Module.finrank ℂ (B1 Γ w) = w + 1 := by

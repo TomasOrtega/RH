@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.LyingOver
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ A v v' hv hv'`. Establish `hcomap : v'.asIdeal.comap (algebraMap (𝓞 K) (𝓞 L)) = v.asIdeal`. Use extensionality with `x`. Rewrite using `[Ideal.mem_comap, ← hv x, ← hv' (algebraMap (𝓞 K) (𝓞 L) x)]`. Establish `: ((algebraMap (𝓞 K) (𝓞 L) x : 𝓞 L) : L) = algebraMap K L (x : K)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[this, ← IsScalarTower.algebraMap_apply]`. Use `haveI : v'.asIdeal.LiesOver v.asIdeal := ⟨hcomap.symm⟩`. Use `⟨v.asIdeal.ramificationIdx' v'.asIdeal, Nat.pos_of_ne_zero (Ideal.IsDedekindDomain.ramificationIdx'_ne_zero_of_liesOver v'.asIdeal v.ne_bot), ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_liesOver L v v' x).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem valuation_pow_of_isPlaceOver : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Field L] [NumberField L] [Algebra L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)), IsPlaceOver A v → IsPlaceOver A v' → ∃ e : ℕ, 0 < e ∧ ∀ x : K, v'.valuation L (algebraMap K L x) = v.valuation K x ^ e := by
   intro K L Ω _ _ _ _ _ _ _ _ _ A v v' hv hv'

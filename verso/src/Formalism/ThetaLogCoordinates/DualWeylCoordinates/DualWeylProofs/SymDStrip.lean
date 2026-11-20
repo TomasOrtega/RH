@@ -30,21 +30,19 @@ def qs_midD (b : ℕ) (mu nu : Fin n → ℤ) (J : TIdx mu) (α : SymIdx n b) (K
 
 open Classical in
 /- English proof (translation)
-Establish `hT : ∀ I, TMat mu J I = qs_TM (nu (lastIdx n)) (Finset.Ioc (nu (lastIdx n)) (mu 0)) (qs_ext mu J) (qs_ext mu I)` using `fun I => qs_TMat_eq hmu _ _ (hs.1 _) le_rfl J I`. Establish `hm : ∀ m : ↥(qs_D nu mu) → Fin n, ∑ y : TIdx mu × SymIdx n b, TMat mu J y.1 * SymDMat n b α y.2 * (((if (∀ c : ↥(qs_D nu mu), m c ∉ qs_ext nu K c.1) ∧ qs_ext mu y.1 = qs_add (qs_D nu mu) (qs_ext nu K) m then (if ∀ x, qs_cnt m x = (y.2.1 x : ℕ) then ∏ c : ↥(qs_D nu mu), qs_sg (qs_ …`. Introduce `m`. Rewrite using `[Fintype.sum_prod_type]`. Take `⟨f, hf⟩ : ∃ f : (ℤ → Finset (Fin n)) → GLCoord ℤ n, f = fun E => qs_TM (nu (lastIdx n)) (Finset.Ioc (nu (lastIdx n)) (mu 0)) (qs_ext mu J) E * ∑ β : SymIdx n b, qs_SM (qs_gI n).transpose b α β * (if ∀ x, qs_cnt m x = (β.1 x : ℕ) then (∏ c : ↥(qs_D nu mu), ((qs_sg (qs_ext nu K c.1 …` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ I : TIdx mu, (∑ β : SymIdx n b, TMat mu J I * SymDMat n b α β * (((if (∀ c : ↥(qs_D nu mu), m c ∉ qs_ext nu K c.1) ∧ qs_ext mu I = qs_add (qs_D nu mu) (qs_ext nu K) m then (if ∀ x, qs_cnt m x = (β.1 x : ℕ) then ∏ c : ↥(qs_D nu mu), qs_sg (qs_ext nu K c.1) (m c) else 0) els …`. Introduce `I`. Rewrite using `[hf]`. Use `split_ifs with h`. Simplify using `only [hT, Finset.mul_sum, qs_SymDMat_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun β _ => ?_` and prove the remaining obligations. Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl (fun I _ => h1 I), qs_collapse hmu _ _ (fun h => qs_add_card hnu hmu hs _ (qs_ext_card hnu K) m h), hf]`. Use `split_ifs with h`. Simplify using `only [qs_sum_sym (qs_gI n).transpose (qs_card_D hnu hmu hs) m α]`. Rewrite using `[Finset.sum_mul, Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[qs_TM]`. Simplify using `only [Matrix.transpose_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `h2 : ∀ y : TIdx mu × SymIdx n b, TMat mu J y.1 * SymDMat n b α y.2 * ((qs_psD b mu nu y K : ℤ) : GLCoord ℤ n) = ∑ m : ↥(qs_D nu mu) → Fin n, TMat mu J y.1 * SymDMat n b α y.2 * (((if (∀ c : ↥(qs_D nu mu), m c ∉ qs_ext nu K c.1) ∧ qs_ext mu y.1 = qs_add (qs_D nu mu) (qs_ext nu K) …`. Introduce `y`. Rewrite using `[qs_psD, Int.cast_sum, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_congr rfl (fun y _ => h2 y), Finset.sum_comm, Finset.sum_congr rfl (fun m _ => hm m), Finset.sum_comm, qs_midD]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ x, qs_cnt a x = (α.1 x : ℕ)`. Simplify using `only [if_pos h]`. Rewrite using `[← Finset.mul_sum, qs_core_inv (qs_gC n) (qs_gI n) (qs_gC_mul_gI n) _ _ (qs_D_sub nu mu)]`.
-
-Simplify using `only [if_neg h, Finset.sum_const_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qs_psD_left (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : Dominant nu) (hs : HStrip nu mu b)
     (J : TIdx mu) (α : SymIdx n b) (K : TIdx nu) :
@@ -120,17 +118,17 @@ theorem qs_psD_left (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu :
 
 open Classical in
 /- English proof (translation)
-Establish `hT : ∀ K', TMat nu K' K = qs_TM (nu (lastIdx n)) (Finset.Ioc (nu (lastIdx n)) (mu 0)) (qs_ext nu K') (qs_ext nu K)` using `fun K' => qs_TMat_eq hnu _ _ le_rfl (hs.1 0) K' K`. Take `⟨f, hf⟩ : ∃ f : (↥(qs_D nu mu) → Fin n) → (ℤ → Finset (Fin n)) → GLCoord ℤ n, f = fun a E => (if ∀ x, qs_cnt a x = (α.1 x : ℕ) then (∏ c : ↥(qs_D nu mu), ((qs_sg (E c.1) (a c) : ℤ) : GLCoord ℤ n)) * qs_TM (nu (lastIdx n)) (Finset.Ioc (nu (lastIdx n)) (mu 0)) E (qs_ext nu K) else …` from `⟨_, rfl⟩`. Establish `h2 : ∀ K' : TIdx nu, ((qs_psD b mu nu (J, α) K' : ℤ) : GLCoord ℤ n) * TMat nu K' K = ∑ a : ↥(qs_D nu mu) → Fin n, if (∀ c : ↥(qs_D nu mu), a c ∈ qs_ext mu J c.1) ∧ qs_ext nu K' = qs_rem (qs_D nu mu) (qs_ext mu J) a then f a (qs_ext nu K') else 0`. Introduce `K'`. Rewrite using `[qs_psD, Int.cast_sum, Finset.sum_mul, hf]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `qs_rem_iff_add (qs_D nu mu) (qs_ext nu K') (qs_ext mu J) a` as an intermediate fact. Distinguish the cases in `h : (∀ c : ↥(qs_D nu mu), a c ∉ qs_ext nu K' c.1) ∧ qs_ext mu J = qs_add (qs_D nu mu) (qs_ext nu K') a`. Rewrite using `[if_pos h, if_pos (this.2 h)]`. Simplify using `only [hT]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, if_neg (fun h' => h (this.1 h'))]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl (fun K' _ => h2 K'), Finset.sum_comm, qs_midD]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[qs_collapse hnu _ _ (fun h => qs_rem_card hnu hmu hs _ (qs_ext_card hmu J) a h), hf]`. Distinguish the cases in `h : ∀ c : ↥(qs_D nu mu), a c ∈ qs_ext mu J c.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_pos h]`. Simplify using `only [qs_rem_mem]`. Use `split_ifs`. Rewrite using `[qs_TM]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[if_neg h, if_neg h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qs_psD_right (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : Dominant nu) (hs : HStrip nu mu b)
     (J : TIdx mu) (α : SymIdx n b) (K : TIdx nu) :
@@ -171,11 +169,11 @@ theorem qs_psD_right (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu 
   · rw [if_neg h, if_neg h]; simp
 
 /- English proof (translation)
-Establish `hiff : ∀ m : ↥(qs_D nu mu) → Fin n, ((∀ c : ↥(qs_D nu mu), m c ∉ qs_ext nu (canT nu) c.1) ∧ qs_ext mu (canT mu) = qs_add (qs_D nu mu) (qs_ext nu (canT nu)) m) ↔ m = qs_mc nu mu` using `fun m => (qs_rem_iff_add _ _ _ m).symm.trans (qs_can_iff hnu hmu hs m)`. Rewrite using `[qs_psD, Finset.sum_eq_single (qs_mc nu mu)]`. Rewrite using `[if_pos ((hiff _).2 rfl), if_pos] swap`. Introduce `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Use `Finset.prod_eq_one fun c _ => ?_` and prove the remaining obligations. Rewrite using `[qs_ext_can hnu]`. Conclude with `qs_sg_ini _ _`. Introduce `m _ hm`. Rewrite using `[if_neg (fun h => hm ((hiff _).1 h))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem qs_psD_lead (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu : Dominant nu) (hs : HStrip nu mu b) :
     qs_psD b mu nu (canT mu, qs_mon (qs_card_D hnu hmu hs) (qs_mc nu mu)) (canT nu) = 1 := by
@@ -195,9 +193,9 @@ theorem qs_psD_lead (b : ℕ) {mu nu : Fin n → ℤ} (hmu : Dominant mu) (hnu :
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `h1 : (qs_gC n).map (evGL (torusPt n)) * (qs_gI n).map (evGL (torusPt n)) = 1`. Rewrite using `[← Matrix.map_mul, qs_gC_mul_gI]`. Simplify using the standard rewrite rules. Establish `h2 : (qs_gC n).map (evGL (torusPt n)) = (torusPt n).val` using `qs_gC_torus`. Establish `h3 : (qs_gI n).map (evGL (torusPt n)) = (torusPt n).inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[(torusPt n).inv_val, Matrix.one_mul]`. Use `_ = (torusPt n).inv := by rw [Matrix.mul_assoc, ← h2, h1, Matrix.mul_one]`. Rewrite using `[Matrix.transpose_map, h3]`. Conclude with `Matrix.diagonal_transpose _`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qs_gI_torus : (qs_gI n).transpose.map (evGL (torusPt n)) =
     Matrix.diagonal fun a => AddMonoidAlgebra.single (Pi.single a (-1 : ℤ)) (1 : ℤ) := by
@@ -214,25 +212,21 @@ lemma qs_gI_torus : (qs_gI n).transpose.map (evGL (torusPt n)) =
 omit [NeZero n] in
 open Classical in
 /- English proof (translation)
-The claim follows from `(Finset.mem_filter.1 h).2`.
+A detailed English derivation is pending.
 -/
 lemma qs_mem_strDown {mu nu : Fin n → ℤ} {b : ℕ} (h : nu ∈ strDown mu b) : HStrip nu mu b :=
   (Finset.mem_filter.1 h).2
 
 /- English proof (translation)
-Introduce `hc n _ b`. Use `⟨fun α x => -((α.1 x : ℕ) : ℤ), qs_psD b, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `α β h`. Conclude with `Subtype.ext (funext fun x => Fin.ext (by`. Use `congrFun h x` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_inj] at this`. Conclude with `this))` after adjusting the coercions. Introduce `k l`. Rewrite using `[qs_SymDMat_eq, qs_SM_map, qs_gI_torus, qs_SM_diag]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Rewrite using `[qs_prod_torus]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Introduce `mu hmu nu hnu`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `qs_dom_down hmu (qs_mem_strDown hnu)`. Introduce `mu hmu nu hnu`. Establish `hs` using `qs_mem_strDown hnu`. Establish `hnu'` using `qs_dom_down hmu hs`. Use extensionality with `⟨J, α⟩ K`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(qs_psD_left b hmu hnu' hs J α K).trans (qs_psD_right b hmu hnu' hs J α K).symm`. Introduce `mu hmu nu hnu`. Establish `hs` using `qs_mem_strDown hnu`. Establish `hnu'` using `qs_dom_down hmu hs`. Use `⟨qs_mon (qs_card_D hnu' hmu hs) (qs_mc nu mu), ?_, Or.inl (qs_psD_lead b hmu hnu' hs)⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `x`. Use `qs_cnt_mc hnu' hmu hs x` as an intermediate fact. Use `show -((qs_cnt (qs_mc nu mu) x : ℕ) : ℤ) = nu x - mu x`. Use linear arithmetic over natural numbers and integers. Introduce `mu hmu`.
-
-Conclude with `hc n mu b hmu`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem symDStrip_of : CntSymD → SymDStrip := by
   intro hc n _ b

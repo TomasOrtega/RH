@@ -9,7 +9,7 @@ namespace PositivityTheory.CW
 namespace EigenGainPolynomial
 
 /- English proof (translation)
-Use `inner_self_eq_norm_sq (𝕜 := ℂ) w` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem re_inner_self {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (w : V) :
     (inner ℂ w w).re = ‖w‖ ^ 2 := by
@@ -17,9 +17,9 @@ theorem re_inner_self {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V
   simpa using this
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < 1 + ν` using `by linarith`. Establish `hy1 : -1 < (x - ν) / (1 + ν)`. Rewrite using `[lt_div_iff₀ h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hA'` using `hA _ hy1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hx1 : 1 + x = (1 + ν) * (1 + (x - ν) / (1 + ν))` using `by field_simp; ring`. Establish `ha : 0 ≤ ((1 + ν) ^ s)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem phi_lb (s : ℕ) (c ν x : ℝ) (hν : 0 ≤ ν) (hx : 0 ≤ x)
     (hA : ∀ y : ℝ, -1 < y → 1 - s * y + (s : ℝ) ^ 2 / 4 * y ^ 2 - c * y ^ 4 ≤ ((1 + y) ^ s)⁻¹) :
@@ -40,11 +40,11 @@ theorem phi_lb (s : ℕ) (c ν x : ℝ) (hν : 0 ≤ ν) (hx : 0 ≤ x)
     _ = ((1 + x) ^ s)⁻¹ := by rw [hx1, mul_pow, mul_inv]
 
 /- English proof (translation)
-Establish `e1 : ∀ (k : ℝ) (f : ℝ → ℝ), fc b μ (fun x => k * f x) = (k : ℂ) • fc b μ f`. Introduce `k f`. Combine the equalities or inequalities in the displayed calculation. Establish `hT2 : fc b μ (fun x => (x - ν) * (x - ν)) = fc b μ (fun x => x - ν) * fc b μ (fun x => x - ν)` using `hmul (fun x => x - ν) (fun x => x - ν)`. Establish `hT4 : fc b μ (fun x => (x - ν) * (x - ν) * ((x - ν) * (x - ν))) = fc b μ (fun x => (x - ν) * (x - ν)) * fc b μ (fun x => (x - ν) * (x - ν))` using `hmul (fun x => (x - ν) * (x - ν)) (fun x => (x - ν) * (x - ν))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : fc b μ (fun x => k0 + k1 * (x - ν) + k2 * ((x - ν) * (x - ν)) + k4 * ((x - ν) * (x - ν) * ((x - ν) * (x - ν)))) = (k0 : ℂ) • 1 + (k1 : ℂ) • fc b μ (fun x => x - ν) + (k2 : ℂ) • fc b μ (fun x => (x - ν) * (x - ν)) + (k4 : ℂ) • fc b μ (fun x => (x - ν) * (x - ν) * ((x - ν) * ( …`. Rewrite using `[hadd (fun x => k0 + k1 * (x - ν) + k2 * ((x - ν) * (x - ν))) (fun x => k4 * ((x - ν) * (x - ν) * ((x - ν) * (x - ν)))), hadd (fun x => k0 + k1 * (x - ν)) (fun x => k2 * ((x - ν) * (x - ν))), hadd (fun _ => k0) (fun x => k1 * (x - ν)), hconst, e1 k1 (fun x => x - ν), e1 k2 (fun x …`. Rewrite using `[hF, hT4, hT2]`. Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, Module.End.mul_apply, Module.End.one_apply, inner_add_right, inner_smul_right, Complex.add_re, Complex.re_ofReal_mul]`. Establish `r2 : ∀ u : V, inner ℂ u (fc b μ (fun x => x - ν) (fc b μ (fun x => x - ν) u)) = inner ℂ (fc b μ (fun x => x - ν) u) (fc b μ (fun x => x - ν) u)` using `fun u => (hsym _ _ _).symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `r4` using `(hsym (fun x => x - ν) w _).symm.trans (r2 (fc b μ (fun x => x - ν) w))`. Rewrite using `[r4, r2]`. Simplify using `only [re_inner_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fc_poly {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι : Type}
     {b : Module.Basis ι ℂ V} {μ : ι → ℝ}
@@ -86,25 +86,25 @@ theorem fc_poly {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {ι 
   simp only [re_inner_self]
 
 /- English proof (translation)
-Establish `h1 : (0 : ℝ) < 1 + ν` using `by linarith`. Establish `ha : 0 < ((1 + ν) ^ s)⁻¹` using `by positivity`. Establish `hv' : casimirK ε E v = (ν : ℂ) • v` using `hv`. Establish `hT : ∀ u, fc b μ (fun x => x - ν) u = casimirK ε E u - (ν : ℂ) • u`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : (fun x : ℝ => x - ν) = fun x => x + -ν` using `by funext x; ring`. Rewrite using `[hf, hadd (fun x => x) (fun _ => -ν), hid, hconst]`. Simplify using `[sub_eq_add_neg]`. Establish `hTE : ∀ p : Fin n × Fin n, fc b μ (fun x => x - ν) (E p.1 p.2 v) = Z ε E p.1 p.2 v`. Introduce `p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hT, Z, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hv', map_smul]`. Establish `hTZ : ∀ p : Fin n × Fin n, fc b μ (fun x => x - ν) (Z ε E p.1 p.2 v) = (casimirK ε E * Z ε E p.1 p.2 - Z ε E p.1 p.2 * casimirK ε E) v`. Introduce `p`. Rewrite using `[hT, LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, hv', map_smul]`. Establish `hp : ∀ p ∈ nc ε, ((1 + ν) ^ s)⁻¹ * ‖E p.1 p.2 v‖ ^ 2 + (-(((1 + ν) ^ s)⁻¹ * s / (1 + ν))) * (inner ℂ (E p.1 p.2 v) (Z ε E p.1 p.2 v)).re + (((1 + ν) ^ s)⁻¹ * (s : ℝ) ^ 2 / (4 * (1 + ν) ^ 2)) * ‖Z ε E p.1 p.2 v‖ ^ 2 + (-(((1 + ν) ^ s)⁻¹ * cs / (1 + ν) ^ 4)) * ‖(casimirK ε E * Z ε …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p _`. Use `hmono (fun x => ((1 + ν) ^ s)⁻¹ + (-(((1 + ν) ^ s)⁻¹ * s / (1 + ν))) * (x - ν) + (((1 + ν) ^ s)⁻¹ * (s : ℝ) ^ 2 / (4 * (1 + ν) ^ 2)) * ((x - ν) * (x - ν)) + (-(((1 + ν) ^ s)⁻¹ * cs / (1 + ν) ^ 4)) * ((x - ν) * (x - ν) * ((x - ν) * (x - ν)))) (fun x => ((1 + x) ^ s)⁻¹) (fun x hx = …` as an intermediate fact. Rewrite `this` using `[fc_poly hsym hadd hmul hconst, hTE, hTZ]`. Conclude with `this`. Unfold `beta`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.re_sum]`. Use `le_trans ?_ (Finset.sum_le_sum hp)` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Complex.re_sum, hE]`. Establish `hN : 0 ≤ ‖v‖ ^ 2` using `by positivity`. Establish `hR` using `le_trans (Complex.re_le_norm _) h9a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : -(((1 + ν) ^ s)⁻¹ * s / (1 + ν)) ≤ 0`. Establish `: 0 ≤ ((1 + ν) ^ s)⁻¹ * s / (1 + ν)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk2 : 0 ≤ ((1 + ν) ^ s)⁻¹ * (s : ℝ) ^ 2 / (4 * (1 + ν) ^ 2)` using `by positivity`. Establish `hk4 : -(((1 + ν) ^ s)⁻¹ * cs / (1 + ν) ^ 4) ≤ 0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ ((1 + ν) ^ s)⁻¹ * cs / (1 + ν) ^ 4` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `i2` using `mul_le_mul_of_nonpos_left hR hk1`. Establish `i3` using `mul_le_mul_of_nonneg_left h8 hk2`. Establish `i4` using `mul_le_mul_of_nonpos_left h9b hk4`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : -(((1 + ν) ^ s)⁻¹ * s / (1 + ν)) * (C * (1 + ν) * ‖v‖ ^ 2) = -(((1 + ν) ^ s)⁻¹ * (s * C) * ‖v‖ ^ 2)`. Clear the denominators using the available nonvanishing facts. Establish `e3 : ((1 + ν) ^ s)⁻¹ * (s : ℝ) ^ 2 / (4 * (1 + ν) ^ 2) * (c0 * (1 + ν) ^ 2 * ‖v‖ ^ 2) = ((1 + ν) ^ s)⁻¹ * ((s : ℝ) ^ 2 * c0 / 4) * ‖v‖ ^ 2`. Clear the denominators using the available nonvanishing facts. Establish `e4 : -(((1 + ν) ^ s)⁻¹ * cs / (1 + ν) ^ 4) * (C * (1 + ν) ^ 3 * ‖v‖ ^ 2) = -(((1 + ν) ^ s)⁻¹ * (cs * C / (1 + ν)) * ‖v‖ ^ 2)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `i2` using `[e2]`. Rewrite `i3` using `[e3]`. Rewrite `i4` using `[e4]`. Establish `b4 : cs * C / (1 + ν) ≤ 1` using `(div_le_one h1).2 (by linarith)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb4` using `mul_le_mul_of_nonneg_left b4 (mul_nonneg ha.le hN)`. Establish `hs` using `mul_le_mul_of_nonneg_left hsC (mul_nonneg ha.le hN)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem main {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     {E : Fin n → Fin n → Module.End ℂ V} {ι : Type} {b : Module.Basis ι ℂ V} {μ : ι → ℝ}
@@ -190,15 +190,15 @@ theorem main {n : ℕ} {ε : Fin n → Bool} {V : Type} [NormedAddCommGroup V] [
 end EigenGainPolynomial
 
 /- English proof (translation)
-Introduce `h0 h8 h9 h10 h11 n ε V _ _ E hM ι b μ hB κ hκ c hc`. Take `⟨-, -, -, hnorm⟩` from `h0 n ε V E hM`. Take `⟨c0, x1, hc0, h8'⟩` from `h8 n ε V E hM`. Take `⟨C, hC, h9'⟩` from `h9 n ε V E hM`. Take `⟨-, hsym, hmono, hadd, hmul, hconst, hid⟩` from `h11 n ε V E hM ι b μ hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cs, hcs, h10'⟩` from `h10 (⌈4 * (C + c + 1) / c0⌉₊ + 1) (by omega)`. Use `⟨⌈4 * (C + c + 1) / c0⌉₊ + 1, max 0 (max x1 (cs * C)), by omega, le_max_left _ _, ?_⟩` and prove the remaining obligations. Introduce `ν v hν hv`. Establish `hν0 : 0 ≤ ν` using `le_trans (le_max_left _ _) hν`. Establish `hνx : x1 ≤ ν` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hν`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hνc : cs * C ≤ ν` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hν`. Establish `hsC : c + 1 ≤ ((⌈4 * (C + c + 1) / c0⌉₊ + 1 : ℕ) : ℝ) ^ 2 * c0 / 4 - ((⌈4 * (C + c + 1) / c0⌉₊ + 1 : ℕ) : ℝ) * C`. Establish `hce` using `Nat.le_ceil (4 * (C + c + 1) / c0)`. Establish `hsc : 4 * (C + c + 1) ≤ ((⌈4 * (C + c + 1) / c0⌉₊ + 1 : ℕ) : ℝ) * c0`. Use `(div_le_iff₀ hc0).1 hce` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hs1 : (1 : ℝ) ≤ ((⌈4 * (C + c + 1) / c0⌉₊ + 1 : ℕ) : ℝ)` using `by push_cast; linarith [Nat.cast_nonneg (α := ℝ) ⌈4 * (C + c + 1) / c0⌉₊]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hv' : casimirK ε E v = (ν : ℂ) • v` using `hv`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hE : ∑ p ∈ nc ε, ‖E p.1 p.2 v‖ ^ 2 = (ν - κ) * ‖v‖ ^ 2`. Rewrite using `[(hnorm κ hκ v).2.1, hv', inner_smul_right, Complex.re_ofReal_mul, EigenGainPolynomial.re_inner_self]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨h9a, h9b⟩` from `h9' ν v hν0 hv`. Conclude with `EigenGainPolynomial.main hsym hmono hadd hmul hconst hid κ c _ c0 C cs ν hc0 hC hcs hsC hν0 hνc v hv h10' hE (h8' ν v hνx hv) h9a h9b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eigen_gain_of_moments : A0 → A8 → A9 → A10 → FunctionalCalculusLaws → A12 := by
   intro h0 h8 h9 h10 h11 n ε V _ _ E hM ι b μ hB κ hκ c hc

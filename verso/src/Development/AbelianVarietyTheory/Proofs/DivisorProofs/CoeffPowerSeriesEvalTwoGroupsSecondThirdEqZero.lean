@@ -8,17 +8,17 @@ set_option autoImplicit false
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Establish `hX : ∀ s, Sum.elim (x2 (R` using `R) (d := d)) x3 s = X (Sum.elim (fun i => Sum.inr (Sum.inl i)) (fun i => Sum.inr (Sum.inr i)) s) := by`. Apply the tactic sequence `intro s; cases s <;> rfl`. Establish `hs : HasSubst (Sum.elim (x2 (R` using `R) (d := d)) x3) := hasSubst_of_constantCoeff_zero fun s => by rw [hX]; exact constantCoeff_X _`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `ha (Finsupp.ext h)`. Unfold `at2`. Rewrite using `[coeff_subst hs]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `α`. Establish `key : ∃ β : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ, β (Sum.inl i) = 0 ∧ (α.prod fun s k => (Sum.elim (x2 (R` using `R) (d := d)) x3 s) ^ k) = monomial β 1 := by`. Unfold `Finsupp.prod`. Use `Finset.prod_induction _ (fun f => ∃ β : Fin d ⊕ (Fin d ⊕ Fin d) →₀ ℕ, β (Sum.inl i) = 0 ∧ f = monomial β 1) ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `f g ⟨β, hβ, rfl⟩ ⟨γ, hγ, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨β + γ, by simp [hβ, hγ], by rw [monomial_mul_monomial, one_mul]⟩`. Conclude with `⟨0, rfl, (monomial_zero_one).symm⟩`. Introduce `s _`. Use `⟨Finsupp.single (Sum.elim (fun i => Sum.inr (Sum.inl i)) (fun i => Sum.inr (Sum.inr i)) s) (α s), ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases s <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hX, X_pow_eq]`. Take `⟨β, hβ, hp⟩` from `key`. Rewrite using `[hp, coeff_monomial_ne, smul_zero]`. Introduce `h`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hi` to reduce the goal to its premises. Use `congrArg (fun w => w (Sum.inl i)) h` as an intermediate fact. Simplify `this` using `[hβ]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coeff_at2_x2_x3_eq_zero_of_first_ne_zero {R : Type} [CommRing R] {d : ℕ} (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     (a b e : Fin d →₀ ℕ) (ha : a ≠ 0) :

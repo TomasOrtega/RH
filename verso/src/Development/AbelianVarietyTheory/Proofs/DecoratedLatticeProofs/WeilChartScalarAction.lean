@@ -23,7 +23,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.RegSch
 
 /- English proof (translation)
-Introduce `D ψ θ A T χ om ν 𝓨 μ κ omS hP lam hlam`. Conclude with `{ levi := GlobalTheory.StdUnn.transport_levi D ψ A T χ om hP.weil ν 𝓨 hP.cov θ hP.inf μ hP.skew κ hP.chart omS hP.trans lam hlam unip := GlobalTheory.StdUnn.Unip.transport_unip D ψ A T χ om hP.weil ν 𝓨 hP.cov θ hP.inf μ hP.skew κ hP.chart omS hP.trans lam hlam weyl := GlobalTheor …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pass_isWeilSch : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A T : HSp D) (χ : (AE D)ˣ →* Circle) (om : GA D (dblSp A) × GA D T →* Module.End ℂ (WO (dblSp A) T → ℂ)) (ν : Measure (WO A T)) (𝓨 : Set (WO A T)) (μ : D.host.E) (κ : GA D (dblSp A) ≃* GlobalTheory.StdUnn.G D A.rank) (omS : GlobalTheory.StdUnn.G D A.rank →* Module.End ℂ (schwartzA θ T.rank A.rank)), Pass ψ θ A T χ om ν 𝓨 μ κ omS → ∀ lam : D.host.F, algebraMap D.host.F D.host.E lam = -D.host.xi0 / μ → GlobalTheory.StdUnn.IsWeilSch (GlobalTheory.StdUnn.shift ψ lam) χ⁻¹ θ T ν omS := by
   intro D ψ θ A T χ om ν 𝓨 μ κ omS hP lam hlam

@@ -5,25 +5,21 @@ namespace Formalism.MainNotions.G.SymmetricFormBlocks
 open Finset
 
 /- English proof (translation)
-Establish `hS1 : ∑ a ∈ A, ∑ w ∈ Wn, ∑ z ∈ I, bl a w z ≤ ∑ a ∈ A, ∑ z ∈ I, (Wn.card : ℝ) * (bq a z * dx z + ε₂ * (dy a z * dx z))`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_le_sum fun z hz => hplus a ha z hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ : ∑ a ∈ A, ∑ z ∈ I, bq a z * dx z ≤ ε₁ * T.card * K * ∑ a ∈ A, m a`. Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `z _`. Rewrite using `[Finset.sum_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ ≤ ∑ z ∈ I, (ε₁ * ∑ i ∈ T, ∑ a ∈ A, dy (u a i) z) * dx z := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `z hz`. Conclude with `mul_le_mul_of_nonneg_right (htm z hz) (hdx z)`. Use `_ = ∑ z ∈ I, ∑ i ∈ T, ∑ a ∈ A, ε₁ * (dy (u a i) z * dx z) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `z _`. Rewrite using `[mul_assoc, Finset.sum_mul, Finset.mul_sum]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.sum_mul, Finset.mul_sum]`. Use `_ = ∑ i ∈ T, ∑ z ∈ I, ∑ a ∈ A, ε₁ * (dy (u a i) z * dx z) := Finset.sum_comm`. Use `_ = ∑ i ∈ T, ∑ a ∈ A, ∑ z ∈ I, ε₁ * (dy (u a i) z * dx z) := Finset.sum_congr rfl fun i _ => Finset.sum_comm`. Use `_ ≤ ∑ i ∈ T, ∑ a ∈ A, ε₁ * (K * m a) := by`. Apply `Finset.sum_le_sum` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[← Finset.mul_sum]`. Apply `mul_le_mul_of_nonneg_left _ h1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hcnt (u a i) (hu a ha i hi).1).trans (hu a ha i hi).2`. Use `_ = ∑ i ∈ T, ε₁ * (K * ∑ a ∈ A, m a) := by`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = ε₁ * T.card * K * ∑ a ∈ A, m a := by`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∑ a ∈ A, ∑ z ∈ I, ε₂ * (dy a z * dx z) ≤ ε₂ * ∑ a ∈ A, m a`. Rewrite using `[Finset.mul_sum]`.
-
-Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `a ha`. Rewrite using `[← Finset.mul_sum]`. Conclude with `mul_le_mul_of_nonneg_left (hcnt a ha) h2`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [mul_add, Finset.mul_sum, Finset.sum_add_distrib]`. Use `_ ≤ (Wn.card : ℝ) * (ε₁ * T.card * K * ∑ a ∈ A, m a + ε₂ * ∑ a ∈ A, m a) := mul_le_mul_of_nonneg_left (add_le_add hQ hD) (Nat.cast_nonneg _)`. Use `_ = (ε₁ * T.card * K + ε₂) * ((Wn.card : ℝ) * ∑ a ∈ A, m a) := by ring`.
+A detailed English derivation is pending.
 -/
 theorem assemble {α ι Z : Type*} (A : Finset α) (Wn : Finset ℕ) (I : Finset Z) (T : Finset ι)
     (bl : α → ℕ → Z → ℝ) (bq : α → Z → ℝ) (dx : Z → ℝ) (dy : α → Z → ℝ) (u : α → ι → α) (m : α → ℝ)

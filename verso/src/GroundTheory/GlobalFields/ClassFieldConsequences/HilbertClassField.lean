@@ -23,7 +23,7 @@ instance isAbelianGalois_hilbertClassField : IsAbelianGalois K (hilbertClassFiel
   inferInstanceAs (IsAbelianGalois K ((Modulus.one : Modulus K).rayClassField Ω))
 
 /- English proof (translation)
-Rewrite using `[← Modulus.congruenceSubgroup_one]`. Conclude with `(Modulus.one : Modulus K).range_ideleClassNorm_rayClassField Ω`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_ideleClassNorm_hilbertClassField :
     (ideleClassNorm K (hilbertClassField K Ω)).range =
@@ -32,11 +32,11 @@ theorem range_ideleClassNorm_hilbertClassField :
   exact (Modulus.one : Modulus K).range_ideleClassNorm_rayClassField Ω
 
 /- English proof (translation)
-Use `⟨fun v ↦ ?_, fun v ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[isUnramifiedIn_iff_ramificationIdx]`. Introduce `w hw`. Use `hw` as an intermediate fact. Conclude with `(Modulus.one : Modulus K).ramificationIdx_rayClassField_eq_one Ω (Modulus.not_dvd_one_ideal v) w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← infiniteLocalSymbol_eq_one_iff] ext1 x`. Establish `hx : IdeleClassGroup.mk K (infiniteEmbedding v x) ∈ (ideleClassNorm K (hilbertClassField K Ω)).range`. Rewrite using `[range_ideleClassNorm_hilbertClassField]`. Conclude with `⟨_, infiniteEmbedding_mem_standardOpenSubgroup v x, rfl⟩`. Rewrite `hx` using `[← ker_reciprocityMap, MonoidHom.mem_ker, reciprocityMap_mk, ideleSymbol_infiniteEmbedding]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, MonoidHom.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem isUnramifiedEverywhere_hilbertClassField :
     IsUnramifiedEverywhere K (hilbertClassField K Ω) := by
@@ -57,11 +57,11 @@ theorem isUnramifiedEverywhere_hilbertClassField :
     rw [hx, MonoidHom.one_apply]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hle`. Conclude with `(isUnramifiedEverywhere_hilbertClassField K Ω).of_le hle`. Introduce `h`. Use `(range_ideleClassNorm_le_range_iff L (hilbertClassField K Ω)).1 ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[range_ideleClassNorm_hilbertClassField]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Rewrite using `[← ker_reciprocityMap, MonoidHom.mem_ker, reciprocityMap_mk]`. Use `ideleSymbol_eq_one_of_isUnramifiedEverywhere K L h fun v ↦ ?_` and prove the remaining obligations. Establish `hx' : x ∈ (Modulus.one : Modulus K).congruenceSubgroup`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Modulus.congruenceSubgroup_one]`. Conclude with `hx`. Establish `hv` using `((Modulus.one : Modulus K).mem_congruenceSubgroup.1 hx').1 v`. Rewrite `hv` using `[(Modulus.exponent_eq_zero_iff _ v).2 (Modulus.not_dvd_one_ideal v)]`. Conclude with `HeightOneSpectrum.adicCompletionIntegers.mem_units_iff_valued_eq_one.2 (mem_unitsLevel.1 hv).1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_hilbertClassField_iff (L : IntermediateField K Ω) [FiniteDimensional K L]
     [IsAbelianGalois K L] :
@@ -88,7 +88,7 @@ def hilbertClassFieldArtinEquiv :
   Modulus.classGroupEquiv.symm.trans ((Modulus.one : Modulus K).rayClassArtinEquiv Ω)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Modulus.one : Modulus K).rayClassArtinEquiv Ω (Modulus.classGroupEquiv.symm (ClassGroup.mk0 ⟨v.asIdeal, mem_nonZeroDivisors_of_ne_zero v.ne_bot⟩)) = _`. Rewrite using `[← Modulus.classGroupEquiv_primeClass v, MulEquiv.symm_apply_apply]`. Conclude with `(Modulus.one : Modulus K).rayClassArtinEquiv_primeClass Ω (Modulus.not_dvd_one_ideal v) w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hilbertClassFieldArtinEquiv_mk0 (v : HeightOneSpectrum (𝓞 K))
     (w : HeightOneSpectrum (𝓞 (hilbertClassField K Ω))) [w.asIdeal.LiesOver v.asIdeal] :

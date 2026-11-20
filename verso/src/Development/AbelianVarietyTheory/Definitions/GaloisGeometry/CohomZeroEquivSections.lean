@@ -144,14 +144,14 @@ def resCoef (f : X ⟶ Y) : (res R f).obj (coef R Y) ≅ coef R X :=
     (GlobalTheory.Et.coef R)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, GrothendieckTopology.top_mem _ _, fun _ u _ => ⟨r, ⟨PreservesProduct.iso (res R u) _ ≪≫ Pi.mapIso fun _ => resCoef R u⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLisse_pi_coef (X : Scheme.{0}) (r : ℕ) : IsLisse (∏ᶜ fun _ : Fin r => coef R X) :=
   ⟨⊤, GrothendieckTopology.top_mem _ _, fun _ u _ =>
     ⟨r, ⟨PreservesProduct.iso (res R u) _ ≪≫ Pi.mapIso fun _ => resCoef R u⟩⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⊤, GrothendieckTopology.top_mem _ _, fun U u _ => ⟨1, ⟨resCoef R u ≪≫ (productUniqueIso fun _ : Fin 1 => coef R U).symm⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLisse_coef (X : Scheme.{0}) : IsLisse (coef R X) :=
   ⟨⊤, GrothendieckTopology.top_mem _ _, fun U u _ =>
@@ -172,32 +172,32 @@ section Examples
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : IsGrothendieckAbelian.{1} (Shv ℚ X) := inferInstance
 
 /- English proof (translation)
-The claim follows from `cohomZeroEquivSections ℚ F T`.
+A detailed English derivation is pending.
 -/
 example (F : Shv ℚ X) (T : Over X) : H F 0 T ≃ₗ[ℚ] Sec F T := cohomZeroEquivSections ℚ F T
 
 /- English proof (translation)
-The claim follows from `secCoef ℚ T`.
+A detailed English derivation is pending.
 -/
 example (T : Over X) : Sec (coef ℚ X) T ≃ₗ[ℚ] C(T.left, ℚ) := secCoef ℚ T
 
 /- English proof (translation)
-The claim follows from `isLisse_coef ℚ X`.
+A detailed English derivation is pending.
 -/
 example : IsLisse (coef ℚ X) := isLisse_coef ℚ X
 
 /- English proof (translation)
-The claim follows from `isLisse_pi_coef ℚ X 3`.
+A detailed English derivation is pending.
 -/
 example : IsLisse (∏ᶜ fun _ : Fin 3 => coef ℚ X) := isLisse_pi_coef ℚ X 3
 
 /- English proof (translation)
-The claim follows from `map_smul _ q z`.
+A detailed English derivation is pending.
 -/
 example (F : Shv ℚ X) (T : Over X) (q : ℚ) (z : H F 0 T) : cohomZeroEquivSections ℚ F T (q • z) = q • cohomZeroEquivSections ℚ F T z :=
   map_smul _ q z

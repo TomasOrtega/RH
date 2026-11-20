@@ -54,7 +54,7 @@ def evDbl {κ κ₁ : Type} (e : ((κ → R) → ℂ) →ₗ[ℂ] ((κ₁ → R)
   partL e ∘ₗ partR (conjMap e)
 
 /- English proof (translation)
-Simplify using `only [evDbl, LinearMap.comp_apply, partL_apply, partR_apply, Sum.elim_comp_inl, Sum.elim_comp_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evDbl_apply {κ κ₁ : Type} (e : ((κ → R) → ℂ) →ₗ[ℂ] ((κ₁ → R) → ℂ)) (Φ : (κ ⊕ κ → R) → ℂ)
     (s : κ₁ ⊕ κ₁ → R) : evDbl e Φ s =
@@ -62,11 +62,11 @@ theorem evDbl_apply {κ κ₁ : Type} (e : ((κ → R) → ℂ) →ₗ[ℂ] ((κ
   simp only [evDbl, LinearMap.comp_apply, partL_apply, partR_apply, Sum.elim_comp_inl, Sum.elim_comp_inr]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[evDbl_apply]`. Establish `h1 : ∀ x₁ : κ → R, (fun x₂ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) = φ₁ x₁ • φ₂` using `fun x₁ => by`. Use function extensionality and compare the values at `x₂`. Simplify using `[boxFun]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `h2 : (fun x₁ => conjMap e (fun x₂ => boxFun φ₁ φ₂ (Sum.elim x₁ x₂)) (s ∘ Sum.inr)) = conjMap e φ₂ (s ∘ Sum.inr) • φ₁`. Use function extensionality and compare the values at `x₁`. Rewrite using `[h1, map_smul]`. Simplify using `[mul_comm]`. Rewrite using `[h2, map_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[boxFun, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evDbl_boxFun {κ κ₁ : Type} (e : ((κ → R) → ℂ) →ₗ[ℂ] ((κ₁ → R) → ℂ)) (φ₁ φ₂ : (κ → R) → ℂ) :
     evDbl e (boxFun φ₁ φ₂) = boxFun (e φ₁) (conjMap e φ₂) := by
@@ -95,15 +95,15 @@ def IsTame {κ κ' : Type} [Fintype κ] [Fintype κ'] (T : ((κ → AF F) → �
 variable {F}
 
 /- English proof (translation)
-Introduce `g hg` and use `⟨Unit, inferInstance, fun _ => ContinuousLinearMap.id ℂ _, fun _ => g, fun _ => hg, fun f => by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isTame_id {κ : Type} [Fintype κ] : IsTame F (LinearMap.id : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) :=
   fun g hg => ⟨Unit, inferInstance, fun _ => ContinuousLinearMap.id ℂ _, fun _ => g, fun _ => hg, fun f => by simp⟩
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨ι, _, P, g', hg', hP⟩` from `hT g hg`. Use `choose ι' inst P' g'' hg'' hP' using fun j => hT' (g' j) (hg' j)`. Use `letI : ∀ j, Fintype (ι' j) := inst`. Use `⟨Σ j, ι' j, inferInstance, fun p => (P' p.1 p.2).comp (P p.1), fun p => g'' p.1 p.2, fun p => hg'' p.1 p.2, fun f => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, hP, map_sum, Fintype.sum_sigma]`. Conclude with `Finset.sum_congr rfl fun j _ => hP' j (P j f)`.
+A detailed English derivation is pending.
 -/
 theorem IsTame.comp {κ κ' κ'' : Type} [Fintype κ] [Fintype κ'] [Fintype κ'']
     {T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)} {T' : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ'' → AF F) → ℂ)}
@@ -118,11 +118,9 @@ theorem IsTame.comp {κ κ' κ'' : Type} [Fintype κ] [Fintype κ'] [Fintype κ'
   exact Finset.sum_congr rfl fun j _ => hP' j (P j f)
 
 /- English proof (translation)
-Introduce `φ hφ`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, g, hg, rfl⟩` from `hx`. Take `⟨ι, _, P, g', hg', hP⟩` from `hT g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hP]`. Conclude with `Submodule.sum_mem _ fun j _ => Submodule.subset_span ⟨P j f, g' j, hg' j, rfl⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem IsTame.mapsTo {κ κ' : Type} [Fintype κ] [Fintype κ'] {T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)}
     (hT : IsTame F T) : ∀ φ ∈ schA F κ, T φ ∈ schA F κ' := by
@@ -138,9 +136,7 @@ theorem IsTame.mapsTo {κ κ' : Type} [Fintype κ] [Fintype κ'] {T : ((κ → A
   | smul c x _ hx => rw [map_smul]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Introduce `g hg`. Take `⟨ι, _, P, g', hg', hP⟩` from `hT g hg`. Use `choose L hL using fun j => hl (g' j) (hg' j)`. Use `⟨∑ j, (L j).comp (P j), fun f => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply, hP, map_sum, ContinuousLinearMap.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun j _ => hL j (P j f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTame.comp_adm {κ κ' : Type} [Fintype κ] [Fintype κ'] {T : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ' → AF F) → ℂ)}
     (hT : IsTame F T) {l : ((κ' → AF F) → ℂ) →ₗ[ℂ] ℂ} (hl : l ∈ (adeleClass F).adm κ') :

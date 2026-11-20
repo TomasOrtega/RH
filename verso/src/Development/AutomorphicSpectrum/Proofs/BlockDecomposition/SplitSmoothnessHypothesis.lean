@@ -18,9 +18,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `hs : IsOpen {x : Fˣ | (x : F) ∈ 𝒪[F] ∧ ((x⁻¹ : Fˣ) : F) ∈ 𝒪[F]}` using `((Valuation.isOpen_integer (R := F)).preimage Units.continuous_val).inter ((Valuation.isOpen_integer (R := F)).preimage Units.continuous_coe_inv)`. Establish `h1 : (1 : Fˣ) ∈ {x : Fˣ | (x : F) ∈ 𝒪[F] ∧ ((x⁻¹ : Fˣ) : F) ∈ 𝒪[F]}`. Simplify using `[Valuation.mem_integer_iff]`. Use `filter_upwards [hs.mem_nhds h1] with x hx`. Establish `a : ValuativeRel.valuation F (x : F) ≤ 1` using `hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b : ValuativeRel.valuation F ((x⁻¹ : Fˣ) : F) ≤ 1` using `hx.2`. Establish `c : ValuativeRel.valuation F (x : F) = 1`. Use `le_antisymm a ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Conclude with `modulus_eq_one_iff.2 ⟨x.ne_zero, mem_unitFiltrationUnits_zero_iff_ord.1 (mem_unitFiltrationUnits_zero_iff.2 c)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem modulus_near : ∀ᶠ x : Fˣ in 𝓝 1, modulus (x : F) = 1 := by
   have hs : IsOpen {x : Fˣ | (x : F) ∈ 𝒪[F] ∧ ((x⁻¹ : Fˣ) : F) ∈ 𝒪[F]} :=
@@ -41,9 +41,9 @@ theorem modulus_near : ∀ᶠ x : Fˣ in 𝓝 1, modulus (x : F) = 1 := by
     mem_unitFiltrationUnits_zero_iff_ord.1 (mem_unitFiltrationUnits_zero_iff.2 c)⟩
 
 /- English proof (translation)
-Establish `e1 : one1 (1 : GL (Fin 2) F) = 1`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [one1]`. Rewrite using `[piS_eq, e1]`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[rWS_zero χ Matrix.det_one (by simp)]`. Simplify using `[cst, mp]`. Use `congr 1`. Apply the tactic sequence `ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem piS_one (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (Φ : F × F → ℂ) :
     piS χ c₁ 1 Φ = Φ := by
@@ -58,11 +58,11 @@ theorem piS_one (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (Φ : F × F →
   ext <;> simp
 
 /- English proof (translation)
-Establish `hdet : ((uni2 b : GL (Fin 2) F).val).det = 1`. Simplify using `[uni2, Matrix.det_fin_two]`. Establish `hd : GeneralLinearGroup.det (uni2 b : GL (Fin 2) F) = 1` using `Units.ext (by simpa using hdet)`. Rewrite using `[piS_eq]`. Simplify using `only []`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rWS_zero χ (det_normalized_determinant_one _) (by simp [one1, uni2])]`. Establish `e0 : one1 (uni2 b : GL (Fin 2) F) 0 0 = 1` using `by simp [one1, hdet, uni2]`. Establish `e1 : one1 (uni2 b : GL (Fin 2) F) 0 1 = b` using `by simp [one1, uni2]`. Rewrite using `[e0, e1, hdet]`. Apply the tactic sequence `have : (1 * z.1, 1 * z.2) * ((1 : F), (1 : F)) = z := by ext <;> simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this]`. Simplify using `[cst, mp, hd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem piS_uni (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (b : F) (Ψ : F × F → ℂ) (z : F × F) :
     piS χ c₁ (uni2 b) Ψ z = (χ (b * (z.1 * z.2)) : ℂ) * Ψ z := by
@@ -80,13 +80,13 @@ theorem piS_uni (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (b : F) (Ψ : F 
   simp [cst, mp, hd]
 
 /- English proof (translation)
-Establish `hdet : ((dg2 a d : GL (Fin 2) F).val).det = (a : F) * d`. Simplify using `[dg2, Matrix.det_fin_two]`. Establish `hd : GeneralLinearGroup.det (dg2 a d : GL (Fin 2) F) = a * d` using `Units.ext (by simpa using hdet)`. Rewrite using `[piS_eq]`. Simplify using `only []`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rWS_zero χ (det_normalized_determinant_one _) (by simp [one1, dg2])]`. Establish `e0 : one1 (dg2 a d : GL (Fin 2) F) 0 0 = ((d⁻¹ : Fˣ) : F)`. Simplify using `only [one1, hdet]`. Simplify using `[dg2]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `e1 : one1 (dg2 a d : GL (Fin 2) F) 0 1 = 0` using `by simp [one1, dg2]`. Rewrite using `[e0, e1, hdet]`. Establish `: (((d⁻¹ : Fˣ) : F) * z.1, ((d⁻¹ : Fˣ) : F) * z.2) * ((a : F) * d, (1 : F)) = ((a : F) * z.1, ((d⁻¹ : Fˣ) : F) * z.2)`. Use `ext`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `[cst, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem piS_dg (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (a d : Fˣ) (Ψ : F × F → ℂ) (z : F × F) :
     piS χ c₁ (dg2 a d) Ψ z = ((c₁ (a * d) : ℂˣ) : ℂ) * mp (a * d) (1 / 2) *
@@ -114,17 +114,15 @@ theorem piS_dg (χ : AddChar F Circle) (c₁ : Fˣ →* ℂˣ) (a d : Fˣ) (Ψ :
   ring
 
 /- English proof (translation)
-Establish `hc : Continuous (fun q : (Fˣ × Fˣ) × (F × F) => (((q.1.1 : Fˣ) : F) * q.2.1, (((q.1.2)⁻¹ : Fˣ) : F) * q.2.2))` using `((Units.continuous_val.comp (continuous_fst.comp continuous_fst)).mul (continuous_fst.comp continuous_snd)).prodMk ((Units.continuous_coe_inv.comp (continuous_snd.comp continuous_fst)).mul (continuous_snd.comp continuous_snd))`. Establish `hK : IsCompact (tsupport Ψ)` using `hΨ.2`. Establish `E : ∀ᶠ p : Fˣ × Fˣ in 𝓝 1, ∀ y ∈ tsupport Ψ, Ψ ((p.1 : F) * y.1, ((p.2⁻¹ : Fˣ) : F) * y.2) = Ψ y`. Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `h1` using `(hΨ.1.comp_continuous hc).eventually_eq ((1 : Fˣ × Fˣ), y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `(hΨ.1.comp_continuous (continuous_snd (X := Fˣ × Fˣ) (Y := F × F))).eventually_eq ((1 : Fˣ × Fˣ), y)`. Use `filter_upwards [h1, h2] with q a b`. Simplify using `only [Function.comp] at a b`. Rewrite using `[a, b]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `E' : ∀ᶠ p : Fˣ × Fˣ in 𝓝 1, ∀ y ∈ tsupport Ψ, Ψ (((p⁻¹).1 : F) * y.1, ((((p⁻¹).2)⁻¹ : Fˣ) : F) * y.2) = Ψ y`. Establish `ht : Tendsto (fun p : Fˣ × Fˣ => p⁻¹) (𝓝 1) (𝓝 1)`. Simplify using `using (continuous_inv (G := Fˣ × Fˣ)).tendsto 1`. Conclude with `ht.eventually E`. Use `filter_upwards [E, E'] with p a b z`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hz : z ∈ tsupport Ψ`. Conclude with `a z hz`. Establish `hz0 : Ψ z = 0` using `image_eq_zero_of_notMem_tsupport hz`. Rewrite using `[hz0]`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hy : ((p.1 : F) * z.1, ((p.2⁻¹ : Fˣ) : F) * z.2) ∈ tsupport Ψ` using `subset_tsupport _ hne`. Use `b _ hy` as an intermediate fact. Establish `e : (((p⁻¹).1 : F) * ((p.1 : F) * z.1), ((((p⁻¹).2)⁻¹ : Fˣ) : F) * (((p.2⁻¹ : Fˣ) : F) * z.2)) = z`. Apply the tactic sequence `ext <;> simp`. Rewrite `this` using `[e, hz0]`.
-
-Conclude with `hne this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tube {Ψ : F × F → ℂ} (hΨ : Ψ ∈ SBE (F × F)) :
     ∀ᶠ p : Fˣ × Fˣ in 𝓝 1, ∀ z : F × F, Ψ ((p.1 : F) * z.1, ((p.2⁻¹ : Fˣ) : F) * z.2) = Ψ z := by
@@ -165,11 +163,11 @@ theorem tube {Ψ : F × F → ℂ} (hΨ : Ψ ∈ SBE (F × F)) :
     exact hne this.symm
 
 /- English proof (translation)
-Establish `hK : IsCompact (tsupport Ψ)` using `hΨ.2`. Establish `E : ∀ᶠ b : F in 𝓝 0, ∀ y ∈ tsupport Ψ, (χ (b * (y.1 * y.2)) : ℂ) = 1`. Use `hK.eventually_forall_of_forall_eventually fun y _ => ?_` and prove the remaining obligations. Establish `hc : Continuous (fun q : F × (F × F) => q.1 * (q.2.1 * q.2.2))` using `by fun_prop`. Establish `h1` using `((isLC_char hχ hχ1).comp_continuous hc).eventually_eq ((0 : F), y)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h1] with q a`. Simplify using `only [Function.comp] at a`. Rewrite using `[a]`. Simplify using the standard rewrite rules. Use `filter_upwards [E] with b hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[piS_uni]`. Distinguish the cases in `hz : z ∈ tsupport Ψ`. Rewrite using `[hb z hz, one_mul]`. Rewrite using `[image_eq_zero_of_notMem_tsupport hz, mul_zero]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uni_fix {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) (c₁ : Fˣ →* ℂˣ)
     {Ψ : F × F → ℂ} (hΨ : Ψ ∈ SBE (F × F)) :
@@ -194,7 +192,7 @@ def lo (t : F) : GL (Fin 2) F := w0⁻¹ * uni2 (-t) * w0
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `: ((w0⁻¹ : GL (Fin 2) F)).val = !![0, -1; 1, 0]` using `rfl`. Simplify using `only [lo, Units.val_mul, this]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, w0, Matrix.mul_apply, Fin.sum_univ_two]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lo_val (t : F) : (lo t : GL (Fin 2) F).val = !![1, 0; t, 1] := by
   have : ((w0⁻¹ : GL (Fin 2) F)).val = !![0, -1; 1, 0] := rfl
@@ -203,7 +201,7 @@ theorem lo_val (t : F) : (lo t : GL (Fin 2) F).val = !![1, 0; t, 1] := by
   fin_cases i <;> fin_cases j <;> simp [uni2, w0, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `hΨ` using `piS_mem hχ hχ1 c₁ hΦ (w0 : GL (Fin 2) F)`. Establish `ht : Tendsto (fun t : F => -t) (𝓝 0) (𝓝 0)`. Simplify using `using (continuous_neg (G := F)).tendsto 0`. Use `filter_upwards [ht.eventually (uni_fix hχ hχ1 c₁ hΨ)] with t h`. Rewrite using `[lo, piS_mul hχ hχ1 c₁ hΦ, piS_mul hχ hχ1 c₁ hΨ, h, ← piS_mul hχ hχ1 c₁ hΦ, inv_mul_cancel, piS_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_fix [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) (c₁ : Fˣ →* ℂˣ)
     {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :
@@ -216,11 +214,11 @@ theorem lo_fix [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 
     piS_one]
 
 /- English proof (translation)
-Establish `hker : ∀ᶠ x : Fˣ in 𝓝 1, c₁ x = 1` using `(GlobalTheory.RootEx.UniformLattices.isOpen_ker_of_continuous c₁ hc).mem_nhds (one_mem c₁.ker)`. Establish `hA : ∀ᶠ x : Fˣ in 𝓝 1, c₁ x = 1 ∧ modulus (x : F) = 1` using `hker.and modulus_near`. Establish `t1 : Tendsto (fun p : Fˣ × Fˣ => p.1) (𝓝 1) (𝓝 1)` using `continuous_fst.tendsto 1`. Establish `t2 : Tendsto (fun p : Fˣ × Fˣ => p.2) (𝓝 1) (𝓝 1)` using `continuous_snd.tendsto 1`. Use `filter_upwards [t1.eventually hA, t2.eventually hA, tube hΨ] with p ha hd hT`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Rewrite using `[piS_dg, hT z]`. Establish `m : modulus (((p.1 * p.2 : Fˣ)) : F) = 1`. Rewrite using `[Units.val_mul, modulus_mul, ha.2, hd.2, one_mul]`. Establish `m' : modulus (((p.2⁻¹ : Fˣ)) : F) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_inv_eq_inv_val, modulus_inv, hd.2, inv_one]`. Establish `m2 : modulus ((p.1 : F) * (p.2 : F)) = 1` using `by simpa using m`. Establish `m3 : modulus ((p.2 : F)⁻¹) = 1` using `by simpa using m'`. Simplify using `[mp, m2, m3, ha.1, hd.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_fix {χ : AddChar F Circle} {c₁ : Fˣ →* ℂˣ} (hc : Continuous c₁)
     {Ψ : F × F → ℂ} (hΨ : Ψ ∈ SBE (F × F)) :
@@ -246,14 +244,14 @@ def toU (x : F) : Fˣ := by
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Simplify using `[toU, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toU_val {x : F} (h : x ≠ 0) : ((toU x : Fˣ) : F) = x := by
   simp [toU, h]
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Rewrite using `[Units.isEmbedding_val₀.isInducing.tendsto_nhds_iff]`. Establish `: (Units.val ∘ toU : F → F) =ᶠ[𝓝 1] id` using `by filter_upwards [(continuous_id.tendsto (1 : F)).eventually_ne (one_ne_zero)] with x hx`. Conclude with `toU_val hx`. Simplify using `using (tendsto_id (α := F) (x := 𝓝 1)).congr' this.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem toU_tendsto : Tendsto (toU : F → Fˣ) (𝓝 1) (𝓝 1) := by
   rw [Units.isEmbedding_val₀.isInducing.tendsto_nhds_iff]
@@ -265,9 +263,9 @@ theorem toU_tendsto : Tendsto (toU : F → Fˣ) (𝓝 1) (𝓝 1) := by
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `h0 : u.val 0 0 ≠ 0` using `ha ▸ a.ne_zero`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, lo_val]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, ha, he] <;> field_simp <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem iwahori (u : GL (Fin 2) F) (a e : Fˣ) (ha : (a : F) = u.val 0 0)
     (he : (e : F) = u.val 1 1 - u.val 0 1 * u.val 1 0 / u.val 0 0) :
@@ -280,15 +278,13 @@ theorem iwahori (u : GL (Fin 2) F) (a e : Fˣ) (ha : (a : F) = u.val 0 0)
     simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two, ha, he] <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hent : ∀ i j, Continuous (fun u : GL (Fin 2) F => u.val i j)` using `fun i j => (Units.continuous_val (M := Matrix (Fin 2) (Fin 2) F)).matrix_elem i j`. Establish `ta : Tendsto (fun u : GL (Fin 2) F => u.val 0 0) (𝓝 1) (𝓝 1)`. Simplify using `using (hent 0 0).tendsto 1`. Establish `tb : Tendsto (fun u : GL (Fin 2) F => u.val 0 1) (𝓝 1) (𝓝 0)`. Simplify using `using (hent 0 1).tendsto 1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `tc : Tendsto (fun u : GL (Fin 2) F => u.val 1 0) (𝓝 1) (𝓝 0)`. Simplify using `using (hent 1 0).tendsto 1`. Establish `td : Tendsto (fun u : GL (Fin 2) F => u.val 1 1) (𝓝 1) (𝓝 1)`. Simplify using `using (hent 1 1).tendsto 1`. Establish `tba : Tendsto (fun u : GL (Fin 2) F => u.val 0 1 / u.val 0 0) (𝓝 1) (𝓝 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `tb.div ta one_ne_zero`. Rewrite `h` using `[zero_div]`. Conclude with `h`. Establish `tca : Tendsto (fun u : GL (Fin 2) F => u.val 1 0 / u.val 0 0) (𝓝 1) (𝓝 0)`. Establish `h` using `tc.div ta one_ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[zero_div]`. Conclude with `h`. Establish `te : Tendsto (fun u : GL (Fin 2) F => u.val 1 1 - u.val 0 1 * u.val 1 0 / u.val 0 0) (𝓝 1) (𝓝 1)`. Simplify using `using td.sub ((tb.mul tc).div ta one_ne_zero)`. Establish `tp : Tendsto (fun u : GL (Fin 2) F => ((toU (u.val 0 0), toU (u.val 1 1 - u.val 0 1 * u.val 1 0 / u.val 0 0)) : Fˣ × Fˣ)) (𝓝 1) (𝓝 1)`.
-
-Conclude with `(toU_tendsto.comp ta).prodMk_nhds (toU_tendsto.comp te)`. Use `filter_upwards [ta.eventually_ne one_ne_zero, te.eventually_ne one_ne_zero, tba.eventually (uni_fix hχ hχ1 c₁ hΦ), tca.eventually (lo_fix hχ hχ1 c₁ hΦ), tp.eventually (dg_fix (χ := χ) hc hΦ)] with u h0 h1 hU hL hD`. Rewrite using `[iwahori u _ _ (toU_val h0) (toU_val h1), piS_mul hχ hχ1 c₁ hΦ, hU, piS_mul hχ hχ1 c₁ hΦ, hD, hL]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stab_near [CharZero F] {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1)
     {c₁ : Fˣ →* ℂˣ} (hc : Continuous c₁) {Φ : F × F → ℂ} (hΦ : Φ ∈ SBE (F × F)) :

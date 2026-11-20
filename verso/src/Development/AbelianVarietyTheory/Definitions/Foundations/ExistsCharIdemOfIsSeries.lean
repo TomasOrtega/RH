@@ -17,9 +17,9 @@ variable {g : ℕ} [Fact g.Prime] {N : ℕ}
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Unfold `IsUp IsUniUp`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ a b`. Use `⟨h2 a b, fun hab => ?_⟩` and prove the remaining obligations. Substitute `hab` using the available equality.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality.
 
-Conclude with `h1 a`. Introduce `h`. Conclude with `⟨fun a => (h a a).2 rfl, fun a b hab => (h a b).1 hab⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUp_iff_isUniUp (u : GG g N) : IsUp g N u ↔ IsUniUp u.val := by
   unfold IsUp IsUniUp
@@ -34,9 +34,9 @@ theorem isUp_iff_isUniUp (u : GG g N) : IsUp g N u ↔ IsUniUp u.val := by
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Unfold `eDat eps`. Simplify using `only [MonoidAlgebra.coeff_smul, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.smul_apply, Finsupp.finsetSum_apply, Finsupp.single_apply, smul_eq_mul]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype, div_eq_inv_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem coeff_eDat (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop) (φ : Matrix (Fin N) (Fin N) (ZMod g) → ZMod g)
     (ψ : AddChar (ZMod g) ℂ) (x : GG g N) :
@@ -54,11 +54,11 @@ theorem coeff_eDat (P : Matrix (Fin N) (Fin N) (ZMod g) → Prop) (φ : Matrix (
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Unfold `entN`. Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single ⟨c, h.2⟩]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg]`. Introduce `hbc`. Conclude with `hb (Fin.ext hbc)`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _`. Rewrite using `[if_neg]`. Introduce `hbc`. Conclude with `h ⟨a.isLt, hbc ▸ b.isLt⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_ite_entN (M : Matrix (Fin N) (Fin N) (ZMod g)) (a : Fin N) (c : ℕ) :
     (∑ b : Fin N, if (b : ℕ) = c then M a b else 0) = entN M a c := by
@@ -78,7 +78,7 @@ theorem sum_ite_entN (M : Matrix (Fin N) (Fin N) (ZMod g)) (a : Fin N) (c : ℕ)
     exact h ⟨a.isLt, hbc ▸ b.isLt⟩
 
 /- English proof (translation)
-Simplify using `only [sum_ite_entN]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => Formalism.MainNotions.ArithmeticCylinders.entN M i (i + 1)) N]`. Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ, Nat.add_sub_cancel, show Formalism.MainNotions.ArithmeticCylinders.entN M n (n + 1) = 0 by unfold Formalism.MainNotions.ArithmeticCylinders.entN; rw [dif_neg (by omega)], add_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_superdiag_eq_sum_entN (M : Matrix (Fin N) (Fin N) (ZMod g)) (hN : 0 < N) :
     (∑ a : Fin N, ∑ b : Fin N, if (b : ℕ) = a + 1 then M a b else 0) =
@@ -92,7 +92,7 @@ private theorem sum_superdiag_eq_sum_entN (M : Matrix (Fin N) (Fin N) (ZMod g)) 
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `by omega`. Rewrite using `[eU, coeff_eDat]`. Unfold `levOfChar Lev.e Lev.Mem Lev.chi Lev.Edge`. Simplify using `only [Bool.false_eq_true, ↓reduceIte, false_implies, and_true, isUp_iff_isUniUp, Units.val_one, one_mul, sum_superdiag_eq_sum_entN _ hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem coeff_eU (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (s k : ℕ) (h : s + k < N) (x : GG g N) :
     (eU g N ψ).coeff x = (levOfChar ψ hψ N false s k h).e x := by
@@ -103,17 +103,17 @@ theorem coeff_eU (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (s k : ℕ) (h : s
     Units.val_one, one_mul, sum_superdiag_eq_sum_entN _ hN]
 
 /- English proof (translation)
-Establish `pos : ∀ i, i + 1 ≠ s → ¬(0 < k ∧ i + 1 = s + k) → F i = f i` using `fun i h1 h2 => by`. Rewrite using `[hF, if_pos ⟨h1, h2⟩]`. Establish `neg : ∀ i, ¬(i + 1 ≠ s ∧ ¬(0 < k ∧ i + 1 = s + k)) → F i = 0` using `fun i h => by`. Rewrite using `[hF, if_neg h]`. Substitute `hN` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Apply the tactic sequence `rcases s with _ | t <;> rcases k with _ | j`. Rewrite using `[show 0 + 2 * 0 + 1 = 1 from rfl, Finset.sum_range_one, pos 0 (by omega) (by omega)]`. Simplify using `using hf`. Rewrite using `[show j + 1 + 2 * 0 + 1 = j + 1 + 1 by omega, Finset.sum_range_succ, Finset.sum_range_succ, neg j (by omega), pos (j + 1) (by omega) (by omega), show f (j + 1) = 0 by simpa using hf]`. Simplify using `only [Nat.zero_sub, Finset.range_zero, Finset.sum_empty, Nat.add_sub_cancel, zero_add, add_zero]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega), zero_add]`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Conclude with `pos i (by omega) (by omega)`. Rewrite using `[show 0 + 2 * (t + 1) + 1 = t + 1 + 1 + t + 1 by omega, Finset.sum_range_succ, Finset.sum_range_add, Finset.sum_range_succ, Finset.sum_range_succ, neg t (by omega), pos (t + 1) (by omega) (by omega), pos (t + 1 + 1 + t) (by omega) (by omega), show f (t + 1 + 1 + t) = 0 by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show t + 1 + 1 + t = 0 + 2 * (t + 1) + 1 - 1 by omega]; exact hf]`. Rewrite using `[Nat.add_sub_cancel, if_pos (by omega), Nat.zero_sub, Finset.range_zero, Finset.sum_empty]`. Establish `e1 : ∑ i ∈ Finset.range t, F i = ∑ i ∈ Finset.range t, f i` using `Finset.sum_congr rfl (fun i hi => pos i (by simp at hi; omega) (by omega))`. Establish `e2 : ∑ i ∈ Finset.range t, F (t + 1 + 1 + i) = ∑ i ∈ Finset.range t, f (t + 1 + 0 + 1 + i)` using `Finset.sum_congr rfl (fun i hi => pos _ (by omega) (by omega))`. Rewrite using `[e1, e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `abel_nf`. Rewrite using `[show j + 1 + 2 * (t + 1) + 1 = t + 1 + j + 1 + 1 + t + 1 by omega, Finset.sum_range_succ, Finset.sum_range_add, Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_add, Finset.sum_range_succ, neg t (by omega), neg (t + 1 + j) (by omega), pos (t + 1 + j + 1) (by omega) …`. Rewrite using `[show t + 1 + j + 1 + 1 + t = j + 1 + 2 * (t + 1) + 1 - 1 by omega]; exact hf]`. Rewrite using `[Nat.add_sub_cancel, Nat.add_sub_cancel, if_pos (by omega)]`. Establish `e1 : ∑ i ∈ Finset.range t, F i = ∑ i ∈ Finset.range t, f i` using `Finset.sum_congr rfl (fun i hi => pos i (by simp at hi; omega) (by simp at hi; omega))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∑ i ∈ Finset.range j, F (t + 1 + i) = ∑ i ∈ Finset.range j, f (t + 1 + i)` using `Finset.sum_congr rfl (fun i hi => pos _ (by omega) (by simp at hi; omega))`. Establish `e3 : ∑ i ∈ Finset.range t, F (t + 1 + j + 1 + 1 + i) = ∑ i ∈ Finset.range t, f (t + 1 + (j + 1) + 1 + i)` using `Finset.sum_congr rfl (fun i hi => pos _ (by omega) (by omega))`. Rewrite using `[e1, e2, e3]`. Use `abel_nf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_range_eq_sum_split_of_last_eq_zero {R : Type} [AddCommMonoid R] (f F : ℕ → R) (s k N : ℕ) (hN : N = k + 2 * s + 1)
     (hF : ∀ i, F i = if i + 1 ≠ s ∧ ¬(0 < k ∧ i + 1 = s + k) then f i else 0) (hf : f (N - 1) = 0) :
@@ -165,15 +165,15 @@ private theorem sum_range_eq_sum_split_of_last_eq_zero {R : Type} [AddCommMonoid
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Unfold `levOfChar Lev.Edge`. Simplify using `only [↓reduceIte]`. Establish `inner : ∀ a : Fin N, (∑ b : Fin N, if ((b : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ s ∧ ¬(0 < k ∧ (a : ℕ) + 1 = s + k) ∨ (a : ℕ) + 1 = s ∧ (b : ℕ) = s + k) then M a b else 0) = (if (a : ℕ) + 1 ≠ s ∧ ¬(0 < k ∧ (a : ℕ) + 1 = s + k) then entN M a (a + 1) else 0) + (if (a : ℕ) + 1 = s then entN M …`. Introduce `a`. Establish `hb : ∀ b : Fin N, (if ((b : ℕ) = a + 1 ∧ (a : ℕ) + 1 ≠ s ∧ ¬(0 < k ∧ (a : ℕ) + 1 = s + k) ∨ (a : ℕ) + 1 = s ∧ (b : ℕ) = s + k) then M a b else 0) = (if (a : ℕ) + 1 ≠ s ∧ ¬(0 < k ∧ (a : ℕ) + 1 = s + k) then (if (b : ℕ) = a + 1 then M a b else 0) else 0) + (if (a : ℕ) + 1 = s then …`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Apply the tactic sequence `by_cases p1 : (b : ℕ) = a + 1 <;> by_cases p2 : (a : ℕ) + 1 = s <;>`. Apply the tactic sequence `by_cases p3 : (0 < k ∧ (a : ℕ) + 1 = s + k) <;> by_cases p4 : (b : ℕ) = s + k <;> simp [p1, p2, p3, p4]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => hb b), Finset.sum_add_distrib, Finset.sum_ite_irrel, Finset.sum_ite_irrel, sum_ite_entN, sum_ite_entN, Finset.sum_const_zero]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => inner a), Finset.sum_add_distrib, Fin.sum_univ_eq_sum_range (fun i => if i + 1 ≠ s ∧ ¬(0 < k ∧ i + 1 = s + k) then entN M i (i + 1) else 0) N, Fin.sum_univ_eq_sum_range (fun i => if i + 1 = s then entN M i (s + k) else 0) N, sum_range_eq_sum_spli …`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ i ∈ Finset.range N, (if i + 1 = s then entN M i (s + k) else 0) = if 1 ≤ s then entN M (s - 1) (s + k) else 0`. Break down `s with _ | t` into its components or cases. Rewrite using `[if_neg (by omega)]`. Conclude with `Finset.sum_eq_zero (fun i _ => if_neg (by omega))`. Rewrite using `[if_pos (by omega), Nat.add_sub_cancel]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.add_right_cancel_iff]`. Rewrite using `[Finset.sum_ite_eq' (Finset.range N) t, if_pos (Finset.mem_range.mpr (by omega))]`. Establish `e3 : ∑ i ∈ Finset.range (s - 1), entN M (s + k + 1 + i) (s + k + 1 + i + 1) = ∑ i ∈ Finset.range (s - 1), entN M (s + k + 1 + i) (s + k + 2 + i)` using `Finset.sum_congr rfl (fun i _ => by rw [show s + k + 1 + i + 1 = s + k + 2 + i by omega])`. Rewrite using `[e2, e3]`. Unfold `phiJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hs : 1 ≤ s`. Simplify using `only [if_pos hs]`. Normalize the expressions using the abelian group laws. Simplify using `only [if_neg hs]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sum_edge_eq_phiJ (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (s k : ℕ) (hN : N = k + 2 * s + 1) (h : s + k < N)
     (M : Matrix (Fin N) (Fin N) (ZMod g)) :
@@ -221,17 +221,15 @@ theorem sum_edge_eq_phiJ (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (s k : ℕ
 open Formalism.MainNotions.ArithmeticCylinders in
 
 /- English proof (translation)
-Rewrite using `[eJ, coeff_eDat]`. Unfold `Lev.e`. Use `congr 1`. Use function extensionality and compare the values at `u`. Unfold `levOfChar Lev.Mem`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Simplify using `only [isUp_iff_isUniUp, forall_const]`. Apply `propext` to reduce the goal to its premises. Apply `and_congr_right` to reduce the goal to its premises. Introduce `_`. Prove the components needed by the constructor for the conclusion.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `H a b h1 h2 h3`. Rewrite using `[show b = ⟨s + k, by omega⟩ from Fin.ext h3]`. Use `H a h1 h2` as an intermediate fact. Unfold `entN at this`. Rewrite `this` using `[dif_pos ⟨a.isLt, by omega⟩]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `H a h1 h2`. Unfold `entN`. Rewrite using `[dif_pos ⟨by omega, by omega⟩]`. Conclude with `H ⟨a, by omega⟩ ⟨s + k, by omega⟩ h1 h2 rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Establish `hE` using `sum_edge_eq_phiJ ψ hψ s k hN h (u : Matrix (Fin N) (Fin N) (ZMod g))`. Unfold `levOfChar at hE`. Unfold `levOfChar Lev.chi`. Simplify using `only [Units.val_one, one_mul]`.
-
-Rewrite using `[hE]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_eJ (ψ : AddChar (ZMod g) ℂ) (hψ : ψ ≠ 1) (s k : ℕ) (hN : N = k + 2 * s + 1) (h : s + k < N) (x : GG g N) :
     (eJ g N k s ψ).coeff x = (levOfChar ψ hψ N true s k h).e x := by

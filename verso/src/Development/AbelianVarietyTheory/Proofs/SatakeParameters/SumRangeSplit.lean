@@ -14,7 +14,7 @@ open Formalism.MainNotions Formalism.BasicNotions Formalism.MainNotions.G Classi
 namespace GlobalTheory.TopExcess
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, k = n + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[Nat.add_sub_cancel, ← Finset.sum_range_add_sum_Ico f (Nat.le_add_right (n + 1) M), Finset.sum_range_succ, ← Finset.sum_range_add_sum_Ico f (by omega : 1 ≤ n), Finset.sum_range_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_range_split (f : ℕ → ℝ) (k M : ℕ) (hk : 2 ≤ k) :
     ∑ r ∈ Finset.range (k + M), f r =
@@ -24,7 +24,7 @@ theorem sum_range_split (f : ℕ → ℝ) (k M : ℕ) (hk : 2 ≤ k) :
     ← Finset.sum_range_add_sum_Ico f (by omega : 1 ≤ n), Finset.sum_range_one]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Use `Finset.card_nsmul_le_sum (Finset.Ico a b) f lo (fun r hr => (h r (Finset.mem_Ico.1 hr).1 (Finset.mem_Ico.1 hr).2).1)` as an intermediate fact. Rewrite `this` using `[Nat.card_Ico, nsmul_eq_mul]`. Then use the resulting hypothesis. Use `Finset.sum_le_card_nsmul (Finset.Ico a b) f hi (fun r hr => (h r (Finset.mem_Ico.1 hr).1 (Finset.mem_Ico.1 hr).2).2)` as an intermediate fact. Rewrite `this` using `[Nat.card_Ico, nsmul_eq_mul]`. Then use the resulting hypothesis.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sum_Ico_bounds (f : ℕ → ℝ) (a b : ℕ) (lo hi : ℝ) (h : ∀ r, a ≤ r → r < b → lo ≤ f r ∧ f r ≤ hi) :
     ((b - a : ℕ) : ℝ) * lo ≤ ∑ r ∈ Finset.Ico a b, f r ∧ ∑ r ∈ Finset.Ico a b, f r ≤ ((b - a : ℕ) : ℝ) * hi := by
@@ -37,23 +37,23 @@ theorem sum_Ico_bounds (f : ℕ → ℝ) (a b : ℕ) (lo hi : ℝ) (h : ∀ r, a
     rwa [Nat.card_Ico, nsmul_eq_mul] at this
 
 /- English proof (translation)
-Introduce `eps Fm`. Take `⟨x1, h1⟩` from `GlobalTheory.ShNums.size_rel Fm`. Take `⟨x2, h2⟩` from `GlobalTheory.Ggeo.wPl_windows Fm`. Take `⟨x3, h3⟩` from `GlobalTheory.LongRows.longRows Fm`. Take `⟨x4, h4⟩` from `GlobalTheory.TopRows.top_rows Fm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x5, h5⟩` from `GlobalTheory.blockRows_mem_Icc Fm`. Use `⟨max (max (max x1 x2) (max x3 x4)) x5, fun x hx hx1 i u j hj z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [ge_iff_le, max_le_iff] at hx`. Take `⟨⟨⟨g1, g2⟩, g3, g4⟩, g5⟩` from `hx`. Take `⟨a1, a2, a3, -, a5, a6, -, -, a9, -⟩` from `h1 x g1 hx1 i`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, -, b3⟩` from `h2 x g2 hx1 i j hj z`. Take `⟨b3, -⟩` from `b3 hz`. Establish `c` using `h3 x g3 hx1 i u j hj z`. Take `⟨-, -, d3, d4⟩` from `h4 x g4 hx1 i u j hj z hz`. Establish `e` using `h5 x g5 hx1 i u j hj z`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `clear h1 h2 h3 h4 h5`. Generalize the expression as in `Fm.L x i = L at *`. Generalize the expression as in `Fm.D x i = D at *`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hN : D.R.N j = D.R.k + j * (D.R.t + 1)` using `by unfold Ranks.N; omega`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hok` using `nuRowOK D`. Rewrite using `[GlobalTheory.nuD_card_eq_sum_nuRow D hok u j hj z, hok u j hj z 0, if_pos (by omega), hN, sum_range_split _ _ _ (by omega)]`. Take `⟨m1, m2⟩` from `sum_Ico_bounds (DV.nuRow D u (j + 1) (tauPl D z)) 1 (D.R.k - 1) _ _ (fun r hr1 hr2 => let h := (c r (by omega)).2 hz hr1 (by omega); ⟨h.1.le, h.2.le⟩)`. Take `⟨n1, n2⟩` from `sum_Ico_bounds (DV.nuRow D u (j + 1) (tauPl D z)) D.R.k (D.R.k + j * (D.R.t + 1)) _ _ (fun r hr1 hr2 => e r hr1 (by omega))`. Establish `hkc : ((D.R.k - 1 - 1 : ℕ) : ℝ) = (D.R.k : ℝ) - 2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.sub_sub, Nat.cast_sub (by omega)]; norm_num`. Rewrite `m1`, `m2` using `[hkc]`. Rewrite `n1`, `n2` using `[Nat.add_sub_cancel_left]`. Move the coercions through the operations in `at n1 n2`. Establish `hS` using `L.Sc_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `L.etaSz_pos`. Establish `hk' : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`. Establish `hj' : (j : ℝ) ≤ D.R.m` using `by exact_mod_cast hj.le`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hNm : (0 : ℝ) ≤ D.R.N D.R.m` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `hb : 0 < L.sc.b` using `Real.exp_pos _`. Establish `hb' : 0 < L.sc.b'` using `div_pos (mul_pos hx0 hb) (Real.exp_pos _)`. Establish `hq : L.sc.b' / L.sc.x ≤ L.sc.b' / 4` using `div_le_div_of_nonneg_left hb'.le (by norm_num) a6`. Establish `hbl : (j : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz ≤ (D.R.m : ℝ) * ((D.R.t : ℝ) + 1) * L.etaSz` using `by gcongr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS1 : L.Sc ≤ (D.R.k : ℝ) * L.Sc` using `le_mul_of_one_le_left hS.le (by linarith)`. Rewrite `d4` using `[mul_div_assoc]`. Apply the tactic sequence `constructor <;> nlinarith`.
+Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem top_excess : ∀ {eps : ℝ} (Fm : FamP eps), ∃ x0 : ℝ, ∀ x ≥ x0, Fm.x1 < x → ∀ i : Fm.Ix x, ∀ (u : (Fm.D x i).what₂.Word), ∀ j < (Fm.D x i).R.m, ∀ (z : Bool × HH (Fm.D x i)), IsTopPl (Fm.D x i) z → 0 ≤ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) - ((((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z - 2 * wPl (Fm.D x i) (j + 1) z) ∧ (((nuD (Fm.D x i) u j z).card : ℕ) : ℝ) - (((nuD (Fm.D x i) u j z).rowLen 0 : ℕ) : ℝ) - ((((Fm.D x i).R.k : ℝ) - 1) * wPl (Fm.D x i) (j + 1) z - 2 * wPl (Fm.D x i) (j + 1) z) ≤ 4 * wPl (Fm.D x i) (j + 1) z := by
   intro eps Fm

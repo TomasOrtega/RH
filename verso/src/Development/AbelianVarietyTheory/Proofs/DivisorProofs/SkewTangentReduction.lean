@@ -7,20 +7,20 @@ namespace GlobalTheory.SUCongRed
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Unfold `red`. Rewrite using `[dif_pos s.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem red_coe (S : Subring A) (ϖ : A) (s : S) :
     red S ϖ (s : A) = Ideal.Quotient.mk (piIdeal S ϖ) s := by
   unfold red; rw [dif_pos s.2]
 
 /- English proof (translation)
-Establish `hI : piIdeal S ϖ = Ideal.span {(⟨ϖ, hϖ⟩ : S)}`. Unfold `piIdeal`. Use `congr 1`. Use extensionality with `x`. Simplify using `[Subtype.ext_iff]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, he⟩`. Use `⟨⟨t, ht⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show t * ϖ = (s : A)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, pow_one, mul_comm]`. Introduce and unpack `⟨c, hc⟩`. Use `⟨c, c.2, ?_⟩` and prove the remaining obligations. Establish `h2` using `congrArg Subtype.val hc`. Rewrite using `[← h2, pow_one, mul_comm]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem inPow_one_iff (S : Subring A) (ϖ : A) (hϖ : ϖ ∈ S) (s : S) :
     InPow S ϖ 1 (s : A) ↔ Ideal.Quotient.mk (piIdeal S ϖ) s = 0 := by
@@ -41,31 +41,27 @@ end GlobalTheory.SUCongRed
 
 open GlobalTheory.SUCongRed in
 /- English proof (translation)
-Introduce `hϖ hσ hH hτ`. Use `set π := Ideal.Quotient.mk (piIdeal S ϖ) with hπ`. Set `σS : S →+* S` to `(σ.comp S.subtype).codRestrict S (fun x => hσ x x.2)`. Set `Hs : Matrix n n S` to `fun i j => ⟨H i j, hH i j⟩`. Establish `hHs : H = Hs.map S.subtype` using `by ext i j; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHr : H.map (red S ϖ) = Hs.map π`. Use extensionality with `i j`. Conclude with `red_coe S ϖ (Hs i j)`. Establish `hτS : ∀ s : S, τ (π s) = π (σS s)`. Introduce `s`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hτ s s.2` as an intermediate fact. Rewrite `this` using `[red_coe]`. Rewrite using `[this, ← red_coe]`. Both sides reduce to the same expression. Establish `core : ∀ Xs : Matrix n n S, ((∀ i j, InPow S ϖ 1 ((Formalism.UG.cT σ (Xs.map S.subtype) * H + H * Xs.map S.subtype) i j)) ∧ InPow S ϖ 1 (Xs.map S.subtype).trace) ↔ (Formalism.UG.cT τ (Xs.map π) * H.map (red S ϖ) + H.map (red S ϖ) * Xs.map π = 0 ∧ (Xs.map π).trace = 0)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `Xs`. Use `set Z : Matrix n n S := Formalism.UG.cT σS Xs * Hs + Hs * Xs with hZ`. Establish `e1 : Formalism.UG.cT σ (Xs.map S.subtype) * H + H * Xs.map S.subtype = Z.map S.subtype`. Establish `: Z.map S.subtype = S.subtype.mapMatrix Z` using `rfl`. Rewrite using `[this, hZ, map_add, map_mul, map_mul, hHs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e2 : Formalism.UG.cT τ (Xs.map π) * H.map (red S ϖ) + H.map (red S ϖ) * Xs.map π = Z.map π`. Establish `: Z.map π = π.mapMatrix Z` using `rfl`. Rewrite using `[this, hZ, map_add, map_mul, map_mul, hHr]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `hτS (Xs j i)`. Establish `t1 : (Xs.map S.subtype).trace = ((Xs.trace : S) : A)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(map_sum S.subtype _ _).symm`. Establish `t2 : (Xs.map π).trace = π Xs.trace`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.map_apply]`. Conclude with `(map_sum π _ _).symm`. Rewrite using `[e1, e2, t1, t2, inPow_one_iff S ϖ hϖ]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `and_congr ?_ Iff.rfl` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `i j`. Conclude with `(inPow_one_iff S ϖ hϖ _).1 (h i j)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h i j`. Conclude with `(inPow_one_iff S ϖ hϖ _).2 (congrFun (congrFun h i) j)`. Use extensionality with `Y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨X, hX, hY, hsk, htr⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `Xs : Matrix n n S` to `fun i j => ⟨X i j, hX i j⟩`. Establish `hXs : X = Xs.map S.subtype` using `by ext i j; rfl`. Establish `hYX : Y = Xs.map π`. Use extensionality with `i j`. Rewrite using `[hY i j]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `red_coe S ϖ (Xs i j)`. Rewrite `hsk`, `htr` using `[hXs]`. Rewrite using `[hYX]`. Conclude with `(core Xs).1 ⟨hsk, htr⟩`. Introduce and unpack `⟨h1, h2⟩ choose Xs hXs using fun i j => Ideal.Quotient.mk_surjective (I := piIdeal S ϖ) (Y i j)`.
-
-Establish `hYX : Y = (Matrix.of Xs).map π` using `by ext i j; exact (hXs i j).symm`. Rewrite `h1`, `h2` using `[hYX]`. Take `⟨c1, c2⟩` from `(core (Matrix.of Xs)).2 ⟨h1, h2⟩`. Use `⟨(Matrix.of Xs).map S.subtype, fun i j => (Xs i j).2, fun i j => ?_, c1, c2⟩` and prove the remaining obligations. Rewrite using `[← hXs i j]`.
-
-Conclude with `(red_coe S ϖ (Xs i j)).symm`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SUCong.skewTr_eq_reduced {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
     (S : Subring A) (σ : A →+* A) (H : Matrix n n A) (ϖ : A) (τ : Res S ϖ →+* Res S ϖ) :

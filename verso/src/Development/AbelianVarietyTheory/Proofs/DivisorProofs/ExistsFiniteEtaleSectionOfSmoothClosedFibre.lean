@@ -13,11 +13,11 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR U hU O hO`. Take `⟨k', _, _, _, _, x, hx, hxO⟩` from `GlobalTheory.T.exists_separable_point_smooth_localRing_open R U hU O hO`. Take `⟨R', _, _, _, ρ, σ, hF, hE, hσ⟩` from `GlobalTheory.T.exists_finiteEtale_local_ext_residueField_separable R hR k'`. Establish `hN : IsNoetherianRing R'` using `hF.1.1`. Establish `hc : IsAdicComplete (maximalIdeal R') R'` using `hF.1.2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀ : (spMap σ ≫ x) ≫ U.hom = spMap ((residue R').comp ρ)`. Rewrite using `[Category.assoc, hx, ← hσ, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hr : Set.range (spMap σ ≫ x) ⊆ O`. Introduce and unpack `_ ⟨p, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hxO ⟨_, rfl⟩`. Take `⟨a, ha, haO⟩` from `GlobalTheory.T.exists_lift_residueFieldPoint_smooth_completeLocal R R' hc ρ U hU (spMap σ ≫ x) hx₀ O hr`. Conclude with `⟨R', _, inferInstance, inferInstance, ρ, a, hF, hE, ha, haO⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_finEtale_section_of_smooth : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (U : Over (Sp R)), Smooth U.hom → ∀ O : U.left.Opens, (∃ u ∈ O, U.hom u = closedPoint R) → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (a : Sp R' ⟶ U.left), FinExt ρ ∧ ρ.Etale ∧ a ≫ U.hom = spMap ρ ∧ Set.range a ⊆ O := by
   intro R _ _ _ hR U hU O hO

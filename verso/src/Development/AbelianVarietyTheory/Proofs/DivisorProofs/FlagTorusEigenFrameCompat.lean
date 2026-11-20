@@ -17,9 +17,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ShFam.Cell
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ V hV φV f₀ w i K K' _ _ em ψ a h`. Establish `hsp : ∀ {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R →+* R') (g : R' →+* R''), spMap (g.comp f) = spMap g ≫ spMap f`. Introduce `R R' R'' _ _ _ f g`. Apply the tactic sequence `first | rfl | (simp [spMap]) | (exact Spec.map_comp _ _)`. Take `⟨g, hg, p, hp, y, ψ', φ₁, f, t₀, t', hpy, hf0, hfg⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g', hg'⟩` from `exists_frameIn hV f₀ w (em.comp ψ) rfl (em ∘ a)`. Take `⟨t, ht⟩` from `GlobalTheory.T.eigen_frame_weyl_permutation hV f₀ w em ψ rfl rfl g g' a hg hg'`. Use `⟨g', hg', spMap em ≫ p, ?_, y, em.comp ψ', φ₁, f, t₀, _, ?_, hf0, GlobalTheory.T.eigen_frame_composition f g g' ψ' em t' t hfg ht⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hp, hsp, Category.assoc]`. Rewrite using `[hpy, hsp, Category.assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lands_map : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β} {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}, ∀ (Φ : FlagTor Z e U) {V : (gen Z).Opens} (hV : IsAffineOpen V) {φV : c.F →+* Γ(gen Z, V)} (f₀ : EigFrame Z φV (hV.fromSpec ≫ genι Z)) (w : ∀ τ : E →+* ℂ, Equiv.Perm (Fin (Dw.mult τ))) (i : U.Comp) {K K' : Type} [Field K] [Field K'] (em : K →+* K') (ψ : Γ(gen Z, V) →+* K) (a : Cell.Coord Dw → K), Cell.Lands Φ hV f₀ w i ψ a → Cell.Lands Φ hV f₀ w i (em.comp ψ) (em ∘ a) := by
   intro E _ _ _ H Dw l Xo c O _ β Z F _ e σ N U Φ V hV φV f₀ w i K K' _ _ em ψ a h

@@ -11,7 +11,7 @@ universe u
 variable {X Y Z : Scheme.{u}}
 
 /- English proof (translation)
-Establish `: Epi (Scheme.Γ.rightOp.map p)`. Use `ΓSpec.adjunction.isLeftAdjoint` as an intermediate fact. Use `inferInstance`. Establish `: Mono p.appTop` using `inferInstanceAs (Mono (Scheme.Γ.rightOp.map p).unop)`. Conclude with `ConcreteCategory.injective_of_mono_of_preservesPullback p.appTop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_appTop_of_epi (p : Y ⟶ X) [Epi p] : Function.Injective p.appTop := by
   have : Epi (Scheme.Γ.rightOp.map p) :=
@@ -21,11 +21,11 @@ theorem injective_appTop_of_epi (p : Y ⟶ X) [Epi p] : Function.Injective p.app
   exact ConcreteCategory.injective_of_mono_of_preservesPullback p.appTop
 
 /- English proof (translation)
-Set `E` to `RingHom.eqLocus f.appTop.hom g.appTop.hom`. Set `ι : CommRingCat.of E ⟶ Γ(Y, ⊤)` to `CommRingCat.ofHom E.subtype`. Establish `hι : ι ≫ f.appTop = ι ≫ g.appTop`. Use extensionality with `x`. Conclude with `x.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `: HasPullback p p` using `inferInstance`. Take `⟨u, hu⟩` from `IsRegularEpi.exists_of_isKernelPair p h (Y.toSpecΓ ≫ Spec.map ι) (by`. Rewrite using `[Scheme.toSpecΓ_naturality_assoc, Scheme.toSpecΓ_naturality_assoc, ← Spec.map_comp, ← Spec.map_comp, hι])`. Use `⟨u.appTop ((Scheme.ΓSpecIso (.of E)).inv ⟨s, hs⟩), ?_⟩` and prove the remaining obligations. Establish `h1 : (Scheme.ΓSpecIso (.of E)).inv ≫ u.appTop ≫ p.appTop = ι`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_appTop, hu, Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc]`. Simplify using the standard rewrite rules. Conclude with `congr($h1 ⟨s, hs⟩)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_appTop_eq_of_effectiveEpi (p : Y ⟶ X) [EffectiveEpi p] {f g : Z ⟶ Y}
     (h : IsPullback f g p p) (s : Γ(Y, ⊤)) (hs : f.appTop s = g.appTop s) :
@@ -47,7 +47,7 @@ theorem exists_appTop_eq_of_effectiveEpi (p : Y ⟶ X) [EffectiveEpi p] {f g : Z
   exact congr($h1 ⟨s, hs⟩)
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← CommRingCat.comp_apply, ← Scheme.Hom.comp_appTop, ← Scheme.Hom.comp_appTop, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appTop_appTop_eq {p : Y ⟶ X} {f g : Z ⟶ Y} (h : f ≫ p = g ≫ p) (a : Γ(X, ⊤)) :
     f.appTop (p.appTop a) = g.appTop (p.appTop a) := by
@@ -55,7 +55,7 @@ theorem appTop_appTop_eq {p : Y ⟶ X} {f g : Z ⟶ Y} (h : f ≫ p = g ≫ p) (
     ← Scheme.Hom.comp_appTop, h]
 
 /- English proof (translation)
-Use `⟨?_, fun hs => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl, -⟩`. Conclude with `appTop_appTop_eq h.w a`. Take `⟨a, ha⟩` from `exists_appTop_eq_of_effectiveEpi p h s hs`. Conclude with `⟨a, ha, fun b hb => injective_appTop_of_epi p (hb.trans ha.symm)⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem existsUnique_appTop_eq_iff (p : Y ⟶ X) [EffectiveEpi p] {f g : Z ⟶ Y}
     (h : IsPullback f g p p) (s : Γ(Y, ⊤)) :
@@ -67,9 +67,9 @@ theorem existsUnique_appTop_eq_iff (p : Y ⟶ X) [EffectiveEpi p] {f g : Z ⟶ Y
     exact ⟨a, ha, fun b hb => injective_appTop_of_epi p (hb.trans ha.symm)⟩
 
 /- English proof (translation)
-Use `⟨fun ha => ?_, fun ha => ha.map p.appTop.hom⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `ha.exists_right_inv`. Establish `h` using `IsPullback.of_hasPullback p p`. Take `⟨b, rfl⟩` from `exists_appTop_eq_of_effectiveEpi p h t (by`. Establish `h1` using `congrArg (pullback.fst p p).appTop.hom ht`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (pullback.snd p p).appTop.hom ht`. Rewrite `h1`, `h2` using `[map_mul, map_one]`. Rewrite `h1` using `[appTop_appTop_eq h.w a]`. Conclude with `left_inv_eq_right_inv ((mul_comm _ _).trans h1) h2)`. Conclude with `IsUnit.of_mul_eq_one b (injective_appTop_of_epi p (by rw [map_mul, ht, map_one]))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_appTop_iff (p : Y ⟶ X) [EffectiveEpi p] (a : Γ(X, ⊤)) :
     IsUnit (p.appTop a) ↔ IsUnit a := by
@@ -85,9 +85,9 @@ theorem isUnit_appTop_iff (p : Y ⟶ X) [EffectiveEpi p] (a : Γ(X, ⊤)) :
   exact IsUnit.of_mul_eq_one b (injective_appTop_of_epi p (by rw [map_mul, ht, map_one]))
 
 /- English proof (translation)
-Use `⟨?_, fun hs => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, rfl, -⟩`. Conclude with `Units.ext (appTop_appTop_eq h.w a)`. Take `⟨a, ha⟩` from `exists_appTop_eq_of_effectiveEpi p h s (congrArg Units.val hs)`. Take `⟨a, rfl⟩` from `(isUnit_appTop_iff p a).1 (ha ▸ s.isUnit)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, Units.ext ha, fun b hb => Units.ext <| injective_appTop_of_epi p ((congrArg Units.val hb).trans ha.symm)⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_units_appTop_eq_iff (p : Y ⟶ X) [EffectiveEpi p] {f g : Z ⟶ Y}
     (h : IsPullback f g p p) (s : Γ(Y, ⊤)ˣ) :
@@ -104,13 +104,13 @@ theorem existsUnique_units_appTop_eq_iff (p : Y ⟶ X) [EffectiveEpi p] {f g : Z
 section Opens
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `hc : ∀ s : PullbackCone (p ∣_ U) (p ∣_ U), (s.fst ≫ (p ⁻¹ᵁ U).ι) ≫ p = (s.snd ≫ (p ⁻¹ᵁ U).ι) ≫ p` using `fun s => by`. Rewrite using `[Category.assoc, Category.assoc, ← morphismRestrict_ι, s.condition_assoc]`. Establish `hr : ∀ s : PullbackCone (p ∣_ U) (p ∣_ U), Set.range (h.lift _ _ (hc s)) ⊆ Set.range (f ⁻¹ᵁ p ⁻¹ᵁ U).ι` using `fun s => by`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `f (h.lift _ _ _ x) ∈ p ⁻¹ᵁ U`. Rewrite using `[← Scheme.Hom.comp_apply, h.lift_fst, Scheme.Hom.comp_apply]`. Conclude with `(s.fst x).2`. Use `⟨⟨?_⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => IsOpenImmersion.lift (f ⁻¹ᵁ p ⁻¹ᵁ U).ι (h.lift _ _ (hc s)) (hr s)) (fun s => ?_) (fun s => ?_) (fun s m h₁ h₂ => ?_)⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono U.ι]`. Simplify using `[morphismRestrict_ι, Scheme.Hom.resLE_comp_ι_assoc, h.w]`. Rewrite using `[← cancel_mono (p ⁻¹ᵁ U).ι]`. Simplify using the standard rewrite rules. Rewrite using `[← cancel_mono (p ⁻¹ᵁ U).ι]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← cancel_mono (f ⁻¹ᵁ p ⁻¹ᵁ U).ι, IsOpenImmersion.lift_fac]`. Use `h.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using `[← h₁]`. Simplify using `[← h₂]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPullback_resLE {p : Y ⟶ X} {f g : Z ⟶ Y} (h : IsPullback f g p p) (U : X.Opens)
     (W : Z.Opens) (hW : W = f ⁻¹ᵁ p ⁻¹ᵁ U) (hf : W ≤ f ⁻¹ᵁ p ⁻¹ᵁ U) (hg : W ≤ g ⁻¹ᵁ p ⁻¹ᵁ U) :
@@ -140,7 +140,7 @@ theorem isPullback_resLE {p : Y ⟶ X} {f g : Z ⟶ Y} (h : IsPullback f g p p) 
     · simp [← h₂]
 
 /- English proof (translation)
-Establish `: V.topIso.inv ≫ (f.resLE V W e).appTop = f.appLE V W e ≫ W.topIso.inv`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.resLE_app_top, Iso.inv_hom_id_assoc]`. Conclude with `congr($this s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_resLE_apply (f : Z ⟶ Y) (V : Y.Opens) (W : Z.Opens) (e : W ≤ f ⁻¹ᵁ V)
     (s : Γ(Y, V)) : (f.resLE V W e).appTop (V.topIso.inv s) = W.topIso.inv (f.appLE V W e s) := by
@@ -149,14 +149,14 @@ theorem appTop_resLE_apply (f : Z ⟶ Y) (V : Y.Opens) (W : Z.Opens) (e : W ≤ 
   exact congr($this s)
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.resLE_eq_morphismRestrict, appTop_resLE_apply, Scheme.Hom.appLE_eq_app]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appTop_morphismRestrict_apply (p : Y ⟶ X) (U : X.Opens) (a : Γ(X, U)) :
     (p ∣_ U).appTop (U.topIso.inv a) = (p ⁻¹ᵁ U).topIso.inv (p.app U a) := by
   rw [← Scheme.Hom.resLE_eq_morphismRestrict, appTop_resLE_apply, Scheme.Hom.appLE_eq_app]
 
 /- English proof (translation)
-Establish `: Flat (p ∣_ U)` using `MorphismProperty.of_isPullback (isPullback_morphismRestrict p U).flip ‹_›`. Establish `: Surjective (p ∣_ U)` using `MorphismProperty.of_isPullback (isPullback_morphismRestrict p U).flip ‹_›`. Establish `: QuasiCompact (p ∣_ U)` using `MorphismProperty.of_isPullback (isPullback_morphismRestrict p U).flip ‹_›`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem effectiveEpi_morphismRestrict (p : Y ⟶ X) [Flat p] [Surjective p] [QuasiCompact p]
     (U : X.Opens) : EffectiveEpi (p ∣_ U) := by
@@ -169,7 +169,7 @@ theorem effectiveEpi_morphismRestrict (p : Y ⟶ X) [Flat p] [Surjective p] [Qua
   infer_instance
 
 /- English proof (translation)
-Use `effectiveEpi_morphismRestrict p U` as an intermediate fact. Establish `hb : ∀ {T : Scheme.{u}} (V : T.Opens), Function.Bijective V.topIso.inv` using `fun V => ConcreteCategory.bijective_of_isIso _`. Rewrite using `[← (hb W).1.eq_iff, ← appTop_resLE_apply, ← appTop_resLE_apply, ← existsUnique_appTop_eq_iff (p ∣_ U) (isPullback_resLE h U W hW hf hg), ← (Equiv.ofBijective _ (hb U)).existsUnique_congr_right]`. Simplify using `only [Equiv.ofBijective_apply, appTop_morphismRestrict_apply, (hb _).1.eq_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem existsUnique_app_eq_iff (p : Y ⟶ X) [Flat p] [Surjective p] [QuasiCompact p]
     {f g : Z ⟶ Y} (h : IsPullback f g p p) (U : X.Opens) (W : Z.Opens) (hW : W = f ⁻¹ᵁ p ⁻¹ᵁ U)
@@ -184,7 +184,7 @@ theorem existsUnique_app_eq_iff (p : Y ⟶ X) [Flat p] [Surjective p] [QuasiComp
   simp only [Equiv.ofBijective_apply, appTop_morphismRestrict_apply, (hb _).1.eq_iff]
 
 /- English proof (translation)
-Use `effectiveEpi_morphismRestrict p U` as an intermediate fact. Rewrite using `[← isUnit_map_iff (p ⁻¹ᵁ U).topIso.inv.hom, ← appTop_morphismRestrict_apply, isUnit_appTop_iff, isUnit_map_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUnit_app_iff (p : Y ⟶ X) [Flat p] [Surjective p] [QuasiCompact p] (U : X.Opens)
     (a : Γ(X, U)) : IsUnit (p.app U a) ↔ IsUnit a := by

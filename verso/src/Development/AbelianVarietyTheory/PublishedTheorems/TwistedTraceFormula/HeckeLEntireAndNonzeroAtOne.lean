@@ -37,7 +37,7 @@ namespace GlobalTheory.HeckeOne
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `lt_of_le_of_ne ?_ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_ne_zero x).symm` and prove the remaining obligations. Conclude with `mul_nonneg (Finset.prod_nonneg fun v _ => pow_nonneg (norm_nonneg _) _) (finprod_nonneg fun v => norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ideleNorm_pos (x : Ideles K) : 0 < ideleNorm x := by
   refine lt_of_le_of_ne ?_ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleNorm_ne_zero x).symm
@@ -45,7 +45,7 @@ theorem ideleNorm_pos (x : Ideles K) : 0 < ideleNorm x := by
     (finprod_nonneg fun v => norm_nonneg _)
 
 /- English proof (translation)
-Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast (ideleNorm_pos x).ne'), Circle.coe_exp, ← Complex.ofReal_log (ideleNorm_pos x).le]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cpow_eq_exp (x : Ideles K) (t : ℝ) :
     ((ideleNorm x : ℝ) : ℂ) ^ ((t : ℂ) * Complex.I) =
@@ -78,7 +78,7 @@ theorem normChar_apply (t : ℝ) (x : Ideles K) :
     (((normChar K t).1 x : ℂˣ) : ℂ) = ((Circle.exp (t * Real.log (ideleNorm x)) : Circle) : ℂ) := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `Subtype.ext (MonoidHom.ext fun x => Units.ext (by rw [h x, cpow_eq_exp, normChar_apply]))`. Introduce and unpack `rfl x`. Rewrite using `[cpow_eq_exp, normChar_apply]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNormPow_iff (χ : HChar K) (t : ℝ) : IsNormPow χ t ↔ χ = normChar K t := by
   constructor
@@ -88,23 +88,23 @@ theorem isNormPow_iff (χ : HChar K) (t : ℝ) : IsNormPow χ t ↔ χ = normCha
     rw [cpow_eq_exp, normChar_apply]
 
 /- English proof (translation)
-Introduce `x` and use `by rw [normChar_apply]; exact Circle.norm_coe _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnitary_normChar (t : ℝ) : (normChar K t).IsUnitary := fun x => by
   rw [normChar_apply]; exact Circle.norm_coe _
 
 /- English proof (translation)
-Introduce `x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isNormPow_one : IsNormPow (1 : HChar K) 0 := fun x => by simp
 
 /- English proof (translation)
-The claim follows from `((isNormPow_iff _ _).1 isNormPow_one).symm`.
+A detailed English derivation is pending.
 -/
 theorem normChar_zero : normChar K 0 = 1 := ((isNormPow_iff _ _).1 isNormPow_one).symm
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (MonoidHom.ext fun x => Units.ext (by change _ = (((normChar K s).1 x : ℂˣ) : ℂ) * (((normChar K t).1 x : ℂˣ) : ℂ) rw [normChar_apply, normChar_apply, normChar_apply, add_mul, Circle.exp_add, Circle.coe_mul]))`.
+A detailed English derivation is pending.
 -/
 theorem normChar_add (s t : ℝ) : normChar K (s + t) = normChar K s * normChar K t :=
   Subtype.ext (MonoidHom.ext fun x => Units.ext (by
@@ -112,7 +112,7 @@ theorem normChar_add (s t : ℝ) : normChar K (s + t) = normChar K s * normChar 
     rw [normChar_apply, normChar_apply, normChar_apply, add_mul, Circle.exp_add, Circle.coe_mul]))
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.ideleNorm_localIdele]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ideleNorm_localIdele (v : HeightOneSpectrum (𝓞 K)) (u : (v.adicCompletion K)ˣ) :
     ideleNorm (Neutral.B1.localIdele K v u) = ‖(u : v.adicCompletion K)‖ := by
@@ -120,7 +120,7 @@ theorem ideleNorm_localIdele (v : HeightOneSpectrum (𝓞 K)) (u : (v.adicComple
   rfl
 
 /- English proof (translation)
-Introduce `u hu` and use `by apply Units.ext change (((normChar K t).1 (Neutral.B1.localIdele K v u) : ℂˣ) : ℂ) = _ rw [normChar_apply, ideleNorm_localIdele, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.norm_eq_one_of_valued hu] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unrAt_normChar (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) : (normChar K t).UnrAt v := fun u hu => by
   apply Units.ext
@@ -129,15 +129,15 @@ theorem unrAt_normChar (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) : (normChar K 
   simp
 
 /- English proof (translation)
-Introduce `⟨t, ht⟩` and use `h ((isNormPow_iff χ t).1 ht ▸ unrAt_normChar t v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isNormPow_of_not_unrAt {χ : HChar K} {v : HeightOneSpectrum (𝓞 K)} (h : ¬ χ.UnrAt v) :
     ¬ ∃ t : ℝ, IsNormPow χ t := fun ⟨t, ht⟩ => h ((isNormPow_iff χ t).1 ht ▸ unrAt_normChar t v)
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt_eq _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_isUnramifiedAt t v) (Formalism.L2.Host.unif_spec v)`. Rewrite `h` using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_valueAt]`. Establish `hN` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Rewrite using `[Complex.cpow_def_of_ne_zero (by exact_mod_cast (by omega : Ideal.absNorm v.asIdeal ≠ 0)), ← Complex.natCast_log]`. Use `Eq.trans h.symm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem val_normChar (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) :
     (((normChar K t).val v : ℂˣ) : ℂ) = ((Ideal.absNorm v.asIdeal : ℕ) : ℂ) ^ (-((t : ℂ) * Complex.I)) := by
@@ -153,9 +153,9 @@ theorem val_normChar (t : ℝ) (v : HeightOneSpectrum (𝓞 K)) :
   ring
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 K)`. Set `v : HeightOneSpectrum (𝓞 K)` to `⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField K)⟩`. Take `⟨t, ht⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.exists_normPow_valueAt_eq_neg_one v`. Use `⟨t, fun h => ?_⟩` and prove the remaining obligations. Rewrite `ht` using `[GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.valueAt_eq _ (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.UnitaryHeckeChar.normPow_isUnramifiedAt t v) (Formalism.L2.Host.unif_spec v)]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (((normChar K t).val v : ℂˣ) : ℂ) = -1` using `ht`. Rewrite `h2` using `[h]`. Establish `h3 : (1 : ℂ) = -1` using `h2`. Evaluate the numerical expressions using `at h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Evaluate the numerical expressions.
 -/
 theorem exists_normChar_ne_one : ∃ t : ℝ, normChar K t ≠ 1 := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 K)
@@ -171,13 +171,13 @@ theorem exists_normChar_ne_one : ∃ t : ℝ, normChar K t ≠ 1 := by
   norm_num at h3
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.analyticAt 1, h.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem isContAtOne_of_isHeckeL {χ : HChar K} {Λ : ℂ → ℂ} (h : IsHeckeL χ Λ) : IsContAtOne χ Λ :=
   ⟨h.1.analyticAt 1, h.2⟩
 
 /- English proof (translation)
-Establish `hc : Tendsto (fun x : ℝ => (x : ℂ)) (𝓝[>] 1) (𝓝 1)` using `(Complex.continuous_ofReal.tendsto' 1 1 (by simp)).mono_left nhdsWithin_le_nhds`. Use `tendsto_nhds_unique_of_eventuallyEq (h.1.continuousAt.tendsto.comp hc) (h'.1.continuousAt.tendsto.comp hc) ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Conclude with `(h.2 x hx).unique (h'.2 x hx)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsContAtOne.apply_one_eq {χ : HChar K} {Λ Λ' : ℂ → ℂ} (h : IsContAtOne χ Λ) (h' : IsContAtOne χ Λ') :
     Λ 1 = Λ' 1 := by
@@ -189,7 +189,7 @@ theorem IsContAtOne.apply_one_eq {χ : HChar K} {Λ Λ' : ℂ → ℂ} (h : IsCo
   exact (h.2 x hx).unique (h'.2 x hx)
 
 /- English proof (translation)
-Take `⟨Λ, hΛ⟩` from `(H K χ hu).1 hχ`. Take `⟨Λ', h', h0⟩` from `(H K χ hu).2 fun h => hχ ⟨0, h ▸ isNormPow_one⟩`. Conclude with `⟨Λ, hΛ, (isContAtOne_of_isHeckeL hΛ).apply_one_eq h' ▸ h0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_entire_ne_zero (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) {χ : HChar K} (hu : χ.IsUnitary)
     (hχ : ¬ ∃ t : ℝ, IsNormPow χ t) : ∃ Λ : ℂ → ℂ, IsHeckeL χ Λ ∧ Λ 1 ≠ 0 := by

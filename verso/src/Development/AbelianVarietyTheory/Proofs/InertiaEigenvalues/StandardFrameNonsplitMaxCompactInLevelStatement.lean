@@ -14,7 +14,7 @@ open ReciprocityTheory.Aut Formalism.AUTREP
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.NonSplitLevel.lift_level` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FStandardFrameNonsplitMaxCompactInLevel.lean&line=103#L103)
 -/

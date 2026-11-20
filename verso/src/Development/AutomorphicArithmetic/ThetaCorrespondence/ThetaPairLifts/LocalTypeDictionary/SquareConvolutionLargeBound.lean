@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 noncomputable section
 namespace GlobalTheory.SquareConv
 /- English proof (translation)
-Introduce `_ _ hWC _ _`. Use `⟨0, fun ε CF _ => ⟨(12:ℝ) ^ (5/ε), fun D large₂ he hx Γ _ _ Pl0 T A Ks _ _ _ R F hS ch hch hsc => ?_⟩⟩` and prove the remaining obligations. Introduce `i j t M hM Θ Θ' hΘ g g₁`. Establish `hst : SquareStanding ch.G t` using `standing hS (splitBound_ge he hx) ch.G t`. Conclude with `GlobalTheory.T.bigRoute_kernel_integrableOn_unitary_quotient hWC hS.core.lev ch.W ch.S.B ch.rm t i j (GlobalTheory.T.squareThetaTripleHypotheses_of_standing hS.core.lev ch.W t i j hst) M hM Θ Θ' hΘ g₁ g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem square_convolution_large_bound : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     IntegrableOn (kerBig ch.W Θ g g₁) (M.fd _) (M.ν _) := by
@@ -31,7 +31,7 @@ open GlobalTheory.SplitFlip GlobalTheory.SplitWeil GlobalTheory.StdFrames
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField borelKw borelSpaceKw
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.SquareConv.square_convolution_large_bound | exact _root_.GlobalTheory.SquareConv.square_convolution_large_bound | (intros; apply _root_.GlobalTheory.SquareConv.square_convolution_large_bound <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.square_convolution_estimate : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     IntegrableOn (kerBig ch.W Θ g g₁) (M.fd _) (M.ν _) := by

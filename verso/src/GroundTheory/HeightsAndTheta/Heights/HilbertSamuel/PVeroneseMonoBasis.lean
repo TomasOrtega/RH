@@ -14,13 +14,13 @@ noncomputable section
 namespace VeroneseMonoBasis
 
 /- English proof (translation)
-Rewrite using `[SectionsRank.sec_eq_span, SectionsRank.sec_eq_span, VeroneseGenDeg.range_alt, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_x_eq (D n : ℕ) : sec ℤ (Veronese.x D) n = sec ℤ (Veronese.t D) (2 * n) := by
   rw [SectionsRank.sec_eq_span, SectionsRank.sec_eq_span, VeroneseGenDeg.range_alt, ← pow_mul]
 
 /- English proof (translation)
-Rewrite using `[sec_x_eq]`. Use `Submodule.mem_map.mpr ⟨monoZ (adtEnum D (2 * n) k), (mem_homogeneousSubmodule _ _).mpr (monoZ_isHomogeneous (adtEnum_sum D (2 * n) k)), ?_⟩` and prove the remaining obligations. Rewrite using `[AlgHom.toLinearMap_apply, aeval_monoZ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mono_mem_sec (D n : ℕ) (k : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card) :
     (∏ i, Veronese.t D i ^ adtEnum D (2 * n) k i) ∈ sec ℤ (Veronese.x D) n := by
@@ -30,11 +30,11 @@ theorem mono_mem_sec (D n : ℕ) (k : Fin (Finset.Nat.antidiagonalTuple (D + 1) 
   rw [AlgHom.toLinearMap_apply, aeval_monoZ]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `u hu l`. Use `set p : MvPolynomial (Fin (D + 1)) ℤ := ∑ k, u k • monoZ (adtEnum D N k) with hp`. Establish `hpa : aeval (Veronese.t D) p = aeval (Veronese.t D) (0 : MvPolynomial (Fin (D + 1)) ℤ)`. Rewrite using `[hp, map_sum, map_zero, ← hu]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, aeval_monoZ]`. Establish `hp0` using `VeroneseGenDeg.aeval_t_injective D hpa`. Establish `hc` using `congrArg (coeff (Finsupp.equivFunOnFinite.symm (adtEnum D N l))) hp0`. Rewrite `hc` using `[hp, coeff_sum, coeff_zero, Finset.sum_eq_single l (fun k _ hkl => ?_) (by simp)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hc` using `[coeff_smul, monoZ, coeff_monomial, if_pos rfl, smul_eq_mul, mul_one]`. Then use the resulting hypothesis. Rewrite using `[coeff_smul, monoZ, coeff_monomial, if_neg, smul_zero]`. Introduce `hE`. Conclude with `hkl (adtEnum_injective D N (by simpa using hE))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linearIndependent_mono (D N : ℕ) :
     LinearIndependent ℤ (fun k : Fin (Finset.Nat.antidiagonalTuple (D + 1) N).card =>
@@ -60,15 +60,13 @@ end VeroneseMonoBasis
 open VeroneseMonoBasis in
 
 /- English proof (translation)
-Introduce `D n`. Establish `hex : ∀ k : Fin (Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).card, ∃ f : MvPolynomial (Ix (Veronese.Idx D)) ℤ, f.IsHomogeneous n ∧ aeval (Veronese.x D) f = ∏ i, Veronese.t D i ^ adtEnum D (2 * n) k i` using `fun k => by`. Take `⟨f, hf, hfx⟩` from `Submodule.mem_map.mp (mono_mem_sec D n k)`. Conclude with `⟨f, (mem_homogeneousSubmodule _ _).mp hf, hfx⟩`. Use `choose f hf hfx using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hb : ∀ k, aeval (Veronese.x D) (map (Int.castRingHom ℚ) (f k)) = ∏ i, Veronese.t D i ^ adtEnum D (2 * n) k i` using `fun k => by`. Rewrite using `[aeval_map_intQ, hfx]`. Use `⟨fun k => map (Int.castRingHom ℚ) (f k), ⟨fun k => ⟨f k, hf k, rfl⟩, ?_, ?_⟩, hb⟩` and prove the remaining obligations. Simplify using `only [hb]`. Conclude with `linearIndependent_mono D (2 * n)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hb]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `mono_mem_sec D n k`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sec_x_eq]`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Rewrite using `[AlgHom.toLinearMap_apply, aeval_eq_sum_adt _ ((mem_homogeneousSubmodule _ _).mp hg)]`. Use `Submodule.sum_mem _ fun a ha => ?_` and prove the remaining obligations. Establish `hai : adtEnum D (2 * n) ((Finset.Nat.antidiagonalTuple (D + 1) (2 * n)).equivFin ⟨a, ha⟩) = a`.
-
-Simplify using `[adtEnum]`. Rewrite using `[← zsmul_eq_mul, ← hai]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VeroneseMonoBasis.proof : VeroneseMonoBasis.Statement := by
   intro D n

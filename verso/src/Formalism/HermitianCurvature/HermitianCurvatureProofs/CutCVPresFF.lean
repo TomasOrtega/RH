@@ -9,13 +9,11 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : {g : Q.Mx k r | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧ ∀ a : Fin r, Formalism.QuantumDeterminants.Dmin k r z z' g ⟨(a : ℕ) + 1, by omega⟩ ≠ 0} = {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g} ∩ ⋂ a : Fin r, {g | Formalism.QuantumDeterminants.Dmin k r z z' g …`. Use extensionality with `g`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_lt continuous_const (Formalism.FourierDecayAlt.P.Ux8.cont_Gf k r z z')).inter (isOpen_iInter_of_finite fun a => isOpen_ne_fun (Formalism.FourierDecayAlt.P.Ux8.cont_Dmin k r z z' _) continuous_const)`. Introduce and unpack `g ⟨-, hg⟩ s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Establish `hs : h * m ∈ Sset k r z` using `⟨h, hh, m, hm.1, rfl⟩`. Establish `hs' : h' * m' ∈ Sset k r z'` using `⟨h', hh', m', hm'.1, rfl⟩`. Establish `hD : ∀ l, Dmin k r z z' (h * m * g * (h' * m')) l = Dmin k r z z' g l` using `fun l => dInv k r z z' hz hz' _ hs _ hs' g l`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun a => by rw [hD]; exact hg.2 a⟩` and prove the remaining obligations. Establish `e : Gf k r z z' (h * m * g * (h' * m')) = Gf k r z z' g`. Unfold `Gf`. Rewrite using `[hD, hD]`. Rewrite using `[e]`.
-
-Conclude with `hg.1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDom_omP {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z') :
     Q.IsDom k r z z' 0 {g | 0 < Formalism.QuantumDeterminants.Gf k r z z' g ∧
@@ -42,9 +40,9 @@ theorem isDom_omP {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k 
     exact hg.1
 
 /- English proof (translation)
-Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top A₀ _ v J hJ Y s`. Establish `hz` using `(T v).base.z_mem`. Establish `hz'` using `(T v).base.z'_mem`. Establish `hD : Q.IsDom S.G.k S.G.r (T v).base.z (T v).base.z' 0 (OmP S T v)` using `isDom_omP hz hz'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : Q.CV S.G.k S.G.r (Y : ℂ) J ∈ Q.FFl S.G.k S.G.r (T v).base.z (T v).base.z' (T v).base.π (T v).base.π' 0 (OmP S T v)` using `Formalism.FourierDecayAlt.P.operator_preserves_fusion_forms _ _ S.G.k S.G.r _ _ _ _ 0 _ (Y : ℂ) 0 0 hz hz' hD J hJ`. Conclude with `Formalism.FourierDecayAlt.P.Qx8.FFl_smul hC s`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coefficient_vector_preserves_form : CVPresFF := by
   refine ⟨0, ?_⟩

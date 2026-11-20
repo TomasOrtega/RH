@@ -22,15 +22,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hC : 0 ≤ C`. Establish `h1` using `hb 1`. Establish `h2` using `Real.exp_pos (-(c * D 1))`. Use polynomial arithmetic with `[norm_nonneg (a 1)]`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hev : ∀ᶠ g in nhds g₀, D g < D g₀ + 1` using `hDc.continuousAt.eventually (gt_mem_nhds (lt_add_one (D g₀)))`. Use `continuousAt_of_dominated (bound := fun m => C * Real.exp (c * (D g₀ + 1)) * Real.exp (-(c * D m))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `Filter.Eventually.of_forall fun g => (ha.comp (continuous_id.mul continuous_const)).aestronglyMeasurable`. Use `filter_upwards [hev] with g hg`. Use `Filter.Eventually.of_forall fun m => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : D m ≤ D (m * g) + D g`. Establish `h3` using `hDm (m * g) g⁻¹`. Rewrite `h3` using `[mul_inv_cancel_right, hDi]`. Then use the resulting hypothesis. Establish `k1` using `mul_le_mul_of_nonneg_left hm hc`. Establish `k2` using `mul_le_mul_of_nonneg_left hg.le hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, ← Real.exp_add]`. Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) hC` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities. Conclude with `hν.const_mul _`.
-
-Conclude with `Filter.Eventually.of_forall fun m => (ha.comp (continuous_const.mul continuous_id)).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem continuous_integral_translate (ν : Measure G) (D : G → ℝ) (hDc : Continuous D)
     (hDi : ∀ g, D g⁻¹ = D g) (hDm : ∀ g h, D (g * h) ≤ D g + D h) (c C : ℝ) (hc : 0 ≤ c)
@@ -65,15 +63,15 @@ theorem continuous_integral_translate (ν : Measure G) (D : G → ℝ) (hDc : Co
       (ha.comp (continuous_const.mul continuous_id)).continuousAt
 
 /- English proof (translation)
-Establish `hC : 0 ≤ C`. Establish `h1` using `hab 1`. Establish `h2` using `Real.exp_pos (-(c * D 1))`. Use polynomial arithmetic with `[norm_nonneg (a 1)]`. Establish `hC' : 0 ≤ C'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1` using `hbb 1`. Establish `h2` using `Real.exp_pos (-(c * D 1))`. Use polynomial arithmetic with `[norm_nonneg (b 1)]`. Establish `hmeas : AEStronglyMeasurable (fun p : G × G => a (p.1 * p.2) * b p.2) (ν.prod μ)` using `((ha.comp continuous_mul).mul (hb.comp continuous_snd)).aestronglyMeasurable`. Use `Integrable.mono' ((hν.mul_prod hμ).const_mul (C * C')) hmeas (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, y⟩` from `p`. Establish `hm : D m ≤ D (m * y) + D y`. Establish `h3` using `hDm (m * y) y⁻¹`. Rewrite `h3` using `[mul_inv_cancel_right, hDi]`. Then use the resulting hypothesis. Establish `k0` using `mul_nonneg hc (hD0 (m * y))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `k1` using `mul_le_mul_of_nonneg_left hm hc`. Use `show ‖a (m * y) * b y‖ ≤ C * C' * (Real.exp (-(c / 2 * D m)) * Real.exp (-(c / 2 * D y)))`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_left (Real.exp_le_exp.2 ?_) (mul_nonneg hC hC')` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem integrable_translate_mul (ν μ : Measure G) [SFinite ν] [SFinite μ] (D : G → ℝ) (hD0 : ∀ g, 0 ≤ D g)
     (hDi : ∀ g, D g⁻¹ = D g) (hDm : ∀ g h, D (g * h) ≤ D g + D h) (c C C' : ℝ) (hc : 0 ≤ c)
@@ -110,11 +108,11 @@ theorem integrable_translate_mul (ν μ : Measure G) [SFinite ν] [SFinite μ] (
         nlinarith
 
 /- English proof (translation)
-Take `⟨⟨h1, hmul⟩, hiso, -⟩` from `hσ`. Establish `e2 : umat m * umat m⁻¹ = 1` using `congrArg (fun z : UJ ε => umat z) (mul_inv_cancel m)`. Establish `hv : σ (umat m) (σ (umat m⁻¹) w) = w`. Establish `h3` using `hmul (umat m) m.2 (umat m⁻¹) m⁻¹.2`. Rewrite `h3` using `[e2, h1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `congrArg (fun T : H →L[ℂ] H => T w) h3`. Simplify using `using h4.symm`. Establish `hmy : σ (umat (m * y)) u = σ (umat m) (σ (umat y) u)`. Establish `h3` using `hmul (umat m) m.2 (umat y) y.2`. Conclude with `congrArg (fun T : H →L[ℂ] H => T u) h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : H →ₗᵢ[ℂ] H` to `⟨(σ (umat m) : H →ₗ[ℂ] H), fun x => hiso (umat m) m.2 x⟩`. Rewrite using `[hmy]`. Use `conv_lhs => rw [← hv]`. Conclude with `T.inner_map_map (σ (umat m⁻¹) w) (σ (umat y) u)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inner_mul_eq_inner_inv_of_isURepOn {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hσ : IsURepOn (UJset ε) σ)
@@ -136,9 +134,9 @@ private theorem inner_mul_eq_inner_inv_of_isURepOn {n : ℕ} {ε : Fin n → Boo
   exact T.inner_map_map (σ (umat m⁻¹) w) (σ (umat y) u)
 
 /- English proof (translation)
-Take `⟨-, -, -, -, h5⟩` from `GlobalTheory.Count.Cartan.cartan_distances n ε`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Establish `h0 : ∀ g : UJ ε, dOp (umat g) = 0` using `fun g => by`. Rewrite using `[GlobalTheory.Count.Cartan.dOp_eq, Subsingleton.elim (α := Matrix (Fin 0) (Fin 0) ℂ) (umat g) 0]`. Use `letI : NormedRing (Matrix (Fin 0) (Fin 0) ℂ) := Matrix.instL2OpNormedRing`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `Real.log_eq_zero.2 (Or.inl norm_zero)`. Use `⟨fun g => (h0 g).ge, fun g => by rw [h0, h0], fun g h => by rw [h0, h0, h0, add_zero], h5⟩` and prove the remaining obligations. Take `⟨-, h2, -⟩` from `GlobalTheory.Count.Cartan.cartan_distances n ε`. Conclude with `⟨fun g => (h2 g 1 hn).1, fun g => (h2 g 1 hn).2.1, fun g h => (h2 g h hn).2.2.1, h5⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem dOp_nonneg_inv_subadditive_continuous (n : ℕ) (ε : Fin n → Bool) :
     (∀ g : UJ ε, 0 ≤ dOp (umat g)) ∧ (∀ g : UJ ε, dOp (umat g⁻¹) = dOp (umat g)) ∧
@@ -155,27 +153,27 @@ private theorem dOp_nonneg_inv_subadditive_continuous (n : ℕ) (ε : Fin n → 
     exact ⟨fun g => (h2 g 1 hn).1, fun g => (h2 g 1 hn).2.1, fun g h => (h2 g h hn).2.2.1, h5⟩
 
 /- English proof (translation)
-Establish `hadd : ∀ x p q : Fin n → ℂ, herm (Jm ε) x (p + q) = herm (Jm ε) x p + herm (Jm ε) x q`. Introduce `x p q`. Simplify using `only [herm, star_add, add_dotProduct]`. Establish `hneg : ∀ x p : Fin n → ℂ, herm (Jm ε) x (-p) = -herm (Jm ε) x p`. Introduce `x p`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [herm, star_neg, neg_dotProduct]`. Establish `hzero : ∀ x : Fin n → ℂ, herm (Jm ε) x 0 = 0`. Introduce `x`. Simplify using `only [herm, star_zero, zero_dotProduct]`. Establish `hmulv : ∀ g h : UJ ε, umat (g * h) - 1 = (umat g - 1) * (umat h - 1) + (umat g - 1) + (umat h - 1)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `g h`. Establish `e : umat (g * h) = umat g * umat h` using `rfl`. Rewrite using `[e]`. Use `noncomm_ring`. Establish `hinv : ∀ g : UJ ε, umat g⁻¹ - 1 = -(umat g - 1) - (umat g⁻¹ - 1) * (umat g - 1) ∧ umat g⁻¹ - 1 = -(umat g - 1) - (umat g - 1) * (umat g⁻¹ - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `h1 : umat g⁻¹ * umat g = 1` using `congrArg (fun z : UJ ε => umat z) (inv_mul_cancel g)`. Establish `h2 : umat g * umat g⁻¹ = 1` using `congrArg (fun z : UJ ε => umat z) (mul_inv_cancel g)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[sub_mul, mul_sub, mul_sub, h1, mul_one, one_mul, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[mul_sub, sub_mul, sub_mul, h2, mul_one, one_mul, one_mul]`. Normalize the expressions using the abelian group laws. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e0 : umat (1 : UJ ε) - 1 = 0` using `sub_self (1 : Matrix (Fin n) (Fin n) ℂ)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [NW, Set.mem_setOf_eq, e0, zero_mulVec, hzero]`. Conclude with `⟨fun _ _ => trivial, fun _ _ => W.zero_mem, fun _ _ _ => trivial⟩`. Introduce `a ha b hb`. Simplify using `only [NW, Set.mem_setOf_eq] at ha hb ⊢`. Take `⟨a1, a2, a3⟩` from `ha`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2, b3⟩` from `hb`. Apply the tactic sequence `refine ⟨fun x hx => ?_, fun y hy => ?_, fun y x hx => ?_⟩ <;>`. Rewrite using `[hmulv, add_mulVec, add_mulVec, ← mulVec_mulVec]`. Rewrite using `[b1 x hx, a1 x hx, mulVec_zero, add_zero, add_zero]`. Rewrite using `[a1 _ (b2 y hy), zero_add]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.add_mem (a2 y hy) (b2 y hy)`. Rewrite using `[hadd, hadd, a3 _ x hx, a3 y x hx, b3 y x hx, add_zero, add_zero]`. Introduce `g hg`. Simplify using `only [NW, Set.mem_setOf_eq] at hg ⊢`. Take `⟨a1, a2, a3⟩` from `hg`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `c1 : ∀ x ∈ W, (umat g⁻¹ - 1) *ᵥ x = 0`. Introduce `x hx`. Rewrite using `[(hinv g).1, sub_mulVec, neg_mulVec, ← mulVec_mulVec, a1 x hx, mulVec_zero, neg_zero, sub_zero]`. Use `⟨c1, fun y hy => ?_, fun y x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[(hinv g).1, sub_mulVec, neg_mulVec, ← mulVec_mulVec, c1 _ (a2 y hy), sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `W.neg_mem (a2 y hy)`. Rewrite using `[(hinv g).2, sub_mulVec, neg_mulVec, ← mulVec_mulVec, sub_eq_add_neg, hadd, hneg, hneg, a3 y x hx, a3 _ x hx, neg_zero, add_zero]`. Establish `hcu : Continuous (fun g : UJ ε => umat g - 1)` using `(Units.continuous_val.comp continuous_subtype_val).sub continuous_const`. Establish `hcv : ∀ y, Continuous (fun g : UJ ε => (umat g - 1) *ᵥ y)` using `fun y => hcu.matrix_mulVec continuous_const`. Simplify using `only [NW, Set.setOf_and, Set.setOf_forall]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `IsClosed.inter (isClosed_iInter fun x => isClosed_iInter fun _ => isClosed_eq (hcv x) continuous_const) (IsClosed.inter (isClosed_iInter fun y => isClosed_iInter fun _ => (W.closed_of_finiteDimensional).preimage (hcv y)) (isClosed_iInter fun y => isClosed_iInter fun x => isClosed …` and prove the remaining obligations. Simplify using `only [herm]`. Unfold `dotProduct`. Conclude with `continuous_finset_sum _ fun i _ => ((continuous_apply i).comp (hcv y).star).mul continuous_const`.
+A detailed English derivation is pending.
 -/
 private theorem nw_one_mem_mul_mem_inv_mem_isClosed {n : ℕ} (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) :
     (1 : UJ ε) ∈ NW ε W ∧ (∀ a ∈ NW ε W, ∀ b ∈ NW ε W, a * b ∈ NW ε W) ∧
@@ -248,35 +246,31 @@ private theorem nw_one_mem_mul_mem_inv_mem_isClosed {n : ℕ} (ε : Fin n → Bo
 end General
 
 /- English proof (translation)
-Introduce `n ε W ν hW hν β hβ hβt hβ1 H _ _ _ σ d c u v v' hσ hd hc hf hf' hvv`. Take `⟨hD0, hDi, hDm, hDc⟩` from `dOp_nonneg_inv_subadditive_continuous n ε`. Take `⟨n1, nmul, ninv, ncl⟩` from `nw_one_mem_mul_mem_inv_mem_isClosed ε W`. Establish `hr` using `GlobalTheory.T.haar_subgroup_bi_invariant n ε W ν hW hν`. Take `⟨-, hνi⟩` from `GlobalTheory.T.unipotentRadical_volume_growth n ε W ν hW hν`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsFiniteMeasureOnCompacts ν := hν.2.1`. Establish `hnr : (0 : ℝ) ≤ (n : ℝ) * (rkR ε : ℝ)` using `by positivity`. Establish `hc0 : 0 ≤ c` using `by nlinarith`. Establish `hνc : Integrable (fun m : UJ ε => Real.exp (-(c * dOp (umat m)))) ν` using `hνi c (by nlinarith)`. Establish `hνc2 : Integrable (fun m : UJ ε => Real.exp (-(c / 2 * dOp (umat m)))) ν` using `hνi (c / 2) (by nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμc2 : Integrable (fun m : UJ ε => Real.exp (-(c / 2 * dOp (umat m)))) (muG ε)`. Take `⟨C0, -, hC0⟩` from `GlobalTheory.BallVol.ballVol n ε`. Conclude with `GlobalTheory.integrable_exp_neg_mul_of_sublevel_growth (UJ ε) (muG ε) (fun g => dOp (umat g)) _ (c / 2) C0 hDc.measurable hD0 hC0 (by nlinarith)`. Take `⟨C1, hC1⟩` from `hf`. Take `⟨C2, hC2⟩` from `hf'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu : Continuous (fun g : UJ ε => umat g)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hsc : ∀ x : H, Continuous (fun g : UJ ε => σ (umat g) x)` using `fun x => (hσ.2.2 x).comp_continuous hcu (fun g => g.2)`. Establish `cf : Continuous (fun g : UJ ε => ⟪v, σ (umat g) u⟫_ℂ)` using `continuous_const.inner (hsc u)`. Establish `cf' : Continuous (fun g : UJ ε => ⟪v', σ (umat g) u⟫_ℂ)` using `continuous_const.inner (hsc u)`. Establish `hconj : ∀ F : UJ ε → ℂ, ∫ x, star (F x) ∂ν = star (∫ x, F x ∂ν)` using `fun F => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using integral_conj (μ := ν) (f := F)`. Establish `hP` using `integrable_translate_mul ν (muG ε) (fun g => dOp (umat g)) hD0 hDi hDm c C2 C1 hc0 hνc2 hμc2 (fun g => star ⟪v', σ (umat g) u⟫_ℂ) (fun g => ⟪v, σ (umat g) u⟫_ℂ) cf'.star cf (fun g => (norm_star _).trans_le (hC2 g)) hC1`. Establish `hνN : ∀ᵐ m ∂ν, m ∈ NW ε W` using `ae_iff.2 hν.2.2.1`. Establish `hF' : ∀ y : UJ ε, ∀ m₀ ∈ NW ε W, (∫ m, ⟪v', σ (umat (m * (m₀ * y))) u⟫_ℂ ∂ν) = ∫ m, ⟪v', σ (umat (m * y)) u⟫_ℂ ∂ν`. Introduce `y m₀ hm₀`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e' : Measure.map (MeasurableEquiv.mulRight m₀) ν = ν` using `hr.1 m₀ hm₀`. Use `conv_rhs => rw [← e']`. Rewrite using `[integral_map_equiv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun z : UJ ε => ⟪v', σ (umat z) u⟫_ℂ) (mul_assoc x m₀ y).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hin : ∀ y : UJ ε, (∫ m, ⟪v, σ (umat (m * y)) u⟫_ℂ * star (∫ k, ⟪v', σ (umat (k * (m * y))) u⟫_ℂ ∂ν) ∂ν) = (∫ m, ⟪v, σ (umat (m * y)) u⟫_ℂ ∂ν) * star (∫ k, ⟪v', σ (umat (k * y)) u⟫_ℂ ∂ν)`. Introduce `y`. Rewrite using `[← integral_mul_const]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hνN] with m hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF' y m hm]`. Establish `hpt : ∀ y : UJ ε, (∫ m, star ⟪v', σ (umat (m * y)) u⟫_ℂ * ⟪v, σ (umat y) u⟫_ℂ ∂ν) = ⟪v, σ (umat y) u⟫_ℂ * star (∫ m, ⟪v', σ (umat (m * y)) u⟫_ℂ ∂ν)`. Introduce `y`. Rewrite using `[integral_mul_const, hconj, mul_comm]`. Establish `hhint : Integrable (fun y : UJ ε => ⟪v, σ (umat y) u⟫_ℂ * star (∫ m, ⟪v', σ (umat (m * y)) u⟫_ℂ ∂ν)) (muG ε)` using `hP.integral_prod_right.congr (Filter.Eventually.of_forall fun y => hpt y)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `N : Subgroup (UJ ε)` to `{ carrier := NW ε W, mul_mem' := fun {a b} ha hb => nmul a ha b hb, one_mem' := n1, inv_mem' := fun {a} ha => ninv a ha }`. Take `⟨-, hU⟩` from `GlobalTheory.T.weil_formula_with_cutoff_subgroup (UJ ε) (muG ε) N ν ncl hν β hβ hβt hβ1`. Take `⟨hUi, hUe⟩` from `hU _ hhint`. Establish `key : ∀ m : UJ ε, ∫ y, star ⟪v', σ (umat (m * y)) u⟫_ℂ * ⟪v, σ (umat y) u⟫_ℂ ∂(muG ε) = ⟪u, u⟫_ℂ * ⟪v, σ (umat m⁻¹) v'⟫_ℂ / (d : ℂ)`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← (hd.2 u v u (σ (umat m⁻¹) v')).2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `show star ⟪v', σ (umat (m * y)) u⟫_ℂ * ⟪v, σ (umat y) u⟫_ℂ = _`. Rewrite using `[inner_mul_eq_inner_inv_of_isURepOn σ hσ m y v' u]`. Conclude with `mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Establish `hinvI : ∫ m, ⟪v, σ (umat m⁻¹) v'⟫_ℂ ∂ν = ∫ m, ⟪v, σ (umat m) v'⟫_ℂ ∂ν`. Establish `e' : Measure.map (MeasurableEquiv.inv (UJ ε)) ν = ν` using `hr.2`. Use `conv_rhs => rw [← e']`. Rewrite using `[integral_map_equiv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `⟨continuous_integral_translate ν (fun g => dOp (umat g)) hDc hDi hDm c C1 hc0 hνc (fun g => ⟪v, σ (umat g) u⟫_ℂ) cf hC1, ?_, ?_⟩` and prove the remaining obligations. Use `hUi.congr (Filter.Eventually.of_forall fun g => ?_) dsimp only` and prove the remaining obligations. Rewrite using `[hin g]`. Establish `s1 : (∫ g : UJ ε, ((β g).toReal : ℂ) * ((∫ m, ⟪v, σ (umat (m * g)) u⟫_ℂ ∂ν) * star (∫ m, ⟪v', σ (umat (m * g)) u⟫_ℂ ∂ν)) ∂(muG ε)) = ∫ y, ⟪v, σ (umat y) u⟫_ℂ * star (∫ m, ⟪v', σ (umat (m * y)) u⟫_ℂ ∂ν) ∂(muG ε)`. Rewrite using `[hUe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hin g]`. Establish `s2 : (∫ y, ⟪v, σ (umat y) u⟫_ℂ * star (∫ m, ⟪v', σ (umat (m * y)) u⟫_ℂ ∂ν) ∂(muG ε)) = ∫ y, ∫ m, star ⟪v', σ (umat (m * y)) u⟫_ℂ * ⟪v, σ (umat y) u⟫_ℂ ∂ν ∂(muG ε)` using `integral_congr_ae (Filter.Eventually.of_forall fun y => (hpt y).symm)`. Establish `s3` using `integral_integral_swap (μ := ν) (ν := muG ε) (f := fun m y => star ⟪v', σ (umat (m * y)) u⟫_ℂ * ⟪v, σ (umat y) u⟫_ℂ) hP`.
-
-Rewrite using `[s1, s2, ← s3]`. Repeatedly rewrite using `[key]`. Establish `hu : ⟪u, u⟫_ℂ = ((‖u‖ : ℝ) : ℂ) ^ 2` using `inner_self_eq_norm_sq_to_K u`. Rewrite using `[integral_div, integral_const_mul, hinvI, hu]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem constTerm_inner : ∀ (n : ℕ) (ε : Fin n → Bool) (W : Submodule ℂ (Fin n → ℂ)) (ν : Measure (UJ ε)), IsIsoC ε W → IsHaarSub (NW ε W) ν → ∀ β : UJ ε → ENNReal, Measurable β → (∀ y, β y ≠ ⊤) → (∀ y, ∫⁻ m, β (m⁻¹ * y) ∂ν = 1) → ∀ (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (d c : ℝ) (u v v' : H), IsURepOn (UJset ε) σ → IsFdeg (muG ε) σ d → 8 * n * rkR ε < c → (∃ C : ℝ, ∀ g : UJ ε, ‖⟪v, σ (umat g) u⟫_ℂ‖ ≤ C * Real.exp (-(c * dOp (umat g)))) → (∃ C : ℝ, ∀ g : UJ ε, ‖⟪v', σ (umat g) u⟫_ℂ‖ ≤ C * Real.exp (-(c * dOp (umat g)))) → (∃ C : ℝ, ∀ g : UJ ε, ‖⟪v, σ (umat g) v'⟫_ℂ‖ ≤ C * Real.exp (-(c * dOp (umat g)))) → Continuous (fun g : UJ ε => (∫ m, ⟪v, σ (umat (m * g)) u⟫_ℂ ∂ν)) ∧ Integrable (fun g : UJ ε => ((β g).toReal : ℂ) * ((∫ m, ⟪v, σ (umat (m * g)) u⟫_ℂ ∂ν) * star (∫ m, ⟪v', σ (umat (m * g)) u⟫_ℂ ∂ν))) (muG ε) ∧ ∫ g : UJ ε, ((β g).toReal : ℂ) * ((∫ m, ⟪v, σ (umat (m * g)) u⟫_ℂ ∂ν) * star (∫ m, ⟪v', σ (umat (m * g)) u⟫_ℂ ∂ν)) ∂(muG ε) = (∫ m, ⟪v, σ (umat m) v'⟫_ℂ ∂ν) * ((‖u‖ ^ 2 / d : ℝ) : ℂ) := by
   intro n ε W ν hW hν β hβ hβt hβ1 H _ _ _ σ d c u v v' hσ hd hc hf hf' hvv

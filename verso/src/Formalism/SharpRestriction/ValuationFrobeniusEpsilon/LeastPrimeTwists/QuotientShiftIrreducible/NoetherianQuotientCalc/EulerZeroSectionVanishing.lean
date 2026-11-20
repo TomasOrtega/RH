@@ -41,7 +41,7 @@ def GIso.annOfZero (F : GMod B R k) (s : R) (d : Deg k) (h : ∀ x : F.M, s • 
     exact h x)).shift d
 
 /- English proof (translation)
-Simplify using `only [chi]`. Rewrite using `[chi_congr ts _ _ (GIso.quotOfZero F s h) m, chi_congr ts _ _ (GIso.annOfZero F s d h) m, chi_shift]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_cons_of_zero (ts : List (Deg k × R)) (F : GMod B R k) (d : Deg k) (s : R)
     (h : ∀ x : F.M, s • x = 0) (m : Deg k) :

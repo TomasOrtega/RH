@@ -5,12 +5,12 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 namespace PositivityTheory.SiegelWeilFormula.Gunr
 
 /- English proof (translation)
-The claim follows from `unrWhitX_of_parts locC almostGood`.
+A detailed English derivation is pending.
 -/
 theorem unrWhitX : PositivityTheory.SiegelWeilFormula.Gen.UnrWhitX := unrWhitX_of_parts locC almostGood
 
 /- English proof (translation)
-The claim follows from `unrWhit_of_parts locC almostGood`.
+A detailed English derivation is pending.
 -/
 theorem unrWhit : PositivityTheory.SiegelWeilFormula.Gen.UnrWhit := unrWhit_of_parts locC almostGood
 

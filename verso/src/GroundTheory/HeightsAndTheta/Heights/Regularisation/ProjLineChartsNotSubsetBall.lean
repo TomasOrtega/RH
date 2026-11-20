@@ -15,7 +15,7 @@ local notation "RegChartDataA" => GroundTheory.Heights₂.Heights.Regular.RegCha
 noncomputable section
 
 /- English proof (translation)
-Establish `h : coordDiv S = ⋃ i ∈ S, (fun z : Fin D → ℂ => z i) ⁻¹' {0}`. Use extensionality with `z`. Simplify using `[coordDiv]`. Rewrite using `[h]`. Conclude with `isClosed_biUnion_finset fun i _ => isClosed_singleton.preimage (continuous_apply i)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_coordDiv {D : ℕ} (S : Finset (Fin D)) : IsClosed (coordDiv S) := by
   have h : coordDiv S = ⋃ i ∈ S, (fun z : Fin D → ℂ => z i) ⁻¹' {0} := by
@@ -27,7 +27,7 @@ theorem isClosed_coordDiv {D : ℕ} (S : Finset (Fin D)) : IsClosed (coordDiv S)
 variable {D : ℕ} {X : Type*} [TopologicalSpace X] {A : FinHolAtlas D X}
 
 /- English proof (translation)
-Use `isOpen_iff_forall_mem_open.2 fun x hx => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `R.cover x`. Establish `hs : x ∈ (R.chart j).source` using `R.mid_subset_source j (R.inner_subset_mid j hj)`. Conclude with `⟨(R.chart j).source ∩ R.chart j ⁻¹' (coordDiv (R.S j))ᶜ, fun y hy => (R.mem_Yo j y hy.1).2 hy.2, (R.chart j).isOpen_inter_preimage (isClosed_coordDiv _).isOpen_compl, hs, (R.mem_Yo j x hs).1 hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isOpen_Yo_regular (R : RegChartDataA A) : IsOpen R.Yo := by
   refine isOpen_iff_forall_mem_open.2 fun x hx => ?_
@@ -160,15 +160,13 @@ theorem toBoundedPsh_ph [T2Space X] {R : RegCharts A} (P : BoundedThPsh R)
 end BoundedThPsh
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.smoothed molli`. Establish `hae : ∀ᵐ w : Fin D → ℂ, ∀ i ∈ R.S j, w i ≠ z i`. Rewrite using `[Filter.eventually_all_finset]`. Introduce `i _`. Rewrite using `[ae_iff]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ne_eq, not_not]`. Conclude with `Measure.pi_eval_preimage_null (fun _ : Fin D => (volume : Measure ℂ)) (measure_singleton (z i))`. Use `integral_congr_ae (hae.mono fun w hw => ?_)` and prove the remaining obligations. Distinguish the cases in `hρ : ρ.scaled t w = 0`. Simplify using `[hρ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw1 : ‖w‖ < t`. Establish `hs : t⁻¹ • w ∈ ball (0 : Fin D → ℂ) 1` using `ρ.support_subset fun h0 => hρ (by simp [Mollifier.scaled, h0])`. Rewrite `hs` using `[mem_ball_zero_iff, norm_smul, Real.norm_eq_abs, abs_inv, abs_of_pos ht]`. Rewrite `hs` using `[inv_mul_lt_iff₀ ht, mul_one]`. Then use the resulting hypothesis. Establish `hb : z - w ∈ ball z t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_ball, dist_eq_norm, sub_sub_cancel_left, norm_neg]`. Conclude with `hw1`. Establish `hd : z - w ∉ coordDiv (R.S j)`. Introduce and unpack `⟨i, hi, h0⟩`. Conclude with `hw i hi (by rw [Pi.sub_apply, sub_eq_zero] at h0; exact h0.symm)`.
-
-Simplify using `only [GroundTheory.Heights₂.Heights.Regular.RegChartData.trunc, limsupExt, if_neg hd]`. Rewrite using `[max_eq_left (hK _ hb hd)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothed_eq_molli (R : RegChartDataA A) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.N)
     (z : Fin D → ℂ) (ht : 0 < t) (hK : ∀ y ∈ ball z t, y ∉ coordDiv (R.S j) → -K ≤ R.u j y) :
@@ -198,7 +196,7 @@ theorem smoothed_eq_molli (R : RegChartDataA A) (ρ : Mollifier D) (K t : ℝ) (
   rw [max_eq_left (hK _ hb hd)]
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg`. Rewrite using `[smoothed_eq_molli R ρ K t j _ ht hK]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phReg_eq_phChart [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
     (om_pot : IsPotential A om) (om_pos : IsPosPot A om) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.N)
@@ -210,7 +208,7 @@ theorem phReg_eq_phChart [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
   rfl
 
 /- English proof (translation)
-Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg`. Conclude with `congrArg (fun s => s - R.q j (R.ψ j x)) (smoothed_eq_molli (R.toRegular hW hf) ρ K t j (R.ψ j x) ht hK)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem phChart_eq_phReg [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆ ball 0 1)
     (hf : ∀ j, ContDiffOn ℝ ∞ (R.f j) (R.W j)) (ρ : Mollifier D) (K t : ℝ) (j : Fin R.n) (x : X)
@@ -220,11 +218,11 @@ theorem phChart_eq_phReg [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆
   exact congrArg (fun s => s - R.q j (R.ψ j x)) (smoothed_eq_molli (R.toRegular hW hf) ρ K t j (R.ψ j x) ht hK)
 
 /- English proof (translation)
-Use `set R' := RegChartData.ofRegular R om om_pot om_pos`. Establish `hV : ∀ j, R'.toRegCharts.V' j = R.mid j` using `RegCharts.ofPotentialCharts_V' R.toPotentialCharts om om_pot om_pos`. Take `⟨hc1, hc2⟩` from `(R'.cover x).choose_spec`. Establish `hc : x ∈ R.mid (R'.cover x).choose`. Rewrite using `[← hV]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hc1, subset_closure.trans (R'.closure_W''_subset _) hc2⟩`. Rewrite using `[GroundTheory.Heights₂.Heights.Regular.RegChartData.regularised, PotentialCharts.glue_eq_pad _ _ hε x hc]`. Unfold `RegCharts.glued RegCharts.regArg`. Use `congr 2`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2 h2`. Rewrite using `[hmol j h1]`. Conclude with `absurd ((hV j).symm ▸ h1) h2`. Conclude with `absurd ((hV j) ▸ h2) h1`. Rewrite using `[hmol _ hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularised_eq_glued [CompactSpace X] (R : RegChartDataA A) (om : LocPot X)
     (om_pot : IsPotential A om) (om_pos : IsPosPot A om) (ρ : Mollifier D) (K : ℝ)
@@ -251,11 +249,9 @@ theorem regularised_eq_glued [CompactSpace X] (R : RegChartDataA A) (om : LocPot
   · rw [hmol _ hc]
 
 /- English proof (translation)
-Take `⟨hc1, hc2⟩` from `(R.cover x).choose_spec`. Establish `hc : x ∈ (R.toRegular hW hf).mid (R.cover x).choose` using `⟨hc1, subset_closure.trans (R.closure_W''_subset _) hc2⟩`. Unfold `GroundTheory.Heights₂.Heights.Regular.RegChartData.regularised`. Rewrite using `[PotentialCharts.glue_eq_pad _ _ hε x hc]`. Unfold `RegCharts.glued RegCharts.regArg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 2`. Use function extensionality and compare the values at `j`. Use `split_ifs with h1 h2 h2`. Rewrite using `[hmol j h1]`. Conclude with `absurd h1 h2`.
-
-Conclude with `absurd h2 h1`. Rewrite using `[hmol _ hc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glued_eq_regularised [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j ⊆ ball 0 1)
     (hf : ∀ j, ContDiffOn ℝ ∞ (R.f j) (R.W j)) (ρ : Mollifier D) (K : ℝ) (η : Fin R.n → X → ℝ)
@@ -277,9 +273,9 @@ theorem glued_eq_regularised [T2Space X] (R : RegChartData A) (hW : ∀ j, R.W j
   · rw [hmol _ hc]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (fun _ : Fin 1 => (1 : ℂ)) ∈ projLineCharts.W 0` using `by show _ ∈ ball (0 : Fin 1 → ℂ) 2`. Rewrite using `[mem_ball_zero_iff, pi_norm_const]`. Evaluate the numerical expressions. Establish `h2` using `h 0 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `h2` using `[mem_ball_zero_iff, pi_norm_const]`. Evaluate the numerical expressions using `at h2`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem projLineCharts_not_subset_ball : ¬ ∀ j, projLineCharts.W j ⊆ ball 0 1 := by
   intro h
@@ -292,9 +288,9 @@ theorem projLineCharts_not_subset_ball : ¬ ∀ j, projLineCharts.W j ⊆ ball 0
   norm_num at h2
 
 /- English proof (translation)
-Establish `h : ∀ w : Fin 0 → ℂ, ρ.scaled t w * f (z - w) = ρ.toFun w * f z`. Introduce `w`. Rewrite using `[Subsingleton.elim (z - w) z]`. Simplify using `only [Mollifier.scaled, mul_zero, pow_zero, inv_one, one_mul]`. Rewrite using `[Subsingleton.elim (t⁻¹ • w) w]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `molli`. Repeatedly rewrite using `[h]`. Rewrite using `[integral_mul_const, ρ.integral_eq_one, one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem molli_fin_zero (ρ : Mollifier 0) (t : ℝ) (f : (Fin 0 → ℂ) → ℝ) (z : Fin 0 → ℂ) :
     molli ρ t f z = f z := by
@@ -310,19 +306,19 @@ theorem molli_fin_zero (ρ : Mollifier 0) (t : ℝ) (f : (Fin 0 → ℂ) → ℝ
 def pointOm : LocPot Unit := LocPot.ofFun fun _ => 0
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ fun _ => contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 theorem pointOm_pot : IsPotential pointAtlas pointOm :=
   ReciprocityTheory.AnForm.M.isPotential_ofFun _ _ fun _ => contDiffOn_const
 
 /- English proof (translation)
-Introduce `_ _ _ _ w hw` and use `absurd (Subsingleton.elim w 0) hw`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pointOm_pos : IsPosPot pointAtlas pointOm :=
   fun _ _ _ _ w hw => absurd (Subsingleton.elim w 0) hw
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Simplify using `[GroundTheory.Heights₂.Heights.Regular.RegChartData.phReg, GroundTheory.Heights₂.Heights.Regular.RegChartData.smoothed, molli_fin_zero, GroundTheory.Heights₂.Heights.Regular.RegChartData.trunc, limsupExt, coordDiv, GroundTheory.Heights₂.Heights.Regular.RegChartData.u, PotentialCh …`. Simplify using `[RegCharts.phChart, molli_fin_zero, RegCharts.u, RegChartData.ofRegular, RegCharts.ofPotentialCharts, pointReg, pointCharts]`.
+Prove the components needed by the constructor for the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem phReg_ne_phChart_point (ρ : Mollifier 0) (t : ℝ) :
     pointReg.phReg ρ (-1) t (0 : Fin 1) () = 1 ∧

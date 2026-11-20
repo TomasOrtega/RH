@@ -15,15 +15,15 @@ open Formalism.L2.Host (HChar)
 namespace GlobalTheory.TopFlipNu
 
 /- English proof (translation)
-Use `haveI : (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `hK : IsCompact {y : w.adicCompletion E | Valued.v y ≤ 1}`. Use `IsNonarchimedeanLocalField.isCompact_closedBall (w.adicCompletion E) 1` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Conclude with `e.le_one_iff_le_one.symm`. Establish `hv0 : Valued.v c ≠ 0` using `by simpa using hc`. Take `⟨s, -, hs⟩` from `hK.elim_nhds_subcover (fun y => {z | (z - y) * c⁻¹ ∈ w.adicCompletionIntegers E}) fun y _ => ((Valued.isOpen_valuationSubring _).preimage ((continuous_id.sub continuous_const).mul continuous_const)).mem_nhds (by simp)`. Establish `h1 : ∀ n : ℕ, ∃ y : s, Valued.v (x ^ n - y) ≤ Valued.v c` using `fun n => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: x ^ n ∈ {y : w.adicCompletion E | Valued.v y ≤ 1}` using `by simp [hx]`. Take `⟨y, hy, h⟩` from `Set.mem_iUnion₂.1 (hs this)`. Use `⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Establish `h2 : Valued.v ((x ^ n - y) * c⁻¹) ≤ 1` using `h`. Rewrite `h2` using `[map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 hv0), one_mul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose f hf using h1`. Establish `key : ∀ a b : ℕ, a < b → f a = f b → ∃ k : ℕ, 0 < k ∧ Valued.v (x ^ k - 1) ≤ Valued.v c` using `fun a b hab h => by`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_lt hab`. Use `⟨k + 1, by omega, ?_⟩` and prove the remaining obligations. Establish `h3` using `Valuation.map_sub_le _ (hf (a + k + 1)) (h ▸ hf a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `h4 : x ^ (a + k + 1) - f (a + k + 1) - (x ^ a - f (a + k + 1)) = x ^ a * (x ^ (k + 1) - 1)` using `by ring`. Rewrite `h3` using `[h4, map_mul, map_pow, hx, one_pow, one_mul]`. Then use the resulting hypothesis. Take `⟨a, b, hne, h⟩` from `Finite.exists_ne_map_eq_of_infinite f`. Break down `lt_or_gt_of_ne hne with h' | h'` into its components or cases. Use `exacts [key a b h' h, key b a h' h.symm]`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_pow_close {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (x c : w.adicCompletion E)
     (hx : Valued.v x = 1) (hc : c ≠ 0) : ∃ k : ℕ, 0 < k ∧ Valued.v (x ^ k - 1) ≤ Valued.v c := by
@@ -58,11 +58,11 @@ theorem exists_pow_close {E : Type} [Field E] [NumberField E] (w : HeightOneSpec
   exacts [key a b h' h, key b a h' h.symm]
 
 /- English proof (translation)
-Establish `hu` using `Formalism.L2.Host.unif_spec w`. Unfold `Formalism.L2.Host.IsUnifAt at hu`. Take `⟨k, hk, h1⟩` from `exists_pow_close w x (((Formalism.L2.Host.atFin w (Formalism.L2.Host.unif w) : (w.adicCompletion E)ˣ) : w.adicCompletion E) ^ n) hx (pow_ne_zero _ (Units.ne_zero _))`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `h _ ?_ ?_` and prove the remaining obligations. Use `show Valued.v _ = 1`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow, hx, one_pow]`. Rewrite `h1` using `[map_pow, hu, ← WithZero.exp_nsmul]`. Rewrite using `[Units.val_pow_eq_pow_val]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one {E : Type} [Field E] [NumberField E] {χ : HChar E} {w : HeightOneSpectrum (𝓞 E)} {n : ℕ}
     (h : χ.LevelLe w n) (x : (w.adicCompletion E)ˣ) (hx : Valued.v (x : w.adicCompletion E) = 1) :
@@ -82,7 +82,7 @@ theorem exists_pow_eq_one {E : Type} [Field E] [NumberField E] {χ : HChar E} {w
     simpa using h1
 
 /- English proof (translation)
-Take `⟨k, hk, h1⟩` from `exists_pow_eq_one h x hx`. Take `⟨ζ, hζ⟩` from `hχ w x`. Establish `h2 : ζ ^ k = 1` using `D.what₂.embLL.injective (by rw [map_pow, hζ, map_one, ← Units.val_pow_eq_pow_val, h1, Units.val_one])`. Conclude with `⟨ζ, GlobalTheory.KappaArith.isAwayUnit_of_pow_eq_one m hk h2, hζ⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem awayIm_unit {D : D7} {χ : HChar D.host.E} (hχ : LocIn D.what₂.embLL χ) {w : HeightOneSpectrum (𝓞 D.host.E)} {n : ℕ}
     (h : χ.LevelLe w n) (x : (w.adicCompletion D.host.E)ˣ) (hx : Valued.v (x : w.adicCompletion D.host.E) = 1) (m : ℕ) :
@@ -93,7 +93,7 @@ theorem awayIm_unit {D : D7} {χ : HChar D.host.E} (hχ : LocIn D.what₂.embLL 
   exact ⟨ζ, GlobalTheory.KappaArith.isAwayUnit_of_pow_eq_one m hk h2, hζ⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : w.under (𝓞 D.host.F) ∈ G.pl.S0`. Break down `G.pl.mem_S0_of_sum_eq.1 h with h | h` into its components or cases. Conclude with `fun x hx h3 => (G.ch.lev0 i h1 h2 w h).1 x hx (h3.trans (WithZero.exp_le_exp.2 (by omega)))`. Conclude with `(G.ch.lev1 i h1 h2 w h).1`. Conclude with `fun x hx _ => G.ch.unr i h1 h2 w h x hx`.
+Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem chi_levelLe {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData L sc) {i : ℕ} (h1 : 1 ≤ i)
     (h2 : i ≤ D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)) : (G.ch.chiH i).LevelLe w 2 := by
@@ -104,15 +104,15 @@ theorem chi_levelLe {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGr
   · exact fun x hx _ => G.ch.unr i h1 h2 w h x hx
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL hC i j x t hx`. Establish `hQ : L.Q μ₀ = ∅` using `Finset.eq_empty_of_forall_notMem fun w hw => (hL.Q_ram μ₀ w).2 (Or.inl hw) (by rw [hL.xi_base]; intro x _; rfl)`. Establish `h0 : locPl G μ₀ = G.pl.W0` using `by rw [locPl, hQ]; simp`. Establish `hsub : G.pl.W0 ⊆ locPl G t` using `fun w hw => by unfold locPl; simp [hw]`. Establish `hf : ∀ w, (((locGrid G t w).nu i j (x w) : ℂˣ) : ℂ) = ((L.xiH t).loc w (x w) : ℂ) * (((locGrid G μ₀ w).nu i j (x w) : ℂˣ) : ℂ)` using `fun w => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Grid.nu, locGrid, MonoidHom.div_apply, Formalism.L2.Host.HChar.loc_mul, hL.xi_base, Formalism.L2.Host.HChar.loc_one, Units.val_div_eq_div_val, Units.val_mul, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree. Establish `hb : ∀ w ∈ locPl G t, GlobalTheory.KappaArith.AwayIm D (Qn G t) (((locGrid G μ₀ w).nu i j (x w) : ℂˣ) : ℂ)` using `fun w hw => by haveI : (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`. Establish `e` using `ValuativeRel.isEquiv (ValuativeRel.valuation (Kw w)) (Valued.v : Valuation (Kw w) (WithZero (Multiplicative ℤ)))`. Establish `hv : Valued.v (x w : Kw w) = 1` using `e.eq_one_iff_eq_one.1 (hx w hw)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv' : Valued.v (((x w)⁻¹ : (Kw w)ˣ) : Kw w) = 1` using `by rw [Units.val_inv_eq_inv_val, map_inv₀, hv, inv_one]`. Establish `h1 : 1 ≤ D.R.m - (i : ℕ)` using `by have := i.2; omega`. Establish `h2 : D.R.m - (i : ℕ) ≤ D.R.m` using `Nat.sub_le _ _`. Establish `a` using `awayIm_unit (hC.mu0 j) ((L.C.isMu0 j).tame w) (x w) hv (Qn G t)`. Establish `b` using `awayIm_unit (hC.chi _ h1 h2) (chi_levelLe G h1 h2 w) (x w)⁻¹ hv' (Qn G t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : muBase L (j + 1) = L.C.mu0 j` using `by rw [muBase, dif_pos j.2]`. Use `a.mul b using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Grid.nu, locGrid, MonoidHom.div_apply, hL.xi_base, mul_one, hm, map_inv, Units.val_div_eq_div_val, Units.val_inv_eq_inv_val]`. Conclude with `div_eq_mul_inv _ _`. Use `⟨(∏ w ∈ locPl G t, ((L.xiH t).loc w (x w) : ℂ)) * ∏ w ∈ locPl G t \ G.pl.W0, (((locGrid G μ₀ w).nu i j (x w) : ℂˣ) : ℂ), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.KappaArith.AwayIm.prod _ _ fun w _ => GlobalTheory.KappaArith.awayIm_val hL (hC.xi t) _ w (x w)).mul (GlobalTheory.KappaArith.AwayIm.prod _ _ fun w hw => hb w (Finset.mem_sdiff.1 hw).1)`. Rewrite using `[h0, mul_assoc, Finset.prod_sdiff hsub, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun w _ => hf w`.
+A detailed English derivation is pending.
 -/
 theorem nu_arith : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → CharsIn G D.what₂.embLL → ∀ (i j : Fin D.R.m) (x : ∀ w : Pl D.host.E, (Kw w)ˣ) (t : T),
       (∀ w ∈ locPl G t, ValuativeRel.valuation (Kw w) (x w : Kw w) = 1) →

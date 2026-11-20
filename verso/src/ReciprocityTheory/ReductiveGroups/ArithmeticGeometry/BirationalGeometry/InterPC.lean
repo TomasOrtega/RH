@@ -12,9 +12,9 @@ def pC (P : Ideal (MRing ι)) : Ideal (MRingOver ℂ ι) :=
   Ideal.span (map (Int.castRingHom ℂ) '' (P : Set (MRing ι)))
 
 /- English proof (translation)
-Use extensionality with `z`. Simplify using `only [mcPts, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun f hf => ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : pC P ≤ RingHom.ker (MvPolynomial.eval z)` using `Ideal.span_le.2 (by rintro _ ⟨g, hg, rfl⟩; exact h2 g hg)`. Conclude with `RingHom.mem_ker.1 (hle hf)`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun f hf => h2 _ (Ideal.subset_span ⟨f, hf, rfl⟩)⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mcPts_eq_pC (P : Ideal (MRing ι)) :
     mcPts P = {z | (∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) ∧ ∀ f ∈ pC P, eval z f = 0} := by

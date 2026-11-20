@@ -24,13 +24,11 @@ def WtC (σ : c.F →+* ℂ) : Prop :=
     FrBor t y y' → evR Xo c f y' = wchar (ex Dw a n) t * evR Xo c f y
 
 /- English proof (translation)
-Introduce `a n hd p y ψ`. Take `⟨z, hz⟩` from `hB p y ψ`. Take `⟨-, -, hcov, -⟩` from `hU`. Take `⟨k, x, t, ht⟩` from `hcov z`. Use `⟨k, x, toC (wchar (ex Dw a n) t), fun f hf => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hft : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, ψ, y, hz⟩`. Establish `e2` using `hW f hf.1`. Establish `hev : evR Xo c f z = ψ (f p y)`. Unfold `evR evalAt`. Rewrite using `[dif_pos hft]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e2 _ _ _ _ _ _ _ _ hft.choose_spec.choose_spec.choose_spec hz`. Establish `hwt` using `hC a n hd f hf t ((U σ).un k x) z ht`. Establish `hr : rdU (U σ) f k x.1 = toC (evR Xo c f ((U σ).un k x))`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, dif_pos x.2, Subtype.coe_eta]`. Rewrite using `[hr, ← hev, hwt]`.
-
-Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem testRd_of (σ : c.F →+* ℂ)
     (hW : EvalWD (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z)) (hU : IsUnf (U σ))
@@ -53,9 +51,9 @@ theorem testRd_of (σ : c.F →+* ℂ)
   all_goals rfl
 
 /- English proof (translation)
-Introduce `a n hd σ hσ f hf h0`. Use function extensionality and compare the values at `p y`. Use `show f p y = 0`. Use `eq_zero_of_cpts σ p _ fun ψ => ?_` and prove the remaining obligations. Take `⟨k, x, u, hk⟩` from `h σ hσ a n hd p y ψ`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hk f (cusp_le_sec Xo c U a n hf)`. Rewrite `e` using `[h0 k x.1 x.2, mul_zero]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rdDomInj_of (h : ∀ σ, GoodEmb c σ → TestRd Xo c U σ) : RdDomInj Xo c U := by
   intro a n hd σ hσ f hf h0
@@ -68,15 +66,15 @@ theorem rdDomInj_of (h : ∀ σ, GoodEmb c σ → TestRd Xo c U σ) : RdDomInj X
   exact e
 
 /- English proof (translation)
-Use `haveI : CharZero c.F := RingHom.charZero σ`. Introduce `a k hd n b hb hli`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `w hw`. Establish `hθ : ∀ θ : Module.Dual c.F (CAt σ), ∀ i, θ (toCAt σ (w i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `θ`. Establish `hz : ∑ i, θ (toCAt σ (w i)) • b i = 0`. Use function extensionality and compare the values at `p y`. Establish `hpt` using `descend_cpts σ p (fun i => b i p y) w (fun ψ => by`. Take `⟨k', x, u, hk⟩` from `h a k hd p y ψ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : ∀ i, w i * cvalR σ (ψ (b i p y)) = u * (w i * rdU (U σ) (b i) k' x.1)`. Introduce `i`. Rewrite using `[hk (b i) (hb i)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2` using `congrFun (congrFun hw k') x.1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at e2`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.mul_sum, e2, mul_zero]) θ`. Simplify `hpt` using `[Finset.sum_apply]`. Conclude with `fun i => Fintype.linearIndependent_iff.1 hli _ hz i`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Conclude with `(Module.forall_dual_apply_eq_zero_iff c.F (toCAt σ (w i))).1 fun θ => hθ θ i`.
+A detailed English derivation is pending.
 -/
 theorem rdIndep_of (σ : c.F →+* ℂ) (h : TestRd Xo c U σ) : RdIndep Xo c U σ := by
   haveI : CharZero c.F := RingHom.charZero σ
@@ -122,17 +120,15 @@ Both sides reduce to the same expression.
 theorem mat_rmul {Ψ : Finset (E →+* ℂ)} (x b : Frame Ψ r) (τ : Ψ) : mat (rmul x b) τ = mat x τ * mat b τ := rfl
 
 /- English proof (translation)
-Establish `hbinv : frInv b ∈ Bor X.Ψ r`. Introduce `τ`. Take `⟨hdet, htri⟩` from `hb τ`. Establish `hu : IsUnit (mat b τ).det` using `isUnit_iff_ne_zero.2 hdet`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mat_frInv]`. Conclude with `(Matrix.isUnit_nonsing_inv_det_iff.2 hu).ne_zero`. Introduce `i j hij haveI : Invertible (mat b τ) := Matrix.invertibleOfIsUnitDet _ hu`. Establish `hBT : (mat b τ).BlockTriangular id` using `fun i' j' h' => htri i' j' h'`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hBT hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hrm : rmul (rmul (lact γ x) b) (frInv b) = lact γ x`. Use function extensionality and compare the values at `τ`. Use `show mat (rmul (lact γ x) b) τ * mat (frInv b) τ = mat (lact γ x) τ`. Rewrite using `[mat_rmul, mat_frInv, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.2 (hb τ).1), Matrix.mul_one]`. Establish `h1 : P (lact γ x) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hB _ hz (frInv b) hbinv`. Rewrite `h2` using `[hrm, h0, mul_zero]`. Conclude with `h2`. Rewrite `h1` using `[hΓ γ hγ x hx]`. Take `⟨n, hn, hχ⟩` from `X.χ_fin la`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : X.χ la γ ≠ 0`. Introduce `h`. Establish `h3` using `hχ γ hγ`. Rewrite `h3` using `[h, zero_pow hn.ne']`. Conclude with `zero_ne_one h3`.
-
-Conclude with `(mul_eq_zero.1 h1).resolve_left hne`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_orbit (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → ℂ)
     (hB : ∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, P (rmul x b) = bchar la b * P x)
@@ -169,15 +165,15 @@ theorem eq_zero_of_orbit (X : Data E r) (la : Wt X.Ψ r) (P : Frame X.Ψ r → �
   exact (mul_eq_zero.1 h1).resolve_left hne
 
 /- English proof (translation)
-Use `replace hP : P ∈ Submodule.span ℂ {Q | IsHolCusp X la Q} := hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem Q hQ`. Establish `hQ' : IsHolCusp X la Q` using `hQ`. Conclude with `⟨fun k x hx b hb => (hQ' k).1.1.2.1 x hx b hb, fun k γ hγ x hx => (hQ' k).1.1.2.2 γ hγ x hx⟩`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨fun k x _ b _ => by simp, fun k γ _ x _ => by simp⟩`. Consider the case `add Q R _ _ hQ hR`. Use `⟨fun k x hx b hb => ?_, fun k γ hγ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Rewrite using `[hQ.1 k x hx b hb, hR.1 k x hx b hb]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.add_apply]`. Rewrite using `[hQ.2 k γ hγ x hx, hR.2 k γ hγ x hx]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a Q _ hQ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun k x hx b hb => ?_, fun k γ hγ x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hQ.1 k x hx b hb]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ.2 k γ hγ x hx]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eqv_holSub {Comp : Type} (X : Comp → Data E r) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X}
     (hP : P ∈ holSub X la) :
@@ -219,13 +215,11 @@ def QuotSupp : Prop :=
 variable {V dict mu}
 
 /- English proof (translation)
-Use `replace hP : P ∈ Submodule.span ℂ {Q | IsHolCusp X la Q} := hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem Q hQ => exact h la Q hQ`. Consider the case `zero`. Use `⟨fun γ _ g => ?_, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_zero, Pi.zero_apply]`. Rewrite using `[map_zero]`. Conclude with `continuous_const`. Consider the case `add Q R _ _ hQ hR`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, Pi.add_apply, hQ.1 γ hγ g, hR.1 γ hγ g]`. Rewrite using `[map_add]`. Conclude with `hQ.2.add hR.2`. Consider the case `smul a Q _ hQ`. Use `⟨fun γ hγ g => ?_, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [map_smul, Pi.smul_apply, hQ.1 γ hγ g]`. Rewrite using `[map_smul]`. Conclude with `hQ.2.const_smul a`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adelAut_holSub (h : AdelAut V dict mu) (la : ∀ k, Wt (X k).Ψ r) {P : FDSec X} (hP : P ∈ holSub X la) :
     (∀ γ ∈ GQ V, ∀ g, adel V dict mu P (γ * g) = adel V dict mu P g) ∧ Continuous (adel V dict mu P) := by
@@ -249,7 +243,7 @@ theorem adelAut_holSub (h : AdelAut V dict mu) (la : ∀ k, Wt (X k).Ψ r) {P : 
       exact hQ.2.const_smul a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Conclude with `congrArg (Quotient.lift φ _) (Quotient.out_eq q)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem onQ_eq_lift (φ : GA D V → ℂ) (hL : ∀ γ ∈ GQ V, ∀ g, φ (γ * g) = φ g) :
     onQ V φ = Quotient.lift φ (fun a b hab => by
@@ -261,9 +255,7 @@ theorem onQ_eq_lift (φ : GA D V → ℂ) (hL : ∀ γ ∈ GQ V, ∀ g, φ (γ *
   exact congrArg (Quotient.lift φ _) (Quotient.out_eq q)
 
 /- English proof (translation)
-Introduce `la P hP`. Take `⟨hL, hc⟩` from `h la P hP`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Rewrite using `[onQ_eq_lift _ hL]`. Use `Measurable.aestronglyMeasurable ?_` and prove the remaining obligations.
-
-Conclude with `measurable_from_quotient.2 hc.measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem adelMeas_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+* ℂ} {V : HSp D}
     {dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r} {mu : GA D V → ℂ}
@@ -276,13 +268,11 @@ theorem adelMeas_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F �
   exact measurable_from_quotient.2 hc.measurable
 
 /- English proof (translation)
-Introduce `la P hP h0 k x hx`. Establish `hA'` using `adelAut_holSub hA la hP`. Establish `hz : ∀ g, adel V dict mu P g = 0` using `hQ _ hA'.2 hA'.1 h0`. Take `⟨-, -, -, hdom, hsurj, -⟩` from `hd`. Take `⟨g, γ, hγ, b, hb, hg⟩` from `hsurj k x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm : mu g ≠ 0`. Introduce `h`. Establish `h1` using `hmu.2.1 g`. Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : mu g * P (dict g).1 (dict g).2 = 0` using `hz g`. Establish `h2 : P (dict g).1 (dict g).2 = 0` using `(mul_eq_zero.1 h1).resolve_left hm`. Establish `h3` using `hdom g`. Rewrite `h2`, `h3` using `[hg]`. Establish `hE` using `eqv_holSub (U σ).X la hP`.
-
-Conclude with `eq_zero_of_orbit ((U σ).X k) (la k) (P k) (hE.1 k) (hE.2 k) hx hγ hb h3 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeDom_of_aut {U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r} {σ : c.F →+* ℂ} {V : HSp D}
     {dict : GA D V → Σ k, Frame ((U σ).X k).Ψ r} {mu : GA D V → ℂ} {Kf : Subgroup (GA D V)}

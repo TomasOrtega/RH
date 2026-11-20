@@ -38,16 +38,16 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {X X' : Type} [AddCo
 
 omit [IsCMField E] in
 /- English proof (translation)
-Simplify using `[pairE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairE_comp (f : X' ≃ₗ[𝓞 E] X) (ξ : Module.Dual ℤ X) (y : X') :
     pairE (E := E) (ξ.comp (f.toLinearMap.restrictScalars ℤ)) y = pairE ξ (f y) := by
   simp [pairE]
 
 /- English proof (translation)
-Use `⟨h.1, fun s hs => ?_⟩` and prove the remaining obligations. Establish `hs' : IsBePar ξ be s` using `⟨hs.1, fun x y => by`. Take `⟨x, rfl⟩` from `f.surjective x`. Take `⟨y, rfl⟩` from `f.surjective y`. Rewrite using `[← hbe, ← hs.2, pairE_comp, pairE_comp]⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(h.2 s hs').1, fun ν h1 h2 h3 => (h.2 s hs').2 ν h1 h2 fun s' hl => h3 s' ⟨hl.1, fun x y => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pairE_comp, pairE_comp]`. Conclude with `hl.2 _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaAt_comp (f : X' ≃ₗ[𝓞 E] X) (ξ : Module.Dual ℤ X) {N : ℕ} {be : LinearMap.BilinForm ℤ X}
     {be' : LinearMap.BilinForm ℤ X'} (hbe : ∀ y z, be' y z = be (f y) (f z)) {ν₀ : E} {jj : ℤ}
@@ -67,21 +67,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `(Spec.map_comp _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem sp_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : B →+* C) (g : A →+* B) :
     spMap f ≫ spMap g = spMap (f.comp g) := (Spec.map_comp _ _).symm
 
 /- English proof (translation)
-Take `⟨z, t', m1, m2, φ, -, -, -, -, -, hu, -⟩` from `h`. Take `⟨v, u', hv, h1, h2, h3⟩` from `hu τ k`. Use `((GlobalTheory.T.exists_unique_constant_tangent_vectors_along_arc hG E H Dw l Xo c O β Y A b a χ W (e τ k)).2 v hv).2 ?_` and prove the remaining obligations. Establish `e1 : eSec t'.G ≫ m1.φ = y.x ≫ eSec Xo.univ.t.G` using `m1.cm.e_comm.trans (congrArg (· ≫ _) m1.base)`. Establish `e2 : eSec t'.G ≫ m2.φ = spMap ι ≫ eSec W.t.G` using `m2.cm.e_comm.trans (congrArg (· ≫ _) m2.base)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ u' = eSec t'.G`. Use `m1.cart.1.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `((Category.assoc _ _ _).trans ((congrArg _ h1).trans (y.tan τ k).2)).trans e1.symm`. Use `((Category.assoc _ _ _).trans (congrArg _ h3)).trans ((sp_comp _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[TanPart.fst_alg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Spec.map_id _).trans (Over.w (MonObj.one (X := t'.G))).symm`. Use `W.t.semi.separated` as an intermediate fact. Use `ExtUnique.isSchemeTheoreticallyDominant_spec_of_injective (CommRingCat.ofHom ι) hι` as an intermediate fact. Use `ExtUnique.hom_ext_of_dominant W.t.G.hom ?_ (spMap ι) ?_` and prove the remaining obligations. Use `((Category.assoc _ _ _).trans (congrArg _ (Over.w v))).trans ((sp_comp _ _).trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TanPart.fst_alg]`. Conclude with `(Spec.map_id _).trans (Over.w (MonObj.one (X := W.t.G))).symm`. Use `Eq.trans ?_ e2` and prove the remaining obligations. Rewrite using `[← h0, Category.assoc, h2, ← Category.assoc, ← Category.assoc, sp_comp, sp_comp]`. Use `congr 2`.
-
-Conclude with `RingHom.ext fun x => by simp [dualMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gtTanR_of_isArcFr (hG : Out.GlobalFnsSt) {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β}
     {A : Type} [CommRing A] [IsDomain A] [IsLocalRing A] [IsNoetherianRing A] {b : O →+* A} {a : ArcIn Dw l β A b}
@@ -118,7 +116,7 @@ variable {K : Type} [Field K]
 def cstL : ℂ →+* ℂ⸨X⸩ := (HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.C (R := ℂ))
 
 /- English proof (translation)
-The claim follows from `HahnSeries.ofPowerSeries_C z`.
+A detailed English derivation is pending.
 -/
 theorem cstL_eq (z : ℂ) : cstL z = HahnSeries.C z := HahnSeries.ofPowerSeries_C z
 
@@ -126,9 +124,9 @@ def evP (ι : K →+* ℂ) (x : ArcLt Dw → ℂ) : MvPolynomial (ArcLt Dw) K⸨
   MvPolynomial.eval₂Hom (LetterMap.coeffMap ι) fun v => cstL (x v)
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero, arcDet, map_prod, Finset.prod_ne_zero_iff]`. Introduce `τ _`. Establish `: (evP ι x).mapMatrix (Matrix.of fun i k : Fin (Dw.mult τ) => (MvPolynomial.X (⟨τ, i, k⟩ : ArcLt Dw) : MvPolynomial (ArcLt Dw) K⸨X⸩)) = cstL.mapMatrix (Matrix.of fun i k : Fin (Dw.mult τ) => x ⟨τ, (i, k)⟩)`. Use extensionality with `i k : 2`. Simplify using `[evP]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.map_det, this, ← RingHom.map_det]`. Conclude with `(map_ne_zero cstL).2 (hx τ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_evalLaurent_det (ι : K →+* ℂ) {x : ArcLt Dw → ℂ} (hx : InvBl x) : IsUnit (evP ι x (arcDet Dw K)) := by
   rw [isUnit_iff_ne_zero, arcDet, map_prod, Finset.prod_ne_zero_iff]
@@ -145,27 +143,27 @@ def evS (ι : K →+* ℂ) {x : ArcLt Dw → ℂ} (hx : InvBl x) : ArcS Dw K →
   IsLocalization.Away.lift (arcDet Dw K) (g := evP ι x) (isUnit_evalLaurent_det ι hx)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem evS_algebraMap (ι : K →+* ℂ) {x : ArcLt Dw → ℂ} (hx : InvBl x) (P : MvPolynomial (ArcLt Dw) K⸨X⸩) :
     evS ι hx (algebraMap _ _ P) = evP ι x P := IsLocalization.Away.lift_eq _ _ _
 
 /- English proof (translation)
-The claim follows from `(evS_algebraMap ι hx _).trans ((MvPolynomial.eval₂Hom_C _ _ _).trans (LetterMap.coeffMap_ofPowerSeries ι g))`.
+A detailed English derivation is pending.
 -/
 theorem evS_arcι (ι : K →+* ℂ) {x : ArcLt Dw → ℂ} (hx : InvBl x) (g : PowerSeries K) :
     evS ι hx (arcι Dw K g) = HahnSeries.ofPowerSeries ℤ ℂ (PowerSeries.map ι g) :=
   (evS_algebraMap ι hx _).trans ((MvPolynomial.eval₂Hom_C _ _ _).trans (LetterMap.coeffMap_ofPowerSeries ι g))
 
 /- English proof (translation)
-The claim follows from `(evS_algebraMap ι hx _).trans (MvPolynomial.eval₂Hom_X' _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem evS_arcX (ι : K →+* ℂ) {x : ArcLt Dw → ℂ} (hx : InvBl x) (τ : E →+* ℂ) (i k : Fin (Dw.mult τ)) :
     evS ι hx (arcX Dw K τ i k) = cstL (x ⟨τ, (i, k)⟩) :=
   (evS_algebraMap ι hx _).trans (MvPolynomial.eval₂Hom_X' _ _ _)
 
 /- English proof (translation)
-Rewrite using `[evP, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_eq, HahnSeries.coeff_sum]`. Use `Finset.sum_congr rfl fun μ _ => ?_` and prove the remaining obligations. Simplify using `only [← map_pow, ← map_prod]`. Rewrite using `[mul_comm, cstL_eq, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul, mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coeff_evalLaurent (ι : K →+* ℂ) (x : ArcLt Dw → ℂ) (P : MvPolynomial (ArcLt Dw) K⸨X⸩) (j : ℤ) :
     (evP ι x P).coeff j = ∑ μ ∈ P.support, ι ((P.coeff μ).coeff j) * ∏ v ∈ μ.support, x v ^ μ v := by
@@ -178,21 +176,21 @@ theorem coeff_evalLaurent (ι : K →+* ℂ) (x : ArcLt Dw → ℂ) (P : MvPolyn
 end Ev
 
 /- English proof (translation)
-Establish `hY : Mono d.Y.j` using `GlobalTheory.ThetaShiftProofs.mono_j d.Y (mono_spMap_subtype _)`. Establish `: CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap c.F K₁).injective`. Establish `hdom` using `(GlobalTheory.ArcConst.algebraic_const E H Dw K₁).1`. Set `φ : ArcS Dw K₁ →ₐ[c.F] ℂ⸨X⸩` to `{ evS ι hx with commutes' := fun r => by`. Express the relevant statement in the definitionally equal form `evS ι hx _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[arcS_pin, evS_arcι, PowerSeries.map_C, halg]`. Use `rfl }`. Take `⟨y₁, hy₁⟩` from `hev.bc _ _ φ y₀`. Take `⟨z₁, hz₁⟩` from `hev.bc _ _ φ d.yF`. Establish `a₀` using `(GlobalTheory.T.arcFramedPoint_unique_and_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W e₀ d.th hth _ _ y₀ hy₀).2 hY _ φ y₁ hy₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hι : φ.toRingHom.comp (arcι Dw K₁) = (HahnSeries.ofPowerSeries ℤ ℂ).comp (PowerSeries.map ι)` using `RingHom.ext fun g => evS_arcι ι hx g`. Rewrite `a₀` using `[hι]`. Establish `b₁` using `GlobalTheory.T.isFramedPoint_of_arc_baseChange h1 h2 E H Dw l Xo c _ _ d.Y K₁ _ _ d.χ d.W ℂ b' a₁ ι p W₁ hY hp hW e₀ e₁ d.th th₁ he ht _ _ y₁ a₀`. Establish `c₁` using `((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c (ArcS Dw K₁)).2.2.1 _ φ _ _ _ _ _ _ hc hy₁).1 hz₁`. Set `g : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) ℂ` to `fun τ => Matrix.of fun i k => x ⟨τ, (i, k)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : ∀ τ, (letM Dw K₁ τ).map φ = 1 * (g τ).map cstL` using `fun τ => by`. Rewrite using `[one_mul]`. Conclude with `Matrix.ext fun i k => evS_arcX ι hx τ i k`. Establish `hζ : φ (cst Dw ζ) = cstL (ι ζ) * 1`. Rewrite using `[mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(evS_arcι ι hx _).trans ?_` and prove the remaining obligations. Rewrite using `[PowerSeries.map_C]`. Both sides reduce to the same expression. Rewrite `c₁` using `[funext hM, hζ]`. Establish `hu` using `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ _ _ y₁).2.2.1 z₁ c₁`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y₂, hy₂⟩` from `(GlobalTheory.ArcQ.frChg_exists_unique_units E H Dw l Xo c ℂ⸨X⸩ (fun τ => (g τ).map cstL) 1 y₁).1 (fun τ => by simpa only [one_mul] using hu.1 τ) isUnit_one`. Establish `c₂ : FrChg (fun _ => 1) (cstL (ι ζ)) y₂ z₁` using `((GlobalTheory.T.frameChange_compose_invert_baseChange_triangular E H Dw l Xo c ℂ⸨X⸩).1 _ _ _ _ _ _ _ hy₂).2 c₁`. Use `⟨fun h0 => hu.2.ne_zero (by rw [h0, map_zero, zero_mul]), y₂, ?_, fun F hF => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.arcFrame_change_by_constants h1 h2 E H Dw l Xo c _ _ d.Y ℂ b' a₁ _ W₁ e₁ e₂ th₁ th₁ g 1 hth₁ he₂ (ThMul.refl _) _ _ y₁ y₂ hY b₁ ?_` and prove the remaining obligations. Rewrite using `[map_one, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hy₂`. Take `⟨P, hP, -⟩` from `evR_arc_isHomogeneous h1 h2 E H Dw l Xo c hev K₁ d a' n F hF`. Establish `eS` using `(GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF (ArcS Dw K₁)).1 _ φ _ _ hz₁`. Establish `eT` using `((GlobalTheory.T.framedPoint_eval_natural_weight_scaling E H Dw l Xo c hev a' n F hF ℂ⸨X⸩).2 inferInstance).2 _ _ _ c₂`. Establish `e3 : evP ι x P = cstL (ι ζ ^ n) * evR Xo c F y₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_pow, ← eT, eS, ← hP]`. Conclude with `(evS_algebraMap ι hx P).symm`. Rewrite using `[ajAt, ← hP, LetterMap.num_algebraMap, ← coeff_evalLaurent, e3, cstL_eq, HahnSeries.C_mul_eq_smul, HahnSeries.coeff_smul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.EvLaws Xo c)
     {K₁ : Type} [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ) [Algebra c.F ℂ⸨X⸩]
@@ -256,13 +254,13 @@ theorem exists_frPt_at (h1 : Out.Laws) (h2 : Out.Laws2) (hev : GlobalTheory.Reg.
       HahnSeries.coeff_smul, smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `d.arcDatum_isArc_point_basis.2.1`. Establish `: CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap c.F K₁).injective`. Take `⟨hdom, hinj, -⟩` from `GlobalTheory.ArcConst.algebraic_const E H Dw K₁`. Establish `hq0 : q.asIdeal = ⊥`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hq` to reduce the goal to its premises. Establish `hm` using `(IsDiscreteValuationRing.iff_pid_with_one_nonzero_prime (PowerSeries ℂ)).1 inferInstance`. Rewrite using `[hm.2.unique ⟨h, q.isPrime⟩ ⟨IsDiscreteValuationRing.not_a_field _, inferInstance⟩, PowerSeries.maximalIdeal_eq_span_X]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hι : Function.Injective (arcι Dw K₁)` using `hinj.comp ((MvPolynomial.C_injective _ _).comp HahnSeries.ofPowerSeries_injective)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `η : Sp (ArcS Dw K₁)` to `(⊥ : PrimeSpectrum (ArcS Dw K₁))`. Establish `hη : spMap (arcι Dw K₁) η = spMap (PowerSeries.map ι) q`. Use `PrimeSpectrum.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.comap (arcι Dw K₁) ⊥ = Ideal.comap (PowerSeries.map ι) q.asIdeal`. Rewrite using `[hq0, Ideal.comap_bot_of_injective _ hι, Ideal.comap_bot_of_injective _ (PowerSeries.map_injective ι ι.injective)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z η, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, hz, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hη]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem generic_mem {K₁ : Type} [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ)
     (q : Sp (PowerSeries ℂ)) (hq : PowerSeries.X ∉ q.asIdeal) :
@@ -288,23 +286,19 @@ theorem generic_mem {K₁ : Type} [Field K₁] [Algebra c.F K₁] (d : ArcDatum 
   rw [← Scheme.Hom.comp_apply, hz, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, hη]
 
 /- English proof (translation)
-Introduce `h1 h2 hU h5 hN E _ _ _ H Dw l Xo c K₁ _ _ d ι r U ξ ν₀ a' n hev hgood hunf hover hpush hrk hξ hbeta hdom htv`. Use `letI : Algebra (FractionRing ℂ) ℂ := FractionRing.liftAlgebra ℂ ℂ`. Use `haveI : IsScalarTower ℂ (FractionRing ℂ) ℂ := FractionRing.isScalarTower_liftAlgebra ℂ ℂ`. Use `letI : Algebra c.F ℂ⸨X⸩ := (cstL.comp (ι.comp (algebraMap c.F K₁))).toAlgebra`. Take `⟨Uw⟩` from `GlobalTheory.T.nonempty_unifWitnessData_of_isUnf E H Dw l Xo c _ r U hunf`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ζ, e₀, y₀, hy₀, hc⟩` from `d.exists_normal_tangent h1 h2`. Establish `hth : ThNZ d.th`. Take `⟨_, _, _, _, hne, -⟩` from `d.isArc3`. Conclude with `(GlobalTheory.ThetaOverField.nonzero_generates h1 h2 K₁ _ d.th).1.1 hne`. Establish `: CharZero K₁` using `charZero_of_injective_algebraMap (algebraMap c.F K₁).injective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hι : Function.Injective (arcι Dw K₁)` using `(GlobalTheory.ArcConst.algebraic_const E H Dw K₁).2.1.comp ((MvPolynomial.C_injective _ _).comp HahnSeries.ofPowerSeries_injective)`. Take `⟨⟨a₁, p, hp⟩, hbc⟩` from `GlobalTheory.ArcQBC.baseChanges h1 h2 hU h5 E H Dw l Xo c _ _ d.Y K₁ ℂ _ (d.a.restrict (c.V d.Wp).subtype) ι ι.injective ((ι.comp (algebraMap c.F K₁)).comp (c.V d.Wp).subtype) rfl`. Take `⟨hW, hlet, htan, hthx, hnz⟩` from `hbc a₁ p hp`. Take `⟨W₁, hW₁⟩` from `hW d.χ d.W`. Use `choose e₁ he₁ using fun τ k => (hlet (e₀ τ k)).exists`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨th₁, hth₁⟩` from `(hthx d.th).exists`. Establish `hover₁ : (spMap (PowerSeries.map ι) ≫ d.χ) ≫ d.Y.s = spMap (PowerSeries.C (R` using `ℂ)) ≫ spMap ((ι.comp (algebraMap c.F K₁)).comp (c.V d.Wp).subtype) := by`. Rewrite using `[Category.assoc, hover, sp_comp, sp_comp, sp_comp]`. Use `congr 1`. Conclude with `RingHom.ext fun x => PowerSeries.map_C _ _`.
+Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Ha⟩` from `hN E H Dw l Xo c _ _ d.Y (ι.comp (algebraMap c.F K₁)) a₁ _ W₁ Uw.g _ Uw.F hgood ((GlobalTheory.Relab.relab_good E H l c _ hgood).2.2.2 Dw Uw.g Uw.e) (GlobalTheory.ArcInTest.exists_values c d.Wp) hover₁ (generic_mem d ι)`. Set `f : a₁.D₀.X ≃ₗ[𝓞 E] d.a.D₀.X` to `{ p.xe with map_smul' := hp.2.1 }`. Take `⟨k, ξ', sE, C, hiso, -, -, -, hC, -, hmain⟩` from `GlobalTheory.T.laurentCoeff_sectionValue_arc_eq_fourierJacobi h1 h2 E H Dw l Xo c _ r U Uw _ _ d.Y a₁ _ W₁ Ha th₁ (ξ.comp (f.toLinearMap.restrictScalars ℤ)) ν₀ d.jj a' n hev hgood hunf (fun _ => rfl) hover₁ (mono_spMap_subtype _) hpush (hnz _ _ hth₁ hth) (f.finrank_eq.trans hrk) …`. Take `⟨y, rfl⟩` from `f.surjective y`. Conclude with `LinearMap.congr_fun h y))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(betaAt_comp f ξ hp.2.2.1 hbeta) hdom htv (((Ha.T + 1 : ℝ) : ℂ) * Complex.I) (by simp)`. Take `⟨v₁, v₂, -, v₄⟩` from `GlobalTheory.T.torusExt_exponential_derivative_bijective_tangent h1.globalFns E H Dw l Xo c _ _ _ d.Y a₁ _ W₁ _ _ Uw.F Ha`. Use `choose z₁ hz₁ using fun τ i => (v₁ (e₁ τ i) (htan _ _ (he₁ τ i) (gtTanR_of_isArcFr h1.globalFns hι hy₀ τ i))).exists`. Establish `key : ∀ x, InvBl x → ∃ (fr : (U.X k).dom) (κ : ℂ), κ ≠ 0 ∧ ∀ F ∈ sec Xo c a' n, (U.X k).IsBddSec (laU U a' n k) (rdU U F k) → ajAt d ι F x * eTwoPi (((Ha.T + 1 : ℝ) : ℂ) * Complex.I) ^ d.jj = κ * (U.X k).fj (laU U a' n k) ξ' (fun τ => (τ.1 ν₀).re) (rdU U F k) fr.1` using `fun x hx => by choose e₂ he₂ using fun (τ : E →+* ℂ) (i : Fin (Dw.mult τ)) => (v₂ (∑ j, x ⟨τ, (i, j)⟩ • z₁ τ j)).exists`. Take `⟨hζ, y, hy, hval⟩` from `exists_frPt_at h1 h2 hev d ι (fun _ => rfl) hy₀ hc hth hp hW₁ he₁ hth₁ (hnz _ _ hth₁ hth) hx (fun τ i => (v₄ _ _ _ _ _ (hz₁ τ)).2 (he₂ τ i)) a' n`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨fr, κ, -, -, -, -, -, -, hκ, hF⟩` from `hmain e₂ _ y hy he₂`. Use `⟨fr, ι ζ ^ n * κ, mul_ne_zero (pow_ne_zero _ hζ) (norm_pos_iff.1 ?_), fun F h hb => ?_⟩` and prove the remaining obligations. Rewrite using `[hκ]`. Conclude with `mul_pos (Real.rpow_pos_of_pos (mul_pos hC (Finset.prod_pos fun τ _ => inv_pos.2 (GlobalTheory.FlagFlowCheck.tt_pos _ fr.2 hiso.2.2 τ))) _) (BoundedSectionAlgebra.nfac_pos _ fr.2 _)`. Rewrite using `[hval F h, mul_assoc, hF F h hb, mul_assoc]`.
-
-Establish `hone : InvBl (Dw` using `Dw) fun v => (1 : Matrix (Fin (Dw.mult v.1)) (Fin (Dw.mult v.1)) ℂ) v.2.1 v.2.2 := fun τ => (Matrix.det_one (n := Fin (Dw.mult τ)) (R := ℂ)).trans_ne one_ne_zero`. Use `choose fr κ hκ hF using key`. Use `⟨k, ξ', fun x => if hx : InvBl x then (fr x hx).1 else (fr _ hone).1, eTwoPi (((Ha.T + 1 : ℝ) : ℂ) * Complex.I), fun x => if hx : InvBl x then κ x hx else 1, Complex.exp_ne_zero _, hiso, fun x hx => ?_, fun x hx => ?_, fun F h hb x hx => ?_⟩` and prove the remaining obligations. Simplify `hκ x hx` using `only [dif_pos hx]`. Simplify `(fr x hx).2` using `only [dif_pos hx]`.
-
-Simplify `hF x hx F h hb` using `only [dif_pos hx]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt → Out.Laws5 → ToroidalArchimedeanCondition → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ) (r : ℕ) (U : Unf Xo c (ι.comp (algebraMap c.F K₁)) r) (ξ : Module.Dual ℤ d.a.D₀.X) (ν₀ : E) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.Reg.EvLaws Xo c → GoodEmb c (ι.comp (algebraMap c.F K₁)) → IsUnf U → d.OverBase → PushInvertible d.Y.t.G d.Y.t.PP.L → Module.finrank (𝓞 E) d.a.D₀.X = 1 → ξ ≠ 0 → BetaAt ξ l.M' d.a.be ν₀ d.jj → Dom a' n → (∀ k, TransvIn (U.X k) l.M' (laU U a' n k)) → ∃ (k : U.Comp) (ξ' : Fin r → E) (fr : (ArcLt Dw → ℂ) → Frame (U.X k).Ψ r) (u₁ : ℂ) (κ : (ArcLt Dw → ℂ) → ℂ), u₁ ≠ 0 ∧ (U.X k).IsIso ξ' ∧ (∀ x, InvBl x → κ x ≠ 0) ∧ (∀ x, InvBl x → fr x ∈ (U.X k).dom) ∧ ∀ F ∈ sec Xo c a' n, (U.X k).IsBddSec (laU U a' n k) (rdU U F k) → ∀ x, InvBl x → ajAt d ι F x * u₁ ^ d.jj = κ x * (U.X k).fj (laU U a' n k) ξ' (fun τ => (τ.1 ν₀).re) (rdU U F k) (fr x) := by
   intro h1 h2 hU h5 hN E _ _ _ H Dw l Xo c K₁ _ _ d ι r U ξ ν₀ a' n hev hgood hunf hover hpush hrk hξ hbeta hdom htv
@@ -370,7 +364,7 @@ theorem ajAt_eq_fj_of_overBase : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt
   · simpa only [dif_pos hx] using hF x hx F h hb
 
 /- English proof (translation)
-Introduce `h1 h2 hU h5 hN E _ _ _ H Dw l Xo c K₁ _ _ d ι r U ξ ν₀ a' n hev hgood hunf hover _` and use `ajAt_eq_fj_of_overBase h1 h2 hU h5 hN E H Dw l Xo c K₁ d ι r U ξ ν₀ a' n hev hgood hunf hover`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ajAt_eq_fj : Out.Laws → Out.Laws2 → Out.UnifBaseChangeSt → Out.Laws5 → ToroidalArchimedeanCondition → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K₁ : Type) [Field K₁] [Algebra c.F K₁] (d : ArcDatum Xo c K₁) (ι : K₁ →+* ℂ) (r : ℕ) (U : Unf Xo c (ι.comp (algebraMap c.F K₁)) r) (ξ : Module.Dual ℤ d.a.D₀.X) (ν₀ : E) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), GlobalTheory.Reg.EvLaws Xo c → GoodEmb c (ι.comp (algebraMap c.F K₁)) → IsUnf U → d.OverBase → (∀ τ k, GtTanR (d.e τ k)) → PushInvertible d.Y.t.G d.Y.t.PP.L → Module.finrank (𝓞 E) d.a.D₀.X = 1 → ξ ≠ 0 → BetaAt ξ l.M' d.a.be ν₀ d.jj → Dom a' n → (∀ k, TransvIn (U.X k) l.M' (laU U a' n k)) → ∃ (k : U.Comp) (ξ' : Fin r → E) (fr : (ArcLt Dw → ℂ) → Frame (U.X k).Ψ r) (u₁ : ℂ) (κ : (ArcLt Dw → ℂ) → ℂ), u₁ ≠ 0 ∧ (U.X k).IsIso ξ' ∧ (∀ x, InvBl x → κ x ≠ 0) ∧ (∀ x, InvBl x → fr x ∈ (U.X k).dom) ∧ ∀ F ∈ sec Xo c a' n, (U.X k).IsBddSec (laU U a' n k) (rdU U F k) → ∀ x, InvBl x → ajAt d ι F x * u₁ ^ d.jj = κ x * (U.X k).fj (laU U a' n k) ξ' (fun τ => (τ.1 ν₀).re) (rdU U F k) (fr x) :=
   fun h1 h2 hU h5 hN E _ _ _ H Dw l Xo c K₁ _ _ d ι r U ξ ν₀ a' n hev hgood hunf hover _ =>

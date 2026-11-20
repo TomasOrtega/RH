@@ -20,7 +20,7 @@ open MvPolynomial
 namespace GlobalTheory.PsCo.Pc1.A
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.psco_t_core`.
+A detailed English derivation is pending.
 -/
 theorem core : ∀ {A : Type} [CommRing A] [Algebra ℂ A] {I : Type} [Fintype I] [DecidableEq I]
     (D : I → Derivation ℂ A A) (dm : Derivation ℂ A A) (J : Ideal A) (Z : Matrix I I A) (u η : I → A) (E μ r : A),
@@ -31,20 +31,20 @@ theorem core : ∀ {A : Type} [CommRing A] [Algebra ℂ A] {I : Type} [Fintype I
   GlobalTheory.psco_t_core
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PsCo.DMComm.dM_comm`.
+A detailed English derivation is pending.
 -/
 theorem dM_comm : ∀ {n : ℕ} (ε : Fin n → Bool) (w x : Mode ε) (P : Poly n), dM ε w (dM ε x P) = dM ε x (dM ε w P) :=
   GlobalTheory.PsCo.DMComm.dM_comm
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PsCo.Cw2a.coefM_dMu`.
+A detailed English derivation is pending.
 -/
 theorem coefM_dMu : ∀ {n L : ℕ} (ε : Fin n → Bool) (x : Mode ε) (k : ℕ) (s : PolyM n L),
     coefM n L k (dMu L ε x s) = dL L ε x (coefM n L k s) :=
   GlobalTheory.PsCo.Cw2a.coefM_dMu
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.coefM_pencil`.
+A detailed English derivation is pending.
 -/
 theorem coefM_pencil : ∀ {n L : ℕ} {I : Type} [Fintype I] [DecidableEq I] (A0 B0 : Matrix I I (PolyL n L)),
     let Z : Matrix I I (PolyM n L) := fun x y => muM n L * inM n L (A0 x y) + inM n L (B0 x y)
@@ -101,9 +101,9 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [_root_.GlobalTheory.PsCo.Pc1.A.inM]`. Consider the case `add p q hp hq => simp [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, Derivation.leibniz, hp, smul_eq_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.inM, pderiv_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pderiv_mu_lambdaPoly_lemma_5 (f : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) :
     pderiv none (_root_.GlobalTheory.PsCo.Pc1.A.inM n L f) = 0 := by
@@ -118,7 +118,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.muM, pderiv_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pderiv_mu_muVariable_lemma_6 : pderiv none (_root_.GlobalTheory.PsCo.Pc1.A.muM n L) = 1 := by
   simp [_root_.GlobalTheory.PsCo.Pc1.A.muM, pderiv_X]
@@ -127,9 +127,9 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [_root_.GlobalTheory.PsCo.Pc1.A.inM]`. Consider the case `add p q hp hq => simp [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, Derivation.leibniz, hp, smul_eq_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.dMu, _root_.GlobalTheory.PsCo.Pc1.A.inM, mkDerivation_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pencilModeDerivation_lambdaPoly_lemma_7 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) (f : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) :
     _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε x (_root_.GlobalTheory.PsCo.Pc1.A.inM n L f) =
@@ -145,9 +145,9 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp [_root_.GlobalTheory.PsCo.Pc1.A.inL]`. Consider the case `add p q hp hq => simp [map_add, hp, hq]`. Consider the case `mul_X p v hp`. Simplify using `only [map_mul, Derivation.leibniz, hp, smul_eq_mul, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.dL, _root_.GlobalTheory.PsCo.Pc1.A.inL, mkDerivation_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lambdaModeDerivation_entryPoly_lemma_8 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) (P : _root_.GlobalTheory.PsCo.Pc1.Poly n) :
     _root_.GlobalTheory.PsCo.Pc1.A.dL L ε x (_root_.GlobalTheory.PsCo.Pc1.A.inL n L P) =
@@ -163,7 +163,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.dMu, _root_.GlobalTheory.PsCo.Pc1.A.muM, mkDerivation_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pencilModeDerivation_muVariable_lemma_9 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) :
     _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε x (_root_.GlobalTheory.PsCo.Pc1.A.muM n L) = 0 := by
@@ -173,7 +173,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.dL, _root_.GlobalTheory.PsCo.Pc1.A.laL, mkDerivation_X]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lambdaModeDerivation_variable_lemma_10 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) (i : Fin L) :
     _root_.GlobalTheory.PsCo.Pc1.A.dL L ε x (_root_.GlobalTheory.PsCo.Pc1.A.laL n i) = 0 := by
@@ -183,9 +183,9 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Take `⟨⟨r, c⟩, hr, hc⟩` from `j`. Take `⟨⟨a, b⟩, ha, hb⟩` from `x`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.dM, _root_.GlobalTheory.PsCo.Pc1.dZ, mkDerivation_X, Sum.elim_inl, Matrix.single_apply]`. Establish `h1 : a ≠ c` using `fun h => by simp_all`. Establish `h2 : b ≠ r` using `fun h => by simp_all`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma modeDerivation_offDiagonalEntry_lemma_21 (x j : _root_.GlobalTheory.PsCo.Pc1.Mode ε) :
     _root_.GlobalTheory.PsCo.Pc1.dM ε x (X (Sum.inl j.1)) = 0 := by
@@ -201,7 +201,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.rP, _root_.GlobalTheory.PsCo.Pc1.OmP, map_sum, Derivation.leibniz, modeDerivation_offDiagonalEntry_lemma_21]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma modeDerivation_offDiagonalBlockSqNorm_lemma_19 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) :
     _root_.GlobalTheory.PsCo.Pc1.dM ε x (_root_.GlobalTheory.PsCo.Pc1.rP ε) =
@@ -213,7 +213,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.i2, pencilModeDerivation_lambdaPoly_lemma_7, lambdaModeDerivation_entryPoly_lemma_8]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma pencilModeDerivation_embedding_lemma_16 (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε) (s : _root_.GlobalTheory.PsCo.Pc1.Poly n) :
     _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε x (_root_.GlobalTheory.PsCo.Pc1.A.i2 L s) =
@@ -224,7 +224,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Establish `h : Ideal.map (_root_.GlobalTheory.PsCo.Pc1.A.inM n L) (_root_.GlobalTheory.PsCo.Pc1.A.JL (n` using `n) L) = _root_.GlobalTheory.PsCo.Pc1.A.JM L := by`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.JL, _root_.GlobalTheory.PsCo.Pc1.A.JM, Ideal.map_span, ← Set.range_comp]`. Simplify using `[Function.comp_def, map_pow]`. Conclude with `h ▸ Ideal.mem_map_of_mem _ hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma lambdaPoly_mem_lambdaSquaresIdealPolyM_lemma_20 {g : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L}
     (hg : g ∈ _root_.GlobalTheory.PsCo.Pc1.A.JL L) :
@@ -239,17 +239,17 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Establish `hP0` using `_root_.GlobalTheory.PsCo.Cw2a.t_dual_prod (_root_.GlobalTheory.PsCo.Pc1.A.dL L ε i) (fun l => _root_.GlobalTheory.PsCo.Pc1.A.laL n l) (fun l => _root_.GlobalTheory.PsCo.Pc1.A.inL n L (m l)) (_root_.GlobalTheory.PsCo.Pc1.A.JL L) (fun l => lambdaModeDerivation_variable_lemma_10 ε i …`. Establish `hk : _root_.GlobalTheory.PsCo.Pc1.dM ε i (_root_.GlobalTheory.PsCo.Pc1.detbP n) = 0` using `_root_.GlobalTheory.PsCo.Cw2a.modeDerivation_det_eq_zero ε i`. Establish `hdM : _root_.GlobalTheory.PsCo.Pc1.dM ε i (_root_.GlobalTheory.PsCo.Pc1.detbP n ^ M) = 0`. Simplify using `[Derivation.leibniz_pow, hk]`. Establish `hE : _root_.GlobalTheory.PsCo.Pc1.A.dL L ε i (_root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight M m) = _root_.GlobalTheory.PsCo.Pc1.A.inL n L (_root_.GlobalTheory.PsCo.Pc1.detbP n ^ M) * _root_.GlobalTheory.PsCo.Pc1.A.dL L ε i (_root_.GlobalTheory.PsCo.Pc1.A.dualNumberFactor …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[_root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight, Derivation.leibniz, lambdaModeDerivation_entryPoly_lemma_8, hdM]`. Simplify using the standard rewrite rules. Establish `hB : ∑ j, _root_.GlobalTheory.PsCo.Pc1.A.pencilConstantPartMatrix ε c i j * _root_.GlobalTheory.PsCo.Pc1.A.inL n L (X (Sum.inl j.1)) = ∑ l, _root_.GlobalTheory.PsCo.Pc1.A.laL n l * _root_.GlobalTheory.PsCo.Pc1.A.dL L ε i (_root_.GlobalTheory.PsCo.Pc1.A.inL n L (m l))`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.pencilConstantPartMatrix, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[lambdaModeDerivation_entryPoly_lemma_8, hc, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.inL, mul_assoc]`. Establish `hA : ∑ j, _root_.GlobalTheory.PsCo.Pc1.A.inM n L (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L i j) * _root_.GlobalTheory.PsCo.Pc1.A.i2 L (X (Sum.inl j.1)) = _root_.GlobalTheory.PsCo.Pc1.A.i2 L (_root_.GlobalTheory.PsCo.Pc1.dM ε i (_root_.GlobalTheory.PsCo.Pc1.rP …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[modeDerivation_offDiagonalBlockSqNorm_lemma_19]`. Simplify using `[map_sum, _root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix, _root_.GlobalTheory.PsCo.Pc1.A.i2, mul_comm]`. Establish `hsplit : ∑ j, _root_.GlobalTheory.PsCo.Pc1.A.Zm ε L (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L) (_root_.GlobalTheory.PsCo.Pc1.A.pencilConstantPartMatrix ε c) i j * _root_.GlobalTheory.PsCo.Pc1.A.i2 L (X (Sum.inl j.1)) = _root_.GlobalTheory.PsCo.Pc1.A.muM n L * …`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.Zm, add_mul, Finset.sum_add_distrib, Finset.mul_sum, map_sum, map_mul, mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[hsplit, pencilModeDerivation_embedding_lemma_16, hA, hB, pencilModeDerivation_lambdaPoly_lemma_7, hE]`. Establish `key : _root_.GlobalTheory.PsCo.Pc1.A.inM n L (_root_.GlobalTheory.PsCo.Pc1.A.inL n L (_root_.GlobalTheory.PsCo.Pc1.detbP n ^ M) * _root_.GlobalTheory.PsCo.Pc1.A.dL L ε i (_root_.GlobalTheory.PsCo.Pc1.A.dualNumberFactorsProduct m)) + _root_.GlobalTheory.PsCo.Pc1.A.muM n L * _root_ …`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight, map_mul, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lambdaPoly_mem_lambdaSquaresIdealPolyM_lemma_20 (Ideal.mul_mem_left _ _ hP0)`.
+A detailed English derivation is pending.
 -/
 private lemma weight_modeDerivation_sub_mem_lemma_11 (M : ℕ) (m : Fin L → _root_.GlobalTheory.PsCo.Pc1.Poly n)
     (c : Fin L → _root_.GlobalTheory.PsCo.Pc1.Mode ε → _root_.GlobalTheory.PsCo.Pc1.Mode ε → ℂ)
@@ -321,7 +321,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Establish `h : ((optionEquivLeft ℂ (Fin L ⊕ _root_.GlobalTheory.PsCo.Pc1.A.EntIdx n)).toAlgHom.comp (rename some)) = (Polynomial.CAlgHom : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L →ₐ[ℂ] _)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[optionEquivLeft_X_some]`. Conclude with `congrArg (fun f => f a) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma optionEquivLeft_rename_some_eq_C_lemma_23 (a : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) :
     optionEquivLeft ℂ _ (rename some a) = Polynomial.C a := by
@@ -336,7 +336,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.coefM, _root_.GlobalTheory.PsCo.Pc1.A.inM, optionEquivLeft_rename_some_eq_C_lemma_23]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma muCoeff_lambdaPoly_mul_lemma_18 (a : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (_root_.GlobalTheory.PsCo.Pc1.A.inM n L a * F) =
@@ -347,9 +347,9 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.exL, _root_.GlobalTheory.PsCo.Pc1.A.laL, LinearMap.coe_comp, Function.comp_apply, AlgEquiv.toLinearMap_apply, map_mul, map_pow, sumAlgEquiv_X_inl]`. Simplify using `only [LinearMap.coe_restrictScalars, MvPolynomial.lcoeff_apply]`. Rewrite using `[X_pow_eq_monomial, coeff_mul_monomial', if_neg]`. Introduce `h`. Use `h i` as an intermediate fact.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.allOnes] at this`.
+Simplify using the standard rewrite rules.
 -/
 private lemma lambdaCoeff_mul_variable_sq_lemma_22 (G : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) (i : Fin L) :
     _root_.GlobalTheory.PsCo.Pc1.A.exL n L (G * _root_.GlobalTheory.PsCo.Pc1.A.laL n i ^ 2) = 0 := by
@@ -365,7 +365,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Rewrite `hg` using `[_root_.GlobalTheory.PsCo.Pc1.A.JM, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨f, rfl⟩` from `hg`. Simplify using `only [map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← map_pow, mul_comm, muCoeff_lambdaPoly_mul_lemma_18, mul_comm, lambdaCoeff_mul_variable_sq_lemma_22]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private lemma coeff_eq_zero_of_mem_lambdaSquares_lemma_12 {g : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L}
     (hg : g ∈ _root_.GlobalTheory.PsCo.Pc1.A.JM L) (k : ℕ) :
@@ -380,7 +380,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Establish `h` using `sumAlgEquiv_comp_rename_inr ℂ (Fin L) (_root_.GlobalTheory.PsCo.Pc1.A.EntIdx n)`. Conclude with `congrArg (fun f => f s) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma sumAlgEquiv_rename_inr_eq_C_lemma_25 (s : _root_.GlobalTheory.PsCo.Pc1.Poly n) :
     sumAlgEquiv ℂ (Fin L) (_root_.GlobalTheory.PsCo.Pc1.A.EntIdx n) (rename Sum.inr s) = C s := by
@@ -391,7 +391,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.exL, _root_.GlobalTheory.PsCo.Pc1.A.inL, sumAlgEquiv_rename_inr_eq_C_lemma_25, coeff_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma extractCoeff_inl_mul (s : _root_.GlobalTheory.PsCo.Pc1.Poly n) (G : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) :
     _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.inL n L s * G) =
@@ -402,7 +402,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.PsCo.Cw2a.t_coefM_pderiv]`. Simplify using `only [Algebra.smul_def, map_add, map_natCast, map_one, nsmul_eq_mul, Nat.cast_add, Nat.cast_one]`. Rewrite using `[show ((k : _root_.GlobalTheory.PsCo.Pc1.A.PolyL n L) + 1) = _root_.GlobalTheory.PsCo.Pc1.A.inL n L ((k : _root_.GlobalTheory.PsCo.Pc1.Poly n) + 1) by simp, extractCoeff_inl_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma coeff_pderiv_mu_lemma_13 (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (pderiv none F)) =
@@ -417,7 +417,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.i2, muCoeff_lambdaPoly_mul_lemma_18, extractCoeff_inl_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma coeff_embedding_mul_lemma_14 (s : _root_.GlobalTheory.PsCo.Pc1.Poly n) (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (_root_.GlobalTheory.PsCo.Pc1.A.i2 L s * F)) =
@@ -428,7 +428,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Rewrite using `[_root_.GlobalTheory.PsCo.Cw2a.coefM_dMu, _root_.GlobalTheory.PsCo.Cw2a.exL_dL_holds]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma coeff_modeDerivation_lemma_15 {ε : Fin n → Bool} (x : _root_.GlobalTheory.PsCo.Pc1.Mode ε)
     (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
@@ -441,7 +441,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.coefM, _root_.GlobalTheory.PsCo.Pc1.A.muM]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma muCoeff_zero_mu_mul_lemma_26 (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) :
     _root_.GlobalTheory.PsCo.Pc1.A.coefM n L 0 (_root_.GlobalTheory.PsCo.Pc1.A.muM n L * F) = 0 := by
@@ -451,7 +451,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.A.coefM, _root_.GlobalTheory.PsCo.Pc1.A.muM]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma muCoeff_succ_mu_mul_lemma_27 (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.A.coefM n L (k + 1) (_root_.GlobalTheory.PsCo.Pc1.A.muM n L * F) =
@@ -462,7 +462,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Consider the cases of `k with`. Consider the case `zero => simp [muCoeff_zero_mu_mul_lemma_26, _root_.GlobalTheory.PsCo.Pc1.prev]`. Consider the case `succ k => simp [muCoeff_succ_mu_mul_lemma_27, _root_.GlobalTheory.PsCo.Pc1.prev]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 private lemma coeff_mu_mul_lemma_17 (F : _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (_root_.GlobalTheory.PsCo.Pc1.A.muM n L * F)) =
@@ -476,7 +476,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp [_root_.GlobalTheory.PsCo.Pc1.prev]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma shift_const_mul_lemma_4 (s : _root_.GlobalTheory.PsCo.Pc1.Poly n) (f : ℕ → _root_.GlobalTheory.PsCo.Pc1.Poly n) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.prev (fun k => s * f k) k = s * _root_.GlobalTheory.PsCo.Pc1.prev f k := by
@@ -486,23 +486,23 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} (ε : Fin n → Bool) in
 /- English proof (translation)
-Use `set Z := _root_.GlobalTheory.PsCo.Pc1.A.Zm ε L (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L) (_root_.GlobalTheory.PsCo.Pc1.A.pencilConstantPartMatrix ε c) with hZ`. Use `set w := _root_.GlobalTheory.PsCo.Pc1.A.inM n L (_root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight M m) with hw`. Use `set a : _root_.GlobalTheory.PsCo.Pc1.Mode ε → _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L := fun j => _root_.GlobalTheory.PsCo.Pc1.A.i2 L (X (Sum.inr j.1)) with ha`. Use `set b : _root_.GlobalTheory.PsCo.Pc1.Mode ε → _root_.GlobalTheory.PsCo.Pc1.A.PolyM n L := fun j => _root_.GlobalTheory.PsCo.Pc1.A.i2 L (X (Sum.inl j.1)) with hb`. Establish `h1 : ∀ i j, pderiv none (Z i j) = _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε i (a j)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `[hZ, ha, _root_.GlobalTheory.PsCo.Pc1.A.Zm, Derivation.leibniz, pderiv_mu_lambdaPoly_lemma_5, pderiv_mu_muVariable_lemma_6, _root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix, _root_.GlobalTheory.PsCo.Pc1.A.i2, pencilModeDerivation_lambdaPoly_lemma_7, lambdaModeDerivation_ …`. Establish `h2 : ∀ h i j, _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε h (Z i j) = _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε i (Z h j)`. Introduce `h i j`. Simplify using `only [hZ, _root_.GlobalTheory.PsCo.Pc1.A.Zm, Derivation.leibniz, pencilModeDerivation_muVariable_lemma_9, pencilModeDerivation_lambdaPoly_lemma_7, _root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix, lambdaModeDerivation_entryPoly_lemma_8, _root_.GlobalTheory.PsCo.Pc1.A.pen …`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [MvPolynomial.derivation_C, mul_zero, smul_zero, zero_add, add_zero, Finset.sum_const_zero, map_zero, smul_eq_mul, _root_.GlobalTheory.PsCo.Pc1.OmP]`. Rewrite using `[_root_.GlobalTheory.PsCo.DMComm.dM_comm ε h i]`. Establish `h3 : pderiv none w = 0` using `pderiv_mu_lambdaPoly_lemma_5 _`. Establish `h5 : _root_.GlobalTheory.PsCo.Pc1.A.i2 L (_root_.GlobalTheory.PsCo.Pc1.rP ε) = ∑ j, b j * a j`. Simplify using `[hb, ha, _root_.GlobalTheory.PsCo.Pc1.rP, map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem` using `_root_.GlobalTheory.weighted_det_divergence_mem_ideal (fun x => _root_.GlobalTheory.PsCo.Pc1.A.dMu L ε x) (pderiv none) (_root_.GlobalTheory.PsCo.Pc1.A.JM L) Z a b w (_root_.GlobalTheory.PsCo.Pc1.A.muM n L) (_root_.GlobalTheory.PsCo.Pc1.A.i2 L (_root_.GlobalTheory.PsCo.Pc1.rP ε)) …`. Take `⟨d1, d2, d3⟩` from `_root_.GlobalTheory.coefM_pencil (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L) (_root_.GlobalTheory.PsCo.Pc1.A.pencilConstantPartMatrix ε c)`. Establish `e1 : ∀ k, Fintype.card (_root_.GlobalTheory.PsCo.Pc1.Mode ε) < k → _root_.GlobalTheory.PsCo.Pc1.A.coefM n L k Z.det = 0` using `d1`. Establish `e2 : _root_.GlobalTheory.PsCo.Pc1.A.coefM n L (Fintype.card (_root_.GlobalTheory.PsCo.Pc1.Mode ε)) Z.det = (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L).det` using `d2`. Establish `e3 : ∀ k x y, Fintype.card (_root_.GlobalTheory.PsCo.Pc1.Mode ε) ≤ k → _root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (Z.adjugate y x) = 0` using `d3`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hN : _root_.GlobalTheory.PsCo.Pc1.nMode ε = Fintype.card (_root_.GlobalTheory.PsCo.Pc1.Mode ε)` using `rfl`. Use `⟨fun k => _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (w * Z.det)), fun x k => _root_.GlobalTheory.PsCo.Pc1.A.exL n L (_root_.GlobalTheory.PsCo.Pc1.A.coefM n L k (w * ∑ j, Z.adjugate j x * a j)), ⟨fun k => ?_, fun k hk => ?_, fun x k hk => ? …` and prove the remaining obligations. Establish `hk` using `coeff_eq_zero_of_mem_lambdaSquares_lemma_12 hmem k`. Simplify using `only [map_sub, map_add, map_sum, coeff_pderiv_mu_lemma_13, coeff_embedding_mul_lemma_14, coeff_modeDerivation_lemma_15, mul_assoc, pencilModeDerivation_embedding_lemma_16, coeff_mu_mul_lemma_17, shift_const_mul_lemma_4] at hk`. Simplify using `only [← mul_assoc] at hk ⊢`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `hk`. Rewrite `hk` using `[hN]`. Simplify using `only [hw, muCoeff_lambdaPoly_mul_lemma_18]`. Rewrite using `[e1 k hk, mul_zero, map_zero]`. Rewrite `hk` using `[hN]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hw, ha, _root_.GlobalTheory.PsCo.Pc1.A.i2, AlgHom.comp_apply]`. Rewrite using `[mul_comm (Z.adjugate j x), ← mul_assoc, ← map_mul, muCoeff_lambdaPoly_mul_lemma_18, e3 k x j hk, mul_zero, map_zero]`. Establish `hdet : (_root_.GlobalTheory.PsCo.Pc1.A.pencilDerivativePartMatrix ε L).det = _root_.GlobalTheory.PsCo.Pc1.A.inL n L (_root_.GlobalTheory.PsCo.Pc1.OmP ε).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression. Simplify using `only [hN, hw, muCoeff_lambdaPoly_mul_lemma_18]`. Rewrite using `[e2, hdet]`. Establish `hprod` using `_root_.GlobalTheory.PsCo.Cw2a.t_exL_dual (L := L) m (_root_.GlobalTheory.PsCo.Pc1.detbP n ^ M * (_root_.GlobalTheory.PsCo.Pc1.OmP ε).det)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[show _root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight M m * _root_.GlobalTheory.PsCo.Pc1.A.inL n L (_root_.GlobalTheory.PsCo.Pc1.OmP ε).det = (∏ i, (1 + _root_.GlobalTheory.PsCo.Pc1.A.laL n i * _root_.GlobalTheory.PsCo.Pc1.A.inL n L (m i))) * _root_.GlobalTheory.PsCo.Pc1.A …`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.A.pencilDeterminantWeight, _root_.GlobalTheory.PsCo.Pc1.A.dualNumberFactorsProduct, map_mul]`. Use the proof step `ring, hprod]`. Simplify using `only [_root_.GlobalTheory.PsCo.Pc1.topP]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private lemma koszulRecursion_solvable_of_product_lemma (M : ℕ) (m : Fin L → _root_.GlobalTheory.PsCo.Pc1.Poly n)
     (c : Fin L → _root_.GlobalTheory.PsCo.Pc1.Mode ε → _root_.GlobalTheory.PsCo.Pc1.Mode ε → ℂ)
@@ -579,7 +579,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp [_root_.GlobalTheory.PsCo.Pc1.prev]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma shift_zero_lemma_2 (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.prev (fun _ => (0 : _root_.GlobalTheory.PsCo.Pc1.Poly n)) k = 0 := by
@@ -589,7 +589,7 @@ open MvPolynomial in
 variable {n L : ℕ} in
 variable {n L : ℕ} in
 /- English proof (translation)
-Apply the tactic sequence `cases k <;> simp [_root_.GlobalTheory.PsCo.Pc1.prev]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private lemma shift_add_lemma_3 (f g : ℕ → _root_.GlobalTheory.PsCo.Pc1.Poly n) (k : ℕ) :
     _root_.GlobalTheory.PsCo.Pc1.prev (fun k => f k + g k) k =
@@ -600,25 +600,23 @@ open MvPolynomial in
 variable {n L : ℕ} in
 
 /- English proof (translation)
-Introduce `n ε M P hP`. Establish `hP' : P ∈ Submodule.span ℂ (Submonoid.closure {P : _root_.GlobalTheory.PsCo.Pc1.Poly n | ∃ a b, ε a = ε b ∧ P = X (Sum.inl (a, b))} : Set _)`. Rewrite using `[← Algebra.adjoin_eq_span]`. Conclude with `hP`. Use `clear hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hP' using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `Submonoid.exists_list_of_mem_closure hx`. Establish `hgen : ∀ i : Fin l.length, ∃ c : _root_.GlobalTheory.PsCo.Pc1.Mode ε → _root_.GlobalTheory.PsCo.Pc1.Mode ε → ℂ, ∀ x, _root_.GlobalTheory.PsCo.Pc1.dM ε x (l.get i) = ∑ y, C (c x y) * X (Sum.inl y.1)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, b, hab, he⟩` from `hl _ (List.get_mem l i)`. Rewrite using `[he]`. Conclude with `_root_.GlobalTheory.PsCo.Cw2a.dM_block_entries ε a b hab`. Use `choose c hc using hgen`. Take `⟨p, q, hpq, htop⟩` from `koszulRecursion_solvable_of_product_lemma ε M (fun i => l.get i) c hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, q, hpq, ?_⟩` and prove the remaining obligations. Rewrite using `[htop, ← Fin.prod_ofFn, List.ofFn_get]`. Consider the case `zero`. Use `⟨fun _ => 0, fun _ _ => 0, ⟨fun k => ?_, fun _ _ => rfl, fun _ _ _ => rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `[shift_zero_lemma_2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[_root_.GlobalTheory.PsCo.Pc1.topP]`. Consider the case `add x y _ _ hx hy`. Take `⟨p₁, q₁, ⟨r₁, s₁, t₁⟩, e₁⟩` from `hx`. Take `⟨p₂, q₂, ⟨r₂, s₂, t₂⟩, e₂⟩` from `hy`. Use `⟨fun k => p₁ k + p₂ k, fun x k => q₁ x k + q₂ x k, ⟨fun k => ?_, fun k hk => ?_, fun x k hk => ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h₁` using `r₁ k`. Establish `h₂` using `r₂ k`. Simplify using `only [map_add, shift_add_lemma_3, mul_add, Finset.sum_add_distrib] at h₁ h₂ ⊢`. Take the linear combination `h₁ + h₂`. Simplify using `[s₁ k hk, s₂ k hk]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Simplify using `[t₁ x k hk, t₂ x k hk]`. Simplify using `only [e₁, e₂, _root_.GlobalTheory.PsCo.Pc1.topP]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul r x _ hx`. Take `⟨p₁, q₁, ⟨r₁, s₁, t₁⟩, e₁⟩` from `hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `⟨fun k => C r * p₁ k, fun x k => C r * q₁ x k, ⟨fun k => ?_, fun k hk => ?_, fun x k hk => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h₁` using `r₁ k`. Simplify using `only [Derivation.leibniz, MvPolynomial.derivation_C, smul_zero, add_zero, smul_eq_mul, shift_const_mul_lemma_4]`. Simplify using `only [mul_add, Finset.sum_add_distrib] at h₁ ⊢`. Establish `hc : ∀ x : _root_.GlobalTheory.PsCo.Pc1.Mode ε, _root_.GlobalTheory.PsCo.Pc1.dM ε x (_root_.GlobalTheory.PsCo.Pc1.rP ε) * (C r * _root_.GlobalTheory.PsCo.Pc1.prev (q₁ x) k) = C r * (_root_.GlobalTheory.PsCo.Pc1.dM ε x (_root_.GlobalTheory.PsCo.Pc1.rP ε) * _root_.GlobalTheory.PsCo …` using `fun _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zero, Finset.sum_const_zero, add_zero, hc, ← Finset.mul_sum]`. Take the linear combination `C r * h₁`. Simplify using `[s₁ k hk]`. Simplify using `[t₁ x k hk]`. Simplify using `only [e₁, _root_.GlobalTheory.PsCo.Pc1.topP, smul_eq_C_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PsCo.Pc1.A.stAlg : _root_.GlobalTheory.PsCo.Pc1.StAlg := by
   intro n ε M P hP

@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.RT.Inj.Rank
 
 /- English proof (translation)
-Establish `hb` using `TopologicalSpace.isBasis_countableBasis X`. Establish `hc` using `TopologicalSpace.countable_countableBasis X`. Establish `hfin : {t : Set (Set X) | t.Finite ∧ t ⊆ TopologicalSpace.countableBasis X}.Countable` using `Set.countable_setOf_finite_subset hc`. Use `(hfin.image fun t => ⋃₀ t).mono ?_` and prove the remaining obligations. Introduce and unpack `U ⟨hU, hK⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨S, hS, rfl⟩` from `hb.open_eq_sUnion hU`. Take `⟨t, htS, htf, hcov⟩` from `hK.elim_finite_subcover_image (b := S) (c := fun s => s) (fun s hs => hb.isOpen (hS hs)) Set.sUnion_eq_biUnion.subset`. Use `⟨t, ⟨htf, htS.trans hS⟩, Set.Subset.antisymm ?_ ?_⟩` and prove the remaining obligations. Conclude with `Set.sUnion_subset_sUnion htS`. Simplify `hcov` using `[Set.sUnion_eq_biUnion]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem countable_compactOpen (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     {U : Set X | IsOpen U ∧ IsCompact U}.Countable := by
@@ -30,15 +30,15 @@ theorem countable_compactOpen (X : Type) [TopologicalSpace X] [SecondCountableTo
   · simpa [Set.sUnion_eq_biUnion] using hcov
 
 /- English proof (translation)
-Take `⟨hl, hK⟩` from `hf`. Establish `hK' : IsCompact (tsupport f)` using `hK`. Take `⟨t, ht⟩` from `hK'.elim_finite_subcover (fun c : ℂ => f ⁻¹' {c}) (fun c => hl.isOpen_fiber c) (fun x _ => Set.mem_iUnion.2 ⟨f x, rfl⟩)`. Establish `hsum : f = ∑ c ∈ t, c • (f ⁻¹' {c}).indicator (1 : X → ℂ)`. Use function extensionality and compare the values at `x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, Set.indicator_apply, Set.mem_preimage, Set.mem_singleton_iff, Pi.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with h`. Both sides reduce to the same expression. Assume the negation of the conclusion as `hne`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hx : x ∈ tsupport f` using `subset_tsupport f (fun h0 => hne (by simpa using h0))`. Take `⟨c, hc, hxc⟩` from `Set.mem_iUnion₂.1 (ht hx)`. Establish `: f x = c` using `hxc`. Conclude with `h (this ▸ hc)`. Rewrite using `[hsum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hc : c = 0`. Simplify using `[hc]`. Use `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, ⟨hl.isOpen_fiber c, ?_⟩, rfl⟩)` and prove the remaining obligations. Use `hK'.of_isClosed_subset (hl.isClosed_fiber c) fun x hx => subset_tsupport f ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: f x = c` using `hx`. Simplify `hc` using `[Function.mem_support, this]`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_indicator {X : Type} [TopologicalSpace X] {f : X → ℂ}
     (hf : f ∈ GlobalTheory.WeilM.SB X) :
@@ -71,7 +71,7 @@ theorem mem_span_indicator {X : Type} [TopologicalSpace X] {f : X → ℂ}
     simpa [Function.mem_support, this] using hc
 
 /- English proof (translation)
-Establish `hle : GlobalTheory.WeilM.SB X ≤ Submodule.span ℂ ((fun U : Set X => U.indicator (1 : X → ℂ)) '' {U : Set X | IsOpen U ∧ IsCompact U})` using `fun f hf => mem_span_indicator hf`. Use `(Submodule.rank_mono hle).trans ((rank_span_le _).trans ?_)` and prove the remaining obligations. Conclude with `Cardinal.le_aleph0_iff_set_countable.2 ((countable_compactOpen X).image _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rank_SB_le (X : Type) [TopologicalSpace X] [SecondCountableTopology X] :
     Module.rank ℂ (GlobalTheory.WeilM.SB X) ≤ Cardinal.aleph0 := by

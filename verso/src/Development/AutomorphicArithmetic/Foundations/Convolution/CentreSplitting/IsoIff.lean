@@ -10,9 +10,9 @@ open GlobalTheory.CuspRep (CuspSub GA Af Ad finGL locGL)
 open UpperTheory.ConvolutionTheory.C UpperTheory.ConvolutionTheory.Dp UpperTheory.V
 
 /- English proof (translation)
-Introduce `E _ _ _ n μ _ π π' V V' h h'`. Rewrite using `[isoEq E n π π']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite using `[((exSummand E n μ π V).1 h).2, ((exSummand E n μ π V').1 h').2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `rfl`. Conclude with `(exCusp E n μ V h.summand).unique h h'`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Dp.isoIff :
     UpperTheory.ConvolutionTheory.Dp.IsoIff := by

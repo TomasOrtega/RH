@@ -19,11 +19,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.WeilAdjoint
 
 /- English proof (translation)
-Establish `hG` using `GlobalTheory.globalFns_holds`. Establish `hB` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `e₁ : CartesianMonoidalCategory.lift (fst A A ≫ f) (snd A A) = f ⊗ₘ 𝟙 A`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `e₂ : CartesianMonoidalCategory.lift (fst A A) (snd A A ≫ f') = 𝟙 A ⊗ₘ f'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `h' : LBIso (P.pull (f ⊗ₘ 𝟙 A).left) (P.pull (𝟙 A ⊗ₘ f').left)`. Rewrite using `[← e₁, ← e₂]`. Conclude with `h`. Establish `hL` using `pull_isLB hP (f ⊗ₘ 𝟙 A).left`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₁` using `GlobalTheory.lbIso_lbPow_one hL`. Establish `i₂` using `LBIso.trans (GlobalTheory.isLB_lbPow hL 1) hL (pull_isLB hP _) i₁ h'`. Use `CommutatorPairing.weilIs_unique hG hB hL (WeilIsogeny.weilIs_pull_hom hG hB hL hP (f ⊗ₘ 𝟙 A) i₁ (n := k) (x := CartesianMonoidalCategory.lift x 1) (y := CartesianMonoidalCategory.lift 1 y) ?_) (WeilIsogeny.weilIs_pull_hom hG hB hL hP (𝟙 A ⊗ₘ f') i₂ ?_)` and prove the remaining obligations. Rewrite using `[lift_map, lift_map, Category.comp_id, Category.comp_id, MonObj.one_comp]` and apply the resulting hypothesis. Rewrite using `[lift_map, lift_map, Category.comp_id, Category.comp_id, MonObj.one_comp]` and apply the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem weilIs_adjoint {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianScheme A) {P : LB (A ⊗ A).left}
     (hP : P.IsLB) (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f']
@@ -51,20 +51,20 @@ theorem weilIs_adjoint {S : Scheme.{0}} {A : Over S} [GrpObj A] (hA : IsAbelianS
   · rwa [lift_map, lift_map, Category.comp_id, Category.comp_id, MonObj.one_comp]
 
 /- English proof (translation)
-The claim follows from `Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm`.
+A detailed English derivation is pending.
 -/
 theorem map_unitOn {A B : Type} [CommRing A] [CommRing B] (β : A →+* B) (c : Aˣ) :
     Units.map (spMap β).appTop.hom.toMonoidHom (unitOn c) = unitOn (Units.map β.toMonoidHom c) :=
   Units.ext (congrArg (fun q => q.hom c.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom β))).symm
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1 (congrArg Units.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitOn_injective {K : Type} [CommRing K] : Function.Injective (unitOn (R := K)) := fun _ _ h =>
   Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of K)).inv).1 (congrArg Units.val h))
 
 /- English proof (translation)
-Rewrite using `[← map_unitOn, ← hx, ← hy]`. Conclude with `CommPairing.weilIs_pull GlobalTheory.globalFns_holds hB hP (T := SpAlg K D) (T' := SpAlg K E) (spOver α) hU`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_algHom {K : Type} [CommRing K] {B : Over (Sp K)} [GrpObj B] (hB : IsAbelianScheme B) {P : LB B.left}
     (hP : P.IsLB) {k : ℤ} {D E : Type} [CommRing D] [Algebra K D] [CommRing E] [Algebra K E] (α : D →ₐ[K] E)
@@ -75,9 +75,9 @@ theorem weilIs_algHom {K : Type} [CommRing K] {B : Over (Sp K)} [GrpObj B] (hB :
   exact CommPairing.weilIs_pull GlobalTheory.globalFns_holds hB hP (T := SpAlg K D) (T' := SpAlg K E) (spOver α) hU
 
 /- English proof (translation)
-Establish `hB` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Establish `l : ∀ a b : D →ₐ[K] D, spOver (Algebra.TensorProduct.map a b) ≫ spOver (Algebra.TensorProduct.includeLeft : D →ₐ[K] D ⊗[K] D) ≫ y = spOver (Algebra.TensorProduct.includeLeft : D →ₐ[K] D ⊗[K] D) ≫ spOver a ≫ y` using `fun a b => by`. Rewrite using `[← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, Algebra.TensorProduct.map_comp_includeLeft]`. Establish `r : ∀ a b : D →ₐ[K] D, spOver (Algebra.TensorProduct.map a b) ≫ spOver (Algebra.TensorProduct.includeRight : D →ₐ[K] D ⊗[K] D) ≫ y = spOver (Algebra.TensorProduct.includeRight : D →ₐ[K] D ⊗[K] D) ≫ spOver b ≫ y` using `fun a b => by`. Rewrite using `[← Category.assoc, ← Category.assoc, spOver_comp, spOver_comp, Algebra.TensorProduct.map_comp_includeRight]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `weilIs_adjoint hA hP f f' h (spOver Algebra.TensorProduct.includeLeft ≫ y) (spOver Algebra.TensorProduct.includeRight ≫ y) (weilIs_algHom hB hP (Algebra.TensorProduct.map φ (AlgHom.id K D)) (by rw [comp_lift, MonObj.comp_one, l, hφ, Category.assoc]) (by rw [comp_lift, MonObj.comp …`. Conclude with `congrArg Units.val (unitOn_injective e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_unit_eq {K : Type} [CommRing K] {A : Over (Sp K)} [GrpObj A] (hA : IsAbelianScheme A)
     {P : LB (A ⊗ A).left} (hP : P.IsLB) (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f']
@@ -108,7 +108,7 @@ theorem map_unit_eq {K : Type} [CommRing K] {A : Over (Sp K)} [GrpObj A] (hA : I
   exact congrArg Units.val (unitOn_injective e)
 
 /- English proof (translation)
-Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s t => simp`. Consider the case `add s t hs ht => simp only [map_add, hs, ht]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem rid_lTensor_map {K D : Type} [CommRing K] [CommRing D] [Algebra K D] (a b : D →ₐ[K] D) (χ : D →ₗ[K] K)
     (u : D ⊗[K] D) : TensorProduct.rid K D (χ.lTensor D (Algebra.TensorProduct.map a b u)) =
@@ -119,9 +119,9 @@ theorem rid_lTensor_map {K D : Type} [CommRing K] [CommRing D] [Algebra K D] (a 
   | add s t hs ht => simp only [map_add, hs, ht]
 
 /- English proof (translation)
-Introduce `_ p _ K _ A _ hA P hP 𝒜 t w hw f f' _ _ h`. Use `PDivGroup.hom_ext fun n => BialgHom.ext fun χ => ?_` and prove the remaining obligations. Take `⟨U, hU, hχ⟩` from `hw n`. Establish `e` using `map_unit_eq hA hP.isLB f f' h (t.y n) _ _ (t.map_y t f n) (t.map_y t f' n) U hU`. Establish `e'` using `congrArg (fun u => TensorProduct.rid K (𝒜.A n) (LinearMap.lTensor (𝒜.A n) (WithConv.ofConv χ) u)) e`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [rid_lTensor_map] at e'`. Use `show (t.map t f).app n (w.app n χ) = w.app n (CartierDual.map ((t.map t f').app n) χ)`. Rewrite using `[hχ, hχ]`. Conclude with `e'`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comp_weilHom : GlobalTheory.Published.CubeTheorem → ∀ (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (A : Over (Sp K)) [GrpObj A], IsAbelianScheme A → ∀ (P : LB (A ⊗ A).left), IsDual A A P → ∀ (𝒜 : PDivGroup p K) (t : 𝒜.TorsionTower A) (w : 𝒜 ⟶ 𝒜.dual), IsWeilHom t t P w → ∀ (f f' : A ⟶ A) [IsMonHom f] [IsMonHom f'], LBIso (ev P (fst A A ≫ f) (snd A A)) (ev P (fst A A) (snd A A ≫ f')) → t.map t f ≫ w = w ≫ dualHom _ _ (t.map t f') := by
   intro _ p _ K _ A _ hA P hP 𝒜 t w hw f f' _ _ h

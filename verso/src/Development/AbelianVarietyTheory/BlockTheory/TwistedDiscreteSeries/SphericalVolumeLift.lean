@@ -193,7 +193,7 @@ def TowerForm (D : D7) : Prop :=
 def RallisFormula (D : D7) : Prop := Convergent D ∧ EulerForm D ∧ TowerForm D
 
 /- English proof (translation)
-Simplify using `only [lift, petersson, pet, AutomorphicL2Unitary.descend, Pi.smul_apply, smul_eq_mul, map_mul, ← integral_const_mul]`. Conclude with `integral_congr_ae (.of_forall fun q => by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {A B : HSp D} (m : Measure (GA D A)) (K : GA D A → GA D B → ℂ) (f : GA D A → ℂ) (z : ℂ) (h : GA D B) :
     lift m K (z • f) h = conj z * lift m K f h := by
@@ -201,14 +201,14 @@ example {A B : HSp D} (m : Measure (GA D A)) (K : GA D A → GA D B → ℂ) (f 
   exact integral_congr_ae (.of_forall fun q => by ring)
 
 /- English proof (translation)
-Use `two_mul_wittIndex_le B` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 example {A B : HSp D} {t : ℕ} (hb : B.rank = A.rank + t) (ht : A.rank < t) : wittIndex B < t := by
   have := two_mul_wittIndex_le B
   omega
 
 /- English proof (translation)
-Use `⟨⟨h.2.theta, 1, fun l hl => ?_⟩, by simpa [IsSphOff] using h.2.lat⟩` and prove the remaining obligations. Take `⟨p, rfl⟩` from `List.length_eq_one_iff.1 hl`. Conclude with `h.2.fock p.1 p.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 example {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D} {sS : RealMat S} {sT : RealMat T} {LS : Lat S}
     {LT : Lat T} {Φ : WO S T → ℂ} (h : IsVacO ψ θ S T sS sT LS LT Φ) :

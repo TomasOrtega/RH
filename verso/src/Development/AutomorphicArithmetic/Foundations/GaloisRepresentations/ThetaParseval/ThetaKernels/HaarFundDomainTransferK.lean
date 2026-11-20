@@ -14,25 +14,21 @@ namespace GlobalTheory.RatDarbouxTransferF
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ _ nS nT JS JT _ _ ξ₀ _ _ JA JB ξ _ _ κ _ co hrat ν 𝓕 hν h𝓕`. Take `⟨hfr, hfin, -⟩` from `finrank_AEF F E`. Use `haveI : IsTopologicalRing (AF F ⊗[F] E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI hMT : IsModuleTopology (AF F) (Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E)) := inferInstanceAs (IsModuleTopology (AF F) (Fin nT → Fin nS → AF F ⊗[F] E))`. Use `letI mP : MeasurableSpace ((κ → AF F) × (κ → AF F)) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : BorelSpace ((κ → AF F) × (κ → AF F)) := ⟨rfl⟩`. Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Set `ce : Matrix (Fin nT) (Fin nS) (AF F ⊗[F] E) ≃L[AF F] (κ → AF F) × (κ → AF F)` to `{ co.e with continuous_toFun := IsModuleTopology.continuous_of_linearMap co.e.toLinearMap continuous_invFun := IsModuleTopology.continuous_of_linearMap co.e.symm.toLinearMap }`. Set `ca : WOF F E nS nT ≃ₜ+ (κ → AF F) × (κ → AF F)` to `{ co.e.toAddEquiv with continuous_toFun := ce.continuous continuous_invFun := ce.symm.continuous }`. Set `me : WOF F E nS nT ≃ᵐ (κ → AF F) × (κ → AF F)` to `ca.toHomeomorph.toMeasurableEquiv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `into : ∀ g ∈ ratLF F E nS nT, co.e g ∈ GlobalTheory.WeilUnitaryTransport.ratPair F κ`. Introduce and unpack `_ ⟨x, rfl⟩`. Take `⟨y, z, h⟩` from `hrat x`. Conclude with `(GlobalTheory.WeilUnitaryTransport.mem_ratPair_iff _).2 ⟨y, z, h⟩`. Establish `onto' : ∀ p ∈ GlobalTheory.WeilUnitaryTransport.ratPair F κ, co.e.symm p ∈ ratLF F E nS nT` using `onto F E nS nT κ co.e hrat`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ν.map me, me '' 𝓕, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `ca.isAddHaarMeasure_map ν`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hqmp : Measure.QuasiMeasurePreserving me.symm (ν.map me) ν` using `(MeasurePreserving.mk me.symm.measurable (MeasurableEquiv.map_symm_map me)).quasiMeasurePreserving`. Establish `hpre : me '' 𝓕 = me.symm ⁻¹' 𝓕` using `Set.ext fun y => ⟨by rintro ⟨w, hw, rfl⟩; simpa using hw, fun hy => ⟨me.symm y, hy, me.apply_symm_apply y⟩⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[hpre]`. Conclude with `h𝓕.nullMeasurableSet.preimage hqmp`. Rewrite using `[me.measurableEmbedding.ae_map_iff] filter_upwards [h𝓕.ae_covers] with x ⟨g, hg⟩`. Use `⟨⟨co.e g, into g g.2⟩, g +ᵥ x, hg, ?_⟩` and prove the remaining obligations. Use `show co.e ((g : WOF F E nS nT) + x) = co.e g + co.e x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_add]`. Introduce `p q hpq`. Set `g : ratLF F E nS nT` to `⟨co.e.symm p, onto' p p.2⟩`. Set `h : ratLF F E nS nT` to `⟨co.e.symm q, onto' q q.2⟩`. Establish `hgh : g ≠ h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Apply `hpq` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg (fun t : ratLF F E nS nT => co.e (t : WOF F E nS nT)) e` as an intermediate fact. Simplify `this` using `[g, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `himg : ∀ (r : GlobalTheory.WeilUnitaryTransport.ratPair F κ) (k : ratLF F E nS nT), (k : WOF F E nS nT) = co.e.symm r → r +ᵥ me '' 𝓕 = me '' (k +ᵥ 𝓕)`. Introduce `r k hk`. Rewrite using `[← Set.image_vadd, ← Set.image_vadd, Set.image_image, Set.image_image]`. Use `Set.image_congr fun w _ => ?_` and prove the remaining obligations. Use `show (r : (κ → AF F) × (κ → AF F)) + co.e w = co.e ((k : WOF F E nS nT) + w)`.
-
-Rewrite using `[map_add, hk, LinearEquiv.apply_symm_apply]`. Use `show MeasureTheory.AEDisjoint (ν.map me) (p +ᵥ me '' 𝓕) (q +ᵥ me '' 𝓕)`. Rewrite using `[himg p g rfl, himg q h rfl, MeasureTheory.AEDisjoint, ← Set.image_inter me.injective, me.map_apply, me.preimage_image]`. Conclude with `h𝓕.aedisjoint hgh`. Introduce `f`.
-
-Rewrite using `[MeasurableEquiv.restrict_map, MeasurableEquiv.preimage_image, lintegral_map_equiv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem haar_fundDomain_transfer_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     _root_.UpperTheory.TP.W.GoodK σ B → IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →

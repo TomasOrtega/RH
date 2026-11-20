@@ -32,7 +32,7 @@ theorem secW_apply (z : w.adicCompletion D.host.E) :
     secW hw h z = GlobalTheory.EmbChart.tensAt D.host.E v ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm z) := rfl
 
 /- English proof (translation)
-Rewrite using `[secW_apply, secW_apply, GlobalTheory.EmbChart.tensAt_mul_right]`. Use `congr 1`. Rewrite using `[map_mul (GlobalTheory.LFun.InertChart.complEquiv hw h).symm]`. Use `show _ = _ * (GlobalTheory.LFun.InertChart.complEquiv hw h).symm ((GlobalTheory.LFun.InertChart.complEquiv hw h) _)`. Rewrite using `[RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secW_mul_right (z : w.adicCompletion D.host.E) (A : AE D) :
     secW hw h z * A = secW hw h (z * evW hw h A) := by
@@ -43,7 +43,7 @@ theorem secW_mul_right (z : w.adicCompletion D.host.E) (A : AE D) :
   rw [RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Use `show GlobalTheory.LFun.InertChart.complEquiv hw h (compFin D.host.F D.host.E v (GlobalTheory.EmbChart.tensAt D.host.E v ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm z))) = z`. Rewrite using `[GlobalTheory.EmbChart.compFin_tensAt, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evW_secW (z : w.adicCompletion D.host.E) : evW hw h (secW hw h z) = z := by
   show GlobalTheory.LFun.InertChart.complEquiv hw h (compFin D.host.F D.host.E v (GlobalTheory.EmbChart.tensAt D.host.E v
@@ -51,7 +51,7 @@ theorem evW_secW (z : w.adicCompletion D.host.E) : evW hw h (secW hw h z) = z :=
   rw [GlobalTheory.EmbChart.compFin_tensAt, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use `show GlobalTheory.LFun.toCompl h (compFin D.host.F D.host.E v ((1 : AF D.host.F) ⊗ₜ[D.host.F] a)) = _`. Use `show GlobalTheory.LFun.toCompl h ((evFin D.host.F v 1) ⊗ₜ[D.host.F] a) = _`. Rewrite using `[map_one, GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evW_incA (a : D.host.E) : evW hw h (incA D a) = algebraMap D.host.E _ a := by
   show GlobalTheory.LFun.toCompl h (compFin D.host.F D.host.E v ((1 : AF D.host.F) ⊗ₜ[D.host.F] a)) = _
@@ -59,16 +59,16 @@ theorem evW_incA (a : D.host.E) : evW hw h (incA D a) = algebraMap D.host.E _ a 
   rw [map_one, GlobalTheory.LFun.toCompl_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[mul_comm, secW_mul_right, evW_incA, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incA_mul_secW (a : D.host.E) (z : w.adicCompletion D.host.E) :
     incA D a * secW hw h z = secW hw h (algebraMap D.host.E _ a * z) := by
   rw [mul_comm, secW_mul_right, evW_incA, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[secW_apply, secW_apply]`. Use `show Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (AF D.host.F) D.sp.cm.sig (GlobalTheory.EmbChart.tensAt D.host.E v _) = GlobalTheory.EmbChart.tensAt D.host.E v _`. Rewrite using `[GlobalTheory.EmbChart.sigR_tensAt]`. Use `congr 1`. Apply `(GlobalTheory.LFun.InertChart.complEquiv hw h).injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.apply_symm_apply]`. Use `hc ((GlobalTheory.LFun.InertChart.complEquiv hw h).symm z)` as an intermediate fact. Conclude with `this.symm.trans (congrArg c ((GlobalTheory.LFun.InertChart.complEquiv hw h).apply_symm_apply z))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cA_secW {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E} (hc : GlobalTheory.LFun.IsConjAt D.sp.cm.sig h c)
     (z : w.adicCompletion D.host.E) : cA D (secW hw h z) = secW hw h (c z) := by
@@ -82,9 +82,9 @@ theorem cA_secW {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E} 
   exact this.symm.trans (congrArg c ((GlobalTheory.LFun.InertChart.complEquiv hw h).apply_symm_apply z))
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.map_apply, cA_secW hc, incA_mul_secW, secW_mul_right, evW_incA, evW_secW, ← map_sum]`. Use `congr 1`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Finset.sum_mul, Matrix.map_apply, cT, Matrix.transpose_apply]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (Finset.sum_congr rfl fun c _ => Finset.sum_comm) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hO_map_secW {S T : HSp D} {c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E}
     (hc : GlobalTheory.LFun.IsConjAt D.sp.cm.sig h c) (M N : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E)) :
@@ -102,14 +102,14 @@ theorem hO_map_secW {S T : HSp D} {c : w.adicCompletion D.host.E →+* w.adicCom
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cT, Matrix.smul_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_smul' (c : L →+* L) {m n : ℕ} (k : L) (A : Matrix (Fin m) (Fin n) L) : cT c (k • A) = c k • cT c A := by
   ext i j
   simp [cT, Matrix.smul_apply]
 
 /- English proof (translation)
-Establish `h1 : G * a.1 = cT c (a⁻¹).1 * antiJ L n`. Rewrite using `[← ha, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← cT_mul, Units.mul_inv, cT_one, Matrix.one_mul]`. Establish `h2 : G * (a.1 * antiJ L n * cT c a.1) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.mul_assoc (cT c (a⁻¹).1), Formalism.UG.P.fIwasawa_antiJ_mul_antiJ, Matrix.mul_one, ← cT_mul, Units.mul_inv, cT_one]`. Rewrite using `[← Matrix.mul_one G', ← h2, ← Matrix.mul_assoc, hG, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_eq_of_frame (c : L →+* L) {n : ℕ} {G G' : Matrix (Fin n) (Fin n) L} (hG : G' * G = 1) (a : GL (Fin n) L)
     (ha : cT c a.1 * G * a.1 = antiJ L n) : G' = a.1 * antiJ L n * cT c a.1 := by
@@ -121,7 +121,7 @@ theorem inv_eq_of_frame (c : L →+* L) {n : ℕ} {G G' : Matrix (Fin n) (Fin n)
   rw [← Matrix.mul_one G', ← h2, ← Matrix.mul_assoc, hG, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[cT_smul', cT_mul, cT_mul]`. Simplify using `only [Matrix.mul_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (cT c aS.1) (cT c (aS⁻¹).1), ← cT_mul, Units.inv_mul, cT_one, Matrix.one_mul, ← Matrix.mul_assoc GT aT.1, ← Matrix.mul_assoc (cT c aT.1) (GT * aT.1), ← Matrix.mul_assoc (cT c aT.1) GT, hT, Matrix.trace_mul_comm aS.1]`. Simplify using `only [Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_frame (c : L →+* L) {n n' : ℕ} (k : L) (aS : GL (Fin n) L) (aT : GL (Fin n') L)
     (GT J' : Matrix (Fin n') (Fin n') L) (J : Matrix (Fin n) (Fin n) L) (hT : cT c aT.1 * GT * aT.1 = J')
@@ -136,7 +136,7 @@ theorem trace_frame (c : L →+* L) {n n' : ℕ} (k : L) (aS : GL (Fin n) L) (aT
   ring
 
 /- English proof (translation)
-Establish `hG : (S.gram⁻¹.map (algebraMap D.host.E (w.adicCompletion D.host.E)) : Matrix (Fin S.rank) (Fin S.rank) _) * S.gram.map (algebraMap D.host.E (w.adicCompletion D.host.E)) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ (GlobalTheory.LatVac.gram_det_isUnit S), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[uPt, uPt, hO_map_secW hc, inv_eq_of_frame c hG aS hS, trace_frame c k aS aT _ _ _ hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem hO_uPt {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : IsInertAt D.host.F D.host.E v w} {h : w.under (𝓞 D.host.F) = v} {S T : HSp D}
@@ -155,11 +155,9 @@ theorem hO_uPt {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {w : HeightOneSp
   rw [uPt, uPt, hO_map_secW hc, inv_eq_of_frame c hG aS hS, trace_frame c k aS aT _ _ _ hT]
 
 /- English proof (translation)
-Introduce `D ψ v w hw h S T c k aS aT hc hS hT x y`. Establish `h2 : (2 : w.adicCompletion D.host.E) ≠ 0`. Establish `: CharZero (w.adicCompletion D.host.E)` using `algebraRat.charZero _`. Conclude with `two_ne_zero`. Establish `hx : (2⁻¹ : w.adicCompletion D.host.E) • x + (2⁻¹ : w.adicCompletion D.host.E) • x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← add_smul, ← two_mul, mul_inv_cancel₀ h2, one_smul]`. Establish `hl : GlobalTheory.Hk3.locH c 1 (GlobalTheory.SphTheta.antiG _ S.rank) (GlobalTheory.SphTheta.antiG _ T.rank) x y = Matrix.trace (antiJ (w.adicCompletion D.host.E) S.rank * cT c y * antiJ (w.adicCompletion D.host.E) T.rank * x)`. Rewrite using `[GlobalTheory.Hk3.locH, one_mul]`. Both sides reduce to the same expression. Use `conv_lhs => rw [← hx, uPt_add, GlobalTheory.SplitScalar.symplOH_add_left, GlobalTheory.SplitScalar.symplOH_add_self]`.
-
-Rewrite using `[thW_apply, symplO, hO_uPt k hc hS hT, hl, Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplOH_uPt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : IsInertAt D.host.F D.host.E v w) (h : w.under (𝓞 D.host.F) = v) (S T : HSp D) (c : w.adicCompletion D.host.E →+* w.adicCompletion D.host.E) (k : w.adicCompletion D.host.E) (aS : GL (Fin S.rank) (w.adicCompletion D.host.E)) (aT : GL (Fin T.rank) (w.adicCompletion D.host.E)), IsConjAt D.sp.cm.sig h c → Formalism.UG.cT c aS.1 * S.gram.map (algebraMap D.host.E _) * aS.1 = Formalism.UG.antiJ _ S.rank → Formalism.UG.cT c aT.1 * T.gram.map (algebraMap D.host.E _) * aT.1 = Formalism.UG.antiJ _ T.rank → ∀ x y : Matrix (Fin T.rank) (Fin S.rank) (w.adicCompletion D.host.E), ψ (symplOH S T (uPt hw h k aS aT x) (uPt hw h k aS aT y)) = thW ψ hw h (k * c k) (2⁻¹ * GlobalTheory.Hk3.locH c 1 (GlobalTheory.SphTheta.antiG _ S.rank) (GlobalTheory.SphTheta.antiG _ T.rank) x y) := by
   intro D ψ v w hw h S T c k aS aT hc hS hT x y

@@ -5,25 +5,23 @@ open Matrix
 namespace PositivityTheory.SiegelWeilFormula.kunf
 
 /- English proof (translation)
-Take `⟨u, hu0, hcu⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hc`. Establish `hTu : T *ᵥ u ≠ 0` using `fun h0 => hTd (Matrix.exists_mulVec_eq_zero_iff.mp ⟨u, hu0, h0⟩)`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hTu`. Establish `hi' : (T *ᵥ u) i ≠ 0` using `hi`. Take `⟨y, hy⟩ : ∃ y : Fin n → K, y ⬝ᵥ (T *ᵥ u) = 1` from `⟨Pi.single i ((T *ᵥ u) i)⁻¹, by rw [single_dotProduct, inv_mul_cancel₀ hi']⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨su, hsu⟩ : ∃ w : Fin n → K, w = s ∘ u` from `⟨_, rfl⟩`. Take `⟨sy, hsy⟩ : ∃ w : Fin n → K, w = s ∘ y` from `⟨_, rfl⟩`. Establish `hcsu : c.map s *ᵥ su = 0`. Rewrite using `[hsu]`. Use extensionality with `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← RingHom.map_mulVec, hcu]`. Simplify using the standard rewrite rules. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Simplify using `at he`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hM : (e • (c.map s)ᵀ * a) *ᵥ u = 0`. Rewrite using `[eq_neg_of_add_eq_zero_left hda, Matrix.neg_mulVec, ← Matrix.mulVec_mulVec, hcu, Matrix.mulVec_zero, neg_zero]`. Establish `hM' : ((c.map s)ᵀ * a) *ᵥ u = 0`. Rewrite `hM` using `[Matrix.smul_mul, Matrix.smul_mulVec]`. Conclude with `(smul_eq_zero.mp hM).resolve_left he0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : (c.map s *ᵥ y) ⬝ᵥ (a *ᵥ u) = y ⬝ᵥ (((c.map s)ᵀ * a) *ᵥ u)`. Simplify using `only [Matrix.dotProduct_mulVec, ← Matrix.vecMul_vecMul, Matrix.vecMul_transpose]`. Use `⟨vecMulVec u y - e • vecMulVec sy su, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Substitute `hsu hsy` using the available equality. Use extensionality with `j k`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply, Matrix.smul_apply, Matrix.map_apply, Matrix.sub_apply, Matrix.vecMulVec_apply, Function.comp_apply, smul_eq_mul, map_sub, map_mul, hs, hse]`. Take the linear combination `(-(y j * u k)) * he`. Simplify using `[Matrix.mul_sub, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hcu, hcsu]`. Use `⟨a *ᵥ u, e • (c.map s *ᵥ y), ?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_vecMulVec, Matrix.vecMulVec_mul, Matrix.vecMul_transpose, hcsu]`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_dotProduct, key, hM', dotProduct_zero, smul_zero]`. Establish `h1 : (T *ᵥ u) ⬝ᵥ y = 1` using `by rw [dotProduct_comm, hy]`. Establish `hsy1 : sy ⬝ᵥ (T.map s *ᵥ su) = 1`. Establish `hmv : T.map s *ᵥ su = s ∘ (T *ᵥ u)`. Rewrite using `[hsu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Conclude with `(RingHom.map_mulVec s T u j).symm`. Rewrite using `[hmv, hsy, ← RingHom.map_dotProduct, hy, map_one]`. Establish `h2 : (T *ᵥ sy) ⬝ᵥ su = -e`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.vecMul_transpose, ← Matrix.dotProduct_mulVec]`. Use `_ = sy ⬝ᵥ ((-(e • T.map s)) *ᵥ su) := by rw [hT]`. Use `_ = -e * (sy ⬝ᵥ (T.map s *ᵥ su)) := by`. Rewrite using `[Matrix.neg_mulVec, Matrix.smul_mulVec, dotProduct_neg, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ = -e := by rw [hsy1, mul_one]`. Rewrite using `[Matrix.mul_sub, Matrix.mul_smul, Matrix.mul_vecMulVec, Matrix.mul_vecMulVec, Matrix.trace_sub, Matrix.trace_smul, Matrix.trace_vecMulVec, Matrix.trace_vecMulVec, h1, h2, smul_eq_mul]`. Take the linear combination `he`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_beta_pf {K : Type} [Field K] (s : K →+* K) (hs : ∀ x, s (s x) = x) {n : ℕ} (e : K) (he : e * e = 1)
     (hse : s e = e) (a c d' : Matrix (Fin n) (Fin n) K) (hc : c.det = 0) (hda : e • (c.map s)ᵀ * a + d' * c = 0)

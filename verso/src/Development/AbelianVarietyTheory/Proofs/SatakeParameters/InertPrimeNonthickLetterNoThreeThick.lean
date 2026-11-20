@@ -14,15 +14,13 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory.HTW.InertWord
 
 /- English proof (translation)
-Introduce `R H τ φ hL hφ hnot`. Establish `h2 : 2 ≤ orderOf φ`. Rewrite using `[GlobalTheory.T.orderOf_eq_max_two_of_sign_neg_implicit φ hφ]`. Conclude with `Nat.le_of_dvd (Nat.lcm_pos two_pos (orderOf_pos _)) (Nat.dvd_lcm_left _ _)`. Distinguish the cases in `hc : φ = R.cc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hτ : ¬ Thick H τ` using `fun h => hnot ⟨hc, h⟩`. Substitute `hc` using the available equality. Establish `hno : ∀ i : ZMod (orderOf (R.cc)), ¬ Thick H (letter τ (R.cc) i)`. Introduce `i h`. Apply `hτ` to reduce the goal to its premises.
+Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.complexConjugation_orbit_one_realPlace τ).2 i` as an intermediate fact. Unfold `Thick at h ⊢`. Rewrite `h` using `[this]`. Conclude with `h`. Conclude with `GlobalTheory.T.cyclicWord_noThreeMarked_of_atMostOne _ h2 (fun a b ha _ => absurd ha (hno a))`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hlen : 4 * H.Lw < orderOf φ.2`. Conclude with `GlobalTheory.T.cyclicWord_noThreeMarked_of_atMostTwoInWindow _ H.Lw hL (GlobalTheory.T.atMostTwoThick_in_window_long_orbit H τ φ hlen)`. Establish `h1 : φ ≠ 1`. Introduce and unpack `rfl`. Conclude with `absurd (show (1 : ℤˣ) = -1 from hφ) (by decide)`.
-
-Establish `adj : ∀ i : ZMod (orderOf φ), ¬ (Thick H (letter τ φ i) ∧ Thick H (letter τ φ (i + 1)))` using `fun i h => UpperTheory.KStar.Words.placeOf_letter_succ_ne τ φ h1 hc i (GlobalTheory.T.atMostOneThick_short_orbit H τ φ (not_lt.mp hlen) (i + 1) i h.2 h.1)`. Use `⟨fun i h => adj i ⟨h.1, h.2.1⟩, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hall`. Establish `hall' : ∀ i, Thick H (letter τ φ i)` using `fun i => by_contra fun hi => hall ⟨i, hi⟩`. Conclude with `adj 0 ⟨hall' 0, hall' (0 + 1)⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inert_nothree_nonthick : ∀ {R : Ranks} (H : Host R) (τ φ : R.GG), 3 ≤ H.Lw → φ.1.2 = -1 →
     ¬ (φ = R.cc ∧ Thick H τ) →

@@ -24,13 +24,13 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
 
 /- English proof (translation)
-Establish `h1 : ∀ x : V ⊗[Qp] C, SumJumps.ext1 Qp C e.symm.toLinearMap (SumJumps.ext1 Qp C e.toLinearMap x) = x`. Introduce `x`. Rewrite using `[SumJumps.ext1_comp_ext1]`. Use `SumJumps.ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal. Use extensionality with `v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `h2 : ∀ x : V' ⊗[Qp] C, SumJumps.ext1 Qp C e.toLinearMap (SumJumps.ext1 Qp C e.symm.toLinearMap x) = x`. Introduce `x`. Rewrite using `[SumJumps.ext1_comp_ext1]`. Use `SumJumps.ext1_id (LL := LL) x` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use extensionality with `v`. Simplify using the standard rewrite rules. Use `LinearEquiv.finrank_eq (LinearEquiv.ofLinear ((SumJumps.ext1 Qp C e.toLinearMap).restrict a) ((SumJumps.ext1 Qp C e.symm.toLinearMap).restrict b) ?_ ?_)` and prove the remaining obligations. Use extensionality with `x`. Simplify using `[LinearMap.restrict_apply, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `[LinearMap.restrict_apply, h1]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem finrank_eq_of_equiv_tensor {C : Type} [AddCommGroup C] [Module Qp C] (e : V ≃ₗ[LL] V')
     (S : Submodule LL (V ⊗[Qp] C)) (S' : Submodule LL (V' ⊗[Qp] C))
@@ -60,7 +60,7 @@ theorem finrank_eq_of_equiv_tensor {C : Type} [AddCommGroup C] [Module Qp C] (e 
 variable {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
 /- English proof (translation)
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symm_equivariant (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) (g : G) (v : V') :
     e.symm.toLinearMap (ρ' g v) = ρ g (e.symm.toLinearMap v) := by
@@ -69,7 +69,7 @@ theorem symm_equivariant (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g
   simp
 
 /- English proof (translation)
-The claim follows from `finrank_eq_of_equiv_tensor e _ _ (SumJumps.dcris_map PD e.toLinearMap he) (SumJumps.dcris_map PD e.symm.toLinearMap (symm_equivariant e he))`.
+A detailed English derivation is pending.
 -/
 theorem finrank_dcris_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v)) :
     finrank LL (Dcris PD ρ) = finrank LL (Dcris PD ρ') :=
@@ -77,7 +77,7 @@ theorem finrank_dcris_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v
     (SumJumps.dcris_map PD e.symm.toLinearMap (symm_equivariant e he))
 
 /- English proof (translation)
-The claim follows from `finrank_eq_of_equiv_tensor e _ _ (SumJumps.fildR_map PD e.toLinearMap he τ a) (SumJumps.fildR_map PD e.symm.toLinearMap (symm_equivariant e he) τ a)`.
+A detailed English derivation is pending.
 -/
 theorem finrank_fildR_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v))
     (τ : K →ₐ[Qp] LL) (a : ℤ) :
@@ -86,14 +86,14 @@ theorem finrank_fildR_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v
     (SumJumps.fildR_map PD e.symm.toLinearMap (symm_equivariant e he) τ a)
 
 /- English proof (translation)
-Simplify using `only [multV, finrank_fildR_eq_of_equiv PD e he]`.
+Simplify using the standard rewrite rules.
 -/
 theorem multV_eq_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v))
     (τ : K →ₐ[Qp] LL) (a : ℤ) : multV PD ρ τ a = multV PD ρ' τ a := by
   simp only [multV, finrank_fildR_eq_of_equiv PD e he]
 
 /- English proof (translation)
-Unfold `IsCrys at h ⊢`. Rewrite using `[finrank_dcris_eq_of_equiv PD e he, h, e.finrank_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isCrys_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g (e v))
     (h : IsCrys PD ρ') : IsCrys PD ρ := by
@@ -103,9 +103,9 @@ theorem isCrys_of_equiv (e : V ≃ₗ[LL] V') (he : ∀ g v, e (ρ g v) = ρ' g 
 end Transport
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `h`. Establish `he' : ∀ g v, e (T.ρ g v) = matRep M g (e v)`. Introduce `g v`. Rewrite using `[he]`. Simplify using `[matRep, Matrix.toLinAlgEquiv'_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨isCrys_of_equiv _ e he', fun τ u => multV_eq_of_equiv _ e he' τ u⟩`.
+Supply the required witnesses or components.
 -/
 theorem isCrys_multV_of_isMatRep {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (T : Lat K LL) {r : ℕ}
     (M : ↥(GK K) →* Matrix (Fin r) (Fin r) ↥LL.1) (h : IsMatRep T M) :

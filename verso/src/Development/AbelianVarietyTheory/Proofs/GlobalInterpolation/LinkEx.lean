@@ -13,9 +13,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Pk Forma
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `𝒜 cT hEx sel hduty hTu hn4 hLit`. Establish `hC0 : (3 : ℝ) ≤ 3` using `le_refl _`. Establish `hC0' : (0 : ℝ) < 3` using `by norm_num`. Establish `hCe : Real.exp 1 ≤ 3` using `le_trans (le_of_lt (lt_trans Real.exp_one_lt_d9 (by norm_num))) hC0`. Establish `hRec : ∀ {eps : ℝ} (Fm : FamP eps), 𝒜 Fm → Formalism.L2.LayerTwoFamilyClass Fm` using `fun Fm hc => class_of_record_of_choice (sel Fm hc) (class_duties_of_choice (sel Fm hc) (hduty Fm hc))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∀ {eps : ℝ} (Fm : FamP eps), WithTw (WithSm (WithChN 𝒜)) Fm → 𝒜 Fm` using `fun _ hc => hc.1.1.1`. Establish `hProv : Closed (WithTw (WithSm (WithChN 𝒜))) fun Fm _ => ChosenProviso Fm 3` using `(hn4.and (Pk.Closed.sub Formalism.MainNotions.Ext.Lw.closed_rankTiesF_C2S fun Fm hc => (hRec Fm (hsub Fm hc)).c2s)).imp fun Fm _ _ h => Formalism.MainNotions.StandardLattice.HarishChandraReduction.chosenProviso_min Fm 3 hCe h.1 h.2`. Establish `hE' : DesignExists (WithTw (WithSm (WithChN 𝒜))) 3` using `designExists_of_choices (designChoices_upN (hEx minkowski_bound_rat)) hTu hProv (chosenThin_closed (WithTw (WithSm (WithChN 𝒜))) hLit)`. Conclude with `hE'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Top.link_ex : ∀ (𝒜 : FamClass)
     (cT : ℝ → ℝ → ℝ)

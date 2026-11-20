@@ -26,13 +26,13 @@ def ltIdeal : Ideal v.integer where
       _ < 1 := by rwa [one_mul]
 
 /- English proof (translation)
-Set `A0 : Matrix (Fin n) (Fin n) v.integer` to `fun i j => ⟨A i j, hA i j⟩`. Set `B0 : Matrix (Fin n) (Fin n) v.integer` to `fun i j => ⟨B i j, hB i j⟩`. Establish `eA : A0.map v.integer.subtype = A` using `by ext i j; rfl`. Establish `eB : B0.map v.integer.subtype = B` using `by ext i j; rfl`. Establish `hm : A0.map (Ideal.Quotient.mk (ltIdeal v)) = B0.map (Ideal.Quotient.mk (ltIdeal v))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Rewrite using `[Ideal.Quotient.eq]`. Conclude with `h i j`. Establish `hd` using `congrArg Matrix.det hm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : Ideal.Quotient.mk (ltIdeal v) A0.det = (A0.map (Ideal.Quotient.mk (ltIdeal v))).det` using `RingHom.map_det _ _`. Establish `d2 : Ideal.Quotient.mk (ltIdeal v) B0.det = (B0.map (Ideal.Quotient.mk (ltIdeal v))).det` using `RingHom.map_det _ _`. Rewrite `hd` using `[← d1, ← d2, Ideal.Quotient.eq]`. Establish `e1 : v.integer.subtype A0.det = (A0.map v.integer.subtype).det` using `RingHom.map_det _ _`. Establish `e2 : v.integer.subtype B0.det = (B0.map v.integer.subtype).det` using `RingHom.map_det _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e1` using `[eA]`. Rewrite `e2` using `[eB]`. Establish `: v ((A0.det - B0.det : v.integer) : K) < 1` using `hd`. Rewrite using `[← e1, ← e2, ← map_sub]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_sub_lt {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, v (A i j) ≤ 1)
     (hB : ∀ i j, v (B i j) ≤ 1) (h : ∀ i j, v (A i j - B i j) < 1) : v (A.det - B.det) < 1 := by
@@ -60,9 +60,9 @@ theorem det_sub_lt {n : ℕ} (A B : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, v (
   exact this
 
 /- English proof (translation)
-Set `A0 : Matrix (Fin n) (Fin n) v.integer` to `fun i j => ⟨A i j, hA i j⟩`. Establish `eA : A0.map v.integer.subtype = A` using `by ext i j; rfl`. Establish `e : A0.adjugate.map v.integer.subtype = (A0.map v.integer.subtype).adjugate` using `RingHom.map_adjugate _ _`. Rewrite `e` using `[eA]`. Introduce `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e]`. Conclude with `(A0.adjugate i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adjugate_le_one {n : ℕ} (A : Matrix (Fin n) (Fin n) K) (hA : ∀ i j, v (A i j) ≤ 1) :
     ∀ i j, v (A.adjugate i j) ≤ 1 := by
@@ -82,7 +82,7 @@ section Place
 variable {L : Type} [Field L] [NumberField L] [IsCMField L]
 
 /- English proof (translation)
-Establish `h` using `s.split_le_one (m : 𝓞 L)`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intCast_le_one (s : SplitPlace L) (m : ℤ) :
     Valued.v ((m : s.v.adicCompletion (maximalRealSubfield L))) ≤ 1 := by
@@ -90,7 +90,7 @@ theorem intCast_le_one (s : SplitPlace L) (m : ℤ) :
   simpa using h
 
 /- English proof (translation)
-Establish `h : Valued.v (s.i ((g : 𝓞 L) : L)) < 1` using `hg`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem natCast_lt_one (s : SplitPlace L) (g : ℕ) (hg : ((g : 𝓞 L) ∈ s.w.asIdeal)) :
     Valued.v ((g : s.v.adicCompletion (maximalRealSubfield L))) < 1 := by
@@ -98,13 +98,11 @@ theorem natCast_lt_one (s : SplitPlace L) (g : ℕ) (hg : ((g : 𝓞 L) ∈ s.w.
   simpa using h
 
 /- English proof (translation)
-Establish `hcop : IsCoprime (g : ℤ) m`. Rewrite using `[Int.isCoprime_iff_gcd_eq_one]`. Establish `h1 : ¬ g ∣ m.natAbs` using `fun h => hm (Int.natCast_dvd.mpr h)`. Conclude with `(Nat.Prime.coprime_iff_not_dvd hp).2 h1`. Take `⟨a, b, hab⟩` from `hcop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (intCast_le_one s m) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Establish `e : ((a : s.v.adicCompletion (maximalRealSubfield L))) * (g : s.v.adicCompletion (maximalRealSubfield L)) + (b : s.v.adicCompletion (maximalRealSubfield L)) * (m : s.v.adicCompletion (maximalRealSubfield L)) = 1`. Conclude with `congrArg (fun z : ℤ => (z : s.v.adicCompletion (maximalRealSubfield L))) hab` after adjusting the coercions. Establish `h1 : Valued.v ((a : s.v.adicCompletion (maximalRealSubfield L)) * (g : s.v.adicCompletion (maximalRealSubfield L))) < 1`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Valued.v ((b : s.v.adicCompletion (maximalRealSubfield L)) * (m : s.v.adicCompletion (maximalRealSubfield L))) < 1`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h3` using `lt_of_le_of_lt (Valuation.map_add _ _ _) (max_lt h1 h2)`.
-
-Rewrite `h3` using `[e, map_one]`. Conclude with `lt_irrefl _ h3`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_eq_one (s : SplitPlace L) (g : ℕ) (hp : g.Prime) (hg : ((g : 𝓞 L) ∈ s.w.asIdeal)) (m : ℤ)
     (hm : ¬ (g : ℤ) ∣ m) : Valued.v ((m : s.v.adicCompletion (maximalRealSubfield L))) = 1 := by
@@ -132,21 +130,19 @@ theorem intCast_eq_one (s : SplitPlace L) (g : ℕ) (hp : g.Prime) (hg : ((g : �
 end Place
 
 /- English proof (translation)
-Introduce `L _ _ _ n s g hp hg x γ hx`. Take `⟨htriv, hred⟩` from `hx`. Use `haveI : Fact g.Prime := ⟨hp⟩`. Use `set A : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L)) := ((s.loc n x : GL (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))) with hAdef`. Set `M : Matrix (Fin n) (Fin n) ℤ` to `fun i j => (((γ : Matrix (Fin n) (Fin n) (ZMod g)) i j).val : ℤ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B : Matrix (Fin n) (Fin n) (s.v.adicCompletion (maximalRealSubfield L))` to `M.map (Int.castRingHom _)`. Establish `hB : ∀ i j, Valued.v (B i j) ≤ 1` using `fun i j => intCast_le_one s _`. Establish `hAB : ∀ i j, Valued.v (A i j - B i j) < 1`. Introduce `i j`. Use `hred i j` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `e : B i j = ((((γ : Matrix (Fin n) (Fin n) (ZMod g)) i j).val : ℕ) : s.v.adicCompletion (maximalRealSubfield L))`. Express the relevant statement in the definitionally equal form `(((M i j : ℤ)) : s.v.adicCompletion (maximalRealSubfield L)) = _`. Conclude with `Int.cast_natCast _`. Rewrite using `[e]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : ∀ i j, Valued.v (A i j) ≤ 1`. Introduce `i j`. Establish `e : A i j = (A i j - B i j) + B i j` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (hAB i j).le (hB i j))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hdetB : B.det = ((M.det : ℤ) : s.v.adicCompletion (maximalRealSubfield L))` using `(RingHom.map_det (Int.castRingHom (s.v.adicCompletion (maximalRealSubfield L))) M).symm`. Establish `hMγ : M.map (Int.castRingHom (ZMod g)) = (γ : Matrix (Fin n) (Fin n) (ZMod g))`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(((M i j : ℤ)) : ZMod g) = _`. Rewrite using `[Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdetM : ((M.det : ℤ) : ZMod g) = (γ : Matrix (Fin n) (Fin n) (ZMod g)).det`. Rewrite using `[← hMγ]`. Conclude with `RingHom.map_det (Int.castRingHom (ZMod g)) M`. Establish `hne : ¬ (g : ℤ) ∣ M.det`. Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd, hdetM]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Matrix.isUnits_det_units γ).ne_zero`. Establish `hvB : Valued.v B.det = 1` using `by rw [hdetB]; exact intCast_eq_one s g hp hg _ hne`. Establish `hvA : Valued.v A.det = 1`. Establish `hd` using `det_sub_lt Valued.v A B hA hB hAB`. Establish `e : A.det = (A.det - B.det) + B.det` using `by ring`.
-
-Rewrite using `[e, Valuation.map_add_eq_of_lt_right _ (by rw [hvB]; exact hd), hvB]`. Use `GlobalTheory.TSetFin.mem_Umax_of_loc s x htriv hA ?_` and prove the remaining obligations. Introduce `i j`. Rewrite using `[map_inv, Matrix.coe_units_inv, ← hAdef, Matrix.inv_def, Matrix.smul_apply, smul_eq_mul, map_mul, Ring.inverse_eq_inv', map_inv₀, hvA, inv_one, one_mul]`. Conclude with `adjugate_le_one Valued.v A hA i j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Umax_of_isLift : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (s : ReciprocityTheory.Aut.SplitPlace L) (g : ℕ), g.Prime → ((g : 𝓞 L) ∈ s.w.asIdeal) → ∀ (x : Formalism.AUTREP.GAf L n) (γ : GL (Fin n) (ZMod g)), GlobalTheory.LabPin.IsLift s x γ → x ∈ ReciprocityTheory.Aut.Umax L n := by
   intro L _ _ _ n s g hp hg x γ hx

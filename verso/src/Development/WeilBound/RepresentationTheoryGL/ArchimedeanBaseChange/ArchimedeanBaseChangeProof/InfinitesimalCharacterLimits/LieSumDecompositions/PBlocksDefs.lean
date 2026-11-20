@@ -25,14 +25,14 @@ def RS {r s : ℕ} (U : Submodule ℂ (Sm E (r + s))) (T : Sm E (r + s) →ₗ[�
   Submodule.span ℂ {ℓ | ∃ ψ ∈ U, ∃ k g, ℓ ∈ rsF r s (T ψ) k g}
 
 /- English proof (translation)
-Introduce `_ h` and use `Submodule.subset_span ⟨ψ, hψ, k, g, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lsF_sub_LS {r s : ℕ} {U : Submodule ℂ (Sm E (r + s))} {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)} {ψ : Sm E (r + s)}
     (hψ : ψ ∈ U) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) : lsF r s (T ψ) k g ⊆ LS U T :=
   fun _ h => Submodule.subset_span ⟨ψ, hψ, k, g, h⟩
 
 /- English proof (translation)
-Introduce `_ h` and use `Submodule.subset_span ⟨ψ, hψ, k, g, h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rsF_sub_RS {r s : ℕ} {U : Submodule ℂ (Sm E (r + s))} {T : Sm E (r + s) →ₗ[ℂ] Sm E (r + s)} {ψ : Sm E (r + s)}
     (hψ : ψ ∈ U) (k : Kinf E (r + s)) (g : GL (Fin (r + s)) (Af E)) : rsF r s (T ψ) k g ⊆ RS U T :=

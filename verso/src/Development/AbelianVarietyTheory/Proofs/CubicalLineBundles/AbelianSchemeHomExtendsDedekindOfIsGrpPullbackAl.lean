@@ -10,11 +10,11 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `H R K _ _ _ _ _ G G' _ _ G₀ G₀' _ _ φ φ' hG hG' hφ hφ' f hf`. Take `⟨_, _⟩` from `ExtUnique.spec_fractionRing R K`. Use `hG.smooth` as an intermediate fact. Use `hG'.proper` as an intermediate fact. Take `⟨a, ha, ha'⟩` from `grpPullback_iso (isGrpPullback_pullback G _) hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `grpPullback_iso hφ' (isGrpPullback_pullback G' _)`. Take `⟨F, ⟨hF, hF'⟩, -⟩` from `abelianScheme_hom_extends_dedekind H R K G G' hG hG' (a.hom ≫ f ≫ b.hom) inferInstance`. Establish `key : f.left ≫ φ' = φ ≫ F.left`. Establish `h₁` using `ExtUnique.pullback_map_left_fst (spMap (algebraMap R K)) F`. Rewrite `h₁` using `[hF', Over.comp_left, Over.comp_left, Category.assoc, Category.assoc, hb', ← ha', Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: IsIso a.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map a.hom))`. Conclude with `(cancel_epi a.hom.left).1 h₁`. Conclude with `⟨F, hF, key, fun F' h' => ExtUnique.over_hom_ext_of_isPullback hφ.1 (h'.symm.trans key)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem abelianScheme_hom_extends_dedekind_of_isGrpPullback :
     (∀ (T K : Type) [CommRing T] [IsDomain T] [IsDiscreteValuationRing T] [Field K] [Algebra T K] [IsFractionRing T K] (G G' : Over (Sp T)) [GrpObj G] [GrpObj G'], IsSemiAbelian G → IsSemiAbelian G' → ∀ f : (Over.pullback (spMap (algebraMap T K))).obj G ⟶ (Over.pullback (spMap (algebraMap T K))).obj G', IsMonHom f → ∃! F : G ⟶ G', IsMonHom F ∧ (Over.pullback (spMap (algebraMap T K))).map F = f) → ∀ (R K : Type) [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (G G' : Over (Sp R)) [GrpObj G] [GrpObj G'] (G₀ G₀' : Over (Sp K)) [GrpObj G₀] [GrpObj G₀'] (φ : G₀.left ⟶ G.left) (φ' : G₀'.left ⟶ G'.left), IsAbelianScheme G → IsAbelianScheme G' → IsGrpPullback G₀ G (spMap (algebraMap R K)) φ → IsGrpPullback G₀' G' (spMap (algebraMap R K)) φ' → ∀ f : G₀ ⟶ G₀', IsMonHom f → ∃ F : G ⟶ G', IsMonHom F ∧ f.left ≫ φ' = φ ≫ F.left ∧ ∀ F' : G ⟶ G', f.left ≫ φ' = φ ≫ F'.left → F' = F := by

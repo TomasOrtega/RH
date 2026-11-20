@@ -28,107 +28,107 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.EqZeroOfLeSmall
 namespace PositivityTheory.Rg.BcB.E1
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelBasic.kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem kerBasic : KerBasic := GlobalTheory.CompanionTheory.KernelBasic.kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KerLinear.kerLin_of_kerBasic kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem kerLin : KerLin := GlobalTheory.CompanionTheory.KerLinear.kerLin_of_kerBasic kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelCount.cntBasic_of_kerBasic kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem cntBasic : CntBasic := GlobalTheory.CompanionTheory.KernelCount.cntBasic_of_kerBasic kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelRows.rowInt_of_kerBasic kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem rowInt : RowInt := GlobalTheory.CompanionTheory.KernelRows.rowInt_of_kerBasic kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelColumn.colSq_of_kerBasic kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem colSq : ColSq := GlobalTheory.CompanionTheory.KernelColumn.colSq_of_kerBasic kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KerSquare.kernel_rows_columns_square_integrable kerBasic cntBasic colSq`.
+A detailed English derivation is pending.
 -/
 theorem kernel_rows_columns_square_integrable : KernelL2RowsColumns := GlobalTheory.CompanionTheory.KerSquare.kernel_rows_columns_square_integrable kerBasic cntBasic colSq
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Schur.schurL`.
+A detailed English derivation is pending.
 -/
 theorem schurL : SchurL := GlobalTheory.CompanionTheory.Schur.schurL
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.SchurKernel.schurInt_of_schurL schurL`.
+A detailed English derivation is pending.
 -/
 theorem schurInt : SchurInt := GlobalTheory.CompanionTheory.SchurKernel.schurInt_of_schurL schurL
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Schur.schurOp_of_schurL schurL`.
+A detailed English derivation is pending.
 -/
 theorem schurOp : SchurOp := GlobalTheory.CompanionTheory.Schur.schurOp_of_schurL schurL
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ConvTest.cvTest`.
+A detailed English derivation is pending.
 -/
 theorem cvTest : CvTest := GlobalTheory.CompanionTheory.ConvTest.cvTest
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelComposition.kerMul_of_kerBasic_of_cvTest kerBasic cvTest`.
+A detailed English derivation is pending.
 -/
 theorem kerMul : KerMul := GlobalTheory.CompanionTheory.KernelComposition.kerMul_of_kerBasic_of_cvTest kerBasic cvTest
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.OpEx.opExA kerBasic rowInt schurOp`.
+A detailed English derivation is pending.
 -/
 theorem opExA : OpExA := GlobalTheory.CompanionTheory.OpEx.opExA kerBasic rowInt schurOp
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KerAdj.opAdj_of kerBasic rowInt schurInt opExA`.
+A detailed English derivation is pending.
 -/
 theorem opAdj : OpAdj := GlobalTheory.CompanionTheory.KerAdj.opAdj_of kerBasic rowInt schurInt opExA
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelOperators.opMul kerBasic kerLin rowInt kernel_rows_columns_square_integrable schurInt cvTest kerMul`.
+A detailed English derivation is pending.
 -/
 theorem opMul : OpMul := GlobalTheory.CompanionTheory.KernelOperators.opMul kerBasic kerLin rowInt kernel_rows_columns_square_integrable schurInt cvTest kerMul
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelColumns.colOp kerBasic cvTest kernel_rows_columns_square_integrable kerMul`.
+A detailed English derivation is pending.
 -/
 theorem colOp : ColOp := GlobalTheory.CompanionTheory.KernelColumns.colOp kerBasic cvTest kernel_rows_columns_square_integrable kerMul
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.CellSumProof.cellSum_of_cntBasic cntBasic`.
+A detailed English derivation is pending.
 -/
 theorem cellSum : CellSum := GlobalTheory.CompanionTheory.CellSumProof.cellSum_of_cntBasic cntBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.TwoSidedUnif.twoUnif`.
+A detailed English derivation is pending.
 -/
 theorem twoUnif : TwoUnif := GlobalTheory.CompanionTheory.TwoSidedUnif.twoUnif
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Bump.bumpEx`.
+A detailed English derivation is pending.
 -/
 theorem bumpEx : BumpEx := GlobalTheory.CompanionTheory.Bump.bumpEx
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.ApproxUnit.approxU cvTest twoUnif`.
+A detailed English derivation is pending.
 -/
 theorem approxU : ApproxU := GlobalTheory.CompanionTheory.ApproxUnit.approxU cvTest twoUnif
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelClose.kerClose`.
+A detailed English derivation is pending.
 -/
 theorem kerClose : KerClose := GlobalTheory.CompanionTheory.KernelClose.kerClose
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelColumns.vecClose_of_kerBasic_colSq kerBasic colSq`.
+A detailed English derivation is pending.
 -/
 theorem vecClose : VecClose := GlobalTheory.CompanionTheory.KernelColumns.vecClose_of_kerBasic_colSq kerBasic colSq
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelColumns.vecNorm_of_vecClose vecClose`.
+A detailed English derivation is pending.
 -/
 theorem vecNorm : VecNorm := GlobalTheory.CompanionTheory.KernelColumns.vecNorm_of_vecClose vecClose
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KerVec.vecEx cntBasic kernel_rows_columns_square_integrable twoUnif vecClose`.
+A detailed English derivation is pending.
 -/
 theorem vecEx : VecEx := GlobalTheory.CompanionTheory.KerVec.vecEx cntBasic kernel_rows_columns_square_integrable twoUnif vecClose
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.E1.vecInner_of_kerBasic kerBasic`.
+A detailed English derivation is pending.
 -/
 theorem vecInner : VecInner := GlobalTheory.CompanionTheory.E1.vecInner_of_kerBasic kerBasic
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KernelColumns.vecLim_of cntBasic cvTest colOp approxU vecClose`.
+A detailed English derivation is pending.
 -/
 theorem vecLim : VecLim := GlobalTheory.CompanionTheory.KernelColumns.vecLim_of cntBasic cvTest colOp approxU vecClose
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.KerPoint.ptEq_of kerBasic cvTest opAdj colOp bumpEx approxU kerClose vecLim`.
+A detailed English derivation is pending.
 -/
 theorem ptEq : PtEq := GlobalTheory.CompanionTheory.KerPoint.ptEq_of kerBasic cvTest opAdj colOp bumpEx approxU kerClose vecLim
 

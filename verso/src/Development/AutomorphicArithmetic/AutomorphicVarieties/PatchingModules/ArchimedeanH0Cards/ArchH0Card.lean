@@ -5,9 +5,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing UpperTheory.V.W UpperTheory.V.Pa UpperTheory.V.Pa.B2
 
 /- English proof (translation)
-Take `⟨S, rfl⟩` from `hf.exists_finset_coe`. Use `letI : Module (ZMod (l ^ 1)) M.X := AddCommGroup.zmodModule (by simpa using hM)`. Take `⟨hρ, -, ⟨e1, -⟩, e2, -⟩` from `UpperTheory.V.Pa.B2.scal A _ M (l ^ 1)`. Establish `h` using `hE F Ω l 1 M.X S (GlobalTheory.Published.zmodRep (l ^ 1) M.ρ) one_pos (fun v hv => hS v hv) hρ c fun w _ => hc w`. Rewrite `h` using `[archH0Card, IsTotallyReal.nrComplexPlaces_eq_zero, pow_zero, mul_one, Finset.filter_true_of_mem fun w _ => IsTotallyReal.isReal w]`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `c0 : Nat.card (H0 M.ρ) = Nat.card (H0 (GlobalTheory.Published.zmodRep (l ^ 1) M.ρ))` using `Nat.card_congr (Equiv.subtypeEquivRight fun _ => Iff.rfl)`. Rewrite using `[c0, Nat.card_congr e1.toEquiv, Nat.card_congr e2.toEquiv]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.Pa.B2.ge_real (hE : GlobalEulerChar) (F Ω : Type) [Field F] [NumberField F] [IsTotallyReal F]
     [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (S : Set (HeightOneSpectrum (𝓞 F)))
@@ -29,11 +29,11 @@ private theorem UpperTheory.V.Pa.B2.ge_real (hE : GlobalEulerChar) (F Ω : Type)
   exact h
 
 /- English proof (translation)
-Introduce `hP l _ L Ω _ _ _ _ _ _ s V0 V O _ _ _ _ _ n r`. Take `⟨h1, h2⟩` from `UpperTheory.V.Pa.ccEx l L Ω`. Use `choose c hc using h1`. Establish `hcard : Fintype.card (InfinitePlace (Lp L)) = Module.finrank ℚ (Lp L)`. Rewrite using `[IsTotallyReal.finrank, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyReal.nrComplexPlaces_eq_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : Fin (Module.finrank ℚ (Lp L)) ≃ InfinitePlace (Lp L)` to `(Fintype.equivFinOfCardEq hcard).symm`. Use `⟨fun i => toGS Ω V.S' (c (e i)), fun i => ?_, fun A _ M hM => ?_⟩` and prove the remaining obligations. Take `⟨j, hj, -⟩` from `hc (e i)`. Take `⟨a1, a2, -⟩` from `h2 _ ⟨j, hj⟩`. Use `⟨(Int.units_eq_one_or (V.η (toGS Ω V.S' (c (e i))))).resolve_left fun h => a2 ((V.hη _).1 h), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(map_mul (toGS Ω V.S') _ _).symm.trans (by rw [a1, map_one]; rfl)`. Establish `h` using `UpperTheory.V.Pa.B2.ge_real hP.ge (Lp L) Ω l V.S' V.fin (fun v hv => V.sub (Or.inl hv)) c hc A M hM`. Rewrite `h` using `[← Equiv.prod_comp e]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.B2.arGE :
     CohP → ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (V0 V : s.Lev) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid V0.frame O n), ∃ c : Fin (Module.finrank ℚ (Lp L)) → (globOf r V).Γ, (∀ i, (globOf r V).η (c i) = -1 ∧ c i * c i = 1) ∧ ∀ (A : Type) [CommRing A] (M : FRep A (globOf r V).Γ), (∀ m : M.X, l • m = 0) → Nat.card (H0 M.ρ) * Nat.card (H2 M.ρ) * Nat.card M.X ^ Module.finrank ℚ (Lp L) = Nat.card (H1 M.ρ) * ∏ i, Nat.card {m : M.X // M.ρ (c i) m = m} := by

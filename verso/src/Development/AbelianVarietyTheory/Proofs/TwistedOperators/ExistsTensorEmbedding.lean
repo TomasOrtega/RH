@@ -6,17 +6,15 @@ open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible
 namespace GlobalTheory.FockTensor
 
 /- English proof (translation)
-Set `S : Submodule ℂ D.U.H` to `{ carrier := {x | ∀ g, A (D.U.π g x) = B (D.U.π g x)} add_mem' := by`. Introduce `a b ha hb g`. Simplify using `only [map_add]`. Rewrite using `[ha g, hb g]`. Use the proof step `zero_mem' := by intro g; simp`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `smul_mem' := by`. Introduce `c a ha g`. Simplify using `only [map_smul]`. Rewrite using `[ha g] }`. Establish `hcl : IsClosed (S : Set D.U.H)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `: (S : Set D.U.H) = ⋂ g, {x | A (D.U.π g x) = B (D.U.π g x)}`. Use extensionality with `x`. Simplify using `only [Set.mem_iInter]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isClosed_iInter fun g => isClosed_eq (by fun_prop) (by fun_prop)`. Establish `hinv : ∀ g, ∀ x ∈ S, D.U.π g x ∈ S`. Introduce `g x hx g'`. Use `hx (g' * g)` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Break down `D.irred S hcl hinv with h0 | h1` into its components or cases. Establish `: u ∈ S` using `h`. Rewrite `this` using `[h0]`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 this) hu`.
-
-Use extensionality with `x`. Establish `hx : x ∈ S` using `by rw [h1]; trivial`. Use `hx 1` as an intermediate fact. Rewrite `this` using `[map_one]`. Conclude with `this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_orbit {p q : ℕ} {T : GrpData p q} (D : DSRep T) (u : D.U.H) (hu : u ≠ 0)
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (A B : D.U.H →L[ℂ] E)
@@ -53,7 +51,7 @@ theorem ext_orbit {p q : ℕ} {T : GrpData p q} (D : DSRep T) (u : D.U.H) (hu : 
     exact this
 
 /- English proof (translation)
-The claim follows from `ext_orbit D u hu A B fun g => by rw [hA, hB, h]`.
+A detailed English derivation is pending.
 -/
 theorem isHomG_ext {p q : ℕ} {T : GrpData p q} (D : DSRep T) (πU : URep T) (u : D.U.H)
     (hu : u ≠ 0) (A B : D.U.H →L[ℂ] πU.H) (hA : ∀ g x, A (D.U.π g x) = πU.π g (A x))
@@ -61,25 +59,23 @@ theorem isHomG_ext {p q : ℕ} {T : GrpData p q} (D : DSRep T) (πU : URep T) (u
   ext_orbit D u hu A B fun g => by rw [hA, hB, h]
 
 /- English proof (translation)
-Introduce `p q T D πU v hv K _ _ j hj hex`. Use `choose io hio hiov using hex`. Establish `hu : D.ι v ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zero_ne_one hv`. Establish `hG : ∀ y g x, io y (D.U.π g x) = πU.π g (io y x)` using `fun y g x => congrArg (fun f : D.U.H →L[ℂ] πU.H => f x) (hio y g)`. Establish `key1 : ∀ y y' x', inner ℂ (j y) (io y' x') = inner ℂ (D.ι v) x' * inner ℂ y y'`. Introduce `y y' x'`. Use `ext_orbit D (D.ι v) hu ((innerSL ℂ (j y)).comp (io y')) ((inner ℂ y y' : ℂ) • innerSL ℂ (D.ι v)) (fun g => by show inner ℂ (j y) (io y' (D.U.π g (D.ι v))) = inner ℂ y y' * inner ℂ (D.ι v) (D.U.π g (D.ι v))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hG, hiov, hj, mcoef, mul_comm])`. Establish `h2` using `congrArg (fun f : D.U.H →L[ℂ] ℂ => f x') this`. Rewrite using `[mul_comm]`. Conclude with `h2`. Establish `key2 : ∀ y y' g x', inner ℂ (io y (D.U.π g (D.ι v))) (io y' x') = inner ℂ (D.U.π g (D.ι v)) x' * inner ℂ y y'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y y' g x'`. Rewrite using `[hG, hiov, inner_pi_left, ← hG, key1, inner_pi_left]`. Establish `key : ∀ x x' y y', inner ℂ (io y x) (io y' x') = inner ℂ x x' * inner ℂ y y'`. Introduce `x x' y y'`. Use `ext_orbit D (D.ι v) hu ((innerSL ℂ (io y x)).comp (io y')) ((inner ℂ y y' : ℂ) • innerSL ℂ x) (fun g => by show inner ℂ (io y x) (io y' (D.U.π g (D.ι v))) = inner ℂ y y' * inner ℂ x (D.U.π g (D.ι v))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inner_conj_symm, key2, map_mul, inner_conj_symm, inner_conj_symm, mul_comm])`. Establish `h2` using `congrArg (fun f : D.U.H →L[ℂ] ℂ => f x') this`. Rewrite using `[mul_comm]`. Conclude with `h2`. Establish `hnorm : ∀ x y, ‖io y x‖ ≤ 1 * ‖x‖ * ‖y‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `x y`. Establish `h` using `key x x y y`. Rewrite `h` using `[inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Establish `h' : ‖io y x‖ ^ 2 = (‖x‖ * ‖y‖) ^ 2`. Rewrite using `[mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h` after adjusting the coercions. Use `(pow_left_inj₀ (norm_nonneg _) (by positivity) two_ne_zero).1 h'` as an intermediate fact. Rewrite using `[this, one_mul]`. Establish `hadd : ∀ y y', io (y + y') = io y + io y'` using `fun y y' => isHomG_ext D πU _ hu _ _ (hG _) (fun g x => by show io y (D.U.π g x) + io y' (D.U.π g x) = πU.π g (io y x + io y' x)`. Rewrite using `[hG, hG, map_add]) (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `show io (y + y') (D.ι v) = io y (D.ι v) + io y' (D.ι v)`. Rewrite using `[hiov, hiov, hiov, map_add])`. Establish `hsmul : ∀ (c : ℂ) y, io (c • y) = c • io y` using `fun c y => isHomG_ext D πU _ hu _ _ (hG _) (fun g x => by show c • io y (D.U.π g x) = πU.π g (c • io y x)`. Rewrite using `[hG, map_smul]) (by`. Use `show io (c • y) (D.ι v) = c • io y (D.ι v)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hiov, hiov, map_smul])`. Set `L : D.U.H →ₗ[ℂ] K →ₗ[ℂ] πU.H` to `LinearMap.mk₂ ℂ (fun x y => io y x) (fun a b y => map_add _ _ _) (fun c a y => map_smul _ _ _) (fun x a b => by rw [hadd]; rfl) (fun c x a => by rw [hsmul]; rfl)`. Use `⟨LinearMap.mkContinuous₂ L 1 hnorm, key, hiov, fun g x y => (hG y g x).symm, ?_⟩` and prove the remaining obligations. Introduce `R S hR hS x y`. Use `isHomG_ext D πU _ hu (R.comp (io y)) (io (S y)) (fun g x => by show R (io y (D.U.π g x)) = πU.π g (R (io y x))` as an intermediate fact.
-
-Rewrite using `[hG, hR]) (hG _) (by`. Use `show R (io y (D.ι v)) = _`. Rewrite using `[hiov, hiov, hS])`. Conclude with `congrArg (fun f : D.U.H →L[ℂ] πU.H => f x) this`.
+A detailed English derivation is pending.
 -/
 theorem exists_tensor_embedding :
     ∀ (p q : ℕ) (T : GrpData p q) (D : DSRep T) (πU : URep T) (v : D.HK.V), ‖D.ι v‖ = 1 → ∀ (K : Type) [NormedAddCommGroup K] [InnerProductSpace ℂ K] (j : K →ₗᵢ[ℂ] πU.H), (∀ g y y', inner ℂ (j y) (πU.π g (j y')) = mcoef D v g * inner ℂ y y') → (∀ y, ∃ io : D.U.H →L[ℂ] πU.H, IsHomG D πU io ∧ io (D.ι v) = j y) → ∃ Tm : D.U.H →L[ℂ] K →L[ℂ] πU.H, (∀ x x' y y', inner ℂ (Tm x y) (Tm x' y') = inner ℂ x x' * inner ℂ y y') ∧ (∀ y, Tm (D.ι v) y = j y) ∧ (∀ g x y, πU.π g (Tm x y) = Tm (D.U.π g x) y) ∧ ∀ (R : πU.H →L[ℂ] πU.H) (S : K →L[ℂ] K), (∀ g z, R (πU.π g z) = πU.π g (R z)) → (∀ y, R (j y) = j (S y)) → ∀ x y, R (Tm x y) = Tm x (S y) := by

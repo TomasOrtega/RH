@@ -17,9 +17,9 @@ def TanS {A : Type} [CommRing A] [Algebra S A] (y : sp (R₀ := S) (DualNumber A
   spMap (TrivSqZeroExt.fstHom S A A) ≫ y = 1
 
 /- English proof (translation)
-Unfold `TanS at hy ⊢`. Rewrite using `[← Category.assoc, spMap_comp]`. Establish `e : (TrivSqZeroExt.fstHom S A' A').comp (dualMapS j) = j.comp (TrivSqZeroExt.fstHom S A A)`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[dualMapS_fst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, ← spMap_comp, Category.assoc, hy, comp_one'']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanS_restrict {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Algebra S A'] (j : A →ₐ[S] A')
     {y : sp (R₀ := S) (DualNumber A) ⟶ G} (hy : TanS y) : TanS (spMap (dualMapS j) ≫ y) := by
@@ -31,9 +31,9 @@ theorem tanS_restrict {A A' : Type} [CommRing A] [Algebra S A] [CommRing A'] [Al
   rw [e, ← spMap_comp, Category.assoc, hy, comp_one'']
 
 /- English proof (translation)
-Unfold `TanS at hy ⊢`. Rewrite using `[← Category.assoc, spMap_comp]`. Establish `e : (TrivSqZeroExt.fstHom S A A).comp (scaleS c) = TrivSqZeroExt.fstHom S A A`. Use `AlgHom.ext fun x => ?_` and prove the remaining obligations. Simplify using `[scaleS_fst]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, hy]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tanS_scale {A : Type} [CommRing A] [Algebra S A] (c : A) {y : sp (R₀ := S) (DualNumber A) ⟶ G}
     (hy : TanS y) : TanS (spMap (scaleS c) ≫ y) := by
@@ -61,13 +61,13 @@ abbrev epsA (A : Type) [CommRing A] [Algebra (Localization.Away s) A] :
   (Algebra.ofId (Localization.Away s) A).comp (eps C)
 
 /- English proof (translation)
-Establish `hy' : pushR G (pullR (G` using `G) (R' := Localization.Away s) y) = y := pushR_pullR (G := G) (R' := Localization.Away s) y`. Establish `h0 : spMap (TrivSqZeroExt.fstHom (Localization.Away s) A A) ≫ pullR (G` using `G) (R' := Localization.Away s) y = pt C (epsA C A) := by`. Apply `pushR_inj (G := G)` to reduce the goal to its premises. Rewrite using `[pushR_spMap, fst_restrict, hy', hy]`. Simplify using `only [epsA]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pt_eps, pushR_one]`. Establish `hnil : ∀ a ∈ RingHom.ker (TrivSqZeroExt.fstHom (Localization.Away s) A A), IsNilpotent a`. Introduce `a ha`. Establish `h1 : a.fst = 0` using `ha`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine TrivSqZeroExt.ext ?_ ?_ <;> simp [pow_two, h1]`. Establish `hcov` using `le_preimage_of_nil C (TrivSqZeroExt.fstHom (Localization.Away s) A A) (fun a => ⟨TrivSqZeroExt.inl a, by simp⟩) hnil _ (epsA C A) h0`. Take `⟨h, hh⟩` from `exists_pt C _ hcov`. Use `⟨h, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : pt C ((TrivSqZeroExt.fstHom (Localization.Away s) A A).comp h) = pt C (epsA C A)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← spMap_pt, ← hh, h0]`. Establish `h2` using `pt_injective C h1`. Introduce `b`. Simplify using `using AlgHom.congr_fun h2 b`. Rewrite using `[← hy', hh]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem tanS_chart {y : sp (R₀ := S) (DualNumber A) ⟶ G} (hy : TanS y) :
     ∃ h : Γ((Gs G s).left, C.U) →ₐ[Localization.Away s] DualNumber A, IsTanAt (epsA C A) h ∧ y = pushR G (pt C h) := by
@@ -96,9 +96,9 @@ theorem tanS_chart {y : sp (R₀ := S) (DualNumber A) ⟶ G} (hy : TanS y) :
   · rw [← hy', hh]
 
 /- English proof (translation)
-Unfold `TanS`. Rewrite using `[← fst_restrict s A, ← pushR_spMap, spMap_pt]`. Establish `e : (TrivSqZeroExt.fstHom (Localization.Away s) A A).comp h = epsA C A`. Use `AlgHom.ext fun b => ?_` and prove the remaining obligations. Simplify using `using hh b`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[e]`. Simplify using `only [epsA]`. Rewrite using `[pt_eps, pushR_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chart_tanS (h : Γ((Gs G s).left, C.U) →ₐ[Localization.Away s] DualNumber A) (hh : IsTanAt (epsA C A) h) :
     TanS (pushR G (pt C h)) := by
@@ -112,14 +112,14 @@ theorem chart_tanS (h : Γ((Gs G s).left, C.U) →ₐ[Localization.Away s] DualN
   rw [pt_eps, pushR_one]
 
 /- English proof (translation)
-The claim follows from `pt_injective C (pushR_inj (G := G) e)`.
+A detailed English derivation is pending.
 -/
 theorem chart_inj {h₁ h₂ : Γ((Gs G s).left, C.U) →ₐ[Localization.Away s] DualNumber A}
     (e : pushR G (pt C h₁) = pushR G (pt C h₂)) : h₁ = h₂ :=
   pt_injective C (pushR_inj (G := G) e)
 
 /- English proof (translation)
-Rewrite using `[← spMap_pt, pushR_spMap]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem chart_map {A' : Type} [CommRing A'] [Algebra S A'] [Algebra (Localization.Away s) A']
     [IsScalarTower S (Localization.Away s) A'] (j : A →ₐ[Localization.Away s] A')
@@ -129,7 +129,7 @@ theorem chart_map {A' : Type} [CommRing A'] [Algebra S A'] [Algebra (Localizatio
   congr 2
 
 /- English proof (translation)
-Rewrite using `[← spMap_pt, pushR_spMap]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem chart_scale (c : A) (h : Γ((Gs G s).left, C.U) →ₐ[Localization.Away s] DualNumber A) :
     spMap (scaleS (S := S) c) ≫ pushR G (pt C h) = pushR G (pt C ((scaleS c).comp h)) := by

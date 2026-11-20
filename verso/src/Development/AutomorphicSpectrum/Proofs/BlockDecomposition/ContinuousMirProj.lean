@@ -10,11 +10,9 @@ namespace GlobalTheory.CompanionTheory.BZMirFun
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hval : Continuous fun g : Mir k n => ((g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hblock : Continuous fun g : Mir k n => ((mirabolicProjection k n g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `(continuous_apply (Fin.castSucc j)).comp ((continuous_apply (Fin.castSucc i)).comp hval)`. Establish `hinv : Continuous fun g : Mir k n => g⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_inv`. Use `Units.continuous_iff.2 ⟨hblock, ?_⟩` and prove the remaining obligations. Establish `: (fun g : Mir k n => (((mirabolicProjection k n g)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)) = fun g => ((mirabolicProjection k n g⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`. Use function extensionality and compare the values at `g`. Rewrite using `[map_inv]`.
-
-Use `show Continuous (fun g : Mir k n => (((mirabolicProjection k n g)⁻¹ : GL (Fin n) k) : Matrix (Fin n) (Fin n) k))`. Rewrite using `[this]`. Conclude with `hblock.comp hinv`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mirProj (n : ℕ) : Continuous (mirabolicProjection k n) := by
   have hval : Continuous fun g : Mir k n =>
@@ -36,7 +34,7 @@ theorem continuous_mirProj (n : ℕ) : Continuous (mirabolicProjection k n) := b
   exact hblock.comp hinv
 
 /- English proof (translation)
-Introduce `n W _ _ σ hσ w`. Conclude with `(hσ w).preimage (continuous_mirProj k n)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem smPsiPlus : SmPsiPlus k := by
   intro n W _ _ σ hσ w

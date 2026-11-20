@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype
 open Classical in
 
 /- English proof (translation)
-Use extensionality with `k`. Establish `hk` using `congrFun h k`. Simplify using `only [LatEmb.pBar, Pi.smul_apply, Pi.add_apply, Pi.zero_apply, smul_eq_mul] at hk ⊢`. Take the linear combination `(-2 * Complex.I) * hk + ((C.perExt R (Pi.single τ (Complex.I • y))) k) * Complex.I_mul_I`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem perExt_I_of_pBar {τ : Ψ} {y : Fin (j + j') → ℂ} (h : C.pBar R τ y = 0) :
     C.perExt R (Pi.single τ (Complex.I • y)) = Complex.I • C.perExt R (Pi.single τ y) := by
@@ -33,7 +33,7 @@ theorem perExt_I_of_pBar {τ : Ψ} {y : Fin (j + j') → ℂ} (h : C.pBar R τ y
 open Classical in
 
 /- English proof (translation)
-Establish `h1` using `perExt_I_of_pBar C R h`. Use extensionality with `k`. Simplify using `only [LatEmb.pPart, h1, Pi.smul_apply, Pi.sub_apply, smul_eq_mul]`. Take the linear combination `(-(1 / 2 : ℂ) * (C.perExt R (Pi.single τ y)) k) * Complex.I_mul_I`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem pPart_of_pBar {τ : Ψ} {y : Fin (j + j') → ℂ} (h : C.pBar R τ y = 0) :
     C.pPart R τ y = C.perExt R (Pi.single τ y) := by
@@ -45,9 +45,9 @@ theorem pPart_of_pBar {τ : Ψ} {y : Fin (j + j') → ℂ} (h : C.pBar R τ y = 
 open Classical in
 
 /- English proof (translation)
-Unfold `LatEmb.Fm`. Rewrite using `[Finset.sum_eq_single τ]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Simplify using `[Pi.single_eq_of_ne hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ τ) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Fm_single (τ : Ψ) (y x : Fin (j + j') → ℂ) :
     C.Fm (Pi.single τ y) (Pi.single τ x) =
@@ -61,11 +61,11 @@ theorem Fm_single (τ : Ψ) (y x : Fin (j + j') → ℂ) :
     exact absurd (Finset.mem_univ τ) h
 
 /- English proof (translation)
-Establish `hs : star (A τ *ᵥ Sum.elim 0 x) ⬝ᵥ (C.sgr τ *ᵥ (A τ *ᵥ Sum.elim 0 y)) = -(star x ⬝ᵥ y)`. Establish `h1 : star (A τ *ᵥ Sum.elim 0 x) ⬝ᵥ (C.sgr τ *ᵥ (A τ *ᵥ Sum.elim 0 y)) = star (Sum.elim 0 x : Sg j j' → ℂ) ⬝ᵥ (((A τ)ᴴ * C.sgr τ * A τ) *ᵥ Sum.elim 0 y)`. Rewrite using `[Matrix.star_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Simplify using `only [Matrix.dotProduct_mulVec]`. Rewrite using `[h1, hA.unit τ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sgI, Matrix.fromBlocks_mulVec]`. Simplify using `[dotProduct, Fintype.sum_sum_type, Matrix.neg_mulVec]`. Establish `hg : C.sgr τ = ((C.eps τ : ℝ) : ℂ) • C.gr τ` using `rfl`. Rewrite `hs` using `[hg, Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`. Rewrite using `[C.xi_eq τ]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Take the linear combination `(Complex.I * (C.c : ℂ)) * hs`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem xi_block {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdapted R A) (τ : Ψ)
     (x y : Fin j' → ℂ) :
@@ -86,13 +86,11 @@ theorem xi_block {A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ} (hA : C.IsAdap
   linear_combination (Complex.I * (C.c : ℂ)) * hs
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ _ j j' n g Λ _ _ F C R A hF hA τ x y`. Establish `hx` using `pPart_of_pBar C R (hA.kerBar τ x)`. Establish `hy` using `pPart_of_pBar C R (hA.kerBar τ y)`. Establish `hiy` using `perExt_I_of_pBar C R (hA.kerBar τ y)`. Establish `h1` using `hF (Pi.single τ (A τ *ᵥ Sum.elim 0 y)) (Pi.single τ (A τ *ᵥ Sum.elim 0 x))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hF (Pi.single τ (Complex.I • (A τ *ᵥ Sum.elim 0 y))) (Pi.single τ (A τ *ᵥ Sum.elim 0 x))`. Rewrite `h1` using `[Fm_single, xi_block C R hA]`. Rewrite `h2` using `[Fm_single, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul, mul_left_comm, xi_block C R hA, hiy, smul_dotProduct, smul_eq_mul]`. Rewrite using `[RiemLat.ip, hx, hy]`. Use `set H := C.perExt R (Pi.single τ (A τ *ᵥ Sum.elim 0 y)) ⬝ᵥ R.Hm *ᵥ star (C.perExt R (Pi.single τ (A τ *ᵥ Sum.elim 0 x))) with hH`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set w := star x ⬝ᵥ y with hw`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.mul_re, Complex.mul_im] at h1 h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `[Complex.mul_re, Complex.mul_im] at h1 h2 ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gram_last_block : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Type) [Fintype Ψ] (j j' n g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (F : UnivFam E Ψ j j' n g Λ) (C : LatEmb F) (R : RiemLat E g Λ) (A : Ψ → Matrix (Fin (j + j')) (Sg j j') ℂ), (∀ y y', (C.perExt R y ⬝ᵥ R.Hm *ᵥ star (C.perExt R y')).im = C.Fm y y') → C.IsAdapted R A → ∀ (τ : Ψ) (x y : Fin j' → ℂ), R.ip (C.pPart R τ (A τ *ᵥ Sum.elim 0 x)) (C.pPart R τ (A τ *ᵥ Sum.elim 0 y)) = ((2 * C.c : ℝ) : ℂ) * (star x ⬝ᵥ y) := by
   classical

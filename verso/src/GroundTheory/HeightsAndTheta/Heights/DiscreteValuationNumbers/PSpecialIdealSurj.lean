@@ -7,11 +7,9 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ V hV`. Set `π : MRing ι O →+* MRing ι (IsLocalRing.ResidueField O)` to `MvPolynomial.map (IsLocalRing.residue O)`. Establish `hπ : Function.Surjective π` using `MvPolynomial.map_surjective _ (IsLocalRing.residue_surjective)`. Use `⟨V.comap π, Ideal.comap_isPrime π V, ?_, ?_⟩` and prove the remaining obligations. Establish `h0 : IsLocalRing.residue O ϖ = 0` using `(IsLocalRing.residue_eq_zero_iff ϖ).2 ((IsLocalRing.mem_maximalIdeal ϖ).2 hϖ.not_isUnit)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap]`. Establish `: π (C ϖ) = 0`. Simplify using `only [π, MvPolynomial.map_C, h0, map_zero]`. Rewrite using `[this]`. Conclude with `V.zero_mem`.
-
-Conclude with `Ideal.map_comap_of_surjective π hπ V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SpecialIdealSurj.proof : SpecialIdealSurj.Statement := by
   intro O _ _ _ ϖ hϖ K _ _ ι _ V hV

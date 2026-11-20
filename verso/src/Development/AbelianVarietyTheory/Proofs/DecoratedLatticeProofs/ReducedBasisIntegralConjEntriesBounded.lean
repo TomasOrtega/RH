@@ -6,7 +6,7 @@ open Matrix GlobalTheory.ClassFin
 namespace GlobalTheory.ReducedBasisBound
 
 /- English proof (translation)
-The claim follows from `|∑ p, f p| ≤ N * B := by refine (Finset.abs_sum_le_sum_abs _ _).trans ?_ calc ∑ p, |f p| ≤ ∑ _p : Fin N, B := Finset.sum_le_sum (fun p _ => h p) _ = N * B := by simp`.
+A detailed English derivation is pending.
 -/
 lemma abs_sum_le_card {N : ℕ} (f : Fin N → ℝ) (B : ℝ) (h : ∀ p, |f p| ≤ B) :
     |∑ p, f p| ≤ N * B := by
@@ -15,7 +15,7 @@ lemma abs_sum_le_card {N : ℕ} (f : Fin N → ℝ) (B : ℝ) (h : ∀ p, |f p| 
     _ = N * B := by simp
 
 /- English proof (translation)
-Use `congrFun (congrFun h p) j` as an intermediate fact. Rewrite `this` using `[Matrix.mul_assoc, diagonal_mul]`. Rewrite using `[this, Matrix.mul_apply]`. Simplify using `[mul_diagonal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma entry_eq {N : ℕ} (a : Fin N → ℝ) (n Z P : Matrix (Fin N) (Fin N) ℝ)
     (h : diagonal a * n * P = Z * diagonal a * n) (p j : Fin N) :
@@ -26,7 +26,7 @@ lemma entry_eq {N : ℕ} (a : Fin N → ℝ) (n Z P : Matrix (Fin N) (Fin N) ℝ
   simp [mul_diagonal]
 
 /- English proof (translation)
-Establish `: |x| < 1` using `by exact_mod_cast h`. Conclude with `Int.abs_lt_one_iff.mp this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma int_eq_zero {x : ℤ} (h : |(x : ℝ)| < 1) : x = 0 := by
   have : |x| < 1 := by exact_mod_cast h
@@ -39,21 +39,19 @@ namespace GlobalTheory.ReducedBasisBound
 variable {N : ℕ} {C₁ Cm T : ℝ} {a : Fin N → ℝ} {n m Z : Matrix (Fin N) (Fin N) ℝ}
 
 /- English proof (translation)
-Introduce `i j hij`. Apply `int_eq_zero` to reduce the goal to its premises. Establish `hC0 : 0 ≤ C₁` using `by linarith`. Establish `hM' : M'.map (Int.cast : ℤ → ℝ) = m * (n * M'.map (Int.cast : ℤ → ℝ))`. Rewrite using `[← Matrix.mul_assoc, hmn, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hE : ∀ p, j ≤ p → |(n * M'.map (Int.cast : ℤ → ℝ)) p i| ≤ N * (T * C₁ ^ 3 * ε)`. Introduce `p hp`. Establish `he` using `entry_eq a n Zᵀ _ h2 p i`. Establish `hb : |∑ q, Zᵀ p q * a q * n q i| ≤ N * (T * C₁ ^ 3 * ε * a p)`. Apply `abs_sum_le_card` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q`. Break down `le_or_gt q i with hq | hq` into its components or cases. Establish `haq : a q ≤ C₁ ^ 2 * ε * a p`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[abs_mul, abs_mul, transpose_apply, abs_of_pos (ha q)]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use `ha p` as an intermediate fact. Conclude with `mul_le_mul (mul_le_mul (hZ q p) haq (ha q).le hT) (hn q i) (abs_nonneg _) (by positivity)`. Use `_ = T * C₁ ^ 3 * ε * a p := by ring`. Rewrite using `[hn_low q i hq]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ha p` as an intermediate fact. Simplify using `only [mul_zero, abs_zero]`. Check the signs of the components of the expression. Establish `: a p * |(n * M'.map (Int.cast : ℤ → ℝ)) p i| ≤ a p * (N * (T * C₁ ^ 3 * ε))`. Rewrite using `[← abs_of_pos (ha p), ← abs_mul, he, abs_of_pos (ha p)]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left this (ha p)`. Apply the tactic sequence `have hentry : ((M' j i : ℤ) : ℝ) = (M'.map (Int.cast : ℤ → ℝ)) j i := by simp`. Rewrite using `[hentry, hM', mul_apply]`. Use `lt_of_le_of_lt (abs_sum_le_card _ _ (fun p => ?_)) hK` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `le_or_gt j p with hp | hp` into its components or cases. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (hm j p) (hE p hp) (abs_nonneg _) hCm`. Rewrite using `[hm_low j p hp, zero_mul, abs_zero]`. Establish `: (0 : ℝ) ≤ N * (T * C₁ ^ 3 * ε)` using `by positivity`.
-
-Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 lemma integral_entry_eq_zero (hC : 1 ≤ C₁) (hCm : 0 ≤ Cm) (hT : 0 ≤ T)
     (ha : ∀ i, 0 < a i) (hle : ∀ i j, i ≤ j → a i ≤ C₁ * a j)
@@ -111,17 +109,17 @@ namespace GlobalTheory.ReducedBasisBound
 variable {N : ℕ} {C₁ Cm T : ℝ} {a : Fin N → ℝ} {n m Z : Matrix (Fin N) (Fin N) ℝ}
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `hC0 : 0 ≤ C₁` using `by linarith`. Establish `h` using `congrArg (· * m) h2`. Simplify using `only [Matrix.mul_assoc] at h`. Rewrite `h` using `[hnm, Matrix.mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrFun (congrFun h j) i`. Rewrite `e` using `[diagonal_mul, mul_diagonal, transpose_apply]`. Establish `hz : (n * (M'.map (Int.cast : ℤ → ℝ) * m)) j i = 0`. Rewrite using `[mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `p _`. Break down `lt_or_ge p j with hp | hp` into its components or cases. Rewrite using `[hn_low j p hp, zero_mul]`. Establish `hin : (M'.map (Int.cast : ℤ → ℝ) * m) p i = 0`. Rewrite using `[mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `q _`. Break down `lt_or_ge i q with hq | hq` into its components or cases. Rewrite using `[hm_low q i hq, mul_zero]`. Establish `hq' : a q ≤ ε * a p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.map_apply, hA q p hq']`. Simplify using the standard rewrite rules. Rewrite using `[hin, mul_zero]`. Rewrite `e` using `[hz, mul_zero]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(mul_eq_zero.mp e.symm).resolve_right (ne_of_gt (ha i))`.
+A detailed English derivation is pending.
 -/
 lemma conj_entry_eq_zero (hC : 1 ≤ C₁) (ha : ∀ i, 0 < a i) (hle : ∀ i j, i ≤ j → a i ≤ C₁ * a j)
     (hnm : n * m = 1) (hn_low : ∀ i j, j < i → n i j = 0) (hm_low : ∀ i j, j < i → m i j = 0)
@@ -160,17 +158,17 @@ lemma conj_entry_eq_zero (hC : 1 ≤ C₁) (ha : ∀ i, 0 < a i) (hle : ∀ i j,
   exact (mul_eq_zero.mp e.symm).resolve_right (ne_of_gt (ha i))
 
 /- English proof (translation)
-Introduce `i j`. Establish `hC0 : 0 ≤ C₁` using `by linarith`. Establish `hM : M.map (Int.cast : ℤ → ℝ) = m * (n * M.map (Int.cast : ℤ → ℝ))`. Rewrite using `[← Matrix.mul_assoc, hmn, Matrix.one_mul]`. Establish `hE : ∀ p, |(n * M.map (Int.cast : ℤ → ℝ)) p j| ≤ N * (T * C₁ / δ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Establish `he` using `entry_eq a n Z _ h1 p j`. Establish `hb : |∑ q, Z p q * a q * n q j| ≤ N * (T * C₁ / δ * a p)`. Apply `abs_sum_le_card` to reduce the goal to its premises. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ha p` as an intermediate fact. Distinguish the cases in `hz : Z p q = 0`. Rewrite using `[hz]`. Simplify using `only [zero_mul, abs_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Establish `hlt : δ * a q < a p`. Assume the negation of the conclusion as `hc`. Conclude with `hz (hB p q (not_lt.mp hc))`. Establish `haq : a q ≤ a p / δ` using `by rw [le_div_iff₀ hδ]; linarith`. Rewrite using `[abs_mul, abs_mul, abs_of_pos (ha q)]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: a p * |(n * M.map (Int.cast : ℤ → ℝ)) p j| ≤ a p * (N * (T * C₁ / δ))`. Rewrite using `[← abs_of_pos (ha p), ← abs_mul, he, abs_of_pos (ha p)]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left this (ha p)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hentry : ((M i j : ℤ) : ℝ) = (M.map (Int.cast : ℤ → ℝ)) i j := by simp`. Rewrite using `[hentry, hM, mul_apply]`. Conclude with `abs_sum_le_card _ _ (fun p => by`. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (hm i p) (hE p) (abs_nonneg _) hCm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma entry_bound_of_vanishing (hC : 1 ≤ C₁) (hCm : 0 ≤ Cm) (hT : 0 ≤ T) (ha : ∀ i, 0 < a i)
     (hmn : m * n = 1) (hn : ∀ i j, |n i j| ≤ C₁) (hm : ∀ i j, |m i j| ≤ Cm) (hZ : ∀ i j, |Z i j| ≤ T)
@@ -216,7 +214,7 @@ end GlobalTheory.ReducedBasisBound
 namespace GlobalTheory.ReducedBasisBound
 
 /- English proof (translation)
-The claim follows from `|k l i| ≤ 1 := by have e := congrFun (congrFun h i) i rw [mul_apply, one_apply_eq] at e simp only [transpose_apply] at e have : k l i ^ 2 ≤ 1 := by rw [← e, sq] exact Finset.single_le_sum (f := fun l => k l i * k l i) (fun l _ => mul_self_nonneg _) (Finset.mem_univ l) exact sq_le …`.
+A detailed English derivation is pending.
 -/
 lemma abs_entry_le_one {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (h : kᵀ * k = 1) (l i : Fin N) :
     |k l i| ≤ 1 := by
@@ -230,7 +228,7 @@ lemma abs_entry_le_one {N : ℕ} (k : Matrix (Fin N) (Fin N) ℝ) (h : kᵀ * k 
   exact sq_le_one_iff_abs_le_one _ |>.mp this
 
 /- English proof (translation)
-The claim follows from `|(kᵀ * X * k) i j| ≤ N * (N * R) := by rw [mul_apply] apply abs_sum_le_card intro q rw [abs_mul] have hin : |(kᵀ * X) i q| ≤ N * R := by rw [mul_apply] apply abs_sum_le_card intro l rw [abs_mul, transpose_apply] calc |k l i| * |X l q| ≤ 1 * R := mul_le_mul (hk l i) (hX l q) (abs_ …`.
+A detailed English derivation is pending.
 -/
 lemma conj_bound {N : ℕ} (k X : Matrix (Fin N) (Fin N) ℝ) (hk : ∀ l i, |k l i| ≤ 1) (R : ℝ)
     (hR : 0 ≤ R) (hX : ∀ i j, |X i j| ≤ R) (i j : Fin N) :
@@ -250,27 +248,27 @@ lemma conj_bound {N : ℕ} (k X : Matrix (Fin N) (Fin N) ℝ) (hk : ∀ l i, |k 
     _ = N * R := mul_one _
 
 /- English proof (translation)
-Introduce `N C R`. Take `⟨C₁, hC₁d⟩ : ∃ C₁ : ℝ, C₁ = max C 1` from `⟨_, rfl⟩`. Take `⟨Cm0, hCm0⟩` from `GlobalTheory.unipotent_upper_inv_bounded N C₁`. Take `⟨Cm, hCmd⟩ : ∃ Cm : ℝ, Cm = max Cm0 0` from `⟨_, rfl⟩`. Take `⟨T, hTd⟩ : ∃ T : ℝ, T = N * (N * max R 0)` from `⟨_, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, hKd⟩ : ∃ K : ℝ, K = N * (Cm * (N * (T * C₁ ^ 3)))` from `⟨_, rfl⟩`. Take `⟨ε, hεd⟩ : ∃ ε : ℝ, ε = 1 / (K + 1)` from `⟨_, rfl⟩`. Take `⟨δ, hδd⟩ : ∃ δ : ℝ, δ = ε / C₁ ^ 2` from `⟨_, rfl⟩`. Use `⟨N * (Cm * (N * (T * C₁ / δ))), ?_⟩` and prove the remaining obligations. Introduce `k a n hs X M M' hX hM hM'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC : 1 ≤ C₁` using `hC₁d ▸ le_max_right _ _`. Establish `hC₁pos : 0 < C₁` using `by linarith`. Establish `hCm : 0 ≤ Cm` using `hCmd ▸ le_max_right _ _`. Establish `hR : 0 ≤ max R 0` using `le_max_right _ _`. Establish `hT : 0 ≤ T` using `by rw [hTd]; positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK0 : 0 ≤ K` using `by rw [hKd]; positivity`. Establish `hε : 0 < ε` using `by rw [hεd]; positivity`. Establish `hKε : (N : ℝ) * (Cm * (N * (T * C₁ ^ 3 * ε))) < 1`. Establish `e : (N : ℝ) * (Cm * (N * (T * C₁ ^ 3 * ε))) = K * (1 / (K + 1))`. Rewrite using `[← hεd, hKd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mul_one_div, div_lt_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hδ : 0 < δ` using `by rw [hδd]; positivity`. Establish `hδε : δ * C₁ ^ 2 = ε` using `by rw [hδd]; field_simp`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ∀ i j, i ≤ j → a i ≤ C₁ * a j`. Introduce `i j hij`. Break down `hij.lt_or_eq with h | h` into its components or cases. Conclude with `(hs.le i j h).trans (mul_le_mul_of_nonneg_right (hC₁d ▸ le_max_left _ _) (hs.pos j).le)`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[hs.pos i]`. Establish `hn : ∀ i j, |n i j| ≤ C₁` using `fun i j => (hs.bdd i j).trans (hC₁d ▸ le_max_left _ _)`. Take `⟨m, hmn, hnm, hm_low, hm⟩` from `hCm0 n hs.diag hs.lower hn`. Establish `hm' : ∀ i j, |m i j| ≤ Cm` using `fun i j => (hm i j).trans (hCmd ▸ le_max_left _ _)`. Establish `hk` using `abs_entry_le_one k hs.orth`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, hZd⟩ : ∃ Z : Matrix (Fin N) (Fin N) ℝ, Z = kᵀ * X * k` from `⟨_, rfl⟩`. Establish `hZ : ∀ i j, |Z i j| ≤ T`. Introduce `i j`. Rewrite using `[hZd, hTd]`. Conclude with `conj_bound k X hk _ hR (fun i j => (hX i j).trans (le_max_left _ _)) i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : diagonal a * n * M.map (Int.cast : ℤ → ℝ) = Z * diagonal a * n`. Use `congrArg (kᵀ * ·) hM` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc] at this`. Rewrite `this` using `[hs.orth, Matrix.one_mul]`. Rewrite using `[this, hZd]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : diagonal a * n * M'.map (Int.cast : ℤ → ℝ) = Zᵀ * diagonal a * n`. Use `congrArg (kᵀ * ·) hM'` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc] at this`. Rewrite `this` using `[hs.orth, Matrix.one_mul]`. Rewrite using `[this, hZd]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.transpose_mul, Matrix.mul_assoc]`. Establish `hA` using `integral_entry_eq_zero hC hCm hT hs.pos hle hmn hs.lower hm_low hn hm' hZ M' h2 ε hε hKε`. Establish `hB` using `conj_entry_eq_zero hC hs.pos hle hnm hs.lower hm_low M' h2 ε hA δ hδ.le hδε`. Conclude with `entry_bound_of_vanishing hC hCm hT hs.pos hmn hn hm' hZ M h1 δ hδ hB`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_conj_bounded : ∀ (N : ℕ) (C R : ℝ), ∃ C' : ℝ, ∀ (k : Matrix (Fin N) (Fin N) ℝ)
     (a : Fin N → ℝ) (n : Matrix (Fin N) (Fin N) ℝ), IsSiegel C k a n →

@@ -6,9 +6,9 @@ open GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions 
 open GlobalTheory.CompanionTheory.ConjSat
 
 /- English proof (translation)
-Introduce `E _ _ _ n σ w hw τ B ⟨_, f, f0, hf, hfx⟩ hB`. Establish `hu : locU n (UpperTheory.V.Af.Bc.cPl w) = locU n w` using `locU_eq_of_under (GlobalTheory.SplitPts.over_split hw).2.1`. Use `⟨flipIrr τ, ⟨(flipIrr τ).irred, f, f0, hf, fun x v => ?_⟩, hasSatGL_flipIrr τ hB⟩` and prove the remaining obligations. Establish `hx : (x : UA E n) ∈ locU n w` using `hu ▸ x.2`. Establish `key` using `hfx ⟨x, hx⟩ v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `key` using `[MonoidHom.comp_apply]`. Express the relevant statement in the definitionally equal form `f (τ.ρ (flipGL w (cLoc _ x.1)) v) = _`. Rewrite using `[← cLoc_eq_flipGL]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.uConj :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.UConj := by

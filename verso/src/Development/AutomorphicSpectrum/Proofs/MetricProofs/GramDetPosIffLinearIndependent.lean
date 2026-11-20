@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type
   [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Establish `hH : (R.Hmᵀ).IsHermitian`. Use extensionality with `i j`. Conclude with `R.herm.apply j i`. Use `Matrix.PosDef.of_dotProduct_mulVec_pos hH fun x hx => ?_` and prove the remaining obligations. Establish `h1` using `R.pos x hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : star x ⬝ᵥ (R.Hmᵀ *ᵥ x) = x ⬝ᵥ R.Hm *ᵥ star x`. Rewrite using `[Matrix.mulVec_transpose, dotProduct_comm, ← Matrix.dotProduct_mulVec]`. Establish `him : (star x ⬝ᵥ (R.Hmᵀ *ᵥ x)).im = 0` using `hH.im_star_dotProduct_mulVec_self x`. Rewrite using `[Complex.pos_iff]`. Conclude with `⟨by rw [e]; exact h1, him.symm⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem posDef_Hm_transpose (R : RiemLat E g Λ) : (R.Hmᵀ).PosDef := by
   have hH : (R.Hmᵀ).IsHermitian := by
@@ -30,7 +30,7 @@ theorem posDef_Hm_transpose (R : RiemLat E g Λ) : (R.Hmᵀ).PosDef := by
   exact ⟨by rw [e]; exact h1, him.symm⟩
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [RiemLat.gram, RiemLat.ip, Matrix.of_apply, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.conjTranspose_apply, Matrix.transpose_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,7 +45,7 @@ theorem gram_eq_mul (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ)
   ring
 
 /- English proof (translation)
-Establish `hC : Function.Injective ((Matrix.of u)ᵀ).mulVec` using `Matrix.mulVec_injective_iff.2 hu`. Rewrite using `[gram_eq_mul]`. Conclude with `((posDef_Hm_transpose R).conjTranspose_mul_mul_same hC).det_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_pos_of_linearIndependent (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ)
     (hu : LinearIndependent ℂ u) : 0 < (R.gram u).det := by
@@ -54,9 +54,9 @@ theorem det_pos_of_linearIndependent (R : RiemLat E g Λ) {m : ℕ} (u : Fin m �
   exact ((posDef_Hm_transpose R).conjTranspose_mul_mul_same hC).det_pos
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (R.gram u).mulVec` using `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).2 (isUnit_iff_ne_zero.2 hd))`. Establish `hC : Function.Injective ((Matrix.of u)ᵀ).mulVec`. Introduce `x y hxy`. Apply `hinj` to reduce the goal to its premises. Establish `hxy' : (Matrix.of u)ᵀ *ᵥ x = (Matrix.of u)ᵀ *ᵥ y` using `hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [gram_eq_mul, ← Matrix.mulVec_mulVec, hxy']`. Conclude with `Matrix.mulVec_injective_iff.1 hC`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_det_ne_zero (R : RiemLat E g Λ) {m : ℕ} (u : Fin m → Fin g → ℂ)
     (hd : (R.gram u).det ≠ 0) : LinearIndependent ℂ u := by
@@ -70,7 +70,7 @@ theorem linearIndependent_of_det_ne_zero (R : RiemLat E g Λ) {m : ℕ} (u : Fin
   exact Matrix.mulVec_injective_iff.1 hC
 
 /- English proof (translation)
-Introduce `E _ _ _ g Λ _ _ R m u`. Use `⟨fun hu => ?_, linearIndependent_of_det_ne_zero R u⟩` and prove the remaining obligations. Establish `h` using `Complex.pos_iff.1 (det_pos_of_linearIndependent R u hu)`. Conclude with `⟨h.1, h.2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gram_det_pos_iff : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ] [Module (𝓞 E) Λ] (R : RiemLat E g Λ) (m : ℕ) (u : Fin m → Fin g → ℂ), (LinearIndependent ℂ u → 0 < (R.gram u).det.re ∧ (R.gram u).det.im = 0) ∧ ((R.gram u).det ≠ 0 → LinearIndependent ℂ u) := by
   intro E _ _ _ g Λ _ _ R m u

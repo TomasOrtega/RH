@@ -8,51 +8,45 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `k L Ω _ _ _ _ _ _ _ _ _ _ _ l _ D e U _ he hpro hcyc`. Establish `hfam` using `galEmbFam k L Ω l`. Establish `hcycE : ∀ h : G L Ω, cycZ k Ω l (galEmb k L Ω h) = cycZ L Ω l h` using `fun h => by`. Rewrite using `[← MonoidHom.comp_apply, hfam.2.2.1]`. Establish `hlift : ∀ σ ∈ galOf k L Ω, ∃ h : G L Ω, galEmb k L Ω h = σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `σ hσ`. Conclude with `⟨AlgEquiv.ofRingEquiv (f := σ.toRingEquiv) hσ, by ext x; rfl⟩`. Establish `hmap : Subgroup.map (galEmb k L Ω) (cycU l (⊤ : Subgroup (G L Ω))) = cycU l U`. Rewrite using `[hcyc]`. Use extensionality with `σ`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, hg, rfl⟩`. Use `Subgroup.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Conclude with `g.commutes x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidHom.mem_ker, hcycE]`. Conclude with `(Subgroup.mem_inf.1 hg).2`. Introduce `hσ`. Take `⟨hσG, hσK⟩` from `Subgroup.mem_inf.1 hσ`. Take `⟨h, rfl⟩` from `hlift σ hσG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h, Subgroup.mem_inf.2 ⟨Subgroup.mem_top _, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, ← hcycE]`. Conclude with `hσK`. Take `⟨Ψ, hΨ⟩` from `dinfTransport k Ω L Ω (algebraMap k L) (RingEquiv.refl Ω) (fun x => IsScalarTower.algebraMap_apply k L Ω x) (galEmb k L Ω) (fun g x => rfl) l l U ⊤ hmap`. Establish `hdTw : ∀ (g : G k Ω) (χ : Dinf l l U) (w : cycU l U), ((dTw l l U e g χ : Dinf l l U) : cycU l U → QZ l) w = (((cycZ k Ω l ^ (-e)) g : ℤ_[l]ˣ) : ℤ_[l]) • (χ : cycU l U → QZ l) (conjHom (cycU l U) g w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `g χ w`. Both sides reduce to the same expression. Establish `hq : ∀ (h : G L Ω) (m : QZ l), qzG L Ω l e h m = (((cycZ L Ω l ^ (-e)) h : ℤ_[l]ˣ) : ℤ_[l]) • m` using `fun h m => rfl`. Establish `hqE : ∀ (h : G L Ω) (m : QZ l), (((cycZ k Ω l ^ (-e)) (galEmb k L Ω h) : ℤ_[l]ˣ) : ℤ_[l]) • m = qzG L Ω l e h m`. Introduce `h m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← hfam.2.2.2 e]`. Both sides reduce to the same expression. Establish `hmemE : ∀ u : cycU l (⊤ : Subgroup (G L Ω)), galEmb k L Ω u ∈ cycU l U` using `fun u => hmap ▸ Subgroup.mem_map_of_mem _ u.2`. Set `E : cycU l (⊤ : Subgroup (G L Ω)) → cycU l U` to `fun u => ⟨galEmb k L Ω u, hmemE u⟩`. Establish `hEsurj : ∀ w : cycU l U, ∃ u, E u = w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w`. Establish `hw : (w : G k Ω) ∈ Subgroup.map (galEmb k L Ω) (cycU l (⊤ : Subgroup (G L Ω)))`. Rewrite using `[hmap]`. Conclude with `w.2`. Take `⟨u, hu, huw⟩` from `hw`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨⟨u, hu⟩, Subtype.ext huw⟩`. Establish `key : ∀ χ : Dinf l l U, χ ∈ ShaD l l U (galOf k L Ω) e ↔ ((Ψ χ : Dinf l l (⊤ : Subgroup (G L Ω))) : cycU l (⊤ : Subgroup (G L Ω)) → QZ l) ∈ EqHom l (Uinf L Ω l) (qzG L Ω l e)`. Introduce `χ`. Establish `hX : ((Ψ χ : Dinf l l (⊤ : Subgroup (G L Ω))) : cycU l (⊤ : Subgroup (G L Ω)) → QZ l) ∈ XDual l (Uinf L Ω l) ℤ_[l] (QZ l)` using `(Ψ χ).2`. Establish `hΨE : ∀ u, ((Ψ χ : Dinf l l (⊤ : Subgroup (G L Ω))) : cycU l (⊤ : Subgroup (G L Ω)) → QZ l) u = (χ : cycU l U → QZ l) (E u)` using `fun u => hΨ χ u (E u) rfl`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hinv`. Use `Submodule.mem_inf.2 ⟨hX, (Submodule.mem_iInf _).2 fun h => ?_⟩` and prove the remaining obligations. Introduce `u u' huu`. Rewrite using `[hΨE, hΨE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : galEmb k L Ω h ∈ galOf k L Ω` using `fun x => h.commutes x`. Establish `hinvg` using `(Representation.mem_invariants _ _).1 hinv ⟨_, hg⟩`. Establish `h2 : ((dTw l l U e (galEmb k L Ω h) χ : Dinf l l U) : cycU l U → QZ l) (E u') = (χ : cycU l U → QZ l) (E u')` using `congrArg (fun y : Dinf l l U => (y : cycU l U → QZ l) (E u')) hinvg`. Rewrite `h2` using `[hdTw]`. Establish `hconj : conjHom (cycU l U) (galEmb k L Ω h) (E u') = E u`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (galEmb k L Ω h)⁻¹ * galEmb k L Ω u' * galEmb k L Ω h = galEmb k L Ω u`. Rewrite using `[← map_inv, ← map_mul, ← map_mul]`. Use `congr 1`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show h⁻¹ ((u' : G L Ω) (h x)) = (u : G L Ω) x`. Rewrite using `[show (u' : G L Ω) (h x) = h ((u : G L Ω) x) from huu x, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Rewrite `h2` using `[hconj, hqE]`. Conclude with `h2.symm`. Introduce `hE`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Take `⟨_, hC⟩` from `Submodule.mem_inf.1 hE`. Rewrite `hC` using `[Submodule.mem_iInf]`. Use `(Representation.mem_invariants _ _).2 fun g => ?_` and prove the remaining obligations. Take `⟨h, hh⟩` from `hlift g g.2`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `w`. Use `show ((dTw l l U e (g : G k Ω) χ : Dinf l l U) : cycU l U → QZ l) w = (χ : cycU l U → QZ l) w`. Rewrite using `[hdTw]`. Take `⟨u', rfl⟩` from `hEsurj w`. Establish `hu : h⁻¹ * (u' : G L Ω) * h ∈ cycU l (⊤ : Subgroup (G L Ω))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_inf.2 ⟨Subgroup.mem_top _, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.mem_ker, map_mul, map_mul, map_inv, MonoidHom.mem_ker.1 (Subgroup.mem_inf.1 u'.2).2, mul_one, inv_mul_cancel]`. Establish `hcond` using `hC h ⟨_, hu⟩ u' (fun x => by show (u' : G L Ω) (h x) = h ((h⁻¹ * (u' : G L Ω) * h) x)`. Rewrite using `[AlgEquiv.mul_apply, AlgEquiv.mul_apply, AlgEquiv.aut_inv, AlgEquiv.apply_symm_apply])`. Rewrite `hcond` using `[hΨE, hΨE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconj : conjHom (cycU l U) (g : G k Ω) (E u') = E ⟨_, hu⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (g : G k Ω)⁻¹ * galEmb k L Ω u' * (g : G k Ω) = galEmb k L Ω (h⁻¹ * (u' : G L Ω) * h)`. Rewrite using `[← hh, map_mul, map_mul, map_inv]`. Rewrite using `[hconj, ← hh, hqE]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcond.symm`. Establish `hR : ∀ x : Sha D e, resInf D e (x : H1 (qzTw D e)) ∈ EqHom l (Uinf L Ω l) (qzG L Ω l e)`. Introduce `x`. Rewrite using `[← resInfOnto L Ω l D e he hpro]`. Conclude with `Submodule.mem_map_of_mem x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hED : ∀ f, f ∈ EqHom l (Uinf L Ω l) (qzG L Ω l e) → f ∈ Dinf l l (⊤ : Subgroup (G L Ω))` using `fun f hf => (Submodule.mem_inf.1 hf).1`. Set `R0 : Sha D e →ₗ[ℤ_[l]] Dinf l l (⊤ : Subgroup (G L Ω))` to `LinearMap.codRestrict _ ((resInf D e).comp (Sha D e).subtype) (fun x => hED _ (hR x))`. Set `f : Sha D e →ₗ[ℤ_[l]] ShaD l l U (galOf k L Ω) e` to `LinearMap.codRestrict _ (Ψ.symm.toLinearMap.comp R0) (fun x => (key _).2 (by`. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Conclude with `hR x))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfinj : Function.Injective f`. Introduce `x y hxy`. Establish `h1 : Ψ.symm (R0 x) = Ψ.symm (R0 y)` using `congrArg Subtype.val hxy`. Establish `h2 : R0 x = R0 y` using `Ψ.symm.injective h1`. Establish `h3 : resInf D e x = resInf D e y` using `congrArg Subtype.val h2`.
-
-Conclude with `Subtype.ext (resInfInj L Ω l D e he hpro h3)`. Establish `hfsurj : Function.Surjective f`. Introduce `χ`. Establish `hm` using `(key (χ : Dinf l l U)).1 χ.2`. Rewrite `hm` using `[← resInfOnto L Ω l D e he hpro]`.
-
-Take `⟨x, hx, hxe⟩` from `hm`. Use `⟨⟨x, hx⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show Ψ.symm (R0 ⟨x, hx⟩) = χ`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `Subtype.ext hxe`.
-
-Use `⟨LinearEquiv.ofBijective f ⟨hfinj, hfsurj⟩, ?_⟩` and prove the remaining obligations. Introduce `x u u' hu`. Use `show ((Ψ.symm (R0 x) : Dinf l l U) : cycU l U → QZ l) u' = resInf D e x u`. Rewrite using `[← hΨ (Ψ.symm (R0 x)) u u' hu, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.desc :
     ∀ (k L Ω : Type) [Field k] [NumberField k] [Field L] [NumberField L] [Field Ω] [Algebra k L] [Algebra k Ω] [Algebra L Ω] [IsScalarTower k L Ω] [IsAlgClosure k Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (D : LData L Ω l) (e : ℤ) (U : Subgroup (G k Ω)) [U.Normal], e ≠ 0 → Procyc L Ω l → cycU l U = cycU l (galOf k L Ω) →

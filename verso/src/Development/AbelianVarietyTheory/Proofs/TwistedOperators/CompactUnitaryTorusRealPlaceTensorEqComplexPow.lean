@@ -18,11 +18,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (P : PPol σ r) {w : InfinitePlace F} (τ : EmbOver E w)
 
 /- English proof (translation)
-Use `letI : Algebra E ℂ := τ.1.toAlgebra`. Use `haveI : Algebra.IsSeparable E (Fld P) := Algebra.IsAlgebraic.isSeparable_of_perfectField`. Set `emb : Fin r → (Fld P →ₐ[E] ℂ)` to `fun i => { psiL P τ i with commutes' := fun e => psiL_algebraMap P τ i e }`. Establish `hinj : Function.Injective emb`. Introduce `i j h`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `cxRoots_injective P τ` to reduce the goal to its premises. Establish `h'` using `congrArg (fun f : Fld P →ₐ[E] ℂ => f (alpha P)) h`. Simplify `h'` using `[emb]`. Establish `hcard : Fintype.card (Fin r) = Fintype.card (Fld P →ₐ[E] ℂ)`. Rewrite using `[Fintype.card_fin, AlgHom.card, finrank_Fld]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective emb` using `(Fintype.bijective_iff_injective_and_card emb).2 ⟨hinj, hcard⟩`. Establish `htr` using `trace_eq_sum_embeddings (K := E) (L := Fld P) (E := ℂ) (x := y)`. Rewrite using `[show τ.1 (Algebra.trace E (Fld P) y) = algebraMap E ℂ (Algebra.trace E (Fld P) y) from rfl, htr]`. Conclude with `(Fintype.sum_bijective emb hbij (fun i => psiL P τ i y) (fun g => g y) (fun i => rfl)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_eq_sum (y : Fld P) : τ.1 (Algebra.trace E (Fld P) y) = ∑ i, psiL P τ i y := by
   letI : Algebra E ℂ := τ.1.toAlgebra
@@ -44,11 +44,9 @@ theorem trace_eq_sum (y : Fld P) : τ.1 (Algebra.trace E (Fld P) y) = ∑ i, psi
   exact (Fintype.sum_bijective emb hbij (fun i => psiL P τ i y) (fun g => g y) (fun i => rfl)).symm
 
 /- English proof (translation)
-Establish `key : ((psiL P τ i).comp (star' P : Fld P →+* Fld P) : AdjoinRoot P.1 →+* ℂ) = ((starRingEnd ℂ).comp (psiL P τ i) : AdjoinRoot P.1 →+* ℂ)`. Apply `AdjoinRoot.ringHom_ext` to reduce the goal to its premises. Use extensionality with `e show psiL P τ i (star' P (algebraMap E (Fld P) e)) = conj (psiL P τ i (algebraMap E (Fld P) e))`. Rewrite using `[star'_algebraMap, psiL_algebraMap, psiL_algebraMap]`. Conclude with `hCM.2.2.2 τ.1 e`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show psiL P τ i (star' P (alpha P)) = conj (psiL P τ i (alpha P))`. Rewrite using `[star'_alpha, map_inv₀, psiL_alpha]`. Establish `h1 : cxRoots τ.1 P i * conj (cxRoots τ.1 P i) = 1`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq, hi]`. Evaluate the numerical expressions.
-
-Conclude with `(eq_inv_of_mul_eq_one_right h1).symm`. Conclude with `RingHom.congr_fun key y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem psiL_star (hCM : IsCMExt F E σ) (i : Fin r) (hi : ‖cxRoots τ.1 P i‖ = 1) (y : Fld P) :
     psiL P τ i (star' P y) = conj (psiL P τ i y) := by
@@ -69,7 +67,7 @@ theorem psiL_star (hCM : IsCMExt F E σ) (i : Fin r) (hi : ‖cxRoots τ.1 P i�
   exact RingHom.congr_fun key y
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply hw a, Complex.conj_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_real (a : w.Completion) (hw : w.IsReal) :
     conj (InfinitePlace.Completion.extensionEmbedding w a) = InfinitePlace.Completion.extensionEmbedding w a := by
@@ -81,19 +79,19 @@ end GlobalTheory.TrEll.RealTorus
 open GlobalTheory.TrEll.RealTorus in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM r P w τ hc`. Establish `hbij` using `GlobalTheory.T.completionTensorAllRootsMap_bijective_cm F E σ hCM r P w τ`. Establish `hnorm` using `GlobalTheory.T.torusFieldComplexRoots_norm_eq_one_compact F E σ hCM r P w τ hbij hc`. Establish `hw : w.IsReal` using `hCM.1.isReal w`. Use `⟨RingEquiv.ofBijective (PsiAll P τ) hbij, ?_, ?_, ?_, ?_, cxRoots_injective P τ, hnorm⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `y i`. Simplify using `only [RingEquiv.ofBijective_apply, PsiAll_apply]`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[show sigR w.Completion (star' P) (a ⊗ₜ[F] y) = a ⊗ₜ[F] star' P y from rfl]`. Rewrite using `[Psi_tmul, Psi_tmul, psiL_star P τ hCM i (hnorm i), map_mul, ext_real a hw]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Introduce `e i`. Simplify using `only [RingEquiv.ofBijective_apply, PsiAll_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Proceed by induction on `e using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Rewrite using `[show algebraMap (w.Completion ⊗[F] E) (w.Completion ⊗[F] Fld P) (a ⊗ₜ[F] e) = a ⊗ₜ[F] algebraMap E (Fld P) e from rfl]`. Rewrite using `[Psi_tmul, infEmb_tmul, psiL_algebraMap]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Use function extensionality and compare the values at `i`. Simplify using `only [RingEquiv.ofBijective_apply, PsiAll_apply, Psi_tmul, map_one, psiL_alpha, one_mul]`. Introduce `y`. Simplify using `only [RingEquiv.ofBijective_apply, PsiAll_apply]`.
+Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Rewrite using `[show trBase P w.Completion (a ⊗ₜ[F] y) = a ⊗ₜ[F] Algebra.trace E (Fld P) y from rfl]`. Rewrite using `[infEmb_tmul, trace_eq_sum P τ y, Finset.mul_sum]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Psi_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem GlobalTheory.TrEll.realTorus_split : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (r : ℕ) (P : PPol σ r) (w : InfinitePlace F) (τ : EmbOver E w), CompactSpace (Tor P w.Completion) → ∃ Ψ : w.Completion ⊗[F] Fld P ≃+* (Fin r → ℂ), (∀ y i, Ψ (sigR w.Completion (star' P) y) i = conj (Ψ y i)) ∧ (∀ e i, Ψ (algebraMap (w.Completion ⊗[F] E) _ e) i = infEmb τ e) ∧ Ψ (1 ⊗ₜ[F] alpha P) = cxRoots τ.1 P ∧ (∀ y, infEmb τ (trBase P w.Completion y) = ∑ i, Ψ y i) ∧ Function.Injective (cxRoots τ.1 P) ∧ ∀ i, ‖cxRoots τ.1 P i‖ = 1 := by
   intro F E _ _ _ _ _ σ hCM r P w τ hc

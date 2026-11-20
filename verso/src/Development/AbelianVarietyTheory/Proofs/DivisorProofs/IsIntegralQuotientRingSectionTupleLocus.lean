@@ -12,27 +12,23 @@ set_option autoImplicit false
 namespace GlobalTheory.FnInt
 
 /- English proof (translation)
-Introduce `k _ X _ p D hA P e x hG l w hl hw`. Establish `: IsProper p`. Take `⟨m, i, hi, rfl⟩` from `hA.isProjOver`. Use `isProper_str k m` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : w ∈ (integralClosure (Subring.closure (Set.range fun j => x j / x l)) X.functionField).toSubring`. Rewrite using `[← iInf_valuationSubring_superset, Subring.mem_iInf]`. Introduce and unpack `⟨V, hV⟩`. Express the relevant statement in the definitionally equal form `w ∈ V`. Establish `hk : ∀ a : k, toFunctionField p a ∈ V`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Use `hA.finite` as an intermediate fact. Establish `h1 : IsIntegral ℤ (toFunctionField p a)` using `(Algebra.IsIntegral.isIntegral (R := ℤ) a).map (toFunctionField p).toIntAlgHom`. Establish `h2 : IsIntegral V (toFunctionField p a)` using `h1.tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hd` using `dominatesStalk_centre p V hk`. Take `⟨j, hj⟩` from `hG.cover (centre p V hk)`. Establish `hz : centre p V hk ∈ NV P e 0 (x l)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i i' hi hi'`. Establish `hu` using `hj i i' hi hi'`. Establish `hr` using `hG.mem l (centre p V hk) i i' hi hi'`. Establish `hne` using `hu.ne_zero`. Establish `hxj : x j ≠ 0` using `fun h0 => hne (by simp [Pair.loc, h0])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hloc : P.loc (e : ℤ) 0 (x l) i i' = x l / x j * P.loc (e : ℤ) 0 (x j) i i'`. Simplify using `only [Pair.loc]`. Clear the denominators using the available nonvanishing facts. Establish `hg : RegAt (centre p V hk) (x l / x j)`. Establish `: x l / x j = P.loc (e : ℤ) 0 (x l) i i' * (P.loc (e : ℤ) 0 (x j) i i')⁻¹`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hloc, mul_assoc, mul_inv_cancel₀ hne, mul_one]`. Rewrite using `[this]`. Conclude with `hr.mul hu.inv.regAt`. Establish `hgu : UnitAt (centre p V hk) (x l / x j)`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a, ha, hag⟩` from `zeroAt_iff.2 ⟨hg, hn⟩`. Establish `h1` using `hd.2 a ha`. Rewrite `h1` using `[hag]`. Establish `hgV : x l / x j ∈ V` using `by rw [← hag]; exact hd.1 a`. Establish `h2 : (x l / x j)⁻¹ ∈ V`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[inv_div]`. Conclude with `hV ⟨j, rfl⟩`. Establish `hgne : x l / x j ≠ 0` using `div_ne_zero hl hxj`. Establish `hu' : IsUnit (⟨x l / x j, hgV⟩ : V)`. Use `⟨⟨⟨_, hgV⟩, ⟨_, h2⟩, Subtype.ext (mul_inv_cancel₀ hgne), Subtype.ext (inv_mul_cancel₀ hgne)⟩, rfl⟩` and prove the remaining obligations.
-
-Conclude with `(V.coe_mem_nonunits_iff (a := ⟨_, hgV⟩)).mp h1 hu'`. Rewrite using `[hloc]`. Conclude with `hgu.mul hu`. Take `⟨a, ha⟩` from `hw _ hz`. Rewrite using `[← ha]`.
-
-Conclude with `hd.1 a`. Conclude with `hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∀ (l : Fin (D + 1)) (w : X.functionField), x l ≠ 0 → (∀ z ∈ NV P e 0 (x l), RegAt z w) → IsIntegral (ratR x l) w := by
   intro k _ X _ p D hA P e x hG l w hl hw

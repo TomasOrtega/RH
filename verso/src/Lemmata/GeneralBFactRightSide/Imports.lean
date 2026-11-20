@@ -3,11 +3,11 @@ import Mathlib
 namespace Bl.general_b_fact_right_side
 
 /- English proof (translation)
-Introduce `x`. Rewrite using `[Complex.exp_eq_one_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn⟩`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`. Establish `h3 : (x : ℂ) = (n : ℂ)`. Rewrite `hn` using `[mul_comm (n : ℂ)]`. Conclude with `mul_left_cancel₀ h2 hn`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `h3` after adjusting the coercions. Introduce and unpack `⟨n, rfl⟩`. Conclude with `⟨n, by push_cast; ring⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ (x : Real),

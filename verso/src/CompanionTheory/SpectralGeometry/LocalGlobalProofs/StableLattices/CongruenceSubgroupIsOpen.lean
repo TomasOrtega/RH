@@ -6,11 +6,11 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.CartGL
 
 /- English proof (translation)
-Introduce `L _ _ n r h0 h1 hr`. Establish `hball : IsOpen (Metric.closedBall (0 : L) r)` using `IsUltrametricDist.isOpen_closedBall _ hr.ne'`. Establish `hval : Continuous fun k : GL (Fin n) L => (k : Matrix (Fin n) (Fin n) L)` using `Units.continuous_val`. Establish `hinv : Continuous fun k : GL (Fin n) L => ((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `Units.continuous_val.comp continuous_inv`. Establish `hset : (GlobalTheory.CompanionTheory.CartGL.congK L n r h0 h1 : Set (GL (Fin n) L)) = ⋂ i : Fin n, ⋂ j : Fin n, ((fun k : GL (Fin n) L => ((k : Matrix (Fin n) (Fin n) L) - 1) i j) ⁻¹' Metric.closedBall (0 : L) r ∩ (fun k : GL (Fin n) L => (((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `k`. Simplify using `only [SetLike.mem_coe, mem_congK, Set.mem_iInter, Set.mem_inter_iff, Set.mem_preimage, mem_closedBall_zero_iff]`. Rewrite using `[hset]`. Use `isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun j => IsOpen.inter ?_ ?_` and prove the remaining obligations. Use `hball.preimage ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(continuous_apply_apply i j).comp (hval.sub continuous_const)`. Use `hball.preimage ?_` and prove the remaining obligations. Conclude with `(continuous_apply_apply i j).comp (hinv.sub continuous_const)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isOpen_congK : ∀ (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (r : ℝ)
     (h0 : 0 ≤ r) (h1 : r ≤ 1), 0 < r →

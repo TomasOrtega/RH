@@ -8,11 +8,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int` as an intermediate fact. Establish `: Module.Finite ℤ K` using `finite_of_finite_type_of_isJacobsonRing ℤ _`. Take `⟨p, hp⟩` from `CharP.exists K`. Establish `hp0 : p ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `CharP.charP_to_charZero K` as an intermediate fact. Conclude with `Int.not_isField (isField_of_isIntegral_of_isField (algebraMap ℤ K).injective_int (Field.toIsField _))`. Establish `: Fact p.Prime` using `⟨(CharP.char_is_prime_or_zero K p).resolve_right hp0⟩`. Set `` to `ZMod.algebra K p`. Establish `: Module.Finite (ZMod p) K` using `Module.Finite.of_restrictScalars_finite ℤ _ _`.
-
-Conclude with `Module.finite_of_finite (ZMod p)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_field_of_finiteType_int (K : Type*) [Field K] [Algebra.FiniteType ℤ K] :
     Finite K := by
@@ -30,7 +28,7 @@ theorem finite_field_of_finiteType_int (K : Type*) [Field K] [Algebra.FiniteType
   exact Module.finite_of_finite (ZMod p)
 
 /- English proof (translation)
-Use `ReciprocityTheory.AnForm.R.IntegerToRational.isJacobsonRing_int` as an intermediate fact. Conclude with `LocallyOfFiniteType.jacobsonSpace π`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jacobsonSpace_of_locallyOfFiniteType_int {X : Scheme.{0}} (π : X ⟶ Sp ℤ)
     [LocallyOfFiniteType π] : JacobsonSpace X := by
@@ -38,9 +36,9 @@ theorem jacobsonSpace_of_locallyOfFiniteType_int {X : Scheme.{0}} (π : X ⟶ Sp
   exact LocallyOfFiniteType.jacobsonSpace π
 
 /- English proof (translation)
-Use `isClosed_singleton_iff_isClosedImmersion.mp hx` as an intermediate fact. Establish `h : LocallyOfFiniteType (X.fromSpecResidueField x ≫ π)` using `inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective (X.fromSpecResidueField x ≫ π)`. Rewrite `h` using `[← hφ, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Establish `e : φ.hom = algebraMap ℤ (X.residueField x)` using `RingHom.ext_int _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : (algebraMap ℤ (X.residueField x)).FiniteType` using `e ▸ h`. Establish `: Algebra.FiniteType ℤ (X.residueField x)` using `RingHom.finiteType_algebraMap.mp h'`. Conclude with `finite_field_of_finiteType_int _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_residueField_of_isClosed_of_locallyOfFiniteType_int {X : Scheme.{0}}
     (π : X ⟶ Sp ℤ) [LocallyOfFiniteType π] (x : X) (hx : IsClosed ({x} : Set X)) :
@@ -59,7 +57,7 @@ section Top
 variable {T : Type*} [TopologicalSpace T] [JacobsonSpace T]
 
 /- English proof (translation)
-Introduce `y hy`. Assume the negation of the conclusion as `hyV`. Take `⟨x, ⟨hxU, hxV⟩, hx⟩` from `nonempty_inter_closedPoints (Z := U ∩ Vᶜ) ⟨y, hy, hyV⟩ (hU.isLocallyClosed.inter hV.isClosed_compl.isLocallyClosed)`. Conclude with `hxV (h x hx hxU)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subset_of_isOpen_of_closedPoints {U V : Set T} (hU : IsOpen U) (hV : IsOpen V)
     (h : ∀ x, IsClosed ({x} : Set T) → x ∈ U → x ∈ V) : U ⊆ V := by
@@ -70,7 +68,7 @@ theorem subset_of_isOpen_of_closedPoints {U V : Set T} (hU : IsOpen U) (hV : IsO
   exact hxV (h x hx hxU)
 
 /- English proof (translation)
-Establish `hO : IsOpen (W ∩ ⋂ i : {i // ξ ∈ U i}, U i.1)` using `hW.inter (isOpen_iInter_of_finite fun i => hU i.1)`. Take `⟨x, ⟨hxc, hxW, hxU⟩, hx⟩` from `nonempty_inter_closedPoints (Z := closure {ξ} ∩ (W ∩ ⋂ i : {i // ξ ∈ U i}, U i.1)) ⟨ξ, subset_closure rfl, hξ, Set.mem_iInter.mpr fun i => i.2⟩ (isClosed_closure.isLocallyClosed.inter hO.isLocallyClosed)`. Establish `hs : ξ ⤳ x` using `specializes_iff_mem_closure.mpr hxc`. Conclude with `⟨x, hx, hs, hxW, fun i => ⟨fun h => hs.mem_open (hU i) h, fun h => Set.mem_iInter.mp hxU ⟨i, h⟩⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_isClosed_specializes_mem_iff (ξ : T) {ι : Type*} [Finite ι] (U : ι → Set T)
     (hU : ∀ i, IsOpen (U i)) {W : Set T} (hW : IsOpen W) (hξ : ξ ∈ W) :
@@ -86,13 +84,11 @@ theorem exists_isClosed_specializes_mem_iff (ξ : T) {ι : Type*} [Finite ι] (U
     ⟨fun h => hs.mem_open (hU i) h, fun h => Set.mem_iInter.mp hxU ⟨i, h⟩⟩⟩
 
 /- English proof (translation)
-Establish `hc : (⋃ i, closure (S i)) = Set.univ`. Rewrite using `[← Set.univ_subset_iff, ← closure_closedPoints (X := T), (isClosed_iUnion_of_finite fun i => isClosed_closure).closure_subset_iff]`. Introduce `x hx`. Take `⟨i, hi⟩` from `h x hx`. Conclude with `Set.mem_iUnion.mpr ⟨i, subset_closure hi⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Fintype.ofFinite ι` as an intermediate fact. Take `⟨Z, hZ, hZ'⟩` from `isIrreducible_iff_sUnion_isClosed.mp (IrreducibleSpace.isIrreducible_univ T) (Finset.univ.image fun i => closure (S i)) (by`. Introduce `z hz`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hz`. Conclude with `isClosed_closure)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use the proof step `(by`. Introduce `x _`. Take `⟨i, hi⟩` from `Set.mem_iUnion.mp (hc ▸ Set.mem_univ x : x ∈ ⋃ i, closure (S i))`. Conclude with `⟨_, Finset.mem_coe.mpr (Finset.mem_image_of_mem _ (Finset.mem_univ i)), hi⟩)`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.mp hZ`.
-
-Conclude with `⟨i, fun x => hZ' (Set.mem_univ x)⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dense_of_closedPoints_cover [IrreducibleSpace T] {ι : Type*} [Finite ι]
     (S : ι → Set T) (h : ∀ x, IsClosed ({x} : Set T) → ∃ i, x ∈ S i) : ∃ i, Dense (S i) := by
@@ -120,9 +116,9 @@ theorem exists_dense_of_closedPoints_cover [IrreducibleSpace T] {ι : Type*} [Fi
 end Top
 
 /- English proof (translation)
-Introduce `X π _`. Establish `hJ` using `jacobsonSpace_of_locallyOfFiniteType_int π`. Use `⟨hJ, finite_residueField_of_isClosed_of_locallyOfFiniteType_int π, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U V h`. Conclude with `TopologicalSpace.Opens.ext (subset_antisymm (subset_of_isOpen_of_closedPoints U.isOpen V.isOpen fun x hx => (h x hx).1) (subset_of_isOpen_of_closedPoints V.isOpen U.isOpen fun x hx => (h x hx).2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ξ ι _ U W hξ`. Conclude with `exists_isClosed_specializes_mem_iff ξ (fun i => (U i : Set X)) (fun i => (U i).isOpen) W.isOpen hξ`. Introduce `ι _ Sg _ h`. Conclude with `exists_dense_of_closedPoints_cover Sg h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem jacobson_tools_of_locallyOfFiniteType_int :
     ∀ (X : Scheme.{0}) (π : X ⟶ Sp ℤ) [LocallyOfFiniteType π], JacobsonSpace X ∧

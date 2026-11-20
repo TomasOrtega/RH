@@ -24,7 +24,7 @@ variable (K : Type) [Field K] [NumberField K] [StarRing K] {n : ℕ}
   ofFormB (bVV K lam) (delK lam M) (formAt (bVV K lam) (pairK lam fun _ => 1))
 
 /- English proof (translation)
-Unfold `weylH stdDelH`. Rewrite using `[stdDelL_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem weylH_std (lam : DomWeight n) : weylH K lam (colLat (1 : GL (Fin n) K)) = stdDelH K lam := by
   unfold weylH stdDelH
@@ -48,7 +48,7 @@ def EEC (u : Pr.Word) (d : (colGSD W Ch u 0).D) (τ : X.Tau) : Submodule (𝓞 X
   dualFr (tauLat X.emb τ (d : DecoSet X.E (R.N 0) (Pr.vT u) Pr.vGs).1.Lsh)
 
 /- English proof (translation)
-Unfold `EEC`. Establish `hL : Submodule.IsLattice X.E (d : DecoSet X.E (R.N 0) (Pr.vT u) Pr.vGs).1.Lsh` using `(d : DecoSet X.E (R.N 0) (Pr.vT u) Pr.vGs).2.Lsh_lattice`. Conclude with `(dualFrameLattice_holds X.K (R.N 0) 1 _ (by simp) (tauLatticeLattice_holds X.E X.K X.Tau (R.N 0) X.emb τ _ hL)).1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem EEC_isLattice (u : Pr.Word) (d : (colGSD W Ch u 0).D) (τ : X.Tau) : Submodule.IsLattice X.K (EEC W Ch u d τ) := by
   unfold EEC
@@ -58,11 +58,11 @@ theorem EEC_isLattice (u : Pr.Word) (d : (colGSD W Ch u 0).D) (τ : X.Tau) : Sub
     (tauLatticeLattice_holds X.E X.K X.Tau (R.N 0) X.emb τ _ hL)).1
 
 /- English proof (translation)
-Establish `hg : gramKd X.emb (1 : Matrix (Fin (R.N 0)) (Fin (R.N 0)) X.E) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Simplify using `[gramKd]`. Establish `hpair : (colGSD W Ch u 0).pair = pairK (W.lamTrue u 0) fun _ => 1` using `by show pairVr X.emb (W.lamTrue u 0) 1 = _`. Rewrite using `[pairVr, hg]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hform : (fun v => (colGSD W Ch u 0).pairAt v) = formAt (bVV X.K (W.lamTrue u 0)) (pairK (W.lamTrue u 0) fun _ => 1)`. Use function extensionality and compare the values at `v x y`. Rewrite using `[GSD.pairAt_eq_formAt, hpair]`. Both sides reduce to the same expression. Use `show ofFormB (colGSD W Ch u 0).bV ((colGSD W Ch u 0).Del d) (fun v => (colGSD W Ch u 0).pairAt v) = _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem colValH_eq_tenH (u : Pr.Word) (d : (colGSD W Ch u 0).D) :
     (colGSD W Ch u 0).valH d = tenH X.K (W.lamTrue u 0) (EEC W Ch u d) := by

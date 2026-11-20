@@ -12,9 +12,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.TeichmullerPowerUnit
 
 /- English proof (translation)
-Introduce `l _ K bk C c hc`. Take `⟨n, w, hw⟩` from `GlobalTheory.T.exists_prime_pow_mul_eq_theta_witt l K bk (c : Om l) hc c.2`. Establish `ho` using `GlobalTheory.T.localPeriodRings_section_eq_ainfToBdRPlus l bk.a C w ((l : Om l) ^ n * (c : Om l)) hw`. Use `⟨n, w, ?_⟩` and prove the remaining obligations. Apply `GlobalTheory.Published.FontaineBcris.iotaInj GlobalTheory.T.fontaineBcrisBasicTheorems_proof C` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hB : C.ι (Per.aB l (wA l bk.a w)) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l (wA l bk.a w))` using `GlobalTheory.MemLoc.ULaws.iota_aB C (wA l bk.a w)`. Rewrite using `[hB, ← ho, map_mul, map_pow, map_natCast, C.ι_u, map_mul, map_pow, map_natCast, map_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_mul_u_eq_aB : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (C : Core l) (c : ↥(MaximalUnramifiedExtension l)), (c : Om l) ∈ K.1 → ∃ (n : ℕ) (w : Wq l bk.a), (l : Per.Bcris l) ^ n * C.u c = Per.aB l (wA l bk.a w) := by
   intro l _ K bk C c hc

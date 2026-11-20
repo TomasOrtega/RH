@@ -15,7 +15,7 @@ namespace GlobalTheory.ThK.EvAt0.SchwartzProd
 open scoped Classical in
 
 /- English proof (translation)
-Introduce `F _ _ n d d₁ h G f`. Take `⟨b, hb⟩` from `GlobalTheory.SchwartzBox.exists_schwartz_box f G`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (ContinuousLinearEquiv.piCongrLeft ℝ (fun _ : Fin n × Fin d => mixedEmbedding.mixedSpace F) (idx h).symm).symm b, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, hb, mul_comm]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_prod : ∀ {F : Type} [Field F] [NumberField F] {n d d₁ : ℕ} (h : d = d₁ + 2) (G : SInf F (Fin n × Fin 2))
     (f : SInf F (Fin n × Fin d₁)), ∃ g : SInf F (Fin n × Fin d), ∀ y,

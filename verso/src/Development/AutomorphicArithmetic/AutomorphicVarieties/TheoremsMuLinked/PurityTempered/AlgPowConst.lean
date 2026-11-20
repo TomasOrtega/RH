@@ -14,13 +14,11 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hi`. Establish `hle : (⊤ : Submodule ℂ (Fin n → ℂ)) ≤ LinearMap.ker (LinearMap.proj i : (Fin n → ℂ) →ₗ[ℂ] ℂ)`. Rewrite using `[← hp.1]`. Use `iSup_le fun k v hv => ?_` and prove the remaining obligations. Break down `lt_trichotomy k 0 with hk | rfl | hk` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨j, rfl⟩ : ∃ j : ℕ, k = -((j + 1 : ℕ) : ℤ)` from `⟨(-k - 1).toNat, by omega⟩`. Establish `hv' : v ∈ absSpace (diagEnd c) (q ^ (-((j + 1 : ℕ) : ℝ) / 2))`. Rewrite `hv` using `[Int.cast_neg, Int.cast_natCast]`. Then use the resulting hypothesis. Rewrite using `[(hp.2 (j + 1)).2.1 hv' (zero_mem _) (by simp)]`. Conclude with `zero_mem _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(mem_absSpace_diagEnd c _ v).1 hv i (by simpa using hi)`. Take `⟨j, rfl⟩ : ∃ j : ℕ, k = ((j + 1 : ℕ) : ℤ)` from `⟨(k - 1).toNat, by omega⟩`. Rewrite `hv` using `[Int.cast_natCast]`. Take `⟨u, -, rfl⟩` from `(hp.2 (j + 1)).2.2 hv`. Simplify using the standard rewrite rules.
-
-Simplify using `using hle (Submodule.mem_top (x := fun _ => 1))`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem pure_zero {n : ℕ} {q : ℝ} {c : Fin n → ℂ} (hp : IsPurePair q (diagEnd c) 0) (i : Fin n) : ‖c i‖ = 1 := by
   by_contra hi
@@ -46,19 +44,19 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Take `⟨m, b, rfl⟩` from `x.exists_rep`. Take `⟨e, he⟩` from `GlobalTheory.T.weilRep_equiv_of_charpoly_eq F Ω A w h m n b (WDRep.ofChars h μ hμ) fun σ => by`. Rewrite using `[WDRep.ofChars_ρ, charpoly_diagEnd, ← hx, WD.charPol_mk]`. Simplify using `only [WDRep.ofChars_ρ] at he`. Establish `hN : b.N = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Break down `hor with hne | h0` into its components or cases. Establish `h1 : ∀ j, b.N (e.symm (Pi.single j 1)) = 0` using `fun j => by`. Use `e.map_eq_zero_iff.1 (funext fun i => ?_)` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `hne i j`. Establish `h2 : b.ρ σ (e.symm (Pi.single j 1)) = (μ j σ : ℂ) • e.symm (Pi.single j 1)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `e.injective ?_` and prove the remaining obligations. Rewrite using `[he, map_smul, e.apply_symm_apply]`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = j`. Substitute `hk` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hk]`. Establish `h3` using `congrFun (congrArg e (b.comm_apply σ (e.symm (Pi.single j 1)))) i`. Rewrite `h3` using `[he, h2, map_smul, map_smul, map_smul, diagEnd_apply, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ← mul_assoc]`. Conclude with `(mul_eq_mul_right_iff.1 h3).resolve_left hσ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Pi.basisFun ℂ (Fin n)).map e.symm).ext fun j => by`. Rewrite using `[Module.Basis.map_apply, Pi.basisFun_apply, h1, LinearMap.zero_apply]`. Conclude with `(WD.monodromyZero_ofWeilDeligneRepClass_iff b).1 h0`. Rewrite `ht` using `[WD.lpTw_mk, WD.tempered_mk]`. Establish `h1 : ∀ φ : Weil h, deg φ = 1 → ∀ k, ‖((normV w : ℕ) : ℂ) ^ (t : ℂ) * μ k φ‖ = 1` using `fun φ hφ => pure_zero ((ht φ hφ).of_equiv e (fun v => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[WDRep.tw_ρ, hφ, zpow_one, LinearMap.smul_apply, map_smul, he]`. Use function extensionality and compare the values at `k`. Simplify using `[mul_assoc]) fun v => by simp [hN])`. Establish `hc : ‖((normV w : ℕ) : ℂ) ^ (t : ℂ)‖ ≠ 0` using `fun h0 => by`. Simplify `h1 (frob h) deg_frob i` using `[h0]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ φ : Weil h, deg φ = 1 → ‖(μ i φ : ℂ)‖ = ‖(μ j φ : ℂ)‖` using `fun φ hφ => mul_left_cancel₀ hc (by rw [← norm_mul, ← norm_mul, h1 φ hφ, h1 φ hφ])`. Establish `h3` using `h2 (s * frob h ^ (1 - deg s)) (by simp [deg_frob])`. Simplify using `only [map_mul, map_zpow, Units.val_mul, Units.val_zpow_eq_zpow_val, norm_mul, norm_zpow, h2 _ deg_frob] at h3`. Conclude with `mul_right_cancel₀ (zpow_ne_zero _ (norm_ne_zero_iff.2 (Units.ne_zero _))) h3`.
+A detailed English derivation is pending.
 -/
 private theorem norms_eq {n : ℕ} (x : WD h) (μ : Fin n → Weil h →* ℂˣ) (hμ : ∀ i, GlobalTheory.WeilDeligne.IsSmooth (μ i))
     (hx : ∀ s, x.charPol s = ∏ i, (X - C (μ i s : ℂ))) {t : ℝ} (ht : (x.lpTw t).tempered)
@@ -104,11 +102,9 @@ private theorem norms_eq {n : ℕ} (x : WD h) (μ : Fin n → Weil h →* ℂˣ)
 end
 
 /- English proof (translation)
-Establish `key : ∀ t, ‖(ψ t : K)‖ ≤ 1` using `fun t => by`. Take `⟨C, hC⟩` from `(isCompact_range hψ.norm).bddAbove`. Use `not_lt.1 fun hlt => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `pow_unbounded_of_one_lt C hlt`. Establish `h1` using `hC ⟨t ^ m, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [map_pow, Units.val_pow_eq_pow_val, norm_pow] at h1`. Conclude with `absurd hm (not_lt.2 h1)`. Use `le_antisymm (key s) ?_` and prove the remaining obligations. Establish `h2` using `key s⁻¹`. Rewrite `h2` using `[map_inv, Units.val_inv_eq_inv_val, norm_inv]`.
-
-Conclude with `(inv_le_one₀ (norm_pos_iff.2 (ψ s).ne_zero)).1 h2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_one {Γ K : Type} [Group Γ] [TopologicalSpace Γ] [CompactSpace Γ] [NormedField K]
     (ψ : Γ →* Kˣ) (hψ : Continuous fun s => (ψ s : K)) (s : Γ) : ‖(ψ s : K)‖ = 1 := by
@@ -130,22 +126,20 @@ variable {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAl
   {w : HeightOneSpectrum (𝓞 F)} {A : ValuationSubring Ω} {h : IsPlaceOver A w} {a : Weil h →* (w.adicCompletion F)ˣ}
 
 /- English proof (translation)
-The claim follows from `((Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ F Ω l)).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 private theorem cyc_cont : Continuous ((cycBar F Ω l).comp (Dec (F := F) A).subtype) :=
   ((Continuous.units_map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom
     ((continuous_algebraMap ℚ_[l] (Qbar l)).comp continuous_subtype_val)).comp (continuous_cycZ F Ω l)).comp continuous_subtype_val
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite (W.Emb l w)`. Use `haveI : CompactSpace (Dec (F := F) A) := isCompact_iff_compactSpace.1 (isClosed_Dec A).isCompact`. Use `haveI : CharZero (w.adicCompletion F) := algebraRat.charZero _`. Establish `hl : (l : Qbar l) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨s, hs⟩` from `ha.surj (Units.mk0 (l : w.adicCompletion F) (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero))`. Use `⟨s, fun h0 => ?_, ?_⟩` and prove the remaining obligations. Establish `h2` using `ha.ord_eq s`. Rewrite `h2` using `[h0, neg_zero, hs]`. Use `haveI : (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ))).Compatible := Valuation.Compatible.ofValuation _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h3` using `(ValuativeRel.isEquiv (ValuativeRel.valuation (w.adicCompletion F)) (Valued.v : Valuation (w.adicCompletion F) (WithZero (Multiplicative ℤ)))).eq_one_iff_eq_one.1 (GlobalTheory.SmGL.ord_eq_zero_iff.1 h2)`. Establish `h4 : Valued.v (algebraMap F (w.adicCompletion F) (((l : ℕ) : 𝓞 F) : F)) < 1`. Rewrite using `[show Valued.v (algebraMap F (w.adicCompletion F) (((l : ℕ) : 𝓞 F) : F)) = w.valuation F (algebraMap (𝓞 F) F ((l : ℕ) : 𝓞 F)) from HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w _]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).2 hw`. Use `h4.ne (Eq.trans ?_ h3)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `h1` using `UpperTheory.V.Loc.epsArt H h hw a ha s`. Rewrite `h1` using `[hs, Hi.algPow, finprod_eq_prod_of_fintype, GlobalTheory.Pst.normV_eq_pow (l := l) hw]`. Simplify using `only [Units.val_mk0, map_natCast, zpow_one, Finset.prod_const, Nat.cast_pow] at h1`. Rewrite `h1` using `[← zpow_natCast, ← zpow_mul, ← zpow_natCast, ← zpow_add₀ hl]`.
-
-Establish `h2 : ‖(cycBar F Ω l s : Qbar l)‖ = 1` using `norm_one _ (Units.continuous_val.comp (cyc_cont (F := F) (A := A) (l := l))) (Subgroup.inclusion (Weil_le_Dec h) s)`. Rewrite `h2` using `[h1, norm_zpow]`. Rewrite `h1` using `[(zpow_eq_one_iff_right₀ (norm_nonneg _) (GlobalTheory.PlaceBridge.norm_l_lt_one (l := l)).ne).1 h2, zpow_zero]`. Use `Units.ext (Subtype.ext ((algebraMap ℚ_[l] (Qbar l)).injective (Eq.trans h1 ?_)))` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ex_elt (H : GlobalTheory.Published.GlobalArtinReciprocity) (hw : ((l : ℕ) : 𝓞 F) ∈ w.asIdeal) (ha : IsLocalArtin h a) :
     ∃ s : Weil h, deg s ≠ 0 ∧ cycZ F Ω l s = 1 := by
@@ -181,7 +175,7 @@ private theorem ex_elt (H : GlobalTheory.Published.GlobalArtinReciprocity) (hw :
     simp
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeckeGal.finite_contEmb (l := l) w`. Use `haveI := Fintype.ofFinite (W.Emb l w)`. Unfold `Hi.algPow`. Rewrite using `[finprod_eq_prod_of_fintype, finprod_eq_prod_of_fintype, ← Finset.prod_zpow]`. Conclude with `Finset.prod_congr rfl fun j _ => by rw [Pi.neg_apply, neg_neg, zpow_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algPow_const (c : ℤ) (y : w.adicCompletion F) :
     Hi.algPow (l := l) w (-fun _ => -c) y = Hi.algPow w (fun _ => 1) y ^ c := by
@@ -192,7 +186,7 @@ private theorem algPow_const (c : ℤ) (y : w.adicCompletion F) :
   exact Finset.prod_congr rfl fun j _ => by rw [Pi.neg_apply, neg_neg, zpow_one]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `hf`. Establish `h1 : Continuous fun s => (ψ i s : Qbar l)` using `((Units.continuous_val.comp ((continuous_const.mul hr).mul continuous_const)).matrix_elem i i).congr fun s => (hg s).2 i`. Conclude with `Units.continuous_iff.2 ⟨h1, (h1.comp continuous_inv).congr fun s => by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem flag_cont {n : ℕ} {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] {r : Γ →* GL (Fin n) (Qbar l)}
     (hr : Continuous r) {ψ : Fin n → Γ →* (Qbar l)ˣ} (hf : W.HasFlag r ψ) (i : Fin n) : Continuous (ψ i) := by
@@ -204,29 +198,27 @@ private theorem flag_cont {n : ℕ} {Γ : Type} [Group Γ] [TopologicalSpace Γ]
 end
 
 /- English proof (translation)
-Introduce `P F Ω _ _ _ _ _ l _ _ ι n r hr w A h hw x hx ⟨t, ht⟩ ψ m k hf hm hk hI hor`. Establish `hN` using `P.litN`. Establish `H` using `hN.aut.art`. Take `⟨rc, a, ha, -⟩` from `P.exists_rec h`. Take `⟨O, _, _, _, Bw, hj⟩` from `Af.exists_bridge (l := l) h hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hp, hcmp⟩` from `hx O Bw hj`. Establish `hc : Continuous (r.comp (Dec (F` using `F) A).subtype) := hr.comp continuous_subtype_val`. Establish `hψc` using `flag_cont hc hf`. Use `choose ω hω using fun i => (Loc.ordCharIff H h ι a ha (fun _ => -m i) (ψ i)).1.2 ⟨hψc i, Loc.laArith H h hw (ψ i) (hψc i) (m i) k hk (hI i)⟩`. Establish `hpol : ∀ s, (wdAt (Loc.PP l) ι Bw h hj (r.comp (Dec (F` using `F) A).subtype)).charPol s = ∏ i, (X - C (((ω i).comp a) s : ℂ)) := fun s => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `hf`. Take `⟨T⟩` from `UpperTheory.V.Loc.tiedP l`. Establish `hc` using `fun i => (UpperTheory.V.Loc.charDR hN h hw ι a ha (ω i) _ (ψ i) (hω i)).1 O Bw hj`. Take `⟨-, F₂⟩` from `UpperTheory.V.Loc.PstExact.flag T ι Bw h hj _ (fun i => GlobalTheory.TripleGal.rk1 (ψ i)) M (fun g => (hM g).1) (fun g i => ((hM g).2 i).trans (by simp [GlobalTheory.TripleGal.rk1]))`. Rewrite using `[(F₂ hp).2 s]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_congr rfl fun i _ => (hc i).2.2 s`. Establish `hxp` using `fun s => (hcmp (Or.inl ((Lev.ssCalc F Ω A w h).1 n _ _ hpol)) s).symm.trans (hpol s)`. Set `inc` to `Subgroup.inclusion (Weil_le_Dec h)`. Set `ε : ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := (cycBar F Ω l).comp (Dec (F := F) A).subtype`. Set `χ : Fin n → ↥(Dec (F` to `F) A) →* (Qbar l)ˣ := fun i => ψ i * ε ^ (-m i)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχc : ∀ i, Continuous (χ i)` using `fun i => (hψc i).mul ((continuous_zpow (-m i)).comp cyc_cont)`. Establish `hq : ((normV w : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`. Establish `hq' : ((normV w : ℕ) : Qbar l) ≠ 0` using `Nat.cast_ne_zero.mpr (one_lt_normV w).ne_bot`. Establish `hμ : ∀ i s, (((ω i).comp a) s : ℂ) = ((normV w : ℕ) : ℂ) ^ (m i * deg s) * ι (χ i (inc s) : Qbar l)` using `fun i s => by`. Establish `h1 : (ψ i (inc s) : Qbar l) = ι.symm (ω i (a s)) * Hi.algPow w (-fun _ => -m i) (a s : w.adicCompletion F)` using `(hω i).val s _ rfl (Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (ε (inc s) : Qbar l) = _` using `UpperTheory.V.Loc.epsArt H h hw a ha s`. Establish `h3 : Hi.algPow (l` using `l) w (fun _ => 1) (a s : w.adicCompletion F) ≠ 0 := fun h0 => (ε (inc s)).ne_zero (by rw [h2, h0, mul_zero])`. Establish `h4 : (χ i (inc s) : Qbar l) = (ψ i (inc s) : Qbar l) * (ε (inc s) : Qbar l) ^ (-m i)` using `by simp [χ]`. Establish `h5 : (χ i (inc s) : Qbar l) = ι.symm (ω i (a s)) * ((normV w : ℕ) : Qbar l) ^ (-(m i * deg s))`. Rewrite using `[h4, h1, h2, algPow_const, mul_zpow, ← zpow_mul, mul_mul_mul_comm, ← zpow_add₀ h3, add_neg_cancel, zpow_zero, mul_one, mul_neg, mul_comm (deg s)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h5, map_mul, ι.apply_symm_apply, map_zpow₀, map_natCast, mul_left_comm, ← zpow_add₀ hq, add_neg_cancel, zpow_zero, mul_one]`. Both sides reduce to the same expression. Take `⟨s, hs, hs1⟩` from `ex_elt H hw ha`. Use `⟨inc s, hs1, fun i j hij N hN0 e => hij ?_⟩` and prove the remaining obligations. Establish `hn` using `norms_eq x _ (fun i => ha.smooth (hω i).smooth) hxp ht (hor.imp_left fun hne i j => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Assume the negation of the conclusion as `hij`. Simplify using `only [not_exists, not_not, hμ] at hij`. Take `⟨ha, h1⟩` from `UpperTheory.continuous_character_compact_unit_values F Ω l ι w A h hw (χ i * (χ j)⁻¹) (1 + m j - m i) (Units.continuous_val.comp ((hχc i).mul (hχc j).inv)) (fun σ => by`. Establish `h2` using `hij σ`. Establish `h3 : ι (χ j (inc σ) : Qbar l) ≠ 0` using `(map_ne_zero ι).mpr (Units.ne_zero _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h4 : ((normV w : ℕ) : ℂ) ^ (m i * deg σ) ≠ 0` using `zpow_ne_zero _ hq`. Express the relevant statement in the definitionally equal form `ι ((χ i (inc σ) * (χ j (inc σ))⁻¹ : (Qbar l)ˣ) : Qbar l) = _`. Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, map_mul, map_inv₀, sub_mul, add_mul, one_mul, zpow_sub₀ hq, zpow_add₀ hq, mul_inv_eq_iff_eq_mul₀ h3, div_mul_eq_mul_div, eq_div_iff h4, mul_comm, mul_assoc]`. Conclude with `h2)`. Use `hne i j ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h5 : χ i = χ j` using `mul_inv_eq_one.mp h1`. Establish `h6 : -m j = 1 + -m i` using `by omega`. Simplify using `only [χ] at h5`. Rewrite `h5` using `[h6, zpow_add, zpow_one, ← mul_assoc]`. Conclude with `mul_right_cancel h5) s i j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h7 : ε (inc s) = 1` using `congrArg (Units.map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom).toMonoidHom) hs1 |>.trans (map_one _)`. Establish `h8 : ∀ i, χ i (inc s) = ψ i (inc s)` using `fun i => by simp [χ, h7]`. Establish `h9 : ‖ι (ψ i (inc s) : Qbar l)‖ = ‖ι (ψ j (inc s) : Qbar l)‖`. Use `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) hN0.ne').1 ?_` and prove the remaining obligations. Rewrite using `[← norm_pow, ← norm_pow, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ← Units.val_pow_eq_pow_val]`.
-
-Conclude with `congrArg (fun u : (Qbar l)ˣ => ‖ι (u : Qbar l)‖) e`. Rewrite `hn` using `[hμ, hμ, h8, h8, norm_mul, norm_mul, h9, norm_zpow, norm_zpow, Complex.norm_natCast]`. Establish `h10` using `mul_right_cancel₀ (norm_ne_zero_iff.2 ((map_ne_zero ι).mpr (Units.ne_zero _))) hn`. Establish `hq1 : (1 : ℝ) < (normV w : ℕ)` using `by exact_mod_cast one_lt_normV w`. Conclude with `hm.injective (mul_right_cancel₀ hs (zpow_right_injective₀ (zero_lt_one.trans hq1) hq1.ne' h10))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Th.purLocS :
     Af.Hypotheses₂ → ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (ι : Qbar l ≃+* ℂ) (n : ℕ) (r : G F Ω →* GL (Fin n) (Qbar l)), Continuous r → ∀ (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w), ((l : ℕ) : 𝓞 F) ∈ w.asIdeal → ∀ x : WD h, (∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O) (hj : Induces Bw), IsPstAt (Loc.PP l) Bw (r.comp (Dec (F := F) A).subtype) ∧ Lev.SsCmp (wdAt (Loc.PP l) ι Bw h hj (r.comp (Dec (F := F) A).subtype)) x) → (∃ t : ℝ, (x.lpTw t).tempered) → ∀ (ψ : Fin n → Dec (F := F) A →* (Qbar l)ˣ) (m : Fin n → ℤ) (k : ℕ), W.HasFlag (r.comp (Dec (F := F) A).subtype) ψ → StrictAnti m → 0 < k → (∀ i (g : Dec (F := F) A), (g : G F Ω) ∈ Ine (F := F) A → (ψ i g * cycBar F Ω l g ^ (-m i)) ^ k = 1) → ((∀ i j, ψ i ≠ ψ j * (cycBar F Ω l).comp (Dec (F := F) A).subtype) ∨ x.mono0) → ∃ g : Dec (F := F) A, cycZ F Ω l g = 1 ∧ Pr.FreeRatios fun i => ψ i g := by

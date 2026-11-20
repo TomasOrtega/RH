@@ -15,19 +15,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Corev.ChainParOfGap
 
 /- English proof (translation)
-Introduce `D h k`. Unfold `GlobalTheory.Chain.ChainPar`. Introduce `τ`. Take `⟨al, be, ga, de, hc, h1, h2⟩` from `GlobalTheory.ArchRec.ParChain.parChain D k τ`. Unfold `GlobalTheory.ArchRec.Centred at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.SchurIrreducible.DataAR`. Use `⟨al, be, ga, de, ⟨hc.1, hc.2.2 h⟩, hc.2.1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1] clear hc h1 h2 h`. Use `congr 1`. Unfold `expT GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.alT`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions.
 
-Break down `Nat.even_or_odd (k : ℕ) with hk | hk` into its components or cases. Establish `ho : Odd ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Odd (k : ℕ)` using `Nat.not_odd_iff_even.mpr hk`. Establish `hne2 : ¬ Even ((k : ℕ) + 1)` using `Nat.not_even_iff_odd.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ho : Even ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Even (k : ℕ)` using `Nat.not_even_iff_odd.mpr hk`. Establish `hne2 : ¬ Odd ((k : ℕ) + 1)` using `Nat.not_odd_iff_even.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`. Rewrite using `[h2] clear hc h1 h2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Unfold `expS GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.alS`. Break down `Nat.even_or_odd (k : ℕ) with hk | hk` into its components or cases. Establish `ho : Odd ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Odd (k : ℕ)` using `Nat.not_odd_iff_even.mpr hk`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne2 : ¬ Even ((k : ℕ) + 1)` using `Nat.not_even_iff_odd.mpr ho`. Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`. Establish `ho : Even ((k : ℕ) + 1)` using `hk.add_one`. Establish `hne : ¬ Even (k : ℕ)` using `Nat.not_even_iff_odd.mpr hk`. Establish `hne2 : ¬ Odd ((k : ℕ) + 1)` using `Nat.not_odd_iff_even.mpr ho`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `simp [ho, hk, hne, hne2] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem chainPar_of_nodeGap : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → ∀ k, ChainPar D k := by
   intro D h k

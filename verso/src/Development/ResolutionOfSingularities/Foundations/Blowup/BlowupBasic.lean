@@ -8,13 +8,13 @@ open CategoryTheory AlgebraicGeometry Opposite
 namespace FunctorialResolution.Blowup
 
 /- English proof (translation)
-Take `⟨hx1, hx2⟩` from `mem_nonZeroDivisors_iff.mp hx`. Establish `h2 : ∀ z : A, e.inv.hom (e.hom.hom z) = z`. Introduce `z`. Simplify using the standard rewrite rules. Establish `h3 : ∀ y : B, e.hom.hom (e.inv.hom y) = y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Simplify using the standard rewrite rules. Establish `key : ∀ y : B, e.hom.hom x * y = 0 → y = 0`. Introduce `y hy`. Establish `h1 : e.inv.hom (e.hom.hom x * y) = 0` using `by rw [hy, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_mul, h2 x]`. Establish `h4` using `hx1 _ h1`. Rewrite using `[← h3 y, h4, map_zero]`. Rewrite using `[mem_nonZeroDivisors_iff]`. Use `⟨key, fun y hy => key y ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_comm]`. Conclude with `hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_nonZeroDivisors_of_iso {A B : CommRingCat.{u}} (e : A ≅ B) {x : A}
     (hx : x ∈ nonZeroDivisors A) : e.hom.hom x ∈ nonZeroDivisors B := by
@@ -37,7 +37,7 @@ theorem map_mem_nonZeroDivisors_of_iso {A B : CommRingCat.{u}} (e : A ≅ B) {x 
   exact hy
 
 /- English proof (translation)
-Take `⟨V, hV, hxV, hVW⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens hx`. Conclude with `⟨⟨V, hV⟩, hxV, hVW⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_affineOpen_le (X : Scheme.{u}) (x : X) (W : X.Opens) (hx : x ∈ W) :
     ∃ U : X.affineOpens, x ∈ (U : X.Opens) ∧ (U : X.Opens) ≤ W := by
@@ -46,7 +46,7 @@ private theorem exists_affineOpen_le (X : Scheme.{u}) (x : X) (W : X.Opens) (hx 
   exact ⟨⟨V, hV⟩, hxV, hVW⟩
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Simplify using `[Scheme.Hom.appLE]`. Conclude with `(Category.id_comp _).trans (Z.presheaf.map_id _)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem appLE_eq_id_of_eq_id {Z : Scheme.{u}} (g : Z ⟶ Z) (hg : g = 𝟙 Z) (U : Z.Opens)
     (h : U ≤ g ⁻¹ᵁ U) : g.appLE U U h = 𝟙 _ := by
@@ -55,7 +55,7 @@ private theorem appLE_eq_id_of_eq_id {Z : Scheme.{u}} (g : Z ⟶ Z) (hg : g = �
   exact (Category.id_comp _).trans (Z.presheaf.map_id _)
 
 /- English proof (translation)
-Introduce `y hy`. Use `show e.hom.base (e.inv.base y) ∈ U`. Establish `hb : e.hom.base (e.inv.base y) = y` using `by simp`. Rewrite using `[hb]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_preimage_inv_preimage_hom {A B : Scheme.{u}} (e : A ≅ B) (U : B.Opens) :
     U ≤ e.inv ⁻¹ᵁ (e.hom ⁻¹ᵁ U) := by
@@ -77,7 +77,7 @@ private noncomputable def sectionsIsoPreimage {A B : Scheme.{u}} (e : A ≅ B) (
     exact appLE_eq_id_of_eq_id _ e.hom_inv_id _ _
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, f, hxU, hf, hIspan⟩` from `hI x`. Use `⟨U, f, hxU, hf, ?_⟩` and prove the remaining obligations. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE I (𝟙 X) U U le_rfl, appLE_eq_id_of_eq_id (𝟙 X) rfl (U : X.Opens) le_rfl, hIspan]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isLocallyGeneratedByNonZeroDivisor_comap_id {X : Scheme.{u}} {I : X.IdealSheafData}
     (hI : IsLocallyGeneratedByNonZeroDivisor I) : IsLocallyGeneratedByNonZeroDivisor (I.comap (𝟙 X)) := by
@@ -89,7 +89,7 @@ private theorem isLocallyGeneratedByNonZeroDivisor_comap_id {X : Scheme.{u}} {I 
   simp
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, hxU, -⟩` from `exists_affineOpen_le X x ⊤ trivial`. Use `⟨U, 1, hxU, one_mem _, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_top (X : Scheme.{u}) :
     IsLocallyGeneratedByNonZeroDivisor (⊤ : X.IdealSheafData) := by
@@ -99,9 +99,9 @@ theorem isLocallyGeneratedByNonZeroDivisor_top (X : Scheme.{u}) :
   simp
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, hU, -⟩` from `exists_affineOpen_le X (f.base x) ⊤ trivial`. Take `⟨V, hV, hVU⟩` from `exists_affineOpen_le X' x (f ⁻¹ᵁ (U : X.Opens)) hU`. Use `⟨V, 1, hV, one_mem _, ?_⟩` and prove the remaining obligations. Establish `h1 : ((⊤ : X.IdealSheafData).ideal U) = ⊤` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE (⊤ : X.IdealSheafData) f U V hVU, h1, Ideal.map_top, Ideal.span_singleton_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isLocallyGeneratedByNonZeroDivisor_comap_top {X X' : Scheme.{u}} (f : X' ⟶ X) :
     IsLocallyGeneratedByNonZeroDivisor ((⊤ : X.IdealSheafData).comap f) := by
@@ -114,7 +114,7 @@ theorem isLocallyGeneratedByNonZeroDivisor_comap_top {X X' : Scheme.{u}} (f : X'
     Ideal.map_top, Ideal.span_singleton_one]
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, f, hxU, hf, hJU⟩` from `hJ (e.hom.base x)`. Use `⟨⟨e.hom ⁻¹ᵁ (U : X'.Opens), IsAffineOpen.preimage_of_isIso U.2 e.hom⟩, (e.hom.appLE (U : X'.Opens) (e.hom ⁻¹ᵁ (U : X'.Opens)) le_rfl).hom f, hxU, ?_, ?_⟩` and prove the remaining obligations. Conclude with `FunctorialResolution.Blowup.map_mem_nonZeroDivisors_of_iso (sectionsIsoPreimage e (U : X'.Opens)) hf`. Rewrite using `[Scheme.IdealSheafData.comap_ideal_eq_map_appLE J e.hom U ⟨e.hom ⁻¹ᵁ (U : X'.Opens), IsAffineOpen.preimage_of_isIso U.2 e.hom⟩ le_rfl, hJU, Ideal.map_span, Set.image_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsLocallyGeneratedByNonZeroDivisor.comap_iso {X' X'' : Scheme.{u}} {J : X'.IdealSheafData}
     (hJ : IsLocallyGeneratedByNonZeroDivisor J) (e : X'' ≅ X') :
@@ -129,14 +129,14 @@ theorem IsLocallyGeneratedByNonZeroDivisor.comap_iso {X' X'' : Scheme.{u}} {J : 
       Ideal.map_span, Set.image_singleton]
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.isLocallyGeneratedByNonZeroDivisor_comap {X X' : Scheme.{u}} {π : X' ⟶ X}
     {I : X.IdealSheafData} (h : IsBlowupAlongIdealSheaf π I) : IsLocallyGeneratedByNonZeroDivisor (I.comap π) :=
   h.1
 
 /- English proof (translation)
-The claim follows from `h.2 W g hg`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.existsUnique_lift {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (W : Scheme.{u}) (g : W ⟶ X) (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g)) :
@@ -144,7 +144,7 @@ theorem IsBlowupAlongIdealSheaf.existsUnique_lift {X X' : Scheme.{u}} {π : X' �
   h.2 W g hg
 
 /- English proof (translation)
-The claim follows from `(h.2 W g hg).unique ha hb`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.hom_ext_of_comp_eq {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) {W : Scheme.{u}} {g : W ⟶ X} (hg : IsLocallyGeneratedByNonZeroDivisor (I.comap g))
@@ -152,7 +152,7 @@ theorem IsBlowupAlongIdealSheaf.hom_ext_of_comp_eq {X X' : Scheme.{u}} {π : X' 
   (h.2 W g hg).unique ha hb
 
 /- English proof (translation)
-Take `⟨s, hs, -⟩` from `h.2 X (𝟙 X) (isLocallyGeneratedByNonZeroDivisor_comap_id hI)`. Use `⟨⟨s, ?_, hs⟩⟩` and prove the remaining obligations. Conclude with `h.hom_ext_of_comp_eq h.1 (by rw [Category.assoc, hs, Category.comp_id]) (Category.id_comp π)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.isIso_of_isLocallyGeneratedByNonZeroDivisor {X X' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (hI : IsLocallyGeneratedByNonZeroDivisor I) : IsIso π := by
@@ -161,16 +161,16 @@ theorem IsBlowupAlongIdealSheaf.isIso_of_isLocallyGeneratedByNonZeroDivisor {X X
   exact h.hom_ext_of_comp_eq h.1 (by rw [Category.assoc, hs, Category.comp_id]) (Category.id_comp π)
 
 /- English proof (translation)
-The claim follows from `h.isIso_of_isLocallyGeneratedByNonZeroDivisor (isLocallyGeneratedByNonZeroDivisor_top X)`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.isIso_of_top {X X' : Scheme.{u}} {π : X' ⟶ X}
     (h : IsBlowupAlongIdealSheaf π (⊤ : X.IdealSheafData)) : IsIso π :=
   h.isIso_of_isLocallyGeneratedByNonZeroDivisor (isLocallyGeneratedByNonZeroDivisor_top X)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Scheme.IdealSheafData.comap_id]` and apply the resulting hypothesis. Introduce `W g _`. Use `⟨g, Category.comp_id g, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hy, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isBlowupAlongIdealSheaf_id_of_isLocallyGeneratedByNonZeroDivisor {X : Scheme.{u}} (I : X.IdealSheafData)
     (hI : IsLocallyGeneratedByNonZeroDivisor I) : IsBlowupAlongIdealSheaf (𝟙 X) I := by
@@ -182,7 +182,7 @@ theorem isBlowupAlongIdealSheaf_id_of_isLocallyGeneratedByNonZeroDivisor {X : Sc
     rw [← hy, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `h₂.hom_ext_of_comp_eq h₁.1 ha hb`.
+A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.hom_ext_of_isBlowupAlongIdealSheaf {X X₁ X₂ : Scheme.{u}} {π₁ : X₁ ⟶ X} {π₂ : X₂ ⟶ X}
     {I : X.IdealSheafData} (h₁ : IsBlowupAlongIdealSheaf π₁ I) (h₂ : IsBlowupAlongIdealSheaf π₂ I)
@@ -190,7 +190,7 @@ theorem IsBlowupAlongIdealSheaf.hom_ext_of_isBlowupAlongIdealSheaf {X X₁ X₂ 
   h₂.hom_ext_of_comp_eq h₁.1 ha hb
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `h₂.2 X₁ π₁ h₁.1`. Take `⟨b, hb, -⟩` from `h₁.2 X₂ π₂ h₂.1`. Use `⟨⟨a, b, ?_, ?_⟩, ha⟩` and prove the remaining obligations. Conclude with `h₁.hom_ext_of_comp_eq h₁.1 (by rw [Category.assoc, hb, ha]) (Category.id_comp π₁)`. Conclude with `h₂.hom_ext_of_comp_eq h₂.1 (by rw [Category.assoc, ha, hb]) (Category.id_comp π₂)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.exists_iso {X X₁ X₂ : Scheme.{u}} {π₁ : X₁ ⟶ X} {π₂ : X₂ ⟶ X}
     {I : X.IdealSheafData} (h₁ : IsBlowupAlongIdealSheaf π₁ I) (h₂ : IsBlowupAlongIdealSheaf π₂ I) :
@@ -202,11 +202,11 @@ theorem IsBlowupAlongIdealSheaf.exists_iso {X X₁ X₂ : Scheme.{u}} {π₁ : X
   · exact h₂.hom_ext_of_comp_eq h₂.1 (by rw [Category.assoc, ha, hb]) (Category.id_comp π₂)
 
 /- English proof (translation)
-Establish `hcomp : I.comap (e.hom ≫ π) = (I.comap π).comap e.hom`. Simplify using `[Scheme.IdealSheafData.comap_comp]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hcomp]`. Conclude with `h.1.comap_iso e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W g hg`. Take `⟨k, hk, hk'⟩` from `h.2 W g hg`. Use `⟨k ≫ e.inv, ?_, ?_⟩` and prove the remaining obligations. Use `show (k ≫ e.inv) ≫ e.hom ≫ π = g`. Rewrite using `[Category.assoc, ← Category.assoc e.inv e.hom π, e.inv_hom_id, Category.id_comp, hk]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m hm`. Establish `hm' : m ≫ e.hom ≫ π = g` using `hm`. Establish `hme : m ≫ e.hom = k` using `hk' _ ((Category.assoc m e.hom π).trans hm')`. Rewrite using `[← hme, Category.assoc, e.hom_inv_id, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsBlowupAlongIdealSheaf.iso_hom_comp {X X' X'' : Scheme.{u}} {π : X' ⟶ X} {I : X.IdealSheafData}
     (h : IsBlowupAlongIdealSheaf π I) (e : X'' ≅ X') : IsBlowupAlongIdealSheaf (e.hom ≫ π) I := by

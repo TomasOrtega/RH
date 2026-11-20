@@ -12,7 +12,7 @@ variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 def TateAcyclic (M : Rep.{u} k G) : Prop := ∀ n : ℤ, IsZero (tateCohomology M n)
 
 /- English proof (translation)
-Introduce `n` and use `by rw [IsZero.iff_id_eq_zero] change 𝟙 ((tateCohomologyFunctor n).obj M) = 0 rw [← (tateCohomologyFunctor n).map_id, ← h, Functor.map_comp, (hN n).eq_of_tgt ((tateCohomologyFunctor n).map i) 0, zero_comp]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TateAcyclic.of_retract {M N : Rep.{u} k G} (i : M ⟶ N) (r : N ⟶ M) (h : i ≫ r = 𝟙 M)
     (hN : TateAcyclic N) : TateAcyclic M := fun n => by
@@ -22,20 +22,20 @@ theorem TateAcyclic.of_retract {M N : Rep.{u} k G} (i : M ⟶ N) (r : N ⟶ M) (
     (hN n).eq_of_tgt ((tateCohomologyFunctor n).map i) 0, zero_comp]
 
 /- English proof (translation)
-The claim follows from `hN.of_retract e.hom e.inv e.hom_inv_id`.
+A detailed English derivation is pending.
 -/
 theorem TateAcyclic.of_iso {M N : Rep.{u} k G} (e : M ≅ N) (hN : TateAcyclic N) :
     TateAcyclic M :=
   hN.of_retract e.hom e.inv e.hom_inv_id
 
 /- English proof (translation)
-Rewrite using `[tateCohomology, tateCohomologyFunctor, Functor.comp_obj, HomologicalComplex.homologyFunctor_obj, ← HomologicalComplex.exactAt_iff_isZero_homology, HomologicalComplex.exactAt_iff' _ (-1) 0 1 (by simp) (by simp), ShortComplex.moduleCat_exact_iff]`. Express the relevant statement in the definitionally equal form `∀ x₂ : (inhomogeneousCochains M).X 0, (inhomogeneousCochains M).d 0 1 x₂ = 0 → ∃ x₁ : (inhomogeneousChains M).X 0, M.tateNorm x₁ = x₂`. Introduce `x₂ hd`. Establish `hinv : ∀ g : G, M.ρ g ((cochainsIso₀ M).hom x₂) = (cochainsIso₀ M).hom x₂`. Introduce `g`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : (d₀₁ M).hom ((cochainsIso₀ M).hom.hom x₂) = (cochainsIso₁ M).hom.hom (((inhomogeneousCochains M).d 0 1).hom x₂)`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, comp_d₀₁_eq]`. Both sides reduce to the same expression. Rewrite `key` using `[show ((inhomogeneousCochains M).d 0 1).hom x₂ = 0 from hd, map_zero]`. Use `congr_fun key g` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp this`. Take `⟨y, hy⟩` from `h _ hinv`. Use `⟨(chainsIso₀ M).inv y, ?_⟩` and prove the remaining obligations. Simplify using `only [Rep.tateNorm, ConcreteCategory.comp_apply, Iso.inv_hom_id_apply]`. Express the relevant statement in the definitionally equal form `(cochainsIso₀ M).inv (M.ρ.norm y) = x₂`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, Iso.hom_inv_id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_zero_of_forall (M : Rep.{u} k G)
     (h : ∀ m : M, (∀ g : G, M.ρ g m = m) → ∃ y : M, M.ρ.norm y = m) :
@@ -62,9 +62,9 @@ theorem isZero_tateCohomology_zero_of_forall (M : Rep.{u} k G)
   rw [hy, Iso.hom_inv_id_apply]
 
 /- English proof (translation)
-Rewrite using `[tateCohomology, tateCohomologyFunctor, Functor.comp_obj, HomologicalComplex.homologyFunctor_obj, ← HomologicalComplex.exactAt_iff_isZero_homology, HomologicalComplex.exactAt_iff' _ (-2) (-1) 0 (by simp) (by simp), ShortComplex.moduleCat_exact_iff]`. Express the relevant statement in the definitionally equal form `∀ x₂ : (inhomogeneousChains M).X 0, M.tateNorm x₂ = 0 → ∃ x₁ : (inhomogeneousChains M).X 1, (inhomogeneousChains M).d 1 0 x₁ = x₂`. Introduce `x₂ hx`. Establish `hn : M.ρ.norm ((chainsIso₀ M).hom x₂) = 0`. Use `congr_arg (fun x => (cochainsIso₀ M).hom x) hx` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Rep.tateNorm, ConcreteCategory.comp_apply, Iso.inv_hom_id_apply, map_zero] at this`. Conclude with `this`. Take `⟨z, hz⟩` from `h _ hn`. Use `⟨(chainsIso₁ M).inv z, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_d₁₀_comp_inv_apply, hz, Iso.hom_inv_id_apply]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_neg_one_of_forall (M : Rep.{u} k G)
     (h : ∀ m : M, M.ρ.norm m = 0 → ∃ z : G →₀ M, d₁₀ M z = m) :
@@ -85,7 +85,7 @@ theorem isZero_tateCohomology_neg_one_of_forall (M : Rep.{u} k G)
   rw [eq_d₁₀_comp_inv_apply, hz, Iso.hom_inv_id_apply]
 
 /- English proof (translation)
-Use `isZero_tateCohomology_zero_of_forall M fun m hm => ⟨φ m, ?_⟩` and prove the remaining obligations. Rewrite using `[Representation.norm, LinearMap.sum_apply]`. Use `conv_rhs => rw [← hφ m]`. Simplify using `only [hm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_zero_of_sum_eq (M : Rep.{u} k G) (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) :
@@ -96,9 +96,9 @@ theorem isZero_tateCohomology_zero_of_sum_eq (M : Rep.{u} k G) (φ : M.V →ₗ[
   simp only [hm]
 
 /- English proof (translation)
-Use `isZero_tateCohomology_neg_one_of_forall M fun m hm => ⟨∑ g : G, Finsupp.single g⁻¹ (φ (M.ρ g⁻¹ m)), ?_⟩` and prove the remaining obligations. Establish `hsum : ∑ g : G, M.ρ g⁻¹ m = M.ρ.norm m`. Rewrite using `[Representation.norm, LinearMap.sum_apply]`. Conclude with `Fintype.sum_equiv (Equiv.inv G) _ _ (fun _ => rfl)`. Use `show (Finsupp.lsum k fun g : G => M.ρ g⁻¹ - LinearMap.id) (∑ g : G, Finsupp.single g⁻¹ (φ (M.ρ g⁻¹ m))) = m`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, Finsupp.lsum_single, LinearMap.sub_apply, LinearMap.id_apply, inv_inv]`. Rewrite using `[Finset.sum_sub_distrib, ← map_sum, hsum, hm, map_zero, sub_zero, hφ]`.
+A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_neg_one_of_sum_eq (M : Rep.{u} k G) (φ : M.V →ₗ[k] M.V)
     (hφ : ∀ m : M, ∑ g : G, M.ρ g (φ (M.ρ g⁻¹ m)) = m) :
@@ -131,9 +131,9 @@ noncomputable def coindBotProj :
 open scoped Classical in
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `∑ g : G, (Pi.single (M := fun _ : G => B.V) (1 : G) (f.1 (1 * g⁻¹)) (x * g)) = f.1 x`. Rewrite using `[Fintype.sum_eq_single x⁻¹]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `g hg`. Rewrite using `[Pi.single_apply, if_neg]`. Conclude with `fun h => hg (eq_inv_of_mul_eq_one_right h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sum_coindBotProj (f : coind (⊥ : Subgroup G).subtype B) :
     ∑ g : G, (coind (⊥ : Subgroup G).subtype B).ρ g
@@ -149,9 +149,7 @@ theorem sum_coindBotProj (f : coind (⊥ : Subgroup G).subtype B) :
     exact fun h => hg (eq_inv_of_mul_eq_one_right h)
 
 /- English proof (translation)
-Break down `n with (_ | n) | (_ | n)` into its components or cases. Conclude with `isZero_tateCohomology_zero_of_sum_eq _ (coindBotProj B) (sum_coindBotProj B)`. Conclude with `((isZero_groupCohomology_succ_of_subsingleton B n).of_iso (coindIso B (n + 1))).of_iso ((TateCohomology.isoGroupCohomology (n + 1)).app _)`. Conclude with `isZero_tateCohomology_neg_one_of_sum_eq _ (coindBotProj B) (sum_coindBotProj B)`. Establish `e` using `(TateCohomology.isoGroupHomology (Int.negSucc (n + 1)) (n + 1) (by simp [Int.negSucc_eq])).app (coind (⊥ : Subgroup G).subtype B)`.
-
-Use `(((isZero_groupHomology_succ_of_subsingleton B n).of_iso (indIso (⊥ : Subgroup G) B (n + 1))).of_iso ?_).of_iso e` and prove the remaining obligations. Conclude with `(groupHomology.functor k G (n + 1)).mapIso (indCoindIso B).symm`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_coind_bot (n : ℤ) :
     IsZero (tateCohomology (coind (⊥ : Subgroup G).subtype B) n) := by
@@ -168,7 +166,7 @@ theorem isZero_tateCohomology_coind_bot (n : ℤ) :
     exact (groupHomology.functor k G (n + 1)).mapIso (indCoindIso B).symm
 
 /- English proof (translation)
-Conclude with `(isZero_tateCohomology_coind_bot B n).of_iso ((tateCohomologyFunctor n).mapIso (indCoindIso B))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_ind_bot (n : ℤ) :
     IsZero (tateCohomology (ind (⊥ : Subgroup G).subtype B) n) := by
@@ -177,13 +175,13 @@ theorem isZero_tateCohomology_ind_bot (n : ℤ) :
     ((tateCohomologyFunctor n).mapIso (indCoindIso B))
 
 /- English proof (translation)
-The claim follows from `isZero_tateCohomology_coind_bot B`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_coind_bot : TateAcyclic (coind (⊥ : Subgroup G).subtype B) :=
   isZero_tateCohomology_coind_bot B
 
 /- English proof (translation)
-The claim follows from `isZero_tateCohomology_ind_bot B`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_ind_bot : TateAcyclic (ind (⊥ : Subgroup G).subtype B) :=
   isZero_tateCohomology_ind_bot B

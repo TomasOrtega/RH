@@ -10,7 +10,7 @@ open MvPowerSeries ReciprocityTheory.PGsh ReciprocityTheory.ChartRestriction.G.S
 
 open MvPowerSeries in
 /- English proof (translation)
-Rewrite using `[Equiv.sum_comp S.equivFin.symm F, ← Finset.sum_subset (Finset.subset_univ S) (fun b _ hb => by simp [hb]), ← Finset.sum_coe_sort S]`. Conclude with `Finset.sum_congr rfl (fun b _ => by simp [b.2])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_dite_mem_eq_sum_equivFin {d : ℕ} (S : Finset (Fin d)) {M : Type*} [AddCommMonoid M] (F : S → M) :
     ∑ b, (if hb : b ∈ S then F ⟨b, hb⟩ else 0) = ∑ w : Fin S.card, F (S.equivFin.symm w) := by
@@ -20,7 +20,7 @@ private lemma sum_dite_mem_eq_sum_equivFin {d : ℕ} (S : Finset (Fin d)) {M : T
 
 open MvPowerSeries in
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [_root_.ReciprocityTheory.PGsh.LogFGL.lc, _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.lgCurve_sumF G g hg c, map_sum, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma lc_sumF_eq_sum {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d m : ℕ} (G : _root_.ReciprocityTheory.PGsh.LogFGL v d) (p : ℕ)
     (g : Fin m → Fin d → PowerSeries C) (hg : ∀ u, _root_.ReciprocityTheory.PGsh.IsCurve v (g u)) (n : ℕ) :
@@ -30,7 +30,7 @@ private lemma lc_sumF_eq_sum {C : Type} [Field C] {v : AddValuation C (WithTop �
 
 open MvPowerSeries in
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [_root_.ReciprocityTheory.PGsh.LogFGL.lc, _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.lgCurve_rescale G x (fun b => (hga b).1) c, PowerSeries.coeff_rescale, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private lemma lc_rescaleCurve_eq_pow_smul {C : Type} [Field C] {v : AddValuation C (WithTop ℝ)} {d : ℕ} (G : _root_.ReciprocityTheory.PGsh.LogFGL v d) (p : ℕ)
     (x : C) {ga : Fin d → PowerSeries C} (hga : _root_.ReciprocityTheory.PGsh.IsCurve v ga) (n : ℕ) :
@@ -41,35 +41,27 @@ private lemma lc_rescaleCurve_eq_pow_smul {C : Type} [Field C] {v : AddValuation
 open MvPowerSeries in
 
 /- English proof (translation)
-Introduce `hroot C _ _ _ v p hp hv d h ty i G γ S hcurve htype n j hn V _ _ La hrank`. Use `set e : Fin S.card ≃ S := S.equivFin.symm with he`. Use `set γS : Fin S.card → Fin d → PowerSeries C := fun u => γ (e u) with hγS`. Establish `hcS : ∀ u, _root_.ReciprocityTheory.PGsh.IsCurve v (γS u)` using `fun u => hcurve _ (e u).2`. Establish `htS : ∀ u, G.IsOfType p ty i (γS u)` using `fun u => htype _ (e u).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrange : Set.range (fun u => La (G.lc p (γS u) n)) = (fun a => La (G.lc p (γ a) n)) '' (S : Set (Fin d))`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `⟨e u, (e u).2, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha, rfl⟩`. Conclude with `⟨e.symm ⟨a, ha⟩, by simp [γS]⟩`. Take `⟨T, hTint, hTdet, hrest⟩` from `hroot C v p hp hv d h S.card ty i G γS hcS htS n j hn V La (hrange ▸ hrank)`. Take `⟨-, -, hTzero⟩` from `hrest`. Establish `hTinv` using `_root_.ReciprocityTheory.ChartRestriction.G.Sh.pt_inv_int (fun a b => (_root_.ReciprocityTheory.ChartRestriction.G.Sh.ptIsIntV_iff _).mp (hTint a b)) hTdet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hzero : _root_.ReciprocityTheory.PGsh.IsIntV v (0 : C)` using `(_root_.ReciprocityTheory.ChartRestriction.G.Sh.ptIsIntV_iff _).mpr (Subring.zero_mem _)`. Use `set x : Matrix (Fin d) (Fin d) C := fun a b => if ha : a ∈ S then if hb : b ∈ S then T (e.symm ⟨a, ha⟩) (e.symm ⟨b, hb⟩) else 0 else 0 with hx`. Use `set y : Matrix (Fin d) (Fin d) C := fun a b => if ha : a ∈ S then if hb : b ∈ S then T⁻¹ (e.symm ⟨a, ha⟩) (e.symm ⟨b, hb⟩) else 0 else 0 with hy`. Use `set D : Finset (Fin d) := (Finset.univ.filter (fun w : Fin S.card => (w : ℕ) < j)).image (fun w => (e w : Fin d)) with hD`. Use `⟨x, y, D, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Take `⟨w, -, rfl⟩` from `Finset.mem_image.mp ha`. Conclude with `(e w).2`. Use `Finset.card_image_le.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b`. Simplify using `only [hx]`. Use `split_ifs`. Conclude with `hTint _ _`. Conclude with `hzero`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hzero`. Introduce `a b`. Simplify using `only [hy]`. Use `split_ifs`. Conclude with `(_root_.ReciprocityTheory.ChartRestriction.G.Sh.ptIsIntV_iff _).mpr (hTinv.2 _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hzero`. Conclude with `hzero`. Introduce `a b hab`. Simplify using `only [hx] at hab`. Use `split_ifs at hab with ha hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨ha, hb⟩`. Conclude with `absurd rfl hab`. Conclude with `absurd rfl hab`. Introduce `a b hab`. Simplify using `only [hy] at hab`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs at hab with ha hb`. Conclude with `⟨ha, hb⟩`. Conclude with `absurd rfl hab`. Conclude with `absurd rfl hab`. Introduce `a c ha hc`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hterm : ∀ b, x a b * y b c = if hb : b ∈ S then T (e.symm ⟨a, ha⟩) (e.symm ⟨b, hb⟩) * T⁻¹ (e.symm ⟨b, hb⟩) (e.symm ⟨c, hc⟩) else 0`. Introduce `b`. Simplify using `only [hx, hy, dif_pos ha, dif_pos hc]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[Finset.sum_congr rfl (fun b _ => hterm b), sum_dite_mem_eq_sum_equivFin S (fun b : S => T (e.symm ⟨a, ha⟩) (e.symm b) * T⁻¹ (e.symm b) (e.symm ⟨c, hc⟩))]`.
-
-Simplify using `only [← he, Equiv.symm_apply_apply]`. Rewrite using `[← Matrix.mul_apply, Matrix.mul_nonsing_inv _ hTinv.1, Matrix.one_apply]`. Simplify using `only [EmbeddingLike.apply_eq_iff_eq, Subtype.mk.injEq]`. Introduce `a ha haD set w := e.symm ⟨a, ha⟩ with hw`. Establish `hjw : j ≤ (w : ℕ)`.
-
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Conclude with `haD (Finset.mem_image.mpr ⟨w, by simp [hlt], by simp [hw]⟩)`. Establish `key` using `hTzero w hjw`. Establish `hp0 : p ^ n ≠ 0` using `pow_ne_zero _ hp.ne_zero`.
-
-Establish `hterm : ∀ b, x a b ^ (p ^ n) • G.lc p (γ b) n = if hb : b ∈ S then T w (e.symm ⟨b, hb⟩) ^ (p ^ n) • G.lc p (γ b) n else 0`. Introduce `b`. Simplify using `only [hx, dif_pos ha, ← hw]`. Apply the tactic sequence `split_ifs <;> simp [zero_pow hp0]`. Rewrite using `[Finset.sum_congr rfl (fun b _ => hterm b), sum_dite_mem_eq_sum_equivFin S (fun b : S => T w (e.symm b) ^ (p ^ n) • G.lc p (γ b) n)]`.
-
-Simplify using `only [← he, Equiv.symm_apply_apply]`. Rewrite `key` using `[lc_sumF_eq_sum G p _ (fun u => _root_.ReciprocityTheory.ChartRestriction.G.Sh.PTb.isCurve_rescale (hTint w u) (hcS u))]`. Rewrite `key` using `[Finset.sum_congr rfl (fun u _ => lc_rescaleCurve_eq_pow_smul G p (T w u) (hcS u) n)]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.RootFin.root_fin : _root_.ReciprocityTheory.ChartRestriction.G.Sh.RootStatement → ∀ (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : AddValuation C (WithTop ℝ)) (p : ℕ),

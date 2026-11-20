@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RestrActApply
 open Formalism.BasicNotions.TH Formalism.MainNotions.SchurIrreducible GlobalTheory.FockAlg GlobalTheory.SteepMult
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.SteepMult.CasDom.casDom | exact GlobalTheory.SteepMult.CasDom.casDom | (intros; apply GlobalTheory.SteepMult.CasDom.casDom <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.casimir_section_sum_identity : ∀ (R S k : ℕ) (W : Type) [AddCommGroup W] [Module ℂ W] (actW : Mat R S →ₗ[ℂ] Module.End ℂ W)
     (B : W →ₗ⋆[ℂ] W →ₗ[ℂ] ℂ), IsUnitary actW B → ∀ Ψ : (Fin k → NC R S) → W,

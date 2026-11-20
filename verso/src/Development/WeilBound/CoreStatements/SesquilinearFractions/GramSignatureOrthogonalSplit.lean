@@ -8,13 +8,13 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Introduce `E _ _ _ H D g ty p q x hty hpq hx horth hpos`. Use `D.fin` as an intermediate fact. Use `D.proj` as an intermediate fact. Establish `hcard : Fintype.card (Fin p ⊕ Fin q) = Module.finrank (𝓞 E) D.La`. Rewrite using `[D.rank, ← hpq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Take `⟨n, hn0, hn⟩` from `exists_nsmul_mem_span_full_family x hcard hx`. Establish `hc0 : ∀ y, DPer.coef D x hx n hn y = 0 → y = 0` using `DPer.eq_zero_of_coef D x hx n hn hn0`. Establish `hcx` using `DPer.planeCoef_mulVec_smul_x_eq_zero_of_ne D x hx n hn`. Establish `hP : IsPeriod D ty (DPer.per hty (DPer.coef D x hx n hn) n)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨DPer.per_smul hty _ n, ?_, DPer.per_discrete hty _ n hn0 hc0, DPer.per_span hty x _ n hn0 hcx, DPer.Hm hty (gramE D x), DPer.Hm_herm hty _ ?_, DPer.Hm_pos hty _ (fun τ h => (hpos τ h).1) (fun τ h => (hpos τ h).2), DPer.herm_EF hty _ n hn0 x (DPer.coef_sum D x hx n hn) horth⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Conclude with `fun y h => hc0 y (DPer.coef_zero_of_per hty _ n hn0 y h)`. Conclude with `fun m m' => (GlobalTheory.T.sesq_sesquilinear_skew_hermitian E H D).2.2.2.2.2.1 (x m) (x m')`. Use `⟨_, hP, fun a => ?_, fun b => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Conclude with `DPer.per_inl hty _ n _ a (hcx _) k (by simpa [sgnRt] using hk)`. Introduce `k hk`. Conclude with `DPer.per_inr hty _ n _ b (hcx _) k (by simpa [sgnRt] using hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_signature_orthogonal_split : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (p q : ℕ) (x : Fin p ⊕ Fin q → D.La), IsTypeFn H p q ty → p + q = D.p + D.q → LinearIndependent (𝓞 E) x → (∀ a b, sesq D (x (.inl a)) (x (.inr b)) = 0) → (∀ τ : E →+* ℂ, τ (H.rt : E) = H.rt0 → ((gramE D (x ∘ Sum.inl)).map fun a => Complex.I * τ a).PosDef ∧ (-((gramE D (x ∘ Sum.inr)).map fun a => Complex.I * τ a)).PosDef) → ∃ (P : D.La →+ (Fin g → ℂ)) (hP : IsPeriod D ty P), IsPure hP x := by
   intro E _ _ _ H D g ty p q x hty hpq hx horth hpos

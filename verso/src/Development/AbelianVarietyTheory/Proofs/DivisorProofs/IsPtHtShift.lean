@@ -20,15 +20,15 @@ noncomputable section
 namespace GlobalTheory.ShiftHt
 
 /- English proof (translation)
-Introduce `HE k _ X _ p D hX L x a t hx hL`. Take `⟨h, H, hh⟩` from `hL`. Take `⟨h', H'⟩` from `(HE k X p D hX).1 (L.shift (fun _ => t) fun _ => rfl)`. Use `⟨h', H', ?_⟩` and prove the remaining obligations. Take `⟨hc, hd⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Use `hX.isNoetherian_sub i` as an intermediate fact. Establish `hr : Set.range i = closure {i (genericPoint Z)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr]`. Establish `hbij : Function.Bijective (i.residueFieldMap (genericPoint Z)).hom`. Use `⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`. Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`. Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff hbij.1).1 hc`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Take `⟨r, hr⟩` from `GlobalTheory.Cartier.exists_isRatSec (L.restr i).isLB`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[H'.point Z i hcΓ hd r hr, GlobalTheory.HtSelfInter.curveDeg_shift hX L t i hcΓ hd hr, ← H.point Z i hcΓ hd r hr, hh]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isPtHt_shift : GlobalTheory.Published.ArExists → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L : HermLB p) (x : X) (a t : ℝ), IsAlgPt x → IsPtHt L x a → IsPtHt (L.shift (fun _ => t) fun _ => rfl) x (a + t) := by
   intro HE k _ X _ p D hX L x a t hx hL

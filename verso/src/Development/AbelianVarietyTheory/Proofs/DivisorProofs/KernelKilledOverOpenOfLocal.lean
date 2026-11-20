@@ -10,7 +10,7 @@ namespace GlobalTheory.KerKilledLocal
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [pullU, Scheme.Hom.comp_app, Units.coe_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pullU_comp' {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Opens) (x : Γ(X, U)ˣ) :
     pullU (f ≫ g) U x = pullU f (g ⁻¹ᵁ U) (pullU g U x) := by
@@ -19,17 +19,15 @@ theorem pullU_comp' {X Y Z : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (U : X.Open
   rfl
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hg`. Establish `h1 : ∃ t : LB.Gen (((L.pull a).pull b).pull h), t.IsGen` using `⟨LB.genPull _ t h, LB.isGen_genPull _ t ht h⟩`. Establish `hb : ∀ z : Z', a.base (b.base (h.base z)) = c.base (e.base z)` using `fun z => by`. Use `congrArg (fun φ => φ.base z) heq` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hmem : ∀ (j : PUnit.{1} → PUnit.{1} → L.ι) (z : Z'), z ∈ ((L.pull c).pull e).U j → z ∈ (((L.pull a).pull b).pull h).U (fun _ => j)`. Introduce `j z hz`. Establish `h1` using `(mem_wchart_pu L c _ _).1 ((mem_wchart_pu (L.pull c) e j z).1 hz)`. Apply `(mem_wchart_pu ((L.pull a).pull b) h _ z).2` to reduce the goal to its premises. Apply `(mem_wchart_pu (L.pull a) b j _).2` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(mem_wchart_pu L a _ _).2` to reduce the goal to its premises. Rewrite using `[hb z]`. Conclude with `h1`. Use `exists_gen_transfer (L := ((L.pull a).pull b).pull h) (L' := (L.pull c).pull e) (fun j => fun _ => j) (fun j z hz => hmem j z hz) ?_ h1` and prove the remaining obligations. Introduce `i j y hy`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy1 : y ∈ (e ≫ c) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit))` using `pull_inf_le L c _ _ (pull_inf_le (L.pull c) e i j hy)`. Establish `hy2 : y ∈ (h ≫ b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit))`. Rewrite using `[heq]`. Conclude with `hy1`. Establish `hm : y ∈ h ⁻¹ᵁ (((L.pull a).pull b).U i ⊓ ((L.pull a).pull b).U j)` using `pull_inf_le ((L.pull a).pull b) h (fun _ => i) (fun _ => j) ⟨hmem i y hy.1, hmem j y hy.2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hy' : h.base y ∈ (b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit))` using `hy2`. Use `(germ_pull_pull L c e i j y hy hy1).trans ((gU_pullU_congr heq.symm _ _ y hy1 hy2).trans ?_)` and prove the remaining obligations. Use `Eq.trans ?_ (germ_pull ((L.pull a).pull b) h (fun _ => i) (fun _ => j) y _ hm).symm` and prove the remaining obligations. Establish `hy3 : y ∈ h ⁻¹ᵁ ((b ≫ a) ⁻¹ᵁ (L.U (i PUnit.unit PUnit.unit) ⊓ L.U (j PUnit.unit PUnit.unit)))` using `hy2`. Rewrite using `[gU_pullU h _ y hm, germ_pull_pull L a b i j (h.base y) hm hy', ← gU_pullU h _ y hy3]`.
-
-Use `erw [pullU_comp']`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gen_pull3 {X Y Z Z' Y' : Scheme.{0}} (L : LB X) (a : Y ⟶ X) (b : Z ⟶ Y) (h : Z' ⟶ Z)
     (c : Y' ⟶ X) (e : Z' ⟶ Y') (heq : h ≫ b ≫ a = e ≫ c)
@@ -77,28 +75,28 @@ noncomputable section Grp
 variable {S' : Scheme.{0}} (G : Over S') [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_fst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_fst' {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) :
     (lift a b).left ≫ (fst X Y).left = a.left := by
   rw [← Over.comp_left, lift_fst]
 
 /- English proof (translation)
-Rewrite using `[← Over.comp_left, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_snd' {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) :
     (lift a b).left ≫ (snd X Y).left = b.left := by
   rw [← Over.comp_left, lift_snd]
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, lift_left_fst']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_fst'_assoc {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) {Q : Scheme.{0}}
     (q : X.left ⟶ Q) : (lift a b).left ≫ (fst X Y).left ≫ q = a.left ≫ q := by
   rw [← Category.assoc, lift_left_fst']
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, lift_left_snd']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_left_snd'_assoc {S : Scheme.{0}} {T X Y : Over S} (a : T ⟶ X) (b : T ⟶ Y) {Q : Scheme.{0}}
     (q : Y.left ⟶ Q) : (lift a b).left ≫ (snd X Y).left ≫ q = b.left ≫ q := by
@@ -112,7 +110,7 @@ def down (V : S'.Opens) {T : Over V.toScheme} (x : T ⟶ (Over.pullback V.ι).ob
     rw [Category.assoc, pullback.condition, ← Category.assoc, wx])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `((isGrpPullback V.ι G).2 T x y (down G V x) (down G V y) rfl rfl).symm`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem down_mul (V : S'.Opens) {T : Over V.toScheme} (x y : T ⟶ (Over.pullback V.ι).obj G) :
     down G V (x * y) = down G V x * down G V y := by
@@ -120,7 +118,7 @@ theorem down_mul (V : S'.Opens) {T : Over V.toScheme} (x y : T ⟶ (Over.pullbac
   exact ((isGrpPullback V.ι G).2 T x y (down G V x) (down G V y) rfl rfl).symm
 
 /- English proof (translation)
-Establish `h1 : x.left ≫ pullback.fst G.hom V.ι = y.left ≫ pullback.fst G.hom V.ι` using `congrArg CommaMorphism.left h`. Establish `wx : x.left ≫ pullback.snd G.hom V.ι = T.hom` using `Over.w x`. Establish `wy : y.left ≫ pullback.snd G.hom V.ι = T.hom` using `Over.w y`. Conclude with `Over.OverMorphism.ext (pullback.hom_ext h1 (wx.trans wy.symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem down_injective (V : S'.Opens) {T : Over V.toScheme} (x y : T ⟶ (Over.pullback V.ι).obj G)
     (h : down G V x = down G V y) : x = y := by
@@ -131,7 +129,7 @@ theorem down_injective (V : S'.Opens) {T : Over V.toScheme} (x y : T ⟶ (Over.p
   exact Over.OverMorphism.ext (pullback.hom_ext h1 (wx.trans wy.symm))
 
 /- English proof (translation)
-Establish `h` using `down_mul G V (1 : T ⟶ (Over.pullback V.ι).obj G) 1`. Rewrite `h` using `[_root_.mul_one]`. Conclude with `mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem down_one (V : S'.Opens) {T : Over V.toScheme} :
     down G V (1 : T ⟶ (Over.pullback V.ι).obj G) = 1 := by
@@ -140,7 +138,7 @@ theorem down_one (V : S'.Opens) {T : Over V.toScheme} :
   exact mul_left_cancel (h.symm.trans (_root_.mul_one _).symm)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, down_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, down_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem down_pow (V : S'.Opens) {T : Over V.toScheme} (x : T ⟶ (Over.pullback V.ι).obj G) (n : ℕ) :
     down G V (x ^ n) = down G V x ^ n := by
@@ -149,7 +147,7 @@ theorem down_pow (V : S'.Opens) {T : Over V.toScheme} (x : T ⟶ (Over.pullback 
   | succ n ih => rw [pow_succ, pow_succ, down_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_pt {A B : Over S'} (f : A ⟶ B) (g : B ⟶ G) (n : ℕ) : f ≫ g ^ n = (f ≫ g) ^ n := by
   induction n with
@@ -169,25 +167,23 @@ noncomputable section Main
 variable {S' : Scheme.{0}} (G : Over S') [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Use `set U : T.left.Opens := (T.hom ≫ W.ι) ⁻¹ᵁ V with hU`. Establish `hr : Set.range (U.ι ≫ T.hom ≫ W.ι) ⊆ Set.range V.ι`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `u.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set k := IsOpenImmersion.lift V.ι (U.ι ≫ T.hom ≫ W.ι) hr with hkdef`. Establish `hk : k ≫ V.ι = U.ι ≫ T.hom ≫ W.ι` using `IsOpenImmersion.lift_fac _ _ _`. Set `Tp : Over V.toScheme` to `Over.mk k`. Establish `wx : x.left ≫ pullback.snd G.hom W.ι = T.hom` using `Over.w x`. Set `xp : Tp ⟶ (Over.pullback V.ι).obj G` to `Over.homMk (pullback.lift (U.ι ≫ x.left ≫ pullback.fst G.hom W.ι) k (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hk, Category.assoc, Category.assoc, pullback.condition, ← Category.assoc x.left, wx]))`. Use the proof step `(pullback.lift_snd _ _ _)`. Set `ρ : Over.mk (Tp.hom ≫ V.ι) ⟶ Over.mk (T.hom ≫ W.ι)` to `Over.homMk U.ι hk.symm`. Establish `hρ : ρ ≫ down G W x = down G V xp`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `U.ι ≫ x.left ≫ pullback.fst G.hom W.ι = pullback.lift _ _ _ ≫ pullback.fst G.hom V.ι`. Rewrite using `[pullback.lift_fst]`. Set `GW` to `(Over.pullback W.ι).obj G`. Set `GV` to `(Over.pullback V.ι).obj G`. Set `bz : (GV ⊗ Tp).left ⟶ T.left` to `(snd GV Tp).left ≫ U.ι`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `Z' : Over W.toScheme` to `Over.mk (bz ≫ T.hom)`. Set `v : Z' ⟶ T` to `Over.homMk bz rfl`. Establish `e1 : (fst GV Tp).left ≫ pullback.snd G.hom V.ι = (GV ⊗ Tp).hom` using `Over.w (fst GV Tp)`. Establish `e2 : (snd GV Tp).left ≫ k = (GV ⊗ Tp).hom` using `Over.w (snd GV Tp)`. Set `u : Z' ⟶ GW` to `Over.homMk (pullback.lift ((fst GV Tp).left ≫ pullback.fst G.hom V.ι) (bz ≫ T.hom) (by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, e1, ← e2, Category.assoc, hk]`. Simplify using `only [bz, Category.assoc]))`. Use the proof step `(pullback.lift_snd _ _ _)`. Establish `heq : (lift u v).left ≫ (lift (snd GW T ≫ x) (fst GW T)).left ≫ pφ₂ W.ι G = (lift (snd GV Tp ≫ xp) (fst GV Tp)).left ≫ pφ₂ V.ι G`. Apply `adelic_GL2_ext_of_local_components G` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Category.assoc, pφ₂_fst]`. Rewrite using `[lift_left_fst'_assoc, lift_left_fst'_assoc]`. Simplify using `only [Over.comp_left, Category.assoc]`. Rewrite using `[lift_left_snd'_assoc]`. Express the relevant statement in the definitionally equal form `bz ≫ x.left ≫ pullback.fst G.hom W.ι = (snd GV Tp).left ≫ pullback.lift _ _ _ ≫ pullback.fst G.hom V.ι`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[pullback.lift_fst]`. Simplify using `only [bz, Category.assoc]`. Simplify using `only [Category.assoc, pφ₂_snd]`. Rewrite using `[lift_left_snd'_assoc, lift_left_snd'_assoc, lift_left_fst'_assoc]`. Express the relevant statement in the definitionally equal form `pullback.lift _ _ _ ≫ pullback.fst G.hom W.ι = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_fst]`. Both sides reduce to the same expression. Establish `hgen` using `GlobalTheory.KerKilledLocal.gen_pull3 P (pφ₂ W.ι G) _ (lift u v).left (pφ₂ V.ι G) _ heq hs`. Establish `hxp : xp ^ d = 1` using `hV Tp xp hgen`. Establish `key : ρ ≫ down G W x ^ d = ρ ≫ 1`.
-
-Rewrite using `[comp_pow_pt, hρ, ← down_pow, hxp, down_one, MonObj.comp_one]`. Conclude with `congrArg CommaMorphism.left key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (d : ℕ) (P : LB (G2 G).left) (V W : S'.Opens) (hV : KerKilledOn d G P V)
     (T : Over W.toScheme) (x : T ⟶ (Over.pullback W.ι).obj G)
@@ -257,11 +253,11 @@ namespace GlobalTheory.KerKilledLocal
 open GlobalTheory.KerKilledLocus
 
 /- English proof (translation)
-Introduce `d S' G _ _ P W hloc T x hs`. Apply `down_injective G W` to reduce the goal to its premises. Rewrite using `[down_pow, down_one]`. Establish `hmem : ∀ t : T.left, (T.hom ≫ W.ι) t ∈ W` using `fun t => by`. Establish `h : (T.hom ≫ W.ι) t ∈ Set.range W.ι` using `⟨T.hom t, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Use `choose V hpV hV using fun t : T.left => hloc _ (hmem t)`. Set `U : T.left → T.left.Opens` to `fun t => (T.hom ≫ W.ι) ⁻¹ᵁ V t`. Establish `hc : TopologicalSpace.IsOpenCover U`. Rewrite using `[TopologicalSpace.IsOpenCover, eq_top_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun t _ => TopologicalSpace.Opens.mem_iSup.mpr ⟨t, hpV t⟩`. Use `Over.OverMorphism.ext ((T.left.openCoverOfIsOpenCover U hc).hom_ext _ _ fun t => ?_)` and prove the remaining obligations. Conclude with `step G d P (V t) W (hV t) T x hs`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kerKilledOn_of_local : ∀ (d : ℕ) (S' : Scheme.{0}) (G : Over S') [GrpObj G] [IsCommMonObj G]
     (P : LB (G2 G).left) (W : S'.Opens),

@@ -4,31 +4,29 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Monom
 open Polynomial Matrix
 
 /- English proof (translation)
-Establish `hss : ∀ g, Module.End.IsSemisimple (σ g)`. Introduce `g`. Use `Module.End.isSemisimple_of_squarefree_aeval_eq_zero (p := X ^ n - C 1) (Polynomial.separable_X_pow_sub_C 1 hn one_ne_zero).squarefree ?_` and prove the remaining obligations. Simplify using `[hpow g]`. Establish `hall` using `Module.End.iSup_iInf_maxGenEigenspace_eq_top_of_iSup_maxGenEigenspace_eq_top_of_commute (fun g => σ g) (fun i j _ => hc i j) (fun i => Module.End.iSup_maxGenEigenspace_eq_top (σ i))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hno`. Apply `hne` to reduce the goal to its premises. Establish `hle : ∀ χ : G → K, (⨅ i, Module.End.maxGenEigenspace (σ i) (χ i)) ≤ ⨅ i, Module.End.eigenspace (σ i) 1`. Introduce `χ`. Establish `hW : ∀ x ∈ ⨅ i, Module.End.maxGenEigenspace (σ i) (χ i), ∀ g, σ g x = χ g • x`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx g`. Establish `h1` using `(Submodule.mem_iInf _).1 hx g`. Rewrite `h1` using `[(hss g).isFinitelySemisimple.maxGenEigenspace_eq_eigenspace, Module.End.mem_eigenspace_iff]`. Conclude with `h1`. Distinguish the cases in `hχ : ∀ g, χ g = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Rewrite using `[Submodule.mem_iInf]`. Introduce `g`. Rewrite using `[Module.End.mem_eigenspace_iff, hW x hx g, hχ g]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx'`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hx' (Submodule.zero_mem _)`. Establish `hχ0 : ∀ g, χ g ≠ 0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `g h0`. Apply `hx0` to reduce the goal to its premises. Establish `h1 : σ g⁻¹ (σ g x) = x` using `by show (σ g⁻¹ * σ g) x = x`. Rewrite using `[← map_mul, inv_mul_cancel, map_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hW x hx g, h0, zero_smul, map_zero]`. Conclude with `h1.symm`. Establish `hmul : ∀ a b, χ (a * b) = χ a * χ b`. Introduce `a b`. Establish `h1 : σ (a * b) x = σ a (σ b x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_mul]`. Both sides reduce to the same expression. Rewrite `h1` using `[hW x hx, hW x hx, map_smul, hW x hx, smul_smul]`. Establish `h2` using `smul_left_injective K hx0 h1`. Rewrite using `[h2, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1' : χ 1 = 1`. Establish `h1 : σ 1 x = x`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Rewrite `h1` using `[hW x hx]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `smul_left_injective K hx0 (h1.trans (one_smul K x).symm)`. Set `η : G →* Kˣ` to `{ toFun := fun g => Units.mk0 (χ g) (hχ0 g) map_one' := Units.ext h1' map_mul' := fun a b => Units.ext (hmul a b) }`. Apply `hno` to reduce the goal to its premises. Use `⟨η, ?_, x, hx0, fun g => hW x hx g⟩` and prove the remaining obligations. Introduce `hη`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply `hχ` to reduce the goal to its premises. Introduce `g`. Establish `h3` using `congrArg (fun u : Kˣ => (u : K)) (DFunLike.congr_fun hη g)`. Simplify `h3` using `[η]`. Establish `htop : (⊤ : Submodule K A) ≤ ⨅ i, Module.End.eigenspace (σ i) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hall]`. Conclude with `iSup_le hle`. Introduce `g x`. Establish `h4` using `(Submodule.mem_iInf _).1 (htop (Submodule.mem_top (x := x))) g`. Rewrite `h4` using `[Module.End.mem_eigenspace_iff, one_smul]`.
-
-Conclude with `h4`.
+A detailed English derivation is pending.
 -/
 private theorem exists_char {K G A : Type} [Field K] [IsAlgClosed K] [Group G] [AddCommGroup A] [Module K A]
     [FiniteDimensional K A] (σ : Representation K G A) (n : ℕ) (hn : (n : K) ≠ 0)
@@ -106,11 +104,9 @@ private theorem exists_char {K G A : Type} [Field K] [IsAlgClosed K] [Group G] [
   exact h4
 
 /- English proof (translation)
-Set `S : Subrepresentation ρ` to `⟨LinearMap.ker f, by`. Introduce `g v hv`. Establish `h` using `hf g v`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite `h` using `[hv, map_zero]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(smul_eq_zero.mp h.symm).resolve_left (η g).ne_zero⟩`. Break down `hirr.eq_bot_or_eq_top S with h | h` into its components or cases. Use `left`. Conclude with `congrArg Subrepresentation.toSubmodule h`. Use `right`.
-
-Conclude with `congrArg Subrepresentation.toSubmodule h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 private theorem ker_cases {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Module K V]
     (ρ : Representation K G V) (hirr : ρ.IsIrreducible) (f : V →ₗ[K] V) (η : G →* Kˣ)
@@ -127,23 +123,19 @@ private theorem ker_cases {K G V : Type} [Field K] [Group G] [AddCommGroup V] [M
   · right; exact congrArg Subrepresentation.toSubmodule h
 
 /- English proof (translation)
-Use `haveI : ComplementedLattice (Subrepresentation τ) := hs`. Establish `hnt : (⊥ : Subrepresentation τ) ≠ ⊤`. Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Establish `hv' : v ∈ (⊤ : Subrepresentation τ).toSubmodule` using `Submodule.mem_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv'` using `[← h]`. Conclude with `hv ((Submodule.mem_bot K).1 hv')`. Choose the witnesses or unpack the hypotheses as in `⟨W, hW0, hW1⟩ : ∃ W : Subrepresentation τ, W ≠ ⊥ ∧ W ≠ ⊤ := by`. Assume the negation of the conclusion as `hW`. Use `push_neg at hW`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `hn { exists_pair_ne := ⟨⊥, ⊤, hnt⟩ eq_bot_or_eq_top := fun W => (em (W = ⊥)).imp_right (hW W) }`. Take `⟨W', hWW'⟩` from `exists_isCompl W`. Establish `hc : IsCompl W'.toSubmodule W.toSubmodule`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subrepresentation.toSubmodule hWW'.symm.inf_eq_bot`. Rewrite using `[codisjoint_iff]`. Conclude with `congrArg Subrepresentation.toSubmodule hWW'.symm.sup_eq_top`. Set `q` to `Submodule.linearProjOfIsCompl W'.toSubmodule W.toSubmodule hc`. Establish `hker : LinearMap.ker (W'.toSubmodule.subtype ∘ₗ q) = W.toSubmodule`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[LinearMap.ker_comp, Submodule.ker_subtype, Submodule.comap_bot]`. Conclude with `Submodule.linearProjOfIsCompl_ker hc`. Use `⟨W'.toSubmodule.subtype ∘ₗ q, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g v`. Establish `hv : v ∈ W'.toSubmodule ⊔ W.toSubmodule`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hc.sup_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨b, hb, a, ha, rfl⟩` from `Submodule.mem_sup.1 hv`. Establish `ha' : τ g a ∈ W.toSubmodule` using `W.apply_mem_toSubmodule g ha`. Establish `hb' : τ g b ∈ W'.toSubmodule` using `W'.apply_mem_toSubmodule g hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : q b = ⟨b, hb⟩` using `Submodule.linearProjOfIsCompl_apply_left hc ⟨b, hb⟩`. Establish `e2 : q a = 0` using `Submodule.linearProjOfIsCompl_apply_right hc ⟨a, ha⟩`. Establish `e3 : q (τ g b) = ⟨τ g b, hb'⟩` using `Submodule.linearProjOfIsCompl_apply_left hc ⟨_, hb'⟩`. Establish `e4 : q (τ g a) = 0` using `Submodule.linearProjOfIsCompl_apply_right hc ⟨_, ha'⟩`. Simplify using `only [LinearMap.comp_apply, map_add, e1, e2, e3, e4]`.
-
-Simplify using the standard rewrite rules. Rewrite using `[hker]`. Introduce `h`. Conclude with `hW0 (Subrepresentation.toSubmodule_injective h)`. Rewrite using `[hker]`.
-
-Introduce `h`. Conclude with `hW1 (Subrepresentation.toSubmodule_injective h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem exists_proj {K H V : Type} [Field K] [Group H] [AddCommGroup V] [Module K V] [Nontrivial V]
     (τ : Representation K H V) (hs : τ.IsSemisimpleRepresentation) (hn : ¬ τ.IsIrreducible) :
@@ -194,49 +186,41 @@ private theorem exists_proj {K H V : Type} [Field K] [Group H] [AddCommGroup V] 
     exact hW1 (Subrepresentation.toSubmodule_injective h)
 
 /- English proof (translation)
-Introduce `K G V _ _ _ _ _ _ ρ N _ _ hidx hcomm hirr hnot`. Establish `hρ : ∀ a b w, ρ a (ρ b w) = ρ (a * b) w`. Introduce `a b w`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hρ1 : ∀ w, ρ 1 w = w`. Introduce `w`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use `haveI : Nontrivial V := by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Use `haveI := hirr`. Apply `(bot_ne_top : (⊥ : Subrepresentation ρ) ≠ ⊤)` to reduce the goal to its premises. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `show (⊥ : Submodule K V) = ⊤`. Conclude with `Submodule.eq_top_iff'.2 fun x => by`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `Submodule.zero_mem _`. Take `⟨p, hp, hp0, hp1⟩` from `exists_proj (ρ.comp N.subtype) (UpperTheory.V.AlgebraTools.clifford K G V ρ N hirr) hnot`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Set `A : Submodule K (Module.End K V)` to `{ carrier := {f | ∀ m ∈ N, ∀ v, ρ m (f v) = f (ρ m v)} add_mem' := by`. Introduce `f g hf hg m hm v`. Simplify using `[hf m hm v, hg m hm v]`. Use the proof step `zero_mem' := by`. Introduce `m hm v`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Simplify using the standard rewrite rules. Use the proof step `smul_mem' := by`. Introduce `c f hf m hm v`. Simplify using `[hf m hm v] }`. Establish `hA : ∀ f, f ∈ A → ∀ m ∈ N, ∀ v, ρ m (f v) = f (ρ m v)` using `fun f hf => hf`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpA : p ∈ A` using `fun m hm v => hp ⟨m, hm⟩ v`. Set `c : G → Module.End K V →ₗ[K] Module.End K V` to `fun g => LinearMap.mulLeft K (ρ g) ∘ₗ LinearMap.mulRight K (ρ g⁻¹)`. Establish `hc_apply : ∀ g f v, c g f v = ρ g (f (ρ g⁻¹ v))` using `fun g f v => rfl`. Establish `hconj : ∀ g, ∀ f ∈ A, c g f ∈ A`. Introduce `g f hf m hm v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hc_apply, hc_apply]`. Establish `hn' : g⁻¹ * m * g ∈ N`. Simplify using `using Subgroup.Normal.conj_mem ‹N.Normal› m hm g⁻¹`. Establish `e1 : ∀ w, ρ m (ρ g w) = ρ g (ρ (g⁻¹ * m * g) w)`. Introduce `w`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hρ, hρ]`. Use `congr 2`. Use `group`. Establish `e2 : ∀ w, ρ g⁻¹ (ρ m w) = ρ (g⁻¹ * m * g) (ρ g⁻¹ w)`. Introduce `w`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hρ, hρ]`. Use `congr 2`. Use `group`. Rewrite using `[e1, e2, hA f hf _ hn']`. Set `σ : Representation K G A` to `{ toFun := fun g => (c g).restrict (hconj g) map_one' := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show ρ 1 (f.1 (ρ 1⁻¹ v)) = f.1 v`. Rewrite using `[inv_one, hρ1, hρ1]`. Use the proof step `map_mul' := by`. Introduce `a b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show ρ (a * b) (f.1 (ρ (a * b)⁻¹ v)) = ρ a (ρ b (f.1 (ρ b⁻¹ (ρ a⁻¹ v))))`. Rewrite using `[hρ, hρ, _root_.mul_inv_rev] }`. Establish `hσN : ∀ m ∈ N, σ m = 1`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `LinearMap.ext fun f => Subtype.ext (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show ρ m (f.1 (ρ m⁻¹ v)) = f.1 v`. Rewrite using `[hA f.1 f.2 m hm, hρ, mul_inv_cancel, hρ1]`. Establish `hpow : ∀ g, σ g ^ N.index = 1`. Introduce `g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_pow, hσN _ (Subgroup.pow_index_mem N g)]`. Establish `hcσ : ∀ g h, Commute (σ g) (σ h)`. Introduce `g h`. Establish `hk : g⁻¹ * h⁻¹ * g⁻¹⁻¹ * h⁻¹⁻¹ ∈ N` using `hcomm (by`. Rewrite using `[commutator_def, ← commutatorElement_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Subgroup.commutator_mem_commutator (Subgroup.mem_top _) (Subgroup.mem_top _))`. Establish `e : g * h = h * g * (g⁻¹ * h⁻¹ * g⁻¹⁻¹ * h⁻¹⁻¹)` using `by group`. Use `show σ g * σ h = σ h * σ g`. Rewrite using `[← map_mul, ← map_mul, e, map_mul, hσN _ hk, mul_one]`. Establish `hne : ¬ ∀ g x, σ g x = x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `hall`. Establish `hpe : ∀ g v, ρ g (p v) = ((1 : G →* Kˣ) g : K) • p (ρ g v)`. Introduce `g v`. Establish `h1` using `congrArg (fun y : A => y.1 (ρ g v)) (hall g ⟨p, hpA⟩)`. Express the relevant statement in the definitionally equal form `ρ g (p (ρ g⁻¹ (ρ g v))) = p (ρ g v) at h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hρ, inv_mul_cancel, hρ1]`. Simplify using `using h1`. Break down `ker_cases ρ hirr p 1 hpe with h | h` into its components or cases. Conclude with `hp0 h`. Conclude with `hp1 h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨η, hη1, x, hx0, hx⟩` from `exists_char σ N.index hidx hpow hcσ hne`. Establish `hNker : N ≤ η.ker`. Introduce `m hm`. Rewrite using `[MonoidHom.mem_ker]`. Establish `h1` using `hx m`.
-
-Rewrite `h1` using `[hσN m hm]`. Establish `h2 : (η m : K) = 1` using `smul_left_injective K hx0 (h1.symm.trans (one_smul K x).symm)`. Conclude with `Units.ext h2`. Establish `hfx : ∀ g v, ρ g (x.1 v) = (η g : K) • x.1 (ρ g v)`. Introduce `g v`.
-
-Establish `h1` using `congrArg (fun y : A => y.1 (ρ g v)) (hx g)`. Express the relevant statement in the definitionally equal form `ρ g (x.1 (ρ g⁻¹ (ρ g v))) = ((η g : K) • x).1 (ρ g v) at h1`. Rewrite `h1` using `[hρ, inv_mul_cancel, hρ1]`. Simplify using `using h1`. Establish `hinj : Function.Injective x.1`.
-
-Break down `ker_cases ρ hirr x.1 η hfx with h | h` into its components or cases. Conclude with `LinearMap.ker_eq_bot.1 h`. It suffices to derive a contradiction. Apply `hx0` to reduce the goal to its premises. Conclude with `Subtype.ext (LinearMap.ker_eq_top.1 h)`.
-
-Conclude with `⟨η, hη1, hNker, LinearEquiv.ofInjectiveEndo x.1 hinj, fun g v => hfx g v⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.twistOfRed :
     ∀ (K G V : Type) [Field K] [IsAlgClosed K] [Group G] [AddCommGroup V] [Module K V] [FiniteDimensional K V] (ρ : Representation K G V)

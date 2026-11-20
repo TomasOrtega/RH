@@ -8,9 +8,9 @@ open UpperTheory.Gal UpperTheory.Gal.Mod UpperTheory.Gal.Int.Geo
 open Formalism.ConjugateSelfDual ReciprocityTheory.Gal
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hx' : x = ∑ i, b.repr ⟨x, hx⟩ i • (b i : M)`. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨x, hx⟩)`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, SetLike.val_smul] at h`. Conclude with `h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', map_sum]`. Use `Submodule.sum_mem _ (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, hb]`. Conclude with `Submodule.smul_mem _ _ (Submodule.sum_mem _ (fun k _ => Submodule.smul_mem _ _ (b k).2))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_submodule_of_basis_matrix {L M : Type*} [Field L] [AddCommGroup M] [Module L M] {P : Submodule L M}
     {d : ℕ} (b : Module.Basis (Fin d) L P) (g : M →ₗ[L] M) (A : Matrix (Fin d) (Fin d) L)
@@ -26,13 +26,13 @@ private theorem mem_submodule_of_basis_matrix {L M : Type*} [Field L] [AddCommGr
   exact Submodule.smul_mem _ _ (Submodule.sum_mem _ (fun k _ => Submodule.smul_mem _ _ (b k).2))
 
 /- English proof (translation)
-Establish `hP` using `mem_submodule_of_basis_matrix b g A hb`. Establish `hmat : LinearMap.toMatrixAlgEquiv b (g.restrict hP) = A`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrixAlgEquiv_apply]`. Establish `h : g.restrict hP (b j) = ∑ k, A k j • b k`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `[LinearMap.restrict_apply, hb]`. Rewrite using `[h, b.repr_sum_self]`. Establish `hcoe : ∀ (Q' : Polynomial L) (y : P), ((Polynomial.aeval (g.restrict hP) Q' y : P) : M) = Polynomial.aeval g Q' y`. Introduce `Q' y`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `Q' using Polynomial.induction_on' with`. Consider the case `add p q hp hq => simp [map_add, LinearMap.add_apply, hp, hq]`. Consider the case `monomial k a`. Simplify using `only [Polynomial.aeval_monomial, Module.End.pow_restrict k hP, Module.End.mul_apply, Module.algebraMap_end_apply, LinearMap.restrict_apply, SetLike.val_smul]`. Establish `h0 : Polynomial.aeval (g.restrict hP) Q = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `y`. Rewrite using `[hcoe]`. Simplify using `using hQ y y.2`. Rewrite using `[← hmat, Polynomial.aeval_algEquiv, AlgHom.comp_apply, h0, map_zero]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aeval_matrix_eq_zero_of_aeval_zero_on_submodule {L M : Type*} [Field L] [AddCommGroup M] [Module L M] {P : Submodule L M}
     {d : ℕ} (b : Module.Basis (Fin d) L P) (g : M →ₗ[L] M) (A : Matrix (Fin d) (Fin d) L)
@@ -61,19 +61,19 @@ private theorem aeval_matrix_eq_zero_of_aeval_zero_on_submodule {L M : Type*} [F
   rw [← hmat, Polynomial.aeval_algEquiv, AlgHom.comp_apply, h0, map_zero]
 
 /- English proof (translation)
-Introduce `hT hP hG E Ω _ _ _ _ _ l _ ι H θ hN dd ρ hcont hpc w hl n ϑ R hcong hroots A hA`. Take `⟨ρ₀, ⟨b, hb⟩, hgr⟩` from `hpc`. Take `⟨C, p, f, hp, hpw, hnorm, hon, hC⟩` from `hcong`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8⟩` from `hP E Ω w A hA`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : ∀ σ : Gal(Ω/E), ∀ x ∈ piece l H Ω (Qbar l) θ, galV l H Ω (Qbar l) σ x ∈ piece l H Ω (Qbar l) θ`. Introduce `σ`. Conclude with `mem_submodule_of_basis_matrix b (galV l H Ω (Qbar l) σ) (ρ₀ σ : Matrix (Fin dd) (Fin dd) (Qbar l)) (hb σ)`. Establish `key` using `fun σ hσA => hT l p f n hp (Ow w) (h6 p hpw) E (by exact_mod_cast hp.ne_zero) (by rw [← hnorm]; exact h3) Ω A h1 h2 (h5 l hl) (Qbar l) H θ hN C ϑ hC hinv σ hσA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hsA, hsv⟩` from `h7 s hs`. Establish `hM : Polynomial.aeval (ρ₀ s : Matrix (Fin dd) (Fin dd) (Qbar l)) (Polynomial.X - 1 : Polynomial (Qbar l)) = 0`. Use `aeval_matrix_eq_zero_of_aeval_zero_on_submodule b (galV l H Ω (Qbar l) s) _ (hb s) _ (fun x hx => ?_)` and prove the remaining obligations. Simplify using `[(key s hsA x hx).1 hsv]`. Establish `hM'` using `hG (G E Ω) (Qbar l) dd ρ₀ ρ hgr s _ hM`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_sub, Polynomial.aeval_X, map_one, sub_eq_zero] at hM'`. Conclude with `Units.ext hM'`. Take `⟨hσA, hσv⟩` from `h8 _ σ hσ`. Rewrite `hσv` using `[h4, hnorm]`. Establish `hM : Polynomial.aeval (ρ₀ σ⁻¹ : Matrix (Fin dd) (Fin dd) (Qbar l)) (crystallineComparison.heckePol (normV w) n ϑ) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `aeval_matrix_eq_zero_of_aeval_zero_on_submodule b (galV l H Ω (Qbar l) σ⁻¹) _ (hb σ⁻¹) _ (fun x hx => ?_)` and prove the remaining obligations. Rewrite using `[← (key σ hσA x hx).2 hσv, crystallineComparison.heckePol, h4, hnorm, map_sum, LinearMap.sum_apply, Finset.sum_range (fun j => (Polynomial.aeval (galV l H Ω (Qbar l) σ⁻¹)) (Polynomial.C ((-1) ^ j * ((p ^ f : ℕ) : Qbar l) ^ j.choose 2 * ϑ j) * Polynomial.X ^ (n - j)) x)]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Polynomial.C_mul_X_pow_eq_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.algebraMap_end_apply, Module.End.pow_apply]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Move the coercions through the operations in `[co]`. Expand and normalize the polynomial expressions, which then agree. Establish `hM'` using `hG (G E Ω) (Qbar l) dd ρ₀ ρ hgr σ⁻¹ _ hM`. Take `⟨hϑ0, hpol⟩` from `hroots`. Establish `hQ : crystallineComparison.heckePol (normV w) n ϑ = Polynomial.C (ϑ 0) * Polynomial.map ι.symm.toRingHom (crystallineComparison.rootPol R)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h` using `congrArg (Polynomial.map ι.symm.toRingHom) hpol`. Rewrite `h` using `[Polynomial.map_map, Polynomial.map_mul, Polynomial.map_C]`. Simplify using `using h`. Rewrite `hM'` using `[hQ, map_mul, Polynomial.aeval_C, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, smul_eq_zero]`. Conclude with `hM'.resolve_left hϑ0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Mod.esStep :
     TowES → PlaceData → GrPass → ESStep := by

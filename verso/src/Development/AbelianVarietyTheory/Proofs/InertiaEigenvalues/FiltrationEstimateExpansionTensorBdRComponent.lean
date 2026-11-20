@@ -34,7 +34,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 variable {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] in
 /- English proof (translation)
-Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FilV`. Conclude with `⟨v ⊗ₜ[Qp] (⟨y, hy⟩ : (PD.Fil n).restrictScalars Qp), by simp⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 private theorem tmul_mem_filV_of_mem_fil (n : ℤ) (v : V) {y : BdR} (hy : y ∈ PD.Fil n) :
     v ⊗ₜ[Qp] y ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) n := by
@@ -49,7 +49,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR]
     (PD : _root_.Formalism.WeaklyAdmissibleFiltrations.PeriodData G Qp K₀ K B BdR) in
 /- English proof (translation)
-Proceed by induction on `a, h using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ n _ ih => exact (PD.Fil_anti n).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem fil_antitone' {a b : ℤ} (h : b ≤ a) : PD.Fil a ≤ PD.Fil b := by
   induction a, h using Int.le_induction with
@@ -66,9 +66,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 variable {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] in
 /- English proof (translation)
-Introduce `x hx`. Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FilV at hx`. Take `⟨t, rfl⟩` from `hx`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul v y => simpa using tmul_mem_filV_of_mem_fil PD b v (fil_antitone' PD h y.2)`. Consider the case `add x y hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem filV_antitone' {a b : ℤ} (h : b ≤ a) :
     _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) a ≤ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) b := by
@@ -90,9 +90,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 variable {LL : Type} [Field LL] [Algebra Qp LL]
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `tmul v y`. Take `⟨n, hn⟩` from `PD.Fil_exh y`. Conclude with `⟨n, tmul_mem_filV_of_mem_fil PD n v hn⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨n₁, h₁⟩` from `hx`. Take `⟨n₂, h₂⟩` from `hy`. Conclude with `⟨min n₁ n₂, add_mem (filV_antitone' PD (min_le_left _ _) h₁) (filV_antitone' PD (min_le_right _ _) h₂)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_mem_filV' (x : V ⊗[Qp] BdR) : ∃ n, x ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := V) n := by
   induction x using TensorProduct.induction_on with
@@ -111,7 +111,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Simplify using `[_root_.Formalism.BasicNotions.mulVR]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mulVR_tmul' (β : BdR) (v : T.V) (y : BdR) :
     _root_.Formalism.BasicNotions.mulVR T β (v ⊗ₜ[Qp] y) = v ⊗ₜ[Qp] (β * y) := by
@@ -122,7 +122,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp only [mulVR_tmul', mul_assoc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem mulVR_mulVR' (β γ : BdR) (x : T.V ⊗[Qp] BdR) :
     _root_.Formalism.BasicNotions.mulVR T β (_root_.Formalism.BasicNotions.mulVR T γ x) = _root_.Formalism.BasicNotions.mulVR T (β * γ) x := by
@@ -136,11 +136,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.compKer at hx ⊢`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, y, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨c, _root_.Formalism.BasicNotions.mulVR T β y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, LinearMap.map_smul, mulVR_mulVR', mulVR_mulVR', mul_comm]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c x _ hx => rw [LinearMap.map_smul]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 private theorem mulVR_mem_compKer (ι : LL →ₐ[Qp] BdR) (β : BdR) {x : T.V ⊗[Qp] BdR}
     (hx : x ∈ _root_.Formalism.BasicNotions.compKer T ι) : _root_.Formalism.BasicNotions.mulVR T β x ∈ _root_.Formalism.BasicNotions.compKer T ι := by
@@ -157,9 +157,9 @@ private theorem mulVR_mem_compKer (ι : LL →ₐ[Qp] BdR) (β : BdR) {x : T.V �
 
 open TensorProduct in
 /- English proof (translation)
-Unfold `_root_.Formalism.WeaklyAdmissibleFiltrations.FilV at hx`. Take `⟨t, rfl⟩` from `hx`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.coe_subtype, mulVR_tmul']`. Conclude with `tmul_mem_filV_of_mem_fil PD _ v (PD.Fil_mul _ _ _ _ hβ y.2)`. Consider the case `add x y hx hy => rw [map_add, map_add]`. Conclude with `add_mem hx hy`.
+Simplify using the standard rewrite rules. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem mulRight_mem_filV_lemma_4 {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type}
     [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K]
@@ -185,7 +185,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp only [mulVR_tmul', add_mul, TensorProduct.tmul_add]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Normalize the expressions using the abelian group laws.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 private theorem mulVR_add' (β γ : BdR) (x : T.V ⊗[Qp] BdR) :
     _root_.Formalism.BasicNotions.mulVR T (β + γ) x = _root_.Formalism.BasicNotions.mulVR T β x + _root_.Formalism.BasicNotions.mulVR T γ x := by
@@ -199,7 +199,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v y => simp only [mulVR_tmul', zero_mul, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 private theorem mulVR_zero' (x : T.V ⊗[Qp] BdR) : _root_.Formalism.BasicNotions.mulVR T 0 x = 0 := by
   induction x using TensorProduct.induction_on with
@@ -212,7 +212,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [mulVR_zero']`. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, mulVR_add', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem mulVR_sum {ι : Type} (s : Finset ι) (f : ι → BdR) (x : T.V ⊗[Qp] BdR) :
     _root_.Formalism.BasicNotions.mulVR T (∑ i ∈ s, f i) x = ∑ i ∈ s, _root_.Formalism.BasicNotions.mulVR T (f i) x := by
@@ -226,7 +226,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp : Type} [Field Qp] {BdR :
     [CommRing BdR] [Algebra Qp BdR] {LL O : Type} [Field LL] [Algebra Qp LL] [CommRing O]
     [Algebra O LL] [TopologicalSpace LL] (T : _root_.Formalism.BasicNotions.LocLat G Qp LL O) in
 /- English proof (translation)
-Unfold `_root_.Formalism.BasicNotions.compKer`. Conclude with `Submodule.subset_span ⟨c, x, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem smul_sub_mulVR_mem_compKer (ι : LL →ₐ[Qp] BdR) (c : LL) (x : T.V ⊗[Qp] BdR) :
     c • x - _root_.Formalism.BasicNotions.mulVR T (ι c) x ∈ _root_.Formalism.BasicNotions.compKer T ι := by
@@ -236,71 +236,65 @@ private theorem smul_sub_mulVR_mem_compKer (ι : LL →ₐ[Qp] BdR) (c : LL) (x 
 open TensorProduct in
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL O _ _ _ _ _ T ι tS pk hunit htS r w z D b e L hz hb hL a hLa`. Use `set C := _root_.Formalism.BasicNotions.compKer T ι with hC`. Use `set t : BdRˣ := hunit.unit with ht_def`. Establish `htt : (t : BdR) = tS` using `hunit.unit_spec`. Use `set τ : ℤ → BdR := fun n => ((t ^ n : BdRˣ) : BdR) with hτ_def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `τ_add : ∀ m n : ℤ, τ (m + n) = τ m * τ n` using `fun m n => by`. Simplify using `only [hτ_def, zpow_add, Units.val_mul]`. Establish `τ_nat : ∀ n : ℕ, τ n = tS ^ n` using `fun n => by`. Simplify using `only [hτ_def, zpow_natCast, Units.val_pow_eq_pow_val, htt]`. Take `⟨q₁, hq₁⟩` from `PD.Fil_exh (1 : BdR)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hpow : ∀ n : ℕ, tS ^ n ∈ PD.Fil (q₁ + n)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using hq₁`. Consider the case `succ n ih`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[pow_succ]`. Use `PD.Fil_mul _ _ _ _ ih htS using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨p, hp⟩` from `PD.Fil_exh pk`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set β₀ : BdR := pk * τ ((a : ℤ) - w) with hβ₀_def`. Take `⟨q₂, hq₂⟩` from `PD.Fil_exh β₀`. Use `choose dj hdj using fun j => exists_mem_filV' PD (LL := LL) (D j)`. Use `set d : ℤ := -∑ j, |dj j| with hd_def`. Establish `hDd : ∀ j, D j ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) d := fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `filV_antitone' PD ?_ (hdj j)` and prove the remaining obligations. Establish `h1 : |dj j| ≤ ∑ i, |dj i|` using `Finset.single_le_sum (fun i _ => abs_nonneg (dj i)) (Finset.mem_univ j)`. Establish `h2` using `neg_abs_le (dj j)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmulS : ∀ {β : BdR} {q n : ℤ} {x : T.V ⊗[Qp] BdR}, β ∈ PD.Fil q → x ∈ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) n → _root_.Formalism.BasicNotions.mulVR T β x ∈ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := T.V) (q + n) := by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β q n x hβ hx`. Take `⟨y, hy, y', hy', rfl⟩` from `Submodule.mem_sup.mp hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (mulVR_mem_compKer T ι β hy) (mulRight_mem_filV_lemma_4 PD T hβ hy')`. Establish `hsupmono : ∀ {m n : ℤ}, n ≤ m → C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) m ≤ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := T.V) n := fun h => sup_le_sup_left (filV_antitone' PD h) _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcoeff : ∀ (f : PowerSeries LL) (k : ℕ), _root_.GlobalTheory.HWL.Cmp.cz f (k : ℤ) = PowerSeries.coeff k f`. Introduce `f k`. Simplify using `[_root_.GlobalTheory.HWL.Cmp.cz]`. Establish `hLC : ∀ i : ℤ, i < -(w : ℤ) → L i ∈ C`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h` using `hL i`. Simplify `h` using `[_root_.GlobalTheory.HWL.Cmp.cz_neg _ (show i + (w : ℤ) < 0 by omega)]`. Establish `hLF : ∀ i : ℤ, L i ∈ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) d := by`. Introduce `i`. Establish `hs : ∑ j, _root_.GlobalTheory.HWL.Cmp.cz (e j) (i + (w : ℤ)) • D j ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) d := Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (hDd j)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `Submodule.add_mem_sup (hL i) hs`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Use `set H : ℤ → T.V ⊗[Qp] BdR := fun i => _root_.Formalism.BasicNotions.mulVR T (pk * τ (i + a)) (L i) with hH_def`. Establish `hH0 : ∀ i : ℤ, i < -(a : ℤ) → H i = 0` using `fun i hi => by`. Simplify using `only [hH_def, hLa i hi, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers.
 
-Establish `hHC : ∀ i : ℤ, i < -(w : ℤ) → H i ∈ C` using `fun i hi => mulVR_mem_compKer T ι _ (hLC i hi)`. Establish `hHF : ∀ (N : ℕ) (i : ℤ), (N : ℤ) ≤ i + a → H i ∈ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) (N + (p + q₁ + d)) := by`. Introduce `N i hi`. Take `⟨n, hn⟩ : ∃ n : ℕ, i + a = n` from `⟨(i + a).toNat, by omega⟩`. Establish `hβ : pk * τ (i + a) ∈ PD.Fil (p + (q₁ + n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hn, τ_nat]`. Conclude with `PD.Fil_mul _ _ _ _ hp (hpow n)`. Use `hsupmono ?_ (hmulS hβ (hLF i))` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers. Establish `hbase : ∑ k ∈ Finset.range w, H ((k : ℤ) - w) - ∑ k ∈ Finset.range a, H ((k : ℤ) - a) ∈ C`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ∑ k ∈ Finset.range (a + w), H ((k : ℤ) - ((a + w : ℕ) : ℤ)) = ∑ k ∈ Finset.range a, H ((k : ℤ) - ((a + w : ℕ) : ℤ)) + ∑ k ∈ Finset.range w, H ((k : ℤ) - w)`. Rewrite using `[Finset.sum_range_add]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∑ k ∈ Finset.range (a + w), H ((k : ℤ) - ((a + w : ℕ) : ℤ)) = ∑ k ∈ Finset.range a, H ((k : ℤ) - a)`. Rewrite using `[add_comm a w, Finset.sum_range_add, Finset.sum_eq_zero (fun k hk => hH0 _ ?_), zero_add]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.mem_range.mp hk` as an intermediate fact. Use `push_cast`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Use linear arithmetic over natural numbers and integers. Establish `hC1 : ∑ k ∈ Finset.range a, H ((k : ℤ) - ((a + w : ℕ) : ℤ)) ∈ C` using `Submodule.sum_mem _ fun k hk => hHC _ (by have := Finset.mem_range.mp hk; push_cast; omega)`. Establish `hrw : ∑ k ∈ Finset.range w, H ((k : ℤ) - w) - ∑ k ∈ Finset.range a, H ((k : ℤ) - a) = -∑ k ∈ Finset.range a, H ((k : ℤ) - ((a + w : ℕ) : ℤ))`. Rewrite using `[← e2, e1]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hrw]`. Conclude with `neg_mem hC1`. Establish `hshift : ∀ N : ℕ, ∑ k ∈ Finset.range (N + w), H ((k : ℤ) - w) - ∑ k ∈ Finset.range (N + a), H ((k : ℤ) - a) ∈ C`. Introduce `N`. Proceed by induction on `N with`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Consider the case `zero => simpa using hbase`. Consider the case `succ N ih`. Rewrite using `[show N + 1 + w = (N + w) + 1 by ring, show N + 1 + a = (N + a) + 1 by ring, Finset.sum_range_succ, Finset.sum_range_succ]`. Establish `heq : H (((N + w : ℕ) : ℤ) - w) = H (((N + a : ℕ) : ℤ) - a)`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Use `ih using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨-(min (p + q₁ + d) (q₂ + w + d)), fun M => ?_⟩` and prove the remaining obligations. Establish `hmin1` using `min_le_left (p + q₁ + d) (q₂ + w + d)`. Establish `hmin2` using `min_le_right (p + q₁ + d) (q₂ + w + d)`. Establish `hbnd1 : C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) (M + (p + q₁ + d)) ≤ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := T.V) ((M : ℤ) - -(min (p + q₁ + d) (q₂ + w + d))) := hsupmono (by omega)`. Establish `hbnd2 : C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) (q₂ + ((M + w : ℕ) : ℤ) + d) ≤ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL := LL) (V := T.V) ((M : ℤ) - -(min (p + q₁ + d) (q₂ + w + d))) := hsupmono (by push_cast; omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hτw : τ ((a : ℤ) - w) * tS ^ w = tS ^ a`. Rewrite using `[← τ_nat w, ← τ_add, sub_add_cancel, τ_nat]`. Establish `eqB : _root_.Formalism.BasicNotions.mulVR T (tS ^ a) (_root_.Formalism.BasicNotions.mulVR T pk z) = _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (tS ^ w) z)`. Rewrite using `[mulVR_mulVR', mulVR_mulVR', hβ₀_def, mul_assoc, hτw, mul_comm]`. Establish `eqC : _root_.Formalism.BasicNotions.mulVR T pk (∑ k ∈ Finset.range M, _root_.Formalism.BasicNotions.mulVR T (tS ^ k) (L ((k : ℤ) - (a : ℤ)))) = ∑ k ∈ Finset.range M, H ((k : ℤ) - a)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mulVR_mulVR', hH_def]`. Simplify using `only`. Rewrite using `[sub_add_cancel, τ_nat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m1 : _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (tS ^ w) z) - ∑ j, _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (b j) (D j)) ∈ C`. Establish `h` using `mulVR_mem_compKer T ι β₀ hz`. Rewrite `h` using `[map_sub, map_sum]`. Then use the resulting hypothesis. Establish `hstep : ∀ j, _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (b j) (D j)) - (∑ k ∈ Finset.range (M + w), PowerSeries.coeff k (e j) • _root_.Formalism.BasicNotions.mulVR T (β₀ * tS ^ k) (D j) + _root_.Formalism.BasicNotions.mulVR T (β₀ * (b j - ∑ k …`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsplit : _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (b j) (D j)) = ∑ k ∈ Finset.range (M + w), _root_.Formalism.BasicNotions.mulVR T (β₀ * tS ^ k) (_root_.Formalism.BasicNotions.mulVR T (ι (PowerSeries.coeff k (e j))) (D j)) + _root_.Formalism …`. Rewrite using `[mulVR_mulVR']`. Rewrite using `[show β₀ * b j = β₀ * (∑ k ∈ Finset.range (M + w), ι (PowerSeries.coeff k (e j)) * tS ^ k) + β₀ * (b j - ∑ k ∈ Finset.range (M + w), ι (PowerSeries.coeff k (e j)) * tS ^ k) by ring, mulVR_add', Finset.mul_sum, mulVR_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVR_mulVR']`. Conclude with `congrArg (fun β => _root_.Formalism.BasicNotions.mulVR T β (D j)) (by ring)`. Rewrite using `[hsplit, add_sub_add_right_eq_sub, ← Finset.sum_sub_distrib]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `h` using `mulVR_mem_compKer T ι (β₀ * tS ^ k) (smul_sub_mulVR_mem_compKer T ι (PowerSeries.coeff k (e j)) (D j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[map_sub, LinearMap.map_smul]`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem h`. Establish `m2` using `Submodule.sum_mem C (t := Finset.univ) fun j _ => hstep j`. Rewrite `m2` using `[Finset.sum_sub_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβk : ∀ k : ℕ, pk * τ ((k : ℤ) - w + a) = β₀ * tS ^ k` using `fun k => by`. Rewrite using `[show (k : ℤ) - w + a = ((a : ℤ) - w) + k by ring, τ_add, τ_nat, hβ₀_def, mul_assoc]`. Establish `hterm : ∀ k : ℕ, _root_.Formalism.BasicNotions.mulVR T (β₀ * tS ^ k) (∑ j, PowerSeries.coeff k (e j) • D j) - H ((k : ℤ) - w) ∈ C`. Introduce `k`. Establish `h` using `mulVR_mem_compKer T ι (β₀ * tS ^ k) (hL ((k : ℤ) - w))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_add_cancel, hcoeff] at h`. Establish `h'` using `neg_mem h`. Rewrite `h'` using `[← map_neg, neg_sub]`. Rewrite using `[hH_def]`. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hβk k, ← map_sub]`. Conclude with `h'`. Establish `m3` using `Submodule.sum_mem C (t := Finset.range (M + w)) fun k _ => hterm k`. Rewrite `m3` using `[Finset.sum_sub_distrib]`. Establish `m4` using `hshift M`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `eqD : ∑ k ∈ Finset.range (M + a), H ((k : ℤ) - a) = ∑ k ∈ Finset.range M, H ((k : ℤ) - a) + ∑ k ∈ Finset.range a, H (((M + k : ℕ) : ℤ) - a)` using `Finset.sum_range_add _ _ _`. Establish `m5 : ∑ k ∈ Finset.range a, H (((M + k : ℕ) : ℤ) - a) ∈ C ⊔ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) (M + (p + q₁ + d)) := Submodule.sum_mem _ fun k _ => hHF M _ (by push_cast; omega)`. Establish `m6 : ∑ j, _root_.Formalism.BasicNotions.mulVR T (β₀ * (b j - ∑ k ∈ Finset.range (M + w), ι (PowerSeries.coeff k (e j)) * tS ^ k)) (D j) ∈ _root_.Formalism.WeaklyAdmissibleFiltrations.FilV PD (LL` using `LL) (V := T.V) (q₂ + ((M + w : ℕ) : ℤ) + d) := Submodule.sum_mem _ fun j _ => mulRight_mem_filV_lemma_4 PD T (PD.Fil_mul _ _ _ _ hq₂ (hb j (M + w))) (hDd j)`. Establish `eqA : ∑ j, ∑ k ∈ Finset.range (M + w), PowerSeries.coeff k (e j) • _root_.Formalism.BasicNotions.mulVR T (β₀ * tS ^ k) (D j) = ∑ k ∈ Finset.range (M + w), _root_.Formalism.BasicNotions.mulVR T (β₀ * tS ^ k) (∑ j, PowerSeries.coeff k (e j) • D j)`. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [LinearMap.map_smul]`. Rewrite `m2` using `[Finset.sum_add_distrib, eqA]`. Rewrite using `[eqB, eqC]`.
-
-Establish `hX : _root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (tS ^ w) z) - ∑ k ∈ Finset.range M, H ((k : ℤ) - a) = (_root_.Formalism.BasicNotions.mulVR T β₀ (_root_.Formalism.BasicNotions.mulVR T (tS ^ w) z) - ∑ j, _root_.Formalism.BasicNotions.mulVR T β₀ …`. Rewrite using `[eqD]`. Normalize the expressions using the abelian group laws. Rewrite using `[hX]`. Use `add_mem (add_mem (add_mem (add_mem (add_mem ?_ ?_) ?_) ?_) (hbnd1 m5)) (hbnd2 (Submodule.mem_sup_right m6))` and prove the remaining obligations.
-
-Conclude with `Submodule.mem_sup_left m1`. Conclude with `Submodule.mem_sup_left m2`. Conclude with `Submodule.mem_sup_left m3`. Conclude with `Submodule.mem_sup_left m4`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HWL.Cmp.filt_expansion_component : ∀ {G : Type} [Group G]
     [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀]

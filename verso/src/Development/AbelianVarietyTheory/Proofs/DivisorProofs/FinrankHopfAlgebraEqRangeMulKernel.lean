@@ -9,7 +9,7 @@ open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.
 namespace GlobalTheory.Dieu
 
 /- English proof (translation)
-Introduce `k _ A _ _ _ _ C _ _ _ _ f`. Rewrite using `[GlobalTheory.PDiv.finrank_eq_ker_mul_range k A C f, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_range_mul_ker : ∀ (k : Type) [Field k] (A : Type) [CommRing A] [HopfAlgebra k A]
     [IsCocomm k A] [Module.Finite k A] (C : Type) [CommRing C] [HopfAlgebra k C] [IsCocomm k C]

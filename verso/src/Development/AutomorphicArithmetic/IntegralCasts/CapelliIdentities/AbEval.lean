@@ -1,19 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `k X inst _ r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `H hfin hr`. Establish `hH : H = ⊥` using `Submodule.finrank_eq_zero.mp (Nat.le_zero.mp hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨fun _ => default, fun φ hφ _ => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[hH]`. Conclude with `(Submodule.mem_bot k).mp hφ`. Consider the case `succ n ih`. Introduce `H hfin hr`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : ∀ φ ∈ H, φ = 0`. Conclude with `⟨fun _ => default, fun φ hφ _ => h φ hφ⟩`. Establish `h' : ∃ ψ ∈ H, ∃ x, ψ x ≠ 0`. Assume the negation of the conclusion as `hc`. Apply `h` to reduce the goal to its premises.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ hφ`. Use function extensionality and compare the values at `x`. Assume the negation of the conclusion as `hx`. Conclude with `hc ⟨φ, hφ, x, hx⟩`. Take `⟨ψ, hψ, x, hx⟩` from `h'`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K : Submodule k (X → k)` to `H ⊓ LinearMap.ker (LinearMap.proj (R := k) (φ := fun _ : X => k) x)`. Establish `hle : K ≤ H` using `inf_le_left`. Establish `hlt : K < H`. Use `lt_of_le_of_ne hle ?_` and prove the remaining obligations. Introduce `he`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ψ ∈ K` using `he ▸ hψ`. Conclude with `hx hK.2`. Establish `hKfin : Module.Finite k ↥K` using `Submodule.finiteDimensional_of_le hle`. Establish `hrank : Module.finrank k ↥K < Module.finrank k ↥H` using `Submodule.finrank_lt_finrank_of_lt hlt`. Take `⟨t, ht⟩` from `ih K hKfin (by omega)`.
-
-Use `⟨Fin.cons x t, fun φ hφ h0 => ?_⟩` and prove the remaining obligations. Conclude with `ht φ ⟨hφ, h0 0⟩ (fun a => h0 a.succ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Ra1.ab_eval :
     ∀ {k X : Type} [inst : Field k] [Inhabited X] (r : ℕ)

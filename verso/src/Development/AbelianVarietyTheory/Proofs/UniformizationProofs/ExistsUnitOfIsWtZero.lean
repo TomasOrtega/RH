@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UU
 
 /- English proof (translation)
-Establish `e : pullU π V a = pullU π V b` using `Geo.Tor.unit_ext fun y hy => by`. Establish `k` using `h y hy`. Rewrite `k` using `[← Category.id_comp π]`. Conclude with `(gm_pull (𝟙 Y) π y V hy a).trans (k.trans (gm_pull (𝟙 Y) π y V hy b).symm)`. Conclude with `Units.ext (FunDescent.app_injective π V (congrArg Units.val e))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_ext_of_flat {Y Z : Scheme.{0}} (π : Y ⟶ Z) [Flat π] [Surjective π] {V : Z.Opens} {a b : Γ(Z, V)ˣ}
     (h : ∀ y, π y ∈ V → gm π y V a = gm π y V b) : a = b := by
@@ -27,9 +27,9 @@ theorem unit_ext_of_flat {Y Z : Scheme.{0}} (π : Y ⟶ Z) [Flat π] [Surjective
   exact Units.ext (FunDescent.app_injective π V (congrArg Units.val e))
 
 /- English proof (translation)
-Use `Q.q_affine` as an intermediate fact. Take `⟨-, h₂, h₃⟩` from `invariant_functions_descend S G Q.B _ Q.q Q.i Q.q_hom Q.i_hom Q.q_flat Q.q_surj inferInstance Q.isKernel V`. Take `⟨a, ha⟩` from `h₃ f.val fun Z t g k₁ k₂ => by`. Rewrite using `[hf Z t g k₁ k₂, ← chV_val, chV_zero, Units.val_one, _root_.one_mul]`. Take `⟨b, rfl⟩` from `h₂ a (ha ▸ f.isUnit)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨b, Units.ext ha⟩`.
+Supply the required witnesses or components.
 -/
 theorem TQ.exists_unit_of_isWt_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X] {G : Over S} [GrpObj G] (Q : TQ G X)
     (V : Q.B.left.Opens) (f : Γ(G.left, Q.q.left ⁻¹ᵁ V)ˣ) (hf : IsWt Q.i _ f.val 0) :
@@ -43,17 +43,17 @@ theorem TQ.exists_unit_of_isWt_zero {S : Scheme.{0}} {X : Type} [AddCommGroup X]
   exact ⟨b, Units.ext ha⟩
 
 /- English proof (translation)
-Introduce `S X _ G _ Q N N' u u' χ _ _ hu hu'`. Use `Q.q_flat` as an intermediate fact. Use `Q.q_surj` as an intermediate fact. Establish `key : ∀ (k : N'.ι) (j : N.ι), ∃ a : Γ(Q.B.left, N'.U k ⊓ N.U j)ˣ, ∀ y, Q.q.left y ∈ N'.U k ⊓ N.U j → gm Q.q.left y _ a = gm (𝟙 _) y _ (u'.s fun _ => k) * (gm (𝟙 _) y _ (u.s fun _ => j))⁻¹`. Introduce `k j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `l₁ : Q.q.left ⁻¹ᵁ (N'.U k ⊓ N.U j) ≤ (N'.pull Q.q.left).U fun _ => k` using `fun _ hx => mem_pull.2 hx.1`. Establish `l₂ : Q.q.left ⁻¹ᵁ (N'.U k ⊓ N.U j) ≤ (N.pull Q.q.left).U fun _ => j` using `fun _ hx => mem_pull.2 hx.2`. Establish `w` using `((hu'.2 fun _ => k).res l₁).mul ((hu.2 fun _ => j).inv.res l₂)`. Rewrite `w` using `[add_neg_cancel]`. Take `⟨a, ha⟩` from `Q.exists_unit_of_isWt_zero _ (res l₁ (u'.s _) * res l₂ (u.s _)⁻¹) w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨a, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e` using `gm_pull (𝟙 _) Q.q.left y _ hy a`. Rewrite `e` using `[Category.id_comp]`. Rewrite using `[← e, ha, map_mul, gm_res (𝟙 _) y l₁ hy, gm_res (𝟙 _) y l₂ hy, map_inv]`. Use `choose a ha using key`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `tr : ∀ (M : LB Q.B.left) (t : LB.Gen (M.pull Q.q.left)), t.IsGen → ∀ (i i' : M.ι) (y : G.left), Q.q.left y ∈ M.U i → Q.q.left y ∈ M.U i' → gm (𝟙 _) y _ (t.s fun _ => i) = gm Q.q.left y _ (M.g i i') * gm (𝟙 _) y _ (t.s fun _ => i')`. Introduce `M t ht i i' y hi hi'`. Establish `hm : y ∈ (M.pull Q.q.left).U (fun _ => i) ⊓ (M.pull Q.q.left).U (fun _ => i')` using `⟨mem_pull.2 hi, mem_pull.2 hi'⟩`. Establish `e` using `congrArg (gm (𝟙 _) y _) (ht (fun _ => i) (fun _ => i'))`. Rewrite `e` using `[map_mul, gm_res _ y _ hm, gm_res _ y _ hm, gm_pull_g M Q.q.left (𝟙 _) y _ _ hm.1 hm.2, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e`. Use `⟨⟨fun p => a p.1 p.2⟩, fun p p' => unit_ext_of_flat Q.q.left fun y hy => ?_⟩` and prove the remaining obligations. Establish `e₁` using `(gm_res Q.q.left y inf_le_left hy (a p.1 p.2)).trans (ha _ _ y hy.1)`. Establish `e₂` using `(gm_res Q.q.left y inf_le_right hy (a p'.1 p'.2)).trans (ha _ _ y hy.2)`. Establish `e₃ : gm Q.q.left y _ ((LB.div N' N).g p p') = gm Q.q.left y _ (N'.g p.1 p'.1) * (gm Q.q.left y _ (N.g p.2 p'.2))⁻¹` using `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res _ y _ hy _) ((map_inv _ _).trans (congrArg _ (gm_res _ y _ hy _))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `e₁.trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) e₃ e₂)).symm)` and prove the remaining obligations. Rewrite using `[tr N' u' hu'.1 p.1 p'.1 y hy.1.1 hy.2.1, tr N u hu.1 p.2 p'.2 y hy.1.2 hy.2.2, mul_inv, _root_.mul_mul_mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_genWt : ∀ (S : Scheme.{0}) (X : Type) [AddCommGroup X] (G : Over S) [GrpObj G] (Q : TQ G X) (N N' : LB Q.B.left) (u : LB.Gen (N.pull Q.q.left)) (u' : LB.Gen (N'.pull Q.q.left)) (χ : X), N.IsLB → N'.IsLB → Q.GenWt N u χ → Q.GenWt N' u' χ → LBIso N N' := by
   intro S X _ G _ Q N N' u u' χ _ _ hu hu'

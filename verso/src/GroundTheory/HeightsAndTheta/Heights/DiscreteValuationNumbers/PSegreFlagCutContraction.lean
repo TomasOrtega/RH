@@ -14,9 +14,7 @@ noncomputable section
 namespace SegreFlagCutContraction
 
 /- English proof (translation)
-Use function extensionality and compare the values at `o`. Distinguish the cases in `ho : ∃ a, j a = o`. Take `⟨a, rfl⟩` from `ho`. Conclude with `j.injective.extend_apply (b ∘ j) 0 a`. Rewrite using `[FieldNumbers.pullDeg, Function.extend_apply' _ _ _ ho, Pi.zero_apply]`.
-
-Conclude with `(hb o (by simpa [Set.mem_range] using ho)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullDeg_comp_of_eq_zero {K K' : Type*} (j : K ↪ K') (b : K' → ℤ)
     (hb : ∀ o, o ∉ Set.range j → b o = 0) : FieldNumbers.pullDeg j (b ∘ j) = b := by
@@ -28,11 +26,11 @@ theorem pullDeg_comp_of_eq_zero {K K' : Type*} (j : K ↪ K') (b : K' → ℤ)
     exact (hb o (by simpa [Set.mem_range] using ho)).symm
 
 /- English proof (translation)
-Proceed by induction on `a using WithBot.recBotCoe with`. Consider the case `bot => exact bot_le`. Consider the case `coe b`. Proceed by induction on `b using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-It suffices to derive a contradiction. Establish `h' : ((⊤ : ℕ∞) : WithBot ℕ∞) < (((m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h`. Conclude with `absurd (WithBot.coe_lt_coe.mp h') (by simp)`. Consider the case `coe c`. Establish `h' : (((c : ℕ) : ℕ∞) : WithBot ℕ∞) < (((m + 1 : ℕ) : ℕ∞) : WithBot ℕ∞)` using `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : c < m + 1` using `by exact_mod_cast WithBot.coe_lt_coe.mp h'`. Use `show (((c : ℕ) : ℕ∞) : WithBot ℕ∞) ≤ (((m : ℕ) : ℕ∞) : WithBot ℕ∞)`. Conclude with `WithBot.coe_le_coe.mpr (by exact_mod_cast (by omega : c ≤ m))`.
+A detailed English derivation is pending.
 -/
 theorem withBot_le_of_lt_succ (a : WithBot ℕ∞) (m : ℕ) (h : a < ((m + 1 : ℕ) : WithBot ℕ∞)) :
     a ≤ ((m : ℕ) : WithBot ℕ∞) := by
@@ -56,9 +54,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 omit [IsDomain O] [IsDiscreteValuationRing O] [∀ o, Fintype (ι' o)] in
 
 /- English proof (translation)
-Establish `key : ∀ {c : K' → ℕ} {u : MRing ι' O}, IsMultiHomog u c → divCycle P u W ≠ 0 → W.IsPrime ∧ P ≤ W ∧ IsMultiHomogIdeal W`. Introduce `c u hu hne`. Unfold `divCycle at hne`. Use `split_ifs at hne with hW'`. Conclude with `⟨hW'.1.1.1, le_sup_left.trans hW'.1.1.2, MinimalPrimeMultiHomog.full O K' ι' _ W (SupSpanMultiHomog.full O K' ι' P u c hPm hu) hW'.1⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd rfl hne`. Distinguish the cases in `h1 : divCycle P s W = 0`. Conclude with `key hh fun h2 => hW (by simp [ratDiv, h1, h2])`. Conclude with `key hs h1`.
+A detailed English derivation is pending.
 -/
 theorem ratDiv_support {P W : Ideal (MRing ι' O)} (hPm : IsMultiHomogIdeal P) {cs ch : K' → ℕ}
     {s h : MRing ι' O} (hs : IsMultiHomog s cs) (hh : IsMultiHomog h ch) (hW : ratDiv P s h W ≠ 0) :
@@ -76,19 +74,17 @@ theorem ratDiv_support {P W : Ideal (MRing ι' O)} (hPm : IsMultiHomogIdeal P) {
   · exact key hs h1
 
 /- English proof (translation)
-Substitute `hl` using the available equality. Establish `: P.IsPrime` using `hP.multiProj.isPrime`. Establish `hϖP : (C ϖ : MRing ι' O) ∉ P`. Introduce `h`. Establish `h' : ϖ ∈ P.comap (C : O →+* MRing ι' O)` using `h`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h'` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero h'`. Establish `hlt : P < W` using `lt_of_le_of_ne hPW (fun h => hϖP (h ▸ hϖW))`. Establish `hdrop` using `DimStrictDrop.full (MRing ι' O) P W hlt`. Rewrite `hdrop` using `[hP.dim]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hQp, -, -, -⟩` from `SpecialIdealCorresp.full O ϖ hϖ K' ι' P W hWp hϖW`. Establish `hQm` using `SpecialIdealMultiHomog.full O K' ι' W hWm`. Establish `hdimQ : ringKrullDim (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((l.length + Fintype.card K' + 1 : ℕ) : WithBot ℕ∞)`. Rewrite using `[SpecialQuotDim.full O ϖ hϖ K' ι' W hϖW]`. Use `lt_natCast_of_add_one_le ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : l.length + Fintype.card K' + 1 = l.length + 1 + Fintype.card K'` using `by omega`. Rewrite using `[e]`. Conclude with `hdrop`. Express the relevant statement in the definitionally equal form `intNum (IsLocalRing.ResidueField O) (specialIdeal W) l.get = 0`. Distinguish the cases in `hcase : ¬ IsRelevant (specialIdeal W) ∨ ringKrullDim (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W) < ((l.length + Fintype.card K' : ℕ) : WithBot ℕ∞)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `IntNumVanish.full (IsLocalRing.ResidueField O) K' ι' l.length (specialIdeal W) hQp hQm hcase l.get`. Use `push Not at hcase`. Take `⟨hrel, hge⟩` from `hcase`. Establish `hdimEq : ringKrullDim (MRing ι' (IsLocalRing.ResidueField O) ⧸ specialIdeal W) = ((l.length + Fintype.card K' : ℕ) : WithBot ℕ∞)` using `le_antisymm (withBot_le_of_lt_succ _ _ hdimQ) hge`. Establish `hrelQ : FieldNumbers.relDim (specialIdeal W) = ((l.length : ℕ) : WithBot (WithTop ℤ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FieldNumbers.relDim, hdimEq]`. Establish `: (((l.length + Fintype.card K' : ℕ) : ℤ) - Fintype.card K') = l.length` using `by push_cast; ring`. Conclude with `congrArg (fun z : ℤ => ((z : WithTop ℤ) : WithBot (WithTop ℤ))) this`. Establish `hz` using `FieldNumbers.ProjectionFormulaContracted.full (IsLocalRing.ResidueField O) K K' j ι' (specialIdeal W) ⟨hQp, hQm, hrel⟩ l.length hrelQ hcon (fun i => l.get i ∘ j)`. Rewrite using `[← hz]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(pullDeg_comp_of_eq_zero j _ (hlj _ (List.get_mem l i))).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem vNumL_eq_zero_of_contract {ϖ : O} (hϖ : Irreducible ϖ) {P W : Ideal (MRing ι' O)} {n : ℕ}
     (hP : IsModelOver P n) [hWp : W.IsPrime] (hPW : P ≤ W) (hWm : IsMultiHomogIdeal W)
@@ -140,13 +136,11 @@ end SegreFlagCutContraction
 open SegreFlagCutContraction in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hsame w w' x x' f g hflag M M' a₀ a₀' φ φ' hφ hφ' Φ _ _ _ _ e t ht k hk`. Establish `hH : IsModelOver (pointIdeal O (flagClosurePt y w e φ φ' t (k + 1))) (d + k)`. Establish `h` using `(hModel O ϖ hϖ Ω K ι y d hV N E B B' hsame w w' x x' f g hflag M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht (k + 1) (by omega) (by omega)).1`. Simplify using `using h`. Take `⟨hp1, hp2⟩` from `hProj O ϖ hϖ Ω K ι y d hV N E B B' hsame w w' x x' f g hflag M M' a₀ a₀' φ φ' hφ hφ' Φ e t ht k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨fun cs ch s h hs hh hdeg hsP hhP hval W hϖW hW l hl hl0 => ?_, fun cs ch s h hs hh hdeg hsP hhP hval W hϖW hW l hl hl0 => ?_⟩` and prove the remaining obligations. Take `⟨hWp, hPW, hWm⟩` from `ratDiv_support hH.multiProj.multiHomog hs hh hW`. Use `vNumL_eq_zero_of_contract hϖ hH hPW hWm hϖW Function.Embedding.some (hp1 cs ch s h hs hh hdeg hsP hhP hval W hϖW hW) l hl fun b hb o ho => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `none => exact hl0 b hb`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some o => exact absurd ⟨o, rfl⟩ ho`. Take `⟨hWp, hPW, hWm⟩` from `ratDiv_support hH.multiProj.multiHomog hs hh hW`. Use `vNumL_eq_zero_of_contract hϖ hH hPW hWm hϖW secondFactorBlocks (hp2 cs ch s h hs hh hdeg hsP hhP hval W hϖW hW) l hl fun b hb o ho => ?_` and prove the remaining obligations. Break down `o with _ | _ | o` into its components or cases. Conclude with `absurd ⟨none, rfl⟩ ho`.
-
-Conclude with `hl0 b hb`. Conclude with `absurd ⟨some o, rfl⟩ ho`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem SegreFlagCutContraction.proof (hModel : SegreFlagClosureModel.Statement)
     (hProj : SegreFlagCutProjection.Statement) : SegreFlagCutContraction.Statement := by

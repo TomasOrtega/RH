@@ -15,7 +15,7 @@ def Fmod (p : ℕ) (F : FGLaw O d) (n : ℕ) : Fin d → PS (O ⧸ Ideal.span {(
   fun i => MvPowerSeries.map (Ideal.Quotient.mk _) (F.F i)
 
 /- English proof (translation)
-Simplify using `[Fmod, F.const i]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Fmod_const (p : ℕ) (F : FGLaw O d) (n : ℕ) (i : Fin d) : constantCoeff (Fmod p F n i) = 0 := by
   simp [Fmod, F.const i]

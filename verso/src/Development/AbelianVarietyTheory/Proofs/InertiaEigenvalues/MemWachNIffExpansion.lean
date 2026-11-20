@@ -22,19 +22,17 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [CommRing O] [Algebra O LL] [TopologicalSpace LL] {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hxN i ζ hζ`. Rewrite using `[hkey i ζ hζ]`. Introduce `j`. Establish `e : (⟨W.Q ^ k • x, hx⟩ : ↥(W.N T)) = W.Q ^ k • (⟨x, hxN⟩ : ↥(W.N T))` using `rfl`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Take `⟨w, hw⟩` from `hQ i ζ hζ`. Use `Ideal.mem_comap.2 (Ideal.mem_span_singleton.2 ?_)` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, hw]`. Conclude with `Dvd.dvd.mul_right (pow_dvd_pow_of_dvd (dvd_mul_right _ _) k) _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `H`. Establish `hd : ∀ j, W.Q ^ k ∣ nb.repr ⟨W.Q ^ k • x, hx⟩ j` using `fun j => hdiv _ (fun i ζ hζ => (hkey i ζ hζ).1 (H i ζ hζ) j)`. Use `choose b hb using hd`. Set `z : ↥(W.N T)` to `∑ j, b j • nb j`. Establish `hz : W.Q ^ k • ((z : ↥(W.N T)) : W.DD T) = W.Q ^ k • x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (⟨W.Q ^ k • x, hx⟩ : ↥(W.N T)) = W.Q ^ k • z` using `by conv_lhs => rw [← nb.sum_repr ⟨W.Q ^ k • x, hx⟩]`. Simplify using `only [z, Finset.smul_sum, hb, mul_smul]`. Conclude with `(congrArg Subtype.val e).symm`. Establish `hu : IsUnit (algebraMap (LetA O n) W.EE (W.Q ^ k))`. Rewrite using `[map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hunit.pow k`. Take `⟨u, hu'⟩` from `hu`. Establish `h1 : ∀ y : W.DD T, W.Q ^ k • y = (u : W.EE) • y` using `fun y => by`. Rewrite using `[hu', algebraMap_smul]`. Rewrite `hz` using `[h1, h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hx' : x = (z : W.DD T)`. Use `congrArg (fun y => ((u⁻¹ : W.EEˣ) : W.EE) • y) hz` as an intermediate fact. Simplify using `only [smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this.symm`. Rewrite using `[hx']`.
-
-Conclude with `z.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_N_iff_of_points (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) {ι : Type} [Fintype ι]
     (nb : Module.Basis ι (LetA O n) ↥(W.N T)) (P : ZMod n → LL → Prop) (Φ : ZMod n → LL → Prop)
@@ -84,11 +82,9 @@ set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D HW F Cm l _ K s LL h W C T hT k x hx`. Take `⟨nb⟩` from `GlobalTheory.NL.N_basis D HW F l K s LL h T hT`. Use `mem_N_iff_of_points W T nb (fun i ζ => IsPrimitiveRoot ζ (l ^ s)) _ k x hx ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i ζ hζ`. Conclude with `((GlobalTheory.NL.LevInj.expansion_basis D HW F Cm l K s LL h T hT i ζ ⟨s, hζ⟩ (GlobalTheory.NL.FullLevel.full_lat D HW F Cm l K s LL h T hT i ζ hζ)).2 _ nb).2.2 _ k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i ζ hζ`. Take `⟨⟨w, _, hw⟩, -⟩` from `(GlobalTheory.NL.lev_at_root_of_unity D HW l K s LL h i ζ ⟨s, hζ⟩).2.2.2.1 hζ`. Conclude with `⟨w, hw⟩`. Conclude with `(GlobalTheory.NL.WDiv.weierstrass_dense D HW l K s LL h).1 k`. Establish `h0` using `((GlobalTheory.NL.IoXQ.main D HW F l K s LL h).2.2.2.2.2.2 0).2`.
-
-Simplify using `using h0`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_N_iff_expansion : ∀ (D : Formalism.BasicNotions.D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (Cm : CmpOf D.loc D.locA HW F) (l : ℕ) [Fact l.Prime] (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL), let W := (HW l).W K s LL h; let C := Cm l; ∀ T : Lt K LL, IsCrys ((D.loc l).PD K) T.ρ → ∀ (k : ℕ) (x : W.DD T) (hx : W.Q ^ k • x ∈ W.N T), x ∈ W.N T ↔ ∀ (i : Let K) (ζ : ↥LL.1), IsPrimitiveRoot ζ (l ^ s) → ∃ f ∈ Lat C h T i ζ, ∀ j : ℤ, ex C h T i ζ ⟨W.Q ^ k • x, hx⟩ j = f (j - k) := by
   intro D HW F Cm l _ K s LL h W C T hT k x hx

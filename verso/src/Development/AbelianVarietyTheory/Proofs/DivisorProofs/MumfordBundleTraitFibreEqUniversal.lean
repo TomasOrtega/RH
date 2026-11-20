@@ -17,19 +17,19 @@ namespace GlobalTheory.Poinc
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `g n o _ ζ F T W _ _ fK G'' _ β κ hκ hκβ α₂ hα₂`. Establish `hL` using `T.U.LG.isLB`. Establish `hA` using `T.A.isLB`. Establish `hP` using `F.univ.isLB`. Establish `hLβ` using `pull_isLB hL (pullback.fst G''.hom (jK W) ≫ β)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB₁ : (abelian₂ ((Over.pullback (jK W)).obj G'') (T.U.LG.L.pull (pullback.fst G''.hom (jK W) ≫ β))).IsLB` using `LB.isLB_linComb hLβ _ _`. Use `(cls_eq_iff hB₁ (pull_isLB hP α₂)).1 ?_` and prove the remaining obligations. Establish `c₂ : cls _ hB₁ = lam (CechPic.pull (pullback.fst G''.hom (jK W) ≫ β) (cls _ hL)) (fst ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G'')) (snd ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G''))`. Rewrite using `[← cls_pull hL _ hLβ]`. Conclude with `cls_cube_two hLβ _ _ hB₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hext : CechPic.pull T.U.gen.hom.left (cls _ hA) = CechPic.pull (pullback.fst T.G.hom (jK T.V)) (cls _ hL)`. Use `(cls_eq_iff (pull_isLB hA T.U.gen.hom.left) (pull_isLB hL (pullback.fst T.G.hom (jK T.V)))).2 T.U.ext` as an intermediate fact. Rewrite `this` using `[cls_pull hA, cls_pull hL]`. Then use the resulting hypothesis. Establish `hΛ : lam (cls _ hA) (fst T.A.A T.A.A) (snd T.A.A T.A.A) = CechPic.pull T.α₂ (cls _ hP)`. Establish `hl : (abelian₂ T.A.A T.A.L).IsLB` using `LB.isLB_linComb hA _ _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(cls_eq_iff hl (pull_isLB hP T.α₂)).2 T.lb` as an intermediate fact. Rewrite `this` using `[cls_pull hP]`. Conclude with `(cls_cube_two hA _ _ hl).symm.trans this`. Establish `hgi : T.U.gen.inv.left ≫ T.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id, Over.id_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : CechPic.pull (pullback.fst G''.hom (jK W) ≫ β) (cls _ hL) = CechPic.pull κ (cls _ hA)`. Rewrite using `[← hκβ, pull_comp, pull_comp, ← hext, ← pull_comp T.U.gen.inv.left, hgi, pull_id]`. Rewrite using `[c₂, e₁, lam_pull_of_isGrpPullback hκ, cls_pull hP]`. Use `set Q := lift (pushHom hκ _ (fst ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G''))) (pushHom hκ _ (snd ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G''))) with hQdef`. Establish `e₃ : lam (cls _ hA) (pushHom hκ _ (fst ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G''))) (pushHom hκ _ (snd ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G''))) = CechPic.pull Q.left (lam (cls _ hA) (fst T.A.A T.A.A) (snd T.A.A T.A.A))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pull_lam, lift_fst, lift_snd]`. Establish `hQ : Q.left ≫ T.α₂ = α₂`. Use `GlobalTheory.UnifLamFibre.isSquare_unique (φ := κ ≫ T.α) ⟨?_, ?_⟩ hα₂` and prove the remaining obligations. Rewrite using `[Category.assoc, T.sq.1, ← Category.assoc, ← Over.comp_left, lift_fst] show ((fst ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G'')).left ≫ κ) ≫ T.α = _`. Rewrite using `[Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, T.sq.2, ← Category.assoc, ← Over.comp_left, lift_snd] show ((snd ((Over.pullback (jK W)).obj G'') ((Over.pullback (jK W)).obj G'')).left ≫ κ) ≫ T.α = _`. Rewrite using `[Category.assoc]`. Rewrite using `[e₃, hΛ, ← pull_comp, hQ]`.
+A detailed English derivation is pending.
 -/
 theorem lam_trait_fibre_eq_univ : ∀ (g n : ℕ) (o : Type) [CommRing o] (ζ : o) (F : SFam g n ζ) (T : Trait F) (W : Type) [CommRing W] [IsDomain W] (fK : FractionRing T.V →+* FractionRing W) (G'' : Over (Sp W)) [GrpObj G''] (β : G''.left ⟶ T.G.left) (κ : ((Over.pullback (jK W)).obj G'').left ⟶ T.A.A.left), IsGrpPullback ((Over.pullback (jK W)).obj G'') T.A.A (spMap fK) κ → κ ≫ T.U.gen.inv.left ≫ pullback.fst T.G.hom (jK T.V) = pullback.fst G''.hom (jK W) ≫ β → ∀ (α₂ : (G2 ((Over.pullback (jK W)).obj G'')).left ⟶ (G2 F.univ.A).left), IsSquare (κ ≫ T.α) α₂ → LBIso (abelian₂ ((Over.pullback (jK W)).obj G'') (T.U.LG.L.pull (pullback.fst G''.hom (jK W) ≫ β))) (F.univ.P.pull α₂) := by
   intro g n o _ ζ F T W _ _ fK G'' _ β κ hκ hκβ α₂ hα₂

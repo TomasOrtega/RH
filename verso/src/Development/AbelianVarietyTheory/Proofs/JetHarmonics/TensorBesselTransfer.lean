@@ -9,9 +9,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `h0 : (0 : R.H) ∈ R.sm` using `R.smSub.zero_mem`. Simplify using `using hsmul 0 0 h0`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Establish `hs : ∑ i ∈ s, f i ∈ R.sm` using `R.smSub.sum_mem fun i _ => hf i`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hadd _ (hf a) _ hs, ih]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sum_of_add_on_sm {k r : ℕ} (R : Rep k r) {Wp : Type} [AddCommGroup Wp] [Module ℂ Wp] (l : R.H → Wp)
     (hadd : ∀ v ∈ R.sm, ∀ w ∈ R.sm, l (v + w) = l v + l w) (hsmul : ∀ (a : ℂ), ∀ v ∈ R.sm, l (a • v) = a • l v)
@@ -26,19 +26,17 @@ theorem map_sum_of_add_on_sm {k r : ℕ} (R : Rep k r) {Wp : Type} [AddCommGroup
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hadd _ (hf a) _ hs, ih]
 
 /- English proof (translation)
-Introduce `hK k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI Wp _ _ _ _ om l lI β hR hRI hT hadd hsmul hl a w hw g hg`. Establish `hσw : R.σ g w ∈ R.sm` using `(rep_basic_of_isDS hK k r ε mu R hR).2.2.2.1 g hg w hw`. Establish `htm : ∀ c, tm R a w c ∈ R.sm` using `fun c => R.smSub.smul_mem (a c) hw`. Establish `hact : ∀ c, act ρ R g (tm R a w) c = (ρ g *ᵥ a) c • R.σ g w`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [act, tm, map_smul, smul_smul, Matrix.mulVec, dotProduct, Finset.sum_smul]`. Establish `hx : ∀ c, act ρ R g (tm R a w) c ∈ R.sm` using `fun c => by`. Rewrite using `[hact]`. Conclude with `R.smSub.smul_mem _ hσw`. Use `set y : ∀ I, (RI I).H := fun I => (RI I).σ g (∑ c, pr I c (tm R a w c)) with hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyeq : ∀ I, ∑ c, pr I c (act ρ R g (tm R a w) c) = y I` using `fun I => hT.pr_eq I g hg _ htm`. Establish `hysm : ∀ I, y I ∈ (RI I).sm` using `fun I => by`. Rewrite using `[← hyeq]`. Conclude with `(RI I).smSub.sum_mem fun c _ => (hT.pr_sm I c).mem _ (hx c)`. Establish `hdec : ∀ c, ∑ I, io I c (y I) = (ρ g *ᵥ a) c • R.σ g w` using `fun c => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hact, ← hT.sum_io_pr _ hx c]`. Simplify using `only [hyeq]`. Establish `hev : ∀ I, ev Γ R om (fun c => io I c (y I)) ∈ R.sm` using `fun I => R.smSub.sum_mem fun i _ => R.smSub.sum_mem fun j _ => R.smSub.smul_mem _ ((hT.io_sm I j).mem _ (hysm I))`. Establish `hsum : ∑ I, ev Γ R om (fun c => io I c (y I)) = Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ a) om • R.σ g w`. Simplify using `only [ev]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Establish `: ∀ i, ∑ I, ∑ j, (star (om i) * Γ i j) • io I j (y I) = ∑ j, (star (om i) * Γ i j * (ρ g *ᵥ a) j) • R.σ g w` using `fun i => by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.smul_sum, hdec, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [this, ← Finset.sum_smul]`. Use `congr 1`. Generalize the expression as in `ρ g *ᵥ a = b`. Simplify using `only [Formalism.QuantumDeterminants.herm, Matrix.mulVec, dotProduct, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Rewrite using `[← hsmul _ _ hσw, ← hsum, map_sum_of_add_on_sm R l hadd hsmul _ _ hev]`.
-
-Conclude with `Finset.sum_congr rfl fun I _ => hl I _ (hysm I)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_smul_eq_sum_of_tensRaw : PI.KFinSmooth → ∀ (k r : ℕ) (ι κ : Type) [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ρ : Mx k r → Matrix ι ι ℂ) (Γ : Matrix ι ι ℂ) (d : ℕ) (R : Rep k r) (RI : κ → Rep k r) (io : ∀ I, ι → (RI I).H → R.H) (pr : ∀ I, ι → R.H → (RI I).H) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (muI : κ → Fin (2 * r + k + 1) → ℝ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (om : ι → ℂ) (l : R.H → Wp) (lI : ∀ I, (RI I).H → Wp) (β : κ → ℂ), R.IsDS ε mu → (∀ I, (RI I).IsDS ε (muI I)) → TensRaw ρ R RI io pr → (∀ v ∈ R.sm, ∀ w ∈ R.sm, l (v + w) = l v + l w) → (∀ (a : ℂ), ∀ v ∈ R.sm, l (a • v) = a • l v) → (∀ I, ∀ y ∈ (RI I).sm, l (ev Γ R om (fun c => io I c y)) = β I • lI I y) → ∀ (a : ι → ℂ), ∀ w ∈ R.sm, ∀ g ∈ GG k r, Formalism.QuantumDeterminants.herm Γ (ρ g *ᵥ a) om • l (R.σ g w) = ∑ I, β I • lI I ((RI I).σ g (∑ c, pr I c (tm R a w c))) := by
   intro hK k r ι κ _ _ _ _ ρ Γ d R RI io pr ε mu muI Wp _ _ _ _ om l lI β hR hRI hT hadd hsmul hl a w hw g hg

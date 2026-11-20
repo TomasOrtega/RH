@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.TorusCh
 
 /- English proof (translation)
-Unfold `chi`. Use `Continuous.matrix_det ?_` and prove the remaining obligations. Conclude with `continuous_const.add (continuous_const.mul (Units.continuous_val.sub continuous_const))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_chi {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
     (e : Matrix (Fin n) (Fin n) E) : Continuous (chi e : GA E n → Ad E) := by
@@ -17,11 +17,9 @@ theorem continuous_chi {E : Type} [Field E] [NumberField E] [IsCMField E] {n : �
   exact continuous_const.add (continuous_const.mul (Units.continuous_val.sub continuous_const))
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Set `ψ : ↥(H : Set (GA E n)) → (Ad E)ˣ` to `fun t => ⟨chi e t.1, chi e t.1⁻¹, by rw [← chi_mul e he _ _ (hH _ t.2), mul_inv_cancel, chi_one], by rw [← chi_mul e he _ _ (comm_inv (hH _ t.2)), inv_mul_cancel, chi_one]⟩`. Establish `hψ : Continuous ψ`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(continuous_chi e).comp continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(continuous_chi e).comp (continuous_inv.comp continuous_subtype_val)`. Establish `hm : Continuous fun t => (GroundTheory.Global.IdeleGroup.ideleModule E (ψ t) : ℝ)` using `continuous_subtype_val.comp (GroundTheory.Global.IdeleGroup.continuous_ideleModule.comp hψ)`. Establish `heq : (H : Set (GA E n)).domRestrict (lam e) = fun t : ↥(H : Set (GA E n)) => Real.log (GroundTheory.Global.IdeleGroup.ideleModule E (ψ t) : ℝ)`. Use function extensionality and compare the values at `t`. Conclude with `hlog (ψ t)`.
-
-Rewrite using `[heq]`. Conclude with `hm.log fun t => (GroundTheory.Global.IdeleGroup.ideleModule E (ψ t)).2.ne'`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_lam (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (e : Matrix (Fin n) (Fin n) E) (he : e * e = e)

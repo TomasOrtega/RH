@@ -21,21 +21,19 @@ namespace GlobalTheory.CompanionTheory.FexTheta.Stab
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 ha)).1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_le_of_inv_le {a : WithZero (Multiplicative ℤ)} (ha : a ≠ 0) (h1 : a ≤ 1) (h2 : a⁻¹ ≤ 1) : a = 1 :=
   le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 ha)).1 h2)
 
 /- English proof (translation)
-Establish `hO : ∀ z : Kv K w, normalizedValuation (Kv K w) z ≤ 1 ↔ Valued.v z ≤ 1` using `fun z => by`. Rewrite using `[normalizedValuation_le_one_iff]`. Conclude with `GlobalTheory.CompanionTheory.IntCoord.mem_O_iff w z`. Establish `hnv : ord y = 0 ↔ normalizedValuation (Kv K w) y = 1`. Rewrite using `[normalizedValuation_eq_exp_ord hy]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Simplify using `[h]`. Introduce `h`. Establish `h' : WithZero.exp (-ord y) = WithZero.exp (0 : ℤ)` using `by simpa using h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `WithZero.exp_inj.1 h'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[hnv]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_one_of_le_of_inv_le (by simpa using hy) ((hO y).1 h.le) ?_` and prove the remaining obligations. Rewrite using `[← map_inv₀]`. Conclude with `(hO _).1 (by rw [map_inv₀, h, inv_one])`. Introduce `h`. Use `eq_one_of_le_of_inv_le (by simpa using hy) ((hO y).2 h.le) ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_inv₀]`. Conclude with `(hO _).2 (by rw [map_inv₀, h, inv_one])`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_eq_zero_iff (w : PlK K) {y : Kv K w} (hy : y ≠ 0) : ord y = 0 ↔ Valued.v y = 1 := by
   have hO : ∀ z : Kv K w, normalizedValuation (Kv K w) z ≤ 1 ↔ Valued.v z ≤ 1 := fun z => by
@@ -68,14 +66,14 @@ theorem alg_ne_zero (w : PlK K) (κ : Kˣ) : algebraMap K (Kv K w) (κ : K) ≠ 
   simp
 
 /- English proof (translation)
-Rewrite using `[ord_eq_zero_iff w (alg_ne_zero w κ), GlobalTheory.CompanionTheory.IntCoord.val_alg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_alg_eq_zero_iff (w : PlK K) (κ : Kˣ) :
     ord (algebraMap K (Kv K w) (κ : K)) = 0 ↔ w.valuation K (κ : K) = 1 := by
   rw [ord_eq_zero_iff w (alg_ne_zero w κ), GlobalTheory.CompanionTheory.IntCoord.val_alg]
 
 /- English proof (translation)
-The claim follows from `Function.rightInverse_invFun (GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.algebraMap_bijective v w h1).2 _`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_degreeOneEmbedding_inverse (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) (ξ : K) :
@@ -83,7 +81,7 @@ theorem algebraMap_degreeOneEmbedding_inverse (v : Pl) (w : PlK K) [w.asIdeal.Li
   Function.rightInverse_invFun (GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.algebraMap_bijective v w h1).2 _
 
 /- English proof (translation)
-Introduce `h`. Use `algebraMap_degreeOneEmbedding_inverse v w h1 (κ : K)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `alg_ne_zero w κ this.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degreeOneEmbedding_ne_zero (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) (κ : Kˣ) : dg1 v w (κ : K) ≠ 0 := by
@@ -93,7 +91,7 @@ theorem degreeOneEmbedding_ne_zero (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.as
   exact alg_ne_zero w κ this.symm
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_degreeOneEmbedding_inverse v w h1, ord_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ord_alg_eq (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) (ξ : K) :
@@ -101,7 +99,7 @@ theorem ord_alg_eq (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
   rw [← algebraMap_degreeOneEmbedding_inverse v w h1, ord_algebraMap]
 
 /- English proof (translation)
-Establish `he : (ramificationIndex (Qv v) (Kv K w) : ℤ) ≠ 0`. Conclude with `(ramificationIndex_pos (Qv v) (Kv K w)).ne'` after adjusting the coercions. Rewrite using `[ord_alg_eq v w h1, mul_eq_zero, or_iff_right he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem order_degreeOneEmbedding_eq_zero_iff (v : Pl) (w : PlK K) [w.asIdeal.LiesOver v.asIdeal]
     (h1 : Module.finrank (Qv v) (Kv K w) = 1) (ξ : K) :
@@ -113,7 +111,7 @@ theorem order_degreeOneEmbedding_eq_zero_iff (v : Pl) (w : PlK K) [w.asIdeal.Lie
 variable {c : HeckeCharacter K} {v : Pl}
 
 /- English proof (translation)
-Establish `h : e1 (LM.ns (c` using `c) w σ η Φ) (κ : K) ≠ 0 := by simp [e1]`. Simplify using `[k1, h, e1, ord]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem order_unit_field_datum_zero (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] (σ : Kv K w ≃ₐ[Qv v] Kv K w) (η : (Qv v)ˣ →* ℂˣ)
     (Φ : Kv K w → ℂ) (κ : Kˣ) : ord ((k1 (LM.ns (c := c) w σ η Φ) κ : (Qv v)ˣ) : Qv v) = 0 := by
@@ -121,7 +119,7 @@ theorem order_unit_field_datum_zero (w : PlK K) [w.asIdeal.LiesOver v.asIdeal] (
   simp [k1, h, e1, ord]
 
 /- English proof (translation)
-Establish `h' : e1 (LM.sp (c` using `c) w₁ w₂ Φ) (κ : K) ≠ 0 := h`. Simplify using `only [k1, dif_neg h']`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem split_datum_unit_coordinate (w₁ w₂ : PlK K) [w₁.asIdeal.LiesOver v.asIdeal] [w₂.asIdeal.LiesOver v.asIdeal]
     (Φ : Qv v × Qv v → ℂ) (κ : Kˣ) (h : dg1 v w₁ (κ : K) ≠ 0) :
@@ -135,7 +133,7 @@ def pl : LM c v → PlK K
   | LM.ns w .. => w
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ => exact i₁`. Consider the case `@ns w i σ η Φ => exact i`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem pl_liesOver (L : LM c v) : (pl L).asIdeal.LiesOver v.asIdeal := by
   cases L with
@@ -143,9 +141,9 @@ theorem pl_liesOver (L : LM c v) : (pl L).asIdeal.LiesOver v.asIdeal := by
   | @ns w i σ η Φ => exact i
 
 /- English proof (translation)
-Consider the cases of `L with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Take `⟨-, d₁, -⟩` from `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hok.1`. Rewrite using `[split_datum_unit_coordinate w₁ w₂ Φ κ (degreeOneEmbedding_ne_zero v w₁ d₁ κ), order_degreeOneEmbedding_eq_zero_iff v w₁ d₁, ord_alg_eq_zero_iff]`. Conclude with `h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `@ns w i σ η Φ => exact order_unit_field_datum_zero w σ η Φ κ`.
+A detailed English derivation is pending.
 -/
 theorem order_unit_coordinate_of_valuation_one (h2 : Module.finrank ℚ K = 2) (L : LM c v) (hok : L.ok) (κ : Kˣ)
     (h : (pl L).valuation K (κ : K) = 1) : ord ((k1 L κ : (Qv v)ˣ) : Qv v) = 0 := by
@@ -157,32 +155,28 @@ theorem order_unit_coordinate_of_valuation_one (h2 : Module.finrank ℚ K = 2) (
   | @ns w i σ η Φ => exact order_unit_field_datum_zero w σ η Φ κ
 
 /- English proof (translation)
-The claim follows from `ord_norm y`.
+A detailed English derivation is pending.
 -/
 theorem ord_norm_alg (u : PlK K) [u.asIdeal.LiesOver v.asIdeal] (y : Kv K u) :
     ord (Algebra.norm (Qv v) y) = residueDegree (Qv v) (Kv K u) * ord y :=
   ord_norm y
 
 /- English proof (translation)
-Establish `hprod` using `SemiLocal.algebraMap_norm_eq_prod (K := ℚ) (L := K) v (κ : K)`. Rewrite `hprod` using `[hN, map_one]`. Consider the cases of `L with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Take `⟨hall, d₁, d₂⟩` from `GlobalTheory.CompanionTheory.BaseChangeFunctionalEquation.places_split h2 v w₁ w₂ hok.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite `h0` using `[split_datum_unit_coordinate w₁ w₂ Φ κ (degreeOneEmbedding_ne_zero v w₁ d₁ κ), order_degreeOneEmbedding_eq_zero_iff v w₁ d₁]`. Establish `hu : (⟨w₁, i₁⟩ : SemiLocal.PlacesOver K v) ≠ ⟨w₂, i₂⟩` using `fun h => hok.1 (congrArg Subtype.val h)`. Establish `huniv : (Finset.univ : Finset (SemiLocal.PlacesOver K v)) = {⟨w₁, i₁⟩, ⟨w₂, i₂⟩}`. Use extensionality with `u`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, true_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Break down `hall u.1 u.2 with h | h` into its components or cases. Conclude with `Or.inl (Subtype.ext h)`. Conclude with `Or.inr (Subtype.ext h)`. Rewrite `hprod` using `[huniv, Finset.prod_pair hu]`. Use `replace hprod : (1 : Qv v) = Algebra.norm (Qv v) (algebraMap K (Kv K w₁) (κ : K)) * Algebra.norm (Qv v) (algebraMap K (Kv K w₂) (κ : K)) := hprod`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn₁ : Algebra.norm (Qv v) (algebraMap K (Kv K w₁) (κ : K)) ≠ 0`. Rewrite using `[Ne, Algebra.norm_eq_zero_iff]`. Conclude with `alg_ne_zero w₁ κ`. Establish `hn₂ : Algebra.norm (Qv v) (algebraMap K (Kv K w₂) (κ : K)) ≠ 0`. Rewrite using `[Ne, Algebra.norm_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `alg_ne_zero w₂ κ`. Establish `ho` using `congrArg ord hprod`. Rewrite `ho` using `[ord_mul hn₁ hn₂, ord_norm_alg, ord_norm_alg, h0]`. Establish `h1 : ord (1 : Qv v) = 0` using `by simp [ord]`. Rewrite `ho` using `[h1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h02 : ord (algebraMap K (Kv K w₂) (κ : K)) = 0`. Simplify `ho.symm` using `[(residueDegree_pos (Qv v) (Kv K w₂)).ne']`. Break down `hall w hw with rfl | rfl` into its components or cases. Conclude with `(ord_alg_eq_zero_iff _ κ).1 h0`. Conclude with `(ord_alg_eq_zero_iff _ κ).1 h02`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Consider the case `@ns w₀ i σ η Φ`. Take `⟨hall, -⟩` from `hok`. Take `rfl` from `hall w hw`. Establish `huniv : (Finset.univ : Finset (SemiLocal.PlacesOver K v)) = {⟨w, i⟩}`. Use extensionality with `u`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_univ, Finset.mem_singleton, true_iff]`. Conclude with `Subtype.ext (hall u.1 u.2)`. Rewrite `hprod` using `[huniv, Finset.prod_singleton]`. Use `replace hprod : (1 : Qv v) = Algebra.norm (Qv v) (algebraMap K (Kv K w) (κ : K)) := hprod`. Establish `ho` using `congrArg ord hprod`.
-
-Rewrite `ho` using `[ord_norm_alg]`. Establish `h1 : ord (1 : Qv v) = 0` using `by simp [ord]`. Rewrite `ho` using `[h1]`. Establish `h02 : ord (algebraMap K (Kv K w) (κ : K)) = 0`. Simplify `ho.symm` using `[(residueDegree_pos (Qv v) (Kv K w)).ne']`.
-
-Conclude with `(ord_alg_eq_zero_iff _ κ).1 h02`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem val_eq_one (h2 : Module.finrank ℚ K = 2) (L : LM c v) (hok : L.ok) (κ : Kˣ)
     (hN : Algebra.norm ℚ (κ : K) = 1) (h0 : ord ((k1 L κ : (Qv v)ˣ) : Qv v) = 0)
@@ -236,9 +230,9 @@ theorem val_eq_one (h2 : Module.finrank ℚ K = 2) (L : LM c v) (hok : L.ok) (κ
     exact (ord_alg_eq_zero_iff _ κ).1 h02
 
 /- English proof (translation)
-Introduce `a b h`. Establish `ha` using `pl_liesOver (M a)`. Establish `hb` using `pl_liesOver (M b)`. Simplify using `only at h`. Rewrite `ha` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `HeightOneSpectrum.ext` to reduce the goal to its premises. Rewrite using `[ha.over, hb.over]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pl_injective (M : ∀ v : Pl, LM c v) : Function.Injective (fun v => pl (M v)) := by
   intro a b h
@@ -250,11 +244,9 @@ theorem pl_injective (M : ∀ v : Pl, LM c v) : Function.Injective (fun v => pl 
   rw [ha.over, hb.over]
 
 /- English proof (translation)
-Establish `hS : {w : PlK K | w.valuation K (κ : K) ≠ 1}.Finite`. Use `((HeightOneSpectrum.Support.finite (𝓞 K) (κ : K)).union (HeightOneSpectrum.Support.finite (𝓞 K) ((κ : K)⁻¹))).subset ?_` and prove the remaining obligations. Introduce `w hw`. Break down `lt_or_gt_of_ne hw with h | h` into its components or cases. Use `right show 1 < w.valuation K (κ : K)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv₀]`. Conclude with `(one_lt_inv₀ (zero_lt_iff.2 (by simp))).2 h`. Use `left`. Conclude with `h`. Use `(hS.preimage (pl_injective M).injOn).subset ?_` and prove the remaining obligations.
-
-Introduce `v hv h`. Conclude with `hv (order_unit_coordinate_of_valuation_one h2 (M v) (hok v) κ h)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem support_finite (h2 : Module.finrank ℚ K = 2) (M : ∀ v : Pl, LM c v) (hok : ∀ v, (M v).ok) (κ : Kˣ) :
     (Function.support fun v : Pl => ord ((k1 (M v) κ : (Qv v)ˣ) : Qv v)).Finite := by
@@ -274,9 +266,9 @@ theorem support_finite (h2 : Module.finrank ℚ K = 2) (M : ∀ v : Pl, LM c v) 
   exact hv (order_unit_coordinate_of_valuation_one h2 (M v) (hok v) κ h)
 
 /- English proof (translation)
-Set `v : Pl` to `⟨w.asIdeal.under (𝓞 ℚ), inferInstance, Ideal.under_ne_bot _ w.ne_bot⟩`. Establish `hw : w.asIdeal.LiesOver v.asIdeal` using `⟨rfl⟩`. Use `val_eq_one h2 (M v) (hok v) κ hN ?_ w hw` and prove the remaining obligations. Establish `h` using `DFunLike.congr_fun h0 v`. Rewrite `h` using `[vK, dif_pos (support_finite h2 M hok κ)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem val_eq_one_all (h2 : Module.finrank ℚ K = 2) (M : ∀ v : Pl, LM c v) (hok : ∀ v, (M v).ok) (κ : Kˣ)
     (hN : Algebra.norm ℚ (κ : K) = 1) (h0 : vK M κ = 0) (w : PlK K) : w.valuation K (κ : K) = 1 := by
@@ -288,11 +280,11 @@ theorem val_eq_one_all (h2 : Module.finrank ℚ K = 2) (M : ∀ v : Pl, LM c v) 
   exact h
 
 /- English proof (translation)
-Use `haveI := hc`. Establish `hr : NumberField.Units.rank K = 0`. Establish `h1` using `InfinitePlace.card_add_two_mul_card_eq_rank K`. Establish `h3 : InfinitePlace.nrRealPlaces K = 0` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Establish `h4` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `NumberField.Units.rank`. Use linear arithmetic over natural numbers and integers. Use `haveI : IsEmpty (Fin (NumberField.Units.rank K)) := by`. Rewrite using `[hr]`. Use `infer_instance`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Finite.of_surjective (fun ζ : NumberField.Units.torsion K => (ζ : (𝓞 K)ˣ)) fun x => ?_` and prove the remaining obligations. Take `⟨⟨ζ, e⟩, h, -⟩` from `NumberField.Units.exist_unique_eq_mul_prod K x`. Conclude with `⟨ζ, by simpa using h.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_units (h2 : Module.finrank ℚ K = 2) (hc : IsTotallyComplex K) : Finite (𝓞 K)ˣ := by
   haveI := hc
@@ -316,15 +308,13 @@ namespace GlobalTheory.CompanionTheory.FexTheta
 open GlobalTheory.CompanionTheory.FexTheta.Stab in
 
 /- English proof (translation)
-Introduce `K _ _ h2 hc c M hM`. Use `haveI := finite_units h2 hc`. Establish `hmem : ∀ κ : {κ : K1 K // vK M (κ : Kˣ) = 0}, (κ.1 : Kˣ) ∈ Set.range (Units.map (algebraMap (𝓞 K) K).toMonoidHom)`. Introduce `κ`. Establish `hN : Algebra.norm ℚ ((κ.1 : Kˣ) : K) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : Units.map (Algebra.norm ℚ : K →* ℚ) (κ.1 : Kˣ) = 1` using `MonoidHom.mem_ker.1 κ.1.2`. Conclude with `congrArg Units.val h`. Establish `hv` using `val_eq_one_all h2 M hM.1 (κ.1 : Kˣ) hN κ.2`. Take `⟨a, ha⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K (((κ.1 : Kˣ) : K)) (fun w => (hv w).le)`. Take `⟨b, hb⟩` from `HeightOneSpectrum.mem_integers_of_valuation_le_one (R := 𝓞 K) K (((κ.1 : Kˣ) : K)⁻¹) (fun w => by rw [map_inv₀, hv w, inv_one])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hab : a * b = 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Establish `: (algebraMap (𝓞 K) K a) * (algebraMap (𝓞 K) K b) = 1`. Rewrite using `[ha, hb]`. Conclude with `mul_inv_cancel₀ (Units.ne_zero _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Conclude with `⟨⟨a, b, hab, by rw [mul_comm]; exact hab⟩, Units.ext ha⟩`. Use `Finite.of_injective (fun κ : {κ : K1 K // vK M (κ : Kˣ) = 0} => (⟨(κ.1 : Kˣ), hmem κ⟩ : Set.range (Units.map (algebraMap (𝓞 K) K).toMonoidHom))) ?_` and prove the remaining obligations. Introduce `a b h`. Establish `h' : ((a.1 : K1 K) : Kˣ) = ((b.1 : K1 K) : Kˣ)` using `congrArg (fun x : Set.range (Units.map (algebraMap (𝓞 K) K).toMonoidHom) => (x : Kˣ)) h`.
-
-Conclude with `Subtype.ext (Subtype.ext h')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_stabiliser : ∀ (K : Type) [Field K] [NumberField K], Module.finrank ℚ K = 2 → IsTotallyComplex K →
     ∀ (c : HeckeCharacter K) (M : ∀ v : Pl, LM c v), AdmM M → Finite {κ : K1 K // vK M (κ : Kˣ) = 0} := by

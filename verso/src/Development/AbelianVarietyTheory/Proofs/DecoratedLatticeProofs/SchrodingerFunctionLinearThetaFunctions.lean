@@ -13,9 +13,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn
 
 /- English proof (translation)
-Introduce `D ψ hψ A B ν 𝓨 hν f f' hf hf' c`. Use `⟨GlobalTheory.OrientedHeis.theta_add hf hf', GlobalTheory.OrientedHeis.theta_smul c hf, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `h1` using `(dblDec A).integrableOn_mixS hψ.1.1 hν hf x 0`. Establish `h2` using `(dblDec A).integrableOn_mixS hψ.1.1 hν hf' x 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sch, HypDec.mixS, HypDec.integrandS_eq, Pi.add_apply, mul_add] at h1 h2 ⊢`. Conclude with `integral_add h1 h2`. Use function extensionality and compare the values at `x`. Simplify using `only [sch, HypDec.mixS, HypDec.integrandS_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sch_linear : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f f', IsThetaFunO ψ (dblSp A) B f → IsThetaFunO ψ (dblSp A) B f' → ∀ c : ℂ, IsThetaFunO ψ (dblSp A) B (f + f') ∧ IsThetaFunO ψ (dblSp A) B (c • f) ∧ sch ψ A B ν 𝓨 (f + f') = sch ψ A B ν 𝓨 f + sch ψ A B ν 𝓨 f' ∧ sch ψ A B ν 𝓨 (c • f) = c • sch ψ A B ν 𝓨 f := by
   intro D ψ hψ A B ν 𝓨 hν f f' hf hf' c

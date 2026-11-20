@@ -21,7 +21,7 @@ section Alg
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `⟨by simp, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `R.one_mem`. Conclude with `R.zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPt_X (R : Subring K) {σ : Type} (a : σ) : IsPt R (MvPowerSeries.X a : MvPowerSeries σ K) := by
   classical
@@ -32,7 +32,7 @@ theorem isPt_X (R : Subring K) {σ : Type} (a : σ) : IsPt R (MvPowerSeries.X a 
   · exact R.zero_mem
 
 /- English proof (translation)
-Rewrite using `[Pts.fmul_zero_left h, be0, Pts.zero_fadd h hy, PowerSeries.subst_zero_of_constantCoeff_zero hph, sub_zero, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem biadd_formal_mul_zero {l linv ph : PowerSeries K} (h : IsLogPair l linv)
     (hph : PowerSeries.constantCoeff ph = 0) {σ : Type} (x : MvPowerSeries σ K) {y : MvPowerSeries σ K}
@@ -41,7 +41,7 @@ theorem biadd_formal_mul_zero {l linv ph : PowerSeries K} (h : IsLogPair l linv)
     sub_zero, sub_self]
 
 /- English proof (translation)
-Unfold `flin`. Rewrite using `[Equiv.sum_comp e (fun a => MvPowerSeries.C (c a) * PowerSeries.subst (u a) l)]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem flin_reindex {σ : Type} (l linv : PowerSeries K) {ν ν' : Type} [Fintype ν] [Fintype ν']
     (e : ν' ≃ ν) (c : ν → K) (u : ν → MvPowerSeries σ K) :
@@ -50,7 +50,7 @@ theorem flin_reindex {σ : Type} (l linv : PowerSeries K) {ν ν' : Type} [Finty
   rw [Equiv.sum_comp e (fun a => MvPowerSeries.C (c a) * PowerSeries.subst (u a) l)]
 
 /- English proof (translation)
-Unfold `phSum`. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, Pts.constantCoeff_subst (MvPowerSeries.constantCoeff_X i) hph, mul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_phSum {n : Type} [Fintype n] (c : n → K) {ph : PowerSeries K}
     (hph : PowerSeries.constantCoeff ph = 0) : MvPowerSeries.constantCoeff (phSum c ph) = 0 := by
@@ -61,35 +61,35 @@ theorem constantCoeff_phSum {n : Type} [Fintype n] (c : n → K) {ph : PowerSeri
     Pts.constantCoeff_subst (MvPowerSeries.constantCoeff_X i) hph, mul_zero]
 
 /- English proof (translation)
-Simplify using `[sqSum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_sqSum {n : Type} [Fintype n] (c : n → K) :
     MvPowerSeries.constantCoeff (sqSum c) = 0 := by
   simp [sqSum]
 
 /- English proof (translation)
-Rewrite using `[map_mul, constantCoeff_sqSum, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_C_mul_sqSum {n : Type} [Fintype n] (s : K) (c : n → K) :
     MvPowerSeries.constantCoeff (MvPowerSeries.C s * sqSum c) = 0 := by
   rw [map_mul, constantCoeff_sqSum, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [HurwitzJetIntegrality.inBlock_eq_rename, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inBlock_mul {ι B : Type} (k : B) (f g : MvPowerSeries ι K) :
     inBlock k (f * g) = inBlock k f * inBlock k g := by
   simp only [HurwitzJetIntegrality.inBlock_eq_rename, map_mul]
 
 /- English proof (translation)
-Unfold `tens4`. Simplify using `only [inBlock_mul, Finset.prod_mul_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem tensor_four_mul {ι : Type} (f g : MvPowerSeries ι K) : tens4 (f * g) = tens4 f * tens4 g := by
   unfold tens4
   simp only [inBlock_mul, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Establish `h` using `HurwitzJetIntegrality.coeff_inBlock_embDomain k f 0`. Rewrite `h` using `[Finsupp.embDomain_zero]`. Simplify `h` using `[hf]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem constantCoeff_inBlock {ι B : Type} (k : B) {f : MvPowerSeries ι K}
     (hf : MvPowerSeries.constantCoeff f = 0) : MvPowerSeries.constantCoeff (inBlock k f) = 0 := by
@@ -98,7 +98,7 @@ theorem constantCoeff_inBlock {ι B : Type} (k : B) {f : MvPowerSeries ι K}
   simpa [hf] using h
 
 /- English proof (translation)
-Simplify using `[HurwitzJetIntegrality.inBlock_eq_rename, sqSum, Finset.mul_sum, Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem sum_inBlock_sqSum {ι B : Type} [Fintype ι] [Fintype B] (s : K) (c : ι → K) :
     ∑ k : B, inBlock k (MvPowerSeries.C s * sqSum c) =
@@ -109,7 +109,7 @@ theorem sum_inBlock_sqSum {ι B : Type} [Fintype ι] [Fintype B] (s : K) (c : ι
 variable [CharZero K]
 
 /- English proof (translation)
-Unfold `inBlock`. Conclude with `mvSubst_mvExp hf (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_X _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inBlock_mvExp {ι B : Type} [Finite ι] (k : B) {f : MvPowerSeries ι K}
     (hf : MvPowerSeries.constantCoeff f = 0) : inBlock k (mvExp f) = mvExp (inBlock k f) := by
@@ -118,7 +118,7 @@ theorem inBlock_mvExp {ι B : Type} [Finite ι] (k : B) {f : MvPowerSeries ι K}
     (MvPowerSeries.hasSubst_of_constantCoeff_zero fun i => MvPowerSeries.constantCoeff_X _)
 
 /- English proof (translation)
-Unfold `tens4`. Establish `h0 : MvPowerSeries.constantCoeff (MvPowerSeries.C s * sqSum c) = 0` using `constantCoeff_C_mul_sqSum s c`. Rewrite using `[Finset.prod_congr rfl (fun k _ => inBlock_mvExp k h0), ← mvExp_sum Finset.univ (fun k : Fin 4 => inBlock k (MvPowerSeries.C s * sqSum c)) (fun k _ => constantCoeff_inBlock k h0), sum_inBlock_sqSum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem tensor_four_exp_quadratic {ι : Type} [Fintype ι] (s : K) (c : ι → K) :
     tens4 (mvExp (MvPowerSeries.C s * sqSum c)) =
@@ -132,13 +132,13 @@ theorem tensor_four_exp_quadratic {ι : Type} [Fintype ι] (s : K) (c : ι → K
     sum_inBlock_sqSum]
 
 /- English proof (translation)
-Establish `e : ν ≃ Fin (Fintype.card ν)` using `Fintype.equivFin ν`. Establish `key` using `gramFormula K R l linv ph hF O τ hE hB h1 hN hA m (Fintype.card ν) (fun i j => δ i (e.symm j)) ν (fun j => MvPowerSeries.X (e.symm j)) (fun j => isPt_X R _)`. Establish `e1 : (∑ i, PowerSeries.subst (flin l linv (fun j => τ (δ i (e.symm j))) (fun j => (MvPowerSeries.X (e.symm j) : MvPowerSeries ν K))) ph) = phIso τ l linv ph δ`. Unfold `phIso`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[flin_reindex l linv e.symm (fun a => τ (δ i a)) (fun a => MvPowerSeries.X a)]`. Establish `e2 : (∑ j, τ (∑ i, star (δ i (e.symm j)) * δ i (e.symm j)) • PowerSeries.subst (MvPowerSeries.X (e.symm j) : MvPowerSeries ν K) ph) = phSum (fun a => τ (g a)) ph`. Unfold `phSum`. Rewrite using `[← Equiv.sum_comp e.symm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hδ, if_pos rfl]`. Establish `e3 : (∑ j, ∑ j' ∈ Finset.univ.filter (fun j' => j < j'), be0 l linv ph (fmul l linv (τ (∑ i, star (δ i (e.symm j')) * δ i (e.symm j))) (MvPowerSeries.X (e.symm j) : MvPowerSeries ν K)) (MvPowerSeries.X (e.symm j'))) = 0`. Use `Finset.sum_eq_zero fun j _ => Finset.sum_eq_zero fun j' hj' => ?_` and prove the remaining obligations. Establish `hne : e.symm j' ≠ e.symm j` using `fun hh => (ne_of_gt (Finset.mem_filter.1 hj').2) (e.symm.injective hh)`. Rewrite using `[hδ, if_neg hne, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `biadd_formal_mul_zero hF.1 hF.2.2 _ (MvPowerSeries.constantCoeff_X _)`. Rewrite `key` using `[e1, e2, e3, add_zero]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phIso_cong (R : Subring K) {l linv ph : PowerSeries K} (hF : Frame R l linv ph)
     (h1 : F1 R l linv ph) {O : Type} [CommRing O] [StarRing O] (τ : O →+* K)
@@ -181,19 +181,17 @@ end PairedSquareConstantCoefficients
 open PairedSquareConstantCoefficients
 
 /- English proof (translation)
-Introduce `K _ _ _ l linv ph d hF hl h1 hS O _ _ τ hE hB hN hA n m _ _ _ w hw δ hδ Th G hG hTh`. Use `set R := unitBall K with hR`. Use `set c : Fin 4 × n → K := fun a => τ (w a.2) with hc`. Use `set s : K := jet l ph 2 / 2 with hs`. Establish `hcong : Cong R (phIso τ l linv ph δ) (phSum c ph)` using `phIso_cong R hF h1 τ hE hB hN hA (fun a : Fin 4 × n => w a.2) δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hneg : LG R (-(phIso τ l linv ph δ - phSum c ph))` using `(lGSubgroup K R _).2.2 _ hcong`. Establish `hP0 : MvPowerSeries.constantCoeff (-(phSum c ph)) = 0`. Rewrite using `[map_neg, constantCoeff_phSum c hF.2.2, neg_zero]`. Establish `hexp : mvExp (-(phIso τ l linv ph δ)) = mvExp (-(phSum c ph)) * mvExp (-(phIso τ l linv ph δ - phSum c ph))`. Rewrite using `[← mvExp_add hP0 hneg.1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hG' : IntMv R (mvExp (-(phIso τ l linv ph δ - phSum c ph)) * G)` using `IntegralMvPolynomialLemmas.intMv_mul hneg.2 hG`. Establish `hcn : ∀ a, ‖c a‖ ≤ 1`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hB (w a.2) (hw a.2) 1` as an intermediate fact. Establish `h2 : binom (τ (w a.2)) 1 = τ (w a.2)` using `by simp [binom]`. Rewrite `this` using `[h2]`. Conclude with `this`. Take `⟨J4, hJ4, hJ4e⟩` from `hO K l linv ph d hF.1 hl hF.2.2 hS (Fin 4 × n) c hcn _ hG'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hJ4e` using `[← mul_assoc, ← hexp, ← hTh]`. Establish `hq0` using `constantCoeff_C_mul_sqSum s (fun j => τ (w j))`. Establish `hq40` using `constantCoeff_C_mul_sqSum s c`. Use `⟨mvExp (MvPowerSeries.C s * sqSum (fun j => τ (w j))) * Th, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[jets_in_norm_holds K n]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `jets_fourth_holds K R n _ ?_ ?_` and prove the remaining obligations. Introduce `x hx`. Establish `hx' : ‖x‖ ^ 4 ≤ 1` using `by rw [← norm_pow]; exact hx`. Conclude with `pow_le_one_iff_of_nonneg (norm_nonneg x) (by norm_num) |>.1 hx'`. Rewrite using `[tensor_four_mul, tensor_four_exp_quadratic, hJ4e, ← mul_assoc, mvExp_mul_neg hq40, one_mul]`.
-
-Conclude with `(jets_in_norm_holds K _ J4).1 hJ4`. Rewrite using `[← mul_assoc, mvExp_neg hq0, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IntAtD_of (hO : ShapeOrth) : IntAtD := by
   intro K _ _ _ l linv ph d hF hl h1 hS O _ _ τ hE hB hN hA n m _ _ _ w hw δ hδ Th G hG hTh

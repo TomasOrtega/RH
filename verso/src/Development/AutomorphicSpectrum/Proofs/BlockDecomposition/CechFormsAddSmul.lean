@@ -8,9 +8,9 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundThe
 namespace GlobalTheory.CompanionTheory.OmCech
 
 /- English proof (translation)
-Use `letI := GlobalTheory.HodgeCoh.algΓ q`. Apply `(GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).injective` to reduce the goal to its premises. Establish `h1 : ∀ z : CO q U a j, GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j (cechOmAdd q U hU hUaff a j z) = cechHAddEquivH.{0} U hU hUaff (GlobalTheory.HodgeCoh.Omega q a) j z` using `fun z => (GlobalTheory.coh.toH (GlobalTheory.HodgeCoh.Omega q a) j).apply_symm_apply _`. Establish `h2` using `cechHAddEquivH_naturality.{0} U hU hUaff (smulHom (GlobalTheory.HodgeCoh.Omega q a) (algebraMap K Γ(X, ⊤) r)) j x`. Establish `h3` using `GlobalTheory.coh.toH_map K (smulHom (GlobalTheory.HodgeCoh.Omega q a) (algebraMap K Γ(X, ⊤) r)) j (cechOmAdd q U hU hUaff a j x)`.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3`, the goal using `[h1]`. Conclude with `h2.trans h3.symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechOmAdd_smul {K : Type} [Field K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) {ι : Type}
     (U : ι → X.Opens) (hU : iSup U = ⊤) (hUaff : ∀ (n : ℕ) (i : Fin (n + 1) → ι), IsAffineOpen (⨅ a, U (i a)))

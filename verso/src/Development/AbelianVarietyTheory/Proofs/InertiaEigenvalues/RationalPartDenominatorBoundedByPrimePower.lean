@@ -27,25 +27,21 @@ namespace GlobalTheory.MoveDenom
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D V hstd l hl s`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Use `set M := Matrix.GeneralLinearGroup.map (n := Fin V.rank) ι.toRingHom with hM`. Take `⟨c1, hc1⟩` from `GlobalTheory.T.adelicMatrix_exists_prime_pow_clears_denominators_over l hl V.rank (M (fin V s).1).1`. Take `⟨c2, hc2⟩` from `GlobalTheory.T.adelicMatrix_exists_prime_pow_clears_denominators_over l hl V.rank (M (fin V s).1)⁻¹.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max c1 c2, ?_⟩` and prove the remaining obligations. Introduce `z hz γ h γ' k bad hrat hlb hsob hk hk' heq`. Use `set C : FiniteAdeleRing (𝓞 D.host.E) D.host.E := ((l ^ max c1 c2 : ℕ) : FiniteAdeleRing (𝓞 D.host.E) D.host.E) with hC`. Establish `bs : Bnd l (C • (M (fin V s).1).1)` using `GlobalTheory.T.adelicMatrix_boundedDenominator_primeTo_of_integral l hl _ _ fun Q hQ i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc1 _ (le_max_left _ _) Q hQ i j`. Establish `bs' : Bnd l (C • (M (fin V s).1)⁻¹.1)` using `GlobalTheory.T.adelicMatrix_boundedDenominator_primeTo_of_integral l hl _ _ fun Q hQ i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `hc2 _ (le_max_right _ _) Q hQ i j`. Establish `ez` using `GlobalTheory.T.finiteMatrix_apply_eq_one_at_places_over_of_oneAt D ι h1 h2 h3 V l z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `bz : Bnd l (M (fin V z).1).1` using `GlobalTheory.T.adelicMatrix_boundedDenominator_primeTo_of_integral l hl _ _ fun Q hQ i j => by`. Rewrite using `[ez Q hQ i j]`. Conclude with `one_entry_v_le_one _ Q i j`. Establish `bz' : Bnd l (M (fin V z).1)⁻¹.1` using `GlobalTheory.T.adelicMatrix_boundedDenominator_primeTo_of_integral l hl _ _ fun Q hQ i j => by`. Rewrite using `[inv_eq_one_off _ _ Q (ez Q hQ) i j]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `one_entry_v_le_one _ Q i j`. Establish `bk' : Bnd l (M k.1)⁻¹.1` using `bnd_inv_of_hLat_std D ι h1 h2 V hstd l k hk`. Establish `bk : Bnd l (M k.1).1`. Use `bnd_inv_of_hLat_std D ι h1 h2 V hstd l k⁻¹ hk'` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_inv, map_inv, inv_inv]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h4` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨hid, hcj⟩` from `GlobalTheory.T.placeIdempotent_components_conj_valuation D ι h1 h2 h4`. Take `⟨-, e', P', he', hb', hs'⟩` from `hsob`. Establish `hp' : ∀ PP ∈ P', (l : 𝓞 D.host.E) ∉ PP.asIdeal`. Introduce `PP hPP hpP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, rfl⟩` from `hlb`. Conclude with `hb' PP hPP (by rw [Nat.cast_mul]; exact Ideal.mul_mem_right _ _ hpP)`. Take `⟨S, hSf, hSp, hS0⟩` from `GlobalTheory.T.idempotent_add_conj_support_finite_prime_to_p D ι hid hcj l e' P' he' hp'`. Take `⟨bh, bh'⟩` from `GlobalTheory.T.isBoundedPrimeToDenom_GL_and_inv_of_eq_one_off_finite l hl _ (M (fin V h).1) S hSf hSp fun Q hQ i j => GlobalTheory.T.supported_adelic_point_eq_one_where_idempotent_vanishes D ι V e' h hs' Q (hS0 Q hQ) i j`. Establish `eγ : fin V γ = fin V s * fin V z * k⁻¹ * (fin V h)⁻¹`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : fin V (s * z) = fin V s * fin V z` using `map_mul _ _ _`. Rewrite `heq` using `[e1]`. Rewrite using `[heq]`. Use `group`. Establish `eMγ : M (fin V γ).1 = M (fin V s).1 * M (fin V z).1 * (M k.1)⁻¹ * (M (fin V h).1)⁻¹`.
-
-Rewrite using `[eγ, Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_inv, map_mul, map_mul, map_mul, map_inv, map_inv]`. Apply `GlobalTheory.T.boundedDenom_rationalMatrix_of_finitePart D ι h1 V l (max c1 c2) γ γ' hrat` to reduce the goal to its premises. Rewrite using `[eMγ, Units.val_mul, Units.val_mul, Units.val_mul, ← Matrix.smul_mul, ← Matrix.smul_mul, ← Matrix.smul_mul]`. Conclude with `bnd_mul l _ _ _ (bnd_mul l _ _ _ (bnd_mul l _ _ _ bs bz) bk') bh'`. Rewrite using `[eMγ, _root_.mul_inv_rev, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, inv_inv, Units.val_mul, Units.val_mul, Units.val_mul, ← Matrix.mul_smul, ← Matrix.mul_smul, ← Matrix.mul_smul]`.
-
-Conclude with `bnd_mul l _ _ _ bh (bnd_mul l _ _ _ bk (bnd_mul l _ _ _ bz' bs'))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denomAt_of_move : ∀ (D : D7) (V : HSp D), Bridge.hLat V 1 = Formalism.L2.Pj.stdLat D.host.E V.rank → ∀ l : ℕ, l.Prime → ∀ s : GA D V, ∃ c : ℕ, ∀ z : GA D V, OneAt V l z → ∀ (γ h : GA D V) (γ' : GL (Fin V.rank) D.host.E) (k : Bridge.Gf V) (bad : ℕ), GlobalTheory.Member.IsRat V γ γ' → l ∣ bad → SplitOffBad V bad h → Bridge.hLat V k = Formalism.L2.Pj.stdLat D.host.E V.rank → Bridge.hLat V k⁻¹ = Formalism.L2.Pj.stdLat D.host.E V.rank → fin V (s * z) = fin V γ * fin V h * k → DenomAt l c γ' := by
   intro D V hstd l hl s

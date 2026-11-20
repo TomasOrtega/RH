@@ -19,13 +19,13 @@ noncomputable section
 namespace GlobalTheory.NefOfGen
 
 /- English proof (translation)
-Take `⟨hc, hd⟩` from `hx`. Take `⟨Z, i, _, _, rfl⟩` from `exists_isClosedImmersion_genericPoint x`. Establish `hr : Set.range i = closure {i (genericPoint Z)}`. Establish `h₁` using `(genericPoint_spec Z).image i.continuous`. Rewrite `h₁` using `[Set.image_univ, i.isClosedEmbedding.isClosed_range.closure_eq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h₁.def.symm`. Rewrite `hd` using `[topologicalKrullDim_eq_of_isEmbedding i.isClosedEmbedding.isEmbedding hr]`. Establish `hbij : Function.Bijective (i.residueFieldMap (genericPoint Z)).hom`. Use `⟨RingHom.injective _, fun u => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Z.residue_surjective _ u`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `i.stalkMap_surjective _ u`. Conclude with `⟨X.residue _ u, ConcreteCategory.congr_hom (Scheme.residue_residueFieldMap i _) u⟩`. Establish `hc' : CharZero (Z.residueField (genericPoint Z))` using `(RingHom.charZero_iff hbij.1).1 hc`. Establish `hcΓ : CharZero Γ(Z, ⊤)` using `(Z.Γevaluation (genericPoint Z)).hom.charZero`. Establish `hZ : IsArithVar (i ≫ p) 0` using `hX.of_isClosedImmersion i hcΓ hd`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `GlobalTheory.SmallSecHeight.numberField hZ hc'` as an intermediate fact. Rewrite using `[GlobalTheory.HtSelfInter.card_ringHom_eq]`. Conclude with `Nat.card_pos` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_pos_of_isAlgPt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral X] {p : X ⟶ Sp k} {D : ℕ}
     (hX : IsArithVar p D) {x : X} (hx : IsAlgPt x) : (0 : ℝ) < Nat.card (X.residueField x →+* ℂ) := by
@@ -49,11 +49,11 @@ theorem card_pos_of_isAlgPt {k : Type} [CommRing k] {X : Scheme.{0}} [IsIntegral
   exact_mod_cast Nat.card_pos
 
 /- English proof (translation)
-Introduce `hA k _ X _ p D hX M m N s hm hs hsp hf`. Establish `hc : ∀ i, ∃ c : ℝ, s i ∈ ((M.shift (fun _ => -c) fun _ => rfl).pow m).smallSec` using `fun i => GlobalTheory.AmpleHtLow.small_of_shift k X p D hX M m hm (s i)`. Use `choose c hc using hc`. Take `⟨h, H⟩` from `(hA.arExists k X p D hX).1 M`. Use `⟨-(-(∑ i, |c i|)), ?_, GlobalTheory.HtSelfInter.isNef_shift hX hsp hf fun x hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[neg_neg]`. Conclude with `Finset.sum_nonneg fun j _ => abs_nonneg (c j)`. Take `⟨i, hi⟩` from `hs x hx.1`. Establish `hN` using `card_pos_of_isAlgPt hX hx`. Establish `hb : IsPtHt M x (h x / Nat.card (X.residueField x →+* ℂ))` using `⟨h, H, (div_mul_cancel₀ _ hN.ne').symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨_, hb, ?_⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SmallSecHeight.le_ptHt k X p D hX M m (c i) _ x (s i) hm (hc i) hi hx hb`. Establish `h2 : -(∑ j, |c j|) ≤ c i` using `(neg_le_neg (Finset.single_le_sum (fun j _ => abs_nonneg (c j)) (Finset.mem_univ i))).trans (neg_abs_le _)`. Conclude with `h2.trans h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nef_of_gen : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (M : HermLB p) (m N : ℕ) (s : Fin N → (M.pow m).B.Sec), 1 ≤ m → (∀ x : X, CharZero (X.residueField x) → ∃ i, x ∈ ReciprocityTheory.ChartRestriction.G.Out.nonzeroLocus (s i)) → M.SemiPos D → NefFib M → ∃ t : ℝ, 0 ≤ t ∧ (M.shift (fun _ => t) fun _ => rfl).IsNef D := by
   intro hA k _ X _ p D hX M m N s hm hs hsp hf

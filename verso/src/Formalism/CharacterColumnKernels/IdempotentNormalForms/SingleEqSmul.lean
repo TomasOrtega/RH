@@ -28,14 +28,14 @@ Both sides reduce to the same expression.
 theorem combo_apply (v : g → M) (w : g → R) : combo v w = ∑ j, w j • v j := rfl
 
 /- English proof (translation)
-Rewrite using `[combo_apply]`. Simplify using `[Pi.single_apply, ite_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem combo_single (v : g → M) (j : g) (x : R) : combo v (Pi.single j x) = x • v j := by
   rw [combo_apply]
   simp [Pi.single_apply, ite_smul]
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_eq_smul (j : g) (x : R) : (Pi.single j x : g → R) = x • Pi.single j 1 := by
   ext i
@@ -44,7 +44,7 @@ theorem single_eq_smul (j : g) (x : R) : (Pi.single j x : g → R) = x • Pi.si
   · simp [h]
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_row (Θ : Matrix m g R) (i : m) :
     ∑ j, Θ i j • (Pi.single j (1 : R) : g → R) = Θ i := by
@@ -55,9 +55,9 @@ def toVec (Θ : Matrix m g R) (φ : Coker Θ →ₗ[R] M) : g → M :=
   fun j => φ ((relSpan Θ).mkQ (Pi.single j (1 : R)))
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Rewrite using `[relMap_apply', Pi.zero_apply]`. Simplify using `only [toVec]`. Establish `h : ∑ j, Θ i j • φ ((relSpan Θ).mkQ (Pi.single j (1 : R))) = φ ((relSpan Θ).mkQ (∑ j, Θ i j • (Pi.single j (1 : R) : g → R)))`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[map_sum, map_smul]`. Rewrite using `[h, sum_row]`. Establish `hmem : Θ i ∈ relSpan Θ` using `Submodule.subset_span ⟨i, rfl⟩`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero _).mpr hmem, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem toVec_mem (Θ : Matrix m g R) (φ : Coker Θ →ₗ[R] M) :
     toVec Θ φ ∈ LinearMap.ker (relMap O M Θ) := by
@@ -109,7 +109,7 @@ def homEquiv (Θ : Matrix m g R) : (Coker Θ →ₗ[R] M) ≃ₗ[O] LinearMap.ke
 end HomAux
 
 /- English proof (translation)
-Introduce `R O M _ _ _ _ _ _ m g _ _ _ Θ`. Conclude with `⟨homEquiv Θ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem homCoker : StatHomCoker := by
   intro R O M _ _ _ _ _ _ m g _ _ _ Θ

@@ -16,7 +16,7 @@ def Filt : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {E₀ E : Spc} (g : E
   Subsingleton (Hrel R g F n)
 
 /- English proof (translation)
-Introduce `R _ F E₀ E g n h`. Conclude with `hF R F g n (fun p => hP R F g p n (h p))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem CechFilt_of (hP : Piece) (hF : Filt) : LateralTheory.E.SSPf.CechFilt := by
   intro R _ F E₀ E g n h
@@ -30,7 +30,7 @@ def FiltGen : Prop := ∀ {C : Type u} [Category.{v} C] [Abelian C] {K L I : Coc
   Subsingleton (CohomologyClass (mappingCone φ) I n)
 
 /- English proof (translation)
-Unfold `chains`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show -(i : ℤ) ≠ j omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (j : ℤ) (hj : 0 < j) : IsZero (((chains R).obj E).X j) := by
   unfold chains
@@ -39,7 +39,7 @@ theorem chains_isZero (R : Type) [CommRing R] (E : Spc) (j : ℤ) (hj : 0 < j) :
     omega)
 
 /- English proof (translation)
-Unfold `res InjectiveResolution.cochainComplex`. Conclude with `HomologicalComplex.isZero_extend_X _ _ _ (fun i => by show (i : ℤ) ≠ j omega)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (j : ℤ) (hj : j < 0) : IsZero ((res R F).X j) := by
   unfold res InjectiveResolution.cochainComplex
@@ -48,7 +48,7 @@ theorem res_isZero (R : Type) [CommRing R] (F : Shv R) (j : ℤ) (hj : j < 0) : 
     omega)
 
 /- English proof (translation)
-Introduce `R _ F E₀ E g n h`. Apply `hG ((chains R).map g) n (chains_isZero R E₀) (chains_isZero R E) (res_isZero R F)` to reduce the goal to its premises. Introduce `k hk`. Take `⟨p, rfl⟩ : ∃ p : ℕ, k = -(p : ℤ)` from `⟨(-k).toNat, by omega⟩`. Conclude with `h p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Filt_of (hG : FiltGen.{2, 1}) : Filt := by
   intro R _ F E₀ E g n h
@@ -68,14 +68,14 @@ def ShiftLvl : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) {E₀ E : Spc} (g
     (((chains R).map g).f (-(p : ℤ))))) F n)
 
 /- English proof (translation)
-Introduce `R _ F E₀ E g p n h`. Conclude with `hS R F g p n (hD R F _ _ h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem Piece_of (hD : DiscLvl) (hS : ShiftLvl) : Piece := by
   intro R _ F E₀ E g p n h
   exact hS R F g p n (hD R F _ _ h)
 
 /- English proof (translation)
-The claim follows from `CechFilt_of (Piece_of hD hS) (Filt_of hG)`.
+A detailed English derivation is pending.
 -/
 theorem CechFilt_of_disc_shift_filtGen (hD : DiscLvl) (hS : ShiftLvl) (hG : FiltGen.{2, 1}) : LateralTheory.E.SSPf.CechFilt :=
   CechFilt_of (Piece_of hD hS) (Filt_of hG)

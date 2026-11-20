@@ -14,9 +14,9 @@ open Matrix
 open scoped ComplexOrder
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.coe_star_mul_self _`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Unitary.coe_mul_star_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hA.spectral_theorem`. Rewrite `h` using `[Unitary.conjStarAlgAut_apply]`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_eig {k : ℕ} {A : Matrix (Fin k) (Fin k) ℂ} (hA : A.IsHermitian) :
     ((hA.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ))ᴴ * (hA.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) = 1 ∧
@@ -32,19 +32,17 @@ theorem herm_eig {k : ℕ} {A : Matrix (Fin k) (Fin k) ℂ} (hA : A.IsHermitian)
     exact h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `herm_eig hP.isHermitian`. Use `set U : Matrix (Fin k) (Fin k) ℂ := (hP.isHermitian.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) with hU`. Use `set d := hP.isHermitian.eigenvalues with hd`. Establish `hpos : ∀ i, 0 < d i` using `hP.eigenvalues_pos`. Set `r : Fin k → ℂ` to `fun i => ((Real.sqrt (d i) : ℝ) : ℂ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr0 : ∀ i, r i ≠ 0` using `fun i => by`. Simplify `(Real.sqrt_pos.2 (hpos i)).ne'` using `[r]`. Establish `hrr : ∀ i, star (r i) * r i = (d i : ℂ)` using `fun i => by`. Simplify using `only [r, Complex.star_def, Complex.conj_ofReal]`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (hpos i).le]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdiag : diagonal r * diagonal (fun i => (r i)⁻¹) = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `mul_inv_cancel₀ (hr0 i)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hdiag' : diagonal (fun i => (r i)⁻¹) * diagonal r = 1`. Rewrite using `[diagonal_mul_diagonal, ← diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `inv_mul_cancel₀ (hr0 i)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `⟨diagonal r * Uᴴ, U * diagonal (fun i => (r i)⁻¹), ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[conjTranspose_mul, conjTranspose_conjTranspose, diagonal_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = U * diagonal (fun i => (d i : ℂ)) * Uᴴ := by`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[diagonal_mul_diagonal]`. Use `congr 3`. Use function extensionality and compare the values at `i`. Conclude with `hrr i`. Use `_ = P := h3.symm`.
-
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem posDef_factor {k : ℕ} {P : Matrix (Fin k) (Fin k) ℂ} (hP : P.PosDef) :
     ∃ B C : Matrix (Fin k) (Fin k) ℂ, Bᴴ * B = P ∧ B * C = 1 ∧ C * B = 1 := by
@@ -79,27 +77,23 @@ theorem posDef_factor {k : ℕ} {P : Matrix (Fin k) (Fin k) ℂ} (hP : P.PosDef)
       _ = 1 := by rw [hdiag', Matrix.mul_one, h2]
 
 /- English proof (translation)
-Take `⟨hss, hiso, hP⟩` from `h`. Take `⟨B, C, hBB, hBC, hCB⟩` from `posDef_factor hP`. Establish `hPs : (G * s) * s = G` using `by rw [Matrix.mul_assoc, hss, Matrix.mul_one]`. Establish `hsP : sᴴ * (G * s) = G` using `by rw [← Matrix.mul_assoc]; exact hiso`. Establish `hCtBt : Cᴴ * Bᴴ = 1` using `by rw [← conjTranspose_mul, hBC, conjTranspose_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHh : (B * s * C).IsHermitian`. Establish `e : (B * s * C)ᴴ = Cᴴ * (sᴴ * (Bᴴ * B)) * C`. Rewrite using `[conjTranspose_mul, conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `show (B * s * C)ᴴ = B * s * C`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hBB, hsP, ← hPs, ← hBB]`. Combine the equalities or inequalities in the displayed calculation. Establish `hHH : (B * s * C) * (B * s * C) = 1`. Combine the equalities or inequalities in the displayed calculation. Take `⟨h1, h2, h3⟩` from `herm_eig hHh`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set V : Matrix (Fin k) (Fin k) ℂ := (hHh.eigenvectorUnitary : Matrix (Fin k) (Fin k) ℂ) with hV`. Use `set l := hHh.eigenvalues with hl`. Use `set H := B * s * C with hH`. Establish `hHV : H * V = V * diagonal (fun i => (l i : ℂ))` using `by conv_lhs => rw [h3]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one]`. Establish `hsq : diagonal (fun i => (l i : ℂ)) * diagonal (fun i => (l i : ℂ)) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.one_mul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `_ = Vᴴ * (V * diagonal (fun i => (l i : ℂ)) * Vᴴ) * (V * diagonal (fun i => (l i : ℂ))) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = Vᴴ * H * (H * V) := by rw [← h3, hHV]`. Use `_ = Vᴴ * (H * H) * V := by simp only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [hHH, Matrix.mul_one, h1]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 
-Establish `hl2 : ∀ i, l i = 1 ∨ l i = -1` using `fun i => by`. Establish `e` using `congrFun (congrFun hsq i) i`. Rewrite `e` using `[diagonal_mul_diagonal, diagonal_apply_eq, Matrix.one_apply_eq]`. Establish `e' : l i * l i = 1` using `by exact_mod_cast e`. Conclude with `mul_self_eq_one_iff.mp e'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hsgn : PositivityTheory.Rg.Sw.sgn (fun i => decide (0 < l i)) = fun i => (l i : ℂ)`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases hl2 i with e | e <;> simp [PositivityTheory.Rg.Sw.sgn, e]`. Set `f : GL (Fin k) ℂ` to `⟨C * V, Vᴴ * B, by`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hf : f.1 = C * V` using `rfl`. Establish `hfP : (f.1)ᴴ * (G * s) * f.1 = 1`. Rewrite using `[hf, conjTranspose_mul, ← hBB]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hsf : s * f.1 = f.1 * diagonal (fun i => (l i : ℂ))`. Rewrite using `[hf]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨fun i => decide (0 < l i), f, ?_, hfP⟩` and prove the remaining obligations. Rewrite using `[hsgn]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hsf]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = diagonal (fun i => (l i : ℂ)) := by rw [hfP, Matrix.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frame {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanInv G s) :
     ∃ (ε : Fin k → Bool) (f : GL (Fin k) ℂ),
@@ -176,9 +170,9 @@ theorem exists_frame {k : ℕ} {G s : Matrix (Fin k) (Fin k) ℂ} (h : IsCartanI
     _ = diagonal (fun i => (l i : ℂ)) := by rw [hfP, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `D V θ s hθ hs`. Use `choose ε fr h1 h2 using fun τ => exists_frame (hs τ)`. Use `⟨ε, fr, fun τ => ?_, h2⟩` and prove the remaining obligations. Establish `e : (HeckeCharacterZeroLocus.SiegelWeilU.JR (HeckeCharacterZeroLocus.SiegelWeilU.Ainf D.host.F) (HSpace.gram V)).map (θ τ) = gramAt D V τ`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hθ τ).1 _`. Rewrite using `[e]`. Conclude with `h1 τ`.
+A detailed English derivation is pending.
 -/
 theorem exists_frames : ∀ (D : D7) (V : HSp D) (θ : InfFam D) (s : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ), IsInfFam θ → (∀ τ, IsCartanInv (gramAt D V τ) (s τ)) → ∃ (ε : D.what₂.Tau → Fin V.rank → Bool) (fr : D.what₂.Tau → GL (Fin V.rank) ℂ), PositivityTheory.SiegelWeilFormula.Gen.IsFrames (HSpace.gram V) θ ε fr ∧ ∀ τ, ((fr τ).1)ᴴ * (gramAt D V τ * s τ) * (fr τ).1 = 1 := by
   intro D V θ s hθ hs

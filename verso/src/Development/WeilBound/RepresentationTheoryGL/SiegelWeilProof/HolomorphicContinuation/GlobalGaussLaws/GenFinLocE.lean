@@ -21,7 +21,7 @@ theorem sigI_coe (σ : E →ₐ[F] E) (v : HeightOneSpectrum (𝓞 F)) (z : intL
     ((sigI σ v z : intLoc F E v) : Fv F v ⊗[F] E) = sigR (Fv F v) σ z := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR, hσ]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sigR_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (R : Type) [CommRing R] [Algebra F R] (z : R ⊗[F] E) :
     sigR R σ (sigR R σ z) = z := by
@@ -31,23 +31,23 @@ theorem sigR_sigR (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (R : Type) [
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (sigR_sigR σ hσ (Fv F v) (z : Fv F v ⊗[F] E))`.
+A detailed English derivation is pending.
 -/
 theorem sigI_sigI (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (v : HeightOneSpectrum (𝓞 F)) (z : intLoc F E v) :
     sigI σ v (sigI σ v z) = z := Subtype.ext (sigR_sigR σ hσ (Fv F v) (z : Fv F v ⊗[F] E))
 
 /- English proof (translation)
-Set `φ : E →ₗ[F] E` to `σ.toLinearMap - LinearMap.id`. Establish `hex : Function.Exact (Algebra.linearMap F E) φ`. Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: σ y = y` using `by have := hy; simp only [φ, LinearMap.sub_apply, AlgHom.toLinearMap_apply, LinearMap.id_apply, sub_eq_zero] at this; exact this`. Take `⟨c, hc⟩` from `(hfix y).1 this`. Conclude with `⟨c, hc⟩`. Introduce and unpack `⟨c, rfl⟩`. Simplify using `[φ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Establish `hex'` using `Module.Flat.lTensor_exact (Fv F v) hex`. Establish `hφ : φ.lTensor (Fv F v) z = 0`. Establish `key : ∀ w : Fv F v ⊗[F] E, φ.lTensor (Fv F v) w = sigR (Fv F v) σ w - w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul a x => simp [φ, sigR, TensorProduct.tmul_sub]`. Consider the case `add y w hy hw => rw [map_add, hy, hw, map_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[key, hz, sub_self]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw⟩` from `(hex' z).1 hφ`. Use `⟨TensorProduct.rid F (Fv F v) w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hw]`. Use `clear hw`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a c`. Simplify using `only [LinearMap.lTensor_tmul, Algebra.linearMap_apply, TensorProduct.rid_tmul]`. Rewrite using `[Algebra.algebraMap_eq_smul_one, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`. Consider the case `add y w hy hw => rw [map_add, hy, hw, map_add, TensorProduct.add_tmul]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem fixed_eq_tmul (σ : E →ₐ[F] E) (hfix : ∀ x, σ x = x ↔ x ∈ (algebraMap F E).range) (v : HeightOneSpectrum (𝓞 F))
     (z : Fv F v ⊗[F] E) (hz : sigR (Fv F v) σ z = z) : ∃ a : Fv F v, z = a ⊗ₜ[F] (1 : E) := by
@@ -83,7 +83,7 @@ theorem fixed_eq_tmul (σ : E →ₐ[F] E) (hfix : ∀ x, σ x = x ↔ x ∈ (al
   | add y w hy hw => rw [map_add, hy, hw, map_add, TensorProduct.add_tmul]
 
 /- English proof (translation)
-Establish `h1` using `absFin_le_one_of_mem_intLoc h`. Rewrite `h1` using `[absFin_tmul_one]`. Conclude with `(Valued.toNormedField.norm_le_one_iff).1 (by exact_mod_cast h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_tmul_mem (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (h : a ⊗ₜ[F] (1 : E) ∈ intLoc F E v) :
     a ∈ v.adicCompletionIntegers F := by
@@ -92,14 +92,14 @@ theorem mem_of_tmul_mem (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (h : a ⊗
   exact (Valued.toNormedField.norm_le_one_iff).1 (by exact_mod_cast h1)
 
 /- English proof (translation)
-Simplify using `using tmul_mem_intLoc (E := E) h (1 : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tmul_one_mem (v : HeightOneSpectrum (𝓞 F)) (a : Fv F v) (h : a ∈ v.adicCompletionIntegers F) :
     a ⊗ₜ[F] (1 : E) ∈ intLoc F E v := by
   simpa using tmul_mem_intLoc (E := E) h (1 : 𝓞 E)
 
 /- English proof (translation)
-Use `⟨⟨0, 1, fun h => ?_⟩⟩` and prove the remaining obligations. Establish `h' : ((0 : intLoc F E v) : Fv F v ⊗[F] E) = ((1 : intLoc F E v) : Fv F v ⊗[F] E)` using `congrArg Subtype.val h`. Use `congrArg (absFin F v) h'` as an intermediate fact. Rewrite `this` using `[ZeroMemClass.coe_zero, OneMemClass.coe_one, absFin_zero, absFin_one]`. Conclude with `zero_ne_one this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_intLoc (v : HeightOneSpectrum (𝓞 F)) : Nontrivial (intLoc F E v) := by
   refine ⟨⟨0, 1, fun h => ?_⟩⟩
@@ -109,23 +109,23 @@ theorem nontrivial_intLoc (v : HeightOneSpectrum (𝓞 F)) : Nontrivial (intLoc 
   exact zero_ne_one this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_or]`. Take `⟨hn1, hn2⟩` from `hne`. Establish `hsurj : Function.Surjective s` using `fun y => ⟨s y, hss y⟩`. Establish `hcc : ∀ I : Ideal R, (I.comap s).comap s = I`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `I`. Use extensionality with `z`. Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, hss]`. Establish `hm' : (𝔪.comap s).IsMaximal` using `Ideal.comap_isMaximal_of_surjective s hsurj`. Establish `hn' : (𝔫.comap s).IsMaximal` using `Ideal.comap_isMaximal_of_surjective s hsurj`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn3 : 𝔫.comap s ≠ 𝔪`. Introduce `h`. Apply `hn2` to reduce the goal to its premises. Rewrite using `[← h, hcc]`. Establish `hn4 : 𝔫.comap s ≠ 𝔪.comap s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Apply `hn1` to reduce the goal to its premises. Rewrite using `[← hcc 𝔫, h, hcc]`. Establish `c1 : 𝔪 ⊔ 𝔫 = ⊤` using `Ideal.IsMaximal.coprime_of_ne h𝔪 h𝔫 (Ne.symm hn1)`. Establish `c2 : 𝔪 ⊔ 𝔫.comap s = ⊤` using `Ideal.IsMaximal.coprime_of_ne h𝔪 hn' (Ne.symm hn3)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c3 : 𝔪.comap s ⊔ 𝔫 = ⊤` using `Ideal.IsMaximal.coprime_of_ne hm' h𝔫 (Ne.symm hn2)`. Establish `c4 : 𝔪.comap s ⊔ 𝔫.comap s = ⊤` using `Ideal.IsMaximal.coprime_of_ne hm' hn' (Ne.symm hn4)`. Establish `d1 : 𝔪 ⊔ 𝔫 * 𝔫.comap s = ⊤` using `(Ideal.sup_mul_eq_of_coprime_left c1).trans c2`. Establish `d2 : 𝔪.comap s ⊔ 𝔫 * 𝔫.comap s = ⊤` using `(Ideal.sup_mul_eq_of_coprime_left c3).trans c4`. Establish `e1 : 𝔫 * 𝔫.comap s ⊔ 𝔪 = ⊤` using `by rw [sup_comm]; exact d1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : 𝔫 * 𝔫.comap s ⊔ 𝔪.comap s = ⊤` using `by rw [sup_comm]; exact d2`. Establish `d3 : 𝔫 * 𝔫.comap s ⊔ 𝔪 * 𝔪.comap s = ⊤` using `(Ideal.sup_mul_eq_of_coprime_left e1).trans e2`. Establish `h1 : (1 : R) ∈ 𝔫 * 𝔫.comap s ⊔ 𝔪 * 𝔪.comap s` using `by rw [d3]; exact Submodule.mem_top`. Take `⟨y, hy, x, hx, hxy⟩` from `Submodule.mem_sup.1 h1`. Establish `hxm : x ∈ 𝔪` using `(Ideal.mul_le_left : 𝔪 * 𝔪.comap s ≤ 𝔪) hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyn : y ∈ 𝔫` using `(Ideal.mul_le_left : 𝔫 * 𝔫.comap s ≤ 𝔫) hy`. Establish `hyn'' : y ∈ 𝔫.comap s` using `(Ideal.mul_le_right : 𝔫 * 𝔫.comap s ≤ 𝔫.comap s) hy`. Establish `hyn' : s y ∈ 𝔫` using `Ideal.mem_comap.1 hyn''`. Establish `hzm : x * s x ∈ 𝔪` using `Ideal.mul_mem_right _ _ hxm`. Establish `hfz : s (x * s x) = x * s x` using `by rw [map_mul, hss, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1z : 1 - x * s x ∈ 𝔫`. Establish `hx' : x = 1 - y` using `by rw [← hxy]; ring`. Establish `e : 1 - x * s x = y + s y - y * s y` using `by rw [hx', map_sub, map_one]; ring`. Rewrite using `[e]`. Conclude with `Ideal.sub_mem _ (Ideal.add_mem _ hyn hyn') (Ideal.mul_mem_right _ _ hyn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hloc _ hfz with hu | hu` into its components or cases. Conclude with `h𝔪.ne_top (Ideal.eq_top_of_isUnit_mem _ hzm hu)`. Conclude with `h𝔫.ne_top (Ideal.eq_top_of_isUnit_mem _ h1z hu)`.
+A detailed English derivation is pending.
 -/
 theorem orbit_abs {R : Type} [CommRing R] (s : R →+* R) (hss : ∀ z, s (s z) = z)
     (hloc : ∀ z, s z = z → IsUnit z ∨ IsUnit (1 - z)) (𝔪 𝔫 : Ideal R) (h𝔪 : 𝔪.IsMaximal) (h𝔫 : 𝔫.IsMaximal) :
@@ -169,9 +169,9 @@ theorem orbit_abs {R : Type} [CommRing R] (s : R →+* R) (hss : ∀ z, s (s z) 
   · exact h𝔫.ne_top (Ideal.eq_top_of_isUnit_mem _ h1z hu)
 
 /- English proof (translation)
-Use `⟨⟨_, ⟨((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) ⊗ₜ[F] (1 : E), tmul_one_mem v _ (u⁻¹ : (v.adicCompletionIntegers F)ˣ).1.2⟩, Subtype.ext ?_, Subtype.ext ?_⟩, rfl⟩` and prove the remaining obligations. Use `show ((u : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E) * (((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← Subring.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Use `show (((u⁻¹ : (v.adicCompletionIntegers F)ˣ) : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E) * ((u : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E) = 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← Subring.coe_mul, Units.inv_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem isUnit_tmul (v : HeightOneSpectrum (𝓞 F)) (u : (v.adicCompletionIntegers F)ˣ) :
     IsUnit (⟨((u : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E), tmul_one_mem v _ (u : v.adicCompletionIntegers F).2⟩ :
@@ -186,13 +186,11 @@ theorem isUnit_tmul (v : HeightOneSpectrum (𝓞 F)) (u : (v.adicCompletionInteg
     rw [Algebra.TensorProduct.tmul_mul_tmul, mul_one, ← Subring.coe_mul, Units.inv_mul]; rfl
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `fixed_eq_tmul σ hfix v (z : Fv F v ⊗[F] E) (by rw [← sigI_coe]; exact congrArg Subtype.val hz)`. Establish `haO : a ∈ v.adicCompletionIntegers F` using `mem_of_tmul_mem v a (ha ▸ z.2)`. Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨a, haO⟩ : v.adicCompletionIntegers F) with hu | hu` into its components or cases. Use `left`. Take `⟨u, hu⟩` from `hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : z = ⟨((u : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E), tmul_one_mem v _ (u : v.adicCompletionIntegers F).2⟩` using `Subtype.ext (by rw [ha, hu])`. Rewrite using `[e]`. Conclude with `isUnit_tmul v u`. Use `right`. Take `⟨u, hu⟩` from `hu`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `e : 1 - z = ⟨((u : v.adicCompletionIntegers F) : Fv F v) ⊗ₜ[F] (1 : E), tmul_one_mem v _ (u : v.adicCompletionIntegers F).2⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hu]`. Use `show (1 : Fv F v ⊗[F] E) - (z : Fv F v ⊗[F] E) = (1 - a) ⊗ₜ[F] (1 : E)`. Rewrite using `[ha, TensorProduct.sub_tmul, Algebra.TensorProduct.one_def]`.
-
-Rewrite using `[e]`. Conclude with `isUnit_tmul v u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixed_local (σ : E →ₐ[F] E) (hfix : ∀ x, σ x = x ↔ x ∈ (algebraMap F E).range) (v : HeightOneSpectrum (𝓞 F))
     (z : intLoc F E v) (hz : sigI σ v z = z) : IsUnit z ∨ IsUnit (1 - z) := by
@@ -214,7 +212,7 @@ theorem fixed_local (σ : E →ₐ[F] E) (hfix : ∀ x, σ x = x ↔ x ∈ (alge
     rw [e]; exact isUnit_tmul v u
 
 /- English proof (translation)
-Use `nontrivial_intLoc (E := E) v` as an intermediate fact. Take `⟨𝔪, h𝔪⟩` from `Ideal.exists_maximal (intLoc F E v)`. Conclude with `⟨𝔪, h𝔪, fun 𝔫 h𝔫 => orbit_abs (sigI σ v) (sigI_sigI σ hσ v) (fixed_local σ hfix v) 𝔪 𝔫 h𝔪 h𝔫⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem orbit (σ : E →ₐ[F] E) (hσ : ∀ x, σ (σ x) = x) (hfix : ∀ x, σ x = x ↔ x ∈ (algebraMap F E).range)
     (v : HeightOneSpectrum (𝓞 F)) :

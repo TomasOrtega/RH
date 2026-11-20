@@ -23,15 +23,13 @@ section Transfer
 variable {X : TopCat.{u}} {P Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{u}} {D : Opens X}
 
 /- English proof (translation)
-Establish `hI : ∀ {m : ℕ} (i : Fin (m + 1) → ι), inter U i ≤ D` using `fun i => (inter_le U i 0).trans (hU _)`. Set `push' (m : ℕ) : Cochain Q U m →+ Cochain P U m` to `{ toFun σ i := φ _ (hI i) (σ i) map_zero' := by funext i; exact map_zero _ map_add' σ τ := by funext i; exact map_add _ _ _ }`. Establish `hd : ∀ m σ, d P U m (push' m σ) = push' (m + 1) (d Q U m σ)`. Introduce `m σ`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[d_apply]`. Express the relevant statement in the definitionally equal form `_ = φ _ (hI i) (d Q U m σ i)`. Rewrite using `[d_apply, map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(hnat _ (hI (i ∘ a.succAbove)) _).symm`. Establish `hinj : ∀ m, Function.Injective (push' m)` using `fun m σ τ h => by`. Use function extensionality and compare the values at `i`. Conclude with `(hφ _ (hI i)).1 (congrFun h i)`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : ∀ m, Function.Surjective (push' m)` using `fun m σ => ⟨fun i => ((hφ _ (hI i)).2 (σ i)).choose, funext fun i => ((hφ _ (hI i)).2 (σ i)).choose_spec⟩`. Introduce `m σ hσ`. Take `⟨σQ, rfl⟩` from `hsurj _ σ`. Establish `h0 : d Q U (m + 1) σQ = 0` using `hinj _ (by rw [← hd, hσ, map_zero])`. Take `⟨τ, hτ⟩` from `hQ m σQ h0`.
-
-Conclude with `⟨push' m τ, by rw [hd, hτ]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma cechAcyclic_of_bijective_le (φ : ∀ W : Opens X, W ≤ D → Q.obj (op W) →+ P.obj (op W))
     (hφ : ∀ W hW, Function.Bijective (φ W hW))
@@ -74,14 +72,14 @@ variable {A σ : Type u} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A]
 variable {𝒜 : ℕ → σ} [GradedRing 𝒜]
 
 /- English proof (translation)
-Use `SetLike.pow_mem_graded m hu` as an intermediate fact. Rewrite `this` using `[smul_eq_mul, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma pow_mem_of_mem_one {u : A} (hu : u ∈ 𝒜 1) (m : ℕ) : u ^ m ∈ 𝒜 m := by
   have := SetLike.pow_mem_graded m hu
   rwa [smul_eq_mul, mul_one] at this
 
 /- English proof (translation)
-Introduce `h` and use `hx (x.isPrime.mem_of_pow_mem m h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma pow_nmem {u : A} {x : ProjectiveSpectrum 𝒜} (hx : u ∉ x.asHomogeneousIdeal) (m : ℕ) :
     u ^ m ∉ x.asHomogeneousIdeal := fun h => hx (x.isPrime.mem_of_pow_mem m h)
@@ -91,7 +89,7 @@ def twistFrac (u : A) (k : ℤ) (x : ProjectiveSpectrum 𝒜) (hx : u ∉ x.asHo
   Localization.mk (u ^ k.toNat) ⟨u ^ (-k).toNat, pow_nmem hx _⟩
 
 /- English proof (translation)
-Rewrite using `[twistFrac, twistFrac, Localization.mk_mul, ← Localization.mk_one, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [neg_neg, Submonoid.coe_mul, Submonoid.coe_one, one_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma twistFrac_mul_twistFrac_neg (u : A) (k : ℤ) (x : ProjectiveSpectrum 𝒜)
     (hx : u ∉ x.asHomogeneousIdeal) : twistFrac u k x hx * twistFrac u (-k) x hx = 1 := by
@@ -102,7 +100,7 @@ lemma twistFrac_mul_twistFrac_neg (u : A) (k : ℤ) (x : ProjectiveSpectrum 𝒜
   ring
 
 /- English proof (translation)
-Introduce `x` and use `⟨W, x.2, 𝟙 W, (-k).toNat, k.toNat, by omega, u ^ k.toNat, u ^ (-k).toNat, pow_mem_of_mem_one hu _, pow_mem_of_mem_one hu _, fun y => pow_nmem (hW y) _, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma isLocallyFraction_twistFrac {u : A} (hu : u ∈ 𝒜 1) (k : ℤ)
     {W : Opens (ProjectiveSpectrum.top 𝒜)} (hW : ∀ x : W, u ∉ x.1.asHomogeneousIdeal) :
@@ -112,7 +110,7 @@ lemma isLocallyFraction_twistFrac {u : A} (hu : u ∈ 𝒜 1) (k : ℤ)
 
 set_option backward.isDefEq.respectTransparency.types false in
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨V, hxV, iV, j, ⟨r, hr⟩, ⟨s, hs⟩, hsn, w⟩ := t.2 x refine ⟨V, hxV, iV, j, j, by simp, r, s, hr, hs, hsn, fun y => ?_⟩ exact (congrArg HomogeneousLocalization.val (w y)).trans (HomogeneousLocalization.val_mk _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma isLocallyFraction_val_section {W : Opens (ProjectiveSpectrum.top 𝒜)}
     (t : (ProjectiveSpectrum.Proj.structureSheaf 𝒜).obj.obj (op W)) :
@@ -145,13 +143,13 @@ lemma twistMap_apply {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) {W : Opens (Projectiv
     (twistMap hu k hW t).1 x = twistFrac u k x.1 (hW x) * (t.1 x).val := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `HomogeneousLocalization.val_injective` to reduce the goal to its premises. Establish `h1 : twistFrac u k x.1 (hW x) * (t.1 x).val = 0` using `congrFun (congrArg Subtype.val ht) x`. Establish `h2` using `twistFrac_mul_twistFrac_neg u k x.1 (hW x)`. Use `(show (t.1 x).val = 0 from ?_).trans HomogeneousLocalization.val_zero.symm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Take the linear combination `(-(t.1 x).val) * h2`. Use `_ = 0 := by rw [h1, mul_zero]`. Introduce `s`. Establish `hf` using `isLocallyFraction_mul (neg_add_cancel k) (isLocallyFraction_twistFrac hu (-k) hW) s.2`. Take `⟨t, ht⟩` from `exists_section_of_isLocallyFraction_zero _ hf`.
+Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t, Subtype.ext (funext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[twistMap_apply, ht x]`. Express the relevant statement in the definitionally equal form `twistFrac u k x.1 (hW x) * (twistFrac u (-k) x.1 (hW x) * s.1 x) = s.1 x`. Take the linear combination `(s.1 x) * twistFrac_mul_twistFrac_neg u k x.1 (hW x)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma twistMap_bijective {u : A} (hu : u ∈ 𝒜 1) (k : ℤ) {W : Opens (ProjectiveSpectrum.top 𝒜)}
     (hW : ∀ x : W, u ∉ x.1.asHomogeneousIdeal) : Function.Bijective (twistMap hu k hW) := by
@@ -188,7 +186,7 @@ def AffineUnder {ι : Type w} (v : ι → A) (V : (Proj 𝒜).Opens) : Prop :=
   IsAffineOpen V ∧ ∃ j, V ≤ Proj.basicOpen 𝒜 (v j)
 
 /- English proof (translation)
-The claim follows from `isCoverSystem_isBasicCover.iSup_eq V U hU.1 inter_mem V κ U hU n i := by refine ⟨isCoverSystem_isBasicCover.inter_mem V U hU.1 i, ?_⟩ obtain ⟨j, hj⟩ := hU.2.2 refine ⟨j, (inter_le U i 0).trans ((le_iSup U (i 0)).trans ?_)⟩ exact (isCoverSystem_isBasicCover.iSup_eq V U hU.1).le.tr …`.
+A detailed English derivation is pending.
 -/
 lemma isCoverSystem_affineUnder {ι : Type w} (v : ι → A) :
     IsCoverSystem (X := (Proj 𝒜).toTopCat) (AffineUnder v)
@@ -204,7 +202,7 @@ lemma isCoverSystem_affineUnder {ι : Type w} (v : ι → A) :
     exact ⟨κ, hκ, U, ⟨hU, hV⟩, hsub⟩
 
 /- English proof (translation)
-Introduce `V hV κ _ U hU`. Take `⟨j, hj⟩` from `hV.2`. Establish `hUV : ∀ a, U a ≤ V` using `fun a => (le_iSup U a).trans (isCoverSystem_isBasicCover.iSup_eq V U hU.1).le`. Use `cechAcyclic_of_bijective_le (Q := (modulesAb (SheafOfModules.unit (Proj 𝒜).ringCatSheaf)).obj) (D := Proj.basicOpen 𝒜 (v j)) (fun W hW => twistMap (hv j) k (W := W) (fun x => hW x.2)) (fun W hW => twistMap_bijective _ _ _) ?_ U (fun a => (hUV a).trans hj) (cechAcyclic_of_isBasicC …` and prove the remaining obligations. Introduce `W W' h hW x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
 Both sides reduce to the same expression.
 -/
@@ -226,9 +224,9 @@ lemma goodAcyclic_twist {ι : Type w} (v : ι → A) (hv : ∀ j, v j ∈ 𝒜 1
   rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Express the relevant statement in the definitionally equal form `x ∈ inter (X := (Proj 𝒜).toTopCat) (fun j => Proj.basicOpen 𝒜 (v j)) i ↔ _`. Rewrite using `[mem_inter_iff]`. Express the relevant statement in the definitionally equal form `(∀ a, v (i a) ∉ x.asHomogeneousIdeal.toIdeal) ↔ (∏ a, v (i a)) ∉ x.asHomogeneousIdeal.toIdeal`. Use `x.isPrime` as an intermediate fact.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[Ideal.IsPrime.prod_mem_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma inter_basicOpen_eq {ι : Type w} (v : ι → A) {m : ℕ} (i : Fin (m + 1) → ι) :
     inter (X := (Proj 𝒜).toTopCat) (fun j => Proj.basicOpen 𝒜 (v j)) i =
@@ -243,9 +241,9 @@ lemma inter_basicOpen_eq {ι : Type w} (v : ι → A) {m : ℕ} (i : Fin (m + 1)
   simp
 
 /- English proof (translation)
-Use `nonempty_cechH_equiv (isCoverSystem_affineUnder v) _ hcov (fun {m} i => ⟨?_, ⟨i 0, inter_le _ i 0⟩⟩) p _ (goodAcyclic_twist v hv k)` and prove the remaining obligations. Rewrite using `[inter_basicOpen_eq]`. Establish `hmem : ∏ a, v (i a) ∈ 𝒜 (m + 1)`. Use `SetLike.prod_mem_graded 𝒜 (fun _ => 1) (fun a => v (i a)) (F := (Finset.univ : Finset (Fin (m + 1)))) (fun a _ => hv (i a))` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `Proj.isAffineOpen_basicOpen 𝒜 _ hmem (Nat.succ_pos m)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_cechH_equiv_H_twist {ι : Type w} (v : ι → A) (hv : ∀ j, v j ∈ 𝒜 1)
     (hcov : ⨆ j, Proj.basicOpen 𝒜 (v j) = ⊤) (k : ℤ) (p : ℕ)
@@ -271,7 +269,7 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {A : Type u} [CommRing A] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `nonempty_cechH_equiv_H_twist (fun j => MvPolynomial.X j) (fun j => X_mem j) iSup_stdOpen k p`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_cechH_equiv_H (k : ℤ) (p : ℕ)
     [HasExt.{w'} (Sheaf (Opens.grothendieckTopology (projectiveSpace A n).toTopCat)

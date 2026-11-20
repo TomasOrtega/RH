@@ -17,14 +17,14 @@ open GlobalTheory.CompanionTheory.CupRep
 variable {K : Type} [CommRing K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)}
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Ideal.Quotient.mk_surjective (ev T h g))`.
+A detailed English derivation is pending.
 -/
 theorem mk_liftV {V : X.Opens} (T : Thick (smFun X q)) (h : InU V T) (g : Γ(X, V)) :
     Ideal.Quotient.mk T.J (liftV T h g) = ev T h g :=
   Classical.choose_spec (Ideal.Quotient.mk_surjective (ev T h g))
 
 /- English proof (translation)
-Use `Ideal.Quotient.eq.1 ?_` and prove the remaining obligations. Rewrite using `[mk_liftV]`. Establish `e : Ideal.Quotient.mk T'.J (φ.φ (liftV T h g)) = Ideal.quotientMap T'.J φ.φ φ.hle (Ideal.Quotient.mk T.J (liftV T h g))` using `(Ideal.quotientMap_mk).symm`. Rewrite using `[e, mk_liftV]`. Conclude with `GlobalTheory.CompanionTheory.GrForm.ev_nat φ h h' g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftV_sub_map_mem {V : X.Opens} {T T' : Thick (smFun X q)} (φ : T ⟶ T') (h : InU V T) (h' : InU V T')
     (g : Γ(X, V)) : liftV T' h' g - φ.φ (liftV T h g) ∈ T'.J := by
@@ -36,7 +36,7 @@ theorem liftV_sub_map_mem {V : X.Opens} {T T' : Thick (smFun X q)} (φ : T ⟶ T
   exact GlobalTheory.CompanionTheory.GrForm.ev_nat φ h h' g
 
 /- English proof (translation)
-Use `Ideal.Quotient.eq_zero_iff_mem.1 ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_add, mk_liftV, mk_liftV, mk_liftV, map_add, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftV_add_mem {V : X.Opens} (T : Thick (smFun X q)) (h : InU V T) (x y : Γ(X, V)) :
     liftV T h x + liftV T h y - liftV T h (x + y) ∈ T.J := by
@@ -46,7 +46,7 @@ theorem liftV_add_mem {V : X.Opens} (T : Thick (smFun X q)) (h : InU V T) (x y :
 variable (s : ℕ) (V : X.Opens)
 
 /- English proof (translation)
-Use `mem_FC.2 fun u => ?_` and prove the remaining obligations. Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Rewrite using `[Nat.cast_one, hF.one]`. Conclude with `liftV_sub_map_mem (u.map (homOfLE (Fin.zero_le (Fin.last 1)))).hom _ _ g`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem addC_mem (g : Γ(X, V)) :
     addC (KS q s {V}) (fun T => liftV T.obj (ks_in q s V T.obj T.property) g) ∈
@@ -57,9 +57,9 @@ theorem addC_mem (g : Γ(X, V)) :
   exact liftV_sub_map_mem (u.map (homOfLE (Fin.zero_le (Fin.last 1)))).hom _ _ g
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Proceed by induction on `d with`. Consider the case `zero`. Use `mem_FC.2 fun u => ?_` and prove the remaining obligations. Rewrite using `[hF.top _ (by simp)]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Consider the case `succ n ih`. Conclude with `cup_mem hF (by omega) (ih _ fun i => hl _) (hl (Fin.last n))`.
+Check the elementary cases of the proposition. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cupList_mem {d : ℕ} (l : Fin d → CH.Cn (CH.modF (sP (KS q s {V})).A) 1)
     (hl : ∀ k, l k ∈ FC (sFil (KS q s {V}) ((1 : ℕ) : ℤ)) 1) :
@@ -74,7 +74,7 @@ theorem cupList_mem {d : ℕ} (l : Fin d → CH.Cn (CH.modF (sP (KS q s {V})).A)
     exact cup_mem hF (by omega) (ih _ fun i => hl _) (hl (Fin.last n))
 
 /- English proof (translation)
-The claim follows from `congrArg (fun b : (sP (KS q s {V})).A.obj (u.obj (Fin.last d)) => ((sP (KS q s {V})).A.map (u.map (homOfLE (Fin.le_last (CH.front (Nat.zero_add d) (Fin.last 0)))))).hom (liftV (u.obj (CH.front (Nat.zero_add d) (Fin.last 0))).obj (ks_in q s V _ (u.obj (CH.front (Nat.zero_add d) (F …`.
+A detailed English derivation is pending.
 -/
 theorem xdtC_val {d : ℕ} (t : Fin d → Γ(X, V)) (x : Γ(X, V)) (u : ComposableArrows (KS q s {V}).FullSubcategory d) :
     vl (xdtC (q := q) s V t x) u =
@@ -96,13 +96,13 @@ namespace GlobalTheory.CompanionTheory.ConeLocal
 open GlobalTheory.CompanionTheory.CupRep XdtAdd
 
 /- English proof (translation)
-Establish `hF` using `GlobalTheory.CompanionTheory.DPFil.isFil_sFil (KS q s {V})`. Use `rep_congr (rep_add ha hb) fun u => ?_` and prove the remaining obligations. Establish `hc` using `mem_FC.1 (cupList_mem s V (fun k => addC (KS q s {V}) fun T => liftV T.obj (ks_in q s V T.obj T.property) (t k)) fun k => addC_mem s V (t k)) u`. Set `T0` to `u.obj (CH.front (Nat.zero_add d) (Fin.last 0))`. Set `ψ` to `u.map (homOfLE (Fin.le_last (CH.front (Nat.zero_add d) (Fin.last 0))))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h1 : ((sP (KS q s {V})).A.map ψ).hom (liftV T0.obj (ks_in q s V _ T0.property) x + liftV T0.obj (ks_in q s V _ T0.property) y - liftV T0.obj (ks_in q s V _ T0.property) (x + y)) ∈ (sFil (KS q s {V}) ((1 : ℕ) : ℤ)).S _`. Rewrite using `[Nat.cast_one, hF.one]`. Conclude with `(sP (KS q s {V})).J.map_mem ψ (liftV_add_mem T0.obj _ x y)`. Establish `h2` using `hF.mul 1 d _ h1 hc`. Establish `e : ((1 + d : ℕ) : ℤ) = (d : ℤ) + 1` using `by push_cast; ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[e]`. Express the relevant statement in the definitionally equal form `vl (xdtC (q := q) s V t x) u + vl (xdtC (q := q) s V t y) u - vl (xdtC (q := q) s V t (x + y)) u ∈ _`. Rewrite using `[xdtC_val, xdtC_val, xdtC_val]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_sub, map_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem rep_xdtC_add {K : Type} [Field K] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of K)} (s : ℕ) (V : X.Opens)
     {d : ℕ} (t : Fin d → Γ(X, V)) (x y : Γ(X, V)) (a b : HQ (KS q s {V}) d ((d : ℤ) + 1) d)

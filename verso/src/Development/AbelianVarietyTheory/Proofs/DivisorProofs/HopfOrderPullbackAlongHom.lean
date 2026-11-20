@@ -14,24 +14,22 @@ def intAfP (p : ℕ) : Set (AfP p) :=
   {a | ∀ v : AwayP p, AfP.eval v a ∈ v.1.adicCompletionIntegers ℚ}
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.isOpen_forall_mem (fun _ => Valued.isOpen_valuationSubring _)`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_intAfP (p : ℕ) : IsOpen (intAfP p) :=
   RestrictedProduct.isOpen_forall_mem (fun _ => Valued.isOpen_valuationSubring _)
 
 /- English proof (translation)
-The claim follows from `_root_.natCast_mem _ n`.
+A detailed English derivation is pending.
 -/
 theorem natCast_mem (v : HeightOneSpectrum ℤ) (n : ℕ) :
     (n : v.adicCompletion ℚ) ∈ v.adicCompletionIntegers ℚ :=
   _root_.natCast_mem _ n
 
 /- English proof (translation)
-Take `⟨b, hb, hbx⟩` from `adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Use `⟨b.natAbs, Int.natAbs_pos.2 hb0, ?_⟩` and prove the remaining obligations. Establish `e : ((b.natAbs : ℕ) : v.adicCompletion ℚ) = algebraMap ℤ (v.adicCompletion ℚ) (|b|)`. Rewrite using `[← Int.natCast_natAbs, map_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Break down `abs_choice b with h | h` into its components or cases. Rewrite using `[h, mul_comm]`. Conclude with `hbx`. Rewrite using `[h, map_neg, neg_mul, mul_comm]`.
-
-Conclude with `neg_mem hbx`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_local (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ) :
     ∃ n : ℕ, 0 < n ∧ (n : v.adicCompletion ℚ) * x ∈ v.adicCompletionIntegers ℚ := by
@@ -46,18 +44,16 @@ theorem exists_nat_local (v : HeightOneSpectrum ℤ) (x : v.adicCompletion ℚ) 
   · rw [h, map_neg, neg_mul, mul_comm]; exact neg_mem hbx
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eval_natCast_mul {p : ℕ} (v : AwayP p) (n : ℕ) (a : AfP p) :
     AfP.eval v ((n : AfP p) * a) = (n : v.1.adicCompletion ℚ) * AfP.eval v a := by
   rw [map_mul, map_natCast]
 
 /- English proof (translation)
-Use `choose m hm0 hm using fun v : AwayP p => exists_nat_local v.1 (AfP.eval v a)`. Establish `hS : {v : AwayP p | ¬ AfP.eval v a ∈ v.1.adicCompletionIntegers ℚ}.Finite` using `Filter.eventually_cofinite.mp (a : Πʳ v : AwayP p, [v.1.adicCompletion ℚ, v.1.adicCompletionIntegers ℚ]).2`. Use `⟨∏ v ∈ hS.toFinset, m v, Finset.prod_pos (fun v _ => hm0 v), fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[eval_natCast_mul]`. Distinguish the cases in `hw : w ∈ hS.toFinset`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m hw`. Rewrite using `[hk, Nat.cast_mul, mul_comm ((m w : ℕ) : w.1.adicCompletion ℚ), mul_assoc]`. Conclude with `mul_mem (natCast_mem w.1 k) (hm w)`. Establish `hw' : AfP.eval w a ∈ w.1.adicCompletionIntegers ℚ`. Assume the negation of the conclusion as `h`.
-
-Conclude with `hw (hS.mem_toFinset.mpr h)`. Conclude with `mul_mem (natCast_mem w.1 _) hw'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_nat_adele {p : ℕ} (a : AfP p) : ∃ n : ℕ, 0 < n ∧ (n : AfP p) * a ∈ intAfP p := by
   choose m hm0 hm using fun v : AwayP p => exists_nat_local v.1 (AfP.eval v a)
@@ -75,11 +71,11 @@ theorem exists_nat_adele {p : ℕ} (a : AfP p) : ∃ n : ℕ, 0 < n ∧ (n : AfP
     exact mul_mem (natCast_mem w.1 _) hw'
 
 /- English proof (translation)
-Establish `hden : r.den = p ^ r.den.primeFactorsList.length`. Use `Nat.eq_prime_pow_of_unique_prime_dvd r.den_nz fun {ℓ} hℓ hdvd => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hℓ' : Prime (ℓ : ℤ)` using `Nat.prime_iff_prime_int.1 hℓ`. Set `v : HeightOneSpectrum ℤ` to `⟨Ideal.span {(ℓ : ℤ)}, (Ideal.span_singleton_prime hℓ'.ne_zero).2 hℓ', by simpa using hℓ.ne_zero⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hv : v.asIdeal ≠ Ideal.span {(p : ℤ)}`. Introduce `h'`. Establish `h'' : Associated (ℓ : ℤ) (p : ℤ)` using `Ideal.span_singleton_eq_span_singleton.1 h'`. Conclude with `hne (by simpa using Int.natAbs_eq_iff_associated.2 h'')`. Establish `h1` using `Rat.valuation_le_one_iff_den.1 (h ⟨v, hv⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1 (Ideal.mem_span_singleton.2 (by exact_mod_cast hdvd))`. Use `⟨r.num, r.den.primeFactorsList.length, ?_⟩` and prove the remaining obligations. Establish `: ((p : ℚ) ^ r.den.primeFactorsList.length) = (r.den : ℚ)` using `by conv_rhs => rw [hden] push_cast; rfl`. Rewrite using `[this, Rat.mul_den_eq_num]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_of_integral_away (p : ℕ) [Fact p.Prime] (r : ℚ)
     (h : ∀ v : AwayP p, (v.1.valuation ℚ r) ≤ 1) : ∃ (k : ℤ) (e : ℕ), r * (p : ℚ) ^ e = k := by
@@ -102,13 +98,13 @@ theorem exists_pow_of_integral_away (p : ℕ) [Fact p.Prime] (r : ℚ)
   rw [this, Rat.mul_den_eq_num]
 
 /- English proof (translation)
-Introduce `p _ Ω hΩ`. Use `choose m hm0 hm using fun a : AfP p => exists_nat_adele a`. Take `⟨t, ht⟩` from `hΩ.elim_finite_subcover (fun a => (fun x => (m a : AfP p) * x) ⁻¹' intAfP p) (fun a => (isOpen_intAfP p).preimage (continuous_const_mul _)) (fun x _ => Set.mem_iUnion.mpr ⟨x, hm x⟩)`. Use `⟨∏ a ∈ t, m a, Finset.prod_pos (fun a _ => hm0 a), fun q hq => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hqa⟩` from `Set.mem_iUnion₂.mp (ht hq)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Finset.dvd_prod_of_mem m ha`. Establish `hqa' : (m a : AfP p) * algebraMap ℚ (AfP p) q ∈ intAfP p` using `hqa`. Establish `hint : ∀ v : AwayP p, v.1.valuation ℚ (((∏ a ∈ t, m a : ℕ) : ℚ) * q) ≤ 1`. Introduce `v`. Establish `h2 : AfP.eval v (algebraMap ℚ (AfP p) (((∏ a ∈ t, m a : ℕ) : ℚ) * q)) ∈ v.1.adicCompletionIntegers ℚ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : algebraMap ℚ (AfP p) (((∏ a ∈ t, m a : ℕ) : ℚ) * q) = (k : AfP p) * ((m a : AfP p) * algebraMap ℚ (AfP p) q)`. Rewrite using `[map_mul, map_natCast, hk, Nat.cast_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, eval_natCast_mul]`. Conclude with `mul_mem (natCast_mem v.1 k) (hqa' v)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[AlgHom.commutes]`. Rewrite using `[← valuedAdicCompletion_eq_valuation', ← mem_adicCompletionIntegers]`. Conclude with `h2`. Take `⟨z, e, hz⟩` from `exists_pow_of_integral_away p _ hint`. Conclude with `⟨z, e, by rw [← hz]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem den_bounded_of_isCompact : ∀ (p : ℕ) [Fact p.Prime] (Ω : Set (AfP p)), IsCompact Ω → ∃ M : ℕ, 0 < M ∧
     ∀ q : ℚ, algebraMap ℚ (AfP p) q ∈ Ω → ∃ (k : ℤ) (e : ℕ), q * ((M : ℚ) * (p : ℚ) ^ e) = k := by

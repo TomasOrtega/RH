@@ -11,23 +11,21 @@ open scoped UpperHalfPlane
 namespace GlobalTheory.IdealTheta
 
 /- English proof (translation)
-Use `set A : ℤ := r.num * s.den with hA`. Use `set B : ℤ := s.num * r.den with hB`. Establish `hr : (r : K) * (r.den : K) = (r.num : K)`. Use `congrArg (fun t : ℚ => (t : K)) (Rat.mul_den_eq_num r)` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hs : (s : K) * (s.den : K) = (s.num : K)`. Use `congrArg (fun t : ℚ => (t : K)) (Rat.mul_den_eq_num s)` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hAB : (A : K) * a₁ + (B : K) * a₂ = (r.den : K) * (s.den : K)`. Rewrite using `[hA, hB]`. Use `push_cast`. Rewrite using `[← hr, ← hs]`. Take the linear combination `((r.den : K) * (s.den : K)) * h`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN : (r.den : K) * (s.den : K) ≠ 0` using `mul_ne_zero (Nat.cast_ne_zero.mpr r.den_nz) (Nat.cast_ne_zero.mpr s.den_nz)`. Establish `hg : Int.gcd A B ≠ 0`. Introduce `h0`. Rewrite `h0` using `[Int.gcd_eq_zero_iff]`. Rewrite `hAB` using `[h0.1, h0.2]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Apply `hN` to reduce the goal to its premises. Rewrite using `[← hAB]`. Simplify using the standard rewrite rules. Take `⟨p, hp⟩ : ((Int.gcd A B : ℕ) : ℤ) ∣ A` from `Int.gcd_dvd_left A B`. Take `⟨q, hq⟩ : ((Int.gcd A B : ℕ) : ℤ) ∣ B` from `Int.gcd_dvd_right A B`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbez` using `Int.gcd_eq_gcd_ab A B`. Use `set g : ℕ := Int.gcd A B with hgdef`. Establish `hgZ : (g : ℤ) ≠ 0` using `Nat.cast_ne_zero.mpr hg`. Establish `hgK : (g : K) ≠ 0` using `Nat.cast_ne_zero.mpr hg`. Use `⟨((r.den : ℚ) * (s.den : ℚ)) / (g : ℚ), p, q, -Int.gcdB A B, Int.gcdA A B, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (0 : ℚ) < r.den` using `Nat.cast_pos.mpr r.den_pos`. Establish `h2 : (0 : ℚ) < s.den` using `Nat.cast_pos.mpr s.den_pos`. Establish `h3 : (0 : ℚ) < g` using `Nat.cast_pos.mpr (Nat.pos_of_ne_zero hg)`. Check the signs of the components of the expression. Apply `mul_left_cancel₀ hgZ` to reduce the goal to its premises.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `-hbez - Int.gcdA A B * hp - Int.gcdB A B * hq`. Establish `hpK : (A : K) = (g : K) * (p : K)` using `by exact_mod_cast congrArg (fun t : ℤ => (t : K)) hp`. Establish `hqK : (B : K) = (g : K) * (q : K)` using `by exact_mod_cast congrArg (fun t : ℤ => (t : K)) hq`. Use `push_cast`. Rewrite using `[eq_div_iff hgK, ← hAB, hpK, hqK]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_primitive_rat {K : Type} [Field K] [CharZero K] (a₁ a₂ : K) (r s : ℚ)
     (h : (r : K) * a₁ + (s : K) * a₂ = 1) :
@@ -72,41 +70,41 @@ theorem exists_primitive_rat {K : Type} [Field K] [CharZero K] (a₁ a₂ : K) (
     ring
 
 /- English proof (translation)
-Introduce `K _ _ d δ ι 𝔞 Λ hK _ _ _ hΛ`. Take `⟨c₀, τ₀, hc₀, hlat⟩` from `latTau Λ`. Establish `hmem : ∀ z : ℂ, z ∈ Λ.lattice ↔ ∃ y : K, y ∈ 𝔞 ∧ ι y = z`. Introduce `z`. Establish `: z ∈ (Λ.lattice : Set ℂ) ↔ z ∈ ι '' (𝔞 : Set K)` using `by rw [hΛ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Take `⟨a₁, -, ha₁⟩` from `(hmem (c₀ * τ₀)).mp ((hlat _).mpr ⟨1, 0, by simp⟩)`. Take `⟨a₂, -, ha₂⟩` from `(hmem c₀).mp ((hlat _).mpr ⟨0, 1, by simp⟩)`. Establish `hA : ∀ x : K, x ∈ 𝔞 ↔ ∃ m n : ℤ, x = (m : K) * a₁ + (n : K) * a₂`. Introduce `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : x ∈ 𝔞 ↔ ι x ∈ Λ.lattice`. Rewrite using `[hmem]`. Conclude with `⟨fun h => ⟨x, h, rfl⟩, fun ⟨y, hy, e⟩ => ι.injective e ▸ hy⟩`. Rewrite using `[h1, hlat]`. Use `exists_congr fun m => exists_congr fun n => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ι.injective.eq_iff]`. Simplify using `only [map_add, map_mul, map_intCast, ha₁, ha₂]`. Apply the tactic sequence `constructor <;> intro h <;> rw [h] <;> ring`. Establish `hli : LinearIndependent ℚ ![a₁, a₂]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s h`. Rewrite `h` using `[Rat.smul_def, Rat.smul_def]`. Establish `h1` using `congrArg ι h`. Simplify using `only [map_add, map_mul, map_ratCast, ha₁, ha₂, map_zero] at h1`. Establish `h2 : (r : ℂ) * τ₀ + (s : ℂ) = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `mul_left_cancel₀ hc₀` to reduce the goal to its premises. Take the linear combination `h1`. Establish `h3` using `congrArg Complex.im h2`. Establish `hr : r = 0`. Use `τ₀.im_ne_zero` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h3` using `[this]`. Substitute `hr` using the available equality. Simplify using `using h2`. Establish `hspan` using `hli.span_eq_top_of_card_eq_finrank (by simp [hK])`. Take `⟨w, hw⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).mp (show (1 : K) ∈ Submodule.span ℚ (Set.range ![a₁, a₂]) by rw [hspan]; trivial)`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, Rat.smul_def] at hw`. Take `⟨c, p, q, u, v, hc, hdet, hcK⟩` from `exists_primitive_rat a₁ a₂ (w 0) (w 1) hw`. Establish `hcK0 : (c : K) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hcC0 : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `hdetK : (p : K) * v - q * u = 1` using `by exact_mod_cast congrArg (fun t : ℤ => (t : K)) hdet`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetR : (p : ℝ) * v - q * u = 1` using `by exact_mod_cast hdet`. Use `set θ : K := -((u : K) * a₁ + (v : K) * a₂) / (c : K) with hθ`. Establish `hcθ : (c : K) * θ = -((u : K) * a₁ + (v : K) * a₂)`. Rewrite using `[hθ]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcC : (c : ℂ) = c₀ * ((p : ℂ) * τ₀ + q)`. Establish `h1` using `congrArg ι hcK`. Simplify using `only [map_add, map_mul, map_ratCast, map_intCast, ha₁, ha₂] at h1`. Take the linear combination `-h1`. Establish `hz : ((p : ℂ) * τ₀ + q) ≠ 0`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h0`. Apply `hcC0` to reduce the goal to its premises. Rewrite using `[hcC, h0, mul_zero]`. Establish `hιθ : ι θ = -((u : ℂ) * τ₀ + v) / ((p : ℂ) * τ₀ + q)`. Establish `h1` using `congrArg ι hcθ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_mul, map_neg, map_ratCast, map_intCast, ha₁, ha₂] at h1`. Rewrite using `[eq_div_iff hz]`. Apply `mul_left_cancel₀ hc₀` to reduce the goal to its premises. Rewrite `h1` using `[hcC]`. Take the linear combination `h1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `him : 0 < (ι θ).im`. Rewrite using `[hιθ, Complex.div_im, ← sub_div]`. Use `div_pos ?_ (Complex.normSq_pos.mpr hz)` and prove the remaining obligations. Establish `hy : 0 < (τ₀ : ℂ).im` using `τ₀.im_pos`. Simplify using `only [Complex.neg_im, Complex.neg_re, Complex.add_im, Complex.add_re, Complex.mul_im, Complex.mul_re, Complex.intCast_im, Complex.intCast_re]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `: -(↑u * (τ₀ : ℂ).im + 0 * (τ₀ : ℂ).re + 0) * (↑p * (τ₀ : ℂ).re - 0 * (τ₀ : ℂ).im + ↑q) - -(↑u * (τ₀ : ℂ).re - 0 * (τ₀ : ℂ).im + ↑v) * (↑p * (τ₀ : ℂ).im + 0 * (τ₀ : ℂ).re + 0) = (τ₀ : ℂ).im`. Take the linear combination `(τ₀ : ℂ).im * hdetR`. Rewrite using `[this]`. Conclude with `hy`. Establish `hmain : ∀ x : K, x ∈ 𝔞 ↔ ∃ a b : ℤ, x = (c : K) * ((a : K) * θ + (b : K))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `x`. Rewrite using `[hA]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, n, rfl⟩`. Use `⟨m * q - n * p, m * v - n * u, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components.
 
-Use `push_cast`. Take the linear combination `(-((m : K) * q - n * p)) * hcθ + ((m : K) * v - n * u) * hcK - ((m : K) * a₁ + (n : K) * a₂) * hdetK`. Introduce and unpack `⟨a, b, rfl⟩`. Use `⟨b * p - a * u, b * q - a * v, ?_⟩` and prove the remaining obligations. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(a : K) * hcθ - (b : K) * hcK`. Use `⟨c, θ, ⟨ι θ, him⟩, hc, rfl, ⟨hcC0, fun z => ?_⟩, hmain⟩` and prove the remaining obligations. Rewrite using `[hmem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨a, b, rfl⟩` from `(hmain y).mp hy`. Conclude with `⟨a, b, by simp⟩`. Introduce and unpack `⟨a, b, rfl⟩`. Conclude with `⟨_, (hmain _).mpr ⟨a, b, rfl⟩, by simp⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (Λ : PeriodPair), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) → 𝔞 ≠ 0 → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf ι 𝔞 Λ → ∃ (c : ℚ) (θ : K) (τ : ℍ), 0 < c ∧ ι θ = (τ : ℂ) ∧ IsTauOf Λ (c : ℂ) τ ∧ ∀ x : K, x ∈ 𝔞 ↔ ∃ a b : ℤ, x = (c : K) * ((a : K) * θ + (b : K)) := by
   intro K _ _ d δ ι 𝔞 Λ hK _ _ _ hΛ

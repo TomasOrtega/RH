@@ -12,7 +12,7 @@ namespace Dec
 variable {d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact hf`. Consider the case `cons j w ih => show ContDiff ℝ ∞ (fun x => fderiv ℝ (dw w f) x (ev j))`. Conclude with `(contDiff_infty_iff_fderiv.mp ih).2.clm_apply contDiff_const`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma contDiff_dw {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) (w : List (Fin d)) : ContDiff ℝ ∞ (dw w f) := by
   induction w with
@@ -22,11 +22,11 @@ lemma contDiff_dw {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) (w : List (Fin d))
     exact (contDiff_infty_iff_fderiv.mp ih).2.clm_apply contDiff_const
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons j w ih`. Use function extensionality and compare the values at `x`. Use `show fderiv ℝ (dw w (fun y => f y + g y)) x (ev j) = fderiv ℝ (dw w f) x (ev j) + fderiv ℝ (dw w g) x (ev j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `(contDiff_dw hf w).differentiable (by simp) x`. Establish `h2` using `(contDiff_dw hg w).differentiable (by simp) x`. Rewrite using `[ih]`. Use `first`. Consider the case `rw [show (fun y => dw w f y + dw w g y) = dw w f + dw w g from rfl, fderiv_add h1 h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `rw [fderiv_fun_add h1 h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma dw_add {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ ∞ g) (w : List (Fin d)) :
     dw w (fun y => f y + g y) = fun y => dw w f y + dw w g y := by
@@ -44,9 +44,9 @@ lemma dw_add {f g : E d → ℂ} (hf : ContDiff ℝ ∞ f) (hg : ContDiff ℝ �
       | rw [fderiv_fun_add h1 h2]; rfl
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons j w ih`. Use function extensionality and compare the values at `x`. Use `show fderiv ℝ (dw w (fun _ : E d => (0 : ℂ))) x (ev j) = 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ih]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dw_zero (w : List (Fin d)) : dw w (fun _ : E d => (0 : ℂ)) = fun _ => 0 := by
   induction w with
@@ -58,11 +58,11 @@ lemma dw_zero (w : List (Fin d)) : dw w (fun _ : E d => (0 : ℂ)) = fun _ => 0 
     simp
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => rfl`. Consider the case `cons j w ih`. Use function extensionality and compare the values at `x`. Use `show fderiv ℝ (dw w (fun y => c * f y)) x (ev j) = c * fderiv ℝ (dw w f) x (ev j)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h1` using `(contDiff_dw hf w).differentiable (by simp) x`. Rewrite using `[ih]`. Use `first`. Consider the case `rw [fderiv_const_mul h1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `rw [fderiv_fun_const_mul h1]`. Simplify using the standard rewrite rules. Consider the case `rw [show (fun y => c * dw w f y) = c • dw w f from rfl, fderiv_const_smul h1]`. Simplify using the standard rewrite rules.
+Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma dw_const_mul {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) (w : List (Fin d)) :
     dw w (fun y => c * f y) = fun y => c * dw w f y := by
@@ -79,9 +79,9 @@ lemma dw_const_mul {f : E d → ℂ} (hf : ContDiff ℝ ∞ f) (c : ℂ) (w : Li
       | rw [show (fun y => c * dw w f y) = c • dw w f from rfl, fderiv_const_smul h1]; simp
 
 /- English proof (translation)
-Simplify using `only [trOp]`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (fun y => (b1 n w y + b2 n w y) * φ y) = fun y => b1 n w y * φ y + b2 n w y * φ y`. Use function extensionality and compare the values at `y`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, dw_add ((h1 n w).mul hφ) ((h2 n w).mul hφ)]`. Simplify using `only [mul_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma trOp_add (m : ℕ) (b1 b2 : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (φ : E d → ℂ)
     (h1 : ∀ n w, ContDiff ℝ ∞ (b1 n w)) (h2 : ∀ n w, ContDiff ℝ ∞ (b2 n w)) (hφ : ContDiff ℝ ∞ φ) (x : E d) :
@@ -98,7 +98,7 @@ lemma trOp_add (m : ℕ) (b1 b2 : (n : ℕ) → (Fin n → Fin d) → E d → �
   simp only [mul_add]
 
 /- English proof (translation)
-Use `show Continuous (fun x => ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * dw (List.ofFn w) (fun y => b n w y * φ y) x)`. Use `continuous_finset_sum _ fun n _ => continuous_finset_sum _ fun w _ => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `(contDiff_dw ((hb n w).mul hφ) _).continuous`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma continuous_trOp (m : ℕ) (b : (n : ℕ) → (Fin n → Fin d) → E d → ℂ) (φ : E d → ℂ)
     (hb : ∀ n w, ContDiff ℝ ∞ (b n w)) (hφ : ContDiff ℝ ∞ φ) : Continuous (trOp m b φ) := by
@@ -108,7 +108,7 @@ lemma continuous_trOp (m : ℕ) (b : (n : ℕ) → (Fin n → Fin d) → E d →
   exact (contDiff_dw ((hb n w).mul hφ) _).continuous
 
 /- English proof (translation)
-Establish `h1 : ContDiff ℝ ∞ (fun y : E d => ((inner ℝ y ξ : ℝ) : ℂ))` using `Complex.ofRealCLM.contDiff.comp (contDiff_id.inner ℝ contDiff_const)`. Conclude with `Complex.contDiff_exp.comp ((contDiff_const.mul h1).neg)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma contDiff_eF (ξ : E d) : ContDiff ℝ ∞ (eF ξ) := by
   have h1 : ContDiff ℝ ∞ (fun y : E d => ((inner ℝ y ξ : ℝ) : ℂ)) :=
@@ -116,9 +116,9 @@ lemma contDiff_eF (ξ : E d) : ContDiff ℝ ∞ (eF ξ) := by
   exact Complex.contDiff_exp.comp ((contDiff_const.mul h1).neg)
 
 /- English proof (translation)
-Use `contDiff_iff_contDiffAt.mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`. Conclude with `hg.contDiffAt.mul (hf.contDiffAt (hU.mem_nhds hx))`. Establish `hx' : x ∉ tsupport g` using `fun h => hx (hgU h)`. Establish `hev : g =ᶠ[𝓝 x] 0` using `by first`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact notMem_tsupport_iff_eventuallyEq.mp hx'`. Consider the case `exact not_mem_tsupport_iff_eventuallyEq.mp hx'`. Use `(contDiffAt_const (c := (0 : ℂ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hev] with y hy`. Simplify using `[hy]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma contDiff_mul_of_tsupport {U : Set (E d)} (hU : IsOpen U) {g f : E d → ℂ} (hg : ContDiff ℝ ∞ g)
     (hgU : tsupport g ⊆ U) (hf : ContDiffOn ℝ ∞ f U) : ContDiff ℝ ∞ (fun x => g x * f x) := by
@@ -135,11 +135,9 @@ lemma contDiff_mul_of_tsupport {U : Set (E d)} (hU : IsOpen U) {g f : E d → �
     simp [hy]
 
 /- English proof (translation)
-Establish `hχU' : ∀ x, x ∉ U → cut χ u =ᶠ[𝓝 x] 0`. Introduce `x hx`. Establish `hx' : x ∉ tsupport χ` using `fun h => hx (hχU h)`. Establish `hev : χ =ᶠ[𝓝 x] 0` using `by first`. Consider the case `exact notMem_tsupport_iff_eventuallyEq.mp hx'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact not_mem_tsupport_iff_eventuallyEq.mp hx'`. Use `filter_upwards [hev] with y hy`. Simplify using `[cut, hy]`. Use `⟨continuous_iff_continuousAt.mpr fun x => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ U`.
-
-Conclude with `(Complex.continuous_ofReal.comp hχ.continuous).continuousAt.mul (hu.continuousAt (hU.mem_nhds hx))`. Conclude with `continuousAt_const.congr (hχU' x hx).symm`. Conclude with `(hχc.comp_left Complex.ofReal_zero).mul_right`.
+Treat this case separately. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. A detailed English derivation is pending.
 -/
 lemma cut_cont {U : Set (E d)} (hU : IsOpen U) {u : E d → ℂ} (hu : ContinuousOn u U) {χ : E d → ℝ}
     (hχ : ContDiff ℝ ∞ χ) (hχc : HasCompactSupport χ) (hχU : tsupport χ ⊆ U) :
@@ -161,23 +159,23 @@ lemma cut_cont {U : Set (E d)} (hU : IsOpen U) {u : E d → ℂ} (hu : Continuou
   · exact (hχc.comp_left Complex.ofReal_zero).mul_right
 
 /- English proof (translation)
-Conclude with `(tsupport_mul_subset_left).trans (tsupport_comp_subset Complex.ofReal_zero χ)`.
+A detailed English derivation is pending.
 -/
 lemma tsupport_cut (χ : E d → ℝ) (u : E d → ℂ) : tsupport (cut χ u) ⊆ tsupport χ := by
   exact (tsupport_mul_subset_left).trans (tsupport_comp_subset Complex.ofReal_zero χ)
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun x : E d => r⁻¹ • (x - x0))` using `(continuous_id.sub continuous_const).const_smul r⁻¹`. Establish `hnorm : ∀ x : E d, ‖r⁻¹ • (x - x0)‖ = r⁻¹ * dist x x0`. Introduce `x`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hr), dist_eq_norm]`. Establish `h3 : tsupport (fun x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ)) ⊆ ball x0 (2 * r)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : tsupport (fun x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ)) ⊆ (fun x : E d => r⁻¹ • (x - x0)) ⁻¹' tsupport ψ0`. Apply `closure_minimal _ ((isClosed_tsupport ψ0).preimage hcont)` to reduce the goal to its premises. Introduce `x hx`. Apply `subset_tsupport` to reduce the goal to its premises. Introduce `h0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hx` to reduce the goal to its premises. Simplify using `[h0]`. Use `hsub.trans fun x hx => ?_` and prove the remaining obligations. Establish `h2 : r⁻¹ • (x - x0) ∈ ball (0 : E d) 2` using `hψs hx`. Rewrite `h2` using `[mem_ball_zero_iff, hnorm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Complex.ofRealCLM.contDiff.comp (hψ.comp ((contDiff_id.sub contDiff_const).const_smul r⁻¹)), ?_, h3, ?_⟩` and prove the remaining obligations. Conclude with `IsCompact.of_isClosed_subset (isCompact_closedBall x0 (2 * r)) (isClosed_tsupport _) (h3.trans ball_subset_closedBall)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : r⁻¹ • (x - x0) ∈ ball (0 : E d) 1`. Rewrite using `[mem_ball_zero_iff, hnorm]`. Rewrite `hx` using `[mem_ball]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hψ1 _ h1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 lemma psi_props (x0 : E d) (ψ0 : E d → ℝ) (r : ℝ) (hψ : ContDiff ℝ ∞ ψ0) (hψc : HasCompactSupport ψ0)
     (hψ1 : ∀ y ∈ ball (0 : E d) 1, ψ0 y = 1) (hψs : tsupport ψ0 ⊆ ball 0 2) (hr : 0 < r) :
@@ -220,7 +218,7 @@ lemma psi_props (x0 : E d) (ψ0 : E d → ℝ) (r : ℝ) (hψ : ContDiff ℝ ∞
     simp
 
 /- English proof (translation)
-Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Simplify using `only [Function.comp_def]`. Rewrite using `[Finset.prod_neg, Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma prod_neg_eq (n : ℕ) (w : Fin n → Fin d) (ξ : E d) :
     ((List.ofFn w).map fun j => -(2 * Real.pi * Complex.I * ((ξ j : ℝ) : ℂ))).prod = (-1 : ℂ) ^ n * mono w ξ := by
@@ -232,39 +230,37 @@ lemma prod_neg_eq (n : ℕ) (w : Fin n → Fin d) (ξ : E d) :
 end Dec
 
 /- English proof (translation)
-Introduce `hPF hDw hFP hPL hWF d ι _ P U u hyp x0 ψ0 r hψ hψc hψ1 hψs hr hball χ χ' hχ hχc hχs hχ' hχ'c hχ's hχχ' i`. Take `⟨hUo, hA, -, hu, -⟩` from `id hyp`. Establish `hχU : tsupport χ ⊆ U` using `hχs.trans ((ball_subset_ball (by linarith)).trans hball)`. Take `⟨c, hc, hcw⟩` from `hWF d ι P U u hyp i χ χ' hχ hχc hχU hχ' hχ'c hχ's hχχ'`. Take `⟨hψC, hψH, hψT, hψ1'⟩` from `Dec.psi_props x0 ψ0 r hψ hψc hψ1 hψs hr`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hgc, hgs⟩` from `Dec.cut_cont hUo hu hχ hχc hχU`. Take `⟨hg'c, hg's⟩` from `Dec.cut_cont hUo hu hχ' hχ'c hχ's`. Use `set m := P.ord i with hm`. Establish `hψU` using `hψT.trans hball`. Set `lo : (n : ℕ) → (Fin n → Fin d) → E d → ℂ` to `fun n w x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ) * (P.a i n w x - if n = m then P.a i n w x0 else 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `b2 : (n : ℕ) → (Fin n → Fin d) → E d → ℂ` to `fun n w _ => if n = m then P.a i n w x0 else 0`. Establish `hlo : ∀ n w, ContDiff ℝ ∞ (lo n w) ∧ HasCompactSupport (lo n w)` using `fun n w => ⟨Dec.contDiff_mul_of_tsupport hUo hψC hψU ((hA i n w).sub contDiffOn_const), hψH.mul_right⟩`. Establish `hb2 : ∀ n w, ContDiff ℝ ∞ (b2 n w)` using `fun n w => contDiff_const`. Use `⟨lo, c, hlo, hc, fun ξ => ?_⟩` and prove the remaining obligations. Establish `hφ` using `Dec.contDiff_eF ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hterm : ∀ n (w : Fin n → Fin d), ∫ y, cut χ' u y * c n w y * dw (List.ofFn w) (eF ξ) y = (-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) (𝓕 (cut χ' u)) ξ`. Introduce `n w`. Establish `hpf` using `hPF d 0 (fun _ _ => c n w) (cut χ' u) (fun _ _ => hc n w) hg'c hg's ξ`. Establish `htr0 : ∀ y, trOp 0 (fun _ _ => c n w) (eF ξ) y = c n w y * eF ξ y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[trOp, dw]`. Establish `hmono0 : ∀ (w' : Fin 0 → Fin d) (η : E d), mono w' η = 1`. Introduce `w' η`. Simplify using `[mono]`. Simplify using `only [htr0] at hpf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : (fun y => cut χ' u y * c n w y * dw (List.ofFn w) (eF ξ) y) = fun y => ((-1 : ℂ) ^ n * mono w ξ) * (cut χ' u y * (c n w y * eF ξ y))`. Use function extensionality and compare the values at `y`. Simplify using `only [hDw d ξ (List.ofFn w), Dec.prod_neg_eq]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, integral_const_mul, hpf]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hmono0]`. Establish `hR : ∫ y, cut χ u y * P.tr i (eF ξ) y = ∑ n ∈ Finset.range m, ∑ w : Fin n → Fin d, (-1 : ℂ) ^ n * mono w ξ * conv (𝓕 (c n w)) (𝓕 (cut χ' u)) ξ`. Rewrite using `[hcw ξ]`. Conclude with `Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun w _ => hterm n w`. Establish `hloc` using `hPL d m (P.a i) (fun n w y => lo n w y + b2 n w y) (cut χ u) (eF ξ) (ball x0 r) isOpen_ball ((Dec.tsupport_cut χ u).trans hχs) (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n w x hx`. Establish `h1` using `hψ1' x hx`. Simplify using `only [lo, b2, h1]`. Apply the tactic sequence `split_ifs <;> ring)`. Establish `hsplit : ∀ y, trOp m (fun n w y => lo n w y + b2 n w y) (eF ξ) y = trOp m lo (eF ξ) y + trOp m b2 (eF ξ) y` using `fun y => Dec.trOp_add m lo b2 (eF ξ) (fun n w => (hlo n w).1) hb2 hφ y`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb2e : ∀ y, trOp m b2 (eF ξ) y = (∑ w : Fin m → Fin d, P.a i m w x0 * mono w ξ) * eF ξ y`. Introduce `y`. Simplify using `only [trOp]`. Rewrite using `[Finset.sum_range_succ, Finset.sum_eq_zero, zero_add, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b2, eq_self_iff_true, if_true]`. Rewrite using `[Dec.dw_const_mul hφ, hDw d ξ (List.ofFn w), Dec.prod_neg_eq]`. Use `beta_reduce`. Establish `hsq : ((-1 : ℂ) ^ m) * (-1) ^ m = 1`. Rewrite using `[← mul_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Evaluate the numerical expressions. Take the linear combination `(P.a i m w x0 * mono w ξ * eF ξ y) * hsq`. Introduce `n hn`. Establish `hne : n ≠ m` using `(Finset.mem_range.mp hn).ne`. Use `Finset.sum_eq_zero fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [b2, if_neg hne, zero_mul]`. Rewrite using `[Dec.dw_zero]`. Simplify using the standard rewrite rules. Establish `hint1 : Integrable (fun y => cut χ u y * trOp m lo (eF ξ) y)` using `(hgc.mul (Dec.continuous_trOp m lo (eF ξ) (fun n w => (hlo n w).1) hφ)).integrable_of_hasCompactSupport hgs.mul_right`. Establish `hint2 : Integrable (fun y => cut χ u y * trOp m b2 (eF ξ) y)` using `(hgc.mul (Dec.continuous_trOp m b2 (eF ξ) hb2 hφ)).integrable_of_hasCompactSupport hgs.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hconst : ∫ y, cut χ u y * trOp m b2 (eF ξ) y = (∑ w : Fin m → Fin d, P.a i m w x0 * mono w ξ) * 𝓕 (cut χ u) ξ`. Repeatedly rewrite using `[hb2e]`. Rewrite using `[← hFP d (cut χ u) hgc hgs ξ, ← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∫ y, cut χ u y * P.tr i (eF ξ) y = (∑ w : Fin m → Fin d, P.a i m w x0 * mono w ξ) * 𝓕 (cut χ u) ξ + ∑ n ∈ Finset.range (m + 1), ∑ w : Fin n → Fin d, conv (𝓕 (lo n w)) (fun η => mono w η * 𝓕 (cut χ u) η) ξ`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsplit y, mul_add]`. Use `_ = (∫ y, cut χ u y * trOp m lo (eF ξ) y) + ∫ y, cut χ u y * trOp m b2 (eF ξ) y := integral_add hint1 hint2`. Use `_ = _ := by`. Rewrite using `[hPF d m lo (cut χ u) hlo hgc hgs ξ, hconst, add_comm]`. Establish `hlom : ∀ w : Fin m → Fin d, lo m w = fun x => ((ψ0 (r⁻¹ • (x - x0)) : ℝ) : ℂ) * (P.a i m w x - P.a i m w x0)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `w`. Use function extensionality and compare the values at `x`. Simplify using `only [lo, eq_self_iff_true, if_true]`. Rewrite using `[← hR, key, Finset.sum_range_succ]`. Simplify using `only [hlom]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frozenDecompositionOfParts : DecomposeOf := by
   intro hPF hDw hFP hPL hWF d ι _ P U u hyp x0 ψ0 r hψ hψc hψ1 hψs hr hball χ χ' hχ hχc hχs

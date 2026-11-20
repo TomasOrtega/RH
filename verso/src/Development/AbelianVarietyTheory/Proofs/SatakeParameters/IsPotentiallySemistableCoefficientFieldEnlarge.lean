@@ -21,7 +21,7 @@ variable {l : ℕ} [Fact l.Prime] (P : LocPrime l) {K : FinExt l}
   {ι : Type} [Fintype ι] [DecidableEq ι] {E : V' ≃ₗ[LL] (ι → V)}
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensCoord_mulV (c : ↥(MaximalUnramifiedExtension l)) (x : V' ⊗[ℚ_[l]] Bst P) (i : ι) :
     tensCoord E (Bst P) (mulV P LL' V' c x) i = mulV P LL V c (tensCoord E (Bst P) x i) := by
@@ -34,7 +34,7 @@ variable (hE : ∀ g x i, E (ρ' g x) i = ρ g (E x i))
 include hE
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [hE]`. Consider the case `add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensCoord_stRep (g : ↥(GK K)) (x : V' ⊗[ℚ_[l]] Bst P) (i : ι) :
     tensCoord E (Bst P) (stRep P ρ' g x) i = stRep P ρ g (tensCoord E (Bst P) x i) := by
@@ -44,13 +44,13 @@ theorem tensCoord_stRep (g : ↥(GK K)) (x : V' ⊗[ℚ_[l]] Bst P) (i : ι) :
   | add x y hx hy => simp only [map_add, Pi.add_apply, hx, hy]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx i`. Take `⟨K', hK⟩` from `(mem_Dpst P ρ').1 hx`. Conclude with `(mem_Dpst P ρ).2 ⟨K', fun g hg => by rw [← tensCoord_stRep P hE, hK g hg]⟩`. Introduce `hx choose K' hK using fun i => (mem_Dpst P ρ).1 (hx i)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsum : x = ∑ i, (tensCoord E (Bst P)).symm (Pi.single i (tensCoord E (Bst P) x i))`. Apply `(tensCoord E (Bst P)).injective` to reduce the goal to its premises. Rewrite using `[map_sum]`. Simplify using `only [LinearEquiv.apply_symm_apply]`. Conclude with `(Finset.univ_sum_single _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun i _ => (mem_Dpst P ρ').2 ⟨K' i, fun g hg => (tensCoord E (Bst P)).injective ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Rewrite using `[tensCoord_stRep P hE, LinearEquiv.apply_symm_apply]`. Distinguish the cases in `h : j = i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h` using the available equality. Simplify using `[hK j g hg]`. Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_Dpst_coord (x : V' ⊗[ℚ_[l]] Bst P) :
     x ∈ Dpst P ρ' ↔ ∀ i, tensCoord E (Bst P) x i ∈ Dpst P ρ := by
@@ -93,7 +93,7 @@ def dpstCoord : DpstUr P ρ' ≃ₗ[↥(MaximalUnramifiedExtension l)] (ι → D
     exact Subtype.ext (congrFun ((tensCoord E (Bst P)).apply_symm_apply fun i => (y i).1) i)
 
 /- English proof (translation)
-Unfold `IsPst at h ⊢`. Rewrite using `[(dpstCoord P hE).rank_eq, (E.restrictScalars ℚ_[l]).rank_eq, rank_fun, rank_fun, h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPst_of_coord (h : IsPst P ρ) : IsPst P ρ' := by
   unfold IsPst at h ⊢
@@ -102,9 +102,9 @@ theorem isPst_of_coord (h : IsPst P ρ) : IsPst P ρ' := by
 end Coord
 
 /- English proof (translation)
-Introduce `l _ P E Ω _ _ _ Gw O _ _ _ Bw m L₁ L₂ hL r₁ h`. Set `_ : Algebra ↥L₁.1 ↥L₂.1` to `(IntermediateField.inclusion hL).toRingHom.toAlgebra`. Establish `: IsScalarTower ℚ_[l] ↥L₁.1 ↥L₂.1` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `L₂.2` as an intermediate fact. Establish `: FiniteDimensional ↥L₁.1 ↥L₂.1` using `Module.Finite.of_restrictScalars_finite ℚ_[l] _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρ : ∀ g, ∃ M : Matrix (Fin m) (Fin m) ↥L₁.1, (∀ x, Bw.repE L₁ r₁ g x = M.mulVec x) ∧ ∀ x, Bw.repE L₂ (mapRep (IntermediateField.inclusion hL).toRingHom r₁) g x = (M.map (algebraMap ↥L₁.1 ↥L₂.1)).mulVec x` using `fun g => ⟨r₁ (Bw.e.symm g), fun _ => rfl, fun _ => rfl⟩`. Conclude with `isPst_of_coord P (E := vecCoord ↥L₁.1 ↥L₂.1 m) (vecCoord_rep hρ) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPst_enlarge : ∀ {l : ℕ} [Fact l.Prime] (P : LocPrime l) {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]

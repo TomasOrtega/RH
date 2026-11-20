@@ -14,9 +14,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hi) (Fin.castLE_injective hi) _ _ ?_ (fun k => rfl)` and prove the remaining obligations. Introduce `k hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : i ≤ (k : ℕ)`. Assume the negation of the conclusion as `h`. Conclude with `hk ⟨⟨k, by omega⟩, Fin.ext rfl⟩`. Establish `ha` using `a.2`. Rewrite using `[hc _ _ (by rw [Fin.lt_def, Fin.coe_castLE]; omega), zero_mul]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sub_lower_mul {i : ℕ} (hi : i ≤ n) {c : Matrix (Fin n) (Fin n) ℂ} (hc : IsLowerTri c)
     (M : Matrix (Fin n) (Fin n) ℂ) :
@@ -34,11 +34,11 @@ private lemma sub_lower_mul {i : ℕ} (hi : i ≤ n) {c : Matrix (Fin n) (Fin n)
   rw [hc _ _ (by rw [Fin.lt_def, Fin.coe_castLE]; omega), zero_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE hi) (Fin.castLE_injective hi) _ _ ?_ (fun k => rfl)` and prove the remaining obligations. Introduce `k hk`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk' : i ≤ (k : ℕ)`. Assume the negation of the conclusion as `h`. Conclude with `hk ⟨⟨k, by omega⟩, Fin.ext rfl⟩`. Establish `hb` using `b.2`. Unfold `IsUpperTri at hc'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc' _ _ (by rw [Fin.lt_def, Fin.coe_castLE]; omega), mul_zero]`.
+A detailed English derivation is pending.
 -/
 private lemma sub_mul_upper {i : ℕ} (hi : i ≤ n) {c' : Matrix (Fin n) (Fin n) ℂ} (hc' : IsUpperTri c')
     (M : Matrix (Fin n) (Fin n) ℂ) :
@@ -57,7 +57,7 @@ private lemma sub_mul_upper {i : ℕ} (hi : i ≤ n) {c' : Matrix (Fin n) (Fin n
   rw [hc' _ _ (by rw [Fin.lt_def, Fin.coe_castLE]; omega), mul_zero]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : a < b` using `hab`. Apply `hc` to reduce the goal to its premises. Rewrite using `[Fin.lt_def, Fin.coe_castLE, Fin.coe_castLE]`. Conclude with `hab'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma lowerTri_sub {i : ℕ} (hi : i ≤ n) {c : Matrix (Fin n) (Fin n) ℂ} (hc : IsLowerTri c) :
     (c.submatrix (Fin.castLE hi) (Fin.castLE hi)).IsLowerTriangular := by
@@ -68,7 +68,7 @@ private lemma lowerTri_sub {i : ℕ} (hi : i ≤ n) {c : Matrix (Fin n) (Fin n) 
   exact hab'
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `hab' : b < a` using `hab`. Apply `hc'` to reduce the goal to its premises. Rewrite using `[Fin.lt_def, Fin.coe_castLE, Fin.coe_castLE]`. Conclude with `hab'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma upperTri_sub {i : ℕ} (hi : i ≤ n) {c' : Matrix (Fin n) (Fin n) ℂ} (hc' : IsUpperTri c') :
     (c'.submatrix (Fin.castLE hi) (Fin.castLE hi)).IsUpperTriangular := by
@@ -79,11 +79,11 @@ private lemma upperTri_sub {i : ℕ} (hi : i ≤ n) {c' : Matrix (Fin n) (Fin n)
   exact hab'
 
 /- English proof (translation)
-Establish `hp : ∀ f : Fin n → ℂ, ∏ a : Fin i, f (Fin.castLE hi a) = ∏ l ∈ univ.filter (fun l : Fin n => (l : ℕ) < i), f l`. Introduce `f`. Rewrite using `[Finset.prod_filter]`. Use `Fintype.prod_of_injective (Fin.castLE hi) (Fin.castLE_injective hi) _ _ ?_ ?_` and prove the remaining obligations. Introduce `k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg]`. Introduce `hlt`. Conclude with `hk ⟨⟨k, hlt⟩, Fin.ext rfl⟩`. Introduce `a`. Rewrite using `[if_pos (by rw [Fin.coe_castLE]; exact a.2)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `lead`. Rewrite using `[dif_pos hi, dif_pos hi, sub_mul_upper hi hc', sub_lower_mul hi hc, Matrix.det_mul, Matrix.det_mul, Matrix.det_of_lowerTriangular _ (lowerTri_sub hi hc), Matrix.det_of_upperTriangular (upperTri_sub hi hc'), Finset.prod_mul_distrib, ← hp (fun l => c l l), ← hp (fun l => c' l l)]`. Simplify using `only [Matrix.submatrix_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lead_tri_mul {c z c' : Matrix (Fin n) (Fin n) ℂ} (hc : IsLowerTri c) (hc' : IsUpperTri c') (i : ℕ) (hi : i ≤ n) :
     lead i (c * z * c') =
@@ -107,7 +107,7 @@ theorem lead_tri_mul {c z c' : Matrix (Fin n) (Fin n) ℂ} (hc : IsLowerTri c) (
   ring
 
 /- English proof (translation)
-Establish `hp` using `(hx.submatrix (Fin.castLE_injective hi)).det_pos`. Unfold `lead`. Rewrite using `[dif_pos hi]`. Take `⟨h1, h2⟩` from `Complex.pos_iff.mp hp`. Conclude with `⟨h1, h2.symm⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lead_posDef {x : Matrix (Fin n) (Fin n) ℂ} (hx : x.PosDef) (i : ℕ) (hi : i ≤ n) :
     0 < (lead i x).re ∧ (lead i x).im = 0 := by

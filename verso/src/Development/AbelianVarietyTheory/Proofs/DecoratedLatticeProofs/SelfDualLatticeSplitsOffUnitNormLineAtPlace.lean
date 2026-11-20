@@ -19,14 +19,14 @@ namespace GlobalTheory.Core.Mi.LatMatch.SplitOff
 variable {D : D7}
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IwaPlace.hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_eq (S : HSp D) (x y : Fin S.rank → AE D) :
     GlobalTheory.IwaPlace.hermAt S x y = (fun i => cA D (y i)) ⬝ᵥ (gA S *ᵥ x) := by
   simp only [GlobalTheory.IwaPlace.hermAt, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `h : (fun i => cA D ((a *ᵥ y) i)) = (fun i => cA D (y i)) ᵥ* adj a`. Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, Matrix.vecMul, dotProduct, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[hermAt_eq, h, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (adj a)]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermAt_mulVec (S : HSp D) {k : ℕ} (a : Mx D S.rank k) (x : Fin S.rank → AE D) (y : Fin k → AE D) :
     GlobalTheory.IwaPlace.hermAt S x (a *ᵥ y) = (fun i => cA D (y i)) ⬝ᵥ ((adj a ⬝ gA S) *ᵥ x) := by
@@ -37,21 +37,21 @@ theorem hermAt_mulVec (S : HSp D) {k : ℕ} (a : Mx D S.rank k) (x : Fin S.rank 
   rw [hermAt_eq, h, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec _ (adj a)]
 
 /- English proof (translation)
-Rewrite using `[hermAt_mulVec, hermAt_eq, Matrix.mulVec_mulVec, o.pB_eq, ← Matrix.mul_assoc (gA B), gA_mul_giA, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermAt_jB {S A B : HSp D} (o : OrthDec S A B) (y : Fin S.rank → AE D) (l : Fin B.rank → AE D) :
     GlobalTheory.IwaPlace.hermAt S y (o.jB *ᵥ l) = GlobalTheory.IwaPlace.hermAt B (o.pB *ᵥ y) l := by
   rw [hermAt_mulVec, hermAt_eq, Matrix.mulVec_mulVec, o.pB_eq, ← Matrix.mul_assoc (gA B), gA_mul_giA, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec (incA D) o.iB ζ i`.
+A detailed English derivation is pending.
 -/
 theorem ratV_vecB {S A L : HSp D} (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) :
     ratV (vecB o ζ) = o.jB *ᵥ ratV ζ :=
   funext fun i => RingHom.map_mulVec (incA D) o.iB ζ i
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IwaPlace.hermAt, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermAt_smul (S : HSp D) (c a : AE D) (x y : Fin S.rank → AE D) :
     GlobalTheory.IwaPlace.hermAt S (c • x) (a • y) = c * cA D a * GlobalTheory.IwaPlace.hermAt S x y := by
@@ -64,7 +64,7 @@ Both sides reduce to the same expression.
 theorem cA_incA (e : D.host.E) : cA D (incA D e) = incA D (star e) := rfl
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.IwaPlace.hermAt, gA, rat, ratV, Matrix.map_apply, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, cA_incA, Pi.star_apply, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermAt_ratV (S : HSp D) (x : Fin S.rank → D.host.E) :
     GlobalTheory.IwaPlace.hermAt S (ratV x) (ratV x) = incA D (star x ⬝ᵥ S.gram *ᵥ x) := by
@@ -78,11 +78,9 @@ namespace GlobalTheory.Core.Mi.LatMatch.SplitOff
 variable {D : D7}
 
 /- English proof (translation)
-Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨GlobalTheory.SelfDualAt.indP (· = v), ?_, ?_, 1, ?_, ?_⟩` and prove the remaining obligations. Introduce `w`. Rewrite using `[GlobalTheory.SelfDualAt.evalV_indP]`. Use `split_ifs`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Introduce `w hw`. Rewrite using `[GlobalTheory.SelfDualAt.evalV_indP, if_neg hw]`. Conclude with `FractionalIdeal.one_mem_one _`.
-
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eps_mem_idV (v : GlobalTheory.FinPl.Pl D) :
     algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (· = v)) ∈ idV (1 : FI D) v := by
@@ -100,11 +98,11 @@ theorem eps_mem_idV (v : GlobalTheory.FinPl.Pl D) :
     rfl
 
 /- English proof (translation)
-Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨α, h1, h2, a, ha, rfl⟩` from `hy`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises. Use `⟨α, h1, h2, c * a, FractionalIdeal.mul_mem_mul (FractionalIdeal.mem_spanSingleton_self _ _) ha, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `((1 : AF D.host.F) ⊗ₜ[D.host.F] c) * (_ ⊗ₜ[D.host.F] _) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem incA_mul_mem_idV (c : D.host.E) {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl D} {x : AE D} (hx : x ∈ idV 𝔞 v) :
     incA D c * x ∈ idV (FractionalIdeal.spanSingleton _ c * 𝔞) v := by
@@ -120,7 +118,7 @@ theorem incA_mul_mem_idV (c : D.host.E) {𝔞 : FI D} {v : GlobalTheory.FinPl.Pl
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[← GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Conclude with `GlobalTheory.SeeSaw.idV_natInv_mul_le D 1 T v hT (incA_mul_mem_idV _ hx)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natInv_mul_mem_intAt {T : ℕ} {v : GlobalTheory.FinPl.Pl D} (hT : (T : 𝓞 D.host.F) ∉ v.asIdeal) {x : AE D}
     (hx : x ∈ intAt D (· = v)) : incA D ((T : D.host.E)⁻¹) * x ∈ intAt D (· = v) := by
@@ -134,7 +132,7 @@ namespace GlobalTheory.Core.Mi.LatMatch.SplitOff
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hstar : star μ ≠ 0` using `star_ne_zero.2 hμ`. Establish `e : star μ⁻¹ * N = -((T : D.host.E) * μ)`. Rewrite using `[hN, star_inv₀]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← map_mul, e, map_neg, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_factor {μ : D.host.E} (hμ : μ ≠ 0) (T : ℕ) (N : D.host.E) (hN : N = -(μ * star μ * (T : D.host.E))) :
     (incA D (star μ⁻¹) : AE D) * incA D N = -((incA D (T : D.host.E) : AE D) * incA D μ) := by
@@ -145,7 +143,7 @@ theorem norm_factor {μ : D.host.E} (hμ : μ ≠ 0) (T : ℕ) (N : D.host.E) (h
   rw [← map_mul, e, map_neg, map_mul]
 
 /- English proof (translation)
-Introduce and unpack `h0`. Apply `hT` to reduce the goal to its premises. Establish `: T = 0` using `by exact_mod_cast h0`. Rewrite using `[this, Nat.cast_zero]`. Conclude with `zero_mem _`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_ne_zero {T : ℕ} {v : GlobalTheory.FinPl.Pl D} (hT : (T : 𝓞 D.host.F) ∉ v.asIdeal) : (T : D.host.E) ≠ 0 := by
   rintro h0
@@ -155,7 +153,7 @@ theorem nat_ne_zero {T : ℕ} {v : GlobalTheory.FinPl.Pl D} (hT : (T : 𝓞 D.ho
   exact zero_mem _
 
 /- English proof (translation)
-Establish `h2` using `natInv_mul_mem_intAt hT h`. Rewrite `h2` using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ (nat_ne_zero hT), map_one, one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cancel_mem {T : ℕ} {v : GlobalTheory.FinPl.Pl D} (hT : (T : 𝓞 D.host.F) ∉ v.asIdeal) {x : AE D}
     (h : incA D (T : D.host.E) * x ∈ intAt D (· = v)) : x ∈ intAt D (· = v) := by
@@ -163,13 +161,13 @@ theorem cancel_mem {T : ℕ} {v : GlobalTheory.FinPl.Pl D} (hT : (T : 𝓞 D.hos
   rwa [← mul_assoc, ← map_mul, inv_mul_cancel₀ (nat_ne_zero hT), map_one, one_mul] at h2
 
 /- English proof (translation)
-Establish `hεI : algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (· = v)) ∈ intAt D (· = v)` using `(GlobalTheory.SeeSaw.idV_one_eq_intAt D v _).1 (eps_mem_idV v)`. Establish `hεc` using `GlobalTheory.SelfDualAt.algebraMap_placeIdempotent_mul (· = v) c hc`. Establish `hεε` using `GlobalTheory.SelfDualAt.cA_alg (D := D) (GlobalTheory.SelfDualAt.cP (· = v))`. Establish `ha : algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (· = v)) * incA D μ⁻¹ ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ hεI.1`. Establish `haM` using `(hline _ ha).2 (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_left_comm, ← map_mul, mul_inv_cancel₀ hμ, map_one, mul_one]`. Conclude with `hεI)`. Establish `hsd` using `GlobalTheory.IwaPlace.LocSD.isSDAt_latV D S M v hM`. Establish `hh` using `((hsd.2.2 y hy).1 hyM) _ haM`. Establish `hXY` using `norm_factor (D := D) hμ T _ hnorm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh` using `[ratV_vecB, ← Matrix.mulVec_smul, hermAt_jB, hl, hermAt_smul, hermAt_ratV, map_mul, hεε, cA_incA]`. Establish `key : c * (algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (· = v)) * incA D (star μ⁻¹)) * incA D (star ζ ⬝ᵥ L.gram *ᵥ ζ) = -(incA D (T : D.host.E) * (incA D μ * c))`. Take the linear combination `(algebraMap (AF D.host.F) (AE D) (GlobalTheory.SelfDualAt.cP (· = v)) * c) * hXY - (incA D (T : D.host.E) * incA D μ) * hεc`. Rewrite `hh` using `[key]`. Rewrite `hh` using `[← GlobalTheory.SeeSaw.idV_one_eq_intAt]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `neg_mem hh`. Rewrite `h3` using `[neg_neg, GlobalTheory.SeeSaw.idV_one_eq_intAt]`. Conclude with `cancel_mem hT h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_part {S A L : HSp D} (o : OrthDec S A L) {ζ : Fin L.rank → D.host.E} {M : Lat S} {μ : D.host.E} {T : ℕ}
     {v : GlobalTheory.FinPl.Pl D} (hM : IsSelfDualC S M) (hμ : μ ≠ 0) (hline : LineAt (vecB o ζ) μ M v)
@@ -204,17 +202,15 @@ end GlobalTheory.Core.Mi.LatMatch.SplitOff
 namespace GlobalTheory.Core.Mi.LatMatch.SplitOff
 
 /- English proof (translation)
-Introduce `D S A L o ζ M μ T v hζ hM hμ hline hnorm hT y hy`. Establish `hsum : o.jA *ᵥ (o.pA *ᵥ y) + o.jB *ᵥ (o.pB *ᵥ y) = y`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← Matrix.add_mulVec, o.sum_eq_one, Matrix.one_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `hyM`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ j k : Fin L.rank, j = k` using `fun j k => Fin.ext (by have := hζ.1; omega)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, ζ i ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hζ.2` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show ζ = 0 from funext hcon]`. Simplify using the standard rewrite rules. Establish `hl : o.pB *ᵥ y = ((o.pB *ᵥ y) i * incA D (ζ i)⁻¹) • ratV ζ` using `funext fun j => by`. Rewrite using `[hs j i, Pi.smul_apply, smul_eq_mul, ratV, mul_assoc, ← map_mul, inv_mul_cancel₀ hi, map_one, mul_one]`. Establish `hc : (o.pB *ᵥ y) i * incA D (ζ i)⁻¹ ∈ idAt D (· = v)` using `Ideal.mul_mem_right _ _ (GlobalTheory.IwaPlace.mulVec_mem_idAt _ hy i)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : o.jB *ᵥ (o.pB *ᵥ y) ∈ latV S M (· = v)`. Establish `hvec : o.jB *ᵥ (o.pB *ᵥ y) = ((o.pB *ᵥ y) i * incA D (ζ i)⁻¹) • ratV (vecB o ζ)` using `by conv_lhs => rw [hl]`. Rewrite using `[Matrix.mulVec_smul, ratV_vecB]`. Rewrite using `[hvec]`. Conclude with `(hline _ hc).2 (line_part o hM hμ hline hnorm hT hy hyM _ hc hl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, hB⟩` and prove the remaining obligations. Rewrite using `[eq_sub_of_add_eq hsum]`. Conclude with `sub_mem hyM hB`. Introduce and unpack `⟨h1, h2⟩`. Rewrite using `[← hsum]`.
-
-Conclude with `add_mem h1 h2`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitsAt : ∀ (D : D7) (S A L : HSp D) (o : OrthDec S A L) (ζ : Fin L.rank → D.host.E) (M : Lat S) (μ : D.host.E) (T : ℕ) (v : GlobalTheory.FinPl.Pl D), IsLineVec L ζ → IsSelfDualC S M → μ ≠ 0 → LineAt (vecB o ζ) μ M v → star ζ ⬝ᵥ L.gram *ᵥ ζ = -(μ * star μ * (T : D.host.E)) → (T : 𝓞 D.host.F) ∉ v.asIdeal → SplitsAt o M v := by
   intro D S A L o ζ M μ T v hζ hM hμ hline hnorm hT y hy

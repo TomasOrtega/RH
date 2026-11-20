@@ -7,19 +7,17 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.SuppFin
 
 /- English proof (translation)
-Introduce `E _ _ _ n y`. Use `set P : GL (Fin n) (Af E) := GeneralLinearGroup.map (pFin E) (y : GA E n) with hP`. Establish `h1 : ∀ᶠ w in cofinite, ∀ i j, (P.val i j) w ∈ HeightOneSpectrum.adicCompletionIntegers E w`. Rewrite using `[eventually_all]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eventually_all]`. Introduce `j`. Conclude with `(P.val i j).2`. Establish `h2 : ∀ᶠ w in cofinite, ∀ i j, ((P⁻¹).val i j) w ∈ HeightOneSpectrum.adicCompletionIntegers E w`. Rewrite using `[eventually_all]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[eventually_all]`. Introduce `j`. Conclude with `((P⁻¹).val i j).2`. Use `filter_upwards [h1, h2] with w hw1 hw2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hmul : ∀ (A B : GL (Fin n) (Af E)), A * B = 1 → (A.val.map (pLoc E w)) * (B.val.map (pLoc E w)) = 1`. Introduce `A B h`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, h, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`. Set `M : Matrix (Fin n) (Fin n) (Ov E w)` to `Matrix.of fun i j => ⟨(P.val i j) w, hw1 i j⟩`. Set `N : Matrix (Fin n) (Fin n) (Ov E w)` to `Matrix.of fun i j => ⟨((P⁻¹).val i j) w, hw2 i j⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hM : M.map (Ov E w).subtype = P.val.map (pLoc E w)` using `Matrix.ext fun i j => rfl`. Establish `hN : N.map (Ov E w).subtype = (P⁻¹).val.map (pLoc E w)` using `Matrix.ext fun i j => rfl`. Establish `hinj : Function.Injective (fun A : Matrix (Fin n) (Fin n) (Ov E w) => A.map (Ov E w).subtype)` using `Matrix.map_injective Subtype.val_injective`. Set `k : GL (Fin n) (Ov E w)` to `{ val := M inv := N val_inv := hinj (by`. Simplify using `only`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _)]`. Conclude with `hmul _ _ (mul_inv_cancel P))`. Use `inv_val := hinj (by`. Simplify using `only`. Rewrite using `[Matrix.map_mul, hM, hN, Matrix.map_one _ (map_zero _) (map_one _)]`.
-
-Conclude with `hmul _ _ (inv_mul_cancel P)) }`. Conclude with `⟨k, Units.ext (Matrix.ext fun i j => rfl)⟩`.
+A detailed English derivation is pending.
 -/
 theorem cLoc_mem_KGL_cofinite : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (y : UA E n),
     ∀ᶠ w in cofinite, cLoc w y ∈ GlobalTheory.LFun.KGL w n := by

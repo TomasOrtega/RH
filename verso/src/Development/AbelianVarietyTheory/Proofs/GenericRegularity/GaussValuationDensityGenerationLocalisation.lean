@@ -14,7 +14,7 @@ variable {O L U Γ : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 omit [Field L] [Algebra O L] [IsFractionRing O L] in
 
 /- English proof (translation)
-Rewrite `ha` using `[hϖ.maximalIdeal_eq, Ideal.mem_span_singleton]`. Take `⟨y, rfl⟩` from `ha`. Rewrite using `[map_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (h1 y)) h2`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_lt_one (g : O →+* U) (h1 : ∀ a, v (g a) ≤ 1) {ϖ : O} (hϖ : Irreducible ϖ) (h2 : v (g ϖ) < 1)
     {a : O} (ha : a ∈ IsLocalRing.maximalIdeal O) : v (g a) < 1 := by
@@ -24,11 +24,11 @@ theorem val_lt_one (g : O →+* U) (h1 : ∀ a, v (g a) ≤ 1) {ϖ : O} (hϖ : I
   exact lt_of_le_of_lt (mul_le_of_le_one_right' (h1 y)) h2
 
 /- English proof (translation)
-Break down `ValuationRing.isInteger_or_isInteger O c with h | ⟨b, hb⟩` into its components or cases. Conclude with `h`. Distinguish the cases in `hc0 : c = 0`. Conclude with `⟨0, by simp [hc0]⟩`. Distinguish the cases in `hu : IsUnit b`.
+Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨u, rfl⟩` from `hu`. Use `⟨((u⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[map_units_inv, hb, inv_inv]`. It suffices to derive a contradiction. Use `val_lt_one v (φ.comp (algebraMap O L)) h1 hϖ h2 (a := b) hu` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[RingHom.comp_apply, hb]`. Establish `h3 : v (φ c) * v (φ c⁻¹) = 1` using `by rw [← map_mul, ← map_mul, mul_inv_cancel₀ hc0, map_one, map_one]`. Conclude with `absurd h3 (lt_of_le_of_lt (mul_le_of_le_one_left' hc) this).ne`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isInteger_of_val_le (φ : L →+* U) (h1 : ∀ a, v (φ (algebraMap O L a)) ≤ 1) {ϖ : O} (hϖ : Irreducible ϖ)
     (h2 : v (φ (algebraMap O L ϖ)) < 1) {c : L} (hc : v (φ c) ≤ 1) : ∃ a, algebraMap O L a = c := by
@@ -48,7 +48,7 @@ theorem isInteger_of_val_le (φ : L →+* U) (h1 : ∀ a, v (φ (algebraMap O L 
 end
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `ha.exists_right_inv`. Use `le_antisymm (h1 a) ?_` and prove the remaining obligations. Establish `h3 : v (g a) * v (g b) = 1` using `by rw [← map_mul, ← map_mul, hb, map_one, map_one]`. Conclude with `h3.symm.le.trans (mul_le_of_le_one_right' (h1 b))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_unit {A U Γ : Type} [CommRing A] [Field U] [LinearOrderedCommGroupWithZero Γ] (v : Valuation U Γ)
     (g : A →+* U) (h1 : ∀ a, v (g a) ≤ 1) {a : A} (ha : IsUnit a) : v (g a) = 1 := by
@@ -58,7 +58,7 @@ theorem val_unit {A U Γ : Type} [CommRing A] [Field U] [LinearOrderedCommGroupW
   exact h3.symm.le.trans (mul_le_of_le_one_right' (h1 b))
 
 /- English proof (translation)
-Establish `ho : IsOpen {x : la.adicCompletion K | t⁻¹ * (c - x) ∈ la.adicCompletionIntegers K}` using `(Valued.isOpen_valuationSubring (la.adicCompletion K)).preimage (f := fun x => t⁻¹ * (c - x)) (by fun_prop)`. Take `⟨a, ha⟩` from `(HeightOneSpectrum.denseRange_algebraMap K la).exists_mem_open ho ⟨c, by simp⟩`. Conclude with `⟨a, ⟨_, ha⟩, by rw [mul_inv_cancel_left₀ ht]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_approx {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K))
     (c t : la.adicCompletion K) (ht : t ≠ 0) :
@@ -69,37 +69,31 @@ theorem exists_approx {K : Type} [Field K] [NumberField K] (la : HeightOneSpectr
   exact ⟨a, ⟨_, ha⟩, by rw [mul_inv_cancel_left₀ ht]⟩
 
 /- English proof (translation)
-Introduce `D B P j X la N U _ v ψ h1 h2`. Establish `hϖ : Irreducible (unif X la)` using `Classical.choose_spec (IsDiscreteValuationRing.exists_irreducible (X.Ol la))`. Establish `e1 : ∀ c : X.Ol la, algebraMap (X.Kl la) (Kp X la N) (algebraMap (X.Ol la) (X.Kl la) c) = algebraMap (Op X la N) (Kp X la N) (algebraMap (X.Ol la) (Op X la N) c)` using `fun c => by`. Rewrite using `[← IsScalarTower.algebraMap_apply, ← IsScalarTower.algebraMap_apply]`. Establish `eC : ∀ c : X.Ol la, algebraMap (Pol X la N) (Op X la N) (MvPolynomial.C c) = algebraMap (X.Ol la) (Op X la N) c` using `fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`. Use `set φ : X.Kl la →+* U := ψ.comp (algebraMap (X.Kl la) (Kp X la N)) with hφ`. Establish `g1 : ∀ a, v (φ (algebraMap (X.Ol la) (X.Kl la) a)) ≤ 1` using `fun a => by`. Rewrite using `[hφ, RingHom.comp_apply, e1]`. Conclude with `h1 _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `g2 : v (φ (algebraMap (X.Ol la) (X.Kl la) (unif X la))) < 1`. Rewrite using `[hφ, RingHom.comp_apply, e1]`. Conclude with `h2`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf p hp ⟨α₀, hα₀⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : ∀ a, f a = φ (algebraMap B.KO (X.Kl la) a)` using `hf`. Establish `hex : ∀ α, ∃ a : X.Ol la, algebraMap (X.Ol la) (X.Kl la) a = algebraMap B.KO (X.Kl la) (p.coeff α)` using `fun α => isInteger_of_val_le v φ g1 hϖ g2 (by rw [← hf']; exact hp α)`. Use `choose b hb using hex`. Use `set p₀ : Pol X la N := ∑ α ∈ p.support, MvPolynomial.monomial α (b α) with hp₀`. Establish `hs : α₀ ∈ p.support`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h`. Rewrite `hα₀` using `[h, map_zero, map_zero]`. Conclude with `zero_ne_one hα₀`. Establish `hc : p₀.coeff α₀ = b α₀` using `by classical`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp₀, MvPolynomial.coeff_sum]`. Simplify using `only [MvPolynomial.coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq' , if_pos hs]`. Establish `hn : p₀ ∉ gI X la N`. Unfold `gI Formalism.DV.gaussIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.mem_map_C_iff]`. Introduce `h`. Use `val_lt_one v (φ.comp (algebraMap (X.Ol la) (X.Kl la))) g1 hϖ g2 (h α₀)` as an intermediate fact. Rewrite `this` using `[hc, RingHom.comp_apply, hb, ← hf', hα₀]`. Conclude with `lt_irrefl _ this`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : IsUnit (algebraMap (Pol X la N) (Op X la N) p₀)` using `(IsLocalization.AtPrime.isUnit_to_map_iff (Op X la N) (gI X la N) p₀).2 hn`. Use `val_unit v (ψ.comp (algebraMap (Op X la N) (Kp X la N))) h1 hu` as an intermediate fact. Rewrite using `[← this]`. Use `congr 1`. Rewrite using `[MvPolynomial.eval₂_eq, hp₀, map_sum, map_sum]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.monomial_eq, map_mul, map_mul, eC, hf', ← hb, hφ, RingHom.comp_apply, e1, Finsupp.prod, map_prod, map_prod]`. Simplify using `only [map_pow]`. Both sides reduce to the same expression. Introduce `c γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `exists_pow_lt₀ g2 (Units.mk0 γ hγ)`. Establish `ht : algebraMap (X.Ol la) (X.Kl la) (unif X la) ^ n ≠ 0`. Use `pow_ne_zero _ ?_` and prove the remaining obligations. Rewrite using `[Ne, IsFractionRing.to_map_eq_zero_iff]`. Conclude with `hϖ.ne_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, y, hy⟩` from `exists_approx la (algebraMap (X.Ol la) (X.Kl la) c) _ ht`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply (X.Ol la) (X.Kl la) (Kp X la N)]`. Express the relevant statement in the definitionally equal form `v (φ _ - φ _) < γ`. Rewrite using `[← map_sub, hy, map_mul, map_mul, map_pow, map_pow]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' (g1 y)) hn`. Introduce `S hO hT`. Establish `hP : ∀ q : Pol X la N, ψ (algebraMap (Op X la N) (Kp X la N) (algebraMap (Pol X la N) (Op X la N) q)) ∈ S`. Introduce `q`. Proceed by induction on `q using MvPolynomial.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `C a => rw [eC]`. Conclude with `hO a`. Consider the case `add p q hp hq => simp only [map_add]`. Conclude with `S.add_mem hp hq`. Consider the case `mul_X p i hp => simp only [map_mul]`.
-
-Conclude with `S.mul_mem hp (hT i)`. Establish `hA : ∀ x : Op X la N, ψ (algebraMap (Op X la N) (Kp X la N) x) ∈ S`. Introduce `x`. Take `⟨⟨a, s⟩, h⟩` from `IsLocalization.surj (gI X la N).primeCompl x`. Establish `hs : ψ (algebraMap (Op X la N) (Kp X la N) (algebraMap (Pol X la N) (Op X la N) s)) ≠ 0` using `(((IsLocalization.map_units (Op X la N) s).map _).map _).ne_zero`.
-
-Establish `h'` using `congrArg (fun z => ψ (algebraMap (Op X la N) (Kp X la N) z)) h`. Simplify using `only [map_mul] at h'`. Rewrite using `[eq_div_of_mul_eq hs h']`. Conclude with `S.div_mem (hP _) (hP _)`. Introduce `c`.
-
-Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := Op X la N) c`. Rewrite using `[map_div₀]`. Conclude with `S.div_mem (hA _) (hA _)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gauss_dense_gen : ∀ (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralCharts.Prov D) (j : ℕ) (X : PJ D B P j) (la : HeightOneSpectrum (𝓞 B.KO)) (N : ℕ) (U : Type) [Field U] (v : Valuation U (WithZero (Multiplicative ℤ))) (ψ : Kp X la N →+* U), (∀ a : Op X la N, v (ψ (algebraMap (Op X la N) (Kp X la N) a)) ≤ 1) → v (ψ (algebraMap (Op X la N) (Kp X la N) (unifO X la N))) < 1 → (∀ (f : B.KO →+* U), (∀ a, f a = ψ (algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a))) → ∀ p : MvPolynomial (Idx D j N) B.KO, (∀ α, v (f (p.coeff α)) ≤ 1) → (∃ α, v (f (p.coeff α)) = 1) → v (MvPolynomial.eval₂ f (fun q => ψ (algebraMap (Op X la N) (Kp X la N) (Tv X la N q))) p) = 1) ∧ (∀ (c : X.Ol la) (γ : WithZero (Multiplicative ℤ)), γ ≠ 0 → ∃ a : B.KO, v (ψ (algebraMap (X.Ol la) (Kp X la N) c) - ψ (algebraMap (X.Kl la) (Kp X la N) (algebraMap B.KO (X.Kl la) a))) < γ) ∧ ∀ S : Subfield U, (∀ c : X.Ol la, ψ (algebraMap (X.Ol la) (Kp X la N) c) ∈ S) → (∀ q, ψ (algebraMap (Op X la N) (Kp X la N) (Tv X la N q)) ∈ S) → ∀ c : Kp X la N, ψ c ∈ S := by
   intro D B P j X la N U _ v ψ h1 h2

@@ -8,7 +8,7 @@ import Development.AbelianVarietyTheory.Proofs.UnitaryExistence.HostGeneratorPow
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal GlobalTheory.LocM GlobalTheory.TorRef GlobalTheory.PolFan GlobalTheory.PolCell
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.finite_projective_int_of_ringOfIntegers` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FRingOfIntegersProjectiveModuleIntFinrank.lean&line=10#L10)
 -/

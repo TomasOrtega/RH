@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.O
 attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 /- English proof (citation)
-Apply `GlobalTheory.AbLaw.finrank_cechLB_homology_extProd` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCoherentCohomologyProofs%2FFinrankCechLBHomologyExtProd.lean&line=34#L34)
 -/

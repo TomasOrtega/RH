@@ -12,25 +12,23 @@ open GlobalTheory.Mem GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw
 namespace GlobalTheory.Mem.R3.Rw.LiftForms
 
 /- English proof (translation)
-Set `b : Module.Basis (Fin n) ℂ W` to `Module.Basis.mk li sp.ge`. Establish `hb : ∀ k, b k = j (Pi.single k 1)` using `fun k => Module.Basis.mk_apply li sp.ge k`. Set `J : W →ₗ[ℂ] N` to `b.constr ℂ fun k => a (Pi.single k 1)`. Set `a' : (Fin n → K) →ₛₗ[σ] N` to `{ toFun := a, map_add' := hadd, map_smul' := hsmul }`. Establish `hJ : ∀ x, J (j x) = a x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h : (J : W →ₛₗ[RingHom.id ℂ] N).comp j = a'`. Use `(Pi.basisFun K (Fin n)).ext fun k => ?_` and prove the remaining obligations. Rewrite using `[Pi.basisFun_apply, LinearMap.comp_apply, ← hb]`. Conclude with `b.constr_basis ℂ _ k`. Introduce `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `LinearMap.congr_fun h x`. Establish `htop : ∀ u : W, u ∈ Submodule.span ℂ (Set.range j)`. Introduce `u`. Establish `hu : u ∈ Submodule.span ℂ (Set.range fun k => j (Pi.single k 1))` using `sp ▸ Submodule.mem_top`. Conclude with `Submodule.span_mono (by rintro _ ⟨k, rfl⟩; exact ⟨_, rfl⟩) hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : LinearMap.range J = C`. Establish `h1 : Submodule.span ℂ (Set.range j) = ⊤` using `eq_top_iff.2 fun u _ => htop u`. Rewrite using `[LinearMap.range_eq_map, ← h1, Submodule.map_span, ← Set.range_comp, ← hsp]`. Use `congr 2`. Conclude with `funext hJ`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ∀ u, J u ∈ C` using `fun u => hr ▸ LinearMap.mem_range_self J u`. Establish `hz : ∀ v, ip 0 (J v) = 0`. Introduce `v`. Use `hC.smul 0 0 ⟨_, hm v⟩` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `left : ∀ v, (∀ x, ⟪j x, v⟫_ℂ = ip (J (j x)) (J v)) → ∀ u, ⟪u, v⟫_ℂ = ip (J u) (J v)`. Introduce `v hv u`. Proceed by induction on `htop u using Submodule.span_induction with`. Consider the case `mem _ h => obtain ⟨x, rfl⟩ := h`. Conclude with `hv x`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [inner_zero_left, map_zero, hz]`. Consider the case `add p q _ _ hp hq`. Rewrite using `[inner_add_left, map_add, hp, hq]`. Conclude with `(hC.add ⟨_, hm p⟩ ⟨_, hm q⟩ ⟨_, hm v⟩).symm`. Consider the case `smul s p _ hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inner_smul_left, map_smul, hp]`. Conclude with `(hC.smul s ⟨_, hm p⟩ ⟨_, hm v⟩).symm`. Establish `hall : ∀ u v, ⟪u, v⟫_ℂ = ip (J u) (J v)`. Introduce `u v`. Use `left v (fun x => ?_) u` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ⟪v, j x⟫_ℂ = ip (J v) (J (j x))` using `left (j x) (fun x' => by rw [hJ, hJ, hip]) v`. Rewrite using `[← inner_conj_symm, h1]`. Conclude with `hC.herm ⟨_, hm v⟩ ⟨_, hm (j x)⟩`. Use `⟨J, ?_, hr, hall, hJ⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`.
-
-Introduce `u hu`. Establish `h` using `hall u u`. Rewrite `h` using `[show ip (J u) (J u) = ip 0 (J u) by rw [hu], hz]`. Conclude with `inner_self_eq_zero.1 h`.
+A detailed English derivation is pending.
 -/
 theorem exists_embed {K N W : Type} [Field K] [AddCommGroup N] [Module ℂ N] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {σ : K →+* ℂ} {n : ℕ} (j : (Fin n → K) →ₛₗ[σ] W) (li : LinearIndependent ℂ (fun k => j (Pi.single k 1)))
@@ -93,13 +91,11 @@ theorem exists_embed {K N W : Type} [Field K] [AddCommGroup N] [Module ℂ N] [N
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ _ hP hH y i t W _ _ j li sp hip`. Establish `hB : R.toRealDat.BaseW F.lv2` using `hP.char.base`. Establish `hok : A3.A.fam.Ok 1` using `hH.ok.ok2`. Establish `h` using `(GlobalTheory.T.classSums_eq_pairings_topChain_lifts D G Pl0 T A3.A Ks R.toRealDat F.lv2 y.tupT y.hm y.hTop y.hinj hB hP.keep.prX hok (y.tup t)).2.2 i`. Establish `hA` using `GlobalTheory.HilbertLevels.hermA R.toRealDat F.lv2 y.tupT y.hm y.hTop y.hinj (y.tup t) i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ t', t' = t → (Submodule.span ℂ (Set.range fun x => R.toRealDat.extV i t' (R.toRealDat.jV i t' (liftForm A3.A F.lv2.P0 F.lv2.ψ0 i t' x))) = (y.L F.lv2).Amt (y.tup t) i ∧ ∀ x x', (y.L F.lv2).ipA (y.tup t) i (R.toRealDat.extV i t' (R.toRealDat.jV i t' (liftForm A3.A F.lv2.P0 …`. Introduce and unpack `_ rfl h'`. Conclude with `h'`. Take `⟨h1, h2⟩` from `key (y.tupT (y.tup t)) (y.tupT_tup t) h`. Use `exists_embed j li sp (fun x => R.toRealDat.extV i t (R.toRealDat.jV i t (liftForm A3.A F.lv2.P0 F.lv2.ψ0 i t x))) ?_ ?_ _ _ hA h1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x'`. Simplify using `only [DatApi.liftForm_add]`. Conclude with `(congrArg _ (map_add (R.toRealDat.jV i t) _ _)).trans (map_add (R.toRealDat.extV i t) _ _)`. Introduce `c x`. Simplify using `only [DatApi.liftForm_smul]`.
-
-Conclude with `(congrArg _ (map_smulₛₗ (R.toRealDat.jV i t) _ _)).trans (map_smul (R.toRealDat.extV i t) _ _)`. Introduce `x x'`. Conclude with `(hip x x').trans (h2 x x').symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_forms_embed : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), (∀ o : D.what₂.O, ∃ k : Ks, algebraMap Ks D.what₂.LL k = D.what₂.OtoLL o) → Inputs D → Pins R F cG → Holds R F → ∀ (y : Hd R.toRealDat) (i : Fin D.R.m) (t : T) (W : Type) [NormedAddCommGroup W] [InnerProductSpace ℂ W] (j : (Fin (lDim D A3.A F.lv2.P0 F.lv2.ψ0 i t) → D.what₂.LL) →ₛₗ[D.what₂.embLL] W), LinearIndependent ℂ (fun k => j (Pi.single k 1)) → Submodule.span ℂ (Set.range fun k => j (Pi.single k 1)) = ⊤ → (∀ x x', ⟪j x, j x'⟫_ℂ = D.what₂.embLL (Formalism.DivisionValues.hform (lH D A3.A F.lv2.P0 F.lv2.ψ0 i t) x x')) → ∃ J : W →ₗ[ℂ] (GA D ((y.L F.lv2).V i) → (y.L F.lv2).TauV i), Function.Injective J ∧ LinearMap.range J = (y.L F.lv2).Amt (y.tup t) i ∧ (∀ x x', ⟪x, x'⟫_ℂ = (y.L F.lv2).ipA (y.tup t) i (J x) (J x')) ∧ ∀ x, J (j x) = R.toRealDat.extV i t (R.toRealDat.jV i t (liftForm A3.A F.lv2.P0 F.lv2.ψ0 i t x)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ _ hP hH y i t W _ _ j li sp hip

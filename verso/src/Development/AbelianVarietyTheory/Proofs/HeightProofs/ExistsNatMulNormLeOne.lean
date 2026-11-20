@@ -9,7 +9,7 @@ namespace GlobalTheory.AbsNormAdicBounds
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `h0 : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).2 hy`. Use `⟨Multiplicative.toAdd (WithZero.unzero h0), ?_⟩` and prove the remaining obligations. Rewrite using `[NumberField.FinitePlace.norm_def, WithZeroMulInt.toNNReal_neg_apply _ h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_norm_eq_zpow (y : v.adicCompletion F) (hy : y ≠ 0) :
     ∃ k : ℤ, ‖y‖ = (Ideal.absNorm v.asIdeal : ℝ) ^ k := by
@@ -19,7 +19,7 @@ theorem exists_norm_eq_zpow (y : v.adicCompletion F) (hy : y ≠ 0) :
   simp
 
 /- English proof (translation)
-Establish `h` using `(NumberField.FinitePlace.norm_lt_one_iff_mem F v ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)).2 (Ideal.absNorm_mem v.asIdeal)`. Rewrite `h` using `[map_natCast, map_natCast]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_absNorm_lt_one :
     ‖((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F)‖ < 1 := by
@@ -28,11 +28,9 @@ theorem norm_absNorm_lt_one :
   rwa [map_natCast, map_natCast] at h
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)`. Conclude with `NumberField.HeightOneSpectrum.one_lt_absNorm v` after adjusting the coercions. Distinguish the cases in `h0 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F) = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_norm_eq_zpow v _ h0`. Establish `hlt` using `norm_absNorm_lt_one v`. Rewrite `hlt`, the goal using `[hk]`. Establish `hk0 : k < 0` using `(zpow_lt_one_iff_right₀ hq).1 hlt`. Rewrite using `[← zpow_add_one₀ (by linarith)]`.
-
-Conclude with `zpow_le_one_of_nonpos₀ hq.le (by omega)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_absNorm_mul_le_one :
     ‖((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion F)‖ * (Ideal.absNorm v.asIdeal : ℝ) ≤ 1 := by
@@ -48,13 +46,13 @@ theorem norm_absNorm_mul_le_one :
     exact zpow_le_one_of_nonpos₀ hq.le (by omega)
 
 /- English proof (translation)
-Establish `hqN` using `NumberField.HeightOneSpectrum.one_lt_absNorm v`. Establish `hq : (1 : ℝ) < (Ideal.absNorm v.asIdeal : ℝ)` using `by exact_mod_cast hqN`. Take `⟨m, hm1, hm2⟩` from `exists_nat_pow_near hH hq`. Use `⟨Ideal.absNorm v.asIdeal ^ m, pow_pos (by omega) m, by exact_mod_cast hm1, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyle : ‖y‖ ≤ (Ideal.absNorm v.asIdeal : ℝ) ^ m`. Distinguish the cases in `h0 : y = 0`. Rewrite using `[h0, norm_zero]`. Check the signs of the components of the expression. Take `⟨k, hk⟩` from `exists_norm_eq_zpow v y h0`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result.
 
-Establish `hlt : (Ideal.absNorm v.asIdeal : ℝ) ^ k < (Ideal.absNorm v.asIdeal : ℝ) ^ ((m + 1 : ℕ) : ℤ)`. Rewrite using `[zpow_natCast, ← hk]`. Conclude with `hy.trans_lt hm2`. Establish `hkm : k < ((m + 1 : ℕ) : ℤ)` using `(zpow_lt_zpow_iff_right₀ hq).1 hlt`. Rewrite using `[hk, ← zpow_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zpow_le_zpow_right₀ hq.le (by push_cast at hkm; omega)`. Rewrite using `[norm_mul, Nat.cast_pow, norm_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_norm_le_one {F : Type} [Field F] [NumberField F]
     (v : HeightOneSpectrum (𝓞 F)) (H : ℝ) (hH : 1 ≤ H) :

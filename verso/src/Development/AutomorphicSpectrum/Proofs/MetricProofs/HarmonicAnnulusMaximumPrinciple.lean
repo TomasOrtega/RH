@@ -7,13 +7,11 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.Ar.PB.Flat
 
 /- English proof (translation)
-Take `⟨F, hF, hre⟩` from `InnerProductSpace.HarmonicOnNhd.exists_analyticOnNhd_ball_re_eq hh`. Establish `hz₀ : z₀ ∈ Metric.ball z₀ r` using `Metric.mem_ball_self hr`. Establish `hball : Metric.ball z₀ r ∈ 𝓝 z₀` using `Metric.ball_mem_nhds z₀ hr`. Establish `hnorm : ∀ z ∈ Metric.ball z₀ r, ‖Complex.exp (F z)‖ = Real.exp (h z)` using `fun z hz => by`. Rewrite using `[Complex.norm_exp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Real.exp (hre hz)`. Establish `hdiff : ∀ᶠ z in 𝓝 z₀, DifferentiableAt ℂ (fun z => Complex.exp (F z)) z` using `by filter_upwards [Metric.isOpen_ball.mem_nhds hz₀] with z hz`. Conclude with `(hF z hz).differentiableAt.cexp`. Establish `hmax : IsLocalMax (norm ∘ fun z => Complex.exp (F z)) z₀` using `by filter_upwards [hball] with z hz`. Simplify using `only [Function.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hnorm z hz, hnorm z₀ hz₀]`. Conclude with `Real.exp_le_exp.2 (hle z hz)`. Use `filter_upwards [Complex.eventually_eq_of_isLocalMax_norm hdiff hmax, hball] with z hz hzb`. Establish `h1` using `congrArg norm hz`. Rewrite `h1` using `[hnorm z hzb, hnorm z₀ hz₀]`.
-
-Conclude with `Real.exp_injective h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmonic_eventually_eq_of_ball_le {h : ℂ → ℝ} {z₀ : ℂ} {r : ℝ} (hr : 0 < r)
     (hh : InnerProductSpace.HarmonicOnNhd h (Metric.ball z₀ r))
@@ -38,23 +36,21 @@ theorem harmonic_eventually_eq_of_ball_le {h : ℂ → ℝ} {z₀ : ℂ} {r : �
   exact Real.exp_injective h1
 
 /- English proof (translation)
-Introduce `h a b ha hab hc hh hb z hz1 hz2`. Assume the negation of the conclusion as `hpos`. Use `push Not at hpos`. Use `set K : Set ℂ := {z : ℂ | a ≤ ‖z‖ ∧ ‖z‖ ≤ b} with hK`. Establish `hKclosed : IsClosed K` using `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKcomp : IsCompact K` using `(isCompact_closedBall (0 : ℂ) b).of_isClosed_subset hKclosed (fun w hw => by simpa using hw.2)`. Establish `hzK : z ∈ K` using `⟨hz1, hz2⟩`. Take `⟨z₁, hz₁K, hz₁⟩` from `hKcomp.exists_isMaxOn ⟨z, hzK⟩ hc`. Use `set S : Set ℂ := K ∩ h ⁻¹' {h z₁} with hS`. Establish `hSclosed : IsClosed S` using `hc.preimage_isClosed_of_isClosed hKclosed isClosed_singleton`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hScomp : IsCompact S` using `hKcomp.of_isClosed_subset hSclosed Set.inter_subset_left`. Take `⟨z₀, hz₀S, hz₀⟩` from `hScomp.exists_isMaxOn ⟨z₁, hz₁K, rfl⟩ (continuous_norm.continuousOn (s := S))`. Establish `hz₀K : z₀ ∈ K` using `hz₀S.1`. Establish `hval : h z₀ = h z₁` using `hz₀S.2`. Establish `hMpos : 0 < h z₀` using `hval ▸ hpos.trans_le (hz₁ hzK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlo : a < ‖z₀‖` using `lt_of_le_of_ne hz₀K.1 fun e => absurd (hb z₀ (Or.inl e.symm)) (not_le.2 hMpos)`. Establish `hhi : ‖z₀‖ < b` using `lt_of_le_of_ne hz₀K.2 fun e => absurd (hb z₀ (Or.inr e)) (not_le.2 hMpos)`. Establish `hUopen : IsOpen {w : ℂ | a < ‖w‖ ∧ ‖w‖ < b}` using `(isOpen_lt continuous_const continuous_norm).inter (isOpen_lt continuous_norm continuous_const)`. Take `⟨r, hr, hrU⟩` from `Metric.isOpen_iff.1 hUopen z₀ ⟨hlo, hhi⟩`. Establish `hloc : ∀ᶠ w in 𝓝 z₀, h w = h z₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `harmonic_eventually_eq_of_ball_le hr (fun w hw => hh w (hrU hw).1 (hrU hw).2) ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[hval]`. Conclude with `hz₁ ⟨(hrU hw).1.le, (hrU hw).2.le⟩`. Take `⟨ε, hε, hεb⟩` from `Metric.eventually_nhds_iff_ball.1 (hloc.and (hUopen.mem_nhds ⟨hlo, hhi⟩))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz₀pos : 0 < ‖z₀‖` using `ha.trans hlo`. Use `set t : ℝ := ε / (2 * ‖z₀‖) with ht`. Establish `htpos : 0 < t` using `by positivity`. Use `set w : ℂ := ((1 + t : ℝ) : ℂ) * z₀ with hw`. Establish `hwnorm : ‖w‖ = (1 + t) * ‖z₀‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hw, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Establish `hdist : dist w z₀ < ε`. Establish `e : w - z₀ = (t : ℂ) * z₀`. Rewrite using `[hw]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[dist_eq_norm, e, norm_mul, Complex.norm_real, Real.norm_of_nonneg htpos.le, ht]`. Establish `: ε / (2 * ‖z₀‖) * ‖z₀‖ = ε / 2` using `by field_simp`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Take `⟨hwval, hwU⟩` from `hεb w hdist`. Establish `hwS : w ∈ S` using `⟨⟨hwU.1.le, hwU.2.le⟩, by simpa [hval] using hwval⟩`. Establish `hle : ‖w‖ ≤ ‖z₀‖` using `hz₀ hwS`. Rewrite `hle` using `[hwnorm]`. Use polynomial arithmetic with `[mul_pos htpos hz₀pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem harmonic_annulus_le_zero : ∀ (h : ℂ → ℝ) (a b : ℝ), 0 < a → a < b →
     ContinuousOn h {z : ℂ | a ≤ ‖z‖ ∧ ‖z‖ ≤ b} →

@@ -17,7 +17,7 @@ variable {X : Stages} {px : PreX X.B.toPre} {I : ColIn X.B px} {hX : X.B.fields.
   {Wt : Set X.B.places.Pl}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ok, z.pins.char, hex, host, par, X.B.ccK_top, z.pins.keep.guard, GlobalTheory.LiftRows.Inh.goodTypes_of_typesTrue z.pins.char.base.lev ty, ser, GlobalTheory.Hk3.inertJunk_colIn3 _ _ _ hX _ _ _ _ _ _, z.pins.trSem, z.pins.keep.std, z.pins.phs, w1, nV⟩`.
+Supply the required witnesses or components.
 -/
 theorem TiesA.of_dat (z : Dat X I hX Tw Wt)
     (ok : (famR X I hX (usedOf I Tw Wt) z.Xg z.tr).fam3.Ok3 1) (hex : z.R.toRealDat.ExAt)
@@ -30,9 +30,9 @@ theorem TiesA.of_dat (z : Dat X I hX Tw Wt)
     GlobalTheory.Hk3.inertJunk_colIn3 _ _ _ hX _ _ _ _ _ _, z.pins.trSem, z.pins.keep.std, z.pins.phs, w1, nV⟩
 
 /- English proof (translation)
-Establish `e : (fun i => cj (twAt X.toD7.what₂.embLL (famR X I hX (usedOf I Tw Wt) z.Xg z.tr).A.v0) (z.R.phs i)) = fun _ => (1 : ℂ)`. Use function extensionality and compare the values at `i`. Rewrite using `[z.pins.phs i]`. Conclude with `map_one _`. Use `⟨⟨z.geo.fw, z.geo.bar⟩, z.geo.pins, ?_, hU, hI, ?_, hC⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `z.geo.phase`. Rewrite using `[e]`. Conclude with `hM`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TiesG.of_dat (z : Dat X I hX Tw Wt) (hU : z.R.toRealDat.LUnif) (hI : IoExt z.R.toRealDat)
     (hM : ∀ i, OneMapRowR z.core z.R.toRealDat z.geo.κ z.geo.v₀ z.geo.O (fun _ => 1) i)

@@ -18,7 +18,7 @@ namespace GlobalTheory.ZH.LocThetaConv
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Take `rfl : U = f ⁻¹ᵁ W` from `le_antisymm e e'`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Use `f.isIso_app W hW` as an intermediate fact. Conclude with `ConcreteCategory.bijective_of_isIso (f.app W)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem bijective_appLE (f : Y ⟶ X) [IsOpenImmersion f] (W : X.Opens) (hW : W ≤ f.opensRange)
     (U : Y.Opens) (e : U ≤ f ⁻¹ᵁ W) (e' : f ⁻¹ᵁ W ≤ U) : Function.Bijective (f.appLE W U e).hom := by
@@ -28,7 +28,7 @@ theorem bijective_appLE (f : Y ⟶ X) [IsOpenImmersion f] (W : X.Opens) (hW : W 
   exact ConcreteCategory.bijective_of_isIso (f.app W)
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.map_appLE f e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_resG (f : Y ⟶ X) {W W' : X.Opens} (h : W' ≤ W) {U : Y.Opens} (e : U ≤ f ⁻¹ᵁ W')
     (a : Γ(X, W)) : (f.appLE W' U e).hom (resG X h a) =
@@ -37,7 +37,7 @@ theorem appLE_resG (f : Y ⟶ X) {W W' : X.Opens} (h : W' ≤ W) {U : Y.Opens} (
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Scheme.Hom.appLE_map f e (homOfLE h).op]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem resG_appLE (f : Y ⟶ X) {W : X.Opens} {U U' : Y.Opens} (h : U' ≤ U) (e : U ≤ f ⁻¹ᵁ W)
     (a : Γ(X, W)) : resG Y h ((f.appLE W U e).hom a) = (f.appLE W U' (h.trans e)).hom a := by
@@ -45,7 +45,7 @@ theorem resG_appLE (f : Y ⟶ X) {W : X.Opens} {U U' : Y.Opens} (h : U' ≤ U) (
   rfl
 
 /- English proof (translation)
-Simplify using `only [LB.LinComb, zpow_one]`. Use `erw [Fintype.prod_subsingleton _ k]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem g_val (L : LB X) {K : Type} [Fintype K] [Subsingleton K] (φ : K → (Y ⟶ X)) (k : K)
     (i j : K → L.ι) : ((LB.LinComb L φ (fun _ => 1)).g i j).val =
@@ -57,7 +57,7 @@ theorem g_val (L : LB X) {K : Type} [Fintype K] [Subsingleton K] (φ : K → (Y 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h 0, fun h => Set.mem_iInter.2 fun k => by obtain rfl : k = 0 := Subsingleton.elim _ _ exact h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_one {L : LB X} {j : Fin 1 → L.ι} {x : X} :
     x ∈ (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)).U j ↔ x ∈ L.U (j 0) :=
@@ -66,22 +66,20 @@ theorem mem_one {L : LB X} {j : Fin 1 → L.ι} {x : X} :
     exact h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_pull' {L : LB X} (f : Y ⟶ X) {j : L.ι} {y : Y} :
     y ∈ (L.pull f).U (fun _ => j) ↔ f y ∈ L.U j :=
   ⟨fun h => Set.mem_iInter.1 h PUnit.unit, fun h => Set.mem_iInter.2 fun _ => h⟩
 
 /- English proof (translation)
-Use `set L₁ := LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1) with hL₁`. Establish `e : ∀ j : Fin 1 → L.ι, (L.pull V.ι).U (fun _ => j 0) ≤ V.ι ⁻¹ᵁ (V ⊓ L₁.U j)` using `fun j y hy => ⟨y.2, mem_one.2 ((mem_pull' _).1 hy)⟩`. Establish `e' : ∀ j : Fin 1 → L.ι, V.ι ⁻¹ᵁ (V ⊓ L₁.U j) ≤ (L.pull V.ι).U (fun _ => j 0)` using `fun j y hy => (mem_pull' _).2 (mem_one.1 hy.2)`. Establish `hV : V ≤ V.ι.opensRange` using `V.opensRange_ι.ge`. Use `choose τ hτ using fun j : Fin 1 → L.ι => (bijective_appLE V.ι _ (inf_le_left.trans hV) _ (e j) (e' j)).2 (σ.f fun _ => j 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨τ, fun i j => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Apply `(bijective_appLE V.ι (V ⊓ L₁.U i ⊓ L₁.U j) ((inf_le_left.trans inf_le_left).trans hV) ((L.pull V.ι).U (fun _ => i 0) ⊓ (L.pull V.ι).U (fun _ => j 0)) (fun y hy => ⟨e i hy.1, (e j hy.2).2⟩) (fun y hy => ⟨e' i hy.1, e' j ⟨hy.1.1, hy.2⟩⟩)).1` to reduce the goal to its premises. Establish `h` using `σ.compat (fun _ => i 0) (fun _ => j 0)`. Rewrite `h` using `[← hτ i, ← hτ j]`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `((appLE_resG _ _ _ _).trans (resG_appLE _ _ _ _).symm).trans (h.trans ?_)` and prove the remaining obligations. Use `congr 1`. Establish `h1 : ((L.pull V.ι).g (fun _ => i 0) (fun _ => j 0)).val = (V.ι.appLE (L.U (i 0) ⊓ L.U (j 0)) ((L.pull V.ι).U (fun _ => i 0) ⊓ (L.pull V.ι).U (fun _ => j 0)) (fun y hy => ⟨(mem_pull' _).1 hy.1, (mem_pull' _).1 hy.2⟩)).hom (L.g (i 0) (j 0)).val` using `(g_val L (fun _ : PUnit => V.ι) PUnit.unit _ _).trans (by rfl)`. Establish `h2 : (L₁.g i j).val = resG X (fun y hy => ⟨mem_one.1 hy.1, mem_one.1 hy.2⟩ : L₁.U i ⊓ L₁.U j ≤ L.U (i 0) ⊓ L.U (j 0)) (L.g (i 0) (j 0)).val` using `(g_val L (fun _ : Fin 1 => 𝟙 X) 0 _ _).trans (by rfl)`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((appLE_resG _ _ _ _).trans (appLE_resG _ _ _ _)).symm`. Conclude with `(resG_appLE _ _ _ _).trans (appLE_resG _ _ _ _).symm`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Use `⟨fun _ => k PUnit.unit, ?_⟩` and prove the remaining obligations. Establish `h` using `Scheme.basicOpen_appLE V.ι _ _ (e fun _ => k PUnit.unit) (τ fun _ => k PUnit.unit)`.
-
-Establish `h'` using `hτ fun _ => k PUnit.unit`. Establish `hk' : y ∈ V.toScheme.basicOpen (σ.f fun _ => k PUnit.unit)` using `hk`. Rewrite `hk'` using `[← h']`. Conclude with `(h.le hk').2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_secOn (L : LB X) (V : X.Opens) (σ : LB.Sec (L.pull V.ι)) :
     ∃ τ ∈ secOn (LB.LinComb L (K := Fin 1) (fun _ => 𝟙 X) (fun _ => 1)) V,
@@ -123,9 +121,9 @@ theorem exists_secOn (L : LB X) (V : X.Opens) (σ : LB.Sec (L.pull V.ι)) :
     exact (h.le hk').2
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := x) p (IsLocalRing.closedPoint K) hx`. Use `LocallyOfFiniteType.jacobsonSpace (pullback.snd π x)` as an intermediate fact. Take `⟨c, hcO, hc'⟩` from `nonempty_inter_closedPoints (Z := (pullback.fst π x ⁻¹ᵁ O : Set _)) ⟨z, show pullback.fst π x z ∈ O from hz ▸ hp⟩ (pullback.fst π x ⁻¹ᵁ O).isOpen.isLocallyClosed`. Establish `hc : IsClosed {c}` using `hc'`. Use `⟨pointOfClosedPoint (pullback.snd π x) c hc ≫ pullback.fst π x, ?_, fun a _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, pullback.condition, pointOfClosedPoint_comp_assoc]`. Use `show pullback.fst π x (pointOfClosedPoint (pullback.snd π x) c hc a) ∈ O`. Rewrite using `[pointOfClosedPoint_apply]`. Conclude with `hcO`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_point {K : Type} [Field K] [IsAlgClosed K] (π : X ⟶ Y) [LocallyOfFiniteType π]
     (x : Sp K ⟶ Y) (O : X.Opens) (p : X) (hp : p ∈ O) (hx : π p = x (IsLocalRing.closedPoint K)) :
@@ -142,9 +140,9 @@ theorem exists_point {K : Type} [Field K] [IsAlgClosed K] (π : X ⟶ Y) [Locall
     exact hcO
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ S ρ M U₀ Q H z`. Take `⟨N, σ, hz, hσ⟩` from `H z`. Take `⟨τ, hτ, hne⟩` from `exists_secOn Q.L.L _ σ`. Use `⟨N, τ, hz, hτ, fun K _ _ x hx => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hyx⟩` from `hσ _ (hx ⟨IsLocalRing.closedPoint K, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `hne y hy`. Use `Q.dim` as an intermediate fact. Establish `: Smooth Q.G.hom` using `SmoothOfRelativeDimension.smooth S.g _`. Take `⟨g, hg, hO⟩` from `exists_point Q.G.hom x _ _ hj hyx`. Conclude with `⟨g, j, hg, ((GlobalTheory.Points.le_preimage_basicOpen_iff g (GlobalTheory.Points.le_preimage_mono g (Scheme.basicOpen_le _ _) hO) (τ j)).1 hO).ne_zero⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_secFam_fibNe : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (Q : ZHPre ρ M U₀), Q.LocTheta → ∀ z : M.Z, ∃ (N : M.Z.Opens) (σ : Q.SecFam N), z ∈ N ∧ σ ∈ secOn Q.LOne (Q.G.hom ⁻¹ᵁ N) ∧ Q.FibNe N σ := by
   intro o Ω _ _ _ _ S ρ M U₀ Q H z

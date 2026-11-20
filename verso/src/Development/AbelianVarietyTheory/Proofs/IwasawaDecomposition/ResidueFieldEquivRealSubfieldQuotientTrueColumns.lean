@@ -12,7 +12,7 @@ namespace GlobalTheory.Mem.Col2.ResF
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Apply `D.host.φ₀.injective` to reduce the goal to its premises. Rewrite using `[Formalism.HC.HostAx.conjE_apply, Formalism.HC.HostAx.conjE_apply]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem conj_conj_host (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   apply D.host.φ₀.injective
@@ -20,7 +20,7 @@ theorem conj_conj_host (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   simp
 
 /- English proof (translation)
-Establish `hF : (z : D.host.E) ∈ D.host.F` using `(D.host.conjE_mem_hostF_iff _).2 hz`. Use `⟨⟨⟨z, hF⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(isIntegral_algHom_iff (D.host.F.subtype.toIntAlgHom) Subtype.val_injective).mp (RingOfIntegers.isIntegral_coe z)`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_intF (z : 𝓞 D.host.E) (hz : D.host.conj (z : D.host.E) = z) :
     ∃ zF : 𝓞 D.host.F, algebraMap (𝓞 D.host.F) (𝓞 D.host.E) zF = z := by
@@ -31,13 +31,13 @@ theorem exists_intF (z : 𝓞 D.host.E) (hz : D.host.conj (z : D.host.E) = z) :
   · rfl
 
 /- English proof (translation)
-Introduce `r`. Take `⟨y, rfl⟩` from `A.res_surj v r`. Set `cO : 𝓞 D.host.E ≃+* 𝓞 D.host.E` to `RingOfIntegers.mapRingEquiv D.host.conj.toRingEquiv`. Establish `hcO : ∀ y : 𝓞 D.host.E, ((cO y : 𝓞 D.host.E) : D.host.E) = D.host.conj (y : D.host.E)` using `fun y => rfl`. Take `⟨t, ht⟩` from `exists_intF (D := D) (A.piU + cO A.piU) (by push_cast; simp only [hcO, map_add, conj_conj_host]; ring)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `exists_intF (D := D) (y * cO A.piU + cO y * A.piU) (by push_cast; simp only [hcO, map_add, map_mul, conj_conj_host]; ring)`. Establish `htp : t ∉ (A.eV v).1.asIdeal`. Rewrite using `[A.res_v, ht, map_add, A.res_pi, zero_add]`. Conclude with `A.res_conj v _ rfl`. Take `⟨s, i, hi, hsi⟩` from `((A.eV v).1.isMaximal).exists_inv htp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hi0 : A.res v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) i) = 0` using `(A.res_v v i).1 hi`. Establish `hst : A.res v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) s) * A.res v (cO A.piU) = 1`. Use `congrArg (fun x => A.res v (algebraMap (𝓞 D.host.F) (𝓞 D.host.E) x)) hsi` as an intermediate fact. Simplify using `only [map_add, map_mul, map_one, hi0, add_zero, ht, A.res_pi, zero_add] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨s * z, ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, map_mul, hz, map_add, A.res_pi, mul_zero, add_zero]`. Rewrite using `[mul_comm (A.res v y), ← mul_assoc, hst, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_algebraMap_surjective (A : AtTTied u) (v : (D.mem u).A.vT) :
     Function.Surjective ((A.res v).comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E))) := by
@@ -62,9 +62,9 @@ theorem res_algebraMap_surjective (A : AtTTied u) (v : (D.mem u).A.vT) :
   rw [mul_comm (A.res v y), ← mul_assoc, hst, one_mul]
 
 /- English proof (translation)
-Establish `hker : (A.eV v).1.asIdeal = RingHom.ker ((A.res v).comp (algebraMap (𝓞 D.host.F) (𝓞 D.host.E)))`. Use extensionality with `x`. Rewrite using `[RingHom.mem_ker]`. Conclude with `A.res_v v x`. Use `⟨((Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective (res_algebraMap_surjective A v))).symm, fun a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingEquiv.symm_apply_eq]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_fv_equiv (A : AtTTied u) (v : (D.mem u).A.vT) :
     ∃ e : (D.mem u).A.Fv v ≃+* (𝓞 D.host.F ⧸ (A.eV v).1.asIdeal),
@@ -77,7 +77,7 @@ theorem exists_fv_equiv (A : AtTTied u) (v : (D.mem u).A.vT) :
   rfl
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z u Ch chOf F _ v`. Conclude with `exists_fv_equiv F.atT v`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fv_equiv_quot : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) {Ch : ℕ → Type} {chOf : ∀ i, ((I.rec7 l Z).mem u).C.cls i → Ch i} (F : FormsTiedSym (I.rec7 l Z) u Ch chOf), I.StdF l Z u F → ∀ v : ((I.rec7 l Z).mem u).A.vT,
   ∃ e : ((I.rec7 l Z).mem u).A.Fv v ≃+* (𝓞 (I.rec7 l Z).host.F ⧸ (F.atT.eV v).1.asIdeal),

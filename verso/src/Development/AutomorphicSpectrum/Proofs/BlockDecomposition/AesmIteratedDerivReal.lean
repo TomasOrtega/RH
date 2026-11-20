@@ -5,13 +5,11 @@ open MeasureTheory Filter Topology Set
 namespace GlobalTheory.CompanionTheory.HolMean
 
 /- English proof (translation)
-Take `⟨ε, hε, hεs⟩` from `Metric.mem_nhds_iff.mp (Filter.inter_mem hV (hU.mem_nhds hz₀))`. Use `⟨ε / 2, half_pos hε, Metric.ball z₀ (ε / 2), Metric.ball_mem_nhds z₀ (half_pos hε), ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Conclude with `(hεs (Metric.ball_subset_ball (by linarith) hz)).2`. Introduce `f hf C hC z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsub : Metric.closedBall z (ε / 2) ⊆ V ∩ U`. Introduce `w hw`. Apply `hεs` to reduce the goal to its premises. Rewrite `hz`, the goal using `[Metric.mem_ball]`. Rewrite `hw` using `[Metric.mem_closedBall]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Complex.norm_deriv_le_of_forall_mem_sphere_norm_le (half_pos hε)` to reduce the goal to its premises. Apply `DifferentiableOn.diffContOnCl` to reduce the goal to its premises. Conclude with `hf.mono (Metric.closure_ball_subset_closedBall.trans (hsub.trans Set.inter_subset_right))`. Introduce `w hw`.
-
-Conclude with `hC w (hsub (Metric.sphere_subset_closedBall hw))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma cauchy_nhds {U V : Set ℂ} (hU : IsOpen U) {z₀ : ℂ} (hz₀ : z₀ ∈ U) (hV : V ∈ 𝓝 z₀) :
     ∃ R : ℝ, 0 < R ∧ ∃ W ∈ 𝓝 z₀, W ⊆ U ∧ ∀ f : ℂ → ℂ, DifferentiableOn ℂ f U →
@@ -40,13 +38,13 @@ section Series
 variable {κ : Type} {U : Set ℂ}
 
 /- English proof (translation)
-Establish `key : ∀ z₀ ∈ U, ∃ ε > 0, Metric.ball z₀ ε ⊆ U ∧ ∃ u : κ → ℝ, Summable u ∧ ∀ z ∈ Metric.ball z₀ ε, ∀ k, ‖F k z‖ ≤ u k`. Introduce `z₀ hz₀`. Take `⟨V, hV, u, hu, hle⟩` from `hb z₀ hz₀`. Take `⟨ε, hε, hεs⟩` from `Metric.mem_nhds_iff.mp (Filter.inter_mem hV (hU.mem_nhds hz₀))`. Conclude with `⟨ε, hε, fun z hz => (hεs hz).2, u, hu, fun z hz k => hle z (hεs hz) k⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z₀ hz₀`. Take `⟨ε, hε, hsub, u, hu, hle⟩` from `key z₀ hz₀`. Establish `hd` using `Complex.differentiableOn_tsum_of_summable_norm hu (fun k => (hF k).mono hsub) Metric.isOpen_ball (fun k w hw => hle w hw k)`. Conclude with `(hd.differentiableAt (Metric.ball_mem_nhds z₀ hε)).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z₀ hz₀`. Take `⟨ε, hε, hsub, u, hu, hle⟩` from `key z₀ hz₀`. Conclude with `(Complex.hasSum_deriv_of_summable_norm hu (fun k => (hF k).mono hsub) Metric.isOpen_ball (fun k w hw => hle w hw k) (Metric.mem_ball_self hε)).tsum_eq.symm`. Introduce `z₀ hz₀`. Take `⟨V, hV, u, hu, hle⟩` from `hb z₀ hz₀`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R, hR, W, hW, hWU, hest⟩` from `cauchy_nhds hU hz₀ hV`. Use `⟨W, hW, fun k => u k / R, hu.div_const R, ?_⟩` and prove the remaining obligations. Introduce `z hz k`. Conclude with `hest (F k) (hF k) (u k) (fun w hw => hle w hw k) z hz.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma series_step (hU : IsOpen U) (F : κ → ℂ → ℂ) (hF : ∀ k, DifferentiableOn ℂ (F k) U)
     (hb : ∀ z₀ ∈ U, ∃ V ∈ 𝓝 z₀, ∃ u : κ → ℝ, Summable u ∧ ∀ z ∈ V ∩ U, ∀ k, ‖F k z‖ ≤ u k) :
@@ -77,15 +75,13 @@ lemma series_step (hU : IsOpen U) (F : κ → ℂ → ℂ) (hF : ∀ k, Differen
     exact hest (F k) (hF k) (u k) (fun w hw => hle w hw k) z hz.1
 
 /- English proof (translation)
-Establish `loc : ∀ (n : ℕ) (f g : ℂ → ℂ), Set.EqOn f g U → Set.EqOn (iteratedDeriv n f) (iteratedDeriv n g) U`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f g h z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [iteratedDeriv_zero]`. Conclude with `h hz`. Consider the case `succ n ih`. Introduce `f g h z hz`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_succ]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `Filter.EventuallyEq.deriv_eq (Filter.eventually_of_mem (hU.mem_nhds hz) (ih f g h))`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `F _ _ z _`. Simplify using `only [iteratedDeriv_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ r ih`. Introduce `F hF hb z hz`. Take `⟨_, hder, hb'⟩` from `series_step hU F hF hb`. Establish `hF' : ∀ k, DifferentiableOn ℂ (deriv (F k)) U` using `fun k => (hF k).deriv hU`. Simplify using `only [iteratedDeriv_succ']`.
-
-Rewrite using `[loc r (deriv (fun w => ∑' k, F k w)) (fun w => ∑' k, deriv (F k) w) (fun w hw => hder w hw) hz]`. Conclude with `ih (fun k => deriv (F k)) hF' hb' z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma iteratedDeriv_series (hU : IsOpen U) (r : ℕ) : ∀ (F : κ → ℂ → ℂ),
     (∀ k, DifferentiableOn ℂ (F k) U) →
@@ -123,13 +119,11 @@ section Measurability
 variable {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω} {U : Set ℂ}
 
 /- English proof (translation)
-Take `⟨δ, hδ, hball⟩` from `Metric.isOpen_iff.mp hU z hz`. Take `⟨t, htpos, htlt, ht0⟩ : ∃ t : ℕ → ℝ, (∀ n, 0 < t n) ∧ (∀ n, t n < δ) ∧ Tendsto t atTop (𝓝 0)` from `⟨fun n => δ / ((n : ℝ) + 2), fun n => div_pos hδ (by positivity), fun n => div_lt_self hδ (by have : (0:ℝ) ≤ n := Nat.cast_nonneg n; linarith), tendsto_const_nhds.div_atTop (tendsto_natCast_atTop_atTop.atTop_add tendsto_const_nhds)⟩`. Establish `hmem : ∀ n, z + (t n : ℂ) ∈ U`. Introduce `n`. Apply `hball` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Metric.mem_ball, dist_eq_norm, add_sub_cancel_left, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (htpos n)]`. Conclude with `htlt n`. Establish `hz0 : AEStronglyMeasurable (G z) μ` using `by simpa using hm 0 (by simpa using hz)`. Establish `htc : Tendsto (fun n => (t n : ℂ)) atTop (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.mpr ⟨?_, Filter.Eventually.of_forall fun n => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(Complex.continuous_ofReal.tendsto 0).comp ht0` as an intermediate fact. Rewrite `this` using `[Complex.ofReal_zero]`. Conclude with `this`. Conclude with `Set.mem_compl_singleton_iff.mpr (Complex.ofReal_ne_zero.mpr (htpos n).ne')`. Use `aestronglyMeasurable_of_tendsto_ae (f := fun n ω => ((t n : ℂ))⁻¹ • (G (z + t n) ω - G z ω)) atTop (fun n => ?_) (ae_of_all μ fun ω => ?_)` and prove the remaining obligations.
-
-Conclude with `((hm (t n) (hmem n)).sub hz0).const_smul ((t n : ℂ))⁻¹`. Establish `hda : HasDerivAt (fun w => G w ω) (deriv (fun w => G w ω) z) z` using `(((hd ω) z hz).differentiableAt (hU.mem_nhds hz)).hasDerivAt`. Conclude with `hda.tendsto_slope_zero.comp htc`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma aesm_deriv (hU : IsOpen U) (G : ℂ → Ω → ℂ)
     (hd : ∀ ω, DifferentiableOn ℂ (fun z => G z ω) U) {z : ℂ} (hz : z ∈ U)
@@ -163,13 +157,11 @@ lemma aesm_deriv (hU : IsOpen U) (G : ℂ → Ω → ℂ)
     exact hda.tendsto_slope_zero.comp htc
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `G _ hm t ht`. Simplify using `only [iteratedDeriv_zero]`. Conclude with `hm t ht`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `G hd hm t ht`. Simplify using `only [iteratedDeriv_succ']`. Establish `hd' : ∀ ω, DifferentiableOn ℂ (fun z => deriv (fun w => G w ω) z) U` using `fun ω => (hd ω).deriv hU`. Establish `hm' : ∀ s : ℝ, (s : ℂ) ∈ U → AEStronglyMeasurable (fun ω => deriv (fun w => G w ω) (s : ℂ)) μ`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Use `aesm_deriv hU G hd hs (fun x hx => ?_)` and prove the remaining obligations. Establish `h` using `hm (s + x) (by rw [Complex.ofReal_add]; exact hx)`. Rewrite `h` using `[Complex.ofReal_add]`. Conclude with `h`.
-
-Conclude with `ih (fun z ω => deriv (fun w => G w ω) z) hd' hm' t ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma aesm_iteratedDeriv_real (hU : IsOpen U) (n : ℕ) : ∀ G : ℂ → Ω → ℂ,
     (∀ ω, DifferentiableOn ℂ (fun z => G z ω) U) →
@@ -195,11 +187,9 @@ lemma aesm_iteratedDeriv_real (hU : IsOpen U) (n : ℕ) : ∀ G : ℂ → Ω →
     exact ih (fun z ω => deriv (fun w => G w ω) z) hd' hm' t ht
 
 /- English proof (translation)
-Take `⟨t, ρ, hρ, hzb, hsub⟩` from `hball z hz`. Establish `htU : (t : ℂ) ∈ U` using `hsub (Metric.mem_ball_self hρ)`. Establish `hterm : ∀ n : ℕ, AEStronglyMeasurable (fun ω => ((n.factorial : ℂ))⁻¹ • (z - t) ^ n • iteratedDeriv n (fun w => G w ω) (t : ℂ)) μ`. Introduce `n`. Conclude with `((aesm_iteratedDeriv_real hU n G hd hm t htU).const_smul ((z - t) ^ n)).const_smul ((n.factorial : ℂ))⁻¹`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `aestronglyMeasurable_of_tendsto_ae (f := fun N ω => ∑ n ∈ Finset.range N, ((n.factorial : ℂ))⁻¹ • (z - t) ^ n • iteratedDeriv n (fun w => G w ω) (t : ℂ)) atTop (fun N => ?_) (ae_of_all μ fun ω => ?_)` and prove the remaining obligations. Establish `h` using `Finset.aestronglyMeasurable_sum (μ := μ) (Finset.range N) (fun n _ => hterm n)`. Rewrite `h` using `[Finset.sum_fn]`. Conclude with `h`. Establish `hs` using `Complex.hasSum_taylorSeries_on_ball ((hd ω).mono hsub) hzb`.
-
-Conclude with `hs.tendsto_sum_nat`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma aesm_of_real (hU : IsOpen U)
     (hball : ∀ z ∈ U, ∃ (t ρ : ℝ), 0 < ρ ∧ z ∈ Metric.ball (t : ℂ) ρ ∧ Metric.ball (t : ℂ) ρ ⊆ U)
@@ -230,11 +220,11 @@ section Integral
 variable {Ω : Type} [MeasurableSpace Ω] {μ : Measure Ω} {U : Set ℂ}
 
 /- English proof (translation)
-Establish `h2 : ∀ z ∈ U, AEStronglyMeasurable (fun ω => deriv (fun w => G w ω) z) μ` using `fun z hz => aesm_deriv hU G hd hz (fun x hx => hm _ hx)`. Establish `h3 : ∀ z₀ ∈ U, ∃ V ∈ 𝓝 z₀, ∃ g : Ω → ℝ, Integrable g μ ∧ ∀ z ∈ V ∩ U, ∀ ω, ‖deriv (fun w => G w ω) z‖ ≤ g ω`. Introduce `z₀ hz₀`. Take `⟨V, hV, g, hg, hle⟩` from `hb z₀ hz₀`. Take `⟨R, hR, W, hW, hWU, hest⟩` from `cauchy_nhds hU hz₀ hV`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨W, hW, fun ω => g ω / R, hg.div_const R, ?_⟩` and prove the remaining obligations. Introduce `z hz ω`. Conclude with `hest (fun w => G w ω) (hd ω) (g ω) (fun w hw => hle w hw ω) z hz.1`. Use `⟨?_, h2, h3⟩` and prove the remaining obligations. Introduce `z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV, g, hg, hle⟩` from `hb z hz`. Take `⟨W, hW, g', hg', hle'⟩` from `h3 z hz`. Take `⟨ε, hε, hεs⟩` from `Metric.mem_nhds_iff.mp (Filter.inter_mem hW (hU.mem_nhds hz))`. Establish `hint : Integrable (G z) μ` using `hg.mono' (hm z hz) (ae_of_all μ fun ω => hle z ⟨mem_of_mem_nhds hV, hz⟩ ω)`. Conclude with `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (F := G) (F' := fun x ω => deriv (fun w => G w ω) x) (bound := g') (Metric.ball_mem_nhds z hε) (Filter.eventually_of_mem (hU.mem_nhds hz) hm) hint (h2 z hz) (ae_of_all μ fun ω x hx => hle' x (hεs hx) ω) hg' (ae_of_all μ fun ω x hx …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma integral_step (hU : IsOpen U) (G : ℂ → Ω → ℂ)
     (hd : ∀ ω, DifferentiableOn ℂ (fun z => G z ω) U)
@@ -269,15 +259,13 @@ lemma integral_step (hU : IsOpen U) (G : ℂ → Ω → ℂ)
       (((hd ω) x (hεs hx).2).differentiableAt (hU.mem_nhds (hεs hx).2)).hasDerivAt)).2
 
 /- English proof (translation)
-Establish `loc : ∀ (n : ℕ) (f g : ℂ → ℂ), Set.EqOn f g U → Set.EqOn (iteratedDeriv n f) (iteratedDeriv n g) U`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `f g h z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [iteratedDeriv_zero]`. Conclude with `h hz`. Consider the case `succ n ih`. Introduce `f g h z hz`. Rewrite using `[iteratedDeriv_succ, iteratedDeriv_succ]`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `Filter.EventuallyEq.deriv_eq (Filter.eventually_of_mem (hU.mem_nhds hz) (ih f g h))`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `G _ _ _ z _`. Simplify using `only [iteratedDeriv_zero]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ r ih`. Introduce `G hd hm hb z hz`. Take `⟨h1, h2, h3⟩` from `integral_step hU G hd hm hb`. Establish `hd' : ∀ ω, DifferentiableOn ℂ (fun z => deriv (fun w => G w ω) z) U` using `fun ω => (hd ω).deriv hU`. Simplify using `only [iteratedDeriv_succ']`.
-
-Use `(loc r (deriv (fun w => ∫ ω, G w ω ∂μ)) (fun w => ∫ ω, deriv (fun w' => G w' ω) w ∂μ) (fun w hw => (h1 w hw).deriv) hz).trans ?_` and prove the remaining obligations. Conclude with `ih (fun z ω => deriv (fun w => G w ω) z) hd' h2 h3 z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma iteratedDeriv_integral (hU : IsOpen U) (r : ℕ) : ∀ G : ℂ → Ω → ℂ,
     (∀ ω, DifferentiableOn ℂ (fun z => G z ω) U) →
@@ -314,17 +302,15 @@ lemma iteratedDeriv_integral (hU : IsOpen U) (r : ℕ) : ∀ G : ℂ → Ω → 
 end Integral
 
 /- English proof (translation)
-Establish `hser : ∀ p ω, ∀ z₀ ∈ U, ∃ V ∈ 𝓝 z₀, ∃ u : κ → ℝ, Summable u ∧ ∀ z ∈ V ∩ U, ∀ k, ‖F p z ω k‖ ≤ u k`. Introduce `p ω z₀ hz₀`. Take `⟨N, hN, M, g, hM, hg, hMg, hle⟩` from `hB (p, z₀) ⟨Set.mem_univ _, hz₀⟩`. Take `⟨A, hA, V, hV, hAV⟩` from `mem_nhds_prod_iff.mp hN`. Conclude with `⟨V, hV, M ω, hM ω, fun z hz k => hle (p, z) (hAV ⟨mem_of_mem_nhds hA, hz.1⟩) hz.2 ω k⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hdS : ∀ p ω, DifferentiableOn ℂ (fun z => ∑' k, F p z ω k) U` using `fun p ω => (series_step hU (fun k z => F p z ω k) (fun k => hF p ω k) (hser p ω)).1`. Establish `hmeas : ∀ p z, z ∈ U → AEStronglyMeasurable (fun ω => ∑' k, F p z ω k) μ` using `fun p z hz => aesm_of_real hU hball (fun z ω => ∑' k, F p z ω k) (hdS p) (hFm p) hz`. Establish `hint : ∀ p, ∀ z₀ ∈ U, ∃ V ∈ 𝓝 z₀, ∃ g : Ω → ℝ, Integrable g μ ∧ ∀ z ∈ V ∩ U, ∀ ω, ‖∑' k, F p z ω k‖ ≤ g ω`. Introduce `p z₀ hz₀`. Take `⟨N, hN, M, g, hM, hg, hMg, hle⟩` from `hB (p, z₀) ⟨Set.mem_univ _, hz₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, V, hV, hAV⟩` from `mem_nhds_prod_iff.mp hN`. Use `⟨V, hV, g, hg, fun z hz ω => ?_⟩` and prove the remaining obligations. Conclude with `(tsum_of_norm_bounded (hM ω).hasSum (fun k => hle (p, z) (hAV ⟨mem_of_mem_nhds hA, hz.1⟩) hz.2 ω k)).trans (hMg ω)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN, M, g, hM, hg, hMg, hle⟩` from `hB q hq`. Establish `hS : ∀ q' ∈ (Set.univ ×ˢ U) ∩ N, ∀ ω, ‖∑' k, F q'.1 q'.2 ω k‖ ≤ g ω` using `fun q' hq' ω => (tsum_of_norm_bounded (hM ω).hasSum (fun k => hle q' hq'.2 hq'.1.2 ω k)).trans (hMg ω)`. Use `continuousWithinAt_of_dominated (bound := g) ?_ ?_ hg ?_` and prove the remaining obligations. Conclude with `Filter.eventually_of_mem self_mem_nhdsWithin (fun q' hq' => hmeas q'.1 q'.2 hq'.2)`. Conclude with `Filter.eventually_of_mem (inter_mem_nhdsWithin _ hN) (fun q' hq' => ae_of_all μ (hS q' hq'))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ae_of_all μ fun ω => ?_` and prove the remaining obligations. Establish `hc : ContinuousOn (fun q' : P × ℂ => ∑' k, F q'.1 q'.2 ω k) ((Set.univ ×ˢ U) ∩ N)` using `continuousOn_tsum (fun k => (hFc ω k).mono Set.inter_subset_left) (hM ω) (fun k q' hq' => hle q' hq'.2 hq'.1.2 ω k)`. Conclude with `(continuousWithinAt_inter hN).mp (hc q ⟨hq, mem_of_mem_nhds hN⟩)`. Introduce `p z hz`. Conclude with `(((integral_step hU (fun z ω => ∑' k, F p z ω k) (hdS p) (fun z hz => hmeas p z hz) (hint p)).1 z hz).differentiableAt).differentiableWithinAt`.
-
-Introduce `p z hz r`. Use `(iteratedDeriv_integral hU r (fun z ω => ∑' k, F p z ω k) (hdS p) (fun z hz => hmeas p z hz) (hint p) z hz).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `ω`. Conclude with `iteratedDeriv_series hU r (fun k z => F p z ω k) (fun k => hF p ω k) (hser p ω) z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem holomorphic_mean (P Ω κ : Type) [TopologicalSpace P] [FirstCountableTopology P]
     [MeasurableSpace Ω] [Countable κ] (μ : Measure Ω) (U : Set ℂ)

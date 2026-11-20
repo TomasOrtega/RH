@@ -35,14 +35,14 @@ def cMap (i : V₁ ≃ₗ[ℂ] V) (mk : Z →ₗ[ℂ] Y) : V₁ ⊗[ℂ] Z →�
   (Exponents.boolTensorEquiv (X := TwoT V Y)).symm.toLinearMap ∘ₗ TensorProduct.map i.toLinearMap mk
 
 /- English proof (translation)
-The claim follows from `Exponents.boolTensorEquiv_tprod _`.
+A detailed English derivation is pending.
 -/
 theorem bool_tprod_pair (a : V) (y : Y) :
     Exponents.boolTensorEquiv (X := TwoT V Y) (PiTensorProduct.tprod ℂ (pair a y)) = (a ⊗ₜ[ℂ] y : V ⊗[ℂ] Y) :=
   Exponents.boolTensorEquiv_tprod _
 
 /- English proof (translation)
-Apply `(Exponents.boolTensorEquiv (X := TwoT V Y)).injective` to reduce the goal to its premises. Rewrite using `[bool_tprod_pair]`. Use `show (Exponents.boolTensorEquiv (X := TwoT V Y)) ((Exponents.boolTensorEquiv (X := TwoT V Y)).symm _) = _`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cMap_tmul (i : V₁ ≃ₗ[ℂ] V) (mk : Z →ₗ[ℂ] Y) (a : V₁) (b : Z) :
     cMap i mk (a ⊗ₜ[ℂ] b) = PiTensorProduct.tprod ℂ (pair (i a) (mk b)) := by
@@ -53,7 +53,7 @@ theorem cMap_tmul (i : V₁ ≃ₗ[ℂ] V) (mk : Z →ₗ[ℂ] Y) (a : V₁) (b 
   rfl
 
 /- English proof (translation)
-Apply `(Exponents.boolTensorEquiv (X := TwoT V Y)).injective` to reduce the goal to its premises. Rewrite using `[map_smul, bool_tprod_pair, bool_tprod_pair]`. Conclude with `TensorProduct.tmul_smul d a y`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tprod_pair_smul (a : V) (d : ℂ) (y : Y) :
     PiTensorProduct.tprod ℂ (pair a (d • y)) = d • PiTensorProduct.tprod ℂ (pair a y) := by
@@ -62,18 +62,18 @@ theorem tprod_pair_smul (a : V) (d : ℂ) (y : Y) :
   exact TensorProduct.tmul_smul d a y
 
 /- English proof (translation)
-The claim follows from `(Exponents.boolTensorEquiv (X := TwoT V Y)).symm.surjective.comp (TensorProduct.map_surjective i.surjective h)`.
+A detailed English derivation is pending.
 -/
 theorem cMap_surjective (i : V₁ ≃ₗ[ℂ] V) (mk : Z →ₗ[ℂ] Y) (h : Function.Surjective mk) :
     Function.Surjective (cMap i mk) :=
   (Exponents.boolTensorEquiv (X := TwoT V Y)).symm.surjective.comp (TensorProduct.map_surjective i.surjective h)
 
 /- English proof (translation)
-Establish `h0 : TensorProduct.map i.toLinearMap mk w = 0`. Establish `: (Exponents.boolTensorEquiv (X` using `TwoT V Y)).symm (TensorProduct.map i.toLinearMap mk w) = 0 := hw`. Simplify using `using this`. Establish `h1 : LinearMap.lTensor V₁ mk w = 0`. Establish `e : ∀ w : V₁ ⊗[ℂ] Z, TensorProduct.map i.symm.toLinearMap LinearMap.id (TensorProduct.map i.toLinearMap mk w) = LinearMap.lTensor V₁ mk w`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[← e, h0, map_zero]`. Establish `hex : Function.Exact (LinearMap.ker mk).subtype mk` using `LinearMap.exact_subtype_ker_map mk`. Conclude with `(lTensor_exact V₁ hex h w).1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cMap_eq_zero (i : V₁ ≃ₗ[ℂ] V) (mk : Z →ₗ[ℂ] Y) (h : Function.Surjective mk) (w : V₁ ⊗[ℂ] Z)
     (hw : cMap i mk w = 0) : w ∈ LinearMap.range (LinearMap.lTensor V₁ (LinearMap.ker mk).subtype) := by
@@ -100,9 +100,7 @@ variable {G M W W' : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [TopologicalSpace M] [IsTopologicalGroup M] [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
 
 /- English proof (translation)
-Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `show (χ g : ℂ) • (E (Submodule.Quotient.mk (cInd H σ (s g) f))).1.1 x = (E (Submodule.Quotient.mk f)).1.1 (x * g)`. Rewrite using `[hE, hE, map_mul, smul_smul, Units.val_mul, mul_comm]`. Use `show _ • c (f.1.1.1 (s x * s g)) = _ • c (f.1.1.1 (s (x * g)))`.
-
-Rewrite using `[map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coinv_intertwine (H U : Subgroup G) (Q : Subgroup M) (s : M →* G) (χ : M →* ℂˣ)
     (σ : Representation ℂ H W) (σ' : Representation ℂ Q W') (c : W →ₗ[ℂ] W')
@@ -124,7 +122,7 @@ section Concrete
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, h⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k α n m e`. Conclude with `h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem parab_mul_KO {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)]
     [∀ a, DecidableEq (m a)] [Fintype n] [DecidableEq n] (e : (Σ a, m a) ≃ n) :
@@ -133,7 +131,7 @@ theorem parab_mul_KO {α n : Type} {m : α → Type} [Fintype α] [LinearOrder �
   exact h
 
 /- English proof (translation)
-Use `ext`. Conclude with `GlobalTheory.CompanionTheory.MirPsiPair.det_glEmbMat n _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem det_levi (n : ℕ) (g : GL (Fin n) k) :
     GeneralLinearGroup.det ((levi k n g : Mir k n) : GL (Fin (n + 1)) k) = GeneralLinearGroup.det g := by
@@ -141,13 +139,11 @@ theorem det_levi (n : ℕ) (g : GL (Fin n) k) :
   exact GlobalTheory.CompanionTheory.MirPsiPair.det_glEmbMat n _
 
 /- English proof (translation)
-Use `ext`. Use `show (1 + colMat k n v.toAdd : Matrix (Fin (n + 1)) (Fin (n + 1)) k).det = 1`. Rewrite using `[Matrix.det_of_upperTriangular]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : i = Fin.last n`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hi` using the available equality. Simplify using `[colMat]`. Simplify using `[colMat, hi]`. Introduce `a b hab`. Establish `hb : b ≠ Fin.last n` using `fun h => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `h` using the available equality. Conclude with `absurd (Fin.le_last a) (not_le.2 hab)`. Establish `hne : a ≠ b` using `fun h => by`. Substitute `h` using the available equality. Conclude with `lt_irrefl _ hab`.
-
-Simplify using `[colMat, hb, Matrix.one_apply, hne]`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_unip (n : ℕ) (v : Multiplicative (Fin n → k)) : GeneralLinearGroup.det (unip k n v) = 1 := by
   ext
@@ -168,7 +164,7 @@ theorem det_unip (n : ℕ) (v : Multiplicative (Fin n → k)) : GeneralLinearGro
     simp [colMat, hb, Matrix.one_apply, hne]
 
 /- English proof (translation)
-Use `show absPow k (s : ℂ) (GeneralLinearGroup.det ((levi k n g : Mir k n) : GL (Fin (n + 1)) k)) = absPow k (s : ℂ) _`. Rewrite using `[det_levi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpowM_levi (n : ℕ) (s : ℝ) (g : GL (Fin n) k) :
     dpowM n s (levi k n g) = dpow n s g := by
@@ -176,7 +172,7 @@ theorem dpowM_levi (n : ℕ) (s : ℝ) (g : GL (Fin n) k) :
   rw [det_levi]
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)`. Use `show absPow k (s : ℂ) (GeneralLinearGroup.det (u : GL (Fin (n + 1)) k)) = 1`. Establish `hv' : (u : GL (Fin (n + 1)) k) = unip k n v` using `hv.symm`. Rewrite using `[hv', det_unip, map_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpowM_of_mem (n : ℕ) (s : ℝ) (u : Mir k n) (hu : u ∈ MirUin k n) : dpowM n s u = 1 := by
   obtain ⟨v, hv⟩ := (hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)
@@ -185,15 +181,15 @@ theorem dpowM_of_mem (n : ℕ) (s : ℝ) (u : Mir k n) (hu : u ∈ MirUin k n) :
   rw [hv', det_unip, map_one]
 
 /- English proof (translation)
-Establish `e1 : absPow k (((((j + 1 : ℕ) : ℝ) / 2 : ℝ)) : ℂ) = absPow k ((j : ℂ) / 2) * absPow k (1 / 2)`. Rewrite using `[← absPow_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : absPow k ((-1 / 2 : ℝ) : ℂ) = (absPow k (1 / 2))⁻¹`. Rewrite using `[← absPow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e3 : absPow k (((-((m : ℕ) : ℝ) / 2 : ℝ)) : ℂ) = absPow k (-(m : ℂ) / 2)`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.mul_apply, MonoidHom.inv_apply, map_mul, mul_inv]`. Generalize the expression as in `absPow k (1 / 2) a = A`. Generalize the expression as in `absPow k (1 / 2) b = B`. Generalize the expression as in `absPow k ((j : ℂ) / 2) a = P`. Generalize the expression as in `absPow k (-(m : ℂ) / 2) b = R`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem scalar_id (m j : ℕ) (a b : kˣ) :
     absPow k ((-1 / 2 : ℝ) : ℂ) (a * b) * absPow k (((((j + 1 : ℕ) : ℝ) / 2 : ℝ)) : ℂ) a *
@@ -250,34 +246,32 @@ abbrev iV (j : ℕ) : Vt (j := j) ρ ≃ₗ[ℂ] ρ.V := LinearEquiv.refl ℂ ρ
 abbrev cc : Vt (j := j) ρ ⊗[ℂ] Zt τ m →ₗ[ℂ] PiTensorProduct ℂ (TwoT ρ.V (psiN τ).V) := cMap (iV ρ j) (mkZ τ m)
 
 /- English proof (translation)
-The claim follows from `cMap_tmul _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem cc_tmul (a : ρ.V) (b : τ.V) : cc ρ τ ((a : Vt (j := j) ρ) ⊗ₜ[ℂ] (b : Zt τ m)) =
     PiTensorProduct.tprod ℂ (pair a (mkY τ b)) :=
   cMap_tmul _ _ _ _
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.mem_mirabolicParabolic_iff_parabolic k m j _).2 (by rwa [GlobalTheory.CompanionTheory.BZMirAdj.mirProj_levi])`.
+A detailed English derivation is pending.
 -/
 theorem levi_mem_HGP (p : GL (Fin (m + j)) k) (hp : p ∈ parab k (eMJ m j)) : levi k (m + j) p ∈ MirabolicParabolic k m j :=
   (GlobalTheory.T.mem_mirabolicParabolic_iff_parabolic k m j _).2 (by rwa [GlobalTheory.CompanionTheory.BZMirAdj.mirProj_levi])
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, smul_add, hx, hy]`. Consider the case `tmul a b => set g₁ : GL (Fin m) k := leviProj k (eMJ m j) p false with hg₁ set g₂ : GL (Fin j) k := leviProj k (eMJ m j) p true with hg₂`. Establish `hgp` using `GlobalTheory.T.gpProj_levi_formula k m j (p : GL (Fin (m + j)) k) p.2 (levi_mem_HGP _ p.2)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1 : sig ρ τ ⟨levi k (m + j) p, levi_mem_HGP _ p.2⟩ (a ⊗ₜ[ℂ] b) = (((dpow m (((j + 1 : ℕ) : ℝ) / 2) g₁ : ℂˣ) : ℂ) • ρ.ρ g₁ a : Vt (j` using `j) ρ) ⊗ₜ[ℂ] (((dpow j (-((m : ℕ) : ℝ) / 2) g₂ : ℂˣ) : ℂ) • τ.ρ (levi k j g₂) b : Zt τ m) := by show extTensor _ _ (gpProj k m j _) _ = _`. Rewrite using `[hgp]`. Use `(extTensor_tmul _ _ _ a b).trans ?_` and prove the remaining obligations. Use `show (((dpow m (((j + 1 : ℕ) : ℝ) / 2) g₁ : ℂˣ) : ℂ) • ρ.ρ g₁ a : Vt (j := j) ρ) ⊗ₜ[ℂ] (((dpowM j (-((m : ℕ) : ℝ) / 2) (levi k j g₂) : ℂˣ) : ℂ) • τ.ρ (levi k j g₂) b : Zt τ m) = _`. Rewrite using `[dpowM_levi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (fun x => twoRep ρ.ρ (psiN τ).ρ x (leviProj k (eMJ m j) p x) (pair a (mkY τ b) x)) = pair (ρ.ρ g₁ a) (((dpow j (-1 / 2) g₂ : ℂˣ) : ℂ) • mkY τ (τ.ρ (levi k j g₂) b))`. Use function extensionality and compare the values at `x`. Consider the cases of `x`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hlev : leviProj k (eMJ m j) p = leviTwo k (Fin m) (Fin j) (g₁, g₂)`. Use function extensionality and compare the values at `x`. Consider the cases of `x`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdet : GeneralLinearGroup.det (p : GL (Fin (m + j)) k) = GeneralLinearGroup.det g₁ * GeneralLinearGroup.det g₂`. Rewrite using `[det_parab, Fintype.prod_bool, mul_comm]`. Establish `hs : ((dpow (m + j) (-1 / 2) (p : GL (Fin (m + j)) k) : ℂˣ) : ℂ) * (((dpow m (((j + 1 : ℕ) : ℝ) / 2) g₁ : ℂˣ) : ℂ) * ((dpow j (-((m : ℕ) : ℝ) / 2) g₂ : ℂˣ) : ℂ)) = ((deltaHalf k (Two (Fin m) (Fin j)) (leviProj k (eMJ m j) p) : ℂˣ) : ℂ) * ((dpow j (-1 / 2) g₂ : ℂˣ) : ℂ)`. Rewrite using `[hlev, deltaHalf_two, ← Units.val_mul, ← Units.val_mul, ← Units.val_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `scalar_id (k := k) m j (GeneralLinearGroup.det g₁) (GeneralLinearGroup.det g₂)` as an intermediate fact. Simplify using `only [dpow, detChar_apply, hdet, Fintype.card_fin]`. Rewrite using `[← mul_assoc]`. Conclude with `this`. Establish `h3 : cc ρ τ (sig ρ τ ⟨levi k (m + j) p, levi_mem_HGP _ p.2⟩ (a ⊗ₜ[ℂ] b)) = (((dpow m (((j + 1 : ℕ) : ℝ) / 2) g₁ : ℂˣ) : ℂ) * ((dpow j (-((m : ℕ) : ℝ) / 2) g₂ : ℂˣ) : ℂ)) • PiTensorProduct.tprod ℂ (pair (ρ.ρ g₁ a) (mkY τ (τ.ρ (levi k j g₂) b)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, TensorProduct.smul_tmul_smul]`. Conclude with `(LinearMap.map_smul (cc ρ τ) _ _).trans (congrArg _ (cc_tmul ρ τ _ _))`. Establish `h4 : cc ρ τ (a ⊗ₜ[ℂ] b) = PiTensorProduct.tprod ℂ (pair a (mkY τ b))` using `cc_tmul ρ τ a b`. Rewrite using `[h3, h4, smul_smul, hs, ← smul_smul]`. Use `show _ = ((deltaHalf k (Two (Fin m) (Fin j)) (leviProj k (eMJ m j) p) : ℂˣ) : ℂ) • piTensor (twoRep ρ.ρ (psiN τ).ρ) (leviProj k (eMJ m j) p) (PiTensorProduct.tprod ℂ (pair a (mkY τ b)))`.
-
-Rewrite using `[piTensor_tprod]`. Conclude with `congrArg _ ((tprod_pair_smul _ _ _).symm.trans (congrArg (PiTensorProduct.tprod ℂ) h2.symm))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hcomp (p : parab k (eMJ m j)) (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
     ((dpow (m + j) (-1 / 2) (p : GL (Fin (m + j)) k) : ℂˣ) : ℂ) •
@@ -334,22 +328,22 @@ theorem hcomp (p : parab k (eMJ m j)) (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
     exact congrArg _ ((tprod_pair_smul _ _ _).symm.trans (congrArg (PiTensorProduct.tprod ℂ) h2.symm))
 
 /- English proof (translation)
-The claim follows from `Submodule.mkQ_surjective (twKer τ.ρ (MirUin k j) 1)`.
+A detailed English derivation is pending.
 -/
 theorem mkZ_surjective : Function.Surjective (mkZ τ m) :=
   Submodule.mkQ_surjective (twKer τ.ρ (MirUin k j) 1)
 
 /- English proof (translation)
-Use `(Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨u, hu⟩, b, ?_⟩)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem mkY_unip (u : Mir k j) (hu : u ∈ MirUin k j) (b : τ.V) : mkY τ (τ.ρ u b) = mkY τ b := by
   refine (Submodule.Quotient.eq _).2 (Submodule.subset_span ⟨⟨u, hu⟩, b, ?_⟩)
   simp
 
 /- English proof (translation)
-Use `(extTensor_tmul _ _ _ a b).trans ?_` and prove the remaining obligations. Rewrite using `[hv]`. Use `show (((dpow m (((j + 1 : ℕ) : ℝ) / 2) 1 : ℂˣ) : ℂ) • ρ.ρ 1 a : Vt (j := j) ρ) ⊗ₜ[ℂ] (((dpowM j (-((m : ℕ) : ℝ) / 2) (gpProj k m j v).2 : ℂˣ) : ℂ) • τ.ρ (gpProj k m j v).2 b : Zt τ m) = _`. Rewrite using `[dpowM_of_mem _ _ _ hv2, map_one, map_one]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem sig_tmul (v : MirabolicParabolic k m j) (a : Vt (j := j) ρ) (b : Zt τ m) (hv : (gpProj k m j v).1 = 1)
     (hv2 : (gpProj k m j v).2 ∈ MirUin k j) :
@@ -363,13 +357,11 @@ theorem sig_tmul (v : MirabolicParabolic k m j) (a : Vt (j := j) ρ) (b : Zt τ 
   rfl
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun t _ => a ⊗ₜ[ℂ] (t : Zt τ m) ∈ twKer (sig ρ τ) ((MirUin k (m + j)).subgroupOf (MirabolicParabolic k m j)) 1) ?_ ?_ ?_ ?_ ht` and prove the remaining obligations. Introduce and unpack `_ ⟨n, b, rfl⟩`. Take `⟨v, hv, hv2⟩` from `GlobalTheory.T.gpProj_unipotent_surjective k m j (n : Mir k j) n.2`. Use `Submodule.subset_span ⟨⟨v, hv⟩, a ⊗ₜ[ℂ] b, ?_⟩` and prove the remaining obligations. Establish `h1` using `sig_tmul ρ τ v a b (by rw [hv2]) (by rw [hv2]; exact n.2)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[hv2]`. Use `show _ = sig ρ τ v _ - _`. Rewrite using `[h1]`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `TensorProduct.tmul_sub _ _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show a ⊗ₜ[ℂ] (0 : Zt τ m) ∈ _`. Rewrite using `[TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Introduce `x y _ _ hx hy show a ⊗ₜ[ℂ] ((x : Zt τ m) + (y : Zt τ m)) ∈ _`. Rewrite using `[TensorProduct.tmul_add]`.
-
-Conclude with `add_mem hx hy`. Introduce `c x _ hx show a ⊗ₜ[ℂ] (c • (x : Zt τ m)) ∈ _`. Rewrite using `[TensorProduct.tmul_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tmul_mem_twKer (a : Vt (j := j) ρ) (t : Zt τ m) (ht : t ∈ twKer τ.ρ (MirUin k j) 1) :
     a ⊗ₜ[ℂ] t ∈ twKer (sig ρ τ) ((MirUin k (m + j)).subgroupOf (MirabolicParabolic k m j)) 1 := by
@@ -397,17 +389,15 @@ theorem tmul_mem_twKer (a : Vt (j := j) ρ) (t : Zt τ m) (ht : t ∈ twKer τ.�
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hw`. Take `⟨y, rfl⟩` from `cMap_eq_zero (iV ρ j) (mkZ τ m) (mkZ_surjective τ) w hw`. Use `clear hw`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `tmul a t`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `tmul_mem_twKer ρ τ a _ ((Submodule.Quotient.mk_eq_zero _).1 t.2)`. Introduce `hw`. Establish `hle : twKer (sig ρ τ) ((MirUin k (m + j)).subgroupOf (MirabolicParabolic k m j)) 1 ≤ LinearMap.ker (cc ρ τ)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : ((u : MirabolicParabolic k m j) : Mir k (m + j)) ∈ MirUin k (m + j)` using `u.2`. Take `⟨h1, h2⟩` from `GlobalTheory.T.gpProj_unipotent k m j u hu`. Establish `key : ∀ w, cc ρ τ (sig ρ τ (u : MirabolicParabolic k m j) w) = cc ρ τ w`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`. Rewrite using `[sig_tmul ρ τ _ a b h1 h2]`. Conclude with `(cc_tmul ρ τ _ _).trans ((congrArg (fun y => PiTensorProduct.tprod ℂ (pair (V := ρ.V) a y)) (mkY_unip τ _ h2 b)).trans (cc_tmul ρ τ a b).symm)`.
-
-Use `show cc ρ τ (sig ρ τ (u : MirabolicParabolic k m j) w - (((1 : ((MirUin k (m + j)).subgroupOf (MirabolicParabolic k m j)) →* ℂˣ) u : ℂˣ) : ℂ) • w) = 0`. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub]`. Conclude with `sub_eq_zero.2 (key w)`. Conclude with `hle hw`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hck (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
     cc ρ τ w = 0 ↔ w ∈ twKer (sig ρ τ) ((MirUin k (m + j)).subgroupOf (MirabolicParabolic k m j)) 1 := by
@@ -443,13 +433,13 @@ theorem hck (w : Vt (j := j) ρ ⊗[ℂ] Zt τ m) :
     exact hle hw
 
 /- English proof (translation)
-The claim follows from `(isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_dpow_ker (n : ℕ) (s : ℝ) : IsOpen ((dpow (k := k) n s).ker : Set (GL (Fin n) k)) :=
   (isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar
 
 /- English proof (translation)
-Use `isSmooth_comp (isSmooth_extTensor (isSmooth_twist hρ (isOpen_dpow_ker _ _)) ?_) _ (GlobalTheory.T.gpProj_continuous k m j)` and prove the remaining obligations. Conclude with `isSmooth_twist hτ (IsSmoothChar.comp (χ := dpow (j + 1) (-((m : ℕ) : ℝ) / 2)) (isOpen_dpow_ker _ _) (Mir k j).subtype continuous_subtype_val)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmooth_sig (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) : IsSmooth (sig ρ τ) := by
   refine isSmooth_comp (isSmooth_extTensor (isSmooth_twist hρ (isOpen_dpow_ker _ _)) ?_) _ (GlobalTheory.T.gpProj_continuous k m j)
@@ -457,11 +447,11 @@ theorem isSmooth_sig (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) : IsSmooth (s
     continuous_subtype_val)
 
 /- English proof (translation)
-Establish `hPK` using `parab_mul_KO (k := k) (eMJ m j)`. Establish `hker : ∀ g, mirabolicProjection k (m + j) g = 1 ↔ g ∈ MirUin k (m + j)` using `fun g => ⟨GlobalTheory.CompanionTheory.BZMirAdj.mem_of_mirProj_eq_one k _ g, GlobalTheory.CompanionTheory.BZMirAdj.mirProj_eq_one_of_mem k _ g⟩`. Establish `hUH : MirUin k (m + j) ≤ MirabolicParabolic k m j` using `fun g hg => by`. Use `(GlobalTheory.T.mem_mirabolicParabolic_iff_parabolic k m j g).2 ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.BZMirAdj.mirProj_eq_one_of_mem k _ g hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Establish `hN : (MirUin k (m + j)).Normal`. Establish `: MirUin k (m + j) = (mirabolicProjection k (m + j)).ker`. Use extensionality with `g`. Rewrite using `[MonoidHom.mem_ker, hker]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Use `infer_instance`. Conclude with `GlobalTheory.CompanionTheory.CIndCoinv.coinv_equiv (MirabolicParabolic k m j) (MirUin k (m + j)) (parab k (eMJ m j)) (levi k (m + j)) (mirabolicProjection k (m + j)) (GlobalTheory.T.isClosed_mirabolicParabolic k m j) (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k (m …`.
+A detailed English derivation is pending.
 -/
 theorem exE (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     ∃ E : (cIndSpace (MirabolicParabolic k m j) (sig ρ τ) ⧸ twKer (cInd (MirabolicParabolic k m j) (sig ρ τ)) (MirUin k (m + j)) 1) ≃ₗ[ℂ]
@@ -491,9 +481,9 @@ theorem exE (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     (GlobalTheory.T.compact_induction_twisted_kernel _ _ hUH (GlobalTheory.CompanionTheory.BZMirOnto.exists_compactOpen k (m + j)) _ (isSmooth_sig ρ τ hρ hτ))
 
 /- English proof (translation)
-Use `(exE ρ τ hρ hτ).elim fun E hE => ?_` and prove the remaining obligations. Establish `key` using `coinv_intertwine _ _ _ (levi k (m + j)) (dpow (m + j) (-1 / 2)) _ _ _ E hE`. Use `⟨Representation.Equiv.mk E ?_⟩` and prove the remaining obligations. Introduce `g`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.Quotient.induction_on _ y fun f => ?_` and prove the remaining obligations. Establish `h1 : twist (psiMinus k (cInd (MirabolicParabolic k m j) (sig ρ τ))) (dpow (m + j) (-1 / 2)) g (Submodule.Quotient.mk f) = ((dpow (m + j) (-1 / 2) g : ℂˣ) : ℂ) • Submodule.Quotient.mk (cInd (MirabolicParabolic k m j) (sig ρ τ) (levi k (m + j) g) f)` using `rfl`. Establish `h2 : E (twist (psiMinus k (cInd (MirabolicParabolic k m j) (sig ρ τ))) (dpow (m + j) (-1 / 2)) g (Submodule.Quotient.mk f)) = smInd (parab k (eMJ m j)) (sigP ρ τ) g (E (Submodule.Quotient.mk f))` using `(congrArg E h1).trans (key g f)`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem psiMinus_cInd_equiv_smInd (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) :
     Nonempty ((twist (psiMinus k (cInd (MirabolicParabolic k m j) (sig ρ τ))) (dpow (m + j) (-1 / 2))).Equiv
@@ -513,7 +503,7 @@ theorem psiMinus_cInd_equiv_smInd (hρ : IsSmooth ρ.ρ) (hτ : IsSmooth τ.ρ) 
 end Main
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m j ρ τ hρ hτ`. Conclude with `psiMinus_cInd_equiv_smInd ρ τ hρ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem psiGP : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], PsiGP k := by
   intro k _ _ _ _ m j ρ τ hρ hτ

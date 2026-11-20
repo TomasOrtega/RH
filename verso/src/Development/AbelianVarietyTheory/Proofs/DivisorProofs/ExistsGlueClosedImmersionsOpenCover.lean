@@ -5,9 +5,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GlueClosed
 
 /- English proof (translation)
-Establish `hx : U.ι (pullback.fst U.ι V.ι x) ∈ U ⊓ V`. Use `⟨(pullback.fst U.ι V.ι x).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Conclude with `(pullback.snd U.ι V.ι x).2`. Take `⟨y, hy⟩ : ∃ y : (U ⊓ V).toScheme, (U ⊓ V).ι y = U.ι (pullback.fst U.ι V.ι x)` from `⟨⟨_, hx⟩, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y, ?_⟩` and prove the remaining obligations. Apply `(pullback.fst U.ι V.ι ≫ U.ι).isOpenEmbedding.injective` to reduce the goal to its premises. Rewrite using `[← Scheme.Hom.comp_apply _ (pullback.fst U.ι V.ι ≫ U.ι), pullback.lift_fst_assoc, Scheme.homOfLE_ι, hy]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift_eq {X : Scheme.{0}} (U V : X.Opens) (x : (pullback U.ι V.ι).carrier) :
     ∃ y : (U ⊓ V).toScheme, pullback.lift (X.homOfLE (inf_le_left : U ⊓ V ≤ U))
@@ -54,13 +54,13 @@ instance : Preorder (coverOfSet S hcov).I₀ := inferInstanceAs (Preorder S)
 end
 
 /- English proof (translation)
-Use `choose t ht using fun (U V : S) (h : U.1 ≤ V.1) ↦ (H U V h _ (c U)).1 ⟨𝟙 _, Category.id_comp _⟩`. Establish `hid : ∀ U : S, t U U le_rfl = 𝟙 _` using `fun U ↦ by`. Rewrite using `[← cancel_mono (c U), ht, X.homOfLE_rfl]`. Simplify using the standard rewrite rules. Establish `hcomp : ∀ (U V W : S) (h : U.1 ≤ V.1) (k : V.1 ≤ W.1), t U W (h.trans k) = t U V h ≫ t V W k` using `fun U V W h k ↦ by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono (c W), ht, Category.assoc, ht, ← Category.assoc, ht, Category.assoc, X.homOfLE_homOfLE]`. Establish `hpb : ∀ (U V : S) (h : U.1 ≤ V.1), IsPullback (t U V h) (c U) (c V) (X.homOfLE h)` using `fun U V h ↦ by`. Use `⟨⟨ht _ _ _⟩, ⟨PullbackCone.IsLimit.mk _ (fun s ↦ ((H U V h _ s.snd).2 ⟨s.fst, s.condition⟩).choose) ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[← cancel_mono (c V), Category.assoc, ht, ← Category.assoc, ((H U V h _ s.snd).2 ⟨s.fst, s.condition⟩).choose_spec, s.condition]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s`. Conclude with `((H U V h _ s.snd).2 ⟨s.fst, s.condition⟩).choose_spec`. Introduce `s m _ h2`. Rewrite using `[← cancel_mono (c U), h2, ((H U V h _ s.snd).2 ⟨s.fst, s.condition⟩).choose_spec]`. Use `letI := locallyDirected S hcov hinf`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `d : (coverOfSet S hcov).RelativeGluingData` to `{ functor := { obj := C map := fun {U V} h ↦ t U V h.le map_id := hid map_comp := fun {U V W} h k ↦ hcomp U V W h.le k.le } natTrans := { app := c, naturality := fun U V h ↦ ht U V h.le } equifibered := fun {U V} h ↦ hpb U V h.le }`. Conclude with `⟨d.glued, d.toBase, d.cover.f, d.isPullback_natTrans_ι_toBase⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue {X : Scheme.{0}} (S : Set X.Opens) (hcov : ∀ x : X, ∃ U ∈ S, x ∈ U)
     (hinf : ∀ U ∈ S, ∀ V ∈ S, U ⊓ V ∈ S) (C : S → Scheme.{0}) (c : ∀ U, C U ⟶ U.1.toScheme)
@@ -98,21 +98,19 @@ theorem exists_glue {X : Scheme.{0}} (S : Set X.Opens) (hcov : ∀ x : X, ∃ U 
   exact ⟨d.glued, d.toBase, d.cover.f, d.isPullback_natTrans_ι_toBase⟩
 
 /- English proof (translation)
-Introduce `X ι Xi m hm hcov A a ha hcomp`. Set `S : Set X.Opens` to `{U | ∃ i, U ≤ (m i).opensRange}`. Establish `hS : ∀ x : X, ∃ U ∈ S, x ∈ U` using `fun x ↦ by`. Take `⟨i, hi⟩` from `hcov x`. Conclude with `⟨(m i).opensRange, ⟨i, le_rfl⟩, hi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hinf : ∀ U ∈ S, ∀ V ∈ S, U ⊓ V ∈ S` using `fun U ⟨i, hi⟩ V _ ↦ ⟨i, inf_le_left.trans hi⟩`. Establish `hl : ∀ (U : X.Opens) (i : ι), U ≤ (m i).opensRange → ∃ l : U.toScheme ⟶ Xi i, l ≫ m i = U.ι` using `fun U i h ↦ ⟨IsOpenImmersion.lift (m i) U.ι (by rw [Scheme.Opens.range_ι]; exact h), IsOpenImmersion.lift_fac _ _ _⟩`. Use `choose l hl using hl`. Establish `hC : ∀ U : S, ∃ (C : Scheme.{0}) (c : C ⟶ U.1.toScheme), IsClosedImmersion c ∧ ∀ (i : ι) (Y : Scheme.{0}) (g : Y ⟶ Xi i) (h : Y ⟶ U.1.toScheme), h ≫ U.1.ι = g ≫ m i → ((∃ z : Y ⟶ C, z ≫ c = h) ↔ ∃ z : Y ⟶ A i, z ≫ a i = g)`. Introduce and unpack `⟨U, j, hj⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pullback (a j) (l U j hj), pullback.snd _ _, inferInstance, fun i Y g h hg ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[← hcomp j i Y (h ≫ l U j hj) g (by rw [Category.assoc, hl, hg])]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z ≫ pullback.fst _ _, by simp [pullback.condition]⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨pullback.lift z h hz, pullback.lift_snd _ _ _⟩`. Use `choose C c hc hCa using hC`. Take `⟨B, b, e, he⟩` from `exists_glue S hS hinf C c (by`. Introduce `U V h Y g`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `V.2`. Rewrite using `[hCa U i Y (g ≫ l U.1 i (h.trans hi)) g (by rw [Category.assoc, hl]), hCa V i Y (g ≫ l U.1 i (h.trans hi)) (g ≫ X.homOfLE h) (by rw [Category.assoc, Category.assoc, hl, X.homOfLE_ι])])`. Use `⟨B, b, ?_, fun i Y g ↦ ?_⟩` and prove the remaining obligations. Apply `IsZariskiLocalAtTarget.of_openCover (P := @IsClosedImmersion) (coverOfSet S hS)` to reduce the goal to its premises. Introduce `U`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hc U` as an intermediate fact. Express the relevant statement in the definitionally equal form `IsClosedImmersion (pullback.snd b U.1.ι)`. Rewrite using `[← (he U).flip.isoPullback_inv_snd]`. Use `infer_instance`. Set `U : S` to `⟨(m i).opensRange, i, le_rfl⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hh : (g ≫ (m i).isoOpensRange.hom) ≫ U.1.ι = g ≫ m i` using `by simp [U]`. Rewrite using `[← hCa U i Y g _ hh]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨(he U).lift _ z (hh.trans hz.symm), (he U).lift_fst _ _ _⟩`.
-
-Introduce and unpack `⟨z, hz⟩`. Conclude with `⟨z ≫ e U, by rw [Category.assoc, ← (he U).w, ← Category.assoc, hz, hh]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_glue_isClosedImmersion : ∀ (X : Scheme.{0}) (ι : Type) (Xi : ι → Scheme.{0}) (m : ∀ i, Xi i ⟶ X), (∀ i, IsOpenImmersion (m i)) → (∀ x : X, ∃ i, x ∈ Set.range (m i)) → ∀ (A : ι → Scheme.{0}) (a : ∀ i, A i ⟶ Xi i), (∀ i, IsClosedImmersion (a i)) → (∀ (i j : ι) (Y : Scheme.{0}) (g : Y ⟶ Xi i) (g' : Y ⟶ Xi j), g ≫ m i = g' ≫ m j → ((∃ z : Y ⟶ A i, z ≫ a i = g) ↔ (∃ z : Y ⟶ A j, z ≫ a j = g'))) → ∃ (B : Scheme.{0}) (b : B ⟶ X), IsClosedImmersion b ∧ ∀ (i : ι) (Y : Scheme.{0}) (g : Y ⟶ Xi i), ((∃ z : Y ⟶ B, z ≫ b = g ≫ m i) ↔ (∃ z : Y ⟶ A i, z ≫ a i = g)) := by
   intro X ι Xi m hm hcov A a ha hcomp

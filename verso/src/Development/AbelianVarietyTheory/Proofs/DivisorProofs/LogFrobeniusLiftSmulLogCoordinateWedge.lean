@@ -4,9 +4,9 @@ open GlobalTheory GlobalTheory.LogDR
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ p n x γ hγ c I`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, hγ.1]`. Use `congr 1`. Unfold `logWedge`. Rewrite using `[map_list_prod, List.map_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `i _`. Conclude with `hγ.2 i`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cartierMap_smul_logWedge : ∀ (K : Type) [Field K] (p : ℕ) (n : ℕ) (x : Fin n → Kˣ) (γ : abelian₂ K →+* abelian₂ K),
     IsCartierMap p x γ → ∀ (c : K) (I : Finset (Fin n)), γ (c • logWedge x I) = c ^ p • logWedge x I := by

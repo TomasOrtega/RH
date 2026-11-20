@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.AnnLattice
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `FiniteAdeleRing.ext _ fun v => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Pi.single w t : ∀ v : Pl E, v.adicCompletion E) v * pLoc E v z = (Pi.single w (t * pLoc E w z) : ∀ v : Pl E, v.adicCompletion E) v`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sLoc_mul (w : Pl E) (t : w.adicCompletion E) (z : Af E) :
     sLoc E w t * z = sLoc E w (t * pLoc E w z) := by
@@ -27,7 +27,7 @@ theorem sLoc_mul (w : Pl E) (t : w.adicCompletion E) (z : Af E) :
   · simp [Pi.single_eq_of_ne h]
 
 /- English proof (translation)
-Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap]`. Conclude with `u.valuation_le_one d`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_int_le_one (u : Pl E) (d : 𝓞 E) :
     Valued.v (algebraMap E (u.adicCompletion E) (algebraMap (𝓞 E) E d)) ≤ 1 := by
@@ -35,11 +35,11 @@ theorem val_int_le_one (u : Pl E) (d : 𝓞 E) :
   exact u.valuation_le_one d
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `insert w S hw ih`. Take `⟨D, hD0, hD⟩` from `ih fun u hu => hc u (Finset.mem_insert_of_mem hu)`. Take `⟨x, hxw, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot w.ne_bot`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hlt : Valued.v (algebraMap E (w.adicCompletion E) (algebraMap (𝓞 E) E x)) < 1`. Rewrite using `[Formalism.UG.P.levelaf_valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem w _).2 hxw`. Take `⟨n, hn⟩` from `exists_pow_lt₀ hlt (Units.mk0 _ (hc w (Finset.mem_insert_self _ _)))`. Use `⟨D * x ^ n, mul_ne_zero hD0 (pow_ne_zero _ hx0), fun u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_pow]`. Break down `Finset.mem_insert.1 hu with rfl | hu` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_int_small (S : Finset (Pl E)) (c : Pl E → WithZero (Multiplicative ℤ))
     (hc : ∀ w ∈ S, c w ≠ 0) :
@@ -64,7 +64,7 @@ theorem exists_int_small (S : Finset (Pl E)) (c : Pl E → WithZero (Multiplicat
         _ = c u := mul_one _
 
 /- English proof (translation)
-Establish `hb0 : b ≠ 0` using `(zero_lt_one.trans h).ne'`. Take `⟨n, rfl⟩ : ∃ n : ℤ, b = WithZero.exp n` from `⟨_, (WithZero.exp_log hb0).symm⟩`. Rewrite using `[← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_exp_mul {b : WithZero (Multiplicative ℤ)} (h : 1 < b) : 1 ≤ WithZero.exp (-1 : ℤ) * b := by
   have hb0 : b ≠ 0 := (zero_lt_one.trans h).ne'
@@ -76,13 +76,13 @@ theorem one_le_exp_mul {b : WithZero (Multiplicative ℤ)} (h : 1 < b) : 1 ≤ W
 variable {ψ : AddChar (Ad E) ℂ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Establish `h1 : 1 < Valued.v (pLoc E w z)` using `not_le.1 hcon`. Take `⟨-, ϖ, y, hϖ, hy1, hy⟩` from `hw`. Establish `hz0 : Valued.v (pLoc E w z) ≠ 0` using `(zero_lt_one.trans h1).ne'`. Establish `hzw : pLoc E w z ≠ 0` using `(map_ne_zero _).1 hz0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ' : Valued.v ϖ = WithZero.exp (-1 : ℤ)` using `hϖ`. Establish `hd : 1 ≤ Valued.v ϖ * Valued.v (pLoc E w z)`. Rewrite using `[hϖ']`. Conclude with `one_le_exp_mul h1`. Establish `hyv : Valued.v (ϖ * y) ≤ 1` using `hy1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hyv` using `[map_mul]`. Establish `hle : Valued.v y ≤ Valued.v (pLoc E w z)`. Combine the equalities or inequalities in the displayed calculation. Establish `ht : y / pLoc E w z ∈ Formalism.UG.Ov E w`. Express the relevant statement in the definitionally equal form `Valued.v (y / pLoc E w z) ≤ 1`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ hle zero_le'`. Establish `h2` using `hz _ (hL _ ht)`. Rewrite `h2` using `[sLoc_mul, div_mul_cancel₀ _ hzw]`. Conclude with `hy h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le_one_of_cond {w : Pl E} (hw : Cond ψ w) {L : Set (Af E)}
     (hL : ∀ t ∈ Formalism.UG.Ov E w, sLoc E w t ∈ L) {z : Af E}
@@ -113,17 +113,17 @@ theorem val_le_one_of_cond {w : Pl E} (hw : Cond ψ w) {L : Set (Af E)}
   exact hy h2
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hψ.loc w`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`. Conclude with `hy (by simp)`. Establish `hY : Valued.v y ≠ 0` using `(map_ne_zero _).2 hy0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hN`. Use `set g : WithZero (Multiplicative ℤ) := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hg`. Establish `hg0 : g ≠ 0`. Rewrite using `[hg]`. Conclude with `(map_ne_zero _).2 γ.ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `⟨g / Valued.v y, div_ne_zero hg0 hY, fun z hz d hd => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Establish `h1 : 1 < Valued.v (d * pLoc E w z)` using `not_le.1 hcon`. Rewrite `h1` using `[map_mul]`. Establish `hb0 : Valued.v (pLoc E w z) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Rewrite `h1` using `[h, mul_zero]`. Conclude with `not_lt_of_ge zero_le' h1`. Establish `hzw : pLoc E w z ≠ 0` using `(map_ne_zero _).1 hb0`. Establish `hYpos : 0 < Valued.v y` using `zero_lt_iff.2 hY`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbpos : 0 < Valued.v (pLoc E w z)` using `zero_lt_iff.2 hb0`. Establish `hdY : Valued.v d * Valued.v y ≤ g` using `(le_div_iff₀ hYpos).1 hd`. Establish `ht : y / pLoc E w z ∈ N`. Use `hγ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).restrict (y / pLoc E w z) < γ.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Valuation.restrict_lt_iff_lt_embedding, map_div₀, ← hg, div_lt_iff₀ hbpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `hz _ (hL _ ht)`. Rewrite `h2` using `[sLoc_mul, div_mul_cancel₀ _ hzw]`. Conclude with `hy h2`.
+A detailed English derivation is pending.
 -/
 theorem exists_val_bound (hψ : StdPsi ψ) (w : Pl E) {L : Set (Af E)} {N : Set (w.adicCompletion E)} (hN : N ∈ 𝓝 0)
     (hL : ∀ t ∈ N, sLoc E w t ∈ L) :
@@ -163,15 +163,13 @@ theorem exists_val_bound (hψ : StdPsi ψ) (w : Pl E) {L : Set (Af E)} {N : Set 
   exact hy h2
 
 /- English proof (translation)
-Introduce `E _ _ _ ψ hψ S hS L hoff hon`. Establish `hloc : ∀ w : Pl E, ∃ c : WithZero (Multiplicative ℤ), c ≠ 0 ∧ (w ∈ S → ∀ z : Af E, (∀ a ∈ L, ψ (sFin E (a * z)) = 1) → ∀ d : w.adicCompletion E, Valued.v d ≤ c → Valued.v (d * pLoc E w z) ≤ 1)` using `fun w => by`. Distinguish the cases in `hw : w ∈ S`. Take `⟨N, hN, hNL⟩` from `hon w hw`. Take `⟨c, hc0, hc⟩` from `exists_val_bound hψ w hN hNL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c, hc0, fun _ => hc⟩`. Conclude with `⟨1, one_ne_zero, fun h => absurd h hw⟩`. Use `choose c hc0 hc using hloc`. Take `⟨D, hD0, hD⟩` from `exists_int_small S c fun w _ => hc0 w`. Establish `he : algebraMap (𝓞 E) E D ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 E) E)).2 hD0`.
+Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(fun y => algebraMap E (Af E) (algebraMap (𝓞 E) E D)⁻¹ * y) '' (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)), (GroundTheory.Global.isCompact_integralFiniteAdeles E).image (continuous_const.mul continuous_id), fun z hz => ?_⟩` and prove the remaining obligations. Use `⟨algebraMap E (Af E) (algebraMap (𝓞 E) E D) * z, ?_, ?_⟩` and prove the remaining obligations. Use `SetLike.mem_coe.2 (GroundTheory.Global.mem_integralFiniteAdeles.2 fun w => ?_)` and prove the remaining obligations. Establish `e : (algebraMap E (Af E) (algebraMap (𝓞 E) E D) * z) w = algebraMap E (w.adicCompletion E) (algebraMap (𝓞 E) E D) * pLoc E w z` using `rfl`. Rewrite using `[e, HeightOneSpectrum.mem_adicCompletionIntegers]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ S`. Conclude with `hc w hw z hz _ (hD w hw)`. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Express the relevant statement in the definitionally equal form `algebraMap E (Af E) (algebraMap (𝓞 E) E D)⁻¹ * (algebraMap E (Af E) (algebraMap (𝓞 E) E D) * z) = z`.
-
-Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ he, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_annihilator : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {ψ : AddChar (Ad E) ℂ},
     StdPsi ψ → ∀ (S : Finset (Pl E)), (∀ w, w ∉ S → Cond ψ w) → ∀ (L : Set (Af E)),

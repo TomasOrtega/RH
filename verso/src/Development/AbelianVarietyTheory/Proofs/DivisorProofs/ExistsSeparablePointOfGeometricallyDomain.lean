@@ -11,9 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.SepPoint
 
 /- English proof (translation)
-Use `haveI : Algebra.EssFiniteType k B := inferInstance`. Use `haveI : Algebra.EssFiniteType B (FractionRing B) := Algebra.EssFiniteType.of_isLocalization _ (nonZeroDivisors B)`. Use `haveI : Algebra.EssFiniteType k (FractionRing B) := Algebra.EssFiniteType.comp k B _`. Take `_ | ⟨p, hp, hpk⟩` from `CharP.exists' k`. Conclude with `exists_isTranscendenceBasis_and_isSeparable_of_perfectField k _`.
-
-Use `haveI : ExpChar k p := .prime hp.out`. Conclude with `exists_isTranscendenceBasis_and_isSeparable_of_linearIndepOn_pow_of_essFiniteType p hp.out (hH p hp.out hpk)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sepBasis (k B : Type) [Field k] [CommRing B] [IsDomain B] [Algebra k B]
     (hB : Algebra.FiniteType k B)
@@ -34,15 +32,13 @@ theorem exists_sepBasis (k B : Type) [Field k] [CommRing B] [IsDomain B] [Algebr
       p hp.out (hH p hp.out hpk)
 
 /- English proof (translation)
-Take `⟨T, rfl⟩` from `hB`. Use `haveI : IsIntegrallyClosed (Algebra.adjoin k (s : Set F)) := isIntegrallyClosed_adjoin k F s hs.1`. Take `⟨θ, hθ, H, hH0, U, V, hUV, hT⟩` from `GlobalTheory.T.exists_primitive_element_separability_certificate k F s hs hsep T`. Take `⟨ev, hev⟩` from `exists_ev k F s hs.1 H hH0`. Set `R` to `Algebra.adjoin k (s : Set F)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `minpoly R θ`. Set `e : R →+* SeparableClosure k` to `(ev : R →+* SeparableClosure k)`. Establish `hmon : f.Monic` using `minpoly.monic hθ`. Establish `hsepa : (f.map e).Separable`. Establish `h1` using `congrArg (Polynomial.map e) hUV`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C] at h1`. Use `⟨Polynomial.C (e H)⁻¹ * U.map e, Polynomial.C (e H)⁻¹ * V.map e, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.derivative_map, mul_assoc, mul_assoc, ← mul_add, h1, ← Polynomial.C_mul, inv_mul_cancel₀ (show e H ≠ 0 from hev), Polynomial.C_1]`. Establish `hdeg : (f.map e).degree ≠ 0`. Rewrite using `[hmon.degree_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(minpoly.degree_pos hθ).ne'`. Take `⟨r, hr⟩` from `IsSepClosed.exists_root _ hdeg hsepa`. Establish `hr' : Polynomial.eval₂ (ev : R →+* SeparableClosure k) r f = 0`. Rewrite `hr` using `[Polynomial.IsRoot, Polynomial.eval_map]`. Then use the resulting hypothesis. Take `⟨ψ, hψ⟩` from `GlobalTheory.T.exists_algHom_adjoin_extend_of_isIntegral_root k F (SeparableClosure k) R θ hθ ev r hr'`.
-
-Establish `hHS : (H : F) ∈ Algebra.adjoin k (insert θ (R : Set F))` using `Algebra.subset_adjoin (Set.mem_insert_of_mem _ H.2)`. Conclude with `GlobalTheory.T.nonempty_adjoin_algHom_of_mul_mem_of_map_ne_zero k F (SeparableClosure k) _ ψ ⟨H, hHS⟩ (by rw [hψ _ H.2 hHS]; exact hev) (T : Set F) hT`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem core (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
     (hs : IsTranscendenceBasis k ((↑) : s → F))
@@ -75,9 +71,9 @@ theorem core (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
     (by rw [hψ _ H.2 hHS]; exact hev) (T : Set F) hT
 
 /- English proof (translation)
-Introduce `k B _ _ _ hB hK`. Use `haveI : IsDomain (k ⊗[k] B) := hK k inferInstance inferInstance`. Use `haveI : IsDomain B := (Algebra.TensorProduct.lid k B).symm.toMulEquiv.isDomain`. Take `⟨s, hs, hsep⟩` from `exists_sepBasis k B hB (fun p hp hpk => GlobalTheory.T.linearIndepOn_frob_pow_of_isDomain_tensor_insep k B p hp hpk hK)`. Set `g : B →ₐ[k] FractionRing B` to `IsScalarTower.toAlgHom k B (FractionRing B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfg : g.range.FG`. Rewrite using `[← Algebra.map_top]`. Conclude with `hB.out.map g`. Take `⟨ψ⟩` from `core k (FractionRing B) s hs hsep g.range hfg`. Conclude with `GlobalTheory.T.exists_finite_separable_point_of_separableClosure_point' k B hB ⟨ψ.comp g.rangeRestrict⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_sepPoint : ∀ (k B : Type) [Field k] [CommRing B] [Algebra k B],
     Algebra.FiniteType k B →

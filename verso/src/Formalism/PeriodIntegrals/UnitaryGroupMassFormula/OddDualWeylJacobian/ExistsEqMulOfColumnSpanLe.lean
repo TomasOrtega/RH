@@ -10,9 +10,9 @@ namespace PI.OddDualWeyl
 namespace Misc
 
 /- English proof (translation)
-Establish `h : PI.OddDualWeyl.sgnK K m = ((Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1))) : ℤ) : K)`. Unfold `PI.OddDualWeyl.sgnK PI.OddDualWeyl.revCol`. Establish `hr : (Fin.rev : Fin (m + 1) → Fin (m + 1)) = ⇑(Fin.revPerm : Equiv.Perm (Fin (m + 1)))` using `rfl`. Rewrite using `[hr, Matrix.det_permute', Matrix.det_one, mul_one]`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign (Fin.revPerm : Equiv.Perm (Fin (m + 1)))) with hs | hs <;>`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[h, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgn (K : Type) [Field K] (m : ℕ) : sgnK K m = 1 ∨ sgnK K m = -1 := by
   have h : PI.OddDualWeyl.sgnK K m =
@@ -26,11 +26,9 @@ theorem sgn (K : Type) [Field K] (m : ℕ) : sgnK K m = 1 ∨ sgnK K m = -1 := b
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K]
 
 /- English proof (translation)
-Establish `h2 : Submodule.span O (Set.range fun c : Fin n => fun i => g i c) ≤ Submodule.span O (Set.range fun c : Fin n => fun i => g' i c)` using `h`. Establish `hc : ∀ c : Fin n, ∃ a : Fin n → O, ∑ j, a j • (fun i => g' i j) = fun i => g i c`. Introduce `c`. Establish `hm : (fun i => g i c) ∈ Submodule.span O (Set.range fun c : Fin n => fun i => g' i c)` using `h2 (Submodule.subset_span ⟨c, rfl⟩)`. Conclude with `(Submodule.mem_span_range_iff_exists_fun (R := O)).1 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose a ha using hc`. Use `⟨Matrix.of fun j c => a c j, ?_⟩` and prove the remaining obligations. Use extensionality with `i c`. Establish `hi` using `congrFun (ha c) i`. Rewrite using `[← hi, Finset.sum_apply]`.
-
-Simplify using `only [Pi.smul_apply, Algebra.smul_def, Matrix.mul_apply, Matrix.map_apply, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_of_columnSpan_le {n : ℕ} (g g' : Matrix (Fin n) (Fin n) K) (h : colSpan O g ≤ colSpan O g') :
     ∃ v : Matrix (Fin n) (Fin n) O, g = g' * v.map (algebraMap O K) := by
@@ -50,11 +48,9 @@ theorem exists_eq_mul_of_columnSpan_le {n : ℕ} (g g' : Matrix (Fin n) (Fin n) 
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Unfold `PI.OddDualWeyl.colSpan`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `x ⟨c, rfl⟩`. Establish `hv : (fun i => (h' * v.map (algebraMap O K)) i c) = ∑ j, v j c • fun i => h' i j`. Use extensionality with `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, Algebra.smul_def, Matrix.mul_apply, Matrix.map_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Simplify using `only`. Rewrite using `[hv]`.
-
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSpan_mul_le {n : ℕ} (h' : Matrix (Fin n) (Fin n) K) (v : Matrix (Fin n) (Fin n) O) :
     colSpan O (h' * v.map (algebraMap O K)) ≤ colSpan O h' := by
@@ -71,7 +67,7 @@ theorem colSpan_mul_le {n : ℕ} (h' : Matrix (Fin n) (Fin n) K) (v : Matrix (Fi
   exact Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)
 
 /- English proof (translation)
-Establish `hU : g⁻¹ * g' = u.map (algebraMap O K)`. Rewrite using `[hu, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hg, Matrix.one_mul]`. Establish `hinv : g⁻¹ = u.map (algebraMap O K) * g'⁻¹`. Rewrite using `[← hU, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hg', Matrix.mul_one]`. Rewrite using `[hinv, Matrix.transpose_mul, Matrix.transpose_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem invT_eq {n : ℕ} {g g' : Matrix (Fin n) (Fin n) K} (hg : IsUnit g.det) (hg' : IsUnit g'.det)
     (u : Matrix (Fin n) (Fin n) O) (hu : g' = g * u.map (algebraMap O K)) :
@@ -85,16 +81,16 @@ theorem invT_eq {n : ℕ} {g g' : Matrix (Fin n) (Fin n) K} (hg : IsUnit g.det) 
 end Misc
 
 /- English proof (translation)
-Introduce `K _ m`. Conclude with `PI.OddDualWeyl.Misc.sgn K m`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem reverseSignUnit : SgnPM := by
   intro K _ m
   exact PI.OddDualWeyl.Misc.sgn K m
 
 /- English proof (translation)
-Introduce `O K _ _ _ m g g' hg hg' h`. Take `⟨v, hv⟩` from `PI.OddDualWeyl.Misc.exists_eq_mul_of_columnSpan_le (O := O) g' g h.ge`. Take `⟨w, hw⟩` from `PI.OddDualWeyl.Misc.exists_eq_mul_of_columnSpan_le (O := O) g g' h.le`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[PI.OddDualWeyl.Misc.invT_eq hg hg' v hv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PI.OddDualWeyl.Misc.colSpan_mul_le _ _`. Rewrite using `[PI.OddDualWeyl.Misc.invT_eq hg' hg w hw]`. Conclude with `PI.OddDualWeyl.Misc.colSpan_mul_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem columnSpanDual : DualB := by
   intro O K _ _ _ m g g' hg hg' h

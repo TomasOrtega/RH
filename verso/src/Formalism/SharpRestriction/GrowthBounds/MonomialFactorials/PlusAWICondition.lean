@@ -11,9 +11,9 @@ section Level
 variable (p : ℕ) [Fact p.Prime] {N r : ℕ} [NeZero r] (G : Formalism.GM.M.BlockData N)
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `xiMons_spec (r := r) G n m hm`. Use `Submodule.mem_inf.2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, MvPolynomial.mem_restrictSupport_iff]`. Introduce `m' hm'`. Establish `hm2 : m' = m` using `Finset.mem_singleton.1 (support_monomial_subset hm')`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `hm2` using the available equality. Conclude with `⟨h1, h2⟩`. Conclude with `⟨monomial m 1, by simp⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem mono_mem_xiPolZ (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ) (hm : m ∈ xiMons (r := r) G n) :
     monomial m (1 : ℚ_[p]) ∈ Formalism.GM.M.XiPolZ p N r G.T.t n := by
@@ -28,9 +28,9 @@ theorem mono_mem_xiPolZ (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ)
   · exact ⟨monomial m 1, by simp⟩
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `xiMons_spec (r := r) G n m hm`. Rewrite using `[pderiv_monomial]`. Establish `: m (Sum.inl (Fin.castSucc a, c)) = 0`. Assume the negation of the conclusion as `hne`. Take `⟨d, hd⟩` from `h1 _ (Finsupp.mem_support_iff.2 hne)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Formalism.GM.M.xiVar, Sum.inl.injEq, Prod.mk.injEq] at hd`. Conclude with `absurd hd.1 (Fin.castSucc_ne_last a)`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pderiv_chain_mono (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ) (hm : m ∈ xiMons (r := r) G n)
     (a : Fin N) (c : Fin r) : pderiv (Sum.inl (Fin.castSucc a, c)) (monomial m (1 : ℚ_[p])) = 0 := by
@@ -45,7 +45,7 @@ theorem pderiv_chain_mono (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ �
   simp
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `xiMons_spec (r := r) G n m hm`. Assume the negation of the conclusion as `hne`. Take `⟨d, hd⟩` from `h1 _ (Finsupp.mem_support_iff.2 hne)`. Simplify using `only [Formalism.GM.M.chainEmb, Formalism.GM.M.xiVar, Sum.inl.injEq, Prod.mk.injEq] at hd`. Conclude with `absurd hd.1 (Fin.castSucc_ne_last x.1)`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mono_chain_zero (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ) (hm : m ∈ xiMons (r := r) G n)
     (x : Fin N × Fin r) : m (Formalism.GM.M.chainEmb N r G.T.t x) = 0 := by
@@ -56,7 +56,7 @@ theorem mono_chain_zero (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ)
   exact absurd hd.1 (Fin.castSucc_ne_last x.1)
 
 /- English proof (translation)
-Introduce `x y h`. Simplify using `only [Formalism.GM.M.chainEmb, Sum.inl.injEq, Prod.mk.injEq] at h`. Conclude with `Prod.ext (Fin.castSucc_injective _ h.1) h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chainEmb_inj : Function.Injective (Formalism.GM.M.chainEmb N r G.T.t) := by
   intro x y h
@@ -64,9 +64,9 @@ theorem chainEmb_inj : Function.Injective (Formalism.GM.M.chainEmb N r G.T.t) :=
   exact Prod.ext (Fin.castSucc_injective _ h.1) h.2
 
 /- English proof (translation)
-Take `⟨-, -, h3⟩` from `xiMons_spec (r := r) G n m hm`. Establish `hdvd : (m.prod fun _ k => k.factorial) ∣ n.factorial`. Use `Nat.prod_factorial_dvd_factorial_sum m.support m` as an intermediate fact. Rewrite `this` using `[h3]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (mfac m : ℚ_[p]) = ((m.prod fun _ k => k.factorial : ℕ) : ℚ_[p])`. Unfold `mfac Finsupp.prod`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e, ← Nat.cast_mul, Nat.div_mul_cancel hdvd]`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cf_mul (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ) (hm : m ∈ xiMons (r := r) G n) :
     (((n.factorial / (m.prod fun _ k => k.factorial) : ℕ) : ℚ_[p]) * (mfac m : ℚ_[p])) = (n.factorial : ℚ_[p]) := by
@@ -82,27 +82,27 @@ theorem cf_mul (n : ℕ) (m : Formalism.GM.M.BVar N r G.T.t →₀ ℕ) (hm : m 
   rw [e, ← Nat.cast_mul, Nat.div_mul_cancel hdvd]
 
 /- English proof (translation)
-Unfold `RestPlusAW`. Take `⟨x, y, hx, hy, hxy⟩` from `goodCount_mem p (fun F F' => Formalism.GM.M.fockN p (G.lettersAt j jp) (G.T.phis p (r := r) (G.lettersAt j jp) F) F') (Formalism.GM.M.YZ p (r := r) (G.lettersAt j jp) G.T.J G.T.thr) D`. Establish `hcard : (xiMons (r` using `r) G (G.B - jp)).card = dXi r (G.B - jp) := card_xiMons_eq (r := r) G (G.B - jp)`. Set `e` to `Fintype.equivFin (Fin (Formalism.GM.M.goodCount p (fun F F' => Formalism.GM.M.fockN p (G.lettersAt j jp) (G.T.phis p (r := r) (G.lettersAt j jp) F) F') (Formalism.GM.M.YZ p (r := r) (G.lettersAt j jp) G.T.J G.T.thr) D) × (xiMons (r := r) G (G.B - jp)))`. Set `cfn : (Formalism.GM.M.BVar N r G.T.t →₀ ℕ) → ℕ` to `fun m => (G.B - jp).factorial / (m.prod fun _ k => k.factorial)`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hXm : ∀ k, rename (Formalism.GM.M.chainEmb N r G.T.t) (x (e.symm k).1) * monomial (e.symm k).2.1 (1 : ℚ_[p]) ∈ Ljj p (r` using `r) G j jp := fun k => Submodule.subset_span ⟨x (e.symm k).1, hx _, _, mono_mem_xiPolZ p (r := r) G (G.B - jp) _ (e.symm k).2.2, rfl⟩`. Establish `hYm : ∀ k, ((cfn (e.symm k).2.1 : ℕ) : ℚ_[p]) • (rename (Formalism.GM.M.chainEmb N r G.T.t) (y (e.symm k).1) * monomial (e.symm k).2.1 (1 : ℚ_[p])) ∈ Ljj p (r` using `r) G j jp := by`. Introduce `k`. Establish `h1 : rename (Formalism.GM.M.chainEmb N r G.T.t) (y (e.symm k).1) * monomial (e.symm k).2.1 (1 : ℚ_[p]) ∈ Ljj p (r` using `r) G j jp := Submodule.subset_span ⟨y (e.symm k).1, hy _, _, mono_mem_xiPolZ p (r := r) G (G.B - jp) _ (e.symm k).2.2, rfl⟩`. Establish `h2` using `Submodule.smul_mem (Ljj p (r := r) G j jp) ((cfn (e.symm k).2.1 : ℕ) : ℤ_[p]) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[algebra_compatible_smul ℚ_[p] ((cfn (e.symm k).2.1 : ℕ) : ℤ_[p]), map_natCast]`. Conclude with `h2`. Establish `hpair : ∀ k k', bePhi p (r` using `r) G j jp (rename (Formalism.GM.M.chainEmb N r G.T.t) (x (e.symm k).1) * monomial (e.symm k).2.1 (1 : ℚ_[p])) (((cfn (e.symm k').2.1 : ℕ) : ℚ_[p]) • (rename (Formalism.GM.M.chainEmb N r G.T.t) (y (e.symm k').1) * monomial (e.symm k').2.1 (1 : ℚ_[p]))) = if k = k' then (p : ℚ_[p]) …`. Introduce `k k'`. Take `⟨⟨i, m, hm⟩, hk⟩ : ∃ q, e.symm k = q` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨i', m', hm'⟩, hk'⟩ : ∃ q, e.symm k' = q` from `⟨_, rfl⟩`. Establish `hkk : k = k' ↔ (i = i' ∧ m = m')`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Rewrite `hk'` using `[hk]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Prod.mk.injEq, Subtype.mk.injEq] at hk'`. Conclude with `hk'`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `e.symm.injective (hk.trans hk'.symm)`. Rewrite using `[hk, hk']`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[bePhi_smul_right]`. Unfold `bePhi`. Rewrite using `[phisB_rename_mul p (r := r) G hB j jp _ _ (fun a c => pderiv_chain_mono p (r := r) G (G.B - jp) m hm a c), fockK_rename_mul _ (chainEmb_inj (r := r) G) _ _ m m' 1 (mono_chain_zero (r := r) G (G.B - jp) m hm) (mono_chain_zero (r := r) G (G.B - jp) m' hm')]`. Establish `hxy' : Formalism.GM.M.fock p (G.T.phis p (r` using `r) (G.lettersAt j jp) (x i)) (y i') / ∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p]) = if i = i' then (p : ℚ_[p]) ^ D else 0 := hxy i i'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hmm : m = m'`. Substitute `hmm` using the available equality. Rewrite using `[if_pos rfl]`. Establish `hcf` using `cf_mul p (r := r) G (G.B - jp) m hm`. Establish `hdeg : (degFact G j jp : ℚ_[p]) = (∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p])) * ((G.B - jp).factorial : ℚ_[p])`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Unfold `degFact`. Use `push_cast`. Both sides reduce to the same expression. Establish `hF : Formalism.GM.M.fockK (G.T.phis p (r` using `r) (G.lettersAt j jp) (x i)) (y i') = Formalism.GM.M.fock p (G.T.phis p (r := r) (G.lettersAt j jp) (x i)) (y i') := rfl`. Establish `hP : (∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p])) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn0 : ((G.B - jp).factorial : ℚ_[p]) ≠ 0` using `Nat.cast_ne_zero.2 (Nat.factorial_ne_zero _)`. Rewrite using `[hdeg, hF]`. Establish `key : ((cfn m : ℕ) : ℚ_[p]) * (1 * mfac m * Formalism.GM.M.fock p (G.T.phis p (r` using `r) (G.lettersAt j jp) (x i)) (y i') / ((∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p])) * ((G.B - jp).factorial : ℚ_[p]))) = Formalism.GM.M.fock p (G.T.phis p (r := r) (G.lettersAt j jp) (x i)) (y i') / ∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p]) := by`. Rewrite using `[show ((cfn m : ℕ) : ℚ_[p]) * (1 * mfac m * Formalism.GM.M.fock p (G.T.phis p (r := r) (G.lettersAt j jp) (x i)) (y i') / ((∏ a, (((G.lettersAt j jp).deg a).factorial : ℚ_[p])) * ((G.B - jp).factorial : ℚ_[p]))) = (((cfn m : ℕ) : ℚ_[p]) * mfac m) * Formalism.GM.M.fock p (G.T.phis …`. Rewrite using `[hcf]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[key, hxy']`. Distinguish the cases in `hii : i = i'`. Rewrite using `[if_pos hii, if_pos (hkk.2 ⟨hii, rfl⟩)]`. Rewrite using `[if_neg hii, if_neg (fun h => hii (hkk.1 h).1)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[if_neg hmm, if_neg (fun h => hmm (hkk.1 h).2)]`. Simplify using the standard rewrite rules. Establish `hmem` using `le_csSup (gcL_bdd p (r := r) G j jp D) ⟨fun k => _, fun k => _, hXm, hYm, hpair⟩`. Rewrite `hmem` using `[Fintype.card_prod, Fintype.card_fin, Fintype.card_coe, hcard]`. Conclude with `hmem`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plusAW_of_blockOK (hB : G.BlockOK) (j : Fin G.T.t → ℕ) (jp : ℕ) (D : ℤ) : RestPlusAW p (r := r) G j jp D := by
   classical
@@ -193,14 +193,14 @@ end Level
 variable (C0 CE1 CE2 : ℝ) (X : flipOneThree.Inst)
 
 /- English proof (translation)
-Introduce `dl _ aTop _ x _`. Conclude with `plusAW_of_blockOK X.p (gB C0 CE1 CE2 X aTop 0 x.1) (gB_blockOK C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2 _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem plusAWICondition (CM : ℝ) : RestPlusAWI C0 CE1 CE2 X CM := by
   intro dl _ aTop _ x _
   exact plusAW_of_blockOK X.p (gB C0 CE1 CE2 X aTop 0 x.1) (gB_blockOK C0 CE1 CE2 X aTop 0 x.1) x.2.1 x.2.2 _
 
 /- English proof (translation)
-The claim follows from `restPlusA_of C0 CE1 CE2 X CM (plusAWICondition C0 CE1 CE2 X CM)`.
+A detailed English derivation is pending.
 -/
 theorem plusACondition (CM : ℝ) : RestPlusA C0 CE1 CE2 X CM :=
   restPlusA_of C0 CE1 CE2 X CM (plusAWICondition C0 CE1 CE2 X CM)

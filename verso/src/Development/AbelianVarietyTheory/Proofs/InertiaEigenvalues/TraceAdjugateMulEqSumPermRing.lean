@@ -6,13 +6,13 @@ open Polynomial Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1 : ∀ i, (M.adjugate * B) i i = (M.updateCol i (fun k => B k i)).det`. Introduce `i`. Rewrite using `[← cramer_apply, cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`. Simplify using `only [Matrix.trace, Matrix.diag, h1, det_apply']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i)]`. Simplify using `only [updateCol_apply]`. Rewrite using `[mul_comm]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun j hj => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (Finset.ne_of_mem_erase hj)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_adjugate_mul_eq_sum_perm_ring {A : Type} [CommRing A] {n : Type} [Fintype n]
     [DecidableEq n] (M B : Matrix n n A) :
@@ -36,13 +36,13 @@ theorem trace_adjugate_mul_eq_sum_perm_ring {A : Type} [CommRing A] {n : Type} [
   rw [if_neg (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Introduce `A _ n _ _ M₀ N`. Use `set P := (M₀.map C + (X : A[X]) • N.map C).det with hP`. Use `⟨P.divX.divX, ?_⟩` and prove the remaining obligations. Establish `h0 : P.coeff 0 = M₀.det`. Rewrite using `[coeff_zero_eq_eval_zero, hP, ← coe_evalRingHom, RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Establish `h1 : P.coeff 1 = (M₀.adjugate * N).trace`. Establish `hd : P.coeff 1 = (derivative P).eval 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coeff_zero_eq_eval_zero, coeff_derivative]`. Simplify using the standard rewrite rules. Rewrite using `[hd, trace_adjugate_mul_eq_sum_perm_ring, hP, det_apply']`. Simplify using `[derivative_prod_finset, eval_finsetSum, eval_prod, Finset.mul_sum]`. Establish `e1` using `divX_mul_X_add P`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `divX_mul_X_add P.divX`. Rewrite `e2` using `[coeff_divX, zero_add]`. Rewrite using `[← h0, ← h1]`. Take the linear combination `-e1 - X * e2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem det_add_X_smul_first_variation : ∀ (A : Type) [CommRing A] (n : Type) [Fintype n]
     [DecidableEq n] (M₀ N : Matrix n n A), ∃ p : Polynomial A,

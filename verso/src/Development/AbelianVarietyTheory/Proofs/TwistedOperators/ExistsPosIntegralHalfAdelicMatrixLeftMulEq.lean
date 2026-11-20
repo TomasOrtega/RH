@@ -5,15 +5,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HalfAverage
 
 /- English proof (translation)
-Introduce `D a m n M M' h1 h2`. Use `haveI : IsTopologicalRing (AE D) := (Formalism.IndefR.Eqv.ae_facts D).1`. Use `haveI : SecondCountableTopology (AE D) := (Formalism.IndefR.Eqv.ae_facts D).2.2.2.1`. Use `haveI : SecondCountableTopology (Mx D m n) := inferInstanceAs (SecondCountableTopology (Fin m → Fin n → AE D))`. Use `haveI : SecondCountableTopology (halfMx a m n) := Topology.IsInducing.subtypeVal.secondCountableTopology`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ N : Matrix (Fin m) (Fin m) (AE D), Continuous (leftMul a (n` using `n) N) := fun N => (continuous_const.matrix_mul continuous_subtype_val).subtype_mk _`. Set `e : halfMx a m n ≃ₜ+ halfMx a m n` to `{ toFun := leftMul a M invFun := leftMul a M' left_inv := fun t => Subtype.ext (by`. Rewrite using `[leftMul_coe, leftMul_coe, ← Matrix.mul_assoc, h2, Matrix.one_mul])`. Use `right_inv := fun t => Subtype.ext (by`. Rewrite using `[leftMul_coe, leftMul_coe, ← Matrix.mul_assoc, h1, Matrix.one_mul])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use the proof step `map_add' := fun x y => Subtype.ext (by`. Rewrite using `[AddSubgroup.coe_add, leftMul_coe, leftMul_coe, leftMul_coe, AddSubgroup.coe_add, Matrix.mul_add])`. Use `continuous_toFun := hc M`. Use `continuous_invFun := hc M' }`. Use `haveI : ((haarHalf a m n).map e).IsAddHaarMeasure := e.isAddHaarMeasure_map _`.
-
-Establish `heq` using `Measure.isAddLeftInvariant_eq_smul ((haarHalf a m n).map e) (haarHalf a m n)`. Use `⟨(Measure.addHaarScalarFactor ((haarHalf a m n).map e) (haarHalf a m n) : ℝ), by exact_mod_cast Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _, fun φ => ?_⟩` and prove the remaining obligations. Set `em : halfMx a m n ≃ᵐ halfMx a m n` to `e.toHomeomorph.toMeasurableEquiv`. Establish `h3 : ∫ t, φ (leftMul a M t) ∂haarHalf a m n = ∫ t, φ t ∂((haarHalf a m n).map e)`. Use `integral_map_equiv (μ := haarHalf a m n) em φ` as an intermediate fact.
-
-Conclude with `this.symm`. Establish `h4` using `congrArg (fun μ : Measure (halfMx a m n) => ∫ t, φ t ∂μ) heq`. Rewrite using `[h3, h4, integral_smul_nnreal_measure]`. Simplify using `[Complex.real_smul, NNReal.smul_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_leftMul_eq_smul : ∀ (D : D7) (a : AE D) (m n : ℕ) (M M' : Matrix (Fin m) (Fin m) (AE D)),
     M * M' = 1 → M' * M = 1 → ∃ κ : ℝ, 0 < κ ∧ ∀ φ : halfMx a m n → ℂ,

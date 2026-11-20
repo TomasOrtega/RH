@@ -16,25 +16,25 @@ namespace PKIR
 variable {E : Type} [Field E] [NumberField E] {k : ℕ}
 
 /- English proof (translation)
-The claim follows from `(GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g)).2`.
+A detailed English derivation is pending.
 -/
 theorem dt_pos (g : GA E k) : 0 < Dt g := (GroundTheory.Global.IdeleGroup.ideleModule E (GeneralLinearGroup.det g)).2
 
 /- English proof (translation)
-The claim follows from `div_nonneg (height_nonneg _ _) (Real.rpow_nonneg (dt_pos g).le _)`.
+A detailed English derivation is pending.
 -/
 theorem ht_nonneg (g : GA E k) (ξ : Fin k → E) : 0 ≤ ht g ξ :=
   div_nonneg (height_nonneg _ _) (Real.rpow_nonneg (dt_pos g).le _)
 
 /- English proof (translation)
-Unfold `dmin`. Conclude with `Real.iInf_nonneg fun ξ => ht_nonneg g ξ.1`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dmin_nonneg (g : GA E k) : 0 ≤ dmin g := by
   unfold dmin
   exact Real.iInf_nonneg fun ξ => ht_nonneg g ξ.1
 
 /- English proof (translation)
-Unfold `wt`. Conclude with `pow_nonneg (le_min zero_le_one (dmin_nonneg g)) M`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem wt_nonneg (M : ℕ) (g : GA E k) : 0 ≤ wt M g := by
   unfold wt
@@ -43,27 +43,25 @@ theorem wt_nonneg (M : ℕ) (g : GA E k) : 0 ≤ wt M g := by
 end PKIR
 
 /- English proof (translation)
-Introduce `hS2 hG0 hG2a hG2c _hG5 hG5b hK2 hK3 hK4 hK9 E _ _ _ k hk ψ hψ hcof π hπ`. Take `⟨S₀, hS₀⟩` from `hK9 E k hk ψ hψ hcof π hπ`. Use `⟨S₀, fun S hS α hα M j hj U hU Y hYc hYi hYπ => ?_⟩` and prove the remaining obligations. Take `⟨_hcond, h9⟩` from `hS₀ S hS`. Take `⟨φ, hφ, h, x, hhS, hx, hsat, hlev, hwh⟩` from `h9 α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, J, hW, hsm⟩` from `hK2 E k hk M`. Take `⟨x₀, hx₀, hsm₀⟩` from `hK3 E k hk M ρ J hW π hπ φ hφ`. Establish `hJx₀ : J x₀ = x` using `DFunLike.coe_injective (hx₀.trans hx.symm)`. Take `⟨_, _, _, hSg, hST, _⟩` from `hS2 _ k (XB E k) (ρ.comp (infGL E k)) hW.poly`. Take `⟨g1, g2, _, _, _, _, g7, _⟩` from `hG0 E k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsm1 : SmV (ρ.comp (infGL E k)) (ρ h x₀)` using `by set y := cInf h set hf := (infGL E k y)⁻¹ * h`. Establish `hcf : cInf hf = 1` using `by simp only [hf, map_mul, map_inv, g1, y, inv_mul_cancel]`. Establish `hc : ∀ (g : GL (Fin k) (Cinf E)) z, ρ hf ((ρ.comp (infGL E k)) g z) = (ρ.comp (infGL E k)) g (ρ hf z)`. Introduce `g z`. Simplify using `only [MonoidHom.comp_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, g7 hf hcf g, map_mul, ContinuousLinearMap.mul_apply]`. Use `hSg y _ (hST (ρ hf) hc x₀ hsm₀)` as an intermediate fact. Simplify `this` using `only [MonoidHom.comp_apply, ← ContinuousLinearMap.mul_apply, ← map_mul, hf, mul_inv_cancel_left]`. Take `⟨Yg, hYgc, hYgi, hYgm⟩` from `hG2a E k ψ hψ`. Establish `hw` using `fun w : Off E S => hG2c E k w.1 (Finset.univ.val.map (α w)) (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose Yw hYwc hYwi hYwm using hw`. Use `set Y' : Submodule ℂ (XB E k) := Y ⊓ Yg ⊓ ⨅ w, Yw w with hY'`. Establish `hmem : ∀ z, z ∈ Y' ↔ (z ∈ Y ∧ z ∈ Yg) ∧ ∀ w, z ∈ Yw w` using `fun z => by`. Simplify using `only [Y', Submodule.mem_inf, Submodule.mem_iInf]`. Establish `hYOK : YOK ψ S Y'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.coe_inf, Submodule.coe_inf, Submodule.coe_iInf]`. Conclude with `(hYc.inter hYgc).inter (isClosed_iInter hYwc)`. Introduce `g hg z hz`. Rewrite `hz`, the goal using `[hmem]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `⟨⟨hYi g z hz.1.1, hYgi g z hz.1.2⟩, fun w => hYwi w g (hg w.1 w.2) z (hz.2 w)⟩`. Introduce `z hz`. Conclude with `((hYgm z).1 ((hmem z).1 hz).1.2).1`. Establish `hcusp` using `π.cusp φ hφ`. Establish `hxY' : Rt E k h x ∈ Y'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxg : x ∈ Yg`. Use `(hYgm x).2 ⟨?_, fun γ g => ?_⟩` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `GlobalTheory.T.isMirabolicWhittakerStage_of_isCuspForm E k ψ φ hcusp`. Rewrite using `[congrFun hx, congrFun hx]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hcusp.1.left γ g`. Rewrite using `[hmem]`. Conclude with `⟨⟨hYi h x (hYπ x ⟨φ, hφ, hx⟩), hYgi h x hxg⟩, fun w => hYwi w h (hhS w.1 w.2) x ((hYwm w x).2 (hsat w))⟩`. Establish `hJ1 : J (ρ h x₀) = Rt E k h x` using `by rw [hW.inter, hJx₀]`. Take `⟨x', C, hCU, hx'Y, hsm', hlev', hBlk, hBump⟩` from `hK4 E k (wt M) ρ J hW ψ hψ S Y' hYOK j hj U hU (ρ h x₀) (hJ1 ▸ hxY') hsm1 (hJ1 ▸ (hG5b E k S).2.1 h x hlev) (hJ1 ▸ hwh)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨hx'1, hx'2⟩, hx'3⟩` from `(hmem _).1 hx'Y`. Take `⟨hgood, hinv⟩` from `(hYgm _).1 hx'2`. Use `⟨J x', hx'1, ⟨hgood, hinv, fun w => (hYwm w _).1 (hx'3 w), hsm x' hsm', hlev', ?_, ⟨C, hCU, hBlk, hBump⟩⟩⟩` and prove the remaining obligations. Use `⟨‖x'‖, fun g => ?_⟩` and prove the remaining obligations. Establish `hw0` using `PKIR.wt_nonneg M g`.
-
-Rewrite using `[hW.mul, norm_mul, Complex.norm_real, Real.norm_of_nonneg hw0, mul_comm ‖x'‖]`. Conclude with `mul_le_mul_of_nonneg_left (x'.norm_coe_le_norm g) hw0`.
+A detailed English derivation is pending.
 -/
 theorem kir_of : jumpWindows.S2 → jumpWindows.G0 → jumpWindows.G2a → jumpWindows.G2c → jumpWindows.G5 → jumpWindows.G5b → K2 → K3 → K4 → K9 → KIR := by
   intro hS2 hG0 hG2a hG2c _hG5 hG5b hK2 hK3 hK4 hK9 E _ _ _ k hk ψ hψ hcof π hπ

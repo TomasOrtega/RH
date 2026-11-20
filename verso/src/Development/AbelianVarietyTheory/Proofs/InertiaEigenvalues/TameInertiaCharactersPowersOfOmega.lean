@@ -18,37 +18,37 @@ noncomputable section
 namespace GlobalTheory.TameIner
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.mem_inertia_Ql_iff_residue_trivial`.
+A detailed English derivation is pending.
 -/
 theorem mem_IK_iff : ∀ (l : ℕ) [Fact l.Prime] (g : Gl l), g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) ↔ ∀ x : Om l, ‖x‖ ≤ 1 → ‖(g : GQ l) x - x‖ < 1 :=
   GlobalTheory.T.mem_inertia_Ql_iff_residue_trivial
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.aeval_rootOfUnity_mul_kummer_root_minpoly`.
+A detailed English derivation is pending.
 -/
 theorem minpoly_root : ∀ (l : ℕ) [Fact l.Prime] (M : ℕ), 0 < M → ∀ (ρ ξ : Om l), ρ ^ M = -(l : Om l) → ξ ^ M = 1 → Polynomial.aeval (ξ * ρ) (minpoly ↥(MaximalUnramifiedExtension l) ρ) = 0 :=
   GlobalTheory.T.aeval_rootOfUnity_mul_kummer_root_minpoly
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_galois_fixing_maxUnramified_map_conj`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift : ∀ (l : ℕ) [Fact l.Prime] (x y : Om l), Polynomial.aeval y (minpoly ↥(MaximalUnramifiedExtension l) x) = 0 → ∃ g : GQ l, (∀ z ∈ MaximalUnramifiedExtension l, g z = z) ∧ g x = y :=
   GlobalTheory.T.exists_galois_fixing_maxUnramified_map_conj
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inertia_char_openKer_trivial_fixing_normal`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_normal : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l) (χ : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) →* (↥LL.1)ˣ), IsOpen (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) → ∃ F : FinExt l, Normal ℚ_[l] ↥F.1 ∧ ∀ g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)), (∀ x ∈ F.1, ((g : Gl l) : GQ l) x = x) → χ g = 1 :=
   GlobalTheory.T.inertia_char_openKer_trivial_fixing_normal
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_prime_pow_fixing_normal_of_near`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_fix : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), Normal ℚ_[l] ↥F.1 → ∀ g : GQ l, (∀ x ∈ F.1, x ≠ 0 → ‖g x - x‖ < ‖x‖) → ∃ s : ℕ, ∀ x ∈ F.1, (g ^ l ^ s) x = x :=
   GlobalTheory.T.exists_prime_pow_fixing_normal_of_near
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.inertia_fixing_kummer_root_moves_less`.
+A detailed English derivation is pending.
 -/
 theorem near_of_fix_root : ∀ (l : ℕ) [Fact l.Prime] (F : FinExt l), ∃ M : ℕ, 0 < M ∧ ¬ l ∣ M ∧ ∀ ρ : Om l, ρ ^ M = -(l : Om l) → ∀ g : GQ l, (∀ y : Om l, ‖y‖ ≤ 1 → ‖g y - y‖ < 1) → g ρ = ρ → ∀ x ∈ F.1, x ≠ 0 → ‖g x - x‖ < ‖x‖ :=
   GlobalTheory.T.inertia_fixing_kummer_root_moves_less
@@ -58,9 +58,9 @@ variable {l : ℕ} [hl : Fact l.Prime]
 open GlobalTheory.MemLoc.FrobLaws in
 
 /- English proof (translation)
-Establish `h1` using `(mem_IK_iff l g).1 hg ζ (norm_root hm hζ).le`. Establish `hgζ : ((g : GQ l) ζ) ^ m = 1` using `by rw [← map_pow, hζ, map_one]`. Set `a : OO l` to `⟨(g : GQ l) ζ, show ‖(g : GQ l) ζ‖ ≤ 1 from (norm_root hm hgζ).le⟩`. Set `b : OO l` to `⟨ζ, show ‖ζ‖ ≤ 1 from (norm_root hm hζ).le⟩`. Use `res_inj (a := a) (b := b) hm hlm (Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact hgζ)) (Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact hζ)) ((res_eq_iff a b).2 h1)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val this`.
+A detailed English derivation is pending.
 -/
 theorem fix_root (g : Gl l) (hg : g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l)) {ζ : Om l} {m : ℕ} (hm : 0 < m)
     (hlm : ¬ l ∣ m) (hζ : ζ ^ m = 1) : (g : GQ l) ζ = ζ := by
@@ -75,9 +75,9 @@ theorem fix_root (g : Gl l) (hg : g ∈ IK (Formalism.MainNotions.ElementDenomin
 open GlobalTheory.MemLoc.FrobLaws in
 
 /- English proof (translation)
-Establish `hK : ζ ∈ MaximalUnramifiedExtension l` using `IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, hζ⟩`. Establish `h1` using `hFr ζ hK (norm_root hm hζ).le`. Establish `hgζ : ((Fr : GQ l) ζ) ^ m = 1` using `by rw [← map_pow, hζ, map_one]`. Establish `hζl : (ζ ^ l) ^ m = 1` using `by rw [← pow_mul, mul_comm, pow_mul, hζ, one_pow]`. Set `a : OO l` to `⟨(Fr : GQ l) ζ, show ‖(Fr : GQ l) ζ‖ ≤ 1 from (norm_root hm hgζ).le⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : OO l` to `⟨ζ ^ l, show ‖ζ ^ l‖ ≤ 1 from (norm_root hm hζl).le⟩`. Use `res_inj (a := a) (b := b) hm hlm (Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact hgζ)) (Subtype.ext (by rw [SubmonoidClass.coe_pow]; exact hζl)) ((res_eq_iff a b).2 h1)` as an intermediate fact. Conclude with `congrArg Subtype.val this`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem frob_root (Fr : Gl l) (hFr : ∀ x : Om l, x ∈ MaximalUnramifiedExtension l → ‖x‖ ≤ 1 → ‖(Fr : GQ l) x - x ^ l‖ < 1)
     {ζ : Om l} {m : ℕ} (hm : 0 < m) (hlm : ¬ l ∣ m) (hζ : ζ ^ m = 1) : (Fr : GQ l) ζ = ζ ^ l := by
@@ -94,13 +94,11 @@ theorem frob_root (Fr : Gl l) (hFr : ∀ x : Om l, x ∈ MaximalUnramifiedExtens
 open GlobalTheory.MemLoc.FrobLaws in
 
 /- English proof (translation)
-Establish `key : ∀ y : Om l, ‖y‖ < 1 → ‖(g : GQ l) y - y‖ < 1` using `fun y hy => by`. Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans_lt (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_gal]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg]`. Conclude with `hy`. Rewrite using `[mem_IK_iff]`. Introduce `x hx`. Break down `hx.lt_or_eq with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `key x h`. Take `⟨ζ, m, hm, hlm, hζ, hn⟩` from `exists_root x h`. Establish `e : (g : GQ l) x - x = (g : GQ l) (x - ζ) - (x - ζ)`. Rewrite using `[map_sub, hg ζ (IntermediateField.subset_adjoin _ _ ⟨m, hm, hlm, hζ⟩)]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e]`. Conclude with `key _ hn`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_IK_of_fix_Kur (g : Gl l) (hg : ∀ x ∈ MaximalUnramifiedExtension l, (g : GQ l) x = x) :
     g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) := by
@@ -120,9 +118,9 @@ theorem mem_IK_of_fix_Kur (g : Gl l) (hg : ∀ x ∈ MaximalUnramifiedExtension 
     exact key _ hn
 
 /- English proof (translation)
-Take `⟨g, hgK, hgρ⟩` from `exists_lift l ρ (ζ * ρ) (minpoly_root l M hM ρ ζ hρ hζ)`. Establish `hmem : g ∈ GK (Formalism.MainNotions.ElementDenominator.qlExt l)`. Rewrite using `[GK, IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`. Express the relevant statement in the definitionally equal form `x ∈ (⊥ : IntermediateField ℚ_[l] (Om l)) at hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨c, rfl⟩` from `IntermediateField.mem_bot.1 hx`. Conclude with `g.commutes c`. Conclude with `⟨⟨g, hmem⟩, mem_IK_of_fix_Kur _ hgK, hgρ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_inertia {M : ℕ} (hM : 0 < M) (ρ ζ : Om l) (hρ : ρ ^ M = -(l : Om l)) (hζ : ζ ^ M = 1) :
     ∃ g : Gl l, g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) ∧ (g : GQ l) ρ = ζ * ρ := by
@@ -136,11 +134,11 @@ theorem exists_inertia {M : ℕ} (hM : 0 < M) (ρ ζ : Om l) (hρ : ρ ^ M = -(l
   exact ⟨⟨g, hmem⟩, mem_IK_of_fix_Kur _ hgK, hgρ⟩
 
 /- English proof (translation)
-Take `⟨F, hFn, hF⟩` from `exists_open_normal l LL χ ho`. Take `⟨M, hM, hlM, hnear⟩` from `near_of_fix_root l F`. Use `⟨M, hM, hlM, fun ρ hρ g hg => ?_⟩` and prove the remaining obligations. Establish `hres` using `(mem_IK_iff l (g : Gl l)).1 g.2`. Establish `h1` using `hnear ρ hρ _ hres hg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `exists_pow_fix l F hFn _ h1`. Establish `h2 : χ (g ^ l ^ s) = 1` using `hF _ (fun x hx => by simpa using hs x hx)`. Establish `h3 : χ g ^ orderOf χ = 1` using `by rw [← MonoidHom.pow_apply, pow_orderOf_eq_one]; rfl`. Rewrite `h2` using `[map_pow]`. Use `pow_gcd_eq_one.2 ⟨h3, h2⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Nat.Coprime.gcd_eq_one (Nat.Coprime.pow_right s hc), pow_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem chi_trivial (LL : FinExt l) (χ : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) →* (↥LL.1)ˣ)
     (ho : IsOpen (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)))) (hc : Nat.Coprime (orderOf χ) l) :
@@ -163,51 +161,47 @@ end GlobalTheory.TameIner
 namespace GlobalTheory.TameIner
 
 /- English proof (translation)
-Introduce `l _ a e _ _ ϖ LL _ _`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨z, hz⟩` from `TameDescentExponentData.prim (K := ↥LL.1) (l := l) (e := e) (a := a)`. Establish `he0 : 0 < e` using `Nat.pos_of_ne_zero (NeZero.ne e)`. Establish `hle : ¬ l ∣ e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : l ∣ l ^ a` using `dvd_pow_self l (NeZero.ne a)`. Rewrite `h1` using `[← TameDescentExponentData.succ_eq (K := ↥LL.1) (l := l) (e := e) (a := a)]`. Conclude with `hp.not_dvd_one ((Nat.dvd_add_right h).1 h1)`. Establish `hzO : IsPrimitiveRoot ((z : ↥LL.1) : Om l) e` using `hz.map_of_injective (f := LL.1.val) LL.1.val.injective`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : (l : Om l) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`. Establish `hπ0 : ϖ.seq 0 ≠ 0` using `ϖ.seq_ne_zero 0`. Establish `hroot : ∀ w : Om l, w ^ e = 1 → ∃ k < e, ((z ^ k : ↥LL.1) : Om l) = w`. Introduce `w hw`. Take `⟨k, hk, h⟩` from `hzO.eq_pow_of_pow_eq_one hw`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, hk, by rw [← h]; rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g _`. Establish `hw : ((g : GQ l) (ϖ.seq 0) / ϖ.seq 0) ^ e = 1`. Rewrite using `[div_pow, ← map_pow, ϖ.seq_zero, map_neg, map_natCast, div_self (neg_ne_zero.2 hl0)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, -, hk⟩` from `hroot _ hw`. Use `⟨z ^ k, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hk]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← pow_mul, mul_comm, pow_mul, hz.pow_eq_one, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg, hgπ⟩` from `exists_inertia he0 (ϖ.seq 0) _ ϖ.seq_zero hzO.pow_eq_one`. Conclude with `⟨g, hg, z, hgπ.symm, hz⟩`. Introduce `χ hχo hχc`. Take `⟨M0, hM0, hlM0, hM0χ⟩` from `chi_trivial LL χ hχo hχc`. Establish `hM : 0 < M0 * e` using `Nat.mul_pos hM0 he0`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlM : ¬ l ∣ M0 * e` using `fun h => ((Nat.Prime.dvd_mul hp).1 h).elim hlM0 hle`. Use `haveI : NeZero (M0 * e) := ⟨hM.ne'⟩`. Take `⟨ρ, hρ⟩` from `IsAlgClosed.exists_pow_nat_eq (-(l : Om l)) hM`. Take `⟨ζ, hζ⟩ : ∃ ζ : Om l, IsPrimitiveRoot ζ (M0 * e)` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Om l) (M0 * e)`. Take `⟨σ, hσ, hσρ⟩` from `exists_inertia hM ρ ζ hρ hζ.pow_eq_one`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hρ0 : ρ ≠ 0`. Introduce and unpack `rfl`. Rewrite `hρ` using `[zero_pow hM.ne', eq_comm, neg_eq_zero]`. Conclude with `hl0 hρ`. Establish `hζσ : ∀ g : Gl l, g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l) → (g : GQ l) ζ = ζ` using `fun g hg => fix_root g hg hM hlM hζ.pow_eq_one`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hrat : ∀ g : Gl l, ∃ j : ℕ, (g : GQ l) ρ = ζ ^ j * ρ`. Introduce `g`. Establish `h1 : ((g : GQ l) ρ / ρ) ^ (M0 * e) = 1`. Rewrite using `[div_pow, ← map_pow, hρ, map_neg, map_natCast, div_self (neg_ne_zero.2 hl0)]`. Take `⟨j, -, hj⟩` from `hζ.eq_pow_of_pow_eq_one h1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨j, by rw [hj]; field_simp⟩`. Establish `hσpow : ∀ j : ℕ, ((σ ^ j : Gl l) : GQ l) ρ = ζ ^ j * ρ`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `succ j ih`. Rewrite using `[pow_succ, Subgroup.coe_mul, AlgEquiv.mul_apply, hσρ, map_mul, ih, hζσ _ (Subgroup.pow_mem _ hσ j), pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Use `set σ' : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) := ⟨σ, hσ⟩ with hσ'`. Establish `hχg : ∀ (g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) (j : ℕ), ((g : Gl l) : GQ l) ρ = ζ ^ j * ρ → χ g = χ σ' ^ j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g j hj`. Establish `hfix : ((((σ' ^ j)⁻¹ * g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) : Gl l) : GQ l) ρ = ρ`. Establish `h2` using `hσpow j`. Establish `h3 : ((((σ' ^ j)⁻¹ * g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) : Gl l) : GQ l) = ((σ ^ j : Gl l) : GQ l)⁻¹ * ((g : Gl l) : GQ l)`. Simplify using `[σ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3, AlgEquiv.mul_apply, hj, ← h2]`. Conclude with `AlgEquiv.symm_apply_apply _ ρ`. Establish `h1 : χ ((σ' ^ j)⁻¹ * g) = 1`. Use `hM0χ (ρ ^ e) (by rw [← pow_mul, mul_comm e M0]; exact hρ) _ ?_` and prove the remaining obligations. Rewrite using `[map_pow, hfix]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[map_mul, map_inv, map_pow, inv_mul_eq_one]`. Conclude with `h1.symm`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `Fr hFr g h hgh`. Take `⟨j, hj⟩` from `hrat g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i, hi⟩` from `hrat Fr⁻¹`. Establish `hFrζ : (Fr : GQ l) ζ = ζ ^ l` using `frob_root Fr hFr hM hlM hζ.pow_eq_one`. Establish `hh : (h : Gl l) = Fr * g * Fr⁻¹` using `by rw [hgh]; group`. Establish `hFr1 : (Fr : GQ l) (ζ ^ i * ρ) = ρ`. Rewrite using `[← hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Fr : GQ l) (((Fr⁻¹ : Gl l) : GQ l) ρ) = ρ`. Rewrite using `[← AlgEquiv.mul_apply, ← Subgroup.coe_mul, mul_inv_cancel, Subgroup.coe_one, AlgEquiv.one_apply]`. Establish `hhρ : ((h : Gl l) : GQ l) ρ = ζ ^ (j * l) * ρ`. Rewrite using `[hh, Subgroup.coe_mul, Subgroup.coe_mul, AlgEquiv.mul_apply, AlgEquiv.mul_apply, hi, map_mul, map_pow, hζσ g g.2, hj]`. Establish `e1 : ζ ^ i * (ζ ^ j * ρ) = ζ ^ j * (ζ ^ i * ρ)` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[e1, map_mul, hFr1, map_pow, hFrζ, ← pow_mul, mul_comm l j]`. Rewrite using `[hχg h _ hhρ, hχg g j hj, pow_mul]`. Introduce `hχe`. Establish `h1 : ((χ σ' : (↥LL.1)ˣ) : ↥LL.1) ^ e = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, ← MonoidHom.pow_apply, hχe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Establish `hζe : IsPrimitiveRoot (ζ ^ M0) e` using `hζ.pow hM rfl`. Take `⟨s, -, hs⟩` from `hroot (ζ ^ M0) hζe.pow_eq_one`. Establish `hzs : IsPrimitiveRoot (z ^ s) e`. Rewrite `hζe` using `[← hs]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsPrimitiveRoot.map_iff_of_injective (f := LL.1.val) LL.1.val.injective).1 hζe`. Take `⟨c, hc, hcz⟩` from `hzs.eq_pow_of_pow_eq_one h1`. Use `⟨(c : ZMod e), fun g w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[ZMod.val_natCast, Nat.mod_eq_of_lt hc]`. Take `⟨j, hj⟩` from `hrat g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hχg g j hj, Units.val_pow_eq_pow_val, ← hcz]`. Establish `hη : (ϖ.seq 0 / ρ ^ M0) ^ e = 1`. Rewrite using `[div_pow, ϖ.seq_zero, ← pow_mul, hρ, div_self (neg_ne_zero.2 hl0)]`. Establish `hgη` using `fix_root (g : Gl l) g.2 he0 hle hη`. Establish `hgπ : ((g : Gl l) : GQ l) (ϖ.seq 0) = (ζ ^ M0) ^ j * ϖ.seq 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ϖ.seq 0 = (ϖ.seq 0 / ρ ^ M0) * ρ ^ M0` using `by field_simp`. Rewrite using `[e1, map_mul, hgη, map_pow, hj]`. Expand and normalize the polynomial expressions, which then agree. Establish `hw' : w = (z ^ s) ^ j`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Establish `e2 : (w : Om l) * ϖ.seq 0 = (ζ ^ M0) ^ j * ϖ.seq 0` using `hw.trans hgπ`. Rewrite `e2` using `[mul_left_inj' hπ0, ← hs]`. Rewrite using `[e2]`. Both sides reduce to the same expression. Rewrite using `[hw']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (ϖ : PiSys l e) (LL : FinExt l) [HasUnr a LL] [TameDescentExponentData ↥LL.1 l e a], (∀ g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l), ∃ w : ↥LL.1, (w : Om l) * ϖ.seq 0 = (g : GQ l) (ϖ.seq 0) ∧ w ^ e = 1) ∧ (∃ g ∈ IK (Formalism.MainNotions.ElementDenominator.qlExt l), ∃ w : ↥LL.1, (w : Om l) * ϖ.seq 0 = (g : GQ l) (ϖ.seq 0) ∧ IsPrimitiveRoot w e) ∧ ∀ (χ : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)) →* (↥LL.1)ˣ), IsOpen (χ.ker : Set ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) → Nat.Coprime (orderOf χ) l → (∀ (Fr : Gl l), (∀ x : Om l, x ∈ MaximalUnramifiedExtension l → ‖x‖ ≤ 1 → ‖(Fr : GQ l) x - x ^ l‖ < 1) → ∀ g h : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l)), (g : Gl l) = Fr⁻¹ * h * Fr → χ h = χ g ^ l) ∧ (χ ^ e = 1 → ∃ c : ZMod e, ∀ (g : ↥(IK (Formalism.MainNotions.ElementDenominator.qlExt l))) (w : ↥LL.1), (w : Om l) * ϖ.seq 0 = ((g : Gl l) : GQ l) (ϖ.seq 0) → (χ g : ↥LL.1) = w ^ c.val) := by
   intro l _ a e _ _ ϖ LL _ _

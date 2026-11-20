@@ -17,11 +17,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.MumfordFibre
 
 /- English proof (translation)
-Establish `h₁ : (translDiff A L (𝟙 A)).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h₂` using `LB.isLB_linComb hL (K := Fin 2) ![(lift (toUnit A ≫ x) (𝟙 A) ≫ μ[A]).left, 𝟙 A.left] ![1, -1]`. Use `(CechPic.cls_eq_iff (LB.isLB_pull h₂ _) (LB.isLB_pull h₁ _)).1 ?_` and prove the remaining obligations. Rewrite using `[CechPic.cls_pull h₂, CechPic.cls_pull h₁, CechPic.cls_linComb hL _ _ h₂, show CechPic.cls _ h₁ = _ from CechPic.cls_linComb hL _ _ h₁, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zsmul, map_zsmul, ← CechPic.pull_comp, ← CechPic.pull_comp]`. Use `congr 3`. Use `fin_cases k`. Use `show ((p ≫ snd A A) ≫ lift (toUnit A ≫ x) (𝟙 A) ≫ μ[A]).left = (p ≫ lift (fst A A ≫ 𝟙 A) (snd A A) ≫ μ[A]).left`. Rewrite using `[comp_lift_assoc, comp_lift_assoc, Category.comp_id, Category.comp_id, h, ← Category.assoc, comp_toUnit]`.
-
-Conclude with `Category.comp_id _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_pull_translDiff {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A.left} (hL : L.IsLB)
     {T : Over S} (p : T ⟶ A ⊗ A) (x : 𝟙_ (Over S) ⟶ A) (h : p ≫ fst A A = toUnit T ≫ x) :
@@ -46,15 +44,15 @@ theorem lbIso_pull_translDiff {S : Scheme.{0}} {A : Over S} [GrpObj A] {L : LB A
   · exact Category.comp_id _
 
 /- English proof (translation)
-Introduce `K _ _ P t Y π f hπ ht hne κ _ _ D hD hcov`. Establish `hpb` using `((GlobalTheory.AbProj.abelian_projective_baseChange K P).2 K t Y π f hπ).2.2.2.2.2`. Rewrite `hpb` using `[ht]`. Set `x : 𝟙_ (Over (Spec (CommRingCat.of K))) ⟶ P.A` to `Over.homMk t ht`. Establish `hx : x ≠ η[P.A]` using `fun h => hne (congrArg (·.left) h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hw : π ≫ (P.A ⊗ P.A).hom = f`. Rewrite using `[← Over.w (fst P.A P.A), ← Category.assoc, hπ.w, Category.assoc, ht, Category.comp_id]`. Set `p : Over.mk f ⟶ P.A ⊗ P.A` to `Over.homMk π hw`. Establish `hp : p ≫ fst P.A P.A = toUnit _ ≫ x` using `by ext1`. Conclude with `hπ.w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwg⟩` from `lbIso_pull_translDiff P.isLB p x hp`. Set `e : Y ⟶ P.A.left` to `π ≫ (snd P.A P.A).left`. Establish `: IsIso e` using `hpb.isIso_fst_of_isIso`. Establish `he : e ≫ P.A.hom = f` using `hpb.w.trans (Category.comp_id _)`. Establish `hM` using `LB.isLB_linComb P.isLB (K := Fin 2) ![(lift (toUnit P.A ≫ x) (𝟙 P.A) ≫ μ[P.A]).left, 𝟙 P.A.left] ![1, -1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hac` using `GlobalTheory.T.cechComplex_acyclic_additiveLineBundle_noSections K P _ hM (GlobalTheory.TranslateAdditive.translate_div_additive K P x) (GlobalTheory.T.sections_translationDifference_eq_zero K P x hx) κ (fun i => inv e ⁻¹ᵁ D i) (fun i => (hD i).preimage_of_isIso _) (by rw [← Sche …`. Take `⟨i₁⟩` from `cechLB_pull_iso_of_isOpenImmersion K _ P.A.hom _ Y e κ (fun i => inv e ⁻¹ᵁ D i) hM (fun i => by rw [Scheme.Hom.opensRange_of_isIso]; exact le_top)`. Establish `hD' : (fun i => e ⁻¹ᵁ inv e ⁻¹ᵁ D i) = D` using `funext fun i => by`. Rewrite using `[← Scheme.Hom.comp_preimage, IsIso.hom_inv_id]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `i₁` using `[he, hD']`. Establish `i₂` using `cechLBCongr f D (LB.isLB_pull hM e) (LB.isLB_pull (L := translDiff P.A P.L (𝟙 P.A)) (LB.isLB_linComb P.isLB _ _) π) w hwg`. Conclude with `fun n => (hac n).of_iso (i₁.symm ≪≫ i₂)`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem fibre_acyclic : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (t : Spec (CommRingCat.of K) ⟶ P.A.left) (Y : Scheme.{0}) (π : Y ⟶ (P.A ⊗ P.A).left) (f : Y ⟶ Spec (CommRingCat.of K)), IsPullback π f (fst P.A P.A).left t → t ≫ P.A.hom = 𝟙 _ → t ≠ η[P.A].left → ∀ (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → Y.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → (cechLB f ((translDiff P.A P.L (𝟙 P.A)).pull π) D).Acyclic := by
   intro K _ _ P t Y π f hπ ht hne κ _ _ D hD hcov

@@ -15,7 +15,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : (k.1)ᴴ * ((k.1 * X * (k.1)ᴴ) * k.1) = ((k.1)ᴴ * k.1) * X * ((k.1)ᴴ * k.1)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h, unit_star_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hb_conj_back (k : Matrix.unitaryGroup (Fin n) ℂ) (X : Mat n) :
     (k.1)ᴴ * ((k.1 * X * (k.1)ᴴ) * k.1) = X := by
@@ -25,29 +25,25 @@ theorem hb_conj_back (k : Matrix.unitaryGroup (Fin n) ℂ) (X : Mat n) :
   simp
 
 /- English proof (translation)
-Introduce `n lam E Fr ε ι S Γ T hD f hf`. Take `⟨hs, heq⟩` from `hf`. Establish `hdiff : ∀ x ∈ GLs n, DifferentiableAt ℝ f x` using `fun x hx => (hs.differentiableOn (by simp)).differentiableAt (isOpen_GLs.mem_nhds hx)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hfa` using `contDiffOn_fderivWithin_apply (m := ∞) hs isOpen_GLs.uniqueDiffOn (le_of_eq rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `DC`. Use `ContDiffOn.sum fun p _ => ?_` and prove the remaining obligations. Establish `h1 : ContDiffOn ℝ ∞ (fun x => Rd (hb p) f x) (GLs n)`. Use `(hfa.comp (contDiffOn_id.prodMk (mulRL (hb p)).contDiff.contDiffOn) (fun x hx => ⟨hx, Set.mem_univ _⟩)).congr fun x hx => ?_` and prove the remaining obligations. Use `show fderiv ℝ f x (x * hb p) = fderivWithin ℝ f (GLs n) x (mulRL (hb p) x)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fderivWithin_of_isOpen isOpen_GLs hx, mulRL_apply]`. Establish `h2 : ContDiffOn ℝ ∞ (fun x => fderiv ℝ Fr 1 (hb p) (f x)) (GLs n)` using `((fderiv ℝ Fr 1 (hb p)).restrictScalars ℝ).contDiff.comp_contDiffOn hs`. Conclude with `((ε (hb p)).restrictScalars ℝ).contDiff.comp_contDiffOn (h1.add h2)`. Introduce `g hg k`. Establish `hgk : g * k.1 ∈ GLs n` using `mem_GLs_mul hg (unit_mem k)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRd : ∀ X : Mat n, Rd X f (g * k.1) = E.ρ k⁻¹ (Rd (k.1 * X * (k.1)ᴴ) f g)`. Introduce `X`. Establish `hev : (fun y : Mat n => f (y * k.1)) =ᶠ[nhds g] fun y => ((E.ρ k⁻¹).restrictScalars ℝ) (f y)` using `by filter_upwards [isOpen_GLs.mem_nhds hg] with y hy`. Simplify using `using heq y hy k`. Establish `h` using `fderiv_right f k.1 g _ (hdiff _ hgk) (hdiff _ hg) hev (g * (k.1 * X * (k.1)ᴴ))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hm : g * (k.1 * X * (k.1)ᴴ) * k.1 = g * k.1 * X`. Simplify using `only [Matrix.mul_assoc, unit_star_mul, Matrix.mul_one]`. Use `show fderiv ℝ f (g * k.1) (g * k.1 * X) = E.ρ k⁻¹ (fderiv ℝ f g (g * (k.1 * X * (k.1)ᴴ)))`. Rewrite using `[← hm]`. Simplify using `using h`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ v, E.ρ k (E.ρ k⁻¹ v) = v`. Introduce `v`. Rewrite using `[← ContinuousLinearMap.mul_apply, rho_mul_inv]`. Both sides reduce to the same expression. Establish `hdF : ∀ (X : Mat n) (v : E.V), (fderiv ℝ Fr 1 X) (E.ρ k⁻¹ v) = E.ρ k⁻¹ (fderiv ℝ Fr 1 (k.1 * X * (k.1)ᴴ) v)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `X v`. Establish `h` using `dFr_conj hD k (k.1 * X * (k.1)ᴴ)`. Rewrite `h` using `[hb_conj_back k X]`. Rewrite using `[h, ContinuousLinearMap.mul_apply, ContinuousLinearMap.mul_apply, hv]`. Establish `heps : ∀ (X : Mat n), IsHermitian X → ∀ w, ε X (E.ρ k⁻¹ w) = E.ρ k⁻¹ (ε (k.1 * X * (k.1)ᴴ) w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Introduce `X hX w`. Rewrite using `[← ContinuousLinearMap.mul_apply, eps_rho_inv hD k X hX, ContinuousLinearMap.mul_apply]`. Set `B : Mat n →ₗ[ℝ] Mat n →ₗ[ℝ] E.V` to `LinearMap.mk₂ ℝ (fun Y Z => ε Y (Rd Z f g + fderiv ℝ Fr 1 Z (f g))) (by`. Introduce `a b c`. Simplify using `only [map_add, ContinuousLinearMap.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `abel)`. Use the proof step `(by intro c a b; simp only [map_smul, ContinuousLinearMap.smul_apply])`. Use the proof step `(by`. Introduce `a b c`. Simplify using `only [Rd, Matrix.mul_add, map_add, ContinuousLinearMap.add_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `abel)`. Use the proof step `(by`. Introduce `c a b`. Simplify using `only [Rd, Matrix.mul_smul, map_smul, ContinuousLinearMap.smul_apply]`. Rewrite using `[← smul_add]`.
-
-Conclude with `(ε a).map_smul_of_tower c _)`. Establish `key` using `basis_inv B k`. Unfold `DC`. Rewrite using `[heq g hg k]`. Combine the equalities or inequalities in the displayed calculation.
-
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[hRd, hdF, ← map_add, heps _ (hb_herm p)]`. Both sides reduce to the same expression. Use `_ = E.ρ k⁻¹ (∑ p : Fin n × Fin n, B (hb p) (hb p)) := by rw [← map_sum, key]`. Use `_ = _ := rfl`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem dCinCE : DCinCE := by
   intro n lam E Fr ε ι S Γ T hD f hf

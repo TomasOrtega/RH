@@ -14,11 +14,11 @@ open GlobalTheory.EtC.Rel
 section Ring
 
 /- English proof (translation)
-Use `IsLocalRing.of_isUnit_or_isUnit_one_sub_self fun x => ?_` and prove the remaining obligations. Set `S` to `Algebra.adjoin O {(x : Ω)}`. Use `haveI : Module.Finite O S := Module.Finite.iff_fg.2 (IsIntegral.fg_adjoin_singleton x.2)`. Use `haveI : IsLocalRing S := by`. Take `⟨q, hq⟩` from `Ideal.exists_maximal S`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : S ≃+* Localization.AtPrime q` using `RingEquiv.ofBijective (algebraMap _ _) ⟨IsLocalization.injective _ q.primeCompl_le_nonZeroDivisors, GlobalTheory.surjective_algebraMap_localization_of_henselian O q⟩`. Conclude with `e.symm.isLocalRing`. Establish `hle : S ≤ (integralClosure O Ω)` using `Algebra.adjoin_le (Set.singleton_subset_iff.2 x.2)`. Set `f : S →+* integralClosure O Ω` to `(Subalgebra.inclusion hle).toRingHom`. Establish `hx : f ⟨x, Algebra.self_mem_adjoin_singleton O _⟩ = x` using `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Break down `IsLocalRing.isUnit_or_isUnit_one_sub_self (⟨x, Algebra.self_mem_adjoin_singleton O _⟩ : S) with h | h` into its components or cases. Use `left`. Simplify `h.map f` using `[hx]`. Use `right`. Simplify `h.map f` using `[hx]`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_integralClosure (O Ω : Type) [CommRing O] [HenselianLocalRing O] [Field Ω] [Algebra O Ω] :
     IsLocalRing (integralClosure O Ω) := by
@@ -62,7 +62,7 @@ Both sides reduce to the same expression.
 @[simp] theorem galInt_apply (σ : Ω ≃ₐ[K] Ω) (x : integralClosure O Ω) : ((galInt O K σ x : integralClosure O Ω) : Ω) = σ x := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `σ (algebraMap O Ω r) = algebraMap O Ω r`. Rewrite using `[IsScalarTower.algebraMap_apply O K Ω, σ.commutes]`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem galInt_algebraMap (σ : Ω ≃ₐ[K] Ω) (r : O) :
     galInt O K σ (algebraMap O (integralClosure O Ω) r) = algebraMap O (integralClosure O Ω) r := by
@@ -126,7 +126,7 @@ abbrev genStr : GlobalTheory.Et.fibre p (algebraMap O K) ⟶ Spec (CommRingCat.o
 abbrev genFib : Scheme.{0} := GlobalTheory.Et.geom Ω (genStr K p)
 
 /- English proof (translation)
-Use extensionality with `r`. Express the relevant statement in the definitionally equal form `algebraMap K Ω (algebraMap O K r) = algebraMap O Ω r`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem ringHom_tower :
     CommRingCat.ofHom (algebraMap O K) ≫ CommRingCat.ofHom (algebraMap K Ω) =
@@ -142,12 +142,12 @@ def jGen : genFib K Ω p ⟶ intFib Ω p :=
         Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ringHom_tower])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem jGen_fst : jGen K Ω p ≫ pullback.fst _ _ = pullback.fst _ _ ≫ pullback.fst _ _ := pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem jGen_snd : jGen K Ω p ≫ intStr Ω p =
     pullback.snd _ _ ≫ Spec.map (CommRingCat.ofHom (integralClosure O Ω).val.toRingHom) := pullback.lift_snd _ _ _
@@ -162,13 +162,13 @@ def galIntMap (σ : Ω ≃ₐ[K] Ω) : intFib Ω p ⟶ intFib Ω p :=
     exact congrArg Subtype.val (galInt_algebraMap σ r).symm)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem galIntMap_fst (σ : Ω ≃ₐ[K] Ω) : galIntMap p σ ≫ pullback.fst _ _ = pullback.fst _ _ :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem galIntMap_snd (σ : Ω ≃ₐ[K] Ω) :
     galIntMap p σ ≫ intStr Ω p = intStr Ω p ≫ Spec.map (CommRingCat.ofHom (galInt O K σ).toRingHom) :=
@@ -182,15 +182,15 @@ def galSpMap (σ : Ω ≃ₐ[K] Ω) : spFib Ω p ⟶ spFib Ω p :=
     rw [Category.assoc, galIntMap_snd, pullback.condition_assoc, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, e])
 
 /- English proof (translation)
-The claim follows from `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 @[reassoc] theorem galSpMap_i (σ : Ω ≃ₐ[K] Ω) : galSpMap p σ ≫ iSp Ω p = iSp Ω p ≫ galIntMap p σ :=
   pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, galIntMap_fst, jGen_fst, GlobalTheory.Et.galMap_fst_assoc]`. Establish `e : CommRingCat.ofHom (integralClosure O Ω).val.toRingHom ≫ CommRingCat.ofHom (σ : Ω →+* Ω) = CommRingCat.ofHom (galInt O K σ).toRingHom ≫ CommRingCat.ofHom (integralClosure O Ω).val.toRingHom`. Use extensionality with `x`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Rewrite using `[Category.assoc, Category.assoc, galIntMap_snd, jGen_snd, jGen_snd_assoc, GlobalTheory.Et.galMap_snd_assoc, ← Spec.map_comp, ← Spec.map_comp, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galGen_j (σ : Ω ≃ₐ[K] Ω) : GlobalTheory.Et.galMap Ω (genStr K p) σ ≫ jGen K Ω p = jGen K Ω p ≫ galIntMap p σ := by
   apply pullback.hom_ext
@@ -202,9 +202,9 @@ theorem galGen_j (σ : Ω ≃ₐ[K] Ω) : GlobalTheory.Et.galMap Ω (genStr K p)
       ← Spec.map_comp, ← Spec.map_comp, e]
 
 /- English proof (translation)
-Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, galIntMap_fst]`. Rewrite using `[Category.assoc, galIntMap_snd, pullback.condition_assoc, pullback.condition, ← Spec.map_comp]`. Use `congr 3`. Use extensionality with `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Conclude with `hσ x`.
+A detailed English derivation is pending.
 -/
 theorem iSp_galIntMap {σ : Ω ≃ₐ[K] Ω} (hσ : σ ∈ inertia O K Ω) : iSp Ω p ≫ galIntMap p σ = iSp Ω p := by
   apply pullback.hom_ext
@@ -344,7 +344,7 @@ variable {O : Type} [CommRing O] [HenselianLocalRing O] {K : Type} [Field K] [Al
   {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O))
 
 /- English proof (translation)
-The claim follows from `(NatTrans.mapHomologicalComplex (transFlat R (bcSq (galSpMap_i p σ)).hom (galGen_j p σ)) _).naturality (resMap R φ)`.
+A detailed English derivation is pending.
 -/
 theorem galC_natural {F G : Shv R} (φ : F ⟶ G) (σ : Ω ≃ₐ[K] Ω) :
     (pullC R (galSpMap p σ)).map (nbCMap R (iSp Ω p) (jGen K Ω p) φ) ≫ galC R p G σ =
@@ -370,25 +370,25 @@ variable (R : Type) [CommRing R] (O : Type) [CommRing O] [HenselianLocalRing O] 
   (Ω : Type) [Field Ω] [Algebra K Ω] [Algebra O Ω] [IsScalarTower O K Ω]
 
 /- English proof (translation)
-The claim follows from `RPsi R K Ω (𝟙 (Spec (CommRingCat.of O))) (coef R)`.
+A detailed English derivation is pending.
 -/
 example : DerivedCategory (ShvS R (spFib Ω (𝟙 (Spec (CommRingCat.of O))))) :=
   RPsi R K Ω (𝟙 (Spec (CommRingCat.of O))) (coef R)
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (n : ℤ) : AddCommGroup (HPsi R K Ω (𝟙 (Spec (CommRingCat.of O))) (coef R) n) := inferInstance
 
 /- English proof (translation)
-The claim follows from `ineC R p F (one_mem (inertia O K Ω))`.
+A detailed English derivation is pending.
 -/
 example {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O)) (F : Shv R) :
     RPsiC R K Ω p F ⟶ RPsiC R K Ω p F :=
   ineC R p F (one_mem (inertia O K Ω))
 
 /- English proof (translation)
-The claim follows from `galInt_algebraMap σ r`.
+A detailed English derivation is pending.
 -/
 example (σ : Ω ≃ₐ[K] Ω) (r : O) :
     galInt O K σ (algebraMap O (integralClosure O Ω) r) = algebraMap O (integralClosure O Ω) r :=
@@ -400,17 +400,17 @@ Both sides reduce to the same expression.
 example (x : integralClosure O Ω) : galInt O K (1 : Ω ≃ₐ[K] Ω) x = x := rfl
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : Field (ResidueField (integralClosure O Ω)) := inferInstance
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example (n : ℤ) : Module ℚ_[3] (HPsiQ 3 K Ω (𝟙 (Spec (CommRingCat.of O))) n) := inferInstance
 
 /- English proof (translation)
-Apply `congrArg ULift.up` to reduce the goal to its premises. Conclude with `map_one _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 example : (lamRedLin 3 1).hom (⟨1⟩ : ULift.{1} (ZMod (3 ^ 2))) = (⟨1⟩ : ULift.{1} (ZMod (3 ^ 1))) := by
   apply congrArg ULift.up
@@ -419,7 +419,7 @@ example : (lamRedLin 3 1).hom (⟨1⟩ : ULift.{1} (ZMod (3 ^ 2))) = (⟨1⟩ : 
 end Examples
 
 /- English proof (translation)
-The claim follows from `haveI : HenselianLocalRing ℤ_[3] := GlobalTheory.henselianLocalRing_of_henselianRing ℤ_[3] (inertia ℤ_[3] ℚ_[3] (AlgebraicClosure ℚ_[3]), HPsi ℤ_[3] ℚ_[3] (AlgebraicClosure ℚ_[3]) (𝟙 (Spec (CommRingCat.of ℤ_[3]))) (lam 3 1) 0)`.
+A detailed English derivation is pending.
 -/
 example : Subgroup (AlgebraicClosure ℚ_[3] ≃ₐ[ℚ_[3]] AlgebraicClosure ℚ_[3]) × Type 2 :=
   haveI : HenselianLocalRing ℤ_[3] := GlobalTheory.henselianLocalRing_of_henselianRing ℤ_[3]

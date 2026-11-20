@@ -16,7 +16,7 @@ section General
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qf27.infEmb_unique .. | (apply UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumpt …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem infEmb_unique {τ : E →+* ℂ} {θ θ' : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmb τ θ) (h' : IsInfEmb τ θ') : θ = θ' := by
   first | exact UpperTheory.Reformulated.B.Qf27.infEmb_unique .. | (apply UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> assumption) | (apply @UpperTheory.Reformulated.B.Qf27.infEmb_unique <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› τ θ θ' h h' | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› τ θ θ' h | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› τ θ θ' | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› τ θ | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› τ | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E ‹_› | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F E | exact @UpperTheory.Reformulated.B.Qf27.infEmb_unique F
@@ -28,19 +28,19 @@ variable (D : D7)
 def fEmb (τ : D.what₂.Tau) : D.host.F →+* ℂ := (tauE D τ).comp (algebraMap D.host.F D.host.E)
 
 /- English proof (translation)
-The claim follows from `(D.sp.cm.fixed _).mpr ⟨x, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem star_algebraMapF (x : D.host.F) : star (algebraMap D.host.F D.host.E x) = algebraMap D.host.F D.host.E x :=
   (D.sp.cm.fixed _).mpr ⟨x, rfl⟩
 
 /- English proof (translation)
-The claim follows from `D.sp.cm.cmUnram.2.1 _ a`.
+A detailed English derivation is pending.
 -/
 theorem tauE_star (τ : D.what₂.Tau) (a : D.host.E) : tauE D τ (star a) = starRingEnd ℂ (tauE D τ a) :=
   D.sp.cm.cmUnram.2.1 _ a
 
 /- English proof (translation)
-Rewrite using `[ComplexEmbedding.isReal_iff]`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Simplify using `only [fEmb, RingHom.comp_apply]`. Rewrite using `[← tauE_star, star_algebraMapF]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fEmb_isReal (τ : D.what₂.Tau) : ComplexEmbedding.IsReal (fEmb D τ) := by
   rw [ComplexEmbedding.isReal_iff]
@@ -52,13 +52,13 @@ theorem fEmb_isReal (τ : D.what₂.Tau) : ComplexEmbedding.IsReal (fEmb D τ) :
 def plW (τ : D.what₂.Tau) : InfinitePlace D.host.F := InfinitePlace.mk (fEmb D τ)
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.embedding_mk_eq_of_isReal (fEmb_isReal D τ)`.
+A detailed English derivation is pending.
 -/
 theorem plW_embedding (τ : D.what₂.Tau) : (plW D τ).embedding = fEmb D τ :=
   InfinitePlace.embedding_mk_eq_of_isReal (fEmb_isReal D τ)
 
 /- English proof (translation)
-The claim follows from `@IsTotallyReal.isReal _ _ D.sp.cm.totReal w`.
+A detailed English derivation is pending.
 -/
 theorem isReal_place (w : InfinitePlace D.host.F) : w.IsReal :=
   @IsTotallyReal.isReal _ _ D.sp.cm.totReal w
@@ -69,13 +69,13 @@ Both sides reduce to the same expression.
 theorem plW_eq_tauPl (τ : D.what₂.Tau) : plW D τ = Formalism.L2.Host.tauPl D τ := rfl
 
 /- English proof (translation)
-Rewrite using `[plW_eq_tauPl]`. Conclude with `(Formalism.L2.Host.tauPl D).apply_symm_apply w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plW_symm (w : InfinitePlace D.host.F) : plW D ((Formalism.L2.Host.tauPl D).symm w) = w := by
   rw [plW_eq_tauPl]; exact (Formalism.L2.Host.tauPl D).apply_symm_apply w
 
 /- English proof (translation)
-Rewrite using `[plW_eq_tauPl]`. Conclude with `(Formalism.L2.Host.tauPl D).symm_apply_apply τ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_plW (τ : D.what₂.Tau) : (Formalism.L2.Host.tauPl D).symm (plW D τ) = τ := by
   rw [plW_eq_tauPl]; exact (Formalism.L2.Host.tauPl D).symm_apply_apply τ
@@ -89,13 +89,13 @@ Both sides reduce to the same expression.
 theorem gW_apply (w : InfinitePlace D.host.F) (a : Ainf D.host.F) : gW D w a = extensionEmbedding w (a w) := rfl
 
 /- English proof (translation)
-The claim follows from `(isometry_extensionEmbedding w).continuous.comp (continuous_apply w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_gW (w : InfinitePlace D.host.F) : Continuous (gW D w) :=
   (isometry_extensionEmbedding w).continuous.comp (continuous_apply w)
 
 /- English proof (translation)
-Rewrite using `[gW_apply, ← extensionEmbeddingOfIsReal_apply (isReal_place D w)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gW_real (w : InfinitePlace D.host.F) (a : Ainf D.host.F) :
     gW D w a = ((isometryEquivRealOfIsReal (isReal_place D w) (a w) : ℝ) : ℂ) := by
@@ -103,7 +103,7 @@ theorem gW_real (w : InfinitePlace D.host.F) (a : Ainf D.host.F) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← extensionEmbeddingOfIsReal_apply (isReal_place D w)]`. Use `congr 1`. Conclude with `(isometryEquivRealOfIsReal (isReal_place D w)).apply_symm_apply t`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem gW_symm (w : InfinitePlace D.host.F) (t : ℝ) :
     extensionEmbedding w ((isometryEquivRealOfIsReal (isReal_place D w)).symm t) = (t : ℂ) := by
@@ -112,7 +112,7 @@ theorem gW_symm (w : InfinitePlace D.host.F) (t : ℝ) :
   exact (isometryEquivRealOfIsReal (isReal_place D w)).apply_symm_apply t
 
 /- English proof (translation)
-Rewrite using `[gW_apply, InfiniteAdeleRing.algebraMap_apply, extensionEmbedding_coe, plW_embedding D τ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gW_algebraMap (τ : D.what₂.Tau) (x : D.host.F) :
     gW D (plW D τ) (algebraMap D.host.F (Ainf D.host.F) x) = fEmb D τ x := by
@@ -126,7 +126,7 @@ def thetaC (τ : D.what₂.Tau) : Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ
     ({ tauE D τ with commutes' := fun _ => rfl } : D.host.E →ₐ[D.host.F] ℂ)).toRingHom
 
 /- English proof (translation)
-Set `_ : Algebra D.host.F ℂ` to `(fEmb D τ).toAlgebra`. Conclude with `Algebra.TensorProduct.productMap_apply_tmul _ _ a x`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem thetaC_tmul (τ : D.what₂.Tau) (a : Ainf D.host.F) (x : D.host.E) :
     thetaC D τ (a ⊗ₜ[D.host.F] x) = gW D (plW D τ) a * tauE D τ x := by
@@ -134,9 +134,9 @@ theorem thetaC_tmul (τ : D.what₂.Tau) (a : Ainf D.host.F) (x : D.host.E) :
   exact Algebra.TensorProduct.productMap_apply_tmul _ _ a x
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[thetaC_tmul, map_one, one_mul]`. Establish `: (fun a : Ainf D.host.F => thetaC D τ (a ⊗ₜ[D.host.F] (1 : D.host.E))) = gW D (plW D τ)`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[thetaC_tmul, map_one, mul_one]`. Rewrite using `[this]`. Conclude with `continuous_gW D _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isInfFam_thetaC : IsInfFam (D := D) (thetaC D) := by
   intro τ
@@ -147,27 +147,27 @@ theorem isInfFam_thetaC : IsInfFam (D := D) (thetaC D) := by
     rw [this]; exact continuous_gW D _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨thetaC D, isInfFam_thetaC D⟩`.
+Supply the required witnesses or components.
 -/
 theorem infFamExists_holds : InfFamExists D := ⟨thetaC D, isInfFam_thetaC D⟩
 
 /- English proof (translation)
-Introduce `_ _ h h'` and use `funext fun τ => infEmb_unique (h τ) (h' τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem infFamUnique_holds : InfFamUnique D := fun _ _ h h' => funext fun τ => infEmb_unique (h τ) (h' τ)
 
 /- English proof (translation)
-The claim follows from `infFamUnique_holds D θ _ hθ (isInfFam_thetaC D)`.
+A detailed English derivation is pending.
 -/
 theorem eq_thetaC {θ : Datum.InfFam D} (hθ : IsInfFam θ) : θ = thetaC D :=
   infFamUnique_holds D θ _ hθ (isInfFam_thetaC D)
 
 /- English proof (translation)
-Establish `h2 : Module.finrank D.host.F D.host.E = 2` using `D.sp.cm.deg2`. Establish `hb : ∃ b : D.host.E, b ∉ (algebraMap D.host.F D.host.E).range`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: Module.finrank D.host.F D.host.E ≤ 1` using `finrank_le_one (1 : D.host.E) fun w => by`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hc w`. Conclude with `⟨c, by rw [Algebra.smul_def, mul_one, hc]⟩`. Use linear arithmetic over natural numbers and integers. Take `⟨b, hb⟩` from `hb`. Use `⟨b - star b, by simp [star_sub, star_star], fun h0 => hb ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: star b = b` using `(sub_eq_zero.mp h0).symm`. Conclude with `(D.sp.cm.fixed b).mp this`.
+A detailed English derivation is pending.
 -/
 theorem exists_alpha : ∃ α : D.host.E, star α = -α ∧ α ≠ 0 := by
   have h2 : Module.finrank D.host.F D.host.E = 2 := D.sp.cm.deg2
@@ -186,25 +186,25 @@ theorem exists_alpha : ∃ α : D.host.E, star α = -α ∧ α ≠ 0 := by
 def alphaE : D.host.E := (exists_alpha D).choose
 
 /- English proof (translation)
-The claim follows from `(exists_alpha D).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem star_alphaE : star (alphaE D) = -alphaE D := (exists_alpha D).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(exists_alpha D).choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem alphaE_ne : alphaE D ≠ 0 := (exists_alpha D).choose_spec.2
 
 /- English proof (translation)
-Rewrite using `[LinearIndependent.pair_iff]`. Introduce `s t hst`. Establish `ht : t = 0`. Assume the negation of the conclusion as `ht`. Establish `e1 : alphaE D = algebraMap D.host.F D.host.E (-(s / t))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `ht' : algebraMap D.host.F D.host.E t ≠ 0`. Rewrite using `[ne_eq, map_eq_zero_iff _ (algebraMap D.host.F D.host.E).injective]` and apply the resulting hypothesis. Rewrite using `[map_neg, map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take the linear combination `hst`. Establish `e2` using `star_alphaE D`. Rewrite `e2` using `[e1, star_algebraMapF]`. Establish `e3 : algebraMap D.host.F D.host.E (-(s / t)) = 0`. Use `e2` as an intermediate fact.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← e1]`. Establish `h2 : (2 : D.host.E) * alphaE D = 0` using `by linear_combination this`. Rewrite using `[← e1]`. Conclude with `(mul_eq_zero.mp h2).resolve_left two_ne_zero`. Conclude with `alphaE_ne D (e1.trans e3)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `ht` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Rewrite `hst` using `[zero_smul, add_zero, Algebra.smul_def, mul_one]`. Conclude with `(map_eq_zero_iff _ (algebraMap D.host.F D.host.E).injective).mp hst`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linInd_alpha : LinearIndependent D.host.F ![(1 : D.host.E), alphaE D] := by
   rw [LinearIndependent.pair_iff]
@@ -235,12 +235,12 @@ def basE : Module.Basis (Fin 2) D.host.F D.host.E :=
   basisOfLinearIndependentOfCardEqFinrank (linInd_alpha D) (by rw [Fintype.card_fin]; exact D.sp.cm.deg2.symm)
 
 /- English proof (translation)
-Simplify using `[basE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basE_zero : basE D 0 = 1 := by simp [basE]
 
 /- English proof (translation)
-Simplify using `[basE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem basE_one : basE D 1 = alphaE D := by simp [basE]
 
@@ -248,7 +248,7 @@ def basA : Module.Basis (Fin 2) (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.h
   Algebra.TensorProduct.basis (Ainf D.host.F) (basE D)
 
 /- English proof (translation)
-Use `conv_lhs => rw [← (basA D).sum_repr x]`. Rewrite using `[Fin.sum_univ_two]`. Simplify using `only [basA, Algebra.TensorProduct.basis_apply, basE_zero, basE_one, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decomp (x : Ainf D.host.F ⊗[D.host.F] D.host.E) :
     x = (basA D).repr x 0 ⊗ₜ[D.host.F] (1 : D.host.E) + (basA D).repr x 1 ⊗ₜ[D.host.F] alphaE D := by
@@ -259,13 +259,13 @@ theorem decomp (x : Ainf D.host.F ⊗[D.host.F] D.host.E) :
 def betaT (τ : D.what₂.Tau) : ℂ := tauE D τ (alphaE D)
 
 /- English proof (translation)
-Rewrite using `[betaT, ← tauE_star, star_alphaE, map_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_betaT (τ : D.what₂.Tau) : starRingEnd ℂ (betaT D τ) = -betaT D τ := by
   rw [betaT, ← tauE_star, star_alphaE, map_neg]
 
 /- English proof (translation)
-Establish `h` using `congrArg Complex.re (conj_betaT D τ)`. Rewrite `h` using `[Complex.conj_re, Complex.neg_re]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem betaT_re (τ : D.what₂.Tau) : (betaT D τ).re = 0 := by
   have h := congrArg Complex.re (conj_betaT D τ)
@@ -273,7 +273,7 @@ theorem betaT_re (τ : D.what₂.Tau) : (betaT D τ).re = 0 := by
   linarith
 
 /- English proof (translation)
-Introduce `h`. Establish `: betaT D τ = 0` using `Complex.ext (betaT_re D τ) h`. Conclude with `alphaE_ne D ((map_eq_zero_iff _ (tauE D τ).injective).mp this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem betaT_im_ne (τ : D.what₂.Tau) : (betaT D τ).im ≠ 0 := by
   intro h
@@ -281,7 +281,7 @@ theorem betaT_im_ne (τ : D.what₂.Tau) : (betaT D τ).im ≠ 0 := by
   exact alphaE_ne D ((map_eq_zero_iff _ (tauE D τ).injective).mp this)
 
 /- English proof (translation)
-Use `conv_lhs => rw [decomp D x]`. Rewrite using `[map_add, thetaC_tmul, thetaC_tmul, map_one, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem thetaC_decomp (τ : D.what₂.Tau) (x : Ainf D.host.F ⊗[D.host.F] D.host.E) :
     thetaC D τ x = gW D (plW D τ) ((basA D).repr x 0) + gW D (plW D τ) ((basA D).repr x 1) * betaT D τ := by
@@ -290,17 +290,15 @@ theorem thetaC_decomp (τ : D.what₂.Tau) (x : Ainf D.host.F ⊗[D.host.F] D.ho
   rfl
 
 /- English proof (translation)
-Establish `hc : ∀ i : Fin 2, (basA D).repr x i = 0`. Establish `key : ∀ τ, gW D (plW D τ) ((basA D).repr x 0) = 0 ∧ gW D (plW D τ) ((basA D).repr x 1) = 0`. Introduce `τ`. Establish `h0` using `h τ`. Rewrite `h0` using `[thetaC_decomp, gW_real, gW_real]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set r0 := isometryEquivRealOfIsReal (isReal_place D (plW D τ)) ((basA D).repr x 0 (plW D τ))`. Use `set r1 := isometryEquivRealOfIsReal (isReal_place D (plW D τ)) ((basA D).repr x 1 (plW D τ))`. Establish `hre` using `congrArg Complex.re h0`. Establish `him` using `congrArg Complex.im h0`. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, zero_mul, sub_zero, betaT_re, mul_zero, Complex.zero_re, Complex.add_im, Complex.mul_im, zero_add, Complex.zero_im, add_zero] at hre him`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `h1 : r1 = 0`. Break down `mul_eq_zero.mp him with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h (betaT_im_ne D τ)`. Rewrite using `[gW_real, gW_real]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `⟨Complex.ofReal_eq_zero.mpr hre, Complex.ofReal_eq_zero.mpr h1⟩`. Establish `hz : ∀ i : Fin 2, (∀ τ, gW D (plW D τ) ((basA D).repr x i) = 0) → (basA D).repr x i = 0`. Introduce `i hi`. Use function extensionality and compare the values at `w`. Take `⟨τ, rfl⟩ : ∃ τ, plW D τ = w` from `⟨_, plW_symm D w⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `(extensionEmbedding (plW D τ)).injective` to reduce the goal to its premises. Rewrite using `[← gW_apply, hi τ]`. Conclude with `(map_zero (extensionEmbedding (plW D τ))).symm`. Introduce `i`. Use `fin_cases i`.
-
-Conclude with `hz 0 fun τ => (key τ).1`. Conclude with `hz 1 fun τ => (key τ).2`. Establish `: (basA D).repr x = 0` using `Finsupp.ext hc`. Simplify using `using congrArg (basA D).repr.symm this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem thetaC_inj (x : Ainf D.host.F ⊗[D.host.F] D.host.E) (h : ∀ τ, thetaC D τ x = 0) : x = 0 := by
   have hc : ∀ i : Fin 2, (basA D).repr x i = 0 := by
@@ -343,7 +341,7 @@ def splitInv (y : D.what₂.Tau → ℂ) : Ainf D.host.F ⊗[D.host.F] D.host.E 
   preA D y 0 ⊗ₜ[D.host.F] (1 : D.host.E) + preA D y 1 ⊗ₜ[D.host.F] alphaE D
 
 /- English proof (translation)
-Rewrite using `[gW_apply]`. Simplify using `only [preA]`. Rewrite using `[if_pos rfl, gW_symm, symm_plW]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archimedean_image_real (y : D.what₂.Tau → ℂ) (τ : D.what₂.Tau) :
     gW D (plW D τ) (preA D y 0) = ((y τ).re : ℂ) := by
@@ -352,7 +350,7 @@ theorem archimedean_image_real (y : D.what₂.Tau → ℂ) (τ : D.what₂.Tau) 
   rw [if_pos rfl, gW_symm, symm_plW]
 
 /- English proof (translation)
-Rewrite using `[gW_apply]`. Simplify using `only [preA]`. Rewrite using `[if_neg (by decide), gW_symm, symm_plW]`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem archimedean_image_imaginary (y : D.what₂.Tau → ℂ) (τ : D.what₂.Tau) :
     gW D (plW D τ) (preA D y 1) = (((y τ).im / (betaT D τ).im : ℝ) : ℂ) := by
@@ -361,7 +359,7 @@ theorem archimedean_image_imaginary (y : D.what₂.Tau → ℂ) (τ : D.what₂.
   rw [if_neg (by decide), gW_symm, symm_plW]
 
 /- English proof (translation)
-Rewrite using `[splitInv, map_add, thetaC_tmul, thetaC_tmul, map_one, mul_one, archimedean_image_real, archimedean_image_imaginary, show tauE D τ (alphaE D) = betaT D τ from rfl]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.mul_re, betaT_re]`. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, zero_add, betaT_re, mul_zero, add_zero]`. Clear denominators, using `[betaT_im_ne D τ]` for the nonvanishing conditions.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem thetaC_splitInv (y : D.what₂.Tau → ℂ) (τ : D.what₂.Tau) : thetaC D τ (splitInv D y) = y τ := by
   rw [splitInv, map_add, thetaC_tmul, thetaC_tmul, map_one, mul_one, archimedean_image_real, archimedean_image_imaginary,
@@ -374,7 +372,7 @@ theorem thetaC_splitInv (y : D.what₂.Tau → ℂ) (τ : D.what₂.Tau) : theta
 def splitHom : Ainf D.host.F ⊗[D.host.F] D.host.E →+* (D.what₂.Tau → ℂ) := RingHom.pi fun τ => thetaC D τ
 
 /- English proof (translation)
-Use `⟨(injective_iff_map_eq_zero _).mpr fun x hx => thetaC_inj D x fun τ => congrFun hx τ, fun y => ⟨splitInv D y, funext fun τ => thetaC_splitInv D y τ⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem splitHom_bij : Function.Bijective (splitHom D) := by
   refine ⟨(injective_iff_map_eq_zero _).mpr fun x hx => thetaC_inj D x fun τ => congrFun hx τ, fun y =>
@@ -388,7 +386,7 @@ Both sides reduce to the same expression.
 theorem splitEquiv_apply (x : Ainf D.host.F ⊗[D.host.F] D.host.E) (τ : D.what₂.Tau) : splitEquiv D x τ = thetaC D τ x := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Apply `(splitEquiv D).injective` to reduce the goal to its premises. Rewrite using `[RingEquiv.apply_symm_apply]`. Use function extensionality and compare the values at `τ`. Rewrite using `[splitEquiv_apply, thetaC_splitInv]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem splitEquiv_symm : ⇑(splitEquiv D).symm = splitInv D := by
   funext y
@@ -400,13 +398,13 @@ theorem splitEquiv_symm : ⇑(splitEquiv D).symm = splitInv D := by
 instance isModuleTopology_ainfE : IsModuleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E) := ⟨rfl⟩
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap ((basA D).coord k)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_repr (k : Fin 2) : Continuous fun x : Ainf D.host.F ⊗[D.host.F] D.host.E => (basA D).repr x k :=
   IsModuleTopology.continuous_of_linearMap ((basA D).coord k)
 
 /- English proof (translation)
-Use `continuous_pi fun w => (isometryEquivRealOfIsReal (isReal_place D w)).symm.continuous.comp ?_` and prove the remaining obligations. Use `fin_cases k`. Conclude with `Complex.continuous_re.comp (continuous_apply _)`. Conclude with `(Complex.continuous_im.comp (continuous_apply _)).div_const _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_preA (k : Fin 2) : Continuous fun y : D.what₂.Tau → ℂ => preA D y k := by
   refine continuous_pi fun w => (isometryEquivRealOfIsReal (isReal_place D w)).symm.continuous.comp ?_
@@ -415,9 +413,9 @@ theorem continuous_preA (k : Fin 2) : Continuous fun y : D.what₂.Tau → ℂ =
   · exact (Complex.continuous_im.comp (continuous_apply _)).div_const _
 
 /- English proof (translation)
-Rewrite using `[splitEquiv_symm]`. Establish `e : splitInv D = fun y => preA D y 0 • ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) + preA D y 1 • ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] alphaE D)`. Use function extensionality and compare the values at `y`. Simplify using `only [splitInv, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : Continuous fun _ : D.what₂.Tau → ℂ => ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E))` using `continuous_const`. Establish `c2 : Continuous fun _ : D.what₂.Tau → ℂ => ((1 : Ainf D.host.F) ⊗ₜ[D.host.F] alphaE D)` using `continuous_const`. Establish `: ContinuousAdd (Ainf D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.toContinuousAdd (Ainf D.host.F) _`. Conclude with `((continuous_preA D 0).smul c1).add ((continuous_preA D 1).smul c2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_splitEquiv_symm : Continuous (splitEquiv D).symm := by
   rw [splitEquiv_symm]

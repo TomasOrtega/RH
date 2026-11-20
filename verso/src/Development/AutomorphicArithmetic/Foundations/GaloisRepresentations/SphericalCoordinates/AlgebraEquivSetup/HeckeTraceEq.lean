@@ -77,7 +77,7 @@ def hop {Γ H V : Type} [Group Γ] [Group H] [AddCommGroup V] [Module ℂ V] (ι
     (F : H → ℂ) : Module.End ℂ (forms ι K ξ) := if h : ∃ T, IsHecke ι K ξ F T then h.choose else 0
 
 /- English proof (translation)
-Unfold `heckeTrace hop`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heckeTrace_eq {Γ H V : Type} [Group Γ] [Group H] [AddCommGroup V] [Module ℂ V] (ι : Γ →* H) (K : Subgroup H)
     (ξ : Representation ℂ Γ V) (F : H → ℂ) : heckeTrace ι K ξ F = LinearMap.trace ℂ _ (hop ι K ξ F) := by

@@ -24,49 +24,43 @@ def lieU {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) : Submodule ℝ (Matrix (Fin
     rw [conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h n J hJ`. Set `τ : ∀ w : InfinitePlace F, EmbOver E w` to `fun w => Classical.choice inferInstance`. Set `H : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ` to `fun w => J.map (τ w).1`. Establish `hHu : ∀ w, IsUnit (H w).det` using `fun w => by show IsUnit (J.map (τ w).1).det`. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsUnit.mk0 _ hJ.2).map _`. Establish `hHh : ∀ w, (H w)ᴴ = H w` using `fun w => by`. Use extensionality with `i k`. Simplify using `only [H, conjTranspose_apply, map_apply]`. Rewrite using `[← h.2.2.2, hJ.1 i k]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : InfinitePlace F → ℕ` to `fun w => Module.finrank ℝ (lieU (H w))`. Set `b : ∀ w, Module.Basis (Fin (e w)) ℝ (lieU (H w))` to `fun w => Module.finBasis ℝ _`. Set `q : (Σ w : InfinitePlace F, Fin (e w)) ≃ Fin (Fintype.card (Σ w : InfinitePlace F, Fin (e w)))` to `Fintype.equivFin _`. Set `Zg : Fin (Fintype.card (Σ w : InfinitePlace F, Fin (e w))) → Matrix (Fin n) (Fin n) ℂ` to `fun a => (b (q.symm a).1 (q.symm a).2 : Matrix (Fin n) (Fin n) ℂ)`. Establish `hZg : ∀ a, (Zg a)ᴴ * H (q.symm a).1 + H (q.symm a).1 * Zg a = 0` using `fun a => (b (q.symm a).1 (q.symm a).2).2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ∀ a (t : ℝ), ∃ y : GArch σ J (q.symm a).1, archMat σ J (τ (q.symm a).1) y = NormedSpace.exp (t • Zg a)` using `fun a t => by`. Take `⟨u, hu⟩` from `Matrix.isUnit_exp (t • Zg a)`. Establish `h1` using `GlobalTheory.SmoothForms.exp_mem_UH (hHu (q.symm a).1) (X := t • Zg a) ((lieU (H (q.symm a).1)).smul_mem t (hZg a))`. Use `⟨(archEquiv J h (τ (q.symm a).1)).symm ⟨u, show _ * _ * _ = _ from hu ▸ h1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, MulEquiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hu`. Use `choose y hy using hy`. Set `δ : Fin (Fintype.card (Σ w : InfinitePlace F, Fin (e w))) → ℝ → GAd σ J` to `fun a t => embArch σ J (q.symm a).1 (y a t)`. Set `Zw : InfinitePlace F → Fin (Fintype.card (Σ w : InfinitePlace F, Fin (e w))) → Matrix (Fin n) (Fin n) ℂ` to `fun w a => if (q.symm a).1 = w then Zg a else 0`. Establish `hK : ∀ w a (t : ℝ), archMat σ J (τ w) (projArch σ J w (δ a t)) = NormedSpace.exp (t • Zw w a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `w a t`. Distinguish the cases in `hw : (q.symm a).1 = w`. Substitute `hw` using the available equality. Simplify using `only [δ, Zw, if_pos rfl, projArch_embArch_self, hy]`. Simplify using `only [δ, Zw, if_neg hw, smul_zero, NormedSpace.exp_zero, projArch_embArch_ne σ J (Ne.symm hw), map_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hunit : ∀ w (g : GArch σ J w), (archMat σ J (τ w) g)ᴴ * H w * archMat σ J (τ w) g = H w` using `fun w g => by`. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h]`. Conclude with `(archEquiv J h (τ w) g).2`. Establish `hinj : ∀ w, Function.Injective (archMat σ J (τ w))` using `fun w g g' hg => (archEquiv J h (τ w)).injective (Subtype.ext (Units.ext (by`. Rewrite using `[GlobalTheory.Orb.archMat_eq_archEquiv J h, GlobalTheory.Orb.archMat_eq_archEquiv J h] at hg)))` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hloc : ∀ w, ∃ V ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) ℂ), ∃ s : Matrix (Fin n) (Fin n) ℂ → (Fin _ → ℝ), ContinuousAt s 1 ∧ ∀ g ∈ V, gᴴ * H w * g = H w → g = (List.ofFn fun a => NormedSpace.exp (s g a • Zw w a)).prod`. Introduce `w`. Establish `hj : Function.Injective fun i : Fin (e w) => q ⟨w, i⟩` using `fun i i' hi => by`. Simplify using `using q.injective hi`. Establish `hZj : ∀ i, Zw w (q ⟨w, i⟩) = (b w i : Matrix (Fin n) (Fin n) ℂ)` using `fun i => by show (if (q.symm (q ⟨w, i⟩)).1 = w then Zg (q ⟨w, i⟩) else 0) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_pos (by simp)]`. Use `show ((b (q.symm (q ⟨w, i⟩)).1 (q.symm (q ⟨w, i⟩)).2 : Matrix (Fin n) (Fin n) ℂ)) = _`. Rewrite using `[q.symm_apply_apply]`. Use `GlobalTheory.T.hermitian_unitary_group_one_parameter_chart n (H w) (hHh w) (hHu w) _ (e w) (Zw w) (fun i => q ⟨w, i⟩) hj ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `a ha`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `only [Zw]`. Rewrite using `[if_neg]`. Introduce `hw`. Apply `ha` to reduce the goal to its premises. Break down `hqa : q.symm a with ⟨w', i⟩` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hw` using `[hqa]`. Substitute `hw` using the available equality. Establish `h2` using `congrArg q hqa`. Rewrite `h2` using `[Equiv.apply_symm_apply]`. Conclude with `⟨i, h2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `a`. Simplify using `only [Zw]`. Use `split_ifs with hw`. Substitute `hw` using the available equality. Conclude with `hZg a`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [hZj]`. Use `Fintype.linearIndependent_iff.2 fun c hc i => ?_` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.1 (b w).linearIndependent c (Subtype.ext ?_) i` and prove the remaining obligations. Simplify using `using hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `X hX`. Simplify using `only [hZj]`. Establish `e1` using `congrArg Subtype.val ((b w).sum_repr ⟨X, hX⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at e1`. Rewrite using `[← e1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose V hV sw hsw hdec using hloc`. Set `gw : InfinitePlace F → GAd σ J → Matrix (Fin n) (Fin n) ℂ` to `fun w x => archMat σ J (τ w) (projArch σ J w x)`. Establish `hgc : ∀ w, Continuous (gw w)` using `fun w => (GlobalTheory.Orb.continuous_archMat σ J (τ w)).comp (continuous_projArch σ J w)`. Establish `hg1 : ∀ w, gw w 1 = 1` using `fun w => by simp [gw]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `⟨_, δ, fun a => ⟨(q.symm a).1, τ _, Zg a, hZg a, fun t => ⟨y a t, rfl, hy a t⟩⟩, fun U hU => ?_⟩` and prove the remaining obligations. Establish `hfc : Continuous fun x => ofFin σ J (projFin σ J x)` using `(continuous_ofFin σ J).comp (continuous_projFin σ J)`. Use `⟨{x | ∀ w, gw w x ∈ V w} ∩ {x | ofFin σ J (projFin σ J x) ∈ U}, ?_, fun x a => sw (q.symm a).1 (gw (q.symm a).1 x) a, ?_, ?_⟩` and prove the remaining obligations. Use `Filter.inter_mem (Filter.eventually_all.2 fun w => (hgc w).continuousAt.preimage_mem_nhds ?_) (hfc.continuousAt.preimage_mem_nhds ?_)` and prove the remaining obligations. Rewrite using `[hg1]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hV w`. Simplify using `using hU`. Conclude with `continuousAt_pi.2 fun a => (continuous_apply a).continuousAt.comp ((hsw _).comp_of_eq (hgc _).continuousAt (hg1 _))`. Introduce `x hx`. Use `⟨ofFin σ J (projFin σ J x), hx.2, mem_finPts.2 (projInf_ofFin _ _ _), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Both sides reduce to the same expression.
 
-Use `conv_lhs => rw [← ofInf_projInf_mul_ofFin_projFin σ J x]`. Use `congr 1`. Apply `GAd_ext σ J` to reduce the goal to its premises. Introduce `w`. Apply `hinj w` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[projArch_ofInf, projInfArch_projInf, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`. Establish `e2 : (⇑(archMat σ J (τ w)) ∘ ⇑(projArch σ J w) ∘ fun a => δ a (sw (q.symm a).1 (gw (q.symm a).1 x) a)) = fun a => NormedSpace.exp (sw w (gw w x) a • Zw w a)` using `funext fun a => by`. Simplify using `only [Function.comp_apply]`. Rewrite using `[hK]`. Distinguish the cases in `hw : (q.symm a).1 = w`.
-
-Substitute `hw` using the available equality. Both sides reduce to the same expression. Simplify using `[Zw, hw]`. Rewrite using `[e2]`. Conclude with `hdec w _ (hx.1 w) (hunit w _)`.
-
-Introduce `v`. Rewrite using `[proj_ofInf, map_list_prod, List.map_ofFn]`. Establish `e3 : (⇑(proj σ J v) ∘ fun a => δ a (sw (q.symm a).1 (gw (q.symm a).1 x) a)) = fun _ => 1`. Use function extensionality and compare the values at `fun a => by simp [δ]`. Rewrite using `[e3]`.
-
-Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_realLines_chart : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∃ (d : ℕ) (δ : Fin d → ℝ → GAd σ J), (∀ a, IsRealLine σ J (δ a)) ∧
       ∀ U ∈ 𝓝 (1 : GAd σ J), ∃ W ∈ 𝓝 (1 : GAd σ J), ∃ s : GAd σ J → (Fin d → ℝ), ContinuousAt s 1 ∧

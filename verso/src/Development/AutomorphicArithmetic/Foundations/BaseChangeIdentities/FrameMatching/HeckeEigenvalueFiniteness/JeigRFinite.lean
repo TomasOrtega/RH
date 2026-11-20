@@ -20,7 +20,7 @@ section Gen
 variable {G V W : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ρ (h : G) v = (((1 : K →* ℂˣ) h : ℂˣ) : ℂ) • v` using `hv h`. Rewrite using `[Representation.Equiv.toLinearEquiv_apply, ← φ.toIntertwiningMap.isIntertwining, ← Representation.Equiv.toLinearEquiv_apply, h1, map_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fix_map {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) (K : Subgroup G) {v : V}
     (hv : v ∈ fixed ρ K) : φ.toLinearEquiv v ∈ fixed σ K := by
@@ -31,7 +31,7 @@ theorem fix_map {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ 
   rfl
 
 /- English proof (translation)
-Unfold `hkG`. Use `(φ.toLinearEquiv.toAddEquiv.map_finsum (fun q : G ⧸ K => f q.out • ρ q.out v)).trans (finsum_congr fun q => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.toLinearEquiv (f q.out • ρ q.out v) = f q.out • σ q.out (φ.toLinearEquiv v)`. Rewrite using `[map_smul, Representation.Equiv.toLinearEquiv_apply, Representation.Equiv.toLinearEquiv_apply, φ.toIntertwiningMap.isIntertwining]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem hk_map {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ : ρ.Equiv σ) (K : Subgroup G) (f : G → ℂ) (v : V) :
     φ.toLinearEquiv (hkG ρ K f v) = hkG σ K f (φ.toLinearEquiv v) := by
@@ -42,13 +42,13 @@ theorem hk_map {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (φ :
     φ.toIntertwiningMap.isIntertwining]
 
 /- English proof (translation)
-Distinguish the cases in `h : (Function.support fun q : G ⧸ K => f q.out).Finite`. Use `⟨∑ q ∈ h.toFinset, f q.out • ρ q.out, fun v => ?_⟩` and prove the remaining obligations. Unfold `hkG`. Rewrite using `[finsum_eq_sum_of_support_subset (s := h.toFinset), LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `q hq`. Rewrite using `[Set.Finite.coe_toFinset]`. Introduce `h0`. Apply `hq` to reduce the goal to its premises. Simplify using `only [h0, zero_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `⟨0, fun v => ?_⟩` and prove the remaining obligations. Unfold `hkG`. Distinguish the cases in `hv : v = 0`. Simplify using `[hv]`. Use `finsum_of_infinite_support fun hfin => h (hfin.subset fun q hq h0 => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Break down `smul_eq_zero.1 h0 with h1 | h1` into its components or cases. Conclude with `hq h1`. Apply `hv` to reduce the goal to its premises. Use `congrArg (ρ q.out⁻¹) h1` as an intermediate fact. Rewrite `this` using `[map_zero, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hk_lin (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ) : ∃ T : V →ₗ[ℂ] V, ∀ v, hkG ρ K f v = T v := by
   by_cases h : (Function.support fun q : G ⧸ K => f q.out).Finite
@@ -73,14 +73,14 @@ theorem hk_lin (ρ : Representation ℂ G V) (K : Subgroup G) (f : G → ℂ) : 
         rwa [map_zero, ← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] at this
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.LinearIndependentEigenvectors.li_eig T ev hinj v h0 hv`.
+A detailed English derivation is pending.
 -/
 theorem li_eig {Ξ P : Type} (T : P → V →ₗ[ℂ] V) (ev : Ξ → P → ℂ) (hinj : Function.Injective ev) (v : Ξ → V)
     (h0 : ∀ ξ, v ξ ≠ 0) (hv : ∀ ξ p, T p (v ξ) = ev ξ p • v ξ) : LinearIndependent ℂ v :=
   _root_.UpperTheory.Reformulated.B.LinearIndependentEigenvectors.li_eig T ev hinj v h0 hv
 
 /- English proof (translation)
-Use `choose v hU h0 hv using fun ξ : {ξ | ∃ v ∈ U, v ≠ 0 ∧ ∀ p, T p v = ev ξ p • v} => ξ.2`. Establish `h` using `li_eig T (fun ξ : {ξ | ∃ v ∈ U, v ≠ 0 ∧ ∀ p, T p v = ev ξ p • v} => ev ξ.1) (hinj.comp Subtype.val_injective) v h0 hv`. Establish `h' : LinearIndependent ℂ fun ξ => (⟨v ξ, hU ξ⟩ : U)` using `LinearIndependent.of_comp U.subtype h`. Use `haveI := h'.finite_of_isNoetherian`. Conclude with `Set.toFinite _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fin_eig {Ξ P : Type} (U : Submodule ℂ V) [FiniteDimensional ℂ U] (T : P → V →ₗ[ℂ] V) (ev : Ξ → P → ℂ)
     (hinj : Function.Injective ev) : {ξ | ∃ v ∈ U, v ≠ 0 ∧ ∀ p, T p v = ev ξ p • v}.Finite := by
@@ -101,7 +101,7 @@ def JEigR {V : Type} [AddCommGroup V] [Module ℂ V] (w : Pl E) (ρ : Representa
     ∀ x y, Gap x → Gap y → hkG ρ (I2 a b w) (dc2 w ϖ x y) v = ev2 w ξa ξb x y • v
 
 /- English proof (translation)
-Take `⟨v, hv, hv0, he⟩` from `h`. Use `⟨φ.toLinearEquiv v, fix_map φ _ hv, fun h0 => hv0 (φ.toLinearEquiv.injective (by rw [h0, map_zero])), fun x y hx hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hk_map, he x y hx hy, map_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jeigR_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] {w : Pl E}
     {ρ : Representation ℂ (GLw a w × GLw b w) V} {σ : Representation ℂ (GLw a w × GLw b w) W} (φ : ρ.Equiv σ)
@@ -113,7 +113,7 @@ theorem jeigR_equiv {V W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup W
   rw [← hk_map, he x y hx hy, map_smul]
 
 /- English proof (translation)
-Unfold `qh`. Rewrite using `[Complex.ofReal_ne_zero, Real.sqrt_ne_zero']`. Establish `hq : qV E w ≠ 0`. Conclude with `Ideal.absNorm_eq_zero_iff.not.2 w.ne_bot`. Conclude with `Nat.pos_of_ne_zero hq` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem qh_ne_zero (w : Pl E) : qh w ≠ 0 := by
   unfold qh
@@ -123,15 +123,15 @@ theorem qh_ne_zero (w : Pl E) : qh w ≠ 0 := by
   exact_mod_cast Nat.pos_of_ne_zero hq
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun j _ => Units.ne_zero _`.
+A detailed English derivation is pending.
 -/
 theorem pw_ne_zero {m : ℕ} (y : Fin m → ℂˣ) (x : Fin m → ℤ) : pw y x ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun j _ => Units.ne_zero _
 
 /- English proof (translation)
-Establish `key : ∀ j, (((y j ^ (x j + if j = i then 1 else 0) : ℂˣ)) : ℂ) = ((y j ^ x j : ℂˣ) : ℂ) * (if j = i then (y i : ℂ) else 1)`. Introduce `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[_root_.zpow_add]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Simplify using `only [pw, key, Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem pw_shift {m : ℕ} (y : Fin m → ℂˣ) (x : Fin m → ℤ) (i : Fin m) :
     pw y (fun j => x j + if j = i then 1 else 0) = pw y x * (y i : ℂ) := by
@@ -147,7 +147,7 @@ theorem pw_shift {m : ℕ} (y : Fin m → ℂˣ) (x : Fin m → ℤ) (i : Fin m)
 def g0 (m : ℕ) : Fin m → ℤ := fun i => 2 * ((m : ℤ) - (i : ℕ))
 
 /- English proof (translation)
-Introduce `i j hij`. Use `Fin.lt_def.1 hij` as an intermediate fact. Simplify using `only [g0]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gap0 (m : ℕ) : Gap (g0 m) := by
   intro i j hij
@@ -156,7 +156,7 @@ theorem gap0 (m : ℕ) : Gap (g0 m) := by
   omega
 
 /- English proof (translation)
-Introduce `j l hjl`. Use `Fin.lt_def.1 hjl` as an intermediate fact. Simplify using `only [g0]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap1 (m : ℕ) (i : Fin m) : Gap (fun j => g0 m j + if j = i then 1 else 0) := by
   intro j l hjl
@@ -165,13 +165,13 @@ theorem gap1 (m : ℕ) (i : Fin m) : Gap (fun j => g0 m j + if j = i then 1 else
   split_ifs <;> omega
 
 /- English proof (translation)
-Introduce and unpack `⟨ξa, ξb⟩ ⟨ξa', ξb'⟩ h`. Establish `hx : ∀ (x : Fin a → ℤ) (y : Fin b → ℤ), Gap x → Gap y → ev2 w ξa ξb x y = ev2 w ξa' ξb' x y` using `fun x y hx hy => congrFun h ⟨(x, y), hx, hy⟩`. Establish `hd : ∀ {N : ℕ} (x : Fin N → ℤ), dl w x ≠ 0` using `fun _ => zpow_ne_zero _ (qh_ne_zero w)`. Establish `h0` using `hx (g0 a) (g0 b) (gap0 a) (gap0 b)`. Simplify using `only [ev2] at h0`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hM : pw ξa (g0 a) * pw ξb (g0 b) = pw ξa' (g0 a) * pw ξb' (g0 b)`. Use `mul_left_cancel₀ (mul_ne_zero (hd (g0 a)) (hd (g0 b))) ?_` and prove the remaining obligations. Take the linear combination `h0`. Establish `hM0 : pw ξa' (g0 a) * pw ξb' (g0 b) ≠ 0` using `mul_ne_zero (pw_ne_zero _ _) (pw_ne_zero _ _)`. Use `Prod.ext (funext fun i => Units.ext ?_) (funext fun i => Units.ext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `hx _ (g0 b) (gap1 a i) (gap0 b)`. Simplify using `only [ev2, pw_shift] at h1`. Use `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero (hd (fun j => g0 a j + if j = i then 1 else 0)) (hd (g0 b))) hM0) ?_` and prove the remaining obligations. Take the linear combination `h1 - (dl w (fun j => g0 a j + if j = i then 1 else 0) * dl w (g0 b) * (ξa i : ℂ)) * hM`. Establish `h1` using `hx (g0 a) _ (gap0 a) (gap1 b i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [ev2, pw_shift] at h1`. Use `mul_left_cancel₀ (mul_ne_zero (mul_ne_zero (hd (g0 a)) (hd (fun j => g0 b j + if j = i then 1 else 0))) hM0) ?_` and prove the remaining obligations. Take the linear combination `h1 - (dl w (g0 a) * dl w (fun j => g0 b j + if j = i then 1 else 0) * (ξb i : ℂ)) * hM`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ev2_inj (w : Pl E) : Function.Injective (fun (ξ : (Fin a → ℂˣ) × (Fin b → ℂˣ))
     (p : {p : (Fin a → ℤ) × (Fin b → ℤ) // Gap p.1 ∧ Gap p.2}) => ev2 w ξ.1 ξ.2 p.1.1 p.1.2) := by
@@ -198,7 +198,7 @@ theorem ev2_inj (w : Pl E) : Function.Injective (fun (ξ : (Fin a → ℂˣ) × 
     linear_combination h1 - (dl w (g0 a) * dl w (fun j => g0 b j + if j = i then 1 else 0) * (ξb i : ℂ)) * hM
 
 /- English proof (translation)
-Use `choose T hT using fun (p : {p : (Fin a → ℤ) × (Fin b → ℤ) // Gap p.1 ∧ Gap p.2}) => hk_lin ρ (I2 a b w) (dc2 w ϖ p.1.1 p.1.2)`. Use `(fin_eig (fixed ρ (I2 a b w)) T _ (ev2_inj w)).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨ξa, ξb⟩ ⟨v, hv, hv0, he⟩`. Conclude with `⟨v, hv, hv0, fun p => by rw [← hT]; exact he _ _ p.2.1 p.2.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem jeigR_finite {V : Type} [AddCommGroup V] [Module ℂ V] (w : Pl E)
     (ρ : Representation ℂ (GLw a w × GLw b w) V) (ϖ : (w.adicCompletion E)ˣ)

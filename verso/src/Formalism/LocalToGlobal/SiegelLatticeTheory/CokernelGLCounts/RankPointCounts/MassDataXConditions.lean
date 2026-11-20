@@ -26,13 +26,13 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
   (i0 i0' : ∀ _ : NumberField.InfinitePlace X.B.I.F, Fin D.R.k) (νq : X.B.I.Ginf → Measure X.B.I.Ginf)
 
 /- English proof (translation)
-The claim follows from `inMass_bC X hb hK FdN FdN' u u' X0 _ T sd C Th _ (massH_pos X u).ne'`.
+A detailed English derivation is pending.
 -/
 theorem inMass_bCF : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InMass :=
   inMass_bC X hb hK FdN FdN' u u' X0 _ T sd C Th _ (massH_pos X u).ne'
 
 /- English proof (translation)
-Establish `h` using `inMassesAt_holds X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) ⟨0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0⟩ hX`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inMasses_bCF (hX : HypX X hb FdN FdN' u u') :
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InMasses := by
@@ -40,7 +40,7 @@ theorem inMasses_bCF (hX : HypX X hb FdN FdN' u u') :
   exact h
 
 /- English proof (translation)
-Establish `h` using `level_s_at_instance X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) ⟨0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0⟩ hX`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inLevelS_bCF (hX : HypX X hb FdN FdN' u u') :
     (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).InLevelS := by
@@ -48,7 +48,7 @@ theorem inLevelS_bCF (hX : HypX X hb FdN FdN' u u') :
   exact h
 
 /- English proof (translation)
-Establish `h` using `inVolumes_of_compat X hb hK FdN FdN' u u' X0 (locOf X u u' ψ) ⟨0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0⟩ (volumes_s_at_instance hSW X hb hK FdN FdN' u u' X0 _ _) hX ⟨ψ, hψ, hstd, hC⟩ hdet`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inVolumes_bCF (hSW : PI.VolStabS.MassDataS.SWXS) (hX : HypX X hb FdN FdN' u u') (hψ : IsCharAF X.B.I.F ψ)
     (hstd : IsStdChar ψ) (hC : MeasCompatψ X ψ) (hdet : (gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0) :
@@ -58,7 +58,7 @@ theorem inVolumes_bCF (hSW : PI.VolStabS.MassDataS.SWXS) (hX : HypX X hb FdN FdN
   exact h
 
 /- English proof (translation)
-The claim follows from `inTypedC_loc X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq (fun X v => SDL.sdLocX_holds X v) (fun X v _ => Formalism.L2.SG.Pf.NcX.OmVSt.unramAt_of_cm X.B.I.cm v) sTypIdx_holds hψ hstd hX hP hL hL' hTF`.
+A detailed English derivation is pending.
 -/
 theorem inTyped_bCF (hX : HypX X hb FdN FdN' u u') (hP : ProdConv X u u' ψ) (hL : LocTieX X ψ u) (hL' : LocTieX X ψ u')
     (hTF : TypFacts X u u') (hψ : IsCharAF X.B.I.F ψ) (hstd : IsStdChar ψ) :
@@ -68,7 +68,7 @@ theorem inTyped_bCF (hX : HypX X hb FdN FdN' u u') (hP : ProdConv X u u' ψ) (hL
     hψ hstd hX hP hL hL' hTF
 
 /- English proof (translation)
-Conclude with `Formalism.L2.SG.Pf.MassDataPos.massDataPosC_of X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq (locHaarPosC_holds X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq) (covolPosC_of X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq hSW hψ hC hX.1 hdet) hQ (recPos …`.
+A detailed English derivation is pending.
 -/
 theorem pos_bCF (hSW : PI.VolStabS.MassDataS.SWXS) (hX : HypX X hb FdN FdN' u u') (hP : ProdConv X u u' ψ)
     (hψ : IsCharAF X.B.I.F ψ) (hC : MeasCompatψ X ψ) (hdet : (gramE X.B.I.cm.sig X.B.I.J X0).det ≠ 0)

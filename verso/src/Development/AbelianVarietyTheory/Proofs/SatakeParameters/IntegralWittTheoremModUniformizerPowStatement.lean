@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.DvdPowZeroIff
 open Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Hk3.IntWittMod.witt_mod_pow` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FIntegralWittTheoremModUniformizerPow.lean&line=105#L105)
 -/

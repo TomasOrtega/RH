@@ -8,13 +8,13 @@ open Finset Polynomial
 namespace Formalism.CohomologicalDescent
 
 /- English proof (translation)
-Introduce `ι _ σ l h kap s hl hs hd i`. Establish `: Nonempty ι` using `⟨i⟩`. Take `⟨j, hj⟩` from `Finite.exists_max (fun x => |kap x|)`. Establish `hL : (2 : ℤ) ≤ (l : ℤ)` using `by exact_mod_cast hl`. Establish `h1` using `hd (σ.symm j)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hs (σ.symm j)`. Rewrite `h1` using `[Equiv.apply_symm_apply]`. Establish `h3` using `abs_le.mp (hj (σ.symm j))`. Establish `key : ((l : ℤ) - 1) * |kap j| ≤ (h : ℤ)`. Break down `le_or_gt 0 (kap j) with hk | hk` into its components or cases.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h3`, the goal using `[abs_of_nonneg hk]`. Establish `e : ((l : ℤ) - 1) * kap j = (l : ℤ) * kap j - kap j` using `by ring`. Rewrite using `[e]`. Combine the linear relations using `[h1.2, h2.1, h3.2]`. Rewrite `h3`, the goal using `[abs_of_neg hk]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `e : ((l : ℤ) - 1) * -kap j = -((l : ℤ) * kap j) + kap j` using `by ring`. Rewrite using `[e]`. Combine the linear relations using `[h1.1, h2.2, h3.1]`. Establish `h4 : ((l : ℤ) - 1) * |kap i| ≤ ((l : ℤ) - 1) * |kap j|` using `mul_le_mul_of_nonneg_left (hj i) (by linarith)`. Conclude with `le_trans h4 key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shiftBound_holds : KapBound := by
   intro ι _ σ l h kap s hl hs hd i
@@ -40,7 +40,7 @@ theorem shiftBound_holds : KapBound := by
   exact le_trans h4 key
 
 /- English proof (translation)
-Set `_ : Unique {a // b a = b s}` to `{ default := ⟨s, rfl⟩ uniq := fun j => Subtype.ext (hs j.1 j.2) }`. Rewrite using `[Matrix.det_unique]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lw_det_block {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
     (M : Matrix m m R) (b : m → ℕ) (s : m) (hs : ∀ j, b j = b s → j = s) :
@@ -52,7 +52,7 @@ theorem lw_det_block {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.BlockTriangular.det hM, Finset.prod_image]`. Conclude with `Finset.prod_congr rfl (fun i _ => lw_det_block M b i (fun j hj => hb hj))`. Introduce `x _ y _ hxy`. Conclude with `hb hxy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lw_det_inj {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
     (M : Matrix m m R) (b : m → ℕ) (hM : M.BlockTriangular b) (hb : Function.Injective b) :
@@ -63,17 +63,15 @@ theorem lw_det_inj {R m : Type*} [CommRing R] [DecidableEq m] [Fintype m]
     exact hb hxy
 
 /- English proof (translation)
-Introduce `K _ n M b S r hM hS hchar`. Establish `hC : (Matrix.charmatrix M).BlockTriangular b`. Introduce `i j hij`. Establish `hne : i ≠ j`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `lt_irrefl _ hij`. Simplify using `[hne, hM hij]`. Establish `hdet : M.charpoly = ∏ a ∈ univ.image b, ((Matrix.charmatrix M).toSquareBlock b a).det` using `Matrix.BlockTriangular.det hC`. Establish `hdvd : ∏ s ∈ S, (X - C (M s s)) ∣ M.charpoly`. Rewrite using `[hdet]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∏ s ∈ S, (X - C (M s s)) = ∏ a ∈ S.image b, ((Matrix.charmatrix M).toSquareBlock b a).det`. Rewrite using `[Finset.prod_image]`. Use `Finset.prod_congr rfl (fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[lw_det_block _ b s (hS s hs), Matrix.charmatrix_apply_eq]`. Introduce `x hx y _ hxy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hS x hx y hxy.symm).symm`. Rewrite using `[h1]`. Conclude with `Finset.prod_dvd_prod_of_subset _ _ _ (Finset.image_subset_image (Finset.subset_univ S))`. Establish `hne : M.charpoly ≠ 0` using `(Matrix.charpoly_monic M).ne_zero`. Establish `hroots` using `Polynomial.roots.le_of_dvd hne hdvd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : ∏ s ∈ S, (X - C (M s s)) = (Multiset.map (fun a => X - C a) (S.val.map (fun s => M s s))).prod`. Rewrite using `[Multiset.map_map]`. Both sides reduce to the same expression. Establish `e2 : ∏ u, (X - C (r u)) = (Multiset.map (fun a => X - C a) ((Finset.univ : Finset (Fin n)).val.map r)).prod`. Rewrite using `[Multiset.map_map]`.
-
-Both sides reduce to the same expression. Rewrite `hroots` using `[e1, Polynomial.roots_multiset_prod_X_sub_C, hchar, e2, Polynomial.roots_multiset_prod_X_sub_C]`. Conclude with `hroots`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charpolyDiagBlocks_holds : CharpolyBlocks := by
   intro K _ n M b S r hM hS hchar

@@ -14,25 +14,23 @@ open GlobalTheory.IwLevel
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `S _ _ hprin hnil`. Take `⟨x, hx⟩` from `hprin.principal`. Take `⟨M, hM⟩` from `hnil`. Use `set m := IsLocalRing.maximalIdeal S with hm`. Establish `hM' : m ^ M = ⊥` using `hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : ∀ n : ℕ, m ^ n = Ideal.span {x ^ n}`. Introduce `n`. Rewrite using `[hx]`. Conclude with `Ideal.span_singleton_pow x n`. Apply `((Set.finite_Iic M).image fun n => m ^ n).subset` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `I _`. Distinguish the cases in `hI : I = ⊥`. Conclude with `⟨M, Set.mem_Iic.mpr le_rfl, by simp only [hM', hI]⟩`. Establish `hnot : ¬ I ≤ m ^ M`. Rewrite using `[hM']`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun h => hI (le_bot_iff.mp h)`. Establish `hex : ∃ k, ¬ I ≤ m ^ k` using `⟨M, hnot⟩`. Establish `hk` using `Nat.find_spec hex`. Establish `hkM : Nat.find hex ≤ M` using `Nat.find_min' hex hnot`. Establish `hk0 : Nat.find hex ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Apply `hk` to reduce the goal to its premises. Rewrite using `[h, pow_zero]`. Rewrite using `[Ideal.one_eq_top]`. Conclude with `le_top`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨n, hn⟩ : ∃ n, Nat.find hex = n + 1` from `Nat.exists_eq_succ_of_ne_zero hk0`. Establish `hIn : I ≤ m ^ n`. Assume the negation of the conclusion as `h`. Conclude with `Nat.find_min hex (show n < Nat.find hex by omega) h`. Rewrite `hk` using `[hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, haI, ha⟩` from `SetLike.not_le_iff_exists.mp hk`. Establish `ha' : a ∈ m ^ n` using `hIn haI`. Rewrite `ha'` using `[hpow, Ideal.mem_span_singleton']`. Take `⟨y, rfl⟩` from `ha'`. Establish `hy : IsUnit y`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hy`. Apply `ha` to reduce the goal to its premises. Establish `hym : y ∈ m` using `(IsLocalRing.mem_maximalIdeal y).mpr hy`. Rewrite `hym` using `[hx, Ideal.mem_span_singleton']`. Take `⟨z, rfl⟩` from `hym`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hpow, Ideal.mem_span_singleton']`. Conclude with `⟨z, by ring⟩`. Use `⟨n, Set.mem_Iic.mpr (by omega), ?_⟩` and prove the remaining obligations. Use `show m ^ n = I`. Apply `le_antisymm _ hIn` to reduce the goal to its premises.
-
-Rewrite using `[hpow, Ideal.span_le, Set.singleton_subset_iff]`. Use `I.mul_mem_left ((hy.unit⁻¹ : Sˣ) : S) haI` as an intermediate fact. Rewrite `this` using `[← _root_.mul_assoc, IsUnit.val_inv_mul, _root_.one_mul]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem localRing_finite_ideals_of_maximalIdeal_principal_nilpotent :
     ∀ (S : Type) [CommRing S] [IsLocalRing S], (IsLocalRing.maximalIdeal S).IsPrincipal →

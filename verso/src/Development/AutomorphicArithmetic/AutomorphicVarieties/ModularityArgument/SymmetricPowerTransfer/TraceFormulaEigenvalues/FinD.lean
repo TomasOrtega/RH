@@ -3,25 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.V.Z.Sym.Tf
 
 /- English proof (translation)
-Use `set L : Subgroup Γ := Subgroup.comap B.ι (Subgroup.map (MulEquiv.toMonoidHom (MulAut.conj g')) B.U) with hL`. Use `haveI hfi : (B.Γ₀.subgroupOf L).FiniteIndex := ⟨hB.stab g'⟩`. Use `haveI : Finite (L ⧸ B.Γ₀.subgroupOf L) := Subgroup.finite_quotient_of_finiteIndex`. Establish `hcomm' : ∀ γ, s.θ.symm (B.ι γ) = B.ι (s.θΓ.symm γ)`. Introduce `γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Apply `s.θ.injective` to reduce the goal to its premises. Rewrite using `[MulEquiv.apply_symm_apply, s.comm, MulEquiv.apply_symm_apply]`. Set `T : Set Γ` to `{δ | f (g⁻¹ * B.ι δ * s.θ g') ≠ 0}`. Set `key : Γ → G ⧸ B.U` to `fun δ => (QuotientGroup.mk (s.θ.symm (g⁻¹ * B.ι δ * s.θ g')) : G ⧸ B.U)`. Establish `hkey : ∀ δ ∈ T, key δ ∈ {x : G ⧸ B.U | f (s.θ (Quotient.out x)) ≠ 0}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `δ hδ`. Take `⟨u, hu⟩` from `QuotientGroup.mk_out_eq_mul B.U (s.θ.symm (g⁻¹ * B.ι δ * s.θ g'))`. Use `show f (s.θ (Quotient.out (key δ))) ≠ 0`. Establish `hu' : Quotient.out (key δ) = s.θ.symm (g⁻¹ * B.ι δ * s.θ g') * u` using `hu`. Rewrite using `[hu', map_mul, MulEquiv.apply_symm_apply, hf.right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (Units.ne_zero _) hδ`. Establish `himg : ((QuotientGroup.mk : Γ → Γ ⧸ B.Γ₀) '' T).Finite`. Establish `hsub : T ⊆ ⋃ c ∈ {x : G ⧸ B.U | f (s.θ (Quotient.out x)) ≠ 0}, {δ | key δ = c}` using `fun δ hδ => Set.mem_biUnion (hkey δ hδ) rfl`. Use `Set.Finite.subset ?_ (Set.image_mono hsub)` and prove the remaining obligations. Rewrite using `[Set.image_iUnion₂]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `hf.fin.biUnion fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `hne : ∃ δ₁, key δ₁ = c`. Take `⟨δ₁, hδ₁⟩` from `hne`. Set `φ : L ⧸ B.Γ₀.subgroupOf L → Γ ⧸ B.Γ₀` to `fun q => ((δ₁ * s.θΓ ((Quotient.out q : L) : Γ) : Γ) : Γ ⧸ B.Γ₀)`. Use `(Set.finite_range φ).subset ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨δ, hδ, rfl⟩`. Establish `hab` using `QuotientGroup.eq.mp (hδ₁.trans hδ.symm)`. Establish `hl : s.θΓ.symm (δ₁⁻¹ * δ) ∈ L`. Rewrite using `[hL, Subgroup.mem_comap, Subgroup.mem_map]`. Use `⟨_, hab, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hcomm']`. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply, map_mul, map_inv, MulEquiv.symm_apply_apply, mul_inv_rev, inv_inv]`. Use `group`. Take `⟨z, hz⟩` from `QuotientGroup.mk_out_eq_mul (B.Γ₀.subgroupOf L) (⟨s.θΓ.symm (δ₁⁻¹ * δ), hl⟩ : L)`. Use `⟨(QuotientGroup.mk (⟨s.θΓ.symm (δ₁⁻¹ * δ), hl⟩ : L) : L ⧸ B.Γ₀.subgroupOf L), ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz0 : ((z : L) : Γ) ∈ B.Γ₀` using `Subgroup.mem_subgroupOf.mp z.2`. Use `show ((δ₁ * s.θΓ ((Quotient.out _ : L) : Γ) : Γ) : Γ ⧸ B.Γ₀) = _`. Rewrite using `[show Quotient.out (QuotientGroup.mk (⟨s.θΓ.symm (δ₁⁻¹ * δ), hl⟩ : L) : L ⧸ B.Γ₀.subgroupOf L) = _ from hz]`. Rewrite using `[Subgroup.coe_mul, map_mul, MulEquiv.apply_symm_apply, s.fix _ hz0, ← mul_assoc, mul_inv_cancel_left]`. Apply `QuotientGroup.eq.mpr` to reduce the goal to its premises.
-
-Simplify using `using B.Γ₀.inv_mem hz0`. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨δ, hδ, rfl⟩`. Conclude with `(hne ⟨δ, hδ⟩).elim`. Use `⟨himg.toFinset.image (fun q => Quotient.out q), fun δ hδ => ?_⟩` and prove the remaining obligations.
-
-Use `⟨Quotient.out ((δ : Γ ⧸ B.Γ₀)), Finset.mem_image.mpr ⟨_, himg.mem_toFinset.mpr ⟨δ, hδ, rfl⟩, rfl⟩, (Quotient.out ((δ : Γ ⧸ B.Γ₀)))⁻¹ * δ, ?_, by group⟩` and prove the remaining obligations. Conclude with `QuotientGroup.eq.mp (QuotientGroup.out_eq' _)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finD {Γ G V : Type} [Group Γ] [Group G] [AddCommGroup V] [Module ℂ V] (B : Base Γ G V) (hB : B.Fin) (s : B.Tw)
     (f : G → ℂ) (hf : s.IsTest f) (g g' : G) :

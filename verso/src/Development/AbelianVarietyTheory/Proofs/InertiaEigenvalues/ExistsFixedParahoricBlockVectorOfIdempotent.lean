@@ -13,11 +13,11 @@ namespace GlobalTheory.BlockIdem
 open ValuativeRel Matrix GlobalTheory.StepData
 
 /- English proof (translation)
-Proceed by induction on `a using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add a a' ha ha'`. Apply the tactic sequence `rw [add_mul, MonoidAlgebra.coeff_add, MonoidAlgebra.coeff_add, Finsupp.sum_add_index', Finsupp.sum_add_index', ha, ha'] <;> intros <;> simp [add_smul]`. Consider the case `single g c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Rewrite using `[MonoidAlgebra.coeff_single, Finsupp.sum_single_index (by simp)]`. Proceed by induction on `b using MonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add b b' hb hb'`. Apply the tactic sequence `rw [mul_add, MonoidAlgebra.coeff_add, MonoidAlgebra.coeff_add, Finsupp.sum_add_index', Finsupp.sum_add_index', map_add, smul_add, hb, hb'] <;> intros <;> simp [add_smul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `single h d`. Apply the tactic sequence `rw [MonoidAlgebra.single_mul_single, MonoidAlgebra.coeff_single, MonoidAlgebra.coeff_single, Finsupp.sum_single_index, Finsupp.sum_single_index, map_smul, hT, smul_smul] <;> simp`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem conv_sum {G W : Type} [Group G] [AddCommGroup W] [Module ℂ W] (T : G → W →ₗ[ℂ] W) (f : G → W)
     (hT : ∀ g h, T g (f h) = f (g * h)) (a b : MonoidAlgebra ℂ G) :
@@ -43,12 +43,12 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 def ee (r t : ℕ) : Fin r ⊕ Fin t ≃ Fin (r + t) := stdSum (rfl : r + t = r + t)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[ee]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ee_inl (i : Fin r) : ee r t (Sum.inl i) = Fin.castAdd t i := by ext; simp [ee]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[ee]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ee_inr (j : Fin t) : ee r t (Sum.inr j) = Fin.natAdd r j := by ext; simp [ee]
 
@@ -61,15 +61,15 @@ variable (F) in
 def bl (r t : ℕ) : GL (Fin (r + t)) F →* GL (Fin r ⊕ Fin t) F := reix F (ee r t).symm
 
 /- English proof (translation)
-Rewrite using `[bl, val_reix, Equiv.symm_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bl_apply (g : GL (Fin (r + t)) F) (a b : Fin r ⊕ Fin t) : (bl F r t g).val a b = g.val (ee r t a) (ee r t b) := by
   rw [bl, val_reix, Equiv.symm_symm]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Take `⟨a, rfl⟩` from `(ee r t).surjective a`. Take `⟨b, rfl⟩` from `(ee r t).surjective b`. Use `congrFun (congrFun H a) b` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[bl_apply, bl_apply]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem eq_of_bl {g g' : GL (Fin (r + t)) F} (H : (bl F r t g).val = (bl F r t g').val) : g = g' := by
   apply Units.ext
@@ -80,7 +80,7 @@ theorem eq_of_bl {g g' : GL (Fin (r + t)) F} (H : (bl F r t g).val = (bl F r t g
   rwa [bl_apply, bl_apply] at this
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[bl_apply]`. Use `val_emb₂ F (ee r t) (A, 1)` as an intermediate fact. Simplify using `only [dg, MonoidHom.coe_comp, Function.comp_apply, MonoidHom.inl_apply]`. Rewrite using `[this, reindex_apply, submatrix_apply, Equiv.symm_apply_apply, Equiv.symm_apply_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -93,21 +93,21 @@ theorem dg_bl (A : GL (Fin r) F) : (bl F r t (dg F r t A)).val = fromBlocks A.va
   rfl
 
 /- English proof (translation)
-Simplify using `only [toBlocks₂₁, of_apply, bl_apply, ee_inr, ee_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bl_21 (g : GL (Fin (r + t)) F) (i : Fin t) (j : Fin r) :
     (bl F r t g).val.toBlocks₂₁ i j = g.val (Fin.natAdd r i) (Fin.castAdd t j) := by
   simp only [toBlocks₂₁, of_apply, bl_apply, ee_inr, ee_inl]
 
 /- English proof (translation)
-Simplify using `only [toBlocks₁₁, of_apply, bl_apply, ee_inl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem bl_11 (g : GL (Fin (r + t)) F) (i j : Fin r) :
     (bl F r t g).val.toBlocks₁₁ i j = g.val (Fin.castAdd t i) (Fin.castAdd t j) := by
   simp only [toBlocks₁₁, of_apply, bl_apply, ee_inl]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [toBlocks₂₂, of_apply, bl_apply, ee_inr, submatrix_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem bl_22 (g : GL (Fin (r + t)) F) :
     (bl F r t g).val.toBlocks₂₂ = g.val.submatrix (Fin.natAdd r) (Fin.natAdd r) := by
@@ -115,9 +115,9 @@ theorem bl_22 (g : GL (Fin (r + t)) F) :
   simp only [toBlocks₂₂, of_apply, bl_apply, ee_inr, submatrix_apply]
 
 /- English proof (translation)
-Introduce `a b`. Take `⟨a, rfl⟩` from `(ee r t).surjective a`. Take `⟨b, rfl⟩` from `(ee r t).surjective b`. Use `congrFun (congrFun (dg_bl (t := t) A) a) b` as an intermediate fact. Rewrite `this` using `[bl_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `intM_fromBlocks.2 ⟨hA, intM_zero, intM_zero, intM_one⟩ a b`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intM_dg {A : GL (Fin r) F} (hA : IntM A.val) : IntM (dg F r t A).val := by
   intro a b
@@ -129,7 +129,7 @@ theorem intM_dg {A : GL (Fin r) F} (hA : IntM A.val) : IntM (dg F r t A).val := 
   exact intM_fromBlocks.2 ⟨hA, intM_zero, intM_zero, intM_one⟩ a b
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.StepData.mem_KO.2 ⟨intM_dg (GlobalTheory.StepData.mem_KO.1 hA).1, by rw [← map_inv]; exact intM_dg (GlobalTheory.StepData.mem_KO.1 hA).2⟩`.
+A detailed English derivation is pending.
 -/
 theorem dg_mem_KO {A : GL (Fin r) F} (hA : A ∈ KO F (Fin r)) : dg F r t A ∈ KO F (Fin (r + t)) :=
   GlobalTheory.StepData.mem_KO.2 ⟨intM_dg (GlobalTheory.StepData.mem_KO.1 hA).1,
@@ -145,26 +145,26 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {χ : Fˣ →* ℂˣ} {W : Type} [AddCommGroup W] [Module ℂ W] {π : Representation ℂ (GL (Fin (r + t)) F) W}
 
 /- English proof (translation)
-Introduce `h hh h1 h2 u hu` and use `by rw [map_add, hv h hh h1 h2 u hu, hw h hh h1 h2 u hu, smul_add]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBlockVec_add {v w : W} (hv : IsBlockVec χ π v) (hw : IsBlockVec χ π w) : IsBlockVec χ π (v + w) :=
   fun h hh h1 h2 u hu => by rw [map_add, hv h hh h1 h2 u hu, hw h hh h1 h2 u hu, smul_add]
 
 /- English proof (translation)
-Introduce `h hh h1 h2 u hu` and use `by rw [map_smul, hv h hh h1 h2 u hu, smul_comm]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBlockVec_smul (c : ℂ) {v : W} (hv : IsBlockVec χ π v) : IsBlockVec χ π (c • v) :=
   fun h hh h1 h2 u hu => by rw [map_smul, hv h hh h1 h2 u hu, smul_comm]
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isBlockVec_zero : IsBlockVec χ π (0 : W) := fun _ _ _ _ _ _ => by simp
 
 /- English proof (translation)
-Establish `key` using `hv _ (dg_mem_KO (GlobalTheory.StepData.KOne_le_KO hκ)) (fun i j => by rw [← bl_21, dg_bl, toBlocks_fromBlocks₂₁]; simp) (fun i j => by`. Rewrite using `[← bl_11, dg_bl, toBlocks_fromBlocks₁₁]`. Use `(GlobalTheory.StepData.mem_KOne.1 hκ) i j` as an intermediate fact. Rewrite using `[Matrix.sub_apply, Matrix.one_apply] at this)` and apply the resulting hypothesis. Use `1 (by rw [← bl_22, dg_bl, toBlocks_fromBlocks₂₂, det_one, Units.val_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, map_one, Units.val_one, one_smul]`.
+A detailed English derivation is pending.
 -/
 theorem dg_fix {v : W} (hv : IsBlockVec χ π v) {κ : GL (Fin r) F} (hκ : κ ∈ KOne F (Fin r)) :
     π (dg F r t κ) v = v := by
@@ -178,17 +178,15 @@ theorem dg_fix {v : W} (hv : IsBlockVec χ π v) {κ : GL (Fin r) F} (hκ : κ �
   rw [key, map_one, Units.val_one, one_smul]
 
 /- English proof (translation)
-Introduce `h hh h1 h2 u hu`. Establish `hd` using `dg_mem_KO (t := t) hκ`. Establish `hK : (dg F r t κ)⁻¹ * h * dg F r t κ ∈ KO F (Fin (r + t))` using `mul_mem (mul_mem (inv_mem hd) hh) hd`. Take `⟨A, B, C, D, hE⟩ : ∃ A B C D, (bl F r t h).val = fromBlocks A B C D` from `⟨_, _, _, _, (fromBlocks_toBlocks _).symm⟩`. Establish `hΦ : (bl F r t ((dg F r t κ)⁻¹ * h * dg F r t κ)).val = fromBlocks ((κ⁻¹).val * A * κ.val) ((κ⁻¹).val * B) (C * κ.val) D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← map_inv (dg F r t) κ, map_mul, map_mul, Units.val_mul, Units.val_mul, dg_bl, dg_bl, hE, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `[Matrix.mul_assoc]`. Establish `hC : MaxM C` using `fun i j => by`. Rewrite using `[show C i j = h.val (Fin.natAdd r i) (Fin.castAdd t j) by rw [← bl_21, hE, toBlocks_fromBlocks₂₁]]`. Conclude with `h1 i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : MaxM (A - 1)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply]`. Rewrite using `[show A i j = h.val (Fin.castAdd t i) (Fin.castAdd t j) by rw [← bl_11, hE, toBlocks_fromBlocks₁₁]]`. Conclude with `h2 i j`. Establish `key` using `hv _ hK (fun i j => by rw [← bl_21, hΦ, toBlocks_fromBlocks₂₁]; exact hC.mul_intM (intM_of_mem_KO hκ) i j) (fun i j => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← bl_11, hΦ, toBlocks_fromBlocks₁₁]`. Establish `e : (κ⁻¹).val * A * κ.val - 1 = (κ⁻¹).val * (A - 1) * κ.val`. Rewrite using `[mul_sub, sub_mul, mul_one, Units.inv_mul]`. Use `((((GlobalTheory.StepData.mem_KO.1 hκ).2).mul_maxM hA).mul_intM (intM_of_mem_KO hκ)) i j` as an intermediate fact. Rewrite `this` using `[← e, Matrix.sub_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this)`. Use `u (by`. Rewrite using `[← bl_22, hΦ, toBlocks_fromBlocks₂₂]`. Rewrite `hu` using `[← bl_22, hE, toBlocks_fromBlocks₂₂]`. Conclude with `hu)`.
-
-Establish `hh' : h * dg F r t κ = dg F r t κ * ((dg F r t κ)⁻¹ * h * dg F r t κ)` using `by group`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Module.End.mul_apply, ← map_mul, hh', map_mul, Module.End.mul_apply]`. Use `_ = (χ u : ℂ) • π (dg F r t κ) v := by rw [key, map_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_isBlockVec {v : W} (hv : IsBlockVec χ π v) {κ : GL (Fin r) F} (hκ : κ ∈ KO F (Fin r)) :
     IsBlockVec χ π (π (dg F r t κ) v) := by
@@ -228,17 +226,17 @@ theorem dg_isBlockVec {v : W} (hv : IsBlockVec χ π v) {κ : GL (Fin r) F} (hκ
     _ = (χ u : ℂ) • π (dg F r t κ) v := by rw [key, map_smul]
 
 /- English proof (translation)
-Use `set M : Matrix (Fin r) (Fin r) F := fun i j => h.val (Fin.castAdd t i) (Fin.castAdd t j) with hM`. Establish `hΦ : (bl F r t h).val = fromBlocks M 0 0 1`. Use extensionality with `(a | a) (b | b)`. Rewrite using `[bl_apply, ee_inl, ee_inl, fromBlocks_apply₁₁]`. Use `H (Fin.castAdd t a) (Fin.natAdd r b)` as an intermediate fact.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[dif_neg (by simp only [Fin.coe_castAdd, Fin.coe_natAdd]; omega)]`. Establish `hne : Fin.castAdd t a ≠ Fin.natAdd r b` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `[bl_apply, ee_inl, ee_inr, this, hne]`. Use `H (Fin.natAdd r a) (Fin.castAdd t b)` as an intermediate fact. Rewrite `this` using `[dif_neg (by simp only [Fin.coe_castAdd, Fin.coe_natAdd]; omega)]`. Establish `hne : Fin.natAdd r a ≠ Fin.castAdd t b` using `fun e => by`. Use `congrArg Fin.val e` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `[bl_apply, ee_inl, ee_inr, this, hne]`. Use `H (Fin.natAdd r a) (Fin.natAdd r b)` as an intermediate fact. Rewrite `this` using `[dif_neg (by simp only [Fin.coe_castAdd, Fin.coe_natAdd]; omega)]`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[bl_apply, ee_inr, this, Matrix.one_apply]`. Establish `hdet : IsUnit M.det`. Establish `h1 : IsUnit (bl F r t h).val.det` using `(Matrix.isUnit_iff_isUnit_det _).1 (bl F r t h).isUnit`. Rewrite `h1` using `[hΦ, Matrix.det_fromBlocks_zero₂₁, det_one, mul_one]`. Then use the resulting hypothesis. Use `⟨Matrix.nonsingInvUnit M hdet, eq_of_bl ?_, fun a b => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dg_bl, hΦ]`. Both sides reduce to the same expression. Use `H (Fin.castAdd t a) (Fin.castAdd t b)` as an intermediate fact. Rewrite `this` using `[dif_pos (show ((Fin.castAdd t a : Fin (r + t)) : ℕ) < r ∧ ((Fin.castAdd t b : Fin (r + t)) : ℕ) < r from ⟨a.isLt, b.isLt⟩)]`. Conclude with `this`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_of_isLiftN {p : ℕ} {g : GL (Fin r) (ZMod p)} {h : GL (Fin (r + t)) F} (H : IsLiftN g h) :
     ∃ A : GL (Fin r) F, dg F r t A = h ∧ IsLift g A := by
@@ -276,13 +274,11 @@ namespace GlobalTheory.BlockIdem
 open ValuativeRel Matrix GlobalTheory.StepData
 
 /- English proof (translation)
-Introduce `F _ _ _ _ p _ r t χ W _ _ π z x hp hz hx hnk`. Take `⟨ℓ', hℓ', hne⟩` from `hnk`. Establish `hA : ∀ g, ∃ A : GL (Fin r) F, dg F r t A = ℓ' g ∧ IsLift g A` using `fun g => exists_of_isLiftN (hℓ' g)`. Use `choose ℓ hℓ1 hℓ2 using hA`. Establish `hx1 : ∀ h ∈ KOne F (Fin r), (π.comp (dg F r t)) h x = x` using `fun h hh => dg_fix hx hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ g h, π (dg F r t (ℓ g)) (π (dg F r t (ℓ h)) x) = π (dg F r t (ℓ (g * h))) x`. Introduce `g h`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← map_mul]`. Conclude with `IsLift.apply_eq hp (π := π.comp (dg F r t)) hx1 ((hℓ2 g).mul hp (hℓ2 h)) (hℓ2 (g * h))`. Use `⟨z.coeff.sum fun g c => c • π (dg F r t (ℓ g)) x, ?_, ?_, ℓ, hℓ2, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `hne` using `only [hℓ1]`. Rewrite using `[Finsupp.sum]`. Conclude with `Finset.sum_induction _ _ (fun a b => isBlockVec_add) isBlockVec_zero (fun g _ => isBlockVec_smul _ (dg_isBlockVec hx ((hℓ2 g).mem_KO hp)))`. Use `conv_sum (fun g => π (dg F r t (ℓ g))) (fun h => π (dg F r t (ℓ h)) x) hT z z` as an intermediate fact. Rewrite `this` using `[hz]`.
-
-Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_fixed_blockVec : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (p : ℕ) [Fact p.Prime] (r t : ℕ) (χ : Fˣ →* ℂˣ) (W : Type) [AddCommGroup W] [Module ℂ W] (π : Representation ℂ (GL (Fin (r + t)) F) W) (z : MonoidAlgebra ℂ (GL (Fin r) (ZMod p))) (x : W), resCard F = p → z * z = z → IsBlockVec χ π x → NotKilled π z x → ∃ y : W, y ≠ 0 ∧ IsBlockVec χ π y ∧ ∃ ℓ : GL (Fin r) (ZMod p) → GL (Fin r) F, (∀ g, IsLift g (ℓ g)) ∧ (z.coeff.sum fun g c => c • π (emb₂ F (stdSum (rfl : r + t = r + t)) (ℓ g, 1)) y) = y := by
   intro F _ _ _ _ p _ r t χ W _ _ π z x hp hz hx hnk

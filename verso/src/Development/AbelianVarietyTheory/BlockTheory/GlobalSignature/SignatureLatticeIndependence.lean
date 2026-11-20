@@ -40,7 +40,7 @@ example (W : HSpace E) (L : Submodule (𝓞 E) W.V) (hL : Submodule.IsLattice E 
     (hU : Formalism.HermitianLatticesTheory.IsUnimodular W.hT L) : (withLattice W L hL hU).gram = W.gram := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => rfl, fun _ => Iff.rfl, by simp [frameMatrix]⟩`.
+Supply the required witnesses or components.
 -/
 example (W : HSpace E) : IsIsometry W W (LinearEquiv.refl E W.V) ∧ CarriesLattice W W (LinearEquiv.refl E W.V) ∧
     frameMatrix W W (LinearEquiv.refl E W.V) = 1 :=
@@ -67,7 +67,7 @@ def IsConjugationBy {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [C
   ∀ h : HA R σ J₁, Intertwines (baseChange R C) (pointMatrix R σ J₁ h) (pointMatrix R σ J₂ (Φ h))
 
 /- English proof (translation)
-Introduce `h`. Rewrite using `[Intertwines, baseChange, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.one_mul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E) : IsConjugationBy R σ J J 1 id := by

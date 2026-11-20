@@ -26,7 +26,7 @@ section Bundles
 variable {X X' Y Y' : Scheme.{0}}
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H`. Conclude with `LBIso.chartPull (chartPullId _) (chartPullOut L ψ ε h _ e) (iso_linComb ((isGen_iff w).1 hw) ψ' ε)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iso_linComb_pull {L : LB X} {L' : LB X'} {F : X' ⟶ X} (H : LBIso L' (L.pull F)) {K : Type} [Fintype K]
     (ψ' : K → (Y' ⟶ X')) (ψ : K → (Y ⟶ X)) (ε : K → ℤ) (h : Y' ⟶ Y) (e : ∀ k, ψ' k ≫ F = h ≫ ψ k) :
@@ -35,7 +35,7 @@ theorem iso_linComb_pull {L : LB X} {L' : LB X'} {F : X' ⟶ X} (H : LBIso L' (L
   exact LBIso.chartPull (chartPullId _) (chartPullOut L ψ ε h _ e) (iso_linComb ((isGen_iff w).1 hw) ψ' ε)
 
 /- English proof (translation)
-The claim follows from `LBIso.trans hM' (pull_isLB hM h) hN' a (LBIso.trans (pull_isLB hM h) (pull_isLB hN h) hN' (H.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M h h rfl) (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull N h h rfl)) b.symm)`.
+A detailed English derivation is pending.
 -/
 theorem iso_up {M N : LB Y} {M' N' : LB Y'} {h : Y' ⟶ Y} (hM : M.IsLB) (hN : N.IsLB) (hM' : M'.IsLB) (hN' : N'.IsLB)
     (a : LBIso M' (M.pull h)) (b : LBIso N' (N.pull h)) (H : LBIso M N) : LBIso M' N' :=
@@ -49,7 +49,7 @@ section Field
 variable {K : Type} [Field K] {S' : Scheme.{0}} (f : S' ⟶ Sp K)
 
 /- English proof (translation)
-Take `⟨y⟩` from `‹Nonempty S'›`. Take `⟨i, hi⟩` from `Spec.map_surjective (S'.fromSpecResidueField y ≫ f)`. Conclude with `⟨S'.residueField y, inferInstance, i.hom, S'.fromSpecResidueField y, hi.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_point [Nonempty S'] :
     ∃ (K' : Type) (_ : Field K') (i : K →+* K') (x : Sp K' ⟶ S'), x ≫ f = spMap i := by
@@ -60,9 +60,9 @@ theorem exists_point [Nonempty S'] :
 variable {f}
 
 /- English proof (translation)
-Establish `: Subsingleton (Sp K)` using `inferInstanceAs (Subsingleton (PrimeSpectrum K))`. Establish `a : Flat f` using `inferInstance`. Establish `b : Surjective f` using `inferInstance`. Establish `: Flat h` using `MorphismProperty.of_isPullback (P := @Flat) H.flip a`. Establish `: Surjective h` using `MorphismProperty.of_isPullback (P := @Surjective) H.flip b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Flat.epi_of_flat_of_surjective h`.
+A detailed English derivation is pending.
 -/
 theorem epi_of_isPullback [Nonempty S'] {X₀ X : Scheme.{0}} {p₀ : X₀ ⟶ Sp K} {p : X ⟶ S'} {h : X ⟶ X₀}
     (H : IsPullback h p p₀ f) : Epi h := by
@@ -74,7 +74,7 @@ theorem epi_of_isPullback [Nonempty S'] {X₀ X : Scheme.{0}} {p₀ : X₀ ⟶ S
   exact Flat.epi_of_flat_of_surjective h
 
 /- English proof (translation)
-Take `⟨K', _, i, x, hx⟩` from `exists_point f`. Establish `P : IsPullback (pullback.fst p x ≫ h) (pullback.snd p x) p₀ (spMap i)` using `hx ▸ (IsPullback.of_hasPullback p x).paste_horiz H`. Establish `d : LBIso (M.pull h) (N.pull h)` using `LBIso.trans (pull_isLB hM h) hM' (pull_isLB hN h) a.symm (LBIso.trans hM' hN' (pull_isLB hN h) c b)`. Conclude with `(GlobalTheory.T.lineBundle_trivial_iso_descend_field K K' i X₀ _ p₀ _ _ h₁ h₂ h₃ P).2 M N hM hN (d.chartPull (chartPullSame M _ _ _ (pullback.fst p x) fun _ => rfl) (chartPullSame N _ _ _ (pullback.fst p x) fun _ => rfl))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iso_down [Nonempty S'] {X₀ X : Scheme.{0}} {p₀ : X₀ ⟶ Sp K} {p : X ⟶ S'} {h : X ⟶ X₀}
     (H : IsPullback h p p₀ f) (h₁ : Smooth p₀) (h₂ : IsProper p₀) (h₃ : GeometricallyConnected p₀)
@@ -89,9 +89,9 @@ theorem iso_down [Nonempty S'] {X₀ X : Scheme.{0}} {p₀ : X₀ ⟶ Sp K} {p :
     (chartPullSame M _ _ _ (pullback.fst p x) fun _ => rfl) (chartPullSame N _ _ _ (pullback.fst p x) fun _ => rfl))
 
 /- English proof (translation)
-Take `⟨K', _, i, x, hx⟩` from `exists_point f`. Establish `: IsProper A'.hom` using `MorphismProperty.of_isPullback (P := @IsProper) H hA.proper`. Establish `P : IsPullback (pullback.fst A.hom (spMap i)) (pullback.snd A.hom (spMap i)) A.hom (x ≫ f)` using `hx ▸ IsPullback.of_hasPullback A.hom (spMap i)`. Set `ψ : pullback A.hom (spMap i) ⟶ A'.left` to `H.lift (pullback.fst _ _) (pullback.snd _ _ ≫ x) (P.w.trans (Category.assoc _ _ _).symm)`. Establish `hψ : ψ ≫ φ = pullback.fst _ _` using `H.lift_fst _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `Q : IsPullback ψ (pullback.snd A.hom (spMap i)) A'.hom x` using `IsPullback.of_right (hψ ▸ P) (H.lift_snd _ _ _) H`. Conclude with `GlobalTheory.T.relAmple_of_fieldExtension_baseChange K K' i A ((Over.pullback (spMap i)).obj A) (pullback.fst _ _) M (M'.pull ψ) hA (isGrpPullback_pullback A _) hM (pull_isLB hM' ψ) (a.chartPull (ReciprocityTheory.ChartRestriction.G.Geo.Tor.chartPullPull M' ψ ψ rfl) (chartPullSam …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_down [Nonempty S'] {A : Over (Sp K)} [GrpObj A] (hA : IsAbelianScheme A) {A' : Over S'}
     {φ : A'.left ⟶ A.left} (H : IsPullback φ A'.hom A.hom f) {M : LB A.left} {M' : LB A'.left} (hM : M.IsLB)
@@ -122,28 +122,28 @@ section Points
 variable {T : Over S} {T' : Over S'} (U : Over.mk (T'.hom ≫ f) ⟶ T)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) (hx.trans (e ▸ hy.symm))) (by rw [Over.w, Over.w]))`.
+A detailed English derivation is pending.
 -/
 theorem eq_up {x' y' : T' ⟶ G'} {x y : T ⟶ G} (hx : pushPt h.1.w x' = U ≫ x) (hy : pushPt h.1.w y' = U ≫ y)
     (e : x = y) : x' = y' :=
   Over.OverMorphism.ext (h.1.hom_ext (congrArg (fun q => q.left) (hx.trans (e ▸ hy.symm))) (by rw [Over.w, Over.w]))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((cancel_epi U.left).1 (congrArg (fun q => q.left) (hx.symm.trans (e ▸ hy))))`.
+A detailed English derivation is pending.
 -/
 theorem eq_down (hU : Epi U.left) {x' y' : T' ⟶ G'} {x y : T ⟶ G} (hx : pushPt h.1.w x' = U ≫ x)
     (hy : pushPt h.1.w y' = U ≫ y) (e : x' = y') : x = y :=
   Over.OverMorphism.ext ((cancel_epi U.left).1 (congrArg (fun q => q.left) (hx.symm.trans (e ▸ hy))))
 
 /- English proof (translation)
-The claim follows from `(map_mul (pushHom h T') x' y').trans ((congrArg₂ (· * ·) hx hy).trans (MonObj.comp_mul U x y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem push_mul {x' y' : T' ⟶ G'} {x y : T ⟶ G} (hx : pushPt h.1.w x' = U ≫ x) (hy : pushPt h.1.w y' = U ≫ y) :
     pushPt h.1.w (x' * y') = U ≫ (x * y) :=
   (map_mul (pushHom h T') x' y').trans ((congrArg₂ (· * ·) hx hy).trans (MonObj.comp_mul U x y).symm)
 
 /- English proof (translation)
-Use `(map_list_prod (pushHom h T') _).trans (Eq.trans ?_ (map_list_prod (preHom (G := G) U) _).symm)` and prove the remaining obligations. Rewrite using `[List.map_ofFn, List.map_ofFn]`. Use `congrArg (fun z => (List.ofFn z).prod) (funext fun i => ?_)` and prove the remaining obligations. Conclude with `(map_pow (pushHom h T') _ _).trans ((congrArg (· ^ a i) (hx i)).trans (map_pow (preHom (G := G) U) _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem push_linComb {n : ℕ} {x' : Fin n → (T' ⟶ G')} {x : Fin n → (T ⟶ G)} (hx : ∀ i, pushPt h.1.w (x' i) = U ≫ x i)
     (a : Fin n → ℕ) : pushPt h.1.w (Out.linComb x' a) = U ≫ Out.linComb x a := by
@@ -153,7 +153,7 @@ theorem push_linComb {n : ℕ} {x' : Fin n → (T' ⟶ G')} {x : Fin n → (T �
   exact (map_pow (pushHom h T') _ _).trans ((congrArg (· ^ a i) (hx i)).trans (map_pow (preHom (G := G) U) _ _).symm)
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, ← hx]`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Use `show (x'.left ≫ _) ≫ _ = (x'.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem push_comp {x' : T' ⟶ G'} {x : T ⟶ G} (hx : pushPt h.1.w x' = U ≫ x) {a' : G' ⟶ G'} {a : G ⟶ G}
     (ha : a'.left ≫ φ = φ ≫ a.left) : pushPt h.1.w (x' ≫ a') = U ≫ x ≫ a := by
@@ -163,7 +163,7 @@ theorem push_comp {x' : T' ⟶ G'} {x : T ⟶ G} (hx : pushPt h.1.w x' = U ≫ x
   rw [Category.assoc, ha, Category.assoc]
 
 /- English proof (translation)
-The claim follows from `iso_linComb_pull H _ _ _ U.left fun I => psum_push h _ _ U (fun i => by fin_cases i exacts [ha, hb]) I.down`.
+A detailed English derivation is pending.
 -/
 theorem iso_cubeLB_pull [IsCommMonObj G] [IsCommMonObj G'] {L : LB G.left} {L' : LB G'.left}
     (H : LBIso L' (L.pull φ)) {a' b' : T' ⟶ G'} {a b : T ⟶ G} (ha : pushPt h.1.w a' = U ≫ a)
@@ -177,19 +177,19 @@ end Points
 def sqMap : Over.mk ((G' ⊗ G').hom ≫ f) ⟶ G ⊗ G := lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))
 
 /- English proof (translation)
-The claim follows from `(lift_fst _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem push_fst : pushPt h.1.w (fst G' G') = sqMap h ≫ fst G G := (lift_fst _ _).symm
 
 /- English proof (translation)
-The claim follows from `(lift_snd _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem push_snd : pushPt h.1.w (snd G' G') = sqMap h ≫ snd G G := (lift_snd _ _).symm
 
 /- English proof (translation)
-Establish `e₁ : (sqMap h).left ≫ (fst G G).left = (fst G' G').left ≫ φ` using `congrArg (fun q => q.left) (push_fst h).symm`. Establish `e₂ : (sqMap h).left ≫ (snd G G).left = (snd G' G').left ≫ φ` using `congrArg (fun q => q.left) (push_snd h).symm`. Establish `A : IsPullback (snd G G).left (fst G G).left G.hom G.hom` using `(IsPullback.of_hasPullback G.hom G.hom).flip`. Establish `A' : IsPullback (snd G' G').left (fst G' G').left G'.hom G'.hom` using `(IsPullback.of_hasPullback G'.hom G'.hom).flip`. Establish `B` using `A'.paste_horiz h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `B` using `[← e₂, ← h.1.w]`. Establish `C` using `(IsPullback.of_right B e₁ A).paste_vert h.1`. Rewrite `C` using `[Over.w, Over.w]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPullback_sqMap : IsPullback (sqMap h).left (G' ⊗ G').hom (G ⊗ G).hom f := by
   have e₁ : (sqMap h).left ≫ (fst G G).left = (fst G' G').left ≫ φ := congrArg (fun q => q.left) (push_fst h).symm
@@ -204,13 +204,13 @@ theorem isPullback_sqMap : IsPullback (sqMap h).left (G' ⊗ G').hom (G ⊗ G).h
 def selfMap : Over.mk (G'.hom ≫ f) ⟶ G := Over.homMk φ h.1.w
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ((Category.id_comp _).trans (Category.comp_id _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem push_id : pushPt h.1.w (𝟙 G') = selfMap h ≫ 𝟙 G :=
   Over.OverMorphism.ext ((Category.id_comp _).trans (Category.comp_id _).symm)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext ha`.
+A detailed English derivation is pending.
 -/
 theorem push_end {a' : G' ⟶ G'} {a : G ⟶ G} (ha : a'.left ≫ φ = φ ≫ a.left) : pushPt h.1.w a' = selfMap h ≫ a :=
   Over.OverMorphism.ext ha
@@ -227,15 +227,15 @@ namespace GlobalTheory
 open ShapePull
 
 /- English proof (translation)
-Introduce `o _ g k J b Mat κ w w' S S' s s' f t t' ⟨φ, h, hL, hpt, hact⟩`. Use `letI := t.ab.comm`. Use `letI := t'.ab.comm`. Establish `lb : ∀ {X Y : Scheme.{0}} {L : LB X} (_ : L.IsLB) {K : Type} [Fintype K] (ψ : K → (Y ⟶ X)) (ε : K → ℤ), (LB.LinComb L ψ ε).IsLB` using `fun hL _ _ _ _ => DVR.linComb_isLB _ hL _ _`. Establish `pt : ∀ i, pushPt h.1.w (t'.pt i) = baseMap f ≫ t.pt i` using `fun i => Over.OverMorphism.ext (hpt i)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p₁` using `fun i j => push_comp h _ (pt i) (hact j)`. Establish `p₂ : ∀ a, pushPt h.1.w (t'.lab a) = baseMap f ≫ t.lab a` using `fun a => push_linComb h _ pt _`. Establish `i₁ : ∀ j, LBIso (LB.LinComb t'.L (K` using `Fin 2) ![𝟙 t'.A.left, (t'.act j).left] ![(κ : ℤ), -1]) ((LB.LinComb t.L (K := Fin 2) ![𝟙 t.A.left, (t.act j).left] ![(κ : ℤ), -1]).pull φ) := fun j => iso_linComb_pull hL _ _ _ φ fun i => by fin_cases i exacts [(Category.id_comp _).trans (Category.comp_id _).symm, hact j]`. Establish `p₃` using `push_mul h _ (push_end h (hact w)) (push_end h (hact w'))`. Establish `i₂` using `iso_cubeLB_pull h _ hL (push_comp h _ (push_fst h) (hact w)) (push_snd h)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i₃` using `iso_cubeLB_pull h _ hL (push_fst h) (push_comp h _ (push_snd h) (hact w'))`. Establish `i₄` using `iso_cubeLB_pull h _ hL (push_id h) (push_end h (hact w))`. Use `⟨fun H j => ⟨fun i => eq_up h _ (p₁ i j) (p₂ _) ((H j).1 i), ?_⟩, fun H => ⟨eq_up h _ p₃ (push_id h) H.1, iso_up (lb t.isLB _ _) (lb t.isLB _ _) (lb t'.isLB _ _) (lb t'.isLB _ _) i₂ i₃ H.2.1, iso_up t.isLB (lb t.isLB _ _) t'.isLB (lb t'.isLB _ _) hL i₄ H.2.2⟩, ?_⟩` and prove the remaining obligations. Conclude with `(pol_pull S S' t.A t'.A f φ _ _ (lb t.isLB _ _) (lb t'.isLB _ _) t.ab h (i₁ j)).2.1 (H j).2`. Introduce and unpack `K _ rfl - _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hf : Epi f` using `epi_of_isPullback (IsPullback.id_vert f)`. Establish `hφ : Epi φ` using `epi_of_isPullback h.1`. Use `t.ab.smooth` as an intermediate fact. Use `t.ab.proper` as an intermediate fact. Use `t.ab.geomConnected` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pr : IsProper (t.A ⊗ t.A).hom`. Rewrite using `[Over.tensorObj_hom]`. Use `infer_instance`. Conclude with `⟨fun H j => ⟨fun i => eq_down h _ hf (p₁ i j) (p₂ _) ((H j).1 i), relAmple_down t.ab h.1 (lb t.isLB _ _) (lb t'.isLB _ _) (i₁ j) (H j).2⟩, fun _ H => ⟨eq_down h _ hφ p₃ (push_id h) H.1, iso_down (isPullback_sqMap h) (smooth_tensorObj_hom _ _) pr (geometricallyConnected_tensorObj_ …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem shape_prim_pull_and_descend :
     ∀ (o : Type) [CommRing o] (g k : ℕ) (J : Type) (b : TBase o k) Mat κ (w w' : J) (S S' : Scheme.{0}) (s : S ⟶ Sp o) (s' : S' ⟶ Sp o) (f : S' ⟶ S) (t : TObj g k J b s) (t' : TObj g k J b s'), TMap t' t f → (t.Shape Mat κ → t'.Shape Mat κ) ∧ (t.Prim w w' → t'.Prim w w') ∧ ∀ (K : Type) [Field K] (e : S = Sp K), IsAffine S' → Nonempty S' → (t'.Shape Mat κ → t.Shape Mat κ) ∧ (IsIntegral S' → t'.Prim w w' → t.Prim w w') := by

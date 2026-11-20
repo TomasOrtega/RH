@@ -15,9 +15,9 @@ def resQ (φ : GA E a → ℂ) : RightCosetSpace (rationalGLOne E a) → ℂ :=
   fun q => φ ((Quotient.out q : normOneGL E a) : GA E a)
 
 /- English proof (translation)
-Establish `e : RightCosetSpace.mk (rationalGLOne E a) (Quotient.out (RightCosetSpace.mk (rationalGLOne E a) x)) = RightCosetSpace.mk _ x` using `Quotient.out_eq _`. Take `⟨γ, hγ⟩` from `RightCosetSpace.mk_eq_mk_iff.1 e`. Take `⟨δ, hδ⟩ : ((γ : normOneGL E a) : GA E a) ∈ AdelicGLn.rationalGL E a` from `γ.2`. Unfold `resQ`. Rewrite using `[← hγ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `φ (((γ : normOneGL E a) : GA E a) * (x : GA E a)) = _`. Rewrite using `[← hδ]`. Conclude with `h δ x.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resQ_mk {φ : GA E a → ℂ} (h : ∀ γ g, φ (ratGL E a γ * g) = φ g) (x : normOneGL E a) :
     resQ φ (RightCosetSpace.mk _ x) = φ x := by
@@ -33,7 +33,7 @@ theorem resQ_mk {φ : GA E a → ℂ} (h : ∀ γ g, φ (ratGL E a γ * g) = φ 
   exact h δ x.1
 
 /- English proof (translation)
-Use `(RightCosetSpace.isOpenQuotientMap_mk (rationalGLOne E a)).isQuotientMap.continuous_iff.2 ?_` and prove the remaining obligations. Establish `: resQ φ ∘ RightCosetSpace.mk (rationalGLOne E a) = fun x : normOneGL E a => φ x`. Use function extensionality and compare the values at `fun x => resQ_mk h x`. Rewrite using `[this]`. Conclude with `hc.comp continuous_subtype_val`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_resQ {φ : GA E a → ℂ} (hc : Continuous φ) (h : ∀ γ g, φ (ratGL E a γ * g) = φ g) :
     Continuous (resQ φ) := by

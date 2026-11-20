@@ -3,13 +3,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.C
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Polynomial GlobalTheory.GalOfCusp UpperTheory.V.Af
 
 /- English proof (translation)
-Introduce `K _ _ p w hp hpw`. Establish `hcard : normV w = Ideal.absNorm w.asIdeal`. Unfold `normV`. Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hspan : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ Module.finrank ℚ K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `e : (p : 𝓞 K) = algebraMap ℤ (𝓞 K) (p : ℤ)` using `by simp`. Rewrite using `[e, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank]`. Simplify using `[Int.natAbs_pow]`. Establish `hdvd : Ideal.absNorm w.asIdeal ∣ p ^ Module.finrank ℚ K`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hspan]`. Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).mpr hpw)`. Take `⟨h, hle, heq⟩` from `(Nat.dvd_prime_pow hp).mp hdvd`. Use `⟨h, ?_, hle, hcard.trans heq⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos h with h0 | h0` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Rewrite `heq` using `[h0, pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `w.isPrime.ne_top heq`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_normV_eq_prime_pow_le_finrank :
     ∀ (K : Type) [Field K] [NumberField K] (p : ℕ) (w : HeightOneSpectrum (𝓞 K)), p.Prime → (p : 𝓞 K) ∈ w.asIdeal → ∃ h : ℕ, 1 ≤ h ∧ h ≤ Module.finrank ℚ K ∧ normV w = p ^ h := by

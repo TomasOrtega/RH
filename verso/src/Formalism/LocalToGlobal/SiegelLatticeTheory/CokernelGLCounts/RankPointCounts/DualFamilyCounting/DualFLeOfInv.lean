@@ -14,9 +14,9 @@ variable {K F V : Type} [Field K] [NumberField K] [StarRing K] [Field F] [Number
   [Algebra F K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `⟨fun t => if t = p then α else 0, fun t => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs`. Conclude with `hα`. Conclude with `S.zero_mem`. Rewrite using `[Fintype.sum_eq_single p]`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Introduce `t ht`. Simplify using `[ht]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_one {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p : ι} {α : K}
     (hα : α ∈ S) (g : ι → ι → K) :
@@ -32,9 +32,9 @@ theorem exists_one {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p 
       simp [ht]
 
 /- English proof (translation)
-Use `⟨fun t => if t = p then α else if t = q then β else 0, fun t => ?_, fun s => ?_⟩` and prove the remaining obligations. Simplify using `only split_ifs exacts [hα, hβ, S.zero_mem]`. Rewrite using `[Fintype.sum_eq_add p q hpq]`. Simplify using `[hpq.symm]`. Introduce and unpack `t ⟨h1, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem exists_two {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p q : ι} (hpq : p ≠ q)
     {α β : K} (hα : α ∈ S) (hβ : β ∈ S) (g : ι → ι → K) :
@@ -49,13 +49,13 @@ theorem exists_two {ι : Type} [Fintype ι] [DecidableEq ι] {S : Subring K} {p 
       simp [h1, h2]
 
 /- English proof (translation)
-Use `choose κ hκS hκ using hinv`. Introduce `x hx`. Establish `hX : ∀ u, h (G u) x ∈ SP K 𝔭` using `fun u => by`. Rewrite using `[mem_SP_iff_locF]`. Conclude with `hx (G u) (LocF.le_locF 𝔭 _ (Submodule.subset_span ⟨u, rfl⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyx : ∀ s, h (G s) (x - ∑ t, (∑ u, κ u t * h (G u) x) • G t) = 0`. Introduce `s`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [form_smul_right]`. Establish `e : ∀ t, (∑ u, κ u t * h (G u) x) * h (G s) (G t) = ∑ u, h (G u) x * (κ u t * h (G s) (G t))` using `fun t => by`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun u _ => by ring`. Rewrite using `[Finset.sum_congr rfl fun t _ => e t, Finset.sum_comm]`. Simplify using `only [← Finset.mul_sum, hκ]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy` using `eq_zero_of_orth hs hnd G hG hyx`. Rewrite `hxy` using `[sub_eq_zero]`. Rewrite using `[hxy]`. Use `Submodule.sum_mem _ fun t _ => smul_mem_locF_of_SP ?_ (Submodule.subset_span ⟨t, rfl⟩)` and prove the remaining obligations. Conclude with `(SP K 𝔭).sum_mem fun u _ => (SP K 𝔭).mul_mem (hκS u t) (hX u)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dualF_le_of_inv {ι : Type} [Fintype ι] [DecidableEq ι] {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (hnd : Nondeg h) {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (G : ι → V)

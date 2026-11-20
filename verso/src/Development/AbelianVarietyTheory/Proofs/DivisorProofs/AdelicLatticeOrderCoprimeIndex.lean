@@ -19,16 +19,16 @@ theorem natCast_coord (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) : (n : Af E) w 
   rfl
 
 /- English proof (translation)
-Establish `h : (n : Af E) = iota ((n : ℕ) : OF E)` using `by rw [iota, map_natCast, map_natCast]`. Rewrite using `[h]`. Conclude with `val_iota_le_one w _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_nat_le_one (n : ℕ) (w : HeightOneSpectrum (𝓞 E)) : Valued.v ((n : Af E) w) ≤ 1 := by
   have h : (n : Af E) = iota ((n : ℕ) : OF E) := by rw [iota, map_natCast, map_natCast]
   rw [h]; exact val_iota_le_one w _
 
 /- English proof (translation)
-Establish `h1` using `(w.valuation_eq_one_iff_notMem (K := E)).mpr hw`. Establish `h2` using `w.valuedAdicCompletion_eq_valuation' (K := E) ((n : ℕ) : E)`. Establish `h3 : (algebraMap E (w.adicCompletion E)) ((n : ℕ) : E) = ((n : ℕ) : w.adicCompletion E)` using `map_natCast _ _`. Establish `h4 : (((n : ℕ) : 𝓞 E) : E) = ((n : ℕ) : E)` using `map_natCast (algebraMap (𝓞 E) E) _`. Rewrite using `[natCast_coord, ← h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2.trans (h4 ▸ h1)`.
+A detailed English derivation is pending.
 -/
 theorem val_nat_eq_one {n : ℕ} {w : HeightOneSpectrum (𝓞 E)} (hw : (n : 𝓞 E) ∉ w.asIdeal) :
     Valued.v ((n : Af E) w) = 1 := by
@@ -40,19 +40,17 @@ theorem val_nat_eq_one {n : ℕ} {w : HeightOneSpectrum (𝓞 E)} (hw : (n : �
   exact h2.trans (h4 ▸ h1)
 
 /- English proof (translation)
-Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem exp_neg_nat_le_one (k : ℕ) : WithZero.exp (-(k : ℤ)) ≤ 1 := by
   rw [← WithZero.exp_zero, WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Take `⟨a, ha, hai, hza⟩` from `(HatPlace.mem_hatO_iff E c hc z).1 hz`. Use `(HatPlace.mem_hatO_iff E c hc _).2 ⟨(n : Af E) * a, (hatF (E := E)).mul_mem (natCast_mem _ n) ha, fun w => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_coord, map_mul]`. Conclude with `mul_le_one' (val_nat_le_one n w) (hai w)`. Establish `hzi : Valued.v (z w) ≤ 1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `Valuation.map_add_le Valued.v ((hza w).trans (exp_neg_nat_le_one _)) (hai w)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Distinguish the cases in `hw : (l : 𝓞 E) ∈ w.asIdeal`. Rewrite using `[mul_coord, mul_coord, mul_coord, hu w hw, mul_one, ← mul_sub, map_mul]`. Conclude with `(mul_le_mul' (val_nat_le_one n w) (hza w)).trans_eq (one_mul _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hn w hw`. Use `Valuation.map_sub_le _ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_coord, mul_coord, map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_coord, map_mul]`.
-
-Conclude with `(mul_le_mul' h1 (hai w)).trans_eq (mul_one _)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_hatO [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥) {l : ℕ} {u : Af E}
     (hu : ∀ P : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ P.asIdeal → u P = 1) {n : ℕ}
@@ -80,25 +78,23 @@ theorem mul_mem_hatO [IsCMField E] {c : Ideal (OF E)} (hc : c ≠ ⊥) {l : ℕ}
       · rw [mul_coord, map_mul]; exact (mul_le_mul' h1 (hai w)).trans_eq (mul_one _)
 
 /- English proof (translation)
-Introduce `E _ _ _ c hc l hl y hy`. Establish `hy' : ∀ P : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ P.asIdeal → (↑y⁻¹ : Af E) P = 1` using `fun P hP => by`. Establish `h : ((y : Af E) * ↑y⁻¹) P = 1` using `by rw [Units.mul_inv]; rfl`. Rewrite `h` using `[mul_coord, hy P hP, one_mul]`. Then use the resulting hypothesis. Take `⟨m₁, hm₁, hi₁⟩` from `GlobalTheory.UnRep.SmallMat.exists_nsmul_integral (F := E) (y : Af E)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨m₂, hm₂, hi₂⟩` from `GlobalTheory.UnRep.SmallMat.exists_nsmul_integral (F := E) (↑y⁻¹ : Af E)`. Establish `hN : Ideal.absNorm c ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Establish `hn0 : Ideal.absNorm c * m₁ * m₂ ≠ 0` using `mul_ne_zero (mul_ne_zero hN hm₁) hm₂`. Take `⟨k, n, hln, hkn⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hn0 l hl.one_lt.ne'`. Establish `hint : ∀ (m : ℕ) (u : Af E), (∀ v, (m • u) v ∈ v.adicCompletionIntegers E) → ∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((m : Af E) w) * Valued.v (u w) ≤ 1` using `fun m u hmu w => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 (hmu w)`. Express the relevant statement in the definitionally equal form `Valued.v (m • u w) ≤ 1 at h`. Rewrite `h` using `[nsmul_eq_mul, map_mul, ← natCast_coord]`. Then use the resulting hypothesis. Establish `hNw : ∀ w : HeightOneSpectrum (𝓞 E), Valued.v ((Ideal.absNorm c : Af E) w) ≤ WithZero.exp (-(multiplicity w.asIdeal (Ideal.map (algebraMap (OF E) (𝓞 E)) c) : ℤ))` using `fun w => by`. Establish `h` using `HatPlace.val_mul_le hc (Ideal.absNorm_mem c) (y := 1) (fun w => by show Valued.v ((1 : w.adicCompletion E)) ≤ 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_one]) w`. Establish `e : iota ((Ideal.absNorm c : ℕ) : OF E) * 1 = (Ideal.absNorm c : Af E)`. Rewrite using `[mul_one, iota, map_natCast, map_natCast]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Establish `hnw : ∀ w : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∉ w.asIdeal → Valued.v ((n : Af E) w) = Valued.v ((Ideal.absNorm c : Af E) w) * Valued.v ((m₁ : Af E) w) * Valued.v ((m₂ : Af E) w)` using `fun w hw => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : Valued.v (((Ideal.absNorm c * m₁ * m₂ : ℕ) : Af E) w) = Valued.v ((n : Af E) w)`. Rewrite using `[hkn, Nat.cast_mul, Nat.cast_pow, mul_coord, map_mul]`. Establish `h2 : Valued.v ((((l : ℕ) : Af E) ^ k) w) = 1`. Rewrite using `[← Nat.cast_pow, natCast_coord, Nat.cast_pow, map_pow, ← natCast_coord, val_nat_eq_one hw, one_pow]`. Rewrite using `[h2, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Nat.cast_mul, Nat.cast_mul, mul_coord, mul_coord, map_mul, map_mul]`. Establish `hle : ∀ a b : WithZero (Multiplicative ℤ), a ≤ 1 → b ≤ 1 → ∀ e, ∀ t : WithZero (Multiplicative ℤ), t ≤ e → t * a * b ≤ e` using `fun a b ha hb e t ht => (mul_le_mul' (mul_le_mul' ht ha) hb).trans_eq (by rw [mul_one, mul_one])`. Use `⟨n, Nat.Coprime.symm ((Nat.Prime.coprime_iff_not_dvd hl).2 hln), fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `LatLoc.mul_mem_hatO hc hy (n := n) (fun w hw => by`. Rewrite using `[hnw w hw]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hle _ _ (val_nat_le_one _ w) (val_nat_le_one _ w) _ _ (hNw w), ?_⟩` and prove the remaining obligations. Establish `e : Valued.v ((Ideal.absNorm c : Af E) w) * Valued.v ((m₁ : Af E) w) * Valued.v ((m₂ : Af E) w) * Valued.v ((y : Af E) w) = Valued.v ((Ideal.absNorm c : Af E) w) * (Valued.v ((m₁ : Af E) w) * Valued.v ((y : Af E) w)) * Valued.v ((m₂ : Af E) w)` using `by ac_rfl`. Rewrite using `[e]`. Conclude with `hle _ _ (hint m₁ _ hi₁ w) (val_nat_le_one _ w) _ _ (hNw w)) (mem_lattice.1 hx)`. Establish `e : (n : Af E) * (algebraMap E (Af E) x * (↑y⁻¹ : Af E)) * (y : Af E) = algebraMap E (Af E) ((n : E) * x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, mul_assoc, Units.inv_mul, mul_one, map_mul, map_natCast]`. Rewrite `h` using `[e]`. Conclude with `HatCap.mem_orderC_of_mem_hatO hc h`. Establish `h` using `LatLoc.mul_mem_hatO hc hy' (n := n) (fun w hw => by`. Rewrite using `[hnw w hw]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hle _ _ (val_nat_le_one _ w) (val_nat_le_one _ w) _ _ (hNw w), ?_⟩` and prove the remaining obligations. Establish `e : Valued.v ((Ideal.absNorm c : Af E) w) * Valued.v ((m₁ : Af E) w) * Valued.v ((m₂ : Af E) w) * Valued.v ((↑y⁻¹ : Af E) w) = Valued.v ((Ideal.absNorm c : Af E) w) * Valued.v ((m₁ : Af E) w) * (Valued.v ((m₂ : Af E) w) * Valued.v ((↑y⁻¹ : Af E) w))` using `by ac_rfl`. Rewrite using `[e]`. Conclude with `hle _ _ (val_nat_le_one _ w) (hint m₂ _ hi₂ w) _ _ (hNw w)) (algebraMap_mem_hatO hx)`. Rewrite using `[mem_lattice, map_mul, map_natCast]`.
-
-Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_near_orderC : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)), c ≠ ⊥ → ∀ (l : ℕ), l.Prime →
     ∀ y : (Af E)ˣ, (∀ P : HeightOneSpectrum (𝓞 E), (l : 𝓞 E) ∈ P.asIdeal → (y : Af E) P = 1) →

@@ -24,37 +24,35 @@ namespace GlobalTheory.LiftLevel
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D S T C om hom hn B hB ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg hodd f₀ f hf`. Establish `hf0 : f ≠ 0` using `GlobalTheory.T.theta_kernel_finite_vector_ne_zero D S T C hn B hB ΛT hsd βS βT hβS hβT Pg Q ξ f₀ f hf`. Establish `hfc` using `hf`. Take `⟨hvac, e, he, hθ⟩` from `hf`. Take `⟨Lv, k₀, Λ', L, hw2, hmP, hJ, hk₀, hmov, hfin, hA, hB', hC, hD, hE, hF⟩` from `GlobalTheory.T.thetaLift_level_datum_sum_of_translates D S T C hn ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg hodd e he`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Establish `hfT : f = Tm (thPDatum S T βS βT Pg Q ξ e)` using `hall Tm hTm`. Take `⟨hSB, hTh, hFock, hLat⟩` from `GlobalTheory.T.placeModel_indicator_theta_fock_latticeVacuum D S T C B hB ΛT hsd (Pg ∪ Q) e he f₀ hvac Tm hTm L hA hB' hC`. Establish `hLat''` using `hLat _ hD`. Use `haveI := Fintype.ofFinite (LvCls C Lv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f'' := Tm (indL L) with hf''`. Establish `hee : cA D e * cA D e = cA D e` using `by rw [← map_mul, GlobalTheory.PlaceVec.idemSum_mul_self he]`. Establish `hhalf : ∀ w : WO S T, IsHalf (cA D e) (partAt (cA D e) w)` using `fun w i j => by`. Simplify using `only [partAt, Matrix.map_apply]`. Rewrite using `[← mul_assoc, hee]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set t : LvCls C Lv → WO S T := fun c => partAt (cA D e) (actO S T k₀ 1 (finW S T (c.out : Matrix (Fin S.rank) (Fin T.rank) D.host.E))) with ht`. Establish `hfsum : f = ∑ c : LvCls C Lv, Lv.dat hn (-(c.out : Matrix (Fin S.rank) (Fin T.rank) D.host.E)) • heisO C.ψ S T (t c) f''`. Rewrite using `[hfT]`. Establish `hΦ : thPDatum S T βS βT Pg Q ξ e = ∑ c : LvCls C Lv, Lv.dat hn (-(c.out : Matrix (Fin S.rank) (Fin T.rank) D.host.E)) • fun x => indL L (x + t c)`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF x, finsum_eq_sum_of_fintype, Finset.sum_apply]`. Both sides reduce to the same expression. Rewrite using `[hΦ, map_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hTm.trans _ hSB _ (hhalf _)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set f' := om (k₀⁻¹, 1) f'' with hf'`. Establish `hinv : ∀ g : GA D S, ∀ x, om (g, 1) (om (g⁻¹, 1) x) = x` using `fun g x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_one]`. Conclude with `congrArg (fun E : Module.End ℂ (WO S T → ℂ) => E x) om.map_one`. Establish `hinv' : ∀ g : GA D S, ∀ x, om (g⁻¹, 1) (om (g, 1) x) = x` using `fun g x => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hinv g⁻¹ x`. Establish `hom1 : om (k₀, 1) f' = f''` using `hinv k₀ f''`. Establish `hTh' : C.IsTh f'` using `hom.om_pres _ _ hTh`. Establish `hu : om (k₀, 1) (C.uVec Lv hn f') = f`. Rewrite using `[hfsum, Ctx.uVec, finsum_eq_sum_of_fintype, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Use `congr 1`. Rewrite using `[Ctx.rho, hom.om_heis _ _ _ _ hTh', hom1]`. Take `⟨v, hv, hv1, hv2⟩` from `hE _ (c.out).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h2 : heisO C.ψ S T (2 • v) f'' = f''` using `hLat''.1 v hv`. Establish `h3` using `GlobalTheory.FinTranslate.heisO_heisO S T C.ψ (t c) (2 • v) f''`. Rewrite `h3` using `[h2, show C.ψ (symplOH S T (t c) (2 • v)) = 1 from hv2, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmt1 : ∀ V : HSp D, Formalism.L2.Theta.mt V 1 = 1` using `fun V => by simp [Formalism.L2.Theta.mt]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmvB : C.mvB 1 B = B`. Use function extensionality and compare the values at `τ`. Simplify using `[Ctx.mvB, hmt1, compAt]`. Establish `hfmt1 : fmt T 1 = 1` using `by simp [fmt, hmt1]`. Establish `hmov1 : IsMov (fmt T 1) (Lv.sh C.X.Λ) (Lv.sh C.X.Λ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfmt1]`. Introduce `u`. Conclude with `⟨fun h => ⟨u, h, (Matrix.one_mulVec u).symm⟩, fun ⟨u₀, h, e⟩ => by rw [e, Matrix.one_mulVec]; exact h⟩`. Establish `hne' : f' ≠ 0`. Introduce `h0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `hf0` to reduce the goal to its premises. Establish `: f'' = 0` using `by rw [← hom1, h0, map_zero]`. Rewrite using `[hfsum]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: heisO C.ψ S T (t c) (0 : WO S T → ℂ) = 0`. Use function extensionality and compare the values at `w`. Simplify using `[heisO]`. Rewrite using `[this, smul_zero]`. Establish `hFock' : C.IsFock B f'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(((GlobalTheory.Ker.WeakMove.om_move D S T C om hom k₀⁻¹ 1 f'' hTh).2 B hB).1 hFock)` as an intermediate fact. Rewrite `this` using `[hmvB]`. Then use the resulting hypothesis. Establish `hlat' : IsLatVac (heisO C.ψ S T) (hatA S T (tens (stdL D.host.E S.rank) (Lv.sh C.X.Λ))) f'` using `(GlobalTheory.TensLatMove.hatA_move D S T C k₀⁻¹ 1 Λ' (stdL D.host.E S.rank) (Lv.sh C.X.Λ) (Lv.sh C.X.Λ) hmov hmov1).2 om hom f'' hTh hLat''`. Establish `hbase : C.IsBase Lv B f'` using `⟨hTh', hne', hFock', hlat'⟩`. Establish `hu1 : C.IsTh (C.uVec Lv hn f')` using `GlobalTheory.Ker.KernelCompare.isTh_uVec C Lv hn hTh'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfth : C.IsTh f` using `hu ▸ hom.om_pres _ _ hu1`. Establish `hfF : C.IsFock B f` using `fun τ => GlobalTheory.DatumFock.isFockVacAt_thPVec C.ψ C.θ S T _ _ _ _ βS βT Pg Q ξ f₀ f hfc hfth τ`. Establish `hu2 : C.IsFock B (C.uVec Lv hn f')`. Establish `h` using `(((GlobalTheory.Ker.WeakMove.om_move D S T C om hom k₀⁻¹ 1 f hfth).2 B hB).1 hfF)`. Rewrite `h` using `[hmvB, ← hu, hinv']`.
-
-Conclude with `h`. Establish `hu3 : C.uVec Lv hn f' ≠ 0` using `fun h0 => hf0 (by rw [← hu, h0, map_zero])`. Use `⟨Lv, Ideal.absNorm Lv.𝔪, f', k₀, hw2, ?_, Ideal.absNorm_mem Lv.𝔪, hbase, hk₀, hu.symm, hu1, hu2, hu3, GlobalTheory.T.hermitianThetaLevelGroup_stabilizes_selfDualLatticeFrame D S T C Lv ΛT hsd hAA βT hβT Pg hmP hJ⟩` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero fun h => Lv.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem thP_vec_eq_translate : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak C.ψ S T om → ∀ (hn : T.rank ≤ S.rank) (B : C.Bas), C.IsB B → ∀ ΛT : Lt D.host.E T.rank, IsSelfDualC T ΛT → IsAA C.X.Λ ΛT → ∀ (βS : GL (Fin S.rank) (Lev.EAf D)) (βT : GL (Fin T.rank) (Lev.EAf D)), Formalism.L2.DIV.IsFrame βS (stdL D.host.E S.rank) → Formalism.L2.DIV.IsFrame βT ΛT → ∀ (Pg Q : Finset (Formalism.L2.DIV.Pl D.host.E)) (ξ : ∀ PP : Formalism.L2.DIV.Pl D.host.E, (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), Pg.Nonempty → (∀ PP, PP ∈ Pg ∨ PP ∈ Q → (2 : 𝓞 D.host.E) ∉ PP.asIdeal) → ∀ f₀ f, IsThPVecOf C.ψ C.θ S T (fun _ => 1) (C.sB B) (stdL D.host.E S.rank : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) βS βT Pg Q ξ f₀ f → ∃ (Lv : SW.Level C.X) (M : ℕ) (f' : WO S T → ℂ) (k₀ : GA D S), IdemTwo Lv.w ∧ 0 < M ∧ (M : 𝓞 D.host.E) ∈ Lv.𝔪 ∧ C.IsBase Lv B f' ∧ k₀ ∈ GfC S ∧ f = om (k₀, 1) (C.uVec Lv hn f') ∧ C.IsTh (C.uVec Lv hn f') ∧ C.IsFock B (C.uVec Lv hn f') ∧ C.uVec Lv hn f' ≠ 0 ∧ ∀ (k : GA D T) (κ : Lv.J), C.LevK Lv k κ → Lev.finE T k ∈ Formalism.L2.DIV.St βT ∧ ∀ PP ∈ Pg, Formalism.L2.DIV.redFn βT PP (Lev.finE T k) = 1 := by
   intro D S T C om hom hn B hB ΛT hsd hAA βS βT hβS hβT Pg Q ξ hPg hodd f₀ f hf

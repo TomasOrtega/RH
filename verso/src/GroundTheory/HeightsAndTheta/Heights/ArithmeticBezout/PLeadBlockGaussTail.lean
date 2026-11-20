@@ -13,7 +13,7 @@ noncomputable section
 namespace LeadBlockGaussTail
 
 /- English proof (translation)
-The claim follows from `| 0, f, _ => by simp | n + 1, f, hf => by have e := measurePreserving_piFinSuccAbove (fun _ : Fin (n + 1) => μ) 0 let g : E × (Fin n → E) → ℝ≥0∞ := fun a => f 0 a.1 * ∏ i : Fin n, f i.succ (a.2 i) have hg : Measurable fun a : Fin n → E => ∏ i : Fin n, f i.succ (a i) := Finset.mea …`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_pi_prod {E : Type*} [MeasurableSpace E] (μ : Measure E) [SigmaFinite μ] :
     ∀ (n : ℕ) (f : Fin n → E → ℝ≥0∞), (∀ i, Measurable (f i)) →
@@ -40,9 +40,9 @@ theorem lintegral_pi_prod {E : Type*} [MeasurableSpace E] (μ : Measure E) [Sigm
 def halfGauss : ℝ≥0∞ := ∫⁻ z : ℂ, ENNReal.ofReal (Real.exp (-(‖z‖ ^ 2 / 2)))
 
 /- English proof (translation)
-Establish `h` using `(GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (1 / 2 : ℂ)) (by norm_num) 0 0).norm`. Establish `h2 : Integrable (fun z : ℂ => Real.exp (-(‖z‖ ^ 2 / 2)))`. Use `h.congr (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.ofReal_pow, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2.lintegral_lt_top`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem halfGauss_lt_top : halfGauss < ∞ := by
   have h := (GaussianFourier.integrable_cexp_neg_mul_sq_norm_add (V := ℂ) (b := (1 / 2 : ℂ))
@@ -58,7 +58,7 @@ theorem halfGauss_lt_top : halfGauss < ∞ := by
 def entryConst : ℝ := 4 * (2 * halfGauss.toReal + Real.pi)
 
 /- English proof (translation)
-Unfold `entryConst`. Use `Real.pi_pos` as an intermediate fact. Establish `: 0 ≤ halfGauss.toReal` using `ENNReal.toReal_nonneg`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem entryConst_pos : 0 < entryConst := by
   unfold entryConst
@@ -69,30 +69,30 @@ theorem entryConst_pos : 0 < entryConst := by
 def ballInd (ρ : ℝ) (z : ℂ) : ℝ≥0∞ := {z : ℂ | |ρ| * ‖z‖ < 1}.indicator 1 z
 
 /- English proof (translation)
-The claim follows from `measurable_const.indicator (measurableSet_lt (by fun_prop) measurable_const)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_ballInd (ρ : ℝ) : Measurable (ballInd ρ) :=
   measurable_const.indicator (measurableSet_lt (by fun_prop) measurable_const)
 
 /- English proof (translation)
-Unfold `ballInd Set.indicator`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ballInd_le_one (ρ : ℝ) (z : ℂ) : ballInd ρ z ≤ 1 := by
   unfold ballInd Set.indicator
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[ballInd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ballInd_zero (z : ℂ) : ballInd 0 z = 1 := by
   simp [ballInd]
 
 /- English proof (translation)
-Establish `h1` using `Real.add_one_le_exp (t / 2)`. Establish `h2 : Real.exp (-t) = Real.exp (-(t / 2)) * Real.exp (-(t / 2))`. Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `h3 : Real.exp (t / 2) * Real.exp (-(t / 2)) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `h4` using `Real.exp_pos (-(t / 2))`. Establish `h5 : Real.exp (-(t / 2)) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`. Use `interval_cases p`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, mul_one, h2]`. Use the polynomial consequences of the given equalities and inequalities. Rewrite using `[pow_one, h2]`. Use polynomial arithmetic with `[mul_pos h4 h4]`.
+Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exp_mul_pow_le {t : ℝ} (ht : 0 ≤ t) {p : ℕ} (hp : p ≤ 1) :
     Real.exp (-t) * t ^ p ≤ 2 * Real.exp (-(t / 2)) := by
@@ -108,31 +108,27 @@ theorem exp_mul_pow_le {t : ℝ} (ht : 0 ≤ t) {p : ℕ} (hp : p ≤ 1) :
   · rw [pow_one, h2]; nlinarith [mul_pos h4 h4]
 
 /- English proof (translation)
-Establish `hG` using `halfGauss_lt_top`. Establish `hG0 : 0 ≤ halfGauss.toReal` using `ENNReal.toReal_nonneg`. Establish `hpi` using `Real.pi_pos`. Establish `hq : 0 < (1 + ρ ^ 2) ^ (p + 1)` using `by positivity`. Apply the tactic sequence `have h24 : (2 : ℝ) ^ (p + 1) ≤ 4 := by interval_cases p <;> norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Break down `le_or_gt (ρ ^ 2) 1 with hρ | hρ` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one, ← ENNReal.ofReal_mul (Real.exp_pos _).le]`.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ ≤ ENNReal.ofReal (2 * Real.exp (-(‖z‖ ^ 2 / 2))) := ENNReal.ofReal_le_ofReal (exp_mul_pow_le (by positivity) hp)`. Use `_ = _ := by rw [ENNReal.ofReal_mul (by norm_num)]; simp`. Use `_ = 2 * halfGauss := lintegral_const_mul' _ _ (by simp)`. Use `_ = ENNReal.ofReal (2 * halfGauss.toReal) := by`. Rewrite using `[ENNReal.ofReal_mul (by norm_num), ENNReal.ofReal_toReal hG.ne]; simp`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `_ ≤ _ := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hq]`. Establish `h4 : (1 + ρ ^ 2) ^ (p + 1) ≤ 4` using `(pow_le_pow_left₀ (by positivity) (by linarith) (p + 1)).trans h24`. Unfold `entryConst`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hρ0 : 0 < |ρ|` using `abs_pos.2 (by rintro rfl; norm_num at hρ)`. Establish `hset : {z : ℂ | |ρ| * ‖z‖ < 1} = Metric.ball (0 : ℂ) |ρ|⁻¹`. Use extensionality with `z`. Simplify using `only [Set.mem_ofPred_eq, Metric.mem_ball, dist_zero_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[← one_div, lt_div_iff₀ hρ0, mul_comm]`. Establish `hu : (|ρ|⁻¹) ^ 2 = (ρ ^ 2)⁻¹` using `by rw [inv_pow, sq_abs]`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Unfold `ballInd`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hset]`. Distinguish the cases in `hz : z ∈ Metric.ball (0 : ℂ) |ρ|⁻¹`. Rewrite using `[Set.indicator_of_mem hz]`. Establish `hz' : ‖z‖ ^ 2 ≤ (ρ ^ 2)⁻¹`. Rewrite `hz` using `[Metric.mem_ball, dist_zero_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hz.le 2`. Establish `he : ENNReal.ofReal (Real.exp (-‖z‖ ^ 2)) ≤ 1` using `ENNReal.ofReal_le_one.2 (Real.exp_le_one_iff.2 (by nlinarith [norm_nonneg z]))`. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by simp`. Rewrite using `[Set.indicator_of_notMem hz]`. Simplify using the standard rewrite rules. Use `_ = ENNReal.ofReal (((ρ ^ 2)⁻¹) ^ p) * volume (Metric.ball (0 : ℂ) |ρ|⁻¹) := by`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_indicator_one measurableSet_ball]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `_ = ENNReal.ofReal (((ρ ^ 2)⁻¹) ^ p * ((ρ ^ 2)⁻¹ * Real.pi)) := by`. Rewrite using `[Complex.volume_ball, ← ENNReal.ofReal_pow (inv_nonneg.2 hρ0.le), hu, ← ENNReal.ofReal_coe_nnreal, NNReal.coe_real_pi, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_mul (by positivity)]`. Use `_ ≤ _ := by`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[le_div_iff₀ hq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ2 : 0 < ρ ^ 2` using `by linarith`. Establish `hu1 : (ρ ^ 2)⁻¹ * ρ ^ 2 = 1` using `inv_mul_cancel₀ hρ2.ne'`. Establish `hu0 : 0 < (ρ ^ 2)⁻¹` using `inv_pos.2 hρ2`. Establish `hule : (ρ ^ 2)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ hρ.le`. Establish `key : (ρ ^ 2)⁻¹ * (1 + ρ ^ 2) = (ρ ^ 2)⁻¹ + 1` using `by rw [mul_add, hu1, mul_one]`.
-
-Establish `h2 : ((ρ ^ 2)⁻¹) ^ p * ((ρ ^ 2)⁻¹ * Real.pi) * (1 + ρ ^ 2) ^ (p + 1) = Real.pi * ((ρ ^ 2)⁻¹ + 1) ^ (p + 1)`. Rewrite using `[← key, mul_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ((ρ ^ 2)⁻¹ + 1) ^ (p + 1) ≤ 4` using `(pow_le_pow_left₀ (by positivity) (by linarith) (p + 1)).trans h24`. Rewrite using `[h2]`.
-
-Unfold `entryConst`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem entry_bound (ρ : ℝ) (p : ℕ) (hp : p ≤ 1) :
     ∫⁻ z : ℂ, ENNReal.ofReal (Real.exp (-‖z‖ ^ 2)) * ENNReal.ofReal ((‖z‖ ^ 2) ^ p) * ballInd ρ z ≤
@@ -209,9 +205,9 @@ theorem entry_bound (ρ : ℝ) (p : ℕ) (hp : p ≤ 1) :
           nlinarith
 
 /- English proof (translation)
-Establish `h1 : ‖(coordPlaneBlock π).det‖ ≤ ∑ σ : Equiv.Perm (Fin m), ∏ i, ‖π i (Fin.castAdd k (σ i))‖`. Rewrite using `[← Matrix.det_transpose, Matrix.det_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun σ _ => ?_)` and prove the remaining obligations. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h <;>`. Simplify using `[h, norm_prod, coordPlaneBlock, Matrix.transpose_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Use `sq_sum_le_card_mul_sum_sq (s := (Finset.univ : Finset (Equiv.Perm (Fin m)))) (f := fun σ => ∏ i, ‖π i (Fin.castAdd k (σ i))‖)` as an intermediate fact. Simplify `this` using `[Finset.card_univ, Finset.prod_pow]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_det_sq_le {m k : ℕ} (π : Fin m → Fin (m + k) → ℂ) :
     ‖(coordPlaneBlock π).det‖ ^ 2 ≤ (Fintype.card (Equiv.Perm (Fin m)) : ℝ) *
@@ -231,9 +227,9 @@ theorem norm_det_sq_le {m k : ℕ} (π : Fin m → Fin (m + k) → ℂ) :
         simpa [Finset.card_univ, Finset.prod_pow] using this
 
 /- English proof (translation)
-Simplify using `only [linProj, firstCoordVec]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single c0]`. Simplify using `[hc0, mul_comm]`. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (j : ℕ) ≠ 0` using `fun h => hj (Fin.ext (h.trans hc0.symm))`. Simplify using `[this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem linProj_smul_firstCoordVec {m n : ℕ} (π : Fin m → Fin n → ℂ) (r : ℝ) (c0 : Fin n)
     (hc0 : (c0 : ℕ) = 0) (i : Fin m) :
@@ -248,11 +244,11 @@ theorem linProj_smul_firstCoordVec {m n : ℕ} (π : Fin m → Fin n → ℂ) (r
   · simp
 
 /- English proof (translation)
-Distinguish the cases in `hv : linProj π ((r : ℂ) • firstCoordVec n) ∈ Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1`. Rewrite using `[Set.indicator_of_mem hv]`. Establish `: ∀ i, ballInd r (π i c0) = 1`. Introduce `i`. Establish `hi` using `PiLp.norm_apply_le (linProj π ((r : ℂ) • firstCoordVec n)) i`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hi` using `[linProj_smul_firstCoordVec π r c0 hc0 i, norm_mul, Complex.norm_real, Real.norm_eq_abs]`. Rewrite `hv` using `[Metric.mem_ball, dist_zero_right]`. Simplify using `[ballInd, Set.indicator, show |r| * ‖π i c0‖ < 1 from hi.trans_lt hv]`. Simplify using `[this]`. Rewrite using `[Set.indicator_of_notMem hv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`.
+A detailed English derivation is pending.
 -/
 theorem ball_indicator_le {m n : ℕ} (π : Fin m → Fin n → ℂ) (r : ℝ) (c0 : Fin n)
     (hc0 : (c0 : ℕ) = 0) :
@@ -271,7 +267,7 @@ theorem ball_indicator_le {m n : ℕ} (π : Fin m → Fin n → ℂ) (r : ℝ) (
   · rw [Set.indicator_of_notMem hv]; exact bot_le
 
 /- English proof (translation)
-Unfold `matGauss`. Rewrite using `[← Finset.sum_neg_distrib, Real.exp_sum, ENNReal.ofReal_prod_of_nonneg (fun i _ => (Real.exp_pos _).le)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib, Real.exp_sum, ENNReal.ofReal_prod_of_nonneg (fun j _ => (Real.exp_pos _).le)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem matGauss_eq_prod {m n : ℕ} (π : Fin m → Fin n → ℂ) :
     matGauss π = ∏ i, ∏ j, ENNReal.ofReal (Real.exp (-‖π i j‖ ^ 2)) := by
@@ -287,15 +283,13 @@ def entryFn (r : ℝ) {n : ℕ} (c0 s j : Fin n) (z : ℂ) : ℝ≥0∞ :=
     ballInd (if j = c0 then r else 0) z
 
 /- English proof (translation)
-Establish `hc0 : ((Fin.castAdd k (⟨0, hm⟩ : Fin m) : Fin (m + k)) : ℕ) = 0` using `rfl`. Establish `hrow : ∀ σ : Equiv.Perm (Fin m), ∏ i, ∏ j, entryFn r (Fin.castAdd k ⟨0, hm⟩) (Fin.castAdd k (σ i)) j (π i j) = matGauss π * ENNReal.ofReal (∏ i, ‖π i (Fin.castAdd k (σ i))‖ ^ 2) * ∏ i, ballInd r (π i (Fin.castAdd k ⟨0, hm⟩))`. Introduce `σ`. Rewrite using `[matGauss_eq_prod, ENNReal.ofReal_prod_of_nonneg (fun i _ => by positivity)]`. Simplify using `only [entryFn, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (Fin.castAdd k (σ i)) (fun j _ hj => by simp [hj]) (by simp)]`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_eq_single (Fin.castAdd k ⟨0, hm⟩) (fun j _ hj => by simp only [if_neg hj, ballInd_zero]) (by simp)]`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[hrow]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `ball_indicator_le π r _ hc0`. Conclude with `norm_det_sq_le π`. Use `_ = _ := by`. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_sum_of_nonneg (fun σ _ => by positivity)]`. Simplify using `only [Finset.mul_sum]`.
-
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integrand_le {m k : ℕ} (hm : 0 < m) (r : ℝ) (π : Fin m → Fin (m + k) → ℂ) :
     matGauss π * (Metric.ball (0 : EuclideanSpace ℂ (Fin m)) 1).indicator 1
@@ -335,11 +329,11 @@ theorem integrand_le {m k : ℕ} (hm : 0 < m) (r : ℝ) (π : Fin m → Fin (m +
         ring
 
 /- English proof (translation)
-Establish `hrow : ∀ i : Fin m, ∏ j : Fin (m + k), (1 + (if j = Fin.castAdd k ⟨0, hm⟩ then r else 0) ^ 2) ^ ((if j = Fin.castAdd k (σ i) then 1 else 0) + 1) = (1 + r ^ 2) ^ ((if Fin.castAdd k (⟨0, hm⟩ : Fin m) = Fin.castAdd k (σ i) then 1 else 0) + 1)`. Introduce `i`. Rewrite using `[Finset.prod_eq_single (Fin.castAdd k ⟨0, hm⟩) (fun j _ hj => by simp only [if_neg hj]; simp) (by simp)]`. Simplify using the standard rewrite rules. Establish `hsum : ∑ i : Fin m, ((if Fin.castAdd k (⟨0, hm⟩ : Fin m) = Fin.castAdd k (σ i) then 1 else 0) + 1) = m + 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : ∀ i : Fin m, (Fin.castAdd k (⟨0, hm⟩ : Fin m) = Fin.castAdd k (σ i)) ↔ (σ.symm ⟨0, hm⟩ = i)`. Introduce `i`. Rewrite using `[(Fin.castAdd_injective _ _).eq_iff, Equiv.symm_apply_eq]`. Repeatedly rewrite using `[h]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Repeatedly rewrite using `[Finset.prod_div_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, hrow, Finset.prod_pow_eq_pow_sum, hsum, ← pow_mul]`. Put the polynomial expressions in normal form.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Put the polynomial expressions in normal form.
 -/
 theorem prod_entry_eq {m k : ℕ} (hm : 0 < m) (K r : ℝ) (σ : Equiv.Perm (Fin m)) :
     ∏ i : Fin m, ∏ j : Fin (m + k), K / (1 + (if j = Fin.castAdd k ⟨0, hm⟩ then r else 0) ^ 2) ^
@@ -367,17 +361,15 @@ theorem prod_entry_eq {m k : ℕ} (hm : 0 < m) (K r : ℝ) (σ : Equiv.Perm (Fin
   ring_nf
 
 /- English proof (translation)
-Introduce `m k hm`. Use `set N : ℝ := (Fintype.card (Equiv.Perm (Fin m)) : ℝ) with hN`. Establish `hN0 : 0 ≤ N` using `Nat.cast_nonneg _`. Establish `hK` using `entryConst_pos`. Use `⟨N * (N * entryConst ^ (m * (m + k))), fun r => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hφ : ∀ s j : Fin (m + k), Measurable (entryFn r (Fin.castAdd k ⟨0, hm⟩) s j)` using `fun s j => ((ENNReal.measurable_ofReal.comp (by fun_prop)).mul (ENNReal.measurable_ofReal.comp (by fun_prop))).mul (measurable_ballInd _)`. Establish `hrowm : ∀ σ : Equiv.Perm (Fin m), ∀ i : Fin m, Measurable fun x : Fin (m + k) → ℂ => ∏ j, entryFn r (Fin.castAdd k ⟨0, hm⟩) (Fin.castAdd k (σ i)) j (x j)` using `fun σ i => Finset.measurable_prod _ fun j _ => (hφ _ j).comp (measurable_pi_apply j)`. Establish `hq : 0 < (1 + r ^ 2) ^ (m + 1)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hmeas : ∀ σ : Equiv.Perm (Fin m), Measurable fun π : Fin m → Fin (m + k) → ℂ => ∏ i, ∏ j, entryFn r (Fin.castAdd k ⟨0, hm⟩) (Fin.castAdd k (σ i)) j (π i j)` using `fun σ => Finset.measurable_prod _ fun i _ => (hrowm σ i).comp (measurable_pi_apply i)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, lintegral_finsetSum _ (fun σ _ => hmeas σ)]`. Use `congr 1`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[volume_pi, lintegral_pi_prod _ m _ (hrowm σ)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[volume_pi, lintegral_pi_prod _ (m + k) _ (fun j => hφ _ j)]`. Use `_ ≤ ENNReal.ofReal N * ∑ σ : Equiv.Perm (Fin m), ∏ i : Fin m, ∏ j : Fin (m + k), ENNReal.ofReal (entryConst / (1 + (if j = Fin.castAdd k ⟨0, hm⟩ then r else 0) ^ 2) ^ ((if j = Fin.castAdd k (σ i) then 1 else 0) + 1)) := by gcongr with σ _ i _ j _`. Apply the tactic sequence `exact entry_bound _ _ (by split_ifs <;> omega)`. Use `_ = ENNReal.ofReal N * ∑ σ : Equiv.Perm (Fin m), ENNReal.ofReal (entryConst ^ (m * (m + k)) / (1 + r ^ 2) ^ (m + 1)) := by`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_congr rfl fun i _ => (ENNReal.ofReal_prod_of_nonneg fun j _ => div_nonneg hK.le (by positivity)).symm, ← ENNReal.ofReal_prod_of_nonneg fun i _ => Finset.prod_nonneg fun j _ => div_nonneg hK.le (by positivity), prod_entry_eq hm]`. Use `_ = ENNReal.ofReal (N * (N * entryConst ^ (m * (m + k))) / (1 + r ^ 2) ^ (m + 1)) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← ENNReal.ofReal_natCast, ← ENNReal.ofReal_mul (Nat.cast_nonneg _), ← ENNReal.ofReal_mul hN0]`. Use `congr 1`.
-
-Rewrite using `[hN]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proof : LeadBlockGaussTail.Statement := by
   intro m k hm

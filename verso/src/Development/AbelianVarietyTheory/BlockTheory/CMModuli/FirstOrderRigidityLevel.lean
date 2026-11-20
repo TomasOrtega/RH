@@ -198,7 +198,7 @@ def Statement : Prop :=
     ThetaDeterminesAction ∧ FirstOrderRigid
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num, by decide, le_rfl, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : Conv 2 3 2 := ⟨by norm_num, by decide, le_rfl, by norm_num⟩
 

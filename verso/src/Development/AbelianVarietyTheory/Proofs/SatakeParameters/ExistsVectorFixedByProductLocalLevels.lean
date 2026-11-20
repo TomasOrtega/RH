@@ -19,21 +19,21 @@ namespace GlobalTheory.Cong.FixProd
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rU_mul (x y : UA E a) (f : UA E a → ℂ) : RU E a (x * y) f = RU E a x (RU E a y f) := by
   rw [map_mul]; rfl
 
 /- English proof (translation)
-Introduce `_ hx` and use `(Subgroup.mem_inf.1 hx).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem locU_le_finU (w : HeightOneSpectrum (𝓞 E)) : locU a w ≤ finU E a :=
   fun _ hx => (Subgroup.mem_inf.1 hx).1
 
 /- English proof (translation)
-Use `show x * y = y * x`. Use `Subtype.ext (GlobalTheory.DefU.LocRet.ga_ext' ?_ fun v => ?_)` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, map_mul, GlobalTheory.DefU.LocRet.mem_locU_inf hx, GlobalTheory.DefU.LocRet.mem_locU_inf hy]`. Distinguish the cases in `hv : v.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E))`. Establish `hv' : v.under (𝓞 (maximalRealSubfield E)) ≠ u.under (𝓞 (maximalRealSubfield E))` using `hv ▸ h`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Subgroup.coe_mul, map_mul, GlobalTheory.DefU.LocRet.mem_locU_ne hy hv', one_mul, mul_one]`. Simplify using `only [Subgroup.coe_mul, map_mul, GlobalTheory.DefU.LocRet.mem_locU_ne hx hv, one_mul, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem commute_of_apart {w u : HeightOneSpectrum (𝓞 E)} (h : Apart w u) {x y : UA E a}
     (hx : x ∈ locU a w) (hy : y ∈ locU a u) : Commute x y := by
@@ -53,7 +53,7 @@ def avg : (UA E a → ℂ) →ₗ[ℂ] (UA E a → ℂ) :=
   ∑ q : K ⧸ K', RU E a ((Quotient.out q : K) : UA E a)
 
 /- English proof (translation)
-Unfold `avg`. Conclude with `LinearMap.sum_apply _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem avg_apply (f : UA E a → ℂ) :
     avg K K' f = ∑ q : K ⧸ K', RU E a ((Quotient.out q : K) : UA E a) f := by
@@ -61,7 +61,7 @@ theorem avg_apply (f : UA E a → ℂ) :
   exact LinearMap.sum_apply _ _ _
 
 /- English proof (translation)
-Rewrite using `[avg_apply, avg_apply, map_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations. Rewrite using `[← rU_mul, ← rU_mul, (hc _ (Quotient.out q).2).eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_comm {c : UA E a} (hc : ∀ k ∈ K, Commute c k) (f : UA E a → ℂ) :
     avg K K' (RU E a c f) = RU E a c (avg K K' f) := by
@@ -70,7 +70,7 @@ theorem avg_comm {c : UA E a} (hc : ∀ k ∈ K, Commute c k) (f : UA E a → �
   rw [← rU_mul, ← rU_mul, (hc _ (Quotient.out q).2).eq]
 
 /- English proof (translation)
-Rewrite using `[avg_apply, Finset.sum_congr rfl (fun q _ => hf _ (Quotient.out q).2), Finset.sum_const, Finset.card_univ, ← Nat.cast_smul_eq_nsmul ℂ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem avg_of_fixed {f : UA E a → ℂ} (hf : ∀ k ∈ K, RU E a k f = f) :
     avg K K' f = (Fintype.card (K ⧸ K') : ℂ) • f := by
@@ -80,11 +80,11 @@ theorem avg_of_fixed {f : UA E a → ℂ} (hf : ∀ k ∈ K, RU E a k f = f) :
 set_option synthInstance.maxHeartbeats 400000 in
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Rewrite using `[avg_apply, map_sum]`. Establish `key : ∀ q : K ⧸ K', RU E a k (RU E a ((Quotient.out q : K) : UA E a) f) = RU E a ((Quotient.out ((⟨k, hk⟩ : K) • q) : K) : UA E a) f`. Introduce `q`. Establish `hm : (Quotient.out ((⟨k, hk⟩ : K) • q))⁻¹ * ((⟨k, hk⟩ : K) * Quotient.out q) ∈ K'`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Establish `e : (⟨k, hk⟩ : K) * Quotient.out q = Quotient.out ((⟨k, hk⟩ : K) • q) * ((Quotient.out ((⟨k, hk⟩ : K) • q))⁻¹ * ((⟨k, hk⟩ : K) * Quotient.out q))` using `(mul_inv_cancel_left _ _).symm`. Establish `e'` using `congrArg (fun z : K => (z : UA E a)) e`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_mk] at e'`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm'` using `hf _ hm`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_mk] at hm'`. Rewrite using `[← rU_mul, e', rU_mul, hm']`. Rewrite using `[Finset.sum_congr rfl fun q _ => key q]`. Conclude with `Fintype.sum_equiv (MulAction.toPerm (⟨k, hk⟩ : K)) _ _ (fun q => rfl)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_fixed {f : UA E a → ℂ} (hf : ∀ k ∈ K', RU E a ((k : K) : UA E a) f = f) (k : UA E a) (hk : k ∈ K) :
     RU E a k (avg K K' f) = avg K K' f := by
@@ -109,33 +109,27 @@ theorem avg_fixed {f : UA E a → ℂ} (hf : ∀ k ∈ K', RU E a ((k : K) : UA 
 end Avg
 
 /- English proof (translation)
-Set `S` to `Submodule.span ℂ (Set.range fun g : UA E a => RU E a g φ)`. Establish `hSU : S ≤ U` using `Submodule.span_le.2 (by rintro _ ⟨g, rfl⟩; exact hU.stable g φ hφU)`. Establish `hSst : ∀ x, ∀ f ∈ S, RU E a x f ∈ S`. Introduce `x f hf`. Establish `: S ≤ S.comap (RU E a x)` using `Submodule.span_le.2 (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Use `show RU E a x (RU E a g φ) ∈ S`. Rewrite using `[← rU_mul]`. Conclude with `Submodule.subset_span ⟨_, rfl⟩)`. Conclude with `this hf`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hφS : φ ∈ S`. Establish `h1 : RU E a 1 φ = φ` using `by rw [map_one]; rfl`. Rewrite using `[← h1]`. Conclude with `Submodule.subset_span ⟨1, rfl⟩`. Establish `hSeq : S = U`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Break down `hU.irred S hSU hSst with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ hφS)) hφ0`. Conclude with `h`. Establish `hφwS : φw ∈ S` using `hSeq ▸ hφwU`. Take `⟨c, hc⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hφwS`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Set `r : UA E a → UA E a` to `fun g => (GlobalTheory.DefU.LocRet.ret w a g : UA E a)`. Establish `hr : ∀ g, r g ∈ locU a w` using `fun g => (GlobalTheory.DefU.LocRet.ret w a g).2`. Establish `hd : ∀ g, ∀ x ∈ locU a w, Commute ((r g)⁻¹ * g) x` using `fun g x hx => GlobalTheory.DefU.LocRet.commute_ret g ⟨x, hx⟩`. Establish `hsplit : ∀ g, RU E a g φ = RU E a ((r g)⁻¹ * g) (RU E a (r g) φ)`. Introduce `g`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← rU_mul, (hd g (r g) (hr g)).eq, mul_inv_cancel_left]`. Establish `hKf : K ≤ finU E a` using `hKw.trans (locU_le_finU w)`. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Set `K' : Subgroup K` to `{ carrier := {k | ∀ g ∈ c.support, RU E a (k : UA E a) (RU E a (r g) φ) = RU E a (r g) φ} mul_mem' := fun {x y} hx hy g hg => by show RU E a ((x : UA E a) * (y : UA E a)) _ = _`. Rewrite using `[rU_mul, hy g hg, hx g hg]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use the proof step `one_mem' := fun g _ => by show RU E a 1 _ = _`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `inv_mem' := fun {x} hx g hg => by`. Establish `h` using `hx g hg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show RU E a ((x : UA E a)⁻¹) _ = _`. Combine the equalities or inequalities in the displayed calculation. Establish `hK'o : IsOpen (K' : Set K)`. Establish `e : (K' : Set K) = ⋂ g ∈ c.support, {k : K | RU E a (k : UA E a) (RU E a (r g) φ) = RU E a (r g) φ}`. Use extensionality with `k`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.mem_iInter₂]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `isOpen_biInter_finset fun g _ => ?_` and prove the remaining obligations. Establish `ho` using `(hU.aut _ (hU.stable (r g) φ hφU)).level`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcont : Continuous fun k : K => (⟨(k : UA E a), hKf k.2⟩ : finU E a)` using `continuous_subtype_val.subtype_mk _`. Conclude with `ho.preimage hcont`. Use `haveI : Finite (K ⧸ K') := Subgroup.quotient_finite_of_isOpen K' hK'o`. Use `letI : Fintype (K ⧸ K') := Fintype.ofFinite _`. Establish `hA : avg K K' φw = c.sum fun g b => b • RU E a ((r g)⁻¹ * g) (avg K K' (RU E a (r g) φ))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc, Finsupp.sum, Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hsplit g, avg_comm K K' (fun k hk => hd g k (hKw hk))]`. Distinguish the cases in `h0 : ∀ g ∈ c.support, avg K K' (RU E a (r g) φ) = 0`. It suffices to derive a contradiction.
-
-Establish `hz : avg K K' φw = 0`. Rewrite using `[hA, Finsupp.sum]`. Conclude with `Finset.sum_eq_zero fun g hg => by rw [h0 g hg, map_zero, smul_zero]`. Rewrite `hz` using `[avg_of_fixed K K' hφwK]`. Establish `hcard : (Fintype.card (K ⧸ K') : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Fintype.card_pos_iff.2 ⟨(QuotientGroup.mk 1 : K ⧸ K')⟩).ne'`.
-
-Conclude with `hφw0 ((smul_eq_zero.1 hz).resolve_left hcard)`. Use `push_neg at h0`. Take `⟨g, hg, hne⟩` from `h0`. Use `⟨avg K K' (RU E a (r g) φ), ?_, hne, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[avg_apply]`.
-
-Conclude with `Submodule.sum_mem _ fun q _ => hU.stable _ _ (hU.stable _ _ hφU)`. Conclude with `avg_fixed K K' (fun k hk => hk g hg)`. Introduce `y hy hyφ`. Rewrite using `[← avg_comm K K' (fun k hk => hy k (hKw hk)), ← rU_mul, (hy (r g) (hr g)).eq, rU_mul, hyφ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mend (U : Submodule ℂ (UA E a → ℂ)) (hU : IsAutRepU U) (w : HeightOneSpectrum (𝓞 E))
     (K : Subgroup (UA E a)) (hKw : K ≤ locU a w) (hKc : IsCompact (K : Set (UA E a)))
@@ -226,25 +220,21 @@ theorem mend (U : Submodule ℂ (UA E a → ℂ)) (hU : IsAutRepU U) (w : Height
       rw [← avg_comm K K' (fun k hk => hy k (hKw hk)), ← rU_mul, (hy (r g) (hr g)).eq, rU_mul, hyφ]
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU w₀ K hKl hKeq hKc hKint _ hφ'`. Take `⟨φ₀, hφ₀U, hφ₀⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot`. Set `L : Subgroup (finU E a)` to `{ carrier := {k | RU E a (k : UA E a) φ₀ = φ₀} mul_mem' := fun {x y} hx hy => by show RU E a ((x : UA E a) * (y : UA E a)) φ₀ = φ₀`. Rewrite using `[rU_mul]`. Conclude with `(congrArg _ hy).trans hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `one_mem' := by show RU E a 1 φ₀ = φ₀`. Rewrite using `[map_one]`. Both sides reduce to the same expression. Use the proof step `inv_mem' := fun {x} hx => by show RU E a ((x : UA E a)⁻¹) φ₀ = φ₀`. Establish `hx' : RU E a (x : UA E a) φ₀ = φ₀` using `hx`.
+Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hLo : IsOpen (L : Set (finU E a))` using `(hU.aut φ₀ hφ₀U).level`. Establish `hev` using `GlobalTheory.BCT.GlobLev.eventually_locU_mem E a L hLo`. Establish `hgood : ∀ᶠ w in Filter.cofinite, ∀ x ∈ K w, RU E a x φ₀ = φ₀` using `by filter_upwards [hev, hKint] with w h1 h2 x hx`. Conclude with `h1 x (hKl w hx) (h2 x hx) (locU_le_finU w (hKl w hx))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hB` using `Filter.eventually_cofinite.1 hgood`. Establish `main : ∀ S : Finset (HeightOneSpectrum (𝓞 E)), ∃ φ ∈ U, φ ≠ 0 ∧ ∀ u, Apart u w₀ → ((∀ x ∈ K u, RU E a x φ₀ = φ₀) ∨ u ∈ S) → ∀ x ∈ K u, RU E a x φ = φ`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨φ₀, hφ₀U, hφ₀, fun u _ hu x hx => ?_⟩` and prove the remaining obligations. Break down `hu with hu | hu` into its components or cases. Conclude with `hu x hx`. Conclude with `absurd hu (Finset.notMem_empty u)`. Consider the case `insert w S hwS ih`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨φ, hφU, hφ0, hφ⟩` from `ih`. Distinguish the cases in `hw : Apart w w₀`. Take `⟨φw, hφwU, hφw0, hφwK⟩` from `hφ' w hw`. Take `⟨ψ, hψU, hψ0, hψK, hψy⟩` from `mend U hU w (K w) (hKl w) (hKc w) hφwU hφw0 hφwK hφU hφ0`. Use `⟨ψ, hψU, hψ0, fun u hu hu' x hx => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hap : Apart u w`. Use `hψy x (fun z hz => commute_of_apart hap (hKl u hx) hz) ?_` and prove the remaining obligations. Break down `hu' with h | h` into its components or cases. Conclude with `hφ u hu (Or.inl h) x hx`. Break down `Finset.mem_insert.1 h with rfl | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `absurd rfl hap`. Conclude with `hφ u hu (Or.inr h) x hx`. Rewrite `hx` using `[hKeq u w hap]`. Conclude with `hψK x hx`. Use `⟨φ, hφU, hφ0, fun u hu hu' x hx => ?_⟩` and prove the remaining obligations.
-
-Break down `hu' with h | h` into its components or cases. Conclude with `hφ u hu (Or.inl h) x hx`. Break down `Finset.mem_insert.1 h with rfl | h` into its components or cases. Conclude with `absurd hu hw`. Conclude with `hφ u hu (Or.inr h) x hx`.
-
-Take `⟨φ, hφU, hφ0, hφ⟩` from `main hB.toFinset`. Use `⟨φ, hφU, hφ0, fun u hu x hx => hφ u hu ?_ x hx⟩` and prove the remaining obligations. Distinguish the cases in `h : ∀ x ∈ K u, RU E a x φ₀ = φ₀`. Conclude with `Or.inl h`. Conclude with `Or.inr (hB.mem_toFinset.2 h)`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem fix_prod : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a : ℕ) (U : Submodule ℂ (UA E a → ℂ)), IsAutRepU U → ∀ (w₀ : HeightOneSpectrum (𝓞 E)) (K : HeightOneSpectrum (𝓞 E) → Subgroup (UA E a)), (∀ w, K w ≤ locU a w) → (∀ w u, ¬ Apart w u → K w = K u) → (∀ w, IsCompact (K w : Set (UA E a))) → (∀ᶠ w in Filter.cofinite, ∀ x ∈ K w, cLoc w x ∈ GlobalTheory.LFun.KGL w a) → (∀ w, IsOpen ((K w).subgroupOf (locU a w) : Set (locU a w))) → (∀ w, Apart w w₀ → ∃ φ ∈ U, φ ≠ 0 ∧ ∀ x ∈ K w, RU E a x φ = φ) → ∃ φ ∈ U, φ ≠ 0 ∧ ∀ w, Apart w w₀ → ∀ x ∈ K w, RU E a x φ = φ := by
   intro E _ _ _ a U hU w₀ K hKl hKeq hKc hKint _ hφ'

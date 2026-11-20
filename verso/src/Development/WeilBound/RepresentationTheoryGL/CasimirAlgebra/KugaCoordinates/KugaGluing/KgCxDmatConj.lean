@@ -11,7 +11,7 @@ variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 omit [NumberField E] in
 /- English proof (translation)
-Unfold `atEmb`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.star_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem kg_star_atEmb (τ : E →+* ℂ) (z : ℂ) : star (atEmb τ z) = atEmb τ (starRingEnd ℂ z) := by
   classical
@@ -21,11 +21,11 @@ theorem kg_star_atEmb (τ : E →+* ℂ) (z : ℂ) : star (atEmb τ z) = atEmb �
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : ∀ z, (Ξ.dmat (toL (Matrix.single i j (atEmb τ z))))ᴴ = Ξ.dmat (toL (Matrix.single j i (atEmb τ (starRingEnd ℂ z))))`. Introduce `z`. Rewrite using `[← hΞ, Matrix.star_eq_conjTranspose, Matrix.conjTranspose_single, kg_star_atEmb]`. Establish `e2 : Ξ.dmat (toL (Matrix.single j i (atEmb τ (-Complex.I)))) = -Ξ.dmat (toL (Matrix.single j i (atEmb τ Complex.I)))`. Rewrite using `[← map_neg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `k l`. Use `show Matrix.single j i (atEmb τ (-Complex.I)) k l = -(Matrix.single j i (atEmb τ Complex.I) k l)`. Rewrite using `[Matrix.single_apply, Matrix.single_apply, atEmb_eq τ (-Complex.I), atEmb_eq τ Complex.I]`. Apply the tactic sequence `split_ifs <;> simp`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Unfold `cx`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, e, e, map_one, Complex.conj_I, e2]`. Simplify using `only [Complex.star_def, map_div₀, map_one, map_ofNat, Complex.conj_I]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kg_cx_dmat_conj (Ξ : AlgRep E a)
     (hΞ : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), Ξ.dmat (toL (star X)) = (Ξ.dmat (toL X))ᴴ)
@@ -48,7 +48,7 @@ theorem kg_cx_dmat_conj (Ξ : AlgRep E a)
   module
 
 /- English proof (translation)
-Simplify using `only [Matrix.conjTranspose_sum, Matrix.conjTranspose_mul, kg_cx_dmat_conj Ξ hΞ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kg_cas_herm (Ξ : AlgRep E a)
     (hΞ : ∀ X : Matrix (Fin a) (Fin a) (Cinf E), Ξ.dmat (toL (star X)) = (Ξ.dmat (toL X))ᴴ) (τ : E →+* ℂ) :
@@ -57,7 +57,7 @@ theorem kg_cas_herm (Ξ : AlgRep E a)
 
 omit [NumberField E] in
 /- English proof (translation)
-Use extensionality with `i j w`. Establish `h : star (X j i) = X i j` using `by rw [← Matrix.star_apply, hX]`. Establish `h' : star (X j i w) = X i j w` using `congrFun h w`. Simplify using `only [iM, Matrix.star_apply, Matrix.smul_apply, Matrix.neg_apply, Pi.star_apply, Pi.neg_apply, smul_eq_mul, Pi.mul_apply, star_mul', h', Complex.star_def, Complex.conj_I]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem kg_star_iM {X : Matrix (Fin a) (Fin a) (Cinf E)} (hX : star X = X) : star (iM X) = -iM X := by
   ext i j w

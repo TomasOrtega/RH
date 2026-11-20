@@ -16,11 +16,11 @@ def padFam (T S : Finset ι) (c : ∀ i, M i) (x : ∀ u : T, M u) : ∀ u : S, 
   fun u => if h : u.1 ∈ T then x ⟨u.1, h⟩ else c u.1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u.1 ∈ T`. Distinguish the cases in `hu : u.1 = i.1`. Take `⟨u, hu'⟩` from `u`. Take `⟨i, hi⟩` from `i`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hu`. Substitute `hu` using the available equality. Simplify using `[padFam, h]`. Establish `h1 : (⟨u.1, h⟩ : T) ≠ i` using `fun e => hu (by rw [← e])`. Establish `h2 : u ≠ ⟨i.1, hTS i.2⟩` using `fun e => hu (by rw [e])`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [padFam, h, dif_pos, Function.update_of_ne h1, Function.update_of_ne h2]`. Establish `h2 : u ≠ ⟨i.1, hTS i.2⟩` using `fun e => h (by rw [e]; exact i.2)`. Simplify using `only [padFam, h, dif_neg, not_false_eq_true, Function.update_of_ne h2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem padFam_update (T S : Finset ι) (hTS : T ⊆ S) (c : ∀ i, M i) [DecidableEq T] [DecidableEq S]
     (x : ∀ u : T, M u) (i : T) (y : M i) :
@@ -54,7 +54,7 @@ def padTensor (T S : Finset ι) (hTS : T ⊆ S) (c : ∀ i, M i) :
   PiTensorProduct.lift (padMultilinear T S hTS c)
 
 /- English proof (translation)
-Simplify using `[padTensor, padMultilinear]`.
+Simplify using the standard rewrite rules.
 -/
 theorem padTensor_tprod (T S : Finset ι) (hTS : T ⊆ S) (c : ∀ i, M i) (x : ∀ u : T, M u) :
     padTensor T S hTS c (PiTensorProduct.tprod ℂ x) = PiTensorProduct.tprod ℂ (padFam T S c x) := by
@@ -63,17 +63,15 @@ theorem padTensor_tprod (T S : Finset ι) (hTS : T ⊆ S) (c : ∀ i, M i) (x : 
 end Extend
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X R Rf v hv T Φ Φ' hM`. Take `⟨m, m', f, φ, f', φ', hφ, hφ', hΦ, hΦ', hsum⟩` from `hM`. Use `⟨m, m', f, φ, f', φ', fun i => ⟨(hφ i).1, (hφ i).2.1, fun w hw => (hφ i).2.2 w fun h => hw (Finset.mem_insert_of_mem h)⟩, fun j => ⟨(hφ' j).1, (hφ' j).2.1, fun w hw => (hφ' j).2.2 w fun h => hw (Finset.mem_insert_of_mem h)⟩, hΦ, hΦ', ?_⟩` and prove the remaining obligations. Set `c : ∀ u, Rf.Pi u` to `fun u => Rf.p u (G.M.vac u)`. Establish `key` using `congrArg (LinearMap.lTensor R.Pi (padTensor T (insert v T) (Finset.subset_insert _ _) c)) hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [map_sum, LinearMap.lTensor_tmul, padTensor_tprod] at key`. Establish `e1 : ∀ i, padFam T (insert v T) c (fun u : T => Rf.p u (φ i u)) = fun u : (insert v T : Finset (Pl F)) => Rf.p u (φ i u)`. Introduce `i`. Use function extensionality and compare the values at `u`. Distinguish the cases in `h : u.1 ∈ T`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[padFam, h]`. Simplify using `[padFam, h, c, (hφ i).2.2 u.1 h]`. Establish `e2 : ∀ j, padFam T (insert v T) c (fun u : T => Rf.p' u (φ' j u)) = fun u : (insert v T : Finset (Pl F)) => Rf.p' u (φ' j u)`. Introduce `j`. Use function extensionality and compare the values at `u`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : u.1 ∈ T`. Simplify using `[padFam, h]`. Take `⟨u, hu⟩` from `u`. Establish `huv : u = v`. Break down `Finset.mem_insert.1 hu with h' | h'` into its components or cases.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h'`. Conclude with `absurd h' h`. Substitute `huv` using the available equality. Simplify using `[padFam, h, c, (hφ' j).2.2 u h, hv]`. Simplify using `only [e1, e2] at key`.
-
-Conclude with `key`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem polMatchOn_insert : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (R : RealMaps F a a') (Rf : FinMaps F a a') (v : Pl F),

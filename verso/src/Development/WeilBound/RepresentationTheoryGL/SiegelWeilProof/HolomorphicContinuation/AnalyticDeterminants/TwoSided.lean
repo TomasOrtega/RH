@@ -13,13 +13,13 @@ namespace PositivityTheory.Rg.Sw
 open LVs
 
 /- English proof (translation)
-The claim follows from `lv_of cayley uAct (djSec_of cayley) (dpDual cayley uAct) holInt holZero singToDiff topComp infInv`.
+A detailed English derivation is pending.
 -/
 theorem lv : LV :=
   lv_of cayley uAct (djSec_of cayley) (dpDual cayley uAct) holInt holZero singToDiff topComp infInv
 
 /- English proof (translation)
-The claim follows from `LVs.twoSided`.
+A detailed English derivation is pending.
 -/
 theorem twoSided' : TwoSided := LVs.twoSided
 

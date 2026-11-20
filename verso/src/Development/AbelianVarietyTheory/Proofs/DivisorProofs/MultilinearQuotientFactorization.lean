@@ -8,37 +8,33 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ _ A P₀ Q _ _ _ _ _ _ S P _ _ _ _ A₀ S₀ NQ p₀ p Ψ hA hS h0 h1 m a s hmem hsum`. Take `⟨σ₀, hσ₀⟩` from `LinearMap.exists_rightInverse_of_surjective (p₀.comp A₀.subtype) (by rw [LinearMap.range_comp, Submodule.range_subtype]; exact hA)`. Establish `hσ : ∀ i, ∃ g : P i →ₗ[ℂ] S₀ i, ((p i).comp (S₀ i).subtype).comp g = LinearMap.id` using `fun i => LinearMap.exists_rightInverse_of_surjective _ (by rw [LinearMap.range_comp, Submodule.range_subtype]; exact hS i)`. Use `choose σ hσ using hσ`. Establish `hs₀ : ∀ u, p₀ ((σ₀ u : A)) = u` using `fun u => LinearMap.congr_fun hσ₀ u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsi : ∀ i (x : P i), p i ((σ i x : S i)) = x` using `fun i x => LinearMap.congr_fun (hσ i) x`. Set `τ : ∀ i, S i → S i` to `fun i x => (σ i (p i x) : S i)`. Establish `hττ : ∀ i x, τ i (τ i x) = τ i x` using `by intro i x; simp only [τ, hsi]`. Establish `hτmem : ∀ i x, τ i x ∈ S₀ i` using `fun i x => (σ i (p i x)).2`. Establish `hpτ : ∀ i x, p i (x - τ i x) = 0` using `by intro i x; simp [τ, hsi]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key_s : ∀ b ∈ A₀, ∀ (T : Finset ι) (t : ∀ i, S i), (∀ i, t i ∈ S₀ i) → (∀ i ∉ T, τ i (t i) = t i) → NQ.mkQ (Ψ b t) = NQ.mkQ (Ψ b (fun i => τ i (t i)))`. Introduce `b hb T`. Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty`. Introduce `t _ ht`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2; funext i; exact (ht i (by simp)).symm`. Consider the case `@insert j T hj ih`. Introduce `t ht htau`. Establish `ht' : ∀ i, Function.update t j (τ j (t j)) i ∈ S₀ i`. Introduce `i`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `hτmem _ _`. Simplify using `only [Function.update_of_ne h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ht i`. Establish `htau' : ∀ i ∉ T, τ i (Function.update t j (τ j (t j)) i) = Function.update t j (τ j (t j)) i`. Introduce `i hi`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.update_self]`. Conclude with `hττ _ _`. Simplify using `only [Function.update_of_ne h]; exact htau i (by simp [h, hi])`. Establish `e1` using `ih _ ht' htau'`. Establish `e2 : (fun i => τ i (Function.update t j (τ j (t j)) i)) = fun i => τ i (t i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`. Conclude with `hττ _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.update_of_ne h]`. Establish `hdiff : Ψ b t - Ψ b (Function.update t j (τ j (t j))) ∈ NQ`. Establish `: Ψ b t - Ψ b (Function.update t j (τ j (t j))) = Ψ b (Function.update t j (t j - τ j (t j)))`. Rewrite using `[MultilinearMap.map_update_sub, Function.update_eq_self]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use `h1 b hb _ ?_ j ?_` and prove the remaining obligations. Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [Function.update_self]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_mem (ht i) (hτmem _ _)`. Simplify using `only [Function.update_of_ne h]`. Conclude with `ht i`. Simplify using `only [Function.update_self]`. Conclude with `hpτ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Submodule.mkQ_apply]`. Conclude with `(Submodule.Quotient.eq NQ).2 hdiff`. Use `_ = _ := e1`. Use `_ = _ := by rw [e2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ x ∈ A₀, ∀ t : ∀ i, S i, (∀ i, t i ∈ S₀ i) → NQ.mkQ (Ψ x t) = NQ.mkQ (Ψ ((σ₀ (p₀ x) : A)) (fun i => τ i (t i)))`. Introduce `x hx t ht`. Establish `hd : Ψ x t - Ψ ((σ₀ (p₀ x) : A)) t ∈ NQ`. Rewrite using `[← MultilinearMap.sub_apply, ← map_sub]`. Use `h0 _ (sub_mem hx (σ₀ (p₀ x)).2) t ht ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, hs₀, sub_self]`. Rewrite using `[← key_s _ (σ₀ (p₀ x)).2 Finset.univ t ht (by simp)]`. Simplify using `only [Submodule.mkQ_apply]`. Conclude with `(Submodule.Quotient.eq NQ).2 hd`. Set `L : P₀ →ₗ[ℂ] MultilinearMap ℂ P (Q ⧸ NQ)` to `{ toFun := fun u => (NQ.mkQ.compMultilinearMap (Ψ (σ₀ u : A))).compLinearMap (fun i => (S₀ i).subtype.comp (σ i)) map_add' := by intro x y; ext t; simp map_smul' := by intro c x; ext t; simp }`.
-
-Set `Λ : P₀ ⊗[ℂ] (⨂[ℂ] i, P i) →ₗ[ℂ] Q ⧸ NQ` to `TensorProduct.lift ((PiTensorProduct.lift (R := ℂ) (s := P) (E := Q ⧸ NQ)).toLinearMap.comp L)`. Establish `hk : ∀ k, NQ.mkQ (Ψ (a k) (s k)) = Λ (p₀ (a k) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (fun i => p i (s k i)))`. Introduce `k`. Rewrite using `[key _ (hmem k).1 _ (hmem k).2]`. Simplify using `[Λ, L, τ]`.
-
-Establish `: NQ.mkQ (∑ k, Ψ (a k) (s k)) = 0`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[hk]`. Rewrite using `[← map_sum, hsum, map_zero]`. Rewrite `this` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem descend_multilinear_mod : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (A P₀ Q : Type) [AddCommGroup A] [Module ℂ A] [AddCommGroup P₀] [Module ℂ P₀] [AddCommGroup Q] [Module ℂ Q] (S P : ι → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] [∀ i, AddCommGroup (P i)] [∀ i, Module ℂ (P i)] (A₀ : Submodule ℂ A) (S₀ : ∀ i, Submodule ℂ (S i)) (NQ : Submodule ℂ Q) (p₀ : A →ₗ[ℂ] P₀) (p : ∀ i, S i →ₗ[ℂ] P i) (Ψ : A →ₗ[ℂ] MultilinearMap ℂ S Q), A₀.map p₀ = ⊤ → (∀ i, (S₀ i).map (p i) = ⊤) → (∀ a ∈ A₀, ∀ s : ∀ i, S i, (∀ i, s i ∈ S₀ i) → p₀ a = 0 → Ψ a s ∈ NQ) → (∀ a ∈ A₀, ∀ s : ∀ i, S i, (∀ i, s i ∈ S₀ i) → ∀ i, p i (s i) = 0 → Ψ a s ∈ NQ) → ∀ (m : ℕ) (a : Fin m → A) (s : Fin m → ∀ i, S i), (∀ k, a k ∈ A₀ ∧ ∀ i, s k i ∈ S₀ i) → ∑ k, p₀ (a k) ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ (fun i => p i (s k i)) = 0 → ∑ k, Ψ (a k) (s k) ∈ NQ := by
   intro ι _ _ A P₀ Q _ _ _ _ _ _ S P _ _ _ _ A₀ S₀ NQ p₀ p Ψ hA hS h0 h1 m a s hmem hsum

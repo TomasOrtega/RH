@@ -17,9 +17,9 @@ open scoped TensorProduct ENNReal NNReal Matrix
 open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.WeilSiegel.Free GlobalTheory.CompanionTheory.WeilSiegel.HypStep
 
 /- English proof (translation)
-Establish `hu : ∀ f : (Fin n → T) → ℝ≥0∞, ∫⁻ a : Fin 1 → Fin n → T, f (a 0) ∂(Measure.pi fun _ : Fin 1 => Measure.pi fun _ : Fin n => m) = ∫⁻ c, f c ∂(Measure.pi fun _ : Fin n => m)` using `fun f => (measurePreserving_funUnique (Measure.pi fun _ : Fin n => m) (Fin 1)).lintegral_comp_emb (MeasurableEquiv.measurableEmbedding _) f`. Establish `hc : ∀ c : Fin n → T, Measurable fun X : Fin n → Fin (M + 1) → T => ψ (fun a => Fin.cons (c a) (X a))`. Introduce `c`. Use `hψ.comp (measurable_pi_iff.2 fun a => ?_)` and prove the remaining obligations. Conclude with `(TupFubini.measurable_cons_tail (c a)).comp (measurable_pi_apply a)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TupFubini.lintegral_tuple_first_coord m n (M + 1) ψ hψ]`. Use `Eq.trans ?_ (hu fun c => ∫⁻ s : Fin 1 → Fin n → T, ∫⁻ Y : Fin n → Fin M → T, ψ (fun j => vH (c j) (s 0 j) (Y j)) ∂(Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin M => m) ∂(Measure.pi fun _ : Fin 1 => Measure.pi fun _ : Fin n => m)).symm` and prove the remaining obligations. Use `lintegral_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[TupFubini.lintegral_tuple_first_coord m n M _ (hc c)]`. Conclude with `(hu fun c' => ∫⁻ Y : Fin n → Fin M → T, ψ (fun j => vH (c j) (c' j) (Y j)) ∂(Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin M => m)).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_tuple_vH {T : Type} [MeasurableSpace T] (m : Measure T) [SigmaFinite m] (n M : ℕ)
     (ψ : (Fin n → Fin (M + 2) → T) → ℝ≥0∞) (hψ : Measurable ψ) :
@@ -49,21 +49,19 @@ theorem lintegral_tuple_vH {T : Type} [MeasurableSpace T] (m : Measure T) [Sigma
     ∂(Measure.pi fun _ : Fin n => Measure.pi fun _ : Fin M => m)).symm
 
 /- English proof (translation)
-Take `⟨i₁, i₂, i₃, i₄, -⟩` from `id hR`. Take `⟨k₁, k₂, k₃, k₄, -, -, -, hBorel, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hCM R`. Take `⟨hK, hW, -⟩` from `GlobalTheory.T.coordinate_haar_measure F E σ hCM R d b lam hlam`. Establish `hJ'` using `(GlobalTheory.T.hyperbolic_sum_nondegenerate_frame F E σ hCM M J hJ).1`. Establish `: SigmaFinite (coordK R b lam)` using `inferInstance`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBK : BorelSpace (R ⊗[F] E)` using `⟨rfl⟩`. Establish `hBt` using `hBorel 1 n`. Establish `hHaar` using `hW 1 n`. Establish `step : ∫⁻ X, g X ∂(coordW R b lam (n + 1) (M + 2)) = ∫⁻ x : Fin 1 → Fin (M + 2) → R ⊗[F] E, ∫⁻ Y : Fin n → Fin (M + 2) → R ⊗[F] E, g (Fin.cons (x 0) Y) ∂(coordW R b lam n (M + 2)) ∂(coordW R b lam 1 (M + 2))` using `TupFubini.lintegral_tuple_succ (coordK R b lam) n (M + 2) g hg`. Rewrite using `[step]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hu : IsUnit (x 0 0)`. Take `⟨c, hcv⟩` from `hc (x 0) hu`. Establish `hact : Measurable (actW R σ (hypOne J) c : (Fin n → Fin (M + 2) → R ⊗[F] E) → Fin n → Fin (M + 2) → R ⊗[F] E)`. Use `hBorel n (M + 2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont` using `((GlobalTheory.T.adelic_unitary_group_locally_compact F E σ hCM (M + 2) (hypOne J) hJ' R).2.2.2.2.2 n).1`. Conclude with `(hcont.comp (Continuous.prodMk_right c)).measurable`. Establish `hinv` using `GlobalTheory.T.unitary_action_preserves_haar_local F E σ hCM (M + 2) (hypOne J) hJ' R hR n (coordW R b lam n (M + 2)) (hW n (M + 2)) c`. Establish `hf : Measurable fun Y : Fin n → Fin (M + 2) → R ⊗[F] E => g (Fin.cons (x 0) Y)` using `hg.comp (TupFubini.measurable_cons_tail (x 0))`. Establish `hψ` using `hf.comp hact`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hinv]`. Use `_ = ∫⁻ Y, g (Fin.cons (x 0) (actW R σ (hypOne J) c Y)) ∂(coordW R b lam n (M + 2)) := lintegral_map hf hact`. Use `_ = ∫⁻ a, ∫⁻ s, ∫⁻ Y, g (Fin.cons (x 0) (actW R σ (hypOne J) c (fun j => vH (a 0 j) (s 0 j) (Y j)))) ∂(coordW R b lam n M) ∂(coordW R b lam 1 n) ∂(coordW R b lam 1 n) := lintegral_tuple_vH (coordK R b lam) n M _ hψ`. Use `_ = _ := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun a => ?_` and prove the remaining obligations. Establish `ht` using `lintegral_add_right_eq_self (μ := coordW R b lam 1 n) (fun s : Fin 1 → Fin n → R ⊗[F] E => ∫⁻ Y, g (Fin.cons (x 0) (actW R σ (hypOne J) c (fun j => vH (a 0 j) (s 0 j) (Y j)))) ∂(coordW R b lam n M)) (fun _ j => - (tHalf R σ J (x 0) * a 0 j))`. Rewrite using `[← ht]`. Use `lintegral_congr fun s => lintegral_congr fun Y => ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `chartS`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [actW, actTup, hcv, Pi.add_apply, sub_eq_add_neg]`. Establish `h0 : ∀ Y : Fin n → Fin (M + 2) → R ⊗[F] E, g (Fin.cons (x 0) Y) = 0` using `fun Y => hg0 _ (by simpa using hu)`.
-
-Establish `h1 : ∀ a s Y, g (chartS R σ J x a s Y) = 0` using `fun a s Y => hg0 _ (by simpa [chartS] using hu)`. Simplify using `[h0, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_chartS_of_unitary (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hCM : IsCMExt F E σ) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (hJ : IsHermND σ J)
@@ -129,7 +127,7 @@ theorem lintegral_chartS_of_unitary (F E : Type) [Field F] [NumberField F] [Fiel
     simp [h0, h1]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n d b lam hlam g hg hg0`. Conclude with `lintegral_chartS_of_unitary F E σ hCM M J hJ R hR n d b lam hlam g hg hg0 fun x hx => GlobalTheory.CompanionTheory.WeilSiegel.HypUnit.cvec_unitary F E σ hCM M J hJ R x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chartS_lintegral : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n d : ℕ) (b : Module.Basis (Fin d) F E) (lam : Measure R), lam.IsAddHaarMeasure → ∀ g : (Fin (n + 1) → Fin (M + 2) → R ⊗[F] E) → ℝ≥0∞, Measurable g → (∀ X, ¬ IsUnit (X 0 0) → g X = 0) → ∫⁻ X, g X ∂(coordW R b lam (n + 1) (M + 2)) = ∫⁻ x, ∫⁻ a, ∫⁻ s, ∫⁻ Y, g (chartS R σ J x a s Y) ∂(coordW R b lam n M) ∂(coordW R b lam 1 n) ∂(coordW R b lam 1 n) ∂(coordW R b lam 1 (M + 2)) := by
   intro F E _ _ _ _ _ σ hCM M J hJ R _ _ _ _ _ hR n d b lam hlam g hg hg0

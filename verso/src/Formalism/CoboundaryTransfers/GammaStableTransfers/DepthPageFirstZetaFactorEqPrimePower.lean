@@ -10,23 +10,21 @@ open Formalism
 namespace GammaInvariantLatticeLift
 
 /- English proof (translation)
-Introduce `y hy`. Establish `hit : ∀ k (x : D), (fun x : D => Q • x)^[k] x = Q ^ k • x`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih => intro x`. Rewrite using `[Function.iterate_succ_apply', ih, pow_succ', mul_smul]`. Establish `hbM : Function.Bijective (fun x : D => Q ^ M • x)`. Use `hbij.iterate M` as an intermediate fact.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Rewrite using `[hit]`. Use `set w : A := ↑hv.unit⁻¹ with hw_def`. Establish `hwv : w * v = 1` using `hv.val_inv_mul`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : w - 1 = X * (-(w * t))`. Establish `: w - 1 = w * (1 - v)` using `by rw [mul_sub, hwv, mul_one]`. Rewrite using `[this, hvt]`. Expand and normalize the polynomial expressions, which then agree. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : X ∣ w ^ M - 1 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `sub_dvd_pow_sub_pow w 1 M`. Rewrite `h1` using `[one_pow]`. Conclude with `(Dvd.intro _ hw1.symm).trans h1`. Establish `hwM : w ^ M = 1 + X * s` using `by rw [← hs]; ring`. Take `⟨n', hn'N, hn'⟩` from `hN _ hy`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (v * Q) ^ M • γ y = Q ^ M • y + X • n'`. Rewrite using `[← hQ, ← map_pow, ← hsmul, ← hn']`. Normalize the expressions using the abelian group laws. Establish `key : Q ^ M • γ y = w ^ M • (Q ^ M • y + X • n')`. Rewrite using `[← e1, smul_smul, mul_pow, ← mul_assoc, ← mul_pow, hwv, one_pow, one_mul]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set m : D := s • (Q ^ M • y) + w ^ M • n' with hm_def`. Establish `hmN : m ∈ N` using `N.add_mem (N.smul_mem _ hy) (N.smul_mem _ hn'N)`. Establish `hQm : Q ^ M • (γ y - y) = X • m`. Rewrite using `[smul_sub, key, hm_def, hwM]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y', hy'⟩` from `hbM.2 m`. Use `⟨y', ?_, ?_⟩` and prove the remaining obligations. Use `show Q ^ M • y' ∈ N`. Establish `: Q ^ M • y' = m` using `hy'`. Rewrite using `[this]`.
-
-Conclude with `hmN`. Apply `hbM.1 show Q ^ M • (γ y - y) = Q ^ M • (X • y')` to reduce the goal to its premises. Establish `: Q ^ M • y' = m` using `hy'`. Rewrite using `[hQm, smul_comm, this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamma_invariant_lattice_lift {O A D : Type} [CommRing O] [CommRing A] [Algebra O A] [AddCommGroup D]
     [Module A D] [Module O D] [IsScalarTower O A D]
@@ -92,15 +90,15 @@ variable {O A AA : Type} [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [
   [Module O V] [IsScalarTower O AA V] [IsScalarTower O A V]
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul AA a v).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_eq_alg (a : A) (v : V) : a • v = algebraMap A AA a • v :=
   (algebraMap_smul AA a v).symm
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `ha`. Use `Function.bijective_iff_has_inverse.mpr ⟨fun x j => (↑u⁻¹ : AA) • x j, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Use function extensionality and compare the values at `j`. Use `show (↑u⁻¹ : AA) • (a • x j) = x j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_eq_alg (AA := AA) a (x j), ← hu, smul_smul, Units.inv_mul, one_smul]`. Introduce `x`. Use function extensionality and compare the values at `j`. Use `show a • ((↑u⁻¹ : AA) • x j) = x j`. Rewrite using `[smul_eq_alg (AA := AA) a, ← hu, smul_smul, Units.mul_inv, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_bij (_E : WachCohomologyFacts.Amb B AA) (a : A) (ha : IsUnit (algebraMap A AA a)) :
     Function.Bijective (fun x : ZMod n → V => a • x) := by
@@ -116,7 +114,7 @@ theorem smul_bij (_E : WachCohomologyFacts.Amb B AA) (a : A) (ha : IsUnit (algeb
     rw [smul_eq_alg (AA := AA) a, ← hu, smul_smul, Units.mul_inv, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show W.φ (j - 1) (a • x (j - 1)) = B.φ a • W.φ (j - 1) (x (j - 1))`. Rewrite using `[smul_eq_alg (AA := AA) a, W.φ_smul, E.φ_ext, ← smul_eq_alg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Φ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n → V) :
     W.Φ (a • x) = B.φ a • W.Φ x := by
@@ -125,7 +123,7 @@ theorem Φ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n �
   rw [smul_eq_alg (AA := AA) a, W.φ_smul, E.φ_ext, ← smul_eq_alg]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show W.γ j (a • x j) = B.γ a • W.γ j (x j)`. Rewrite using `[smul_eq_alg (AA := AA) a, W.γ_smul, E.γ_ext, ← smul_eq_alg]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Γ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n → V) :
     W.Γ (a • x) = B.γ a • W.Γ x := by
@@ -134,7 +132,7 @@ theorem Γ_smul (W : WachCohomologyFacts.WachDatum E n V) (a : A) (x : ZMod n �
   rw [smul_eq_alg (AA := AA) a, W.γ_smul, E.γ_ext, ← smul_eq_alg]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[Submodule.mem_pi]`. Use `choose x' hx' he using fun j => W.γ_sub j (x j) (hx j (Set.mem_univ j))`. Conclude with `⟨x', (Submodule.mem_pi).2 fun j _ => hx' j, funext fun j => he j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Γ_sub (W : WachCohomologyFacts.WachDatum E n V) :
     ∀ x ∈ Submodule.pi Set.univ W.N, ∃ x' ∈ Submodule.pi Set.univ W.N, W.Γ x - x = B.X • x' := by
@@ -144,7 +142,7 @@ theorem Γ_sub (W : WachCohomologyFacts.WachDatum E n V) :
   exact ⟨x', (Submodule.mem_pi).2 fun j _ => hx' j, funext fun j => he j⟩
 
 /- English proof (translation)
-Use `show B.γ (B.X + (B.ℓ : A)) = (1 + B.X * B.c) * (B.X + (B.ℓ : A))`. Rewrite using `[map_add, map_natCast]`. Take the linear combination `B.hγX`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem γq (B : WachCohomologyFacts.Base O A) : B.γ B.q = (1 + B.X * B.c) * B.q := by
   show B.γ (B.X + (B.ℓ : A)) = (1 + B.X * B.c) * (B.X + (B.ℓ : A))

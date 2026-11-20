@@ -38,7 +38,7 @@ def ofDegOne {φ : G} (hφK : φ ∈ (K : Subgroup G))
 variable (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
 
 /- English proof (translation)
-Apply `OpenSubgroup.toSubgroup_injective` to reduce the goal to its premises. Use `show frobeniusClosure D.deg L s.elt = frobeniusClosure D.deg L t.elt`. Rewrite using `[h]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem field_congr {s t : D.FrobeniusLift K} (h : s.elt = t.elt) :
     s.field L hLK = t.field L hLK := by
@@ -47,7 +47,7 @@ theorem field_congr {s t : D.FrobeniusLift K} (h : s.elt = t.elt) :
   rw [h]
 
 /- English proof (translation)
-Establish `h` using `inertiaDegree_eq_mul D.surjective_deg (K := (K : Subgroup G)) (L := ((s.field L hLK : OpenSubgroup G) : Subgroup G)) (fun x hx => s.field_le hLK hx)`. Rewrite `h` using `[s.inertiaDegree_field hLK]`. Conclude with `(Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero (D.inertiaDegree_ne_zero K)) h).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relInertiaDegree_field (s : D.FrobeniusLift K) :
     relInertiaDegree D.deg K (s.field L hLK) = s.deg := by
@@ -61,7 +61,7 @@ end FrobeniusLift
 variable (hLK : L ≤ K) [((L : Subgroup G).subgroupOf K).Normal]
 
 /- English proof (translation)
-Unfold `recFrob`. Rewrite using `[FrobeniusLift.field_congr hLK h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem recFrob_congr {s t : D.FrobeniusLift K} (h : s.elt = t.elt) :
     D.recFrob L hLK s = D.recFrob L hLK t := by
@@ -69,7 +69,7 @@ theorem recFrob_congr {s t : D.FrobeniusLift K} (h : s.elt = t.elt) :
   rw [FrobeniusLift.field_congr hLK h]
 
 /- English proof (translation)
-Rewrite using `[D.valuation_norm (s.field_le hLK), hπ, FrobeniusLift.relInertiaDegree_field, ← ofAdd_nsmul, nsmul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_norm_prime (s : D.FrobeniusLift K)
     {π : fixedModule A ((s.field L hLK : OpenSubgroup G) : Subgroup G)}
@@ -85,9 +85,9 @@ omit [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDiscon
   [((L : Subgroup G).subgroupOf K).Normal] in
 
 /- English proof (translation)
-Rewrite using `[Finset.smul_prod']`. Simplify using `only [Fin.prod_univ_eq_prod_range (fun j => φ • φ ^ j • y), Fin.prod_univ_eq_prod_range (fun j => φ ^ j • y)]`. Establish `hs` using `Finset.prod_range_succ (fun j => φ ^ j • y) n`. Establish `hs'` using `Finset.prod_range_succ' (fun j => φ ^ j • y) n`. Simplify using `only [pow_zero, one_smul] at hs'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ∏ j ∈ Finset.range n, φ • φ ^ j • y = ∏ j ∈ Finset.range n, φ ^ (j + 1) • y`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, ← pow_succ']`. Rewrite using `[this, div_eq_div_iff_mul_eq_mul, ← hs', hs, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_prod_pow_div (φ : G) (y : A) (n : ℕ) :
     φ • (∏ ν : Fin n, φ ^ (ν : ℕ) • y) / ∏ ν : Fin n, φ ^ (ν : ℕ) • y = φ ^ n • y / y := by
@@ -105,9 +105,9 @@ theorem smul_prod_pow_div (φ : G) (y : A) (n : ℕ) :
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Use `set M : OpenSubgroup G := S ⊓ P`. Establish `hMS : M ≤ S` using `inf_le_left`. Establish `hMP : M ≤ P` using `inf_le_right`. Establish `heS : relRamificationIndex D.deg S M = 1` using `isUnramified_iff.2 fun x hx => ⟨hx.1, (h.le hx).1⟩`. Establish `heP : relRamificationIndex D.deg P M = 1` using `isUnramified_iff.2 fun x hx => ⟨(h.ge hx).1, hx.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `D.valuation_of_mem hMS hyS`. Establish `h2` using `D.valuation_of_mem hMP hyP`. Rewrite `h1` using `[heS, pow_one]`. Rewrite `h2` using `[heP, pow_one]`. Rewrite using `[← h1, ← h2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_eq_of_inf_ker_eq {S P : OpenSubgroup G}
     (h : (S : Subgroup G) ⊓ D.deg.ker = (P : Subgroup G) ⊓ D.deg.ker) {y : A}
@@ -127,59 +127,51 @@ theorem valuation_eq_of_inf_ker_eq {S P : OpenSubgroup G}
   rw [← h1, ← h2]
 
 /- English proof (translation)
-Use `set t := FrobeniusLift.ofDegOne (D := D) hφK hdφ with htdef`. Use `set u := s.mul t with hudef`. Use `set n := s.deg with hndef`. Take `⟨π1, hπ1⟩` from `D.exists_prime (s.field L hLK)`. Take `⟨π2, hπ2⟩` from `D.exists_prime (t.field L hLK)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨π3, hπ3⟩` from `D.exists_prime (u.field L hLK)`. Rewrite using `[← D.mk_norm_eq_recFrob hLK hax s hπ1, ← D.mk_norm_eq_recFrob hLK hax t hπ2, ← D.mk_norm_eq_recFrob hLK hax u hπ3, ← QuotientGroup.mk_mul, QuotientGroup.eq]`. Establish `hJ : ∀ (v : D.FrobeniusLift K) (y : A), y ∈ fixedModule A ((v.field L hLK : OpenSubgroup G) : Subgroup G) → y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun v y hy => fixedModule_anti le_frobeniusClosure hy`. Establish `hφνJ : ∀ (ν : ℕ) (y : A), y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker) → φ ^ ν • y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `fun ν y hy => smul_mem_fixedModule_inf_ker hLK (K.pow_mem hφK ν) hy`. Establish `hσπ1 : s.elt • (π1 : A) = π1` using `π1.2 _ (s.elt_mem_field hLK)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφπ2 : φ • (π2 : A) = π2` using `π2.2 _ (t.elt_mem_field hLK)`. Establish `hσφπ3 : (s.elt * φ) • (π3 : A) = π3` using `π3.2 _ (u.elt_mem_field hLK)`. Use `set T1 : A := ∏ ν : Fin n, φ ^ (ν : ℕ) • (π1 : A) with hT1`. Use `set T3 : A := ∏ ν : Fin (n + 1), φ ^ (ν : ℕ) • (π3 : A) with hT3`. Use `set x : A := T1 * φ ^ n • (π2 : A) / T3 with hxdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set a : A := (π1 : A) / π3 with hadef`. Establish `hT1J : T1 ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `Subgroup.prod_mem _ fun ν _ => hφνJ ν _ (hJ s _ π1.2)`. Establish `hT3J : T3 ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `Subgroup.prod_mem _ fun ν _ => hφνJ ν _ (hJ u _ π3.2)`. Establish `hπ2J : φ ^ n • (π2 : A) ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `hφνJ n _ (hJ t _ π2.2)`. Establish `hxJ : x ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)` using `Subgroup.div_mem _ (Subgroup.mul_mem _ hT1J hπ2J) hT3J`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNprod : ∀ (m : ℕ) (y : A) (hy : y ∈ fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)), (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨∏ ν : Fin m, φ ^ (ν : ℕ) • y, Subgroup.prod_mem _ fun ν _ => hφνJ ν y hy⟩ : A) = ∏ ν : Fin m, φ ^ (ν : ℕ) • (norm A ((K : Sub …`. Introduce `m y hy`. Rewrite using `[coe_norm_inf_ker_prod Finset.univ _ (fun ν : Fin m => hφνJ (ν : ℕ) y hy)]`. Use `Finset.prod_congr rfl fun ν _ => ?_` and prove the remaining obligations. Rewrite using `[smul_norm_inf_ker hLK (K.pow_mem hφK ν)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN1 : (norm A (K : Subgroup G) ((s.field L hLK : OpenSubgroup G) : Subgroup G) π1 : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨T1, hT1J⟩ : A)`. Conclude with `(coe_norm_field_eq hLK s hφK hdφ π1).trans (hNprod _ _ _).symm`. Establish `hN3 : (norm A (K : Subgroup G) ((u.field L hLK : OpenSubgroup G) : Subgroup G) π3 : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨T3, hT3J⟩ : A)`. Conclude with `(coe_norm_field_eq hLK u hφK hdφ π3).trans (hNprod _ _ _).symm`. Establish `hN2K` using `(norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2).2`.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN2 : (norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2 : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨φ ^ n • (π2 : A), hπ2J⟩ : A)`. Establish `h0 : (norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2 : A) = (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨(π2 : A), hJ t _ π2.2⟩ : A)`. Establish `h0' : (norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2 : A) = ∏ ν : Fin 1, φ ^ (ν : ℕ) • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨(π2 : A), hJ t _ π2.2⟩ : A)` using `coe_norm_field_eq hLK t hφK hdφ π2`. Rewrite `h0'` using `[Fin.prod_univ_one]`. Simplify using `using h0'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hNx : (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨x, hxJ⟩ : A) = (norm A (K : Subgroup G) ((s.field L hLK : OpenSubgroup G) : Subgroup G) π1 : A) * norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2 / norm A (K : Subgroup G) ((u. …`. Rewrite using `[hN1, hN2, hN3]`. Establish `e : (⟨x, hxJ⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨T1, hT1J⟩ * ⟨φ ^ n • (π2 : A), hπ2J⟩ / ⟨T3, hT3J⟩` using `rfl`. Rewrite using `[e, map_div, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hst : ∀ y : A, IsOpen (MulAction.stabilizer G y : Set G)` using `fun y => IsDiscreteModule.isOpen_stabilizer y`. Establish `hopen : IsOpen ((L : Set G) ∩ (MulAction.stabilizer G (π1 : A) : Set G) ∩ (MulAction.stabilizer G (π2 : A) : Set G) ∩ (MulAction.stabilizer G (π3 : A) : Set G))` using `((L.isOpen.inter (hst _)).inter (hst _)).inter (hst _)`. Establish `hone : (1 : G) ∈ (L : Set G) ∩ (MulAction.stabilizer G (π1 : A) : Set G) ∩ (MulAction.stabilizer G (π2 : A) : Set G) ∩ (MulAction.stabilizer G (π3 : A) : Set G)` using `⟨⟨⟨L.one_mem, Subgroup.one_mem _⟩, Subgroup.one_mem _⟩, Subgroup.one_mem _⟩`. Take `⟨U, hU⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hopen hone`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (G ⧸ U.toSubgroup)` using `Subgroup.quotient_finite_of_isOpen _ U.isOpen'`. Use `set D0 := orderOf (φ : G ⧸ U.toSubgroup) with hD0def`. Establish `hD0 : 0 < D0` using `orderOf_pos _`. Establish `hφD0U : φ ^ D0 ∈ U.toSubgroup`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow, hD0def, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨⟨hψL, hψ1⟩, hψ2⟩, hψ3⟩` from `hU hφD0U`. Establish `hψπ1 : φ ^ D0 • (π1 : A) = π1` using `MulAction.mem_stabilizer_iff.1 hψ1`. Establish `hψπ2 : φ ^ D0 • (π2 : A) = π2` using `MulAction.mem_stabilizer_iff.1 hψ2`. Establish `hψπ3 : φ ^ D0 • (π3 : A) = π3` using `MulAction.mem_stabilizer_iff.1 hψ3`. Use `set g := (L : Subgroup G).relIndex K with hgdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : 0 < g` using `Nat.pos_of_ne_zero (Subgroup.FiniteIndex.index_ne_zero (H := (L : Subgroup G).subgroupOf K))`. Use `set s1 := powLift hφK hdφ D0 hD0 with hs1`. Use `set s2 := powLift hφK hdφ (g * D0) (Nat.mul_pos hg hD0) with hs2`. Establish `hfix : ∀ (ν : ℕ) (y : A), φ ^ D0 • y = y → φ ^ D0 • φ ^ ν • y = φ ^ ν • y`. Introduce `ν y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, ← pow_add, add_comm, pow_add, mul_smul, hy]`. Establish `hT1ψ : φ ^ D0 • T1 = T1`. Rewrite using `[hT1, Finset.smul_prod']`. Conclude with `Finset.prod_congr rfl fun ν _ => hfix ν _ hψπ1`. Establish `hT3ψ : φ ^ D0 • T3 = T3`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT3, Finset.smul_prod']`. Conclude with `Finset.prod_congr rfl fun ν _ => hfix ν _ hψπ3`. Establish `hxP : x ∈ fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)`. Rewrite using `[FrobeniusLift.coe_field, mem_fixedModule_frobeniusClosure]`. Use `⟨hxJ, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show φ ^ D0 • x = x`. Rewrite using `[hxdef, smul_div', smul_mul', hT1ψ, hfix n _ hψπ2, hT3ψ]`. Establish `hπ1P : (π1 : A) ∈ fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)`. Rewrite using `[FrobeniusLift.coe_field, mem_fixedModule_frobeniusClosure]`. Conclude with `⟨hJ s _ π1.2, hψπ1⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hπ3P : (π3 : A) ∈ fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)`. Rewrite using `[FrobeniusLift.coe_field, mem_fixedModule_frobeniusClosure]`. Conclude with `⟨hJ u _ π3.2, hψπ3⟩`. Establish `haP : a ∈ fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)` using `Subgroup.div_mem _ hπ1P hπ3P`. Establish `hπP : ∀ (v : D.FrobeniusLift K) (y : A) (hy : y ∈ fixedModule A ((v.field L hLK : OpenSubgroup G) : Subgroup G)) (hyP : y ∈ fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)), D.valuation (s1.field L hLK) ⟨y, hyP⟩ = D.valuation (v.field L hLK) ⟨y, hy⟩` using `fun v y hy hyP => valuation_eq_of_inf_ker_eq ((v.field_inf_ker hLK).trans (s1.field_inf_ker hLK).symm) hy hyP`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hau : D.valuation (s1.field L hLK) ⟨a, haP⟩ = 1`. Establish `e : (⟨a, haP⟩ : fixedModule A ((s1.field L hLK : OpenSubgroup G) : Subgroup G)) = ⟨(π1 : A), hπ1P⟩ / ⟨(π3 : A), hπ3P⟩` using `rfl`. Rewrite using `[e, map_div, hπP s _ π1.2 hπ1P, hπP u _ π3.2 hπ3P]`. Simplify using `[hπ1, hπ3]`. Use `set N : fixedModule A (K : Subgroup G) := norm A (K : Subgroup G) ((s.field L hLK : OpenSubgroup G) : Subgroup G) π1 * norm A (K : Subgroup G) ((t.field L hLK : OpenSubgroup G) : Subgroup G) π2 / norm A (K : Subgroup G) ((u.field L hLK : OpenSubgroup G) : Subgroup G) π3 with hNde …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hNcoe : (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨x, hxJ⟩ : A) = (N : A)`. Rewrite using `[hNx]`. Both sides reduce to the same expression. Establish `hvN : D.valuation K N = 1`. Rewrite using `[hNdef, map_div, map_mul, valuation_norm_prime hLK s hπ1, valuation_norm_prime hLK t hπ2, valuation_norm_prime hLK u hπ3, ← ofAdd_add, ← ofAdd_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Multiplicative.ofAdd ((s.deg : ℤ̂) + ((1 : ℕ) : ℤ̂) - ((s.deg + 1 : ℕ) : ℤ̂)) = 1`. Use `push_cast`. Simplify using the standard rewrite rules. Establish `hxu : D.valuation (s1.field L hLK) ⟨x, hxP⟩ = 1`. Establish `hNP : norm A (K : Subgroup G) ((s1.field L hLK : OpenSubgroup G) : Subgroup G) ⟨x, hxP⟩ = N ^ D0`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_norm_field_eq hLK s1 hφK hdφ ⟨x, hxP⟩, SubmonoidClass.coe_pow]`. Establish `h' : ∀ m : Fin s1.deg, φ ^ (m : ℕ) • (norm A ((K : Subgroup G) ⊓ D.deg.ker) ((L : Subgroup G) ⊓ D.deg.ker) ⟨x, fixedModule_anti le_frobeniusClosure hxP⟩ : A) = (N : A)`. Introduce `m`. Rewrite using `[show (⟨x, fixedModule_anti le_frobeniusClosure hxP⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨x, hxJ⟩ from rfl, hNcoe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.2 _ (K.pow_mem hφK _)`. Rewrite using `[Finset.prod_congr rfl fun m _ => h' m, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Both sides reduce to the same expression. Establish `hv` using `D.valuation_norm (s1.field_le hLK) ⟨x, hxP⟩`. Rewrite `hv` using `[hNP, map_pow, hvN, one_pow, FrobeniusLift.relInertiaDegree_field]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(ProfiniteInteger.pow_left_inj (n := s1.deg) hD0.ne').1 (by rw [one_pow]; exact hv.symm)`. Use `set δ : G := φ ^ n * s.elt⁻¹ with hδdef`. Establish `hδ : δ ∈ (K : Subgroup G) ⊓ D.deg.ker`. Use `⟨K.mul_mem (K.pow_mem hφK n) (K.inv_mem s.mem), ?_⟩` and prove the remaining obligations. Use `show D.deg (φ ^ n * s.elt⁻¹) = 1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, map_inv, map_pow, hdφ, s.deg_eq, ← ofAdd_nsmul, ← ofAdd_neg, ← ofAdd_add]`. Rewrite using `[hndef]`. Use `push_cast`. Rewrite using `[nsmul_eq_mul, add_neg_cancel, ofAdd_zero]`. Establish `hδπ1 : δ • (π1 : A) = φ ^ n • (π1 : A)`.
-
-Rewrite using `[hδdef, mul_smul, inv_smul_eq_iff.2 hσπ1.symm]`. Establish `hφπ3 : φ • (π3 : A) = s.elt⁻¹ • (π3 : A)`. Rewrite using `[eq_inv_smul_iff, ← mul_smul]`. Conclude with `hσφπ3`. Establish `hδπ3 : δ • (π3 : A) = φ ^ (n + 1) • (π3 : A)`.
-
-Rewrite using `[hδdef, mul_smul, ← hφπ3, ← mul_smul, ← pow_succ]`. Establish `e2 : φ • φ ^ n • (π2 : A) = φ ^ n • (π2 : A)`. Rewrite using `[smul_smul, ← pow_succ', pow_succ, mul_smul, hφπ2]`. Establish `L1 : φ • x / x = (φ • T1 / T1) / (φ • T3 / T3)`. Rewrite using `[hxdef, smul_div', smul_mul', e2, div_div_div_comm, mul_div_mul_comm, div_self', mul_one]`.
-
-Establish `R1 : δ • a / a = (φ ^ n • (π1 : A) / π1) / (φ ^ (n + 1) • (π3 : A) / π3)`. Rewrite using `[hadef, smul_div', hδπ1, hδπ3, div_div_div_comm]`. Establish `hrel : φ • x / x = δ • a / a`. Rewrite using `[L1, R1, hT1, hT3, smul_prod_pow_div, smul_prod_pow_div]`. Take `⟨b, hb⟩` from `exists_norm_eq_norm_inf_ker hLK hax hφK hdφ s1 s2 rfl hψL (by show φ ^ (g * D0) = (φ ^ D0) ^ g; rw [mul_comm, pow_mul]) rfl hxP haP hxu hau hδ hrel`.
-
-Use `⟨b, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hb, show (⟨x, fixedModule_anti le_frobeniusClosure hxP⟩ : fixedModule A ((L : Subgroup G) ⊓ D.deg.ker)) = ⟨x, hxJ⟩ from rfl, hNcoe, hNdef]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_div]`. Rewrite using `[div_eq_inv_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recFrob_mul_ofDegOne (hax : ClassFieldAxiom G A) [IsDiscreteModule G A]
     (s : D.FrobeniusLift K) {φ : G} (hφK : φ ∈ (K : Subgroup G))
@@ -392,7 +384,7 @@ section General
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `D.relDeg_surjective K (Multiplicative.ofAdd 1)`. Use `⟨φ, φ.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← D.relDeg_pow, hφ, ← ofAdd_nsmul, nsmul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_deg_eq (K : OpenSubgroup G) :
     ∃ φ ∈ (K : Subgroup G), D.deg φ = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂) := by
@@ -401,15 +393,13 @@ theorem exists_deg_eq (K : OpenSubgroup G) :
   rw [← D.relDeg_pow, hφ, ← ofAdd_nsmul, nsmul_one]
 
 /- English proof (translation)
-Take `⟨φ, hφK, hdφ⟩` from `exists_deg_eq (D := D) K`. It suffices to establish `h : ∀ (m : ℕ) (s t : D.FrobeniusLift K), t.deg = m + 1 → D.recFrob L hLK (s.mul t) = D.recFrob L hLK s * D.recFrob L hLK t by`. Take `⟨m, hm⟩ : ∃ m, t.deg = m + 1` from `⟨t.deg - 1, by have := t.deg_pos; omega⟩`. Conclude with `h m s t hm`. Introduce `m`.
+Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `s t ht`. Establish `hdt : D.deg t.elt = Multiplicative.ofAdd (inertiaDegree D.deg K : ℤ̂)`. Rewrite using `[t.deg_eq, ht, zero_add, one_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[recFrob_congr hLK (s := s.mul t) (t := s.mul (FrobeniusLift.ofDegOne t.mem hdt)) rfl, recFrob_congr hLK (s := t) (t := FrobeniusLift.ofDegOne t.mem hdt) rfl]`. Conclude with `recFrob_mul_ofDegOne hLK hax s t.mem hdt`. Consider the case `succ k ih`. Introduce `s t ht`. Use `set φ1 := FrobeniusLift.ofDegOne (D := D) hφK hdφ with hφ1`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Set `t' : D.FrobeniusLift K` to `{ elt := t.elt * φ⁻¹ mem := K.mul_mem t.mem (K.inv_mem hφK) deg := k + 1 deg_pos := Nat.succ_pos k deg_eq := by`. Rewrite using `[map_mul, map_inv, t.deg_eq, hdφ, ht, ← ofAdd_neg, ← ofAdd_add]`. Use `push_cast`. Use `ring_nf }`. Establish `h1 : D.recFrob L hLK (s.mul t) = D.recFrob L hLK ((s.mul t').mul φ1)` using `recFrob_congr hLK (by simp [FrobeniusLift.mul, t', φ1, FrobeniusLift.ofDegOne, mul_assoc])`.
-
-Establish `h2 : D.recFrob L hLK t = D.recFrob L hLK (t'.mul φ1)` using `recFrob_congr hLK (by simp [FrobeniusLift.mul, t', φ1, FrobeniusLift.ofDegOne])`. Rewrite using `[h1, h2, recFrob_mul_ofDegOne hLK hax _ hφK hdφ, recFrob_mul_ofDegOne hLK hax _ hφK hdφ, ih s t' rfl, mul_assoc]`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem recFrob_mul (hax : ClassFieldAxiom G A) [IsDiscreteModule G A] (s t : D.FrobeniusLift K) :
     D.recFrob L hLK (s.mul t) = D.recFrob L hLK s * D.recFrob L hLK t := by

@@ -22,13 +22,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} (W : LocWach PD LL O v n)
 
 /- English proof (translation)
-Simplify using `[LocWach.Q, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Q_eq_q (hs : W.s = 1) : W.Q = W.q := by
   simp [LocWach.Q, hs]
 
 /- English proof (translation)
-Take `⟨E, hE0, -, hE⟩` from `W.lev_π c ζ hζ`. Use `congrArg PowerSeries.constantCoeff hE` as an intermediate fact. Rewrite `this` using `[map_add, map_one, map_mul, PowerSeries.constantCoeff_C, hE0, mul_one]`. Take the linear combination `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem cc_lev_pi (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ (PD.p ^ j)) :
     PowerSeries.constantCoeff (W.lev c ζ letπ) = ζ - 1 := by
@@ -38,9 +38,9 @@ theorem cc_lev_pi (c : ZMod n) (ζ : LL) (hζ : ∃ j : ℕ, IsPrimitiveRoot ζ 
   linear_combination this
 
 /- English proof (translation)
-Establish `h` using `congrArg (PowerSeries.coeff 1) W.q₀_def`. Rewrite `h` using `[PowerSeries.coeff_succ_X_mul, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[h, map_sub, PowerSeries.coeff_one, if_neg one_ne_zero, sub_zero]`. Establish `e : ((1 : PowerSeries O) + PowerSeries.X) ^ PD.p = (((Polynomial.X + 1) ^ PD.p : Polynomial O) : PowerSeries O)`. Rewrite using `[Polynomial.coe_pow, Polynomial.coe_add, Polynomial.coe_X, Polynomial.coe_one, add_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Polynomial.coeff_coe, Polynomial.coeff_X_add_one_pow, Nat.choose_one_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_q_zero_eq_p : PowerSeries.constantCoeff W.q₀ = (PD.p : O) := by
   have h := congrArg (PowerSeries.coeff 1) W.q₀_def
@@ -52,9 +52,9 @@ theorem constantCoeff_q_zero_eq_p : PowerSeries.constantCoeff W.q₀ = (PD.p : O
   rw [e, Polynomial.coeff_coe, Polynomial.coeff_X_add_one_pow, Nat.choose_one_right]
 
 /- English proof (translation)
-Establish `hq : W.q = (fun _ => PowerSeries.mk fun k => PowerSeries.coeff (k + 1) W.q₀) * letπ + (PD.p : LetA O n)`. Use function extensionality and compare the values at `i`. Simplify using `only [LocWach.q, Pi.add_apply, Pi.mul_apply, letπ, Pi.natCast_apply]`. Use `conv_lhs => rw [PowerSeries.eq_shift_mul_X_add_const W.q₀]`. Rewrite using `[constantCoeff_q_zero_eq_p, map_natCast]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq, map_add, map_mul, map_natCast, map_add, map_mul, cc_lev_pi W c 1 ⟨0, by rw [pow_zero]; exact IsPrimitiveRoot.one⟩, sub_self, mul_zero, zero_add, map_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem cc_lev_q_one (c : ZMod n) : PowerSeries.constantCoeff (W.lev c 1 W.q) = (PD.p : LL) := by
   have hq : W.q = (fun _ => PowerSeries.mk fun k => PowerSeries.coeff (k + 1) W.q₀) * letπ +
@@ -68,11 +68,11 @@ theorem cc_lev_q_one (c : ZMod n) : PowerSeries.constantCoeff (W.lev c 1 W.q) = 
     map_natCast]
 
 /- English proof (translation)
-Take `⟨-, ⟨m, hm⟩, hcc⟩` from `h`. Rewrite `hcc` using `[Q_eq_q W hs]`. Establish `hpr : PD.p.Prime` using `PD.hp`. Take `⟨j, -, hord⟩` from `(Nat.dvd_prime_pow hpr).1 (orderOf_dvd_of_pow_eq_one hm)`. Establish `hprim : IsPrimitiveRoot ζ (PD.p ^ j)` using `hord ▸ IsPrimitiveRoot.orderOf ζ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp1 : ζ ^ PD.p = 1`. Assume the negation of the conclusion as `hne`. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.cc_lev_q W c ζ ⟨j, hprim⟩ hne hcc`. Establish `hdvd : PD.p ^ j ∣ PD.p ^ 1` using `by rw [pow_one]; exact hprim.dvd_of_pow_eq_one _ hp1`. Establish `hj1 : j ≤ 1` using `(Nat.pow_dvd_pow_iff_le_right hpr.one_lt).1 hdvd`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.le_one_iff_eq_zero_or_eq_one.1 hj1 with rfl | rfl` into its components or cases. Rewrite `hprim` using `[pow_zero]`. Take `rfl` from `IsPrimitiveRoot.one_right_iff.1 hprim`. Conclude with `absurd (cc_lev_q_one W c ▸ hcc) hp`. Rewrite `hprim` using `[pow_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL}
     (h : Formalism.MainNotions.DeltaInvariantLattices.QRoot W c ζ) : IsPrimitiveRoot ζ PD.p := by
@@ -93,7 +93,7 @@ theorem qroot_prim (hs : W.s = 1) (hp : (PD.p : LL) ≠ 0) {c : ZMod n} {ζ : LL
   · rwa [pow_one] at hprim
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letE]`. Simplify using `[letE, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letE_mul_self (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   funext i
@@ -102,7 +102,7 @@ theorem letE_mul_self (c : ZMod n) : (letE c : LetA O n) * letE c = letE c := by
   · simp [letE, h]
 
 /- English proof (translation)
-Take `⟨z, -, rfl⟩` from `hy`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[smul_smul, letE_mul_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem letE_smul_of_mem_Nl {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
     (hy : y ∈ W.Nl T c) : (letE c : LetA O n) • y = y := by
@@ -111,7 +111,7 @@ theorem letE_smul_of_mem_Nl {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
   rw [smul_smul, letE_mul_self]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Conclude with `(W.N T).smul_mem _ hz`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Nl_le_N (T : LocLat G Qp LL O) (c : ZMod n) : W.Nl T c ≤ W.N T := by
   rintro _ ⟨z, hz, rfl⟩
@@ -119,16 +119,16 @@ theorem Nl_le_N (T : LocLat G Qp LL O) (c : ZMod n) : W.Nl T c ≤ W.N T := by
   exact (W.N T).smul_mem _ hz
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨y, hy, by simp only [LinearMap.smul_apply, LinearMap.id_apply]; exact hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_Nl_of {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T} (hy : y ∈ W.N T)
     (hc : (letE c : LetA O n) • y = y) : y ∈ W.Nl T c :=
   ⟨y, hy, by simp only [LinearMap.smul_apply, LinearMap.id_apply]; exact hc⟩
 
 /- English proof (translation)
-Use `conv_lhs => rw [← hc]`. Rewrite using `[← smul_assoc]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using `[letE, PowerSeries.smul_eq_C_mul]`. Simplify using `[letE, h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smul_eq_single {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
     (hc : (letE c : LetA O n) • y = y) (o : O) :
@@ -142,7 +142,7 @@ theorem smul_eq_single {T : LocLat G Qp LL O} {c : ZMod n} {y : W.DD T}
   · simp [letE, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = c`. Substitute `h` using the available equality. Simplify using `[letπ]`. Simplify using `[letπ, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem letπ_mul_single (c : ZMod n) (a : PowerSeries O) :
     (letπ : LetA O n) * Pi.single c a = Pi.single c (PowerSeries.X * a) := by
@@ -152,7 +152,7 @@ theorem letπ_mul_single (c : ZMod n) (a : PowerSeries O) :
   · simp [letπ, h]
 
 /- English proof (translation)
-Establish `e : (⟨∑ m, a m • b m, hy⟩ : ↥(W.N T)) = ∑ m, a m • (⟨b m, hbN m⟩ : ↥(W.N T))` using `Subtype.ext (by simp [Submodule.coe_sum])`. Rewrite using `[e, map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[W.levN_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levN_sum {T : LocLat G Qp LL O} (c : ZMod n) (ζ : LL) {r : ℕ} {b : Fin r → W.DD T}
     (hbN : ∀ m, b m ∈ W.N T) (a : Fin r → LetA O n) (hy : ∑ m, a m • b m ∈ W.N T) (j : ℤ) :
@@ -166,25 +166,23 @@ theorem levN_sum {T : LocLat G Qp LL O} (c : ZMod n) (ζ : LL) {r : ℕ} {b : Fi
   rfl
 
 /- English proof (translation)
-Establish `hbN : ∀ m, b m ∈ W.N T` using `fun m => Nl_le_N W T c (hbS m)`. Set `bN : Fin r → ↥(W.N T)` to `fun m => ⟨b m, hbN m⟩`. Establish `hcmp : ∀ m, W.cmp T (bN m) ∈ DcrisL PD T.ρ (W.emb c)`. Introduce `m`. Establish `e : (letE c : LetA O n) • bN m = bN m` using `Subtype.ext (letE_smul_of_mem_Nl W (hbS m))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `W.cmp_letter T c (bN m)`. Set `vv : Fin r → ↥(Formalism.MainNotions.DeltaInvariantLattices.ιDi W T c)` to `fun m => ⟨ιV PD (LL := LL) (V := T.V) (W.cmp T (bN m)), Submodule.mem_map_of_mem (hcmp m)⟩`. Establish `hli : LinearIndependent LL vv`. Use `Fintype.linearIndependent_iff.2 fun g hg m => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hg' : ιV PD (LL` using `LL) (V := T.V) (∑ m, g m • W.cmp T (bN m)) = 0 := by`. Use `congrArg Subtype.val hg` as an intermediate fact. Simplify `this` using `[vv, Submodule.coe_sum, map_sum, map_smul]`. Establish `hsum : ∑ m, g m • W.cmp T (bN m) = 0` using `Formalism.MainNotions.UnusedSlot80.LevR.ιV_inj (PD := PD) (V := T.V) (hg'.trans (map_zero _).symm)`. Take `⟨⟨d, hd⟩, hint⟩` from `IsLocalization.exist_integer_multiples (nonZeroDivisors O) (Finset.univ : Finset (Fin r)) g`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose o ho using fun i => hint i (Finset.mem_univ i)`. Use `haveI : Nontrivial O := (algebraMap O LL).domain_nontrivial`. Establish `hdne : algebraMap O LL d ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hd`. Establish `hcz : W.cmp T (∑ i, o i • bN i) = 0`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [W.cmp_smul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ho i, Algebra.smul_def, mul_smul]`. Use `_ = 0 := by rw [← Finset.smul_sum, hsum, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy, hyz⟩` from `h3.1 _ hcz`. Use `set z : W.DD T := ∑ i, o i • b i with hz`. Establish `hzc : ((∑ i, o i • bN i : ↥(W.N T)) : W.DD T) = z` using `by simp [hz, bN, Submodule.coe_sum]`. Establish `hy' : (letπ : LetA O n) • y = z`. Rewrite using `[← hzc, ← hyz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.MainNotions.DeltaInvariantLattices.smulA]`. Establish `hzl : z ∈ W.Nl T c` using `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (hbS i)`. Take `⟨a, ha, -⟩` from `hu _ (mem_Nl_of W ((W.N T).smul_mem (letE c) hy) (by rw [smul_smul, letE_mul_self]))`. Establish `rep1 : z = ∑ j, (Pi.single c (PowerSeries.C (o j)) : LetA O n) • b j`. Rewrite using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun j _ => smul_eq_single W (letE_smul_of_mem_Nl W (hbS j)) (o j)`. Establish `rep2 : z = ∑ j, (Pi.single c (PowerSeries.X * a j) : LetA O n) • b j`. Establish `e1 : z = (letE c : LetA O n) • z` using `(letE_smul_of_mem_Nl W hzl).symm`. Rewrite using `[e1, ← hy', smul_comm, ha, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[smul_smul, letπ_mul_single]`. Establish `heq` using `(hu z hzl).unique rep1 rep2`. Establish `h0 : o m = 0`. Use `congrArg (fun f => PowerSeries.constantCoeff (f m)) heq` as an intermediate fact. Simplify using `using this`.
-
-Establish `: algebraMap O LL d * g m = 0`. Rewrite using `[← Algebra.smul_def, ← ho m, h0, map_zero]`. Conclude with `(mul_eq_zero.1 this).resolve_left hdne`. Simplify using `using hli.fintype_card_le_finrank`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rank_le (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) {r : ℕ}
     {b : Fin r → W.DD T} (hbS : ∀ j, b j ∈ W.Nl T c)
@@ -248,14 +246,14 @@ theorem rank_le (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) 
   simpa using hli.fintype_card_le_finrank
 
 /- English proof (translation)
-Introduce `a b hab` and use `sup_le_sup_right (inf_le_inf_left _ (filVB_anti PD hab)) _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem filC_anti (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) :
     Antitone (Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ) := fun a b hab =>
   sup_le_sup_right (inf_le_inf_left _ (filVB_anti PD hab)) _
 
 /- English proof (translation)
-Use `(Submodule.eq_bot_iff _).2 fun z hz => filV_sep PD (LL := LL) z fun a => ?_` and prove the remaining obligations. Conclude with `Formalism.MainNotions.UnusedSlot80.LevR.dR_sep T.ρ τ a ⟨(Submodule.mem_inf.1 hz).1, Submodule.mem_sup_right (Submodule.mem_inf.1 hz).2⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ddRE_inf_rest (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) :
     DdRE PD T.ρ τ ⊓ (⨆ (τ' : K →ₐ[Qp] LL) (_ : τ' ≠ τ), DdRE PD T.ρ τ') = ⊥ := by
@@ -264,29 +262,27 @@ theorem ddRE_inf_rest (T : LocLat G Qp LL O) (τ : K →ₐ[Qp] LL) :
     ⟨(Submodule.mem_inf.1 hz).1, Submodule.mem_sup_right (Submodule.mem_inf.1 hz).2⟩
 
 /- English proof (translation)
-Take `⟨r, b, hbS, hu⟩` from `hfree`. Establish `hbN : ∀ m, b m ∈ W.N T` using `fun m => Nl_le_N W T c (hbS m)`. Establish `hCa` using `filC_anti (PD := PD) T τ`. Establish `hFa : Antitone (FildR PD T.ρ τ)` using `fun a b hab => inf_le_inf_left _ (filVB_anti PD hab)`. Take `⟨a₀, h₀⟩` from `exists_le_filV PD (DdRE PD T.ρ τ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a₁, h₁⟩` from `exists_inf_filV_eq_bot PD (DdRE PD T.ρ τ)`. Set `e : Fin r → ℤ → T.V ⊗[Qp] BdR` to `fun m => W.levN T c ζ ⟨b m, hbN m⟩`. Establish `hF : ∀ m k, e m k ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-k) := fun m k => by`. Establish `h` using `(Submodule.mem_inf.1 (h41 ⟨b m, hbN m⟩ k)).2`. Rewrite `h` using `[Formalism.MainNotions.UnusedSlot80.LevR.levN_letE]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hLB : ∀ m, ∃ M, LB M (e m)` using `fun m => W.levN_supp T c ζ _`. Establish `hexpand : ∀ (x : W.DD T) (hx : x ∈ W.N T), (letE c : LetA O n) • x = x → ∃ β : Fin r → PowerSeries O, x = ∑ m, (Pi.single c (β m) : LetA O n) • b m ∧ ∀ j, W.levN T c ζ ⟨x, hx⟩ j = ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j`. Introduce `x hx hxc`. Take `⟨β, hβ, -⟩` from `hu x (mem_Nl_of W hx hxc)`. Use `⟨β, hβ, fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs : ∑ m, (Pi.single c (β m) : LetA O n) • b m ∈ W.N T` using `hβ ▸ hx`. Establish `e1 : (⟨x, hx⟩ : ↥(W.N T)) = ⟨_, hs⟩` using `Subtype.ext hβ`. Rewrite using `[e1]`. Conclude with `levN_sum W c ζ hbN _ hs j`. Establish `hS : ∀ k : ℤ, ∀ w ∈ FildR PD T.ρ τ (-k), ∃ γ : Fin r → LL, (∀ j < k, ∑ m, γ m • e m j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j + 1)) ∧ ∑ m, γ m • e m k - w ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD := PD) T τ (-k + 1) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k w hw`. Take `⟨x, α, hα, hlow, hk⟩` from `h42 k w hw`. Simplify using `only [Formalism.MainNotions.UnusedSlot80.LevR.levN_letE] at hlow hk`. Establish `hx'N : (letE c : LetA O n) • (x : W.DD T) ∈ W.N T` using `(W.N T).smul_mem _ x.2`. Establish `hx'c : (letE c : LetA O n) • ((letE c : LetA O n) • (x : W.DD T)) = (letE c : LetA O n) • (x : W.DD T)` using `by rw [smul_smul, letE_mul_self]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨β, -, hβ⟩` from `hexpand _ hx'N hx'c`. Establish `hxe : ∀ j, W.levN T c ζ x j = ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j`. Introduce `j`. Rewrite using `[← hβ j, ← Formalism.MainNotions.UnusedSlot80.LevR.levN_letE W T c ζ x j]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `γ : Fin r → LL` to `fun m => α * PowerSeries.constantCoeff (W.lev c ζ (Pi.single c (β m)))`. Establish `key : ∀ j, α • W.levN T c ζ x j - ∑ m, γ m • e m j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ (-j + 1) := by`. Introduce `j`. Establish `e2 : α • W.levN T c ζ x j - ∑ m, γ m • e m j = ∑ m, α • (smulS (W.lev c ζ (Pi.single c (β m))) (e m) j - PowerSeries.constantCoeff (W.lev c ζ (Pi.single c (β m))) • e m j)`. Rewrite using `[hxe j, Finset.smul_sum, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[smul_sub, mul_smul]`. Rewrite using `[e2]`. Use `Submodule.sum_mem _ fun m _ => ?_` and prove the remaining obligations. Take `⟨M, hM⟩` from `hLB m`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.smul_mem _ _ (smulS_sub_cc hCa hM (hF m) _ j)`. Use `⟨γ, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sub_mem _ (hlow j hj) (key j)` as an intermediate fact. Rewrite `this` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Use `Submodule.sub_mem _ hk (key k)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hr` using `(rank_le W hFr T c hbS hu h3).trans hdim`. Take `⟨β, hβ, hyβ⟩` from `hexpand y hy hyc`. Establish `hdg : ∀ j : ℤ, ∑ m, smulS (W.lev c ζ (Pi.single c (β m))) (e m) j ∈ Formalism.MainNotions.DeltaInvariantLattices.FilC (PD` using `PD) T τ ((k : ℤ) - j) := by`. Introduce `j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hexp j` as an intermediate fact. Rewrite `this` using `[hyβ j]`. Then use the resulting hypothesis. Establish `hdvd` using `dvd_of_dg_mod hFa (DdRE PD T.ρ τ) _ (fun a => inf_le_left) (ddRE_inf_rest T τ) a₀ a₁ (le_inf le_rfl h₀) h₁ hLB hF hS hr k _ hdg`. Rewrite using `[hβ]`. Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem_smul ?_ (hbN m)` and prove the remaining obligations.
-
-Use `show W.lev c ζ (Pi.single c (β m)) ∈ Ideal.span {(PowerSeries.X : PowerSeries LL) ^ k}`. Conclude with `Ideal.mem_span_singleton.2 (hdvd m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod n) (ζ : LL)
     (τ : K →ₐ[Qp] LL)
@@ -374,13 +370,11 @@ theorem mem_vanI_at (hFr : IsFractionRing O LL) (T : LocLat G Qp LL O) (c : ZMod
   exact Ideal.mem_span_singleton.2 (hdvd m)
 
 /- English proof (translation)
-Establish `hp : (PD.p : LL) ≠ 0`. Introduce `h0`. Use `W.v_l` as an intermediate fact. Rewrite `this` using `[h0, AddValuation.map_zero]`. Conclude with `WithTop.top_ne_coe this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(h5.2.2 y hk).2 fun i ζ hQ k' hk' => ?_` and prove the remaining obligations. Distinguish the cases in `hic : i = c`. Substitute `hic` using the available equality. Take `⟨τ, hτ⟩` from `hpt ζ (qroot_prim W hs hp hQ)`. Use `hfd τ` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h41, h42⟩` from `h4.2 i ζ τ hτ`. Conclude with `mem_vanI_at W hFr T i ζ τ (h1.2 i) h3 h41 h42 (hdim τ) (W.Q ^ k' • y) hk' (by rw [smul_comm, hyc]) k' (hexp ζ τ hτ k' hk')`. Establish `hl : (letE c : LetA O n) ∈ Formalism.MainNotions.DeltaInvariantLattices.vanI W i ζ k'` using `by show W.lev i ζ (letE c) ∈ Ideal.span {(PowerSeries.X : PowerSeries LL) ^ k'}`. Rewrite using `[W.lev_letter i ζ _ (by simp [letE, Pi.single_eq_of_ne hic])]`. Conclude with `Ideal.zero_mem _`.
-
-Establish `e1 : W.Q ^ k' • y = (letE c : LetA O n) • (W.Q ^ k' • y)` using `by rw [smul_comm, hyc]`. Rewrite using `[e1]`. Conclude with `Submodule.smul_mem_smul hl hk'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_N_of_exp (hFr : IsFractionRing O LL) (hs : W.s = 1) (T : LocLat G Qp LL O)
     (Pt : ZMod n → LL → (K →ₐ[Qp] LL) → Prop) {M h : ZMod n → ℕ}

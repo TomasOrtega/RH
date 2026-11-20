@@ -10,15 +10,13 @@ namespace GlobalTheory.FinWeil
 open Classical in
 open scoped BigOperators in
 /- English proof (translation)
-Introduce `b hb`. Take `⟨c, hc, y, hy, rfl⟩` from `Submodule.mem_sup.1 (hBle hb)`. Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Use `⟨Ideal.Quotient.mk P r, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (r - Quotient.out (Ideal.Quotient.mk P r)) • x ∈ A`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hxP, ← Ideal.Quotient.eq, Ideal.Quotient.mk_out]`. Establish `h2 : c + r • x - Quotient.out (Ideal.Quotient.mk P r) • x = c + (r - Quotient.out (Ideal.Quotient.mk P r)) • x`. Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Use `show c + r • x - Quotient.out (Ideal.Quotient.mk P r) • x ∈ A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `A.add_mem (Submodule.mem_inf.1 hc).1 h1`. Introduce `q hq`. Establish `h2 : (r - Quotient.out q) • x ∈ A`. Establish `h3 : (r - Quotient.out q) • x = (c + r • x - Quotient.out q • x) - c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[sub_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[h3]`. Conclude with `A.sub_mem hq (Submodule.mem_inf.1 hc).1`. Rewrite `h2` using `[hxP, ← Ideal.Quotient.eq, Ideal.Quotient.mk_out]`.
-
-Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma existsUnique_quotient_sub_smul_mem {R X : Type} [CommRing R] [AddCommGroup X]
     [Module R X] (A B : Submodule R X) (x : X) (P : Ideal R)
@@ -48,13 +46,13 @@ private lemma existsUnique_quotient_sub_smul_mem {R X : Type} [CommRing R] [AddC
 open Classical in
 open scoped BigOperators in
 /- English proof (translation)
-Distinguish the cases in `hTA : T ≤ A`. Conclude with `Or.inl hTA`. Use `right`. Take `⟨t, htT, htA⟩` from `Set.not_subset.1 hTA`. Take `⟨c, hc, y, hy, rfl⟩` from `Submodule.mem_sup.1 (hBle (h2 htT))`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Establish `hr : r ∉ P` using `fun hr => htA (A.add_mem (Submodule.mem_inf.1 hc).1 ((hxP r).2 hr))`. Take `⟨s, i, hi, hsi⟩` from `hP.exists_inv hr`. Establish `hrx : r • x ∈ T`. Establish `h3` using `T.sub_mem htT (h1 hc)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[add_sub_cancel_left]`. Then use the resulting hypothesis. Establish `hix : i • x ∈ T` using `h1 (Submodule.mem_inf.2 ⟨(hxP i).2 hi, B.smul_mem i hx⟩)`. Establish `hxT : x ∈ T`. Establish `h4 : x = s • r • x + i • x` using `by rw [smul_smul, ← add_smul, hsi, one_smul]`. Rewrite using `[h4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `T.add_mem (T.smul_mem s hrx) hix`. Use `le_antisymm h2 (hBle.trans (sup_le h1 ?_))` and prove the remaining obligations. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `hxT`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma le_or_eq_of_inf_le_of_le_of_isMaximal {R X : Type} [CommRing R] [AddCommGroup X]
     [Module R X] (A B : Submodule R X) (x : X) (hx : x ∈ B) (P : Ideal R) (hP : P.IsMaximal)
@@ -83,7 +81,7 @@ private lemma le_or_eq_of_inf_le_of_le_of_isMaximal {R X : Type} [CommRing R] [A
 open Classical in
 open scoped BigOperators in
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private lemma toAddSubgroup_inf {R X : Type} [CommRing R] [AddCommGroup X] [Module R X]
     (A B : Submodule R X) : (A ⊓ B).toAddSubgroup = A.toAddSubgroup ⊓ B.toAddSubgroup := by
@@ -93,31 +91,27 @@ open Classical in
 open scoped BigOperators in
 
 /- English proof (translation)
-Introduce `R X M _ _ _ _ _ σ w γ W hW A B hA hB x hx P hP hfin hxP hBle`. Establish `hA' : ∀ y, y ∈ A ↔ ∀ a ∈ A, γ y a = 1` using `hA`. Establish `hB' : ∀ y, y ∈ B ↔ ∀ b ∈ B, γ y b = 1` using `hB`. Establish `hrep` using `existsUnique_quotient_sub_smul_mem A B x P hxP hBle`. Establish `hN : Nat.card (R ⧸ P) ≠ 0` using `Nat.card_pos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAB : _root_.GlobalTheory.FinWeil.idx A B = Nat.card (R ⧸ P)` using `by haveI := Fintype.ofFinite (R ⧸ P)`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `(_root_.GlobalTheory.FinWeil.sumOp_eq_sum_transversal hW A B hB (0 : M) (fun a _ => map_zero (W a)) (R ⧸ P) (fun q => Quotient.out q • x) (fun q => B.smul_mem _ hx) hrep).2`. Establish `hAB' : A.toAddSubgroup.relIndex B.toAddSubgroup = Nat.card (R ⧸ P)` using `hAB`. Establish `hBA : B.toAddSubgroup.relIndex A.toAddSubgroup = Nat.card (R ⧸ P)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `(_root_.GlobalTheory.FinWeil.perfect_pairing_quotients hW B.toAddSubgroup A.toAddSubgroup A.toAddSubgroup B.toAddSubgroup (fun a _ => by simpa only [Submodule.mem_toAddSubgroup] using hB' a) (fun t ht => by`. Simplify using `only [Submodule.mem_toAddSubgroup] at ht ⊢`. Rewrite using `[hA' t]`. Conclude with `⟨fun h a ha => hW.swap_eq_one (h a ha), fun h a ha => hW.swap_eq_one (h a ha)⟩)`. Use the proof step `(by rw [hAB']; exact hN)).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[key, hAB']`. Establish `hdich` using `le_or_eq_of_inf_le_of_le_of_isMaximal A B x hx P hP hxP hBle`. Use `⟨hAB, hBA, hrep, hdich, ?_⟩` and prove the remaining obligations. Introduce `T h1 h2`. Distinguish the cases in `hTB : T ≤ B`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Introduce a local definition for the expression.
 
-Conclude with `Or.inl hTB`. Use `right`. Set `T' : Submodule R X` to `{ carrier := {b | b ∈ B ∧ ∀ t ∈ T, γ t b = 1} add_mem' := fun {b b'} hb hb' => ⟨B.add_mem hb.1 hb'.1, fun t ht => by`. Rewrite using `[hW.add_right, hb.2 t ht, hb'.2 t ht, one_mul]⟩`. Use the proof step `zero_mem' := ⟨B.zero_mem, fun t _ => hW.zero_right t⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `smul_mem' := fun r b hb => ⟨B.smul_mem r hb.1, fun t ht => by`. Establish `h3` using `hW.adj (σ r) t b`. Rewrite `h3` using `[hW.sg_sg]`. Rewrite using `[← h3]`. Conclude with `hb.2 _ (T.smul_mem _ ht)⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemT' : ∀ b, b ∈ T' ↔ b ∈ B ∧ ∀ t ∈ T, γ t b = 1` using `fun b => Iff.rfl`. Establish `hT'1 : A ⊓ B ≤ T'` using `fun c hc => (hmemT' c).2 ⟨(Submodule.mem_inf.1 hc).2, fun t ht => hW.iso hA (h2 ht) (Submodule.mem_inf.1 hc).1⟩`. Establish `hT'2 : T' ≤ B` using `fun b hb => ((hmemT' b).1 hb).1`. Break down `hdich T' hT'1 hT'2 with hle | heq` into its components or cases. Establish `hT'eq : T' = A ⊓ B` using `le_antisymm (le_inf hle hT'2) hT'1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : (A ⊓ B).toAddSubgroup.relIndex T.toAddSubgroup * T.toAddSubgroup.relIndex A.toAddSubgroup = Nat.card (R ⧸ P)`. Rewrite using `[AddSubgroup.relIndex_mul_relIndex (A ⊓ B).toAddSubgroup T.toAddSubgroup A.toAddSubgroup (fun y hy => h1 hy) (fun y hy => h2 hy), toAddSubgroup_inf, AddSubgroup.inf_relIndex_left, hBA]`. Establish `hne : (A ⊓ B).toAddSubgroup.relIndex T.toAddSubgroup ≠ 0`. Introduce `h0`. Rewrite `hprod` using `[h0, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hN hprod.symm`. Establish `key` using `(_root_.GlobalTheory.FinWeil.perfect_pairing_quotients hW T'.toAddSubgroup B.toAddSubgroup (A ⊓ B).toAddSubgroup T.toAddSubgroup (fun b hb => by`. Simplify using `only [Submodule.mem_toAddSubgroup] at hb ⊢`. Rewrite using `[hmemT']`. Conclude with `⟨fun h t ht => hW.swap_eq_one (h.2 t ht), fun h => ⟨hb, fun t ht => hW.swap_eq_one (h t ht)⟩⟩)`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun t ht => by`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_inf] at ht ⊢`. Rewrite using `[hB' t]`. Conclude with `⟨fun h b hb => hW.swap_eq_one (h.2 b hb), fun h => ⟨h2 ht, fun b hb => hW.swap_eq_one (h b hb)⟩⟩)`. Use the proof step `hne).1`.
+Establish an intermediate fact. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hT'eq, toAddSubgroup_inf, AddSubgroup.inf_relIndex_right, hAB', ← toAddSubgroup_inf]`. Rewrite `hprod` using `[← key]`. Establish `hone : T.toAddSubgroup.relIndex A.toAddSubgroup = 1`. Establish `h5 : Nat.card (R ⧸ P) * T.toAddSubgroup.relIndex A.toAddSubgroup = Nat.card (R ⧸ P) * 1` using `by rw [hprod, mul_one]`. Conclude with `Nat.eq_of_mul_eq_mul_left (Nat.pos_of_ne_zero hN) h5`.
-
-Establish `hAT` using `AddSubgroup.relIndex_eq_one.1 hone`. Conclude with `le_antisymm h2 (fun a ha => hAT ha)`. It suffices to derive a contradiction. Apply `hTB` to reduce the goal to its premises. Introduce `t ht`.
-
-Rewrite using `[hB' t]`. Introduce `b hb`. Rewrite `hb` using `[← heq]`. Conclude with `((hmemT' b).1 hb).2 t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.FinWeil.adjacent_selfDual_simple : ∀ {R X M : Type} [CommRing R] [AddCommGroup X] [Module R X] [AddCommGroup M] [Module ℂ M] {σ : R →+* R} {w : R} {γ : X → X → ℂ} {W : X → M →ₗ[ℂ] M}, _root_.GlobalTheory.FinWeil.IsHeis σ w γ W → ∀ (A B : Submodule R X), _root_.GlobalTheory.FinWeil.SelfDual γ A → _root_.GlobalTheory.FinWeil.SelfDual γ B → ∀ x ∈ B, ∀ P : Ideal R, P.IsMaximal → Finite (R ⧸ P) → (∀ r : R, r • x ∈ A ↔ r ∈ P) → B ≤ (A ⊓ B) ⊔ Submodule.span R {x} → _root_.GlobalTheory.FinWeil.idx A B = Nat.card (R ⧸ P) ∧ _root_.GlobalTheory.FinWeil.idx B A = Nat.card (R ⧸ P) ∧ (∀ b ∈ B, ∃! q : R ⧸ P, b - (Quotient.out q : R) • x ∈ A) ∧ (∀ T : Submodule R X, A ⊓ B ≤ T → T ≤ B → T ≤ A ∨ T = B) ∧ (∀ T : Submodule R X, A ⊓ B ≤ T → T ≤ A → T ≤ B ∨ T = A) := by
   intro R X M _ _ _ _ _ σ w γ W hW A B hA hB x hx P hP hfin hxP hBle

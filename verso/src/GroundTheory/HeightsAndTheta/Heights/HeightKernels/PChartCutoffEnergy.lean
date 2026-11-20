@@ -17,19 +17,19 @@ namespace ChartCutoffEnergyAlt
 def sqn {D : ℕ} (y : Fin D → ℂ) : ℝ := ∑ i, ‖y i‖ ^ 2
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem sqn_nonneg {D : ℕ} (y : Fin D → ℂ) : 0 ≤ sqn y :=
   Finset.sum_nonneg fun _ _ => by positivity
 
 /- English proof (translation)
-Simplify using `only [sqn, Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sqn_smul {D : ℕ} (c : ℝ) (y : Fin D → ℂ) : sqn (c • y) = c ^ 2 * sqn y := by
   simp only [sqn, Pi.smul_apply, norm_smul, Real.norm_eq_abs, mul_pow, sq_abs, Finset.mul_sum]
 
 /- English proof (translation)
-Unfold `sqn`. Conclude with `ContDiff.sum fun i _ => (contDiff_norm_sq ℂ).comp (contDiff_apply ℝ ℂ i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem contDiff_sqn {D : ℕ} : ContDiff ℝ 1 (sqn (D := D)) := by
   unfold sqn
@@ -42,14 +42,14 @@ theorem chartCutoff_eq {D : ℕ} (k : ℕ) (y : Fin D → ℂ) :
     chartCutoff k y = Real.smoothTransition (2 - sqn y / ((k : ℝ) + 1) ^ 2) := rfl
 
 /- English proof (translation)
-Rewrite using `[chartCutoff_eq]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem chartCutoff_zero_eq {D : ℕ} (y : Fin D → ℂ) :
     chartCutoff 0 y = Real.smoothTransition (2 - sqn y) := by
   rw [chartCutoff_eq]; norm_num
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Rewrite using `[chartCutoff_eq, chartCutoff_zero_eq, sqn_smul, inv_pow]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem chartCutoff_scale {D : ℕ} (k : ℕ) :
     (chartCutoff k : (Fin D → ℂ) → ℝ) = fun y => chartCutoff 0 (((k : ℝ) + 1)⁻¹ • y) := by
@@ -59,7 +59,7 @@ theorem chartCutoff_scale {D : ℕ} (k : ℕ) :
   ring
 
 /- English proof (translation)
-Establish `h : (chartCutoff k : (Fin D → ℂ) → ℝ) = fun y => Real.smoothTransition (2 - sqn y / ((k : ℝ) + 1) ^ 2)` using `rfl`. Rewrite using `[h]`. Conclude with `Real.smoothTransition.contDiff.comp (contDiff_const.sub (contDiff_sqn.div_const _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiff_chartCutoff {D : ℕ} (k : ℕ) : ContDiff ℝ 1 (chartCutoff k : (Fin D → ℂ) → ℝ) := by
   have h : (chartCutoff k : (Fin D → ℂ) → ℝ) =
@@ -68,7 +68,7 @@ theorem contDiff_chartCutoff {D : ℕ} (k : ℕ) : ContDiff ℝ 1 (chartCutoff k
   exact Real.smoothTransition.contDiff.comp (contDiff_const.sub (contDiff_sqn.div_const _))
 
 /- English proof (translation)
-Establish `hev : (chartCutoff 0 : (Fin D → ℂ) → ℝ) =ᶠ[nhds x] fun _ => 1` using `by filter_upwards [(contDiff_sqn.continuous.isOpen_preimage _ isOpen_Iio).mem_nhds hx] with x' hx'`. Rewrite using `[chartCutoff_zero_eq]`. Conclude with `Real.smoothTransition.one_of_one_le (by simp only [Set.mem_preimage, Set.mem_Iio] at hx'; linarith)`. Rewrite using `[hev.fderiv_eq]`. Conclude with `fderiv_const_apply _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fderiv_chartCutoff_zero_eq_zero {D : ℕ} {x : Fin D → ℂ} (hx : sqn x < 1) :
     fderiv ℝ (chartCutoff 0 : (Fin D → ℂ) → ℝ) x = 0 := by
@@ -80,9 +80,9 @@ theorem fderiv_chartCutoff_zero_eq_zero {D : ℕ} {x : Fin D → ℂ} (hx : sqn 
   exact fderiv_const_apply _
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (isCompact_closedBall (0 : Fin D → ℂ) 2) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[chartCutoff_zero_eq]`. Apply `Real.smoothTransition.zero_of_nonpos` to reduce the goal to its premises. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, 2 < ‖x i‖ := by`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hx (mem_closedBall_zero_iff.mpr ((pi_norm_le_iff_of_nonneg (by norm_num)).mpr h))`. Establish `: ‖x i‖ ^ 2 ≤ sqn x` using `Finset.single_le_sum (f := fun i => ‖x i‖ ^ 2) (fun j _ => by positivity) (Finset.mem_univ i)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem hasCompactSupport_chartCutoff_zero {D : ℕ} :
     HasCompactSupport (chartCutoff 0 : (Fin D → ℂ) → ℝ) := by
@@ -98,11 +98,9 @@ theorem hasCompactSupport_chartCutoff_zero {D : ℕ} :
   nlinarith
 
 /- English proof (translation)
-Rewrite using `[chartCutoff_scale k]`. Use `set c : ℝ := ((k : ℝ) + 1)⁻¹ with hcdef`. Establish `hc : 0 < c` using `by positivity`. Establish `hd : DifferentiableAt ℝ (chartCutoff 0 : (Fin D → ℂ) → ℝ) (c • y)` using `(contDiff_chartCutoff 0).differentiable (by norm_num) _`. Establish `hL : HasFDerivAt (fun y : Fin D → ℂ => c • y) (c • ContinuousLinearMap.id ℝ (Fin D → ℂ)) y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (hasFDerivAt_id (𝕜 := ℝ) y).const_smul c`. Rewrite using `[show (fun y : Fin D → ℂ => chartCutoff 0 (c • y)) = chartCutoff 0 ∘ fun y => c • y from rfl, (hd.hasFDerivAt.comp y hL).fderiv]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_smul, Real.norm_of_nonneg hc.le]`. Conclude with `mul_le_of_le_one_right hc.le ContinuousLinearMap.norm_id_le`.
-
-Use `_ = _ := mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_fderiv_chartCutoff_le {D : ℕ} (k : ℕ) (y : Fin D → ℂ) :
     ‖fderiv ℝ (chartCutoff k : (Fin D → ℂ) → ℝ) y‖ ≤
@@ -131,7 +129,7 @@ namespace ChartCutoffEnergyAlt
 open ReciprocityTheory.AnForm.A
 
 /- English proof (translation)
-Establish `hc` using `(Complex.ofRealCLM.hasFDerivAt (x := v z)).comp z hv.hasFDerivAt`. Rewrite using `[show cplx v = Complex.ofRealCLM ∘ v from rfl, hc.fderiv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fderiv_cplx {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (hv : DifferentiableAt ℝ v z)
     (h : Fin D → ℂ) : fderiv ℝ (cplx v) z h = ((fderiv ℝ v z h : ℝ) : ℂ) := by
@@ -140,7 +138,7 @@ theorem fderiv_cplx {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} 
   rfl
 
 /- English proof (translation)
-Simplify using `only [dz, dzb, fderiv_cplx hv]`. Apply the tactic sequence `apply Complex.ext <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dzb_eq_star_dz {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (hv : DifferentiableAt ℝ v z)
     (j : Fin D) : dzb j (cplx v) z = star (dz j (cplx v) z) := by
@@ -148,13 +146,13 @@ theorem dzb_eq_star_dz {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → �
   apply Complex.ext <;> simp
 
 /- English proof (translation)
-Simplify using `only [dz, fderiv_cplx hv]`. Establish `h1 : ‖(Pi.single j (1 : ℂ) : Fin D → ℂ)‖ ≤ 1`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).mpr fun i => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`. Establish `h2 : ‖(Complex.I • Pi.single j (1 : ℂ) : Fin D → ℂ)‖ ≤ 1`. Rewrite using `[norm_smul, Complex.norm_I, one_mul]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn` using `norm_nonneg (fderiv ℝ v z)`. Establish `b1` using `((fderiv ℝ v z).le_opNorm (Pi.single j 1)).trans (mul_le_of_le_one_right hn h1)`. Establish `b2` using `((fderiv ℝ v z).le_opNorm (Complex.I • Pi.single j 1)).trans (mul_le_of_le_one_right hn h2)`. Establish `ht` using `norm_sub_le ((fderiv ℝ v z (Pi.single j 1) : ℂ)) (Complex.I * (fderiv ℝ v z (Complex.I • Pi.single j 1) : ℂ))`. Rewrite `ht` using `[norm_mul, Complex.norm_I, one_mul, Complex.norm_real, Complex.norm_real]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_div, Complex.norm_two, div_le_iff₀ (by norm_num)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_dz_le {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (hv : DifferentiableAt ℝ v z)
     (j : Fin D) : ‖dz j (cplx v) z‖ ≤ ‖fderiv ℝ v z‖ := by
@@ -176,7 +174,7 @@ theorem norm_dz_le {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (
   linarith
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [gradMat, vecMulVec_apply, Pi.star_apply, dzb_eq_star_dz hv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gradMat_eq {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (hv : DifferentiableAt ℝ v z) :
     gradMat v v z = vecMulVec (fun j => dz j (cplx v) z) (star fun j => dz j (cplx v) z) := by
@@ -184,17 +182,17 @@ theorem gradMat_eq {D : ℕ} {v : (Fin D → ℂ) → ℝ} {z : Fin D → ℂ} (
   simp only [gradMat, vecMulVec_apply, Pi.star_apply, dzb_eq_star_dz hv]
 
 /- English proof (translation)
-Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Use `⟨(isHermitian_one.smul ?_).sub (posSemidef_vecMulVec_self_star a).1, fun x => ?_⟩` and prove the remaining obligations. Use `show star ((∑ j, ‖a j‖ ^ 2 : ℝ) : ℂ) = ((∑ j, ‖a j‖ ^ 2 : ℝ) : ℂ)`. Simplify using the standard rewrite rules. Use `set w : ℂ := star a ⬝ᵥ x with hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hform : star x ⬝ᵥ ((((∑ j, ‖a j‖ ^ 2 : ℝ) : ℂ) • (1 : Matrix (Fin D) (Fin D) ℂ) - vecMulVec a (star a)) *ᵥ x) = (((∑ j, ‖a j‖ ^ 2) * (∑ j, ‖x j‖ ^ 2) - ‖w‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[sub_mulVec, smul_mulVec, one_mulVec, vecMulVec_mulVec, dotProduct_sub, dotProduct_smul, op_smul_eq_smul, dotProduct_smul, smul_eq_mul, smul_eq_mul]`. Establish `h1 : star x ⬝ᵥ x = ((∑ j, ‖x j‖ ^ 2 : ℝ) : ℂ)`. Simplify using `only [dotProduct, Pi.star_apply, Complex.star_def]`. Use `push_cast`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : star x ⬝ᵥ a = star w`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hw, dotProduct, Pi.star_apply, star_sum, star_mul', star_star]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Rewrite using `[h1, h2, Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hform]`. Use `Complex.zero_le_real.mpr (sub_nonneg.mpr ?_)` and prove the remaining obligations. Establish `hcs : ‖w‖ ≤ ∑ j, ‖a j‖ * ‖x j‖`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `[Pi.star_apply]`. Establish `hcs2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖a j‖) (fun j => ‖x j‖)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem posSemidef_sub_vecMulVec {D : ℕ} (a : Fin D → ℂ) :
     (((∑ j, ‖a j‖ ^ 2 : ℝ) : ℂ) • (1 : Matrix (Fin D) (Fin D) ℂ) - vecMulVec a (star a)).PosSemidef := by
@@ -228,7 +226,7 @@ theorem posSemidef_sub_vecMulVec {D : ℕ} (a : Fin D → ℂ) :
     _ ≤ _ := hcs2
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_multilinearMap_eq_mdisc (D := n + 1)`. Establish `h : (Fin.cons (l • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) (fun _ : Fin n => m • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) = fun i => (Fin.cons l (fun _ : Fin n => m) : Fin (n + 1) → ℂ) i • (fun _ => (1 : Matrix (Fin (n …`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) i <;> simp`. Rewrite using `[h, ← hf, f.map_smul_univ, hf, mdisc_const, det_one, Fin.prod_cons]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -258,7 +256,7 @@ Both sides reduce to the same expression.
 theorem hessC_eq_cxHessian {D : ℕ} (φ : (Fin D → ℂ) → ℝ) : hessC φ = cxHessian φ := rfl
 
 /- English proof (translation)
-Simplify using `only [sqn, dotProduct, Pi.star_apply, Complex.star_def]`. Use `push_cast`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -269,21 +267,19 @@ theorem star_dotProduct_self_eq {D : ℕ} (x : Fin D → ℂ) : star x ⬝ᵥ x 
   rw [mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]; push_cast; ring
 
 /- English proof (translation)
-Take `⟨C0, hC0⟩` from `ChartHessCompare.proof HermFormCompare.proof e M M hM hM`. Take `⟨a, ha, hMa⟩` from `HermFormCompare.proof (e + 1) M 1 hM PosDef.one`. Take `⟨a', ha', haM⟩` from `HermFormCompare.proof (e + 1) 1 M PosDef.one hM`. Take `⟨B, hMB, hB⟩` from `ChartDensityIntegrableAlt.exists_conjTranspose_mul_self hM`. Use `⟨a * a' / 2, by positivity, fun y => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hessC_eq_cxHessian]`. Conclude with `(hC0 y).1.posSemidef`. Substitute `hMB` using the available equality. Rewrite using `[hessC_eq_cxHessian, posSemidef_iff_dotProduct_mulVec]`. Use `⟨(isHermitian_one.smul ?_).sub (ChartHessianComparison.hess_isHermitian B hB y), fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show star (((a * a' / 2 / (1 + sqn y)) : ℝ) : ℂ) = _`. Simplify using the standard rewrite rules. Rewrite using `[sub_mulVec, smul_mulVec, one_mulVec, dotProduct_sub, dotProduct_smul, smul_eq_mul, ChartHessianComparison.hess_form_eq B hB, star_dotProduct_self_eq, ← Complex.ofReal_mul, ← Complex.ofReal_sub]`. Use `Complex.zero_le_real.mpr (sub_nonneg.mpr ?_)` and prove the remaining obligations. Establish `hle` using `ChartHessianComparison.hessForm_le B hB y x 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [zero_smul, sub_zero] at hle`. Use `set w : Fin (e + 1) → ℂ := Fin.cons 0 (star x) with hw`. Use `set v : Fin (e + 1) → ℂ := Fin.cons 1 y with hv`. Establish `hw1` using `hMa w`. Establish `hv1` using `haM v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hw1`, `hv1` using `[one_mulVec, star_dotProduct_self_eq, Complex.ofReal_re]`. Establish `hsw : sqn w = sqn x`. Simplify using `[sqn, hw, Fin.sum_univ_succ]`. Establish `hsv : sqn v = 1 + sqn y`. Simplify using `[sqn, hv, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw1` using `[hsw]`. Rewrite `hv1` using `[hsv]`. Use `set qw := (star w ⬝ᵥ ((Bᴴ * B) *ᵥ w)).re`. Use `set qv := (star v ⬝ᵥ ((Bᴴ * B) *ᵥ v)).re`. Establish `hS` using `sqn_nonneg y`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hX` using `sqn_nonneg x`. Establish `hqv : 0 < qv` using `pos_of_mul_pos_right (show 0 < a' * qv by linarith) ha'.le`. Establish `hr : 1 ≤ a' * qv / (1 + sqn y)` using `(one_le_div (by linarith)).mpr hv1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_iff₀ (by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem hess_bound {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hM : M.PosDef) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ y : Fin e → ℂ, (hessC (hermChartPot M) y).PosSemidef ∧
@@ -330,15 +326,13 @@ theorem hess_bound {e : ℕ} {M : Matrix (Fin (e + 1)) (Fin (e + 1)) ℂ} (hM : 
         _ = _ := by ring
 
 /- English proof (translation)
-Use `set a : Fin (n + 1) → ℂ := fun j => dz j (cplx v) y with ha`. Use `set l : ℝ := ∑ j, ‖a j‖ ^ 2 with hl`. Establish `hmono` using `mdisc_re_mono (Fin.cons (gradMat v v y) fun i => hessC (φ i) y) (Fin.cons ((l : ℂ) • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) fun _ : Fin n => (μ : ℂ) • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)) (by`. Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_zero]`. Rewrite using `[gradMat_eq hv]`. Conclude with `posSemidef_vecMulVec_self_star a`. Simplify using `only [Fin.cons_succ]`. Conclude with `(hφ i).1)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `k`. Use `Fin.cases ?_ (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Rewrite using `[gradMat_eq hv]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
-Conclude with `posSemidef_sub_vecMulVec a`. Simplify using `only [Fin.cons_succ]`. Conclude with `(hφ i).2)`. Rewrite `hmono` using `[mdisc_cons_smul_one, ← Complex.ofReal_pow, ← Complex.ofReal_mul, Complex.ofReal_re]`. Establish `hle : l ≤ (n + 1) * ‖fderiv ℝ v y‖ ^ 2`.
-
-Combine the equalities or inequalities in the displayed calculation. Unfold `gradDens`. Establish `hc : 0 ≤ ((n + 1).factorial : ℝ) * (2 / Real.pi) ^ (n + 1)` using `by positivity`. Use `mul_le_mul_of_nonneg_left (hmono.trans ?_) hc` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gradDens_le {n : ℕ} (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (v : (Fin (n + 1) → ℂ) → ℝ)
     (y : Fin (n + 1) → ℂ) (hv : DifferentiableAt ℝ v y) (μ : ℝ) (hμ : 0 ≤ μ)
@@ -373,7 +367,7 @@ theorem gradDens_le {n : ℕ} (φ : Fin n → (Fin (n + 1) → ℂ) → ℝ) (v 
     _ = _ := by ring
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_pi_fintype]`. Simplify using `[Complex.finrank_real_complex]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem finrank_eq (n : ℕ) : Module.finrank ℝ (Fin (n + 1) → ℂ) = 2 * n + 2 := by
   rw [Module.finrank_pi_fintype]
@@ -385,31 +379,25 @@ end ChartCutoffEnergyAlt
 open ChartCutoffEnergyAlt in
 
 /- English proof (translation)
-Introduce `n T hT`. Use `choose C hC0 hC using fun i => hess_bound (hT i)`. Use `set C' : ℝ := ∑ i, C i with hC'`. Establish `hC'0 : 0 ≤ C'` using `Finset.sum_nonneg fun i _ => hC0 i`. Establish `hH : ∀ i y, (hessC (hermChartPot (T i)) y).PosSemidef ∧ ((((C' / (1 + sqn y)) : ℝ) : ℂ) • (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) - hessC (hermChartPot (T i)) y).PosSemidef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i y`. Use `⟨(hC i y).1, ?_⟩` and prove the remaining obligations. Establish `hle : C i ≤ C'` using `Finset.single_le_sum (f := C) (fun j _ => hC0 j) (Finset.mem_univ i)`. Establish `hd : 0 ≤ C' / (1 + sqn y) - C i / (1 + sqn y)`. Rewrite using `[← sub_div]; exact div_nonneg (sub_nonneg.mpr hle) (by linarith [sqn_nonneg y])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(PosSemidef.one.smul (Complex.zero_le_real.mpr hd)).add (hC i y).2`. Rewrite using `[show C' / (1 + sqn y) = (C' / (1 + sqn y) - C i / (1 + sqn y)) + C i / (1 + sqn y) by ring, Complex.ofReal_add, add_smul, add_sub_assoc]`. Conclude with `h`. Use `set F : (Fin (n + 1) → ℂ) → ℝ := fun x => ‖fderiv ℝ (chartCutoff 0 : (Fin (n + 1) → ℂ) → ℝ) x‖ ^ 2 with hF`. Establish `hFint : Integrable F`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : Continuous F` using `((contDiff_chartCutoff 0).continuous_fderiv (by norm_num)).norm.pow 2`. Establish `hsupp : HasCompactSupport F` using `(hasCompactSupport_chartCutoff_zero.fderiv (𝕜 := ℝ)).comp_left (g := fun t => ‖t‖ ^ 2) (by simp)`. Conclude with `hcont.integrable_of_hasCompactSupport hsupp`. Use `set K0 : ℝ := ((n + 1).factorial : ℝ) * (2 / Real.pi) ^ (n + 1) * ((n + 1) * C' ^ n) with hK0`. Establish `hK0n : 0 ≤ K0` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨K0 * ∫ x, F x, fun k => ?_⟩` and prove the remaining obligations. Use `set c : ℝ := ((k : ℝ) + 1)⁻¹ with hc`. Establish `hc0 : 0 < c` using `by positivity`. Use `set g : (Fin (n + 1) → ℂ) → ℝ := fun y => K0 * c ^ (2 * n + 2) * F (c • y) with hg`. Establish `hgint : Integrable g` using `(hFint.comp_smul hc0.ne').const_mul _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgI : ∫ y, g y = K0 * ∫ x, F x`. Simplify using `only [hg]`. Rewrite using `[integral_const_mul, Measure.integral_comp_smul, finrank_eq, smul_eq_mul, abs_of_pos (by positivity), mul_assoc, ← mul_assoc (c ^ (2 * n + 2)), mul_inv_cancel₀ (by positivity), one_mul]`. Establish `hpt : ∀ y, ReciprocityTheory.AnForm.A.gradDens (fun i => hermChartPot (T i)) (chartCutoff k) (chartCutoff k) y ≤ g y`. Introduce `y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hS` using `sqn_nonneg y`. Establish `hv : DifferentiableAt ℝ (chartCutoff k : (Fin (n + 1) → ℂ) → ℝ) y` using `(contDiff_chartCutoff k).differentiable (by norm_num) y`. Establish `h1` using `gradDens_le _ _ y hv (C' / (1 + sqn y)) (div_nonneg hC'0 (by linarith)) (fun i => hH i y)`. Establish `h2` using `norm_fderiv_chartCutoff_le (D := n + 1) k y`. Rewrite `h2` using `[← hc]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3 : ‖fderiv ℝ (chartCutoff k : (Fin (n + 1) → ℂ) → ℝ) y‖ ^ 2 ≤ c ^ 2 * F (c • y)`. Simplify using `only [hF]`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) h2 2`. Establish `h4 : ‖fderiv ℝ (chartCutoff k : (Fin (n + 1) → ℂ) → ℝ) y‖ ^ 2 * (C' / (1 + sqn y)) ^ n ≤ c ^ 2 * F (c • y) * (C' ^ n * c ^ (2 * n))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hF0 : F (c • y) = 0`. Establish `h0 : ‖fderiv ℝ (chartCutoff k : (Fin (n + 1) → ℂ) → ℝ) y‖ ^ 2 = 0` using `le_antisymm (by simpa [hF0] using h3) (by positivity)`. Rewrite using `[h0, hF0]`. Simplify using the standard rewrite rules. Establish `hne : fderiv ℝ (chartCutoff 0 : (Fin (n + 1) → ℂ) → ℝ) (c • y) ≠ 0` using `fun h => hF0 (by simp [hF, h])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hs : 1 ≤ sqn (c • y)`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hne (fderiv_chartCutoff_zero_eq_zero h)`. Rewrite `hs` using `[sqn_smul]`.
-
-Establish `hμ : C' / (1 + sqn y) ≤ C' * c ^ 2`. Rewrite using `[div_le_iff₀ (by linarith)]`. Establish `: 1 ≤ c ^ 2 * (1 + sqn y)` using `by nlinarith [sq_nonneg c]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hμ' : (C' / (1 + sqn y)) ^ n ≤ C' ^ n * c ^ (2 * n)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `mul_le_mul h3 hμ' (by positivity) (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Distinguish the cases in `hi : Integrable (fun y => ReciprocityTheory.AnForm.A.gradDens (fun i => hermChartPot (T i)) (chartCutoff k) (chartCutoff k) y)`. Conclude with `(integral_mono hi hgint hpt).trans hgI.le`.
-
-Rewrite using `[integral_undef hi]`. Conclude with `mul_nonneg hK0n (integral_nonneg fun x => by positivity)`.
+Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartCutoffEnergy.proof : ChartCutoffEnergy.Statement := by
   intro n T hT

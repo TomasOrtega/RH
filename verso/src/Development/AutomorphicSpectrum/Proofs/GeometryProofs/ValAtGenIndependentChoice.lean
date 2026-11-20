@@ -12,17 +12,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.RootHt.ArchB
 
 /- English proof (translation)
-Take `⟨hz, -⟩` from `val_spec hu`. Establish `hy₀ : ∀ k, y ⟨k, c₀ k⟩ ≠ 0` using `fun k => (hw.2 k (c₀ k) (isUnit_iff_ne_zero.2 (h₀ k))).1`. Establish `hy₁ : ∀ k, y ⟨k, c₁ k⟩ ≠ 0` using `fun k => (hw.2 k (c₁ k) (isUnit_iff_ne_zero.2 (h₁ k))).1`. Establish `hr : ∀ k, ∃ r : ℂ, ValAt ξ z (y ⟨k, c₀ k⟩ / y ⟨k, c₁ k⟩) r ∧ w ⟨k, c₀ k⟩ = r * w ⟨k, c₁ k⟩` using `fun k => (hw.2 k (c₁ k) (isUnit_iff_ne_zero.2 (h₁ k))).2 (c₀ k)`. Use `choose r hrv hrw using hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr0 : ∀ k, r k ≠ 0` using `fun k hk => h₀ k (by rw [hrw k, hk, zero_mul])`. Establish `hprod : ∀ s : Finset K, ValAt ξ z (∏ k ∈ s, (y ⟨k, c₀ k⟩ / y ⟨k, c₁ k⟩) ^ a k) (∏ k ∈ s, r k ^ a k)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using val_one hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `insert k s hk ih`. Rewrite using `[Finset.prod_insert hk, Finset.prod_insert hk]`. Conclude with `val_mul (val_zpow (hr0 k) (hrv k) (a k)) ih`. Establish `hg₀ : (∏ k, y ⟨k, c₀ k⟩ ^ a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy₀ k)`. Establish `hg₁ : (∏ k, y ⟨k, c₁ k⟩ ^ a k) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (hy₁ k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΩ : τ / gen y a e₀ c₁ = (τ / gen y a e₀ c₀) * ∏ k, (y ⟨k, c₀ k⟩ / y ⟨k, c₁ k⟩) ^ a k`. Establish `: ∏ k, (y ⟨k, c₀ k⟩ / y ⟨k, c₁ k⟩) ^ a k = (∏ k, y ⟨k, c₀ k⟩ ^ a k) / ∏ k, y ⟨k, c₁ k⟩ ^ a k`. Rewrite using `[← Finset.prod_div_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => div_zpow _ _ _`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Unfold `gen`. Clear the denominators using the available nonvanishing facts. Establish `hval : u' = u * ∏ k, r k ^ a k`. Establish `h` using `val_mul hu (hprod Finset.univ)`. Rewrite `h` using `[← hΩ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `val_unique hξ hu' h`. Establish `hw₀ : ∏ k, w ⟨k, c₀ k⟩ ^ a k = (∏ k, r k ^ a k) * ∏ k, w ⟨k, c₁ k⟩ ^ a k`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => by rw [hrw k, mul_zpow]`. Rewrite using `[hw₀, hval, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem gen_chart_change (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type)
     (y : (Σ k, J k) → Ω) (z : Sp ℂ ⟶ X) (w : (Σ k, J k) → ℂ) (a : K → ℤ) (e₀ τ : Ω) (c₀ c₁ : (k : K) → J k) (u u' : ℂ)

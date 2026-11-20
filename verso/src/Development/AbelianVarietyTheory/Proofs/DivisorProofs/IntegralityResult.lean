@@ -13,13 +13,13 @@ open scoped NNReal
 namespace GlobalTheory.HalfGeo.IntProof
 
 /- English proof (translation)
-The claim follows from `Subring.ext fun a => (GlobalTheory.PadicComplexHost.mem_iff_norm p a).symm`.
+A detailed English derivation is pending.
 -/
 theorem intO_eq (p : ℕ) [Fact p.Prime] : intO ℂ_[p] = (𝓞_ℂ_[p]).toSubring :=
   Subring.ext fun a => (GlobalTheory.PadicComplexHost.mem_iff_norm p a).symm
 
 /- English proof (translation)
-Introduce `p _`. Rewrite using `[intO_eq p]`. Use `haveI : HenselianLocalRing 𝓞_ℂ_[p] := GlobalTheory.henselianLocalRing_of_valuationRing_of_isAlgClosed _ ℂ_[p]`. Conclude with `⟨GlobalTheory.PadicComplexHost.not_isUnit_p p, GlobalTheory.PadicComplexHost.isAdicComplete p, inferInstance, PadicComplexInt.integers p, ⟨GlobalTheory.HTLat.padicIntHom p⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intSt : IntSt := by
   intro p _

@@ -10,15 +10,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.OddResidueBounds.A
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Bern UpperTheory.V.B4 UpperTheory.V.B5 UpperTheory.V.Odd
 
 /- English proof (translation)
-Establish `hfe : ∑ i ∈ T, f i = ((∑ i ∈ T, (f i).toNat : ℕ) : ℕ∞)`. Rewrite using `[Nat.cast_sum]`. Conclude with `Finset.sum_congr rfl (fun i hi => (ENat.coe_toNat (hf i hi).1).symm)`. Use `lift r to ℕ using hr`. Establish `hm : m ≠ ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `h` using `[hfe, ENat.top_mul hr0]`. Conclude with `ENat.coe_ne_top _ (top_le_iff.1 h)`. Use `lift m to ℕ using hm`. Use `⟨ENat.coe_ne_top _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hfe, ← Nat.cast_mul, Nat.cast_le]`. Simplify using `only [ENat.toNat_coe] at hf ⊢`. Establish `hrpos : (0 : ℝ) < r`. Establish `: r ≠ 0` using `by exact_mod_cast hr0`. Conclude with `Nat.pos_of_ne_zero this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (m : ℝ) * r * L ≤ ∑ i ∈ T, ((f i).toNat : ℝ) * L`. Rewrite using `[← Finset.sum_mul]`. Apply `mul_le_mul_of_nonneg_right _ hL` to reduce the goal to its premises. Conclude with `h` after adjusting the coercions. Establish `h2 : ∑ i ∈ T, ((f i).toNat : ℝ) * L ≤ ∑ i ∈ T, (r : ℝ) * g i` using `Finset.sum_le_sum (fun i hi => (hf i hi).2)`.
-
-Rewrite `h2` using `[← Finset.mul_sum]`. Establish `h3 : (r : ℝ) * ((m : ℝ) * L) ≤ (r : ℝ) * ∑ i ∈ T, g i`. Combine the equalities or inequalities in the displayed calculation. Conclude with `le_of_mul_le_mul_left h3 hrpos`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem divE {ι : Type} (T : Finset ι) (m r : ℕ∞) (f : ι → ℕ∞) (g : ι → ℝ) (L : ℝ) (hL : 0 ≤ L)
     (hr0 : r ≠ 0) (hr : r ≠ ⊤) (h : m * r ≤ ∑ i ∈ T, f i)
@@ -52,7 +50,7 @@ private theorem divE {ι : Type} (T : Finset ι) (m r : ℕ∞) (f : ι → ℕ�
   exact le_of_mul_le_mul_left h3 hrpos
 
 /- English proof (translation)
-Use `haveI : Fintype ((E ≃ₐ[ℚ] E) →* Oˣ) := Fintype.ofFinite _`. Establish `key` using `shaDecompSign ℚ E Ω l O D (e : ℤ) hl2 c ((-1) ^ (e + 1)) hc T (fun ψ h => hT ψ (by simpa using h))`. Establish `hsgn : ((((-1) ^ (e + 1) : ℤˣ) : ℤ) : ℤ_[l]) = (-1) ^ (e + 1)` using `by simp`. Rewrite `key` using `[hcE, hsgn]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem keyO (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [Algebra ℚ Ω]
     [IsScalarTower ℚ E Ω] [IsAlgClosure ℚ Ω] [IsAlgClosure E Ω] [IsAbelianGalois ℚ E] (l : ℕ) [Fact l.Prime] (O : Type)
@@ -68,19 +66,15 @@ private theorem keyO (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Fiel
   exact key
 
 /- English proof (translation)
-Introduce `hPB E Ω _ _ _ _ _ _ N _ ρ hρ l _ D hl2 hld e he`. Take `⟨hsurj, hab, -, -, -⟩` from `UpperTheory.V.Odd.actFacts E Ω N ρ hρ`. Use `haveI := hab`. Take `⟨hcE, -⟩` from `UpperTheory.V.Odd.actConj E Ω N ρ hρ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap E Ω).injective`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : IsAlgClosure ℚ Ω := IsAlgClosure.ofAlgebraic ℚ E Ω`. Use `haveI : NeZero (Monoid.exponent (E ≃ₐ[ℚ] E)) := ⟨Monoid.exponent_ne_zero_of_finite⟩`. Take `⟨O, hO1, hO2, hO3⟩` from `UpperTheory.V.Base.existsO l (Monoid.exponent (E ≃ₐ[ℚ] E))`. Use `haveI := hO1`. Use `haveI := hO2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := hO3`. Use `haveI := Fintype.ofFinite ((E ≃ₐ[ℚ] E) →* Oˣ)`. Take `⟨-, -, -, -, -, heO0, heOle, -, -⟩` from `UpperTheory.V.Base.dvrFacts l O`. Establish `hc : ρ (-1) * ρ (-1) = 1`. Rewrite using `[← map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Set `T : Finset ((E ≃ₐ[ℚ] E) →* Oˣ)` to `Finset.univ.filter (fun ψ => ((ψ (ρ (-1)) : Oˣ) : O) = (-1) ^ (e + 1))`. Establish `hkey` using `keyO E Ω l O D e hl2 (ρ (-1)) hc hcE T (fun ψ hψ => Finset.mem_filter.2 ⟨Finset.mem_univ _, hψ⟩)`. Establish `hpar : ∀ ψ ∈ T, chiOf ρ ψ (-1) = (-1) ^ (e + 1)`. Introduce `ψ hψ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hψ'` using `(Finset.mem_filter.1 hψ).2`. Establish `h1` using `chiOf_unit ρ ψ (-1)`. Rewrite `h1` using `[Units.val_neg, Units.val_one]`. Rewrite using `[h1, hψ']`. Simplify using the standard rewrite rules.
-
-Establish `hfin : eO l O ≠ ⊤` using `ne_top_of_le_ne_top (ENat.coe_ne_top _) heOle`. Establish `hL : 0 ≤ Real.log l` using `Real.log_nonneg (by exact_mod_cast (Fact.out : l.Prime).one_lt.le)`. Take `⟨hm, hle⟩` from `divE T (minusLen D e) (eO l O) (fun ψ => psiLen (l := l) Ω e ψ) (fun ψ => -Real.log ‖alN (e + 1) (chiOf ρ ψ)‖) (Real.log l) hL heO0 hfin hkey (fun ψ hψ => UpperTheory.V.Odd.psiReal hPB E Ω N ρ hρ l hl2 hld O e he ψ (hpar ψ hψ))`. Use `⟨hm, T.image (fun ψ => chiOf ρ ψ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image]`.
-
-Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`. Conclude with `((UpperTheory.V.Odd.chiFacts E N ρ hsurj l O).2 ψ (e + 1)).1 (hpar ψ hψ)`. Rewrite using `[Finset.sum_image (fun x _ y _ h => (UpperTheory.V.Odd.chiFacts E N ρ hsurj l O).1 h)]`. Conclude with `hle`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Odd.atPrime :
     PsiBound → ∀ (E Ω : Type) [Field E] [NumberField E] [IsCMField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (N : ℕ) [NeZero N] (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)), IsCycAct Ω N ρ → ∀ (l : ℕ) [Fact l.Prime] (D : LData E Ω l), l ≠ 2 → ¬ l ∣ Module.finrank ℚ E → ∀ e : ℕ, 1 ≤ e → minusLen D e ≠ ⊤ ∧ ∃ T : Finset (DirichletCharacter (PadicAlgCl l) N), (T : Set _) ⊆ charSet (PadicAlgCl l) (parE ρ (e + 1)) ∧ ((minusLen D e).toNat : ℝ) * Real.log l ≤ ∑ χ ∈ T, -Real.log ‖alN (e + 1) χ‖ := by

@@ -13,14 +13,14 @@ variable {ι : Type} [Fintype ι]
 def gW (c : ℝ) (h : EuclideanSpace ℝ ι → ℂ) (u : EuclideanSpace ℝ ι) : ℂ := h u * (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ)
 
 /- English proof (translation)
-Unfold `gW`. Conclude with `h.continuous.mul (Complex.continuous_ofReal.comp (by fun_prop))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gW_cont (c : ℝ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ)) : Continuous (gW c h) := by
   unfold gW
   exact h.continuous.mul (Complex.continuous_ofReal.comp (by fun_prop))
 
 /- English proof (translation)
-Unfold `gW`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (Real.exp_pos _)]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (Real.exp_le_one_iff.mpr (neg_nonpos.mpr (mul_nonneg hc (sq_nonneg _))))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_gW_le {c : ℝ} (hc : 0 ≤ c) (h : EuclideanSpace ℝ ι → ℂ) (u : EuclideanSpace ℝ ι) :
     ‖gW c h u‖ ≤ ‖h u‖ := by
@@ -30,7 +30,7 @@ theorem norm_gW_le {c : ℝ} (hc : 0 ≤ c) (h : EuclideanSpace ℝ ι → ℂ) 
     (Real.exp_le_one_iff.mpr (neg_nonpos.mpr (mul_nonneg hc (sq_nonneg _))))
 
 /- English proof (translation)
-Use `(h.integrable_pow_mul volume n).mono (((continuous_norm.pow n).mul (gW_cont c h).norm).aestronglyMeasurable) ?_` and prove the remaining obligations. Use `ae_of_all _ fun v => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity)]`. Conclude with `mul_le_mul_of_nonneg_left (norm_gW_le hc _ v) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gW_int_pow {c : ℝ} (hc : 0 ≤ c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ)) (n : ℕ) :
     Integrable (fun v => ‖v‖ ^ n * ‖gW c h v‖) := by
@@ -41,12 +41,12 @@ theorem gW_int_pow {c : ℝ} (hc : 0 ≤ c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ
   exact mul_le_mul_of_nonneg_left (norm_gW_le hc _ v) (by positivity)
 
 /- English proof (translation)
-The claim follows from `h.integrable.mono (gW_cont c h).aestronglyMeasurable (ae_of_all _ fun v => norm_gW_le hc h v)`.
+A detailed English derivation is pending.
 -/
 theorem gW_int {c : ℝ} (hc : 0 ≤ c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ)) : Integrable (gW c h) := h.integrable.mono (gW_cont c h).aestronglyMeasurable (ae_of_all _ fun v => norm_gW_le hc h v)
 
 /- English proof (translation)
-Rewrite using `[Real.fourier_eq']`. Use `integral_congr_ae (ae_of_all _ fun u => ?_)` and prove the remaining obligations. Simplify using `only [gW, smul_eq_mul, real_inner_smul_right, real_inner_comm u ξ]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem four_line (c : ℝ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ)) (ξ : EuclideanSpace ℝ ι) (t : ℝ) :
     𝓕 (gW c h) (t • ξ) = ∫ u, h u * Real.exp (-(c * ‖u‖ ^ 2)) *
@@ -61,7 +61,7 @@ def Kf (c : ℝ) (h : EuclideanSpace ℝ ι → ℂ) (η : EuclideanSpace ℝ ι
   (Real.exp (Real.pi ^ 2 / (2 * c) * ‖η‖ ^ 2) : ℂ) * 𝓕 (gW c h) η
 
 /- English proof (translation)
-Unfold `Kf`. Use `ContDiff.mul ?_ ?_` and prove the remaining obligations. Conclude with `Complex.ofRealCLM.contDiff.comp (Real.contDiff_exp.comp (contDiff_const.mul (contDiff_norm_sq ℝ)))`. Conclude with `(Real.contDiff_fourier (N := ⊤) (fun n _ => gW_int_pow hc h n)).of_le (by exact_mod_cast le_top)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Kf_contDiff {c : ℝ} (hc : 0 ≤ c) (h : 𝓢(EuclideanSpace ℝ ι, ℂ)) (N : ℕ) : ContDiff ℝ N (Kf c h) := by
   unfold Kf
@@ -72,11 +72,11 @@ theorem Kf_contDiff {c : ℝ} (hc : 0 ≤ c) (h : 𝓢(EuclideanSpace ℝ ι, �
       (by exact_mod_cast le_top)
 
 /- English proof (translation)
-Take `⟨p, hp, hpz⟩` from `H ξ`. Use `⟨p.comp (Polynomial.C (-2 * Real.pi * Complex.I) * Polynomial.X), ?_, fun t => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc.ne'`. Establish `e : ((Real.pi ^ 2 / (2 * c) * ‖t • ξ‖ ^ 2 : ℝ) : ℂ) + (-2 * Real.pi * Complex.I * t) ^ 2 * ‖ξ‖ ^ 2 / (8 * c) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, mul_pow, Real.norm_eq_abs, sq_abs]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Kf, four_line, hpz, Complex.ofReal_exp, ← mul_assoc, ← Complex.exp_add, e, Complex.exp_zero, one_mul, Polynomial.eval_comp]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Kf_line {c : ℝ} (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z : ℂ,
@@ -104,7 +104,7 @@ theorem Kf_line {c : ℝ} (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι
     simp
 
 /- English proof (translation)
-Take `⟨Q, hQ, hKQ⟩` from `line_poly N (Kf c h) (Kf_contDiff hc.le h N) (Kf_line hc N h H)`. Use `⟨Q, hQ, fun η => ?_⟩` and prove the remaining obligations. Rewrite using `[← hKQ, Kf, mul_right_comm, ← Complex.ofReal_mul, ← Real.exp_add, add_neg_cancel, Real.exp_zero, Complex.ofReal_one, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem four_eq {c : ℝ} (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z : ℂ,
@@ -118,13 +118,13 @@ theorem four_eq {c : ℝ} (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι
     Complex.ofReal_one, one_mul]
 
 /- English proof (translation)
-Take `⟨Q, hQ, hF⟩` from `four_eq hc N h H`. Establish `hb : 0 < Real.pi ^ 2 / (2 * c)` using `by positivity`. Take `⟨Q', hQ', hinv⟩` from `fourierInv_poly_gauss _ hb Q`. Use `⟨Q', hQ'.trans hQ, fun u => ?_⟩` and prove the remaining obligations. Establish `hFeq : 𝓕 (gW c h) = fun η : EuclideanSpace ℝ ι => MvPolynomial.eval (fun i => ((η i : ℝ) : ℂ)) Q * (Real.exp (-(Real.pi ^ 2 / (2 * c) * ‖η‖ ^ 2)) : ℂ)` using `funext hF`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hint : Integrable (𝓕 (gW c h))`. Rewrite using `[hFeq]`. Conclude with `integrable_poly_gauss _ hb Q`. Establish `key` using `(gW_int hc.le h).fourierInv_fourier_eq hint (gW_cont c h).continuousAt (v := u)`. Rewrite `key` using `[hFeq, hinv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Real.pi ^ 2 / (Real.pi ^ 2 / (2 * c)) = 2 * c`. Establish `: Real.pi ≠ 0` using `Real.pi_ne_zero`. Clear the denominators using the available nonvanishing facts. Rewrite `key` using `[h2]`. Unfold `gW at key`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hE : (Real.exp (-(c * ‖u‖ ^ 2)) : ℂ) ≠ 0` using `by exact_mod_cast (Real.exp_pos _).ne'`. Apply `mul_right_cancel₀ hE` to reduce the goal to its premises. Rewrite using `[← key, mul_assoc _ ((Real.exp (-(c * ‖u‖ ^ 2)) : ℂ)), ← Complex.ofReal_mul, ← Real.exp_add]`. Use `congr 3`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem poly_gauss_of_lines (c : ℝ) (hc : 0 < c) (N : ℕ) (h : 𝓢(EuclideanSpace ℝ ι, ℂ))
     (H : ∀ ξ : EuclideanSpace ℝ ι, ∃ p : Polynomial ℂ, p.natDegree ≤ N ∧ ∀ z : ℂ,

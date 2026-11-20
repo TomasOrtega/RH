@@ -11,26 +11,24 @@ namespace GlobalTheory.KZ.H3
 open Filter Topology
 
 /- English proof (translation)
-The claim follows from `isOpen_lt continuous_const Complex.continuous_im`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_Hs_place : IsOpen Hs := isOpen_lt continuous_const Complex.continuous_im
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨Complex.I, by simp [Hs]⟩, (convex_halfSpace_im_gt (0 : ℝ)).isPreconnected⟩`.
+Supply the required witnesses or components.
 -/
 theorem isConnected_Hs_place : IsConnected Hs :=
   ⟨⟨Complex.I, by simp [Hs]⟩, (convex_halfSpace_im_gt (0 : ℝ)).isPreconnected⟩
 
 /- English proof (translation)
-Establish `hA : AnalyticOnNhd ℂ a Hs` using `ha.analyticOnNhd isOpen_Hs_place`. Establish `hB : AnalyticOnNhd ℂ b Hs` using `hb.analyticOnNhd isOpen_Hs_place`. Establish `hx : ∃ x ∈ Hs, b x ≠ 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hb0` to reduce the goal to its premises. Rewrite using `[← Filter.Germ.coe_zero]`. Use `Filter.Germ.coe_eq.2 ?_` and prove the remaining obligations. Use `filter_upwards [Filter.self_mem_codiscreteWithin Hs] with z hz using h z hz`. Take `⟨x, hxH, hx0⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : b ⁻¹' {0}ᶜ ∈ codiscreteWithin Hs` using `hB.preimage_zero_mem_codiscreteWithin hx0 hxH isConnected_Hs_place`. Establish `hM : MeromorphicAt (a / b) τ` using `(hA τ hτ).meromorphicAt.div (hB τ hτ).meromorphicAt`. Use `⟨toMeromorphicNFAt (a / b) τ, ?_, hM.meromorphicOrderAt_nonneg_iff_analyticAt_toMeromorphicNFAt.1 hord⟩` and prove the remaining obligations. Establish `h1 : ((b * b⁻¹ : ℂ → ℂ) : Mero) = 1`. Rewrite using `[← Filter.Germ.coe_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Filter.Germ.coe_eq.2 ?_` and prove the remaining obligations. Use `filter_upwards [hne] with z hz`. Simplify using `only [Pi.mul_apply, Pi.inv_apply, Pi.one_apply]`. Conclude with `mul_inv_cancel₀ hz`. Establish `h2 : X.an f = ((a / b : ℂ → ℂ) : Mero)`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2]`. Use `Filter.Germ.coe_eq.2 ?_` and prove the remaining obligations. Use `filter_upwards [compl_finite_mem_codiscreteWithin (s := Hs) (Set.finite_singleton τ)] with z hz`. Conclude with `hM.eqOn_compl_singleton_toMeromorphicNFAt hz`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_analyticAt_of_order_nonneg {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε)
     {τ : ℂ} (hτ : τ ∈ Hs) (f : X.K) (a b : ℂ → ℂ) (ha : DifferentiableOn ℂ a Hs) (hb : DifferentiableOn ℂ b Hs)
@@ -73,23 +71,21 @@ namespace GlobalTheory.KZ.H3
 open Filter Topology
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X hj τ hτ`. Establish `h0 : ∃ φ : ℂ → ℂ, X.an 0 = (φ : Mero) ∧ AnalyticAt ℂ φ τ` using `⟨0, by rw [map_zero, Filter.Germ.coe_zero], analyticAt_const⟩`. Set `W : ValuationSubring X.K` to `{ carrier := {f | ∃ φ : ℂ → ℂ, X.an f = (φ : Mero) ∧ AnalyticAt ℂ φ τ} zero_mem' := h0 one_mem' := ⟨1, by rw [map_one, Filter.Germ.coe_one], analyticAt_const⟩ add_mem' := by`. Introduce and unpack `f g ⟨φ, h1, h2⟩ ⟨ψ, h3, h4⟩`. Conclude with `⟨φ + ψ, by rw [map_add, h1, h3, Filter.Germ.coe_add], h2.add h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `mul_mem' := by`. Introduce and unpack `f g ⟨φ, h1, h2⟩ ⟨ψ, h3, h4⟩`. Conclude with `⟨φ * ψ, by rw [map_mul, h1, h3, Filter.Germ.coe_mul], h2.mul h4⟩`. Use the proof step `neg_mem' := by`. Introduce and unpack `f ⟨φ, h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨-φ, by rw [map_neg, h1, Filter.Germ.coe_neg], h2.neg⟩`. Use the proof step `mem_or_inv_mem' := by`. Introduce `f`. Distinguish the cases in `hf : f = 0`. Use `left`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hf]`. Conclude with `h0`. Take `⟨a, b, ha, hb, hb0, hab⟩` from `X.an_mero f`. Establish `hu : X.an f⁻¹ * X.an f = 1` using `by rw [← map_mul, inv_mul_cancel₀ hf, map_one]`. Distinguish the cases in `hord : 0 ≤ meromorphicOrderAt (a / b) τ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `left`. Conclude with `exists_analyticAt_of_order_nonneg X hτ f a b ha hb hb0 hab hord`. Use `right`. Establish `ha0 : (a : Mero) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hb0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hba : X.an f⁻¹ * (a : Mero) = (b : Mero)` using `by rw [← hab, ← mul_assoc, hu, one_mul]`. Establish `hinv : b / a = (a / b)⁻¹`. Use function extensionality and compare the values at `z`.
+Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[inv_div]`. Establish `hord' : 0 ≤ meromorphicOrderAt (b / a) τ`. Rewrite using `[hinv, meromorphicOrderAt_inv]`. Use `push_neg at hord`. Generalize the expression as in `meromorphicOrderAt (a / b) τ = o at hord ⊢`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Proceed by induction on `o with`. Consider the case `top => simp at hord`. Consider the case `coe n`. Establish `hn : n < 0` using `by exact_mod_cast hord`. Establish `: (0 : WithTop ℤ) ≤ ((-n : ℤ) : WithTop ℤ)` using `by exact_mod_cast (by omega : (0 : ℤ) ≤ -n)`.
-
-Simplify using `using this`. Conclude with `exists_analyticAt_of_order_nonneg X hτ f⁻¹ b a hb ha ha0 hba hord' }`. Use `⟨W, ⟨fun c => ⟨fun _ => ε c, X.an_c c, analyticAt_const⟩, ?_⟩, fun f => Iff.rfl⟩` and prove the remaining obligations. Take `⟨φ, h1, h2⟩` from `hj`. Conclude with `⟨φ, h1, h2.analyticAt (isOpen_Hs_place.mem_nhds hτ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_place_at_point : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) , JHol X → ∀ τ ∈ Hs,
     ∃ W : ValuationSubring X.K, X.OverY W ∧ ∀ f : X.K, f ∈ W ↔ ∃ φ : ℂ → ℂ, X.an f = (φ : Mero) ∧ AnalyticAt ℂ φ τ := by

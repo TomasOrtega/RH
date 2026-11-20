@@ -9,11 +9,11 @@ namespace GlobalTheory.Mem.Lift.VacAnn
 open MeasureTheory Complex Matrix in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 /- English proof (translation)
-Establish `h1 : HasFDerivAt (fun u : V => ‖u‖ ^ 2) (2 • innerSL ℝ w) w`. Simplify using `using (hasStrictFDerivAt_norm_sq w).hasFDerivAt`. Establish `h2` using `(Complex.ofRealCLM.hasFDerivAt).comp w h1`. Establish `h3` using `(h2.const_mul (-(Real.pi : ℂ) / 2)).cexp`. Establish `hf : (_root_.GlobalTheory.RealWeil.gau : V → ℂ) = fun u => Complex.exp (-(Real.pi : ℂ) / 2 * ((‖u‖ ^ 2 : ℝ) : ℂ))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Unfold `_root_.GlobalTheory.RealWeil.gau`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[hf]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Use `h3.congr_fderiv ?_` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Function.comp_apply, Complex.ofRealCLM_apply, innerSL_apply_apply, smul_eq_mul, nsmul_eq_mul, ContinuousLinearMap.coe_smul', Pi.smul_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem hasFDerivAt_gau {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] (w : V) :
@@ -39,7 +39,7 @@ open MeasureTheory Complex Matrix in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 
 /- English proof (translation)
-Rewrite using `[(hasFDerivAt_gau w).fderiv]`. Simplify using `only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, Complex.ofRealCLM_apply, innerSL_apply_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.Mem.Lift.VacAnn.fderiv_gau_apply {V : Type} [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] (w v : V) :
@@ -54,15 +54,15 @@ open MeasureTheory Complex Matrix in
 open scoped RealInnerProductSpace ContDiff Real ComplexOrder in
 
 /- English proof (translation)
-Introduce `V _ _ _ _ _ B _ _ _ J ρ hJ h x z`. Use `set P := _root_.GlobalTheory.RealWeil.proj h`. Use `set f := P x with hf_def`. Establish `hf : _root_.GlobalTheory.RealWeil.Sm ρ f` using `_root_.GlobalTheory.RealWeil.Good.sm hJ (_root_.GlobalTheory.RealWeil.Osc.good_proj hJ h x)`. Establish `hsand : ∀ w : V, P (ρ w f) = _root_.GlobalTheory.RealWeil.gau w • f` using `fun w => _root_.GlobalTheory.RealWeil.proj_heis_proj hJ h w x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ w v : V, P (ρ w (_root_.GlobalTheory.Mem.Lift.dH ρ v f)) = ((Real.pi : ℂ) * I * (⟪w, J v⟫ : ℝ) * _root_.GlobalTheory.RealWeil.gau w - (Real.pi : ℂ) * (⟪w, v⟫ : ℝ) * _root_.GlobalTheory.RealWeil.gau w) • f`. Introduce `w v`. Rewrite using `[_root_.GlobalTheory.Mem.Lift.VacBd.heis_dH h hf v w, map_add, map_smul, hsand w, _root_.GlobalTheory.Mem.Lift.VacBd.fderiv_compress P hf _root_.GlobalTheory.RealWeil.contDiff_gau hsand w v, _root_.GlobalTheory.Mem.Lift.VacAnn.fderiv_gau_apply, smul_smul, ← add_smul]`. Use `congr 1`. Use `show (Real.pi : ℂ) * I * ((⟪w, J v⟫ : ℝ) : ℂ) * _root_.GlobalTheory.RealWeil.gau w + -(Real.pi : ℂ) * ((⟪w, v⟫ : ℝ) : ℂ) * _root_.GlobalTheory.RealWeil.gau w = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `set G := _root_.GlobalTheory.Mem.Lift.dH ρ z f + I • _root_.GlobalTheory.Mem.Lift.dH ρ (J z) f`. Establish `hG : _root_.GlobalTheory.RealWeil.Sm ρ G` using `_root_.GlobalTheory.RealWeil.Osc.sm_add (_root_.GlobalTheory.Mem.Lift.VacBd.sm_dH h hf z) (_root_.GlobalTheory.RealWeil.Osc.sm_smul I (_root_.GlobalTheory.Mem.Lift.VacBd.sm_dH h hf (J z)))`. Establish `hzero : ∀ w : V, P (ρ w G) = 0`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 
-Simplify using `only [G, map_add, map_smul, hcomp, smul_smul, ← add_smul, hJ z, inner_neg_right]`. Apply `smul_eq_zero_of_left` to reduce the goal to its premises. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[I_sq]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← (_root_.GlobalTheory.RealWeil.Osc.good_of_sm hJ h hG).inversion hJ]`. Establish `hzero' : ∀ w : V, _root_.GlobalTheory.RealWeil.proj h (ρ (-w) G) = 0` using `fun w => hzero (-w)`. Simplify using `only [hzero', map_zero, integral_zero]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Mem.Lift.VacAnn.proj_annihilated : ∀ (V : Type) [NormedAddCommGroup V]
     [InnerProductSpace ℝ V] [FiniteDimensional ℝ V] [MeasurableSpace V] [BorelSpace V] (B : Type)

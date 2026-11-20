@@ -10,7 +10,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hl : 0 < l ^ 1` using `pow_pos (Fact.out : l.Prime).pos 1`. Use `Set.Finite.subset (Polynomial.nthRoots (l ^ 1) (1 : Om l)).toFinset.finite_toSet ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Finset.mem_coe, Multiset.mem_toFinset, Polynomial.mem_nthRoots hl]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_roots_l : {x : Om l | x ^ (l ^ 1) = 1}.Finite := by
   classical
@@ -21,9 +21,9 @@ theorem finite_roots_l : {x : Om l | x ^ (l ^ 1) = 1}.Finite := by
   exact hx
 
 /- English proof (translation)
-Establish `h0 : FiniteDimensional ℚ_[l] ↥(K0 K)` using `Module.finite_of_finrank_pos (Formalism.MainNotions.N.PreambleDegrees.finrank_maxUnramifiedSubfield_padicFinExt_pos K)`. Establish `: Finite {x : Om l | x ^ (l ^ 1) = 1}` using `finite_roots_l.to_subtype`. Establish `h1 : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ 1) = 1})` using `IntermediateField.finiteDimensional_adjoin (fun x hx => by`. Establish `hl : 0 < l ^ 1` using `pow_pos (Fact.out : l.Prime).pos 1`. Apply `IsIntegral.of_pow hl` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show x ^ (l ^ 1) = 1 from hx]`. Conclude with `isIntegral_one)`. Unfold `Ks`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fd_Ks (K : FinExt l) : FiniteDimensional ℚ_[l] ↥(Ks K 1) := by
   have h0 : FiniteDimensional ℚ_[l] ↥(K0 K) :=
@@ -47,13 +47,13 @@ Both sides reduce to the same expression.
 theorem cycL_val (K : FinExt l) : (cycL K).1 = Ks K 1 := rfl
 
 /- English proof (translation)
-The claim follows from `le_inf (le_sup_left : K0 K ≤ Ks K 1) inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem max_unramified_le_cyclotomic (K : FinExt l) : K0 K ≤ K0 (cycL K) :=
   le_inf (le_sup_left : K0 K ≤ Ks K 1) inf_le_right
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `sup_le (inf_le_left : K0 (cycL K) ≤ (cycL K).1) le_sup_right`. Conclude with `sup_le_sup_right (max_unramified_le_cyclotomic K) _`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem Ks_cycL (K : FinExt l) : Ks (cycL K) 1 = Ks K 1 := by
   apply le_antisymm
@@ -61,7 +61,7 @@ theorem Ks_cycL (K : FinExt l) : Ks (cycL K) 1 = Ks K 1 := by
   · exact sup_le_sup_right (max_unramified_le_cyclotomic K) _
 
 /- English proof (translation)
-Establish `hp : 0 < finrank ℚ_[l] ↥(K0 K)` using `Formalism.MainNotions.N.PreambleDegrees.finrank_maxUnramifiedSubfield_padicFinExt_pos K`. Establish `h1` using `IntermediateField.finrank_bot_mul_relfinrank (le_sup_left : K0 K ≤ Ks K 1)`. Establish `h2` using `Formalism.MainNotions.N.PreambleDegrees.finrank_Ks K one_pos`. Rewrite `h2` using `[Nat.sub_self, pow_zero, one_mul]`. Conclude with `Nat.eq_of_mul_eq_mul_left hp (h1.trans h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclotomic_degree_max_unramified (K : FinExt l) : (K0 K).relfinrank (Ks K 1) = l - 1 := by
   have hp : 0 < finrank ℚ_[l] ↥(K0 K) := Formalism.MainNotions.N.PreambleDegrees.finrank_maxUnramifiedSubfield_padicFinExt_pos K
@@ -71,9 +71,9 @@ theorem cyclotomic_degree_max_unramified (K : FinExt l) : (K0 K).relfinrank (Ks 
   exact Nat.eq_of_mul_eq_mul_left hp (h1.trans h2)
 
 /- English proof (translation)
-Establish `h1` using `cyclotomic_degree_max_unramified K`. Establish `h2` using `cyclotomic_degree_max_unramified (cycL K)`. Rewrite `h2` using `[Ks_cycL]`. Establish `hm` using `IntermediateField.relfinrank_mul_relfinrank (max_unramified_le_cyclotomic K) (inf_le_left : K0 (cycL K) ≤ (cycL K).1)`. Rewrite `hm` using `[cycL_val, h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < l - 1` using `by have := (Fact.out : l.Prime).two_le; omega`. Establish `h3 : (K0 K).relfinrank (K0 (cycL K)) = 1` using `Nat.eq_of_mul_eq_mul_right hpos (by rw [hm, one_mul])`. Conclude with `le_antisymm (IntermediateField.relfinrank_eq_one_iff.1 h3) (max_unramified_le_cyclotomic K)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem max_unramified_cyclotomic_eq (K : FinExt l) : K0 (cycL K) = K0 K := by
   have h1 := cyclotomic_degree_max_unramified K
@@ -88,7 +88,7 @@ theorem max_unramified_cyclotomic_eq (K : FinExt l) : K0 (cycL K) = K0 K := by
   exact le_antisymm (IntermediateField.relfinrank_eq_one_iff.1 h3) (max_unramified_le_cyclotomic K)
 
 /- English proof (translation)
-Establish `hle : K0 K ≤ K.1` using `inf_le_left`. Rewrite using `[IntermediateField.relfinrank_eq_finrank_of_le hle]`. Conclude with `LinearEquiv.finrank_eq { toFun := fun x => ⟨x.1, x.2⟩ invFun := fun x => ⟨x.1, x.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_eq_relfinrank (K : FinExt l) :
     finrank ↥(K0 K) ↥K.1 = (K0 K).relfinrank K.1 := by
@@ -103,7 +103,7 @@ theorem finrank_eq_relfinrank (K : FinExt l) :
       right_inv := fun _ => rfl }
 
 /- English proof (translation)
-Rewrite using `[finrank_eq_relfinrank, cycL_val, ← Ks_cycL K, cyclotomic_degree_max_unramified]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_cycL (K : FinExt l) : finrank ↥(K0 (cycL K)) ↥(cycL K).1 = l - 1 := by
   rw [finrank_eq_relfinrank, cycL_val, ← Ks_cycL K, cyclotomic_degree_max_unramified]

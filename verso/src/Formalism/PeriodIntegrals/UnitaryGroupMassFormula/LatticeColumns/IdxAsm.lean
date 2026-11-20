@@ -17,7 +17,7 @@ def HModelAll : Prop :=
     X.MeasTie hb → X.LevelSubgroupNormalized → ∀ p : TypX X, HModelU X hb u p
 
 /- English proof (translation)
-The claim follows from `idxCountStep_of_models h`.
+A detailed English derivation is pending.
 -/
 theorem idxCountStep_of_modelAll (h : HModelAll) : IdxCountStep := idxCountStep_of_models h
 

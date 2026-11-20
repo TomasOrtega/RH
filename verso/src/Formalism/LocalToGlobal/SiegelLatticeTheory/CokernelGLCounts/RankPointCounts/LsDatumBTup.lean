@@ -13,14 +13,14 @@ variable {D : Formalism.BasicNotions.D7} {M : ∀ p : PlF D, Loc.Model (D.s.atP 
   {T T' : ℕ}
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h1 : IsLCls M δ T T' p w O <;> simp [fL, hL, kL, h1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fL_eq (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (τ : Option ((M p).Cls D.R.rS)) (O : Set (MatP D p)) :
     fL M δ T T' p w τ O = hL M δ T T' p w O * kL M δ T T' p w τ O := by
   by_cases h1 : IsLCls M δ T T' p w O <;> simp [fL, hL, kL, h1]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h1 : IsLCls M δ T T' p w O <;>`. Apply the tactic sequence `by_cases h2 : thL M δ T T' p w (repL M δ T T' p w O) = τ <;> simp [gL, hL, eL, h1, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gL_eq (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (τ : Option ((M p).Cls D.R.rS)) (O : Set (MatP D p)) :
     gL M δ T T' p w τ O = hL M δ T T' p w O * eL M δ T T' p w τ O := by
@@ -28,7 +28,7 @@ theorem gL_eq (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (τ : Option ((M p).
     by_cases h2 : thL M δ T T' p w (repL M δ T T' p w O) = τ <;> simp [gL, hL, eL, h1, h2]
 
 /- English proof (translation)
-Unfold `eL`. Use `split_ifs`. Conclude with `Or.inr rfl`. Conclude with `Or.inl rfl`.
+Replace the relevant objects with their definitions. Prove the second alternative. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem eL_zero_or_one (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (τ : Option ((M p).Cls D.R.rS))
     (O : Set (MatP D p)) : eL M δ T T' p w τ O = 0 ∨ eL M δ T T' p w τ O = 1 := by
@@ -38,11 +38,9 @@ theorem eL_zero_or_one (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) (τ : Optio
   · exact Or.inl rfl
 
 /- English proof (translation)
-Establish `g1` using `hg θ (x0L M δ T T' p w)`. Rewrite `g1` using `[if_pos ⟨rfl, rfl⟩, gL_eq]`. Establish `he : eL M δ T T' p w θ (x0L M δ T T' p w) = 1`. Break down `eL_zero_or_one (M := M) (δ := δ) (T := T) (T' := T') p w θ (x0L M δ T T' p w) with h | h` into its components or cases. Rewrite `g1` using `[h, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd g1 zero_ne_one`. Conclude with `h`. Rewrite `g1` using `[he, mul_one]`. Establish `f1` using `hf θ (x0L M δ T T' p w)`. Rewrite `f1` using `[if_pos ⟨rfl, rfl⟩, fL_eq, g1, one_mul]`.
-
-Conclude with `⟨g1, f1, he⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem base_factors {p : PlF D} {w : Point D.host.E (D.R.rS + 1)} {θ : Option ((M p).Cls D.R.rS)}
     (hf : ∀ τ O, fL M δ T T' p w τ O = if O = x0L M δ T T' p w ∧ τ = θ then 1 else 0)
@@ -65,19 +63,17 @@ variable {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (CntLocal.Tn u)}
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Introduce `γ w hγ w' hG' hk`. Take `⟨hres, hcnt⟩` from `hN γ w hγ w' hG' hk`. Use `⟨hres, fun x => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hU w' hG'`. Establish `hRf` using `hR γ w hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone : ∀ p ∉ S ∪ hRf.toFinset ∪ x.2.toFinset, hL M δ (D.mem u).A.T (D.mem u').A.T p w' (x.1 p) = 1 ∧ kL M δ (D.mem u).A.T (D.mem u').A.T p w' (thT M δ γ p) (x.1 p) = 1`. Introduce `p hp`. Establish `hpS : p ∉ S` using `fun h => hp (Finset.mem_union_left _ (Finset.mem_union_left _ h))`. Establish `hth : thT M δ γ p = θ0 p`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hp (Finset.mem_union_left _ (Finset.mem_union_right _ (hRf.mem_toFinset.2 h)))`. Establish `hx : x.1 p = x0L M δ (D.mem u).A.T (D.mem u').A.T p w'`. Assume the negation of the conclusion as `h`. Conclude with `hp (Finset.mem_union_right _ (x.2.mem_toFinset.2 h))`. Rewrite using `[hx, hth]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hb` using `base_factors (fun τ O => ((hS p hpS).2 τ O).1) (fun τ O => ((hS p hpS).2 τ O).2)`. Conclude with `⟨hb.1, hb.2.1⟩`. Establish `hfunc : (fun γ' : {γ' : TermDef.Term D u u' F0 what₂ // (Corank.TermScal D γ γ' ∧ EligAt γ' w') ∧ locT M δ γ' = x.1} => PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) γ'.1 w') = fun γ' => (∏ᶠ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w' (x.1 p)) * ((PairVal.orbT D u u' F0 what₂ γ …`. Use function extensionality and compare the values at `γ'`. Rewrite using `[hC γ'.1 w' γ'.2.1.2, γ'.2.2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hfunc]`. Establish `hv : (∏ᶠ p, fL M δ (D.mem u).A.T (D.mem u').A.T p w' (thT M δ γ p) (x.1 p)) = (∏ᶠ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w' (x.1 p)) * ∏ᶠ p, kL M δ (D.mem u).A.T (D.mem u').A.T p w' (thT M δ γ p) (x.1 p)`. Rewrite using `[← finprod_mul_distrib]`. Conclude with `finprod_congr fun p => fL_eq p w' _ _`. Use `(S ∪ hRf.toFinset ∪ x.2.toFinset).finite_toSet.subset fun p hp => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_mulSupport.1 hp) (hone p h).1`. Use `(S ∪ hRf.toFinset ∪ x.2.toFinset).finite_toSet.subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_mulSupport.1 hp) (hone p h).2`.
-
-Rewrite using `[hv]`. Conclude with `(hcnt x).mul_left _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem partnerTupleSum_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)
@@ -124,19 +120,17 @@ theorem partnerTupleSum_of {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
   exact (hcnt x).mul_left _
 
 /- English proof (translation)
-Introduce `nc hnc ϖ hϖ w hG γ₀ w₀ hγ₀ hk`. Take `⟨hres, hcnt⟩` from `hN nc hnc ϖ hϖ w hG γ₀ w₀ hγ₀ hk`. Use `⟨hres, fun x => ?_⟩` and prove the remaining obligations. Take `⟨S, hS⟩` from `hU w hG`. Establish `hRf` using `hR γ₀ w₀ hγ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hone : ∀ p ∉ S ∪ hRf.toFinset ∪ x.2.toFinset, hL M δ (D.mem u).A.T (D.mem u').A.T p w (x.1 p) = 1 ∧ eL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) (x.1 p) = 1`. Introduce `p hp`. Establish `hpS : p ∉ S` using `fun h => hp (Finset.mem_union_left _ (Finset.mem_union_left _ h))`. Establish `hth : thT M δ γ₀ p = θ0 p`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hp (Finset.mem_union_left _ (Finset.mem_union_right _ (hRf.mem_toFinset.2 h)))`. Establish `hx : x.1 p = x0L M δ (D.mem u).A.T (D.mem u').A.T p w`. Assume the negation of the conclusion as `h`. Conclude with `hp (Finset.mem_union_right _ (x.2.mem_toFinset.2 h))`. Rewrite using `[hx, hth]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hb` using `base_factors (fun τ O => ((hS p hpS).2 τ O).1) (fun τ O => ((hS p hpS).2 τ O).2)`. Conclude with `⟨hb.1, hb.2.2⟩`. Establish `hfunc : (fun γ : {γ : TermDef.Term D u u' F0 what₂ // (EligAt γ w ∧ kind w = kind w₀ ∧ thT M δ γ = thT M δ γ₀) ∧ locT M δ γ = x.1} => (PairVal.massTerm γ.1 : ℂ) * PairVal.cAt (PairVal.vRdef D u u' F0 what₂ δ M) γ.1 w) = fun γ => (∏ᶠ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w (x.1 …`. Use function extensionality and compare the values at `γ`. Rewrite using `[hC γ.1 w γ.2.1.1, γ.2.2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfunc]`. Establish `hv : (n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dnT M δ L ϖ γ₀ : ℂ) * (∏ᶠ p, gL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) (x.1 p)) = (∏ᶠ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w (x.1 p)) * ((n0 nc (D.mem u).A.T (D.mem u').A.T w : ℂ) * (dnT M δ L ϖ γ₀ : ℂ) * ∏ᶠ p, e …`. Rewrite using `[show (∏ᶠ p, gL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) (x.1 p)) = (∏ᶠ p, hL M δ (D.mem u).A.T (D.mem u').A.T p w (x.1 p)) * ∏ᶠ p, eL M δ (D.mem u).A.T (D.mem u').A.T p w (thT M δ γ₀ p) (x.1 p) from by`. Rewrite using `[← finprod_mul_distrib]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `finprod_congr fun p => gL_eq p w _ _`. Use `(S ∪ hRf.toFinset ∪ x.2.toFinset).finite_toSet.subset fun p hp => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_mulSupport.1 hp) (hone p h).1`. Use `(S ∪ hRf.toFinset ∪ x.2.toFinset).finite_toSet.subset fun p hp => ?_` and prove the remaining obligations.
-
-Assume the negation of the conclusion as `h`. Conclude with `(Function.mem_mulSupport.1 hp) (hone p h).2]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv]`. Conclude with `(hcnt x).mul_left _`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fiberTupleSum_of {L : CntLocal.LocSp D M} {θ0 : ∀ p, Option ((M p).Cls D.R.rS)}
     (hU : LocUnram M δ u u' θ0) (hR : ThRestricted M δ u u' F0 what₂ θ0)

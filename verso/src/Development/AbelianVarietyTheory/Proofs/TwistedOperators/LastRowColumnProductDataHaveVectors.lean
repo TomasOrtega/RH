@@ -28,7 +28,7 @@ namespace GlobalTheory.VecsLast
 open ValuativeRel
 
 /- English proof (translation)
-Use `⟨GlobalTheory.SplitWeil.resCard k ^ d, pow_pos ?_ d, ?_⟩` and prove the remaining obligations. Unfold `GlobalTheory.SplitWeil.resCard`. Conclude with `Nat.card_pos`. Rewrite using `[Nat.cast_pow, map_pow, Units.val_pow_eq_pow_val, map_pow, hϖ]`. Conclude with `pow_le_pow_left₀ zero_le' (le_uniformizer_iff.2 GlobalTheory.RootEx.UnipPow.valuation_resCard_lt_one) d`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_val_le {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) (d : ℕ) :
@@ -48,21 +48,19 @@ open ValuativeRel
 variable {D : D7}
 
 /- English proof (translation)
-Use `choose N hN0 hN using fun w : P => exists_nat_val_le (isUnif_unifAt (D := D) w.1) (d w)`. Establish `hk0 : 0 < ∏ w : P, N w` using `Finset.prod_pos fun w _ => hN0 w`. Establish `hhalf : ∀ (a : ℕ) (u : Mx D m n), IsHalf e u → IsHalf e (a • u)` using `fun a u hu i j => by show e * (a • u) i j = (a • u) i j`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, mul_left_comm, hu i j]`. Establish `hadd : ∀ {t u : Mx D m n}, IsHalf e u → (IsHalf e (t + u) ↔ IsHalf e t)` using `fun {t u} hu => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i j`. Establish `h1` using `h i j`. Establish `h2` using `hu i j`. Simplify using `only [Matrix.add_apply, mul_add] at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `h1 - h2`. Introduce `h i j`. Simplify using `only [Matrix.add_apply, mul_add, h i j, hu i j]`. Use `⟨fun t ht => ?_, ∏ w : P, N w, hk0, fun u hu hue t => ?_, fun t ht => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `ht (if_neg hc')`. Establish `hku` using `hhalf (∏ w : P, N w) u hue dsimp only`. Distinguish the cases in `ht : IsHalf e t`. Rewrite using `[if_pos ((hadd hku).2 ht), if_pos ht]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Simplify by unfolding definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_nsmul]`. Use `h2 w _ _ fun i j => ?_` and prove the remaining obligations. Establish `hint` using `(hc u hue).1 hu w i j`. Rewrite `hint` using `[Valuation.mem_integer_iff]`. Rewrite using `[Matrix.smul_apply, nsmul_eq_mul, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : valuation (Kw w.1) (((∏ w : P, N w : ℕ) : Kw w.1)) ≤ valuation (Kw w.1) (N w : Kw w.1)`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_univ w), Nat.cast_mul, map_mul]`. Conclude with `mul_le_of_le_one_right' (GlobalTheory.RootEx.UnipPow.valuation_natCast_le_one _)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[if_neg (fun h => ht ((hadd hku).1 h)), if_neg ht]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact.
 
-Simplify using `only at ht`. Establish `hE : IsHalf e t`. Assume the negation of the conclusion as `h`. Conclude with `ht (if_neg h)`. Rewrite `ht` using `[if_pos hE]`.
-
-Establish `hmem : t ∈ Λ` using `(hc t hE).2 fun w => h1 w _ (Finset.prod_ne_zero_iff.1 ht w (Finset.mem_univ _))`. Conclude with `Λ.nsmul_mem hmem _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSBHalf_prodCoord {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {P : Finset (Pl D.host.E)}
     {A B : P → Type} [∀ w, Fintype (A w)] [∀ w, Fintype (B w)]
@@ -125,7 +123,7 @@ open ValuativeRel
 variable {D : D7}
 
 /- English proof (translation)
-Use `isSBHalf_prodCoord c (fun z hz => ?_) d ψ h1 h2` and prove the remaining obligations. Rewrite using `[GlobalTheory.ColLatDict.mem_latO_iff_intM hS hT hβS hβT he hAA z hz]`. Conclude with `⟨fun h w => (hc w z).2 (h w.1 w.2), fun h w hw => (hc ⟨w, hw⟩ z).1 (h ⟨w, hw⟩)⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isSBHalf_frames {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)}
     {ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)} (hS : IsSelfDualC S ΛS) (hT : IsSelfDualC T ΛT)
@@ -150,7 +148,7 @@ theorem isSBHalf_frames {S T : HSp D} {ΛS : Submodule (𝓞 D.host.E) (Fin S.ra
 variable {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc}
 
 /- English proof (translation)
-Unfold `Frames.coord`. Rewrite using `[Matrix.mul_add, Matrix.add_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coord_add (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m)
     (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m)
@@ -169,7 +167,7 @@ noncomputable def coordHom (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ �
     exact coord_add B t w hX hY _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.MixVacBig.coord_int_iff B t w hX hY z`.
+A detailed English derivation is pending.
 -/
 theorem coordHom_int_iff (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × ℕ} (hX : X.1 ≤ D.R.m ∧ X.2 ≤ D.R.m)
     (hY : Y.1 ≤ D.R.m ∧ Y.2 ≤ D.R.m) (z : Matrix (Fin (G.V (.grid X.1 X.2)).rank) (Fin (G.V (.grid Y.1 Y.2)).rank) (AE D)) :
@@ -178,9 +176,9 @@ theorem coordHom_int_iff (B : Frames G) (t : T) (w : Pl D.host.E) {X Y : ℕ × 
   GlobalTheory.MixVacBig.coord_int_iff B t w hX hY z
 
 /- English proof (translation)
-Take `⟨hs, hi⟩` from `h`. Use `⟨fun M hM i j => ?_, fun M N hN => hi M N ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `hM (hs M fun hm => hc ?_)` and prove the remaining obligations. Use `GlobalTheory.SplitFlip.FourierDepth.mem_matLat_diagLat.1 hm i j` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Valuation.mem_integer_iff]`. Simplify using `using this`. Conclude with `GlobalTheory.SplitFlip.FourierDepth.mem_matLat_smul_stdLat.2 hN`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem natDatum_props {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {a b : Type} {ϖ : kˣ} {dp : ℕ} {φ : Matrix a b k → ℂ} (h : GlobalTheory.SplitFlip.IsNatDatum ϖ dp φ) :
@@ -200,19 +198,19 @@ end GlobalTheory.VecsLast
 namespace GlobalTheory.VecsLast
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t e he φ hφ`. Establish `hL : R.toLevCh.Is A.μ0` using `s.core.lev`. Establish `hAA : ∀ w ∈ locPl ch.G t, ((∀ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) ≤ 1) ∧ ∃ a ∈ D.host.AA, Valued.v (algebraMap D.host.E (Kw w) a) = 1)`. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `GlobalTheory.FunObj.Good.badInt_notMem hL (GlobalTheory.FlipIntegrand.pde_ne_q_of_setting s) (hch.guard t) hw`. Establish `h2q` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro _ rfl))`. Establish `hN` using `fun h => hb (GlobalTheory.HalfCompare.mem_of_dvd h (Dvd.intro_left _ rfl))`. Use `⟨fun a ha => ?_, ⟨_, GlobalTheory.HostClear.absNorm_mem_AA D, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.FunObj.Good.valuation_le_one_of_mem h2q (Or.inl ha)`. Rewrite using `[GlobalTheory.FunObj.Good.valued_alg]`. Conclude with `GlobalTheory.FunObj.Good.valuation_nat hN`. Use `⟨fun j => ?_, fun i => ?_⟩` and prove the remaining obligations. Establish `hS : IsSelfDualC (ch.G.pS (.mu t D.R.m j)) (ch.G.latS (.mu t D.R.m j))` using `(node_isV ch.G hL (X := .grid D.R.m j) ⟨le_rfl, j.2.le⟩).sd`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : IsSelfDualC (ch.G.pT (.mu t D.R.m j)) (ch.G.latT (.mu t D.R.m j))` using `(node_isV ch.G hL (X := .grid D.R.m ((j : ℕ) + 1)) ⟨le_rfl, j.2⟩).sd`. Establish `hβS` using `ch.S.B.isFrame_β hL (i := D.R.m) (j := (j : ℕ)) le_rfl j.2.le`. Establish `hβT` using `ch.S.B.isFrame_β hL (i := D.R.m) (j := (j : ℕ) + 1) le_rfl j.2`. Establish `hmem : GlobalTheory.SplitFlip.Edge.theta D.R.m j ∈ GlobalTheory.SplitFlip.oppositePath D.R.m`. Simplify using `[GlobalTheory.SplitFlip.oppositePath]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hSB` using `isSBHalf_frames hS hT hβS hβT he hAA (fun w => coordHom ch.S.B t w.1 (X := (D.R.m, (j : ℕ) + 1)) (Y := (D.R.m, (j : ℕ))) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩) (fun w z => coordHom_int_iff ch.S.B t w.1 (X := (D.R.m, (j : ℕ) + 1)) (Y := (D.R.m, (j : ℕ))) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ z) …`. Take `⟨f, hf⟩` from `GlobalTheory.FunObj.VecEx.exists_isThetaAt_of_vac hS.1 hT.1 hS hT he (ch.rm.vT_is t D.R.m j le_rfl j.2) hSB`. Conclude with `⟨f, hSB, hf⟩`. Establish `hS : IsSelfDualC (ch.G.pS (.chi i D.R.m)) (ch.G.latS (.chi i D.R.m))` using `isSelfDualC_neg (node_isV ch.G hL (X := .grid ((i : ℕ) + 1) D.R.m) ⟨i.2, le_rfl⟩).sd`. Establish `hT : IsSelfDualC (ch.G.pT (.chi i D.R.m)) (ch.G.latT (.chi i D.R.m))` using `(node_isV ch.G hL (X := .grid (i : ℕ) D.R.m) ⟨i.2.le, le_rfl⟩).sd`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβS` using `ch.S.B.isFrame_β hL (i := (i : ℕ) + 1) (j := D.R.m) i.2 le_rfl`. Establish `hβT` using `ch.S.B.isFrame_β hL (i := (i : ℕ)) (j := D.R.m) i.2.le le_rfl`. Establish `hmem : GlobalTheory.SplitFlip.Edge.ex i D.R.m ∈ GlobalTheory.SplitFlip.oppositePath D.R.m`. Simplify using `[GlobalTheory.SplitFlip.oppositePath]`. Establish `hSB` using `isSBHalf_frames hS hT hβS hβT he hAA (fun w => coordHom ch.S.B t w.1 (X := ((i : ℕ), D.R.m)) (Y := ((i : ℕ) + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩) (fun w z => coordHom_int_iff ch.S.B t w.1 (X := ((i : ℕ), D.R.m)) (Y := ((i : ℕ) + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩ z) …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `GlobalTheory.FunObj.VecEx.exists_isThetaAt_of_vac hS.1 hT.1 hS hT he (ch.rm.vX_is i D.R.m i.2 le_rfl) hSB`. Conclude with `⟨f, hSB, hf⟩`.
+A detailed English derivation is pending.
 -/
 theorem vecs_last : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (e : AE D), IsIdemSum e (locPl ch.G t) → ∀ (φ : (∀ w : locPl ch.G t, ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin ((locGrid ch.G t w.1).rank b.tgt)) (Fin ((locGrid ch.G t w.1).rank b.src)) (Kw w.1) → ℂ)), (∀ w : locPl ch.G t, ∀ b ∈ GlobalTheory.SplitFlip.oppositePath D.R.m, GlobalTheory.SplitFlip.IsNatDatum (unifAt w.1) (depthAt ch.G w.1) (φ w b)) → (∀ j : Fin D.R.m, ∃ f, IsLocVec ch.W (.mu t D.R.m j) e (ch.rm.vT D.R.m j) (fun y => if IsHalf e y then ∏ w : locPl ch.G t, φ w (.theta D.R.m j) (ch.S.B.coord t w.1 (X := (D.R.m, j + 1)) (Y := (D.R.m, j)) ⟨le_rfl, j.2⟩ ⟨le_rfl, j.2.le⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) f) ∧ ∀ i : Fin D.R.m, ∃ f, IsLocVec ch.W (.chi i D.R.m) e (ch.rm.vX i D.R.m) (fun y => if IsHalf e y then ∏ w : locPl ch.G t, φ w (.ex i D.R.m) (ch.S.B.coord t w.1 (X := (i, D.R.m)) (Y := (i + 1, D.R.m)) ⟨i.2.le, le_rfl⟩ ⟨i.2, le_rfl⟩ (y.map fun a => cpt w.1 (toEAf D a))) else 0) f := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

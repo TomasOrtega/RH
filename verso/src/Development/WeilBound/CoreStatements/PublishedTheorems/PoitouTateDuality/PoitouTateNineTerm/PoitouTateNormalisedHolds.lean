@@ -11,7 +11,7 @@ namespace PositivityTheory.Lit1.PTN
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Introduce `K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Conclude with `(foundData_nonempty ⟨K, inferInstance⟩ S hr ζ hζ hS Av hAv μ hμ ρ hρ).elim fun d => nineAdd_core ⟨K, inferInstance⟩ hl hr ζ hζ inv hinv S hS Av hAv μ hμ M ρ hρ d`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nineAddFS_V : NineAddFS := by
   intro K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ
@@ -19,7 +19,7 @@ theorem nineAddFS_V : NineAddFS := by
     nineAdd_core ⟨K, inferInstance⟩ hl hr ζ hζ inv hinv S hS Av hAv μ hμ M ρ hρ d
 
 /- English proof (translation)
-The claim follows from `PositivityTheory.PTN.poitouTateNormalised_of_nine (nineCmpFS_of_nineAddFS nineAddFS_V)`.
+A detailed English derivation is pending.
 -/
 theorem poitouTateNormalised_holds : GlobalTheory.Published.PoitouTateNormalised :=
   PositivityTheory.PTN.poitouTateNormalised_of_nine (nineCmpFS_of_nineAddFS nineAddFS_V)

@@ -17,7 +17,7 @@ def HasRationalTest (σ : K →+* ℂ) (S : Set E) : Prop :=
   ∃ (n : ℕ) (ψ : Fin n → (E →ₗ[ℂ] ℂ)), (∀ e : E, (∀ a, ψ a e = 0) → e = 0) ∧ ∀ e ∈ S, ∀ a, ∃ z : K, σ z = ψ a e
 
 /- English proof (translation)
-Use `⟨1, fun _ => (-Complex.I) • LinearMap.id, fun e he => ?_, ?_⟩` and prove the remaining obligations. Simplify using `using he 0`. Introduce and unpack `e rfl a`. Conclude with `⟨1, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 example : HasRationalTest (algebraMap ℚ ℂ) ({Complex.I} : Set ℂ) := by
   refine ⟨1, fun _ => (-Complex.I) • LinearMap.id, fun e he => ?_, ?_⟩
@@ -26,11 +26,11 @@ example : HasRationalTest (algebraMap ℚ ℂ) ({Complex.I} : Set ℂ) := by
     exact ⟨1, by simp⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨n, ψ, hinj, hrat⟩`. Use `one_ne_zero (hinj 1 fun a => ?_)` and prove the remaining obligations. Take `⟨p, hp⟩` from `hrat 1 (by simp) a`. Take `⟨q, hq⟩` from `hrat Complex.I (by simp) a`. Establish `h : ψ a Complex.I = Complex.I * ψ a 1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← smul_eq_mul, ← map_smul, smul_eq_mul, mul_one]`. Rewrite `h` using `[← hp, ← hq]`. Establish `h2` using `congrArg Complex.im h`. Simplify using `at h2`. Rewrite using `[← hp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hp0 : p = 0` using `by exact_mod_cast h2.symm`. Simplify using `[hp0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example : ¬ HasRationalTest (algebraMap ℚ ℂ) ({1, Complex.I} : Set ℂ) := by
   rintro ⟨n, ψ, hinj, hrat⟩
@@ -98,11 +98,11 @@ def untwFun (s : Bool) {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ 
   map_smul' z x := by rw [map_smulₛₗ, map_smul, smul_eq_mul, map_mul, cj_cj]; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, ψ, hinj, hrat⟩`. Use `⟨n, fun a => untwFun s (ψ a), fun e he => hinj e fun a => (map_eq_zero (cj s)).1 (he a), fun t x a => ?_⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `hrat t x a`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (cj s) ((h z).symm.trans hz)` as an intermediate fact. Rewrite `this` using `[cj_cj]`. Conclude with `this`. Introduce and unpack `⟨n, ψ, hinj, hrat⟩`. Use `⟨n, fun a => twFun s (ψ a), fun e he => hinj e fun a => (map_eq_zero (cj s)).1 (he a), fun t x a => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hrat t x a`. Conclude with `⟨z, (h z).trans (congrArg (cj s) hz)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem test_tw_iff {K E : Type} [Field K] [NormedAddCommGroup E] [InnerProductSpace ℂ E] (s : Bool) {σ σ' : K →+* ℂ}
     (h : ∀ a, σ' a = cj s (σ a)) {ι : Type} {X : ι → Type} (v : ∀ t, X t → E) :
@@ -123,7 +123,7 @@ theorem test_tw_iff {K E : Type} [Field K] [NormedAddCommGroup E] [InnerProductS
     exact ⟨z, (h z).trans (congrArg (cj s) hz)⟩
 
 /- English proof (translation)
-The claim follows from `test_tw_iff (E := R.HE.H) (twAt D.what₂.embLL A.v0) R.emb0 (ι := T) (X := fun t => A.fam.amb.FR t) fun t x => R.Th t (R.jX t x)`.
+A detailed English derivation is pending.
 -/
 theorem rowTest_toCx_iff (R : RealDat D A Ks) (F : Face D A) : RowTest (R.toCx F) ↔ RowTestModel R :=
   test_tw_iff (E := R.HE.H) (twAt D.what₂.embLL A.v0) R.emb0 (ι := T) (X := fun t => A.fam.amb.FR t) fun t x => R.Th t (R.jX t x)

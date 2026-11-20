@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.UseLoc.Cases
 
 /- English proof (translation)
-Simplify using `[chiT, chiOC]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiT_one_eq {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)} {hw : w ∈ placesOver D.host.E (D.nd.l i)}
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ) : chiT C θ 1 = θ := by
@@ -26,7 +26,7 @@ def iotaL (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G]
   iotaW LL lam a k
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk s = x at hs`. Substitute `hs` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem iotaL_tmul (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G]
     (M N : G →* Matrix (Fin k) (Fin k) O) (lam : O) (a : ℕ) (t : ↥(stdLatG (LL := LL) hinj M).T)
@@ -38,7 +38,7 @@ theorem iotaL_tmul (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Gro
   rfl
 
 /- English proof (translation)
-Establish `hM : (mapM (algebraMap O LL) (twistM N θ)) g = algebraMap O LL ((θ g : Oˣ) : O) • (mapM (algebraMap O LL) N) g`. Use extensionality with `p q`. Simplify using `[mapM, twistM, Matrix.smul_apply, smul_eq_mul, map_mul]`. Express the relevant statement in the definitionally equal form `((mapM (algebraMap O LL) (twistM N θ)) g).mulVec v = ((θ g : Oˣ) : O) • ((mapM (algebraMap O LL) N) g).mulVec v`. Rewrite using `[hM, Matrix.smul_mulVec, algebraMap_smul]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem matRep_twistM_apply {G : Type} [Group G] (N : G →* Matrix (Fin k) (Fin k) O) (θ : G →* Oˣ) (g : G)
     (v : Fin k → LL) :
@@ -51,9 +51,9 @@ theorem matRep_twistM_apply {G : Type} [Group G] (N : G →* Matrix (Fin k) (Fin
   rw [hM, Matrix.smul_mulVec, algebraMap_smul]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`. Consider the case `tmul t x`. Take `⟨s, hs⟩` from `Submodule.Quotient.mk_surjective _ (x : LL ⧸ intO (O := O) LL)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[tableLineDegreeTwo.actTw, LinearMap.smul_apply, LinearMap.rTensor_tmul, map_smul, iotaL_tmul hinj _ N lam a _ x s hs, iotaL_tmul hinj _ N lam a _ x s hs, ← Submodule.Quotient.mk_smul]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (matRep (mapM (algebraMap O LL) N) g (s • (t : Fin k → LL))) = Submodule.Quotient.mk ((((χ g)⁻¹ : Oˣ) : O) • s • matRep (mapM (algebraMap O LL) (twistM N θ)) g (t : Fin k → LL))`. Use `congr 1`. Rewrite using `[matRep_twistM_apply, LinearMap.map_smul, smul_comm _ s, ← mul_smul, hχ g, one_smul]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem actD_iotaL (hinj : Function.Injective (algebraMap O LL)) {G : Type} [Group G] [TopologicalSpace G]
     (N : G →* Matrix (Fin k) (Fin k) O) (θ χ : G →* Oˣ) (hχ : ∀ g, (((χ g)⁻¹ : Oˣ) : O) * ((θ g : Oˣ) : O) = 1)
@@ -80,11 +80,11 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     [TopologicalSpace (Fin k → LL)] [ContinuousAdd (Fin k → LL)] [ContinuousConstSMul LL (Fin k → LL)]
 
 /- English proof (translation)
-Take `⟨n, c, x, m, hc, hz⟩` from `hz`. Use `choose s hs using fun j => Submodule.Quotient.mk_surjective _ (x j : LL ⧸ intO (O := O) LL)`. Establish `e : (fun g => iotaL hinj (twistM N θ) N lam a (z' g)) = (∑ j, LinearMap.compLeft (stdLatG (LL` using `LL) hinj N).T.mkQ G (s j • fun g => (c j g : Fin k → LL))) + LinearMap.pi (fun g => actD (stdLatG (LL := LL) hinj N) g - LinearMap.id) (iotaL hinj (twistM N θ) N lam a m) := by`. Use function extensionality and compare the values at `g`. Rewrite using `[hz g, map_add, map_sum, map_sub, ← actD_iotaL hinj N θ χ hχ lam a g m]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, Finset.sum_apply, LinearMap.pi_apply, LinearMap.sub_apply, LinearMap.id_apply]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[iotaL_tmul hinj _ N lam a _ (x j) (s j) (hs j)]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `add_mem (Submodule.sum_mem _ fun j _ => Submodule.mem_sup_left (Submodule.mem_map_of_mem ?_)) (Submodule.mem_sup_right (LinearMap.mem_range_self _ _))` and prove the remaining obligations. Conclude with `(Submodule.restrictScalars_mem O _ _).2 ((finiteCocycles PD _).smul_mem (s j) (hc j).2)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem readW_gen (PD : PeriodData G Qp K₀ K B BdR) (hinj : Function.Injective (algebraMap O LL))
     (N : G →* Matrix (Fin k) (Fin k) O) (θ χ : G →* Oˣ) (hχ : ∀ g, (((χ g)⁻¹ : Oˣ) : O) * ((θ g : Oˣ) : O) = 1)
@@ -112,7 +112,7 @@ theorem readW_gen (PD : PeriodData G Qp K₀ K B BdR) (hinj : Function.Injective
 end GenRead
 
 /- English proof (translation)
-Rewrite using `[chiT_one_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem chiT_one_inv_mul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (θ : Br.G D.nbr i w hw →* (↥(OL C.LL))ˣ)
@@ -122,7 +122,7 @@ theorem chiT_one_inv_mul {D : D7} {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.
   simp
 
 /- English proof (translation)
-Introduce `D i w hw C lam k N θ a z' hz`. Conclude with `readW_gen (Br.PD D.loc D.nbr i w hw) Subtype.val_injective N θ (chiT C θ 1) (chiT_one_inv_mul C θ) lam a z' hz`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem readW_main : ∀ (D : D7) (i : D.nd.Loc) (w : HeightOneSpectrum (𝓞 D.host.E)) (hw : w ∈ placesOver D.host.E (D.nd.l i))
     (C : TruncatedSeriesCountingIdentities.CoefExt D i w hw) (lam : ↥(OL C.LL)) {k : ℕ} (N : Br.G D.nbr i w hw →* Matrix (Fin k) (Fin k) ↥(OL C.LL))

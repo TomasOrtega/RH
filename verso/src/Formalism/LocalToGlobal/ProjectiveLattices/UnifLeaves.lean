@@ -20,7 +20,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Introduce `k _ hx` and use `⟨fun _ hb => dom_rmul _ hx hb, fun _ hγ => dom_lact _ hx ((M.X k).Γ_stab _ hγ)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem domStab_holds {g : ℕ} {ty : Fin g → (E →+* ℂ)} {σ' : KA l →+* ℂ} {F : FamilyUnif Xo σ' ty}
     (M : ModelsOf F r) : ∀ k, ∀ x ∈ (M.X k).dom, (∀ b ∈ Bor (M.X k).Ψ r, rmul x b ∈ (M.X k).dom) ∧
@@ -39,11 +39,11 @@ def CoverTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
         IsCombAt y.x (v τ) cf (y.u τ i)
 
 /- English proof (translation)
-Introduce `y`. Take `⟨k, x, Pm, hPm, hxy, hv⟩` from `hT y`. Take `⟨Pm', hPm', -, hx', hd', -⟩` from `hun k x`. Establish `hP : Pm' = Pm`. Use extensionality with `a j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[hPm', hPm]`. Substitute `hP` using the available equality. Use `⟨k, x, ?_⟩` and prove the remaining obligations. Establish `hxx : y.x = (un k x).x` using `hxy.symm.trans hx'.symm`. Use `frBor_of_tri (un k x) y hxx fun τ i => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨cf, h1, h2, h3⟩` from `hv (un k x).u hd' τ i`. Conclude with `⟨cf, h1, h2, by rw [← hxx]; exact h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem coverU_of_coverTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
@@ -79,15 +79,15 @@ def FibTri {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     ∃ γ ∈ (M.X k).Γ, ∃ b ∈ Bor (M.X k).Ψ r, (⟨k', x'.1⟩ : Σ k, Frame (M.X k).Ψ r) = ⟨k, rmul (lact γ x.1) b⟩
 
 /- English proof (translation)
-Introduce `k k' x x'`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, hx, hu, -⟩`. Take `⟨Pm, hPm, -, hxP, hd, -⟩` from `hun.1 k x`. Take `⟨Pm', hPm', -, hxP', hd', -⟩` from `hun.1 k' x'`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hB k k' x x' Pm Pm' (un k x).u (un k' x').u hPm hPm' (hxP.symm.trans (hx.symm.trans hxP')) hd hd' fun τ i => ?_` and prove the remaining obligations. Take `⟨cf, hcf, htri, hcomb⟩` from `hu τ i`. Use `⟨cf, by rw [hcf]; exact Units.isUnit _, htri, ?_⟩` and prove the remaining obligations. Establish `e1 : (unfOf e F M un).un k x = un k x` using `rfl`. Rewrite `hcomb` using `[e1, hxP]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hcomb`. Introduce and unpack `⟨γ, hγ, b, hb, heq⟩`. Take `⟨rfl, h2⟩` from `Sigma.mk.inj_iff.1 heq`. Establish `h3 : x'.1 = rmul (lact γ x.1) b` using `eq_of_heq h2`. Establish `hxg : lact γ x.1 ∈ (M.X k').dom` using `(domStab_holds M k' x.1 x.2).2 γ hγ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t1, ht1, -⟩` from `hun.2.2.1 k' γ hγ x hxg`. Establish `hxb : rmul (⟨lact γ x.1, hxg⟩ : (M.X k').dom).1 b ∈ (M.X k').dom`. Establish `hx2` using `x'.2`. Rewrite `hx2` using `[h3]`. Conclude with `hx2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨t2, ht2, -⟩` from `hun.2.1 k' ⟨lact γ x.1, hxg⟩ b hb hxb`. Establish `hx' : (⟨rmul (lact γ x.1) b, hxb⟩ : (M.X k').dom) = x'` using `Subtype.ext h3.symm`. Rewrite `ht2` using `[hx']`. Conclude with `frBor_trans hT ht1 ht2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibreU_of {g : ℕ} (e : Fin g ≃ Σ τ : E →+* ℂ, Fin (Dw.mult τ))
     (F : FamilyUnif Xo (σ.comp (IntermediateField.inclusion c.le).toRingHom) (fun j => relab c σ (e j).1))
@@ -145,7 +145,7 @@ section Rows
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `coverU_of_coverTri _ _ _ hF.choose hF.choose_spec.1 hT`.
+A detailed English derivation is pending.
 -/
 theorem coverU_J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}
@@ -154,7 +154,7 @@ theorem coverU_J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j
   coverU_of_coverTri _ _ _ hF.choose hF.choose_spec.1 hT
 
 /- English proof (translation)
-The claim follows from `fibreU_of _ _ _ hF.choose hF.choose_spec hT hB`.
+A detailed English derivation is pending.
 -/
 theorem fibreU_J {hN : N1c} {Q : Par D} {hpq : ∀ j, 1 ≤ (Q.Dw j).p + (Q.Dw j).q} {j : ℕ} {hj : InR D j}
     {σ : Q.c.F →+* ℂ} {hσ : GoodEmb Q.c σ} {hR : RelabType Q.c σ (Q.Dw j)} {hM : ModelEx hN Q hpq j hj σ hσ hR}

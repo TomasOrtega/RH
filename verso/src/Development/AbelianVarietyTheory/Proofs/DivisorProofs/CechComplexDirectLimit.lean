@@ -17,23 +17,23 @@ theorem termMap_comp {X Y Z : Cube.{0} ι ℤ} (f : X ⟶ Y) (g : Y ⟶ Z) (p : 
     Cube.termMap (f ≫ g) p x = Cube.termMap g p (Cube.termMap f p x) := rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem trans_congr {A : ℕ → Cube.{0} ι ℤ} (μ : ∀ (j c d : ℕ), c + j = d → (A c ⟶ A d))
     {j j' c d : ℕ} (h : c + j = d) (h' : c + j' = d) (e : j = j') : μ j c d h = μ j' c d h' := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `Finset.card_pos.1 (by rw [s.2]; exact hm)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_of_card {m : ℕ} (hm : 0 < m) (s : {s : Finset ι // s.card = m}) :
     s.1.Nonempty :=
   Finset.card_pos.1 (by rw [s.2]; exact hm)
 
 /- English proof (translation)
-Use `choose c a ha using fun s : {s : Finset ι // s.card = m} => h3 s.1 (nonempty_of_card hm s) (z s)`. Establish `hc : ∀ s, c s + (Finset.univ.sup c - c s) = Finset.univ.sup c` using `fun s => by`. Use `Finset.le_sup (f := c) (Finset.mem_univ s)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨Finset.univ.sup c, fun s => ((μ _ (c s) _ (hc s)).app s.1).hom (a s), funext fun s => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun f => (f.app s.1).hom (a s)) (h1 _ (c s) _ (hc s))`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply] at e`. Rewrite using `[Cube.termMap_apply, e]`. Conclude with `ha s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
     (μ : ∀ (j c d : ℕ), c + j = d → (A c ⟶ A d)) (ρ : ∀ c, A c ⟶ B)
@@ -52,9 +52,9 @@ theorem exists_lift {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
   exact ha s
 
 /- English proof (translation)
-Use `choose j hj using fun s : {s : Finset ι // s.card = m} => h4 s.1 (nonempty_of_card hm s) c (x s) (congrFun hx s)`. Use `⟨Finset.univ.sup j, funext fun s => ?_⟩` and prove the remaining obligations. Establish `hle` using `Finset.le_sup (f := j) (Finset.mem_univ s)`. Establish `hcomp` using `h2 (j s) (Finset.univ.sup j - j s) c (c + j s) (c + Finset.univ.sup j) rfl (by omega) (by omega)`. Establish `e : μ (Finset.univ.sup j) c (c + Finset.univ.sup j) rfl = μ (j s + (Finset.univ.sup j - j s)) c (c + Finset.univ.sup j) (by omega)` using `trans_congr μ _ _ (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Cube.termMap_apply, e, ← hcomp]`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp, LinearMap.comp_apply]`. Establish `e : ((μ (j s) c (c + j s) rfl).app s.1).hom (x s) = 0` using `hj s`. Rewrite using `[e, map_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_kill {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
     (μ : ∀ (j c d : ℕ), c + j = d → (A c ⟶ A d)) (ρ : ∀ c, A c ⟶ B)
@@ -80,11 +80,11 @@ theorem exists_kill {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
   rfl
 
 /- English proof (translation)
-Take `⟨C₀, a, ha⟩` from `exists_lift μ ρ h1 h3 hm z`. Establish `hda : Cube.termMap (ρ C₀) (m + 1) (Cube.d (A C₀) m a) = 0`. Rewrite using `[Cube.termMap_d, ha, hz]`. Take `⟨J, hJ⟩` from `exists_kill μ ρ h2 h4 (Nat.succ_pos m) C₀ _ hda`. Use `⟨C₀ + J, fun c hc => ⟨Cube.termMap (μ (c - C₀) C₀ c (by omega)) m a, ?_, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← termMap_comp, h1, ha]`. Rewrite using `[← Cube.termMap_d]`. Establish `e : μ (c - C₀) C₀ c (by omega) = μ J C₀ (C₀ + J) rfl ≫ μ (c - C₀ - J) (C₀ + J) c (by omega)`. Rewrite using `[h2 J (c - C₀ - J) C₀ (C₀ + J) c rfl (by omega) (by omega)]`. Conclude with `trans_congr μ _ _ (by omega)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, termMap_comp, hJ, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cocycle_lift {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
     (μ : ∀ (j c d : ℕ), c + j = d → (A c ⟶ A d)) (ρ : ∀ c, A c ⟶ B)
@@ -113,17 +113,17 @@ theorem exists_cocycle_lift {A : ℕ → Cube.{0} ι ℤ} {B : Cube.{0} ι ℤ}
 end CubeColim
 
 /- English proof (translation)
-Introduce `ι _ _ A B μ ρ h1 h2 h3 h4 n hn`. Take `⟨N, hN⟩` from `eventually_atTop.1 hn`. Rewrite using `[← HomologicalComplex.exactAt_iff_isZero_homology]`. Consider the cases of `n with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Rewrite using `[cochainComplex_exactAt_zero_iff, cechComplex_d B 0]`. Express the relevant statement in the definitionally equal form `Function.Injective (Cube.d B 1)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨C, hC⟩` from `CubeColim.exists_cocycle_lift μ ρ h1 h2 h3 h4 one_pos z hz`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, hda⟩` from `hC (max C N) (le_max_left _ _)`. Establish `hex` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (hN (max C N) (le_max_right _ _))`. Rewrite `hex` using `[cochainComplex_exactAt_zero_iff, cechComplex_d _ 0]`. Express the relevant statement in the definitionally equal form `Function.Injective (Cube.d (A (max C N)) 1) at hex`. Rewrite `hex` using `[injective_iff_map_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ha, hex a hda, map_zero]`. Consider the case `succ p`. Rewrite using `[cechComplex_exactAt_succ_iff]`. Introduce `z`. Use `⟨fun hz => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `CubeColim.exists_cocycle_lift μ ρ h1 h2 h3 h4 (m := p + 2) (by omega) z hz`. Take `⟨a, ha, hda⟩` from `hC (max C N) (le_max_left _ _)`. Establish `hex` using `(HomologicalComplex.exactAt_iff_isZero_homology _ _).2 (hN (max C N) (le_max_right _ _))`. Rewrite `hex` using `[cechComplex_exactAt_succ_iff]`. Take `⟨y, hy⟩` from `(hex a).1 hda`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Cube.termMap (ρ _) (p + 1) y, by rw [← Cube.termMap_d, hy, ha]⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `Cube.d_d B (p + 1) y`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem cechComplex_homology_isZero_of_colimit :
     ∀ {ι : Type} [LinearOrder ι] [Fintype ι] (A : ℕ → Cube.{0} ι ℤ) (B : Cube.{0} ι ℤ) (μ : ∀ (j c d : ℕ), c + j = d → (A c ⟶ A d)) (ρ : ∀ c, A c ⟶ B), (∀ j c d h, μ j c d h ≫ ρ d = ρ c) → (∀ (j j' c d e : ℕ) (h : c + j = d) (h' : d + j' = e) (h'' : c + (j + j') = e), μ j c d h ≫ μ j' d e h' = μ (j + j') c e h'') → (∀ s : Finset ι, s.Nonempty → ∀ b : B.obj s, ∃ c, ∃ a : (A c).obj s, (ρ c).app s a = b) → (∀ s : Finset ι, s.Nonempty → ∀ c (a : (A c).obj s), (ρ c).app s a = 0 → ∃ j, (μ j c (c + j) rfl).app s a = 0) → ∀ n : ℕ, (∀ᶠ c in atTop, IsZero ((cechComplex (A c)).homology n)) → IsZero ((cechComplex B).homology n) := by

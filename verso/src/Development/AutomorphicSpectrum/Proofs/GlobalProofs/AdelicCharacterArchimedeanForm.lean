@@ -14,13 +14,13 @@ open scoped TensorProduct ENNReal Matrix
 namespace GlobalTheory.CompanionTheory.Glob.CharAF
 
 /- English proof (translation)
-Establish `hne : ∀ t, f t ≠ 0` using `fun t h => by`. Use `hn t` as an intermediate fact. Simplify using `[h] at this`. Set `χ : AddChar ℝ ℂˣ` to `{ toFun := fun t => Units.mk0 (f t) (hne t) map_zero_eq_one' := Units.ext (by simp) map_add_eq_mul' := fun a b => Units.ext (by simp [AddChar.map_add_eq_mul]) }`. Establish `hχ : Continuous χ` using `Units.isEmbedding_val₀.continuous_iff.2 hf`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨s, hs, -⟩` from `GroundTheory.Global.existsUnique_addChar_real_units χ hχ`. Establish `hs' : ∀ t : ℝ, f t = Complex.exp (s * t)` using `hs`. Establish `hre : s.re = 0`. Establish `h1` using `hn 1`. Rewrite `h1` using `[hs' 1, Complex.norm_exp]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h1`. Establish `hpi : (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Use `⟨s.im / (2 * Real.pi), fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hs' t]`. Use `congr 1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hs2 : s = (s.im : ℂ) * Complex.I`. Apply the tactic sequence `apply Complex.ext <;> simp [hre]`. Use `push_cast`. Rewrite using `[hs2]`. Simplify using `only [Complex.mul_im, Complex.ofReal_im, Complex.I_im, Complex.ofReal_re, Complex.I_re]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -54,13 +54,13 @@ theorem real_char (f : AddChar ℝ ℂ) (hf : Continuous f) (hn : ∀ t, ‖f t�
   ring
 
 /- English proof (translation)
-Establish `key : ∀ w, ∃ α : ℝ, ∀ t : ℝ, g (Pi.single w t) = Complex.exp (2 * Real.pi * Complex.I * ((α * t : ℝ) : ℂ))` using `fun w => real_char (g.compAddMonoidHom (AddMonoidHom.single (fun _ => ℝ) w)) (show Continuous (fun t : ℝ => g (Pi.single w t)) from hg.comp (continuous_pi fun j => by`. Distinguish the cases in `h : j = w`. Substitute `h` using the available equality. Simplify using `only [Pi.single_eq_same]`. Conclude with `continuous_id`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `continuous_const)) (fun t => hn _)` using `[Pi.single_apply, h]`. Use `choose α hα using key`. Use `⟨α, fun x => ?_⟩` and prove the remaining obligations. Establish `hx : x = ∑ w, Pi.single w (x w)` using `(Finset.univ_sum_single x).symm`. Establish `hsum : ∀ s : Finset ι, g (∑ w ∈ s, Pi.single w (x w)) = ∏ w ∈ s, g (Pi.single w (x w))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert w s hw ih => rw [Finset.sum_insert hw, Finset.prod_insert hw, AddChar.map_add_eq_mul, ih]`. Use `conv_lhs => rw [hx]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[hsum, Finset.prod_congr rfl fun w _ => hα w (x w), ← Complex.exp_sum, ← Finset.mul_sum]`. Use `push_cast`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem pi_char {ι : Type} [Fintype ι] [DecidableEq ι] (g : AddChar (ι → ℝ) ℂ) (hg : Continuous g)
     (hn : ∀ x, ‖g x‖ = 1) :
@@ -88,11 +88,11 @@ theorem pi_char {ι : Type} [Fintype ι] [DecidableEq ι] (g : AddChar (ι → �
   rfl
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun w => ((ρ w : F →+* ℝ) : F →* ℝ))`. Introduce `w w' hww`. Establish `h1 : w.embedding = w'.embedding`. Use extensionality with `x`. Rewrite using `[← hρ, ← hρ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f : F →* ℝ => ((f x : ℝ) : ℂ)) hww`. Rewrite using `[← InfinitePlace.mk_embedding w, h1, InfinitePlace.mk_embedding]`. Establish `hli` using `(linearIndependent_monoidHom F ℝ).comp _ hinj`. Use function extensionality and compare the values at `w`. Use `Fintype.linearIndependent_iff.1 hli β ?_ w` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Simplify using `using h c`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem places_indep {F : Type} [Field F] [NumberField F] (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) (β : InfinitePlace F → ℝ)
@@ -111,25 +111,25 @@ theorem places_indep {F : Type} [Field F] [NumberField F] (ρ : InfinitePlace F 
   simpa using h c
 
 /- English proof (translation)
-Establish `hrat : ∀ c : F, ∃ q : ℚ, ∑ w, α w * ρ w c = q`. Introduce `c`. Take `⟨y, hy, hyi⟩` from `((IsFractionRing.isAlgebraic_iff ℤ ℚ F).2 (Algebra.IsAlgebraic.isAlgebraic c)).exists_integral_multiple`. Take `⟨r, hr⟩ : ∃ r : 𝓞 F, (r : F) = (y : F) * c` from `⟨IsIntegralClosure.mk' (𝓞 F) (y • c) hyi, (IsIntegralClosure.algebraMap_mk' (𝓞 F) (y • c) hyi).trans (by simp)⟩`. Take `⟨n, hn⟩` from `hint r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n / (N * y), ?_⟩` and prove the remaining obligations. Establish `hyR : (y : ℝ) ≠ 0` using `by exact_mod_cast hy`. Establish `hNR : (N : ℝ) ≠ 0` using `by exact_mod_cast hN.ne'`. Establish `h1 : ∑ w, α w * ρ w ((N : F) * (r : F)) = N * y * ∑ w, α w * ρ w c`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[hr]`. Simplify using `only [map_mul, map_natCast, map_intCast]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hn` using `[h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Use `choose q hq using hrat`. Set `L : F →ₗ[ℚ] ℚ` to `{ toFun := q map_add' := fun x y => by`.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: ((q (x + y) : ℚ) : ℝ) = ((q x + q y : ℚ) : ℝ)`. Use `push_cast`. Rewrite using `[← hq, ← hq, ← hq, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_add]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `this` after adjusting the coercions. Use the proof step `map_smul' := fun t x => by`. Establish `: ((q (t • x) : ℚ) : ℝ) = ((t * q x : ℚ) : ℝ)`. Use `push_cast`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← hq, ← hq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: t • x = (t : F) * x` using `by simp [Algebra.smul_def]`. Rewrite using `[this, map_mul, map_ratCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this }` after adjusting the coercions. Set `a : F` to `((Algebra.traceForm ℚ F).toDual (traceForm_nondegenerate ℚ F)).symm L`. Establish `ha : ∀ c, q c = Algebra.trace ℚ F (a * c)`. Introduce `c`. Establish `h1` using `LinearMap.BilinForm.toDual_def (traceForm_nondegenerate ℚ F) (m := a) (n := c)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[LinearEquiv.apply_symm_apply, Algebra.traceForm_apply]`. Conclude with `h1`. Use `⟨a, fun w => ?_⟩` and prove the remaining obligations. Establish `h0 : (fun w => α w - ρ w a) = 0`. Use `places_indep ρ hρ _ fun c => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [sub_mul, Finset.sum_sub_distrib]`. Rewrite using `[hq c, ha c, ← htr (a * c)]`. Simplify using `[map_mul]`. Establish `h1` using `congrFun h0 w`. Simplify `h1` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual {F : Type} [Field F] [NumberField F] (ρ : InfinitePlace F → (F →+* ℝ))
     (hρ : ∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x)
@@ -193,37 +193,33 @@ theorem exists_dual {F : Type} [Field F] [NumberField F] (ρ : InfinitePlace F �
   simpa [sub_eq_zero] using h1
 
 /- English proof (translation)
-Introduce `F _ _ hF ρ e hρ he heρ ψ hψ`. Establish `htr` using `GlobalTheory.CompanionTheory.SW.CoefEis.sum_places_eq_trace F hF ρ hρ`. Establish `hes : Continuous e.toEquiv.symm` using `(Equiv.continuous_symm_iff e.toEquiv).2 he.isOpenMap`. Set `φ : (InfinitePlace F → ℝ) →+ AF F` to `{ toFun := fun x => pairA F (e.symm x) 0 map_zero' := by`. Rewrite using `[map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `map_add' := fun x y => by`. Rewrite using `[map_add]`. Conclude with `Prod.ext rfl (add_zero _).symm }`. Establish `hφ : Continuous φ` using `(hes.prodMk continuous_const : Continuous fun x => (e.symm x, (0 : Af F)))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, hα⟩` from `pi_char (ψ.compAddMonoidHom φ) (hψ.1.comp hφ) (fun x => hψ.2.1 _)`. Establish `hinf : ∀ x : Ainf F, ψ (pairA F x 0) = Complex.exp (2 * Real.pi * Complex.I * ((∑ w, α w * e x w : ℝ) : ℂ))` using `fun x => by`. Use `hα (e x)` as an intermediate fact. Simplify `this` using `[φ]`. Establish `hsplit : ∀ c : F, ψ (pairA F (algebraMap F (Ainf F) c) 0) * ψ (pairA F 0 (algebraMap F (Af F) c)) = 1` using `fun c => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← AddChar.map_add_eq_mul, ← hψ.2.2.1 c]`. Conclude with `congrArg ψ (Prod.ext (add_zero _) (zero_add _))`. Take `⟨N, hN, hNU⟩` from `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.2.1 _ (GlobalTheory.FinTranslate.eventually_fin_eq_one hψ)`. Establish `hint : ∀ r : 𝓞 F, ∃ n : ℤ, ∑ w, α w * ρ w ((N : F) * (r : F)) = n`. Introduce `r`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : algebraMap F (Af F) (r : F) ∈ GlobalTheory.CompanionTheory.SW.Core.Oh F` using `((GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.2.1 _).2 ⟨r, rfl⟩`. Establish `h1 : ψ (pairA F 0 (algebraMap F (Af F) ((N : F) * (r : F)))) = 1`. Use `hNU _ hr` as an intermediate fact. Rewrite using `[map_mul, map_natCast]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2` using `hsplit ((N : F) * (r : F))`. Rewrite `h2` using `[h1, mul_one, hinf, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h2`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hI : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h3 : ((∑ w, α w * e (algebraMap F (Ainf F) ((N : F) * (r : F))) w : ℝ) : ℂ) = n`. Apply `mul_left_cancel₀ hI` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [heρ] at h3`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `h3` after adjusting the coercions. Take `⟨a, ha⟩` from `exists_dual ρ hρ htr α N hN hint`. Establish `hinf' : ∀ x : Ainf F, ψ (pairA F x 0) = Complex.exp (2 * Real.pi * Complex.I * ((∑ w, ρ w a * e x w : ℝ) : ℂ))` using `fun x => by`. Rewrite using `[hinf]`. Simplify using `only [ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hfin : ∀ c : F, ψ (pairA F 0 (algebraMap F (Af F) c)) = Complex.exp (-(2 * Real.pi * Complex.I) * ((Algebra.trace ℚ F (a * c) : ℚ) : ℂ))` using `fun c => by`. Establish `h1` using `hsplit c`. Establish `h2 : ((∑ w, ρ w a * e (algebraMap F (Ainf F) c) w : ℝ) : ℂ) = ((Algebra.trace ℚ F (a * c) : ℚ) : ℂ)`. Establish `h3` using `htr (a * c)`. Simplify using `only [map_mul] at h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [heρ]`. Rewrite using `[h3]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h1` using `[hinf', h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[neg_mul, Complex.exp_neg]`. Conclude with `eq_inv_of_mul_eq_one_right h1`. Establish `hp : Continuous fun y : Af F => pairA F 0 y` using `continuous_const.prodMk continuous_id`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ x : Ainf F, ψ (pairA F x 0) = 1` using `fun x => by`. Rewrite using `[hinf']`. Simplify using the standard rewrite rules. Establish `h2 : ∀ y : Af F, ψ (pairA F 0 y) = 1`. Introduce `y`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hc : Continuous fun y : Af F => ψ (pairA F 0 y)` using `hψ.1.comp hp`. Use `(GlobalTheory.T.mem_Oh_iff_and_nat_mul_properties F).2.2.2.2.2.1.induction_on y (isClosed_eq hc continuous_const) fun c => ?_` and prove the remaining obligations. Rewrite using `[hfin]`. Simplify using the standard rewrite rules. Take `⟨z, hz⟩` from `hψ.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hz` to reduce the goal to its premises. Establish `h3 : z = pairA F z.1 0 + pairA F 0 z.2` using `Prod.ext (add_zero _).symm (zero_add _).symm`. Rewrite using `[h3, AddChar.map_add_eq_mul, h1, h2, one_mul]`. Set `ψf : AddChar (Af F) ℂ` to `{ toFun := fun y => ψ (pairA F 0 (algebraMap F (Af F) a⁻¹ * y)) map_zero_eq_one' := by`. Rewrite using `[mul_zero]`.
-
-Conclude with `ψ.map_zero_eq_one`. Use the proof step `map_add_eq_mul' := fun x y => by`. Rewrite using `[mul_add, ← AddChar.map_add_eq_mul]`. Conclude with `congrArg ψ (Prod.ext (add_zero _).symm rfl) }`. Use `⟨a, ha0, hinf', ψf, ⟨?_, fun b => ?_⟩, fun y => ?_⟩` and prove the remaining obligations.
-
-Conclude with `hψ.1.comp (hp.comp (continuous_const.mul continuous_id))`. Use `show ψ (pairA F 0 (algebraMap F (Af F) a⁻¹ * algebraMap F (Af F) b)) = _`. Rewrite using `[← map_mul, hfin, mul_inv_cancel_left₀ ha0]`. Use `show _ = ψ (pairA F 0 (algebraMap F (Af F) a⁻¹ * (algebraMap F (Af F) a * y)))`. Rewrite using `[← mul_assoc, ← map_mul, inv_mul_cancel₀ ha0, map_one, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char_data : ∀ (F : Type) [Field F] [NumberField F], IsTotallyReal F → ∀ (ρ : InfinitePlace F → (F →+* ℝ)) (e : Ainf F ≃+* (InfinitePlace F → ℝ)), (∀ w x, ((ρ w x : ℝ) : ℂ) = w.embedding x) → IsHomeomorph e → (∀ x w, e (algebraMap F (Ainf F) x) w = ρ w x) → ∀ ψ : AddChar (AF F) ℂ, IsCharAF F ψ → ∃ a : F, a ≠ 0 ∧ (∀ x : Ainf F, ψ (pairA F x 0) = Complex.exp (2 * Real.pi * Complex.I * ((∑ w, ρ w a * e x w : ℝ) : ℂ))) ∧ ∃ ψf : AddChar (Af F) ℂ, GlobalTheory.CompanionTheory.SW.Core.IsStdChar F ψf ∧ ∀ y : Af F, ψ (pairA F 0 y) = ψf (algebraMap F (Af F) a * y) := by
   intro F _ _ hF ρ e hρ he heρ ψ hψ

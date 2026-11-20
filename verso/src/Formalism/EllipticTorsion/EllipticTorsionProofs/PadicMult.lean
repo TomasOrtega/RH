@@ -33,9 +33,9 @@ theorem mulN_succ (F : FormalGroup R) (m : ℕ) :
       (![mulN F m, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R) F.toPowerSeries := rfl
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [mulN_zero]`. Consider the case `succ m ih`. Rewrite using `[mulN_succ]`. Use `constantCoeff_subst_of_zero (R := R) F.toPowerSeries (b := (![mulN F m, PowerSeries.X] : Fin 2 → MvPowerSeries Unit R)) (fun i => by fin_cases i; exacts [ih, PowerSeries.constantCoeff_X])` as an intermediate fact.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[F.zero_constantCoeff]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem constantCoeff_mulN (F : FormalGroup R) (m : ℕ) :
     MvPowerSeries.constantCoeff (mulN F m) = 0 := by
@@ -54,9 +54,9 @@ end Ring
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Rewrite using `[mulN_succ]`. Establish `hs` using `hs2 (R := unitBall K) (constantCoeff_mulN F m) (u := mulN F m) (v := (PowerSeries.X : PowerSeries (unitBall K))) PowerSeries.constantCoeff_X`. Rewrite using `[PowerSeries.map, MvPowerSeries.map_subst hs]`. Simplify using `only [FormalGroup.map_toPowerSeries]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Conclude with `PowerSeries.map_X _`.
+Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_mulN (F : FormalGroup (unitBall K)) (m : ℕ) :
     (mulN F (m + 1)).map (unitBall K).subtype =
@@ -75,11 +75,11 @@ theorem map_mulN (F : FormalGroup (unitBall K)) (m : ℕ) :
   · exact PowerSeries.map_X _
 
 /- English proof (translation)
-Take `⟨hl0, -, hlF⟩` from `hl`. Proceed by induction on `m with`. Consider the case `zero => simp [mulN_zero, hl0]`. Consider the case `succ m ih`. Establish `hM : MvPowerSeries.constantCoeff ((mulN F m).map (unitBall K).subtype) = 0` using `by show MvPowerSeries.constantCoeff (MvPowerSeries.map _ (mulN F m)) = 0`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[MvPowerSeries.constantCoeff_map, constantCoeff_mulN]`. Simplify using the standard rewrite rules. Establish `hs` using `hs2 (R := K) hM (v := (PowerSeries.X : PowerSeries K)) PowerSeries.constantCoeff_X`. Rewrite using `[map_mulN, ← psubst_subst l (F.map (unitBall K).subtype).zero_constantCoeff hs, hlF, MvPowerSeries.subst_add hs, atX, atY, psubst_subst l (by simp) hs, psubst_subst l (by simp) hs, MvPowerSeries.subst_X hs, MvPowerSeries.subst_X hs]`. Simplify using `only [Fin.isValue, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ih, PowerSeries.X_subst]`. Use `push_cast`. Rewrite using `[add_smul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_mulN (F : FormalGroup (unitBall K)) (l : PowerSeries K)
     (hl : IsLog (F.map (unitBall K).subtype) l) (m : ℕ) :
@@ -110,7 +110,7 @@ open Formalism.G Formalism.G.LogP
 variable {K : Type u} [NormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Establish `hM : MvPowerSeries.constantCoeff ((mulN F m).map (unitBall K).subtype) = 0` using `by show MvPowerSeries.constantCoeff (MvPowerSeries.map _ (mulN F m)) = 0`. Rewrite using `[MvPowerSeries.constantCoeff_map, constantCoeff_mulN]`. Simplify using the standard rewrite rules. Rewrite using `[← log_mulN F l hl m, ← PowerSeries.subst_comp_subst_apply (PowerSeries.HasSubst.of_constantCoeff_zero' hl.1) (PowerSeries.HasSubst.of_constantCoeff_zero hM), hel, PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hM)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem e_natMul (F : FormalGroup (unitBall K)) (l e : PowerSeries K)
     (hl : IsLog (F.map (unitBall K).subtype) l) (hel : e.subst l = X) (m : ℕ) :
@@ -124,7 +124,7 @@ theorem e_natMul (F : FormalGroup (unitBall K)) (l e : PowerSeries K)
     PowerSeries.subst_X (PowerSeries.HasSubst.of_constantCoeff_zero hM)]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.coeff_map]`. Conclude with `(coeff n (mulN F m)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_natMul (F : FormalGroup (unitBall K)) (m n : ℕ) :
     ‖coeff n ((mulN F m).map (unitBall K).subtype)‖ ≤ 1 := by
@@ -136,11 +136,11 @@ def coeffPoly (l e : PowerSeries K) (n : ℕ) : Polynomial K :=
     Polynomial.C (coeff d e * coeff n (l ^ d)) * Polynomial.X ^ d
 
 /- English proof (translation)
-Establish `hcl : constantCoeff (c • l) = 0` using `by simp [hl0]`. Take `⟨g, hg⟩` from `PowerSeries.X_dvd_iff.mpr hl0`. Establish `hz : ∀ d, n < d → coeff n (l ^ d) = 0`. Introduce `d hd`. Rewrite using `[hg, mul_pow, PowerSeries.coeff_X_pow_mul', if_neg (by omega)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.coeff_subst' (PowerSeries.HasSubst.of_constantCoeff_zero' hcl), finsum_eq_sum_of_support_subset (s := Finset.range (n + 1))]`. Simplify using `only [coeffPoly, Polynomial.eval_finsetSum, Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_X, smul_pow, PowerSeries.coeff_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun d _ => by ring` and prove the remaining obligations. Introduce `d hd`. Rewrite `hd` using `[Function.mem_support]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.coe_range, Set.mem_Iio]`. Assume the negation of the conclusion as `h`. Apply `hd` to reduce the goal to its premises. Rewrite using `[smul_pow, PowerSeries.coeff_smul, hz d (by omega), smul_zero, smul_zero]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_subst_smul (l e : PowerSeries K) (hl0 : constantCoeff l = 0) (c : K) (n : ℕ) :
     coeff n (e.subst (c • l)) = (coeffPoly l e n).eval c := by
@@ -168,7 +168,7 @@ namespace Formalism.ELL
 open Formalism.G Formalism.ELL.PadicMultiplication
 
 /- English proof (translation)
-Introduce `p _ K _ _ _ F l e hl he0 hel hle b n`. Rewrite using `[coeff_subst_smul l e hl.1]`. Use `h p K (coeffPoly l e n) (fun m => ?_) b` and prove the remaining obligations. Rewrite using `[← coeff_subst_smul l e hl.1, e_natMul F l e hl hel m]`. Conclude with `integral_natMul F m n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem padicMult_of (h : IntValuedZp.{u}) : PadicMult.{u} := by
   intro p _ K _ _ _ F l e hl he0 hel hle b n

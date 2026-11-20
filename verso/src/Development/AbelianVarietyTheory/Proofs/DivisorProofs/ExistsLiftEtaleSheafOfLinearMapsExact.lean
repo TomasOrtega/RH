@@ -6,11 +6,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Establish `hle : LinearMap.ker v ≤ LinearMap.ker f`. Introduce `b hb`. Take `⟨a, rfl⟩` from `hex b hb`. Simplify using `using LinearMap.congr_fun hf a`. Set `f₁ : (B ⧸ LinearMap.ker v) →ₗ[S] N` to `(LinearMap.ker v).liftQ f hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Set `f₂ : LinearMap.range v →ₗ[S] N` to `f₁ ∘ₗ (v.quotKerEquivRange).symm.toLinearMap`. Take `⟨g, hg⟩` from `hN.extension_property (LinearMap.range v).subtype (LinearMap.range v).injective_subtype f₂`. Use `⟨g, LinearMap.ext fun b => ?_⟩` and prove the remaining obligations. Establish `h1` using `LinearMap.congr_fun hg ⟨v b, b, rfl⟩`. Establish `h2 : (v.quotKerEquivRange).symm ⟨v b, b, rfl⟩ = Submodule.Quotient.mk b`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [LinearMap.comp_apply, Submodule.coe_subtype] at h1`. Rewrite using `[LinearMap.comp_apply, h1]`. Simplify using `only [f₂, f₁, LinearMap.comp_apply, LinearEquiv.coe_coe, h2, Submodule.liftQ_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lift_linear_of_injective {S : Type*} [Ring S] {N A B C : Type*} [AddCommGroup N] [Module S N]
     [AddCommGroup A] [Module S A] [AddCommGroup B] [Module S B] [AddCommGroup C] [Module S C]
@@ -33,11 +33,11 @@ theorem lift_linear_of_injective {S : Type*} [Ring S] {N A B C : Type*} [AddComm
   simp only [f₂, f₁, LinearMap.comp_apply, LinearEquiv.coe_coe, h2, Submodule.liftQ_apply]
 
 /- English proof (translation)
-Introduce `R _ J X hinj A B C u v hex f hf`. Take `⟨e, hnat, -⟩` from `GlobalTheory.T.exists_sheafHom_linearMapsSheaf_curry_equiv R J`. Establish `he0 : ∀ M : ModuleCat.{1} (ULift.{1} R), e X M 0 = 0`. Introduce `M`. Use `hnat X M M 0 0` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_comp, ModuleCat.hom_zero, LinearMap.comp_zero]`. Conclude with `this`. Establish `hf' : e X B f ∘ₗ u.hom = 0` using `by rw [← hnat, hf, he0]`. Take `⟨g', hg'⟩` from `lift_linear_of_injective (Module.Baer.of_injective hinj) u.hom v.hom hex (e X B f) hf'`. Use `⟨(e X C).symm g', (e X B).injective ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnat, Equiv.apply_symm_apply, hg']`.
+A detailed English derivation is pending.
 -/
 theorem lift_homSh : ∀ (R : Type) [CommRing R] (J X : Shv R), Module.Injective (ULift.{1} R) (X ⟶ J) → ∀ (A B C : ModuleCat.{1} (ULift.{1} R)) (u : A ⟶ B) (v : B ⟶ C), (∀ b, v.hom b = 0 → ∃ a, u.hom a = b) → ∀ f : X ⟶ (homSh J).obj (op B), f ≫ (homSh J).map u.op = 0 → ∃ g : X ⟶ (homSh J).obj (op C), g ≫ (homSh J).map v.op = f := by
   intro R _ J X hinj A B C u v hex f hf

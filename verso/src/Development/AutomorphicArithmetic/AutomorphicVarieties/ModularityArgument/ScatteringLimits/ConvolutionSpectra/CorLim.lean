@@ -9,11 +9,11 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M N hN φ e p c h1 h2 hp`. Establish `hc : ∀ a b : H, Continuous fun s => ⟪a, M.F.U s b⟫_ℂ` using `fun a b => continuous_const.inner (M.F.cont b)`. Use `⟨hc _ _, ?_⟩` and prove the remaining obligations. Establish `t1` using `(cobLaws M.F).2.2.2.2.2.2.1 (projLaws M).1 _ (M.J (sv V φ e)) c (nAll M N hN p hp)`. Establish `t2` using `corOne φ e (N (∫ x, p x)) c h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t3` using `t1.add t2`. Rewrite `t3` using `[zero_add]`. Use `t3.congr fun a => ?_` and prove the remaining obligations. Establish `e1 : ∀ s, ⟪sv V φ e, sh V s (one V (N (∫ x, p x)))⟫_ℂ = ⟪M.J (sv V φ e), M.F.U s (M.J (one V (N (∫ x, p x))))⟫_ℂ` using `fun s => by rw [M.hJ, M.J.inner_map_map]`. Simplify using `only [e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← intervalIntegral.integral_add ((hc _ _).intervalIntegrable _ _) ((hc _ _).intervalIntegrable _ _)]`. Use `intervalIntegral.integral_congr fun s _ => ?_` and prove the remaining obligations. Simplify using `only [Sc.cor, map_sub, inner_sub_right, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.corLim :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (N : W →ₗ[ℂ] V), M.IsN N → ∀ (φ : ℝ → ℂ) (e : V) (p : L W) (c : ℝ), Continuous φ → HasCompactSupport φ → Bdd p →

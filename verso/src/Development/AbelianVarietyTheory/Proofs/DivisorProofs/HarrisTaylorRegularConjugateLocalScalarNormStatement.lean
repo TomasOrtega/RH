@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.UnitsConjOfMinpolyE
 open Matrix NumberField GlobalTheory.LKTrip GlobalTheory.LKRes GlobalTheory.LKMid GlobalTheory.LKCount GlobalTheory.LKCx
 open scoped TensorProduct Classical
 /- English proof (citation)
-Apply `GlobalTheory.CxRegLoc.local_class_scalar_norm_sep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarrisTaylorRegularConjugateLocalScalarNorm.lean&line=25#L25)
 -/

@@ -12,75 +12,65 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `d U N G q z₀ hU hz₀ hN hz₀N hG hG0 hGd hq hhom hpos`. Use `set N₁ := N ∩ G ⁻¹' U with hN₁`. Establish `hN₁o : IsOpen N₁` using `hG.continuousOn.isOpen_inter_preimage hN hU`. Establish `hz₀N₁ : (z₀, 0) ∈ N₁` using `⟨hz₀N, by simp [hG0, hz₀]⟩`. Establish `hG₁ : ContDiffOn ℝ ∞ G N₁` using `hG.mono inter_subset_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he0, heN, heq, hesymm, hdet⟩` from `GlobalTheory.T.exists_local_inverse_fst_prod d N₁ G z₀ hN₁o hz₀N₁ hG₁ hGd`. Take `⟨ε, hε, hball⟩` from `Metric.isOpen_iff.1 e.open_source _ he0`. Take `⟨ε', hε', hballU⟩` from `Metric.isOpen_iff.1 hU _ hz₀`. Use `set ρ := min ε ε' / 2 with hρdef`. Establish `hρ : 0 < ρ` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρε : ρ < ε` using `by have := min_le_left ε ε'; linarith`. Establish `hρε' : ρ < ε'` using `by have := min_le_right ε ε'; linarith`. Establish `hsrc : ∀ z ∈ closedBall z₀ ρ, ∀ η ∈ closedBall (0 : Fin d → ℂ) ρ, (z, η) ∈ e.source`. Introduce `z hz η hη`. Apply `hball` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[mem_ball, Prod.dist_eq, max_lt_iff]`. Conclude with `⟨(mem_closedBall.1 hz).trans_lt hρε, (mem_closedBall.1 hη).trans_lt hρε⟩`. Establish `hBU : closedBall z₀ ρ ⊆ U` using `fun z hz => hballU ((mem_closedBall.1 hz).trans_lt hρε')`. Take `⟨m, hm, hmq⟩` from `GlobalTheory.T.positive_quadratic_uniform_lower_bound d U (closedBall z₀ ρ) q (isCompact_closedBall _ _) hBU hq.continuousOn hhom hpos`. Establish `hkey : ∀ z ∈ closedBall z₀ ρ, ∀ t : ℝ, 0 < t → t < ρ * √m → ∀ η, q z (t⁻¹ • η) < 1 → ‖η‖ < ρ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `z hz t ht htδ η hη`. Establish `h1` using `hmq z hz (t⁻¹ • η)`. Rewrite `h1` using `[norm_smul, Real.norm_of_nonneg (inv_nonneg.2 ht.le), mul_pow]`. Establish `h2 : t ^ 2 < ρ ^ 2 * m`. Use `pow_lt_pow_left₀ htδ ht.le two_ne_zero` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `this` using `[mul_pow, Real.sq_sqrt hm.le]`. Then use the resulting hypothesis. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h3 : t ^ 2 * t⁻¹ ^ 2 = 1` using `by rw [← mul_pow, mul_inv_cancel₀ ht.ne', one_pow]`. Establish `h4 : t ^ 2 * t⁻¹ ^ 2 < ρ ^ 2 * m * t⁻¹ ^ 2` using `mul_lt_mul_of_pos_right h2 (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : m * (t⁻¹ ^ 2 * ρ ^ 2) ≤ m * (t⁻¹ ^ 2 * ‖η‖ ^ 2)` using `mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hρ.le hc 2) (sq_nonneg _)) hm.le`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨ρ * √m, by positivity, ball z₀ ρ, isOpen_ball, mem_ball_self hρ, ball_subset_closedBall.trans hBU, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz t ht htδ ξ hξ`. Establish `h` using `hkey z (ball_subset_closedBall hz) t ht htδ (t • ξ) (by rwa [inv_smul_smul₀ ht.ne'])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(heN (hsrc z (ball_subset_closedBall hz) _ (mem_closedBall_zero_iff.2 h.le))).1`. Introduce `ψ hψ t ht htδ`. Establish `hsymm1 : ∀ p ∈ e.target, (e.symm p).1 = p.1`. Introduce `p hp`. Use `heq _ (e.map_target hp)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[e.right_inv hp]`. Conclude with `(congrArg Prod.fst this).symm`. Establish `hsymm2 : ∀ p ∈ e.target, G (e.symm p) = p.2`. Introduce `p hp`. Use `heq _ (e.map_target hp)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e.right_inv hp]`. Conclude with `(congrArg Prod.snd this).symm`. Use `set D : (Fin d → ℂ) × (Fin d → ℂ) → ℝ := fun p => (fderiv ℝ (fun ξ => G (p.1, ξ)) p.2).det with hD`. Use `set Kt : (Fin d → ℂ) × (Fin d → ℂ) → ℝ := e.target.indicator (fun p => cutoff (q p.1 (t⁻¹ • (e.symm p).2)) * |D (e.symm p)|⁻¹) with hKt`. Use `set Kc := e '' (closedBall z₀ ρ ×ˢ closedBall (0 : Fin d → ℂ) ρ) with hKc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKcs : closedBall z₀ ρ ×ˢ closedBall (0 : Fin d → ℂ) ρ ⊆ e.source` using `fun p hp => by`. Simplify using `using hsrc p.1 hp.1 p.2 hp.2`. Establish `hKcc : IsCompact Kc` using `((isCompact_closedBall _ _).prod (isCompact_closedBall _ _)).image_of_continuousOn (e.continuousOn.mono hKcs)`. Establish `hKct : Kc ⊆ e.target` using `by rintro _ ⟨p, hp, rfl⟩; exact e.map_source (hKcs hp)`. Establish `hcut : ∀ p ∈ e.target, p.1 ∈ closedBall z₀ ρ → cutoff (q p.1 (t⁻¹ • (e.symm p).2)) ≠ 0 → p ∈ Kc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Introduce `p hp hp1 hne`. Establish `hq1` using `cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hne)`. Establish `h` using `hkey _ hp1 t ht htδ _ hq1`. Use `⟨e.symm p, ⟨?_, mem_closedBall_zero_iff.2 h.le⟩, e.right_inv hp⟩` and prove the remaining obligations. Rewrite using `[hsymm1 p hp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hp1`. Establish `hvan : ∀ p : (Fin d → ℂ) × (Fin d → ℂ), p.1 ∈ closedBall z₀ ρ → p ∉ Kc → Kt p = 0`. Introduce `p hp1 hpK`. Distinguish the cases in `hpt : p ∈ e.target`. Rewrite using `[hKt, indicator_of_mem hpt]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hc : cutoff (q p.1 (t⁻¹ • (e.symm p).2)) = 0`. Simplify using `[hc]`. Conclude with `absurd (hcut p hpt hp1 hc) hpK`. Conclude with `indicator_of_notMem hpt _`. Establish `hUb : ball z₀ ρ ⊆ U` using `ball_subset_closedBall.trans hBU`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDc : ContDiffOn ℝ ∞ D N₁` using `GlobalTheory.T.contDiffOn_fderiv_det d N₁ G hN₁o hG₁`. Establish `hKsm : ContDiffOn ℝ ∞ Kt (ball z₀ ρ ×ˢ univ)`. Introduce `p hp`. Apply `ContDiffAt.contDiffWithinAt` to reduce the goal to its premises. Distinguish the cases in `hpt : p ∈ e.target`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : Kt =ᶠ[𝓝 p] fun p => cutoff (q p.1 (t⁻¹ • (e.symm p).2)) * |D (e.symm p)|⁻¹` using `by filter_upwards [e.open_target.mem_nhds hpt] with p' hp'`. Rewrite using `[hKt, indicator_of_mem hp']`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Establish `hs : ContDiffAt ℝ ∞ e.symm p` using `hesymm.contDiffAt (e.open_target.mem_nhds hpt)`. Establish `hsrcp : e.symm p ∈ e.source` using `e.map_target hpt`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin : ContDiffAt ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => (p.1, t⁻¹ • (e.symm p).2)) p` using `contDiffAt_fst.prodMk (hs.snd.const_smul t⁻¹)`. Establish `hqa : ContDiffAt ℝ ∞ (fun r : (Fin d → ℂ) × (Fin d → ℂ) => q r.1 r.2) (p.1, t⁻¹ • (e.symm p).2)` using `hq.contDiffAt ((hU.prod isOpen_univ).mem_nhds ⟨hUb hp.1, mem_univ _⟩)`. Establish `h1 : ContDiffAt ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => cutoff (q p.1 (t⁻¹ • (e.symm p).2))) p`. Establish `h0` using `hqa.comp p hin`. Conclude with `GlobalTheory.T.contDiff_cutoff'.contDiffAt.comp p h0`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDa : ContDiffAt ℝ ∞ D (e.symm p)` using `hDc.contDiffAt (hN₁o.mem_nhds (heN hsrcp))`. Establish `hD0 : D (e.symm p) ≠ 0` using `hdet _ hsrcp`. Establish `h2 : ContDiffAt ℝ ∞ (fun p => |D (e.symm p)|) p`. Establish `h0` using `(contDiffAt_abs (n := ⊤) hD0).comp p (hDa.comp p hs)`. Conclude with `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `h1.mul (h2.inv (abs_ne_zero.2 hD0))`. Establish `hpK : p ∉ Kc` using `fun h => hpt (hKct h)`. Use `(contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_` and prove the remaining obligations. Use `filter_upwards [hKcc.isClosed.isOpen_compl.mem_nhds hpK, (isOpen_ball.prod isOpen_univ).mem_nhds hp] with p' hp' hp''`. Conclude with `hvan p' (ball_subset_closedBall hp''.1) hp'`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set C := Prod.snd '' Kc with hC`. Establish `hCc : IsCompact C` using `hKcc.image continuous_snd`. Establish `hCU : C ⊆ U`. Introduce and unpack `_ ⟨_, ⟨p, hp, rfl⟩, rfl⟩`. Rewrite using `[heq p (hKcs hp)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(heN (hKcs hp)).2`. Establish `hnumsm : ContDiffOn ℝ ∞ (fun z => ∫ w, ψ w * Kt (z, w)) (ball z₀ ρ)` using `GlobalTheory.T.parameter_integral_smooth d (ball z₀ ρ) C Kt ψ isOpen_ball hCc (fun z hz w hw => hvan (z, w) (ball_subset_closedBall hz) fun h => hw ⟨_, h, rfl⟩) (hψ.integrableOn_compact_subset hCU hCc) hKsm`. Establish `hnum : ∀ z ∈ ball z₀ ρ, ∫ ξ, ψ (G (z, t • ξ)) * cutoff (q z ξ) = |(t ^ Module.finrank ℝ (Fin d → ℂ))⁻¹| * ∫ w, ψ w * Kt (z, w)`. Introduce `z hz`. Establish `hzc` using `ball_subset_closedBall hz`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hsb : ∀ η ∈ ball (0 : Fin d → ℂ) ρ, (z, η) ∈ e.source` using `fun η hη => hsrc z hzc η (ball_subset_closedBall hη)`. Establish `e1 : ∫ ξ, ψ (G (z, t • ξ)) * cutoff (q z ξ) = ∫ ξ, (fun η => ψ (G (z, η)) * cutoff (q z (t⁻¹ • η))) (t • ξ)`. Simplify using `only [inv_smul_smul₀ ht.ne']`. Rewrite using `[e1, Measure.integral_comp_smul volume (fun η => ψ (G (z, η)) * cutoff (q z (t⁻¹ • η))) t, smul_eq_mul]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `GlobalTheory.T.change_of_variables_injective_indicator d (fun η => G (z, η)) (fun w => (e.symm (z, w)).2) (fun η => fderiv ℝ (fun ξ => G (z, ξ)) η) (ball 0 ρ) (fun η => cutoff (q z (t⁻¹ • η))) ψ (fun w => Kt (z, w)) measurableSet_ball ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `η hη`. Establish `hd : DifferentiableAt ℝ G (z, η)` using `(hG₁.differentiableOn (by simp)).differentiableAt (hN₁o.mem_nhds (heN (hsb η hη)))`. Establish `h0` using `hd.comp η ((differentiableAt_const z).prodMk differentiableAt_id)`. Conclude with `h0.hasFDerivAt.hasFDerivWithinAt`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `η₁ h₁ η₂ h₂ h`. Use `e.injOn (hsb η₁ h₁) (hsb η₂ h₂) (by rw [heq _ (hsb η₁ h₁), heq _ (hsb η₂ h₂)]; exact congrArg _ h)` as an intermediate fact. Conclude with `congrArg Prod.snd this`. Introduce `η hη`. Use `e.left_inv (hsb η hη)` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[heq _ (hsb η hη)]`. Simplify using `only [this]`. Introduce `η hη`. Conclude with `hdet _ (hsb η hη)`. Introduce `η hη`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hη (mem_ball_zero_iff.2 (hkey z hzc t ht htδ η (cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hne))))`. Use function extensionality and compare the values at `w`. Distinguish the cases in `hw : w ∈ (fun η => G (z, η)) '' ball 0 ρ`. Take `⟨η, hη, rfl⟩` from `hw`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hl` using `e.left_inv (hsb η hη)`. Establish `ht'` using `e.map_source (hsb η hη)`. Rewrite `hl`, `ht'` using `[heq _ (hsb η hη)]`. Rewrite using `[indicator_of_mem (mem_image_of_mem _ hη), hKt, indicator_of_mem ht']`. Simplify using `only [hl, hD]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[indicator_of_notMem hw]`. Distinguish the cases in `hpt : (z, w) ∈ e.target`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[hKt, indicator_of_mem hpt]`. Establish `hc : cutoff (q z (t⁻¹ • (e.symm (z, w)).2)) ≠ 0` using `fun h => hne (by simp [h])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `hkey z hzc t ht htδ _ (cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hc))`. Establish `hp1` using `hsymm1 _ hpt`. Establish `hp2` using `hsymm2 _ hpt`. Use `hw ⟨(e.symm (z, w)).2, mem_ball_zero_iff.2 hb, ?_⟩` and prove the remaining obligations. Establish `hpe : (z, (e.symm (z, w)).2) = e.symm (z, w)` using `Prod.ext hp1.symm rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only`. Rewrite using `[hpe]`. Conclude with `hp2`. Conclude with `indicator_of_notMem hpt _`. Establish `hden : ContDiffOn ℝ ∞ (fun z => ∫ ξ, cutoff (q z ξ)) (ball z₀ ρ)`.
-
-Establish `h` using `GlobalTheory.T.parameter_integral_smooth d (ball z₀ ρ) (closedBall 0 (max 1 m⁻¹)) (fun p => cutoff (q p.1 p.2)) (fun _ => 1) isOpen_ball (isCompact_closedBall _ _) ?_ (integrableOn_const (isCompact_closedBall _ _).measure_lt_top.ne) (GlobalTheory.T.contDiff_cutoff'.comp_contDiffO …`. Simplify using `using h`. Introduce `z hz w hw`. Assume the negation of the conclusion as `hne`. Establish `hq1` using `cutoff_pos_iff.1 ((cutoff_nonneg _).lt_of_ne' hne)`.
-
-Establish `h1` using `hmq z (ball_subset_closedBall hz) w`. Rewrite `hw` using `[mem_closedBall_zero_iff, not_le, max_lt_iff]`. Establish `h2 : 1 < m * ‖w‖`. Use `mul_lt_mul_of_pos_left hw.2 hm` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel₀ hm.ne']`. Then use the resulting hypothesis.
-
-Establish `h3 : m * ‖w‖ * 1 < m * ‖w‖ * ‖w‖` using `mul_lt_mul_of_pos_left hw.1 (by linarith)`. Simplify using `only at hq1`. Use the polynomial consequences of the given equalities and inequalities. Establish `hden0 : ∀ z ∈ ball z₀ ρ, (∫ ξ, cutoff (q z ξ)) ≠ 0`. Introduce `z hz`.
-
-Establish `hzU` using `hUb hz`. Establish `hc : Continuous (q z)` using `hq.continuousOn.comp_continuous (continuous_const.prodMk continuous_id) fun ξ => ⟨hzU, mem_univ _⟩`. Conclude with `(mass_pos hc (hhom z hzU) (hpos z hzU)).ne'`. Establish `hfin` using `((contDiffOn_const (c := |(t ^ Module.finrank ℝ (Fin d → ℂ))⁻¹|)).mul hnumsm).div hden hden0`. Use `hfin.congr fun z hz => ?_` and prove the remaining obligations.
-
-Simplify using `only [mean]`. Rewrite using `[hnum z hz, Pi.div_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contDiffOn_mean_along_family : ∀ (d : ℕ) (U : Set (Fin d → ℂ)) (N : Set ((Fin d → ℂ) × (Fin d → ℂ))) (G : (Fin d → ℂ) × (Fin d → ℂ) → Fin d → ℂ) (q : (Fin d → ℂ) → (Fin d → ℂ) → ℝ) (z₀ : Fin d → ℂ), IsOpen U → z₀ ∈ U → IsOpen N → (z₀, 0) ∈ N → ContDiffOn ℝ ∞ G N → G (z₀, 0) = z₀ → HasFDerivAt (fun ξ => G (z₀, ξ)) (ContinuousLinearMap.id ℝ (Fin d → ℂ)) 0 → ContDiffOn ℝ ∞ (fun p : (Fin d → ℂ) × (Fin d → ℂ) => q p.1 p.2) (U ×ˢ Set.univ) → (∀ z ∈ U, ∀ (t : ℝ) ξ, q z (t • ξ) = t ^ 2 * q z ξ) → (∀ z ∈ U, ∀ ξ, ξ ≠ 0 → 0 < q z ξ) → ∃ δ : ℝ, 0 < δ ∧ ∃ U' : Set (Fin d → ℂ), IsOpen U' ∧ z₀ ∈ U' ∧ U' ⊆ U ∧ (∀ z ∈ U', ∀ t : ℝ, 0 < t → t < δ → ∀ ξ, q z ξ < 1 → (z, t • ξ) ∈ N) ∧ ∀ ψ : (Fin d → ℂ) → ℝ, MeasureTheory.LocallyIntegrableOn ψ U MeasureTheory.volume → ∀ t : ℝ, 0 < t → t < δ → ContDiffOn ℝ ∞ (fun z => GlobalTheory.ChernReg.mean (q z) fun ξ => ψ (G (z, t • ξ))) U' := by
   intro d U N G q z₀ hU hz₀ hN hz₀N hG hG0 hGd hq hhom hpos

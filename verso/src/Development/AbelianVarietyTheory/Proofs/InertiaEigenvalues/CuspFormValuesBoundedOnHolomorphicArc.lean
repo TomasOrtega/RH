@@ -20,7 +20,7 @@ open ReciprocityTheory.ChartRestriction.G.FD
 namespace GlobalTheory.ArcBdd
 
 /- English proof (translation)
-Rewrite using `[norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun i _ => norm_nonneg _) (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hf i) _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_prod_pow_le {ι : Type} [Fintype ι] (f : ι → ℂ) (e : ι → ℕ) (B : ℝ) (hf : ∀ i, ‖f i‖ ≤ B) :
     ‖∏ i, f i ^ e i‖ ≤ B ^ (∑ i, e i) := by
@@ -30,7 +30,7 @@ theorem norm_prod_pow_le {ι : Type} [Fintype ι] (f : ι → ℂ) (e : ι → �
   exact pow_le_pow_left₀ (norm_nonneg _) (hf i) _
 
 /- English proof (translation)
-Unfold `Data.pnorm`. Establish `h1 : ∀ τ (i : Fin r), ‖dmin X.Gm x τ i.succ / dmin X.Gm x τ i.castSucc‖ = 1`. Introduce `τ i`. Rewrite using `[norm_div, hx τ i.succ, hx τ i.castSucc, div_one]`. Simplify using `only [h1, Real.one_rpow, Finset.prod_const_one, mul_one]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pnorm_unitFr {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r) (la : Wt X.Ψ r)
     (P : Frame X.Ψ r → ℂ) (x : Frame X.Ψ r) (hx : GlobalTheory.FrameNorm.IsUnitFr X x) :
@@ -42,13 +42,13 @@ theorem pnorm_unitFr {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ
   simp only [h1, Real.one_rpow, Finset.prod_const_one, mul_one]
 
 /- English proof (translation)
-Unfold `Formalism.L2.PjFree.holSub at hP`. Proceed by induction on `hP using Submodule.span_induction with`. Consider the case `mem P hP => exact (hP k).1.2`. Consider the case `zero => exact ⟨0, fun x _ => by`. Use `Formalism.L2.Pj.pnorm_zero (X k) (la k) x` as an intermediate fact.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `using this.le⟩`. Consider the case `add P Q _ _ hP hQ`. Take `⟨C1, h1⟩` from `hP`. Take `⟨C2, h2⟩` from `hQ`. Conclude with `⟨C1 + C2, fun x hx => (Formalism.L2.Pj.pnorm_add_le (X k) (la k) (P k) (Q k) x).trans (add_le_add (h1 x hx) (h2 x hx))⟩`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `smul s P _ hP`. Take `⟨C1, h1⟩` from `hP`. Conclude with `⟨‖s‖ * C1, fun x hx => by`. Use `Formalism.L2.Pj.pnorm_smul (X k) (la k) s (P k) x` as an intermediate fact. Simplify using `only [Pi.smul_apply] at this ⊢`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `mul_le_mul_of_nonneg_left (h1 x hx) (norm_nonneg _)⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holSub_bdd {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {Comp : Type}
     (X : Comp → Data E r) (la : (k : Comp) → Wt (X k).Ψ r) (P : Formalism.L2.PjFree.FDSec X)
@@ -73,13 +73,11 @@ theorem holSub_bdd {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} 
       exact mul_le_mul_of_nonneg_left (h1 x hx) (norm_nonneg _)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U σ a' n F hG hF`. Use `haveI := (U σ).fin`. Establish `hF' : Formalism.L2.PjFree.rdU (U σ) F ∈ Formalism.L2.PjFree.holSub (U σ).X (Formalism.L2.PjFree.laU (U σ) a' n)`. Unfold `Formalism.L2.PjFree.cusp at hF`. Rewrite `hF` using `[Submodule.mem_inf, Submodule.mem_iInf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hF.2 σ` as an intermediate fact. Rewrite `this` using `[Submodule.mem_iInf]`. Conclude with `Submodule.mem_comap.mp (this hG)`. Use `choose C hC using holSub_bdd (U σ).X (Formalism.L2.PjFree.laU (U σ) a' n) _ hF'`. Use `⟨∑ k, max (C k) 0, fun k x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hC k x.1 x.2`. Rewrite `h1` using `[pnorm_unitFr _ _ _ _ hx]`. Establish `h2 : Formalism.L2.PjFree.rdU (U σ) F k x.1 = Formalism.L2.PjFree.toC (evR Xo c F ((U σ).un k x))`. Simplify using `[Formalism.L2.PjFree.rdU, x.2]`. Rewrite using `[← h2]`.
-
-Use `h1.trans ((le_max_left (C k) 0).trans ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => max (C k) 0) (fun k _ => le_max_right _ _) (Finset.mem_univ k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cusp_bounded_at_unitFr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r) (σ : c.F →+* ℂ) (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (F : Rul Xo c), Formalism.L2.PjFree.GoodEmb c σ → F ∈ Formalism.L2.PjFree.cusp Xo c U a' n → ∃ M : ℝ, ∀ (k : (U σ).Comp) (x : ((U σ).X k).dom), GlobalTheory.FrameNorm.IsUnitFr ((U σ).X k) x.1 → ‖Formalism.L2.PjFree.toC (evR Xo c F ((U σ).un k x))‖ ≤ M := by
   intro E _ _ _ H Dw l Xo c r U σ a' n F hG hF
@@ -101,15 +99,13 @@ theorem cusp_bounded_at_unitFr : ∀ (E : Type) [Field E] [NumberField E] [IsCMF
   exact Finset.single_le_sum (f := fun k => max (C k) 0) (fun k _ => le_max_right _ _) (Finset.mem_univ k)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U σ Uw _ _ O _ β Y a χ W Ha th Θ z hU hG hz a' n F hD hF`. Take `⟨T1, B1, h1⟩` from `GlobalTheory.T.norm_diag_tangent_unitFrame_holomorphicArc_le E H Dw l Xo c r σ (U σ) Uw O β Y a χ W Ha th Θ z hG (hU σ hG) hz`. Take `⟨T2, B2, h2⟩` from `GlobalTheory.T.arc_generator_ratio_bounded_unit_frame E H Dw l Xo c r σ (U σ) Uw O β Y a χ W Ha th Θ z hG (hU σ hG) hz`. Take `⟨M, hM⟩` from `cusp_bounded_at_unitFr E H Dw l Xo c r U σ a' n F hG hF`. Establish `hev` using `(GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsDomain (CAt σ) := inferInstanceAs (IsDomain ℂ)`. Use `haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ)`. Use `set B := max 1 (max B1 B2)`. Use `⟨max T1 T2, max M 0 * B ^ (∑ i, ex Dw a' n i), ?_⟩` and prove the remaining obligations. Introduce `w hw yw hyw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨k, x, t, hux, hb⟩` from `(GlobalTheory.FrameNorm.exists_unitFr_frBor E H Dw l Xo c σ r (U σ) hG (hU σ hG)).2 yw`. Establish `hsc` using `((GlobalTheory.ArcQ.evR_natural_weight_scaling E H Dw l Xo c hev a' n F (Formalism.L2.PjFree.cusp_le_sec Xo c U a' n hF) (CAt σ)).2 inferInstance).1 t _ _ hb`. Establish `ht : ∀ i, ‖Formalism.L2.PjFree.toC (t i : CAt σ)‖ ≤ B`. Introduce `i`. Break down `i with _ | j` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `(h2 w (lt_of_le_of_lt (le_max_right _ _) hw) yw hyw k x t hux hb).trans ((le_max_right _ _).trans (le_max_right _ _))`. Conclude with `(h1 w (lt_of_le_of_lt (le_max_left _ _) hw) yw hyw k x t hux hb j).trans ((le_max_left _ _).trans (le_max_right _ _))`. Establish `hw' : ‖Formalism.L2.PjFree.toC (wchar (ex Dw a' n) t)‖ ≤ B ^ (∑ i, ex Dw a' n i)` using `norm_prod_pow_le (fun i => Formalism.L2.PjFree.toC (t i : CAt σ)) (ex Dw a' n) B ht`. Rewrite using `[hsc]`. Express the relevant statement in the definitionally equal form `‖(Formalism.L2.PjFree.toC (wchar (ex Dw a' n) t) * Formalism.L2.PjFree.toC (evR Xo c F ((U σ).un k x)) : ℂ)‖ ≤ _`.
-
-Rewrite using `[norm_mul, mul_comm]`. Conclude with `mul_le_mul ((hM k x hux).trans (le_max_left _ _)) hw' (norm_nonneg _) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cusp_values_bounded_on_arc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Formalism.L2.PjFree.Unf Xo c σ r) (σ : c.F →+* ℂ) (Uw : UnfWit (U σ)) [Algebra (FractionRing ℂ) ℂ] [IsScalarTower ℂ (FractionRing ℂ) ℂ] (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (a : ArcIn Dw l β ℂ (σ.comp β)) (χ : Sp (PowerSeries ℂ) ⟶ Y.X) (W : Wit Y a χ) (Ha : HolArc Y σ a χ W Uw.F) (th : a.D₀.P.L.Sec) (Θ : ThetaDat Ha th) (z : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (Fin Uw.g → ℂ)), (∀ σ', Formalism.L2.PjFree.GoodEmb c σ' → Formalism.L2.PjFree.IsUnf (U σ')) → Formalism.L2.PjFree.GoodEmb c σ → (∀ τ, LinearIndependent ℂ (z τ) ∧ ∀ i jj, z τ i jj ≠ 0 → (Uw.e jj).1 = τ) → ∀ (a' : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (F : Rul Xo c), Dom a' n → F ∈ Formalism.L2.PjFree.cusp Xo c U a' n → ∃ T C : ℝ, ∀ w : ℂ, T < w.im → ∀ yw, AnFr Ha Θ z w yw → ‖Formalism.L2.PjFree.toC (evR Xo c F yw)‖ ≤ C := by
   intro E _ _ _ H Dw l Xo c r U σ Uw _ _ O _ β Y a χ W Ha th Θ z hU hG hz a' n F hD hF

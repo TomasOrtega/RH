@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CenTheta
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap (Qv v) (Kv K w))` using `(algebraMap (Qv v) (Kv K w)).injective`. Establish `h` using `Function.leftInverse_invFun hinj (0 : Qv v)`. Simplify `h` using `[dg1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem degreeOneEmbedding_zero {K : Type} [Field K] [NumberField K] (v : Pl) (w : PlK K)
     [w.asIdeal.LiesOver v.asIdeal] : dg1 v w (0 : K) = 0 := by
@@ -26,9 +26,9 @@ theorem degreeOneEmbedding_zero {K : Type} [Field K] [NumberField K] (v : Pl) (w
   simpa [dg1] using h
 
 /- English proof (translation)
-Introduce `K _ _ c v m hok hsp a g`. Establish `hχ` using `GlobalTheory.CompanionTheory.SphStd.isStd_psiF_inv v`. Consider the cases of `m with`. Consider the case `@sp w₁ w₂ i₁ i₂ Φ`. Establish `hΦ : Φ ∈ GL2LocalData.SBE (Qv v × Qv v)` using `⟨hok.2.1, hok.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [LM.val, om0, degreeOneEmbedding_zero]`. Rewrite using `[GlobalTheory.CompanionTheory.SplitPi.piS_mul hχ.1 hχ.2.1 _ hΦ, GlobalTheory.CompanionTheory.SplitCentre.piS_scalar]`. Simplify using the standard rewrite rules. Consider the case `ns w σ η Φ => exact hsp.elim`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem val_zero_central_sp : ∀ (K : Type) [Field K] [NumberField K] (c : HeckeCharacter K) (v : Pl)
     (m : LM c v), m.ok → m.IsSp → ∀ (a : (Qv v)ˣ) (g : GL (Fin 2) (Qv v)),

@@ -11,13 +11,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n S K' hK`. Establish `hT : {w : Pl E | ¬ K' w = KL n w}.Finite` using `Filter.eventually_cofinite.1 hK.2`. Set `f : ∀ w : Pl E, finU E n → UL n w` to `fun w x => ⟨cLoc w x.1, GlobalTheory.BCT.ThBasic.cLoc_mem_UL hU n w x.1⟩`. Establish `hf : ∀ w, Continuous (f w)` using `fun w => Continuous.subtype_mk ((GlobalTheory.DefU.Inert.continuous_cLoc w).comp continuous_subtype_val) _`. Establish `h1 : ∀ w, f w 1 = 1` using `fun w => Subtype.ext (by simp [f])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ᶠ k : finU E n in nhds 1, ∀ w : Pl E, cLoc w (k : UA E n) ∈ GlobalTheory.LFun.KGL w n` using `by filter_upwards [(UpperTheory.unitaryAdelic_localComponents_continuous_levels_open E n).2.2] with k hk w`. Conclude with `(SetLike.ext_iff.1 (GlobalTheory.SmGL.SphCompletion.KO_completion w n) _).1 (hk w)`. Establish `hB : ∀ᶠ k : finU E n in nhds 1, ∀ w ∈ {w : Pl E | ¬ K' w = KL n w}, f w k ∈ K' w`. Use `(Filter.eventually_all_finite hT).2 fun w _ => ?_` and prove the remaining obligations. Establish `ho : IsOpen ((f w) ⁻¹' (K' w : Set (UL n w)))` using `((hK.1 w).1).preimage (hf w)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ho.mem_nhds (by simp [h1])`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Use `filter_upwards [hA, hB] with x hxA hxB`. Use `Subgroup.mem_iInf.2 fun w => Subgroup.mem_iInf.2 fun _ => ?_` and prove the remaining obligations. Use `Subgroup.mem_comap.2 (Subgroup.mem_map.2 ⟨f w x, ?_, rfl⟩)` and prove the remaining obligations.
-
-Distinguish the cases in `hw : K' w = KL n w`. Rewrite using `[hw]`. Conclude with `Subgroup.mem_subgroupOf.2 (hxA w)`. Conclude with `hxB w hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_globLev : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E], Unr E → ∀ (n : ℕ) (S : Set (Pl E)) (K' : ∀ w : Pl E, Subgroup (UL n w)), IsLevelFam (fun w : Pl E => MonoidHom.id (UL n w)) (KL n) K' → IsOpen (globLev S K' : Set (finU E n)) := by
   intro E _ _ _ hU n S K' hK

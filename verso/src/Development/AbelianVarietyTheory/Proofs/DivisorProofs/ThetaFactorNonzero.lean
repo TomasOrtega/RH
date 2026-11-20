@@ -12,7 +12,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels NumberField IsDede
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW`. Establish `h1` using `_root_.GlobalTheory.LFun.continuous_locChar h (_root_.GlobalTheory.AdelicU.splitPrime τ)`. Establish `h2` using `Continuous.units_map (_root_.GlobalTheory.LFun.complMap (_root_.GlobalTheory.AdelicU.splitPrime_under τ)).toMonoidHom (_root_.GlobalTheory.LFun.SplitChart.continuous_complMap (_root_.GlobalTheory.AdelicU.splitPrime_under τ))`. Conclude with `h1.comp h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StepFacNe.chrW_continuous {F E : Type} [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E]
@@ -29,15 +29,15 @@ theorem _root_.GlobalTheory.StepFacNe.chrW_continuous {F E : Type} [Field F] [Nu
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Establish `hw` using `_root_.GlobalTheory.AdelicU.splitPrime_under τ`. Unfold `_root_.GlobalTheory.LFun.UnrAt at h`. Use `push_neg at h`. Take `⟨y, hy1, hy2⟩` from `h`. Unfold `_root_.Formalism.L2.Host.IsUnitAt at hy1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `(_root_.GlobalTheory.LFun.SplitTie.complMap_bijective τ hw).2 (y : _)`. Establish `hv : Valued.v a = 1`. Rewrite using `[← _root_.GlobalTheory.LFun.SplitTie.valued_complMap τ hw, ha]`. Conclude with `hy1`. Establish `ha0 : a ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Simplify using `at hv`. Use `⟨Units.mk0 a ha0, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Simplify using `[hv]`. Introduce `h1`. Apply `hy2` to reduce the goal to its premises. Establish `hy : Units.map (_root_.GlobalTheory.LFun.complMap hw).toMonoidHom (Units.mk0 a ha0) = y` using `Units.ext (by simpa using ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.chrW at h1`. Rewrite `h1` using `[MonoidHom.comp_apply, hy]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.StepFacNe.chrW_ram {F E : Type} [Field F]
     [NumberField F] [Field E] [NumberField E] [Algebra F E]
@@ -72,11 +72,11 @@ theorem _root_.GlobalTheory.StepFacNe.chrW_ram {F E : Type} [Field F]
     exact h1
 
 /- English proof (translation)
-Establish `hB : Bounded (above E S) (charFam χ) 1 0`. Introduce `w _`. Unfold `charFam`. Use `split_ifs`. Use `⟨by simp, fun b hb => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[Multiset.mem_singleton]`. Substitute `hb` using the available equality. Simplify using `[norm_val]`. Simplify using the standard rewrite rules. Establish `hc` using `hB.converges (s := (k : ℂ)) (by`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Complex.natCast_re, zero_add]`. Conclude with `(by omega : 1 < k))` after adjusting the coercions. Conclude with `hc.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem charL_ne_zero {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (χ : Chr F E) (S : Set (Pl F)) (k : ℕ) (hk : 2 ≤ k) : charL χ S (k : ℂ) ≠ 0 := by

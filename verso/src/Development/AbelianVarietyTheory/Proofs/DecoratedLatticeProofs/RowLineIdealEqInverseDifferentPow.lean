@@ -13,9 +13,9 @@ open GlobalTheory.Core.Mi.LatMatch
 namespace GlobalTheory.Core.Mi.LatMatch.DiffInv
 
 /- English proof (translation)
-Introduce `D i`. Establish `hP` using `Formalism.IndefR.Fin.factPrincipalDatum D.R D.host`. Establish `hinv : dI D = (ddS D)⁻¹`. Rewrite using `[GlobalTheory.IntTerm.Conv.ddS_eq]`. Conclude with `eq_inv_of_mul_eq_one_left hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv, inv_pow, aaD, ← Nat.cast_sub i.2.le, _root_.zpow_neg, _root_.zpow_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem aaD_eq_dI_pow : ∀ (D : D7) (i : Fin D.R.rS), aaD D i = dI D ^ (D.R.rS - i.1) := by
   intro D i

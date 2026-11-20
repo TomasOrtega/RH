@@ -23,20 +23,18 @@ def vanSub (N : ℕ) (e : ℕ → ℕ → Module.End ℚ V) (lam : ℕ → ℤ) 
     simp [hU μ x hx hlt]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_vanSub {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {s : Finset ℕ} {U : Module.End ℚ V} :
     U ∈ vanSub N e lam s ↔ ∀ (μ : ℕ → ℤ) (x : V), IsWt N e μ x → ∑ c ∈ s, μ c < ∑ c ∈ s, lam c → U x = 0 :=
   Iff.rfl
 
 /- English proof (translation)
-Introduce `k hk`. Establish `h` using `congrArg (fun f : Module.End ℚ V => f x) (he k k c d hk hk hc hd)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at h`. Rewrite `h` using `[sub_eq_iff_eq_add]`. Rewrite using `[h, hx k hk, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases hkc : k = c <;> by_cases hkd : k = d`. Substitute `hkc` using the available equality. Substitute `hkd` using the available equality. Simplify using the standard rewrite rules. Substitute `hkc` using the available equality.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `[hkd, Ne.symm hkd]`. Use `module`. Substitute `hkd` using the available equality. Simplify using `[hkc]`. Use `module`.
-
-Simplify using `[hkc, hkd, Ne.symm hkd]`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isWt_shift {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} (he : GlRel N e) {c d : ℕ} (hc : c < N) (hd : d < N)
     {μ : ℕ → ℤ} {x : V} (hx : IsWt N e μ x) :
@@ -53,7 +51,7 @@ theorem isWt_shift {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} (he : GlRel 
   · simp [hkc, hkd, Ne.symm hkd]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_shift (s : Finset ℕ) (μ : ℕ → ℤ) (c d : ℕ) :
     ∑ k ∈ s, (μ k + ((if k = c then 1 else 0) - (if k = d then 1 else 0))) =
@@ -61,9 +59,9 @@ theorem sum_shift (s : Finset ℕ) (μ : ℕ → ℤ) (c d : ℕ) :
   rw [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']
 
 /- English proof (translation)
-Rewrite `hU`, the goal using `[mem_vanSub]`. Introduce `μ x hx hlt`. Establish `h2 : ∑ k ∈ s, (μ k + ((if k = c then 1 else 0) - (if k = d then 1 else 0))) < ∑ k ∈ s, lam k`. Rewrite using `[sum_shift]`. Distinguish the cases in `h : c ∈ s`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h, hs.mp h, hlt]`. Simplify using `[h, mt hs.mpr h, hlt]`. Simplify using `only [adj, LinearMap.sub_apply, LinearMap.mulLeft_apply, LinearMap.mulRight_apply, Module.End.mul_apply]`. Rewrite using `[hU μ x hx hlt, map_zero, hU _ _ (isWt_shift he hc hd hx) h2, sub_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mem_vanSub {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {s : Finset ℕ} (he : GlRel N e)
     {c d : ℕ} (hc : c < N) (hd : d < N) (hs : c ∈ s ↔ d ∈ s) {U : Module.End ℚ V}
@@ -79,9 +77,9 @@ theorem adj_mem_vanSub {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : �
   rw [hU μ x hx hlt, map_zero, hU _ _ (isWt_shift he hc hd hx) h2, sub_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro U hU`. Simplify using `using hU`. Consider the case `succ k ih => intro U hU`. Rewrite using `[pow_succ, Module.End.mul_apply]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih _ (hP U hU)`.
+A detailed English derivation is pending.
 -/
 theorem pow_mem_of {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule ℚ M} {P : Module.End ℚ M}
     (hP : ∀ U ∈ S, P U ∈ S) (k : ℕ) : ∀ U ∈ S, (P ^ k) U ∈ S := by
@@ -90,7 +88,7 @@ theorem pow_mem_of {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule ℚ
   | succ k ih => intro U hU; rw [pow_succ, Module.End.mul_apply]; exact ih _ (hP U hU)
 
 /- English proof (translation)
-Introduce `U hU`. Simplify using `only [proj, LinearMap.sum_apply, LinearMap.smul_apply, Module.End.mul_apply]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (pow_mem_of hQ k _ (pow_mem_of hP k U hU))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_mem {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule ℚ M} {P Q : Module.End ℚ M}
     (hP : ∀ U ∈ S, P U ∈ S) (hQ : ∀ U ∈ S, Q U ∈ S) (K j : ℕ) : ∀ U ∈ S, proj K j P Q U ∈ S := by
@@ -99,9 +97,9 @@ theorem proj_mem {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule ℚ M
   exact Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (pow_mem_of hQ k _ (pow_mem_of hP k U hU))
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => intro U hU`. Simplify using `using hU`. Consider the case `cons f L ih`. Introduce `U hU`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[List.prod_cons, Module.End.mul_apply]`. Conclude with `hL f (by simp) _ (ih (fun g hg => hL g (by simp [hg])) U hU)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem listProd_mem {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule ℚ M} (L : List (Module.End ℚ M))
     (hL : ∀ f ∈ L, ∀ U ∈ S, f U ∈ S) : ∀ U ∈ S, L.prod U ∈ S := by
@@ -113,7 +111,7 @@ theorem listProd_mem {M : Type} [AddCommGroup M] [Module ℚ M] {S : Submodule �
     exact hL f (by simp) _ (ih (fun g hg => hL g (by simp [hg])) U hU)
 
 /- English proof (translation)
-The claim follows from `proj_mem (fun U hU => adj_mem_vanSub he hi hj hs hU) (fun U hU => adj_mem_vanSub he hj hi hs.symm hU) _ _`.
+A detailed English derivation is pending.
 -/
 theorem rootP_mem {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {s : Finset ℕ} (he : GlRel N e)
     {i j : ℕ} (hi : i < N) (hj : j < N) (hs : i ∈ s ↔ j ∈ s) (K : ℕ) :
@@ -121,9 +119,9 @@ theorem rootP_mem {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ �
   proj_mem (fun U hU => adj_mem_vanSub he hi hj hs hU) (fun U hU => adj_mem_vanSub he hj hi hs.symm hU) _ _
 
 /- English proof (translation)
-Unfold `rowP`. Apply `listProd_mem` to reduce the goal to its premises. Introduce `f hf`. Rewrite `hf` using `[List.mem_map]`. Take `⟨j, hj, rfl⟩` from `hf`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hj` using `[List.mem_range'_1]`. Conclude with `rootP_mem he hi (by omega) (hS j hj.1 hj.2) K`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowP_mem {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {t : Finset ℕ} (he : GlRel N e)
     {i s n : ℕ} (hi : i < N) (hsn : s + n ≤ N) (hS : ∀ j, s ≤ j → j < s + n → (i ∈ t ↔ j ∈ t)) (K : ℕ) :
@@ -137,11 +135,11 @@ theorem rowP_mem {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ →
   exact rootP_mem he hi (by omega) (hS j hj.1 hj.2) K
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using hx`. Consider the case `succ k ih`. Rewrite using `[pow_succ', Module.End.mul_apply]`. Establish `h` using `isWt_shift he hc hd ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : (fun m => μ m + ((k + 1 : ℕ) : ℤ) * ((if m = c then 1 else 0) - (if m = d then 1 else 0))) = (fun m => (μ m + (k : ℤ) * ((if m = c then 1 else 0) - (if m = d then 1 else 0))) + ((if m = c then 1 else 0) - (if m = d then 1 else 0)))`. Use function extensionality and compare the values at `m`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isWt_pow {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} (he : GlRel N e) {c d : ℕ} (hc : c < N) (hd : d < N)
     {μ : ℕ → ℤ} {x : V} (hx : IsWt N e μ x) (k : ℕ) :
@@ -158,7 +156,7 @@ theorem isWt_pow {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} (he : GlRel N 
     rw [hf]; exact h
 
 /- English proof (translation)
-Use `hU _ _ (isWt_pow he hj hi hv k) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_add_distrib, ← Finset.mul_sum, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq']`. Simplify using `only [his, hjs, if_true, if_false]`. Establish `: (0 : ℤ) < k` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem kill_pow {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {s : Finset ℕ} (he : GlRel N e)
     {i j : ℕ} (hi : i < N) (hj : j < N) (his : i ∈ s) (hjs : j ∉ s) {v : V} (hv : IsWt N e lam v)
@@ -170,17 +168,15 @@ theorem kill_pow {N : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ →
   linarith
 
 /- English proof (translation)
-Establish `hi : i < N` using `by omega`. Establish `h1 : e i j * e j i - e j i * e i j = e i i - e j j`. Use `he i j j i hi hj hj hi` as an intermediate fact. Rewrite `this` using `[if_pos rfl, if_pos rfl]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (e i i - e j j) * e j i - e j i * (e i i - e j j) = -(e j i + e j i)`. Establish `a1` using `he i i j i hi hi hj hi`. Establish `a2` using `he j j j i hj hj hj hi`. Rewrite `a1` using `[if_neg hij.ne, if_pos rfl]`. Rewrite `a2` using `[if_pos rfl, if_neg hij.ne]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hn : (((lam i - lam j).toNat : ℕ) : ℤ) = lam i - lam j` using `Int.toNat_of_nonneg (by omega)`. Establish `hnq : (((lam i - lam j).toNat : ℕ) : ℚ) = ((lam i : ℚ) - (lam j : ℚ))`. Establish `: (((lam i - lam j).toNat : ℕ) : ℚ) = ((((lam i - lam j).toNat : ℕ) : ℤ) : ℚ)` using `by norm_cast`. Rewrite using `[this, hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hH : (e i i - e j j) v = (((lam i - lam j).toNat : ℕ) : ℚ) • v`. Rewrite using `[LinearMap.sub_apply, hv i hi, hv j hj, ← sub_smul, hnq]`. Establish `hK : (lam i - lam j).toNat ≤ K` using `by omega`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hS V (e i j) (e j i) (e i i - e j j) U v φ (lam i - lam j).toNat K (j - i - 1) h1 h2 hE hH hK hφ hU`. Establish `hc : (((lam i - lam j).toNat : ℕ) : ℚ) + ((j - i - 1 : ℕ) : ℚ) + 1 = (((lam i - lam j + (j : ℤ) - (i : ℤ) : ℤ)) : ℚ)`. Establish `: ((((lam i - lam j).toNat : ℕ) : ℤ) + ((j - i - 1 : ℕ) : ℤ) + 1 : ℤ) = lam i - lam j + (j : ℤ) - (i : ℤ)`. Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions.
-
-Rewrite using `[← hc]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step (hS : StepScalar) {N K : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {v : V} {φ : V →ₗ[ℚ] ℚ}
     (he : GlRel N e) {i j : ℕ} (hij : i < j) (hj : j < N) (hv : IsWt N e lam v) (hE : e i j v = 0)
@@ -217,9 +213,9 @@ theorem step (hS : StepScalar) {N K : ℕ} {e : ℕ → ℕ → Module.End ℚ V
   exact key
 
 /- English proof (translation)
-Introduce `μ x hx hlt`. Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Take `⟨h1, -⟩` from `hD μ x hx hx0`. Establish `hi'` using `h1 i (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `hT μ x hx` to reduce the goal to its premises. Rewrite using `[← Finset.sum_range_add_sum_Ico _ hi, ← Finset.sum_range_add_sum_Ico _ hi]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem van_Ico_of_range {a b : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} (hD : Dom (a + b) e lam)
     {T : Module.End ℚ V} (hT : T ∈ vanSub (a + b) e lam (Finset.range a)) {i : ℕ} (hi : i ≤ a) :
@@ -234,11 +230,11 @@ theorem van_Ico_of_range {a b : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam
   linarith
 
 /- English proof (translation)
-Introduce `μ x hx hlt`. Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Take `⟨h1, h2⟩` from `hD μ x hx hx0`. Establish `hs` using `h1 s hs2`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdisj : Disjoint (Finset.Ico i a) (Finset.Ico s (a + b))`. Rewrite using `[Finset.disjoint_left]`. Introduce `y hy1 hy2`. Simplify using `only [Finset.mem_Ico] at hy1 hy2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hlt` using `[Finset.sum_union hdisj, Finset.sum_union hdisj]`. Rewrite `h2` using `[← Finset.sum_range_add_sum_Ico _ hs2, ← Finset.sum_range_add_sum_Ico _ hs2]`. Apply `hU μ x hx` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem van_union {a b : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} (hD : Dom (a + b) e lam)
     {i s : ℕ} (hs1 : a ≤ s) (hs2 : s ≤ a + b) {U : Module.End ℚ V} (hU : U ∈ vanSub (a + b) e lam (Finset.Ico i a)) :
@@ -256,15 +252,15 @@ theorem van_union {a b : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ 
   linarith
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `s hs _`. Establish `: s = a + b` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `[rowP]`. Consider the case `succ n ih`. Introduce `s hs has`. Establish `hsN : s < a + b` using `by omega`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hWmem : rowP (fun c d => adj (e c d)) K i (s + 1) n U ∈ vanSub (a + b) e lam (Finset.Ico i a ∪ Finset.Ico (s + 1) (a + b))`. Use `rowP_mem he (by omega) (by omega) ?_ K U (van_union hD (by omega) (by omega) hU)` and prove the remaining obligations. Introduce `j h1 h2`. Simplify using `only [Finset.mem_union, Finset.mem_Ico]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hrow : rowP (fun c d => adj (e c d)) K i s (n + 1) U = rootP (fun c d => adj (e c d)) K i s (rowP (fun c d => adj (e c d)) K i (s + 1) n U)`. Simplify using `only [rowP, List.range'_succ, List.map_cons, List.prod_cons, Module.End.mul_apply]`. Take `⟨hE, hφ, hl1, hl2⟩` from `hij i s (by omega) hsN`. Establish `hst` using `step hS he (by omega : i < s) hsN hv hE hφ hl1 hl2 (kill_pow he (by omega) hsN (by simp only [Finset.mem_union, Finset.mem_Ico]; omega) (by simp only [Finset.mem_union, Finset.mem_Ico]; omega) hv hWmem)`. Rewrite using `[hrow, Finset.prod_eq_prod_Ico_succ_bot hsN, ← mul_assoc, hst]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih (s + 1) (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem row_scalar (hS : StepScalar) {a b K : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {v : V}
     {φ : V →ₗ[ℚ] ℚ} (he : GlRel (a + b) e) (hD : Dom (a + b) e lam) (hv : IsWt (a + b) e lam v)
@@ -300,7 +296,7 @@ theorem row_scalar (hS : StepScalar) {a b K : ℕ} {e : ℕ → ℕ → Module.E
     exact ih (s + 1) (by omega) (by omega)
 
 /- English proof (translation)
-Simplify using `only [gridP, List.range_succ, List.reverse_append, List.reverse_singleton, List.singleton_append, List.map_cons, List.prod_cons]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gridP_succ {M : Type} [AddCommGroup M] [Module ℚ M] (D : ℕ → ℕ → Module.End ℚ M) (K a b t : ℕ) :
     gridP D K a b (t + 1) = rowP D K t a b * gridP D K a b t := by
@@ -308,9 +304,9 @@ theorem gridP_succ {M : Type} [AddCommGroup M] [Module ℚ M] (D : ℕ → ℕ �
     List.map_cons, List.prod_cons]
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro i _ hi`. Simplify `van_Ico_of_range hD hT hi` using `[gridP]`. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `i hti hi`. Rewrite using `[gridP_succ, Module.End.mul_apply]`. Use `rowP_mem he (by omega) (by omega) ?_ K _ (ih i (by omega) hi)` and prove the remaining obligations. Introduce `j h1 h2`. Simplify using `only [Finset.mem_Ico]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -329,9 +325,9 @@ theorem grid_van {a b K : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ
     omega
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => intro _`. Simplify using `[gridP]`. Consider the case `succ t ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ht`. Rewrite using `[gridP_succ, Module.End.mul_apply, Finset.prod_range_succ, mul_comm (Finset.prod _ _) _, ← mul_assoc, row_scalar hS he hD hv hij (by omega : t < a) (grid_van he hD hT t t le_rfl (by omega)) b a (by omega) le_rfl]`. Conclude with `ih (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grid_scalar (hS : StepScalar) {a b K : ℕ} {e : ℕ → ℕ → Module.End ℚ V} {lam : ℕ → ℤ} {v : V}
     {φ : V →ₗ[ℚ] ℚ} (he : GlRel (a + b) e) (hD : Dom (a + b) e lam) (hv : IsWt (a + b) e lam v)
@@ -355,9 +351,9 @@ namespace GlobalTheory.LeviCut
 open GridScalarProof in
 
 /- English proof (translation)
-Introduce `hS V _ _ a b K e lam v φ T he hD hv hij hT`. Establish `hT' : T ∈ vanSub (a + b) e lam (Finset.range a)` using `hT`. Establish `key` using `grid_scalar hS he hD hv hij hT' a le_rfl`. Rewrite using `[Int.cast_prod]`. Repeatedly rewrite using `[Int.cast_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem gridScalar_of_stepScalar : StepScalar → GridScalar := by
   intro hS V _ _ a b K e lam v φ T he hD hv hij hT

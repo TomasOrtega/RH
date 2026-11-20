@@ -13,23 +13,23 @@ namespace GlobalTheory.CompanionTheory.EGlue.PairSl
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ₁, h₁, φ₂, h₂, rfl⟩` from `h`. Use `⟨fun m₂ => ⟨φ₂.1 m₂ • φ₁, U₁.smul_mem _ h₁, ?_⟩, fun m₁ => ⟨φ₁.1 m₁ • φ₂, U₂.smul_mem _ h₂, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mul_comm]`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `zero`. Use `⟨fun m₂ => ⟨0, U₁.zero_mem, ?_⟩, fun m₁ => ⟨0, U₂.zero_mem, ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Consider the case `add F G _ _ h₁ h₂`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `h₁.1 m₂`. Take `⟨ψ, hψ, e'⟩` from `h₂.1 m₂`. Use `⟨φ + ψ, U₁.add_mem hφ hψ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `i` using `congrFun e x`. Establish `i'` using `congrFun e' x`. Simplify the hypotheses and the goal together. Take `⟨φ, hφ, e⟩` from `h₁.2 m₁`. Take `⟨ψ, hψ, e'⟩` from `h₂.2 m₁`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify the hypotheses and the goal together. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨φ + ψ, U₂.add_mem hφ hψ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `i` using `congrFun e x`. Establish `i'` using `congrFun e' x`. Simplify the hypotheses and the goal together.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify the hypotheses and the goal together.
 
-Consider the case `smul r F _ h`. Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `h.1 m₂`. Use `⟨r • φ, U₁.smul_mem r hφ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `i` using `congrFun e x`. Simplify the hypotheses and the goal together. Take `⟨φ, hφ, e⟩` from `h.2 m₁`. Use `⟨r • φ, U₂.smul_mem r hφ, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Simplify the hypotheses and the goal together. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `i` using `congrFun e x`. Simplify the hypotheses and the goal together.
+Establish an intermediate fact. Simplify the hypotheses and the goal together.
 -/
 theorem exists_slices (U₁ : Submodule ℂ (Sm E a)) (U₂ : Submodule ℂ (Sm E b)) (F : H E a b → ℂ)
     (hF : F ∈ pairSpace U₁ U₂) :
@@ -82,11 +82,11 @@ end GlobalTheory.CompanionTheory.EGlue.PairSl
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Introduce `E _ _ _ a b U₁ U₂ F hF`. Take `⟨h₁, h₂⟩` from `PairSl.exists_slices U₁ U₂ F hF`. Use `⟨fun m₂ => ?_, fun m₁ => ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `h₁ m₂`. Establish `hex : ∃ φ : Sm E a, φ.1 = fun x => F (x, m₂)` using `⟨φ, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : sl₁ F m₂ = hex.choose` using `by simp only [sl₁, dif_pos hex]`. Establish `hc : hex.choose = φ` using `Subtype.ext (hex.choose_spec.trans e.symm)`. Rewrite using `[hs, hc]`. Conclude with `⟨hφ, e⟩`. Take `⟨φ, hφ, e⟩` from `h₂ m₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ φ : Sm E b, φ.1 = fun x => F (m₁, x)` using `⟨φ, e⟩`. Establish `hs : sl₂ F m₁ = hex.choose` using `by simp only [sl₂, dif_pos hex]`. Establish `hc : hex.choose = φ` using `Subtype.ext (hex.choose_spec.trans e.symm)`. Rewrite using `[hs, hc]`. Conclude with `⟨hφ, e⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pairSlices : PairSlices := by
   intro E _ _ _ a b U₁ U₂ F hF

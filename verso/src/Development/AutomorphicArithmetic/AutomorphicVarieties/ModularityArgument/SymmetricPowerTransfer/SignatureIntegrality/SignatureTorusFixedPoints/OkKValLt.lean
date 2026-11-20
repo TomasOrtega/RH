@@ -7,7 +7,7 @@ noncomputable section
 open ValuativeRel Matrix Polynomial GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.Hi UpperTheory.V.AlgebraTools UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Sig UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Glob
 
 /- English proof (translation)
-Establish `hw : valuation k (unif k : k) < 1`. Rewrite using `[GlAx.unif_spec]`. Conclude with `uniformizer_lt_one`. Conclude with `ht.trans (pow_lt_one₀ zero_le' hw two_ne_zero)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem okK_val_lt (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (t : kˣ)
     (ht : valuation k (t : k) < valuation k (unif k : k) ^ 2) : valuation k (t : k) < 1 := by
@@ -17,9 +17,9 @@ private theorem okK_val_lt (k : Type) [Field k] [ValuativeRel k] [TopologicalSpa
   exact ht.trans (pow_lt_one₀ zero_le' hw two_ne_zero)
 
 /- English proof (translation)
-Establish `hinv : ((g₀⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k) * (g₀ : Matrix (Fin 2) (Fin 2) k) = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.coe_mul, inv_mul_cancel, Matrix.GeneralLinearGroup.coe_one]`. Simplify using `only [Matrix.GeneralLinearGroup.coe_mul, val_diagT]`. Prove the components needed by the constructor for the conclusion. Rewrite using `[Matrix.trace_mul_cycle, hinv, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.trace_diagonal, Fin.sum_univ_two]`. Rewrite using `[Matrix.det_mul, Matrix.det_mul, mul_comm, ← mul_assoc, ← Matrix.det_mul, hinv, Matrix.det_one, one_mul]`. Simplify using `[Matrix.det_diagonal, Fin.prod_univ_two]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem okK_conj {k : Type} [Field k] (g₀ : GL (Fin 2) k) (a b : kˣ) :
     ((g₀ * diagT k (Fin 2) ![a, b] * g₀⁻¹ : GL (Fin 2) k) : Matrix (Fin 2) (Fin 2) k).trace = (a : k) + b ∧
@@ -35,35 +35,33 @@ private theorem okK_conj {k : Type} [Field k] (g₀ : GL (Fin 2) k) (a b : kˣ) 
     simp [Matrix.det_diagonal, Fin.prod_univ_two]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ O _ _ hO h2 Δ s hs hs0 V Ry hR χ hχ t ht S`. Establish `htv : valuation k (t : k) < 1` using `okK_val_lt k t ht`. Establish `hSD : SDom (![t, 1] : Fin 2 → kˣ)`. Introduce `i j hij`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at hij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `using htv`. Establish `hχH : ∀ u ∈ V.H, χ u = 1` using `fun u hu => hχ u (V.H_le hu)`. Take `⟨_, hZJ, hZd⟩` from `eqZ k V χ hχH 2 two_pos`. Take `⟨_, hmul, hJJ, hfin⟩` from `hZd ![t, 1] hSD`. Take `⟨_, _, _, hIsScal, hmt, hcomap⟩` from `eD_facts k O hO h2 Δ s hs hs0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfK : ∀ g, S.fK t g = (((χ t)⁻¹ : ℂˣ) : ℂ) * V.fZ χ ![t, 1] (eD hs g)` using `fun g => rfl`. Use `⟨⟨?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `u hu y`. Establish `hu' : eD hs u ∈ V.J 2` using `hu`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[hfK, hfK, map_mul]`. Establish `e` using `hJJ (eD hs u) hu' 1 (Subgroup.one_mem _) (eD hs y)`. Rewrite `e` using `[mul_one]`. Rewrite using `[e]`. Rewrite using `[hfK, hfK, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hJJ 1 (Subgroup.one_mem _) (eD hs u) hu' (eD hs y)`. Rewrite `e` using `[one_mul]`. Rewrite using `[e]`. Introduce `z s' hz y`. Rewrite using `[hfK, hfK, map_mul, (hIsScal z s').mp hz, hmul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hcj : Subgroup.comap (eD hs) (V.ZJ 2) = ZD Δ ⊔ S.J2` using `hcomap V`. Establish `hright : ∀ (g w : GL (Fin 2) k), w ∈ V.ZJ 2 → (V.fZ χ ![t, 1] (g * w) ≠ 0 ↔ V.fZ χ ![t, 1] g ≠ 0)`. Introduce `g w hw`. Take `⟨z, j, hj, rfl⟩` from `(hZJ w).mp hw`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc : g * GeneralLinearGroup.scalar (Fin 2) z = GeneralLinearGroup.scalar (Fin 2) z * g`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, GeneralLinearGroup.coe_scalar]`. Conclude with `(scalar_commute (z : k) (fun r => Commute.all _ r) (g : Matrix (Fin 2) (Fin 2) k)).eq.symm`. Establish `e` using `hJJ 1 (Subgroup.one_mem _) j hj g`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[one_mul]`. Rewrite using `[← mul_assoc, hc, mul_assoc, hmul, e]`. Conclude with `⟨fun h => right_ne_zero_of_mul h, fun h => mul_ne_zero (Units.ne_zero _) h⟩`. Set `φ : (DX Δ ⧸ (ZD Δ ⊔ S.J2)) → (GL (Fin 2) k ⧸ V.ZJ 2)` to `fun x => (QuotientGroup.mk (eD hs x.out))`. Establish `hφ : ∀ x x', φ x = φ x' → x = x'`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x x' he`. Establish `hm` using `QuotientGroup.eq.mp he`. Rewrite `hm` using `[← map_inv, ← map_mul, ← Subgroup.mem_comap, hcj]`. Rewrite using `[← QuotientGroup.out_eq' x, ← QuotientGroup.out_eq' x']`. Conclude with `QuotientGroup.eq.mpr hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Set.Finite.preimage (f := φ) (fun x _ x' _ he => hφ x x' he) hfin).subset ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage] at hx ⊢`. Rewrite `hx` using `[hfK]`. Establish `hx'` using `right_ne_zero_of_mul hx`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show V.fZ χ ![t, 1] (Quotient.out (QuotientGroup.mk (eD hs x.out) : GL (Fin 2) k ⧸ V.ZJ 2)) ≠ 0`. Take `⟨w, hw⟩` from `QuotientGroup.mk_out_eq_mul (V.ZJ 2) (eD hs x.out)`. Rewrite using `[hw, hright _ _ w.2]`. Conclude with `hx'`. Introduce `g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hg` using `[hfK]`. Establish `hg' : V.fZ χ ![t, 1] (eD hs g) ≠ 0` using `right_ne_zero_of_mul hg`. Take `⟨g₀, a, b, hgeq, hab⟩` from `suppZ k V χ ![t, 1] hSD (eD hs g) hg'`. Establish `ha` using `a.ne_zero`. Establish `hb` using `b.ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨((a / b : kˣ) : k) + ((a / b : kˣ)⁻¹ : kˣ), ⟨a / b / t, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `(by simpa using hab : a / b / t ∈ V.H)`. Establish `e : t * (a / b / t) = a / b` using `by rw [mul_comm, div_mul_cancel]`. Rewrite using `[e]`. Take `⟨hdet, htr⟩` from `hmt g`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite `hgeq` using `[show dg ![a, b] = diagT k (Fin 2) ![a, b] from rfl]`. Take `⟨htr', hdet'⟩` from `okK_conj g₀ a b`. Rewrite using `[hdet, htr, hgeq, htr', hdet', ← map_pow, ← map_mul]`. Use `congr 1`. Simplify using `only [Units.val_div_eq_div_val, Units.val_inv_eq_inv_val, inv_div]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Sig.okK :
     UpperTheory.V.Z.Sym.Sig.OkK := by

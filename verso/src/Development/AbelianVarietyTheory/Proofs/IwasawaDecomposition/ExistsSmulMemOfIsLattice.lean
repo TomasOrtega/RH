@@ -5,17 +5,15 @@ import Formalism.LocalToGlobal.Columns.LocWLemmas
 namespace GlobalTheory.SmulMemOfIsLattice
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (B : Set (Formalism.L2.Col.Sp E n))`. Rewrite using `[hB.span_eq_top]`. Conclude with `Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_mem _, by simpa using hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_mem _, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨r, hr, hry⟩` from `hy`. Take `⟨s, hs, hsz⟩` from `hz`. Use `⟨r * s, mul_mem hr hs, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Use `B.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `B.smul_mem _ hry`. Rewrite using `[mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `B.smul_mem _ hsz`. Consider the case `smul c y _ hy`. Take `⟨r, hr, hry⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := NumberField.RingOfIntegers E) c`. Use `⟨r * b, mul_mem hr hb, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hb0 : algebraMap (NumberField.RingOfIntegers E) E b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `h : (r * b) • ((algebraMap (NumberField.RingOfIntegers E) E a / algebraMap (NumberField.RingOfIntegers E) E b) • y) = a • (r • y)`. Rewrite using `[← algebraMap_smul E (r * b), ← algebraMap_smul E a, ← algebraMap_smul E r y, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[h]`. Conclude with `B.smul_mem _ hry`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_isLattice {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (B : Submodule (NumberField.RingOfIntegers E) (Formalism.L2.Col.Sp E n))

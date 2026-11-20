@@ -24,11 +24,11 @@ def good {S : Type} [CommRing S] (B : Over (Sp S)) (M : LB B.left) : Set S :=
     (M.pull (pullback.fst B.hom (Scheme.Opens.ι (X := Sp S) (PrimeSpectrum.basicOpen r))))}
 
 /- English proof (translation)
-Set `p₀ : Ideal S` to `p.comap σ`. Establish `: p₀.IsPrime` using `Ideal.IsPrime.comap σ`. Set `a` to `algebraMap S p₀.ResidueField`. Set `b` to `algebraMap R p.ResidueField`. Set `i : p₀.ResidueField →+* p.ResidueField` to `Ideal.ResidueField.map p₀ p σ rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hw : spMap b ≫ spMap σ = spMap i ≫ spMap a`. Establish `: i.comp a = b.comp σ` using `RingHom.ext fun r => Ideal.ResidueField.map_algebraMap p₀ p σ rfl r`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, this]`. Establish `hX` using `(IsPullback.of_hasPullback A.hom (spMap b)).paste_horiz h`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : Out.RelAmple (Over.mk (pullback.snd A.hom (spMap b))) (M.pull (pullback.fst A.hom (spMap b) ≫ φ))` using `GlobalTheory.FibreAmple.relAmple_of_factor hM h hX (spMap b) rfl hL e hA`. Rewrite `hX` using `[hw]`. Establish `h₀ : Out.RelAmple ((Over.pullback (spMap a)).obj B) (M.pull (pullback.fst B.hom (spMap a)))` using `GlobalTheory.FibreAmple.relAmple_of_fieldExtension hM i (IsPullback.of_hasPullback B.hom (spMap a)) hX (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) h₂`. Take `⟨r, hr, hr'⟩` from `GlobalTheory.ProperFinite.relAmple_near_fibre B hM a (GlobalTheory.FibreAmple.residueField_fraction p₀) h₀`. Conclude with `⟨r, hr', fun hp => hr (Ideal.algebraMap_residueField_eq_zero.2 hp)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_good_notMem {R S : Type} [CommRing R] [CommRing S] [IsNoetherianRing S] (σ : S →+* R)
     (A : Over (Sp R)) (B : Over (Sp S)) [IsProper B.hom] [Flat B.hom] {M : LB B.left} (hM : M.IsLB)
@@ -56,7 +56,7 @@ theorem exists_good_notMem {R S : Type} [CommRing R] [CommRing S] [IsNoetherianR
   exact ⟨r, hr', fun hp => hr (Ideal.algebraMap_residueField_eq_zero.2 hp)⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`. Use `hm.isPrime` as an intermediate fact. Take `⟨r, hr, hr'⟩` from `exists_good_notMem σ A B hM hL h e hA m`. Conclude with `hr' (hle (Ideal.subset_span ⟨r, hr, rfl⟩))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_good {R S : Type} [CommRing R] [CommRing S] [IsNoetherianRing S] (σ : S →+* R)
     (A : Over (Sp R)) (B : Over (Sp S)) [IsProper B.hom] [Flat B.hom] {M : LB B.left} (hM : M.IsLB)
@@ -69,13 +69,13 @@ theorem span_good {R S : Type} [CommRing R] [CommRing S] [IsNoetherianRing S] (�
   exact hr' (hle (Ideal.subset_span ⟨r, hr, rfl⟩))
 
 /- English proof (translation)
-Establish `h1 : (1 : R) ∈ Ideal.span (algebraMap S R '' T)` using `by rw [hT]; trivial`. Take `⟨c, hc, hs⟩` from `Submodule.mem_span_set.1 h1`. Set `F : Finset R` to `c.support.image c`. Use `⟨Algebra.adjoin S (F : Set R), Subalgebra.fg_adjoin_finset F, ?_⟩` and prove the remaining obligations. Use `set C := Algebra.adjoin S (F : Set R)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hmem : ∀ y ∈ c.support, c y ∈ C` using `fun y hy => Algebra.subset_adjoin (Finset.mem_coe.2 (Finset.mem_image_of_mem c hy))`. Use `choose! t ht hty using fun y (hy : y ∈ c.support) => hc hy`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e1 : (1 : C) = ∑ y ∈ c.support.attach, (⟨c y.1, hmem y.1 y.2⟩ : C) * algebraMap S C (t y.1)`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(OneMemClass.coe_one C).trans (hs.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.sum, ← Finset.sum_attach]`. Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `: ((algebraMap S C (t y.1) : C) : R) = y.1` using `hty y.1 y.2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Rewrite using `[e1]`. Conclude with `Ideal.sum_mem _ fun y _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, ht y.1 y.2, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem exists_fg_span {R S : Type} [CommRing R] [CommRing S] [Algebra S R] (T : Set S)
     (hT : Ideal.span (algebraMap S R '' T) = ⊤) :
@@ -103,15 +103,15 @@ theorem exists_fg_span {R S : Type} [CommRing R] [CommRing S] [Algebra S R] (T :
   exact Ideal.sum_mem _ fun y _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨_, ht y.1 y.2, rfl⟩)
 
 /- English proof (translation)
-Set `f` to `pullback.snd B.hom (spMap τ)`. Establish `: IsProper (Over.mk f).hom` using `inferInstanceAs (IsProper f)`. Establish `: IsProper f` using `inferInstance`. Establish `hB` using `IsPullback.of_hasPullback B.hom (spMap τ)`. Use `GlobalTheory.AmpleLocal.relAmple_of_locally (Sp S') (Over.mk f) _ (pull_isLB hM _) inferInstance inferInstance fun s => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `s' : PrimeSpectrum S'` to `s`. Choose the witnesses or unpack the hypotheses as in `⟨r, hr, hs⟩ : ∃ r ∈ T, τ r ∉ s'.asIdeal := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `s'.isPrime.ne_top (top_le_iff.1 (h ▸ Ideal.span_le.2 ?_))` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨r, hr, rfl⟩`. Conclude with `hc r hr`. Set `U : (Sp S').Opens` to `PrimeSpectrum.basicOpen (τ r)`. Set `D : (Sp S).Opens` to `PrimeSpectrum.basicOpen r`. Establish `hrange : Set.range (U.ι ≫ spMap τ) ⊆ Set.range D.ι`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `x.2`. Set `u` to `IsOpenImmersion.lift D.ι (U.ι ≫ spMap τ) hrange`. Establish `hu : u ≫ D.ι = U.ι ≫ spMap τ` using `IsOpenImmersion.lift_fac _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨U, hs, ?_⟩` and prove the remaining obligations. Establish `hU` using `(isPullback_morphismRestrict f U).flip`. Establish `a₁ : Out.RelAmple (Over.mk (f ∣_ U)) (M.pull ((f ⁻¹ᵁ U).ι ≫ pullback.fst B.hom (spMap τ)))` using `GlobalTheory.FibreAmple.relAmple_of_factor hM (IsPullback.of_hasPullback B.hom D.ι) (hU.paste_horiz hB) u hu (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) (hT hr)`. Conclude with `GlobalTheory.FibreAmple.relAmple_of_factor (pull_isLB hM _) hU hU (𝟙 _) (Category.id_comp _) (pull_isLB hM _) (GlobalTheory.FibreAmple.lbIso_pull_pull hM _ _).symm a₁`.
+A detailed English derivation is pending.
 -/
 theorem relAmple_of_span {S S' : Type} [CommRing S] [CommRing S'] (τ : S →+* S') (B : Over (Sp S)) [IsProper B.hom]
     {M : LB B.left} (hM : M.IsLB) (T : Set S) (hT : T ⊆ good B M) (h : Ideal.span (τ '' T) = ⊤) :
@@ -146,9 +146,9 @@ theorem relAmple_of_span {S S' : Type} [CommRing S] [CommRing S'] (τ : S →+* 
     (GlobalTheory.FibreAmple.lbIso_pull_pull hM _ _).symm a₁
 
 /- English proof (translation)
-Take `⟨S₀, B₀, _, φ₀, -, hft, hB₀, hg₀, hp₀⟩` from `GlobalTheory.T.abelian_scheme_spreads_out R g A ∅ hA hg`. Establish `: IsNoetherianRing S₀` using `Algebra.FiniteType.isNoetherianRing ℤ S₀`. Use `hB₀.proper` as an intermediate fact. Establish `hp₀' : IsGrpPullback A B₀ (spMap (algebraMap S₀ R)) φ₀` using `hp₀`. Take `⟨C, hC, M, hM, hiso⟩` from `GlobalTheory.CompanionTheory.Ar.Approx.lb_descends_fg S₀ R B₀.left A.left B₀.hom A.hom φ₀ inferInstance inferInstance hp₀'.1 L hL`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨inst, φ₁, h₁, h₂, h₃⟩` from `GlobalTheory.CompanionTheory.Ar.Approx.model_passes_to_subalgebra S₀ R A B₀ φ₀ hp₀' C`. Establish `hCn : IsNoetherianRing C`. Use `(Subalgebra.fg_iff_finiteType C).1 hC` as an intermediate fact. Use the proof step `Algebra.FiniteType.isNoetherianRing S₀ C`. Conclude with `⟨C, inferInstance, C.val.toRingHom, _, inst, φ₁, M, hCn, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB₀ h₁, (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback B₀.hom _) hg₀, h₂, hM, hiso φ₁ h₃ h₂.1.w⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_noeth_model (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ) (hA : IsAbelianScheme A)
     (hg : SmoothOfRelativeDimension g A.hom) (L : LB A.left) (hL : L.IsLB) :
@@ -171,11 +171,11 @@ theorem exists_noeth_model (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] 
     h₂, hM, hiso φ₁ h₃ h₂.1.w⟩
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg L hL hamp`. Take `⟨S, _, σ, B, _, φ, M, hS, hB, hgB, hp, hM, e⟩` from `exists_noeth_model R A g hA hg L hL`. Use `hB.proper` as an intermediate fact. Use `hB.smooth` as an intermediate fact. Use `letI : Algebra S R := σ.toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Take `⟨C, hC, hsp⟩` from `exists_fg_span (good B M) (span_good σ A B hM hL hp.1 e hamp)`. Establish `hCn : IsNoetherianRing C`. Use `(Subalgebra.fg_iff_finiteType C).1 hC` as an intermediate fact. Use the proof step `Algebra.FiniteType.isNoetherianRing S C`. Take `⟨inst, φ₁, h₁, h₂, h₃⟩` from `GlobalTheory.CompanionTheory.Ar.Approx.model_passes_to_subalgebra S R A B φ hp C`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨C, inferInstance, C.val.toRingHom, _, inst, φ₁, M.pull (pullback.fst _ _), hCn, GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hB h₁, (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback B.hom _) hgB, h₂, pull_isLB hM _, relAmple_ …`.
+A detailed English derivation is pending.
 -/
 theorem polModel : PolModel := by
   intro R _ A _ g hA hg L hL hamp

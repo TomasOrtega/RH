@@ -12,9 +12,9 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair v g h hg hh φ hφ`. Establish `h1X : (1 : UA σ X.J) ∈ UAt σ X (evFin F v)` using `(UAtSub σ X (evFin F v)).one_mem`. Establish `h1W : (1 : UA σ W.J) ∈ UAt σ W (evFin F v)` using `(UAtSub σ W (evFin F v)).one_mem`. Establish `hm` using `locOpMul hP`. Establish `e1` using `hm F E σ B n d X W M χX χW om r s r' s' hPair v (g, 1) (1, h) hg h1W h1X hh φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `hm F E σ B n d X W M χX χW om r s r' s' hPair v (1, h) (g, 1) h1X hh hg h1W φ hφ`. Establish `hc : ((g, 1) : UA σ X.J × UA σ W.J) * (1, h) = (1, h) * (g, 1)`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[← e1, ← e2, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem locOp_comm (hP : GlobalTheory.FunPr.Hypotheses₂) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E)

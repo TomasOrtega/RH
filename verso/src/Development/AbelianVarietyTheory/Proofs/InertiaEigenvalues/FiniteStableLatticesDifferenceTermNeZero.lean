@@ -10,15 +10,15 @@ namespace GlobalTheory.UnitLemma.Desc
 open GlobalTheory.UnitLemma Polynomial Classical
 
 /- English proof (translation)
-Set `b` to `Module.finBasis L Ω`. Set `A` to `AlgebraicClosure L`. Set `f : Ω →ₐ[U] Matrix (Fin (Module.finrank L Ω)) (Fin (Module.finrank L Ω)) A` to `(((Algebra.ofId L A).mapMatrix).comp (Algebra.leftMulMatrix b)).restrictScalars U`. Establish `hM : IsIntegral U (f ω)` using `h.map f`. Establish `htr : algebraMap L A (Algebra.trace L Ω ω) = (f ω).trace`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Algebra.trace_eq_matrix_trace b]`. Simplify using `only [Matrix.trace, Matrix.diag, map_sum]`. Both sides reduce to the same expression. Rewrite using `[← isIntegral_algebraMap_iff (A := L) (B := A) (algebraMap L A).injective, htr, Matrix.trace_eq_sum_roots_charpoly]`. Use `IsIntegral.multiset_sum fun μ hμ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hroot : IsRoot (f ω).charpoly μ` using `(mem_roots'.1 hμ).2`. Establish `hspec : μ ∈ spectrum A (f ω)` using `Matrix.mem_spectrum_iff_isRoot_charpoly.2 hroot`. Take `⟨p, hp, hp0⟩` from `hM`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations. Establish `h1` using `spectrum.subset_polynomial_aeval (f ω) (p.map (algebraMap U A)) ⟨μ, hspec, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : aeval (f ω) (p.map (algebraMap U A)) = 0`. Rewrite using `[aeval_map_algebraMap]`. Simplify `hp0` using `[aeval_def]`. Establish `: Nontrivial (Matrix (Fin (Module.finrank L Ω)) (Fin (Module.finrank L Ω)) A)`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Rewrite `hspec` using `[spectrum.of_subsingleton]`. Conclude with `hspec`. Rewrite `h1` using `[h2, spectrum.zero_eq, Set.mem_singleton_iff]`. Simplify `h1` using `[eval_map]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isIntegral_trace_of_isIntegral'
     (U L Ω : Type) [CommRing U] [Field L] [CommRing Ω] [Algebra U L] [Algebra L Ω] [Algebra U Ω]
@@ -55,16 +55,16 @@ theorem isIntegral_trace_of_isIntegral'
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-The claim follows from `IsIntegrallyClosed.isIntegral_iff.1 (isIntegral_trace_of_isIntegral' K.O K.E B.A x hx)`.
+A detailed English derivation is pending.
 -/
 theorem trace_mem_of_isIntegral (x : B.A) (hx : IsIntegral K.O x) :
     Algebra.trace K.E B.A x ∈ (algebraMap K.O K.E).range :=
   IsIntegrallyClosed.isIntegral_iff.1 (isIntegral_trace_of_isIntegral' K.O K.E B.A x hx)
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_apply]`. Establish `hid : IsIdempotentElem (Algebra.lmul K.E B.A e)`. Unfold `IsIdempotentElem`. Use extensionality with `y`. Simplify using `[← mul_assoc, he.eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h`. Use `(LinearMap.IsIdempotentElem.trace_eq_zero_iff hid).1 h` as an intermediate fact. Apply `h0` to reduce the goal to its premises. Establish `h1` using `LinearMap.congr_fun this 1`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem trace_idem_ne_zero (e : B.A) (he : IsIdempotentElem e) (h0 : e ≠ 0) :
     Algebra.trace K.E B.A e ≠ 0 := by
@@ -78,19 +78,17 @@ theorem trace_idem_ne_zero (e : B.A) (he : IsIdempotentElem e) (h0 : e ≠ 0) :
   simpa using h1
 
 /- English proof (translation)
-Take `⟨x, y, hy, rfl⟩` from `IsFractionRing.div_surjective (A := K.O) T`. Establish `hy0 : algebraMap K.O K.E y ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hy`. Establish `hx0 : x ≠ 0` using `by rintro rfl; simp at hT`. Establish `hα : al K a ≠ 0`. Simplify `(IsFractionRing.injective K.O K.E).ne ha.1` using `[al]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hinf` using `Ideal.iInf_pow_eq_bot_of_isLocalRing (IsLocalRing.maximalIdeal K.O) (IsLocalRing.maximalIdeal.isMaximal K.O).ne_top`. Choose the witnesses or unpack the hypotheses as in `⟨m0, hm0⟩ : ∃ m : ℕ, x ∉ IsLocalRing.maximalIdeal K.O ^ m := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hx0` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Ideal.mem_bot, ← hinf, Ideal.mem_iInf]`. Conclude with `h`. Use `⟨1 - m0, fun n hn => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `Int.exists_eq_neg_ofNat (show n ≤ 0 by omega)`. Take `⟨o, ho⟩` from `hn`. Establish `hinv : al K a ^ (-(m : ℤ)) * al K a ^ m = 1`. Rewrite using `[zpow_neg, zpow_natCast]`. Conclude with `inv_mul_cancel₀ (pow_ne_zero _ hα)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `hxe : algebraMap K.O K.E x = algebraMap K.O K.E (o * y * a ^ m)`. Rewrite using `[map_mul, map_mul, ho, map_pow]`. Establish `e1 : al K a ^ (-(m : ℤ)) * (algebraMap K.O K.E x / algebraMap K.O K.E y) * algebraMap K.O K.E y * al K a ^ m = (al K a ^ (-(m : ℤ)) * al K a ^ m) * algebraMap K.O K.E x`. Clear the denominators using the available nonvanishing facts. Simplify using `only [al] at e1 hinv ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[e1, hinv, one_mul]`. Establish `hxm : x = o * y * a ^ m` using `IsFractionRing.injective K.O K.E hxe`. Apply `hm0` to reduce the goal to its premises. Establish `: x ∈ IsLocalRing.maximalIdeal K.O ^ m`. Rewrite using `[hxm]`.
-
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.pow_mem_pow ha.2.1 m)`. Conclude with `Ideal.pow_le_pow_right (by omega) this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lb (a : K.O) (ha : K.Small a) (T : K.E) (hT : T ≠ 0) :
     ∃ L : ℤ, ∀ n : ℤ, al K a ^ n * T ∈ (algebraMap K.O K.E).range → L ≤ n := by
@@ -129,13 +127,13 @@ theorem exists_lb (a : K.O) (ha : K.Small a) (T : K.E) (hT : T ≠ 0) :
   exact Ideal.pow_le_pow_right (by omega) this
 
 /- English proof (translation)
-Establish `hyE : IsIntegral K.E y` using `Algebra.IsIntegral.isIntegral y`. Take `⟨⟨m, hm⟩, hmi⟩` from `IsIntegral.exists_multiple_integral_of_isLocalization (nonZeroDivisors K.O) (Rₘ := K.E) y hyE`. Establish `hm0 : m ≠ 0` using `nonZeroDivisors.ne_zero hm`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Take `⟨n, u, hmu⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hm0 hϖ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `ha' : a ∈ Ideal.span {ϖ}` using `hϖ.maximalIdeal_eq ▸ ha.2.1`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 ha'`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hc : a ^ n = (((u⁻¹ : K.Oˣ) : K.O) * b ^ n) * m`. Rewrite using `[hmu, ← hb, mul_pow]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h1 : al K a ^ (n : ℤ) • y = (((u⁻¹ : K.Oˣ) : K.O) * b ^ n) • (m • y)`. Rewrite using `[zpow_natCast, smul_smul, ← hc]`. Simplify using `only [al, ← map_pow, algebraMap_smul]`. Establish `h2 : (m • y) = (⟨m, hm⟩ : nonZeroDivisors K.O) • y` using `rfl`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h1, Algebra.smul_def, h2]`. Conclude with `(isIntegral_algebraMap).mul hmi`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_mul (a : K.O) (ha : K.Small a) (y : B.A) :
     ∃ c : ℕ, IsIntegral K.O (al K a ^ (c : ℤ) • y) := by
@@ -168,13 +166,13 @@ open GlobalTheory.UnitLemma Polynomial Classical
 variable {K : UQ} (B : InvAlg K)
 
 /- English proof (translation)
-Distinguish the cases in `hy : IsUnit y`. Use `swap`. Conclude with `⟨0, fun h => absurd h hy⟩`. Establish `hα : al K a ≠ 0`. Simplify `(IsFractionRing.injective K.O K.E).ne ha.1` using `[al]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hy.exists_right_inv`. Take `⟨c, hc⟩` from `exists_int_mul B a ha w`. Take `⟨L, hL⟩` from `exists_lb a ha _ (trace_idem_ne_zero B e he he0)`. Use `⟨c - L, fun _ n hn => ?_⟩` and prove the remaining obligations. Establish `hi` using `hn.mul hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : al K a ^ (-n) • (e * y) * (al K a ^ (c : ℤ) • w) = al K a ^ (-n + c) • e`. Rewrite using `[smul_mul_smul_comm, mul_assoc, hw, mul_one, ← zpow_add₀ hα]`. Rewrite `hi` using `[heq]`. Establish `ht` using `trace_mem_of_isIntegral B _ hi`. Rewrite `ht` using `[map_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hL _ ht` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_ub (a : K.O) (ha : K.Small a) (e : B.A) (he : IsIdempotentElem e) (he0 : e ≠ 0)
     (y : B.A) : ∃ H : ℤ, IsUnit y → ∀ n : ℤ, IsIntegral K.O (al K a ^ (-n) • (e * y)) → n ≤ H := by
@@ -197,11 +195,11 @@ theorem exists_ub (a : K.O) (ha : K.Small a) (e : B.A) (he : IsIdempotentElem e)
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hs : IsUnit s`. Use `swap`. Conclude with `⟨0, fun h => absurd h hs⟩`. Establish `hα : al K a ≠ 0`. Simplify `(IsFractionRing.injective K.O K.E).ne ha.1` using `[al]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `hs.exists_right_inv`. Take `⟨c, hc⟩` from `exists_int_mul B a ha w`. Take `⟨L, hL⟩` from `exists_lb a ha _ (trace_idem_ne_zero B e he he0)`. Use `⟨L - N - c, fun _ M n hM hD => ?_⟩` and prove the remaining obligations. Establish `hz` using `hD _ (hM _ hc)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : s * (al K a ^ (n + N) • (e * (al K a ^ (c : ℤ) • w))) = al K a ^ (n + N + c) • e`. Rewrite using `[mul_smul_comm, mul_smul_comm, mul_smul_comm, smul_smul, ← zpow_add₀ hα, mul_left_comm, hw, mul_one]`. Rewrite `hz` using `[heq, map_smul, smul_eq_mul]`. Use `hL _ hz` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_lb' (a : K.O) (ha : K.Small a) (e : B.A) (he : IsIdempotentElem e) (he0 : e ≠ 0) (N : ℕ)
     (s : B.A) : ∃ L0 : ℤ, IsUnit s → ∀ (M : Submodule K.O B.A) (n : ℤ),
@@ -223,9 +221,9 @@ theorem exists_lb' (a : K.O) (ha : K.Small a) (e : B.A) (he : IsIdempotentElem e
   omega
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h' : ((Nat.card (IsLocalRing.ResidueField K.O) : ℕ) : K.E) = 0`. Rewrite using `[← map_natCast (algebraMap K.O K.E), h, map_zero]`. Rewrite `h'` using `[Nat.cast_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.card_pos (α := IsLocalRing.ResidueField K.O)).ne' h'`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_natCast] haveI := Fintype.ofFinite (IsLocalRing.ResidueField K.O)`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `FiniteField.cast_card_eq_zero _`. Rewrite using `[map_natCast, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem small_card (K : UQ) : K.Small (Nat.card (IsLocalRing.ResidueField K.O) : K.O) := by
   refine ⟨?_, ?_, ?_⟩
@@ -241,25 +239,23 @@ theorem small_card (K : UQ) : K.Small (Nat.card (IsLocalRing.ResidueField K.O) :
   · rw [map_natCast, map_natCast]
 
 /- English proof (translation)
-Introduce `K B ι _ e π S hsep hF I I' hI hI' u s hu hs`. Use `set a : K.O := (Nat.card (IsLocalRing.ResidueField K.O) : K.O)`. Establish `ha : K.Small a` using `small_card K`. Take `⟨N, hN⟩` from `GlobalTheory.T.exists_lattice_idempotent_position_involution_stable K B ι e π S a hsep ha hF`. Take `⟨C, hC⟩` from `GlobalTheory.T.card_lattices_idempotent_position_bounded K B ι e π S a hsep ha hF N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `he : ∀ i, IsIdempotentElem (e i)` using `fun i => hF.1.1.idem i`. Establish `he0 : ∀ i, e i ≠ 0`. Introduce `i`. Take `⟨f, hf, hf0, -, hS, hnS⟩` from `hF.1.2 i`. Distinguish the cases in `hi : i ∈ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hS hi).1]`. Conclude with `hf0`. Take `⟨h1, h2⟩` from `hnS hi`. Introduce `h`. Apply `hf0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: f * e i = f` using `by rw [h2, mul_add, hf.eq, h1, add_zero]`. Rewrite `this` using `[h, mul_zero]`. Conclude with `this.symm`. Establish `hπ : ∀ J ⊆ S, IsUnit (∏ j ∈ J, π j)` using `fun J hJ => Finset.prod_induction _ IsUnit (fun _ _ h1 h2 => h1.mul h2) isUnit_one (fun j hj => (hF.2 j (hJ hj)).1.1)`. Use `choose H hH using fun i y => exists_ub B a ha (e i) (he i) (he0 i) y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose Lo hLo using fun i t => exists_lb' B a ha (e i) (he i) (he0 i) N t`. Set `Ys` to `I.powerset.image (fun J => (∏ j ∈ J, π j) * u)`. Set `Ss` to `I'.powerset.image (fun J => (∏ j ∈ J, π j) * s)`. Set `P : Set (ι → ℤ)` to `⋃ y ∈ (Ys : Set B.A), ⋃ t ∈ (Ss : Set B.A), Set.pi Set.univ (fun i => Set.Icc (Lo i t) (H i y))`. Establish `hP : P.Finite` using `Set.Finite.biUnion Ys.finite_toSet fun y _ => Set.Finite.biUnion Ss.finite_toSet fun t _ => Set.Finite.pi (fun i => Set.finite_Icc _ _)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hP.biUnion fun p _ => (hC p).1).subset ?_` and prove the remaining obligations. Introduce and unpack `M ⟨hML, hMt⟩`. Take `⟨p, hp⟩` from `hN M hML`. Establish `h1 : dlt π I (indM B M) u ≠ 0` using `left_ne_zero_of_mul hMt`. Establish `h2 : dlt π I' (indD B M) s ≠ 0` using `right_ne_zero_of_mul hMt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨J, hJ, hJ0⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h1`. Take `⟨J', hJ', hJ0'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero h2`. Establish `hyM : (∏ j ∈ J, π j) * u ∈ M`. Assume the negation of the conclusion as `h`. Apply `hJ0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[indM, h]`. Establish `htD : InDual B ((∏ j ∈ J', π j) * s) M`. Assume the negation of the conclusion as `h`. Apply `hJ0'` to reduce the goal to its premises. Simplify using `[indD, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyU : IsUnit ((∏ j ∈ J, π j) * u)` using `(hπ J ((Finset.mem_powerset.1 hJ).trans hI)).mul hu`. Establish `htU : IsUnit ((∏ j ∈ J', π j) * s)` using `(hπ J' ((Finset.mem_powerset.1 hJ').trans hI')).mul hs`. Use `Set.mem_biUnion (x := p) ?_ hp` and prove the remaining obligations. Use `Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hJ)) (Set.mem_biUnion (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hJ')) ?_)` and prove the remaining obligations. Introduce `i _`.
-
-Conclude with `⟨hLo i _ htU M (p i) (hp i).1 htD, hH i _ hyU (p i) ((hp i).2 _ hyM)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_term_ne_zero : ∀ (K : UQ) (B : InvAlg K) (ι : Type) [Fintype ι] (e π : ι → B.A) (S : Finset ι),
     B.P.Separable → IsFrame B e π S → ∀ (I I' : Finset ι), I ⊆ S → I' ⊆ S → ∀ u s : B.A, IsUnit u → IsUnit s →

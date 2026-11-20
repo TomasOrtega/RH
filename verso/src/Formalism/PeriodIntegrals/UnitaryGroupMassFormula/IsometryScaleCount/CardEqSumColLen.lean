@@ -8,13 +8,13 @@ namespace PI.IsoScaleA.UnitaryGroupMassFormula
 open PI.IsoScaleA
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range (fun j => μ.colLen j)]`. Establish `hmaps : ((μ.cells : Finset (ℕ × ℕ)) : Set (ℕ × ℕ)).MapsTo Prod.snd (Finset.range (μ.rowLen 0))`. Introduce `x hx`. Establish `hx' : (x.1, x.2) ∈ μ` using `hx`. Establish `h0 : (0, x.2) ∈ μ` using `μ.up_left_mem (Nat.zero_le _) le_rfl hx'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `YoungDiagram.mem_iff_lt_rowLen.mp h0` using `[Finset.mem_range]`. Rewrite using `[YoungDiagram.card, Finset.card_eq_sum_card_fiberwise hmaps]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: (μ.cells.filter fun x => x.2 = j) = (Finset.range (μ.colLen j)).map ⟨fun i => (i, j), fun a b h => by simpa using h⟩`. Use extensionality with `⟨i, k⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_map, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, rfl⟩`. Conclude with `⟨i, YoungDiagram.mem_iff_lt_colLen.mp h1, rfl⟩`. Introduce and unpack `⟨a, ha, h⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨rfl, rfl⟩` from `Prod.mk.inj (show (a, j) = (i, k) from h)`. Conclude with `⟨YoungDiagram.mem_iff_lt_colLen.mpr ha, rfl⟩`. Rewrite using `[this, Finset.card_map, Finset.card_range]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_eq_sum_colLen (μ : YoungDiagram) :
     μ.card = ∑ c : Fin (μ.rowLen 0), μ.colLen c := by
@@ -41,9 +41,9 @@ theorem card_eq_sum_colLen (μ : YoungDiagram) :
   rw [this, Finset.card_map, Finset.card_range]
 
 /- English proof (translation)
-Unfold `PIJ`. Establish `hdet : ∀ z (cc : Fin ((nu z).rowLen 0)), Matrix.det (Matrix.of fun i k : Fin ((nu z).colLen cc) => MvPolynomial.C (c (tp z) * s (tp z)) * MvPolynomial.X ((tp z, I z cc i, J z cc k) : Idx T N N')) = MvPolynomial.C (c (tp z)) ^ (nu z).colLen cc * Matrix.det (Matrix.of fun i k : Fin …`. Introduce `z cc`. Establish `: (Matrix.of fun i k : Fin ((nu z).colLen cc) => MvPolynomial.C (c (tp z) * s (tp z)) * MvPolynomial.X ((tp z, I z cc i, J z cc k) : Idx T N N')) = (MvPolynomial.C (c (tp z)) : MvPolynomial (Idx T N N') ℂ) • (Matrix.of fun i k : Fin ((nu z).colLen cc) => MvPolynomial.C (s (tp z)) …`. Use extensionality with `i k`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[MvPolynomial.C_mul, mul_assoc]`. Rewrite using `[this, Matrix.det_smul, Fintype.card_fin]`. Repeatedly rewrite using `[hdet, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, ← card_eq_sum_colLen, map_prod, map_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem PIJ_scale {Lt T : Type} [Fintype Lt] (tp : Lt → T) {N N' : ℕ} (nu : Lt → YoungDiagram)
     (c s : T → ℂ) (I : ColChoice N' nu) (J : ColChoice N nu) :
@@ -68,9 +68,9 @@ theorem PIJ_scale {Lt T : Type} [Fintype Lt] (tp : Lt → T) {N N' : ℕ} (nu : 
     map_prod, map_pow]
 
 /- English proof (translation)
-Unfold `applyAt0`. Rewrite using `[MvPolynomial.C_mul', Finset.mul_sum]`. Rewrite using `[Finset.sum_subset MvPolynomial.support_smul]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_smul, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `α _ hα`. Rewrite using `[MvPolynomial.notMem_support_iff.mp hα]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem applyAt0_C_mul {T : Type} [Fintype T] {N N' : ℕ} (a : ℂ) (P : MvPolynomial (Idx T N N') ℂ)
     (G : VC T N N' → ℂ) : applyAt0 (MvPolynomial.C a * P) G = a * applyAt0 P G := by
@@ -85,7 +85,7 @@ theorem applyAt0_C_mul {T : Type} [Fintype T] {N N' : ℕ} (a : ℂ) (P : MvPoly
     ring
 
 /- English proof (translation)
-Introduce `Lt T _ _ _ tp N N' nu c s Θ φ`. Use function extensionality and compare the values at `I`. Simplify using `only [AOp, Pi.smul_apply, smul_eq_mul, PIJ_scale, applyAt0_C_mul, mul_assoc]`. Rewrite using `[mul_finsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isoScaleA : IsoScaleA := by
   intro Lt T _ _ _ tp N N' nu c s Θ φ

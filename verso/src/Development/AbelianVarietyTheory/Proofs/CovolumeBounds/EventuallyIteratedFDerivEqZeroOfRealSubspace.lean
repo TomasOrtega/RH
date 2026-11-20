@@ -12,7 +12,7 @@ variable {E V : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
   [NormedAddCommGroup V] [NormedSpace ℂ V]
 
 /- English proof (translation)
-Establish `h1 : HasDerivAt (fun t : ℂ => f (x + t • s)) (fderiv ℂ f x s) 0` using `hf.hasFDerivAt.hasLineDerivAt s`. Rewrite `h1` using `[hasDerivAt_iff_tendsto_slope_zero]`. Use `tendsto_nhds_unique_of_frequently_eq h1 tendsto_const_nhds (h.mono fun t ht => ?_)` and prove the remaining obligations. Simplify using `[ht]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem fderiv_apply_eq_zero_of_frequently {f : E → V} {x s : E} (hf : DifferentiableAt ℂ f x)
     (h : ∃ᶠ t in 𝓝[≠] (0 : ℂ), f (x + t • s) = f x) : fderiv ℂ f x s = 0 := by
@@ -23,9 +23,7 @@ theorem fderiv_apply_eq_zero_of_frequently {f : E → V} {x s : E} (hf : Differe
   simp [ht]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun t : ℝ => (t : ℂ)) (𝓝[≠] 0) (𝓝[≠] 0)`. Use `tendsto_nhdsWithin_iff.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `(Complex.continuous_ofReal.tendsto' 0 0 (by simp)).mono_left nhdsWithin_le_nhds`. Use `filter_upwards [self_mem_nhdsWithin] with t ht`. Simplify using `using ht`.
-
-Conclude with `h1.frequently (h.filter_mono nhdsWithin_le_nhds).frequently`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frequently_nhdsNE_of_eventually_ofReal {p : ℂ → Prop}
     (h : ∀ᶠ t : ℝ in 𝓝 0, p t) : ∃ᶠ t in 𝓝[≠] (0 : ℂ), p t := by
@@ -37,7 +35,7 @@ theorem frequently_nhdsNE_of_eventually_ofReal {p : ℂ → Prop}
   exact h1.frequently (h.filter_mono nhdsWithin_le_nhds).frequently
 
 /- English proof (translation)
-Establish `: (fderiv ℂ f x : E →ₗ[ℂ] V) = 0` using `LinearMap.ext_on hS fun s hs => fderiv_apply_eq_zero_of_frequently hf (frequently_nhdsNE_of_eventually_ofReal (p := fun t => f (x + t • s) = f x) (h s hs))`. Use extensionality with `v`. Conclude with `LinearMap.congr_fun this v`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fderiv_eq_zero_of_real_lines {f : E → V} {x : E} {S : Set E}
     (hS : Submodule.span ℂ S = ⊤) (hf : DifferentiableAt ℂ f x)
@@ -49,7 +47,7 @@ theorem fderiv_eq_zero_of_real_lines {f : E → V} {x : E} {S : Set E}
   exact LinearMap.congr_fun this v
 
 /- English proof (translation)
-The claim follows from `hU.is_const_of_fderiv_eq_zero hU' hf (fun x hx => fderiv_eq_zero_of_real_lines hS (hf.differentiableAt (hU.mem_nhds hx)) (h x hx)) hz hw`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_eventually_real_lines {f : E → V} {U S : Set E}
     (hS : Submodule.span ℂ S = ⊤) (hU : IsOpen U) (hU' : IsPreconnected U)
@@ -61,7 +59,7 @@ theorem eq_of_eventually_real_lines {f : E → V} {U S : Set E}
     hz hw
 
 /- English proof (translation)
-Use `eq_of_eventually_real_lines hS hU hU' hf (fun x hx s hs => ?_) hz hw` and prove the remaining obligations. Establish `h1 : Tendsto (fun t : ℝ => x + (t : ℂ) • s) (𝓝 0) (𝓝 x)` using `Continuous.tendsto' (by fun_prop) _ _ (by simp)`. Conclude with `(h1.eventually (hU.mem_nhds hx)).mono fun t ht => h x hx s hs t ht`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_invariant_real_lines {f : E → V} {U S : Set E}
     (hS : Submodule.span ℂ S = ⊤) (hU : IsOpen U) (hU' : IsPreconnected U)
@@ -76,7 +74,7 @@ theorem eq_of_invariant_real_lines {f : E → V} {U S : Set E}
 variable [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Use `eq_of_invariant_real_lines hS hU hU' hf (fun x hx s hs t ht => h x hx _ ?_ ht) hz hw` and prove the remaining obligations. Rewrite using `[show (t : ℂ) • s = t • s from algebraMap_smul ℂ t s]`. Conclude with `S.smul_mem t hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_invariant_realSubspace {f : E → V} {U : Set E} {S : Submodule ℝ E}
     (hS : Submodule.span ℂ (S : Set E) = ⊤) (hU : IsOpen U) (hU' : IsPreconnected U)
@@ -107,9 +105,9 @@ noncomputable def scaledRealPoints (ι : Type*) (a : ℂ) : Submodule ℝ (ι �
 omit [Fintype ι] in
 
 /- English proof (translation)
-Use `eq_top_iff.mpr fun z _ => ?_` and prove the remaining obligations. Establish `e : z = a⁻¹ • (fun i => a * ((z i).re : ℂ)) + (a⁻¹ * Complex.I) • (fun i => a * ((z i).im : ℂ))`. Use extensionality with `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Complex.re_add_im (z i)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, mul_zero, Complex.ofReal_im, Complex.I_im, mul_one, sub_self, add_zero, Complex.add_im, Complex.mul_im, zero_add]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`. Conclude with `add_mem (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)) (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_scaledRealPoints {a : ℂ} (ha : a ≠ 0) :
     Submodule.span ℂ (scaledRealPoints ι a : Set (ι → ℂ)) = ⊤ := by
@@ -128,7 +126,7 @@ theorem span_scaledRealPoints {a : ℂ} (ha : a ≠ 0) :
     (Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩))
 
 /- English proof (translation)
-Use `eq_of_invariant_realSubspace (span_scaledRealPoints one_ne_zero) hU hU' hf ?_ hz hw` and prove the remaining obligations. Introduce and unpack `y hy _ ⟨x, rfl⟩`. Simplify `h y hy x` using `only [one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_invariant_real {f : (ι → ℂ) → V} {U : Set (ι → ℂ)}
     (hU : IsOpen U) (hU' : IsPreconnected U) (hf : DifferentiableOn ℂ f U)

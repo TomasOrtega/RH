@@ -15,17 +15,17 @@ def FrGram : Prop := ∀ (D : D7) (X : HidaSetting D) (e : Af X.B.I.F), EgProp X
   ∃ y ∈ IntAf X.B.I.F X.B.I.E, epsX X e * G.det * y = epsX X e
 
 /- English proof (translation)
-Set `G' : Matrix (Fin k) (Fin k) S` to `fun l j => ⟨G l j, hG l j⟩`. Set `ε' : S` to `⟨ε, hε⟩`. Set `g' : S` to `⟨gg, hg⟩`. Set `I : Ideal S` to `Ideal.span {g'}`. Establish `hmap : (Ideal.Quotient.mk I).mapMatrix G' = Matrix.scalar (Fin k) (Ideal.Quotient.mk I ε')`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `l j`. Take `⟨t, ht, he⟩` from `hc l j`. Establish `hsub : G' l j - (if l = j then ε' else 0) ∈ I`. Rewrite using `[Ideal.mem_span_singleton']`. Use `⟨⟨t, ht⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply the tactic sequence `split_ifs at he ⊢ <;> simp [G', ε', g'] <;> first | linear_combination he | linear_combination -he`. Use `Ideal.Quotient.eq.mpr hsub` as an intermediate fact. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.scalar_apply, Matrix.diagonal_apply]`. Rewrite using `[this]`.
+Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hdet : Ideal.Quotient.mk I G'.det = Ideal.Quotient.mk I (ε' ^ k)`. Rewrite using `[RingHom.map_det, hmap, Matrix.scalar_apply, Matrix.det_diagonal, Finset.prod_const, Finset.card_univ, Fintype.card_fin, map_pow]`. Take `⟨m, hm⟩` from `Ideal.mem_span_singleton'.mp (Ideal.Quotient.eq.mp hdet)`. Use `⟨m, m.2, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hG' : S.subtype.mapMatrix G' = G`. Use extensionality with `l j`. Both sides reduce to the same expression. Establish `h1 : G.det = S.subtype G'.det`. Rewrite using `[RingHom.map_det, hG']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : G'.det = ε' ^ k + m * g'`. Rewrite using `[hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h2]`. Simplify using `[ε', g', mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fg_det {B : Type} [CommRing B] (S : Subring B) {k : ℕ} (G : Matrix (Fin k) (Fin k) B) (ε gg : B)
     (hε : ε ∈ S) (hg : gg ∈ S) (hG : ∀ l j, G l j ∈ S)
@@ -67,17 +67,17 @@ theorem fg_det {B : Type} [CommRing B] (S : Subring B) {k : ℕ} (G : Matrix (Fi
   simp [ε', g', mul_comm]
 
 /- English proof (translation)
-Introduce `D X e hE G hGi hGc`. Establish `h1 : X.ew * X.ew = X.ew` using `X.ew_idem`. Establish `h2 : X.ew ∈ IntAf X.B.I.F X.B.I.E` using `X.ew_int`. Establish `h3 : (1 : X.B.I.E) ⊗ₜ[X.B.I.F] e ∈ IntAf X.B.I.F X.B.I.E`. Unfold `IntAf Formalism.UG.tensInt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Subring.subset_closure (Or.inr ⟨⟨e, hE.1⟩, rfl⟩)`. Establish `hε : epsX X e ∈ IntAf X.B.I.F X.B.I.E` using `(IntAf X.B.I.F X.B.I.E).mul_mem h3 h2`. Establish `hg : ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ∈ IntAf X.B.I.F X.B.I.E` using `natCast_mem (IntAf X.B.I.F X.B.I.E) _`. Take `⟨m, hm, hdet⟩` from `fg_det (IntAf X.B.I.F X.B.I.E) G (epsX X e) ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) hε hg hGi (fun l j => hGc l j)`. Establish `hidem : epsX X e * epsX X e = epsX X e`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `epsX`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, hE.2.1, h1]`. Establish `hpow : ∀ n : ℕ, epsX X e * epsX X e ^ n = epsX X e`. Introduce `n`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => rw [pow_succ, ← mul_assoc, ih, hidem]`. Take `⟨y, hy, hyeq⟩` from `idxDJacE X.B.I.F X.B.I.E X.B.g e hE m hm`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdet, mul_add, hpow]`. Establish `hfac : epsX X e + epsX X e * (((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * m) = X.ew * ((1 : X.B.I.E) ⊗ₜ[X.B.I.F] e * (1 + ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * m))`. Unfold `epsX`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfac, mul_assoc, hyeq]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `epsX`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frGram : FrGram := by
   intro D X e hE G hGi hGc

@@ -11,7 +11,7 @@ open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model
 variable {D : D7} {n : ℕ}
 
 /- English proof (translation)
-Take `⟨x, -, hx⟩` from `h`. Conclude with `⟨x.1, (congrArg Units.val hx).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem rat_mat {γ : G D n} (h : γ ∈ GF D n) :
     ∃ x : Matrix (Fin (n + n)) (Fin (n + n)) D.host.E, mat γ = x.map (incA D) := by
@@ -19,9 +19,9 @@ theorem rat_mat {γ : G D n} (h : γ ∈ GF D n) :
   exact ⟨x.1, (congrArg Units.val hx).symm⟩
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF D.host.F) := inferInstanceAs (Nontrivial (Ainf D.host.F × Af D.host.F))`. Use `haveI : Nontrivial (AE D) := inferInstance`. Take `⟨x, hx⟩` from `rat_mat h`. Establish `e : ((Matrix.GeneralLinearGroup.det a : (AE D)ˣ) : AE D) = incA D (blkA x).det`. Rewrite using `[RingHom.map_det]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `a.1.det = _`. Rewrite using `[← ha, hx]`. Both sides reduce to the same expression. Establish `h0 : (blkA x).det ≠ 0` using `fun h0 => Units.ne_zero _ (e.trans (by rw [h0, map_zero]))`. Conclude with `⟨Units.mk0 _ h0, Units.ext e⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem det_rat {γ : G D n} (h : γ ∈ GF D n) (a : GL (Fin n) (AE D)) (ha : blkA (mat γ) = a.1) :
     ∃ u : D.host.Eˣ, Matrix.GeneralLinearGroup.det a = Units.map (incA D).toMonoidHom u := by
@@ -36,9 +36,9 @@ theorem det_rat {γ : G D n} (h : γ ∈ GF D n) (a : GL (Fin n) (AE D)) (ha : b
   exact ⟨Units.mk0 _ h0, Units.ext e⟩
 
 /- English proof (translation)
-Use `⟨((mat p).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂, ((mat p).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Take `⟨i, rfl⟩` from `finSumFinEquiv.surjective i`. Take `⟨j, rfl⟩` from `finSumFinEquiv.surjective j`. Simplify using `only [blk4, Matrix.submatrix_apply, Equiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Both sides reduce to the same expression. Both sides reduce to the same expression. Conclude with `lower_eq_zero hp i j`. Both sides reduce to the same expression.
+Apply the first step, then apply the next step to every resulting obligation. Both sides reduce to the same expression. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem siegelParabolicUnn_matrix_blockUpperTriangular {p : G D n} (hp : p ∈ P D n) : ∃ b d, mat p = blk4 (blkA (mat p)) b 0 d := by
   refine ⟨((mat p).submatrix finSumFinEquiv finSumFinEquiv).toBlocks₁₂,
@@ -54,7 +54,7 @@ theorem siegelParabolicUnn_matrix_blockUpperTriangular {p : G D n} (hp : p ∈ P
   · rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem mat_inj {g h : G D n} (e : mat g = mat h) : g = h := Subtype.ext (Units.ext e)
 
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem mat_one : mat (1 : G D n) = 1 := rfl
 
 /- English proof (translation)
-Establish `h2 : (adj (a⁻¹).1 : Mx D n n) * adj a.1 = 1` using `by rw [← adj_mul]; simp [adj_one]`. Simplify using `[submatrix_fromBlocks_mul, h2, block_matrix_one, -Matrix.coe_units_inv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem levi_mul_inv (a : GL (Fin n) (AE D)) :
     (blk4 a.1 0 0 (adj (a⁻¹).1) : Mx D (n + n) (n + n)) * blk4 (a⁻¹).1 0 0 (adj a.1) = 1 := by
@@ -77,13 +77,13 @@ theorem levi_mul_inv (a : GL (Fin n) (AE D)) :
   simp [submatrix_fromBlocks_mul, h2, block_matrix_one, -Matrix.coe_units_inv]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_levi a`. Take `⟨m', hm'⟩` from `exists_levi a⁻¹`. Take `⟨b, d, hb⟩` from `siegelParabolicUnn_matrix_blockUpperTriangular hp`. Rewrite `hb` using `[ha']`. Rewrite `hm'` using `[inv_inv]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu : mat (m' * p) = blk4 1 ((a⁻¹).1 * b) 0 (adj a.1 * d)`. Rewrite using `[mat_mul, hm', hb, submatrix_fromBlocks_mul]`. Simplify using `[-Matrix.coe_units_inv]`. Establish `hd : (adj a.1 : Mx D n n) * d = 1`. Establish `h : adj (mat (m' * p)) * JR (AF D.host.F) (Jst D n) * mat (m' * p) = JR (AF D.host.F) (Jst D n)` using `(m' * p).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[JR_Jst, hu]`. Generalize the expression as in `(adj a.1 : Mx D n n) * d = d' at h ⊢`. Generalize the expression as in `(a⁻¹).1 * b = b' at h`. Simplify using `only [adelicConjTranspose_blockMatrixTwoByTwoFin, submatrix_fromBlocks_mul, adj_one, adj_zero, mul_zero, zero_mul, mul_one, one_mul, add_zero, zero_add, mul_neg, neg_mul, neg_zero] at h`. Conclude with `(blockMatrixTwoByTwoFin_injective h).2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmm : m * m' = 1` using `mat_inj (by rw [mat_mul, mat_one, hm, hm', levi_mul_inv])`. Use `⟨m, m' * p, (a⁻¹).1 * b, by rw [← mul_assoc, hmm, one_mul], hm, by rw [hu, hd]⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_levi_unip {p : G D n} (hp : p ∈ P D n) (a : GL (Fin n) (AE D)) (ha' : blkA (mat p) = a.1) :
     ∃ (m u : G D n) (b : Mx D n n), p = m * u ∧ mat m = blk4 a.1 0 0 (adj (a⁻¹).1) ∧ mat u = blk4 1 b 0 1 := by
@@ -107,13 +107,13 @@ theorem exists_levi_unip {p : G D n} (hp : p ∈ P D n) (a : GL (Fin n) (AE D)) 
   refine ⟨m, m' * p, (a⁻¹).1 * b, by rw [← mul_assoc, hmm, one_mul], hm, by rw [hu, hd]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨levi (D := D) (n := n) ⟨p, hp⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_blkA {p : G D n} (hp : p ∈ P D n) : ∃ a : GL (Fin n) (AE D), blkA (mat p) = a.1 :=
   ⟨levi (D := D) (n := n) ⟨p, hp⟩, rfl⟩
 
 /- English proof (translation)
-Take `⟨p, hp', k, hk, rfl⟩` from `hI g`. Take `⟨c, hc⟩` from `exists_blkA hp'`. Establish `e : blkA (mat (γ * p)) = (a * c).1` using `by rw [blkA_mul hp', ha, hc, Units.val_mul]`. Rewrite using `[← mul_assoc, hH _ ((P D n).mul_mem hp hp') (a * c) e k hk, hH p hp' c hc k hk, map_mul, map_mul, h1, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem height_inv (hI : ∀ g : G D n, ∃ p ∈ P D n, ∃ k ∈ K D n, g = p * k) {H : G D n → ℝ≥0} (hH : IsHeight H)
     {γ : G D n} (hp : γ ∈ P D n) (a : GL (Fin n) (AE D)) (ha : blkA (mat γ) = a.1)
@@ -124,15 +124,13 @@ theorem height_inv (hI : ∀ g : G D n, ∃ p ∈ P D n, ∃ k ∈ K D n, g = p 
   rw [← mul_assoc, hH _ ((P D n).mul_mem hp hp') (a * c) e k hk, hH p hp' c hc k hk, map_mul, map_mul, h1, one_mul]
 
 /- English proof (translation)
-Introduce `D n hI V ψ χ θ μ ω hχ hω H hH Φ z γ hγ g`. Take `⟨hp, hr⟩` from `Subgroup.mem_inf.1 hγ`. Take `⟨a, ha⟩` from `exists_blkA hp`. Take `⟨u, hu⟩` from `det_rat hr a ha`. Establish `h1 : absA D (Matrix.GeneralLinearGroup.det a) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hu]`. Conclude with `absE_inclR u`. Establish `h2 : χ (Matrix.GeneralLinearGroup.det a) = 1`. Rewrite using `[hu]`. Conclude with `hχ.2 u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHe : H (γ * g) = H g` using `height_inv hI hH hp a ha h1 g`. Establish `hW : (ω (γ * g) Φ).1 0 = (ω g Φ).1 0`. Take `⟨m, v, b, e, hm, hv⟩` from `exists_levi_unip hp a ha`. Establish `e' : ω (γ * g) Φ = ω m (ω v (ω g Φ))`. Rewrite using `[e, map_mul, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `z1 : ∀ a : Mx D n n, ((0 : Mx D V.rank n) ⬝ a : Mx D V.rank n) = 0` using `fun a => Matrix.zero_mul a`. Establish `z2 : StdUnn.inner V (0 : Mx D V.rank n) 0 = 0` using `by rw [StdUnn.inner, adj_zero, Matrix.zero_mul]`. Rewrite using `[e', hω.levi m _ hm, h1, h2, z1, hω.unip v b hv, z2]`. Simplify using `[halfTr, npow]`.
-
-Simplify using `only [sect, hHe, hW]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leftInv_sect : ∀ (D : D7) (n : ℕ), (∀ g : GlobalTheory.StdUnn.G D n, ∃ p ∈ GlobalTheory.StdUnn.P D n, ∃ k ∈ GlobalTheory.StdUnn.K D n, g = p * k) → ∀ (V : HSp D) (ψ : AddChar (AF D.host.F) ℂ) (χ : (AE D)ˣ →* Circle) (θ : InfFam D) (μ : Measure (Mx D V.rank n)) (ω : GlobalTheory.StdUnn.G D n →* Module.End ℂ (GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ V.rank n)), IsHeckeChar D χ → GlobalTheory.StdUnn.IsWeilSch ψ χ θ V μ ω → ∀ H : GlobalTheory.StdUnn.G D n → ℝ≥0, GlobalTheory.StdUnn.IsHeight H → ∀ (Φ : GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ V.rank n) (z : ℂ), GlobalTheory.AutomorphicL2Unitary.LeftInv (GlobalTheory.StdUnn.P D n ⊓ GlobalTheory.StdUnn.GF D n) (GlobalTheory.StdUnn.sect ω H Φ z) := by
   intro D n hI V ψ χ θ μ ω hχ hω H hH Φ z γ hγ g

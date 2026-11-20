@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open GlobalTheory.CuspRep GlobalTheory.GalOfCusp UpperTheory.V.Af UpperTheory.V.Ws UpperTheory.V.Sd UpperTheory.V.Sd.S3
 
 /- English proof (translation)
-Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [hu]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem diag_mul {R : Type} [CommRing R] {u : R} (hu : 3 * u = 1) :
     (Matrix.diagonal ![1, 1, -1, 3] * Matrix.diagonal ![1, 1, -1, u] : M4 R) = 1 := by

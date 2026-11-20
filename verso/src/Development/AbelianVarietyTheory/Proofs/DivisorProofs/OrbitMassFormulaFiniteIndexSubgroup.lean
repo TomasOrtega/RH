@@ -33,13 +33,13 @@ theorem toCoset_mk (ι : H →* G) (hc : ∀ (h : H) (d : D), ι h • d = h •
     toCoset ι hc x (g : G ⧸ ι.range) = Quotient.mk'' (g⁻¹ • x) := rfl
 
 /- English proof (translation)
-Rewrite using `[toCoset_mk, Quotient.eq'']`. Express the relevant statement in the definitionally equal form `g⁻¹ • x ∈ orbit H (a⁻¹ • x) ↔ _`. Rewrite using `[mem_orbit_iff, mem_orbit_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨g * ι h * a⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_stabilizer_iff, mul_smul, mul_smul, hc, hh, smul_inv_smul]`. Express the relevant statement in the definitionally equal form `((g * ι h * a⁻¹ : G) • (a : G ⧸ ι.range)) = g`. Rewrite using `[MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Conclude with `⟨h⁻¹, by simp [mul_assoc]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce and unpack `⟨⟨s, hs⟩, hsa⟩`. Express the relevant statement in the definitionally equal form `((s : G) • (a : G ⧸ ι.range)) = g at hsa`. Rewrite `hsa` using `[MulAction.Quotient.smul_mk, QuotientGroup.eq, MonoidHom.mem_range]`. Take `⟨k, hk⟩` from `hsa`. Establish `hg : g = s * a * ι k` using `by rw [hk, smul_eq_mul, mul_inv_cancel_left]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hg` using the available equality. Establish `hs' : s⁻¹ • x = x` using `by rw [inv_smul_eq_iff]; exact (mem_stabilizer_iff.mp hs).symm`. Use `⟨k⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[← hc, map_inv, mul_inv_rev, mul_inv_rev, mul_smul, mul_smul, hs']`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toCoset_eq_iff (ι : H →* G) (hc : ∀ (h : H) (d : D), ι h • d = h • d) (x : D) (a g : G) :
     toCoset ι hc x (g : G ⧸ ι.range) = Quotient.mk'' (a⁻¹ • x) ↔
@@ -65,17 +65,15 @@ theorem toCoset_eq_iff (ι : H →* G) (hc : ∀ (h : H) (d : D), ι h • d = h
     rw [← hc, map_inv, mul_inv_rev, mul_inv_rev, mul_smul, mul_smul, hs']
 
 /- English proof (translation)
-Use `symm`. Use `Nat.card_eq_of_bijective (fun h => ⟨⟨a * ι h.1 * a⁻¹, by` and prove the remaining obligations. Rewrite using `[mem_stabilizer_iff, mul_smul, mul_smul, hc, mem_stabilizer_iff.mp h.2, smul_inv_smul]⟩,`. Use `by`. Rewrite using `[mem_stabilizer_iff]`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((a * ι h.1 * a⁻¹ : G) • (a : G ⧸ ι.range)) = a`. Rewrite using `[MulAction.Quotient.smul_mk, QuotientGroup.eq]`. Conclude with `⟨h.1⁻¹, by simp [mul_assoc]⟩⟩) ⟨?_, ?_⟩`. Introduce `h₁ h₂ he`. Establish `e : a * ι h₁.1 * a⁻¹ = a * ι h₂.1 * a⁻¹` using `congrArg (fun s => ((s.1 : stabilizer G x) : G)) he`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `Subtype.ext (hinj (mul_left_cancel (mul_right_cancel e)))`. Introduce and unpack `⟨⟨s, hs⟩, hsa⟩`. Rewrite `hsa` using `[mem_stabilizer_iff]`. Express the relevant statement in the definitionally equal form `((s : G) • (a : G ⧸ ι.range)) = a at hsa`. Rewrite `hsa` using `[MulAction.Quotient.smul_mk, QuotientGroup.eq, MonoidHom.mem_range]`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hsa`. Establish `e : ι k⁻¹ = a⁻¹ * s * a`. Rewrite using `[map_inv, hk, smul_eq_mul]`. Use `group`. Use `⟨⟨k⁻¹, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mem_stabilizer_iff, ← hc, e, mul_smul, mul_smul, smul_inv_smul, mem_stabilizer_iff.mp hs]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `a * ι k⁻¹ * a⁻¹ = s`. Rewrite using `[e]`.
-
-Use `group`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_stab (ι : H →* G) (hinj : Function.Injective ι)
     (hc : ∀ (h : H) (d : D), ι h • d = h • d) (x : D) (a : G) :
@@ -113,23 +111,21 @@ theorem toG_mk (ι : H →* G) (hc : ∀ (h : H) (d : D), ι h • d = h • d) 
     toG ι hc (Quotient.mk'' y) = Quotient.mk'' y := rfl
 
 /- English proof (translation)
-Use `set x := Quotient.out c' with hx`. Use `haveI : Fintype (G ⧸ ι.range) := Fintype.ofFinite _`. Establish `hS0 : 0 < Nat.card (stabilizer G x)` using `Nat.card_pos`. Establish `hidx : (ι.range.index : ℂ) / Nat.card (stabilizer G x) = ∑ _ω : G ⧸ ι.range, ((Nat.card (stabilizer G x) : ℂ))⁻¹`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Subgroup.index_eq_card, Nat.card_eq_fintype_card, div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hidx, ← Finset.sum_fiberwise Finset.univ (toCoset ι hc x), Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Use `split_ifs with hcx`. Establish `hmem : Quotient.out c ∈ orbit G x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (Quotient.mk'' (Quotient.out c) : orbitRel.Quotient G D) = Quotient.mk'' x`. Rewrite using `[← toG_mk ι hc, Quotient.out_eq', hcx, hx, Quotient.out_eq']`. Conclude with `Quotient.exact' h1`. Take `⟨b, hb⟩` from `hmem`. Establish `hy : (b⁻¹)⁻¹ • x = Quotient.out c` using `by rw [inv_inv]; exact hb`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Proceed by induction. Treat this case separately.
 
-Establish `hfib : (Finset.univ.filter (fun ω => toCoset ι hc x ω = c)) = (orbit (stabilizer G x) ((b⁻¹ : G) : G ⧸ ι.range)).toFinset`. Use extensionality with `ω`. Proceed by induction on `ω using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[Finset.mem_filter, Set.mem_toFinset, ← toCoset_eq_iff ι hc x b⁻¹ g, hy, Quotient.out_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hcard` using `Subgroup.card_mul_index (stabilizer (stabilizer G x) ((b⁻¹ : G) : G ⧸ ι.range))`. Rewrite `hcard` using `[index_stabilizer, card_stab ι hinj hc x b⁻¹, hy]`. Rewrite using `[hfib, ← Set.ncard_eq_toFinset_card']`. Establish `hm0 : Nat.card (stabilizer H (Quotient.out c)) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hcard` using `[h0, zero_mul]`. Use linear arithmetic over natural numbers and integers. Establish `hn0 : (orbit (stabilizer G x) ((b⁻¹ : G) : G ⧸ ι.range)).ncard ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hcard` using `[h0, mul_zero]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[← hcard]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Finset.card_eq_zero.mpr, Nat.cast_zero, zero_mul]`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `ω _ hω`. Apply `hcx` to reduce the goal to its premises. Rewrite using `[← hω]`.
-
-Proceed by induction on `ω using QuotientGroup.induction_on with`. Consider the case `H g`. Rewrite using `[toCoset_mk, toG_mk, hx]`. Use `conv_rhs => rw [← Quotient.out_eq' c']`. Conclude with `Quotient.sound' ⟨g⁻¹, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_fiber (ι : H →* G) (hinj : Function.Injective ι)
     (hc : ∀ (h : H) (d : D), ι h • d = h • d) [ι.range.FiniteIndex]
@@ -186,11 +182,11 @@ theorem sum_fiber (ι : H →* G) (hinj : Function.Injective ι)
       exact Quotient.sound' ⟨g⁻¹, rfl⟩
 
 /- English proof (translation)
-Introduce `G H D _ _ _ _ ι hinj hc hfi hfin _ _ f hf`. Rewrite using `[← Finset.sum_fiberwise Finset.univ (toG ι hc) (fun c => ((Nat.card (MulAction.stabilizer H (Quotient.out c)) : ℂ))⁻¹ * f (Quotient.out c)), Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun c' _ => ?_)` and prove the remaining obligations. Establish `hconst : ∀ c ∈ Finset.univ.filter (fun c => toG ι hc c = c'), ((Nat.card (MulAction.stabilizer H (Quotient.out c)) : ℂ))⁻¹ * f (Quotient.out c) = ((Nat.card (MulAction.stabilizer H (Quotient.out c)) : ℂ))⁻¹ * f (Quotient.out c')`. Introduce `c hc'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc'` using `[Finset.mem_filter]`. Establish `h1 : (Quotient.mk'' (Quotient.out c) : orbitRel.Quotient G D) = Quotient.mk'' (Quotient.out c')`. Rewrite using `[← toG_mk ι hc, Quotient.out_eq', hc'.2, Quotient.out_eq']`. Take `⟨g, hg⟩` from `(Quotient.exact' h1 : Quotient.out c ∈ orbit G (Quotient.out c'))`. Rewrite using `[← hg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ * f (g • Quotient.out c') = _`. Rewrite using `[hf]`. Use `haveI := hfin (Quotient.out c')`. Rewrite using `[Finset.sum_congr rfl hconst, ← Finset.sum_mul, sum_fiber ι hinj hc c', div_eq_mul_inv, mul_assoc]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_formula : ∀ {G H D : Type} [Group G] [Group H] [MulAction G D] [MulAction H D] (ι : H →* G), Function.Injective ι → (∀ (h : H) (d : D), ι h • d = h • d) → ι.range.FiniteIndex → (∀ d : D, Finite (MulAction.stabilizer G d)) → ∀ [Fintype (MulAction.orbitRel.Quotient G D)] [Fintype (MulAction.orbitRel.Quotient H D)] (f : D → ℂ), (∀ (g : G) (d : D), f (g • d) = f d) → ∑ c : MulAction.orbitRel.Quotient H D, ((Nat.card (MulAction.stabilizer H (Quotient.out c)) : ℂ))⁻¹ * f (Quotient.out c) = (ι.range.index : ℂ) * ∑ c : MulAction.orbitRel.Quotient G D, ((Nat.card (MulAction.stabilizer G (Quotient.out c)) : ℂ))⁻¹ * f (Quotient.out c) := by
   intro G H D _ _ _ _ ι hinj hc hfi hfin _ _ f hf

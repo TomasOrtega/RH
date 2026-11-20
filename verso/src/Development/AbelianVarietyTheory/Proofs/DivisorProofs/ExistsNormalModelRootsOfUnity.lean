@@ -21,15 +21,13 @@ noncomputable section
 namespace GlobalTheory.ChainPts
 
 /- English proof (translation)
-Set `K' : IntermediateField B.X.functionField (Kbar B.X)` to `IntermediateField.adjoin B.X.functionField {ρ}`. Establish `hK : FiniteDimensional B.X.functionField K'` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral ρ)`. Take `⟨B', f, γ, hN, hd, -, hinj, -, hres, hrange⟩` from `exists_normalization_in O B hB K' hK`. Establish `hex : ∀ U : AffOp B.X, ∃ x : Γ(B'.X, f.f ⁻¹ᵁ U.1), (γ U x : Kbar B.X) = ρ` using `fun U => by`. Establish `h1 : (⟨ρ, hm U⟩ : U.Bp) ∈ (γ U).range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hrange, mem_ringOver]`. Conclude with `IntermediateField.mem_adjoin_simple_self _ ρ`. Take `⟨x, hx⟩` from `h1`. Conclude with `⟨x, congrArg Subtype.val hx⟩`. Use `choose x hx using hex`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxres : ∀ (U U' : AffOp B.X) (hle : U'.1 ≤ U.1), resG B'.X (f.f.preimage_mono hle) (x U) = x U'`. Introduce `U U' hle`. Apply `hinj U'` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx U', ← hx U]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg Subtype.val (hres U U' hle (x U))`. Establish `hcov : (⊤ : B'.X.Opens) ≤ ⨆ U : {U : AffOp B.X // U.1 ≤ ⊤}, f.f ⁻¹ᵁ U.1.1` using `GlobalTheory.OmegaHT.preimage_le_iSup_affOp f.f ⊤`. Take `⟨π, hπ⟩` from `GlobalTheory.LB.exists_fun_of_cover (V := ⊤) (fun U : {U : AffOp B.X // U.1 ≤ ⊤} => f.f ⁻¹ᵁ U.1.1) (fun _ => le_top) hcov (fun U => x U.1) (fun U U' => by`. Use `GlobalTheory.LB.fun_ext_of_cover (fun W : {W : AffOp B.X // W.1 ≤ U.1.1 ⊓ U'.1.1} => f.f ⁻¹ᵁ W.1.1) (fun W => f.f.preimage_mono W.2) (GlobalTheory.OmegaHT.preimage_le_iSup_affOp f.f (U.1.1 ⊓ U'.1.1)) fun W => ?_` and prove the remaining obligations. Conclude with `((GlobalTheory.OmegaHT.resG_resG_root _ _ _).trans (hxres U.1 W.1 (W.2.trans inf_le_left))).trans ((GlobalTheory.OmegaHT.resG_resG_root _ _ _).trans (hxres U'.1 W.1 (W.2.trans inf_le_right))).symm)`.
-
-Conclude with `⟨B', f, γ, π, hN, hd, hinj, fun U => by rw [hπ ⟨U, le_top⟩]; exact hx U⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_cover_global_elt (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     (B : GlobalTheory.Vert.Model O) (hB : GlobalTheory.IsNormalScheme B.X) (ρ : Kbar B.X)
@@ -65,13 +63,13 @@ theorem exists_cover_global_elt (O : Type) [CommRing O] [IsDomain O] [IsDiscrete
   exact ⟨B', f, γ, π, hN, hd, hinj, fun U => by rw [hπ ⟨U, le_top⟩]; exact hx U⟩
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB n`. Establish `hp : p.Prime` using `Fact.out`. Use `haveI : NeZero ((p ^ n : ℕ) : Kbar B.X) := ⟨by rw [Nat.cast_pow]; exact pow_ne_zero _ (GlobalTheory.Vert.Model.natCast_prime_ne_zero_kbar O p B)⟩`. Use `haveI : NeZero (p ^ n) := ⟨pow_ne_zero _ hp.ne_zero⟩`. Take `⟨ρ, hρ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot (Kbar B.X) (p ^ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B', f, γ, π, hN, hd, hinj, hπ⟩` from `exists_cover_global_elt O B hB ρ fun U => mem_of_pow_mem (pow_pos hp.pos n) (hρ.pow_eq_one ▸ one_mem _)`. Use `⟨B', f, hN, hd, π, ?_, fun l hl => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.LB.fun_ext_of_cover (V := ⊤) (fun U : {U : AffOp B.X // U.1 ≤ ⊤} => f.f ⁻¹ᵁ U.1.1) (fun _ => le_top) (GlobalTheory.OmegaHT.preimage_le_iSup_affOp f.f ⊤) fun U => ?_` and prove the remaining obligations. Rewrite using `[map_pow, map_one]`. Apply `hinj U.1` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, SubmonoidClass.coe_pow, hπ, hρ.pow_eq_one]`. Both sides reduce to the same expression. Take `⟨y⟩ : Nonempty B.X` from `inferInstance`. Take `⟨_, ⟨U, hU, rfl⟩, hyU, -⟩` from `B.X.isBasis_affineOpens.exists_subset_of_mem_open (a := y) (Set.mem_univ y) isOpen_univ`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Set `V : AffOp B.X` to `⟨U, hU, ⟨⟨y, hyU⟩⟩⟩`. Apply `hρ.dvd_of_pow_eq_one` to reduce the goal to its premises. Rewrite using `[← hπ V, ← SubmonoidClass.coe_pow, ← map_pow, ← map_pow, hl, map_one, map_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_cover_primitiveRoot : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ n : ℕ, ∃ (B' : GlobalTheory.Vert.Model O) (g : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ g.relDim = 0 ∧ ∃ ζ : Γ(B'.X, ⊤), IsPrimitiveRoot ζ (p ^ n) := by
   intro O _ _ _ p _ _ _ B hB n

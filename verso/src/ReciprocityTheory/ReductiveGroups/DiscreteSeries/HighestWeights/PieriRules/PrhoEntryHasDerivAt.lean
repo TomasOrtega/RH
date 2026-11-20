@@ -13,7 +13,7 @@ open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `p r`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[← Finset.sum_filter_of_ne (p := P) (fun k _ hk => by_contra fun h => hk (by rw [hA _ _ p.2 h, zero_mul]))]`. Conclude with `Finset.sum_subtype _ (fun k => by simp) _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma prho_submatrix_mul {ι : Type*} [Fintype ι] (P : ι → Prop) [DecidablePred P]
     (A B : Matrix ι ι ℂ) (hA : ∀ i k, P i → ¬ P k → A i k = 0) :
@@ -26,14 +26,14 @@ lemma prho_submatrix_mul {ι : Type*} [Fintype ι] (P : ι → Prop) [DecidableP
   exact Finset.sum_subtype _ (fun k => by simp) _
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `[Matrix.kroneckerMap_apply, sub_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma prho_sub_kron {ι κ : Type*} (A B : Matrix ι ι ℂ) (C : Matrix κ κ ℂ) :
     (A - B) ⊗ₖ C = A ⊗ₖ C - B ⊗ₖ C := by
   ext p q; simp [Matrix.kroneckerMap_apply, sub_mul]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `[Matrix.kroneckerMap_apply, mul_sub]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma prho_kron_sub {ι κ : Type*} (A : Matrix ι ι ℂ) (B C : Matrix κ κ ℂ) :
     A ⊗ₖ (B - C) = A ⊗ₖ B - A ⊗ₖ C := by
@@ -46,21 +46,21 @@ def adDFull (X : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n × Fin n) (Fin n ×
   X ⊗ₖ (1 : Matrix (Fin n) (Fin n) ℂ) - (1 : Matrix (Fin n) (Fin n) ℂ) ⊗ₖ Xᵀ
 
 /- English proof (translation)
-Unfold `adFull`. Rewrite using `[Matrix.map_mul, mul_kronecker_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma adFull_mul (g h : Matrix (Fin n) (Fin n) ℂ) : adFull (g * h) = adFull g * adFull h := by
   unfold adFull
   rw [Matrix.map_mul, mul_kronecker_mul]
 
 /- English proof (translation)
-Unfold `adFull`. Rewrite using `[Matrix.map_one (starRingEnd ℂ) (map_zero _) (map_one _), one_kronecker_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma adFull_one : adFull (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold adFull
   rw [Matrix.map_one (starRingEnd ℂ) (map_zero _) (map_one _), one_kronecker_one]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [adFull, Matrix.star_apply, Matrix.kroneckerMap_apply, Matrix.map_apply, star_mul', RCLike.star_def, RCLike.conj_conj]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma adFull_star (g : Matrix (Fin n) (Fin n) ℂ) : star (adFull g) = adFull (star g) := by
   ext p q
@@ -68,7 +68,7 @@ lemma adFull_star (g : Matrix (Fin n) (Fin n) ℂ) : star (adFull g) = adFull (s
     RCLike.star_def, RCLike.conj_conj]
 
 /- English proof (translation)
-Simplify using `only [adDFull, sub_mul, mul_sub, ← mul_kronecker_mul, Matrix.one_mul, Matrix.mul_one, Matrix.transpose_sub, Matrix.transpose_mul, prho_sub_kron, prho_kron_sub]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 lemma adDFull_bracket (X Y : Matrix (Fin n) (Fin n) ℂ) :
     adDFull X * adDFull Y - adDFull Y * adDFull X = adDFull (X * Y - Y * X) := by
@@ -79,9 +79,9 @@ lemma adDFull_bracket (X Y : Matrix (Fin n) (Fin n) ℂ) :
 variable {ε : Fin n → Bool} {β : Bool}
 
 /- English proof (translation)
-Simplify using `only [adFull, Matrix.kroneckerMap_apply, Matrix.map_apply]`. Distinguish the cases in `h1 : ε k.1 = β`. Establish `h2 : ε p.2 ≠ ε k.2` using `fun h => hk ⟨h1, by rw [← h]; exact hp.2⟩`. Rewrite using `[uq_offdiag_zero hg h2, map_zero, mul_zero]`. Establish `h2 : ε p.1 ≠ ε k.1` using `fun h => h1 (by rw [← h]; exact hp.1)`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[uq_offdiag_zero hg h2, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma adFull_zero_out {g : Matrix (Fin n) (Fin n) ℂ} (hg : g * Jm ε = Jm ε * g) (p k : Fin n × Fin n)
     (hp : ε p.1 = β ∧ ε p.2 = !β) (hk : ¬ (ε k.1 = β ∧ ε k.2 = !β)) : adFull g p k = 0 := by
@@ -93,9 +93,9 @@ lemma adFull_zero_out {g : Matrix (Fin n) (Fin n) ℂ} (hg : g * Jm ε = Jm ε *
     rw [uq_offdiag_zero hg h2, zero_mul]
 
 /- English proof (translation)
-Simplify using `only [adDFull, Matrix.sub_apply, Matrix.kroneckerMap_apply, Matrix.transpose_apply]`. Distinguish the cases in `h1 : ε k.1 = β`. Establish `h2 : ε p.2 ≠ ε k.2` using `fun h => hk ⟨h1, by rw [← h]; exact hp.2⟩`. Establish `h3 : p.2 ≠ k.2` using `fun h => h2 (by rw [h])`. Rewrite using `[Matrix.one_apply_ne h3, uq_offdiag_zero hX (Ne.symm h2), mul_zero, mul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ε p.1 ≠ ε k.1` using `fun h => h1 (by rw [← h]; exact hp.1)`. Establish `h3 : p.1 ≠ k.1` using `fun h => h2 (by rw [h])`. Rewrite using `[Matrix.one_apply_ne h3, uq_offdiag_zero hX h2, zero_mul, zero_mul, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma adDFull_zero_out {X : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X) (p k : Fin n × Fin n)
     (hp : ε p.1 = β ∧ ε p.2 = !β) (hk : ¬ (ε k.1 = β ∧ ε k.2 = !β)) : adDFull X p k = 0 := by
@@ -114,7 +114,7 @@ def pRhoM (g : Matrix (Fin n) (Fin n) ℂ) : Matrix (pIdx ε β) (pIdx ε β) �
   (adFull g).submatrix Subtype.val Subtype.val
 
 /- English proof (translation)
-Unfold `pRhoM`. Rewrite using `[adFull_mul]`. Conclude with `prho_submatrix_mul (fun p : Fin n × Fin n => ε p.1 = β ∧ ε p.2 = !β) _ _ (fun i k hi hk => adFull_zero_out hg i k hi hk)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pRhoM_mul {g : Matrix (Fin n) (Fin n) ℂ} (hg : g * Jm ε = Jm ε * g) (h : Matrix (Fin n) (Fin n) ℂ) :
     pRhoM ε β (g * h) = pRhoM ε β g * pRhoM ε β h := by
@@ -124,7 +124,7 @@ lemma pRhoM_mul {g : Matrix (Fin n) (Fin n) ℂ} (hg : g * Jm ε = Jm ε * g) (h
     (fun i k hi hk => adFull_zero_out hg i k hi hk)
 
 /- English proof (translation)
-Unfold `pRhoM`. Rewrite using `[adFull_one]`. Conclude with `Matrix.submatrix_one _ Subtype.val_injective`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pRhoM_one : pRhoM ε β (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   unfold pRhoM
@@ -132,7 +132,7 @@ lemma pRhoM_one : pRhoM ε β (1 : Matrix (Fin n) (Fin n) ℂ) = 1 := by
   exact Matrix.submatrix_one _ Subtype.val_injective
 
 /- English proof (translation)
-Unfold `pRhoM`. Rewrite using `[Matrix.star_eq_conjTranspose, Matrix.conjTranspose_submatrix, ← Matrix.star_eq_conjTranspose, adFull_star]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma pRhoM_star (g : Matrix (Fin n) (Fin n) ℂ) : star (pRhoM ε β g) = pRhoM ε β (star g) := by
   unfold pRhoM
@@ -140,7 +140,7 @@ lemma pRhoM_star (g : Matrix (Fin n) (Fin n) ℂ) : star (pRhoM ε β g) = pRhoM
     adFull_star]
 
 /- English proof (translation)
-Establish `hk : toMK k ∈ Kset ε` using `k.2`. Establish `hs : star (toMK k) ∈ Kset ε` using `Kset_star ε hk`. Rewrite using `[Unitary.mem_iff, pRhoM_star, ← pRhoM_mul ε β hs.2, ← pRhoM_mul ε β hk.2, Unitary.star_mul_self_of_mem hk.1, Unitary.mul_star_self_of_mem hk.1, pRhoM_one]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma pRhoM_mem (k : KG ε) : pRhoM ε β (toMK k) ∈ unitary (Matrix (pIdx ε β) (pIdx ε β) ℂ) := by
   have hk : toMK k ∈ Kset ε := k.2
@@ -182,9 +182,9 @@ lemma pDRho_apply (X : Matrix (Fin n) (Fin n) ℂ) (p q : pIdx ε β) :
       (1 : Matrix (Fin n) (Fin n) ℂ) p.1.1 q.1.1 * X q.1.2 p.1.2 := rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[pDRho_apply]`. Simplify using `only [pAdM, Matrix.single_apply, Matrix.one_apply]`. Apply the tactic sequence `by_cases h1 : p.1.1 = a <;> by_cases h2 : q.1.1 = b <;> by_cases h3 : p.1.2 = q.1.2 <;>`. Apply the tactic sequence `by_cases h4 : q.1.2 = a <;> by_cases h5 : p.1.2 = b <;> by_cases h6 : p.1.1 = q.1.1 <;>`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[eq_comm]`.
+Simplify the hypotheses and the goal together.
 -/
 theorem pDRho_single (a b : Fin n) : pDRho ε β (Matrix.single a b 1) = pAdM ε β a b := by
   ext p q
@@ -195,7 +195,7 @@ theorem pDRho_single (a b : Fin n) : pDRho ε β (Matrix.single a b 1) = pAdM ε
     simp_all [eq_comm]
 
 /- English proof (translation)
-Establish `e : ∀ Z : Matrix (Fin n) (Fin n) ℂ, pDRho ε β Z = (adDFull Z).submatrix Subtype.val Subtype.val` using `fun _ => rfl`. Establish `hs : ∀ A B : Matrix (Fin n × Fin n) (Fin n × Fin n) ℂ, ((A - B).submatrix Subtype.val Subtype.val : Matrix (pIdx ε β) (pIdx ε β) ℂ) = (A.submatrix Subtype.val Subtype.val : Matrix (pIdx ε β) (pIdx ε β) ℂ) - (B.submatrix Subtype.val Subtype.val : Matrix (pIdx ε β) (pIdx ε β) ℂ)` using `fun _ _ => rfl`. Rewrite using `[e, e, e, ← prho_submatrix_mul (fun p : Fin n × Fin n => ε p.1 = β ∧ ε p.2 = !β) _ _ (fun i k hi hk => adDFull_zero_out hX i k hi hk), ← prho_submatrix_mul (fun p : Fin n × Fin n => ε p.1 = β ∧ ε p.2 = !β) _ _ (fun i k hi hk => adDFull_zero_out hY i k hi hk), ← hs, adDFull_bracke …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pDRho_bracket {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε * X)
     (hY : Y * Jm ε = Jm ε * Y) :
@@ -212,9 +212,9 @@ theorem pDRho_bracket {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X * Jm ε = Jm ε
       (fun i k hi hk => adDFull_zero_out hY i k hi hk), ← hs, adDFull_bracket]
 
 /- English proof (translation)
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a`. Substitute `h1 h2` using the available equality. Simplify using `[Matrix.single_mul_single_same]`. Substitute `h1` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h2]`.
+Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `h2` using the available equality. Simplify using `[Matrix.single_mul_single_same, Matrix.single_mul_single_of_ne, h1]`. Simplify using `[Matrix.single_mul_single_of_ne, h1, h2]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma prho_single_bracket (a b c d : Fin n) :
     Matrix.single a b (1 : ℂ) * Matrix.single c d 1 - Matrix.single c d 1 * Matrix.single a b 1 =
@@ -226,7 +226,7 @@ lemma prho_single_bracket (a b c d : Fin n) :
   · simp [Matrix.single_mul_single_of_ne, h1, h2]
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Establish `e : ∀ a b, pAdM ε β a b = pDRho ε β (Matrix.single a b 1)` using `fun a b => (pDRho_single ε β a b).symm`. Simplify using `only [e]`. Rewrite using `[pDRho_bracket ε β (single_mul_Jm hab 1) (single_mul_Jm hcd 1), prho_single_bracket]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pAdM_kRel : Formalism.REAL.KRel ε (pAdM ε β) := by
   intro a b c d hab hcd
@@ -236,7 +236,7 @@ theorem pAdM_kRel : Formalism.REAL.KRel ε (pAdM ε β) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hm : Continuous (fun k : KG ε => toMK k)` using `(continuous_toM ε).comp continuous_subtype_val`. Use `continuous_matrix fun p q => ?_` and prove the remaining obligations. Simplify using `only [pRho_apply]`. Conclude with `(hm.matrix_elem _ _).mul ((hm.matrix_elem _ _).star)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pRho_continuous :
     Continuous (fun k : KG ε =>
@@ -251,7 +251,7 @@ section Deriv
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℂ ℂ i j)`. Establish `h` using `(L.hasFDerivAt).comp_hasDerivAt _ (hasDerivAt_exp_smul_const X ((0 : ℝ) : ℂ))`. Establish `h2` using `hasDerivAt_real_of_complex' (z := 0) h`. Establish `e : L (NormedSpace.exp (((0 : ℝ) : ℂ) • X) * X) = X i j` using `by simp [L]`. Conclude with `h2.congr_deriv e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma prho_entry_hasDerivAt (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i j) (X i j) 0 := by
@@ -264,11 +264,11 @@ lemma prho_entry_hasDerivAt (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
 end Deriv
 
 /- English proof (translation)
-Establish `hf : (fun t : ℝ => ((pRho ε β (γ t) : unitary (Matrix (pIdx ε β) (pIdx ε β) ℂ)) : Matrix (pIdx ε β) (pIdx ε β) ℂ) i j) = fun t : ℝ => NormedSpace.exp ((t : ℂ) • X) i.1.1 j.1.1 * star (NormedSpace.exp ((t : ℂ) • X) i.1.2 j.1.2)`. Use function extensionality and compare the values at `t`. Rewrite using `[pRho_apply, hγ t]`. Rewrite using `[hf]`. Establish `h` using `(prho_entry_hasDerivAt X i.1.1 j.1.1).mul (prho_entry_hasDerivAt X i.1.2 j.1.2).star`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs : star (X i.1.2 j.1.2) = -X j.1.2 i.1.2`. Use `congrFun (congrFun (onep_skew hX) j.1.2) i.1.2` as an intermediate fact. Simplify `this` using `only [Matrix.conjTranspose_apply, Matrix.neg_apply]`. Establish `e : X i.1.1 j.1.1 * star (NormedSpace.exp (((0 : ℝ) : ℂ) • X) i.1.2 j.1.2) + NormedSpace.exp (((0 : ℝ) : ℂ) • X) i.1.1 j.1.1 * star (X i.1.2 j.1.2) = pDRho ε β X i j`. Rewrite using `[pDRho_apply, hs]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [sub_eq_add_neg]`. Conclude with `h.congr_deriv e`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pRho_hasDerivAt (X : Matrix (Fin n) (Fin n) ℂ) (hX : inK ε X) (γ : ℝ → KG ε)
     (hγ : ∀ t : ℝ, toMK (γ t) = NormedSpace.exp ((t : ℂ) • X)) (i j : pIdx ε β) :

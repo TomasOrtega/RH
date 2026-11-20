@@ -37,15 +37,13 @@ instance countable_fA : Countable (fA F) := by
   exact h.to_subtype
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (fA F) := by`. Take `⟨U, hU, hU0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Take `⟨O, hOU, hO, h0⟩` from `mem_nhds_iff.1 hU`. Use `discreteTopology_of_isOpen_singleton_zero ?_` and prove the remaining obligations. Use `hO.preimage continuous_subtype_val using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨x, hx⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : x = 0` using `congrArg Subtype.val (Set.mem_singleton_iff.1 h)`. Substitute `h1` using the available equality.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h0`. Introduce `h`. Take `⟨y, rfl⟩` from `hx`. Establish `hy : y = 0` using `hU0 y (hOU h)`. Substitute `hy` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.mem_singleton_iff.2 (Subtype.ext (map_zero _))`. Take `⟨K, hK, hKx⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Take `⟨𝓐, h𝓐, hc⟩` from `ComplexParameterFamilyContinuity.addFD_of_cover' (fA F) hK (fun x => by`. Take `⟨y, hy⟩` from `hKx x`. Conclude with `⟨-algebraMap F (AF F) y, ⟨-y, map_neg _ _⟩, by rwa [neg_add_eq_sub]⟩) (lamA F)`.
-
-Use `⟨𝓐, h𝓐, h𝓐.measure_ne_zero (NeZero.ne _), ?_⟩` and prove the remaining obligations. Conclude with `ne_top_of_le_ne_top hc.measure_lt_top.ne (measure_mono subset_closure)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fd_fA : ∃ 𝓐 : Set (AF F), IsAddFundamentalDomain (fA F) 𝓐 (lamA F) ∧ lamA F 𝓐 ≠ 0 ∧ lamA F 𝓐 ≠ ⊤ := by
   haveI : DiscreteTopology (fA F) := by
@@ -76,9 +74,9 @@ variable {nb : nA σ d.Y d.b → d.G} {uM : (Fin L.n → AE F E) → d.G} {nb' :
   {cM : (Fin L.n → AE F E) × AF F → d.G} {δ : E}
 
 /- English proof (translation)
-Take `⟨P, h1, h2⟩` from `Meas.pEquiv0 L h.δ0 ⟨cM (0, 1), by`. Take `⟨A', hA'⟩` from `h.cf (0, 1)`. Use `⟨A', ?_⟩` and prove the remaining obligations. Rewrite using `[hA']`. Establish `hu : uA L (0 : Fin L.n → AE F E) = 1` using `by simp [uA]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hu]⟩`. Conclude with `⟨P, h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pEquiv (h : Hyp L nb uM nb' w₁ cM δ) :
     ∃ P : (nA σ d.Y d.b) ≃ₜ+ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b),
@@ -93,15 +91,15 @@ theorem pEquiv (h : Hyp L nb uM nb' w₁ cM δ) :
   exact ⟨P, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem continuous_cA : Continuous (cA σ : AE F E → AE F E) :=
   IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap
 
 /- English proof (translation)
-Take `⟨ε, hε⟩` from `hb.1`. Establish `h : (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) = {β | βᵀ = -((((ε : ℤ) : AE F E)) • β.map (cA σ))}`. Use extensionality with `β`. Conclude with `kunf.mem_nA_iff hε β`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Continuous fun β : Matrix (Fin n) (Fin n) (AE F E) => β.map (cA σ)` using `continuous_id.matrix_map (continuous_cA (σ := σ))`. Conclude with `isClosed_eq continuous_id.matrix_transpose (hc.const_smul (((ε : ℤ) : AE F E))).neg`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_nA' {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} (hb : IsFrame2 σ Y b) :
     IsClosed (nA σ Y b : Set (Matrix (Fin n) (Fin n) (AE F E))) := by
@@ -120,11 +118,7 @@ instance lcNA {n : ℕ} {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} [Fact (IsFr
   (isClosed_nA' (Fact.out : IsFrame2 σ Y b)).isClosedEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Use `haveI : Fact (IsFrame2 σ L.Y L.b) := ⟨L.ok.frame⟩`. Use `haveI : (lam.map P).IsAddHaarMeasure := P.isAddHaarMeasure_map lam`. Use `haveI : SFinite ν := inferInstance`. Use `haveI : SFinite lam' := inferInstance`. Use `haveI : SFinite (lamA F) := inferInstance`.
-
-Use `haveI : (ν.prod (lamA F)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `haveI : SFinite (ν.prod (lamA F)) := inferInstance`. Use `haveI : ((ν.prod (lamA F)).prod lam').IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `⟨(Measure.addHaarScalarFactor (lam.map P) ((ν.prod (lamA F)).prod lam') : ℝ≥0∞), ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.smul_def]`.
-
-Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lam_map {lam : Measure (nA σ d.Y d.b)} [lam.IsAddHaarMeasure] {ν : Measure (Fin L.n → AE F E)} [ν.IsAddHaarMeasure]
     {lam' : Measure (nA σ L.Y L.b)} [lam'.IsAddHaarMeasure] (P : (nA σ d.Y d.b) ≃ₜ+ (((Fin L.n → AE F E) × AF F) × nA σ L.Y L.b)) :
@@ -143,9 +137,7 @@ theorem lam_map {lam : Measure (nA σ d.Y d.b)} [lam.IsAddHaarMeasure] {ν : Mea
   exact Measure.isAddLeftInvariant_eq_smul _ _
 
 /- English proof (translation)
-Use `haveI : SFinite ν := inferInstance`. Use `haveI : SFinite (lamA F) := inferInstance`. Use `haveI : (ν.prod (lamA F)).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure _ _`. Use `⟨(Measure.addHaarScalarFactor κ (ν.prod (lamA F)) : ℝ≥0∞), ENNReal.coe_ne_zero.2 (Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne', ENNReal.coe_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[← ENNReal.smul_def]`.
-
-Conclude with `Measure.isAddLeftInvariant_eq_smul _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kap_eq {ν : Measure (Fin L.n → AE F E)} [ν.IsAddHaarMeasure] {κ : Measure ((Fin L.n → AE F E) × AF F)}
     [κ.IsAddHaarMeasure] : ∃ c : ℝ≥0∞, c ≠ 0 ∧ c ≠ ⊤ ∧ κ = c • (ν.prod (lamA F)) := by
@@ -162,7 +154,7 @@ end PositivityTheory.SiegelWeilFormula.Act.C5
 namespace PositivityTheory.SiegelWeilFormula.Act.C5
 
 /- English proof (translation)
-The claim follows from `(MeasurePreserving.id μ).skew_product (g := fun x y => y + s x) (measurable_snd.add (hs.comp measurable_fst)) (Filter.Eventually.of_forall fun x => map_add_right_eq_self ν (s x))`.
+A detailed English derivation is pending.
 -/
 theorem shear_mp' {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] [AddGroup Y] [MeasurableAdd₂ Y]
     (μ : Measure X) (ν : Measure Y) [SFinite μ] [SFinite ν] [ν.IsAddRightInvariant] (s : X → Y) (hs : Measurable s) :
@@ -173,15 +165,15 @@ theorem shear_mp' {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] [AddGroup
 open scoped Pointwise in
 
 /- English proof (translation)
-Establish `key : ∀ (g : Γ.prod Δ) (p : X × Y), p ∈ g +ᵥ (s ×ˢ t) ↔ (-(g : X × Y).1 + p.1 ∈ s ∧ -(g : X × Y).2 + p.2 ∈ t)` using `fun g p => by rw [Set.mem_vadd_set_iff_neg_vadd_mem]; rfl`. Use `⟨hs.nullMeasurableSet.prod ht.nullMeasurableSet, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hs.ae_covers`. Establish `h2` using `(Measure.quasiMeasurePreserving_snd (μ := μ) (ν := ν)).ae ht.ae_covers`. Use `filter_upwards [h1, h2] with p hp1 hp2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hp1`. Take `⟨b, hb⟩` from `hp2`. Conclude with `⟨⟨((a : X), (b : Y)), AddSubgroup.mem_prod.2 ⟨a.2, b.2⟩⟩, ha, hb⟩`. Introduce `g g' hne`. Establish `m1 : ∀ g : Γ.prod Δ, (g : X × Y).1 ∈ Γ` using `fun g => (AddSubgroup.mem_prod.1 g.2).1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : ∀ g : Γ.prod Δ, (g : X × Y).2 ∈ Δ` using `fun g => (AddSubgroup.mem_prod.1 g.2).2`. Distinguish the cases in `h1 : (g : X × Y).1 = (g' : X × Y).1`. Establish `h2 : (g : X × Y).2 ≠ (g' : X × Y).2` using `fun h2 => hne (Subtype.ext (Prod.ext h1 h2))`. Establish `hd : AEDisjoint ν ((⟨_, m2 g⟩ : Δ) +ᵥ t) ((⟨_, m2 g'⟩ : Δ) +ᵥ t)` using `ht.aedisjoint fun h => h2 (congrArg Subtype.val h)`. Use `measure_mono_null (t := Set.univ ×ˢ (((⟨_, m2 g⟩ : Δ) +ᵥ t) ∩ ((⟨_, m2 g'⟩ : Δ) +ᵥ t))) ?_ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `p ⟨hp, hp'⟩`. Rewrite `hp`, `hp'` using `[key]`. Conclude with `⟨trivial, Set.mem_vadd_set_iff_neg_vadd_mem.2 hp.2, Set.mem_vadd_set_iff_neg_vadd_mem.2 hp'.2⟩`. Rewrite using `[Measure.prod_prod, show ν _ = 0 from hd, mul_zero]`. Establish `hd : AEDisjoint μ ((⟨_, m1 g⟩ : Γ) +ᵥ s) ((⟨_, m1 g'⟩ : Γ) +ᵥ s)` using `hs.aedisjoint fun h => h1 (congrArg Subtype.val h)`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `measure_mono_null (t := (((⟨_, m1 g⟩ : Γ) +ᵥ s) ∩ ((⟨_, m1 g'⟩ : Γ) +ᵥ s)) ×ˢ Set.univ) ?_ ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hp'⟩`. Rewrite `hp`, `hp'` using `[key]`. Conclude with `⟨⟨Set.mem_vadd_set_iff_neg_vadd_mem.2 hp.1, Set.mem_vadd_set_iff_neg_vadd_mem.2 hp'.1⟩, trivial⟩`. Rewrite using `[Measure.prod_prod, show μ _ = 0 from hd, zero_mul]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fd_prod {X Y : Type} [AddCommGroup X] [AddCommGroup Y] [MeasurableSpace X] [MeasurableSpace Y]
     [MeasurableAdd X] [MeasurableAdd Y] {Γ : AddSubgroup X} {Δ : AddSubgroup Y} [Countable Γ] [Countable Δ]

@@ -16,17 +16,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Establish `L1` using `h1.lat`. Establish `L2` using `h2.lat`. Establish `hN : (((1, h, c) : UF E n × GLG E n SG × GLQ E n Q) • p).deco.1.N = p.deco.1.N` using `LevRead.smul_N p h c`. Rewrite `L2` using `[hN]`. Establish `hstd : ∀ z : Fin n → AfE F E, z ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) ↔ ∀ i, z i ∈ Formalism.L2.Herm.intAf F E := fun z => Formalism.L2.Col.mem_latS_std z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (Pi.single s 1 : Fin n → AfE F E) ∈ Formalism.L2.Herm.hatL (F` using `F) (stdLat E n) := (hstd _).2 fun i => by`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [one_mem _, zero_mem _]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ((g * m : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 ∈ Formalism.L2.Herm.hatL (F` using `F) p.deco.1.N := by`. Use `(L2 _).2 ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `he`. Establish `e : ((g⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (((g * m : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1) = (m : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel_left]`. Use `(hstd _).1 (e ▸ (L1 _).1 hx) r` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single_one]`. Establish `hx : ((g : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1 ∈ Formalism.L2.Herm.hatL (F` using `F) p.deco.1.N := by`. Use `(L1 _).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`. Conclude with `he`. Establish `e : (((g * m)⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ (((g : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1) = ((m⁻¹ : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) *ᵥ Pi.single s 1`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, _root_.mul_inv_rev, inv_mul_cancel_right]`. Use `(hstd _).1 (e ▸ (L2 _).1 hx) r` as an intermediate fact.
-
-Simplify `this` using `[Matrix.mulVec_single_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem int_of_pts {g m : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG E n SG} {c : GLQ E n Q}
     (h1 : IsPtOf hc g p) (h2 : IsPtOf hc (g * m) (((1, h, c) : UF E n × GLG E n SG × GLQ E n Q) • p)) (r s : Fin n) :
@@ -78,15 +76,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Take `⟨r, s, hs, h⟩` from `hy`. Establish `hsp` using `Formalism.L2.Col.reduction_spec P hs h`. Establish `hs0 : Ideal.Quotient.mk P.asIdeal s ≠ 0` using `fun h0 => hs (Ideal.Quotient.eq_zero_iff_mem.1 h0)`. Use `haveI : P.asIdeal.IsMaximal := P.isMaximal`. Take `⟨t, ht⟩` from `Ideal.Quotient.exists_inv hs0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t', rfl⟩` from `Ideal.Quotient.mk_surjective t`. Use `⟨t' * r, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← hsp, ← mul_assoc, mul_comm (Ideal.Quotient.mk P.asIdeal t'), ht, one_mul]`. Establish `hvs : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `HeightOneSpectrum.intValuation_eq_one_iff.2 hs`. Establish `hvy : P.valuation E y ≤ 1`. Establish `e` using `congrArg (P.valuation E) h`. Rewrite `e` using `[map_mul, hvs, one_mul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `P.valuation_le_one r`. Establish `h1 : 1 - t' * s ∈ P.asIdeal`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, map_mul, mul_comm, ht, sub_self]`. Establish `e : y - algebraMap (𝓞 E) E (t' * r) = y * algebraMap (𝓞 E) E (1 - t' * s)`. Simplify using `only [map_mul, map_sub, map_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← map_sub, valued_algebraMap, e, map_mul]`. Conclude with `(mul_le_of_le_one_left' hvy).trans_lt ((HeightOneSpectrum.valuation_lt_one_iff_mem P _).2 h1)`.
+A detailed English derivation is pending.
 -/
 theorem hasRes_redP {P : HeightOneSpectrum (𝓞 E)} {y : E} (hy : Formalism.L2.Col.IntAt P y) :
     HasRes P (algebraMap E (P.adicCompletion E) y) (Formalism.L2.Col.redP P y) := by
@@ -116,9 +114,9 @@ theorem hasRes_redP {P : HeightOneSpectrum (𝓞 E)} {y : E} (hy : Formalism.L2.
     exact (mul_le_of_le_one_left' hvy).trans_lt ((HeightOneSpectrum.valuation_lt_one_iff_mem P _).2 h1)
 
 /- English proof (translation)
-Take `⟨t, ht, hv⟩` from `h`. Establish `h0 : t - t0 ∈ P.asIdeal` using `Ideal.Quotient.eq.1 ht`. Establish `e : z - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E t0) = (z - algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E t)) + algebraMap E (P.adicCompletion E) (algebraMap (𝓞 E) E (t - t0))`. Simplify using `only [map_sub]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Use `Valuation.map_add_lt _ hv ?_` and prove the remaining obligations. Rewrite using `[valued_algebraMap]`. Conclude with `(HeightOneSpectrum.valuation_lt_one_iff_mem P _).2 h0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_lt_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E} {t0 : 𝓞 E}
     (h : HasRes P z (Ideal.Quotient.mk P.asIdeal t0)) :
@@ -135,9 +133,9 @@ theorem val_sub_lt_of_hasRes {P : HeightOneSpectrum (𝓞 E)} {z : P.adicComplet
   exact (HeightOneSpectrum.valuation_lt_one_iff_mem P _).2 h0
 
 /- English proof (translation)
-Distinguish the cases in `h0 : Valued.v z = 0`. Rewrite using `[h0]`. Conclude with `zero_le'`. Rewrite `h`, the goal using `[← WithZero.exp_log h0]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E} (h : Valued.v z < 1) :
     Valued.v z ≤ WithZero.exp (-1 : ℤ) := by
@@ -149,9 +147,9 @@ theorem le_exp_neg_one {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E}
   omega
 
 /- English proof (translation)
-Distinguish the cases in `hrs : r = s`. Substitute `hrs` using the available equality. Rewrite `h`, the goal using `[Matrix.one_apply_eq]`. Use `val_sub_lt_of_hasRes (t0 := 1) (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h`, the goal using `[Matrix.one_apply_ne hrs]`. Use `val_sub_lt_of_hasRes (t0 := 0) (by simpa using h)` as an intermediate fact. Simplify using `using this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_sub_one_lt {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E} {r s : Fin n}
     (h : HasRes P z ((1 : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)) r s)) :
@@ -166,17 +164,15 @@ theorem val_sub_one_lt {P : HeightOneSpectrum (𝓞 E)} {z : P.adicCompletion E}
     simpa using this
 
 /- English proof (translation)
-Introduce `i j`. Establish `he : (Pi.single j 1 : Sp E n) ∈ Formalism.L2.Col.stdAt E n P`. Use `Formalism.L2.Col.le_locP P _ ((mem_stdLat _).2 fun l => ?_)` and prove the remaining obligations. Rewrite using `[Pi.single_apply]`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `exacts [⟨1, map_one _⟩, ⟨0, map_zero _⟩]`. Establish `hGe : G (Pi.single j 1) ∈ Formalism.L2.Col.stdAt E n P` using `(hG (Pi.single j 1)).2 he`. Establish `hint : Formalism.L2.Col.IntAt P (G (Pi.single j 1) i)`. Take `⟨s, hs, hsx⟩` from `(Formalism.L2.Col.mem_locP P _ _).1 hGe`. Take `⟨r, hr⟩` from `(mem_stdLat _).1 hsx i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨r, s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[hr]`. Simplify using `[Algebra.smul_def]`. Establish `hred : Formalism.L2.Col.redV P (Pi.single j 1 : Sp E n) = Pi.single j 1`. Use function extensionality and compare the values at `l`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `show Formalism.L2.Col.redP P _ = _`. Rewrite using `[Pi.single_apply, Pi.single_apply]`. Use `split_ifs`. Simplify using `using Formalism.L2.Col.reduction_coe P 1`. Simplify using `using Formalism.L2.Col.reduction_coe P 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1` using `congrFun (hA _ he) i`. Rewrite `e1` using `[hred, Matrix.mulVec_single_one]`. Establish `e2 : (((GlobalTheory.TwU.ratA F (toGLm E n G) : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) i j) = Formalism.UG.inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F) (G (Pi.single j 1) i) := by`. Rewrite using `[← GlobalTheory.Mem.Col2.TopCh.toGLm_entry]`. Both sides reduce to the same expression.
-
-Rewrite using `[e2, adAt_inclE]`. Use `hasRes_redP hint` as an intermediate fact. Use `show HasRes P _ (A i j)`. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `(e1.trans (Matrix.transpose_apply A j i)).symm`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isRed_ratA {P : HeightOneSpectrum (𝓞 E)} {G : Sp E n ≃ₗ[E] Sp E n} (hG : G ∈ Formalism.L2.Col.GLint E n P)
     {A : Matrix (Fin n) (Fin n) (𝓞 E ⧸ P.asIdeal)}
@@ -226,7 +222,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {hc : Formalism.BasicNotions.CMData F E} {n : ℕ} {ST SG Q : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Use `show adAt F P (Formalism.UG.inclE (F := F) (FiniteAdeleRing (𝓞 F) F) _) = _`. Rewrite using `[adAt_inclE]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rhoP_ratA (P : HeightOneSpectrum (𝓞 E)) (G : ↥(Formalism.L2.Col.GLint E n P)) :
     TopCh.rhoP F P (GlobalTheory.TwU.ratA F (toGLm E n G.1)) = TopCh.iotaP P G := by
@@ -236,15 +232,13 @@ theorem rhoP_ratA (P : HeightOneSpectrum (𝓞 E)) (G : ↥(Formalism.L2.Col.GLi
   rfl
 
 /- English proof (translation)
-Establish `hI : ∀ a ∈ Formalism.L2.Herm.intAf F E, IntAtA (F` using `F) P a := fun a ha => ⟨1, Formalism.L2.Col.one_notMem P, by simpa using ha⟩`. Establish `hV : ∀ a ∈ Formalism.L2.Herm.intAf F E, Valued.v (adAt F P a) ≤ 1` using `fun a ha => (mem_rInt_iff F E a).1 ha P`. Use `⟨fun r s => hI _ (int_of_pts h1 h2 r s).1, fun r s => hI _ (int_of_pts h1 h2 r s).2, ?_, ?_⟩` and prove the remaining obligations. Introduce `hP G hG hred r s`. Take `⟨A, hA⟩` from `LevRead.exists_isRed (P := P) (x := m⁻¹) (fun i j => hV _ (int_of_pts h1 h2 i j).2) (fun i j => by rw [inv_inv]; exact hV _ (int_of_pts h1 h2 i j).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2' : IsPtOf hc (g * (m⁻¹)⁻¹) (((1, h, c) : UF E n × GLG E n SG × GLQ E n Q) • p)` using `by rwa [inv_inv]`. Establish `hAe` using `LevRead.eq_red h1 h2' ⟨P, hP⟩ hA`. Establish `hB` using `isRed_ratA (F := F) hG hred`. Establish `hC` using `hA.mul hB`. Rewrite `hC` using `[hAe, ← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_exp_neg_one (val_sub_one_lt (hC r s))`. Introduce `hP N r s`. Establish `e0` using `TopCh.rhoT_eq_iota (k := 1) (t := 1) (y := g) (x := m) h c (fun _ => map_one _) (by simpa using h1) (by simpa using h2) ⟨P, hP⟩`. Establish `e1 : TopCh.rhoP F P m = TopCh.iotaP P ((c ⟨P, hP⟩)⁻¹)` using `by simpa [TopCh.rhoT] using e0`. Establish `e2 : TopCh.rhoP F P (m⁻¹ * GlobalTheory.TwU.ratA F (toGLm E n ((c ⟨P, hP⟩)⁻¹).1)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, e1, rhoP_ratA P ((c ⟨P, hP⟩)⁻¹), inv_mul_cancel]`. Establish `e3 : adAt F P (((m⁻¹ * GlobalTheory.TwU.ratA F (toGLm E n ((c ⟨P, hP⟩)⁻¹).1) : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)) r s) = (1 : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s`. Use `congrArg (fun x : GL (Fin n) (P.adicCompletion E) => (x : Matrix (Fin n) (Fin n) (P.adicCompletion E)) r s) e2` as an intermediate fact. Conclude with `this.trans (congrArg (fun M : Matrix (Fin n) (Fin n) (P.adicCompletion E) => M r s) Units.val_one)`. Rewrite using `[e3, sub_self, map_zero]`.
-
-Conclude with `zero_le'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem core {g m : GL (Fin n) (AfE F E)} {p : DecoF E n ST SG Q} {h : GLG E n SG} {c : GLQ E n Q}
     (h1 : IsPtOf hc g p) (h2 : IsPtOf hc (g * m) (((1, h, c) : UF E n × GLG E n SG × GLQ E n Q) • p))
@@ -293,15 +287,15 @@ namespace GlobalTheory.Mem.Col2.AdT.ReadBad
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I hOk l Z u a i hi bad Ch chOf K k hR c x κ' hγ hpt P`. Establish `hpt0` using `hR.pt c`. Establish `hd : Disjoint (B.primes X).vGs (I.Q a)` using `Finset.disjoint_right.2 (fun {P} hP => Q_notMem_of_ok hOk a P hP)`. Establish `hp1` using `IsPtOf.of_extTo (I.Q_subset_SQ a) hd hpt0`. Establish `hγ' : toGLm B.fields.E (B.R.N i) κ'.1.1 = 1` using `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκ1 : κ'.1 = 1` using `Subtype.ext ((MulEquiv.map_eq_one_iff _).1 hγ')`. Establish `hinc : FrmG.incl _ _ κ' = ((1, κ'.2.1.1, κ'.2.2.1) : UF B.fields.E (B.R.N i) × GLG B.fields.E (B.R.N i) (B.primes X).vGs × GLQ B.fields.E (B.R.N i) (I.Q a))` using `by show (κ'.1, κ'.2.1.1, κ'.2.2.1) = _`. Rewrite using `[hκ1]`. Establish `hp2 : IsPtOf B.sp.cm ((show GA B (B.R.N i) from ((K (chOf c)).y ⟨c, rfl⟩).1) * k (chOf c) * ((k (chOf c))⁻¹ * x * k (chOf c))) (((1, κ'.2.1.1, κ'.2.2.1) : UF B.fields.E (B.R.N i) × GLG B.fields.E (B.R.N i) (B.primes X).vGs × GLQ B.fields.E (B.R.N i) (I.Q a)) • ((I.stp u a i).rep …`. Rewrite using `[← hinc, show ∀ yy : GA B (B.R.N i), yy * k (chOf c) * ((k (chOf c))⁻¹ * x * k (chOf c)) = yy * x * k (chOf c) from fun yy => by group]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `hpt`. Take `⟨c1, c2, c3, c4⟩` from `ReadBad.core hp1 hp2 P.1`. Use `⟨c1, c2, fun g hL => ?_⟩` and prove the remaining obligations. Establish `eG : GlobalTheory.TwU.seamGL (sm I l Z) g = toGLm B.fields.E (B.R.N i) g` using `Units.ext (Matrix.ext fun _ _ => rfl)`. Unfold `GlobalTheory.TwU.NearAt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eG]`. Use `(GlobalTheory.Mem.Col2.AdT.AdelicValuationDictionary.main I hOk l Z a (B.R.N i) ((I.cst a).D P) P (show GL (Fin (B.R.N i)) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E) from ((k (chOf c))⁻¹ * x * k (chOf c))⁻¹ * GlobalTheory.TwU.ratA B.host.F (toGLm B.fields.E (B.R.N i) g))).2.2. …` and prove the remaining obligations. Introduce `r s`. Break down `Finset.mem_union.1 P.2 with hG | hQ` into its components or cases. Rewrite using `[(hOk.idx_ok a).depthG P hG]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `c3 hG g hL.1 (hL.2.1 hG) r s` as an intermediate fact. Simplify using `using this`. Establish `e` using `hL.2.2 hQ`. Substitute `e` using the available equality. Conclude with `c4 hQ _ r s`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (i : ℕ) (hi : i ≤ B.R.m) (bad : Set (HeightOneSpectrum (𝓞 (I.rec7 l Z).host.F))) (Ch : Type) (chOf : (I.stp u a i).Cl → Ch) (K : Charts I l Z u a i hi bad chOf) (k : Ch → GA B (B.R.N i)), ReadsAt I l Z K k → ∀ (c : (I.stp u a i).Cl) (x : GA B (B.R.N i)) (κ' : (I.stp u a i).G c.1), (I.stp u a i).gam c.1 κ' = 1 → PtOf ((show GA B (B.R.N i) from ((K (chOf c)).y ⟨c, rfl⟩).1) * x * k (chOf c)) ((I.stp u a i).act c.1 κ' ((I.stp u a i).rep c)).1.1 → ∀ P : SBof I a, (∀ r s, IntAtA (F := B.host.F) (show HeightOneSpectrum (𝓞 B.host.E) from GlobalTheory.TwU.seamP (sm I l Z) P.1) ((((k (chOf c))⁻¹ * x * k (chOf c) : GA B (B.R.N i)) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s)) ∧ (∀ r s, IntAtA (F := B.host.F) (show HeightOneSpectrum (𝓞 B.host.E) from GlobalTheory.TwU.seamP (sm I l Z) P.1) (((((k (chOf c))⁻¹ * x * k (chOf c))⁻¹ : GA B (B.R.N i)) : Matrix (Fin (B.R.N i)) (Fin (B.R.N i)) (AfE B.host.F B.host.E)) r s)) ∧ ∀ g : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i), LiftsInv I κ' P g → GlobalTheory.TwU.NearAt (show HeightOneSpectrum (𝓞 B.host.E) from GlobalTheory.TwU.seamP (sm I l Z) P.1) ((I.cst a).D P) ((k (chOf c))⁻¹ * x * k (chOf c)) (GlobalTheory.TwU.seamGL (sm I l Z) g) := by
   intro B X I hOk l Z u a i hi bad Ch chOf K k hR c x κ' hγ hpt P

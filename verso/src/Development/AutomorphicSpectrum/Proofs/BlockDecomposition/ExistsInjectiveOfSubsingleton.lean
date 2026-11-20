@@ -14,11 +14,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SubEmb
 
 /- English proof (translation)
-Use `haveI := hi`. Use `haveI : Nontrivial V := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hi`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨w, hw⟩` from `exists_ne (0 : Y)`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f : Module.Dual ℂ V, f v ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hv ((Module.forall_dual_apply_eq_zero_iff ℂ v).1 h)`. Set `φ : π.IntertwiningMap τ` to `{ toFun := fun u => f u • w map_add' := fun a b => by simp [add_smul] map_smul' := fun c a => by simp [mul_smul] isIntertwining' := fun g => by`. Rewrite using `[Subsingleton.elim g 1, map_one, map_one]`.
-
-Conclude with `LinearMap.ext fun _ => rfl }`. Use `⟨φ, (Representation.IsIrreducible.injective_or_eq_zero φ).resolve_right fun h => ?_⟩` and prove the remaining obligations. Establish `h1 : f v • w = 0` using `congrArg (fun ψ : π.IntertwiningMap τ => ψ v) h`. Conclude with `(smul_ne_zero hf hw) h1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_injective_of_subsingleton {G V Y : Type} [Group G] [Subsingleton G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup Y] [Module ℂ Y] [Nontrivial Y] (π : Representation ℂ G V) (τ : Representation ℂ G Y)
@@ -44,7 +42,7 @@ theorem exists_injective_of_subsingleton {G V Y : Type} [Group G] [Subsingleton 
   exact (smul_ne_zero hf hw) h1
 
 /- English proof (translation)
-Use `haveI : Subsingleton (GL (Fin 0) k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩`. Establish `hirr : (prodIrr x hd).IsIrreducible` using `GlobalTheory.SmGL.MultiIrr.isIrreducible_multiProd_zero _ _`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hirr`. Conclude with `exists_injective_of_subsingleton π _ hi`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem zero_case {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin 0) k) V) (hi : π.IsIrreducible)
@@ -56,15 +54,15 @@ theorem zero_case {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   exact exists_injective_of_subsingleton π _ hi
 
 /- English proof (translation)
-Establish `hF0` using `GlobalTheory.CompanionTheory.ProdInj.prod₂_map_injective k a b _ _ W' σ _ ρ f hf`. Take `⟨F, hF⟩` from `hF0`. Set `y : Fin 1 → IrrGL k` to `fun _ => IrrGL.of ρ hρs hρi`. Establish `hy : ∑ i, (y i).1 = b` using `by simp [y, IrrGL.of]`. Establish `hy' : ∑ i : Fin 1, (IrrGL.of ρ hρs hρi).1 = (IrrGL.of ρ hρs hρi).1` using `by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁0` using `nonempty_equiv_prodIrr_one (IrrGL.of ρ hρs hρi) hy'`. Take `⟨e₁⟩` from `e₁0`. Establish `e₂ : ρ.Equiv (prodIrr y hy)` using `(IrrGL.equivOf ρ hρs hρi).trans e₁`. Establish `hd : ∑ i, (Fin.append x' y i).1 = a + b`. Rewrite using `[Fin.sum_univ_add]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Rewrite using `[hd', hy]`. Establish `e₃0` using `hstage k c 1 a b x' y hd' hy hd`. Take `⟨e₃⟩` from `e₃0`. Use `⟨c + 1, Fin.append x' y, hd, fun i => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) i` and prove the remaining obligations. Rewrite using `[Fin.append_left]`. Conclude with `hcusp i`. Rewrite using `[Fin.append_right]`. Conclude with `IrrGL.isCusp_of.2 ⟨hb, hρc⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `E` to `(prod₂Equiv (Representation.Equiv.refl _) e₂).trans e₃`. Use `⟨E.toIntertwiningMap.comp F, ?_⟩` and prove the remaining obligations. Conclude with `E.toLinearEquiv.injective.comp hF`.
+A detailed English derivation is pending.
 -/
 theorem succ_case
     (hstage : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p q r t : ℕ) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t) (h : ∑ a, (Fin.append x y a).1 = r + t), Nonempty ((prod₂ (prodIrr x hx) (prodIrr y hy)).Equiv (prodIrr (Fin.append x y) h)))
@@ -99,13 +97,13 @@ theorem succ_case
     exact E.toLinearEquiv.injective.comp hF
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N`. Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `V _ _ π hs hi`. Distinguish the cases in `hN0 : N = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hN0` using the available equality. Conclude with `⟨0, Fin.elim0, by simp, fun a => a.elim0, zero_case π hi _ _⟩`. Establish `hN : 0 < N` using `Nat.pos_of_ne_zero hN0`. Establish `h0` using `GlobalTheory.JacFactor.exists_map_jac₂ k N V π hs hi hN`. Take `⟨a, b, h, W, W', _, _, _, _, σ, ρ, hb, hσs, hσi, hρs, hρi, hρc, φ, hφ⟩` from `h0`.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `h` using the available equality. Establish `h1` using `GlobalTheory.CompanionTheory.Frob.exists_injective_of_jac₂ k a b V W W' π σ ρ hs hi φ hφ`. Take `⟨ψ, hψ⟩` from `h1`. Establish `h2` using `ih a (by omega) W σ hσs hσi`. Take `⟨c, x', hd', hcusp, f, hf⟩` from `h2`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3` using `succ_case hstage σ ρ hb hρs hρi hρc x' hd' hcusp f hf`. Take `⟨c', x, hd, hx, Φ, hΦ⟩` from `h3`. Conclude with `⟨c', x, hd, hx, Φ.comp ψ, hΦ.comp hψ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem subEmbedding_of_stage
     (hstage : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (p q r t : ℕ) (x : Fin p → IrrGL k) (y : Fin q → IrrGL k) (hx : ∑ a, (x a).1 = r) (hy : ∑ a, (y a).1 = t) (h : ∑ a, (Fin.append x y a).1 = r + t), Nonempty ((prod₂ (prodIrr x hx) (prodIrr y hy)).Equiv (prodIrr (Fin.append x y) h))) :

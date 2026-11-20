@@ -9,7 +9,7 @@ namespace GlobalTheory
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_lifting_property f LinearMap.id hf`. Conclude with `⟨(h.splitSurjectiveEquiv hg ⟨s, hs⟩).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_equiv_prod_of_exact_of_projective {A : Type*} [CommRing A] {K F M : Type*}
     [AddCommGroup K] [Module A K] [AddCommGroup F] [Module A F] [AddCommGroup M] [Module A M]
@@ -19,15 +19,15 @@ theorem nonempty_equiv_prod_of_exact_of_projective {A : Type*} [CommRing A] {K F
   exact ⟨(h.splitSurjectiveEquiv hg ⟨s, hs⟩).1⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `M _ _ _ h _`. Establish `h1 : Projective (ModuleCat.of R M)` using `(projective_iff_hasProjectiveDimensionLE_zero _).2 h`. Establish `h2 : Module.Projective R M` using `(IsProjective.iff_projective M).2 h1`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Module.Free R M` using `Module.free_of_flat_of_isLocalRing`. Use `infer_instance`. Consider the case `succ n ih`. Introduce `M _ _ _ h hp`. Take `⟨m, f, hf⟩` from `Module.Finite.exists_fin' R M`.
+Establish an intermediate fact. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS` using `LinearMap.shortExact_shortComplexKer hf`. Establish `hK : HasProjectiveDimensionLE (ModuleCat.of R (LinearMap.ker f)) n`. Establish `hP : Projective (ModuleCat.of R (Fin m → R))` using `inferInstance`. Conclude with `(hS.hasProjectiveDimensionLT_X₃_iff n hP).1 h`. Establish `hex : Function.Exact ((LinearMap.ker f).subtype.baseChange A) (f.baseChange A)` using `lTensor_exact A f.exact_subtype_ker_map hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective ((LinearMap.ker f).subtype.baseChange A)` using `Module.Flat.lTensor_preserves_injective_linearMap _ (LinearMap.ker f).injective_subtype`. Establish `hsurj : Function.Surjective (f.baseChange A)` using `LinearMap.lTensor_surjective A hf`. Take `⟨e⟩` from `nonempty_equiv_prod_of_exact_of_projective _ _ hinj hsurj hex`. Establish `hfree : Module.Free A ((A ⊗[R] LinearMap.ker f) × (A ⊗[R] M))` using `Module.Free.of_equiv e`. Establish `hKp : Module.Projective A (A ⊗[R] LinearMap.ker f)` using `Module.Projective.of_split (LinearMap.inl A _ (A ⊗[R] M)) (LinearMap.fst A _ _) (LinearMap.ext fun _ ↦ rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hKs` using `ih (LinearMap.ker f) hK hKp`. Take `⟨N, _, _, _, _, _⟩` from `Module.IsStablyFree.exist_free_prod A (A ⊗[R] LinearMap.ker f)`. Establish `: Module.Free A ((A ⊗[R] M) × ((A ⊗[R] LinearMap.ker f) × N))` using `Module.Free.of_equiv (M := ((A ⊗[R] LinearMap.ker f) × (A ⊗[R] M)) × N) (((LinearEquiv.prodComm A _ _).prodCongr (LinearEquiv.refl A N)).trans (LinearEquiv.prodAssoc A _ _ _))`. Conclude with `Module.IsStablyFree.of_free_prod A _ ((A ⊗[R] LinearMap.ker f) × N)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isStablyFree_baseChange_of_hasProjectiveDimensionLE (R : Type) [CommRing R]
     [IsNoetherianRing R] [IsLocalRing R] (A : Type) [CommRing A] [Algebra R A] [Module.Flat R A]
@@ -73,7 +73,7 @@ variable {A : Type*} [CommRing A] {M N : Type*} [AddCommGroup M] [Module A M]
   [AddCommGroup N] [Module A N] {n : ℕ}
 
 /- English proof (translation)
-Set `c : M × N →ₗ[A] (M × N) [⋀^Fin n]→ₗ[A] M` to `{ toFun := fun x ↦ (bN.det.compLinearMap (LinearMap.snd A M N)).smulRight x.1 map_add' := fun x y ↦ AlternatingMap.ext fun _ ↦ by simp map_smul' := fun c x ↦ AlternatingMap.ext fun _ ↦ by simp [smul_smul, mul_comm] }`. Use `⟨exteriorPower.alternatingMapLinearEquiv (AlternatingMap.alternatizeUncurryFin c), fun m ↦ ⟨exteriorPower.ιMulti A (n + 1) (Fin.cons (m, 0) fun i ↦ (0, bN i)), ?_⟩⟩` and prove the remaining obligations. Simplify using `[c, AlternatingMap.alternatizeUncurryFin_apply, Fin.sum_univ_succ, Module.Basis.det_self]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_surjective_exteriorPower_prod (bN : Module.Basis (Fin n) A N) :
     ∃ φ : ⋀[A]^(n + 1) (M × N) →ₗ[A] M, Function.Surjective φ := by
@@ -88,13 +88,13 @@ theorem exists_surjective_exteriorPower_prod (bN : Module.Basis (Fin n) A N) :
 end cofactor
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial A with _ | _` into its components or cases. Rewrite using `[Subsingleton.elim J ⊥]`. Conclude with `bot_isPrincipal`. Take `⟨N, _, _, _, _, _⟩` from `Module.IsStablyFree.exist_free_prod A J`. Set `n` to `Module.finrank A N`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hp : Module.finrank A (J × N) ≤ n + 1`. Use `LinearMap.finrank_le_finrank_of_injective (f := J.subtype.prodMap (LinearMap.id : N →ₗ[A] N)) (Function.Injective.prodMap J.injective_subtype Function.injective_id)` as an intermediate fact. Rewrite `this` using `[Module.finrank_prod (M := A), Module.finrank_self, add_comm]`. Then use the resulting hypothesis. Establish `h1 : Module.finrank A (⋀[A]^(n + 1) (J × N)) ≤ 1`. Rewrite using `[exteriorPower.finrank_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Nat.choose_le_choose (n + 1) hp`. Take `⟨v, hv⟩` from `finrank_le_one_iff.1 h1`. Take `⟨φ, hφ⟩` from `exists_surjective_exteriorPower_prod (M := J) (Module.finBasis A N)`. Use `⟨(φ v : A), le_antisymm (fun y hy ↦ ?_) ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `hφ ⟨y, hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `hv w`. Rewrite `hw` using `[map_smul]`. Conclude with `Submodule.mem_span_singleton.2 ⟨c, congrArg Subtype.val hw⟩`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Conclude with `(φ v).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrincipal_of_isStablyFree {A : Type} [CommRing A] (J : Ideal A) [Module.Finite A J]
     [Module.IsStablyFree A J] : J.IsPrincipal := by
@@ -122,9 +122,9 @@ theorem isPrincipal_of_isStablyFree {A : Type} [CommRing A] (J : Ideal A) [Modul
     exact (φ v).2
 
 /- English proof (translation)
-Introduce `R _ _ _ _ x R' _ _ _ I n h hp`. Establish `hflat : Module.Flat R R'` using `IsLocalization.flat R' (Submonoid.powers x)`. Establish `hb : IsBaseChange R' (Algebra.idealMap R' I)` using `IsLocalizedModule.isBaseChange (Submonoid.powers x) R' _`. Establish `hp' : Module.Projective R' (R' ⊗[R] I)` using `Module.Projective.of_equiv hb.equiv.symm`. Establish `hs` using `isStablyFree_baseChange_of_hasProjectiveDimensionLE R R' n I h hp'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Module.IsStablyFree.equiv hb.equiv` as an intermediate fact. Use `Module.Finite.equiv hb.equiv` as an intermediate fact. Conclude with `isPrincipal_of_isStablyFree _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPrincipal_map_away_of_hasProjectiveDimensionLE :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] [IsLocalRing R] [IsDomain R] (x : R) (R' : Type) [CommRing R'] [Algebra R R'] [IsLocalization.Away x R'] (I : Ideal R) (n : ℕ), HasProjectiveDimensionLE (ModuleCat.of R I) n → Module.Projective R' (I.map (algebraMap R R')) → (I.map (algebraMap R R')).IsPrincipal := by

@@ -24,9 +24,7 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.ChiExt
 
 /- English proof (translation)
-Use `ext1 u`. Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : kP P)`. Establish `ha0 : (a : E) ≠ 0`. Introduce `h0`. Establish `: a = 0` using `by exact_mod_cast h0`.
-
-Conclude with `u.ne_zero (by rw [← ha, this, map_zero])`. Conclude with `(h a (Units.mk0 _ ha0) u rfl ha.symm).trans (h' a (Units.mk0 _ ha0) u rfl ha.symm).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem res_unique {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.HChar E} {P : Pl E} {c c' : (kP P)ˣ →* ℂˣ}
     (h : ∀ (a : 𝓞 E) (k : Eˣ) (u : (kP P)ˣ), (k : E) = a → (u : kP P) = Ideal.Quotient.mk _ a → c u = χ.locK P k)
@@ -40,11 +38,11 @@ theorem res_unique {E : Type} [Field E] [NumberField E] {χ : Formalism.L2.Host.
   exact (h a (Units.mk0 _ ha0) u rfl ha.symm).trans (h' a (Units.mk0 _ ha0) u rfl ha.symm).symm
 
 /- English proof (translation)
-Consider the cases of `B with | mk P => ?_`. Consider the cases of `B' with | mk P' => ?_`. Simplify using `only at hB`. Substitute `hB` using the available equality. Take `rfl : px' = px` from `eq_of_heq hpx`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Take `rfl : f' = f` from `eq_of_heq hf`. Take `rfl : Pg' = Pg` from `eq_of_heq hPg`. Take `rfl : eG' = eG` from `eq_of_heq heG`. Take `rfl : g' = g` from `eq_of_heq hg`. Take `rfl : j = j'` from `Fin.ext hj`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `e : c' PP.1 = c PP.1` using `inv_injective (res_unique (h' PP.1 PP.2) (h PP.1 PP.2))`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prod_eq {B B' : Base} (hB : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : Fr B'.toPre} (hf : HEq f' f)
     {px : PreX B.toPre} {px' : PreX B'.toPre} (hpx : HEq px' px) (j : Fin B.R.m) (j' : Fin B'.R.m) (hj : (j : ℕ) = j')
@@ -76,11 +74,11 @@ theorem prod_eq {B B' : Base} (hB : B'.toPre = B.toPre) {f : Fr B.toPre} {f' : F
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _`. Use `StepW.of_all fun K B' f' T' w' _ _ _ B f T w hE hf _ hpx Z hX Wt z _ _ _ _ Z' hX' _ _ _ z' _ hx j j' hj φ hφ g g' hg => ?_` and prove the remaining obligations. Apply `RingHom.injective (w'.st Z').toD7.what₂.embLL` to reduce the goal to its premises. Use `(z'.pins.char.base.grp.chiW j' g').trans (Eq.trans ?_ ((hφ _).trans (z.pins.char.base.grp.chiW j g)).symm)` and prove the remaining obligations. Establish `hC : z.R.toLevCh.C.mu0 j = f.mu0 j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[z.lev.C, w.C_eq]`. Both sides reduce to the same expression. Establish `hC' : z'.R.toLevCh.C.mu0 j' = f'.mu0 j'`. Rewrite using `[z'.lev.C, w'.C_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `prod_eq hE.1 hf hpx j j' hj hx.Pg z.R.eG z'.R.eG hx.eG (z.R.chi ((j : ℕ) + 1)) (z'.R.chi ((j' : ℕ) + 1)) (fun PP hP => hC ▸ z.lev.is.chi j PP hP) (fun PP hP => hC' ▸ z'.lev.is.chi j' PP hP) g g' hg`.
+A detailed English derivation is pending.
 -/
 theorem chi_ext : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.DiscreteSeriesExists → GlobalTheory.Published.HarishChandraFinite → (StepW Pinned fun K B' f' T' w' => ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), Enl0 B B' →
   HEq f' f → Pinned K B f T w → HEq w'.px w.px → ∀ (Z : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl)

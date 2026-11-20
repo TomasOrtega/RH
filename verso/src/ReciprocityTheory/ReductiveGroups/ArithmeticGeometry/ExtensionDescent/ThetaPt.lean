@@ -57,14 +57,14 @@ def liftFun {T : Over S} (W : (T ⊗ A).left.Opens) (r : Γ(T.left, ⊤)) : Γ((
   ((T ⊗ A).left.presheaf.map (homOfLE le_top).op).hom ((fst T A).left.appTop.hom r)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le_zero (L : LB A.left) {T : Over S} (m : T ⊗ A ⟶ A) (j : Fin 2 → L.ι) :
     LB.wchart L ![(snd T A).left, m.left] j ≤ LB.wchart L (fun _ : Fin 1 => (snd T A).left) (fun _ => j 0) :=
   fun _ hy => Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : m.left.base y ∈ (L.U (j 1) : Set A.left)` using `Set.mem_iInter.1 hy 1`. Establish `e : ψ.left ≫ (snd T A).left = m.left` using `by rw [← Over.comp_left, hm]`. Rewrite `h1` using `[← e]`. Conclude with `Set.mem_iInter.2 fun _ => h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_le_pull (L : LB A.left) {T : Over S} (ψ : T ⊗ A ⟶ T ⊗ A) (m : T ⊗ A ⟶ A)
     (hm : ψ ≫ snd T A = m) (j : Fin 2 → L.ι) :
@@ -95,9 +95,9 @@ def IsGenSec (L : LB A.left) (a : ℤ) {T : Over S} (th : LB.Sec (LPow A L a T))
 def ptSecT {T : Over S} (z : T ⟶ A) : T ⟶ T ⊗ A := lift (𝟙 T) z
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : z.left.base y ∈ (L.U (j 0) : Set A.left)` using `Set.mem_iInter.1 hy 0`. Establish `e : (ptSecT A z).left ≫ (snd T A).left = z.left`. Rewrite using `[← Over.comp_left, ptSecT, lift_snd]`. Rewrite `h1` using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Set.mem_iInter.2 fun i => by`. Rewrite using `[Subsingleton.elim i 0]`. Conclude with `h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_le (L : LB A.left) {T : Over S} (z : T ⟶ A) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => z.left) j ≤
@@ -151,9 +151,9 @@ def InVVOver (P : PolAV S) (N m : ℕ) {T : Over S} (s : LB.Sec (LPow P.A P.L N 
     (∀ l, IsVVGen P N m (t l)) ∧ ∀ j, s.f j = ∑ l, liftFun P.A _ (r l) * (t l).f j
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : (snd T' A).left.base y ∈ (L.U (j 0) : Set A.left)` using `Set.mem_iInter.1 hy 0`. Establish `e : h.left ≫ (snd T A).left = (snd T' A).left` using `by rw [← Over.comp_left, hh]`. Rewrite `h1` using `[← e]`. Conclude with `Set.mem_iInter.2 fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subsingleton.elim i 0]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem chart_le_res (L : LB A.left) {T T' : Over S} (h : T' ⊗ A ⟶ T ⊗ A) (hh : h ≫ snd T A = snd T' A)
     (a : ℤ) (j : Fin 1 → L.ι) :

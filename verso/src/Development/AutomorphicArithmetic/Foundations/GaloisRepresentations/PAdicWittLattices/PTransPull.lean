@@ -8,15 +8,15 @@ open scoped TensorProduct
 universe u
 
 /- English proof (translation)
-Take `⟨hpb, hm⟩` from `h`. Establish `hw : φ ≫ G.hom = G'.hom ≫ f` using `hpb.w`. Set `P : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk φ (by simpa using hw)`. Establish `key : ∀ n : ℕ, ((𝟙 G') ^ n : G' ⟶ G').left ≫ φ = (P ^ n).left`. Introduce `n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero`. Set `x₀ : Over.mk (G'.hom ≫ f) ⟶ G` to `Over.homMk ((1 : G' ⟶ G').left ≫ φ) (by rw [Category.assoc, hw, ← Category.assoc, Over.w]; rfl)`. Establish `e : (x₀ * x₀).left = x₀.left`. Rewrite using `[hm G' 1 1 x₀ x₀ rfl rfl, _root_.mul_one (1 : G' ⟶ G')]`.
+Proceed by induction. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : x₀ * x₀ = x₀` using `Over.OverMorphism.ext e`. Establish `e3 : x₀ = 1` using `by simpa using e2`. Rewrite using `[pow_zero, pow_zero]`. Conclude with `congrArg CommaMorphism.left e3`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Rewrite using `[pow_succ, pow_succ, ← hm G' _ _ (P ^ n) P ih.symm (by simp [P])]`. Rewrite using `[key d]`. Establish `hP : P ≫ ((𝟙 G) ^ d) = P ^ d` using `by rw [MonObj.comp_pow, Category.comp_id]`. Rewrite using `[← hP]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem pow_push {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj G'] [GrpObj G] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (d : ℕ) :
@@ -45,7 +45,7 @@ private theorem pow_push {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} [GrpObj
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `c₁.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, e', ← Category.assoc, e, Category.assoc, ← Over.comp_left, h, pow_push c₁]`. Rewrite using `[Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem qinv_pull {S S' : Scheme.{0}} {A₁' A₂' : Over S'} {A₁ A₂ : Over S} [GrpObj A₁'] [GrpObj A₁] {f : S' ⟶ S}
     {φ₁ : A₁'.left ⟶ A₁.left} {φ₂ : A₂'.left ⟶ A₂.left} (c₁ : IsGrpPullback A₁' A₁ f φ₁) {ψ : A₁ ⟶ A₂} {χ : A₂ ⟶ A₁}
@@ -57,15 +57,15 @@ private theorem qinv_pull {S S' : Scheme.{0}} {A₁' A₂' : Over S'} {A₁ A₂
   · rw [Over.w, Over.w]
 
 /- English proof (translation)
-Introduce `hHom hTate p _ D G L R _ _ gb S S' s s' f hf N₁ N₂ o₁ o₂ o₁' o₂' m₁ m₂ ψ h hT`. Take `⟨hmon, hact, ⟨χ, d, hχmon, hχact, e1, e2, hd⟩, ⟨c, hc, ⟨lb⟩, tt⟩, hgeo⟩` from `hT`. Take `⟨ψ', hψ, hmon', hact', hlb'⟩` from `hHom D.toG R gb S S' s s' f N₁ N₂ o₁ o₂ o₁' o₂' m₁ m₂ ψ`. Take `⟨χ', hχ, hχmon', hχact', -⟩` from `hHom D.toG R gb S S' s s' f N₂ N₁ o₂ o₁ o₂' o₁' m₂ m₁ χ`. Use `⟨ψ', ⟨hmon' hmon, hact' hact, ⟨χ', d, hχmon' hχmon, hχact' hχact, qinv_pull m₁.cart hψ hχ e1, qinv_pull m₂.cart hχ hψ e2, hd⟩, ⟨c, hc, hlb' c ⟨lb⟩, tt⟩, ?_⟩, hψ⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k _ _ t β ht`. Take `⟨I₁, I₂, hI₁, hI₂, hev⟩` from `hgeo k (t ≫ f) β (by rw [Category.assoc, hf, ht])`. Take `⟨I₁', hI₁', hev₁⟩` from `(hTate p D R gb S S' s s' f N₁ o₁ o₁' m₁ k t).1 I₁`. Take `⟨I₂', hI₂', hev₂⟩` from `(hTate p D R gb S S' s s' f N₂ o₂ o₂' m₂ k t).1 I₂`. Use `⟨I₁', I₂', hI₁' hI₁, hI₂' hI₂, fun n hn hnp x y => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hev n hn hnp x y]`. Prove the components needed by the constructor for the conclusion. Introduce `e`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `key` using `congrArg (fun a => a.left ≫ m₂.φ) e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `only [Over.comp_left, Category.assoc, hψ] at key`. Use `erw [← Category.assoc, hev₁ n x, hev₂ n y] at key`. Rewrite using `[Over.comp_left]`. Conclude with `key`. Introduce `e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `m₂.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hψ, ← Category.assoc] erw [hev₁ n x, hev₂ n y]`. Rewrite using `[← Over.comp_left, e]`. Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pTransPull :
     HomPull → TatePull → TransPull := by

@@ -7,11 +7,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsCyclotomicExtensi
     fun {p : ℕ} [Fact (Nat.Prime p)] (D : GlobalTheory.UPel.HT.Datum p) ↦ TensorProduct ℤ ℚ D.La
 
 /- English proof (translation)
-Introduce `p _ D P h0 hadd htmul v`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => exact h0`. Consider the case `add x y hx hy => exact hadd x y hx hy`. Consider the case `tmul a w`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => rw [TensorProduct.tmul_zero]`. Conclude with `h0`. Consider the case `tmul t x => exact htmul a t x`. Consider the case `add x y hx hy => rw [TensorProduct.tmul_add]`.
-
-Conclude with `hadd _ _ hx hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk61.vq_induction :
     ∀ {p : ℕ} [inst : Fact (Nat.Prime p)] {D : GlobalTheory.UPel.HT.Datum p}

@@ -9,9 +9,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L A B s hP hL hA hB hBa hs`. Take `⟨a, ha, hsa, -⟩` from `id hs`. Establish `hS : ∀ ε ∈ Set.Ioi (0 : ℝ), ptsIntegral P (Fin.cons (regLog A s ε) (pot L)) (fun z => Real.log (B.h z)) = ptsIntegral P (Fin.cons (fun z => Real.log (B.h z)) (pot L)) (regLog A s ε)`. Introduce `ε hε`. Establish `h` using `hSt K ι P n L (regLine A s ε ha hsa) B hP hL (isSmoothHerm_regLine hA hε ha hsa) hB (regLine_a A s ε ha hsa) hBa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[log_regLine]`. Conclude with `h.symm`. Conclude with `tendsto_nhds_unique (hReg K ι P n L A B s hP hL hA hB hBa hs) ((hLim K ι P n L A B s hP hL hA hB hBa hs).congr' (eventually_nhdsWithin_of_forall hS))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PoincareLelongAlt.of_found (hSt : StokesStatement) (hReg : PoincareLelongRegularised.Statement)
     (hLim : PoincareLelongLimit.Statement) : ReciprocityTheory.ChartRestriction.G.Geo.ArithmeticPoincareLelongFormula := by

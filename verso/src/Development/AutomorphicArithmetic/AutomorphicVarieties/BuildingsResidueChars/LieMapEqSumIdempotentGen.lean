@@ -5,11 +5,9 @@ open scoped TensorProduct
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Introduce `R _ _ ι _ n A _ _ _ _ D l X`. Establish `key : ∀ i j, ∑ τ, D.ch τ (X i j) • gen D l τ i j = l (Matrix.single i j (X i j))`. Introduce `i j`. Simplify using `only [gen, ← map_smul, ← map_sum, ← D.mul_e, ← Finset.mul_sum, D.sum, mul_one, unitMap_tmul, one_smul]`. Use `conv_rhs =>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `arg 2`. Use extensionality with `i`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [key, ← map_sum]`.
-
-Use `congr 1`. Conclude with `Matrix.matrix_eq_sum_single X`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lieMap_eq_sum_idempotent_gen :
     ∀ (R : Type) [CommRing R] [Algebra ℝ R] (ι : Type) [Fintype ι] (n : ℕ) (A : Type) [Ring A] [Algebra ℂ A] [Algebra ℝ A] [IsScalarTower ℝ ℂ A] (D : Idem R ι) (l : Matrix (Fin n) (Fin n) R →ₗ[ℝ] A) (X : Matrix (Fin n) (Fin n) R), l X = ∑ τ, ∑ i, ∑ j, D.ch τ (X i j) • gen D l τ i j := by

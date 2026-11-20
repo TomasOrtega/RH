@@ -13,24 +13,22 @@ open PI.UpqRep PI.ZuckTensor
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [Pi.single_apply, Fin.rev_eq_iff]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma revNum_single (s x : Fin n) :
     (Pi.single (Fin.rev s) (1 : ℝ) : Fin n → ℝ) x = (Pi.single s (1 : ℝ) : Fin n → ℝ) (Fin.rev x) := by
   simp only [Pi.single_apply, Fin.rev_eq_iff]
 
 /- English proof (translation)
-Establish `h1 : #(univ.filter fun b => a < b ∧ revE ε b = revE ε a) = #(univ.filter fun b => b < Fin.rev a ∧ ε b = ε (Fin.rev a))`. Apply `Finset.card_nbij' Fin.rev Fin.rev` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_rev.mpr hb.2.1, hb.2.2⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.lt_rev_iff.mpr hb.2.1, by simp only [revE, Fin.rev_rev]; exact hb.2.2⟩`. Introduce `b _`. Conclude with `Fin.rev_rev b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Conclude with `Fin.rev_rev b`. Establish `h2 : #(univ.filter fun b => b < a ∧ revE ε b = revE ε a) = #(univ.filter fun b => Fin.rev a < b ∧ ε b = ε (Fin.rev a))`. Apply `Finset.card_nbij' Fin.rev Fin.rev` to reduce the goal to its premises. Introduce `b hb`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_rev.mpr hb.2.1, hb.2.2⟩`. Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_iff.mpr hb.2.1, by simp only [revE, Fin.rev_rev]; exact hb.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Conclude with `Fin.rev_rev b`. Introduce `b _`. Conclude with `Fin.rev_rev b`. Simplify using `only [rhoC]`.
-
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem revNum_rhoC (ε : Fin n → Bool) (a : Fin n) : rhoC (revE ε) a = - rhoC ε (Fin.rev a) := by
   have h1 : #(univ.filter fun b => a < b ∧ revE ε b = revE ε a) =
@@ -60,17 +58,15 @@ theorem revNum_rhoC (ε : Fin n → Bool) (a : Fin n) : rhoC (revE ε) a = - rho
   ring
 
 /- English proof (translation)
-Establish `h1 : #(univ.filter fun b => a < b ∧ revE ε b ≠ revE ε a) = #(univ.filter fun b => b < Fin.rev a ∧ ε b ≠ ε (Fin.rev a))`. Apply `Finset.card_nbij' Fin.rev Fin.rev` to reduce the goal to its premises. Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_rev.mpr hb.2.1, hb.2.2⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.lt_rev_iff.mpr hb.2.1, by simp only [revE, Fin.rev_rev]; exact hb.2.2⟩`. Introduce `b _`. Conclude with `Fin.rev_rev b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Conclude with `Fin.rev_rev b`. Establish `h2 : #(univ.filter fun b => b < a ∧ revE ε b ≠ revE ε a) = #(univ.filter fun b => Fin.rev a < b ∧ ε b ≠ ε (Fin.rev a))`. Apply `Finset.card_nbij' Fin.rev Fin.rev` to reduce the goal to its premises. Introduce `b hb`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_rev.mpr hb.2.1, hb.2.2⟩`. Introduce `b hb`. Rewrite `hb`, the goal using `[Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨mem_univ _, Fin.rev_lt_iff.mpr hb.2.1, by simp only [revE, Fin.rev_rev]; exact hb.2.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b _`. Conclude with `Fin.rev_rev b`. Introduce `b _`. Conclude with `Fin.rev_rev b`. Simplify using `only [rhoN]`.
-
-Rewrite using `[h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem revNum_rhoN (ε : Fin n → Bool) (a : Fin n) : rhoN (revE ε) a = - rhoN ε (Fin.rev a) := by
   have h1 : #(univ.filter fun b => a < b ∧ revE ε b ≠ revE ε a) =
@@ -100,9 +96,9 @@ theorem revNum_rhoN (ε : Fin n → Bool) (a : Fin n) : rhoN (revE ε) a = - rho
   ring
 
 /- English proof (translation)
-Introduce `n lam ⟨hs, hz⟩`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Use `show -lam (Fin.rev b) < -lam (Fin.rev a)`. Conclude with `neg_lt_neg (hs (Fin.rev_lt_rev.mpr hab))`. Take `⟨m, hm⟩` from `hz (Fin.rev a)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨-m - (n : ℤ) + 1, ?_⟩` and prove the remaining obligations. Simplify using `only [revP]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem harish_chandra_holds : HCRev := by
   intro n lam ⟨hs, hz⟩
@@ -116,9 +112,9 @@ theorem harish_chandra_holds : HCRev := by
     linarith
 
 /- English proof (translation)
-Introduce `n ε lam h hg a b hab`. Use `hg (Fin.rev a) (Fin.rev b) hab` as an intermediate fact. Establish `e : revP lam a - revP lam b = -(lam (Fin.rev a) - lam (Fin.rev b))`. Simplify using `only [revP]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, abs_neg]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spectral_gap_holds : GapRev := by
   intro n ε lam h hg a b hab
@@ -129,7 +125,7 @@ theorem spectral_gap_holds : GapRev := by
   exact this
 
 /- English proof (translation)
-Introduce `n ε lam`. Use function extensionality and compare the values at `a`. Simplify using `only [lowK, revP, Pi.add_apply, Pi.sub_apply, revNum_rhoC, revNum_rhoN]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem lowest_k_type_holds : LowKRev := by
   intro n ε lam
@@ -138,16 +134,16 @@ theorem lowest_k_type_holds : LowKRev := by
   ring
 
 /- English proof (translation)
-Simplify using `only [nsq, dot, revP, neg_mul_neg]`. Conclude with `Equiv.sum_comp Fin.revPerm (fun a => u a * u a)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem revNum_nsq (u : Fin n → ℝ) : nsq (revP u) = nsq u := by
   simp only [nsq, dot, revP, neg_mul_neg]
   exact Equiv.sum_comp Fin.revPerm (fun a => u a * u a)
 
 /- English proof (translation)
-Introduce `n ε ν`. Establish `e : revP ν + (2 : ℝ) • rhoC (revE ε) = revP (ν + (2 : ℝ) • rhoC ε)`. Use function extensionality and compare the values at `a`. Simplify using `only [revP, Pi.add_apply, Pi.smul_apply, smul_eq_mul, revNum_rhoC]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [vNormSq]`. Rewrite using `[e, revNum_nsq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem vector_norm_holds : VNormRev := by
   intro n ε ν
@@ -159,13 +155,13 @@ theorem vector_norm_holds : VNormRev := by
   rw [e, revNum_nsq]
 
 /- English proof (translation)
-Introduce `n ε μ Λ ⟨c, hc, hsum⟩`. Use `⟨fun a b => c (Fin.rev b) (Fin.rev a), fun a b h => ?_, ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hc _ _ h`. Conclude with `⟨Fin.rev_lt_rev.mp h1, h2.symm⟩`. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : ∀ a b : Fin n, root (Fin.rev b) (Fin.rev a) x = - root a b (Fin.rev x)`. Introduce `a b`. Simplify using `only [root, Pi.sub_apply, revNum_single]`. Expand and normalize the polynomial expressions, which then agree. Establish `hx` using `congrFun hsum (Fin.rev x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at hx`. Establish `re : (∑ a : Fin n, ∑ b : Fin n, (c (Fin.rev b) (Fin.rev a) : ℝ) * root a b x) = ∑ a : Fin n, ∑ b : Fin n, (c a b : ℝ) * root (Fin.rev b) (Fin.rev a) x`. Rewrite using `[Finset.sum_comm]`. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun b => ?_)` and prove the remaining obligations. Use `Fintype.sum_equiv Fin.revPerm _ _ (fun a => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.revPerm_apply, Fin.rev_rev]`. Simplify using `only [Pi.sub_apply, revP, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[re]`. Simplify using `only [key, mul_neg, Finset.sum_neg_distrib, ← hx]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem compact_dominant_holds : CDomRev := by
   intro n ε μ Λ ⟨c, hc, hsum⟩

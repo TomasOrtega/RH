@@ -15,9 +15,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped Matrix ComplexOrder
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify `M.valAt_zero hz` using `[Mz.pt_zero]`. Consider the case `insert p s hp ih`. Rewrite using `[Finset.sum_insert hp, Finset.sum_insert hp, Mz.add]`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `LieModel.ValAt.add ?_ ih` and prove the remaining obligations. Take `⟨h1, g, hg, hg'⟩` from `hc p`. Use `(hx p).smul h1 g` as an intermediate fact. Rewrite `this` using `[hg, hg', ← Mz.pt_smul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_sum_smul {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G]
     {ξ : Spec (CommRingCat.of Ω) ⟶ X} {L : Type} [AddCommGroup L] [Module Ω L] (M : LieModel G ξ L)
@@ -38,13 +38,13 @@ theorem valAt_sum_smul {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [Grp
     exact this
 
 /- English proof (translation)
-Take `⟨V, _, _, ⟨Mz⟩⟩` from `lieModel_exists 𝔐.X 𝔐.t.G ℂ z`. Take `⟨h, hh, -, -⟩` from `GlobalTheory.T.hodge_hermitian_form_exists E H 𝔐.X 𝔐.t z V Mz hP`. Take `⟨v, hv, hΓ⟩` from `hG`. Take `⟨v', hv', hΓ'⟩` from `hG'`. Use `choose x hx using fun p => Mz.onto (v p) (hv p).isTanAt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hz : genPt 𝔐.ξ ⤳ centre z` using `𝔐.all _`. Establish `key : ∀ q, Mz.pt (∑ p, Tz p q • x p) = v' q` using `fun q => by`. Establish `h1` using `valAt_sum_smul 𝔐.M Mz hz Finset.univ b x (fun p => by rw [hx]; exact hv p) (fun p => T p q) (fun p => Tz p q) (fun p => hT p q)`. Rewrite `h1` using `[← hb q]`. Conclude with `h1.unique 𝔐.tie.gen (hv' q)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ p q, Γ p q = h (x p) (x q)` using `fun p q => (hh _ _ _).1 (by rw [hx, hx]; exact hΓ p q)`. Establish `e2 : ∀ p q, Γ' p q = h (∑ i, Tz i p • x i) (∑ j, Tz j q • x j)` using `fun p q => (hh _ _ _).1 (by rw [key, key]; exact hΓ' p q)`. Use extensionality with `p q`. Rewrite using `[e2]`. Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, e1, map_sum, LinearMap.sum_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, RCLike.star_def, RingHom.id_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gramAt_change (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω]

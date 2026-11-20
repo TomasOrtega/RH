@@ -5,9 +5,9 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.NormSumLt.main`. Consider the case `exact _root_.GlobalTheory.NormSumLt.main`. Consider the case `(apply _root_.GlobalTheory.NormSumLt.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.NormSumLt.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.NormSumLt.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.NormSumLt.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem norm_finset_sum_lt_of_forall_lt {K : Type*} [NormedField K] [IsUltrametricDist K]
     (s : Finset ℕ) (f : ℕ → K) {r : ℝ} (hr : 0 < r) (h : ∀ i ∈ s, ‖f i‖ < r) :
@@ -21,13 +21,11 @@ theorem norm_finset_sum_lt_of_forall_lt {K : Type*} [NormedField K] [IsUltrametr
   | (intros; exact _root_.GlobalTheory.NormSumLt.main ..)
 
 /- English proof (translation)
-Take `⟨p, hm, hp⟩` from `hz`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Use `set n := p.natDegree`. Rewrite `hp` using `[Polynomial.eval₂_eq_sum_range, Finset.sum_range_succ, Polynomial.coeff_natDegree, hm.leadingCoeff, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set S := ∑ i ∈ Finset.range n, (algebraMap ℤ K) (p.coeff i) * z ^ i`. Establish `hS : ‖S‖ < ‖z‖ ^ n`. Use `norm_finset_sum_lt_of_forall_lt _ _ (pow_pos (by linarith) n) ?_` and prove the remaining obligations. Introduce `i hi`. Rewrite using `[norm_mul, norm_pow]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h1 : ‖(algebraMap ℤ K) (p.coeff i)‖ ≤ 1`. Rewrite using `[eq_intCast]`. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : z ^ n = -S` using `by linear_combination hp`.
-
-Establish `h3 : ‖z‖ ^ n = ‖S‖` using `by rw [← norm_pow, h2, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral_int {K : Type*} [NormedField K] [IsUltrametricDist K]
     {z : K} (hz : IsIntegral ℤ z) : ‖z‖ ≤ 1 := by
@@ -53,23 +51,21 @@ theorem norm_le_one_of_isIntegral_int {K : Type*} [NormedField K] [IsUltrametric
   linarith
 
 /- English proof (translation)
-Set `τ : E →+* PadicAlgCl l` to `(IsAlgClosed.lift : E →ₐ[ℚ] PadicAlgCl l).toRingHom`. Establish `hle : ∀ x : 𝓞 E, ‖τ (x : E)‖ ≤ 1` using `fun x => norm_le_one_of_isIntegral_int ((x.isIntegral_coe).map τ.toIntAlgHom)`. Set `I : Ideal (𝓞 E)` to `{ carrier := {x | ‖τ (x : E)‖ < 1} add_mem' := by`. Introduce `a b ha hb`. Simplify using `only [Set.mem_setOf_eq] at *`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[map_add]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ha hb)`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Introduce `c x hx`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul] at *`. Use `push_cast`. Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ x : 𝓞 E, x ∈ I ↔ ‖τ (x : E)‖ < 1` using `fun x => Iff.rfl`. Establish `hprime : I.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, hmem]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y hxy`. Rewrite `hxy` using `[hmem]`. Rewrite using `[hmem, hmem]`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: 1 ≤ ‖τ ((x * y : 𝓞 E) : E)‖`. Use `push_cast`. Rewrite using `[map_mul, norm_mul]`. Conclude with `one_le_mul_of_one_le_of_one_le h.1 h.2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : I ≠ ⊥`. Introduce `hbot`. Establish `hl : ((l : 𝓞 E)) ∈ I`. Rewrite using `[hmem]`. Establish `h1 : ((l : 𝓞 E) : E) = (l : E)` using `by push_cast; rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, map_natCast, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)) l, PadicAlgCl.norm_extends]`. Conclude with `Padic.norm_p_lt_one`. Rewrite `hl` using `[hbot, Ideal.mem_bot]`. Establish `h2 : ((l : 𝓞 E) : E) = 0` using `by rw [hl]; rfl`. Establish `h3 : ((l : 𝓞 E) : E) = (l : E)` using `by push_cast; rfl`.
-
-Rewrite `h2` using `[h3]`. Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast h2)`. Conclude with `⟨τ, ⟨I, hprime, hne⟩, fun x => (hmem x).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_embedding_padicAlgCl_place (E : Type) [Field E] [NumberField E] (l : ℕ)
     [Fact l.Prime] : ∃ (τ : E →+* PadicAlgCl l) (w : HeightOneSpectrum (𝓞 E)),

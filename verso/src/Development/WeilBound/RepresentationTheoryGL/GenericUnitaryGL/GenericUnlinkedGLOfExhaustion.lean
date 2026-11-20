@@ -28,38 +28,38 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `PositivityTheory.rg.gu.whit.whitRankIrr k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem whitRankIrr : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.WhitRankIrr k :=
   fun k _ _ _ _ => PositivityTheory.rg.gu.whit.whitRankIrr k
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `whitRankStd_of_heredity k (GlobalTheory.T.whittaker_heredity k) (whitRankIrr k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem whitRankStd : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.WhitRankStd k :=
   fun k _ _ _ _ => whitRankStd_of_heredity k (GlobalTheory.T.whittaker_heredity k) (whitRankIrr k)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _` and use `GlobalTheory.TL.segment_jacquet_all irreducibleAdmissibleGL hZ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lSegJacquet (hZ : GlobalTheory.Published.SegmentRepresentation) : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], Zc.LSegJacquet k :=
   fun _ _ _ _ _ => GlobalTheory.TL.segment_jacquet_all irreducibleAdmissibleGL hZ
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GlobalTheory.RgGu.Nup2.nuPair k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nuPair : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.NuPair k :=
   fun k _ _ _ _ => GlobalTheory.RgGu.Nup2.nuPair k
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GlobalTheory.T.lUnlinkedIrr_of_irreducibleAdmissible k irreducibleAdmissibleGL (lSegJacquet hZ k) PositivityTheory.Geo.geometricLemmaFiltration (nuPair k) (whitRankStd k) (prodIrrFiniteLength k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem lUnlinkedIrr (hZ : GlobalTheory.Published.SegmentRepresentation) : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.LUnlinkedIrr k :=
   fun k _ _ _ _ => GlobalTheory.T.lUnlinkedIrr_of_irreducibleAdmissible k irreducibleAdmissibleGL (lSegJacquet hZ k) PositivityTheory.Geo.geometricLemmaFiltration
     (nuPair k) (whitRankStd k) (prodIrrFiniteLength k)
 
 /- English proof (translation)
-Introduce `k _ _ _ _` and use `GlobalTheory.T.reorder_of_unlinked_commute_swap k (GlobalTheory.T.unlinked_commute_of_irreducible k irreducibleAdmissibleGL (lUnlinkedIrr hZ k)) (GlobalTheory.RgGu.Swap.swapProd k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem reorder (hZ : GlobalTheory.Published.SegmentRepresentation) : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.Reorder k :=
   fun k _ _ _ _ => GlobalTheory.T.reorder_of_unlinked_commute_swap k (GlobalTheory.T.unlinked_commute_of_irreducible k irreducibleAdmissibleGL (lUnlinkedIrr hZ k)) (GlobalTheory.RgGu.Swap.swapProd k)

@@ -15,9 +15,9 @@ def genColSub (d a : ℕ) : Pol ι d a →ₐ[ℂ] MvPolynomial (Var ι d a) (Mv
   aeval fun y => ∑ j' : Fin a, C (X (y.1, j', y.2.2)) * X (y.1, y.2.1, j')
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c => simp [genColSub, colSub, algebraMap_eq]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p y hp`. Simplify using `only [map_mul, hp]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[genColSub, colSub, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_eval_genColSub {d a : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (P : Pol ι d a) :
     map (eval fun x : ι × Fin a × Fin a => g x.1 x.2.1 x.2.2) (genColSub d a P) = colSub g P := by
@@ -32,7 +32,7 @@ def genDetChar (a : ℕ) (n : ι → ℕ) : MvPolynomial (ι × Fin a × Fin a) 
   ∏ τ, (Matrix.of fun i j => (X (τ, i, j) : MvPolynomial (ι × Fin a × Fin a) ℂ)).det ^ n τ
 
 /- English proof (translation)
-Rewrite using `[genDetChar, map_prod, detChar]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, RingHom.map_det]`. Use `congr 2`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -46,13 +46,13 @@ theorem eval_genDetChar {a : ℕ} (n : ι → ℕ) (g : ι → Matrix (Fin a) (F
   simp
 
 /- English proof (translation)
-Use `set D : MvPolynomial (Var ι d a) (MvPolynomial (ι × Fin a × Fin a) ℂ) := genColSub d a P - C (genDetChar a n) * map C P with hDdef`. Establish `hD : ∀ g : ι → Matrix (Fin a) (Fin a) ℂ, map (eval fun x : ι × Fin a × Fin a => g x.1 x.2.1 x.2.2) D = colSub g P - detChar n g • P`. Introduce `g`. Rewrite using `[hDdef, map_sub, map_mul, map_C, map_eval_genColSub, eval_genDetChar, map_map, smul_eq_C_mul]`. Use `congr 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `: (eval fun x : ι × Fin a × Fin a => g x.1 x.2.1 x.2.2).comp (C : ℂ →+* MvPolynomial (ι × Fin a × Fin a) ℂ) = RingHom.id ℂ` using `by ext; simp`. Rewrite using `[this, map_id]`. Establish `hD0 : D = 0`. Use `MvPolynomial.ext _ _ fun m => ?_` and prove the remaining obligations. Rewrite using `[coeff_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Formalism.L2.Col.eq_zero_of_forall_unitary (ι := ι) (n := a) (fun _ => 1) (fun _ => by simp) _ fun u hu => ?_` and prove the remaining obligations. Simplify using `only [Matrix.one_mul]`. Rewrite using `[← coeff_map, hD u]`. Establish `hu' : ∀ τ, u τ ∈ Matrix.unitaryGroup (Fin a) ℂ` using `fun τ => Matrix.mem_unitaryGroup_iff'.mpr (by simpa [Matrix.star_eq_conjTranspose] using hu τ)`. Use `hP (fun τ => ⟨u τ, hu' τ⟩)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at this`. Rewrite using `[this, sub_self, coeff_zero]`. Use `hD g` as an intermediate fact. Rewrite `this` using `[hD0, _root_.map_zero]`. Conclude with `(sub_eq_zero.mp this.symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colSub_eq_detChar_smul_of_mem_inv {a d : ℕ} (n : ι → ℕ) (P : Pol ι d a) (hP : P ∈ inv a d n)
     (g : ι → Matrix (Fin a) (Fin a) ℂ) : colSub g P = detChar n g • P := by

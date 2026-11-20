@@ -10,7 +10,7 @@ open Formalism.DivisionValues (vw lw conjPl)
 namespace Formalism.PairingDivisionLocalBalance
 
 /- English proof (translation)
-Introduce `K _ _ _ w a a' g ha ha'`. Rewrite using `[div_eq_mul_inv, Formalism.DivisionValues.ValuationRepresentative.vw_mul w a a'⁻¹ ha (inv_ne_zero ha'), Formalism.DivisionValues.ValuationRepresentative.vw_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ratio_valuation : RatioVal := by
   intro K _ _ _ w a a' g ha ha'
@@ -18,9 +18,9 @@ theorem ratio_valuation : RatioVal := by
   ring
 
 /- English proof (translation)
-Introduce `K _ _ _ w G G' q hq h hv`. Establish `hq0 : (q : K) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `hG : (G : K) ≠ 0` using `by intro h0; rw [h0, zero_mul] at h; exact hq0 h.symm`. Establish `hG' : (G' : K) ≠ 0` using `by intro h0; rw [h0, mul_zero] at h; exact hq0 h.symm`. Establish `h1` using `Formalism.DivisionValues.ValuationRepresentative.vw_mul w (G : K) (G' : K) hG hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[h, hv]`. Establish `h2` using `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w G`. Establish `h3` using `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w G'`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gaussValUnit : GaussUnit := by
   intro K _ _ _ w G G' q hq h hv
@@ -34,7 +34,7 @@ theorem gaussValUnit : GaussUnit := by
   omega
 
 /- English proof (translation)
-Proceed by induction on `R using Finset.induction_on with`. Consider the case `empty => simp [Formalism.DivisionValues.ValuationRepresentative.vw_one]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.sum_insert ha, Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ (he a (Finset.mem_insert_self _ _)) (Finset.prod_ne_zero_iff.mpr fun q hq => he q (Finset.mem_insert_of_mem hq)), ih fun q hq => he q (Finset.mem_insert_of_mem hq)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_prod {K : Type} [Field K] [NumberField K] [StarRing K] (w : Pl K) {P : Type} (R : Finset P)
     (e : P → K) (he : ∀ q ∈ R, e q ≠ 0) : vw w (∏ q ∈ R, e q) = ∑ q ∈ R, vw w (e q) := by
@@ -48,9 +48,9 @@ theorem vw_prod {K : Type} [Field K] [NumberField K] [StarRing K] (w : Pl K) {P 
       ih fun q hq => he q (Finset.mem_insert_of_mem hq)]
 
 /- English proof (translation)
-Introduce `K _ _ _ w P R y y' e B hy hyy he hB`. Establish `hy' : y' ≠ 0` using `by intro h0; rw [h0, zero_mul] at hyy; exact hy hyy`. Establish `hp : ∏ q ∈ R, e q ≠ 0` using `by intro h0; rw [h0, mul_zero] at hyy; exact hy hyy`. Establish `h1` using `Formalism.DivisionValues.ValuationRepresentative.vw_mul w y' _ hy' hp`. Rewrite `h1` using `[← hyy, vw_prod w R e (fun q hq => (Finset.prod_ne_zero_iff.mp hp) q hq)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : 0 ≤ ∑ q ∈ R, vw w (e q)` using `Finset.sum_nonneg he`. Establish `h3 : vw w y' ≤ vw w y` using `by omega`. Conclude with `le_trans (by exact_mod_cast h3) hB`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem upper_part_stays : UpperStays := by
   intro K _ _ _ w P R y y' e B hy hyy he hB
@@ -63,13 +63,13 @@ theorem upper_part_stays : UpperStays := by
   exact le_trans (by exact_mod_cast h3) hB
 
 /- English proof (translation)
-Introduce `K _ _ _ _ n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[Formalism.DivisionValues.ValuationRepresentative.vw_zero]`. Establish `hn0 : (n : K) ≠ 0` using `by exact_mod_cast hn.ne'`. Take `⟨h1, h2⟩` from `Formalism.DivisionValues.prod_formula' K (n : K) hn0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2]`. Establish `hc : (Fintype.card (InfinitePlace K) : ℝ) * 2 = (finrank ℚ K : ℝ)`. Establish `h3` using `IsTotallyComplex.finrank K`. Establish `h4` using `InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces K`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5` using `IsTotallyComplex.nrRealPlaces_eq_zero K`. Rewrite using `[h3, h4, h5]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : (0 : ℝ) < finrank ℚ K` using `by exact_mod_cast finrank_pos`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [map_natCast, Complex.norm_natCast, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[← hc]`. Establish `: (Fintype.card (InfinitePlace K) : ℝ) ≠ 0`. Introduce `h0`. Rewrite `hc` using `[h0, zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion. Clear the denominators using the available nonvanishing facts.
 -/

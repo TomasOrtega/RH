@@ -7,17 +7,17 @@ namespace GlobalTheory
 open MeasureTheory in
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ Γ _ K hK hcov f hf hf0 hinv`. Establish `: Countable Γ` using `countable_of_discrete_addSubgroup Γ`. Take `⟨hex, h⟩` from `meanSquare_addFundamentalDomain_of_cocompact G Γ K hK hcov`. Take `⟨N, hN⟩` from `h f hf hinv`. Use `⟨hex, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hN0 : N ≠ 0`. Introduce `h0`. Take `⟨μ, F, hμ, hF, h1⟩` from `hex`. Establish `h2` using `(hN μ F hμ hF).2.2.1`. Rewrite `h2` using `[h0, ENNReal.coe_zero, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : ∫⁻ w, ‖f w‖ₑ ^ 2 ∂μ = 0`. Rewrite using `[hF.lintegral_eq_tsum'']`. Establish `e : ∀ (g : Γ) (x : G), ‖f (g +ᵥ x)‖ₑ = ‖f x‖ₑ` using `fun g x => by`. Use `hinv g g.2 x` as an intermediate fact. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, ← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Simplify using `only [e, h2, tsum_zero]`. Rewrite `h3` using `[lintegral_eq_zero_iff (hf.enorm.measurable.pow_const 2)]`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[← hf.ae_eq_iff_eq μ continuous_zero]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h3] with w hw`. Simplify using `using hw`. Establish `hpos : (0 : ℝ) < N` using `by positivity`. Use `⟨((√(N : ℝ))⁻¹ : ℝ), fun μ F hμ hF h1 => ?_⟩` and prove the remaining obligations. Establish `h2` using `(hN μ F hμ hF).2.2.2`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, ENNReal.toReal_one, one_mul]`. Simplify using `only [norm_mul, mul_pow]`. Rewrite using `[integral_const_mul, h2, Complex.norm_real, Real.norm_eq_abs, sq_abs, inv_pow, Real.sq_sqrt hpos.le, inv_mul_cancel₀ hpos.ne']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_normalise_meanSquare_of_cocompact : ∀ (G : Type) [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G] [LocallyCompactSpace G] [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] (Γ : AddSubgroup G) [DiscreteTopology Γ] (K : Set G), IsCompact K → (∀ x : G, ∃ g ∈ Γ, g + x ∈ K) → ∀ f : G → ℂ, Continuous f → f ≠ 0 → (∀ g ∈ Γ, ∀ w, ‖f (g + w)‖ = ‖f w‖) → (∃ (μ : MeasureTheory.Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure ∧ MeasureTheory.IsAddFundamentalDomain Γ 𝓕 μ ∧ μ 𝓕 = 1) ∧ ∃ c : ℂ, ∀ (μ : MeasureTheory.Measure G) (𝓕 : Set G), μ.IsAddHaarMeasure → MeasureTheory.IsAddFundamentalDomain Γ 𝓕 μ → μ 𝓕 = 1 → ∫ w in 𝓕, ‖c * f w‖ ^ 2 ∂μ = 1 := by
   intro G _ _ _ _ _ _ _ _ Γ _ K hK hcov f hf hf0 hinv

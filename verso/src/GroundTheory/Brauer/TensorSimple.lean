@@ -11,7 +11,7 @@ variable {K A B : Type*} [Field K] [Ring A] [Ring B] [Algebra K A] [Algebra K B]
 variable {κ : Type*} [DecidableEq κ] (𝒞 : Module.Basis κ K B)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a' b`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp only [mul_add, map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_tmul_one_mul (a : A) (x : A ⊗[K] B) (i : κ) :
     TensorProduct.equivFinsuppOfBasisRight 𝒞 ((a ⊗ₜ[K] (1 : B)) * x) i =
@@ -23,7 +23,7 @@ theorem coeff_tmul_one_mul (a : A) (x : A ⊗[K] B) (i : κ) :
   | add x y hx hy => simp only [mul_add, map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a' b`. Simplify using `[Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp only [add_mul, map_add, Finsupp.add_apply, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_mul_tmul_one (a : A) (x : A ⊗[K] B) (i : κ) :
     TensorProduct.equivFinsuppOfBasisRight 𝒞 (x * (a ⊗ₜ[K] (1 : B))) i =
@@ -35,7 +35,7 @@ theorem coeff_mul_tmul_one (a : A) (x : A ⊗[K] B) (i : κ) :
   | add x y hx hy => simp only [add_mul, map_add, Finsupp.add_apply, hx, hy]
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite `hi` using `[Finsupp.mem_support_iff, coeff_tmul_one_mul]`. Rewrite using `[Finsupp.mem_support_iff]`. Introduce `h`. Conclude with `hi (by rw [h, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem support_coeff_tmul_one_mul (a : A) (x : A ⊗[K] B) :
     (TensorProduct.equivFinsuppOfBasisRight 𝒞 ((a ⊗ₜ[K] (1 : B)) * x)).support ⊆
@@ -47,7 +47,7 @@ theorem support_coeff_tmul_one_mul (a : A) (x : A ⊗[K] B) :
   exact hi (by rw [h, mul_zero])
 
 /- English proof (translation)
-Introduce `i hi`. Rewrite `hi` using `[Finsupp.mem_support_iff, coeff_mul_tmul_one]`. Rewrite using `[Finsupp.mem_support_iff]`. Introduce `h`. Conclude with `hi (by rw [h, zero_mul])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem support_coeff_mul_tmul_one (a : A) (x : A ⊗[K] B) :
     (TensorProduct.equivFinsuppOfBasisRight 𝒞 (x * (a ⊗ₜ[K] (1 : B)))).support ⊆
@@ -65,11 +65,11 @@ section Central
 variable {K A B : Type*} [Field K] [Ring A] [Ring B] [Algebra K A] [Algebra K B]
 
 /- English proof (translation)
-Set `𝒞` to `Module.Basis.ofVectorSpace K B`. Set `φ` to `TensorProduct.equivFinsuppOfBasisRight (M := A) 𝒞`. Establish `hc : ∀ i, ∃ k : K, φ x i = algebraMap K A k` using `fun i ↦ by`. Rewrite using `[← Algebra.IsCentral.mem_center_iff (K := K), Subalgebra.mem_center_iff]`. Introduce `a`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun y ↦ φ y i) (h a)` as an intermediate fact. Simplify `this` using `only [φ, coeff_tmul_one_mul, coeff_mul_tmul_one]`. Use `choose k hk using hc`. Use `⟨(φ x).sum fun i _ ↦ k i • 𝒞 i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← φ.symm_apply_apply x]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.equivFinsuppOfBasisRight_symm_apply, Finsupp.sum, Finsupp.sum, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[hk i, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_one_tmul_of_commute [Algebra.IsCentral K A] (x : A ⊗[K] B)
     (h : ∀ a : A, (a ⊗ₜ[K] (1 : B)) * x = x * (a ⊗ₜ[K] (1 : B))) :
@@ -93,11 +93,11 @@ theorem exists_eq_one_tmul_of_commute [Algebra.IsCentral K A] (x : A ⊗[K] B)
 variable (K A B)
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Algebra.TensorProduct.includeRight_map_center_le K A B)` and prove the remaining obligations. Introduce `x hx`. Rewrite `hx` using `[Subalgebra.mem_center_iff]`. Take `⟨b, rfl⟩` from `exists_eq_one_tmul_of_commute x fun a ↦ hx _`. Break down `subsingleton_or_nontrivial A with hA | hA` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨0, Subalgebra.zero_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (1 : A) 0, zero_tmul, map_zero]`. Establish `hb : b ∈ Subalgebra.center K B`. Rewrite using `[Subalgebra.mem_center_iff]`. Introduce `c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective (includeRight : B →ₐ[K] A ⊗[K] B)` using `Algebra.TensorProduct.includeRight_injective (algebraMap K A).injective`. Apply `hinj` to reduce the goal to its premises. Use `hx ((1 : A) ⊗ₜ[K] c)` as an intermediate fact. Simplify `this` using `[Algebra.TensorProduct.tmul_mul_tmul]`. Conclude with `⟨b, hb, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem center_tensorProduct_eq_map_includeRight [Algebra.IsCentral K A] :
     Subalgebra.center K (A ⊗[K] B) = (Subalgebra.center K B).map includeRight := by
@@ -119,11 +119,11 @@ theorem center_tensorProduct_eq_map_includeRight [Algebra.IsCentral K A] :
     exact ⟨b, hb, rfl⟩
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Algebra.TensorProduct.includeLeft_map_center_le K B A)` and prove the remaining obligations. Introduce `x hx`. Set `e` to `Algebra.TensorProduct.comm K A B`. Establish `hx' : e.symm x ∈ Subalgebra.center K (A ⊗[K] B)`. Rewrite `hx`, the goal using `[Subalgebra.mem_center_iff]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `w`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, e.apply_symm_apply, hx]`. Rewrite `hx'` using `[center_tensorProduct_eq_map_includeRight]`. Take `⟨b, hb, hbx⟩` from `hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[← e.apply_symm_apply x, ← hbx]`. Simplify using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem center_tensorProduct_eq_map_includeLeft [Algebra.IsCentral K A] :
     Subalgebra.center K (B ⊗[K] A) = (Subalgebra.center K B).map includeLeft := by
@@ -153,29 +153,27 @@ section Simple
 variable {K A B : Type*} [Field K] [Ring A] [Ring B] [Algebra K A] [Algebra K B]
 
 /- English proof (translation)
-Set `𝒞` to `Module.Basis.ofVectorSpace K B`. Set `φ` to `TensorProduct.equivFinsuppOfBasisRight (M := A) 𝒞`. Establish `hex : ∃ n, ∃ x ∈ I, x ≠ 0 ∧ (φ x).support.card = n`. Assume the negation of the conclusion as `hne`. Apply `hI` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `x`. Rewrite using `[TwoSidedIdeal.mem_bot]`. Use `⟨fun hx ↦ ?_, fun hx ↦ hx ▸ I.zero_mem⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hx0`. Conclude with `hne ⟨_, x, hx, hx0, rfl⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxI, hx0, hxn⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ y ∈ I, y ≠ 0 → Nat.find hex ≤ (φ y).support.card` using `fun y hy hy0 ↦ Nat.find_min' hex ⟨y, hy, hy0, rfl⟩`. Use `set n := Nat.find hex`. Establish `hφx : φ x ≠ 0` using `fun h ↦ hx0 (φ.map_eq_zero_iff.mp h)`. Take `⟨i₀, hi₀⟩` from `Finsupp.support_nonempty_iff.mpr hφx`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Set `J : TwoSidedIdeal A` to `TwoSidedIdeal.mk' {a | ∃ y ∈ I, (φ y).support ⊆ (φ x).support ∧ φ y i₀ = a} ⟨0, I.zero_mem, by simp, by simp⟩ (by`. Introduce and unpack `_ _ ⟨y, hy, hys, rfl⟩ ⟨z, hz, hzs, rfl⟩`. Use `⟨y + z, I.add_mem hy hz, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[map_add]`. Conclude with `Finsupp.support_add.trans (Finset.union_subset hys hzs))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce and unpack `_ ⟨y, hy, hys, rfl⟩`. Use `⟨-y, I.neg_mem hy, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[map_neg, Finsupp.support_neg]`. Conclude with `hys)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use the proof step `(by`. Introduce and unpack `a _ ⟨y, hy, hys, rfl⟩`. Conclude with `⟨(a ⊗ₜ[K] (1 : B)) * y, I.mul_mem_left _ _ hy, (support_coeff_tmul_one_mul 𝒞 a y).trans hys, coeff_tmul_one_mul 𝒞 a y i₀⟩)`. Use the proof step `(by`. Introduce and unpack `_ a ⟨y, hy, hys, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `⟨y * (a ⊗ₜ[K] (1 : B)), I.mul_mem_right _ _ hy, (support_coeff_mul_tmul_one 𝒞 a y).trans hys, coeff_mul_tmul_one 𝒞 a y i₀⟩)`. Establish `h1J : (1 : A) ∈ J` using `IsSimpleRing.one_mem_of_ne_zero_mem J (Finsupp.mem_support_iff.mp hi₀) ((TwoSidedIdeal.mem_mk' _ _ _ _ _ _ _).mpr ⟨x, hxI, subset_rfl, rfl⟩)`. Take `⟨y, hyI, hys, hy1⟩` from `(TwoSidedIdeal.mem_mk' _ _ _ _ _ _ _).mp h1J`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Simplify using `at hy1`. Establish `hyeq : (φ y).support = (φ x).support` using `Finset.eq_of_subset_of_card_le hys (hxn ▸ hmin y hyI hy0)`. Establish `hcomm : ∀ a : A, (a ⊗ₜ[K] (1 : B)) * y = y * (a ⊗ₜ[K] (1 : B))`. Introduce `a`. Rewrite using `[← sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hz0`. Establish `hzI : (a ⊗ₜ[K] (1 : B)) * y - y * (a ⊗ₜ[K] (1 : B)) ∈ I` using `I.sub_mem (I.mul_mem_left _ _ hyI) (I.mul_mem_right _ _ hyI)`. Establish `hsub : (φ ((a ⊗ₜ[K] (1 : B)) * y - y * (a ⊗ₜ[K] (1 : B)))).support ⊆ (φ y).support.erase i₀`. Introduce `i hi`. Rewrite `hi` using `[Finsupp.mem_support_iff, map_sub, Finsupp.sub_apply, coeff_tmul_one_mul, coeff_mul_tmul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Finset.mem_erase.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hi (by rw [hy1, mul_one, one_mul, sub_self])`. Rewrite using `[Finsupp.mem_support_iff]`. Introduce `h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hi (by rw [h, mul_zero, zero_mul, sub_zero])`. Establish `hi₀y : i₀ ∈ (φ y).support` using `hyeq ▸ hi₀`. Use `(hmin _ hzI hz0).trans (Finset.card_le_card hsub)` as an intermediate fact. Rewrite `this` using `[Finset.card_erase_of_mem hi₀y, hyeq, hxn]`. Establish `hn : 0 < n` using `hxn ▸ Finset.card_pos.mpr ⟨i₀, hi₀⟩`.
-
-Use linear arithmetic over natural numbers and integers. Take `⟨b, rfl⟩` from `exists_eq_one_tmul_of_commute y hcomm`. Use `⟨b, ?_, hyI⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hy0 (tmul_zero _ _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_one_tmul_mem_of_ne_bot [Algebra.IsCentral K A] [IsSimpleRing A]
     (I : TwoSidedIdeal (A ⊗[K] B)) (hI : I ≠ ⊥) :

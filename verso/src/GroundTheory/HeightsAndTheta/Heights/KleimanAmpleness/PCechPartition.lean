@@ -10,23 +10,21 @@ noncomputable section
 universe u v w
 
 /- English proof (translation)
-Introduce `S _ Ω _ E _ _ _ n U M m a b j hjU hab ha hb hloc p s hs hds`. Set `T : Subring Ω` to `{ carrier := {c | ∀ I, ∀ z ∈ M I, c • z ∈ M I} mul_mem' := fun {x y} hx hy I z hz => by rw [mul_smul]; exact hx I _ (hy I z hz) one_mem' := fun I z hz => by rwa [one_smul] add_mem' := fun {x y} hx hy I z hz => by rw [add_smul]; exact (M I).add_mem (hx I z hz) (hy I z hz) zero_mem …`. Establish `hT : ∀ c ∈ T, ∀ I, ∀ z ∈ M I, c • z ∈ M I` using `fun c hc => hc`. Set `b' : Fin m → T` to `fun k => ⟨b k, hb k⟩`. Establish `hspan : Ideal.span (Set.range b') = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (∑ k, (⟨a k, ha k⟩ : T) * b' k) = 1` using `Subtype.ext (by simp [b', hab])`. Rewrite using `[← h1]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨k, rfl⟩)`. Establish `hex : ∀ (k : Fin m) (K : Cech.Idx U p), ∃ e0 : ℕ, j k ∉ K.1.1 → b k ^ e0 • Cech.Partition.onSet s (insert (j k) K.1.1) ∈ M K.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k K`. Distinguish the cases in `hk : j k ∈ K.1.1`. Conclude with `⟨0, fun h => absurd hk h⟩`. Set `I' : Cell U` to `⟨insert (j k) K.1.1, Finset.insert_nonempty _ _, Finset.insert_subset (hjU k) K.1.2.2⟩`. Establish `hI' : I'.1.card = p + 1 + 1`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(insert (j k) K.1.1).card = p + 1 + 1`. Rewrite using `[Finset.card_insert_of_notMem hk, K.2]`. Establish `hz : Cech.Partition.onSet s (insert (j k) K.1.1) ∈ M I'`. Rewrite using `[show insert (j k) K.1.1 = (⟨I', hI'⟩ : Cech.Idx U (p + 1)).1.1 from rfl, Cech.Partition.onSet_idx]`. Conclude with `(Submodule.mem_pi.mp hs) ⟨I', hI'⟩ (Set.mem_univ _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e0, he0⟩` from `hloc k K.1 I' rfl _ hz`. Conclude with `⟨e0, fun _ => he0⟩`. Use `choose f hf using hex`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, ∀ k K, f k K ≤ e := by`. Take `⟨e, he⟩` from `(Set.finite_range (fun x : Fin m × Cech.Idx U p => f x.1 x.2)).bddAbove`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨e, fun k K => he ⟨(k, K), rfl⟩⟩`. Establish `hpow` using `Ideal.span_pow_eq_top (Set.range b') hspan e`. Rewrite `hpow` using `[← Set.range_comp, Ideal.eq_top_iff_one, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨c, hc⟩` from `hpow`. Set `wt : Fin n → Ω` to `fun i => ∑ k ∈ Finset.univ.filter (fun k => j k = i), (c k : Ω) * b k ^ e`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : ∑ i ∈ U, wt i = 1`. Rewrite using `[Finset.sum_fiberwise_of_maps_to (fun k _ => hjU k)]`. Establish `h` using `congrArg Subtype.val hc`. Simplify `h` using `[b']`. Use `Cech.Partition.exact_of_partition M s hds wt hw ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K i _ hiK`. Simplify using `only [wt, Finset.sum_smul]`. Use `Submodule.sum_mem _ fun k hk => ?_` and prove the remaining obligations. Take `rfl` from `(Finset.mem_filter.mp hk).2`. Rewrite using `[mul_smul, ← Nat.sub_add_cancel (he k K), pow_add, mul_smul]`.
-
-Conclude with `hT _ (c k).2 _ _ (hT _ (pow_mem (show b k ∈ T from hb k) _) _ _ (hf k K hiK))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CechPartition.proof : CechPartition.Statement.{u, v, w} := by
   intro S _ Ω _ E _ _ _ n U M m a b j hjU hab ha hb hloc p s hs hds

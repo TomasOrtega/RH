@@ -15,27 +15,25 @@ variable {K V : Type} [Field K] [StarRing K] [AddCommGroup V] [Module K V]
 variable {S : Subring K} {h : V →ₗ⋆[K] V →ₗ[K] K} {M : AddSubgroup V}
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact hs u v | exact hs.eq u v`.
+A detailed English derivation is pending.
 -/
 theorem star_h (hs : h.IsSymm) (u v : V) : star (h u v) = h v u := by
   first | exact hs u v | exact hs.eq u v
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `hr`. Set `A : AddSubgroup K` to `{ carrier := {a | ∃ m ∈ M, h m r = a} add_mem' := by`. Introduce and unpack `_ _ ⟨m, hm, rfl⟩ ⟨m', hm', rfl⟩`. Conclude with `⟨m + m', M.add_mem hm hm', by simp⟩`. Use the proof step `zero_mem' := ⟨0, M.zero_mem, by simp⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use the proof step `neg_mem' := by`. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `⟨-m, M.neg_mem hm, by simp⟩ }`. Establish `h1 : ∀ s ∈ S, ∀ a ∈ A, s * a ∈ A`. Introduce and unpack `s hs _ ⟨m, hm, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨star s • m, hM.smul_mem _ (hS.star_mem s hs) m hm, ?_⟩` and prove the remaining obligations. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star]`. Establish `h2 : ∃ a ∈ A, a ≠ 0`. Take `⟨t, ht, htv⟩` from `hM.span v`. Use `⟨h (t • v) r, ⟨_, htv, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Conclude with `mul_ne_zero (star_ne_zero.mpr ht) hv`. Establish `h3 : ∃ t : K, t ≠ 0 ∧ ∀ a ∈ A, t * a ∈ S`. Take `⟨t, ht, htr⟩` from `hM.span r`. Use `⟨t, ht, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce and unpack `_ ⟨m, hm, rfl⟩`. Use `hM.int m hm _ htr` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Take `⟨α, ⟨m₀, hm₀, hα⟩, hα0, hαS⟩` from `hS.principal A h1 h2 h3`. Establish `hrM : α⁻¹ • r ∈ M` using `hM.dual _ fun m hm => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul, smul_eq_mul, mul_comm]`. Conclude with `hαS _ ⟨m, hm, rfl⟩`. Use `⟨α, hα0, hrM, m₀ - ∑ i, (h (x i) m₀ * (h (x i) (x i))⁻¹) • x i, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `M.sub_mem hm₀ (M.sum_mem fun i _ => hM.smul_mem _ ?_ _ (hxM i))` and prove the remaining obligations. Conclude with `S.mul_mem (hM.int _ (hxM i) _ hm₀) (hxu i).2.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, RingHom.id_apply, hrx, mul_zero, Finset.sum_const_zero, sub_zero]`. Rewrite using `[hα, inv_mul_cancel₀ hα0]`. Introduce `j`. Rewrite using `[map_sub, map_sum]`. Simplify using `only [map_smul, smul_eq_mul]`.
-
-Rewrite using `[Finset.sum_eq_single j (fun i _ hij => by rw [hxo j i (Ne.symm hij), mul_zero]) (by simp), mul_assoc, inv_mul_cancel₀ (hxu j).1, mul_one, sub_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair (hS : IsHermSemilocal S) (hM : IsSelfDualMod S h M) {ι : Type} [Fintype ι]
     (x : ι → V) (hxo : ∀ i j, i ≠ j → h (x i) (x j) = 0) (hxu : ∀ i, IsUnitIn S (h (x i) (x i)))
@@ -85,7 +83,7 @@ theorem exists_pair (hS : IsHermSemilocal S) (hM : IsSelfDualMod S h M) {ι : Ty
       (by simp), mul_assoc, inv_mul_cancel₀ (hxu j).1, mul_one, sub_self]
 
 /- English proof (translation)
-Establish `H : ∀ a b : V, star ((u⁻¹ • h) a b) = (u⁻¹ • h) b a`. Introduce `a b`. Simplify using `only [LinearMap.smul_apply, smul_eq_mul, star_mul', star_inv₀, hus, star_h hs]`. Apply the tactic sequence `first | exact H | exact ⟨H⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSymm_smul (hs : h.IsSymm) {u : K} (hus : star u = u) : (u⁻¹ • h).IsSymm := by
   have H : ∀ a b : V, star ((u⁻¹ • h) a b) = (u⁻¹ • h) b a := by
@@ -94,17 +92,17 @@ theorem isSymm_smul (hs : h.IsSymm) {u : K} (hus : star u = u) : (u⁻¹ • h).
   first | exact H | exact ⟨H⟩
 
 /- English proof (translation)
-Establish `hu0 : u ≠ 0` using `hu.1`. Take `⟨α, hα0, hαM, w, hwM, hw1, hwx⟩` from `exists_pair hS hM x hxo hxu hxM ⟨r, by rw [hrr]; exact hu0⟩ hrx`. Establish `hyy : h (α⁻¹ • r) (α⁻¹ • r) = star α⁻¹ * α⁻¹ * u`. Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, hrr, RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsa : star α⁻¹ * α⁻¹ ∈ S`. Establish `h1` using `S.mul_mem (hM.int _ hαM _ hαM) hu.2.2`. Rewrite `h1` using `[hyy, mul_assoc, mul_inv_cancel₀ hu0, mul_one]`. Conclude with `h1`. Take `⟨b, hb, hab⟩` from `Formalism.HermitianLattices.Ext.L3.WA.exists_norm_one_mul_mem hS hsa`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0`. Introduce and unpack `rfl`. Simplify using `at hb`. Establish `hs'` using `isSymm_smul hs hus`. Establish `hyw0 : h (α⁻¹ • r) w = 1` using `by rw [← star_h hs, hw1, star_one]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : (u⁻¹ • h) (α⁻¹ • r) (α⁻¹ • r) = star (α⁻¹ * b) * (α⁻¹ * b)`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, hyy, star_mul']`. Rewrite using `[mul_comm u⁻¹, mul_assoc, mul_inv_cancel₀ hu0, mul_one]`. Take the linear combination `(-(star α⁻¹ * α⁻¹)) * hb`. Establish `hyw' : (u⁻¹ • h) (α⁻¹ • r) (u • w) = 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul, map_smul, smul_eq_mul, hyw0, mul_one, inv_mul_cancel₀ hu0]`. Establish `hww : (u⁻¹ • h) (u • w) (u • w) = u * h w w`. Simplify using `only [LinearMap.smul_apply, map_smulₛₗ, map_smul, smul_eq_mul, starRingEnd_apply, hus, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Take `⟨c, hc, d, hd, hcd⟩` from `Formalism.HermitianLattices.Ext.L3.WA.exists_norm_one_of_pair hS hs' (y := α⁻¹ • r) (w := u • w) (a := α⁻¹ * b) hab (mul_ne_zero (inv_ne_zero hα0) hb0) hy' hyw' (hww ▸ S.mul_mem hu.2.1 (hM.int w hwM w hwM))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c • (u • w) + d • (α⁻¹ • r), M.add_mem (hM.smul_mem c hc _ (hM.smul_mem u hu.2.1 w hwM)) (hM.smul_mem d hd _ hαM), ?_, ?_⟩` and prove the remaining obligations. Rewrite `hcd` using `[LinearMap.smul_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `((inv_mul_eq_one₀ (inv_ne_zero hu0 |> fun _ => hu0)).1 hcd).symm`. Introduce `i`. Simplify using `[map_add, map_smul, hwx i, hrx i]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_of_ref (hS : IsHermSemilocal S) (hs : h.IsSymm) (hM : IsSelfDualMod S h M) {ι : Type}
     [Fintype ι] (x : ι → V) (hxo : ∀ i j, i ≠ j → h (x i) (x j) = 0) (hxu : ∀ i, IsUnitIn S (h (x i) (x i)))
@@ -148,15 +146,15 @@ theorem exists_of_ref (hS : IsHermSemilocal S) (hs : h.IsSymm) (hM : IsSelfDualM
     simp [map_add, map_smul, hwx i, hrx i]
 
 /- English proof (translation)
-Set `f : K → V →ₗ[K] V` to `fun b => { toFun := fun v => v - (b * h w v) • w map_add' := fun x y => by`. Simplify using `only [map_add, mul_add, add_smul]`. Normalize the expressions using the abelian group laws. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [map_smul, smul_eq_mul, RingHom.id_apply, smul_sub, smul_smul]`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm] }`. Establish `hf : ∀ b v, f b v = v - (b * h w v) • w` using `fun _ _ => rfl`. Establish `hcomp : ∀ b c : K, b + c = b * c * h w w → ∀ v : V, (v - (c * h w v) • w) - (b * h w (v - (c * h w v) • w)) • w = v`. Introduce `b c hbc v`. Rewrite using `[map_sub, map_smul, smul_eq_mul, sub_sub, ← add_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: c * h w v + b * (h w v - c * h w v * h w w) = 0`. Take the linear combination `(h w v) * hbc`. Rewrite using `[this, zero_smul, sub_zero]`. Establish `ha' : star a + a = star a * a * h w w` using `by linear_combination ha`. Set `τ : V ≃ₗ[K] V` to `LinearEquiv.ofLinear (f a) (f (star a)) (LinearMap.ext fun v => hcomp a (star a) ha v) (LinearMap.ext fun v => hcomp (star a) a ha' v)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨τ, ?_, fun v => rfl⟩` and prove the remaining obligations. Introduce `x y`. Express the relevant statement in the definitionally equal form `h (x - (a * h w x) • w) (y - (a * h w y) • w) = h x y`. Establish `hsx : star (h w x) = h x w` using `star_h hs w x`. Simplify using `only [map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, RingHom.id_apply, star_mul', hsx]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(h w y * h x w)) * ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_quasi (hs : h.IsSymm) (w : V) {a : K} (ha : a + star a = a * star a * h w w) :
     ∃ τ ∈ Formalism.HermitianLatticesTheory.isom h, ∀ v, τ v = v - (a * h w v) • w := by
@@ -189,33 +187,31 @@ theorem exists_quasi (hs : h.IsSymm) (w : V) {a : K} (ha : a + star a = a * star
   linear_combination (-(h w y * h x w)) * ha
 
 /- English proof (translation)
-Establish `hsy : ∀ a b : V, star (h a b) = h b a` using `star_h hs`. Establish `key : ∀ y : V, h y y = u → h z y ≠ u → ∃ τ ∈ Formalism.HermitianLatticesTheory.isom h, τ y = z ∧ ∀ v, h y v = 0 → h z v = 0 → τ v = v`. Introduce `y hy hne`. Establish `hp : u - h z y ≠ 0` using `sub_ne_zero.mpr (Ne.symm hne)`. Establish `hsp : star (u - h z y) ≠ 0` using `star_ne_zero.mpr hp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hww : h (y - z) (y - z) = (u - h z y) + star (u - h z y)`. Simplify using `only [map_sub, LinearMap.sub_apply]`. Rewrite using `[hy, hz, star_sub, hus, hsy]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨τ, hτ, hf⟩` from `exists_quasi hs (y - z) (a := (u - h z y)⁻¹) (by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hww, star_inv₀]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Use `⟨τ, hτ, ?_, ?_⟩` and prove the remaining obligations. Establish `hyz : h (y - z) y = u - h z y`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, LinearMap.sub_apply, hy]`. Rewrite using `[hf, hyz, inv_mul_cancel₀ hp, one_smul]`. Normalize the expressions using the abelian group laws. Introduce `v hyv hzv`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sub, LinearMap.sub_apply, hyv, hzv, sub_zero, mul_zero, zero_smul]`. Distinguish the cases in `hne : h z x = u`. Take `⟨θ, -, hθ⟩` from `hS.unram`. Establish `hd : θ - star θ ≠ 0` using `hθ.1`. Establish `hθ0 : θ ≠ 0`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using `at hd`. Establish `hsθ : star θ ≠ 0` using `star_ne_zero.mpr hθ0`. Establish `hcc : θ * (star θ)⁻¹ * (star θ * θ⁻¹) = 1` using `by field_simp`. Establish `hc1 : θ * (star θ)⁻¹ ≠ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1`. Apply `hd` to reduce the goal to its premises. Clear denominators, using `at h1` for the nonvanishing conditions. Conclude with `sub_eq_zero.mpr h1`. Take `⟨τ₁, hτ₁, hf₁⟩` from `exists_quasi hs x (a := (1 - θ * (star θ)⁻¹) * u⁻¹) (by`.
+Reduce the claim to the hypotheses of an applicable result. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hx]`. Simplify using `only [star_mul', star_sub, star_one, star_inv₀, star_star, hus]`. Clear the denominators using the available nonvanishing facts. Use the proof step `ring)`. Establish `h1x : τ₁ x = (θ * (star θ)⁻¹) • x`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[hf₁, hx, mul_assoc, inv_mul_cancel₀ hu0, mul_one, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Establish `hyy : h (τ₁ x) (τ₁ x) = u`. Establish `hcx : ∀ c : K, h (c • x) (c • x) = star c * c * u`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, starRingEnd_apply, hx]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1x, hcx, star_mul', star_inv₀, star_star]`. Establish `e1 : star θ * (star θ)⁻¹ = 1` using `mul_inv_cancel₀ hsθ`. Establish `e2 : θ * θ⁻¹ = 1` using `mul_inv_cancel₀ hθ0`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(θ * θ⁻¹ * u) * e1 + u * e2`. Establish `hzy : h z (τ₁ x) ≠ u`. Rewrite using `[h1x, map_smul, smul_eq_mul, hne]`. Introduce `h2`. Apply `hc1` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_right_cancel₀ hu0 (h2.trans (one_mul u).symm)` as an intermediate fact. Conclude with `this`. Take `⟨τ₂, hτ₂, h2y, h2v⟩` from `key _ hyy hzy`. Use `⟨τ₂ * τ₁, (Formalism.HermitianLatticesTheory.isom h).mul_mem hτ₂ hτ₁, ?_, ?_⟩` and prove the remaining obligations. Conclude with `h2y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hxv hzv`. Establish `h1v : τ₁ v = v`. Rewrite using `[hf₁, hxv, mul_zero, zero_smul, sub_zero]`. Express the relevant statement in the definitionally equal form `τ₂ (τ₁ v) = v`. Rewrite using `[h1v]`.
-
-Use `h2v v ?_ hzv` and prove the remaining obligations. Rewrite using `[h1x, map_smulₛₗ, LinearMap.smul_apply, hxv, smul_zero]`. Conclude with `key x hx hne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isom_move (hS : IsHermSemilocal S) (hs : h.IsSymm) {x z : V} {u : K} (hu0 : u ≠ 0)
     (hus : star u = u) (hx : h x x = u) (hz : h z z = u) :

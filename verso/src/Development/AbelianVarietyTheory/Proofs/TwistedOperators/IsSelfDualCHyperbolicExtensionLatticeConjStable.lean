@@ -13,7 +13,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E]
 omit [NumberField E] in
 
 /- English proof (translation)
-Take `⟨b, rfl⟩` from `h`. Establish `hb : IsIntegral ℤ (algebraMap (𝓞 E) E b)` using `b.isIntegral_coe`. Use `hb.map (starRingEnd E).toIntAlgHom` as an intermediate fact. Conclude with `⟨⟨_, this⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem star_mem_int {x : E} (h : x ∈ (algebraMap (𝓞 E) E).range) : star x ∈ (algebraMap (𝓞 E) E).range := by
   obtain ⟨b, rfl⟩ := h
@@ -23,18 +23,18 @@ theorem star_mem_int {x : E} (h : x ∈ (algebraMap (𝓞 E) E).range) : star x 
 
 omit [NumberField E] [StarRing E] in
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_one_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_one_iff_range {x : E} :
     x ∈ (1 : FractionalIdeal (𝓞 E)⁰ E) ↔ x ∈ (algebraMap (𝓞 E) E).range := by
   rw [FractionalIdeal.mem_one_iff]; rfl
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `x hx`. Rewrite `*` using `[pow_zero, mem_one_iff_range]`. Conclude with `star_mem_int hx`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `x hx`. Rewrite `*` using `[pow_succ]`. Use `FractionalIdeal.mul_induction_on hx (fun a ha b hb => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[star_mul']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `FractionalIdeal.mul_mem_mul (ih a ha) (hI b hb)`. Rewrite using `[star_add]`. Conclude with `(I ^ n * I).1.add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem star_mem_pow {I : FractionalIdeal (𝓞 E)⁰ E} (hI : ∀ x ∈ I, star x ∈ I) (n : ℕ) :
     ∀ x ∈ I ^ n, star x ∈ I ^ n := by
@@ -53,9 +53,9 @@ theorem star_mem_pow {I : FractionalIdeal (𝓞 E)⁰ E} (hI : ∀ x ∈ I, star
       exact (I ^ n * I).1.add_mem ha hb
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `*` using `[FractionalIdeal.mem_inv_iff h0]`. Introduce `y hy`. Use `star_mem_int (mem_one_iff_range.1 (hx _ (hI y hy)))` as an intermediate fact. Rewrite `this` using `[star_mul', star_star]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mem_one_iff_range.2 this`.
+A detailed English derivation is pending.
 -/
 theorem star_mem_inv {I : FractionalIdeal (𝓞 E)⁰ E} (h0 : I ≠ 0) (hI : ∀ x ∈ I, star x ∈ I) :
     ∀ x ∈ I⁻¹, star x ∈ I⁻¹ := by
@@ -73,20 +73,20 @@ def idealSum (Y : HSpace E) {ρ : ℕ} (v : Fin ρ → Y.V) (J : Fin ρ → Frac
 variable {Y : HSpace E} {ρ : ℕ}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem i ⟨a, ha, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_idealSum (v : Fin ρ → Y.V) {J : Fin ρ → FractionalIdeal (𝓞 E)⁰ E} (i : Fin ρ) {a : E}
     (ha : a ∈ J i) : a • v i ∈ idealSum Y v J :=
   Submodule.mem_iSup_of_mem i ⟨a, ha, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Use `Submodule.iSup_induction _ (motive := fun y => ∃ β : Fin ρ → E, (∀ i, β i ∈ J i) ∧ y = ∑ i, β i • v i) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `i x ⟨a, ha, rfl⟩`. Use `⟨Pi.single i a, fun j => ?_, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using ha`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `(J j).zero_mem`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i (fun j _ h => by rw [Pi.single_eq_of_ne h, zero_smul]) (by simp)]`. Simplify using the standard rewrite rules. Conclude with `⟨0, fun i => (J i).zero_mem, by simp⟩`. Introduce and unpack `x y ⟨β, hβ, rfl⟩ ⟨γ, hγ, rfl⟩`. Use `⟨β + γ, fun i => (J i).1.add_mem (hβ i) (hγ i), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[add_smul, Finset.sum_add_distrib]`. Introduce and unpack `⟨β, hβ, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => smul_mem_idealSum v i (hβ i)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_idealSum {v : Fin ρ → Y.V} {J : Fin ρ → FractionalIdeal (𝓞 E)⁰ E} {y : Y.V} :
     y ∈ idealSum Y v J ↔ ∃ β : Fin ρ → E, (∀ i, β i ∈ J i) ∧ y = ∑ i, β i • v i := by
@@ -109,15 +109,13 @@ theorem mem_idealSum {v : Fin ρ → Y.V} {J : Fin ρ → FractionalIdeal (𝓞 
     exact Submodule.sum_mem _ fun i _ => smul_mem_idealSum v i (hβ i)
 
 /- English proof (translation)
-The claim follows from `Submodule.fg_iSup _ fun i => (FractionalIdeal.fg_of_isNoetherianRing le_rfl (J i)).map _`.
+A detailed English derivation is pending.
 -/
 theorem fg_idealSum (v : Fin ρ → Y.V) (J : Fin ρ → FractionalIdeal (𝓞 E)⁰ E) : (idealSum Y v J).FG :=
   Submodule.fg_iSup _ fun i => (FractionalIdeal.fg_of_isNoetherianRing le_rfl (J i)).map _
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha, ha0⟩ : ∃ a ∈ J i, a ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hJ i (FractionalIdeal.eq_zero_iff.2 h)`. Use `Submodule.smul_mem _ a⁻¹ (Submodule.subset_span (R := E) (smul_mem_idealSum v i ha))` as an intermediate fact.
-
-Rewrite `this` using `[smul_smul, inv_mul_cancel₀ ha0, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_idealSum (v : Fin ρ → Y.V) {J : Fin ρ → FractionalIdeal (𝓞 E)⁰ E} (hJ : ∀ i, J i ≠ 0) (i : Fin ρ) :
     v i ∈ Submodule.span E (idealSum Y v J : Set Y.V) := by
@@ -129,7 +127,7 @@ theorem mem_span_idealSum (v : Fin ρ → Y.V) {J : Fin ρ → FractionalIdeal (
   rwa [smul_smul, inv_mul_cancel₀ ha0, one_smul] at this
 
 /- English proof (translation)
-The claim follows from `(Y.herm.eq y x).symm`.
+A detailed English derivation is pending.
 -/
 theorem hT_swap (Y : HSpace E) (x y : Y.V) : Y.hT x y = star (Y.hT y x) := (Y.herm.eq y x).symm
 
@@ -142,7 +140,7 @@ structure IsHyp (Y : HSpace E) (U : Submodule E Y.V) (e f : Fin ρ → Y.V) : Pr
 variable {U : Submodule E Y.V} {e f : Fin ρ → Y.V}
 
 /- English proof (translation)
-Rewrite using `[hT_swap, fe]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hT_ef (fe : ∀ i j, Y.hT (f i) (e j) = if i = j then 1 else 0) (i j : Fin ρ) :
     Y.hT (e i) (f j) = if i = j then 1 else 0 := by
@@ -152,7 +150,7 @@ theorem hT_ef (fe : ∀ i j, Y.hT (f i) (e j) = if i = j then 1 else 0) (i j : F
   · simp [h, Ne.symm h]
 
 /- English proof (translation)
-Rewrite using `[H.mem]`. Introduce `i`. Simplify using `[map_sum, H.ee, H.ff, H.fe, hT_ef H.fe]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem IsHyp.proj_mem (H : IsHyp Y U e f) (y : Y.V) :
     y - ∑ i, Y.hT (f i) y • e i - ∑ i, Y.hT (e i) y • f i ∈ U := by
@@ -161,7 +159,7 @@ theorem IsHyp.proj_mem (H : IsHyp Y U e f) (y : Y.V) :
   simp [map_sum, H.ee, H.ff, H.fe, hT_ef H.fe]
 
 /- English proof (translation)
-Establish `h1 : ∀ i, Y.hT (e i) w = 0` using `fun i => ((H.mem w).1 hw i).1`. Establish `h2 : ∀ i, Y.hT (f i) w = 0` using `fun i => ((H.mem w).1 hw i).2`. Establish `h3 : ∀ i, Y.hT w' (e i) = 0` using `fun i => by rw [hT_swap, ((H.mem w').1 hw' i).1, star_zero]`. Establish `h4 : ∀ i, Y.hT w' (f i) = 0` using `fun i => by rw [hT_swap, ((H.mem w').1 hw' i).2, star_zero]`. Simplify using `[map_sum, LinearMap.sum_apply, H.ee, H.ff, H.fe, hT_ef H.fe, h1, h2, h3, h4, mul_comm, starRingEnd_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem IsHyp.pairing (H : IsHyp Y U e f) (β γ β' γ' : Fin ρ → E) {w w' : Y.V} (hw : w ∈ U) (hw' : w' ∈ U) :
     Y.hT (∑ i, β' i • e i + w' + ∑ i, γ' i • f i) (∑ i, β i • e i + w + ∑ i, γ i • f i) =
@@ -173,25 +171,23 @@ theorem IsHyp.pairing (H : IsHyp Y U e f) (β γ β' γ' : Fin ρ → E) {w w' :
   simp [map_sum, LinearMap.sum_apply, H.ee, H.ff, H.fe, hT_ef H.fe, h1, h2, h3, h4, mul_comm, starRingEnd_apply]
 
 /- English proof (translation)
-Establish `hLU : ∀ x ∈ L, x ∈ U` using `fun x hx => hsp ▸ Submodule.subset_span hx`. Establish `hdec : ∀ y : Y.V, y = ∑ i, Y.hT (f i) y • e i + (y - ∑ i, Y.hT (f i) y • e i - ∑ i, Y.hT (e i) y • f i) + ∑ i, Y.hT (e i) y • f i` using `fun y => by abel`. Establish `hmem : ∀ y, y ∈ (idealSum Y e J ⊔ L ⊔ idealSum Y f fun i => (J i)⁻¹) → ∃ β γ : Fin ρ → E, ∃ w ∈ L, (∀ i, β i ∈ J i) ∧ (∀ i, γ i ∈ (J i)⁻¹) ∧ y = ∑ i, β i • e i + w + ∑ i, γ i • f i`. Introduce `y hy`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, w, hw, rfl⟩` from `Submodule.mem_sup.1 ha`. Take `⟨β, hβ, rfl⟩` from `mem_idealSum.1 hb`. Take `⟨γ, hγ, rfl⟩` from `mem_idealSum.1 hc`. Conclude with `⟨β, γ, w, hw, hβ, hγ, rfl⟩`. Use `⟨⟨((fg_idealSum e J).sup hfg).sup (fg_idealSum f _), ?_⟩, fun y => ⟨fun hy x hx => ?_, fun hy => ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_top_iff]`. Introduce `y _`. Rewrite using `[hdec y]`. Use `add_mem (add_mem (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_) ?_) (Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.2 (le_sup_left.trans le_sup_left)) (mem_span_idealSum e hJ0 i)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `H.proj_mem y` as an intermediate fact. Rewrite `this` using `[← hsp]`. Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.2 (le_sup_right.trans le_sup_left)) this`. Conclude with `Submodule.span_mono (SetLike.coe_subset_coe.2 le_sup_right) (mem_span_idealSum f (fun i => inv_ne_zero (hJ0 i)) i)`. Take `⟨β, γ, w, hw, hβ, hγ, rfl⟩` from `hmem y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨β', γ', w', hw', hβ', hγ', rfl⟩` from `hmem x hx`. Rewrite using `[H.pairing β γ β' γ' (hLU w hw) (hLU w' hw')]`. Use `add_mem (add_mem (sum_mem fun i _ => ?_) ?_) (sum_mem fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[mul_comm]`. Conclude with `mem_one_iff_range.1 ((FractionalIdeal.mem_inv_iff (hJ0 i)).1 (hγ i) _ (hJ i _ (hβ' i)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hL w' (hLU w' hw')).1 hw' w hw`. Conclude with `mem_one_iff_range.1 ((FractionalIdeal.mem_inv_iff (hJ0 i)).1 (star_mem_inv (hJ0 i) (hJ i) _ (hγ' i)) _ (hβ i))`. Rewrite using `[hdec y]`. Use `add_mem (Submodule.mem_sup_left (add_mem (Submodule.mem_sup_left ?_) (Submodule.mem_sup_right ?_))) (Submodule.mem_sup_right ?_)` and prove the remaining obligations. Use `mem_idealSum.2 ⟨_, fun i => ?_, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← inv_inv (J i), FractionalIdeal.mem_inv_iff (inv_ne_zero (hJ0 i))]`. Introduce `a ha`. Use `hy (star a • f i) (Submodule.mem_sup_right (smul_mem_idealSum f (J := fun i => (J i)⁻¹) i (star_mem_inv (hJ0 i) (hJ i) _ ha)))` as an intermediate fact. Rewrite using `[mem_one_iff_range, mul_comm]`. Simplify `this` using `only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hL _ (H.proj_mem y)]`. Introduce `x hx`. Use `star_mem_int (hy x (Submodule.mem_sup_left (Submodule.mem_sup_right hx)))` as an intermediate fact. Establish `h1 : ∀ i, Y.hT (e i) x = 0` using `fun i => ((H.mem x).1 (hLU x hx) i).1`. Establish `h2 : ∀ i, Y.hT (f i) x = 0` using `fun i => ((H.mem x).1 (hLU x hx) i).2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[← hT_swap]`. Establish `h3 : Y.hD x (y - ∑ i, Y.hT (f i) y • e i - ∑ i, Y.hT (e i) y • f i) = Y.hT y x`. Simplify using `[HSpace.hD, map_sum, LinearMap.sum_apply, h1, h2]`. Rewrite using `[h3]` and apply the resulting hypothesis. Use `mem_idealSum.2 ⟨_, fun i => ?_, rfl⟩` and prove the remaining obligations.
-
-Rewrite using `[FractionalIdeal.mem_inv_iff (hJ0 i)]`. Introduce `a ha`. Use `hy (star a • e i) (Submodule.mem_sup_left (Submodule.mem_sup_left (smul_mem_idealSum e i (hJ i _ ha))))` as an intermediate fact. Rewrite using `[mem_one_iff_range, mul_comm]`. Simplify `this` using `only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem IsHyp.selfDual (H : IsHyp Y U e f) {L : Submodule (𝓞 E) Y.V} (hfg : L.FG)
     (hsp : Submodule.span E (L : Set Y.V) = U)
@@ -261,11 +257,11 @@ theorem IsHyp.selfDual (H : IsHyp Y U e f) {L : Submodule (𝓞 E) Y.V} (hfg : L
       simpa only [map_smulₛₗ, LinearMap.smul_apply, starRingEnd_apply, star_star, smul_eq_mul] using this
 
 /- English proof (translation)
-Set `φ : Y.V →ₗ[E] (Fin ρ → E) × (Fin ρ → E)` to `(LinearMap.pi fun i => Y.hT (e i)).prod (LinearMap.pi fun i => Y.hT (f i))`. Establish `hk : ∀ y, y ∈ LinearMap.ker φ ↔ ∀ i, Y.hT (e i) y = 0 ∧ Y.hT (f i) y = 0`. Introduce `y`. Simplify using `[φ, LinearMap.mem_ker, funext_iff, forall_and]`. Establish `hs : LinearMap.range φ = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.range_eq_top]`. Introduce and unpack `⟨a, b⟩`. Use `⟨∑ i, b i • e i + ∑ i, a i • f i, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `ext i <;> simp [φ, map_sum, ee, ff, fe, hT_ef fe]`. Establish `hd` using `LinearMap.finrank_range_add_finrank_ker φ`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hd` using `[hs, finrank_top, Y.rank_eq]`. Simplify using `only [Module.finrank_prod, Module.finrank_fin_fun] at hd`. Establish `hle : U ≤ LinearMap.ker φ` using `fun y hy => (hk y).2 (hU y hy)`. Establish `heq : U = LinearMap.ker φ` using `Submodule.eq_of_le_of_finrank_le hle (by omega)`. Conclude with `⟨ee, ff, fe, fun y => heq ▸ hk y⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isHyp_of_finrank (ee : ∀ i j, Y.hT (e i) (e j) = 0) (ff : ∀ i j, Y.hT (f i) (f j) = 0)
     (fe : ∀ i j, Y.hT (f i) (e j) = if i = j then 1 else 0)
@@ -295,11 +291,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents Formalism.L2.He
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hm : ∀ y, crd Y y ∈ crdLat Y Λ ↔ y ∈ Λ` using `fun y => ⟨fun ⟨x, hx, hxy⟩ => (crd Y).injective hxy ▸ hx, fun hy => ⟨y, hy, rfl⟩⟩`. Use `⟨⟨h.fg.map _, ?_⟩, fun y => ?_⟩` and prove the remaining obligations. Establish `h1 : (crdLat Y Λ : Set (Fin Y.rank → D.host.E)) = Y.frame.equivFun.toLinearMap '' (Λ : Set Y.V)` using `rfl`. Rewrite using `[h1, ← Submodule.map_span, h.span_eq_top, Submodule.map_top, LinearEquiv.range]`. Take `⟨y, rfl⟩` from `(crd Y).surjective y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hm, hd]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H _ ⟨x, hx, rfl⟩`. Take `⟨b, hb⟩` from `H x hx`. Conclude with `⟨b, hb.trans (hT_crd D.sp.cm Y x y)⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H x hx`. Take `⟨b, hb⟩` from `H (crd Y x) ((hm x).2 hx)`. Conclude with `⟨b, hb.trans (hT_crd D.sp.cm Y x y).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSelfDualC_crdLat (Y : HSp D) {Λ : Submodule (𝓞 D.host.E) Y.V} (h : Submodule.IsLattice D.host.E Λ)
     (hd : ∀ y, y ∈ Λ ↔ ∀ x ∈ Λ, Y.hT x y ∈ (algebraMap (𝓞 D.host.E) D.host.E).range) :
@@ -320,15 +316,15 @@ theorem isSelfDualC_crdLat (Y : HSp D) {Λ : Submodule (𝓞 D.host.E) Y.V} (h :
       exact ⟨b, hb.trans (hT_crd D.sp.cm Y x y).symm⟩
 
 /- English proof (translation)
-Use `isHyp_of_finrank (fun i j => H.ee j i) (fun i j => H.ff j i) (fun i j => ?_) (fun y hy i => ?_) ?_` and prove the remaining obligations. Use `H.ef j i` as an intermediate fact. Rewrite `this` using `[HSpace.hD]`. Rewrite using `[this]`. Simplify using `only [eq_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨_, ⟨x, rfl⟩, b, hb, rfl⟩` from `Submodule.mem_sup.1 hy`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hb`. Establish `h1` using `H.hyp_X i x`. Establish `h2` using `H.hyperbolicDecomp_hyp_orthogonal_line i 0`. Simplify using `only [HSpace.hD] at h1 h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h1.1, h1.2, h2.1, h2.2]`. Establish `hinj : Function.Injective ι`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Use `X.nondeg.1 x fun y => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← H.isom x y, hx]`. Simplify using the standard rewrite rules. Establish `hlt : LinearMap.range ι < flatSp Y X ι z`. Use `lt_of_le_of_ne le_sup_left fun h => hc ?_` and prove the remaining obligations. Establish `hz : z ∈ LinearMap.range ι` using `h ▸ Submodule.mem_sup_right (Submodule.mem_span_singleton_self z)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `hz`. Rewrite using `[← H.z_norm 0, ← H.z_X 0 x, hx]`. Establish `h1` using `Submodule.finrank_lt_finrank_of_lt hlt`. Rewrite `h1` using `[LinearMap.finrank_range_of_inj hinj, X.rank_eq]`. Use `H.rank` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -362,7 +358,7 @@ theorem isHyp_flatSp {Y X : HSp D} {ι : X.V →ₗ[D.host.E] Y.V} {z : Y.V} {ρ
     omega
 
 /- English proof (translation)
-Introduce `D u Y X ι z ρ e f H L hL nn hn`. Establish `hc : -Tu D u ≠ 0` using `neg_ne_zero.2 (Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero)`. Establish `h` using `(isHyp_flatSp hc H).selfDual hL.1 hL.2.1 hL.2.2 (J := fun i => nn ^ (ρ - i.val)) (fun i => pow_ne_zero _ hn.1) (fun i => star_mem_pow (fun x hx => (hn.2 x).1 hx) _)`. Conclude with `isSelfDualC_crdLat Y h.1 h.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_lamN : ∀ (D : D7) (u : D.what₂.Word) (Y X : HSp D) (ι : X.V →ₗ[D.host.E] Y.V) (z : Y.V) (ρ : ℕ) (e f : Fin ρ → Y.V), GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsDec Y X ι (fun _ : Fin 1 => z) (-GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.Tu D u) e f → ∀ L, GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsSDIn Y (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.flatSp Y X ι z) L → ∀ nn, GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.IsCStable nn → Formalism.IndefR.Datum.IsSelfDualC Y (Formalism.L2.Herm.crdLat Y (GlobalTheory.IndefiniteRowSideFullHecke.FlatSpaceComponents.lamN Y e f L nn)) := by
   intro D u Y X ι z ρ e f H L hL nn hn

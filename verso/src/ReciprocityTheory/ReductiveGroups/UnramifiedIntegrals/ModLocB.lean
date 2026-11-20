@@ -10,11 +10,11 @@ open NumberField IsDedekindDomain Formalism.L2.Th1.CM Neutral.HilbertClassField
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hcont : Continuous (algebraMap ℚ_[l] ℂ_[l])` using `continuous_algebraMap ℚ_[l] ℂ_[l]`. Establish `hclosed : IsClosed ((MaximalUnramifiedExtension l : Set ℂ_[l]))` using `Subfield.isClosed_topologicalClosure _`. Establish `hpre : IsClosed ((algebraMap ℚ_[l] ℂ_[l]) ⁻¹' (MaximalUnramifiedExtension l : Set ℂ_[l]))` using `hclosed.preimage hcont`. Establish `hall : Set.range ((↑) : ℚ → ℚ_[l]) ⊆ (algebraMap ℚ_[l] ℂ_[l]) ⁻¹' (MaximalUnramifiedExtension l : Set ℂ_[l])`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `show algebraMap ℚ_[l] ℂ_[l] (q : ℚ_[l]) ∈ MaximalUnramifiedExtension l`. Rewrite using `[map_ratCast]`. Conclude with `SubfieldClass.ratCast_mem (MaximalUnramifiedExtension l) q`. Establish `hmem : a ∈ closure (Set.range ((↑) : ℚ → ℚ_[l]))`. Rewrite using `[Metric.mem_closure_iff]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ε hε`. Take `⟨r, hr⟩` from `Padic.rat_dense (p := l) a hε`. Conclude with `⟨r, ⟨r, rfl⟩, by rw [dist_eq_norm]; exact hr⟩`. Conclude with `hpre.closure_subset_iff.mpr hall hmem`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem padic_mem_Kur {l : ℕ} [Fact l.Prime] (a : ℚ_[l]) : algebraMap ℚ_[l] ℂ_[l] a ∈ MaximalUnramifiedExtension l := by
   have hcont : Continuous (algebraMap ℚ_[l] ℂ_[l]) := continuous_algebraMap ℚ_[l] ℂ_[l]
@@ -33,9 +33,9 @@ theorem padic_mem_Kur {l : ℕ} [Fact l.Prime] (a : ℚ_[l]) : algebraMap ℚ_[l
   exact hpre.closure_subset_iff.mpr hall hmem
 
 /- English proof (translation)
-Establish `hd : ‖(d : ℂ_[l])‖ = 1` using `norm_natCast_Cl_of_not_dvd (l := l) hld`. Establish `hc : -(d : ℂ_[l]) ∈ MaximalUnramifiedExtension l` using `by first`. Consider the case `exact neg_mem (natCast_mem (MaximalUnramifiedExtension l) d)`. Consider the case `exact neg_mem (by simpa using SubfieldClass.ratCast_mem (MaximalUnramifiedExtension l) (d : ℚ))`. Establish `h2 : ‖s‖ ^ 2 = 1` using `by rw [← norm_pow, hs, norm_neg, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hy : ‖s‖ = 1`. Establish `h0` using `norm_nonneg s`. Use polynomial arithmetic with `[h2, h0]`. Conclude with `sqrt_mem (l := l) hl (-(d : ℂ_[l])) s hc hy hs`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sqrt_mem_Kur {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {d : ℕ} (hld : ¬ l ∣ d) {s : ℂ_[l]}
     (hs : s ^ 2 = -(d : ℂ_[l])) : s ∈ MaximalUnramifiedExtension l := by
@@ -57,35 +57,33 @@ def kurAlg (l : ℕ) [Fact l.Prime] : IntermediateField ℚ_[l] (PadicAlgCl l) :
     exact padic_mem_Kur a
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_kurAlg {l : ℕ} [Fact l.Prime] {y : PadicAlgCl l} :
     y ∈ kurAlg l ↔ algebraMap (PadicAlgCl l) ℂ_[l] y ∈ MaximalUnramifiedExtension l := Iff.rfl
 
 /- English proof (translation)
-Establish `hK : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] {s})` using `by first`. Consider the case `exact IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral s)`. Consider the case `exact IntermediateField.adjoin.finiteDimensional (Algebra.IsAlgebraic.isAlgebraic s).isIntegral`. Establish `hq2 : 2 ≤ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s})`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hlt`. Establish `h1 : ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ 1 - 1 = 0` using `by rw [pow_one]; omega`. Establish `h2 : ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ 2 - 1 = 0`. Establish `: ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ 2 ≤ 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `e : ReciprocityTheory.DiscreteGroups.LocalClassField.Kn l (IntermediateField.adjoin ℚ_[l] {s}) 1 = ReciprocityTheory.DiscreteGroups.LocalClassField.Kn l (IntermediateField.adjoin ℚ_[l] {s}) 2` using `by simp only [ReciprocityTheory.DiscreteGroups.LocalClassField.Kn, h1, h2]`. Establish `d1` using `ReciprocityTheory.DiscreteGroups.LocalClassField.degLK_Kn (p := l) (K := (IntermediateField.adjoin ℚ_[l] {s})) hK (n := 1) one_pos`. Establish `d2` using `ReciprocityTheory.DiscreteGroups.LocalClassField.degLK_Kn (p := l) (K := (IntermediateField.adjoin ℚ_[l] {s})) hK (n := 2) two_pos`. Rewrite `d1` using `[e, d2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlq : l ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s})`. Assume the negation of the conclusion as `h`. Take `⟨n, hn, hdvd⟩` from `ReciprocityTheory.DiscreteGroups.LocalClassField.exists_dvd_qK_pow_sub_one (p := l) (K := (IntermediateField.adjoin ℚ_[l] {s})) hK h`. Establish `h1 : ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ n` using `dvd_pow_self _ hn.ne'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 1 ≤ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ n` using `Nat.one_le_pow _ _ (by omega)`. Establish `h3 : ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ n - (ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l …` using `by first`. Consider the case `exact Nat.dvd_sub h1 hdvd`. Consider the case `exact Nat.dvd_sub (by omega) h1 hdvd`. Rewrite `h3` using `[Nat.sub_sub_self hpos]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd one_pos h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hnd : ∀ k, 0 < k → ¬ l ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ k - 1`. Introduce `k hk h`. Establish `h1 : l ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ k` using `hlq.trans (dvd_pow_self _ hk.ne')`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 1 ≤ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ k` using `Nat.one_le_pow _ _ (by omega)`. Establish `h3 : l ∣ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ k - (ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ k - 1)` using `by first`. Consider the case `exact Nat.dvd_sub h1 h`. Consider the case `exact Nat.dvd_sub (by omega) h1 h`. Rewrite `h3` using `[Nat.sub_sub_self hpos]`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Fact.out : l.Prime).one_lt.ne' (Nat.dvd_one.1 h3)`. Establish `hle : ReciprocityTheory.DiscreteGroups.LocalClassField.MaximalUnramifiedExtension l (IntermediateField.adjoin ℚ_[l] {s}) ≤ kurAlg l`. Use `iSup_le fun n => sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Rewrite using `[SetLike.mem_coe, mem_kurAlg]`. Use `sqrt_mem_Kur hl hld ?_` and prove the remaining obligations. Rewrite using `[← map_pow, hs, map_neg, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce `ζ hζ`. Establish `hζ0 : ζ ^ (ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ (n + 1) - 1) = 1` using `hζ`. Rewrite using `[SetLike.mem_coe, mem_kurAlg]`. Establish `hζ' : (algebraMap (PadicAlgCl l) ℂ_[l] ζ) ^ (ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ (n + 1) - 1) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, hζ0, map_one]`. Establish `hN : 0 < ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ (n + 1) - 1`. Establish `: 2 ≤ ReciprocityTheory.DiscreteGroups.LocalClassField.qK l (IntermediateField.adjoin ℚ_[l] {s}) ^ (n + 1)` using `le_trans hq2 (Nat.le_self_pow (by omega) _)`. Use linear arithmetic over natural numbers and integers. Conclude with `Subfield.le_topologicalClosure _ (Subfield.subset_closure ⟨_, hN, hnd (n + 1) (Nat.succ_pos n), hζ'⟩)`.
-
-Conclude with `mem_kurAlg.1 (hle hy)`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem kur_le {l : ℕ} [Fact l.Prime] (hl : l ≠ 2) {d : ℕ} (hld : ¬ l ∣ d) {s : PadicAlgCl l}
     (hs : s ^ 2 = -(d : PadicAlgCl l)) {y : PadicAlgCl l}

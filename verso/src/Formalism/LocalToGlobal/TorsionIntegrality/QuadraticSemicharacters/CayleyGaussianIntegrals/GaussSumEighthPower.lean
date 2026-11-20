@@ -10,51 +10,51 @@ namespace IsQuadFn
 variable {M : Type*} [AddCommGroup M] {φ : M → ℂ} {b : M → M → ℂ}
 
 /- English proof (translation)
-Conclude with `eq_div_of_mul_eq (mul_ne_zero (h.ne x) (h.ne y)) (by rw [h.add]; ring)`.
+A detailed English derivation is pending.
 -/
 theorem b_eq (h : IsQuadFn φ b) (x y : M) : b x y = φ (x + y) / (φ x * φ y) := by
   exact eq_div_of_mul_eq (mul_ne_zero (h.ne x) (h.ne y)) (by rw [h.add]; ring)
 
 /- English proof (translation)
-Rewrite using `[h.b_eq x y, h.b_eq y x, add_comm, mul_comm (φ x)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem symm (h : IsQuadFn φ b) (x y : M) : b x y = b y x := by
   rw [h.b_eq x y, h.b_eq y x, add_comm, mul_comm (φ x)]
 
 /- English proof (translation)
-Rewrite using `[h.b_eq]`. Conclude with `div_ne_zero (h.ne _) (mul_ne_zero (h.ne x) (h.ne y))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_ne (h : IsQuadFn φ b) (x y : M) : b x y ≠ 0 := by
   rw [h.b_eq]
   exact div_ne_zero (h.ne _) (mul_ne_zero (h.ne x) (h.ne y))
 
 /- English proof (translation)
-Rewrite using `[h.symm x (y + z), h.left, h.symm y x, h.symm z x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem right (h : IsQuadFn φ b) (x y z : M) : b x (y + z) = b x y * b x z := by
   rw [h.symm x (y + z), h.left, h.symm y x, h.symm z x]
 
 /- English proof (translation)
-Establish `h0` using `h.sq 0 (0 : M)`. Simplify using `using h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem phi_zero (h : IsQuadFn φ b) : φ 0 = 1 := by
   have h0 := h.sq 0 (0 : M)
   simpa using h0
 
 /- English proof (translation)
-Rewrite using `[h.b_eq, zero_add, h.phi_zero, one_mul, div_self (h.ne y)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_zero_left (h : IsQuadFn φ b) (y : M) : b 0 y = 1 := by
   rw [h.b_eq, zero_add, h.phi_zero, one_mul, div_self (h.ne y)]
 
 /- English proof (translation)
-Rewrite using `[h.symm, h.b_zero_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_zero_right (h : IsQuadFn φ b) (y : M) : b y 0 = 1 := by
   rw [h.symm, h.b_zero_left]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_nsmul, h.b_zero_left, pow_zero]`. Consider the case `succ k ih => rw [succ_nsmul, h.left, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem b_nsmul_left (h : IsQuadFn φ b) (k : ℕ) (x y : M) : b (k • x) y = b x y ^ k := by
   induction k with
@@ -62,7 +62,7 @@ theorem b_nsmul_left (h : IsQuadFn φ b) (k : ℕ) (x y : M) : b (k • x) y = b
   | succ k ih => rw [succ_nsmul, h.left, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[h.b_nsmul_left, h.symm x (l • y), h.b_nsmul_left, h.symm y x, ← pow_mul, mul_comm l k]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_nsmul_nsmul (h : IsQuadFn φ b) (k l : ℕ) (x y : M) :
     b (k • x) (l • y) = b x y ^ (k * l) := by
@@ -70,7 +70,7 @@ theorem b_nsmul_nsmul (h : IsQuadFn φ b) (k l : ℕ) (x y : M) :
     ← pow_mul, mul_comm l k]
 
 /- English proof (translation)
-Establish `h1 : b (-x) y * b x y = 1`. Rewrite using `[← h.left, show -x + x = (0 : M) by simp, h.b_zero_left]`. Conclude with `eq_inv_of_mul_eq_one_left h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem b_neg_left (h : IsQuadFn φ b) (x y : M) : b (-x) y = (b x y)⁻¹ := by
   have h1 : b (-x) y * b x y = 1 := by
@@ -78,13 +78,13 @@ theorem b_neg_left (h : IsQuadFn φ b) (x y : M) : b (-x) y = (b x y)⁻¹ := by
   exact eq_inv_of_mul_eq_one_left h1
 
 /- English proof (translation)
-Rewrite using `[h.symm x (-y), h.b_neg_left, h.symm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem b_neg_right (h : IsQuadFn φ b) (x y : M) : b x (-y) = (b x y)⁻¹ := by
   rw [h.symm x (-y), h.b_neg_left, h.symm y x]
 
 /- English proof (translation)
-Establish `hx` using `h.ne x`. Establish `h1` using `h.sq 2 x`. Rewrite `h1` using `[two_nsmul, h.add]`. Apply `mul_left_cancel₀ (mul_ne_zero hx hx)` to reduce the goal to its premises. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -97,9 +97,9 @@ theorem b_self (h : IsQuadFn φ b) (x : M) : b x x = φ x ^ 2 := by
   ring
 
 /- English proof (translation)
-Establish `hx` using `h.ne x`. Establish `h1` using `h.add x (-x)`. Rewrite `h1` using `[show x + -x = (0 : M) by simp, h.phi_zero, h.b_neg_right, h.b_self]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_inv_cancel₀ (pow_ne_zero 2 hx), mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = φ x * φ (-x) * (φ x ^ 2)⁻¹ * φ x := by ring`. Use `_ = φ x := by rw [← h1, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem phi_neg (h : IsQuadFn φ b) (x : M) : φ (-x) = φ x := by
   have hx := h.ne x
@@ -111,7 +111,7 @@ theorem phi_neg (h : IsQuadFn φ b) (x : M) : φ (-x) = φ x := by
     _ = φ x := by rw [← h1, one_mul]
 
 /- English proof (translation)
-Simplify using `only [h.add, h.left, h.b_nsmul_nsmul, h01, h02, h03, h12, h13, h23, one_pow, mul_one, h.sq]`. Apply the tactic sequence `try ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem phi_orth4 (h : IsQuadFn φ b) (x₀ x₁ x₂ x₃ : M) (h01 : b x₀ x₁ = 1) (h02 : b x₀ x₂ = 1)
     (h03 : b x₀ x₃ = 1) (h12 : b x₁ x₂ = 1) (h13 : b x₁ x₃ = 1) (h23 : b x₂ x₃ = 1)
@@ -123,25 +123,21 @@ theorem phi_orth4 (h : IsQuadFn φ b) (x₀ x₁ x₂ x₃ : M) (h01 : b x₀ x�
   try ring
 
 /- English proof (translation)
-Establish `hB : ∀ v w, B (T v) (T w) * B v w = 1`. Introduce `v w`. Establish `h1` using `hT (v + w)`. Rewrite `h1` using `[map_add, h.add, h.add]`. Establish `h2` using `hT v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `hT w`. Establish `h4 : (Φ v * Φ (T v)) * (Φ w * Φ (T w)) * (B (T v) (T w) * B v w) = 1`. Take the linear combination `h1`. Rewrite `h4` using `[h2, h3, one_mul, one_mul]`. Then use the resulting hypothesis. Establish `hinj : Function.Injective T`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `(injective_iff_map_eq_zero T).mpr (fun v hv => h.nondeg v (fun w => ?_))` and prove the remaining obligations. Establish `h5` using `hB v w`. Rewrite `h5` using `[hv, h.b_zero_left, one_mul]`. Then use the resulting hypothesis. Establish `hsurj : Function.Surjective T` using `Finite.injective_iff_surjective.mp hinj`. Establish `hchar : ∀ w, w ≠ 0 → ∑ v, B w (T v) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w hw`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, B w (T u) ≠ 1 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hw (h.nondeg w (fun y => by obtain ⟨u, rfl⟩ := hsurj y; exact hcon u))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : B w (T u) * ∑ v, B w (T v) = ∑ v, B w (T v)`. Rewrite using `[Finset.mul_sum]`. Conclude with `Fintype.sum_equiv (Equiv.addLeft u) _ _ (fun v => by simp [h.right])`. Establish `h6 : (B w (T u) - 1) * ∑ v, B w (T v) = 0`. Rewrite using `[sub_mul, hs, one_mul, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h6).resolve_left (sub_ne_zero.mpr hu)`. Establish `hrow : ∀ v, Φ v * ∑ w, Φ w = ∑ w, Φ w * B w (T v)`. Introduce `v`. Establish `e : ∑ w, Φ (w + T v) = ∑ w, Φ w` using `Fintype.sum_equiv (Equiv.addRight (T v)) _ _ (fun w => by simp)`. Rewrite using `[← e, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[h.add]`. Take the linear combination `(Φ w * B w (T v)) * hT v`. Establish `hcol : ∀ w, ∑ v, B w (T v) = if w = 0 then (Fintype.card P : ℂ) else 0`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hw`. Substitute `hw` using the available equality. Simplify using `[h.b_zero_left]`. Conclude with `hchar w hw`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun w _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `_ = ∑ w, Φ w * (if w = 0 then (Fintype.card P : ℂ) else 0) := Finset.sum_congr rfl (fun w _ => by rw [hcol w])`. Use `_ = (Fintype.card P : ℂ) := by`.
-
-Simplify using `[h.phi_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_sq_of_anti {P : Type*} [AddCommGroup P] [Fintype P] {Φ : P → ℂ} {B : P → P → ℂ}
     (h : IsQuadFn Φ B) (T : P →+ P) (hT : ∀ v, Φ v * Φ (T v) = 1) :
@@ -199,11 +195,11 @@ theorem sum_sq_of_anti {P : Type*} [AddCommGroup P] [Fintype P] {Φ : P → ℂ}
         simp [h.phi_zero]
 
 /- English proof (translation)
-Simplify using `only [Pi.add_apply, h.add, Finset.prod_mul_distrib] left u v w := by simp only [Pi.add_apply, h.left, Finset.prod_mul_distrib] sq k v := by simp only [Pi.smul_apply, h.sq, Finset.prod_pow] ne v := Finset.prod_ne_zero_iff.2 fun i _ => h.ne _ nondeg v hv := by`. Use function extensionality and compare the values at `i`. Apply `h.nondeg` to reduce the goal to its premises. Introduce `y`. Establish `h1` using `hv (Pi.single i y)`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.prod_eq_single i]`. Simplify using `using h1`. Introduce `j _ hj`. Rewrite using `[Pi.single_eq_of_ne hj, h.b_zero_right]`. Introduce `hi`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) hi`.
+A detailed English derivation is pending.
 -/
 theorem pow4 (h : IsQuadFn φ b) :
     IsQuadFn (fun v : Fin 4 → M => ∏ i, φ (v i)) (fun v w => ∏ i, b (v i) (w i)) where
@@ -247,44 +243,42 @@ def quatK : (Fin 4 → M) →+ (Fin 4 → M) where
 end Quaternion
 
 /- English proof (translation)
-Rewrite using `[hX, inv_mul_cancel₀ ha, inv_mul_cancel₀ hc, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_one_of_eq_inv_mul_self_mul_inv_mul_self {a c X : ℂ} (ha : a ≠ 0) (hc : c ≠ 0)
     (hX : X = (a⁻¹ * a) * (c⁻¹ * c)) : X = 1 := by
   rw [hX, inv_mul_cancel₀ ha, inv_mul_cancel₀ hc, one_mul]
 
 /- English proof (translation)
-Introduce `M _ _ φ b h`. Establish `H` using `h.pow4`. Establish `hPI : ∀ v : Fin 4 → M, ∏ i, φ (quatI M v i) = ∏ i, φ (v i)`. Introduce `v`. Simplify using `only [Fin.prod_univ_four]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `φ (-v 1) * φ (v 0) * φ (-v 3) * φ (v 2) = φ (v 0) * φ (v 1) * φ (v 2) * φ (v 3)`. Simplify using `only [h.phi_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPJ : ∀ v : Fin 4 → M, ∏ i, φ (quatJ M v i) = ∏ i, φ (v i)`. Introduce `v`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `φ (-v 2) * φ (v 3) * φ (v 0) * φ (-v 1) = φ (v 0) * φ (v 1) * φ (v 2) * φ (v 3)`. Simplify using `only [h.phi_neg]`. Expand and normalize the polynomial expressions, which then agree. Establish `hPK : ∀ v : Fin 4 → M, ∏ i, φ (quatK M v i) = ∏ i, φ (v i)`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Introduce `v`. Simplify using `only [Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `φ (-v 3) * φ (-v 2) * φ (v 1) * φ (v 0) = φ (v 0) * φ (v 1) * φ (v 2) * φ (v 3)`. Simplify using `only [h.phi_neg]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `pI : ∀ v : Fin 4 → M, ∏ i, b (v i) (quatI M v i) = 1`. Introduce `v`. Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `b (v 0) (-v 1) * b (v 1) (v 0) * b (v 2) (-v 3) * b (v 3) (v 2) = 1`. Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Rewrite using `[h.symm (v 1) (v 0), h.symm (v 3) (v 2)]`. Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 1)) (h.b_ne (v 2) (v 3)) (by ring)`. Establish `pJ : ∀ v : Fin 4 → M, ∏ i, b (v i) (quatJ M v i) = 1`. Introduce `v`. Rewrite using `[Fin.prod_univ_four]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `b (v 0) (-v 2) * b (v 1) (v 3) * b (v 2) (v 0) * b (v 3) (-v 1) = 1`. Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`. Rewrite using `[h.symm (v 2) (v 0), h.symm (v 3) (v 1)]`. Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 2)) (h.b_ne (v 1) (v 3)) (by ring)`. Establish `pK : ∀ v : Fin 4 → M, ∏ i, b (v i) (quatK M v i) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `b (v 0) (-v 3) * b (v 1) (-v 2) * b (v 2) (v 1) * b (v 3) (v 0) = 1`. Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`. Rewrite using `[h.symm (v 2) (v 1), h.symm (v 3) (v 0)]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 3)) (h.b_ne (v 1) (v 2)) (by ring)`. Establish `pIJ : ∀ v : Fin 4 → M, ∏ i, b (quatI M v i) (quatJ M v i) = 1`. Introduce `v`. Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `b (-v 1) (-v 2) * b (v 0) (v 3) * b (-v 3) (v 0) * b (v 2) (-v 1) = 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`. Rewrite using `[h.symm (v 3) (v 0), h.symm (v 2) (v 1)]`. Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 3)) (h.b_ne (v 1) (v 2)) (by ring)`. Establish `pIK : ∀ v : Fin 4 → M, ∏ i, b (quatI M v i) (quatK M v i) = 1`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `b (-v 1) (-v 3) * b (v 0) (-v 2) * b (-v 3) (v 1) * b (v 2) (v 0) = 1`. Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`. Rewrite using `[h.symm (v 3) (v 1), h.symm (v 2) (v 0)]`. Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 2)) (h.b_ne (v 1) (v 3)) (by ring)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Establish `pJK : ∀ v : Fin 4 → M, ∏ i, b (quatJ M v i) (quatK M v i) = 1`. Introduce `v`. Rewrite using `[Fin.prod_univ_four]`. Express the relevant statement in the definitionally equal form `b (-v 2) (-v 3) * b (v 3) (-v 2) * b (v 0) (v 1) * b (-v 1) (v 0) = 1`. Simplify using `only [h.b_neg_left, h.b_neg_right, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[h.symm (v 3) (v 2), h.symm (v 1) (v 0)]`. Conclude with `eq_one_of_eq_inv_mul_self_mul_inv_mul_self (h.b_ne (v 0) (v 1)) (h.b_ne (v 2) (v 3)) (by ring)`. Take `⟨a, c, d, e, habcd⟩` from `Nat.sum_four_squares (Fintype.card (Fin 4 → M) ^ 2 - 1)`. Establish `hN : 1 ≤ Fintype.card (Fin 4 → M) ^ 2` using `Nat.one_le_iff_ne_zero.mpr (pow_pos (Fintype.card_pos_iff.mpr ⟨0⟩) 2).ne'`. Take `⟨T, hTdef⟩ : ∃ T : (Fin 4 → M) →+ (Fin 4 → M), ∀ v, T v = a • v + c • quatI M v + d • quatJ M v + e • quatK M v` from `⟨AddMonoidHom.mk' (fun v : Fin 4 → M => a • v + c • quatI M v + d • quatJ M v + e • quatK M v) (fun v w => by simp only [map_add, smul_add]; abel), fun v => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hT : ∀ v : Fin 4 → M, (∏ i, φ (v i)) * (∏ i, φ (T v i)) = 1`. Introduce `v`. Establish `hO : (∏ i, φ ((a • v + c • quatI M v + d • quatJ M v + e • quatK M v) i)) = (∏ i, φ (v i)) ^ (a ^ 2) * (∏ i, φ (quatI M v i)) ^ (c ^ 2) * (∏ i, φ (quatJ M v i)) ^ (d ^ 2) * (∏ i, φ (quatK M v i)) ^ (e ^ 2)` using `H.phi_orth4 v (quatI M v) (quatJ M v) (quatK M v) (pI v) (pJ v) (pK v) (pIJ v) (pIK v) (pJK v) a c d e`. Establish `hsq : (∏ i, φ ((Fintype.card (Fin 4 → M) • v) i)) = (∏ i, φ (v i)) ^ (Fintype.card (Fin 4 → M) ^ 2)` using `H.sq _ v`. Rewrite `hsq` using `[card_nsmul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply, h.phi_zero, Finset.prod_const_one] at hsq`. Rewrite using `[hTdef, hO, hPI, hPJ, hPK, ← pow_add, ← pow_add, ← pow_add, habcd, ← pow_succ', Nat.sub_add_cancel hN, ← hsq]`. Establish `key : (∑ v : Fin 4 → M, ∏ i, φ (v i)) ^ 2 = (Fintype.card (Fin 4 → M) : ℂ)` using `H.sum_sq_of_anti T hT`. Establish `hsum : (∑ x, φ x) ^ 4 = ∑ v : Fin 4 → M, ∏ i, φ (v i)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `Fintype.prod_sum (fun _ x => φ x)`. Rewrite using `[show (8 : ℕ) = 4 * 2 by norm_num, pow_mul, hsum, key]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussSumEighthPower : GaussEighth := by
   intro M _ _ φ b h

@@ -8,21 +8,19 @@ open GlobalTheory GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN Glob
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `O _ bar φ X _ _ _ h`. Take `⟨S, hS, hfin⟩` from `h.finite`. Set `Q : ℕ → Finset (LinearMap.BilinForm ℤ X) → Prop` to `fun N T => 0 < N ∧ ∃ ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ, (∀ g ∈ T, (ℓ g : ℝ) = N * φ.evalZ g) ∧ (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β ≤ ℓ β) ∧ ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β = ℓ β → ∃ k : ℕ, 0 < k ∧ k • β ∈ AddSubmonoid.closure (T : Set …`. Set `n : Finset (LinearMap.BilinForm ℤ X) → ℕ` to `fun T => if hT : ∃ N, Q N T then Nat.find hT else 0`. Use `⟨hS.toFinset.powerset.sup n, fun m ε hε => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `hfin m ε hε`. Set `ε' : Fin m → LinearMap.BilinForm ℤ X` to `fun i => pull e.toLinearMap (ε i)`. Establish `hc' : IsCone bar φ ε'` using `hε.pull_equiv e`. Set `T : Finset (LinearMap.BilinForm ℤ X)` to `Finset.univ.image ε'`. Establish `hTS : T ∈ hS.toFinset.powerset` using `Finset.mem_powerset.2 fun g hg => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `hS.mem_toFinset.2 (he i)`. Establish `hTr : (T : Set (LinearMap.BilinForm ℤ X)) = Set.range ε'` using `by simp [T]`. Establish `hex : ∃ N, Q N T`. Take `⟨N₀, ℓ₀, hN₀, h1, h2, h3⟩` from `hc'.strict`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨N₀, hN₀, ℓ₀, fun g hg => ?_, h2, fun β hβ hp heq => ?_⟩` and prove the remaining obligations. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hg`. Conclude with `h1 i`. Take `⟨k, c, hk, hc⟩` from `h3 β hβ hp heq`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hTr, hc]`. Conclude with `AddSubmonoid.sum_mem _ fun i _ => AddSubmonoid.nsmul_mem _ (AddSubmonoid.subset_closure (Set.mem_range_self i)) _`. Establish `hnT : n T = Nat.find hex` using `dif_pos hex`. Take `⟨hN, ℓ', h1, h2, h3⟩` from `Nat.find_spec hex`. Set `P : LinearMap.BilinForm ℤ X →ₗ[ℤ] LinearMap.BilinForm ℤ X` to `{ toFun := pull e.toLinearMap, map_add' := fun _ _ => rfl, map_smul' := fun _ _ => rfl }`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨Nat.find hex, ℓ' ∘ₗ P, hN, hnT ▸ Finset.le_sup hTS, fun i => ?_, fun β hβ hp => ?_, fun β hβ hp heq => ?_⟩` and prove the remaining obligations. Use `h1 (ε' i) (Finset.mem_image_of_mem _ (Finset.mem_univ i))` as an intermediate fact. Rewrite `this` using `[evalZ_pull φ e.surjective]`. Conclude with `this`. Rewrite using `[← evalZ_pull φ (r := e.toLinearMap) e.surjective]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h2 _ (pull_mem _ hβ) fun y => hp _`. Rewrite `heq` using `[← evalZ_pull φ (r := e.toLinearMap) e.surjective]`. Take `⟨k, hk, hmem⟩` from `h3 _ (pull_mem _ hβ) (fun y => hp _) heq`. Rewrite `hmem` using `[hTr]`. Take `⟨c, hc⟩` from `AddSubmonoid.mem_closure_range_iff_of_fintype.1 hmem`.
-
-Use `⟨k, c, hk, LinearMap.ext₂ fun a b => ?_⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `e.surjective a`. Take `⟨b, rfl⟩` from `e.surjective b`. Simplify `LinearMap.congr_fun₂ hc a b` using `[ε', LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPolFanOn_exists_strict_bound : ∀ (O : Type) [CommRing O] (bar : O → O) (φ : InvFun O) (X : Type) [AddCommGroup X] [Module O X] [Module.Finite O X], IsPolFanOn bar φ X → ∃ Nmax : ℕ, ∀ (m : ℕ) (ε : Fin m → LinearMap.BilinForm ℤ X), IsCone bar φ ε → ∃ (N : ℕ) (ℓ : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ), 0 < N ∧ N ≤ Nmax ∧ (∀ i, (ℓ (ε i) : ℝ) = N * φ.evalZ (ε i)) ∧ (∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β ≤ ℓ β) ∧ ∀ β ∈ balForms bar X, (∀ y, 0 ≤ β y y) → N * φ.evalZ β = ℓ β → ∃ (k : ℕ) (c : Fin m → ℕ), 0 < k ∧ k • β = ∑ i, c i • ε i := by
   classical

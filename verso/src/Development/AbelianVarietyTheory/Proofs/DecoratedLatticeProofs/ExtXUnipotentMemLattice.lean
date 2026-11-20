@@ -21,7 +21,7 @@ def mulAA (S : HSp D) (L : Lat S) : Lat S :=
   (D.host.AA : Submodule (𝓞 D.host.E) D.host.E) • L
 
 /- English proof (translation)
-Use `AddSubgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨α, hα, hα', r⟩`. Conclude with `⟨α, hα, fun w hw => hα' w fun h => hw (h ▸ hv), r⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latV_mono {S : HSp D} {L : Lat S} {P : Pl D → Prop} {v : Pl D} (hv : P v) :
     latV S L (· = v) ≤ latV S L P := by

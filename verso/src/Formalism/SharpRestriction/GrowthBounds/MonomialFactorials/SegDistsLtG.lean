@@ -10,9 +10,9 @@ open MvPolynomial Finset Formalism.MainNotions.G Formalism.MainNotions.flipOneTh
 variable {C0 CE1 CE2 : ℝ} {X : flipOneThree.Inst}
 
 /- English proof (translation)
-Establish `hp` using `Finset.pairwise_sort s (fun x1 x2 : ℕ => x1 ≤ x2)`. Establish `hn` using `Finset.sort_nodup s (fun x1 x2 : ℕ => x1 ≤ x2)`. Establish `hle : (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get l ≤ (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get u` using `hp.rel_get_of_lt h`. Establish `hne : (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get l ≠ (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get u`. Introduce `he`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(List.nodup_iff_injective_get.mp hn) he` as an intermediate fact. Conclude with `absurd this (ne_of_lt h)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem sort_get_lt_of_lt (s : Finset ℕ) (l u : Fin (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).length)
     (h : l < u) : (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get l < (s.sort (fun x1 x2 : ℕ => x1 ≤ x2)).get u := by
@@ -27,15 +27,15 @@ private theorem sort_get_lt_of_lt (s : Finset ℕ) (l u : Fin (s.sort (fun x1 x2
   omega
 
 /- English proof (translation)
-The claim follows from `sort_get_lt_of_lt _ l u h`.
+A detailed English derivation is pending.
 -/
 theorem segDists_lt {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (l u : Fin (segS TT j)) (h : l < u) :
     (segDists TT j).get l < (segDists TT j).get u := sort_get_lt_of_lt _ l u h
 
 /- English proof (translation)
-Establish `hm : (segDists TT j).get u ∈ segDists TT j` using `List.get_mem _ _`. Unfold `segDists at hm`. Rewrite `hm` using `[Finset.mem_sort, Finset.mem_image]`. Take `⟨x, hx, hxe⟩` from `hm`. Rewrite `hx` using `[Finset.mem_filter]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (segDists TT j).get u = cdist (segStart TT j) x` using `hxe.symm`. Rewrite using `[e]`. Conclude with `hx.2.2.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segDists_lt_G {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (u : Fin (segS TT j)) :
     (segDists TT j).get u < segG TT j := by
@@ -49,9 +49,9 @@ theorem segDists_lt_G {n' : ℕ} (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (u
   exact hx.2.2.2
 
 /- English proof (translation)
-Establish `h1` using `segDists_lt X.L.TT X.j l u h`. Establish `h2` using `segDists_lt_G X.L.TT X.j u`. Establish `hp : 0 < X.p`. Use `X.std.1.five_le` as an intermediate fact. Use `show 0 < X.L.p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `show X.p * X.p ^ (segG X.L.TT X.j - (segDists X.L.TT X.j).get u) ≤ X.p ^ (segG X.L.TT X.j - (segDists X.L.TT X.j).get l)`. Rewrite using `[← pow_succ']`. Conclude with `Nat.pow_le_pow_right hp (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem P_step (l u : Fin X.s) (h : l < u) :
     X.p * (X.S C0 CE1 CE2).P X.p u ≤ (X.S C0 CE1 CE2).P X.p l := by
@@ -67,9 +67,9 @@ theorem P_step (l u : Fin X.s) (h : l < u) :
   exact Nat.pow_le_pow_right hp (by omega)
 
 /- English proof (translation)
-Establish `h1` using `segDists_lt_G X.L.TT X.j u`. Establish `hp : 0 < X.p`. Use `X.std.1.five_le` as an intermediate fact. Use `show 0 < X.L.p`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 
-Use `show X.p ≤ X.p ^ (segG X.L.TT X.j - (segDists X.L.TT X.j).get u)`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem p_le_P (u : Fin X.s) : X.p ≤ (X.S C0 CE1 CE2).P X.p u := by
   have h1 := segDists_lt_G X.L.TT X.j u

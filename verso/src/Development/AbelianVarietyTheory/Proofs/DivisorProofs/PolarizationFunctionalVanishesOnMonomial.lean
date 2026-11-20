@@ -5,7 +5,7 @@ open MvPolynomial GlobalTheory.ArInt
 namespace GlobalTheory.PolarFlat
 
 /- English proof (translation)
-Rewrite using `[← Finset.powerset_univ, ← Finset.insert_erase (Finset.mem_univ j), Finset.sum_powerset_insert (Finset.notMem_erase j _), ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun S hS => ?_` and prove the remaining obligations. Establish `hjS : j ∉ S` using `fun h => Finset.notMem_erase j _ (Finset.mem_powerset.1 hS h)`. Rewrite using `[Finset.card_insert_of_notMem hjS, hg S hjS, pow_succ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem altSum_eq_zero {M : Type} [AddCommGroup M] (D : ℕ) (j : Fin D) (g : Finset (Fin D) → M)
     (hg : ∀ S, j ∉ S → g (insert j S) = g S) :
@@ -18,15 +18,13 @@ theorem altSum_eq_zero {M : Type} [AddCommGroup M] (D : ℕ) (j : Fin D) (g : Fi
   simp
 
 /- English proof (translation)
-Use `split_ifs with hf`. Rewrite using `[Finset.sum_eq_single Finset.univ]`. Simplify using the standard rewrite rules. Introduce `S _ hS`. Establish `: ¬ ∀ t, f t ∈ S`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hall`. Apply `hS` to reduce the goal to its premises. Use extensionality with `k`. Take `⟨t, rfl⟩` from `hf k`. Simplify using `[hall t]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [Function.Surjective, not_forall] at hf`. Take `⟨k, hk⟩` from `hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `altSum_eq_zero D k _ fun S _ => ?_` and prove the remaining obligations. Establish `: (∀ t, f t ∈ insert k S) ↔ ∀ t, f t ∈ S`. Use `forall_congr' fun t => ?_` and prove the remaining obligations. Rewrite using `[Finset.mem_insert]`. Conclude with `⟨fun h => h.resolve_left fun e => hk ⟨t, e⟩, Or.inr⟩`.
-
-Simplify using `only [this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem signCount (D : ℕ) (f : Fin D → Fin D) :
     ∑ S : Finset (Fin D), ((-1 : ℤ) ^ S.card) • (if ∀ t, f t ∈ S then (1 : ℤ) else 0) =
@@ -53,7 +51,7 @@ theorem signCount (D : ℕ) (f : Fin D → Fin D) :
     simp only [this]
 
 /- English proof (translation)
-Rewrite using `[← Fin.prod_const, Fintype.prod_sum]`. Use `Finset.sum_congr rfl fun f _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_ite_zero]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pow_sum_ite (D : ℕ) (S : Finset (Fin D)) :
     (∑ i, if i ∈ S then (X i : MvPolynomial (Fin D) ℝ) else 0) ^ D =
@@ -64,11 +62,11 @@ theorem pow_sum_ite (D : ℕ) (S : Finset (Fin D)) :
   simp
 
 /- English proof (translation)
-Repeatedly rewrite using `[pow_sum_ite, Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`. Establish `step : ∀ f : Fin D → Fin D, ∑ S : Finset (Fin D), ((-1 : ℤ) ^ S.card) • (if ∀ t, f t ∈ S then ∏ t, (X (f t) : MvPolynomial (Fin D) ℝ) else 0) = (if Function.Surjective f then ((-1 : ℤ) ^ D) • ∏ k, (X k : MvPolynomial (Fin D) ℝ) else 0)`. Introduce `f`. Establish `e1 : ∀ S : Finset (Fin D), ((-1 : ℤ) ^ S.card) • (if ∀ t, f t ∈ S then ∏ t, (X (f t) : MvPolynomial (Fin D) ℝ) else 0) = (((-1 : ℤ) ^ S.card) • (if ∀ t, f t ∈ S then (1 : ℤ) else 0)) • ∏ t, (X (f t) : MvPolynomial (Fin D) ℝ)`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply the tactic sequence `intro S; split_ifs <;> simp`. Repeatedly rewrite using `[e1]`. Rewrite using `[← Finset.sum_smul, signCount]`. Use `split_ifs with hf`. Use `congr 1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Equiv.prod_comp (Equiv.ofBijective f ⟨Finite.injective_iff_surjective.2 hf, hf⟩) (fun k => (X k : MvPolynomial (Fin D) ℝ))`. Simplify using the standard rewrite rules. Repeatedly rewrite using `[step]`. Rewrite using `[← Finset.sum_filter, Finset.sum_const]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polar (D : ℕ) :
     ∑ S : Finset (Fin D), ((-1 : ℤ) ^ S.card) • (∑ i, if i ∈ S then (X i : MvPolynomial (Fin D) ℝ) else 0) ^ D =
@@ -97,15 +95,15 @@ theorem polar (D : ℕ) :
 end GlobalTheory.PolarFlat
 
 /- English proof (translation)
-Set `e : Finset (Fin D) → Fin D → ℤ` to `fun S i => if i ∈ S then 1 else 0`. Establish `hlin : ∀ S, lin (fun i => ((e S i : ℤ) : ℝ)) = ∑ i, if i ∈ S then (X i : MvPolynomial (Fin D) ℝ) else 0`. Introduce `S`. Unfold `lin`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hi : i ∈ S <;> simp [e, hi]`. Establish `hB : ∑ S : Finset (Fin D), ((-1 : ℤ) ^ S.card) • Ψ ((∑ i, if i ∈ S then (X i : MvPolynomial (Fin D) ℝ) else 0) ^ D) = 0`. Use `GlobalTheory.PolarFlat.altSum_eq_zero D j _ fun S hj => ?_` and prove the remaining obligations. Establish `hu : Function.update (e (insert j S)) j 0 = e S`. Use function extensionality and compare the values at `i`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality. Simplify using `[e, hj]`. Simplify using `[e, hi, Function.update_of_ne hi]`. Rewrite using `[← hlin (insert j S), ← hlin S, h, hu]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hP` using `congrArg Ψ (GlobalTheory.PolarFlat.polar D)`. Rewrite `hP` using `[map_sum]`. Rewrite `hP` using `[map_zsmul]`. Rewrite `hP` using `[hB, map_nsmul, map_zsmul]`. Establish `hcard : (Finset.univ.filter fun f : Fin D → Fin D => Function.Surjective f).card ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `Finset.card_ne_zero_of_mem (a := id)` to reduce the goal to its premises. Simplify using `[Function.surjective_id]`. Establish `h1` using `(smul_eq_zero.1 hP.symm).resolve_left hcard`. Rewrite `h1` using `[zsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (by simp)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Div.polar_prod_eq_zero (D : ℕ) (Ψ : MvPolynomial (Fin D) ℝ →ₗ[ℝ] ℝ) (j : Fin D)
     (h : ∀ n : Fin D → ℤ, Ψ (lin (fun i => (n i : ℝ)) ^ D) =

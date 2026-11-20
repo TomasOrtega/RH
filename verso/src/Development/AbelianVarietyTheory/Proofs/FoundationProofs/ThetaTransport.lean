@@ -16,17 +16,15 @@ variable {W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W] [NormedSpace ℝ 
   [FiniteDimensional ℝ W] [MeasurableSpace W] [BorelSpace W] (μ : Measure W) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis hA hsp`. Establish `hb₁ : (Submodule.span ℤ (Set.range (b.map e))).toAddSubgroup = A₁`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `e.surjective y`. Rewrite using `[← he, ← hb, Submodule.mem_toAddSubgroup, Submodule.mem_toAddSubgroup, Module.Basis.mem_span_iff_repr_mem, Module.Basis.mem_span_iff_repr_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[mean_eq μ b hb hf, mean_eq μ (b.map e) hb₁ fun x hx z => by`. Rewrite using `[map_add, hf _ ((he _).2 (by simpa using hx))]]`. Set `ec : W ≃L[ℝ] W` to `e.toContinuousLinearEquiv`. Set `em : W ≃ᵐ W` to `ec.toHomeomorph.toMeasurableEquiv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hpre : ZSpan.fundamentalDomain b = em ⁻¹' ZSpan.fundamentalDomain (b.map e)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `_ ↔ e x ∈ ZSpan.fundamentalDomain (b.map e)`. Simplify using `[ZSpan.mem_fundamentalDomain]`. Use `haveI : (μ.map em).IsAddHaarMeasure := ec.isAddHaarMeasure_map μ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs` using `Measure.isAddLeftInvariant_eq_smul (μ.map em) μ`. Establish `hc0 : Measure.addHaarScalarFactor (μ.map em) μ ≠ 0` using `(Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure _ _).ne'`. Establish `h1 : ⨍ z in em ⁻¹' ZSpan.fundamentalDomain (b.map e), f z ∂μ = ⨍ z in ZSpan.fundamentalDomain (b.map e), f (e.symm z) ∂(μ.map em)`. Rewrite using `[setAverage_eq, setAverage_eq, setIntegral_map_equiv, measureReal_def, measureReal_def, em.map_apply]`. Use `congr 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Conclude with `congrArg f (e.symm_apply_apply z).symm`. Rewrite using `[hpre, h1, hs, setAverage_eq, setAverage_eq, Measure.restrict_smul, integral_smul_nnreal_measure, measureReal_nnreal_smul_apply]`. Establish `hc1 : ((Measure.addHaarScalarFactor (μ.map em) μ : NNReal) : ℝ) ≠ 0`. Conclude with `hc0` after adjusting the coercions.
-
-Rewrite using `[NNReal.smul_def, smul_eq_mul, smul_eq_mul, smul_eq_mul, mul_inv]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem mean_transport {A A₁ : AddSubgroup W} (hA : DiscreteTopology A)
     (hsp : Submodule.span ℝ (A : Set W) = ⊤) (e : W ≃ₗ[ℝ] W) (he : ∀ x, x ∈ A ↔ e x ∈ A₁)
@@ -66,13 +64,11 @@ theorem mean_transport {A A₁ : AddSubgroup W} (hA : DiscreteTopology A)
   field_simp
 
 /- English proof (translation)
-Take `⟨n, b, hb⟩` from `exists_basis hA hsp`. Rewrite using `[mean_eq μ b hb hf, setAverage_eq, smul_eq_mul]`. Establish `hbd` using `ZSpan.fundamentalDomain_isBounded b`. Establish `hI : IntegrableOn f (ZSpan.fundamentalDomain b) μ` using `(hc.continuousOn.integrableOn_compact hbd.isCompact_closure).mono_set subset_closure`. Establish `hsupp : 0 < μ (Function.support f ∩ ZSpan.fundamentalDomain b)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pos_iff_ne_zero]`. Introduce `h`. Establish `hfd` using `ZSpan.isAddFundamentalDomain' b μ`. Establish `hz0` using `hfd.measure_zero_of_invariant (Function.support f) (fun g => ?_) h`. Conclude with `(hc.isOpen_support.measure_pos μ ⟨z₀, hz⟩).ne' hz0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Rewrite using `[Set.mem_vadd_set_iff_neg_vadd_mem]`. Express the relevant statement in the definitionally equal form `f (-(g : W) + y) ≠ 0 ↔ f y ≠ 0`. Rewrite using `[add_comm, hf _ (A.neg_mem (hb.le g.2))]`. Use `mul_pos (inv_pos.2 ?_) ?_` and prove the remaining obligations.
-
-Conclude with `ENNReal.toReal_pos (hsupp.trans_le (measure_mono Set.inter_subset_right)).ne' hbd.measure_lt_top.ne`. Conclude with `(setIntegral_pos_iff_support_of_nonneg_ae (Filter.Eventually.of_forall h0) hI).2 hsupp`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mean_pos {A : AddSubgroup W} (hA : DiscreteTopology A)
     (hsp : Submodule.span ℝ (A : Set W) = ⊤) {f : W → ℝ} (hc : Continuous f) (h0 : ∀ z, 0 ≤ f z)
@@ -99,17 +95,17 @@ theorem mean_pos {A : AddSubgroup W} (hA : DiscreteTopology A)
 end General
 
 /- English proof (translation)
-Introduce `D cc δ hc N N' A A₁ h₁ _ u hu hA th hth`. Take `⟨f₁, s₁, d₁, c₁⟩` from `klat_facts hc h₁`. Establish `hH` using `isHerm_sesqOf D (tor0 D cc δ) N N'`. Establish `: (volume : Measure (Fin N' → Fin N → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (VC D N N')).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t₁` using `discrete_of_selfDual hH d₁ f₁`. Establish `hF : th ∈ Formalism.L2.Th1.H.fixedBy (sesqOf D (tor0 D cc δ) N N') (al D (tor0 D cc δ)) A` using `hth.2`. Establish `hper` using `fun x hx z => rho_add_of_fixed hH c₁ hF (x := x) hx z`. Use `⟨⟨hth.1.comp u.symm.toContinuousLinearEquiv.differentiable, fun x hx z => ?_⟩, ?_, fun hne => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `u.surjective x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `u.surjective z`. Use `hth.2 x ((hA x).2 hx) z` as an intermediate fact. Simplify using `only [al, U, hu, ← map_add, LinearEquiv.symm_apply_apply] at this ⊢`. Conclude with `this`. Use `mean_transport volume t₁ s₁ (u.restrictScalars ℝ) hA hper` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `mean volume A₁ (rho (sesqOf D (tor0 D cc δ) N N') fun z => th (u.symm z)) = _`. Use `congr 1`. Use function extensionality and compare the values at `z`. Take `⟨z, rfl⟩` from `u.surjective z`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖th (u.symm (u z))‖ ^ 2 * Real.exp (-Real.pi * (Hf D _ (u z) (u z)).re) = ‖th (u.symm (u z))‖ ^ 2 * Real.exp (-Real.pi * (Hf D _ (u.symm (u z)) (u.symm (u z))).re)`. Rewrite using `[hu, u.symm_apply_apply]`. Take `⟨z₀, hz⟩` from `Function.ne_iff.1 hne`. Use `mean_pos (f := rho (sesqOf D (tor0 D cc δ) N N') th) volume t₁ s₁ (continuous_rho hH hth.1.continuous) (fun z => by unfold rho; positivity) hper (z₀ := z₀) ?_` and prove the remaining obligations. Establish `: 0 < ‖th z₀‖` using `norm_pos_iff.2 hz`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rho`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem theta_transport : ∀ (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ (N N' : ℕ) (A A₁ : AddSubgroup (VC D N N')), KLat D (tor0 D cc δ) A → KLat D (tor0 D cc δ) A₁ → ∀ (u : VC D N N' ≃ₗ[ℂ] VC D N N'), (∀ z w, Hf D (tor0 D cc δ) (u z) (u w) = Hf D (tor0 D cc δ) z w) → (∀ x, x ∈ A ↔ u x ∈ A₁) → ∀ th ∈ ThSp D (tor0 D cc δ) A, (fun z => th (u.symm z)) ∈ ThSp D (tor0 D cc δ) A₁ ∧ normSq D (tor0 D cc δ) A₁ (fun z => th (u.symm z)) = normSq D (tor0 D cc δ) A th ∧ (th ≠ 0 → 0 < normSq D (tor0 D cc δ) A th) := by
   intro D cc δ hc N N' A A₁ h₁ _ u hu hA th hth

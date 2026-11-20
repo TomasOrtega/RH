@@ -13,11 +13,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLi
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo T Ω _ _ χ x x₁ pm c c₁ h hc`. Establish `hw : pm ≫ (Over.mk x ⊗ Xo.univ.t.G).hom = (Over.mk x₁ ⊗ Xo.univ.t.G).hom`. Rewrite using `[← Over.w (snd (Over.mk x) Xo.univ.t.G), ← Over.w (snd (Over.mk x₁) Xo.univ.t.G), ← Category.assoc, h.2.1]`. Set `P : Over.mk x₁ ⊗ Xo.univ.t.G ⟶ Over.mk x ⊗ Xo.univ.t.G` to `Over.homMk pm hw`. Set `Φ : Over.mk x₁ ⟶ Over.mk x` to `Over.homMk (spMap χ) h.1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hPf : P ≫ fst (Over.mk x) Xo.univ.t.G = fst (Over.mk x₁) Xo.univ.t.G ≫ Φ` using `Over.OverMorphism.ext (by simpa [P, Φ] using h.2.2)`. Establish `hPs : P ≫ snd (Over.mk x) Xo.univ.t.G = snd (Over.mk x₁) Xo.univ.t.G` using `Over.OverMorphism.ext (by simpa [P] using h.2.1)`. Establish `hΦ : Φ ≫ c = c₁` using `Over.OverMorphism.ext (by simpa [Φ] using hc.symm)`. Establish `key : translT Xo.univ.t.G c₁ ≫ P = P ≫ translT Xo.univ.t.G c`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Category.assoc, Category.assoc, hPf, translT, translT, lift_fst, lift_fst_assoc]`. Conclude with `hPf.symm`. Rewrite using `[Category.assoc, Category.assoc, hPs, translT, translT, lift_snd, lift_snd, translPt, translPt, comp_lift_assoc, reassoc_of% hPf, hPs, hΦ]`. Use `congrArg CommaMorphism.left key` as an intermediate fact. Simplify `this` using `[P]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem translT_comp_isCan : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {T Ω : Type} [CommRing T] [CommRing Ω] (χ : T →+* Ω) {x : Sp T ⟶ Xo.X} {x₁ : Sp Ω ⟶ Xo.X} {pm : Gx x₁ ⟶ Gx x} (c : Over.mk x ⟶ Xo.univ.t.G) (c₁ : Over.mk x₁ ⟶ Xo.univ.t.G), IsCan χ pm → c₁.left = spMap χ ≫ c.left → (translT Xo.univ.t.G c₁).left ≫ pm = pm ≫ (translT Xo.univ.t.G c).left := by
   intro E _ _ _ H Dw l Xo T Ω _ _ χ x x₁ pm c c₁ h hc

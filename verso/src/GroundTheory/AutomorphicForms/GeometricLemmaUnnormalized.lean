@@ -19,9 +19,9 @@ variable {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchi
   (σ : Representation ℂ (levi F n β) W)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g hg q hq`. Take `⟨l, hl, hgl⟩` from `(mem_cellUnion _).1 hg`. Take `⟨p', hp', q', hq', rfl⟩` from `mem_doubleCoset.1 hgl`. Conclude with `(mem_cellUnion _).2 ⟨l, hl, mem_doubleCoset.2 ⟨p', hp', q' * q, (blockUpper F n γ).mul_mem hq' hq, by group⟩⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp g hg`. Take `⟨l, hl, hgl⟩` from `(mem_cellUnion _).1 hg`. Take `⟨p', hp', q', hq', rfl⟩` from `mem_doubleCoset.1 hgl`. Conclude with `(mem_cellUnion _).2 ⟨l, hl, mem_doubleCoset.2 ⟨p * p', (blockUpper F n β).mul_mem hp hp', q', hq', by group⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cellUnion_mul_mem {k : ℕ} (w : Fin k → Equiv.Perm (Fin n)) (j : ℕ) :
     (∀ g ∈ cellUnion (fun l => doubleCoset (permGL F (w l)) (blockUpper F n β : Set (GL (Fin n) F))
@@ -44,17 +44,15 @@ theorem cellUnion_mul_mem {k : ℕ} (w : Fin k → Equiv.Perm (Fin n)) (j : ℕ)
       (blockUpper F n β).mul_mem hp hp', q', hq', by group⟩⟩
 
 /- English proof (translation)
-Take `⟨k, w, hcov, hanti⟩` from `exists_cellEnumeration (F := F) β γ`. Use `set C : Fin k → Set (GL (Fin n) F) := fun l => doubleCoset (permGL F (w l)) (blockUpper F n β : Set (GL (Fin n) F)) (blockUpper F n γ)`. Establish `hdisj : Pairwise fun i j => Disjoint (C i) (C j)`. Introduce `i j hij`. Rewrite using `[Set.disjoint_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hgi hgj`. Take `⟨l, -, hl⟩` from `hcov g`. Conclude with `hij ((hl i hgi).trans (hl j hgj).symm)`. Establish `hcov' : ∀ g, ∃ l, g ∈ C l` using `fun g => (hcov g).exists`. Establish `hcl` using `closure_doubleCoset_subset_of_antitone hcov hanti`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨k, w, hcov, fun i => jacquetFiltration γ (σ := σ) (cellUnion C i), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show jacquetFiltration γ (cellUnion C 0) = ⊥`. Rewrite using `[cellUnion_zero, jacquetFiltration_empty]`. Use `show jacquetFiltration γ (cellUnion C k) = ⊤`. Rewrite using `[cellUnion_of_cover hcov', jacquetFiltration_univ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `fun i i' h => jacquetFiltration_mono γ (cellUnion_mono h)`. Use `⟨fun i m => jacquetFiltration_le_comap γ (cellUnion_mul_mem w i).1 m, fun j => ?_⟩` and prove the remaining obligations. Establish `hYo : IsOpen (cellUnion C ((j : ℕ) + 1))` using `isOpen_cellUnion hdisj hcov' hcl _`. Establish `hCY : closure (C j) ∩ cellUnion C ((j : ℕ) + 1) = C j` using `closure_inter_cellUnion_succ hdisj hcl j`. Establish `hYQ` using `(cellUnion_mul_mem (F := F) (β := β) (γ := γ) w ((j : ℕ) + 1)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYP` using `(cellUnion_mul_mem (F := F) (β := β) (γ := γ) w ((j : ℕ) + 1)).2`. Establish `hdiff : cellUnion C ((j : ℕ) + 1) \ C j = cellUnion C j`. Rewrite using `[cellUnion_succ j, union_sdiff_right, (disjoint_cellUnion hdisj j).symm.sdiff_eq_left]`. Use `⟨⟨gradedJacquetMap γ (w j) σ hYo hCY hYQ, fun m => ?_⟩, ?_, fun x => ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations.
-
-Conclude with `gradedJacquetMap_jacquetRep σ hYo hCY hYQ m x`. Conclude with `gradedJacquetMap_surjective σ hYo hCY hYQ (cellJacquetMap_surjective hYo hCY hYP hYQ hσ)`. Use `gradedJacquetMap_eq_zero_iff σ hYo hCY hYQ (fun f hf h0 => exists_sub_mem_ker_of_cellJacquet_eq_zero σ hσ hYo hCY hYQ hf h0) x` as an intermediate fact. Rewrite `this` using `[hdiff]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_filtration_jacquetModule_parabolicInd (hσ : IsSmooth σ) :
     ∃ (k : ℕ) (w : Fin k → Equiv.Perm (Fin n)),

@@ -10,23 +10,21 @@ namespace Formalism.ELL.TorsionIntegralEllipticTorsion
 open WeierstrassCurve Formalism.ELL
 
 /- English proof (translation)
-Establish `hW'` using `hW`. Unfold `IntegralModel at hW'`. Establish `h'` using `h`. Rewrite `h'` using `[WeierstrassCurve.Affine.equation_iff]`. Take `⟨h1, h2, h3, h4, h6⟩` from `hW'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hadd : ∀ a b : K, ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a + b‖ ≤ 1` using `fun a b ha hb => (IsUltrametricDist.norm_add_le_max a b).trans (max_le ha hb)`. Establish `hmul : ∀ a b : K, ‖a‖ ≤ 1 → ‖b‖ ≤ 1 → ‖a * b‖ ≤ 1` using `fun a b ha hb => by`. Rewrite using `[norm_mul]`. Use `first`. Consider the case `exact mul_le_one₀ ha (norm_nonneg _) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `nlinarith [norm_nonneg a, norm_nonneg b]`. Establish `hx2 : ‖x ^ 2‖ ≤ 1`. Rewrite using `[norm_pow]`. Use `first`. Consider the case `exact pow_le_one₀ (norm_nonneg _) hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `nlinarith [norm_nonneg x]`. Establish `hx3 : ‖x ^ 3‖ ≤ 1`. Rewrite using `[norm_pow]`. Use `first`. Consider the case `exact pow_le_one₀ (norm_nonneg _) hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Consider the case `nlinarith [norm_nonneg x, hx2]`. Establish `hR : ‖x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆‖ ≤ 1` using `hadd _ _ (hadd _ _ (hadd _ _ hx3 (hmul _ _ h2 hx2)) (hmul _ _ h4 hx)) h6`. Assume the negation of the conclusion as `hy`. Use `push_neg at hy`. Establish `hy0 : 0 ≤ ‖y‖` using `norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : ‖W.a₁ * x * y + W.a₃ * y‖ ≤ ‖y‖`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hy2 : y ^ 2 = (x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆) - (W.a₁ * x * y + W.a₃ * y)` using `by first`. Consider the case `linear_combination h'`. Consider the case `(rw [← h']; ring)`. Establish `hsub : ‖(x ^ 3 + W.a₂ * x ^ 2 + W.a₄ * x + W.a₆) - (W.a₁ * x * y + W.a₃ * y)‖ ≤ ‖y‖`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le (hR.trans hy.le) ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]`. Conclude with `hm`. Establish `hn : ‖y‖ ^ 2 ≤ ‖y‖`.
-
-Rewrite using `[← norm_pow, hy2]`. Conclude with `hsub`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma y_int {K : Type u} [NormedField K] [IsUltrametricDist K] (W : WeierstrassCurve K)
     (hW : IntegralModel W) {x y : K} (h : W.toAffine.Equation x y) (hx : ‖x‖ ≤ 1) :
@@ -87,9 +85,7 @@ namespace Formalism.ELL
 open WeierstrassCurve
 
 /- English proof (translation)
-Introduce `K _ _ W hW hΔ n hn x y hxy hnP`. Establish `hx : ‖x‖ ≤ 1`. Assume the negation of the conclusion as `hx`. Use `push Not at hx`. Conclude with `Affine.Point.some_ne_zero hxy (h K W hW hΔ n hn _ hx hnP)`.
-
-Conclude with `⟨hx, TorsionIntegralEllipticTorsion.y_int W hW hxy.1 hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem torsionIntegral_of (h : Formalism.ELL.FormalGroupPointsTorsionFree.{u}) : Formalism.ELL.TorsionIntegral.{u} := by
   intro K _ _ W hW hΔ n hn x y hxy hnP

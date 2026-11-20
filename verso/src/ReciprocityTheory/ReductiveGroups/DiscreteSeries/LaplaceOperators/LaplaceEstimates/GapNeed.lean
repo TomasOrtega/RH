@@ -3,19 +3,17 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Laplace
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `k r ε h hp hq hg`. Unfold `StepGap at hg`. Unfold `hNeed S7.q0`. Take `⟨h1, h2⟩` from `hg`. Rewrite `h2`, the goal using `[← Nat.cast_min]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hqr : ((qOf ε : ℕ) : ℝ) - 1 = (r : ℝ)` using `by rw [hq]; push_cast; ring`. Rewrite using `[hqr]`. Establish `hm : 1 ≤ min (pOf ε) (qOf ε)`. Assume the negation of the conclusion as `hc`. Establish `h0 : min (pOf ε) (qOf ε) = 0` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h2` using `[h0]`. Simplify using `at h2`. Combine the linear relations using `[le_max_left (0 : ℝ) (2 * (r : ℝ) * (2 * (r : ℝ) + (k : ℝ) + 1) ^ 2)]`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `set m := min (pOf ε) (qOf ε) with hmdef`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set N : ℝ := ((2 * r + k + 1 : ℕ) : ℝ) with hN`. Establish `hN1 : (1 : ℝ) ≤ N` using `by rw [hN]; norm_cast; omega`. Establish `hm1 : (1 : ℝ) ≤ (m : ℝ)` using `by exact_mod_cast hm`. Establish `hsq : 1 ≤ Real.sqrt (2 * (m : ℝ))` using `Real.one_le_sqrt.mpr (by linarith)`. Use `set s := 8 * Real.sqrt (2 * (m : ℝ)) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs8 : 8 ≤ s` using `by rw [hs]; linarith`. Establish `hspos : 0 < s` using `by linarith`. Use `set X := max (2 * N * (m : ℝ)) (2 * (r : ℝ) * N ^ 2) with hX`. Establish `hX1 : 2 * N * m ≤ X` using `le_max_left _ _`. Establish `hNm : 1 ≤ N * m` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hC : s * (4 * X + 1) < h`. Establish `h4` using `h2`. Rewrite `h4` using `[lt_sub_iff_add_lt, lt_div_iff₀ hspos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsX : 8 * X ≤ s * X` using `by nlinarith`.
-
-Use `max_lt (by linarith) (max_lt ?_ hC)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gapNeed : GapNeedStatement := by
   intro k r ε h hp hq hg

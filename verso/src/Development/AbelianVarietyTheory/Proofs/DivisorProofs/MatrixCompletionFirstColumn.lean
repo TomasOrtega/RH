@@ -8,25 +8,25 @@ namespace GlobalTheory
 open Module
 
 /- English proof (translation)
-Introduce `m v φ h`. Set `L : (Fin (m + 1) → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun x => φ ⬝ᵥ x map_add' := fun x y => dotProduct_add φ x y map_smul' := fun c x => by simp [dotProduct_smul] }`. Establish `hL : ∀ x, L x = φ ⬝ᵥ x` using `fun x => rfl`. Establish `hsurj : LinearMap.range L = ⊤`. Rewrite using `[LinearMap.range_eq_top]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Conclude with `⟨c • v, by rw [hL, dotProduct_smul, h]; simp⟩`. Establish `hdim : Module.finrank ℂ (LinearMap.ker L) = m`. Use `LinearMap.finrank_range_add_finrank_ker L` as an intermediate fact. Rewrite `this` using `[hsurj, finrank_top, Module.finrank_self, Module.finrank_fin_fun]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Set `bN` to `Module.finBasisOfFinrankEq ℂ (LinearMap.ker L) hdim`. Establish `hli : ∀ (c : ℂ), ∀ x ∈ LinearMap.ker L, c • v + x = 0 → c = 0`. Introduce `c x hx hc`. Use `congrArg L hc` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_add, map_smul, LinearMap.mem_ker.mp hx, hL v, h, map_zero]`. Simplify using `using this`. Establish `hsp : ∀ z : Fin (m + 1) → ℂ, ∃ c : ℂ, z + c • v ∈ LinearMap.ker L`. Introduce `z`. Use `⟨-(L z), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.mem_ker, map_add, map_smul, hL v, h]`. Simplify using the standard rewrite rules. Set `b` to `Module.Basis.mkFinCons v bN hli hsp`. Establish `hb : ⇑b = Fin.cons v (Subtype.val ∘ bN)` using `Module.Basis.coe_mkFinCons v bN hli hsp`. Set `e` to `Pi.basisFun ℂ (Fin (m + 1))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hcoord : b.coord 0 = L`. Use `b.ext fun i => ?_` and prove the remaining obligations. Use `Fin.cases ?_ (fun k => ?_) i` and prove the remaining obligations. Rewrite using `[Basis.coord_apply, Basis.repr_self, hb]`. Simplify using `[hL, h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Basis.coord_apply, Basis.repr_self, Finsupp.single_apply]`. Establish `hmem : b k.succ ∈ LinearMap.ker L`. Rewrite using `[hb]`. Simplify using the standard rewrite rules. Rewrite using `[LinearMap.mem_ker.mp hmem]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fin.succ_ne_zero]`. Use `⟨e.toMatrix b, b.toMatrix e, Basis.toMatrix_mul_toMatrix_flip e b, ?_, ?_⟩` and prove the remaining obligations. Introduce `i`. Rewrite using `[Basis.toMatrix_apply, hb]`. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j`. Rewrite using `[Basis.toMatrix_apply]`. Use `congrArg (fun f : (Fin (m + 1) → ℂ) →ₗ[ℂ] ℂ => f (e j)) hcoord` as an intermediate fact. Simplify using `only [Basis.coord_apply] at this`. Rewrite using `[this, hL]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[e, dotProduct_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frame_first_column_first_row :
     ∀ (m : ℕ) (v φ : Fin (m + 1) → ℂ), φ ⬝ᵥ v = 1 → ∃ P P' : Matrix (Fin (m + 1)) (Fin (m + 1)) ℂ,

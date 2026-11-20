@@ -17,17 +17,17 @@ noncomputable section
 namespace GlobalTheory.MixedLocalChains.ExtAdd
 
 /- English proof (translation)
-Set `f` to `cokernel.π ψ ≫ g`. Set `ι : E' ⟶ kernel f` to `kernel.lift f ψ (by simp [f])`. Set `u : kernel f ⟶ kernel g` to `kernel.lift g (kernel.ι f ≫ cokernel.π ψ) (by`. Rewrite using `[Category.assoc]`. Conclude with `kernel.condition f)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hιu : ι ≫ u = 0` using `by ext; simp [ι, u]`. Set `T : ShortComplex C` to `ShortComplex.mk ι u hιu`. Establish `hC : (ShortComplex.mk ψ (cokernel.π ψ) (cokernel.condition ψ)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel ψ)`. Establish `hu : Epi u`. Rewrite using `[epi_iff_surjective_up_to_refinements]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A y`. Take `⟨A', π', hπ', x, hx⟩` from `surjective_up_to_refinements_of_epi (cokernel.π ψ) (y ≫ kernel.ι g)`. Use `⟨A', π', hπ', kernel.lift f x (by simp [f, ← reassoc_of% hx]), ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (kernel.ι g)]`. Simplify using `[u, hx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT : T.Exact`. Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Introduce `A x₂ hx₂`. Establish `h0 : (x₂ ≫ kernel.ι f) ≫ cokernel.π ψ = 0`. Use `congrArg (· ≫ kernel.ι g) hx₂` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[T, u]`. Take `⟨A', π', hπ', x₁, hx₁⟩` from `hC.exact_up_to_refinements (x₂ ≫ kernel.ι f) h0`. Use `⟨A', π', hπ', x₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono (kernel.ι f)]`. Simplify `hx₁` using `[T, ι]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Conclude with `⟨IsColimit.coconePointUniqueUpToIso (colimit.isColimit _) (hT.gIsCokernel)⟩`.
+A detailed English derivation is pending.
 -/
 theorem cok_lift_iso {C : Type*} [Category C] [Abelian C] {E' E M : C} (ψ : E' ⟶ E) (g : cokernel ψ ⟶ M)
     [Epi g] : Nonempty (cokernel (kernel.lift (cokernel.π ψ ≫ g) ψ (by simp)) ≅ kernel g) := by
@@ -60,15 +60,15 @@ theorem cok_lift_iso {C : Type*} [Category C] [Abelian C] {E' E M : C} (ψ : E' 
   exact ⟨IsColimit.coconePointUniqueUpToIso (colimit.isColimit _) (hT.gIsCokernel)⟩
 
 /- English proof (translation)
-Use `P.iso` as an intermediate fact. Set `j` to `B.gen.ι`. Establish `hR : IsIso ((Scheme.Modules.restrictFunctor j).map P.ψ)`. Set `e` to `Scheme.Modules.restrictFunctorIsoPullback j`. Establish `h : (Scheme.Modules.restrictFunctor j).map P.ψ = e.hom.app _ ≫ B.genRes.map P.ψ ≫ e.inv.app _`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← e.hom.naturality_assoc, Iso.hom_inv_id_app, Category.comp_id]`. Rewrite using `[h]`. Use `infer_instance`. Establish `hinj : ∀ U : B.gen.toScheme.Opens, Function.Injective (P.ψ.app (j ''ᵁ U))` using `fun U => app_injective_of_mono ((Scheme.Modules.restrictFunctor j).map P.ψ) U`. Use `mono_of_locally_app_injective _ fun W x hx => ⟨W, hx, le_rfl, fun a b e => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hηW : genericPoint B.X ∈ W` using `(genericPoint_specializes x).mem_open W.isOpen hx`. Establish `hV : j ''ᵁ (j ⁻¹ᵁ W) = B.gen ⊓ W`. Rewrite using `[Scheme.Hom.image_preimage_eq_opensRange_inf, Scheme.Opens.opensRange_ι]`. Establish `hVW : j ''ᵁ (j ⁻¹ᵁ W) ≤ W` using `hV.le.trans inf_le_right`. Establish `hηV : genericPoint B.X ∈ j ''ᵁ (j ⁻¹ᵁ W)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV]`. Conclude with `⟨B.genericPoint_mem_gen, hηW⟩`. Use `sub_eq_zero.1 (P.vb'.isTorsionFree W hηW _ ?_)` and prove the remaining obligations. Establish `h0 : Twist.resM _ hVW (a - b) = 0`. Apply `hinj (j ⁻¹ᵁ W)` to reduce the goal to its premises.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Twist.app_resM, map_sub, e, sub_self, map_zero, map_zero]`. Rewrite using `[← Twist.germ_resM hVW hηV, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mono_ψ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {B : Vert.Model O} (P : Pres B) :
     Mono P.ψ := by
@@ -95,25 +95,23 @@ theorem mono_ψ {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
   rw [← Twist.germ_resM hVW hηV, h0, map_zero]
 
 /- English proof (translation)
-Set `a : E₃' ⟶ pullback f (cokernel.π ψ)` to `pullback.lift 0 ψ (by simp)`. Set `b : kernel f ⟶ pullback f (cokernel.π ψ)` to `pullback.lift (kernel.ι f) 0 (by simp)`. Establish `ha₁ : a ≫ pullback.fst f (cokernel.π ψ) = 0` using `pullback.lift_fst _ _ _`. Establish `ha₂ : a ≫ pullback.snd f (cokernel.π ψ) = ψ` using `pullback.lift_snd _ _ _`. Establish `hb₁ : b ≫ pullback.fst f (cokernel.π ψ) = kernel.ι f` using `pullback.lift_fst _ _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb₂ : b ≫ pullback.snd f (cokernel.π ψ) = 0` using `pullback.lift_snd _ _ _`. Establish `hC : (ShortComplex.mk ψ (cokernel.π ψ) (cokernel.condition ψ)).Exact` using `ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel ψ)`. Set `S₁ : ShortComplex X.Modules` to `ShortComplex.mk a (pullback.fst f (cokernel.π ψ)) ha₁`. Establish `hS₁ : S₁.ShortExact`. Use `ShortComplex.ShortExact.mk' ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`. Introduce `A x₂ hx₂`. Establish `hx₂' : x₂ ≫ pullback.fst f (cokernel.π ψ) = 0` using `hx₂`. Establish `h0 : (x₂ ≫ pullback.snd f (cokernel.π ψ)) ≫ cokernel.π ψ = 0`. Rewrite using `[Category.assoc, ← pullback.condition, ← Category.assoc, hx₂', zero_comp]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨A', π', hπ', x₁, hx₁⟩` from `hC.exact_up_to_refinements _ h0`. Use `⟨A', π', hπ', x₁, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(π' ≫ x₂) ≫ _ = (x₁ ≫ a) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hx₂', ha₁, comp_zero, comp_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(π' ≫ x₂) ≫ _ = (x₁ ≫ a) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, ha₂]`. Conclude with `hx₁`. Establish `: Mono (a ≫ pullback.snd f (cokernel.π ψ))` using `by rw [ha₂]; infer_instance`. Conclude with `mono_of_mono a (pullback.snd f (cokernel.π ψ))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Abelian.epi_pullback_of_epi_g f (cokernel.π ψ)`. Set `S₂ : ShortComplex X.Modules` to `ShortComplex.mk b (pullback.snd f (cokernel.π ψ)) hb₂`. Establish `hS₂ : S₂.ShortExact`. Use `ShortComplex.ShortExact.mk' ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[ShortComplex.exact_iff_exact_up_to_refinements]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A x₂ hx₂`. Establish `hx₂' : x₂ ≫ pullback.snd f (cokernel.π ψ) = 0` using `hx₂`. Establish `h0 : (x₂ ≫ pullback.fst f (cokernel.π ψ)) ≫ f = 0`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx₂', zero_comp]`. Use `⟨A, 𝟙 A, inferInstance, kernel.lift f _ h0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Apply `pullback.hom_ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(𝟙 A ≫ x₂) ≫ _ = (kernel.lift f _ h0 ≫ b) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hb₁, kernel.lift_ι, Category.id_comp]`. Express the relevant statement in the definitionally equal form `(𝟙 A ≫ x₂) ≫ _ = (kernel.lift f _ h0 ≫ b) ≫ _`. Rewrite using `[Category.assoc, Category.assoc, hb₂, comp_zero, Category.id_comp, hx₂']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Mono (b ≫ pullback.fst f (cokernel.π ψ))` using `by rw [hb₁]; infer_instance`. Conclude with `mono_of_mono b (pullback.fst f (cokernel.π ψ))`. Conclude with `Abelian.epi_pullback_of_epi_f f (cokernel.π ψ)`. Establish `hF : GlobalTheory.VB.IsVB (pullback f (cokernel.π ψ)) (r + s)`. Use `GlobalTheory.T.short_exact_vector_bundles_rank_add X S₁ s r hS₁ h₃' hE` as an intermediate fact.
-
-Rewrite `this` using `[add_comm]`. Then use the resulting hypothesis. Conclude with `GlobalTheory.VB.isVB_X₁_of_shortExact X S₂ r s hS₂ hF h₃`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isVB_kernel {X : Scheme.{0}} {E E₃' E₃ : X.Modules} (ψ : E₃' ⟶ E₃) [Mono ψ] (f : E ⟶ cokernel ψ) [Epi f]
     {r s : ℕ} (hE : GlobalTheory.VB.IsVB E r) (h₃ : GlobalTheory.VB.IsVB E₃ s) (h₃' : GlobalTheory.VB.IsVB E₃' s) :
@@ -168,23 +166,21 @@ theorem isVB_kernel {X : Scheme.{0}} {E E₃' E₃ : X.Modules} (ψ : E₃' ⟶ 
   exact GlobalTheory.VB.isVB_X₁_of_shortExact X S₂ r s hS₂ hF h₃
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB P₁ P₂ P₃ ⟨S, hS, ⟨e₁⟩, ⟨e₂⟩, ⟨e₃⟩⟩ k`. Use `hS.epi_g` as an intermediate fact. Set `g : cokernel P₂.ψ ⟶ P₃.mod` to `e₂.inv ≫ S.g ≫ e₃.hom`. Use `haveI h3 : Epi (S.g ≫ e₃.hom) := @epi_comp _ _ _ _ _ S.g hS.epi_g e₃.hom _`. Use `haveI hg : Epi g := @epi_comp _ _ _ _ _ e₂.inv _ (S.g ≫ e₃.hom) h3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : P₂.E ⟶ P₃.mod` to `cokernel.π P₂.ψ ≫ g`. Use `haveI hf : Epi f := by dsimp only [f]; infer_instance`. Set `j : kernel f ⟶ P₂.E` to `kernel.ι f`. Set `ι : P₂.E' ⟶ kernel f` to `kernel.lift f P₂.ψ (by simp [f])`. Establish `hψ : ι ≫ j = P₂.ψ` using `kernel.lift_ι _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `mono_ψ P₃` as an intermediate fact. Set `f' : P₂.E ⟶ cokernel P₃.ψ` to `f`. Use `haveI : Epi f' := hf`. Establish `hK : GlobalTheory.VB.IsVB (kernel f) P₂.r` using `isVB_kernel P₃.ψ f' P₂.vb P₃.vb P₃.vb'`. Use `hK.isQuasicoherent` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `P₂.vb.isQuasicoherent` as an intermediate fact. Use `P₂.iso` as an intermediate fact. Establish `hmj : Mono (B.genRes.map j)` using `mono_pullback_map _ j`. Establish `hij : IsIso (B.genRes.map j)`. Establish `hc : IsIso (B.genRes.map ι ≫ B.genRes.map j)` using `by rw [← Functor.map_comp, hψ]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: IsSplitEpi (B.genRes.map j)` using `⟨⟨inv (B.genRes.map ι ≫ B.genRes.map j) ≫ B.genRes.map ι, by simp⟩⟩`. Conclude with `isIso_of_mono_of_isSplitEpi _`. Establish `hiι : IsIso (B.genRes.map ι)`. Establish `hc : IsIso (B.genRes.map ι ≫ B.genRes.map j)` using `by rw [← Functor.map_comp, hψ]; infer_instance`. Conclude with `IsIso.of_isIso_comp_right _ (B.genRes.map j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `Q₁ : Pres B` to `⟨P₂.r, kernel f, P₂.E', hK, P₂.vb', ι, hiι⟩`. Set `Q₃ : Pres B` to `⟨P₂.r, P₂.E, kernel f, P₂.vb, hK, j, hij⟩`. Establish `h₁ : Nonempty (Q₁.mod ≅ P₁.mod)`. Take `⟨e⟩` from `cok_lift_iso P₂.ψ g`. Conclude with `⟨e ≪≫ kernelIsIsoComp e₂.inv (S.g ≫ e₃.hom) ≪≫ kernelCompMono S.g e₃.hom ≪≫ (IsLimit.conePointUniqueUpToIso hS.fIsKernel (kernelIsKernel S.g)).symm ≪≫ e₁⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h₃ : Nonempty (Q₃.mod ≅ P₃.mod)`. Conclude with `⟨IsColimit.coconePointUniqueUpToIso (colimit.isColimit _) (Abelian.epiIsCokernelOfKernel _ (kernelIsKernel f))⟩`. Establish `hcomp : (haveI` using `P₂.iso; Vert.Model.GenIso.ofHom P₂.ψ) = Vert.Model.GenIso.ofHom j ≪≫ Vert.Model.GenIso.ofHom ι := by ext1`. Simplify using `only [Vert.Model.GenIso.ofHom, Iso.trans_hom, Iso.symm_hom, asIso_inv]`. Apply `IsIso.inv_eq_of_hom_inv_id` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ, Functor.map_comp]`. Simplify using the standard rewrite rules. Establish `hba` using `(GlobalTheory.T.ck_additive_composition O p B hB _ _ _ (Vert.Model.GenIso.ofHom j) (Vert.Model.GenIso.ofHom ι) P₂.r k P₂.vb hK P₂.vb').1`. Establish `hm₁` using `GlobalTheory.T.ck_presentation_invariant O p B hB Q₁ P₁ h₁ k`. Establish `hm₃` using `GlobalTheory.T.ck_presentation_invariant O p B hB Q₃ P₃ h₃ k`.
-
-Rewrite using `[← hm₁, ← hm₃, add_comm]`. Express the relevant statement in the definitionally equal form `ckP p _ P₂.r k = ckP p _ P₂.r k + ckP p _ P₂.r k`. Rewrite using `[hcomp]`. Conclude with `hba`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ck_add_of_isExt : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime]
     [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X →

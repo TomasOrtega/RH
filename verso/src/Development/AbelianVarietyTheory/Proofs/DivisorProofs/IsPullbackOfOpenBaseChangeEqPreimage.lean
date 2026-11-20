@@ -9,19 +9,17 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Introduce `S S₁ P G p s e c hw hl V hV`. Establish `hlf : Limits.pullback.lift e c hw ≫ Limits.pullback.fst p s = e` using `Limits.pullback.lift_fst _ _ _`. Establish `hls : Limits.pullback.lift e c hw ≫ Limits.pullback.snd p s = c` using `Limits.pullback.lift_snd _ _ _`. Generalize the expression as in `Limits.pullback.lift e c hw = l at hl hV hlf hls`. Establish `hr : Set.range e ⊆ Set.range V.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨g, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `h` using `(hV (l g)).mpr ⟨g, rfl⟩`. Rewrite `h` using `[← Scheme.Hom.comp_apply, hlf]`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he' : IsOpenImmersion.lift V.ι e hr ≫ V.ι = e` using `IsOpenImmersion.lift_fac _ _ _`. Generalize the expression as in `IsOpenImmersion.lift V.ι e hr = e' at he'`. Establish `hcomm : e' ≫ V.ι ≫ p = c ≫ s` using `by rw [← Category.assoc, he', hw]`. Establish `hk : ∀ t : PullbackCone (V.ι ≫ p) s, ∃ q : t.pt ⟶ G, q ≫ l = Limits.pullback.lift (t.fst ≫ V.ι) t.snd ((Category.assoc _ _ _).trans t.condition)`. Introduce `t`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨IsOpenImmersion.lift l _ ?_, IsOpenImmersion.lift_fac _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Use `(hV _).mp ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Limits.pullback.lift_fst, Scheme.Hom.comp_apply]`. Conclude with `(t.fst x).2`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `choose q hq using hk`. Use `⟨e', he', ⟨hcomm⟩, ⟨PullbackCone.IsLimit.mk hcomm q ?_ ?_ ?_⟩⟩` and prove the remaining obligations. Introduce `t`. Rewrite using `[← cancel_mono V.ι, Category.assoc, he', ← hlf, ← Category.assoc, hq, Limits.pullback.lift_fst]`. Introduce `t conv_lhs => rw [← hls]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, hq, Limits.pullback.lift_snd]`. Introduce `t m h₁ h₂`. Rewrite using `[← cancel_mono l, hq]`. Apply `Limits.pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hlf, Limits.pullback.lift_fst, ← h₁, Category.assoc, he']`.
-
-Rewrite using `[Category.assoc, hls, Limits.pullback.lift_snd, h₂]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_of_open_part_eq_preimage :
     ∀ (S S₁ P G : Scheme.{0}) (p : P ⟶ S) (s : S₁ ⟶ S) (e : G ⟶ P) (c : G ⟶ S₁) (hw : e ≫ p = c ≫ s), IsOpenImmersion (Limits.pullback.lift e c hw) → ∀ V : P.Opens, (∀ w : ↥(Limits.pullback p s), Limits.pullback.fst p s w ∈ V ↔ w ∈ Set.range (Limits.pullback.lift e c hw)) → ∃ e' : G ⟶ V.toScheme, e' ≫ V.ι = e ∧ IsPullback e' c (V.ι ≫ p) s := by

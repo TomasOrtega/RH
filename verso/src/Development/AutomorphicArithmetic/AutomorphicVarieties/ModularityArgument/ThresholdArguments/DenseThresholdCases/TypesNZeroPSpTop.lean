@@ -17,13 +17,13 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 end P_spTop
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 /- English proof (translation)
-Introduce `hLat hUniq hCount hLift hTw hRes hPiEta hOrd hPiSub hSupp hCusp hProd hTen L V _ _ π hπs hπi Y iY mY τ hτs hτi hτd hsub`. Establish `hc : ∀ a, ∃ μ' : Fin (G.d a) → kˣ →* ℂˣ, (∀ j, IsSmoothChar (μ' j) ∧ ∀ u : kˣ, valuation k (u : k) = 1 → μ' j u = G.μ a u) ∧ IsCuspSupport (τ a) (fun _ => 1) (fun j => detRep (Fin 1) (μ' j))` using `fun a => hCusp L.loc k (G.d a) (Y a) (τ a) (hτs a) (hτi a) (G.μ a) (G.smooth a) (hτd a)`. Use `choose ν hν hνc using hc`. Establish `hνs : ∀ a j, IsSmoothChar (ν a j)` using `fun a j => (hν a j).1`. Establish `hνr : ∀ a j, res (ν a j) = res (G.μ a)` using `fun a j => P_spTop.res_eq (hν a j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htw` using `fun a => hTw Y τ a (hτs a) (hτi a) (hτd a)`. Establish `hPi : (multiProd G.e (G.twD τ)).IsIrreducible` using `hProd hCusp L.loc k G.s n G.d G.hd Y (G.twD τ) (fun a => (htw a).1) (fun a => (htw a).2.1) G.μ G.smooth (fun a => (htw a).2.2) (fun b c hbc => P_spTop.exists_unit_ne (G.dist b c hbc))`. Establish `hπI` using `hSupp hOrd L V π hπs hπi Y τ hτs hτi ν hνs hνc hsub`. Establish `hPI` using `hPiSub hOrd L Y τ hτs hτi ν hνs hνc hPi`. Take `⟨hfd, hle⟩` from `hCount L (G.cOf ν) (P_spTop.isSmoothChar_cOf G ν hνs) (hRes ν hνr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hπη : G.HasEtaVec (jacU G.e π)`. Take `⟨v, hv0, hv⟩` from `hTen k G.s G.d Y τ G.μ hτd`. Use `hLift _ _ (jacU G.e π) (piTensor τ) (isSmooth_jacU G.e hπs) hsub ⟨v, hv0, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm'` using `hm`. Rewrite `hm'` using `[leviK, Subgroup.mem_pi]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hv m fun a => hm' a (Set.mem_univ a)`. Establish `hPη` using `hPiEta hLift Y τ hτs hτd`. Take `⟨e⟩` from `hUniq hLat _ (prinSeries (G.cOf ν)) (P_spTop.isSmooth_prinSeries _) hfd hle _ _ π (multiProd G.e (G.twD τ)) hπi hPi hπI hPI hπη hPη`. Conclude with `⟨Y, iY, mY, G.twD τ, fun a => (htw a).1, fun a => (htw a).2.1, fun a => (htw a).2.2, ⟨e⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem step_spTop_alt (G : Grp k n) : G.Step_spTop_alt := by
   intro hLat hUniq hCount hLift hTw hRes hPiEta hOrd hPiSub hSupp hCusp hProd hTen L V _ _ π hπs hπi Y iY mY τ hτs hτi hτd hsub

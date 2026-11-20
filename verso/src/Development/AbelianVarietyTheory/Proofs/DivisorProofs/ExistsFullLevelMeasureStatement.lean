@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.Divisors₂.TamagawaSp
 open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Formalism.L2.DIV Formalism.IndefR.Links Formalism.IndefR.FWT GlobalTheory.CovTop
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.MassFullLevel.mass_le_of_full` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsFullLevelMeasure.lean&line=28#L28)
 -/

@@ -20,7 +20,7 @@ namespace GlobalTheory.LatHt
 def jump (E : Type) [Field E] [NumberField E] (p : ℕ) : ℝ := Real.log p / ((p : ℝ) - 1) + vDiff E p * Real.log p
 
 /- English proof (translation)
-Use `add_nonneg ?_ (mul_nonneg (by unfold vDiff; positivity) (Real.log_natCast_nonneg p))` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos p with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Establish `: (1 : ℝ) ≤ p` using `by exact_mod_cast h`. Conclude with `div_nonneg (Real.log_natCast_nonneg p) (by linarith)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jump_nonneg (E : Type) [Field E] [NumberField E] (p : ℕ) : 0 ≤ jump E p := by
   refine add_nonneg ?_ (mul_nonneg (by unfold vDiff; positivity) (Real.log_natCast_nonneg p))
@@ -36,7 +36,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} (Y : FlagCpt Z e)
 
 /- English proof (translation)
-The claim follows from `|lgOf Y (rootSym Dw (ArIn.ind T) none τ i) v ε y - lgOf Y (rootSym Dw (ArIn.ind ∅) none τ i) v ε y| ≤ if resP v ∈ T then |-Real.log (ε.w (resP v)) / Real.log (resP v)| * jump E (resP v) else 0 := by by_cases hp : (resP v).Prime swap · simp only [lgOf, dif_neg hp, sub_self, abs_ze …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lgOf_rootSym_sub_le (τ : E →+* ℂ) (i : ℕ) (T : Finset ℕ) (v : HeightOneSpectrum (𝓞 F))
     (ε : Ext v) (y : AlgPt Y.Y) :
@@ -71,7 +71,7 @@ theorem abs_lgOf_rootSym_sub_le (τ : E →+* ℂ) (i : ℕ) (T : Finset ℕ) (v
     exact le_rfl
 
 /- English proof (translation)
-The claim follows from `|(adlOf Y (fun _ => h₀) (rootSym Dw (ArIn.ind T) none τ i)).ht x - (adlOf Y (fun _ => h₀) (rootSym Dw (ArIn.ind ∅) none τ i)).ht x| ≤ ∑ p ∈ T, jump E p := by have e2 : adlOf Y (fun _ => h₀) (rootSym Dw (ArIn.ind ∅) none τ i) = { adlOf Y (fun _ => h₀) (rootSym Dw (ArIn.ind T) none …`.
+A detailed English derivation is pending.
 -/
 theorem abs_ht_rootSym_sub_le {C : CxSt F} (h₀ : ∀ (σ : F →+* ℂ) (n : Letter Dw → ℤ), C.Met Y.Y σ (divOf Y n))
     (τ : E →+* ℂ) (i : ℕ) (T : Finset ℕ) (hT : ∀ p ∈ T, p.Prime) (x : Y.Y.X) :
@@ -104,13 +104,11 @@ theorem abs_ht_rootSym_sub_le {C : CxSt F} (h₀ : ∀ (σ : F →+* ℂ) (n : L
 end Gen
 
 /- English proof (translation)
-Use `set b : ℝ := ∑ p ∈ (2 * (NumberField.discr D.host.E).natAbs * κ.l.M').primeFactors, jump D.host.E p with hb`. Establish `hb0 : 0 ≤ b` using `Finset.sum_nonneg fun p _ => jump_nonneg _ p`. Establish `hv0 : 0 ≤ Real.log D.host.rdE` using `by simpa using PlaceBd.sum_vDiff_mul_log_le_log_rdE D ∅ (by simp)`. Use `⟨1 + 2 * (3 + Real.log D.host.rdE + b), by positivity, fun B hB => ⟨fun p hp => ?_, ?_⟩⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 hp with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(Finset.mem_filter.1 h).2`. Conclude with `Nat.prime_of_mem_primeFactors h`. Establish `hlB : 1 / 2 ≤ Real.log B`. Use `Real.log_two_gt_d9` as an intermediate fact. Use `Real.log_le_log two_pos hB` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `PrimeLogSum.sum_log_div_pred_le_real B (by linarith)`. Establish `h2` using `PlaceBd.sum_vDiff_mul_log_le_log_rdE D ((Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime) fun p hp => (Finset.mem_filter.1 hp).2`. Establish `h3 : ∑ p ∈ Pad.setB κ B, jump D.host.E p ≤ ∑ p ∈ (Finset.range (⌊B⌋₊ + 1)).filter Nat.Prime, jump D.host.E p + b`. Rewrite using `[Pad.setB, hb, ← Finset.sum_union_inter]`.
-
-Conclude with `le_add_of_nonneg_right (Finset.sum_nonneg fun p _ => jump_nonneg _ p)`. Simplify using `only [jump, Finset.sum_add_distrib] at h3 ⊢`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem sum_jump_le {D : D7} {A : Amb D} (κ : Lv A) : ∃ K : ℝ, 0 ≤ K ∧ ∀ B : ℝ, 2 ≤ B →
     (∀ p ∈ Pad.setB κ B, p.Prime) ∧ ∑ p ∈ Pad.setB κ B, jump D.host.E p ≤ K * Real.log B := by
@@ -136,13 +134,13 @@ theorem sum_jump_le {D : D7} {A : Amb D} (κ : Lv A) : ∃ K : ℝ, 0 ≤ K ∧ 
   nlinarith
 
 /- English proof (translation)
-Introduce `_ _ D O _ _ A T H h`. Take `⟨K, hK0, hK⟩` from `sum_jump_le O.κ`. Use `⟨Fintype.card (DV.Rt D.what₂.Tau O.N) * K, fun B hB u y => ?_⟩` and prove the remaining obligations. Take `⟨hp, hs⟩` from `hK B hB`. Establish `e1` using `h.pts_is.L B hB y u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2` using `h.ht.h0 u y`. Use `(congrArg abs (congrArg₂ (· - ·) e1 e2)).trans_le ?_` and prove the remaining obligations. Rewrite using `[O.setB_eq]`. Unfold `Setup.htWt`. Rewrite using `[neg_sub_neg, abs_sub_comm, ← Finset.sum_sub_distrib]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `(Finset.abs_sum_le_sum_abs _ _).trans ((Finset.sum_le_sum (g := fun _ => ‖u‖ * (K * Real.log B)) fun x _ => ?_).trans_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_sub, abs_mul]`. Use `mul_le_mul ((norm_le_pi_norm (u x.1) x.2).trans (norm_le_pi_norm u x.1)) ?_ (abs_nonneg _) (norm_nonneg _)` and prove the remaining obligations. Conclude with `(abs_ht_rootSym_sub_le (O.Φ.C _) (O.met.h0 _) _ _ _ hp _).trans hs`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem latCmp : Hypotheses2 → HypothesesH → OnObj fun _ _ _ _ H h => LatCmp H h.pts := by
   intro _ _ D O _ _ A T H h

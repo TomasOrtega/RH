@@ -18,13 +18,13 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-The claim follows from `(algebraMap_smul K c x).symm`.
+A detailed English derivation is pending.
 -/
 theorem ok_smul_eq {n : ℕ} (c : 𝓞 K) (x : Fin n → K) : c • x = (algebraMap (𝓞 K) K c) • x :=
   (algebraMap_smul K c x).symm
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_third_alt.goal1 .. | (apply Bl.general_b_fact_third_alt.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_third_alt.goal1 <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem {n : ℕ} (R : Submodule (𝓞 K) (Fin n → K)) (x : Fin n → K)
     (hx : x ∈ Submodule.span K (R : Set (Fin n → K))) : ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ R := by
@@ -35,26 +35,24 @@ namespace LevelAmb
 variable [StarRing K] {D0 D1 : ℕ} (A : LevelAmb K D0 D1)
 
 /- English proof (translation)
-The claim follows from `inf_le_left`.
+A detailed English derivation is pending.
 -/
 theorem partLat_le (e : Matrix (Fin A.Dg) (Fin A.Dg) K) : A.partLat e ≤ A.Rg := inf_le_left
 
 /- English proof (translation)
-The claim follows from `hy.2`.
+A detailed English derivation is pending.
 -/
 theorem mem_range_of_partLat {e : Matrix (Fin A.Dg) (Fin A.Dg) K} {y : Fin A.Dg → K} (hy : y ∈ A.partLat e) :
     y ∈ LinearMap.range e.mulVecLin := hy.2
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Conclude with `hy.2`. Introduce `w hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hw' : w ∈ Submodule.span K (A.Rg : Set (Fin A.Dg → K))`. Rewrite using `[hL.span_eq_top]`. Conclude with `Submodule.mem_top`. Take `⟨d, hd, hm⟩` from `exists_smul_mem A.Rg w hw'`. Establish `hdK : algebraMap (𝓞 K) K d ≠ 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ne, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]`. Conclude with `hd`. Establish `hmem : d • w ∈ A.partLat e`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Use `show d • w ∈ LinearMap.range e.mulVecLin`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ok_smul_eq]`. Conclude with `Submodule.smul_mem _ _ hw`. Establish `: w = (algebraMap (𝓞 K) K d)⁻¹ • (d • w)`. Rewrite using `[ok_smul_eq, smul_smul, inv_mul_cancel₀ hdK, one_smul]`. Rewrite using `[this]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+A detailed English derivation is pending.
 -/
 theorem span_partLat (hL : A.LatG) (e : Matrix (Fin A.Dg) (Fin A.Dg) K) :
     Submodule.span K (A.partLat e : Set (Fin A.Dg → K)) = LinearMap.range e.mulVecLin := by
@@ -79,23 +77,23 @@ theorem span_partLat (hL : A.LatG) (e : Matrix (Fin A.Dg) (Fin A.Dg) K) :
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Establish `: IsNoetherian (𝓞 K) A.Rg` using `isNoetherian_of_fg_of_noetherian A.Rg hL.fg`. Conclude with `Submodule.FG.of_le_of_isNoetherian (A.partLat_le e)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem partLat_fg (hL : A.LatG) (e : Matrix (Fin A.Dg) (Fin A.Dg) K) : (A.partLat e).FG := by
   have : IsNoetherian (𝓞 K) A.Rg := isNoetherian_of_fg_of_noetherian A.Rg hL.fg
   exact Submodule.FG.of_le_of_isNoetherian (A.partLat_le e)
 
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `smul_ne_zero (Nat.pos_iff_ne_zero.mp hh) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_smul_ne_zero {n : ℕ} {h : ℕ} (hh : 0 < h) {y : Fin n → K} (hy : y ≠ 0) : (h : 𝓞 K) • y ≠ 0 := by
   rw [Nat.cast_smul_eq_nsmul]
   exact smul_ne_zero (Nat.pos_iff_ne_zero.mp hh) hy
 
 /- English proof (translation)
-Unfold `Formalism.BranchingDeterminantCap.scaleFrame`. Rewrite using `[Matrix.det_smul]`. Use `IsUnit.mul ?_ (hF v)` and prove the remaining obligations. Use `IsUnit.pow _ (isUnit_iff_ne_zero.mpr ?_)` and prove the remaining obligations. Establish `: (0 : ℝ) < Real.sqrt h` using `Real.sqrt_pos.mpr (by exact_mod_cast hh)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this.ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem frame_scale_unit (h : ℕ) (hh : 0 < h) (hF : A.FramesG) (v : InfinitePlace K) :
     IsUnit ((Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt h) A.Xg) v).det := by
@@ -107,31 +105,29 @@ theorem frame_scale_unit (h : ℕ) (hh : 0 < h) (hF : A.FramesG) (v : InfinitePl
   exact_mod_cast this.ne'
 
 /- English proof (translation)
-Take `⟨hinj, hrange, hmaj⟩` from `hE`. Take `⟨hle, hsm⟩` from `hS`. Establish `himg : A.img ι RR ≠ ⊥`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Introduce `hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hsm y hy` as an intermediate fact. Rewrite `this` using `[hb, Submodule.mem_bot]`. Conclude with `nat_smul_ne_zero hh hy0 this`. Establish `hfgI : (A.img ι RR).FG`. Establish `: IsNoetherian (𝓞 K) A.Rg` using `isNoetherian_of_fg_of_noetherian A.Rg hL.fg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Submodule.FG.of_le_of_isNoetherian (le_trans hle (A.partLat_le ep))`. Establish `hinj' : Function.Injective (ι.mulVecLin.restrictScalars (𝓞 K))` using `hinj`. Establish `hfg : RR.FG` using `Submodule.fg_of_fg_map_injective _ hinj' hfgI`. Establish `hspan : Submodule.span K (RR : Set (Fin D → K)) = ⊤`. Rewrite using `[eq_top_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Establish `h1 : ι *ᵥ x ∈ Submodule.span K (A.partLat ep : Set (Fin A.Dg → K))`. Rewrite using `[A.span_partLat hL ep, ← hrange]`. Conclude with `⟨x, rfl⟩`. Establish `h2 : Submodule.span K (A.partLat ep : Set (Fin A.Dg → K)) ≤ Submodule.span K (A.img ι RR : Set (Fin A.Dg → K))`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Establish `hyy` using `hsm y hy`. Establish `hhK : (h : K) ≠ 0` using `by exact_mod_cast hh.ne'`. Establish `: y = (h : K)⁻¹ • ((h : 𝓞 K) • y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_smul_eq_nsmul, ← Nat.cast_smul_eq_nsmul K, smul_smul, inv_mul_cancel₀ hhK, one_smul]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hyy)`. Establish `h3` using `h2 h1`. Establish `himgset : (A.img ι RR : Set (Fin A.Dg → K)) = ι.mulVecLin '' (RR : Set (Fin D → K))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `img`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite `h3` using `[himgset, Submodule.span_image]`. Take `⟨z, hz, hzx⟩` from `h3`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: z = x` using `hinj hzx`. Rewrite using `[← this]`. Conclude with `hz`. Set `B : Formalism.BasicNotions.HLat K` to `{ V := Fin A.Dg → K, ι := Fin A.Dg, b := Pi.basisFun K (Fin A.Dg), X := Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt h) A.Xg, L := ⊥ }`. Set `C : Formalism.BasicNotions.HLat K` to `{ V := Fin D → K, ι := Fin D, b := Pi.basisFun K (Fin D), X := XE, L := RR }`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hB : HLatOps.FrameOK B` using `A.frame_scale_unit h hh hF`. Establish `hn : ∀ v x, Formalism.HermitianLatticesTheory.normAt C.b C.X v x = Formalism.HermitianLatticesTheory.normAt B.b B.X v (ι.mulVecLin x)`. Introduce `v x`. Rewrite using `[HLatOps.normAt_eq_sqrt, HLatOps.normAt_eq_sqrt]`. Use `show Real.sqrt (Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin D)) XE v x x).re = Real.sqrt (Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin A.Dg)) (Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt h) A.Xg) v (ι *ᵥ x) (ι *ᵥ x)).re`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hmaj v x x]`. Take `⟨hCf, hnum⟩` from `HLatOps.emb_numbers K C B ι.mulVecLin hB hinj hn`. Take `⟨-, hnum2⟩` from `hnum RR`. Take `⟨hmu, hmax, _hmin, _hlcv⟩` from `hnum2 hfg`. Establish `hgood : C.Good` using `⟨hCf, hfg, hspan⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Establish `hrk : 0 < C.rank` using `by show 0 < Formalism.HN.rkK RR`. Unfold `Formalism.HN.rkK`. Rewrite using `[hspan, finrank_top, Module.finrank_fin_fun]`. Break down `Nat.eq_zero_or_pos D with hD | hD` into its components or cases. It suffices to derive a contradiction.
+Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Substitute `hD` using the available equality. Apply `himg` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce and unpack `y ⟨x, -, rfl⟩`. Establish `: x = 0` using `Subsingleton.elim _ _`.
-
-Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Conclude with `hD`. Take `⟨hdual, -, -⟩` from `HLatOps.dual_numbers K C hgood hrk`. Conclude with `⟨himg, hmu, hmax, hdual⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem levelFacts [IsTotallyComplex K] {D : ℕ} (ι : Matrix (Fin A.Dg) (Fin D) K) (ep : Matrix (Fin A.Dg) (Fin A.Dg) K)
     (h : ℕ) (XE : InfinitePlace K → Matrix (Fin D) (Fin D) ℂ) (RR : Submodule (𝓞 K) (Fin D → K))
@@ -222,25 +218,25 @@ end LevelAmb
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ _ _ _ Bs Df0 Df1 N S0 S1 A hFr hLat hE0 hE1 hS0 hS1 hSz hRk hD0 hD1 hMx hMu hRows`. Take `⟨h0p, h0G, h1p, h1G, hla⟩` from `hSz`. Take `⟨hne0, hne1⟩` from `hRows`. Take `⟨hI0, hmu0, hmax0, hdual0⟩` from `A.levelFacts A.ι0 A.ep0 A.h0 S0.XE S0.RR hFr hLat hE0 hS0 h0p hne0`. Take `⟨hI1, hmu1, hmax1, hdual1⟩` from `A.levelFacts A.ι1 A.ep1 A.h1 S1.XE S1.RR hFr hLat hE1 hS1 h1p hne1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfg0 : A.latticeAtBaseLevel.FG` using `A.partLat_fg hLat A.ep0`. Establish `hfg1 : A.latticeAtSharpLevel.FG` using `A.partLat_fg hLat A.ep1`. Establish `hG1 : (1 : ℝ) ≤ (A.G : ℝ)` using `by exact_mod_cast le_trans h0p h0G`. Establish `hlogG : 0 ≤ Real.log A.G` using `Real.log_nonneg hG1`. Establish `hlog0 : Real.log A.h0 ≤ Real.log A.G` using `Real.log_le_log (by exact_mod_cast h0p) (by exact_mod_cast h0G)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog1 : Real.log A.h1 ≤ Real.log A.G` using `Real.log_le_log (by exact_mod_cast h1p) (by exact_mod_cast h1G)`. Establish `hLC0` using `Formalism.BranchingDeterminantCap.levelCompare_statement K (Fin A.Dg → K) (Fin A.Dg) (Pi.basisFun K (Fin A.Dg)) A.Xg hFr A.latticeAtBaseLevel (A.img A.ι0 S0.RR) A.h0 hfg0 hI0 h0p hS0.1 hS0.2`. Establish `hLC1` using `Formalism.BranchingDeterminantCap.levelCompare_statement K (Fin A.Dg → K) (Fin A.Dg) (Pi.basisFun K (Fin A.Dg)) A.Xg hFr A.latticeAtSharpLevel (A.img A.ι1 S1.RR) A.h1 hfg1 hI1 h1p hS1.1 hS1.2`. Unfold `Passage`. Introduce `hde0 hde3 HH0 hHH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmaxRR0 : S0.muMaxRR = Formalism.HN.muMaxDef (Pi.basisFun K (Fin A.Dg)) (Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt A.h0) A.Xg) (A.img A.ι0 S0.RR)` using `hmax0`. Establish `hmaxRR1 : S1.muMaxRR = Formalism.HN.muMaxDef (Pi.basisFun K (Fin A.Dg)) (Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt A.h1) A.Xg) (A.img A.ι1 S1.RR)` using `hmax1`. Establish `hcc0 : S0.muCC = - Formalism.HN.muDef (Pi.basisFun K (Fin A.Dg)) (Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt A.h0) A.Xg) (A.img A.ι0 S0.RR)` using `by show Formalism.HN.muDef _ _ _ = _`. Rewrite using `[hdual0, hmu0]`. Establish `hcc1 : S1.muCC = - Formalism.HN.muDef (Pi.basisFun K (Fin A.Dg)) (Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt A.h1) A.Xg) (A.img A.ι1 S1.RR)` using `by show Formalism.HN.muDef _ _ _ = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hdual1, hmu1]`. Prove the components needed by the constructor for the conclusion. Establish `a1` using `(abs_le.mp hLC1.2).2`. Establish `a0` using `(abs_le.mp hLC0.2).1`. Unfold `LevelAmb.MaxT at hMx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LevelAmb.latticeAtBaseLevel LevelAmb.latticeAtSharpLevel at *`. Rewrite using `[hmaxRR1]`. Rewrite `hHH` using `[hmaxRR0]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hRs : ∀ s, A.Rs s ≤ A.latticeAtBaseLevel`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Introduce `s y hy`. Use `⟨hy.1, ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hy.2`. Use `⟨A.es s *ᵥ x, ?_⟩` and prove the remaining obligations. Use `show A.ep0 *ᵥ (A.es s *ᵥ x) = y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec]`. Conclude with `hx`. Take `⟨hr0, hr1⟩` from `hRk`. Establish `hr0' : (Formalism.HN.rkK A.latticeAtBaseLevel : ℝ) = ∑ s, (Formalism.HN.rkK (A.Rs s) : ℝ)` using `by rw [hr0]; push_cast; rfl`. Establish `hr1' : (Formalism.HN.rkK A.latticeAtSharpLevel : ℝ) = ∑ s, (A.nS s : ℝ) * (Formalism.HN.rkK (A.Rs s) : ℝ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hr1]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hP` using `Formalism.BranchingDeterminantCap.passageLat_of Formalism.BranchingDeterminantCap.levelCompare_statement K (Fin A.Dg → K) (Fin A.Dg) (Pi.basisFun K (Fin A.Dg)) A.Xg hFr A.S A.Rs A.nS A.latticeAtBaseLevel A.latticeAtSharpLevel (A.img A.ι0 S0.RR) (A.img A.ι1 S1.RR) A.G A.h0 A.h1 A. …`. Rewrite using `[hcc0, hcc1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb : 3 * N.de * (4 * Real.log A.G) ≤ 3 * N.de * (28 * N.la)`. Apply `mul_le_mul_of_nonneg_left _ (by linarith)` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem passage_from_levels : PassageFromLevels := by
   intro K _ _ _ _ Bs Df0 Df1 N S0 S1 A hFr hLat hE0 hE1 hS0 hS1 hSz hRk hD0 hD1 hMx hMu hRows
@@ -310,7 +306,7 @@ theorem passage_from_levels : PassageFromLevels := by
     nlinarith
 
 /- English proof (translation)
-Introduce `K _ _ _ _ E _ _ Pg r k _ Pl0 T J _ F ψ Zs N S0 S1 A`. Conclude with `passage_from_levels K F.base _ _ N S0 S1 A`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem passage_base_sharp_levels : PassageAtBaseSharpLevels := by
   intro K _ _ _ _ E _ _ Pg r k _ Pl0 T J _ F ψ Zs N S0 S1 A
@@ -338,7 +334,7 @@ def trivAmb (S : IndefData Df) : LevelAmb K S.D S.D where
   ι1 := 1
 
 /- English proof (translation)
-Apply `le_antisymm inf_le_left` to reduce the goal to its premises. Introduce `y hy`. Use `⟨hy, y, ?_⟩` and prove the remaining obligations. Use `show (1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ y = y`. Conclude with `Matrix.one_mulVec y`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trivAmb_partLat (S : IndefData Df) : (trivAmb S).partLat (trivAmb S).ep0 = S.RR := by
   apply le_antisymm inf_le_left
@@ -348,11 +344,9 @@ theorem trivAmb_partLat (S : IndefData Df) : (trivAmb S).partLat (trivAmb S).ep0
   exact Matrix.one_mulVec y
 
 /- English proof (translation)
-Unfold `LevelAmb.img`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨x, hx, hxy⟩` from `Submodule.mem_map.mp h`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hxy]`. Use `show (1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ x ∈ S.RR`. Rewrite using `[Matrix.one_mulVec]` and apply the resulting hypothesis. Introduce `hy`. Use `Submodule.mem_map.mpr ⟨y, hy, ?_⟩` and prove the remaining obligations.
-
-Use `show (1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ y = y`. Conclude with `Matrix.one_mulVec y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem trivAmb_img (S : IndefData Df) : (trivAmb S).img (trivAmb S).ι0 S.RR = S.RR := by
   unfold LevelAmb.img
@@ -369,27 +363,23 @@ theorem trivAmb_img (S : IndefData Df) : (trivAmb S).img (trivAmb S).ι0 S.RR = 
     exact Matrix.one_mulVec y
 
 /- English proof (translation)
-Use `letI : Unique (trivAmb S).S := inferInstanceAs (Unique Unit)`. Establish `hP1 : (trivAmb S).partLat (trivAmb S).ep0 = S.RR` using `trivAmb_partLat S`. Establish `hRP0 : (trivAmb S).latticeAtBaseLevel = S.RR` using `hP1`. Establish `hRP1 : (trivAmb S).latticeAtSharpLevel = S.RR` using `hP1`. Establish `hRs : ∀ s, (trivAmb S).Rs s = S.RR`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Establish `: (trivAmb S).ep0 * (trivAmb S).es s = (trivAmb S).ep0`. Conclude with `mul_one _`. Unfold `LevelAmb.Rs`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hP1`. Establish `hsc : Formalism.BranchingDeterminantCap.scaleFrame (Real.sqrt (((trivAmb S).h0 : ℕ) : ℝ)) (trivAmb S).Xg = S.XE`. Use function extensionality and compare the values at `v`. Use `show ((Real.sqrt ((1 : ℕ) : ℝ) : ℝ) : ℂ) • S.XE v = S.XE v`. Rewrite using `[Nat.cast_one, Real.sqrt_one, Complex.ofReal_one, one_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hemb : (trivAmb S).EmbAt (trivAmb S).ι0 (trivAmb S).ep0 (trivAmb S).h0 S.XE`. Use `⟨fun x y h => ?_, rfl, fun v x y => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ x = (1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ y at h`. Rewrite `h` using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Then use the resulting hypothesis. Rewrite using `[hsc] show _ = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun K (Fin S.D)) S.XE v ((1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ x) ((1 : Matrix (Fin S.D) (Fin S.D) K) *ᵥ y)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.one_mulVec, Matrix.one_mulVec]`. Establish `hsand : (trivAmb S).SandAt (trivAmb S).ι0 (trivAmb S).ep0 (trivAmb S).h0 S.RR`. Use `⟨?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[trivAmb_img, hP1]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[trivAmb_img]`. Rewrite using `[hP1] at hy show ((1 : ℕ) : 𝓞 K) • y ∈ S.RR`. Rewrite using `[Nat.cast_one, one_smul]` and apply the resulting hypothesis. Establish `hG : Real.log ((trivAmb S).G : ℝ) = 0` using `by show Real.log ((1 : ℕ) : ℝ) = 0`. Rewrite using `[Nat.cast_one, Real.log_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hX, hL, hemb, hemb, hsand, hsand, ⟨one_pos, le_rfl, one_pos, le_rfl, by rw [hG]; exact hla⟩, ⟨?_, ?_⟩, ?_, ?_, ?_, ⟨one_pos, fun _ => ⟨?_, ?_⟩⟩, ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hRP0, Fintype.sum_unique, hRs]`. Rewrite using `[hRP1, Fintype.sum_unique, hRs] show Formalism.HN.rkK S.RR = 1 * Formalism.HN.rkK S.RR`. Rewrite using `[one_mul]`. Unfold `LevelAmb.Deg0`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hRP0, Fintype.sum_unique, hRs, hG]`. Simplify using the standard rewrite rules. Unfold `LevelAmb.Deg1`. Rewrite using `[hRP1, Fintype.sum_unique, hRs, hG] show ((1 : ℕ) : ℝ) * _ - _ ≤ _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Unfold `LevelAmb.MaxT`. Rewrite using `[hRP0, hRP1, hG]`. Simplify using the standard rewrite rules. Use `show (1 - N.de) * (1 : ℝ) ≤ ((1 : ℕ) : ℝ) push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `show ((1 : ℕ) : ℝ) ≤ (1 + N.de) * (1 : ℝ) push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[hRP0]`. Conclude with `hne`. Rewrite using `[hRP1]`.
-
-Conclude with `hne`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivAmb_hyps (S : IndefData Df) (N : IndefNum Bs) (hX : ∀ v, IsUnit (S.XE v).det)
     (hL : Submodule.IsLattice K S.RR) (hne : S.RR ≠ ⊥) (hla : 0 ≤ N.la) (hde : 0 ≤ N.de) :

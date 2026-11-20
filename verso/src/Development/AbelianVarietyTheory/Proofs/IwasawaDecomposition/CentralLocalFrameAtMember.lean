@@ -26,9 +26,9 @@ namespace GlobalTheory.CenLocAt
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `hL`. Use `GlobalTheory.HeightCounting.Up.Model.AtMem.imp (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.HeightCounting.Up.Model.AtMem.and (GlobalTheory.T.level_finE_mem_divisor_standard hL) (GlobalTheory.T.central_frame_split_place_nontrivial hL)) (GlobalTheory.T.g0_lift_uni …` and prove the remaining obligations. Introduce `K B f T w Z Wt p0 t nch n c h ad i s k hs`. Take `⟨⟨hA, hB⟩, hC⟩` from `h`. Take `⟨L, hL1, hU, hLc⟩` from `hC s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hSt, hFR⟩` from `hA ad k s`. Use `⟨L, hL1, fun hN => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.exists_conj_parahoric_block_lift t.r.z.R t.r.z.cG k s (ad.PV k) L hU hSt (fun PP hPP => ?_) hLc` and prove the remaining obligations. Take `⟨s', φ, b, hw, hres, hfr⟩` from `hFR PP hPP`. Conclude with `⟨s', φ, b, hw, hres, hfr, fun hP => hB ad i s k hs hN s' φ b (hw ▸ hP) hres hfr⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem frameAt_of_layer : ∀ hL : GlobalTheory.Published.LocalLanglandsGL, AtMem hL fun _ _ _ _ w Z _ _ t _ _ c => ∀ (ad : MtAd t.r.Y c.a.all.gal.mt) (i : (w.st Z).toD7.nd.Loc) s k, t.r.Y.tup s = (w.st Z).toD7.nd.mu i → GlobalTheory.CenLocAt.FrameAt t.r.Y t.r.z.cG k (ad.PV k) s := by
   intro hL

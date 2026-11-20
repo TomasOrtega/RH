@@ -14,19 +14,19 @@ open scoped Topology
 namespace GlobalTheory.FinSubgroup
 
 /- English proof (translation)
-Introduce `D V hV`. Take `⟨e, he, hc, hcs⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Use `letI : TopologicalSpace (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E)`. Use `letI : TopologicalSpace (InfiniteAdeleRing D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (InfiniteAdeleRing D.host.F) (InfiniteAdeleRing D.host.F ⊗[D.host.F] D.host.E)`. Establish `h0 : e.symm 0 = 0` using `map_zero _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hV' : (e.symm : _ → AE D) ⁻¹' V ∈ 𝓝 ((0 : InfiniteAdeleRing D.host.F ⊗[D.host.F] D.host.E), (0 : FiniteAdeleRing (𝓞 D.host.F) D.host.F ⊗[D.host.F] D.host.E))`. Apply `hcs.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Establish `: (e.symm : _ → AE D) (0, 0) = 0` using `h0`. Rewrite using `[this]`. Conclude with `hV`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA, B, hB, hAB⟩` from `mem_nhds_prod_iff.1 hV'`. Take `⟨N, hN, hNB⟩` from `(GlobalTheory.AdLat.OpenLat.isOpen_nsmul_hat D.host.F D.host.E 0 ⊤ (Subsingleton.elim _ _)).2 B hB`. Set `W : AddSubgroup (GlobalTheory.AdLat.RA D.host.F D.host.E)` to `(GlobalTheory.AdLat.hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E))).map (nsmulAddMonoidHom N)`. Establish `hW : IsOpen (W : Set (GlobalTheory.AdLat.RA D.host.F D.host.E))`. Use `GlobalTheory.IdeleParts.isOpen_nsmul_adelicCompletion_integers D.host.F D.host.E N hN` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`. Simplify using `only [W, AddSubgroup.coe_map, Set.mem_image, SetLike.mem_coe, nsmulAddMonoidHom_apply, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨y, hy, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`. Set `f : AE D →+ GlobalTheory.AdLat.RA D.host.F D.host.E` to `(AddMonoidHom.snd _ _).comp e.toAddMonoidHom`. Establish `hf : Continuous f` using `continuous_snd.comp hc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W.comap f, hW.preimage hf, fun a ha hinf => ?_⟩` and prove the remaining obligations. Establish `h1 : (e a).1 = 0` using `by rw [(he a).1]; exact hinf`. Establish `h2 : (e a).2 ∈ B`. Take `⟨y, hy, hya⟩` from `AddSubgroup.mem_map.1 (AddSubgroup.mem_comap.1 ha)`. Establish `: f a = (e a).2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this, ← hya]`. Conclude with `hNB y hy`. Establish `h3 : e a ∈ A ×ˢ B` using `⟨by rw [h1]; exact mem_of_mem_nhds hA, h2⟩`. Use `hAB h3` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_openAddSubgroup_finite_points :
     ∀ (D : D7) (V : Set (AE D)), V ∈ nhds (0 : AE D) →

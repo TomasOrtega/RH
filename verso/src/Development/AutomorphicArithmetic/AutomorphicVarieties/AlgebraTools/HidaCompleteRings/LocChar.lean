@@ -3,7 +3,7 @@ import Mathlib
 open IsLocalRing
 
 /- English proof (translation)
-Establish `h1 : f x ∈ (J • (⊤ : Submodule R N)).map f` using `Submodule.mem_map_of_mem hx`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem map_mem_smul_top {R N : Type} [CommRing R] [AddCommGroup N] [Module R N]
     (J : Ideal R) (f : Module.End R N) {x : N} (hx : x ∈ J • (⊤ : Submodule R N)) :
@@ -13,11 +13,11 @@ private theorem map_mem_smul_top {R N : Type} [CommRing R] [AddCommGroup N] [Mod
   exact Submodule.smul_mono le_rfl le_top h1
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `x`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x`. Rewrite using `[pow_succ' f k, Module.End.mul_apply, pow_succ J k, Submodule.mul_smul]`. Establish `h1 : f ((f ^ k) x) ∈ (J ^ k • (⊤ : Submodule R N)).map f` using `Submodule.mem_map_of_mem (ih x)`. Rewrite `h1` using `[Submodule.map_smul'']`. Use `Submodule.smul_mono le_rfl ?_ h1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, _, rfl⟩`. Conclude with `hf z`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem pow_mem_pow_smul_top {R N : Type} [CommRing R] [AddCommGroup N] [Module R N]
     (J : Ideal R) (f : Module.End R N) (hf : ∀ x, f x ∈ J • (⊤ : Submodule R N)) (k : ℕ) :
@@ -37,25 +37,21 @@ private theorem pow_mem_pow_smul_top {R N : Type} [CommRing R] [AddCommGroup N] 
     exact hf z
 
 /- English proof (translation)
-Introduce `R N T ι _ _ _ _ _ _ _ ρ I u e hI he hu hspan x`. Establish `hP : ∀ (k : ℕ) (t : T) {z : N}, z ∈ maximalIdeal R ^ k • (⊤ : Submodule R N) → ρ t z ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)` using `fun k t z hz => map_mem_smul_top _ (ρ t) hz`. Prove the components needed by the constructor for the conclusion. Introduce `hx i k`. Take `⟨n, hn⟩` from `hu i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hek : ∀ j : ℕ, ρ (e ^ j) x = x`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih => rw [pow_succ, map_mul, Module.End.mul_apply, hx, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨n * k, ?_⟩` and prove the remaining obligations. Establish `hmem` using `pow_mem_pow_smul_top (maximalIdeal R) (ρ (u i ^ n * e)) (hI _ hn) k x`. Establish `heq : (ρ (u i) ^ (n * k)) x = (ρ (u i ^ n * e) ^ k) x`. Rewrite using `[← map_pow, ← map_pow, mul_pow, ← pow_mul, map_mul, Module.End.mul_apply, hek k]`. Rewrite using `[heq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Introduce `h`. Take `⟨y, hy⟩ : ∃ y, y = ρ (1 - e) x` from `⟨_, rfl⟩`. Establish `hyk : ∀ k : ℕ, y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `S : Ideal T` to `{ carrier := {t | ρ t y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)} add_mem' := fun {a b} ha hb => by show ρ (a + b) y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem ha hb`. Use the proof step `zero_mem' := by show ρ 0 y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Rewrite using `[map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _`. Use the proof step `smul_mem' := fun c t ht => by show ρ (c * t) y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Rewrite using `[map_mul, Module.End.mul_apply]`. Conclude with `hP k c ht }`. Establish `hrad : I ⊔ Ideal.span (Set.range u) ≤ S.radical`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `sup_le (fun μ hμ => Ideal.mem_radical_iff.mpr ⟨k, ?_⟩) (Ideal.span_le.mpr ?_)` and prove the remaining obligations. Use `show ρ (μ ^ k) y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Rewrite using `[map_pow]`. Conclude with `pow_mem_pow_smul_top _ (ρ μ) (hI μ hμ) k y`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨n, hn⟩` from `h i k`. Use `Ideal.mem_radical_iff.mpr ⟨n, ?_⟩` and prove the remaining obligations. Use `show ρ (u i ^ n) y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)`. Establish `hc : ρ (u i ^ n) y = ρ (1 - e) ((ρ (u i) ^ n) x)`. Rewrite using `[hy, ← map_pow, ← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul, mul_comm]`.
-
-Rewrite using `[hc]`. Conclude with `hP k _ hn`. Take `⟨K, hK⟩` from `Ideal.mem_radical_iff.mp (hrad hspan)`. Establish `hKy : ρ ((1 - e) ^ K) y = y`. Rewrite using `[hy, ← Module.End.mul_apply, ← map_mul, ← pow_succ, he.one_sub.pow_succ_eq]`.
-
-Establish `hK' : ρ ((1 - e) ^ K) y ∈ maximalIdeal R ^ k • (⊤ : Submodule R N)` using `hK`. Rewrite `hK'` using `[hKy]`. Then use the resulting hypothesis. Establish `hy0 : y = 0` using `IsHausdorff.haus inferInstance y (fun k => SModEq.zero.mpr (hyk k))`. Rewrite `hy0` using `[hy, map_sub, map_one, LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`. Conclude with `hy0.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.AnnihilatorQuotientFinite.locChar :
     ∀ (R N T ι : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R] [AddCommGroup N] [Module R N] [Module.Finite R N] [CommRing T] (ρ : T →+* Module.End R N) (I : Ideal T) (u : ι → T) (e : T), (∀ μ ∈ I, ∀ x, ρ μ x ∈ maximalIdeal R • (⊤ : Submodule R N)) → IsIdempotentElem e → (∀ i, ∃ n : ℕ, u i ^ n * e ∈ I) → 1 - e ∈ I ⊔ Ideal.span (Set.range u) → ∀ x, ρ e x = x ↔ ∀ (i : ι) (k : ℕ), ∃ n : ℕ, (ρ (u i) ^ n) x ∈ maximalIdeal R ^ k • (⊤ : Submodule R N) := by

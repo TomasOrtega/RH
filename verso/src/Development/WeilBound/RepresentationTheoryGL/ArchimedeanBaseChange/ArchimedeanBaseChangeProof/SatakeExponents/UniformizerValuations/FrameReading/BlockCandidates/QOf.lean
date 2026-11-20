@@ -29,9 +29,9 @@ def Q : Prop := ∃ (i : F₀.C.ι) (s₁ : Tr E (F₀.C.a i)) (s₂ : Tr E (n -
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨O⟩` from `h2 hR E n hn π S T F₀ F h i χ hχ`. Take `⟨ia, ib⟩` from `h3 hR E n π S T F₀ F i χ hχ O`. Take `⟨Pa, Pb, D, hC⟩` from `cand_of F i O ia ib h5 h6`. Establish `hP : (↑F.d.P : Set (Pl E)) ⊆ F₀.Sec` using `fun w hw => F.levOff.1 (Finset.mem_coe.2 (Finset.mem_union_left _ hw))`. Establish `hl` using `fun j => (h7 E n F₀.Sec F.d (F₀.C.a i) (F₀.C.le i) F₀.hSec F.ok hP).2.2 _ _ _ (O.type j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `h4 E (F.B i) (F.β i) (F.m - 1) _ O.F (h.βok i).ψ (fun j => (hl j).1) (sq_ne F i _ rfl hχ O)`. Rewrite `e` using `[Nat.sub_add_cancel F.m_pos]`. Conclude with `⟨i, O.s₁, O.s₂, Pa, Pb, D, _, O.F, hC, O.mem, hl, e, h9 hR E hE n hn π hπ S F₀ F.d i _ _ _ _ _ hC, h8 hR E hE n π hπ S T F₀ F i _ _ Pa Pb D hC.ctx _ O.F O.ne O.mem hl (eig_h F i _ rfl hχ O)⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem q_of (hE : GlobalTheory.BCT.Unr E) (hn : 1 ≤ n) (hπ : IsAutRepU π) (h : F.Struct)
     (hχ : Chi (fun x => F.g x i) (X F i) (fun x => (F.ug x).p F.fam F.i₀) χ) (h2 : LimAt) (h3 : Ident) (h4 : PowNe)

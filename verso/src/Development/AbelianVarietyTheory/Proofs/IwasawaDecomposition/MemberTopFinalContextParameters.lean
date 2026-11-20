@@ -12,7 +12,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 namespace GlobalTheory.Fc
 
 /- English proof (translation)
-Introduce `hAll hU KP Q Q' QO hB hF hE hS hEv` and use `GlobalTheory.T.existsLayeredData_of_goodScaleContexts hAll Q' QO (GlobalTheory.T.layeredAutomorphicData_exists_of_twoPasses (GlobalTheory.Mem.VolMass.volumes_eq_masses_of_unfold hU) KP Q Q' hB hF hE hS) hEv`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem memberTop_final_contextParameters :
     StandardLattice.SiegelMassRatioCM → (∀ D : D7, StandardLattice.VolTie D → StandardLattice.VolumeRatio₂ D) →

@@ -15,11 +15,11 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.HeckeLevelFrameExistence
 
 /- English proof (translation)
-Establish `h0 : ∀ w, w ∉ F₀.d₀.T` using `fun w => by rw [F₀.T₀]; exact Finset.notMem_empty w`. Establish `hlev : ∀ w ∈ F₀.d₀.Bad, GlobalTheory.BCT.IsLevel (MonoidHom.id _) (KL n w) (F₀.d₀.KB w)` using `fun w hw => by`. Establish `h` using `F₀.levFam.1 w`. Establish `e : F₀.d₀.KU w = F₀.d₀.KB w` using `(if_neg (h0 w)).trans ((if_neg fun h' => Finset.disjoint_left.1 F₀.ok₀.disj.2.2 h' hw).trans (if_pos hw))`. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨fun w hw => absurd hw (h0 w), fun w hw => ⟨(F₀.S₀ w hw).2, fun g => ?_, F₀.K'_lev w hw⟩, fun w hw hs => ⟨hlev w hw, fun a ha => ?_⟩, fun w hw hs => ⟨F₀.kB w, F₀.kB_pos w hw hs, hlev w hw, fun γ => ?_, fun a ha => ?_⟩⟩` and prove the remaining obligations. Unfold `UL`. Rewrite using `[if_pos (F₀.S₀ w hw).2]`. Conclude with `Subgroup.mem_top g`. Rewrite using `[F₀.fix_def a ha w, if_pos hw, if_pos hs]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : {γ : UL n w | γ.1 ∈ MB.congK n w (F₀.kB w)} = (((GlobalTheory.PrincCong.congSub w n (F₀.kB w)).subgroupOf (UL n w) : Subgroup (UL n w)) : Set (UL n w))` using `Set.ext fun x => (GlobalTheory.PrincCong.mem_congSub_iff w n (F₀.kB w) x.1).symm`. Rewrite using `[F₀.KB_def w, if_pos hw, if_neg hs, e, Subgroup.closure_eq]`. Conclude with `GlobalTheory.PrincCong.mem_congSub_iff w n (F₀.kB w) γ.1`. Rewrite using `[F₀.fix_def a ha w, if_pos hw, if_neg hs]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mok0 {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {hR : Rd.ReadLimit} {π : Submodule ℂ (UA E n → ℂ)}
     {S : Finset (Pl E)} (F₀ : Frame0 hR π S) : MLM.MOk F₀.d₀ := by

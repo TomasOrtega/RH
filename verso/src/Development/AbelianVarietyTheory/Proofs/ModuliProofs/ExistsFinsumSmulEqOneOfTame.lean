@@ -15,31 +15,27 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open scoped CategoryTheory.Obj TensorProduct Pointwise in
 
 /- English proof (translation)
-Introduce `Γ _ _ B _ _ htame`. Use `haveI := Fintype.ofFinite Γ`. Set `A` to `FixedPoints.subring B Γ`. Use `haveI : Algebra.IsInvariant A B Γ := ⟨fun b hb => ⟨⟨b, hb⟩, rfl⟩⟩`. Use `haveI := Algebra.IsInvariant.isIntegral A B Γ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `tr_inv : ∀ b : B, ∑ g : Γ, g • b ∈ A`. Introduce `b h`. Rewrite using `[Finset.smul_sum]`. Repeatedly rewrite using `[← mul_smul]`. Conclude with `Equiv.sum_comp (Equiv.mulLeft h) (fun g => g • b)`.
+Rewrite the conclusion repeatedly using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Set `T : Ideal A` to `Ideal.span {t | ∃ b : B, (t : B) = ∑ g : Γ, g • b}`. Establish `hT : ∀ t ∈ T, ∃ b : B, (t : B) = ∑ g : Γ, g • b`. Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht => exact ht`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add t u _ _ htb hub`. Take `⟨b, hb⟩` from `htb`. Take `⟨c, hc⟩` from `hub`. Conclude with `⟨b + c, by simp [hb, hc, Finset.sum_add_distrib]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Consider the case `smul a t _ htb`. Take `⟨b, hb⟩` from `htb`. Use `⟨(a : B) * b, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Subring.coe_mul, hb, Finset.mul_sum, smul_mul']`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[a.2 g]`. It suffices to establish `h1 : (1 : A) ∈ T by`. Take `⟨b, hb⟩` from `hT 1 h1`. Conclude with `⟨b, by rw [finsum_eq_sum_of_fintype, ← hb]; rfl⟩`. Assume the negation of the conclusion as `h1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨m, hm, hTm⟩` from `Ideal.exists_le_maximal T ((Ideal.ne_top_iff_one T).mpr h1)`. Establish `hker : RingHom.ker (algebraMap A B) ≤ m`. Introduce `z hz`. Establish `: z = 0` using `Subtype.ext hz`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `m.zero_mem`. Take `⟨Q, hQ, hQm⟩` from `Ideal.exists_ideal_over_maximal_of_isIntegral m hker`. Take `⟨n, c, d, s, hs, hsep⟩` from `_root_.GlobalTheory.exists_sum_smul_separating_inertia Γ B Q hQ.isPrime`. Establish `trace_mem : ∀ j, ∑ g : Γ, g • c j ∈ Q`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmemT : (⟨∑ g : Γ, g • c j, tr_inv (c j)⟩ : A) ∈ T` using `Ideal.subset_span ⟨c j, rfl⟩`. Use `hTm hmemT` as an intermediate fact. Rewrite `this` using `[← hQm, Ideal.mem_comap]`. Conclude with `this`. Establish `hz : ∑ g : Γ, ∑ j, d j * g • c j ∈ Q`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Conclude with `Q.sum_mem fun j _ => by`. Rewrite using `[← Finset.mul_sum]`. Conclude with `Q.mul_mem_left _ (trace_mem j)`. Establish `hdiff : ∑ g : Γ, (∑ j, d j * g • c j - if g ∈ Q.inertia Γ then s else 0) ∈ Q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Q.sum_mem fun g _ => ?_` and prove the remaining obligations. Use `split_ifs with hg`. Conclude with `(hsep g).1 hg`. Simplify using `using (hsep g).2 hg`. Rewrite `hdiff` using `[Finset.sum_sub_distrib, Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const, nsmul_eq_mul]`.
-
-Establish `hcs` using `Q.sub_mem hz hdiff`. Rewrite `hcs` using `[sub_sub_cancel]`. Break down `hQ.isPrime.mem_or_mem hcs with hc | hc` into its components or cases. Apply `htame Q hQ.isPrime` to reduce the goal to its premises. Use `hc using 2` and compare the differences between its conclusion and the goal.
-
-Rewrite using `[Nat.card_eq_fintype_card, Fintype.card_subtype]`. Conclude with `hs hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_finsum_smul_eq_one_of_tame :
     ∀ (Γ : Type) [Group Γ] [Finite Γ] (B : Type) [CommRing B] [MulSemiringAction Γ B],

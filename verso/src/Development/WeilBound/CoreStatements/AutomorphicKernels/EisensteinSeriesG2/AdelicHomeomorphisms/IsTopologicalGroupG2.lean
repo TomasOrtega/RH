@@ -17,7 +17,7 @@ instance modTopAE : IsModuleTopology (AF F) (AE F E) := ⟨rfl⟩
 instance ringAE : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_homeomorphAE : Nonempty (AE F E ≃ₜ (Fin (Module.finrank F E) → AF F)) :=
   GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := F) (E := E) (AF F)

@@ -13,7 +13,7 @@ namespace GlobalTheory.Cyc.Decomp
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.MainNotions.LocalSituation GlobalTheory.Cyc GlobalTheory.Cyc.Decomp TensorProduct
 
 /- English proof (translation)
-Simplify using `only [intC, inC, Set.mem_ofPred_eq, Set.mem_image, SetLike.mem_coe] at hy`. Take `⟨⟨x, hxF, rfl⟩, -⟩` from `hy`. Rewrite using `[ha.1 σ x, (IntermediateField.mem_fixingSubgroup_iff F σ).1 hσ x hxF]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_eq_of_mem_intC {l : ℕ} [Fact l.Prime]
     {act : GQ l →* (PadicComplex l ≃+* PadicComplex l)} (ha : IsActC act)
@@ -24,29 +24,25 @@ theorem act_eq_of_mem_intC {l : ℕ} [Fact l.Prime]
   rw [ha.1 σ x, (IntermediateField.mem_fixingSubgroup_iff F σ).1 hσ x hxF]
 
 /- English proof (translation)
-Introduce `l _ act χ K m d M D g ha hg hMc hMmul hMfix hD hDinv hInt hH hgclose`. Take `⟨Y, hY, hDY⟩` from `hDinv`. Establish `hl : (l : PadicComplex l) ≠ 0`. Conclude with `(Fact.out : l.Prime).ne_zero` after adjusting the coercions. Establish `hright : D * ((l : PadicComplex l)⁻¹ • Y) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, hDY, smul_smul, inv_mul_cancel₀ hl, one_smul]`. Establish `hdet : IsUnit D.det` using `Matrix.isUnit_det_of_right_inverse hright`. Establish `hinv : D⁻¹ = (l : PadicComplex l)⁻¹ • Y` using `Matrix.inv_eq_right_inv hright`. Establish `hDD : D⁻¹ * D = 1` using `Matrix.nonsing_inv_mul D hdet`. Establish `hDD' : D * D⁻¹ = 1` using `Matrix.mul_nonsing_inv D hdet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmapmul : ∀ (e : PadicComplex l ≃+* PadicComplex l) (A B : Matrix (Fin d) (Fin d) (PadicComplex l)), (A * B).map e = A.map e * B.map e`. Introduce `e A B`. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, map_sum, map_mul]`. Establish `hmapcomp : ∀ σ τ : GQ l, D.map (act (σ * τ)) = (D.map (act τ)).map (act σ)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `σ τ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, map_mul]`. Both sides reduce to the same expression. Use `⟨fun σ => D⁻¹ * (M σ * D.map (act σ)), hdet, hD, ?_, ⟨hg, ?_, ?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[hinv, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, mul_inv_cancel₀ hl, one_mul]`. Conclude with `hY a b`. Introduce `a b`. Simplify using `only [Matrix.mul_apply, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousOn_finsetSum _ fun k _ => continuousOn_const.mul ?_` and prove the remaining obligations. Use `continuousOn_finsetSum _ fun j _ => (hMc k j).mul ?_` and prove the remaining obligations. Conclude with `(IsActC.continuous_orbit l act ha (D j b)).continuousOn`. Introduce `σ hσ a b`. Take `⟨X, hX, hMX⟩` from `hInt σ hσ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show (D⁻¹ * (M σ * D.map (act σ))) a b ∈ intC (Ks K m)`. Rewrite using `[hMX, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Conclude with `hX a b`. Introduce `σ hσ τ hτ`. Take `⟨X, hX, hMX⟩` from `hInt τ hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Chain the equalities or inequalities of the calculation.
 
-Establish `hUτ : D⁻¹ * (M τ * D.map (act τ)) = X`. Rewrite using `[hMX, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Establish `hXfix : X.map (act σ) = X`. Use extensionality with `i j`. Conclude with `act_eq_of_mem_intC ha (show σ ∈ (Ks K m).fixingSubgroup from hσ) (hX i j)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show D⁻¹ * (M (σ * τ) * D.map (act (σ * τ))) = D⁻¹ * (M σ * D.map (act σ)) * (D⁻¹ * (M τ * D.map (act τ)))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hMmul σ hσ τ hτ, hmapmul, hMfix σ hσ τ hτ, hmapcomp]`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = D⁻¹ * (M σ * (D.map (act σ) * X)) := by rw [hMX, hmapmul, hXfix]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ = D⁻¹ * (M σ * D.map (act σ)) * (D⁻¹ * (M τ * D.map (act τ))) := by`. Rewrite using `[hUτ]`. Simplify using `only [Matrix.mul_assoc]`. Introduce `σ hσ show D⁻¹ * (M σ * D.map (act σ)) = 1`. Rewrite using `[hH σ hσ, hDD]`.
-
-Introduce `a b`. Take `⟨X, hX, hMX⟩` from `hgclose`. Establish `hU : D⁻¹ * (M g * D.map (act g)) - 1 = X`. Rewrite using `[← hDD, ← Matrix.mul_sub, hMX, ← Matrix.mul_assoc, hDD, Matrix.one_mul]`. Use `show ‖(D⁻¹ * (M g * D.map (act g)) - 1) a b‖ < rho1 l`.
-
-Rewrite using `[hU]`. Conclude with `hX a b`. Introduce `σ hσ show D * (D⁻¹ * (M σ * D.map (act σ))) = M σ * D.map (act σ)`. Rewrite using `[← Matrix.mul_assoc, hDD', Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDec_of_matrix : ∀ (l : ℕ) [Fact l.Prime] (act : GQ l →* (PadicComplex l ≃+* PadicComplex l)) (χ : GQ l →* ℚ_[l]ˣ) (K : FinExt l) (m d : ℕ) (M : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l)) (D : Matrix (Fin d) (Fin d) (PadicComplex l)) (g : GQ l), IsActC act → IsGen χ K m g → (∀ i j, ContinuousOn (fun σ => M σ i j) (Gj K m)) → (∀ σ ∈ Gj K m, ∀ τ ∈ Gj K m, M (σ * τ) = M σ * M τ) → (∀ σ ∈ Gj K m, ∀ τ ∈ Gj K m, (M τ).map (act σ) = M τ) → (∀ i j, ‖D i j‖ ≤ 1) → (∃ X : Matrix (Fin d) (Fin d) (PadicComplex l), (∀ i j, ‖X i j‖ ≤ 1) ∧ D * X = (l : PadicComplex l) • (1 : Matrix (Fin d) (Fin d) (PadicComplex l))) → (∀ σ ∈ Gj K m, ∃ X : Matrix (Fin d) (Fin d) (PadicComplex l), (∀ i j, X i j ∈ intC (Ks K m)) ∧ M σ * D.map (act σ) = D * X) → (∀ σ ∈ Hinf K, M σ * D.map (act σ) = D) → (∃ X : Matrix (Fin d) (Fin d) (PadicComplex l), (∀ i j, ‖X i j‖ < rho1 l) ∧ M g * D.map (act g) - D = D * X) → ∃ U : GQ l → Matrix (Fin d) (Fin d) (PadicComplex l), IsDec act χ K m M D U g := by
   intro l _ act χ K m d M D g ha hg hMc hMmul hMfix hD hDinv hInt hH hgclose

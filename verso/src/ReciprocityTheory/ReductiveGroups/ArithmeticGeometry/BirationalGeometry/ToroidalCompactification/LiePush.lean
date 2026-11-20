@@ -13,28 +13,26 @@ variable {S : Type} [CommRing S] {X : Scheme.{0}} {x : Sp S ⟶ X} {G : Over X} 
 include h
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (h.1.hom_ext e (by simp))`.
+A detailed English derivation is pending.
 -/
 theorem inj_over {T : Over (Sp S)} {u v : T ⟶ G'} (e : u.left ≫ φ = v.left ≫ φ) : u = v := Over.OverMorphism.ext (h.1.hom_ext e (by simp))
 
 /- English proof (translation)
-Establish `oneL : ∀ {Y : Scheme.{0}} (T H : Over Y) [GrpObj H], (1 : T ⟶ H).left = T.hom ≫ η[H].left`. Introduce `Y T H _`. Use `show (toUnit T ≫ η[H]).left = _`. Rewrite using `[Over.comp_left]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately.
 
-Apply the tactic sequence `all_goals first`. Consider the case `simpa using Over.w (toUnit T)`. Consider the case `(have e := Over.w (toUnit T)`. Rewrite using `[show (𝟙_ (Over Y)).hom = 𝟙 Y from rfl, Category.comp_id] at e)` and apply the resulting hypothesis. Establish `hmul : ∀ {T : Over (Sp S)} (a b : T ⟶ G'), pushPt h.1.w (a * b) = pushPt h.1.w a * pushPt h.1.w b` using `fun {T} a b => Over.OverMorphism.ext (h.2 T a b (pushPt h.1.w a) (pushPt h.1.w b) rfl rfl).symm`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hone : ∀ T : Over (Sp S), pushPt h.1.w (1 : T ⟶ G') = 1`. Introduce `T`. Establish `e1 : pushPt h.1.w (1 : T ⟶ G') * pushPt h.1.w 1 = pushPt h.1.w 1`. Rewrite using `[← hmul, _root_.one_mul]`. Conclude with `mul_right_cancel (e1.trans (_root_.one_mul _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hη : η[G'].left ≫ φ = x ≫ η[G].left`. Establish `e` using `congrArg (fun g => g.left) (hone (Over.mk (𝟙 (Sp S))))`. Simplify using `only [pushPt, Over.homMk_left, oneL, Over.mk_hom] at e`. Simplify using `using e`. Establish `hfa : Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (epsR S).hom = 𝟙 _`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Use `all_goals`. Use extensionality with `r`.
+By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `first`. Consider the case `(simp [TrivSqZeroExt.algebraMap_eq_inl]; done)`. Consider the case `(simp; done)`. Set `t : Over.mk (𝟙 (Sp S)) ⟶ epsR S` to `Over.homMk (Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom) hfa`. Rewrite using `[oneL]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Over.mk_hom]`. Prove the components needed by the constructor for the conclusion. Introduce `hw`. Unfold `IsTangent at hw`. Rewrite using `[← Category.assoc, hw, hη]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hw`. Unfold `IsTangent`. Establish `key : t ≫ w = 1`. Apply `inj_over h` to reduce the goal to its premises. Use `show Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w.left ≫ φ = _`.
-
-Rewrite using `[hw, oneL, Category.assoc, hη]`. Simplify using the standard rewrite rules. Establish `e` using `congrArg (fun g => g.left) key`. Simplify using `only [Over.comp_left, t, Over.homMk_left, oneL, Over.mk_hom] at e`. Simplify using `using e`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tan_push (w : epsR S ⟶ G') : IsTangent w ↔
     Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ w.left ≫ φ = (1 : Over.mk x ⟶ G).left := by
@@ -87,11 +85,11 @@ theorem tan_push (w : epsR S ⟶ G') : IsTangent w ↔
     simpa using e
 
 /- English proof (translation)
-Establish `hmul : ∀ a b : T ⟶ G', pushPt h.1.w (a * b) = pushPt h.1.w a * pushPt h.1.w b` using `fun a b => Over.OverMorphism.ext (h.2 T a b (pushPt h.1.w a) (pushPt h.1.w b) rfl rfl).symm`. Establish `hone : pushPt h.1.w (1 : T ⟶ G') = 1`. Establish `e1 : pushPt h.1.w (1 : T ⟶ G') * pushPt h.1.w 1 = pushPt h.1.w 1`. Rewrite using `[← hmul, _root_.one_mul]`. Conclude with `mul_right_cancel (e1.trans (_root_.one_mul _).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ {m : ℕ} (v : Fin m → (T ⟶ G')), pushPt h.1.w (List.ofFn v).prod = (List.ofFn fun i => pushPt h.1.w (v i)).prod`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro v`. Simplify using `only [List.ofFn_zero, List.prod_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `hone`. Consider the case `succ m ih => intro v`. Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[hmul, ih]`. Conclude with `congrArg (fun f => f.left) (key u)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_push {n : ℕ} {T : Over (Sp S)} (u : Fin n → (T ⟶ G')) :
     (List.ofFn u).prod.left ≫ φ = (List.ofFn fun i => pushPt h.1.w (u i)).prod.left := by
@@ -110,13 +108,13 @@ theorem prod_push {n : ℕ} {T : Over (Sp S)} (u : Fin n → (T ⟶ G')) :
   exact congrArg (fun f => f.left) (key u)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Use `⟨fun i => pushPt h.1.w (u i), fun i => ?_, (prod_push h u).symm⟩` and prove the remaining obligations. Simplify using `[pushPt, hu i]`. Introduce and unpack `⟨u, hu, hw⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `hs : ∀ i, Geo.Tor.spMap (epsScaleR (c i)) ≫ (epsR S).hom = (epsR S).hom`. Introduce `i`. Simplify using `only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> first | simp [epsScaleR] | simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `u' : Fin n → (epsR S ⟶ G')` to `fun i => Over.homMk (Geo.Tor.spMap (epsScaleR (c i)) ≫ (v i).left) (by rw [Category.assoc, Over.w (v i)]; exact hs i)`. Use `⟨u', fun i => rfl, ?_⟩` and prove the remaining obligations. Apply `inj_over h` to reduce the goal to its premises. Establish `e : (fun i => pushPt h.1.w (u' i)) = u`. Use function extensionality and compare the values at `fun i => Over.OverMorphism.ext (by simp [pushPt, u', hu i])`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[prod_push h u', ← hw, e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_push {n : ℕ} (c : Fin n → S) (v : Fin n → (epsR S ⟶ G')) (w : epsR S ⟶ G') : IsLieComb c v w ↔
     ∃ u : Fin n → (Over.mk (Geo.Tor.spMap (algebraMap S (DualNumber S)) ≫ x) ⟶ G),
@@ -141,25 +139,25 @@ theorem comb_push {n : ℕ} (c : Fin n → S) (v : Fin n → (epsR S ⟶ G')) (w
 
 omit h in
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hc`. Establish `hs : ∀ s : S, Geo.Tor.spMap (epsScaleR s) ≫ (epsR S).hom = (epsR S).hom`. Introduce `s`. Simplify using `only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Apply the tactic sequence `ext r <;> first | simp [epsScaleR] | simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `hd : Geo.Tor.spMap (dualMapR f) ≫ (epsR R).hom = (epsR S).hom ≫ Geo.Tor.spMap f`. Simplify using `only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext r <;> first`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl]; done)`. Consider the case `(simp [dualMapR]; done)`. Consider the case `simp [dualMapR, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fst_inl, TrivSqZeroExt.snd_inl]`. Establish `hcomm : ∀ i, Geo.Tor.spMap (dualMapR f) ≫ Geo.Tor.spMap (epsScaleR (c i)) = Geo.Tor.spMap (epsScaleR (f (c i))) ≫ Geo.Tor.spMap (dualMapR f)`. Introduce `i`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Geo.Tor.spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `ext a <;> first`. Consider the case `(simp [dualMapR, epsScaleR]; done)`. Consider the case `(simp [dualMapR, epsScaleR, smul_eq_mul, map_mul]; done)`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [dualMapR, epsScaleR, smul_eq_mul, map_mul, mul_comm]; done)`. Consider the case `(simp [dualMapR, epsScaleR, smul_eq_mul, map_mul, TrivSqZeroExt.algebraMap_eq_inl]; done)`. Consider the case `(simp [dualMapR, epsScaleR, smul_eq_mul, TrivSqZeroExt.algebraMap_eq_inl]; clear * -; done)`. Set `d : Over.mk ((epsR S).hom ≫ Geo.Tor.spMap f) ⟶ epsR R` to `Over.homMk (Geo.Tor.spMap (dualMapR f)) hd`. Establish `cm : ∀ a b : epsR R ⟶ G₀, d ≫ (a * b) = (d ≫ a) * (d ≫ b)` using `fun a b => by show d ≫ (lift a b ≫ μ) = lift (d ≫ a) (d ≫ b) ≫ μ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[comp_lift_assoc]`. Establish `c1 : d ≫ (1 : epsR R ⟶ G₀) = 1` using `by show d ≫ (toUnit _ ≫ η) = toUnit _ ≫ η`. Rewrite using `[comp_toUnit_assoc]`. Establish `key : ∀ {m : ℕ} (a : Fin m → (epsR R ⟶ G₀)), d ≫ (List.ofFn a).prod = (List.ofFn fun i => d ≫ a i).prod`. Introduce `m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m with`. Consider the case `zero => intro a`. Simplify using `only [List.ofFn_zero, List.prod_nil]`. Conclude with `c1`. Consider the case `succ m ih => intro a`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.ofFn_succ, List.prod_cons]`. Rewrite using `[cm, ih]`. Set `u' : Fin n → (epsR S ⟶ G')` to `fun i => Over.homMk (Geo.Tor.spMap (epsScaleR (f (c i))) ≫ (v' i).left) (by rw [Category.assoc, Over.w (v' i)]; exact hs _)`. Establish `e2 : (fun i => d ≫ u i) = fun i => pushPt h.1.w (u' i)`. Use function extensionality and compare the values at `i`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, d, Over.homMk_left, pushPt, u', hu i, Category.assoc, hv i]`. Rewrite using `[← Category.assoc, hcomm i, Category.assoc]`. Use `⟨u', fun i => rfl, ?_⟩` and prove the remaining obligations. Apply `inj_over h` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, prod_push h u']`. Use `show (d ≫ (List.ofFn u).prod).left = _`. Rewrite using `[key, e2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comb_baseChange {R : Type} [CommRing R] {G₀ : Over (Sp R)} [GrpObj G₀] (f : R →+* S) {ψ : G'.left ⟶ G₀.left}
     (h : IsGrpPullback G' G₀ (Geo.Tor.spMap f) ψ) {n : ℕ} {c : Fin n → R} {v : Fin n → (epsR R ⟶ G₀)} {w : epsR R ⟶ G₀}
@@ -219,7 +217,7 @@ theorem comb_baseChange {R : Type} [CommRing R] {G₀ : Over (Sp R)} [GrpObj G�
 
 omit h in
 /- English proof (translation)
-Take `⟨k, e⟩` from `prodPts_tan hy c v hv`. Rewrite using `[isLieComb_iff]`. Conclude with `⟨fun q => (tcoord_congr hy q hw k).trans e, fun q => tan_ext hy hw k (q.trans e.symm)⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem comb_iff_coord {n d : ℕ} {y : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin n) m) ⟶ G'} (hy : IsUnivChart G' n y) (c : Fin d → S)
     {v : Fin d → (epsR S ⟶ G')} (hv : ∀ i, IsTan (v i)) {w : epsR S ⟶ G'} (hw : IsTan w) :
@@ -230,25 +228,23 @@ theorem comb_iff_coord {n d : ℕ} {y : ∀ m : ℕ, sp (R₀ := S) (JetR S (Fin
 
 omit h in
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `hc`. Establish `oneL : ∀ {Y : Scheme.{0}} (T H : Over Y) [GrpObj H], (1 : T ⟶ H).left = T.hom ≫ η[H].left`. Introduce `Y T H _`. Use `show (toUnit T ≫ η[H]).left = _`. Rewrite using `[Over.comp_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Apply the tactic sequence `all_goals first`. Consider the case `simpa using Over.w (toUnit T)`. Consider the case `(have e := Over.w (toUnit T)`. Rewrite using `[show (𝟙_ (Over Y)).hom = 𝟙 Y from rfl, Category.comp_id] at e)` and apply the resulting hypothesis.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `single : ∀ {m : ℕ} (a : Fin m → (epsR S ⟶ G')) (k : Fin m), (∀ i, i ≠ k → a i = 1) → (List.ofFn a).prod = a k`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro a k`. Conclude with `k.elim0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ m ih`. Introduce `a k ha`. Rewrite using `[List.ofFn_succ, List.prod_cons]`. Break down `Fin.eq_zero_or_eq_succ k with rfl | ⟨k', rfl⟩` into its components or cases. Establish `ht : (fun i : Fin m => a i.succ) = fun _ => 1` using `funext fun i => ha _ (Fin.succ_ne_zero i)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht]`. Simplify using the standard rewrite rules. Rewrite using `[ha 0 (Fin.succ_ne_zero k').symm, _root_.one_mul]`. Conclude with `ih (fun i => a i.succ) k' (fun i hi => ha _ (fun e => hi (Fin.succ_injective _ e)))`. Establish `hv' : ∀ i, Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom ≫ (v i).left = η[G'].left` using `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h0 : Geo.Tor.spMap (epsScaleR (0 : S)) = (epsR S).hom ≫ Geo.Tor.spMap (TrivSqZeroExt.fstHom S S S).toRingHom`. Simplify using `only [epsR, Over.mk_hom, Geo.Tor.spMap, ← Spec.map_comp]`. Use `congr 1`. Apply the tactic sequence `all_goals (ext r <;> first`. Consider the case `(simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `(simp [epsScaleR]; done))`. Establish `h1 : Geo.Tor.spMap (epsScaleR (1 : S)) = 𝟙 _`. Simplify using `only [Geo.Tor.spMap]`. Rewrite using `[← Spec.map_id]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Apply the tactic sequence `all_goals (ext r <;> first`. Consider the case `(simp [epsScaleR]; done)`. Consider the case `(simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done))`. Establish `hu1 : ∀ i, i ≠ j → u i = 1`. Introduce `i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu i, Pi.single_eq_of_ne hi, h0, oneL, Category.assoc, hv' i]`. Establish `huj : u j = v j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hu j, Pi.single_eq_same, h1, Category.id_comp]`.
-
-Rewrite using `[single u j hu1, huj]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_comb_single [IsLocalRing S] [Smooth G'.hom] {d : ℕ} {v : Fin d → (epsR S ⟶ G')} (hv : ∀ i, IsTangent (v i))
     {w : epsR S ⟶ G'} (hw : IsTangent w) (j : Fin d) (hc : IsLieComb (Pi.single j 1) v w) : w = v j := by
@@ -302,11 +298,11 @@ theorem eq_of_comb_single [IsLocalRing S] [Smooth G'.hom] {d : ℕ} {v : Fin d �
 
 omit h in
 /- English proof (translation)
-Take `⟨m, y, hy⟩` from `univChartLoc G'`. Establish `tv` using `fun i => (isTan_iff _).2 (hv.1 i)`. Establish `tu` using `fun i => (isTan_iff _).2 (hu.1 i)`. Take `⟨tw, -⟩` from `prodPts_tan hy z v tv`. Establish `hz : IsLieComb z v (prodPts z v)` using `(isLieComb_iff _ _ _).2 rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ a : Fin n → S, IsLieComb a u (prodPts z v) ↔ ∀ j, ∑ i, a i * U i j = z j` using `fun a => by`. Establish `e : ∑ i, a i • tcoord hy (u i) (tu i) = ∑ j, (∑ i, a i * U i j) • tcoord hy (v j) (tv j)`. Simplify using `only [(comb_iff_coord hy _ tv (tu _)).1 (hU _), Finset.smul_sum, Finset.sum_smul, smul_smul]`. Conclude with `Finset.sum_comm`. Rewrite using `[comb_iff_coord hy a tu tw, e, ← comb_iff_coord hy _ tv tw, ← funext_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun q => (hv.2 _ ((isTan_iff _).1 tw)).unique q hz, fun q => q ▸ hz⟩`. Simplify `hu.2 _ ((isTan_iff _).1 tw)` using `only [key]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem coords_basis [IsLocalRing S] [Smooth G'.hom] {d n : ℕ} {v : Fin d → (epsR S ⟶ G')} {u : Fin n → (epsR S ⟶ G')}
     (hv : IsLieBasis v) (hu : IsLieBasis u) (U : Fin n → Fin d → S) (hU : ∀ i, IsLieComb (U i) v (u i)) (z : Fin d → S) :

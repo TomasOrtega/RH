@@ -27,7 +27,7 @@ def CellContract.Statement : Prop :=
     CellPosExact S y G
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ => one_ne_zero, fun _ _ h => absurd (fun _ _ _ => one_ne_zero) h, fun _ _ _ _ _ => le_rfl, fun _ _ _ => rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem CellContract.hyps :
     (∀ k, (fun _ : (Σ _ : Unit, Fin 2) => (1 : ℚ)) ⟨k, (fun _ => (0 : Fin 2) : ∀ _ : Unit, Fin 2) k⟩ ≠ 0) ∧

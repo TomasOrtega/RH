@@ -22,9 +22,9 @@ def InPerf (x : R) : Prop := ∃ (n : ℕ) (e : E) (r : R), φ^[n] x = ι e + (p
 variable {ι φ p}
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact ⟨e, r, by simpa using h⟩`. Consider the case `succ k ih`. Take `⟨e₁, r₁, h₁⟩` from `ih`. Take `⟨e₂, he₂⟩` from `hφ e₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨e₂, φ r₁, ?_⟩` and prove the remaining obligations. Rewrite using `[show k + 1 + n = (k + n) + 1 by omega, Function.iterate_succ_apply', h₁]`. Simplify using `[map_add, map_mul, map_natCast, he₂]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem perf_persist (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x : R} {n : ℕ} {e : E} {r : R}
     (h : φ^[n] x = ι e + (p : R) * r) (k : ℕ) :
@@ -39,16 +39,16 @@ theorem perf_persist (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x : R} {n : ℕ} 
     simp [map_add, map_mul, map_natCast, he₂]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, e, 0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem InPerf.of_ι (e : E) : InPerf ι φ p (ι e) := ⟨0, e, 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨n, e, r, h⟩` from `hx`. Take `⟨m, f, s, h'⟩` from `hy`. Take `⟨e', r', he⟩` from `perf_persist hφ h m`. Take `⟨f', s', hf⟩` from `perf_persist hφ h' n`. Use `⟨m + n, e' + f', r' + s', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (φ^[m + n]) (x + y) = φ^[m + n] x + φ^[m + n] y`. Rewrite using `[← RingHom.coe_pow]`. Conclude with `map_add _ _ _`. Rewrite using `[hc, he, show m + n = n + m by omega, hf]`. Simplify using `only [map_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem InPerf.add (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x y : R} (hx : InPerf ι φ p x)
     (hy : InPerf ι φ p y) : InPerf ι φ p (x + y) := by
@@ -63,11 +63,11 @@ theorem InPerf.add (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x y : R} (hx : InPe
   simp only [map_add]; ring
 
 /- English proof (translation)
-Take `⟨n, e, r, h⟩` from `hx`. Take `⟨m, f, s, h'⟩` from `hy`. Take `⟨e', r', he⟩` from `perf_persist hφ h m`. Take `⟨f', s', hf⟩` from `perf_persist hφ h' n`. Use `⟨m + n, e' * f', ι e' * s' + r' * ι f' + (p : R) * r' * s', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : (φ^[m + n]) (x * y) = φ^[m + n] x * φ^[m + n] y`. Rewrite using `[← RingHom.coe_pow]`. Conclude with `map_mul _ _ _`. Rewrite using `[hc, he, show m + n = n + m by omega, hf]`. Simplify using `only [map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem InPerf.mul (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x y : R} (hx : InPerf ι φ p x)
     (hy : InPerf ι φ p y) : InPerf ι φ p (x * y) := by
@@ -82,7 +82,7 @@ theorem InPerf.mul (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {x y : R} (hx : InPe
   simp only [map_mul]; ring
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (InPerf.of_ι (ι := ι) (φ := φ) (p := p) (0 : E))`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `InPerf.add hφ (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InPerf.sum (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {I : Type} (s : Finset I) {f : I → R}
     (h : ∀ i ∈ s, InPerf ι φ p (f i)) : InPerf ι φ p (∑ i ∈ s, f i) := by
@@ -95,9 +95,9 @@ theorem InPerf.sum (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {I : Type} (s : Fins
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨a, r, har⟩` from `h2`. Take `⟨v, rfl⟩` from `hτ`. Establish `hc : ι ((↑v⁻¹ : E) ^ N) * t ^ N = 1`. Rewrite using `[← ht, ← map_pow, ← map_mul, ← mul_pow, Units.inv_mul, one_pow, map_one]`. Use `⟨ι ((↑v⁻¹ : E) ^ N) * y1, InPerf.mul hφ (InPerf.of_ι _) h1, a, ι ((↑v⁻¹ : E) ^ N) * r, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : y - ι ((↑v⁻¹ : E) ^ N) * y1 = ι ((↑v⁻¹ : E) ^ N) * (t ^ N * y - y1)`. Take the linear combination `(-y) * hc`. Rewrite using `[key, har]`. Take the linear combination `(t ^ m * j a) * hc`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_inPerf_near {A : Type} [CommRing A] {j : A →+* R} {t : R}
     (hφ : ∀ e, ∃ e', φ (ι e) = ι e') {τ : E} (hτ : IsUnit τ) (ht : ι τ = t) {N m : ℕ} {y y1 : R}
@@ -115,9 +115,9 @@ theorem exists_inPerf_near {A : Type} [CommRing A] {j : A →+* R} {t : R}
   linear_combination (t ^ m * j a) * hc
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`. Simplify using `only [crd, TensorProduct.lift.tmul, LinearMap.coe_comp, Function.comp_apply, LinearMap.lsmul_apply]`. Repeatedly rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', ← TensorProduct.sum_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use `congr 1`. Simplify `b.sum_repr o` using `[Module.Basis.coord_apply]`. Consider the case `add x y hx hy => simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]`.
+Reduce the equality to equality of the corresponding arguments. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 private theorem sum_crd_lemma {Z O W : Type} [CommRing Z] [CommRing O] [Algebra Z O] [CommRing W]
     [Algebra Z W] {n : ℕ} (b : Module.Basis (Fin n) Z O) (z : O ⊗[Z] W) :
@@ -133,9 +133,9 @@ private theorem sum_crd_lemma {Z O W : Type} [CommRing Z] [CommRing O] [Algebra 
   | add x y hx hy => simp only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hx, hy]
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a = 0`. Conclude with `⟨0, by simp [h0]⟩`. Take `⟨m, b, hb, rfl⟩` from `WittVector.exists_eq_pow_p_mul a h0`. Consider the cases of `m with`. Consider the case `zero => simp only [pow_zero, one_mul] at ha`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Conclude with `absurd ha hb`. Consider the case `succ m => exact ⟨(l : WittVector l (Cb l)) ^ m * b, by ring⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem eq_l_mul_lemma_2 {l : ℕ} [Fact l.Prime] (a : WittVector l (Cb l)) (ha : a.coeff 0 = 0) :
     ∃ r : WittVector l (Cb l), a = (l : WittVector l (Cb l)) * r := by
@@ -147,9 +147,9 @@ private theorem eq_l_mul_lemma_2 {l : ℕ} [Fact l.Prime] (a : WittVector l (Cb 
   | succ m => exact ⟨(l : WittVector l (Cb l)) ^ m * b, by ring⟩
 
 /- English proof (translation)
-Establish `hcc : ∀ z : Ainf l, (WittVector.constantCoeff : WittVector l (Cb l) →+* Cb l) (inclW l z) = algebraMap (OCb l) (Cb l) ((WittVector.constantCoeff : WittVector l (OCb l) →+* OCb l) z)`. Introduce `z`. Simplify using `[inclW, WittVector.map_coeff]`. Apply `eq_l_mul_lemma_2` to reduce the goal to its premises. Rewrite using `[← WittVector.constantCoeff_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sub, map_mul, map_pow, hcc, piW, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h ⊢`. Simplify using `only [map_add, map_mul, map_pow, map_sub, map_one] at h`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem coeff_step_lemma_4 {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
     (LL : FinExt l) (s N k : ℕ) (y : RW LL) (i : Fin (Module.finrank ℤ_[l] ↥(OL LL))) (u v : OCb l)
@@ -171,19 +171,19 @@ private theorem coeff_step_lemma_4 {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hR : ∀ (o : ↥(OL LL)) (a : Ainf l), inclR LL (o ⊗ₜ[ℤ_[l]] a) = o ⊗ₜ[ℤ_[l]] inclW l a`. Introduce `o a`. Unfold `inclR`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hl : ((l : ℕ) : RW LL) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] ((l : ℕ) : WCb l)`. Rewrite using `[← map_natCast (Algebra.TensorProduct.includeRight (R := ℤ_[l]) (A := ↥(OL LL)) (B := WCb l)) l]`. Both sides reduce to the same expression. Establish `hsm : ∀ (o : ↥(OL LL)) (w : WCb l), ((l : ℕ) : RW LL) * (o ⊗ₜ[ℤ_[l]] w) = o ⊗ₜ[ℤ_[l]] (((l : ℕ) : WCb l) * w)`. Introduce `o w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← nsmul_eq_mul, ← nsmul_eq_mul, TensorProduct.tmul_smul]`. Establish `e1 : inclR LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piW AI s) ^ N * y = ∑ i, basisO LL i ⊗ₜ[ℤ_[l]] (inclW l (piW AI s) ^ N * crd (basisO LL) i y)` using `by conv_lhs => rw [← sum_crd_lemma (basisO LL) y]`. Rewrite using `[hR, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_mul_tmul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [one_pow, one_mul]`. Establish `e2 : inclR LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piW AI s) ^ k * (inclR LL : RA LL →+* RW LL) (∑ i, basisO LL i ⊗ₜ[ℤ_[l]] WittVector.teichmuller l (v i)) = ∑ i, basisO LL i ⊗ₜ[ℤ_[l]] (inclW l (piW AI s) ^ k * inclW l (WittVector.teichmuller l (v i)))`. Express the relevant statement in the definitionally equal form `inclR LL ((1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] piW AI s) ^ k * inclR LL (∑ i, basisO LL i ⊗ₜ[ℤ_[l]] WittVector.teichmuller l (v i)) = _`. Rewrite using `[map_sum]`. Simplify using `only [hR]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.tmul_pow, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `only [one_pow, one_mul]`. Establish `e3 : ((l : ℕ) : RW LL) * ∑ i, basisO LL i ⊗ₜ[ℤ_[l]] r i = ∑ i, basisO LL i ⊗ₜ[ℤ_[l]] (((l : ℕ) : WCb l) * r i)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => hsm _ _`. Unfold `NearPi Near piR`. Use `⟨∑ i, basisO LL i ⊗ₜ[ℤ_[l]] WittVector.teichmuller l (v i), ∑ i, basisO LL i ⊗ₜ[ℤ_[l]] r i, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, e3, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `key : inclW l (piW AI s) ^ N * crd (basisO LL) i y - inclW l (WittVector.teichmuller l (u i)) = inclW l (piW AI s) ^ k * inclW l (WittVector.teichmuller l (v i)) + (l : WittVector l (Cb l)) * r i`. Rewrite using `[← hr i]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← TensorProduct.tmul_sub, ← TensorProduct.tmul_add, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nearPi_sum_lemma_5 {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P)
     (LL : FinExt l) (s N k : ℕ) (y : RW LL) (u v : Fin (Module.finrank ℤ_[l] ↥(OL LL)) → OCb l)
@@ -240,7 +240,7 @@ end Perf
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `choose r hr using fun i => coeff_step_lemma_4 AI LL s N k y i (u i) (v i) (h i)`. Conclude with `nearPi_sum_lemma_5 AI LL s N k y u v r hr`.
+A detailed English derivation is pending.
 -/
 theorem nearPi_of_coeff {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s N k : ℕ)
     (y : RW LL) (u v : Fin (Module.finrank ℤ_[l] ↥(OL LL)) → OCb l)
@@ -253,7 +253,7 @@ theorem nearPi_of_coeff {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s N
   exact nearPi_sum_lemma_5 AI LL s N k y u v r hr
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tmul_eq_algebraMap_mul {Z O W : Type} [CommRing Z] [CommRing O] [Algebra Z O] [CommRing W]
     [Algebra Z W] (o : O) (w : W) :
@@ -262,7 +262,7 @@ theorem tmul_eq_algebraMap_mul {Z O W : Type} [CommRing Z] [CommRing O] [Algebra
   simp
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o w`. Simplify using `only [Algebra.TensorProduct.map_tmul, AlgHom.coe_id, id_eq, crd, TensorProduct.lift.tmul, LinearMap.coe_comp, Function.comp_apply, LinearMap.lsmul_apply, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem crd_map_lemma_6 {Z O W : Type} [CommRing Z] [CommRing O] [Algebra Z O] [CommRing W]
     [Algebra Z W] {n : ℕ} (b : Module.Basis (Fin n) Z O) (f : W →ₐ[Z] W) (i : Fin n) (z : O ⊗[Z] W) :
@@ -277,19 +277,17 @@ private theorem crd_map_lemma_6 {Z O W : Type} [CommRing Z] [CommRing O] [Algebr
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `y hy m`. Establish `hfix : ∀ g ∈ Hinf K, AI.gRW LL g y = y`. Introduce `g hg`. Unfold `fixSub at hy`. Simplify using `only [Subring.mem_iInf, RingHom.mem_eqLocus] at hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Conclude with `hy g hg`. Take `⟨hφE, -, hπ, -⟩` from `GlobalTheory.T.etaleEmbedding_frobenius_galois_compat l P AI K s LL h W E`. Establish `hφ : ∀ e, ∃ e', φRW LL (E.tie.ioE e) = E.tie.ioE e'` using `fun e => ⟨W.φE e, (hφE e).symm⟩`. Establish `hcoef : ∀ i, ∀ g ∈ Hinf K, autCb l (AI.actT g) ((crd (basisO LL) i y).coeff 0) = (crd (basisO LL) i y).coeff 0`. Introduce `i g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `congrArg (fun z => (crd (basisO LL) i z).coeff 0) (hfix g hg)`. Simplify using `only [LocAinf.gRW, LocAinf.actWCbHom, MonoidHom.coe_mk, OneHom.coe_mk] at hc`. Rewrite `hc` using `[crd_map_lemma_6]`. Use `conv_rhs => rw [← hc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ' : ∀ e, ∃ e', (φRW LL : RW LL →+* RW LL) ((E.tie.ioE : W.EE →+* RW LL) e) = (E.tie.ioE : W.EE →+* RW LL) e'` using `hφ`. Establish `hap : ∀ i, ∃ N₀ : ℕ, ∀ N ≥ N₀, ∃ u ∈ Subring.closure (Set.range AI.εroot ∪ {xb | ∃ c : Om l, c ∈ K0 K ∧ ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ c ^ m = 1 ∧ IsTiltOf c m xb}), ∃ v : OCb l, algebraMap (OCb l) (Cb l) ((AI.εroot s - 1) ^ N) * (crd (basisO LL) i y).coeff 0 = algebraMap (OCb l) (Cb …` using `fun i => GlobalTheory.T.tilt_invariant_approx_by_epsilonRoots_closure l P AI K s ((crd (basisO LL) i y).coeff 0) (hcoef i) m`. Use `choose N₀ hN₀ using hap`. Establish `hall : ∀ i, ∃ u ∈ Subring.closure (Set.range AI.εroot ∪ {xb | ∃ c : Om l, c ∈ K0 K ∧ ∃ m : ℕ, 0 < m ∧ ¬ l ∣ m ∧ c ^ m = 1 ∧ IsTiltOf c m xb}), ∃ v : OCb l, algebraMap (OCb l) (Cb l) ((AI.εroot s - 1) ^ (∑ j, N₀ j)) * (crd (basisO LL) i y).coeff 0 = algebraMap (OCb l) (Cb l) (u + …` using `fun i => hN₀ i _ (Finset.single_le_sum (fun j _ => Nat.zero_le (N₀ j)) (Finset.mem_univ i))`. Use `choose u hu v hv using hall`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnear` using `nearPi_of_coeff AI LL s (∑ j, N₀ j) ((∑ j, N₀ j) + m) y u v hv`. Establish `hy1 : InPerf (E.tie.ioE : W.EE →+* RW LL) (φRW LL : RW LL →+* RW LL) l (∑ i, basisO LL i ⊗ₜ[ℤ_[l]] inclW l (WittVector.teichmuller l (u i)))`. Apply `InPerf.sum hφ'` to reduce the goal to its premises. Introduce `i _`. Rewrite using `[tmul_eq_algebraMap_mul (basisO LL i) (inclW l (WittVector.teichmuller l (u i)))]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Apply `InPerf.mul hφ'` to reduce the goal to its premises. Establish `hb : algebraMap ↥(OL LL) (RW LL) (basisO LL i) = (E.tie.ioE : W.EE →+* RW LL) (algebraMap ↥(OL LL) W.EE (basisO LL i))` using `(E.tie.ioE.commutes _).symm`. Rewrite using `[hb]`. Conclude with `InPerf.of_ι _`. Conclude with `GlobalTheory.T.teichmullerEpsilonRoots_mem_frobeniusPerfection_mod_l l P AI K s LL h W E (u i) (hu i)`.
-
-Unfold `NearPi at hnear`. Take `⟨y0, hy0, hn0⟩` from `exists_inPerf_near (j := (inclR LL : RA LL →+* RW LL)) hφ' W.EE_π hπ hy1 hnear`. Take `⟨n, e, r, her⟩` from `hy0`. Conclude with `⟨n, y0, e, r, her, hn0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixSub_approx_perfection (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (K : FinExt l) (s : ℕ) (LL : FinExt l) (h : Good K s LL) (W : Wach P K LL)

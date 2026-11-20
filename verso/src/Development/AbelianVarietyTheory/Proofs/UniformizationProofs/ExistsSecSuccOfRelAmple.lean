@@ -19,13 +19,13 @@ namespace GlobalTheory
 open LBGerm
 
 /- English proof (translation)
-Use `h.compactSpace` as an intermediate fact. Use `h.quasiSeparatedSpace` as an intermediate fact. Establish `hL` using `h.isLB`. Take `⟨i, hi⟩` from `exists_chart hL x`. Take `⟨n, hn, s, hs, hr, -⟩` from `h.exists_affine_le hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `le : ∀ J : PUnit → L.ι, nonzeroLocus s ⊓ powChart L J ≤ L.U (J PUnit.unit) ⊓ L.U i` using `fun J y hy => ⟨mem_powChart.1 hy.2, hr hy.1⟩`. Establish `hg : ∀ (J : PUnit → L.ι) (y : X), y ∈ nonzeroLocus s ⊓ powChart L J → gs (𝟙 X) y _ (resG X (le J) (L.g (J PUnit.unit) i).val) = (gm (𝟙 X) y (L.U (J PUnit.unit) ⊓ L.U i) (L.g (J PUnit.unit) i)).val` using `fun J y hy => (gs_res (𝟙 X) y _ hy _).trans (gs_unit (𝟙 X) y _ (le J hy) _)`. Take `⟨N, hN⟩` from `exists_sec_eq_pow_mul (m := 1) hL s (fun J => resG X (le J) (L.g (J PUnit.unit) i).val) (mem_secOn_of_germ (M := lbPow L 1) _ fun y J J' h hJ hJ' => by`. Rewrite using `[gm_lbPow_g 1 (𝟙 X) y J J' hJ hJ', pow_one]`. Use `(hg J y ⟨h, hJ⟩).trans (Eq.trans ?_ (congrArg _ (hg J' y ⟨h, hJ'⟩)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Units.val_mul, gm_cocycle hL (𝟙 X) y (mem_powChart.1 hJ) (mem_powChart.1 hJ') (hr h)])`. Take `⟨u, hu⟩` from `hN (N + 1) (Nat.le_succ N)`. Use `⟨n * (N + 1), Nat.mul_pos hn (Nat.succ_pos N), secPow s (N + 1), secCast (Nat.add_comm _ _) u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secPow s (Nat.succ_pos N)]` and apply the resulting hypothesis. Establish `hJ : x ∈ powChart L (fun _ => i)` using `mem_powChart.2 hi`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hy : x ∈ nonzeroLocus s ⊓ powChart L (fun _ => i)` using `⟨hs, hJ⟩`. Establish `e` using `congrArg (gs (𝟙 X) x _) (hu fun _ => i)`. Rewrite `e` using `[gs_res _ x _ hy, gs_mul _ x _ hy, gs_pow _ x _ hy, gs_res _ x _ hy, hg _ x hy]`. Rewrite using `[nonzeroLocus_secCast, mem_nonzeroLocus_iff_powFn u hJ, e]`. Conclude with `(((mem_nonzeroLocus_iff_powFn s hJ).1 hs).pow _).mul (Units.isUnit _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsAmpleLB.exists_sec_succ {X : Scheme.{0}} {L : LB X} (h : IsAmpleLB L) (x : X) :
     ∃ n, 1 ≤ n ∧ ∃ (a : (lbPow L n).Sec) (b : (lbPow L (n + 1)).Sec), x ∈ nonzeroLocus a ∧ x ∈ nonzeroLocus b := by
@@ -56,7 +56,7 @@ theorem IsAmpleLB.exists_sec_succ {X : Scheme.{0}} {L : LB X} (h : IsAmpleLB L) 
     exact (((mem_nonzeroLocus_iff_powFn s hJ).1 hs).pow _).mul (Units.isUnit _)
 
 /- English proof (translation)
-Introduce `R _ X _ L hL hA x`. Take `⟨n, hn, a, b, ha, hb⟩` from `(isAmpleLB_of_relAmple_of_isAffine X hL hA).exists_sec_succ x`. Take `⟨a', ha', -⟩` from `exists_sec_oneTerm L (K' := Fin 1) (e' := ((n : ℕ) : ℤ)) rfl a`. Take `⟨b', hb', -⟩` from `exists_sec_oneTerm L (K' := Fin 1) (e' := ((n + 1 : ℕ) : ℤ)) rfl b`. Conclude with `⟨n, hn, a', b', ha'.ge ha, hb'.ge hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_succ_of_relAmple : ∀ (R : Type) [CommRing R] (X : Over (Spec (CommRingCat.of R))) [IsProper X.hom] (L : LB X.left), L.IsLB → RelAmple X L → ∀ x : X.left, ∃ (n : ℕ) (_ : 1 ≤ n) (a : H0 L n) (b : H0 L (n + 1)), x ∈ nonzeroLocus a ∧ x ∈ nonzeroLocus b := by
   intro R _ X _ L hL hA x

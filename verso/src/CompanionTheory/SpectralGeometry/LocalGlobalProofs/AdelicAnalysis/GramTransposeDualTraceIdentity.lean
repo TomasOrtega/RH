@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology GlobalTheory.Com
 open scoped ENNReal NNReal MatrixGroups Kronecker
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨i, w⟩` from `p`. Simplify using `only [mulVec, dotProduct, DM, emb, Fintype.sum_prod_type, blockDiagonal_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `[map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem DM_mulVec_emb {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι] [DecidableEq ι]
     [DecidableEq (InfinitePlace F)] (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ))
@@ -21,7 +21,7 @@ theorem DM_mulVec_emb {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype 
   simp [map_sum, map_mul]
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct, gM, transpose_apply, Matrix.smul_apply, kroneckerMap_apply, EM, Matrix.one_apply, Fintype.sum_prod_type, smul_eq_mul]`. Rewrite using `[Finset.mul_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `[Finset.sum_ite_eq, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem gM_transpose_mulVec {F : Type} [Field F] [NumberField F] {ι : Type} [Fintype ι]
     [DecidableEq ι] [DecidableEq (InfinitePlace F)] (ρ : InfinitePlace F → (F →+* ℝ))
@@ -35,9 +35,9 @@ theorem gM_transpose_mulVec {F : Type} [Field F] [NumberField F] {ι : Type} [Fi
   simp [Finset.sum_ite_eq, mul_assoc]
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _ _ M B ρ P hQ b N y`. Take `⟨hT, -, -, -, hρ, -, -⟩` from `hQ`. Use function extensionality and compare the values at `p`. Take `⟨i, v⟩` from `p`. Rewrite using `[DM_mulVec_emb, gM_transpose_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `sum_rho_eq_trace hT hρ ((b v : F) * (B *ᵥ y) i)`. Simplify using `only [emb, ← map_mul]`. Rewrite using `[h]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem gM_DM_emb_eq_trace : ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι] [DecidableEq (InfinitePlace F)] (M : ℕ) (B : Matrix ι ι F) (ρ : InfinitePlace F → (F →+* ℝ)) (P : InfinitePlace F → Matrix ι ι ℝ), QSetup M B ρ P → ∀ (b : InfinitePlace F → 𝓞 F) (N : ℕ) (y : ι → F), (gM ρ b N)ᵀ *ᵥ (DM B ρ *ᵥ emb ρ y) = fun p => (((N : ℚ) * Algebra.trace ℚ F ((b p.2 : F) * (B *ᵥ y) p.1) : ℚ) : ℝ) := by
   intro F _ _ ι _ _ _ M B ρ P hQ b N y

@@ -19,7 +19,7 @@ structure SesqCls (U : Submodule ℂ V) (β : V → V → ℂ) : Prop where
 variable {U : Submodule ℂ V} {β : V → V → ℂ}
 
 /- English proof (translation)
-Rewrite using `[hβ.herm _ (U.add_mem hy hy') _ hx, hβ.add_left _ hy _ hy' _ hx, map_add, ← hβ.herm _ hy _ hx, ← hβ.herm _ hy' _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SesqCls.add_right (hβ : SesqCls U β) {x y y' : V} (hx : x ∈ U) (hy : y ∈ U) (hy' : y' ∈ U) :
     β x (y + y') = β x y + β x y' := by
@@ -27,21 +27,21 @@ theorem SesqCls.add_right (hβ : SesqCls U β) {x y y' : V} (hx : x ∈ U) (hy :
     ← hβ.herm _ hy' _ hx]
 
 /- English proof (translation)
-Rewrite using `[hβ.herm _ (U.smul_mem c hy) _ hx, hβ.smul_left _ hy _ hx, map_mul, ← hβ.herm _ hy _ hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem SesqCls.smul_right (hβ : SesqCls U β) {x y : V} (hx : x ∈ U) (hy : y ∈ U) (c : ℂ) :
     β x (c • y) = conj c * β x y := by
   rw [hβ.herm _ (U.smul_mem c hy) _ hx, hβ.smul_left _ hy _ hx, map_mul, ← hβ.herm _ hy _ hx]
 
 /- English proof (translation)
-Establish `h` using `hβ.smul_left 0 U.zero_mem y hy 0`. Rewrite `h` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem SesqCls.zero_left (hβ : SesqCls U β) {y : V} (hy : y ∈ U) : β 0 y = 0 := by
   have h := hβ.smul_left 0 U.zero_mem y hy 0
   rwa [zero_smul, zero_mul] at h
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, hβ.zero_left hy]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hβ.add_left _ (hf a) _ (U.sum_mem fun i _ => hf i) _ hy, ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem SesqCls.sum_left (hβ : SesqCls U β) {ι : Type*} (s : Finset ι) (f : ι → V) (hf : ∀ i, f i ∈ U)
     {y : V} (hy : y ∈ U) : β (∑ i ∈ s, f i) y = ∑ i ∈ s, β (f i) y := by
@@ -52,7 +52,7 @@ theorem SesqCls.sum_left (hβ : SesqCls U β) {ι : Type*} (s : Finset ι) (f : 
     rw [Finset.sum_insert ha, Finset.sum_insert ha, hβ.add_left _ (hf a) _ (U.sum_mem fun i _ => hf i) _ hy, ih]
 
 /- English proof (translation)
-Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_empty, Finset.sum_empty, hβ.herm _ U.zero_mem _ hx, hβ.zero_left hx, map_zero]`. Introduce `a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, hβ.add_right hx (hf a) (U.sum_mem fun i _ => hf i), ih]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem SesqCls.sum_right (hβ : SesqCls U β) {ι : Type*} (s : Finset ι) (f : ι → V) (hf : ∀ i, f i ∈ U)
     {x : V} (hx : x ∈ U) : β x (∑ i ∈ s, f i) = ∑ i ∈ s, β x (f i) := by
@@ -95,7 +95,7 @@ def adjB (U : Submodule ℂ V) (β : V → V → ℂ) (hβ : SesqCls U β) : Sta
     exact hβ.herm _ hy _ (ha2 x hx)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_adjB {hβ : SesqCls U β} {a : Q.Pr V} :
     a ∈ adjB U β hβ ↔ (∀ x ∈ U, a.1 x ∈ U) ∧ (∀ x ∈ U, a.2.unop x ∈ U) ∧
@@ -113,17 +113,17 @@ def pairS (β : V → V → ℂ) (X X' : Ix S → V) : ℂ := ∑ z, β (X z) (X
 def InU (U : Submodule ℂ V) (X : Ix S → V) : Prop := ∀ z, X z ∈ U
 
 /- English proof (translation)
-Introduce `a` and use `U.sum_mem fun b _ => hM a b _ (hX b)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blockMulVec_apply_mem {M : SlopeTestRemainingChoices S (Q.Pr V)} (hM : ∀ a b, ∀ x ∈ U, (M a b).1 x ∈ U) {X : Ix S → V} (hX : InU U X) :
     InU U (actP M X) := fun a => U.sum_mem fun b _ => hM a b _ (hX b)
 
 /- English proof (translation)
-Establish `hM2 : ∀ a b, M a b ∈ adjB U β hβ` using `hM`. Establish `hM'` using `fun a b => (mem_adjB (hβ := hβ)).1 (hM2 a b)`. Establish `key : ∀ z b, β (((star M) z b).1 (X b)) (Y z) = β (X b) ((M b z).1 (Y z))`. Introduce `z b`. Establish `h1 : (M b z).2.unop (X b) ∈ U` using `(hM' b z).2.1 _ (hX b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (M b z).1 (Y z) ∈ U` using `(hM' b z).1 _ (hY z)`. Use `show β ((M b z).2.unop (X b)) (Y z) = _`. Rewrite using `[hβ.herm _ (hY z) _ h1, ← (hM' b z).2.2 _ (hY z) _ (hX b), ← hβ.herm _ h2 _ (hX b)]`. Unfold `pairS actP`. Rewrite using `[Finset.sum_congr rfl fun z _ => hβ.sum_right Finset.univ (fun b => (M z b).1 (Y b)) (fun b => (hM' z b).1 _ (hY b)) (hX z)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun z _ => hβ.sum_left Finset.univ (fun b => ((star M) z b).1 (X b)) (fun b => (hM' b z).2.1 _ (hX b)) (hY z)]`. Repeatedly rewrite using `[key]`. Conclude with `Finset.sum_comm`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairS_adj (hβ : SesqCls U β) (M : SlopeTestRemainingChoices S (Q.Pr V)) (hM : M ∈ entSub (adjB U β hβ)) (X Y : Ix S → V)
     (hX : InU U X) (hY : InU U Y) : pairS β X (actP M Y) = pairS β (actP (star M) X) Y := by
@@ -144,7 +144,7 @@ theorem pairS_adj (hβ : SesqCls U β) (M : SlopeTestRemainingChoices S (Q.Pr V)
   exact Finset.sum_comm
 
 /- English proof (translation)
-Unfold `pairS`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun z _ => hβ.smul_left _ (hX z) _ (hY z) c`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairS_smul_left (hβ : SesqCls U β) (c : ℂ) (X Y : Ix S → V) (hX : InU U X) (hY : InU U Y) :
     pairS β (c • X) Y = c * pairS β X Y := by
@@ -153,7 +153,7 @@ theorem pairS_smul_left (hβ : SesqCls U β) (c : ℂ) (X Y : Ix S → V) (hX : 
   exact Finset.sum_congr rfl fun z _ => hβ.smul_left _ (hX z) _ (hY z) c
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Unfold `actP`. Rewrite using `[Pi.smul_apply, Finset.smul_sum]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem smul_blockMulVec (M : SlopeTestRemainingChoices S (Q.Pr V)) (c : ℂ) (X : Ix S → V) : actP (c • M) X = c • actP M X := by
   funext a
@@ -196,7 +196,7 @@ def frmU (hβ : SesqCls U β) (M : SlopeTestRemainingChoices S (Q.Pr V)) (hM : �
       exact Finset.sum_congr rfl fun z _ => hβ.smul_right (blockMulVec_apply_mem hM hX z) (hY z) c)
 
 /- English proof (translation)
-Set `W` to `Submodule.pi Set.univ (fun _ : Ix S => U)`. Set `x : W` to `⟨X, fun z _ => hX z⟩`. Set `x' : W` to `⟨X', fun z _ => hX' z⟩`. Use `Formalism.FourierDecayAlt.P.GramProductIdentities.cs_of_pos (frmU hβ M hM) (fun m => hP m.1 fun z => m.2 z (Set.mem_univ z)) x x'` as an intermediate fact. Conclude with `this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cs_U (hβ : SesqCls U β) (M : SlopeTestRemainingChoices S (Q.Pr V)) (hM : ∀ a b, ∀ x ∈ U, (M a b).1 x ∈ U)
     (hP : ∀ X : Ix S → V, InU U X → 0 ≤ (pairS β (actP M X) X).re ∧ (pairS β (actP M X) X).im = 0)
@@ -216,11 +216,9 @@ variable {A S : Type} [Ring A] [StarRing A] [Algebra ℂ A] [StarModule ℂ A] [
 variable {𝒜 : StarSubalgebra ℂ A}
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil`. Introduce `a b`. Use `show io (QQ Y a b) ∈ entSub 𝒜`. Conclude with `io_mem (hQ a b)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Consider separately whether the proposition holds or fails.
 
-Consider the case `cons l w ih`. Distinguish the cases in `hp : l.plus`. Rewrite using `[TTw, if_pos hp]`. Conclude with `entries_mem_mul ih (reflection_entries_mem _ _)`. Rewrite using `[TTw, if_neg hp]`.
-
-Conclude with `entries_mem_mul (reflection_transpose_entries_mem _ _) ih`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem word_transfer_mem_entrywise (QQ : ℂ → M2 A) (w : List (Letter ℂ S)) (Y : ℂ) (hQ : ∀ a b, QQ Y a b ∈ 𝒜) :
     E2 𝒜 (TTw QQ w Y) := by
@@ -235,9 +233,9 @@ theorem word_transfer_mem_entrywise (QQ : ℂ → M2 A) (w : List (Letter ℂ S)
     · rw [TTw, if_neg hp]; exact entries_mem_mul (reflection_transpose_entries_mem _ _) ih
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l w ih`. Rewrite using `[RRw]`. Use `(entSub 𝒜).mul_mem (ih fun l' hl' => hw l' (by simp [hl'])) (ins_mem _ ?_)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT` using `word_transfer_mem_entrywise QQ w l.pt (hw l (by simp))`. Use `split_ifs`. Conclude with `hT`. Conclude with `entries_mem_transpose hT`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rrw_mem_at (QQ : ℂ → M2 A) (w : List (Letter ℂ S)) (hw : ∀ l ∈ w, ∀ a b, QQ l.pt a b ∈ 𝒜) :
     RRw QQ w ∈ entSub 𝒜 := by
@@ -252,20 +250,18 @@ theorem rrw_mem_at (QQ : ℂ → M2 A) (w : List (Letter ℂ S)) (hw : ∀ l ∈
     · exact entries_mem_transpose hT
 
 /- English proof (translation)
-Unfold `Formalism.YangianSpanCharacter.T.J`. Conclude with `entries_mem_of_four (entSub 𝒜).zero_mem (entSub 𝒜).one_mem (neg_mem (entSub 𝒜).one_mem) (entSub 𝒜).zero_mem`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem symplectic_form_mem_entrywise : E2 𝒜 (Formalism.YangianSpanCharacter.T.J (SlopeTestRemainingChoices S A)) := by
   unfold Formalism.YangianSpanCharacter.T.J
   exact entries_mem_of_four (entSub 𝒜).zero_mem (entSub 𝒜).one_mem (neg_mem (entSub 𝒜).one_mem) (entSub 𝒜).zero_mem
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact (entSub 𝒜).one_mem`. Consider the case `cons l L ih`. Rewrite using `[Ps]`. Use `(entSub 𝒜).mul_mem ?_ (ih fun l' hl' => hL l' (by simp [hl']))` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with hp`. Unfold `PsiP`. Use `ins_mem _ ?_` and prove the remaining obligations. Introduce `i j`. Rewrite using `[Matrix.neg_apply]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `neg_mem ((entSub 𝒜).smul_mem ?_ _)` and prove the remaining obligations. Conclude with `entries_mem_mul symplectic_form_mem_entrywise (entries_mem_transpose (word_transfer_mem_entrywise QQ _ _ (fun a b => (hL l (by simp) a b).1 hp))) i j`. Unfold `PsiM`. Use `ins_mem _ ?_` and prove the remaining obligations. Introduce `i j`.
-
-Use `(entSub 𝒜).smul_mem ?_ _` and prove the remaining obligations. Conclude with `entries_mem_mul symplectic_form_mem_entrywise (word_transfer_mem_entrywise QQ _ _ (fun a b => (hL l (by simp) a b).2 (by simpa using hp))) i j`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ps_mem_at (QQ : ℂ → M2 A) (q : ℂ → ℂ) (w : List (Letter ℂ S)) (L : List (Letter ℂ S))
     (hL : ∀ l ∈ L, ∀ a b, (l.plus = true → QQ (l.pt + 1) a b ∈ 𝒜) ∧ (l.plus = false → QQ (l.pt - 1) a b ∈ 𝒜)) :
@@ -296,15 +292,15 @@ variable {V : Type} [AddCommGroup V] [Module ℂ V] {S : Type} [Fintype S] [Deci
 variable {U : Submodule ℂ V} {β : V → V → ℂ}
 
 /- English proof (translation)
-Establish `hok` using `Formalism.FourierDecayAlt.P.DualKernelLemmas.dkDualOK S q w L hD`. Establish `hdl` using `Formalism.FourierDecayAlt.P.duality_list_holds ℂ (Q.Pr V) S QQ q w L hS hD.2.1 hD.2.2.1 hok`. Establish `hkap` using `Formalism.FourierDecayAlt.P.kappa_formula_holds ℂ S q w L hD.2.1 hD.2.2.1 hok`. Establish `h4` using `Formalism.FourierDecayAlt.P.GramProductIdentities.dkStep4 S q w L hD.1`. Establish `hk0 : kap q w L ≠ 0` using `hdl.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (L.map fun l => qw q w l.pt).prod = kap q w L` using `by rw [hkap, h4]`. Establish `hPsU : ∀ a b, ∀ x ∈ U, (Ps QQ q w L a b).1 x ∈ U` using `fun a b x hx => (hPs a b).1 x hx`. Establish `hsPs : star (Ps QQ q w L) ∈ entSub (adjB U β hβ)` using `star_mem_entSub hPs`. Establish `hsPsU : ∀ a b, ∀ x ∈ U, (star (Ps QQ q w L) a b).1 x ∈ U` using `fun a b x hx => (hsPs a b).1 x hx`. Establish `hY : InU U (actP (Ps QQ q w L) X₂)` using `blockMulVec_apply_mem hPsU h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR1 : InU U (actP (RRw QQ (L ++ w)) X₁)` using `blockMulVec_apply_mem hRR h1`. Establish `hR2 : InU U (actP (RRw QQ (L ++ w)) (actP (Ps QQ q w L) X₂))` using `blockMulVec_apply_mem hRR hY`. Establish `e1 : pairS β (actP (JL L * RRw QQ w) X₁) X₂ = pairS β (actP (RRw QQ (L ++ w)) X₁) (actP (Ps QQ q w L) X₂)`. Rewrite using `[← hdl.2.2.1, polyAction_mul, pairS_adj hβ _ hPs _ _ hR1 h2]`. Establish `hm : pairS β (actP (RRw QQ (L.map dl ++ w)) X₂) X₂ = kap q w L * pairS β (actP (RRw QQ (L ++ w)) (actP (Ps QQ q w L) X₂)) (actP (Ps QQ q w L) X₂)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : RRw QQ (L.map dl ++ w) = kap q w L • (star (Ps QQ q w L) * RRw QQ (L ++ w) * Ps QQ q w L)`. Rewrite using `[hdl.2.2.2.1, smul_smul, mul_inv_cancel₀ hk0, one_smul]`. Rewrite using `[e, smul_blockMulVec, polyAction_mul, polyAction_mul, pairS_smul_left hβ _ _ _ (blockMulVec_apply_mem hsPsU hR2) h2, pairS_adj hβ _ hPs _ _ hR2 h2]`. Rewrite using `[hprod, hm, e1]`. Use `Formalism.FourierDecayAlt.P.DualKernelLemmas.real_bound _ _ _ _ hk0 (hPos X₁ h1).2 (hPos _ hY).2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `cs_U hβ _ hRR hPos X₁ _ h1 hY`.
+A detailed English derivation is pending.
 -/
 theorem dk_partial (hβ : SesqCls U β) (QQ : ℂ → M2 (Q.Pr V)) (q : ℂ → ℂ) (w L : List (Letter ℂ S))
     (hS : IsStart QQ q) (hD : FormPairingAction.DKHyp q w L)

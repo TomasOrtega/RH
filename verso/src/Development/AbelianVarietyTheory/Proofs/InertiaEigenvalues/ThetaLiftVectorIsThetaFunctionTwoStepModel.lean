@@ -27,19 +27,19 @@ namespace GlobalTheory.TwoStepModel
 open GlobalTheory.ExportSeries
 
 /- English proof (translation)
-Establish `hA` using `GlobalTheory.T.adjointFrame_integral_iff_parts_conj_half D S T βS βT Pg Q eg eQ hg hq hd he`. Establish `hB` using `GlobalTheory.T.reduction_adjointFrame_conj_half_two_parts D S T βS βT Pg Q eg eQ hg hq hd he`. Establish `heg` using `GlobalTheory.PlaceVec.idemSum_mul_self hg`. Establish `heQ` using `GlobalTheory.PlaceVec.idemSum_mul_self hq`. Establish `hcg : ∀ x : WO S T, IsHalf (cA D eg) (cA D eg • x)` using `fun x => GlobalTheory.ExportSeries.RestrictHalfModel.isHalf_smul (by rw [← map_mul, heg]) x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcQ : ∀ x : WO S T, IsHalf (cA D eQ) (cA D eQ • x)` using `fun x => GlobalTheory.ExportSeries.RestrictHalfModel.isHalf_smul (by rw [← map_mul, heQ]) x`. Use function extensionality and compare the values at `x`. Rewrite using `[tensorHalf_apply]`. Establish `hc : cA D (eg + eQ) = cA D eQ + cA D eg` using `by rw [map_add, add_comm]`. Distinguish the cases in `hx : IsHalf (cA D (eg + eQ)) x`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hx' : IsHalf (cA D eQ + cA D eg) x` using `hc ▸ hx`. Rewrite using `[if_pos hx', mul_one]`. Distinguish the cases in `hi : IsIntM (frMapAdj S T βS βT x)`. Take `⟨i1, i2⟩` from `(hA x hx).1 hi`. Take `⟨r1, r2⟩` from `hB x hx hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `c1 : IsHalf (cA D (eg + eQ)) x ∧ IsIntM (frMapAdj S T βS βT x)` using `⟨hx, hi⟩`. Establish `c2 : IsHalf (cA D eQ) (cA D eQ • x) ∧ IsIntM (frMapAdj S T βS βT (cA D eQ • x))` using `⟨hcQ x, i2⟩`. Establish `c3 : IsHalf (cA D eg) (cA D eg • x) ∧ IsIntM (frMapAdj S T βS βT (cA D eg • x))` using `⟨hcg x, i1⟩`. Rewrite using `[if_pos c1, if_pos c2, if_pos c3, mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `GlobalTheory.PlaceVec.omegaQ_congr Q _ ξ _ fun PP hPP => (r2 PP hPP).symm`. Conclude with `GlobalTheory.PlaceVec.omegaK_congr Pg fun PP hPP => (r1 PP hPP).symm`. Establish `c1 : ¬ (IsHalf (cA D (eg + eQ)) x ∧ IsIntM (frMapAdj S T βS βT x))` using `fun h => hi h.2`. Rewrite using `[if_neg c1]`. Use `mt (hA x hx).2 hi` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `not_and_or.1 this with h | h` into its components or cases. Establish `c3 : ¬ (IsHalf (cA D eg) (cA D eg • x) ∧ IsIntM (frMapAdj S T βS βT (cA D eg • x)))` using `fun h' => h h'.2`. Rewrite using `[if_neg c3, mul_zero]`. Establish `c2 : ¬ (IsHalf (cA D eQ) (cA D eQ • x) ∧ IsIntM (frMapAdj S T βS βT (cA D eQ • x)))` using `fun h' => h h'.2`. Rewrite using `[if_neg c2, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ¬ (IsHalf (cA D (eg + eQ)) x ∧ IsIntM (frMapAdj S T βS βT x))` using `fun h => hx h.1`. Establish `hx' : ¬ IsHalf (cA D eQ + cA D eg) x` using `hc ▸ hx`. Rewrite using `[if_neg c1, if_neg hx', mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem datum_eq_tensorHalf {D : D7} {S T : HSp D} (βS : GL (Fin S.rank) (EAf D)) (βT : GL (Fin T.rank) (EAf D))
     {Pg Q : Finset (Pl D.host.E)} {eg eQ : AE D} (hg : IsIdemSum eg Pg) (hq : IsIdemSum eQ Q) (hd : Disjoint Pg Q)
@@ -93,21 +93,19 @@ end GlobalTheory.TwoStepModel
 namespace GlobalTheory.ConjTwist
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC _hG i t eg eQ fg hg hq hfg`. Take `⟨⟨hψ, -⟩, e, he, hTe⟩` from `hC.thP.vP i t`. Establish `hSV` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βV i))`. Establish `hSW` using `GlobalTheory.AdTh.RecPair.selfDual_of_coe (GlobalTheory.AdTh.RecPair.coe_eq_of_frame (hC.lev.βW i))`. Establish `hd` using `GlobalTheory.TwistPlaces.typePlaces_disjoint_twistPlaces R F hC t`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : e = eg + eQ`. Rewrite using `[← GlobalTheory.ExportSeries.idem_eq he, ← GlobalTheory.ExportSeries.idem_eq hg, ← GlobalTheory.ExportSeries.idem_eq hq]`. Conclude with `Finset.sum_union hd`. Substitute `hsum` using the available equality. Establish `heg` using `GlobalTheory.PlaceVec.idemSum_mul_self hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heQ` using `GlobalTheory.PlaceVec.idemSum_mul_self hq`. Establish `hee` using `GlobalTheory.PlaceVec.idemSum_mul_self he`. Establish `hgQ : eg * eQ = 0`. Use `GlobalTheory.PlaceVec.natCast_mul_eq_zero 2 _ two_pos ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hee - heg - heQ`. Establish `hcg : cA D eg * cA D eg = cA D eg` using `by rw [← map_mul, heg]`. Establish `hcQ : cA D eQ * cA D eQ = cA D eQ` using `by rw [← map_mul, heQ]`. Establish `hQg : cA D eQ * cA D eg = 0` using `by rw [← map_mul, mul_comm, hgQ, map_zero]`. Establish `hgQ' : cA D eg * cA D eQ = 0` using `by rw [mul_comm, hQg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ : ∀ a : AE D, a * a = a → ∀ u ∈ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True), a • u ∈ (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True)` using `fun a ha u hu => GlobalTheory.PlaceModelSum.idem_smul_latO ha hu`. Establish `hinfg : infPart D (cA D eg) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hg)`. Establish `hinfQ : infPart D (cA D eQ) = 0` using `GlobalTheory.PlaceVec.infPart_cA (GlobalTheory.PlaceVec.idemSum_infPart hq)`. Establish `hSBg` using `GlobalTheory.PlaceVec.isSBHalf_of_red hSV.1 hSW.1 hinfg (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceVec.frMapAdj_add _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_up _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_down _ _ _ _) R.Pg (fun y => omegaK R.Pg y) fun y y' h = …`. Establish `hSBQ` using `GlobalTheory.PlaceVec.isSBHalf_of_red hSV.1 hSW.1 hinfQ (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i)) (GlobalTheory.PlaceVec.frMapAdj_add _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_up _ _ _ _) (GlobalTheory.PlaceVec.frMapAdj_down _ _ _ _) (R.Q t) (fun y => omegaQ (R.Q t) (Wc D i). …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨Te, hTe1⟩, hTe2⟩` from `hTe`. Establish `hc : cA D (eg + eQ) = cA D eQ + cA D eg` using `by rw [map_add, add_comm]`. Establish `hc' : cA D (eg + eQ) = cA D eg + cA D eQ` using `map_add _ _ _`. Establish `hm1` using `GlobalTheory.TwoStepModel.isPlaceModel_comp_tensorHalf hcQ hcg hQg hΛ hSBg (hc ▸ hTe1)`. Establish `hm2` using `GlobalTheory.ExportSeries.isPlaceModel_comp_restrictHalf hcg hcQ hgQ' hΛ (hc' ▸ hTe1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbase` using `hfg.2 _ hm2`. Simplify using `only [LinearMap.comp_apply] at hbase`. Rewrite `hm1` using `[← hbase]`. Use `⟨⟨_, hm1⟩, fun T' hT' => ?_⟩` and prove the remaining obligations. Rewrite using `[hTe2 Te hTe1, GlobalTheory.TwoStepModel.datum_eq_tensorHalf (R.βV i) (R.βW i) hg hq hd he (R.xiR t)]`.
-
-Conclude with `GlobalTheory.PlaceVec.placeModel_unique hψ hSV hSW hcQ hinfQ hm1 hT' hSBQ`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isThetaAt_vP_twoStep : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → QGuard R → ∀ (i : Fin D.R.m) (t : T0) (eg eQ : AE D) (fg : WO (Vc D i) (Wc D i) → ℂ), IsIdemSum eg R.Pg → IsIdemSum eQ (R.Q t) → IsThetaAt R.ψ (symplO (Vc D i) (Wc D i)) (heisO R.ψ (Vc D i) (Wc D i)) (cA D eg) (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) 1 (R.vacP i) (fun x => if IsHalf (cA D eg) x ∧ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaK R.Pg (fun PP => redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) else 0) fg → IsThetaAt R.ψ (symplO (Vc D i) (Wc D i)) (heisO R.ψ (Vc D i) (Wc D i)) (cA D eQ) (latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True) 1 fg (fun x => if IsHalf (cA D eQ) x ∧ IsIntM (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x) then omegaQ (R.Q t) (Wc D i).rank (R.xiR t) (-1) (fun PP => redM PP (frMapAdj (Vc D i) (Wc D i) (R.βV i) (R.βW i) x)) else 0) (R.vP i t) := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC _hG i t eg eQ fg hg hq hfg

@@ -50,7 +50,7 @@ section Class
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {n M : ℕ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, fun _ _ _ _ => contDiff_const⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSmoothCc_const (c : ℂ)
     (hc : HasCompactSupport (fun _ : Fin n → Fin M → Ainf F ⊗[F] E => c)) :
@@ -58,13 +58,13 @@ theorem isSmoothCc_const (c : ℂ)
   ⟨hc, fun _ _ _ _ => contDiff_const⟩
 
 /- English proof (translation)
-The claim follows from `isSmoothCc_const 0 HasCompactSupport.zero`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothCc_zero : IsSmoothCc F E (fun _ : Fin n → Fin M → Ainf F ⊗[F] E => (0 : ℂ)) :=
   isSmoothCc_const 0 HasCompactSupport.zero
 
 /- English proof (translation)
-Establish `e : Φinf = fun _ => Φinf default` using `funext fun X => congrArg Φinf (Subsingleton.elim X default)`. Rewrite using `[e]`. Conclude with `isSmoothCc_const _ (HasCompactSupport.intro' isCompact_univ isClosed_univ fun x hx => absurd (Set.mem_univ x) hx)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothCc_empty (Φinf : (Fin 0 → Fin M → Ainf F ⊗[F] E) → ℂ) : IsSmoothCc F E Φinf := by
   have e : Φinf = fun _ => Φinf default := funext fun X => congrArg Φinf (Subsingleton.elim X default)
@@ -72,9 +72,9 @@ theorem isSmoothCc_empty (Φinf : (Fin 0 → Fin M → Ainf F ⊗[F] E) → ℂ)
   exact isSmoothCc_const _ (HasCompactSupport.intro' isCompact_univ isClosed_univ fun x hx => absurd (Set.mem_univ x) hx)
 
 /- English proof (translation)
-Use `⟨hs, fun N' e _ he' => ?_⟩` and prove the remaining obligations. Set `L : (Fin N' → ℝ) →+ (Fin N → ℝ)` to `(e.symm.trans e0).toAddMonoidHom`. Establish `hL : Continuous L` using `he0.comp he'`. Establish `key : Φinf ∘ e.symm = (Φinf ∘ e0.symm) ∘ (L.toRealLinearMap hL)`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[L]`. Rewrite using `[key]`. Conclude with `h0.comp (L.toRealLinearMap hL).contDiff`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothCc_of_coord (Φinf : (Fin n → Fin M → Ainf F ⊗[F] E) → ℂ) (hs : HasCompactSupport Φinf)
     {N : ℕ} (e0 : (Fin n → Fin M → Ainf F ⊗[F] E) ≃+ (Fin N → ℝ)) (he0 : Continuous e0)

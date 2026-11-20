@@ -27,7 +27,7 @@ def stepLB (b : Bool) (st : ((E →+* ℂ) × ℕ) ⊕ ℕ) : FinLB z.Z.X :=
   | none => FinLB.triv _
 
 /- English proof (translation)
-Unfold `stepLB`. Use `split`. Use `next y hy => obtain rfl : y = x := Option.some.inj (hy.symm.trans h)`. Both sides reduce to the same expression. Use `next hy => exact absurd (hy.symm.trans h) (by simp)`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepLB_of_some (b : Bool) {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter Dw} (h : letterOf Dw st = some x) :
     z.stepLB b st = (z.line b st x h).L := by
@@ -49,15 +49,15 @@ def genId : GenIso z.Z (z.line false st x h).L (z.line true st x h).L :=
   (exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose
 
 /- English proof (translation)
-The claim follows from `(exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem isGenId_genId : IsGenId (z.line false st x h) (z.line true st x h) (z.genId hp hW h) :=
   (exists_isGenId hp hW z.full (GenId.bdd_step hp st) _ _).choose_spec
 
 /- English proof (translation)
-Establish `ha` using `Pull.le_of_fromSpec (z.Z.U a).2 hφ`. Establish `hi' : ⊤ ≤ y.gen ⁻¹ᵁ (z.line false st x h).L.U i` using `fun q _ => hi (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))`. Establish `hj' : ⊤ ≤ y.gen ⁻¹ᵁ (z.line true st x h).L.U j` using `fun q _ => hj (Set.mem_univ (spMap (intO ↥y.C.S).subtype q))`. Establish `e` using `z.isGenId_genId hp hW h _ y.gen a i j fun q hq => ⟨ha hq, hi' hq, hj' hq⟩`. Establish `n` using `GenId.val_ne_zero _ ha hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e'` using `congrArg (fun c => Real.log ‖c‖) e`. Rewrite `n` using `[← e]`. Simplify using `only [norm_mul] at e'`. Rewrite `e'` using `[Real.log_mul (norm_ne_zero_iff.2 (left_ne_zero_of_mul n)) (norm_ne_zero_iff.2 (right_ne_zero_of_mul n))]`. Combine the linear relations using `[(z.line false st x h).norm y a i φ hφ hi, (z.line true st x h).norm y a j φ hφ hj]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_norm_genId (y : z.Z.Pt) (a : Fin z.Z.m) (φ : Γ(z.Z.X, (z.Z.U a).1) →+* ↥y.C.S)
     (hφ : spMap φ ≫ z.Z.chart a = y.gen) {i j} (hi : ⊤ ≤ y.z ⁻¹ᵁ (z.line false st x h).L.U i)
@@ -89,29 +89,29 @@ def dualPair : DV.FPair (ithOf hp hW z.Z d) r :=
     fun i => NModel.GenIso.dual (z.genId hp hW (h i))
 
 /- English proof (translation)
-The claim follows from `(z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem pair_x_eq_LB_false (i : Fin r) : (z.stepPair hp hW d h).x i = z.stepLB false (st i) := (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-The claim follows from `(z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem pair_x_prime_eq_LB_true (i : Fin r) : (z.stepPair hp hW d h).x' i = z.stepLB true (st i) := (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-The claim follows from `congrArg FinLB.dual (z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem dualPair_x_eq_dual_LB_false (i : Fin r) : (z.dualPair hp hW d h).x i = (z.stepLB false (st i)).dual :=
   congrArg FinLB.dual (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-The claim follows from `congrArg FinLB.dual (z.stepLB_of_some _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem dualPair_x_prime_eq_dual_LB_true (i : Fin r) : (z.dualPair hp hW d h).x' i = (z.stepLB true (st i)).dual :=
   congrArg FinLB.dual (z.stepLB_of_some _ _).symm
 
 /- English proof (translation)
-The claim follows from `vdiv_dual hp hW d _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem dualPair_Dv (i : Fin r) : (z.dualPair hp hW d h).Dv i = -vdiv hp hW d _ _ (z.genId hp hW (h i)) :=
   vdiv_dual hp hW d _ _ _
@@ -129,15 +129,15 @@ section Ranks
 variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) {p : ℕ} [Fact p.Prime] (jc : DV.KW p →+* ℂ)
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun x => Formalism.MainNotions.WeightFamilies.emb_conj D (jc.comp τ) x`.
+A detailed English derivation is pending.
 -/
 theorem comp_cEmb (τ : DV.Emb D p) : jc.comp (DV.cEmb D τ) = conjEmb (jc.comp τ) :=
   RingHom.ext fun x => Formalism.MainNotions.WeightFamilies.emb_conj D (jc.comp τ) x
 
 /- English proof (translation)
-Establish `h₁` using `S.p_eq`. Establish `h₂` using `S.rank_eq`. Distinguish the cases in `h : τ ∈ DV.PsiOf D jc`. Take `⟨t, ht⟩` from `id h`. Rewrite using `[DV.rkOf, if_pos h, ht, Datum.mult, if_pos (A.cm t), h₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩ : DV.cEmb D τ ∈ DV.PsiOf D jc` from `by_contra fun h' => h ((cm_type_meets_conjugate_pair p jc τ).2 h')`. Establish `h₃` using `GlobalTheory.Proof.LetterConjugation.mult_add S.Dw (jc.comp τ)`. Rewrite `h₃` using `[← comp_cEmb, ht, Datum.mult.eq_1 _ (DV.tauEmb D t), if_pos (A.cm t)]`. Rewrite using `[DV.rkOf, if_neg h]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mult_comp (τ : DV.Emb D p) : S.Dw.mult (jc.comp τ) = DV.rkOf (DV.PsiOf D jc) N j τ := by
   have h₁ := S.p_eq
@@ -152,7 +152,7 @@ theorem mult_comp (τ : DV.Emb D p) : S.Dw.mult (jc.comp τ) = DV.rkOf (DV.PsiOf
     omega
 
 /- English proof (translation)
-Establish `h₁` using `GlobalTheory.Proof.LetterConjugation.mult_add S.Dw (jc.comp τ)`. Establish `h₂` using `S.rank_eq`. Rewrite `h₁` using `[mult_comp]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mult_conj_comp (τ : DV.Emb D p) : S.Dw.mult (conjEmb (jc.comp τ)) = N - DV.rkOf (DV.PsiOf D jc) N j τ := by
   have h₁ := GlobalTheory.Proof.LetterConjugation.mult_add S.Dw (jc.comp τ)
@@ -161,7 +161,7 @@ theorem mult_conj_comp (τ : DV.Emb D p) : S.Dw.mult (conjEmb (jc.comp τ)) = N 
   omega
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Proof.LetterConjugation.two_mul_length S.Dw`. Rewrite `h` using `[GlobalTheory.Proof.LetterConjugation.finrank_host, S.rank_eq, mul_assoc]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem length_letters : (letters S.Dw).length = D.R.f * N := by
   have h := GlobalTheory.Proof.LetterConjugation.two_mul_length S.Dw
@@ -169,14 +169,14 @@ theorem length_letters : (letters S.Dw).length = D.R.f * N := by
   omega
 
 /- English proof (translation)
-The claim follows from `dif_pos (i.cast (mult_comp S jc τ).symm).2`.
+A detailed English derivation is pending.
 -/
 theorem letterOf_lie (τ : DV.Emb D p) (i : Fin (DV.rkOf (DV.PsiOf D jc) N j τ)) :
     letterOf S.Dw (.inl (jc.comp τ, i)) = some ⟨jc.comp τ, i.cast (mult_comp S jc τ).symm⟩ :=
   dif_pos (i.cast (mult_comp S jc τ).symm).2
 
 /- English proof (translation)
-The claim follows from `dif_pos (i.rev.cast (mult_conj_comp S jc τ).symm).2`.
+A detailed English derivation is pending.
 -/
 theorem letterOf_om (τ : DV.Emb D p) (i : Fin (N - DV.rkOf (DV.PsiOf D jc) N j τ)) :
     letterOf S.Dw (.inl (conjEmb (jc.comp τ), i.rev)) =
@@ -184,7 +184,7 @@ theorem letterOf_om (τ : DV.Emb D p) (i : Fin (N - DV.rkOf (DV.PsiOf D jc) N j 
   dif_pos (i.rev.cast (mult_conj_comp S jc τ).symm).2
 
 /- English proof (translation)
-The claim follows from `List.getElem?_eq_getElem (k.cast (length_letters S).symm).2`.
+A detailed English derivation is pending.
 -/
 theorem letterOf_whole (k : Fin (D.R.f * N)) :
     letterOf S.Dw (.inr k) = some ((letters S.Dw).get (k.cast (length_letters S).symm)) :=
@@ -214,14 +214,14 @@ def mdlOf : DV.Mdl D p N (DV.rkOf (DV.PsiOf D jc) N j) where
   omW_dual := ⟨Fin.revPerm, fun _ => FinLB.firstChern_dual _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨z.pair_x_eq_LB_false hp hW _ _ i, z.pair_x_prime_eq_LB_true hp hW _ _ i⟩`.
+Supply the required witnesses or components.
 -/
 theorem mdlOf_lie (τ : DV.Emb D p) (i) : ((mdlOf z jc).lie τ).x i = z.stepLB false (.inl (jc.comp τ, i)) ∧
     ((mdlOf z jc).lie τ).x' i = z.stepLB true (.inl (jc.comp τ, i)) :=
   ⟨z.pair_x_eq_LB_false hp hW _ _ i, z.pair_x_prime_eq_LB_true hp hW _ _ i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨z.dualPair_x_eq_dual_LB_false hp hW _ _ i, z.dualPair_x_prime_eq_dual_LB_true hp hW _ _ i⟩`.
+Supply the required witnesses or components.
 -/
 theorem mdlOf_om (τ : DV.Emb D p) (i) :
     ((mdlOf z jc).om τ).x i = (z.stepLB false (.inl (conjEmb (jc.comp τ), i.rev))).dual ∧
@@ -229,14 +229,14 @@ theorem mdlOf_om (τ : DV.Emb D p) (i) :
   ⟨z.dualPair_x_eq_dual_LB_false hp hW _ _ i, z.dualPair_x_prime_eq_dual_LB_true hp hW _ _ i⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨z.pair_x_eq_LB_false hp hW _ _ k, z.pair_x_prime_eq_LB_true hp hW _ _ k⟩`.
+Supply the required witnesses or components.
 -/
 theorem mdlOf_lieW (k) : (mdlOf z jc).lieW.x k = z.stepLB false (.inr k) ∧
     (mdlOf z jc).lieW.x' k = z.stepLB true (.inr k) :=
   ⟨z.pair_x_eq_LB_false hp hW _ _ k, z.pair_x_prime_eq_LB_true hp hW _ _ k⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨z.dualPair_x_eq_dual_LB_false hp hW _ _ k, z.dualPair_x_prime_eq_dual_LB_true hp hW _ _ k⟩`.
+Supply the required witnesses or components.
 -/
 theorem mdlOf_omW (k) : (mdlOf z jc).omW.x k = (z.stepLB false (.inr k.rev)).dual ∧
     (mdlOf z jc).omW.x' k = (z.stepLB true (.inr k.rev)).dual :=
@@ -249,14 +249,14 @@ theorem mdlOf_lie_Dv (τ : DV.Emb D p) (i) :
     ((mdlOf z jc).lie τ).Dv i = vdiv hp hW _ _ _ (z.genId hp hW (letterOf_lie S jc τ i)) := rfl
 
 /- English proof (translation)
-The claim follows from `z.dualPair_Dv hp hW _ _ i`.
+A detailed English derivation is pending.
 -/
 theorem mdlOf_om_Dv (τ : DV.Emb D p) (i) :
     ((mdlOf z jc).om τ).Dv i = -vdiv hp hW _ _ _ (z.genId hp hW (letterOf_om S jc τ i)) :=
   z.dualPair_Dv hp hW _ _ i
 
 /- English proof (translation)
-The claim follows from `z.dualPair_Dv hp hW _ _ k`.
+A detailed English derivation is pending.
 -/
 theorem mdlOf_omW_Dv (k) : (mdlOf z jc).omW.Dv k = -(mdlOf z jc).lieW.Dv k.rev := z.dualPair_Dv hp hW _ _ k
 
@@ -267,9 +267,9 @@ variable {jc} {t : D.what₂.Tau} {τ : DV.Emb D p} (ht : jc.comp τ = DV.tauEmb
 include ht
 
 /- English proof (translation)
-Establish `hi : (i' : ℕ) < S.Dw.p`. Establish `hr : DV.rkOf (DV.PsiOf D jc) N j τ = j` using `if_pos ⟨t, ht⟩`. Use `i.2` as an intermediate fact. Use `S.p_eq` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[(mdlOf_lie z jc τ i).1, (mdlOf_lie z jc τ i).2, ht, ← h]`. Conclude with `⟨if_pos hi, if_pos hi⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rootOf_lie (i : Fin (DV.rkOf (DV.PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = i) :
     rootOf z jc (false, (t, i')) = ((mdlOf z jc).lie τ).x i ∧ rootOf z jc (true, (t, i')) = ((mdlOf z jc).lie τ).x' i := by
@@ -282,9 +282,9 @@ theorem rootOf_lie (i : Fin (DV.rkOf (DV.PsiOf D jc) N j τ)) (i' : Fin N) (h : 
   exact ⟨if_pos hi, if_pos hi⟩
 
 /- English proof (translation)
-Establish `hr : DV.rkOf (DV.PsiOf D jc) N j τ = j` using `if_pos ⟨t, ht⟩`. Establish `h₁` using `S.p_eq`. Establish `h₂` using `S.rank_eq`. Establish `hi : ¬ (i' : ℕ) < S.Dw.p` using `by omega`. Establish `e : (i.rev : ℕ) = S.Dw.p + S.Dw.q - 1 - i'` using `by rw [Fin.val_rev]; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(mdlOf_om z jc τ i).1, (mdlOf_om z jc τ i).2, ht, e]`. Conclude with `⟨if_neg hi, if_neg hi⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem rootOf_om (i : Fin (N - DV.rkOf (DV.PsiOf D jc) N j τ)) (i' : Fin N) (h : (i' : ℕ) = j + i) :
     rootOf z jc (false, (t, i')) = ((mdlOf z jc).om τ).x i ∧ rootOf z jc (true, (t, i')) = ((mdlOf z jc).om τ).x' i := by
@@ -305,7 +305,7 @@ variable {D : D7} {A : Amb D} {N j : ℕ} (S : Sig A N j) (κ : Lv A)
   (hj : ∀ (p : ℕ) [Fact p.Prime] (la : PlL D p), JcPin D p la (jC p la))
 
 /- English proof (translation)
-Establish `h : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`. Establish `: 1 / ((p : ℝ) - 1) ≤ 1`. Rewrite using `[div_le_one (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -338,11 +338,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   (hp : p.Prime) (hW : (p : ℂ) ∈ W.nonunits)
 
 /- English proof (translation)
-Establish `g : y.gen ≫ z.Z.π = spMap (intO ↥y.C.S).subtype ≫ y.z ≫ z.Z.π` using `Category.assoc _ _ _`. Establish `F` using `Pull.frame_ind (Pull.chart_frame z.Z hφ) τ`. Rewrite using `[z.log_norm_genId hp hW h y a φ hφ hi hj]`. Simplify using `only [lnStep, dif_pos k.2, hτ, and_false, if_false, sub_zero, sub_nonneg]`. Rewrite `F`, the goal using `[g]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `pos (b)` using `GlobalTheory.GrNormPos.grNorm_pos HTBound.htBound E H _ _ p y.C b _ hp (Pull.ext_unique _ _) _ _ F.1 F.2 k`. Use `Real.log_le_log (pos true) (csInf_le_csInf ⟨0, ?_⟩ ?_ ?_)` and prove the remaining obligations. Introduce and unpack `r ⟨cf, -, -, -, rfl⟩`. Check the signs of the components of the expression. Conclude with `Set.nonempty_iff_ne_empty.2 fun e => (pos false).ne' ((congrArg sInf e).trans Real.sInf_empty)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Check the signs of the components of the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `r ⟨cf, h₁, h₂, ⟨w, hw, hc⟩, rfl⟩`. Conclude with `⟨cf, h₁, h₂, ⟨w, latDR_subset_latHT E H _ _ _ p _ hw, hc⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 example (z : admitted Y i₀) {τ : E →+* ℂ} (hτ : τ (H.rt : E) ≠ H.rt0) (k : Fin (Dw.mult τ))
     (h : letterOf Dw (.inl (τ, k)) = some ⟨τ, k⟩) (y : z.Z.Pt) (a : Fin z.Z.m) (φ : Γ(z.Z.X, (z.Z.U a).1) →+* ↥y.C.S)
@@ -362,9 +362,9 @@ example (z : admitted Y i₀) {τ : E →+* ℂ} (hτ : τ (H.rt : E) ≠ H.rt0)
     exact ⟨cf, h₁, h₂, ⟨w, latDR_subset_latHT E H _ _ _ p _ hw, hc⟩, rfl⟩
 
 /- English proof (translation)
-Use `isDiscreteValuationRing_V Z.i.c hp hW` as an intermediate fact. Establish `e : IsGenId M M (.ofGlobal (idIso _) (idIso_isGen M.L.isLB))` using `fun k _ w a i j hw => by`. Establish `hw' : ⊤ ≤ w ⁻¹ᵁ ((nmodel Z).gen ⊓ (M.L.U i ⊓ M.L.U j))` using `fun q hq => ⟨chart_le_gen hp hW a (hw hq).1, (hw hq).2⟩`. Rewrite using `[M.trans k w a i j hw]`. Conclude with `congrArg (· * _) (FieldPtGlue.valF_restrict _ hw' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.unique hp hW e]`. Conclude with `(congrArg NModel.toQ (NModel.GenIso.div_ofGlobal _ _ _ _)).trans (map_zero _)`.
+A detailed English derivation is pending.
 -/
 example {Z : LocM.Mdl Y i₀} {b st x} (M : LineModel Z b st x) (u : GenIso Z M.L M.L) (h : IsGenId M M u) (d : ℕ) :
     vdiv hp hW d _ _ u = 0 := by
@@ -377,7 +377,7 @@ example {Z : LocM.Mdl Y i₀} {b st x} (M : LineModel Z b st x) (u : GenIso Z M.
   exact (congrArg NModel.toQ (NModel.GenIso.div_ofGlobal _ _ _ _)).trans (map_zero _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, (mdlOf_omW z jc _).1⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} [Fact p.Prime] (z : AdmAt S κ hp hW)
     (jc : DV.KW p →+* ℂ) (h : 0 < D.R.f * N) : (mdlOf z jc).Z.dim = Formalism.DegreeFormula.dimFl D.what₂.Tau N + 1 ∧

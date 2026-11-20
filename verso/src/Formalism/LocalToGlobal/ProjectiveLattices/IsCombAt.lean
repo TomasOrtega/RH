@@ -104,13 +104,13 @@ def evR (f : Rul Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
   evalAt (K := c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) f y
 
 /- English proof (translation)
-Take `⟨hf1, hf2⟩` from `hf`. Take `⟨hg1, hg2⟩` from `hg`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `p q φ y z h`. Express the relevant statement in the definitionally equal form `f q z * g q z = φ (f p y * g p y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf1 p q φ y z h, hg1 p q φ y z h, map_mul]`. Introduce `p t y y' h`. Express the relevant statement in the definitionally equal form `f p y' * g p y' = _ * (f p y * g p y)`. Rewrite using `[hf2 p t y y' h, hg2 p t y y' h]`. Establish `he : ∀ i, ex Dw (a + a') (n + n') i = ex Dw a n i + ex Dw a' n' i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Apply the tactic sequence `cases i <;> rfl`. Apply the tactic sequence `try unfold wchar`. Rewrite using `[show (∏ i, (t i : p.R) ^ ex Dw (a + a') (n + n') i) = (∏ i, (t i : p.R) ^ ex Dw a n i) * ∏ i, (t i : p.R) ^ ex Dw a' n' i by`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Finset.prod_congr rfl fun i _ => by rw [he, pow_add]]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sec_mul (a a' : (E →+* ℂ) × ℕ → ℕ) (n n' : ℕ) {f g : Rul Xo c} (hf : f ∈ sec Xo c a n)
     (hg : g ∈ sec Xo c a' n') : f * g ∈ sec Xo c (a + a') (n + n') := by

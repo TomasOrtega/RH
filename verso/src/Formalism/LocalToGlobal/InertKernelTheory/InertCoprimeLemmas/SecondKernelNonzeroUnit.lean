@@ -10,7 +10,7 @@ namespace Formalism.L2.KerInert.K2
 variable {p : ℕ} [Fact p.Prime] {X : Sys p}
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : algebraMap (K0 p) Y.Kc (p : K0 p) = 0`. Rewrite using `[map_natCast, ← map_natCast (algebraMap X.G.Kf Y.Kc), h, map_zero]`. Rewrite `h1` using `[map_eq_zero_iff _ (algebraMap (K0 p) Y.Kc).injective]`. Conclude with `(Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_ne_zero_Kf (Y : Pend X) : (p : X.G.Kf) ≠ 0 := by
   intro h
@@ -20,21 +20,21 @@ theorem p_ne_zero_Kf (Y : Pend X) : (p : X.G.Kf) ≠ 0 := by
   exact (Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero) h1
 
 /- English proof (translation)
-Unfold `Pend.eS`. Conclude with `Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (p_ne_zero_Kf Y)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eS_ne_zero (Y : Pend X) (j : ℕ) (La : X.Lt j) : Y.eS j La ≠ 0 := by
   unfold Pend.eS
   exact Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (p_ne_zero_Kf Y)
 
 /- English proof (translation)
-Unfold `Pend.eT`. Conclude with `Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (p_ne_zero_Kf Y)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem eT_ne_zero (Y : Pend X) (j : ℕ) (La' : X.Lt (j + 1)) : Y.eT j La' ≠ 0 := by
   unfold Pend.eT
   exact Finset.prod_ne_zero_iff.mpr fun v _ => zpow_ne_zero _ (p_ne_zero_Kf Y)
 
 /- English proof (translation)
-Introduce `p _ X Y j La La' f h G`. Establish `hne : Y.eS j La * (Y.eT j La')⁻¹ ≠ 0` using `mul_ne_zero (eS_ne_zero Y j La) (inv_ne_zero (eT_ne_zero Y j La'))`. Unfold `Pend.ker Pend.kerF`. Rewrite using `[h, map_smul, smul_smul, mul_inv_cancel₀ hne, one_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_of_smul : KerOfSmul := by
   intro p _ X Y j La La' f h G
@@ -44,20 +44,20 @@ theorem kernel_of_smul : KerOfSmul := by
   rw [h, map_smul, smul_smul, mul_inv_cancel₀ hne, one_smul]
 
 /- English proof (translation)
-Simplify using `only [Pend.ker, Pend.kerF, map_zero, LinearMap.zero_apply, smul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ker_zero (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) : Y.ker j La La' 0 = 0 := by
   simp only [Pend.ker, Pend.kerF, map_zero, LinearMap.zero_apply, smul_zero]
 
 /- English proof (translation)
-Simplify using `only [Pend.ker, Pend.kerF, map_add, LinearMap.add_apply, smul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ker_add (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (G1 G2 : (X.Pj j).Xsp) :
     Y.ker j La La' (G1 + G2) = Y.ker j La La' G1 + Y.ker j La La' G2 := by
   simp only [Pend.ker, Pend.kerF, map_add, LinearMap.add_apply, smul_add]
 
 /- English proof (translation)
-Simplify using `only [Pend.ker, Pend.kerF, map_smul, LinearMap.smul_apply]`. Rewrite using `[smul_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_smul (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (a : X.G.Kf) (G : (X.Pj j).Xsp) :
     Y.ker j La La' (a • G) = a • Y.ker j La La' G := by
@@ -65,24 +65,24 @@ theorem ker_smul (Y : Pend X) (j : ℕ) (La : X.Lt j) (La' : X.Lt (j + 1)) (a : 
   rw [smul_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_smul_Kf (Y : Pend X) {σ : Type} (a : X.G.Kf) (P : MvPolynomial σ X.G.Kf) :
     MvPolynomial.map (algebraMap X.G.Kf Y.Kc) (a • P) = a • MvPolynomial.map (algebraMap X.G.Kf Y.Kc) P := by
   rw [MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `j hj x` and use `hC j hj x (R.KL j x) (hR j hj x)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tieChain_of_K {Y : Pend X} (R : RecSide X Y) (hC : TieChainK R) (hR : TieRat R) : TieChain R :=
   fun j hj x => hC j hj x (R.KL j x) (hR j hj x)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Introduce `c' L' _`. Simplify using `only [map_zero, Pi.zero_apply, ker_zero, smul_zero, Finset.sum_const_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Consider the case `add x y _ _ hx hy`. Introduce `c' L' hL`. Simplify using `only [map_add, Pi.add_apply, ker_add, smul_add, Finset.sum_add_distrib, hx c' L' hL, hy c' L' hL]`. Consider the case `smul a x _ hx`. Introduce `c' L' hL`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_smul, Pi.smul_apply, ker_smul]`. Rewrite using `[map_smul_Kf Y, hx c' L' hL, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun La _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem body_of_span (Y : Pend X) (j : ℕ) (cK : Y.Kc) (S : Set (X.Fm j))
     (hS : ∀ F ∈ S, ∀ (c' : X.Lv.comp (j + 1)) (L' : (X.Pj (j + 1)).Tup), (X.Pj (j + 1)).IsLatTup L' →
@@ -108,11 +108,11 @@ theorem body_of_span (Y : Pend X) (j : ℕ) (cK : Y.Kc) (S : Set (X.Fm j))
     rw [smul_comm]
 
 /- English proof (translation)
-Introduce `D p _ X Y R hC hR hS hRd hCl hSer hDel hSp`. Establish `body : K2NonzeroUnit X Y`. Introduce `j hj`. Take `⟨cK, h1, h2, h3, hD⟩` from `hDel j hj`. Use `⟨cK, h1, h2, h3, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hF`. Use `body_of_span Y j cK (R.cmp j '' R.Sh j) ?_ F (hSp j hj hF)` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩ c' L' hL`. Rewrite using `[hC j hj x, hRd j hj _ c' L' hL, hR j hj x, hS j hj x hx, map_sum]`. Rewrite using `[← Equiv.sum_comp (R.e j), ← Finset.sum_coe_sort (Y.Rep j)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun La _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, map_inv₀, map_natCast, hCl j hj La, hD La x hx c' L' hL, kernel_of_smul p X Y j La.1 (c', L') _ (hSer j hj La.1 La.2 c' L' hL), mul_smul]`. Use `⟨body, fun j hj => ?_⟩` and prove the remaining obligations. Take `⟨cK, h1, h2, _, h⟩` from `body j hj`. Conclude with `⟨cK, h1, h2, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem second_kernel_nonzero_unit : K2OfAgreements := by
   intro D p _ X Y R hC hR hS hRd hCl hSer hDel hSp
@@ -133,11 +133,9 @@ theorem second_kernel_nonzero_unit : K2OfAgreements := by
   exact ⟨cK, h1, h2, h⟩
 
 /- English proof (translation)
-Introduce `D p _ X Y R hC hSp hUp j hj F hF`. Establish `hspan` using `hSp j hj hF`. Use `clear hF`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hx`. Rewrite using `[hC j hj y]`. Conclude with `hUp j hj _`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [map_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem admissible_third_of_forms : Adm3bOf := by
   intro D p _ X Y R hC hSp hUp j hj F hF
@@ -160,7 +158,7 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : G.Inst D L} {Gl : G
   {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc0 Dx cX}
 
 /- English proof (translation)
-Unfold `qOf`. Rewrite using `[dif_pos h]`. Conclude with `Classical.choose_spec h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharpQ_qOf {t : KerEntTied ex} {Tw : TwForms D} {u : D.what₂.Word} {μ : D.what₂.Tup} {i : ℕ}
     {x : ((Tw.fm u μ).lat i).V} (h : ∃ Q, SharpQ t Tw u μ i x Q) : SharpQ t Tw u μ i x (qOf t Tw u μ i x) := by
@@ -169,9 +167,9 @@ theorem sharpQ_qOf {t : KerEntTied ex} {Tw : TwForms D} {u : D.what₂.Word} {μ
   exact Classical.choose_spec h
 
 /- English proof (translation)
-Introduce `j hj x hx`. Establish `hQ` using `sharpQ_qOf hx`. Use function extensionality and compare the values at `c' y'`. Use `show (D.chTw u μ).K j ((Tw.fm u μ).emb j x) c' y' = (∑ c : (D.chTw u μ).cls j, (((Nat.card ((D.chTw u μ).stab j c) : ℕ) : ℂ))⁻¹ • entRec t Tw u μ j c x) c' y'`. Rewrite using `[compatible_lift_exists D L hT Gi Gl Kc0 Dx cX ex t u μ j (lt_of_lt_of_le hj hm) _ _ hQ.1 hQ.2 c' y']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, entRec]`.
+A detailed English derivation is pending.
 -/
 theorem recSum_recOf {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (t : KerEntTied ex) (Tw : TwForms D)
     (u : D.what₂.Word) (μ : D.what₂.Tup) (ι : ℂ →+* Y.Kc) (σ : D.what₂.LL →+* X.G.Kf)
@@ -190,9 +188,7 @@ theorem recSum_recOf {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (t : KerE
   simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, entRec]
 
 /- English proof (translation)
-Introduce `j hj x`. Express the relevant statement in the definitionally equal form `((Tw.fm u μ).lat j).V at x`. Take `⟨y, hy⟩` from `hK j hj x`. Use `show (Tw.fm u μ).emb (j + 1) (klRec Tw u μ j x) = (D.chTw u μ).K j ((Tw.fm u μ).emb j x)`. Rewrite using `[klRec, Formalism.L2.G.Cmp.ratMap_eq _ _ _ _ x y (by exact hy)]`.
-
-Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tieRat_recOf {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (t : KerEntTied ex) (Tw : TwForms D)
     (u : D.what₂.Word) (μ : D.what₂.Tup) (ι : ℂ →+* Y.Kc) (σ : D.what₂.LL →+* X.G.Kf)
@@ -210,7 +206,7 @@ theorem tieRat_recOf {p : ℕ} [Fact p.Prime] (X : Sys p) (Y : Pend X) (t : KerE
   exact hy
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t Tw u μ p _ X Y ι σ cmp Rd e Sr hm hK hC hRd hCl hSer hDel hSp`. Establish `hR` using `tieRat_recOf X Y t Tw u μ ι σ cmp Rd e Sr hK`. Conclude with `second_kernel_nonzero_unit D p X Y _ (tieChain_of_K _ hC hR) hR (recSum_recOf X Y t Tw u μ ι σ cmp Rd e Sr hm) hRd hCl hSer hDel hSp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem second_kernel_of_data : K2OfParams := by
   intro D L hT Gi Gl Kc0 Dx cX ex t Tw u μ p _ X Y ι σ cmp Rd e Sr hm hK hC hRd hCl hSer hDel hSp
@@ -219,7 +215,7 @@ theorem second_kernel_of_data : K2OfParams := by
     (recSum_recOf X Y t Tw u μ ι σ cmp Rd e Sr hm) hRd hCl hSer hDel hSp
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc0 Dx cX ex t Tw u μ p _ X Y ι σ cmp Rd e Sr hK hC hSp hUp`. Conclude with `admissible_third_of_forms D p X Y _ (tieChain_of_K _ hC (tieRat_recOf X Y t Tw u μ ι σ cmp Rd e Sr hK)) hSp hUp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_third_of_data : Adm3bOfRec := by
   intro D L hT Gi Gl Kc0 Dx cX ex t Tw u μ p _ X Y ι σ cmp Rd e Sr hK hC hSp hUp

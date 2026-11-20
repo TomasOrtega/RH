@@ -5,13 +5,13 @@ namespace GlobalTheory.UpperUnitriangularMul
 open Matrix
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hba`. Rewrite using `[Matrix.mul_apply]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `c _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `lt_or_ge c a with h | h` into its components or cases. Rewrite using `[hU a c h, zero_mul]`. Rewrite using `[hW c b (lt_of_lt_of_le hba h), mul_zero]`. Introduce `a`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single a]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU1, hW1, one_mul]`. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases. Rewrite using `[hU a c h, zero_mul]`. Rewrite using `[hW c a h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem upperUnitriangular_mul {E : Type} [Field E] [NumberField E] [StarRing E] {N : ℕ}
     {U W : Matrix (Fin N) (Fin N) E}

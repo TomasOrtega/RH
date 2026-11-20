@@ -15,15 +15,13 @@ namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Cones.TileSign
 variable {V : Type} [AddCommGroup V] [Module ℚ V]
 
 /- English proof (translation)
-Unfold `SignConst`. Distinguish the cases in `hz : ∀ v ∈ s, l v = 0`. Use `Or.inl ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨t, -, rfl⟩` from `hx`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero (fun i hi => by rw [map_smul, hz i hi, smul_zero])`. Use `Or.inr (Or.inl ?_) push_neg at hz` and prove the remaining obligations. Take `⟨w, hw, hlw⟩` from `hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Rewrite using `[map_sum]`. Establish `hnn : ∀ i ∈ s, 0 ≤ l (t i • i)` using `fun i hi => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_nonneg (ht i hi).le (h i hi)`. Establish `hpos : 0 < l (t w • w)`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `mul_pos (ht w hw) (lt_of_le_of_ne (h w hw) (Ne.symm hlw))`.
-
-Conclude with `lt_of_lt_of_le hpos (Finset.single_le_sum hnn hw)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signConst_of_nonneg (l : V →ₗ[ℚ] ℚ) (s : Finset V) (h : ∀ v ∈ s, 0 ≤ l v) : SignConst l (coneOn s) := by
   unfold SignConst
@@ -48,15 +46,15 @@ theorem signConst_of_nonneg (l : V →ₗ[ℚ] ℚ) (s : Finset V) (h : ∀ v �
     exact lt_of_lt_of_le hpos (Finset.single_le_sum hnn hw)
 
 /- English proof (translation)
-Unfold `SignConst`. Distinguish the cases in `hz : ∀ v ∈ s, l v = 0`. Use `Or.inl ?_` and prove the remaining obligations. Introduce `x hx`. Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨t, -, rfl⟩` from `hx`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero (fun i hi => by rw [map_smul, hz i hi, smul_zero])`. Use `Or.inr (Or.inr ?_) push_neg at hz` and prove the remaining obligations. Take `⟨w, hw, hlw⟩` from `hz`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Rewrite using `[map_sum]`. Establish `hnp : ∀ i ∈ s, 0 ≤ -l (t i • i)` using `fun i hi => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Use polynomial arithmetic with `[(ht i hi).le, h i hi]`. Establish `hneg : l (t w • w) < 0`. Establish `hlt : l w < 0` using `lt_of_le_of_ne (h w hw) hlw`. Rewrite using `[map_smul, smul_eq_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[ht w hw]`. Establish `key` using `Finset.single_le_sum hnp hw`. Simplify using `only [Finset.sum_neg_distrib] at key`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem signConst_of_nonpos (l : V →ₗ[ℚ] ℚ) (s : Finset V) (h : ∀ v ∈ s, l v ≤ 0) : SignConst l (coneOn s) := by
   unfold SignConst
@@ -84,7 +82,7 @@ theorem signConst_of_nonpos (l : V →ₗ[ℚ] ℚ) (s : Finset V) (h : ∀ v �
     linarith
 
 /- English proof (translation)
-Establish `hqp : q ≠ p` using `fun e => hp (by rw [← e]; exact Finset.mem_insert_self q X)`. Establish `hpX : p ∉ X` using `fun e => hp (Finset.mem_insert_of_mem e)`. Establish `hX : ∑ i ∈ X, (if i = p then α else if i = q then β else t i) • i = ∑ i ∈ X, t i • i` using `Finset.sum_congr rfl (fun j hj => by`. Rewrite using `[if_neg (fun e => hpX (by rw [← e]; exact hj)), if_neg (fun e => hq (by rw [← e]; exact hj))])`. Rewrite using `[Finset.sum_insert hp, Finset.sum_insert hq, if_pos rfl, if_neg hqp, if_pos rfl, hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_insert_insert_ite_ite_smul [DecidableEq V] {p q : V} {X : Finset V} (hp : p ∉ insert q X) (hq : q ∉ X)
     (α β : ℚ) (t : V → ℚ) :
@@ -98,7 +96,7 @@ private theorem sum_insert_insert_ite_ite_smul [DecidableEq V] {p q : V} {X : Fi
   rw [Finset.sum_insert hp, Finset.sum_insert hq, if_pos rfl, if_neg hqp, if_pos rfl, hX]
 
 /- English proof (translation)
-Establish `hX : ∑ i ∈ X, (if i = p then α else t i) • i = ∑ i ∈ X, t i • i` using `Finset.sum_congr rfl (fun j hj => by rw [if_neg (fun e => hp (by rw [← e]; exact hj))])`. Rewrite using `[Finset.sum_insert hp, if_pos rfl, hX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_insert_ite_smul [DecidableEq V] {p : V} {X : Finset V} (hp : p ∉ X) (α : ℚ) (t : V → ℚ) :
     ∑ i ∈ insert p X, (if i = p then α else t i) • i = α • p + ∑ i ∈ X, t i • i := by
@@ -107,7 +105,7 @@ private theorem sum_insert_ite_smul [DecidableEq V] {p : V} {X : Finset V} (hp :
   rw [Finset.sum_insert hp, if_pos rfl, hX]
 
 /- English proof (translation)
-Introduce `i hi`. Use `split_ifs with h1 h2`. Conclude with `hα`. Conclude with `hβ`. Conclude with `ht i ((Finset.mem_insert.mp ((Finset.mem_insert.mp hi).resolve_left h1)).resolve_left h2)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem pos_ite_ite_of_pos_insert_insert [DecidableEq V] {p q : V} {X : Finset V} {α β : ℚ} {t : V → ℚ}
     (hα : 0 < α) (hβ : 0 < β) (ht : ∀ j ∈ X, 0 < t j) :
@@ -119,7 +117,7 @@ private theorem pos_ite_ite_of_pos_insert_insert [DecidableEq V] {p q : V} {X : 
   · exact ht i ((Finset.mem_insert.mp ((Finset.mem_insert.mp hi).resolve_left h1)).resolve_left h2)
 
 /- English proof (translation)
-Introduce `i hi`. Use `split_ifs with h1`. Conclude with `hα`. Conclude with `ht i ((Finset.mem_insert.mp hi).resolve_left h1)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem pos_ite_of_pos_insert [DecidableEq V] {p : V} {X : Finset V} {α : ℚ} {t : V → ℚ}
     (hα : 0 < α) (ht : ∀ j ∈ X, 0 < t j) :
@@ -130,7 +128,7 @@ private theorem pos_ite_of_pos_insert [DecidableEq V] {p : V} {X : Finset V} {α
   · exact ht i ((Finset.mem_insert.mp hi).resolve_left h1)
 
 /- English proof (translation)
-Establish `h0 : ∑ i ∈ s, (T i - T' i) • id i = 0`. Simplify using `only [id, sub_smul, Finset.sum_sub_distrib, h, sub_self]`. Introduce `i hi`. Conclude with `sub_eq_zero.mp (linearIndepOn_finset_iff.mp hs (fun i => T i - T' i) h0 i hi)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem eq_of_sum_smul_eq_of_linearIndepOn {s : Finset V} (hs : LinearIndepOn ℚ id (s : Set V)) (T T' : V → ℚ)
     (h : ∑ i ∈ s, T i • i = ∑ i ∈ s, T' i • i) : ∀ i ∈ s, T i = T' i := by
@@ -140,9 +138,9 @@ private theorem eq_of_sum_smul_eq_of_linearIndepOn {s : Finset V} (hs : LinearIn
   exact sub_eq_zero.mp (linearIndepOn_finset_iff.mp hs (fun i => T i - T' i) h0 i hi)
 
 /- English proof (translation)
-Establish `hqp : q ≠ p` using `fun e => hp (by rw [← e]; exact Finset.mem_insert_self q X)`. Rewrite `h` using `[← sum_insert_insert_ite_ite_smul hp hq α β t, ← sum_insert_insert_ite_ite_smul hp hq α' β' t']`. Establish `hc` using `eq_of_sum_smul_eq_of_linearIndepOn hli _ _ h`. Establish `h1` using `hc p (Finset.mem_insert_self _ _)`. Establish `h2` using `hc q (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨by simpa using h1, by simpa [hqp] using h2⟩`.
+Supply the required witnesses or components.
 -/
 private theorem coeff_eq_of_linearIndepOn_insert_insert [DecidableEq V] {p q : V} {X : Finset V} (hp : p ∉ insert q X) (hq : q ∉ X)
     (hli : LinearIndepOn ℚ id ((insert p (insert q X) : Finset V) : Set V)) {α β α' β' : ℚ} {t t' : V → ℚ}
@@ -156,9 +154,9 @@ private theorem coeff_eq_of_linearIndepOn_insert_insert [DecidableEq V] {p q : V
   exact ⟨by simpa using h1, by simpa [hqp] using h2⟩
 
 /- English proof (translation)
-Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `htu : 0 < t u` using `ht u (Finset.mem_insert_self _ _)`. Establish `htc : 0 < t c` using `ht c (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Use `⟨t u + t c * a, t c * b, t, add_pos htu (mul_pos htc ha), mul_pos htc hb, fun j hj => ht j (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hj)), ?_, by nlinarith [mul_pos htu hb]⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert hu, Finset.sum_insert hcr, hc]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_coords_lt_of_mem_coneOn_insert_u_c [DecidableEq V] {u w c : V} {r : Finset V} {a b : ℚ} (hc : c = a • u + b • w)
     (ha : 0 < a) (hb : 0 < b) (hu : u ∉ insert c r) (hcr : c ∉ r) {x : V}
@@ -176,9 +174,9 @@ private theorem exists_coords_lt_of_mem_coneOn_insert_u_c [DecidableEq V] {u w c
   module
 
 /- English proof (translation)
-Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `htc : 0 < t c` using `ht c (Finset.mem_insert_self _ _)`. Establish `htw : 0 < t w` using `ht w (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Use `⟨t c * a, t c * b + t w, t, mul_pos htc ha, add_pos (mul_pos htc hb) htw, fun j hj => ht j (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hj)), ?_, by nlinarith [mul_pos htw ha]⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_insert hcw, Finset.sum_insert hwr, hc]`. Use `module`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_coords_lt_swap_of_mem_coneOn_c_w [DecidableEq V] {u w c : V} {r : Finset V} {a b : ℚ} (hc : c = a • u + b • w)
     (ha : 0 < a) (hb : 0 < b) (hcw : c ∉ insert w r) (hwr : w ∉ r) {x : V}
@@ -196,9 +194,9 @@ private theorem exists_coords_lt_swap_of_mem_coneOn_c_w [DecidableEq V] {u w c :
   module
 
 /- English proof (translation)
-Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `htc : 0 < t c` using `ht c (Finset.mem_insert_self _ _)`. Use `⟨t c * a, t c * b, t, mul_pos htc ha, mul_pos htc hb, fun j hj => ht j (Finset.mem_insert_of_mem hj), ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_insert hcr, hc]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `module`.
+A detailed English derivation is pending.
 -/
 private theorem exists_coords_eq_of_mem_coneOn_insert_c [DecidableEq V] {u w c : V} {r : Finset V} {a b : ℚ} (hc : c = a • u + b • w)
     (ha : 0 < a) (hb : 0 < b) (hcr : c ∉ r) {x : V} (hx : x ∈ coneOn (insert c r)) :
@@ -213,21 +211,19 @@ private theorem exists_coords_eq_of_mem_coneOn_insert_c [DecidableEq V] {u w c :
   module
 
 /- English proof (translation)
-Simplify using `only [coneOn, Set.mem_setOf_eq] at hx`. Take `⟨t, ht, rfl⟩` from `hx`. Establish `htu : 0 < t u` using `ht u (Finset.mem_insert_self _ _)`. Establish `htw : 0 < t w` using `ht w (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))`. Establish `htr : ∀ j ∈ r, 0 < t j` using `fun j hj => ht j (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hj))`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_insert huw, Finset.sum_insert hwr]`. Break down `lt_trichotomy (t w * a) (t u * b) with h | h | h` into its components or cases. Use `Or.inl (Or.inl ?_)` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : ℚ, k * b = t w` from `⟨t w / b, div_mul_cancel₀ _ hb.ne'⟩`. Establish `hk0 : 0 < k` using `by nlinarith`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : (t u - k * a) * b = t u * b - t w * a` using `by rw [← hk]; ring`. Establish `hm : 0 < (t u - k * a) * b` using `by rw [e]; linarith`. Establish `hku : 0 < t u - k * a` using `by nlinarith`. Simplify using `only [coneOn, Set.mem_setOf_eq]`. Use `⟨fun i => if i = u then t u - k * a else if i = c then k else t i, pos_ite_ite_of_pos_insert_insert hku hk0 htr, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `beta_reduce`. Rewrite using `[sum_insert_insert_ite_ite_smul huc hcr, hc, ← hk]`. Use `module`. Use `Or.inr ?_` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : ℚ, k * a = t u` from `⟨t u / a, div_mul_cancel₀ _ ha.ne'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk0 : 0 < k` using `by nlinarith`. Establish `hkb : k * b = t w` using `mul_right_cancel₀ ha.ne' (by rw [h, ← hk]; ring)`. Simplify using `only [coneOn, Set.mem_setOf_eq]`. Use `⟨fun i => if i = c then k else t i, pos_ite_of_pos_insert hk0 htr, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sum_insert_ite_smul hcr, hc, ← hk, ← hkb]`. Use `module`. Use `Or.inl (Or.inr ?_)` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k : ℚ, k * a = t u` from `⟨t u / a, div_mul_cancel₀ _ ha.ne'⟩`. Establish `hk0 : 0 < k` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : (t w - k * b) * a = t w * a - t u * b` using `by rw [← hk]; ring`. Establish `hm : 0 < (t w - k * b) * a` using `by rw [e]; linarith`. Establish `hkw : 0 < t w - k * b` using `by nlinarith`. Simplify using `only [coneOn, Set.mem_setOf_eq]`. Use `⟨fun i => if i = c then k else if i = w then t w - k * b else t i, pos_ite_ite_of_pos_insert_insert hk0 hkw htr, ?_⟩` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[sum_insert_insert_ite_ite_smul hcw hwr, hc, ← hk]`. Use `module`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coneOn_u_w_subset_union [DecidableEq V] {u w c : V} {r : Finset V} {a b : ℚ} (hc : c = a • u + b • w)
     (ha : 0 < a) (hb : 0 < b) (huw : u ∉ insert w r) (hwr : w ∉ r) (huc : u ∉ insert c r)
@@ -276,53 +272,47 @@ private theorem coneOn_u_w_subset_union [DecidableEq V] {u w c : V} {r : Finset 
     module
 
 /- English proof (translation)
-Establish `hfr : ∀ (x : V) (X : Finset V), l x = 0 → ((insert x X).filter (fun v => l v ≠ 0)).card = (X.filter (fun v => l v ≠ 0)).card`. Introduce `x X hx`. Rewrite using `[Finset.filter_insert, if_neg (not_not.mpr hx)]`. Establish `hfi : ∀ (x : V) (X : Finset V), l x ≠ 0 → x ∉ X → ((insert x X).filter (fun v => l v ≠ 0)).card = (X.filter (fun v => l v ≠ 0)).card + 1`. Introduce `x X hx hxX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.filter_insert, if_pos hx, Finset.card_insert_eq_ite, if_neg (fun h => hxX (Finset.mem_filter.mp h).1)]`. Proceed by induction on `n with`. Consider the case `zero => intro s hs`. Conclude with `absurd hs (Nat.not_lt_zero _)`. Consider the case `succ n ih`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs hli hP`. Distinguish the cases in `hnn : ∀ v ∈ s, 0 ≤ l v`. Conclude with `Tile.cone s hli hP (signConst_of_nonneg l s hnn)`. Distinguish the cases in `hnp : ∀ v ∈ s, l v ≤ 0`. Conclude with `Tile.cone s hli hP (signConst_of_nonpos l s hnp)`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_neg at hnn hnp`. Take `⟨w, hws, hlw⟩` from `hnn`. Take `⟨u, hus, hlu⟩` from `hnp`. Establish `huw : u ≠ w` using `by rintro rfl; linarith`. Take `⟨r, hur, hwr, rfl⟩ : ∃ r : Finset V, u ∉ r ∧ w ∉ r ∧ s = insert u (insert w r)` from `⟨(s.erase u).erase w, by simp, by simp, by rw [Finset.insert_erase (Finset.mem_erase.mpr ⟨huw.symm, hws⟩), Finset.insert_erase hus]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huwr : u ∉ insert w r` using `by simp [huw, hur]`. Establish `hlw0 : l w ≠ 0` using `hlw.ne`. Establish `hlu0 : l u ≠ 0` using `hlu.ne'`. Establish `ha : (0 : ℚ) < -l w` using `by linarith`. Establish `hb : (0 : ℚ) < l u` using `hlu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPu : u ∈ P` using `hP (Finset.mem_coe.mpr (Finset.mem_insert_self _ _))`. Establish `hPw : w ∈ P` using `hP (Finset.mem_coe.mpr (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))`. Establish `hPr : ∀ x ∈ r, x ∈ P` using `fun x hx => hP (Finset.mem_coe.mpr (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem hx)))`. Establish `hcP : (-l w) • u + (l u) • w ∈ P` using `P.add_mem (P.smul_mem ha hPu) (P.smul_mem hb hPw)`. Establish `hlc : l ((-l w) • u + (l u) • w) = 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [map_add, map_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨hcr, hcu, hcw, hli1, hli2, hli3⟩` from `StellarLI.main u w r (-l w) (l u) ha hb huw hur hwr hli`. Generalize the expression as in `hcdef : (-l w) • u + (l u) • w = c at hcP hlc hcr hcu hcw hli1 hli2 hli3`. Establish `hc' : c = (-l w) • u + (l u) • w` using `hcdef.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `huc : u ∉ insert c r` using `by simp [Ne.symm hcu, hur]`. Establish `hcwr : c ∉ insert w r` using `by simp [hcw, hcr]`. Establish `hs'` using `hs`. Rewrite `hs'` using `[hfi u _ hlu0 huwr, hfi w r hlw0 hwr]`. Establish `hcA : ((insert u (insert c r)).filter (fun v => l v ≠ 0)).card < n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfi u _ hlu0 huc, hfr c r hlc]`. Use linear arithmetic over natural numbers and integers. Establish `hcB : ((insert c (insert w r)).filter (fun v => l v ≠ 0)).card < n`. Rewrite using `[hfr c _ hlc, hfi w r hlw0 hwr]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hcC : ((insert c r).filter (fun v => l v ≠ 0)).card < n`. Rewrite using `[hfr c r hlc]`. Use linear arithmetic over natural numbers and integers. Establish `hsubA : ((insert u (insert c r) : Finset V) : Set V) ⊆ P`. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe] at hx`. Break down `hx with h | h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hPu`. Rewrite using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcP`. Conclude with `hPr x h`. Establish `hsubB : ((insert c (insert w r) : Finset V) : Set V) ⊆ P`. Introduce `x hx`. Simplify using `only [Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe] at hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hx with h | h | h` into its components or cases. Rewrite using `[h]`. Conclude with `hcP`. Rewrite using `[h]`. Conclude with `hPw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hPr x h`. Establish `hsubC : ((insert c r : Finset V) : Set V) ⊆ P`. Introduce `x hx`. Simplify using `only [Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe] at hx`. Break down `hx with h | h` into its components or cases.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Conclude with `hcP`. Conclude with `hPr x h`. Establish `hA` using `ih _ hcA hli2 hsubA`. Establish `hB` using `ih _ hcB hli1 hsubB`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hC` using `ih _ hcC hli3 hsubC`. Establish `dAB : Disjoint (coneOn (insert u (insert c r))) (coneOn (insert c (insert w r)))`. Rewrite using `[Set.disjoint_left]`. Introduce `x h1 h2`. Take `⟨α, β, t, -, -, -, e1, r1⟩` from `exists_coords_lt_of_mem_coneOn_insert_u_c hc' ha hb huc hcr h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨α', β', t', -, -, -, e2, r2⟩` from `exists_coords_lt_swap_of_mem_coneOn_c_w hc' ha hb hcwr hwr h2`. Take `⟨rfl, rfl⟩` from `coeff_eq_of_linearIndepOn_insert_insert huwr hwr hli (e1.symm.trans e2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `dAC : Disjoint (coneOn (insert u (insert c r))) (coneOn (insert c r))`. Rewrite using `[Set.disjoint_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `x h1 h2`. Take `⟨α, β, t, -, -, -, e1, r1⟩` from `exists_coords_lt_of_mem_coneOn_insert_u_c hc' ha hb huc hcr h1`. Take `⟨α', β', t', -, -, -, e2, r2⟩` from `exists_coords_eq_of_mem_coneOn_insert_c hc' ha hb hcr h2`. Take `⟨rfl, rfl⟩` from `coeff_eq_of_linearIndepOn_insert_insert huwr hwr hli (e1.symm.trans e2)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `dBC : Disjoint (coneOn (insert c (insert w r))) (coneOn (insert c r))`. Rewrite using `[Set.disjoint_left]`. Introduce `x h1 h2`. Take `⟨α, β, t, -, -, -, e1, r1⟩` from `exists_coords_lt_swap_of_mem_coneOn_c_w hc' ha hb hcwr hwr h1`. Take `⟨α', β', t', -, -, -, e2, r2⟩` from `exists_coords_eq_of_mem_coneOn_insert_c hc' ha hb hcr h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨rfl, rfl⟩` from `coeff_eq_of_linearIndepOn_insert_insert huwr hwr hli (e1.symm.trans e2)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `dABC : Disjoint (coneOn (insert u (insert c r)) ∪ coneOn (insert c (insert w r))) (coneOn (insert c r))` using `Set.disjoint_union_left.mpr ⟨dAC, dBC⟩`. Establish `heq : coneOn (insert u (insert w r)) = (coneOn (insert u (insert c r)) ∪ coneOn (insert c (insert w r))) ∪ coneOn (insert c r)`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Conclude with `fun hx => coneOn_u_w_subset_union hc' ha hb huwr hwr huc hcr hcwr hx`. Introduce `hx`. Establish `key : ∃ α β : ℚ, ∃ t : V → ℚ, 0 < α ∧ 0 < β ∧ (∀ j ∈ r, 0 < t j) ∧ x = α • u + (β • w + ∑ j ∈ r, t j • j)`. Break down `hx with (hx | hx) | hx` into its components or cases.
-
-Take `⟨α, β, t, h1, h2, h3, h4, -⟩` from `exists_coords_lt_of_mem_coneOn_insert_u_c hc' ha hb huc hcr hx`. Conclude with `⟨α, β, t, h1, h2, h3, h4⟩`. Take `⟨α, β, t, h1, h2, h3, h4, -⟩` from `exists_coords_lt_swap_of_mem_coneOn_c_w hc' ha hb hcwr hwr hx`. Conclude with `⟨α, β, t, h1, h2, h3, h4⟩`. Take `⟨α, β, t, h1, h2, h3, h4, -⟩` from `exists_coords_eq_of_mem_coneOn_insert_c hc' ha hb hcr hx`.
-
-Conclude with `⟨α, β, t, h1, h2, h3, h4⟩`. Take `⟨α, β, t, h1, h2, h3, h4⟩` from `key`. Simplify using `only [coneOn, Set.mem_setOf_eq]`. Use `⟨fun i => if i = u then α else if i = w then β else t i, pos_ite_ite_of_pos_insert_insert h1 h2 h3, ?_⟩` and prove the remaining obligations. Use `beta_reduce`.
-
-Rewrite using `[sum_insert_insert_ite_ite_smul huwr hwr]`. Conclude with `h4`. Rewrite using `[heq]`. Conclude with `Tile.union (Tile.union hA hB dAB) hC dABC`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tile_of_card_lt [DecidableEq V] (P : ConvexCone ℚ V) (l : V →ₗ[ℚ] ℚ) (n : ℕ) :
     ∀ s : Finset V, (s.filter (fun v => l v ≠ 0)).card < n → LinearIndepOn ℚ id (s : Set V) → (s : Set V) ⊆ P →
@@ -447,7 +437,7 @@ theorem tile_of_card_lt [DecidableEq V] (P : ConvexCone ℚ V) (l : V →ₗ[ℚ
     exact Tile.union (Tile.union hA hB dAB) hC dABC
 
 /- English proof (translation)
-Introduce `V _ _ P l s hli hP`. Conclude with `tile_of_card_lt P l _ s (Nat.lt_succ_self _) hli hP`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ {V : Type} [AddCommGroup V] [Module ℚ V] (P : ConvexCone ℚ V) (l : V →ₗ[ℚ] ℚ) (s : Finset V), LinearIndepOn ℚ id (s : Set V) → (s : Set V) ⊆ P →
     Tile (P : Set V) (SignConst l) (coneOn s) := by

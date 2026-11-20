@@ -17,7 +17,7 @@ noncomputable section
 namespace GlobalTheory.TrEll.RatEll
 
 /- English proof (translation)
-Take `⟨-, -, -, h⟩` from `h`. Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h, h, star_star]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
@@ -27,13 +27,13 @@ theorem sig_sig {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E]
   rw [h, h, star_star]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ`. Use `⟨GlobalTheory.T.unitaryRationalDiagonalHom_bijective F E σ n J, ?_⟩` and prove the remaining obligations. Introduce `γ hirr`. Establish `hm : Formalism.UG.cT (σ : E →+* E) γ.1.1 * J * γ.1.1 = J` using `γ.2`. Establish `hs` using `GlobalTheory.T.charpoly_unitary_eq_conjugateReciprocal F E σ n J hJ.2 γ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : γ.1.1.det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).mp γ.1.isUnit).ne_zero`. Establish `h0 : eval 0 γ.1.1.charpoly ≠ 0`. Rewrite using `[← coeff_zero_eq_eval_zero]`. Introduce `hc`. Apply `hdet` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.det_eq_sign_charpoly_coeff, hc, mul_zero]`. Establish `hP : γ.1.1.charpoly.Monic ∧ Irreducible γ.1.1.charpoly ∧ γ.1.1.charpoly.natDegree = n ∧ eval 0 γ.1.1.charpoly ≠ 0 ∧ γ.1.1.charpoly = sharp σ n γ.1.1.charpoly` using `⟨Matrix.charpoly_monic _, hirr, by rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin], h0, hs⟩`. Set `P : PPol σ n` to `⟨γ.1.1.charpoly, hP⟩`. Use `⟨P, rfl, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `GlobalTheory.T.exists_adjoinRoot_linearEquiv_of_charpoly_eq F E σ n P γ.1.1 rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx0, hxs, hxf⟩` from `GlobalTheory.T.exists_unitaryTorus_traceForm_of_hermitian F E σ (sig_sig hσ) n P J hJ γ.1.1 hm φ hφ`. Conclude with `GlobalTheory.T.exists_normClass_of_rationalIsometry_traceForm F E σ n P J φ x hx0 hxs hxf γ hφ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_cls_of_irreducible : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → Function.Bijective (diagH σ J F) ∧ ∀ γ : GRat σ J, Irreducible γ.1.1.charpoly → ∃ P : PPol σ n, γ.1.1.charpoly = P.1 ∧ ∃ q, HasCls P F J (diagH σ J F γ) q := by
   intro F E _ _ _ _ _ σ hσ n J hJ

@@ -5,9 +5,9 @@ noncomputable section
 namespace GlobalTheory.LatticeSchwartz
 
 /- English proof (translation)
-Use `Summable.of_nonneg_of_le (fun z => by positivity) (fun z => ?_) ((ZLattice.summable_norm_pow_inv L k hk).add (hasSum_ite_eq (0 : L) (1 : ℝ)).summable)` and prove the remaining obligations. Distinguish the cases in `hz : z = 0`. Substitute `hz` using the available equality. Simplify using `only [if_pos rfl, norm_zero, add_zero, inv_one, one_pow]`. Conclude with `le_add_of_nonneg_left (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : 0 < ‖z‖` using `norm_pos_iff.2 hz`. Simplify using `only [hz, if_false, add_zero]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem summable_one_add_norm_inv_pow' {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E]
     [FiniteDimensional ℝ E] (L : Submodule ℤ E) [DiscreteTopology L] {k : ℕ}
@@ -26,11 +26,11 @@ theorem summable_one_add_norm_inv_pow' {E : Type} [NormedAddCommGroup E] [Normed
     linarith
 
 /- English proof (translation)
-Establish `hA` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (k + N, j)) le_rfl le_rfl h x`. Establish `hB` using `SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℂ) (m := (N, m)) le_rfl le_rfl f (x - l)`. Establish `hc : 1 + ‖l‖ ≤ (1 + ‖x‖) * (1 + ‖x - l‖)`. Establish `: ‖l‖ ≤ ‖x‖ + ‖x - l‖`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use polynomial arithmetic with `[norm_nonneg x, norm_nonneg (x - l)]`. Establish `hc0 : 0 < 1 + ‖l‖` using `by positivity`. Establish `hxk : ‖x‖ ^ k ≤ (1 + ‖x‖) ^ k` using `by gcongr; linarith`. Use `set P := ‖iteratedFDeriv ℝ j h x‖`. Use `set Q := ‖iteratedFDeriv ℝ m f (x - l)‖`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 ≤ P` using `norm_nonneg _`. Establish `hQ : 0 ≤ Q` using `norm_nonneg _`. Rewrite using `[inv_pow, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem term_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     (h f : SchwartzMap V ℂ) (k N j m : ℕ) (x l : V) :
@@ -58,15 +58,15 @@ theorem term_le {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
     _ ≤ _ := by gcongr
 
 /- English proof (translation)
-Introduce `V _ _ _ Λ _ _ h f _ u hu k n`. Use `set N := Module.finrank ℤ Λ + 1 with hN`. Establish `hw : Summable fun l : Λ => ((1 + ‖l‖)⁻¹) ^ N` using `summable_one_add_norm_inv_pow' Λ (Nat.lt_succ_self _)`. Use `set D : ℕ → ℝ := fun j => (n.choose j : ℝ) * ((2 ^ (k + N) * (Finset.Iic (k + N, j)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) h) * (2 ^ N * (Finset.Iic (N, n - j)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f)) with hD`. Establish `hD0 : ∀ j, 0 ≤ D j` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 0 ≤ (Finset.Iic (k + N, j)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) h` using `apply_nonneg _ _`. Establish `h2 : 0 ≤ (Finset.Iic (N, n - j)).sup (fun m => SchwartzMap.seminorm ℂ m.1 m.2) f` using `apply_nonneg _ _`. Check the signs of the components of the expression. Use `set C := ∑ j ∈ Finset.range (n + 1), D j with hC`. Establish `hC0 : 0 ≤ C` using `Finset.sum_nonneg fun j _ => hD0 j`.
+Check the signs of the components of the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_nonneg_of_le (fun l => apply_nonneg _ _) (fun l => ?_) (hw.mul_left C)` and prove the remaining obligations. Use `SchwartzMap.seminorm_le_bound ℂ k n (u l) (by positivity) fun x => ?_` and prove the remaining obligations. Establish `hul : (u l : V → ℂ) = fun y => h y * f (y - l)` using `funext (hu l)`. Rewrite using `[hul]`. Establish `hg : ContDiff ℝ n (fun y : V => f (y - (l : V)))` using `(f.smooth n).comp (contDiff_id.sub contDiff_const)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hL` using `norm_iteratedFDeriv_mul_le (𝕜 := ℝ) (h.smooth n) hg x (n := n) le_rfl`. Rewrite `hL` using `[iteratedFDeriv_comp_sub]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; refine Finset.sum_congr rfl fun j _ => by ring`. Use `_ ≤ ∑ j ∈ Finset.range (n + 1), D j * ((1 + ‖(l : V)‖)⁻¹) ^ N := by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `ht` using `term_le h f k N j (n - j) x l`. Establish `hch : (0 : ℝ) ≤ n.choose j` using `Nat.cast_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Use `_ = C * ((1 + ‖l‖)⁻¹) ^ N := by rw [hC, Finset.sum_mul]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem summable_seminorm_mul_comp_sub : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V]
     (Λ : Submodule ℤ V) [DiscreteTopology Λ] [IsZLattice ℝ Λ] (h f : SchwartzMap V ℂ), HasCompactSupport h →

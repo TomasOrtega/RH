@@ -3,17 +3,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.Base UpperTheory.Top UpperTheory.V.HV
 
 /- English proof (translation)
-Introduce `hZ χ`. Use `⟨0, fun h _ t hB Ω _ _ _ l hl c e hl2 he0 het ψ hψ hc => ?_⟩` and prove the remaining obligations. Take `⟨hnB, hdiv, rfl⟩` from `hc`. Establish `h5 : 5 ≤ l`. Establish `h3 : l ≠ 3` using `fun h3 => hnB (h3 ▸ Finset.mem_insert_self _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : l ≠ 4` using `fun h4 => absurd (h4 ▸ hl.out) (by norm_num)`. Use `hl.out.two_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hev : Even e`. Establish `h1` using `(h.mem_X.1 hψ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `PsiEven at h1`. Rewrite `h1` using `[MulChar.one_apply (isUnit_one.neg)]`. Assume the negation of the conclusion as `hne`. Rewrite `h1` using `[(Nat.not_even_iff_odd.1 hne).neg_one_pow]`. Establish `h2 : (2 : c.O) = 0` using `by linear_combination h1`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `two_ne_zero h2`. Establish `h2e : 2 ≤ e` using `by obtain ⟨k, rfl⟩ := hev; omega`. Establish `hd : Chr.dirG ℚ Ω (1 : DirichletCharacter c.O h.N) = 1`. Use extensionality with `σ`. Simplify using `[Chr.dirG]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Vlen Ω c e (1 : DirichletCharacter c.O h.N) = 0`. Unfold `Vlen`. Rewrite using `[hd]`. Conclude with `le_antisymm ((Chr.V'_le_V l h.N e 1).trans (hZ Ω l c e h5 h2e hev hdiv).le) bot_le`. Use `⟨by rw [h0]; simp, ?_⟩` and prove the remaining obligations.
-
-Simplify using `[Vn, h0, Chr.nrm]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.HV.countZ :
     PropZ → CountZ := by

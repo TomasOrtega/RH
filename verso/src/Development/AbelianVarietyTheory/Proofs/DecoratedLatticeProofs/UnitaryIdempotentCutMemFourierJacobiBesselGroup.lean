@@ -14,14 +14,14 @@ noncomputable section
 namespace GlobalTheory.FinPl.SetCut
 
 /- English proof (translation)
-Rewrite using `[sub_smul, one_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem smul_add_one_sub_smul_sub_one {R : Type} [CommRing R] {n : ℕ} (c : R) (M : Matrix (Fin n) (Fin n) R) :
     c • M + (1 - c) • (1 : Matrix (Fin n) (Fin n) R) - 1 = c • (M - 1) := by
   rw [sub_smul, one_smul, smul_sub]; abel
 
 /- English proof (translation)
-Rewrite using `[← h]`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, smul_add, sub_smul, one_smul, Matrix.mul_sub, Matrix.sub_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem smul_add_one_sub_smul_block {R : Type} [CommRing R] {n m : ℕ} (c : R) (P Q : Matrix (Fin n) (Fin n) R)
     (j : Matrix (Fin n) (Fin m) R) (p : Matrix (Fin m) (Fin n) R) (M : Matrix (Fin m) (Fin m) R)
@@ -34,7 +34,7 @@ theorem smul_add_one_sub_smul_block {R : Type} [CommRing R] {n m : ℕ} (c : R) 
   abel
 
 /- English proof (translation)
-Use `smul_add_one_sub_smul_block c 0 (j' * p') j p M (by rw [zero_add, h])` as an intermediate fact. Simplify `this` using `only [zero_add, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_add_one_sub_smul_block₂ {R : Type} [CommRing R] {n m k : ℕ} (c : R)
     (j : Matrix (Fin n) (Fin m) R) (p : Matrix (Fin m) (Fin n) R) (M : Matrix (Fin m) (Fin m) R)
@@ -48,18 +48,18 @@ theorem smul_add_one_sub_smul_block₂ {R : Type} [CommRing R] {n m k : ℕ} (c 
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `smul_add_one_sub_smul_sub_one (algebraMap (AF D.host.F) (AE D) ε) (Formalism.L2.Theta.mt V g)`.
+A detailed English derivation is pending.
 -/
 theorem jac_subOne_cutG (V : HSp D) (ε : AF D.host.F) (hε : ε * ε = ε) (g : GA D V) :
     Formalism.L2.Theta.subOne V (cutG V ε hε g) = algebraMap (AF D.host.F) (AE D) ε • Formalism.L2.Theta.subOne V g :=
   smul_add_one_sub_smul_sub_one (algebraMap (AF D.host.F) (AE D) ε) (Formalism.L2.Theta.mt V g)
 
 /- English proof (translation)
-Unfold `NFlag`. Rewrite using `[MonoidHom.map_closure]`. Apply `Subgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, ⟨h1, h2⟩, rfl⟩`. Use `⟨fun i => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha, hb⟩` from `h1 i`. Use `⟨algebraMap (AF D.host.F) (AE D) ε • a, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, ha j hj, smul_zero]`. Rewrite using `[jac_subOne_cutG, Matrix.smul_mulVec, hb, Matrix.mulVec_smul]`. Take `⟨a, hb⟩` from `h2 x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨algebraMap (AF D.host.F) (AE D) ε • a, ?_⟩` and prove the remaining obligations. Rewrite using `[jac_subOne_cutG, Matrix.smul_mulVec, hb, Matrix.mulVec_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem jac_cutG_map_NFlag (V : HSp D) {ρ : ℕ} (e : Matrix (Fin V.rank) (Fin ρ) D.host.E) (ε : AF D.host.F)
     (hε : ε * ε = ε) : (NFlag V e).map (cutG V ε hε) ≤ NFlag V e := by
@@ -77,7 +77,7 @@ theorem jac_cutG_map_NFlag (V : HSp D) {ρ : ℕ} (e : Matrix (Fin V.rank) (Fin 
     rw [jac_subOne_cutG, Matrix.smul_mulVec, hb, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Apply `GlobalTheory.MixModel.mt_injective V` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.mt V (cutG V ε hε (d.emb0 h)) = Formalism.L2.Theta.mt V (d.emb0 (cutG V₀ ε hε h))`. Rewrite using `[mt_cutG, HypDec.unitaryMatrix_wittCoreEmbedding, HypDec.unitaryMatrix_wittCoreEmbedding, mt_cutG]`. Conclude with `smul_add_one_sub_smul_block _ _ _ _ _ _ d.sum_eq_one`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitaryIdempotentCut_wittHyperbolicEmbedding_comm {V V₀ : HSp D} {ρ : ℕ} (d : HypDec V V₀ ρ) (ε : AF D.host.F) (hε : ε * ε = ε) (h : GA D V₀) :
     cutG V ε hε (d.emb0 h) = d.emb0 (cutG V₀ ε hε h) := by
@@ -87,7 +87,7 @@ theorem unitaryIdempotentCut_wittHyperbolicEmbedding_comm {V V₀ : HSp D} {ρ :
   exact smul_add_one_sub_smul_block _ _ _ _ _ _ d.sum_eq_one
 
 /- English proof (translation)
-Apply `GlobalTheory.MixModel.mt_injective V₀` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Formalism.L2.Theta.mt V₀ (cutG V₀ ε hε (o.emb (h, 1))) = Formalism.L2.Theta.mt V₀ (o.emb (cutG A ε hε h, 1))`. Rewrite using `[mt_cutG, OrthDec.mt_emb, OrthDec.mt_emb, mt_cutG, mt_one]`. Conclude with `smul_add_one_sub_smul_block₂ _ _ _ _ _ _ o.sum_eq_one`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_cutG_emb_inl {V₀ A L : HSp D} (o : OrthDec V₀ A L) (ε : AF D.host.F) (hε : ε * ε = ε) (h : GA D A) :
     cutG V₀ ε hε (o.emb (h, 1)) = o.emb (cutG A ε hε h, 1) := by
@@ -97,13 +97,11 @@ theorem jac_cutG_emb_inl {V₀ A L : HSp D} (o : OrthDec V₀ A L) (ε : AF D.ho
   exact smul_add_one_sub_smul_block₂ _ _ _ _ _ _ o.sum_eq_one
 
 /- English proof (translation)
-Use `⟨fun g hg => ?_, fun A L o g hg => ?_⟩` and prove the remaining obligations. Establish `H : (jacGrp d).map (cutG V ε hε) ≤ jacGrp d`. Unfold `jacGrp`. Rewrite using `[Subgroup.map_sup]`. Use `sup_le_sup (jac_cutG_map_NFlag V d.e ε hε) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨_, ⟨h, rfl⟩, rfl⟩`. Conclude with `⟨cutG V₀ ε hε h, (unitaryIdempotentCut_wittHyperbolicEmbedding_comm d ε hε h).symm⟩`. Conclude with `H ⟨g, hg, rfl⟩`. Establish `H : (besGrp d o).map (cutG V ε hε) ≤ besGrp d o`. Unfold `besGrp`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.map_sup]`. Use `sup_le_sup (jac_cutG_map_NFlag V d.e ε hε) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨h, rfl⟩, rfl⟩`. Use `⟨cutG A ε hε h, ?_⟩` and prove the remaining obligations. Rewrite using `[embA_apply, embA_apply, unitaryIdempotentCut_wittHyperbolicEmbedding_comm, jac_cutG_emb_inl]`.
-
-Conclude with `H ⟨g, hg, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cutG_mem_jacGrp_besGrp (D : D7) (V V₀ : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (ε : AF D.host.F) (hε : ε * ε = ε) :
     (∀ g ∈ jacGrp d, cutG V ε hε g ∈ jacGrp d) ∧

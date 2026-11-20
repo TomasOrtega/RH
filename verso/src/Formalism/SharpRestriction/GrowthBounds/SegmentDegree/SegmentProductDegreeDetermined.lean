@@ -14,9 +14,9 @@ section Img
 variable {ι ι' : Type} {n : ℕ}
 
 /- English proof (translation)
-Unfold `multideg imgMon`. Simplify using `only [Finsupp.sum_apply]`. Unfold `Finsupp.sum`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Finsupp.single_apply, Prod.mk.injEq]`. Distinguish the cases in `h : ga v.1 = t`. Simplify using `[h]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem multideg_imgMon [DecidableEq ι'] (ga : ι → ι') (ep : ι → ℕ) (m : ι × Fin n →₀ ℕ) (t : ι') :
     multideg (imgMon (fun v : ι × Fin n => (ga v.1, v.2)) (fun v => ep v.1) m) t =
@@ -33,9 +33,9 @@ theorem multideg_imgMon [DecidableEq ι'] (ga : ι → ι') (ep : ι → ℕ) (m
   · simp [h]
 
 /- English proof (translation)
-Establish `hsub : m.support ⊆ T ×ˢ (Finset.univ : Finset (Fin n))`. Introduce `v hv`. Rewrite using `[Finset.mem_product]`. Conclude with `⟨hT v hv, Finset.mem_univ _⟩`. Rewrite using `[Finsupp.sum_of_support_subset m hsub _ (fun _ _ => mul_zero _), Finset.sum_product]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Unfold `multideg`. Rewrite using `[Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_eq_multideg (h : ι → ℕ) (m : ι × Fin n →₀ ℕ) (T : Finset ι) (hT : ∀ v ∈ m.support, v.1 ∈ T) :
     (m.sum fun v k => h v.1 * k) = ∑ x ∈ T, h x * multideg m x := by
@@ -50,7 +50,7 @@ theorem sum_eq_multideg (h : ι → ℕ) (m : ι × Fin n →₀ ℕ) (T : Finse
   rw [Finset.mul_sum]
 
 /- English proof (translation)
-Rewrite using `[multideg_imgMon, multideg_imgMon]`. Set `T : Finset ι` to `m.support.image Prod.fst ∪ m'.support.image Prod.fst`. Rewrite using `[sum_eq_multideg (fun x => if ga x = t then ep x else 0) m T (fun v hv => Finset.mem_union_left _ (Finset.mem_image_of_mem _ hv)), sum_eq_multideg (fun x => if ga x = t then ep x else 0) m' T (fun v hv => Finset.mem_union_right _ (Finset.mem_image_of_mem _ hv))]`. Conclude with `Finset.sum_congr rfl fun x _ => by rw [h x]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multideg_imgMon_congr (ga : ι → ι') (ep : ι → ℕ) (m m' : ι × Fin n →₀ ℕ)
     (h : ∀ x, multideg m x = multideg m' x) (t : ι') :
@@ -66,9 +66,9 @@ theorem multideg_imgMon_congr (ga : ι → ι') (ep : ι → ℕ) (m m' : ι × 
   exact Finset.sum_congr rfl fun x _ => by rw [h x]
 
 /- English proof (translation)
-Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp hQ0`. Establish `hm0' : m0 ∈ Q.support` using `MvPolynomial.mem_support_iff.mpr hm0`. Use `⟨fun t => multideg (imgMon (fun v : ι × Fin n => (ga v.1, v.2)) (fun v => ep v.1) m0) t, fun t m' hm' => ?_, fun t m' hm' => ?_⟩` and prove the remaining obligations. Take `⟨m, hm, rfl⟩` from `supp_aeval_pow (fun v : ι × Fin n => (ga v.1, v.2)) (fun v => ep v.1) P hm'`. Conclude with `multideg_imgMon_congr ga ep m m0 (fun x => (mem_Pol_iff.mp hP m hm x).trans (mem_Pol_iff.mp hQ m0 hm0' x).symm) t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, rfl⟩` from `supp_aeval_pow (fun v : ι × Fin n => (ga v.1, v.2)) (fun v => ep v.1) Q hm'`. Conclude with `multideg_imgMon_congr ga ep m m0 (fun x => (mem_Pol_iff.mp hQ m hm x).trans (mem_Pol_iff.mp hQ m0 hm0' x).symm) t`.
+A detailed English derivation is pending.
 -/
 theorem degAt_aeval {R : Type} [CommRing R] (ga : ι → ι') (ep : ι → ℕ) {β : ι → ℕ}
     {P Q : MvPolynomial (ι × Fin n) R} (hP : P ∈ Pol R n β) (hQ : Q ∈ Pol R n β) (hQ0 : Q ≠ 0) :
@@ -90,7 +90,7 @@ theorem degAt_aeval {R : Type} [CommRing R] (ga : ι → ι') (ep : ι → ℕ) 
 end Img
 
 /- English proof (translation)
-Introduce `m hm`. Use `support_monomial_subset hm` as an intermediate fact. Rewrite `this` using `[Finset.mem_singleton]`. Rewrite using `[this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem degAt_monomial {R : Type} [CommRing R] {ι : Type} {n : ℕ} (l : ι × Fin n →₀ ℕ) (c : R) (t : ι) :
     DegAt t (multideg l t) (monomial l c : MvPolynomial (ι × Fin n) R) := by
@@ -101,21 +101,19 @@ theorem degAt_monomial {R : Type} [CommRing R] {ι : Type} {n : ℕ} (l : ι × 
   rw [this]
 
 /- English proof (translation)
-The claim follows from `mem_Pol_iff.mpr fun m hm t => h t m hm`.
+A detailed English derivation is pending.
 -/
 theorem mem_Pol_of_degAt {R : Type} [CommRing R] {ι : Type} {n : ℕ} {d : ι → ℕ} {P : MvPolynomial (ι × Fin n) R}
     (h : ∀ t, DegAt t (d t) P) : P ∈ Pol R n d := mem_Pol_iff.mpr fun m hm t => h t m hm
 
 /- English proof (translation)
-Introduce `p n' r K _ F O _ x z β l0 d hx hz hdeg hne`. Establish `hz0 : ∀ j ∈ Finset.range F.J, z (j : ℤ) ≠ 0`. Introduce `j hj h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[Finset.prod_eq_zero hj (by rw [h0, map_zero]), zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ j : ℕ, ∃ δ : Fin n' → ℕ, j ∈ Finset.range F.J → (∀ t, DegAt t (δ t) (phSeg O K p F (j : ℤ) (x j))) ∧ ∀ t, DegAt t (δ t) (phSeg O K p F (j : ℤ) (z j))`. Introduce `j`. Distinguish the cases in `hj : j ∈ Finset.range F.J`. Take `⟨δ, h1, h2⟩` from `degAt_aeval (R := O) (n := r + K) (fun y : ℤ => posOf n' y) (fun y : ℤ => p ^ F.dist (j : ℤ) y) (hx j) (hz j) (hz0 j hj)`. Conclude with `⟨δ, fun _ => ⟨h1, h2⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hj⟩`. Use `choose δ hδ using key`. Establish `hX : ∀ t, DegAt t (∑ j ∈ Finset.range F.J, δ j t + multideg l0 t) ((∏ j ∈ Finset.range F.J, phSeg O K p F (j : ℤ) (x j)) * monomial l0 1)` using `fun t => degAt_mul (degAt_prod _ _ _ fun j hj => (hδ j hj).1 t) (degAt_monomial l0 1 t)`. Establish `hZ : ∀ t, DegAt t (∑ j ∈ Finset.range F.J, δ j t + multideg l0 t) ((∏ j ∈ Finset.range F.J, phSeg O K p F (j : ℤ) (z j)) * monomial l0 1)` using `fun t => degAt_mul (degAt_prod _ _ _ fun j hj => (hδ j hj).2 t) (degAt_monomial l0 1 t)`. Take `⟨m0, hm0⟩` from `MvPolynomial.ne_zero_iff.mp hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm0'` using `MvPolynomial.mem_support_iff.mpr hm0`. Rewrite `hdeg`, the goal using `[RRdeg_eq_Pol]`. Use `mem_Pol_of_degAt fun t => ?_` and prove the remaining obligations. Establish `e : d t = ∑ j ∈ Finset.range F.J, δ j t + multideg l0 t` using `(mem_Pol_iff.mp hdeg m0 hm0' t).symm.trans (hZ t m0 hm0')`. Rewrite using `[e]`.
-
-Conclude with `hX t`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segment_product_degree_determined : SegmentProductDegreeDetermined := by
   intro p n' r K _ F O _ x z β l0 d hx hz hdeg hne
@@ -149,7 +147,7 @@ theorem segment_product_degree_determined : SegmentProductDegreeDetermined := by
   exact hX t
 
 /- English proof (translation)
-Introduce `m hm`. Take `⟨i, hi, hmi⟩` from `Finset.mem_biUnion.mp (support_sum hm)`. Conclude with `h i hi m hmi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem degAt_sum {R : Type} [CommRing R] {ι : Type} {n : ℕ} {x : ι} {d : ℕ} {κ : Type} (s : Finset κ)
     (f : κ → MvPolynomial (ι × Fin n) R) (h : ∀ i ∈ s, DegAt x d (f i)) : DegAt x d (∑ i ∈ s, f i) := by
@@ -159,7 +157,7 @@ theorem degAt_sum {R : Type} [CommRing R] {ι : Type} {n : ℕ} {x : ι} {d : �
   exact h i hi m hmi
 
 /- English proof (translation)
-Introduce `m hm`. Use `h m ?_` and prove the remaining obligations. Rewrite `hm`, the goal using `[mem_support_iff]`. Introduce `h0`. Conclude with `hm (by rw [coeff_C_mul, h0, mul_zero])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem degAt_C_mul {R : Type} [CommRing R] {ι : Type} {n : ℕ} {x : ι} {d : ℕ} (c : R)
     {P : MvPolynomial (ι × Fin n) R} (h : DegAt x d P) : DegAt x d (C c * P) := by
@@ -170,11 +168,11 @@ theorem degAt_C_mul {R : Type} [CommRing R] {ι : Type} {n : ℕ} {x : ι} {d : 
   exact hm (by rw [coeff_C_mul, h0, mul_zero])
 
 /- English proof (translation)
-Unfold `Dat.detPl`. Rewrite using `[Matrix.det_apply]`. Use `degAt_sum _ _ fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul]`. Establish `h1 : (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : MvPolynomial (ℤ × Fin r) R) = C (((Equiv.Perm.sign σ : ℤˣ) : ℤ) : R)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1]`. Use `degAt_C_mul _ ?_` and prove the remaining obligations. Establish `h2` using `degAt_prod (R := R) (x := t) Finset.univ (fun i : Fin r => (Matrix.of fun a b : Fin r => (MvPolynomial.X (X.row j x a, b) : MvPolynomial (ℤ × Fin r) R)) (σ i) i) (fun i => if X.row j x (σ i) = t then 1 else 0) (fun i _ => degAt_X (x := t) (X.row j x (σ i), i))`. Rewrite `h2` using `[Equiv.sum_comp σ (fun a => if X.row j x a = t then 1 else 0)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem degAt_detPl {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n' r) (j x t : ℤ) :
     DegAt t (∑ a : Fin r, if X.row j x a = t then 1 else 0) (X.detPl R j x) := by
@@ -194,13 +192,13 @@ theorem degAt_detPl {R : Type} [CommRing R] {n' r : ℕ} [NeZero n'] (X : Dat n'
   exact h2
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ j b y e hy`. Distinguish the cases in `hy0 : y = 0`. Conclude with `⟨0, by rw [hy0]; simp [Dat.zSeg]⟩`. Establish `hexp : ∀ P : SegRing O r K, expand (p ^ X.Rj p K j) P = aeval (fun v : ℤ × Fin (r + K) => (MvPolynomial.X ((fun z : ℤ => z) v.1, v.2) : SegRing O r K) ^ (fun _ : ℤ => p ^ X.Rj p K j) v.1) P`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: expand (p ^ X.Rj p K j) = aeval (fun v : ℤ × Fin (r + K) => (MvPolynomial.X ((fun z : ℤ => z) v.1, v.2) : SegRing O r K) ^ (fun _ : ℤ => p ^ X.Rj p K j) v.1)`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using the standard rewrite rules. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨δ, h1, -⟩` from `degAt_aeval (R := O) (n := r + K) (fun z : ℤ => z) (fun _ : ℤ => p ^ X.Rj p K j) hy hy hy0`. Establish `hD : X.DlSeg p K O j ∈ Pol O r (fun t => ∑ x ∈ X.toLate j, X.sg p K j x * ∑ a : Fin r, if X.row j x a = t then 1 else 0)`. Use `mem_Pol_of_degAt fun t => ?_` and prove the remaining obligations. Unfold `Dat.DlSeg`. Conclude with `degAt_prod _ _ _ fun x _ => degAt_pow (degAt_detPl X j x t) _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `h` using `hom_Pol_mul O (hom_Pol_mul O (plEmb_Pol r K hD) (mem_Pol_of_degAt h1)) (mem_Pol_of_degAt fun t => degAt_monomial e (1 : O) t)`. Unfold `Dat.zSeg`. Rewrite using `[hexp]`. Conclude with `⟨_, h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem segment_image_multihomogeneous : SegmentImageMultihomogeneous := by
   intro p n' r K _ _ _ X O _ j b y e hy

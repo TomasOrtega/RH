@@ -11,13 +11,11 @@ open MeasureTheory GroundTheory.Automorphic PositivityTheory.Rg.Tf.IntegralApply
 open scoped InnerProductSpace FourierTransform ComplexConjugate
 
 /- English proof (translation)
-Introduce `H V W _ _ _ _ _ _ _ _ _ D`. Use `haveI := FiniteDimensional.complete ℂ V`. Use `haveI := FiniteDimensional.complete ℂ W`. Take `⟨M, hT, hJ, hJ', hL⟩` from `model D`. Establish `act : ∀ Y β β', Ker β → Ker β' → Conv D.J D.J Y β → Conv D.J' D.J' Y β' → M.Acts Y β β'` using `fun Y β β' k k' c c' => ⟨fun u => by rw [hJ, hJ]; exact c u _ (convSpec β k u).1, fun v => by rw [hJ', hJ']; exact c' v _ (convSpec β' k' v).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨N, hN⟩` from `nUnit M D.B D.β D.β' D.β_ker D.β'_ker D.β_unit D.β'_unit (act _ _ _ D.β_ker D.β'_ker D.B_J D.B_J') (hT ▸ D.compact D.T₀ _ le_rfl ((hL _ _ le_rfl).2 rfl))`. Use `⟨N, fun Y β β' k k' c c' => nInt M _ hN Y β β' k k' (act _ _ _ k k' c c'), ?_⟩` and prove the remaining obligations. Introduce `X Λ κ T K hk hc hT' hΛ htc hb`. Take `rfl` from `(hL T Λ hT').1 hΛ`. Establish `hX : M.Carries X κ` using `fun u => by rw [hJ, hJ']; exact hc u _ (convSpec κ hk u).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨ψ, δ, -, hδ, hψ, h1⟩` from `traceNear M X κ hk hX T (hT ▸ hT') htc ε hε`. Establish `h2` using `traceSm M N hN X κ hk hX ψ δ T K hδ hψ (hT ▸ hT') htc hb`. Rewrite `h2` using `[hT]`. Rewrite `h1` using `[norm_sub_rev]`.
-
-Conclude with `(norm_sub_le_norm_sub_add_norm_sub _ _ _).trans ((add_le_add h1 h2).trans_eq (add_comm _ _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.main :
     PositivityTheory.Rg.Tf.IntegralApplyAeEq.Main := by

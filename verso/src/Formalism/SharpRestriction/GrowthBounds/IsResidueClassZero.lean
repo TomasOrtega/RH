@@ -66,9 +66,9 @@ def rhoB (D : D7) (K : Consts) (s : Scale) : ℝ :=
 def CbLarge (K : Consts) (s : Scale) : Prop := (N1 s : ℝ) ≤ K.CN * Real.log s.x
 
 /- English proof (translation)
-Unfold `rho rhoB`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `h1 : K.rho * (N1 s : ℝ) * La K s ≤ K.rho * (K.CN * Real.log s.x) * La K s`. Apply `mul_le_mul_of_nonneg_right _ hLa` to reduce the goal to its premises. Conclude with `mul_le_mul_of_nonneg_left h hr`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `div_le_div_of_nonneg_right h1 hk`. Rewrite using `[show K.rho * K.CN * Real.log s.x * La K s = K.rho * (K.CN * Real.log s.x) * La K s by ring]`. Combine the linear relations using `[h2]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rho_le_rhoB (D : D7) (K : Consts) (s : Scale) (hr : 0 ≤ K.rho) (hLa : 0 ≤ La K s) (h : CbLarge K s) :
     rho D K s ≤ rhoB D K s := by
@@ -111,7 +111,7 @@ def HEv (D : D7) (p : ℕ) : Prop := Even (addOrderOf (hP D p))
 def IsCs (D : D7) (p : ℕ) : Prop := IsResidueClassZero D p ∧ Odd (addOrderOf (hP D p)) ∧ hP D p ≠ 0
 
 /- English proof (translation)
-Introduce `h0`. Unfold `HEv at h`. Rewrite `h` using `[h0, addOrderOf_zero]`. Conclude with `Nat.not_even_one h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HEv.ne_zero {D : D7} {p : ℕ} (h : HEv D p) : hP D p ≠ 0 := by
   intro h0
@@ -120,12 +120,12 @@ theorem HEv.ne_zero {D : D7} {p : ℕ} (h : HEv D p) : hP D p ≠ 0 := by
   exact Nat.not_even_one h
 
 /- English proof (translation)
-Introduce `hc` and use `Nat.not_even_iff_odd.mpr hc.2.1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HEv.not_isCs {D : D7} {p : ℕ} (h : HEv D p) : ¬ IsCs D p := fun hc => Nat.not_even_iff_odd.mpr hc.2.1 h
 
 /- English proof (translation)
-Distinguish the cases in `he : Even (addOrderOf (hP D p))`. Conclude with `Or.inl he`. Distinguish the cases in `h0 : hP D p = 0`. Conclude with `Or.inr (Or.inl h0)`. Conclude with `Or.inr (Or.inr ⟨h, Nat.not_even_iff_odd.mp he, h0⟩)`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Consider separately whether the proposition holds or fails. Prove the second alternative. Prove the second alternative.
 -/
 theorem class_zero_trichotomy {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : HEv D p ∨ hP D p = 0 ∨ IsCs D p := by
   by_cases he : Even (addOrderOf (hP D p))
@@ -135,7 +135,7 @@ theorem class_zero_trichotomy {D : D7} {p : ℕ} (h : IsResidueClassZero D p) : 
     · exact Or.inr (Or.inr ⟨h, Nat.not_even_iff_odd.mp he, h0⟩)
 
 /- English proof (translation)
-Take `⟨-, hodd, hne⟩` from `h`. Establish `h1 : addOrderOf (hP D p) ≠ 1` using `fun h1 => hne (by`. Establish `h2` using `addOrderOf_nsmul_eq_zero (hP D p)`. Rewrite using `[h1, one_nsmul] at h2)` and apply the resulting hypothesis. Take `⟨k, hk⟩` from `hodd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -315,7 +315,7 @@ def ServedOrbitsContained (X : Inst D L) (K : Consts) (a b : HH D → ℤ) : Pro
   ∀ p, Cand D L K p → Sig X K a b p ≤ L.sc.x ^ (-L.sc.eps) → goodReps X p ⊆ VV X K a b p
 
 /- English proof (translation)
-Introduce `p hc hs`. Establish `hv : VV X K a b p = goodReps X p`. Unfold `VV`. Conclude with `if_pos ⟨hc, hs⟩`. Conclude with `hv ▸ Finset.Subset.refl (goodReps X p)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem served_orbits_in_set (X : Inst D L) (K : Consts) (a b : HH D → ℤ) : ServedOrbitsContained X K a b := by
   intro p hc hs

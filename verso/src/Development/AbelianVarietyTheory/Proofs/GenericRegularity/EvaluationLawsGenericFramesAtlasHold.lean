@@ -23,9 +23,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.L2.Pj GlobalTheory.Reg
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Establish `hB : Out.SecBaseChangeSt` using `GlobalTheory.abelianSchemeLaws_all.1.secBaseChange`. Establish `hT : Out.SecTwistSt` using `GlobalTheory.abelianSchemeLaws_all.2.secTwist`. Take `⟨-, -, hwd, hwt, hint, -⟩` from `GlobalTheory.T.framedModuli_algebraicLaws_chart_weight_integrality hB E H Dw l Xo c`. Establish `hbc : FrBC Xo c` using `fun S T _ _ _ _ φ y => GlobalTheory.Frames.FramedBaseChange.exists_frMap hB E H Dw l Xo c S T φ y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨hwd, GlobalTheory.T.framedPoint_reduced_from_testRing hB E H Dw l Xo c, hwt, hbc⟩, hint, genFrEx_of hT, GlobalTheory.T.flagCharts_cover_framed_fieldPoints hT E H Dw l Xo c hbc⟩`.
+Supply the required witnesses or components.
 -/
 theorem evLaws_genFr_atlas : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), EvLaws Xo c ∧ IntDiagUnit Xo c ∧ GenFrEx Xo c ∧ ∀ h : GenFrEx Xo c, Atlas h := by
   intro E _ _ _ H Dw l Xo c

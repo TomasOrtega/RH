@@ -18,7 +18,7 @@ variable {k : Type} [Field k] {Ω : Type} [Field Ω] [Algebra k Ω] {K' : Type} 
 include hsp
 
 /- English proof (translation)
-Establish `hsy : aeval x' (X c : Kleiman.Poly k N) ≠ 0` using `by rw [aeval_X]; exact hc`. Establish `h1` using `Kleiman.mem_locAt (x := x) (isHomogeneous_X k a) (isHomogeneous_X k c) hsy`. Establish `h2` using `Kleiman.redAt_eq hsp (isHomogeneous_X k a) (isHomogeneous_X k c) hsy`. Simplify using `only [aeval_X] at h1 h2`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem locAt_ratio {c : Fin (N + 1)} (hc : x' c ≠ 0) (a : Fin (N + 1)) :
     x a / x c ∈ Kleiman.locAt k x x' ∧ Kleiman.redAt k x x' (x a / x c) = x' a / x' c := by
@@ -29,9 +29,9 @@ theorem locAt_ratio {c : Fin (N + 1)} (hc : x' c ≠ 0) (a : Fin (N + 1)) :
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `Int.eq_nat_or_neg n`. Simplify `Kleiman.locAt_pow hsp ha n` using `only [zpow_natCast]`. Establish `hp` using `Kleiman.locAt_pow hsp ha n`. Establish `hpr : Kleiman.redAt k x x' (a ^ n) ≠ 0` using `by rw [hp.2]; exact pow_ne_zero _ hr`. Take `⟨-, h1, h2⟩` from `Kleiman.locAt_inv hsp hp.1 hpr`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [zpow_neg, zpow_natCast]`. Rewrite using `[← hp.2]`. Conclude with `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem locAt_zpow {a : Ω} (ha : a ∈ Kleiman.locAt k x x') (hr : Kleiman.redAt k x x' a ≠ 0) (n : ℤ) :
     a ^ n ∈ Kleiman.locAt k x x' ∧ Kleiman.redAt k x x' (a ^ n) = Kleiman.redAt k x x' a ^ n := by
@@ -47,59 +47,53 @@ theorem locAt_zpow {a : Ω} (ha : a ∈ Kleiman.locAt k x x') (hr : Kleiman.redA
 end Loc
 
 /- English proof (translation)
-Introduce `k _ N Ω _ _ x Q n m s K' _ _ x' s' hxy hgen hle ⟨i₀, hi₀⟩ ⟨j₁, hj₁⟩`. Establish `hsp : Kleiman.primeOf (S` using `k) x ≤ Kleiman.primeOf (S := k) x' := by`. Rewrite using `[← comap_mIdealOver_graph x s, ← comap_mIdealOver_graph x' s']`. Conclude with `Ideal.comap_mono hle`. Take `⟨γ, hγ0, hg, hb⟩` from `Kleiman.exists_restrict_gen hsp hxy Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmemQ : ∀ (I : Kleiman.Chart x') {i : Fin (N + 1)}, i ∈ I.1 → ∀ b, x i ^ (-n) * s b ∈ Q.sub (Kleiman.liftChart hxy I)`. Introduce `I i hi b`. Establish `hxi : x i ≠ 0` using `(Kleiman.mem_support x).mp ((Kleiman.liftChart hxy I).2.2 hi)`. Establish `hsb : s b ∈ (Q.twist (Kleiman.twistSys k x n)).sub (Kleiman.liftChart hxy I)`. Rewrite using `[← hgen]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Take `⟨q, hq, hqb⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n (Kleiman.liftChart hxy I) hi (s b)).mp hsb`. Rewrite using `[hqb, smul_eq_mul, ← mul_assoc, ← zpow_add₀ hxi, neg_add_cancel, zpow_zero, one_mul]`. Conclude with `hq`. Establish `hi₀I : i₀ ∈ (Kleiman.singleChart hi₀).1` using `Finset.mem_singleton_self i₀`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx₀ : x i₀ ≠ 0` using `hxy i₀ hi₀`. Take `⟨t, ht⟩ : ∃ t : Fin m → Ω, t = fun b => x i₀ ^ (-n) * s b / γ` from `⟨_, rfl⟩`. Establish `htL : ∀ b, t b ∈ Kleiman.locAt k x x'` using `fun b => by`. Rewrite using `[ht]`. Conclude with `hg (Kleiman.singleChart hi₀) _ (hmemQ _ hi₀I b)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨l₀, hl₀⟩ : ∃ l, Kleiman.redAt k x x' (t l) ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨b₀, -, hb₀L, hb₀r, hb₀Q⟩` from `hb (Kleiman.singleChart hi₀)`. Establish `hmem : x i₀ ^ n • (b₀ * γ) ∈ (Q.twist (Kleiman.twistSys k x n)).sub (Kleiman.liftChart hxy (Kleiman.singleChart hi₀))` using `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n _ hi₀I _).mpr ⟨_, hb₀Q, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← hgen, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨a, ha⟩` from `hmem`. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at ha`. Establish `haL : ∀ b, (a b : Ω) ∈ Kleiman.locAt k x x'` using `fun b => (Kleiman.chartRing_sub_locAt hsp hxy _ (a b).2).1`. Establish `hsum : b₀ = ∑ b, (a b : Ω) * t b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hxn : x i₀ ^ n ≠ 0` using `zpow_ne_zero n hx₀`. Establish `: ∑ b, (a b : Ω) * t b = x i₀ ^ (-n) / γ * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun b _ => by rw [ht]; ring`. Rewrite using `[this, ha, zpow_neg]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hL` using `Kleiman.locAt_sum hsp Finset.univ (fun b => (a b : Ω) * t b) fun b _ => (Kleiman.locAt_mul hsp (haL b) (htL b)).1`. Apply `hb₀r` to reduce the goal to its premises. Rewrite using `[hsum, hL.2]`. Conclude with `Finset.sum_eq_zero fun b _ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[(Kleiman.locAt_mul hsp (haL b) (htL b)).2, hcon b, mul_zero]`. Establish `htl0 : t l₀ ≠ 0` using `(Kleiman.locAt_inv hsp (htL l₀) hl₀).1`. Establish `hsl0 : s l₀ ≠ 0` using `fun h0 => htl0 (by rw [ht]; simp [h0])`. Establish `hkey : ∀ b, s' b * Kleiman.redAt k x x' (t l₀) = s' l₀ * Kleiman.redAt k x x' (t b)`. Introduce `b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hdL, hdr⟩` from `Kleiman.locAt_div hsp (htL b) (htL l₀) hl₀`. Take `⟨f, h, e, hf, hh, hhy, hfh⟩` from `hdL`. Establish `hhx` using `Kleiman.aeval_ne_zero_of_primeOf_le hsp hh hhy`. Establish `hr2 : Kleiman.redAt k x x' (t b) / Kleiman.redAt k x x' (t l₀) = aeval x' f / aeval x' h`. Rewrite using `[← hdr, hfh, Kleiman.redAt_eq hsp hf hh hhy]`.
+Simplify by unfolding definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hst : t b / t l₀ = s b / s l₀`. Rewrite using `[div_eq_div_iff htl0 hsl0, ht]`. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hfh` using `[hst, div_eq_div_iff hsl0 hhx]`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgr` using `graphEq_of_le hle hf hh b l₀ (by rw [hfh]; ring)`. Rewrite `hr2` using `[div_eq_div_iff hl₀ hhy]`. Apply `mul_right_cancel₀ hhy` to reduce the goal to its premises. Take the linear combination `Kleiman.redAt k x x' (t l₀) * hgr - s' l₀ * hr2`. Establish `hlam : s' l₀ ≠ 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h0`. Apply `hj₁` to reduce the goal to its premises. Use `hkey j₁` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `(mul_eq_zero.mp this).resolve_right hl₀`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨μ, hμdef⟩ : ∃ μ : K', μ = s' l₀ / (Kleiman.redAt k x x' (t l₀) * x' i₀ ^ n)` from `⟨_, rfl⟩`. Establish `hμ : μ ≠ 0`. Rewrite using `[hμdef]`. Conclude with `div_ne_zero hlam (mul_ne_zero hl₀ (zpow_ne_zero n hi₀))`. Set `Q'' : Kleiman.LineBundle k x'` to `Kleiman.LineBundle.mk (Kleiman.SubFamily.mk (Kleiman.redSys hxy Q.toSubSystem γ) (Kleiman.redSys_mem_iff hsp hxy hg)) (fun I => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨S0, hS0⟩` from `Q.fg (Kleiman.liftChart hxy I)`. Express the relevant statement in the definitionally equal form `(Kleiman.redSys hxy Q.toSubSystem γ).sub I |>.FG`. Rewrite using `[Kleiman.redSys_sub_eq_span hsp hxy hg I hS0]`. Conclude with `Submodule.fg_span (S0.finite_toSet.image _))`. Use the proof step `(fun I => Kleiman.redSys_invertible hsp hxy hγ0 hg I (hb I))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR'' : Kleiman.RestrictData Q.toSubSystem hxy Q''.toSubSystem (fun q => Kleiman.redAt k x x' (q / γ))` using `Kleiman.restrictData_redSys hsp hxy hg Q'' rfl`. Establish `hR'` using `restrictData_scale hR'' μ hμ`. Use `⟨scaleBundle Q'' μ hμ, fun q => μ * Kleiman.redAt k x x' (q / γ), hR', ?_⟩` and prove the remaining obligations. Introduce `I`. Take `⟨i, hi⟩` from `I.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxi' : x' i ≠ 0` using `(Kleiman.mem_support x').mp (I.2.2 hi)`. Establish `hxi : x i ≠ 0` using `hxy i hxi'`. Establish `hc : ∀ b, x i ^ (-n) * s b / γ ∈ Kleiman.locAt k x x' ∧ Kleiman.redAt k x x' (x i ^ (-n) * s b / γ) = (x' i₀ / x' i) ^ n * Kleiman.redAt k x x' (t b)`. Introduce `b`. Take `⟨hr1, hr2⟩` from `locAt_ratio hsp hxi' i₀`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hr0 : Kleiman.redAt k x x' (x i₀ / x i) ≠ 0` using `by rw [hr2]; exact div_ne_zero hi₀ hxi'`. Take `⟨hz1, hz2⟩` from `locAt_zpow hsp hr1 hr0 n`. Establish `hxn : x i ^ n ≠ 0` using `zpow_ne_zero n hxi`. Establish `hxn₀ : x i₀ ^ n ≠ 0` using `zpow_ne_zero n hx₀`. Establish `heq : x i ^ (-n) * s b / γ = (x i₀ / x i) ^ n * t b`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[ht, div_zpow, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq, ← hr2, ← hz2]`. Conclude with `Kleiman.locAt_mul hsp hz1 (htL b)`. Establish `hval : ∀ b, s' b = x' i ^ n * (μ * Kleiman.redAt k x x' (x i ^ (-n) * s b / γ))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Introduce `b`. Establish `hk` using `hkey b`. Establish `hxn : x' i ^ n ≠ 0` using `zpow_ne_zero n hxi'`. Establish `hxn₀ : x' i₀ ^ n ≠ 0` using `zpow_ne_zero n hi₀`. Rewrite using `[(hc b).2, hμdef, div_zpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hk`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, TranslateEq.mem_twist_twistSys_iff _ n I hi]`. Conclude with `⟨_, hR'.mem I _ (hmemQ I hi b), by rw [smul_eq_mul]; exact hval b⟩`. Introduce `z hz`. Take `⟨w, hw, rfl⟩` from `(TranslateEq.mem_twist_twistSys_iff _ n I hi z).mp hz`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_span_singleton_mul.mp hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Take `⟨q, hq, rfl⟩` from `(Kleiman.mem_redSys_iff hsp hxy hg I v).mp hv`. Establish `hxq : x i ^ n • q ∈ (Q.twist (Kleiman.twistSys k x n)).sub (Kleiman.liftChart hxy I)` using `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n _ hi _).mpr ⟨q, hq, rfl⟩`. Rewrite `hxq` using `[← hgen, Submodule.mem_span_range_iff_exists_fun]`. Take `⟨a, ha⟩` from `hxq`. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `haL : ∀ b, (a b : Ω) ∈ Kleiman.locAt k x x' ∧ Kleiman.redAt k x x' (a b) ∈ Kleiman.chartRing k x' I` using `fun b => Kleiman.chartRing_sub_locAt hsp hxy I (a b).2`. Establish `hqs : q / γ = ∑ b, (a b : Ω) * (x i ^ (-n) * s b / γ)`. Establish `hxn : x i ^ n ≠ 0` using `zpow_ne_zero n hxi`. Establish `: ∑ b, (a b : Ω) * (x i ^ (-n) * s b / γ) = x i ^ (-n) / γ * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[this, ha, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Establish `hsumL` using `Kleiman.locAt_sum hsp Finset.univ (fun b => (a b : Ω) * (x i ^ (-n) * s b / γ)) fun b _ => (Kleiman.locAt_mul hsp (haL b).1 (hc b).1).1`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
-
-Use `⟨fun b => ⟨Kleiman.redAt k x x' (a b), (haL b).2⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.smul_def, smul_eq_mul]`. Rewrite using `[hqs, hsumL.2, Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[(Kleiman.locAt_mul hsp (haL b).1 (hc b).1).2, hval b]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GraphRestrict.full : GraphRestrict.Statement := by
   intro k _ N Ω _ _ x Q n m s K' _ _ x' s' hxy hgen hle ⟨i₀, hi₀⟩ ⟨j₁, hj₁⟩

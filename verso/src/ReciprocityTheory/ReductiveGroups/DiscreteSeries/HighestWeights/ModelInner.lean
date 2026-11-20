@@ -22,7 +22,7 @@ def MV.mk {ε : Fin n → Bool} {m : Fin n → ℤ} (f : KG ε → ℂ) (hf : f 
   (⟨f, hf⟩ : ↥(Vsp ε m))
 
 /- English proof (translation)
-Conclude with `(show ↥(Vsp ε m) from f).2`.
+A detailed English derivation is pending.
 -/
 theorem MV.mem {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) : f.fn ∈ Vsp ε m := by
   exact (show ↥(Vsp ε m) from f).2
@@ -34,7 +34,7 @@ Both sides reduce to the same expression.
     (MV.mk f hf).fn = f := rfl
 
 /- English proof (translation)
-Conclude with `Subtype.ext h`.
+A detailed English derivation is pending.
 -/
 theorem MV.ext {ε : Fin n → Bool} {m : Fin n → ℤ} {f g : MV ε m} (h : f.fn = g.fn) : f = g := by
   exact Subtype.ext h
@@ -58,13 +58,13 @@ def mvInner {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε m) : ℂ :=
   ∫ x, starRingEnd ℂ (f.fn x) * g.fn x ∂(muK ε)
 
 /- English proof (translation)
-Conclude with `continuous_of_mem_Vsp ε m f.mem`.
+A detailed English derivation is pending.
 -/
 theorem MV.continuous_fn {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) : Continuous f.fn := by
   exact continuous_of_mem_Vsp ε m f.mem
 
 /- English proof (translation)
-Use `compactSpace_KG ε` as an intermediate fact. Conclude with `hF.integrable_of_hasCompactSupport (isClosed_tsupport F).isCompact`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous_KG {ε : Fin n → Bool} {F : KG ε → ℂ} (hF : Continuous F) :
     MeasureTheory.Integrable F (muK ε) := by
@@ -73,7 +73,7 @@ theorem integrable_of_continuous_KG {ε : Fin n → Bool} {F : KG ε → ℂ} (h
   exact hF.integrable_of_hasCompactSupport (isClosed_tsupport F).isCompact
 
 /- English proof (translation)
-Conclude with `integrable_of_continuous_KG ((Complex.continuous_conj.comp f.continuous_fn).mul g.continuous_fn)`.
+A detailed English derivation is pending.
 -/
 theorem mvInner_integrable {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε m) :
     MeasureTheory.Integrable (fun x => starRingEnd ℂ (f.fn x) * g.fn x) (muK ε) := by
@@ -81,7 +81,7 @@ theorem mvInner_integrable {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV �
     ((Complex.continuous_conj.comp f.continuous_fn).mul g.continuous_fn)
 
 /- English proof (translation)
-Unfold `mvInner`. Repeatedly rewrite using `[← Complex.normSq_eq_conj_mul_self]`. Conclude with `integral_ofReal`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvInner_self_eq {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) :
     mvInner f f = ((∫ x, Complex.normSq (f.fn x) ∂(muK ε) : ℝ) : ℂ) := by
@@ -90,9 +90,9 @@ theorem mvInner_self_eq {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) 
   exact integral_ofReal
 
 /- English proof (translation)
-Unfold `mvInner`. Rewrite using `[← integral_conj]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [map_mul, Complex.conj_conj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem mvInner_conj {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε m) :
     starRingEnd ℂ (mvInner g f) = mvInner f g := by
@@ -104,14 +104,14 @@ theorem mvInner_conj {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε m) :
   exact mul_comm _ _
 
 /- English proof (translation)
-Rewrite using `[mvInner_self_eq, Complex.ofReal_re]`. Conclude with `integral_nonneg fun x => Complex.normSq_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvInner_re_nonneg {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) : 0 ≤ (mvInner f f).re := by
   rw [mvInner_self_eq, Complex.ofReal_re]
   exact integral_nonneg fun x => Complex.normSq_nonneg _
 
 /- English proof (translation)
-Simplify using `only [mvInner, MV.fn_add, Pi.add_apply, map_add, add_mul]`. Conclude with `integral_add (mvInner_integrable f h) (mvInner_integrable g h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvInner_add_left {ε : Fin n → Bool} {m : Fin n → ℤ} (f g h : MV ε m) :
     mvInner (f + g) h = mvInner f h + mvInner g h := by
@@ -119,7 +119,7 @@ theorem mvInner_add_left {ε : Fin n → Bool} {m : Fin n → ℤ} (f g h : MV �
   exact integral_add (mvInner_integrable f h) (mvInner_integrable g h)
 
 /- English proof (translation)
-Simplify using `only [mvInner, MV.fn_smul, Pi.smul_apply, smul_eq_mul, map_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mvInner_smul_left {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε m) (c : ℂ) :
     mvInner (c • f) g = starRingEnd ℂ c * mvInner f g := by
@@ -127,9 +127,9 @@ theorem mvInner_smul_left {ε : Fin n → Bool} {m : Fin n → ℤ} (f g : MV ε
   exact integral_const_mul _ _
 
 /- English proof (translation)
-Establish `hc : Continuous fun x => Complex.normSq (f.fn x)` using `Complex.continuous_normSq.comp f.continuous_fn`. Rewrite `h` using `[mvInner_self_eq, Complex.ofReal_eq_zero]`. Establish `hae : (fun x => Complex.normSq (f.fn x)) =ᵐ[muK ε] 0` using `(integral_eq_zero_iff_of_nonneg (fun x => Complex.normSq_nonneg _) (by`. Use `compactSpace_KG ε` as an intermediate fact. Conclude with `hc.integrable_of_hasCompactSupport (isClosed_tsupport _).isCompact)).mp h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (fun x => Complex.normSq (f.fn x)) = 0` using `(Continuous.ae_eq_iff_eq (muK ε) hc continuous_const).mp hae`. Apply `MV.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Simplify using `using congrFun hz x`. Use the proof step `@[instance_reducible]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mvInner_definite {ε : Fin n → Bool} {m : Fin n → ℤ} (f : MV ε m) (h : mvInner f f = 0) : f = 0 := by
 

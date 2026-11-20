@@ -15,12 +15,12 @@ section Flip
 variable {m : ℕ}
 
 /- English proof (translation)
-Introduce `_` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem flip_he (ε : Fin m → Bool) : ∀ a, (fun a => !ε a) a = !ε a := fun _ => rfl
 
 /- English proof (translation)
-Establish `key : ∀ g : Matrix (Fin m) (Fin m) ℂ, gᴴ * -J * g = -J ↔ gᴴ * J * g = J`. Introduce `g`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`. Unfold `PI.PhMeasCore.SmoothOnH PI.PhMeasCore.UH`. Simplify using `only [Set.mem_setOf_eq, key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem smoothOnH_neg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (J : Matrix (Fin m) (Fin m) ℂ)
     (f : Matrix (Fin m) (Fin m) ℂ → E) : PI.PhMeasCore.SmoothOnH (-J) f ↔ PI.PhMeasCore.SmoothOnH J f := by
@@ -33,7 +33,7 @@ theorem smoothOnH_neg {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (J 
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Simplify using `only [PI.PhMeasCore.smoothVecs, Set.mem_setOf_eq]`. Rewrite using `[GlobalTheory.CompanionTheory.NegDS.Jm_flip (ε := ε) (ε' := fun a => !ε a) (fun a => rfl)]`. Conclude with `smoothOnH_neg _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smoothVecs_flip (ε : Fin m → Bool) (π : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)) (v : H) :
     v ∈ PI.PhMeasCore.smoothVecs (Jm (fun a => !ε a)) π ↔ v ∈ PI.PhMeasCore.smoothVecs (Jm ε) π := by
@@ -42,14 +42,14 @@ theorem mem_smoothVecs_flip (ε : Fin m → Bool) (π : Matrix (Fin m) (Fin m) �
   exact smoothOnH_neg _ _
 
 /- English proof (translation)
-Simplify using `only [SmT, Set.mem_setOf_eq, mem_smoothVecs_flip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_SmT_flip (ε : Fin m → Bool) (π : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)) (x : Fin m → H) :
     x ∈ SmT (fun a => !ε a) π ↔ x ∈ SmT ε π := by
   simp only [SmT, Set.mem_setOf_eq, mem_smoothVecs_flip]
 
 /- English proof (translation)
-Unfold `PI.DSInfCharCap.thetaJ`. Rewrite using `[GlobalTheory.CompanionTheory.NegDS.Jm_flip (ε := ε) (ε' := fun a => !ε a) (fun a => rfl)]`. Simplify using `[Matrix.mul_neg, Matrix.neg_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem thetaJ_flip (ε : Fin m → Bool) (Y : Matrix (Fin m) (Fin m) ℂ) :
     PI.DSInfCharCap.thetaJ (fun a => !ε a) Y = PI.DSInfCharCap.thetaJ ε Y := by
@@ -58,14 +58,14 @@ theorem thetaJ_flip (ε : Fin m → Bool) (Y : Matrix (Fin m) (Fin m) ℂ) :
   simp [Matrix.mul_neg, Matrix.neg_mul]
 
 /- English proof (translation)
-Simplify using `only [PI.DSInfCharCap.dsigC, thetaJ_flip]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dsigC_flip (ε : Fin m → Bool) (σ : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)) (Y : Matrix (Fin m) (Fin m) ℂ) (v : H) :
     PI.DSInfCharCap.dsigC (fun a => !ε a) σ Y v = PI.DSInfCharCap.dsigC ε σ Y v := by
   simp only [PI.DSInfCharCap.dsigC, thetaJ_flip]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Simplify using `only [casT, dsigC_flip]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem casT_flip (ε : Fin m → Bool) (π : Matrix (Fin m) (Fin m) ℂ → (H →L[ℂ] H)) (x : Fin m → H) :
     casT (fun a => !ε a) π x = casT ε π x := by
@@ -73,7 +73,7 @@ theorem casT_flip (ε : Fin m → Bool) (π : Matrix (Fin m) (Fin m) ℂ → (H 
   simp only [casT, dsigC_flip]
 
 /- English proof (translation)
-Unfold `formT`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `l _`. Apply the tactic sequence `by_cases h : ε l = true <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem formT_flip (ε : Fin m → Bool) (y x : Fin m → H) : formT (fun a => !ε a) y x = -formT ε y x := by
   unfold formT
@@ -83,7 +83,7 @@ theorem formT_flip (ε : Fin m → Bool) (y x : Fin m → H) : formT (fun a => !
   by_cases h : ε l = true <;> simp [h]
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.CompanionTheory.NegDS.isDS_flip m K (fun a => !ε a) lam σ h`. Simplify using `only [Bool.not_not] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isDS_of_flip {ε : Fin m → Bool} {lam : Fin m → ℝ} {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
     {σ : Matrix (Fin m) (Fin m) ℂ → (K →L[ℂ] K)} (h : IsDS (fun a => !ε a) lam σ) : IsDS ε lam σ := by
@@ -94,9 +94,9 @@ theorem isDS_of_flip {ε : Fin m → Bool} {lam : Fin m → ℝ} {K : Type} [Nor
 end Flip
 
 /- English proof (translation)
-Introduce `m ε lam H _ _ π X hF`. Set `Y : Dec ε lam π` to `{ S := X.S Hs := X.Hs nH := X.nH iH := X.iH cH := X.cH πs := X.πs ds := fun s hs => ⟨(X.ds s hs).1, isDS_of_flip (X.ds s hs).2⟩ p := X.p pr := X.pr c := fun s => -X.c s κ := X.κ p_sm := fun s hs x hx => (mem_SmT_flip ε π _).1 (X.p_sm s hs x ((mem_SmT_flip ε π x).2 hx)) sum := fun …`. Establish `h` using `X.form s hs x ((mem_SmT_flip ε π x).2 hx) y ((mem_SmT_flip ε π y).2 hy)`. Rewrite `h` using `[formT_flip]`. Rewrite using `[neg_mul, ← h, neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `cas := fun s hs x hx => by`. Establish `h` using `X.cas s hs x ((mem_SmT_flip ε π x).2 hx)`. Rewrite `h` using `[casT_flip]`. Then use the resulting hypothesis. Use `κ_inj := X.κ_inj }`. Conclude with `⟨Y, hF⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem flip_decomposition_holds : FlipDec := by
   intro m ε lam H _ _ π X hF

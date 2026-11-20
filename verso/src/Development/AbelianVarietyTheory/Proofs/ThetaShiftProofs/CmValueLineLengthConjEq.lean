@@ -12,7 +12,7 @@ open scoped LaurentSeries
 namespace GlobalTheory.ArcCM
 
 /- English proof (translation)
-Establish `h1` using `(GlobalTheory.ArchConj.norms_conj hK K P em _).2 v (h em)`. Establish `h2` using `(GlobalTheory.T.thetaNorm_lieNorm_unique_at_embedding hK K P _ _ _).2 v hv (h ((starRingEnd ℂ).comp em)) h1`. Conclude with `Real.log_injOn_pos (hℓ.2 _) (hℓ.2 _) h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem len_conj_of_lieNorm (hK : Known) {K : Type} [Field K] [NumberField K] (P : Out.PolAV (Sp K))
     (v : epsR K ⟶ P.A) (hv : IsTangent v) (ℓ : MLine K) (hℓ : ℓ.Good)
@@ -23,17 +23,15 @@ theorem len_conj_of_lieNorm (hK : Known) {K : Type} [Field K] [NumberField K] (P
   exact Real.log_injOn_pos (hℓ.2 _) (hℓ.2 _) h2
 
 /- English proof (translation)
-Introduce `hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s mo n em`. Use `letI := H.starRing`. Establish `tie` using `GlobalTheory.T.cm_metrised_line_lengths_eq_section_lie_norms hK E H Dw l c K₁ a e th jj n' La c₁ s`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, -, -, -, hΨ, h', hT, -⟩` from `s.good`. Establish `hTl : s.Tl.n ((starRingEnd ℂ).comp em) = s.Tl.n em`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `(GlobalTheory.ArchConj.norms_conj hK K₁ a.D₀.P em _).1 a.D₀.rig th (tie em).1`. Establish `h2` using `(GlobalTheory.T.thetaNorm_lieNorm_unique_at_embedding hK K₁ a.D₀.P _ _ _).1 a.D₀.rig th a.D₀.rig_gen (tie ((starRingEnd ℂ).comp em)).1 h1`. Conclude with `(sq_eq_sq₀ (hT.2 _).le (hT.2 _).le).1 h2`. Establish `hL : ∀ m, (s.L.ℓ m).n ((starRingEnd ℂ).comp em) = (s.L.ℓ m).n em`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm` using `s.L_good.2.2.2 m`. Break down `hq : s.L.src m with q | q` into its components or cases. Rewrite `hm` using `[hq]`. Establish `hm' : s.L.ℓ m = s.ℓΨ q.2` using `hm`. Rewrite using `[hm']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `len_conj_of_lieNorm hK s.xΨ.P (s.xΨ.v q.2) (s.xΨ.basis.1 q.2) _ (hΨ q.2).1 (fun σ => (tie σ).2.1 q.2) em`. Rewrite `hm` using `[hq]`. Establish `hm' : s.L.ℓ m = s.ℓ' q.2` using `hm`. Rewrite using `[hm']`. Conclude with `len_conj_of_lieNorm hK s.x'.P (s.x'.v q.2) (s.x'.basis.1 q.2) _ (h' q.2).1 (fun σ => (tie σ).2.2.1 q.2) em`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hline : ∀ τ k, (s.line τ k).n ((starRingEnd ℂ).comp em) = (s.line τ k).n em`. Introduce `τ k`. Unfold `CMIn.line`. Break down `s.kind τ k with _ | m` into its components or cases. Both sides reduce to the same expression.
-
-Conclude with `hL m`. Simplify using `only [CMIn.valLine, MLine.tensor, MLine.pow, MLine.dual, MLine.prodPow, hTl, hline]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valLine_conj : Known → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (K₁ : Type) [Field K₁] [NumberField K₁] [Algebra c.F K₁] (a : ArcIn Dw l (RingHom.id c.F) K₁ (algebraMap c.F K₁)) (e : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → Out.GtPt a.D₀ (epsR K₁)) (th : a.D₀.P.L.Sec) (jj : ℤ) (n' : ℕ) (La c₁ : ℝ) (s : CMIn a e th jj n' La c₁) (mo : ArcLt Dw →₀ ℕ) (n : ℕ) (em : K₁ →+* ℂ), (s.valLine mo n).n ((starRingEnd ℂ).comp em) = (s.valLine mo n).n em := by
   intro hK E _ _ _ H Dw l c K₁ _ _ _ a e th jj n' La c₁ s mo n em

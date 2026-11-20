@@ -15,9 +15,9 @@ namespace GlobalTheory.AcrisPow
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨4 * (A + B + 1), fun n hn => ?_⟩` and prove the remaining obligations. Use `set m := 2 * (A + B + 1) with hm`. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le (show m ≤ n by omega)`. Establish `hk : m ≤ k` using `by omega`. Establish `h1 : m < 2 ^ m` using `Nat.lt_two_pow_self`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : k < 2 ^ k` using `Nat.lt_two_pow_self`. Establish `h3 : (m + 1) * (k + 1) ≤ 2 ^ m * 2 ^ k` using `Nat.mul_le_mul h1 h2`. Rewrite using `[pow_add]`. Establish `h4 : A * (m + k) + B < (m + 1) * (k + 1)` using `by nlinarith`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eventually_lt_two_pow (A B : ℕ) : ∃ n₀ : ℕ, ∀ n, n₀ ≤ n → A * n + B < 2 ^ n := by
   refine ⟨4 * (A + B + 1), fun n hn => ?_⟩
@@ -32,13 +32,13 @@ theorem eventually_lt_two_pow (A B : ℕ) : ∃ n₀ : ℕ, ∀ n, n₀ ≤ n �
   omega
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hlu : IsUnit ((l : ℕ) : Per.AinfP l)`. Use `IsLocalization.Away.algebraMap_isUnit (S := Per.AinfP l) ((l : ℕ) : Per.Ainf l)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Then use the resulting hypothesis. Establish `hf : IsUnit ((l.factorial : ℕ) : Per.AinfP l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `GlobalTheory.Per.exists_factorial_mul_eq_pow_ainf l l`. Establish `h2` using `congrArg (algebraMap (Per.Ainf l) (Per.AinfP l)) hc`. Rewrite `h2` using `[map_mul, map_pow, map_natCast, map_natCast]`. Conclude with `isUnit_of_mul_isUnit_left (h2 ▸ hlu.pow l)`. Take `⟨v, hv⟩` from `hf.exists_right_inv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : ((l.factorial : ℕ) : Per.AinfP l) * (v * algebraMap (Per.Ainf l) (Per.AinfP l) ξ ^ l) = algebraMap (Per.Ainf l) (Per.AinfP l) ξ ^ l` using `by rw [← mul_assoc, hv, one_mul]`. Generalize the expression as in `v * algebraMap (Per.Ainf l) (Per.AinfP l) ξ ^ l = x at hx`. Establish `hxD : x ∈ Per.Acris0 l` using `GlobalTheory.RingIface.dividedPower_mem_Acris0 l ξ l x hξ hx`. Establish `hfac : ((l.factorial : ℕ) : Per.AinfP l) = ((l : ℕ) : Per.AinfP l) * (((l - 1).factorial : ℕ) : Per.AinfP l)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp.ne_zero]`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(((l - 1).factorial : ℕ) : Per.Acris0 l) * ⟨x, hxD⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Simplify using `only [SubmonoidClass.coe_pow, Subalgebra.coe_algebraMap, Subalgebra.coe_mul, SubringClass.coe_natCast]`. Rewrite using `[← hx, hfac, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_pow_acris0 (ξ : Ainf l) (hξ : Per.θ l ξ = 0) :
     ((l : ℕ) : Per.Acris0 l) ∣ algebraMap (Ainf l) (Per.Acris0 l) ξ ^ l := by
@@ -64,11 +64,11 @@ theorem dvd_pow_acris0 (ξ : Ainf l) (hξ : Per.θ l ξ = 0) :
   rw [← hx, hfac, mul_assoc]
 
 /- English proof (translation)
-Use `set f := algebraMap (Ainf l) (Per.Acris l)`. Establish `hξ : Per.θ l (bk.ev bk.E) = 0`. Rewrite using `[← RingHom.mem_ker, ← bk.span_ev]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `h1 : (l : Per.Acris l) ∣ f (bk.ev bk.E) ^ l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `map_dvd (algebraMap (Per.Acris0 l) (Per.Acris l)) (dvd_pow_acris0 _ hξ)` as an intermediate fact. Rewrite `this` using `[map_natCast, map_pow, ← GlobalTheory.RingIface.tower l]`. Conclude with `this`. Establish `h2 : (l : Per.Acris l) ∣ f (bk.ev bk.E) - f (bk.ev X) ^ bk.Ep.natDegree`. Use `map_dvd f (AinfDiv.dvd_E bk)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_natCast, map_sub, map_pow]`. Then use the resulting hypothesis. Establish `h3 : (l : Per.Acris l) ∣ f (bk.ev bk.E) ^ l - (f (bk.ev X) ^ bk.Ep.natDegree) ^ l` using `h2.trans (sub_dvd_pow_sub_pow _ _ l)`. Establish `h4` using `dvd_sub h1 h3`. Rewrite `h4` using `[sub_sub_cancel, ← pow_mul]`. Simplify `h4` using `[RingHom.comp_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem dvd_X_pow {K : FinExt l} (bk : BK K) :
     (l : Per.Acris l) ∣ ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) X ^ (bk.Ep.natDegree * l) := by
@@ -89,11 +89,11 @@ theorem dvd_X_pow {K : FinExt l} (bk : BK K) :
   simpa [RingHom.comp_apply] using h4
 
 /- English proof (translation)
-Introduce `l _ K bk c M`. Use `set e := bk.Ep.natDegree`. Take `⟨n₀, hn₀⟩` from `eventually_lt_two_pow (e * l * c) (e * l * M)`. Use `⟨n₀, fun n hn => ?_⟩` and prove the remaining obligations. Establish `hlt` using `hn₀ n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2l : 2 ^ n ≤ l ^ n` using `Nat.pow_le_pow_left (Fact.out : l.Prime).two_le n`. Establish `hle : e * l * (c * n + M) ≤ l ^ n - 1`. Establish `: e * l * (c * n + M) = e * l * c * n + e * l * M` using `by ring`. Use linear arithmetic over natural numbers and integers. Establish `hk` using `pow_dvd_pow_of_dvd (dvd_X_pow bk) (c * n + M)`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[← pow_mul]`. Conclude with `hk.trans (pow_dvd_pow _ hle)`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (c M : ℕ), ∃ n₀ : ℕ, ∀ n, n₀ ≤ n →
     (l : Per.Acris l) ^ (c * n + M) ∣ ((algebraMap (Ainf l) (Per.Acris l)).comp bk.ev) X ^ (l ^ n - 1) := by

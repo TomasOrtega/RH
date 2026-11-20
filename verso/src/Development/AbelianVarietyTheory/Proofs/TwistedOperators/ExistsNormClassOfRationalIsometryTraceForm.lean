@@ -12,9 +12,9 @@ namespace GlobalTheory.RatCls
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} (P : PPol σ n)
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, map_mul, Algebra.smul_def]`. Use `congr 1`. Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.lid F (Fld P) (Algebra.TensorProduct.map (AlgHom.id F F) (IsScalarTower.toAlgHom F E (Fld P)) (a ⊗ₜ e)) = _`. Simplify using `[Algebra.smul_def, IsScalarTower.algebraMap_apply F E (Fld P)]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem lid_smul (c : F ⊗[F] E) (z : F ⊗[F] Fld P) :
     Algebra.TensorProduct.lid F (Fld P) (c • z) =
@@ -31,9 +31,9 @@ theorem lid_smul (c : F ⊗[F] E) (z : F ⊗[F] Fld P) :
 
 omit [Field E] in
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a e`. Simplify using `only [inclR, Algebra.TensorProduct.lid_tmul]`. Express the relevant statement in the definitionally equal form `(1 : F) ⊗ₜ[F] (a • e) = a ⊗ₜ e`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[TensorProduct.tmul_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem inclR_lid {A : Type} [Field A] [Algebra F A] (c : F ⊗[F] A) :
     inclR F (Algebra.TensorProduct.lid F A c) = c := by
@@ -47,7 +47,7 @@ theorem inclR_lid {A : Type} [Field A] [Algebra F A] (c : F ⊗[F] A) :
 
 omit [Field E] in
 /- English proof (translation)
-Simplify using `[inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lid_inclR {A : Type} [Field A] [Algebra F A] (a : A) :
     Algebra.TensorProduct.lid F A (inclR F a) = a := by
@@ -83,20 +83,20 @@ namespace GlobalTheory.RatCls
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ} (P : PPol σ n)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[tensEquiv_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem tensEquiv_tmul (φ : Fld P ≃ₗ[E] (Fin n → E)) (v : Fld P) :
     tensEquiv (F := F) P φ (1 ⊗ₜ v) = fun i => inclR F (φ v i) := by
   funext i; rw [tensEquiv_apply]; simp
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (e : E) : sigR F σ (inclR F e) = inclR F (σ e) := by
   simp [sigR, inclR]
 
 /- English proof (translation)
-Simplify using `[Formalism.UG.hform, JR, map_sum, map_mul, sigR_inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_inclR (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
     Formalism.UG.hform (sigR F σ) (JR F J) (fun i => inclR F (a i)) (fun i => inclR F (b i)) =
@@ -104,7 +104,7 @@ theorem hform_inclR (J : Matrix (Fin n) (Fin n) E) (a b : Fin n → E) :
   simp [Formalism.UG.hform, JR, map_sum, map_mul, sigR_inclR]
 
 /- English proof (translation)
-Simplify using `[trBase, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trBase_tmul (w : Fld P) : trBase P F (1 ⊗ₜ w) = inclR F (Algebra.trace E (Fld P) w) := by
   simp [trBase, inclR]
@@ -115,21 +115,21 @@ noncomputable section
 namespace GlobalTheory.RatCls
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ n P J φ x hx hs hφ γ hγ`. Set `Φ` to `tensEquiv (F := F) P φ`. Set `u : (F ⊗[F] Fld P)ˣ` to `Units.map (Algebra.TensorProduct.lid F (Fld P)).symm.toAlgHom.toRingHom.toMonoidHom (Units.mk0 x hx)`. Establish `hu : (u : F ⊗[F] Fld P) = 1 ⊗ₜ x` using `by simp [u]`. Establish `hmem : u ∈ plusUnits P F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Units.map (sigR F (star' P)).toMonoidHom u = MonoidHom.id _ u`. Use `ext`. Simplify using `[hu, sigR, hs]`. Set `xu : plusUnits P F` to `⟨u, hmem⟩`. Establish `pure : ∀ y : F ⊗[F] Fld P, ∃ v, y = 1 ⊗ₜ v` using `fun y => ⟨Algebra.TensorProduct.lid F (Fld P) y, (inclR_lid y).symm⟩`.
+Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI : IsIsom P F J xu.1.1 Φ`. Introduce `y y'`. Take `⟨v, rfl⟩` from `pure y`. Take `⟨v', rfl⟩` from `pure y'`. Simplify using `only [Φ, tensEquiv_tmul, hform_inclR, hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ = trBase P F (u.1 * 1 ⊗ₜ v * sigR F (star' P) (1 ⊗ₜ v'))`. Rewrite using `[hu]`. Simplify using `only [sigR, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, map_one, Algebra.TensorProduct.tmul_mul_tmul, mul_one, trBase_tmul]`. Use `⟨QuotientGroup.mk xu, xu, Φ, hI, rfl, ?_⟩` and prove the remaining obligations. Establish `ht : (torUnit (diagH (star' P) (one₁ P) F (alphaRat P))).1 = 1 ⊗ₜ alpha P` using `by show Matrix.det ((((alphaRat P).1 : GL (Fin 1) (Fld P)) : Matrix (Fin 1) (Fin 1) (Fld P)).map (inclR F)) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_fin_one]`. Simplify using `[alphaRat, inclR]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mulMat Φ (torUnit (diagH (star' P) (one₁ P) F (alphaRat P))).1 = (γ.1 : Matrix (Fin n) (Fin n) E).map (inclR F)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht]`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Take `⟨y, rfl⟩` from `Φ.surjective w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v, rfl⟩` from `pure y`. Rewrite using `[Matrix.toLin'_apply, Matrix.toLin'_apply, mulMat_mulVec, Algebra.TensorProduct.tmul_mul_tmul, mul_one]`. Simplify using `only [Φ, tensEquiv_tmul]`. Use function extensionality and compare the values at `i`. Rewrite using `[← hγ, RingHom.map_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem hasCls_of_ratIsom : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (P : PPol σ n)
     (J : Matrix (Fin n) (Fin n) E) (φ : Fld P ≃ₗ[E] (Fin n → E)) (x : Fld P), x ≠ 0 → star' P x = x →

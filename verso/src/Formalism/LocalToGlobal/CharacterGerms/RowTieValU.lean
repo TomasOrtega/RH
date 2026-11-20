@@ -16,9 +16,9 @@ def IsIU (V : VF C) {σ : Type} (U : MvPowerSeries σ C) : Prop :=
   IntS V U ∧ V.v (MvPowerSeries.constantCoeff U) = 0
 
 /- English proof (translation)
-Use `⟨fun μ => ?_, ?_⟩` and prove the remaining obligations. Unfold `VF.Ge`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs`. Rewrite using `[AddValuation.map_one]`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_rfl`. Rewrite using `[AddValuation.map_zero]`. Conclude with `le_top`. Rewrite using `[map_one, AddValuation.map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIU.one {σ : Type} : IsIU V (1 : MvPowerSeries σ C) := by
   refine ⟨fun μ => ?_, ?_⟩
@@ -30,15 +30,13 @@ theorem IsIU.one {σ : Type} : IsIU V (1 : MvPowerSeries σ C) := by
   · rw [map_one, AddValuation.map_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨IntS.mul h.1 h'.1, by rw [map_mul, AddValuation.map_mul, h.2, h'.2, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsIU.mul {σ : Type} {U U' : MvPowerSeries σ C} (h : IsIU V U) (h' : IsIU V U') : IsIU V (U * U') :=
   ⟨IntS.mul h.1 h'.1, by rw [map_mul, AddValuation.map_mul, h.2, h'.2, add_zero]⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty]`. Conclude with `IsIU.one`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha]`.
-
-Conclude with `(h a (Finset.mem_insert_self a s)).mul (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIU.prod {σ ι : Type} (s : Finset ι) {U : ι → MvPowerSeries σ C} (h : ∀ i ∈ s, IsIU V (U i)) :
     IsIU V (∏ i ∈ s, U i) := by
@@ -80,21 +78,19 @@ def PairSt : Prop :=
 end Defs
 
 /- English proof (translation)
-Introduce `hs`. Use `choose π hπi hπc hπp using hP hs`. Establish `hproj : IsProj Y p π` using `⟨hπi, hπc, hπp⟩`. Take `⟨U0, hU0, hE⟩` from `h1 hs π hproj`. Use `choose Uc hUc hUceq using h2 hs π hproj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `choose Up hUp hUpeq using h3 hs π hproj`. Set `W : Orb × Fin 2 → Orb × Fin 2 → PS C 1 dd` to `fun s s' => if h : s' ≠ barS s then Uc s s' h else 1`. Establish `hW : ∀ s s', IsIU V (W s s')`. Introduce `s s'`. Distinguish the cases in `h : s' ≠ barS s`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [W, dif_pos h]`. Conclude with `hUc s s' h`. Simplify using `only [W, dif_neg h]`. Conclude with `IsIU.one`. Establish `hone : pull1 Y p (1 : PS C 1 dd) = 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `VP.pullback_one_var_prod (Y := Y) (p := p) (∅ : Finset Unit) (fun _ => 1)` as an intermediate fact. Simplify using `using this`. Establish `hA : ∀ s s', pull1 Y p (Aterm Y π s s') = pull1 Y p (W s s') * (if s' = barS s then pull1 Y p (Aterm Y π s (barS s)) else 1)`. Introduce `s s'`. Distinguish the cases in `h : s' = barS s`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h' : ¬ s' ≠ barS s` using `not_not.2 h`. Simplify using `only [W, dif_neg h', if_pos h, hone, one_mul]`. Rewrite using `[h]`. Simplify using `only [W, dif_pos h, if_neg h, mul_one]`. Conclude with `hUceq s s' h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpair : ∏ s : Orb × Fin 2, pull1 Y p (Aterm Y π s (barS s)) = ∏ o, (pull1 Y p (Up o) * toAllS o (mvExp (Y.raw (p o)).hRow))`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun o _ => ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Establish `hb0 : barS (o, (0 : Fin 2)) = (o, 1)` using `by simp [barS]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hb1 : barS (o, (1 : Fin 2)) = (o, 0)` using `by simp [barS]`. Rewrite using `[hb0, hb1]`. Conclude with `hUpeq o`. Use `⟨U0 * (∏ s, ∏ s', W s s') * ∏ o, Up o, ((hU0.mul (IsIU.prod _ fun s _ => IsIU.prod _ fun s' _ => hW s s')).mul (IsIU.prod _ fun o _ => hUp o)).1, ((hU0.mul (IsIU.prod _ fun s _ => IsIU.prod _ fun s' _ => hW s s')).mul (IsIU.prod _ fun o _ => hUp o)).2, ?_⟩` and prove the remaining obligations. Rewrite using `[hE]`.
-
-Rewrite using `[Finset.prod_congr rfl fun s _ => Finset.prod_congr rfl fun s' _ => hA s s']`. Simplify using `only [Finset.prod_mul_distrib, Finset.prod_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hpair, Finset.prod_mul_distrib, VP.pullback_one_var_mul, VP.pullback_one_var_mul, VP.pullback_one_var_prod, VP.pullback_one_var_prod]`. Repeatedly rewrite using `[VP.pullback_one_var_prod]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem unit_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hP : ProjPullSt Y p) (h1 : BiaddSt Y p)
     (h2 : CrossSt Y p) (h3 : PairSt Y p) : UnitSt Y p := by
@@ -146,7 +142,7 @@ theorem unit_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (hP : Pro
   ring
 
 /- English proof (translation)
-The claim follows from `valuation_eq_pair_of_unit_germ Y p H Ls n (unit_of Y p hP h1 h2 h3) (germLift_of Y p H hP hT)`.
+A detailed English derivation is pending.
 -/
 theorem valuation_eq_pair_of_pairing (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
     (Ls : LetSys C dd) (n : ℕ) (hP : ProjPullSt Y p) (hT : ∀ o, RawChart.TCoordSt (H o).cartH)

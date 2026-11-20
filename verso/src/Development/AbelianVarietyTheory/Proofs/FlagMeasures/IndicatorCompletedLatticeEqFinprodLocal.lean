@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace GlobalTheory.AdelicU
 
 /- English proof (translation)
-Use `isLattice_stdLattice (E := E) (n := n)` as an intermediate fact. Use `filter_upwards [eventually_latLoc_eq F L (stdLattice E n), Filter.eventually_all.2 fun i => eventually_map_evalV_mem_intLoc (y i)] with v h h1`. Rewrite using `[h, mem_latLoc_stdLattice]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_vecLoc_mem_latLoc {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) (y : Fin n → Af F ⊗[F] E) :
@@ -23,11 +23,9 @@ theorem eventually_vecLoc_mem_latLoc {F E : Type} [Field F] [NumberField F] [Fie
   exact h1
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n L hL X`. Establish `key : ∀ v : HeightOneSpectrum (𝓞 F), vecLoc v (X 0) ∈ latLoc F L v → {Y : Fin 1 → Fin n → Fv F v ⊗[F] E | Y 0 ∈ GlobalTheory.AdelicU.latLoc F L v}.indicator (1 : (Fin 1 → Fin n → Fv F v ⊗[F] E) → ℂ) (projV v X) = 1` using `fun v hv => Set.indicator_of_mem (s := {Y : Fin 1 → Fin n → Fv F v ⊗[F] E | Y 0 ∈ GlobalTheory.AdelicU.latLoc F L v}) hv _`. Distinguish the cases in `h : X 0 ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E))`. Rewrite using `[Set.indicator_of_mem (s := {X : Fin 1 → Fin n → Af F ⊗[F] E | X 0 ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E))}) h, finprod_congr fun v => key v ((mem_latHat_iff hL.fg _).1 h v), finprod_one]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem (s := {X : Fin 1 → Fin n → Af F ⊗[F] E | X 0 ∈ Formalism.MainNotions.StandardLattice.latHat F E (L : Set (Fin n → E))}) h]`. Rewrite `h` using `[mem_latHat_iff hL.fg, not_forall]`. Take `⟨v, hv⟩` from `h`. Use `(finprod_eq_zero _ v ?_ ?_).symm` and prove the remaining obligations. Conclude with `Set.indicator_of_notMem (s := {Y : Fin 1 → Fin n → Fv F v ⊗[F] E | Y 0 ∈ GlobalTheory.AdelicU.latLoc F L v}) hv _`.
-
-Conclude with `Set.Finite.subset (Filter.eventually_cofinite.1 (eventually_vecLoc_mem_latLoc L hL (X 0))) fun u hu hu' => hu (key u hu')`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem indicator_latHat_eq_finprod :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (n : ℕ)

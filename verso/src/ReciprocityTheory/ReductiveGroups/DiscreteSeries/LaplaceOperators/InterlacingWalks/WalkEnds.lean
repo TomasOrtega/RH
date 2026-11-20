@@ -3,13 +3,13 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.LaplaceOperators.Interla
 namespace ReciprocityTheory.ChartRestriction.DS.Lap
 
 /- English proof (translation)
-Introduce `k r u v b t`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Establish `ha` using `a.isLt`. Simplify using `only [lamT, raisePar]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(exfalso; omega)`. Consider the case `(have h0 : a.val - (k - 1) = 0 := by omega`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[h0])`. Use function extensionality and compare the values at `a`. Establish `ha` using `a.isLt`. Simplify using `only [raisePar, walkPar, parLam]`. Use `split_ifs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `all_goals first`. Consider the case `rfl`. Consider the case `(exfalso; omega)`. Use function extensionality and compare the values at `a`. Simplify using `[walkPar]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem walkEnds : EndsStatement := by
   intro k r u v b t

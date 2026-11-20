@@ -22,7 +22,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RayEv
 
 /- English proof (translation)
-Establish `h'` using `h.map (Over.pullback f)`. Establish `e : (Over.pullback f).map (toUnit K) = toUnit _ ≫ Functor.LaxMonoidal.ε (Over.pullback f)` using `(cancel_mono (Functor.OplaxMonoidal.η (Over.pullback f))).1 (toUnit_unique _ _)`. Use `Diag.isPullback_toUnit_of_lift _ (h'.w.trans (by rw [e, Category.assoc]; rfl)) (fun {T} a b k => h'.hom_ext k ((cancel_mono (Functor.OplaxMonoidal.η (Over.pullback f))).1 (toUnit_unique _ _))) fun {T} t ht => ⟨h'.lift t (toUnit _ ≫ Functor.LaxMonoidal.ε (Over.pullback f)) (ht.tra …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem isKernel_pull {S S' : Scheme.{0}} (f : S' ⟶ S) {K G B : Over S} [GrpObj B] {i : K ⟶ G} {q : G ⟶ B}
     (h : IsPullback i (toUnit K) q η[B]) :
@@ -36,9 +36,9 @@ theorem isKernel_pull {S S' : Scheme.{0}} (f : S' ⟶ S) {K G B : Over S} [GrpOb
       (ht.trans (Category.assoc _ _ _).symm), h'.lift_fst _ _ _⟩
 
 /- English proof (translation)
-Use `haveI := hi.isMonHom`. Use `haveI := hq.isMonHom`. Take `⟨h₁, h₂⟩ : Function.Injective (lieMap f hi) ∧ Function.Exact (lieMap f hi) (lieMap f hq)` from `Lie.map_kernel (isKernel_pull (spMap f) h)`. Use `⟨fun x y e => Subtype.ext (h₁ (congrArg Subtype.val e)), fun v => ⟨fun e => ?_, ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `(h₂ v.1).1 (congrArg Subtype.val e)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨w, fun x => h₁ ?_⟩, Subtype.ext hw⟩` and prove the remaining obligations. Rewrite using `[lieMap_act, LinearMap.map_smul, hw]`. Conclude with `v.2 x`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `Subtype.ext ((h₂ _).2 ⟨w.1, rfl⟩)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eigMap_exact {R S O : Type} [CommRing R] [CommRing S] [CommRing O] (f : R →+* S) {K G B : Over (Sp R)}
     [GrpObj K] [IsCommMonObj K] [GrpObj G] [IsCommMonObj G] [GrpObj B] [IsCommMonObj B] {c : OAct O K} {a : OAct O G}
@@ -69,9 +69,9 @@ def contr (ρ : Λ →+* Module.End O M) (ψ : LinearMap.BilinForm O M) (i : J) 
   ψ.baseChange C (eigDefect h ρ i x) (1 ⊗ₜ x')
 
 /- English proof (translation)
-Establish `e : IsEquivariant (baseChangeAction C ρ) (baseChangeAction C ρ') (f.baseChange C)` using `fun a z => by`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add z w hz hw => simp only [map_add, hz, hw]`. Consider the case `tmul c m => exact congrArg (c ⊗ₜ[O] ·) (hf a m)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[eigDefect, map_sub, e.proj h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eigDefect_map {ρ : Λ →+* Module.End O M} {ρ' : Λ →+* Module.End O M'} {f : M →ₗ[O] M'}
     (hf : IsEquivariant ρ ρ' f) (i : J) (x : M) :
@@ -85,7 +85,7 @@ theorem eigDefect_map {ρ : Λ →+* Module.End O M} {ρ' : Λ →+* Module.End 
   rfl
 
 /- English proof (translation)
-Rewrite using `[contr, contr, ← eigDefect_map h hf]`. Proceed by induction on `eigDefect h ρ i x with`. Consider the case `zero => simp`. Consider the case `add z w hz hw => simp only [map_add, LinearMap.add_apply, hz, hw]`. Consider the case `tmul c m => simp [LinearMap.BilinForm.baseChange_tmul]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem contr_comp {ρ : Λ →+* Module.End O M} {ρ' : Λ →+* Module.End O M'} {f : M →ₗ[O] M'}
     (hf : IsEquivariant ρ ρ' f) (ψ : LinearMap.BilinForm O M') (i : J) (x x' : M) :
@@ -97,14 +97,14 @@ theorem contr_comp {ρ : Λ →+* Module.End O M} {ρ' : Λ →+* Module.End O M
   | tmul c m => simp [LinearMap.BilinForm.baseChange_tmul]
 
 /- English proof (translation)
-Rewrite using `[contr, eigDefect, proj_of_mem h hx, sub_self, map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem contr_of_eigen {ρ : Λ →+* Module.End O M} (ψ : LinearMap.BilinForm O M) (i : J) {x : M}
     (hx : (1 : C) ⊗ₜ[O] x ∈ eigenSub (baseChangeAction C ρ) (σ i)) (x' : M) : contr h ρ ψ i x x' = 0 := by
   rw [contr, eigDefect, proj_of_mem h hx, sub_self, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Rewrite using `[contr, eigDefect, proj_of_mem_ne h hij hx, zero_sub, map_neg, LinearMap.neg_apply, LinearMap.BilinForm.baseChange_tmul, _root_.mul_one, Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example {ρ : Λ →+* Module.End O M} (ψ : LinearMap.BilinForm O M) {i j : J} (hij : j ≠ i) {x : M}
     (hx : (1 : C) ⊗ₜ[O] x ∈ eigenSub (baseChangeAction C ρ) (σ j)) (x' : M) :
@@ -169,7 +169,7 @@ def natAct : Λ →+* Module.End O (NatLie hq) where
     (LinearMap.congr_fun (map_add (DeRham.act (dp0 O) (𝟙 _) b) c c') z.1.2))
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem natToB_equivariant : IsEquivariant (natAct hq) (DeRham.act (dp0 O) (𝟙 _) b) (natToB hq) := fun _ _ => rfl
 
@@ -193,14 +193,14 @@ def kapExt (i : J) (u u' : Lie a) : C :=
   contr h (natAct hq) (natForm hq sp) i (natLift hq sp u) (natLift hq sp u')
 
 /- English proof (translation)
-The claim follows from `contr_comp h (natToB_equivariant hq) _ i _ _`.
+A detailed English derivation is pending.
 -/
 theorem kapExt_eq (i : J) (u u' : Lie a) :
     kapExt hq sp h i u u' = kapAb sp h i (Lie.mapLinear hq u) (Lie.mapLinear hq u') :=
   contr_comp h (natToB_equivariant hq) _ i _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨0, isPolForm_zero L hL, 0, fun v => toUnit_unique 1 v.hom ▸ isLieImage_one_iff.2 (zero_mem _), fun _ _ => rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 example (b : OAct Λ (𝟙_ (Over (Sp O)))) (L : LB (𝟙_ (Over (Sp O))).left) (hL : ∀ i j, L.g i j = 1) :
     Nonempty (PolSplit b L) :=

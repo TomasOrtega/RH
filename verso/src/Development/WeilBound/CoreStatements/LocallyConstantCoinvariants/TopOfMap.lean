@@ -13,9 +13,9 @@ open scoped TensorProduct
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `hv : Φ v ∈ N.map Φ` using `by rw [h]; exact Submodule.mem_top`. Take `⟨n, hn, hnv⟩` from `hv`. Establish `hker : v - n ∈ N` using `hR (hK _ (by rw [map_sub, hnv, sub_self]))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `N.add_mem hker hn` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem top_of_map {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U] [Module ℂ U] (Φ : V →ₗ[ℂ] U) {R N : Submodule ℂ V}
     (hK : ∀ f, Φ f = 0 → f ∈ R) (hR : R ≤ N) (h : N.map Φ = ⊤) : N = ⊤ := by
@@ -28,25 +28,25 @@ theorem top_of_map {V U : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup U]
   simpa using this
 
 /- English proof (translation)
-Set `e` to `stdSum (rfl : n + t = n + t)`. Take `⟨-, -, -, -, -, hcont, hP, -, hPK⟩` from `GlobalTheory.SmGL.LeviInt.levi_integral_facts k _ (Fin (n + t)) _ (two e)`. Take `⟨_, _⟩` from `GlobalTheory.SplitWeil.Model.secondCountable_and_t2_local_field (k := k)`. Set `ρ : Representation ℂ (Levi k (Two (Fin n) (Fin t))) _` to `MonoidHom.comp (τ.comp (MonoidHom.inr Γ _)) (leviTwo k (Fin n) (Fin t)).symm.toMonoidHom`. Set `π₁` to `detRep (Fin n) (1 : kˣ →* ℂˣ)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `π₂` to `detRep (Fin t) μ`. Set `ρD : Representation ℂ (Levi k (Two (Fin n) (Fin t))) (ℂ ⊗[ℂ] ℂ)` to `(extTensor π₁ π₂).comp (leviTwo k (Fin n) (Fin t)).symm.toMonoidHom`. Set `q : ρ.IntertwiningMap ρD` to `{ toLinearMap := (TensorProduct.lid ℂ ℂ).symm.toLinearMap ∘ₗ l isIntertwining' := fun m => LinearMap.ext fun φ => by`. Express the relevant statement in the definitionally equal form `(TensorProduct.lid ℂ ℂ).symm (l (τ (1, m false, m true) φ)) = extTensor π₁ π₂ (m false, m true) ((TensorProduct.lid ℂ ℂ).symm (l φ))`. Rewrite using `[hτl]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[π₁, π₂, detRep] }`. Establish `hq : Function.Surjective q` using `(TensorProduct.lid ℂ ℂ).symm.surjective.comp hs`. Establish `hρ : IsSmooth ρ` using `isSmooth_comp hτ _ ((continuous_apply false).prodMk (continuous_apply true))`. Establish `hI : (parInd (two e) ρD).IsIrreducible` using `hB k n t ℂ ℂ π₁ π₂ ((isSmooth_ofChar_iff _).2 (IsSmoothChar.detChar (by unfold IsSmoothChar; simp))) (isIrreducible_ofChar _) ((isUnitarisable_ofChar_iff _).2 fun g => by simp) ((isSmooth_ofChar_iff _).2 hμ.detChar) (isIrreducible_ofChar _) ((isUnitarisable_ofChar_iff _).2 fun g …`. Set `σ` to `(twist ρ (deltaHalf k (Two (Fin n) (Fin t)))).comp (leviProj k (two e))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσ : IsSmooth σ` using `isSmooth_comp (isSmooth_twist hρ (isSmoothChar_deltaHalf k)) _ hcont`. Set `α : Representation.IntertwiningMap σ ((twist ρD (deltaHalf k (Two (Fin n) (Fin t)))).comp (leviProj k (two e)))` to `compMap (twistMap q _) _`. Set `T : Γ → Representation.IntertwiningMap σ σ` to `fun γ => compMap (twistMap (actFst τ γ) (deltaHalf k (Two (Fin n) (Fin t)))) (leviProj k (two e))`. Establish `hker0 : ∀ x, α x = 0 → x ∈ Submodule.span ℂ {y | ∃ γ z, y = T γ z - z}`. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : l x = 0` using `(TensorProduct.lid ℂ ℂ).symm.map_eq_zero_iff.1 hx`. Use `(Submodule.span_le (p := Submodule.span ℂ {y | ∃ γ z, y = T γ z - z})).2 ?_ (hk x h0)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, v, rfl⟩`. Use `Submodule.subset_span ⟨γ, v, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨-, hker⟩` from `GlobalTheory.SmGL.IndCoinv.smInd_coinvariants (GL (Fin (n + t)) k) (parab k (two e)) (KO k _) hP GlobalTheory.SplitFlip.isCompact_KO hPK (GlobalTheory.SmGL.exists_open_normalised_subgroup_subset k _) _ _ σ _ hσ α _ T (fun y => hq y) hker0`. Set `Φ : (parInd (two e) ρ).IntertwiningMap (parInd (two e) ρD)` to `parIndMap (two e) q`. Establish `hK : ∀ f, Φ f = 0 → f ∈ twRel ((indSnd e τ).comp (MonoidHom.inl _ _)) 1` using `fun f hf => by`. Use `(Submodule.span_le (p := twRel ((indSnd e τ).comp (MonoidHom.inl _ _)) 1)).2 ?_ (hker f hf)` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨γ, z, rfl⟩`. Use `Submodule.subset_span ⟨γ, z, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Use `congr 1`. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `show τ (γ, 1) (z.1.1 x) = τ (γ, 1) (z.1.1 (x * 1))`. Rewrite using `[mul_one]`. Set `S : Subrepresentation (parInd (two e) ρD)` to `⟨N.map Φ.toLinearMap, by`. Introduce and unpack `h _ ⟨f, hf, rfl⟩`. Use `⟨_, hN h f hf, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indSnd_inr]`. Conclude with `Φ.isIntertwining _ _ h f⟩`. Break down `hI.eq_bot_or_eq_top S with h | h` into its components or cases. Use `Or.inr fun f hf => hK f ?_` and prove the remaining obligations. Establish `: Φ.toLinearMap f ∈ S.toSubmodule` using `⟨f, hf, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the first alternative.
 
-Rewrite `this` using `[h]`. Conclude with `this`. Conclude with `Or.inl (top_of_map Φ.toLinearMap hK hR (congrArg Subrepresentation.toSubmodule h))`.
+A detailed English derivation is pending.
 -/
 theorem irr_gen (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (n t : ℕ) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ)
     (hu : ∀ x, ‖(μ x : ℂ)‖ = 1) {Γ W : Type} [Group Γ] [AddCommGroup W] [Module ℂ W]
@@ -120,19 +120,19 @@ theorem irr_gen (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible)
   · exact Or.inl (top_of_map Φ.toLinearMap hK hR (congrArg Subrepresentation.toSubmodule h))
 
 /- English proof (translation)
-Set `τ` to `fibRep (Fin n) (Fin n) (Fin t) μ n`. Set `ξ : GL (Fin n) k →* ℂˣ` to `detChar (Fin n) (μ⁻¹ * absPow k (((Fintype.card (Fin n) : ℂ) + Fintype.card (Fin t)) / 2))`. Establish `hξ : IsSmoothChar ξ` using `(hμ.inv.mul (isSmoothChar_of_isUnram (isUnram_absPow k _))).detChar`. Take `⟨l, hs, hl, hk⟩` from `exists_fun (k := k) (κ := n) (Fintype.card_fin n).symm hξ`. Establish `hτ : IsSmooth (τ.comp (MonoidHom.inr _ _))` using `GlobalTheory.T.fibre_representation_smooth k _ _ _ μ hμ n`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hτl : ∀ g p₁ p₂ φ, l (τ (g, p₁, p₂) φ) = (μ (GeneralLinearGroup.det p₂) : ℂ) * l φ`. Introduce `g p₁ p₂ φ`. Express the relevant statement in the definitionally equal form `l ((fibChar (Fin n) (Fin n) (Fin t) μ (g, p₁, p₂) : ℂ) • fibBase (Fin n) (Fin n) n (g, p₁) φ) = _`. Rewrite using `[map_smul, hl, smul_eq_mul, ← mul_assoc]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `a1 : ∀ (x : kˣ) (s s' s'' : ℂ), s + s' + s'' = 0 → absPow k s x * absPow k s' x * absPow k s'' x = 1` using `fun x s s' s'' h => by`. Rewrite using `[← MonoidHom.mul_apply, ← absPow_add, ← MonoidHom.mul_apply, ← absPow_add, h]`. Conclude with `Units.ext (by simp [val_absPow])`. Establish `b1` using `congrArg Units.val (a1 (GeneralLinearGroup.det p₁) (-(n : ℂ) / 2) (-(t : ℂ) / 2) (((n : ℂ) + t) / 2) (by ring))`. Establish `b2` using `congrArg Units.val (a1 (GeneralLinearGroup.det p₂) (-(n : ℂ) / 2) ((n : ℂ) / 2) 0 (by ring))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [fibChar, ξ, MonoidHom.mul_apply, MonoidHom.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd, detChar_apply, Units.val_mul, MonoidHom.inv_apply, Fintype.card_fin, Units.val_inv_eq_inv_val, Units.val_one, val_absPow, Complex.cpow_zero, mul_one] at b1 b2 ⊢`. Establish `n1` using `(μ (GeneralLinearGroup.det g)).ne_zero`. Establish `n2` using `(μ (GeneralLinearGroup.det p₁)).ne_zero`. Establish `n3` using `(absPow k (((n : ℂ) + t) / 2) (GeneralLinearGroup.det g)).ne_zero`. Rewrite `n3` using `[val_absPow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [neg_div] at b1 b2`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(exp := 1) ((nabs k (GeneralLinearGroup.det p₂) : ℂ) ^ (-((n : ℂ) / 2)) * (nabs k (GeneralLinearGroup.det p₂) : ℂ) ^ ((n : ℂ) / 2)) * b1 + b2`. Use `irr_gen hB n t hμ hu τ hτ l hs hτl (fun x h0 => ?_) N hR hN` and prove the remaining obligations. Use `(Submodule.span_le (p := twRel (τ.comp (MonoidHom.inl _ _)) 1)).2 ?_ (hk x h0)` and prove the remaining obligations.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨γ, v, rfl⟩`. Establish `e1 : τ (γ, 1) v = (ξ γ : ℂ) • rightRep (Fin n) (Fin n) n γ v`. Express the relevant statement in the definitionally equal form `(fibChar (Fin n) (Fin n) (Fin t) μ (γ, 1) : ℂ) • fibBase (Fin n) (Fin n) n (γ, 1) v = _`. Use `congr 1`. Simplify using `[fibChar, ξ]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : rightRep (Fin n) (Fin n) n γ v - ((ξ⁻¹ γ : ℂˣ) : ℂ) • v = ((ξ⁻¹ γ : ℂˣ) : ℂ) • (τ (γ, 1) v - (((1 : GL (Fin n) k →* ℂˣ) γ : ℂˣ) : ℂ) • v)`. Rewrite using `[e1, MonoidHom.one_apply, Units.val_one, one_smul, smul_sub, smul_smul, MonoidHom.inv_apply, Units.inv_mul, one_smul]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨γ, v, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irr_ind (hB : GlobalTheory.Published.BernsteinUnitaryProductIrreducible) (n t : ℕ) {μ : kˣ →* ℂˣ} (hμ : IsSmoothChar μ)
     (hu : ∀ x, ‖(μ x : ℂ)‖ = 1) (N : Submodule ℂ (IndSp (two (stdSum (rfl : n + t = n + t)))

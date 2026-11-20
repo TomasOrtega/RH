@@ -8,9 +8,9 @@ open Formalism.MainNotions.N
 namespace GlobalTheory.TraceSemisimple
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_2 h_3 h_4; revert Γ k h_2 h_3 h_4 n ρ hρ x hx htr; exact @_root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate)`. Consider the case `exact @_root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate`. Consider the case `exact _root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate`. Consider the case `(apply _root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem trace_nondegenerate_of_isSSRep {Γ k : Type} [Group Γ] [Field k] [CharZero k] {n : ℕ}
     (ρ : Γ →* GL (Fin n) k) (hρ : IsSSRep ρ) (x : Matrix (Fin n) (Fin n) k) (hx : x ∈ spanAlg ρ)
@@ -25,23 +25,21 @@ theorem trace_nondegenerate_of_isSSRep {Γ k : Type} [Group Γ] [Field k] [CharZ
   | (intros; exact _root_.GlobalTheory.SemisimpleTraceForm.trace_form_nondegenerate ..)
 
 /- English proof (translation)
-Introduce `Γ k k' _ _ _ _ ι n ρ hρ`. Set `_ : Algebra k k'` to `ι.toAlgebra`. Establish `hφι : ∀ (φ : k' →ₗ[k] k) (c : k') (r : k), φ (c * ι r) = φ c * r`. Introduce `φ c r`. Rewrite using `[mul_comm c, mul_comm (φ c), ← smul_eq_mul r, ← map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hent : ∀ g i j, ((mapRep ι ρ g : GL (Fin n) k') : Matrix (Fin n) (Fin n) k') i j = ι (((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k) i j)` using `fun _ _ _ => rfl`. Apply `isSSRep_of_trace_nondegenerate` to reduce the goal to its premises. Introduce `x hx htr`. Establish `hmem : ∀ φ : k' →ₗ[k] k, x.map φ ∈ spanAlg ρ` using `by clear htr`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Introduce `φ`. Establish `: ((mapRep ι ρ g : GL (Fin n) k') : Matrix (Fin n) (Fin n) k').map φ = φ 1 • ((ρ g : GL (Fin n) k) : Matrix (Fin n) (Fin n) k)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, hent, Matrix.smul_apply, smul_eq_mul, ← hφι, one_mul]`. Rewrite using `[this]`. Conclude with `(spanAlg ρ).smul_mem (Submodule.subset_span ⟨g, rfl⟩) _`. Consider the case `zero`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Establish `: (0 : Matrix (Fin n) (Fin n) k').map φ = 0` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add y z _ _ hy hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ`. Establish `: (y + z).map φ = y.map φ + z.map φ` using `by ext i j; simp`. Rewrite using `[this]`. Conclude with `add_mem (hy φ) (hz φ)`. Consider the case `smul c y _ hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `φ`. Conclude with `hy (φ ∘ₗ LinearMap.mulLeft k c)`. Establish `hzero : ∀ φ : k' →ₗ[k] k, x.map φ = 0`. Introduce `φ`. Use `trace_nondegenerate_of_isSSRep ρ hρ _ (hmem φ) fun g => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congrArg φ (htr g)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Rewrite using `[← this]`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, map_sum, hent, hφι, Matrix.map_apply]`. Use extensionality with `i j`.
-
-Rewrite using `[Matrix.zero_apply, ← Module.forall_dual_apply_eq_zero_iff k]`. Introduce `φ`. Conclude with `congrFun (congrFun (hzero φ) i) j`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isSSRep_mapRep :
     ∀ (Γ k k' : Type) [Group Γ] [Field k] [Field k'] [CharZero k] (ι : k →+* k') (n : ℕ)

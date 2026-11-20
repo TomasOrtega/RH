@@ -15,11 +15,9 @@ namespace PieceCon
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hY a) b`. Simplify using `only [Jm, Matrix.mul_diagonal, Matrix.diagonal_mul] at h`. Apply the tactic sequence `cases ha : ε a <;> cases hb : ε b`. Conclude with `absurd (ha.trans hb.symm) hab`. Rewrite `h` using `[ha, hb]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bool.false_eq_true, if_false, if_true] at h`. Take the linear combination `h / 2`. Rewrite `h` using `[ha, hb]`. Simplify using `only [Bool.false_eq_true, if_false, if_true] at h`. Take the linear combination `-h / 2`.
-
-Conclude with `absurd (ha.trans hb.symm) hab`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem entry_eq_zero_of_comm {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) ℂ}
     (hY : Y * Jm ε = Jm ε * Y) {a b : Fin n} (hab : ε a ≠ ε b) : Y a b = 0 := by
@@ -34,7 +32,7 @@ theorem entry_eq_zero_of_comm {ε : Fin n → Bool} {Y : Matrix (Fin n) (Fin n) 
   · exact absurd (ha.trans hb.symm) hab
 
 /- English proof (translation)
-Introduce `i j hij`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs with h`. Conclude with `absurd (h.1 ▸ h.2 ▸ hab) hij`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem single_block {ε : Fin n → Bool} {a b : Fin n} (hab : ε a = ε b) :
     ∀ i j, ε i ≠ ε j → Matrix.single a b (1 : ℂ) i j = 0 := by
@@ -52,7 +50,7 @@ def blockPart (ε : Fin n → Bool) : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Mat
     ext a b; simp only [Matrix.of_apply, Matrix.smul_apply, RingHom.id_apply]; split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [blockPart, LinearMap.coe_mk, AddHom.coe_mk, Matrix.of_apply]`. Use `split_ifs with h`. Both sides reduce to the same expression. Conclude with `(hX a b h).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem blockPart_eq {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : ∀ a b, ε a ≠ ε b → X a b = 0) : blockPart ε X = X := by
@@ -77,7 +75,7 @@ theorem cut_apply (W : Submodule ℂ V) (A : V →L[ℂ] V) (v : W) :
     cut W A v = W.orthogonalProjectionOnto (A v) := rfl
 
 /- English proof (translation)
-Rewrite using `[cut_apply]`. Conclude with `congrArg Subtype.val (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (K := W) ⟨A v, h⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cut_apply_mem (W : Submodule ℂ V) (A : V →L[ℂ] V) (v : W) (h : A v ∈ W) :
     ((cut W A v : W) : V) = A v := by
@@ -85,7 +83,7 @@ theorem cut_apply_mem (W : Submodule ℂ V) (A : V →L[ℂ] V) (v : W) (h : A v
   exact congrArg Subtype.val (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (K := W) ⟨A v, h⟩)
 
 /- English proof (translation)
-Use `ext1 v`. Use `show cut W (A * B) v = cut W A (cut W B v)`. Rewrite using `[cut_apply, cut_apply, cut_apply_mem W B v (hB v v.2)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cut_mul (W : Submodule ℂ V) (A B : V →L[ℂ] V) (hB : ∀ v ∈ W, B v ∈ W) :
     cut W (A * B) = cut W A * cut W B := by
@@ -95,7 +93,7 @@ theorem cut_mul (W : Submodule ℂ V) (A B : V →L[ℂ] V) (hB : ∀ v ∈ W, B
   rfl
 
 /- English proof (translation)
-Use `ext1 v`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[cut_apply_mem W 1 v v.2]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cut_one (W : Submodule ℂ V) : cut W 1 = 1 := by
   ext1 v
@@ -110,31 +108,31 @@ section Piece
 variable {ε : Fin n → Bool} (R : KRep ε)
 
 /- English proof (translation)
-Simplify using `[KRep.op, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem op_mul (k k' : KG ε) : R.op (k * k') = R.op k * R.op k' := by
   simp [KRep.op, map_mul]
 
 /- English proof (translation)
-Simplify using `[KRep.op, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem op_one : R.op 1 = 1 := by
   simp [KRep.op, map_one]
 
 /- English proof (translation)
-Simplify using `[KRep.op, map_inv, ← Unitary.star_eq_inv, Unitary.coe_star]`.
+Simplify using the standard rewrite rules.
 -/
 theorem op_inv (k : KG ε) : R.op k⁻¹ = star (R.op k) := by
   simp [KRep.op, map_inv, ← Unitary.star_eq_inv, Unitary.coe_star]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[Matrix.matrix_eq_sum_single X, map_sum, _root_.sum_apply]`. Use `W.sum_mem fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum, _root_.sum_apply]`. Use `W.sum_mem fun b _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hab : ε a = ε b`. Establish `e : Matrix.single a b (X a b) = X a b • Matrix.single a b 1`. Use extensionality with `i j`. Simplify using `[Matrix.single_apply]`. Rewrite using `[e, map_smul, _root_.smul_apply]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W.smul_mem _ (hW a b hab v hv)`. Establish `e : Matrix.single a b (X a b) = 0`. Rewrite using `[hX a b hab]`. Use extensionality with `i j`. Simplify using `[Matrix.single_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_zero, _root_.zero_apply]`. Conclude with `W.zero_mem`.
+A detailed English derivation is pending.
 -/
 theorem dτ_mem {W : Submodule ℂ R.V} (hW : Formalism.REAL.KStable ε R.units W)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : ∀ a b, ε a ≠ ε b → X a b = 0) :
@@ -158,7 +156,7 @@ variable {W : Submodule ℂ R.V} (hτ : ∀ k : KG ε, ∀ v ∈ W, R.op k v ∈
 include hτ
 
 /- English proof (translation)
-Rewrite using `[ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `u v`. Rewrite using `[Submodule.coe_inner, Submodule.coe_inner, cut_apply_mem W _ u (hτ _ u u.2), cut_apply_mem W _ v (hτ _ v v.2), op_inv, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_left]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem star_cut (k : KG ε) : star (cut W (R.op k)) = cut W (R.op k⁻¹) := by
   rw [ContinuousLinearMap.star_eq_adjoint, eq_comm, ContinuousLinearMap.eq_adjoint_iff]
@@ -168,7 +166,7 @@ theorem star_cut (k : KG ε) : star (cut W (R.op k)) = cut W (R.op k⁻¹) := by
     ContinuousLinearMap.adjoint_inner_left]
 
 /- English proof (translation)
-Rewrite using `[Unitary.mem_iff, star_cut R hτ, ← cut_mul W _ _ (hτ k), ← cut_mul W _ _ (hτ k⁻¹), ← op_mul, ← op_mul, inv_mul_cancel, mul_inv_cancel, op_one, cut_one]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cut_mem_unitary (k : KG ε) : cut W (R.op k) ∈ unitary (W →L[ℂ] W) := by
   rw [Unitary.mem_iff, star_cut R hτ, ← cut_mul W _ _ (hτ k), ← cut_mul W _ _ (hτ k⁻¹),
@@ -189,7 +187,7 @@ theorem tauW_coe (k : KG ε) : ((tauW R hτ k : unitary (W →L[ℂ] W)) : W →
   rfl
 
 /- English proof (translation)
-Establish `h : Continuous fun k : KG ε => cut W (R.op k)` using `(cut W).continuous.comp (continuous_subtype_val.comp R.cont)`. Conclude with `h.subtype_mk _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tauW_cont : Continuous (tauW R hτ) := by
   have h : Continuous fun k : KG ε => cut W (R.op k) :=
@@ -272,11 +270,11 @@ def pieceKType {n : ℕ} {ε : Fin n → Bool} (R : KRep ε)
 open PieceCon in
 
 /- English proof (translation)
-Introduce `n ε R μ x hx hhi`. Use `set W := Formalism.REAL.kSpan ε R.units x with hWdef`. Establish `hK : Formalism.REAL.KStable ε R.units W` using `Formalism.REAL.isCompactInvariant_compactSpan x`. Establish `hτ : ∀ k : KG ε, ∀ v ∈ W, R.op k v ∈ W` using `(hS n ε R W).mpr hK`. Use `⟨pieceKType R hS hR μ x hx hhi, LinearIsometryEquiv.refl ℂ W, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k v`. Express the relevant statement in the definitionally equal form `↥W at v`. Conclude with `cut_apply_mem W _ v (hτ k v v.2)`. Introduce `X hX v`. Express the relevant statement in the definitionally equal form `↥W at v`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ a b, ε a ≠ ε b → X a b = 0` using `fun a b h => entry_eq_zero_of_comm hX h`. Use `show ((cut W (R.dτ (blockPart ε X)) v : W) : R.V) = R.dτ X v`. Rewrite using `[blockPart_eq hb]`. Conclude with `cut_apply_mem W _ v (dτ_mem R hK hb v v.2)`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kRepPiece_of (hR : KRepRelStatement) (hS : KRepStableStatement) : KRepPieceStatement := by
   intro n ε R μ x hx hhi

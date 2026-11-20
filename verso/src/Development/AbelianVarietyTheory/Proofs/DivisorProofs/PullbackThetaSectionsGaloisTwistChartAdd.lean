@@ -8,7 +8,7 @@ open GlobalTheory.Mum GlobalTheory.Mum.Conj
 namespace GlobalTheory.Mum.Conj
 
 /- English proof (translation)
-Introduce `R _ _ A N σ t t' t'' h j`. Use `show GlobalTheory.FieldBaseChange.pullFn _ _ (t''.f j) = GlobalTheory.FieldBaseChange.pullFn _ _ (t.f j) + GlobalTheory.FieldBaseChange.pullFn _ _ (t'.f j)`. Rewrite using `[h j]`. Conclude with `map_add _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secTw_add_chart : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ)
     (σ : Kb R →ₐ[FractionRing R] Kb R) (t t' t'' : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N),

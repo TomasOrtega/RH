@@ -16,11 +16,11 @@ open scoped CategoryTheory.Obj TensorProduct Pointwise
 namespace GlobalTheory.SemiAbelianDescent
 
 /- English proof (translation)
-Establish `: IsAffine Z` using `isAffine_of_isAffineHom f`. Establish `: Nonempty Z` using `⟨(f.surjective (Nonempty.some inferInstance)).choose⟩`. Take `⟨z, -, hz⟩` from `(isClosed_univ (X := Z)).exists_closed_singleton Set.univ_nonempty`. Rewrite `hz` using `[isClosed_singleton_iff_isClosedImmersion]`. Use `set g : Spec (Z.residueField z) ⟶ Spec (CommRingCat.of Ω) := Z.fromSpecResidueField z ≫ f with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: IsIntegralHom g` using `inferInstance`. Establish `: IsIso (Spec.preimage g)`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Use `IsAlgClosed.ringHom_bijective_of_isIntegral _ ?_` and prove the remaining obligations. Rewrite using `[← IsIntegralHom.SpecMap_iff, Spec.map_preimage]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `infer_instance`. Use `⟨Spec.map (inv (Spec.preimage g)) ≫ Z.fromSpecResidueField z, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, Spec.map_preimage]`. Use `_ = 𝟙 _ := by rw [← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_section {Z : Scheme.{0}} {Ω : Type} [Field Ω] [IsAlgClosed Ω]
     (f : Z ⟶ Spec (CommRingCat.of Ω)) [IsIntegralHom f] [Surjective f] :
@@ -43,7 +43,7 @@ theorem exists_section {Z : Scheme.{0}} {Ω : Type} [Field Ω] [IsAlgClosed Ω]
     _ = 𝟙 _ := by rw [← Spec.map_comp, IsIso.hom_inv_id, Spec.map_id]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_section (pullback.snd π p)`. Use `⟨s ≫ pullback.fst π p, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_lift {X X' : Scheme.{0}} (π : X ⟶ X') [IsIntegralHom π] [Surjective π]
     {Ω : Type} [Field Ω] [IsAlgClosed Ω] (p : Spec (CommRingCat.of Ω) ⟶ X') :
@@ -53,9 +53,9 @@ theorem exists_lift {X X' : Scheme.{0}} (π : X ⟶ X') [IsIntegralHom π] [Surj
   rw [Category.assoc, pullback.condition, ← Category.assoc, hs, Category.id_comp]
 
 /- English proof (translation)
-Establish `key : Set.range (pullback.diagonal f) = m '' Set.range d`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Take `⟨x, rfl⟩` from `j.surjective y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d x, ⟨x, rfl⟩, by rw [← Scheme.Hom.comp_apply, hc, Scheme.Hom.comp_apply]⟩`. Introduce and unpack `⟨_, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨j x, by rw [← Scheme.Hom.comp_apply, ← hc, Scheme.Hom.comp_apply]⟩`. Rewrite using `[key]`. Conclude with `m.isClosedMap _ hd`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isClosed_range_diagonal_of_surjective_universallyClosed {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S) [Surjective j]
     {P : Scheme.{0}} (m : P ⟶ Limits.pullback f f) [UniversallyClosed m] (d : X ⟶ P)
@@ -73,7 +73,7 @@ private theorem isClosed_range_diagonal_of_surjective_universallyClosed {X Y S :
   exact m.isClosedMap _ hd
 
 /- English proof (translation)
-Establish `hm` using `MorphismProperty.pullbackMap (P := @UniversallyClosed) (f := j ≫ f) (g := j ≫ f) (f' := f) (g' := f) (i₁ := j) (i₂ := j) ‹UniversallyClosed j› ‹UniversallyClosed j› rfl rfl`. Establish `hcl` using `isClosed_range_diagonal_of_surjective_universallyClosed j f (pullback.map (j ≫ f) (j ≫ f) f f j j (𝟙 _) (Category.comp_id _) (Category.comp_id _)) (pullback.diagonal (j ≫ f)) (pullback.diagonal (j ≫ f)).isClosedEmbedding.isClosed_range (pullback.comp_diagonal j f).symm`. Conclude with `⟨IsClosedImmersion.of_isPreimmersion _ hcl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isSeparated_of_comp {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
     [Surjective j] [UniversallyClosed j] [IsSeparated (j ≫ f)] : IsSeparated f := by
@@ -85,9 +85,9 @@ theorem isSeparated_of_comp {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
   exact ⟨IsClosedImmersion.of_isPreimmersion _ hcl⟩
 
 /- English proof (translation)
-Use `⟨fun U hU hU' => ?_⟩` and prove the remaining obligations. Establish `h` using `(QuasiCompact.isCompact_preimage (f := j ≫ f) U hU hU').image j.continuous`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx`. Take `⟨y, rfl⟩` from `j.surjective x`. Conclude with `⟨y, by simpa using hx, rfl⟩`. Introduce and unpack `⟨y, hy, rfl⟩`. Simplify using `using hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quasiCompact_of_comp {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
     [Surjective j] [QuasiCompact (j ≫ f)] : QuasiCompact f := by
@@ -103,9 +103,9 @@ theorem quasiCompact_of_comp {X Y S : Scheme.{0}} (j : X ⟶ Y) (f : Y ⟶ S)
     simpa using hy
 
 /- English proof (translation)
-Use `⟨geometrically_iff_of_isClosedUnderIsomorphisms.mpr fun K _ y => ?_⟩` and prove the remaining obligations. Set `ιK : Spec (CommRingCat.of (AlgebraicClosure K)) ⟶ Spec (CommRingCat.of K)` to `Spec.map (CommRingCat.ofHom (algebraMap K (AlgebraicClosure K)))`. Take `⟨q, hq⟩` from `exists_lift π (ιK ≫ y)`. Establish `hA : ConnectedSpace ↥(pullback f q)` using `GeometricallyConnected.geometrically_connectedSpace _ _ _ (.of_hasPullback _ _)`. Establish `hιK : Surjective ιK` using `⟨fun x => ⟨Nonempty.some inferInstance, Subsingleton.elim _ _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `M` to `(IsPullback.paste_horiz (IsPullback.of_hasPullback f q) h).isoPullback.hom ≫ (pullback.congrHom rfl hq).hom ≫ (pullbackLeftPullbackSndIso f' y ιK).inv ≫ pullback.fst (pullback.snd f' y) ιK`. Establish `hM : Surjective M` using `by dsimp only [M]; infer_instance`. Conclude with `M.surjective.connectedSpace M.continuous`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_isPullback {X X' Y Y' : Scheme.{0}} {π : X ⟶ X'} [IsIntegralHom π]
     [Surjective π] {f : Y ⟶ X} {f' : Y' ⟶ X'} {φ : Y ⟶ Y'} (h : IsPullback φ f f' π)
@@ -124,15 +124,13 @@ theorem geometricallyConnected_of_isPullback {X X' Y Y' : Scheme.{0}} {π : X �
   exact M.surjective.connectedSpace M.continuous
 
 /- English proof (translation)
-Take `⟨hc, hsm, hsep, hqc, hgc, hfib⟩` from `hG`. Establish `hpb : IsPullback φ G.hom G'.hom π` using `h.1`. Establish `hφi : IsIntegralHom φ` using `MorphismProperty.of_isPullback hpb.flip ‹IsIntegralHom π›`. Establish `hφs : Surjective φ` using `MorphismProperty.of_isPullback hpb.flip ‹Surjective π›`. Establish `hw : φ ≫ G'.hom = G.hom ≫ π` using `hpb.w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsep' : IsSeparated G'.hom`. Establish `: IsSeparated (φ ≫ G'.hom)` using `by rw [hw]; infer_instance`. Conclude with `isSeparated_of_comp φ G'.hom`. Establish `hqc' : QuasiCompact G'.hom`. Establish `: QuasiCompact (φ ≫ G'.hom)` using `by rw [hw]; infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `quasiCompact_of_comp φ G'.hom`. Establish `hgc' : GeometricallyConnected G'.hom` using `geometricallyConnected_of_isPullback hpb`. Use `⟨‹_›, ‹_›, hsep', hqc', hgc', ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ p`. Take `⟨q, hq⟩` from `exists_lift π p`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T⟩` from `hfib Ω q`. Establish `h1` using `isGrpPullback_pullback G q`. Establish `h2` using `IsGrpPullback.comp h1 h`. Establish `h3` using `isGrpPullback_pullback G' p`. Take `⟨e, he, -⟩` from `grpPullback_iso (h2.congr hq rfl) h3`.
-
-Conclude with `⟨torusExtOfIso e T⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_descends {X X' : Scheme.{0}} {π : X ⟶ X'} {G : Over X} [GrpObj G] {G' : Over X'}
     [GrpObj G'] [IsCommMonObj G'] {φ : G.left ⟶ G'.left} [IsIntegralHom π] [Surjective π]
@@ -160,29 +158,27 @@ theorem isSemiAbelian_descends {X X' : Scheme.{0}} {π : X ⟶ X'} {G : Over X} 
   exact ⟨torusExtOfIso e T⟩
 
 /- English proof (translation)
-Introduce `X X' π G _ G' _ _ φ hi hs h hsm hG`. Establish `hG' : IsSemiAbelian G'` using `isSemiAbelian_descends h hG`. Use `⟨hG', ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨U, hU, hP⟩`. Establish `hloc : ∀ x, π x ∈ abLocus G' ↔ x ∈ abLocus G` using `abLocus_pullback abLocusOne hG' h.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hV : IsOpen (abLocus G')`. Establish `hc : (abLocus G')ᶜ = π '' (U : Set X)ᶜ`. Use extensionality with `y`. Take `⟨x, rfl⟩` from `π.surjective y`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Use `⟨x, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[Set.mem_compl_iff, hU, ← hloc]`. Conclude with `hy`. Introduce and unpack `⟨x', hx', hxx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_compl_iff, ← hxx, hloc, ← hU]`. Conclude with `hx'`. Rewrite using `[← isClosed_compl_iff, hc]`. Conclude with `π.isClosedMap _ U.isOpen.isClosed_compl`. Set `V' : X'.Opens` to `⟨abLocus G', hV⟩`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hpre : π ⁻¹ᵁ V' = U`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `π x ∈ abLocus G' ↔ x ∈ (U : Set X)`. Rewrite using `[hU, hloc]`. Rewrite `hP` using `[← hpre]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpb : IsPullback φ G.hom G'.hom π` using `h.1`. Establish `hw : φ ≫ G'.hom = G.hom ≫ π` using `hpb.w`. Establish `hφs : Surjective φ` using `MorphismProperty.of_isPullback hpb.flip ‹Surjective π›`. Establish `hle : G.hom ⁻¹ᵁ (π ⁻¹ᵁ V') ≤ φ ⁻¹ᵁ (G'.hom ⁻¹ᵁ V')`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `G'.hom (φ x) ∈ V'`. Rewrite using `[← Scheme.Hom.comp_apply, hw, Scheme.Hom.comp_apply]`. Conclude with `hx`. Set `a` to `φ.resLE (G'.hom ⁻¹ᵁ V') (G.hom ⁻¹ᵁ (π ⁻¹ᵁ V')) hle`. Establish `heq : a ≫ (G'.hom ∣_ V') = (G.hom ∣_ (π ⁻¹ᵁ V')) ≫ (π ∣_ V')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[← cancel_mono V'.ι]`. Simplify using `only [a, Category.assoc, morphismRestrict_ι, morphismRestrict_ι_assoc, Scheme.Hom.resLE_comp_ι_assoc, hw]`. Establish `ha : Surjective a`. Prove the components needed by the constructor for the conclusion. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Take `⟨w, hw'⟩` from `φ.surjective ((G'.hom ⁻¹ᵁ V').ι z)`. Establish `hz : (G'.hom ⁻¹ᵁ V').ι z ∈ ((G'.hom ⁻¹ᵁ V' : G'.left.Opens) : Set G'.left)`. Rewrite using `[← Scheme.Opens.range_ι (G'.hom ⁻¹ᵁ V')]`. Conclude with `⟨z, rfl⟩`. Establish `hm : w ∈ Set.range (G.hom ⁻¹ᵁ (π ⁻¹ᵁ V')).ι`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Express the relevant statement in the definitionally equal form `π (G.hom w) ∈ V'`. Rewrite using `[← Scheme.Hom.comp_apply, ← hw, Scheme.Hom.comp_apply, hw']`. Conclude with `hz`. Take `⟨w', rfl⟩` from `hm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w', (G'.hom ⁻¹ᵁ V').ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, Scheme.Hom.resLE_comp_ι, Scheme.Hom.comp_apply, hw']`. Establish `hsep : IsSeparated G'.hom` using `hG'.separated`. Establish `hcomp : UniversallyClosed (a ≫ (G'.hom ∣_ V'))`. Rewrite using `[heq]`.
-
-Use `infer_instance`. Establish `huc : UniversallyClosed (G'.hom ∣_ V')` using `UniversallyClosed.of_comp_surjective a _`. Conclude with `⟨V', rfl, by constructor⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main : ∀ (X X' : Scheme.{0}) (π : X ⟶ X') (G : Over X) [GrpObj G] (G' : Over X') [GrpObj G'] [IsCommMonObj G'] (φ : G.left ⟶ G'.left), IsIntegralHom π → Surjective π → IsGrpPullback G G' π φ → Smooth G'.hom → IsSemiAbelian G → IsSemiAbelian G' ∧ ((∃ U : X.Opens, (U : Set X) = abLocus G ∧ IsProper (G.hom ∣_ U)) → (∃ U : X'.Opens, (U : Set X') = abLocus G' ∧ IsProper (G'.hom ∣_ U))) := by
   intro X X' π G _ G' _ _ φ hi hs h hsm hG

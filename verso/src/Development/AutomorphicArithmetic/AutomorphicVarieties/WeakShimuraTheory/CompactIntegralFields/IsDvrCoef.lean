@@ -6,11 +6,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.SymplecticGSp4.Cop
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `haveI : CharZero c.O := charZero_of_injective_algebraMap (dvrFacts l c.O).1`. Use `⟨fun x y hxy => Subtype.ext ?_, 𝔞.loc c, inferInstance, (UpperTheory.V.abelian₂.dvr_finite l c.O).2.1, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← h.1 c x, ← h.1 c y, hxy]`. Establish `h1 : IsAlgebraic ℚ_[l] (e x)` using `Algebra.IsAlgebraic.isAlgebraic _`. Establish `h2 : IsAlgebraic ℤ_[l] (e x)` using `(IsFractionRing.isAlgebraic_iff ℤ_[l] ℚ_[l] _).2 h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : IsAlgebraic c.O (e x)` using `h2.extendScalars (dvrFacts l c.O).1`. Take `⟨p, hp, hx⟩` from `h3`. Use `⟨p, hp, e.injective ?_⟩` and prove the remaining obligations. Establish `h4 : (e : 𝔞.K →+* PadicAlgCl l).comp (𝔞.toK.comp (𝔞.a c)) = algebraMap c.O (PadicAlgCl l)` using `RingHom.ext fun z => h.1 c z`. Establish `h5` using `hom_eval₂ p (𝔞.toK.comp (𝔞.a c)) (e : 𝔞.K →+* PadicAlgCl l) x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[h4]`. Rewrite using `[map_zero]`. Conclude with `h5.trans hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isDvr_coef {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l) (h : 𝔞.IsZero e) (c : Coef l) :
     𝔞.IsDvr (𝔞.a c) := by
@@ -30,17 +30,15 @@ private theorem isDvr_coef {l : ℕ} [Fact l.Prime] (𝔞 : Amb l) (e : 𝔞.K �
     exact h5.trans hx
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ c D _ 𝔞 e h r hr`. Take `⟨R, _, _, _, ρ, y, hρ, rfl⟩` from `hr`. Take `⟨⟨c', hc', hy'⟩, a, ha1, -, hy⟩` from `(coPt c R).1 y`. Set `y' : R →+* c'.O` to `(y : R →+* PadicAlgCl l).codRestrict c'.O hy'`. Establish `hn : ∀ z : c'.O, ‖(z : PadicAlgCl l)‖ ≤ 1` using `fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← h.1 c' z]`. Conclude with `(h.2 _).1 (𝔞.a c' z).2`. Establish `hm : ∀ x ∈ maximalIdeal R, y' x ∈ maximalIdeal c'.O`. Introduce `x hx hu`. Take `⟨w, hw⟩` from `hu.exists_right_inv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : y x * (w : PadicAlgCl l) = 1` using `congrArg Subtype.val hw`. Establish `h2 : ‖y x‖ ≤ a` using `by simpa using hy 1 x (by rwa [pow_one])`. Establish `h3` using `congrArg norm h1`. Rewrite `h3` using `[norm_mul, norm_one]`. Establish `h4` using `mul_le_of_le_one_right (norm_nonneg (y x)) (hn w)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨mapRep ((𝔞.a c').comp y') ρ.hom, ⟨⟨c'.O, inferInstance, inferInstance, inferInstance, 𝔞.a c', ⟨mapRep y' ρ.hom, fun _ => 1⟩, isDvr_coef 𝔞 e h c', fun i j N => ?_, ?_⟩, R, _, _, _, ρ, (𝔞.a c').comp y', hρ, RingHom.ext fun x => ?_, fun x hx => ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `hle : maximalIdeal R ^ N ≤ (maximalIdeal c'.O ^ N).comap y'` using `le_trans (Ideal.pow_right_mono hm N) (Ideal.le_comap_pow _ N)`. Conclude with `(ρ.cont i j N).comp (Ideal.quotientMap _ y' hle)`. Use `PD.ext rfl (funext fun _ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite using `[← 𝔞.compat c c' hc' x]`. Conclude with `congrArg (𝔞.a c') (Subtype.ext (y.commutes x))`. Conclude with `map_nonunit (𝔞.a c') _ (hm x hx)`. Use extensionality with `g i j`.
-
-Conclude with `h.1 c' (y' (ρ.hom g i j))`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.eptV :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → ∀ (𝔞 : Amb l) (e : 𝔞.K ≃+* PadicAlgCl l), 𝔞.IsZero e → ∀ r, D.EPt r → ∃ r', VPt D 𝔞 r' ∧ mapRep ((e : 𝔞.K →+* PadicAlgCl l).comp 𝔞.toK) r' = r := by

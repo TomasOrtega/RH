@@ -10,15 +10,13 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.GaugeEx
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm d b s M J x a B J' μ' hM hsd hμ'`. Establish `: FiniteDimensional F E` using `Module.Finite.of_basis b`. Take `⟨ν, hν, hνu⟩` from `GlobalTheory.T.existsUnique_stdHermitianFibreProduct_of_rank_ge_three F E σ hcm d b s (M + 1) J a (by omega) hsd.1 hsd.2.1`. Take `⟨-, ⟨e, he, heu⟩, hcont⟩` from `GlobalTheory.T.unitary_stabilizer_anisotropic_vector_equiv_complement F E σ hcm (AF F) M J x a B J' hsd`. Take `⟨-, hinv, horb, hfin, hne⟩` from `GlobalTheory.T.stdHermitianFibreMeasure_invariant_orbit_finite_nonzero F E σ hcm d b s (M + 1) J x a ν hsd.1 hsd.2.1 hsd.2.2.1 hν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hc1, hc2⟩` from `hcont e he`. Prove the components needed by the constructor for the conclusion. Establish `: (μ'.map e.symm).IsHaarMeasure` using `MulEquiv.isHaarMeasure_map μ' e.symm hc2 hc1`. Take `⟨μ, hμ, hint⟩` from `GlobalTheory.T.weil_formula_haar_orbit_stabilizer (HA (AF F) σ J) (Fin 1 → Fin (M + 1) → AF F ⊗[F] E) (ratTup (F := F) (AF F) x) (μ'.map e.symm) ν this hfin hne hinv horb`. Use `⟨μ, hμ, fun ν' hν' e' he' => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `rfl` from `hνu ν' hν'`. Take `rfl` from `heu e' he'`. Conclude with `hint`. Introduce `μ₁ μ₂ h₁ h₂`. Establish `k₁` using `h₁ ν hν e he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₂` using `h₂ ν hν e he`. Set `t : (Fin 1 → Fin (M + 1) → AF F ⊗[F] E) → HA (AF F) σ J` to `fun y => if h : ∃ g : HA (AF F) σ J, g • ratTup (F := F) (AF F) x = y then h.choose else 1`. Establish `ht : ∀ y, (∃ g : HA (AF F) σ J, g • ratTup (F` using `F) (AF F) x = y) → t y • ratTup (F := F) (AF F) x = y := fun y hy => by`. Simplify using `only [t, dif_pos hy]`. Conclude with `hy.choose_spec`.
-
-Conclude with `Measure.ext_of_lintegral _ fun f hf => (k₁ f hf t ht).trans (k₂ f hf t ht).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unique_stepRel : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (d : ℕ) (b : Module.Basis (Fin d) F E) (s : StdMeas b) (M : ℕ) (J : Matrix (Fin (M + 1)) (Fin (M + 1)) E) (x : Fin 1 → Fin (M + 1) → E) (a : F) (B : Matrix (Fin (M + 1)) (Fin M) E) (J' : Matrix (Fin M) (Fin M) E) (μ' : Measure (HA (AF F) σ J')), 2 ≤ M → StepData σ J x a B J' → μ'.IsHaarMeasure → (∃ μ : Measure (HA (AF F) σ J), μ.IsHaarMeasure ∧ StepRel s σ J x a B J' μ μ') ∧ ∀ μ₁ μ₂ : Measure (HA (AF F) σ J), StepRel s σ J x a B J' μ₁ μ' → StepRel s σ J x a B J' μ₂ μ' → μ₁ = μ₂ := by
   intro F E _ _ _ _ _ σ hcm d b s M J x a B J' μ' hM hsd hμ'

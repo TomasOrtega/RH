@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.BaseZ
 
 /- English proof (translation)
-Introduce `k _ X Y p q t t' π hπ hπ' L hL hL'`. Use `HermLB.isometric_of_eqOn fun τ a y _ => ?_` and prove the remaining obligations. Establish `key : ∀ (σ σ' : k →+* ℂ) (_ : σ = σ') (z : CxPts p σ) (z' : CxPts p σ'), z.1 = z'.1 → (L.φ σ).φ (a PUnit.unit) z = (L.φ σ').φ (a PUnit.unit) z'`. Introduce and unpack `σ _ rfl z z' h`. Rewrite using `[Subtype.ext h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `(Weight.pull_φ (wZ L t τ) π hπ' a y).trans (Eq.trans ?_ (Weight.pull_φ (L.φ (emb q y)) π hπ a (unsheet q y)).symm)` and prove the remaining obligations. Use `key _ _ ?_ _ _ rfl` and prove the remaining obligations. Establish `e : (PtsOver.map π hπ' _ y).1 ≫ p = y.1 ≫ q`. Rewrite using `[← hπ]`. Conclude with `Category.assoc _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (Spec.preimage ((PtsOver.map π hπ' _ y).1 ≫ p)).hom = (Spec.preimage (y.1 ≫ q)).hom`. Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem isometric_toZ_pull : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (t : X ⟶ Sp ℤ) (t' : Y ⟶ Sp ℤ) (π : Y ⟶ X) (hπ : π ≫ p = q) (hπ' : π ≫ t = t') (L : HermLB p) (hL : ∀ τ, (wZ L t τ).IsCInf) (hL' : ∀ τ, (wZ (L.pull π hπ) t' τ).IsCInf), (toZ (L.pull π hπ) t' hL').Isometric ((toZ L t hL).pull π hπ') := by
   intro k _ X Y p q t t' π hπ hπ' L hL hL'

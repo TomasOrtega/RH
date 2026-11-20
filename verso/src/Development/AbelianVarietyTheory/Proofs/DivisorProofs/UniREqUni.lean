@@ -30,7 +30,7 @@ theorem uniR_apply {R : Type*} [CommRing R] {m : ℕ} (n : Low m → R) (a b : F
     uniR n a b = if h : b < a then n ⟨(a, b), h⟩ else if a = b then 1 else 0 := rfl
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [Matrix.map_apply, uniR_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_uniR {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) {m : ℕ} (n : Low m → R) :
     (uniR n).map f = uniR fun s => f (n s) := by

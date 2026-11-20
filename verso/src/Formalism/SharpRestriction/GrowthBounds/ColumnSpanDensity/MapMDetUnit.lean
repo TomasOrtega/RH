@@ -11,7 +11,7 @@ section Tr
 variable {p n' : ℕ} (R : RS p n') {k : ℕ}
 
 /- English proof (translation)
-Use `show IsUnit ((algebraMap R.W R.Qq).mapMatrix V).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hV.map _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mapM_det_unit (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) :
     IsUnit (mapM (Qq := R.Qq) V).det := by
@@ -20,7 +20,7 @@ theorem mapM_det_unit (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) :
   exact hV.map _
 
 /- English proof (translation)
-Establish `h` using `colSpan_unimod (1 : Matrix (Fin k) (Fin k) R.Qq) V hV`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem colSpan_mapM (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) :
     colSpan R.W (mapM (Qq := R.Qq) V) = colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq) := by
@@ -28,7 +28,7 @@ theorem colSpan_mapM (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) :
   rwa [one_mul] at h
 
 /- English proof (translation)
-Rewrite using `[colSpan, colSpan, Submodule.map_span, ← Set.range_comp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem colSpan_map_mulVecLin_eq_colSpan_mul (M g : Matrix (Fin k) (Fin k) R.Qq) :
     (colSpan R.W g).map ((Matrix.mulVecLin M).restrictScalars R.W) = colSpan R.W (M * g) := by
@@ -36,13 +36,13 @@ private theorem colSpan_map_mulVecLin_eq_colSpan_mul (M g : Matrix (Fin k) (Fin 
   congr 1
 
 /- English proof (translation)
-Take `⟨⟨g1, hg1, hs⟩, ⟨g2, hg2, ht⟩, hle, hpm, hcard⟩` from `he`. Use `set f := (Matrix.mulVecLin M).restrictScalars R.W with hfdef`. Establish `hfinj : Function.Injective f`. Establish `h` using `(Matrix.mulVec_injective_iff_isUnit (A := M)).2 ((Matrix.isUnit_iff_isUnit_det M).2 hM)`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨M * g1, by rw [Matrix.det_mul]; exact hM.mul hg1, by rw [hs]; exact colSpan_map_mulVecLin_eq_colSpan_mul R M g1⟩, ⟨M * g2, by rw [Matrix.det_mul]; exact hM.mul hg2, by rw [ht]; exact colSpan_map_mulVecLin_eq_colSpan_mul R M g2⟩, Submodule.map_mono hle, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `⟨(p : R.W) • y, hpm y hy, map_smul f _ y⟩`. Rewrite using `[← hcard]`. Set `e0` to `Submodule.equivMapOfInjective f hfinj e.tgt`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hPQ : (Submodule.comap e.tgt.subtype e.src).map (e0 : e.tgt →ₗ[R.W] _) = Submodule.comap (e.tgt.map f).subtype (e.src.map f)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.1, hy, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hz`. Take `⟨y, hys, hyz⟩` from `hz`. Use `⟨⟨y, hle hys⟩, hys, Subtype.ext ?_⟩` and prove the remaining obligations. Conclude with `hyz`. Conclude with `(Nat.card_congr (Submodule.Quotient.equiv _ _ e0 hPQ).toEquiv).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem isEdge_map_mulVecLin_of_isUnit_det (M : Matrix (Fin k) (Fin k) R.Qq) (hM : IsUnit M.det) (e : Edge R.W R.Qq k)
     (he : IsEdge p n' 1 e) :
@@ -73,13 +73,11 @@ private theorem isEdge_map_mulVecLin_of_isUnit_det (M : Matrix (Fin k) (Fin k) R
     exact (Nat.card_congr (Submodule.Quotient.equiv _ _ e0 hPQ).toEquiv).symm
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨g, hg, hgeq⟩` from `(baseEdge R j).1`. Establish `hker : colSpan R.W (dj j (p : R.Qq)) ≤ LinearMap.ker ((LinearMap.proj j : (Fin k → R.Qq) →ₗ[R.Qq] R.Qq).restrictScalars R.W)`. Rewrite using `[colSpan, Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `[dj, Matrix.diagonal_apply, h0]`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c, g j c ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hg.ne_zero (Matrix.det_eq_zero_of_row_eq_zero j hall)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (fun i => g i c) ∈ colSpan R.W (dj j (p : R.Qq))`. Establish `hgeq' : colSpan R.W (dj j (p : R.Qq)) = colSpan R.W g` using `hgeq`. Rewrite using `[hgeq']`. Conclude with `Submodule.subset_span ⟨c, rfl⟩`. Establish `h1` using `hker hmem`.
-
-Simplify using `at h1`. Conclude with `hc h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem natCast_p_ne_zero_Qq (j : Fin k) : (p : R.Qq) ≠ 0 := by
   intro h0
@@ -102,7 +100,7 @@ private theorem natCast_p_ne_zero_Qq (j : Fin k) : (p : R.Qq) ≠ 0 := by
   exact hc h1
 
 /- English proof (translation)
-Establish `h` using `isEdge_map_mulVecLin_of_isUnit_det R (mapM V) (mapM_det_unit R V hV) _ (baseEdge R j)`. Simplify using `only [colSpan_map_mulVecLin_eq_colSpan_mul, mul_one, colSpan_mapM R V hV] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem edgeT (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) (j : Fin k) :
     IsEdge p n' 1 (⟨colSpan R.W (mapM V * dj j (p : R.Qq)), colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq)⟩ :
@@ -112,9 +110,9 @@ theorem edgeT (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) (j : Fin k) :
   exact h
 
 /- English proof (translation)
-Establish `hp` using `natCast_p_ne_zero_Qq R j`. Establish `hdet : IsUnit (mapM V * dj j (p : R.Qq)⁻¹).det`. Rewrite using `[Matrix.det_mul, dj_det]`. Conclude with `(mapM_det_unit R V hV).mul (isUnit_iff_ne_zero.2 (inv_ne_zero hp))`. Establish `h` using `isEdge_map_mulVecLin_of_isUnit_det R _ hdet _ (baseEdge R j)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [colSpan_map_mulVecLin_eq_colSpan_mul, mul_one, mul_assoc, dj_mul, inv_mul_cancel₀ hp, dj_one, colSpan_mapM R V hV] at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem edgeS (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) (j : Fin k) :
     IsEdge p n' 1 (⟨colSpan R.W (1 : Matrix (Fin k) (Fin k) R.Qq), colSpan R.W (mapM V * dj j (p : R.Qq)⁻¹)⟩ :
@@ -129,13 +127,13 @@ theorem edgeS (V : Matrix (Fin k) (Fin k) R.W) (hV : IsUnit V.det) (j : Fin k) :
   exact h
 
 /- English proof (translation)
-Take `⟨g, hg, rfl⟩` from `hL`. Use `set f := (Matrix.mulVecLin g).restrictScalars R.W with hfdef`. Establish `hfinj : Function.Injective f` using `(Matrix.mulVec_injective_iff_isUnit (A := g)).2 ((Matrix.isUnit_iff_isUnit_det g).2 hg)`. Use `⟨fun i => ⟨(es i).src.map f, (es i).tgt.map f⟩, ?_, fun i => isEdge_map_mulVecLin_of_isUnit_det R g hg _ (hes i), ?_, ?_⟩` and prove the remaining obligations. Introduce `i i' h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Establish `h1 : (es i).src.map f = (es i').src.map f` using `congrArg Edge.src h`. Establish `h2 : (es i).tgt.map f = (es i').tgt.map f` using `congrArg Edge.tgt h`. Establish `e1` using `Submodule.map_injective_of_injective hfinj h1`. Establish `e2` using `Submodule.map_injective_of_injective hfinj h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hi : es i`. Consider the cases of `hi' : es i'`. Rewrite `e1`, `e2` using `[hi, hi']`. Simplify using `only at e1 e2`. Rewrite using `[e1, e2]`.
+Split into cases according to the possible forms of the given data. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi show (es i).tgt.map f = _`. Rewrite using `[hi, colSpan_map_mulVecLin_eq_colSpan_mul, mul_one]`. Introduce `i hi show (es i).src.map f = _`. Rewrite using `[hi, colSpan_map_mulVecLin_eq_colSpan_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport (L : Submodule R.W (Fin k → R.Qq)) (hL : IsLattice R.W L) {Ne : ℕ}
     (es : Fin Ne → Edge R.W R.Qq k) (hinj : Function.Injective es) (hes : ∀ i, IsEdge p n' 1 (es i)) :

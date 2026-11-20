@@ -9,7 +9,7 @@ namespace GlobalTheory.SuppGrp
 open GlobalTheory.FinPl
 
 /- English proof (translation)
-Take `⟨α, rfl, -, h2⟩` from `h`. Use `Submodule.mem_inf.2 ⟨?_, (Submodule.mem_iInf _).2 fun u => ?_⟩` and prove the remaining obligations. Conclude with `TensorProduct.zero_tmul _ (1 : D.host.E)`. Establish `hu : u.1 ≠ v` using `fun e => u.2 (e ▸ hP) show (evalV D.host.F u.1 α) ⊗ₜ[D.host.F] (1 : D.host.E) = 0`. Rewrite using `[h2 u.1 hu, TensorProduct.zero_tmul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeIdem_mem_idAt {D : D7} {v : Pl D} {ε : AF D.host.F} (h : IsPlaceIdem D v ε) (P : Pl D → Prop) (hP : P v) :
     algebraMap (AF D.host.F) (AE D) ε ∈ idAt D P := by
@@ -21,9 +21,9 @@ theorem placeIdem_mem_idAt {D : D7} {v : Pl D} {ε : AF D.host.F} (h : IsPlaceId
     rw [h2 u.1 hu, TensorProduct.zero_tmul]
 
 /- English proof (translation)
-Rewrite using `[congGrp, MonoidHom.mem_ker, Units.ext_iff, ← Matrix.ext_iff]`. Introduce `i j`. Establish `h1` using `h i j`. Rewrite `h1` using `[Matrix.sub_apply, ← Ideal.Quotient.eq]`. Establish `: Ideal.Quotient.mk I ((1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j) = (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D ⧸ I)) i j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite `h1` using `[this]`. Conclude with `h1`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_congGrp {D : D7} (V : HSp D) (I : Ideal (AE D)) (g : GA D V) (h : ∀ i j, (mt V g - 1) i j ∈ I) :
     g ∈ congGrp V I := by
@@ -38,9 +38,9 @@ theorem mem_congGrp {D : D7} (V : HSp D) (I : Ideal (AE D)) (g : GA D V) (h : �
   exact h1
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q V g hg P hP`. Take `⟨ε, h1, h2⟩` from `q.above`. Use `mem_congGrp V _ g fun i j => ?_` and prove the remaining obligations. Establish `h3` using `hg i j`. Rewrite `h3` using `[h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h3]`. Conclude with `Ideal.mul_mem_right _ _ (placeIdem_mem_idAt h1 P hP)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_grpAt_of_suppAt : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (V : HSp D) (g : GA D V), SuppAt q.e V g → ∀ P : GlobalTheory.FinPl.Pl D → Prop, P q.v → g ∈ GlobalTheory.FinPl.grpAt V P := by
   intro D k _ _ _ _ q V g hg P hP

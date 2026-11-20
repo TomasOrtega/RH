@@ -13,14 +13,14 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {R R' : Type} [CommRing R] [Algebra c.O R] [IsCO c.O R] [CommRing R'] [Algebra c.O R'] [IsCO c.O R']
 
 /- English proof (translation)
-Simplify using `[Raw.hEl, Matrix.add_apply, Matrix.smul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hEl_map' (f : R →ₐ[c.O] R') (ρ : Lift c.O D.rbar R) (i j : Fin 4) :
     D.hEl (ρ.map f).hom i j = f (D.hEl ρ.hom i j) := by
   simp [Raw.hEl, Matrix.add_apply, Matrix.smul_apply]
 
 /- English proof (translation)
-Use `forall_congr' fun g => ?_` and prove the remaining obligations. Rewrite using `[← f.commutes]`. Conclude with `UpperTheory.V.Ws.Po.gsp_iff (f : R →+* R') _ (r.hom g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mult_iff' (f : R →ₐ[c.O] R') (r : Lift c.O D.rbar R) :
     D.Mult (r.map f).hom ↔ ∀ g i j,
@@ -32,17 +32,11 @@ private theorem mult_iff' (f : R →ₐ[c.O] R') (r : Lift c.O D.rbar R) :
 end
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ c D hD`. Establish `hL : Cond.IsClosed (rbar` using `D.rbarAt l) fun _ _ _ _ r => OnComp D.condL (D.r0At l) r := by`. Take `⟨U, _, _, _, ρ, J, hrep, hJ⟩` from `compL D hD hP.loc`. Conclude with `onCompClosed _ _ _ _ _ _ (closedL D) U ρ hrep J hJ`. Establish `hQ : ∀ p ∈ D.Sb, Cond.IsClosed (rbar` using `D.rbarAt p) fun _ _ _ _ r => OnComp (D.condP p) (D.r0At p) r := fun p hp => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U, _, _, _, ρ, J, hrep, hJ⟩` from `compP D hD hP.loc p hp`. Conclude with `onCompClosed _ _ _ _ _ _ (closedP D p) U ρ hrep J hJ`. Use `closed_of_set _ fun R _ _ _ r => ?_` and prove the remaining obligations. Take `⟨IL, hIL⟩` from `hL R (D.loc r l)`. Use `choose IP hIP using fun p hp => hQ p hp R (D.loc r p)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨{x | (∃ g i j, x = (adj (r.hom g) * r.hom g - algebraMap c.O R (D.th g) • (1 : UpperTheory.V.GradeZeroInterpolatingElement.M4 R)) i j) ∨ (∃ A : ValuationSubring Ω, Raw.Away D.T A ∧ ∃ g ∈ Ine (F := ℚ) A, D.rbar g = 1 ∧ ∃ i j, x = (r.hom g - 1) i j) ∨ (∃ i j, lamW i ≠ lamW j ∧ x = …` and prove the remaining obligations. Take `⟨g, i, j, rfl⟩ | ⟨A, hA, g, hg, hg1, i, j, rfl⟩ | ⟨i, j, hij, rfl⟩ | rfl | rfl | hx | ⟨p, hp, hx⟩` from `hx`. Conclude with `(mult_iff' D f r).1 h.mult g i j`. Conclude with `(one_iff (f : R →+* R') (r.hom g)).1 (h.unr A hA g hg hg1) i j`. Conclude with `h.nrm.1 i j hij`.
-
-Rewrite using `[← hEl_map']`. Conclude with `h.nrm.2.1`. Rewrite using `[← hEl_map']`. Conclude with `h.nrm.2.2`. Conclude with `(hIL R' f).1 h.atL x hx`.
-
-Conclude with `(hIP p hp R' f).1 (h.atP p hp) x hx`. Use `⟨(mult_iff' D f r).2 fun g i j => h _ (.inl ⟨g, i, j, rfl⟩), fun A hA g hg hg1 => (one_iff (f : R →+* R') (r.hom g)).2 fun i j => h _ (.inr (.inl ⟨A, hA, g, hg, hg1, i, j, rfl⟩)), ⟨fun i j hij => h _ (.inr (.inr (.inl ⟨i, j, hij, rfl⟩))), ?_, ?_⟩, (hIL R' f).2 fun x hx => h x (.i …` and prove the remaining obligations. Rewrite using `[hEl_map']`. Conclude with `h _ (.inr (.inr (.inr (.inl rfl))))`. Rewrite using `[hEl_map']`.
-
-Conclude with `h _ (.inr (.inr (.inr (.inr (.inl rfl)))))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Po.ptClosed :
     CohomologyHyp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), D.Good → Cond.IsClosed (rbar := D.rbar) fun _ _ _ _ ρ => D.IsPt ρ := by

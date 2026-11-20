@@ -9,43 +9,35 @@ open GlobalTheory.CechDR GlobalTheory.HodgeCoh KaehlerDifferential GlobalTheory.
 namespace UpperTheory.Gal.W2
 
 /- English proof (translation)
-Use `set m : Ideal R := RingHom.ker e with hm`. Use `set Ig : Ideal R := Ideal.span (Set.range g) with hIgEq`. Establish `hmem : ∀ x, x ∈ m ↔ e x = 0` using `fun x => RingHom.mem_ker`. Establish `hsub : ∀ x : R, x - algebraMap ℂ R (e x) ∈ m` using `fun x => by`. Rewrite using `[hmem, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `dl : R →ₗ[ℂ] R ⧸ m ^ 2` to `{ toFun := fun x => Ideal.Quotient.mk (m ^ 2) (x - algebraMap ℂ R (e x)) map_add' := fun x y => by`. Simplify using `only [map_add, map_sub]`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `map_smul' := fun c x => by`. Simplify using `only [RingHom.id_apply, Algebra.smul_def, map_mul, map_sub, AlgHom.commutes, Ideal.Quotient.mk_algebraMap, Algebra.algebraMap_self]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `ring }`. Set `dd : Derivation ℂ R (R ⧸ m ^ 2)` to `Derivation.mk' dl (fun a b => by`. Simplify using `only [dl, LinearMap.coe_mk, AddHom.coe_mk, Algebra.smul_def, Ideal.Quotient.algebraMap_eq]`. Rewrite using `[← map_mul, ← map_mul, ← map_add, Ideal.Quotient.eq]`. Establish `h2 : (a - algebraMap ℂ R (e a)) * (b - algebraMap ℂ R (e b)) ∈ m ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (hsub a) (hsub b)`. Use `(m ^ 2).neg_mem_iff.mpr h2 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_mul]`. Use the proof step `ring)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hd : ∀ x, dd x = Ideal.Quotient.mk (m ^ 2) (x - algebraMap ℂ R (e x))` using `fun x => rfl`. Establish `hL : ∀ x, dd.liftKaehlerDifferential (D ℂ R x) = dd x` using `fun x => Derivation.liftKaehlerDifferential_comp_D dd x`. Establish `hkill : ∀ b ∈ m, ∀ ω, b • dd.liftKaehlerDifferential ω = 0`. Introduce `b hb`. Establish `hz : (b • dd.liftKaehlerDifferential : Ω[R⁄ℂ] →ₗ[R] R ⧸ m ^ 2) = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Derivation.liftKaehlerDifferential_unique _ _ (Derivation.ext fun x => ?_)` and prove the remaining obligations. Use `show (b • dd.liftKaehlerDifferential) (D ℂ R x) = (0 : Ω[R⁄ℂ] →ₗ[R] R ⧸ m ^ 2) (D ℂ R x)`. Rewrite using `[LinearMap.smul_apply, LinearMap.zero_apply, hL, hd, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, Ideal.Quotient.eq_zero_iff_mem, pow_two]`. Conclude with `Ideal.mul_mem_mul hb (hsub x)`. Introduce `ω`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `LinearMap.congr_fun hz ω`. Establish `hle : m ≤ Ig ⊔ m ^ 2`. Introduce `x hx`. Use `set c : Fin d → ℂ := Matrix.vecMul (φ (D ℂ R x)) M⁻¹ with hcEq`. Establish `hc : ∑ j, c j • M j = φ (D ℂ R x)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : Matrix.vecMul c M = φ (D ℂ R x)`. Rewrite using `[hcEq, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet), Matrix.vecMul_one]`. Rewrite using `[← h1]`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set x' := x - ∑ j, c j • g j with hx'Eq`. Establish `hx' : φ (D ℂ R x') = 0`. Simplify using `only [hx'Eq, map_sub, map_sum, Derivation.map_smul, map_smul, hM, hc, sub_self]`. Take `⟨k, b, ω', hb, hω⟩` from `hk _ hx'`. Establish `hx'm : x' ∈ m ^ 2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h1 : dd.liftKaehlerDifferential (D ℂ R x') = 0`. Rewrite using `[hω, map_sum]`. Conclude with `Finset.sum_eq_zero fun i _ => by`. Rewrite using `[map_smul]`. Conclude with `hkill _ ((hmem _).mpr (hb i)) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hex' : e x' = 0`. Simplify using `[hx'Eq, map_sub, map_sum, map_smul, hg, (hmem x).mp hx]`. Rewrite `h1` using `[hL, hd, hex', map_zero, sub_zero, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h1`. Establish `hsum : ∑ j, c j • g j ∈ Ig` using `Ideal.sum_mem _ fun j _ => Submodule.smul_of_tower_mem _ (c j) (Ideal.subset_span ⟨j, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : x = ∑ j, c j • g j + x'`. Rewrite using `[hx'Eq]`. Normalize the expressions using the abelian group laws. Rewrite using `[hx]`. Conclude with `Submodule.add_mem_sup hsum hx'm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfg : (Submodule.map (Submodule.mkQ Ig) m).FG` using `(IsNoetherian.noetherian m).map _`. Take `⟨r, hr1, hr⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul m (Submodule.map (Submodule.mkQ Ig) m) hfg (by`. Rewrite using `[← Submodule.map_smul'']`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨i, hi, q, hq, hiq⟩` from `Submodule.mem_sup.mp (hle hx)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨q, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hq` using `[pow_two, ← Ideal.smul_eq_mul]`. Conclude with `hq`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, ← hiq]`. Establish `: q - (i + q) = -i` using `by abel`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ig.neg_mem hi)`. Use `⟨r, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `(hmem _).mp hr1`. Rewrite `h` using `[map_sub, map_one, sub_eq_zero]`.
-
-Conclude with `h`. Introduce `e' he' hr'`. Establish `hIg : Ig ≤ RingHom.ker e'` using `Ideal.span_le.mpr (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `he' j)`.
-
-Establish `hmk : ∀ x ∈ m, e' x = 0`. Introduce `x hx`. Establish `h0` using `hr _ (Submodule.mem_map_of_mem hx)`. Rewrite `h0` using `[← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, smul_eq_mul]`. Establish `h3` using `hIg h0`.
-
-Rewrite `h3` using `[RingHom.mem_ker, map_mul]`. Conclude with `(mul_eq_zero.mp h3).resolve_left hr'`. Use extensionality with `x`. Establish `h` using `hmk _ (hsub x)`. Rewrite `h` using `[map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_eq_zero]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem iso_alg {R : Type} [CommRing R] [Algebra ℂ R] [IsNoetherianRing R] {d : ℕ}
     (e : R →ₐ[ℂ] ℂ) (φ : Ω[R⁄ℂ] →ₗ[ℂ] (Fin d → ℂ))
@@ -156,7 +148,7 @@ private theorem iso_alg {R : Type} [CommRing R] [Algebra ℂ R] [IsNoetherianRin
     exact h
 
 /- English proof (translation)
-The claim follows from `(CxPts.ev_res hV hy _).trans (valR_comp _ _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 private theorem ev_pull {Z Y : Scheme.{0}} {sZ : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} {c : Y ⟶ Z}
     {U : Z.Opens} {V : Y.Opens} (hV : V ≤ c ⁻¹ᵁ U) {y : CxPts s' (RingHom.id ℂ)}
@@ -173,14 +165,14 @@ private def evAlg {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {V : Y.Opens} {y : CxPts 
       exact this }
 
 /- English proof (translation)
-The claim follows from `(CxPts.ev_eq h f).symm`.
+A detailed English derivation is pending.
 -/
 private theorem evAlg_apply {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {V : Y.Opens} {y : CxPts s' (RingHom.id ℂ)}
     (h : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V) (f : Sec s' V) :
     evAlg h f = CxPts.ev s' (RingHom.id ℂ) V f y := (CxPts.ev_eq h f).symm
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← specMap_valMap_fromSpec hV y'.1 h', ← specMap_valMap_fromSpec hV y.1 h]`. Use `congr 2`. Use extensionality with `f`. Conclude with `congrArg (fun φ => φ f) e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem eq_of_evAlg {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {V : Y.Opens} (hV : IsAffineOpen V)
     {y y' : CxPts s' (RingHom.id ℂ)} (h : y ∈ CxPts.ptsIn s' (RingHom.id ℂ) V)
@@ -192,17 +184,15 @@ private theorem eq_of_evAlg {Y : Scheme.{0}} {s' : Y ⟶ Sp ℂ} {V : Y.Opens} (
   exact congrArg (fun φ => φ f) e
 
 /- English proof (translation)
-Take `⟨U, V, hV1, hV2, t, hyV, hU, hVa, φ, hφs, hφ1, hφ2, hφk⟩` from `hT`. Use `haveI : IsNoetherianRing (Sec s' V) := IsLocallyNoetherian.component_noetherian ⟨V, hVa⟩`. Set `g : Fin d → Sec s' V` to `fun j => Sec.res s' hV1 (appSec sZ s' c₁ U (t j)) - Sec.res s' hV2 (appSec sZ s' c₂ U (t j))`. Establish `hgz : ∀ (y' : CxPts s' (RingHom.id ℂ)) (hy' : y' ∈ CxPts.ptsIn s' (RingHom.id ℂ) V), y'.1 ≫ c₁ = y'.1 ≫ c₂ → ∀ j, evAlg hy' (g j) = 0`. Introduce `y' hy' hf j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [g, map_sub, evAlg_apply, ev_pull hV1 hy', ev_pull hV2 hy', hf, sub_self]`. Establish `hk : ∀ ω : Ω[Sec s' V⁄ℂ], φ ω = 0 → ∃ (m : ℕ) (b : Fin m → Sec s' V) (ω' : Fin m → Ω[Sec s' V⁄ℂ]), (∀ i, evAlg hyV (b i) = 0) ∧ ω = ∑ i, b i • ω' i`. Introduce `ω hω`. Take `⟨m, b, ω', hb, hsum⟩` from `hφk ω hω`. Conclude with `⟨m, b, ω', fun i => by rw [evAlg_apply]; exact hb i, hsum⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hM : ∀ j, φ (D ℂ (Sec s' V) (g j)) = (1 - A) j`. Introduce `j`. Simplify using `only [g, map_sub, hφ1, hφ2]`. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr1, hr⟩` from `iso_alg (evAlg hyV) φ hk g (hgz y hyV hfix) (1 - A) hM hdet`. Use `⟨Y.basicOpen r, ?_, ?_⟩` and prove the remaining obligations. Use `(CxPts.mem_ptsIn_basicOpen hyV r).mpr ?_` and prove the remaining obligations. Rewrite using `[← evAlg_apply hyV, hr1]`. Conclude with `one_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y' hf hy'`. Establish `hy'V : y' ∈ CxPts.ptsIn s' (RingHom.id ℂ) V` using `CxPts.ptsIn_mono (Y.basicOpen_le r) hy'`. Establish `hne : evAlg hy'V r ≠ 0`. Rewrite using `[evAlg_apply]`. Conclude with `(CxPts.mem_ptsIn_basicOpen hy'V r).mp hy'`.
-
-Conclude with `eq_of_evAlg hVa hyV hy'V (hr _ (hgz y' hy'V hf) hne)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isolated {Z Y : Scheme.{0}} {sZ : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp ℂ} {d : ℕ} {c₁ c₂ : Y ⟶ Z}
     {h₁ : c₁ ≫ sZ = s'} {h₂ : c₂ ≫ sZ = s'} [IsLocallyNoetherian Y] (y : CxPts s' (RingHom.id ℂ))
@@ -242,13 +232,11 @@ private theorem isolated {Z Y : Scheme.{0}} {sZ : Z ⟶ Sp ℂ} {s' : Y ⟶ Sp �
     exact eq_of_evAlg hVa hyV hy'V (hr _ (hgz y' hy'V hf) hne)
 
 /- English proof (translation)
-Introduce `Z Y sZ s' d c₁ c₂ h₁ h₂ _ _ _ hiso`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian s'`. Use `haveI : CompactSpace Y := QuasiCompact.compactSpace_of_compactSpace s'`. Use `haveI : IsNoetherian Y := {}`. Use `set F := {y : CxPts s' (RingHom.id ℂ) | y.1 ≫ c₁ = y.1 ≫ c₂} with hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hW : ∀ y : F, ∃ W : Y.Opens, y.1 ∈ CxPts.ptsIn s' (RingHom.id ℂ) W ∧ ∀ y' : CxPts s' (RingHom.id ℂ), y'.1 ≫ c₁ = y'.1 ≫ c₂ → y' ∈ CxPts.ptsIn s' (RingHom.id ℂ) W → y' = y.1`. Introduce `y`. Take `⟨A, hT, hdet⟩` from `hiso y.1 y.2`. Conclude with `isolated y.1 y.2 hT hdet`. Use `choose W hyW hW' using hW`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcov : (fun y : CxPts s' (RingHom.id ℂ) => (y : Sp ℂ ⟶ Y) (IsLocalRing.closedPoint ℂ)) '' F ⊆ ⋃ i : F, (W i : Set Y)`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `Set.mem_iUnion.mpr ⟨⟨y, hy⟩, CxPts.mem_ptsIn.mp (hyW ⟨y, hy⟩)⟩`. Take `⟨t, ht⟩` from `(TopologicalSpace.NoetherianSpace.isCompact _).elim_finite_subcover (fun i : F => (W i : Set Y)) (fun i => (W i).isOpen) hcov`. Use `(t.finite_toSet.image Subtype.val).subset ?_` and prove the remaining obligations.
-
-Introduce `y' hy'`. Take `⟨i, hi, hmem⟩` from `Set.mem_iUnion₂.mp (ht ⟨y', hy', rfl⟩)`. Conclude with `⟨i, hi, (hW' i y' hy' (CxPts.mem_ptsIn.mpr hmem)).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixFinite_of : FixFinite := by
   intro Z Y sZ s' d c₁ c₂ h₁ h₂ _ _ _ hiso

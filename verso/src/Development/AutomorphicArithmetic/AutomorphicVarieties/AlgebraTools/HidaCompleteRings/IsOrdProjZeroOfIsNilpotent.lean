@@ -9,13 +9,13 @@ variable {R : Type*} [CommRing R] {M : Type*} [AddCommGroup M] [Module R M]
 def ordPart (U : Module.End R M) : Submodule R M := ⨅ n : ℕ, LinearMap.range (U ^ n)
 
 /- English proof (translation)
-Simplify using `[ordPart, Submodule.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ordPart {U : Module.End R M} {x : M} : x ∈ ordPart U ↔ ∀ n : ℕ, ∃ y, (U ^ n) y = x := by
   simp [ordPart, Submodule.mem_iInf]
 
 /- English proof (translation)
-Establish `h1` using `Submodule.mem_map_of_mem (f := f) hx`. Rewrite `h1` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_smul_top {N : Type*} [AddCommGroup N] [Module R N] (f : M →ₗ[R] N) (J : Ideal R)
     {x : M} (hx : x ∈ (J • ⊤ : Submodule R M)) : f x ∈ (J • ⊤ : Submodule R N) := by
@@ -55,7 +55,7 @@ noncomputable def ordProj (I : Ideal R) (U : Module.End R M) : Module.End R M :=
   if h : ∃ e, IsOrdProj I U e then h.choose else 0
 
 /- English proof (translation)
-Unfold `ordProj`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOrdProj_ordProj {I : Ideal R} {U : Module.End R M} (h : ∃ e, IsOrdProj I U e) :
     IsOrdProj I U (ordProj I U) := by
@@ -70,7 +70,7 @@ structure OrdAdm (I : Ideal R) : Prop where
   finLen : ∀ k : ℕ, IsFiniteLength R (M ⧸ (I ^ k • ⊤ : Submodule R M))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.idem, h.comm, h.bij, fun k => (h.nil k).imp fun _ hn x => Submodule.smul_mono (Ideal.pow_right_mono hIJ k) le_rfl (hn x)⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsOrdProj.mono {I J : Ideal R} (hIJ : I ≤ J) {U e : Module.End R M} (h : IsOrdProj I U e) :
     IsOrdProj J U e :=
@@ -86,7 +86,7 @@ variable {A A' : Type*} [CommRing A] [CommRing A'] [Algebra A A']
   {M' : Type*} [AddCommGroup M'] [Module A M'] [Module A' M'] [IsScalarTower A A' M']
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => simp only [pow_succ', Module.End.mul_apply, h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pow_intertwine {U : Module.End A M} {U' : Module.End A' M'} {f : M →ₗ[A] M'}
     (h : ∀ x, f (U x) = U' (f x)) (n : ℕ) (x : M) : f ((U ^ n) x) = (U' ^ n) (f x) := by
@@ -95,7 +95,7 @@ theorem pow_intertwine {U : Module.End A M} {U' : Module.End A' M'} {f : M →�
   | succ n ih => simp only [pow_succ', Module.End.mul_apply, h, ih]
 
 /- English proof (translation)
-Use `mem_ordPart.2 fun n => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mem_ordPart.1 hx n`. Conclude with `⟨f y, (pow_intertwine h n y).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem map_mem_ordPart {U : Module.End A M} {U' : Module.End A' M'} {f : M →ₗ[A] M'}
     (h : ∀ x, f (U x) = U' (f x)) {x : M} (hx : x ∈ ordPart U) : f x ∈ ordPart U' := by

@@ -17,11 +17,11 @@ namespace GlobalTheory.SchurUnitary
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra in
 
 /- English proof (translation)
-Establish `hR' : R * (c * T x + d) = 1` using `mul_eq_one_comm.1 hR`. Set `u : (Matrix n n ℂ)ˣ` to `⟨c * T x + d, R, hR, hR'⟩`. Establish `hT : HasFDerivAt (fun s => T s) (LinearMap.toContinuousLinearMap T) x` using `(LinearMap.toContinuousLinearMap T).hasFDerivAt`. Establish `hN` using `(hT.const_mul a).add_const b`. Establish `hD` using `(hT.const_mul c).add_const d`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI` using `(hasFDerivAt_ringInverse (𝕜 := ℂ) u).comp x (f := fun s => c * T s + d) hD`. Establish `hP` using `hN.mul' hI`. Establish `hS` using `(LinearMap.toContinuousLinearMap S).hasFDerivAt.comp x hP`. Establish `e : (fun s => S ((a * T s + b) * (c * T s + d)⁻¹)) = (LinearMap.toContinuousLinearMap S) ∘ ((fun s => a * T s + b) * (Ring.inverse ∘ fun s => c * T s + d))`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.nonsing_inv_eq_ringInverse]`. Rewrite using `[e, hS.fderiv]`. Establish `hi : Ring.inverse (c * T x + d) = R` using `Ring.inverse_unit u`. Express the relevant statement in the definitionally equal form `S ((a * T x + b) * (-(R * (c * T v) * R)) + a * T v * Ring.inverse (c * T x + d)) = _`. Rewrite using `[hi, Matrix.mul_neg, neg_add_eq_sub]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem fderiv_frac {n : Type} [Fintype n] [DecidableEq n] {E F : Type}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E]
@@ -64,7 +64,7 @@ def symL (g : ℕ) : Matrix (Fin g) (Fin g) ℂ →ₗ[ℂ] symMat g where
     apply Subtype.ext; funext i j; simp [symPart]; ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[tauU, symPart]`. Simplify using `[tauU, symPart, Matrix.one_apply, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem tauU_I : tauU (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) = Complex.I • 1 := by
   ext i j
@@ -73,17 +73,17 @@ theorem tauU_I : tauU (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)))
   · simp [tauU, symPart, Matrix.one_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Establish `hk : k.1 * star k.1 = 1` using `k.2.2`. Use `set a := k.1.map Complex.re`. Use `set b := k.1.map Complex.im`. Establish `h1 : a * aᵀ + b * bᵀ = 1`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Complex.re (congrFun (congrFun hk i) j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Complex.re_sum, Matrix.one_apply] at this`. Simplify using `only [a, b, Matrix.add_apply, Matrix.mul_apply, Matrix.one_apply, ← Finset.sum_add_distrib]`. Apply the tactic sequence `split_ifs at this ⊢ <;> simpa using this`. Establish `h2 : b * aᵀ = a * bᵀ`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `congrArg Complex.im (congrFun (congrFun hk i) j)` as an intermediate fact. Simplify using `only [Matrix.mul_apply, Complex.im_sum, Matrix.one_apply] at this`. Rewrite using `[← sub_eq_zero]`. Simplify using `only [a, b, Matrix.mul_apply, ← Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `have h0 : (if i = j then (1 : ℂ) else 0).im = 0 := by split_ifs <;> simp`. Rewrite `this` using `[h0]`. Rewrite using `[← this]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[SymplecticGroup.mem_iff, Matrix.J, fromBlocks_transpose, fromBlocks_multiply, fromBlocks_multiply]`. Use `congr 1`. Simplify using `[h2]`. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, transpose_neg, Matrix.neg_mul]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[← h1]`. Normalize the expressions using the abelian group laws. Simplify using `only [Matrix.mul_zero, Matrix.mul_one, Matrix.mul_neg, zero_add, add_zero, transpose_neg, Matrix.neg_mul, neg_neg]`. Conclude with `h1`. Simplify using `[h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_sp (k : Matrix.unitaryGroup (Fin g) ℂ) :
     fromBlocks (k.1.map Complex.re) (k.1.map Complex.im) (-(k.1.map Complex.im))
@@ -121,21 +121,21 @@ theorem mem_sp (k : Matrix.unitaryGroup (Fin g) ℂ) :
   · simp [h2]
 
 /- English proof (translation)
-Introduce `g k`. Establish `hk : k.1 * star k.1 = 1` using `k.2.2`. Set `a : Matrix (Fin g) (Fin g) ℂ` to `(k.1.map Complex.re).map fun t : ℝ => (t : ℂ)`. Set `b : Matrix (Fin g) (Fin g) ℂ` to `(k.1.map Complex.im).map fun t : ℝ => (t : ℂ)`. Set `γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g` to `⟨_, mem_sp k⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hact : actB γ = fun s => symL g ((a * tauL g s + b) * ((-b) * tauL g s + a)⁻¹)`. Use function extensionality and compare the values at `s`. Establish `: (-(k.1.map Complex.im)).map (fun t : ℝ => (t : ℂ)) = -b`. Use extensionality with `i j`. Simplify using `[b]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hx : tauL g (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) = Complex.I • 1` using `tauU_I`. Establish `hD : -b * (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)) + a = (star k.1)ᵀ`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_smul, Matrix.mul_one]`. Apply the tactic sequence `apply Complex.ext <;> simp [a, b]`. Establish `hN : a * (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ)) + b = Complex.I • (star k.1)ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_smul, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [a, b]`. Establish `hab : a + Complex.I • b = k.1`. Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [a, b]`. Establish `hR : (star k.1)ᵀ * k.1ᵀ = 1` using `by rw [← transpose_mul, hk, transpose_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `⟨γ, ?_, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[hact]`. Simplify using `only [hx, hD, hN]`. Rewrite using `[Matrix.inv_eq_right_inv hR, Matrix.smul_mul, hR]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hact, fderiv_frac (tauL g) (symL g) a b (-b) a k.1ᵀ _ (by rw [hx, hD, hR]) v, hx, hN]`. Express the relevant statement in the definitionally equal form `symPart _ = symPart (k.1 * tauL g v * k.1ᵀ)`. Use `congr 1`. Rewrite using `[Matrix.smul_mul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hR, Matrix.one_mul]`. Generalize the expression as in `k.1ᵀ = R`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite using `[← hab]`. Simplify using `[Matrix.add_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem main : ∀ (g : ℕ) (k : Matrix.unitaryGroup (Fin g) ℂ), ∃ γ : GlobalTheory.IndefiniteRowSideFullHecke.SiegelReframe.Sp g, actB γ (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) = symPart (Complex.I • 1) ∧ ∀ v : symMat g, fderiv ℂ (actB γ) (symPart (Complex.I • (1 : Matrix (Fin g) (Fin g) ℂ))) v = symPart (k.1 * tauU v * k.1ᵀ) := by
   intro g k

@@ -7,16 +7,16 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.SplitPlaceOver
 
 /- English proof (translation)
-The claim follows from `D.host.φ₀.injective (by rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`.
+A detailed English derivation is pending.
 -/
 theorem host_conj_eq' (D : D7) (x : D.host.E) : D.host.conj x = IsCMField.complexConj D.host.E x :=
   D.host.φ₀.injective (by
     rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])
 
 /- English proof (translation)
-Introduce `D s w hov`. Break down `GlobalTheory.SplitConjPlace.eq_or_eq_conjPlE s.w w (hov.trans s.w_under.symm) with e | e` into its components or cases. Conclude with `Or.inl e.symm`. Use `right`. Introduce `x y hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy : y = IsCMField.ringOfIntegersComplexConj D.host.E x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[hxy, IsCMField.coe_ringOfIntegersComplexConj, host_conj_eq']`. Rewrite using `[e, GlobalTheory.SplitConjPlace.mem_conjPlE, hy]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_or_isConjPl : ∀ (D : D7) (s : SplitPlace D.host.E) (w : PlE D.host), NG.OverPl w s.v →
     s.w = w ∨ IsConjPl D.host w s.w := by

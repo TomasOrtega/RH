@@ -7,13 +7,13 @@ namespace GlobalTheory
 open Real Filter Asymptotics in
 
 /- English proof (translation)
-Introduce `a b C p hab`. Establish `hlo : (fun x : ℝ => Real.log x ^ (p : ℝ)) =o[atTop] fun x => x ^ (b - a)` using `isLittleO_log_rpow_rpow_atTop _ (sub_pos.mpr hab)`. Establish `hc : (0 : ℝ) < 1 / (|C| + 1)` using `by positivity`. Establish `hev` using `(hlo.bound hc).and (eventually_gt_atTop (0 : ℝ))`. Take `⟨x0, hx0⟩` from `eventually_atTop.mp hev`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨x0, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨hb, hxpos⟩` from `hx0 x hx`. Rewrite `hb` using `[Real.rpow_natCast]`. Establish `hxa : 0 < x ^ a` using `Real.rpow_pos_of_pos hxpos a`. Establish `hxba : 0 < x ^ (b - a)` using `Real.rpow_pos_of_pos hxpos _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hb` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_pos hxba]`. Establish `hsplit : x ^ b = x ^ a * x ^ (b - a)`. Rewrite using `[← Real.rpow_add hxpos]`. Put the polynomial expressions in normal form. Establish `h1 : C * Real.log x ^ p ≤ |C| * |Real.log x ^ p|`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Rewrite using `[← abs_mul]`. Conclude with `le_abs_self _`. Establish `h2 : |C| * |Real.log x ^ p| ≤ x ^ (b - a)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.const_mul_rpow_mul_log_pow_le_rpow :
     ∀ a b C : ℝ, ∀ p : ℕ, a < b →

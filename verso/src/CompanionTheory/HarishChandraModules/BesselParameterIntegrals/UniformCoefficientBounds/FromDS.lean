@@ -13,11 +13,11 @@ namespace CompanionTheory.D.Upq.Coef
 open Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeDimData Formalism.FourierDecayAlt.P.CutBP.Jmu Formalism.FourierDecayAlt.P.CutBP.Jmu.NDG ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Establish `hp : pOf ε ≤ n` using `(Finset.card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `hq : qOf ε ≤ n` using `(Finset.card_le_univ _).trans_eq (Fintype.card_fin n)`. Establish `h0 : S7.q0 ε ≤ n` using `by unfold S7.q0; omega`. Establish `hp' : (pOf ε : ℝ) ≤ n` using `by exact_mod_cast hp`. Establish `hq' : (qOf ε : ℝ) ≤ n` using `by exact_mod_cast hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0' : (S7.q0 ε : ℝ) ≤ n` using `by exact_mod_cast h0`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `h2 : (n : ℝ) ≤ n ^ 3` using `le_self_pow₀ h1 (by norm_num)`. Establish `h3 : (n : ℝ) ^ 2 ≤ n ^ 3` using `pow_le_pow_right₀ h1 (by norm_num)`. Use `max_le ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (n : ℝ) * pOf ε * qOf ε ≤ n * n * n` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities. Establish `h4 : Real.sqrt (2 * (S7.q0 ε : ℝ)) ≤ 2 * n` using `Real.sqrt_le_iff.2 ⟨by positivity, by nlinarith⟩`. Establish `h5 : 16 * (n : ℝ) * S7.q0 ε ≤ 16 * n * n` using `by gcongr`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem thrStar_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thrStar ε ≤ 32 * (n : ℝ) ^ 3 := by
   have hp : pOf ε ≤ n := (Finset.card_le_univ _).trans_eq (Fintype.card_fin n)
@@ -38,7 +38,7 @@ theorem thrStar_le {n : ℕ} (hn : 1 ≤ n) (ε : Fin n → Bool) : thrStar ε �
     nlinarith
 
 /- English proof (translation)
-The claim follows from `| [], _ => rfl | X :: W, v => by change Formalism.MainNotions.S.dsig σ X (Formalism.MainNotions.S.dsigW σ W v) = PI.UpqRep.dsig σ X (PI.UpqRep.dsigW σ W v) rw [dsigW_SK σ W v]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Mx k r → (H →L[ℂ] H)) : ∀ (W : List (Mx k r)) (v : H),
@@ -49,19 +49,17 @@ theorem dsigW_SK {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpac
     rw [dsigW_SK σ W v]; rfl
 
 /- English proof (translation)
-Introduce `k r ε lam h H _ _ _ σ hlam hσ hgap hok v0 hv0`. Establish `hn : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ (by exact_mod_cast by omega)`. Establish `hh` using `hok.2.1`. Establish `ht` using `thrStar_le (n := 2 * r + k + 1) (by omega) ε`. Establish `hs : (1 : ℝ) ≤ Real.sqrt (2 * ((r : ℝ) + 1))` using `Real.one_le_sqrt.2 (by have : (0 : ℝ) ≤ r := Nat.cast_nonneg r; linarith)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha0 : 0 ≤ aOf r h` using `div_nonneg (by linarith) (by positivity)`. Establish `ha : aOf r h ≤ h / 8` using `div_le_div_of_nonneg_left (by linarith) (by norm_num) (by linarith)`. Establish `hm : thrStar ε + (⌊aOf r h⌋₊ : ℕ) < h`. Use `Nat.floor_le ha0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨C, Ws, hWs, hC⟩` from `DecInf.decSm hlam hgap _ hm (σ := σ) hσ`. Establish `hv0s` using `CompanionTheory.D.gk.admitted.k_finite_smooth k r ε lam H σ hlam hσ v0 hv0`. Use `set N := (Ws.map fun w => ‖Formalism.MainNotions.S.dsigW (k := k) (r := r) σ w v0‖).sum`. Use `⟨|C * N|, Ws, fun W hW => (hWs W hW).2, fun w hw x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC w hw v0 hv0s x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [dsigW_SK] at h1`. Use `set M := (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) σ W w‖).sum`. Establish `hM : 0 ≤ M` using `List.sum_nonneg fun t ht => by`. Take `⟨W, -, rfl⟩` from `List.mem_map.1 ht`. Conclude with `norm_nonneg _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg1 : 1 ≤ B.gN x` using `Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_ge_one hx`. Establish `h2 : B.gN x ^ (aOf r h - 1) ≤ B.gN x ^ (⌊aOf r h⌋₊ : ℕ)`. Rewrite using `[← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le hg1 (Nat.sub_one_lt_floor _).le`. Establish `h3 : B.gN x ^ (aOf r h - 1) * ‖⟪v0, σ x w⟫_ℂ‖ ≤ |C * N| * M`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(mul_le_mul_of_nonneg_right h2 (norm_nonneg _)).trans (h1.trans ?_)` and prove the remaining obligations. Establish `e : N = (Ws.map fun w => ‖PI.UpqRep.dsigW (k` using `k) (r := r) σ w v0‖).sum := by`. Simplify using `only [N, dsigW_SK]`. Rewrite using `[← e, mul_right_comm]`. Conclude with `mul_le_mul_of_nonneg_right (le_abs_self _) hM`.
-
-Rewrite using `[← neg_sub, Real.rpow_neg (by linarith), ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos (by linarith) _), mul_comm]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decay_infinite_range : DecInf := by
   intro k r ε lam h H _ _ _ σ hlam hσ hgap hok v0 hv0
@@ -100,9 +98,9 @@ theorem decay_infinite_range : DecInf := by
   exact h3
 
 /- English proof (translation)
-Introduce `hK k r Wp Wq _ _ _ _ _ _ Bs ε lam h u u' νq νq' A hG`. Establish `hn : (1 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) ^ 3` using `one_le_pow₀ (by exact_mod_cast by omega)`. Establish `hh` using `hG.1.2.2.2.1.2.1`. Establish `ht` using `thrStar_le (n := 2 * r + k + 1) (by omega) ε`. Establish `hm : thrStar ε + (64 * (2 * r + k + 1) ^ 3 : ℕ) < h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨C, Ws, -, hC⟩` from `DecInf.decSm hG.1.1 hG.1.2.2.1 _ hm (σ := A.σ) hG.1.2.1`. Rewrite using `[coef_eq_cf]`. Conclude with `inCC_cf_of_dec hK hG.1.1 hG.1.2.1 (lowest_unit_vector_is_K_finite hG) _ (fun a ha b hb => ⟨_, fun g hg => (congrArg (· * _) (Real.rpow_natCast _ _)).trans_le (hC b hb a ha g hg)⟩) 5`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem capelli_coefficient_continuity : CoefCC := by
   intro hK k r Wp Wq _ _ _ _ _ _ Bs ε lam h u u' νq νq' A hG

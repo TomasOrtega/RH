@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.IntegralCasts.CapelliIdentities.ExistsP
 open UpperTheory.Gal.LocalSmoothExtension
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh57.exists_perm_of_map_eq a b h`.
+A detailed English derivation is pending.
 -/
 private theorem exists_perm_of_map_eq {n : ℕ} (a b : Fin n → ℂ)
     (h : Finset.univ.val.map a = Finset.univ.val.map b) :
@@ -12,9 +12,9 @@ private theorem exists_perm_of_map_eq {n : ℕ} (a b : Fin n → ℂ)
   _root_.UpperTheory.Reformulated.B.Qh57.exists_perm_of_map_eq a b h
 
 /- English proof (translation)
-Introduce `F _ _ n lam χ g hg`. Establish `h : ∃ g : (F →+* ℂ) → Fin n → ℂ, Lists χ g` using `⟨g, hg⟩`. Unfold `schW`. Rewrite using `[dif_pos h]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e, he⟩` from `exists_perm_of_map_eq (h.choose τ) (g τ) ((h.choose_spec τ).symm.trans (hg τ))`. Establish `hge : h.choose τ = g τ ∘ e` using `funext fun i => (he i).symm`. Rewrite using `[hge]`. Unfold `UpperTheory.Gal.Schur.sch`. Rewrite using `[← MvPolynomial.aeval_rename, GroundTheory.Heights₂.Heights.RestTerms.Schur.schur_isSymmetric (lam τ) e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.LocalSmoothExtension.schWEq_of :
     SchWEq := by

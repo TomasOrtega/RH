@@ -10,17 +10,17 @@ namespace GlobalTheory.BCT.ConjugationGramUnitary
 open Formalism.UG
 
 /- English proof (translation)
-Establish `key : ∀ (y : L) (m : ℤ), Valued.v y = ((Multiplicative.ofAdd (-m) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) → ordL y = m`. Introduce `y m h`. Establish `hne : Valued.v y ≠ 0` using `by rw [h]; exact WithZero.coe_ne_zero`. Unfold `ordL`. Rewrite using `[dif_neg hne]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((WithZero.unzero hne : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = Multiplicative.ofAdd (-m)`. Rewrite using `[WithZero.coe_unzero, h]`. Rewrite using `[WithZero.coe_inj.mp e]`. Simplify using the standard rewrite rules. Establish `spec : ∀ y : L, y ≠ 0 → Valued.v y = ((Multiplicative.ofAdd (-(ordL y)) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hne : Valued.v y ≠ 0` using `(Valuation.ne_zero_iff _).mpr hy`. Unfold `ordL`. Rewrite using `[dif_neg hne]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Establish `h1 : ordL (σ a * a * x) = 2 * ordL a + ordL x`. Apply `key` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, hσ, spec a ha, spec x hx]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.coe_mul, ← WithZero.coe_mul]`. Use `congr 1`. Rewrite using `[← ofAdd_add, ← ofAdd_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h1, zpow_add₀ (by norm_num), Even.neg_one_zpow (even_two_mul _), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem negOne_zpow_ordL_mul {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L)
     (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (a x : L) (ha : a ≠ 0) :
@@ -57,11 +57,11 @@ def gram {K : Type} [Field K] (σ : K →+* K) {n : ℕ} {ι : Type} (v : ι →
   Matrix.of fun i j => ∑ k, σ (v i k) * v j k
 
 /- English proof (translation)
-Establish `hc : ∀ j k, (c j : Fin n → K) k = ∑ l, b.toMatrix c l j * (b l : Fin n → K) k`. Introduce `j k`. Use `b.sum_toMatrix_smul_self c j` as an intermediate fact. Rewrite using `[← this, Submodule.coe_sum, Finset.sum_apply]`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hc, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gram_basis {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (V : Submodule K (Fin n → K)) {ι : Type} [Fintype ι]
     [DecidableEq ι] (b c : Module.Basis ι K V) :
@@ -83,13 +83,13 @@ theorem gram_basis {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (V : Submodul
   ring
 
 /- English proof (translation)
-Establish `he : ∀ a b, ∑ k, σ (g k a) * g k b = if a = b then 1 else 0`. Introduce `a b`. Use `congrFun (congrFun hg a) b` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Establish `hm : ∀ (x : Fin n → K) k, (g *ᵥ x) k = ∑ a, g k a * x a` using `fun _ _ => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `only [gram, Matrix.of_apply, hm, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∀ y, ∑ k, σ (g k y) * σ (v i y) * (g k a * v j a) = σ (v i y) * v j a * (if y = a then 1 else 0)`. Introduce `y`. Rewrite using `[← he y a, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_unitary {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (g : Matrix (Fin n) (Fin n) K)
     (hg : (g.map σ)ᵀ * g = 1) {ι : Type} (v : ι → (Fin n → K)) :
@@ -112,11 +112,11 @@ theorem gram_unitary {K : Type} [Field K] (σ : K →+* K) {n : ℕ} (g : Matrix
   simp only [this, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Proceed by induction on `Q using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, Matrix.mul_add, Matrix.add_mul]`. Consider the case `monomial k a`. Simplify using `only [aeval_monomial, Units.val_mul]`. Establish `: ((g⁻¹).val * γ.val * g.val) ^ k = (g⁻¹).val * γ.val ^ k * g.val`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ih, pow_succ]`. Simplify using `only [Matrix.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Rewrite using `[← Matrix.mul_assoc g.val, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`. Rewrite using `[this]`. Simplify using `[Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.smul_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aeval_conj {K : Type} [Field K] {n : ℕ} (γ g : GL (Fin n) K) (Q : K[X]) :
     aeval (g⁻¹ * γ * g).val Q = (g⁻¹).val * aeval γ.val Q * g.val := by
@@ -142,33 +142,31 @@ namespace GlobalTheory.BCT
 open GlobalTheory.BCT.ConjugationGramUnitary
 
 /- English proof (translation)
-Introduce `E _ _ _ n w hv Q₁ γ g`. Unfold `kapSign`. Use `split_ifs with hs`. Both sides reduce to the same expression. Establish `hg : ((g.1.val).map (cj w))ᵀ * g.1.val = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `g.2`. Simplify using `only [UL, hs, if_false] at h`. Establish `h2 : Formalism.UG.cT (cj w) (g.1 : Matrix (Fin n) (Fin n) (w.adicCompletion E)) * 1 * (g.1 : Matrix (Fin n) (Fin n) _) = 1` using `h`. Simplify `h2` using `[Formalism.UG.cT]`. Establish `hinv : ((g.1)⁻¹).val * g.1.val = 1` using `by rw [← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinv' : g.1.val * ((g.1)⁻¹).val = 1` using `by rw [← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `hM : aeval ((g⁻¹ * γ * g).1).val Q₁ = ((g.1)⁻¹).val * aeval γ.1.val Q₁ * g.1.val`. Establish `: (g⁻¹ * γ * g).1 = g.1⁻¹ * γ.1 * g.1` using `by simp`. Rewrite using `[this]`. Conclude with `aeval_conj _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Introduce a local definition for the expression.
 
-Simplify using `only`. Set `V` to `LinearMap.ker (Matrix.toLin' (aeval γ.1.val Q₁))`. Set `V'` to `LinearMap.ker (Matrix.toLin' (aeval ((g⁻¹ * γ * g : UL n w) : GLw n w).val Q₁))`. Establish `hmem : ∀ x, x ∈ V' ↔ g.1.val *ᵥ x ∈ V`. Introduce `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [V, V', LinearMap.mem_ker, Matrix.toLin'_apply]`. Rewrite using `[hM, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (g.1.val *ᵥ ·) h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify `this` using `[Matrix.mulVec_mulVec, hinv']`. Introduce `h`. Rewrite using `[h, Matrix.mulVec_zero]`. Establish `hinj : Function.Injective (Matrix.toLin' g.1.val)`. Introduce `x y h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (((g.1)⁻¹).val *ᵥ ·) h` as an intermediate fact. Simplify `this` using `[Matrix.toLin'_apply, Matrix.mulVec_mulVec, hinv]`. Establish `hmap : V'.map (Matrix.toLin' g.1.val) = V`. Use extensionality with `x`. Simplify using `only [Submodule.mem_map, Matrix.toLin'_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `(hmem y).mp hy`. Introduce `hx`. Use `⟨((g.1)⁻¹).val *ᵥ x, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hmem, Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Conclude with `hx`. Rewrite using `[Matrix.mulVec_mulVec, hinv', Matrix.one_mulVec]`. Set `e : V' ≃ₗ[w.adicCompletion E] V` to `(Submodule.equivMapOfInjective _ hinj V').trans (LinearEquiv.ofEq _ _ hmap)`. Set `b` to `Module.finBasis (w.adicCompletion E) V`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `b'` to `Module.finBasis (w.adicCompletion E) V'`. Set `c₀` to `b'.map e`. Set `c` to `c₀.reindex (b.indexEquiv c₀).symm`. Establish `hc₀ : ∀ i, (c₀ i : Fin n → w.adicCompletion E) = g.1.val *ᵥ (b' i : Fin n → w.adicCompletion E)`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h1 : gram (cj w) (fun i => (b' i : Fin n → w.adicCompletion E)) = gram (cj w) (fun i => (c₀ i : Fin n → w.adicCompletion E))`. Simplify using `only [hc₀]`. Conclude with `(gram_unitary (cj w) _ hg _).symm`. Establish `h2 : (gram (cj w) (fun i => (c₀ i : Fin n → w.adicCompletion E))).det = (gram (cj w) (fun i => (c i : Fin n → w.adicCompletion E))).det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: gram (cj w) (fun i => (c i : Fin n → w.adicCompletion E)) = (gram (cj w) (fun i => (c₀ i : Fin n → w.adicCompletion E))).submatrix (b.indexEquiv c₀) (b.indexEquiv c₀)`. Use extensionality with `i j`. Simplify using `[ConjugationGramUnitary.gram, c, Module.Basis.reindex_apply]`. Rewrite using `[this, Matrix.det_submatrix_equiv_self]`. Set `A` to `b.toMatrix c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hA : A.det ≠ 0` using `Matrix.det_ne_zero_of_right_inverse (b.toMatrix_mul_toMatrix_flip c)`. Establish `h3 : (gram (cj w) (fun i => (c i : Fin n → w.adicCompletion E))).det = cj w A.det * A.det * (gram (cj w) (fun i => (b i : Fin n → w.adicCompletion E))).det`. Establish `hd : ((b.toMatrix c).map (cj w)).det = cj w A.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[gram_basis (cj w) V b c, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hd]`. Expand and normalize the polynomial expressions, which then agree.
-
-Express the relevant statement in the definitionally equal form `(-1 : ℂ) ^ Formalism.UG.ordL (gram (cj w) (fun i => (b' i : Fin n → w.adicCompletion E))).det = (-1 : ℂ) ^ Formalism.UG.ordL (gram (cj w) (fun i => (b i : Fin n → w.adicCompletion E))).det`. Rewrite using `[h1, h2, h3]`. Conclude with `negOne_zpow_ordL_mul (cj w) hv _ _ hA`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapSign_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (w : Pl E),
     (∀ x, Valued.v (cj w x) = Valued.v x) →

@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace GlobalTheory.NewPrime.FormNonzero
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `hd`. Use `⟨((u⁻¹ : Λˣ) : Λ) • f z, fun g => ?_⟩` and prove the remaining obligations. Establish `e1 : f (g * z) = f (z * g)`. Establish `: g * z = (g * z * g⁻¹ * z⁻¹) * (z * g)` using `by group`. Rewrite using `[this, hf, h0 _ (hc g), hL _ (hc g), zero_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e1` using `[hf, hf, hz]`. Rewrite using `[map_smul, ← smul_sub]`. Establish `e2 : π g (f z) - f z = (d - 1) • f g`. Rewrite using `[sub_smul, one_smul, sub_eq_sub_iff_add_eq_add, add_comm (π g (f z)), e1, add_comm]`. Rewrite using `[e2, smul_smul, ← hu, Units.inv_mul, one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cob_of_vanish {G Λ V : Type} [Group G] [CommRing Λ] [AddCommGroup V] [Module Λ V] (π : Representation Λ G V)
     (L : Subgroup G) (hL : ∀ h ∈ L, ∀ m, π h m = m) (z : G) (d : Λ) (hd : IsUnit (d - 1)) (hz : ∀ m, π z m = d • m)
@@ -29,9 +29,9 @@ theorem cob_of_vanish {G Λ V : Type} [Group G] [CommRing Λ] [AddCommGroup V] [
   rw [e2, smul_smul, ← hu, Units.inv_mul, one_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [repOn, matAct, MonoidHom.coe_mk, OneHom.coe_mk, hκ, hz, Units.val_one, one_smul, LinearMap.coe_mk, AddHom.coe_mk, Matrix.map_apply, Matrix.smul_apply, Pi.smul_apply]`. Rewrite using `[Finset.sum_eq_single a]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply_ne hb.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem repOn_scalar {G O Λ : Type} [Group G] [CommRing O] [CommRing Λ] [Algebra O Λ] {r : ℕ} (ρ : G →* GL (Fin r) O)
     (κ : G →* Λˣ) (Y : Type) [AddCommGroup Y] [Module Λ Y] (z : G) (d : O) (hκ : κ z = 1)
@@ -47,27 +47,25 @@ theorem repOn_scalar {G O Λ : Type} [Group G] [CommRing O] [CommRing Λ] [Algeb
   · simp
 
 /- English proof (translation)
-Introduce `D N X bkP i s hl M L z hM hz hL A _ _ _ _ _ _ κ Q ρ hS hK hρ hanti hκz hκL a Φ Z hU x₀ j c y hx₀ hj hy`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Apply `hy` to reduce the goal to its premises. Take `⟨d, hd, hd2, hd1, he⟩` from `GlobalTheory.TwSys.TameScalar.exists_scalar_tmat_of_tame_inertia D N X bkP i s z hS.1.1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, -⟩` from `(hU A).1 x₀ hx₀`. Establish `hcl` using `GlobalTheory.T.two_mul_cocycle_values_zero_on_small_subgroup D N X bkP i s hl M L z hM hz hL A κ Q ρ hS hK hρ hanti hκz hκL x y (fun h hh => by rw [hx]; exact hcon h hh)`. Set `I : Ideal A` to `Ideal.span {t | ∃ h ∈ L, ∃ b, t = x.1 h b}`. Establish `hjI : x₀ j ∈ I`. Use `letI : TopologicalSpace (A ⧸ I) := ⊥`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : DiscreteTopology (A ⧸ I) := ⟨rfl⟩`. Establish `hker : matAct Φ (fun k => I.mkQ (x₀ k)) = 0`. Use function extensionality and compare the values at `k`. Use `congrArg I.mkQ (congrFun hx₀ k)` as an intermediate fact. Simplify `this` using `only [matAct, LinearMap.coe_mk, AddHom.coe_mk, map_sum, map_smul, Pi.zero_apply, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx', -⟩` from `(hU (A ⧸ I)).1 _ hker`. Establish `h0` using `(hU (A ⧸ I)).2.1 _ hker (by`. Rewrite using `[← hx']`. Use `cob_of_vanish _ L (fun h hh m => ?_) z (algebraMap (X.O0 i) A d) (by simpa using hd1.map (algebraMap (X.O0 i) A)) (repOn_scalar _ _ _ z _ hκz (by rw [Tgl_coe, hd])) hL.1.2.2.2.1 _ x'.2.2 (fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z hM hL A κ ρ hK hρ (A ⧸ I) h hh).1, hκL h hh, Units.val_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Establish `e : x'.1 h b = I.mkQ (x.1 h b)`. Rewrite using `[hx, hx']`. Simplify using `only [rect, map_sum, map_smul]`. Rewrite using `[e, Pi.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Ideal.subset_span ⟨h, hh, b, rfl⟩)`. Use `congrFun h0 j` as an intermediate fact. Rewrite `this` using `[Pi.zero_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Then use the resulting hypothesis. Establish `hcI : c ∈ I`. Take `⟨t, rfl⟩` from `hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Conclude with `I.mul_mem_right _ hjI`. Establish `hkill : ∀ t ∈ I, ∀ h' ∈ L, ∀ b, (X.l i : A) ^ nu X i * t * y.1 h' b = 0`. Introduce `t ht h' hh' b`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨h, hh, b', rfl⟩` from `ht`. Conclude with `hcl h hh h' hh' b' b`. Consider the case `zero => simp`. Consider the case `add t t' _ _ h1 h2 => rw [mul_add, add_mul, h1, h2, add_zero]`. Consider the case `smul u t _ h1 => rw [smul_eq_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `u * h1`. Establish `hρz : (ρ z : Matrix (Fin D.R.r) (Fin D.R.r) (X.O0 i)) = ((d⁻¹ : (X.O0 i)ˣ) : X.O0 i) • 1`. Establish `hinv : (Tmat i s z)⁻¹ = ((d⁻¹ : (X.O0 i)ˣ) : X.O0 i) • 1`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[hd, Matrix.smul_mul, one_mul, smul_smul, Units.inv_mul, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hρ z, Tdual, he, hinv, Units.val_one, one_smul, Matrix.transpose_smul, Matrix.transpose_one]`. Establish `hdi` using `GlobalTheory.TwSys.TameScalar.isUnit_sub_one _ (GlobalTheory.TwSys.TameScalar.isUnit_inv_sq_sub_one d hd2)`. Use `cob_of_vanish _ L (fun h hh m => ?_) z (algebraMap (X.O0 i) A ((d⁻¹ : (X.O0 i)ˣ) : X.O0 i)) (by simpa only [map_sub, map_one] using hdi.map (algebraMap (X.O0 i) A)) (repOn_scalar _ _ _ z _ (by simp [hκz]) hρz) hL.1.2.2.2.1 _ (fun g h => ?_) (fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.twisted_representation_kills_small_subgroup D N X i s hl M L z hM hL A κ⁻¹ ρ hK hρ A h hh).2.1]`. Simplify using `[hκL h hh]`.
-
-Rewrite using `[y.2.2, smul_add, map_smul]`. Use function extensionality and compare the values at `b`. Conclude with `hkill c hcI h hh b`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_bform_ne_zero : ∀ (D : Formalism.BasicNotions.D7) (N : NData D.R D.host D.what₂) (X : NTw D.R D.host D.what₂ D.LL0 N) (bkP : BKPh X) (i : X.Tw) (s : X.Sig i), 0 < nu X i → ∀ (M : ℕ) (L : Subgroup (GE N)) (z : GE N), nu X i + 1 ≤ M → IsTameInertiaElementAtTwistPrime X i z → Small2 i s M L z → ∀ (A : Type) [CommRing A] [IsLocalRing A] [Finite A] [Algebra (X.O0 i) A] [TopologicalSpace A] [DiscreteTopology A] (κ : GE N →* Aˣ) (Q : Finset (PlE D.host)) (ρ : GE N →* GL (Fin D.R.r) (X.O0 i)), Setup bkP i s κ Q → Kills i A → IsDual i s ρ → AntiHom X.cc κ → κ z = 1 → (∀ g ∈ L, κ g = 1) → ∀ (a : ℕ) (Φ : Matrix (Fin a) (Fin a) A) Z, Univ bkP i s κ Q Φ Z → ∀ (x₀ : Fin a → A) (j : Fin a) (c : A) (y : Z1 (repOn ρ κ⁻¹ A)), matAct Φ x₀ = 0 → x₀ j ∣ c → ¬ Cob (repOn ρ κ⁻¹ A) (fun g => ((X.l i : A) ^ nu X i * c) • y.1 g) → ∃ h ∈ L, bform (X := X) (fun g => rect (Z g) x₀) y.1 h ≠ 0 := by
   intro D N X bkP i s hl M L z hM hz hL A _ _ _ _ _ _ κ Q ρ hS hK hρ hanti hκz hκL a Φ Z hU x₀ j c y hx₀ hj hy

@@ -12,21 +12,19 @@ open Formalism.BasicNotions Formalism.MainNotions.flipTwoThree
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Establish `key : ∀ v ∈ Submodule.span E (L : Set S.V), ∀ c : E, psi M (c • v) ∈ UU M L e`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 (Algebra.IsAlgebraic.isAlgebraic c)`. Take `⟨y, hy0, hyi⟩` from `halg.exists_integral_multiple`. Use `set w : 𝓞 E := ⟨y • c, hyi⟩ with hw`. Establish `hwx : w • x ∈ L` using `L.smul_mem w hx`. Establish `h1` using `psi_mem_U S M L e _ hwx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwE : (w : E) = (y : E) * c`. Rewrite using `[hw]`. Use `show y • c = (y : E) * c`. Rewrite using `[zsmul_eq_mul]`. Establish `h2 : c • x = (((1 / (y : ℚ)) : ℚ) : E) • ((w : E) • x)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[smul_smul, hwE]`. Use `congr 1`. Establish `: (y : E) ≠ 0` using `by exact_mod_cast hy0`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[h2, psi_rat, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ _ h1`. Consider the case `zero`. Introduce `c`. Rewrite using `[smul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`. Introduce `c`. Rewrite using `[smul_add, map_add]`. Conclude with `add_mem (hx c) (hy c)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Consider the case `smul a x _ hx`. Introduce `c`. Rewrite using `[smul_smul]`. Conclude with `hx (c * a)`. Use `key v (by rw [hL.span_eq_top]; exact Submodule.mem_top) 1` as an intermediate fact.
-
-Rewrite `this` using `[one_smul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem psi_mem_U_all (S : HSpace E) (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] [DecidableEq ι]
     (e : Basis ι ℤ L) (hL : Submodule.IsLattice E L) (v : S.V) : psi M v ∈ UU M L e := by
@@ -69,21 +67,19 @@ theorem psi_mem_U_all (S : HSpace E) (M : Model S) (L : Submodule (𝓞 E) S.V) 
   rwa [one_smul] at this
 
 /- English proof (translation)
-Use `set P := Submodule.span E {x | x ∈ L ∧ trR (S.hT x x) ≤ R ^ 2} with hPdef`. Assume the negation of the conclusion as `hP`. Establish `hlt : finrank E P < finrank E S.V` using `Submodule.finrank_lt hP`. Use `set p := Module.finBasis E P with hp`. Use `set Φ : S.V →ₗ[E] (Fin (finrank E P) → E) := LinearMap.pi fun j ↦ S.hT (p j : S.V) with hΦ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker Φ ≠ ⊥` using `LinearMap.ker_ne_bot_of_finrank_lt (by rw [Module.finrank_fin_fun]; exact hlt)`. Take `⟨z, hzk, hz0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hker`. Establish `hzj : ∀ j, S.hT (p j : S.V) z = 0` using `fun j ↦ congrFun (LinearMap.mem_ker.1 hzk) j`. Establish `hPz : ∀ x ∈ P, S.hT x z = 0`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Establish `hx'` using `congrArg (fun t : P ↦ (t : S.V)) (p.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hx'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_eq_zero fun j _ ↦ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hT_smul_left, hzj, mul_zero]`. Establish `hw : psi M z ∈ UU M L e` using `psi_mem_U_all S M L e hL z`. Use `set w : UU M L e := ⟨psi M z, hw⟩ with hwdef`. Establish `hsub : {u : UU M L e | u ∈ abelian₂ S hσ hsig hpos M L e ∧ ‖u‖ ≤ R} ⊆ ((Submodule.span ℝ {w})ᗮ : Submodule ℝ (UU M L e))`. Introduce and unpack `u ⟨hu, hnu⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨l, hl, hul⟩` from `exists_of_mem_Lam S hσ hsig hpos M L e u hu`. Rewrite using `[SetLike.mem_coe, Submodule.mem_orthogonal_singleton_iff_inner_left]`. Establish `hlP : l ∈ P`. Use `Submodule.subset_span ⟨hl, ?_⟩` and prove the remaining obligations. Rewrite using `[← norm_psi_sq M l, ← hul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖(u : EuclideanSpace ℝ (Idx S))‖ = ‖u‖` using `rfl`. Rewrite using `[this]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) hnu 2`. Express the relevant statement in the definitionally equal form `⟪(u : EuclideanSpace ℝ (Idx S)), psi M z⟫_ℝ = 0`. Rewrite using `[hul, inner_psi hσ, hPz l hlP]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[trR]`. Establish `htop` using `Submodule.span_le.2 hsub`. Rewrite `htop` using `[hspan]`. Establish `hww : w ∈ (Submodule.span ℝ {w})ᗮ` using `htop Submodule.mem_top`. Rewrite `hww` using `[Submodule.mem_orthogonal_singleton_iff_inner_left]`.
-
-Establish `hw0 : w = 0` using `inner_self_eq_zero.1 hww`. Establish `: psi M z = 0`. Use `congrArg (fun t : UU M L e ↦ (t : EuclideanSpace ℝ (Idx S))) hw0` as an intermediate fact. Simplify `this` using `[hwdef]`. Conclude with `hz0 (eq_zero_of_psi S hσ hsig hpos M z this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem span_E_of_real (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (M : Model S) (L : Submodule (𝓞 E) S.V) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -135,19 +131,17 @@ theorem span_E_of_real (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star 
   exact hz0 (eq_zero_of_psi S hσ hsig hpos M z this)
 
 /- English proof (translation)
-Take `⟨M⟩` from `model_exists S hσ hsig hpos`. Establish `: Module.Finite (𝓞 E) L` using `Module.Finite.iff_fg.2 hL.fg`. Establish `: Module.Finite ℤ L` using `Module.Finite.trans (𝓞 E) L`. Establish `: Module.IsTorsionFree ℤ L` using `Module.IsTorsionFree.of_smul_eq_zero fun n x h ↦ by`. Establish `h'` using `congrArg (fun t : L ↦ (t : S.V)) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_zero] at h'`. Establish `h'' : (n : E) • (x : S.V) = 0` using `by rw [Int.cast_smul_eq_zsmul]; simpa using h'`. Break down `smul_eq_zero.1 h'' with h1 | h1` into its components or cases. Use `left`. Conclude with `h1` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `right`. Conclude with `Subtype.ext h1`. Establish `: Module.Free ℤ L` using `Module.free_of_finite_type_torsion_free'`. Use `set e := Module.Free.chooseBasis ℤ L with he`. Use `set lam := Real.sqrt ((finrank ℚ E : ℝ) * ((q : ℝ) * ((discr E).natAbs : ℝ) ^ 2) ^ (-(1 / (finrank ℚ E : ℝ)))) with hlamdef`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : (0 : ℝ) < (q : ℝ) * ((discr E).natAbs : ℝ) ^ 2`. Establish `: (discr E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (discr_ne_zero E)`. Check the signs of the components of the expression. Establish `hdpos : (0 : ℝ) < finrank ℚ E` using `by exact_mod_cast Module.finrank_pos`. Establish `hlam : 0 < lam` using `Real.sqrt_pos.2 (by positivity)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : ∀ y : UU M L e, y ≠ 0 → (∀ x ∈ abelian₂ S hσ hsig hpos M L e, ∃ n : ℤ, ⟪x, y⟫_ℝ = (n : ℝ)) → lam ≤ ‖y‖`. Introduce `y hy0 hy`. Take `⟨z, hz, hz0, hyz⟩` from `dual_vector_of_integral_pairing S hσ hsig hpos M L e y hy0 hy`. Establish `h1` using `trR_dual_ge S hσ hsig hpos q hq L hLT z hz hz0`. Establish `h2 : ‖y‖ ^ 2 = trR (S.hT z z)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← norm_psi_sq M z, ← hyz]`. Both sides reduce to the same expression. Rewrite using `[← Real.sqrt_sq (norm_nonneg y), h2]`. Conclude with `Real.sqrt_le_sqrt h1`. Establish `hsp` using `span_short_of_dual (abelian₂ S hσ hsig hpos M L e) lam hlam hd`.
-
-Use `⟨finrank ℝ (UU M L e), ?_, span_E_of_real S hσ hsig hpos M L e hL _ hsp⟩` and prove the remaining obligations. Establish `h1` using `Submodule.finrank_le (UU M L e)`. Rewrite `h1` using `[finrank_euclideanSpace, Fintype.card_prod, Fintype.card_prod, Fintype.card_fin, Fintype.card_bool, Embeddings.card]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem span_trR_short (S : HSpace E) (hσ : ∀ (φ : E →+* ℂ) a, φ (star a) = star (φ a)) (hsig : S.SigOK)
     (hpos : S.IsPosDef) (q : ℕ) (hq : q ≠ 0) (L : Submodule (𝓞 E) S.V) (hL : Submodule.IsLattice E L)

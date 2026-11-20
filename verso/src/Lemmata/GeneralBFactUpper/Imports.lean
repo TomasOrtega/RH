@@ -3,11 +3,9 @@ import Mathlib
 namespace Bl.general_b_fact_upper
 
 /- English proof (translation)
-Introduce `K _ _ x y hx hy n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : x ^ (n + 1) - y ^ (n + 1) = x ^ n * (x - y) + (x ^ n - y ^ n) * y` using `by ring`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) hx)`. Rewrite using `[norm_mul]`.
-
-Conclude with `(mul_le_of_le_one_right (norm_nonneg _) hy).trans ih`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type} [inst : NormedField.{0} K] [IsUltrametricDist.{0} K] {x y : K},

@@ -33,7 +33,7 @@ def skewCoef (D : D7) (𝔪 : Ideal (𝓞 D.host.E)) : Submodule (𝓞 D.host.E)
     exact ⟨s * m, Ideal.mul_mem_left _ _ hm, by rw [map_mul, h1, Algebra.smul_def]; ring⟩
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.coeIdeal_ne_zero.2 fun h => by have h3 := D.host.𝔟_spec.2 simp [h] at h3`.
+A detailed English derivation is pending.
 -/
 theorem b_ne_zero (D : D7) :
     ((D.host.𝔟 : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0 :=
@@ -42,11 +42,11 @@ theorem b_ne_zero (D : D7) :
     simp [h] at h3
 
 /- English proof (translation)
-Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem A hA`. Establish `hs : (Pi.single j 1 : Fin a → D.host.E) ∈ stdL D a`. Simplify using `only [stdL, Submodule.mem_pi, Set.mem_univ, true_imp_iff, Submodule.mem_one]`. Introduce `k`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Use `exacts [⟨1, map_one _⟩, ⟨0, map_zero _⟩]`. Use `hA _ hs` as an intermediate fact. Simplify using `only [skewLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff] at this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using this i`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add A B _ _ hA hB => exact Submodule.add_mem _ hA hB`. Consider the case `smul c A _ hA => exact Submodule.smul_mem _ c hA`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem entries_of_homL {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} {A : Matrix (Fin d) (Fin a) D.host.E}
     (hA : A ∈ homL D (stdL D a) (skewLat D 𝔪 d)) (i : Fin d) (j : Fin a) :
@@ -69,13 +69,13 @@ theorem entries_of_homL {𝔪 : Ideal (𝓞 D.host.E)} {a d : ℕ} {A : Matrix (
   | smul c A _ hA => exact Submodule.smul_mem _ c hA
 
 /- English proof (translation)
-Establish `hne : ((D.host.conj • 𝔪 : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 fun h => h𝔪 (by`. Establish `h'` using `congrArg (fun I : Ideal (𝓞 D.host.E) => D.host.conj⁻¹ • I) h`. Simplify using `using h')`. Proceed by induction on `hA using Submodule.span_induction with`. Consider the case `mem B hB`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately.
 
-Take `⟨t, ht, A, hA, rfl⟩` from `hB`. Introduce `b hb c hc`. Establish `h1 : t * algebraMap (𝓞 D.host.E) D.host.E b ∈ (1 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)` using `(FractionalIdeal.mem_inv_iff (b_ne_zero D)).1 ht _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨b, hb, rfl⟩)`. Establish `h2 : A i j * algebraMap (𝓞 D.host.E) D.host.E c ∈ (𝔪 : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E)` using `(FractionalIdeal.mem_div_iff_of_ne_zero hne).1 (entries_of_homL hA i j) _ ((FractionalIdeal.mem_coeIdeal _).2 ⟨c, hc, rfl⟩)`. Take `⟨o, ho⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm, hm'⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h2`. Use `⟨o * m, Ideal.mul_mem_left _ _ hm, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ho, hm', Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => exact (skewCoef D 𝔪).zero_mem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add A B _ _ hA hB => exact (skewCoef D 𝔪).add_mem hA hB`. Consider the case `smul c A _ hA`. Rewrite using `[Matrix.smul_apply]`. Conclude with `(skewCoef D 𝔪).smul_mem c hA`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_of_YYl {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ} {A : Matrix (Fin d) (Fin a) D.host.E}
     (hA : A ∈ YYl D (stdL D a) (skewLat D 𝔪 d)) (i : Fin d) (j : Fin a) : A i j ∈ skewCoef D 𝔪 := by
@@ -104,11 +104,11 @@ theorem entries_of_YYl {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a 
     exact (skewCoef D 𝔪).smul_mem c hA
 
 /- English proof (translation)
-Set `S : AddSubgroup (Matrix (Fin d) (Fin a) D.host.E)` to `{ carrier := {z | ∀ i j, z i j ∈ skewCoef D 𝔪} zero_mem' := fun _ _ => (skewCoef D 𝔪).zero_mem add_mem' := fun ha hb i j => (skewCoef D 𝔪).add_mem (ha i j) (hb i j) neg_mem' := fun ha i j => (skewCoef D 𝔪).neg_mem (ha i j) }`. Establish `hle : La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d) ≤ S.map (GlobalTheory.ThetaLatticePoints.ptHom D ⊤ δ a d)`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, A, hA, rfl⟩`. Take `⟨c, -, rfl⟩` from `(GlobalTheory.CurveLattice.mem_lamOf D ⊤ δ w).1 hw`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨((c : D.host.K) : D.host.E) • A, fun i j => ?_, GlobalTheory.ThetaLatticePoints.ptHom_smul D ⊤ δ a d c A⟩` and prove the remaining obligations. Establish `hint : IsIntegral ℤ ((c : D.host.K) : D.host.E)` using `(RingOfIntegers.isIntegral_coe c).algebraMap (B := D.host.E)`. Use `(skewCoef D 𝔪).smul_mem (⟨_, hint⟩ : 𝓞 D.host.E) (entries_of_YYl h𝔪 hA i j)` as an intermediate fact. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hδ : δ ≠ 0` using `(GlobalTheory.CurveLattice.lattice_of_curve D (GlobalTheory.InducedType.induced_type D).1 ⊤ δ hc).2.1`. Take `⟨z', hz', e⟩` from `hle hz`. Establish `: z' = z` using `GlobalTheory.ThetaLatticePoints.ptHom_injective D ⊤ hδ a d e`. Conclude with `this ▸ hz' i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem entries_of_mem {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host.E)} (h𝔪 : 𝔪 ≠ ⊥) {a d : ℕ}
     (z : Matrix (Fin d) (Fin a) D.host.E)
@@ -135,11 +135,11 @@ theorem entries_of_mem {δ : ℂ} (hc : Crv D ⊤ δ) {𝔪 : Ideal (𝓞 D.host
   exact this ▸ hz' i j
 
 /- English proof (translation)
-Take `⟨μ, hμ, β, hβ, hμβ⟩` from `Ideal.isCoprime_iff_exists.1 h2`. Take `⟨μ', hμ', ν, hν, hμν⟩` from `Ideal.isCoprime_iff_exists.1 h1`. Take `⟨m, hm, hme⟩` from `he β hβ ν hν`. Set `o : 𝓞 D.host.E` to `⟨e, hi⟩`. Establish `ho : algebraMap (𝓞 D.host.E) D.host.E o = e` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨o * μ + o * β * μ' + m, add_mem (add_mem (Ideal.mul_mem_left _ _ hμ) (Ideal.mul_mem_left _ _ hμ')) hm, ?_⟩` and prove the remaining obligations. Establish `ea : algebraMap (𝓞 D.host.E) D.host.E μ + algebraMap (𝓞 D.host.E) D.host.E β = 1`. Rewrite using `[← map_add, hμβ, map_one]`. Establish `eb : algebraMap (𝓞 D.host.E) D.host.E μ' + algebraMap (𝓞 D.host.E) D.host.E ν = 1`. Rewrite using `[← map_add, hμν, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_add, hme, map_mul, map_mul, map_mul, ho]`. Take the linear combination `e * ea + e * algebraMap (𝓞 D.host.E) D.host.E β * eb`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mem_of_int {𝔪 : Ideal (𝓞 D.host.E)} (h1 : IsCoprime 𝔪 (D.host.conj • 𝔪)) (h2 : IsCoprime 𝔪 D.host.𝔟)
     {e : D.host.E} (he : e ∈ skewCoef D 𝔪) (hi : IsIntegral ℤ e) :
@@ -158,9 +158,9 @@ theorem mem_of_int {𝔪 : Ideal (𝓞 D.host.E)} (h1 : IsCoprime 𝔪 (D.host.c
   linear_combination e * ea + e * algebraMap (𝓞 D.host.E) D.host.E β * eb
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h`. Use `⟨-n, ?_⟩` and prove the remaining obligations. Establish `e : Hf D T u y = Hf D T (u - u') y + Hf D T u' y` using `by rw [← VacMove.hf_add_left, sub_add_cancel]`. Establish `e2 : (Hf D T u y).im = (Hf D T (u - u') y).im + (Hf D T u' y).im` using `by rw [e, Complex.add_im]`. Establish `hpi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ((Hf D T u y).im : ℂ) = (Hf D T u' y).im - n`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Take the linear combination `-hn`. Establish `h4 : (Hf D T u y).im = (Hf D T u' y).im - n` using `by exact_mod_cast h3`. Use `push_cast`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -195,9 +195,9 @@ Normalize the expressions using the abelian group laws.
 theorem alg2 {G : Type*} [AddCommGroup G] (s t w : G) : w = s - t + w - s + t := by abel
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, -, s, hs, rfl⟩` from `hy`. Conclude with `mul_mem ((GlobalTheory.HeckeVal.inc_mem_iff D _).2 (RingOfIntegers.isIntegral_coe b)) hs`. Consider the case `zero => exact zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add _ _ _ _ h1 h2 => exact add_mem h1 h2`. Consider the case `neg _ _ h => exact neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_OhE_of_hatId {𝔪 : Ideal (𝓞 D.host.E)} {y : AE D} (hy : y ∈ hatId D 𝔪) : y ∈ OhE D := by
   induction hy using AddSubgroup.closure_induction with
@@ -209,9 +209,9 @@ theorem mem_OhE_of_hatId {𝔪 : Ideal (𝓞 D.host.E)} {y : AE D} (hy : y ∈ h
   | neg _ _ h => exact neg_mem h
 
 /- English proof (translation)
-Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨b, hb, s, hs, rfl⟩` from `hy`. Conclude with `AddSubgroup.subset_closure ⟨b, hb, x * s, mul_mem hx hs, by ring⟩`. Consider the case `zero => rw [mul_zero]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add y z _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`. Consider the case `neg y _ h => rw [mul_neg]`. Conclude with `neg_mem h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hatId_mul {𝔪 : Ideal (𝓞 D.host.E)} {x y : AE D} (hx : x ∈ OhE D) (hy : y ∈ hatId D 𝔪) :
     x * y ∈ hatId D 𝔪 := by
@@ -226,29 +226,23 @@ theorem hatId_mul {𝔪 : Ideal (𝓞 D.host.E)} {x y : AE D} (hx : x ∈ OhE D)
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D δ hc 𝔪 h𝔪 hcop hb a d had r r' hr hr' x x' _ _ hx hx' hk`. Establish `h1` using `(GlobalTheory.InducedType.induced_type D).1`. Establish `kp : KLat D (tor0 D ⊤ δ) (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d))` using `Or.inr ⟨_, _, VacMove.sd_of_moves (VacMove.moves_one D a), GlobalTheory.T.selfDualSkewIdealLattice_isSelfDual D 𝔪 d h𝔪, rfl⟩`. Establish `hpt : pt D (tor0 D ⊤ δ) δ (x - x') = pt D (tor0 D ⊤ δ) δ x - pt D (tor0 D ⊤ δ) δ x'` using `map_sub (GlobalTheory.ThetaLatticePoints.ptHom D ⊤ δ a d) x x'`. Establish `hmem : pt D (tor0 D ⊤ δ) δ (x - x') ∈ La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.theta_space_selfDual_pair_at_most_line D h1 ⊤ δ hc a d _ kp).2.2.2.1 _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[hpt]`. Conclude with `im_int_of_kap_eq _ _ _ y (hk y hy)`. Establish `hz` using `entries_of_mem hc h𝔪 (x - x') hmem`. Use `set B := (unitBlock D 0 a d).map (inc D) with hB`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R := (((r⁻¹ : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D)) with hRdef`. Use `set R' := (((r'⁻¹ : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D)) with hR'def`. Use `set P' := (((r' : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D)) with hP'def`. Establish `hri` using `(mem_intG r).1 hr`. Establish `hri'` using `(mem_intG r').1 hr'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hR : ∀ i j, R i j ∈ OhE D` using `fun i j => (hri i j).2`. Establish `hR' : ∀ i j, R' i j ∈ OhE D` using `fun i j => (hri' i j).2`. Establish `hP' : ∀ i j, P' i j ∈ OhE D` using `fun i j => (hri' i j).1`. Establish `hBi : ∀ i k, B i k ∈ OhE D` using `fun i k => by`. Simplify using `only [hB, Matrix.map_apply, unitBlock, Matrix.of_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `split_ifs`. Rewrite using `[map_one]`. Conclude with `one_mem _`. Rewrite using `[map_zero]`. Conclude with `zero_mem _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrow : ∀ (i : Fin d) (j : Fin a), (B * (R - R')) i j ∈ hatId D 𝔪`. Introduce `i j`. Establish `e : (B * (R - R')) i j = (x'.map (inc D) - B * R') i j - (x.map (inc D) - B * R) i j + inc D ((x - x') i j)`. Simplify using `only [Matrix.mul_sub, Matrix.sub_apply, Matrix.map_apply, map_sub]`. Conclude with `alg1 _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : (B * (R - R')) i j ∈ OhE D`. Rewrite using `[Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => mul_mem (hBi i k) (by rw [Matrix.sub_apply]; exact sub_mem (hR k j) (hR' k j))`. Establish `hzi : inc D ((x - x') i j) ∈ OhE D`. Establish `: inc D ((x - x') i j) = (B * (R - R')) i j - (x'.map (inc D) - B * R') i j + (x.map (inc D) - B * R) i j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Conclude with `alg2 _ _ _`. Rewrite using `[this]`. Conclude with `add_mem (sub_mem hint (mem_OhE_of_hatId (hx' i j))) (mem_OhE_of_hatId (hx i j))`. Take `⟨m, hm, hme⟩` from `mem_of_int hcop hb (hz i j) ((GlobalTheory.HeckeVal.inc_mem_iff D _).1 hzi)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzm : inc D ((x - x') i j) ∈ hatId D 𝔪` using `AddSubgroup.subset_closure ⟨m, hm, 1, one_mem _, by rw [mul_one, ← hme]⟩`. Rewrite using `[e]`. Conclude with `add_mem (sub_mem (hx' i j) (hx i j)) hzm`. Establish `hdiff : ∀ i j : Fin a, (R - R') i j ∈ hatId D 𝔪`. Introduce `i j`.
-
-Establish `e : (B * (R - R')) ⟨i.1, lt_of_lt_of_le i.2 had⟩ j = (R - R') i j`. Simplify using `only [hB, Matrix.mul_apply, Matrix.map_apply, unitBlock, Matrix.of_apply, zero_add]`. Simplify using `[apply_ite (inc D), Fin.val_inj]`. Rewrite using `[← e]`. Conclude with `hrow _ j`.
-
-Establish `e1 : R' * P' = 1`. Simplify using `only [hR'def, hP'def, Subgroup.coe_inv]`. Conclude with `Units.inv_mul _`. Introduce `i j`. Establish `e2 : (((r⁻¹ * r' : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D)) - 1 = (R - R') * P'`.
-
-Rewrite using `[Matrix.sub_mul, e1]`. Both sides reduce to the same expression. Rewrite using `[e2, Matrix.mul_apply]`. Conclude with `sum_mem fun k _ => by rw [mul_comm]; exact hatId_mul (hP' k j) (hdiff i k)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cong_of_kap_eq : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → IsCoprime 𝔪 (D.host.conj • 𝔪) → IsCoprime 𝔪 D.host.𝔟 → ∀ {a d : ℕ}, a ≤ d → ∀ (r r' : GA D a), r ∈ intG D a → r' ∈ intG D a → ∀ x x' : Matrix (Fin d) (Fin a) D.host.E, pt D (tor0 D ⊤ δ) δ x ∈ (La0 D (tor0 D ⊤ δ) a d) → pt D (tor0 D ⊤ δ) δ x' ∈ (La0 D (tor0 D ⊤ δ) a d) → (∀ i j, (x.map (inc D) - (unitBlock D 0 a d).map (inc D) * (((r⁻¹ : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D))) i j ∈ hatId D 𝔪) → (∀ i j, (x'.map (inc D) - (unitBlock D 0 a d).map (inc D) * (((r'⁻¹ : GA D a) : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D))) i j ∈ hatId D 𝔪) → (∀ y ∈ (La D (tor0 D ⊤ δ) (stdL D a) (skewLat D 𝔪 d)), Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x) y = Formalism.MainNotions.TaylorLogMetric.kap D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ x') y) → CongOne D 𝔪 (r⁻¹ * r') := by
   intro D δ hc 𝔪 h𝔪 hcop hb a d had r r' hr hr' x x' _ _ hx hx' hk

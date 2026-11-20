@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [local instance 100] LieRing.ofAssociativeRing
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simpa [MvPolynomial.derivation_C] using hasDerivAt_const (0 : ℝ) a`. Consider the case `add P Q hP hQ => simp only [map_add]`. Conclude with `hP.add hQ`. Consider the case `mul_X P p hP`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Use `hP.mul (h p)` as an intermediate fact. Simplify using `only [map_mul, MvPolynomial.eval_X, Derivation.leibniz, smul_eq_mul, map_add]`. Conclude with `this.congr_deriv (by ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_eval {σ : Type} (δ : Derivation ℂ (MvPolynomial σ ℂ) (MvPolynomial σ ℂ)) (c : ℝ → σ → ℂ)
     (h : ∀ p, HasDerivAt (fun t => c t p) (MvPolynomial.eval (c 0) (δ (MvPolynomial.X p))) 0) (P : MvPolynomial σ ℂ) :
@@ -28,9 +28,9 @@ theorem hasDerivAt_eval {σ : Type} (δ : Derivation ℂ (MvPolynomial σ ℂ) (
     exact this.congr_deriv (by ring)
 
 /- English proof (translation)
-Use `letI : NormedRing (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Matrix (Fin n) (Fin n) ℂ) := Matrix.linftyOpNormedAlgebra`. Use `haveI : CompleteSpace (Matrix (Fin n) (Fin n) ℂ) := FiniteDimensional.complete ℝ _`. Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Set `L : Matrix (Fin n) (Fin n) ℂ →ₗ[ℝ] ℂ` to `{ toFun := fun B => (A * B) i j map_add' := fun B C => by simp [mul_add] map_smul' := fun c B => by simp }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `(LinearMap.toContinuousLinearMap L).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h`. Rewrite `h2` using `[zero_smul, NormedSpace.exp_zero, one_mul]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_entry {n : ℕ} (A X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (A * NormedSpace.exp (t • X)) i j) ((A * X) i j) 0 := by
@@ -47,13 +47,13 @@ theorem hasDerivAt_entry {n : ℕ} (A X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin
   exact h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Set `c : ℝ → D.what₂.Tau × Fin V.rank × Fin V.rank → ℂ` to `fun t => realEntries θ V (g * expInf θ V (t • atPlace V τ X))`. Establish `hc : ∀ t p, c t p = (infMat D.sp.cm.sig V.gram (θ p.1) g * NormedSpace.exp (t • (atPlace V τ X p.1 : Matrix (Fin V.rank) (Fin V.rank) ℂ))) p.2.1 p.2.2` using `fun t p => by`. Simplify using `only [c, realEntries]`. Rewrite using `[R.2.2.2.1, (isExpFam_expInf R (t • atPlace V τ X)).2]`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h0 : c 0 = realEntries θ V g` using `funext fun p => by`. Rewrite using `[hc, zero_smul, NormedSpace.exp_zero, mul_one]`. Both sides reduce to the same expression. Establish `h` using `hasDerivAt_eval (matDer τ X.1) c (fun p => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [hc]`. Apply the tactic sequence `convert hasDerivAt_entry (infMat D.sp.cm.sig V.gram (θ p.1) g) (atPlace V τ X p.1 : Matrix (Fin V.rank) (Fin V.rank) ℂ) p.2.1 p.2.2 using 1`. Rewrite using `[h0, matDer_X]`. Take `⟨τ', i, j⟩` from `p`. Distinguish the cases in `e : τ' = τ`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using `[atPlace, Matrix.mul_apply, realEntries]`. Simplify using `[atPlace, e, Pi.single_eq_of_ne e]) P`. Rewrite `h` using `[h0]`. Conclude with `h.deriv`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieDer_polyFun (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (V : HSp D)
     (R : RealPoints θ V) (τ : D.what₂.Tau) (X : LieAt V τ) (P : PolyE V) :

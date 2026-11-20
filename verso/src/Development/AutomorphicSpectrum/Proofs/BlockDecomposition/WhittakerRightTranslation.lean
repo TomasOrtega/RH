@@ -11,14 +11,14 @@ namespace GlobalTheory.CompanionTheory.WhittakerTrans
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Simplify using `only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]`. Conclude with `Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mp_mul' (x y : Fˣ) (s : ℂ) : mp (x * y) s = mp x s * mp y s := by
   simp only [mp, Units.val_mul, modulus_mul, NNReal.coe_mul, Complex.ofReal_mul]
   exact Complex.mul_cpow_ofReal_nonneg (NNReal.coe_nonneg _) (NNReal.coe_nonneg _) s
 
 /- English proof (translation)
-The claim follows from `continuous_id.matrix_vecMul continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_vecMul_gl (k : GL (Fin 2) F) :
     Continuous fun x : Fin 2 → F ↦ x ᵥ* (k : Matrix (Fin 2) (Fin 2) F) :=
@@ -37,7 +37,7 @@ def vecMulHomeo (k : GL (Fin 2) F) : (Fin 2 → F) ≃ₜ (Fin 2 → F) where
   continuous_invFun := continuous_vecMul_gl k⁻¹
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ.1.comp_continuous (continuous_vecMul_gl k), hφ.2.comp_isClosedEmbedding (vecMulHomeo k).isClosedEmbedding⟩`.
+Supply the required witnesses or components.
 -/
 theorem rt_mem {φ : (Fin 2 → F) → ℂ} (hφ : φ ∈ GodementSectionLocal.schwartzBruhat2 F)
     (k : GL (Fin 2) F) : rt φ k ∈ GodementSectionLocal.schwartzBruhat2 F :=
@@ -47,7 +47,7 @@ theorem rt_mem {φ : (Fin 2 → F) → ℂ} (hφ : φ ∈ GodementSectionLocal.s
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Simplify using `only [W2, rt, map_mul, Units.val_mul, mp_mul', Matrix.vecMul_vecMul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem whittaker_right_translation_formula (ψ : AddChar F Circle) (μ₁ μ₂ : Fˣ →* ℂˣ) (φ : (Fin 2 → F) → ℂ)
     (g h : GL (Fin 2) F) :
@@ -57,7 +57,7 @@ theorem whittaker_right_translation_formula (ψ : AddChar F Circle) (μ₁ μ₂
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ φ hφ h`. Conclude with `⟨rt_mem hφ h, fun g => whittaker_right_translation_formula ψ μ₁ μ₂ φ g h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem sTrans : Ad3.SchwartzSpaceL2.STrans := by
   intro F _ _ _ _ _ _ ψ _ μ₁ μ₂ _ _ φ hφ h

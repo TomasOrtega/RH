@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.Jp
 
 /- English proof (translation)
-Introduce `k _ _ n ψ₀ hψ β T hne`. Set `χ : AddChar (Matrix (Fin n) (Fin n) k) ℂ` to `{ toFun := fun Y => ψ₀ (Matrix.trace (Y * (T - β))) map_zero_eq_one' := by simp map_add_eq_mul' := fun X Y => by`. Rewrite using `[Matrix.add_mul, Matrix.trace_add, AddChar.map_add_eq_mul] }`. Establish `hχ : χ ≠ 1`. Establish `hA : T - β ≠ 0` using `sub_ne_zero.mpr hne`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, (T - β) i j ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hA (Matrix.ext h)`. Take `⟨a, ha⟩` from `(AddChar.ne_one_iff).1 hψ`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(AddChar.ne_one_iff).2 ⟨Matrix.single j i (a / (T - β) i j), ?_⟩` and prove the remaining obligations. Establish `htr : Matrix.trace (Matrix.single j i (a / (T - β) i j) * (T - β)) = a`. Rewrite using `[Matrix.trace_single_mul]`. Conclude with `div_mul_cancel₀ a hij`. Express the relevant statement in the definitionally equal form `ψ₀ (Matrix.trace (Matrix.single j i (a / (T - β) i j) * (T - β))) ≠ 1`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[htr]`. Conclude with `ha`. Establish `hterm : ∀ Y : Matrix (Fin n) (Fin n) k, coY ψ₀ β Y * ψ₀ (Matrix.trace (Y * T)) = ((Fintype.card k : ℂ) ^ (n * n))⁻¹ * χ Y`. Introduce `Y`. Establish `hχY : χ Y = ψ₀ (Matrix.trace (Y * (T - β)))` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coY, hχY, ← AddChar.map_neg_eq_conj, mul_assoc, ← AddChar.map_add_eq_mul, Matrix.mul_sub, Matrix.trace_sub]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun Y _ => hterm Y), ← Finset.mul_sum, AddChar.sum_eq_zero_of_ne_one hχ, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coY_sum_mul_eq_zero : ∀ (k : Type) [Field k] [Fintype k] (n : ℕ) (ψ₀ : AddChar k ℂ), ψ₀ ≠ 1 →
     ∀ β T : Matrix (Fin n) (Fin n) k, T ≠ β →

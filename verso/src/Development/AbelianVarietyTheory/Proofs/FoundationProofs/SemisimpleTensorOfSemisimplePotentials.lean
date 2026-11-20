@@ -15,11 +15,11 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory.KZ.Comp
 
 /- English proof (translation)
-Proceed by induction on `P using FreeAlgebra.induction with`. Consider the case `grade0 r`. Introduce `p hp`. Use `(H3.abelian₂ X l E).smul_mem r hp using 1` and compare the differences between its conclusion and the goal. Apply the tactic sequence `ext <;> simp [Algebra.algebraMap_eq_smul_one]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Apply an available result and prove the equalities needed to match it to the conclusion. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `grade1 T`. Introduce `p hp`. Simplify using `using GlobalTheory.T.kummerPotentialSpan_hecke_letter_stable ε X N l T p hp`. Consider the case `mul a b ha hb`. Introduce `p hp`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using ha _ (hb p hp)`. Consider the case `add a b ha hb`. Introduce `p hp`. Simplify using `using (H3.abelian₂ X l E).add_mem (ha p hp) (hb p hp)`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lift_mem_lam {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime]
     {E : Type} [Field E] [Algebra ℤ_[l] E] (P : FreeAlgebra E Letter) :
@@ -41,11 +41,9 @@ theorem lift_mem_lam {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ)
     simpa using (H3.abelian₂ X l E).add_mem (ha p hp) (hb p hp)
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X hε hj N l w _ hl2 hN hNl hw E _ _ ι lam hSS`. Use `haveI : CharZero E := RingHom.charZero ι.toRingHom`. Take `⟨P, hPA, hP1, hP⟩` from `GlobalTheory.T.semisimpleHeckePoly_transport_ringEquiv N l w ι lam hSS`. Use `⟨P, hPA, hP1, fun x hx T hT => ?_⟩` and prove the remaining obligations. Take `⟨G, hG, hxG⟩` from `GlobalTheory.T.exists_eichlerShimuraPotential_of_mem_VB ε X N l w (GlobalTheory.T.exists_eichlerShimuraPotential_of_mem_kummer ε X hε hj N l w hl2 hN hNl hw) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `lift_mem_lam ε X N l P (x, G) hxG`. Establish `h2` using `GlobalTheory.T.kummerPotentialSpan_hecke_letter_stable ε X N l T _ h1`. Establish `h3` using `(H3.abelian₂ X l E).sub_mem h2 ((H3.abelian₂ X l E).smul_mem (lam T) h1)`. Establish `h4 : ((X.opV N l E T - lam T • (1 : Module.End E (E ⊗[ℤ_[l]] X.Fn l))) (FreeAlgebra.lift E (X.opV N l E) P x), (opL E N l T - lam T • (1 : Module.End E (ℂ → MvPolynomial (Fin 2) E))) (FreeAlgebra.lift E (opL E N l) P G)) ∈ H3.abelian₂ X l E`. Simplify using `using h3`.
-
-Conclude with `GlobalTheory.T.kummerRelatedPair_fst_eq_zero_of_trivial ε X hε hj N l w (by omega) inferInstance _ _ h4 (hP G hG T hT)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ssbb_of_ssPotB : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), Function.Injective ε → (∃ φ : ℂ → ℂ, DifferentiableOn ℂ φ Hs ∧ X.an X.jK = (φ : Mero)) → ∀ (N l w : ℕ) [Fact l.Prime], l ≠ 2 → 5 ≤ N → Nat.Coprime N l → Odd w → ∀ {E : Type} [Field E] [Algebra ℤ_[l] E] (ι : E ≃+* ℂ) (lam : Letter → E), SSPotB N l w (fun T => ι (lam T)) → X.SSBB N l w E lam := by
   intro Ω _ _ _ ε X hε hj N l w _ hl2 hN hNl hw E _ _ ι lam hSS

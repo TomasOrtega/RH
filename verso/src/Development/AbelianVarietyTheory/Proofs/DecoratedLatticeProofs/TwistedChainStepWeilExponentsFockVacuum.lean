@@ -21,11 +21,11 @@ open GlobalTheory.Chain GlobalTheory.ChainFr GlobalTheory.PairLift GlobalTheory.
 namespace GlobalTheory.ChainTw.StepExpTw
 
 /- English proof (translation)
-Introduce `D _ c w hw k _ s s' hs hs' p hp hk`. Take `⟨hr, _, hsf⟩` from `hs`. Take `⟨hr', _, hsf'⟩` from `hs'`. Use `⟨⟨c.chS (k + 1), c.chT (k + 1), hp.weil, fun τ => StepExp.chrStep_exp' hw.com ⟨k, hk⟩ τ⟩, ?_⟩` and prove the remaining obligations. Take `⟨f₀, hv⟩` from `hp.vec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hrk : s.V.rank ≤ s'.V.rank`. Establish `h1 : s.V.rank = D.R.rankY k` using `hsf.rank`. Establish `h2 : s'.V.rank = D.R.rankY (k + 1)` using `hsf'.rank`. Rewrite using `[h1, h2]`. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right D.R.t (Nat.le_succ k)) D.R.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, d⟩` from `StepVac.stepVec_vac hsf.selfDual hsf'.selfDual hrk hv`. Conclude with `{ theta := a, ne := b, vac := d }`.
+A detailed English derivation is pending.
 -/
 theorem twStepExpVac : ∀ D : D7, ForStepQ D fun c _ k s s' p => ∀ hk : k < D.R.m,
     IsWeilExp c.ψ s.V s'.V (GlobalTheory.Chain.expS D ⟨k, hk⟩) (GlobalTheory.Chain.expT D ⟨k, hk⟩) p.ω ∧

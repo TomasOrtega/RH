@@ -13,11 +13,11 @@ open Formalism.MainNotions.S Formalism.L2.SG.Pf.RowDictPf PIW.AdelClassFin Forma
   Formalism.L2.SG.Pf.AllRowsRedKerA Formalism.L2.SG.Pf.KppRedW Formalism.L2.SG.Pf.AllRowsRho Formalism.L2.SG.Pf.KppFrameW
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨i, hi⟩` from `i`. Take `⟨j, hj⟩` from `j`. Simplify using `only [GlobalTheory.SeeConjRead.flagV, Fin.mk.injEq]`. Apply the tactic sequence `split_ifs <;> first`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Consider the case `(exfalso; omega)`. Consider the case `(rw [sub_zero]; first | exact heb _ _ | exact hez _ | exact hef _ _ | exact hbe _ _ | exact hbz _ | exact hbf _ _ | exact hze _ | exact hzb _ | exact hzf _ | exact hfe _ _ | exact hfb _ _ | exact hfz _)`. Consider the case `exact hzz`. Consider the case `(convert hee _ _ using 2; simp only [Fin.mk.injEq]; split_ifs <;> first | rfl | (exfalso; omega))`. Consider the case `(convert hbb _ _ using 2; simp only [Fin.mk.injEq]; split_ifs <;> first | rfl | (exfalso; omega))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(convert hff _ _ using 2; simp only [Fin.mk.injEq]; split_ifs <;> first | rfl | (exfalso; omega))`.
+Treat this case separately.
 -/
 theorem gram_flagV {M R : Type} [Zero M] [Ring R] (S : AddSubgroup R) (B : M → M → R) {ρ k n : ℕ}
     (hn : n = 2 * ρ + k + 1) (e f e' f' : Fin ρ → M) (b b' : Fin k → M) (z z' : M)
@@ -43,9 +43,7 @@ theorem gram_flagV {M R : Type} [Zero M] [Ring R] (S : AddSubgroup R) (B : M →
     | (convert hff _ _ using 2; simp only [Fin.mk.injEq]; split_ifs <;> first | rfl | (exfalso; omega))
 
 /- English proof (translation)
-Unfold `GlobalTheory.SeeConjRead.flagV`. Use `split_ifs`. Conclude with `he _`. Conclude with `hb _`. Conclude with `hz`.
-
-Conclude with `hf _`. Conclude with `h0`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem flagV_mem {M : Type} [Zero M] (P : M → Prop) (h0 : P 0) {ρ k n : ℕ} {e f : Fin ρ → M} {b : Fin k → M}
     {z : M} (he : ∀ a, P (e a)) (hf : ∀ a, P (f a)) (hb : ∀ i, P (b i)) (hz : P z) (i : Fin n) :
@@ -59,7 +57,7 @@ theorem flagV_mem {M : Type} [Zero M] (P : M → Prop) (h0 : P 0) {ρ k n : ℕ}
   · exact h0
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Unfold `Ranks.r Ranks.rS`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem r_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -68,7 +66,7 @@ theorem r_eq (D : D7) : D.R.r = 2 * D.R.rS + D.R.k + 1 := by
   omega
 
 /- English proof (translation)
-Establish `h0 : hhat I 0 v = 0`. Use `hhat_sub_left I u u v` as an intermediate fact. Rewrite `this` using `[sub_self, sub_self]`. Then use the resulting hypothesis. Use `hhat_sub_left I 0 u v` as an intermediate fact. Rewrite `this` using `[zero_sub, h0, zero_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hhat_neg (I : AutInst) (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I (-u) v = -hhat I u v := by
   have h0 : hhat I 0 v = 0 := by
@@ -78,7 +76,7 @@ theorem hhat_neg (I : AutInst) (u v : Fin I.n → I.E ⊗[I.F] Af I.F) : hhat I 
   rwa [zero_sub, h0, zero_sub] at this
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sg_ite (I : AutInst) (q : Prop) [Decidable q] (x : I.E ⊗[I.F] Af I.F) :
     sg I (if q then x else 0) = if q then sg I x else 0 := by
@@ -87,14 +85,14 @@ theorem sg_ite (I : AutInst) (q : Prop) [Decidable q] (x : I.E ⊗[I.F] Af I.F) 
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `wLf Lq`. Rewrite using `[wLat_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wLf_eq (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) : wLf X w = Lq X.B.I (wB X w) := by
   unfold wLf Lq
   rw [wLat_eq]
 
 /- English proof (translation)
-Use `show RingOfIntegers.mapRingEquiv X.ιE ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal`. Rewrite using `[map_natCast]`. Conclude with `level_mem X kv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_wB (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) :
     ((X.B.g : ℕ) : 𝓞 X.B.I.E) ∈ (wB X (D.naut.plGw kv.1 kv.2)).asIdeal := by
@@ -103,7 +101,7 @@ theorem natCast_wB (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) :
   exact level_mem X kv
 
 /- English proof (translation)
-Use `iE_mem (I := X.B.I) (natCast_wB X kv)` as an intermediate fact. Simplify `this` using `[iE]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem g_Wq (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) :
     ((X.B.g : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2)) := by
@@ -111,7 +109,7 @@ theorem g_Wq (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) :
   simpa [iE] using this
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `hc`. Conclude with `Wq_mul' (g_Wq X kv) ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem zmod_Wq (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (hc : ZMod' X.B.I X.B.g c) : c ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2)) := by
@@ -119,7 +117,7 @@ theorem zmod_Wq (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {c : X.B.I.E
   exact Wq_mul' (g_Wq X kv) ht
 
 /- English proof (translation)
-Take `⟨t, ht, rfl⟩` from `hc`. Conclude with `⟨sg X.B.I t, DictLat.sigR_int X.B.I ht, by rw [map_mul, sg_natCast]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem zmod_sg (X : HidaSetting D) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : ZMod' X.B.I X.B.g c) :
     ZMod' X.B.I X.B.g (sg X.B.I c) := by
@@ -127,7 +125,7 @@ theorem zmod_sg (X : HidaSetting D) {c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F} (hc : 
   exact ⟨sg X.B.I t, DictLat.sigR_int X.B.I ht, by rw [map_mul, sg_natCast]⟩
 
 /- English proof (translation)
-Establish `h1` using `zmod_Wq X kv (zmod_sg X h)`. Establish `e : sg X.B.I (hA X.B.I x y) = hhat X.B.I y x` using `hhat_conj X.B.I x y`. Rewrite `h1` using `[map_sub, e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sw (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {x y : VA X.B.I} {d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (h : ZMod' X.B.I X.B.g (hA X.B.I x y - d)) :
@@ -137,7 +135,7 @@ theorem sw (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {x y : VA X.B.I} 
   rwa [map_sub, e] at h1
 
 /- English proof (translation)
-Use `sw X kv (d := 0) (by rwa [sub_zero])` as an intermediate fact. Rewrite `this` using `[map_zero, sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sw0 (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {x y : VA X.B.I}
     (h : ZMod' X.B.I X.B.g (hA X.B.I x y)) : hhat X.B.I y x ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2)) := by
@@ -145,7 +143,7 @@ theorem sw0 (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {x y : VA X.B.I}
   rwa [map_zero, sub_zero] at this
 
 /- English proof (translation)
-Unfold `mL`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `smul_Lf_wLf X _ _ (level_mem X kv) hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mL_le (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) : mL X.B.I X.B.g ≤ wLf X (D.naut.plGw kv.1 kv.2) := by
   unfold mL
@@ -154,9 +152,9 @@ theorem mL_le (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) : mL X.B.I X.B
   exact smul_Lf_wLf X _ _ (level_mem X kv) hx
 
 /- English proof (translation)
-Rewrite `h` using `[wLf_eq]`. Establish `hz : X.z0 ∈ X.B.I.Lf` using `X.vectorsInLattice.2.1`. Establish `h1` using `hhat_Lq_right hz h`. Rewrite `h1` using `[DictLat.hhat_smul_right]`. Establish `h2 : hhat X.B.I X.z0 X.z0 + 1 ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))` using `zmod_Wq X kv X.formsAtZero.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `Wq_mul h2 hs`. Establish `e : s = s * (hhat X.B.I X.z0 X.z0 + 1) - s * hhat X.B.I X.z0 X.z0` using `by ring`. Rewrite using `[e]`. Conclude with `sub_mem h3 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_of_vec (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {s : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F}
     (hs : s ∈ IntAf X.B.I.F X.B.I.E) (h : s • X.z0 ∈ wLf X (D.naut.plGw kv.1 kv.2)) :
@@ -172,9 +170,9 @@ theorem scal_of_vec (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) {s : X.B
   exact sub_mem h3 h1
 
 /- English proof (translation)
-Take `⟨c, hc, ht⟩` from `h`. Take `⟨c', hc', ht'⟩` from `h'`. Establish `hd : (p : ℤ) ∣ c - c'` using `(ZMod.intCast_eq_intCast_iff_dvd_sub _ _ _).1 (hc'.trans hc.symm)`. Take `⟨q, hq⟩` from `hd`. Establish `hpq : ((c - c' : ℤ) : I.E ⊗[I.F] Af I.F) ∈ Wq I w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hq, Int.cast_mul, Int.cast_natCast]`. Conclude with `Wq_mul' (natCast_Wq hp hcard) (intCast_int q)`. Establish `e : t - t' = (t - c) - (t' - c') + ((c - c' : ℤ) : I.E ⊗[I.F] Af I.F)` using `by push_cast; ring`. Rewrite using `[e]`. Conclude with `add_mem (sub_mem ht ht') hpq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congW_eq_mem {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} (hp : p.Prime)
     (hcard : Nat.card (𝓞 I.E ⧸ w.asIdeal) = p) {t t' : I.E ⊗[I.F] Af I.F} {m : ZMod p}
@@ -191,26 +189,24 @@ theorem congW_eq_mem {I : AutInst} {w : HeightOneSpectrum (𝓞 I.E)} {p : ℕ} 
   exact add_mem (sub_mem ht ht') hpq
 
 /- English proof (translation)
-The claim follows from `scal_of_vec X kv (sub_mem (one_mem _) X.ew_int) (hE X.z0 X.vectorsInLattice.2.1)`.
+A detailed English derivation is pending.
 -/
 theorem ew_at (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k) (hE : GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2)) :
     1 - X.ew ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2)) :=
   scal_of_vec X kv (sub_mem (one_mem _) X.ew_int) (hE X.z0 X.vectorsInLattice.2.1)
 
 /- English proof (translation)
-Establish `hp` using `D.host.g_prime kv.1`. Establish `hcard : Nat.card (𝓞 X.B.I.E ⧸ (wB X (D.naut.plGw kv.1 kv.2)).asIdeal) = D.host.g kv.1`. Rewrite using `[card_wB, card_res_host]`. Establish `hn : 0 < X.B.I.n` using `by rw [X.n_eq, r_eq]; omega`. Use `haveI : Fact (D.host.g kv.1).Prime := ⟨hp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `congW_exists hp hcard X.ew_int`. Establish `hmm` using `congW_mul X.ew_int hm hm`. Rewrite `hmm` using `[X.ew_idem]`. Establish `hm2 : m = m * m` using `congW_unique hp hcard hn hm hmm`. Establish `h01 : m = 0 ∨ m = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: m * (m - 1) = 0` using `by rw [mul_sub, mul_one, ← hm2, sub_self]`. Break down `mul_eq_zero.1 this with h | h` into its components or cases. Conclude with `Or.inl h`. Conclude with `Or.inr (sub_eq_zero.1 h)`. Break down `h01 with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hew : X.ew ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))`. Use `congW_eq_mem hp hcard hm (congW_zero_of (zero_mem _))` as an intermediate fact. Simplify using `using this`. Establish `hint : 1 - X.ew - sg X.B.I X.ew ∈ IntAf X.B.I.F X.B.I.E` using `sub_mem (sub_mem (one_mem _) X.ew_int) (DictLat.sigR_int X.B.I X.ew_int)`. Establish `hfull` using `scal_of_vec X kv hint (mL_le X kv (X.ew_full _ X.vectorsInLattice.2.1))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : 1 - sg X.B.I X.ew = (1 - X.ew - sg X.B.I X.ew) + X.ew` using `by ring`. Rewrite using `[e]`. Conclude with `add_mem hfull hew`. It suffices to derive a contradiction. Apply `hE` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `h1 : X.ew - 1 ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))` using `congW_eq_mem hp hcard hm ⟨1, by simp, by simp⟩`. Establish `h2 : 1 - X.ew ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem h1`.
-
-Rewrite using `[wLf_eq]`. Conclude with `Wq_smul h2 hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ew_not (X : HidaSetting D) (kv : Σ k : Fin 2, D.nd.PlG k)
     (hE : ¬ GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2)) :
@@ -264,55 +260,41 @@ def epsD (X : HidaSetting D) (w : HeightOneSpectrum (𝓞 D.host.E)) : Fin D.R.k
   if GlobalTheory.Mem.SymFrame.EwAt X w then X.bwd else fun i => X.bw (Fin.rev i)
 
 /- English proof (translation)
-Establish `hp` using `D.host.g_prime kv.1`. Establish `hcard : Nat.card (𝓞 X.B.I.E ⧸ (wB X (D.naut.plGw kv.1 kv.2)).asIdeal) = D.host.g kv.1`. Rewrite using `[card_wB, card_res_host]`. Use `haveI : NeZero (D.host.g kv.1) := ⟨hp.ne_zero⟩`. Establish `hm : D.R.r = X.B.I.n` using `X.n_eq.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb0 : IsRedBasis0 X.B.I (wB X (D.naut.plGw kv.1 kv.2)) b`. Establish `h` using `hb`. Unfold `IsRedBasis at h`. Rewrite `h` using `[wLat_eq]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `fam : ∀ x, ((∃ i, x = X.bw i) ∨ (∃ i, x = X.bwd i)) → ZMod' X.B.I X.B.g (hA X.B.I X.z0 x) ∧ ∀ a, ZMod' X.B.I X.B.g (hA X.B.I (X.e0 a) x) ∧ ZMod' X.B.I X.B.g (hA X.B.I (X.f0 a) x)`. Introduce and unpack `x (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `⟨(X.weightVectorsIntegral i).1, fun a => ⟨((X.weightVectorsIntegral i).2.2 a).1, ((X.weightVectorsIntegral i).2.2 a).2.1⟩⟩`. Conclude with `⟨(X.weightVectorsIntegral i).2.1, fun a => ⟨((X.weightVectorsIntegral i).2.2 a).2.2.1, ((X.weightVectorsIntegral i).2.2 a).2.2.2⟩⟩`. Establish `hε : ∀ j, (∃ i, GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2) j = X.bw i) ∨ (∃ i, GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2) j = X.bwd i)`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `j`. Unfold `GlobalTheory.Mem.SymFrame.epsW`. Use `split_ifs`. Conclude with `Or.inl ⟨j, rfl⟩`. Conclude with `Or.inr ⟨_, rfl⟩`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Establish `hεd : ∀ j, (∃ i, epsD X (D.naut.plGw kv.1 kv.2) j = X.bw i) ∨ (∃ i, epsD X (D.naut.plGw kv.1 kv.2) j = X.bwd i)`. Introduce `j`. Unfold `epsD`. Use `split_ifs`. Conclude with `Or.inr ⟨j, rfl⟩`.
+Prove the second alternative. Prove the first alternative. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `Or.inl ⟨_, rfl⟩`. Establish `hbb : ∀ i j, hhat X.B.I (epsD X (D.naut.plGw kv.1 kv.2) i) (GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2) j) - (if i = j then 1 else 0) ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))`. Introduce `i j`. Distinguish the cases in `hE : GlobalTheory.Mem.SymFrame.EwAt X (D.naut.plGw kv.1 kv.2)`. Simplify using `only [epsD, GlobalTheory.Mem.SymFrame.epsW, if_pos hE]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `h1` using `zmod_Wq X kv (X.bw_dual i j)`. Establish `h2 : (if i = j then X.ew - 1 else 0) ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))` using `by split_ifs`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (ew_at X kv hE)`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have e : hhat X.B.I (X.bwd i) (X.bw j) - (if i = j then 1 else 0) = (hA X.B.I (X.bwd i) (X.bw j) - if i = j then X.ew else 0) + (if i = j then X.ew - 1 else 0) := by show _ = (hhat X.B.I (X.bwd i) (X.bw j) - if i = j then X.ew else 0) + (if i = j then X.ew - 1 else 0) split_ifs < …`. Rewrite using `[e]`. Conclude with `add_mem h1 h2`. Simplify using `only [epsD, GlobalTheory.Mem.SymFrame.epsW, if_neg hE]`. Establish `h1` using `sw X kv (X.bw_dual (Fin.rev j) (Fin.rev i))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h2 : (if i = j then sg X.B.I X.ew - 1 else 0) ∈ Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))` using `by split_ifs`. Rewrite using `[← neg_sub]`. Conclude with `neg_mem (ew_not X kv hE)`. Conclude with `zero_mem _`. Establish `e : hhat X.B.I (X.bw (Fin.rev i)) (X.bwd (Fin.rev j)) - (if i = j then 1 else 0) = (hhat X.B.I (X.bw (Fin.rev i)) (X.bwd (Fin.rev j)) - sg X.B.I (if Fin.rev j = Fin.rev i then X.ew else 0)) + (if i = j then sg X.B.I X.ew - 1 else 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `only [if_true]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : ¬ Fin.rev j = Fin.rev i` using `fun h' => h (Fin.rev_injective h').symm`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [h, h', if_false, map_zero, sub_zero, add_zero]`. Rewrite using `[e]`. Conclude with `add_mem h1 h2`. Set `fr : Fin D.R.r → VA X.B.I` to `fun j => GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2) (π.symm j)`. Set `frd : Fin D.R.r → VA X.B.I` to `fun i => GlobalTheory.SeeConjRead.flagV D.R.rS D.R.k D.R.r X.f0 X.e0 (epsD X (D.naut.plGw kv.1 kv.2)) (-X.z0) (π.symm i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hbwL : ∀ x, ((∃ i, x = X.bw i) ∨ (∃ i, x = X.bwd i)) → x ∈ X.B.I.Lf`. Introduce and unpack `x (⟨i, rfl⟩ | ⟨i, rfl⟩)`. Conclude with `(X.vectorsInLattice.2.2 i).1`. Conclude with `(X.vectorsInLattice.2.2 i).2`. Establish `hfr : ∀ j, fr j ∈ X.B.I.Lf` using `fun j => flagV_mem (· ∈ X.B.I.Lf) (zero_mem _) (fun a => (X.vectorsInLattice.1 a).1) (fun a => (X.vectorsInLattice.1 a).2) (fun i => hbwL _ (hε i)) X.vectorsInLattice.2.1 _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hfrd : ∀ i, frd i ∈ X.B.I.Lf` using `fun j => flagV_mem (· ∈ X.B.I.Lf) (zero_mem _) (fun a => (X.vectorsInLattice.1 a).2) (fun a => (X.vectorsInLattice.1 a).1) (fun i => hbwL _ (hεd i)) (neg_mem X.vectorsInLattice.2.1) _`. Establish `hG : GramW (wB X (D.naut.plGw kv.1 kv.2)) fr frd`. Introduce `i j`. Use `gram_flagV (Wq X.B.I (wB X (D.naut.plGw kv.1 kv.2))).toAddSubgroup (hhat X.B.I) (r_eq D) X.e0 X.f0 X.f0 X.e0 (GlobalTheory.Mem.SymFrame.epsW X (D.naut.plGw kv.1 kv.2)) (epsD X (D.naut.plGw kv.1 kv.2)) X.z0 (-X.z0) (fun a c => by` as an intermediate fact. Establish `h` using `sw X kv (X.gramIntegral c a).2.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[sg_ite, map_one]`. Simplify `h)` using `only [@eq_comm _ c a, Submodule.mem_toAddSubgroup]`. Use the proof step `(fun a j => zmod_Wq X kv ((fam _ (hε j)).2 a).2)`. Use the proof step `(fun a => zmod_Wq X kv ((X.formsAtZero.2 a).2))`. Use the proof step `(fun a c => zmod_Wq X kv (X.gramIntegral a c).2.1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use the proof step `(fun i c => sw0 X kv ((fam _ (hεd i)).2 c).1)`. Use `hbb`. Use the proof step `(fun i => sw0 X kv (fam _ (hεd i)).1)`. Use the proof step `(fun i c => sw0 X kv ((fam _ (hεd i)).2 c).2)`. Use the proof step `(fun c => by show hhat X.B.I (-X.z0) (X.e0 c) ∈ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hhat_neg]`. Conclude with `neg_mem (sw0 X kv (X.formsAtZero.2 c).1))`. Use the proof step `(fun j => by show hhat X.B.I (-X.z0) _ ∈ _`. Rewrite using `[hhat_neg]`. Conclude with `neg_mem (zmod_Wq X kv (fam _ (hε j)).1))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(by show hhat X.B.I (-X.z0) X.z0 - 1 ∈ _`. Rewrite using `[hhat_neg, show -hhat X.B.I X.z0 X.z0 - 1 = -(hhat X.B.I X.z0 X.z0 + 1) by ring]`. Conclude with `neg_mem (zmod_Wq X kv X.formsAtZero.1))`. Use the proof step `(fun c => by show hhat X.B.I (-X.z0) (X.f0 c) ∈ _`. Rewrite using `[hhat_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `neg_mem (sw0 X kv (X.formsAtZero.2 c).2))`. Use the proof step `(fun a c => zmod_Wq X kv (X.gramIntegral a c).1)`. Use the proof step `(fun a j => zmod_Wq X kv ((fam _ (hε j)).2 a).1)`. Use the proof step `(fun a => zmod_Wq X kv ((X.formsAtZero.2 a).1))`. Use the proof step `(fun a c => zmod_Wq X kv (X.gramIntegral a c).2.2)`.
-
-Use the proof step `(π.symm i) (π.symm j)`. Simplify using `only [Equiv.apply_eq_iff_eq, Submodule.mem_toAddSubgroup] at this`. Conclude with `this`. Take `⟨c, hc⟩` from `exists_lifts hp hcard hfr`. Establish `hcL : ∀ j, c j ∈ X.B.I.L` using `fun j => (hc j).1`.
-
-Establish `hcq : ∀ j, fr j - iv X.B.I (c j) ∈ Lq X.B.I (wB X (D.naut.plGw kv.1 kv.2))` using `fun j => (hc j).2`. Establish `hG'` using `gram_lift hfrd hG hcq`. Establish `hcB : IsRedBasis0 X.B.I (wB X (D.naut.plGw kv.1 kv.2)) c` using `isRedBasis_of_gram hp hcard hm hfrd hcL hG'`. Use `choose Pc hPc using fun j => rep_exists hp hcard hb0 (hfr j)`. Use `choose Qc hQc using fun j => rep_exists hp hcard hcB (DictLat.iv_mem X.B.I (hb0.1 j))`.
-
-Set `P : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))` to `Matrix.of fun k j => Pc j k`. Set `Q : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1))` to `Matrix.of fun k j => Qc j k`. Establish `hP : ∀ j, RepV (wB X (D.naut.plGw kv.1 kv.2)) (D.host.g kv.1) (fun k => iv X.B.I (b k)) (iv X.B.I (c j)) (fun k => P k j)`. Introduce `j`. Establish `h1` using `hPc j`.
-
-Unfold `RepV at h1 ⊢`. Use `sub_mem h1 (hcq j)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `only [P, Matrix.of_apply]`. Normalize the expressions using the abelian group laws.
-
-Establish `hQ : ∀ j, RepV (wB X (D.naut.plGw kv.1 kv.2)) (D.host.g kv.1) (fun k => iv X.B.I (c k)) (iv X.B.I (b j)) (fun k => Q k j)` using `hQc`. Establish `hPQ : P * Q = 1`. Use extensionality with `i j`. Establish `h1` using `rep_comp hp hcard hb0.1 (hQ j) hP`. Establish `h2` using `rep_self (w := wB X (D.naut.plGw kv.1 kv.2)) hp (fun k => iv X.B.I (b k)) j`.
-
-Use `rep_unique hp hcard hm hb0 h1 h2` as an intermediate fact. Use `congrFun this i` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Matrix.mul_apply]`. Establish `hQP : Q * P = 1` using `(Matrix.mul_eq_one_comm_of_card_eq (Fin D.R.r) (Fin D.R.r) _ rfl).mp hPQ`. Use `⟨⟨P, Q, hPQ, hQP⟩, fun j => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[wLf_eq]`. Conclude with `hPc j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main_kv (X : HidaSetting D) (b : Fin D.R.r → Fin X.B.I.n → X.B.I.E) (kv : Σ k : Fin 2, D.nd.PlG k)
     (hb : IsRedBasis X (D.naut.plGw kv.1 kv.2) b) (π : Equiv.Perm (Fin D.R.r)) :
@@ -464,7 +446,7 @@ theorem main_kv (X : HidaSetting D) (b : Fin D.R.r → Fin X.B.I.n → X.B.I.E) 
   exact hPc j
 
 /- English proof (translation)
-Introduce `D X _ _ b hb _ π`. Use `choose P hP using fun kv => main_kv X (b kv) kv (hb kv) π`. Conclude with `⟨P, fun kv j => hP kv j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem symVec_red : ∀ (D : D7) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D), (∀ x : X.B.I.E, HEq (X.ιE x) x) → ∀ (b : (Σ k : Fin 2, D.nd.PlG k) → Fin D.R.r → Fin X.B.I.n → X.B.I.E), (∀ kv : (Σ k : Fin 2, D.nd.PlG k), IsRedBasis X (D.naut.plGw kv.1 kv.2) (b kv)) → (∀ kv : (Σ k : Fin 2, D.nd.PlG k), ((D.host.g kv.1 : ℕ) : 𝓞 D.host.E) ∈ (D.naut.plGw kv.1 kv.2).asIdeal) → ∀ π : Equiv.Perm (Fin D.R.r), ∃ P : G0g D.nd, ∀ (kv : (Σ k : Fin 2, D.nd.PlG k)) (j : Fin D.R.r), GlobalTheory.Mem.SymFrame.symVec X (D.naut.plGw kv.1 kv.2) (π.symm j) - ∑ i, ((((((P kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g kv.1)))) i j).val : ℕ) : X.B.I.E ⊗[X.B.I.F] Formalism.MainNotions.S.Af X.B.I.F) • incl X.B.I (b kv i) ∈ wLf X (D.naut.plGw kv.1 kv.2) := by
   intro D X _ _ b hb _ π

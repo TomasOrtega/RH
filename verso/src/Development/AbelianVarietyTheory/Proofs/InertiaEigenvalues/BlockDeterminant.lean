@@ -8,9 +8,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.Proof.BlockDeterminant
 
 /- English proof (translation)
-Apply `hφ` to reduce the goal to its premises. Establish `h1` using `congrArg Matrix.det h`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, mul_comm _ P.det]`. Establish `h2` using `hP.mul_left_cancel h1`. Rewrite using `[RingHom.map_det, RingHom.map_det]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem det_eq_of_conj {ι A B : Type} [Fintype ι] [DecidableEq ι] [CommRing A] [CommRing B]
     (φ : A →+* B) (hφ : Function.Injective φ) (M M' : Matrix ι ι A) (P : Matrix ι ι B)
@@ -23,9 +23,9 @@ theorem det_eq_of_conj {ι A B : Type} [Fintype ι] [DecidableEq ι] [CommRing A
   exact h2
 
 /- English proof (translation)
-Establish `e : ∀ M : κ → Matrix ι ι A, (∑ k, c k • M k).map φ = ∑ k, φ (c k) • (M k).map φ`. Introduce `M`. Use extensionality with `a b`. Simplify using `[Matrix.sum_apply, map_sum]`. Rewrite using `[e, e, Matrix.mul_sum, Matrix.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_sum {ι κ A B : Type} [Fintype ι] [Fintype κ] [CommRing A] [CommRing B]
     (φ : A →+* B) (c : κ → A) (M M' : κ → Matrix ι ι A) (P : Matrix ι ι B)
@@ -40,9 +40,9 @@ theorem conj_sum {ι κ A B : Type} [Fintype ι] [Fintype κ] [CommRing A] [Comm
   rw [Matrix.mul_smul, Matrix.smul_mul, h]
 
 /- English proof (translation)
-Use `det_eq_of_conj (MvPolynomial.map φ) (MvPolynomial.map_injective φ hφ) _ _ (P.map (MvPolynomial.C : B →+* MvPolynomial κ B)) ?_ ?_` and prove the remaining obligations. Use `hP.map (MvPolynomial.C : B →+* MvPolynomial κ B)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Use `conj_sum _ _ _ _ _ fun k => ?_` and prove the remaining obligations. Establish `e : ∀ Q : Matrix ι ι A, (Q.map (MvPolynomial.C : A →+* MvPolynomial κ A)).map (MvPolynomial.map φ) = (Q.map φ).map (MvPolynomial.C : B →+* MvPolynomial κ B)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `Q`. Use `ext1 a b`. Simplify using the standard rewrite rules. Rewrite using `[e, e, ← Matrix.map_mul, ← Matrix.map_mul, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_generic_eq {ι κ A B : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [CommRing A] [CommRing B]
     (φ : A →+* B) (hφ : Function.Injective φ) (M M' : κ → Matrix ι ι A) (P : Matrix ι ι B)
@@ -62,9 +62,9 @@ theorem det_generic_eq {ι κ A B : Type} [Fintype ι] [DecidableEq ι] [Fintype
     rw [e, e, ← Matrix.map_mul, ← Matrix.map_mul, h]
 
 /- English proof (translation)
-Use `det_eq_of_conj φ hφ _ _ (Matrix.kroneckerMap (· * ·) (1 : Matrix κ κ B) P) ?_ ?_` and prove the remaining obligations. Rewrite using `[Matrix.det_kronecker]`. Simplify using `using hP.pow _`. Use extensionality with `⟨k, a⟩ ⟨l, b⟩`. Use `congrFun (congrFun (h k l) a) b` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_apply, Matrix.map_apply] at this`. Simplify using `[Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_ite_eq, this]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_block_eq {ι κ A B : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ]
     [CommRing A] [CommRing B]
@@ -81,15 +81,13 @@ theorem det_block_eq {ι κ A B : Type} [Fintype ι] [DecidableEq ι] [Fintype �
     simp [Matrix.mul_apply, Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_ite_eq, this]
 
 /- English proof (translation)
-Introduce `R H what₂ N i r r' Pm hPm X' p T'`. Establish `key : ∀ (m : ℕ) (f : Fin m → X' → N.O i) (g : Fin m → GE N) (y : X'), (Pm (p y) : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * ((∑ k, fun x' => f k x' • rO N i r (p x') (g k)) y).map (toK N i) = ((∑ k, fun x' => f k x' • rO N i r' (p x') (g k)) y).map (toK N i) * (Pm (p y) : Matrix ( …`. Introduce `m f g y`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Conclude with `conj_sum _ _ _ _ _ fun k => hPm _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `back : ∀ a', InSpan N i T' (fun y => rO N i r' (p y)) a' → ∃ a, InSpan N i T' (fun y => rO N i r (p y)) a ∧ ∀ y, (Pm (p y) : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * (a y).map (toK N i) = (a' y).map (toK N i) * (Pm (p y) : Matrix (Fin R.nV) (Fin R.nV) (KK N i))`. Introduce and unpack `a' ⟨m, f, g, hf, rfl⟩`. Conclude with `⟨_, ⟨m, f, g, hf, rfl⟩, key m f g⟩`. Establish `hinj : Function.Injective (toK N i)` using `IsFractionRing.injective _ _`. Establish `hU : ∀ x, IsUnit (Pm x : Matrix (Fin R.nV) (Fin R.nV) (KK N i)).det` using `fun x => (Matrix.isUnit_iff_isUnit_det _).1 (Pm x).isUnit`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨m, f, g, hf, rfl⟩`. Conclude with `⟨_, ⟨m, f, g, hf, rfl⟩, key m f g⟩`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun m a' ha' d => ?_, fun g Θ' hΘ' => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `choose a ha hc using fun k => back (a' k) (ha' k)`. Use `h1 m a ha d` as an intermediate fact. Use `this using 2 with y` and compare the differences between its conclusion and the goal. Rewrite using `[det_generic_eq (toK N i) hinj (fun k => a k y) (fun k => a' k y) _ (hU (p y)) (fun k => hc k y)]`. Use `choose Θ hΘ hc using fun k l => back (Θ' k l) (hΘ' k l)`.
-
-Use `h2 g Θ hΘ` as an intermediate fact. Use `this using 2 with y` and compare the differences between its conclusion and the goal. Conclude with `(det_block_eq (toK N i) hinj (fun k l => Θ k l y) (fun k l => Θ' k l y) _ (hU (p y)) (fun k l => hc k l y)).symm`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem main : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc) (r r' : (N.X i → (GE N →* GL (Fin R.nV) (N.O i)))) (Pm : N.X i → GL (Fin R.nV) (KK N i)), (∀ x g, (Pm x : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * (rO N i r x g).map (toK N i) = (rO N i r' x g).map (toK N i) * (Pm x : Matrix (Fin R.nV) (Fin R.nV) (KK N i))) → ∀ (X' : Type) (p : X' → N.X i) (T' : Subalgebra (N.O i) (X' → N.O i)), (∀ a, InSpan N i T' (fun y => rO N i r (p y)) a → ∃ a', InSpan N i T' (fun y => rO N i r' (p y)) a' ∧ ∀ y, (Pm (p y) : Matrix (Fin R.nV) (Fin R.nV) (KK N i)) * (a y).map (toK N i) = (a' y).map (toK N i) * (Pm (p y) : Matrix (Fin R.nV) (Fin R.nV) (KK N i))) ∧ (CharpolyCoeffsInSubalgebra N i T' (fun y => rO N i r (p y)) → CharpolyCoeffsInSubalgebra N i T' (fun y => rO N i r' (p y))) := by
   intro R H what₂ N i r r' Pm hPm X' p T'

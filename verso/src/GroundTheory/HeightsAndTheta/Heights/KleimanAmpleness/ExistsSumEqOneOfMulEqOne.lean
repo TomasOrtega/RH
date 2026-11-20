@@ -14,19 +14,17 @@ section Loc
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Establish `h0 : (⟨0, hAB he⟩ : B) = 0` using `rfl`. Conclude with `heP (h0 ▸ P.zero_mem)`. Establish `hpow : ∀ M : ℕ, (⟨e, hAB he⟩ : B) ^ M ∉ P` using `fun M h => heP (hP.mem_of_pow_mem M h)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, hb, rfl⟩`. Take `⟨K, hK⟩` from `hB a.2`. Take `⟨K', hK'⟩` from `hB b.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha' : e ^ (K + K') * a ∈ A`. Rewrite using `[pow_add, mul_comm (e ^ K), mul_assoc]`. Conclude with `A.mul_mem (A.pow_mem he _) hK`. Establish `hb' : e ^ (K + K') * b ∈ A`. Rewrite using `[pow_add, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `A.mul_mem (A.pow_mem he _) hK'`. Use `Subring.subset_closure ⟨⟨_, ha'⟩, ⟨_, hb'⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`. Introduce `h`. Establish `h' : (⟨e, hAB he⟩ : B) ^ (K + K') * b ∈ P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Break down `hP.mem_or_mem h' with h1 | h1` into its components or cases. Conclude with `hpow _ h1`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hb h1`. Simplify using `only`. Rewrite using `[mul_div_mul_left _ _ (pow_ne_zero _ he0)]`. Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, hb, rfl⟩`.
-
-Conclude with `Subring.subset_closure ⟨Subalgebra.inclusion hAB a, Subalgebra.inclusion hAB b, hb, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem locIn_eq_of_le_powMulMem {A B : Subalgebra S Ω} (hAB : A ≤ B) {e : Ω} (he : e ∈ A)
     (hB : B ≤ powMulMem A e he) (P : Ideal B) (hP : P.IsPrime) (heP : (⟨e, hAB he⟩ : B) ∉ P) :
@@ -62,31 +60,29 @@ theorem locIn_eq_of_le_powMulMem {A B : Subalgebra S Ω} (hAB : A ≤ B) {e : Ω
     exact Subring.subset_closure ⟨Subalgebra.inclusion hAB a, Subalgebra.inclusion hAB b, hb, rfl⟩
 
 /- English proof (translation)
-Establish `hpow : ∀ M : ℕ, (⟨e, he⟩ : A) ^ M ∉ p` using `fun M h => hep (hp.mem_of_pow_mem M h)`. Set `P : Ideal B` to `{ carrier := {b | ∃ M : ℕ, ∃ a ∈ p, e ^ M * (b : Ω) = (a : Ω)} add_mem' := by`. Introduce and unpack `b b' ⟨M, a, ha, hab⟩ ⟨M', a', ha', hab'⟩`. Use `⟨M + M', ⟨e, he⟩ ^ M' * a + ⟨e, he⟩ ^ M * a', p.add_mem (p.mul_mem_left _ ha) (p.mul_mem_left _ ha'), ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.coe_add, Subalgebra.coe_mul, SubmonoidClass.coe_pow]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hab, ← hab']`. Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, 0, p.zero_mem, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c b ⟨M, a, ha, hab⟩`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨K, hK⟩` from `hB c.2`. Use `⟨K + M, ⟨_, hK⟩ * a, p.mul_mem_left _ ha, ?_⟩` and prove the remaining obligations. Simplify using `only [smul_eq_mul, Subalgebra.coe_mul]`. Rewrite using `[← hab]`. Use `ring }`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemP : ∀ b : B, b ∈ P ↔ ∃ M : ℕ, ∃ a ∈ p, e ^ M * (b : Ω) = (a : Ω)` using `fun _ => Iff.rfl`. Establish `hPprime : P.IsPrime`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, hmemP]`. Introduce and unpack `⟨M, a, ha, hab⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply `hpow M` to reduce the goal to its premises. Use `ha using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (by simpa using hab)`. Introduce `b b' hbb`. Take `⟨M, a, ha, hab⟩` from `(hmemP _).mp hbb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK⟩` from `hB b.2`. Take `⟨K', hK'⟩` from `hB b'.2`. Establish `h1 : (⟨e, he⟩ : A) ^ M * ((⟨_, hK⟩ : A) * ⟨_, hK'⟩) = ⟨e, he⟩ ^ (K + K') * a`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_mul, SubmonoidClass.coe_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hab]`. Simplify using `only [Subalgebra.coe_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (⟨e, he⟩ : A) ^ M * ((⟨_, hK⟩ : A) * ⟨_, hK'⟩) ∈ p`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `p.mul_mem_left _ ha`. Break down `hp.mem_or_mem h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (hpow M)`. Break down `hp.mem_or_mem h3 with h4 | h4` into its components or cases. Conclude with `Or.inl ⟨K, _, h4, rfl⟩`.
+Prove the second alternative. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Conclude with `Or.inr ⟨K', _, h4, rfl⟩`. Establish `heP : (⟨e, hAB he⟩ : B) ∉ P`. Introduce and unpack `⟨M, a, ha, hab⟩`. Apply `hpow (M + 1)` to reduce the goal to its premises. Use `ha using 1` and compare the differences between its conclusion and the goal.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow]`. Rewrite using `[← hab, pow_succ]`. Establish `hcomap : P.comap (Subalgebra.inclusion hAB) = p`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.mem_comap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨M, a', ha', hab⟩`. Establish `h1 : (⟨e, he⟩ : A) ^ M * a = a'`. Apply `Subtype.ext` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Simplify using `using hab`. Establish `h2 : (⟨e, he⟩ : A) ^ M * a ∈ p` using `by rw [h1]; exact ha'`. Break down `hp.mem_or_mem h2 with h3 | h3` into its components or cases. Conclude with `absurd h3 (hpow M)`. Conclude with `h3`.
-
-Introduce `ha`. Conclude with `⟨0, a, ha, by simp⟩`. Use `⟨P, hPprime, ?_⟩` and prove the remaining obligations. Rewrite using `[locIn_eq_of_le_powMulMem hAB he hB P hPprime heP, hcomap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPrime_locIn_eq {A B : Subalgebra S Ω} (hAB : A ≤ B) {e : Ω} (he : e ∈ A)
     (hB : B ≤ powMulMem A e he) (p : Ideal A) (hp : p.IsPrime) (hep : (⟨e, he⟩ : A) ∉ p) :
@@ -159,15 +155,13 @@ theorem exists_isPrime_locIn_eq {A B : Subalgebra S Ω} (hAB : A ≤ B) {e : Ω}
   rw [locIn_eq_of_le_powMulMem hAB he hB P hPprime heP, hcomap]
 
 /- English proof (translation)
-Establish `hone : (1 : Ω) ∈ Submodule.span A (Set.range g) * Q'`. Rewrite using `[hQQ]`. Conclude with `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Choose the witnesses or unpack the hypotheses as in `⟨w, hwQ, hsum⟩ : ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = 1 := by`. Use `Submodule.mul_induction_on (C := fun z => ∃ w : Fin m → Ω, (∀ b, w b ∈ Q') ∧ ∑ b, g b * w b = z) hone ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq q' hq'`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun A).mp hq`. Use `⟨fun b => (a b : Ω) * q', fun b => Q'.smul_mem (a b) hq', ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subalgebra.smul_def, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ _ ⟨w, hw, rfl⟩ ⟨w', hw', rfl⟩`. Use `⟨w + w', fun b => Q'.add_mem (hw b) (hw' b), ?_⟩` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Finset.sum_congr rfl fun b _ => by simp [mul_add]`. Use `⟨w, fun a b => ?_, hsum⟩` and prove the remaining obligations. Establish `h` using `Submodule.mul_mem_mul (Submodule.subset_span ⟨a, rfl⟩ : g a ∈ Submodule.span A (Set.range g)) (hwQ b)`. Rewrite `h` using `[hQQ, Submodule.mem_one]`. Take `⟨y, hy⟩` from `h`.
-
-Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sum_eq_one_of_mul_eq_one (A : Subalgebra S Ω) (Q' : Submodule A Ω) {m : ℕ} (g : Fin m → Ω)
     (hQQ : Submodule.span A (Set.range g) * Q' = 1) :
@@ -204,15 +198,15 @@ section Graph
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω] {N m : ℕ} {x : Fin (N + 1) → Ω}
 
 /- English proof (translation)
-Use `set I := Kleiman.singleChart hi with hIdef`. Establish `hiI : i ∈ I.1` using `Finset.mem_singleton_self i`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨b, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hb : s b ∈ (Q.twist (Kleiman.twistSys S x n)).sub I`. Rewrite using `[← hgen I]`. Conclude with `Submodule.subset_span ⟨b, rfl⟩`. Take `⟨y, hy, hyb⟩` from `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI (s b)).mp hb`. Establish `: x i ^ (-n) * s b = y`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hyb, smul_eq_mul, zpow_neg, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero n hi), one_mul]`. Use `show x i ^ (-n) * s b ∈ Q.sub I`. Rewrite using `[this]`. Conclude with `hy`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : x i ^ n * y ∈ Submodule.span (Kleiman.chartRing S x I) (Set.range s)`. Rewrite using `[hgen I]`. Conclude with `(TranslateEq.mem_twist_twistSys_iff Q.toSubSystem n I hiI _).mpr ⟨y, hy, rfl⟩`. Take `⟨a, ha⟩` from `(Submodule.mem_span_range_iff_exists_fun _).mp hy'`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Simplify using `only [Subalgebra.smul_def, smul_eq_mul] at ha ⊢`. Establish `: ∑ b, (a b : Ω) * (x i ^ (-n) * s b) = x i ^ (-n) * ∑ b, (a b : Ω) * s b`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ => by ring`. Rewrite using `[this, ha, zpow_neg, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero n hi), one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem span_graphGens_eq (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     {i : Fin (N + 1)} (hi : x i ≠ 0) :
@@ -244,9 +238,9 @@ theorem span_graphGens_eq (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → 
     rw [this, ha, zpow_neg, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero n hi), one_mul]
 
 /- English proof (translation)
-Take `⟨Q', hQ'⟩` from `Q.invertible (Kleiman.singleChart hi)`. Rewrite `hQ'` using `[← span_graphGens_eq Q n s hgen hi]`. Take `⟨w, hw, hsum⟩` from `exists_sum_eq_one_of_mul_eq_one _ Q' _ hQ'`. Use `⟨w, fun a b => ?_, hsum⟩` and prove the remaining obligations. Rewrite using `[chartRingOver_oneBlock x (fun _ => i) hi]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw a b`.
+A detailed English derivation is pending.
 -/
 theorem exists_graph_inverse (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m → Ω) (hgen : IsGraphGen Q n s)
     {i : Fin (N + 1)} (hi : x i ≠ 0) :
@@ -260,11 +254,9 @@ theorem exists_graph_inverse (Q : Kleiman.LineBundle S x) (n : ℤ) (s : Fin m �
   exact hw a b
 
 /- English proof (translation)
-Establish `hA` using `chartRingOver_oneBlock (S := S) x (fun _ => i) hi`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `chartRing_le_graphRing x s hi j`. Use `graphRing_le x s hi j _ (fun a ha => ⟨0, ?_⟩) fun c => ⟨1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, one_mul, hA]`. Conclude with `ha`. Establish `: (x i ^ (-n) * s j * w b) ^ 1 * (s c / s j) = x i ^ (-n) * s c * w b`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `hw c b`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem graphRing_between {i : Fin (N + 1)} (hi : x i ≠ 0) (n : ℤ) (s : Fin m → Ω) (w : Fin m → Ω)
     (hw : ∀ a b, x i ^ (-n) * s a * w b ∈ chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i))
@@ -284,31 +276,27 @@ theorem graphRing_between {i : Fin (N + 1)} (hi : x i ≠ 0) (n : ℤ) (s : Fin 
 end Graph
 
 /- English proof (translation)
-Introduce `S _ N Ω _ _ x Q n m s hx hgen`. Take `⟨i₀, hi₀⟩` from `hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `(⟨⟩ | ⟨⟩)`. Conclude with `⟨i₀, hi₀⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨w, -, hsum⟩` from `exists_graph_inverse Q n s hgen hi₀`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h0 : ∀ b, s b = 0` using `fun b => h b`. Simplify using `[h0] at hsum`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `show IndefiniteRowSideFullHecke.Kleiman2.modelPts S (graphVec x s) = IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x)`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, P, hP, rfl⟩`. Take `⟨i, j, rfl⟩ : ∃ (i : Fin (N + 1)) (j : Fin m), c = graphChart i j` from `⟨c (Sum.inl ()), c (Sum.inr ()), graphChart_eta c⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : x i ≠ 0` using `hc (Sum.inl ())`. Establish `hj : s j ≠ 0` using `hc (Sum.inr ())`. Take `⟨w, hw, hsum⟩` from `exists_graph_inverse Q n s hgen hi`. Establish `hB : ∀ b, chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i) ≤ graphRing S x s i j ∧ graphRing S x s i j ≤ powMulMem _ _ (hw j b)` using `graphRing_between hi n s w hw hj`. Take `⟨hAB, -⟩` from `hB j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Choose the witnesses or unpack the hypotheses as in `⟨b, hb⟩ : ∃ b, (⟨_, hAB (hw j b)⟩ : graphRing S x s i j) ∉ P := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hP.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Establish `h1 : (1 : graphRing S x s i j) = ∑ b, (⟨s b / s j, div_mem_graphRing_inr x s i j b⟩ : graphRing S x s i j) * ⟨_, hAB (hw j b)⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_one, AddSubmonoidClass.coe_finsetSum, Subalgebra.coe_mul]`. Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun b _ => P.mul_mem_left _ (h b)`. Take `⟨hAB', hle⟩` from `hB b`. Establish `hP' : (P.comap (Subalgebra.inclusion hAB')).IsPrime` using `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun _ => i, fun _ => hi, _, hP', ?_⟩` and prove the remaining obligations. Conclude with `locIn_eq_of_le_powMulMem hAB' (hw j b) hle P hP hb`. Introduce and unpack `⟨c, hc, p, hp, rfl⟩`. Take `⟨i, rfl⟩ : ∃ i : Fin (N + 1), c = fun _ => i` from `⟨c (), funext fun u => rfl⟩`. Establish `hi : x i ≠ 0` using `hc ()`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, hsum⟩` from `exists_graph_inverse Q n s hgen hi`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, (⟨_, hw j j⟩ : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) ∉ p := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Apply `hp.ne_top` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `h1 : (1 : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) = ∑ b, ⟨_, hw b b⟩`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subalgebra.coe_one, AddSubmonoidClass.coe_finsetSum]`. Conclude with `hsum.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Conclude with `Ideal.sum_mem _ fun b _ => h b`. Establish `hsj : s j ≠ 0`. Introduce `h0`. Apply `hj` to reduce the goal to its premises.
-
-Establish `: (⟨_, hw j j⟩ : chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock x) (fun _ => i)) = 0` using `Subtype.ext (by simp [h0])`. Rewrite using `[this]`. Conclude with `p.zero_mem`. Take `⟨hAB, hle⟩` from `graphRing_between hi n s w hw hsj j`. Take `⟨P, hP, hPeq⟩` from `exists_isPrime_locIn_eq hAB (hw j j) hle p hp hj`.
-
-Use `⟨graphChart i j, ?_, P, hP, hPeq.symm⟩` and prove the remaining obligations. Introduce and unpack `(⟨⟩ | ⟨⟩)`. Conclude with `hi`. Conclude with `hsj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem GraphModel.full : GraphModel.Statement := by
   intro S _ N Ω _ _ x Q n m s hx hgen

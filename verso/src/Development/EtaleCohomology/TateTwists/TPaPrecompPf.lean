@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-Use `congrArg (fun f => (ModuleCat.Hom.hom f) x) (φ.hom.naturality g.op)` as an intermediate fact. Simplify using `using this.symm`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pa_sec_res_map {R : Type} [CommRing R] {F G : Shv R} (φ : F ⟶ G) {V U : Scheme.{0}} (g : V ⟶ U)
     (x : Sec F U) : Sec.res g (Sec.map φ x) = Sec.map φ (Sec.res g x) := by
@@ -19,11 +19,11 @@ theorem pa_sec_map_comp {R : Type} [CommRing R] {F G H : Shv R} (φ : F ⟶ G) (
     (x : Sec F U) : Sec.map (φ ≫ ψ) x = Sec.map ψ (Sec.map φ x) := rfl
 
 /- English proof (translation)
-Introduce `R _ I I' J K u μ`. Use `⟨⟨fun U s t w h => (μ.mul U s t w h).comp ((u.f s).hom.app (op U)).hom, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `V U g s t w h a b`. Simplify using `only [LinearMap.comp_apply]`. Conclude with `(μ.nat g s t w h _ b).trans (by rw [pa_sec_res_map])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U s t w h a b`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[μ.leibniz]`. Use `congr 2`. Rewrite using `[← pa_sec_map_comp, u.comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `U s t w h a b`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem t_pa_precomp_of : t_pa_precomp := by
   intro R _ I I' J K u μ

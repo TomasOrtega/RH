@@ -23,14 +23,14 @@ instance dualLocal (A : Type) [CommRing A] [IsLocalRing A] : IsLocalRing (DualNu
 def fstR (A : Type) [CommRing A] : DualNumber A →+* A := (fstHom A A A).toRingHom
 
 /- English proof (translation)
-Introduce `r` and use `⟨inl r, rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 lemma fstR_surj (A : Type) [CommRing A] : Function.Surjective (fstR A) := fun r => ⟨inl r, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Ideal.mem_span_singleton']`. Express the relevant statement in the definitionally equal form `fst x = 0 ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨inl x.snd, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify `hx.symm` using `[snd_mul, DualNumber.snd_eps, DualNumber.fst_eps]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨a, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -49,7 +49,7 @@ lemma ker_fstR (A : Type) [CommRing A] :
     simp
 
 /- English proof (translation)
-Rewrite using `[← ker_fstR]`. Express the relevant statement in the definitionally equal form `fst a = 0`. Establish `h` using `congrArg snd ha`. Simplify `h` using `[snd_mul, DualNumber.snd_eps, DualNumber.fst_eps]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma ann_eps (A : Type) [CommRing A] (a : DualNumber A) (ha : a * DualNumber.eps = 0) :
     a ∈ Ideal.span {(DualNumber.eps : DualNumber A)} := by
@@ -59,7 +59,7 @@ lemma ann_eps (A : Type) [CommRing A] (a : DualNumber A) (ha : a * DualNumber.ep
   simpa [snd_mul, DualNumber.snd_eps, DualNumber.fst_eps] using h
 
 /- English proof (translation)
-Use `ext`. Simplify using `using h`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 lemma char_D (A : Type) [CommRing A] (k : ℕ) (h : (k : A) = 0) : (k : DualNumber A) = 0 := by
   ext
@@ -74,7 +74,7 @@ def mapD {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) : DualNumber A �
   map_mul' x y := by ext <;> simp [snd_mul, mul_comm]
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨a, ha⟩ := hf y.fst obtain ⟨b, hb⟩ := hf y.snd refine ⟨inl a + inr b, ?_⟩ ext <;> simp [mapD, ha, hb]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma mapD_surj {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (hf : Function.Surjective f) :
     Function.Surjective (mapD f) := fun y => by
@@ -104,20 +104,20 @@ instance zmod_prime_sq_local : IsLocalRing (ZMod (p ^ 2)) :=
 def red : ZMod (p ^ 2) →+* ZMod p := ZMod.castHom (dvd_pow_self p two_ne_zero) (ZMod p)
 
 /- English proof (translation)
-The claim follows from `ZMod.ringHom_surjective _`.
+A detailed English derivation is pending.
 -/
 lemma red_surj : Function.Surjective (red p) := ZMod.ringHom_surjective _
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, ZMod.natCast_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma psq : (p : ZMod (p ^ 2)) ^ 2 = 0 := by
   rw [← Nat.cast_pow, ZMod.natCast_self]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `ZMod.natCast_zmod_surjective a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `h` using `[map_natCast, ZMod.natCast_eq_zero_iff]`. Conclude with `Nat.cast_dvd_cast h`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc⟩`. Rewrite using `[hc, map_mul, map_natCast, ZMod.natCast_self, zero_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma red_eq_zero (a : ZMod (p ^ 2)) : red p a = 0 ↔ (p : ZMod (p ^ 2)) ∣ a := by
   obtain ⟨k, rfl⟩ := ZMod.natCast_zmod_surjective a
@@ -129,9 +129,9 @@ lemma red_eq_zero (a : ZMod (p ^ 2)) : red p a = 0 ↔ (p : ZMod (p ^ 2)) ∣ a 
     rw [hc, map_mul, map_natCast, ZMod.natCast_self, zero_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨k, rfl⟩` from `ZMod.natCast_zmod_surjective a`. Rewrite `h` using `[← Nat.cast_mul, ZMod.natCast_eq_zero_iff, sq]`. Rewrite using `[map_natCast, ZMod.natCast_eq_zero_iff]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.dvd_of_mul_dvd_mul_left hp.out.pos h`. Introduce `h`. Take `⟨c, rfl⟩` from `(red_eq_zero p a).1 h`. Rewrite using `[← mul_assoc, ← sq, psq, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ann_p (a : ZMod (p ^ 2)) : (p : ZMod (p ^ 2)) * a = 0 ↔ red p a = 0 := by
   constructor
@@ -145,7 +145,7 @@ lemma ann_p (a : ZMod (p ^ 2)) : (p : ZMod (p ^ 2)) * a = 0 ↔ red p a = 0 := b
     rw [← mul_assoc, ← sq, psq, zero_mul]
 
 /- English proof (translation)
-Establish `h1 : (p : ZMod (p ^ 2)) ∣ x - y` using `(red_eq_zero p _).1 (by rw [map_sub, h, sub_self])`. Establish `h2` using `dvd_sub_pow_of_dvd_sub h1 1`. Rewrite `h2` using `[pow_one, show (1 + 1 : ℕ) = 2 from rfl, psq, zero_dvd_iff, sub_eq_zero]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pow_congr (x y : ZMod (p ^ 2)) (h : red p x = red p y) : x ^ p = y ^ p := by
   have h1 : (p : ZMod (p ^ 2)) ∣ x - y := (red_eq_zero p _).1 (by rw [map_sub, h, sub_self])
@@ -156,7 +156,7 @@ lemma pow_congr (x y : ZMod (p ^ 2)) (h : red p x = red p y) : x ^ p = y ^ p := 
 def sec (a : ZMod p) : ZMod (p ^ 2) := (a.val : ℕ)
 
 /- English proof (translation)
-Rewrite using `[sec, map_natCast, ZMod.natCast_zmod_val]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma red_sec (a : ZMod p) : red p (sec p a) = a := by
   rw [sec, map_natCast, ZMod.natCast_zmod_val]
@@ -170,24 +170,22 @@ def teich : ZMod p →* ZMod (p ^ 2) where
     exact pow_congr p _ _ (by rw [map_mul, red_sec, red_sec, red_sec])
 
 /- English proof (translation)
-The claim follows from `pow_congr p _ _ (red_sec p _)`.
+A detailed English derivation is pending.
 -/
 lemma teich_red (x : ZMod (p ^ 2)) : teich p (red p x) = x ^ p :=
   pow_congr p _ _ (red_sec p _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `red p (sec p a ^ p) = a`. Rewrite using `[map_pow, red_sec, ZMod.pow_card]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 lemma red_teich (a : ZMod p) : red p (teich p a) = a := by
   change red p (sec p a ^ p) = a
   rw [map_pow, red_sec, ZMod.pow_card]
 
 /- English proof (translation)
-Use `set q : MvPolynomial (Fin n) ℤ := (∑ j, (MvPolynomial.X j) ^ p) - (∑ j, MvPolynomial.X j) ^ p with hq`. Establish `hd : MvPolynomial.C (p : ℤ) ∣ q`. Rewrite using `[MvPolynomial.C_dvd_iff_zmod, hq]`. Simplify using `only [map_sub, map_sum, map_pow, MvPolynomial.map_X]`. Rewrite using `[sum_pow_char, sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[MvPolynomial.C_dvd_iff_dvd_coeff]`. Use `conv_rhs => rw [q.as_sum]`. Express the relevant statement in the definitionally equal form `_ * ∑ m ∈ q.support, MvPolynomial.monomial m (q.coeff m / (p : ℤ)) = _`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[← map_natCast (MvPolynomial.C : ℤ →+* _), MvPolynomial.C_mul_monomial, Int.mul_ediv_cancel' (hd m)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wS_spec (n : ℕ) : (p : MvPolynomial (Fin n) ℤ) * wS p n =
     (∑ j, (MvPolynomial.X j) ^ p) - (∑ j, MvPolynomial.X j) ^ p := by
@@ -205,13 +203,13 @@ lemma wS_spec (n : ℕ) : (p : MvPolynomial (Fin n) ℤ) * wS p n =
     Int.mul_ediv_cancel' (hd m)]
 
 /- English proof (translation)
-Establish `hf : ∀ x : ZMod p, (frobeniusEquiv (ZMod p) p).symm x = x` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, frobeniusEquiv_apply, frobenius_def, ZMod.pow_card]`. Establish `h` using `congrArg (MvPolynomial.eval₂Hom (Int.castRingHom (ZMod (p ^ 2))) (fun j => sec p (a j))) (wS_spec p n)`. Simplify using `only [map_mul, map_natCast, map_sub, map_sum, map_pow, MvPolynomial.eval₂Hom_X'] at h`. Establish `h1 : teich p (∑ j, a j) = (∑ j, sec p (a j)) ^ p`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← teich_red, map_sum (red p)]`. Simplify using `only [red_sec]`. Use `set c := MvPolynomial.eval₂ (Int.castRingHom (ZMod p)) (fun j => (frobeniusEquiv (ZMod p) p).symm (a j)) (wS p n) with hc`. Establish `h2 : (p : ZMod (p ^ 2)) * (teich p c - MvPolynomial.eval₂Hom (Int.castRingHom (ZMod (p ^ 2))) (fun j => sec p (a j)) (wS p n)) = 0`. Rewrite using `[ann_p, map_sub, red_teich, MvPolynomial.coe_eval₂Hom, MvPolynomial.eval₂_comp_left, sub_eq_zero, hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `RingHom.ext_int _ _`. Use function extensionality and compare the values at `j`. Rewrite using `[hf, Function.comp_apply, red_sec]`. Establish `h3 : ∑ j, teich p (a j) = ∑ j, sec p (a j) ^ p` using `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h3, h1]`. Take the linear combination `-h - h2`.
+A detailed English derivation is pending.
 -/
 lemma witt_add (n : ℕ) (a : Fin n → ZMod p) : ∑ j, teich p (a j) =
     teich p (∑ j, a j) + p * teich p (MvPolynomial.eval₂ (Int.castRingHom (ZMod p))
@@ -246,7 +244,7 @@ def lev' : ℕ → LAlg ℤ
   | _ + 1 => mkL (DualNumber (ZMod (p ^ 2)))
 
 /- English proof (translation)
-Rewrite using `[ZMod.natCast_eq_zero_iff]`. Conclude with `pow_dvd_pow p (by omega)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pk (n : ℕ) : ((p ^ (n + 1 + 1) : ℕ) : ZMod (p ^ 2)) = 0 := by
   rw [ZMod.natCast_eq_zero_iff]
@@ -336,7 +334,7 @@ def wModel : WData (tower p) (mkL (ZMod p)) where
     exact this
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (p : ZMod (p ^ 2)) * 1 = 0` using `by rw [mul_one]; exact h`. Rewrite `h1` using `[ann_p, map_one]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wModel_p_ne_zero : (p : ((wModel p).W : Type)) ≠ 0 := by
   intro h

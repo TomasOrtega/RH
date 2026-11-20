@@ -12,13 +12,13 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul app_resM)
 open GlobalTheory.QCoh (appLinear appLinear_apply)
 
 /- English proof (translation)
-Use `isFrame_of_forall_exists fun V h x hx => ?_` and prove the remaining obligations. Take `⟨W, a, -, hxW, hle, ha⟩` from `hA.exists_affine hx`. Use `⟨W, hle, hxW, ?_⟩` and prove the remaining obligations. Set `p : Γ(A, W) →ₗ[Γ(X, W)] (Fin k → Γ(X, W))` to `LinearMap.funLeft _ _ g ∘ₗ (he.basis (hle.trans h)).equivFun.toLinearMap ∘ₗ appLinear u W`. Establish `hp : p ∘ₗ (Fintype.linearCombination Γ(X, W) fun i => resM A (hle.trans h) (s i)) = LinearMap.id`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `(Pi.basisFun _ _).ext fun j => ?_` and prove the remaining obligations. Establish `h₁ : appLinear u W (resM A (hle.trans h) (s j)) = he.basis (hle.trans h) (g j)`. Rewrite using `[appLinear_apply, app_resM, hs, IsFrame.basis_apply]`. Use function extensionality and compare the values at `i`. Simplify using `[p, h₁, Finsupp.single_apply, Pi.single_apply, hg.eq_iff, eq_comm, -IsFrame.basis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hp' (c) : p (Fintype.linearCombination Γ(X, W) (fun i => resM A (hle.trans h) (s i)) c) = c` using `LinearMap.congr_fun hp c`. Establish `hsurj : Function.Surjective p` using `fun c => ⟨_, hp' c⟩`. Establish `hinj : Function.Injective p`. Use `OrzechProperty.injective_of_surjective_endomorphism (p ∘ₗ (ha.basis le_rfl).equivFun.symm.toLinearMap) (hsurj.comp (ha.basis le_rfl).equivFun.symm.surjective)` as an intermediate fact. Conclude with `(Function.Injective.of_comp_iff' _ (ha.basis le_rfl).equivFun.symm.bijective).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun c c' hc => by rw [← hp' c, hc, hp'], fun y => ⟨p y, hinj (hp' _)⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.subbundle_frame_of_injective {X : Scheme.{0}} {A M : X.Modules} {k r : ℕ} (hA : IsVB A k) (u : A ⟶ M)
     {U : X.Opens} {e : Fin r → Γ(M, U)} (he : IsFrame e) (g : Fin k → Fin r) (hg : Function.Injective g)
@@ -44,13 +44,13 @@ private theorem UpperTheory.subbundle_frame_of_injective {X : Scheme.{0}} {A M :
   exact ⟨fun c c' hc => by rw [← hp' c, hc, hp'], fun y => ⟨p y, hinj (hp' _)⟩⟩
 
 /- English proof (translation)
-Use `isFrame_of_forall_exists fun V h x hx => ?_` and prove the remaining obligations. Take `⟨W', c, -, hxW', hle', hc⟩` from `hL.exists_affine hx`. Take `⟨W, hW, hxW, t, ht⟩` from `VBExt.exists_lifts q c hxW'`. Establish `hle` using `hW.trans hle'`. Use `⟨W, hle, hxW, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `(hs W (hle.trans h)).2 (t 0)`. Establish `h₁ : resM L hW (c 0) = a j₀ • resM L (hle.trans h) (q.app U (s j₀))`. Rewrite using `[← ht, ← ha, Fintype.linearCombination_apply, ← appLinear_apply, map_sum, Finset.sum_eq_single j₀, map_smul, appLinear_apply, app_resM]`. Introduce `j _ hj`. Rewrite using `[map_smul, appLinear_apply, app_resM, h₀ j hj, map_zero, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hsurj : Function.Surjective (Fintype.linearCombination Γ(X, W) fun _ : Fin 1 => resM L (hle.trans h) (q.app U (s j₀)))` using `fun y => by`. Take `⟨b, rfl⟩` from `(hc W hW).2 y`. Use `⟨fun _ => b 0 * a j₀, ?_⟩` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, Fin.sum_univ_one, h₁, smul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨?_, hsurj⟩` and prove the remaining obligations. Establish `hg` using `OrzechProperty.injective_of_surjective_endomorphism ((hc.basis hW).equivFun.toLinearMap ∘ₗ (Fintype.linearCombination Γ(X, W) fun _ : Fin 1 => resM L (hle.trans h) (q.app U (s j₀)))) ((hc.basis hW).equivFun.surjective.comp hsurj)`. Conclude with `Function.Injective.of_comp (f := ⇑(hc.basis hW).equivFun) hg`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.quotient_line_frame {X : Scheme.{0}} {A L : X.Modules} {k : ℕ} (hL : IsVB L 1) (q : A ⟶ L) [Epi q]
     {U : X.Opens} {s : Fin k → Γ(A, U)} (hs : IsFrame s) (j₀ : Fin k) (h₀ : ∀ j, j ≠ j₀ → q.app U (s j) = 0) :
@@ -79,9 +79,9 @@ private theorem UpperTheory.quotient_line_frame {X : Scheme.{0}} {A L : X.Module
   exact Function.Injective.of_comp (f := ⇑(hc.basis hW).equivFun) hg
 
 /- English proof (translation)
-Proceed by induction on `b using Fin.induction with`. Consider the case `zero`. Take `rfl : a = 0` from `Fin.le_zero_iff.1 h`. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Consider the case `succ b ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Break down `h.eq_or_lt with rfl | h'` into its components or cases. Conclude with `⟨𝟙 _, Category.id_comp _⟩`. Take `⟨φ, hφ⟩` from `ih (Fin.le_castSucc_iff.2 h')`. Conclude with `⟨φ ≫ fl.step b, by rw [Category.assoc, fl.step_ι, hφ]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.flag_nested {X : Scheme.{0}} {M : X.Modules} {r : ℕ} (fl : Vert.Flag M r) (a b : Fin (r + 1))
     (h : a ≤ b) : ∃ φ : fl.F a ⟶ fl.F b, φ ≫ fl.ι b = fl.ι a := by
@@ -96,13 +96,13 @@ private theorem UpperTheory.flag_nested {X : Scheme.{0}} {M : X.Modules} {r : �
       exact ⟨φ ≫ fl.step b, by rw [Category.assoc, fl.step_ι, hφ]⟩
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.induction with`. Consider the case `zero`. Take `⟨U, s, hx, hs⟩` from `fl.isVB 0 x`. Conclude with `⟨U, s, hx, hs, fun j => j.elim0⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨U, s, hx, hs, H⟩` from `ih`. Take `⟨U', c, -, hx', hle, hc⟩` from `(fl.isVB_gr k).exists_affine hx`. Take `⟨W, hW, hxW, t, ht⟩` from `VBExt.exists_lifts (fl.π k) c hx'`. Establish `ht' : IsFrame fun j => (fl.π k).app W (t j)` using `by rw [funext ht]; exact hc.res hW`. Establish `hf` using `(VBExt.isFrame_sumElim (VMetric.stepSeq_shortExact fl k) (hs.res (hW.trans hle)) ht').comp_equiv finSumFinEquiv.symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨W, _, hxW, hf, fun j i hij => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `(finSumFinEquiv (m := k.castSucc) (n := 1)).surjective j`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply]`. Break down `j with j | j` into its components or cases. Take `⟨s₀, hs₀⟩` from `H j i hij`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨resM _ (hW.trans hle) s₀, ?_⟩` and prove the remaining obligations. Rewrite using `[app_resM, hs₀, ← app_resM, ← fl.step_ι]`. Both sides reduce to the same expression. Take `rfl : i = k` from `Fin.ext (by rw [hij, Subsingleton.elim j 0]; rfl)`. Conclude with `⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.flag_local_frames {X : Scheme.{0}} {M : X.Modules} {r : ℕ} (fl : Vert.Flag M r) (x : X)
     (k : Fin (r + 1)) : ∃ (U : X.Opens) (s : Fin k → Γ(fl.F k, U)), x ∈ U ∧ IsFrame s ∧
@@ -133,13 +133,13 @@ private theorem UpperTheory.flag_local_frames {X : Scheme.{0}} {M : X.Modules} {
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `X M r fl`. Use `⟨fun x => ?_, fun ch hch i t ht => ?_⟩` and prove the remaining obligations. Take `⟨U, s, hx, hs, H⟩` from `UpperTheory.flag_local_frames fl x (Fin.last r)`. Conclude with `⟨⟨U, _, hs.map_iso (fl.ι (Fin.last r))⟩, hx, fun i => H i i rfl⟩`. Establish `hi : (i.succ : ℕ) ≤ r` using `i.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key (j : Fin (i.succ : ℕ)) : ∃ s : Γ(fl.F i.succ, ch.U), (fl.ι i.succ).app ch.U s = ch.e (j.castLE hi) ∧ (j = Fin.last i → s = t) ∧ (j ≠ Fin.last i → (fl.π i).app ch.U s = 0)`. Distinguish the cases in `hj : j = Fin.last i`. Substitute `hj` using the available equality. Conclude with `⟨t, ht, fun _ => rfl, fun h => (h rfl).elim⟩`. Take `⟨s₀, hs₀⟩` from `hch (j.castLE hi)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ⟩` from `UpperTheory.flag_nested fl (j.castLE hi).succ i.castSucc (Fin.val_lt_last hj)`. Use `⟨(φ ≫ fl.step i).app ch.U s₀, ?_, fun h => (hj h).elim, fun _ => ?_⟩` and prove the remaining obligations. Rewrite using `[QCoh.app_app, Category.assoc, fl.step_ι, hφ, hs₀]`. Establish `h₀ : fl.step i ≫ fl.π i = 0` using `Limits.cokernel.condition _`. Rewrite using `[QCoh.app_app, Category.assoc, h₀, Limits.comp_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `choose s hs h₁ h₂ using key`. Use `UpperTheory.quotient_line_frame (fl.isVB_gr i) (fl.π i) (UpperTheory.subbundle_frame_of_injective (fl.isVB i.succ) (fl.ι i.succ) ch.isFrame _ (Fin.castLE_injective hi) s hs) (Fin.last i) h₂` as an intermediate fact. Rewrite `this` using `[h₁ _ rfl]`. Then use the resulting hypothesis.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_adapted_flag_charts :
     ∀ (X : Scheme.{0}) (M : X.Modules) (r : ℕ) (fl : Vert.Flag M r), (∀ x : X, ∃ ch : Chart M r, x ∈ ch.U ∧ IsAdapted fl ch) ∧ ∀ ch : Chart M r, IsAdapted fl ch → ∀ (i : Fin r) (t : Γ(fl.F i.succ, ch.U)), (fl.ι i.succ).app ch.U t = ch.e i → IsFrame fun _ : Fin 1 => (fl.π i).app ch.U t := by
